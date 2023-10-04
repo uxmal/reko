@@ -1,25716 +1,16608 @@
-;;; Segment code (0000)
-0000 1E 01 70 00 40 00 08 00 72 00 40 00 08 00 20 57 ..p.@...r.@... W
-0010 07 10 70 00 00 00 00 00 00 56 02 10 D0 00 1E 03 ..p......V......
-0020 1E 01 07 01 74 00 40 00 08 00 72 00 40 00 08 00 ....t.@...r.@...
-0030 14 00 24 C0 46 55 E6 4F 74 5B 14 49 44 5F 64 61 ..$.FU.Ot[.ID_da
-0040 F4 4F 04 56 07 10 70 00 00 00 00 00 00 56 02 10 .O.V..p......V..
-0050 D0 00 07 02 1E 03 00 00 1E 01 38 01 12 00 04 70 ..........8....p
-0060 08 00 00 50 1B 12 81 05 84 1C 01 05 80 1C 14 00 ...P............
-0070 08 C0 E8 4F 98 60 0A 55 12 00 04 B0 0C 00 80 57 ...O.`.U.......W
-0080 5E 10 10 60 13 00 04 B0 0C 00 20 4C A0 61 00 A0 ^..`...... L.a..
-0090 D0 00 12 00 04 B0 0C 00 80 57 44 1F FF C0 65 FF .........WD...e.
-00A0 70 00 00 00 00 00 00 56 06 10 72 00 40 00 04 00 p......V..r.@...
-00B0 FF C0 39 FF 12 00 14 30 08 00 38 02 1E 03 00 00 ..9....0..8.....
-00C0 1E 01 1E 03 1E 01 70 00 00 00 00 00 00 56 09 10 ......p......V..
-00D0 74 00 40 00 10 00 72 00 40 00 04 00 FF C0 0D FF t.@...r.@.......
-00E0 FF C0 41 FF 1E 03 00 00 1E 01 1E 03 12 01 12 00 ..A.............
-00F0 04 B0 28 00 10 01 00 05 6C E2 10 01 12 00 04 B0 ..(.....l.......
-0100 2C 00 10 01 00 C0 74 D4 12 5A 00 C0 6A D8 9D 01 ,.....t..Z..j...
-0110 67 01 BF 60 FC BF 28 55 4A 55 BC 54 00 40 1D 54 g..`..(UJU.T.@.T
-0120 E8 10 76 5B F4 55 A2 55 00 C0 B0 21 70 53 14 12 ..v[.U.U...!pS..
-0130 18 01 1C 01 D4 55 82 54 F2 61 00 C0 5E D7 07 5B .....U.T.a..^..[
-0140 82 55 00 C0 F6 D7 8F 60 00 52 1F 10 07 52 1A 1E .U.....`.R...R..
-0150 82 55 00 C0 32 D7 A2 55 00 C0 70 02 00 52 15 11 .U..2..U..p..R..
-0160 BF 60 04 40 67 02 9D 03 20 05 74 E2 00 C0 F4 D7 .`.@g... .t.....
-0170 12 5A 00 C0 02 D8 B4 54 00 40 F4 61 A2 55 00 C0 .Z.....T.@.a.U..
-0180 CE 09 02 55 FF C0 69 FF 20 05 7A E2 FF C0 61 FF ...U..i. .z...a.
-0190 00 00 9D 01 67 01 BF 60 FC BF 28 55 4A 55 BD 5A ....g..`..(UJU.Z
-01A0 00 40 1C 54 EC 10 1A 01 00 5E 10 01 C4 55 82 54 .@.T.....^...U.T
-01B0 F2 61 00 C0 0E D7 8F 60 07 53 12 12 D6 5B F4 55 .a.....`.S...[.U
-01C0 82 55 00 C0 1A 0F 07 5B 00 52 61 11 00 52 1C 1E .U.....[.Ra..R..
-01D0 A2 55 00 C0 B2 D6 00 52 1B 11 82 55 00 C0 EC 01 .U.....R...U....
-01E0 00 52 12 11 BF 60 04 40 67 02 9D 03 B4 54 00 40 .R...`.@g....T.@
-01F0 F4 61 82 55 00 C0 58 09 02 55 FF C0 F3 FE 20 05 .a.U..X..U.... .
-0200 8A E2 FF C0 EB FE 20 05 7A E2 FF C0 E3 FE 20 05 ...... .z..... .
-0210 98 E2 FF C0 DB FE 00 00 9D 01 58 01 BF 60 FC FB ..........X..`..
-0220 FD 55 2A 55 4D EF 00 04 00 C0 4C D9 08 55 30 54 .U*UM.....L..U0T
-0230 80 61 B0 56 FF 03 A7 12 18 01 A4 55 D2 55 00 C0 .a.V.......U.U..
-0240 E6 D8 D8 61 70 00 7A 00 2E 67 08 E0 40 05 BE E2 ...ap.z..g..@...
-0250 A2 55 00 C0 1A D6 08 55 4F 60 00 56 05 13 4D AF .U.....UO`.V..M.
-0260 00 04 D2 55 00 C0 86 03 00 56 0D 11 04 55 82 55 ...U.....V...U.U
-0270 FF C0 9F FE A2 55 00 C0 8E DB DF 55 BF 60 04 04 .....U.....U.`..
-0280 58 02 9D 03 12 00 04 B0 28 00 10 01 00 05 A6 E2 X.......(.......
-0290 10 01 12 00 04 B0 2C 00 10 01 00 C0 DE D2 12 5A ......,........Z
-02A0 00 C0 D4 D6 1D 01 12 00 04 B0 28 00 10 01 00 05 ..........(.....
-02B0 C2 E2 10 01 12 00 04 B0 2C 00 10 01 00 C0 BC D2 ........,.......
-02C0 12 5A 00 C0 B2 D6 A2 55 00 C0 98 D6 12 5A 00 C0 .Z.....U.....Z..
-02D0 A6 D6 9D 01 67 01 BF 60 00 FC 28 55 00 C0 98 D8 ....g..`..(U....
-02E0 0C 55 A0 05 FF FF 14 00 0A B0 30 54 A0 61 B0 56 .U........0T.a.V
-02F0 FF 03 A4 14 10 54 C0 61 10 01 84 55 42 54 F2 61 .....T.a...UBT.a
-0300 00 C0 24 D8 4F 60 3C 52 BB 10 B2 54 FD FF A2 61 ..$.O`<R...T...a
-0310 82 61 40 05 D8 E2 00 C0 4A D9 00 52 04 12 FC 61 .a@.....J..R...a
-0320 70 00 7A 00 2E 67 0C E0 8C 5B 97 5B FD 55 40 05 p.z..g...[.[.U@.
-0330 BE E2 D2 55 00 C0 B6 02 0A 55 00 56 05 13 40 05 ...U.....U.V..@.
-0340 DC E2 C2 5B 73 5B 00 C0 26 D5 00 56 07 12 04 55 ...[s[..&..V...U
-0350 A2 55 FF C0 41 FE D2 55 00 C0 AC DA BF 60 00 04 .U..A..U.....`..
-0360 67 02 9D 03 C1 55 B1 32 FD FF 1C 5F FC 61 0C F0 g....U.2..._.a..
-0370 8D 55 F0 55 FC 5B 17 5B EB 1D 12 00 04 B0 28 00 .U.U.[.[......(.
-0380 10 01 00 05 A6 E2 10 01 12 00 04 B0 2C 00 10 01 ............,...
-0390 00 C0 E8 D1 12 5A 00 C0 DE D5 82 55 00 C0 C4 D5 .....Z.....U....
-03A0 12 5A 00 C0 D2 D5 1D 01 12 00 04 B0 28 00 10 01 .Z..........(...
+;;; Segment code (00000000)
+00000000 1E 01 70 00 40 00 08 00 72 00 40 00 08 00 20 57 ..p.@...r.@... W
+00000010 07 10 70 00 00 00 00 00 00 56 02 10 D0 00 1E 03 ..p......V......
+00000020 1E 01 07 01 74 00 40 00 08 00 72 00 40 00 08 00 ....t.@...r.@...
+00000030 14 00 24 C0 46 55 E6 4F 74 5B 14 49 44 5F 64 61 ..$.FU.Ot[.ID_da
+00000040 F4 4F 04 56 07 10 70 00 00 00 00 00 00 56 02 10 .O.V..p......V..
+00000050 D0 00 07 02 1E 03 00 00 1E 01 38 01 12 00 04 70 ..........8....p
+00000060 08 00 00 50 1B 12 81 05 84 1C 01 05 80 1C 14 00 ...P............
+00000070 08 C0 E8 4F 98 60 0A 55 12 00 04 B0 0C 00 80 57 ...O.`.U.......W
+00000080 5E 10 10 60 13 00 04 B0 0C 00 20 4C A0 61 00 A0 ^..`...... L.a..
+00000090 D0 00 12 00 04 B0 0C 00 80 57 44 1F FF C0 65 FF .........WD...e.
+000000A0 70 00 00 00 00 00 00 56 06 10 72 00 40 00 04 00 p......V..r.@...
+000000B0 FF C0 39 FF 12 00 14 30 08 00 38 02 1E 03 00 00 ..9....0..8.....
+000000C0 1E 01 1E 03 1E 01 70 00 00 00 00 00 00 56 09 10 ......p......V..
+000000D0 74 00 40 00 10 00 72 00 40 00 04 00 FF C0 0D FF t.@...r.@.......
+000000E0 FF C0 41 FF 1E 03 00 00 1E 01 1E 03 12 01 12 00 ..A.............
+000000F0 04 B0 28 00 10 01 00 05 6C E2 10 01 12 00 04 B0 ..(.....l.......
+00000100 2C 00 10 01 00 C0 74 D4 12 5A 00 C0 6A D8 9D 01 ,.....t..Z..j...
+00000110 67 01 BF 60 FC BF 28 55 4A 55 BC 54 00 40 1D 54 g..`..(UJU.T.@.T
+00000120 E8 10 76 5B F4 55 A2 55 00 C0 B0 21 70 53 14 12 ..v[.U.U...!pS..
+00000130 18 01 1C 01 D4 55 82 54 F2 61 00 C0 5E D7 07 5B .....U.T.a..^..[
+00000140 82 55 00 C0 F6 D7 8F 60 00 52 1F 10 07 52 1A 1E .U.....`.R...R..
+00000150 82 55 00 C0 32 D7 A2 55 00 C0 70 02 00 52 15 11 .U..2..U..p..R..
+00000160 BF 60 04 40 67 02 9D 03 20 05 74 E2 00 C0 F4 D7 .`.@g... .t.....
+00000170 12 5A 00 C0 02 D8 B4 54 00 40 F4 61 A2 55 00 C0 .Z.....T.@.a.U..
+00000180 CE 09 02 55 FF C0 69 FF 20 05 7A E2 FF C0 61 FF ...U..i. .z...a.
+00000190 00 00 9D 01 67 01 BF 60 FC BF 28 55 4A 55 BD 5A ....g..`..(UJU.Z
+000001A0 00 40 1C 54 EC 10 1A 01 00 5E 10 01 C4 55 82 54 .@.T.....^...U.T
+000001B0 F2 61 00 C0 0E D7 8F 60 07 53 12 12 D6 5B F4 55 .a.....`.S...[.U
+000001C0 82 55 00 C0 1A 0F 07 5B 00 52 61 11 00 52 1C 1E .U.....[.Ra..R..
+000001D0 A2 55 00 C0 B2 D6 00 52 1B 11 82 55 00 C0 EC 01 .U.....R...U....
+000001E0 00 52 12 11 BF 60 04 40 67 02 9D 03 B4 54 00 40 .R...`.@g....T.@
+000001F0 F4 61 82 55 00 C0 58 09 02 55 FF C0 F3 FE 20 05 .a.U..X..U.... .
+00000200 8A E2 FF C0 EB FE 20 05 7A E2 FF C0 E3 FE 20 05 ...... .z..... .
+00000210 98 E2 FF C0 DB FE 00 00 9D 01 58 01 BF 60 FC FB ..........X..`..
+00000220 FD 55 2A 55 4D EF 00 04 00 C0 4C D9 08 55 30 54 .U*UM.....L..U0T
+00000230 80 61 B0 56 FF 03 A7 12 18 01 A4 55 D2 55 00 C0 .a.V.......U.U..
+00000240 E6 D8 D8 61 70 00 7A 00 2E 67 08 E0 40 05 BE E2 ...ap.z..g..@...
+00000250 A2 55 00 C0 1A D6 08 55 4F 60 00 56 05 13 4D AF .U.....UO`.V..M.
+00000260 00 04 D2 55 00 C0 86 03 00 56 0D 11 04 55 82 55 ...U.....V...U.U
+00000270 FF C0 9F FE A2 55 00 C0 8E DB DF 55 BF 60 04 04 .....U.....U.`..
+00000280 58 02 9D 03 12 00 04 B0 28 00 10 01 00 05 A6 E2 X.......(.......
+00000290 10 01 12 00 04 B0 2C 00 10 01 00 C0 DE D2 12 5A ......,........Z
+000002A0 00 C0 D4 D6 1D 01 12 00 04 B0 28 00 10 01 00 05 ..........(.....
+000002B0 C2 E2 10 01 12 00 04 B0 2C 00 10 01 00 C0 BC D2 ........,.......
+000002C0 12 5A 00 C0 B2 D6 A2 55 00 C0 98 D6 12 5A 00 C0 .Z.....U.....Z..
+000002D0 A6 D6 9D 01 67 01 BF 60 00 FC 28 55 00 C0 98 D8 ....g..`..(U....
+000002E0 0C 55 A0 05 FF FF 14 00 0A B0 30 54 A0 61 B0 56 .U........0T.a.V
+000002F0 FF 03 A4 14 10 54 C0 61 10 01 84 55 42 54 F2 61 .....T.a...UBT.a
+00000300 00 C0 24 D8 4F 60 3C 52 BB 10 B2 54 FD FF A2 61 ..$.O`<R...T...a
+00000310 82 61 40 05 D8 E2 00 C0 4A D9 00 52 04 12 FC 61 .a@.....J..R...a
+00000320 70 00 7A 00 2E 67 0C E0 8C 5B 97 5B FD 55 40 05 p.z..g...[.[.U@.
+00000330 BE E2 D2 55 00 C0 B6 02 0A 55 00 56 05 13 40 05 ...U.....U.V..@.
+00000340 DC E2 C2 5B 73 5B 00 C0 26 D5 00 56 07 12 04 55 ...[s[..&..V...U
+00000350 A2 55 FF C0 41 FE D2 55 00 C0 AC DA BF 60 00 04 .U..A..U.....`..
+00000360 67 02 9D 03 C1 55 B1 32 FD FF 1C 5F FC 61 0C F0 g....U.2..._.a..
+00000370 8D 55 F0 55 FC 5B 17 5B EB 1D 12 00 04 B0 28 00 .U.U.[.[......(.
+00000380 10 01 00 05 A6 E2 10 01 12 00 04 B0 2C 00 10 01 ............,...
+00000390 00 C0 E8 D1 12 5A 00 C0 DE D5 82 55 00 C0 C4 D5 .....Z.....U....
+000003A0 12 5A 00 C0 D2 D5 1D 01 12 00 04 B0 28 00 10 01 .Z..........(...
 
-;; fn03B0: 03B0
+;; fn03B0: 000003B0
 fn03B0 proc
-	movd	$E2C2,r0
+	movd	$E2C2,(r1,r0)
 	push	$1,r0
-	Invalid
+	loadd	(0x40002C),r0
 	push	$1,r0
-	bal	ra,D578
-	Invalid
-	bal	ra,D974
+	bal	ra,fn0000D578
+	movw	$1,r2
+	bal	ra,fn0000D974
 	push	$1,ra
 	cmpd	$0,(r3,r2)
-	beq	03E2
-	Invalid
-	Invalid
-	bhi	0370
-	beq	03DC
-	bal	ra,2D76
+	beq	000003E2
+
+l000003CE:
+	loadw	0xC(r3,r2),r0
+	cmpw	$1C4F,r0
+	beq	000003DC
+
+l000003D6:
+	bal	ra,fn00002D76
 	popret	$1,ra
-	bal	ra,1B74
+
+l000003DC:
+	bal	ra,fn00001B74
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l000003E2:
+	movw	$FFFE,r0
 	popret	$1,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	movw	r4,r7
-	movd	(r11,r10),(r6,r5)
-	cmpd	$0,(r3,r2)
-	beq	049A
-	Invalid
-	movd	$D5B2C000,(r1,r0)
-	movd	(r9,r8),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	049A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	beq	0494
-	movb	$D0,r2
-	movb	$D5,r3
-	movd	$E32C,r4
-	Invalid
-	Invalid
-	bhi	03E0
-	br	0458
-	movxb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	beq	04A4
-	movb	r0,r1
-	Invalid
-	cmpb	$9,r1
-	bhs	0446
-	Invalid
-	cmpb	$4D,r0
-	blo	0450
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r6,ra
-	push	$0,r0
-	push	$0,r13
-	push	$1,r12
-	bal	ra,DAEC
-	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
-	bne	04F0
-	Invalid
-	bal	ra,D99C
-	movd	(r3,r2),(r9,r8)
-	bal	ra,D99C
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	0494
-	Invalid
-	bhi	044C
-	beq	056E
-	movd	(r3,r2),r12
-	bal	ra,DB74
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,D9B0
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	0494
-	push	$1,r10
-	movd	(r5,r4),r12
-	movd	(r3,r2),(r1,r0)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	bne	059E
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r9
-	Invalid
-	Invalid
-	Invalid
-	bne	04EA
-	movw	r0,r13
-	Invalid
-	bgt	0476
-	Invalid
-	Invalid
-	Invalid
-	beq	05D6
-	Invalid
-	bhi	0496
-	beq	05A8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	051E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0518
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movw	r6,r13
-	br	0450
-	Invalid
-	cinv	[d,]
-	br	0450
-	Invalid
-	Invalid
-	Invalid
-	br	0450
-	Invalid
-	br	0450
-	Invalid
-	Invalid
-	br	0450
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0494
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,DB74
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,D9B0
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	0494
-	push	$1,r10
-	movd	(r5,r4),r12
-	movd	(r3,r2),(r1,r0)
-	bal	ra,DB24
-	Invalid
-	br	04EA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	04E0
-	Invalid
-	Invalid
-	movw	r7,r2
-	bal	ra,DDD8
-	Invalid
-	Invalid
-	Invalid
-	bne	05BE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	0562
-	bne	04FE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	04FE
-	Invalid
-	Invalid
-	movw	r7,r2
-	bal	ra,DDD8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	04FE
-	push	$1,ra
-	movd	(r6,r5),(r5,r4)
-	Invalid
-	bal	ra,03E8
-	popret	$1,ra
-	push	$1,ra
-	movd	(r6,r5),(r5,r4)
-	Invalid
-	bal	ra,03E8
-	popret	$1,ra
-	push	$1,ra
-	push	$4,r7
-	movw	r2,r7
-	movd	(r11,r10),(r4,r3)
-	Invalid
-	beq	0646
-	Invalid
-	bal	ra,D9B0
-	movd	(r9,r8),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0646
-	Invalid
-	Invalid
-	push	$0,r7
-	movd	$E464,r0
-	push	$1,r0
-	push	$1,r8
-	bal	ra,D598
-	movd	(r6,r5),(r11,r10)
-	movw	r7,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,03E8
-	movd	(r11,r10),(r1,r0)
-	movd	(r3,r2),(r9,r8)
-	bal	ra,D99C
-	Invalid
-	movd	(r1,r0),(r11,r10)
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	movd	(r1,r0),(r11,r10)
-	pop	$4,r7
-	popret	$1,ra
-	res
-	cmpd	$0,(r3,r2)
-	beq	068A
-	Invalid
-	Invalid
-	bhi	05F6
-	Invalid
-	Invalid
-	beq	066A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	068A
-	Invalid
-	Invalid
-	bne	068A
-	movw	r4,r0
-	Invalid
-	Invalid
-	bhi	068A
-	Invalid
-	bhi	0682
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	0680
-	Invalid
-	Invalid
-	res
-	push	$1,ra
-	push	$1,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0710
-	Invalid
-	Invalid
-	bhi	063C
-	bne	0710
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	06B8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0710
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	0710
-	Invalid
-	Invalid
-	Invalid
-	bhi	066C
-	bne	06DE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	06FE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	06F8
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$2,r7
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r7
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$2,r6
-	Invalid
-	Invalid
-	bhi	06C8
-	Invalid
-	Invalid
-	beq	073E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0754
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0848
-	Invalid
-	blo	0848
-	Invalid
-	beq	078C
-	Invalid
-	Invalid
-	Invalid
-	beq	076A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	070E
-	beq	079A
-	Invalid
-	bgt	0848
-	Invalid
-	Invalid
-	beq	0786
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	0734
-	bne	0774
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	084E
-	Invalid
-	ble	07FE
-	Invalid
-	Invalid
-	bgt	0848
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	0848
-	Invalid
-	Invalid
-	Invalid
-	bhi	0762
-	beq	0824
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	07EA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	07E4
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	bhi	0796
-	bne	08A2
-	Invalid
-	Invalid
-	movw	r7,r0
-	Invalid
-	bgt	083E
-	Invalid
-	Invalid
-	Invalid
-	beq	083E
-	Invalid
-	movw	r1,r0
-	Invalid
-	Invalid
-	movzw	r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	077A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	bne	07D4
-	br	07EA
-	Invalid
-	Invalid
-	br	0814
-	Invalid
-	ble	07FE
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	movw	r7,r0
-	Invalid
-	Invalid
-	bgt	0844
-	Invalid
-	movw	r7,r3
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	0848
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	0890
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	088A
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	push	$2,r7
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r7
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$2,r6
-	Invalid
-	Invalid
-	bhi	0858
-	Invalid
-	Invalid
-	beq	08CE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	08E4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	09D8
-	Invalid
-	blo	09D8
-	Invalid
-	beq	091C
-	Invalid
-	Invalid
-	Invalid
-	beq	08FA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	089E
-	beq	092A
-	Invalid
-	bgt	09D8
-	Invalid
-	Invalid
-	beq	0916
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	08C4
-	bne	0904
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	09DE
-	Invalid
-	ble	098E
-	Invalid
-	Invalid
-	bgt	09D8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	09D8
-	Invalid
-	Invalid
-	Invalid
-	bhi	08F2
-	beq	09B4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	097A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0974
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	bhi	0926
-	bne	0A32
-	Invalid
-	Invalid
-	movw	r7,r0
-	Invalid
-	bgt	09CE
-	Invalid
-	Invalid
-	Invalid
-	beq	09CE
-	Invalid
-	movw	r1,r0
-	Invalid
-	Invalid
-	movzw	r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	090A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	bne	0964
-	br	097A
-	Invalid
-	Invalid
-	br	09A4
-	Invalid
-	ble	098E
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	movw	r7,r0
-	Invalid
-	Invalid
-	bgt	09D4
-	Invalid
-	movw	r7,r3
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	09D8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	0A20
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0A1A
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	0A64
-	Invalid
-	Invalid
-	bhi	09DE
-	Invalid
-	Invalid
-	beq	0A52
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0A64
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0A62
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	0A94
-	Invalid
-	Invalid
-	bhi	0A0E
-	Invalid
-	Invalid
-	beq	0A82
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0A94
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0A92
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	push	$1,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0ADC
-	Invalid
-	Invalid
-	bhi	0A44
-	Invalid
-	Invalid
-	beq	0AB8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0ADC
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	0ADC
-	Invalid
-	Invalid
-	bhi	0A68
-	beq	0AD2
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$1,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0B28
-	Invalid
-	Invalid
-	bhi	0A90
-	Invalid
-	Invalid
-	beq	0B04
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0B28
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDD8
-	Invalid
-	beq	0B28
-	Invalid
-	Invalid
-	bhi	0AB4
-	beq	0B1E
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	res
-	cmpd	$0,(r3,r2)
-	beq	0B40
-	Invalid
-	Invalid
-	Invalid
-	bhi	0AD8
-	beq	0B44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	cmpd	$0,(r3,r2)
-	beq	0B90
-	Invalid
-	Invalid
-	bhi	0AF2
-	Invalid
-	Invalid
-	beq	0B66
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0B90
-	Invalid
-	Invalid
-	cmpd	$0,(r5,r4)
-	beq	0B74
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0B84
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	0B8A
-	Invalid
-	movd	$E46C,r0
-	Invalid
-	movd	$E2BC,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	push	$1,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0BB4
-	Invalid
-	Invalid
-	bhi	0B40
-	Invalid
-	Invalid
-	beq	0BB8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0BB8
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	bhi	0B58
-	bne	0BC6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	0BE2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0BDC
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	res
+000003E8                         9D 01 67 01 BF 60 FC FF         ..g..`..
+000003F0 2C 55 47 5B 5A 55 02 56 01 15 B2 54 70 00 00 C0 ,UG[ZU.V...Tp...
+00000400 B2 D5 08 55 00 56 0A 14 00 C3 14 00 B0 5A 00 20 ...U.V.......Z. 
+00000410 08 DB 00 54 08 EF 34 00 08 C3 0C 00 90 5A 08 DF ...T..4......Z..
+00000420 2A 00 08 C3 2C 00 08 C3 20 00 0A B0 0D 5A 00 50 *...,... ....Z.P
+00000430 02 13 B2 58 D0 FF B3 58 D5 FF 40 05 2C E3 16 5A ...X...X..@.,..Z
+00000440 BE 5A 4F 1C EA 10 00 5C B0 32 D0 FF 08 DF 2A 00 .ZO....\.2....*.
+00000450 1A 60 0A B0 00 50 07 12 01 59 21 31 B1 50 09 00 .`...P...Y!1.P..
+00000460 B3 1F 30 31 B0 50 4D 00 A4 1F 00 5D 00 5F 20 4C ..01.PM....]._ L
+00000470 40 61 00 A0 E0 0A B0 5A B6 01 00 01 0D 01 1C 01 @a.....Z........
+00000480 00 C0 6C D6 07 5B 08 D7 8F 60 90 52 12 13 28 A8 ..l..[...`.R..(.
+00000490 00 C0 0C D5 82 55 00 C0 06 D5 08 54 80 55 4F 60 .....U.....T.UO`
+000004A0 67 02 9D 03 18 96 1F D0 01 52 05 1F B1 52 4F 1C g........R...RO.
+000004B0 0F 15 C2 55 00 C0 C0 D6 1A 54 0A 61 A2 55 00 C0 ...U.....T.a.U..
+000004C0 F2 D4 08 E8 00 56 07 1E 1A 01 C4 55 02 55 00 C0 .....V.....U.U..
+000004D0 56 D6 4F 60 0D 52 14 16 B0 5A 01 06 BD 5A 09 02 V.O`.R...Z...Z..
+000004E0 1F 90 B1 52 B1 79 12 10 0D 5B 07 52 65 1C 78 D7 ...R.y...[.Re.x.
+000004F0 08 96 10 52 01 17 B0 52 4F 1C 07 15 08 C2 08 C3 ...R...RO.......
+00000500 30 00 28 AF 34 00 02 56 0B 10 08 9F 32 00 B0 52 0.(.4..V....2..R
+00000510 FC FF 03 10 00 C0 88 D4 00 54 08 EF 34 00 08 C3 .........T..4...
+00000520 32 00 08 C3 08 00 08 C3 3C 00 80 55 4F 60 67 02 2.......<..UO`g.
+00000530 9D 03 6D 5B EE 18 18 C3 0C 00 EB 18 B0 5A B1 79 ..m[.........Z.y
+00000540 08 D6 E7 18 E8 D6 E5 18 28 C3 2C 00 E2 18 18 C3 ........(.,.....
+00000550 2C 00 E0 18 FF FE 48 C3 2C 00 E0 18 F7 FE 18 C3 ,.....H.,.......
+00000560 20 00 E0 18 EF FE 38 C3 2C 00 E0 18 E7 FE D8 9F  .....8.,.......
+00000570 20 00 0D 52 10 19 18 C3 20 00 C2 55 00 C0 F8 D5  ..R.... ..U....
+00000580 1A 54 0A 61 A2 55 00 C0 2A D4 08 E8 00 56 03 18 .T.a.U..*....V..
+00000590 1A 01 C4 55 02 55 00 C0 8E D5 4F 60 E7 1A B0 5A ...U.U....O`...Z
+000005A0 01 0E BD 5A 09 0A ED 19 14 5A 03 5A 72 5B 00 C0 ...Z.....Z.Zr[..
+000005B0 2A D8 08 DF 24 00 90 52 13 10 08 C3 24 00 08 96 *...$..R....$...
+000005C0 08 C2 B0 52 4F 1C 1C 19 08 C3 26 00 08 C3 28 00 ...RO.....&...(.
+000005D0 08 C3 22 00 E5 19 24 5A 03 5A 72 5B 00 C0 FC D7 .."...$Z.Zr[....
+000005E0 B0 5A B1 79 08 D6 08 C2 EB 18 1E 01 45 55 94 5A .Z.y........EU.Z
+000005F0 FF C0 F9 FD 1E 03 1E 01 45 55 94 5A FF C0 ED FD ........EU.Z....
+00000600 1E 03 1E 01 47 01 27 5B 3A 55 92 52 0D 11 D2 54 ....G.'[:U.R...T
+00000610 00 C0 A0 D3 08 55 00 56 07 11 BF 60 FE FF 07 01 .....U.V...`....
+00000620 00 05 64 E4 10 01 18 01 00 C0 70 CF A5 55 74 5B ..d.......p..Ut[
+00000630 82 55 FF C0 B7 FD 0A 55 82 55 00 C0 62 D3 CF 60 .U.....U.U..b..`
+00000640 A0 55 47 02 1E 03 0A 54 A0 55 47 02 1E 03 00 00 .UG....T.UG.....
+00000650 02 56 0C 11 02 96 B0 52 4F 1C 11 08 01 52 06 10 .V.....RO....R..
+00000660 B0 52 B1 79 10 08 00 52 11 11 02 9A 00 52 1E 10 .R.y...R.....R..
+00000670 40 5B 40 33 40 53 4A 10 24 52 44 10 42 DB 00 5A @[@3@SJ.$RD.B..Z
+00000680 EE 0A 24 5A 42 DB 00 5A EC 1F 90 5A EE 0A 00 00 ..$ZB..Z...Z....
+00000690 1E 01 18 01 28 55 02 56 0C 13 02 96 B0 52 4F 1C ....(U.V.....RO.
+000006A0 18 13 02 9F 32 00 00 52 11 08 01 52 06 10 B0 52 ....2..R...R...R
+000006B0 FB FF 10 08 00 52 1D 12 38 9F 24 00 28 97 04 5A .....R..8.$.(..Z
+000006C0 00 C0 18 D7 90 52 05 12 08 C2 08 96 B0 52 4F 1C .....R.......RO.
+000006D0 17 10 08 C3 26 00 08 C3 28 00 08 C3 22 00 08 C3 ....&...(..."...
+000006E0 30 00 28 AF 34 00 02 56 0B 10 08 9F 32 00 B0 52 0.(.4..V....2..R
+000006F0 FC FF 03 10 00 C0 A8 D2 00 54 08 EF 34 00 08 C3 .........T..4...
+00000700 32 00 08 C3 08 00 08 C3 3C 00 00 5A 18 02 1E 03 2.......<..Z....
+00000710 90 5A 18 02 1E 03 00 00 1E 01 27 01 28 55 47 5B .Z........'.(UG[
+00000720 02 56 00 18 26 01 02 96 B0 52 4F 1C 11 08 01 52 .V..&....RO....R
+00000730 07 10 B0 52 B1 79 11 08 01 52 10 18 0E 01 18 9F ...R.y...R......
+00000740 32 00 01 52 12 08 02 52 06 10 B1 52 FB FF 11 08 2..R...R...R....
+00000750 01 52 1B 17 15 52 A9 17 05 52 09 11 18 9F 30 00 .R...R...R....0.
+00000760 01 52 04 10 18 9F 2E 00 17 33 08 C3 30 00 B0 52 .R.......3..0..R
+00000770 4F 1C 04 11 07 52 69 16 08 94 07 52 05 10 18 C3 O....Ri....R....
+00000780 30 00 78 DF 2E 00 70 33 27 02 1E 03 18 94 17 3B 0.x...p3'......;
+00000790 08 C3 30 00 B0 52 4F 1C 1E 1E 28 94 48 9F 22 00 ..0..RO...(.H.".
+000007A0 14 52 06 15 07 52 7C 12 27 33 07 52 6E 14 38 9F .R...R|.'3.Rn.8.
+000007B0 24 00 28 97 04 5A 00 C0 22 D6 90 52 06 14 08 C2 $.(..Z.."..R....
+000007C0 08 96 B0 52 4F 1C 0F 12 08 C3 30 00 28 AF 34 00 ...RO.....0.(.4.
+000007D0 02 56 0C 10 18 9F 32 00 B1 52 FC FF 04 10 00 C0 .V....2..R......
+000007E0 BE D1 08 96 02 54 28 EF 34 00 08 C3 32 00 08 C3 .....T(.4...2...
+000007F0 08 00 08 C3 3C 00 B0 52 4F 1C 14 15 02 5A 18 90 ....<..RO....Z..
+00000800 70 5B 01 52 6D 11 71 53 D3 08 03 52 09 11 17 3B p[.Rm.qS...R...;
+00000810 10 5B 01 5A 18 D0 0E 5F 48 A2 E4 61 48 E2 20 33 .[.Z..._H..aH. 3
+00000820 08 D4 EC 1A 08 C3 26 00 08 C3 28 00 08 C3 22 00 ......&...(...".
+00000830 08 C3 30 00 28 AF 34 00 02 56 1D 1C E7 1D 71 3B ..0.(.4..V....q;
+00000840 07 5A E9 1E 07 52 7C 1D 90 5A 27 02 1E 03 70 5B .Z...R|..Z'...p[
+00000850 20 33 00 52 68 1F 08 90 73 5B 03 3B 28 97 00 C0  3.Rh...s[.;(...
+00000860 7A D5 90 52 02 1F 08 C2 08 C3 26 00 08 C3 28 00 z..R......&...(.
+00000870 08 C3 30 00 28 AF 34 00 02 56 0B 10 08 9F 32 00 ..0.(.4..V....2.
+00000880 B0 52 FC FF 03 10 00 C0 16 D1 00 54 08 EF 34 00 .R.........T..4.
+00000890 08 C3 32 00 08 C3 3C 00 08 94 70 33 08 D4 27 02 ..2...<...p3..'.
+000008A0 1E 03 00 5A E0 18 D7 FE 1E 01 27 01 28 55 47 5B ...Z......'.(UG[
+000008B0 02 56 00 18 26 01 02 96 B0 52 4F 1C 11 08 01 52 .V..&....RO....R
+000008C0 07 10 B0 52 B1 79 11 08 01 52 10 18 0E 01 18 9F ...R.y...R......
+000008D0 32 00 01 52 12 08 02 52 06 10 B1 52 FB FF 11 08 2..R...R...R....
+000008E0 01 52 1B 17 15 52 A9 17 05 52 09 11 18 9F 30 00 .R...R...R....0.
+000008F0 01 52 04 10 18 9F 2E 00 17 33 08 C3 30 00 B0 52 .R.......3..0..R
+00000900 4F 1C 04 11 07 52 69 16 08 94 07 52 05 10 18 C3 O....Ri....R....
+00000910 30 00 78 DF 2E 00 70 33 27 02 1E 03 18 94 17 3B 0.x...p3'......;
+00000920 08 C3 30 00 B0 52 4F 1C 1E 1E 28 94 48 9F 22 00 ..0..RO...(.H.".
+00000930 14 52 06 15 07 52 7C 12 27 33 07 52 6E 14 38 9F .R...R|.'3.Rn.8.
+00000940 24 00 28 97 04 5A 00 C0 92 D4 90 52 06 14 08 C2 $.(..Z.....R....
+00000950 08 96 B0 52 4F 1C 0F 12 08 C3 30 00 28 AF 34 00 ...RO.....0.(.4.
+00000960 02 56 0C 10 18 9F 32 00 B1 52 FC FF 04 10 00 C0 .V....2..R......
+00000970 2E D0 08 96 02 54 28 EF 34 00 08 C3 32 00 08 C3 .....T(.4...2...
+00000980 08 00 08 C3 3C 00 B0 52 4F 1C 14 15 02 5A 18 90 ....<..RO....Z..
+00000990 70 5B 01 52 6D 11 71 53 D3 08 03 52 09 11 17 3B p[.Rm.qS...R...;
+000009A0 10 5B 01 5A 18 D0 0E 5F 48 A2 E4 61 48 E2 20 33 .[.Z..._H..aH. 3
+000009B0 08 D4 EC 1A 08 C3 26 00 08 C3 28 00 08 C3 22 00 ......&...(...".
+000009C0 08 C3 30 00 28 AF 34 00 02 56 1D 1C E7 1D 71 3B ..0.(.4..V....q;
+000009D0 07 5A E9 1E 07 52 7C 1D 90 5A 27 02 1E 03 70 5B .Z...R|..Z'...p[
+000009E0 20 33 00 52 68 1F 08 90 73 5B 03 3B 28 97 00 C0  3.Rh...s[.;(...
+000009F0 EA D3 90 52 02 1F 08 C2 08 C3 26 00 08 C3 28 00 ...R......&...(.
+00000A00 08 C3 30 00 28 AF 34 00 02 56 0B 10 08 9F 32 00 ..0.(.4..V....2.
+00000A10 B0 52 FC FF 03 10 00 C0 86 CF 00 54 08 EF 34 00 .R.........T..4.
+00000A20 08 C3 32 00 08 C3 3C 00 08 94 70 33 08 D4 27 02 ..2...<...p3..'.
+00000A30 1E 03 00 5A E0 18 D7 FE 02 56 05 11 02 96 B0 52 ...Z.....V.....R
+00000A40 4F 1C 11 08 01 52 06 10 B0 52 B1 79 10 08 00 52 O....R...R.y...R
+00000A50 1A 10 02 94 12 9F 30 00 01 52 04 10 12 9F 2E 00 ......0..R......
+00000A60 10 33 EE 0A 90 5A EE 0A 02 56 05 11 02 96 B0 52 .3...Z...V.....R
+00000A70 4F 1C 11 08 01 52 06 10 B0 52 B1 79 10 08 00 52 O....R...R.y...R
+00000A80 1A 10 02 94 12 9F 30 00 01 52 04 10 12 9F 2E 00 ......0..R......
+00000A90 10 33 EE 0A 90 5A EE 0A 1E 01 18 01 28 55 02 56 .3...Z......(U.V
+00000AA0 0E 11 02 96 B0 52 4F 1C 11 08 01 52 06 10 B0 52 .....RO....R...R
+00000AB0 B1 79 10 08 00 52 13 11 28 97 14 5A 03 5A 00 C0 .y...R..(..Z.Z..
+00000AC0 1A D3 90 52 0C 10 18 96 B1 52 4F 1C 03 10 18 02 ...R.....RO.....
+00000AD0 1E 03 18 9F 3C 00 10 3B 18 02 1E 03 90 5A 18 02 ....<..;.....Z..
+00000AE0 1E 03 00 00 1E 01 18 01 28 55 02 56 0E 11 02 96 ........(U.V....
+00000AF0 B0 52 4F 1C 11 08 01 52 06 10 B0 52 B1 79 10 08 .RO....R...R.y..
+00000B00 00 52 13 11 28 97 14 5A 03 5A 00 C0 CE D2 90 52 .R..(..Z.Z.....R
+00000B10 0C 10 18 96 B1 52 4F 1C 03 10 18 02 1E 03 18 9F .....RO.........
+00000B20 3C 00 10 3B 18 02 1E 03 90 5A 18 02 1E 03 00 00 <..;.....Z......
+00000B30 02 56 07 10 12 96 00 5A B1 52 4F 1C 04 10 EE 0A .V.....Z.RO.....
+00000B40 00 5A EE 0A 02 9F 28 00 EE 0A 00 00 02 56 01 12 .Z....(......V..
+00000B50 02 96 B0 52 4F 1C 11 08 01 52 06 10 B0 52 B1 79 ...RO....R...R.y
+00000B60 10 08 00 52 16 11 02 9F 32 00 04 56 04 10 04 D0 ...R....2..V....
+00000B70 02 9F 32 00 B0 52 FC FF 06 10 02 AF 34 00 00 56 ..2..R......4..V
+00000B80 05 10 EE 0A 00 05 6C E4 EE 0A 00 05 BC E2 EE 0A ......l.........
+00000B90 00 54 EE 0A 1E 01 18 01 28 55 02 56 0C 10 02 96 .T......(U.V....
+00000BA0 B0 52 4F 1C 11 08 01 52 08 10 B0 52 B1 79 11 08 .RO....R...R.y..
+00000BB0 01 52 03 10 18 02 1E 03 B0 52 4F 1C 15 10 08 C3 .R.......RO.....
+00000BC0 26 00 08 C3 28 00 28 AF 34 00 02 56 0B 10 08 9F &...(.(.4..V....
+00000BD0 32 00 B0 52 FC FF 03 10 00 C0 C4 CD 00 54 08 EF 2..R.........T..
+00000BE0 34 00 08 C3 32 00 18 02 1E 03 00 00             4...2.......    
+
+;; fn00000BEC: 00000BEC
+;;   Called from:
+;;     00001BB6 (in fn00001B74)
+;;     00002E3A (in fn00002D76)
+;;     00002E6C (in fn00002D76)
+fn00000BEC proc
 	push	$1,r13,ra
 	push	$6,r7
 	movd	(r9,r8),(r3,r2)
 	movw	r4,r10
 	movw	r5,r11
 	movw	r6,r7
-	Invalid
-	Invalid
+	loadd	0x68(r3,r2),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	0C14
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0C0E
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0C28
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0C28
-	Invalid
-	Invalid
-	Invalid
+	beq	00000C14
+
+l00000C00:
+	loadw	0x64(r9,r8),r0
+	cmpw	$FFFC,r0
+	beq	00000C0E
+
+l00000C0A:
+	bal	ra,fn0000D99C
+
+l00000C0E:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x68(r9,r8)
+
+l00000C14:
+	cmpw	$0,r10
+	sne	r0
+	cmpw	$0,r0
+	beq	00000C28
+
+l00000C1C:
+	cmpw	$FFFB,r10
+	sne	r0
+	cmpw	$0,r0
+	beq	00000C28
+
+l00000C26:
+	storw	$0,(r9,r8)
+
+l00000C28:
+	storw	r10,0x64(r9,r8)
 	movw	r11,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0C80
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0C80
-	Invalid
+	orw	r0,r7
+	cmpw	$0,r0
+	seq	r0
+	cmpw	$0,r0
+	bne	00000C80
+
+l00000C38:
+	cmpw	$FFFC,r10
+	seq	r0
+	cmpw	$0,r0
+	bne	00000C80
+
+l00000C42:
+	loadd	0x10(r9,r8),r12
 	movd	(r3,r2),r12
-	bal	ra,DB74
+	bal	ra,fn0000DB74
 	movd	r13,(r1,r0)
 	movw	r11,r2
 	movw	r7,r3
-	bal	ra,DB74
+	bal	ra,fn0000DB74
 	movd	(r3,r2),r13
-	Invalid
-	Invalid
-	bal	ra,D9B0
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	addd	$3,(r3,r2)
+	bal	ra,fn0000D9B0
+	stord	(r1,r0),0x68(r9,r8)
 	cmpd	$0,(r1,r0)
-	beq	0C84
+	beq	00000C84
+
+l00000C66:
 	movd	(r5,r4),r12
 	movd	(r3,r2),(r1,r0)
-	bal	ra,DBF0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DBF0
+	movw	$203A,r2
+	storw	r2,(r1,r0)
+	movd	$2,(r3,r2)
+	addd	(r1,r0),(r3,r2)
 	movw	r11,r4
 	movw	r7,r5
-	bal	ra,DC28
+	bal	ra,fn0000DC28
+
+l00000C80:
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00000C84:
+	movw	$FFFC,r0
+	storw	r0,0x64(r9,r8)
 	pop	$6,r7
 	popret	$1,r13,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5ABDD10F,(r9,r8)
-	Invalid
-	br	0CDA
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,6EAE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0D78
-	Invalid
-	Invalid
-	beq	0D90
-	Invalid
-	Invalid
-	beq	0DA6
-	Invalid
-	andd	$17085201,(r9,r8)
-	Invalid
-	Invalid
-	push	$0,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	0CAC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0CFA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r8
-	Invalid
-	Invalid
-	Invalid
-	bne	0D4A
-	Invalid
-	Invalid
-	Invalid
-	br	0D12
-	Invalid
-	Invalid
-	Invalid
-	bhs	0D36
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	0D1E
-	movw	r13,r5
-	movzw	r5,(r6,r5)
-	movzw	r7,(r4,r3)
-	Invalid
-	Invalid
-	bal	ra,DDC0
-	Invalid
-	blt	0D0A
-	Invalid
-	bne	0E08
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0CAC
-	movd	$E490,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	andd	$3B01911F,(r9,r8)
-	Invalid
-	movzw	r1,(r1,r0)
-	Invalid
-	andd	$C0020014,(r5,r4)
-	Invalid
-	Invalid
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	$E4C4,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	$E46C,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	ord	$120B5605,(r1,r0)
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	movzw	r2,(r5,r4)
-	Invalid
-	andd	$C0420014,(r5,r4)
-	Invalid
-	Invalid
-	bne	0D70
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	andd	$C0020014,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	0DDC
-	Invalid
-	br	0D70
-	movd	$E47A,r5
-	br	0DAE
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	br	0D70
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0E62
-	Invalid
-	Invalid
-	Invalid
-	bhs	0EFC
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$1F,r0
-	Invalid
-	push	$4,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	movzw	r10,(r3,r2)
-	bal	ra,D9B0
-	movw	r0,r12
-	movw	r1,r11
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	bal	ra,D9B0
-	Invalid
-	res
-	Invalid
-	res
-	movw	r1,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r0
-	movw	r12,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r2
-	Invalid
-	Invalid
-	Invalid
-	ord	$5CEF08,(r9,r8)
-	Invalid
-	xord	$3CDF78,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r0
-	movd	$E4EC,r5
-	Invalid
-	res
-	movd	(r3,r2),r13
-	bal	ra,6C16
-	Invalid
-	Invalid
-	beq	0E30
-	Invalid
-	res
-	bal	ra,D99C
-	Invalid
-	bal	ra,D99C
-	Invalid
-	movd	$E46C,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0F12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	0EF4
-	Invalid
-	Invalid
-	Invalid
-	bne	0FA8
-	Invalid
-	Invalid
-	beq	0F2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	0F44
-	Invalid
-	Invalid
-	bhs	0F6C
-	movw	r10,r5
-	Invalid
-	Invalid
-	Invalid
-	bhs	0F50
-	movw	r11,r5
-	movzw	r5,(r6,r5)
-	movzw	r7,(r4,r3)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DDC0
-	Invalid
-	blt	0F3E
-	Invalid
-	bne	1002
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	0FDE
-	Invalid
-	beq	0FAC
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$8B,r0
-	Invalid
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,6A40
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	beq	0FDE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r1,r0)
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	res
-	Invalid
-	br	0FC2
-	movw	r0,r2
-	movw	r1,r3
-	bal	ra,D99C
-	movw	r12,r2
-	movw	r11,r3
-	bal	ra,D99C
-	Invalid
-	Invalid
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	res
-	push	$1,ra
-	push	$6,r7
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	beq	1080
-	Invalid
-	beq	1060
-	Invalid
-	beq	104A
-	Invalid
-	Invalid
-	bne	1044
-	Invalid
-	Invalid
-	Invalid
-	beq	101E
-	Invalid
-	Invalid
-	Invalid
-	bne	101E
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0E1A
-	Invalid
-	beq	107A
-	Invalid
-	Invalid
-	Invalid
-	bne	102E
-	Invalid
-	br	1046
-	Invalid
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$C0FF5582,(r5,r4)
-	Invalid
-	Invalid
-	bne	102E
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	109C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	10C0
-	movw	r7,r5
-	Invalid
-	Invalid
-	Invalid
-	bhs	10A8
-	movw	r12,r5
-	movzw	r5,(r6,r5)
-	movzw	r3,(r4,r3)
-	Invalid
-	Invalid
-	bal	ra,DDC0
-	Invalid
-	blt	1092
-	Invalid
-	bne	10CA
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	br	1046
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	br	107C
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	movd	(r11,r10),(r5,r4)
-	movw	r6,r13
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$4,r2
-	Invalid
-	Invalid
-	bhi	1092
-	Invalid
-	push	$3,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1112
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r0
-	Invalid
-	Invalid
-	push	$2,r4,ra
-	Invalid
-	Invalid
-	beq	118A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r2
-	Invalid
-	movzw	r13,r13
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFFE0000,r13
-	bhs	113E
-	Invalid
-	Invalid
-	Invalid
-	beq	1190
-	Invalid
-	Invalid
-	bhs	114A
-	movw	r2,r7
-	movzw	r7,(r9,r8)
-	Invalid
-	push	$1,r8
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	r13,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,r13
-	beq	1182
-	Invalid
-	br	1130
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1218
-	movw	r1,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	11A0
-	Invalid
-	Invalid
-	Invalid
-	beq	117E
-	Invalid
-	Invalid
-	Invalid
-	beq	120A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	120A
-	Invalid
-	beq	11DA
-	Invalid
-	andd	$44EFAC,(r9,r8)
-	movd	(r3,r2),r12
-	bal	ra,0C90
-	Invalid
-	beq	1214
-	Invalid
-	Invalid
-	movzw	r7,(r9,r8)
-	Invalid
-	br	1166
-	Invalid
-	Invalid
-	Invalid
-	bhs	11CC
-	movzw	r7,(r9,r8)
-	movd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	11F0
-	Invalid
-	Invalid
-	movzw	r5,(r6,r5)
-	Invalid
-	Invalid
-	bal	ra,DDC0
-	Invalid
-	blt	11D2
-	Invalid
-	bne	12A6
-	Invalid
-	Invalid
-	Invalid
-	br	1166
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	bne	117A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	129E
-	Invalid
-	Invalid
-	Invalid
-	beq	129E
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1278
-	movw	r8,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	1298
-	Invalid
-	bgt	1298
-	Invalid
-	movw	r7,r1
-	Invalid
-	Invalid
-	movzw	r1,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	124A
-	Invalid
-	Invalid
-	Invalid
-	beq	128A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	beq	1214
-	Invalid
-	br	1246
-	Invalid
-	Invalid
-	br	125E
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	br	1218
-	movd	$E4F4,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	br	1230
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	r13,(r5,r4)
-	Invalid
-	Invalid
-	cmpd	$0,r12
-	beq	12EE
-	Invalid
-	Invalid
-	bhi	1288
-	beq	12FA
-	Invalid
-	movd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1310
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	12EE
-	movd	(r11,r10),r13
-	cmpd	$0,r13
-	beq	12F0
-	movd	(r5,r4),r13
-	movd	(r3,r2),(r9,r8)
-	bal	ra,D358
-	movd	(r11,r10),(r1,r0)
-	movd	(r5,r4),r13
-	movd	(r3,r2),(r1,r0)
-	bal	ra,D4E0
-	cmpd	(r1,r0),(r9,r8)
-	beq	133C
-	movd	$E514,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	br	12EE
-	cmpd	$0,(r11,r10)
-	beq	12F0
-	Invalid
-	Invalid
-	Invalid
-	bne	1400
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r8
-	cmpd	$FFFE0000,(r11,r10)
-	bhs	135A
-	Invalid
-	Invalid
-	beq	13A8
-	Invalid
-	bhs	1364
-	movw	r8,r7
-	movzw	r7,(r9,r8)
-	Invalid
-	push	$1,r8
-	Invalid
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r11,r10),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r11,r10)
-	beq	139C
-	Invalid
-	br	134E
-	movd	(r5,r4),r13
-	Invalid
-	bal	ra,D4E0
-	movd	(r11,r10),(r1,r0)
-	br	12F0
-	Invalid
-	Invalid
-	Invalid
-	beq	13BA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	13F0
-	Invalid
-	Invalid
-	Invalid
-	bhi	13F0
-	Invalid
-	beq	1464
-	Invalid
-	andd	$EF0CA00F,(r9,r8)
-	andd	$C0FF55C2,(r5,r4)
-	Invalid
-	Invalid
-	beq	12EE
-	Invalid
-	Invalid
-	movzw	r7,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	br	1384
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	134E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	134A
-	Invalid
-	beq	143C
-	movw	r8,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	145E
-	Invalid
-	bgt	145E
-	Invalid
-	movw	r7,r1
-	Invalid
-	Invalid
-	movzw	r1,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	140E
-	br	134A
-	Invalid
-	Invalid
-	Invalid
-	beq	144E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	140E
-	Invalid
-	Invalid
-	br	1426
-	Invalid
-	movw	r8,r11
-	br	1470
-	Invalid
-	Invalid
-	bhs	14A6
-	movzw	r7,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movw	r11,r5
-	Invalid
-	Invalid
-	Invalid
-	bhs	1486
-	Invalid
-	Invalid
-	movzw	r5,(r6,r5)
-	Invalid
-	Invalid
-	bal	ra,DDC0
-	Invalid
-	blt	146A
-	Invalid
-	Invalid
-	bne	14C6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),r13
-	Invalid
-	bal	ra,D4E0
-	movd	(r11,r10),(r1,r0)
-	Invalid
-	Invalid
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	159E
-	Invalid
-	Invalid
-	bhi	148A
-	bne	159E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1506
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	159E
-	Invalid
-	Invalid
-	beq	152C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	15F0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r7
-	movw	r13,r8
-	cmpd	$FFFE0000,r13
-	bhs	154A
-	Invalid
-	Invalid
-	beq	15A8
-	Invalid
-	Invalid
-	bhs	1556
-	Invalid
-	Invalid
-	movzw	r1,(r11,r10)
-	Invalid
-	push	$1,r10
-	movd	(r5,r4),(r9,r8)
-	Invalid
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	r13,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,r13
-	Invalid
-	push	$0,r8
-	Invalid
-	br	153E
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	bne	1590
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	15B8
-	Invalid
-	Invalid
-	Invalid
-	beq	1690
-	Invalid
-	Invalid
-	Invalid
-	beq	1594
-	Invalid
-	Invalid
-	Invalid
-	blo	1594
-	Invalid
-	beq	1652
-	Invalid
-	andd	$EF0CA40F,(r9,r8)
-	andd	$C0FF55C2,(r5,r4)
-	Invalid
-	Invalid
-	beq	159E
-	Invalid
-	Invalid
-	Invalid
-	movzw	r1,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	br	1578
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r0
-	Invalid
-	beq	1534
-	Invalid
-	beq	162E
-	movw	r7,r4
-	Invalid
-	bgt	164C
-	Invalid
-	Invalid
-	Invalid
-	beq	164C
-	Invalid
-	movw	r0,r4
-	movw	r10,r0
-	Invalid
-	movzw	r4,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	15FE
-	movw	r0,r10
-	br	1534
-	Invalid
-	Invalid
-	Invalid
-	beq	163E
-	Invalid
-	Invalid
-	Invalid
-	beq	162A
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	beq	159E
-	Invalid
-	br	15FE
-	Invalid
-	Invalid
-	br	1616
-	Invalid
-	br	165E
-	Invalid
-	Invalid
-	Invalid
-	bls	16A6
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	1672
-	Invalid
-	Invalid
-	movzw	r5,(r6,r5)
-	Invalid
-	movd	(r4,r3),(r9,r8)
-	bal	ra,DDC0
-	Invalid
-	blt	1656
-	Invalid
-	bne	16B4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	159E
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	178C
-	Invalid
-	Invalid
-	bhi	1678
-	bne	178C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	16F4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	178C
-	Invalid
-	Invalid
-	beq	171A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	17DE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r7
-	movw	r13,r8
-	cmpd	$FFFE0000,r13
-	bhs	1738
-	Invalid
-	Invalid
-	beq	1796
-	Invalid
-	Invalid
-	bhs	1744
-	Invalid
-	Invalid
-	movzw	r1,(r11,r10)
-	Invalid
-	push	$1,r10
-	movd	(r5,r4),(r9,r8)
-	Invalid
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	r13,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,r13
-	Invalid
-	push	$0,r8
-	Invalid
-	br	172C
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	bne	177E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	17A6
-	Invalid
-	Invalid
-	Invalid
-	beq	187E
-	Invalid
-	Invalid
-	Invalid
-	beq	1782
-	Invalid
-	Invalid
-	Invalid
-	blo	1782
-	Invalid
-	beq	1840
-	Invalid
-	andd	$EF0CA40F,(r9,r8)
-	andd	$C0FF55C2,(r5,r4)
-	Invalid
-	Invalid
-	beq	178C
-	Invalid
-	Invalid
-	Invalid
-	movzw	r1,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	br	1766
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r0
-	Invalid
-	beq	1722
-	Invalid
-	beq	181C
-	movw	r7,r4
-	Invalid
-	Invalid
-	Invalid
-	beq	183A
-	Invalid
-	bgt	183A
-	Invalid
-	movw	r0,r4
-	movw	r10,r0
-	Invalid
-	movzw	r4,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	17EC
-	movw	r0,r10
-	br	1722
-	Invalid
-	Invalid
-	Invalid
-	beq	182C
-	Invalid
-	Invalid
-	Invalid
-	beq	1818
-	movd	(r3,r2),r12
-	bal	ra,1018
-	Invalid
-	beq	178C
-	Invalid
-	br	17EC
-	Invalid
-	Invalid
-	br	1804
-	Invalid
-	br	184C
-	Invalid
-	Invalid
-	Invalid
-	bls	1894
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	1860
-	Invalid
-	Invalid
-	movzw	r5,(r6,r5)
-	Invalid
-	movd	(r4,r3),(r9,r8)
-	bal	ra,DDC0
-	Invalid
-	blt	1844
-	Invalid
-	bne	18A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	178C
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	res
-	push	$1,ra
-	push	$4,r7
-	movw	r2,r10
-	movd	(r9,r8),(r4,r3)
-	cmpd	$0,(r4,r3)
-	beq	197C
-	Invalid
-	Invalid
-	bhi	1864
-	bne	197C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	18E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	197C
-	Invalid
-	Invalid
-	Invalid
-	bne	1920
-	Invalid
-	bgt	197C
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r1
-	Invalid
-	beq	198C
-	Invalid
-	beq	19CA
-	Invalid
-	Invalid
-	res
-	cmpd	(r5,r4),(r3,r2)
-	beq	19A4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r0
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	18E8
-	Invalid
-	Invalid
-	beq	1962
-	movw	r7,r4
-	Invalid
-	Invalid
-	Invalid
-	beq	199E
-	Invalid
-	bgt	199E
-	Invalid
-	movw	r1,r4
-	movw	r11,r1
-	Invalid
-	movzw	r4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	18E8
-	Invalid
-	Invalid
-	bne	1934
-	Invalid
-	Invalid
-	Invalid
-	beq	1972
-	Invalid
-	Invalid
-	Invalid
-	beq	1982
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1018
-	Invalid
-	bne	192E
-	Invalid
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	bgt	197C
-	Invalid
-	movw	r0,r1
-	Invalid
-	Invalid
-	movzw	r1,(r1,r0)
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	br	1910
-	Invalid
-	Invalid
-	br	1948
-	movzw	r6,(r3,r2)
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	bls	19C6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	cmpd	(r5,r4),(r3,r2)
-	bhi	19B0
-	Invalid
-	movd	(r5,r4),(r1,r0)
-	br	1906
-	movd	(r5,r4),(r1,r0)
-	br	1906
-	movd	$E536,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	br	197E
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	movw	r6,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	bne	1ACE
-	movw	r2,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1ACE
-	Invalid
-	Invalid
-	bhi	19AC
-	bne	1ACE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1A28
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1ACE
-	Invalid
-	Invalid
-	Invalid
-	bne	1AD8
-	Invalid
-	Invalid
-	Invalid
-	beq	1ACE
-	Invalid
-	Invalid
-	Invalid
-	beq	1B1E
-	Invalid
-	Invalid
-	bhs	1A48
-	movw	r0,r7
-	movzw	r7,r12
-	Invalid
-	movd	(r6,r5),r12
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,DB5C
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	1A66
-	subd	(r1,r0),(r9,r8)
-	Invalid
-	movzw	r7,r12
-	push	$1,r12
-	movd	(r5,r4),(r9,r8)
-	movd	(r3,r2),r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1AA2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1A3C
-	Invalid
-	cmpd	r13,(r1,r0)
-	beq	1ACE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	1AC4
-	Invalid
-	Invalid
-	Invalid
-	beq	1A30
-	movd	(r3,r2),(r11,r10)
-	bal	ra,1018
-	Invalid
-	bne	1AE6
-	Invalid
-	movw	r0,r1
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1A30
-	Invalid
-	Invalid
-	beq	1AB4
-	movw	r7,r1
-	Invalid
-	bgt	1B34
-	Invalid
-	Invalid
-	Invalid
-	beq	1B34
-	Invalid
-	movw	r0,r1
-	movw	r9,r0
-	Invalid
-	movzw	r1,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1AE6
-	Invalid
-	Invalid
-	Invalid
-	beq	1ACE
-	br	1A38
-	movd	(r3,r2),(r11,r10)
-	bal	ra,1018
-	Invalid
-	beq	1ACE
-	Invalid
-	Invalid
-	bne	1A40
-	Invalid
-	Invalid
-	br	1AA2
-	Invalid
-	Invalid
-	br	1B00
-	res
-	push	$1,ra
-	push	$1,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	1B6E
-	Invalid
-	Invalid
-	bhi	1AE8
-	beq	1B56
-	Invalid
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	1B4E
-	Invalid
-	Invalid
-	bne	1B4E
-	bal	ra,0E1A
-	Invalid
-	Invalid
-	br	1B52
-	Invalid
-	pop	$1,r8
-	popret	$1,ra
+00000C90 9D 01 67 01 BF 60 FC FF 28 55 BC 54 38 00 2C 61 ..g..`..(U.T8.,a
+00000CA0 02 9F 48 00 0F D1 BD 5A 00 40 E8 11 04 5A C2 55 ..H....Z.@...Z.U
+00000CB0 00 C0 FE 61 21 5A 01 33 B1 22 FB FF 01 52 0D 15 ...a!Z.3."...R..
+00000CC0 B0 52 FC FF 06 16 B0 52 FD FF 0E 16 18 9F 48 00 .R.....R......H.
+00000CD0 01 52 08 17 10 52 00 18 0E 01 08 9F 3C 00 00 52 .R...R......<..R
+00000CE0 16 1E 08 9F 32 00 00 52 11 08 01 52 07 10 B0 52 ....2..R...R...R
+00000CF0 FB FF 10 08 00 52 10 18 08 01 78 9F 26 00 07 52 .....R....x.&..R
+00000D00 15 12 28 9A 2F D0 A8 AC E5 10 07 33 0F 90 70 53 ..(./......3..pS
+00000D10 B3 11 5F 90 75 3B B5 52 00 40 B2 10 D5 5B 55 5F .._.u;.R.@...[U_
+00000D20 73 5F A3 61 28 97 00 C0 9A D0 00 52 CF 1E 00 52 s_.a(......R...R
+00000D30 1C 16 18 C3 26 00 08 9F 3C 00 07 33 78 DF 3C 00 ....&...<..3x.<.
+00000D40 08 AC 08 EF 38 00 07 52 12 1B 50 05 90 E4 B4 5A ....8..R..P....Z
+00000D50 FB FF 82 55 FF C0 99 FE 08 9F 48 00 1F 91 01 3B ...U......H....;
+00000D60 18 D0 10 5F 28 AF 44 00 14 00 02 C0 28 E2 01 5A ..._(.D.....(..Z
+00000D70 10 5B 4F 60 67 02 9D 03 50 05 C4 E4 B4 5A FE FF .[O`g...P....Z..
+00000D80 82 55 FF C0 6B FE 91 5A 10 5B 4F 60 67 02 9D 03 .U..k..Z.[O`g...
+00000D90 50 05 6C E4 04 5B 82 55 FF C0 55 FE 91 5A 10 5B P.l..[.U..U..Z.[
+00000DA0 4F 60 67 02 9D 03 58 AF 50 00 05 56 0B 12 B4 5A O`g...X.P..V...Z
+00000DB0 FD FF 82 55 FF C0 39 FE 91 5A 10 5B 4F 60 67 02 ...U..9..Z.[O`g.
+00000DC0 9D 03 2F 91 28 D0 24 5F 28 AF 44 00 14 00 42 C0 ../.(.$_(.D...B.
+00000DD0 28 E2 10 52 1E 1C 08 C3 22 00 01 5A 10 5B 4F 60 (..R...."..Z.[O`
+00000DE0 67 02 9D 03 0F 91 10 3B 08 D0 00 5F 28 AF 44 00 g......;..._(.D.
+00000DF0 14 00 02 C0 28 E2 08 C3 22 00 01 5A E0 1F 91 5A ....(..."..Z...Z
+00000E00 E8 1B 50 05 7A E4 E4 1D 50 05 A8 E4 94 5A 82 55 ..P.z...P....Z.U
+00000E10 FF C0 DD FD 91 5A ED 1A 00 00 9D 01 67 01 BF 60 .....Z......g..`
+00000E20 FC FF 28 55 BD 54 38 00 2D 61 72 9A 07 52 0A 11 ..(U.T8.-ar..R..
+00000E30 78 9F 3C 00 17 52 B3 16 48 AF 38 00 04 B0 B0 50 x.<..R..H.8....P
+00000E40 1F 00 00 18 46 01 08 9F 20 00 00 52 10 18 9A 01 ....F... ..R....
+00000E50 08 C3 3C 00 18 C3 26 00 08 C2 00 5A 4F 60 67 02 ..<...&....ZO`g.
+00000E60 9D 03 A2 9B A2 5F 00 C0 4A CB 0C 5B 1B 5B 08 DC ....._..J..[.[..
+00000E70 18 DD A2 5B A2 33 22 5F 00 C0 38 CB 08 DF 1C 00 ...[.3"_..8.....
+00000E80 18 DF 1E 00 12 5B 02 27 02 52 02 08 02 52 10 18 .....[.'.R...R..
+00000E90 60 01 C2 5B B2 27 02 52 02 08 02 52 10 18 52 01 `..[.'.R...R..R.
+00000EA0 A8 DA 00 54 08 EF 58 00 08 EF 5C 00 08 EF 60 00 ...T..X...\...`.
+00000EB0 78 DF 3C 00 08 EF 38 00 BF 60 FE FF B0 5A 38 00 x.<...8..`...Z8.
+00000EC0 00 01 50 05 EC E4 B4 5A 1F 00 D2 55 00 C0 4A 5D ..P....Z...U..J]
+00000ED0 4F 60 00 52 0E 1A 28 AF 1C 00 00 C0 C2 CA 28 AC O`.R..(.......(.
+00000EE0 00 C0 BC CA 78 DA 50 05 6C E4 B4 5A FC FF 82 55 ....x.P.l..Z...U
+00000EF0 FF C0 FD FC 90 5A 4F 60 67 02 9D 03 08 9F 32 00 .....ZO`g.....2.
+00000F00 00 52 11 08 01 52 06 10 B0 52 FB FF 10 08 00 52 .R...R...R.....R
+00000F10 12 1F 08 9F 26 00 00 52 18 14 C8 AC 07 52 08 10 ....&..R.....R..
+00000F20 08 AF 38 00 00 B0 0C F0 78 9F 3C 00 C8 AC A8 9A ..8.....x.<.....
+00000F30 7A 3B 70 5F 0F E0 07 5A BB 5A 00 40 E4 10 07 33 z;p_...Z.Z.@...3
+00000F40 7A 53 B5 11 A5 5B 75 3B B5 52 00 40 B2 10 B5 5B zS...[u;.R.@...[
+00000F50 55 5F 73 5F 0F A0 03 61 C3 61 28 97 00 C0 64 CE U_s_...a.a(...d.
+00000F60 00 52 CE 1E 00 52 1E 14 18 C3 26 00 08 9F 3C 00 .R...R....&...<.
+00000F70 07 33 78 DF 3C 00 08 AC 08 EF 38 00 07 52 00 13 .3x.<.....8..R..
+00000F80 17 52 05 11 E0 18 B5 FE 04 B1 B0 50 8B FF 10 18 .R.........P....
+00000F90 B9 FE D2 55 00 C0 AC 5A 28 C3 22 00 08 C3 20 00 ...U...Z(."... .
+00000FA0 00 5A 4F 60 67 02 9D 03 07 52 0A 11 08 9F 20 00 .ZO`g....R.... .
+00000FB0 00 52 00 18 9F FE 28 AF 1C 00 28 E2 17 5A 48 AF .R....(...(..ZH.
+00000FC0 38 00 70 5F 10 01 00 C0 5E CB 08 9F 3C 00 08 D0 8.p_....^...<...
+00000FD0 08 C3 3C 00 18 C3 22 00 18 C3 20 00 4F 60 00 5A ..<..."... .O`.Z
+00000FE0 4F 60 67 02 9D 03 28 AF 1C 00 28 E2 EB 1E 02 5B O`g...(...(....[
+00000FF0 13 5B 00 C0 AA C9 C2 5B B3 5B 00 C0 A2 C9 E0 18 .[.....[.[......
+00001000 E9 FE 50 05 A8 E4 94 5A 82 55 FF C0 E3 FB 90 5A ..P....Z.U.....Z
+00001010 4F 60 67 02 9D 03 00 00 1E 01 67 01 28 55 08 9F O`g.......g.(U..
+00001020 22 00 10 52 0E 12 20 52 0C 11 00 52 0F 10 08 90 "..R.. R...R....
+00001030 00 52 19 10 08 9F 26 00 00 52 02 1F 08 9F 3C 00 .R....&..R....<.
+00001040 00 52 1E 1E 00 5A 67 02 1E 03 82 55 FF C0 CF FD .R...Zg....U....
+00001050 90 52 04 11 08 9F 22 00 00 52 1A 1E 00 5A E4 1F .R...."..R...Z..
+00001060 08 9A 00 33 08 DF 48 00 08 AF 1C 00 08 EF 44 00 ...3..H.......D.
+00001070 82 55 FF C0 1F FC 90 52 1B 1D 90 5A 67 02 1E 03 .U.....R...Zg...
+00001080 78 9A 77 33 A8 AF 1C 00 08 C2 03 5A BC 5A 00 40 x.w3.......Z.Z.@
+00001090 E6 10 38 90 03 33 38 D0 37 53 B3 11 75 5B 35 3B ..8..38.7S..u[5;
+000010A0 B5 52 00 40 B2 10 C5 5B 55 5F 33 5F A3 61 28 97 .R.@...[U_3_.a(.
+000010B0 00 C0 10 CD 00 52 CE 1E 00 52 18 10 18 C3 26 00 .....R...R....&.
+000010C0 08 AF 1C 00 08 E2 00 5A EF 1B 50 05 A8 E4 94 5A .......Z..P....Z
+000010D0 82 55 FF C0 1B FB 90 5A E2 1D 00 00 9D 01 67 01 .U.....Z......g.
+000010E0 BF 60 F4 FF 2C 55 4A 55 6D 5B 02 56 00 18 42 01 .`..,UJUm[.V..B.
+000010F0 02 96 B0 52 4F 1C 10 18 38 01 02 9F 32 00 00 52 ...RO...8...2..R
+00001100 11 08 01 52 07 10 B0 52 FB FF 10 08 00 52 10 18 ...R...R.....R..
+00001110 20 01 0D 52 60 18 A4 01 00 5A 0D 53 07 13 1C 9F  ..R`....Z.S....
+00001120 30 00 01 53 10 18 12 01 7C 90 DD 5F 00 54 0F E2 0..S....|.._.T..
+00001130 DF D0 9D 00 00 00 FE FF B3 10 91 5A 1F D0 07 52 ...........Z...R
+00001140 08 12 2F 90 27 53 B2 10 27 5B 78 5F 4C A2 18 01 ../.'S..'[x_L...
+00001150 A2 55 00 C0 D2 C9 0C A2 80 61 0C E2 0C 90 70 3B .U.......a....p;
+00001160 0C D0 8A 61 4F 60 14 00 8D C0 0F A2 80 61 0F E2 ...aO`.......a..
+00001170 0C 94 07 33 7C D4 0D 56 05 10 7C 90 EA 1D 1C C3 ...3|..V..|.....
+00001180 28 00 1F 92 01 52 09 14 10 5B CF 60 67 02 9D 03 (....R...[.`g...
+00001190 0C 9F 26 00 00 52 05 10 0C 9F 3C 00 00 52 00 1F ..&..R....<..R..
+000011A0 1C 9F 22 00 01 52 02 13 0C 9A 00 33 2F 90 02 53 .."..R.....3/..S
+000011B0 4D 12 11 52 03 11 2C DF 48 00 AC EF 44 00 C2 55 M..R..,.H...D..U
+000011C0 FF C0 D1 FA 90 52 07 12 7C 90 0C C2 78 5F 8A 61 .....R..|...x_.a
+000011D0 EB 1C 07 33 1F 90 71 53 BA 1F 78 5F A0 55 80 61 ...3..qS..x_.U.a
+000011E0 0F E4 5F 90 75 3B B5 52 00 40 B3 10 B5 5A 00 40 .._.u;.R.@...Z.@
+000011F0 55 5F 2C 97 3F A4 00 C0 CA CB 00 52 CB 1E 00 52 U_,.?......R...R
+00001200 13 15 1C C3 26 00 AF A4 EF 1A C2 55 FF C0 0D FE ....&......U....
+00001210 90 52 14 1B 01 54 1F E2 0C 9F 32 00 B0 52 FB FF .R...T....2..R..
+00001220 11 08 01 52 0D 13 00 52 10 08 00 52 09 13 90 5A ...R...R...R...Z
+00001230 CF 60 67 02 9D 03 0C DF 30 00 8C 9F 2E 00 7C 90 .`g.....0.....|.
+00001240 08 52 00 18 E9 FE 07 52 08 11 81 5B 87 53 D0 08 .R.....R...[.S..
+00001250 00 52 03 12 07 52 61 12 78 3B 71 5B 07 5A 7C D0 .R...Ra.x;q[.Z|.
+00001260 14 5F 2C A2 42 61 2C E2 0C 94 10 33 0C D4 08 52 ._,.Ba,....3...R
+00001270 00 18 BB FE 07 52 1A 1E 0C 9F 26 00 00 52 06 10 .....R....&..R..
+00001280 0C 9F 3C 00 00 52 00 18 A5 FE C2 55 FF C0 8D FD ..<..R.....U....
+00001290 90 52 01 1C 7C 90 E8 1D 87 3B 08 5A E1 1E 0F 92 .R..|....;.Z....
+000012A0 CF 60 67 02 9D 03 50 05 A8 E4 94 5A C2 55 FF C0 .`g...P....Z.U..
+000012B0 3F F9 00 54 0F E2 E1 1B 50 05 F4 E4 B4 5A FE FF ?..T....P....Z..
+000012C0 C2 55 FF C0 2B F9 90 5A E4 1B 00 00 9D 01 67 01 .U..+..Z......g.
+000012D0 BF 60 F0 FF BC 54 26 00 FC 61 2F E0 4D 55 8C A0 .`...T&..a/.MU..
+000012E0 CC A2 0C 56 05 10 0C 96 B0 52 4F 1C 07 10 0A 54 ...V.....RO....T
+000012F0 A0 55 BF 60 10 00 67 02 9D 03 0C 9F 32 00 00 52 .U.`..g.....2..R
+00001300 11 08 01 52 06 10 B0 52 FB FF 10 08 00 52 10 1F ...R...R.....R..
+00001310 DA 55 0D 56 0E 1E D4 55 82 55 00 C0 3E C0 0A 55 .U.V...U.U..>..U
+00001320 D4 55 02 55 00 C0 BC C1 80 57 09 10 50 05 14 E5 .U.U.....W..P...
+00001330 B4 5A FE FF C2 55 FF C0 B7 F8 EA 1D 0A 56 09 1D .Z...U.......V..
+00001340 0C 9F 30 00 00 52 1D 15 7C 90 00 54 0F E2 A8 5B ..0..R..|..T...[
+00001350 9A 00 00 00 FE FF B2 10 98 5A 07 52 06 12 87 53 .........Z.R...S
+00001360 B2 10 87 5B 78 5F 4C A2 18 01 2F A2 00 C0 B8 C7 ...[x_L.../.....
+00001370 0C A2 80 61 0C E2 0C 90 70 3B 0C D0 0F A2 80 61 ...a....p;.....a
+00001380 0F E2 4F 60 14 00 8A C0 0F A2 80 61 0F E2 0C 94 ..O`.......a....
+00001390 07 33 7C D4 0A 56 03 10 7C 90 EA 1D D4 55 2F A2 .3|..V..|....U/.
+000013A0 00 C0 40 C1 0A 55 E5 1A 0C 9F 26 00 00 52 06 10 ..@..U....&..R..
+000013B0 0C 9F 3C 00 00 52 00 18 FE 00 1C 9F 22 00 01 52 ..<..R......"..R
+000013C0 08 11 0C 9A 00 33 08 53 44 11 11 52 0C 14 8C DF .....3.SD..R....
+000013D0 48 00 0F A0 0C EF 44 00 C2 55 FF C0 B7 F8 90 52 H.....D..U.....R
+000013E0 07 18 7C 90 0C C2 78 5F 0F A0 80 61 0F E0 EB 1C ..|...x_...a....
+000013F0 C2 55 FF C0 27 FC 90 52 00 18 F7 FE 7C 90 E8 1A .U..'..R....|...
+00001400 0C C3 30 00 8C 9F 2E 00 7C 90 08 52 0F 19 07 52 ..0.....|..R...R
+00001410 06 11 81 5B 87 53 D0 08 00 52 02 12 07 52 60 12 ...[.S...R...R`.
+00001420 78 3B 71 5B 07 5A 7C D0 14 5F 2C A2 42 61 2C E2 x;q[.Z|.._,.Ba,.
+00001430 0C 94 10 33 0C D4 08 52 1B 1E E8 18 0C 9F 26 00 ...3...R......&.
+00001440 00 52 06 10 0C 9F 3C 00 00 52 00 18 01 FF C2 55 .R....<..R.....U
+00001450 FF C0 C9 FB 90 52 00 18 99 FE 7C 90 E9 1D 87 3B .....R....|....;
+00001460 08 5A E2 1E AF E6 8B 5B E4 10 07 33 7B 53 BC 11 .Z.....[...3{S..
+00001470 78 5F 0F A0 80 61 0F E4 B5 5B 75 3B B5 52 00 40 x_...a...[u;.R.@
+00001480 B3 10 B5 5A 00 40 55 5F 2C 97 3F A4 00 C0 34 C9 ...Z.@U_,.?...4.
+00001490 00 52 CC 1E AF A6 00 52 17 11 1C C3 26 00 0F A4 .R.....R....&...
+000014A0 0F E0 E0 18 E3 FE AF A6 78 5F 0F A0 80 61 0F E0 ........x_...a..
+000014B0 E0 18 D5 FE 1C C3 28 00 D4 55 2F A2 00 C0 24 C0 ......(..U/...$.
+000014C0 0A 55 E0 18 2F FE 50 05 A8 E4 94 5A C2 55 FF C0 .U../.P....Z.U..
+000014D0 1F F7 0A 54 E0 18 1D FE 00 00 9D 01 67 01 BF 60 ...T........g..`
+000014E0 F0 FF 2C 55 02 56 0C 15 02 96 B0 52 4F 1C 18 15 ..,U.V.....RO...
+000014F0 02 9F 32 00 00 52 11 08 01 52 06 10 B0 52 FB FF ..2..R...R...R..
+00001500 10 08 00 52 1D 14 AC 90 0A 52 01 11 90 5A A0 33 ...R.....R...Z.3
+00001510 0C D0 0C 94 10 32 0C D4 0C A2 12 54 02 61 2C E2 .....2.....T.a,.
+00001520 00 B0 00 5D BF 60 10 00 67 02 9D 03 0C 9F 30 00 ...].`..g.....0.
+00001530 00 52 1F 15 00 54 0F E6 1D 54 FF E4 A7 5B D8 5B .R...T...T...[.[
+00001540 9D 00 00 00 FE FF B2 10 98 5A 07 52 0E 12 7F D2 .........Z.R....
+00001550 87 53 B2 10 8F D2 1F 92 1A 5F 8C A2 1A 01 84 55 .S......._.....U
+00001560 2F A6 00 C0 C2 C5 A8 61 8C E2 0F 94 07 3B 7C D0 /......a.....;|.
+00001570 0F A6 A0 61 0F E6 4F 60 14 00 AD C0 0F A6 A0 61 ...a..O`.......a
+00001580 0F E6 0C 94 AF 92 0A 33 AC D4 0D 56 00 18 08 01 .......3...V....
+00001590 7C 90 E6 1D C2 55 FF C0 83 FA 90 52 1A 1F 90 5A |....U.....R...Z
+000015A0 BF 60 10 00 67 02 9D 03 0C 9F 26 00 00 52 05 10 .`..g.....&..R..
+000015B0 0C 9F 3C 00 00 52 0D 16 1C 9F 22 00 01 52 0B 1E ..<..R...."..R..
+000015C0 0C 9A 00 33 80 53 A7 1E 11 52 04 14 8C DF 48 00 ...3.S...R....H.
+000015D0 0F A4 0C EF 44 00 C2 55 FF C0 B9 F6 90 52 00 1E ....D..U.....R..
+000015E0 1C 90 1F D2 0C C2 1A 5F 0F A4 A0 61 0F E4 E5 1C ......._...a....
+000015F0 AC DF 30 00 7C 9F 2E 00 A0 5B 07 52 0C 19 00 52 ..0.|....[.R...R
+00001600 07 11 74 5B 00 52 63 12 70 53 D1 08 01 52 0F 11 ..t[.Rc.pS...R..
+00001610 07 3B 04 5B A0 5B 0C D0 48 5F 2C A2 82 61 2C E2 .;.[.[..H_,..a,.
+00001620 1C 94 41 33 1C D4 07 52 1B 1E 0A 5B E4 18 1C 9F ..A3...R...[....
+00001630 26 00 01 52 05 10 1C 9F 3C 00 01 52 07 1F C2 55 &..R....<..R...U
+00001640 FF C0 D9 F9 90 52 0C 1A 0C 90 EA 1D 70 3B 07 5A .....R......p;.Z
+00001650 E3 1E 8F D2 E5 10 07 33 1F 92 17 53 55 12 7A 5F .......3...SU.z_
+00001660 8F A4 A8 61 5F 92 75 3B B5 52 00 40 B3 10 B5 5A ...a_.u;.R.@...Z
+00001670 00 40 55 5F 2C 97 83 55 00 C0 48 C7 00 52 CC 1E .@U_,..U..H..R..
+00001680 00 52 19 11 1C C3 26 00 8F E4 7F D2 E0 18 ED FE .R....&.........
+00001690 1C C3 28 00 1F 96 01 52 D3 18 0F B0 00 5D BF 60 ..(....R.....].`
+000016A0 10 00 67 02 9D 03 7A 5F 0F A4 A0 61 0F E4 7F D2 ..g...z_...a....
+000016B0 E0 18 C9 FE 50 05 A8 E4 94 5A C2 55 FF C0 31 F5 ....P....Z.U..1.
+000016C0 90 5A E0 18 63 FE 00 00 9D 01 67 01 BF 60 F0 FF .Z..c.....g..`..
+000016D0 2C 55 02 56 0C 15 02 96 B0 52 4F 1C 18 15 02 9F ,U.V.....RO.....
+000016E0 32 00 00 52 11 08 01 52 06 10 B0 52 FB FF 10 08 2..R...R...R....
+000016F0 00 52 1D 14 AC 90 0A 52 01 11 90 5A A0 33 0C D0 .R.....R...Z.3..
+00001700 0C 94 10 32 0C D4 0C A2 12 54 02 61 2C E2 00 B0 ...2.....T.a,...
+00001710 00 5D BF 60 10 00 67 02 9D 03 0C 9F 30 00 00 52 .].`..g.....0..R
+00001720 1F 15 00 54 0F E6 1D 54 FF E4 A7 5B D8 5B 9D 00 ...T...T...[.[..
+00001730 00 00 FE FF B2 10 98 5A 07 52 0E 12 7F D2 87 53 .......Z.R.....S
+00001740 B2 10 8F D2 1F 92 1A 5F 8C A2 1A 01 84 55 2F A6 ......._.....U/.
+00001750 00 C0 D4 C3 A8 61 8C E2 0F 94 07 3B 7C D0 0F A6 .....a.....;|...
+00001760 A0 61 0F E6 4F 60 14 00 AD C0 0F A6 A0 61 0F E6 .a..O`.......a..
+00001770 0C 94 AF 92 0A 33 AC D4 0D 56 00 18 08 01 7C 90 .....3...V....|.
+00001780 E6 1D C2 55 FF C0 95 F8 90 52 1A 1F 90 5A BF 60 ...U.....R...Z.`
+00001790 10 00 67 02 9D 03 0C 9F 26 00 00 52 05 10 0C 9F ..g.....&..R....
+000017A0 3C 00 00 52 0D 16 1C 9F 22 00 01 52 0B 1E 0C 9A <..R...."..R....
+000017B0 00 33 80 53 A7 1E 11 52 04 14 8C DF 48 00 0F A4 .3.S...R....H...
+000017C0 0C EF 44 00 C2 55 FF C0 CB F4 90 52 00 1E 1C 90 ..D..U.....R....
+000017D0 1F D2 0C C2 1A 5F 0F A4 A0 61 0F E4 E5 1C AC DF ....._...a......
+000017E0 30 00 7C 9F 2E 00 A0 5B 07 52 0C 19 00 52 07 11 0.|....[.R...R..
+000017F0 74 5B 70 53 D1 08 01 52 01 12 00 52 6F 11 07 3B t[pS...R...Ro..;
+00001800 04 5B A0 5B 0C D0 48 5F 2C A2 82 61 2C E2 1C 94 .[.[..H_,..a,...
+00001810 41 33 1C D4 07 52 1B 1E 0A 5B E4 18 1C 9F 26 00 A3...R...[....&.
+00001820 01 52 05 10 1C 9F 3C 00 01 52 07 1F C2 55 FF C0 .R....<..R...U..
+00001830 EB F7 90 52 0C 1A 0C 90 EA 1D 70 3B 07 5A E3 1E ...R......p;.Z..
+00001840 8F D2 E5 10 07 33 1F 92 17 53 55 12 7A 5F 8F A4 .....3...SU.z_..
+00001850 A8 61 5F 92 75 3B B5 52 00 40 B3 10 B5 5A 00 40 .a_.u;.R.@...Z.@
+00001860 55 5F 2C 97 83 55 00 C0 5A C5 00 52 CC 1E 00 52 U_,..U..Z..R...R
+00001870 19 11 1C C3 26 00 8F E4 7F D2 E0 18 ED FE 1C C3 ....&...........
+00001880 28 00 1F 96 01 52 D3 18 0F B0 00 5D BF 60 10 00 (....R.....].`..
+00001890 67 02 9D 03 7A 5F 0F A4 A0 61 0F E4 7F D2 E0 18 g...z_...a......
+000018A0 C9 FE 50 05 A8 E4 94 5A C2 55 FF C0 43 F3 90 5A ..P....Z.U..C..Z
+000018B0 E0 18 63 FE 00 00 1E 01 47 01 2A 5B 38 55 03 56 ..c.....G.*[8U.V
+000018C0 0E 15 03 96 B0 52 4F 1C 1A 15 03 9F 32 00 00 52 .....RO.....2..R
+000018D0 11 08 01 52 06 10 B0 52 FB FF 10 08 00 52 1F 14 ...R...R.....R..
+000018E0 08 9F 30 00 00 52 1D 11 0A 52 69 14 68 90 08 9A ..0..R...Ri.h...
+000018F0 00 33 01 5B 06 52 0B 14 06 53 08 16 48 A2 28 AF .3.[.R...S..H.(.
+00001900 1C 00 24 57 00 15 16 32 68 D0 94 60 48 E2 A4 F0 ..$W...2h..`H...
+00001910 08 94 90 32 08 D4 08 C3 28 00 A0 5B 47 02 1E 03 ...2....(..[G...
+00001920 08 C3 30 00 78 9F 2E 00 0B 5A B7 53 0E 1D 18 90 ..0.x....Z.S....
+00001930 01 52 08 11 74 5B 71 53 D0 08 00 52 01 13 01 52 .R..t[qS...R...R
+00001940 6F 12 17 3B 14 5B B1 5B 18 D0 40 5F 28 A2 02 61 o..;.[.[..@_(..a
+00001950 28 E2 08 94 40 33 08 D4 07 52 07 1C 18 90 01 52 (...@3...R.....R
+00001960 1A 1E 08 9F 26 00 00 52 05 10 08 9F 3C 00 00 52 ....&..R....<..R
+00001970 09 10 82 55 FF C0 A5 F6 90 52 1A 1D 90 5A 47 02 ...U.....R...ZG.
+00001980 1E 03 0A 52 6C 1F 08 9A 01 5B 01 33 18 C2 10 5F ...Rl....[.3..._
+00001990 90 60 28 AF 1C 00 20 61 08 E2 A0 F0 EA 1B 71 3B .`(... a......q;
+000019A0 07 5A E3 1D 62 5F 42 61 00 5F 40 61 24 57 5C 10 .Z..b_Ba._@a$W\.
+000019B0 92 60 90 60 42 B0 40 F0 48 AF 1C 00 24 57 49 1F .`.`B.@.H...$WI.
+000019C0 68 90 04 55 E1 1A 04 55 EF 19 50 05 36 E5 B4 5A h..U...U..P.6..Z
+000019D0 FD FF 82 55 FF C0 19 F2 90 5A E2 1D 9D 01 67 01 ...U.....Z....g.
+000019E0 BF 60 F4 FF 2A 55 4F E4 68 5B 0F 94 1F 95 10 27 .`..*UO.h[.....'
+000019F0 00 52 01 08 06 52 D0 08 10 25 00 50 19 16 20 5B .R...R...%.P.. [
+00001A00 B0 27 00 52 00 08 00 52 13 16 02 96 B0 52 4F 1C .'.R...R.....RO.
+00001A10 1F 15 02 9F 32 00 00 52 11 08 01 52 06 10 B0 52 ....2..R...R...R
+00001A20 FB FF 10 08 00 52 14 15 0A 9F 30 00 00 52 15 15 .....R....0..R..
+00001A30 98 32 8F D0 08 52 0C 14 0A 90 DF A4 00 52 00 17 .2...R.......R..
+00001A40 7F 90 07 53 B2 10 07 5B 7C 5F 8A A2 C5 55 A4 5A ...S...[|_...U.Z
+00001A50 82 55 00 C0 0A C1 0F E2 00 56 06 10 14 00 80 C0 .U.......V......
+00001A60 17 5A 07 33 7C 5F 1C 01 84 55 D2 55 00 C0 B8 C0 .Z.3|_...U.U....
+00001A70 0A 90 70 3B 0A D0 2A A2 C2 61 2A E2 1A 94 71 33 ..p;..*..a*...q3
+00001A80 1A D4 2F 92 72 3B 2F D2 CD 61 4F 60 02 52 11 08 ../.r;/..aO`.R..
+00001A90 01 52 08 10 1F 92 2F 93 21 27 01 52 01 08 01 52 .R..../.!'.R...R
+00001AA0 1E 1C 0F A4 0D 57 04 11 0D 82 0F 94 1F 95 CF 60 .....W.........`
+00001AB0 67 02 9D 03 0A 9F 26 00 00 52 05 10 0A 9F 3C 00 g.....&..R....<.
+00001AC0 00 52 07 1B A2 55 FF C0 53 F5 90 52 1D 10 00 5A .R...U..S..R...Z
+00001AD0 01 5B CF 60 67 02 9D 03 0A C3 30 00 7A 9F 2E 00 .[.`g.....0.z...
+00001AE0 09 5A 97 53 06 1A 0A 90 00 52 05 1E 71 5B 00 52 .Z.S.....R..q[.R
+00001AF0 62 12 70 53 D2 08 02 52 0E 11 07 3B 01 5B 90 5B b.pS...R...;.[.[
+00001B00 0A D0 14 5F 2A A2 42 61 2A E2 0A 94 10 33 0A D4 ..._*.Ba*....3..
+00001B10 07 52 1A 1E 98 32 8F D0 08 52 0A 1D EE 18 A2 55 .R...2...R.....U
+00001B20 FF C0 F9 F4 90 52 04 1D 0A 90 00 52 1A 18 1A C3 .....R.....R....
+00001B30 28 00 E8 1B 70 3B 07 5A E4 1E 00 00 1E 01 18 01 (...p;.Z........
+00001B40 28 55 02 56 05 11 02 96 B0 52 4F 1C 05 10 08 9F (U.V.....RO.....
+00001B50 20 00 18 02 1E 03 02 9F 22 00 00 52 19 1F 02 90  ......."..R....
+00001B60 00 52 16 1F FF C0 B7 F2 08 9F 20 00 E3 1F 00 5A .R........ ....Z
+00001B70 18 02 1E 03                                     ....            
+
+;; fn00001B74: 00001B74
+;;   Called from:
+;;     000003DC (in fn03B0)
+fn00001B74 proc
 	push	$1,ra
 	push	$3,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	1BE0
-	Invalid
-	Invalid
-	bhi	1B20
-	bne	1BE0
-	Invalid
-	Invalid
-	beq	1BA4
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,89C4
-	Invalid
-	res
-	bal	ra,D99C
-	Invalid
-	bal	ra,D99C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1BB0
-	Invalid
-	Invalid
-	Invalid
+	beq	00001BE0
+
+l00001B7E:
+	loadw	0xC(r3,r2),r0
+	cmpw	$1C4F,r0
+	bne	00001BE0
+
+l00001B86:
+	loadw	0x14(r3,r2),r0
+	cmpw	$0,r0
+	beq	00001BA4
+
+l00001B8C:
+	movd	$38,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	bal	ra,fn000089C4
+	loadd	0x38(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+	loadd	0x18(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+
+l00001BA4:
+	loadw	0x64(r9,r8),r7
+	cmpw	$FFFB,r7
+	beq	00001BB0
+
+l00001BAE:
+	movw	$0,r7
+
+l00001BB0:
+	movd	$0,(r6,r5)
+	movw	$0,r4
 	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	bal	ra,D99C
-	Invalid
-	bal	ra,DDF0
+	bal	ra,fn00000BEC
+	loadd	0x10(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+	loadw	0xE(r9,r8),r2
+	bal	ra,fn0000DDF0
 	movw	r0,r10
 	movd	(r3,r2),(r9,r8)
-	bal	ra,D99C
-	Invalid
-	bne	1BD8
+	bal	ra,fn0000D99C
+	cmpw	$0,r10
+	bne	00001BD8
+
+l00001BD2:
 	movw	r7,r0
 	pop	$3,r7
 	popret	$1,ra
-	Invalid
+
+l00001BD8:
+	movw	$FFFF,r7
 	movw	r7,r0
 	pop	$3,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00001BE0:
+	movw	$FFFE,r7
 	movw	r7,r0
 	pop	$3,r7
 	popret	$1,ra
-	res
-	push	$1,ra
+00001BEA                               00 00 1E 01 67 01           ....g.
+00001BF0 28 55 72 9B 72 5B 72 33 22 5F 00 C0 B6 BD 0A 55 (Ur.r[r3"_.....U
+00001C00 08 EC 0C 54 C0 57 03 14 08 9F 20 00 00 52 05 10 ...T.W.... ..R..
+00001C10 78 DA 00 5A 67 02 1E 03 72 5F 00 C0 96 BD 08 EF x..Zg...r_......
+00001C20 1C 00 00 56 01 13 C8 EF 58 00 C8 EF 5C 00 C8 EF ...V....X...\...
+00001C30 60 00 48 9F 2A 00 BF 60 FE FF B0 5A 38 00 00 01 `.H.*..`...Z8...
+00001C40 00 05 EC E4 10 01 08 9F 2C 00 00 01 85 5A 05 01 ........,....Z..
+00001C50 B6 5A 1F 00 B2 54 38 00 82 61 00 C0 CC 45 CF 60 .Z...T8..a...E.`
+00001C60 00 52 1F 11 C8 EF 38 00 18 9B 08 9F 20 00 18 DA .R....8..... ...
+00001C70 00 52 10 1D 18 DF 48 00 28 AF 1C 00 28 EF 44 00 .R....H.(...(.D.
+00001C80 28 E2 67 02 1E 03 A2 55 00 C0 14 BD 50 05 6C E4 (.g....U....P.l.
+00001C90 B4 5A FC FF 82 55 FF C0 57 EF 90 5A 67 02 1E 03 .Z...U..W..Zg...
+00001CA0 28 AF 1C 00 00 C0 F8 BC 28 AC 00 C0 F2 BC EF 1E (.......(.......
+00001CB0 00 00 9D 01 67 01 28 55 4C 5B 02 9A 00 52 0A 17 ....g.(UL[...R..
+00001CC0 78 9F 20 00 07 52 04 12 58 9F 3C 00 05 52 0C 11 x. ..R..X.<..R..
+00001CD0 38 AF 38 00 B7 5A 00 40 B5 52 00 40 B2 10 75 5B 8.8..Z.@.R.@..u[
+00001CE0 55 5F 28 97 00 C0 AC C0 00 52 68 15 58 9F 3C 00 U_(......Rh.X.<.
+00001CF0 05 3B 58 DF 3C 00 00 5E 38 AF 38 00 03 61 38 EF .;X.<..^8.8..a8.
+00001D00 38 00 05 52 1A 1E 07 5A 70 5B 67 02 9D 03 BA 54 8..R...Zp[g....T
+00001D10 38 00 8A 61 58 9F 48 00 70 5B 05 52 0F 11 0C 52 8..aX.H.p[.R...R
+00001D20 07 14 4C 52 11 08 01 52 19 11 10 52 00 08 5D 5B ..LR...R...R..][
+00001D30 00 52 14 11 C4 5B A2 55 00 C0 9C 2F B0 52 FE FF .R...[.U.../.R..
+00001D40 0E 14 58 9F 48 00 D5 53 19 1E 4C 52 1D 1D A2 55 ..X.H..S..LR...U
+00001D50 00 C0 44 2A 70 5B 67 02 9D 03 28 AF 44 00 08 A2 ..D*p[g...(.D...
+00001D60 20 57 4A 10 E6 14 00 5E 28 A2 20 61 08 E2 28 AF  WJ....^(. a..(.
+00001D70 44 00 20 57 57 12 14 00 02 C0 B2 56 00 40 D4 10 D. WW......V.@..
+00001D80 B2 5A 00 40 03 5A 50 05 FF FF 14 00 25 B0 28 97 .Z.@.ZP.....%.(.
+00001D90 03 55 00 C0 FE BF 00 52 77 1E 50 05 A8 E4 94 5A .U.....Rw.P....Z
+00001DA0 82 55 FF C0 4B EE 97 5A 70 5B 67 02 9D 03 5D 5B .U..K..Zp[g...][
+00001DB0 E2 1C FF C0 3B FE 07 5B 90 52 13 18 70 5B 67 02 ....;..[.R..p[g.
+00001DC0 9D 03 D8 9F 48 00 0D 52 16 1B D8 9A D8 DF 48 00 ....H..R......H.
+00001DD0 08 AF 1C 00 08 EF 44 00 08 E2 ED 1A 50 05 56 E5 ......D.....P.V.
+00001DE0 04 5B 82 55 FF C0 09 EE 97 5A 70 5B 67 02 9D 03 .[.U.....Zp[g...
+00001DF0 5D 5B 0D 52 10 1A EA 1E 00 00 9D 01 67 01 28 55 ][.R........g.(U
+00001E00 02 9A 00 52 07 16 08 9F 20 00 00 52 1A 11 08 9F ...R.... ..R....
+00001E10 48 00 BC 5A 00 40 07 5A BA 54 38 00 8A 61 0D 5B H..Z.@.Z.T8..a.[
+00001E20 00 52 00 13 04 5A A2 55 00 C0 AC 2E B0 52 FE FF .R...Z.U.....R..
+00001E30 04 16 08 9F 48 00 D0 53 13 1F 00 5A 67 02 9D 03 ....H..S...Zg...
+00001E40 58 9F 3C 00 05 52 0A 1F 38 AF 38 00 B7 5A 00 40 X.<..R..8.8..Z.@
+00001E50 B5 52 00 40 B2 10 75 5B 55 5F 28 97 00 C0 34 BF .R.@..u[U_(...4.
+00001E60 00 52 6F 12 58 9F 3C 00 05 3B 58 DF 3C 00 00 5E .Ro.X.<..;X.<..^
+00001E70 38 AF 38 00 03 61 38 EF 38 00 05 52 1A 1E 00 5A 8.8..a8.8..R...Z
+00001E80 EE 1D 28 AF 44 00 08 A2 20 57 4A 10 ED 12 00 5E ..(.D... WJ....^
+00001E90 28 A2 20 61 08 E2 28 AF 44 00 02 57 B1 12 14 00 (. a..(.D..W....
+00001EA0 02 C0 B2 56 00 40 D3 10 C2 5B 73 5B 50 05 FF FF ...V.@...[s[P...
+00001EB0 14 00 25 B0 28 97 03 55 00 C0 D8 BE 00 52 78 1E ..%.(..U.....Rx.
+00001EC0 50 05 A8 E4 94 5A 82 55 FF C0 25 ED 90 5A 67 02 P....Z.U..%..Zg.
+00001ED0 9D 03 FF C0 1B FD 90 52 17 19 67 02 9D 03 D8 9F .......R..g.....
+00001EE0 48 00 0D 52 10 1A D8 9A D8 DF 48 00 08 AF 1C 00 H..R......H.....
+00001EF0 08 EF 44 00 08 E2 E7 19 50 05 56 E5 04 5B 82 55 ..D.....P.V..[.U
+00001F00 FF C0 ED EC 90 5A 67 02 9D 03 00 00 9D 01 67 01 .....Zg.......g.
+00001F10 BF 60 FC FF 28 55 4A 5B 02 9F 3C 00 00 52 10 18 .`..(UJ[..<..R..
+00001F20 68 01 0A 52 0A 14 B0 54 38 00 80 61 0F E0 11 5A h..R...T8..a...Z
+00001F30 BD 5A 00 40 0C 5A 08 9A A0 53 D2 08 02 52 01 14 .Z.@.Z...S...R..
+00001F40 0B 5B 00 52 6E 13 28 AC 01 52 07 10 B5 5F 04 5A .[.Rn.(..R..._.Z
+00001F50 00 C0 F4 BB 28 AC 08 9A B8 DF 3C 00 28 EF 38 00 ....(.....<.(.8.
+00001F60 18 94 B1 33 18 D4 00 52 0D 16 08 9F 20 00 00 52 ...3...R.... ..R
+00001F70 03 15 58 9F 3C 00 05 52 0C 11 38 AF 38 00 B7 5A ..X.<..R..8.8..Z
+00001F80 00 40 B5 52 00 40 B2 10 75 5B 55 5F 28 97 00 C0 .@.R.@..u[U_(...
+00001F90 02 BE 00 52 67 13 58 9F 3C 00 05 3B 58 DF 3C 00 ...Rg.X.<..;X.<.
+00001FA0 00 5E 38 AF 38 00 03 61 38 EF 38 00 05 52 1A 1E .^8.8..a8.8..R..
+00001FB0 BA 3B 01 5A 1A 53 10 1C 00 5A 4F 60 67 02 9D 03 .;.Z.S...ZO`g...
+00001FC0 AB 5B E2 1C 28 AF 44 00 08 A2 20 57 4A 10 E5 14 .[..(.D... WJ...
+00001FD0 00 5E 28 A2 20 61 08 E2 28 AF 44 00 02 57 B9 13 .^(. a..(.D..W..
+00001FE0 14 00 02 C0 B2 56 00 40 D3 10 D2 5B C3 5B 50 05 .....V.@...[.[P.
+00001FF0 FF FF 14 00 25 B0 28 97 03 55 00 C0 96 BD 00 52 ....%.(..U.....R
+00002000 78 1E 50 05 A8 E4 94 5A 82 55 FF C0 E3 EB 90 5A x.P....Z.U.....Z
+00002010 4F 60 67 02 9D 03 08 9F 48 00 07 5B 00 52 03 1D O`g.....H..[.R..
+00002020 04 5A 2F A0 00 C0 B0 2C B0 52 FE FF 05 12 08 9F .Z/....,.R......
+00002030 48 00 70 53 13 1F BA 3B 01 5A 1A 53 10 18 FB FE H.pS...;.Z.S....
+00002040 EC 1B 82 55 FF C0 A9 FB 90 52 10 19 90 5A E6 1B ...U.....R...Z..
+00002050 78 9F 48 00 07 52 15 1E 78 9A 78 DF 48 00 08 AF x.H..R..x.x.H...
+00002060 1C 00 08 EF 44 00 08 E2 04 5A 2F A0 00 C0 68 2C ....D....Z/...h,
+00002070 B0 52 FE FF 1D 1D 50 05 56 E5 04 5B 82 55 FF C0 .R....P.V..[.U..
+00002080 6F EB 90 5A EB 19 FF C0 75 FD 90 52 10 18 97 FE o..Z....u..R....
+00002090 90 5A E4 19 00 00 9D 01 67 01 BF 60 FC FF B0 54 .Z......g..`...T
+000020A0 1A 00 F0 61 2C 55 4D 55 20 A0 2F E0 02 56 0E 14 ...a,UMU ./..V..
+000020B0 0C 9A 00 52 01 15 0C 9F 30 00 00 52 1E 13 7C 9A ...R....0..R..|.
+000020C0 0C 9F 3C 00 72 5F 4F A0 24 57 5C 14 48 55 04 5B ..<.r_O.$W\.HU.[
+000020D0 2C AC 04 52 0E 12 0C AF 38 00 44 5F 40 61 14 00 ,..R....8.D_@a..
+000020E0 20 C0 07 3B 7A 5F 8A 57 B3 10 87 5B 8A 55 40 00  ..;z_.W...[.U@.
+000020F0 00 00 FF FF 02 61 1A 01 D4 55 00 C0 2A BA 0C 9F .....a...U..*...
+00002100 3C 00 70 33 0C DF 3C 00 0C 94 07 33 7C D4 14 00 <.p3..<....3|...
+00002110 A8 C0 4F 60 08 56 0C 11 C2 55 FF C0 E1 FC 90 52 ..O`.V...U.....R
+00002120 05 11 AD 61 4C 9F 3C 00 7C 9A 2C AC 04 52 14 1D ...aL.<.|.,..R..
+00002130 2C EF 38 00 20 55 E2 1D 0C C3 30 00 4C 9F 2E 00 ,.8. U....0.L...
+00002140 C2 55 FF C0 CB FD 90 52 1B 1B 02 54 2F E0 0F A0 .U.....R...T/...
+00002150 4F 60 67 02 9D 03 C2 55 FF C0 95 FA 90 52 1C 1A O`g....U.....R..
+00002160 E5 1F 00 52 10 18 24 01 DC EF 38 00 BD 54 38 00 ...R..$...8..T8.
+00002170 CD 61 AF A0 9A 00 00 00 FE FF A6 13 A1 5B A8 55 .a...........[.U
+00002180 1C DF 3C 00 0C 94 10 33 0C D4 07 52 07 13 0C 9F ..<....3...R....
+00002190 20 00 00 52 0C 13 5C 9F 3C 00 05 52 0C 11 3C AF  ..R..\.<..R..<.
+000021A0 38 00 B7 5A 00 40 B5 52 00 40 B2 10 75 5B 55 5F 8..Z.@.R.@..u[U_
+000021B0 2C 97 00 C0 DE BB 00 52 6C 15 5C 9F 3C 00 05 3B ,......Rl.\.<..;
+000021C0 5C DF 3C 00 00 5E 3C AF 38 00 03 61 3C EF 38 00 \.<..^<.8..a<.8.
+000021D0 05 52 1A 1E 14 00 8A C0 0A 56 0A 1B 7C 9A 9A 00 .R.......V..|...
+000021E0 00 00 FE FF BC 1C 91 5A 18 5B 09 5A 1C DF 3C 00 .......Z.[.Z..<.
+000021F0 0C 94 10 33 0C D4 07 52 1B 1C C2 55 FF C0 F1 F9 ...3...R...U....
+00002200 90 52 04 1A 0C 9F 20 00 00 52 16 1C 0C 9F 48 00 .R.... ..R....H.
+00002210 07 5B 00 52 0F 10 04 5A D2 55 00 C0 BA 2A B0 52 .[.R...Z.U...*.R
+00002220 FE FF 0F 14 0C 9F 48 00 70 53 05 1D 07 5B 00 52 ......H.pS...[.R
+00002230 13 1F 0C AF 44 00 3C A2 30 57 AA 10 E3 13 00 5E ....D.<.0W.....^
+00002240 3C A2 03 61 3C E2 0C AF 44 00 30 57 B7 12 14 00 <..a<...D.0W....
+00002250 30 C0 B0 56 00 40 D4 10 B0 5A 00 40 01 5A 50 05 0..V.@...Z.@.ZP.
+00002260 FF FF 14 00 05 B0 2C 97 00 C0 28 BB 00 52 78 1E ......,...(..Rx.
+00002270 50 05 A8 E4 94 5A C2 55 FF C0 75 E9 00 54 0F E0 P....Z.U..u..T..
+00002280 0F A0 4F 60 67 02 9D 03 C2 55 FF C0 71 FB 90 52 ..O`g....U..q..R
+00002290 00 18 BB FE 7C 9A E0 18 D3 FE 7C 9F 48 00 07 52 ....|.....|.H..R
+000022A0 1B 1B 7C 9A 7C DF 48 00 0C AF 1C 00 0C EF 44 00 ..|.|.H.......D.
+000022B0 0C E2 04 5A D2 55 00 C0 1E 2A B0 52 FE FF 13 1B ...Z.U...*.R....
+000022C0 50 05 56 E5 04 5B C2 55 FF C0 25 E9 01 54 1F E0 P.V..[.U..%..T..
+000022D0 0F A0 4F 60 67 02 9D 03 1E 01 07 01 02 56 08 11 ..O`g........V..
+000022E0 02 96 07 5A B0 52 B1 79 04 10 70 5B 07 02 1E 03 ...Z.R.y..p[....
+000022F0 72 9F 32 00 07 52 1C 10 06 52 6E 10 66 5F 16 01 r.2..R...Rn.f_..
+00002300 FF C0 97 FD 07 5B 4F 60 70 5B 07 02 1E 03 07 5A .....[O`p[.....Z
+00002310 70 5B 07 02 1E 03 50 05 7E E5 B4 5A FD FF FF C0 p[....P.~..Z....
+00002320 CF E8 70 5B 07 02 1E 03 00 00 9D 01 58 01 BF 60 ..p[........X..`
+00002330 FC FF BC 54 18 00 FC 61 2F E0 4A 55 DC A0 CC A2 ...T...a/.JU....
+00002340 0C 56 05 10 0C 96 B0 52 B1 79 06 10 08 54 80 55 .V.....R.y...T.U
+00002350 4F 60 58 02 9D 03 0C 9F 32 00 00 52 18 1F 48 55 O`X.....2..R..HU
+00002360 04 56 06 1F D2 55 00 C0 F2 AF 08 55 A4 55 02 55 .V...U.....U.U.U
+00002370 00 C0 70 B1 D0 57 09 10 50 05 14 E5 B4 5A FE FF ..p..W..P....Z..
+00002380 C2 55 FF C0 6B E8 E3 1E 08 56 02 1E 18 01 4F A2 .U..k....V....O.
+00002390 C2 55 FF C0 05 FD A4 55 02 55 00 C0 46 B1 08 55 .U.....U.U..F..U
+000023A0 4F 60 E6 1D 1E 01 27 01 BF 60 FC FF 28 55 47 5B O`....'..`..(UG[
+000023B0 02 56 0D 14 02 96 B0 52 B1 79 19 14 02 9F 32 00 .V.....R.y....2.
+000023C0 00 52 15 14 12 9F 30 00 01 52 19 13 68 9A 06 52 .R....0..R..h..R
+000023D0 01 12 48 9F 3C 00 28 AC 04 52 0D 12 08 AF 38 00 ..H.<.(..R....8.
+000023E0 44 5F 40 61 14 00 20 C0 06 53 B4 11 40 00 00 00 D_@a.. ..S..@...
+000023F0 FF FF 20 61 70 F0 08 9F 3C 00 10 32 08 DF 3C 00 .. ap...<..2..<.
+00002400 08 94 10 32 08 D4 B0 5A FF 00 70 23 4F 60 27 02 ...2...Z..p#O`'.
+00002410 1E 03 7F F0 10 54 10 01 44 54 F4 61 82 55 FF C0 .....T..DT.a.U..
+00002420 79 FC 4F 60 10 56 13 11 B0 5A FF 00 70 23 4F 60 y.O`.V...Z..p#O`
+00002430 27 02 1E 03 28 EF 38 00 20 55 E3 1D 02 DF 30 00 '...(.8. U....0.
+00002440 42 9F 2E 00 FF C0 C9 FA 90 52 11 1C 90 5A 4F 60 B........R...ZO`
+00002450 27 02 1E 03 00 00 9D 01 67 01 BF 60 FC FF 2D 55 '.......g..`..-U
+00002460 4A 55 02 56 02 15 02 96 B0 52 B1 79 1E 14 72 9F JU.V.....R.y..r.
+00002470 32 00 07 52 1A 14 42 55 00 C0 FC B6 0F E0 00 56 2..R..BU.......V
+00002480 0B 13 0D 9A 00 52 0C 13 0D 9F 30 00 00 52 10 18 .....R....0..R..
+00002490 E4 01 7D 9A 0D 9F 3C 00 72 5F 4F A0 24 57 5A 13 ..}...<.r_O.$WZ.
+000024A0 4C 55 04 5B 2D AC 04 52 00 18 8E 01 0D AF 38 00 LU.[-..R......8.
+000024B0 44 5F 40 61 14 00 20 C0 07 3B 78 5F C8 57 B3 10 D_@a.. ..;x_.W..
+000024C0 C7 5B C8 55 40 00 00 00 FF FF 02 61 18 01 A4 55 .[.U@......a...U
+000024D0 00 C0 54 B6 0D 9F 3C 00 70 33 0D DF 3C 00 0D 94 ..T...<.p3..<...
+000024E0 07 33 7D D4 14 00 8C C0 4F 60 0C 56 10 18 54 01 .3}.....O`.V..T.
+000024F0 7F 90 07 52 0A 10 70 5B 4F 60 67 02 9D 03 D2 55 ...R..p[O`g....U
+00002500 FF C0 ED F6 90 52 11 1C 97 5A 70 5B 4F 60 67 02 .....R...Zp[O`g.
+00002510 9D 03 00 52 10 18 8A 01 AD EF 38 00 BC 54 38 00 ...R......8..T8.
+00002520 DC 61 AF A0 9A 00 00 00 FE FF A6 13 A1 5B A8 55 .a...........[.U
+00002530 1D DF 3C 00 0D 94 10 33 0D D4 07 52 07 13 0D 9F ..<....3...R....
+00002540 20 00 00 52 0C 13 5D 9F 3C 00 05 52 0C 11 3D AF  ..R..].<..R..=.
+00002550 38 00 B7 5A 00 40 B5 52 00 40 B2 10 75 5B 55 5F 8..Z.@.R.@..u[U_
+00002560 2D 97 00 C0 2E B8 00 52 6C 15 5D 9F 3C 00 05 3B -......Rl.].<..;
+00002570 5D DF 3C 00 00 5E 3D AF 38 00 03 61 3D EF 38 00 ].<..^=.8..a=.8.
+00002580 05 52 1A 1E 14 00 8A C0 0A 56 03 1B 7D 9A 9A 00 .R.......V..}...
+00002590 00 00 FE FF BC 1C 91 5A 18 5B 09 5A 1D DF 3C 00 .......Z.[.Z..<.
+000025A0 0D 94 10 33 0D D4 07 52 1B 1C D2 55 FF C0 41 F6 ...3...R...U..A.
+000025B0 90 52 0B 1A 0D 9F 20 00 00 52 16 1C 0D 9F 48 00 .R.... ..R....H.
+000025C0 07 5B 00 52 0F 10 04 5A C2 55 00 C0 0A 27 B0 52 .[.R...Z.U...'.R
+000025D0 FE FF 0D 15 0D 9F 48 00 70 53 05 1D 07 5B 00 52 ......H.pS...[.R
+000025E0 13 1F 0D AF 44 00 3D A2 30 57 AA 10 EA 13 00 5E ....D.=.0W.....^
+000025F0 3D A2 03 61 3D E2 0D AF 44 00 30 57 BE 12 14 00 =..a=...D.0W....
+00002600 30 C0 B0 56 00 40 D4 10 B0 5A 00 40 01 5A 50 05 0..V.@...Z.@.ZP.
+00002610 FF FF 14 00 05 B0 2D 97 00 C0 78 B7 00 52 78 1E ......-...x..Rx.
+00002620 50 05 A8 E4 94 5A D2 55 FF C0 C5 E5 97 5A 70 5B P....Z.U.....Zp[
+00002630 4F 60 67 02 9D 03 2D EF 38 00 20 55 E0 18 75 FE O`g...-.8. U..u.
+00002640 D2 55 FF C0 B9 F7 90 52 00 18 C1 FE 8A 61 4D 9F .U.....R.....aM.
+00002650 3C 00 7D 9A E0 18 51 FE 7D 9F 48 00 07 52 14 1B <.}...Q.}.H..R..
+00002660 7D 9A 7D DF 48 00 0D AF 1C 00 0D EF 44 00 0D E2 }.}.H.......D...
+00002670 EB 1A 0D C3 30 00 4D 9F 2E 00 D2 55 FF C0 91 F8 ....0.M....U....
+00002680 90 52 10 18 11 FE 97 5A E0 18 83 FE 50 05 56 E5 .R.....Z....P.V.
+00002690 04 5B D2 55 FF C0 59 E5 97 5A E0 18 5D FE D2 55 .[.U..Y..Z..]..U
+000026A0 FF C0 5B F7 90 52 00 18 63 FE 7D 9A E0 18 6D FE ..[..R..c.}...m.
+000026B0 9D 01 67 01 BF 60 F8 FF BC 54 1E 00 FC 61 28 55 ..g..`...T...a(U
+000026C0 4A 55 CC A0 CF E2 0D 54 D2 57 00 18 92 01 02 96 JU.....T.W......
+000026D0 B0 52 B1 79 10 18 88 01 02 9F 32 00 0F D0 00 52 .R.y......2....R
+000026E0 10 18 7C 01 72 9A 07 52 02 16 08 9F 30 00 00 52 ..|.r..R....0..R
+000026F0 16 14 48 9F 3C 00 08 AC 04 52 00 15 28 AF 38 00 ..H.<....R..(.8.
+00002700 14 00 02 C0 4C 5F 2C 61 0C 61 97 32 72 5F C2 61 ....L_,a.a.2r_.a
+00002710 02 82 0F A2 10 01 A4 55 C2 55 00 C0 36 AF 07 5B .......U.U..6..[
+00002720 4F 60 00 52 00 14 A8 9A 0A 53 BC 13 90 5A A0 33 O`.R.....S...Z.3
+00002730 00 5F 0C 61 0C B0 00 50 15 13 B8 9F 3C 00 7B 33 ._.a...P....<.{3
+00002740 B8 DF 3C 00 08 94 70 33 08 D4 BA 53 AC 12 A8 DF ..<...p3...S....
+00002750 3C 00 82 55 FF C0 A7 F6 90 52 03 14 AB 3B 28 AC <..U.....R...;(.
+00002760 B0 5F 48 9A 44 5F 24 61 10 01 00 C0 BA B3 08 AC ._H.D_$a........
+00002770 08 EF 38 00 B8 DF 3C 00 4F 60 E5 11 08 C3 30 00 ..8...<.O`....0.
+00002780 48 9F 2E 00 82 55 FF C0 87 F7 90 52 0A 12 78 9A H....U.....R..x.
+00002790 48 9F 3C 00 08 AC 04 52 12 1B 08 EF 38 00 02 54 H.<....R....8..T
+000027A0 E2 1B 7F 90 70 5B 8F 60 67 02 9D 03 72 9B 72 5B ....p[.`g...r.r[
+000027B0 72 33 22 5F 00 C0 FC B1 0C 55 08 EC D0 57 0A 10 r3"_.....U...W..
+000027C0 08 9F 20 00 00 52 03 11 78 DA E0 19 C2 55 00 C0 .. ..R..x....U..
+000027D0 CE B1 50 05 6C E4 B4 5A FC FF 82 55 FF C0 11 E4 ..P.l..Z...U....
+000027E0 78 9F 32 00 70 5B 8F 60 67 02 9D 03 72 5F 00 C0 x.2.p[.`g...r_..
+000027F0 C2 B1 08 EF 1C 00 00 56 0A 1E D8 EF 58 00 D8 EF .......V....X...
+00002800 5C 00 D8 EF 60 00 48 9F 2A 00 BF 60 FE FF B0 5A \...`.H.*..`...Z
+00002810 38 00 00 01 00 05 EC E4 10 01 08 9F 2C 00 00 01 8...........,...
+00002820 85 5A 05 01 B6 5A 1F 00 B2 54 38 00 82 61 00 C0 .Z...Z...T8..a..
+00002830 F8 39 CF 60 00 52 16 11 D8 EF 38 00 78 9B 08 9F .9.`.R....8.x...
+00002840 20 00 78 DA 00 52 10 18 A5 FE 78 DF 48 00 08 AF  .x..R....x.H...
+00002850 1C 00 08 EF 44 00 08 E2 E0 18 93 FE B7 5A FE FF ....D........Z..
+00002860 E2 1A 28 AF 1C 00 00 C0 36 B1 28 AC 00 C0 30 B1 ..(.....6.(...0.
+00002870 E1 1B 00 00 9D 01 67 01 BF 60 F4 FF BC 54 22 00 ......g..`...T".
+00002880 FC 61 8C A0 0C A2 0F E2 8C 60 CF E4 08 56 00 18 .a.......`...V..
+00002890 80 02 08 96 B0 52 B1 79 10 18 76 02 18 9F 32 00 .....R.y..v...2.
+000028A0 1F D0 01 52 10 18 6A 02 08 9A 00 52 00 18 36 02 ...R..j....R..6.
+000028B0 48 9F 3C 00 08 9F 30 00 00 52 1B 14 28 AC 04 52 H.<...0..R..(..R
+000028C0 00 18 3E 01 08 AF 38 00 14 00 20 C0 4A 5F 0A 61 ..>...8... .J_.a
+000028D0 2A 61 08 9A 90 32 00 5F A0 61 00 82 0F A4 10 01 *a...2._.a......
+000028E0 4F A4 A2 55 00 C0 6C AD 07 5B 4F 60 00 52 00 18 O..U..l..[O`.R..
+000028F0 22 01 C8 9A 0C 53 B0 18 18 01 C2 5B 92 32 22 5F "....S.....[.2"_
+00002900 2A 61 0A B0 00 50 10 18 08 01 A8 9F 3C 00 7A 33 *a...P......<.z3
+00002910 A8 DF 3C 00 08 94 70 33 08 D4 AC 53 AA 17 C8 DF ..<...p3...S....
+00002920 3C 00 82 55 FF C0 D7 F4 90 52 00 18 36 01 C1 5B <..U.....R..6..[
+00002930 1A 3B 28 AC A0 5F 48 9A 44 5F 24 61 10 01 00 C0 .;(.._H.D_$a....
+00002940 E6 B1 08 AC 08 EF 38 00 A8 DF 3C 00 4F 60 E1 16 ......8...<.O`..
+00002950 08 C3 30 00 B8 9F 2E 00 04 52 10 18 9A 01 28 AC ..0......R....(.
+00002960 0B 52 0E 14 BC 54 38 00 8C 61 11 5A BD 5A 00 40 .R...T8..a.Z.Z.@
+00002970 08 9A B0 53 D4 08 04 52 09 14 07 5B 00 52 66 14 ...S...R...[.Rf.
+00002980 01 52 07 10 75 5F 04 5A 00 C0 BC B1 28 AC 08 9A .R..u_.Z....(...
+00002990 78 DF 3C 00 28 EF 38 00 18 94 71 33 18 D4 00 52 x.<.(.8...q3...R
+000029A0 00 18 FA 00 08 9F 20 00 00 52 01 16 58 9F 3C 00 ...... ..R..X.<.
+000029B0 05 52 0C 11 38 AF 38 00 BA 5A 00 40 B5 52 00 40 .R..8.8..Z.@.R.@
+000029C0 B2 10 A5 5B 55 5F 28 97 00 C0 C8 B3 00 52 63 14 ...[U_(......Rc.
+000029D0 58 9F 3C 00 05 3B 58 DF 3C 00 00 5E 38 AF 38 00 X.<..;X.<..^8.8.
+000029E0 03 61 38 EF 38 00 05 52 1A 1E 7B 3B 28 AC 1F 90 .a8.8..R..{;(...
+000029F0 0B 52 1F 1B 48 9F 3C 00 04 52 10 18 CB FE 28 EF .R..H.<..R....(.
+00002A00 38 00 00 54 04 5A E0 18 C7 FE B7 5B EA 1B 7F 90 8..T.Z.....[....
+00002A10 70 5B CF 60 67 02 9D 03 08 AF 44 00 38 A2 03 57 p[.`g.....D.8..W
+00002A20 4A 10 E8 14 00 5E 38 A2 03 61 38 E2 08 AF 44 00 J....^8..a8...D.
+00002A30 30 57 BC 13 14 00 30 C0 B0 56 00 40 D3 10 D0 5B 0W....0..V.@...[
+00002A40 01 5A 50 05 FF FF 14 00 05 B0 28 97 00 C0 44 B3 .ZP.......(...D.
+00002A50 00 52 79 1E 50 05 A8 E4 94 5A 82 55 FF C0 91 E1 .Ry.P....Z.U....
+00002A60 78 9F 32 00 70 5B CF 60 67 02 9D 03 08 9F 48 00 x.2.p[.`g.....H.
+00002A70 0A 5B 00 52 02 1D 04 5A C2 55 00 C0 5A 22 B0 52 .[.R...Z.U..Z".R
+00002A80 FE FF 07 12 08 9F 48 00 A0 53 13 1F 7B 3B 28 AC ......H..S..{;(.
+00002A90 1F 90 0B 52 10 18 DD FE EE 1A 82 55 FF C0 51 F1 ...R.......U..Q.
+00002AA0 90 52 11 18 78 9F 32 00 EE 1D A8 9F 48 00 0A 52 .R..x.2.....H..R
+00002AB0 13 1E A8 9A A8 DF 48 00 08 AF 1C 00 08 EF 44 00 ......H.......D.
+00002AC0 08 E2 04 5A C2 55 00 C0 0E 22 B0 52 FE FF 1B 1D ...Z.U...".R....
+00002AD0 50 05 56 E5 04 5B 82 55 FF C0 15 E1 78 9F 32 00 P.V..[.U....x.2.
+00002AE0 E2 1C 82 55 FF C0 09 F1 90 52 10 18 C7 FD 78 9F ...U.....R....x.
+00002AF0 32 00 E9 1B 82 55 FF C0 05 F3 90 52 02 1B 28 AC 2....U.....R..(.
+00002B00 0B 52 10 18 63 FE 48 9F 3C 00 E0 18 EF FE B7 5A .R..c.H.<......Z
+00002B10 FE FF E0 18 FF FE 00 00 9D 01 67 01 BF 60 FC FF ..........g..`..
+00002B20 28 55 4F D1 02 56 00 18 AA 01 02 96 B0 52 B1 79 (UO..V.......R.y
+00002B30 10 18 A0 01 02 9F 32 00 0F D0 00 52 10 18 94 01 ......2....R....
+00002B40 44 52 A0 18 8E 01 02 9F 30 00 00 52 03 15 0F 90 DR......0..R....
+00002B50 02 DF 30 00 B2 9F 2E 00 02 9F 3C 00 00 52 13 15 ..0.......<..R..
+00002B60 0B 52 08 14 BC 54 38 00 8C 61 11 5A BD 5A 00 40 .R...T8..a.Z.Z.@
+00002B70 08 9A B0 53 D2 08 02 52 0D 14 07 5B 00 52 6A 14 ...S...R...[.Rj.
+00002B80 28 AC 01 52 07 10 75 5F 04 5A 00 C0 BA AF 28 AC (..R..u_.Z....(.
+00002B90 08 9A 78 DF 3C 00 28 EF 38 00 18 94 71 33 18 D4 ..x.<.(.8...q3..
+00002BA0 00 52 07 17 08 9F 20 00 00 52 0D 15 58 9F 3C 00 .R.... ..R..X.<.
+00002BB0 05 52 0C 11 38 AF 38 00 BA 5A 00 40 B5 52 00 40 .R..8.8..Z.@.R.@
+00002BC0 B2 10 A5 5B 55 5F 28 97 00 C0 C8 B1 00 52 62 14 ...[U_(......Rb.
+00002BD0 58 9F 3C 00 05 3B 58 DF 3C 00 00 5E 38 AF 38 00 X.<..;X.<..^8.8.
+00002BE0 03 61 38 EF 38 00 05 52 1A 1E 7B 3B 1F 90 0B 52 .a8.8..R..{;...R
+00002BF0 10 1C 4F 91 82 55 FF C0 BD F0 08 9F 32 00 4F 60 ..O..U......2.O`
+00002C00 67 02 9D 03 FF C0 F7 F1 90 52 1B 1A 08 9F 32 00 g........R....2.
+00002C10 E7 1F B7 5B E6 1B 08 AF 44 00 38 A2 30 57 AA 10 ...[....D.8.0W..
+00002C20 E2 14 00 5E 38 A2 03 61 38 E2 08 AF 44 00 30 57 ...^8..a8...D.0W
+00002C30 B6 13 14 00 30 C0 B0 56 00 40 D3 10 D0 5B 01 5A ....0..V.@...[.Z
+00002C40 50 05 FF FF 14 00 05 B0 28 97 00 C0 46 B1 00 52 P.......(...F..R
+00002C50 79 1E 50 05 A8 E4 94 5A 82 55 FF C0 93 DF 08 9F y.P....Z.U......
+00002C60 32 00 EE 1C 08 9F 48 00 0A 5B 00 52 05 1D 04 5A 2.....H..[.R...Z
+00002C70 C2 55 00 C0 62 20 B0 52 FE FF 04 12 08 9F 48 00 .U..b .R......H.
+00002C80 A0 53 13 1F 7B 3B 1F 90 0B 52 10 18 E7 FE E2 1B .S..{;...R......
+00002C90 82 55 FF C0 5B EF 90 52 16 18 E0 1B A8 9F 48 00 .U..[..R......H.
+00002CA0 0A 52 16 1E A8 9A A8 DF 48 00 08 AF 1C 00 08 EF .R......H.......
+00002CB0 44 00 08 E2 04 5A C2 55 00 C0 1C 20 B0 52 FE FF D....Z.U... .R..
+00002CC0 1E 1D 50 05 56 E5 04 5B 82 55 FF C0 23 DF E6 19 ..P.V..[.U..#...
+00002CD0 B0 5A FE FF 4F 60 67 02 9D 03 00 00 1E 01 47 01 .Z..O`g.......G.
+00002CE0 28 55 4A 5B 5B 5B 02 56 01 14 02 96 B0 52 B1 79 (UJ[[[.V.....R.y
+00002CF0 1D 13 72 9F 32 00 07 52 19 13 02 9F 2A 00 40 53 ..r.2..R....*.@S
+00002D00 0E 12 08 9F 30 00 00 52 1C 11 08 9A 00 52 02 11 ....0..R.....R..
+00002D10 08 9F 3C 00 00 52 07 10 54 5A 82 55 FF C0 97 EF ..<..R..TZ.U....
+00002D20 90 52 08 11 B5 5B A4 5B B2 54 38 00 82 61 00 C0 .R...[.[.T8..a..
+00002D30 46 32 A8 DF 2A 00 B8 DF 2C 00 70 5B 47 02 1E 03 F2..*...,.p[G...
+00002D40 08 C3 30 00 48 9F 2E 00 82 55 FF C0 C3 F1 90 52 ..0.H....U.....R
+00002D50 1D 1D 78 9F 32 00 70 5B 47 02 1E 03 02 9F 2C 00 ..x.2.p[G.....,.
+00002D60 50 53 10 1D 70 5B 47 02 1E 03 B7 5A FE FF 70 5B PS..p[G....Z..p[
+00002D70 47 02 1E 03 00 00                               G.....          
+
+;; fn00002D76: 00002D76
+;;   Called from:
+;;     000003D6 (in fn03B0)
+fn00002D76 proc
+	push	$1,r13,ra
 	push	$6,r7
+	addd	$FFFC,sp
 	movd	(r9,r8),(r3,r2)
-	Invalid
-	movw	r7,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	bal	ra,D9B0
-	movd	(r11,r10),(r1,r0)
-	Invalid
-	Invalid
-	cmpd	(r1,r0),r12
-	beq	1C8C
-	Invalid
-	Invalid
-	Invalid
-	beq	1C18
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
-	movzw	r7,(r3,r2)
-	bal	ra,D9B0
-	Invalid
-	res
-	cmpd	$0,(r1,r0)
-	beq	1C86
-	Invalid
-	ord	$5CEFC8,(r9,r8)
-	Invalid
-	xord	$2A9F48,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r0
-	movd	$E4EC,r0
-	push	$1,r0
-	Invalid
-	Invalid
-	push	$0,r0
-	Invalid
-	push	$0,r5
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,6226
-	Invalid
-	Invalid
-	bne	1CA0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1C12
-	Invalid
-	andd	$1CAF28,(r9,r8)
-	Invalid
-	andd	$267E228,(r5,r4)
-	popret	$1,ra
+	cmpd	$0,(r3,r2)
+	beq	fn000030F2
+
+l00002D86:
+	loadw	0xC(r3,r2),r0
+	cmpw	$79B1,r0
+	bne	fn000030E8
+
+l00002D90:
+	loadw	0x60(r3,r2),r0
+	cmpw	$0,r0
+	bne	fn0000300E
+
+l00002D9A:
+	storw	$0,(sp)
+	movd	$38,(r11,r10)
+	addd	(r9,r8),(r11,r10)
+	loadw	0x14(r9,r8),r0
+	cmpw	$0,r0
+	beq	fn0000304A
+
+l00002DAA:
+	loadw	0x40(r9,r8),r0
+	cmpw	$0,r0
+	bne	00002E92
+
+l00002DB2:
+	loadw	0x90(r9,r8),r7
+	movw	$4000,r13
+	movw	$0,r12
+	cmpw	$0,r7
+	seq	r1
+	cmpw	$0,r1
+	bne	00002DF0
+
+l00002DC4:
+	cmpw	$1,r0
+	seq	r0
+	cmpw	$0,r0
+	bne	00002DF0
+
+l00002DCC:
+	movw	$4,r4
 	movd	(r3,r2),(r11,r10)
-	bal	ra,D99C
-	movd	$E46C,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
-	Invalid
-	res
-	bal	ra,D99C
-	Invalid
-	bal	ra,D99C
-	br	1C8C
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r12
-	Invalid
-	Invalid
-	beq	1DB2
-	Invalid
-	Invalid
-	Invalid
-	beq	1D0E
-	Invalid
-	Invalid
-	Invalid
-	beq	1D06
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	1CE0
-	movw	r7,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	1D9A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1CD8
-	Invalid
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$52055B70,(r9,r8)
-	beq	1D5A
-	Invalid
-	beq	1DAE
-	Invalid
-	Invalid
-	Invalid
-	bne	1D5A
-	Invalid
-	Invalid
-	movw	r5,r13
-	Invalid
-	bne	1D5A
-	movw	r12,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	1DDC
-	Invalid
-	andd	$1E1953D5,(r9,r8)
-	Invalid
-	bne	1D06
-	movd	(r3,r2),(r11,r10)
-	bal	ra,4794
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$5720A208,(r5,r4)
-	bhi	1D76
-	br	1DF0
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$12575720,(r5,r4)
-	subd	(r3,r2),(r1,r0)
-	Invalid
-	bge	1D86
-	Invalid
-	Invalid
-	Invalid
-	movd	$FFFF,r5
-	Invalid
-	movd	(r4,r3),(r1,r0)
-	bal	ra,DD90
-	Invalid
-	ble	1D66
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	movw	r5,r13
-	br	1D34
-	bal	ra,1BEC
-	movw	r0,r7
-	Invalid
-	bne	1CC0
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$1B16520D,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$1AEDE208,(r5,r4)
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	movw	r5,r13
-	Invalid
-	bne	1D34
-	br	1DCA
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	Invalid
-	beq	1ED2
-	Invalid
-	Invalid
-	Invalid
-	bne	1E40
-	Invalid
-	andd	$40005ABC,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r13
-	Invalid
-	beq	1E82
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	1EF8
-	Invalid
-	andd	$1F1353D0,(r9,r8)
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	1E3A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	1E58
-	movw	r7,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	1EC0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1E50
-	Invalid
-	br	1E3C
-	Invalid
-	andd	$5720A208,(r5,r4)
-	bhi	1E9E
-	br	1EE6
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$12B15702,(r5,r4)
-	subd	(r3,r2),(r1,r0)
-	Invalid
-	bge	1EAC
-	movw	r12,r2
-	movw	r7,r3
-	movd	$FFFF,r5
-	Invalid
-	movd	(r4,r3),(r1,r0)
-	bal	ra,DD90
-	Invalid
-	ble	1E8E
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	bal	ra,1BEC
-	Invalid
-	bne	1E06
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$1A10520D,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$19E7E208,(r5,r4)
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r8
-	Invalid
-	beq	1FB8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	1FC0
-	movw	r0,r11
-	Invalid
-	bgt	1FC0
-	Invalid
-	Invalid
-	beq	1F58
-	movzw	r11,(r6,r5)
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2042
-	Invalid
-	Invalid
-	Invalid
-	beq	2016
-	Invalid
-	Invalid
-	Invalid
-	beq	1FB0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	1F8A
-	movw	r7,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2002
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	1F82
-	Invalid
-	Invalid
-	Invalid
-	bne	1F36
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movw	r10,r11
-	br	1F46
-	Invalid
-	andd	$5720A208,(r5,r4)
-	bhi	1FE0
-	br	2058
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$13B95702,(r5,r4)
-	subd	(r3,r2),(r1,r0)
-	Invalid
-	bge	1FEE
-	movw	r13,r2
-	movw	r12,r3
-	movd	$FFFF,r5
-	Invalid
-	movd	(r4,r3),(r1,r0)
-	bal	ra,DD90
-	Invalid
-	ble	1FD0
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$52005B07,(r9,r8)
-	beq	1FC4
-	Invalid
-	Invalid
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	2076
-	Invalid
-	andd	$1F135370,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	1FB8
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1BEC
-	Invalid
-	bne	1F6A
-	Invalid
-	br	1FBA
-	Invalid
-	andd	$1E155207,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$5A04E208,(r5,r4)
-	Invalid
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	bne	202E
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	br	1FBA
-	bal	ra,1DFA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	1FBA
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	r12,(r3,r2)
-	movd	r13,(r5,r4)
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	214A
-	Invalid
-	Invalid
-	beq	2156
-	Invalid
-	Invalid
-	Invalid
-	bne	2138
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r3,r2)
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	bls	2162
-	movd	(r9,r8),(r5,r4)
-	movw	r0,r4
-	Invalid
-	Invalid
-	beq	2130
-	Invalid
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	movzw	r7,(r11,r10)
-	cmpd	(r11,r10),(r9,r8)
-	bhs	20EE
-	movw	r8,r7
-	movd	(r11,r10),(r9,r8)
-	andd	$FFFF0000,(r1,r0)
-	Invalid
-	push	$1,r10
-	movd	(r5,r4),r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r9,r8),(r11,r10)
-	cmpd	$0,(r9,r8)
-	beq	214E
-	movd	(r3,r2),r12
-	bal	ra,1DFA
-	Invalid
-	beq	214A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	20D6
-	Invalid
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	br	20DA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,1F0C
-	Invalid
-	bne	20BE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	(r3,r2),r12
-	bal	ra,1BEC
-	Invalid
-	bne	20B6
-	br	214A
-	Invalid
-	Invalid
-	push	$2,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFFE0000,(r11,r10)
-	blo	21E6
-	movw	r10,r1
-	movd	(r9,r8),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	21FA
-	Invalid
-	Invalid
-	Invalid
-	beq	220C
-	Invalid
-	Invalid
-	Invalid
-	beq	21D4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	21AE
-	movw	r7,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2270
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	21A6
-	subd	(r11,r10),(r9,r8)
-	beq	214E
-	Invalid
-	cmpd	$FFFE0000,(r11,r10)
-	bhs	217C
-	Invalid
-	movw	r1,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	218E
-	movd	(r3,r2),r12
-	bal	ra,1BEC
-	Invalid
-	beq	214A
-	Invalid
-	Invalid
-	Invalid
-	bne	2196
-	Invalid
-	andd	$52005B07,(r9,r8)
-	beq	2232
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	22C0
-	Invalid
-	andd	$1D055370,(r9,r8)
-	movw	r0,r7
-	Invalid
-	bne	2216
-	Invalid
-	andd	$5730A23C,(r5,r4)
-	blo	224E
-	br	22A2
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$12B75730,(r5,r4)
-	subd	(r1,r0),(r4,r3)
-	Invalid
-	bge	225E
-	Invalid
-	Invalid
-	Invalid
-	movd	$FFFF,r5
-	Invalid
-	bal	ra,DD90
-	Invalid
-	ble	223E
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	(r3,r2),r12
-	bal	ra,1DFA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$1B1B5207,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF0C,(r9,r8)
-	Invalid
-	andd	$5A04E20C,(r5,r4)
-	movd	(r3,r2),r13
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	bne	2224
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	push	$1,ra
-	push	$0,r7
-	cmpd	$0,(r3,r2)
-	beq	230E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	22F0
-	movw	r7,r0
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	230E
-	Invalid
-	bgt	2316
-	movzw	r6,(r7,r6)
-	push	$1,r6
-	bal	ra,2096
-	movw	r0,r7
-	Invalid
-	movw	r7,r0
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	movw	r7,r0
-	pop	$0,r7
-	popret	$1,ra
-	movd	$E57E,r5
-	Invalid
-	Invalid
-	bal	ra,0BEC
-	movw	r7,r0
-	pop	$0,r7
-	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$5,r8
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	cmpd	$0,r12
-	beq	234C
-	Invalid
-	Invalid
-	Invalid
-	beq	2356
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	pop	$5,r8
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	234C
-	movd	(r9,r8),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	234E
-	movd	(r3,r2),r13
-	bal	ra,D358
-	movd	(r9,r8),(r1,r0)
-	movd	(r5,r4),(r11,r10)
-	movd	(r3,r2),(r1,r0)
-	bal	ra,D4E0
-	cmpd	(r1,r0),r13
-	beq	2388
-	movd	$E514,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,0BEC
-	br	234C
-	cmpd	$0,(r9,r8)
-	beq	234E
-	push	$1,r8
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,2096
-	movd	(r5,r4),(r11,r10)
-	movd	(r3,r2),(r1,r0)
-	bal	ra,D4E0
-	movd	(r9,r8),(r1,r0)
-	Invalid
-	br	234E
-	push	$1,ra
-	push	$2,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r7
-	cmpd	$0,(r3,r2)
-	beq	244C
-	Invalid
-	Invalid
-	Invalid
-	bne	244C
-	Invalid
-	Invalid
-	Invalid
-	bne	244C
-	Invalid
-	Invalid
-	Invalid
-	bne	243C
-	Invalid
-	Invalid
-	beq	2412
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2434
-	Invalid
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	bhs	2412
-	andd	$FFFF0000,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,2096
-	Invalid
-	cmpd	$1,(r1,r0)
-	bne	244C
-	Invalid
-	res
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	br	23E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,1F0C
-	Invalid
-	bne	23CC
-	Invalid
-	Invalid
-	pop	$2,r7
-	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r13,(r3,r2)
-	movd	(r11,r10),(r5,r4)
-	cmpd	$0,(r3,r2)
-	beq	2508
-	Invalid
-	Invalid
-	Invalid
-	bne	2508
-	Invalid
-	Invalid
-	Invalid
-	bne	2508
-	movd	(r3,r2),(r5,r4)
-	bal	ra,DB74
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	24F6
-	Invalid
-	Invalid
-	beq	24FE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r3,r2)
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	bls	2512
-	movd	r12,(r5,r4)
-	movw	r0,r4
-	Invalid
-	Invalid
-	Invalid
-	push	$0,ra,ra
-	Invalid
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	movzw	r7,(r9,r8)
-	cmpd	(r9,r8),r12
-	bhs	24C4
-	movw	r12,r7
-	movd	(r9,r8),r12
-	andd	$FFFF0000,(r1,r0)
-	Invalid
-	push	$1,r8
-	movd	(r5,r4),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	r12,(r9,r8)
-	cmpd	$0,r12
-	Invalid
-	push	$5,r4
-	Invalid
-	Invalid
-	beq	2508
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	(r3,r2),r13
-	bal	ra,1BEC
-	Invalid
-	bne	2488
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	push	$0,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFFE0000,(r11,r10)
-	blo	2596
-	movw	r10,r1
-	movd	(r9,r8),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	25AA
-	Invalid
-	Invalid
-	Invalid
-	beq	25BC
-	Invalid
-	Invalid
-	Invalid
-	beq	2584
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	255E
-	movw	r7,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2620
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2556
-	subd	(r11,r10),(r9,r8)
-	beq	24F0
-	Invalid
-	cmpd	$FFFE0000,(r11,r10)
-	bhs	252C
-	Invalid
-	movw	r1,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	253E
-	movd	(r3,r2),r13
-	bal	ra,1BEC
-	Invalid
-	beq	2508
-	Invalid
-	Invalid
-	Invalid
-	bne	2546
-	Invalid
-	andd	$52005B07,(r9,r8)
-	beq	25E2
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	268C
-	Invalid
-	andd	$1D055370,(r9,r8)
-	movw	r0,r7
-	Invalid
-	bne	25C6
-	Invalid
-	andd	$5730A23D,(r5,r4)
-	blo	25FE
-	br	2660
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$12BE5730,(r5,r4)
-	subd	(r1,r0),(r4,r3)
-	Invalid
-	bge	260E
-	Invalid
-	Invalid
-	Invalid
-	movd	$FFFF,r5
-	Invalid
-	bal	ra,DD90
-	Invalid
-	ble	25EE
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,0BEC
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,1DFA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$1B145207,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF0D,(r9,r8)
-	Invalid
-	andd	$1AEBE20D,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,1F0C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),r13
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,1DFA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),r13
-	Invalid
-	push	$1,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r12
-	Invalid
-	Invalid
-	beq	27AC
-	Invalid
-	Invalid
-	Invalid
-	bne	277C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	279A
-	Invalid
-	Invalid
-	subd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	movd	(r5,r4),(r11,r10)
-	movd	(r3,r2),r12
-	bal	ra,D650
-	movw	r0,r7
-	Invalid
-	Invalid
-	beq	27A4
-	Invalid
-	Invalid
-	bhs	27A2
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	bne	27A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	27A4
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1DFA
-	Invalid
-	beq	27E0
-	Invalid
-	Invalid
-	movzw	r11,(r1,r0)
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	27A4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1F0C
-	Invalid
-	beq	27E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	26FC
-	Invalid
-	Invalid
-	Invalid
-	br	2704
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	movw	r7,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	bal	ra,D9B0
-	movd	r12,(r1,r0)
-	Invalid
-	cmpd	(r1,r0),r13
-	beq	27D2
-	Invalid
-	Invalid
-	Invalid
-	beq	27EC
-	Invalid
-	br	26EA
-	movd	(r3,r2),r12
-	bal	ra,D99C
-	movd	$E46C,r5
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movzw	r7,(r3,r2)
-	bal	ra,D9B0
-	Invalid
-	res
-	cmpd	$0,(r1,r0)
-	beq	27CC
-	Invalid
-	ord	$5CEFD8,(r9,r8)
-	Invalid
-	xord	$2A9F48,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r0
-	movd	$E4EC,r0
-	push	$1,r0
-	Invalid
-	Invalid
-	push	$0,r0
-	Invalid
-	push	$0,r5
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,6226
-	Invalid
-	Invalid
-	bne	2862
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$18E0E208,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	br	27A4
-	Invalid
-	res
-	bal	ra,D99C
-	Invalid
-	bal	ra,D99C
-	br	27D2
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r9,r8)
-	Invalid
-	pop	$0,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$7,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r10
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2950
-	Invalid
-	Invalid
-	Invalid
-	push	$3,ra
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,D650
-	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8
-	movw	r12,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	push	$0,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	2A10
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1DFA
-	Invalid
-	Invalid
-	push	$3,r6
-	movw	r12,r1
-	Invalid
-	Invalid
-	movzw	r10,(r1,r0)
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	2A10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r10,ra
-	Invalid
-	Invalid
-	beq	29FE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2A0A
-	movw	r0,r7
-	Invalid
-	bgt	2A0A
-	Invalid
-	beq	2990
-	movzw	r7,(r6,r5)
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	2A6C
-	Invalid
-	Invalid
-	Invalid
-	beq	29EA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	29C4
-	movw	r10,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2A54
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	29BC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2970
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r11,r7
-	br	2980
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$5703A238,(r5,r4)
-	bhi	2A34
-	br	2AB2
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$13BC5730,(r5,r4)
-	subd	(r1,r0),(r4,r3)
-	Invalid
-	bge	2A42
-	movw	r13,r0
-	Invalid
-	movd	$FFFF,r5
-	Invalid
-	bal	ra,DD90
-	Invalid
-	ble	2A24
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	movw	r7,r0
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$52005B0A,(r9,r8)
-	beq	2A18
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	2AD0
-	Invalid
-	andd	$1F1353A0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	29F4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1BEC
-	Invalid
-	bne	29A4
-	Invalid
-	Invalid
-	br	2A64
-	Invalid
-	andd	$1E13520A,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$5A04E208,(r5,r4)
-	movd	(r3,r2),r12
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	bne	2A84
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	br	2A64
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1BEC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	2A64
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1DFA
-	Invalid
-	beq	2A60
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$2,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r4,ra
-	Invalid
-	Invalid
-	push	$0,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	2BF2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2C04
-	Invalid
-	beq	2BF2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2C12
-	movw	r0,r7
-	Invalid
-	bgt	2C12
-	Invalid
-	Invalid
-	beq	2B92
-	movzw	r7,(r6,r5)
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2C90
-	Invalid
-	Invalid
-	Invalid
-	beq	2C64
-	Invalid
-	Invalid
-	Invalid
-	beq	2BEA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	2BC4
-	movw	r10,r5
-	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2C52
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2BBC
-	Invalid
-	Invalid
-	Invalid
-	bne	2B70
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1CB2
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	bal	ra,1DFA
-	Invalid
-	bne	2B60
-	Invalid
-	Invalid
-	br	2BFE
-	movw	r11,r7
-	br	2B80
-	Invalid
-	andd	$5730A238,(r5,r4)
-	blo	2C32
-	br	2CA4
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$13B65730,(r5,r4)
-	subd	(r1,r0),(r4,r3)
-	Invalid
-	bge	2C40
-	movw	r13,r0
-	Invalid
-	movd	$FFFF,r5
-	Invalid
-	bal	ra,DD90
-	Invalid
-	ble	2C22
-	movd	$E4A8,r5
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	br	2BFE
-	Invalid
-	andd	$52005B0A,(r9,r8)
-	beq	2C16
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	2CC2
-	Invalid
-	andd	$1F1353A0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	2BF2
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1BEC
-	Invalid
-	bne	2BA4
-	br	2BFA
-	Invalid
-	andd	$1E16520A,(r9,r8)
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$5A04E208,(r5,r4)
-	movd	(r3,r2),r12
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	bne	2C7C
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	br	2BFA
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	res
-	push	$1,ra
-	push	$4,r7
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r10
-	movw	r5,r11
-	cmpd	$0,(r3,r2)
-	beq	2D6A
-	Invalid
-	Invalid
-	Invalid
-	bne	2D6A
-	Invalid
-	Invalid
-	Invalid
-	bne	2D6A
-	Invalid
-	Invalid
-	Invalid
-	beq	2D5C
-	Invalid
-	Invalid
-	Invalid
-	bne	2D40
-	Invalid
-	Invalid
-	beq	2D32
-	Invalid
-	Invalid
-	Invalid
-	beq	2D24
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1CB2
-	Invalid
-	beq	2D52
-	movw	r11,r5
-	movw	r10,r4
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,5F74
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1F0C
-	Invalid
-	bne	2D0A
-	Invalid
-	Invalid
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	2D02
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$3,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r2
-	Invalid
-	Invalid
-	Invalid
-	bne	2E92
-	Invalid
-	andd	$40005ABD,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2DF0
-	Invalid
-	Invalid
-	Invalid
-	bne	2DF0
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r12
-	Invalid
-	andd	$18005371,(r9,r8)
-	push	$5,r0
+	bal	ra,fn00004CD4
+	cmpw	$FFFE,r0
+	beq	fn00003070
+
+l00002DDC:
+	loadw	0x90(r9,r8),r1
+	cmpw	r1,r7
+	beq	fn00003082
+
+l00002DE6:
 	movw	r1,r7
-	Invalid
-	Invalid
-	Invalid
-	beq	2DC4
-	Invalid
-	andd	$5702A208,(r5,r4)
-	blo	2E10
-	Invalid
-	push	$1,r0
+	cmpw	$0,r7
+	seq	r1
+	cmpw	$0,r1
+	beq	00002DC4
+
+l00002DF0:
+	loadd	0x88(r9,r8),(r3,r2)
+	loadd	4(r9,r8),(r1,r0)
+	cmpd	(r3,r2),(r1,r0)
+	blo	00002E10
+
+l00002DFA:
+	br	fn0000301A
+
+l00002DFE:
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$18B05702,(r5,r4)
-	res
+	loadd	4(r9,r8),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),4(r9,r8)
+	loadd	0x88(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
+	bhs	fn00003000
+
+l00002E10:
 	subd	(r3,r2),(r1,r0)
-	Invalid
-	bge	2E1E
+	cmpd	$4000,(r3,r2)
+	bge	00002E1E
+
+l00002E1A:
 	movw	r13,r2
 	movw	r12,r3
-	movd	$FFFF,r5
-	Invalid
+
+l00002E1E:
+	movd	$FFFF,(r6,r5)
+	andd	(r3,r2),(r6,r5)
+	loadw	0xE(r9,r8),r2
 	movd	(r4,r3),(r1,r0)
-	bal	ra,DD90
-	Invalid
-	ble	2DFE
-	movd	$E4A8,r5
-	Invalid
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	ble	00002DFE
+
+l00002E32:
+	movd	$E4A8,(r6,r5)
+	movw	$FFFF,r4
 	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	2E66
-	Invalid
-	Invalid
-	Invalid
-	bne	2E60
+	bal	ra,fn00000BEC
+	loadw	0x64(r9,r8),r0
+	storw	r0,(sp)
+
+l00002E44:
+	loadw	0x14(r9,r8),r0
+	cmpw	$0,r0
+	beq	00002E66
+
+l00002E4A:
+	loadw	0x40(r9,r8),r0
+	cmpw	$0,r0
+	bne	00002E60
+
+l00002E52:
 	movd	(r3,r2),(r11,r10)
-	bal	ra,6134
-	Invalid
-	res
-	bal	ra,D99C
-	Invalid
-	bal	ra,D99C
-	Invalid
-	Invalid
+	bal	ra,fn00006134
+	loadd	0x38(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+
+l00002E60:
+	loadd	0x18(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+
+l00002E66:
+	movd	$0,(r6,r5)
+	movw	$0,r4
 	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	Invalid
-	bal	ra,D99C
-	Invalid
-	bal	ra,DDF0
+	bal	ra,fn00000BEC
+	loadd	0x10(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+	loadw	0xE(r9,r8),r2
+	bal	ra,fn0000DDF0
 	movw	r0,r7
-	Invalid
-	beq	2E84
-	Invalid
+	cmpw	$FFFF,r0
+	beq	00002E84
+
+l00002E82:
+	loadw	(sp),r7
+
+l00002E84:
 	movd	(r3,r2),(r9,r8)
-	bal	ra,D99C
+	bal	ra,fn0000D99C
 	movw	r7,r0
-	Invalid
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	2F40
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	2EAA
+
+l00002E92:
+	loadw	0x78(r9,r8),r5
+	cmpw	$0,r5
+	beq	00002F40
+
+l00002E9A:
+	loadd	0x70(r9,r8),(r4,r3)
+	movw	$4000,r7
+
+l00002EA2:
+	cmpw	$4000,r5
+	bhs	00002EAA
+
+l00002EA8:
 	movw	r7,r5
+
+l00002EAA:
 	movzw	r5,(r6,r5)
-	Invalid
-	bal	ra,DD90
-	Invalid
-	bgt	2E32
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0xE(r9,r8),r2
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	bgt	00002E32
+
+l00002EB6:
+	loadw	0x78(r9,r8),r5
+	subw	r5,r0
+	storw	r5,0x78(r9,r8)
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	2EA2
-	br	2E44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,1F0C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	bal	ra,1BEC
-	Invalid
-	Invalid
-	Invalid
-	br	2E3E
-	Invalid
-	andd	$18105207,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	andd	$1CAF08,(r9,r8)
-	Invalid
-	andd	$18E0E208,(r5,r4)
-	Invalid
-	movd	$E556,r5
-	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,0BEC
-	br	2E3E
-	movd	(r3,r2),(r11,r10)
-	bal	ra,4794
-	br	2E44
-	Invalid
-	Invalid
-	br	2E8A
-	Invalid
-	Invalid
-	beq	2E66
-	br	2E60
+	loadd	0x70(r9,r8),(r4,r3)
+	addd	(r1,r0),(r4,r3)
+	stord	(r4,r3),0x70(r9,r8)
+	cmpw	$0,r5
+	bne	00002EA2
+
+l00002ED0:
+	br	00002E44
+00002ED2       02 C3 30 00 42 9F 2E 00 FF C0 33 F0 90 52   ..0.B.....3..R
+00002EE0 10 18 BB FE 08 9F 32 00 0F D0 BA 54 38 00 8A 61 ......2....T8..a
+00002EF0 08 9A 00 52 10 18 B7 FE 82 55 FF C0 F3 EC 90 52 ...R.....U.....R
+00002F00 10 18 AB FE ED 19 78 9F 48 00 07 52 10 18 C1 FE ......x.H..R....
+00002F10 78 9A 78 DF 48 00 08 AF 1C 00 08 EF 44 00 08 E2 x.x.H.......D...
+00002F20 E0 18 AD FE 50 05 56 E5 04 5B 82 55 FF C0 C1 DC ....P.V..[.U....
+00002F30 E7 18 A2 55 00 C0 60 18 E6 18 B7 5A FE FF E6 1A ...U..`....Z....
+
+l00002F40:
+	loadw	0x14(r9,r8),r0
+	cmpw	$0,r0
+	beq	00002E66
+
+l00002F46:
+	br	00002E60
+
+;; fn00002F48: 00002F48
+;;   Called from:
+;;     00003EDE (in fn00003A36)
+fn00002F48 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
+
+;; fn00002F4C: 00002F4C
+;;   Called from:
+;;     00002F4A (in fn00002F48)
+;;     0000334E (in fn00003348)
+;;     0000334E (in fn00003348)
+fn00002F4C proc
+	addd	$FFE8,sp
 	movd	(r11,r10),(r3,r2)
-	Invalid
-	ord	$30AFD2,ra
-	Invalid
-	ord	$55D55F72,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	ord	$9F6A5B90,r12
-	xord	$9F6AD56F,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	2F8A
-	Invalid
-	push	$0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r2
+	loadw	0xBC(r3,r2),r1
+	loadd	0x60(r3,r2),r13
+	loadw	0xAC(r3,r2),r7
+	movzw	r7,(r3,r2)
+	movd	(r6,r5),r13
+	addd	(r3,r2),(r6,r5)
+	stord	(r6,r5),(sp)
+	loadw	0xB8(r11,r10),r9
+	movw	r9,r0
+	loadw	0xD0(r11,r10),r6
+	storw	r6,0xA(sp)
+	loadw	0x50(r11,r10),r6
+	movw	$FEFA,r8
+	addw	r8,r6
+	movw	$0,r5
+	cmpw	r7,r8
+	bhs	fn00002F8A
+
+;; fn00002F82: 00002F82
+;;   Called from:
+;;     00002F80 (in fn00002F4C)
+;;     00002F80 (in fn00002F4C)
+fn00002F82 proc
+	movw	$106,r5
+	addw	r5,r7
+	subw	r5,r6
+
+;; fn00002F8A: 00002F8A
+;;   Called from:
+;;     00002F80 (in fn00002F4C)
+;;     00002F80 (in fn00002F4C)
+;;     00002F88 (in fn00002F82)
+fn00002F8A proc
+	loadd	0x70(r11,r10),(r8,r7)
+	loadw	0x58(r11,r10),r6
+	storw	r6,8(sp)
+	addd	$102,(r3,r2)
 	movd	r12,r13
-	Invalid
-	Invalid
+	addd	(r3,r2),r12
+	stord	r12,0xC(sp)
 	movxw	r9,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$10425329,(r7,r6)
-	lshw	$FFFFFFF2,r1
-	Invalid
-	ord	$953FD32F,(r11,r10)
-	Invalid
-	bls	2FC6
-	Invalid
+	loadd	(sp),r12
+	addd	r12,(r3,r2)
+	movd	$FFFFFFFF,ra
+	addd	(r3,r2),ra
+	loadb	(ra),ra
+	storb	ra,4(sp)
+	loadb	(r3,r2),r6
+	loadw	0xCC(r11,r10),r2
+	cmpw	r9,r2
+	bhi	00002FB8
+
+;; fn00002FB6: 00002FB6
+;;   Called from:
+;;     00002FB4 (in fn00002F8A)
+;;     00002FB4 (in fn00002F8A)
+;;     0000330C (in fn000032CA)
+fn00002FB6 proc
+	lshw	$-14,r1
+
+l00002FB8:
+	loadw	0xB4(r11,r10),r2
+	storw	r2,6(sp)
+	loadw	0xA(sp),r3
+	cmpw	r2,r3
+	bls	00002FC6
+
+l00002FC4:
+	storw	r2,0xA(sp)
+
+l00002FC6:
 	movb	r6,r12
 	movw	r0,r6
 	movw	r5,ra
 	movw	r1,r5
-	Invalid
-	Invalid
-	br	2FDA
-	Invalid
-	Invalid
-	beq	3012
+	stord	(r11,r10),0x10(sp)
+	loadw	8(sp),r11
+	br	fn00002FDA
+
+l00002FD4:
+	addw	$FFFF,r9
+	cmpw	$0,r5
+	beq	00003012
+
+;; fn00002FDA: 00002FDA
+;;   Called from:
+;;     00002FD2 (in fn00002FB6)
+;;     00002FD8 (in fn0000300E)
+fn00002FDA proc
 	movzw	r4,(r1,r0)
-	Invalid
+	addd	r13,(r1,r0)
 	movxw	r6,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	bne	3004
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	3004
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	3004
-	Invalid
-	Invalid
-	Invalid
-	beq	3024
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	loadb	(r3,r2),r9
+	cmpb	r9,r12
+	bne	fn00003004
+
+l00002FE8:
+	addd	$FFFFFFFF,(r3,r2)
+	loadb	(r3,r2),r2
+	loadb	4(sp),r9
+	cmpb	r2,r9
+	bne	fn00003004
+
+l00002FF2:
+	loadb	(r1,r0),r3
+	loadd	(sp),(r10,r9)
+	loadb	(r10,r9),r2
+	cmpb	r3,r2
+	bne	fn00003004
+
+l00002FFC:
+	loadb	1(r1,r0),r3
+	loadb	1(r10,r9),r2
+
+;; fn00003000: 00003000
+;;   Called from:
+;;     00002E0C (in fn00002D76)
+;;     00002FFE (in fn00002FDA)
+fn00003000 proc
+	cmpb	r3,r2
+
+;; fn00003002: 00003002
+;;   Called from:
+;;     00003000 (in fn00003000)
+;;     00003000 (in fn00003000)
+;;     000032C0 (in fn000032BE)
+fn00003002 proc
+	beq	fn00003024
+
+;; fn00003004: 00003004
+;;   Called from:
+;;     00002FE6 (in fn00002FDA)
+;;     00002FF0 (in fn00002FDA)
+;;     00002FFA (in fn00002FDA)
+;;     00003002 (in fn00003002)
+;;     00003002 (in fn00003002)
+;;     00003094 (in fn00003086)
+;;     000030B4 (in fn00003086)
+fn00003004 proc
+	andw	r4,r11
 	movzw	r4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	2FD4
+	addd	(r1,r0),(r1,r0)
+	addd	(r8,r7),(r1,r0)
+	loadw	(r1,r0),r4
+
+;; fn0000300E: 0000300E
+;;   Called from:
+;;     00002D96 (in fn00002D76)
+;;     0000300C (in fn00003004)
+fn0000300E proc
+	cmpw	ra,r4
+	bhi	00002FD4
+
+l00003012:
 	movw	r6,r0
-	Invalid
-	Invalid
-	bhs	301C
+
+;; fn00003014: 00003014
+;;   Called from:
+;;     00003012 (in fn0000300E)
+;;     000030EE (in fn000030EC)
+fn00003014 proc
+	loadw	6(sp),r9
+	cmpw	r0,r9
+	bhs	0000301C
+
+;; fn0000301A: 0000301A
+;;   Called from:
+;;     00002DFA (in fn00002D76)
+;;     00003018 (in fn00003014)
+;;     00003018 (in fn00003014)
+fn0000301A proc
 	movw	r9,r0
-	Invalid
-	res
+
+l0000301C:
+	addd	$18,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+;; fn00003024: 00003024
+;;   Called from:
+;;     00003002 (in fn00003002)
+;;     00003002 (in fn00003002)
+fn00003024 proc
 	movd	(r3,r2),(r10,r9)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3078
-	Invalid
-	Invalid
-	Invalid
-	bne	30B6
-	Invalid
-	Invalid
-	Invalid
-	bne	30BE
-	Invalid
-	Invalid
-	Invalid
-	bne	30C6
-	Invalid
-	Invalid
-	Invalid
-	bne	30CE
-	Invalid
-	Invalid
-	Invalid
-	bne	30D6
-	Invalid
-	Invalid
-	Invalid
-	bne	30DE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$2,(r3,r2)
+	addd	$2,(r1,r0)
+	storw	r11,8(sp)
+	loadd	0xC(sp),(r11,r10)
+	storw	r4,0x14(sp)
+	br	fn00003078
+
+l00003032:
+	loadb	2(r3,r2),r4
+	loadb	2(r1,r0),r9
+	cmpb	r4,r9
+	bne	000030B6
+
+l0000303A:
+	loadb	3(r3,r2),r4
+	loadb	3(r1,r0),r9
+
+;; fn0000303E: 0000303E
+;;   Called from:
+;;     0000303C (in fn00003078)
+;;     0000323C (in fn000030F2)
+fn0000303E proc
+	cmpb	r4,r9
+	bne	fn000030BE
+
+;; fn00003042: 00003042
+;;   Called from:
+;;     00003040 (in fn0000303E)
+;;     00003040 (in fn0000303E)
+fn00003042 proc
+	loadb	4(r3,r2),r4
+	loadb	4(r1,r0),r9
+	cmpb	r4,r9
+	bne	000030C6
+
+;; fn0000304A: 0000304A
+;;   Called from:
+;;     00002DA6 (in fn00002D76)
+;;     00003048 (in fn00003042)
+fn0000304A proc
+	loadb	5(r3,r2),r4
+	loadb	5(r1,r0),r9
+	cmpb	r4,r9
+	bne	000030CE
+
+l00003052:
+	loadb	6(r3,r2),r4
+	loadb	6(r1,r0),r9
+	cmpb	r4,r9
+	bne	000030D6
+
+l0000305A:
+	loadb	7(r3,r2),r4
+	loadb	7(r1,r0),r9
+	cmpb	r4,r9
+	bne	000030DE
+
+l00003062:
+	addd	$8,(r3,r2)
+	addd	$8,(r1,r0)
+	loadb	(r3,r2),r4
+	loadb	(r1,r0),r9
+	cmpb	r4,r9
+	seq	r4
 	cmpd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
+
+;; fn00003070: 00003070
+;;   Called from:
+;;     00002DD8 (in fn00002D76)
+;;     0000306E (in fn0000304A)
+fn00003070 proc
+	slo	r9
+	andb	r9,r4
 	cmpb	$0,r9
-	beq	30E6
-	Invalid
-	Invalid
-	Invalid
-	beq	3032
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	000030E6
+
+;; fn00003078: 00003078
+;;   Called from:
+;;     00003030 (in fn00003024)
+;;     00003076 (in fn00003070)
+fn00003078 proc
+	loadb	1(r3,r2),r4
+	loadb	1(r1,r0),r9
+	cmpb	r4,r9
+	beq	00003032
+
+l00003080:
+	loadw	8(sp),r11
+
+;; fn00003082: 00003082
+;;   Called from:
+;;     00002DE2 (in fn00002D76)
+;;     00003080 (in fn00003078)
+fn00003082 proc
+	loadw	0x14(sp),r4
+	addd	$1,(r3,r2)
+
+;; fn00003086: 00003086
+;;   Called from:
+;;     00003084 (in fn00003082)
+;;     000030C4 (in fn000030BE)
+;;     000030D4 (in fn0000304A)
+;;     000030DC (in fn0000304A)
+;;     000030E4 (in fn0000304A)
+;;     000030EA (in fn000030E8)
+fn00003086 proc
+	loadd	0xC(sp),(r1,r0)
 	subd	(r1,r0),(r3,r2)
-	push	$0,r2
-	Invalid
-	Invalid
-	ble	3004
-	Invalid
-	Invalid
-	ord	$5391951F,(r9,r8)
-	bge	30EC
+	movw	$102,r9
+	subw	r9,r0
+	cmpw	r6,r9
+	ble	fn00003004
+
+l00003096:
+	loadd	0x10(sp),(r1,r0)
+	storw	r4,0xB0(r1,r0)
+	loadw	0xA(sp),r1
+	cmpw	r1,r9
+	bge	fn000030EC
+
+l000030A2:
 	movxw	r9,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	(sp),r12
+	addd	r12,(r3,r2)
+	movd	$FFFFFFFF,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r6
+	storb	r6,4(sp)
+	loadb	(r3,r2),r12
 	movw	r9,r6
-	br	3004
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	Invalid
-	br	3086
-	Invalid
-	Invalid
-	br	3086
+	br	fn00003004
+
+l000030B6:
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$2,(r3,r2)
+	br	fn00003086
+
+;; fn000030BE: 000030BE
+;;   Called from:
+;;     00003040 (in fn0000303E)
+;;     00003040 (in fn0000303E)
+;;     00003084 (in fn00003082)
+;;     00003086 (in fn00003086)
+;;     000030BC (in fn00003078)
+;;     000030CC (in fn00003042)
+fn000030BE proc
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$3,(r3,r2)
+	br	fn00003086
+
+l000030C6:
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$4,(r3,r2)
+	br	fn00003086
+
+l000030CE:
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$5,(r3,r2)
+	br	fn00003086
+
+l000030D6:
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$6,(r3,r2)
+	br	fn00003086
+
+l000030DE:
+	loadw	8(sp),r11
+	loadw	0x14(sp),r4
+	addd	$7,(r3,r2)
+	br	fn00003086
+
+l000030E6:
+	loadw	8(sp),r11
+
+;; fn000030E8: 000030E8
+;;   Called from:
+;;     00002D8C (in fn00002D76)
+;;     000030E6 (in fn00003070)
+fn000030E8 proc
+	loadw	0x14(sp),r4
+	br	fn00003086
+
+;; fn000030EC: 000030EC
+;;   Called from:
+;;     000030A0 (in fn00003086)
+fn000030EC proc
 	movw	r9,r0
-	br	3014
-	res
+	br	fn00003014
+000030F0 00 00                                           ..              
+
+;; fn000030F2: 000030F2
+;;   Called from:
+;;     00002D82 (in fn00002D76)
+;;     00003B8A (in fn000030F2)
+;;     000044CA (in fn00004450)
+;;     00004544 (in fn00004450)
+fn000030F2 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
+	addd	$FFF4,sp
 	movd	r13,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$32B75B70,(r11,r10)
-	Invalid
-	Invalid
+	loadw	0x50(r3,r2),r7
+	storw	r7,2(sp)
+	loadw	0xB4(r3,r2),r11
+	movw	r7,r0
+	addw	$FEFA,r11
+	storw	r7,4(sp)
 	movzw	r0,(r2,r1)
-	Invalid
-	Invalid
-	ord	$349FAD,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	bne	3182
-	Invalid
-	Invalid
-	bne	312A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	3192
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r8
-	Invalid
-	ord	$18B053A7,(r11,r10)
-	push	$4,ra,ra
-	Invalid
-	Invalid
-	pop	$2,r8,ra
-	Invalid
-	Invalid
-	ord	$12069F1D,(r11,r10)
+	stord	(r2,r1),8(sp)
+	loadw	0xAC(r13),r3
+	loadw	0x68(r13),r10
+	subw	r10,r11
+	subw	r10,r3
+	cmpw	$0,r10
+	bne	00003182
+
+l00003122:
+	orw	r11,r3
+	cmpw	$0,r11
+	bne	0000312A
+
+l00003128:
+	loadw	2(sp),r10
+
+l0000312A:
+	loadw	4(sp),r7
+	addw	r0,r7
+	cmpw	r3,r0
+	bls	00003192
+
+l00003132:
+	loadd	(r13),(r9,r8)
+	loadw	4(r9,r8),r7
+	cmpw	$0,r7
+	beq	fn00003348
+
+l0000313C:
+	loadw	0xB4(r13),r11
+	cmpw	r7,r10
+	bhs	fn000034DE
+
+l00003146:
+	cmpw	$0,r10
+	bne	00003698
+
+l0000314C:
+	addw	r11,r10
+	storw	r11,0xB4(r13)
+	loadw	0x240C(r13),r1
 	movw	r11,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r10
-	Invalid
-	push	$0,r5
-	blo	3240
-	Invalid
-	Invalid
-	Invalid
-	beq	3240
-	Invalid
-	Invalid
-	Invalid
-	ord	$349FAD,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	beq	3122
-	Invalid
-	bne	312A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	3132
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	r0,r1
+	cmpw	$2,r0
+	blo	000033B0
+
+l00003160:
+	cmpw	$105,r11
+	blo	00003240
+
+l00003166:
+	loadd	(r13),(r1,r0)
+	loadw	4(r1,r0),r0
+	cmpw	$0,r0
+	beq	00003240
+
+l0000316E:
+	loadw	0x50(r13),r0
+	loadw	0xAC(r13),r3
+	loadw	0x68(r13),r10
+	subw	r10,r11
+	subw	r10,r3
+	cmpw	$0,r10
+	beq	00003122
+
+l00003182:
+	cmpw	$FFFF,r10
+	bne	0000312A
+
+l00003186:
+	movw	$FFFE,r10
+	loadw	4(sp),r7
+	addw	r0,r7
+	cmpw	r3,r0
+	bhi	00003132
+
+l00003192:
+	loadd	0x60(r13),(r3,r2)
+	loadw	2(sp),r0
+	subw	r0,r10
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
+	loadd	8(sp),(r5,r4)
+	addd	(r3,r2),(r5,r4)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	ord	$3B10931F,(r9,r8)
-	Invalid
-	ord	$569F3D,(r9,r8)
-	Invalid
-	Invalid
-	ord	$4CAF0D,(r7,r6)
-	Invalid
+	bal	ra,fn0000DB24
+	loadw	0xB0(r13),r0
+	loadw	6(sp),r1
+	subw	r0,r1
+	storw	r0,0xB0(r13)
+	loadw	0xAC(r13),r3
+	subw	r3,r1
+	storw	r3,0xAC(r13)
+	loadd	0x98(r13),(r1,r0)
+	loadd	0xC(sp),(r5,r4)
 	subd	(r1,r0),(r5,r4)
-	andd	$289F2D,r12
-	Invalid
-	andd	$61005F40,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x98(r13)
+	loadw	0x50(r13),r2
+	loadw	0x84(r13),r4
+	movzw	r4,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	loadd	0x78(r13),(r7,r6)
+	addd	(r7,r6),(r1,r0)
+	addw	$FFFF,r9
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
+	addd	$1,(r5,r4)
+	addd	(r5,r4),(r5,r4)
 	movd	(r7,r6),(r1,r0)
 	subd	(r7,r6),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r12
-	Invalid
-	Invalid
+	movd	(r5,r4),(r7,r6)
+	addd	$4,sp
+
+l000031EE:
+	addd	$FFFE,(r1,r0)
+	loadw	(r1,r0),r6
+	cmpw	r2,r6
+	blo	fn000034CE
+
+l000031FA:
+	subw	r6,r2
+	storw	r6,(r1,r0)
 	cmpd	(r5,r4),(r1,r0)
-	bne	31EE
+	bne	000031EE
+
+l00003202:
 	movzw	r2,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	loadd	0x70(r13),(r5,r4)
+	addd	(r5,r4),(r1,r0)
+	movw	$FFFF,r4
+	addw	r4,r2
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
+	addd	$1,(r5,r4)
+	addd	(r5,r4),(r5,r4)
 	movd	(r7,r6),(r1,r0)
 	subd	(r7,r6),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r12
-	Invalid
-	Invalid
+	movd	(r5,r4),(r7,r6)
+
+l0000321E:
+	addd	$FFFE,(r1,r0)
+	loadw	(r1,r0),r6
+	cmpw	r2,r6
+	blo	fn0000347E
+
+l0000322A:
+	subw	r6,r2
+	storw	r6,(r1,r0)
 	cmpd	(r5,r4),(r1,r0)
-	bne	321E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	329A
-	Invalid
-	Invalid
+	bne	0000321E
+
+l00003232:
+	loadw	2(sp),r7
+	addw	r10,r7
+	loadd	(r13),(r9,r8)
+	loadw	4(r9,r8),r7
+	cmpw	$0,r7
+	bne	fn0000303E
+
+l00003240:
+	loadd	0x2418(r13),(r3,r2)
+	loadd	0x68(r13),(r11,r10)
 	cmpd	(r3,r2),(r11,r10)
-	bls	3280
-	Invalid
-	ord	$9F0D5F88,(r7,r6)
-	ord	$61085F00,(r11,r10)
+	bls	00003280
+
+l0000324C:
+	loadw	0xAC(r13),r8
+	movzw	r8,(r9,r8)
+	loadw	0xB4(r13),r0
+	movzw	r0,(r1,r0)
+	addd	(r1,r0),(r9,r8)
 	cmpd	(r3,r2),(r9,r8)
-	Invalid
-	push	$3,r6
+	bls	fn000034C8
+
+l00003260:
 	subd	(r11,r10),(r9,r8)
-	push	$0,r2
-	Invalid
-	push	$6,r12
-	Invalid
-	Invalid
-	Invalid
+	cmpd	$102,(r11,r10)
+	blo	fn00003540
+
+l0000326C:
+	loadd	0x60(r13),(r3,r2)
+	addd	(r9,r8),(r3,r2)
 	movd	(r6,r5),(r11,r10)
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	beq	32D6
-	Invalid
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	addd	(r11,r10),(r9,r8)
+	stord	(r9,r8),0x2418(r13)
+
+l00003280:
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	ord	$AFCD3B18,(r7,r6)
-	Invalid
-	movzw	r8,(r3,r2)
-	Invalid
-	Invalid
-	movzb	r4,(r5,r4)
-	Invalid
-	andd	$489FAD,(r1,r0)
-	Invalid
-	andd	$5A12D00F,(r7,r6)
-	Invalid
+00003286                   8D 9F 56 00 18 3B CD AF 30 00       ..V..;..0.
+00003290 82 5F C2 61 42 B0 44 5D 4D DF 40 00 AD 9F 48 00 ._.aB.D]M.@...H.
+000032A0 0D 9F 46 00 0F D0 12 5A 82 33 22 5F C2 61 02 B0 ..F....Z.3"_.a..
+000032B0 00 5D A4 45 40 2B 2F 90 20 23 0D DF 40 00       .].E@+/. #..@.  
+
+;; fn000032BE: 000032BE
+;;   Called from:
+;;     0000330A (in fn000032CA)
+fn000032BE proc
+	cmpw	$0,r1
+	beq	fn00003002
+
+l000032C4:
+	movw	$2,r2
+	addw	r2,r8
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$18005201,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
+
+;; fn000032CA: 000032CA
+;;   Called from:
+;;     000032C8 (in fn000032BE)
+;;     00003578 (in fn00003A36)
+fn000032CA proc
+	addd	r12,(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$61445F04,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashuw	r10,r0
+	xorw	r0,r2
+	loadw	(sp),r4
+	andw	r0,r4
+	storw	r0,0x80(r13)
+	movzw	r0,(r5,r4)
+	addd	(r5,r4),(r5,r4)
+	loadd	0x78(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	loadw	(r5,r4),r9
+	loadw	0x58(r13),r2
+	andw	r2,r8
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	334E
+	loadd	0x70(r13),(r7,r6)
+	addd	(r3,r2),(r3,r2)
+	addd	(r7,r6),(r3,r2)
+	storw	r9,(r3,r2)
+	storw	r8,(r5,r4)
+	addw	$1,r1
+	addw	$FFFF,r9
+	storw	r1,0x240C(r13)
 	movw	r11,r2
-	Invalid
-	Invalid
-	blo	32BE
-	Invalid
-	Invalid
-	Invalid
-	movzw	r3,(r1,r0)
-	movzw	r11,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,r12
-	Invalid
-	push	$1,r12
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	336E
-	Invalid
-	beq	3380
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18E05B7A,(r11,r10)
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	r2,r1
+	cmpw	$2,r2
+	blo	fn000032BE
+
+l0000330C:
+	br	fn00002FB6
+00003310 02 5A 30 5F BA 5F A0 61 AD AF 30 00 0A 61 28 D2 .Z0_._.a..0..a(.
+00003320 7C 5F 48 A0 1C 01 A2 55 00 C0 FC A7 08 AF 1C 00 |_H....U........
+00003330 00 9C 4F 60 10 52 0C 11                         ..O`.R..        
+
+;; fn00003338: 00003338
+;;   Called from:
+;;     0000385A (in fn00003480)
+fn00003338 proc
+	cmpw	$2,r0
+	beq	00003380
+
+l0000333C:
+	loadd	(r9,r8),(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),(r9,r8)
+	loadd	8(r9,r8),(r1,r0)
+	addd	(r1,r0),r12
+	stord	r12,8(r9,r8)
+
+;; fn00003348: 00003348
+;;   Called from:
+;;     00003138 (in fn000030F2)
+;;     00003346 (in fn00003338)
+fn00003348 proc
+	loadw	0xB4(r13),r11
+	movw	r7,r10
+	br	fn00002F4C
+00003352       00 C2 04 57 10 18 C9 FE 7F 91 7A 33 E0 18   ...W......z3..
+00003360 D9 FE 00 C2 04 57 10 18 89 FE E0 18 99 FE 28 AF .....W........(.
+00003370 30 00 76 5B A4 55 00 C0 78 8D 08 EF 30 00 EF 1D 0.v[.U..x...0...
+
+l00003380:
+	loadd	0x60(r9,r8),(r3,r2)
 	movw	r7,r6
 	movd	(r5,r4),(r11,r10)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	br	333C
-	Invalid
-	Invalid
-	movw	r7,r6
-	movd	(r5,r4),(r11,r10)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	br	333C
-	Invalid
-	push	$0,r2
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	subd	(r9,r8),(r3,r2)
-	push	$0,r2
-	subd	(r11,r10),(r3,r2)
-	bhs	33B0
-	movd	(r11,r10),(r9,r8)
-	movd	$FFFF,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DB44
-	Invalid
-	beq	341E
-	Invalid
-	Invalid
-	beq	3424
-	Invalid
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r9,r8)
+	br	0000333C
+00003392       B0 54 02 01 80 61 02 57 50 18 E7 FE 14 00   .T...a.WP.....
+000033A0 28 C0 B8 60 02 01 14 00 2A C0 8A 57 B2 10 8A 55 (..`....*..W...U
+
+l000033B0:
+	movd	$FFFF,(r6,r5)
+	andd	(r11,r10),(r6,r5)
+	loadd	0x60(r13),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	loadd	0x2418(r13),(r1,r0)
+	addd	(r1,r0),(r11,r10)
+	stord	(r11,r10),0x2418(r13)
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	push	$0,r2
-	Invalid
-	Invalid
-	Invalid
-	movd	(r6,r5),(r11,r10)
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	beq	3442
-	Invalid
-	Invalid
-	movw	r7,r2
-	Invalid
-	movw	r10,r7
-	br	3312
+000033D4             BA 54 02 01 2D AF 30 00 82 61 A5 55     .T..-.0..a.U
+000033E0 04 5A 00 C0 62 A7 A8 61 8D EF 0C 12 E0 18 95 FE .Z..b..a........
+000033F0 72 5B A2 3B A7 5B EE 18                         r[.;.[..        
+
+;; fn000033F8: 000033F8
+;;   Called from:
+;;     000055CE (in fn00004CD4)
+fn000033F8 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
+	addd	$FFF0,sp
 	movd	r12,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	storw	r4,8(sp)
+	loadd	0xC(r3,r2),(r1,r0)
+	loadw	0x50(r3,r2),r2
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
+	addd	$FFFB,(r1,r0)
 	cmpd	(r1,r0),(r3,r2)
-	bhs	3416
+	bhs	00003416
+
+l00003414:
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00003416:
+	storw	r0,0xA(sp)
+	loadd	(r12),r13
+	loadw	4(r13),r7
+	storw	r7,0xC(sp)
 	movw	r7,r10
-	Invalid
-	beq	3476
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r6
-	Invalid
-	Invalid
-	ord	$4C9F0C,(r7,r6)
-	Invalid
+	loadw	0x2414(r12),r0
+	addw	$2A,r11
+	ashuw	$-13,r0
+	loadw	0x10(r13),r7
+	cmpw	r7,r0
+	bhi	0000389A
+
+l00003432:
+	subw	r7,r0
+	loadw	0xAC(r12),r8
+	loadw	0x98(r12),r0
+	subw	r8,r0
 	movzw	r8,(r1,r0)
 	movzw	r10,(r3,r2)
-	Invalid
-	cmpd	$FFFE0000,(r1,r0)
-	blo	3456
+	addd	(r3,r2),(r1,r0)
+	cmpd	$FFFE,(r1,r0)
+	blo	00003456
+
+l0000344C:
 	movw	r8,r0
-	Invalid
-	Invalid
-	bhs	3456
+	addw	r0,r10
+	cmpw	r7,r0
+	bhs	00003456
+
+l00003454:
 	movw	r0,r7
-	Invalid
-	bhs	345C
+
+l00003456:
+	cmpw	r8,r7
+	bhs	0000345C
+
+l0000345A:
 	movw	r7,r8
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l0000345C:
+	loadw	0xA(sp),r0
+	cmpw	r0,r7
+	bhs	fn00003780
+
+l00003464:
+	cmpw	$0,r7
+	seq	r1
+	loadw	8(sp),r2
+	cmpw	$4,r2
+	sne	r0
+	andb	r0,r1
 	cmpb	$0,r0
-	Invalid
-	push	$7,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00003856
+
+l00003476:
+	cmpw	$0,r2
+	seq	r0
+	cmpw	$0,r0
+	bne	0000384C
+
+;; fn0000347E: 0000347E
+;;   Called from:
+;;     00003226 (in fn000030F2)
+fn0000347E proc
 	push	$6,r8,ra
+
+;; fn00003480: 00003480
+;;   Called from:
+;;     00003472 (in fn000033F8)
+;;     0000347E (in fn0000347E)
+;;     0000347E (in fn0000347E)
+;;     0000347E (in fn0000347E)
+;;     0000384C (in fn0000347E)
+;;     000038AA (in fn000033F8)
+fn00003480 proc
 	movw	r7,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$5,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subw	r0,r8
+	cmpw	r0,r10
+	bne	00003842
+
+l0000348A:
+	cmpw	$4,r2
+	seq	r1
+	storw	r1,4(sp)
+	movd	$0,(r1,r0)
 	push	$1,r0
-	Invalid
+	loadw	8(sp),r6
 	movd	(r5,r4),(r1,r0)
 	movd	(r3,r2),r12
-	bal	ra,AF94
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000AF94
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	$FFFC,(r1,r0)
+	storb	r7,(r1,r0)
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	$FFFD,(r1,r0)
+
+l000034B4:
 	movw	r7,r2
-	lshw	$FFFFFFF8,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	$-8,r2
+	storb	r2,(r1,r0)
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	$FFFE,(r1,r0)
 	movb	r7,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xorb	$FFFF,r9
+
+;; fn000034C8: 000034C8
+;;   Called from:
+;;     0000325C (in fn000030F2)
+;;     000034C6 (in fn00003480)
+fn000034C8 proc
+	storb	r2,(r1,r0)
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+
+;; fn000034CE: 000034CE
+;;   Called from:
+;;     000031F6 (in fn000030F2)
+;;     000034CC (in fn000034C8)
+;;     000034CC (in fn000034C8)
+fn000034CE proc
+	addd	(r3,r2),(r1,r0)
+	addd	$FFFFFFFF,(r1,r0)
 	movw	r7,r2
-	Invalid
-	lshw	$FFFFFFF8,r2
-	Invalid
-	Invalid
-	Invalid
+	xorw	$FFFF,r9
+	lshw	$-8,r2
+	storb	r2,(r1,r0)
+	loadd	(r12),(r11,r10)
+	loadd	0x38(r11,r10),r13
+
+;; fn000034DE: 000034DE
+;;   Called from:
+;;     00003142 (in fn000030F2)
+;;     000034DC (in fn000034CE)
+fn000034DE proc
 	res
 	movd	(r3,r2),r13
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	34F2
+	bal	ra,fn0000B09C
+	loadw	0x14(r13),r0
+	loadw	0x10(r11,r10),r9
+	addd	$4,sp
+	cmpw	r9,r0
+	bhs	fn000034F2
+
+;; fn000034F0: 000034F0
+;;   Called from:
+;;     000034EC (in fn000034DE)
+;;     000034EE (in fn000034CE)
+fn000034F0 proc
 	movw	r0,r9
-	Invalid
-	beq	3532
+
+;; fn000034F2: 000034F2
+;;   Called from:
+;;     000034EC (in fn000034DE)
+;;     000034EE (in fn000034CE)
+;;     000034F0 (in fn000034F0)
+;;     000038AE (in fn000033F8)
+fn000034F2 proc
+	cmpw	$0,r9
+	beq	00003532
+
+l000034F6:
 	movzw	r9,(r2,r1)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l000034F8:
+	stord	(r2,r1),(sp)
+	loadd	0xC(r11,r10),(r3,r2)
+	loadd	0x10(r13),(r5,r4)
+	loadd	(sp),(r1,r0)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r11,r10),(r1,r0)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r11,r10)
+	loadd	0x10(r13),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r13)
+	loadd	0x14(r11,r10),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r11,r10)
+	loadw	0x10(r11,r10),r0
+	subw	r0,r9
+	storw	r0,0x10(r11,r10)
+	loadd	0x14(r13),(r1,r0)
 	subd	(r1,r0),(r3,r2)
-	Invalid
+	stord	(r1,r0),0x14(r13)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	3532
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	356E
+	bne	00003532
+
+l0000352E:
+	loadd	8(r13),(r1,r0)
+	stord	(r1,r0),0x10(r13)
+
+l00003532:
+	loadd	(r12),r13
+	cmpw	$0,r8
+	beq	fn0000356E
+
+l00003538:
 	movzw	r8,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$11A6104,r12
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$EFAC610A,r12
-	andd	$604F3B87,r12
-	Invalid
-	Invalid
-	bne	360A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	35E6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r12,ra
-	Invalid
-	ord	$5F7A5F1E,(r7,r6)
-	Invalid
-	Invalid
+	loadd	0xC(r13),(r3,r2)
+	loadd	0x60(r12),(r5,r4)
+
+;; fn00003540: 00003540
+;;   Called from:
+;;     00003268 (in fn000030F2)
+;;     0000353C (in fn000034F2)
+fn00003540 proc
+	loadd	0x98(r12),(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	push	$1,r10
+	bal	ra,fn0000DB24
+	loadd	(r12),r13
+	loadd	0xC(r13),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r13)
+	loadw	0x10(r13),r0
+	subw	r0,r8
+	storw	r0,0x10(r13)
+	loadd	0x14(r13),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r13)
+	loadd	0x98(r12),(r1,r0)
+	addd	(r1,r0),(r11,r10)
+	stord	(r11,r10),0x98(r12)
+	subw	r7,r8
+	addd	$4,sp
+
+;; fn0000356E: 0000356E
+;;   Called from:
+;;     00003536 (in fn000034F2)
+;;     0000356C (in fn00003540)
+;;     0000356C (in fn00003540)
+;;     00003C70 (in fn00003C70)
+;;     00003C76 (in fn00003C76)
+;;     00003D1C (in fn00003D1C)
+fn0000356E proc
+	loadw	4(r13),r10
+	cmpw	$0,r7
+	bne	0000360A
+
+l00003574:
+	loadw	4(sp),r7
+	cmpw	$0,r7
+	beq	fn000032CA
+
+l0000357C:
+	loadw	0xC(sp),r7
+	subw	r7,r10
+	movw	$1,r9
+	cmpw	$0,r7
+	beq	000035E6
+
+l00003586:
+	loadw	0x50(r12),r0
+	loadd	0x60(r12),(r3,r2)
+	cmpw	r0,r7
+	bhs	00003AE8
+
+l00003594:
+	loadw	0xAC(r12),r1
+	movzw	r1,ra
+	movzw	r7,(r11,r10)
+	loadd	0x68(r12),(r5,r4)
 	subd	(r5,r4),ra
-	Invalid
-	popret	$0,r12
-	Invalid
-	Invalid
+	cmpd	(r5,r4),(r11,r10)
+	bhs	00003BBE
+
+l000035AA:
+	addd	ra,(r3,r2)
+	loadd	(r13),(r5,r4)
 	subd	(r5,r4),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	ord	$DF8C3378,(r7,r6)
-	ord	$289F0C,(r7,r6)
-	Invalid
+	push	$1,r10
+	bal	ra,fn0000DB24
+	loadw	0xAC(r12),r8
+	addw	r8,r7
+	storw	r8,0xAC(r12)
+	loadw	0x50(r12),r0
+	addd	$4,sp
 	movzw	r8,(r3,r2)
-	Invalid
-	andd	$12069F1C,r12
-	Invalid
-	Invalid
-	bhs	35DA
+	stord	(r3,r2),0x98(r12)
+	loadw	0x240C(r12),r1
+	subw	r0,r1
+	cmpw	r0,r7
+	bhs	000035DA
+
+l000035D8:
 	movw	r7,r0
-	Invalid
-	Invalid
-	beq	362A
-	Invalid
-	Invalid
-	pop	$0,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	di
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	362A
-	Invalid
-	Invalid
-	popret	$2,ra
+
+l000035DA:
+	addw	r0,r1
+	storw	r0,0x240C(r12)
+	cmpw	$0,r9
+	beq	00003AE6
+
+l000035E6:
+	movw	$3,r0
+
+l000035E8:
+	addd	$10,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+000035F0 0F C3 04 00 3F 94 43 52 10 18 99 FE 70 5B 80 3B ....?.CR....p[.;
+00003600 A0 53 06 08 6F D2 E0 18 8B FE                   .S..o.....      
+
+l0000360A:
+	loadd	0xC(r13),(r9,r8)
+	cmpw	r7,r10
+	bhi	0000362A
+
+l00003610:
+	cmpw	$0,r10
+	bne	00003C6E
+
+l00003616:
 	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3574
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0xC(r13)
+	loadw	0x10(r13),r2
+	subw	r2,r7
+	storw	r2,0x10(r13)
+	loadd	0x14(r13),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r13)
+	br	00003574
+
+l0000362A:
+	storw	r7,(sp)
 	movw	r7,r3
-	Invalid
-	Invalid
+	subw	r10,r3
+	storw	r10,4(r13)
 	movzw	r3,(r11,r10)
-	Invalid
+	loadd	(r13),(r5,r4)
 	push	$1,r10
 	movd	(r3,r2),(r9,r8)
-	bal	ra,DB24
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	36C0
-	Invalid
-	Invalid
-	push	$5,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3616
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r4,ra
-	Invalid
-	ord	$22B0940F,(r7,r6)
-	Invalid
-	Invalid
-	beq	368E
-	Invalid
-	bne	368E
-	movzw	r8,(r1,r0)
-	Invalid
-	andd	$15115740,r12
-	Invalid
-	br	35E8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	36AA
-	Invalid
-	andd	$289F2C,r12
+	bal	ra,fn0000DB24
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x18(r1,r0),r0
+	addd	$4,sp
+	cmpw	$1,r0
+	beq	000036C0
+
+l0000364A:
+	cmpw	$2,r0
+	beq	00003A04
+
+l00003650:
+	loadd	(r13),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+
+l00003654:
+	stord	(r1,r0),(r13)
+	loadd	8(r13),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),8(r13)
+	loadd	(r12),r13
+	loadd	0xC(r13),(r9,r8)
+	loadw	4(r13),r10
+	br	00003616
+00003664             7F 96 A7 3B 07 52 10 18 F4 01 8C 9F     ...;.R......
+00003670 56 00 0F 94 B0 22 FB FF 00 52 0A 10 0A 52 18 10 V...."...R...R..
+00003680 80 5F 4C AF 4C 00 40 57 11 15 10 5A             ._L.L.@W...Z    
+
+l0000368C:
+	br	000035E8
+0000368E                                           7C 9F               |.
+00003690 34 00 97 32 87 3B A7 53                         4..2.;.S        
+
+l00003698:
+	bls	000036AA
+
+l0000369A:
+	loadd	0x98(r12),(r5,r4)
+	loadw	0x50(r12),r2
 	movzw	r2,(r1,r0)
 	cmpd	(r5,r4),(r1,r0)
-	Invalid
-	push	$4,r6,ra
-	Invalid
-	bhs	36D2
-	Invalid
-	beq	3726
+	ble	fn00003A32
+
+l000036AA:
+	cmpw	r7,r10
+	bhs	000036D2
+
+l000036AE:
+	cmpw	$0,r10
+	beq	00003726
+
+l000036B2:
 	movzw	r8,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x60(r12),(r1,r0)
+	addd	(r1,r0),(r9,r8)
 	movw	r10,r7
-	Invalid
-	br	36EA
-	Invalid
-	Invalid
-	Invalid
+	movw	$0,r0
+	br	000036EA
+
+l000036C0:
+	loadd	0x60(r13),(r3,r2)
+	loadw	(sp),r6
 	movd	(r5,r4),(r9,r8)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	br	3650
-	Invalid
-	beq	3726
+	bal	ra,fn0000C0EE
+	stord	(r1,r0),0x60(r13)
+	br	00003650
+
+l000036D2:
+	cmpw	$0,r7
+	beq	00003726
+
+l000036D6:
 	movzw	r8,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,r4
+	loadd	0x60(r12),(r1,r0)
+	addd	(r1,r0),(r9,r8)
+	cmpw	r7,r10
+	bls	00003B88
+
+l000036E4:
 	movw	r10,r0
-	Invalid
+	subw	r0,r7
 	movw	r7,r10
-	Invalid
+
+l000036EA:
+	storw	r0,4(r13)
 	movzw	r10,(r1,r0)
-	Invalid
-	Invalid
+	stord	(r1,r0),4(sp)
+	loadd	(r13),(r5,r4)
 	push	$1,r0
 	movd	(r3,r2),(r9,r8)
-	bal	ra,DB24
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r8
-	Invalid
-	Invalid
-	pop	$1,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$DF8C3378,(r7,r6)
-	ord	$4CAF4C,(r7,r6)
-	Invalid
-	beq	3780
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x18(r1,r0),r0
+	addd	$4,sp
+	cmpw	$1,r0
+	beq	fn00003B14
+
+l00003708:
+	cmpw	$2,r0
+	beq	fn00003B36
+
+l0000370E:
+	loadd	(r13),(r1,r0)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),(r13)
+	loadd	8(r13),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),8(r13)
+
+l0000371C:
+	loadw	0xAC(r12),r8
+	addw	r8,r7
+	storw	r8,0xAC(r12)
+
+l00003726:
+	loadd	0x98(r12),(r5,r4)
+	loadw	0x2414(r12),r0
+
+l0000372C:
+	beq	fn00003780
+
+;; fn0000372E: 0000372E
+;;   Called from:
+;;     0000372A (in fn000030F2)
+;;     0000372C (in fn000030F2)
+;;     00003B7C (in fn00003B3C)
+fn0000372E proc
+	addw	$2A,r11
+	ashuw	$-13,r0
 	movzw	r0,(r1,r0)
-	Invalid
+	loadd	0xC(r12),(r3,r2)
 	movd	(r7,r6),(r3,r2)
 	subd	(r7,r6),(r1,r0)
-	cmpd	$FFFF0000,(r7,r6)
-	bhs	374C
-	movd	$FFFF,r0
+	movd	(r1,r0),(r7,r6)
+	cmpd	$FFFF,(r7,r6)
+	bhs	0000374C
+
+l00003748:
+	movd	$FFFF,(r1,r0)
+
+l0000374C:
 	movw	r0,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	375A
+	subw	r8,r4
+	loadw	0x50(r12),r2
+	cmpw	r2,r0
+	bhs	0000375A
+
+l00003758:
 	movw	r0,r2
-	Invalid
-	bhs	379A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l0000375A:
+	cmpw	r2,r8
+	bhs	0000379A
+
+l0000375E:
+	cmpw	$0,r8
+	sne	r1
+	loadw	8(sp),r7
+	cmpw	$4,r7
+	seq	r0
+	orb	r0,r1
 	cmpb	$0,r0
-	beq	381E
-	Invalid
-	Invalid
-	Invalid
-	beq	381E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	381E
-	Invalid
-	Invalid
-	Invalid
-	beq	381E
+	beq	0000381E
+
+l0000376E:
+	cmpw	$0,r7
+	sne	r0
+	cmpw	$0,r0
+	beq	0000381E
+
+l00003776:
+	loadd	(r12),(r1,r0)
+	loadw	4(r1,r0),r0
+	cmpw	$0,r0
+	seq	r0
+	cmpw	$0,r0
+
+;; fn00003780: 00003780
+;;   Called from:
+;;     0000372C (in fn000030F2)
+;;     0000377E (in fn0000372E)
+;;     000037A6 (in fn0000372E)
+fn00003780 proc
+	beq	0000381E
+
+l00003782:
+	cmpw	r3,r8
+	sls	r0
+	cmpw	$0,r0
+	beq	0000381E
+
+l0000378A:
 	movw	r3,r2
-	Invalid
-	bhs	3792
+	cmpw	r3,r8
+	bhs	00003792
+
+l00003790:
 	movw	r8,r2
-	Invalid
-	bne	37AA
-	Invalid
-	br	37AC
+
+l00003792:
+	cmpw	$4,r7
+	bne	000037AA
+
+l00003796:
+	movw	$1,r13
+	br	000037AC
+
+l0000379A:
 	movw	r3,r2
-	Invalid
-	bhs	37A2
+	cmpw	r3,r8
+	bhs	000037A2
+
+l000037A0:
 	movw	r8,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l000037A2:
+	loadw	8(sp),r7
+	cmpw	$4,r7
+	beq	fn00003A36
+
+l000037AA:
+	movw	$0,r13
+
+l000037AC:
+	loadd	0x60(r12),(r1,r0)
+	addd	(r1,r0),(r5,r4)
 	movzw	r2,(r9,r8)
 	push	$1,r8
 	movw	r13,r6
 	movd	(r3,r2),r12
-	bal	ra,AF94
-	Invalid
-	andd	$EF8C6108,r12
-	andd	$AFA8A08C,r12
-	res
+	bal	ra,fn0000AF94
+	loadd	0x98(r12),(r1,r0)
+
+l000037C2:
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x98(r12)
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	37E0
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+
+;; fn000037D8: 000037D8
+;;   Called from:
+;;     000037D6 (in fn00003780)
+;;     00003BAA (in fn000030F2)
+fn000037D8 proc
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	fn000037E0
+
+;; fn000037DE: 000037DE
+;;   Called from:
+;;     000037DC (in fn000037D8)
+;;     000037DC (in fn000037D8)
+fn000037DE proc
 	movw	r0,r7
-	Invalid
-	beq	381A
+
+;; fn000037E0: 000037E0
+;;   Called from:
+;;     0000376C (in fn0000372E)
+;;     00003774 (in fn0000372E)
+;;     00003780 (in fn00003780)
+;;     00003788 (in fn00003780)
+;;     000037DC (in fn000037D8)
+;;     000037DC (in fn000037D8)
+;;     000037DE (in fn000037DE)
+;;     00003BDA (in fn00003A36)
+fn000037E0 proc
+	cmpw	$0,r7
+	beq	0000381A
+
+l000037E4:
 	movzw	r7,r12
-	Invalid
-	Invalid
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
 	push	$1,r12
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l000037EC:
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
 	subd	(r1,r0),r12
-	Invalid
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	381A
-	Invalid
-	Invalid
-	Invalid
-	bne	38E4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),(r9,r8)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	3886
-	movzw	r0,(r1,r0)
-	Invalid
+	bne	0000381A
+
+l00003816:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l0000381A:
+	cmpw	$0,r13
+	bne	000038E4
+
+l0000381E:
+	movw	$0,r0
+	addd	$10,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+00003828                         2D AF 30 00 6F 90 84 55         -.0.o..U
+00003830 00 C0 C8 92 0D EF 30 00 E0 18 19 FE 2C C3 04 12 ......0.....,...
+00003840 00 5F                                           ._              
+
+l00003842:
+	loadd	(r13),(r5,r4)
 	subd	(r5,r4),(r1,r0)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	ord	$5B80604F,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r5,r4),(r1,r0)
-	andd	$DF8C3B28,r12
-	ord	$30AF2C,(r7,r6)
-	movzw	r8,(r9,r8)
-	movd	(r5,r4),(r3,r2)
-	Invalid
-	push	$1,r8
-	bal	ra,DB24
-	Invalid
-	beq	38D4
-	Invalid
-	Invalid
-	blo	389A
-	Invalid
-	Invalid
-	beq	38E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18A053A7,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$5F045F1E,(r7,r6)
-	Invalid
-	push	$1,ra
-	bal	ra,DB24
-	Invalid
-	beq	390E
-	Invalid
-	Invalid
-	blo	38D4
-	Invalid
-	Invalid
-	beq	391A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18E05F0E,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r6
-	movd	(r5,r4),(r9,r8)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r6
-	movd	(r5,r4),(r9,r8)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r3
-	Invalid
-	Invalid
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	Invalid
-	Invalid
-	ord	$10552BB,(r11,r10)
-	Invalid
-	pop	$2,r12
-	Invalid
-	ord	$33145A24,(r7,r6)
+	push	$1,r0
+	bal	ra,fn0000DB24
+
+l0000384C:
+	loadd	4(r11,r10),r13
+
+l0000384E:
+	loadw	0x50(r12),r8
+	storw	r8,0xAC(r12)
+
+l00003856:
+	addd	$4,sp
+	movw	r8,r0
+	br	fn00003338
+0000385E                                           09 5A               .Z
+00003860 E0 18 27 FD DC A0 AD 92 E0 18 0B FE 14 00 04 C0 ..'.............
+00003870 4C EF 4C 00 28 3B 8C DF 56 00 2C AF 30 00 88 5F L.L.(;..V.,.0.._
+00003880 24 55 04 61 18 01 00 C0 9E A2 0C 9F 04 12 4F 60 $U.a..........O`
+00003890 10 52 A4 10 10 32 0C DF 04 12                   .R...2....      
+
+l0000389A:
+	loadw	0x50(r12),r0
+	addw	r7,r0
+	loadd	(r12),r13
+	loadw	4(r13),r10
+	loadw	0xAC(r12),r8
+	cmpw	r7,r10
+	blo	000034B4
+
+l000038AE:
+	br	000034F8
+000038B2       01 3B 1C DF 56 00 1E 5F 04 5F 24 61 1E 01   .;..V.._._$a..
+000038C0 00 C0 64 A2 0C 9F 04 12 4F 60 10 52 A4 10 10 32 ..d.....O`.R...2
+000038D0 0C DF 04 12 DC A0 2C AF 30 00 0C 9F 56 00 0E 5F ......,.0...V.._
+000038E0 E0 18 CB FC                                     ....            
+
+l000038E4:
+	movw	$2,r0
+	addd	$10,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+000038EE                                           0C A0               ..
+000038F0 00 92 00 52 00 08 00 52 00 18 B3 FE 83 53 50 08 ...R...R.....SP.
+00003900 1D 5A 00 52 10 18 A9 FE E0 18 A3 FE 2D AF 30 00 .Z.R........-.0.
+00003910 A6 5B 84 55 00 C0 DA 87 0D EF 30 00 E0 18 F3 FD .[.U......0.....
+00003920 2D AF 30 00 A6 5B 84 55 00 C0 D0 91 0D EF 30 00 -.0..[.U......0.
+00003930 E0 18 DF FD 0A 52 00 18 E7 FD 00 5A E0 18 AF FD .....R.....Z....
+00003940 AF D0 A3 5B E0 18 EB FC 9D 01 67 01 BF 60 F4 FF ...[......g..`..
+00003950 2C 55 4F D4 BC 9F 5A 00 BB 52 05 01 B0 18 2C 02 ,UO...Z..R....,.
+00003960 1C 9F                                           ..              
+
+l00003962:
+	ord	$5A243314,(r7,r6)
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x60(r12),(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	andd	$409F0C,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	andd	$DF2C2302,(r7,r6)
-	andd	$61225F22,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x90(r12),r3
+	loadw	0x80(r12),r0
+	ashuw	r3,r0
+	xorw	r2,r0
+	loadw	0x8C(r12),r0
+	andw	r2,r0
+	storw	r2,0x80(r12)
+
+l00003988:
+	andd	$5F226122,(r1,r0)
+
+l0000398A:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	loadd	0x78(r12),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	loadw	(r3,r2),r4
+	loadw	0x58(r12),r6
+	andw	r6,r1
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	39C0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x70(r12),(r9,r8)
+	addd	(r7,r6),(r7,r6)
+	addd	(r9,r8),(r7,r6)
+	storw	r4,(r7,r6)
+	storw	r1,(r3,r2)
+	cmpw	$0,r4
+	beq	000039C0
+
+l000039AE:
+	loadw	0x50(r12),r0
+	addw	$FEFA,r11
 	movw	r1,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r6,ra
-	Invalid
-	ord	$11F69F8C,(r1,r0)
+	subw	r2,r4
+	cmpw	r2,r0
+	bhs	00003DA8
+
+l000039C0:
+	loadw	0xA0(r12),r0
+	loadw	0x23EC(r12),r8
 	movzw	r8,(r5,r4)
 	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	br	3A00
-	Invalid
-	Invalid
-	Invalid
-	br	39F8
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
+	addd	(r5,r4),(r3,r2)
+	loadd	0x23F0(r12),(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	addw	$1,r1
+	loadd	0x23E0(r12),(r11,r10)
+	addd	(r11,r10),(r5,r4)
+	cmpw	$2,r0
+	bhs	00003DDE
+
+l000039E2:
 	movb	$FD,r2
-	Invalid
-	Invalid
-	ord	$5B103B01,(r9,r8)
-	Invalid
-	Invalid
-	br	3A20
-	Invalid
-	Invalid
+	addb	r2,r0
+	loadw	0xB0(r12),r0
+	subw	r1,r0
+	movw	r1,r0
+	storw	r1,(r7,r6)
+	storw	r8,0x23EC(r12)
+	storb	r2,(r5,r4)
+	addw	$FFFF,r9
 	movzb	r2,(r3,r2)
 	movxw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F32E,(r3,r2)
+
+l00003A00:
+	storb	r2,3(ra)
+	loadb	(r3,r2),r2
+
+l00003A04:
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	bhs	3A22
-	lshw	$1,r0
-	Invalid
-	push	$0,r0
+	ashud	$2,(r3,r2)
+	addd	r12,(r3,r2)
+	loadw	0x8DC(r3,r2),r1
+	addw	$1,r1
+	storw	r1,0x8DC(r3,r2)
+	cmpw	$FF,r0
+	bhs	00003A22
+
+l00003A1C:
+	lshw	$-9,r0
+	addw	$100,r11
+
+l00003A22:
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F42E,(r1,r0)
+	loadb	(r1,r0),r0
 	movzb	r0,(r1,r0)
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	3A66
-	Invalid
-	Invalid
-	br	3A70
-	Invalid
-	Invalid
-	Invalid
-	ord	$5A9FBC,(r1,r0)
-	Invalid
-	Invalid
-	ord	$569F3C,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$469FAC,(r9,r8)
-	Invalid
-	xord	$8B05302,(r1,r0)
-	Invalid
-	Invalid
-	push	$3,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	ord	$3CAF0C,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$3211901F,(r1,r0)
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r12,(r1,r0)
+
+;; fn00003A32: 00003A32
+;;   Called from:
+;;     000036A6 (in fn000030F2)
+;;     00003A30 (in fn00003A36)
+fn00003A32 proc
+	loadw	0x12BC(r1,r0),r2
+
+;; fn00003A36: 00003A36
+;;   Called from:
+;;     0000372E (in fn0000372E)
+;;     00003780 (in fn00003780)
+;;     000037A6 (in fn0000372E)
+;;     00003A32 (in fn00003A32)
+;;     00003A32 (in fn00003A32)
+;;     0000405E (in fn0000402E)
+;;     00004286 (in fn0000402E)
+;;     0000436E (in fn0000402E)
+;;     00004376 (in fn0000402E)
+fn00003A36 proc
+	addw	$1,r1
+	storw	r2,0x12BC(r1,r0)
+	loadw	0x23E8(r12),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r12),r1
+	cmpw	r0,r1
+	seq	r9
+	loadw	0xA0(r12),r2
+	loadw	0xB4(r12),r11
+	subw	r11,r2
+	storw	r11,0xB4(r12)
+	loadw	0xAC(r12),r3
+	storw	r3,(sp)
+	loadd	0x60(r12),ra
+	loadw	0x90(r12),r8
+	loadw	0x8C(r12),r10
+	loadw	0xC0(r12),r0
+	cmpw	r2,r0
+
+l00003A70:
+	shs	r0
+	cmpw	$0,r0
+	beq	00003DE8
+
+l00003A78:
+	cmpw	$2,r11
+	slo	r0
+	cmpw	$0,r0
+	beq	00003DDE
+
+l00003A82:
+	movw	$FFFF,r3
+	addw	r3,r2
+	storw	r3,0xA0(r12)
+	loadd	0x78(r12),(r1,r0)
+	stord	(r1,r0),4(sp)
+	loadd	0x70(r12),r13
+	loadw	0x58(r12),r1
+	storw	r1,2(sp)
+	loadw	0x80(r12),r0
+	loadw	(sp),r1
+	addw	$1,r1
+	storw	r2,0xA(sp)
 	movw	r3,r6
-	Invalid
-	ord	$33125A22,(r7,r6)
+
+l00003AA6:
+	storw	r1,0xAC(r12)
+	movw	$2,r2
+	addw	r2,r1
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
+	addd	ra,(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$61445F04,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashuw	r8,r0
+	xorw	r0,r2
+	andw	r0,r10
+	storw	r0,0x80(r12)
+	movzw	r0,(r5,r4)
+	addd	(r5,r4),(r5,r4)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	loadw	(r5,r4),r7
+	loadw	2(sp),r2
+	andw	r2,r1
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$52063211,(r1,r0)
-	bne	3AA6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18005209,(r7,r6)
-	Invalid
-	Invalid
-	andd	$145F22,r12
-	bal	ra,9100
-	Invalid
-	pop	$3,r0,ra
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r3,r2)
+	addd	r13,(r3,r2)
+	storw	r7,(r3,r2)
+	storw	r1,(r5,r4)
+	addw	$FFFF,r9
+	storw	r6,0xA0(r12)
+	addw	$1,r1
+	cmpw	$0,r6
+	bne	00003AA6
+
+l00003AE4:
+	loadw	0xA(sp),r2
+
+l00003AE6:
+	loadw	(sp),r3
+
+l00003AE8:
+	addw	r2,r3
+	storw	r2,0xAC(r12)
+	cmpw	$0,r9
+	beq	000037C2
+
+l00003AF4:
+	loadd	0x98(r12),(r5,r4)
+	movzw	r2,(r3,r2)
+	subd	(r3,r2),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00004060
+
+l00003B04:
+	andd	$FFFF,(r5,r4)
+
+l00003B0A:
+	loadd	0x60(r12),(r1,r0)
+	addd	(r1,r0),(r5,r4)
 	push	$1,r2
-	Invalid
+	movw	$0,r6
+
+;; fn00003B14: 00003B14
+;;   Called from:
+;;     00003704 (in fn000030F2)
+;;     00003B12 (in fn00003A36)
+fn00003B14 proc
 	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
+	bal	ra,fn0000B218
+	loadw	0xAC(r12),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r12)
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+
+l00003B28:
 	res
+
+;; fn00003B2A: 00003B2A
+;;   Called from:
+;;     00003B26 (in fn00003B14)
+;;     00003B28 (in fn00003B14)
+fn00003B2A proc
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	3B3C
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+
+;; fn00003B36: 00003B36
+;;   Called from:
+;;     0000370A (in fn000030F2)
+;;     00003B34 (in fn00003B2A)
+;;     00003B34 (in fn00003B14)
+fn00003B36 proc
+	cmpw	r7,r0
+	bhs	fn00003B3C
+
+;; fn00003B3A: 00003B3A
+;;   Called from:
+;;     00003B38 (in fn00003B36)
+;;     00003B38 (in fn00003B36)
+fn00003B3A proc
 	movw	r0,r7
-	Invalid
-	beq	3B76
+
+;; fn00003B3C: 00003B3C
+;;   Called from:
+;;     00003AF0 (in fn00003A36)
+;;     00003B38 (in fn00003B36)
+;;     00003B38 (in fn00003B36)
+;;     00003B3A (in fn00003B3A)
+fn00003B3C proc
+	cmpw	$0,r7
+	beq	00003B76
+
+l00003B40:
 	movzw	r7,r13
-	Invalid
-	Invalid
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
 	push	$1,r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
 	subd	(r1,r0),r13
-	Invalid
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	3B76
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00003B76
+
+l00003B72:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l00003B76:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	bne	fn0000372E
+
+l00003B80:
+	movw	$0,r0
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l00003B88:
 	movd	(r3,r2),r12
-	bal	ra,30F2
-	Invalid
-	ord	$10552B0,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	3B80
-	Invalid
-	ord	$16005200,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,2F48
-	Invalid
-	ord	$569F1C,(r1,r0)
-	Invalid
-	br	3BEE
+	bal	ra,fn000030F2
+	loadw	0xB4(r12),r0
+	cmpw	$105,r0
+	blo	0000372C
+
+l00003B9A:
+	loadw	8(sp),r1
+	cmpw	$0,r1
+	beq	00003B80
+
+l00003BA0:
+	loadw	0xAC(r12),r1
+	cmpw	$0,r0
+	beq	00003C66
+
+l00003BA8:
+	cmpw	$2,r0
+	bhs	fn000037D8
+
+l00003BAE:
+	br	0000371C
+00003BB2       C2 55 FF C0 95 F3 0C DF 50 00 1C 9F         .U......P...  
+
+l00003BBE:
+	ord	$9F8C11F6,(r7,r6)
 	movzw	r8,(r5,r4)
 	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	br	3BFC
-	Invalid
-	Invalid
-	Invalid
-	br	3BF4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r5,r4),(r3,r2)
+	loadd	0x23F0(r12),(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	addw	$1,r1
+	loadd	0x23E0(r12),(r11,r10)
+	addd	(r11,r10),(r5,r4)
+	cmpw	$2,r0
+	blo	000037EC
+
+l00003BDE:
 	movzw	r1,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3C18
-	Invalid
+	loadd	0x60(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r0
+	storw	$0,(r7,r6)
+	storw	r8,0x23EC(r12)
+	storb	r0,(r5,r4)
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF203212,(r11,r10)
-	xord	$11F49F0C,(r11,r10)
-	Invalid
-	Invalid
-	br	3C36
-	Invalid
-	Invalid
-	Invalid
-	ord	$DFBC329B,(r11,r10)
-	ord	$569F2C,(r11,r10)
-	Invalid
-	Invalid
-	ord	$18005209,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$50C30C,(r7,r6)
-	movzw	r2,(r1,r0)
-	Invalid
-	Invalid
-	movzb	r3,(r4,r3)
-	Invalid
-	andd	$33205A10,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$18005209,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0xD4(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0xD4(r1,r0)
+	loadw	0x23E8(r12),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r12),r1
+	cmpw	r0,r1
+	seq	r9
+	loadw	0xB4(r12),r11
+	addw	$FFFF,r9
+	storw	r11,0xB4(r12)
+	loadw	0xAC(r12),r2
+	addw	$1,r1
+	storw	r2,0xAC(r12)
+	cmpw	$0,r9
+	beq	0000368C
+
+l00003C2A:
+	br	000039C0
+00003C2E                                           0F 90               ..
+00003C30 02 33 2C DF 56 00 0C C3 50 00 20 5F E0 61 30 B0 .3,.V...P. _.a0.
+00003C40 33 5D 3C DF 40 00 10 5A 20 33 00 5F 0E 61 0E B0 3]<.@..Z 3._.a..
+00003C50 00 5D 83 45 30 2B 0A 23 AC DF 40 00 09 52       .].E0+.#..@..R  
+
+l00003C5E:
+	beq	00003654
+
+l00003C62:
+	br	00003988
+
+l00003C66:
 	movw	r1,r0
-	Invalid
-	blo	3D10
-	Invalid
-	beq	3CBA
-	Invalid
-	Invalid
-	beq	3D1C
-	Invalid
-	br	3CA4
-	Invalid
-	Invalid
-	beq	3B82
-	Invalid
-	andd	$145F10,r12
-	bal	ra,928C
-	Invalid
-	push	$2,r12
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
+	cmpw	$2,r1
+	blo	00003D10
+
+l00003C6C:
+	storw	r0,0x240C(r12)
+
+l00003C6E:
+	beq	00003CBA
+
+;; fn00003C70: 00003C70
+;;   Called from:
+;;     00003C6C (in fn000030F2)
+;;     00003C6E (in fn0000356E)
+fn00003C70 proc
+	loadw	8(sp),r2
+	cmpw	$4,r2
+	beq	fn00003D1C
+
+;; fn00003C76: 00003C76
+;;   Called from:
+;;     00003C74 (in fn00003C70)
+;;     00003D1A (in fn000030F2)
+fn00003C76 proc
+	loadw	0x23EC(r12),r2
+
+l00003C78:
+	br	00003CA4
+00003C7A                               10 5A 02 52 02 18           .Z.R..
+00003C80 4C AF 4C 00 10 5F 14 00 40 C0 04 56 60 18 2C 01 L.L.._..@..V`.,.
+00003C90 44 00 00 00 FF FF 2C AF 30 00 24 61 10 01 06 5A D.....,.0.$a...Z
+00003CA0 C2 55 00 C0                                     .U..            
+
+l00003CA4:
+	sbitw	$6,0x69F0C(r7)
+	ord	$5F00EF0C,(r7,r6)
+	andd	$A08CAFA8,r12
 	res
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	3CC8
+	bal	ra,fn0000B09C
+
+l00003CBA:
+	sbitb	$4,(0x049A0A)
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	00003CC8
+
+l00003CC6:
 	movw	r0,r7
-	Invalid
-	beq	3D02
+
+l00003CC8:
+	cmpw	$0,r7
+	beq	00003D02
+
+l00003CCC:
 	movzw	r7,r13
-	Invalid
-	Invalid
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
 	push	$1,r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
 	subd	(r1,r0),r13
-	Invalid
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	3D02
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00003D02
+
+l00003CFE:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l00003D02:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	sne	r0
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	beq	3D60
-	Invalid
-	Invalid
-	bne	3C76
-	Invalid
-	andd	$145F10,r12
-	bal	ra,9328
-	bgt	3DBE
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+
+l00003D10:
+	movw	$2,r0
+	storw	r0,0x240C(r12)
+	loadw	8(sp),r2
+	cmpw	$4,r2
+	bne	fn00003C76
+
+;; fn00003D1C: 00003D1C
+;;   Called from:
+;;     00003C74 (in fn00003C70)
+;;     00003D1A (in fn000030F2)
+fn00003D1C proc
+	loadd	0x98(r12),(r5,r4)
+	movzw	r1,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00003DBE
+
+l00003D2A:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l00003D36:
 	push	$1,r0
-	Invalid
+	movw	$1,r6
 	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
-	res
+	bal	ra,fn0000B218
+
+l00003D40:
+	loadw	0xAC(r12),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r12)
+
+l00003D4A:
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+
+l00003D50:
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	3D62
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	00003D62
+
+l00003D60:
 	movw	r0,r7
-	Invalid
-	beq	3D9C
+
+l00003D62:
+	cmpw	$0,r7
+	beq	00003D9C
+
+l00003D66:
 	movzw	r7,r13
-	Invalid
-	Invalid
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
 	push	$1,r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
 	subd	(r1,r0),r13
-	Invalid
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	3D9C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00003D9C
+
+l00003D98:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l00003D9C:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r1
+	movw	$3,r0
+	cmpw	$0,r1
+	bne	00003962
+
+l00003DA8:
+	movw	$2,r0
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	movw	r4,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3D36
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	Invalid
-	Invalid
-	ord	$52B75A2D,(r11,r10)
-	push	$0,r5
-	Invalid
-	push	$2,r0
-	Invalid
-	ord	$509F5C,(r7,r6)
-	Invalid
-	ord	$33165A26,(r9,r8)
+00003DB0 04 5A 45 5B E0 18 5D FD 04 54 E0 18 E3 FE       .ZE[..]..T....  
+
+l00003DBE:
+	movd	$0,(r5,r4)
+	br	00003D36
+00003DC2       9D 01 67 01 BF 60 F8 FF 2C 55 4F D3 72 9F   ..g..`..,UO.r.
+00003DD0 5A 00 2D 5A                                     Z.-Z            
+
+l00003DD4:
+	cmpw	$105,r7
+	bhs	00004018
+
+l00003DDC:
+	loadw	0xAC(r12),r1
+
+l00003DDE:
+	ord	$9F5C0050,(r7,r6)
+
+l00003DE0:
+	loadw	0xA0(r12),r5
+	loadw	0xB0(r12),r10
+
+l00003DE8:
+	movw	$2,r6
+	addw	r6,r1
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x60(r12),(r3,r2)
+	addd	(r7,r6),(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	andd	$409F0C,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	andd	$DF2C2302,(r7,r6)
-	andd	$61225F22,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x90(r12),r3
+	loadw	0x80(r12),r0
+	ashuw	r3,r0
+	xorw	r2,r0
+	loadw	0x8C(r12),r0
+	andw	r2,r0
+	storw	r2,0x80(r12)
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	loadd	0x78(r12),(r7,r6)
+	addd	(r7,r6),(r3,r2)
+	loadw	(r3,r2),r4
+	loadw	0x58(r12),r6
+	andw	r6,r1
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$52DFAC,r12
-	Invalid
-	ord	$150C5204,(r1,r0)
-	Invalid
-	xord	$15B85350,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x70(r12),(r9,r8)
+	addd	(r7,r6),(r7,r6)
+	addd	(r9,r8),(r7,r6)
+	storw	r4,(r7,r6)
+	storw	r1,(r3,r2)
+	storw	r5,0xB8(r12)
+	storw	r10,0xA4(r12)
+	storw	$2,0x50(r12)
+	cmpw	$0,r4
+	beq	00003EF4
+
+l00003E3E:
+	loadw	0xC0(r12),r0
+	cmpw	r0,r5
+	bhs	00003EF4
+
+l00003E46:
+	loadw	0x50(r12),r2
+	addw	$FEFA,r11
 	movw	r13,r0
 	movw	r1,r3
-	Invalid
-	Invalid
-	bhs	3EDC
-	Invalid
-	bhs	3E62
-	Invalid
-	Invalid
-	push	$2,r2
-	Invalid
-	ord	$16085200,(r5,r4)
-	Invalid
+	subw	r3,r4
+	cmpw	r3,r2
+	bhs	00003EDC
+
+l00003E58:
+	cmpw	$2,r5
+	bhs	00003E62
+
+l00003E5C:
+	cmpw	r5,r0
+	bls	000040A2
+
+l00003E62:
+	loadw	0xA8(r12),r0
+	cmpw	$0,r0
+	beq	00003F38
+
+l00003E6A:
+	addw	$FFFF,r9
 	movzw	r1,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3EA4
+	loadd	0x60(r12),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r0
+	loadw	0x23EC(r12),r1
 	movzw	r1,(r5,r4)
-	Invalid
-	br	3EAE
+	loadd	0x23F0(r12),(r3,r2)
 	movd	(r7,r6),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3EAA
-	Invalid
-	Invalid
-	br	3EBC
-	Invalid
-	Invalid
+	addd	(r5,r4),(r7,r6)
+	addd	(r7,r6),(r3,r2)
+	storw	$0,(r3,r2)
+	loadd	0x23E0(r12),(r3,r2)
+	addw	$1,r1
+	storw	r1,0x23EC(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF203212,(r11,r10)
-	xord	$11F49F0C,(r11,r10)
-	Invalid
-	Invalid
-	br	3EDC
-	Invalid
-	Invalid
-	pop	$3,r4,ra
-	Invalid
-	ord	$DF0C3210,(r7,r6)
-	ord	$5A9F7C,(r7,r6)
-	Invalid
-	Invalid
-	ord	$9800A00C,(r11,r10)
-	Invalid
-	bne	3DD4
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0xD4(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0xD4(r1,r0)
+	loadw	0x23E8(r12),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r12),r1
+	cmpw	r1,r0
+	beq	0000441C
+
+l00003EB8:
+	loadw	0xAC(r12),r0
+	addw	$1,r1
+	storw	r0,0xAC(r12)
+	loadw	0xB4(r12),r7
+	addw	$FFFF,r9
+	storw	r7,0xB4(r12)
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	bne	00003DD4
+
+l00003ED4:
+	movw	$0,r0
+	addd	$8,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l00003EDC:
 	movd	(r3,r2),r12
-	bal	ra,2F48
-	Invalid
-	ord	$13B45250,(r1,r0)
-	Invalid
-	ord	$569F1C,r12
-	br	3E58
+	bal	ra,fn00002F48
+	storw	r0,0xA0(r12)
+	cmpw	$5,r0
+	bhs	00003F50
+
+l00003EEA:
+	loadw	0xB8(r12),r5
+	loadw	0xAC(r12),r1
+	br	00003E58
+
+l00003EF4:
 	movw	r13,r0
-	br	3E58
-	movd	(r3,r2),r12
-	bal	ra,30F2
-	Invalid
-	ord	$10552B0,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	3ED4
-	Invalid
-	Invalid
-	popret	$0,r10
-	Invalid
-	ord	$509F5C,(r7,r6)
-	Invalid
-	ord	$18A05220,(r9,r8)
-	Invalid
-	Invalid
-	ord	$52DFAC,r12
-	Invalid
-	ord	$19E15BD0,(r1,r0)
-	Invalid
-	ord	$DF1C3211,(r5,r4)
-	ord	$5A9F7C,(r7,r6)
-	Invalid
-	Invalid
-	ord	$FE8918E0,(r11,r10)
-	Invalid
-	ord	$5C9F5C,(r7,r6)
-	Invalid
-	xord	$100C5212,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$3B235B13,(r9,r8)
-	Invalid
-	beq	3F70
-	Invalid
-	Invalid
-	Invalid
-	ord	$18B05225,(r1,r0)
-	Invalid
-	Invalid
-	ord	$FFFD32BA,(r11,r10)
-	Invalid
+	br	00003E58
+00003EF8                         C2 55 FF C0 F9 F1 0C 9F         .U......
+00003F00 5A 00 B0 52 05 01 A0 18 D7 FE 1F 93 01 52 03 1E Z..R.........R..
+00003F10 00 52 00 18 0A 03 1C 9F 56 00 5C 9F 50 00 AC 9F .R......V.\.P...
+00003F20 58 00 20 52 A0 18 C5 FE 5C DF 5C 00 AC DF 52 00 X. R....\.\...R.
+00003F30 2C C3 50 00 D0 5B E1 19                         ,.P..[..        
+
+l00003F38:
+	storw	$1,0x54(r12)
+	addw	$1,r1
+	storw	r1,0xAC(r12)
+	loadw	0xB4(r12),r7
+	addw	$FFFF,r9
+	storw	r7,0xB4(r12)
+	br	00003C5E
+
+l00003F50:
+	loadw	0xAC(r12),r1
+	loadw	0xB8(r12),r5
+	loadw	0xC8(r12),r2
+	cmpw	$1,r2
+	beq	00003F76
+
+l00003F60:
+	cmpw	$3,r0
+	bne	00003D50
+
+l00003F66:
+	loadw	0xB0(r12),r2
+	movw	r1,r3
+	subw	r3,r2
+	cmpw	$1000,r3
+	bhs	00003D40
+
+l00003F76:
+	storw	$2,0x50(r12)
+	cmpw	$2,r5
+	bhs	00003D4A
+
+l00003F80:
+	loadw	0xB4(r12),r10
+	addw	$FFFD,r11
+	addw	r10,r1
 	movb	$FD,r0
-	Invalid
-	Invalid
-	ord	$3B085B18,(r3,r2)
-	Invalid
-	br	3FC6
+	addb	r5,r0
+	loadw	0xA4(r12),r0
+	movw	r1,r8
+	subw	r8,r0
+	loadw	0x23EC(r12),r4
 	movzw	r4,(r1,r0)
-	Invalid
-	br	3FD0
+	loadd	0x23F0(r12),(r7,r6)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	3FD0
-	Invalid
-	Invalid
-	br	3FE2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	addd	(r7,r6),(r3,r2)
+	movw	$FFFF,r6
+	addw	r6,r8
+	storw	r6,(r3,r2)
+	loadd	0x23E0(r12),(r3,r2)
+	addw	$1,r1
+	storw	r4,0x23EC(r12)
+
+;; fn00003FB8: 00003FB8
+;;   Called from:
+;;     00003FB4 (in fn00003A36)
+;;     00005E7A (in fn00004CD4)
+fn00003FB8 proc
+	addd	(r3,r2),(r1,r0)
+	storb	r5,(r1,r0)
+	addw	$FFFE,r11
 	movzb	r5,(r3,r2)
 	movxw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F32E,(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	pop	$1,r8
+	ashud	$2,(r3,r2)
+	addd	r12,(r3,r2)
+	loadw	0x8DC(r3,r2),r0
+	addw	$1,r1
+	storw	r0,0x8DC(r3,r2)
+	cmpw	$FF,r8
+	blo	00004410
+
+l00003FE4:
 	movzw	r8,(r2,r1)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F42E,(r2,r1)
+	loadb	(r2,r1),r0
 	movzb	r0,(r1,r0)
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	402C
-	Invalid
-	br	402C
-	Invalid
-	Invalid
-	Invalid
-	ord	$5A9F7C,r12
-	Invalid
-	Invalid
-	Invalid
-	ord	$FFFE5AB8,(r11,r10)
-	Invalid
-	Invalid
-	ord	$569F9C,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$1840536A,(r7,r6)
-	push	$0,r10
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0x12BC(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0x12BC(r1,r0)
+	loadw	0x23EC(r12),ra
+	loadw	0x23E8(r12),r0
+	addw	$FFFF,r9
+	storw	r0,(sp)
+	loadw	0xB8(r12),r11
+	loadw	0xB4(r12),r7
+	addw	$1,r1
+	subw	r7,r11
+	storw	r7,0xB4(r12)
+
+l00004018:
+	ord	$5AB8FFFE,(r11,r10)
+
+;; fn0000401A: 0000401A
+;;   Called from:
+;;     00004016 (in fn00003FB8)
+;;     00004018 (in fn00003A36)
+fn0000401A proc
+	movw	$FFFE,r8
+	addw	r8,r11
+	storw	r8,0xB8(r12)
+	loadw	0xAC(r12),r9
+	movw	$1,r6
+	addw	r6,r9
+	storw	r7,4(sp)
+
+;; fn0000402E: 0000402E
+;;   Called from:
+;;     00003460 (in fn000033F8)
+;;     00003572 (in fn0000356E)
+;;     00003612 (in fn0000356E)
+;;     0000364C (in fn0000356E)
+;;     00003652 (in fn0000356E)
+;;     00003D3C (in fn00003D1C)
+;;     00004028 (in fn0000401A)
+;;     0000402C (in fn0000401A)
+;;     00004088 (in fn00003A36)
+fn0000402E proc
+	storw	r6,0xAC(r12)
+	cmpw	r10,r6
+	bhi	00004248
+
+l00004038:
+	movw	$2,r2
+	addw	r2,r6
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x60(r12),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	andd	$409F0C,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	andd	$DF2C2302,(r7,r6)
-	andd	$61225F22,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x90(r12),r1
+	loadw	0x80(r12),r0
+	ashuw	r1,r0
+	xorw	r2,r0
+	loadw	0x8C(r12),r0
+	andw	r2,r0
+	storw	r2,0x80(r12)
+	movzw	r2,(r3,r2)
+
+l00004060:
+	addd	(r3,r2),(r3,r2)
+	loadd	0x78(r12),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	loadw	(r3,r2),r7
+	loadw	0x58(r12),r0
+	andw	r0,r6
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$52083216,r12
-	bne	402E
-	Invalid
-	Invalid
-	ord	$50C32C,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	ord	$531E901F,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	andd	$145FB0,r12
-	bal	ra,96B0
-	Invalid
-	push	$6,r4
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	40EC
-	movw	r0,r7
-	Invalid
-	beq	412C
-	movzw	r7,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	412C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$FC9B18E0,(r11,r10)
-	Invalid
-	Invalid
-	ord	$52083216,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$50C32C,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	ord	$531E901F,(r7,r6)
-	Invalid
-	Invalid
-	br	40A4
-	Invalid
-	andd	$569F0C,r12
-	movzw	r0,(r1,r0)
+	loadd	0x70(r12),(r5,r4)
+	addd	(r1,r0),(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	storw	r7,(r1,r0)
+	storw	r6,(r3,r2)
+	addw	$FFFF,r9
+	storw	r8,0xB8(r12)
+	addw	$1,r1
+	cmpw	$0,r8
+	bne	fn0000402E
+
+l0000408A:
+	loadw	4(sp),r7
+	storw	$0,0x54(r12)
+	storw	$2,0x50(r12)
+	addw	r11,r9
+	addw	$FFFF,r9
+	storw	r11,0xAC(r12)
+	loadw	(sp),r1
+	cmpw	ra,r1
+	bne	00003B0A
+
+l000040A2:
+	storb	r3,0xD(r6,r5)
+
+l000040A4:
+	loadd	0x98(r12),(r5,r4)
+	movzw	r11,(r1,r0)
 	subd	(r1,r0),(r5,r4)
-	bgt	420E
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+	cmpd	$0,(r5,r4)
+	bgt	00004378
+
+l000040B4:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	addd	(r3,r2),(r5,r4)
 	push	$1,r0
-	Invalid
+	movw	$0,r6
 	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
-	res
+	bal	ra,fn0000B218
+	loadw	0xAC(r12),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r12)
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	41B2
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	000040EC
+
+l000040EA:
 	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
-	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r8,r1
-	lshw	$1,r1
-	Invalid
-	push	$0,r0
-	movzw	r1,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r5
-	br	4186
-	Invalid
-	movw	r4,r5
-	Invalid
-	Invalid
-	Invalid
-	ord	$549F1C,(r7,r6)
-	Invalid
-	beq	426E
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	4262
-	movzw	r8,(r3,r2)
-	Invalid
-	br	426C
-	movd	(r7,r6),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	4268
-	Invalid
-	Invalid
-	br	427A
-	Invalid
-	Invalid
-	movzb	r1,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF123211,(r11,r10)
-	xord	$54DF0C,(r11,r10)
-	Invalid
-	ord	$52225B20,(r7,r6)
-	blo	431A
-	Invalid
-	beq	42C2
-	Invalid
-	Invalid
-	beq	4326
-	Invalid
-	br	42AC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$145F20,r12
-	bal	ra,9896
-	Invalid
-	push	$2,r4
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	42D2
-	movw	r0,r7
-	Invalid
-	beq	430C
-	movzw	r7,r13
-	Invalid
-	Invalid
-	push	$1,r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),r13
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	430C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	beq	436A
-	Invalid
-	Invalid
-	bne	427E
-	Invalid
-	andd	$145F20,r12
-	bal	ra,9932
-	bgt	43C0
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,B218
-	Invalid
-	ord	$EF0C5F00,(r7,r6)
-	andd	$AFA8A08C,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	436C
-	movw	r0,r7
-	Invalid
-	beq	43A6
-	movzw	r7,r13
-	Invalid
-	Invalid
-	push	$1,r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),r13
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	43A6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	4340
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	movd	(r9,r8),(r5,r4)
-	movw	r6,r7
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$3,r10,ra
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$3,r0,ra
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$2,r6,ra
-	Invalid
-	res
-	cmpd	$0,r13
-	Invalid
-	push	$1,r12,ra
-	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	beq	440A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	4450
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4402
-	cmpd	$0,(r9,r8)
-	Invalid
-	push	$3,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r2
-	Invalid
-	Invalid
-	push	$3,r8
-	Invalid
-	ord	$FFFE5AB0,(r11,r10)
-	Invalid
-	bne	4402
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	44B6
-	Invalid
-	bne	44AE
-	movw	r5,r4
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F553295,(r3,r2)
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	bal	ra,DB44
-	Invalid
-	Invalid
-	ord	$EF0D5400,(r7,r6)
-	andd	$1206DF5D,r12
-	Invalid
-	Invalid
-	Invalid
+
+l000040EC:
+	cmpw	$0,r7
+	beq	0000412C
+
+l000040F0:
 	movzw	r7,(r3,r2)
-	Invalid
+	stord	(r3,r2),(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	loadd	(sp),(r1,r0)
+	push	$1,r0
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),(r3,r2)
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	0000412C
+
+l00004128:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l0000412C:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	beq	00003C78
+
+l00004136:
+	loadw	0xB4(r12),r7
+	br	00003A70
+0000413E                                           98 32               .2
+00004140 8C DF 5C 00 16 32 08 52 10 18 E7 FE 7F 92 0C C3 ..\..2.R........
+00004150 54 00 2C C3 50 00 9B 33 9B 32 BC DF 56 00 1F 90 T.,.P..3.2..V...
+00004160 1E 53 10 18 73 FC EF 19 4C AF 4C 00 0C 9F 56 00 .S..s...L.L...V.
+00004170 00 5F 14 00 40 C0 04 56 6B 14 44 00 00 00 FF FF ._..@..Vk.D.....
+00004180 2C AF 30 00 24 61 10 01 06 5A C2 55 00 C0 8C 70 ,.0.$a...Z.U...p
+00004190 0C 9F 56 00 00 5F 0C EF 4C 00 8C A0 A8 AF 1C 00 ..V.._..L.......
+000041A0 A2 55 00 C0 FA 6E 0A 9A 78 98 4F 60 07 53 B2 10 .U...n..x.O`.S..
+000041B0 07 5B 07 52 00 18 05 FD 70 5F 0F E0 28 A6 4A A8 .[.R....p_..(.J.
+000041C0 10 01 00 C0 62 99 08 A6 2F A2 20 61 08 E6 0A A8 ....b.../. a....
+000041D0 20 61 0A E8 08 AA 20 61 08 EA 08 98 70 3B 08 D8  a.... a....p;..
+000041E0 0A AA 14 00 20 C0 0A EA 4F 60 00 56 10 18 CD FC .... ...O`.V....
+000041F0 0A A4 0A E8 E0 18 C5 FC 81 5B 91 49 B1 32 00 01 .........[.I.2..
+00004200 10 5F 00 04 2E F4 00 B0 00 5D E0 18 E5 FD 04 5A ._.......].....Z
+00004210 45 5B EA 1B 04 5A 45 5B E0 18 A9 FE 2C 9F 56 00 E[...ZE[....,.V.
+00004220 1C 9F 54 00 01 52 04 12 92 32 22 5F 4C AF 30 00 ..T..R...2"_L.0.
+00004230 42 61 12 B0 8C 9F F6 11 82 5F 4C AF F8 11 26 55 Ba......._L...&U
+00004240 26 61 64 61 04 D0 4C AF                         &ada..L.        
+
+l00004248:
+	br	00004268
+0000424A                               18 32 8C DF F6 11           .2....
+00004250 42 61 12 F0 12 5D 22 5F 22 4C C2 61 12 9F 6A 00 Ba...]"_"L.a..j.
+00004260 11 32 12 DF 6A 00 0C DF                         .2..j...        
+
+l00004268:
+	ord	$9F2C0056,(r5,r4)
+	movw	r2,r0
+	cmpw	$2,r2
+	blo	0000431A
+
+l00004274:
+	storw	r0,0x240C(r12)
+	loadw	6(sp),r3
+	cmpw	$4,r3
+	beq	00004326
+
+l0000427E:
+	loadw	0x23EC(r12),r1
+	movw	$1,r0
+	cmpw	$0,r1
+	beq	00003B28
+
+l0000428A:
+	loadd	0x98(r12),(r5,r4)
+	movzw	r2,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	000044DE
+
+l0000429A:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	push	$1,r0
+	movw	$0,r6
+	movd	(r3,r2),r12
+	bal	ra,fn0000B218
+	loadw	0xAC(r12),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r12)
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	000042D2
+
+l000042D0:
 	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l000042D2:
+	cmpw	$0,r7
+	beq	0000430C
+
+l000042D6:
+	movzw	r7,r13
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	push	$1,r13
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),r13
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	0000430C
+
+l00004308:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l0000430C:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	sne	r0
+	addd	$8,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+
+l0000431A:
+	movw	$2,r0
+	storw	r0,0x240C(r12)
+	loadw	6(sp),r3
+	cmpw	$4,r3
+	bne	0000427E
+
+l00004326:
+	loadd	0x98(r12),(r5,r4)
+	movzw	r2,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	000043C0
+
+l00004334:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l00004340:
+	push	$1,r0
+	movw	$1,r6
+	movd	(r3,r2),r12
+	bal	ra,fn0000B218
+	loadw	0xAC(r12),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r12)
+	loadd	(r12),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	0000436C
+
+l0000436A:
+	movw	r0,r7
+
+l0000436C:
+	cmpw	$0,r7
+	beq	000043A6
+
+l00004370:
+	movzw	r7,r13
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	push	$1,r13
+
+l00004378:
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),r13
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	000043A6
+
+l000043A2:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l000043A6:
+	loadd	(r12),(r1,r0)
+	loadw	0x10(r1,r0),r1
+	movw	$3,r0
+	cmpw	$0,r1
+	bne	00003A00
+
+l000043B2:
+	movw	$2,r0
+	addd	$8,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+000043BA                               04 54 E0 18 EB FE           .T....
+
+l000043C0:
+	movd	$0,(r5,r4)
+	br	00004340
+000043C4             9D 01 67 01 BF 60 F0 FF 2F E2 48 55     ..g..`../.HU
+000043D0 67 5B 02 56 00 18 BA 01 02 AF 20 00 00 56 00 18 g[.V...... ..V..
+000043E0 B0 01 02 AF 24 00 00 56 00 18 A6 01 D2 AF 1C 00 ....$..V........
+000043F0 0D 56 00 18 9C 01 24 55 2D A0 B0 5A FE FF 24 57 .V....$U-..Z..$W
+00004400 05 10                                           ..              
+
+l00004402:
+	addd	$10,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+0000440A                               2D 92 B2 52 2A 00           -..R*.
+
+l00004410:
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+
+l0000441C:
+	ord	$8132131,(r12_l,r11)
+
+;; fn0000441E: 0000441E
+;;   Called from:
+;;     0000441A (in fn00003FB8)
+;;     0000441C (in fn00003A36)
+fn0000441E proc
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
+	cmpb	$0,r1
+	beq	fn00004450
+
+;; fn0000443E: 0000443E
+;;   Called from:
+;;     00004438 (in fn0000441E)
+;;     0000443C (in fn0000441E)
+fn0000443E proc
+	movw	$FFC7,r1
+	addw	r1,r2
+	andw	$FFEF,r11
+	cmpw	$0,r1
+	sne	r1
+	cmpw	$0,r1
+	bne	00004402
+
+;; fn00004450: 00004450
+;;   Called from:
+;;     00004296 (in fn0000402E)
+;;     00004438 (in fn0000441E)
+;;     0000443C (in fn0000441E)
+;;     0000444E (in fn0000443E)
+;;     0000444E (in fn0000443E)
+fn00004450 proc
+	cmpd	$0,(r9,r8)
+	beq	fn000046CA
+
+l00004456:
+	loadw	0x18(r13),r5
+	storw	r5,2(sp)
+	cmpw	$2,r5
+	beq	fn000046C0
+
+l00004460:
+	cmpw	$1,r5
+	beq	fn000046D2
+
+l00004466:
+	loadw	0xB4(r13),r1
+	movw	$FFFE,r0
+	cmpw	$0,r1
+	bne	00004402
+
+l00004472:
+	storw	r1,0x18(r13)
+	loadw	0x50(r13),r0
+	cmpw	r0,r7
+	blo	000044B6
+
+l0000447C:
+	cmpw	$0,r5
+	bne	000044AE
+
+l00004480:
+	movw	r5,r4
+	loadd	0x78(r13),(r3,r2)
+	loadw	0x84(r13),r5
+	addw	$FFFF,r9
+	movzw	r5,(r6,r5)
+	addd	(r6,r5),(r6,r5)
+	movd	(r1,r0),(r3,r2)
+	addd	(r6,r5),(r1,r0)
+	storw	r4,(r1,r0)
+	bal	ra,fn0000DB44
+	loadw	2(sp),r5
+	storw	r5,0xAC(r13)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	storw	r5,0x240C(r13)
+	loadw	0x50(r13),r0
+
+l000044AE:
+	subw	r7,r0
+	movzw	r7,(r3,r2)
+	addd	(r3,r2),(r9,r8)
+	movw	r0,r7
+
+l000044B6:
+	loadd	4(sp),(r1,r0)
+	loadw	4(r1,r0),r1
+	storw	r1,8(sp)
+	loadd	4(sp),(r3,r2)
+	loadd	(r3,r2),(r4,r3)
+	stord	(r4,r3),0xC(sp)
+	loadd	4(sp),(r5,r4)
+	storw	r7,4(r5,r4)
+	stord	(r9,r8),(r5,r4)
 	movd	(r3,r2),r13
-	bal	ra,30F2
-	Invalid
-	ord	$13BF5223,(r11,r10)
+	bal	ra,fn000030F2
+	loadw	0xB4(r13),r3
+	cmpw	$2,r3
+	bhs	00004552
+
+l000044D6:
 	movw	r3,r9
-	Invalid
-	ord	$489F7D,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	andd	$AFADD05F,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FFFE5AB2,(r1,r0)
-	Invalid
-	Invalid
+
+l000044D8:
+	loadw	0xAC(r13),r1
+	loadw	0x90(r13),r7
+
+l000044DE:
+	andd	$AFED0030,(r9,r8)
+	loadw	0x8C(r13),r5
+	storw	r5,(sp)
+	loadd	0x78(r13),(r11,r10)
+	loadd	0x70(r13),r12
+	loadw	0x58(r13),r6
+	loadw	0x80(r13),r0
+	movw	$FFFE,r2
+	addw	r2,r1
+	addw	r9,r2
 	movw	r7,r8
 	movw	r6,r7
-	Invalid
-	Invalid
+
+l00004506:
+	movw	$2,r2
+	addw	r2,r1
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
+	addd	ra,(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$61445F04,(r1,r0)
-	Invalid
-	Invalid
+	ashuw	r8,r0
+	xorw	r0,r2
+	loadw	(sp),r2
+	andw	r0,r2
+	storw	r0,0x80(r13)
+	movzw	r0,(r5,r4)
+	addd	(r5,r4),(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadw	(r5,r4),r6
 	movw	r7,r2
-	Invalid
+	andw	r2,r1
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4506
-	Invalid
-	ord	$5AC32D,(r7,r6)
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	storw	r6,(r3,r2)
+	storw	r1,(r5,r4)
+	addw	$1,r1
+	cmpw	r1,r9
+	bne	00004506
+
+l0000453A:
+	storw	r1,0xAC(r13)
+	storw	$2,0x5A(r13)
 	movd	(r3,r2),r13
-	bal	ra,30F2
-	Invalid
-	ord	$1CA55229,(r11,r10)
+	bal	ra,fn000030F2
+	loadw	0xB4(r13),r9
+	cmpw	$2,r9
+	blo	000044D8
+
+l00004550:
 	movw	r9,r3
-	Invalid
-	ord	$DF0D3330,(r7,r6)
-	ord	$EF0D5F00,(r7,r6)
-	andd	$1206DF3D,r12
-	Invalid
-	ord	$5CC32D,(r11,r10)
-	Invalid
-	ord	$54C30D,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	458E
-	Invalid
-	ord	$1F14520A,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r6
-	movd	(r5,r4),(r9,r8)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movw	r4,r6
-	movw	r5,r3
-	Invalid
-	cmpd	$0,(r11,r10)
-	beq	469E
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	469E
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	469E
-	Invalid
-	res
-	cmpd	$0,ra
-	beq	469E
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r11,r10),(r5,r4)
-	beq	4608
+
+l00004552:
+	loadw	0xAC(r13),r0
+	addw	r0,r3
+	storw	r0,0xAC(r13)
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	storw	r3,0x240C(r13)
+	storw	$0,0x5A(r13)
+	storw	$2,0x5C(r13)
+	storw	$2,0x50(r13)
+	storw	$0,0x54(r13)
+	loadd	0xC(sp),(r1,r0)
+	loadd	4(sp),(r4,r3)
+	stord	(r1,r0),(r4,r3)
+	loadw	8(sp),r1
+	storw	r1,4(r4,r3)
+	loadw	2(sp),r2
+	storw	r2,0x18(r13)
+	movw	$0,r0
+	addd	$10,sp
 	pop	$6,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21410811,(r6,r5)
-	Invalid
-	ord	$21410814,(r12_l,r11)
-	Invalid
-	xord	$21410814,(r8,r7)
-	Invalid
-	movd	$21410814,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	464C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4604
-	Invalid
-	ord	$5A9F4E,(r7,r6)
-	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	4662
-	movw	r1,r7
-	movw	r6,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4692
-	Invalid
-	Invalid
-	Invalid
-	beq	4692
+	popret	$1,r13,ra
+0000458E                                           B0 5A               .Z
+00004590 FE FF BF 60 10 00 67 02 9D 03 B2 52 2A 00 18 1F ...`..g....R*...
+000045A0 AD 9F 5A 00 0A 52 14 1F 0F A2 20 AF 30 00 76 5B ..Z..R.... .0.v[
+000045B0 84 55 00 C0 3C 7B 2F A2 02 EF 30 00 AD DC 0D 9F .U..<{/...0.....
+000045C0 28 00 07 53 40 18 F3 FE E0 18 E7 FE 1E 01 67 01 (..S@.........g.
+000045D0 BC 54 12 00 FC 61 2A 55 46 5B 53 5B 8C A0 0A 56 .T...a*UF[S[...V
+000045E0 0F 15 0A AF 20 00 00 56 0B 15 0A AF 24 00 00 56 .... ..V....$..V
+000045F0 07 15 EA AF 1C 00 0E 56 03 15 4E A0 B0 5A FE FF .......V..N..Z..
+00004600 4A 57 03 10 67 02 1E 03 2E 92 B2 52 2A 00 14 08 JW..g......R*...
+00004610 B2 52 45 00 11 08 41 21 B2 52 5B 00 14 08 41 21 .RE...A!.R[...A!
+00004620 B2 52 67 00 14 08 41 21 B2 52 71 00 14 08 41 21 .Rg...A!.Rq...A!
+00004630 B2 52 9A 02 14 08 41 21 01 50 09 10 B2 32 C7 FF .R....A!.P...2..
+00004640 B2 22 EF FF 02 52 11 08 01 52 1D 1D 0E 9F 56 00 ."...R...R....V.
+00004650 4E 9F 5A 00 01 5B 41 33 7E 9F 28 00 17 53 B2 10 N.Z..[A3~.(..S..
+00004660 17 5B 61 5B 31 27 01 52 11 08 01 52 03 11 07 52 .[a[1'.R...R...R
+00004670 11 08 01 52                                     ...R            
+
+l00004674:
+	beq	00004692
+
+l00004676:
 	movzw	r7,(r11,r10)
 	movzw	r0,(r1,r0)
 	movzw	r4,(r5,r4)
-	Invalid
+	addd	(r5,r4),(r1,r0)
 	subd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
+	loadd	0x60(ra),(r5,r4)
+	addd	(r1,r0),(r5,r4)
 	push	$1,r10
 	movw	r6,r2
-	bal	ra,DB24
-	Invalid
+	bal	ra,fn0000DB24
+	addd	$4,sp
+
+l00004692:
 	cmpd	$0,(r9,r8)
-	beq	46A6
-	Invalid
-	Invalid
+	beq	000046A6
+
+l00004696:
+	storw	r7,(r9,r8)
+	movw	$0,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+0000469E                                           B0 5A               .Z
+000046A0 FE FF 67 02 1E 03                               ..g...          
+
+l000046A6:
+	movw	$0,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
+
+;; fn000046AC: 000046AC
+;;   Called from:
+;;     0000640E (in fn00004CD4)
+;;     00006674 (in fn00004CD4)
+fn000046AC proc
 	push	$1,ra
 	push	$3,r8
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	4786
-	Invalid
-	Invalid
+	beq	00004786
+
+l000046B6:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	4786
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	4786
-	Invalid
-	res
+	beq	00004786
+
+l000046BE:
+	loadd	0x48(r3,r2),(r1,r0)
+
+;; fn000046C0: 000046C0
+;;   Called from:
+;;     0000445C (in fn00004450)
+;;     000046BE (in fn000046AC)
+fn000046C0 proc
+	addd	$56001601,(r5,r4)
+
+;; fn000046C6: 000046C6
+;;   Called from:
+;;     000046B4 (in fn000046AC)
+;;     000046BC (in fn000046AC)
+;;     000046C0 (in fn000046C0)
+;;     000046C2 (in fn000046C0)
+;;     000046C2 (in fn000046C0)
+fn000046C6 proc
+	loadd	0x38(r3,r2),(r11,r10)
+
+;; fn000046CA: 000046CA
+;;   Called from:
+;;     00004452 (in fn00004450)
+;;     000046C6 (in fn000046C6)
+fn000046CA proc
 	cmpd	$0,(r11,r10)
-	beq	4786
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r9,r8),(r3,r2)
-	beq	46DC
+	beq	00004786
+
+;; fn000046CE: 000046CE
+;;   Called from:
+;;     000046CC (in fn000046CA)
+;;     000046CC (in fn000046CA)
+fn000046CE proc
+	loadd	(r11,r10),(r3,r2)
+	movw	$FFFE,r0
+
+;; fn000046D2: 000046D2
+;;   Called from:
+;;     00004462 (in fn00004450)
+;;     000046D0 (in fn000046CE)
+fn000046D2 proc
+	storb	sp,0x5728(ra)
+	beq	fn000046DC
+
+l000046D8:
 	pop	$3,r8
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+
+;; fn000046DC: 000046DC
+;;   Called from:
+;;     000046D4 (in fn000046D2)
+;;     000046D4 (in fn000046D2)
+;;     000046D6 (in fn000046D2)
+fn000046DC proc
+	loadw	4(r11,r10),r2
+	cmpw	$2A,r2
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
 	cmpb	$0,r1
-	beq	4720
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	46D8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	4764
-	Invalid
-	beq	4774
-	Invalid
-	bne	478E
-	Invalid
-	movd	$5A06D21A,(r2,r1)
-	Invalid
+	beq	00004720
+
+l00004710:
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r2
+	sne	r1
+	cmpw	$0,r1
+	bne	000046D8
+
+l00004720:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	stord	(r1,r0),8(r9,r8)
+	stord	(r1,r0),0x18(r9,r8)
+	storw	$2,0x2C(r9,r8)
+	stord	(r1,r0),0x14(r11,r10)
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadw	0x18(r11,r10),r0
+	cmpw	$0,r0
+	bgt	00004764
+
+l00004738:
+	cmpw	$2,r0
+	beq	00004774
+
+l0000473C:
+	cmpw	$0,r0
+	bne	0000478E
+
+l00004740:
+	movw	$71,r1
+
+l00004744:
+	storw	r1,4(r11,r10)
+	movw	$0,r6
+	movd	$0,(r5,r4)
 	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000C0EE
+
+l00004750:
+	stord	(r1,r0),0x60(r9,r8)
+	storw	$0,0x26(r11,r10)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,AF06
-	Invalid
+	bal	ra,fn0000AF06
+	movw	$0,r0
 	pop	$3,r8
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4744
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00004764:
+	movw	$0,r1
+	subw	r1,r0
+	storw	r1,0x18(r11,r10)
+	movw	$2A,r1
+	cmpw	$FFFE,r0
+	bne	00004744
+
+l00004774:
+	movw	$39,r0
+	storw	r0,4(r11,r10)
+	movw	$0,r6
+	movd	$0,(r5,r4)
 	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	br	4750
-	Invalid
-	Invalid
+	bal	ra,fn0000CAF8
+	br	00004750
+
+l00004786:
+	movw	$FFFE,r0
 	pop	$3,r8
 	popret	$1,ra
-	Invalid
-	Invalid
-	br	4744
-	push	$1,ra
-	push	$3,r8
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$5,r0
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$4,r6
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$3,r12
-	Invalid
-	res
-	cmpd	$0,(r11,r10)
-	Invalid
-	push	$3,r2
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r9,r8),(r3,r2)
-	beq	47CC
-	pop	$3,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	4810
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	47C8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	48CA
-	Invalid
-	beq	48DA
-	Invalid
-	bne	48F4
-	Invalid
-	movd	$5A06D21A,(r2,r1)
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,AF06
-	Invalid
-	res
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F553295,(r3,r2)
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DB44
-	Invalid
-	xord	$55205E22,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E5A4,r0
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF289020,(r1,r0)
-	xord	$DF289220,(r7,r6)
-	xord	$DF089300,(r9,r8)
-	ord	$56C308,ra
-	Invalid
-	Invalid
-	andd	$5AC308,r12
-	Invalid
-	beq	4900
-	Invalid
-	ord	$50C328,r12
-	Invalid
-	ord	$40C308,(r5,r4)
-	pop	$3,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4834
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	br	4840
-	Invalid
-	Invalid
-	pop	$3,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	br	4834
-	push	$1,ra
-	push	$0,r7
-	cmpd	$0,(r3,r2)
-	beq	497C
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	497C
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	497C
-	Invalid
-	res
-	cmpd	$0,ra
-	beq	497C
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	beq	4928
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	496C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4924
-	Invalid
-	Invalid
-	bne	497C
-	Invalid
-	res
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$1,r12
-	push	$2,r7
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	4A1C
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	4A1C
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	4A1C
-	Invalid
-	res
-	cmpd	$0,ra
-	beq	4A1C
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r9,r8)
-	beq	49BE
-	pop	$2,r7
-	pop	$1,r12
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	4A02
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	49B8
-	cmpd	$0,(r5,r4)
-	beq	4A0A
-	Invalid
-	Invalid
-	cmpd	$0,(r7,r6)
-	beq	4A26
-	Invalid
-	beq	4A64
-	Invalid
-	Invalid
-	pop	$2,r7
-	pop	$1,r12
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$2,r7
-	pop	$1,r12
-	popret	$1,ra
-	Invalid
-	pop	$2,r7
-	pop	$1,r12
-	popret	$1,ra
-	push	$1,ra
-	push	$6,r7
-	movw	r4,r11
-	movw	r5,r8
-	cmpd	$0,(r3,r2)
-	beq	4A58
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	4A58
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	4A58
-	Invalid
+
+l0000478E:
+	movw	$2A,r1
+	br	00004744
+00004794             1E 01 38 01 28 55 02 56 00 18 50 01     ..8.(U.V..P.
+000047A0 02 AF 20 00 00 56 00 18 46 01 02 AF 24 00 00 56 .. ..V..F...$..V
+000047B0 00 18 3C 01 A2 AF 1C 00 0A 56 00 18 32 01 2A A0 ..<......V..2.*.
+000047C0 B0 5A FE FF 28 57 03 10 38 02 1E 03 2A 92 B2 52 .Z..(W..8...*..R
+000047D0 2A 00 13 08 B2 52 45 00 11 08 31 21 B2 52 5B 00 *....RE...1!.R[.
+000047E0 13 08 31 21 B2 52 67 00 13 08 31 21 B2 52 71 00 ..1!.Rg...1!.Rq.
+000047F0 13 08 31 21 B2 52 9A 02 13 08 31 21 01 50 09 10 ..1!.R....1!.P..
+00004800 B2 32 C7 FF B2 22 EF FF 02 52 11 08 01 52 1D 1D .2..."...R...R..
+00004810 00 54 08 EA 08 E4 08 EC 28 C3 2C 00 0A EA 0A A4 .T......(.,.....
+00004820 0A E8 0A 9C 00 52 62 15 20 52 08 15 00 52 13 16 .....Rb. R...R..
+00004830 B1 5A 71 00 1A D2 06 5A 04 54 42 55 00 C0 B2 78 .Zq....Z.TBU...x
+00004840 08 EF 30 00 0A C3 26 00 A2 55 00 C0 BC 66 88 AF ..0...&..U...f..
+00004850 1C 00 08 9F 28 00 00 5F 00 61 08 EF 34 00 28 AF ....(.._.a..4.(.
+00004860 3C 00 58 9F 42 00 95 32 55 5F 55 61 20 55 50 61 <.X.B..2U_Ua UPa
+00004870 00 C2 04 5A 00 C0 D0 92 28 9F 62 00 22 5E 20 55 ...Z....(.b."^ U
+00004880 20 61 02 61 22 4C 00 05 A4 E5 20 61 20 91 28 DF  a.a"L.... a .(.
+00004890 60 00 20 90 28 DF 66 00 20 92 28 DF 68 00 00 93 `. .(.f. .(.h...
+000048A0 08 DF 5E 00 08 C3 56 00 00 54 08 EF 4C 00 08 C3 ..^...V..T..L...
+000048B0 5A 00 08 C3 06 12 28 C3 5C 00 28 C3 50 00 08 C3 Z.....(.\.(.P...
+000048C0 54 00 08 C3 40 00 38 02 1E 03 01 5A 01 3B 1A DC T...@.8....Z.;..
+000048D0 B1 5A 2A 00 B0 52 FE FF 1E 1A B0 5A 39 00 0A D2 .Z*..R.....Z9...
+000048E0 06 5A 04 54 42 55 00 C0 12 82 EB 1A B0 5A FE FF .Z.TBU.......Z..
+000048F0 38 02 1E 03 B1 5A 2A 00 EE 19 1E 01 07 01 02 56 8....Z*........V
+00004900 0E 13 02 AF 20 00 00 56 0A 13 02 AF 24 00 00 56 .... ..V....$..V
+00004910 06 13 E2 AF 1C 00 0E 56 02 13 6E A0 B0 5A FE FF .......V..n..Z..
+00004920 62 57 03 10 07 02 1E 03 2E 92 B2 52 2A 00 13 08 bW.........R*...
+00004930 B2 52 45 00 11 08 31 21 B2 52 5B 00 13 08 31 21 .RE...1!.R[...1!
+00004940 B2 52 67 00 13 08 31 21 B2 52 71 00 13 08 31 21 .Rg...1!.Rq...1!
+00004950 B2 52 9A 02 13 08 31 21 01 50 09 10 B2 32 C7 FF .R....1!.P...2..
+00004960 B2 22 EF FF 02 52 11 08 01 52 1D 1D 0E 9C 20 52 ."...R...R.... R
+00004970 16 10 4E EF 1C 00 00 5A 07 02 1E 03 B0 5A FE FF ..N....Z.....Z..
+00004980 07 02 1E 03 00 00 1E 01 1C 01 27 01 EC 54 FC 61 ..........'..T.a
+00004990 6C A0 02 56 04 14 02 AF 20 00 00 56 00 14 02 AF l..V.... ..V....
+000049A0 24 00 00 56 0C 13 E2 AF 1C 00 0E 56 08 13 8E A0 $..V.......V....
+000049B0 B0 5A FE FF 82 57 04 10 27 02 1C 02 1E 03 2E 92 .Z...W..'.......
+000049C0 B2 52 2A 00 13 08 B2 52 45 00 11 08 31 21 B2 52 .R*....RE...1!.R
+000049D0 5B 00 13 08 31 21 B2 52 67 00 13 08 31 21 B2 52 [...1!.Rg...1!.R
+000049E0 71 00 13 08 31 21 B2 52 9A 02 13 08 31 21 01 50 q...1!.R....1!.P
+000049F0 09 10 B2 32 C7 FF B2 22 EF FF 02 52 11 08 01 52 ...2..."...R...R
+00004A00 1C 1D 04 56 03 10 0E 9A 04 D0 06 56 0D 10 0E 9F ...V.......V....
+00004A10 0A 12 06 D0 00 5A 27 02 1C 02 1E 03 B0 5A FE FF .....Z'......Z..
+00004A20 27 02 1C 02 1E 03 00 5A 27 02 1C 02 1E 03 1E 01 '......Z'.......
+00004A30 67 01 4B 5B 58 5B 02 56 00 11 02 AF 20 00 00 56 g.K[X[.V.... ..V
+00004A40 0C 10 02 AF 24 00 00 56 08 10 C2 AF             ....$..V....    
+
+;; fn00004A4C: 00004A4C
+;;   Called from:
+;;     00005162 (in fn00004CD4)
+fn00004A4C proc
 	res
 	cmpd	$0,r12
-	beq	4A58
-	Invalid
+	beq	00004A58
+	loadd	(r12),(r1,r0)
 	cmpd	(r3,r2),(r1,r0)
-	beq	4A62
-	Invalid
-	Invalid
+	beq	00004A62
+	movw	$FFFE,r11
 	movw	r11,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21200810,(r6,r5)
-	Invalid
-	ord	$21200812,(r12_l,r11)
-	Invalid
-	xord	$21200812,(r8,r7)
-	Invalid
-	movd	$21200812,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+	loadw	4(r12),r1
+	cmpw	$2A,r1
+	sne	r2
+	cmpw	$45,r1
+	sne	r0
+	andb	r0,r2
+	cmpw	$5B,r1
+	sne	r2
+	andb	r0,r2
+	cmpw	$67,r1
+	sne	r2
+	andb	r0,r2
+	cmpw	$71,r1
+	sne	r2
+	andb	r0,r2
+	cmpw	$29A,r1
+	sne	r2
+	andb	r0,r2
 	cmpb	$0,r0
-	beq	4AA6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4A58
-	Invalid
-	Invalid
-	Invalid
-	br	4ADC
-	cmpd	(r3,r2),(r1,r0)
-	bhi	4AFA
-	Invalid
-	Invalid
-	beq	4B0E
+	beq	00004AA6
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r1
+	sne	r0
+	cmpw	$0,r0
+	bne	00004A58
+	loadd	0x10(r12),(r1,r0)
+	addd	$2,(r1,r0)
+	loadd	0x23F0(r12),(r3,r2)
+
+;; fn00004AAC: 00004AAC
+;;   Called from:
+;;     00005616 (in fn00004CD4)
+fn00004AAC proc
+	br	fn00004ADC
+00004AAE                                           02 57               .W
+00004AB0 45 12 BA 5A                                     E..Z            
+
+;; fn00004AB4: 00004AB4
+;;   Called from:
+;;     0000560E (in fn00004CD4)
+fn00004AB4 proc
+	cbitb	$1,0xA9F1C(r2,r1)
+
+l00004AB8:
+	loadw	0x2414(r12),r1
+
+;; fn00004ABA: 00004ABA
+;;   Called from:
+;;     00004AB4 (in fn00004AB4)
+fn00004ABA proc
+	beq	00004B0E
+
+l00004ABC:
 	movw	r10,r0
-	Invalid
+	subw	r0,r1
 	movw	r11,r7
-	Invalid
-	bge	4AC8
+	cmpw	r11,r0
+	bge	fn00004AC8
+
+;; fn00004AC6: 00004AC6
+;;   Called from:
+;;     00004AC2 (in fn00004AE8)
+;;     00004AC4 (in fn00004ABA)
+;;     00004AC8 (in fn00004AC8)
+;;     000055DA (in fn00004CD4)
+fn00004AC6 proc
 	movw	r0,r7
+
+;; fn00004AC8: 00004AC8
+;;   Called from:
+;;     00004AC4 (in fn00004ABA)
+;;     00004AC6 (in fn00004AC6)
+fn00004AC8 proc
 	movw	r9,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4B24
-	Invalid
-	Invalid
-	beq	4B2A
-	Invalid
-	Invalid
-	beq	4B34
+	ashuw	r7,r0
+	addw	$FFFF,r9
+	andw	r0,r8
+	ashuw	r1,r0
+	loadw	0x2410(r12),r2
+	orw	r0,r2
+	storw	r0,0x2410(r12)
+
+;; fn00004ADC: 00004ADC
+;;   Called from:
+;;     00004AAC (in fn00004AAC)
+;;     00004AD8 (in fn00004AE8)
+fn00004ADC proc
+	addw	r1,r7
+	storw	r1,0x2414(r12)
 	movd	(r3,r2),r12
-	bal	ra,B09C
+	bal	ra,fn0000B09C
+
+;; fn00004AE8: 00004AE8
+;;   Called from:
+;;     00004AE4 (in fn00004ADC)
+;;     00004AE4 (in fn00004ADC)
+fn00004AE8 proc
 	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4AB8
+	subb	r0,r7
+	ashuw	r0,r8
+	subw	r11,r7
+	cmpw	$0,r11
+	bne	00004AB8
+
+l00004AF4:
 	movw	r11,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	movw	r11,r0
-	pop	$6,r7
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$1,r12
-	push	$0,r7
-	Invalid
-	Invalid
-	Invalid
+00004AFA                               BB 5A FB FF B0 5B           .Z...[
+00004B00 67 02 1E 03 00 00 1E 01 1C 01 07 01 AC 54       g............T  
+
+l00004B0E:
+	addd	sp,r12
+	loadw	(r12),r7
 	cmpd	$0,(r3,r2)
-	beq	4B9A
-	Invalid
-	Invalid
+	beq	00004B9A
+
+l00004B16:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	4B9A
-	Invalid
-	Invalid
+	beq	00004B9A
+
+l00004B1E:
+	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	4B9A
-	Invalid
-	res
+	beq	00004B9A
+
+l00004B26:
+	loadd	0x38(r3,r2),ra
 	cmpd	$0,ra
-	beq	4B9A
-	Invalid
-	Invalid
-	Invalid
+	beq	00004B9A
+
+l00004B2E:
+	loadd	(ra),r12
+	movw	$FFFE,r0
 	cmpd	(r3,r2),r12
-	beq	4B3E
+	beq	00004B3E
+
+l00004B38:
 	pop	$0,r7
 	pop	$1,r12
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+
+l00004B3E:
+	loadw	4(ra),r2
+	cmpw	$2A,r2
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
 	cmpb	$0,r1
-	beq	4B82
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4B38
-	Invalid
-	xord	$60DF5E,(r7,r6)
-	Invalid
-	xord	$5EDF7E,(r9,r8)
-	Invalid
+	beq	00004B82
+
+l00004B72:
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r2
+	sne	r1
+	cmpw	$0,r1
+	bne	00004B38
+
+l00004B82:
+	storw	r4,0xCC(ra)
+	storw	r5,0xC0(ra)
+	storw	r6,0xD0(ra)
+	storw	r7,0xBC(ra)
+	movw	$0,r0
 	pop	$0,r7
 	pop	$1,r12
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00004B9A:
+	movw	$FFFE,r0
 	pop	$0,r7
 	pop	$1,r12
 	popret	$1,ra
-	push	$1,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r7,r6),ra
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	4BDE
-	Invalid
-	Invalid
-	cmpd	$0,(r7,r6)
-	beq	4BDE
-	Invalid
-	Invalid
-	cmpd	$0,(r7,r6)
-	beq	4BDE
-	Invalid
-	res
-	cmpd	$0,(r9,r8)
-	beq	4BDE
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	beq	4BE6
-	Invalid
-	cinv	[i,,u]
+00004BA4             1E 01 67 01 7E 54 4E 61 B0 54 3F 00     ..g.~TNa.T?.
+00004BB0 40 61 A0 4B E6 55 D6 4B 60 61 40 61 02 56 00 11 @a.K.U.K`a@a.V..
+00004BC0 62 AF 20 00 06 56 0C 10 62 AF 24 00 06 56 08 10 b. ..V..b.$..V..
+00004BD0 82 AF 1C 00 08 56 04 10 68 A0 62 57 05 10 B0 60 .....V..h.bW...`
+00004BE0 0B 00 67 02 1E 03 38 92 B3 52 2A 00 16 08 B3 52 ..g...8..R*....R
+00004BF0 45 00 12 08 62 21 B3 52 5B 00 16 08 62 21 B3 52 E...b!.R[...b!.R
+00004C00 67 00 16 08 62 21 B3 52 71 00 16 08 62 21 B3 52 g...b!.Rq...b!.R
+00004C10 9A 02 16 08 62 21 02 50 09 10 B3 32 C7 FF B3 22 ....b!.P...2..."
+00004C20 EF FF 03 52 12 08 02 52 1B 1D 28 9C 12 52 06 14 ...R...R..(..R..
+00004C30 22 52 0D 11 02 52 09 11                         "R...R..        
+
+l00004C38:
+	movd	$6,(r7,r6)
+
+l00004C3A:
+	loadw	0x54(r9,r8),r2
+	cmpw	$F,r2
+	beq	00004C4A
+
+l00004C42:
+	addd	$5,(r1,r0)
+	addd	(r7,r6),(r1,r0)
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21620812,(r6,r5)
-	Invalid
-	ord	$21620816,(r12_l,r11)
-	Invalid
-	xord	$21620816,(r8,r7)
-	Invalid
-	movd	$21620816,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	cmpb	$0,r2
-	beq	4C2A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4BDE
-	Invalid
-	Invalid
-	beq	4CBA
-	Invalid
-	beq	4C6C
-	Invalid
-	beq	4C68
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4C4A
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,ra
-	Invalid
-	andd	$1F1952F2,(r5,r4)
+
+l00004C4A:
+	loadw	0x88(r9,r8),r2
+	cmpw	$F,r2
+	bne	00004C42
+
+l00004C52:
 	movd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
+	lshd	$-20,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	ra,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-18,ra
+	addd	ra,(r1,r0)
+	lshd	$-7,(r5,r4)
+	addd	(r5,r4),(r1,r0)
+	addd	(r7,r6),(r1,r0)
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	br	4C3A
-	Invalid
-	res
-	cmpd	$0,r12
-	beq	4CC6
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	4CCC
-	Invalid
-	Invalid
-	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
-	beq	4C98
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r2
-	bne	4C8A
-	Invalid
-	res
-	cmpd	$0,(r11,r10)
-	beq	4CAE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r2
-	bne	4CA0
-	Invalid
-	Invalid
-	Invalid
-	beq	4C3A
-	Invalid
-	br	4C3A
-	Invalid
-	ord	$1B0C5202,(r7,r6)
-	Invalid
-	br	4C3A
-	Invalid
-	Invalid
-	Invalid
+00004C68                         06 54 E8 1E C8 AF 1C 00         .T......
+00004C70 0C 56 0A 12 2C A6 02 56 0A 12 6C 98 26 32 66 5F .V..,..V..l.&2f_
+00004C80 B6 60 12 00 AC AA 0A 56 08 10 16 60 1A 60 92 54 .`.....V...`.`.T
+00004C90 A2 61 22 B0 02 50 1A 1F AC AF 1C 00 0A 56 08 10 .a"..P.......V..
+00004CA0 16 60 1A 60 92 54 A2 61 22 B0 02 50 1A 1F 2C 9F .`.`.T.a"..P..,.
+00004CB0 22 00 02 52 03 1C 26 60 E1 1C                   "..R..&`..      
+
+l00004CBA:
+	loadw	0xAC(r9,r8),r2
+	cmpw	$0,r2
+	beq	00004C38
+
+l00004CC2:
+	movd	$A,(r7,r6)
+	br	00004C3A
+00004CC6                   B6 54 12 00 E8 1B B6 54 12 00       .T.....T..
+00004CD0 EA 1D 00 00                                     ....            
+
+;; fn00004CD4: 00004CD4
+;;   Called from:
+;;     00002DD0 (in fn00002D76)
+;;     0000600C (in fn00004CD4)
+fn00004CD4 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
+	addd	$FFF4,sp
 	movd	r12,(r3,r2)
-	Invalid
+	storw	r4,(sp)
 	cmpd	$0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	000055EA
+
+l00004CE6:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	000055E0
+
+l00004CF0:
+	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
+	beq	000055D6
+
+l00004CFA:
+	loadd	0x38(r3,r2),r13
 	cmpd	$0,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	000055CC
+
+l00004D04:
+	loadd	(r13),(r3,r2)
+	movw	$FFFE,r0
 	cmpd	r12,(r3,r2)
-	beq	4D14
-	Invalid
+	beq	00004D14
+
+l00004D0E:
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+
+l00004D14:
+	loadw	4(r13),r2
+	cmpw	$2A,r2
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
 	cmpb	$0,r1
-	beq	4D5A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4D0E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00004D5A
+
+l00004D48:
+	movw	$FFC7,r1
+	addw	r1,r2
+	andw	$FFEF,r11
+	cmpw	$0,r1
+	sne	r1
+	cmpw	$0,r1
+	bne	00004D0E
+
+l00004D5A:
+	loadw	(sp),r0
+	cmpw	$5,r0
+	blo	0000556E
+
+l00004D62:
+	loadd	0xC(r12),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4D78
-	Invalid
+	beq	00006D4A
+
+l00004D6A:
+	loadw	4(r12),r3
+	cmpw	$0,r3
+	beq	00004D78
+
+l00004D70:
+	loadd	(r12),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006D3C
+
+l00004D78:
+	loadw	(sp),r1
+	cmpw	$4,r1
+	sne	r0
 	movb	r0,r1
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	beq	4D90
+	cmpw	$29A,r2
+	seq	r0
+	cmpw	$0,r0
+	beq	00004D90
+
+l00004D8A:
 	cmpb	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00006D24
+
+l00004D90:
+	loadw	0x10(r12),r0
+	cmpw	$0,r0
+	beq	00006CC4
+
+l00004D98:
+	loadw	0x4C(r13),r0
+	loadw	(sp),r4
+	storw	r4,0x4C(r13)
+	loadd	0x14(r13),(r5,r4)
 	cmpd	$0,(r5,r4)
-	Invalid
-	popret	$2,r2,ra
-	Invalid
-	Invalid
-	push	$5,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	4DBC
-	Invalid
+	bne	000054EA
+
+l00004DAA:
+	cmpw	$0,r3
+	bne	00005158
+
+l00004DB0:
+	loadw	(sp),r4
+	addw	r4,r4
+	loadw	(sp),r3
+	cmpw	$5,r3
+	bne	00004DBC
+
+l00004DBA:
+	movw	$1,r4
+
+l00004DBC:
 	movw	r0,r3
-	Invalid
-	Invalid
-	bge	4DC8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4DD6
+	addw	r3,r0
+	cmpw	$4,r0
+	bge	00004DC8
+
+l00004DC4:
+	addw	$FFF7,r11
+
+l00004DC8:
+	cmpw	r4,r3
+	sge	r0
+	cmpw	$0,r0
+	beq	00004DD6
+
+l00004DD0:
 	cmpb	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	push	$3,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18005200,(r11,r10)
-	Invalid
-	Invalid
-	xord	$18005200,(r3,r2)
-	Invalid
-	Invalid
-	xord	$18005221,(r5,r4)
-	res
-	Invalid
-	Invalid
-	Invalid
+	bne	00006C86
+
+l00004DD6:
+	cmpw	$29A,r2
+	bne	0000513A
+
+l00004DDE:
+	loadw	4(r12),r3
+	cmpw	$0,r3
+	bne	00006C76
+
+l00004DE6:
+	loadw	0xB4(r13),r0
+	cmpw	$0,r0
+	beq	00005E48
+
+l00004DF0:
+	loadw	0xC4(r13),r0
+	cmpw	$0,r0
+	beq	00005D9E
+
+l00004DFA:
+	loadw	0xC8(r13),r1
+	cmpw	$2,r1
+	beq	00006098
+
+l00004E04:
+	cmpw	$3,r1
+	beq	0000657E
+
+l00004E0A:
 	movxw	r0,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E5A4,r2
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	ashud	$2,(r1,r0)
+	movd	$E5A4,(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadd	8(r1,r0),(r1,r0)
+	loadw	(sp),r4
 	movd	(r3,r2),r13
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$5,r4,ra
-	Invalid
-	bne	4EB6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	4E62
-	Invalid
+	movw	$FFFE,r1
+	addw	r1,r0
+	cmpw	$1,r1
+	bhs	000068CE
+
+l00004E2E:
+	movw	$FFFD,r1
+	andw	r1,r0
+	cmpw	$0,r1
+	beq	000055DE
+
+l00004E3A:
+	cmpw	$1,r0
+	bne	00004EB6
+
+l00004E3E:
+	loadw	(sp),r3
+	cmpw	$1,r3
+	beq	00006C02
+
+l00004E46:
+	cmpw	$5,r3
+	beq	00004E62
+
+l00004E4A:
+	movd	$0,(r9,r8)
 	push	$1,r8
-	Invalid
+	movw	$0,r6
 	movd	(r5,r4),(r9,r8)
 	movd	(r3,r2),r13
-	bal	ra,AF94
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfs	4E78
-	Invalid
-	res
+	bal	ra,fn0000AF94
+	addd	$4,sp
+	loadw	(sp),r4
+	cmpw	$3,r4
+	beq	00006F76
+
+l00004E62:
+	loadd	0x38(r12),(r9,r8)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	4E76
+	bal	ra,fn0000B09C
+	loadw	0x10(r12),r0
+	loadw	0x14(r9,r8),r7
+	cmpw	r7,r0
+	bhs	00004E76
+
+l00004E74:
 	movw	r0,r7
-	Invalid
-	beq	4EB0
+
+l00004E76:
+	cmpw	$0,r7
+	beq	00004EB0
+
+l00004E7A:
 	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
 	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r3,r2)
 	subd	(r3,r2),(r11,r10)
-	Invalid
+	stord	(r3,r2),0x14(r9,r8)
+	addd	$4,sp
 	cmpd	$0,(r3,r2)
-	bne	4EB0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$6,r0
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00004EB0
+
+l00004EAC:
+	loadd	8(r9,r8),(r3,r2)
+	stord	(r3,r2),0x10(r9,r8)
+
+l00004EB0:
+	cmpw	$0,r0
+	beq	00005572
+
+l00004EB6:
+	loadw	(sp),r0
+	cmpw	$4,r0
+	bne	fn00006182
+
+l00004EBE:
+	loadw	0x18(r13),r3
+	cmpw	$0,r3
+	bge	00006B6E
+
+l00004EC6:
+	loadw	0x60(r12),r8
+	loadw	0x64(r12),r2
+	loadd	0x14(r13),(r1,r0)
+	movd	$1,(r5,r4)
+	addd	(r1,r0),(r5,r4)
+	loadd	8(r13),(r7,r6)
+	addd	(r7,r6),(r1,r0)
+	stord	(r5,r4),0x14(r13)
+	cmpw	$2,r3
+	beq	00006D18
+
+l00004EE0:
 	movw	r2,r3
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	$-8,r3
+	storb	r3,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+	loadw	0x60(r12),r2
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
 	movw	r2,r3
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
+	lshw	$-8,r3
+	storb	r3,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+	loadd	0x38(r12),(r9,r8)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	4F2C
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	00004F2C
+
+l00004F2A:
 	movw	r0,r7
-	Invalid
-	beq	4F66
+
+l00004F2C:
+	cmpw	$0,r7
+	beq	00004F66
+
+l00004F30:
 	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
 	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
 	subd	(r1,r0),(r11,r10)
-	Invalid
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	4F66
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	4F72
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	00004F66
+
+l00004F62:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00004F66:
+	loadw	0x18(r13),r0
+	cmpw	$0,r0
+	bge	00004F72
+
+l00004F6C:
+	movw	$0,r1
+	subw	r1,r0
+	storw	r1,0x18(r13)
+
+l00004F72:
+	loadw	0x14(r13),r0
+	loadw	0x16(r13),r1
+	orw	r0,r1
+	cmpw	$0,r0
+	seq	r0
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	5068
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$18D05210,(r5,r4)
-	Invalid
-	Invalid
-	ord	$10035200,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	res
-	movw	r7,r2
-	bal	ra,D4A4
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r3
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$12055200,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r3
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r3
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	movd	$AF8CD20D,(r2,r1)
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$5207,r8
-	Invalid
-	movd	$2AA0D,r8
-	cmpd	$0,(r1,r0)
-	bne	513A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r10,ra
-	Invalid
-	andd	$7A21800,(r6,r5)
-	Invalid
-	andd	$CC01800,(r10,r9)
-	Invalid
-	ord	$D5A1800,(r12_l,r11)
-	Invalid
-	xord	$D5A1800,(r8,r7)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r7,r6),(r5,r4)
-	bhs	50CA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	xord	$5200D21D,(r8,r7)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	50F8
-	movw	r0,r7
-	Invalid
-	beq	5132
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r11,r10)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5132
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00004F82       B2 52 9A 02 00 18 A6 0D B2 52 2A 00 1D 16   .R.......R*...
+00004F90 7D 9F 2A 00 C7 42 B7 32 00 88 0D 9F 64 00 10 52 }.*..B.2....d..R
+00004FA0 D0 18 90 06 0D 9F 56 00 00 52 03 10 B7 26 20 00 ......V..R...& .
+00004FB0 B3 5A 1F 00 72 5B 00 C0 EE 84 B2 5A 1F 00 72 33 .Z..r[.....Z..r3
+00004FC0 02 3B 0D A4 4D AA 16 54 46 61 6D EA 40 61 23 5B .;..M..TFam.@a#[
+00004FD0 83 49 30 F0 0D A4 4D AA 16 54 46 61 6D EA 40 61 .I0...M..TFam.@a
+00004FE0 20 F0 0D 9F 56 00 00 52 05 12 2C 9F 32 00 0D A4  ...V..R..,.2...
+00004FF0 4D AA 16 54 46 61 6D EA 40 61 23 5B 83 49 30 F0 M..TFam.@a#[.I0.
+00005000 0D A4 4D AA 16 54 46 61 6D EA 40 61 20 F0 2C 9F ..M..TFam.@a .,.
+00005010 30 00 0D A4 4D AA 16 54 46 61 6D EA 40 61 23 5B 0...M..TFam.@a#[
+00005020 83 49 30 F0 0D A4 4D AA 16 54 46 61 6D EA 40 61 .I0...M..TFam.@a
+00005030 20 F0 06 5A 04 54 42 55 00 C0 B6 70 0C EF 30 00  ..Z.TBU...p..0.
+00005040 B0 5A 71 00 0D D2 8C AF 1C 00 82 55 00 C0 50 60 .Zq........U..P`
+00005050 08 9A 7C 98 07 53 A0 18 80 05 07 52 10 18 82 05 ..|..S.....R....
+00005060 0D AA 00 56 1B 16 2D 92 B2 52 39 00 00 18 EA 01 ...V..-..R9.....
+00005070 B2 52 45 00 00 18 A2 07 B2 52 49 00 00 18 C0 0C .RE......RI.....
+00005080 B2 52 5B 00 00 18 5A 0D B2 52 67 00 00 18 5A 0D .R[...Z..Rg...Z.
+00005090 3C 92 03 52 10 18 5D FD E0 18 4F FD 0D AF 1C 00 <..R..]...O.....
+000050A0 00 9F 22 00 00 52 00 18 1C 0B 6D AA 46 57 BE 10 .."..R....m.FW..
+000050B0 46 3B 0D A4 04 61 2C AF 30 00 00 C0 3E 7A 0C EF F;...a,.0...>z..
+000050C0 30 00 0D AF 1C 00 00 9F 22 00 B1 5A 67 00 1D D2 0......."..Zg...
+000050D0 00 52 00 18 F0 0A 2D AA 24 54 24 61 0D A6 04 57 .R....-.$T$a...W
+000050E0 B0 18 B0 0A 8C AF 1C 00 82 55 00 C0 B2 5F 08 9A .........U..._..
+000050F0 7C 98 07 53 B2 10 07 5B 07 52 0C 11 7A 5F 2C A6 |..S...[.R..z_,.
+00005100 48 A8 1A 01 00 C0 20 8A 0C A6 A0 61 0C E6 08 A8 H..... ....a....
+00005110 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 70 3B 0C D8 .a.....a....p;..
+00005120 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 13 10 08 A4 ........O`.V....
+00005130 08 E8 2D AA 02 56 00 18 5A 0A                   ..-..V..Z.      
+
+l0000513A:
+	movw	$FFFF,r0
+	storw	r0,0x4C(r13)
+	movw	$0,r0
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	movd	(r3,r2),r13
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	5158
-	movw	r0,r7
-	Invalid
-	bne	521E
-	Invalid
-	beq	5212
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	andd	$569F0D,r12
-	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	51BC
-	movw	r0,r7
-	Invalid
-	beq	51FA
-	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00005148                         D2 55 00 C0 52 5F 0C 98         .U..R_..
+00005150 7D 9A 07 53 B2 10 07 5B                         }..S...[        
+
+l00005158:
+	cmpw	$0,r7
+	bne	0000521E
+
+l0000515C:
+	cmpw	$0,r0
+	beq	00005212
+
+l00005160:
+	loadw	4(r13),r2
+	br	fn00004A4C
+00005166                   B0 5A FE FF CF 60 67 02 9D 03       .Z...`g...
+00005170 4D AF 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 M.L...V.._..@..V
+00005180 60 18 A4 0D 44 00 00 00 FF FF 2D AF 30 00 24 61 `...D.....-.0.$a
+00005190 10 01 16 5A D2 55 00 C0 82 60 0D 9F 56 00 00 5F ...Z.U...`..V.._
+000051A0 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 F0 5E ..L........U...^
+000051B0 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 ..x.O`.S...[.R..
+000051C0 70 5F 0F E0 28 A6 4A A8 10 01 00 C0 5A 89 08 A6 p_..(.J.....Z...
+000051D0 2F A2 20 61 08 E6 0A A8                         /. a....        
+
+l000051D8:
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
 	subd	(r1,r0),(r3,r2)
-	Invalid
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	51FA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	000051FA
+
+l000051F6:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l000051FA:
+	loadd	(r13),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	bne	00006B18
+
+l00005204:
+	movw	$29A,r0
+	storw	r0,4(r13)
+	loadw	0x10(r12),r0
+	cmpw	$0,r0
+	bne	00005E2E
+
+l00005212:
+	movw	$FFFF,r1
+	storw	r1,0x4C(r13)
+	addd	$C,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l0000521E:
 	movzw	r7,(r9,r8)
-	Invalid
-	Invalid
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r13),(r5,r4)
 	push	$1,r8
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r13),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r13)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r13),(r3,r2)
 	subd	(r3,r2),(r9,r8)
-	Invalid
+	stord	(r3,r2),0x14(r13)
+
+l0000524A:
+	addd	$4,sp
 	cmpd	$0,(r3,r2)
-	bne	515C
-	Invalid
-	Invalid
-	br	515C
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$1F,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$8B,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	r2,r6
-	Invalid
-	Invalid
-	Invalid
-	beq	52B4
-	movb	$2,r6
-	Invalid
-	Invalid
+	bne	0000515C
+
+l00005250:
+	loadd	8(r13),(r3,r2)
+	stord	(r3,r2),0x10(r13)
+	br	0000515C
+00005256                   06 5A 04 54 42 55 00 C0 9C 78       .Z.TBU...x
+00005260 0C EF 30 00 0D A4 2D AA 14 54 24 61 4D EA 20 61 ..0...-..T$aM. a
+00005270 B2 58 1F 00 20 F0 0D A4 2D AA 14 54 24 61 4D EA .X.. ...-..T$aM.
+00005280 20 61 B2 58 8B FF 20 F0 0D A4 2D AA 14 54 24 61  a.X.. ...-..T$a
+00005290 4D EA 20 61 80 82 0D AF 1C 00 00 56 00 18 86 09 M. a.......V....
+000052A0 20 90 02 52 12 08 26 59 30 9F 22 00 03 52 03 10  ..R..&Y0."..R..
+000052B0 26 58 26 31 20 A6 02 56 02 10 46 30 20 AA 02 56 &X&1 ..V..F0 ..V
+000052C0 02 10 86 30 00 AF 1C 00 00 56 04 10 B0 58 10 00 ...0.....V...X..
+000052D0 06 31 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 .1..-..T$aM. a`.
+000052E0 0D AF 1C 00 60 92 0D A4 2D AA 14 54 24 61 4D EA ....`...-..T$aM.
+000052F0 20 61 60 F0 0D AF 1C 00 60 A2 86 4B 0D A4 2D AA  a`.....`..K..-.
+00005300 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 60 93 .T$aM. a`.....`.
+00005310 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 0D AF ..-..T$aM. a`...
+00005320 1C 00 60 93 86 49 0D A4 2D AA 14 54 24 61 4D EA ..`..I..-..T$aM.
+00005330 20 61 60 F0 0D 9F 62 00 B0 52 09 00 00 18 08 0A  a`...b..R......
+00005340 1D 9F 64 00 11 52 C1 08 01 52 10 18 08 0A 10 52 ..d..R...R.....R
+00005350 D6 08 06 50 10 18 FE 09 0D A4 2D AA 14 54 24 61 ...P......-..T$a
+00005360 4D EA 20 61 60 F0 0D AF 1C 00 60 95 0D A4 2D AA M. a`.....`...-.
+00005370 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 20 A6 .T$aM. a`..... .
+00005380 02 56 06 11 60 98 0D A4 2D AA 14 54 24 61 4D EA .V..`...-..T$aM.
+00005390 20 61 60 F0 0D AF 1C 00 60 98 86 49 0D A4 2D AA  a`.....`..I..-.
+000053A0 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 20 9F .T$aM. a`..... .
+000053B0 22 00 02 52 0B 10 6D 9A 4D A4 2C AF 30 00 00 C0 "..R..m.M.,.0...
+000053C0 3A 77 0C EF 30 00 0D AF 1C 00 02 54 2D EF 20 00 :w..0......T-. .
+000053D0 B2 5A 45 00 2D D2 40 A6 04 56 00 18 26 01 AD AA .ZE.-.@..V..&...
+000053E0 ED AF 20 00 70 98 E0 55 07 3B 7F D2 78 5F 0D A6 .. .p..U.;..x_..
+000053F0 A2 55 82 61 20 57 51 16 02 5B A2 3B 2F D4 28 5F .U.a WQ..[.;/.(_
+00005400 2D A4 A2 61 E4 61 18 01 00 C0 1C 87 0D A6 0D EA -..a.a..........
+00005410 2D AF 1C 00 4F 60 22 9F 22 00 02 52 12 08 02 52 -...O`"."..R...R
+00005420 0F 10 A0 57 A2 08 02 52 0B 10 06 5B A6 3B 4D A4 ...W...R...[.;M.
+00005430 A4 61 2C AF 30 00 00 C0 C2 76 0C EF 30 00 0D AF .a,.0....v..0...
+00005440 20 00 08 61 8D EF 20 00 8C AF 1C 00 82 55 00 C0  ..a.. ......U..
+00005450 4E 5C 08 9A 7C 98 07 53 B2 10 07 5B 07 52 0C 11 N\..|..S...[.R..
+00005460 7A 5F 2C A6 48 A8 1A 01 00 C0 BC 86 0C A6 A0 61 z_,.H..........a
+00005470 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 .....a.....a....
+00005480 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 p;..........O`.V
+00005490 13 10 08 A4 08 E8 AD AA 0A 56 10 18 A1 FC 3F 92 .........V....?.
+000054A0 4F 94 43 3B 3F D2 38 5F 0D A6 2D AF 1C 00 42 A6 O.C;?.8_..-...B.
+000054B0 ED AF 20 00 08 57 A1 1A 2D A4 A2 61 E4 61 18 01 .. ..W..-..a.a..
+000054C0 00 C0 64 86 6D AA 86 61 6D EA 0D AF 1C 00 4F 60 ..d.m..am.....O`
+000054D0 20 9F 22 00 02 52 12 08 02 52 00 11 A6 57 A2 08  ."..R...R...W..
+000054E0 02 52 0C 10 A6 3B 4D A4 A4 61                   .R...;M..a      
+
+l000054EA:
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+	loadd	0x38(r13),(r1,r0)
+	movd	$0,(r3,r2)
+	stord	(r3,r2),0x40(r13)
+	movw	$49,r2
+	storw	r2,4(r13)
+	loadd	0x14(r1,r0),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	52BC
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	52C4
-	Invalid
-	Invalid
-	res
-	cmpd	$0,(r1,r0)
-	beq	52D2
-	movb	$10,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$952B0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	xord	$8C15211,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	53AE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	53CA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$A640D22D,(r6,r5)
-	cmpd	$0,(r5,r4)
-	Invalid
-	push	$2,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),ra
-	Invalid
-	Invalid
-	movzw	r7,(r9,r8)
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	cmpd	(r1,r0),(r3,r2)
-	bls	54B8
-	movw	r0,r2
-	Invalid
-	Invalid
-	movzw	r2,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	543E
-	cmpd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
-	beq	543E
-	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	545C
-	movw	r0,r7
-	Invalid
-	beq	5496
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r11,r10)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5496
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r3,(r9,r8)
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r9,r8),(r1,r0)
-	blo	53F8
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	54FA
-	cmpd	(r7,r6),(r11,r10)
-	Invalid
-	Invalid
-	beq	54FA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$AA20D22D,(r10,r9)
-	cmpd	$0,(r3,r2)
-	Invalid
-	movd	$4AA4D,r10
+	beq	00006052
+
+l0000550E:
+	loadd	0x14(r13),(r5,r4)
 	movd	(r7,r6),(r5,r4)
-	br	553E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	br	0000553E
+
+l00005514:
+	loadd	0x14(r1,r0),(r1,r0)
+	loadd	0x40(r13),(r3,r2)
+	movd	$1,(r9,r8)
+	addd	(r3,r2),(r9,r8)
+	stord	(r9,r8),0x40(r13)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r2
+	loadd	8(r13),(r1,r0)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r13)
+	addd	(r7,r6),(r1,r0)
+	storb	r2,(r1,r0)
 	cmpb	$0,r2
-	Invalid
-	movd	$CAA6D,r4
-	Invalid
-	res
-	Invalid
+	beq	00005FCC
+
+l00005538:
+	loadd	0x14(r13),(r7,r6)
+	loadd	0x38(r13),(r1,r0)
+
+l0000553E:
+	loadd	0xC(r13),(r3,r2)
 	cmpd	(r3,r2),(r7,r6)
-	bne	5514
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	556A
+	bne	00005514
+
+l00005544:
+	loadw	0x44(r1,r0),r0
+	cmpw	$0,r0
+	sne	r0
+	cmpw	$0,r0
+	beq	0000556A
+
+l00005550:
 	cmpd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	beq	556A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
+	shi	r0
+	cmpw	$0,r0
+	beq	0000556A
+
+l00005558:
+	subw	r6,r4
+	loadd	8(r13),(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+
+l0000556A:
+	loadd	0x38(r12),(r9,r8)
+
+l0000556E:
 	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	557E
+	bal	ra,fn0000B09C
+
+l00005572:
+	movw	r2,r12
+
+l00005574:
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	0000557E
+
+l0000557C:
 	movw	r0,r7
-	Invalid
-	beq	55B8
+
+l0000557E:
+	cmpw	$0,r7
+	beq	000055B8
+
+l00005582:
 	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
 	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
 	subd	(r1,r0),(r11,r10)
-	Invalid
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	55B8
-	Invalid
-	Invalid
-	Invalid
+	bne	000055B8
+
+l000055B4:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l000055B8:
+	loadd	0x14(r13),(r7,r6)
 	cmpd	$0,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
+	bne	00004CBA
+
+l000055C0:
+	loadd	0x38(r13),(r1,r0)
+	movw	$0,r4
 	movw	r4,r5
-	br	5514
-	Invalid
+	br	00005514
+000055CA                               4F 90                       O.    
+
+l000055CC:
 	movd	(r3,r2),r13
-	bal	ra,33F8
-	Invalid
-	Invalid
+	bal	ra,fn000033F8
+	br	00004674
+
+l000055D6:
 	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r7
+	beq	fn00004AE8
+
+l000055DE:
 	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
+
+l000055E0:
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
 	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+
+l000055EA:
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
 	subd	(r1,r0),(r11,r10)
-	Invalid
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$18D05210,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r4
-	Invalid
-	ord	$569F0D,(r1,r0)
-	movzw	r0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	5694
-	movzw	r1,(r5,r4)
-	Invalid
-	br	569E
-	movd	(r7,r6),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	569A
-	Invalid
-	Invalid
-	br	56AC
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF203212,(r11,r10)
-	xord	$11F69F2D,(r11,r10)
-	Invalid
-	br	56C6
-	Invalid
-	Invalid
-	ord	$DF7D3297,(r11,r10)
-	ord	$569F0D,(r11,r10)
-	Invalid
-	Invalid
-	ord	$1C1B5312,(r7,r6)
-	Invalid
-	andd	$145F00,r12
-	bal	ra,ACC6
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+	bne	fn00004AB4
+
+l00005612:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	br	fn00004AAC
+0000561A                               0F 90 00 52 00 18           ...R..
+00005620 00 02 0D 92 B0 52 9A 02 10 18 C9 F7 E0 18 8B F8 .....R..........
+00005630 0D 9F 62 00 10 52 D0 18 6F F9 50 52 D0 18 D4 06 ..b..R..o.PR....
+00005640 60 52 00 18 42 08 B7 26 C0 00 E0 18 5B F9 07 52 `R..B..&....[..R
+00005650 00 18 04 01 0D C3 50 00 0D 9F 56 00 02 5F 0D AF ......P...V.._..
+00005660 30 00 20 61 00 B0 1D 9F F6 11 14 5F 2D AF F8 11 0. a......._-...
+00005670 46 55 46 61 62 61 02 C2 2D AF F0 11 11 32 1D DF FUFaba..-....2..
+00005680 F6 11 42 61 02 F0 00 5D 00 5F 20 4C D0 61 20 9F ..Ba...]._ L.a .
+00005690 6A 00 12 32 20 DF 6A 00 2D 9F F6 11 1D 9F F4 11 j..2 .j.-.......
+000056A0 91 32 7D 9F 5A 00 97 32 7D DF 5A 00 0D 9F 56 00 .2}.Z..2}.Z...V.
+000056B0 10 32 0D DF 56 00 12 53 1B 1C 4D AF 4C 00 00 5F .2..V..S..M.L.._
+000056C0 14 00 40 C0 04 56 60 18 84 06 44 00 00 00 FF FF ..@..V`...D.....
+000056D0 2D AF 30 00 24 61 10 01 06 5A D2 55 00 C0 3C 5B -.0.$a...Z.U..<[
+000056E0 0D 9F 56 00 00 5F 0D EF 4C 00 8D A0 A8 AF 1C 00 ..V.._..L.......
+000056F0 A2 55 00 C0 AA 59 0A 9A 78 98 4F 60 07 53 B2 10 .U...Y..x.O`.S..
+00005700 07 5B 07 52 0F 11 72 5F 2F E2 28 A6 4A A8 0F A2 .[.R..r_/.(.J...
+00005710 10 01 00 C0 12 84 08 A6 2F A4 20 61 08 E6 0A A8 ......../. a....
+00005720 20 61 0A E8 08 AA 20 61 08 EA 08 98 70 3B 08 D8  a.... a....p;..
+00005730 0A AA 14 00 20 C0 0A EA 4F 60 00 56 13 10 0A A4 .... ...O`.V....
+00005740 0A E8 0D A0 00 98 00 52 00 18 C3 FA 7D 9F 5A 00 .......R....}.Z.
+00005750 07 52 11 18 D2 55 FF C0 9D D9 0D 9F 5A 00 00 52 .R...U......Z..R
+00005760 10 18 F5 FE 1F 90 01 52 00 18 A3 FA 7D DF 06 12 .......R....}...
+00005770 41 52 00 18 FF F9 0D 9F F6 11 00 52 00 18 C3 F6 AR.........R....
+00005780 4D AF 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 M.L...V.._..@..V
+00005790 60 18 8E 07 44 00 00 00 FF FF 2D AF 30 00 24 61 `...D.....-.0.$a
+000057A0 10 01 06 5A D2 55 00 C0 72 5A 0D 9F 56 00 00 5F ...Z.U..rZ..V.._
+000057B0 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 E0 58 ..L........U...X
+000057C0 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 ..x.O`.S...[.R..
+000057D0 70 5F 0F E2 28 A6 4A A8 10 01 00 C0 4A 83 08 A6 p_..(.J.....J...
+000057E0 2F A4 20 61 08 E6 0A A8 20 61 0A E8 08 AA 20 61 /. a.... a.... a
+000057F0 08 EA 08 98 70 3B 08 D8 0A AA 14 00 20 C0 0A EA ....p;...... ...
+00005800 4F 60 00 56 13 10 0A A4 0A E8 0D A0 00 98 00 52 O`.V...........R
+00005810 10 08 E0 18 1D F6 0D AF 1C 00 E0 18 BD FB 00 5A ...............Z
+00005820 CF 60 67 02 9D 03 60 B2 68 51 10 18 C6 01 60 B3 .`g...`.hQ....`.
+00005830 68 51 10 18 BE 01 30 60 B6 54 02 01 26 61 46 61 hQ....0`.T..&aFa
+00005840 2E 55 E3 12 A0 B2 A8 51 10 18 F6 06 A0 B3 A8 51 .U.....Q.......Q
+00005850 10 18 FE 06 A0 B4 A8 51 10 18 EE 06 A0 B5 A8 51 .......Q.......Q
+00005860 10 18 0C 07 A0 B6 A8 51 10 18 FC 06 A0 B7 A8 51 .......Q.......Q
+00005870 10 18 EC 06 80 60 A0 B0 8A 51 03 08 06 57 AA 08 .....`...Q...W..
+00005880 3A 21 0A 50 00 18 D2 06 A0 B1 A8 51 0C 1D E2 55 :!.P.......Q...U
+00005890 10 60 60 3B B1 5A 02 01 01 33 1D DF 50 00 B1 53 .``;.Z...3..P..S
+000058A0 B0 18 8A 06 BD DF 50 00 B1 5B B0 58 FD FF 10 31 ......P..[.X...1
+000058B0 1D 9F F6 11 12 5F 4D AF F8 11 26 55 26 61 64 61 ....._M...&U&ada
+000058C0 14 C2 4D AF F0 11 11 32 1D DF F6 11 42 61 02 F0 ..M....2....Ba..
+000058D0 00 5D 00 5E 00 04 2E F3 00 B0 00 5D 00 5F 20 4C .].^.......]._ L
+000058E0 D0 61 20 9F 6E 04 12 32 20 DF 6E 04 30 05 2E F4 .a .n..2 .n.0...
+000058F0 03 B0 00 5D 00 5F 20 4C D0 61 20 9F 5E 09 12 32 ...]._ L.a .^..2
+00005900 20 DF 5E 09 0D 9F F4 11 90 32 1D 9F F6 11 10 53  .^......2.....S
+00005910 01 08 0D 9F 50 00 BD 9F 5A 00 0B 3B BD DF 5A 00 ....P...Z..;..Z.
+00005920 2D 9F 56 00 20 33 0D DF 56 00 0D C3 50 00 01 52 -.V. 3..V...P..R
+00005930 0C 14 4D AF 4C 00 00 5F 14 00 40 C0 04 56 60 18 ..M.L.._..@..V`.
+00005940 B4 04 44 00 00 00 FF FF 2D AF 30 00 24 61 10 01 ..D.....-.0.$a..
+00005950 06 5A D2 55 00 C0 C4 58 0D 9F 56 00 00 5F 0D EF .Z.U...X..V.._..
+00005960 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 32 57 0A 9A L........U..2W..
+00005970 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 70 5F x.O`.S...[.R..p_
+00005980 0F E2 28 A6 4A A8 10 01 00 C0 9C 81 08 A6 2F A4 ..(.J........./.
+00005990 20 61 08 E6 0A A8 20 61 0A E8 08 AA 20 61 08 EA  a.... a.... a..
+000059A0 08 98 70 3B 08 D8 0A AA 14 00 20 C0 0A EA 4F 60 ..p;...... ...O`
+000059B0 00 56 13 10 0A A4 0A E8 0D A0 00 98 00 52 00 18 .V...........R..
+000059C0 4D F8 BD 9F 5A 00 9F 90 BB 52 02 01 B2 14 0D C3 M...Z....R......
+000059D0 50 00 0D 9F 56 00 4D AF 30 00 02 5F 00 52 09 10 P...V.M.0.._.R..
+000059E0 90 54 20 61 40 61 80 B0 60 B1 68 51 00 18 3B FE .T a@a..`.hQ..;.
+000059F0 42 61 02 B0 1D 9F F6 11 12 5F 4D AF F8 11 26 55 Ba......._M...&U
+00005A00 26 61 64 61 04 C2 4D AF F0 11 11 32 1D DF F6 11 &ada..M....2....
+00005A10 42 61 02 F0 00 5D 00 5F 20 4C D0 61 20 9F 6A 00 Ba...]._ L.a .j.
+00005A20 12 32 20 DF 6A 00 0D 9F F4 11 90 32 1D 9F F6 11 .2 .j......2....
+00005A30 10 53 01 08 BD 9F 5A 00 9B 32 BD DF 5A 00 0D 9F .S....Z..2..Z...
+00005A40 56 00 10 32 0D DF 56 00 01 52 0F 1B E0 18 E7 FE V..2..V..R......
+00005A50 D2 55 FF C0 A1 D6 BD 9F 5A 00 BB 52 02 01 A8 1B .U......Z..R....
+00005A60 09 52 00 18 A9 F7 0B 52 00 18 00 03 0D C3 50 00 .R.....R......P.
+00005A70 0D 9F 56 00 4D AF 30 00 02 5F 2B 52 BA 1B EF 1A ..V.M.0.._+R....
+00005A80 0D AF 1C 00 20 9F 22 00 02 52 0F 10 6D AA 46 57 .... ."..R..m.FW
+00005A90 BC 10 46 3B 0D A4 04 61 2C AF 30 00 00 C0 5C 70 ..F;...a,.0...\p
+00005AA0 0C EF 30 00 0D AF 1C 00 02 54 2D EF 20 00 B2 5A ..0......T-. ..Z
+00005AB0 5B 00 2D D2 20 AF 1C 00 02 56 00 18 0D F6 4D AA [.-. ....V....M.
+00005AC0 46 55 E7 11 00 AF 1C 00 2D AF 20 00 18 54 28 61 FU......-. ..T(a
+00005AD0 8D EF 20 00 20 61 20 B0 0D A4 18 54 68 61 8D EA .. . a ....Tha..
+00005AE0 60 61 20 F0 02 50 00 18 B7 F5 6D AA 0D AF 1C 00 `a ..P....m.....
+00005AF0 2D A6 62 57 18 1E 00 9F 22 00 00 52 10 08 00 52 -.bW...."..R...R
+00005B00 0E 10 64 57 40 08 00 52 0A 10 46 3B 0D A4 04 61 ..dW@..R..F;...a
+00005B10 2C AF 30 00 00 C0 E4 6F 0C EF 30 00 8C AF 1C 00 ,.0....o..0.....
+00005B20 82 55 00 C0 7A 55 08 9A 7C 98 07 53 B2 10 07 5B .U..zU..|..S...[
+00005B30 07 52 0C 11 7A 5F 2C A6 48 A8 1A 01 00 C0 E8 7F .R..z_,.H.......
+00005B40 0C A6 A0 61 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 ...a.....a.....a
+00005B50 0C EA 0C 98 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA ....p;..........
+00005B60 4F 60 00 56 13 10 08 A4 08 E8 6D AA 06 56 10 18 O`.V......m..V..
+00005B70 CD F5 0D AF 1C 00 04 5A 45 5B E5 1A B1 5A 9A 02 .......ZE[...Z..
+00005B80 1D D2 B0 22 FD FF 00 52 10 18 2F F3 E0 18 7F F6 ..."...R../.....
+00005B90 6C 9F 30 00 0D A4 14 54 24 61 4D EA 20 61 60 F0 l.0....T$aM. a`.
+00005BA0 6C AF 30 00 86 4B 0D A4 2D AA 14 54 24 61 4D EA l.0..K..-..T$aM.
+00005BB0 20 61 60 F0 06 5A 04 54 42 55 00 C0 3E 6F 0C EF  a`..Z.TBU..>o..
+00005BC0 30 00 B0 5A 71 00 0D D2 8C AF 1C 00 82 55 00 C0 0..Zq........U..
+00005BD0 CE 54 08 9A 7C 98 07 53 B2 10 07 5B 07 52 0C 11 .T..|..S...[.R..
+00005BE0 7A 5F 2C A6 48 A8 1A 01 00 C0 3C 7F 0C A6 A0 61 z_,.H.....<....a
+00005BF0 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 .....a.....a....
+00005C00 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 p;..........O`.V
+00005C10 13 10 08 A4 08 E8 0D AA 00 56 00 18 77 F4 E0 18 .........V..w...
+00005C20 1D F5 0D A4 2D AA 14 54 24 61 4D EA 20 61 00 82 ....-..T$aM. a..
+00005C30 0D A4 2D AA 14 54 24 61 4D EA 20 61 00 82 0D A4 ..-..T$aM. a....
+00005C40 2D AA 14 54 24 61 4D EA 20 61 00 82 0D A4 2D AA -..T$aM. a....-.
+00005C50 14 54 24 61 4D EA 20 61 00 82 0D A4 2D AA 14 54 .T$aM. a....-..T
+00005C60 24 61 4D EA 20 61 00 82 0D 9F 62 00 B0 52 09 00 $aM. a....b..R..
+00005C70 07 15 1D 9F 64 00 11 52 C1 08 01 52 10 18 02 02 ....d..R...R....
+00005C80 10 52 D6 08 06 50 10 18 F8 01 0D A4 2D AA 14 54 .R...P......-..T
+00005C90 24 61 4D EA 20 61 60 F0 0D A4 2D AA 14 54 24 61 $aM. a`...-..T$a
+00005CA0 4D EA 20 61 30 82 B0 5A 71 00 0D D2 8C AF 1C 00 M. a0..Zq.......
+00005CB0 82 55 00 C0 EA 53 08 9A 7C 98 07 53 B2 10 07 5B .U...S..|..S...[
+00005CC0 07 52 0C 11 7A 5F 2C A6 48 A8 1A 01 00 C0 58 7E .R..z_,.H.....X~
+00005CD0 0C A6 A0 61 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 ...a.....a.....a
+00005CE0 0C EA 0C 98 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA ....p;..........
+00005CF0 4F 60 00 56 13 10 08 A4 08 E8 0D AA 00 56 10 18 O`.V.........V..
+00005D00 3D F4 2D 92 B2 52 45 00 10 18 71 F3 E0 18 0B FB =.-..RE...q.....
+00005D10 B7 26 40 00 E0 18 91 F2 10 5A E0 18 F5 EF 26 58 .&@......Z....&X
+00005D20 E5 1B D2 55 00 C0 E8 53 E0 18 3B F1 12 00 00 B0 ...U...S..;.....
+00005D30 6C FC 0C EC B0 5A FB FF E0 18 D7 EF 0D AF 1C 00 l....Z..........
+00005D40 E0 18 C7 F7 26 58 E0 18 13 F6 04 5A 45 5B E0 18 ....&X.....ZE[..
+00005D50 89 F9 46 58 E0 18 05 F6 12 00 00 B0 60 FC 0C EC ..FX........`...
+00005D60 B0 5A FE FF E0 18 AB EF BD DF 06 12 3F 90 43 52 .Z..........?.CR
+00005D70 00 18 26 01 0D 9F F6 11 00 52 00 18 C5 F0 4D AF ..&......R....M.
+00005D80 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 60 18 L...V.._..@..V`.
+00005D90 A6 01 44 00 00 00 FF FF 2D AF 30 00 24 61       ..D.....-.0.$a  
+
+l00005D9E:
 	push	$1,r0
-	Invalid
+	movw	$0,r6
 	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	5702
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	00005DCA
+
+l00005DC8:
 	movw	r0,r7
-	Invalid
-	beq	5742
-	movzw	r7,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5742
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$18115207,(r11,r10)
-	movd	(r3,r2),r13
-	bal	ra,30F2
-	Invalid
-	ord	$18105200,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	57BA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	57A4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$569F0D,r12
-	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	57CC
-	movw	r0,r7
-	Invalid
-	beq	580A
-	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	580A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	push	$3,ra,ra
-	Invalid
-	Invalid
-	push	$0,r2
-	Invalid
-	Invalid
-	movd	ra,(r3,r2)
-	br	5888
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r7,r6),(r1,r0)
-	Invalid
-	Invalid
-	cmpb	$0,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	5844
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r2
-	Invalid
-	Invalid
-	ord	$18B053B1,(r1,r0)
-	Invalid
-	Invalid
-	ord	$58B05BB1,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	br	58DE
-	movzw	r1,(r3,r2)
-	Invalid
-	br	58E8
-	movd	(r7,r6),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	58E4
-	Invalid
-	Invalid
-	br	58F6
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$F42E,r3
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	592E
-	Invalid
-	Invalid
-	br	5938
-	Invalid
-	Invalid
-	Invalid
-	ord	$5A9FBD,(r1,r0)
-	Invalid
-	Invalid
-	ord	$569F2D,(r11,r10)
-	Invalid
-	Invalid
-	ord	$50C30D,(r7,r6)
-	Invalid
-	beq	59C8
-	Invalid
-	andd	$145F00,r12
-	bal	ra,AF3E
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	597A
-	movw	r0,r7
-	Invalid
-	beq	59B8
-	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	59B8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$52BB909F,(r11,r10)
-	push	$0,r2
-	bhs	5A50
-	Invalid
-	ord	$569F0D,(r1,r0)
-	Invalid
-	Invalid
-	movzw	r0,(r3,r2)
-	Invalid
-	beq	59F0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	5A22
-	movzw	r1,(r3,r2)
-	Invalid
-	br	5A2C
-	movd	(r7,r6),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	5A28
-	Invalid
-	Invalid
-	br	5A3A
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF203212,(r11,r10)
-	xord	$11F49F0D,(r11,r10)
-	Invalid
-	Invalid
-	br	5A5A
-	Invalid
-	Invalid
-	Invalid
-	ord	$DFBD329B,(r11,r10)
-	ord	$569F0D,(r11,r10)
-	Invalid
-	Invalid
-	ord	$1B0F5201,(r7,r6)
-	Invalid
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,30F2
-	Invalid
-	ord	$10252BB,(r11,r10)
-	blo	59CE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$0,r0
-	Invalid
-	ord	$569F0D,(r1,r0)
-	Invalid
-	Invalid
-	movzw	r0,(r3,r2)
-	Invalid
-	bhs	59F0
-	br	59DC
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	5AA8
-	Invalid
-	cmpd	(r7,r6),(r5,r4)
-	bhs	5AA8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$AF20D22D,(r12_l,r11)
-	res
-	cmpd	$0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	(r7,r6),(r5,r4)
-	br	5AF0
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	bne	5AC4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	5B1C
-	cmpd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	beq	5B1C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	5B30
-	movw	r0,r7
-	Invalid
-	beq	5B6A
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r11,r10)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5B6A
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movw	r4,r5
-	br	5AC4
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	movd	$AF8CD20D,(r2,r1)
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	5BDC
-	movw	r0,r7
-	Invalid
-	beq	5C16
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r11,r10)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5C16
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$952B0,(r3,r2)
-	beq	5D1E
-	Invalid
-	xord	$8C15211,(r5,r4)
-	Invalid
-	Invalid
-	pop	$0,r2
-	Invalid
-	Invalid
-	cmpb	$0,r6
-	Invalid
-	push	$7,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$AF8CD20D,(r2,r1)
-	res
-	movd	(r3,r2),(r9,r8)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	bhs	5CC0
-	movw	r0,r7
-	Invalid
-	beq	5CFA
-	movzw	r7,(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	subd	(r1,r0),(r11,r10)
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	5CFA
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$F3711810,(r6,r5)
-	Invalid
-	Invalid
-	Invalid
-	andd	$F29118E0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movb	$2,r6
-	br	5C8A
-	movd	(r3,r2),r13
-	bal	ra,B10C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	movb	$2,r6
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r5
-	Invalid
-	Invalid
-	movb	$4,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	5DB6
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r6
-	Invalid
-	br	5DA2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$569F0D,r12
-	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	Invalid
-	push	$2,r6,ra
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	5DCA
-	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
+
+l00005DCA:
+	cmpw	$0,r7
+	beq	0000524A
+
+l00005DD0:
 	movzw	r7,(r4,r3)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$4,r6
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$569F0D,r12
-	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	bgt	5F3A
-	andd	$FFFF0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	movd	(r3,r2),r13
-	bal	ra,B218
-	Invalid
-	ord	$EF0D5F00,(r7,r6)
-	andd	$AFA8A08D,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,B09C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	5EE0
-	movw	r0,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F553295,(r3,r2)
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,DB44
-	Invalid
-	ord	$18105200,(r11,r10)
-	Invalid
-	Invalid
-	ord	$4CEF8D,(r7,r6)
-	Invalid
-	beq	5F64
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	5EB4
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r13,ra
-	push	$6,r7
-	movd	(r11,r10),(r3,r2)
-	movw	r4,r7
-	movw	r5,r12
-	cmpd	$0,(r3,r2)
-	beq	5FA0
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	5FA0
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	5FA0
-	Invalid
-	res
-	cmpd	$0,(r9,r8)
-	beq	5FA0
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	beq	5FA8
-	Invalid
-	Invalid
+	stord	(r4,r3),4(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	loadd	4(sp),(r1,r0)
+	br	000051D8
+00005DDE                                           0D AF               ..
+00005DE0 1C 00 E0 18 D3 FC 0D AF 1C 00 00 9F 22 00 E0 18 ............"...
+00005DF0 E3 F2 04 5A 45 5B E0 18 59 FB 80 F0 6C AF 30 00 ...ZE[..Y...l.0.
+00005E00 86 4B 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 .K..-..T$aM. a`.
+00005E10 6C 9F 32 00 0D A4 2D AA 14 54 24 61 4D EA 20 61 l.2...-..T$aM. a
+00005E20 60 F0 6C 9F 32 00 86 49 0D A4 2D AA 14 54       `.l.2..I..-..T  
+
+l00005E2E:
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	8(r12),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	8(r12),(r7,r6)
+
+l00005E48:
+	lshd	$-24,(r7,r6)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0xA(r12),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0xA(r12),r6
+	lshw	$-8,r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	br	fn00003FB8
+00005E7E                                           46 58               FX
+00005E80 E0 18 0B FE B7 26 80 00 E0 18 1D F1 B0 5A 9A 02 .....&.......Z..
+00005E90 0D D2 E0 18 2D F0 4D AF 4C 00 0D 9F 56 00 00 5F ....-.M.L...V.._
+00005EA0 14 00 40 C0 04 56 6A 14 44 00 00 00 FF FF 2D AF ..@..Vj.D.....-.
+00005EB0 30 00 24 61 10 01 16 5A D2 55 00 C0 5E 53 0D 9F 0.$a...Z.U..^S..
+00005EC0 56 00 00 5F 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 V.._..L........U
+00005ED0 00 C0 CC 51 0A 9A 78 98 4F 60 07 53 B2 10 07 5B ...Q..x.O`.S...[
+00005EE0 07 52 00 18 19 F3 E0 18 DB F2 2D AF 3C 00 5D 9F .R........-.<.].
+00005EF0 42 00 95 32 55 5F 55 61 20 55 50 61 00 C2 04 5A B..2U_Ua UPa...Z
+00005F00 00 C0 44 7C 0D 9F 5A 00 00 52 10 18 59 EF 0D DF ..D|..Z..R..Y...
+00005F10 56 00 8D EF 4C 00 0D DF 06 12 E0 18 49 EF 04 54 V...L.......I..T
+00005F20 E0 18 81 F8 04 54 E0 18 6B F2 21 52 A0 18 7F F9 .....T..k.!R....
+00005F30 E0 18 C1 FA 04 54 E0 18 69 FE 04 54 EC 1B E2 55 .....T..i..T...U
+00005F40 20 60 E0 18 51 F9 E2 55 40 60 E0 18 49 F9 E2 55  `..Q..U@`..I..U
+00005F50 30 60 E0 18 41 F9 E2 55 E0 18 3B F9 E2 55 70 60 0`..A..U..;..Up`
+00005F60 E0 18 33 F9 E2 55 60 60 E0 18 2B F9 E2 55 50 60 ..3..U``..+..UP`
+00005F70 E0 18 23 F9 9D 01 67 01 2A 55 47 5B 5C 5B 02 56 ..#...g.*UG[\[.V
+00005F80 00 11 02 AF 20 00 00 56 0C 10 02 AF 24 00 00 56 .... ..V....$..V
+00005F90 08 10 82 AF 1C 00 08 56 04 10 08 A0 02 57 05 10 .......V.....W..
+
+l00005FA0:
+	movw	$FFFE,r0
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21200810,(r6,r5)
-	Invalid
-	ord	$21200812,(r12_l,r11)
-	Invalid
-	xord	$21200812,(r8,r7)
-	Invalid
-	movd	$21200812,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00005FA8                         18 92 B1 52 2A 00 12 08         ...R*...
+00005FB0 B1 52 45 00 10 08 20 21 B1 52 5B 00 12 08 20 21 .RE... !.R[... !
+00005FC0 B1 52 67 00 12 08 20 21 B1 52 71 00             .Rg... !.Rq.    
+
+l00005FCC:
+	sne	r2
+	andb	r0,r2
+	cmpw	$29A,r1
+	sne	r2
+	andb	r0,r2
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r1
+	sne	r1
+	andb	r0,r1
 	cmpb	$0,r0
-	bne	5FA0
-	Invalid
-	beq	60BE
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	5FA0
+	bne	00005FA0
+
+l00005FEA:
+	cmpw	$FFFF,r4
+	beq	000060BE
+
+l00005FEE:
+	cmpw	$9,r4
+	slo	r0
+
+l00005FF4:
+	cmpw	$4,r12
+	slo	r1
+	cmpw	$0,r1
+	bne	00005FA0
+
+l00005FFC:
 	cmpb	$0,r0
-	bne	5FA0
-	Invalid
-	xord	$140653C0,(r5,r4)
-	Invalid
+	bne	00005FA0
+
+l00006000:
+	loadw	0xC8(r9,r8),r0
+	cmpw	r0,r12
+	beq	00006092
+
+l00006008:
+	movw	$5,r4
 	movd	(r3,r2),(r11,r10)
-	bal	ra,4CD4
-	Invalid
-	Invalid
-	beq	5FA0
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r2
-	Invalid
-	xord	$13025337,(r3,r2)
-	Invalid
-	bne	605C
-	Invalid
-	beq	6074
-	Invalid
-	beq	605C
-	Invalid
-	Invalid
-	Invalid
-	andd	$33245A94,(r3,r2)
+	bal	ra,fn00004CD4
+	cmpw	$FFFE,r0
+	beq	00005FA0
+
+l00006016:
+	loadw	0x10(r11,r10),r0
+	cmpw	$0,r0
+	beq	0000623E
+
+l0000601E:
+	loadw	0xC4(r9,r8),r3
+
+l00006022:
+	cmpw	r7,r3
+	beq	00006088
+
+l00006026:
+	cmpw	$0,r3
+	bne	0000605C
+
+l0000602A:
+	loadw	0x2408(r9,r8),r6
+	cmpw	$0,r6
+	beq	0000605C
+
+l00006032:
+	loadd	0x78(r9,r8),(r1,r0)
+	loadw	0x84(r9,r8),r2
+	movw	$FFFF,r4
+	addw	r4,r2
 	movzw	r4,(r5,r4)
 	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	beq	60C2
+	addd	(r5,r4),(r11,r10)
+	cmpw	$1,r6
+	beq	000060C2
+
+l00006048:
 	movd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
+	addd	(r11,r10),(r5,r4)
+	storw	r3,(r5,r4)
+
+l0000604E:
 	movd	(r6,r5),(r11,r10)
-	Invalid
+	movw	$0,r4
+
+l00006052:
 	movd	(r3,r2),(r1,r0)
-	bal	ra,DB44
-	Invalid
-	beq	60A2
-	Invalid
-	xord	$55025E70,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E5A4,r0
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF289020,(r1,r0)
-	xord	$DF289220,(r7,r6)
-	xord	$DF089300,(r9,r8)
-	ord	$64DFC8,ra
-	Invalid
+	bal	ra,fn0000DB44
+	storw	$0,0x1204(r9,r8)
+
+l0000605C:
+	storw	r7,0xC4(r9,r8)
+	movxw	r7,(r1,r0)
+	movd	(r3,r2),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	ashud	$2,(r3,r2)
+	movd	$E5A4,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	2(r1,r0),r2
+	storw	r2,0xC0(r9,r8)
+	loadw	(r1,r0),r2
+	storw	r2,0xCC(r9,r8)
+	loadw	4(r1,r0),r2
+	storw	r2,0xD0(r9,r8)
+	loadw	6(r1,r0),r0
+	storw	r0,0xBC(r9,r8)
+
+l00006088:
+	storw	r12,0xC8(r9,r8)
+	movw	$0,r0
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	xord	$E5A405E0,(r3,r2)
+
+l00006092:
+	loadw	0xC4(r9,r8),r3
+	movd	$E5A4,ra
+
+l00006098:
+	stord	(r11,r10),0xA(r5,r4)
+
+l0000609A:
 	movxw	r7,(r5,r4)
 	movd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
+	addd	(r5,r4),(r1,r0)
+	addd	(r5,r4),(r1,r0)
 	movd	r13,(r1,r0)
-	Invalid
-	Invalid
+	ashud	$2,r13
+	addd	ra,r13
 	movxw	r3,(r5,r4)
 	movd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r5,r4),(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	8(r13),(r5,r4)
+	loadd	8(r1,r0),(r1,r0)
 	cmpd	(r5,r4),(r1,r0)
-	bne	6008
-	br	6022
-	Invalid
-	br	5FF4
-	Invalid
-	Invalid
+	bne	00006008
+
+l000060BC:
+	br	00006022
+
+l000060BE:
+	movw	$6,r7
+	br	00005FF4
+
+l000060C2:
+	loadw	0x50(r9,r8),r6
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	addd	$1,(r5,r4)
+	addd	(r5,r4),(r5,r4)
 	movd	ra,(r3,r2)
 	subd	ra,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	bhi	611C
+
+l000060D6:
+	addd	$FFFE,(r3,r2)
+	loadw	(r3,r2),r13
+	cmpw	r13,r6
+	bhi	0000611C
+
+l000060E0:
 	movw	r13,r4
-	Invalid
-	Invalid
+	subw	r4,r6
+	storw	r4,(r3,r2)
 	cmpd	(r3,r2),ra
-	bne	60D6
+	bne	000060D6
+
+l000060EA:
 	movzw	r6,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r3,r2)
+	loadd	0x70(r9,r8),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	movw	$FFFF,r4
+	addw	r4,r6
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
+	addd	$1,(r5,r4)
+	addd	(r5,r4),(r5,r4)
 	movd	ra,(r3,r2)
 	subd	ra,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	blo	6124
+
+l00006104:
+	addd	$FFFE,(r3,r2)
+	loadw	(r3,r2),r13
+	cmpw	r6,r13
+	blo	00006124
+
+l0000610E:
 	movw	r13,r4
-	Invalid
+	subw	r4,r6
 	movw	r4,r13
-	Invalid
+	storw	r4,(r3,r2)
 	cmpd	ra,(r3,r2)
-	bne	6104
-	br	604E
-	Invalid
+	bne	00006104
+
+l0000611A:
+	br	0000604E
+
+l0000611C:
+	storw	$0,(r3,r2)
 	cmpd	(r3,r2),ra
-	bne	60D6
-	br	60EA
-	Invalid
+	bne	000060D6
+
+l00006122:
+	br	000060EA
+
+l00006124:
+	storw	$0,(r3,r2)
 	cmpd	ra,(r3,r2)
-	bne	6104
-	br	604E
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
+	bne	00006104
+
+l0000612A:
+	br	0000604E
+0000612C                                     B0 5A FB FF             .Z..
+00006130 67 02 9D 03                                     g...            
+
+;; fn00006134: 00006134
+;;   Called from:
+;;     00002E54 (in fn00002D76)
+;;     00006744 (in fn00004CD4)
+;;     00006990 (in fn00004CD4)
+fn00006134 proc
 	push	$1,ra
 	push	$3,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	621C
-	Invalid
-	Invalid
+	beq	0000621C
+
+l0000613E:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	621C
-	Invalid
-	Invalid
+	beq	0000621C
+
+l00006146:
+	loadd	0x48(r3,r2),(r7,r6)
 	cmpd	$0,(r7,r6)
-	beq	621C
-	Invalid
-	res
+	beq	0000621C
+
+l0000614E:
+	loadd	0x38(r3,r2),ra
 	cmpd	$0,ra
-	beq	621C
-	Invalid
-	Invalid
-	Invalid
+	beq	0000621C
+
+l00006156:
+	loadd	(ra),(r3,r2)
+	movw	$FFFE,r0
 	cmpd	(r9,r8),(r3,r2)
-	beq	6164
+	beq	00006164
+
+l00006160:
 	pop	$3,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21210811,(r6,r5)
-	Invalid
-	ord	$21210812,(r12_l,r11)
-	Invalid
-	xord	$21210812,(r8,r7)
-	Invalid
-	movd	$21210812,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+
+l00006164:
+	loadw	4(ra),r10
+	cmpw	$2A,r10
+	sne	r2
+	cmpw	$45,r10
+	sne	r1
+	andb	r1,r2
+	cmpw	$5B,r10
+	sne	r2
+	andb	r1,r2
+	cmpw	$67,r10
+	sne	r2
+
+;; fn00006182: 00006182
+;;   Called from:
+;;     00004EBA (in fn00004CD4)
+;;     00006180 (in fn00006134)
+fn00006182 proc
+	andb	r1,r2
+	cmpw	$71,r10
+	sne	r2
+	andb	r1,r2
+	cmpw	$29A,r10
+	sne	r2
+	andb	r1,r2
 	cmpb	$0,r1
-	beq	61AA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6160
-	Invalid
-	Invalid
-	Invalid
+	beq	000061AA
+
+l00006198:
+	movw	$FFC7,r1
+	addw	r1,r10
+	andw	$FFEF,r11
+	cmpw	$0,r1
+	sne	r1
+	cmpw	$0,r1
+	bne	00006160
+
+l000061AA:
+	loadd	8(ra),(r5,r4)
+	loadd	0x50(r9,r8),(r3,r2)
 	cmpd	$0,(r5,r4)
-	beq	61C2
+
+;; fn000061B2: 000061B2
+;;   Called from:
+;;     000061B0 (in fn00006182)
+;;     000089B4 (in fn0000A110)
+fn000061B2 proc
+	beq	fn000061C2
+
+;; fn000061B4: 000061B4
+;;   Called from:
+;;     000061B2 (in fn000061B2)
+;;     000061B2 (in fn000061B2)
+fn000061B4 proc
 	jal	ra,(r7,r6)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x38(r9,r8),ra
+	loadd	0x48(r9,r8),(r7,r6)
+	loadd	0x50(r9,r8),(r3,r2)
+
+;; fn000061C2: 000061C2
+;;   Called from:
+;;     000061A8 (in fn00006182)
+;;     000061B2 (in fn000061B2)
+;;     000061B2 (in fn000061B2)
+;;     000061BE (in fn000061B4)
+fn000061C2 proc
+	loadd	0x78(ra),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	61D8
+	beq	000061D8
+
+l000061CA:
 	jal	ra,(r7,r6)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x38(r9,r8),ra
+	loadd	0x48(r9,r8),(r7,r6)
+	loadd	0x50(r9,r8),(r3,r2)
+
+l000061D8:
+	loadd	0x70(ra),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	61EE
+	beq	000061EE
+
+l000061E0:
 	jal	ra,(r7,r6)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x38(r9,r8),ra
+	loadd	0x48(r9,r8),(r7,r6)
+	loadd	0x50(r9,r8),(r3,r2)
+
+l000061EE:
+	loadd	0x60(ra),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	6204
+	beq	00006204
+
+l000061F6:
 	jal	ra,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
+	loadd	0x48(r9,r8),(r7,r6)
+	loadd	0x38(r9,r8),ra
+	loadd	0x50(r9,r8),(r3,r2)
+
+l00006204:
 	movd	(r5,r4),ra
 	jal	ra,(r7,r6)
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	$5AB01A17,(r2,r1)
-	Invalid
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x38(r9,r8)
+	cmpw	$71,r10
+	bne	00006160
+
+l00006214:
+	movw	$FFFD,r0
 	pop	$3,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l0000621C:
+	movw	$FFFE,r0
 	pop	$3,r7
 	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	movw	r4,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00006224             00 00 9D 01 67 01 BF 60 F8 FF BC 54     ....g..`...T
+00006230 1E 00 FC 61 2A 55 4D 5B 0C 90 0F D0 1C 91       ...a*UM[......  
+
+l0000623E:
+	storw	r1,4(sp)
+	loadd	4(r12),(r1,r0)
+	loadw	8(r12),r3
 	cmpd	$0,(r1,r0)
-	Invalid
-	pop	$2,r6,ra
-	Invalid
+	beq	00006792
+
+l0000624A:
+	loadb	(r1,r0),r0
 	cmpb	$31,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	sne	r0
+	cmpw	$38,r3
+	sne	r2
+	orb	r2,r0
 	cmpb	$0,r2
-	Invalid
-	pop	$1,r0,ra
+	bne	0000677C
+
+l00006260:
 	cmpd	$0,(r11,r10)
-	Invalid
-	pop	$0,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	0000676A
+
+l00006266:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x18(r11,r10)
+	loadd	0x40(r11,r10),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	pop	$6,r2
-	Invalid
-	Invalid
+	beq	00006734
+
+l00006274:
+	loadd	0x48(r11,r10),(r9,r8)
 	cmpd	$0,(r9,r8)
-	Invalid
-	pop	$4,r6
-	Invalid
-	Invalid
-	pop	$1,ra
-	Invalid
-	Invalid
-	pop	$2,r0
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r6
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r10
-	Invalid
-	Invalid
-	Invalid
-	beq	62DE
+	beq	00006706
+
+l0000627E:
+	cmpw	$FFFF,r13
+	beq	000066BC
+
+l00006284:
+	cmpw	$0,r6
+	bgt	000066C6
+
+l0000628A:
+	movw	$1,r7
+	cmpw	$F,r6
+	blt	000066DA
+
+l00006292:
+	loadw	(sp),r3
+	addw	$FFFF,r9
+	cmpw	$8,r3
+	blo	00006734
+
+l0000629C:
+	storw	r6,2(sp)
+	movw	$FFF8,r3
+	addw	r3,r6
+	cmpw	$7,r3
+	slo	r3
+	cmpw	$0,r3
+	bne	00006722
+
+l000062AE:
+	cmpw	$8,r5
+	sne	r3
+	cmpw	$0,r3
+	bne	00006718
+
+l000062B8:
+	loadw	4(sp),r3
+	cmpw	$4,r3
+	slo	r3
+	cmpw	$0,r3
+	bne	0000670C
+
+l000062C4:
+	cmpw	$9,r13
+	slo	r3
+	cmpw	$0,r3
+	bne	00006700
+
+l000062D0:
+	cmpw	$8,r6
+	seq	r3
+	cmpw	$0,r3
+	beq	000062DE
+
+l000062D8:
 	cmpb	$0,r2
-	Invalid
-	pop	$0,r12
-	Invalid
-	bne	62E6
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	bne	632C
-	Invalid
+	bne	000066F2
+
+l000062DE:
+	cmpw	$8,r6
+	bne	000062E6
+
+l000062E2:
+	storw	$9,2(sp)
+
+l000062E6:
+	loadd	0x50(r11,r10),(r3,r2)
+	movw	$1210,r5
+	movw	$1,r4
 	jal	ra,(r1,r0)
 	movd	(r9,r8),(r1,r0)
-	Invalid
+	movd	$0,r12
 	cmpd	(r1,r0),r12
-	Invalid
-	pop	$1,r4
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$45015A11,(r5,r4)
+	beq	00006720
+
+l000062FC:
+	stord	(r1,r0),0x38(r11,r10)
+	stord	(r11,r10),(r1,r0)
+	movw	$2A,r0
+	storw	r0,4(r9,r8)
+	storw	r7,0x18(r9,r8)
+	stord	r12,0x38(r9,r8)
+	loadw	2(sp),r0
+	storw	r0,0x54(r9,r8)
+	movw	$1,r7
+	ashuw	r0,r7
+	storw	r7,0x50(r9,r8)
+	movw	$FFFF,r0
+	addw	r0,r7
+	storw	r0,0x58(r9,r8)
+	loadw	(sp),r0
+	addw	$7,r7
+	storw	r0,0x88(r9,r8)
+	movw	$1,r1
+	ashuw	r0,r1
 	movw	r1,r0
-	Invalid
-	andd	$DF083290,(r3,r2)
-	andd	$32B2902F,(r7,r6)
-	res
-	Invalid
-	bal	ra,D464
-	Invalid
-	andd	$28AF2A,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
+	storw	r1,0x84(r9,r8)
+	addw	$FFFF,r9
+	storw	r0,0x8C(r9,r8)
+	loadw	(sp),r2
+	addw	$9,r11
+	movw	$3,r3
+	bal	ra,fn0000D464
+	storw	r0,0x90(r9,r8)
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	movw	r7,r4
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x60(r9,r8)
+	loadw	0x50(r9,r8),r4
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	andd	$28AF2A,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x70(r9,r8)
+	loadw	0x84(r9,r8),r4
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	beq	63E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	63BC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x78(r9,r8)
+	stord	r12,0x2418(r9,r8)
+	loadw	(sp),r0
+
+l0000638C:
+	addw	$6,r6
+	movw	$1,r4
+	ashuw	r0,r4
+	storw	r4,0x23E8(r9,r8)
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$4,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	br	63CE
+	stord	(r1,r0),8(r9,r8)
+	loadw	0x23E8(r9,r8),r6
 	movzw	r6,(r3,r2)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	stord	(r5,r4),0xC(r9,r8)
+	loadd	0x60(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	Invalid
-	push	$3,r12
-	Invalid
-	Invalid
+	beq	0000662E
+
+l000063BA:
+	loadd	0x70(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	Invalid
-	push	$3,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
+	beq	00006624
+
+l000063C4:
+	loadw	0x78(r9,r8),r4
+
+l000063C6:
+	subd	$9F58003E,r12
+	orw	r4,r5
+	cmpw	$0,r4
+
+l000063D0:
+	seq	r4
+	cmpw	$0,r4
+	bne	00006610
+
+l000063D8:
 	movw	r0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	lshw	$FFFFFFF1,r6
+	orw	r4,r1
+	cmpw	$0,r4
+	seq	r4
+	cmpw	$0,r4
+	bne	00006602
+
+l000063E6:
+	lshw	$-15,r6
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	br	6420
+	addd	(r7,r6),(r7,r6)
+	addd	(r1,r0),(r7,r6)
+	stord	(r7,r6),0x23F0(r9,r8)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	641C
-	Invalid
-	xord	$DF28922F,(r3,r2)
-	xord	$248388,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x23E0(r9,r8)
+	storw	r13,0xC4(r9,r8)
+	loadw	4(sp),r2
+	storw	r2,0xC8(r9,r8)
+	storb	$8,0x24(r9,r8)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,46AC
+	bal	ra,fn000046AC
 	movw	r0,r7
-	Invalid
-	beq	6420
+	cmpw	$0,r0
+	beq	00006420
+
+l00006418:
 	movw	r7,r0
-	Invalid
+	addd	$8,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	res
-	Invalid
-	Invalid
+
+l00006420:
+	loadd	0x38(r11,r10),(r9,r8)
+	loadw	0x50(r9,r8),r0
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F553295,(r3,r2)
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	stord	(r1,r0),0x68(r9,r8)
+	loadd	0x78(r9,r8),(r3,r2)
+	loadw	0x84(r9,r8),r5
+	addw	$FFFF,r9
+	movzw	r5,(r6,r5)
+	addd	(r6,r5),(r6,r5)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
+	addd	(r6,r5),(r1,r0)
+	storw	r7,(r1,r0)
 	movw	r7,r4
-	bal	ra,DB44
-	Invalid
-	xord	$55205E22,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E5A4,r0
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF289020,(r1,r0)
-	xord	$DF289220,(r7,r6)
-	xord	$DF089300,(r9,r8)
-	ord	$56DF78,ra
-	Invalid
-	andd	$5ADF78,r12
-	Invalid
-	beq	64D0
-	Invalid
-	ord	$50C328,r12
-	Invalid
-	ord	$40DF78,(r5,r4)
+	bal	ra,fn0000DB44
+	loadw	0xC4(r9,r8),r2
+	movxw	r2,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	ashud	$2,(r3,r2)
+	movd	$E5A4,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	2(r1,r0),r2
+	storw	r2,0xC0(r9,r8)
+	loadw	(r1,r0),r2
+	storw	r2,0xCC(r9,r8)
+	loadw	4(r1,r0),r2
+	storw	r2,0xD0(r9,r8)
+	loadw	6(r1,r0),r0
+	storw	r0,0xBC(r9,r8)
+	storw	r7,0xAC(r9,r8)
+	stord	r12,0x98(r9,r8)
+	storw	r7,0xB4(r9,r8)
+	storw	r7,0x240C(r9,r8)
+	storw	$2,0x5C(r9,r8)
+	storw	$2,0x50(r9,r8)
+	storw	r7,0xA8(r9,r8)
+	storw	r7,0x80(r9,r8)
 	movw	r7,r0
-	Invalid
+	addd	$8,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r2
-	Invalid
-	movw	r2,r6
-	movb	$1,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	r7,r2
-	Invalid
-	Invalid
-	Invalid
-	movd	$5D760000,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	649E
-	movd	$5D6E0000,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	6418
-	Invalid
-	Invalid
-	br	6418
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,6134
-	Invalid
-	Invalid
-	br	6418
-	Invalid
-	Invalid
-	br	6418
-	res
-	push	$1,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	cmpd	$0,(r6,r5)
-	Invalid
-	pop	$0,r4
-	Invalid
-	cmpb	$31,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r10,ra
-	cmpd	$0,(r3,r2)
-	Invalid
-	pop	$0,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$4,r2,ra
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$2,r2,ra
-	Invalid
-	Invalid
-	push	$2,r12,ra
-	Invalid
-	res
-	Invalid
-	push	$6,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	bne	65B6
-	Invalid
-	jal	ra,(r1,r0)
-	movd	(r9,r8),(r1,r0)
-	Invalid
+0000649E                                           6D 5A               mZ
+000064A0 06 52 70 18 E9 FD 07 5A 72 5B 62 3B 26 5B 12 58 .Rp....Zr[b;&[.X
+000064B0 E0 18 E3 FD B6 32 F0 FF 72 59 27 5A E0 18 D7 FD .....2..rY'Z....
+000064C0 78 00 00 00 76 5D 8A EF 24 00 9D 52 10 18 B9 FD x...v]..$..R....
+000064D0 E7 1E 78 00 00 00 6E 5D 8A EF 20 00 0A EF 28 00 ..x...n].. ...(.
+000064E0 80 55 E0 18 93 FD B7 5A FE FF E7 19 B7 5A FA FF .U.....Z.....Z..
+000064F0 E4 19 B0 5A 9A 02 08 D2 12 00 00 B0 68 FC 0A EC ...Z........h...
+00006500 A2 55 FF C0 33 FC B7 5A FC FF E7 18 B7 5A FC FF .U..3..Z.....Z..
+00006510 E4 18 00 00 1E 01 67 01 BC 54 12 00 FC 61 2A 55 ......g..T...a*U
+00006520 47 5B 1C 90 05 56 00 18 04 02 05 B0 B0 50 31 00 G[...V.......P1.
+00006530 10 08 00 52 10 18 F6 01 B1 52 38 00 10 08 00 52 ...R.....R8....R
+00006540 10 18 EA 01 02 56 00 18 0C 02 00 54 02 EC 02 AF .....V.....T....
+00006550 20 00 00 56 00 18 C2 01 2A AF 24 00 02 56 00 18  ..V....*.$..V..
+00006560 A2 01 97 52 00 18 AC 01 B7 52 09 00 A0 18 E6 01 ...R.....R......
+00006570 2A AF 28 00 B5 5A 10 12 14 5A D0 00 08 55       *.(..Z...Z...U  
+
+l0000657E:
+	movd	$0,r12
 	cmpd	(r1,r0),r12
-	Invalid
-	push	$5,r10,ra
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$42DF48,(r5,r4)
-	Invalid
-	andd	$48C358,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006936
+
+l00006586:
+	stord	(r1,r0),0x38(r11,r10)
+	stord	(r11,r10),(r1,r0)
+	movw	$2A,r0
+	storw	r0,4(r9,r8)
+	storw	$1,0x18(r9,r8)
+	stord	r12,0x38(r9,r8)
+	storw	$F,0x2A(r9,r8)
+
+l0000659E:
+	movw	$8000,r4
+	storw	r4,0x50(r9,r8)
+	movw	$7FFF,r0
+	storw	r0,0x58(r9,r8)
+	storw	$F,0x44(r9,r8)
+	storw	r4,0x84(r9,r8)
+	storw	r0,0x8C(r9,r8)
+	storw	$5,0x48(r9,r8)
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x60(r9,r8)
+	loadw	0x50(r9,r8),r4
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	andd	$28AF2A,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x70(r9,r8)
+	loadw	0x84(r9,r8),r4
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	beq	6650
-	Invalid
-	Invalid
-	Invalid
-	br	6628
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x78(r9,r8)
+	stord	r12,0x2418(r9,r8)
+	movw	$4000,r4
+	storw	r4,0x23E8(r9,r8)
+
+l00006602:
+	loadd	0x50(r11,r10),(r3,r2)
+	loadd	0x40(r11,r10),(r1,r0)
+	movw	$4,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	br	663A
+	stord	(r1,r0),8(r9,r8)
+
+l00006610:
+	loadw	0x23E8(r9,r8),r6
 	movzw	r6,(r3,r2)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	stord	(r5,r4),0xC(r9,r8)
+	loadd	0x60(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	Invalid
+	beq	00006846
+
+l00006624:
 	push	$1,r2
-	Invalid
-	Invalid
+
+l00006626:
+	loadd	0x70(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	Invalid
+	beq	0000683C
+
+l0000662E:
 	push	$0,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6734
+
+l00006630:
+	loadw	0x78(r9,r8),r4
+	loadw	0x7C(r9,r8),r5
+	orw	r4,r5
+	cmpw	$0,r4
+	seq	r4
+	cmpw	$0,r4
+	bne	00006734
+
+l00006642:
 	movw	r0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6734
-	lshw	$FFFFFFF1,r6
+	orw	r4,r1
+	cmpw	$0,r4
+	seq	r4
+	cmpw	$0,r4
+	bne	00006734
+
+l0000664E:
+	lshw	$-15,r6
 	movzw	r6,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	br	6688
+	addd	(r5,r4),(r5,r4)
+	addd	(r1,r0),(r5,r4)
+	stord	(r5,r4),0x23F0(r9,r8)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	6684
-	Invalid
-	xord	$64C308,(r3,r2)
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x23E0(r9,r8)
+	storw	r7,0xC4(r9,r8)
+	storw	$0,0x64(r9,r8)
+	storb	$8,0x24(r9,r8)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,46AC
+	bal	ra,fn000046AC
 	movw	r0,r7
-	Invalid
-	beq	6684
+	cmpw	$0,r0
+	beq	00006684
+
+l0000667E:
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	res
-	Invalid
-	Invalid
+
+l00006684:
+	loadd	0x38(r11,r10),(r9,r8)
+	loadw	0x50(r9,r8),r0
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F553295,(r3,r2)
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	stord	(r1,r0),0x68(r9,r8)
+	loadd	0x78(r9,r8),(r3,r2)
+	loadw	0x84(r9,r8),r5
+	addw	$FFFF,r9
+	movzw	r5,(r6,r5)
+	addd	(r6,r5),(r6,r5)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
+	addd	(r6,r5),(r1,r0)
+	storw	r7,(r1,r0)
 	movw	r7,r4
-	bal	ra,DB44
-	Invalid
-	xord	$55205E22,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E5A4,r0
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF289020,(r1,r0)
-	xord	$DF289220,(r7,r6)
-	xord	$DF089300,(r9,r8)
-	ord	$56DF78,ra
-	Invalid
-	andd	$5ADF78,r12
-	Invalid
-	beq	6734
-	Invalid
-	ord	$50C328,r12
-	Invalid
-	ord	$40DF78,(r5,r4)
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-	movd	$5D760000,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$5D6E0000,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB44
+	loadw	0xC4(r9,r8),r2
+	movxw	r2,(r3,r2)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	ashud	$2,(r3,r2)
+
+l000066BC:
+	movd	$E5A4,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	2(r1,r0),r2
+	storw	r2,0xC0(r9,r8)
+
+l000066C6:
+	xord	$9020DF28,(r1,r0)
+
+l000066C8:
+	loadw	(r1,r0),r2
+	storw	r2,0xCC(r9,r8)
+
+l000066CC:
+	xord	$9220DF28,(r7,r6)
+	xord	$9300DF08,(r9,r8)
+	ord	$DF780056,ra
+
+l000066DA:
+	storw	r7,0xAC(r9,r8)
+	stord	r12,0x98(r9,r8)
+	storw	r7,0xB4(r9,r8)
+	storw	r7,0x240C(r9,r8)
+	storw	$2,0x5C(r9,r8)
+	storw	$2,0x50(r9,r8)
+
+l000066F2:
+	storw	r7,0xA8(r9,r8)
+	storw	r7,0x80(r9,r8)
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
+
+l00006700:
+	movd	$5D76,(r3,r2)
+
+l00006706:
+	stord	(r3,r2),0x48(r11,r10)
+	cmpw	$FFFF,r7
+
+l0000670C:
+	bne	000063C6
+
+l00006710:
+	movw	$6,r7
+	br	000063D0
+00006716                   72 00                               r.        
+
+l00006718:
+	res
+	movzb	r6,ra
+	stord	(r3,r2),0x40(r11,r10)
+
+l00006720:
+	stord	(r1,r0),0x50(r11,r10)
+
+l00006722:
+	addd	$552018E0,(r9,r8)
+
+l00006724:
+	movd	(r1,r0),(r3,r2)
+	br	0000638C
+
+l00006728:
+	storb	r3,[r12](r7,r6)
+0000672A                               B7 5A FA FF 70 5B           .Z..p[
+00006730 67 02 1E 03                                     g...            
+
+l00006734:
+	movw	$29A,r0
+	storw	r0,4(r9,r8)
+	loadd	(0x00FC68),r0
+	stord	(r1,r0),0x18(r11,r10)
 	movd	(r3,r2),(r11,r10)
-	bal	ra,6134
-	Invalid
-	Invalid
+	bal	ra,fn00006134
+	movw	$FFFC,r7
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-	push	$1,r13,ra
-	push	$5,r8
+00006752       B7 5A FE FF 70 5B 67 02 1E 03 B7 5A FC FF   .Z..p[g....Z..
+00006760 70 5B 67 02 1E 03 9D 01 58 01                   p[g.....X.      
+
+l0000676A:
 	movd	r12,(r3,r2)
 	cmpd	$0,(r5,r4)
-	Invalid
-	pop	$1,r8
-	Invalid
-	Invalid
+	beq	00006B9E
+
+l00006772:
+	loadd	0x40(r5,r4),(r9,r8)
 	cmpd	$0,(r9,r8)
-	Invalid
-	pop	$0,ra
-	Invalid
-	Invalid
+	beq	00006B94
+
+l0000677C:
+	loadd	0x48(r5,r4),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	pop	$0,r4
-	Invalid
-	res
+	beq	00006B8A
+
+l00006786:
+	loadd	0x38(r5,r4),r13
 	cmpd	$0,r13
-	Invalid
-	push	$7,r10,ra
-	Invalid
-	Invalid
-	Invalid
+	beq	00006B80
+
+l00006790:
+	loadd	(r13),(r3,r2)
+
+l00006792:
+	movw	$FFFE,r0
 	cmpd	(r5,r4),(r3,r2)
-	beq	679E
+	beq	0000679E
+
+l0000679A:
 	pop	$5,r8
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$21310811,(r6,r5)
-	Invalid
-	ord	$21310813,(r12_l,r11)
-	Invalid
-	xord	$21310813,(r8,r7)
-	Invalid
-	movd	$21310813,(r2,r1)
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
+
+l0000679E:
+	loadw	4(r13),r2
+	cmpw	$2A,r2
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
 	cmpb	$0,r1
-	beq	67E2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	679A
+	beq	000067E2
+
+l000067D2:
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r2
+	sne	r1
+	cmpw	$0,r1
+	bne	0000679A
+
+l000067E2:
 	cmpd	$0,r12
-	Invalid
-	push	$2,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	687E
-	Invalid
+	beq	00006B28
+
+l000067E8:
+	loadd	(r5,r4),(r1,r0)
+	stord	(r1,r0),(r12)
+	loadd	4(r5,r4),(r1,r0)
+	stord	(r1,r0),4(r12)
+	loadd	8(r5,r4),(r1,r0)
+	stord	(r1,r0),8(r12)
+	loadd	0xC(r5,r4),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r5,r4),(r1,r0)
+	stord	(r1,r0),0x10(r12)
+	loadd	0x14(r5,r4),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadd	0x18(r5,r4),(r1,r0)
+	stord	(r1,r0),0x18(r12)
+	loadd	0x38(r5,r4),(r1,r0)
+	stord	(r1,r0),0x38(r12)
+	loadd	0x40(r5,r4),(r1,r0)
+	stord	(r1,r0),0x40(r12)
+	loadd	0x48(r5,r4),(r1,r0)
+	stord	(r1,r0),0x48(r12)
+	loadd	0x50(r5,r4),(r3,r2)
+	stord	(r3,r2),0x50(r12)
+	loadd	0x58(r5,r4),(r1,r0)
+	stord	(r1,r0),0x58(r12)
+	loadd	0x60(r5,r4),(r1,r0)
+	stord	(r1,r0),0x60(r12)
+	loadd	0x68(r5,r4),(r1,r0)
+	stord	(r1,r0),0x68(r12)
+
+l0000683C:
+	movw	$1210,r5
+	movw	$1,r4
 	jal	ra,(r9,r8)
 	movd	(r9,r8),(r1,r0)
+
+l00006846:
 	cmpd	$0,(r1,r0)
-	Invalid
-	push	$5,r4
-	Invalid
-	res
-	Invalid
-	bne	6892
+	beq	00006AF0
+
+l0000684C:
+	stord	(r1,r0),0x38(r12)
+	movd	$1210,(r1,r0)
 	push	$1,r0
 	movd	(r5,r4),r13
 	movd	(r3,r2),(r9,r8)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	stord	r12,(r9,r8)
+	loadw	0x50(r9,r8),r4
+	loadd	0x50(r12),(r3,r2)
+	loadd	0x40(r12),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x60(r9,r8)
+	loadw	0x50(r9,r8),r4
+	loadd	0x50(r12),(r3,r2)
+	loadd	0x40(r12),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	andd	$28AF2C,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x70(r9,r8)
+	loadw	0x84(r9,r8),r4
+	loadd	0x50(r12),(r3,r2)
+	loadd	0x40(r12),(r1,r0)
+	movw	$2,r5
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	br	68C6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),0x78(r9,r8)
+	loadw	0x23E8(r9,r8),r4
+	loadd	0x50(r12),(r3,r2)
+	loadd	0x40(r12),(r1,r0)
+	movw	$4,r5
 	jal	ra,(r1,r0)
 	movd	(r11,r10),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r1,r0),8(r9,r8)
+	loadd	0x60(r9,r8),(r3,r2)
+	addd	$4,sp
 	cmpd	$0,(r3,r2)
-	beq	698E
-	Invalid
-	Invalid
+	beq	0000698E
+
+l000068BA:
+	loadd	0x70(r9,r8),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	698E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	698E
+	beq	0000698E
+
+l000068C2:
+	loadw	0x78(r9,r8),r0
+	loadw	0x7C(r9,r8),r1
+	orw	r0,r1
+	cmpw	$0,r0
+
+l000068CE:
+	seq	r0
+	cmpw	$0,r0
+	bne	0000698E
+
+l000068D4:
 	movw	r10,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	698E
-	Invalid
-	Invalid
-	Invalid
+	orw	r0,r11
+	cmpw	$0,r0
+	seq	r0
+	cmpw	$0,r0
+	bne	0000698E
+
+l000068E0:
+	loadw	0x50(r9,r8),r0
+	addw	r0,r0
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
+	loadd	0x60(r13),(r5,r4)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0x70(r9,r8),(r3,r2)
+	loadw	0x50(r9,r8),r0
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	loadd	0x70(r13),(r5,r4)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	andd	$61005F00,(r3,r2)
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0x78(r9,r8),(r3,r2)
+	loadw	0x84(r9,r8),r0
+	movzw	r0,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	loadd	0x78(r13),(r5,r4)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r1,r0)
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0xC(r9,r8),(r1,r0)
+	andd	$FFFF,(r1,r0)
+	loadd	8(r13),(r5,r4)
 	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x10(r13),(r1,r0)
+	loadd	8(r13),(r5,r4)
+
+l00006936:
 	subd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	br	6968
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadw	0x23E8(r9,r8),r0
 	movw	r0,r4
-	lshw	$FFFFFFF1,r4
+	lshw	$-15,r4
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	br	697E
+	addd	(r5,r4),(r5,r4)
+	addd	(r5,r4),(r11,r10)
+	stord	(r11,r10),0x23F0(r9,r8)
 	movzw	r0,(r1,r0)
 	movd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	697C
-	Invalid
-	xord	$EF086180,(r11,r10)
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$1,r13,ra
-	Invalid
-	Invalid
+	addd	(r1,r0),(r5,r4)
+	addd	(r5,r4),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x23E0(r9,r8)
+	movd	$6A,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x15E0(r9,r8)
+	movd	$95E,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x15F8(r9,r8)
+	movd	$A52,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x1610(r9,r8)
+	addd	$10,sp
+	movw	$0,r0
 	pop	$5,r8
 	popret	$1,r13,ra
+00006986                   B0 5A FE FF 58 02 9D 03             .Z..X...  
+
+l0000698E:
 	movd	(r3,r2),r12
-	bal	ra,6134
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn00006134
+	movw	$FFFC,r0
+	br	0000659E
+0000699C                                     B0 5A FC FF             .Z..
+000069A0 E0 18 FB FD 1E 01 07 01 0E 54 E2 57 06 14 02 AF .........T.W....
+000069B0 20 00 E0 57 02 14 02 AF 24 00 E0 57 0E 13 42 AF  ..W....$..W..B.
+000069C0 1C 00 E4 57 0A 13 64 A0 B0 5A FE FF 62 57 03 10 ...W..d..Z..bW..
+000069D0 07 02 1E 03 14 92 B1 32 CC C0 B1 52 1F 00 A9 1F .......2...R....
+000069E0 E4 EA E2 EA E2 E4 E2 EC 04 94 00 52 05 10 10 22 ...........R..."
+000069F0 00 5E 02 EF 30 00 B0 5A 34 3F 04 D2 04 C3 06 00 .^..0..Z4?......
+00006A00 04 C3 0A 00 B0 5A 00 80 04 D7 00 54 04 EC 04 EF .....Z.....T....
+00006A10 28 00 04 C3 2C 00 B0 54 0C 05 40 61 04 EF 48 00 (...,..T..@a..H.
+00006A20 04 EF 38 00 04 EF 34 00 14 C3 9C 1B 90 5A 04 DF ..8...4......Z..
+00006A30 9E 1B 00 5A 07 02 1E 03 B0 5A FE FF 07 02 1E 03 ...Z.....Z......
+
+;; fn00006A40: 00006A40
+;;   Called from:
+;;     00006CC2 (in fn00004CD4)
+;;     00006DBC (in fn00004CD4)
+;;     00008E54 (in fn00008DC0)
+fn00006A40 proc
 	push	$1,ra
 	push	$0,r7
-	Invalid
+	movd	$0,ra
 	cmpd	(r3,r2),ra
-	beq	6A38
-	Invalid
-	Invalid
+	beq	00006AE0
+
+l00006A4A:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	(r1,r0),ra
-	beq	6A38
-	Invalid
-	Invalid
+	beq	00006AE0
+
+l00006A52:
+	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	(r1,r0),ra
-	beq	6A38
-	Invalid
-	res
+	beq	00006AE0
+
+l00006A5A:
+	loadd	0x38(r3,r2),(r5,r4)
 	cmpd	(r5,r4),ra
-	beq	6A38
-	Invalid
-	Invalid
-	Invalid
+	beq	00006AE0
+
+l00006A62:
+	loadd	(r5,r4),(r7,r6)
+	movw	$FFFE,r0
 	cmpd	(r3,r2),(r7,r6)
-	beq	69D4
+	beq	00006A70
+
+l00006A6C:
 	pop	$0,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,BC88
-	res
-	blo	69D0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	69F6
-	Invalid
+
+l00006A70:
+	loadw	4(r5,r4),r1
+	addw	$C0CC,r11
+	cmpw	$1F,r1
+	blo	00006A6C
+
+l00006A7C:
+	storw	$0,0x1E(r5,r4)
+	storw	$0,0x20(r5,r4)
+	storw	$0,0x22(r5,r4)
+	stord	ra,0x14(r5,r4)
+	stord	ra,0x14(r3,r2)
+	stord	ra,8(r3,r2)
+	stord	ra,0x18(r3,r2)
+	loadw	8(r5,r4),r0
+	cmpw	$0,r0
+	beq	00006A9E
+
+l00006A96:
+	andw	$1,r1
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	wait
-	Invalid
-	cinv	[i,,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$C6140,r0
-	Invalid
-	andd	$38EF04,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	bfc	69A2
-	Invalid
-	Invalid
-	bfc	69AC
-	Invalid
+	stord	(r1,r0),0x60(r3,r2)
+
+l00006A9E:
+	movw	$3F34,r0
+	storw	r0,4(r5,r4)
+	storw	$0,6(r5,r4)
+	storw	$0,0xA(r5,r4)
+	movw	$8000,r0
+	storw	r0,0xE(r5,r4)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x18(r5,r4)
+	stord	(r1,r0),0x50(r5,r4)
+	storw	$0,0x2C(r5,r4)
+	movd	$50C,(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	stord	(r1,r0),0x90(r5,r4)
+	stord	(r1,r0),0x70(r5,r4)
+	stord	(r1,r0),0x68(r5,r4)
+	storw	$1,0x1B9C(r5,r4)
+	movw	$FFFF,r0
+	storw	r0,0x373C(r5,r4)
+	movw	$0,r0
 	pop	$0,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00006AE0:
+	movw	$FFFE,r0
 	pop	$0,r7
 	popret	$1,ra
-	push	$1,ra
-	push	$0,r7
-	Invalid
-	cmpd	(r3,r2),ra
-	beq	6AE0
-	Invalid
-	Invalid
-	cmpd	(r1,r0),ra
-	beq	6AE0
-	Invalid
-	Invalid
-	cmpd	(r1,r0),ra
-	beq	6AE0
-	Invalid
-	res
-	cmpd	(r5,r4),ra
-	beq	6AE0
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	beq	6A70
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,BD24
-	res
-	blo	6A6C
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	6A9E
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	wait
-	Invalid
-	cinv	[i,,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$C6140,r0
-	Invalid
-	andd	$38EF04,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	bfc	6A4A
-	Invalid
-	Invalid
-	bfc	6A54
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	push	$1,ra
-	push	$6,r7
-	movd	(r9,r8),(r3,r2)
-	movw	r4,r7
+00006AE8                         1E 01 67 01 28 55 47 5B         ..g.(UG[
+
+l00006AF0:
 	cmpd	$0,(r3,r2)
-	beq	6B12
-	Invalid
-	Invalid
+	beq	00006B12
+
+l00006AF4:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	6B12
-	Invalid
-	Invalid
+	beq	00006B12
+
+l00006AFC:
+	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	6B12
-	Invalid
-	res
+	beq	00006B12
+
+l00006B04:
+	loadd	0x38(r3,r2),(r11,r10)
 	cmpd	$0,(r11,r10)
-	beq	6B12
-	Invalid
+	beq	00006B12
+
+l00006B0C:
+	loadd	(r11,r10),(r3,r2)
 	cmpd	(r9,r8),(r3,r2)
-	beq	6B1A
-	Invalid
-	Invalid
+	beq	00006B1A
+
+l00006B12:
+	movw	$FFFE,r0
 	pop	$6,r7
+
+l00006B18:
 	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,BDD0
-	res
-	blo	6B12
-	Invalid
-	bgt	6C0A
+
+l00006B1A:
+	loadw	4(r11,r10),r2
+	addw	$C0CC,r11
+	cmpw	$1F,r2
+	blo	00006B12
+
+l00006B26:
+	cmpw	$0,r4
+
+l00006B28:
+	bgt	00006C0A
+
+l00006B2A:
 	movw	r4,r2
-	Invalid
-	Invalid
+	ashuw	$-12,r2
+	addw	$5,r5
 	movw	r2,r12
-	Invalid
-	Invalid
-	blt	6B3A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	6B50
-	Invalid
-	Invalid
-	Invalid
-	bne	6B12
-	Invalid
-	Invalid
+	cmpw	$2F,r4
+	blt	00006B3A
+
+l00006B38:
+	andw	$F,sp
+
+l00006B3A:
+	movw	$FFF8,r2
+	addw	r2,r7
+	cmpw	$7,r2
+	slo	r2
+	cmpw	$0,r2
+	beq	00006B50
+
+l00006B48:
+	cmpw	$0,r7
+	sne	r2
+	cmpw	$0,r2
+	bne	00006B12
+
+l00006B50:
+	loadd	0x48(r11,r10),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	6C02
-	Invalid
-	res
-	Invalid
-	beq	6C02
-	Invalid
-	Invalid
+	beq	00006C02
+
+l00006B58:
+	loadw	0x38(r11,r10),r2
+	cmpw	r7,r2
+	beq	00006C02
+
+l00006B60:
+	loadd	0x50(r9,r8),(r3,r2)
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x48(r11,r10)
+	loadd	0x40(r9,r8),(r1,r0)
+
+l00006B6E:
+	addd	$D4CADF7A,(r1,r0)
+
+l00006B70:
+	storw	r12,8(r11,r10)
+	storw	r7,0x38(r11,r10)
 	cmpd	$0,(r1,r0)
-	beq	6B12
-	Invalid
-	Invalid
-	Invalid
+	beq	00006B12
+
+l00006B7A:
+	loadd	0x48(r9,r8),(r1,r0)
+
+l00006B7E:
+	movd	$0,(r3,r2)
+
+l00006B80:
 	cmpd	(r1,r0),(r3,r2)
-	beq	6B12
-	Invalid
-	res
+	beq	00006B12
+
+l00006B84:
+	loadd	0x38(r9,r8),(r1,r0)
 	cmpd	(r1,r0),(r3,r2)
-	beq	6B12
-	Invalid
+
+l00006B8A:
+	beq	00006B12
+
+l00006B8C:
+	loadd	(r1,r0),(r5,r4)
 	cmpd	(r9,r8),(r5,r4)
-	bne	6B12
-	Invalid
-	Invalid
-	bal	ra,BE4A
-	res
-	blo	6B12
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	6BC0
-	Invalid
+	bne	00006B12
+
+l00006B92:
+	loadw	4(r1,r0),r4
+
+l00006B94:
+	addw	$C0CC,r11
+	cmpw	$1F,r4
+	blo	00006B12
+
+l00006B9E:
+	storw	$0,0x1E(r1,r0)
+	storw	$0,0x20(r1,r0)
+	storw	$0,0x22(r1,r0)
+	stord	(r3,r2),0x14(r1,r0)
+	stord	(r3,r2),0x14(r9,r8)
+	stord	(r3,r2),8(r9,r8)
+	stord	(r3,r2),0x18(r9,r8)
+	loadw	8(r1,r0),r2
+	cmpw	$0,r2
+	beq	00006BC0
+
+l00006BB8:
+	andw	$1,r1
 	movxw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	wait
-	Invalid
-	cinv	[i,,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$C6102,r0
-	Invalid
-	andd	$38EF20,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	bfc	6B6C
-	Invalid
-	Invalid
-	bfc	6B76
-	Invalid
+	stord	(r3,r2),0x60(r9,r8)
+
+l00006BC0:
+	movw	$3F34,r2
+	storw	r2,4(r1,r0)
+	storw	$0,6(r1,r0)
+	storw	$0,0xA(r1,r0)
+	movw	$8000,r2
+	storw	r2,0xE(r1,r0)
+	movd	$0,(r3,r2)
+	stord	(r3,r2),0x18(r1,r0)
+	stord	(r3,r2),0x50(r1,r0)
+	storw	$0,0x2C(r1,r0)
+	movd	$50C,(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x90(r1,r0)
+	stord	(r3,r2),0x70(r1,r0)
+	stord	(r3,r2),0x68(r1,r0)
+	storw	$1,0x1B9C(r1,r0)
+	movw	$FFFF,r2
+	storw	r2,0x373C(r1,r0)
+	movw	$0,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	res
-	br	6B7E
-	Invalid
+
+l00006C02:
+	storw	r12,8(r11,r10)
+	storw	r7,0x38(r11,r10)
+	br	00006B7E
+
+l00006C0A:
+	movw	$0,r2
 	movw	r2,r3
-	Invalid
+	subw	r3,r4
 	movw	r3,r7
 	movw	r2,r12
-	br	6B3A
-	push	$1,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	cmpd	$0,(r6,r5)
-	Invalid
-	res
-	Invalid
-	cmpb	$31,r0
-	Invalid
-	Invalid
-	bne	6D24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6D24
-	cmpd	$0,(r3,r2)
-	beq	6D38
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	6D08
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	br	00006B3A
+00006C16                   1E 01 67 01 BC 54 12 00 FC 61       ..g..T...a
+00006C20 28 55 47 5B 1C 90 05 56 00 18 FC 00 05 B0 B0 50 (UG[...V.......P
+00006C30 31 00 10 08 00 52 17 17 B1 52 38 00 10 08 00 52 1....R...R8....R
+00006C40 12 17 02 56 0A 17 00 54 02 EC 02 AF 20 00 00 56 ...V...T.... ..V
+00006C50 0C 15 22 9F 28 00 38 9F 2A 00                   ..".(.8.*.      
+
+l00006C5A:
+	loadd	0x48(r9,r8),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	6CFC
-	Invalid
-	blo	6BCC
-	Invalid
+	beq	00006CFC
+
+l00006C62:
+	movw	$1BA4,r5
+	movw	$1,r4
 	jal	ra,(r1,r0)
 	movd	(r11,r10),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	6D2E
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006D2E
+
+l00006C70:
+	stord	(r1,r0),0x38(r9,r8)
+	stord	(r9,r8),(r1,r0)
+
+l00006C76:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x48(r11,r10)
+	movw	$3F34,r0
+	storw	r0,4(r11,r10)
+	loadd	0x48(r9,r8),(r1,r0)
+
+l00006C86:
+	loadd	0x40(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	6D1E
+	beq	00006D1E
+
+l00006C8E:
 	cmpd	$0,(r1,r0)
-	beq	6D1E
-	Invalid
-	bgt	6CE4
+	beq	00006D1E
+
+l00006C92:
+	cmpw	$0,r7
+	bgt	00006CE4
+
+l00006C96:
 	movw	r7,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blt	6CA4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	6CBA
-	Invalid
-	Invalid
-	Invalid
-	bne	6D1E
-	Invalid
-	Invalid
-	res
+	ashuw	$-12,r2
+	addw	$5,r5
+	cmpw	$2F,r7
+	blt	00006CA4
+
+l00006CA2:
+	andw	$F,sp
+
+l00006CA4:
+	movw	$FFF8,r3
+	addw	r3,r7
+	cmpw	$7,r3
+	slo	r3
+	cmpw	$0,r3
+	beq	00006CBA
+
+l00006CB2:
+	cmpw	$0,r7
+	sne	r3
+	cmpw	$0,r3
+	bne	00006D1E
+
+l00006CBA:
+	storw	r2,8(r11,r10)
+	storw	r7,0x38(r11,r10)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,6A40
+	bal	ra,fn00006A40
+
+l00006CC4:
+	storb	r7,0xD(sp)
+
+l00006CC6:
 	movw	r0,r7
-	Invalid
-	beq	6CDE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r0
+	beq	00006CDE
+
+l00006CCC:
+	loadd	0x48(r9,r8),(r1,r0)
+
+l00006CD0:
+	loadd	0x50(r9,r8),(r3,r2)
 	movd	(r5,r4),(r11,r10)
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	res
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x38(r9,r8)
+
+l00006CDE:
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
+
+l00006CE4:
+	movw	$0,r2
 	movw	r2,r3
-	Invalid
+	subw	r3,r7
 	movw	r3,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6CB2
-	br	6CBA
-	movd	$5D760000,(r5,r4)
-	Invalid
-	Invalid
-	br	6C62
-	movd	$5D6E0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r2
+	movw	$FFF8,r3
+	addw	r3,r7
+	cmpw	$7,r3
+	slo	r3
+	cmpw	$0,r3
+	bne	00006CB2
+
+l00006CFA:
+	br	00006CBA
+
+l00006CFC:
+	movd	$5D76,(r5,r4)
+	stord	(r5,r4),0x48(r9,r8)
+	br	00006C62
+00006D08                         74 00 00 00 6E 5D 42 EF         t...n]B.
+00006D10 20 00 02 EF 28 00 02 5B                          ...(..[        
+
+l00006D18:
 	movw	r1,r3
 	movd	(r1,r0),(r5,r4)
-	br	6C5A
-	Invalid
-	Invalid
-	br	6CD0
-	Invalid
-	Invalid
+	br	00006C5A
+
+l00006D1E:
+	movw	$FFFE,r7
+	br	00006CD0
+
+l00006D24:
+	movw	$FFFA,r7
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00006D2E:
+	movw	$FFFC,r7
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+00006D38                         B7 5A FE FF                     .Z..    
+
+l00006D3C:
 	movw	r7,r0
 	pop	$6,r7
 	popret	$1,ra
-	push	$1,ra
-	push	$4,r7
-	movd	(r9,r8),(r3,r2)
-	cmpd	$0,(r5,r4)
-	beq	6E00
-	Invalid
+00006D42       1E 01 47 01 28 55 04 56                     ..G.(U.V      
+
+l00006D4A:
+	beq	00006E00
+
+l00006D4C:
+	loadb	(r5,r4),r0
 	cmpb	$31,r0
-	Invalid
-	Invalid
-	bne	6E00
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6E00
+	sne	r0
+	cmpw	$0,r0
+	bne	00006E00
+
+l00006D58:
+	cmpw	$38,r6
+	sne	r0
+	cmpw	$0,r0
+	bne	00006E00
+
+l00006D62:
 	cmpd	$0,(r3,r2)
-	beq	6E1A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006E1A
+
+l00006D66:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x18(r3,r2)
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	6DEA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006DEA
+
+l00006D72:
+	loadw	0x50(r3,r2),r2
+	loadw	0x54(r9,r8),r3
+
+l00006D7A:
+	loadd	0x48(r9,r8),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	6DDE
-	Invalid
-	blo	6CEC
-	Invalid
+	beq	00006DDE
+
+l00006D82:
+	movw	$1BA4,r5
+	movw	$1,r4
 	jal	ra,(r1,r0)
 	movd	(r11,r10),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	6E10
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	beq	00006E10
+
+l00006D90:
+	stord	(r1,r0),0x38(r9,r8)
+	stord	(r9,r8),(r1,r0)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x48(r11,r10)
+	movw	$3F34,r0
+	storw	r0,4(r11,r10)
+	loadd	0x48(r9,r8),(r1,r0)
+	loadd	0x40(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	6E0A
+	beq	00006E0A
+
+l00006DAE:
 	cmpd	$0,(r1,r0)
-	beq	6E0A
-	Invalid
-	res
-	Invalid
-	res
+	beq	00006E0A
+
+l00006DB2:
+	storw	$5,8(r11,r10)
+	storw	$F,0x1C(r11,r10)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,6A40
+	bal	ra,fn00006A40
 	movw	r0,r7
-	Invalid
-	beq	6DD8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r0
+	beq	00006DD8
+
+l00006DC6:
+	loadd	0x48(r9,r8),(r1,r0)
+
+l00006DCA:
+	loadd	0x50(r9,r8),(r3,r2)
 	movd	(r5,r4),(r11,r10)
 	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	res
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x38(r9,r8)
+
+l00006DD8:
 	movw	r7,r0
 	pop	$4,r7
 	popret	$1,ra
-	movd	$5D760000,(r5,r4)
-	Invalid
-	Invalid
-	br	6D82
-	movd	$5D6E0000,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00006DDE:
+	movd	$5D76,(r5,r4)
+	stord	(r5,r4),0x48(r9,r8)
+	br	00006D82
+
+l00006DEA:
+	movd	$5D6E,(r5,r4)
+	stord	(r5,r4),0x40(r3,r2)
+	stord	(r1,r0),0x50(r3,r2)
 	movw	r0,r2
 	movw	r1,r3
 	movd	(r1,r0),(r5,r4)
-	br	6D7A
-	Invalid
-	Invalid
+	br	00006D7A
+
+l00006E00:
+	movw	$FFFA,r7
 	movw	r7,r0
 	pop	$4,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	br	6DCA
-	Invalid
-	Invalid
+
+l00006E0A:
+	movw	$FFFE,r7
+	br	00006DCA
+
+l00006E10:
+	movw	$FFFC,r7
 	movw	r7,r0
 	pop	$4,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00006E1A:
+	movw	$FFFE,r7
 	movw	r7,r0
 	pop	$4,r7
 	popret	$1,ra
-	res
-	push	$1,ra
-	push	$0,r7
-	cmpd	$0,(r3,r2)
-	beq	6EA6
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	6EA6
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	6EA6
-	Invalid
-	res
-	cmpd	$0,ra
-	beq	6EA6
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	beq	6E54
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,C108
-	res
-	blo	6E50
-	Invalid
-	bgt	6E98
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r6
-	Invalid
-	Invalid
-	Invalid
-	blo	6E50
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r5,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	6FA2
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	6F9A
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	6F92
-	Invalid
-	res
-	cmpd	$0,r13
-	beq	6F82
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	beq	6EEC
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	bal	ra,A1F0
-	Invalid
-	res
-	blo	6EE2
-	Invalid
-	Invalid
-	cmpd	$0,(r11,r10)
-	beq	6EE2
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r11,r10)
-	beq	6F7C
-	Invalid
-	Invalid
-	bne	6F1A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$C61D4,r0
-	Invalid
-	res
-	Invalid
-	pop	$4,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$EF2F61D2,(r9,r8)
-	Invalid
-	Invalid
-	andd	$EF3F61D3,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	blo	6FA2
-	movzw	r1,(r2,r1)
-	Invalid
-	movd	$E838,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	6F0C
-	br	6EE2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	br	6EE2
-	Invalid
-	Invalid
-	Invalid
-	br	6EE2
-	Invalid
-	Invalid
-	Invalid
-	br	6EE2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	6F2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ble	6EE0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	6FEE
-	Invalid
-	Invalid
-	push	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	blo	7000
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),r12
-	bal	ra,CB28
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	7038
-	Invalid
-	Invalid
-	bfc	6FB2
-	Invalid
-	bal	ra,8A20
-	movd	$E934,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E8B4,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	6F86
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	6FE0
-	Invalid
-	cmpb	$0,r4
-	beq	6FAA
-	movb	$F0,r10
-	Invalid
-	cmpb	$0,r10
-	Invalid
-	bne	715A
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	700A
-	Invalid
-	Invalid
-	movb	$20,r0
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	blt	70FE
-	movb	$40,r0
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	blt	714A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	70D2
-	Invalid
-	Invalid
-	Invalid
-	blo	7026
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r8,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r3,r0
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r1,r0)
-	movw	r0,r6
-	Invalid
-	Invalid
-	bls	718A
-	Invalid
-	Invalid
-	Invalid
-	bgt	70FE
-	movw	r1,r2
-	br	710C
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	beq	711A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r3,r0
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r10,(r1,r0)
-	movw	r0,r6
-	Invalid
-	blo	7104
-	Invalid
-	movb	r11,r4
-	movw	r8,r5
-	Invalid
-	movb	r10,r2
-	movw	r0,r3
-	movb	$F0,r10
-	Invalid
-	cmpb	$0,r10
-	Invalid
-	bcc	718E
-	Invalid
-	bfc	70CE
-	movb	$0,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	70DC
-	movb	$40,r0
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	7184
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	726E
-	movw	r1,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	712A
-	Invalid
-	Invalid
-	Invalid
-	movd	$E7EC,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bne	7212
-	Invalid
-	Invalid
-	Invalid
-	beq	72A2
-	Invalid
-	Invalid
-	Invalid
-	blo	72A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	7212
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	72A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$5,r10
-	Invalid
-	res
-	Invalid
-	bne	7242
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r2
-	Invalid
-	Invalid
-	Invalid
-	movw	r11,r10
-	Invalid
-	bhs	7256
-	movw	r1,r10
-	movzw	r0,(r1,r0)
-	Invalid
-	movzw	r10,(r1,r0)
-	movzw	r11,(r5,r4)
-	Invalid
-	subd	(r7,r6),(r5,r4)
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bne	728C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	72A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r9,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movzw	r8,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	lshw	$FFFFFFF2,r0
-	Invalid
-	cmpb	$0,r0
-	beq	72F0
-	Invalid
-	Invalid
-	Invalid
-	beq	72F0
-	Invalid
-	subd	(r5,r4),(r3,r2)
-	Invalid
-	movw	r8,r6
-	Invalid
-	beq	73D8
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	72FE
-	Invalid
-	andd	$52B0920D,(r1,r0)
-	Invalid
-	beq	734E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	731C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	7320
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	733C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	7320
-	movzw	r1,(r11,r10)
-	Invalid
-	subd	(r5,r4),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	72A2
-	Invalid
-	res
-	Invalid
-	movw	r5,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	jal	ra,(r1,r0)
-	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r11,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	subd	(r5,r4),(r1,r0)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,C0EE
-	br	72EA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$429F0D,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	andd	$329F1F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r5
-	Invalid
-	Invalid
-	Invalid
-	bhs	747E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r5,(r2,r1)
-	Invalid
-	Invalid
-	bcs	746C
-	Invalid
-	bne	7446
-	Invalid
-	bcc	746C
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r5,(r2,r1)
-	Invalid
-	blo	743E
-	Invalid
-	Invalid
-	Invalid
-	movb	$0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5FB496BF,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	movw	r1,r0
-	br	740A
-	Invalid
-	Invalid
-	Invalid
-	bhs	74D0
-	Invalid
-	Invalid
-	Invalid
-	blo	74E8
-	Invalid
-	res
-	Invalid
-	bhs	74C8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	750E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r1,r0),(r9,r8)
-	Invalid
-	br	756E
-	movd	$E820,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8,ra
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	7592
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r12,ra
-	Invalid
-	Invalid
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bge	7616
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r5,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bhi	7606
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bne	7640
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r6,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	76C4
-	Invalid
-	Invalid
-	Invalid
-	beq	76C4
-	Invalid
-	subd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bcs	76EA
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	bne	76F2
-	movd	(r5,r4),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),(r9,r8)
-	Invalid
-	andd	$FF000000,(r5,r4)
-	Invalid
-	movd	(r5,r4),(r9,r8)
-	Invalid
-	andd	$FF,(r5,r4)
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	movd	$E80A,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FFFF0000,(r3,r2)
-	cmpd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	movd	$E6C4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r11,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r6
-	Invalid
-	beq	78AE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	blo	787E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	xord	$FFFF0000,(r1,r0)
-	movd	$FFFF,r2
-	Invalid
-	Invalid
-	Invalid
-	movd	$E6EC,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E6D8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	7924
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r1
-	Invalid
-	andd	$4BB05580,(r3,r2)
-	Invalid
-	res
-	Invalid
-	Invalid
-	andd	$4B635583,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	andd	$32B74B28,(r1,r0)
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$3F455AB0,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r4,(r5,r4)
-	Invalid
-	movd	$F134,ra
-	Invalid
-	Invalid
-	movw	r3,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5F44904E,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r2
-	movd	(r11,r10),(r1,r0)
-	br	798A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	7A66
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	79F0
-	Invalid
-	Invalid
-	Invalid
-	beq	7A5E
-	movw	r4,r3
-	Invalid
-	movzw	r3,(r3,r2)
-	Invalid
-	cmpd	$0,(r5,r4)
-	beq	7A2C
-	Invalid
-	cmpd	$0,ra
-	beq	7A2C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	7A1C
-	Invalid
-	movzw	r3,(r1,r0)
-	movzw	r2,(r3,r2)
-	Invalid
-	push	$1,r0
-	movd	(r5,r4),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	beq	7A48
-	Invalid
-	Invalid
-	Invalid
-	beq	7A48
-	Invalid
-	Invalid
-	movd	(r5,r4),(r11,r10)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	7B3C
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	7A84
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	7A90
-	Invalid
-	Invalid
-	bne	7AAE
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	7AA4
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r5,r6
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	7AEE
-	Invalid
-	res
-	cmpd	$0,(r5,r4)
-	beq	7AEE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	7AEE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r9,ra
-	Invalid
-	Invalid
-	movw	r2,r0
-	cmpb	$0,r3
-	Invalid
-	Invalid
-	beq	7B00
-	Invalid
-	Invalid
-	Invalid
-	bne	7ABC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	beq	7B24
-	Invalid
-	Invalid
-	Invalid
-	beq	7B24
-	movw	r2,r6
-	Invalid
-	movd	(r5,r4),(r11,r10)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	movzw	r6,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	br	7AA4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r6
-	br	7B54
-	Invalid
-	Invalid
-	Invalid
-	beq	7B8C
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	7B82
-	Invalid
-	cmpd	$0,(r5,r4)
-	beq	7B82
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	7B82
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r9,ra
-	Invalid
-	Invalid
-	movw	r2,r0
-	cmpb	$0,r3
-	Invalid
-	Invalid
-	bne	7B4C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	beq	7BB2
-	Invalid
-	Invalid
-	Invalid
-	beq	7BB2
-	movw	r2,r6
-	Invalid
-	movd	(r5,r4),(r11,r10)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	movzw	r2,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$85B14,r8
-	br	7BE2
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	beq	7C70
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	7BDC
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	7C10
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	beq	7C3C
-	Invalid
-	Invalid
-	Invalid
-	beq	7C3C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),sp
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r4
-	br	7C94
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	beq	7C70
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	bhs	7C8E
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	7CB8
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	beq	7CE6
-	Invalid
-	Invalid
-	Invalid
-	beq	7CE6
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movw	r9,r0
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),sp
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	7C52
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r5
-	br	7D1E
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	7D16
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	7D44
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	7C66
-	Invalid
-	andd	$409F3D,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$F134,r2
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$1CAF0F,(r7,r6)
-	Invalid
-	andd	$34EF0D,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r1
-	Invalid
-	Invalid
-	push	$1,r2
-	Invalid
-	Invalid
-	push	$1,r3
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,920C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E72E,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	7E5E
-	Invalid
-	Invalid
-	bhs	7E10
-	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	bhs	7E1C
-	Invalid
-	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	movzw	r1,(r3,r2)
-	Invalid
-	push	$1,r2
-	movd	(r5,r4),(r11,r10)
-	Invalid
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	7E04
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$8,r8
-	Invalid
-	movd	$20500,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$7,r10
-	movw	r2,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	$C5203,r9
-	Invalid
-	popret	$2,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	movd	$25203,r7
-	Invalid
-	popret	$7,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	res
-	Invalid
-	movd	$A5203,r4
-	Invalid
-	popret	$5,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	andd	$FF000000,(r3,r2)
-	Invalid
-	Invalid
-	andd	$FF,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,r10,ra
-	Invalid
-	Invalid
-	res
-	Invalid
-	movzw	r1,ra
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r2
-	Invalid
-	bhs	7FF8
-	movw	r0,r2
-	Invalid
-	Invalid
-	bhs	8000
-	movw	r2,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	popret	$7,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r0
-	Invalid
-	popret	$6,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r5
-	Invalid
-	Invalid
-	movd	(r1,r0),ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	8052
-	Invalid
-	Invalid
-	movzw	r5,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	8074
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r6,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E70A,r0
-	Invalid
-	Invalid
-	Invalid
-	bfc	8018
-	Invalid
-	Invalid
-	movw	r8,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r5,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,ra,ra
-	movw	r1,r6
-	br	80DA
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	Invalid
-	pop	$1,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movw	r8,r1
-	movw	r0,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r10,(r3,r2)
-	Invalid
-	blo	80D2
-	Invalid
-	movb	r11,r4
-	movb	r10,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	subd	ra,(r1,r0)
-	Invalid
-	movw	r2,r1
-	Invalid
-	Invalid
-	movd	$E7D6,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r8,ra
-	movw	r0,r5
-	br	817E
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	beq	8134
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	8178
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	8132
-	Invalid
-	Invalid
-	bfc	8138
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	815C
-	movw	r0,r5
-	br	81D8
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	beq	8134
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	81D2
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	818C
-	Invalid
-	Invalid
-	bfc	8192
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	8246
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	823E
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	$32B22382,sp
-	cinv	[i,,u]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	ra,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r4
-	movzw	r4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	8288
-	Invalid
-	Invalid
-	andd	$309F5F,(r7,r6)
-	movw	r4,r0
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	Invalid
-	movzw	r1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$925F,r5
-	Invalid
-	Invalid
-	Invalid
-	movw	r5,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$5201,r3
-	Invalid
-	push	$5,ra
-	movw	r5,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	Invalid
-	push	$3,ra,ra
-	cmpd	$8B1F0000,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r0,ra
-	Invalid
-	res
-	Invalid
-	bne	833A
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),sp
-	movd	(r3,r2),(r1,r0)
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r3,r6
-	Invalid
-	Invalid
-	movb	r10,r3
-	Invalid
-	Invalid
-	movw	r5,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r5,(r6,r5)
-	movw	r5,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	836C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r11,r1
-	br	83C6
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	Invalid
-	push	$1,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movw	r6,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r4,(r4,r3)
-	movw	r3,r4
-	Invalid
-	Invalid
-	blo	83BE
-	movb	r5,r4
-	Invalid
-	movw	r3,r5
-	movb	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	8388
-	Invalid
-	movw	r5,r6
-	movw	r5,r3
-	movw	r2,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r6,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	ra,(r5,r4)
-	bne	8428
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	83DC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r8,ra
-	movd	$E6AA,r0
-	Invalid
-	Invalid
-	movw	r8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	beq	84CA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),sp
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	84EA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	852A
-	movw	r8,r2
-	Invalid
-	movzw	r2,(r3,r2)
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	res
-	bal	ra,D4EC
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	852A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$4,r12
-	movd	$E67A,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E662,r0
-	Invalid
-	Invalid
-	movd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$7,ra
-	Invalid
-	bne	8596
-	Invalid
-	popret	$6,r12
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	858E
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	ra,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$1,r2,ra
-	Invalid
-	bne	85E2
-	Invalid
-	popret	$2,r0
-	movd	(r3,r2),(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	85DA
-	movb	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$4,r10
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r1,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	movd	$E7BA,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r4
-	movd	(r11,r10),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r0,r6
-	Invalid
-	movw	r6,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r5,(r1,r0)
-	movw	r0,r1
-	Invalid
-	Invalid
-	bhs	872A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r3,r5
-	Invalid
-	movw	r11,r3
-	Invalid
-	Invalid
-	Invalid
-	br	86EA
-	movd	(r1,r0),(r11,r10)
-	Invalid
-	Invalid
-	push	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	movw	r6,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r2,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	blo	86E2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$0,r3
-	movb	r3,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bfc	86B8
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	876C
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r0
-	Invalid
-	beq	878E
-	Invalid
-	Invalid
-	Invalid
-	beq	878E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),sp
-	bal	ra,CAF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$3F465AB1,(r7,r6)
-	Invalid
-	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$4,r12
-	Invalid
-	bne	88B8
-	movd	$E762,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	bne	8880
-	Invalid
-	res
-	Invalid
-	bhs	8888
-	movd	$E696,r0
-	Invalid
-	Invalid
-	Invalid
-	blo	8878
-	Invalid
-	bhi	8878
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	Invalid
-	Invalid
-	Invalid
-	andd	$2000000,(r9,r8)
-	cmpd	$0,(r9,r8)
-	beq	8980
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	andd	$34EF0D,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r1
-	Invalid
-	Invalid
-	push	$1,r2
-	Invalid
-	Invalid
-	push	$1,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,920C
-	Invalid
-	Invalid
-	beq	8906
-	movd	$E788,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	andd	$38EF0D,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	andd	$429F0D,(r5,r4)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	Invalid
-	push	$1,r1
-	Invalid
-	bal	ra,920C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E7A4,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	$E748,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[d,]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00006E24             00 00 1E 01 07 01 02 56 0D 13 02 AF     .......V....
+00006E30 20 00 00 56 09 13 02 AF 24 00 00 56 05 13 E2 AF  ..V....$..V....
+00006E40 1C 00 0E 56 01 13 6E A0 B0 5A FE FF 62 57 03 10 ...V..n..Z..bW..
+00006E50 07 02 1E 03 1E 92 B1 32 CC C0 B1 52 1F 00 A9 1F .......2...R....
+00006E60 04 52 6B 11 B4 52 10 00 C4 1F 1E 9F 2C 00 46 5B .Rk..R......,.F[
+00006E70 16 33 B6 52 20 00 AD 1E 12 54 42 48 92 32 25 23 .3.R ....TBH.2%#
+00006E80 15 45 50 5F 2E AF 28 00 20 61 0E EF 28 00 6E DF .EP_..(. a..(.n.
+00006E90 2C 00 00 5A 07 02 1E 03 00 54 0E EF 28 00 0E C3 ,..Z.....T..(...
+00006EA0 2C 00 07 02 1E 03 B0 5A FE FF 07 02 1E 03 9D 01 ,......Z........
+00006EB0 67 01 BF 60 C8 FF 2C 55 4F DC 02 56 03 17 02 AF g..`..,UO..V....
+00006EC0 20 00 00 56 0B 16 02 AF 24 00 00 56 03 16 D2 AF  ..V....$..V....
+00006ED0 1C 00 0D 56 07 15 0D A0 B7 5A FE FF 7F D6 02 57 ...V.....Z.....W
+00006EE0 06 10 0F 96 BF 60 38 00 67 02 9D 03 0D 92 B1 5A .....`8.g......Z
+00006EF0 CC C0 01 33 B1 52 1F 00 A5 1F A2 A6 AF E8 0A 56 ...3.R.........V
+00006F00 01 1F A2 A0 72 92 7F DA 0A 56 09 13 B0 52 3F 3F ....r....V...R??
+00006F10 15 10 B0 5A 40 3F 0D D2 C1 5A 7C 98 7F D3 8D AF ...Z@?...Z|.....
+00006F20 28 00 7D 9F 2C 00 0F 9C B0 32 FB FF 0F DD 2F 93 (.}.,....2..../.
+00006F30 2F DB 3F 9A 3F D2 B4 54 0C 05 D4 61 4F EF 1C 00 /.?.?..T...aO...
+00006F40 B5 54 CC 02 D5 61 5F EF 20 00 B2 54 48 00 D2 61 .T...a_. ..TH..a
+00006F50 2F EF 24 00 B3 54 4C 00 D3 61 3F EF 28 00 B4 54 /.$..TL..a?.(..T
+00006F60 3C 00 D4 61 4F EF 2C 00 B1 52 1E 00 AB 11 11 5F <..aO.,..R....._
+00006F70 21 4C 40 05 38 E8                               !L@.8.          
+
+l00006F76:
+	addd	(r2,r1),(r5,r4)
+	loadd	(r5,r4),(r1,r0)
+	jr	(r1,r0)
+00006F7C                                     07 52 07 1C             .R..
+00006F80 E1 1B BB 5A FE FF BF D6 0F 96 BF 60 38 00 67 02 ...Z.......`8.g.
+00006F90 9D 03 BA 5A FE FF AF D6 E5 1A B7 5A FE FF 7F D6 ...Z.......Z....
+00006FA0 E1 1A BC 5A FE FF CF D6 ED 19 54 39 48 47 27 3B ...Z......T9HG';
+00006FB0 2D DF 9E 1B 3D DF 2E 00 B0 5A 4D 3F 0D D2 2F A8 -...=....ZM?../.
+00006FC0 AF A4 1F 93 01 52 00 18 7C 18 4F A8 14 60 4F E8 .....R..|.O..`O.
+00006FD0 0D 9F 2E 00 02 F0 91 32 1F D3 B0 5A 48 3F 0D D2 .......2...ZH?..
+00006FE0 2F 92 52 52 A0 08 00 52 00 18 B2 10 3F 93 B3 52 /.RR...R....?..R
+00006FF0 01 01 A0 08 00 52 00 18 A4 10 4F A8 4C E6 3C D8 .....R....O.L.<.
+00007000 AC E0 2C D2 8D EF 28 00 7D DF 2C 00 4F 9B C2 55 ..,...(.}.,.O..U
+00007010 00 C0 18 5B AC A6 AF E8 BC 98 BF D3 AC A0 7C 92 ...[..........|.
+00007020 7F D2 8D AF 28 00 7D 9F 2C 00 1D 92 B1 52 3F 3F ....(.}.,....R??
+00007030 14 10 90 5A 0D DF 9E 1B B1 32 CC C0 E6 19 20 05 ...Z.....2.... .
+00007040 34 E9 2D EF 34 00 9D C3 3C 00 20 05 B4 E8 2D EF 4.-.4...<. ...-.
+00007050 38 00 5D C3 3E 00 B1 5A 47 3F 1D D2 4F 9C 64 52 8.].>..ZG?..O.dR
+00007060 00 18 12 19 D8 4B B7 32 FD FF B0 5A 48 3F 0D D2 .....K.2...ZH?..
+00007070 E8 1B AF E4 04 50 0A 19 BA 58 F0 FF 4A 21 0A 50 .....P...X..J!.P
+00007080 00 18 1C 16 00 58 20 39 08 47 27 3B 2D DF 9E 1B .....X 9.G';-...
+00007090 3D DF 2E 00 B0 58 20 00 40 21 00 50 10 18 C0 13 =....X .@!.P....
+000070A0 B0 58 40 00 40 21 00 50 10 18 C0 15 F4 22 4D DF .X@.@!.P....."M.
+000070B0 32 00 B0 5A 49 3F 0D D2 AF A4 04 52 10 18 AA 10 2..ZI?.....R....
+000070C0 0D 9F 2E 00 0D DF A0 1B B0 5A 4A 3F 0D D2 ED AF .........ZJ?....
+000070D0 38 00 85 5B 0D 9F 3E 00 93 5A 03 45 93 2A 30 5B 8..[..>..Z.E.*0[
+000070E0 80 23 00 5F 20 4C E0 61 40 B0 20 B1 10 91 20 5D .#._ L.a@. ... ]
+000070F0 06 5B 70 53 B0 18 5A 14 1F 92 01 52 00 18 60 10 .[pS..Z....R..`.
+00007100 12 5B E5 10 4A 55 02 52 00 18 08 10 92 32 14 54 .[..JU.R.....2.T
+00007110 A4 61 0A B0 00 5D 00 5F 70 48 08 61 87 32 8F D6 .a...]._pH.a.2..
+00007120 30 5B 80 23 00 5F 20 4C E0 61 B0 B0 A0 B1 10 91 0[.#._ L.a......
+00007130 A0 5D 06 5B 70 53 A7 1E 4F E4 B4 59 85 5B 2F D2 .].[pS..O..Y.[/.
+00007140 A2 59 03 5B BA 58 F0 FF 4A 21 0A 50 00 18 30 12 .Y.[.X..J!.P..0.
+00007150 0D 9F 9E 1B 02 58 32 39 28 47 67 3B 30 33 0D DF .....X29(Gg;03..
+00007160 9E 1B B0 58 40 00 40 21 00 50 10 18 C2 0F 1D DF ...X@.@!.P......
+00007170 30 00 F4 22 4D DF 32 00 B0 5A 4B 3F 0D D2 AF A4 0.."M.2..ZK?....
+00007180 04 52 10 18 40 10 B0 5A 4C 3F 0D D2 1F 93 01 52 .R..@..ZL?.....R
+00007190 00 18 1E 16 12 5B 1F 9B 21 3B 0D 9F 30 00 10 53 .....[..!;..0..S
+000071A0 B0 18 7A 0F 10 3B 1D 9F 20 00 01 53 50 18 26 0E ..z..;.. ..SP.&.
+000071B0 1D 9F 9C 1B 01 52 00 18 1C 0E 00 05 EC E7 0C EC .....R..........
+000071C0 B0 5A 51 3F 0D D2 AF E4 BA 5A FD FF AF D6 AF A8 .ZQ?.....Z......
+000071D0 AC E6 BF 93 BC D8 AF A4 AC E0 BF 92 BC D2 8D EF ................
+000071E0 28 00 7D DF 2C 00 0D 9F 1E 00 00 52 13 11 7F 9B (.}.,......R....
+000071F0 AF 93 A7 53 07 15 0D 92 B0 52 50 3F A3 15 BF 9C ...S.....RP?....
+00007200 4B 52 11 08 01 52 16 10 B0 52 4D 3F B0 08 00 52 KR...R...RM?...R
+00007210 09 14 BF 9B 7F 93 7B 3B 8C AF 1C 00 28 AF 24 00 ......{;....(.$.
+00007220 02 56 00 18 5A 01 18 9F 1E 00 01 52 1B 10 08 9F .V..Z......R....
+00007230 1C 00 11 5A 01 45 18 DF 1E 00 08 C3 22 00 08 C3 ...Z.E......"...
+00007240 20 00 1B 53 50 18 12 01 08 9F 22 00 01 3B BA 5B  ..SP....."..;.[
+00007250 1B 53 B2 10 1A 5B 00 5F 02 61 A0 5F B4 5F 6F A8 .S...[._.a._._o.
+00007260 14 00 46 C0 64 55 10 01 00 C0 BC 68 AB 3B 4F 60 ..F.dU.....h.;O`
+00007270 0B 52 10 18 3A 01 08 9F 22 00 A0 33 08 DF 22 00 .R..:..."..3..".
+00007280 18 9F 1E 00 10 53 13 10 B8 DF 22 00 08 9F 20 00 .....S...."... .
+00007290 BC 98 BF D3 7C 92 7F D2 01 53 B4 10 0A 33 A8 DF ....|....S...3..
+000072A0 20 00 9F 9A BF 92 B9 3B 8F 9B 7F 93 78 3B 92 5F  ......;....x;._
+000072B0 0C A4 20 61 0C E4 82 5F 0C AA 20 61 0C EA 0D AA .. a..._.. a....
+000072C0 20 61 0D EA 0D B8 E0 49 10 22 00 50 02 11 08 52  a.....I.".P...R
+000072D0 10 08 00 52 0E 10 4C A6 14 00 24 C0 2D A8 0D 96 ...R..L...$.-...
+000072E0 86 5B 00 52 0A 17 00 C0 12 58 0D E8 0C EF 30 00 .[.R.....X....0.
+000072F0 1D 9F 2C 00 0D 93 00 52 03 10 B1 32 40 00 0D 92 ..,....R...2@...
+00007300 B0 52 3F 3F 05 12 B0 52 47 3F 02 08 02 52 17 10 .R??...RG?...R..
+00007310 B0 52 42 3F 02 08 00 5A 02 53 03 10 B0 5A 00 01 .RB?...Z.S...Z..
+00007320 10 33 0C DF 2C 00 98 27 08 52 00 08 00 52 17 10 .3..,..'.R...R..
+00007330 AF 9C 4A 52 00 08 00 52 00 18 AB FB BF 96 0B 52 ..JR...R.......R
+00007340 10 18 A3 FB B7 5A FB FF 7F D6 E0 18 99 FB B1 32 .....Z.........2
+00007350 80 00 00 5A E6 1E 1A 5F 4F A8 14 00 A4 C0 1A 01 ...Z..._O.......
+00007360 00 C0 C4 67 08 C3 22 00 08 9F 1E 00 08 DF 20 00 ...g.."....... .
+00007370 AC 92 AF D4 BC 98 BF D5 4F 60 E4 19 08 9F 1C 00 ........O`......
+00007380 15 5A 54 5B 04 45 2C AF 28 00 0C AF 20 00 D0 00 .ZT[.E,.(... ...
+00007390 02 55 08 EF 24 00 00 56 10 18 8F FE B0 5A 52 3F .U..$..V.....ZR?
+000073A0 0D D2 BA 5A FC FF AF D6 E0 18 3B FB B0 5F 28 AF ...Z......;.._(.
+000073B0 24 00 4F A8 14 00 04 C0 10 01 00 C0 6A 67 B8 DF $.O.........jg..
+000073C0 22 00 08 9F 1E 00 08 DF 20 00 7C 92 7F D4 AC 98 "....... .|.....
+000073D0 AF D5 4F 60 E0 18 CF FE 00 C0 16 4D E7 18 4D 9F ..O`.......M..M.
+000073E0 32 00 E0 18 D9 FC 6D 9F 46 00 0D 9F 42 00 0F DF 2.....m.F...B...
+000073F0 32 00 0D 9F 44 00 1F 9F 32 00 01 33 1F DF 30 00 2...D...2..3..0.
+00007400 0E 5A 6F D6 6F 92 15 5B 0F 96 05 53 B0 18 B8 13 .Zo.o..[...S....
+00007410 2D AF 34 00 2F E4 0D 9F 3C 00 94 5A 04 45 94 2A -.4./...<..Z.E.*
+00007420 40 5B 80 23 00 5F 20 4C 20 61 50 B1 00 91 51 5D @[.#._ L aP...Q]
+00007430 17 53 50 18 2C 11 06 52 17 10 E0 18 38 11 2A 55 .SP.,..R....8.*U
+00007440 06 52 00 18 86 0B 96 32 12 54 A2 61 0A B0 00 5D .R.....2.T.a...]
+00007450 00 5F 70 48 08 61 87 32 40 5B 80 23 00 5F 20 4C ._pH.a.2@[.#._ L
+00007460 AF A4 A0 61 50 B1 00 91 51 5D 71 53 A9 1E F0 52 ...aP...Q]qS...R
+00007470 A0 18 AC 0D 04 58 54 39 48 47 17 3B 1F 96 11 32 .....XT9HG.;...2
+00007480 1D DF 46 00 BF 96 B4 5F B4 60 26 00 44 61 D4 61 ..F...._.`&.Da.a
+00007490 04 D0 1F D6 2A 55 5F 9F 30 00 10 5B E7 1B 0D 94 ....*U_.0..[....
+000074A0 00 52 00 18 B6 11 0D 96 00 52 00 18 AE 11 B7 52 .R.......R.....R
+000074B0 1F 00 A0 18 BA 10 0F 92 00 52 00 18 A2 0C 03 5B .........R.....[
+000074C0 93 32 11 54 A1 61 1F E4 0A B0 00 5D 00 5F 70 48 .2.T.a.....]._pH
+000074D0 08 61 82 5A 72 33 B2 52 1F 00 A0 18 64 0F 03 52 .a.Zr3.R....d..R
+000074E0 00 18 46 11 3F 92 B3 32 FE FF 24 54 A4 61 4F E4 ..F.?..2..$T.aO.
+000074F0 0A B1 00 5D 00 5F 20 48 08 61 B2 5A 10 00 72 33 ...]._ H.a.Z..r3
+00007500 B2 52 1F 00 A0 18 3A 0F 03 52 00 18 A0 0D 3F 92 .R....:..R....?.
+00007510 B3 32 FD FF 35 54 A5 61 5F E4 0A B2 00 5D 00 5F .2..5T.a_....]._
+00007520 20 48 08 61 B2 5A 18 00 72 33 B2 52 1F 00 A0 18  H.a.Z..r3.R....
+00007530 10 0F 03 52 00 18 76 0D 6F 92 B6 32 FC FF 6F D2 ...R..v.o..2..o.
+00007540 40 54 A0 61 0F E4 0A B3 00 5D 00 5F 20 48 08 61 @T.a.....]._ H.a
+00007550 B7 32 20 00 0D AA 80 57 00 18 FA 10 00 05 20 E8 .2 ....W...... .
+00007560 0C EC B0 5A 51 3F 0D D2 BA 5A FD FF AF D6 E0 18 ...ZQ?...Z......
+00007570 61 FC 0D 96 B1 5A 00 02 01 23 01 52 10 18 98 01 a....Z...#.R....
+00007580 2D AC 02 56 07 10 70 43 10 22 02 DF 22 00 12 C3 -..V..pC.".."...
+00007590 24 00 06 5A 04 54 42 55 00 C0 60 55 0D E8 0C EF $..Z.TBU..`U....
+000075A0 30 00 B0 5A 3F 3F 0D D2 AF E4 AF 9D 1A 52 B0 18 0..Z??.......R..
+000075B0 00 0D 0D 93 00 52 00 18 CC 01 71 5A 71 23 00 58 .....R....qZq#.X
+000075C0 10 39 08 47 B7 22 F8 FF B0 5A 4E 3F 0D D2 AF A4 .9.G."...ZN?....
+000075D0 0D 94 00 52 00 18 7E 0B B7 52 1F 00 A0 18 DC 11 ...R..~..R......
+000075E0 5F 92 05 52 00 18 84 0D 51 5B 91 32 12 54 A2 61 _..R....Q[.2.T.a
+000075F0 2F E4 2A B0 22 5D 22 5F 72 48 28 61 84 5A 74 33 /.*."]"_rH(a.Zt3
+00007600 B4 52 1F 00 A0 18 40 10 01 52 00 18 48 0E 91 32 .R....@..R..H..2
+00007610 25 54 A5 61 5F E4 2A B1 22 5D 22 5F 42 48 28 61 %T.a_.*."]"_BH(a
+00007620 B4 5A 10 00 74 33 B4 52 1F 00 A0 18 1A 10 01 52 .Z..t3.R.......R
+00007630 00 18 22 0E 1F 92 B1 32 FD FF 32 54 A2 61 2F E4 .."....2..2T.a/.
+00007640 2A B2 22 5D 22 5F 42 48 28 61 B4 5A 18 00 74 33 *."]"_BH(a.Z..t3
+00007650 B4 52 1F 00 A0 18 F0 0F 01 52 00 18 F8 0D 3F 92 .R.......R....?.
+00007660 B3 32 FC FF 3F D2 45 54 A5 61 5F E4 2A B3 22 5D .2..?.ET.a_.*."]
+00007670 22 5F 42 48 28 61 B7 32 20 00 6F 9B AF 93 A6 3B "_BH(a.2 .o....;
+00007680 64 5F 2C AA 42 61 2C EA 2D AA 42 61 2D EA 41 5A d_,.Ba,.-.Ba-.AZ
+00007690 01 23 01 52 12 08 02 52 06 11 06 52 12 08 02 52 .#.R...R...R...R
+000076A0 02 11 AF A8 14 00 4A C0 A4 55 2D A8 0D 96 00 52 ......J..U-....R
+000076B0 00 18 2C 11 00 C0 44 54 0D E8 0C EF 30 00 0D 94 ..,...DT....0...
+000076C0 41 5A 01 23 01 52 00 18 6A 0F 1D 96 82 55 01 52 AZ.#.R..j....U.R
+000076D0 11 11 84 55 84 4D 82 4A 42 61 84 55 84 4B 44 00 ...U.M.JBa.U.KD.
+000076E0 00 00 00 FF 42 61 84 55 84 4C 44 00 FF 00 00 00 ....Ba.U.LD.....
+000076F0 42 61 4D A8 24 57 00 18 52 0A 00 05 0A E8 0C EC BaM.$W..R.......
+00007700 B0 5A 51 3F 0D D2 BF 93 BF DB BA 5A FD FF AF D6 .ZQ?.......Z....
+00007710 E0 18 BF FA F7 52 A0 18 28 0E 2F 92 02 52 00 18 .....R..(./..R..
+00007720 3E 0A 21 5B 91 32 13 54 A3 61 3F E4 2A B0 22 5D >.![.2.T.a?.*."]
+00007730 22 5F 72 48 28 61 84 5A 74 33 F4 52 A0 18 28 0E "_rH(a.Zt3.R..(.
+00007740 01 52 00 18 10 0D 5F 92 B5 32 FE FF 5F D2 21 54 .R...._..2.._.!T
+00007750 A1 61 1F E4 2A B1 22 5D 22 5F 42 48 28 61 B7 32 .a..*."]"_BH(a.2
+00007760 10 00 1D 94 41 22 01 52 00 18 D6 09 2D A8 42 00 ....A".R....-.B.
+00007770 00 00 FF FF 82 57 00 18 C8 09 00 05 C4 E6 E0 18 .....W..........
+00007780 E3 FD 27 52 A0 18 BA 0E BF 92 0B 52 00 18 C0 0E ..'R.......R....
+00007790 BA 5B 9A 32 AF D2 AF A4 1A 60 3F A4 23 B0 22 5D .[.2.....`?.#."]
+000077A0 22 5F 72 48 28 61 87 32 11 5A 81 23 1D D3 82 55 "_rH(a.2.Z.#...U
+000077B0 F2 4B 32 22 22 52 00 18 16 01 32 52 09 17 12 52 .K2""R....2R...R
+000077C0 00 18 7F F8 B0 5A 41 3F 0D D2 D8 4B B7 32 FD FF .....ZA?...K.2..
+000077D0 AF E4 71 5A 71 23 00 58 10 39 08 47 B7 22 F8 FF ..qZq#.X.9.G."..
+000077E0 B7 52 1F 00 AD 14 0F 92 00 52 00 18 4E 0D 03 5B .R.......R..N..[
+000077F0 93 32 1A 60 1F A4 01 B0 00 5D 00 5F 70 48 08 61 .2.`.....]._pH.a
+00007800 82 5A 72 33 B2 52 1F 00 A0 18 9C 0C 03 52 00 18 .Zr3.R.......R..
+00007810 38 0C 3F 92 B3 32 FE FF AF A4 2A 60 4F A4 04 B1 8.?..2....*`O...
+00007820 00 5D 00 5F 20 48 08 61 B2 5A 10 00 72 33 B2 52 .]._ H.a.Z..r3.R
+00007830 1F 00 A0 18 72 0C 03 52 00 18 0E 0C 3F 92 B3 32 ....r..R....?..2
+00007840 FD FF 4A 55 3A 60 04 B2 00 5D 00 5F 20 48 08 61 ..JU:`...]._ H.a
+00007850 B2 5A 18 00 72 33 B2 52 1F 00 A0 18 4A 0C 03 52 .Z..r3.R....J..R
+00007860 00 18 E6 0B AF 92 BA 32 FC FF AF D2 4A 55 4A 60 .......2....JUJ`
+00007870 04 B3 00 5D 00 5F 20 48 08 61 B7 32 20 00 80 55 ...]._ H.a.2 ..U
+00007880 00 4B 60 00 00 00 FF FF 20 05 FF FF 14 00 82 B0 .K`..... .......
+00007890 02 57 00 18 F0 0B 00 05 EC E6 0C EC B0 5A 51 3F .W...........ZQ?
+000078A0 0D D2 AF E4 BB 5A FD FF BF D6 E0 18 25 F9 00 05 .....Z......%...
+000078B0 D8 E6 0C EC B0 5A 51 3F 0D D2 D8 4B B7 32 FD FF .....ZQ?...K.2..
+000078C0 AF E4 BA 5A FD FF AF D6 E0 18 07 F9 B0 5A 44 3F ...Z.........ZD?
+000078D0 0D D2 D8 4B B7 32 FD FF AF E4 D7 52 A4 12 0F 92 ...K.2.....R....
+000078E0 00 52 00 18 56 0C 03 5B 93 32 1A 60 1F A4 01 B0 .R..V..[.2.`....
+000078F0 00 5D 00 5F 70 48 08 61 82 5A 72 33 D2 52 A0 18 .]._pH.a.Zr3.R..
+00007900 58 0E 03 52 00 18 42 0B AF 92 BA 32 FE FF AF D2 X..R..B....2....
+00007910 AF A4 2A 60 3F A4 03 B1 00 5D 00 5F 20 48 08 61 ..*`?....]._ H.a
+00007920 B7 32 10 00 B2 5A 1F 00 82 23 B2 32 01 01 2D DF .2...Z...#.2..-.
+00007930 42 00 80 55 B0 4B B0 22 1F 00 10 32 0D DF 44 00 B..U.K."...2..D.
+00007940 83 55 63 4B F3 22 43 32 3D DF 40 00 28 4B B7 32 .UcK."C2=.@.(K.2
+00007950 F2 FF B0 52 1E 00 A0 08 00 52 10 18 38 07 B2 52 ...R.....R..8..R
+00007960 1E 01 A0 08 00 52 10 18 2C 07 0D C3 46 00 B0 5A .....R..,...F..Z
+00007970 45 3F 0D D2 04 5A 12 5A 42 33 44 5F 44 61 E0 05 E?...Z.ZB3D_Da..
+00007980 34 F1 4E 61 13 32 36 5B 3F 92 27 52 A0 18 A6 0B 4.Na.26[?.'R....
+00007990 03 52 00 18 B2 0B 93 32 10 54 A0 61 4A B0 44 5D .R.....2.T.aJ.D]
+000079A0 44 5F 74 48 48 61 87 32 2D DF 46 00 4E 90 44 5F D_tHHa.2-.F.N.D_
+000079B0 B4 60 26 00 44 61 D4 61 7A 5A 8A 23 A4 D0 D8 4B .`&.Da.azZ.#...K
+000079C0 B7 32 FD FF 14 5A 24 33 2E 60 64 53 00 18 AE 0C .2...Z$3.`dS....
+000079D0 42 5B 0A 55 EB 1D 0D 96 B1 5A 00 04 01 23 01 52 B[.U.....Z...#.R
+000079E0 03 14 1D 9F 2E 00 3F 92 3F D4 13 53 B2 10 1F D4 ......?.?..S....
+000079F0 4F 94 04 52 05 13 43 5B 4D AC 32 5F 2F E6 04 56 O..R..C[M.2_/..V
+00007A00 06 11 E4 A6 0E 56 03 11 24 98 12 3B 34 99 4F 94 .....V..$..;4.O.
+00007A10 24 33 0F A6 34 53 B3 10 23 3B 30 5F 22 5F E2 61 $3..4S..#;0_"_.a
+00007A20 10 01 A4 55 00 C0 00 61 0D 96 4F 60 B0 22 00 02 ...U...a..O`."..
+00007A30 00 52 0B 10 0D 94 40 22 00 52 07 10 2D A8 6F 94 .R....@".R..-.o.
+00007A40 A4 55 00 C0 B6 50 0D E8 4F 92 5F 94 54 3B 4F D2 .U...P..O._.T;O.
+00007A50 0F A6 0A 61 1D 9F 2E 00 51 3B 1D DF 2E 00 01 52 ...a....Q;.....R
+00007A60 10 18 10 0C 0D 96 0D C3 2E 00 B1 5A 3A 3F 1D D2 ...........Z:?..
+00007A70 B1 5A 00 08 01 23 01 52 12 16 2D AC 02 56 03 10 .Z...#.R..-..V..
+00007A80 04 54 42 EA 0D C3 2E 00 B1 5A 3B 3F 1D D2 B1 5A .TB......Z;?...Z
+00007A90 00 10 01 23 01 52 1C 10 2D AC 02 56 04 10 04 54 ...#.R..-..V...T
+00007AA0 42 EF 1C 00 B1 5A 3C 3F 1D D2 E0 18 CB FA 5F 92 B....Z<?......_.
+00007AB0 05 52 00 18 B6 08 00 5A 8F E4 56 5B 12 5A 02 33 .R.....Z..V[.Z.3
+00007AC0 00 5F A0 61 30 B0 0D AC 00 56 02 11 40 AF 1C 00 ._.a0....V..@...
+00007AD0 04 56 0E 10 9D 9F 2E 00 00 9F 20 00 09 53 58 10 .V........ ..SX.
+00007AE0 10 5A 90 33 0D DF 2E 00 9E 5F E4 61 34 F0 20 5B .Z.3....._.a4. [
+00007AF0 03 50 11 08 01 52 05 10 26 53 A1 08 01 52 1F 1D .P...R..&S...R..
+00007B00 3F FC 8F A4 2F D4 0D 96 B0 22 00 02 00 52 0B 10 ?.../...."...R..
+00007B10 0D 94 40 22 00 52 07 10 26 5B 2D A8 A4 55 00 C0 ..@".R..&[-..U..
+00007B20 DA 4F 0D E8 6F 94 60 5F 0A 61 0F 92 60 3B 0F D2 .O..o.`_.a..`;..
+00007B30 1F BC 01 50 10 18 3C 0B 0D 96 E5 1B 1F 92 01 52 ...P..<........R
+00007B40 00 18 1C 06 00 5A 8F E4 16 5B E5 10 26 53 A1 08 .....Z...[..&S..
+00007B50 01 52 0D 11 12 5A 02 33 00 5F A0 61 30 B0 0D AC .R...Z.3._.a0...
+00007B60 00 56 00 11 40 AA 04 56 0D 10 9D 9F 2E 00 00 9C .V..@..V........
+00007B70 09 53 58 10 10 5A 90 33 0D DF 2E 00 9E 5F E4 61 .SX..Z.3....._.a
+00007B80 34 F0 20 5B 03 50 11 08 01 52 11 1E 3F FC 8F A4 4. [.P...R..?...
+00007B90 2F D4 0D 96 B0 22 00 02 00 52 0C 10 0D 94 40 22 /...."...R....@"
+00007BA0 00 52 08 10 26 5B 2D A8 A4 55 00 C0 4E 4F 0D E8 .R..&[-..U..NO..
+00007BB0 2F 94 20 5F 0A 61 3F 92 23 3B 3F D2 4F BC 04 50 /. _.a?.#;?.O..P
+00007BC0 10 18 B0 0A 0D 96 E0 18 BF FE F7 52 A0 18 B8 0A ...........R....
+00007BD0 1F 92 01 52 00 18 88 05 14 5B E4 10 2A 55 04 52 ...R.....[..*U.R
+00007BE0 08 14 94 32 12 54 A2 61 0A B0 00 5D 00 5F 70 48 ...2.T.a...]._pH
+00007BF0 08 61 87 32 F7 52 B3 1F 2F E4 4F D2 0D AC 00 56 .a.2.R../.O....V
+00007C00 08 10 B2 5A FF 00 82 23 20 D4 82 55 82 4B 20 D5 ...Z...# ..U.K .
+00007C10 4D 96 40 5B B1 5A 00 02 41 23 01 52 00 11 1D 94 M.@[.Z..A#.R....
+00007C20 41 22 01 52 0C 10 8F F0 88 4B 8F F1 2D A8 26 5A A".R.....K..-.&Z
+00007C30 F4 55 00 C0 C6 4E 0D E8 4D 96 40 5B B1 5A 38 3F .U...N..M.@[.Z8?
+00007C40 1D D2 B7 5A 00 04 47 23 AF A4 08 54 07 52 10 18 ...Z..G#...T.R..
+00007C50 EA 07 2D AC 02 56 00 18 6A 06 00 54 02 E6 40 5B ..-..V..j..T..@[
+00007C60 B1 5A 00 04 41 23 B2 5A 39 3F 2D D2 E0 18 73 FD .Z..A#.Z9?-...s.
+00007C70 2F E4 4F D2 4F D6 E0 18 59 F5 B7 52 1F 00 A0 18 /.O.O...Y..R....
+00007C80 0C 0A 0F 92 00 52 00 18 E2 06 04 5B E4 10 2A 55 .....R.....[..*U
+00007C90 04 52 0F 1E 94 32 12 54 A2 61 0A B0 00 5D 00 5F .R...2.T.a...]._
+00007CA0 70 48 08 61 87 32 B7 52 1F 00 B2 1F 2F E4 4F D2 pH.a.2.R..../.O.
+00007CB0 0D AC 00 56 02 10 80 E2 0D 96 B0 22 00 02 00 52 ...V......."...R
+00007CC0 03 11 0D 94 40 22 00 52 0F 10 8F F0 80 55 80 4B ....@".R.....U.K
+00007CD0 0F F1 9F F2 90 5B 80 49 0F F3 2D A8 46 5A F4 55 .....[.I..-.FZ.U
+00007CE0 00 C0 18 4E 0D E8 B0 5A 37 3F 0D D2 AF A4 07 5A ...N...Z7?.....Z
+00007CF0 08 54 E0 18 DF FE 4D 96 40 5B B1 5A 00 04 41 23 .T....M.@[.Z..A#
+00007D00 01 52 08 1A F7 52 A0 18 0C 0B 2F 92 02 52 00 18 .R...R..../..R..
+00007D10 5A 06 25 5B E5 10 2A 55 05 52 00 18 1A 04 95 32 Z.%[..*U.R.....2
+00007D20 12 54 A2 61 0A B0 00 5D 00 5F 70 48 08 61 87 32 .T.a...]._pH.a.2
+00007D30 F7 52 B2 1F 2F E4 5F D2 8D DF 2E 00 0D AC 00 56 .R../._........V
+00007D40 02 10 80 D8 B7 5A 00 02 47 23 07 52 10 18 60 07 .....Z..G#.R..`.
+00007D50 40 5B B1 5A 00 04 41 23 AF A4 08 54 E5 18 4D 9F @[.Z..A#...T..M.
+00007D60 46 00 3D 9F 40 00 34 53 40 18 0F FC B4 52 12 00 F.=.@.4S@....R..
+00007D70 A4 11 40 5F 00 61 20 05 34 F1 02 61 14 32 02 90 ..@_.a .4..a.2..
+00007D80 00 5F B0 60 26 00 00 61 D0 61 00 C2 22 60 B4 52 ._.`&..a.a.."`.R
+00007D90 13 00 15 1F 4D DF 46 00 0F AF 1C 00 0D EF 48 00 ....M.F.......H.
+00007DA0 0D EF 34 00 7D C3 3C 00 1F AF 20 00 11 01 2F AF ..4.}.<... .../.
+00007DB0 30 00 12 01 3F AF 2C 00 13 01 B5 5A 13 00 3F AF 0...?.,....Z..?.
+00007DC0 34 00 02 5A 00 C0 48 14 CF 60 00 52 00 18 D2 09 4..Z..H..`.R....
+00007DD0 00 05 2E E7 E0 18 EB F3 0D 96 E0 18 B5 FC 0D 94 ................
+00007DE0 00 52 10 18 E4 04 B0 5A 40 3F 0D D2 AF E4 E0 18 .R.....Z@?......
+00007DF0 C5 F7 4D 9F 32 00 E0 18 8B F3 0D 96 E0 18 75 FC ..M.2.........u.
+00007E00 0D 9F 2E 00 00 52 0C 12 1F 92 01 53 B2 10 01 5B .....R.....S...[
+00007E10 1F D6 0F 93 01 53 B3 10 0F D6 01 5B 01 52 00 18 .....S.....[.R..
+00007E20 18 0A 12 5F 2F E4 12 01 A4 55 2F AA 00 C0 F8 5C ..._/....U/....\
+00007E30 4F 94 5F 98 54 3B 4F D4 0F A6 0A 61 1F 95 51 3B O._.T;O....a..Q;
+00007E40 1F D5 2F AA 4F A6 42 61 2F EA 0D 9F 2E 00 5F 98 ../.O.Ba/....._.
+00007E50 50 3B 0D DF 2E 00 1D 92 4F 60 E0 18 DF F1 B0 5A P;......O`.....Z
+00007E60 3F 3F 0D D2 AF E4 E0 18 45 F7 0D 9F 2E 00 B1 5A ??......E......Z
+00007E70 43 3F 1D D2 E8 1C F7 52 A0 18 18 08 1F 92 01 52 C?.....R.......R
+00007E80 00 18 E8 04 13 5B 93 32 14 54 A4 61 4F E4 0A B0 .....[.2.T.aO...
+00007E90 00 5D 00 5F 70 48 08 61 82 5A 72 33 F2 52 A0 18 .]._pH.a.Zr3.R..
+00007EA0 B0 08 03 52 00 18 06 04 0F 92 B0 32 FE FF 0F D2 ...R.......2....
+00007EB0 23 54 A3 61 3F E4 0A B1 00 5D 00 5F 20 48 08 61 #T.a?....]._ H.a
+00007EC0 B7 32 10 00 84 5B 8D D6 88 50 00 18 A2 05 00 05 .2...[...P......
+00007ED0 7A E6 E0 18 8F F6 B7 52 1F 00 A0 18 BC 07 2F 92 z......R....../.
+00007EE0 02 52 00 18 7A 02 23 5B 93 32 14 54 A4 61 4F E4 .R..z.#[.2.T.aO.
+00007EF0 0A B0 00 5D 00 5F 70 48 08 61 82 5A 72 33 B2 52 ...]._pH.a.Zr3.R
+00007F00 1F 00 A0 18 9C 05 03 52 00 18 A2 03 3F 92 B3 32 .......R....?..2
+00007F10 FE FF 25 54 A5 61 5F E4 0A B1 00 5D 00 5F 20 48 ..%T.a_....]._ H
+00007F20 08 61 B2 5A 10 00 72 33 B2 52 1F 00 A0 18 72 05 .a.Z..r3.R....r.
+00007F30 03 52 00 18 78 03 3F 92 B3 32 FD FF 30 54 A0 61 .R..x.?..2..0T.a
+00007F40 0F E4 0A B2 00 5D 00 5F 20 48 08 61 B7 32 18 00 .....]._ H.a.2..
+00007F50 B7 52 1F 00 A0 18 4A 05 03 52 00 18 52 03 0F 92 .R....J..R..R...
+00007F60 B0 32 FC FF 0F D2 41 54 A1 61 1F E4 0A B3 00 5D .2....AT.a.....]
+00007F70 00 5F 70 48 08 61 80 55 80 4A 82 55 82 4D 20 61 ._pH.a.U.J.U.M a
+00007F80 82 55 82 4B 42 00 00 00 00 FF 20 61 88 4C 48 00 .U.KB..... a.LH.
+00007F90 FF 00 00 00 08 61 8D E8 8C EF 30 00 B0 5A 3E 3F .....a....0..Z>?
+00007FA0 0D D2 07 5A 08 54 0D 95 00 52 00 18 3A 08 06 5A ...Z.T...R..:..Z
+00007FB0 04 54 42 55 00 C0 3A 41 0D E8 0C EF 30 00 B0 5A .TBU..:A....0..Z
+00007FC0 3F 3F 0D D2 E0 18 E7 F5 2F E4 6F D2 6F D6 E0 18 ??....../.o.o...
+00007FD0 01 F2 1D 9F 22 00 2D AF 24 00 01 53 50 18 DA 02 ....".-.$..SP...
+00007FE0 10 3B 1D 9F 1E 00 01 3B 1E 5F 2E 61 1D 9F 2E 00 .;.....;._.a....
+00007FF0 12 5B 01 53 B2 10 02 5B 4F 93 24 53 B2 10 24 5B .[.S...[O.$S..$[
+00008000 0F 93 40 3B 0F D3 41 3B 1D DF 2E 00 20 54 E0 61 ..@;..A;.... T.a
+00008010 2F A8 02 57 52 08 0F A8 20 60 0E 57 50 08 20 25 /..WR... `.WP. %
+00008020 C4 52 A1 08 10 21 00 50 00 18 F4 03 0F A8 14 00 .R...!.P........
+00008030 E0 90 60 00 FF FF FF FF 10 20 00 50 00 18 E0 03 ..`...... .P....
+00008040 B5 5A FE FF 45 33 F5 49 15 32 2F A8 E0 55 06 5A .Z..E3.I.2/..U.Z
+00008050 4F D4 40 90 42 D0 16 32 22 60 20 60 56 53 4A 1F O.@.B..2"` `VSJ.
+00008060 4F 94 55 33 50 5F 2F A8 02 61 E0 61 54 53 03 10 O.U3P_/..a.aTS..
+00008070 00 B0 02 F0 96 5A 46 33 64 5F 14 60 0F A8 40 61 .....ZF3d_.`..@a
+00008080 0F E8 0D 9F 2E 00 00 52 00 18 E3 EF 1D 92 E0 18 .......R........
+00008090 AB EF 00 05 0A E7 E0 18 29 F1 0D C3 9E 1B ED AF ........).......
+000080A0 34 00 81 5B 2D 9F 3C 00 90 5A 20 45 90 2A 02 5B 4..[-.<..Z E.*.[
+000080B0 82 23 22 5F 22 4C E2 61 42 B0 52 B1 32 91 52 5D .#"_"L.aB.R.2.R]
+000080C0 72 53 B0 18 B1 EF 1F 92 01 52 00 18 9E 02 16 5B rS.......R.....[
+000080D0 E5 10 4A 55 06 52 00 18 9C 02 96 32 14 54 A4 61 ..JU.R.....2.T.a
+000080E0 2A B0 22 5D 22 5F 72 48 28 61 87 32 81 5B 02 5B *."]"_rH(a.2.[.[
+000080F0 82 23 22 5F 22 4C E2 61 B2 B0 A2 B1 32 91 A2 5D .#"_"L.a....2..]
+00008100 72 53 A8 1E 4F E4 B4 59 A5 59 6F D2 E0 18 69 EF rS..O..Y.Yo...i.
+00008110 4F E4 2F D2 2F D6 E0 18 B9 F0 00 5F EF A8 14 00 O././......_....
+00008120 0E C0 2D 9F 2E 00 21 5B E0 18 D1 FE 00 05 D6 E7 ..-...![........
+00008130 E0 18 31 F4 2F E4 5F D2 5F D6 E0 18 95 F0 AF A4 ..1./._._.......
+00008140 07 5A 08 54 E0 18 3D F4 7F 93 7F DB AF A4 07 5A .Z.T..=........Z
+00008150 08 54 B1 5A 4F 3F 1D D2 E0 18 49 F3 AF E4 AF 92 .T.ZO?....I.....
+00008160 AF D6 E0 18 6D F0 47 53 50 18 56 06 0F 92 00 52 ....m.GSP.V....R
+00008170 00 18 F8 01 05 5B E4 10 2A 55 05 52 0C 1D 95 32 .....[..*U.R...2
+00008180 12 54 A2 61 0A B0 00 5D 00 5F 70 48 08 61 87 32 .T.a...]._pH.a.2
+00008190 47 53 43 1F 2F E4 5F D2 2A 55 90 5A 40 45 90 2A GSC./._.*U.Z@E.*
+000081A0 80 23 1D 9F 2E 00 10 33 0D DF 2E 00 01 58 41 39 .#.....3.....XA9
+000081B0 18 47 47 3B 1D 9F 9E 1B 14 33 4D DF 9E 1B E0 18 .GG;.....3M.....
+000081C0 07 EF 47 53 50 18 12 06 0F 92 00 52 08 1C 05 5B ..GSP......R...[
+000081D0 E4 10 2A 55 05 52 0F 1A 95 32 12 54 A2 61 0A B0 ..*U.R...2.T.a..
+000081E0 00 5D 00 5F 70 48 08 61 87 32 47 53 43 1F 2F E4 .]._pH.a.2GSC./.
+000081F0 5F D2 2A 55 90 5A 40 45 90 2A 80 23 1D 9F 30 00 _.*U.Z@E.*.#..0.
+00008200 10 33 0D DF 30 00 00 58 40 39 08 47 47 3B 0D 9F .3..0..X@9.GG;..
+00008210 9E 1B 04 33 4D DF 9E 1B E0 18 6F EF B0 52 10 00 ...3M.....o..R..
+00008220 00 18 A8 03 B0 52 11 00 00 18 54 03 70 5A 10 33 .....R....T.pZ.3
+00008230 70 53 B0 18 24 06 06 52 17 10 E0 18 12 06 A2 55 pS..$..R.......U
+00008240 06 52 00 18 87 FD 96 32 1A 54 2A 61 22 B0 22 5D .R.....2.T*a"."]
+00008250 22 5F 72 48 28 61 87 32 70 53 A2 1F 00 58 10 39 "_rH(a.2pS...X.9
+00008260 08 47 B2 5A 7F 00 82 23 B2 32 0B 00 98 4B B0 5A .G.Z...#.2...K.Z
+00008270 F9 FF 10 3B 07 33 E3 5B 1F 96 12 33 4F 9F 30 00 ...;.3.[...3O.0.
+00008280 42 53 A0 18 CC 06 14 5B 40 5F B0 60 26 00 00 61 BS.....[@_.`&..a
+00008290 D0 61 30 D0 14 32 42 53 18 1F 4F D6 4D DF 46 00 .a0..2BS..O.M.F.
+000082A0 5F 9F 30 00 40 5B E0 18 65 F1 27 5B 3F D2 0F C3 _.0.@[..e.'[?...
+000082B0 0C 00 E0 18 1D EF 01 3B 1E 5F 2E 61 E0 18 31 FD .......;._.a..1.
+000082C0 01 5A E0 18 A5 F9 F7 52 A0 18 50 05 5F 92 05 52 .Z.....R..P._..R
+000082D0 00 18 8D FE 51 5B 91 32 12 54 A2 61 2F E4 2A B0 ....Q[.2.T.a/.*.
+000082E0 22 5D 22 5F 72 48 28 61 84 5A 74 33 F4 52 A0 18 "]"_rH(a.Zt3.R..
+000082F0 30 05 01 52 00 18 5E 01 53 5B B3 32 FE FF 3F D2 0..R..^.S[.2..?.
+00008300 25 54 A5 61 5F E4 2A B1 22 5D 22 5F 42 48 28 61 %T.a_.*."]"_BH(a
+00008310 B7 32 10 00 01 5B F1 49 11 20 01 50 00 18 BE 01 .2...[.I. .P....
+00008320 98 00 00 00 1F 8B 01 08 01 52 00 18 B0 01 0D 9F .........R......
+00008330 1C 00 00 52 13 10 FD C3 1C 00 06 5A 04 54 42 55 ...R.......Z.TBU
+00008340 00 C0 B8 47 0D E8 B2 5A 1F 8B 2F D0 26 5A F4 55 ...G...Z../.&Z.U
+00008350 02 55 00 C0 A6 47 0D E8 B0 5A 35 3F 0D D2 AF A4 .U...G...Z5?....
+00008360 07 5A 08 54 E0 18 19 FB AF E4 BF 92 BF D6 E0 18 .Z.T............
+00008370 61 EE 4F E4 6F D2 6F D6 E0 18 57 EE 04 31 93 5A a.O.o.o...W..1.Z
+00008380 43 45 36 5B 96 2A 65 23 A3 59 23 39 35 46 52 5B CE6[.*e#.Y#95FR[
+00008390 12 33 22 5F 22 4C E2 61 42 B0 52 B1 22 91 55 5D .3"_"L.aB.R.".U]
+000083A0 53 5B 03 33 73 53 B0 18 96 04 BF 92 0B 52 0F 1D S[.3sS.......R..
+000083B0 0A 39 AF FC 1F DF 30 00 2F A4 B1 5B E5 10 A2 55 .9....0./..[...U
+000083C0 01 52 00 18 92 01 91 32 1A 54 2A 61 22 B0 22 5D .R.....2.T*a"."]
+000083D0 22 5F 72 48 28 61 87 32 62 5B 82 23 3F BC 32 46 "_rH(a.2b[.#?.2F
+000083E0 4F 9F 30 00 42 33 22 5F 22 4C E2 61 52 B0 42 B1 O.0.B3"_"L.aR.B.
+000083F0 22 91 43 5D 34 5B 04 33 74 53 A2 1E 54 59 1F D2 ".C]4[.3tS..TY..
+00008400 35 5B 01 58 01 39 18 47 07 3B 3D 9F 9E 1B 30 33 5[.X.9.G.;=...03
+00008410 56 5B 53 5B 21 5B AF E4 E0 18 3D ED 2F A8 96 5A V[S[![....=./..Z
+00008420 46 33 64 5F 14 60 E4 61 0E B0 02 F0 1E 60 12 60 F3d_.`.a.....`.`
+00008430 4E 57 1B 1F E0 18 45 FC 07 5A E0 18 D1 F8 27 5B NW....E..Z....'[
+00008440 3F D2 E0 18 13 F1 27 5B 3F D2 AF E4 3F D6 E0 18 ?.....'[?...?...
+00008450 81 ED 47 5B 1F D2 1F D6 E0 18 77 ED 90 5A 0D DF ..G[......w..Z..
+00008460 9E 1B B0 5A 3F 3F 0D D2 E0 18 43 F1 BB 5A 00 E0 ...Z??....C..Z..
+00008470 8B 23 BF D6 0B 52 00 18 E8 02 00 05 AA E6 E0 18 .#...R..........
+00008480 E3 F0 80 5B 8D DF 2E 00 B1 5A 42 3F 1D D2 7F 9C ...[.....ZB?....
+00008490 67 52 00 18 D4 04 07 5A 08 54 E0 18 D5 F9 3F D2 gR.....Z.T....?.
+000084A0 E0 18 D7 FA 27 5B 3F D2 E0 18 D7 F3 2D 94 42 22 ....'[?.....-.B"
+000084B0 40 5B 02 52 0B 10 8F F0 88 4B 8F F1 2D A8 26 5A @[.R.....K..-.&Z
+000084C0 F4 55 00 C0 36 46 0D E8 0D 96 B1 5A 00 04 01 23 .U..6F.....Z...#
+000084D0 AF A4 07 5A 08 54 E0 18 91 F7 0D C3 0C 00 2D AC ...Z.T........-.
+000084E0 02 56 04 10 91 5A 12 DF 24 00 10 22 00 52 0E 11 .V...Z..$..".R..
+000084F0 82 5B 82 42 22 5F 80 55 80 4B 02 61 B4 54 1F 00 .[.B"_.U.K.a.T..
+00008500 00 C0 EC 4F 0F E6 00 56 11 11 F0 5A 80 23 80 52 ...O...V...Z.#.R
+00008510 00 18 4C 03 00 05 7A E6 0C EC B0 5A 51 3F 0D D2 ..L...z....ZQ?..
+00008520 BB 5A FD FF BF D6 E0 18 A9 EC 00 05 62 E6 E0 18 .Z..........b...
+00008530 33 F0 A0 55 E0 18 75 F4 0F D6 E0 18 95 EC AF E4 3..U..u.........
+00008540 E0 18 23 F2 3F D2 AF E4 3F D6 E0 18 85 EC AF E4 ..#.?...?.......
+00008550 E0 18 F3 EB AF E4 1F D2 1F D6 E0 18 75 EC A2 55 ............u..U
+00008560 E0 18 0F EF 47 5B 1F D2 E0 18 FB F1 AF E4 E0 18 ....G[..........
+00008570 E7 EF 6F D2 AF E4 6F D6 E0 18 57 EC 30 5A 10 33 ..o...o...W.0Z.3
+00008580 70 53 B0 18 7E 03 06 52 17 10 E0 18 6C 03 A2 55 pS..~..R....l..U
+00008590 06 52 00 18 37 FA 96 32 1A 54 2A 61 22 B0 22 5D .R..7..2.T*a"."]
+000085A0 22 5F 72 48 28 61 87 32 70 53 A2 1F 00 58 10 39 "_rH(a.2pS...X.9
+000085B0 08 47 72 5A 82 23 32 32 D8 4B B0 5A FD FF 10 3B .GrZ.#22.K.Z...;
+000085C0 07 33 E3 5B E0 18 B5 FC 20 5A 10 33 70 53 B0 18 .3.[.... Z.3pS..
+000085D0 92 03 06 52 17 10 E0 18 20 03 A2 55 06 52 00 18 ...R.... ..U.R..
+000085E0 EB F9 96 32 1A 54 2A 61 22 B0 22 5D 22 5F 72 48 ...2.T*a"."]"_rH
+000085F0 28 61 87 32 70 53 A2 1F 00 58 10 39 08 47 17 3B (a.2pS...X.9.G.;
+00008600 0F 96 00 52 00 18 4A 03 90 32 00 5F B0 60 26 00 ...R..J..2._.`&.
+00008610 00 61 D0 61 30 90 32 5A 82 23 32 32 E8 4B B7 32 .a.a0.2Z.#22.K.2
+00008620 FE FF E0 18 57 FC 27 5B 3F D2 3F D6 E0 18 A3 EB ....W.'[?.?.....
+00008630 BF 93 BF DB AF A4 17 5B 08 54 E0 18 19 FB AF A4 .......[.T......
+00008640 E0 18 69 F1 47 5B 1F D2 E0 18 33 F0 0F D6 E0 18 ..i.G[....3.....
+00008650 81 EB AF A4 07 5A 08 54 B0 5A 50 3F 0D D2 AF E4 .....Z.T.ZP?....
+00008660 1F C3 0C 00 E0 18 6B EB 00 05 BA E7 E0 18 F5 EE ......k.........
+00008670 AF E4 0F C3 0C 00 E0 18 59 EB 3F D2 24 5B 0A 55 ........Y.?.$[.U
+00008680 E0 18 ED F6 AF E4 E0 18 77 F5 AF E4 E0 18 25 F6 ........w.....%.
+00008690 AF E4 E0 18 33 F8 AF E4 E0 18 DF F8 24 31 90 5A ....3.......$1.Z
+000086A0 40 45 06 5B 96 2A 60 5B 10 23 2A 39 A0 46 30 33 @E.[.*`[.#*9.F03
+000086B0 00 5F 20 4C E0 61 40 B0 50 B1 B0 91 BF D6 50 5D ._ L.a@.P.....P]
+000086C0 01 5B 21 33 71 53 B2 13 BF 92 0B 52 00 18 93 FA .[!3qS.....R....
+000086D0 AF FF 30 00 35 5B 0F A4 B3 5B CF EF 34 00 2F D4 ..0.5[...[..4./.
+000086E0 E5 10 A0 55 03 52 00 18 1E 01 93 32 1A 54 0A 61 ...U.R.....2.T.a
+000086F0 00 B0 00 5D 00 5F 70 48 08 61 87 32 60 5B 80 23 ...]._pH.a.2`[.#
+00008700 1F BF 30 00 10 46 50 33 00 5F 20 4C E0 61 40 B0 ..0..FP3._ L.a@.
+00008710 20 B1 C0 91 CF D6 20 5D 1F 94 01 33 71 53 A2 1E  ..... ]...3qS..
+00008720 3F D2 CF AF 34 00 2F 94 AF E4 03 58 35 59 25 39 ?...4./....X5Y%9
+00008730 58 47 27 3B 03 39 38 47 07 3B 1D DF 9E 1B 0F 96 XG';.98G.;......
+00008740 0D DF 2E 00 04 50 10 18 4F E9 E0 18 6F E8 27 5B .....P..O...o.'[
+00008750 3F D2 E0 18 73 F7 27 5B 3F D2 E0 18 CB F1 2D AC ?...s.'[?.....-.
+00008760 02 56 05 10 80 55 80 4B 10 22 02 D0 B4 22 00 02 .V...U.K."..."..
+00008770 04 52 0E 10 0D 94 40 22 00 52 0A 10 8F F0 88 4B .R....@".R.....K
+00008780 8F F1 2D A8 26 5A F4 55 00 C0 70 43 0D E8 B0 5A ..-.&Z.U..pC...Z
+00008790 36 3F 0D D2 AF A4 7F 96 08 54 E0 18 E9 F4 0D DF 6?.......T......
+000087A0 46 00 B1 5A 46 3F 1D D2 06 5B E0 18 41 EC AF E4 F..ZF?...[..A...
+000087B0 BF 93 BF D6 E0 18 1B EA AF E4 E0 18 C1 EE AF E4 ................
+000087C0 E0 18 DB F9 6F D2 0D 9F 4C 02 00 52 16 17 00 05 ....o...L..R....
+000087D0 62 E7 E0 18 ED E9 AF E4 E0 18 1D FA 00 C0 12 39 b..............9
+000087E0 E0 18 D9 EE AF A8 AC E6 BF 93 BC D8 AF A4 AC E0 ................
+000087F0 BF 92 BC D2 8D EF 28 00 7D DF 2C 00 2F C3 0C 00 ......(.}.,./...
+00008800 E0 18 E3 E6 AF E4 3F D2 CF AF 34 00 3F D6 E0 18 ......?...4.?...
+00008810 C1 E9 AF E4 E0 18 25 F5 AF E4 E0 18 FB FA 47 5B ......%.......G[
+00008820 1F D2 E0 18 F3 FA B1 5A 47 3F 1D D2 1F 9C 61 52 .......ZG?....aR
+00008830 10 18 3B E8 0F D6 AF E4 E0 18 97 E9 AF A4 E0 18 ..;.............
+00008840 C5 FB AF E4 AF 93 AF D6 E0 18 87 E9 2F E4 6F D2 ............/.o.
+00008850 6F D6 E0 18 7D E9 2A 55 E0 18 05 FA C8 4B B7 32 o...}.*U.....K.2
+00008860 FC FF F0 5A 80 23 80 32 1D 9F 1C 00 01 52 19 10 ...Z.#.2.....R..
+00008870 0D DF 1C 00 F0 52 B9 10 00 05 96 E6 E0 18 E5 EC .....R..........
+00008880 F0 52 AB 1F 01 53 49 1F 11 5A 01 45 1D D7 06 5A .R...SI..Z.E...Z
+00008890 04 54 42 55 00 C0 5A 38 0D E8 0C EF 30 00 48 00 .TBU..Z8....0.H.
+000088A0 00 00 00 02 08 56 0D 16 B0 5A 3D 3F 0D D2 AF A4 .....V...Z=?....
+000088B0 8F A6 07 5A E0 18 2B F6 0F AF 1C 00 0D EF 48 00 ...Z..+.......H.
+000088C0 0D EF 34 00 9D C3 3C 00 1F AF 20 00 11 01 2F AF ..4...<... .../.
+000088D0 30 00 12 01 3F AF 2C 00 13 01 5F 9F 3E 00 3F AF 0...?.,..._.>.?.
+000088E0 34 00 12 5A 00 C0 28 09 CF 60 00 52 0D 10 00 05 4..Z..(..`.R....
+000088F0 88 E7 E0 18 CD E8 2F E4 6F D2 6F D6 E0 18 D3 E8 ....../.o.o.....
+00008900 2A 55 E0 18 AB FC 0D AF 48 00 0D EF 38 00 6D C3 *U......H...8.m.
+00008910 3E 00 5D 9F 44 00 0D 9F 42 00 00 5F 00 61 3F AF >.].D...B.._.a?.
+00008920 28 00 03 61 0F AF 20 00 10 01 B0 54 3E 00 D0 61 (..a.. ....T>..a
+00008930 10 01 1F AF 2C 00 11 01 22 5A 00 C0 D2 08 CF 60 ....,..."Z.....`
+00008940 00 52 00 18 E5 FE 00 05 A4 E7 E0 18 75 E8 6F D2 .R..........u.o.
+00008950 00 05 48 E7 0C EC B0 5A 51 3F 0D D2 E0 18 6B E8 ..H....ZQ?....k.
+00008960 2A 55 E0 18 97 FC AF E4 07 5A 7F D6 08 54 E0 18 *U.......Z...T..
+00008970 61 E8 0F D6 D8 4B B7 32 FD FF AF E4 E0 18 53 E8 a....K.2......S.
+00008980 B0 5A 3F 3F 0D D2 07 5A E0 18 23 EC AF E4 E0 18 .Z??...Z..#.....
+00008990 4D EF AF E4 1F C3 0C 00 E0 18 37 E8 B7 5A FC FF M.........7..Z..
+000089A0 7F D6 E0 18 41 E5 2F A8 E0 18 1B E6 AF E4 E0 18 ....A./.........
+000089B0 25 EE                                           %.              
+
+l000089B2:
+	stord	(r11,r10),8(sp)
+	br	fn000061B2
+000089B8                         AF E4 E0 18 F1 EB AF E4         ........
+000089C0 E0 18 E7 F5                                     ....            
+
+;; fn000089C4: 000089C4
+;;   Called from:
+;;     00001B92 (in fn00001B74)
+fn000089C4 proc
 	push	$1,ra
 	push	$2,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	8A28
-	Invalid
-	Invalid
+	beq	00008A28
+
+l000089CE:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	8A28
-	Invalid
-	Invalid
+	beq	00008A28
+
+l000089D6:
+	loadd	0x48(r3,r2),(r7,r6)
 	cmpd	$0,(r7,r6)
-	beq	8A28
-	Invalid
-	res
+	beq	00008A28
+
+l000089DE:
+	loadd	0x38(r3,r2),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	8A28
-	Invalid
-	Invalid
-	Invalid
+	beq	00008A28
+
+l000089E6:
+	loadd	(r5,r4),(r3,r2)
+	movw	$FFFE,r0
 	cmpd	(r9,r8),(r3,r2)
-	beq	89F4
+	beq	000089F4
+
+l000089F0:
 	pop	$2,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,DCA8
-	res
-	blo	89F0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l000089F4:
+	loadw	4(r5,r4),r1
+	addw	$C0CC,r11
+	cmpw	$1F,r1
+	blo	000089F0
+
+l00008A00:
+	loadd	0x48(r5,r4),(r1,r0)
+	loadd	0x50(r9,r8),(r3,r2)
 	cmpd	$0,(r1,r0)
-	beq	8A1C
+	beq	00008A1C
+
+l00008A0C:
 	movd	(r5,r4),(r1,r0)
 	jal	ra,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
+	loadd	0x48(r9,r8),(r7,r6)
+	loadd	0x38(r9,r8),(r5,r4)
+	loadd	0x50(r9,r8),(r3,r2)
+
+l00008A1C:
 	jal	ra,(r7,r6)
-	Invalid
-	Invalid
-	res
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x38(r9,r8)
 	pop	$2,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00008A28:
+	movw	$FFFE,r0
 	pop	$2,r7
 	popret	$1,ra
-	push	$1,ra
-	push	$5,r8
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	8AD2
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8AD2
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8AD2
-	Invalid
-	res
-	cmpd	$0,(r9,r8)
-	beq	8AD2
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	beq	8A68
-	pop	$5,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,DD1C
-	res
-	blo	8A64
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	8AC2
-	movw	r10,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	8AC2
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	subd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	push	$1,r0
-	bal	ra,DB24
-	Invalid
-	cmpd	$0,r12
-	beq	8ADA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,r8
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$5,r8
-	popret	$1,ra
-	Invalid
-	pop	$5,r8
-	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	movd	r12,(r5,r4)
-	movw	r6,r7
-	cmpd	$0,(r3,r2)
-	Invalid
-	push	$5,r6
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$4,r12
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$4,r2
-	Invalid
-	res
-	cmpd	$0,r13
-	Invalid
-	push	$3,r8
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r11,r10),(r3,r2)
-	beq	8B24
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	bal	ra,BE48
-	Invalid
-	res
-	blo	8B1E
-	Invalid
-	Invalid
-	beq	8BDE
-	Invalid
-	Invalid
-	bne	8B1E
-	Invalid
-	Invalid
-	movd	(r3,r2),(r5,r4)
-	bal	ra,C0EE
-	movw	r7,r6
-	movd	(r5,r4),r12
-	movd	(r3,r2),(r1,r0)
-	bal	ra,C0EE
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	Invalid
-	push	$3,r2
-	Invalid
-	res
-	movzw	r7,(r5,r4)
-	movd	(r1,r0),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	beq	8BF6
-	Invalid
-	res
-	Invalid
-	bne	8B8A
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	8C24
-	Invalid
-	Invalid
-	Invalid
+00008A30 1E 01 58 01 BC 54 10 00 FC 61 4A 55 CC A0 02 56 ..X..T...aJU...V
+00008A40 09 14 02 AF 20 00 00 56 05 14 02 AF 24 00 00 56 .... ..V....$..V
+00008A50 01 14 82 AF 1C 00 08 56 0D 13 48 A0 B0 5A FE FF .......V..H..Z..
+00008A60 42 57 03 10 58 02 1E 03 18 92 B1 32 CC C0 B1 52 BW..X......2...R
+00008A70 1F 00 A9 1F 08 9F 20 00 00 52 11 08 01 52 02 12 ...... ..R...R..
+00008A80 A1 5B B1 27 01 52 11 08 01 52 0C 11 48 9F 22 00 .[.'.R...R..H.".
+00008A90 40 3B 00 5F 44 5F 28 AF 24 00 24 61 10 01 A2 55 @;._D_(.$.$a...U
+00008AA0 00 C0 84 50 08 9F 22 00 00 5F 28 9F 20 00 22 5F ...P..".._(. ."_
+00008AB0 14 00 02 C0 A2 61 48 AF 24 00 10 01 00 C0 68 50 .....aH.$.....hP
+00008AC0 8F 60 0C 56 0B 10 08 9F 20 00 0C D0 00 5A 58 02 .`.V.... ....ZX.
+00008AD0 1E 03 B0 5A FE FF 58 02 1E 03 00 5A 58 02 1E 03 ...Z..X....ZX...
+00008AE0 00 00 9D 01 67 01 BF 60 FC FF 2A 55 4C 55 67 5B ....g..`..*ULUg[
+00008AF0 02 56 00 18 56 01 02 AF 20 00 00 56 00 18 4C 01 .V..V... ..V..L.
+00008B00 02 AF 24 00 00 56 00 18 42 01 D2 AF 1C 00 0D 56 ..$..V..B......V
+00008B10 00 18 38 01 2D A0 B0 5A FE FF 2A 57 04 10 4F 60 ..8.-..Z..*W..O`
+00008B20 67 02 9D 03 2D 92 B1 5A CC C0 21 33 B1 52 1F 00 g...-..Z..!3.R..
+00008B30 A7 1F 1D 94 01 52 04 15 B2 52 3E 3F 11 1F 06 5A .....R...R>?...Z
+00008B40 04 54 42 55 00 C0 AA 35 76 5B C4 55 02 55 00 C0 .TBU...5v[.U.U..
+00008B50 A0 35 2D A8 02 57 10 18 32 01 8A AF 1C 00 74 5F .5-..W..2.....t_
+00008B60 C0 55 40 61 0F E0 28 AF 24 00 02 56 05 14 68 9F .U@a..(.$..V..h.
+00008B70 1E 00 06 52 1B 10 08 9F 1C 00                   ...R......      
+
+l00008B7A:
+	movw	$1,r6
+	ashuw	r0,r6
+	storw	r6,0x3C(r9,r8)
+	storw	$0,0x22(r9,r8)
+	storw	$0,0x20(r9,r8)
+	cmpw	r7,r6
+	bls	00008C24
+
+l00008B8E:
+	loadw	0x44(r9,r8),r0
+	subw	r6,r0
 	movw	r7,r10
-	Invalid
-	bhs	8B9C
+
+;; fn00008B96: 00008B96
+;;   Called from:
+;;     00008B94 (in fn00008DC0)
+;;     00009ACC (in fn0000A110)
+fn00008B96 proc
+	cmpw	r7,r6
+	bhs	fn00008B9C
+
+;; fn00008B9A: 00008B9A
+;;   Called from:
+;;     00008B98 (in fn00008B96)
+;;     00008B98 (in fn00008B96)
+fn00008B9A proc
 	movw	r6,r10
+
+;; fn00008B9C: 00008B9C
+;;   Called from:
+;;     00008B98 (in fn00008B96)
+;;     00008B98 (in fn00008B96)
+;;     00008B9A (in fn00008B9A)
+;;     00008C46 (in fn00008DC0)
+;;     00008C66 (in fn00009A3E)
+fn00008B9C proc
 	movzw	r0,(r1,r0)
-	Invalid
+	addd	(r1,r0),(r3,r2)
 	movzw	r10,(r1,r0)
 	push	$1,r0
 	movd	(r5,r4),r12
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	bne	8C52
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	beq	8C7A
-	Invalid
-	Invalid
-	Invalid
-	bhs	8BD2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,,]
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	subw	r7,r10
+	addd	$4,sp
+	cmpw	$0,r7
+	bne	00008C52
+
+l00008BB2:
+	loadw	0x44(r9,r8),r0
+	addw	r0,r10
+	storw	r0,0x44(r9,r8)
+	loadw	0x3C(r9,r8),r1
+	cmpw	r0,r1
+	beq	00008C7A
+
+l00008BC4:
+	loadw	0x40(r9,r8),r0
+	cmpw	r1,r0
+	bhs	00008BD2
+
+l00008BCC:
+	addw	r10,r0
+	storw	r10,0x40(r9,r8)
+
+l00008BD2:
+	storw	$1,0xA(r13)
+	movw	$0,r0
+
+l00008BD8:
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	movd	(r9,r8),r13
-	Invalid
-	Invalid
-	beq	8B3E
-	movzw	r7,(r5,r4)
-	movd	(r1,r0),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r3,r2)
-	bne	8B6E
-	Invalid
-	res
-	Invalid
-	movw	r5,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	jal	ra,(r1,r0)
-	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	8B6E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
+00008BDE                                           D8 55               .U
+00008BE0 B2 52 3E 3F 0D 1A 74 5F C0 55 40 61 0F E0 28 AF .R>?..t_.U@a..(.
+00008BF0 24 00 02 56 1D 1B 08 9F 1C 00 15 5A 54 5B 04 45 $..V.......ZT[.E
+00008C00 2A AF 28 00 0A AF 20 00 D0 00 02 55 08 EF 24 00 *.(... ....U..$.
+00008C10 00 56 1E 1A B0 5A 52 3F 0D D2 B0 5A FC FF 4F 60 .V...ZR?...Z..O`
+00008C20 67 02 9D 03                                     g...            
+
+l00008C24:
 	movzw	r6,(r7,r6)
-	Invalid
+	loadd	(sp),(r5,r4)
 	subd	(r5,r4),(r7,r6)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,,]
-	Invalid
-	br	8BD8
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
+	push	$1,r6
+	bal	ra,fn0000DB24
+	storw	$0,0x22(r9,r8)
+	loadw	0x3C(r9,r8),r0
+	storw	r0,0x40(r9,r8)
+	addd	$4,sp
+	storw	$1,0xA(r13)
+	movw	$0,r0
+	br	00008BD8
+00008C48                         B0 5A FE FF 4F 60 67 02         .Z..O`g.
+00008C50 9D 03                                           ..              
+
+l00008C52:
 	movzw	r7,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x48(r9,r8),(r3,r2)
+	loadd	(sp),(r5,r4)
 	subd	(r5,r4),(r1,r0)
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	push	$1,r0
+	bal	ra,fn0000DB24
+	storw	r7,0x44(r9,r8)
+
+l00008C66:
+	addd	$9F08001E,(r3,r2)
+
+l00008C68:
+	loadw	0x3C(r9,r8),r0
+
+l00008C6C:
+	storw	r0,0x40(r9,r8)
+	addd	$4,sp
+	storw	$1,0xA(r13)
+
+;; fn00008C74: 00008C74
+;;   Called from:
+;;     00008BD6 (in fn00008B9C)
+;;     00008C72 (in fn00008B9C)
+;;     00009B9E (in fn0000A110)
+fn00008C74 proc
 	cinv	[i,,]
-	Invalid
-	br	8BD8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	8BCC
-	br	8BD2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	push	$0,r7
-	cmpd	$0,(r3,r2)
-	beq	8CDE
-	Invalid
-	Invalid
+	movw	$0,r0
+	br	00008BD8
+
+l00008C7A:
+	storw	r7,0x44(r9,r8)
+	loadw	0x40(r9,r8),r0
+	cmpw	r1,r0
+	blo	00008BCC
+
+l00008C86:
+	br	00008BD2
+
+l00008C88:
+	movw	$FFFD,r0
+	br	000089B2
+00008C90 1E 01 07 01 02 56 04 12 02 AF 20 00 00 56 00 12 .....V.... ..V..
+
+l00008CA0:
+	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	8CDE
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8CDE
-	Invalid
-	res
+	beq	00008CDE
+
+l00008CA8:
+	loadd	0x38(r3,r2),ra
 	cmpd	$0,ra
-	beq	8CDE
-	Invalid
-	Invalid
-	Invalid
+	beq	00008CDE
+
+l00008CB0:
+	loadd	(ra),(r7,r6)
+
+l00008CB2:
+	movw	$FFFE,r0
 	cmpd	(r3,r2),(r7,r6)
-	beq	8CBE
+
+l00008CB8:
+	beq	00008CBE
+
+l00008CBA:
 	pop	$0,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,DF72
-	res
-	blo	8CBA
-	Invalid
-	Invalid
-	Invalid
-	beq	8CBA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00008CBE:
+	loadw	4(ra),r1
+	addw	$C0CC,r11
+	cmpw	$1F,r1
+	blo	00008CBA
+
+l00008CCA:
+	loadw	8(ra),r1
+	andw	$2,r2
+	cmpw	$0,r1
+	beq	00008CBA
+
+l00008CD2:
+	stord	(r5,r4),0x18(ra)
+
+l00008CD4:
+	storw	$0,0x24(r5,r4)
+	movw	$0,r0
 	pop	$0,r7
 	popret	$1,ra
-	Invalid
-	Invalid
+
+l00008CDE:
+	movw	$FFFE,r0
 	pop	$0,r7
 	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
+00008CE6                   00 00 9D 01 67 01 BF 60             ....g..`  
+
+l00008CEE:
+	storb	sp,0x552C(r12)
 	cmpd	$0,(r3,r2)
-	Invalid
-	push	$3,r8,ra
-	Invalid
-	Invalid
+	beq	00009064
+
+l00008CF8:
+	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	Invalid
-	push	$2,ra,ra
-	Invalid
-	Invalid
+	beq	0000905A
+
+l00008D02:
+	loadd	0x48(r3,r2),(r1,r0)
+
+l00008D04:
+	addd	$56001800,(r5,r4)
+
+l00008D06:
 	cmpd	$0,(r1,r0)
-	Invalid
-	push	$2,r4,ra
-	Invalid
-	res
+	beq	00009050
+
+l00008D0C:
+	loadd	0x38(r3,r2),r13
 	cmpd	$0,r13
-	Invalid
-	push	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
+	beq	00009046
+
+l00008D16:
+	loadd	(r13),(r3,r2)
+	movw	$FFFE,r0
 	cmpd	r12,(r3,r2)
-	beq	8D26
-	Invalid
+
+l00008D1E:
+	beq	00008D26
+
+l00008D20:
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	bal	ra,C03C
-	Invalid
-	res
-	blo	8D20
-	Invalid
-	Invalid
-	bne	8D44
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r12
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r8
-	Invalid
+
+l00008D26:
+	loadw	4(r13),r1
+	movw	$C0CC,r2
+	addw	r2,r1
+	cmpw	$1F,r2
+	blo	00008D20
+
+l00008D34:
+	loadw	4(r12),r8
+	cmpw	$0,r8
+	bne	00008D44
+
+l00008D3A:
+	loadw	0x58(r13),r0
+	cmpw	$7,r0
+	bhs	00009038
+
+l00008D44:
+	cmpw	$3F53,r1
+	beq	00008FDC
+
+l00008D4C:
+	movw	$3F53,r0
+	storw	r0,4(r13)
+	loadw	0x58(r13),r0
+	movw	$7,r1
+	andw	r1,r0
+	loadd	0x50(r13),(r5,r4)
+	ashud	r1,(r5,r4)
+	stord	(r5,r4),0x50(r13)
+	andw	$FFF8,r11
+	storw	r0,0x58(r13)
+	cmpw	$7,r0
+	bhs	00008FFE
+
+l00008D72:
+	storb	r4,(sp)
 	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	8DA4
-	Invalid
+	lshd	$-24,(r3,r2)
+	movw	$FFF8,r7
+	addw	r7,r0
+	cmpw	$7,r7
+	bhs	00008DA4
+
+l00008D82:
+	storb	r2,1(sp)
 	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	8DA4
-	Invalid
+	lshd	$-16,(r3,r2)
+	movw	$FFF0,r1
+	addw	r1,r0
+	cmpw	$7,r1
+	bhs	00008DA4
+
+l00008D92:
+	storb	r2,2(sp)
 	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	8DA4
-	Invalid
-	Invalid
-	lshw	$FFFFFFF3,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	addw	$FFE8,r11
+	cmpw	$7,r0
+	bhs	00008DA4
+
+l00008DA0:
+	storb	r2,3(sp)
+	movd	$0,(r3,r2)
+
+l00008DA4:
+	lshw	$-13,r7
+	addw	$1,r1
+	stord	(r3,r2),0x50(r13)
+	storw	$0,0x2C(r13)
+
+l00008DB0:
 	movd	(r3,r2),sp
-	Invalid
+	movw	$0,r0
 	movw	r0,r1
-	Invalid
-	res
+	movw	$FF,r8
 	movw	r0,r9
 	movb	$1,r10
-	Invalid
-	Invalid
+	movw	$4,r11
+
+;; fn00008DC0: 00008DC0
+;;   Called from:
+;;     00008DBE (in fn0000A110)
+;;     00009A40 (in fn00009A3E)
+;;     00009A48 (in fn00009A3E)
+fn00008DC0 proc
+	loadb	(r3,r2),r4
 	movzb	r4,(r7,r6)
 	movw	r8,r5
-	Invalid
-	bhs	8E6A
-	Invalid
-	beq	8E70
+	cmpw	$1,r0
+	bhs	00008E6A
+
+l00008DCA:
+	cmpw	r6,r5
+	beq	00008E70
+
+l00008DCE:
 	cmpb	$0,r4
-	bne	8E8C
+	bne	00008E8C
+
+l00008DD2:
 	movw	r11,r4
-	Invalid
+	subw	r4,r0
 	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	8DEC
+	cmpw	$3,r4
+	shs	r6
+
+l00008DDC:
+	addw	$1,r1
+	addd	$1,(r3,r2)
+	cmpw	r7,r1
+	slo	r4
+	cmpw	$0,r4
+	beq	00008DEC
+
+l00008DE8:
 	cmpb	$0,r6
-	bne	8DC0
-	Invalid
-	andd	$A04C928C,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	fn00008DC0
+
+l00008DEC:
+	storw	r0,0x8C(r13)
+	loadw	4(r12),r8
+	loadd	(r12),(r5,r4)
+	cmpw	$0,r8
+	sne	r1
+	andb	r6,r1
+	movw	$0,r1
 	cmpb	$0,r6
-	beq	8EA8
-	Invalid
-	res
+	beq	00008EA8
+
+l00008E00:
+	movw	$FF,r9
 	movw	r1,r10
-	Invalid
+	movw	$4,r7
+
+l00008E08:
 	movzw	r1,(r3,r2)
-	Invalid
-	Invalid
+	addd	(r5,r4),(r3,r2)
+	loadb	(r3,r2),r2
 	movzb	r2,(r12_l,r11)
 	movw	r9,r3
-	Invalid
-	bhs	8E78
-	Invalid
-	beq	8E7E
+	cmpw	$1,r0
+	bhs	00008E78
+
+l00008E16:
+	cmpw	r3,r11
+	beq	00008E7E
+
+l00008E1A:
 	cmpb	$0,r2
-	bne	8E86
+	bne	00008E86
+
+l00008E1E:
 	movw	r7,r2
-	Invalid
+	subw	r2,r0
 	movw	r2,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	8E36
+	cmpw	$3,r2
+	shs	r2
+
+l00008E28:
+	addw	$1,r1
+	cmpw	r8,r1
+	slo	r3
+	cmpw	$0,r3
+	beq	00008E36
+
+l00008E32:
 	cmpb	$0,r2
-	bne	8E08
+	bne	00008E08
+
+l00008E36:
 	movzw	r1,(r9,r8)
-	Invalid
-	Invalid
-	andd	$3B12922C,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	8EC4
-	Invalid
+	addd	(r9,r8),(r5,r4)
+
+l00008E3A:
+	storw	r0,0x8C(r13)
+	loadw	4(r12),r2
+	subw	r2,r1
+	storw	r2,4(r12)
+	stord	(r5,r4),(r12)
+	loadd	8(r12),(r3,r2)
+	addd	(r3,r2),(r9,r8)
+	stord	(r9,r8),8(r12)
+	cmpw	$4,r0
+	bne	00008EC4
+
+l00008E50:
+	loadd	0x14(r12),(r11,r10)
 	movd	(r3,r2),r12
-	bal	ra,6A40
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn00006A40
+	stord	(r9,r8),8(r12)
+	stord	(r11,r10),0x14(r12)
+	movw	$3F3F,r0
+	storw	r0,4(r13)
+	movw	$0,r0
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l00008E6A:
 	movw	r9,r5
-	Invalid
-	bne	8DCE
-	Invalid
-	Invalid
-	Invalid
-	br	8DDC
+	cmpw	r6,r5
+	bne	00008DCE
+
+l00008E70:
+	addw	$1,r1
+	cmpw	$3,r0
+	shs	r6
+	br	00008DDC
+
+l00008E78:
 	movw	r10,r3
-	Invalid
-	bne	8E1A
-	Invalid
-	Invalid
-	Invalid
-	br	8E28
+	cmpw	r3,r11
+	bne	00008E1A
+
+l00008E7E:
+	addw	$1,r1
+	cmpw	$3,r0
+	shs	r2
+	br	00008E28
+
+l00008E86:
 	movb	r6,r2
-	Invalid
-	br	8E28
+	movw	$0,r0
+	br	00008E28
+
+l00008E8C:
 	movb	r10,r6
-	Invalid
-	br	8DDC
-	Invalid
-	andd	$8B65230,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r6
-	bne	8E00
-	Invalid
-	br	8E3A
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	movb	$1,r6
-	Invalid
-	br	8DEC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	cmpd	$0,(r3,r2)
-	beq	8F16
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8F16
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8F16
-	Invalid
-	res
-	cmpd	$0,(r5,r4)
-	beq	8F16
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),ra
-	beq	8EF6
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,C20C
-	Invalid
-	res
-	blo	8EF4
-	Invalid
-	Invalid
-	Invalid
-	bne	8EF4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$1,ra
-	Invalid
-	Invalid
-	popret	$1,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r11,r10),(r3,r2)
-	movd	(r9,r8),(r5,r4)
-	cmpd	$0,(r5,r4)
-	Invalid
-	push	$6,r6
-	Invalid
-	Invalid
-	cmpd	$0,(r7,r6)
-	Invalid
-	push	$5,r12
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$5,r2
-	Invalid
-	res
-	cmpd	$0,r12
-	Invalid
-	push	$4,r8
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	beq	8F5C
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	bal	ra,E210
-	res
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r6
-	movw	r10,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8
-	Invalid
-	Invalid
-	Invalid
-	blo	8EEA
-	Invalid
-	jal	ra,(r7,r6)
-	movd	r13,(r1,r0)
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$0,ra
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	8FB4
-	Invalid
-	res
-	Invalid
-	movw	r5,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	jal	ra,(r1,r0)
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	90A2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	8F72
+	movw	$0,r0
+	br	00008DDC
+00008E92       0D 9F 46 00 30 52 B6 08 4C A0 08 52 11 08   ..F.0R..L..R..
+00008EA0 16 21 01 5A 06 50 1D 1A                         .!.Z.P..        
+
+l00008EA8:
+	movd	$0,(r9,r8)
+	br	00008E3A
+00008EAC                                     B0 5A FE FF             .Z..
+00008EB0 4F 60 67 02 9D 03 16 58 00 5A E9 19 B0 5A FB FF O`g....X.Z...Z..
+00008EC0 E0 18 61 FE                                     ..a.            
+
+l00008EC4:
+	movw	$FFFD,r0
+	br	00008B7A
+00008ECC                                     1E 01 02 56             ...V
+00008ED0 03 12 02 AF 20 00 00 56 0F 11 02 AF 24 00 00 56 .... ..V....$..V
+00008EE0 0B 11 42 AF 1C 00 04 56 07 11 E4 A0 B0 5A FE FF ..B....V.....Z..
+00008EF0 E2 57 02 10 1E 03 14 92 B2 5A CC C0 12 33 B2 52 .W.......Z...3.R
+00008F00 1F 00 A9 1F 00 5A B1 52 41 3F 15 1F 04 9F 2C 00 .....Z.RA?....,.
+00008F10 00 52 00 08 1E 03 B0 5A FE FF 1E 03 9D 01 67 01 .R.....Z......g.
+00008F20 BF 60 FC FF 2A 55 48 55 04 56 00 18 66 01 64 AF .`..*UHU.V..f.d.
+00008F30 20 00 06 56 00 18 5C 01 04 AF 24 00 00 56 00 18  ..V..\...$..V..
+00008F40 52 01 C4 AF 1C 00 0C 56 00 18 48 01 2C A0 B0 5A R......V..H.,..Z
+00008F50 FE FF 24 57 04 10 4F 60 67 02 9D 03 0C 92 B0 32 ..$W..O`g......2
+00008F60 CC C0 B0 52 1F 00 A0 08 00 52 10 18 26 01 A0 5B ...R.....R..&..[
+00008F70 B0 27 00 52 00 08 00 52 10 18 18 01 24 AF 28 00 .'.R...R....$.(.
+00008F80 B5 5A A4 1B 14 5A D6 00 0D 55 00 56 00 18 0E 01 .Z...Z...U.V....
+00008F90 0C AF 24 00 0F E0 00 56 0E 10 0C 9F 1C 00 15 5A ..$....V.......Z
+00008FA0 54 5B 04 45 28 AF 28 00 08 AF 20 00 D0 00 0F E0 T[.E(.(... .....
+00008FB0 00 56 08 17 08 A0 0A E0 08 A2 0A E2 08 A4 0A E4 .V..............
+00008FC0 08 A6 0A E6 08 A8 0A E8 08 AA 0A EA 08 AC 0A EC ................
+00008FD0 08 AF 1C 00 0A EF 1C 00 08 AF 20 00             .......... .    
+
+l00008FDC:
+	stord	(r1,r0),0x40(r11,r10)
+	loadd	0x48(r9,r8),(r1,r0)
+	stord	(r1,r0),0x48(r11,r10)
+	loadd	0x50(r9,r8),(r1,r0)
+	stord	(r1,r0),0x50(r11,r10)
+	loadd	0x58(r9,r8),(r1,r0)
+	stord	(r1,r0),0x58(r11,r10)
+	loadd	0x60(r9,r8),(r1,r0)
+	stord	(r1,r0),0x60(r11,r10)
+
+l00008FFE:
+	subd	$AF080034,(r1,r0)
+
+l00009000:
+	loadd	0x68(r9,r8),(r1,r0)
+	stord	(r1,r0),0x68(r11,r10)
+	movd	$1BA4,(r1,r0)
 	push	$1,r0
 	movd	(r5,r4),r12
 	movd	(r3,r2),r13
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$C61C2,r0
-	Invalid
-	movd	$C61D8,r0
-	Invalid
+	bal	ra,fn0000DB24
+	stord	(r11,r10),(r13)
+	loadd	0x68(r12),(r1,r0)
+	movd	$50C,(r3,r2)
+	addd	r12,(r3,r2)
+	movd	$50C,(r9,r8)
+	addd	r13,(r9,r8)
+	addd	$4,sp
 	cmpd	(r1,r0),(r3,r2)
-	bls	906C
-	Invalid
-	andd	$C0200014,(r9,r8)
-	Invalid
-	Invalid
-	andd	$5600A00F,(r9,r8)
-	beq	905C
-	Invalid
-	res
-	Invalid
-	Invalid
+	bls	0000906C
+
+l0000902E:
+	loadd	0x90(r12),(r1,r0)
+	subd	(r1,r0),(r3,r2)
+	addd	(r1,r0),(r9,r8)
+
+l00009038:
+	stord	(r9,r8),0x90(r13)
+	loadd	(sp),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	0000905C
+
+l00009042:
+	loadw	0x38(r12),r1
+
+l00009046:
+	movw	$1,r0
+	ashuw	r1,r0
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
+	loadd	0x48(r12),(r5,r4)
 	push	$1,r0
-	Invalid
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
+	loadd	4(sp),(r3,r2)
+	bal	ra,fn0000DB24
+	addd	$4,sp
+
+l0000905A:
+	loadd	(sp),(r1,r0)
+
+l0000905C:
+	stord	(r1,r0),0x48(r13)
+	stord	r13,0x38(r11,r10)
+
+l00009064:
+	movw	$0,r0
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	bfc	8FDE
-	Invalid
+
+l0000906C:
+	movd	$1B98,(r5,r4)
+	addd	r12,(r5,r4)
 	cmpd	(r1,r0),(r5,r4)
-	blo	902E
+	blo	0000902E
+
+l00009076:
 	subd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x68(r13)
+	loadd	0x70(r12),(r1,r0)
 	subd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	br	902E
-	Invalid
-	Invalid
-	Invalid
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x70(r13)
+	br	0000902E
+00009090 B0 5A FE FF 4F 60 67 02 9D 03 B0 5A FC FF E0 18 .Z..O`g....Z....
+000090A0 B9 FE 28 AF 28 00 08 AF 24 00 D4 55 D0 00 B0 5A ..(.(...$..U...Z
+000090B0 FC FF E0 18 A5 FE 1E 01 02 56 03 11 02 AF 20 00 .........V.... .
+000090C0 00 56 0F 10 02 AF 24 00 00 56 0B 10 42 AF 1C 00 .V....$..V..B...
+000090D0 04 56 07 10 E4 A0 B0 5A FE FF E2 57 05 10 1E 03 .V.....Z...W....
+000090E0 B0 5A FE FF 1E 03 14 92 B1 32 CC C0 B1 52 1F 00 .Z.......2...R..
+000090F0 A7 1F 14 C3 9C 1B B0 5A FD FF 1E 03 00 00 1E 01 .......Z........
+00009100 07 01 02 56 08 12 02 AF 20 00 00 56 04 12 02 AF ...V.... ..V....
+00009110 24 00 00 56 00 12 E2 AF 1C 00 0E 56 0C 11 6E A0 $..V.......V..n.
+00009120 B0 5A FE FF 62 57 03 10 07 02 1E 03 1E 92 B1 32 .Z..bW.........2
+00009130 CC C0 B1 52 1F 00 A9 1F 0E 94 04 52 17 10 B0 22 ...R.......R..."
+00009140 FB FF 0E D4 40 5B 07 02 1E 03 40 26 0E D4 00 5A ....@[....@&...Z
+00009150 07 02 1E 03 B0 5A FE FF 07 02 1E 03 00 00 02 56 .....Z.........V
+00009160 00 11 02 AF 20 00 00 56 0C 10 02 AF 24 00 00 56 .... ..V....$..V
+00009170 08 10 42 AF 1C 00 04 56 04 10 04 A0 02 57 05 10 ..B....V.....W..
+00009180 70 00 FF FF 00 00 EE 0A 24 92 B0 5A CC C0 20 33 p.......$..Z.. 3
+00009190 B0 52 1F 00 A6 1F 04 9F 9E 1B 00 5E 00 4D B2 52 .R.........^.M.R
+000091A0 43 3F 0C 10 B2 52 4C 3F 1F 1E 24 9F A0 1B 34 9F C?...RL?..$...4.
+000091B0 2E 00 32 3B 22 5F 20 61 EE 0A 24 9F 2E 00 22 5F ..2;"_ a..$..."_
+000091C0 20 61 EE 0A 00 00 02 56 00 11 02 AF 20 00 00 56  a.....V.... ..V
+000091D0 0C 10 02 AF 24 00 00 56 08 10 02 AF 1C 00 00 56 ....$..V.......V
+000091E0 04 10 40 A0 42 57 03 10 90 54 EE 0A 20 92 B2 32 ..@.BW...T.. ..2
+000091F0 CC C0 B2 52 1F 00 A9 1F B2 54 0C 05 02 61 00 AF ...R.....T...a..
+00009200 48 00 14 00 20 C0 E0 4F EE 0A 00 00 9D 01 67 01 H... ..O......g.
+
+l00009210:
+	addd	$FF90,sp
+	movd	$86,r12
+	addd	sp,r12
+	stord	(r4,r3),0x98(sp)
+	loadd	(r12),(r1,r0)
+	stord	(r1,r0),0xA8(sp)
+	loadd	4(r12),(r4,r3)
+	stord	(r4,r3),0xB0(sp)
+
+l00009228:
+	ord	$A4EC5400,(r9,r8)
+
+l0000922A:
+	loadd	8(r12),ra
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x40(sp)
+	stord	(r1,r0),0x48(sp)
+	stord	(r1,r0),0x50(sp)
+	stord	(r1,r0),0x58(sp)
+	stord	(r1,r0),0x60(sp)
+	stord	(r1,r0),0x68(sp)
+	stord	(r1,r0),0x70(sp)
+	stord	(r1,r0),0x78(sp)
+	cmpw	$0,r5
+	beq	0000927A
+
+l00009252:
+	loadd	0x98(sp),(r7,r6)
+	movw	$FFFF,r8
+	addw	r8,r5
+	movzw	r8,(r9,r8)
+	addd	$1,(r9,r8)
+	addd	(r9,r8),(r9,r8)
+	addd	(r7,r6),(r9,r8)
+
+l00009262:
+	loadw	(r7,r6),r0
+	movzw	r0,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	sp,(r1,r0)
+	loadw	0x40(r1,r0),r3
+	addw	$1,r1
+	storw	r3,0x40(r1,r0)
+	addd	$2,(r7,r6)
+	cmpd	(r7,r6),(r9,r8)
+	bne	00009262
+
+l0000927A:
+	loadw	0x7C(sp),r10
+	cmpw	$0,r10
+	bne	0000A1C8
+
+l00009284:
+	loadw	0x78(sp),r0
+	cmpw	$0,r0
+	bne	00009338
+
+l0000928C:
+	loadw	0x74(sp),r0
+	cmpw	$0,r0
+	bne	0000A23A
+
+l00009296:
+	loadw	0x70(sp),r0
+	cmpw	$0,r0
+	bne	0000A250
+
+l000092A0:
+	loadw	0x6C(sp),r0
+	cmpw	$0,r0
+	bne	0000A2FA
+
+l000092AA:
+	loadw	0x68(sp),r0
+	cmpw	$0,r0
+	bne	0000A320
+
+l000092B4:
+	loadw	0x64(sp),r0
+	cmpw	$0,r0
+	bne	0000A336
+
+l000092BE:
+	loadw	0x60(sp),r0
+	cmpw	$0,r0
+	bne	0000A36C
+
+l000092C8:
+	loadw	0x5C(sp),r0
+	cmpw	$0,r0
+	bne	0000A1DE
+
+l000092D2:
+	loadw	0x58(sp),r0
+	cmpw	$0,r0
+	bne	0000A388
+
+l000092DC:
+	loadw	0x54(sp),r0
+	cmpw	$0,r0
+	bne	0000A3E6
+
+l000092E6:
+	loadw	0x50(sp),r0
+	cmpw	$0,r0
+	bne	0000A40C
+
+l000092F0:
+	loadw	0x4C(sp),r0
+	cmpw	$0,r0
+	bne	0000A39A
+
+l000092FA:
+	loadw	0x48(sp),r0
+	cmpw	$0,r0
+	bne	fn0000A41C
+
+l00009302:
+	sfs	ra
+
+l00009304:
+	loadw	0x44(sp),r0
+	cmpw	$0,r0
+	bne	0000A346
+
+l0000930E:
+	loadd	0xA8(sp),(r5,r4)
+	loadd	(r5,r4),(r3,r2)
+	movw	$140,r1
+	storw	r1,(r3,r2)
+	storw	r0,2(r3,r2)
+	movd	$8,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	loadd	0xA8(sp),(r7,r6)
+	stord	(r5,r4),(r7,r6)
+	storw	r1,4(r3,r2)
+	storw	r0,6(r3,r2)
+	loadd	0xB0(sp),(r8,r7)
+	storw	$1,(r8,r7)
+	addd	$70,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r5,r4),r13
-	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
-	cmpd	$0,(r3,r2)
-	beq	90E0
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	90E0
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	90E0
-	Invalid
-	res
-	cmpd	$0,(r5,r4)
-	beq	90E0
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),ra
-	beq	90E6
-	popret	$1,ra
-	Invalid
-	Invalid
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,E39A
-	res
-	blo	90DE
-	Invalid
-	bfc	906C
-	Invalid
-	Invalid
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$0,r7
-	cmpd	$0,(r3,r2)
-	beq	9154
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	9154
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	9154
-	Invalid
-	res
-	cmpd	$0,ra
-	beq	9154
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r7,r6)
-	beq	912C
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	bal	ra,E3E0
-	res
-	blo	9128
-	Invalid
-	Invalid
-	bne	914A
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r0
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	Invalid
-	Invalid
-	pop	$0,r7
-	popret	$1,ra
-	res
-	cmpd	$0,(r3,r2)
-	beq	9180
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	9180
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	9180
-	Invalid
-	res
-	cmpd	$0,(r5,r4)
-	beq	9180
-	Invalid
-	cmpd	(r3,r2),(r1,r0)
-	beq	9188
-	movd	$FFFF,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,C4AC
-	Invalid
-	res
-	blo	9180
-	Invalid
-	bfc	9114
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	beq	91BA
-	Invalid
-	Invalid
-	bne	9186
-	Invalid
-	blo	910C
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	res
-	cmpd	$0,(r3,r2)
-	beq	91E8
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	91E8
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	beq	91E8
-	Invalid
-	res
-	cmpd	$0,(r1,r0)
-	beq	91E8
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	beq	91EC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,E4A2
-	res
-	blo	91E8
-	Invalid
-	movd	$C6102,r0
-	Invalid
-	andd	$C0200014,(r9,r8)
-	ashud	$FFFFFFF2,(r1,r0)
-	Invalid
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	andd	$EF0FA00C,r12
-	ord	$EF3FA23C,(r5,r4)
-	ord	$5400A4EC,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	927A
-	Invalid
-	andd	$33585A98,r12
-	movzw	r8,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r7,r6),(r9,r8)
-	bne	9262
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	9338
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$5AB1A024,(r5,r4)
-	push	$4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$D212E046,(r5,r4)
-	Invalid
-	Invalid
-	ord	$60BFC217,(r9,r8)
-	movd	$39D0267,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00009338:
+	loadw	0x44(sp),r0
+	cmpw	$0,r0
+	bne	fn0000A44A
+
+l00009342:
+	loadw	0x48(sp),r1
+	cmpw	$0,r1
+	bne	0000A2CC
+
+l0000934C:
+	loadw	0x4C(sp),r1
+	movw	$E,r13
+	cmpw	$0,r1
+	bne	0000A14C
+
+l00009358:
+	loadw	0x50(sp),r1
+	cmpw	$0,r1
+	bne	0000A38E
+
+l00009362:
+	cmpw	$5,r13
+	beq	0000A1B8
+
+l00009368:
+	loadw	0x54(sp),r1
+	cmpw	$0,r1
+	bne	0000A1AE
+
+l00009372:
+	cmpw	$6,r13
+	beq	0000A250
+
+l00009378:
+	loadw	0x58(sp),r1
+	cmpw	$0,r1
+	bne	0000A246
+
+l00009382:
+	cmpw	$7,r13
+	beq	0000A2A0
+
+l00009388:
+	loadw	0x5C(sp),r1
+	cmpw	$0,r1
+	bne	0000A296
+
+l00009392:
+	cmpw	$8,r13
+	beq	0000A2F0
+
+l00009398:
+	loadw	0x60(sp),r1
+	cmpw	$0,r1
+	bne	0000A2E6
+
+l000093A2:
+	cmpw	$9,r13
+	beq	0000A16A
+
+l000093AA:
+	loadw	0x64(sp),r1
+	cmpw	$0,r1
+	bne	0000A3A0
+
+l000093B4:
+	cmpw	$A,r13
+	beq	0000A15A
+
+l000093BA:
+	loadw	0x68(sp),r1
+	cmpw	$0,r1
+	bne	0000A3A0
+
+l000093C4:
+	cmpw	$B,r13
+	beq	0000A148
+
+l000093CC:
+	loadw	0x6C(sp),r1
+	cmpw	$0,r1
+	bne	0000A39A
+
+l000093D6:
+	cmpw	$C,r13
+	beq	0000A138
+
+l000093DC:
+	loadw	0x70(sp),r1
+	cmpw	$0,r1
+	bne	0000A39A
+
+l000093E6:
+	cmpw	$D,r13
+	beq	0000A35C
+
+l000093EC:
+	loadw	0x74(sp),r1
+	cmpw	$0,r1
+	bne	0000A352
+
+l000093F6:
+	cmpw	$F,r13
+	bne	0000A114
+
+l000093FC:
+	loadw	0x78(sp),r1
 	movw	r13,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	xord	$3BB13311,(r1,r0)
-	Invalid
-	Invalid
-	push	$1,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$3BB13311,(r1,r0)
-	Invalid
-	andd	$18605201,(r9,r8)
-	push	$0,r6,ra
+	cmpw	$0,r1
+	bne	0000A394
+
+l00009408:
+	movw	$2,r1
+	subw	r1,r0
+	cmpw	$0,r1
+	bgt	000097F6
+
+l00009412:
+	loadw	0x48(sp),r3
+	addw	r1,r1
+	subw	r1,r3
+	cmpw	$0,r1
+	bgt	000097E8
+
+l00009420:
+	loadw	0x4C(sp),r4
+	addw	r1,r1
+	subw	r1,r4
+	cmpw	$0,r1
+	bgt	000097DA
+
+l0000942E:
+	loadw	0x50(sp),r6
+	addw	r1,r1
+	subw	r1,r6
+	cmpw	$0,r1
+	bgt	000097CC
+
+l0000943C:
+	loadw	0x54(sp),r7
+	addw	r1,r1
+	subw	r1,r7
+	cmpw	$0,r1
+	bgt	000097BE
+
+l0000944A:
+	loadw	0x58(sp),r8
+	addw	r1,r1
+	subw	r1,r8
+	cmpw	$0,r1
+	bgt	000097B0
+
+l00009458:
+	loadw	0x5C(sp),r11
+	storw	r11,0xC0(sp)
+	addw	r1,r1
+	subw	r1,r11
+	cmpw	$0,r1
+	bgt	0000979E
+
+l0000946A:
+	loadw	0x60(sp),r11
+	storw	r11,0x80(sp)
+	addw	r1,r1
+	subw	r1,r11
+	storw	r1,0x90(sp)
+	cmpw	$0,r1
+	bgt	00009788
+
+l00009480:
 	movw	r1,r11
-	Invalid
-	Invalid
-	Invalid
-	andd	$3B1B33BB,(r3,r2)
-	Invalid
-	andd	$1860520B,(r9,r8)
-	push	$6,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$3B1B33BB,(r5,r4)
-	Invalid
-	andd	$1860520B,(r11,r10)
-	push	$5,r8
+	loadw	0x64(sp),r1
+	storw	r1,0x84(sp)
+	addw	r11,r11
+	subw	r11,r1
+	storw	r11,0x90(sp)
+	cmpw	$0,r11
+	bgt	00009770
+
+l00009498:
+	loadw	0x68(sp),r1
+	storw	r1,0x88(sp)
+	addw	r11,r11
+	subw	r11,r1
+	storw	r11,0x94(sp)
+	cmpw	$0,r11
+	bgt	0000975A
+
+l000094AE:
 	movw	r11,r1
-	Invalid
-	Invalid
-	Invalid
-	andd	$3BB13311,(r9,r8)
-	Invalid
-	ord	$18605201,(r1,r0)
-	push	$4,r0
-	Invalid
-	Invalid
-	Invalid
-	andd	$3BB13311,(r11,r10)
-	Invalid
-	ord	$18605201,(r3,r2)
-	push	$2,r10
+	loadw	0x6C(sp),r11
+	storw	r11,0x90(sp)
+	addw	r1,r1
+	subw	r1,r11
+	storw	r1,0xA0(sp)
+	cmpw	$0,r1
+	bgt	00009742
+
+l000094C6:
+	loadw	0x70(sp),r11
+	storw	r11,0x94(sp)
+	addw	r1,r1
+	subw	r1,r11
+	storw	r1,0xA4(sp)
+	cmpw	$0,r1
+	bgt	0000972C
+
+l000094DC:
 	movw	r1,r11
-	Invalid
-	Invalid
-	Invalid
-	ord	$3B1B33BB,(r1,r0)
-	Invalid
-	ord	$1860520B,r12
-	push	$1,r2
-	Invalid
-	Invalid
-	Invalid
-	ord	$3B1B33BB,(r3,r2)
-	Invalid
-	ord	$1860520B,r12
-	res
+	loadw	0x74(sp),r1
+	storw	r1,0xA0(sp)
+	addw	r11,r11
+	subw	r11,r1
+	storw	r11,0xB8(sp)
+	cmpw	$0,r11
+	bgt	00009714
+
+l000094F4:
+	loadw	0x78(sp),r1
+	storw	r1,0xA4(sp)
+	addw	r11,r11
+	subw	r11,r1
+	storw	r11,0xB8(sp)
+	cmpw	$0,r11
+	bgt	000096FE
+
+l0000950A:
 	movw	r11,r1
-	Invalid
-	Invalid
-	Invalid
-	bgt	9602
-	Invalid
-	beq	9528
-	Invalid
-	Invalid
-	Invalid
-	bne	9602
-	Invalid
-	Invalid
-	Invalid
-	bne	9602
-	Invalid
-	ord	$C30F90AC,(r9,r8)
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$D80F3310,(r1,r0)
-	Invalid
-	andd	$D90F3330,(r1,r0)
-	Invalid
-	andd	$DA0F3340,(r3,r2)
-	Invalid
-	andd	$DB0F3360,(r5,r4)
-	Invalid
-	andd	$DC0F3370,(r9,r8)
-	Invalid
-	andd	$DD0F3380,(r11,r10)
-	Invalid
-	ord	$DF0F33B0,(r1,r0)
-	res
-	Invalid
-	ord	$DF0F3310,(r3,r2)
-	res
-	Invalid
-	beq	95BA
-	Invalid
-	andd	$90065A03,r12
-	Invalid
-	beq	95F8
+	addw	r1,r11
+	subw	r1,r10
+	cmpw	$0,r1
+	bgt	00009602
+
+l00009514:
+	cmpw	$0,r1
+	beq	00009528
+
+l00009518:
+	cmpw	$0,r2
+	seq	r1
+	cmpw	$0,r1
+	bne	00009602
+
+l00009520:
+	cmpw	$1,r13
+	sne	r1
+	cmpw	$0,r1
+	bne	00009602
+
+l00009528:
+	loadd	0xB0(sp),r12
+	loadw	(r12),r10
+	storw	$0,2(sp)
+	storw	r0,4(sp)
+	addw	r0,r3
+	storw	r0,6(sp)
+	addw	r0,r4
+	storw	r0,8(sp)
+	addw	r0,r6
+	storw	r0,0xA(sp)
+	addw	r0,r7
+	storw	r0,0xC(sp)
+	addw	r0,r8
+	storw	r0,0xE(sp)
+	loadw	0xC0(sp),r1
+	addw	r0,r1
+	storw	r0,0x10(sp)
+	loadw	0x80(sp),r3
+	addw	r0,r3
+	storw	r0,0x12(sp)
+	loadw	0x84(sp),r4
+	addw	r0,r4
+	storw	r0,0x14(sp)
+	loadw	0x88(sp),r6
+	addw	r0,r6
+	storw	r0,0x16(sp)
+	loadw	0x90(sp),r7
+	addw	r0,r7
+	storw	r0,0x18(sp)
+	loadw	0x94(sp),r8
+	addw	r0,r8
+	storw	r0,0x1A(sp)
+	loadw	0xA0(sp),r11
+	addw	r0,r11
+	storw	r0,0x38(sp)
+	loadw	0xA4(sp),r1
+	addw	r0,r1
+	storw	r0,0x3C(sp)
+	cmpw	$0,r5
+	beq	000095BA
+
+l00009590:
+	loadd	0x98(sp),(r7,r6)
+	movw	$0,r3
+
+l00009596:
+	loadw	(r7,r6),r0
+	cmpw	$0,r0
+	beq	000095F8
+
+l0000959C:
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	addd	sp,(r1,r0)
+	loadw	(r1,r0),r4
+	movw	$1,r8
+	addw	r8,r4
+	storw	r8,(r1,r0)
 	movzw	r4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	9596
-	Invalid
-	bhs	95C0
+	addd	(r1,r0),(r1,r0)
+	addd	ra,(r1,r0)
+	storw	r3,(r1,r0)
+	addw	$1,r1
+	addd	$2,(r7,r6)
+	cmpw	r5,r3
+	bne	00009596
+
+l000095BA:
+	cmpw	r10,r13
+	bhs	000095C0
+
+l000095BE:
 	movw	r13,r10
-	Invalid
-	andd	$1053539A,(r11,r10)
-	Invalid
-	andd	$54AF3F,(r11,r10)
-	Invalid
-	Invalid
-	xord	$BF5F5A10,(r1,r0)
-	andd	$52024550,(r11,r10)
-	beq	963C
-	Invalid
-	bne	960C
-	Invalid
-	popret	$5,r4
-	Invalid
-	movd	$5A10,sp
-	Invalid
-	movd	$39D0267,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	bne	9596
-	br	95BA
-	Invalid
-	Invalid
-	movd	$39D0267,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$25052B0,r12
-	Invalid
-	Invalid
-	beq	9626
-	Invalid
-	xord	$1E155007,r12
-	Invalid
-	ord	$F15A05C0,(r1,r0)
-	Invalid
-	xord	$F19A0530,(r5,r4)
-	Invalid
-	xord	$EFEF10EB,(r9,r8)
-	xord	$68EFEF,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	xord	$8025212,r12
-	Invalid
-	xord	$60AFCF,r13
-	Invalid
-	ord	$4A9F8F,(r3,r2)
-	Invalid
-	andd	$DFBF5A9B,(r3,r2)
-	ord	$5B4A5A04,r12
+
+l000095C0:
+	storw	r10,0x94(sp)
+	cmpw	r10,r9
+	bls	000095CC
+
+l000095C8:
+	storw	r9,0x94(sp)
+
+l000095CC:
+	loadd	0xA8(sp),(r4,r3)
+	loadd	(r4,r3),(r5,r4)
+	stord	(r5,r4),0xC0(sp)
+	movw	$1,r0
+	loadb	0x4A(sp),r5
+	ashuw	r5,r0
+	cmpw	$0,r2
+	beq	0000963C
+
+l000095E2:
+	cmpw	$1,r2
+	bne	0000960C
+
+l000095E6:
+	cmpw	$354,r0
+	bhs	0000A1CA
+
+l000095EE:
+	movw	$1,r0
+	addd	$70,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+
+l000095F8:
+	addw	$1,r1
+	addd	$2,(r7,r6)
+	cmpw	r5,r3
+	bne	00009596
+
+l00009600:
+	br	000095BA
+
+l00009602:
+	movw	$FFFF,r0
+	addd	$70,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+
+l0000960C:
+	cmpw	$2,r2
+	seq	r1
+	storb	r1,0x6C(sp)
+	cmpw	$250,r0
+	slo	r1
+	cmpw	$0,r1
+	beq	00009626
+
+l0000961E:
+	loadb	0x6C(sp),r7
+	cmpb	$0,r7
+	bne	000095EE
+
+l00009626:
+	storw	$0,0x50(sp)
+	movd	$F15A,r12
+	stord	r12,0xC8(sp)
+	movd	$F19A,(r4,r3)
+	stord	(r4,r3),0xD0(sp)
+	br	00009650
+
+l0000963C:
+	stord	ra,0xC8(sp)
+	stord	ra,0xD0(sp)
+	movw	$14,r4
+	storw	r4,0xA0(sp)
+	storb	r2,0x6C(sp)
+
+l00009650:
+	cmpw	$1,r2
+	seq	r2
+	storb	r2,0x6D(sp)
+	loadd	0xC0(sp),r12
+	storw	r0,0xA4(sp)
+	loadw	0x94(sp),r8
+	storw	r8,0x84(sp)
+	movw	$FFFF,r11
+	storw	r11,0xB8(sp)
+	movw	$0,r4
+	movw	r4,r10
 	movw	r9,r6
-	Invalid
-	Invalid
-	Invalid
-	ord	$40DF4F,ra
+	movw	$1,r7
+	addw	$FFFF,r9
+	storw	r0,0xBC(sp)
+	storw	r4,0x80(sp)
 	movw	r9,r11
 	movw	r4,r9
 	movb	r11,r8
-	Invalid
-	Invalid
-	andd	$61005F90,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subb	r8,r10
+	storb	r8,0x44(sp)
+	movzw	r9,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	ra,(r1,r0)
+	loadw	(r1,r0),r1
+	movw	$1,r0
+	addw	r0,r1
 	movb	$0,r8
-	Invalid
-	ord	$104F5320,(r1,r0)
-	Invalid
-	Invalid
-	popret	$7,r6
-	Invalid
+	loadw	0xA0(sp),r2
+	cmpw	r0,r2
+	bhi	000096BE
+
+l000096A2:
+	cmpw	r1,r2
+	bhi	00009D90
+
+l000096A8:
+	subw	r1,r2
 	movzw	r1,(r1,r0)
-	Invalid
-	Invalid
-	xord	$B0826102,(r5,r4)
-	Invalid
-	xord	$90106120,(r9,r8)
+	addd	(r1,r0),(r1,r0)
+	loadd	0xC8(sp),(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	loadb	(r3,r2),r8
+	loadd	0xD0(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadw	(r1,r0),r1
+
+l000096BE:
 	movw	r7,r3
-	Invalid
+	ashuw	r6,r3
 	movw	r3,r6
 	movw	r7,r9
-	Invalid
-	andd	$58004559,(r3,r2)
-	Invalid
+	loadb	0x42(sp),r5
+	ashuw	r5,r9
+	movb	$0,r0
+	subb	r0,r10
 	movw	r4,r5
-	Invalid
+	lshw	r0,r5
 	movw	r9,r0
 	movzb	r8,(r9,r8)
-	Invalid
-	andd	$27284282,(r5,r4)
-	Invalid
+	loadb	0x44(sp),r2
+	ashuw	$8,r2
+	orw	r8,r2
+
+l000096E0:
+	subw	r0,r6
 	movw	r5,r2
-	Invalid
+	addw	r2,r0
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	96E0
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	r12,(r3,r2)
+	storw	r8,(r3,r2)
+	storw	r1,2(r3,r2)
+	cmpw	$0,r0
+	bne	000096E0
+
+l000096F4:
+	movw	$FFFF,r0
+	addw	r0,r11
 	movw	r7,r6
-	Invalid
+	ashuw	r0,r6
 	movw	r6,r0
+
+l000096FE:
 	movw	r4,r1
-	Invalid
-	Invalid
-	beq	9710
-	lshw	$FFFFFFF1,r0
+	andw	r1,r6
+	cmpw	$0,r1
+	beq	00009710
+
+l00009706:
+	lshw	$-15,r0
 	movw	r4,r1
-	Invalid
-	Invalid
-	bne	9706
-	Invalid
-	beq	971C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$DF8F3218,(r1,r0)
-	andd	$61225FB2,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	9754
-	Invalid
-	Invalid
-	popret	$5,r8
-	movzw	r8,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	andd	$90B26142,r12
-	Invalid
-	andd	$185053B5,(r11,r10)
-	pop	$3,r2,ra
-	Invalid
-	ord	$DF6F2306,ra
-	andd	$5C9F8F,(r9,r8)
-	Invalid
-	Invalid
-	pop	$1,ra,ra
-	Invalid
-	bne	9778
-	movw	r5,r10
-	movzw	r9,(r3,r2)
-	Invalid
-	Invalid
-	movw	r11,r6
-	Invalid
-	Invalid
-	andd	$45615B71,(r3,r2)
-	Invalid
-	Invalid
-	pop	$0,r8
+	andw	r1,r0
+	cmpw	$0,r1
+	bne	00009706
+
+l00009710:
+	cmpw	$0,r0
+	beq	0000971C
+
+l00009714:
+	movw	$FFFF,r1
+	addw	r1,r0
+	andw	r4,r1
+	addw	r0,r4
+
+l0000971C:
+	loadw	0x80(sp),r8
+	addw	$1,r1
+	storw	r8,0x80(sp)
 	movzw	r11,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r2,ra
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+
+l0000972C:
+	loadw	0x40(r3,r2),r1
+	addw	$FFFF,r9
+	storw	r1,0x40(r3,r2)
+	cmpw	$0,r1
+	bne	00009754
+
+l0000973A:
+	cmpw	r11,r13
+	beq	00009DEC
+
+l00009740:
+	movzw	r8,(r3,r2)
+
+l00009742:
+	addd	(r3,r2),(r3,r2)
+	addd	ra,(r3,r2)
+	loadw	(r3,r2),r2
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r0,ra
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra,ra
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r12
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$6,r10
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r10
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r8
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r8
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r6
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r6
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r4
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	res
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r2
-	Invalid
-	Invalid
-	bls	9990
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	9990
-	Invalid
-	Invalid
-	andd	$DF4F10E3,(r3,r2)
-	andd	$BF2F5B71,(r3,r2)
-	andd	$9F3F4521,(r3,r2)
-	ord	$DF3F3313,(r3,r2)
-	ord	$35452B3,(r3,r2)
-	Invalid
-	Invalid
-	beq	99BA
-	Invalid
-	xord	$18105004,r13
-	Invalid
-	Invalid
-	ord	$25052B5,(r3,r2)
-	Invalid
-	Invalid
-	beq	99D2
-	Invalid
-	xord	$18105008,r12
-	Invalid
-	Invalid
-	andd	$4C225F92,(r9,r8)
-	Invalid
-	xord	$BF5F6142,(r1,r0)
-	andd	$BF8FF052,(r3,r2)
-	andd	$55C4F182,(r11,r10)
-	Invalid
-	xord	$C0840014,(r1,r0)
-	ashud	$FFFFFFF2,(r5,r4)
-	Invalid
-	Invalid
-	andd	$5CDF9F,(r9,r8)
-	movw	r0,r4
-	Invalid
-	andd	$FC7D18E0,(r1,r0)
+	addd	(r3,r2),(r3,r2)
+	loadd	0x98(sp),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	loadw	(r3,r2),r11
+
+l00009754:
+	loadw	0x94(sp),r5
+	cmpw	r5,r11
+
+l0000975A:
+	bls	00009CBE
+
+l0000975E:
+	loadw	0xBC(sp),r6
+	andw	r6,r0
+	storw	r6,0x90(sp)
+	loadw	0xB8(sp),r8
+	cmpw	r6,r8
+	beq	00009CAA
+
+l00009770:
+	pop	$1,ra,ra
+
+l00009772:
+	cmpw	$0,r10
+	bne	00009778
+
+l00009776:
+	movw	r5,r10
+
+l00009778:
+	movzw	r9,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r3,r2),r12
 	movw	r11,r6
-	Invalid
-	movw	r0,r4
-	Invalid
-	andd	$FC6F18E0,(r1,r0)
-	Invalid
-	movb	$60,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	9A60
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$2,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r13,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9AAC
+	subw	r6,r10
+	storw	r6,0x84(sp)
+	movw	r7,r1
+
+l00009788:
+	ashuw	r6,r1
+	cmpw	r11,r13
+	bls	00009B9C
+
+l00009790:
+	movzw	r11,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+
+l0000979E:
+	bge	00009B8A
+
+l000097A2:
+	movw	$1,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009B72
+
+l000097B0:
+	push	$6,r2,ra
+
+l000097B2:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+
+l000097BE:
+	cmpw	$0,r1
+	bge	00009B60
+
+l000097C4:
+	movw	$2,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+
+l000097CC:
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009B50
+
+l000097D4:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+
+l000097DA:
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009B3E
+
+l000097E6:
+	movw	$3,r4
+
+l000097E8:
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009B2E
+
+l000097F6:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009B1C
+
+l00009808:
+	movw	$4,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009B0C
+
+l00009818:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009AFA
+
+l0000982A:
+	movw	$5,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009AEA
+
+l0000983A:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009AD8
+
+l0000984C:
+	movw	$6,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009AC8
+
+l0000985C:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009AB6
+
+l0000986E:
+	movw	$7,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009AA6
+
+l0000987E:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009A94
+
+l00009890:
+	movw	$8,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l0000989E:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l000098AE:
+	movw	$9,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l000098BE:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l000098CE:
+	movw	$A,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+
+l000098DA:
+	bls	00009990
+
+l000098DC:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l000098EC:
+	movw	$B,r4
+	addw	r4,r6
+
+l000098F2:
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l000098FC:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l0000990C:
+	movw	$C,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l0000991A:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+
+l00009926:
+	cmpw	$0,r1
+	bge	00009990
+
+l0000992A:
+	movw	$D,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l00009938:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l00009948:
+	movw	$E,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l00009956:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l00009966:
+	movw	$F,r4
+	addw	r4,r6
+	addw	r1,r1
+	movw	r10,r2
+	addw	r2,r4
+	cmpw	r2,r13
+	bls	00009990
+
+l00009974:
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	sp,(r3,r2)
+	loadw	0x40(r3,r2),r2
+	subw	r1,r2
+	cmpw	$0,r1
+	bge	00009990
+
+l00009984:
+	movw	$10,r9
+	addw	r9,r6
+	storw	r9,0x84(sp)
+	br	00009994
+
+l00009990:
+	storw	r4,0x84(sp)
+
+l00009994:
+	movw	r7,r1
+	loadb	0x42(sp),r2
+	ashuw	r2,r1
+	loadw	0xA4(sp),r3
+	addw	r3,r1
+	storw	r3,0xA4(sp)
+	cmpw	$354,r3
+	slo	r1
+	cmpw	$0,r1
+	beq	000099BA
+
+l000099B0:
+	loadb	0x6D(sp),r4
+	cmpb	$0,r4
+	bne	00009228
+
+l000099BA:
+	loadw	0xA4(sp),r5
+	cmpw	$250,r5
+	slo	r1
+	cmpw	$0,r1
+	beq	000099D2
+
+l000099C8:
+	loadb	0x6C(sp),r8
+	cmpb	$0,r8
+	bne	00009210
+
+l000099D2:
+	loadw	0x90(sp),r9
+	movzw	r9,(r3,r2)
+	ashud	$2,(r3,r2)
+	loadd	0xC0(sp),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	loadb	0x42(sp),r5
+	storb	r5,(r3,r2)
+	loadb	0x4A(sp),r8
+	storb	r8,1(r3,r2)
+	movd	(r5,r4),r12
+	loadd	0xC0(sp),(r9,r8)
+	subd	(r5,r4),(r9,r8)
+	ashud	$-30,(r5,r4)
+	storw	r4,2(r3,r2)
+	loadw	0x90(sp),r9
+	storw	r9,0xB8(sp)
+
+l00009A00:
+	ord	$5B049F9F,r12
+	andd	$18E0FC7D,(r1,r0)
+00009A0C                                     B6 5B A6 3B             .[.;
+00009A10 04 5B 9F 9F 40 00 E0 18 6F FC 01 5A B8 58 60 00 .[..@...o..Z.X`.
+00009A20 E0 18 9F FC 0F 9F 22 00 FD 5A 00 52 1A 11       ......"..Z.R..  
+
+l00009A2E:
+	loadw	0x48(sp),r1
+	cmpw	$0,r1
+	bne	00009C88
+
+l00009A38:
+	loadw	0x4C(sp),r1
+	movw	$3,r9
+
+;; fn00009A3E: 00009A3E
+;;   Called from:
+;;     00009A3C (in fn0000A110)
+;;     0000AF00 (in fn0000AA58)
+fn00009A3E proc
+	cmpw	$0,r1
+	bne	00008DD2
+
+l00009A44:
+	movw	$4,r9
+	cmpw	r13,r9
+	beq	00008DCA
+
+l00009A4C:
+	br	00008C66
+00009A50 39 5A E0 18 B7 F9 0F 9F 22 00 7D 5A 00 52 08 1E 9Z......".}Z.R..
+
+l00009A60:
+	movw	$1,r9
+	br	00008DB0
+00009A66                   0F 9F 22 00 DD 5A 00 52 00 1E       .."..Z.R..
+00009A70 19 5A E0 18 97 F9 0F 9F 22 00 CD 5A 00 52 08 1D .Z......"..Z.R..
+00009A80 19 5A E0 18 87 F9 ED 5A D9 5B E0 18 7F F9 59 5A .Z.....Z.[....YZ
+00009A90 E0 18 79 F9                                     ..y.            
+
+l00009A94:
+	cmpw	$0,r0
+	beq	00009AAC
+
+l00009A98:
 	movzw	r0,(r3,r2)
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	(r3,r2),r12
 	movb	$40,r0
-	Invalid
-	Invalid
-	andd	$D11CF1BC,(r5,r4)
-	Invalid
-	ord	$4C205FC0,(r3,r2)
-	Invalid
-	xord	$AF3F6120,(r1,r0)
-	ord	$9F6FE003,(r5,r4)
-	andd	$58AF4F,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9A2E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	storb	r0,(r12)
+	loadb	0x44(sp),r11
+
+l00009AA6:
+	andd	$F1BCD11C,(r5,r4)
+
+l00009AA8:
+	storb	r11,1(r12)
+	storw	r1,2(r12)
+
+l00009AAC:
+	loadw	0xA4(sp),r12
+	movzw	r12,(r1,r0)
+	ashud	$2,(r1,r0)
+	loadd	0xC0(sp),(r3,r2)
+
+l00009AB6:
+	xord	$6120AF3F,(r1,r0)
+
+l00009AB8:
+	addd	(r3,r2),(r1,r0)
+	loadd	0xA8(sp),(r4,r3)
+	stord	(r1,r0),(r4,r3)
+	loadw	0x94(sp),r6
+	loadd	0xB0(sp),(r5,r4)
+
+l00009AC8:
+	storw	r6,(r5,r4)
+	movw	$0,r0
+	br	fn00008B96
+00009AD0 0F 9F 22 00 BD 5A 0B 00                         .."..Z..        
+
+l00009AD8:
+	cmpw	$0,r0
+
+l00009ADA:
+	beq	00009A2E
+
+l00009ADC:
+	movw	$1,r9
+	br	00008D34
+00009AE2       69 5A E0 18 25 F9                           iZ..%.        
+
+l00009AE8:
+	loadw	0x44(sp),r0
+
+l00009AEA:
+	addd	$5AAD5200,(r3,r2)
+	beq	00009A2E
+
+l00009AF2:
+	movw	$1,r9
+	br	00008D1E
+00009AF8                         0F 9F                           ..      
+
+l00009AFA:
+	addd	$5ABD0009,(r3,r2)
+	cmpw	$0,r0
+	beq	00009A2E
+
+l00009B04:
+	movw	$1,r9
+	br	00008D0C
+00009B0A                               ED 5A                       .Z    
+
+l00009B0C:
+	movw	$2,r9
+	br	00008D04
+00009B12       79 5A E0 18 F5 F8 0F 9F 22 00               yZ......".    
+
+l00009B1C:
+	movw	$8,r13
+	cmpw	$0,r0
+	beq	00009A2E
+
+l00009B22:
+	movw	$1,r9
+	br	00008CEE
+00009B28                         1D 5A D9 5B E0 18               .Z.[..  
+
+l00009B2E:
+	storb	r13,8(r13)
+	loadw	0x44(sp),r0
+	movw	$6,r13
+	cmpw	$0,r0
+	beq	00009926
+
+l00009B3C:
+	movw	$1,r9
+
+l00009B3E:
+	br	00008CD4
+00009B42       89 5A E0 18 C5 F8 0F 9F 22 00 00 52 12 14   .Z......"..R..
+
+l00009B50:
+	loadw	0x48(sp),r1
+	movw	$3,r13
 	movw	r13,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	9BD2
-	Invalid
-	Invalid
-	Invalid
-	movw	r13,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r13,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r1
-	Invalid
-	ord	$F1DA0560,(r1,r0)
-	Invalid
-	xord	$F2180570,(r5,r4)
-	Invalid
-	xord	$502F0013,(r9,r8)
-	xord	$100F0012,r13
-	xord	$FA5B18E0,r12
-	res
+	cmpw	$0,r1
+	beq	00008CB8
+
+l00009B5E:
+	movw	$2,r9
+
+l00009B60:
+	br	00008CB2
+00009B64             0F 9F 22 00                             ..".        
+
+l00009B68:
+	movw	$5,r13
+	cmpw	$0,r0
+	beq	000098F2
+
+l00009B70:
+	movw	$1,r9
+
+l00009B72:
+	br	00008CA0
+00009B76                   49 5A E0 18 91 F8 0F 9F 22 00       IZ......".
+
+l00009B80:
+	movw	$4,r13
+	cmpw	$0,r0
+	beq	000098DA
+
+l00009B88:
+	movw	$1,r9
+
+l00009B8A:
+	br	00008C88
+00009B8E                                           0F 9F               ..
+00009B90 22 00 2D 5A D9 5B 00 52 00 18 71 F8             ".-Z.[.R..q.    
+
+l00009B9C:
+	movw	$1,r9
+	br	fn00008C74
+00009BA2       D9 5A E0 18 65 F8 B9 5A 09 00 E0 18 5D F8   .Z..e..Z....].
+00009BB0 A9 5A E0 18 57 F8 B9 5A 0B 00 E0 18 4F F8 C9 5A .Z..W..Z....O..Z
+00009BC0 E0 18 49 F8 ED 5A 19 5A E0 18 41 F8 E9 5A E0 18 ..I..Z.Z..A..Z..
+00009BD0 3B F8 3D 5A 19 5A E0 18 33 F8 B5 5A 01 01 5F DF ;.=Z.Z..3..Z.._.
+00009BE0 50 00 60 05 DA F1 6F EF 64 00 70 05 18 F2 7F EF P.`...o.d.p.....
+00009BF0 68 00 13 00 2F 50 6D 00 12 00 0F 10 6C 00 E0 18 h.../Pm.....l...
+00009C00 5B FA 00 00                                     [...            
+
+;; fn00009C04: 00009C04
+;;   Called from:
+;;     0000B682 (in fn0000B308)
+;;     0000B68C (in fn0000B308)
+fn00009C04 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
+	addd	$FFF8,sp
 	movd	r12,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$4,r8,ra
-	Invalid
-	Invalid
+	loadw	2(r5,r4),r13
+	cmpw	$0,r13
+	beq	fn0000A426
+
+l00009C16:
+	movw	$4,r2
+	movw	$7,r0
+	cmpw	$0,r6
+	bgt	0000A1AC
+
+l00009C20:
+	movd	$6,ra
+	addd	(r5,r4),ra
 	movxw	r6,(r7,r6)
-	Invalid
-	Invalid
+	ashud	$2,(r7,r6)
+
+l00009C28:
+	addd	$A,(r7,r6)
 	movd	(r9,r8),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),4(sp)
+	movw	$0,r11
+	movw	$FFFF,r6
 	movw	r13,r10
-	Invalid
-	push	$5,r12
-	Invalid
-	Invalid
-	popret	$4,r12,ra
-	Invalid
-	beq	9C96
-	Invalid
-	beq	9C96
-	Invalid
-	Invalid
-	push	$5,ra
+	br	00009EEE
+00009C3A                               A9 53 00 18 CC 03           .S....
+00009C40 7C 9F 0A 12 3C 9F                               |...<.          
+
+l00009C46:
+	beq	00009C96
+
+l00009C48:
+	cmpw	r1,r2
+	ble	00009F06
+
+l00009C4E:
 	movxw	r10,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,r13
+	addd	r12,r13
+	loadw	0x14A8(r13),r1
+	loadw	0x14A4(r13),r4
 	movw	r4,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9CBA
-	Invalid
-	ble	9CAA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9CD0
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9CE8
+	ashuw	r7,r5
+	orw	r5,r3
+	movw	$10,r0
+	subw	r0,r1
+	storw	r5,0x2410(r12)
+	cmpw	r0,r7
+	ble	00009CAA
+
+l00009C70:
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r3,r2)
+	storb	r5,(r3,r2)
+	loadw	0x2410(r12),r0
+	lshw	$-8,r0
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r7,r6)
+
+l00009C88:
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r12),r7
+
+l00009C96:
 	movb	r7,r0
 	movb	$10,r2
-	Invalid
+	subb	r0,r2
 	movw	r4,r5
-	Invalid
-	Invalid
-	beq	9CF4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D02
-	Invalid
-	beq	9D70
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	r0,r5
+	storw	r5,0x2410(r12)
+	addw	$FFF0,r11
+
+l00009CAA:
+	addw	r1,r7
+	storw	r1,0x2414(r12)
+	cmpw	$0,r11
+	beq	00009D70
+
+l00009CB4:
+	loadw	0x14A8(r13),r2
+	loadw	0x14A4(r13),r4
 	movw	r4,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D1A
-	Invalid
-	ble	9D0A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D30
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D48
+
+l00009CBE:
+	ashuw	r1,r3
+	orw	r3,r5
+	movw	$10,r0
+	subw	r0,r2
+	storw	r3,0x2410(r12)
+	cmpw	r0,r1
+	ble	00009D0A
+
+l00009CD0:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2410(r12),r3
+	lshw	$-8,r3
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2414(r12),r1
 	movb	r1,r0
 	movb	$10,r3
-	Invalid
+	subb	r0,r3
 	movw	r4,r3
-	Invalid
-	Invalid
-	beq	9D54
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D62
-	Invalid
-	beq	9D70
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	r0,r3
+	storw	r3,0x2410(r12)
+	addw	$FFF0,r11
+
+l00009D0A:
+	addw	r1,r2
+	storw	r1,0x2414(r12)
+	cmpw	$1,r11
+	beq	00009D70
+
+l00009D14:
+	loadw	0x14A8(r13),r6
+	loadw	0x14A4(r13),r9
 	movw	r9,r11
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D7A
-	Invalid
-	Invalid
-	pop	$5,r0,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9D92
-	lshw	$FFFFFFF8,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9DAA
+	ashuw	r1,r11
+	orw	r11,r3
+	movw	$10,r0
+	subw	r0,r6
+	storw	r11,0x2410(r12)
+	cmpw	r0,r1
+	ble	0000A2CE
+
+l00009D32:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r11,(r1,r0)
+	loadw	0x2410(r12),r7
+	lshw	$-8,r7
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r7,(r1,r0)
+	loadw	0x2414(r12),r2
 	movb	r2,r0
 	movb	$10,r4
-	Invalid
-	Invalid
-	Invalid
-	beq	9DB4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9DC2
-	Invalid
-	Invalid
-	Invalid
+	subb	r0,r4
+	lshw	r0,r9
+	storw	r9,0x2410(r12)
+	addw	$FFF0,r11
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+
+l00009D70:
+	loadw	(sp),r3
+	cmpw	$0,r3
+	beq	0000A028
+
+l00009D76:
 	push	$5,r10
-	Invalid
-	Invalid
-	push	$6,r12,ra
+
+l00009D78:
+	cmpw	r3,r10
+	beq	0000A152
+
+l00009D7E:
 	movw	r10,r6
-	Invalid
-	Invalid
-	Invalid
+	movw	$4,r2
+	movw	$7,r0
+	movw	$0,r11
 	movw	r3,r10
-	Invalid
-	Invalid
+	addd	$4,ra
+	loadd	4(sp),(r9,r8)
 	cmpd	(r9,r8),ra
-	Invalid
+	beq	0000A03A
+
+l00009D90:
 	push	$5,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9DF6
-	Invalid
-	beq	9DF6
-	Invalid
-	Invalid
-	push	$4,r0
-	Invalid
-	beq	9E1A
+
+l00009D92:
+	loadw	(ra),r9
+	storw	r9,(sp)
+	movw	$1,r1
+	addw	r1,r11
+	cmpw	r1,r0
+	bgt	00009ADA
+
+l00009DA0:
+	loadw	0x2414(r12),r7
+	loadw	0x2410(r12),r3
+	cmpw	$0,r10
+	beq	0000A02A
+
+l00009DAE:
+	cmpw	r10,r6
+	beq	00009E1A
+
+l00009DB2:
 	movxw	r10,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0x14A8(r1,r0),r4
+	loadw	0x14A4(r1,r0),r5
 	movw	r5,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9E1E
-	Invalid
-	Invalid
-	pop	$3,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9E36
-	lshw	$FFFFFFF8,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9E4E
+	ashuw	r7,r0
+	orw	r3,r0
+	movw	$10,r0
+	subw	r0,r4
+	storw	r3,0x2410(r12)
+	cmpw	r0,r7
+	ble	0000A24E
+
+l00009DD6:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2410(r12),r8
+	lshw	$-8,r8
+	loadd	8(r12),(r1,r0)
+
+l00009DEC:
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r8,(r1,r0)
+	loadw	0x2414(r12),r2
 	movb	r2,r0
 	movb	$10,r8
-	Invalid
+	subb	r0,r8
 	movw	r5,r3
-	Invalid
-	Invalid
-	beq	9E5A
-	Invalid
-	Invalid
+	lshw	r0,r3
+	storw	r3,0x2410(r12)
+	addw	$FFF0,r11
 	movw	r4,r7
-	Invalid
-	Invalid
-	beq	9E6A
+	addw	r7,r2
+	storw	r7,0x2414(r12)
 	movw	r11,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+l00009E1A:
+	loadw	0x1528(r12),r0
+	loadw	0x1524(r12),r8
 	movw	r8,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9E80
-	Invalid
-	Invalid
-	push	$4,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9E98
-	lshw	$FFFFFFF8,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9EB0
+	ashuw	r7,r9
+	orw	r9,r3
+	movw	$10,r2
+	subw	r2,r0
+	storw	r9,0x2410(r12)
+	cmpw	r2,r7
+	ble	0000A0C8
+
+l00009E38:
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r9,(r3,r2)
+	loadw	0x2410(r12),r9
+	lshw	$-8,r9
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r9,(r3,r2)
+	loadw	0x2414(r12),r7
 	movb	r7,r2
 	movb	$10,r9
-	Invalid
+	subb	r2,r9
 	movw	r8,r9
-	Invalid
-	Invalid
-	beq	9EBC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9ECA
-	Invalid
-	Invalid
+	lshw	r2,r9
+	storw	r9,0x2410(r12)
+	addw	$FFF0,r11
+	addw	r0,r7
+	storw	r0,0x2414(r12)
+	addw	$FFFD,r11
 	movw	r1,r3
-	Invalid
-	Invalid
-	Invalid
-	beq	9ED4
-	Invalid
-	bge	9F74
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9EEA
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9F02
+	ashuw	r0,r3
+	orw	r9,r3
+	storw	r9,0x2410(r12)
+	cmpw	$E,r0
+	bge	00009F74
+
+l00009E8A:
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+
+l00009E94:
+	addd	(r5,r4),(r3,r2)
+	storb	r9,(r3,r2)
+	loadw	0x2410(r12),r0
+	lshw	$-8,r0
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r12),r0
 	movb	r0,r2
 	movb	$10,r3
-	Invalid
-	Invalid
-	Invalid
-	beq	9F0C
-	Invalid
-	Invalid
-	Invalid
-	beq	9F18
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subb	r2,r3
+	lshw	r2,r1
+	storw	r1,0x2410(r12)
+	addw	$FFF2,r11
+	storw	r0,0x2414(r12)
+	loadw	(sp),r3
+	cmpw	$0,r3
+	bne	00009C28
+
+l00009ECE:
+	movw	$0,r11
 	movw	r10,r6
-	Invalid
-	Invalid
-	res
+	movw	$3,r2
+	movw	$8A,r0
 	movw	r3,r10
-	Invalid
-	Invalid
+	addd	$4,ra
+	loadd	4(sp),(r9,r8)
 	cmpd	(r9,r8),ra
-	Invalid
-	Invalid
-	Invalid
+	bne	00009C46
+
+l00009EE4:
+	addd	$8,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	blt	9F88
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+00009EEA                               A1 52 CE 14                 .R..  
+
+l00009EEE:
+	loadw	0x1530(r12),r8
+	loadw	0x152C(r12),r5
 	movw	r5,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9F54
-	Invalid
-	Invalid
-	push	$7,ra
-	Invalid
-	Invalid
-	beq	9F64
-	Invalid
-	Invalid
+	ashuw	r7,r9
+	orw	r9,r3
+	movw	$10,r0
+	subw	r0,r8
+	storw	r9,0x2410(r12)
+
+l00009F06:
+	cmpw	r0,r7
+	bgt	0000A204
+
+l00009F0C:
+	addw	r8,r7
+	storw	r8,0x2414(r12)
+	addw	$FFFE,r11
 	movw	r11,r3
-	Invalid
-	Invalid
-	Invalid
-	beq	9F6E
-	Invalid
-	Invalid
-	push	$3,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9F86
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9F9E
+	ashuw	r8,r3
+	orw	r9,r3
+	storw	r9,0x2410(r12)
+	cmpw	$D,r8
+	bge	0000A296
+
+l00009F26:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r9,(r1,r0)
+	loadw	0x2410(r12),r6
+	lshw	$-8,r6
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x2414(r12),r0
 	movb	r0,r1
 	movb	$10,r8
-	Invalid
-	Invalid
-	Invalid
-	beq	9FA8
-	Invalid
-	Invalid
-	Invalid
-	beq	9FB4
-	Invalid
-	Invalid
-	movw	r3,r6
-	Invalid
-	Invalid
-	Invalid
-	movw	r3,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9FCC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9FD6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subb	r1,r8
+	lshw	r1,r11
+	storw	r11,0x2410(r12)
+	addw	$FFF3,r11
+	storw	r0,0x2414(r12)
+	br	00009B80
+00009F66                   36 5B 32 5A 60 5A 0B 5A 3A 5B       6[2Z`Z.Z:[
+00009F70 E0 18 19 FE                                     ....            
+
+l00009F74:
+	addw	$2,r2
+	storw	r0,0x2414(r12)
+	br	00009B68
+00009F7E                                           70 33               p3
+00009F80 0C DF 0A 12 E0 18 F5 FE                         ........        
+
+l00009F88:
+	loadw	0x1538(r12),r8
+	loadw	0x1534(r12),r2
 	movw	r2,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	9FEE
-	Invalid
-	bgt	A026
-	Invalid
-	Invalid
-	beq	9FFC
-	Invalid
-	Invalid
+	ashuw	r7,r0
+	orw	r3,r0
+	movw	$10,r0
+	subw	r0,r8
+	storw	r3,0x2410(r12)
+	cmpw	r0,r7
+	bgt	0000A026
+
+l00009FA4:
+	addw	r8,r7
+	storw	r8,0x2414(r12)
+	addw	$FFF6,r11
 	movw	r11,r6
-	Invalid
-	Invalid
-	Invalid
-	beq	A006
-	Invalid
-	res
-	bge	A07C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A01E
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A036
+	ashuw	r8,r6
+	orw	r6,r3
+	storw	r6,0x2410(r12)
+	cmpw	$9,r8
+	bge	0000A07C
+
+l00009FBE:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x2410(r12),r6
+	lshw	$-8,r6
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x2414(r12),r0
 	movb	r0,r1
 	movb	$10,r2
-	Invalid
-	Invalid
-	Invalid
-	beq	A040
-	Invalid
-	Invalid
-	Invalid
-	beq	A04C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A056
-	Invalid
-	Invalid
-	movw	r1,r11
-	movw	r9,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A068
-	movw	r11,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A086
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A09E
-	Invalid
-	Invalid
-	Invalid
+	subb	r1,r2
+	lshw	r1,r11
+	storw	r11,0x2410(r12)
+	addw	$FFF7,r11
+	storw	r0,0x2414(r12)
+	br	00009AE8
+00009FFE                                           61 33               a3
+0000A000 1C DF 0A 12 E0 18 6D FD 1B 5B 9A 5B E0 18 7D FD ......m..[.[..}.
+0000A010 47 33 7C DF 0A 12 B1 5B E0 18 03 FE 32 5A B0 5A G3|....[....2Z.Z
+0000A020 8A 00 E0 18 F9 FB                               ......          
+
+l0000A026:
+	loadd	8(r12),(r1,r0)
+
+l0000A028:
+	loadd	0x14(r12),(r5,r4)
+
+l0000A02A:
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2410(r12),r3
+	lshw	$-8,r3
+
+l0000A03A:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2414(r12),r7
+	movw	$10,r0
+	subw	r0,r7
+	movb	r10,r9
+	subb	r9,r0
 	movw	r2,r3
-	Invalid
-	Invalid
-	beq	A0AC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A0BA
-	Invalid
-	Invalid
+	lshw	r9,r3
+	storw	r3,0x2410(r12)
+	addw	$FFF0,r11
+	addw	r8,r7
+	storw	r8,0x2414(r12)
+	addw	$FFF6,r11
 	movw	r11,r6
-	Invalid
-	Invalid
-	Invalid
-	beq	A0C4
-	Invalid
-	res
-	blt	9FBE
-	Invalid
-	Invalid
-	beq	A0D4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A0E6
-	lshw	$FFFFFFF8,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A0FE
-	Invalid
-	Invalid
-	Invalid
-	movw	r5,r9
-	Invalid
-	Invalid
-	beq	A10C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A11A
-	Invalid
-	Invalid
+	ashuw	r8,r6
+	orw	r6,r3
+	storw	r6,0x2410(r12)
+	cmpw	$9,r8
+	blt	00009FBE
+
+l0000A07C:
+	addw	$7,r7
+	storw	r8,0x2414(r12)
+	br	00009A60
+0000A086                   0C A4 2C AA 16 54 26 61 6C EA       ..,..T&al.
+0000A090 20 61 90 F0 4C 9F 08 12 84 49 0C A4 2C AA 16 54  a..L....I..,..T
+0000A0A0 26 61 6C EA 20 61 40 F0 7C 9F 0A 12 B0 5A 10 00 &al. a@.|....Z..
+0000A0B0 70 3B A4 59 04 39 59 5B 49 46 9C DF 08 12 B8 32 p;.Y.9Y[IF.....2
+0000A0C0 F0 FF 78 33 8C DF 0A 12                         ..x3....        
+
+l0000A0C8:
+	addw	$FFFE,r11
 	movw	r11,r3
-	Invalid
-	Invalid
-	Invalid
-	beq	A124
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A134
-	Invalid
-	Invalid
-	res
+	ashuw	r8,r3
+	orw	r9,r3
+	storw	r9,0x2410(r12)
+	cmpw	$D,r8
+	blt	00009D76
+
+l0000A0DC:
+	addw	$3,r3
+	storw	r8,0x2414(r12)
+	br	00009A00
+0000A0E6                   00 00                               ..        
+
+;; fn0000A0E8: 0000A0E8
+;;   Called from:
+;;     0000B698 (in fn0000B308)
+fn0000A0E8 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
+	addd	$FFFC,sp
+	movd	$1A,(r1,r0)
+	addd	sp,(r1,r0)
 	movd	r12,(r3,r2)
 	movd	r13,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	beq	A154
-	Invalid
-	beq	A154
-	Invalid
-	br	A134
-	Invalid
-	beq	A19A
-	Invalid
+	loadd	(r1,r0),(r3,r2)
+	stord	(r3,r2),(sp)
+	loadw	0x2414(r12),r6
+	loadw	0x2410(r12),r10
+	loadw	0x23EC(r12),r7
+	cmpw	$0,r7
+	beq	fn0000A19A
+
+l0000A10E:
+	movw	$0,r11
+
+;; fn0000A110: 0000A110
+;;   Called from:
+;;     00009C26 (in fn00009C04)
+;;     0000A10E (in fn0000A0E8)
+fn0000A110 proc
 	movzw	r11,(r1,r0)
-	Invalid
-	br	A144
+	loadd	0x23F0(r12),(r3,r2)
+
+l0000A114:
+	br	0000A144
 	movd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	A142
-	Invalid
-	Invalid
-	Invalid
-	bne	A1C6
+	addd	(r1,r0),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	loadw	(r3,r2),ra
+	addw	$1,r1
+	loadd	0x23E0(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r9
+	cmpw	$0,ra
+	bne	0000A1C6
+
+l0000A12C:
 	movzb	r9,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	2(r1,r0),r2
+	loadw	(r1,r0),r3
+
+l0000A138:
 	movw	r3,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A196
-	Invalid
-	Invalid
+	ashuw	r6,r0
+	orw	r10,r0
+	movw	$10,r0
+	subw	r0,r2
+	storw	r10,0x2410(r12)
+
+l0000A148:
+	cmpw	r0,r6
+	ble	fn0000A62E
+
+l0000A14C:
 	pop	$7,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A1AE
-	lshw	$FFFFFFF8,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A1C6
-	Invalid
-	Invalid
-	Invalid
+
+l0000A14E:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+
+l0000A152:
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+
+l0000A15A:
+	storb	r10,(r1,r0)
+	loadw	0x2410(r12),r8
+	lshw	$-8,r8
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+
+l0000A16A:
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r8,(r1,r0)
+	loadw	0x2414(r12),r1
+	movw	$10,r0
+	subw	r0,r1
+	movb	ra,r9
+	subb	r9,r0
 	movw	r3,r10
-	Invalid
-	Invalid
-	beq	A1D4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A1E4
-	Invalid
-	br	A1C0
-	Invalid
-	blo	A110
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	r9,r10
+	storw	r10,0x2410(r12)
+	movw	$FFF0,r6
+	addw	r6,r2
+	addw	r6,r1
+	storw	r6,0x2414(r12)
+	loadw	0x23EC(r12),r7
+	cmpw	r7,r11
+	blo	fn0000A110
+
+;; fn0000A19A: 0000A19A
+;;   Called from:
+;;     0000936E (in fn0000A110)
+;;     00009C1C (in fn00009C04)
+;;     0000A10C (in fn0000A0E8)
+;;     0000A198 (in fn0000A110)
+fn0000A19A proc
+	loadw	0x804(r13),r1
+	loadw	0x800(r13),r0
 	movw	r0,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A202
-	Invalid
-	Invalid
+	ashuw	r6,r9
+	orw	r10,r9
+	movw	$10,r2
+
+l0000A1AC:
+	movw	r2,r3
+
+l0000A1AE:
+	subw	r3,r1
+	storw	r10,0x2410(r12)
+	cmpw	r3,r6
+	bgt	fn0000A5F6
+
+l0000A1B8:
 	pop	$2,r0
-	Invalid
-	Invalid
-	beq	A212
-	Invalid
+
+l0000A1BA:
+	addw	r1,r6
+	storw	r1,0x2414(r12)
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l0000A1C6:
 	movzb	r9,(r10,r9)
+
+l0000A1C8:
 	movxw	r9,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+
+l0000A1CA:
+	addd	$F32E,(r1,r0)
+	loadb	(r1,r0),r8
 	movzb	r8,(r9,r8)
-	Invalid
-	push	$0,r1
-	Invalid
+	movw	$101,r2
+	addw	r2,r8
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	r13,(r3,r2)
+
+l0000A1DE:
+	loadw	2(r3,r2),r0
+	loadw	(r3,r2),r1
 	movw	r1,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A240
-	Invalid
-	Invalid
-	push	$3,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A258
-	lshw	$FFFFFFF8,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A270
+	ashuw	r6,r2
+	orw	r10,r2
+	movw	$10,r2
+	subw	r2,r0
+	storw	r10,0x2410(r12)
+	cmpw	r2,r6
+	ble	fn0000A570
+
+l0000A1F8:
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+
+l0000A204:
+	storb	r10,(r3,r2)
+	loadw	0x2410(r12),r10
+	lshw	$-8,r10
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r10,(r3,r2)
+	loadw	0x2414(r12),r2
 	movb	r2,r3
 	movb	$10,r4
-	Invalid
+	subb	r3,r4
 	movw	r1,r10
-	Invalid
-	Invalid
-	beq	A27C
-	Invalid
-	Invalid
+	lshw	r3,r10
+	storw	r10,0x2410(r12)
+	addw	$FFF0,r11
 	movw	r0,r6
-	Invalid
-	Invalid
-	beq	A28C
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+
+l0000A23A:
 	movzw	r8,(r1,r0)
-	Invalid
-	movd	$FB9C,r2
-	Invalid
-	Invalid
-	Invalid
-	beq	A2AA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	movd	$FB9C,(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	loadw	(r3,r2),r2
+
+l0000A246:
+	cmpw	$0,r2
+	beq	0000A2AA
+
+l0000A24A:
+	addd	$F2F4,(r1,r0)
+
+l0000A24E:
+	loadw	(r1,r0),r0
+
+l0000A250:
+	subw	r9,r0
 	movw	r9,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A2B0
-	Invalid
-	Invalid
-	push	$6,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A2C8
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A2E0
+	ashuw	r6,r0
+	orw	r10,r0
+	movw	$10,r0
+	subw	r0,r2
+	storw	r10,0x2410(r12)
+	cmpw	r0,r6
+	ble	fn0000A534
+
+l0000A268:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r10,(r1,r0)
+	loadw	0x2410(r12),r3
+	lshw	$-8,r3
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r3,(r1,r0)
+	loadw	0x2414(r12),r3
 	movb	r3,r0
 	movb	$10,r1
-	Invalid
+	subb	r0,r1
+
+l0000A296:
 	movw	r9,r10
-	Invalid
-	Invalid
-	beq	A2EC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A2FC
+	lshw	r0,r10
+	storw	r10,0x2410(r12)
+	movw	$FFF0,r6
+
+l0000A2A0:
+	storb	sp,0x3326(r1,r0)
+	addw	r6,r3
+	storw	r6,0x2414(r12)
+
+l0000A2AA:
 	movw	ra,r9
-	Invalid
-	Invalid
-	res
-	blo	A39E
+	addw	$FFFF,r9
+	cmpw	$FF,r9
+	blo	0000A39E
+
+l0000A2B4:
 	movzw	r9,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F42E,(r1,r0)
+	loadb	(r1,r0),ra
 	movzb	ra,ra
+
+l0000A2BE:
 	movzw	ra,ra
 	movd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	loadd	(sp),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	loadw	2(r3,r2),r1
+	loadw	(r3,r2),r8
+
+l0000A2CC:
 	movw	r8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A32A
-	Invalid
-	ble	A396
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A340
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A358
+
+l0000A2CE:
+	ashuw	r6,r0
+	orw	r10,r0
+	movw	$10,r0
+	subw	r0,r1
+	storw	r10,0x2410(r12)
+	cmpw	r0,r6
+	ble	0000A396
+
+l0000A2E0:
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+
+l0000A2E6:
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r10,(r3,r2)
+	loadw	0x2410(r12),r0
+
+l0000A2F0:
+	beq	0000A340
+	lshw	$-8,r0
+	loadd	8(r12),(r3,r2)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+
+l0000A2FA:
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r12),r2
 	movb	r2,r0
 	movb	$10,r3
-	Invalid
+	subb	r0,r3
 	movw	r8,r10
-	Invalid
-	Invalid
-	beq	A364
-	Invalid
-	Invalid
+	lshw	r0,r10
+	storw	r10,0x2410(r12)
+	addw	$FFF0,r11
 	movw	r1,r6
-	Invalid
-	Invalid
-	beq	A374
-	Invalid
-	movd	$FB60,r0
-	Invalid
-	Invalid
-	Invalid
-	beq	A388
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+
+l0000A320:
+	beq	0000A374
+
+l0000A322:
+	addd	ra,ra
+	movd	$FB60,(r1,r0)
+	addd	ra,(r1,r0)
+	loadw	(r1,r0),r2
+	cmpw	$0,r2
+	beq	0000A388
+
+l0000A330:
+	addd	$F2B8,ra
+	loadw	(ra),r0
+
+l0000A336:
+	subw	r9,r0
 	movw	r9,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A396
-	Invalid
-	ble	A382
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A3AC
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A3C4
+	ashuw	r6,r0
+	orw	r10,r0
+	movw	$10,r0
+	subw	r0,r2
+	storw	r10,0x2410(r12)
+
+l0000A346:
+	beq	0000A396
+	cmpw	r0,r6
+	ble	0000A382
+
+l0000A34C:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+
+l0000A352:
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+	storb	r10,(r1,r0)
+	loadw	0x2410(r12),r3
+
+l0000A35C:
+	beq	0000A3AC
+	lshw	$-8,r3
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r5,r4),(r1,r0)
+
+l0000A36C:
+	storb	r3,(r1,r0)
+	loadw	0x2414(r12),r1
 	movb	r1,r0
+
+l0000A374:
 	movb	$10,r4
-	Invalid
+	subb	r0,r4
 	movw	r9,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A3DA
-	Invalid
-	br	A3B6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A3EE
-	br	A322
+	lshw	r0,r10
+	br	00009F88
+
+l0000A382:
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+
+l0000A388:
+	loadw	0x23EC(r12),r7
+	cmpw	r7,r11
+
+l0000A38E:
+	blo	00009E94
+
+l0000A392:
+	br	00009FA4
+
+l0000A394:
+	storb	r0,[r13](r3,r2)
+
+l0000A396:
+	addw	r6,r1
+	storw	r6,0x2414(r12)
+
+l0000A39A:
+	beq	0000A3EE
+
+l0000A39C:
+	br	0000A322
+
+l0000A39E:
 	movw	r9,r0
-	lshw	$1,r0
-	Invalid
-	push	$0,r0
+
+l0000A3A0:
+	lshw	$-9,r0
+	addw	$100,r11
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	$F42E,(r1,r0)
+	loadb	(r1,r0),ra
 	movzb	ra,ra
-	br	A2BE
-	Invalid
-	Invalid
-	beq	A40A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A414
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A424
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A436
-	lshw	$FFFFFFF8,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A44E
+	br	0000A2BE
+0000A3B2       06 33 6C DF 0A 12 E0 18 83 FE 26 33 6C DF   .3l.......&3l.
+0000A3C0 0A 12 B7 53 A0 18 4D FD E0 18 D3 FD 26 33 6C DF ...S..M.....&3l.
+0000A3D0 0A 12 E0 18 D9 FE 4C A4 6C AA 18 54 68 61 8C EA ......L.l..Tha..
+0000A3E0 64 61 A4 F0 3C 9F                               da..<.          
+
+l0000A3E6:
+	beq	0000A436
+
+l0000A3E8:
+	lshw	$-8,r3
+	loadd	8(r12),(r5,r4)
+	loadd	0x14(r12),(r7,r6)
+
+l0000A3EE:
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r5,r4)
+	storb	r3,(r5,r4)
+	loadw	0x2414(r12),r6
 	movb	r6,r3
-	Invalid
-	Invalid
-	Invalid
-	beq	A454
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A462
-	Invalid
+	subb	r3,r2
+	lshw	r3,r0
+	storw	r0,0x2410(r12)
+	addw	$FFF0,r11
+	addw	r1,r6
+
+l0000A40C:
+	storw	r1,0x2414(r12)
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,r13,ra
+
+;; fn0000A416: 0000A416
+;;   Called from:
+;;     0000B25E (in fn0000B218)
+;;     0000B26A (in fn0000B218)
+;;     0000B380 (in fn0000B308)
+fn0000A416 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
-	movd	r12,(r3,r2)
-	Invalid
-	ord	$A404A0D4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$FFAC,sp
+
+;; fn0000A41C: 0000A41C
+;;   Called from:
+;;     00009300 (in fn0000A110)
+;;     0000A41A (in fn0000A416)
+fn0000A41C proc
+	storb	r10,0x552C(r12)
+	stord	(r5,r4),0xA0(sp)
+	loadd	(r5,r4),r13
+
+;; fn0000A426: 0000A426
+;;   Called from:
+;;     00009C12 (in fn00009C04)
+;;     0000A422 (in fn0000A41C)
+;;     0000A424 (in fn0000A41C)
+fn0000A426 proc
+	loadd	8(r5,r4),(r1,r0)
+	loadd	(r1,r0),ra
+	loadw	0xA(r1,r0),r2
+	storw	r2,0x58(sp)
+	storw	$0,0xFAE(r12)
+	movw	$23D,r0
+
+l0000A436:
 	pop	$3,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+;; fn0000A438: 0000A438
+;;   Called from:
+;;     0000A434 (in fn0000A426)
+;;     0000A436 (in fn0000A110)
+fn0000A438 proc
+	storw	r0,0x1F60(r12)
+	cmpw	$0,r2
+	bge	fn0000B9B2
+
+;; fn0000A442: 0000A442
+;;   Called from:
+;;     0000A43E (in fn0000A438)
+;;     0000A43E (in fn0000A438)
+;;     0000A43E (in fn0000A426)
+fn0000A442 proc
 	movd	(r3,r2),r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$5B715BB6,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	A48C
-	Invalid
-	Invalid
-	Invalid
+	movd	$FB2,(r5,r4)
+	addd	r12,(r5,r4)
+
+;; fn0000A44A: 0000A44A
+;;   Called from:
+;;     0000933E (in fn0000A110)
+;;     0000A448 (in fn0000A442)
+fn0000A44A proc
+	movw	$0,r11
+	movw	$FFFF,r7
+	storw	r7,0x98(sp)
+	movw	r11,r6
+	movw	r7,r1
+	loadw	0x58(sp),r7
+	loadw	(r3,r2),r0
+	cmpw	$0,r0
+	beq	fn0000A48C
+
+;; fn0000A460: 0000A460
+;;   Called from:
+;;     0000A45E (in fn0000A44A)
+;;     0000A498 (in fn0000A48C)
+;;     0000A858 (in fn0000AE66)
+fn0000A460 proc
+	addw	$1,r1
+	storw	r11,0x1F5C(r12)
 	movxw	r11,(r1,r0)
-	Invalid
-	movd	$A6100,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
+	addd	$59A,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	storw	r6,(r1,r0)
+
+l0000A472:
+	storb	$0,(r5,r4)
+	movw	$1,r0
+	addw	r0,r6
+	addd	$4,(r3,r2)
+	addd	$1,(r5,r4)
+	cmpw	r7,r0
+	beq	fn0000B726
+
+l0000A482:
 	movw	r6,r1
+
+l0000A484:
 	movw	r0,r6
-	Invalid
-	Invalid
-	bne	A460
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	A484
-	Invalid
-	andd	$1800560E,r12
-	res
-	Invalid
-	Invalid
+	loadw	(r3,r2),r0
+	cmpw	$0,r0
+	bne	fn0000A460
+
+;; fn0000A48C: 0000A48C
+;;   Called from:
+;;     00008DC0 (in fn00008DC0)
+;;     00009A3E (in fn00009A3E)
+;;     0000A45E (in fn0000A44A)
+;;     0000A45E (in fn0000A44A)
+;;     0000A45E (in fn0000A44A)
+;;     0000A460 (in fn0000A460)
+;;     0000A48A (in fn0000A460)
+;;     0000A664 (in fn0000A664)
+;;     0000AA58 (in fn0000AA58)
+fn0000A48C proc
+	storw	r0,2(r3,r2)
+	movw	$1,r0
+	addw	r0,r6
+	addd	$4,(r3,r2)
+	addd	$1,(r5,r4)
+	cmpw	r7,r0
+	bne	0000A484
+
+l0000A49A:
+	storw	r1,0x98(sp)
+	cmpd	$0,ra
+	beq	fn0000B718
+
+l0000A4A4:
+	movw	$1,r6
+	addw	r6,r11
 	movxw	r6,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r7,r6),(r7,r6)
+	addd	r12,(r7,r6)
+
+;; fn0000A4AE: 0000A4AE
+;;   Called from:
+;;     0000A4AC (in fn0000A48C)
+;;     0000A8E8 (in fn0000A8CA)
+fn0000A4AE proc
+	movw	$0,r8
 	movw	r8,r9
 	movw	r8,r10
-	Invalid
-	blt	A500
-	Invalid
-	andd	$18D05210,r12
-	popret	$2,r6,ra
+	cmpw	$1,r11
+	blt	fn0000A500
+
+;; fn0000A4B8: 0000A4B8
+;;   Called from:
+;;     0000A4B6 (in fn0000A4AE)
+;;     0000A4B6 (in fn0000A4AE)
+;;     0000A4FE (in fn0000A4D6)
+;;     0000A4FE (in fn0000A4D6)
+fn0000A4B8 proc
+	loadw	0x98(sp),r0
+	cmpw	$1,r0
+	bge	0000AC0A
+
+l0000A4C2:
 	movd	(r5,r4),r13
 	movw	r8,r2
 	movw	r9,r3
 	movw	r10,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	$1,r1
+	storw	r11,0x1F5C(r12)
+	storw	r0,0x1668(r7,r6)
+	storw	$1,(r5,r4)
+
+;; fn0000A4D6: 0000A4D6
+;;   Called from:
+;;     0000A4D4 (in fn0000A4B8)
+;;     0000A8EC (in fn0000A8CA)
+fn0000A4D6 proc
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	A518
-	Invalid
-	Invalid
-	br	A51E
-	Invalid
-	Invalid
+	addd	r12,(r1,r0)
+	storb	$0,0xFB2(r1,r0)
+	loadd	0x23F8(r12),(r1,r0)
+	addd	$FFFFFFFF,(r1,r0)
+	stord	(r1,r0),0x23F8(r12)
+	addd	ra,(r3,r2)
+	loadw	2(r3,r2),r2
 	movzw	r2,(r3,r2)
-	Invalid
-	beq	A530
+	loadd	0x2400(r12),(r1,r0)
 	subd	(r1,r0),(r3,r2)
-	beq	A538
-	Invalid
-	Invalid
-	bge	A4B8
-	Invalid
-	andd	$50AF1F,r12
-	Invalid
+	stord	(r1,r0),0x2400(r12)
+	addd	$2,(r7,r6)
+	cmpw	$1,r11
+	bge	fn0000A4B8
+
+;; fn0000A500: 0000A500
+;;   Called from:
+;;     0000A4B6 (in fn0000A4AE)
+;;     0000A4B6 (in fn0000A4AE)
+;;     0000A4FE (in fn0000A4D6)
+;;     0000A4FE (in fn0000A4D6)
+fn0000A500 proc
+	loadw	0x98(sp),r7
+	loadd	0xA0(sp),(r2,r1)
+	storw	r7,4(r2,r1)
 	movw	r11,r10
-	Invalid
-	Invalid
-	Invalid
+	ashuw	$-15,r10
+	storw	r10,0x70(sp)
 	movxw	r10,(r1,r0)
-	Invalid
+	addd	(r1,r0),(r1,r0)
 	movd	(r3,r2),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x60(sp)
+	addw	r10,r10
+	storw	r10,0x50(sp)
+	storw	r11,0x78(sp)
+
+l0000A528:
+	loadd	0x60(sp),(r4,r3)
+	loadw	0x1668(r4,r3),r4
+	storw	r4,0x68(sp)
+
+;; fn0000A534: 0000A534
+;;   Called from:
+;;     0000A264 (in fn0000A110)
+;;     0000A530 (in fn0000A59C)
+fn0000A534 proc
+	loadw	0x50(sp),r10
+	loadw	0x78(sp),r5
+	cmpw	r10,r5
+	blt	fn0000B732
+
+;; fn0000A542: 0000A542
+;;   Called from:
+;;     0000A53E (in fn0000A534)
+;;     0000A53E (in fn0000A534)
+;;     0000A5BA (in fn0000A59C)
+fn0000A542 proc
 	movxw	r4,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	loadw	(r3,r2),ra
+	loadw	0x70(sp),r11
+	addd	r12,(r1,r0)
+	movd	$FB2,(r7,r6)
+	addd	(r1,r0),(r7,r6)
+	stord	(r7,r6),0x48(sp)
 	movw	ra,r9
 	movw	r5,ra
+
+l0000A560:
 	movxw	r10,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r5,r4),(r5,r4)
+	addd	r12,(r5,r4)
+	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+
+l0000A56E:
+	ashud	$2,(r1,r0)
+
+;; fn0000A570: 0000A570
+;;   Called from:
+;;     0000A1F4 (in fn0000A110)
+fn0000A570 proc
+	addd	r13,(r1,r0)
+	loadw	(r1,r0),r1
 	movw	r10,r0
-	Invalid
-	ble	A59C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	r10,ra
+	ble	fn0000A59C
+
+;; fn0000A57A: 0000A57A
+;;   Called from:
+;;     0000A56C (in fn0000A542)
+;;     0000A578 (in fn0000A570)
+;;     0000A5A2 (in fn0000A59C)
+;;     0000A660 (in fn0000A5F6)
+;;     0000A670 (in fn0000A664)
+;;     0000B744 (in fn0000B73A)
+fn0000A57A proc
+	addw	$1,r1
+	loadw	0x166C(r5,r4),r7
+	storw	r7,0x40(sp)
 	movxw	r7,(r7,r6)
 	movd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$0,r12,ra
-	Invalid
-	Invalid
-	pop	$6,r0,ra
+	ashud	$2,(r5,r4)
+	addd	r13,(r5,r4)
+	loadw	(r5,r4),r4
+	cmpw	r4,r1
+	bhi	0000ACA8
+
+l0000A594:
+	cmpw	r4,r1
+	beq	0000AB56
+
+l0000A59A:
 	movw	r10,r0
-	Invalid
-	bhi	A5BC
-	Invalid
-	Invalid
-	popret	$4,ra
+
+;; fn0000A59C: 0000A59C
+;;   Called from:
+;;     0000A4BE (in fn0000A4B8)
+;;     0000A524 (in fn0000A500)
+;;     0000A578 (in fn0000A570)
+;;     0000A578 (in fn0000AE66)
+;;     0000A57A (in fn0000A57A)
+;;     0000A59A (in fn0000AE66)
+fn0000A59C proc
+	cmpw	r9,r1
+	bhi	0000A5BC
+
+l0000A5A0:
+	cmpw	r9,r1
+	beq	0000AC3E
+
+l0000A5A6:
 	movxw	r11,(r3,r2)
-	Invalid
-	movd	$A6122,r9
-	Invalid
-	Invalid
+	addd	$59A,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	storw	r8,(r3,r2)
 	movw	r0,r10
-	Invalid
+	addw	r10,r0
 	movw	r0,r11
-	Invalid
-	bge	A560
+	cmpw	r10,ra
+	bge	0000A560
+
+l0000A5BC:
 	movxw	r11,(r1,r0)
-	Invalid
-	movd	$A6100,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	A528
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$59A,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0x68(sp),r6
+	storw	r6,(r1,r0)
+	loadw	0x70(sp),r7
+	addw	$FFFF,r9
+	storw	r7,0x70(sp)
+	loadd	0x60(sp),(r11,r10)
+	addd	$FFFE,(r11,r10)
+	stord	(r11,r10),0x60(sp)
+	loadw	0x50(sp),r11
+	addw	$FFFE,r11
+	storw	r11,0x50(sp)
+	cmpw	$0,r7
+	bne	0000A528
+
+l0000A5F2:
+	loadw	0x78(sp),r11
+
+;; fn0000A5F6: 0000A5F6
+;;   Called from:
+;;     0000A1B6 (in fn0000A110)
+;;     0000A5F2 (in fn0000A59C)
+fn0000A5F6 proc
+	loadw	0x1F60(r12),r0
+	storw	r0,0x74(sp)
 	movxw	r11,(r1,r0)
-	Invalid
+	addd	(r1,r0),(r1,r0)
 	movd	(r3,r2),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x78(sp)
+	loadw	0x58(sp),r3
 	movxw	r3,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
+	ashud	$2,(r3,r2)
 	movd	(r5,r4),r13
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x60(sp)
 	movd	(r6,r5),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r6,r5)
+	stord	(r6,r5),0x50(sp)
+	loadw	0x74(sp),r0
+	addw	$FFFF,r9
 	movxw	r0,(r1,r0)
-	Invalid
+	addd	(r1,r0),(r1,r0)
+
+;; fn0000A62E: 0000A62E
+;;   Called from:
+;;     0000A14C (in fn0000A110)
+;;     0000A62C (in fn0000A5F6)
+fn0000A62E proc
 	movd	(r7,r6),r12
-	Invalid
-	Invalid
-	andd	$FFFE60B0,(r5,r4)
+	addd	(r1,r0),(r7,r6)
+	stord	(r7,r6),0x88(sp)
+	addd	$FFFE,(r1,r0)
 	movd	(r3,r2),r12
-	Invalid
-	Invalid
-	andd	$9F3C5BB9,(r9,r8)
-	Invalid
-	Invalid
-	andd	$AF4F3299,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$7,r12,ra
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x90(sp)
+	movw	r11,r9
+	loadw	0x166C(r12),r3
+	storw	r3,0x80(sp)
+	addw	$FFFF,r9
+	loadd	0x78(sp),(r5,r4)
+	loadw	0x1668(r5,r4),r5
+	storw	r5,0x48(sp)
+	storw	r5,0x166C(r12)
+	cmpw	$1,r9
+	beq	fn0000AA58
+
+;; fn0000A664: 0000A664
+;;   Called from:
+;;     0000A660 (in fn0000A62E)
+;;     0000A660 (in fn0000A5F6)
+fn0000A664 proc
 	movxw	r5,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	loadw	(r3,r2),ra
+	movw	$1,r11
+	movw	$2,r10
+
+l0000A672:
+	addd	r12,(r1,r0)
+	movd	$FB2,(r7,r6)
+	addd	(r1,r0),(r7,r6)
+	stord	(r7,r6),0x68(sp)
 	movw	r9,r0
 	movw	ra,r9
 	movw	r0,ra
+
+l0000A684:
 	movxw	r10,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r5,r4),(r5,r4)
+	addd	r12,(r5,r4)
+	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	(r1,r0),r1
 	movw	r10,r0
-	Invalid
-	bge	A6C0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	ra,r10
+	bge	0000A6C0
+
+l0000A69E:
+	addw	$1,r1
+	loadw	0x166C(r5,r4),r7
+	storw	r7,0x40(sp)
 	movxw	r7,(r7,r6)
 	movd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,ra
-	Invalid
-	Invalid
-	push	$5,r6,ra
+	ashud	$2,(r5,r4)
+	addd	r13,(r5,r4)
+	loadw	(r5,r4),r4
+	cmpw	r4,r1
+	bhi	0000AB70
+
+l0000A6B8:
+	cmpw	r4,r1
+	beq	0000AA66
+
+l0000A6BE:
 	movw	r10,r0
-	Invalid
-	bhi	A6E0
-	Invalid
-	Invalid
+
+l0000A6C0:
+	cmpw	r9,r1
+	bhi	0000A6E0
+
+l0000A6C4:
+	cmpw	r9,r1
+	beq	0000AAEA
+
+;; fn0000A6C8: 0000A6C8
+;;   Called from:
+;;     0000A8D2 (in fn0000A8CA)
+;;     0000A8D6 (in fn0000A8D6)
+fn0000A6C8 proc
 	pop	$1,r2
+
+l0000A6CA:
 	movxw	r11,(r3,r2)
-	Invalid
-	movd	$A6122,r9
-	Invalid
-	Invalid
+	addd	$59A,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	storw	r8,(r3,r2)
 	movw	r0,r10
-	Invalid
+	addw	r10,r0
 	movw	r0,r11
-	Invalid
-	ble	A684
+	cmpw	ra,r10
+	ble	0000A684
+
+l0000A6E0:
 	movw	ra,r9
-	Invalid
-	Invalid
+	loadw	0x48(sp),r6
 	movxw	r11,(r1,r0)
-	Invalid
-	movd	$A6100,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$44AFAF,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$B34DF2A,(r9,r8)
+	addd	$59A,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	storw	r6,(r1,r0)
+	loadw	0x166C(r12),r2
+	loadw	0x80(sp),r0
+	loadd	0x88(sp),(r11,r10)
+	storw	r0,0x1668(r11,r10)
+	loadw	0x74(sp),r7
+	addw	$FFFE,r11
+	storw	r7,0x48(sp)
+	storw	r7,0x1F60(r12)
+	loadd	0x90(sp),(r11,r10)
+	storw	r2,0x1668(r11,r10)
 	movxw	r0,(r1,r0)
 	movd	(r7,r6),(r1,r0)
-	Invalid
-	Invalid
+	ashud	$2,(r7,r6)
+	addd	r13,(r7,r6)
 	movxw	r2,(r3,r2)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	andd	$30AFEF,(r1,r0)
+	ashud	$2,(r5,r4)
+	addd	r13,(r5,r4)
+	stord	r13,0x80(sp)
+	loadd	0x60(sp),ra
 	subd	ra,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r6,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	(r7,r6),r8
+	loadw	(r5,r4),r10
+	addw	r8,r10
+	loadd	0x60(sp),(r11,r10)
+	storw	r8,(r11,r10)
+	addd	r12,(r1,r0)
+	loadb	0xFB2(r1,r0),r0
+	addd	r12,(r3,r2)
+	loadb	0xFB2(r3,r2),r1
+	cmpb	r0,r1
+	bhi	0000AAFC
+
+l0000A754:
+	addb	$1,r1
+	loadd	0x50(sp),(r2,r1)
+	storb	r0,0xFB2(r2,r1)
+	loadw	0x58(sp),r2
+	storw	r2,2(r5,r4)
+	storw	r2,2(r7,r6)
+	addw	$1,r1
+	storw	r2,0x68(sp)
+	loadw	0x58(sp),r3
+	storw	r3,0x166C(r12)
+	cmpw	$1,r9
+	beq	0000AB26
+
+l0000A77A:
+	loadd	0x60(sp),(r5,r4)
+	loadw	(r5,r4),ra
+	movw	$1,r11
+	movw	$2,r10
 	movw	r9,r0
 	movw	ra,r9
 	movw	r0,ra
+
+l0000A78A:
 	movxw	r10,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r5,r4),(r5,r4)
+	addd	r12,(r5,r4)
+	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	(r1,r0),r1
 	movw	r10,r0
-	Invalid
-	bge	A7C4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	ra,r10
+	bge	0000A7C4
+
+l0000A7A4:
+	addw	$1,r1
+	loadw	0x166C(r5,r4),r6
+	storw	r6,0x40(sp)
 	movxw	r6,(r7,r6)
 	movd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$4,ra
-	Invalid
-	beq	A8AA
+	ashud	$2,(r5,r4)
+	addd	r13,(r5,r4)
+	loadw	(r5,r4),r4
+	cmpw	r4,r1
+	bhi	0000AA56
+
+l0000A7BE:
+	cmpw	r4,r1
+	beq	0000A8AA
+
+l0000A7C2:
 	movw	r10,r0
-	Invalid
-	bhi	A7E2
-	Invalid
-	beq	A8C0
+
+l0000A7C4:
+	cmpw	r9,r1
+	bhi	0000A7E2
+
+l0000A7C8:
+	cmpw	r9,r1
+	beq	0000A8C0
+
+l0000A7CC:
 	movxw	r11,(r3,r2)
-	Invalid
-	movd	$A6122,r9
-	Invalid
-	Invalid
+	addd	$59A,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	storw	r8,(r3,r2)
 	movw	r0,r10
-	Invalid
+	addw	r10,r0
 	movw	r0,r11
-	Invalid
-	ble	A78A
+	cmpw	ra,r10
+	ble	0000A78A
+
+l0000A7E2:
 	movw	ra,r9
 	movxw	r11,(r1,r0)
-	Invalid
-	movd	$A6100,r9
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FFFC60B3,(r5,r4)
-	Invalid
-	andd	$48AF4F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	andd	$249F7F,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$AF4F3299,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$59A,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0x58(sp),r11
+	storw	r11,(r1,r0)
+	loadd	0x78(sp),(r1,r0)
+	addd	$FFFE,(r1,r0)
+	stord	(r1,r0),0x78(sp)
+	loadd	0x60(sp),(r2,r1)
+	addd	$4,(r2,r1)
+	stord	(r2,r1),0x60(sp)
+	loadd	0x50(sp),(r3,r2)
+	addd	$1,(r3,r2)
+	stord	(r3,r2),0x50(sp)
+	loadd	0x88(sp),(r4,r3)
+	addd	$FFFC,(r4,r3)
+	stord	(r4,r3),0x88(sp)
+	loadd	0x90(sp),(r5,r4)
+	addd	$FFFC,(r5,r4)
+	stord	(r5,r4),0x90(sp)
+	loadw	0x48(sp),r7
+	storw	r7,0x74(sp)
+	loadw	0x68(sp),r10
+	storw	r10,0x58(sp)
+	loadw	0x166C(r12),r3
+	storw	r3,0x80(sp)
+	addw	$FFFF,r9
+	loadd	0x78(sp),(r5,r4)
+	loadw	0x1668(r5,r4),r5
+	storw	r5,0x48(sp)
+	storw	r5,0x166C(r12)
+	cmpw	$1,r9
+	bne	0000A472
+
+l0000A85C:
+	movw	$1,r11
 	movw	r5,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$4C225E02,r12
-	movd	(r5,r4),r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	A7C2
-	Invalid
-	Invalid
-	br	A7C4
+	br	0000A56E
+0000A864             10 32 0F DF 4C 00 02 5E 22 4C D4 55     .2..L..^"L.U
+0000A870 24 61 E0 18 59 FC C6 61 C2 61 46 BF B2 0F 22 BF $a..Y..a.aF...".
+0000A880 B2 0F 24 51 A0 18 17 FD 8F 9F 20 00 E0 18 11 FD ..$Q...... .....
+0000A890 C6 61 C2 61 46 BF B2 0F 22 BF B2 0F 24 51 A0 18 .a.aF..."...$Q..
+0000A8A0 21 FE 8F 9F 20 00 E0 18 1B FE                   !... .....      
+
+l0000A8AA:
+	addd	r12,(r7,r6)
+	addd	r12,(r3,r2)
+	loadb	0xFB2(r7,r6),r4
+	loadb	0xFB2(r3,r2),r2
+	cmpb	r4,r2
+	blo	0000A7C2
+
+l0000A8BA:
+	loadw	0x40(sp),r8
+	br	0000A7C4
+
+l0000A8C0:
 	movxw	r8,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	A7E2
-	movxw	r8,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r8,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movb	$1,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	movd	$A6100,r9
-	Invalid
-	Invalid
-	Invalid
-	ord	$EF1FA010,(r1,r0)
-	Invalid
-	Invalid
-	ord	$DF3F9232,(r1,r0)
-	Invalid
-	Invalid
-	ord	$A0A0A404,(r1,r0)
-	Invalid
-	andd	$EFAFA2A0,(r5,r4)
-	andd	$DFBF94B0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r12
-	Invalid
-	popret	$1,r0
-	Invalid
-	andd	$1800560A,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	movxw	r10,(r1,r0)
-	Invalid
+	addd	r12,(r3,r2)
+	loadd	0x50(sp),(r6,r5)
+	loadb	0xFB2(r6,r5),r4
+
+;; fn0000A8CA: 0000A8CA
+;;   Called from:
+;;     0000AEF4 (in fn0000B9B2)
+fn0000A8CA proc
+	bne0w	r2,0000A8E2
+
+l0000A8CC:
+	loadb	0xFB2(r3,r2),r1
+	cmpb	r4,r1
+	blo	fn0000A6C8
+
+;; fn0000A8D6: 0000A8D6
+;;   Called from:
+;;     0000A6C8 (in fn0000A6C8)
+;;     0000A8D0 (in fn0000AE66)
+;;     0000A8D2 (in fn0000A8CA)
+fn0000A8D6 proc
+	br	0000A7E2
+0000A8D8                         82 5E C2 61 5F AF 34 00         .^.a_.4.
+0000A8E0 45 B0                                           E.              
+
+l0000A8E2:
+	loadb	0xFB2(r3,r2),r1
+	cmpb	r4,r1
+	blo	fn0000A4AE
+
+l0000A8EC:
+	br	fn0000A4D6
+0000A8F0 82 5E C2 61 5F AF 24 00 45 B0 12 BF B2 0F 14 51 .^.a_.$.E......Q
+0000A900 A0 18 A7 FC E0 18 B9 FC 41 5B 8F 9F 20 00 E0 18 ........A[.. ...
+0000A910 B7 FE 41 5B 8F 9F 20 00 E0 18 A9 FD 41 5B 8F 9F ..A[.. .....A[..
+0000A920 20 00 E0 18 7B FC 10 58 10 31 1F AF 28 00 01 FF  ...{..X.1..(...
+0000A930 B2 0F 2F 9F 2C 00 24 D1 26 D1 12 32 2F DF 34 00 ../.,.$.&..2/.4.
+0000A940 3F 9F 2C 00 3C DF 36 0B 19 52 10 18 31 FE 9C DF ?.,.<.6..R..1...
+0000A950 AE 0F 0F 9F 3A 00 B0 32 FD FF 0C DF B0 0F 00 5E ....:..2.......^
+0000A960 B0 60 9A 05 00 61 C0 61 30 D0 0F AF 50 00 10 A0 .`...a.a0...P...
+0000A970 1F EF 30 00 2F AF 50 00 32 92 3F DF 28 00 4F AF ..0./.P.2.?.(.O.
+0000A980 50 00 04 A4 A0 A0 AF EF 44 00 A0 A2 AF EF 48 00 P.......D.....H.
+0000A990 B0 94 BF DF 3C 00 70 96 02 54 2C EF 14 0B B0 54 ....<.p..T,....T
+0000A9A0 14 0B C0 61 20 E2 20 E4 20 E6 20 E8 20 EA 20 EC ...a . . . . . .
+0000A9B0 20 EF 1C 00 AF AF 30 00 EA 61 0A C3 02 00 AF 9F  .....0..a......
+0000A9C0 24 00 BA 52 3C 02 C0 18 10 03 AF AF 44 00 0A 56 $..R<.......D..V
+0000A9D0 00 18 78 04 AF 9F 24 00 A0 5E 00 61             ..x...$..^.a    
+
+l0000A9DC:
 	movd	(r11,r10),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r11,r10)
+	loadw	0x70(sp),r0
+	storw	r0,0x58(sp)
+	storw	r7,0x68(sp)
+
+l0000A9EC:
+	loadw	0x1668(r11,r10),r0
 	movxw	r0,(r3,r2)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	stord	(r5,r4),0x40(sp)
+	loadd	0x60(sp),(r5,r4)
+	loadd	0x40(sp),(r7,r6)
+	addd	(r7,r6),(r5,r4)
+	loadw	2(r5,r4),r2
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ble	AA28
+	ashud	$2,(r3,r2)
+	loadd	0x60(sp),(r7,r6)
+	addd	(r7,r6),(r3,r2)
+	loadw	2(r3,r2),r2
+	addw	$1,r1
+	loadw	0x68(sp),r7
+	cmpw	r7,r2
+	ble	0000AA28
+
+l0000AA1C:
 	movw	r7,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	AA94
+	loadw	0x58(sp),r7
+	addw	$1,r1
+	storw	r7,0x58(sp)
+
+l0000AA28:
+	storw	r2,2(r5,r4)
+	loadw	0x50(sp),r7
+	cmpw	r7,r0
+	bgt	0000AA94
+
+l0000AA32:
 	movxw	r2,(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blt	AA5E
-	Invalid
+	addd	(r7,r6),(r7,r6)
+	addd	r12,(r7,r6)
+	loadw	0x1628(r7,r6),r1
+	addw	$1,r1
+	storw	r1,0x1628(r7,r6)
+	loadw	0x70(sp),r7
+	loadw	0x78(sp),r1
+	cmpw	r1,r0
+	blt	0000AA5E
+
+l0000AA4E:
+	subw	r0,r1
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	andd	$90706160,(r9,r8)
-	Invalid
-	Invalid
+	addd	(r1,r0),(r1,r0)
+	loadd	0x90(sp),(r7,r6)
+
+l0000AA56:
+	andd	$61609070,(r9,r8)
+
+;; fn0000AA58: 0000AA58
+;;   Called from:
+;;     0000A660 (in fn0000A62E)
+;;     0000A6BA (in fn0000AE66)
+;;     0000A6C8 (in fn0000AE66)
+;;     0000A9E8 (in fn0000AE66)
+;;     0000AA56 (in fn0000AE66)
+;;     0000AA56 (in fn0000AE66)
+;;     0000AD24 (in fn0000AE66)
+fn0000AA58 proc
+	addd	(r7,r6),(r1,r0)
+	loadw	(r1,r0),r7
+
+l0000AA5C:
+	addw	r2,r7
+
+l0000AA5E:
+	loadw	(r5,r4),r8
 	movzw	r8,(r9,r8)
 	movzw	r2,(r3,r2)
 	movd	(r5,r4),(r9,r8)
-	bal	ra,D358
-	Invalid
-	br	AAA4
-	Invalid
-	Invalid
-	br	AAAA
-	Invalid
-	andd	$20AF2F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+
+l0000AA66:
+	bal	ra,fn0000D358
+	loadd	0x23F8(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x23F8(r12)
+	loadd	0x88(sp),(r1,r0)
+	loadd	0x40(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadw	2(r1,r0),r2
+	addw	r2,r7
 	movzw	r2,(r3,r2)
 	movd	(r5,r4),(r9,r8)
-	bal	ra,D358
-	Invalid
-	beq	AACC
-	Invalid
-	Invalid
-	beq	AAD2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r13
-	bne	A9EC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$2,r6
+	bal	ra,fn0000D358
+	loadd	0x2400(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x2400(r12)
+
+l0000AA94:
+	loadw	0x48(sp),r7
+	addw	$1,r1
+	storw	r7,0x48(sp)
+	addd	$2,(r11,r10)
+	cmpw	$23D,r7
+	bne	0000A9EC
+
+l0000AAA6:
+	loadw	0x68(sp),r7
+	loadw	0x58(sp),r10
+	cmpw	$0,r10
+	beq	0000AEFC
+
+l0000AAB4:
 	movw	r10,r3
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movw	$FFFF,r11
+	addw	r11,r7
+	storw	r11,0x70(sp)
 	movxw	r7,(r9,r8)
 	movd	(r5,r4),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r10,r11
-	movw	r6,r10
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r10
-	movw	r10,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$4,r10,ra
+	addd	(r9,r8),(r5,r4)
+	addd	r12,(r5,r4)
+	movw	$FFFE,r6
+	addw	r6,r7
+	movw	$FFFD,r10
+	addw	r10,r7
+	movw	$FFFC,r11
+	addw	r11,r7
+	movw	$FFFB,r0
+	addw	r0,r7
+	movw	$FFFA,r1
+	addw	r1,r7
+	storw	r1,0x48(sp)
+	storw	r11,0x40(sp)
+
+l0000AAEA:
+	addd	$5BAB5B6A,(r1,r0)
+	storw	r0,0x58(sp)
+	br	0000AD28
+0000AAF8                         A0 5B 24 9F                     .[$.    
+
+l0000AAFC:
+	mulsb	r1,r0
+	cmpw	$0,r2
+	bne	fn0000B094
+
+l0000AB04:
 	movw	r11,r0
-	Invalid
-	Invalid
+	loadw	0x161C(r5,r4),r2
 	movw	r10,r6
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000AB10:
+	loadw	0x40(sp),r0
+	loadw	0x1618(r5,r4),r2
 	movw	r11,r6
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$1,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$3,r2,ra
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000AB1E:
+	loadw	0x58(sp),r0
+	loadw	0x1614(r5,r4),r2
+
+l0000AB26:
+	cmpw	$0,r2
+	bne	0000B158
+
+l0000AB2C:
+	loadw	0x48(sp),r0
+	loadw	0x1610(r5,r4),r2
+	cmpw	$0,r2
+	bne	fn0000B29A
+
+l0000AB3A:
+	movw	$FFF9,r0
+	addw	r0,r7
 	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$2,r8,ra
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x160C(r5,r4),r2
+	cmpw	$0,r2
+	bne	fn0000B298
+
+l0000AB4C:
+	movw	$FFF8,r0
+	addw	r0,r7
 	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x1608(r5,r4),r2
+
+l0000AB56:
+	mulsb	r0,r4
+
+l0000AB58:
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000AB5C:
+	movw	$FFF7,r0
+	addw	r0,r7
 	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r12,ra
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x1604(r5,r4),r2
+	cmpw	$0,r2
+	bne	0000B0E2
+
+l0000AB6E:
+	movw	$FFF6,r1
+
+l0000AB70:
+	storb	sp,0x3371(r7,r6)
+
+l0000AB72:
+	addw	r1,r7
+
+l0000AB74:
 	movw	r1,r0
-	Invalid
-	Invalid
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x1600(r5,r4),r2
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000AB7E:
+	movw	$FFF5,r0
+	addw	r0,r7
 	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$1,r10,ra
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x15FC(r5,r4),r2
+	cmpw	$0,r2
+	bne	fn0000B0C0
+
+l0000AB90:
+	movw	$FFF4,r0
+	addw	r0,r7
 	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x15F8(r5,r4),r2
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000ABA0:
+	movw	$FFF3,r0
+	addw	r0,r7
 	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$7,r8
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x15F4(r5,r4),r2
+	cmpw	$0,r2
+	bne	fn0000B09E
+
+l0000ABB2:
+	movw	$FFF2,r0
+	addw	r0,r7
 	movw	r0,r1
-	Invalid
-	Invalid
-	Invalid
-	bne	ABDE
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x15F0(r5,r4),r2
+	cmpw	$0,r2
+	bne	0000ABDE
+
+l0000ABC2:
+	movw	$FFF1,r0
+	addw	r0,r7
 	movw	r0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x15EC(r5,r4),r2
+	cmpw	$0,r2
+	bne	fn0000B07C
+
+l0000ABD4:
+	movw	$FFF0,r0
+	addw	r0,r7
+	loadw	0x15E8(r5,r4),r2
+
+l0000ABDE:
 	movxw	r0,(r1,r0)
-	Invalid
-	movd	$A6100,r8
-	Invalid
-	Invalid
-	Invalid
+	addd	$58A,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	addw	$FFFF,r9
+	storw	r2,(r1,r0)
 	movxw	r6,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bge	AC22
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	loadw	0x1628(r1,r0),r2
+	addw	$2,r2
+	storw	r2,0x1628(r1,r0)
+	loadw	0x1628(r5,r4),r0
+	addw	$FFFF,r9
+	storw	r0,0x1628(r5,r4)
+	addw	$FFFE,r11
+
+l0000AC0A:
+	cmpw	$0,r3
+	bge	0000AC22
+
+l0000AC0E:
 	movd	ra,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x1624(r5,r4),r2
+	cmpw	$0,r2
+	beq	0000A9DC
+
+l0000AC1A:
 	movw	r7,r6
-	Invalid
-	Invalid
-	br	ABDE
-	Invalid
-	Invalid
-	Invalid
-	beq	ACD6
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	ACB8
-	Invalid
-	Invalid
-	Invalid
+	loadw	0x70(sp),r0
+	br	0000ABDE
+
+l0000AC22:
+	stord	ra,0x58(sp)
+	cmpw	$0,r7
+	beq	0000ACD6
+
+l0000AC2A:
+	stord	(r5,r4),0x68(sp)
+	movw	$23D,r7
+	storw	r7,0x48(sp)
+
+l0000AC36:
+	loadd	0x68(sp),(r11,r10)
+	loadw	0x1628(r11,r10),r11
+
+l0000AC3E:
+	storw	r11,0x40(sp)
+	cmpw	$0,r11
+	beq	0000ACB8
+
+l0000AC46:
+	loadw	0x48(sp),r7
+	addw	$FFFF,r9
 	movxw	r7,(r1,r0)
-	Invalid
+	addd	(r1,r0),(r1,r0)
 	movd	(r11,r10),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$5,r6
+	addd	(r1,r0),(r11,r10)
+	loadw	0x58(sp),r0
+	storw	r0,0x70(sp)
+	storw	r7,0x48(sp)
+	loadw	0x1668(r11,r10),r0
+	loadw	0x50(sp),r1
+	cmpw	r1,r0
+	bgt	fn0000AF16
+
+l0000AC6E:
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	ACA4
+	ashud	$2,(r1,r0)
+	loadd	0x60(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	loadw	2(r9,r8),r0
+	loadw	0x70(sp),r2
+	cmpw	r0,r2
+	beq	0000ACA4
+
+l0000AC82:
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
+	loadd	0x58(sp),(r3,r2)
 	subd	(r3,r2),(r1,r0)
+	loadw	(r9,r8),r4
 	movzw	r4,(r5,r4)
-	bal	ra,D358
-	Invalid
-	br	ACCE
-	Invalid
-	Invalid
-	br	ACD4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bne	AC36
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	andd	$12025297,r12
+	bal	ra,fn0000D358
+	loadd	0x23F8(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x23F8(r12)
+	loadw	0x58(sp),r3
+	storw	r3,2(r9,r8)
+
+l0000ACA4:
+	loadw	0x40(sp),r4
+
+l0000ACA8:
+	addw	$FFFF,r9
+	storw	r4,0x40(sp)
+	addd	$FFFE,(r11,r10)
+	cmpw	$0,r4
+	bne	0000AED4
+
+l0000ACB8:
+	loadd	0x58(sp),(r11,r10)
+	addd	$FFFFFFFF,(r11,r10)
+	stord	(r11,r10),0x58(sp)
+	loadd	0x68(sp),(r11,r10)
+	addd	$FFFE,(r11,r10)
+	stord	(r11,r10),0x68(sp)
+	loadw	0x58(sp),r11
+	cmpw	$0,r11
+	bne	0000AC36
+
+l0000ACD6:
+	loadw	0x1628(r12),r0
+	addw	r0,r0
+	storw	r0,2(sp)
+	loadw	0x162C(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,4(sp)
+	loadw	0x1630(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,6(sp)
+	loadw	0x1634(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,8(sp)
+	loadw	0x1638(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0xA(sp)
+	loadw	0x163C(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0xC(sp)
+	loadw	0x1640(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0xE(sp)
+	loadw	0x1644(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x10(sp)
+	loadw	0x1648(r12),r1
+
+l0000AD28:
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x12(sp)
+	loadw	0x164C(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x14(sp)
+	loadw	0x1650(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x16(sp)
+	loadw	0x1654(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x18(sp)
+	loadw	0x1658(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x1A(sp)
+	loadw	0x165C(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x38(sp)
+	loadw	0x1660(r12),r1
+	addw	r0,r1
+	addw	r0,r0
+	storw	r0,0x3C(sp)
+	loadw	0x98(sp),r7
+	cmpw	$FFFF,r7
+	beq	0000ADB8
+
+l0000AD76:
 	movxw	r7,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$52019116,(r1,r0)
-	beq	ADB2
+	addd	$1,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	r13,(r5,r4)
+	movw	$0,r8
+	loadd	0x80(sp),(r7,r6)
+
+l0000AD84:
+	loadw	2(r7,r6),r1
+	cmpw	$0,r1
+	beq	0000ADB2
+
+l0000AD8A:
 	movxw	r1,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r11,r10),(r11,r10)
+	addd	sp,(r11,r10)
+	loadw	(r11,r10),r2
+	movw	$1,r0
+	addw	r0,r2
+	storw	r0,(r11,r10)
 	movw	r8,r3
-	Invalid
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r2
+
+l0000AD9A:
+	movw	$1,r0
+	andw	r0,r2
+	orw	r0,r3
+	lshw	$-15,r2
 	movw	r0,r3
-	Invalid
-	Invalid
-	Invalid
-	blt	AD9A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	r3,r0
+	addw	$FFFF,r9
+	cmpw	$0,r1
+	blt	0000AD9A
+
+l0000ADAC:
+	andw	$7FFF,r11
+	storw	r0,(r7,r6)
+
+l0000ADB2:
+	addd	$4,(r7,r6)
 	cmpd	(r5,r4),(r7,r6)
-	bne	AD84
-	Invalid
-	ord	$39D0267,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$1810560E,r12
-	Invalid
-	Invalid
-	Invalid
-	movxw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$11C7521B,r12
-	Invalid
-	bge	AE2C
-	movd	(r7,r6),r13
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	AE46
-	Invalid
-	Invalid
-	br	AE4C
-	Invalid
-	Invalid
-	bge	ADF0
-	Invalid
-	andd	$18E05B57,r12
-	Invalid
-	movw	r1,r6
-	Invalid
-	Invalid
-	Invalid
-	movxw	r5,(r7,r6)
-	Invalid
-	Invalid
-	movw	r5,r0
-	br	ADF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movxw	r11,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	0000AD84
+
+l0000ADB8:
+	addd	$54,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+0000ADC0 BA 60 FE FF 97 32 E0 18 97 FE 6F 9F 38 00 E0 18 .`...2....o.8...
+0000ADD0 11 FE 6F DF 4C 00 0E 56 10 18 CD F6 12 5A B2 33 ..o.L..V.....Z.3
+0000ADE0 22 5E 22 61 C2 61 04 5A 5F 9F 4C 00 1B 52 C7 11 "^"a.a.Z_.L..R..
+0000ADF0 15 52 DD 11 D6 55 40 5B 1B 32 BC DF AE 0F 02 DF .R...U@[.2......
+0000AE00 34 0B 16 C2 00 5E C0 61 00 83 B2 0F 0C AF FC 11 4....^.a........
+0000AE10 90 60 0C EF FC 11 22 60 1B 52 DB 1E 5F DF 4C 00 .`...."`.R.._.L.
+0000AE20 57 5B E0 18 E3 F6 16 5B E0 18 B7 FD 15 32 56 5E W[.....[.....2V^
+0000AE30 26 4C D6 61 50 5B E1 1E BF 9F 38 00 E0 18 81 F7 &L.aP[....8.....
+0000AE40 6F 9F 20 00 E0 18 9B FD BF 9F 24 00 B8 5E 88 61 o. .......$..^.a
+0000AE50 C8 61 AF 9F 38 00 AF DF 2C 00 AF AF 30 00 7F DF .a..8...,...0...
+0000AE60 20 00 7F 9F 24 00                                ...$.          
+
+;; fn0000AE66: 0000AE66
+;;   Called from:
+;;     0000B744 (in fn0000B73A)
+fn0000AE66 proc
+	loadw	0x1668(r9,r8),r5
 	movxw	r5,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadw	2(r1,r0),r2
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ble	AE90
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadw	2(r3,r2),r4
+	addw	$1,r1
+	loadw	0x40(sp),r2
+	cmpw	r2,r4
+	ble	0000AE90
+
+l0000AE84:
+	loadw	0x58(sp),r3
+	addw	$1,r1
+	storw	r3,0x58(sp)
 	movw	r2,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	AED6
+
+l0000AE90:
+	storw	r4,2(r1,r0)
+	loadw	0x50(sp),r6
+	cmpw	r6,r5
+	bgt	0000AED6
+
+l0000AE9A:
 	movxw	r4,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blt	AEC2
-	Invalid
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	loadw	0x1628(r3,r2),r6
+	addw	$1,r1
+	storw	r6,0x1628(r3,r2)
+	loadw	0x78(sp),r2
+	cmpw	r2,r5
+	blt	0000AEC2
+
+l0000AEB2:
+	subw	r5,r2
 	movxw	r5,(r3,r2)
-	Invalid
-	Invalid
-	andd	$90226152,(r9,r8)
-	Invalid
-	Invalid
+	addd	(r3,r2),(r3,r2)
+	loadd	0x90(sp),(r6,r5)
+	addd	(r6,r5),(r3,r2)
+	loadw	(r3,r2),r2
+	addw	r4,r2
+
+l0000AEC2:
+	loadw	(r1,r0),r2
 	movzw	r2,(r3,r2)
 	movzw	r4,(r5,r4)
-	bal	ra,D358
-	Invalid
-	br	AF06
-	Invalid
-	Invalid
-	br	AF0C
-	Invalid
-	Invalid
-	Invalid
-	pop	$3,r13
-	bne	AE66
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$F59F18E0,r12
-	res
+	bal	ra,fn0000D358
+	loadd	0x23F8(r12),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x23F8(r12)
+
+l0000AED4:
+	br	fn0000AF0C
+
+l0000AED6:
+	addw	$1,r1
+	addd	$2,(r9,r8)
+	cmpw	$23D,r7
+	bne	fn0000AE66
+
+l0000AEE0:
+	loadw	0x40(sp),r7
+	br	0000A672
+0000AEE8                         6F 9F 2C 00 E0 18 F3 FC         o.,.....
+0000AEF0 6F 9F 24 00                                     o.$.            
+
+l0000AEF4:
+	br	fn0000A8CA
+0000AEF8                         0B 5A 9A 5A                     .Z.Z    
+
+l0000AEFC:
+	storw	r10,0x98(sp)
+	br	fn00009A3E
+0000AF04             00 00                                   ..          
+
+;; fn0000AF06: 0000AF06
+;;   Called from:
+;;     0000475A (in fn000046DC)
+fn0000AF06 proc
 	push	$1,ra
-	Invalid
-	xord	$EF026120,(r11,r10)
-	Invalid
-	movd	$F2A8,r0
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	movd	$F298,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$F288,r0
-	Invalid
-	Invalid
-	Invalid
-	beq	AF90
-	Invalid
-	beq	AF98
+	movd	$6A,(r1,r0)
+
+;; fn0000AF0C: 0000AF0C
+;;   Called from:
+;;     0000AED4 (in fn0000AE66)
+;;     0000AF08 (in fn0000AF06)
+fn0000AF0C proc
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x15E0(r3,r2)
+	movd	$F2A8,(r1,r0)
+
+;; fn0000AF16: 0000AF16
+;;   Called from:
+;;     0000AC6A (in fn0000AE66)
+;;     0000AF12 (in fn0000AF0C)
+;;     0000AF12 (in fn0000AF0C)
+fn0000AF16 proc
+	stord	(r1,r0),0x15F0(r3,r2)
+	movd	$95E,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x15F8(r3,r2)
+	movd	$F298,(r1,r0)
+	stord	(r1,r0),0x1608(r3,r2)
+	movd	$A52,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x1610(r3,r2)
+	movd	$F288,(r1,r0)
+	stord	(r1,r0),0x1620(r3,r2)
+	storw	$0,0x1208(r3,r2)
+	storw	$0,0x120A(r3,r2)
 	movd	ra,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	movd	$478,(r5,r4)
+	addd	(r3,r2),(r5,r4)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	xord	$57406040,(r11,r10)
-	bne	AF50
-	Invalid
-	movd	$55206124,(r9,r8)
-	Invalid
-	res
-	Invalid
+
+;; fn0000AF50: 0000AF50
+;;   Called from:
+;;     0000AF4E (in fn0000AF16)
+;;     0000AF4E (in fn0000AF16)
+fn0000AF50 proc
+	storw	$0,0x6A(r1,r0)
+	addd	$4,(r1,r0)
 	cmpd	(r1,r0),(r5,r4)
-	bne	AF62
-	Invalid
-	andd	$C30E6120,r12
-	Invalid
-	Invalid
+	bne	fn0000AF50
+
+l0000AF5A:
+	movd	$78,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	movd	(r1,r0),(r3,r2)
+
+l0000AF62:
+	storw	$0,0x95E(r1,r0)
+	addd	$4,(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
+	bne	0000AF62
+
+l0000AF6C:
+	movd	$4C,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+
+l0000AF72:
+	storw	$0,0xA52(ra)
+	addd	$4,ra
 	cmpd	(r1,r0),ra
-	bne	AF72
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	AFC4
-	Invalid
-	br	AFC0
-	Invalid
-	beq	AFD4
-	Invalid
-	br	AFBC
+	bne	0000AF72
+
+l0000AF7C:
+	storw	$1,0x46A(r3,r2)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x2400(r3,r2)
+	stord	(r1,r0),0x23F8(r3,r2)
+	storw	$0,0x1204(r3,r2)
+	storw	$0,0x11F6(r3,r2)
 	popret	$1,ra
+
+;; fn0000AF94: 0000AF94
+;;   Called from:
+;;     0000349A (in fn00003480)
+;;     000037BA (in fn00003780)
+;;     00004E54 (in fn00004CD4)
+fn0000AF94 proc
 	push	$1,ra
 	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	AFF8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+
+;; fn0000AF98: 0000AF98
+;;   Called from:
+;;     0000AF96 (in fn0000AF94)
+;;     0000B71E (in fn0000B718)
+fn0000AF98 proc
+	movd	$12,r12
+	addd	sp,r12
+	movd	(r9,r8),(r3,r2)
+	loadd	(r12),(r11,r10)
+	loadw	0x2414(r3,r2),r12
+	loadd	0x14(r3,r2),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	loadd	8(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
 	movw	r6,r7
 	movb	r12,r2
-	Invalid
-	Invalid
-	beq	B008
-	Invalid
-	Invalid
-	beq	B00E
-	Invalid
-	blt	B058
+	ashuw	r2,r7
+	loadw	0x2410(r9,r8),r2
+	orw	r7,r2
+	storw	r7,0x2410(r9,r8)
+	cmpw	$D,r12
+	blt	fn0000B058
+
+;; fn0000AFC4: 0000AFC4
+;;   Called from:
+;;     0000AFC2 (in fn0000AF98)
+;;     0000AFC2 (in fn0000AF98)
+fn0000AFC4 proc
 	movw	r12,r6
-	Invalid
-	Invalid
-	beq	B01E
-	Invalid
-	blt	B03E
-	Invalid
-	bge	AFE2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B034
-	Invalid
-	beq	B03C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	$3,r3
+	storw	r6,0x2414(r9,r8)
+
+;; fn0000AFCC: 0000AFCC
+;;   Called from:
+;;     0000B098 (in fn0000B094)
+;;     0000B098 (in fn0000B094)
+fn0000AFCC proc
+	cmpw	$8,r6
+	blt	0000B03E
+
+l0000AFD0:
+	cmpw	$0,r6
+	bge	0000AFE2
+
+l0000AFD4:
+	stord	ra,0x14(r9,r8)
+	storb	r7,(r1,r0)
+
+l0000AFD8:
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	loadd	8(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+
+l0000AFE2:
+	storw	$0,0x1208(r9,r8)
+	storw	$0,0x120A(r9,r8)
+	stord	ra,0x14(r9,r8)
+	storb	r10,(r1,r0)
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	stord	ra,0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
 	movw	r10,r2
-	lshw	$FFFFFFF8,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	$-8,r2
+	storb	r2,(r1,r0)
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	stord	ra,0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
 	movb	r10,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xorb	$FFFF,r9
+	storb	r2,(r1,r0)
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	stord	ra,0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
 	movw	r10,r2
-	Invalid
-	lshw	$FFFFFFF8,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xorw	$FFFF,r9
+	lshw	$-8,r2
+	storb	r2,(r1,r0)
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r1,r0),(r3,r2)
 	push	$1,r10
-	bal	ra,DB24
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000DB24
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r1,r0),(r11,r10)
+	stord	(r11,r10),0x14(r9,r8)
+	addd	$4,sp
 	pop	$6,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	Invalid
-	beq	B094
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	AFD8
-	Invalid
-	Invalid
-	Invalid
-	beq	B0AE
-	lshw	$FFFFFFF8,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B0C6
-	Invalid
-	Invalid
+
+l0000B03E:
+	stord	ra,0x14(r9,r8)
+	storb	r7,(r1,r0)
+	loadw	0x2410(r9,r8),r6
+	lshw	$-8,r6
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	stord	ra,0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	br	0000AFD8
+
+;; fn0000B058: 0000B058
+;;   Called from:
+;;     0000AFC2 (in fn0000AF98)
+;;     0000AFC2 (in fn0000AF98)
+;;     0000AFC8 (in fn0000AFC4)
+fn0000B058 proc
+	stord	ra,0x14(r9,r8)
+	storb	r7,(r1,r0)
+	loadw	0x2410(r9,r8),r7
+	lshw	$-8,r7
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+	stord	ra,0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r7,(r1,r0)
+	loadw	0x2414(r9,r8),r0
+	movw	$10,r1
+	movb	r0,r2
+	subb	r2,r1
+
+;; fn0000B07C: 0000B07C
+;;   Called from:
+;;     0000ABD0 (in fn0000AE66)
+;;     0000B07A (in fn0000B058)
+fn0000B07C proc
 	movw	r6,r7
-	Invalid
-	Invalid
-	beq	B0D2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B0E0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	AFCC
-	res
+	lshw	r2,r7
+	storw	r7,0x2410(r9,r8)
+	movw	$FFF3,r6
+	addw	r6,r0
+	storw	r6,0x2414(r9,r8)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,ra
+	addd	(r3,r2),ra
+
+;; fn0000B094: 0000B094
+;;   Called from:
+;;     0000AB00 (in fn0000AE66)
+;;     0000B092 (in fn0000B07C)
+;;     0000B092 (in fn0000B07C)
+fn0000B094 proc
+	loadd	8(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	br	fn0000AFCC
+0000B09A                               00 00                       ..    
+
+;; fn0000B09C: 0000B09C
+;;   Called from:
+;;     000034E2 (in fn000034DE)
+;;     000034E2 (in fn000034CE)
+;;     000037D0 (in fn00003780)
+;;     00003B2C (in fn00003B14)
+;;     00003B2C (in fn00003B2A)
+;;     00003D52 (in fn00003A36)
+;;     000040DC (in fn00003A36)
+;;     000042C2 (in fn0000402E)
+;;     0000435C (in fn0000402E)
+;;     00004AE4 (in fn00004ADC)
+;;     00004AE4 (in fn00004ADC)
+;;     00004E68 (in fn00004CD4)
+;;     00004F1E (in fn00004CD4)
+;;     00005570 (in fn00004CD4)
+;;     00005DBA (in fn00004CD4)
+fn0000B09C proc
 	push	$1,ra
+
+;; fn0000B09E: 0000B09E
+;;   Called from:
+;;     0000ABAE (in fn0000AE66)
+;;     0000B09C (in fn0000B09C)
+fn0000B09E proc
 	push	$0,r7
-	Invalid
-	beq	B0F6
-	Invalid
-	Invalid
-	bge	B0D6
-	Invalid
-	beq	B100
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B112
-	lshw	$FFFFFFF8,r0
-	Invalid
-	beq	B118
-	Invalid
-	beq	B120
-	Invalid
-	Invalid
-	Invalid
-	beq	B128
+	loadw	0x2414(r3,r2),r0
+	cmpw	$10,r0
+	beq	fn0000B0DA
+
+;; fn0000B0AA: 0000B0AA
+;;   Called from:
+;;     0000B0A8 (in fn0000B09E)
+;;     0000B0A8 (in fn0000B09E)
+fn0000B0AA proc
+	cmpw	$7,r0
+	bge	0000B0D6
+
+l0000B0AE:
+	loadw	0x2410(r3,r2),r6
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),(r5,r4)
+	movd	$1,ra
+	addd	(r5,r4),ra
+	stord	ra,0x14(r3,r2)
+	addd	(r5,r4),(r1,r0)
+	storb	r6,(r1,r0)
+
+;; fn0000B0C0: 0000B0C0
+;;   Called from:
+;;     0000AB8C (in fn0000AE66)
+;;     0000B0AC (in fn0000B0AA)
+;;     0000B0BE (in fn0000B0AA)
+fn0000B0C0 proc
+	loadw	0x2410(r3,r2),r0
+	lshw	$-8,r0
+	storw	r0,0x2410(r3,r2)
+	loadw	0x2414(r3,r2),r0
+	addw	$FFF8,r11
+	storw	r0,0x2414(r3,r2)
+
+l0000B0D6:
 	pop	$0,r7
 	popret	$1,ra
-	Invalid
-	beq	B12C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B13E
-	lshw	$FFFFFFF8,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B152
-	Invalid
-	beq	B15A
+
+;; fn0000B0DA: 0000B0DA
+;;   Called from:
+;;     0000B0A8 (in fn0000B09E)
+;;     0000B0A8 (in fn0000B09E)
+fn0000B0DA proc
+	loadw	0x2410(r3,r2),r6
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),(r5,r4)
+
+l0000B0E2:
+	movd	$1,ra
+	addd	(r5,r4),ra
+	stord	ra,0x14(r3,r2)
+	addd	(r5,r4),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x2410(r3,r2),r4
+	lshw	$-8,r4
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),ra
+	movd	$1,(r7,r6)
+	addd	ra,(r7,r6)
+	stord	(r7,r6),0x14(r3,r2)
+	addd	ra,(r1,r0)
+	storb	r4,(r1,r0)
+	storw	$0,0x1208(r3,r2)
+	storw	$0,0x120A(r3,r2)
 	pop	$0,r7
 	popret	$1,ra
-	push	$1,ra
-	push	$2,r7
-	Invalid
-	beq	B166
-	Invalid
-	movw	r4,r5
-	Invalid
-	Invalid
-	beq	B16C
-	Invalid
-	Invalid
-	beq	B172
-	Invalid
-	bge	B1A4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B188
-	lshw	$FFFFFFF8,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B1A0
-	Invalid
-	Invalid
-	Invalid
+0000B10C                                     1E 01 27 01             ..'.
+0000B110 02 9F 0A 12 24 5A 45 5B 05 45 12 9F 08 12 51 27 ....$ZE[.E....Q'
+0000B120 12 DF 08 12 D0 52 DF 13 E2 A4 62 AA 18 54 68 61 .....R....b..Tha
+0000B130 82 EA 6E 61 1E F0 52 9F 08 12 85 49 02 A4 E2 AA ..na..R....I....
+0000B140 16 54 E6 61 62 EA E0 61 50 F0 02 9F 0A 12 B1 5A .T.ab..aP......Z
+0000B150 10 00 05 59 15 39 54 46                         ...Y.9TF        
+
+l0000B158:
 	movw	r4,r1
-	Invalid
-	beq	B1AC
-	Invalid
-	Invalid
-	Invalid
-	beq	B1B8
-	Invalid
-	res
-	blt	B1B0
-	Invalid
-	Invalid
-	beq	B1C4
-	Invalid
-	Invalid
-	bge	B1A0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B1DC
-	lshw	$FFFFFFF8,r0
-	Invalid
-	beq	B1E2
-	Invalid
-	beq	B1EA
-	Invalid
-	Invalid
-	Invalid
-	beq	B1F2
+	storw	r4,0x2410(r3,r2)
+	addw	$FFF3,r11
+	storw	r0,0x2414(r3,r2)
+	cmpw	$9,r0
+	blt	0000B1B0
+
+l0000B16C:
+	addw	$7,r7
+	storw	r0,0x2414(r3,r2)
+	cmpw	$10,r0
+	beq	0000B1EA
+
+l0000B178:
+	cmpw	$7,r0
+	bge	0000B1A0
+
+l0000B17C:
+	loadd	8(r3,r2),(r5,r4)
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),(r5,r4)
+	storb	r1,(r5,r4)
+	loadw	0x2410(r3,r2),r0
+	lshw	$-8,r0
+	storw	r0,0x2410(r3,r2)
+	loadw	0x2414(r3,r2),r0
+	addw	$FFF8,r11
+	storw	r0,0x2414(r3,r2)
+
+l0000B1A0:
 	pop	$2,r7
 	popret	$1,ra
-	Invalid
-	Invalid
-	beq	B1FC
-	Invalid
-	res
-	bge	B16C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B210
-	lshw	$FFFFFFF8,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B228
-	Invalid
-	beq	B228
-	Invalid
-	Invalid
-	Invalid
-	beq	B234
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B24A
-	lshw	$FFFFFFF8,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B25E
-	Invalid
-	beq	B266
+0000B1A4             30 32 02 DF 0A 12 B0 52 09 00 DF 1D     02.....R....
+
+l0000B1B0:
+	loadd	8(r3,r2),(r5,r4)
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),(r5,r4)
+	storb	r1,(r5,r4)
+	loadw	0x2410(r3,r2),r4
+	lshw	$-8,r4
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),(r1,r0)
+	storb	r4,(r1,r0)
+	loadw	0x2414(r3,r2),r0
+	storw	$0,0x1208(r3,r2)
+	addw	$FFF7,r11
+	storw	r0,0x2414(r3,r2)
+	movw	$0,r1
+	cmpw	$10,r0
+	bne	0000B178
+
+l0000B1EA:
+	loadd	8(r3,r2),(r5,r4)
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),(r5,r4)
+	storb	r1,(r5,r4)
+	loadw	0x2410(r3,r2),r4
+	lshw	$-8,r4
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),(r1,r0)
+	storb	r4,(r1,r0)
+	storw	$0,0x1208(r3,r2)
+	storw	$0,0x120A(r3,r2)
 	pop	$2,r7
 	popret	$1,ra
+
+;; fn0000B218: 0000B218
+;;   Called from:
+;;     00003B16 (in fn00003B14)
+;;     00003B16 (in fn00003B14)
+;;     00003D3C (in fn00003D1C)
+;;     000040C6 (in fn00003A36)
+;;     000042AC (in fn0000402E)
+;;     00004346 (in fn0000402E)
+;;     00005DA4 (in fn00004CD4)
+fn0000B218 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$FFF0,sp
+	movd	$26,r12
+	addd	sp,r12
 	movd	(r9,r8),(r3,r2)
-	Invalid
+	storw	r4,(sp)
 	movw	r5,r7
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	(r12),r12
+	storw	r6,4(sp)
+	movd	$4,(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),8(sp)
 	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	xord	$18D05200,(r3,r2)
-	movd	$AA0E2,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	orw	r0,r5
+	cmpw	$0,r0
+	sne	r0
+	storb	r0,6(sp)
+	loadw	0xC4(r3,r2),r0
+	cmpw	$0,r0
+	bge	fn0000BCFA
+
+l0000B24A:
+	loadd	(r3,r2),ra
+	loadw	0x58(ra),r0
+	cmpw	$2,r0
+	beq	fn0000BB06
+
+l0000B256:
+	movd	$AF0,(r5,r4)
+	addd	(r9,r8),(r5,r4)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,A416
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000A416
+	movd	$AFC,(r5,r4)
+	addd	(r9,r8),(r5,r4)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,A416
-	Invalid
-	Invalid
-	Invalid
-	xord	$9F08618D,(r11,r10)
-	xord	$18005200,r12
-	Invalid
-	Invalid
-	Invalid
+	bal	ra,fn0000A416
+	loadw	0x15E8(r9,r8),r6
+	movd	$6A,r13
+	addd	(r9,r8),r13
+	loadw	0xD8(r9,r8),r0
+	cmpw	$0,r0
+	beq	0000BAC6
+
+l0000B282:
+	movw	$4,r5
+	movw	$7,r1
 	movxw	r6,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	B2F2
-	Invalid
-	movd	$4C2A6182,(r1,r0)
-	Invalid
+	movd	$1,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	movw	$FFFF,r4
+	storw	r4,2(r3,r2)
+	cmpw	$0,r6
+	bgt	fn0000B2F2
+
+;; fn0000B298: 0000B298
+;;   Called from:
+;;     0000AB48 (in fn0000AE66)
+;;     0000B296 (in fn0000B218)
+fn0000B298 proc
+	movd	$70,(r3,r2)
+
+;; fn0000B29A: 0000B29A
+;;   Called from:
+;;     0000AB36 (in fn0000AE66)
+fn0000B29A proc
+	movd	$61824C2A,(r1,r0)
+
+;; fn0000B29C: 0000B29C
+;;   Called from:
+;;     0000B298 (in fn0000B298)
+;;     0000B29A (in fn0000B29A)
+fn0000B29C proc
+	addd	(r9,r8),(r3,r2)
+	ashud	$2,(r11,r10)
+	addd	$A,(r11,r10)
 	movd	ra,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B2E8
-	Invalid
-	Invalid
-	Invalid
+	addd	(r11,r10),ra
+	movw	$0,r6
+	movw	$3,r11
+	movw	$8A,r10
+	storw	r7,2(sp)
+
+;; fn0000B2B0: 0000B2B0
+;;   Called from:
+;;     0000B2AA (in fn0000B29C)
+;;     0000B2AE (in fn0000B29C)
+;;     0000B2EE (in fn0000B308)
+fn0000B2B0 proc
+	loadw	(r3,r2),r7
+	addw	$1,r1
+	cmpw	r6,r1
+	ble	fn0000BB8E
+
+l0000B2BA:
+	cmpw	r7,r0
+	beq	0000B2E8
+
+l0000B2BE:
+	cmpw	r6,r5
+	ble	fn0000BB84
+
+l0000B2C4:
 	movxw	r0,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	loadw	0x14A4(r5,r4),r1
+	addw	r6,r1
+	storw	r6,0x14A4(r5,r4)
+	cmpw	$0,r7
+	beq	fn0000BAF2
+
+l0000B2DA:
+	cmpw	r7,r0
+	beq	0000BBFC
+
+l0000B2E0:
 	movw	r0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movw	$4,r5
+	movw	$7,r1
+	movw	$0,r6
+
+l0000B2E8:
+	addd	$4,(r3,r2)
 	movw	r7,r0
 	cmpd	(r3,r2),ra
-	bne	B2B0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	$5A45,r4
-	Invalid
+	bne	fn0000B2B0
+
+l0000B2F0:
+	loadw	2(sp),r7
+
+;; fn0000B2F2: 0000B2F2
+;;   Called from:
+;;     0000B296 (in fn0000B218)
+;;     0000B2F0 (in fn0000B308)
+fn0000B2F2 proc
+	loadw	0x1600(r9,r8),r6
+	movd	$95E,(r2,r1)
+	addd	(r9,r8),(r2,r1)
+	stord	(r2,r1),0xC(sp)
+	loadw	0x12C0(r9,r8),r0
+	cmpw	$0,r0
+	beq	fn0000BD84
+
+;; fn0000B308: 0000B308
+;;   Called from:
+;;     0000B2B6 (in fn0000B2B0)
+;;     0000B304 (in fn0000B2F2)
+;;     0000B304 (in fn0000B2F2)
+fn0000B308 proc
+	movw	$4,r5
+	movw	$7,r1
 	movxw	r6,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bgt	B378
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$4,r0,ra
-	Invalid
-	beq	B36E
-	Invalid
-	Invalid
-	popret	$3,r6,ra
+	movd	$1,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	ashud	$2,(r3,r2)
+	loadd	0xC(sp),ra
+	addd	ra,(r3,r2)
+	movw	$FFFF,r4
+	storw	r4,2(r3,r2)
+	cmpw	$0,r6
+	bgt	0000B378
+
+l0000B320:
+	movd	$964,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	ashud	$2,(r11,r10)
+	addd	$A,(r11,r10)
+	addd	(r11,r10),ra
+	movw	$0,r6
+	movw	$3,r11
+	movw	$8A,r10
+	storw	r7,2(sp)
+
+l0000B336:
+	loadw	(r3,r2),r7
+	addw	$1,r1
+	cmpw	r1,r6
+	bge	0000BABC
+
+l0000B340:
+	cmpw	r7,r0
+	beq	0000B36E
+
+l0000B344:
+	cmpw	r5,r6
+	bge	0000BAB2
+
+l0000B34A:
 	movxw	r0,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$1,r4,ra
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	loadw	0x14A4(r5,r4),r1
+	addw	r6,r1
+	storw	r6,0x14A4(r5,r4)
+	cmpw	$0,r7
+	beq	0000BA84
+
+l0000B360:
+	cmpw	r7,r0
+	beq	fn0000BB8E
+
+l0000B366:
 	movw	r0,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movw	$4,r5
+	movw	$7,r1
+	movw	$0,r6
+
+l0000B36E:
+	addd	$4,(r3,r2)
 	movw	r7,r0
 	cmpd	ra,(r3,r2)
-	bne	B336
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	0000B336
+
+l0000B376:
+	loadw	2(sp),r7
+
+l0000B378:
+	movd	$B08,(r5,r4)
+	addd	(r9,r8),(r5,r4)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,A416
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$A9F08,r12
-	Invalid
-	Invalid
-	Invalid
-	movd	$89F08,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	$C9F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$C9F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$9F08,r12
-	Invalid
-	Invalid
-	Invalid
-	movd	$29F08,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	$89F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$69F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$C9F08,r11
-	Invalid
-	Invalid
-	Invalid
-	movd	$29F08,ra
-	Invalid
-	Invalid
-	Invalid
-	movd	$89F08,r12
-	Invalid
-	Invalid
-	Invalid
-	movd	$69F08,r12
-	Invalid
-	Invalid
-	Invalid
-	movd	$49F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$29F08,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	$89F08,r11
-	Invalid
-	Invalid
-	Invalid
-	movd	$A54B0,r4
-	res
-	Invalid
-	res
-	Invalid
-	br	B466
-	Invalid
-	Invalid
-	Invalid
-	br	B46E
-	Invalid
-	Invalid
-	Invalid
-	beq	B47E
-	Invalid
-	Invalid
+	bal	ra,fn0000A416
+	loadw	0x1520(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF1E
+
+l0000B38E:
+	loadw	0x14B0(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF84
+
+l0000B398:
+	loadw	0x1518(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF56
+
+l0000B3A2:
+	loadw	0x14B8(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF60
+
+l0000B3AC:
+	loadw	0x1510(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF32
+
+l0000B3B6:
+	loadw	0x14C0(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BFA0
+
+l0000B3C0:
+	loadw	0x1508(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF76
+
+l0000B3CA:
+	loadw	0x14C8(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF7C
+
+l0000B3D4:
+	loadw	0x1500(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF52
+
+l0000B3DE:
+	loadw	0x14D0(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BFA8
+
+l0000B3E8:
+	loadw	0x14F8(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF7E
+
+l0000B3F2:
+	loadw	0x14D8(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BF84
+
+l0000B3FC:
+	loadw	0x14F0(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BFAA
+
+l0000B406:
+	loadw	0x14E0(r9,r8),r0
+	cmpw	$0,r0
+	bne	0000BFB0
+
+l0000B410:
+	loadw	0x14E8(r9,r8),r0
+	cmpw	$0,r0
+	bne	0000BF86
+
+l0000B41A:
+	loadw	0x14A8(r9,r8),r0
+	cmpw	$0,r0
+	bne	fn0000BEB4
+
+l0000B424:
+	movd	$9,(r1,r0)
+	storw	$2,2(sp)
+	loadd	0x23F8(r9,r8),(r3,r2)
+	addd	$E,(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x23F8(r9,r8)
+	addd	$A,(r3,r2)
+	lshd	$-29,(r3,r2)
+	loadd	0x2400(r9,r8),ra
+	addd	$A,ra
+	lshd	$-29,ra
 	movd	(r1,r0),(r3,r2)
 	cmpd	(r3,r2),ra
-	bhs	B44C
+	bhs	0000B44C
+
+l0000B44A:
 	movd	(r1,r0),ra
-	Invalid
+
+l0000B44C:
+	loadd	8(sp),(r5,r4)
 	cmpd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	beq	B45E
-	Invalid
+	sls	r0
+	cmpw	$0,r0
+	beq	0000B45E
+
+l0000B456:
+	loadb	6(sp),r5
 	cmpb	$0,r5
-	Invalid
-	popret	$5,r10
-	Invalid
-	beq	B4B4
-	Invalid
-	beq	B4B4
-	Invalid
-	xord	$8005240,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
+	bne	fn0000BB0E
+
+l0000B45E:
+	loadw	0x2414(r9,r8),r4
+	loadw	0x2410(r9,r8),r5
+	loadw	0xC8(r9,r8),r0
+	cmpw	$4,r0
+	seq	r0
+	cmpw	$0,r0
+	bne	0000BC8C
+
+l0000B474:
 	cmpd	(r3,r2),ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	sls	r0
+	cmpw	$0,r0
+	bne	0000BC82
+
+l0000B47E:
+	loadw	4(sp),r1
+	addw	$4,r4
 	movw	r1,r10
-	Invalid
-	Invalid
-	Invalid
-	beq	B4DA
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B4F2
-	lshw	$FFFFFFF8,r10
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B50A
-	Invalid
-	Invalid
+	ashuw	r4,r10
+	orw	r10,r5
+	storw	r10,0x2410(r9,r8)
+	cmpw	$D,r4
+	bge	fn0000BD82
+
+l0000B492:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r10,(r3,r2)
+	loadw	0x2410(r9,r8),r10
+	lshw	$-8,r10
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r10,(r3,r2)
+	loadw	0x2414(r9,r8),r4
+	movw	$10,r2
+	subw	r2,r4
+	subb	r0,r2
 	movw	r1,r10
-	Invalid
-	Invalid
-	beq	B516
-	Invalid
-	Invalid
-	Invalid
-	beq	B522
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshw	r0,r10
+	storw	r10,0x2410(r9,r8)
+	addw	$FFF3,r11
+	storw	r4,0x2414(r9,r8)
+	loadw	0x1600(r9,r8),r12
+	loadw	0x15E8(r9,r8),ra
 	movw	ra,r1
-	Invalid
-	Invalid
+	addw	$FF00,r11
 	movw	r1,r0
-	Invalid
-	Invalid
-	Invalid
-	beq	B536
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B550
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B568
-	Invalid
-	Invalid
-	Invalid
+	ashuw	r4,r0
+	orw	r0,r10
+	storw	r0,0x2410(r9,r8)
+	cmpw	$B,r4
+	bge	fn0000BD10
+
+l0000B4F0:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2410(r9,r8),r0
+	lshw	$-8,r0
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r9,r8),r4
+	movw	$10,r0
+	movb	r4,r5
+	subb	r5,r0
+	lshw	r5,r1
 	movw	r1,r0
-	Invalid
-	beq	B574
-	Invalid
-	Invalid
-	Invalid
-	beq	B580
+	storw	r1,0x2410(r9,r8)
+	addw	$FFF5,r11
+	storw	r4,0x2414(r9,r8)
 	movw	r12,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	B586
-	Invalid
-	cinv	[i,,u]
-	Invalid
-	popret	$3,r8,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B5A0
-	lshw	$FFFFFFF8,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B5B8
-	Invalid
-	Invalid
+	ashuw	r4,r1
+	orw	r0,r1
+	storw	r0,0x2410(r9,r8)
+	cmpw	$B,r4
+	bge	fn0000BCAC
+
+l0000B540:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2410(r9,r8),r6
+	lshw	$-8,r6
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x2414(r9,r8),r4
+	movw	$10,r0
+	movb	r4,r1
+	subb	r1,r0
 	movw	r12,r2
-	Invalid
+	lshw	r1,r2
 	movw	r2,r0
-	Invalid
-	beq	B5C6
-	Invalid
-	Invalid
-	Invalid
-	beq	B5D2
-	Invalid
-	Invalid
-	Invalid
+	storw	r2,0x2410(r9,r8)
+	addw	$FFF5,r11
+	storw	r4,0x2414(r9,r8)
+	loadw	2(sp),r1
+	addw	$FFFD,r11
 	movw	r1,r2
-	Invalid
-	Invalid
-	Invalid
-	beq	B5DE
-	Invalid
-	Invalid
-	popret	$5,r8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B5F6
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B60E
-	Invalid
-	Invalid
-	Invalid
+	ashuw	r4,r2
+	orw	r0,r2
+	storw	r0,0x2410(r9,r8)
+	cmpw	$C,r4
+	bge	fn0000BC42
+
+l0000B596:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2410(r9,r8),r0
+	lshw	$-8,r0
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r9,r8),r4
+	movw	$10,r0
+	movb	r4,r3
+	subb	r3,r0
+	lshw	r3,r1
 	movw	r1,r0
-	Invalid
-	beq	B61A
-	Invalid
-	Invalid
-	Invalid
-	beq	B626
-	movd	$FB26,r10
+	storw	r1,0x2410(r9,r8)
+	addw	$FFF4,r11
+	storw	r4,0x2414(r9,r8)
+	movd	$FB26,(r11,r10)
 	movb	$10,r2
-	Invalid
-	Invalid
-	Invalid
+	movw	$0,r1
+	movw	$10,r7
+	storw	r12,8(sp)
+	movw	r1,r6
 	movzb	r2,(r3,r2)
 	movxw	r2,(r3,r2)
-	Invalid
-	pop	$1,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$294,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	loadw	4(r3,r2),r5
+	storw	r5,(sp)
 	movw	r5,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	B64E
-	Invalid
-	bge	B66C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B664
-	lshw	$FFFFFFF8,r0
+	ashuw	r4,r1
+	orw	r0,r1
+	storw	r0,0x2410(r9,r8)
+	cmpw	$D,r4
+	bge	0000B66C
+
+l0000B604:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,r12
+	addd	(r5,r4),r12
+	stord	r12,0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2410(r9,r8),r0
+	lshw	$-8,r0
 	movw	r0,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B67E
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r12,(r1,r0)
+	loadw	0x2414(r9,r8),r4
 	movb	r4,r0
-	Invalid
-	Invalid
-	Invalid
+	subb	r0,r7
+	loadw	(sp),r1
+	lshw	r0,r1
 	movw	r1,r0
-	Invalid
-	beq	B688
-	Invalid
-	Invalid
-	Invalid
-	beq	B694
-	Invalid
-	Invalid
-	Invalid
-	bgt	B67A
-	Invalid
-	Invalid
+	storw	r1,0x2410(r9,r8)
+	addw	$FFF3,r11
+	storw	r4,0x2414(r9,r8)
+	addw	$1,r1
+	loadw	2(sp),r2
+	cmpw	r2,r6
+	bgt	0000B67A
+
+l0000B64A:
+	loadb	1(r11,r10),r2
+	addd	$1,(r11,r10)
 	movzb	r2,(r3,r2)
 	movxw	r2,(r3,r2)
-	Invalid
-	pop	$1,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	$294,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	loadw	4(r3,r2),r5
+	storw	r5,(sp)
 	movw	r5,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	B6B6
-	Invalid
-	blt	B604
-	Invalid
-	Invalid
-	beq	B6C4
-	Invalid
-	Invalid
-	Invalid
-	ble	B64A
-	Invalid
+	ashuw	r4,r1
+	orw	r0,r1
+	storw	r0,0x2410(r9,r8)
+	cmpw	$D,r4
+	blt	0000B604
+
+l0000B66C:
+	addw	$3,r3
+	storw	r4,0x2414(r9,r8)
+	addw	$1,r1
+	loadw	2(sp),r3
+	cmpw	r3,r6
+	ble	0000B64A
+
+l0000B67A:
+	loadw	8(sp),r12
 	movw	ra,r6
 	movd	(r5,r4),r13
 	movd	(r3,r2),(r9,r8)
-	bal	ra,9C04
+	bal	ra,fn00009C04
 	movw	r12,r6
-	Invalid
+	loadd	0xC(sp),(r5,r4)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,9C04
-	Invalid
+	bal	ra,fn00009C04
+	loadd	0xC(sp),(r5,r4)
 	push	$1,r4
 	movd	(r5,r4),r13
 	movd	(r3,r2),(r9,r8)
-	bal	ra,A0E8
-	Invalid
-	Invalid
-	push	$2,r6
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	movd	r13,(r3,r2)
-	Invalid
-	res
-	Invalid
-	movd	(r1,r0),(r3,r2)
-	movd	$C07FF3FF,(r3,r2)
-	br	B6C8
-	Invalid
-	Invalid
-	cmpd	(r11,r10),(r1,r0)
-	Invalid
-	pop	$4,ra
-	Invalid
-	Invalid
-	beq	B6BE
-	Invalid
-	xord	$1F035204,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r6
-	movw	r0,r4
-	movw	r11,r5
-	movw	r10,r1
-	Invalid
-	Invalid
-	movw	r7,r6
-	movw	r0,r4
-	movw	r11,r5
-	movw	r10,r1
-	Invalid
-	Invalid
-	Invalid
-	beq	B75A
-	Invalid
-	beq	B714
+	bal	ra,fn0000A0E8
+	addd	$4,sp
+	br	0000B8EA
+0000B6A2       35 5A B1 5A 8A 00 E0 18 DF FB 2D 55 BA 54   5Z.Z......-U.T
+0000B6B0 80 00 2A 61 20 55 72 00 FF F3 7F C0 E6 10 F2 4B ..*a Ur........K
+0000B6C0 40 60 0A 57 00 18 4E 02 14 54 14 00 24 B0 04 56 @`.W..N..T..$..V
+0000B6D0 07 1F 40 9F 6A 00 04 52 03 1F 00 5A 0E DF 2C 00 ..@.j..R...Z..,.
+0000B6E0 E0 18 77 FB 76 5B 04 5B B5 5B A1 5B E0 18 FD FB ..w.v[.[.[.[....
+0000B6F0 76 5B 04 5B B5 5B A1 5B E0 18 77 FC 00 52 0E 12 v[.[.[.[..w..R..
+0000B700 04 53 09 10 04 5E 24 4C 84 61 14 9F 52 0A 11 32 .S...^$L.a..R..2
+0000B710 14 DF 52 0A 18 9F 92 0A                         ..R.....        
+
+;; fn0000B718: 0000B718
+;;   Called from:
+;;     0000A4A0 (in fn0000A48C)
+fn0000B718 proc
+	addw	$1,r1
+	storw	r1,0x1524(r9,r8)
+	br	fn0000AF98
+0000B722       00 52 02 11                                 .R..          
+
+;; fn0000B726: 0000B726
+;;   Called from:
+;;     0000A47E (in fn0000A460)
+fn0000B726 proc
+	cmpw	r4,r0
+	beq	fn0000B73A
+
+l0000B72A:
 	movxw	r0,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B748
-	Invalid
-	beq	B73A
-	movxw	r0,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blt	B784
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blt	B792
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r4
-	movw	r11,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r7,r4
-	movw	r11,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r1,r0),ra
-	Invalid
-	Invalid
-	beq	B876
-	Invalid
-	cmpb	$0,r0
-	beq	B876
-	push	$1,r12
-	Invalid
-	Invalid
-	movw	r7,r5
-	movd	(r3,r2),(r9,r8)
-	bal	ra,AF94
-	Invalid
-	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r9,r8)
-	Invalid
-	xord	$57046040,(r11,r10)
-	bne	B7CE
-	Invalid
-	movd	$55806184,(r9,r8)
-	Invalid
-	res
-	Invalid
-	cmpd	(r1,r0),(r5,r4)
-	bne	B7E0
-	Invalid
-	andd	$C3026180,r12
-	Invalid
-	Invalid
-	cmpd	(r1,r0),(r3,r2)
-	bne	B7F0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B842
-	Invalid
-	br	B83E
-	Invalid
-	beq	B852
-	Invalid
-	br	B83A
-	Invalid
-	Invalid
-	beq	B83C
-	Invalid
-	beq	B86C
-	Invalid
-	blt	B84E
-	Invalid
-	bge	B834
-	Invalid
-	beq	B874
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B886
-	Invalid
-	beq	B88E
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	beq	B8A0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B8B2
-	lshw	$FFFFFFF8,r2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	B834
-	Invalid
-	beq	B8CC
-	Invalid
-	beq	B8CC
-	Invalid
-	Invalid
-	movw	r1,r10
-	Invalid
-	Invalid
-	Invalid
-	beq	B8DA
-	Invalid
-	bge	B8E2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B8F0
-	lshw	$FFFFFFF8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B908
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B912
-	Invalid
-	Invalid
-	Invalid
-	beq	B91E
-	movd	$F62E,r0
-	push	$1,r0
-	movd	$F6A6,r4
-	movd	(r3,r2),(r9,r8)
-	bal	ra,A0E8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B93A
-	br	B8CC
-	Invalid
-	Invalid
-	beq	B942
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B94C
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B956
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	B960
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$18105201,(r3,r2)
-	Invalid
-	Invalid
-	cmpd	$18105201,ra
-	Invalid
-	Invalid
-	popret	$0,r0,ra
-	Invalid
-	br	B942
-	Invalid
-	cmpd	r13,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	beq	B93A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	$2,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	loadw	0x14A4(r5,r4),r1
+
+;; fn0000B732: 0000B732
+;;   Called from:
+;;     0000A53E (in fn0000A534)
+;;     0000A53E (in fn0000A534)
+fn0000B732 proc
+	jls	(r3,r2)
+
+;; fn0000B734: 0000B734
+;;   Called from:
+;;     0000B730 (in fn0000B726)
+;;     0000B732 (in fn0000B732)
+fn0000B734 proc
+	addw	$1,r1
+	storw	r1,0x14A4(r5,r4)
+
+;; fn0000B73A: 0000B73A
+;;   Called from:
+;;     0000B728 (in fn0000B726)
+;;     0000B736 (in fn0000B734)
+fn0000B73A proc
+	loadw	0x1524(r9,r8),r1
+	addw	$1,r1
+	storw	r1,0x1524(r9,r8)
+	br	fn0000AE66
+0000B748                         A6 52 CD 11 18 9F 96 0A         .R......
+0000B750 11 32 18 DF 96 0A E0 18 7F FB A6 52 CB 11 18 9F .2.........R....
+0000B760 96 0A 11 32 18 DF 96 0A E0 18 F3 FB 74 5B B5 5B ...2........t[.[
+0000B770 61 5A 06 5A E0 18 75 FB 74 5B B5 5B 61 5A 06 5A aZ.Z..u.t[.[aZ.Z
+0000B780 E0 18 EF FB 18 9F 9A 0A 11 32 18 DF 9A 0A E0 18 .........2......
+0000B790 47 FB 18 9F 9A 0A 11 32 18 DF 9A 0A E0 18 BF FB G......2........
+0000B7A0 50 54 C0 61 EF A4 E0 57 50 08 00 52 05 16 0F B6 PT.a...WP..R....
+0000B7B0 00 50 02 16 1C 01 6F 94 4F 92 75 5B 82 55 FF C0 .P....o.O.u[.U..
+0000B7C0 D7 F7 4F 60 82 55 B4 54 78 04 84 61 80 55 00 C3 ..O`.U.Tx..a.U..
+0000B7D0 6A 00 40 60 04 57 1C 1F B4 54 78 00 84 61 80 55 j.@`.W...Tx..a.U
+0000B7E0 00 C3 5E 09 40 60 40 57 1C 1F B0 54 4C 00 80 61 ..^.@`@W...TL..a
+0000B7F0 02 C3 52 0A 42 60 20 57 1C 1F 18 C3 6A 04 00 54 ..R.B` W....j..T
+0000B800 08 EF 00 12 08 EF FC 11 08 C3 04 12 08 C3 F6 11 ................
+0000B810 5F 92 05 52 04 11 08 9F 0A 12 80 52 C9 11 00 52 _..R.......R...R
+0000B820 DA 10 48 9F 08 12 08 A4 28 AA 16 54 26 61 68 EA ..H.....(..T&ah.
+0000B830 20 61 40 F0 08 C3 08 12 08 C3 0A 12 BF 60 10 00  a@..........`..
+0000B840 67 02 9D 03 35 5A B1 5A 8A 00 E0 18 C3 FA 48 9F g...5Z.Z......H.
+0000B850 08 12 08 A4 28 AA 16 54 26 61 68 EA 20 61 40 F0 ....(..T&ah. a@.
+0000B860 28 9F 08 12 82 49 08 A4 48 AA 16 54 46 61 68 EA (....I..H..TFah.
+0000B870 40 61 20 F0 E0 1E 48 9F 0A 12 58 9F 08 12 1F 92 @a ...H...X.....
+0000B880 21 32 1A 5B 4A 45 5A 27 A8 DF 08 12 D4 52 DA 12 !2.[JEZ'.....R..
+0000B890 28 A4 48 AA 16 54 46 61 68 EA 42 61 A2 F0 08 9F (.H..TFah.Ba....
+0000B8A0 08 12 80 49 28 A4 48 AA 16 54 46 61 68 EA 42 61 ...I(.H..TFah.Ba
+0000B8B0 02 F0 08 9F 0A 12 B2 5A 10 00 03 59 23 39 31 46 .......Z...Y#91F
+0000B8C0 18 DF 08 12 B0 32 F3 FF 08 DF 0A 12 00 05 2E F6 .....2..........
+0000B8D0 10 01 40 05 A6 F6 82 55 FF C0 11 E8 4F 60 E0 18 ..@....U....O`..
+0000B8E0 E7 FE 34 32 48 DF 0A 12 E2 1F                   ..42H.....      
+
+l0000B8EA:
+	addw	$4,r4
+	storw	r4,0x2414(r9,r8)
+	br	0000B2BA
+0000B8F4             54 32 48 DF 0A 12 E0 18 87 FC 54 32     T2H.......T2
+0000B900 48 DF 0A 12 E0 18 2B FC 34 32 48 DF 0A 12 E0 18 H.....+.42H.....
+0000B910 C3 FB 18 9F 8E 00 10 5A 01 52 10 18 C3 FD 18 9F .......Z.R......
+0000B920 92 00 01 52 10 18 B9 FD 18 9F 9E 00 01 52 10 18 ...R.........R..
+0000B930 AF FD B2 54 80 03 82 61 E5 10 4D 60 2D 57 00 18 ...T...a..M`-W..
+0000B940 9F FD 0D 9F EA 00 00 52 09 1F 10 5A 0E DF 2C 00 .......R...Z..,.
+0000B950 E0 18 07 F9 B0 5A 12 00 0F D1 03 5B             .....Z.....[    
+
+l0000B95C:
 	movxw	r3,(r1,r0)
-	Invalid
+	addd	$1,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	Invalid
-	res
-	Invalid
-	br	B95C
-	res
-	push	$1,ra
-	push	$2,r7
-	Invalid
-	br	BA1A
-	movzw	r0,(r7,r6)
-	Invalid
-	br	BA24
-	movd	(r9,r8),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	BA20
-	Invalid
-	Invalid
-	br	BA32
-	Invalid
-	Invalid
-	Invalid
-	beq	BA80
-	Invalid
-	beq	BA5A
-	Invalid
-	Invalid
-	beq	BA60
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	br	0000AEF4
+0000B96A                               3F C3 02 00 3F 91           ?...?.
+0000B970 E6 1F EF C3 02 00 3F 91 E2 1F B2 5A 10 00 2F D1 ......?....Z../.
+0000B980 23 5B ED 1E FF C3 02 00 3F 91 E9 1E B1 5A 11 00 #[......?....Z..
+0000B990 1F D1 13 5B E4 1E AF C3 02 00 3F 91 E0 1E CF C3 ...[......?.....
+0000B9A0 02 00 3F 91 EC 1D BF C3 02 00 3F 91 E8 1D DF C3 ..?.......?.....
+0000B9B0 02 00                                           ..              
+
+;; fn0000B9B2: 0000B9B2
+;;   Called from:
+;;     0000A43E (in fn0000A426)
+;;     0000A43E (in fn0000A438)
+;;     0000A43E (in fn0000A438)
+fn0000B9B2 proc
+	loadw	2(sp),r3
+	br	0000B95C
+0000B9B6                   8F C3 02 00 3F 91 E0 1D 7F C3       ....?.....
+0000B9C0 02 00 3F 91 EC 1C 9F C3 02 00 3F 91 E8 1C 4F C3 ..?.......?...O.
+0000B9D0 02 00 3F 91 E4 1C 6F C3 02 00 3F 91 E0 1C 5F C3 ..?...o...?..._.
+0000B9E0 02 00 3F 91 EC 1B 00 00 1E 01 27 01 02 9F F6 11 ..?.......'.....
+0000B9F0 06 5F E2 AF F8 11 68 55 68 61 8E 61             ._....hUha.a    
+
+l0000B9FC:
+	storw	r4,(ra)
+	loadd	0x23E0(r3,r2),ra
+	addw	$1,r1
+	storw	r0,0x23EC(r3,r2)
+	addd	(r7,r6),ra
+	storb	r5,(ra)
+	cmpw	$0,r4
+	beq	0000BA80
+
+l0000BA10:
+	loadw	0x2408(r3,r2),r0
+	addw	$1,r1
+	storw	r0,0x2408(r3,r2)
+	addw	$FFFF,r9
 	movzw	r5,(r1,r0)
-	movd	$F32E,r6
-	Invalid
-	Invalid
+	movd	$F32E,(r7,r6)
+	addd	(r7,r6),(r1,r0)
+	loadb	(r1,r0),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	bhs	BA72
-	lshw	$1,r4
-	Invalid
-	push	$0,r0
+	ashud	$2,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	0x8DC(r1,r0),r5
+	addw	$1,r1
+	storw	r5,0x8DC(r1,r0)
+	cmpw	$FF,r4
+	bhs	0000BA72
+
+l0000BA3E:
+	lshw	$-9,r4
+	addw	$100,r11
 	movzw	r4,(r5,r4)
-	movd	$F42E,r0
-	Invalid
-	Invalid
+	movd	$F42E,(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	loadb	(r5,r4),r0
 	movzb	r0,(r1,r0)
+
+l0000BA50:
 	movxw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	res
-	Invalid
-	br	BA8A
-	Invalid
-	Invalid
-	br	BA94
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	0x12BC(r1,r0),r4
+	addw	$1,r1
+	storw	r4,0x12BC(r1,r0)
+	loadw	0x23E8(r3,r2),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r3,r2),r1
+	cmpw	r0,r1
+	seq	r0
 	pop	$2,r7
 	popret	$1,ra
+
+l0000BA72:
 	movzw	r4,(r1,r0)
-	movd	$F42E,r4
-	Invalid
-	Invalid
+	movd	$F42E,(r5,r4)
+	addd	(r1,r0),(r5,r4)
+	loadb	(r5,r4),r0
 	movzb	r0,(r1,r0)
-	br	BA50
+	br	0000BA50
+
+l0000BA80:
 	movzw	r5,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	xord	$DF403214,(r11,r10)
-	xord	$11F49F02,(r11,r10)
-	Invalid
-	Invalid
-	br	BAC4
-	Invalid
-	Invalid
+	ashud	$2,(r1,r0)
+
+l0000BA84:
+	addd	(r3,r2),(r1,r0)
+	loadw	0xD4(r1,r0),r4
+	addw	$1,r1
+	storw	r4,0xD4(r1,r0)
+	loadw	0x23E8(r3,r2),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r3,r2),r1
+	cmpw	r0,r1
+	seq	r0
 	pop	$2,r7
 	popret	$1,ra
-	res
-	movd	$E4EC,r0
-	Invalid
-	movd	$140200,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+0000BAA2       00 00 00 05 EC E4 EE 0A 70 00 00 02 14 00   ........p.....
+0000BAB0 EE 0A                                           ..              
+
+l0000BAB2:
+	movw	$2,r0
+	subw	r0,r2
 	movxw	r0,(r1,r0)
-	Invalid
-	movd	$FC50,r2
-	Invalid
-	Invalid
-	Invalid
-	push	$1,ra
+	ashud	$2,(r1,r0)
+	movd	$FC50,(r3,r2)
+
+l0000BABC:
+	storb	r5,0xC(r1,r0)
+
+l0000BABE:
+	addd	(r3,r2),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	jr	ra
+0000BAC4             1E 01                                   ..          
+
+l0000BAC6:
 	movw	r4,r2
 	movzw	r5,(r5,r4)
 	movzw	r2,(r3,r2)
-	bal	ra,D984
+	bal	ra,fn0000D984
 	popret	$1,ra
-	res
-	push	$1,ra
-	movd	(r3,r2),(r5,r4)
-	bal	ra,D99C
-	popret	$1,ra
-	res
+0000BAD2       00 00 1E 01 42 55 00 C0 C4 1E 1E 03 00 00   ....BU........
+
+;; fn0000BAE0: 0000BAE0
+;;   Called from:
+;;     0000C0F6 (in fn0000C0EE)
+fn0000BAE0 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	Invalid
-	Invalid
-	andd	$554C61F0,ra
-	Invalid
-	Invalid
-	Invalid
+	addd	$FFC8,sp
+	movd	$4E,(r1,r0)
+	addd	sp,(r1,r0)
+	movd	r12,(r5,r4)
+	loadd	(r1,r0),(r9,r8)
+
+;; fn0000BAF2: 0000BAF2
+;;   Called from:
+;;     0000B2D6 (in fn0000B308)
+;;     0000BAF0 (in fn0000BAE0)
+fn0000BAF2 proc
+	stord	(r9,r8),0x50(sp)
 	movd	r13,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	movd	$FFFF,r8
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-16,r13
+	stord	r13,0x40(sp)
+	movd	$FFFF,(r9,r8)
+	andd	(r3,r2),(r9,r8)
+
+;; fn0000BB06: 0000BB06
+;;   Called from:
+;;     0000B252 (in fn0000B218)
+;;     0000BB02 (in fn0000BAF2)
+;;     0000BB02 (in fn0000BAF2)
+fn0000BB06 proc
+	stord	(r9,r8),(sp)
+	loadd	0x50(sp),r13
 	cmpd	$1,r13
-	Invalid
-	push	$5,r4
+
+;; fn0000BB0E: 0000BB0E
+;;   Called from:
+;;     0000B45A (in fn0000B308)
+;;     0000BB0C (in fn0000BB06)
+fn0000BB0E proc
+	beq	fn0000BDB6
+
+;; fn0000BB12: 0000BB12
+;;   Called from:
+;;     0000BB0E (in fn0000BB0E)
+;;     0000BB0E (in fn0000BB06)
+;;     0000BB3E (in fn0000BB3E)
+;;     0000BC32 (in fn0000BC32)
+fn0000BB12 proc
 	cmpd	$0,(r5,r4)
-	Invalid
-	movd	$56FD,r11
-	Invalid
-	push	$7,r12
+	beq	fn0000C674
+
+l0000BB18:
+	cmpd	$F,r13
+	bhs	0000BE12
+
+l0000BB1E:
 	cmpd	$15AF,r13
-	Invalid
-	movd	$6A08F,r11
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhs	BBD6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bhs	fn0000C68E
+
+l0000BB26:
+	loadd	(sp),(r9,r8)
+	loadd	0x50(sp),r13
+	addd	$EA50,r13
+	stord	r13,0x58(sp)
+	movd	$15B0,(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r1,r0),0x48(sp)
+
+;; fn0000BB3E: 0000BB3E
+;;   Called from:
+;;     0000BC30 (in fn0000BB8E)
+fn0000BB3E proc
+	loadb	(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),(sp)
+	loadb	1(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x60(sp)
+	loadb	2(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x60(sp),(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),4(sp)
+	loadb	3(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),8(sp)
+	loadb	4(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0xC(sp)
+	loadb	5(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x10(sp)
+	loadb	6(r12),r2
+
+;; fn0000BB84: 0000BB84
+;;   Called from:
+;;     0000B2C0 (in fn0000B308)
+;;     0000BB3A (in fn0000BB12)
+fn0000BB84 proc
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(sp)
+	loadb	7(r12),r2
+
+;; fn0000BB8E: 0000BB8E
+;;   Called from:
+;;     0000B2B6 (in fn0000B2B0)
+;;     0000B2DC (in fn0000B308)
+;;     0000B362 (in fn0000B308)
+;;     0000BB8C (in fn0000BB84)
+fn0000BB8E proc
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x18(sp)
+	loadb	8(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	res
-	Invalid
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x38(sp)
+	loadb	9(r12),r13
 	movzb	r13,r13
 	movzw	r13,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	r13,(r5,r4)
+	stord	(r5,r4),0x68(sp)
+	loadb	0xA(r12),ra
 	movzb	ra,ra
 	movzw	ra,ra
-	Invalid
-	Invalid
+	addd	(r5,r4),ra
+	loadb	0xB(r12),r10
 	movzb	r10,(r11,r10)
 	movzw	r10,(r11,r10)
-	Invalid
-	Invalid
+	addd	ra,(r11,r10)
+	loadb	0xC(r12),r6
 	movzb	r6,(r7,r6)
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
+	addd	(r11,r10),(r7,r6)
+	loadb	0xD(r12),r4
 	movzb	r4,(r5,r4)
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	cinv	[i,d,]
+	addd	(r7,r6),(r5,r4)
+	loadb	0xE(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	cinv	[i,d,u]
+	addd	(r5,r4),(r3,r2)
+	loadb	0xF(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r3,r2),(r9,r8)
+	loadd	0x60(sp),(r1,r0)
+	loadd	(sp),r13
+	addd	r13,(r1,r0)
+	loadd	4(sp),r13
+	addd	r13,(r1,r0)
+	loadd	8(sp),r13
+	addd	r13,(r1,r0)
+	loadd	0xC(sp),r13
+	addd	r13,(r1,r0)
+	loadd	0x10(sp),r13
+	addd	r13,(r1,r0)
+	loadd	0x14(sp),r13
+
+l0000BBFC:
+	addd	r13,(r1,r0)
+	loadd	0x18(sp),r13
+	addd	r13,(r1,r0)
+	loadd	0x38(sp),r13
+	addd	r13,(r1,r0)
+	stord	(r1,r0),(sp)
+	loadd	0x68(sp),r13
+	addd	r13,(r1,r0)
+	addd	ra,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	addd	(r7,r6),(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	loadd	0x40(sp),r13
+	addd	(r1,r0),r13
+	stord	r13,0x40(sp)
+	addd	$10,r12
+	loadd	0x48(sp),(r1,r0)
 	cmpd	r12,(r1,r0)
-	bne	BB3E
-	movd	$FFF1,r4
+	bne	fn0000BB3E
+
+;; fn0000BC32: 0000BC32
+;;   Called from:
+;;     0000BC30 (in fn0000BB8E)
+;;     0000BC30 (in fn0000BB3E)
+fn0000BC32 proc
+	movd	$FFF1,(r5,r4)
 	movd	(r3,r2),(r9,r8)
-	bal	ra,D4EC
+	bal	ra,fn0000D4EC
 	movd	(r9,r8),(r1,r0)
-	movd	$FFF1,r4
-	Invalid
-	Invalid
-	bal	ra,D4EC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movd	$FFF1,(r5,r4)
+
+;; fn0000BC42: 0000BC42
+;;   Called from:
+;;     0000B592 (in fn0000B308)
+;;     0000BC3E (in fn0000BC32)
+fn0000BC42 proc
+	loadd	0x40(sp),(r3,r2)
+	bal	ra,fn0000D4EC
+	stord	(r1,r0),0x40(sp)
+	loadd	0x58(sp),r13
 	cmpd	$15AF,r13
-	Invalid
-	push	$3,r4,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r3,r2)
-	Invalid
-	cmpd	$FFF00000,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFF00000,(r1,r0)
-	bhs	BC88
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	Invalid
-	Invalid
-	Invalid
+	bhs	fn0000BFBE
+
+;; fn0000BC5A: 0000BC5A
+;;   Called from:
+;;     0000BC56 (in fn0000BC42)
+;;     0000BC56 (in fn0000BC42)
+fn0000BC5A proc
+	stord	r13,0x50(sp)
+	br	0000B9FC
+0000BC62       04 B0 00 5D 02 5F 82 61 92 00 00 00 F0 FF   ...]._.a......
+0000BC70 A0 18 5E 04 0F AF 20 00 20 61 90 00 00 00 F0 FF ..^... . a......
+0000BC80 B4 10                                           ..              
+
+l0000BC82:
+	addd	$FFFF000F,(r1,r0)
+	ashud	$16,(r1,r0)
+	ord	(r3,r2),(r1,r0)
+
+l0000BC8C:
+	loadw	(r1,r0),r2
+
+l0000BC8E:
+	addd	$38,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	cmpd	$0,r13
-	Invalid
-	push	$4,r2
-	Invalid
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+0000BC96                   0D 56 00 18 42 01 04 B0 00 5D       .V..B....]
+0000BCA0 00 5F 8F A0 08 61 8F E0                         ._...a..        
+
+l0000BCA8:
+	loadd	0x40(sp),(r1,r0)
+
+;; fn0000BCAC: 0000BCAC
+;;   Called from:
+;;     0000B53C (in fn0000B308)
+;;     0000BCA8 (in fn0000C6E8)
+fn0000BCAC proc
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x40(sp)
 	cmpd	$1,r13
-	Invalid
-	push	$2,r6
-	Invalid
+	beq	fn0000BF00
+
+;; fn0000BCB8: 0000BCB8
+;;   Called from:
+;;     0000BCB4 (in fn0000BCAC)
+;;     0000BCB4 (in fn0000BCAC)
+;;     0000BCD0 (in fn0000C6E8)
+;;     0000BD10 (in fn0000BD10)
+;;     0000C80E (in fn0000C6E8)
+fn0000BCB8 proc
+	loadb	1(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	loadd	0x40(sp),(r2,r1)
+	addd	(r9,r8),(r2,r1)
+	stord	(r2,r1),0x40(sp)
+
+l0000BCCA:
+	addd	$562D1800,(r1,r0)
+
+l0000BCCC:
 	cmpd	$2,r13
-	Invalid
+	beq	0000BEE6
+
+l0000BCD0:
 	push	$0,r12
+
+l0000BCD2:
 	movd	(r3,r2),(r2,r1)
-	Invalid
+	loadb	2(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$3,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BCE8:
+	loadb	3(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+
+l0000BCF0:
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$4,r13
-	beq	BDDA
-	Invalid
+
+;; fn0000BCFA: 0000BCFA
+;;   Called from:
+;;     0000B246 (in fn0000B218)
+;;     0000BCF8 (in fn0000BCB8)
+fn0000BCFA proc
+	beq	fn0000BDDA
+
+;; fn0000BCFC: 0000BCFC
+;;   Called from:
+;;     0000BCFA (in fn0000BCFA)
+;;     0000BCFA (in fn0000BCFA)
+fn0000BCFC proc
+	loadb	4(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$5,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+;; fn0000BD10: 0000BD10
+;;   Called from:
+;;     0000B4EC (in fn0000B308)
+;;     0000BD0E (in fn0000BCFC)
+fn0000BD10 proc
+	loadb	5(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$6,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BD24:
+	loadb	6(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$7,r13
-	beq	BDDA
-	Invalid
+
+;; fn0000BD36: 0000BD36
+;;   Called from:
+;;     0000BF38 (in fn0000BF32)
+;;     0000BF38 (in fn0000BF1E)
+fn0000BD36 proc
+	beq	fn0000BDDA
+
+l0000BD38:
+	loadb	7(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$8,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BD4C:
+	loadb	8(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$9,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BD62:
+	loadb	9(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$A,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BD76:
+	loadb	0xA(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$B,r13
-	beq	BDDA
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+
+;; fn0000BD82: 0000BD82
+;;   Called from:
+;;     0000B48E (in fn0000B308)
+;;     0000BD80 (in fn0000BD36)
+fn0000BD82 proc
+	stord	(r3,r2),0x40(sp)
+
+;; fn0000BD84: 0000BD84
+;;   Called from:
+;;     0000B304 (in fn0000B2F2)
+;;     0000B304 (in fn0000B2F2)
+;;     0000BD82 (in fn0000BD82)
+fn0000BD84 proc
+	addd	$56BD000B,(r1,r0)
+	beq	fn0000BDDA
+
+;; fn0000BD8C: 0000BD8C
+;;   Called from:
+;;     0000BD88 (in fn0000BD84)
+;;     0000BD8A (in fn0000BD82)
+;;     0000BD8A (in fn0000BD84)
+fn0000BD8C proc
+	loadb	0xB(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$C,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BDA0:
+	loadb	0xC(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$D,r13
-	beq	BDDA
-	Invalid
+	beq	fn0000BDDA
+
+l0000BDB4:
+	loadb	0xD(r5,r4),r0
+
+;; fn0000BDB6: 0000BDB6
+;;   Called from:
+;;     0000BB0E (in fn0000BB06)
+;;     0000BB0E (in fn0000BB0E)
+;;     0000BDB4 (in fn0000BD8C)
+fn0000BDB6 proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
 	cmpd	$E,r13
-	beq	BDDA
-	Invalid
-	cinv	[i,d,]
+	beq	fn0000BDDA
+
+;; fn0000BDC8: 0000BDC8
+;;   Called from:
+;;     0000BDC6 (in fn0000BDB6)
+;;     0000BDC6 (in fn0000BDB6)
+fn0000BDC8 proc
+	loadb	0xE(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFF00000,(r9,r8)
-	bhs	BDEC
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	Invalid
-	movd	$FFF1,r4
-	Invalid
-	Invalid
-	bal	ra,D4EC
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r3,r2)
+	stord	(r3,r2),0x40(sp)
+
+;; fn0000BDDA: 0000BDDA
+;;   Called from:
+;;     0000BCE6 (in fn0000BCB8)
+;;     0000BCFA (in fn0000BCFA)
+;;     0000BCFA (in fn0000BCFA)
+;;     0000BD0E (in fn0000BCFC)
+;;     0000BD22 (in fn0000BD10)
+;;     0000BD36 (in fn0000BD36)
+;;     0000BD4A (in fn0000BD36)
+;;     0000BD60 (in fn0000BD36)
+;;     0000BD74 (in fn0000BD36)
+;;     0000BD8A (in fn0000BD84)
+;;     0000BD8A (in fn0000BD82)
+;;     0000BD8A (in fn0000BD84)
+;;     0000BD9E (in fn0000BD8C)
+;;     0000BDB2 (in fn0000BD8C)
+;;     0000BDC6 (in fn0000BDB6)
+;;     0000BDC6 (in fn0000BDB6)
+;;     0000BDD6 (in fn0000BDC8)
+fn0000BDDA proc
+	loadd	(sp),(r9,r8)
+	cmpd	$FFF0,(r9,r8)
+	bhs	0000BDEC
+
+l0000BDE4:
+	addd	$FFFF000F,(r9,r8)
+	stord	(r9,r8),(sp)
+
+l0000BDEC:
+	movd	$FFF1,(r5,r4)
+	loadd	0x40(sp),(r3,r2)
+	bal	ra,fn0000D4EC
 	movw	r0,r2
-	Invalid
+	movd	$0,(r1,r0)
 	movw	r2,r1
-	Invalid
-	Invalid
+	ord	(r9,r8),(r1,r0)
+	addd	$38,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	cmpd	$0,r13
-	Invalid
-	pop	$2,r8,ra
+0000BE0A                               8F E0 0D 56 00 18           ...V..
+0000BE10 A8 02                                           ..              
+
+l0000BE12:
 	cmpd	$F,r13
-	Invalid
-	pop	$4,r12,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bhs	fn0000C3AC
+
+l0000BE18:
+	loadd	0x58(sp),(r1,r0)
+	addd	$FFF0,(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-28,(r3,r2)
+	stord	(r3,r2),0x60(sp)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	Invalid
+	addd	$1,(r1,r0)
+	ashud	$4,(r1,r0)
 	movd	(r4,r3),r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r4,r3)
+	stord	(r4,r3),0x50(sp)
+	loadb	(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x68(sp)
+	loadb	1(r12),r6
 	movzb	r6,(r7,r6)
 	movzw	r6,(r7,r6)
-	Invalid
-	Invalid
+	addd	(r9,r8),(r7,r6)
+	loadb	2(r12),r4
 	movzb	r4,(r5,r4)
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
+	addd	(r7,r6),(r5,r4)
+	loadb	3(r12),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
+	addd	(r5,r4),(r3,r2)
+	loadb	4(r12),r10
 	movzb	r10,(r11,r10)
 	movzw	r10,(r11,r10)
-	Invalid
-	Invalid
+	addd	(r3,r2),(r11,r10)
+	loadb	5(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,ra
-	Invalid
-	Invalid
+	addd	(r11,r10),ra
+	loadb	6(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,r13
-	Invalid
-	Invalid
+	addd	ra,r13
+	loadb	7(r12),r8
 	movzb	r8,(r1,r0)
 	movzw	r0,(r1,r0)
 	movd	(r9,r8),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	addd	r13,(r9,r8)
+	stord	(r9,r8),4(sp)
+	loadb	8(r12),r8
 	movzb	r8,(r1,r0)
 	movzw	r0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	4(sp),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),8(sp)
+	loadb	9(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	8(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0xC(sp)
+	loadb	0xA(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0xC(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x10(sp)
+	loadb	0xB(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x10(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x14(sp)
+	loadb	0xC(r12),r8
+	movzb	r8,(r9,r8)
+
+;; fn0000BEB4: 0000BEB4
+;;   Called from:
+;;     0000B420 (in fn0000B308)
+;;     0000BEB2 (in fn0000BB12)
+fn0000BEB4 proc
+	movzw	r8,(r1,r0)
+	loadd	0x14(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x18(sp)
+	loadb	0xD(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x18(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x38(sp)
+	loadb	0xE(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	cinv	[i,d,]
+	loadd	0x38(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x48(sp)
+	loadb	0xF(r12),r8
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	movzb	r8,(r9,r8)
-	movzw	r8,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x48(sp),(r9,r8)
+
+l0000BEE6:
+	addd	$6108E08F,(r5,r4)
+
+;; fn0000BEE8: 0000BEE8
+;;   Called from:
+;;     0000BEE4 (in fn0000BEB4)
+;;     0000BEE4 (in fn0000BEB4)
+;;     0000BEE6 (in fn0000BCB8)
+fn0000BEE8 proc
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	loadd	0x68(sp),(r1,r0)
+	addd	(r7,r6),(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	addd	ra,(r1,r0)
+	addd	r13,(r1,r0)
+	loadd	4(sp),r13
+	addd	r13,(r1,r0)
+
+;; fn0000BF00: 0000BF00
+;;   Called from:
+;;     0000BCB4 (in fn0000BCAC)
+;;     0000BCB4 (in fn0000BCAC)
+;;     0000BD34 (in fn0000BD10)
+;;     0000BEFA (in fn0000BEE8)
+;;     0000BEFE (in fn0000BEE8)
+fn0000BF00 proc
+	loadd	8(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	loadd	0xC(sp),(r4,r3)
+	addd	(r4,r3),(r1,r0)
+	loadd	0x10(sp),(r5,r4)
+	addd	(r5,r4),(r1,r0)
+	loadd	0x14(sp),(r9,r8)
+	addd	(r9,r8),(r1,r0)
+	loadd	0x18(sp),r13
+	addd	r13,(r1,r0)
+	loadd	0x38(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	loadd	0x48(sp),(r1,r0)
+
+;; fn0000BF1E: 0000BF1E
+;;   Called from:
+;;     0000B38A (in fn0000B308)
+;;     0000BD36 (in fn0000BD36)
+;;     0000BF1A (in fn0000BF00)
+;;     0000BF3C (in fn0000BF3C)
+fn0000BF1E proc
+	addd	(r1,r0),(r9,r8)
+	loadd	(sp),(r2,r1)
+	addd	(r2,r1),(r9,r8)
+	loadd	0x40(sp),r13
+	addd	(r9,r8),r13
+	stord	r13,0x40(sp)
+	addd	$10,r12
+
+;; fn0000BF32: 0000BF32
+;;   Called from:
+;;     0000B3B2 (in fn0000B308)
+;;     0000BF2E (in fn0000BF1E)
+fn0000BF32 proc
+	loadd	0x50(sp),(r1,r0)
 	cmpd	r12,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	fn0000BD36
+
+;; fn0000BF3C: 0000BF3C
+;;   Called from:
+;;     0000BF38 (in fn0000BF32)
+;;     0000BF38 (in fn0000BF1E)
+fn0000BF3C proc
+	loadd	0x58(sp),(r3,r2)
+	addd	$FFEF,(r3,r2)
+	loadd	0x60(sp),(r1,r0)
+	ashud	$4,(r1,r0)
 	subd	(r3,r2),(r1,r0)
-	Invalid
-	andd	$F0000,(r1,r0)
+	loadd	0x58(sp),(r1,r0)
+
+;; fn0000BF52: 0000BF52
+;;   Called from:
+;;     0000B3DA (in fn0000B308)
+;;     0000BF4E (in fn0000BF3C)
+fn0000BF52 proc
+	andd	$F,(r1,r0)
+
+;; fn0000BF56: 0000BF56
+;;   Called from:
+;;     0000B39E (in fn0000B308)
+;;     0000BF52 (in fn0000BF52)
+fn0000BF56 proc
+	cinv	[i,d,u]
+
+;; fn0000BF58: 0000BF58
+;;   Called from:
+;;     0000BF52 (in fn0000BF52)
+;;     0000BF56 (in fn0000BF56)
+fn0000BF58 proc
 	cmpd	$0,(r1,r0)
-	Invalid
-	push	$3,ra
-	Invalid
+	beq	fn0000C1D6
+
+;; fn0000BF5E: 0000BF5E
+;;   Called from:
+;;     0000BF58 (in fn0000BF56)
+;;     0000BF5A (in fn0000BF58)
+;;     0000BF5A (in fn0000BF58)
+;;     0000BF7A (in fn0000BF7A)
+;;     0000BF92 (in fn0000BF92)
+;;     0000BFBA (in fn0000BFBA)
+;;     0000C1A2 (in fn0000C1A2)
+;;     0000C1BA (in fn0000C1BA)
+fn0000BF5E proc
+	loadb	(r12),r0
+
+;; fn0000BF60: 0000BF60
+;;   Called from:
+;;     0000B3A8 (in fn0000B308)
+;;     0000BF5E (in fn0000BF5E)
+fn0000BF60 proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	loadd	0x40(sp),(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),0x40(sp)
 	cmpd	$0,(r3,r2)
-	Invalid
-	push	$2,r2
+
+;; fn0000BF76: 0000BF76
+;;   Called from:
+;;     0000B3C6 (in fn0000B308)
+;;     0000BF74 (in fn0000BF60)
+fn0000BF76 proc
+	beq	fn0000C1BA
+
+;; fn0000BF7A: 0000BF7A
+;;   Called from:
+;;     0000BF76 (in fn0000BF76)
+;;     0000BF76 (in fn0000BF60)
+fn0000BF7A proc
 	movd	(r5,r4),(r1,r0)
-	Invalid
+
+;; fn0000BF7C: 0000BF7C
+;;   Called from:
+;;     0000B3D0 (in fn0000B308)
+;;     0000BF7A (in fn0000BF7A)
+fn0000BF7C proc
+	loadb	1(r12),r0
+
+;; fn0000BF7E: 0000BF7E
+;;   Called from:
+;;     0000B3EE (in fn0000B308)
+;;     0000BF7C (in fn0000BF7C)
+fn0000BF7E proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+
+;; fn0000BF84: 0000BF84
+;;   Called from:
+;;     0000B394 (in fn0000B308)
+;;     0000B3F8 (in fn0000B308)
+;;     0000B416 (in fn0000B308)
+;;     0000BF82 (in fn0000BF7E)
+;;     0000BF82 (in fn0000BF7C)
+fn0000BF84 proc
+	stord	(r9,r8),(sp)
+
+l0000BF86:
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$1,(r3,r2)
-	Invalid
-	push	$0,r10
-	Invalid
+	beq	fn0000C1A2
+
+;; fn0000BF92: 0000BF92
+;;   Called from:
+;;     0000BF8E (in fn0000BF84)
+;;     0000BF8E (in fn0000BF84)
+fn0000BF92 proc
+	loadb	2(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$2,(r3,r2)
-	beq	C098
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
+
+;; fn0000BFA0: 0000BFA0
+;;   Called from:
+;;     0000B3BC (in fn0000B308)
+;;     0000BF9E (in fn0000BF92)
+fn0000BFA0 proc
+	addd	$5622170A,(r1,r0)
+
+;; fn0000BFA6: 0000BFA6
+;;   Called from:
+;;     0000BFA0 (in fn0000BFA0)
+;;     0000BFA2 (in fn0000BFA0)
+fn0000BFA6 proc
+	loadb	3(r12),r0
+
+;; fn0000BFA8: 0000BFA8
+;;   Called from:
+;;     0000B3E4 (in fn0000B308)
+;;     0000BFA6 (in fn0000BFA6)
+fn0000BFA8 proc
 	movzb	r0,(r1,r0)
+
+;; fn0000BFAA: 0000BFAA
+;;   Called from:
+;;     0000B402 (in fn0000B308)
+;;     0000B40C (in fn0000B308)
+;;     0000BFA8 (in fn0000BFA8)
+fn0000BFAA proc
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+
+l0000BFB0:
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$3,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+;; fn0000BFBA: 0000BFBA
+;;   Called from:
+;;     0000BFB8 (in fn0000BFAA)
+;;     0000BFB8 (in fn0000BFA8)
+fn0000BFBA proc
+	loadb	4(r12),r0
 	movzb	r0,(r1,r0)
+
+;; fn0000BFBE: 0000BFBE
+;;   Called from:
+;;     0000BC56 (in fn0000BC42)
+;;     0000BC56 (in fn0000BC42)
+;;     0000BFBC (in fn0000BFBA)
+fn0000BFBE proc
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$4,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+;; fn0000BFCE: 0000BFCE
+;;   Called from:
+;;     0000BFA4 (in fn0000BFA0)
+;;     0000BFB8 (in fn0000BFA8)
+;;     0000BFCC (in fn0000BFBE)
+;;     0000BFCC (in fn0000BFBE)
+;;     0000BFCC (in fn0000BFBE)
+fn0000BFCE proc
+	loadb	5(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$5,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000BFE2:
+	loadb	6(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$6,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000BFF6:
+	loadb	7(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
+
+;; fn0000C004: 0000C004
+;;   Called from:
+;;     0000C552 (in fn0000C3AC)
+;;     0000C552 (in fn0000C3AC)
+fn0000C004 proc
+	addd	$56721408,(r1,r0)
+
+l0000C006:
 	cmpd	$7,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+	loadb	8(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$8,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000C01E:
+	loadb	9(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$9,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000C034:
+	loadb	0xA(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$A,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000C048:
+	loadb	0xB(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$B,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000C05E:
+	loadb	0xC(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$C,(r3,r2)
-	beq	C098
-	Invalid
+	beq	0000C098
+
+l0000C072:
+	loadb	0xD(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
 	cmpd	$D,(r3,r2)
-	beq	C098
-	Invalid
-	cinv	[i,d,]
+	beq	0000C098
+
+l0000C086:
+	loadb	0xE(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$FFF1,r4
-	Invalid
-	bal	ra,D4EC
-	Invalid
-	movd	$FFF1,r4
-	Invalid
-	Invalid
-	bal	ra,D4EC
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
+	addd	(r9,r8),(r5,r4)
+	stord	(r5,r4),0x40(sp)
+
+l0000C098:
+	movd	$FFF1,(r5,r4)
+	loadd	(sp),(r3,r2)
+	bal	ra,fn0000D4EC
+	stord	(r1,r0),(sp)
+	movd	$FFF1,(r5,r4)
+	loadd	0x40(sp),(r3,r2)
+	bal	ra,fn0000D4EC
+	stord	(r1,r0),0x40(sp)
+	loadd	(sp),(r9,r8)
+	ashud	$16,(r1,r0)
+	ord	(r9,r8),(r1,r0)
+	addd	$38,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	Invalid
-	Invalid
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
+0000C0C4             10 54 BF 60 38 00 67 02 9D 03 22 00     .T.`8.g...".
+0000C0D0 FF FF 0F 00 E0 18 A1 FB DF EF 2C 00 E0 18 3D FD ..........,...=.
+0000C0E0 2F AF 28 00 B2 60 4F EA E0 18 77 FE 00 00       /.(..`O...w...  
+
+;; fn0000C0EE: 0000C0EE
+;;   Called from:
+;;     000036C8 (in fn0000356E)
+;;     0000474C (in fn000046DC)
+fn0000C0EE proc
 	push	$1,ra
 	push	$0,r7
 	movzw	r6,(r7,r6)
 	push	$1,r6
-	bal	ra,BAE0
-	Invalid
+	bal	ra,fn0000BAE0
+	addd	$4,sp
 	pop	$0,r7
 	popret	$1,ra
-	res
-	push	$1,r13,ra
-	push	$5,r8
-	movd	(r9,r8),(r3,r2)
-	movd	(r11,r10),(r5,r4)
+0000C100 00 00 9D 01 58 01 28 55 4A 55 06 52 60 14 C0 05 ....X.(UJU.R`...
+0000C110 FF FF 14 00 2C B0 6D 5E D4 55 C2 55 00 C0 3C 12 ....,.m^.U.U..<.
+0000C120 02 55 00 05 FF FF 14 00 A0 B0 0C 61 08 4B 14 00 .U.........a.K..
+0000C130 D8 C0 0A 4B 8A 61 40 05 F1 FF 00 C0 B2 13 0A 61 ...K.a@........a
+0000C140 20 05 F1 FF A2 61 0C 56 0F 11 90 54 C0 61 90 00  ....a.V...T.a..
+0000C150 00 00 F0 FF B5 10 70 00 FF FF 0E 00 C0 61 92 00 ......p......a..
+0000C160 01 00 E1 FF B5 10 72 00 FF FF 0F 00 A2 61 92 00 ......r......a..
+0000C170 00 00 F0 FF B4 10 22 00 FF FF 0F 00 02 4D 14 00 ......"......M..
+0000C180 20 90 58 02 9D 03 00 05 F0 FF EA 1E 90 54 58 02  .X..........TX.
+0000C190 9D 03 00 00 9D 01 58 01 28 55 4A 55 06 52 60 14 ......X.(UJU.R`.
+0000C1A0 C0 05                                           ..              
+
+;; fn0000C1A2: 0000C1A2
+;;   Called from:
+;;     0000BF8E (in fn0000BF84)
+;;     0000BF8E (in fn0000BF84)
+fn0000C1A2 proc
 	Invalid
-	bgt	C18C
-	movd	$FFFF,r12
-	Invalid
+	andd	(r3,r2),r12
+	movxw	r6,r13
 	movd	(r5,r4),r13
 	movd	(r3,r2),r12
-	bal	ra,D358
+	bal	ra,fn0000D358
 	movd	(r3,r2),(r1,r0)
-	movd	$FFFF,r0
-	Invalid
-	Invalid
+	movd	$FFFF,(r1,r0)
+	andd	(r11,r10),(r1,r0)
+
+;; fn0000C1BA: 0000C1BA
+;;   Called from:
+;;     0000BF76 (in fn0000BF76)
+;;     0000BF76 (in fn0000BF60)
+fn0000C1BA proc
+	loadb	(r1,r0),r10
+	addd	(r1,r0),r12
+	lshd	$-16,(r9,r8)
 	subd	(r9,r8),r13
-	Invalid
-	movd	$FFF1,r4
-	bal	ra,D4EC
-	Invalid
-	movd	$FFF1,r2
-	Invalid
+	lshd	$-16,(r11,r10)
+	addd	(r9,r8),(r11,r10)
+	movd	$FFF1,(r5,r4)
+	bal	ra,fn0000D4EC
+	addd	(r1,r0),(r11,r10)
+	movd	$FFF1,(r3,r2)
+
+;; fn0000C1D6: 0000C1D6
+;;   Called from:
+;;     0000BF58 (in fn0000BF56)
+;;     0000BF5A (in fn0000BF58)
+;;     0000BF5A (in fn0000BF58)
+;;     0000C1D2 (in fn0000C1BA)
+fn0000C1D6 proc
+	addd	(r11,r10),(r3,r2)
 	cmpd	$0,r12
-	beq	C186
-	Invalid
-	Invalid
-	cmpd	$FFF00000,(r1,r0)
-	bhs	C15E
-	movd	$EFFFF,(r1,r0)
-	Invalid
-	cmpd	$FFE10001,(r3,r2)
-	bhs	C16E
-	movd	$FFFFF,(r3,r2)
-	Invalid
-	cmpd	$FFF00000,(r3,r2)
-	bhs	C17C
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	Invalid
-	Invalid
-	popret	$1,r13,ra
-	movd	$FFF0,r0
-	br	C15E
-	Invalid
+	beq	0000C218
+
+l0000C1DC:
+	movd	$FFFFFFFF,(r1,r0)
+	addd	r12,(r1,r0)
+	cmpd	$FFF0,(r1,r0)
+	bhs	0000C1F0
+
+l0000C1E8:
+	movd	$FFFF000E,(r1,r0)
+	addd	r12,(r1,r0)
+
+l0000C1F0:
+	cmpd	$1FFE1,(r3,r2)
+	bhs	0000C200
+
+l0000C1F8:
+	movd	$FFFF000F,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+
+l0000C200:
+	cmpd	$FFF0,(r3,r2)
+	bhs	0000C20E
+
+l0000C208:
+	addd	$FFFF000F,(r3,r2)
+
+l0000C20E:
+	ashud	$16,(r3,r2)
+	ord	(r3,r2),(r1,r0)
 	pop	$5,r8
 	popret	$1,r13,ra
-	res
-	push	$1,r13,ra
-	push	$5,r8
-	movd	(r9,r8),(r3,r2)
-	movd	(r11,r10),(r5,r4)
-	Invalid
-	bgt	C21E
-	movd	$FFFF,r12
-	Invalid
-	movd	(r5,r4),r13
-	movd	(r3,r2),r12
-	bal	ra,D358
-	movd	(r3,r2),(r1,r0)
-	movd	$FFFF,r0
-	Invalid
-	Invalid
-	subd	(r9,r8),r13
-	Invalid
-	movd	$FFF1,r4
-	bal	ra,D4EC
-	Invalid
-	movd	$FFF1,r2
-	Invalid
-	cmpd	$0,r12
-	beq	C218
-	Invalid
-	Invalid
-	cmpd	$FFF00000,(r1,r0)
-	bhs	C1F0
-	movd	$EFFFF,(r1,r0)
-	Invalid
-	cmpd	$FFE10001,(r3,r2)
-	bhs	C200
-	movd	$FFFFF,(r3,r2)
-	Invalid
-	cmpd	$FFF00000,(r3,r2)
-	bhs	C20E
-	Invalid
-	Invalid
-	cinv	[i,d,u]
-	Invalid
-	Invalid
-	popret	$1,r13,ra
-	movd	$FFF0,r0
-	br	C1F0
-	Invalid
-	pop	$5,r8
-	popret	$1,r13,ra
+
+l0000C218:
+	movd	$FFF0,(r1,r0)
+	br	0000C1F0
+0000C21E                                           90 54               .T
+0000C220 58 02 9D 03                                     X...            
+
+;; fn0000C224: 0000C224
+;;   Called from:
+;;     0000CB04 (in fn0000CAF8)
+fn0000C224 proc
 	push	$1,r13,ra
 	push	$6,r7
-	Invalid
-	res
-	Invalid
-	Invalid
+	movd	$16,r12
+	addd	sp,r12
+	loadd	(r12),r12
 	movd	(r1,r0),(r3,r2)
 	xord	$FFFFFFFF,(r1,r0)
 	cmpd	$0,r12
-	beq	C27E
-	Invalid
-	Invalid
-	beq	C288
+	beq	0000C27E
+
+l0000C23C:
+	movd	$3,(r3,r2)
+	andd	(r5,r4),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	0000C288
+
+l0000C246:
 	movd	$FC78,ra
-	br	C258
+	br	0000C258
+
+l0000C24C:
 	movd	(r5,r4),r13
-	Invalid
-	Invalid
-	beq	C28A
-	Invalid
-	Invalid
-	Invalid
+	movd	$3,(r3,r2)
+	andd	r13,(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	0000C28A
+
+l0000C258:
+	movd	$1,r13
+	addd	(r5,r4),r13
+	loadb	(r5,r4),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	res
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xord	(r1,r0),(r3,r2)
+	andd	$FF,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r3,r2),(r3,r2)
+	lshd	$-24,(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	addd	$FFFFFFFF,r12
 	cmpd	$0,r12
-	bne	C24C
+	bne	0000C24C
+
+l0000C27E:
 	xord	$FFFFFFFF,(r1,r0)
 	pop	$6,r7
 	popret	$1,r13,ra
+
+l0000C288:
 	movd	r13,(r5,r4)
+
+l0000C28A:
 	cmpd	$1F,r12
-	Invalid
-	pop	$4,ra,ra
+	bhs	0000C82A
+
+l0000C292:
 	movd	(r11,r10),r13
-	Invalid
-	Invalid
-	Invalid
-	andd	$FFE0FFFF,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	movd	$FFE0,(r3,r2)
+	addd	r12,(r3,r2)
+	andd	$FFFFFFE0,(r3,r2)
+	addd	$20,(r3,r2)
+	addd	(r3,r2),r13
 	movd	$FC78,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	loadd	(r11,r10),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	movd	(r3,r2),(r1,r0)
+	lshd	$-16,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$100,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r3,r2),(r7,r6)
+	movd	$FF,(r3,r2)
+	andd	(r1,r0),(r3,r2)
+	addd	$300,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
 	movd	(r5,r4),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	ra,(r5,r4)
+	loadd	(r3,r2),(r3,r2)
+	loadd	(r5,r4),(r5,r4)
+	xord	(r3,r2),(r5,r4)
+	loadd	4(r11,r10),(r3,r2)
+	xord	(r5,r4),(r3,r2)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r5,r4)
+	xord	(r5,r4),(r3,r2)
+	xord	(r3,r2),(r7,r6)
 	movd	(r1,r0),(r7,r6)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	$FF,(r1,r0)
+	andd	(r7,r6),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r3,r2),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r7,r6)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r3,r2),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	loadd	8(r11,r10),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	lshd	$-24,(r7,r6)
+	andd	$FF,(r7,r6)
+	addd	$200,(r7,r6)
+	ashud	$2,(r7,r6)
+	addd	ra,(r7,r6)
+	loadd	(r7,r6),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	xord	(r1,r0),(r9,r8)
 	movd	(r1,r0),(r9,r8)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r7,r6)
+	movd	$FF,(r1,r0)
+	andd	(r9,r8),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r9,r8)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r1,r0)
+	loadd	0xC(r11,r10),(r5,r4)
+	xord	(r1,r0),(r5,r4)
+	lshd	$-24,(r9,r8)
+	andd	$FF,(r9,r8)
+	addd	$200,(r9,r8)
+	ashud	$2,(r9,r8)
+	addd	ra,(r9,r8)
+	loadd	(r9,r8),(r1,r0)
+	xord	(r1,r0),(r5,r4)
+	xord	(r5,r4),(r7,r6)
+
+;; fn0000C3AC: 0000C3AC
+;;   Called from:
+;;     0000BE14 (in fn0000BB12)
+;;     0000C3A8 (in fn0000C224)
+fn0000C3AC proc
 	movd	(r1,r0),(r7,r6)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	$FF,(r1,r0)
+	andd	(r7,r6),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r7,r6)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	ra,(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	loadd	0x10(r11,r10),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	lshd	$-24,(r7,r6)
+	andd	$FF,(r7,r6)
+	addd	$200,(r7,r6)
+	ashud	$2,(r7,r6)
+	addd	ra,(r7,r6)
+	loadd	(r7,r6),(r1,r0)
+	xord	(r1,r0),(r3,r2)
+	xord	(r3,r2),(r9,r8)
 	movd	(r1,r0),(r9,r8)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r7,r6)
+	movd	$FF,(r1,r0)
+	andd	(r9,r8),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r3,r2),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r9,r8)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r1,r0)
+	loadd	0x14(r11,r10),(r5,r4)
+	xord	(r1,r0),(r5,r4)
+	lshd	$-24,(r9,r8)
+	andd	$FF,(r9,r8)
+	addd	$200,(r9,r8)
+	ashud	$2,(r9,r8)
+	addd	ra,(r9,r8)
+	loadd	(r9,r8),(r1,r0)
+	xord	(r1,r0),(r5,r4)
+	xord	(r5,r4),(r7,r6)
 	movd	(r1,r0),(r7,r6)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	$FF,(r1,r0)
+	andd	(r7,r6),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r5,r4),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r7,r6)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	ra,(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	loadd	0x18(r11,r10),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	lshd	$-24,(r7,r6)
+	andd	$FF,(r7,r6)
+	addd	$200,(r7,r6)
+	ashud	$2,(r7,r6)
+	addd	ra,(r7,r6)
+	loadd	(r7,r6),(r1,r0)
+	xord	(r1,r0),(r3,r2)
+	xord	(r3,r2),(r9,r8)
 	movd	(r1,r0),(r9,r8)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r7,r6)
+	movd	$FF,(r1,r0)
+	andd	(r9,r8),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r5,r4),(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	andd	$FF0000,(r9,r8)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	ra,(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	loadd	0x38(r11,r10),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	lshd	$-24,(r9,r8)
+	andd	$FF,(r9,r8)
+	addd	$200,(r9,r8)
+	ashud	$2,(r9,r8)
+	addd	ra,(r9,r8)
+	loadd	(r9,r8),(r1,r0)
+	xord	(r1,r0),(r3,r2)
+	xord	(r7,r6),(r3,r2)
 	movd	(r1,r0),(r3,r2)
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
+	loadd	(r1,r0),(r7,r6)
+	movd	$FF,(r1,r0)
+	andd	(r3,r2),(r1,r0)
+	addd	$300,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	ra,(r1,r0)
 	movd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	ra,(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r5,r4)
+	xord	(r5,r4),(r1,r0)
+	lshd	$-24,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$200,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r1,r0)
+	xord	(r7,r6),(r1,r0)
+	addd	$20,(r11,r10)
 	cmpd	r13,(r11,r10)
-	Invalid
-	Invalid
-	andd	$1F0000,r12
+	bne	fn0000C004
+
+;; fn0000C556: 0000C556
+;;   Called from:
+;;     0000C552 (in fn0000C3AC)
+;;     0000C552 (in fn0000C3AC)
+fn0000C556 proc
+	andd	$1F,r12
 	cmpd	$3,r12
-	Invalid
-	pop	$2,ra,ra
-	Invalid
-	Invalid
-	Invalid
+	bhs	0000CABA
+
+l0000C562:
+	loadd	(r13),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	movd	$FC78,(r11,r10)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-16,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$100,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadd	(r3,r2),(r9,r8)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	movd	$FF,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	(r3,r2),(r3,r2)
+	loadd	(r5,r4),(r7,r6)
+	xord	(r7,r6),(r3,r2)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	movd	$FFFC,ra
+	addd	r12,ra
 	cmpd	$3,ra
-	Invalid
-	pop	$3,r10
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
+	bhs	0000CA36
+
+l0000C5C6:
+	loadd	4(r13),(r3,r2)
+	xord	(r3,r2),(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$3,(r3,r2)
-	Invalid
-	push	$5,r10,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-16,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$100,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadd	(r3,r2),(r9,r8)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	movd	$FF,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	(r3,r2),(r3,r2)
+	loadd	(r5,r4),(r7,r6)
+	xord	(r7,r6),(r3,r2)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	movd	$FFF8,(r3,r2)
+	addd	r12,(r3,r2)
 	cmpd	$3,(r3,r2)
-	Invalid
-	push	$7,r10
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$3,(r3,r2)
-	Invalid
-	push	$1,r8
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$3,(r3,r2)
-	bhs	C7FC
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	movd	(r1,r0),(r7,r6)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$3,(r3,r2)
-	bhs	C7FC
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r3,r2)
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	popret	$0,r0
-	Invalid
-	Invalid
+	bhs	0000C9D6
+
+l0000C626:
+	loadd	8(r13),(r3,r2)
+	xord	(r3,r2),(r1,r0)
 	movd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FF0000,(r1,r0)
-	Invalid
-	pop	$0,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$FFFCFFFF,ra
-	Invalid
-	Invalid
-	andd	$30000,r12
+	lshd	$-16,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$100,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadd	(r3,r2),(r9,r8)
+	movd	(r3,r2),(r1,r0)
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	movd	$FF,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	(r3,r2),(r3,r2)
+	loadd	(r5,r4),(r7,r6)
+	xord	(r7,r6),(r3,r2)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+
+;; fn0000C674: 0000C674
+;;   Called from:
+;;     0000BB14 (in fn0000BB12)
+;;     0000C672 (in fn0000C556)
+fn0000C674 proc
+	loadd	(r1,r0),(r3,r2)
+	xord	(r9,r8),(r1,r0)
+	movd	$FFF4,(r3,r2)
+	addd	r12,(r3,r2)
+	cmpd	$3,(r3,r2)
+	bhs	fn0000C976
+
+;; fn0000C686: 0000C686
+;;   Called from:
+;;     0000C004 (in fn0000C004)
+;;     0000C28E (in fn0000C224)
+;;     0000C680 (in fn0000C674)
+;;     0000C682 (in fn0000C674)
+;;     0000CA36 (in fn0000C556)
+;;     0000CA42 (in fn0000C556)
+;;     0000CA46 (in fn0000C556)
+fn0000C686 proc
+	loadd	0xC(r13),(r7,r6)
+	xord	(r1,r0),(r7,r6)
+	movd	(r1,r0),(r7,r6)
+
+;; fn0000C68E: 0000C68E
+;;   Called from:
+;;     0000BB22 (in fn0000BB12)
+;;     0000C68C (in fn0000C686)
+fn0000C68E proc
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-8,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	movd	$FF,(r5,r4)
+	andd	(r7,r6),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	movd	$FFF0,(r3,r2)
+	addd	r12,(r3,r2)
+	cmpd	$3,(r3,r2)
+	bhs	fn0000C914
+
+;; fn0000C6E8: 0000C6E8
+;;   Called from:
+;;     0000C6E4 (in fn0000C68E)
+;;     0000C6E4 (in fn0000C68E)
+fn0000C6E8 proc
+	loadd	0x10(r13),(r7,r6)
+	xord	(r1,r0),(r7,r6)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-8,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	movd	$FF,(r5,r4)
+	andd	(r7,r6),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	movd	$FFEC,(r3,r2)
+	addd	r12,(r3,r2)
+	cmpd	$3,(r3,r2)
+	bhs	0000C7FC
+
+l0000C748:
+	loadd	0x14(r13),(r7,r6)
+	xord	(r1,r0),(r7,r6)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-16,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$100,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r9,r8)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-8,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	movd	$FF,(r5,r4)
+	andd	(r7,r6),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+
+l0000C778:
+	addd	(r11,r10),(r5,r4)
+	loadd	(r1,r0),(r1,r0)
+	loadd	(r5,r4),(r3,r2)
+	xord	(r1,r0),(r3,r2)
+	movd	(r1,r0),(r7,r6)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	loadd	(r1,r0),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+
+l0000C79C:
+	loadd	(r1,r0),(r9,r8)
+	movd	$FFE8,(r3,r2)
+	addd	r12,(r3,r2)
+	cmpd	$3,(r3,r2)
+	bhs	0000C7FC
+
+l0000C7A8:
+	loadd	0x18(r13),(r3,r2)
+	xord	(r3,r2),(r1,r0)
+	movd	(r3,r2),(r1,r0)
+	lshd	$-16,(r3,r2)
+	andd	$FF,(r3,r2)
+	addd	$100,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadd	(r3,r2),(r9,r8)
+	movd	$FF,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	addd	$300,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	movd	(r3,r2),(r1,r0)
+
+l0000C7D4:
+	lshd	$-8,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	loadd	(r5,r4),(r7,r6)
+	loadd	(r3,r2),(r3,r2)
+	xord	(r7,r6),(r3,r2)
+	lshd	$-24,(r1,r0)
+	andd	$FF,(r1,r0)
+	addd	$200,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	(r1,r0),(r11,r10)
+	loadd	(r11,r10),(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	(r9,r8),(r1,r0)
+
+l0000C7FC:
+	andd	$FFFFFFFC,ra
+	addd	$4,ra
+	addd	ra,r13
+	andd	$3,r12
 	cmpd	$0,r12
-	Invalid
-	Invalid
-	movd	$FC78,r4
-	Invalid
+	beq	0000BCF0
+
+l0000C812:
+	movd	$FC78,(r5,r4)
+	loadb	(r13),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	res
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xord	(r1,r0),(r3,r2)
+	andd	$FF,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+
+l0000C82A:
+	loadd	(r3,r2),(r9,r8)
+	lshd	$-24,(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	cmpd	$1,r12
+	beq	0000BCCA
+
+l0000C838:
+	loadb	1(r13),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	res
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xord	(r1,r0),(r3,r2)
+	andd	$FF,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	loadd	(r3,r2),(r9,r8)
+	lshd	$-24,(r1,r0)
+	xord	(r9,r8),(r1,r0)
+	cmpd	$2,r12
+	beq	0000BCA8
+
+l0000C85A:
+	loadb	2(r13),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	res
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	xord	(r1,r0),(r3,r2)
+	andd	$FF,(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	loadd	(r5,r4),(r3,r2)
+	lshd	$-24,(r1,r0)
+	xord	(r3,r2),(r1,r0)
+	xord	$FFFFFFFF,(r1,r0)
 	pop	$6,r7
 	popret	$1,r13,ra
-	res
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	ra,(r3,r2)
-	Invalid
-	push	$0,r12
-	Invalid
-	push	$0,r4
-	Invalid
-	Invalid
-	pop	$2,ra
-	movd	$8320EDB8,(r1,r0)
-	Invalid
-	movd	(r1,r0),sp
-	Invalid
-	push	$0,r8
-	Invalid
-	push	$0,r10
-	Invalid
-	movd	$55F261F4,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	bne	C8B6
-	Invalid
-	res
-	Invalid
-	movd	(r9,r8),r13
-	Invalid
-	push	$0,r8
-	Invalid
-	push	$0,r0
-	Invalid
-	push	$0,r10
-	Invalid
-	push	$0,r2
-	Invalid
-	push	$0,r0
-	Invalid
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	C902
-	Invalid
-	movd	(r3,r2),sp
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r0
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C8E8
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r11,r10)
-	bne	C8DC
-	Invalid
-	push	$0,r0
-	Invalid
-	push	$0,r0
-	Invalid
-	Invalid
-	push	$0,r8
-	Invalid
-	push	$0,r10
+0000C880 00 00 9D 01 67 01 BF 60 F0 FE 2E 55 4F EF 0C 01 ....g..`...UO...
+0000C890 6F DF 04 01 06 52 D0 18 2E 02 70 00 B8 ED 20 83 o....R....p... .
+0000C8A0 0F E0 F0 55 FF DF 08 01 1F DF 0A 01 B4 54 7C 00 ...U.........T|.
+0000C8B0 F4 61 F2 55 10 54 02 E2 00 61 42 60 42 57 1C 1F .a.U.T...aB`BW..
+0000C8C0 BD 54 80 00 FD 61 D8 55 0F 9F 08 01 0F DF 00 01 .T...a.U........
+0000C8D0 1F 9F 0A 01 1F DF 02 01 AF AF 00 01 0A A0 06 55 ...............U
+0000C8E0 00 56 00 11 06 54 F2 55 14 54 14 00 04 B0 04 56 .V...T.U.T.....V
+0000C8F0 00 18 40 01 42 A0 14 00 46 A0 F0 4B 42 60 00 56 ..@.B...F..KB`.V
+0000C900 14 1F 68 E0 4A 60 48 60 AD 57 19 1E AF EF 00 01 ..h.J`H`.W......
+0000C910 BA 54 00 01                                     .T..            
+
+;; fn0000C914: 0000C914
+;;   Called from:
+;;     0000C6E4 (in fn0000C68E)
+;;     0000C6E4 (in fn0000C68E)
+fn0000C914 proc
+	addd	sp,(r11,r10)
+	loadw	0x210(sp),r8
+	loadw	0x214(sp),r9
 	movd	r12,r13
-	Invalid
+
+l0000C920:
+	loadd	(r12),(r1,r0)
 	movd	(r7,r6),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	C946
-	Invalid
+	beq	0000C946
+
+l0000C928:
+	movd	$0,(r7,r6)
 	movd	(r3,r2),r13
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r6
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C92C
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r12,(r11,r10)
-	bne	C920
-	movd	(r11,r10),r13
-	Invalid
-	push	$0,r8
-	Invalid
-	push	$0,r10
-	Invalid
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	C97E
-	Invalid
-	movd	(r3,r2),sp
-	Invalid
-	Invalid
-	beq	CA04
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C966
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r0
-	cmpd	(r9,r8),(r1,r0)
-	bne	C95A
-	Invalid
-	push	$0,r4
-	Invalid
-	Invalid
-	bne	CA64
-	Invalid
-	push	$0,r4
-	Invalid
-	Invalid
-	push	$0,r6
-	Invalid
-	beq	C9F4
-	Invalid
-	push	$0,r8
-	Invalid
-	push	$0,r10
-	movd	(r9,r8),r13
-	Invalid
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	C9D2
-	Invalid
-	movd	(r3,r2),r13
-	Invalid
-	Invalid
-	beq	CA1C
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C9BA
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r12,(r9,r8)
-	bne	C9AE
-	Invalid
-	push	$0,r6
-	Invalid
-	Invalid
-	bne	CA94
-	Invalid
-	push	$0,r4
-	Invalid
-	Invalid
-	push	$0,r4
-	Invalid
-	bne	C950
-	Invalid
-	push	$0,r12
-	Invalid
-	push	$1,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C966
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r0
-	cmpd	(r9,r8),(r1,r0)
-	bne	C95A
-	br	C98C
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	bne	C9BA
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r12,(r9,r8)
-	bne	C9AE
-	br	C9DC
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r12,(r11,r10)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,ra
-	beq	C996
-	Invalid
-	movd	(r1,r0),r13
-	Invalid
-	Invalid
-	beq	CA88
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,ra
-	bne	CA6C
-	movd	ra,(r5,r4)
-	br	C996
-	Invalid
-	Invalid
-	cmpd	$0,ra
-	bne	CA6C
-	movd	ra,(r5,r4)
-	br	C996
-	cmpd	$0,ra
-	beq	C9E6
-	Invalid
-	movd	(r1,r0),sp
-	Invalid
-	Invalid
-	beq	CAB8
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,ra
-	bne	CA9C
-	movd	ra,(r5,r4)
-	br	C9E6
-	Invalid
-	Invalid
-	cmpd	$0,ra
-	bne	CA9C
-	movd	ra,(r5,r4)
-	br	C9E6
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	push	$1,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-	movd	$FC78,r0
-	Invalid
-	push	$1,ra
-	push	$1,r12
-	Invalid
-	Invalid
-	Invalid
+
+l0000C92C:
+	movd	$1,(r5,r4)
+	andd	(r1,r0),(r5,r4)
 	cmpd	$0,(r5,r4)
-	beq	CAEE
-	push	$1,r0
-	bal	ra,C224
-	Invalid
-	pop	$1,r12
-	popret	$1,ra
-	movw	r4,r0
-	movw	r5,r1
-	pop	$1,r12
-	popret	$1,ra
-	res
+	beq	fn0000CB60
+
+l0000C938:
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r7,r6)
+	lshd	$-31,(r1,r0)
+	addd	$4,(r3,r2)
+	cmpd	$0,(r1,r0)
+	bne	0000C92C
+
+l0000C946:
+	stord	(r7,r6),(r9,r8)
+	addd	$4,r12
+	addd	$4,(r9,r8)
+	cmpd	r12,(r11,r10)
+	bne	0000C920
+
+l0000C950:
+	movd	(r11,r10),r13
+	loadw	0x210(sp),r8
+	loadw	0x214(sp),r9
+
+l0000C95A:
+	loadd	(r9,r8),(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	0000C97E
+
+l0000C962:
+	movd	$0,(r7,r6)
+	movd	(r3,r2),sp
+
+l0000C966:
+	movd	$1,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	beq	0000CA04
+
+l0000C970:
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r7,r6)
+
+;; fn0000C976: 0000C976
+;;   Called from:
+;;     0000C55E (in fn0000C556)
+;;     0000C622 (in fn0000C556)
+;;     0000C680 (in fn0000C674)
+;;     0000C682 (in fn0000C674)
+;;     0000C94E (in fn0000C914)
+fn0000C976 proc
+	lshd	$-31,(r1,r0)
+	addd	$4,(r3,r2)
+	cmpd	$0,(r1,r0)
+	bne	0000C966
+
+l0000C97E:
+	stord	(r7,r6),(r11,r10)
+	addd	$4,(r9,r8)
+	addd	$4,(r11,r10)
+	loadd	0x200(sp),(r1,r0)
+	cmpd	(r9,r8),(r1,r0)
+	bne	0000C95A
+
+l0000C98C:
+	loadw	0x208(sp),r0
+	andw	$1,r1
+	cmpw	$0,r0
+	bne	0000CA64
+
+l0000C996:
+	loadw	0x208(sp),r1
+	ashuw	$-15,r1
+	storw	r1,0x20C(sp)
+	cmpw	$0,r1
+	beq	0000C9F4
+
+l0000C9A4:
+	loadw	0x210(sp),r10
+	loadw	0x214(sp),r11
+	movd	(r9,r8),r13
+
+l0000C9AE:
+	loadd	(r9,r8),(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	0000C9D2
+
+l0000C9B6:
+	movd	$0,(r7,r6)
+	movd	(r3,r2),r13
+
+l0000C9BA:
+	movd	$1,(r5,r4)
+	andd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	beq	0000CA1C
+
+l0000C9C4:
+	loadd	(r3,r2),(r5,r4)
+	xord	(r5,r4),(r7,r6)
+	lshd	$-31,(r1,r0)
+	addd	$4,(r3,r2)
+	cmpd	$0,(r1,r0)
+	bne	0000C9BA
+
+l0000C9D2:
+	stord	(r7,r6),(r11,r10)
+	addd	$4,(r9,r8)
+
+l0000C9D6:
+	addd	$4,(r11,r10)
+	cmpd	r12,(r9,r8)
+	bne	0000C9AE
+
+l0000C9DC:
+	loadw	0x20C(sp),r0
+	andw	$1,r1
+	cmpw	$0,r0
+	bne	0000CA94
+
+l0000C9E6:
+	loadw	0x208(sp),r0
+	ashuw	$-14,r0
+	storw	r0,0x208(sp)
+	cmpw	$0,r0
+	bne	0000C950
+
+l0000C9F4:
+	loadd	0x218(sp),(r1,r0)
+	xord	ra,(r1,r0)
+	addd	$110,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+
+l0000CA04:
+	lshd	$-31,(r1,r0)
+	addd	$4,(r3,r2)
+	cmpd	$0,(r1,r0)
+	bne	0000C966
+
+l0000CA0C:
+	stord	(r7,r6),(r11,r10)
+	addd	$4,(r9,r8)
+	addd	$4,(r11,r10)
+	loadd	0x200(sp),(r1,r0)
+	cmpd	(r9,r8),(r1,r0)
+	bne	0000C95A
+
+l0000CA1A:
+	br	0000C98C
+
+l0000CA1C:
+	lshd	$-31,(r1,r0)
+	addd	$4,(r3,r2)
+	cmpd	$0,(r1,r0)
+	bne	0000C9BA
+
+l0000CA24:
+	stord	(r7,r6),(r11,r10)
+	addd	$4,(r9,r8)
+	addd	$4,(r11,r10)
+	cmpd	r12,(r9,r8)
+	bne	0000C9AE
+
+l0000CA2E:
+	br	0000C9DC
+0000CA30 F0 4B 42 60 00 56                               .KB`.V          
+
+l0000CA36:
+	bne	0000C79C
+
+l0000CA3A:
+	stord	(r7,r6),(r9,r8)
+	addd	$4,(r11,r10)
+	addd	$4,(r9,r8)
+	cmpd	r13,(r11,r10)
+	bne	0000C778
+
+l0000CA46:
+	br	0000C7D4
+0000CA4A                               F0 4B 42 60 00 56           .KB`.V
+0000CA50 10 18 DD FE 68 E0 4C 60 48 60 AC 57 10 18 C5 FE ....h.L`H`.W....
+0000CA60 E0 18 F1 FE                                     ....            
+
+l0000CA64:
+	cmpd	$0,ra
+	beq	0000C996
+
+l0000CA68:
+	movd	$0,(r5,r4)
+	movd	(r1,r0),r13
+
+l0000CA6C:
+	movd	$1,(r3,r2)
+	andd	ra,(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	0000CA88
+
+l0000CA76:
+	loadd	(r1,r0),(r3,r2)
+	xord	(r3,r2),(r5,r4)
+	lshd	$-31,ra
+	addd	$4,(r1,r0)
+	cmpd	$0,ra
+	bne	0000CA6C
+
+l0000CA84:
+	movd	ra,(r5,r4)
+	br	0000C996
+
+l0000CA88:
+	lshd	$-31,ra
+	addd	$4,(r1,r0)
+	cmpd	$0,ra
+	bne	0000CA6C
+
+l0000CA90:
+	movd	ra,(r5,r4)
+	br	0000C996
+
+l0000CA94:
+	cmpd	$0,ra
+	beq	0000C9E6
+
+l0000CA98:
+	movd	$0,(r5,r4)
+	movd	(r1,r0),sp
+
+l0000CA9C:
+	movd	$1,(r3,r2)
+	andd	ra,(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	0000CAB8
+
+l0000CAA6:
+	loadd	(r1,r0),(r3,r2)
+	xord	(r3,r2),(r5,r4)
+	lshd	$-31,ra
+	addd	$4,(r1,r0)
+	cmpd	$0,ra
+	bne	0000CA9C
+
+l0000CAB4:
+	movd	ra,(r5,r4)
+	br	0000C9E6
+
+l0000CAB8:
+	lshd	$-31,ra
+
+l0000CABA:
+	addd	$4,(r1,r0)
+	cmpd	$0,ra
+	bne	0000CA9C
+
+l0000CAC0:
+	movd	ra,(r5,r4)
+	br	0000C9E6
+0000CAC4             20 55 BF 60 10 01 67 02 9D 03 00 05      U.`..g.....
+0000CAD0 78 FC EE 0A 1E 01 1C 01 8C 54 FC 61 0C A0 04 56 x........T.a...V
+0000CAE0 07 10 10 01 FF C0 41 F7 4F 60 1C 02 1E 03 40 5B ......A.O`....@[
+0000CAF0 51 5B 1C 02 1E 03 00 00                         Q[......        
+
+;; fn0000CAF8: 0000CAF8
+;;   Called from:
+;;     00003388 (in fn00003338)
+;;     00004780 (in fn000046DC)
+;;     000054EE (in fn00004CD4)
+;;     00005562 (in fn00004CD4)
+fn0000CAF8 proc
 	push	$1,ra
 	push	$0,r7
 	cmpd	$0,(r5,r4)
-	beq	CB0E
+	beq	0000CB0E
+
+l0000CB00:
 	movzw	r6,(r7,r6)
 	push	$1,r6
-	bal	ra,C224
-	Invalid
+	bal	ra,fn0000C224
+	addd	$4,sp
 	pop	$0,r7
 	popret	$1,ra
+
+l0000CB0E:
 	movw	r4,r0
 	movw	r5,r1
 	pop	$0,r7
 	popret	$1,ra
-	res
-	push	$1,ra
-	bal	ra,C882
-	popret	$1,ra
-	push	$1,ra
-	bal	ra,C882
-	popret	$1,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movd	(r9,r8),(r3,r2)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r4,(r5,r4)
-	movd	(r7,r6),r13
-	subd	(r7,r6),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	movzw	r0,(r1,r0)
+0000CB16                   00 00 1E 01 FF C0 69 FD 1E 03       ......i...
+0000CB20 1E 01 FF C0 61 FD 1E 03 9D 01 67 01 BF 60 A8 FF ....a.....g..`..
+0000CB30 28 55 C2 AF 1C 00 02 A0 0F E0 02 92 B0 32 FB FF (U...........2..
+0000CB40 00 5F 2F A0 02 61 2F E8 D8 A6 08 98 04 3B 44 5F ._/..a/......;D_
+0000CB50 D6 55 14 00 46 C0 6F EF 2C 00 B0 32 FF FE 00 5F .U..F.o.,..2..._
+
+;; fn0000CB60: 0000CB60
+;;   Called from:
+;;     0000C934 (in fn0000C914)
+fn0000CB60 proc
 	movd	(r3,r2),r13
-	Invalid
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x14(sp)
+	loadw	0x3C(r12),r3
+	storw	r3,0xA(sp)
+	loadw	0x40(r12),r4
+	storw	r4,0x60(sp)
+	loadw	0x44(r12),r5
+	storw	r5,8(sp)
+	loadd	0x48(r12),(r7,r6)
+	stord	(r7,r6),0xC(sp)
+	loadd	0x50(r12),(r11,r10)
+	loadw	0x58(r12),r5
+	loadd	0x68(r12),ra
+	loadd	0x70(r12),(r1,r0)
+	stord	(r1,r0),4(sp)
+	loadw	0x7C(r12),r1
+	movw	$1,r0
 	movw	r0,r2
-	Invalid
+	ashuw	r1,r2
 	movw	r2,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	addw	$FFFF,r9
+	loadw	0x78(r12),r2
+	ashuw	r2,r0
+	addw	$FFFF,r9
 	movzw	r0,(r4,r3)
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r4
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r4,r3),0x18(sp)
+	loadw	8(sp),r4
+	lshw	$-15,r4
+	storw	r4,0x70(sp)
+	loadw	8(sp),r6
+	andw	$FFFE,r11
+	storw	r6,0x40(sp)
 	movzw	r6,(r3,r2)
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r3,r2),0x38(sp)
+	loadd	0xC(sp),(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x68(sp)
 	movzw	r1,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	stord	(r3,r2),0x50(sp)
+	loadw	0xA(sp),r3
+	loadw	8(sp),r4
+	addw	r3,r4
+	storw	r3,0x64(sp)
+	loadd	0xC(sp),(r7,r6)
+	addd	$2,(r7,r6)
+	stord	(r7,r6),0x78(sp)
+	addw	$FFFF,r9
+	storw	r4,0x44(sp)
 	movzw	r4,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$EF8F5B56,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	blo	CC20
-	Invalid
+	addd	$1,(r1,r0)
+	loadd	0xC(sp),(r3,r2)
+	addd	(r1,r0),(r3,r2)
+	stord	(r3,r2),0x80(sp)
+	movw	r5,r6
+	stord	(r9,r8),0x48(sp)
+	loadd	(sp),(r8,r7)
+	cmpw	$E,r6
+	blo	0000CC20
+
+l0000CC02:
+	loadb	1(r8,r7),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movw	$8,r2
+	addw	r2,r6
+	ashud	r2,(r1,r0)
+	loadb	(r8,r7),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	r6,(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	(r1,r0),(r11,r10)
+	addw	$10,r11
+	addd	$2,(r8,r7)
+
+l0000CC20:
+	loadd	0x18(sp),(r3,r2)
+	andd	(r11,r10),(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadb	(r3,r2),r1
+	loadw	2(r3,r2),r0
+	loadb	1(r3,r2),r2
 	movzb	r2,(r4,r3)
 	movb	$0,r4
+	subb	r4,r2
 	Invalid
-	Invalid
-	Invalid
+	subw	r6,r3
 	movzb	r1,(r3,r2)
-	Invalid
-	beq	CC9C
+	cmpw	$0,r2
+	beq	0000CC9C
 	movb	$10,r3
-	Invalid
+	andb	r3,r1
 	cmpb	$0,r3
-	bne	CCC0
+	bne	0000CCC0
 	movb	$40,r3
-	Invalid
+	andb	r3,r1
 	cmpb	$0,r3
-	Invalid
-	push	$6,r0,ra
-	Invalid
-	br	CC70
+	bne	0000D012
+	movw	$1,r4
+	br	0000CC70
 	movb	$10,r3
-	Invalid
+	andb	r3,r1
 	cmpb	$0,r3
-	bne	CCC0
+	bne	0000CCC0
 	movb	$40,r3
-	Invalid
+	andb	r3,r1
 	cmpb	$0,r3
-	Invalid
-	push	$4,r6,ra
+	bne	0000CFF8
 	movw	r4,r1
-	Invalid
+	ashuw	r2,r1
 	movw	r1,r2
-	Invalid
+	addw	$FFFF,r9
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	andd	(r11,r10),(r3,r2)
+	movzw	r0,(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	ashud	$2,(r3,r2)
+	addd	ra,(r3,r2)
+	loadb	(r3,r2),r1
+	loadw	2(r3,r2),r0
+	loadb	1(r3,r2),r2
 	movzb	r2,(r4,r3)
 	movb	$0,r5
+	subb	r5,r2
 	Invalid
-	Invalid
-	Invalid
+	subw	r6,r3
 	movzb	r1,(r3,r2)
-	Invalid
-	bne	CC5A
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r2
+	bne	0000CC5A
+	storb	r0,(r13)
+	addd	$1,r13
+	loadd	0x10(sp),(r1,r0)
 	cmpd	(r8,r7),(r1,r0)
-	Invalid
-	Invalid
-	beq	CCB4
-	Invalid
+	shi	r0
+	cmpw	$0,r0
+	beq	0000CCB4
+	loadd	0x14(sp),(r2,r1)
 	cmpd	r13,(r2,r1)
-	Invalid
-	Invalid
-	bne	CBFE
-	Invalid
+	shi	r0
+	cmpw	$0,r0
+	bne	0000CBFE
+	stord	(r8,r7),(sp)
 	movw	r6,r5
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r2,ra
-	Invalid
+	loadd	0x48(sp),(r9,r8)
+	br	0000CFE0
+	andb	$F,sp
 	cmpb	$0,r1
-	beq	CCEC
+	beq	0000CCEC
 	movzb	r1,(r5,r4)
-	Invalid
-	bhs	CCDA
-	Invalid
+	cmpw	r4,r6
+	bhs	0000CCDA
+	loadb	(r8,r7),r2
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	ashud	r6,(r3,r2)
+	addd	(r3,r2),(r11,r10)
+	addw	$8,r8
+	addd	$1,(r8,r7)
+	movw	$FFFF,r2
+	ashuw	r1,r2
+	xorw	$FFFF,r9
+	andw	r2,r10
+	addw	r0,r2
 	movb	$0,r5
+	subb	r5,r1
 	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$3,r2,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subw	r6,r4
+	cmpw	$E,r6
+	bhs	0000D052
+	loadd	0x50(sp),(r5,r4)
+	andd	(r11,r10),(r5,r4)
+	ashud	$2,(r5,r4)
+	loadd	4(sp),(r2,r1)
+	addd	(r2,r1),(r5,r4)
+	loadb	(r5,r4),r3
+	loadw	2(r5,r4),r2
+	loadb	1(r5,r4),r1
 	movzb	r1,(r5,r4)
 	movb	$0,r5
+	subb	r5,r1
 	Invalid
-	Invalid
-	Invalid
+	subw	r6,r4
 	movzb	r3,(r5,r4)
 	movb	$10,r1
-	Invalid
+	andb	r1,r3
 	cmpb	$0,r1
-	bne	CD68
-	Invalid
-	andd	$18105003,(r1,r0)
-	push	$5,r4,ra
-	Invalid
-	br	CD34
-	Invalid
-	andd	$18105003,(r1,r0)
-	push	$4,r6,ra
+	bne	0000CD68
+	andb	$40,r11
+	cmpb	$0,r3
+	bne	0000D0CA
+	movw	$1,r1
+	br	0000CD34
+	andb	$40,r11
+	cmpb	$0,r3
+	bne	0000D0BC
 	movw	r1,r5
-	Invalid
+	ashuw	r4,r5
 	movw	r5,r4
-	Invalid
+	addw	$FFFF,r9
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	andd	(r11,r10),(r5,r4)
+	movzw	r2,(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	ashud	$2,(r5,r4)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+	loadb	(r5,r4),r3
+	loadw	2(r5,r4),r2
+	loadb	1(r5,r4),r4
 	movzb	r4,(r6,r5)
 	movb	$0,r9
+	subb	r9,r4
 	Invalid
-	Invalid
-	Invalid
+	subw	r6,r5
 	movzb	r3,(r5,r4)
 	movb	$10,r5
-	Invalid
+	andb	r5,r3
 	cmpb	$0,r5
-	beq	CD2A
+	beq	0000CD2A
 	movb	$F,r1
-	Invalid
+	andb	r1,r3
 	movzb	r1,(r4,r3)
-	Invalid
-	bhs	CD8A
-	Invalid
+	cmpw	r3,r6
+	bhs	0000CD8A
+	loadb	(r8,r7),r4
 	movzb	r4,(r5,r4)
 	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,r2,ra
-	Invalid
+	ashud	r6,(r5,r4)
+	addd	(r5,r4),(r11,r10)
+	movw	$8,r9
+	addw	r9,r6
+	cmpw	r3,r9
+	blo	0000D326
+	addd	$1,(r8,r7)
 	movw	r9,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movw	$FFFF,r4
+	ashuw	r1,r4
+	xorw	$FFFF,r9
+	andw	r4,r10
 	movw	r4,r9
-	Invalid
+	addw	r9,r2
 	movb	$0,r2
+	subb	r2,r1
 	Invalid
-	Invalid
-	Invalid
+	subw	r6,r3
 	movd	(r3,r2),r13
-	Invalid
-	Invalid
+	loadd	0x58(sp),(r5,r4)
 	subd	(r3,r2),(r5,r4)
-	Invalid
-	pop	$5,ra
+	cmpw	r9,r2
+	bhs	0000D266
 	movw	r9,r5
-	Invalid
-	Invalid
-	andd	$309F1F,ra
-	Invalid
-	bls	CDC8
-	Invalid
-	bfc	CD38
-	Invalid
-	Invalid
-	popret	$0,ra,ra
-	Invalid
-	Invalid
-	Invalid
-	push	$4,r0
-	Invalid
-	Invalid
-	andd	$5F243B32,ra
-	Invalid
-	Invalid
-	Invalid
-	ord	$18A05330,(r5,r4)
-	popret	$0,r12,ra
-	Invalid
-	ord	$522055D2,(r5,r4)
-	bhs	CE16
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	subw	r5,r2
+	storw	r5,0x9C(sp)
+	loadw	0x60(sp),r1
+	cmpw	r1,r5
+	bls	0000CDC8
+	loadw	0x3738(r12),r2
+	cmpw	$0,r2
+	bne	0000D4E0
+	loadw	8(sp),r2
+	cmpw	$0,r2
+	bne	0000D04C
+	loadw	0xA(sp),r2
+	loadw	0x9C(sp),r3
+	subw	r2,r3
+	movzw	r2,(r5,r4)
+	loadd	0xC(sp),(r2,r1)
+	addd	(r5,r4),(r2,r1)
+	stord	(r2,r1),0xA8(sp)
+	cmpw	r0,r3
+	blo	0000D4FC
+	loadd	0xA8(sp),(r5,r4)
+	movd	(r3,r2),r13
+	cmpw	$2,r0
+	bhs	0000CE16
+	stord	(r11,r10),(sp)
+	loadb	(r5,r4),r1
+	storb	r1,(r13)
+	loadb	1(r5,r4),r1
+	storb	r1,1(r13)
+	movd	$3,(r10,r9)
+	addd	(r5,r4),(r10,r9)
+	movd	$3,(r3,r2)
+	addd	r13,(r3,r2)
+	loadb	2(r5,r4),r1
+	storb	r1,2(r13)
+	addw	$FFFD,r11
 	movd	r13,(r3,r2)
 	movd	(r5,r4),(r10,r9)
-	Invalid
-	blo	CDF4
-	Invalid
+	cmpw	$2,r0
+	blo	0000CDF4
+	loadd	(sp),(r11,r10)
 	movd	r13,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	popret	$4,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	cmpw	$0,r0
+	beq	0000CB28
+	loadb	(r5,r4),r1
+	storb	r1,(r3,r2)
+	cmpw	$2,r0
+	bne	0000D4B0
+	addd	$2,r13
+	loadb	1(r5,r4),r0
+	storb	r0,1(r3,r2)
+	br	0000CB14
+	stord	(r8,r7),(sp)
 	movw	r6,r5
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	loadd	0x48(sp),(r9,r8)
+	andb	$20,r11
 	cmpb	$0,r1
-	bne	CEC2
-	movd	$E7BA,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	bne	0000CEC2
+	movd	$E7BA,(r1,r0)
+	stord	(r1,r0),0x18(r9,r8)
+	movw	$3F51,r0
+	storw	r0,4(r12)
 	movw	r5,r0
-	lshw	$FFFFFFF3,r0
+	lshw	$-13,r0
 	movzw	r0,(r1,r0)
-	Invalid
+	loadd	(sp),(r3,r2)
 	subd	(r3,r2),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
+	movd	(r1,r0),(r3,r2)
+	andw	$7,r7
+	movw	$1,r2
+	ashuw	r5,r2
+	addw	$FFFF,r9
 	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
+	andd	(r3,r2),(r11,r10)
+	stord	(r1,r0),(r9,r8)
+	stord	r13,0xC(r9,r8)
+	loadd	0x10(sp),(r4,r3)
 	cmpd	(r4,r3),(r1,r0)
-	bhs	CECA
+	bhs	0000CECA
 	subd	(r4,r3),(r1,r0)
-	Invalid
-	Invalid
-	Invalid
+	movd	(r1,r0),(r4,r3)
+	addw	$5,r5
+	storw	r0,4(r9,r8)
+	loadd	0x14(sp),(r7,r6)
 	cmpd	r13,(r7,r6)
-	bhi	CEDA
-	Invalid
+	bhi	0000CEDA
+	loadw	0x14(sp),r0
 	movd	(r2,r1),r13
-	Invalid
-	Invalid
-	push	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$39D0267,(r9,r8)
-	Invalid
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	CE4E
-	Invalid
-	Invalid
-	movw	r4,r0
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r7,r6)
-	bls	CE84
-	movd	(r1,r0),(r7,r6)
-	subd	(r1,r0),r13
-	push	$0,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$39D0267,(r9,r8)
-	Invalid
-	movw	r6,r5
-	Invalid
-	Invalid
-	movd	$E7D6,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	br	CE4E
-	Invalid
-	andd	$18505312,ra
-	push	$5,r6
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	ord	$3B51945F,(r5,r4)
-	Invalid
-	andd	$18B05310,ra
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$8525724,(r5,r4)
-	movb	r1,r3
-	Invalid
-	Invalid
-	andd	$8A252C5,ra
-	Invalid
-	cmpb	$0,r2
-	Invalid
-	popret	$2,ra,ra
-	Invalid
-	ord	$90D20014,(r5,r4)
-	xord	$FFFFFFFF,(r3,r2)
-	Invalid
-	cmpb	$0,r2
-	Invalid
-	popret	$1,r8,ra
-	lshw	$FFFFFFF1,r5
-	Invalid
-	Invalid
-	andd	$54AF2F,(r5,r4)
-	Invalid
-	Invalid
-	movd	(r5,r4),(r3,r2)
-	Invalid
-	andd	$4ADF6F,(r9,r8)
-	Invalid
-	andd	$9F6F55D0,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	CF9C
-	Invalid
-	ord	$489F0F,(r5,r4)
-	Invalid
-	andd	$4C9F9F,(r11,r10)
-	Invalid
-	andd	$FFFE22B1,ra
-	movzw	r1,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	andd	$54AF2F,(r5,r4)
-	Invalid
-	Invalid
-	andd	$18005314,ra
-	pop	$7,r4,ra
-	movw	r4,r1
-	Invalid
-	Invalid
-	andd	$3291F023,(r5,r4)
-	movzw	r1,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	pop	$5,ra
-	Invalid
-	Invalid
-	ord	$18E0A0DF,(r5,r4)
-	Invalid
-	movzw	r9,(r3,r2)
-	movd	(r5,r4),r13
-	subd	(r5,r4),(r3,r2)
-	movd	(r5,r4),r13
-	Invalid
-	br	D01A
-	movd	(r5,r4),r13
-	movd	(r10,r9),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	blo	D018
-	movd	(r3,r2),(r10,r9)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	push	$0,r6
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r2,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	ord	$4E9F5F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$8525724,(r5,r4)
-	Invalid
-	Invalid
-	andd	$8A352C5,ra
-	Invalid
-	cmpb	$0,r2
-	Invalid
-	pop	$3,r0
-	Invalid
-	ord	$90D20014,(r5,r4)
-	xord	$FFFFFFFF,(r3,r2)
-	Invalid
-	cmpb	$0,r2
-	Invalid
-	pop	$1,r10
-	movw	r5,r2
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r2
-	Invalid
-	Invalid
-	Invalid
-	andd	$54AF2F,(r5,r4)
-	Invalid
-	Invalid
-	movd	(r5,r4),(r3,r2)
-	Invalid
-	andd	$4ADF6F,(r9,r8)
-	Invalid
-	andd	$9F6F55D0,r12
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	D0EC
-	movw	r9,r1
-	Invalid
-	ord	$489F0F,(r5,r4)
-	Invalid
-	andd	$4C9F9F,(r11,r10)
-	Invalid
-	movzw	r1,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	andd	$54AF2F,(r5,r4)
-	Invalid
-	Invalid
-	andd	$17075314,ra
-	movw	r4,r1
-	Invalid
-	Invalid
-	andd	$3291F023,(r5,r4)
-	movzw	r1,(r3,r2)
-	Invalid
-	Invalid
-	movzw	r9,(r3,r2)
-	movd	(r5,r4),r13
-	subd	(r5,r4),(r3,r2)
-	ord	$FCA318E0,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r6,r5
-	Invalid
-	Invalid
-	movd	$E7EC,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	r13,(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$8525724,(r5,r4)
-	Invalid
-	Invalid
-	andd	$8A352C5,ra
-	Invalid
-	cmpb	$0,r2
-	beq	D21A
-	Invalid
-	ord	$90D20014,(r5,r4)
-	xord	$FFFFFFFF,(r3,r2)
-	Invalid
-	cmpb	$0,r2
-	beq	D21A
-	movw	r5,r2
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r2
-	Invalid
-	Invalid
-	Invalid
-	andd	$54AF1F,(r5,r4)
-	Invalid
-	ord	$AF4F941F,(r1,r0)
-	ord	$48DF0F,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	Invalid
-	andd	$DF9F5B16,(r11,r10)
-	Invalid
-	Invalid
-	andd	$4CDF9F,ra
-	movd	(r1,r0),r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	D1E6
-	Invalid
-	ord	$489F0F,(r5,r4)
-	Invalid
-	andd	$3A9F9F,(r11,r10)
-	Invalid
-	andd	$4EDF1F,r12
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r1
-	Invalid
-	br	D134
-	Invalid
-	ord	$9F1FE0DF,(r5,r4)
-	andd	$5F123291,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$3ADF6F,(r5,r4)
-	Invalid
-	andd	$B06455D0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	bne	D23A
-	Invalid
-	andd	$3A9F6F,(r5,r4)
-	Invalid
-	andd	$FEE318E0,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r1
-	beq	D342
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpb	$0,r2
-	beq	D342
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bhi	D294
-	Invalid
-	Invalid
-	res
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D2C0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movzw	r1,r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movw	r4,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	ord	$9F1FE0DF,(r5,r4)
-	andd	$5F123291,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$3ADF6F,(r5,r4)
-	movd	(r7,r6),r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	bne	D2F2
-	Invalid
-	andd	$3A9F6F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	ord	$9F1FE0DF,(r5,r4)
-	andd	$5F123291,ra
-	Invalid
-	Invalid
-	Invalid
-	andd	$3ADF6F,(r5,r4)
-	movd	(r7,r6),r13
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	bne	D328
-	Invalid
-	andd	$3A9F6F,(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	andd	$F014B012,(r1,r0)
-	Invalid
-	Invalid
-	cmpd	r13,(r3,r2)
-	bne	D34A
-	br	D2C0
-	movw	r4,r0
-	movw	r2,r1
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bls	D38A
-	Invalid
-	bgt	D38A
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D3A6
-	Invalid
-	Invalid
-	Invalid
-	beq	D3A6
-	Invalid
-	ble	D372
-	movw	r2,r0
-	Invalid
-	Invalid
-	bhi	D396
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r1
-	lshw	$FFFFFFF1,r3
-	Invalid
-	bne	D38E
-	Invalid
-	bne	D3A4
-	movw	r5,r0
-	Invalid
-	Invalid
-	bne	D38A
-	movw	r1,r5
-	movw	r2,r0
-	br	D39E
-	Invalid
-	Invalid
-	bgt	D400
-	Invalid
-	ble	D3C2
-	Invalid
-	Invalid
-	movw	r0,r3
-	Invalid
-	movw	r2,r4
-	Invalid
-	Invalid
-	bls	D3E2
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D408
-	Invalid
-	Invalid
-	Invalid
-	beq	D408
-	Invalid
-	ble	D3CA
-	Invalid
-	Invalid
-	bhi	D3EC
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r1
-	lshw	$FFFFFFF1,r3
-	Invalid
-	bne	D3E4
-	Invalid
-	beq	D3FE
-	Invalid
-	Invalid
-	movw	r1,r0
-	Invalid
-	Invalid
-	movw	r5,r2
-	Invalid
-	br	D3B6
-	Invalid
-	bne	D3E2
-	movw	r1,r0
-	br	D3F4
-	Invalid
-	Invalid
-	ble	D41C
-	Invalid
-	movw	r5,r2
-	Invalid
-	movw	r3,r0
-	Invalid
-	Invalid
-	Invalid
-	movw	r2,r0
-	Invalid
-	Invalid
-	bls	D444
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D45E
-	Invalid
-	Invalid
-	Invalid
-	beq	D45E
-	Invalid
-	ble	D42C
-	Invalid
-	blo	D44A
-	Invalid
-	lshw	$FFFFFFF1,r1
-	lshw	$FFFFFFF1,r3
-	Invalid
-	bne	D444
-	Invalid
-	beq	D45C
-	Invalid
-	Invalid
-	movw	r1,r0
-	Invalid
-	Invalid
-	bne	D444
-	br	D452
-	movw	r2,r4
-	Invalid
-	Invalid
-	bls	D488
-	Invalid
-	bgt	D488
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D49C
-	Invalid
-	Invalid
-	Invalid
-	beq	D49C
-	Invalid
-	ble	D470
-	Invalid
-	Invalid
-	bhi	D492
-	Invalid
-	Invalid
-	lshw	$FFFFFFF1,r1
-	lshw	$FFFFFFF1,r3
-	Invalid
-	bne	D48A
-	Invalid
-	Invalid
-	bne	D488
-	movw	r1,r0
-	Invalid
-	movw	r2,r0
-	Invalid
-	Invalid
-	bls	D4C8
-	Invalid
-	bgt	D4C8
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D4D8
-	Invalid
-	Invalid
-	Invalid
-	beq	D4D8
-	Invalid
-	ble	D4B0
-	Invalid
-	bhi	D4CE
-	Invalid
-	lshw	$FFFFFFF1,r1
-	lshw	$FFFFFFF1,r3
-	Invalid
-	bne	D4C8
-	Invalid
-	Invalid
-	bne	D4C8
-	Invalid
-	res
-	push	$1,ra
-	Invalid
-	bal	ra,D4F8
-	popret	$1,ra
-	res
-	push	$1,ra
-	Invalid
-	bal	ra,D4F8
-	popret	$1,ra
-	res
-	push	$1,ra
-	push	$1,r8
-	Invalid
-	cmpd	(r5,r4),(r3,r2)
-	bls	D522
-	cmpd	$0,(r5,r4)
-	bgt	D522
-	Invalid
-	Invalid
-	cmpd	(r3,r2),(r5,r4)
-	Invalid
-	Invalid
-	beq	D544
-	movw	r8,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	D544
-	cmpd	$0,(r5,r4)
-	ble	D506
-	movd	(r1,r0),(r3,r2)
-	Invalid
-	cmpd	(r1,r0),(r5,r4)
-	bhi	D532
-	subd	(r1,r0),(r5,r4)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$0,(r9,r8)
-	bne	D526
-	Invalid
-	bne	D540
-	movd	(r1,r0),ra
-	pop	$1,r8
-	popret	$1,ra
-	cmpd	$0,(r9,r8)
-	bne	D522
-	movd	ra,(r9,r8)
-	movd	(r1,r0),(r3,r2)
-	br	D53A
-	res
-	push	$1,r13
-	movd	r13,sp
-	Invalid
-	movd	sp,r13
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	movd	r13,sp
-	Invalid
-	movd	sp,r13
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	movd	r13,sp
-	Invalid
-	movd	sp,r13
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	movd	r13,sp
-	Invalid
-	movd	sp,r13
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	movd	r13,sp
-	Invalid
-	movd	sp,r13
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	push	$1,r13
-	Invalid
-	Invalid
-	movd	r13,sp
-	Invalid
-	Invalid
-	Invalid
-	movd	sp,r13
-	Invalid
-	pop	$1,r13
-	Invalid
-	res
-	push	$1,ra
-	push	$1,r8
-	movd	$1C780001,(r9,r8)
-	Invalid
-	cmpd	$FFFFFFFF,(r1,r0)
-	beq	E01C
-	jal	ra,(r1,r0)
-	Invalid
-	Invalid
-	Invalid
-	cmpd	$FFFFFFFF,(r1,r0)
-	bne	E010
-	pop	$1,r8
-	popret	$1,ra
-	push	$1,ra
-	popret	$1,ra
-	push	$1,r13,ra
-	push	$6,r7
-	Invalid
-	Invalid
-	movw	r2,r8
-	movd	r13,(r4,r3)
-	movd	$62772036,(r1,r0)
-	Invalid
-	Invalid
-	di
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DCE8
-	cmpd	$0,(r1,r0)
-	beq	E056
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	movd	$E2E0,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	movw	r0,r7
-	Invalid
-	Invalid
-	movd	$E2E8,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	Invalid
-	Invalid
-	push	$1,r8,ra
-	Invalid
-	bge	E0CE
-	movd	$E2EE,r12
-	Invalid
-	br	E0B6
-	movd	$E2F2,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	beq	E114
-	movd	$E2F6,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	bne	E118
-	movb	$66,r0
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	beq	E0CE
-	Invalid
-	movd	(r5,r4),r12
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	bne	E08C
-	movw	r9,r7
-	Invalid
-	Invalid
-	Invalid
-	bne	E0B6
-	Invalid
-	cmpb	$20,r0
-	Invalid
-	push	$3,r8
-	Invalid
-	bne	E16A
-	Invalid
-	Invalid
-	Invalid
-	push	$3,ra
-	Invalid
-	bal	ra,D94C
-	movd	$E2BE,r3
-	movw	r0,r2
-	bal	ra,0602
-	cmpd	$0,(r1,r0)
-	Invalid
-	push	$4,r10
-	Invalid
-	movd	(r3,r2),(r1,r0)
-	bal	ra,0192
-	Invalid
-	Invalid
-	res
+	subw	r0,r1
+	addw	$101,r11
+	storw	r0,0x10(r9,r8)
+	stord	(r11,r10),0x50(r12)
+	storw	r5,0x58(r12)
+	addd	$58,sp
 	pop	$6,r7
 	popret	$1,r13,ra
-	Invalid
-	br	E0AE
-	movd	$E2FA,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	bne	E12E
-	movb	$68,r1
-	Invalid
-	br	E0AE
-	movd	$E2FE,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,DC60
-	Invalid
-	bne	E144
-	movb	$52,r0
-	Invalid
-	br	E0AE
-	Invalid
-	cmpb	$2D,r0
-	bne	E162
-	Invalid
-	movb	$CF,r1
-	Invalid
-	cmpb	$8,r1
-	blo	E162
-	Invalid
+	loadb	1(r8,r7),r2
+	movzb	r2,(r3,r2)
+	movzw	r2,(r3,r2)
+	movw	$8,r1
+	addw	r1,r6
+	ashud	r1,(r3,r2)
+	loadb	(r8,r7),r4
+	movzb	r4,(r5,r4)
+	movzw	r4,(r5,r4)
+	ashud	r6,(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	addd	(r3,r2),(r11,r10)
+	addw	$10,r11
+	addd	$2,(r8,r7)
+	br	0000CB28
+	movw	$3F3F,r0
+	storw	r0,4(r12)
+	br	0000CE4E
+	loadw	0x10(sp),r4
+	subw	r4,r0
+	movw	r4,r0
+	addw	$5,r5
+	storw	r0,4(r9,r8)
+	loadd	0x14(sp),(r7,r6)
+	cmpd	r13,(r7,r6)
+	bls	0000CE84
+	movd	(r1,r0),(r7,r6)
+	subd	(r1,r0),r13
+	addw	$101,r11
+	storw	r0,0x10(r9,r8)
+	stord	(r11,r10),0x50(r12)
+	storw	r5,0x58(r12)
+	addd	$58,sp
+	pop	$6,r7
+	popret	$1,r13,ra
+	stord	(r8,r7),(sp)
+	movw	r6,r5
+	loadd	0x48(sp),(r9,r8)
+	movd	$E7D6,(r1,r0)
+	stord	(r1,r0),0x18(r9,r8)
+	movw	$3F51,r0
+	storw	r0,4(r12)
+	br	0000CE4E
+	loadw	0x9C(sp),r1
+	cmpw	r2,r1
+	bls	0000D1BE
+	loadw	0x64(sp),r2
+	subw	r2,r1
+	movzw	r2,(r3,r2)
+	loadd	0xC(sp),(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0xA8(sp)
+	loadw	8(sp),r5
+	subw	r1,r5
+	storw	r1,0x9C(sp)
+	cmpw	r0,r1
+	bhs	0000CCA2
+	subw	r0,r1
+	movd	$2,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	loadd	0xC(sp),(r2,r1)
+	addd	(r2,r1),(r5,r4)
+	cmpd	r13,(r5,r4)
+	sls	r1
+	movd	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	loadd	0xA8(sp),(r5,r4)
+	cmpd	(r5,r4),(r3,r2)
+	sls	r2
+	movb	r1,r3
+	orb	r3,r2
+	loadw	0x9C(sp),r5
+	cmpw	$C,r5
+	slo	r2
+	andb	r2,r3
+	cmpb	$0,r2
+	beq	0000D6BA
+	loadd	0xA8(sp),(r3,r2)
+	ord	r13,(r3,r2)
+	xord	$FFFFFFFF,(r3,r2)
+	andb	$1,r1
+	cmpb	$0,r2
+	beq	0000D6A4
+	lshw	$-15,r5
+	storw	r5,(sp)
+	stord	r13,0x88(sp)
+	loadd	0xA8(sp),(r3,r2)
+	storw	$0,0x3A(sp)
+	movd	(r5,r4),(r3,r2)
+	storw	r0,0x90(sp)
+	storw	r6,0x94(sp)
+	storw	r9,0x98(sp)
+	movd	(r1,r0),r13
+	loadw	0x74(sp),r6
+	loadw	(r3,r2),r9
+	storw	r9,(r1,r0)
+	addw	$1,r1
+	addd	$2,(r1,r0)
+	addd	$2,(r3,r2)
+	loadw	(sp),r9
+	cmpw	r6,r9
+	bhi	0000CF9C
+	stord	(r5,r4),0xA8(sp)
+	loadw	0x90(sp),r0
+	loadw	0x94(sp),r6
+	loadw	0x98(sp),r9
+	loadw	0x9C(sp),r1
+	andw	$FFFE,r11
+	movzw	r1,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	addd	r13,(r3,r2)
+	stord	(r3,r2),0x88(sp)
+	loadd	0xA8(sp),(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	loadw	0x9C(sp),r4
+	cmpw	r4,r1
+	beq	0000D5C2
+	movw	r4,r1
+	loadb	(r3,r2),r2
+	loadd	0x88(sp),(r4,r3)
+	storb	r2,(r4,r3)
+	addw	$FFFF,r9
+	movzw	r1,(r5,r4)
+	movd	$1,(r2,r1)
+	addd	(r5,r4),(r2,r1)
+	addd	r13,(r2,r1)
+	stord	(r2,r1),(sp)
+	loadw	8(sp),r2
+	cmpw	r2,r0
+	bhi	0000D4B4
+	loadd	0xC(sp),(r2,r1)
+	stord	(r2,r1),0xA8(sp)
+	loadd	(sp),r13
+	br	0000CBCE
+	movzw	r9,(r3,r2)
+	movd	(r5,r4),r13
+	subd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),r13
+	stord	(r11,r10),(sp)
+	br	0000D01A
+	movd	(r5,r4),r13
+	movd	(r10,r9),(r3,r2)
+	loadb	(r3,r2),r1
+	storb	r1,(r13)
+	loadb	1(r3,r2),r1
+	storb	r1,1(r13)
+	addd	$3,r13
+	loadb	2(r3,r2),r1
+	storb	r1,2(r5,r4)
+	addw	$FFFD,r11
+	addd	$3,(r3,r2)
+	cmpw	$2,r0
+	blo	0000D018
+	movd	(r3,r2),(r10,r9)
+	loadd	(sp),(r11,r10)
+	cmpw	$0,r0
+	beq	0000C908
+	loadb	3(r3,r2),r1
+	storb	r1,3(r5,r4)
+	cmpw	$2,r0
+	bne	0000D250
+	movd	$5,r13
+	addd	(r5,r4),r13
+	loadb	4(r3,r2),r0
+	storb	r0,4(r5,r4)
+	br	0000C8F2
+	loadb	1(r8,r7),r4
+	movzb	r4,(r5,r4)
+	movzw	r4,(r5,r4)
+	ashud	r9,(r5,r4)
+	addd	(r5,r4),(r11,r10)
+	addw	$10,r11
+	addd	$2,(r8,r7)
+	br	0000CAB2
+	subw	r2,r1
+	movzw	r2,(r3,r2)
+	loadd	0xC(sp),(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0xA8(sp)
+	loadw	0x9C(sp),r5
+	cmpw	r0,r5
+	bhs	0000CB58
+	subw	r0,r5
+	movd	$2,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	loadd	0xC(sp),(r2,r1)
+	addd	(r2,r1),(r5,r4)
+	cmpd	r13,(r5,r4)
+	sls	r1
+	movd	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	loadd	0xA8(sp),(r5,r4)
+	cmpd	(r5,r4),(r3,r2)
+	sls	r2
+	orb	r2,r1
+	loadw	0x9C(sp),r5
+	cmpw	$C,r5
+	slo	r3
+	andb	r2,r3
+	cmpb	$0,r2
+	beq	0000D506
+	loadd	0xA8(sp),(r3,r2)
+	ord	r13,(r3,r2)
+	xord	$FFFFFFFF,(r3,r2)
+	andb	$1,r1
+	cmpb	$0,r2
+	beq	0000D4F0
+	movw	r5,r2
+	addw	$FFFE,r11
+	lshw	$-15,r2
+	addw	$1,r1
+	storw	r2,(sp)
+	stord	r13,0x88(sp)
+	loadd	0xA8(sp),(r3,r2)
+	storw	$0,0x3A(sp)
+	movd	(r5,r4),(r3,r2)
+	storw	r0,0x90(sp)
+	storw	r6,0x94(sp)
+	storw	r9,0x98(sp)
+	movd	(r1,r0),r13
+	loadw	0x74(sp),r6
+	loadw	(r3,r2),r9
+	storw	r9,(r1,r0)
+	addw	$1,r1
+	addd	$2,(r1,r0)
+	addd	$2,(r3,r2)
+	loadw	(sp),r9
+	cmpw	r6,r9
+	bhi	0000D0EC
+	movw	r9,r1
+	stord	(r5,r4),0xA8(sp)
+	loadw	0x90(sp),r0
+	loadw	0x94(sp),r6
+	loadw	0x98(sp),r9
+	addw	r1,r1
+	movzw	r1,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	addd	r13,(r3,r2)
+	stord	(r3,r2),0x88(sp)
+	loadd	0xA8(sp),(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	loadw	0x9C(sp),r4
+	cmpw	r4,r1
+	beq	0000D214
+	movw	r4,r1
+	loadb	(r3,r2),r2
+	loadd	0x88(sp),(r4,r3)
+	storb	r2,(r4,r3)
+	addw	$FFFF,r9
+	movzw	r1,(r3,r2)
+	addd	$1,(r3,r2)
+	addd	(r3,r2),r13
+	movzw	r9,(r3,r2)
+	movd	(r5,r4),r13
+	subd	(r5,r4),(r3,r2)
+	stord	(r5,r4),0xA8(sp)
+	br	0000CA8C
+	movd	$4,r13
+	addd	(r5,r4),r13
+	br	0000C7F4
+	stord	(r8,r7),(sp)
+	movw	r6,r5
+	loadd	0x48(sp),(r9,r8)
+	movd	$E7EC,(r1,r0)
+	stord	(r1,r0),0x18(r9,r8)
+	movw	$3F51,r0
+	storw	r0,4(r12)
+	br	0000CB38
+	addd	$1,r13
+	br	0000C7D6
+	subw	r0,r3
+	movd	$2,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	loadd	0xC(sp),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	cmpd	r13,(r3,r2)
+	sls	r1
+	movd	$2,(r3,r2)
+	addd	r13,(r3,r2)
+	loadd	0xA8(sp),(r5,r4)
+	cmpd	(r5,r4),(r3,r2)
+	sls	r2
+	orb	r2,r1
+	loadw	0x9C(sp),r5
+	cmpw	$C,r5
+	slo	r3
+	andb	r2,r3
+	cmpb	$0,r2
+	beq	0000D21A
+	loadd	0xA8(sp),(r3,r2)
+	ord	r13,(r3,r2)
+	xord	$FFFFFFFF,(r3,r2)
+	andb	$1,r1
+	cmpb	$0,r2
+	beq	0000D21A
+	movw	r5,r2
+	addw	$FFFE,r11
+	lshw	$-15,r2
+	addw	$1,r1
+	storw	r2,(sp)
+	stord	r13,0x88(sp)
+	loadd	0xA8(sp),(r2,r1)
+	stord	(r2,r1),0xA0(sp)
+	loadw	8(sp),r1
+	loadd	0xA8(sp),(r5,r4)
+	storw	r0,0x90(sp)
+	movd	(r3,r2),(r5,r4)
+	storw	r6,0x94(sp)
+	movw	r1,r6
+	storw	r9,0x74(sp)
+	loadw	0x9C(sp),r9
+	storw	r9,0x98(sp)
+	movd	(r1,r0),r13
+	loadw	(r3,r2),r9
+	storw	r9,(r1,r0)
+	addw	$1,r1
+	addd	$2,(r1,r0)
+	addd	$2,(r3,r2)
+	loadw	(sp),r9
+	cmpw	r6,r9
+	bhi	0000D1E6
+	stord	(r5,r4),0xA8(sp)
+	loadw	0x90(sp),r0
+	loadw	0x94(sp),r6
+	loadw	0x74(sp),r9
+	loadw	0x98(sp),r1
+	storw	r1,0x9C(sp)
+	loadw	(sp),r1
+	br	0000D00E
+	movw	r4,r1
+	addw	$FFFF,r9
+	br	0000D134
+	loadd	0xA8(sp),(r5,r4)
+	stord	r13,(sp)
+	loadw	0x9C(sp),r1
+	addw	$FFFF,r9
+	movzw	r1,(r3,r2)
+	addd	$1,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	storw	r0,0x88(sp)
+	storw	r6,0x74(sp)
+	storw	r1,0x90(sp)
+	movd	(r1,r0),r13
+	loadb	(r5,r4),r6
+	storb	r6,(r1,r0)
+	addd	$1,(r5,r4)
+	addd	$1,(r1,r0)
+	cmpd	(r3,r2),(r5,r4)
+	bne	0000D23A
+	loadw	0x88(sp),r0
+	loadw	0x74(sp),r6
+	loadw	0x90(sp),r1
+	br	0000D018
+	subw	r0,r2
+	movd	$3,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	addd	r13,(r3,r2)
+	loadd	0xC(sp),(r5,r4)
+	cmpd	(r5,r4),(r3,r2)
+	sls	r1
+	loadd	(sp),(r3,r2)
+	loadd	0x78(sp),(r5,r4)
+	cmpd	(r3,r2),(r5,r4)
+	sls	r2
+	orb	r1,r2
+	loadw	8(sp),r5
+	cmpw	$C,r5
+	slo	r2
+	andb	r1,r2
 	cmpb	$0,r1
-	bne	E162
-	Invalid
-	br	E0AE
-	Invalid
-	cmpb	$20,r0
-	beq	E20C
-	Invalid
-	movzw	r8,(r9,r8)
-	Invalid
-	Invalid
-	Invalid
-	movd	$E2BE,r12
-	br	E19A
-	Invalid
-	beq	E1D2
-	movd	(r5,r4),r12
-	bal	ra,05EA
-	cmpd	$0,(r1,r0)
-	beq	E1E8
-	Invalid
-	movd	(r3,r2),(r1,r0)
-	bal	ra,0192
-	Invalid
-	cmpd	r13,(r9,r8)
-	beq	E10A
-	Invalid
-	Invalid
-	Invalid
-	bne	E17A
-	Invalid
-	beq	E1D8
-	movd	(r5,r4),r12
-	bal	ra,D86C
-	movd	(r11,r10),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	E1E0
-	Invalid
-	bal	ra,D94C
-	movd	(r4,r3),sp
-	movw	r0,r2
-	bal	ra,0602
-	cmpd	$0,(r1,r0)
-	beq	E24C
-	movd	(r5,r4),(r1,r0)
-	movd	(r3,r2),(r11,r10)
-	bal	ra,010E
-	br	E194
-	bal	ra,02D2
-	br	E194
-	movd	(r5,r4),sp
-	bal	ra,0218
-	br	E194
-	Invalid
-	bal	ra,D960
-	br	E194
-	Invalid
-	push	$1,r0
-	Invalid
-	push	$1,r0
-	movd	$E2C2,r0
-	push	$1,r0
-	Invalid
-	push	$1,r0
-	bal	ra,D578
-	Invalid
-	Invalid
-	retx
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	Invalid
-	bal	ra,D94C
-	movd	(r4,r3),sp
-	movw	r0,r2
-	bal	ra,0602
-	cmpd	$0,(r1,r0)
-	beq	E24C
-	Invalid
-	movd	(r5,r4),(r1,r0)
-	bal	ra,010E
-	Invalid
-	Invalid
-	movd	$E302,r2
-	bal	ra,00EC
-	movd	$E316,r2
-	bal	ra,00EC
+	beq	0000D342
+	loadd	(sp),(r3,r2)
+	loadd	0xC(sp),r13
+	ord	r13,(r3,r2)
+	xord	$FFFFFFFF,(r3,r2)
+	andb	$1,r1
+	cmpb	$0,r2
+	beq	0000D342
+	loadd	(sp),(r3,r2)
+	movw	$0,r4
+	loadw	(r13),r1
+	storw	r1,(r3,r2)
+	addw	$1,r1
+	addd	$2,(r3,r2)
+	addd	$2,r13
+	loadw	0x70(sp),r1
+	cmpw	r4,r1
+	bhi	0000D294
+	loadd	(sp),(r3,r2)
+	loadd	0x38(sp),(r5,r4)
+	addd	(r5,r4),(r3,r2)
+	loadw	8(sp),r5
+	loadw	0x40(sp),r13
+	cmpw	r5,r13
+	beq	0000D2C0
+	loadd	0x68(sp),(r5,r4)
+	loadb	(r5,r4),r1
+	storb	r1,(r3,r2)
+	loadw	0x44(sp),r1
+	movzw	r1,r13
+	addd	$1,r13
+	loadd	(sp),(r3,r2)
+	br	0000CFA8
+	movw	r4,r1
+	addw	$FFFF,r9
+	br	0000CD04
+	loadd	0xA8(sp),(r5,r4)
+	stord	r13,(sp)
+	loadw	0x9C(sp),r1
+	addw	$FFFF,r9
+	movzw	r1,(r3,r2)
+	addd	$1,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	stord	(r8,r7),0x88(sp)
+	storw	r6,0x74(sp)
+	movd	(r7,r6),r13
+	loadb	(r5,r4),r8
+	storb	r8,(r7,r6)
+	addd	$1,(r5,r4)
+	addd	$1,(r7,r6)
+	stord	(r7,r6),(sp)
+	cmpd	(r3,r2),(r5,r4)
+	bne	0000D2F2
+	loadd	0x88(sp),(r8,r7)
+	loadw	0x74(sp),r6
+	br	0000CF62
+	loadd	0xA8(sp),(r5,r4)
+	stord	r13,(sp)
+	loadw	0x9C(sp),r1
+	addw	$FFFF,r9
+	movzw	r1,(r3,r2)
+	addd	$1,(r3,r2)
+	addd	(r5,r4),(r3,r2)
+	stord	(r8,r7),0x88(sp)
+	storw	r6,0x74(sp)
+	movd	(r7,r6),r13
+	loadb	(r5,r4),r8
+	storb	r8,(r7,r6)
+	addd	$1,(r5,r4)
+	addd	$1,(r7,r6)
+	stord	(r7,r6),(sp)
+	cmpd	(r3,r2),(r5,r4)
+	bne	0000D328
+	loadd	0x88(sp),(r8,r7)
+	loadw	0x74(sp),r6
+	br	0000CC98
+	loadd	0xC(sp),(r3,r2)
+	loadd	(sp),(r5,r4)
+	loadd	0x80(sp),r13
+	loadb	(r3,r2),r1
+	storb	r1,(r5,r4)
+	addd	$1,(r3,r2)
+	addd	$1,(r5,r4)
+	cmpd	r13,(r3,r2)
+	bne	0000D34A
+	br	0000D2C0
+
+;; fn0000D358: 0000D358
+;;   Called from:
+;;     0000AA66 (in fn0000AA58)
+;;     0000AA86 (in fn0000AA58)
+;;     0000AC90 (in fn0000AE66)
+;;     0000AEC8 (in fn0000AE66)
+fn0000D358 proc
+	movw	r4,r0
+	movw	r2,r1
+	muluw	r1,(r1,r0)
+	mulw	r2,r5
+	mulw	r3,r4
+	addw	r1,r4
+	addw	r1,r5
+	jr	ra
+0000D368                         11 5A 23 53 5F 10 03 52         .Z#S_..R
+0000D370 6D 10 33 33 11 33 32 53 A0 08 00 52 05 11 01 52 m.33.32S...R...R
+0000D380 10 08 00 52 01 11 03 52 75 1F 20 5B 05 5A 30 53 ...R...Ru. [.Z0S
+0000D390 43 10 30 3B 15 27 F1 49 F3 49 01 52 19 1F 04 52 C.0;.'.I.I.R...R
+0000D3A0 12 10 50 5B EE 0A 01 52 11 1F 15 5B 20 5B E8 1F ..P[...R...[ [..
+0000D3B0 05 5A 52 53 66 12 03 52 75 10 00 5A 30 3B 03 5B .ZRSf..Ru..Z0;.[
+0000D3C0 15 2A 24 5B 11 5A 23 53 5D 10 33 33 11 33 23 53 .*$[.Z#S].33.3#S
+0000D3D0 40 08 00 52 0A 11 01 52 10 08 00 52 06 11 03 52 @..R...R...R...R
+0000D3E0 75 1F 00 5A 34 53 43 10 34 3B 10 27 F1 49 F3 49 u..Z4SC.4;.'.I.I
+0000D3F0 01 52 19 1F 05 52 04 10 01 5A 01 3B 10 5B EE 0A .R...R...Z.;.[..
+0000D400 25 3B 52 5B 15 5A E8 1D 01 52 1C 1E 10 5B E3 1F %;R[.Z...R...[..
+0000D410 05 5A 52 53 74 10 25 3B 52 5B 15 5A 30 5B 10 43 .ZRSt.%;R[.Z0[.C
+0000D420 03 2B 03 3B 20 5B 11 5A 23 53 5D 10 33 33 11 33 .+.; [.Z#S].33.3
+0000D430 32 53 A4 08 04 52 04 11 01 52 14 08 04 52 00 11 2S...R...R...R..
+0000D440 03 52 75 1F 03 53 A2 10 30 3B F1 49 F3 49 01 52 .Ru..S..0;.I.I.R
+0000D450 1A 1F 05 52 04 10 01 5A 01 3B 10 5B EE 0A 01 52 ...R...Z.;.[...R
+0000D460 12 1F E8 1F                                     ....            
+
+;; fn0000D464: 0000D464
+;;   Called from:
+;;     00006344 (in fn00004CD4)
+fn0000D464 proc
+	movw	r2,r4
+	movw	$1,r1
+	cmpw	r3,r2
+	bls	0000D488
+
+l0000D46C:
+	cmpw	$0,r3
+	bgt	0000D488
+
+l0000D470:
+	addw	r3,r3
+	addw	r1,r1
+	cmpw	r2,r3
+	slo	r0
+	cmpw	$0,r0
+	beq	0000D49C
+
+l0000D47C:
+	cmpw	$0,r1
+	sne	r0
+	cmpw	$0,r0
+	beq	0000D49C
+
+l0000D484:
+	cmpw	$0,r3
+	ble	0000D470
+
+l0000D488:
+	movw	$0,r0
+
+l0000D48A:
+	cmpw	r4,r3
+	bhi	0000D492
+
+l0000D48E:
+	subw	r4,r3
+	orw	r0,r1
+
+l0000D492:
+	lshw	$-15,r1
+	lshw	$-15,r3
+	cmpw	$0,r1
+	bne	0000D48A
+
+l0000D49A:
+	jr	ra
+
+l0000D49C:
+	cmpw	$0,r1
+	bne	0000D488
+
+l0000D4A0:
+	movw	r1,r0
+	jr	ra
+0000D4A4             20 5B 11 5A 23 53 5F 10 03 52 6D 10      [.Z#S_..Rm.
+0000D4B0 33 33 11 33 32 53 A4 08 04 52 0F 10 01 52 14 08 33.32S...R...R..
+0000D4C0 04 52 0B 10 03 52 75 1F 30 53 42 10 30 3B F1 49 .R...Ru.0SB.0;.I
+0000D4D0 F3 49 01 52 1A 1F EE 0A 01 52 17 1F EE 0A 00 00 .I.R.....R......
+0000D4E0 1E 01 06 5A 00 C0 14 00 1E 03 00 00             ...Z........    
+
+;; fn0000D4EC: 0000D4EC
+;;   Called from:
+;;     0000BC38 (in fn0000BC32)
+;;     0000BC46 (in fn0000BC42)
+;;     0000BC46 (in fn0000BC42)
+;;     0000BDF4 (in fn0000BDDA)
+;;     0000C09E (in fn0000BFCE)
+;;     0000C09E (in fn0000BFBE)
+;;     0000C09E (in fn0000BFAA)
+;;     0000C0AC (in fn0000BFCE)
+;;     0000C0AC (in fn0000BFBE)
+;;     0000C0AC (in fn0000BFAA)
+;;     0000C1CC (in fn0000C1BA)
+fn0000D4EC proc
+	push	$1,ra
+	movw	$1,r6
+	bal	ra,fn0000D4F8
+	popret	$1,ra
+0000D4F6                   00 00                               ..        
+
+;; fn0000D4F8: 0000D4F8
+;;   Called from:
+;;     0000D4F0 (in fn0000D4EC)
+fn0000D4F8 proc
+	push	$1,ra
+	push	$1,r8
+	movd	$1,(r9,r8)
+	cmpd	(r5,r4),(r3,r2)
+	bls	0000D522
+
+l0000D502:
+	cmpd	$0,(r5,r4)
+	bgt	0000D522
+
+l0000D506:
+	addd	(r5,r4),(r5,r4)
+	addd	(r9,r8),(r9,r8)
+	cmpd	(r3,r2),(r5,r4)
+	slo	r0
+	cmpw	$0,r0
+	beq	0000D544
+
+l0000D512:
+	movw	r8,r0
+	orw	r0,r9
+	cmpw	$0,r0
+	sne	r0
+	cmpw	$0,r0
+	beq	0000D544
+
+l0000D51E:
+	cmpd	$0,(r5,r4)
+	ble	0000D506
+
+l0000D522:
+	movd	(r1,r0),(r3,r2)
+	movd	$0,ra
+
+l0000D526:
+	cmpd	(r1,r0),(r5,r4)
+	bhi	0000D532
+
+l0000D52A:
+	subd	(r1,r0),(r5,r4)
+	ord	(r9,r8),ra
+
+l0000D532:
+	lshd	$-31,(r9,r8)
+	lshd	$-31,(r5,r4)
+	cmpd	$0,(r9,r8)
+	bne	0000D526
+
+l0000D53A:
+	cmpw	$0,r6
+	bne	0000D540
+
+l0000D53E:
+	movd	(r1,r0),ra
+
+l0000D540:
+	pop	$1,r8
+	popret	$1,ra
+
+l0000D544:
+	cmpd	$0,(r9,r8)
+	bne	0000D522
+
+l0000D548:
+	movd	ra,(r9,r8)
+	movd	(r1,r0),(r3,r2)
+	br	0000D53A
+0000D54E                                           00 00               ..
+0000D550 1D 01 FD 55 00 2C DF 55 1D 02 EE 0A 1D 01 BF 60 ...U.,.U.......`
+0000D560 FC FF FD 55 80 54 D0 61 00 A0 0D E0 00 2C DF 55 ...U.T.a.....,.U
+0000D570 4F 60 1D 02 EE 0A 00 00                         O`......        
+
+;; fn0000D578: 0000D578
+;;   Called from:
+;;     000003BE (in fn03B0)
+fn0000D578 proc
+	push	$1,r13
+	addd	$FFF8,sp
+	movd	r13,sp
+	movd	$C,(r1,r0)
+	addd	r13,(r1,r0)
+	loadd	(r1,r0),(r3,r2)
+	stord	(r3,r2),(r13)
+	loadd	4(r1,r0),(r1,r0)
+	stord	(r1,r0),4(r13)
+	nop
+	movd	sp,r13
+	addd	$8,sp
+	pop	$1,r13
+	jr	ra
+0000D596                   00 00 1D 01 BF 60 F8 FF FD 55       .....`...U
+0000D5A0 C0 54 D0 61 20 A0 2D E0 00 A2 0D E2 00 2C DF 55 .T.a .-......,.U
+0000D5B0 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 F4 FF FD 55 .`.........`...U
+0000D5C0 B0 54 10 00 D0 61 20 A0 2D E0 20 A2 2D E2 00 A4 .T...a .-. .-...
+0000D5D0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 ...,.U.`.......`
+0000D5E0 F8 FF FD 55 C0 54 D0 61 20 A0 2D E0 00 A2 0D E2 ...U.T.a .-.....
+0000D5F0 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000D600 FC FF FD 55 80 54 D0 61 00 A1 0D E0 00 2C DF 55 ...U.T.a.....,.U
+0000D610 4F 60 1D 02 EE 0A 00 00 1D 01 BF 60 F8 FF FD 55 O`.........`...U
+0000D620 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000D630 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
+0000D640 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A M......,.U.`....
+0000D650 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
+0000D660 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A M......,.U.`....
+0000D670 1D 01 BF 60 F0 FF FD 55 B0 54 14 00 D0 61 2D E0 ...`...U.T...a-.
+0000D680 4D E2 20 A0 2D E4 00 A2 0D E6 00 2C DF 55 BF 60 M. .-......,.U.`
+0000D690 10 00 1D 02 EE 0A 00 00 1D 01 BF 60 F4 FF FD 55 ...........`...U
+0000D6A0 B0 54 10 00 D0 61 2D E0 4D E2 00 A0 0D E4 00 2C .T...a-.M......,
+0000D6B0 DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 F4 FF FD 55 .U.`.......`...U
+0000D6C0 2D D0 3D E2 5D E4 00 2C DF 55 CF 60 1D 02 EE 0A -.=.]..,.U.`....
+0000D6D0 1D 01 BF 60 F8 FF FD 55 C0 54 D0 61 20 A0 2D E0 ...`...U.T.a .-.
+0000D6E0 00 A2 0D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 .....,.U.`......
+0000D6F0 1D 01 BF 60 FC FF FD 55 80 54 D0 61 00 A0 0D E0 ...`...U.T.a....
+0000D700 00 2C DF 55 4F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.UO`.........`
+0000D710 F8 FF FD 55 C0 54 D0 61 20 A0 2D E0 00 A2 0D E2 ...U.T.a .-.....
+0000D720 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000D730 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 4D E2 00 A0 ...U.T...a-.M...
+0000D740 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 ...,.U.`.......`
+0000D750 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 ...U-.M..,.U.`..
+0000D760 EE 0A 00 00 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 .......`...U.T..
+0000D770 D0 61 2D E0 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 .a-.M......,.U.`
+0000D780 1D 02 EE 0A 1D 01 BF 60 F4 FF FD 55 2D E0 4D D2 .......`...U-.M.
+0000D790 5D E4 00 2C DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 ]..,.U.`.......`
+0000D7A0 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000D7B0 1D 01 BF 60 F8 FF FD 55 2D D0 3D E2 00 2C DF 55 ...`...U-.=..,.U
+0000D7C0 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 .`.........`...U
+0000D7D0 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000D7E0 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000D7F0 1D 01 FD 55 00 2C DF 55 1D 02 EE 0A 1D 01 BF 60 ...U.,.U.......`
+0000D800 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 ...U-.M..,.U.`..
+0000D810 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000D820 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .UO`.......`...U
+0000D830 2D D0 3D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.=..,.U.`......
+0000D840 1D 01 BF 60 F8 FF FD 55 2D D0 3D E2 00 2C DF 55 ...`...U-.=..,.U
+0000D850 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 .`.........`...U
+0000D860 2D D0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000D870 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 ...U-.M..,.U.`..
+0000D880 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000D890 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F0 FF FD 55 .UO`.......`...U
+0000D8A0 B0 54 14 00 D0 61 2D E0 4D E2 20 A0 2D E4 00 A2 .T...a-.M. .-...
+0000D8B0 0D E6 00 2C DF 55 BF 60 10 00 1D 02 EE 0A 00 00 ...,.U.`........
+0000D8C0 1D 01 BF 60 F0 FF FD 55 B0 54 14 00 D0 61 2D E0 ...`...U.T...a-.
+0000D8D0 4D E2 20 A0 2D E4 00 A2 0D E6 00 2C DF 55 BF 60 M. .-......,.U.`
+0000D8E0 10 00 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 ...........`...U
+0000D8F0 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000D900 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000D910 1D 01 BF 60 FC FF FD 55 2D E0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000D920 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000D930 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 .UO`.......`...U
+0000D940 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000D950 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000D960 1D 01 BF 60 FC FF FD 55 2D E0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000D970 1D 02 EE 0A                                     ....            
+
+;; fn0000D974: 0000D974
+;;   Called from:
+;;     000003C4 (in fn03B0)
+fn0000D974 proc
+	addd	$FFFC,sp
+	movd	r13,sp
+	storw	r2,(r13)
+	nop
+	movd	sp,r13
+	addd	$4,sp
+	jr	ra
+
+;; fn0000D984: 0000D984
+;;   Called from:
+;;     0000BACC (in fn0000B218)
+fn0000D984 proc
+	push	$1,r13
+	addd	$FFF8,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	stord	(r5,r4),4(r13)
+	nop
+	movd	sp,r13
+	addd	$8,sp
+	pop	$1,r13
+	jr	ra
+0000D99A                               00 00                       ..    
+
+;; fn0000D99C: 0000D99C
+;;   Called from:
+;;     00000C0A (in fn00000BEC)
+;;     00001B9A (in fn00001B74)
+;;     00001BA0 (in fn00001B74)
+;;     00001BBC (in fn00001B74)
+;;     00001BCA (in fn00001B74)
+;;     00002E5C (in fn00002D76)
+;;     00002E62 (in fn00002D76)
+;;     00002E72 (in fn00002D76)
+;;     00002E86 (in fn00002D76)
+fn0000D99C proc
+	push	$1,r13
+	addd	$FFFC,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	nop
+	movd	sp,r13
+	addd	$4,sp
+	pop	$1,r13
+	jr	ra
+
+;; fn0000D9B0: 0000D9B0
+;;   Called from:
+;;     00000C5A (in fn00000BEC)
+fn0000D9B0 proc
+	push	$1,r13
+	addd	$FFFC,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	nop
+	movd	sp,r13
+	addd	$4,sp
+	pop	$1,r13
+	jr	ra
+0000D9C4             1D 01 BF 60 F8 FF FD 55 2D E0 4D E2     ...`...U-.M.
+0000D9D0 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000D9E0 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000D9F0 1D 01 BF 60 F4 FF FD 55 2D E0 4D E2 6D D4 00 2C ...`...U-.M.m..,
+0000DA00 DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 F4 FF FD 55 .U.`.......`...U
+0000DA10 2D E0 4D E2 6D D4 00 2C DF 55 CF 60 1D 02 EE 0A -.M.m..,.U.`....
+0000DA20 1D 01 FD 55 00 2C DF 55 1D 02 EE 0A 1D 01 BF 60 ...U.,.U.......`
+0000DA30 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DA40 1D 01 BF 60 FC FF FD 55 2D D0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DA50 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000DA60 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 .UO`.......`...U
+0000DA70 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000DA80 F4 FF FD 55 2D E0 4D E2 6D D4 00 2C DF 55 CF 60 ...U-.M.m..,.U.`
+0000DA90 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000DAA0 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 .UO`.......`...U
+0000DAB0 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000DAC0 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DAD0 00 2C DF 55 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 .,.U.......`...U
+0000DAE0 2D D0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000DAF0 FC FF FD 55 80 54 D0 61 00 A0 0D E0 00 2C DF 55 ...U.T.a.....,.U
+0000DB00 4F 60 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 O`.........`...U
+0000DB10 80 54 D0 61 00 A1 0D E0 00 2C DF 55 4F 60 1D 02 .T.a.....,.UO`..
+0000DB20 EE 0A 00 00                                     ....            
+
+;; fn0000DB24: 0000DB24
+;;   Called from:
+;;     000031A2 (in fn000030F2)
+;;     00003502 (in fn000034F2)
+;;     00003548 (in fn00003540)
+;;     00003548 (in fn00003540)
+;;     000035B4 (in fn00003A36)
+;;     0000363A (in fn0000356E)
+;;     000036F6 (in fn000030F2)
+;;     000037EC (in fn000037E0)
+;;     0000384A (in fn00003480)
+;;     00003B48 (in fn00003B3C)
+;;     00003CD4 (in fn0000356E)
+;;     00003D6E (in fn00003A36)
+;;     000040FC (in fn00003A36)
+;;     000042DE (in fn0000402E)
+;;     00004378 (in fn00003A36)
+;;     0000468C (in fn00004CD4)
+;;     00004E82 (in fn00004CD4)
+;;     00004F38 (in fn00004CD4)
+;;     00005226 (in fn00004CD4)
+;;     0000558A (in fn00004CD4)
+;;     000055E6 (in fn00004CD4)
+;;     0000685A (in fn00004CD4)
+;;     000068EE (in fn00004CD4)
+;;     00006904 (in fn00004CD4)
+;;     0000691A (in fn00004CD4)
+;;     0000692C (in fn00004CD4)
+;;     00008BA6 (in fn00008B9C)
+;;     00008C2E (in fn00008DC0)
+;;     00008C60 (in fn00008B9C)
+;;     00009012 (in fn0000A110)
+;;     00009054 (in fn0000A110)
+;;     0000B02E (in fn0000AFCC)
+fn0000DB24 proc
+	push	$1,r13
+	addd	$FFF4,sp
+	movd	r13,sp
+	movd	$10,(r1,r0)
+	addd	r13,(r1,r0)
+	stord	(r3,r2),(r13)
+	stord	(r5,r4),4(r13)
+	loadd	(r1,r0),(r1,r0)
+	stord	(r1,r0),8(r13)
+	nop
+	movd	sp,r13
+	addd	$C,sp
+	pop	$1,r13
+	jr	ra
+
+;; fn0000DB44: 0000DB44
+;;   Called from:
+;;     00003276 (in fn000030F2)
+;;     000033C0 (in fn000030F2)
+;;     00004496 (in fn00004450)
+;;     00006054 (in fn00004CD4)
+;;     00006446 (in fn00004CD4)
+;;     000066AA (in fn00004CD4)
+fn0000DB44 proc
+	push	$1,r13
+	addd	$FFF4,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	storw	r4,4(r13)
+	stord	(r6,r5),8(r13)
+	nop
+	movd	sp,r13
+	addd	$C,sp
+	pop	$1,r13
+	jr	ra
+0000DB5C                                     1D 01 BF 60             ...`
+0000DB60 F4 FF FD 55 2D E0 4D D2 5D E4 00 2C DF 55 CF 60 ...U-.M.]..,.U.`
+0000DB70 1D 02 EE 0A                                     ....            
+
+;; fn0000DB74: 0000DB74
+;;   Called from:
+;;     00000C46 (in fn00000BEC)
+;;     00000C50 (in fn00000BEC)
+fn0000DB74 proc
+	push	$1,r13
+	addd	$FFFC,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	nop
+	movd	sp,r13
+	addd	$4,sp
+	pop	$1,r13
+	jr	ra
+0000DB88                         1D 01 BF 60 F8 FF FD 55         ...`...U
+0000DB90 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000DBA0 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 ...`...U-.M..,.U
+0000DBB0 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 F8 FF FD 55 .`.........`...U
+0000DBC0 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000DBD0 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
+0000DBE0 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A M......,.U.`....
+
+;; fn0000DBF0: 0000DBF0
+;;   Called from:
+;;     00000C6A (in fn00000BEC)
+fn0000DBF0 proc
+	push	$1,r13
+	addd	$FFF8,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	stord	(r5,r4),4(r13)
+	nop
+	movd	sp,r13
+	addd	$8,sp
+	pop	$1,r13
+	jr	ra
+0000DC06                   00 00 1D 01 BF 60 F4 FF FD 55       .....`...U
+0000DC10 B0 54 10 00 D0 61 2D E0 4D E2 00 A0 0D E4 00 2C .T...a-.M......,
+0000DC20 DF 55 CF 60 1D 02 EE 0A                         .U.`....        
+
+;; fn0000DC28: 0000DC28
+;;   Called from:
+;;     00000C7C (in fn00000BEC)
+fn0000DC28 proc
+	push	$1,r13
+	addd	$FFF8,sp
+	movd	r13,sp
+	stord	(r3,r2),(r13)
+	stord	(r5,r4),4(r13)
+	nop
+	movd	sp,r13
+	addd	$8,sp
+	pop	$1,r13
+	jr	ra
+0000DC3E                                           00 00               ..
+0000DC40 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
+0000DC50 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A M......,.U.`....
+0000DC60 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 ...`...U-.M..,.U
+0000DC70 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 F4 FF FD 55 .`.........`...U
+0000DC80 B0 54 10 00 D0 61 2D E0 4D E2 00 A0 0D E4 00 2C .T...a-.M......,
+0000DC90 DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .U.`.......`...U
+0000DCA0 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000DCB0 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
+0000DCC0 4D E2 00 A0 0D E4 00 2C DF 55 CF 60 1D 02 EE 0A M......,.U.`....
+0000DCD0 1D 01 BF 60 F8 FF FD 55 2D E0 4D D2 00 2C DF 55 ...`...U-.M..,.U
+0000DCE0 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 F8 FF FD 55 .`.........`...U
+0000DCF0 2D E0 4D D2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000DD00 1D 01 BF 60 FC FF FD 55 2D D0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DD10 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 2D D0 00 2C .......`...U-..,
+0000DD20 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 .UO`.......`...U
+0000DD30 2D D0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000DD40 FC FF FD 55 2D D0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DD50 1D 01 BF 60 FC FF FD 55 2D D0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DD60 1D 02 EE 0A 1D 01 BF 60 FC FF FD 55 2D D0 00 2C .......`...U-..,
+0000DD70 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F4 FF FD 55 .UO`.......`...U
+0000DD80 2D D0 3D E2 5D E4 00 2C DF 55 CF 60 1D 02 EE 0A -.=.]..,.U.`....
+
+;; fn0000DD90: 0000DD90
+;;   Called from:
+;;     00002E2A (in fn00002D76)
+;;     00002EAE (in fn00002D76)
+fn0000DD90 proc
+	push	$1,r13
+	addd	$FFF4,sp
+	movd	r13,sp
+	storw	r2,(r13)
+	stord	(r4,r3),4(r13)
+	stord	(r6,r5),8(r13)
+	nop
+	movd	sp,r13
+	addd	$C,sp
+	pop	$1,r13
+	jr	ra
+0000DDA8                         1D 01 BF 60 F4 FF FD 55         ...`...U
+0000DDB0 2D D0 3D E2 5D E4 00 2C DF 55 CF 60 1D 02 EE 0A -.=.]..,.U.`....
+0000DDC0 1D 01 BF 60 F4 FF FD 55 2D D0 3D E2 5D E4 00 2C ...`...U-.=.]..,
+0000DDD0 DF 55 CF 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .U.`.......`...U
+0000DDE0 2D D0 3D D1 4D D2 00 2C DF 55 8F 60 1D 02 EE 0A -.=.M..,.U.`....
+
+;; fn0000DDF0: 0000DDF0
+;;   Called from:
+;;     00001BC2 (in fn00001B74)
+;;     00002E78 (in fn00002D76)
+fn0000DDF0 proc
+	push	$1,r13
+	addd	$FFFC,sp
+	movd	r13,sp
+	storw	r2,(r13)
+	nop
+	movd	sp,r13
+	addd	$4,sp
+	pop	$1,r13
+	jr	ra
+0000DE04             1D 01 BF 60 FC FF FD 55 2D E0 00 2C     ...`...U-..,
+0000DE10 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .UO`.......`...U
+0000DE20 2D D0 3D E2 5D D1 00 2C DF 55 8F 60 1D 02 EE 0A -.=.]..,.U.`....
+0000DE30 1D 01 FD 55 00 2C DF 55 1D 02 EE 0A 1D 01 FD 55 ...U.,.U.......U
+0000DE40 00 2C DF 55 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .,.U.......`...U
+0000DE50 2D D0 3D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.=..,.U.`......
+0000DE60 1D 01 BF 60 FC FF FD 55 2D E0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DE70 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 .......`...U-.M.
+0000DE80 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000DE90 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DEA0 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 ...`...U-.M..,.U
+0000DEB0 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 .`.........`...U
+0000DEC0 2D D0 3D D1 00 2C DF 55 4F 60 1D 02 EE 0A 00 00 -.=..,.UO`......
+0000DED0 1D 01 BF 60 FC FF FD 55 2D E0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DEE0 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 .......`...U-.M.
+0000DEF0 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000DF00 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DF10 1D 01 BF 60 F8 FF FD 55 2D E0 4D E2 00 2C DF 55 ...`...U-.M..,.U
+0000DF20 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 .`.........`...U
+0000DF30 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 -..,.UO`.......`
+0000DF40 FC FF FD 55 2D E0 00 2C DF 55 4F 60 1D 02 EE 0A ...U-..,.UO`....
+0000DF50 1D 01 BF 60 FC FF FD 55 2D E0 00 2C DF 55 4F 60 ...`...U-..,.UO`
+0000DF60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 2D D0 3D E2 .......`...U-.=.
+0000DF70 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
+0000DF80 F4 FF FD 55 2D D0 3D E2 5D E4 00 2C DF 55 CF 60 ...U-.=.]..,.U.`
+0000DF90 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 C0 54 D0 61 .......`...U.T.a
+0000DFA0 20 A0 2D E0 00 A2 0D E2 00 2C DF 55 8F 60 1D 02  .-......,.U.`..
+0000DFB0 EE 0A 00 00 1D 01 BF 60 F8 FF FD 55 C0 54 D0 61 .......`...U.T.a
+0000DFC0 20 A0 2D E0 00 A2 0D E2 00 2C DF 55 8F 60 1D 02  .-......,.U.`..
+0000DFD0 EE 0A 00 00 1D 01 BF 60 FC FF FD 55 2D E0 00 2C .......`...U-..,
+0000DFE0 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .UO`.......`...U
+0000DFF0 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
+0000E000 1E 01 18 01 78 00 01 00 78 1C 08 A0 90 56 07 10 ....x...x....V..
+0000E010 D0 00 B8 60 FC FF 08 A0 90 56 1B 1F 18 02 1E 03 ...`.....V......
+0000E020 1E 01 1E 03 9D 01 67 01 BF 60 E8 FF 28 5B 3D 55 ......g..`..([=U
+0000E030 70 00 36 20 77 62 0F E0 0F 83 04 00 A3 A0 13 00 p.6 wb..........
+0000E040 A4 B0 28 00 B4 5A 2F 00 A2 55 FF C0 9F FC 00 56 ..(..Z/..U.....V
+0000E050 03 10 1A 54 0A 61 98 32 4D 60 40 05 E0 E2 A2 55 ...T.a.2M`@....U
+0000E060 FF C0 01 FC 07 5B 1F C3 14 00 00 52 0A 10 40 05 .....[.....R..@.
+0000E070 E8 E2 A2 55 FF C0 ED FB 7F 9A 00 52 10 18 98 01 ...U.......R....
+0000E080 08 52 D6 12 C0 05 EE E2 19 5A E6 11 40 05 F2 E2 .R.......Z..@...
+0000E090 A2 55 FF C0 CF FB 00 52 0E 13 40 05 F6 E2 A2 55 .U.....R..@....U
+0000E0A0 FF C0 C1 FB 00 52 19 13 B0 58 66 00 0F F3 98 32 .....R...Xf....2
+0000E0B0 4D 60 08 52 0D 10 AD A0 C4 55 A2 55 FF C0 A5 FB M`.R.....U.U....
+0000E0C0 00 52 15 1E 97 5B 98 32 4D 60 08 52 15 1F 0F B3 .R...[.2M`.R....
+0000E0D0 B0 50 20 00 00 18 38 01 08 52 18 14 1F 9A 01 52 .P ...8..R.....R
+0000E0E0 00 18 3E 01 12 00 24 B0 30 00 FF C0 63 F8 30 05 ..>...$.0...c.0.
+0000E0F0 BE E2 02 5B FF C0 0F 25 00 56 00 18 4A 01 12 00 ...[...%.V..J...
+0000E100 44 B0 3C 00 02 55 FF C0 8D 20 00 5A BF 60 18 00 D.<..U... .Z.`..
+0000E110 67 02 9D 03 9F DA EC 1C 40 05 FA E2 A2 55 FF C0 g.......@....U..
+0000E120 43 FB 00 52 15 10 B1 58 68 00 1F F3 E1 1C 40 05 C..R...Xh.....@.
+0000E130 FE E2 A2 55 FF C0 2D FB 00 52 15 10 B0 58 52 00 ...U..-..R...XR.
+0000E140 0F F3 E6 1B 0A B0 B0 50 2D 00 1C 10 0A B1 B1 58 .......P-......X
+0000E150 CF FF 01 31 81 50 A6 10 1A B2 01 50 13 10 0F F2 ...1.P.....P....
+0000E160 E7 1A 0F B3 B0 50 20 00 02 15 98 32 88 5F 18 60 .....P ....2._.`
+0000E170 28 4C D8 61 C0 05 BE E2 E1 11 07 52 0B 12 C4 55 (L.a.......R...U
+0000E180 FF C0 6B 24 00 56 01 13 12 00 44 B0 3C 00 02 55 ..k$.V....D.<..U
+0000E190 FF C0 03 20 4D 60 8D 57 09 1B 2D A0 0F 9A 00 52 ... M`.W..-....R
+0000E1A0 1D 1E 07 52 0A 11 C4 55 FF C0 C5 F6 0A 55 00 56 ...R...U.....U.V
+0000E1B0 08 11 12 00 24 B0 3C 00 FF C0 95 F7 F3 55 02 5B ....$.<......U.[
+0000E1C0 FF C0 43 24 00 56 03 14 04 55 A2 55 FF C0 43 1F ..C$.V...U.U..C.
+0000E1D0 E2 1E FF C0 01 21 EF 1D F4 55 FF C0 3F 20 EB 1D .....!...U..? ..
+0000E1E0 2D A0 FF C0 7F F7 E7 1D 0D A0 10 01 12 00 04 B0 -...............
+0000E1F0 28 00 10 01 00 05 C2 E2 10 01 12 00 04 B0 2C 00 (.............,.
+0000E200 10 01 FF C0 77 F3 BF 60 10 00 E5 1C 0F 83 03 00 ....w..`........
+0000E210 E0 18 C9 FE 0F C3 14 00 7F 9A E0 18 67 FE 12 00 ............g...
+0000E220 24 B0 3C 00 FF C0 29 F7 F3 55 02 5B FF C0 D7 23 $.<...)..U.[...#
+0000E230 00 56 0D 10 12 00 24 B0 30 00 04 55 FF C0 D3 1E .V....$.0..U....
+0000E240 E0 18 CB FE 20 05 02 E3 FF C0 A5 1E 20 05 16 E3 .... ....... ...
+0000E250 FF C0 9D 1E                                     ....            

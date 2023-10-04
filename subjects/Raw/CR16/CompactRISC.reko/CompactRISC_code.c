@@ -4,8 +4,17532 @@
 
 #include "CompactRISC.h"
 
-// 03B0: void fn03B0()
-void fn03B0()
+Eq_n g_t0001 = // 00000001
+	{
+		0x4000,
+		&g_a8004000,
+		0,
+		0x00,
+		0x0400,
+		
+		{
+			L'\xEE5A'
+		},
+		~0xAA,
+		0x0F5F,
+		54552,
+		12117,
+		0xE055,
+		0x94E4,
+		0x0AF7,
+		0x9D00,
+		11519,
+		0xB096,
+		12959,
+		1618,
+		0x08,
+		338,
+		0x0CD0,
+		0x12A2,
+		0xB0,
+		
+		{
+			L'\xA0A4'
+		},
+		
+		{
+			L'\x7411'
+		},
+		0x08321000,
+		137498772,
+		
+		{
+			L'\x7F03'
+		},
+		
+		{
+			L'\x1054'
+		},
+	};
+// 000003B0: void fn03B0(Sequence word32 r6_r5, Sequence Eq_n r9_r8, Register Eq_n r4, Register word16 r11, Register Eq_n r12, Register (ptr32 Eq_n) r13, Register Eq_n ra)
+void fn03B0(word32 r6_r5, Eq_n r9_r8, Eq_n r4, word16 r11, Eq_n r12, struct Eq_n * r13, Eq_n ra)
 {
+	Eq_n r13_n;
+	word16 r3_n;
+	word16 r1_n = fn0000D578(r13, out r3_n, out r13_n);
+	fn0000D974(0x01, r13_n);
+	Eq_n sp_n = <invalid>;
+	sp_n.u6->tFFFFFFFC.u4 = (cup16 *) ra;
+	if (SEQ(r3_n, 0x01) == 0x00)
+		return;
+	if (SEQ(r3_n, 0x01)->w000C == 7247)
+		fn00001B74(r9_r8, r11, r13_n, ra);
+	else
+		fn00002D76(r6_r5, r9_r8, r1_n, r4, r12, r13_n, ra, sp_n.u6[0x0000FFF2], sp_n.u6[0x0000FFF6], sp_n.u6[0x0000FFFA], sp_n.u6[0x0000FFFE], sp_n.u6[0x00010000], sp_n.u6[0x00010004], sp_n.u6[0x00010006], sp_n.u6[65586], sp_n.u6[65594], sp_n.u6[65618], sp_n.u6[0x00020002], sp_n.u6[131116], sp_n.u6[0x0002FF84]);
+}
+
+// 00000BEC: Sequence word32 fn00000BEC(Sequence uipr32 r5_r4, Sequence Eq_n r9_r8, Register cui16 r6, Register Eq_n r13, Register out Eq_n r0Out)
+// Called from:
+//      fn00001B74
+//      fn00002D76
+word32 fn00000BEC(uipr32 r5_r4, Eq_n r9_r8, cui16 r6, Eq_n r13, union Eq_n & r0Out)
+{
+	Eq_n r4 = (word16) r5_r4;
+	cui16 r5 = SLICE(r5_r4, word16, 16);
+	Eq_n r3_r2_n = r9_r8.u6[0x0068];
+	word16 r3_n = SLICE(r3_r2_n, word16, 16);
+	word16 r2_n = (word16) r3_r2_n;
+	if (r3_r2_n != 0x00)
+	{
+		if (r9_r8.u6[100] != ~0x03)
+			r13 = fn0000D99C(r3_r2_n, r13);
+		r9_r8.u6[0x0068] = (struct Eq_n) 0x00;
+	}
+	if ((int16) (r4 != 0x00) != 0x00 && (int16) (r4 != ~0x04) != 0x00)
+		*r9_r8.u4 = 0x00;
+	r9_r8.u6[100] = (struct Eq_n) r4;
+	cui16 r7_n = r6 | r5;
+	Eq_n r0_n = (int16) (r5 == 0x00);
+	if (r0_n == 0x00)
+	{
+		r0_n.u0 = (int16) (r4 == ~0x03);
+		if (r0_n == 0x00)
+		{
+			Eq_n r13_n = fn0000DB74(r3_r2_n, r13);
+			fn0000DB74(SEQ(r7_n, r5), r13_n);
+			struct Eq_n * r3_r2_n = r13_n.u4 + SEQ(r7_n, r5);
+			struct Eq_n * r13_n = fn0000D9B0(&r3_r2_n->w0003, SEQ(r7_n, r5));
+			r9_r8.u6[0x0068] = (struct Eq_n) r13_n;
+			word16 r3_n = SLICE(&r3_r2_n->w0003, word16, 16);
+			word16 r2_n = (word16) r3_r2_n + 0x03;
+			if (r13_n == 0x00)
+			{
+				r9_r8.u6[100] = (struct Eq_n) ~0x03;
+				r0Out.u0 = ~0x03;
+				return SEQ(r3_n, r2_n);
+			}
+			struct Eq_n * r13_n = fn0000DBF0(&r3_r2_n->w0003, r5_r4, r13_n);
+			r3_r2_n->w0003 = 0x203A;
+			fn0000DC28(&r3_r2_n->w0003 + 1, SEQ(r7_n, r5), r13_n);
+			r0_n = (word16) r3_r2_n + 0x03;
+			r3_n = SLICE(&r3_r2_n->w0003 + 1, word16, 16);
+			r2_n = (word16) r3_r2_n + 0x05;
+		}
+	}
+	r0Out = r0_n;
+	return SEQ(r3_n, r2_n);
+}
+
+// 00001B74: void fn00001B74(Sequence Eq_n r9_r8, Register word16 r11, Register Eq_n r13, Register Eq_n ra)
+// Called from:
+//      fn03B0
+void fn00001B74(Eq_n r9_r8, word16 r11, Eq_n r13, Eq_n ra)
+{
+	if (r9_r8 == 0x00 || *((word32) r9_r8 + 0x0C) != 7247)
+		return;
+	Eq_n r3_r2_n = r9_r8;
+	if (*((word32) r9_r8 + 20) != 0x00)
+	{
+		Eq_n r9_r8_n = fn000089C4(r9_r8, r11, ra);
+		Eq_n r13_n = fn0000D99C(r9_r8_n.u6[56], r13);
+		r3_r2_n.u4 = r9_r8_n.u6[24];
+		r13 = fn0000D99C(r3_r2_n, r13_n);
+		r9_r8 = r9_r8_n;
+	}
+	word16 r0_n;
+	fn00000BEC(0x00, r3_r2_n, 0x00, r13, out r0_n);
+	Eq_n r3_r2_n = *((word32) r3_r2_n + 16);
+	Eq_n r13_n = fn0000D99C(r3_r2_n, r13);
+	Eq_n r2_n = r3_r2_n.u6[0x0E];
+	fn0000D99C(SEQ(SLICE(r3_r2_n, word16, 16), r2_n), fn0000DDF0(r2_n, r13_n));
+	if (r0_n != 0x00)
+		;
+}
+
+// 00002D76: void fn00002D76(Sequence word32 r6_r5, Sequence Eq_n r9_r8, Register word16 r1, Register Eq_n r4, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArgFFF6, Stack Eq_n dwArgFFFA, Stack Eq_n dwArgFFFE, Stack Eq_n wArg10002, Stack Eq_n dwArg10004, Stack Eq_n wArg10008, Stack Eq_n dwArg1000A, Stack Eq_n dwArg10036, Stack Eq_n dwArg1003E, Stack Eq_n dwArg10056, Stack Eq_n dwArg20006, Stack Eq_n dwArg20030, Stack Eq_n wArg2FF88)
+// Called from:
+//      fn03B0
+void fn00002D76(word32 r6_r5, Eq_n r9_r8, word16 r1, Eq_n r4, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArgFFF6, Eq_n dwArgFFFA, Eq_n dwArgFFFE, Eq_n wArg10002, Eq_n dwArg10004, Eq_n wArg10008, Eq_n dwArg1000A, Eq_n dwArg10036, Eq_n dwArg1003E, Eq_n dwArg10056, Eq_n dwArg20006, Eq_n dwArg20030, Eq_n wArg2FF88)
+{
+	Eq_n fp;
+	Eq_n r8 = (word16) r9_r8;
+	Eq_n r6 = SLICE(r6_r5, word16, 16);
+	Eq_n r5 = (word16) r6_r5;
+	byte bArgFFFA_n = (byte) dwArgFFFA;
+	Eq_n wArgFFFC_n = SLICE(dwArgFFFA, word16, 16);
+	Eq_n sp_n = fp.u6 + 0x0000FFF6;
+	if (r9_r8 == 0x00)
+	{
+		word32 r9_r8_n;
+		word16 r7_n;
+		word32 r12_n;
+		word32 r13_n;
+		fn000030F2(r6_r5, r4, r8, r12, r13, dwArgFFF6, dwArgFFFA, dwArgFFFE, wArg10002, dwArg10004, wArg10008, dwArg1000A, dwArg10036, dwArg1003E, dwArg10056, dwArg20006, dwArg20030, wArg2FF88, out r9_r8_n, out r7_n, out r12_n, out r13_n);
+		return;
+	}
+	if (*((word32) r9_r8 + 0x0C) != 31153)
+	{
+		fn000030E8();
+		return;
+	}
+	if (*((word32) r9_r8 + 96) != 0x00)
+	{
+		fn0000300E(r4, r5, r6, r12, r13, ra, dwArgFFF6, bArgFFFA_n, wArgFFFC_n);
+		return;
+	}
+	Eq_n r0_n = *((word32) r9_r8 + 20);
+	if (r0_n == 0x00)
+	{
+		fn0000304A(SEQ(r1, r0_n), r9_r8);
+		return;
+	}
+	Eq_n r3_r2_n;
+	Eq_n r3_r2_n;
+	Eq_n r3_r2_n;
+	Eq_n sp_n;
+	Eq_n r0_n = r9_r8.u6[64];
+	if (r0_n == 0x00)
+	{
+		Eq_n r7_n = r9_r8.u6[144];
+		r13 = SEQ(SLICE(r13, word16, 16), 0x4000);
+		Eq_n r12_n = SEQ(SLICE(r12, word16, 16), 0x00);
+		Eq_n r3_r2_n = r9_r8;
+		Eq_n r7_r6_n = SEQ(r7_n, r6);
+		if ((int16) (r7_n == 0x00) == 0x00)
+		{
+			while ((int16) (r0_n == 0x01) == 0x00)
+			{
+				r5.u0 = <invalid>;
+				r4.u0 = <invalid>;
+				Eq_n r7_n;
+				Eq_n r9_r8_n;
+				Eq_n r3_r2_n;
+				word32 r11_r10_n;
+				word32 r5_r4_n;
+				word16 r6_n = (word16) fn00004CD4(r3_r2_n, SEQ(r5, 0x04), r7_r6_n, r9_r8, r12_n, r13, ra, *sp_n.u4, sp_n.u6[0x0000FFF0], sp_n.u6[0x0000FFF4], sp_n.u6[0x0000FFF6], sp_n.u6[0x0000FFFA], sp_n.u6[0x0000FFFC], sp_n.u6[0x00010000], sp_n.u6[65556], sp_n.u6[65560], sp_n.u6[65564], sp_n.u6[0x00010020], sp_n.u6[65572], sp_n.u6[65576], sp_n.u6[65580], sp_n.u6[0x00010030], sp_n.u6[65588], sp_n.u6[0x00010044], sp_n.u6[65608], sp_n.u6[65612], sp_n.u6[65762], sp_n.u6[0x000101F0], sp_n.u6[66036], sp_n.u6[131032], sp_n.u6[131034], sp_n.u6[131038], sp_n.u6[0x0001FFE6], sp_n.u6[131050], sp_n.u6[0x0001FFFC], sp_n.u6[0x00020016], sp_n.u6[131102], sp_n.u6[131110], sp_n.u6[131126], sp_n.u6[0x0002FF7E], sp_n.u6[0x0002FFC2], sp_n.u6[0x0002FFE6], sp_n.u6[0x00030010], sp_n.u6[261992], out r11_r10_n, out r3_r2_n, out r5_r4_n, out r9_r8_n, out r0_n, out r7_n, out r12_n, out r13, out ra);
+				sp_n = fp;
+				if (r0_n == ~0x01)
+				{
+					fn00003070();
+					return;
+				}
+				Eq_n r1_n = r9_r8_n.u6[144];
+				if (r7_n == r1_n)
+				{
+					fn00003082();
+					return;
+				}
+				r9_r8 = r9_r8_n;
+				r3_r2_n = r3_r2_n;
+				r7_r6_n = SEQ(r1_n, r6_n);
+				r9_r8 = r9_r8_n;
+				if ((int16) (r1_n == 0x00) != 0x00)
+					break;
+			}
+		}
+		Eq_n r3_r2_n = r9_r8.u6[0x0088];
+		if (*((word32) r9_r8 + 4) < r3_r2_n)
+		{
+			do
+			{
+				if (r3_r2_n < 0x4000)
+					r3_r2_n = SEQ((word16) r12_n, (word16) r13);
+				ci16 r3_n = SLICE(r3_r2_n, word16, 16);
+				Eq_n r2_n = r9_r8.u6[0x0E];
+				r13 = fn0000DD90(SEQ(r4, r3_n), r3_r2_n & 0xFFFF, r2_n, r13);
+				sp_n = fp;
+				r3_r2_n = SEQ(r3_n, r2_n);
+				if (r3_n >= 0x00)
+					goto l00002E32;
+				Eq_n r1_r0_n = ((word32) r9_r8 + 4)->u4 + (int32) r3_n;
+				*((word32) r9_r8 + 4) = r1_r0_n;
+				r3_r2_n.u4 = r9_r8.u6[0x0088];
+			} while (r1_r0_n < r3_r2_n);
+			fn00003000(r1_r0_n, r3_r2_n);
+			return;
+		}
+		else
+		{
+			fn0000301A();
+			return;
+		}
+	}
+	Eq_n r5_n = *((word32) r9_r8 + 0x0078);
+	if (r5_n != 0x00)
+	{
+		Eq_n r4_r3_n = r9_r8.u6[112];
+		do
+		{
+			word16 r3_n = (word16) r4_r3_n;
+			if (r5_n < 0x4000)
+				r5_n.u0 = 0x4000;
+			Eq_n r2_n = r9_r8.u6[0x0E];
+			r13 = fn0000DD90(r4_r3_n, (word32) r5_n, r2_n, r13);
+			sp_n.u0 = <invalid>;
+			r3_r2_n = SEQ(r3_n, r2_n);
+			if (r0_n > 0x00)
+			{
+l00002E32:
+				word16 r0_n;
+				Eq_n r3_r2_n = fn00000BEC(~0x1B570000, r3_r2_n, 0x00, r13, out r0_n);
+				*sp_n.u4 = (cup16) r3_r2_n.u6[100];
+				r9_r8 = r3_r2_n;
+				r3_r2_n = r3_r2_n;
+				goto l00002E44;
+			}
+			r5_n = *((word32) r9_r8 + 0x0078);
+			*((word32) r9_r8 + 0x0078) = r5_n;
+			int32 r1_r0_n = (int32) (r0_n - r5_n);
+			r4_r3_n.u4 = (r9_r8.u6[112].a0000 + r1_r0_n / 4).u5.u4;
+			r9_r8.u6[112] = (struct Eq_n) r4_r3_n;
+			r0_n = (word16) r1_r0_n;
+			word16 r3_n = (word16) r4_r3_n;
+		} while (r5_n != 0x00);
+		r3_r2_n = SEQ(r3_n, r2_n);
+l00002E44:
+		Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+		r3_r2_n = r3_r2_n;
+		if (*((word32) r9_r8 + 20) != 0x00)
+		{
+			if (r9_r8.u6[64] == 0x00)
+			{
+				Eq_n r9_r8_n;
+				word16 r1_n;
+				word16 r2_n;
+				word16 r3_n;
+				word16 r4_n;
+				word16 r5_n;
+				word16 r6_n;
+				word16 r7_n;
+				word32 ra_n;
+				fn00006134(r9_r8, r3_n, out r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out ra_n);
+				r13 = fn0000D99C(r9_r8_n.u6[56], r13);
+				r9_r8 = r9_r8_n;
+			}
+			goto l00002E60;
+		}
+	}
+	else
+	{
+		r3_r2_n = r9_r8;
+		if (*((word32) r9_r8 + 20) != 0x00)
+		{
+l00002E60:
+			r3_r2_n.u4 = r9_r8.u6[24];
+			r13 = fn0000D99C(r3_r2_n, r13);
+			goto l00002E66;
+		}
+	}
+l00002E66:
+	word16 r0_n;
+	fn00000BEC(0x00, r3_r2_n, 0x00, r13, out r0_n);
+	Eq_n r3_r2_n = *((word32) r3_r2_n + 16);
+	Eq_n r13_n = fn0000D99C(r3_r2_n, r13);
+	Eq_n r2_n = r3_r2_n.u6[0x0E];
+	word16 r3_n = SLICE(r3_r2_n, word16, 16);
+	Eq_n r13_n = fn0000DDF0(r2_n, r13_n);
+	fn0000D99C(SEQ(r3_n, r2_n), r13_n);
+}
+
+// 00002F48: void fn00002F48(Sequence (ptr32 Eq_n) r11_r10, Sequence word32 r6_r5)
+// Called from:
+//      fn000033F8
+void fn00002F48(struct Eq_n * r11_r10, word32 r6_r5)
+{
+	word16 r8_n;
+	word16 r9_n;
+	word32 r12_n;
+	word32 r13_n;
+	fn00002F4C(r11_r10, r6_r5, out r8_n, out r9_n, out r12_n, out r13_n);
+}
+
+// 00002F4C: Register word16 fn00002F4C(Sequence (ptr32 Eq_n) r11_r10, Sequence word32 r6_r5, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn00002F48
+//      fn00003338
+//      fn00003348
+word16 fn00002F4C(struct Eq_n * r11_r10, word32 r6_r5, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	cup16 r7_n = r11_r10->w00AC;
+	word32 r6_r5_n = r6_r5 + (word32) r7_n;
+	cup16 r9_n = r11_r10->w00B8;
+	if (r7_n <= ~0x0105)
+	{
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r8_n;
+		word16 r7_n = fn00002F8A(r11_r10, r9_n, r6_r5_n, out r8_n, out r12_n, out r13_n);
+		r8Out = r8_n;
+		r9Out.u0 = <invalid>;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r7_n;
+	}
+	else
+	{
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r8_n;
+		word16 r7_n = fn00002F82(r11_r10, r9_n, r6_r5_n, out r8_n, out r12_n, out r13_n);
+		r8Out = r8_n;
+		r9Out.u0 = <invalid>;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r7_n;
+	}
+}
+
+// 00002F82: Register word16 fn00002F82(Sequence (ptr32 Eq_n) r11_r10, Register cup16 r9, Stack word32 dwArg00, Register out Eq_n r8Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn00002F48
+//      fn00002F4C
+word16 fn00002F82(struct Eq_n * r11_r10, cup16 r9, word32 dwArg00, union Eq_n & r8Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r8_n;
+	word16 r7_n = fn00002F8A(r11_r10, r9, dwArg00, out r8_n, out r12_n, out r13_n);
+	r8Out = r8_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r7_n;
+}
+
+// 00002F8A: Register word16 fn00002F8A(Sequence (ptr32 Eq_n) r11_r10, Register cup16 r9, Stack word32 dwArg00, Register out Eq_n r8Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn00002F48
+//      fn00002F4C
+word16 fn00002F8A(struct Eq_n * r11_r10, cup16 r9, word32 dwArg00, union Eq_n & r8Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r12;
+	Eq_n r0;
+	Eq_n r4;
+	word16 r6;
+	Eq_n r13;
+	if (r11_r10->w00CC > r9)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		byte stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg10 = <invalid>;
+		fn00002FB6(SEQ(r11, r10), r0, r4, r6, r12, r13, stackArg0, stackArg4, stackArg8, stackArg10);
+		return;
+	}
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		byte stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg10 = <invalid>;
+		fn00002FB6(SEQ(r11, r10), r0, r4, r6, r12, r13, stackArg0, stackArg4, stackArg8, stackArg10);
+		return;
+	}
+}
+
+// 00002FB6: void fn00002FB6(Sequence (ptr32 Eq_n) r11_r10, Register Eq_n r0, Register Eq_n r4, Register word16 r6, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack byte bArg04, Stack Eq_n wArg08, Stack Eq_n wArg0A)
+// Called from:
+//      fn00002F48
+//      fn000032CA
+void fn00002FB6(struct Eq_n * r11_r10, Eq_n r0, Eq_n r4, word16 r6, Eq_n r12, Eq_n r13, Eq_n dwArg00, byte bArg04, Eq_n wArg08, Eq_n wArg0A)
+{
+	wArg0A <= (r11_r10->t00B4).u0;
+	Eq_n r12_n = SEQ(SLICE(r12, word24, 8), (byte) r6);
+	fn00002FDA(r4, r0, r12_n, r13, dwArg00, bArg04);
+}
+
+// 00002FDA: void fn00002FDA(Register Eq_n r4, Register Eq_n r6, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack byte bArg04)
+// Called from:
+//      fn00002FB6
+//      fn0000300E
+void fn00002FDA(Eq_n r4, Eq_n r6, Eq_n r12, Eq_n r13, Eq_n dwArg00, byte bArg04)
+{
+	Eq_n r1_r0_n = r13.u4 + (word32) r4;
+	struct Eq_n * r3_r2_n = r1_r0_n.u4 + (int32) r6;
+	if ((byte) r12 != r3_r2_n->b0000)
+		fn00003004();
+	else
+	{
+		word16 r3_n = SLICE(&r3_r2_n->bFFFFFFFF, word16, 16);
+		word16 r2_n = (word16) r3_r2_n + ~0x00;
+		if (bArg04 != r3_r2_n->bFFFFFFFF)
+			fn00003004();
+		else if (*dwArg00 != *r1_r0_n)
+			fn00003004();
+		else
+		{
+			word16 r3_n = SEQ(SLICE(r3_n, byte, 8), r1_r0_n.u6[1]);
+			word16 r2_n = SEQ(SLICE(r2_n, byte, 8), dwArg00.u6[1]);
+			fn00003000(r1_r0_n, SEQ(r3_n, r2_n));
+		}
+	}
+}
+
+// 00003000: void fn00003000(Sequence Eq_n r1_r0, Sequence Eq_n r3_r2)
+// Called from:
+//      fn00002D76
+//      fn00002FDA
+void fn00003000(Eq_n r1_r0, Eq_n r3_r2)
+{
+	fn00003002(r1_r0, r3_r2);
+}
+
+// 00003002: void fn00003002(Sequence Eq_n r1_r0, Sequence Eq_n r3_r2)
+// Called from:
+//      fn00002F48
+//      fn00003000
+//      fn000032BE
+void fn00003002(Eq_n r1_r0, Eq_n r3_r2)
+{
+	bool Z;
+	if (Z)
+		fn00003024(r1_r0, r3_r2);
+	else
+		fn00003004();
+}
+
+// 00003004: void fn00003004()
+// Called from:
+//      fn00002F48
+//      fn00003002
+//      fn00003078
+void fn00003004()
+{
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n ra;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
+	byte stackArg4 = <invalid>;
+	Eq_n stackArg6 = <invalid>;
+	fn0000300E(r4, r5, r6, r12, r13, ra, stackArg0, stackArg4, stackArg6);
+}
+
+// 0000300E: void fn0000300E(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack byte bArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn00002D76
+//      fn00002F48
+void fn0000300E(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, byte bArg04, Eq_n wArg06)
+{
+	if (r4 > (word16) ra && r5 != 0x00)
+		fn00002FDA(r4, r6, r12, r13, dwArg00, bArg04);
+	else
+		fn00003014(r6, wArg06);
+}
+
+// 00003014: void fn00003014(Register Eq_n r0, Stack Eq_n wArg06)
+// Called from:
+//      fn0000300E
+//      fn000030EC
+void fn00003014(Eq_n r0, Eq_n wArg06)
+{
+	if (wArg06 >= r0)
+		fn0000301A();
+	else
+		fn0000301A();
+}
+
+// 0000301A: void fn0000301A()
+// Called from:
+//      fn00002D76
+//      fn00003014
+void fn0000301A()
+{
+}
+
+// 00003024: void fn00003024(Sequence Eq_n r1_r0, Sequence Eq_n r3_r2)
+// Called from:
+//      fn00002F48
+//      fn00003002
+void fn00003024(Eq_n r1_r0, Eq_n r3_r2)
+{
+	fn00003078(r1_r0.u6 + 2, r3_r2.u6 + 2);
+}
+
+// 0000303E: Register word16 fn0000303E(Sequence (ptr32 Eq_n) r1_r0, Sequence (ptr32 Eq_n) r3_r2, Register word16 r4, Register word16 r9, Register out Eq_n r11Out, Register out ptr32 r12Out)
+// Called from:
+//      fn00003078
+//      fn000030F2
+word16 fn0000303E(struct Eq_n * r1_r0, struct Eq_n * r3_r2, word16 r4, word16 r9, union Eq_n & r11Out, ptr32 & r12Out)
+{
+	if ((byte) r9 != (byte) r4)
+	{
+		Eq_n r11_n;
+		ptr32 r12_n;
+		word16 r9_n = fn000030BE(out r11_n, out r12_n);
+		r11Out = r11_n;
+		r12Out = r12_n;
+		return r9_n;
+	}
+	else
+	{
+		Eq_n r11_n;
+		ptr32 r12_n;
+		word16 r9_n = fn00003042(r1_r0, r3_r2, out r11_n, out r12_n);
+		r11Out = r11_n;
+		r12Out = r12_n;
+		return r9_n;
+	}
+}
+
+// 00003042: Register word16 fn00003042(Sequence (ptr32 Eq_n) r1_r0, Sequence (ptr32 Eq_n) r3_r2, Register out Eq_n r11Out, Register out ptr32 r12Out)
+// Called from:
+//      fn0000303E
+//      fn00003078
+word16 fn00003042(struct Eq_n * r1_r0, struct Eq_n * r3_r2, union Eq_n & r11Out, ptr32 & r12Out)
+{
+	word16 r9;
+	Eq_n r11;
+	ptr32 r12;
+	byte v8_n = r1_r0->b0004;
+	word16 r9_n = SEQ(SLICE(r9, byte, 8), v8_n);
+	if (v8_n != r3_r2->b0004)
+	{
+		Eq_n r11_n;
+		ptr32 r12_n;
+		word16 r9_n = fn000030BE(out r11_n, out r12_n);
+		r11Out = r11_n;
+		r12Out = r12_n;
+		return r9_n;
+	}
+	else
+	{
+		fn0000304A(SEQ(r1, r0), SEQ(r3, r2));
+		r11Out = r11;
+		r12Out = r12;
+		return r9_n;
+	}
+}
+
+// 0000304A: void fn0000304A(Sequence (ptr32 Eq_n) r1_r0, Sequence Eq_n r3_r2)
+// Called from:
+//      fn00002D76
+//      fn00003078
+void fn0000304A(struct Eq_n * r1_r0, Eq_n r3_r2)
+{
+	if (r1_r0->b0005 != (r3_r2.u6)[5])
+	{
+		word16 r11_n;
+		word32 r12_n;
+		fn00003086(out r11_n, out r12_n);
+	}
+	else if (r1_r0->t0006.u0 != (r3_r2.u6)[6])
+	{
+		word16 r11_n;
+		word32 r12_n;
+		fn00003086(out r11_n, out r12_n);
+	}
+	else if (r1_r0->b0007 != (r3_r2.u6)[7])
+	{
+		word16 r11_n;
+		word32 r12_n;
+		fn00003086(out r11_n, out r12_n);
+	}
+	else
+		fn00003070();
+}
+
+// 00003070: void fn00003070()
+// Called from:
+//      fn00002D76
+//      fn0000304A
+void fn00003070()
+{
+	word16 LZ;
+	word16 r1;
+	word16 r0;
+	word16 r3;
+	word16 r2;
+	if ((byte) Test(ULT,LZ) == 0x00)
+		fn000030E8();
+	else
+		fn00003078(SEQ(r1, r0), SEQ(r3, r2));
+}
+
+// 00003078: void fn00003078(Sequence (ptr32 Eq_n) r1_r0, Sequence (ptr32 Eq_n) r3_r2)
+// Called from:
+//      fn00003024
+//      fn00003070
+void fn00003078(struct Eq_n * r1_r0, struct Eq_n * r3_r2)
+{
+	word16 r4;
+	word16 r9;
+	if (r1_r0->b0001 == r3_r2->b0001)
+	{
+		if (r1_r0->b0002 != r3_r2->b0002)
+		{
+			word16 r11_n;
+			word32 r12_n;
+			fn000030BE(out r11_n, out r12_n);
+		}
+		else
+		{
+			word16 r4_n = SEQ(SLICE(r4, byte, 8), r3_r2->b0003);
+			word16 r9_n = SEQ(SLICE(r9, byte, 8), r1_r0->b0003);
+			word16 r11_n;
+			word32 r12_n;
+			fn0000303E(r1_r0, r3_r2, r4_n, r9_n, out r11_n, out r12_n);
+		}
+	}
+	else
+		fn00003082();
+}
+
+// 00003082: void fn00003082()
+// Called from:
+//      fn00002D76
+//      fn00003078
+void fn00003082()
+{
+	word16 r11_n;
+	word32 r12_n;
+	fn00003086(out r11_n, out r12_n);
+}
+
+// 00003086: Register word16 fn00003086(Register out Eq_n r11Out, Register out ptr32 r12Out)
+// Called from:
+//      fn00002D76
+//      fn0000304A
+//      fn00003082
+//      fn000030BE
+word16 fn00003086(union Eq_n & r11Out, ptr32 & r12Out)
+{
+	ptr32 r12_n;
+	word16 r11_n;
+	word16 r9_n = fn000030BE(out r11_n, out r12_n);
+	r11Out.u0 = <invalid>;
+	r12Out = r12_n;
+	return r9_n;
+}
+
+// 000030BE: Register word16 fn000030BE(Register out Eq_n r11Out, Register out ptr32 r12Out)
+// Called from:
+//      fn0000303E
+//      fn00003078
+//      fn00003086
+word16 fn000030BE(union Eq_n & r11Out, ptr32 & r12Out)
+{
+	Eq_n r11_n;
+	ptr32 r12_n;
+	word16 r9_n = fn00003086(out r11_n, out r12_n);
+	r11Out = r11_n;
+	r12Out = r12_n;
+	return r9_n;
+}
+
+// 000030E8: void fn000030E8()
+// Called from:
+//      fn00002D76
+//      fn00003070
+void fn000030E8()
+{
+	word16 r11_n;
+	word32 r12_n;
+	fn00003086(out r11_n, out r12_n);
+}
+
+// 000030EC: void fn000030EC(Register Eq_n r9, Stack Eq_n wArg06)
+// Called from:
+//      fn00003078
+void fn000030EC(Eq_n r9, Eq_n wArg06)
+{
+	fn00003014(r9, wArg06);
+}
+
+// 000030F2: Sequence Eq_n fn000030F2(Sequence word32 r6_r5, Register Eq_n r4, Register Eq_n r8, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg0E, Stack Eq_n wArg12, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Stack Eq_n dwArg10010, Stack Eq_n dwArg1003A, Stack Eq_n wArg1FF92, Sequence out Eq_n r9_r8Out, Register out Eq_n r7Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn00002D76
+//      fn000030F2
+//      fn000033F8
+Eq_n fn000030F2(word32 r6_r5, Eq_n r4, Eq_n r8, Eq_n r12, Eq_n r13, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg0E, Eq_n wArg12, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, Eq_n dwArg10010, Eq_n dwArg1003A, Eq_n wArg1FF92, union Eq_n & r9_r8Out, union Eq_n & r7Out, union Eq_n & r12Out, union Eq_n & r13Out)
+{
+	Eq_n r7;
+	cup16 r6 = SLICE(r6_r5, word16, 16);
+	word16 r5 = (word16) r6_r5;
+	Eq_n dwArg00_n;
+	Eq_n r5_r4_n;
+	cup16 r6_n;
+	Eq_n r7_n;
+	Eq_n r13_n;
+	Eq_n r7_n = r13.u6[80];
+	word32 r2_r1_n = (word32) r7_n;
+	Eq_n r10_n = *((word32) r13 + 0x0068);
+	Eq_n r0_n = r7_n;
+	Eq_n r2_n = SLICE(r2_r1_n, word16, 16);
+	uint16 r11_n = (word32) *((word32) r13 + 0x00B4) + 0x0000FEFA - r10_n;
+	Eq_n r3_n = r13.u6[0x00AC] - r10_n;
+	Eq_n dwArg00_n = dwArg00;
+	dwArg00_n = dwArg00;
+	if (r10_n != 0x00)
+	{
+l00003182:
+		dwArg00_n = dwArg00_n;
+		if (r10_n == ~0x00)
+		{
+			r10_n.u0 = ~0x01;
+			if (r0_n <= r3_n)
+			{
+l00003192:
+				Eq_n r3_r2_n = r13.u6[96];
+				fn0000DB24(r3_r2_n, r3_r2_n.u4 + r2_r1_n, r13, out r13_n);
+				r13_n.u6[0x00B0] = r13_n.u6[0x00B0];
+				Eq_n r3_n = r13_n.u6[0x00AC];
+				r13_n.u6[0x00AC] = (struct Eq_n) r3_n;
+				r13_n.u6[0x0098] = r13_n.u6[0x0098];
+				Eq_n r1_r0_n = r13_n.u6[0x0078];
+				word16 * r5_r4_n = ((word32) r13_n.u6[0x0084] + 0x01) * 0x02 - r1_r0_n;
+				Eq_n r10_n = r10_n - r7_n;
+				Eq_n r2_n = r13_n.u6[80];
+				Eq_n r7_n = SLICE(r5_r4_n, word16, 16);
+				do
+				{
+					word16 r0_n = (word16) r1_r0_n;
+					word16 r1_n = SLICE(r1_r0_n.u6 + 0x0000FFFE, word16, 16);
+					Eq_n r6_n = r1_r0_n.u6[0x0000FFFE];
+					if (r6_n < r2_n)
+					{
+						word16 r10_n;
+						word16 r11_n;
+						Eq_n r12_n;
+						Eq_n r13_n;
+						Eq_n r7_n;
+						word16 r8_n;
+						word16 r9_n;
+						word16 r2_n;
+						word16 r3_n;
+						word16 r5_n;
+						word16 r4_n;
+						word16 r6_n;
+						word32 ra_n;
+						word16 r0_n;
+						word16 r1_n;
+						fn000034CE(r1_r0_n.u6 + 0x0000FFFE, SEQ(r3_n, r2_n), r7_n, r8, r12, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+						r9_r8Out.u0 = <invalid>;
+						r7Out = r7_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return SEQ(r11_n, r10_n);
+					}
+					r1_r0_n.u6[0x0000FFFE] = (struct Eq_n) r6_n;
+					r2_n -= r6_n;
+					r1_r0_n = SEQ(r1_n, r0_n + ~0x01);
+					r1_r0_n = r1_r0_n;
+				} while (r1_r0_n.u6 + 0x0000FFFE != r5_r4_n);
+				r5_r4_n = 0x00020000 - SEQ(r7_n, r6_n);
+				cup16 r2_n = (word32) r2_n + 0x0000FFFF;
+				word16 r4_n = (word16) r5_r4_n;
+				word16 r7_n = SLICE(r5_r4_n, word16, 16);
+				struct Eq_n * r1_r0_n = SEQ(r7_n, r6_n);
+				do
+				{
+					word16 r0_n = (word16) r1_r0_n;
+					word16 r1_n = SLICE(&r1_r0_n->wFFFE, word16, 16);
+					r6_n = r1_r0_n->wFFFE;
+					if (r6_n < r2_n)
+					{
+						word16 r10_n;
+						word16 r11_n;
+						Eq_n r12_n;
+						Eq_n r13_n;
+						word16 r8_n;
+						word16 r9_n;
+						Eq_n r7_n = fn0000347E(SEQ(r1_n, r7_n), SEQ(r3_n, r2_n), r8, r10_n, r12, r13_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+						r9_r8Out.u0 = <invalid>;
+						r7Out = r7_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return SEQ(r11_n, r10_n);
+					}
+					r1_r0_n->wFFFE = r6_n;
+					r2_n -= r6_n;
+					r1_r0_n = SEQ(r1_n, r0_n + ~0x01);
+					r1_r0_n = r1_r0_n;
+				} while (&r1_r0_n->wFFFE != r5_r4_n);
+				Eq_n r9_r8_n = *r13_n.u5;
+				word16 r9_n = SLICE(r9_r8_n, word16, 16);
+				r7_n.u4 = r9_r8_n.u6[4];
+				if (r7_n != 0x00)
+				{
+					word16 r11_n;
+					Eq_n r12_n;
+					fn0000303E(&r1_r0_n->wFFFE, SEQ(r3_n, r2_n), r4_n, r9_n, out r11_n, out r12_n);
+					r9_r8Out.u0 = <invalid>;
+					r7Out = r7_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return SEQ(r11_n, r10_n);
+				}
+				goto l00003240;
+			}
+			goto l00003132;
+		}
+		goto l0000312A;
+	}
+l00003122:
+	r3_n |= r11_n;
+	dwArg00_n = dwArg00_n;
+	if (r11_n == 0x00)
+	{
+		r10_n = r7_n;
+		dwArg00_n = dwArg00_n;
+	}
+l0000312A:
+	dwArg00_n = dwArg00_n;
+	if (r0_n <= r3_n)
+		goto l00003192;
+l00003132:
+	Eq_n r9_r8_n = *r13.u5;
+	word16 wArg0E_n = (word16) dwArg0E;
+	word16 wArg10_n = SLICE(dwArg0E, word16, 16);
+	word16 wArg08_n = (word16) dwArg08;
+	Eq_n r2_n = r2_n;
+	Eq_n r12_n = r12;
+	r6_n = r6;
+	r13_n = r13;
+	r8 = (word16) r9_r8_n;
+	r7_n.u4 = r9_r8_n.u6[4];
+	if (r7_n == 0x00)
+	{
+		word16 r10_n;
+		word16 r11_n;
+		Eq_n r12_n;
+		Eq_n r13_n;
+		word16 r8_n;
+		word16 r9_n;
+		Eq_n r7_n = fn00003348(r6_r5, r7_n, r13, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r9_r8Out.u0 = <invalid>;
+		r7Out = r7_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return SEQ(r11_n, r10_n);
+	}
+	Eq_n r11_n = *((word32) r13 + 0x00B4);
+	if (r10_n >= r7_n)
+		fn000034DE();
+	if (r10_n == 0x00)
+	{
+		*((word32) r13 + 0x00B4) = r11_n;
+		word16 r10_n = r10_n + r11_n;
+		if (r11_n < 0x02)
+		{
+			Eq_n r13_n = fn0000DB44((r13.u6[96].a0000 + SEQ(r3_n, r2_n) / 4).u5.u4, SEQ(r11_n, r10_n) & 0xFFFF, 0x00, r13);
+			Eq_n r11_r10_n = (r13_n.u6[9240].a0000 + SEQ(r11_n, r10_n) / 4).u5.u4;
+			r13_n.u6[9240] = (struct Eq_n) r11_r10_n;
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7;
+			r12Out = r12;
+			r13Out = r13;
+			return r11_r10_n;
+		}
+		r5_r4_n = SEQ(r5, r4);
+		if (r11_n < 0x0105)
+		{
+l00003240:
+			Eq_n r3_r2_n = r13_n.u6[9240];
+			Eq_n r11_r10_n = r13_n.u6[0x0068];
+			word16 r5_n = SLICE(r5_r4_n, word16, 16);
+			word16 r2_n = (word16) r3_r2_n;
+			cup16 r11_n = SLICE(r11_r10_n, word16, 16);
+			word16 r10_n = (word16) r11_r10_n;
+			if (r11_r10_n > r3_r2_n)
+			{
+				byte * r1_r0_n = (word32) *((word32) r13_n + 0x00B4);
+				Eq_n r9_r8_n = r1_r0_n + (word32) (r13_n.u6)[0x00AC];
+				Eq_n r8_n = (word16) r9_r8_n;
+				if (r9_r8_n <= r3_r2_n)
+				{
+					word16 r10_n;
+					word16 r11_n;
+					Eq_n r12_n;
+					Eq_n r13_n;
+					Eq_n r7_n;
+					word16 r8_n;
+					word16 r9_n;
+					word16 r0_n;
+					word16 r1_n;
+					word16 r2_n;
+					word16 r3_n;
+					word16 r4_n;
+					word16 r5_n;
+					word16 r6_n;
+					word32 ra_n;
+					fn000034C8(r1_r0_n, r2_n, r7_n, r8_n, r12, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r9_r8Out.u0 = <invalid>;
+					r7Out = r7_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return SEQ(r11_n, r10_n);
+				}
+				up32 r9_r8_n = r9_r8_n - r11_r10_n;
+				if (r11_r10_n < 0x0102)
+				{
+					word16 r10_n;
+					word16 r11_n;
+					Eq_n r12_n;
+					Eq_n r13_n;
+					Eq_n r7_n;
+					word16 r8_n;
+					word16 r9_n;
+					word16 r0_n;
+					word16 r1_n;
+					word16 r2_n;
+					word16 r3_n;
+					word16 r4_n;
+					word16 r5_n;
+					word16 r6_n;
+					fn00003540(r11_r10_n, r3_r2_n, r5_r4_n, r7_n, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+					r9_r8Out.u0 = <invalid>;
+					r7Out = r7_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return SEQ(r11_n, r10_n);
+				}
+				fn0000DB44((r13_n.u6[96].a0000 + r9_r8_n / 4).u5.u4, SEQ(r6_n, r5_n), 0x00, r13_n).u6[9240] = (struct Eq_n) (r9_r8_n + SEQ(r6_n, r5_n));
+				r11_n = r6_n;
+				r10_n = r5_n;
+			}
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7;
+			r12Out = r12;
+			r13Out = r13;
+			return SEQ(r11_n, r10_n);
+		}
+		r5_r4_n = SEQ(r5, r4);
+		if (*((word32) *r13.u5 + 4) == 0x00)
+			goto l00003240;
+		r10_n = *((word32) r13 + 0x0068);
+		r0_n.u4 = r13.u6[80];
+		r11_n = r11_n - r10_n;
+		r3_n = r13.u6[0x00AC] - r10_n;
+		dwArg08 = dwArg08_n;
+		dwArg08 = dwArg08_n;
+		if (r10_n == 0x00)
+			goto l00003122;
+		goto l00003182;
+	}
+	if (r10_n > 0x00)
+	{
+		r2_n.u4 = r12.u6[80];
+		if ((word32) r2_n < (r12.u6)[0x0098])
+		{
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word16 r7_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			word16 r11_n;
+			word32 r12_n;
+			word32 r13_n;
+			word32 ra_n;
+			fn00003A32(out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r12Out = r12;
+			r13Out = r13;
+			return SEQ(r11_n, r10_n);
+		}
+	}
+	Eq_n r7_n;
+	Eq_n r0_n;
+	dwArg08_n = dwArg08;
+	Eq_n dwArg0C_n = SEQ(wArg0E_n, wArg0C);
+	Eq_n dwArg10_n = SEQ(wArg12, wArg10_n);
+	if (r10_n < r7_n)
+	{
+		if (r10_n == 0x00)
+			goto l00003726;
+		r7_n = r10_n;
+		r0_n.u0 = 0x00;
+		goto l000036EA;
+	}
+	if (r7_n == 0x00)
+	{
+l00003726:
+	}
+	dwArg10_n = SEQ(wArg12, wArg10_n);
+	if (r10_n > r7_n)
+	{
+		r7_n = r7_n - r10_n;
+		r0_n = r10_n;
+		r10_n = r7_n;
+l000036EA:
+		r13.u6[4] = (struct Eq_n) r0_n;
+		Eq_n r5_r4_n = *r13.u5;
+		Eq_n r13_n;
+		fn0000DB24(SEQ(r3_n, r2_n), r5_r4_n, r13, out r13_n);
+		Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+		Eq_n r4_n = (word16) r5_r4_n;
+		Eq_n r3_r2_n = SEQ(r3_n, r2_n);
+		Eq_n r0_n = *r13_n.u6[56].t0018.u4;
+		if (r0_n == 0x01)
+		{
+			word16 r10_n;
+			word16 r11_n;
+			Eq_n r12_n;
+			Eq_n r13_n;
+			Eq_n r7_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word32 ra_n;
+			fn00003B14(r3_r2_n, r4_n, r5_n, r10_n, r13_n, dwArg00_n, dwArg04, dwArg08, dwArg0C_n, dwArg10_n, dwArg14, dwArg40, dwArg48, dwArg60, r10_n, dwArg10010, dwArg1003A, wArg1FF92, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			return SEQ(r11_n, r10_n);
+		}
+		if (r0_n == 0x02)
+		{
+			Eq_n r7_n;
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			word16 r11_n;
+			word32 ra_n;
+			fn00003B36(r0_n, r7_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out ra_n);
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r12Out = r12;
+			r13Out = r13_n;
+			return SEQ(r11_n, r10_n);
+		}
+		*r13_n.u5 = dwArg04.u4 + *r13_n.u5;
+		Mem368[r13_n + 0x08:word32] = Mem360[r13_n + 0x08:word32] + dwArg04;
+		goto l0000371C;
+	}
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	Eq_n stackArg14 = <invalid>;
+	Eq_n stackArg18 = <invalid>;
+	Eq_n stackArg20 = <invalid>;
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg72 = <invalid>;
+	Eq_n stackArg96 = <invalid>;
+	Eq_n stackArg65552 = <invalid>;
+	Eq_n stackArg65594 = <invalid>;
+	Eq_n stackArg130962 = <invalid>;
+	Eq_n r13_n;
+	Eq_n r7_n;
+	struct Eq_n * r9_r8_n;
+	Eq_n r11_r10_n = fn000030F2(r6_r5, r4_n, r8_n, SEQ(r3_n, r2_n), r13, stackArg0, stackArg4, stackArg8, stackArg12, stackArg14, stackArg18, stackArg20, stackArg64, stackArg72, stackArg96, stackArg65552, stackArg65594, stackArg130962, out r9_r8_n, out r7_n, out r12_n, out r13_n);
+	Eq_n r8_n = (word16) r9_r8_n;
+	Eq_n r0_n = *((word32) r12_n + 0x00B4);
+	if (r0_n >= 0x0105)
+	{
+		if (wArg08_n == 0x00)
+		{
+			r9_r8Out.u0 = <invalid>;
+			r7Out = wArg0C;
+			r12Out = r12_n;
+			r13Out = dwArg0E;
+			return r11_r10_n;
+		}
+		Eq_n r1_n = r12_n.u6[0x00AC];
+		if (r0_n == 0x00)
+		{
+			if (r1_n < 0x02)
+			{
+				r12_n.u6[9228] = (struct Eq_n) 0x02;
+				if (wArg08_n != 0x04)
+				{
+					Eq_n r12_n = fn00003C76();
+					r9_r8Out.u0 = <invalid>;
+					r7Out = r7_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r11_r10_n;
+				}
+				else
+				{
+					Eq_n r12_n = fn00003D1C();
+					r9_r8Out.u0 = <invalid>;
+					r7Out = r7_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r11_r10_n;
+				}
+			}
+			else
+			{
+				r12_n.u6[9228] = (struct Eq_n) r1_n;
+				Eq_n r12_n;
+				word16 r0_n;
+				word16 r1_n;
+				word16 r2_n;
+				word16 r3_n;
+				word16 r4_n;
+				word16 r5_n;
+				word16 r6_n;
+				word16 r7_n;
+				word16 r8_n;
+				word16 r9_n;
+				word16 r10_n;
+				word16 r11_n;
+				word32 r13_n;
+				fn00003C70(out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+				r9_r8Out.u0 = <invalid>;
+				r7Out = r7_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r11_r10_n;
+			}
+		}
+		if (r0_n >= 0x02)
+		{
+			Eq_n r12_n;
+			Eq_n r13_n;
+			Eq_n r7_n = fn000037D8(r11_r10_n, r9_r8_n, r0_n, r7_n, r13_n, out r12_n, out r13_n);
+			r9_r8Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			return r11_r10_n;
+		}
+l0000371C:
+		r12_n.u6[0x00AC] = r12_n.u6[0x00AC];
+		goto l00003726;
+	}
+}
+
+// 000032BE: void fn000032BE(Sequence Eq_n r1_r0, Sequence Eq_n r3_r2, Sequence word32 r8_r7)
+// Called from:
+//      fn000032CA
+void fn000032BE(Eq_n r1_r0, Eq_n r3_r2, word32 r8_r7)
+{
+	word16 r10;
+	Eq_n r12;
+	Eq_n r13;
+	word16 r1 = SLICE(r1_r0, word16, 16);
+	word16 r8 = SLICE(r8_r7, word16, 16);
+	Eq_n r0 = (word16) r1_r0;
+	if (r1 == 0x00)
+		fn00003002(r1_r0, r3_r2);
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		byte stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg10 = <invalid>;
+		fn000032CA(SEQ(r11, r10), r0, r1, r8 + 0x02, r12, r13, stackArg0, stackArg4, stackArg8, stackArg10);
+	}
+}
+
+// 000032CA: void fn000032CA(Sequence (ptr32 Eq_n) r11_r10, Register Eq_n r0, Register word16 r1, Register cui16 r8, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack byte bArg04, Stack Eq_n wArg08, Stack Eq_n wArg0A)
+// Called from:
+//      fn000032BE
+//      fn000033F8
+void fn000032CA(struct Eq_n * r11_r10, Eq_n r0, word16 r1, cui16 r8, Eq_n r12, Eq_n r13, Eq_n dwArg00, byte bArg04, Eq_n wArg08, Eq_n wArg0A)
+{
+	word16 r7;
+	Eq_n r10 = (word16) r11_r10;
+	cup16 r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r0_n = __a_shift<word16,word16>(r0, r10);
+	r13.u6[0x0080] = (struct Eq_n) r0_n;
+	cui16 * r5_r4_n = (r13.u6[0x0078].a0000 + ((word32) r0_n * 0x02) / 4).u5.u4;
+	Eq_n r2_n = r13.u6[88];
+	Eq_n r7_r6_n = r13.u6[112];
+	r7_r6_n.u4[(word32) r2_n * 0x02] = *r5_r4_n;
+	*r5_r4_n = r8 & r2_n;
+	r13.u6[9228] = (struct Eq_n) (r1 + 0x01);
+	Eq_n r4_n = (word16) r5_r4_n;
+	word16 r6_n = (word16) r7_r6_n;
+	if (r11 < 0x02)
+		fn000032BE(SEQ(r1, r0), SEQ(r3, r2), SEQ(r8, r7));
+	else
+		fn00002FB6(r11_r10, r0_n, r4_n, r6_n, r12, r13, dwArg00, bArg04, wArg08, wArg0A);
+}
+
+// 00003338: void fn00003338(Sequence Eq_n r1_r0, Sequence Eq_n r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r6, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206)
+// Called from:
+//      fn000033F8
+void fn00003338(Eq_n r1_r0, Eq_n r5_r4, struct Eq_n * r9_r8, Eq_n r6, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206)
+{
+	word16 r0 = (word16) r1_r0;
+	word16 r5 = SLICE(r5_r4, word16, 16);
+	word32 r6_r5_n = SEQ(r6, r5);
+	if (r0 == 0x02)
+	{
+		word32 r6_r5_n;
+		word32 r11_r10_n;
+		word32 r3_r2_n;
+		word32 r7_r6_n;
+		word16 r4_n;
+		word32 ra_n;
+		r9_r8->t0060.u4 = (cup16 *) fn0000CAF8(r1_r0, r5_r4, r5_r4, r7, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, out r11_r10_n, out r3_r2_n, out r6_r5_n, out r7_r6_n, out r9_r8, out r4_n, out r12, out r13, out ra_n);
+		r7.u0 = <invalid>;
+		r6_r5_n = r6_r5_n;
+	}
+	r9_r8->dw0000 = r12.u4 + r9_r8->dw0000;
+	r9_r8->dw0008 = r12.u4 + r9_r8->dw0008;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r12_n;
+	word32 r13_n;
+	fn00003348(r6_r5_n, r7, r13, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+}
+
+// 00003348: Register Eq_n fn00003348(Sequence word32 r6_r5, Register Eq_n r7, Register Eq_n r13, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+//      fn00003338
+Eq_n fn00003348(word32 r6_r5, Eq_n r7, Eq_n r13, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r11_n = *((word32) r13 + 0x00B4);
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r7_n = fn00002F4C(SEQ(r11_n, r7), r6_r5, out r8_n, out r9_n, out r12_n, out r13_n);
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r7;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r7_n;
+}
+
+// 000033F8: FlagGroup bool fn000033F8(Register Eq_n r4, Register Eq_n r6, Register Eq_n r9, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArgFFEA, Stack Eq_n dwArgFFEC, Stack Eq_n wArgFFF0, Stack Eq_n dwArgFFF8, Stack Eq_n dwArgFFFC, Stack Eq_n dwArg10028, Stack Eq_n dwArg10030, Stack Eq_n dwArg10048, Stack Eq_n wArg1FFD4, Stack Eq_n dwArg1FFF8, Stack Eq_n dwArg20022, Stack Eq_n wArg2FF7A, Sequence out Eq_n r3_r6Out, Sequence out Eq_n r9_r8Out, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r7Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004CD4
+bool fn000033F8(Eq_n r4, Eq_n r6, Eq_n r9, Eq_n r11, Eq_n r12, Eq_n wArgFFEA, Eq_n dwArgFFEC, Eq_n wArgFFF0, Eq_n dwArgFFF8, Eq_n dwArgFFFC, Eq_n dwArg10028, Eq_n dwArg10030, Eq_n dwArg10048, Eq_n wArg1FFD4, Eq_n dwArg1FFF8, Eq_n dwArg20022, Eq_n wArg2FF7A, union Eq_n & r3_r6Out, union Eq_n & r9_r8Out, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r7Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+fn000033F8_entry:
+	ptr32 ra
+	Eq_n r1_r0_n = r12.u6[0x0C]
+	Eq_n r3_r2_n = (word32) r12.u6[80]
+	word16 r1_n = SLICE((word32) r1_r0_n + 0x0000FFFB, word16, 16)
+	Eq_n r0_n = (word16) r1_r0_n + ~0x04
+	Eq_n dwArgFFF0_n = SEQ(r4, wArgFFF0)
+	branch r3_r2_n >= (word32) r1_r0_n + 0x0000FFFB l00003416
+	goto l00003414
+l000033F8:
+l00003414:
+	r3_r2_n = SEQ(SLICE((word32) r1_r0_n + 0x0000FFFB, word16, 16), (word16) r1_r0_n + ~0x04)
+l00003416:
+	Eq_n r13_n = *r12.u5
+	Eq_n r7_n = r13_n.u6[4]
+	Eq_n r2_n = (word16) r3_r2_n
+	Eq_n r10_n = r7_n
+	Eq_n r7_n = r13_n.u6[16]
+	branch r12.u6[0x00002414] >> 0x0D > r7_n l0000389A
+l00003432:
+	up32 r3_r2_n = (word32) r7_n
+	Eq_n r8_n = r12.u6[0x00AC]
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	Eq_n r2_n = (word16) r3_r2_n
+	branch (word32) r8_n + r3_r2_n < 0xFFFE l00003456
+l0000344C:
+	r10_n = r7_n + r8_n
+	branch r8_n >= r7_n l00003456
+l00003454:
+	r7_n = r8_n
+l00003456:
+	branch r7_n >= r8_n l0000345C
+l0000345A:
+	r8_n = r7_n
+l0000345C:
+	Eq_n dwArgFFF4_n = SEQ(r7_n, r0_n)
+	branch r7_n >= r0_n l00003780
+	goto l00003464
+l00003460_thunk_fn0000402E:
+	Eq_n r0_n
+	Eq_n r1_n
+	Eq_n r10_n
+	Eq_n r11_n
+	ptr32 r13_n
+	Eq_n r2_n
+	word16 r3_n
+	Eq_n r4_n
+	word16 r6_n
+	Eq_n r7_n
+	word16 r8_n
+	word16 r9_n
+	ptr32 ra_n
+	Eq_n r5_n
+	ptr32 r12_n
+	bool Z_n = fn0000402E(SEQ(r9, r8_n), r2_n, r6, r7_n, r10_n, r12, r13_n, wArgFFEA, dwArgFFEC, dwArgFFF0_n, dwArgFFF4_n, dwArgFFF8, dwArgFFFC, dwArg10028, dwArg10030, dwArg10048, wArg1FFD4, dwArg1FFF8, dwArg20022, wArg2FF7A, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n)
+	r3_r6Out.u0 = <invalid>
+	r9_r8Out.u0 = <invalid>
+	r0Out = r0_n
+	r1Out = r1_n
+	r2Out = r2_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r7Out = r7_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return Z_n
+l00003464:
+	int16 r1_n = (int16) (r7_n == 0x00)
+	int16 r0_n = (int16) (r4 != 0x04)
+	word16 r1_n = SEQ(SLICE(r1_n, byte, 8), (byte) r1_n & (byte) r0_n)
+	branch (byte) r0_n != 0x00 l00003856
+	goto l00003476
+l00003472_thunk_fn00003480:
+	Eq_n r0_n
+	Eq_n r1_n
+	ptr32 r13_n
+	Eq_n r4_n
+	Eq_n r5_n
+	word16 r8_n
+	Eq_n r10_n
+	Eq_n r11_n
+	ptr32 r12_n
+	Eq_n r2_n
+	word16 r3_n
+	word16 r6_n
+	Eq_n r7_n
+	word16 r9_n
+	ptr32 ra_n
+	bool Z_n = fn00003480(SEQ(r1_n, r7_n), SEQ(r3_n, r4), r8_n, r10_n, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n)
+	r3_r6Out.u0 = <invalid>
+	r9_r8Out.u0 = <invalid>
+	r0Out = r0_n
+	r1Out = r1_n
+	r2Out = r2_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r7Out = r7_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return Z_n
+l00003476:
+	branch (int16) (r4 == 0x00) != 0x00 l0000384C
+l0000389A:
+	Eq_n r13_n = *r12.u5
+	word16 r0_n = Mem36[r12 + 0x50:word16] + r7_n
+	Eq_n r10_n = r13_n.u6[4]
+	Eq_n r8_n = r12.u6[0x00AC]
+	branch r10_n < r7_n l000034B4
+	goto l000038AE
+l000038AA_thunk_fn00003480:
+	Eq_n r0_n
+	Eq_n r1_n
+	ptr32 r13_n
+	Eq_n r4_n
+	Eq_n r5_n
+	word16 r8_n
+	Eq_n r10_n
+	Eq_n r11_n
+	ptr32 r12_n
+	Eq_n r2_n
+	word16 r3_n
+	word16 r6_n
+	Eq_n r7_n
+	word16 r9_n
+	ptr32 ra_n
+	bool Z_n = fn00003480(SEQ(r1_n, r7_n), r3_r2_n, r8_n, r10_n, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n)
+	r3_r6Out.u0 = <invalid>
+	r9_r8Out.u0 = <invalid>
+	r0Out = r0_n
+	r1Out = r1_n
+	r2Out = r2_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r7Out = r7_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return Z_n
+l000038AE:
+	Eq_n r0_n
+	Eq_n r1_n
+	Eq_n r10_n
+	Eq_n r11_n
+	ptr32 r12_n
+	ptr32 r13_n
+	Eq_n r2_n
+	word16 r3_n
+	Eq_n r4_n
+	Eq_n r5_n
+	word16 r6_n
+	Eq_n r7_n
+	word16 r8_n
+	word16 r9_n
+	bool Z_n = fn000034F2(&((r11.u6 + 42)->*r10_n.u4), r0_n, r2_n, r7_n, r8_n, r9, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n)
+	r3_r6Out.u0 = <invalid>
+	r9_r8Out.u0 = <invalid>
+	r0Out = r0_n
+	r1Out = r1_n
+	r2Out = r2_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r7Out = r7_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra
+	return Z_n
+l000038AE_thunk_fn000034F2:
+fn000033F8_exit:
+}
+
+// 0000347E: Register word16 fn0000347E(Sequence word32 r1_r7, Sequence Eq_n r3_r2, Register Eq_n r8, Register Eq_n r10, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+word16 fn0000347E(word32 r1_r7, Eq_n r3_r2, Eq_n r8, Eq_n r10, Eq_n r12, Eq_n r13, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word32 ra_n;
+	word16 r6_n;
+	word16 r5_n;
+	word16 r4_n;
+	word16 r3_n;
+	word16 r2_n;
+	word16 r1_n;
+	word16 r0_n;
+	ptr32 r13_n;
+	Eq_n r8_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	word16 r7_n;
+	Eq_n r9_n;
+	fn00003480(r1_r7, r3_r2, r8, r10, r12, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r7_n;
+}
+
+// 00003480: FlagGroup bool fn00003480(Sequence word32 r1_r7, Sequence Eq_n r3_r2, Register Eq_n r8, Register Eq_n r10, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000033F8
+//      fn0000347E
+bool fn00003480(word32 r1_r7, Eq_n r3_r2, Eq_n r8, Eq_n r10, Eq_n r12, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out, union Eq_n & raOut)
+{
+	Eq_n r9;
+	Eq_n r11;
+	Eq_n r6;
+	Eq_n ra;
+	word16 r0;
+	Eq_n r7 = (word16) r1_r7;
+	Eq_n r3 = SLICE(r3_r2, word16, 16);
+	Eq_n r2 = (word16) r3_r2;
+	Eq_n r8_n = r8 - r7;
+	bool Z_n = SLICE(cond(r10 - r7), bool, 6);
+	if (r10 != r7)
+	{
+		Eq_n r5_r4_n = *r13.u5;
+		Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+		Eq_n r4_n = (word16) r5_r4_n;
+		ptr32 r13_n;
+		Eq_n r1_n = fn0000DB24(r3_r2, r5_r4_n, r13, out r13_n);
+		Eq_n r8_n = r12.u6[80];
+		r12.u6[0x00AC] = (struct Eq_n) r8_n;
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg2 = <invalid>;
+		Eq_n stackArg6 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		Eq_n stackArg38 = <invalid>;
+		Eq_n stackArg42 = <invalid>;
+		Eq_n stackArg46 = <invalid>;
+		Eq_n stackArg50 = <invalid>;
+		Eq_n stackArg54 = <invalid>;
+		Eq_n stackArg58 = <invalid>;
+		Eq_n stackArg62 = <invalid>;
+		Eq_n stackArg66 = <invalid>;
+		Eq_n stackArg86 = <invalid>;
+		Eq_n stackArg90 = <invalid>;
+		Eq_n stackArg244 = <invalid>;
+		Eq_n stackArg514 = <invalid>;
+		Eq_n stackArg518 = <invalid>;
+		fn00003338(SEQ(r1, r0), SEQ(r5, r4), SEQ(r9, r8), r6, r7, r12, r13, ra, stackArg0, stackArg2, stackArg6, stackArg8, stackArg12, stackArg38, stackArg42, stackArg46, stackArg50, stackArg54, stackArg58, stackArg62, stackArg66, stackArg86, stackArg90, stackArg244, stackArg514, stackArg518);
+		r0Out = r8_n;
+		r1Out = r1_n;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6;
+		r7Out = r7;
+		r8Out = r8_n;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = r13_n;
+		raOut = ra;
+		return Z_n;
+	}
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg12 = <invalid>;
+		word16 r3_n;
+		word16 r6_n;
+		word16 r7_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn0000AF94(SEQ(r5, r4), SEQ(r9, r8), r6, r13, stackArg12, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		Mem67[Mem46[r3_r2 + 0x08:word32] + Mem46[r3_r2 + 0x14:word32] + 0xFFFC:byte] = SLICE(r7, byte, 0);
+		word32 r1_r0_n = Mem67[r3_r2 + 0x08:word32] + Mem67[r3_r2 + 0x14:word32];
+		r1_r0_n->bFFFD = (byte) (r7 >> 0x08);
+		Eq_n r3_r2_n = r3_r2.u6[20];
+		word32 r1_r0_n = Mem84[r3_r2 + 0x08:word32] + r3_r2_n;
+		word16 r2_n = SEQ(SLICE(r3_r2_n, byte, 8), (byte) r7);
+		Eq_n r0_n;
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		Eq_n r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n ra_n;
+		bool Z_n = fn000034C8(r1_r0_n + 0xFFFE, r2_n, r7, r8_n, r3_r2, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r0Out = r0_n;
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return Z_n;
+	}
+}
+
+// 000034C8: FlagGroup bool fn000034C8(Sequence (ptr32 byte) r1_r0, Register word16 r2, Register Eq_n r7, Register Eq_n r8, Register Eq_n r12, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000030F2
+//      fn00003480
+bool fn000034C8(byte * r1_r0, word16 r2, Eq_n r7, Eq_n r8, Eq_n r12, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	*r1_r0 = (byte) r2;
+	Eq_n r1_r0_n = r12.u6[8];
+	Eq_n r3_r2_n = r12.u6[20];
+	Eq_n r0_n;
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	bool Z_n = fn000034CE(r1_r0_n, r3_r2_n, r7, r8, r12, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r0Out = r0_n;
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return Z_n;
+}
+
+// 000034CE: FlagGroup bool fn000034CE(Sequence Eq_n r1_r0, Sequence Eq_n r3_r2, Register Eq_n r7, Register Eq_n r8, Register Eq_n r12, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000030F2
+//      fn00003480
+//      fn000034C8
+bool fn000034CE(Eq_n r1_r0, Eq_n r3_r2, Eq_n r7, Eq_n r8, Eq_n r12, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, union Eq_n & raOut)
+{
+	word16 r3 = SLICE(r3_r2, word16, 16);
+	Mem22[r1_r0 + r3_r2 + ~0x00:byte] = SLICE(r7 >>u 0x08, byte, 0);
+	Eq_n r11_r10_n = *r12.u5;
+	word16 r11_n;
+	Eq_n r7_n;
+	word32 ra_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	fn0000B09C(SEQ(r3, r7 >> 0x08), SLICE(r11_r10_n, word16, 16), out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+	Eq_n r3_r2_n = SEQ(r3, r7 >> 0x08);
+	word16 r10_n = (word16) r11_r10_n;
+	Eq_n r0_n = *((word32) r3_r2_n + 20);
+	Eq_n r9_n = SEQ(r11_n, r10_n)->t0010.u0;
+	if (r0_n >= r9_n)
+	{
+		Eq_n r0_n;
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		bool Z_n = fn000034F2(SEQ(r11_n, r10_n), r0_n, r7 >> 0x08, r7_n, r8, r9_n, r12, r3_r2_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r0Out = r0_n;
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut.u0 = <invalid>;
+		return Z_n;
+	}
+	else
+	{
+		Eq_n r0_n;
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		bool Z_n = fn000034F0(SEQ(r11_n, r10_n), r0_n, r7 >> 0x08, r7_n, r8, r12, r3_r2_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r0Out = r0_n;
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut.u0 = <invalid>;
+		return Z_n;
+	}
+}
+
+// 000034DE: void fn000034DE()
+// Called from:
+//      fn000030F2
+//      fn00003480
+void fn000034DE()
+{
+}
+
+// 000034F0: FlagGroup bool fn000034F0(Sequence (ptr32 Eq_n) r11_r10, Register Eq_n r0, Register Eq_n r2, Register Eq_n r7, Register Eq_n r8, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000033F8
+//      fn000034CE
+bool fn000034F0(struct Eq_n * r11_r10, Eq_n r0, Eq_n r2, Eq_n r7, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r0_n;
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	bool Z_n = fn000034F2(r11_r10, r0, r2, r7, r8, r0, r12, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	r0Out = r0_n;
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return Z_n;
+}
+
+// 000034F2: FlagGroup bool fn000034F2(Sequence (ptr32 Eq_n) r11_r10, Register Eq_n r0, Register Eq_n r2, Register Eq_n r7, Register Eq_n r8, Register Eq_n r9, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000033F8
+//      fn000034CE
+bool fn000034F2(struct Eq_n * r11_r10, Eq_n r0, Eq_n r2, Eq_n r7, Eq_n r8, Eq_n r9, Eq_n r12, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	if (r9 != 0x00)
+	{
+		word32 r2_r1_n = (word32) r9;
+		struct Eq_n * r13_n;
+		fn0000DB24(r11_r10->t000C.u4, *((word32) r13 + 16), r13, out r13_n);
+		r11_r10->t000C.u4 += r2_r1_n;
+		r13_n->dw0010 += r2_r1_n;
+		r11_r10->dw0014 += r2_r1_n;
+		r11_r10->w0010 = r11_r10->w0010;
+		word32 r1_r0_n = r13_n->dw0014;
+		r13_n->dw0014 = r1_r0_n;
+		r0 = (word16) r1_r0_n;
+		r2 = (word16) (r2_r1_n - r1_r0_n);
+		if (r1_r0_n == 0x00)
+		{
+			word32 r1_r0_n = r13_n->dw0008;
+			r13_n->dw0010 = r1_r0_n;
+			r0 = (word16) r1_r0_n;
+		}
+	}
+	Eq_n r13_n = *r12.u5;
+	if (r8 == 0x00)
+	{
+		Eq_n r0_n;
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r7_n;
+		ptr32 r12_n;
+		bool Z_n = fn0000356E(r0, r2, r7, r11, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r0Out = r0_n;
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return Z_n;
+	}
+	else
+	{
+		Eq_n r11_r10_n = (word32) r8;
+		Eq_n r3_r2_n = r13_n.u6[0x0C];
+		Eq_n r5_r4_n = r12.u6[96];
+		Eq_n r0_n;
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		bool Z_n = fn00003540(r11_r10_n, r3_r2_n, r5_r4_n, r7, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r0Out = r0_n;
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return Z_n;
+	}
+}
+
+// 00003540: FlagGroup bool fn00003540(Sequence Eq_n r11_r10, Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+//      fn000034F2
+bool fn00003540(Eq_n r11_r10, Eq_n r3_r2, Eq_n r5_r4, Eq_n r7, Eq_n r12, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r2 = (word16) r3_r2;
+	word32 r13_n;
+	fn0000DB24(r3_r2, r5_r4 + Mem0[r12 + 0x98:word32], r13, out r13_n);
+	Eq_n r13_n = *r12.u5;
+	Mem62[r13_n + 0x0C:word32] = Mem42[r13_n + 0x0C:word32] + r11_r10;
+	r13_n.u6[16] = r13_n.u6[16];
+	Mem74[r13_n + 0x14:word32] = Mem66[r13_n + 0x14:word32] + r11_r10;
+	int32 r1_r0_n = r12.u6[0x0098];
+	int32 r11_r10_n = r11_r10.u4 + r1_r0_n;
+	r12.u6[0x0098] = (struct Eq_n) r11_r10_n;
+	Eq_n r0_n = (word16) r1_r0_n;
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+	Eq_n r0_n;
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r7_n;
+	ptr32 r12_n;
+	bool Z_n = fn0000356E(r0_n, r2, r7, r11_n, r12, r13_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	r0Out = r0_n;
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return Z_n;
+}
+
+// 0000356E: FlagGroup bool fn0000356E(Register Eq_n r0, Register Eq_n r2, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn000033F8
+//      fn00003540
+//      fn00003C70
+//      fn00003C76
+//      fn00003D1C
+bool fn0000356E(Eq_n r0, Eq_n r2, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
+{
+	Eq_n r1;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r8;
+	Eq_n r9;
+	Eq_n wLoc06;
+	Eq_n dwLoc04;
+	Eq_n r10;
+	Eq_n r10_n = r13.u6[4];
+	bool Z_n = SLICE(cond(r7 - 0x00), bool, 6);
+	if (r7 != 0x00)
+	{
+		Eq_n r9_r8_n = r13.u6[0x0C];
+		Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+		Eq_n r8_n = (word16) r9_r8_n;
+		if (r10_n > r7)
+		{
+			Eq_n r6_n;
+			Eq_n r2_n;
+			r13.u6[4] = (struct Eq_n) r10_n;
+			Eq_n r3_n = r7 - r10_n;
+			Eq_n r5_r4_n = *r13.u5;
+			Eq_n r13_n;
+			fn0000DB24(SEQ(r3_n, r2), r5_r4_n, r13, out r13_n);
+			Eq_n r1_r0_n = r13_n.u6[56];
+			word32 r11_r10_n = (word32) r3_n;
+			Eq_n r0_n = r1_r0_n.u6[24];
+			Eq_n r10_n = (word16) r11_r10_n;
+			Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+			Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+			Eq_n r4_n = (word16) r5_r4_n;
+			Eq_n r8_n = r2;
+			Eq_n r9_n = r3_n;
+			Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+			bool Z_n = SLICE(cond(r0_n - 0x01), bool, 6);
+			if (r0_n != 0x01)
+			{
+				Z_n = SLICE(cond(r0_n - 0x02), bool, 6);
+				r2_n = r2;
+				r6_n = r6;
+				if (r0_n == 0x02)
+				{
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg2 = <invalid>;
+					Eq_n stackArg6 = <invalid>;
+					Eq_n stackArg10 = <invalid>;
+					Eq_n stackArg14 = <invalid>;
+					Eq_n stackArg18 = <invalid>;
+					Eq_n stackArg62 = <invalid>;
+					Eq_n stackArg70 = <invalid>;
+					Eq_n stackArg94 = <invalid>;
+					Eq_n stackArg65514 = <invalid>;
+					Eq_n stackArg65550 = <invalid>;
+					Eq_n stackArg65592 = <invalid>;
+					Eq_n stackArg130960 = <invalid>;
+					word16 r0_n;
+					word16 r1_n;
+					word16 r2_n;
+					word16 r3_n;
+					word16 r4_n;
+					word16 r5_n;
+					word16 r6_n;
+					word16 r7_n;
+					word16 r8_n;
+					word16 r9_n;
+					word16 r10_n;
+					word16 r11_n;
+					word32 r12_n;
+					word32 r13_n;
+					word32 ra_n;
+					fn0000402E(SEQ(r9, r8), r2, r6, r7, r10, r12, r13, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r0Out = r0_n;
+					r1Out = r1_n;
+					r2Out = r2;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6;
+					r7Out = r7;
+					r8Out = r2;
+					r9Out = r3_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12;
+					r13Out = r13_n;
+					return Z_n;
+				}
+			}
+			else
+			{
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				Eq_n r3_r2_n = r13_n.u6[96];
+				Eq_n stackArg65544 = <invalid>;
+				word32 r3_r2_n;
+				word32 r9_r8_n;
+				fn0000C0EE(stackArg65544, out r3_r2_n, out r9_r8_n);
+				r13_n.u6[96] = (struct Eq_n) SEQ(r1_n, r0_n);
+				r2_n = (word16) r3_r2_n;
+				r3_n = SLICE(r3_r2_n, word16, 16);
+				r6_n = r7;
+				r8_n = (word16) r5_r4_n;
+				r9_n = SLICE(r5_r4_n, word16, 16);
+			}
+			word32 r1_r0_n = *r13_n.u5 + r11_r10_n;
+			Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+			Eq_n r0_n = (word16) r1_r0_n;
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg2 = <invalid>;
+			Eq_n stackArg6 = <invalid>;
+			Eq_n stackArg10 = <invalid>;
+			Eq_n stackArg14 = <invalid>;
+			Eq_n stackArg18 = <invalid>;
+			Eq_n stackArg62 = <invalid>;
+			Eq_n stackArg70 = <invalid>;
+			Eq_n stackArg94 = <invalid>;
+			Eq_n stackArg65514 = <invalid>;
+			Eq_n stackArg65550 = <invalid>;
+			Eq_n stackArg65592 = <invalid>;
+			Eq_n stackArg130960 = <invalid>;
+			word16 r0_n;
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word16 r7_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			word16 r11_n;
+			word32 r12_n;
+			word32 r13_n;
+			word32 ra_n;
+			fn0000402E(SEQ(r9, r8), r2, r6, r7, r10, r12, r13, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+			r0Out = r0_n;
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r7Out = r7;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12;
+			r13Out = r13_n;
+			return Z_n;
+		}
+		else
+		{
+			bool Z_n = SLICE(cond(r10_n - 0x00), bool, 6);
+			if (r10_n != 0x00)
+			{
+				if (r10_n == 0x00)
+				{
+					*(byte *) 0x00049A0A = __set_bit<byte,byte>(*(byte *) 0x00049A0A, 0x04);
+					Eq_n r7_n = r9_r8_n.u6[16];
+					if (r0 < r7_n)
+						r7_n = r0;
+					if (r7_n != 0x00)
+					{
+						Eq_n r3_r2_n = r9_r8_n.u6[0x0C];
+						Eq_n r5_r4_n = SEQ(r11, r10_n)->t0010.u4;
+						word32 r13_n;
+						fn0000DB24(r3_r2_n, r5_r4_n, (word32) r7_n, out r13_n);
+						r9_r8_n.u6[0x0C] = (struct Eq_n) (r9_r8_n.u6[0x0C].a0000 + r13_n / 4).u5.u4;
+						SEQ(r11, r10_n)->dw0010 = SEQ(r11, r10_n)->dw0010 + r13_n;
+						r9_r8_n.u6[20] = (struct Eq_n) (r9_r8_n.u6[20].a0000 + r13_n / 4).u5.u4;
+						r9_r8_n.u6[16] = r9_r8_n.u6[16];
+						word32 r1_r0_n = SEQ(r11, r10_n)->dw0014;
+						SEQ(r11, r10_n)->dw0014 = r1_r0_n;
+						r3 = SLICE(r3_r2_n, word16, 16);
+						r2 = (word16) r3_r2_n;
+						r5.u1 = SLICE(r5_r4_n, word16, 16);
+						r4 = (word16) r5_r4_n;
+						if (r1_r0_n == 0x00)
+							SEQ(r11, r10_n)->dw0010 = SEQ(r11, r10_n)->dw0008;
+					}
+					Eq_n r1_r0_n = *r12.u5;
+					Eq_n r0_n = r1_r0_n.u6[16];
+					r0Out.u1 = (int16) (r0_n != 0x00);
+					r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+					r2Out = r2;
+					r3Out = r3;
+					r4Out = r4;
+					r5Out = r5;
+					r6Out = r6;
+					r7Out = wLoc06;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11;
+					r12Out = r12;
+					r13Out = dwLoc04;
+					return SLICE(cond(r0_n - 0x00), bool, 6);
+				}
+				else
+				{
+					Eq_n r13_n;
+					Eq_n r10_n;
+					Eq_n r7_n;
+					Eq_n r2_n;
+					Eq_n r12_n;
+					Eq_n r1_n;
+					Eq_n r0_n;
+					Eq_n r6_n;
+					Eq_n r3_n;
+					Eq_n r9_n;
+					Eq_n r8_n;
+					Eq_n r11_n;
+					Eq_n r5_n;
+					Eq_n r4_n;
+					bool Z_n = SLICE(fn00003C70(out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n), bool, 6);
+					r0Out = r0_n;
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return Z_n;
+				}
+			}
+			else
+			{
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg2 = <invalid>;
+				Eq_n stackArg6 = <invalid>;
+				Eq_n stackArg10 = <invalid>;
+				Eq_n stackArg14 = <invalid>;
+				Eq_n stackArg18 = <invalid>;
+				Eq_n stackArg62 = <invalid>;
+				Eq_n stackArg70 = <invalid>;
+				Eq_n stackArg94 = <invalid>;
+				Eq_n stackArg65514 = <invalid>;
+				Eq_n stackArg65550 = <invalid>;
+				Eq_n stackArg65592 = <invalid>;
+				Eq_n stackArg130960 = <invalid>;
+				word16 r0_n;
+				word16 r1_n;
+				word16 r2_n;
+				word16 r3_n;
+				word16 r4_n;
+				word16 r5_n;
+				word16 r6_n;
+				word16 r7_n;
+				word16 r8_n;
+				word16 r9_n;
+				word16 r10_n;
+				word16 r11_n;
+				word32 r12_n;
+				word32 r13_n;
+				word32 ra_n;
+				fn0000402E(SEQ(r9, r8), r2, r6, r7, r10, r12, r13, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r0Out = r0;
+				r1Out = r1;
+				r2Out = r2;
+				r3Out = r3;
+				r4Out = r4;
+				r5Out = r5;
+				r6Out = r6;
+				r7Out = r7;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11;
+				r12Out = r12;
+				r13Out = r13;
+				return Z_n;
+			}
+		}
+	}
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg2 = <invalid>;
+		Eq_n stackArg6 = <invalid>;
+		Eq_n stackArg10 = <invalid>;
+		Eq_n stackArg14 = <invalid>;
+		Eq_n stackArg18 = <invalid>;
+		Eq_n stackArg62 = <invalid>;
+		Eq_n stackArg70 = <invalid>;
+		Eq_n stackArg94 = <invalid>;
+		Eq_n stackArg65514 = <invalid>;
+		Eq_n stackArg65550 = <invalid>;
+		Eq_n stackArg65592 = <invalid>;
+		Eq_n stackArg130960 = <invalid>;
+		word16 r0_n;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r7_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn0000402E(SEQ(r9, r8), r2, r6, r7, r10, r12, r13, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r0Out = r0;
+		r1Out = r1;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r7Out = r7;
+		r8Out = r8;
+		r9Out = r9;
+		r10Out = r10_n;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = r13;
+		return Z_n;
+	}
+}
+
+// 0000372E: Register Eq_n fn0000372E(Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+//      fn00003B3C
+Eq_n fn0000372E(union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word16 r1;
+	Eq_n r2;
+	Eq_n r5;
+	word32 ra_n;
+	word16 r6_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r8_n;
+	Eq_n r2_n;
+	Eq_n r1_n;
+	Eq_n r7_n;
+	Eq_n r10_n;
+	Eq_n r9_n;
+	ptr32 r13_n;
+	Eq_n r5_n;
+	Eq_n r0_n = fn00003A36(r0, r1, r2, r5, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 00003780: Register word16 fn00003780(Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+//      fn00003B3C
+word16 fn00003780(union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r0;
+	word16 r1;
+	Eq_n r2;
+	word16 r3_n;
+	word16 r2_n;
+	word16 r1_n;
+	word16 r6_n;
+	word32 ra_n;
+	word16 r4_n;
+	word16 r5_n;
+	Eq_n r8_n;
+	word16 r7_n;
+	ptr32 r13_n;
+	ptr32 r12_n;
+	Eq_n r11_n;
+	Eq_n r10_n;
+	Eq_n r9_n;
+	fn00003A36(r0, r1, r2, r5, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r7_n;
+}
+
+// 000037D8: Register Eq_n fn000037D8(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r0, Register Eq_n r7, Register Eq_n r13, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000030F2
+//      fn00003780
+Eq_n fn000037D8(Eq_n r11_r10, struct Eq_n * r9_r8, Eq_n r0, Eq_n r7, Eq_n r13, ptr32 & r12Out, ptr32 & r13Out)
+{
+	if (r0 >= r7)
+	{
+		word16 r1_n;
+		ptr32 r13_n;
+		Eq_n r7_n;
+		ptr32 r12_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		fn000037E0(r11_r10, r9_r8, r7, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r7_n, out r12_n, out r13_n);
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r7_n;
+	}
+	else
+	{
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r7_n = fn000037DE(r11_r10, r9_r8, r0, r13, out r12_n, out r13_n);
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r7_n;
+	}
+}
+
+// 000037DE: Register word16 fn000037DE(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r0, Register Eq_n r13, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn000037D8
+//      fn00003A36
+word16 fn000037DE(Eq_n r11_r10, struct Eq_n * r9_r8, Eq_n r0, Eq_n r13, ptr32 & r12Out, ptr32 & r13Out)
+{
+	ptr32 r13_n;
+	word16 r7_n;
+	ptr32 r12_n;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	fn000037E0(r11_r10, r9_r8, r0, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r7_n, out r12_n, out r13_n);
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r7_n;
+}
+
+// 000037E0: Register word16 fn000037E0(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r7, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r7Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn000037D8
+//      fn00003A36
+word16 fn000037E0(Eq_n r11_r10, struct Eq_n * r9_r8, Eq_n r7, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r7Out, union Eq_n & r12Out, union Eq_n & r13Out)
+{
+	if (r7 != 0x00)
+	{
+		word32 r12_n = (word32) r7;
+		Eq_n r3_r2_n = r9_r8->t000C.u4;
+		Eq_n r5_r4_n = *((word32) r11_r10 + 16);
+		fn0000DB24(r3_r2_n, r5_r4_n, r13, out r13);
+		r9_r8->t000C.u4 += r12_n;
+		((word32) r11_r10 + 16)->u4 += r12_n;
+		r9_r8->dw0014 += r12_n;
+		r9_r8->w0010 = r9_r8->w0010;
+		word32 r1_r0_n = r11_r10.u6[20];
+		r11_r10.u6[20] = (struct Eq_n) r1_r0_n;
+		if (r1_r0_n == 0x00)
+			((word32) r11_r10 + 16)->u4 = r11_r10.u6[8];
+	}
+	if ((word16) r13 != 0x00)
+	{
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r7Out.u0 = <invalid>;
+		r12Out.u0 = <invalid>;
+		r13Out.u0 = <invalid>;
+		return 0x02;
+	}
+	else
+	{
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r7Out.u0 = <invalid>;
+		r12Out.u0 = <invalid>;
+		r13Out.u0 = <invalid>;
+		return 0x00;
+	}
+}
+
+// 00003A32: Register Eq_n fn00003A32(Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000030F2
+//      fn00003A36
+Eq_n fn00003A32(union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	word32 r1_r0;
+	Eq_n r2;
+	Eq_n r5;
+	Eq_n r12;
+	Eq_n r13;
+	word16 r1 = SLICE(r1_r0, word16, 16);
+	Eq_n r0 = (word16) r1_r0;
+	Eq_n r2_n;
+	Eq_n r1_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r12_n;
+	word32 r13_n;
+	word32 ra_n;
+	Eq_n r0_n = fn00003A36(r0, r1, r2, r5, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out.u0 = <invalid>;
+	r4Out.u0 = <invalid>;
+	r5Out.u0 = <invalid>;
+	r6Out.u0 = <invalid>;
+	r7Out.u0 = <invalid>;
+	r8Out.u0 = <invalid>;
+	r9Out.u0 = <invalid>;
+	r10Out.u0 = <invalid>;
+	r11Out.u0 = <invalid>;
+	r12Out.u0 = <invalid>;
+	r13Out.u0 = <invalid>;
+	raOut.u0 = <invalid>;
+	return r0_n;
+}
+
+// 00003A36: Register Eq_n fn00003A36(Register Eq_n r0, Register word16 r1, Register Eq_n r2, Register Eq_n r5, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn0000372E
+//      fn00003780
+//      fn00003A32
+//      fn00003B3C
+//      fn0000402E
+Eq_n fn00003A36(Eq_n r0, word16 r1, Eq_n r2, Eq_n r5, Eq_n r12, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	Eq_n dwLoc04;
+	struct Eq_n * fp;
+	Eq_n wLoc0A;
+	Eq_n wLoc06;
+	word16 r11;
+	Eq_n r10;
+	cui16 r8;
+	word16 r3;
+	Eq_n r4;
+	struct Eq_n * sp_n = fp;
+	SEQ(r1 + 0x01, r0)->t12BC.u0 = (wchar_t) r2;
+	cu16 r1_n = r12.u6[9196];
+	Eq_n r11_n = *((word32) r12 + 0x00B4);
+	Eq_n r9_n = (int16) (r1_n == (r12.u6)[9192]);
+	Eq_n r2_n = r12.u6[0x00A0] - r11_n;
+	*((word32) r12 + 0x00B4) = r11_n;
+	Eq_n ra_n = r12.u6[96];
+	Eq_n r8_n = r12.u6[144];
+	Eq_n r10_n = r12.u6[0x008C];
+	bool v75_n = r12.u6[0x00C0] >= r2_n;
+	Eq_n dwLoc04_n = dwLoc04;
+	r12_n = r12;
+	r5_n = r5;
+	r13_n = r13;
+l00003A70:
+	Eq_n dwLoc04_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r9_r8_n;
+	Eq_n r5_r4_n;
+	Eq_n r3_r2_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n dwLoc04_n;
+	Eq_n r6_n;
+	Eq_n r0_n;
+	cu16 r0_n;
+	Eq_n r2_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r13_n;
+	Eq_n r5_n;
+	Eq_n r12_n;
+	Eq_n dwLoc04_n = dwLoc04_n;
+	if ((int16) v75_n != 0x00)
+	{
+		dwLoc04_n = dwLoc04_n;
+		if ((int16) (r11_n < 0x02) != 0x00)
+		{
+			r12_n.u6[0x00A0] = (struct Eq_n) ~0x00;
+			sp_n->dw0004 = (word32) r12_n.u6[0x0078];
+			r13_n.u4 = r12_n.u6[112];
+			sp_n->w0002 = (cui16) r12_n.u6[88];
+			Eq_n r0_n = r12_n.u6[0x0080];
+			cui16 r1_n = sp_n->dw0000 + 0x01;
+			sp_n->t000A.u0 = (wchar_t) ((word32) r2_n + 0x0000FFFF);
+			r6_n.u0 = ~0x00;
+			do
+			{
+				r12_n.u6[0x00AC] = (struct Eq_n) r1_n;
+				r0_n = __a_shift<word16,word16>(r0_n, r8_n);
+				r12_n.u6[0x0080] = (struct Eq_n) r0_n;
+				cui16 * r5_r4_n = (word32) r0_n * 0x02 + sp_n->dw0004;
+				cui16 r2_n = sp_n->w0002;
+				r13_n.u4[(word32) r2_n * 0x02] = *r5_r4_n;
+				cui16 r1_n = r1_n + 0x02 & r2_n;
+				*r5_r4_n = r1_n;
+				r12_n.u6[0x00A0] = (struct Eq_n) ~0x00;
+				r10_n &= r0_n;
+				r9_n = (word16) r9_n.u0 + 0x0000FFFF;
+				r1_n = r1_n + 0x01;
+			} while (true);
+			r2_n.u0 = sp_n->t000A.u0;
+			r11_r10_n = SEQ(r11_n, r10_n);
+			goto l00003AE6;
+		}
+l00003DDE:
+		dwLoc04_n = dwLoc04_n;
+l00003DE0:
+		r10_n.u4 = r12_n.u6[0x00B0];
+		dwLoc04_n = dwLoc04_n;
+	}
+	Eq_n r3_r2_n;
+	union Eq_n * r3_r2_n;
+	Eq_n r9_n;
+	Eq_n r8_n;
+	Eq_n r6_n;
+	Eq_n r1_n;
+	Eq_n r2_n;
+	Eq_n r0_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	word16 r2_n = (word16) *r12_n.u6[96].t0002;
+	r12_n.u6[0x0080] = (struct Eq_n) r2_n;
+	cui16 r6_n = r12_n.u6[88];
+	r9_r8_n.u4 = r12_n.u6[112];
+	Eq_n r3_r2_n = (r12_n.u6[0x0078].a0000 + ((word32) r2_n * 0x02) / 4).u5.u4;
+	union Eq_n * r7_r6_n = r9_r8_n.u4 + (word32) r6_n * 0x02;
+	Eq_n r4_n = *r3_r2_n.u4;
+	r7_r6_n->u0 = (wchar_t) r4_n;
+	Eq_n r1_n = r1_n + 0x02 & r6_n;
+	*r3_r2_n.u4 = (cup16) r1_n;
+	r12_n.u6[0x00B8] = (struct Eq_n) r5_n;
+	r12_n.u6[0x00A4] = (struct Eq_n) r10_n;
+	r12_n.u6[80] = (struct Eq_n) 0x02;
+	cup16 wLoc02_n = SLICE(dwLoc04_n, word16, 16);
+	sp_n = fp - 0x0E;
+	Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+	Eq_n r8_n = (word16) r9_r8_n;
+	r6_n = (word16) r7_r6_n;
+	if (r4_n == 0x00 || r5_n >= (r12_n.u6)[0x00C0])
+	{
+		r0_n = (word16) r13_n;
+l00003E58:
+		word16 r3_n = SLICE(r3_r2_n, word16, 16);
+		if (r5_n < 0x02 && r0_n <= r5_n)
+		{
+			SEQ(r6_n, r5_n)->b000D = (byte) r3_n;
+			int32 r1_r0_n = (word32) r11_n;
+			r0_n = (word16) r1_r0_n;
+			r5_r4_n = r12_n.u6[0x0098] - r1_r0_n;
+			r3_r2_n = r3_r2_n;
+			r11_r10_n = SEQ(r11_n, r10_n);
+			dwLoc04_n = dwLoc04_n;
+			if (r5_r4_n <= 0x00)
+				goto l000040B4;
+			goto l00004378;
+		}
+		word16 r0_n = r12_n.u6[0x00A8];
+		if (r0_n != 0x00)
+		{
+			byte v49_n = r12_n.u6[96].a0000[(word32) r1_n / 4];
+			word16 r1_n = r12_n.u6[9196];
+			r12_n.u6[9200].a0000[r7_r6_n * 0x02 / 4].u5.u4 = (cup16 *) 0x00;
+			word32 r3_r2_n = r12_n.u6[9184];
+			r12_n.u6[9196] = (struct Eq_n) (r1_n + 0x01);
+			byte * r3_r2_n = &r7_r6_n->u0 + r3_r2_n;
+			*r3_r2_n = v49_n;
+			struct Eq_n * r1_r0_n = r12_n.u4 + ((word32) v49_n << 0x02);
+			Eq_n r2_n = r1_r0_n->t00D4.u0;
+			SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->t00D4.u0 = (wchar_t) r2_n;
+			r5_n.u4 = SLICE(r7_r6_n, word16, 16);
+			Eq_n r4_n = (word16) r7_r6_n;
+			Eq_n r7_n = SLICE(r7_r6_n * 0x02, word16, 16);
+			Eq_n r6_n = (word16) r7_r6_n * 0x02;
+			Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+			int16 r1_n = r12_n.u6[9196];
+			if (r12_n.u6[9192] == r1_n)
+			{
+				Eq_n r1_n;
+				Eq_n r10_n;
+				Eq_n r11_n;
+				Eq_n r12_n;
+				Eq_n r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r6_n;
+				Eq_n r7_n;
+				Eq_n r8_n;
+				Eq_n r9_n;
+				Eq_n ra_n;
+				Eq_n r0_n = fn0000441E(SEQ((word32) r9_n + 0x0000FFFE, r8_n), r1_n, r7_n, r13_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = r7_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				raOut = ra_n;
+				return r0_n;
+			}
+			r12_n.u6[0x00AC] = r12_n.u6[0x00AC];
+			Eq_n r7_n = *((word32) r12_n + 0x00B4);
+			((word32) r12_n + 0x00B4)->u4 = r7_n;
+			struct Eq_n * r1_r0_n = *r12_n.u5;
+			Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+			if (r1_r0_n->t0010.u0 == 0x00)
+			{
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = wLoc06;
+				r8Out = r8_n;
+				r9Out = (word32) r9_n + 0x0000FFFD;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = dwLoc04_n;
+				raOut = ra_n;
+				return 0x00;
+			}
+			if (r7_n >= 0x0105)
+			{
+				Eq_n r1_n;
+				Eq_n r2_n;
+				Eq_n r12_n;
+				Eq_n r9_n;
+				Eq_n r11_n;
+				Eq_n r3_n;
+				Eq_n ra_n;
+				Eq_n r8_n;
+				Eq_n r10_n;
+				Eq_n r13_n;
+				Eq_n r6_n;
+				Eq_n r7_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r0_n = fn0000401A(r12_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = r7_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				raOut = ra_n;
+				return r0_n;
+			}
+			r1_n = (cu16) r12_n.u6[0x00AC];
+			dwLoc04_n = dwLoc04_n;
+			goto l00003DE0;
+		}
+		r12_n.u6[84] = (struct Eq_n) 0x01;
+		cu16 r1_n = r1_n.u6 + 1;
+		r12_n.u6[0x00AC] = (struct Eq_n) r1_n;
+		Eq_n r7_n = *((word32) r12_n + 0x00B4);
+		((word32) r12_n + 0x00B4)->u4 = r7_n;
+		if (r0_n != 0x00)
+		{
+			r1_n = r1_n & 0x5F22;
+			r3_r2_n = r3_r2_n;
+			goto l0000398A;
+		}
+		*r13_n.u5 = (word32) SEQ(r1_n, r0_n);
+		r13_n.u6[8] = (struct Eq_n) (r13_n.u6[8].a0000 + SEQ(r11_n, r10_n) / 4).u5.u4;
+		r13_n.u4 = *r12_n.u5;
+		word32 r9_r8_n = r13_n.u6[0x0C];
+		Eq_n r10_n = r13_n.u6[4];
+		word32 r1_r0_n = (word32) r7_n;
+		word32 r9_r8_n = r9_r8_n + r1_r0_n;
+		r13_n.u6[0x0C] = (struct Eq_n) r9_r8_n;
+		r13_n.u6[16] = r13_n.u6[16];
+		word32 r3_r2_n = r13_n.u6[20];
+		word32 r1_r0_n = r1_r0_n + r3_r2_n;
+		r13_n.u6[20] = (struct Eq_n) r1_r0_n;
+		Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+		r8_n = (word16) r9_r8_n;
+		Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+		r2_n = (word16) r3_r2_n;
+		r1_n.u4 = SLICE(r1_r0_n, word16, 16);
+		Eq_n r0_n = (word16) r1_r0_n;
+		if (wLoc0A == 0x00)
+		{
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg0 = <invalid>;
+			byte stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg10 = <invalid>;
+			fn000032CA(SEQ(r11, r10), r0, r1, r8, r12, r13, stackArg0, stackArg4, stackArg8, stackArg10);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r7Out = wLoc0A;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			raOut = ra_n;
+			return r0_n;
+		}
+		Eq_n r0_n;
+		Eq_n r10_n = r10_n - wLoc02_n;
+		r9_n.u0 = 0x01;
+		dwLoc04_n = dwLoc04_n;
+		if (wLoc02_n != 0x00)
+		{
+			struct Eq_n * r3_r2_n = r12_n.u6[96];
+			cup16 r0_n = r12_n.u6[80];
+			r2_n = (word16) r3_r2_n;
+			r11_r10_n = SEQ(r11_n, r10_n);
+			if (wLoc02_n >= r0_n)
+			{
+l00003AE8:
+				r12_n.u6[0x00AC] = (struct Eq_n) r2_n;
+				r10_n = (word16) r11_r10_n;
+				word16 r11_n = SLICE(r11_r10_n, word16, 16);
+				if (r9_n == 0x00)
+				{
+					Eq_n r1_n;
+					Eq_n r2_n;
+					Eq_n r12_n;
+					Eq_n r9_n;
+					Eq_n r11_n;
+					Eq_n r3_n;
+					Eq_n ra_n;
+					Eq_n r8_n;
+					Eq_n r10_n;
+					Eq_n r13_n;
+					Eq_n r6_n;
+					Eq_n r7_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					Eq_n r0_n = fn00003B3C(SEQ(r11, r10), SEQ(r9, r8), r7_n, r12_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					raOut = ra_n;
+					return r0_n;
+				}
+				int32 r3_r2_n = (word32) r2_n;
+				Eq_n r2_n = (word16) r3_r2_n;
+				if (r12_n.u6[0x0098] <= r3_r2_n)
+				{
+l00003B0A:
+					sp_n->tFFFFFFFE.u0 = (wchar_t) r2_n;
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg4 = <invalid>;
+					Eq_n stackArg8 = <invalid>;
+					Eq_n stackArg12 = <invalid>;
+					Eq_n stackArg16 = <invalid>;
+					Eq_n stackArg20 = <invalid>;
+					Eq_n stackArg64 = <invalid>;
+					Eq_n stackArg72 = <invalid>;
+					Eq_n stackArg96 = <invalid>;
+					Eq_n stackArg65516 = <invalid>;
+					Eq_n stackArg65552 = <invalid>;
+					Eq_n stackArg65594 = <invalid>;
+					Eq_n stackArg130962 = <invalid>;
+					Eq_n r1_n;
+					Eq_n r2_n;
+					Eq_n r12_n;
+					Eq_n r9_n;
+					Eq_n r11_n;
+					Eq_n r3_n;
+					Eq_n ra_n;
+					Eq_n r8_n;
+					Eq_n r10_n;
+					Eq_n r13_n;
+					Eq_n r6_n;
+					Eq_n r7_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					Eq_n r0_n = fn00003B14(SEQ(r9, r8), r4, r5_n, r10, r13_n, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg64, stackArg72, stackArg96, stackArg65516, stackArg65552, stackArg65594, stackArg130962, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					raOut = ra_n;
+					return r0_n;
+				}
+				r3_r2_n.u4 = (r12_n.u6[0x0078].a0000 + (r3_r2_n * 0x02) / 4).u5.u4;
+				cui16 r0_n = r12_n.u6[88];
+				r12_n.u6[112].a0000[(word32) r0_n * 0x02 / 4].u5.u4 = (cup16 *) *r3_r2_n.u4;
+				r6_n &= r0_n;
+				*r3_r2_n.u4 = (cup16) r6_n;
+				r12_n.u6[0x00B8] = (struct Eq_n) r8_n;
+				r2_n = (word16) r3_r2_n;
+				int16 r9_n = (word32) r9_n + 0x0000FFFF;
+				if (r8_n != 0x00)
+				{
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg2 = <invalid>;
+					Eq_n stackArg6 = <invalid>;
+					Eq_n stackArg10 = <invalid>;
+					Eq_n stackArg14 = <invalid>;
+					Eq_n stackArg18 = <invalid>;
+					Eq_n stackArg62 = <invalid>;
+					Eq_n stackArg70 = <invalid>;
+					Eq_n stackArg94 = <invalid>;
+					Eq_n stackArg65514 = <invalid>;
+					Eq_n stackArg65550 = <invalid>;
+					Eq_n stackArg65592 = <invalid>;
+					Eq_n stackArg130960 = <invalid>;
+					Eq_n r1_n;
+					Eq_n r2_n;
+					Eq_n r12_n;
+					Eq_n r0_n;
+					Eq_n r9_n;
+					Eq_n r11_n;
+					Eq_n r3_n;
+					Eq_n ra_n;
+					Eq_n r8_n;
+					Eq_n r10_n;
+					Eq_n r13_n;
+					Eq_n r6_n;
+					Eq_n r7_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					fn0000402E(SEQ(r9, r8), r2_n, r6_n, r7_n, r10, r12_n, r13_n, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					raOut = ra_n;
+					return r0_n;
+				}
+				r12_n.u6[84] = (struct Eq_n) 0x00;
+				r12_n.u6[80] = (struct Eq_n) 0x02;
+				r12_n.u6[0x00AC] = (struct Eq_n) r11_n;
+				int16 r9_n = r9_n + r11_n;
+				if (sp_n->dw0000 != (word16) ra_n)
+					goto l00003B0A;
+				int32 r1_r0_n = (word32) r11_n;
+				r0_n = (word16) r1_r0_n;
+				r5_r4_n = r12_n.u6[0x0098] - r1_r0_n;
+				r9_r8_n = SEQ(r9_n + ~0x00, r8_n);
+				r9_r8_n = SEQ(r9_n + ~0x00, r8_n);
+				r11_r10_n = r11_r10_n;
+				if (r5_r4_n <= 0x00)
+				{
+l000040B4:
+					ui32 r5_r4_n = (r12_n.u6[96].a0000 + (r5_r4_n & 0xFFFF) / 4).u5.u4;
+					struct Eq_n * sp_n = sp_n - 2;
+					sp_n->t0000.u0 = (wchar_t) r0_n;
+					Eq_n r3_r2_n = fn0000B218(r9_r8_n, (word16) r5_r4_n, SLICE(r5_r4_n, word16, 16), r10_n, r13_n, sp_n->t0000.u4, sp_n->t0004.u4, sp_n->t0008.u4, sp_n->t000C.u4, sp_n->t0010.u4, sp_n->t0014.u4, sp_n->t0040.u4, sp_n->t0048.u4, sp_n->t0060.u4, sp_n->tFFEC.u0, sp_n->t10010.u4, sp_n->t1003A.u4, sp_n->t1FF92.u0, out r12_n, out r13_n);
+					r12_n.u6[0x0098] = (struct Eq_n) (word32) r12_n.u6[0x00AC];
+					struct Eq_n * r9_r8_n = *r12_n.u5;
+					word16 r4_n;
+					word16 r6_n;
+					word16 r7_n;
+					fn0000B09C(r3_r2_n, SLICE(r3_r2_n, word16, 16), out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+					r2_n = (word16) r3_r2_n;
+					Eq_n sp_n = <invalid>;
+					r9_n = SLICE(r9_r8_n, word16, 16);
+					r8_n = (word16) r9_r8_n;
+					r10_n = r2_n;
+					struct Eq_n * r0_n = SEQ(r11_n, r2_n)->ptr0014;
+					struct Eq_n * r7_n = r9_r8_n->ptr0010;
+					sp_n = (struct Eq_n *) (sp_n.u6 + 4);
+					if (r0_n < r7_n)
+						r7_n = r0_n;
+					if (r7_n != null)
+					{
+						((word32) sp_n + 4)->u4 = (word32) r7_n;
+						Eq_n r5_r4_n = SEQ(r11_n, r2_n)->t0010.u4;
+						Eq_n r3_r2_n = r9_r8_n->t000C.u4;
+						sp_n.u6[2] = sp_n.u6[4];
+						fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+						Eq_n sp_n = <invalid>;
+						word32 r3_r2_n = *((word32) sp_n + 4);
+						r9_r8_n->t000C.u4 += r3_r2_n;
+						SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0010 + r3_r2_n;
+						r9_r8_n->dw0014 += r3_r2_n;
+						struct Eq_n * r0_n = r9_r8_n->ptr0010;
+						r9_r8_n->ptr0010 = r0_n;
+						word32 r1_r0_n = SEQ(r11_n, r2_n)->dw0014;
+						SEQ(r11_n, r2_n)->dw0014 = r1_r0_n;
+						r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+						r7_n -= r0_n;
+						r2_n = (word16) (r3_r2_n - r1_r0_n);
+						sp_n = (struct Eq_n *) (sp_n.u6 + 4);
+						if (r1_r0_n == 0x00)
+							SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0008;
+					}
+					struct Eq_n * r1_r0_n = *r12_n.u5;
+					cup16 r0_n = r1_r0_n->w0010;
+					r1_n = SLICE(r1_r0_n, word16, 16);
+					v75_n = r0_n >= 0x00;
+					if (r0_n == 0x00)
+						r7_n->w9F0C = __set_bit<word16,byte>(r7_n->w9F0C, 0x06);
+					dwLoc04_n = dwLoc04_n;
+					goto l00003A70;
+				}
+l00004378:
+				word32 r13_n;
+				fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+				r9_r8_n.u6[0x0C] = (struct Eq_n) (r9_r8_n.u6[0x0C].a0000 + r13_n / 4).u5.u4;
+				r11_r10_n->dw0010 += r13_n;
+				r9_r8_n.u6[20] = (struct Eq_n) (r9_r8_n.u6[20].a0000 + r13_n / 4).u5.u4;
+				r9_r8_n.u6[16] = r9_r8_n.u6[16];
+				word32 r1_r0_n = r11_r10_n->dw0014;
+				r11_r10_n->dw0014 = r1_r0_n;
+				Eq_n r10_n = (word16) r11_r10_n;
+				Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+				Eq_n r8_n = (word16) r9_r8_n;
+				Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+				Eq_n r2_n = (word16) r3_r2_n;
+				Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+				Eq_n r4_n = (word16) r5_r4_n;
+				Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+				if (r1_r0_n == 0x00)
+					r11_r10_n->dw0010 = r11_r10_n->dw0008;
+				Eq_n r1_n = *((word32) *r12_n.u5 + 16);
+				r0_n = 0x03;
+				if (r1_n == 0x00)
+				{
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = wLoc06;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = dwLoc04_n;
+					raOut = ra_n;
+					return 0x02;
+				}
+l00003A00:
+				Eq_n v41_n = *r3_r2_n.u4;
+				struct Eq_n * r3_r2_n = r12_n.u4 + ((word32) v41_n << 0x02);
+				++r3_r2_n->w08DC;
+				Eq_n r1_n;
+				Eq_n r2_n;
+				Eq_n r12_n;
+				Eq_n r9_n;
+				Eq_n r11_n;
+				Eq_n r3_n;
+				Eq_n ra_n;
+				Eq_n r8_n;
+				Eq_n r10_n;
+				Eq_n r13_n;
+				Eq_n r6_n;
+				Eq_n r7_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r0_n = fn00003A32(out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = r7_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				raOut = ra_n;
+				return r0_n;
+			}
+			word16 r1_n = r12_n.u6[0x00AC];
+			up32 r5_r4_n = r12_n.u6[0x0068];
+			up32 r11_r10_n = (word32) wLoc02_n;
+			ra_n = (word32) r1_n - r5_r4_n;
+			if (r11_r10_n >= r5_r4_n)
+			{
+				Eq_n r11_r10_n = r12_n.u6[9184];
+				word16 * r7_r6_n = (r12_n.u6[9200].a0000 + (r3_r2_n * 0x02) / 4).u5.u4;
+				word32 r5_r4_n = r3_r2_n + r11_r10_n;
+				Eq_n r7_n = SLICE(r7_r6_n, word16, 16);
+				r6_n = (word16) r7_r6_n;
+				Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+				r10_n = (word16) r11_r10_n;
+				r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+				r4_n = (word16) r5_r4_n;
+				if (r0_n < 0x02)
+				{
+					Eq_n r13_n;
+					Eq_n r7_n;
+					Eq_n r1_n;
+					Eq_n r12_n;
+					Eq_n r2_n;
+					Eq_n r3_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					Eq_n r0_n = fn000037E0(r11_r10_n, SEQ(0x01, r8_n), r7_n, r13_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r7_n, out r12_n, out r13_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out.u0 = 0x01;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					raOut = ra_n;
+					return r0_n;
+				}
+				struct Eq_n * r3_r2_n = r12_n.u6[96];
+				byte v59_n = r3_r2_n[(word32) (r1_n + 0x01) / 3];
+				*r7_r6_n = 0x00;
+				r12_n.u6[9196] = (struct Eq_n) r8_n;
+				*r5_r4_n = v59_n;
+				struct Eq_n * r1_r0_n = r12_n.u4 + ((word32) v59_n << 0x02);
+				SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->w00D4 = r1_r0_n->w00D4;
+				r0_n.u4 = r12_n.u6[9192];
+				Eq_n r1_n = r12_n.u6[9196];
+				r11_n = *((word32) r12_n + 0x00B4);
+				*((word32) r12_n + 0x00B4) = r11_n;
+				r2_n.u4 = r12_n.u6[0x00AC];
+				r12_n.u6[0x00AC] = (struct Eq_n) r2_n;
+				int16 r9_n = (int16) (r1_n == r0_n);
+				r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+				r9_n = r9_n + ~0x00;
+				&r1_n.u6->a0000->u0 = r1_n.u6 + 1;
+				if (r9_n != 0x01)
+				{
+					r3_r2_n = SEQ(r3_n, r2_n);
+					goto l000039C0;
+				}
+l000035E8:
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = wLoc06;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = dwLoc04_n;
+				raOut = ra_n;
+				return r0_n;
+			}
+			Eq_n r5_r4_n = *r13_n.u5;
+			fn0000DB24(r3_r2_n + ra_n, r5_r4_n, r13_n, out r13_n);
+			r8_n.u4 = r12_n.u6[0x00AC];
+			r12_n.u6[0x00AC] = (struct Eq_n) r8_n;
+			int32 r3_r2_n = (word32) r8_n;
+			cup16 r0_n = r12_n.u6[80];
+			r12_n.u6[0x0098] = (struct Eq_n) r3_r2_n;
+			r11_r10_n = r11_r10_n - r5_r4_n;
+			Eq_n sp_n = <invalid>;
+			r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+			r4_n = (word16) r5_r4_n;
+			r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+			r10_n = (word16) r11_r10_n;
+			cup16 r7_n = r8_n.u4 + wLoc02_n;
+			sp_n = (struct Eq_n *) (sp_n.u6 + 4);
+			r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+			r2_n = (word16) r3_r2_n;
+			word16 r1_n = r12_n.u6[9228] - r0_n;
+			if (r7_n < r0_n)
+				r0_n = r7_n;
+			r12_n.u6[9228] = (struct Eq_n) r0_n;
+			r1_n = r1_n + r0_n;
+			if (false)
+			{
+l00003AE6:
+				r11_r10_n = r11_r10_n;
+				goto l00003AE8;
+			}
+		}
+		r0_n.u0 = 0x03;
+		goto l000035E8;
+	}
+	Eq_n v48_n = (word16) r13_n;
+	Eq_n r2_n = r12_n.u6[80];
+	r11_n.u4 = (word32) r11_n + 0x0000FEFA;
+	r0_n = v48_n;
+	r4_n -= r1_n;
+	r3_r2_n = SEQ(r1_n, r2_n);
+	if (r2_n < r1_n)
+		goto l00003E58;
+	Eq_n r3_r2_n = SEQ(r1_n, r2_n);
+	fn00002F48(SEQ(r11, r10), SEQ(r6, r5));
+	r3_r2_n.u6[0x00A0] = (struct Eq_n) v48_n;
+	r12_n = r3_r2_n;
+	if (v48_n < 0x05)
+	{
+		r5_n.u4 = r3_r2_n.u6[0x00B8];
+		r1_n.u4 = r3_r2_n.u6[0x00AC];
+		r3_r2_n = SEQ(r1_n, r2_n);
+		goto l00003E58;
+	}
+	Eq_n r3_r2_n;
+	word16 r2_n = r3_r2_n.u6[200];
+	Eq_n r1_n = r3_r2_n.u6[0x00AC];
+	Eq_n r5_n = r3_r2_n.u6[0x00B8];
+	Eq_n r3_r2_n = SEQ(r1_n, r2_n);
+	if (r2_n != 0x01)
+	{
+		r3_r2_n = SEQ(r1_n, r2_n);
+		if (v48_n != 0x03)
+			goto l00003D50;
+		word16 r2_n = r3_r2_n.u6[0x00B0] - r1_n;
+		r3_r2_n = SEQ(r1_n, r2_n);
+		if (r1_n >= 0x1000)
+		{
+			r3_r2_n.u6[0x0098] = (struct Eq_n) (word32) r3_r2_n.u6[0x00AC];
+			r3_r2_n = SEQ(r1_n, r2_n);
+l00003D4A:
+			r9_r8_n.u4 = *r3_r2_n.u5;
+			r3_r2_n = r3_r2_n;
+l00003D50:
+			r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+			word16 r7_n;
+			fn0000B09C(r3_r2_n, r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+			r2_n = (word16) r3_r2_n;
+			r8_n = (word16) r9_r8_n;
+			r9_n = SLICE(r9_r8_n, word16, 16);
+			r10_n = r2_n;
+			cup16 r0_n = SEQ(r11_n, r2_n)->w0014;
+			cup16 r7_n = r9_r8_n.u6[16];
+			if (r0_n < r7_n)
+				r7_n = r0_n;
+			if (r7_n != 0x00)
+			{
+				Eq_n r3_r2_n = r9_r8_n.u6[0x0C];
+				Eq_n r5_r4_n = SEQ(r11_n, r2_n)->t0010.u4;
+				word32 r13_n;
+				fn0000DB24(r3_r2_n, r5_r4_n, (word32) r7_n, out r13_n);
+				r9_r8_n.u6[0x0C] = (struct Eq_n) (r9_r8_n.u6[0x0C].a0000 + r13_n / 4).u5.u4;
+				SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0010 + r13_n;
+				r9_r8_n.u6[20] = (struct Eq_n) (r9_r8_n.u6[20].a0000 + r13_n / 4).u5.u4;
+				r9_r8_n.u6[16] = r9_r8_n.u6[16];
+				word32 r1_r0_n = SEQ(r11_n, r2_n)->dw0014;
+				SEQ(r11_n, r2_n)->dw0014 = r1_r0_n;
+				r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+				r2_n = (word16) r3_r2_n;
+				r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+				r4_n = (word16) r5_r4_n;
+				r13_n = r13_n - r1_r0_n;
+				if (r1_r0_n == 0x00)
+					SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0008;
+			}
+			r1_n.u4 = *((word32) *r3_r2_n.u5 + 16);
+			if (r1_n == 0x00)
+				goto l00003DA8;
+			word16 r2_n = (word16) r3_r2_n.u6[96].a0000[(word32) r4_n / 4];
+			Eq_n r3_n = r3_r2_n.u6[144];
+			r3_r2_n.u6[0x0080] = (struct Eq_n) r2_n;
+			r3_r2_n = SEQ(r3_n, r2_n);
+l0000398A:
+			int32 r5_r4_n = r12_n.u6[0x0078];
+			cui16 r6_n = r12_n.u6[88];
+			Eq_n r9_r8_n[] = r12_n.u6[112];
+			r3_r2_n = (union Eq_n *) (r3_r2_n.u4 + r5_r4_n);
+			union Eq_n * r7_r6_n = &(r9_r8_n + (word32) r6_n)->t0000.u0;
+			Eq_n r4_n = r3_r2_n->u0;
+			r7_r6_n->u0 = (wchar_t) r4_n;
+			r1_n &= r6_n;
+			r3_r2_n->u0 = (wchar_t) r1_n;
+			r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+			r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+			r9_n = SLICE(r9_r8_n, word16, 16);
+			r8_n = (word16) r9_r8_n;
+			r6_n = (word16) r7_r6_n;
+			if (r4_n == 0x00)
+				goto l000039C0;
+			r11_n.u4 = (word32) r11_n + 0x0000FEFA;
+			r2_n = r1_n;
+			r4_n = r4_n - r1_n;
+			r3_r2_n = SEQ(r3_n, r1_n);
+			if (r12_n.u6[80] < r1_n)
+			{
+l000039C0:
+				int32 r11_r10_n = r12_n.u6[9184];
+				byte * r5_r4_n = &r3_r2_n->u0 + r11_r10_n;
+				word16 r8_n = r12_n.u6[9196];
+				cu16 * r7_r6_n = (r12_n.u6[9200].a0000 + (r3_r2_n * 0x02) / 4).u5.u4;
+				r1_n = (cu16) (r1_n.u6 + 1);
+				r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+				r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+				dwLoc04_n = dwLoc04_n;
+				if (r12_n.u6[0x00A0] < 0x02)
+				{
+					*r7_r6_n = r1_n;
+					r12_n.u6[9196] = (struct Eq_n) r8_n;
+					*r5_r4_n = ~0x02;
+					r0_n = r1_n;
+					r3_r2_n.u0 = 0xF42B;
+					goto l00003A00;
+				}
+				goto l00003DDE;
+			}
+l00003DA8:
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r7Out = wLoc06;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			r13Out = dwLoc04_n;
+			raOut = ra_n;
+			return 0x02;
+		}
+	}
+	r3_r2_n.u6[80] = (struct Eq_n) 0x02;
+	Eq_n r2_n = (word16) r3_r2_n;
+	word16 r3_n = SLICE(r3_r2_n, word16, 16);
+	if (r5_n < 0x02)
+	{
+		Eq_n r10_n = *((word32) r3_r2_n + 0x00B4);
+		word16 r7_r6_n[] = r3_r2_n.u6[9200];
+		Eq_n r4_n = r3_r2_n.u6[9196];
+		r7_r6_n[r3_r2_n] = ~0x00;
+		word32 r3_r2_n = r3_r2_n.u6[9184];
+		r3_r2_n.u6[9196] = (struct Eq_n) r4_n;
+		Eq_n r7_n = SLICE(r7_r6_n, word16, 16);
+		word16 r8_n = r1_n + r10_n + ~0x00;
+		Eq_n r2_n = (word16) r3_r2_n;
+		Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r7_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn00003FB8(SEQ(r1, r0), SEQ(r3, r2), SEQ(r9, r8), r5, r7, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r3_n + 0x01;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out.u0 = ~0x00;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out.u4 = (word32) r11_n + 0x0000FFFD;
+		r12Out = r3_r2_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r2_n;
+	}
+	goto l00003D4A;
+}
+
+// 00003B14: Register word16 fn00003B14(Sequence Eq_n r9_r8, Register Eq_n r4, Register Eq_n r5, Register Eq_n r10, Register Eq_n r13, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Stack Eq_n wArgFFEC, Stack Eq_n dwArg10010, Stack Eq_n dwArg1003A, Stack Eq_n wArg1FF92, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000030F2
+//      fn00003A36
+word16 fn00003B14(Eq_n r9_r8, Eq_n r4, Eq_n r5, Eq_n r10, Eq_n r13, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, Eq_n wArgFFEC, Eq_n dwArg10010, Eq_n dwArg1003A, Eq_n wArg1FF92, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	struct Eq_n * r12_n;
+	word32 r13_n;
+	fn0000B218(r9_r8, r4, r5, r10, r13, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, wArgFFEC, dwArg10010, dwArg1003A, wArg1FF92, out r12_n, out r13_n);
+	r12_n->dw0098 = (word32) r12_n->w00AC;
+	ptr32 r12_n;
+	Eq_n r7_n;
+	Eq_n r3_n;
+	Eq_n r2_n;
+	Eq_n r9_n;
+	Eq_n r8_n;
+	ptr32 r13_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r10_n;
+	Eq_n r1_n;
+	ptr32 ra_n;
+	Eq_n r6_n;
+	Eq_n r11_n;
+	word16 r0_n = fn00003B2A(SEQ(r3, r2), out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00003B2A: Register Eq_n fn00003B2A(Sequence Eq_n r3_r2, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn00003A36
+//      fn00003B14
+Eq_n fn00003B2A(Eq_n r3_r2, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, ptr32 & raOut)
+{
+	Eq_n r0;
+	Eq_n r7;
+	Eq_n r3 = SLICE(r3_r2, word16, 16);
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r11_n;
+	word32 ra_n;
+	fn0000B09C(r3_r2, r3, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+	Eq_n r7_n;
+	Eq_n r3_n;
+	Eq_n r2_n;
+	Eq_n r11_n;
+	Eq_n r10_n;
+	Eq_n r1_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	ptr32 ra_n;
+	Eq_n r9_n;
+	Eq_n r8_n;
+	Eq_n r0_n = fn00003B36(r0, r7, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out.u0 = <invalid>;
+	r13Out.u0 = <invalid>;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00003B36: Register Eq_n fn00003B36(Register Eq_n r0, Register Eq_n r7, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n raOut)
+// Called from:
+//      fn000030F2
+//      fn00003B2A
+Eq_n fn00003B36(Eq_n r0, Eq_n r7, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & raOut)
+{
+	word16 r11;
+	word16 r10;
+	word16 r9;
+	word16 r8;
+	Eq_n r12;
+	if (r0 >= r7)
+	{
+		Eq_n r7_n;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		word32 ra_n;
+		Eq_n r0_n = fn00003B3C(SEQ(r11, r10), SEQ(r9, r8), r7, r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r7Out = r7_n;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r10Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
+		raOut.u0 = <invalid>;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r7_n = fn00003B3A();
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r7Out = r7_n;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r10Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
+		raOut.u0 = <invalid>;
+		return r0;
+	}
+}
+
+// 00003B3A: Register Eq_n fn00003B3A()
+// Called from:
+//      fn00003A36
+//      fn00003B36
+Eq_n fn00003B3A()
+{
+	Eq_n r0;
+	word16 r11;
+	word16 r10;
+	word16 r9;
+	word16 r8;
+	Eq_n r7;
+	Eq_n r12;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r12_n;
+	word32 r13_n;
+	word32 ra_n;
+	fn00003B3C(SEQ(r11, r10), SEQ(r9, r8), r7, r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	return r0;
+}
+
+// 00003B3C: Register word16 fn00003B3C(Sequence (ptr32 Eq_n) r11_r10, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r7, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn00003A36
+//      fn00003B36
+word16 fn00003B3C(struct Eq_n * r11_r10, struct Eq_n * r9_r8, Eq_n r7, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	Eq_n r2;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n wLoc06;
+	Eq_n dwLoc04;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r8 = (word16) r9_r8;
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r10 = (word16) r11_r10;
+	if (r7 != 0x00)
+	{
+		Eq_n r3_r2_n = r9_r8->t000C.u4;
+		Eq_n r5_r4_n = r11_r10->t0010.u4;
+		Eq_n r13_n = (word32) r7;
+		word32 r13_n;
+		fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+		r9_r8->t000C.u4 += r13_n;
+		r11_r10->t0010.u4 += r13_n;
+		r9_r8->dw0014 += r13_n;
+		r9_r8->w0010 = r9_r8->w0010;
+		word32 r1_r0_n = r11_r10->dw0014;
+		r11_r10->dw0014 = r1_r0_n;
+		r3.u1 = SLICE(r3_r2_n, word16, 16);
+		r2 = (word16) r3_r2_n;
+		r5.u1 = SLICE(r5_r4_n, word16, 16);
+		r4 = (word16) r5_r4_n;
+		dwLoc04 = r13_n;
+		if (r1_r0_n == 0x00)
+			r11_r10->t0010.u4 = r11_r10->t0008.u4;
+	}
+	struct Eq_n * r1_r0_n = *r12.u5;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	if (r1_r0_n->w0010 != 0x00)
+	{
+		Eq_n r7_n;
+		Eq_n r13_n;
+		Eq_n r12_n;
+		Eq_n r11_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r8_n;
+		Eq_n r2_n;
+		Eq_n r1_n;
+		Eq_n r9_n;
+		Eq_n r10_n;
+		Eq_n r5_n;
+		word16 r0_n = fn0000372E(out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out.u0 = <invalid>;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut.u0 = <invalid>;
+		return r0_n;
+	}
+	else
+	{
+		r1Out = r1_n;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out.u0 = <invalid>;
+		r7Out = wLoc06;
+		r8Out = r8;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = dwLoc04;
+		raOut.u0 = <invalid>;
+		return 0x00;
+	}
+}
+
+// 00003C70: FlagGroup Eq_n fn00003C70(Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn000030F2
+//      fn0000356E
+Eq_n fn00003C70(union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out)
+{
+	Eq_n r0;
+	Eq_n r2;
+	Eq_n r7;
+	Eq_n r11;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n r2_n;
+	ptr32 r12_n;
+	Eq_n r1_n;
+	Eq_n r0_n;
+	Eq_n r6_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r7_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r13_n;
+	fn0000356E(r0, r2, r7, r11, r12, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	r0Out = r0_n;
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out.u0 = <invalid>;
+	r4Out.u0 = <invalid>;
+	r5Out.u0 = <invalid>;
+	r6Out = r6_n;
+	r7Out.u0 = <invalid>;
+	r8Out.u0 = <invalid>;
+	r9Out.u0 = <invalid>;
+	r10Out.u0 = <invalid>;
+	r11Out.u0 = <invalid>;
+	r12Out = r12_n;
+	r13Out.u0 = <invalid>;
+	return <invalid>;
+}
+
+// 00003C76: Register Eq_n fn00003C76()
+// Called from:
+//      fn000030F2
+//      fn00003C70
+Eq_n fn00003C76()
+{
+	Eq_n r0;
+	Eq_n r2;
+	Eq_n r7;
+	Eq_n r11;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n r12_n;
+	word16 r0_n;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r13_n;
+	fn0000356E(r0, r2, r7, r11, r12, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	return r12_n;
+}
+
+// 00003D1C: Register Eq_n fn00003D1C()
+// Called from:
+//      fn000030F2
+//      fn00003C70
+Eq_n fn00003D1C()
+{
+	Eq_n r7;
+	Eq_n r11;
+	Eq_n r13;
+	word16 r1_n;
+	word16 r0_n;
+	Eq_n r12_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r13_n;
+	fn0000356E(r0, r2, r7, r11, r12, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	return r12_n;
+}
+
+// 00003FB8: Register Eq_n fn00003FB8(Sequence (ptr32 byte) r1_r0, Sequence Eq_n r3_r2, Sequence Eq_n r9_r8, Register Eq_n r5, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000033F8
+//      fn00004CD4
+Eq_n fn00003FB8(byte * r1_r0, Eq_n r3_r2, Eq_n r9_r8, Eq_n r5, Eq_n r7, Eq_n r12, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out, ptr32 & raOut)
+{
+	word32 ra;
+	Eq_n r10;
+	Eq_n r4;
+	cup16 r8 = (word16) r9_r8;
+	Mem14[r1_r0 + r3_r2:byte] = SLICE(r5, byte, 0);
+	struct Eq_n * r3_r2_n = r12.u4 + ((word32) ((byte[]) 62254)[(int32) ((byte) r5)] << 0x02);
+	r3_r2_n->w08DC = r3_r2_n->w08DC;
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+	word16 r2_n = (word16) r3_r2_n;
+	if (r8 < 0xFF)
+	{
+		int16 r1_n = (int16) (r2_n != 0x45);
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		Eq_n r0_n = fn0000441E(r9_r8, r1_n, r7, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+	else
+	{
+		struct Eq_n * r1_r0_n = r12.u4 + ((int32) ((byte[]) 0xF42E)[(word32) r8] << 0x02);
+		word16 r1_n = SLICE(r1_r0_n, word16, 16);
+		Eq_n r2_n = r1_r0_n->t12BC.u1;
+		SEQ(r1_n + 0x01, (word16) r1_r0_n)->t12BC.u1 = (word16) r2_n;
+		ptr32 ra_n = SEQ(SLICE(ra, word16, 16), r12.u6[9196]);
+		Eq_n r0_n = r12.u6[9192];
+		*((word32) r12 + 0x00B4) = *((word32) r12 + 0x00B4);
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r10_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn0000401A(r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n + 0x02;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13;
+		raOut = ra_n;
+		return r0_n;
+	}
+}
+
+// 0000401A: Register Eq_n fn0000401A(Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn00003FB8
+//      fn0000402E
+Eq_n fn0000401A(Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	Eq_n r7;
+	word16 r9;
+	word16 r8;
+	Eq_n r2;
+	Eq_n r6;
+	Eq_n r10;
+	Eq_n r13;
+	r12.u6[0x00B8] = (struct Eq_n) ~0x01;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg2 = <invalid>;
+	Eq_n stackArg6 = <invalid>;
+	Eq_n stackArg10 = <invalid>;
+	Eq_n stackArg14 = <invalid>;
+	Eq_n stackArg18 = <invalid>;
+	Eq_n stackArg62 = <invalid>;
+	Eq_n stackArg70 = <invalid>;
+	Eq_n stackArg94 = <invalid>;
+	Eq_n stackArg65514 = <invalid>;
+	Eq_n stackArg65550 = <invalid>;
+	Eq_n stackArg65592 = <invalid>;
+	Eq_n stackArg130960 = <invalid>;
+	Eq_n r8_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	Eq_n r9_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	word16 r0_n;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r10_n;
+	word32 r13_n;
+	word32 ra_n;
+	fn0000402E(SEQ(r9, r8), r2, r6, r7, r10, r12, r13, stackArg0, stackArg2, stackArg6, stackArg10, stackArg14, stackArg18, stackArg62, stackArg70, stackArg94, stackArg65514, stackArg65550, stackArg65592, stackArg130960, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out.u0 = <invalid>;
+	r2Out.u0 = <invalid>;
+	r3Out.u0 = <invalid>;
+	r4Out.u0 = <invalid>;
+	r5Out.u0 = <invalid>;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out.u0 = <invalid>;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out.u0 = <invalid>;
+	raOut.u0 = <invalid>;
+	return <invalid>;
+}
+
+// 0000402E: FlagGroup bool fn0000402E(Sequence Eq_n r9_r8, Register Eq_n r2, Register Eq_n r6, Register Eq_n r7, Register Eq_n r10, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Stack Eq_n dwArg0A, Stack Eq_n dwArg0E, Stack Eq_n dwArg12, Stack Eq_n dwArg3E, Stack Eq_n dwArg46, Stack Eq_n dwArg5E, Stack Eq_n wArgFFEA, Stack Eq_n dwArg1000E, Stack Eq_n dwArg10038, Stack Eq_n wArg1FF90, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out (ptr32 Eq_n) r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000033F8
+//      fn00003A36
+//      fn0000401A
+bool fn0000402E(Eq_n r9_r8, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n r10, Eq_n r12, Eq_n r13, Eq_n wArg00, Eq_n dwArg02, Eq_n dwArg06, Eq_n dwArg0A, Eq_n dwArg0E, Eq_n dwArg12, Eq_n dwArg3E, Eq_n dwArg46, Eq_n dwArg5E, Eq_n wArgFFEA, Eq_n dwArg1000E, Eq_n dwArg10038, Eq_n wArg1FF90, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, struct Eq_n & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	word32 r5_r4;
+	Eq_n wLoc06;
+	word16 wLoc04;
+	Eq_n r0;
+	word16 r1;
+	Eq_n r5 = SLICE(r5_r4, word16, 16);
+	word16 wArg06 = (word16) dwArg06;
+	r12.u6[0x00AC] = (struct Eq_n) r6;
+	if (r6 <= r10)
+	{
+		Eq_n r2_n = (word16) *r12.u6[96].t0002;
+		r12.u6[0x0080] = (struct Eq_n) r2_n;
+		Eq_n r6_n;
+		struct Eq_n * r12_n;
+		Eq_n r10_n;
+		Eq_n r2_n;
+		Eq_n r1_n;
+		Eq_n r7_n;
+		Eq_n r9_n;
+		Eq_n r8_n;
+		Eq_n r11_n;
+		ptr32 ra_n;
+		Eq_n r3_n;
+		ptr32 r13_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		r0Out = fn00003A36(r0, r1, r2_n, r5, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		Eq_n CFLNZ_n = <invalid>;
+		return SLICE(CFLNZ_n, bool, 6);
+	}
+	if (r2 >= 0x02)
+	{
+		r12.u6[9228] = (struct Eq_n) r2;
+		if (wArg06 != 0x04)
+			goto l0000427E;
+	}
+	else
+	{
+		r12.u6[9228] = (struct Eq_n) 0x02;
+		if (wArg06 != 0x04)
+		{
+l0000427E:
+			if (r12.u6[9196] == 0x00)
+			{
+				Eq_n r6_n;
+				struct Eq_n * r12_n;
+				Eq_n r10_n;
+				Eq_n r2_n;
+				Eq_n r1_n;
+				Eq_n r7_n;
+				Eq_n r9_n;
+				Eq_n r8_n;
+				Eq_n r11_n;
+				ptr32 ra_n;
+				Eq_n r3_n;
+				ptr32 r13_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				r0Out = fn00003A36(r0, r1, r2, r5 | 40748, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r7Out = r7_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				raOut = ra_n;
+				Eq_n CFLNZ_n = <invalid>;
+				return SLICE(CFLNZ_n, bool, 6);
+			}
+			else
+			{
+				word32 r1_r0_n = (word32) r2;
+				word16 r0_n = (word16) r1_r0_n;
+				int32 r5_r4_n = r12.u6[0x0098] - r1_r0_n;
+				if (r5_r4_n > 0x00)
+				{
+					Eq_n r0_n;
+					Eq_n r1_n;
+					ptr32 r13_n;
+					Eq_n r5_n;
+					Eq_n r7_n;
+					Eq_n r2_n;
+					Eq_n r3_n;
+					Eq_n r4_n;
+					Eq_n r10_n;
+					Eq_n r11_n;
+					struct Eq_n * r12_n;
+					Eq_n r6_n;
+					Eq_n r8_n;
+					Eq_n r9_n;
+					ptr32 ra_n;
+					bool Z_n = fn00004450(r9_r8, r7, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+					r0Out = r0_n;
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = r7_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					raOut = ra_n;
+					return Z_n;
+				}
+				else
+				{
+					ui32 r5_r4_n = (r12.u6[96].a0000 + (r5_r4_n & 0xFFFF) / 4).u5.u4;
+					struct Eq_n * r12_n;
+					word32 r13_n;
+					Eq_n r3_r2_n = fn0000B218(r9_r8, (word16) r5_r4_n, SLICE(r5_r4_n, word16, 16), r10, r13, SEQ(wArg00, r0_n), dwArg02, dwArg06, dwArg0A, dwArg0E, dwArg12, dwArg3E, dwArg46, dwArg5E, wArgFFEA, dwArg1000E, dwArg10038, wArg1FF90, out r12_n, out r13_n);
+					r12_n->dw0098 = (word32) r12_n->w00AC;
+					struct Eq_n * r9_r8_n = r12_n->ptr0000;
+					Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+					Eq_n r11_n;
+					Eq_n r6_n;
+					ptr32 ra_n;
+					word16 r7_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					fn0000B09C(r3_r2_n, r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+					Eq_n r2_n = (word16) r3_r2_n;
+					Eq_n sp_n = <invalid>;
+					Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+					Eq_n r8_n = (word16) r9_r8_n;
+					cup16 r0_n = SEQ(r11_n, r2_n)->w0014;
+					cup16 r7_n = r9_r8_n->w0010;
+					ptr32 dwLoc04_n = SEQ(r0_n, wLoc04);
+					if (r0_n < r7_n)
+						r7_n = r0_n;
+					Eq_n r2_n;
+					r2_n = r2_n;
+					if (r7_n != 0x00)
+					{
+						Eq_n r3_r2_n = r9_r8_n->t000C.u4;
+						Eq_n r5_r4_n = SEQ(r11_n, r2_n)->t0010.u4;
+						Eq_n r13_n = (word32) r7_n;
+						*sp_n.u5 = (word32) r13_n;
+						word32 r13_n;
+						fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+						r9_r8_n->t000C.u4 += r13_n;
+						SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0010 + r13_n;
+						r9_r8_n->dw0014 += r13_n;
+						r9_r8_n->w0010 = r9_r8_n->w0010;
+						word32 r1_r0_n = SEQ(r11_n, r2_n)->dw0014;
+						SEQ(r11_n, r2_n)->dw0014 = r1_r0_n;
+						r3_n.u4 = SLICE(r3_r2_n, word16, 16);
+						r2_n = (word16) r3_r2_n;
+						r5_n.u1 = SLICE(r5_r4_n, word16, 16);
+						r4_n = (word16) r5_r4_n;
+						if (r1_r0_n == 0x00)
+							SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0008;
+					}
+					struct Eq_n * r1_r0_n = r12_n->ptr0000;
+					cup16 r0_n = r1_r0_n->w0010;
+					r0Out.u1 = (int16) (r0_n != 0x00);
+					r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = wLoc06;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r2_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = dwLoc04_n;
+					raOut = ra_n;
+					return SLICE(cond(r0_n - 0x00), bool, 6);
+				}
+			}
+		}
+	}
+	Eq_n r5_n;
+	Eq_n r4_n;
+	word32 r1_r0_n = (word32) r2;
+	word16 r0_n = (word16) r1_r0_n;
+	int32 r5_r4_n = r12.u6[0x0098] - r1_r0_n;
+	if (r5_r4_n <= 0x00)
+	{
+		ui32 r5_r4_n = (r12.u6[96].a0000 + (r5_r4_n & 0xFFFF) / 4).u5.u4;
+		r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+		r4_n = (word16) r5_r4_n;
+	}
+	else
+	{
+		r4_n.u0 = 0x00;
+		r5_n.u0 = 0x00;
+	}
+	Eq_n r12_n;
+	Eq_n r13_n;
+	Eq_n r3_r2_n = fn0000B218(r9_r8, r4_n, r5_n, r10, r13, SEQ(wArg00, r0_n), dwArg02, dwArg06, dwArg0A, dwArg0E, dwArg12, dwArg3E, dwArg46, dwArg5E, wArgFFEA, dwArg1000E, dwArg10038, wArg1FF90, out r12_n, out r13_n);
+	r12_n.u6[0x0098] = (struct Eq_n) (word32) r12_n.u6[0x00AC];
+	struct Eq_n * r9_r8_n = *r12_n.u5;
+	word16 r11_n;
+	Eq_n r5_n;
+	word16 r4_n;
+	word16 r6_n;
+	word16 r7_n;
+	word32 ra_n;
+	fn0000B09C(r3_r2_n, SLICE(r3_r2_n, word16, 16), out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+	Eq_n r2_n = (word16) r3_r2_n;
+	Eq_n sp_n = <invalid>;
+	cup16 r0_n = SEQ(r11_n, r2_n)->w0014;
+	cup16 r7_n = r9_r8_n->w0010;
+	if (r0_n < r7_n)
+		r7_n = r0_n;
+	if (r7_n == 0x00)
+	{
+		Eq_n r6_n;
+		struct Eq_n * r12_n;
+		Eq_n r10_n;
+		Eq_n r2_n;
+		Eq_n r1_n;
+		Eq_n r7_n;
+		Eq_n r9_n;
+		Eq_n r8_n;
+		Eq_n r11_n;
+		ptr32 ra_n;
+		Eq_n r3_n;
+		ptr32 r13_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		r0Out = fn00003A36(r0, r1, r2_n, r5_n, r12_n, r13_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		Eq_n CFLNZ_n = <invalid>;
+		return SLICE(CFLNZ_n, bool, 6);
+	}
+	else
+	{
+		Eq_n r13_n = (word32) r7_n;
+		Eq_n r2_n = r9_r8_n->t000C.u0;
+		Eq_n r5_n = SEQ(r11_n, r2_n)->t0012.u0;
+		*sp_n.u5 = (word32) r13_n;
+		Eq_n r6_n;
+		struct Eq_n * r12_n;
+		Eq_n r10_n;
+		Eq_n r2_n;
+		Eq_n r1_n;
+		Eq_n r7_n;
+		Eq_n r9_n;
+		Eq_n r8_n;
+		Eq_n r11_n;
+		ptr32 ra_n;
+		Eq_n r3_n;
+		ptr32 r13_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		r0Out = fn00003A36(r0, r1, r2_n, r5_n, r12_n, r13_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		Eq_n CFLNZ_n = <invalid>;
+		return SLICE(CFLNZ_n, bool, 6);
+	}
+}
+
+// 0000441E: Register word16 fn0000441E(Sequence Eq_n r9_r8, Register int16 r1, Register Eq_n r7, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn00003FB8
+//      fn0000402E
+word16 fn0000441E(Eq_n r9_r8, int16 r1, Eq_n r7, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	if ((byte) r1 == 0x00)
+	{
+		word16 r0_n;
+		Eq_n r1_n;
+		ptr32 r13_n;
+		Eq_n r5_n;
+		Eq_n r7_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		fn00004450(r9_r8, r7, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		word16 r0_n = fn0000443E(r9_r8, r7, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+}
+
+// 0000443E: Register word16 fn0000443E(Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000033F8
+//      fn0000441E
+word16 fn0000443E(Eq_n r9_r8, Eq_n r7, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	if (true)
+	{
+		word16 r0_n;
+		Eq_n r1_n;
+		ptr32 r13_n;
+		Eq_n r5_n;
+		Eq_n r7_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		fn00004450(r9_r8, r7, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+	else
+	{
+		word16 r0_n;
+		Eq_n r1_n;
+		ptr32 r13_n;
+		Eq_n r5_n;
+		Eq_n r7_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		fn00004450(r9_r8, r7, r13, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+}
+
+// 00004450: FlagGroup bool fn00004450(Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000033F8
+//      fn0000441E
+bool fn00004450(Eq_n r9_r8, Eq_n r7, Eq_n r13, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	Eq_n wArg10;
+	Eq_n dwArg12;
+	Eq_n r0;
+	Eq_n r1;
+	Eq_n r10;
+	Eq_n r11;
+	Eq_n r12;
+	Eq_n r2;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n ra;
+	struct Eq_n * dwLoc12;
+	Eq_n wLoc14;
+	Eq_n wLoc06;
+	Eq_n dwLoc04;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r8 = (word16) r9_r8;
+	bool Z_n = SLICE(cond(r9_r8 - 0x00), bool, 6);
+	if (r9_r8 == 0x00)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg2 = <invalid>;
+		Eq_n stackArg6 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		Eq_n stackArg38 = <invalid>;
+		Eq_n stackArg42 = <invalid>;
+		Eq_n stackArg46 = <invalid>;
+		Eq_n stackArg50 = <invalid>;
+		Eq_n stackArg54 = <invalid>;
+		Eq_n stackArg58 = <invalid>;
+		Eq_n stackArg62 = <invalid>;
+		Eq_n stackArg66 = <invalid>;
+		Eq_n stackArg86 = <invalid>;
+		Eq_n stackArg90 = <invalid>;
+		Eq_n stackArg244 = <invalid>;
+		Eq_n stackArg514 = <invalid>;
+		Eq_n stackArg518 = <invalid>;
+		Eq_n stackArg65544 = <invalid>;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn000046CA(SEQ(r11, r10), r9_r8, r7, r13, ra, stackArg0, stackArg2, stackArg6, stackArg8, stackArg12, stackArg38, stackArg42, stackArg46, stackArg50, stackArg54, stackArg58, stackArg62, stackArg66, stackArg86, stackArg90, stackArg244, stackArg514, stackArg518, stackArg65544, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r0Out = r0;
+		r1Out = r1;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r7Out = r7;
+		r8Out = r8;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = r13;
+		raOut = ra;
+		return Z_n;
+	}
+	else
+	{
+		Eq_n r5_n = r13.u6[24];
+		bool Z_n = SLICE(cond(r5_n - 0x02), bool, 6);
+		if (r5_n == 0x02)
+		{
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg2 = <invalid>;
+			Eq_n stackArg6 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			Eq_n stackArg38 = <invalid>;
+			Eq_n stackArg42 = <invalid>;
+			Eq_n stackArg46 = <invalid>;
+			Eq_n stackArg50 = <invalid>;
+			Eq_n stackArg54 = <invalid>;
+			Eq_n stackArg58 = <invalid>;
+			Eq_n stackArg62 = <invalid>;
+			Eq_n stackArg66 = <invalid>;
+			Eq_n stackArg86 = <invalid>;
+			Eq_n stackArg90 = <invalid>;
+			Eq_n stackArg244 = <invalid>;
+			Eq_n stackArg514 = <invalid>;
+			Eq_n stackArg518 = <invalid>;
+			Eq_n stackArg65544 = <invalid>;
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			word16 r11_n;
+			word32 r12_n;
+			word32 r13_n;
+			word32 ra_n;
+			fn000046C0(SEQ(r3, r2), r9_r8, r7, r13, ra, stackArg0, stackArg2, stackArg6, stackArg8, stackArg12, stackArg38, stackArg42, stackArg46, stackArg50, stackArg54, stackArg58, stackArg62, stackArg66, stackArg86, stackArg90, stackArg244, stackArg514, stackArg518, stackArg65544, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+			r0Out = r0;
+			r1Out = r1;
+			r2Out = r2;
+			r3Out = r3;
+			r4Out = r4;
+			r5Out = r5_n;
+			r6Out = r6;
+			r7Out = r7;
+			r8Out = r8;
+			r9Out = r9;
+			r10Out = r10;
+			r11Out = r11;
+			r12Out = r12;
+			r13Out = r13;
+			raOut = ra;
+			return Z_n;
+		}
+		else
+		{
+			bool Z_n = SLICE(cond(r5_n - 0x01), bool, 6);
+			if (r5_n == 0x01)
+			{
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg2 = <invalid>;
+				Eq_n stackArg6 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				Eq_n stackArg38 = <invalid>;
+				Eq_n stackArg42 = <invalid>;
+				Eq_n stackArg46 = <invalid>;
+				Eq_n stackArg50 = <invalid>;
+				Eq_n stackArg54 = <invalid>;
+				Eq_n stackArg58 = <invalid>;
+				Eq_n stackArg62 = <invalid>;
+				Eq_n stackArg66 = <invalid>;
+				Eq_n stackArg86 = <invalid>;
+				Eq_n stackArg90 = <invalid>;
+				Eq_n stackArg244 = <invalid>;
+				Eq_n stackArg514 = <invalid>;
+				Eq_n stackArg518 = <invalid>;
+				Eq_n stackArg65544 = <invalid>;
+				word16 r1_n;
+				word16 r2_n;
+				word16 r3_n;
+				word16 r4_n;
+				word16 r5_n;
+				word16 r6_n;
+				word16 r8_n;
+				word16 r9_n;
+				word16 r10_n;
+				word16 r11_n;
+				word32 r12_n;
+				word32 r13_n;
+				word32 ra_n;
+				fn000046D2(SEQ(r11, r10), r9_r8, r7, r13, ra, stackArg0, stackArg2, stackArg6, stackArg8, stackArg12, stackArg38, stackArg42, stackArg46, stackArg50, stackArg54, stackArg58, stackArg62, stackArg66, stackArg86, stackArg90, stackArg244, stackArg514, stackArg518, stackArg65544, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r0Out = r0;
+				r1Out = r1;
+				r2Out = r2;
+				r3Out = r3;
+				r4Out = r4;
+				r5Out = r5_n;
+				r6Out = r6;
+				r7Out = r7;
+				r8Out = r8;
+				r9Out = r9;
+				r10Out = r10;
+				r11Out = r11;
+				r12Out = r12;
+				r13Out = r13;
+				raOut = ra;
+				return Z_n;
+			}
+			else
+			{
+				Eq_n r1_n = *((word32) r13 + 0x00B4);
+				bool Z_n = SLICE(cond(r1_n - 0x00), bool, 6);
+				if (r1_n != 0x00)
+				{
+					r0Out.u1 = ~0x01;
+					r1Out = r1_n;
+					r2Out = r2;
+					r3Out = r3;
+					r4Out = r4;
+					r5Out = r5_n;
+					r6Out = r6;
+					r7Out = wArg10;
+					r8Out = r8;
+					r9Out = r9;
+					r10Out = r10;
+					r11Out = r11;
+					r12Out = r12;
+					r13Out = dwArg12;
+					raOut = ra;
+					return Z_n;
+				}
+				else
+				{
+					Eq_n r6_n;
+					r13.u6[24] = (struct Eq_n) r1_n;
+					Eq_n r0_n = r13.u6[80];
+					r6_n = r6;
+					if (r7 >= r0_n)
+					{
+						r6_n = r6;
+						if (r5_n == 0x00)
+						{
+							ui32 r6_r5_n = (word32) r13.u6[0x0084];
+							SEQ(r1_n, r0_n)[r6_r5_n].t0000.u0 = (wchar_t) r5_n;
+							Eq_n r13_n = fn0000DB44(SEQ(r1_n, r0_n), r6_r5_n * 0x02, r5_n, r13);
+							Eq_n sp_n = <invalid>;
+							Eq_n r5_n = sp_n.u6[2];
+							r13_n.u6[0x00AC] = (struct Eq_n) r5_n;
+							r13_n.u6[0x0098] = (struct Eq_n) 0x00;
+							r13_n.u6[9228] = (struct Eq_n) r5_n;
+							r9 = (word32) r9 + 0x0000FFFF;
+							r6_n = SLICE(r6_r5_n * 0x02, word16, 16);
+							r0_n.u4 = r13_n.u6[80];
+						}
+						r9_r8 = SEQ(r9, r8) + (word32) r7;
+						r7 = r0_n - r7;
+					}
+					Eq_n r4_r3_n = dwLoc12->t0000.u4;
+					Eq_n r1_n = dwLoc12->t0004.u0;
+					dwLoc12->t0004.u0 = (wchar_t) r7;
+					dwLoc12->t0000.u4 = (cup16 *) r9_r8;
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg4 = <invalid>;
+					Eq_n stackArg8 = <invalid>;
+					Eq_n stackArg12 = <invalid>;
+					Eq_n stackArg14 = <invalid>;
+					Eq_n stackArg18 = <invalid>;
+					Eq_n stackArg20 = <invalid>;
+					Eq_n stackArg64 = <invalid>;
+					Eq_n stackArg72 = <invalid>;
+					Eq_n stackArg96 = <invalid>;
+					Eq_n stackArg65552 = <invalid>;
+					Eq_n stackArg65594 = <invalid>;
+					Eq_n stackArg130962 = <invalid>;
+					word32 r9_r8_n;
+					word16 r7_n;
+					word32 r12_n;
+					word32 r13_n;
+					fn000030F2(SEQ(r6, r5), r4, r8, r12, r13, stackArg0, stackArg4, stackArg8, stackArg12, stackArg14, stackArg18, stackArg20, stackArg64, stackArg72, stackArg96, stackArg65552, stackArg65594, stackArg130962, out r9_r8_n, out r7_n, out r12_n, out r13_n);
+					struct Eq_n * r3_r2_n = SEQ((word16) r4_r3_n, (word16) dwLoc12);
+					Eq_n r3_n = r3_r2_n->t00B4.u0;
+					Eq_n r8_n = (word16) r9_r8;
+					Eq_n r9_n = SLICE(r9_r8, word16, 16);
+					Eq_n r5_n = SLICE(dwLoc12, word16, 16);
+					struct Eq_n * r13_n = r3_r2_n;
+					bool Z_n = SLICE(cond(r3_n - 0x02), bool, 6);
+					if (r3_n < 0x02)
+					{
+						r9_n = r3_n;
+						do
+						{
+							cu16 r1_n = r13_n->w00AC;
+							Eq_n r7_n = r13_n->t0090.u0;
+							word32 r11_r10_n = r13_n->dw0078;
+							ra.u4 = r13_n->t0060.u4;
+							r11.u1 = SLICE(r11_r10_n, word16, 16);
+							r10 = (word16) r11_r10_n;
+							r12.u4 = r13_n->t0070.u4;
+							cui16 r6_n = r13_n->w0058;
+							Eq_n r0_n = r13_n->t0080.u0;
+							cui16 r1_n = r1_n + ~0x01 + 0x02;
+							r8_n = r7_n;
+							do
+							{
+								r0_n = __a_shift<word16,word16>(r0_n, r7_n);
+								r13_n->t0080.u0 = (wchar_t) r0_n;
+								union Eq_n * r5_r4_n = (word32) r0_n * 0x02 + r11_r10_n;
+								r6_n.u0 = r5_r4_n->u0;
+								struct Eq_n * r3_r2_n = r12.u4 + (word32) r6_n * 0x02;
+								r3_r2_n->t0000.u0 = (cui16) r6_n;
+								Eq_n r1_n = r1_n + 0x00 & r6_n;
+								r5_r4_n->u0 = (cui16) r1_n;
+								r5_n.u4 = SLICE(r5_r4_n, word16, 16);
+								r1_n = (word16) r1_n.u0 + 1;
+							} while (r9_n != (word16) r1_n.u0 + 1);
+							r13_n->w00AC = (word16) r1_n.u0 + 1;
+							r13_n->w005A = 0x02;
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg4 = <invalid>;
+							Eq_n stackArg8 = <invalid>;
+							Eq_n stackArg12 = <invalid>;
+							Eq_n stackArg14 = <invalid>;
+							Eq_n stackArg18 = <invalid>;
+							Eq_n stackArg20 = <invalid>;
+							Eq_n stackArg64 = <invalid>;
+							Eq_n stackArg72 = <invalid>;
+							Eq_n stackArg96 = <invalid>;
+							Eq_n stackArg65552 = <invalid>;
+							Eq_n stackArg65594 = <invalid>;
+							Eq_n stackArg130962 = <invalid>;
+							word32 r9_r8_n;
+							word16 r7_n;
+							word32 r12_n;
+							word32 r13_n;
+							fn000030F2(SEQ(r6, r5), r4, r8, r12, r13, stackArg0, stackArg4, stackArg8, stackArg12, stackArg14, stackArg18, stackArg20, stackArg64, stackArg72, stackArg96, stackArg65552, stackArg65594, stackArg130962, out r9_r8_n, out r7_n, out r12_n, out r13_n);
+							r9_n.u0 = r3_r2_n->t00B4.u0;
+							r13_n = r3_r2_n;
+							Z_n = SLICE(cond(r9_n - 0x02), bool, 6);
+						} while (r9_n < 0x02);
+						r3_n = r9_n;
+					}
+					cu16 r0_n = r13_n->w00AC;
+					r13_n->w00AC = r0_n;
+					r13_n->dw0098 = (word32) r0_n;
+					r13_n->w240C = (cup16) ((word32) r3_n + r0_n);
+					r13_n->w005A = 0x00;
+					r13_n->w005C = 0x02;
+					r13_n->w0050 = 0x02;
+					r13_n->w0054 = 0x00;
+					dwLoc12->t0000.u4 = (cup16 *) r4_r3_n;
+					dwLoc12->t0004.u0 = (wchar_t) r1_n;
+					r13_n->t0018.u1 = (word16) wLoc14;
+					r0Out.u1 = 0x00;
+					r1Out = r1_n;
+					r2Out = wLoc14;
+					r3Out = (word16) dwLoc12;
+					r4Out.u4 = SLICE(dwLoc12, word16, 16);
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r7Out = wLoc06;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10;
+					r11Out = r11;
+					r12Out = r12;
+					r13Out = dwLoc04;
+					raOut = ra;
+					return Z_n;
+				}
+			}
+		}
+	}
+}
+
+// 000046AC: Sequence word32 fn000046AC(Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg20, Stack Eq_n dwArg24, Stack Eq_n dwArg28, Stack Eq_n dwArg2C, Stack Eq_n dwArg30, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg50, Stack Eq_n dwArg54, Stack Eq_n dwArgEE, Stack Eq_n wArg01FC, Stack Eq_n wArg0200, Stack Eq_n dwArg10002, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out (ptr32 Eq_n) r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004CD4
+word32 fn000046AC(Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg20, Eq_n dwArg24, Eq_n dwArg28, Eq_n dwArg2C, Eq_n dwArg30, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg50, Eq_n dwArg54, Eq_n dwArgEE, Eq_n wArg01FC, Eq_n wArg0200, Eq_n dwArg10002, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, struct Eq_n & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r8 = (word16) r9_r8;
+	if (r9_r8 == 0x00)
+	{
+		Eq_n r1_n;
+		word16 r10_n;
+		word16 r11_n;
+		struct Eq_n * r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		r0Out = fn000046C6(r9_r8, r9_r8, r7, r13, ra, r8, ra, wArg00, dwArg02, wArg06, dwArg20, dwArg24, dwArg28, dwArg2C, dwArg30, dwArg34, dwArg38, dwArg3C, dwArg50, dwArg54, dwArgEE, wArg01FC, wArg0200, dwArg10002, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return SEQ(r11_n, r10_n);
+	}
+	else if (r9_r8.u6[64] == 0x00)
+	{
+		Eq_n r1_n;
+		word16 r10_n;
+		word16 r11_n;
+		struct Eq_n * r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		r0Out = fn000046C6(r9_r8, r9_r8, r7, r13, ra, r8, ra, wArg00, dwArg02, wArg06, dwArg20, dwArg24, dwArg28, dwArg2C, dwArg30, dwArg34, dwArg38, dwArg3C, dwArg50, dwArg54, dwArgEE, wArg01FC, wArg0200, dwArg10002, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return SEQ(r11_n, r10_n);
+	}
+	else
+	{
+		Eq_n r1_n;
+		word16 r10_n;
+		word16 r11_n;
+		struct Eq_n * r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		r0Out = fn000046C0(r9_r8, r9_r8, r7, r13, ra, r8, ra, wArg00, dwArg02, wArg06, dwArg20, dwArg24, dwArg28, dwArg2C, dwArg30, dwArg34, dwArg38, dwArg3C, dwArg50, dwArg54, dwArgEE, wArg01FC, wArg0200, dwArg10002, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return SEQ(r11_n, r10_n);
+	}
+}
+
+// 000046C0: Register Eq_n fn000046C0(Sequence Eq_n r3_r2, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000033F8
+//      fn000046AC
+Eq_n fn000046C0(Eq_n r3_r2, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	Eq_n r0_n = fn000046C6(r3_r2, r9_r8, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, dwArg10008, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 000046C6: Register word16 fn000046C6(Sequence Eq_n r3_r2, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000046AC
+//      fn000046C0
+word16 fn000046C6(Eq_n r3_r2, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r11_r10_n = r3_r2.u6[56];
+	Eq_n r8_n;
+	ptr32 ra_n;
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r9_n;
+	word16 r0_n = fn000046CA(r11_r10_n, r9_r8, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, dwArg10008, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 000046CA: Register word16 fn000046CA(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000033F8
+//      fn000046C6
+word16 fn000046CA(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	Eq_n r1;
+	ptr32 r12;
+	Eq_n r2;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r10 = (word16) r11_r10;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	if (r11_r10 == 0x00)
+	{
+		r1Out = r1;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r8Out = wArg00;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = r13;
+		raOut = dwArg02;
+		return ~0x01;
+	}
+	else
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		Eq_n r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n ra_n;
+		word16 r0_n = fn000046CE(r11_r10, r9_r8, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, dwArg10008, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+}
+
+// 000046CE: Register word16 fn000046CE(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000046C6
+//      fn000046CA
+word16 fn000046CE(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r0_n = fn000046D2(r11_r10, r9_r8, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, dwArg10008, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 000046D2: Register word16 fn000046D2(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000033F8
+//      fn000046CE
+word16 fn000046D2(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	ptr32 fp;
+	bool Z;
+	word16 r0;
+	Eq_n r1;
+	ptr32 r12;
+	Eq_n r2;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r10 = (word16) r11_r10;
+	ra.u6[22312] = (struct Eq_n) (byte) fp;
+	if (Z)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		Eq_n r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n ra_n;
+		ptr32 r12_n;
+		word16 r0_n = fn000046DC(r11_r10, r9_r8, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, dwArg10008, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+	else
+	{
+		r1Out = r1;
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r8Out = wArg00;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12;
+		r13Out = r13;
+		raOut = dwArg02;
+		return r0;
+	}
+}
+
+// 000046DC: Register word16 fn000046DC(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Stack Eq_n dwArg10008, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn000046C6
+//      fn000046D2
+word16 fn000046DC(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, Eq_n dwArg10008, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	word16 r0;
+	ptr32 r12;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n wLoc06;
+	Eq_n dwLoc04;
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r10 = (word16) r11_r10;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r2_n = r11_r10.u6[4];
+	int16 r3_n = (int16) (r2_n != 666);
+	int16 r1_n = (int16) (r2_n != 0x45);
+	Eq_n r3_n = SEQ(SLICE(r3_n, byte, 8), (byte) r3_n & (byte) r1_n);
+	if ((byte) r1_n != 0x00)
+	{
+		r11 = (word16) r11.u0 + 0x0000FFC7 & ~0x10;
+		Eq_n r1_n = (int16) (r2_n != 0x00);
+		if (r1_n != 0x00)
+		{
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4;
+			r5Out = r5;
+			r6Out = r6;
+			r8Out = wArg00;
+			r9Out = r9;
+			r10Out = r10;
+			r11Out = r11;
+			r12Out = r12;
+			r13Out = r13;
+			raOut = dwArg02;
+			return r0;
+		}
+	}
+	struct Eq_n * r3_r2_n;
+	struct Eq_n * r11_r10_n;
+	struct Eq_n * r9_r8_n;
+	Eq_n r13_n;
+	Eq_n r1_r0_n;
+	Eq_n r6_n;
+	r9_r8.u6[20] = (struct Eq_n) 0x00;
+	r9_r8.u6[8] = (struct Eq_n) 0x00;
+	r9_r8.u6[24] = (struct Eq_n) 0x00;
+	r9_r8.u6[44] = (struct Eq_n) 0x02;
+	SEQ(r11, r10)->dw0014 = 0x00;
+	word32 r1_r0_n = SEQ(r11, r10)->dw0008;
+	SEQ(r11, r10)->dw0010 = r1_r0_n;
+	word16 r1_n = SLICE(r1_r0_n, word16, 16);
+	ci16 r0_n = SEQ(r11, r10)->w0018;
+	if (r0_n <= 0x00)
+	{
+		if (r0_n != 0x02)
+		{
+			if (r0_n == 0x00)
+				r1_n = 113;
+			else
+				r1_n = 0x2A;
+l00004744:
+			SEQ(r11, r10)->w0004 = r1_n;
+			struct Eq_n * r9_r8_n;
+			struct Eq_n * r3_r2_n;
+			r1_r0_n = fn0000C0EE(dwArg10008, out r3_r2_n, out r9_r8_n);
+			r9_r8_n = r9_r8_n;
+			r11_r10_n = SEQ(r11, r10);
+			r3_r2_n = r3_r2_n;
+			goto l00004750;
+		}
+	}
+	else
+	{
+		SEQ(r11, r10)->w0018 = 0x00;
+		r1_n = 0x2A;
+		if (r0_n != ~0x01)
+			goto l00004744;
+	}
+	SEQ(r11, r10)->w0004 = 0x39;
+	r6_n.u0 = <invalid>;
+	struct Eq_n * r9_r8_n;
+	struct Eq_n * r11_r10_n;
+	struct Eq_n * r3_r2_n;
+	word32 r6_r5_n;
+	word32 r7_r6_n;
+	word16 r4_n;
+	r1_r0_n = fn0000CAF8(SEQ(r1_n, 0x39), SEQ(r11, r10), SEQ(r3_n, r2_n), 0x00, r7, r13, ra, wArg00, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, out r11_r10_n, out r3_r2_n, out r6_r5_n, out r7_r6_n, out r9_r8_n, out r4_n, out r12, out r13_n, out ra);
+	r9_r8_n = r9_r8_n;
+	r11_r10_n = r11_r10_n;
+	r3_r2_n = r3_r2_n;
+l00004750:
+	r9_r8_n->t0060.u4 = (cup16 *) r1_r0_n;
+	r11_r10_n->w0026 = 0x00;
+	fn0000AF06(r3_r2_n, ra);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = wLoc06;
+	r9Out.u1 = SLICE(r9_r8_n, word16, 16);
+	r10Out = (word16) r3_r2_n;
+	r11Out = SLICE(r3_r2_n, word16, 16);
+	r12Out = r12;
+	r13Out = r13_n;
+	raOut = dwLoc04;
+	return 0x00;
+}
+
+// 00004A4C: void fn00004A4C()
+// Called from:
+//      fn00004CD4
+void fn00004A4C()
+{
+}
+
+// 00004AAC: Register Eq_n fn00004AAC(Sequence Eq_n r3_r2, Register Eq_n r1, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004CD4
+Eq_n fn00004AAC(Eq_n r3_r2, Eq_n r1, Eq_n r11, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	Eq_n r1_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	ptr32 ra_n;
+	Eq_n r0_n = fn00004ADC(r3_r2, r1, r11, r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r12_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00004AB4: Register word16 fn00004AB4(Sequence (ptr32 Eq_n) r2_r1, Register word16 r3, Register Eq_n r4, Register word16 r5, Register Eq_n r6, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004CD4
+word16 fn00004AB4(struct Eq_n * r2_r1, word16 r3, Eq_n r4, word16 r5, Eq_n r6, Eq_n r10, Eq_n r11, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	struct Eq_n * r3_r2_n = SEQ(r3, SLICE(r2_r1, word16, 16));
+	r2_r1->bA9F1C = __clear_bit<byte,byte>(r2_r1->bA9F1C, 0x01);
+	ptr32 r12_n;
+	Eq_n r7_n;
+	ptr32 ra_n;
+	Eq_n r1_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r11_n;
+	Eq_n r10_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	word16 r0_n = fn00004ABA(r3_r2_n, r4, r5, r6, r10, r11, r12, out r1_n, out r2_n, out r3_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00004ABA: Register Eq_n fn00004ABA(Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r4, Register word16 r5, Register Eq_n r6, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004AB4
+Eq_n fn00004ABA(struct Eq_n * r3_r2, Eq_n r4, word16 r5, Eq_n r6, Eq_n r10, Eq_n r11, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	ptr32 fp;
+	bool Z;
+	Eq_n r1;
+	Eq_n wArg00;
+	ptr32 dwArg02;
+	ptr32 dwArg06;
+	Eq_n r8;
+	Eq_n r9;
+	Eq_n r3 = SLICE(r3_r2, word16, 16);
+	Eq_n r2 = (word16) r3_r2;
+	if (!Z)
+	{
+		if (r10 >= r11)
+		{
+			Eq_n r1_n;
+			Eq_n r10_n;
+			Eq_n r11_n;
+			ptr32 r12_n;
+			Eq_n r2_n;
+			Eq_n r7_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			ptr32 ra_n;
+			Eq_n r0_n = fn00004AC8(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3;
+			r7Out = r7_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			raOut = ra_n;
+			return r0_n;
+		}
+		else
+		{
+			Eq_n r1_n;
+			Eq_n r10_n;
+			Eq_n r11_n;
+			ptr32 r12_n;
+			Eq_n r2_n;
+			Eq_n r7_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			ptr32 ra_n;
+			Eq_n r0_n = fn00004AC6(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3;
+			r7Out = r7_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			raOut = ra_n;
+			return r0_n;
+		}
+	}
+	word16 r7_n = r12.u4[fp];
+	if (r3_r2 != null)
+	{
+		word32 r1_r0_n = r3_r2->dw0040;
+		r1 = SLICE(r1_r0_n, word16, 16);
+		if (r1_r0_n != 0x00)
+		{
+			word32 r1_r0_n = r3_r2->dw0048;
+			r1 = SLICE(r1_r0_n, word16, 16);
+			if (r1_r0_n != 0x00)
+			{
+				struct Eq_n * ra_n = r3_r2->ptr0038;
+				if (ra_n != null)
+				{
+					if (ra_n->ptr0000 == r3_r2)
+					{
+						r2.u1 = ra_n->t0004.u1;
+						int16 r3_n = (int16) (r2 != 666);
+						r1.u0 = (int16) (r2 != 0x45);
+						r3 = SEQ(SLICE(r3_n, byte, 8), (byte) r3_n & (byte) r1);
+						if ((byte) r1 != 0x00)
+						{
+							r11 = (word32) r11 + 0x0000FFC7 & ~0x10;
+							r1.u0 = (int16) (r2 != 0x00);
+							if (r1 != 0x00)
+								goto l00004B38;
+						}
+						ra_n->t00CC.u0 = (wchar_t) r4;
+						ra_n->w00C0 = r5;
+						ra_n->t00D0.u0 = (wchar_t) r6;
+						ra_n->w00BC = r7_n;
+						r1Out = r1;
+						r2Out = r2;
+						r3Out = r3;
+						r7Out = wArg00;
+						r8Out = r8;
+						r9Out = r9;
+						r10Out = r10;
+						r11Out = r11;
+						r12Out = dwArg02;
+						raOut = dwArg06;
+						return 0x00;
+					}
+					else
+					{
+l00004B38:
+						r1Out = r1;
+						r2Out = r2;
+						r3Out = r3;
+						r7Out = wArg00;
+						r8Out = r8;
+						r9Out = r9;
+						r10Out = r10;
+						r11Out = r11;
+						r12Out = dwArg02;
+						raOut = dwArg06;
+						return ~0x01;
+					}
+				}
+			}
+		}
+	}
+	r1Out = r1;
+	r2Out = r2;
+	r3Out = r3;
+	r7Out = wArg00;
+	r8Out = r8;
+	r9Out = r9;
+	r10Out = r10;
+	r11Out = r11;
+	r12Out = dwArg02;
+	raOut = dwArg06;
+	return ~0x01;
+}
+
+// 00004AC6: Register Eq_n fn00004AC6(Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004ABA
+//      fn00004AC8
+//      fn00004CD4
+Eq_n fn00004AC6(union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	Eq_n r7_n;
+	Eq_n r9_n;
+	Eq_n r8_n;
+	Eq_n r1_n;
+	ptr32 r12_n;
+	Eq_n r2_n;
+	Eq_n r11_n;
+	ptr32 ra_n;
+	Eq_n r10_n;
+	Eq_n r0_n = fn00004AC8(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00004AC8: Register Eq_n fn00004AC8(Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004ABA
+//      fn00004AC6
+Eq_n fn00004AC8(union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	Eq_n r9_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r1_n;
+	ptr32 r12_n;
+	Eq_n r2_n;
+	Eq_n r11_n;
+	ptr32 ra_n;
+	Eq_n r10_n;
+	Eq_n r0_n = fn00004AC6(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00004ADC: Register word16 fn00004ADC(Sequence Eq_n r3_r2, Register Eq_n r1, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004AAC
+//      fn00004AE8
+word16 fn00004ADC(Eq_n r3_r2, Eq_n r1, Eq_n r11, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & raOut)
+{
+	Eq_n r9;
+	Eq_n r10;
+	r12.u6[0x00002414] = (struct Eq_n) r1;
+	Eq_n r11_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r6_n;
+	word16 r7_n;
+	word32 ra_n;
+	fn0000B09C(r3_r2, r11, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+	Eq_n r7_n;
+	Eq_n r1_n;
+	ptr32 r12_n;
+	Eq_n r3_n;
+	Eq_n r2_n;
+	Eq_n r11_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	ptr32 ra_n;
+	word16 r0_n = fn00004AE8(r9, r10, r11_n, r3_r2, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r12_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 00004AE8: Register Eq_n fn00004AE8(Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004ADC
+Eq_n fn00004AE8(Eq_n r9, Eq_n r10, Eq_n r11, Eq_n r12, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & raOut)
+{
+	Eq_n wArg00;
+	ptr32 dwArg02;
+	Eq_n r1;
+	Eq_n r2;
+	word16 r3;
+	if (r11 != 0x00)
+	{
+		Eq_n r1_n = r12.u6[0x00002414];
+		Eq_n r1_n = r1_n - r10;
+		if (r10 >= r11)
+		{
+			r12.u6[9232] = (struct Eq_n) __a_shift<word16,word16>(__a_shift<word16,word16>(r9, r11), r1_n);
+			Eq_n r7_n;
+			Eq_n r11_n;
+			ptr32 ra_n;
+			Eq_n r12_n;
+			Eq_n r1_n;
+			Eq_n r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			Eq_n r0_n = fn00004ADC(SEQ(r3, r2), r1_n, r11, r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r12_n, out ra_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out.u0 = <invalid>;
+			r4Out.u0 = <invalid>;
+			r5Out.u0 = <invalid>;
+			r6Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			raOut = ra_n;
+			return r0_n;
+		}
+		else
+		{
+			Eq_n r1_n;
+			Eq_n r11_n;
+			Eq_n r12_n;
+			Eq_n r2_n;
+			Eq_n r7_n;
+			ptr32 ra_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			Eq_n r0_n = fn00004AC6(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out.u0 = <invalid>;
+			r4Out.u0 = <invalid>;
+			r5Out.u0 = <invalid>;
+			r6Out.u0 = <invalid>;
+			r7Out = r7_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			raOut = ra_n;
+			return r0_n;
+		}
+	}
+	else
+	{
+		r1Out = r1;
+		r2Out = r2;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r7Out = wArg00;
+		r11Out = r11;
+		r12Out = r12;
+		raOut = dwArg02;
+		return r11;
+	}
+}
+
+// 00004CD4: Sequence int32 fn00004CD4(Sequence Eq_n r11_r10, Sequence (ptr32 byte) r5_r4, Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArgFFF0, Stack Eq_n wArgFFF4, Stack Eq_n dwArgFFF6, Stack Eq_n wArgFFFA, Stack Eq_n dwArgFFFC, Stack Eq_n dwArg10000, Stack Eq_n dwArg10014, Stack Eq_n dwArg10018, Stack Eq_n dwArg1001C, Stack Eq_n dwArg10020, Stack Eq_n dwArg10024, Stack Eq_n dwArg10028, Stack Eq_n dwArg1002C, Stack Eq_n dwArg10030, Stack Eq_n dwArg10034, Stack Eq_n dwArg10044, Stack Eq_n dwArg10048, Stack Eq_n dwArg1004C, Stack Eq_n dwArg100E2, Stack Eq_n wArg101F0, Stack Eq_n wArg101F4, Stack Eq_n wArg1FFD8, Stack Eq_n dwArg1FFDA, Stack Eq_n wArg1FFDE, Stack Eq_n dwArg1FFE6, Stack Eq_n dwArg1FFEA, Stack Eq_n dwArg1FFFC, Stack Eq_n dwArg20016, Stack Eq_n dwArg2001E, Stack Eq_n dwArg20026, Stack Eq_n dwArg20036, Stack Eq_n wArg2FF7E, Stack Eq_n wArg2FFC2, Stack Eq_n dwArg2FFE6, Stack Eq_n dwArg30010, Stack Eq_n wArg3FF68, Sequence out Eq_n r11_r10Out, Sequence out Eq_n r3_r2Out, Sequence out Eq_n r5_r4Out, Sequence out Eq_n r9_r8Out, Register out Eq_n r0Out, Register out Eq_n r7Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn00002D76
+//      fn00004CD4
+int32 fn00004CD4(Eq_n r11_r10, byte * r5_r4, Eq_n r7_r6, Eq_n r9_r8, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArgFFF0, Eq_n wArgFFF4, Eq_n dwArgFFF6, Eq_n wArgFFFA, Eq_n dwArgFFFC, Eq_n dwArg10000, Eq_n dwArg10014, Eq_n dwArg10018, Eq_n dwArg1001C, Eq_n dwArg10020, Eq_n dwArg10024, Eq_n dwArg10028, Eq_n dwArg1002C, Eq_n dwArg10030, Eq_n dwArg10034, Eq_n dwArg10044, Eq_n dwArg10048, Eq_n dwArg1004C, Eq_n dwArg100E2, Eq_n wArg101F0, Eq_n wArg101F4, Eq_n wArg1FFD8, Eq_n dwArg1FFDA, Eq_n wArg1FFDE, Eq_n dwArg1FFE6, Eq_n dwArg1FFEA, Eq_n dwArg1FFFC, Eq_n dwArg20016, Eq_n dwArg2001E, Eq_n dwArg20026, Eq_n dwArg20036, Eq_n wArg2FF7E, Eq_n wArg2FFC2, Eq_n dwArg2FFE6, Eq_n dwArg30010, Eq_n wArg3FF68, union Eq_n & r11_r10Out, union Eq_n & r3_r2Out, union Eq_n & r5_r4Out, union Eq_n & r9_r8Out, union Eq_n & r0Out, union Eq_n & r7Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	ptr32 fp;
+	Eq_n r7 = SLICE(r7_r6, word16, 16);
+	Eq_n r4 = (word16) r5_r4;
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r6 = (word16) r7_r6;
+	word16 r5 = SLICE(r5_r4, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	Eq_n r10 = (word16) r11_r10;
+	word16 wArgFFF6_n = (word16) dwArgFFF6;
+	word16 wArgFFF8_n = SLICE(dwArgFFF6, word16, 16);
+	Eq_n dwLoc04_n = r13;
+	word16 wLoc04_n = (word16) r13;
+	Eq_n wLoc06_n = r7;
+	struct Eq_n * sp_n = fp + 0xFFEE;
+	Eq_n r11_r10_n = r11_r10;
+	if (r12 == 0x00)
+	{
+l000055EA:
+		Mem1119[r12 + 0x0C:word32] = Mem1107[r12 + 0x0C:word32] + r11_r10_n;
+		Mem1131[r9_r8 + 0x10:word32] = Mem1119[r9_r8 + 0x10:word32] + r11_r10_n;
+		Mem1139[r12 + 0x14:word32] = Mem1131[r12 + 0x14:word32] + r11_r10_n;
+		r12.u6[16] = r12.u6[16];
+		Eq_n r1_r0_n = r9_r8.u6[20];
+		r9_r8.u6[20] = (struct Eq_n) r1_r0_n;
+		word32 r11_r10_n = r11_r10_n - r1_r0_n;
+		word16 r3_n = SLICE(r12, word16, 16);
+		word16 r2_n = (word16) r12;
+		word16 r1_n = SLICE(r1_r0_n, word16, 16);
+		Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+		Eq_n r10_n = (word16) r11_r10_n;
+		if (r1_r0_n != 0x00)
+		{
+			word16 r1_n;
+			word16 r10_n;
+			word16 r11_n;
+			Eq_n r12_n;
+			word16 r2_n;
+			word16 r3_n;
+			Eq_n r7_n;
+			word16 r8_n;
+			word16 r9_n;
+			Eq_n ra_n;
+			Eq_n r0_n = fn00004AB4(SEQ(r2_n, r1_n), r3_n, r4, r5, r6, r10_n, r11_n, r12, out r1_n, out r2_n, out r3_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out = r0_n;
+			r7Out = r7_n;
+			r12Out = r12_n;
+			r13Out = r13;
+			raOut = ra_n;
+			return SEQ(r1_n, r6);
+		}
+		else
+		{
+			Eq_n r1_r0_n = r9_r8.u6[8];
+			*((word32) r9_r8 + 16) = r1_r0_n;
+			Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+			word16 r1_n;
+			word16 r11_n;
+			Eq_n r12_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			Eq_n r7_n;
+			Eq_n ra_n;
+			Eq_n r0_n = fn00004AAC(r12, r1_n, r11_n, r12, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r12_n, out ra_n);
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out = r0_n;
+			r7Out = r7_n;
+			r12Out = r12_n;
+			r13Out = r13;
+			raOut = ra_n;
+			return SEQ(r1_n, r6_n);
+		}
+	}
+	if (r12.u6[64] == 0x00)
+	{
+l000055E0:
+		Eq_n r5_r4_n = *((word32) r9_r8 + 16);
+		r12.u4 = r12.u6[0x0C];
+		sp_n->wFFFFFFFE = (word16) r11_r10;
+		fn0000DB24(r12, r5_r4_n, r13, out r13);
+		r5 = SLICE(r5_r4_n, word16, 16);
+		r4 = (word16) r5_r4_n;
+		r11_r10_n = r11_r10;
+		goto l000055EA;
+	}
+	Eq_n r1_r0_n = r12.u6[72];
+	int16 r1_n = SLICE(r1_r0_n, word16, 16);
+	Eq_n r0_n = (word16) r1_r0_n;
+	if (r1_r0_n == 0x00)
+	{
+		r7 = r0_n;
+		if (r0_n == 0x00)
+		{
+			word16 r1_n;
+			word16 r10_n;
+			word16 r11_n;
+			Eq_n r12_n;
+			word16 r2_n;
+			Eq_n r7_n;
+			word16 r8_n;
+			word16 r9_n;
+			Eq_n ra_n;
+			Eq_n r0_n = fn00004AC6(out r1_n, out r2_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out ra_n);
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out = r0_n;
+			r7Out = r7_n;
+			r12Out = r12_n;
+			r13Out = r13;
+			raOut = ra_n;
+			return SEQ(r1_n, r6);
+		}
+		goto l000055DE;
+	}
+	r13.u4 = r12.u6[56];
+	if (r13 == 0x00)
+	{
+		word16 r0_n;
+		word16 r10_n;
+		word16 r11_n;
+		Eq_n r12_n;
+		word16 r2_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r7_n;
+		struct Eq_n * ra_n;
+		word16 * r9_r8_n;
+		Eq_n r3_r6_n;
+		Eq_n r1_n;
+		Eq_n r13_n;
+		bool Z_n = fn000033F8(r4, r6, r9, r11, r12, wArg1FFD8, dwArg1FFDA, wArg1FFDE, dwArg1FFE6, dwArg1FFEA, dwArg20016, dwArg2001E, dwArg20036, wArg2FFC2, dwArg2FFE6, dwArg30010, wArg3FF68, out r3_r6_n, out r9_r8_n, out r0_n, out r1_n, out r2_n, out r4_n, out r5_n, out r7_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		Eq_n sp_n = <invalid>;
+		word16 r6_n = (word16) r3_r6_n;
+		if (!Z_n)
+		{
+			Eq_n r1_r0_n = r0_n + r4_n;
+			Eq_n r5_r4_n = (word32) r1_r0_n + ra_n->dw0060;
+			sp_n.u6->tFFFFFFFE.u0 = (wchar_t) (r7_n - (word16) r1_r0_n);
+			r1_n = fn0000DB24(r3_r6_n, r5_r4_n, r13_n, out r13_n);
+		}
+		if (r9_r8_n == null)
+		{
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out.u0 = 0x00;
+			r7Out = r7;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			raOut = r13;
+			return SEQ(r1_n, r6_n);
+		}
+		else
+		{
+			*r9_r8_n = r7_n;
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out.u0 = 0x00;
+			r7Out = r7;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			raOut = r13;
+			return SEQ(r1_n, r6_n);
+		}
+	}
+	if (*r13.u5 != r12)
+	{
+l00004D0E:
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r5_r4Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r0Out.u0 = ~0x01;
+		r7Out = wArgFFFA;
+		r12Out = r12;
+		r13Out = dwArgFFFC;
+		raOut = ra;
+		return SEQ(r1_n, r6);
+	}
+	Eq_n r2_n = r13.u6[4];
+	int16 r3_n = (int16) (r2_n != 666);
+	int16 r1_n = (int16) (r2_n != 0x45);
+	word16 r3_n = SEQ(SLICE(r3_n, byte, 8), (byte) r3_n & (byte) r1_n);
+	if ((byte) r1_n != 0x00)
+	{
+		r2_n.u4 = (word32) r2_n + 0x0000FFC7;
+		r11 &= ~0x10;
+		r1_n = 1;
+		if (true)
+			goto l00004D0E;
+	}
+	struct Eq_n * r11_r10_n;
+	Eq_n r9_r8_n;
+	Eq_n r1_r0_n;
+	Eq_n r7_r6_n;
+	Eq_n r1_r0_n;
+	Eq_n r7_r6_n;
+	Eq_n r5_r4_n;
+	Eq_n r11_r10_n;
+	Eq_n r9_r8_n;
+	Eq_n r9_r8_n;
+	Eq_n r3_r2_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r9_r8_n;
+	Eq_n r6_r5_n;
+	Eq_n r3_r2_n;
+	struct Eq_n * r3_r2_n;
+	struct Eq_n * r9_r8_n;
+	Eq_n r9_r8_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r5_r4_n;
+	Eq_n r3_r2_n;
+	Eq_n r5_r4_n;
+	Eq_n r1_r0_n;
+	Eq_n r3_r2_n;
+	struct Eq_n * r11_r10_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r1_r0_n;
+	Eq_n r3_r2_n;
+	Eq_n r1_r0_n;
+	Eq_n r1_r0_n;
+	Eq_n r3_r2_n;
+	word32 r1_r0_n;
+	struct Eq_n * r1_r0_n;
+	word32 r11_r10_n;
+	Eq_n r3_r2_n;
+	Eq_n r3_r2_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r9_r8_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r3_r2_n;
+	Eq_n r1_r0_n;
+	Eq_n r9_r8_n;
+	Eq_n r1_r0_n;
+	struct Eq_n * r11_r10_n;
+	Eq_n r3_r2_n;
+	Eq_n r11_r10_n;
+	Eq_n r7_n;
+	bool v147_n;
+	bool v150_n;
+	Eq_n r11_n;
+	cui16 r10_n;
+	int16 r1_n;
+	Eq_n r7_n;
+	Eq_n r4_n;
+	bool v144_n;
+	cui16 r1_n;
+	cui16 r0_n;
+	word16 r10_n;
+	word16 r11_n;
+	wchar_t r4_n;
+	word16 r10_n;
+	cui16 r11_n;
+	word16 r8_n;
+	word16 r9_n;
+	int16 r4_n;
+	Eq_n r0_n;
+	Eq_n r1_n;
+	int16 r1_n;
+	Eq_n r3_r2_n = SEQ(r3_n, r2_n);
+	if (r4 < 0x05)
+	{
+l0000556E:
+		word16 r11_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r7_n;
+		r1_n = fn0000B09C(r3_r2_n, r11, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra);
+		r9_r8_n = r3_r2_n;
+		r11_r10_n = SEQ(r11_n, r10);
+		goto l00005574;
+	}
+	Eq_n r1_r0_n = r12.u6[0x0C];
+	word16 r1_n = SLICE(r1_r0_n, word16, 16);
+	if (r1_r0_n != 0x00)
+	{
+		Eq_n r3_n = r12.u6[4];
+		if (r3_n != 0x00)
+		{
+			Eq_n r1_r0_n = *r12.u5;
+			word16 r1_n = SLICE(r1_r0_n, word16, 16);
+			if (r1_r0_n == 0x00)
+			{
+				r11_r10Out.u0 = <invalid>;
+				r3_r2Out.u0 = <invalid>;
+				r5_r4Out.u0 = <invalid>;
+				r9_r8Out.u0 = <invalid>;
+				r0Out = r7;
+				r7Out = r4;
+				r12Out = r12;
+				r13Out = r13;
+				raOut = dwArgFFF0;
+				return SEQ(r1_n, r6);
+			}
+		}
+		byte v37_n = (byte) (r4 != 0x04);
+		word16 r1_n = SEQ(SLICE(r4, byte, 8), v37_n);
+		if ((int16) (r2_n == 666) != 0x00 && v37_n != 0x00)
+		{
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out.u0 = ~0x05;
+			r7Out = r4;
+			r12Out = r12;
+			r13Out = r13;
+			raOut = dwArgFFF0;
+			return SEQ(r1_n, r6);
+		}
+		Eq_n r1_r0_n;
+		byte * r5_r4_n;
+		Eq_n r7_n;
+		Eq_n r0_n = r12.u6[16];
+		if (r0_n == 0x00)
+		{
+l00006CC6:
+			r7_n = r0_n;
+			if (r0_n == 0x00)
+				goto l00006CDE;
+			r1_r0_n.u4 = r9_r8.u6[72];
+			r5_r4_n = r5_r4;
+l00006CD0:
+			word16 r4_n = (word16) r5_r4_n;
+			word16 r5_n = SLICE(r5_r4_n, word16, 16);
+			struct Eq_n * r9_r8_n;
+			r1_r0_n();
+			r9_r8_n->dw0038 = 0x00;
+			r1_n = 0x00;
+l00006CDE:
+			r11_r10Out.u0 = <invalid>;
+			r3_r2Out.u0 = <invalid>;
+			r5_r4Out.u0 = <invalid>;
+			r9_r8Out.u0 = <invalid>;
+			r0Out = r7_n;
+			r7Out = r7;
+			r12Out = r12;
+			r13Out = r13;
+			raOut = r13;
+			return SEQ(r1_n, r6);
+		}
+		Eq_n r0_n = r13.u6[76];
+		r13.u6[76] = (struct Eq_n) r4;
+		Eq_n r5_r4_n = r13.u6[20];
+		Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+		Eq_n dwArgFFF4_n = SEQ(wArgFFF6_n, wArgFFF4);
+		if (r5_r4_n != 0x00)
+		{
+			word32 r3_r2_n;
+			word32 r6_r5_n;
+			Eq_n r9_r8_n;
+			Eq_n r11_r10_n;
+			Eq_n r7_r6_n;
+			r12.u6[96] = (struct Eq_n) fn0000CAF8(SEQ(r1_n, r0_n), SEQ(r11, r10), r5_r4_n, r6, r7, r13, ra, r4, dwArgFFF0, wArgFFF4, dwArgFFF6, wArgFFFA, dwArg10014, dwArg10018, dwArg1001C, dwArg10020, dwArg10024, dwArg10028, dwArg1002C, dwArg10030, dwArg10044, dwArg10048, dwArg100E2, wArg101F0, wArg101F4, out r11_r10_n, out r3_r2_n, out r6_r5_n, out r7_r6_n, out r9_r8_n, out r4_n, out r12, out r13, out ra);
+			r1_r0_n.u4 = r13.u6[56];
+			r13.u6[64] = (struct Eq_n) 0x00;
+			r13.u6[4] = (struct Eq_n) 0x49;
+			Eq_n r5_n = <invalid>;
+			r7_n.u4 = SLICE(r7_r6_n, word16, 16);
+			r3_r2_n.u4 = r1_r0_n.u6[20];
+			r6_r5_n = SEQ((word16) r7_r6_n, r5_n);
+			r9_r8_n = r9_r8_n;
+			if (r3_r2_n != 0x00)
+			{
+				r7_r6_n = r7_r6_n;
+				r5_r4_n = r7_r6_n;
+				r11_r10_n = r11_r10_n;
+l0000553E:
+				r10 = (word16) r11_r10_n;
+				r11.u4 = SLICE(r11_r10_n, word16, 16);
+				word16 r4_n = (word16) r5_r4_n;
+				word16 r5_n = SLICE(r5_r4_n, word16, 16);
+				Eq_n r6_n = (word16) r7_r6_n;
+				Eq_n r7_n = SLICE(r7_r6_n, word16, 16);
+				Eq_n r3_r2_n = r13.u6[0x0C];
+				r1_r0_n = r1_r0_n;
+				r7_r6_n = r7_r6_n;
+				if (r7_r6_n == r3_r2_n)
+				{
+					Eq_n r12_n;
+					if ((int16) (r1_r0_n.u6[0x0044] != 0x00) != 0x00 && (int16) (r7_r6_n > r5_r4_n) != 0x00)
+					{
+						Eq_n r1_r0_n = r13.u6[8];
+						word16 r4_n;
+						word32 ra_n;
+						word32 r6_r5_n;
+						word32 r7_r6_n;
+						word32 r9_r8_n;
+						word32 r11_r10_n;
+						Eq_n r3_r2_n;
+						r12_n.u6[96] = (struct Eq_n) fn0000CAF8(r1_r0_n, r11_r10_n, r1_r0_n.u4 + SEQ(r5_n, r4_n - r6_n), r6_n, r7_n, r13, ra, sp_n->t0000.u0, sp_n->t0002.u4, sp_n->t0006.u0, sp_n->t0008.u4, sp_n->t000C.u0, sp_n->t0026.u4, sp_n->t002A.u4, sp_n->t002E.u4, sp_n->t0032.u4, sp_n->t0036.u4, sp_n->t003A.u4, sp_n->t003E.u4, sp_n->t0042.u4, sp_n->t0056.u4, sp_n->t005A.u4, sp_n->t00F4.u4, sp_n->t0202.u0, sp_n->t0206.u0, out r11_r10_n, out r3_r2_n, out r6_r5_n, out r7_r6_n, out r9_r8_n, out r4_n, out r12_n, out r13, out ra_n);
+						r11.u0 = <invalid>;
+						r10.u0 = <invalid>;
+						r3_r2_n = r3_r2_n;
+						r12 = r12_n;
+					}
+					r3_r2_n = r3_r2_n;
+					goto l0000556E;
+				}
+				goto l00005514;
+			}
+			goto l00006052;
+		}
+		Eq_n r3_r2_n;
+		if (r3_n == 0x00)
+		{
+			Eq_n r4_n = r4 *16 0x02;
+			if (r4 == 0x05)
+				r4_n.u0 = 0x01;
+			if (r0_n *16 0x02 < 0x04)
+				r11.u4 = (word32) r11 + 0x0000FFF7;
+			Eq_n r11_r10_n;
+			Eq_n r7_n;
+			int16 r0_n = (int16) (r0_n >= r4_n);
+			if (r0_n != 0x00)
+			{
+				r1_r0_n = SEQ(r1_n, r0_n);
+				r11_r10_n = SEQ(r11, r10);
+				r7_n = r7;
+				if (v37_n != 0x00)
+					goto l00006C86;
+			}
+			Eq_n dwArgFFF8_n = SEQ(wArgFFFA, wArgFFF8_n);
+			if (r2_n != 666)
+			{
+				r13.u6[76] = (struct Eq_n) ~0x00;
+				r11_r10Out.u0 = <invalid>;
+				r3_r2Out.u0 = <invalid>;
+				r5_r4Out.u0 = <invalid>;
+				r9_r8Out.u0 = <invalid>;
+				r0Out.u0 = 0x00;
+				r7Out = wArgFFFA;
+				r12Out = r12;
+				r13Out = dwArgFFFC;
+				raOut = ra;
+				return SEQ(r1_n, r6);
+			}
+			Eq_n r3_n = r12.u6[4];
+			r11_r10_n = SEQ(r11, r10);
+			r7_n = r7;
+			if (r3_n != 0x00)
+			{
+l00006C76:
+				r11_r10_n.u6[72] = (struct Eq_n) 0x00;
+				r11_r10_n.u6[4] = (struct Eq_n) 0x3F34;
+				r1_r0_n.u4 = r9_r8.u6[72];
+l00006C86:
+				Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+				if (r9_r8.u6[64] != 0x00 && r1_r0_n != 0x00)
+				{
+					Eq_n r3_r2_n;
+					Eq_n r7_n;
+					Eq_n r2_n;
+					if (r7_n <= 0x00)
+					{
+						r2_n = r7_n >> 0x0C;
+						&r5_n.u6->a0000->u0 = r5_n.u6 + 5;
+						r7_n.u4 = (word32) r7_n + 0x0000FFF8;
+						r3_r2_n.u4 = (uint32) r2_n;
+						if (true)
+							goto l00006CBA;
+					}
+					else
+					{
+						r2_n.u0 = 0x00;
+						r7_n.u0 = ~0x07;
+						if (true)
+						{
+							r3_r2_n.u0 = 0;
+l00006CBA:
+							r11_r10_n.u8->t0008.u1 = (word16) r3_r2_n;
+							r11_r10_n.u6[56] = (struct Eq_n) r7_n;
+							r9_r8 = r3_r2_n;
+							word16 r11_n;
+							r5_r4 = fn00006A40(r3_r2_n, r11_n, out r0_n, out r1_n, out r6, out r11_n);
+							goto l00006CC6;
+						}
+					}
+					int16 r3_n = (int16) (r7_n != 0x00);
+					r3_r2_n = SEQ(r3_n, r2_n);
+					if (r3_n == 0x00)
+						goto l00006CBA;
+				}
+				r7_n.u0 = ~0x01;
+				r5_r4_n = SEQ(r5_n, r4_n);
+				goto l00006CD0;
+			}
+			Eq_n r7_r6_n = r7_r6;
+			if (*((word32) r13 + 0x00B4) == 0x00)
+			{
+l00005E48:
+				Eq_n r1_r0_n = r13.u6[8];
+				Eq_n r3_r2_n = r13.u6[20];
+				r13.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+				Mem910[r1_r0_n + r3_r2_n:byte] = SLICE(r7_r6_n >>u 0x18, byte, 0);
+				Eq_n r6_n = r12.u6[0x0A];
+				Eq_n r1_r0_n = r13.u6[8];
+				Eq_n r3_r2_n = r13.u6[20];
+				r13.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+				Mem930[r1_r0_n + r3_r2_n:byte] = SLICE(r6_n, byte, 0);
+				Eq_n r3_r2_n = r13.u6[20];
+				Eq_n r6_n = r12.u6[0x0A];
+				Eq_n r1_r0_n = r13.u6[8];
+				r13.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+				word32 r1_r0_n = r1_r0_n + r3_r2_n;
+				*r1_r0_n = (byte) (r6_n >> 0x08);
+				Eq_n r7_n = SLICE(r7_r6_n >> 0x18, word16, 16);
+				Eq_n r5_n = SLICE(r3_r2_n.u6 + 1, word16, 16);
+				word16 r1_n;
+				word16 r10_n;
+				word16 r11_n;
+				Eq_n r12_n;
+				Eq_n r13_n;
+				word16 r2_n;
+				word16 r3_n;
+				word16 r4_n;
+				word16 r5_n;
+				word16 r6_n;
+				Eq_n r7_n;
+				word16 r8_n;
+				word16 r9_n;
+				Eq_n ra_n;
+				Eq_n r0_n = fn00003FB8(r1_r0_n, r3_r2_n, r9_r8, r5_n, r7_n, r12, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+				r11_r10Out.u0 = <invalid>;
+				r3_r2Out.u0 = <invalid>;
+				r5_r4Out.u0 = <invalid>;
+				r9_r8Out.u0 = <invalid>;
+				r0Out = r0_n;
+				r7Out = r7_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				raOut = ra_n;
+				return SEQ(r1_n, r6_n);
+			}
+			Eq_n r0_n = r13.u6[0x00C4];
+			if (r0_n != 0x00)
+			{
+				word16 r1_n = r13.u6[200];
+				if (r1_n == 0x02)
+				{
+					SEQ(r5_n, r4_n)->dw000A = SEQ(r11, r10);
+					r3_r2_n = SEQ(r3_n, r2_n);
+					r11_r10_n = SEQ(r11, r10);
+					r7_n = r7;
+					r9_r8_n = r9_r8;
+					goto l0000609A;
+				}
+				if (r1_n == 0x03)
+				{
+					r12.u0 = 0x00;
+					r1_r0_n = SEQ(r1_n, r0_n);
+					r3_r2_n = SEQ(r3_n, r2_n);
+					r11_r10_n = SEQ(r11, r10);
+					if (SEQ(r1_n, r0_n) == 0x00)
+						goto l00006936;
+					SEQ(r11, r10)->dw0038 = SEQ(r1_n, r0_n);
+					*SEQ(r1_n, r0_n) = SEQ(r11, r10);
+					r9_r8.u6[4] = (struct Eq_n) 0x2A;
+					r9_r8.u6[24] = (struct Eq_n) 0x01;
+					r9_r8.u6[56] = (struct Eq_n) 0x00;
+					r9_r8.u6[42] = (struct Eq_n) 0x0F;
+					r11_r10_n = SEQ(r11, r10);
+l0000659E:
+					r9_r8.u6[80] = (struct Eq_n) 0x8000;
+					r9_r8.u6[88] = (struct Eq_n) 0x7FFF;
+					r9_r8.u6[0x0044] = (struct Eq_n) 0x0F;
+					r9_r8.u6[0x0084] = (struct Eq_n) 0x8000;
+					r9_r8.u6[0x008C] = (struct Eq_n) 0x7FFF;
+					r9_r8.u6[72] = (struct Eq_n) 0x05;
+					<anonymous> * r1_r0_n = r11_r10_n->ptr0040;
+					word32 r13_n;
+					word16 r7_n;
+					word32 r12_n;
+					word32 ra_n;
+					word16 r6_n;
+					struct Eq_n * r9_r8_n;
+					struct Eq_n * r11_r10_n;
+					word32 r1_r0_n;
+					r1_r0_n();
+					r9_r8_n->dw0060 = r1_r0_n;
+					<anonymous> * r1_r0_n = r11_r10_n->ptr0040;
+					word32 r13_n;
+					word16 r7_n;
+					word32 r12_n;
+					word32 ra_n;
+					word16 r6_n;
+					word32 r1_r0_n;
+					struct Eq_n * r9_r8_n;
+					struct Eq_n * r11_r10_n;
+					r1_r0_n();
+					r9_r8_n->dw0070 = r1_r0_n;
+					<anonymous> * r1_r0_n = r11_r10_n->ptr0040;
+					struct Eq_n * r11_r10_n;
+					word32 r1_r0_n;
+					struct Eq_n * r9_r8_n;
+					r1_r0_n();
+					r9_r8_n->dw0078 = r1_r0_n;
+					r9_r8_n->t2418.u4 = (cup16 *) r12;
+					r9_r8_n->w23E8 = 0x4000;
+					r9_n = SLICE(r9_r8_n, word16, 16);
+					r8_n = (word16) r9_r8_n;
+					r4_n = 0x4000;
+					r11_r10_n = r11_r10_n;
+					goto l00006602;
+				}
+				word32 r3_r2_n = SEQ(r3_n, r2_n);
+				<anonymous> * r1_r0_n = ((<anonymous> *[]) 0xE5AC)[r3_r2_n + (SEQ(r3_n, r2_n) + r3_r2_n)];
+				cui16 r0_n;
+				Eq_n r3_r2_n;
+				Eq_n r7_r6_n;
+				struct Eq_n * r11_r10_n;
+				Eq_n r5_r4_n;
+				r1_r0_n();
+				word16 r2_n = (word16) r3_r2_n;
+				r7.u4 = SLICE(r7_r6_n, word16, 16);
+				r6 = (word16) r7_r6_n;
+				r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+				r10_n = (word16) r11_r10_n;
+				word16 r5_n = SLICE(r5_r4_n, word16, 16);
+				word16 r4_n = (word16) r5_r4_n;
+				v144_n = false;
+				r9_r8 = r9_r8_n;
+				r3_r2_n = r3_r2_n;
+				if (true)
+					goto l000068CE;
+				r1_n = ~0x02;
+				cui16 r0_n = r0_n + ~0x01 & ~0x02;
+				r9_r8 = r9_r8_n;
+				if (true)
+				{
+					Eq_n r7_r6_n = r7_r6_n;
+					Eq_n r9_r8_n = r9_r8_n;
+					if (r0_n != 0x01)
+					{
+l00004EB6:
+						word16 r9_n = SLICE(r9_r8_n, word16, 16);
+						if (wArg00 != 0x04)
+						{
+							word16 r1_n;
+							word16 r10_n;
+							word16 r2_n;
+							word16 r3_n;
+							word16 r4_n;
+							word16 r5_n;
+							word16 r6_n;
+							Eq_n r7_n;
+							word16 r8_n;
+							word16 r9_n;
+							Eq_n ra_n;
+							word16 r11_n;
+							Eq_n r0_n = fn00006182(r7_r6_n, r9_r8_n, r1_n, r11_n, ra, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out ra_n);
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							r0Out = r0_n;
+							r7Out = r7_n;
+							r12Out = r12;
+							r13Out = r13;
+							raOut = ra_n;
+							return SEQ(r1_n, r6_n);
+						}
+						Eq_n r3_n = r13.u6[24];
+						if (r3_n >= 0x00)
+							;
+						Eq_n r7_r6_n = r13.u6[8];
+						Eq_n r1_r0_n = r13.u6[20];
+						Eq_n r8_n = *((word16) r12.u0 + 96);
+						Eq_n r2_n = *((word16) r12.u0 + 100);
+						r13.u6[20] = (struct Eq_n) (r1_r0_n.u6 + 1);
+						word16 r7_n = SLICE(r7_r6_n, word16, 16);
+						word16 r6_n = (word16) r7_r6_n;
+						word32 r1_r0_n = r1_r0_n + r7_r6_n;
+						if (r3_n != 0x02)
+						{
+							*r1_r0_n = (<anonymous> *) (byte) (r2_n >> 0x08);
+							Eq_n r1_r0_n = r13.u6[8];
+							Eq_n r5_r4_n = r13.u6[20];
+							r13.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1);
+							Mem4562[r1_r0_n + r5_r4_n:byte] = SLICE(r2_n, byte, 0);
+							Eq_n r2_n = *((word16) r12.u0 + 96);
+							Eq_n r1_r0_n = r13.u6[8];
+							Eq_n r5_r4_n = r13.u6[20];
+							r13.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1);
+							Mem4583[r1_r0_n + r5_r4_n:byte] = SLICE(r2_n >>u 0x08, byte, 0);
+							Eq_n r1_r0_n = r13.u6[8];
+							Eq_n r5_r4_n = r13.u6[20];
+							r13.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1);
+							Mem4602[r1_r0_n + r5_r4_n:byte] = SLICE(r2_n, byte, 0);
+							word16 r11_n;
+							word16 r4_n;
+							word16 r5_n;
+							word16 r6_n;
+							Eq_n ra_n;
+							word16 r7_n;
+							fn0000B09C(SEQ(r2_n >> 0x08, r2_n), r11_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+							struct Eq_n * r3_r2_n = SEQ(r2_n >> 0x08, r2_n);
+							Eq_n r0_n = r3_r2_n->t0014.u0;
+							Eq_n r7_n = *((word16) r12.u0 + 16);
+							if (r0_n < r7_n)
+								r7_n = r0_n;
+							if (r7_n != 0x00)
+							{
+								fn0000DB24(*((word16) r12.u0 + 0x0C), r3_r2_n->t0010.u4, r13, out r13);
+								word32 r11_r10_n = (word32) r7_n;
+								((word16) r12.u0 + 0x0C)->u4 += r11_r10_n;
+								r3_r2_n->t0010.u4 += r11_r10_n;
+								((word16) r12.u0 + 20)->u4 += r11_r10_n;
+								*((word16) r12.u0 + 16) = *((word16) r12.u0 + 16);
+								Eq_n r1_r0_n = r3_r2_n->t0014.u4;
+								r3_r2_n->t0014.u4 = (cup16 *) r1_r0_n;
+								dwLoc04_n = SEQ((word16) r11_r10_n, wLoc04_n);
+								if (r1_r0_n == 0x00)
+									r3_r2_n->t0010.u4 = r3_r2_n->t0008.u4;
+							}
+							if (r13.u6[24] < 0x00)
+								r13.u6[24] = (struct Eq_n) 0x00;
+							Eq_n r0_n = *((word32) r13 + 20);
+							cui16 r1_n = r13.u6[22] | r0_n;
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							r0Out.u1 = (int16) (r0_n == 0x00);
+							r7Out = r7;
+							r12Out = r12;
+							r13Out = dwLoc04_n;
+							raOut = ra_n;
+							return SEQ(r1_n, r6_n);
+						}
+						if (SEQ(r9_n, r8_n)->dw0048 == 0x00)
+							SEQ(r9_n, r8_n)->dw0048 = 23926;
+						Eq_n r11_r10_n;
+						Eq_n r9_r8_n;
+						r1_r0_n();
+						word16 r1_n = SLICE(r11_r10_n, word16, 16);
+						if (r11_r10_n == 0x00)
+						{
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							r0Out.u0 = ~0x03;
+							r7Out = r7;
+							r12Out = r12;
+							r13Out = r13;
+							raOut = r13;
+							return SEQ(r1_n, r6);
+						}
+						r9_r8_n.u6[56] = (struct Eq_n) r11_r10_n;
+						*r11_r10_n.u5 = (word32) r9_r8_n;
+						r11_r10_n = r11_r10_n;
+						r9_r8 = r9_r8_n;
+						goto l00006C76;
+					}
+					Eq_n r3_n = sp_n->t0000.u0;
+					r11_r10_n = r11_r10_n;
+					r1_r0_n = SEQ(~0x02, r0_n);
+					if (r3_n == 0x01)
+						goto l00006C02;
+					Eq_n r3_r2_n = SEQ(r3_n, r2_n);
+					if (r3_n != 0x05)
+					{
+						sp_n->wFFFFFFFE = 0x00;
+						Eq_n sp_n = <invalid>;
+						word16 r3_n;
+						word16 r6_n;
+						word16 r7_n;
+						word16 r9_n;
+						word32 ra_n;
+						word32 r2_r1_n = fn0000AF94(r5_r4_n, r5_r4_n, 0x00, SEQ(r3_n, r2_n), sp_n->t000A.u4, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12, out r13, out ra_n);
+						sp_n = (struct Eq_n *) (sp_n.u6 + 4);
+						word16 r4_n = sp_n.u6[4];
+						r3_r2_n = SEQ(r3_n, SLICE(r2_r1_n, word16, 16));
+						if (r4_n == 0x03)
+						{
+							<anonymous> ** r5_r4_n = SEQ(r5_n, r4_n) + r2_r1_n;
+							<anonymous> * r1_r0_n = *r5_r4_n;
+							Eq_n r13_n;
+							Eq_n r7_n;
+							Eq_n r12_n;
+							Eq_n r0_n;
+							word16 r1_n;
+							Eq_n ra_n;
+							word16 r6_n;
+							r1_r0_n();
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							r0Out = r0_n;
+							r7Out = r7_n;
+							r12Out = r12_n;
+							r13Out = r13_n;
+							raOut = ra_n;
+							return SEQ(r1_n, r6_n);
+						}
+					}
+					word16 r11_n;
+					word16 r4_n;
+					word16 r5_n;
+					word16 r6_n;
+					word16 r7_n;
+					r1_n = fn0000B09C(r3_r2_n, r11_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra);
+					word16 r2_n = (word16) r3_r2_n;
+					Eq_n r0_n = *((word16) r12.u0 + 16);
+					Eq_n r7_n = *((word32) r3_r2_n + 20);
+					if (r0_n < r7_n)
+						r7_n = r0_n;
+					Eq_n r11_r10_n = SEQ(r11_n, r10_n);
+					if (r7_n != 0x00)
+					{
+						word32 r11_r10_n = (word32) r7_n;
+						Eq_n r3_r2_n = *((word16) r12.u0 + 0x0C);
+						Eq_n r5_r4_n = *((word32) r3_r2_n + 16);
+						sp_n->wFFFFFFFE = (word16) r11_r10_n;
+						fn0000DB24(r3_r2_n, r5_r4_n, r13, out r13);
+						((word16) r12.u0 + 0x0C)->u4 += r11_r10_n;
+						((word32) r3_r2_n + 16)->u4 += r11_r10_n;
+						Eq_n r1_r0_n = ((word16) r12.u0 + 20)->u4 + r11_r10_n;
+						*((word16) r12.u0 + 20) = r1_r0_n;
+						r0_n = *((word16) r12.u0 + 16);
+						*((word16) r12.u0 + 16) = r0_n;
+						Eq_n r3_r2_n = r3_r2_n.u6[20];
+						r3_r2_n.u6[20] = (struct Eq_n) r3_r2_n;
+						Eq_n sp_n = <invalid>;
+						r1_n = SLICE(r1_r0_n, word16, 16);
+						r7_n -= r0_n;
+						r2_n = (word16) r3_r2_n;
+						r11_r10_n = r11_r10_n - r3_r2_n;
+						sp_n = (struct Eq_n *) (sp_n.u6 + 4);
+						if (r3_r2_n == 0x00)
+						{
+							Eq_n r3_r2_n = r3_r2_n.u6[8];
+							*((word32) r3_r2_n + 16) = r3_r2_n;
+							r2_n = (word16) r3_r2_n;
+						}
+					}
+					r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+					r10_n = (word16) r11_r10_n;
+					r7_r6_n = SEQ(r7_n, r6_n);
+					r9_r8_n = r3_r2_n;
+					if (r0_n != 0x00)
+						goto l00004EB6;
+					r12 = SEQ(SLICE(r12, word16, 16), r2_n);
+					r9_r8_n = r3_r2_n;
+					r11_r10_n = r11_r10_n;
+l00005574:
+					Eq_n r0_n = *((word32) r9_r8_n + 20);
+					Eq_n r7_n = *((word16) r12.u0 + 16);
+					if (r0_n < r7_n)
+						r7_n = r0_n;
+					Eq_n r1_r0_n = SEQ(r1_n, r0_n);
+					Eq_n r11_r10_n = r11_r10_n;
+					if (r7_n != 0x00)
+					{
+						word32 r11_r10_n = (word32) r7_n;
+						Eq_n r3_r2_n = *((word16) r12.u0 + 0x0C);
+						Eq_n r5_r4_n = *((word32) r9_r8_n + 16);
+						sp_n->wFFFFFFFE = (word16) r11_r10_n;
+						fn0000DB24(r3_r2_n, r5_r4_n, r13, out r13);
+						((word16) r12.u0 + 0x0C)->u4 += r11_r10_n;
+						((word32) r9_r8_n + 16)->u4 += r11_r10_n;
+						((word16) r12.u0 + 20)->u4 += r11_r10_n;
+						*((word16) r12.u0 + 16) = *((word16) r12.u0 + 16);
+						r1_r0_n.u4 = r9_r8_n.u6[20];
+						r9_r8_n.u6[20] = (struct Eq_n) r1_r0_n;
+						r11_r10_n = r11_r10_n - r1_r0_n;
+						if (r1_r0_n == 0x00)
+						{
+							r1_r0_n.u4 = r9_r8_n.u6[8];
+							*((word32) r9_r8_n + 16) = r1_r0_n;
+						}
+					}
+					sp_n = fp - 6;
+					r7_r6_n.u4 = r13.u6[20];
+					if (r7_r6_n != 0x00)
+					{
+						word16 r6_n;
+						if (r9_r8_n.u6[0x00AC] != 0x00)
+							r6_n = 0x0A;
+						else
+							r6_n = 0x06;
+						if (r9_r8_n.u6[84] == 0x0F && (r9_r8_n.u6)[0x0088] == 0x0F)
+						{
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							uint32 r1_r0_n = (word16) ra.u0 + (r1_r0_n >> 0x14) + (ra >> 0x12) + (ra >> 0x07) + (uint32) r6_n;
+							r0Out = (word16) r1_r0_n;
+							r7Out = r7;
+							r12Out = r12;
+							r13Out = r13;
+							raOut = r13;
+							return SEQ(SLICE(r1_r0_n, word16, 16), r6_n);
+						}
+						else
+						{
+							r11_r10Out.u0 = <invalid>;
+							r3_r2Out.u0 = <invalid>;
+							r5_r4Out.u0 = <invalid>;
+							r9_r8Out.u0 = <invalid>;
+							word32 r1_r0_n = r1_r0_n.u6 + 5 + (uint32) r6_n;
+							r0Out = (word16) r1_r0_n;
+							r7Out = r7;
+							r12Out = r12;
+							r13Out = r13;
+							raOut = r13;
+							return SEQ(SLICE(r1_r0_n, word16, 16), r6_n);
+						}
+					}
+					r1_r0_n.u4 = r13.u6[56];
+					r5_r4_n.u0 = 0x00;
+					r11_r10_n = r11_r10_n;
+l00005514:
+					Eq_n r1_r0_n = r1_r0_n.u6[20];
+					Eq_n r3_r2_n = r13.u6[64];
+					r13.u6[64] = (struct Eq_n) (r3_r2_n.u6 + 1);
+					byte v72_n = Mem1573[r1_r0_n + r3_r2_n:byte];
+					Eq_n r1_r0_n = r13.u6[8];
+					r13.u6[20] = (struct Eq_n) (r7_r6_n.u6 + 1);
+					word32 r1_r0_n = r1_r0_n + r7_r6_n;
+					*r1_r0_n = v72_n;
+					word16 r10_n = (word16) r11_r10_n;
+					cup16 r4_n = (word16) r5_r4_n;
+					cui16 r11_n = SLICE(r11_r10_n, word16, 16);
+					r6 = (word16) r7_r6_n;
+					r7_n.u4 = SLICE(r7_r6_n, word16, 16);
+					word16 r9_n = SLICE(r7_r6_n.u6 + 1, word16, 16);
+					word16 r1_n = SLICE(r1_r0_n, word16, 16);
+					int16 r0_n = (word16) r1_r0_n;
+					if (v72_n != 0x00)
+					{
+						r7_r6_n.u4 = r13.u6[20];
+						r1_r0_n.u4 = r13.u6[56];
+						goto l0000553E;
+					}
+					int16 r2_n = (int16) (r1_n != 666);
+					int16 r1_n = (int16) (r1_n != 0x00);
+					word16 r2_n = SEQ(SLICE(r2_n, byte, 8), (byte) r2_n & (byte) r0_n);
+					cui16 r11_n = r11_n + ~0x38 & ~0x10;
+					r1_n = SEQ(SLICE(r1_n, byte, 8), (byte) r1_n & (byte) r0_n);
+					if ((byte) r0_n == 0x00)
+					{
+						if (r4_n != ~0x00)
+							r0_n = (int16) (r4_n < 0x09);
+						else
+							r7_n.u0 = 0x06;
+						r1_n.u0 = (int16) ((word16) r12 < 0x04);
+						if (r1_n == 0x00 && (byte) r0_n == 0x00)
+						{
+							if ((word16) r12 != (r7_r6_n.u6)[0x00C9])
+								goto l00006008;
+							ra.u0 = 58788;
+							r3_r2_n = SEQ(r7_r6_n.u6[0x00C5], r2_n);
+							r9_r8_n = SEQ(r9_n, r6.u6 + 1);
+							r11_r10_n = SEQ(r11_n, r10_n);
+l0000609A:
+							word32 r1_r0_n = Mem1697[r13 * 0x0C + ra + 0x08:word32];
+							r13.u4 = (word16) ra.u0 + (r13 << 0x02);
+							dwLoc04_n = r13;
+							r1_n = SLICE(r1_r0_n, word16, 16);
+							if (r1_r0_n == (r13.u6)[8])
+							{
+								r9_r8_n = r9_r8_n;
+								r11_r10_n = r11_r10_n;
+l00006022:
+								Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+								r9_r8_n = r9_r8_n;
+								if (r3_n == r7_n)
+								{
+l00006088:
+									r9_r8_n.u6[200] = (struct Eq_n) (word16) r12;
+									r11_r10Out.u0 = <invalid>;
+									r3_r2Out.u0 = <invalid>;
+									r5_r4Out.u0 = <invalid>;
+									r9_r8Out.u0 = <invalid>;
+									r0Out.u0 = 0x00;
+									r7Out = r7;
+									r12Out = r12;
+									r13Out = dwLoc04_n;
+									raOut = ra;
+									return SEQ(r1_n, r6);
+								}
+								r9_r8_n = r9_r8_n;
+								r3_r2_n = r3_r2_n;
+								if (r3_n != 0x00)
+								{
+l0000605C:
+									r9_r8_n.u6[0x00C4] = (struct Eq_n) r7_n;
+									struct Eq_n * r1_r0_n = r3_r2_n * 0x0C + 58788;
+									r9_r8_n.u6[0x00C0] = (struct Eq_n) r1_r0_n->w0002;
+									r9_r8_n.u6[0x00CC] = (struct Eq_n) r1_r0_n->w0000;
+									r9_r8_n.u6[0x00D0] = (struct Eq_n) r1_r0_n->w0004;
+									r9_r8_n.u6[188] = (struct Eq_n) r1_r0_n->w0006;
+									r1_n = SLICE(r1_r0_n, word16, 16);
+									r9_r8_n = r9_r8_n;
+									goto l00006088;
+								}
+								r6.u4 = r9_r8_n.u6[9224];
+								r9_r8_n = r9_r8_n;
+								r3_r2_n = r3_r2_n;
+								if (r6 == 0x00)
+									goto l0000605C;
+								Eq_n r3_r2_n;
+								ui16 r2_n = r9_r8_n.u6[0x0084];
+								int32 r11_r10_n = r11_r10_n * 0x02;
+								if (r6 != 0x01)
+								{
+									union Eq_n * r5_r4_n = r11_r10_n + r11_r10_n / 76;
+									r5_r4_n->u0 = (wchar_t) r3_n;
+									r6_r5_n = SEQ(r6, SLICE(r5_r4_n, word16, 16));
+									r3_r2_n = SEQ(r3_n, r2_n + ~0x00);
+								}
+								else
+								{
+									Eq_n r6_n = r9_r8_n.u6[80];
+									r3_r2_n = ra;
+									do
+									{
+										Eq_n r3_r2_n;
+										Eq_n v91_n = r3_r2_n.u6[0x0000FFFE];
+										word16 r2_n = (word16) r3_r2_n;
+										word16 r3_n = SLICE(r3_r2_n.u6 + 0x0000FFFE, word16, 16);
+										r13 = SEQ(SLICE(r13, word16, 16), v91_n);
+										if (r6_n <= v91_n)
+										{
+											r3_r2_n.u6[0x0000FFFE] = (struct Eq_n) v91_n;
+											r6_n -= v91_n;
+											r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+											r3_r2_n = r3_r2_n;
+											if (ra == r3_r2_n.u6 + 0x0000FFFE)
+												break;
+											continue;
+										}
+										r3_r2_n.u6[0x0000FFFE] = (struct Eq_n) 0x00;
+										r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+										r3_r2_n = r3_r2_n;
+									} while (ra != r3_r2_n.u6 + 0x0000FFFE);
+									Eq_n r6_n = (word32) r6_n + 0x0000FFFF;
+									word16 r5_n = SLICE(0x00020000 - ra, word16, 16);
+									r3_r2_n = ra;
+									do
+									{
+										Eq_n r3_r2_n;
+										Eq_n v94_n = r3_r2_n.u6[0x0000FFFE];
+										word16 r2_n = (word16) r3_r2_n;
+										word16 r3_n = SLICE(r3_r2_n.u6 + 0x0000FFFE, word16, 16);
+										r13 = SEQ(SLICE(r13, word16, 16), v94_n);
+										if (v94_n >= r6_n)
+										{
+											r3_r2_n.u6[0x0000FFFE] = (struct Eq_n) v94_n;
+											r6_n -= v94_n;
+											r13 = SEQ(SLICE(r13, word16, 16), v94_n);
+											r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+											r3_r2_n = r3_r2_n;
+											if (r3_r2_n.u6 + 0x0000FFFE != ra)
+												continue;
+											r6_r5_n = SEQ(r6_n, r5_n);
+											r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+											goto l0000604E;
+										}
+										r3_r2_n.u6[0x0000FFFE] = (struct Eq_n) 0x00;
+										r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+										r3_r2_n = r3_r2_n;
+									} while (r3_r2_n.u6 + 0x0000FFFE != ra);
+									r6_r5_n = SEQ(r6_n, r5_n);
+									r3_r2_n = SEQ(r3_n, r2_n + ~0x01);
+								}
+l0000604E:
+								r4_n.u0 = 0x00;
+								r3_r2_n = r3_r2_n;
+l00006052:
+								fn0000DB44(r3_r2_n, r6_r5_n, r4_n, r13);
+								r9_r8_n.u6[4612] = (struct Eq_n) 0x00;
+								r6.u4 = SLICE(r6_r5_n, word16, 16);
+								r9_r8_n = r9_r8_n;
+								r3_r2_n = r3_r2_n;
+								goto l0000605C;
+							}
+l00006008:
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							// Failed to bind call argument.
+							// Please report this issue at https://github.com/uxmal/reko
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg65520 = <invalid>;
+							Eq_n stackArg65524 = <invalid>;
+							Eq_n stackArg65526 = <invalid>;
+							Eq_n stackArg65530 = <invalid>;
+							Eq_n stackArg65532 = <invalid>;
+							Eq_n stackArg65536 = <invalid>;
+							Eq_n stackArg65556 = <invalid>;
+							Eq_n stackArg65560 = <invalid>;
+							Eq_n stackArg65564 = <invalid>;
+							Eq_n stackArg65568 = <invalid>;
+							Eq_n stackArg65572 = <invalid>;
+							Eq_n stackArg65576 = <invalid>;
+							Eq_n stackArg65580 = <invalid>;
+							Eq_n stackArg65584 = <invalid>;
+							Eq_n stackArg65588 = <invalid>;
+							Eq_n stackArg65604 = <invalid>;
+							Eq_n stackArg65608 = <invalid>;
+							Eq_n stackArg65612 = <invalid>;
+							Eq_n stackArg65762 = <invalid>;
+							Eq_n stackArg66032 = <invalid>;
+							Eq_n stackArg66036 = <invalid>;
+							Eq_n stackArg131032 = <invalid>;
+							Eq_n stackArg131034 = <invalid>;
+							Eq_n stackArg131038 = <invalid>;
+							Eq_n stackArg131046 = <invalid>;
+							Eq_n stackArg131050 = <invalid>;
+							Eq_n stackArg131068 = <invalid>;
+							Eq_n stackArg131094 = <invalid>;
+							Eq_n stackArg131102 = <invalid>;
+							Eq_n stackArg131110 = <invalid>;
+							Eq_n stackArg131126 = <invalid>;
+							Eq_n stackArg196478 = <invalid>;
+							Eq_n stackArg196546 = <invalid>;
+							Eq_n stackArg196582 = <invalid>;
+							Eq_n stackArg196624 = <invalid>;
+							Eq_n stackArg261992 = <invalid>;
+							word16 r0_n;
+							word32 r3_r2_n;
+							Eq_n r5_r4_n;
+							Eq_n r1_r6_n = fn00004CD4(r11_r10, r5_r4, r7_r6, r9_r8, r12, r13, ra, stackArg0, stackArg65520, stackArg65524, stackArg65526, stackArg65530, stackArg65532, stackArg65536, stackArg65556, stackArg65560, stackArg65564, stackArg65568, stackArg65572, stackArg65576, stackArg65580, stackArg65584, stackArg65588, stackArg65604, stackArg65608, stackArg65612, stackArg65762, stackArg66032, stackArg66036, stackArg131032, stackArg131034, stackArg131038, stackArg131046, stackArg131050, stackArg131068, stackArg131094, stackArg131102, stackArg131110, stackArg131126, stackArg196478, stackArg196546, stackArg196582, stackArg196624, stackArg261992, out r11_r10_n, out r3_r2_n, out r5_r4_n, out r9_r8_n, out r0_n, out r7_n, out r12, out r13, out ra);
+							word16 wLoc04_n = (word16) r13;
+							wLoc06_n = r7;
+							Eq_n r2_n = <invalid>;
+							r1_n = SLICE(r1_r6_n, word16, 16);
+							r6 = (word16) r1_r6_n;
+							cui16 r5_n = SLICE(r5_r4_n, word16, 16);
+							r4_n = (word16) r5_r4_n;
+							r11_n = SLICE(r11_r10_n, word16, 16);
+							r10_n = (word16) r11_r10_n;
+							sp_n = fp - 6;
+							if (r0_n != ~0x01)
+							{
+								if (r11_r10_n->w0010 != 0x00)
+								{
+									r3_r2_n = SEQ(r9_r8_n.u6[0x00C4], r2_n);
+									goto l00006022;
+								}
+								Eq_n r1_r0_n = *((word16) r12.u0 + 4);
+								Eq_n r3_n = *((word16) r12.u0 + 8);
+								int16 r1_n = SLICE(r1_r0_n, word16, 16);
+								dwLoc04_n = SEQ(r1_n, wLoc04_n);
+								Eq_n r3_r2_n = SEQ(r3_n, r2_n);
+								if (r1_r0_n != 0x00)
+								{
+									int16 r0_n = (int16) (*r1_r0_n != 0x31);
+									int16 r2_n = (int16) (r3_n != 0x38);
+									uint16 r0_n = SEQ(SLICE(r0_n, byte, 8), (byte) r0_n | (byte) r2_n);
+									r3_r2_n = SEQ(r3_n, r2_n);
+									if ((byte) r2_n == 0x00)
+									{
+										if (r11_r10_n != null)
+										{
+											r11_r10_n->dw0018 = 0x00;
+											Eq_n r1_r0_n = r11_r10_n->t0040.u4;
+											r1_n = SLICE(r1_r0_n, word16, 16);
+											Eq_n r0_n = (word16) r1_r0_n;
+											r3_r2_n = SEQ(r3_n, r2_n);
+											if (r1_r0_n == 0x00)
+												goto l00006734;
+											Eq_n r9_r8_n;
+											bool v153_n;
+											bool v156_n;
+											r9_r8_n = r11_r10_n->ptr0048;
+											word16 r9_n = SLICE(r9_r8_n, word16, 16);
+											word16 r8_n = (word16) r9_r8_n;
+											struct Eq_n * r3_r2_n = SEQ(r3_n, r2_n);
+											if (r9_r8_n != null)
+											{
+												r3_r2_n = SEQ(r3_n, r2_n);
+												if ((word16) r13 == ~0x00)
+													goto l000066BC;
+												if (r6 > 0x00)
+												{
+													r1_r0_n = r1_r0_n ^ 0x9020DF28;
+l000066CC:
+													r9_r8_n->w00D0 = r1_r0_n->w0004;
+													r9_r8_n->w00BC = r1_r0_n->w0006;
+													r1_n = SLICE(r1_r0_n, word16, 16);
+l000066DA:
+													r9_r8_n->t00AC.u0 = (wchar_t) r7_n;
+													r9_r8_n->t0098.u4 = (cup16 *) r12;
+													r9_r8_n->t00B4.u0 = (wchar_t) r7_n;
+													r9_r8_n->t240C.u0 = (wchar_t) r7_n;
+													r9_r8_n->w005C = 0x02;
+													r9_r8_n->w0050 = 0x02;
+													goto l000066F2;
+												}
+												r7_n.u0 = 0x01;
+												if (r6 < 0x0F)
+													goto l000066DA;
+												r9_n += ~0x00;
+												r9_r8_n = SEQ(r9_n + ~0x00, r8_n);
+												r3_r2_n = SEQ(r7, r2_n);
+												if (r7 < 0x08)
+												{
+l00006734:
+													r9_r8_n.u6[4] = (struct Eq_n) 666;
+													r11_r10_n->dw0018 = SEQ(r1_n, *(word32 *) 64616);
+													word16 r2_n;
+													word16 r3_n;
+													word16 r1_n;
+													word16 r6_n;
+													word16 r4_n;
+													word16 r5_n;
+													word16 r7_n;
+													word32 ra_n;
+													word32 r9_r8_n;
+													fn00006134(r9_r8_n, SLICE(r3_r2_n, word16, 16), out r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out ra_n);
+													r11_r10Out.u0 = <invalid>;
+													r3_r2Out.u0 = <invalid>;
+													r5_r4Out.u0 = <invalid>;
+													r9_r8Out.u0 = <invalid>;
+													r0Out.u0 = ~0x03;
+													r7Out = wLoc06_n;
+													r12Out = r12;
+													r13Out = r13;
+													raOut = dwLoc04_n;
+													return SEQ(r1_n, r6_n);
+												}
+												struct Eq_n * r9_r8_n;
+												r6.u4 = (word32) r6 + 0x0000FFF8;
+												if (false)
+												{
+													word16 r9_n = SLICE(SEQ(r9_n + ~0x00, r8_n) + 0x552018E0, word16, 16);
+													((word16) r12.u0 + SEQ(0x01, (word32) r6 + 0x0000FFF8))->u3 = 0x00;
+													r9_r8_n = SEQ(r9_n, r8_n + 6368);
+													goto l0000638C;
+												}
+												if ((int16) (r5_n != 0x08) != 0x00)
+													;
+												int16 r3_n = (int16) (r1_n < 0x04);
+												v156_n = r3_n == 0x00;
+												v153_n = r3_n != 0x00;
+												dwLoc04_n = r1_r6_n;
+												if (r3_n != 0x00)
+												{
+l0000670C:
+													r9_r8_n = SEQ(r9_n, r8_n);
+													if (!v153_n)
+													{
+														r7_n.u0 = 0x06;
+														r9_r8_n = SEQ(r9_n, r8_n);
+l000063D0:
+														int16 r4_n = (int16) v156_n;
+														r8_n = (word16) r9_r8_n;
+														r9_n = SLICE(r9_r8_n, word16, 16);
+														cui16 r1_n = SLICE(r1_r0_n, word16, 16);
+														cui16 r0_n = (word16) r1_r0_n;
+														r9_r8_n = r9_r8_n;
+														r5_r4_n = SEQ(r5_n, r4_n);
+														r1_r0_n = r1_r0_n;
+														if (r4_n == 0x00)
+														{
+															cui16 r1_n = r1_n | r0_n;
+															r4_n = (int16) (r0_n == 0x00);
+															r11_r10_n = r11_r10_n;
+															if (r4_n == 0x00)
+															{
+																ui32 r7_r6_n = (word32) (r6 >> 0x0F) * 0x02 + SEQ(r1_n, r0_n);
+																r9_r8_n.u6[9200] = (struct Eq_n) r7_r6_n;
+																word32 r5_r4_n = SEQ(r5_n, r4_n);
+																r9_r8_n.u6[9184] = (struct Eq_n) (SEQ(r1_n, r0_n) + (r5_r4_n + (SEQ(r5_n, r4_n) + r5_r4_n)));
+																r9_r8_n.u6[0x00C4] = (struct Eq_n) (word16) r13;
+																r9_r8_n.u6[200] = (struct Eq_n) sp_n->w0004;
+																r9_r8_n.u6[36] = (struct Eq_n) 0x08;
+																Eq_n r0_n;
+																word16 r1_n;
+																Eq_n r12_n;
+																Eq_n r13_n;
+																word16 r2_n;
+																word16 r3_n;
+																word16 r4_n;
+																word16 r5_n;
+																word16 r6_n;
+																word16 r8_n;
+																word16 r9_n;
+																Eq_n ra_n;
+																struct Eq_n * r11_r10_n = fn000046AC(r9_r8_n, SLICE(r7_r6_n, word16, 16), r13, ra, sp_n->t0000.u0, sp_n->t0002.u4, sp_n->t0006.u0, sp_n->t0020.u4, sp_n->t0024.u4, sp_n->t0028.u4, sp_n->t002C.u4, sp_n->t0030.u4, sp_n->t0034.u4, sp_n->t0038.u4, sp_n->t003C.u4, sp_n->t0050.u4, sp_n->t0054.u4, sp_n->t00EE.u4, sp_n->t01FC.u0, sp_n->t0200.u0, sp_n->t10002.u4, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r12_n, out r13_n, out ra_n);
+																if (r0_n == 0x00)
+																{
+																	struct Eq_n * r9_r8_n = r11_r10_n->ptr0038;
+																	ui32 r1_r0_n = (word32) r9_r8_n->w0050;
+																	r9_r8_n->dw0068 = r1_r0_n * 0x02;
+																	ui32 r6_r5_n = (word32) r9_r8_n->w0084;
+																	union Eq_n * r1_r0_n = r1_r0_n * 0x02 + r6_r5_n * 0x02;
+																	r1_r0_n->u0 = (wchar_t) r0_n;
+																	fn0000DB44(r1_r0_n * 0x02, r6_r5_n * 0x02, r0_n, r13_n);
+																	struct Eq_n * r1_r0_n = r1_r0_n * 0x0C + 58788;
+																	word16 r9_n = SLICE(r9_r8_n, word16, 16);
+																	word16 r8_n = (word16) r9_r8_n;
+																	SEQ(r9_n + ~0x00, r8_n)->w00C0 = r1_r0_n->w0002;
+																	SEQ(r9_n + ~0x00, r8_n)->w00CC = r1_r0_n->w0000;
+																	SEQ(r9_n + ~0x00, r8_n)->w00D0 = r1_r0_n->w0004;
+																	SEQ(r9_n + ~0x00, r8_n)->w00BC = r1_r0_n->w0006;
+																	SEQ(r9_n + ~0x00, r8_n)->t00AC.u0 = (wchar_t) r0_n;
+																	SEQ(r9_n + ~0x00, r8_n)->t0098.u4 = (cup16 *) r12_n;
+																	SEQ(r9_n + ~0x00, r8_n)->t00B4.u0 = (wchar_t) r0_n;
+																	SEQ(r9_n + ~0x00, r8_n)->t240C.u0 = (wchar_t) r0_n;
+																	SEQ(r9_n + ~0x00, r8_n)->w005C = 0x02;
+																	SEQ(r9_n + ~0x00, r8_n)->w0050 = 0x02;
+																	SEQ(r9_n + ~0x00, r8_n)->t00A8.u0 = (wchar_t) r0_n;
+																	SEQ(r9_n + ~0x00, r8_n)->t0080.u0 = (wchar_t) r0_n;
+																	r11_r10Out.u0 = <invalid>;
+																	r3_r2Out.u0 = <invalid>;
+																	r5_r4Out.u0 = <invalid>;
+																	r9_r8Out.u0 = <invalid>;
+																	r0Out = r0_n;
+																	r7Out = r7;
+																	r12Out = r12_n;
+																	r13Out = dwLoc04_n;
+																	raOut = ra_n;
+																	return SEQ(SLICE(r1_r0_n, word16, 16), SLICE(r6_r5_n * 0x02, word16, 16));
+																}
+																else
+																{
+																	r11_r10Out.u0 = <invalid>;
+																	r3_r2Out.u0 = <invalid>;
+																	r5_r4Out.u0 = <invalid>;
+																	r9_r8Out.u0 = <invalid>;
+																	r0Out = r0_n;
+																	r7Out = r7;
+																	r12Out = r12_n;
+																	r13Out = dwLoc04_n;
+																	raOut = ra_n;
+																	return SEQ(r1_n, r6_n);
+																}
+															}
+l00006602:
+															Eq_n r1_r0_n = r11_r10_n->t0040.u4;
+															struct Eq_n * r11_r10_n;
+															Eq_n r5_r4_n;
+															Eq_n r9_r8_n;
+															r1_r0_n();
+															r9_r8_n.u6[8] = (struct Eq_n) r1_r0_n;
+															r9_r8_n = r9_r8_n;
+															r5_r4_n = r5_r4_n;
+															r11_r10_n = r11_r10_n;
+														}
+														r6.u4 = r9_r8_n.u6[9192];
+														r9_r8_n.u6[0x0C] = (struct Eq_n) (r5_r4_n << 0x02);
+														r0_n = (word16) r1_r0_n;
+														r1_n = SLICE(r1_r0_n, word16, 16);
+														r10_n = (word16) r11_r10_n;
+														r11_n = SLICE(r11_r10_n, word16, 16);
+														r5_r4_n.u4 = r9_r8_n.u6[96];
+														r3_r2_n = r5_r4_n;
+														r1_r0_n = r1_r0_n;
+														r11_r10_n = r11_r10_n;
+														r3_r2_n = r5_r4_n;
+														if (r12 == r5_r4_n)
+														{
+l00006846:
+															r4_n = (word16) r5_r4_n;
+															word16 r2_n = (word16) r3_r2_n;
+															word16 r3_n = SLICE(r3_r2_n, word16, 16);
+															r1_n = SLICE(r1_r0_n, word16, 16);
+															if (r1_r0_n != 0x00)
+															{
+																*((word16) r12.u0 + 56) = r1_r0_n;
+																sp_n->wFFFFFFFE = 0x1210;
+																word32 r13_n;
+																fn0000DB24(r3_r2_n, r5_r4_n, r5_r4_n, out r13_n);
+																*r3_r2_n.u5 = (word32) r12;
+																Eq_n r1_r0_n = *((word16) r12.u0 + 64);
+																word32 r13_n;
+																word16 r7_n;
+																struct Eq_n * r12_n;
+																word16 r11_n;
+																word32 ra_n;
+																word16 r6_n;
+																word16 r10_n;
+																struct Eq_n * r9_r8_n;
+																word32 r1_r0_n;
+																r1_r0_n();
+																r9_r8_n->dw0060 = r1_r0_n;
+																<anonymous> * r1_r0_n = r12_n->ptr0040;
+																word32 r13_n;
+																word16 r7_n;
+																struct Eq_n * r12_n;
+																word16 r11_n;
+																word32 ra_n;
+																word16 r6_n;
+																word16 r10_n;
+																word32 r1_r0_n;
+																struct Eq_n * r9_r8_n;
+																r1_r0_n();
+																r9_r8_n->dw0070 = r1_r0_n;
+																<anonymous> * r1_r0_n = r12_n->ptr0040;
+																word32 r13_n;
+																word16 r7_n;
+																struct Eq_n * r12_n;
+																word16 r11_n;
+																word32 ra_n;
+																word16 r6_n;
+																word16 r10_n;
+																word32 r1_r0_n;
+																struct Eq_n * r9_r8_n;
+																r1_r0_n();
+																r9_r8_n->dw0078 = r1_r0_n;
+																<anonymous> * r1_r0_n = r12_n->ptr0040;
+																word32 sp_n;
+																Eq_n r11_r10_n;
+																r1_r0_n();
+																r9_r8.u6[8] = (struct Eq_n) r11_r10_n;
+																r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+																r10_n = (word16) r11_r10_n;
+																r3_r2_n.u4 = r9_r8.u6[96];
+																sp_n = sp_n + 0x04;
+																if (r3_r2_n == 0x00 || (r9_r8.u6)[112] == 0x00)
+																{
+l0000698E:
+																	r12 = r3_r2_n;
+																	r9_r8 = r9_r8_n;
+																	word16 r5_n;
+																	word16 r2_n;
+																	word16 r3_n;
+																	word16 r4_n;
+																	word16 r1_n;
+																	Eq_n r9_r8_n;
+																	r11_r10_n = fn00006134(r9_r8, r11_n, out r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6, out r7, out ra);
+																	goto l0000659E;
+																}
+																v144_n = *((word32) r9_r8 + 0x0078) == 0x00;
+l000068CE:
+																if ((int16) v144_n == 0x00)
+																{
+																	r11_n |= r10_n;
+																	if ((int16) (r10_n == 0x00) == 0x00)
+																	{
+																		Eq_n r5_r4_n = r13.u6[96];
+																		sp_n->wFFFFFFFE = r9_r8.u6[80] *16 0x02;
+																		Eq_n r13_n;
+																		fn0000DB24(r3_r2_n, r5_r4_n, r13, out r13_n);
+																		Eq_n sp_n = <invalid>;
+																		Eq_n r3_r2_n = r9_r8.u6[112];
+																		Eq_n r5_r4_n = r13_n.u6[112];
+																		sp_n.u6->tFFFFFFFE.u0 = (wchar_t) (r9_r8.u6[80] *16 0x02);
+																		Eq_n r13_n;
+																		fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+																		Eq_n sp_n = <invalid>;
+																		Eq_n r3_r2_n = r9_r8.u6[0x0078];
+																		Eq_n r5_r4_n = r13_n.u6[0x0078];
+																		sp_n.u6->tFFFFFFFE.u0 = (wchar_t) (r9_r8.u6[0x0084] *16 0x02);
+																		Eq_n r13_n;
+																		fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+																		Eq_n sp_n = <invalid>;
+																		Eq_n r3_r2_n = r9_r8.u6[8];
+																		Eq_n r5_r4_n = r13_n.u6[8];
+																		sp_n.u6->tFFFFFFFE.u0 = (wchar_t) *((word32) r9_r8 + 0x0C);
+																		struct Eq_n * r13_n;
+																		fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+																		r3_r2_n.u4 = r9_r8.u6[8];
+																		r1_r0_n = r13_n->dw0010;
+																		r11_r10_n = SEQ(r11_n, r10_n);
+l00006936:
+																		((word32) r9_r8 + 16)->u4 = r3_r2_n.u4 + r1_r0_n;
+																		ui32 r5_r4_n = (word32) (r9_r8.u6[9192] >> 0x0F);
+																		r9_r8.u6[9200] = (struct Eq_n) (r11_r10_n + r5_r4_n * 0x02);
+																		r9_r8.u6[9184] = (struct Eq_n) (r3_r2_n.u4 + r5_r4_n * 0x06);
+																		r9_r8.u6[5600] = (struct Eq_n) ((word32) r9_r8 + 0x006A);
+																		r9_r8.u6[5624] = (struct Eq_n) ((word32) r9_r8 + 0x095E);
+																		r9_r8.u6[0x00001610] = (struct Eq_n) &r9_r8.u7->w0A52;
+																		r11_r10Out.u0 = <invalid>;
+																		r3_r2Out.u0 = <invalid>;
+																		r5_r4Out.u0 = <invalid>;
+																		r9_r8Out.u0 = <invalid>;
+																		r0Out.u0 = 0x00;
+																		r7Out = r7;
+																		r12Out = r12;
+																		r13Out = dwLoc04_n;
+																		raOut = ra;
+																		return SEQ(SLICE(&r9_r8.u7->w0A52, word16, 16), r6);
+																	}
+																}
+																goto l0000698E;
+															}
+															if (r3_r2_n != 0x00)
+															{
+																Eq_n r1_r0_n = r3_r2_n.u6[64];
+																r1_n = SLICE(r1_r0_n, word16, 16);
+																if (r1_r0_n == 0x00)
+																	goto l00006B12;
+																r1_r0_n.u4 = r3_r2_n.u6[72];
+																r1_n = SLICE(r1_r0_n, word16, 16);
+																if (r1_r0_n != 0x00)
+																{
+																	Eq_n r11_r10_n = r3_r2_n.u6[56];
+																	word16 r11_n = SLICE(r11_r10_n, word16, 16);
+																	word16 r10_n = (word16) r11_r10_n;
+																	if (r11_r10_n == 0x00 || (*r11_r10_n.u5 != r9_r8_n || (r11_r10_n.u6)[4] < 0x1F))
+																		goto l00006B12;
+																	v150_n = r4_n > 0x00;
+																	r11_r10_n = SEQ(r11_n + 0xC0CC, r10_n);
+l00006B28:
+																	r1_n = SLICE(r1_r0_n, word16, 16);
+																	word16 r8_n = (word16) r9_r8_n;
+																	word16 r9_n = SLICE(r9_r8_n, word16, 16);
+																	word16 r10_n = (word16) r11_r10_n;
+																	word16 r11_n = SLICE(r11_r10_n, word16, 16);
+																	if (!v150_n)
+																	{
+																		r12 = SEQ(SLICE(r12, word16, 16), r4_n >> 0x0C);
+																		if (r4_n >= 0x2F)
+																			sp_n = SEQ(SLICE(sp_n, word16, 16), (word16) sp_n & 0x0F);
+																	}
+																	else
+																	{
+																		r7_n.u0 = 0x00;
+																		r12 = SEQ(SLICE(r12, word16, 16), 0x00);
+																	}
+																	r7.u4 = (word16) r7_n.u0 + 0x0000FFF8;
+																	if (false && (int16) (r7 != 0x00) != 0x00)
+																		goto l00006B12;
+																	word32 r5_r4_n = r11_r10_n->dw0048;
+																	word16 r5_n = SLICE(r5_r4_n, word16, 16);
+																	word16 r4_n = (word16) r5_r4_n;
+																	r11_r10_n = r11_r10_n;
+																	if (r5_r4_n != 0x00)
+																	{
+																		r11_r10_n = r11_r10_n;
+																		if (r11_r10_n->t0038.u0 != r7)
+																		{
+																			word16 r7_n;
+																			struct Eq_n * r11_r10_n;
+																			r1_r0_n();
+																			r11_r10_n->dw0048 = 0x00;
+																			Eq_n r1_r0_n = r9_r8_n.u6[64];
+																			r1_n = SLICE(r1_r0_n, word16, 16);
+																			r11_r10_n->w0008 = (word16) r12;
+																			r11_r10_n->w0038 = r7_n;
+																			if (r1_r0_n == 0x00)
+																				goto l00006B12;
+																			r1_r0_n.u4 = r9_r8_n.u6[72];
+l00006B7E:
+																			r9_r8_n = r9_r8_n;
+																			r3_r2_n.u0 = 0x00;
+																			r1_r0_n = r1_r0_n;
+																			goto l00006B80;
+																		}
+																	}
+l00006C02:
+																	r11_r10_n->w0008 = (word16) r12;
+																	r11_r10_n->t0038.u0 = (wchar_t) r7;
+																	r9_r8_n = r9_r8_n;
+																	r1_r0_n = r1_r0_n;
+																	goto l00006B7E;
+																}
+															}
+l00006B12:
+															r0_n.u0 = ~0x01;
+															r7_n.u0 = sp_n->t0000.u0;
+															goto l00006B18;
+														}
+l00006626:
+														r10_n = (word16) r11_r10_n;
+														r11_n = SLICE(r11_r10_n, word16, 16);
+														r11_r10_n = r11_r10_n;
+														r3_r2_n = r3_r2_n;
+														if (r12 != (r9_r8_n.u6)[112])
+														{
+l00006630:
+															r9_r8_n = r9_r8_n;
+															r11_r10_n = r11_r10_n;
+															r3_r2_n = r3_r2_n;
+															if ((int16) (*((word32) r9_r8_n + 0x0078) == 0x00) == 0x00)
+															{
+																r1_n |= r0_n;
+																r9_r8_n = r9_r8_n;
+																r11_r10_n = r11_r10_n;
+																r3_r2_n = r3_r2_n;
+																if ((int16) (r0_n == 0x00) == 0x00)
+																{
+																	ui32 r5_r4_n = (word32) (r6 >> 0x0F) * 0x02 + SEQ(r1_n, r0_n);
+																	r9_r8_n.u6[9200] = (struct Eq_n) r5_r4_n;
+																	r9_r8_n.u6[9184] = (struct Eq_n) (SEQ(r1_n, r0_n) + r5_r4_n * 0x03);
+																	r9_r8_n.u6[0x00C4] = (struct Eq_n) r7_n;
+																	r9_r8_n.u6[100] = (struct Eq_n) 0x00;
+																	r9_r8_n.u6[36] = (struct Eq_n) 0x08;
+																	Eq_n r0_n;
+																	word16 r1_n;
+																	Eq_n r13_n;
+																	word16 r2_n;
+																	word16 r3_n;
+																	word16 r4_n;
+																	word16 r5_n;
+																	word16 r6_n;
+																	word16 r8_n;
+																	word16 r9_n;
+																	word32 ra_n;
+																	struct Eq_n * r11_r10_n = fn000046AC(r9_r8_n, r7_n, r13, ra, sp_n->t0000.u0, sp_n->t0002.u4, sp_n->t0006.u0, sp_n->t0020.u4, sp_n->t0024.u4, sp_n->t0028.u4, sp_n->t002C.u4, sp_n->t0030.u4, sp_n->t0034.u4, sp_n->t0038.u4, sp_n->t003C.u4, sp_n->t0050.u4, sp_n->t0054.u4, sp_n->t00EE.u4, sp_n->t01FC.u0, sp_n->t0200.u0, sp_n->t10002.u4, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r12, out r13_n, out ra_n);
+																	r7_n = r0_n;
+																	if (r0_n != 0x00)
+																	{
+																		r11_r10Out.u0 = <invalid>;
+																		r3_r2Out.u0 = <invalid>;
+																		r5_r4Out.u0 = <invalid>;
+																		r9_r8Out.u0 = <invalid>;
+																		r0Out = r0_n;
+																		r7Out = wLoc06_n;
+																		r12Out = r12;
+																		r13Out = r13_n;
+																		raOut = dwLoc04_n;
+																		return SEQ(r1_n, r6_n);
+																	}
+																	struct Eq_n * r9_r8_n = r11_r10_n->ptr0038;
+																	ui32 r1_r0_n = (word32) r9_r8_n->w0050;
+																	r9_r8_n->dw0068 = r1_r0_n * 0x02;
+																	ui32 r6_r5_n = (word32) r9_r8_n->w0084;
+																	union Eq_n * r1_r0_n = r1_r0_n * 0x02 + r6_r5_n * 0x02;
+																	r1_r0_n->u0 = (wchar_t) r0_n;
+																	r6.u4 = SLICE(r6_r5_n * 0x02, word16, 16);
+																	r13 = fn0000DB44(r1_r0_n * 0x02, r6_r5_n * 0x02, r0_n, r13_n);
+																	r3_r2_n = SEQ(SLICE(r1_r0_n * 0x0C, word16, 16), (word16) r1_r0_n * 0x0C);
+																	r9_r8_n = SEQ(SLICE(r9_r8_n, word16, 16) + ~0x00, (word16) r9_r8_n);
+l000066BC:
+																	r9_r8_n->w00C0 = r3_r2_n->wE5A6;
+																	word16 r2_n = (word16) r3_r2_n;
+																	word16 r1_n = SLICE(&r3_r2_n->wE5A4, word16, 16);
+																	r9_r8_n->w00CC = r3_r2_n->wE5A4;
+																	r1_r0_n = SEQ(r1_n, r2_n + 58788);
+																	goto l000066CC;
+																}
+															}
+															goto l00006734;
+														}
+														goto l0000683C;
+													}
+													goto l000063C6;
+												}
+												if ((int16) ((word16) r13 < 0x09) == 0x00)
+												{
+													if ((int16) (r6 == 0x10) != 0x00)
+													{
+														r9_r8_n = SEQ(r9_n + ~0x00, r8_n);
+														if ((byte) r2_n != 0x00)
+														{
+l000066F2:
+															r9_r8_n->t00A8.u0 = (wchar_t) r7_n;
+															r9_r8_n->t0080.u0 = (wchar_t) r7_n;
+															r11_r10Out.u0 = <invalid>;
+															r3_r2Out.u0 = <invalid>;
+															r5_r4Out.u0 = <invalid>;
+															r9_r8Out.u0 = <invalid>;
+															r0Out = r7_n;
+															r7Out = wLoc06_n;
+															r12Out = r12;
+															r13Out = r13;
+															raOut = dwLoc04_n;
+															return SEQ(r1_n, r6);
+														}
+													}
+													if (r6 == 0x10)
+														dwLoc04_n = SEQ(r1_n, 0x09);
+													struct Eq_n * sp_n;
+													word32 r13_n;
+													word16 r7_n;
+													word32 ra_n;
+													word16 r6_n;
+													struct Eq_n * r9_r8_n;
+													struct Eq_n * r11_r10_n;
+													r1_r0_n();
+													word16 r11_n = SLICE(r11_r10_n, word16, 16);
+													word16 r10_n = (word16) r11_r10_n;
+													word16 r9_n = SLICE(r9_r8_n, word16, 16);
+													word16 r8_n = (word16) r9_r8_n;
+													if (r9_r8_n == null)
+														r11_r10_n->ptr0050 = r9_r8_n;
+													r11_r10_n->ptr0038 = r9_r8_n;
+													r9_r8_n->ptr0000 = r11_r10_n;
+													r9_r8_n->w0004 = 0x2A;
+													r9_r8_n->w0018 = r7_n;
+													r9_r8_n->dw0038 = 0x00;
+													Eq_n r0_n = sp_n->t0002.u0;
+													r9_r8_n->t0054.u0 = (wchar_t) r0_n;
+													Eq_n r7_n = __a_shift<word16,word16>(0x01, r0_n);
+													r9_r8_n->t0050.u0 = (wchar_t) r7_n;
+													r9_r8_n->w0058 = ~0x00;
+													Eq_n r0_n = sp_n->t0000.u0;
+													r9_r8_n->t0088.u0 = (wchar_t) r0_n;
+													Eq_n r1_n = __a_shift<word16,word16>(0x01, r0_n);
+													r9_r8_n->t0084.u0 = (wchar_t) r1_n;
+													SEQ(r9_n + ~0x00, r8_n)->t008C.u0 = (wchar_t) r1_n;
+													SEQ(r9_n + ~0x00, r8_n)->w0090 = fn0000D464(sp_n->t0000.u0, 0x03);
+													<anonymous> * r1_r0_n = SEQ(r11_n + 0x09, r10_n)->ptr0040;
+													word32 r13_n;
+													word16 r7_n;
+													word32 r12_n;
+													word32 ra_n;
+													word16 r6_n;
+													struct Eq_n * r11_r10_n;
+													word32 r1_r0_n;
+													struct Eq_n * r9_r8_n;
+													r1_r0_n();
+													r9_r8_n->dw0060 = r1_r0_n;
+													<anonymous> * r1_r0_n = r11_r10_n->ptr0040;
+													word32 r13_n;
+													word16 r7_n;
+													word32 r12_n;
+													word32 ra_n;
+													word16 r6_n;
+													word32 r1_r0_n;
+													struct Eq_n * r9_r8_n;
+													struct Eq_n * r11_r10_n;
+													r1_r0_n();
+													r9_r8_n->dw0070 = r1_r0_n;
+													<anonymous> * r1_r0_n = r11_r10_n->ptr0040;
+													union Eq_n * sp_n;
+													struct Eq_n * r11_r10_n;
+													word32 r1_r0_n;
+													r1_r0_n();
+													r9_r8_n->dw0078 = r1_r0_n;
+													r9_r8_n->t2418.u4 = (cup16 *) r12;
+													r0_n.u0 = sp_n->u0;
+													r11_r10_n = r11_r10_n;
+l0000638C:
+													Eq_n r4_n = __a_shift<word16,word16>(0x01, r0_n);
+													r9_r8_n->t23E8.u0 = (wchar_t) r4_n;
+													Eq_n r1_r0_n = r11_r10_n->t0040.u4;
+													Eq_n r5_r4_n;
+													r1_r0_n();
+													r9_r8_n.u6[8] = (struct Eq_n) r1_r0_n;
+													r6.u4 = r9_r8_n.u6[9192];
+													r9_r8_n.u6[0x0C] = (struct Eq_n) (r5_r4_n << 0x02);
+													ui16 r4_n = (word16) r5_r4_n;
+													r1_n = SLICE(r1_r0_n, word16, 16);
+													r0_n = (word16) r1_r0_n;
+													ui16 r8_n = (word16) r9_r8_n;
+													if (r12 == (r9_r8_n.u6)[96])
+													{
+														sp_n->wFFFFFFFE = r8_n;
+														sp_n -= 2;
+														r11_r10_n = r11_r10_n;
+														r3_r2_n = r5_r4_n;
+														goto l00006630;
+													}
+													if (r12 == (r9_r8_n.u6)[112])
+													{
+														sp_n->wFFFFFFFE = r4_n;
+														sp_n -= 2;
+														r11_r10_n = r11_r10_n;
+														r3_r2_n = r5_r4_n;
+														goto l00006626;
+													}
+													r4_n = (wchar_t) *((word32) r9_r8_n + 0x0078);
+l000063C6:
+													r5_n = r9_r8_n.u6[0x007C] | r4_n;
+													v156_n = r4_n == 0x00;
+													r9_r8_n = r9_r8_n;
+													goto l000063D0;
+												}
+												r3_r2_n = &g_t5D76;
+											}
+											r11_r10_n->ptr0048 = r3_r2_n;
+											v156_n = r7_n == ~0x00;
+											v153_n = r7_n != ~0x00;
+											goto l0000670C;
+										}
+										r1_r0_n = SEQ(r1_n, r0_n);
+										if (r5_r4_n == 0x00)
+											goto l00006B9E;
+										r9_r8_n.u4 = r5_r4_n.u6[64];
+										r1_r0_n = SEQ(r1_n, r0_n);
+										r3_r2_n = r12;
+										if (r9_r8_n == 0x00)
+										{
+l00006B94:
+											r1_n = SLICE(r1_r0_n, word16, 16);
+											r1_r0_n = r1_r0_n;
+											if (r4_n < 0x1F)
+												goto l00006B12;
+l00006B9E:
+											r1_r0_n.u6[30] = (struct Eq_n) 0x00;
+											r1_r0_n.u6[32] = (struct Eq_n) 0x00;
+											r1_r0_n.u6[0x0022] = (struct Eq_n) 0x00;
+											r1_r0_n.u6[20] = (struct Eq_n) r12;
+											r9_r8_n.u6[20] = (struct Eq_n) r12;
+											r9_r8_n.u6[8] = (struct Eq_n) r12;
+											r9_r8_n.u6[24] = (struct Eq_n) r12;
+											word16 r0_n = (word16) r1_r0_n;
+											cui16 r1_n = SLICE(r1_r0_n, word16, 16);
+											word16 r2_n = r1_r0_n.u8->t0008.u1;
+											if (r2_n != 0x00)
+											{
+												r9_r8_n.u6[96] = (struct Eq_n) (int32) r2_n;
+												r1_n &= 0x01;
+											}
+											SEQ(r1_n, r0_n)->w0004 = 0x3F34;
+											SEQ(r1_n, r0_n)->w0006 = 0x00;
+											SEQ(r1_n, r0_n)->w000A = 0x00;
+											SEQ(r1_n, r0_n)->w000E = 0x8000;
+											SEQ(r1_n, r0_n)->dw0018 = 0x00;
+											SEQ(r1_n, r0_n)->dw0050 = 0x00;
+											SEQ(r1_n, r0_n)->w002C = 0x00;
+											word32 r1_r0_n = SEQ(r1_n, r0_n);
+											SEQ(r1_n, r0_n)->dw0090 = r1_r0_n + 0x050C;
+											SEQ(r1_n, r0_n)->dw0070 = r1_r0_n + 0x050C;
+											SEQ(r1_n, r0_n)->dw0068 = r1_r0_n + 0x050C;
+											SEQ(r1_n, r0_n)->w1B9C = 0x01;
+											SEQ(r1_n, r0_n)->w373C = ~0x00;
+											r11_r10Out.u0 = <invalid>;
+											r3_r2Out.u0 = <invalid>;
+											r5_r4Out.u0 = <invalid>;
+											r9_r8Out.u0 = <invalid>;
+											r0Out.u0 = 0x00;
+											r7Out = wLoc06_n;
+											r12Out = r12;
+											r13Out = r13;
+											raOut = dwLoc04_n;
+											return SEQ(r1_n, r6);
+										}
+									}
+									r1_r0_n.u4 = r5_r4_n.u6[72];
+									r1_n = SLICE(r1_r0_n, word16, 16);
+									v147_n = r1_r0_n == 0x00;
+									if (r1_r0_n == 0x00)
+										goto l00006B8A;
+									r13.u4 = r5_r4_n.u6[56];
+									if (r13 == 0x00)
+									{
+l00006B80:
+										r1_n = SLICE(r1_r0_n, word16, 16);
+										if (r3_r2_n == r1_r0_n)
+											goto l00006B12;
+										r1_r0_n.u4 = r9_r8_n.u6[56];
+										v147_n = r3_r2_n == r1_r0_n;
+l00006B8A:
+										r1_n = SLICE(r1_r0_n, word16, 16);
+										if (v147_n || *r1_r0_n.u5 != r9_r8_n)
+											goto l00006B12;
+										r4_n = (wchar_t) r1_r0_n.u6[4];
+										r12 = r3_r2_n;
+										goto l00006B94;
+									}
+									r3_r2_n.u4 = *r13.u5;
+								}
+								if (r3_r2_n == r5_r4_n)
+								{
+									Eq_n r2_n = r13.u6[4];
+									r1_n = (int16) (r2_n != 0x45);
+									if ((byte) r1_n != 0x00)
+									{
+										r11_n = r11_n + ~0x38 & ~0x10;
+										r1_n = (int16) (r2_n != 0x00);
+										if (r1_n != 0x00)
+											goto l0000679A;
+									}
+									v150_n = r12 > 0x00;
+									r11_r10_n = SEQ(r11_n, r10_n);
+									r9_r8_n = r9_r8_n;
+									r1_r0_n = SEQ(r1_n, ~0x01);
+									if (r12 == 0x00)
+										goto l00006B28;
+									r12.u0->u4 = *r5_r4_n.u5;
+									*((word16) r12.u0 + 4) = *((word32) r5_r4_n + 4);
+									((word16) r12.u0 + 8)->u4 = r5_r4_n.u6[8];
+									((word16) r12.u0 + 0x0C)->u4 = r5_r4_n.u6[0x0C];
+									*((word16) r12.u0 + 16) = *((word32) r5_r4_n + 16);
+									((word16) r12.u0 + 20)->u4 = r5_r4_n.u6[20];
+									((word16) r12.u0 + 24)->u4 = r5_r4_n.u6[24];
+									((word16) r12.u0 + 56)->u4 = r5_r4_n.u6[56];
+									((word16) r12.u0 + 64)->u4 = r5_r4_n.u6[64];
+									((word16) r12.u0 + 72)->u4 = r5_r4_n.u6[72];
+									((word16) r12.u0 + 80)->u4 = r5_r4_n.u8->dw0050;
+									*((word16) r12.u0 + 88) = *((word32) r5_r4_n + 88);
+									((word16) r12.u0 + 96)->u4 = r5_r4_n.u6[96];
+									((word16) r12.u0 + 0x0068)->u4 = r5_r4_n.u6[0x0068];
+									r9_r8_n = r9_r8_n;
+l0000683C:
+									Eq_n r3_r2_n;
+									Eq_n r5_r4_n;
+									Eq_n r9_r8_n;
+									r9_r8_n();
+									r3_r2_n = r3_r2_n;
+									r1_r0_n = r9_r8_n;
+									r5_r4_n = r5_r4_n;
+									r9_r8_n = r9_r8_n;
+									goto l00006846;
+								}
+								else
+								{
+l0000679A:
+									r11_r10Out.u0 = <invalid>;
+									r3_r2Out.u0 = <invalid>;
+									r5_r4Out.u0 = <invalid>;
+									r9_r8Out.u0 = <invalid>;
+									r0Out.u0 = ~0x01;
+									r7Out = r7_n;
+									r12Out = r12;
+									r13Out = dwLoc04_n;
+									raOut = ra;
+									return SEQ(r1_n, r6);
+								}
+							}
+							goto l00005FA0;
+						}
+					}
+l00005FA0:
+					r11_r10Out.u0 = <invalid>;
+					r3_r2Out.u0 = <invalid>;
+					r5_r4Out.u0 = <invalid>;
+					r9_r8Out.u0 = <invalid>;
+					r0Out.u0 = ~0x01;
+					r7Out = r7;
+					r12Out = r12;
+					r13Out = r13;
+					raOut = ra;
+					return SEQ(r1_n, r6);
+				}
+l000055DE:
+				r11_r10.u4 = (word32) r7;
+				goto l000055E0;
+			}
+			r3_r2_n = fn0000B218(r9_r8, r4_n, r5_n, r10, SEQ(r3_n, r2_n), SEQ(r4, r0_n), dwArgFFF0, dwArgFFF4_n, dwArgFFF8_n, dwArgFFFC, dwArg10000, dwArg1002C, dwArg10034, dwArg1004C, wArg1FFD8, dwArg1FFFC, dwArg20026, wArg2FF7E, out r12, out r13);
+			r13.u6[0x0098] = (struct Eq_n) (word32) r13.u6[0x00AC];
+			r9_r8.u4 = *r13.u5;
+			word16 r11_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r7_n;
+			fn0000B09C(r3_r2_n, SLICE(r3_r2_n, word16, 16), out r4_n, out r5_n, out r6, out r7_n, out r11_n, out ra);
+			word16 r2_n = (word16) r3_r2_n;
+			Eq_n sp_n = <invalid>;
+			r0_n.u0 = SEQ(r11_n, r2_n)->t0014.u0;
+			Eq_n r7_n = r9_r8.u6[16];
+			if (r0_n < r7_n)
+				r7_n = r0_n;
+			if (r7_n != 0x00)
+			{
+				sp_n.u6[8] = (struct Eq_n) (word32) r7_n;
+				Eq_n r3_r2_n = r9_r8.u6[0x0C];
+				word32 r5_r4_n = SEQ(r11_n, r2_n)->dw0010;
+				word32 r1_r0_n = sp_n.u6[8];
+				SEQ(r11_n, r2_n)->dw0010 = r3_r2_n.u4 + r1_r0_n;
+				Mem801[r9_r8 + 0x14:word32] = Mem794[r9_r8 + 0x14:word32] + r3_r2_n;
+				Eq_n r0_n = r9_r8.u6[16];
+				r9_r8.u6[16] = (struct Eq_n) r0_n;
+				Eq_n r1_r0_n = SEQ(r11_n, r2_n)->t0014.u0;
+				SEQ(r11_n, r2_n)->t0014.u0 = (ptr32) r1_r0_n;
+				r7_n = r7_n - r0_n;
+				Eq_n r3_r2_n = r3_r2_n - r1_r0_n;
+				if (r1_r0_n == 0x00)
+					SEQ(r11_n, r2_n)->dw0010 = SEQ(r11_n, r2_n)->dw0008;
+				Eq_n r1_r0_n = *r13.u5;
+				r1_n = SLICE(r1_r0_n, word16, 16);
+				r0_n.u4 = r1_r0_n.u6[16];
+				if (r0_n != 0x00)
+				{
+l00006B18:
+					r11_r10Out.u0 = <invalid>;
+					r3_r2Out.u0 = <invalid>;
+					r5_r4Out.u0 = <invalid>;
+					r9_r8Out.u0 = <invalid>;
+					r0Out = r0_n;
+					r7Out = r7_n;
+					r12Out = r12;
+					r13Out = r13;
+					raOut = dwLoc04_n;
+					return SEQ(r1_n, r6);
+				}
+				r13.u6[4] = (struct Eq_n) 666;
+				r0_n = *((word16) r12.u0 + 16);
+				if (r0_n == 0x00)
+				{
+l00005212:
+					r13.u6[76] = (struct Eq_n) ~0x00;
+					r11_r10Out.u0 = <invalid>;
+					r3_r2Out.u0 = <invalid>;
+					r5_r4Out.u0 = <invalid>;
+					r9_r8Out.u0 = <invalid>;
+					r0Out = r0_n;
+					r7Out = r7;
+					r12Out = r12;
+					r13Out = r13;
+					raOut = ra;
+					return SEQ(~0x00, r6);
+				}
+				r13.u6[20] = (struct Eq_n) ((word32) r3_r2_n + r5_r4_n);
+				*((word32) r3_r2_n + SEQ(r1_n, r0_n)) = (byte) r6;
+				Eq_n r6_n = *((word16) r12.u0 + 8);
+				Eq_n r1_r0_n = r13.u6[8];
+				Eq_n r3_r2_n = r13.u6[20];
+				r13.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+				Mem876[r1_r0_n + r3_r2_n:byte] = SLICE(r6_n, byte, 0);
+				r7_r6_n = *((word16) r12.u0 + 8);
+				goto l00005E48;
+			}
+		}
+		else
+		{
+			if (r7 == 0x00)
+				goto l0000515C;
+			fn0000DB24(r12.u6[0x0C], *((word32) r13 + 16), r13, out r13);
+			word32 r9_r8_n = (word32) r7;
+			r12.u6[0x0C] = (struct Eq_n) (r12.u6[0x0C].a0000 + r9_r8_n / 4).u5.u4;
+			((word32) r13 + 16)->u4 += r9_r8_n;
+			r12.u6[20] = (struct Eq_n) (r12.u6[20].a0000 + r9_r8_n / 4).u5.u4;
+			r0_n.u4 = r12.u6[16];
+			r12.u6[16] = (struct Eq_n) r0_n;
+			r3_r2_n.u4 = r13.u6[20];
+			r13.u6[20] = (struct Eq_n) r3_r2_n;
+		}
+		if (r3_r2_n == 0x00)
+			((word32) r13 + 16)->u4 = r13.u6[8];
+l0000515C:
+		if (r0_n != 0x00)
+			fn00004A4C();
+		goto l00005212;
+	}
+	if (r1_r0_n == 0x00 || ((int16) (*r5_r4 != 0x31) != 0x00 || (int16) (r6 != 0x38) != 0x00))
+	{
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r5_r4Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r0Out.u0 = ~0x05;
+		r7Out = r4;
+		r12Out = r12;
+		r13Out = r13;
+		raOut = dwArgFFF0;
+		return SEQ(r1_n, r6);
+	}
+	if (SEQ(r3_n, r2_n) == 0x00)
+	{
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r5_r4Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r0Out.u0 = ~0x01;
+		r7Out = r4;
+		r12Out = r12;
+		r13Out = r13;
+		raOut = dwArgFFF0;
+		return SEQ(r1_n, r6);
+	}
+	SEQ(r3_n, r2_n)->dw0018 = 0x00;
+	<anonymous> * r1_r0_n = SEQ(r3_n, r2_n)->ptr0040;
+	if (r1_r0_n == null)
+	{
+		SEQ(r3_n, r2_n)->dw0040 = 0x5D6E;
+		SEQ(r3_n, r2_n)->ptr0050 = r1_r0_n;
+	}
+	if (r9_r8.u6[72] == 0x00)
+		r9_r8.u6[72] = (struct Eq_n) 23926;
+	word32 ra_n;
+	byte * r5_r4_n;
+	Eq_n r11_r10_n;
+	Eq_n r12_n;
+	Eq_n r13_n;
+	word16 r6_n;
+	Eq_n r3_r2_n;
+	r1_r0_n();
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16);
+	word16 r10_n = (word16) r11_r10_n;
+	if (r11_r10_n == 0x00)
+	{
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r5_r4Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r0Out.u0 = ~0x03;
+		r7Out = r7;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = r13;
+		return SEQ(r11_n, r6_n);
+	}
+	byte * r5_r4_n;
+	Eq_n r7_n;
+	word16 r1_n;
+	r3_r2_n.u6[56] = (struct Eq_n) r11_r10_n;
+	*r11_r10_n.u5 = (word32) r3_r2_n;
+	r11_r10_n.u6[72] = (struct Eq_n) 0x00;
+	r11_r10_n.u6[4] = (struct Eq_n) 0x3F34;
+	Eq_n r1_r0_n = r3_r2_n.u6[72];
+	r3_r2_n.u4 = r3_r2_n.u6[64];
+	if (r3_r2_n != 0x00 && r1_r0_n != 0x00)
+	{
+		r11_r10_n.u8->t0008.u1 = 0x05;
+		((word32) r11_r10_n + 28)->u4 = 0x0F;
+		Eq_n r0_n;
+		word16 r11_n;
+		byte * r5_r4_n = fn00006A40(r3_r2_n, r11_n, out r0_n, out r1_n, out r6_n, out r11_n);
+		r7_n = r0_n;
+		if (r0_n == 0x00)
+			goto l00006DD8;
+		r1_r0_n.u4 = r3_r2_n.u6[72];
+		r5_r4_n = r5_r4_n;
+	}
+	else
+	{
+		r7_n.u0 = ~0x01;
+		r5_r4_n = r5_r4_n;
+	}
+	word16 r5_n = SLICE(r5_r4_n, word16, 16);
+	word32 ra_n;
+	word16 r10_n;
+	struct Eq_n * r9_r8_n;
+	r1_r0_n();
+	r9_r8_n->dw0038 = 0x00;
+	r1_n = 0x00;
+l00006DD8:
+	r11_r10Out.u0 = <invalid>;
+	r3_r2Out.u0 = <invalid>;
+	r5_r4Out.u0 = <invalid>;
+	r9_r8Out.u0 = <invalid>;
+	r0Out = r7_n;
+	r7Out = r7;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = r13;
+	return SEQ(r1_n, r6_n);
+}
+
+Eq_n g_t5D76 = // 00005D76
+	{
+		4274,
+		57919,
+		
+		{
+			L'\x18E0'
+		},
+		
+		{
+			L'\xF060'
+		},
+		
+		{
+			L'\x6120'
+		},
+		
+		{
+			L'\x9F6C'
+		},
+		
+		{
+			L'\xAA2D'
+		},
+		0x6120,
+		37996,
+		0x6120,
+		42092,
+		
+		{
+			L'\x61A2'
+		},
+	};
+// 00006134: Sequence word32 fn00006134(Sequence Eq_n r9_r8, Register Eq_n r11, Sequence out Eq_n r9_r8Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n raOut)
+// Called from:
+//      fn00002D76
+//      fn00004CD4
+word32 fn00006134(Eq_n r9_r8, Eq_n r11, union Eq_n & r9_r8Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & raOut)
+{
+	Eq_n ra;
+	Eq_n r7;
+	Eq_n r1;
+	word16 r10;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r9 = SLICE(r9_r8, word16, 16);
+	Eq_n r8 = (word16) r9_r8;
+	if (r9_r8 != 0x00)
+	{
+		Eq_n r1_r0_n = r9_r8.u6[64];
+		r1.u1 = SLICE(r1_r0_n, word16, 16);
+		if (r1_r0_n != 0x00)
+		{
+			Eq_n r7_r6_n = r9_r8.u6[72];
+			r6 = (word16) r7_r6_n;
+			if (r7_r6_n != 0x00)
+			{
+				Eq_n ra_n = r9_r8.u6[56];
+				if (ra_n != 0x00)
+				{
+					Eq_n r3_r2_n = *ra_n.u5;
+					Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+					Eq_n r2_n = (word16) r3_r2_n;
+					if (r3_r2_n == r9_r8)
+					{
+						int16 r1_n = (int16) (ra_n.u6[4] != 0x45);
+						Eq_n r1_n;
+						word16 r10_n;
+						Eq_n r2_n;
+						Eq_n r3_n;
+						Eq_n r4_n;
+						Eq_n r5_n;
+						Eq_n r6_n;
+						Eq_n r7_n;
+						word16 r8_n;
+						word16 r9_n;
+						Eq_n ra_n;
+						word16 r11_n;
+						fn00006182(r7_r6_n, r9_r8, r1_n, r11, ra_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out ra_n);
+						r9_r8Out.u0 = <invalid>;
+						r1Out = r1_n;
+						r2Out = r2_n;
+						r3Out = r3_n;
+						r4Out = r4_n;
+						r5Out = r5_n;
+						r6Out = r6_n;
+						r7Out = r7_n;
+						raOut = ra_n;
+						return SEQ(r11_n, r10_n);
+					}
+					else
+					{
+						r9_r8Out.u0 = <invalid>;
+						r1Out = r1;
+						r2Out = r2_n;
+						r3Out = r3_n;
+						r4Out = r4;
+						r5Out = r5;
+						r6Out = r6;
+						r7Out = r7;
+						raOut = ra;
+						return SEQ(r11, r10);
+					}
+				}
+			}
+		}
+	}
+	r9_r8Out.u0 = <invalid>;
+	r1Out = r1;
+	r2Out = r8;
+	r3Out = r9;
+	r4Out = r4;
+	r5Out = r5;
+	r6Out = r6;
+	r7Out = r7;
+	raOut = ra;
+	return SEQ(r11, r10);
+}
+
+// 00006182: Register Eq_n fn00006182(Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register int16 r1, Register Eq_n r11, Register Eq_n ra, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 raOut)
+// Called from:
+//      fn00004CD4
+//      fn00006134
+Eq_n fn00006182(Eq_n r7_r6, Eq_n r9_r8, int16 r1, Eq_n r11, Eq_n ra, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & raOut)
+{
+	if ((byte) r1 != 0x00)
+	{
+		r11 &= ~0x10;
+		if (true)
+		{
+			Eq_n r1_n;
+			Eq_n r10_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r6_n;
+			Eq_n r7_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			ptr32 ra_n;
+			Eq_n r0_n = fn000061C2(r7_r6, r9_r8, ra, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r7Out = r7_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11 & ~0x10;
+			raOut = ra_n;
+			return r0_n;
+		}
+	}
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	Eq_n r0_n = fn000061B2(r7_r6, r9_r8, ra, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 000061B2: Register Eq_n fn000061B2(Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register Eq_n ra, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out ptr32 raOut)
+// Called from:
+//      fn00006182
+//      fn00009C04
+Eq_n fn000061B2(Eq_n r7_r6, Eq_n r9_r8, Eq_n ra, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, ptr32 & raOut)
+{
+	bool Z;
+	if (Z)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		Eq_n r0_n = fn000061C2(r7_r6, r9_r8, ra, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		Eq_n r0_n = fn000061B4(r7_r6, r9_r8, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		raOut = ra_n;
+		return r0_n;
+	}
+}
+
+// 000061B4: Register Eq_n fn000061B4(Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out ptr32 raOut)
+// Called from:
+//      fn00006182
+//      fn000061B2
+Eq_n fn000061B4(Eq_n r7_r6, Eq_n r9_r8, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, ptr32 & raOut)
+{
+	word16 r7 = SLICE(r7_r6, word16, 16);
+	word16 r6 = (word16) r7_r6;
+	word16 r9 = SLICE(r9_r8, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	r7_r6();
+	Eq_n ra_n = r9_r8.u6[56];
+	Eq_n r7_r6_n = r9_r8.u6[72];
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	Eq_n r0_n = fn000061C2(r7_r6_n, r9_r8, ra_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	raOut = ra_n;
+	return r0_n;
+}
+
+// 000061C2: Register word16 fn000061C2(Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register Eq_n ra, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n raOut)
+// Called from:
+//      fn00006182
+//      fn000061B2
+word16 fn000061C2(Eq_n r7_r6, Eq_n r9_r8, Eq_n ra, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & raOut)
+{
+	word16 r7 = SLICE(r7_r6, word16, 16);
+	word16 r6 = (word16) r7_r6;
+	word16 r9 = SLICE(r9_r8, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	if (ra.u6[0x0078] != 0x00)
+	{
+		r7_r6();
+		ra.u4 = r9_r8.u6[56];
+		r7_r6.u4 = r9_r8.u6[72];
+	}
+	word16 r6_n = (word16) r7_r6;
+	word16 r7_n = SLICE(r7_r6, word16, 16);
+	if (ra.u6[112] != 0x00)
+	{
+		struct Eq_n * r9_r8_n;
+		r7_r6();
+		r9 = SLICE(r9_r8_n, word16, 16);
+		r8 = (word16) r9_r8_n;
+		ra.u4 = r9_r8_n->t0038.u4;
+		r7_r6.u4 = r9_r8_n->t0048.u4;
+	}
+	word16 r6_n = (word16) r7_r6;
+	word16 r7_n = SLICE(r7_r6, word16, 16);
+	word32 r5_r4_n = ra.u4[48];
+	if (r5_r4_n != 0x00)
+	{
+		struct Eq_n * r9_r8_n;
+		word32 r5_r4_n;
+		r7_r6();
+		r9 = SLICE(r9_r8_n, word16, 16);
+		r8 = (word16) r9_r8_n;
+		r7_r6.u4 = r9_r8_n->t0048.u4;
+		r5_r4_n = r5_r4_n;
+	}
+	word16 r10_n;
+	struct Eq_n * r9_r8_n;
+	r7_r6();
+	r9_r8_n->dw0038 = 0x00;
+	if (r10_n != 113)
+	{
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r7Out.u0 = <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r10Out.u0 = <invalid>;
+		raOut.u0 = <invalid>;
+		return 0x00;
+	}
+	else
+	{
+		r1Out.u0 = <invalid>;
+		r2Out.u0 = <invalid>;
+		r3Out.u0 = <invalid>;
+		r4Out.u0 = <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r7Out.u0 = <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r10Out.u0 = <invalid>;
+		raOut.u0 = <invalid>;
+		return ~0x02;
+	}
+}
+
+// 00006A40: Sequence Eq_n fn00006A40(Sequence Eq_n r3_r2, Register Eq_n r11, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r6Out, Register out Eq_n r11Out)
+// Called from:
+//      fn00004CD4
+//      fn0000A416
+Eq_n fn00006A40(Eq_n r3_r2, Eq_n r11, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r6Out, union Eq_n & r11Out)
+{
+	Eq_n r1;
+	word16 r4;
+	word16 r5;
+	Eq_n r6;
+	if (r3_r2 != 0x00)
+	{
+		Eq_n r1_r0_n = r3_r2.u6[64];
+		r1 = SLICE(r1_r0_n, word16, 16);
+		if (r1_r0_n != 0x00)
+		{
+			Eq_n r1_r0_n = r3_r2.u6[72];
+			r1 = SLICE(r1_r0_n, word16, 16);
+			if (r1_r0_n != 0x00)
+			{
+				Eq_n r5_r4_n = r3_r2.u6[56];
+				r5 = SLICE(r5_r4_n, word16, 16);
+				r4 = (word16) r5_r4_n;
+				if (r5_r4_n != 0x00)
+				{
+					Eq_n r7_r6_n = *r5_r4_n.u5;
+					Eq_n r6_n = (word16) r7_r6_n;
+					if (r7_r6_n == r3_r2)
+					{
+						r1 = r5_r4_n.u6[4];
+						r11.u4 = (word32) r11 + 0x0000C0CC;
+						if (r1 >= 0x1F)
+						{
+							r5_r4_n.u6[30] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[32] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[0x0022] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[20] = (struct Eq_n) 0x00;
+							r3_r2.u6[20] = (struct Eq_n) 0x00;
+							r3_r2.u6[8] = (struct Eq_n) 0x00;
+							r3_r2.u6[24] = (struct Eq_n) 0x00;
+							word16 r0_n = r5_r4_n.u8->t0008.u1;
+							if (r0_n != 0x00)
+								r3_r2.u6[96] = (struct Eq_n) (int32) r0_n;
+							r5_r4_n.u6[4] = (struct Eq_n) 0x3F34;
+							r5_r4_n.u6[6] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[0x0A] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[0x0E] = (struct Eq_n) 0x8000;
+							r5_r4_n.u6[24] = (struct Eq_n) 0x00;
+							r5_r4_n.u8->dw0050 = 0x00;
+							r5_r4_n.u6[44] = (struct Eq_n) 0x00;
+							r5_r4_n.u6[144] = (struct Eq_n) ((word32) r5_r4_n + 1292);
+							r5_r4_n.u6[112] = (struct Eq_n) ((word32) r5_r4_n + 1292);
+							r5_r4_n.u6[0x0068] = (struct Eq_n) ((word32) r5_r4_n + 1292);
+							r5_r4_n.u6[7068] = (struct Eq_n) 0x01;
+							r5_r4_n.u6[0x0000373C] = (struct Eq_n) ~0x00;
+							r0Out.u1 = 0x00;
+							r1Out = SLICE((word32) r5_r4_n + 1292, word16, 16);
+							r6Out = r6_n;
+							r11Out.u4 = (word32) r11 + 0x0000C0CC;
+							return r5_r4_n;
+						}
+					}
+					r0Out.u1 = ~0x01;
+					r1Out = r1;
+					r6Out = r6_n;
+					r11Out = r11;
+					return r5_r4_n;
+				}
+			}
+		}
+	}
+	r0Out.u1 = ~0x01;
+	r1Out = r1;
+	r6Out = r6;
+	r11Out = r11;
+	return SEQ(r5, r4);
+}
+
+// 000089C4: Sequence Eq_n fn000089C4(Sequence Eq_n r9_r8, Register word16 r11, Register Eq_n ra)
+// Called from:
+//      fn00001B74
+Eq_n fn000089C4(Eq_n r9_r8, word16 r11, Eq_n ra)
+{
+	word16 r9 = SLICE(r9_r8, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	if (r9_r8 == 0x00 || (r9_r8.u6)[64] == 0x00)
+		return r9_r8;
+	Eq_n r7_r6_n = r9_r8.u6[72];
+	word16 r7_n = SLICE(r7_r6_n, word16, 16);
+	if (r7_r6_n == 0x00)
+		return r9_r8;
+	Eq_n r5_r4_n = r9_r8.u6[56];
+	if (r5_r4_n == 0x00)
+		return r9_r8;
+	if (*r5_r4_n.u5 != r9_r8)
+		return r9_r8;
+	word16 r11_n = r11 + 0xC0CC;
+	if (r5_r4_n.u6[4] < 0x1F)
+		return r9_r8;
+	if (r5_r4_n.u6[72] != 0x00)
+	{
+		word16 r1_n;
+		struct Eq_n * r9_r8_n;
+		r7_r6_n();
+		r7_r6_n.u4 = r9_r8_n->t0048.u4;
+		word32 r5_r4_n = r9_r8_n->dw0038;
+		r9 = SLICE(r9_r8_n, word16, 16);
+		r8 = (word16) r9_r8_n;
+		word16 r6_n = (word16) r7_r6_n;
+		word16 r4_n = (word16) r5_r4_n;
+		word16 r5_n = SLICE(r5_r4_n, word16, 16);
+	}
+	word16 r6_n;
+	word16 r5_n;
+	word16 r4_n;
+	Eq_n r9_r8_n;
+	r7_r6_n();
+	r9_r8_n.u6[56] = (struct Eq_n) 0x00;
+	return r9_r8_n;
+}
+
+// 00008B96: void fn00008B96(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register word16 r0, Register Eq_n r6, Register Eq_n r7, Register Eq_n r10, Register Eq_n r13)
+// Called from:
+//      fn00008DC0
+//      fn00009C04
+void fn00008B96(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, word16 r0, Eq_n r6, Eq_n r7, Eq_n r10, Eq_n r13)
+{
+	if (r6 >= r7)
+		fn00008B9C(r3_r2, r5_r4, r9_r8, r0, r7, r10, r13);
+	else
+		fn00008B9A(r3_r2, r5_r4, r9_r8, r0, r6, r7, r13);
+}
+
+// 00008B9A: void fn00008B9A(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register word16 r0, Register Eq_n r6, Register Eq_n r7, Register Eq_n r13)
+// Called from:
+//      fn00008B96
+//      fn0000A57A
+void fn00008B9A(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, word16 r0, Eq_n r6, Eq_n r7, Eq_n r13)
+{
+	fn00008B9C(r3_r2, r5_r4, r9_r8, r0, r7, r6, r13);
+}
+
+// 00008B9C: void fn00008B9C(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register word16 r0, Register Eq_n r7, Register Eq_n r10, Register Eq_n r13)
+// Called from:
+//      fn00008B96
+//      fn0000A57A
+void fn00008B9C(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, word16 r0, Eq_n r7, Eq_n r10, Eq_n r13)
+{
+	Eq_n r13_n;
+	fn0000DB24(r3_r2.u4 + (word32) r0, r5_r4, r13, out r13_n);
+	Eq_n sp_n = <invalid>;
+	word16 r10_n = r10 - r7;
+	if (r7 != 0x00)
+	{
+		Eq_n r5_r4_n = *((word32) sp_n + 4);
+		Eq_n r3_r2_n = r9_r8.u6[72];
+		sp_n.u6[2] = (struct Eq_n) (r7 - (word16) r5_r4_n);
+		struct Eq_n * r13_n;
+		fn0000DB24(r3_r2_n, r5_r4_n, r13_n, out r13_n);
+		r9_r8.u6[0x0044] = (struct Eq_n) r7;
+		Eq_n r0_n = r9_r8.u6[60];
+		r9_r8.u6[64] = (struct Eq_n) r0_n;
+		r13_n->w000A = 0x01;
+		fn00008C74();
+		return;
+	}
+	Eq_n r0_n = r9_r8.u6[0x0044];
+	r9_r8.u6[0x0044] = (struct Eq_n) r0_n;
+	Eq_n r10_n = r0_n.u4 + r10_n;
+	Eq_n r1_n = r9_r8.u6[60];
+	if (r1_n != r0_n)
+	{
+		if (r9_r8.u6[64] >= r1_n)
+			goto l00008BD2;
+	}
+	else
+	{
+		r9_r8.u6[0x0044] = (struct Eq_n) r7;
+		if (r9_r8.u6[64] >= r1_n)
+		{
+l00008BD2:
+			r13_n.u6[0x0A] = (struct Eq_n) 0x01;
+			fn00008C74();
+			return;
+		}
+	}
+	r9_r8.u6[64] = (struct Eq_n) r10_n;
+	goto l00008BD2;
+}
+
+// 00008C74: void fn00008C74()
+// Called from:
+//      fn00008B9C
+//      fn00009C04
+void fn00008C74()
+{
+	__invalidate_cache("i");
+}
+
+// 00008DC0: void fn00008DC0(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r0, Register Eq_n r1, Register Eq_n r6, Register Eq_n r7, Register Eq_n r11, Register Eq_n ra, Stack Eq_n dwArg12, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00009A3E
+//      fn00009C04
+void fn00008DC0(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r0, Eq_n r1, Eq_n r6, Eq_n r7, Eq_n r11, Eq_n ra, Eq_n dwArg12, Eq_n dwArgA0)
+{
+}
+
+// 00009A3E: void fn00009A3E(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r0, Register Eq_n r1, Register Eq_n r6, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg12, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00009C04
+//      fn0000AA58
+void fn00009A3E(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r0, Eq_n r1, Eq_n r6, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg12, Eq_n dwArgA0)
+{
+	fn0000A48C(r3_r2, r5_r4, r9_r8, r0, r1, r6, r7, r11, r12, r13, ra, dwArg12, dwArgA0);
+}
+
+// 00009C04: Register Eq_n fn00009C04(Sequence Eq_n r5_r4, Register Eq_n r6, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Stack Eq_n dwArgFFF2, Stack Eq_n dwArg10004, Stack Eq_n dwArg10024, Stack Eq_n dwArg1002C, Stack Eq_n wArg10032, Stack Eq_n wArg10036, Stack Eq_n wArg1003A, Stack Eq_n wArg1003E, Stack Eq_n wArg10040, Stack Eq_n dwArg10042, Stack Eq_n wArg10046, Stack Eq_n dwArg1004A, Stack Eq_n wArg1004E, Stack Eq_n dwArg10052, Stack Eq_n wArg10056, Stack Eq_n wArg1005A, Stack Eq_n wArg1005E, Stack Eq_n wArg10062, Stack Eq_n wArg10066, Stack Eq_n dwArg1006A, Stack Eq_n wArg1006E, Stack Eq_n dwArg1007A, Stack Eq_n dwArg10082, Stack Eq_n dwArg1008A, Stack Eq_n dwArg10092, Stack Eq_n dwArg1009A, Stack Eq_n dwArg100A2, Stack Eq_n wArg100AA, Stack Eq_n wArg100AE, Register out Eq_n r11Out, Register out Eq_n r12Out)
+// Called from:
+//      fn0000B29A
+Eq_n fn00009C04(Eq_n r5_r4, Eq_n r6, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n dwArgFFF2, Eq_n dwArg10004, Eq_n dwArg10024, Eq_n dwArg1002C, Eq_n wArg10032, Eq_n wArg10036, Eq_n wArg1003A, Eq_n wArg1003E, Eq_n wArg10040, Eq_n dwArg10042, Eq_n wArg10046, Eq_n dwArg1004A, Eq_n wArg1004E, Eq_n dwArg10052, Eq_n wArg10056, Eq_n wArg1005A, Eq_n wArg1005E, Eq_n wArg10062, Eq_n wArg10066, Eq_n dwArg1006A, Eq_n wArg1006E, Eq_n dwArg1007A, Eq_n dwArg10082, Eq_n dwArg1008A, Eq_n dwArg10092, Eq_n dwArg1009A, Eq_n dwArg100A2, Eq_n wArg100AA, Eq_n wArg100AE, union Eq_n & r11Out, union Eq_n & r12Out)
+{
+	word32 r13;
+	Eq_n wArgFFF4 = SLICE(dwArgFFF2, word16, 16);
+	Eq_n v10_n = r5_r4.u6[2];
+	Eq_n r13_n = SEQ(SLICE(r13, word16, 16), v10_n);
+	if (v10_n == 0x00)
+	{
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		fn0000A426(r5_r4, r12, wArgFFF4, out r3_n, out r4_n, out r5_n);
+		r11Out = r11;
+		r12Out = r12;
+		return r10;
+	}
+	else if (r6 > 0x00)
+		fn0000A19A(r6, r10, r12);
+	else
+	{
+		Eq_n r10_n;
+		Eq_n r11_n;
+		Eq_n r12_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r7_n;
+		word16 r8_n;
+		word16 r9_n;
+		word32 r13_n;
+		word32 ra_n;
+		fn0000A110(r5_r4, r6 << 0x02, r10, r11, r12, r13_n, dwArgFFF2, dwArg10004, dwArg10024, dwArg1002C, wArg10032, wArg10036, wArg1003A, wArg1003E, wArg10040, dwArg10042, wArg10046, dwArg1004A, wArg1004E, dwArg10052, wArg10056, wArg1005A, wArg1005E, wArg10062, wArg10066, dwArg1006A, wArg1006E, dwArg1007A, dwArg10082, dwArg1008A, dwArg10092, dwArg1009A, dwArg100A2, wArg100AA, wArg100AE, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r11Out = r11_n;
+		r12Out = r12_n;
+		return r10_n;
+	}
+}
+
+// 0000A0E8: Sequence word32 fn0000A0E8(Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg10008, Stack Eq_n dwArg10010, Stack Eq_n dwArg10028, Stack Eq_n dwArg10030, Stack Eq_n wArg10036, Stack Eq_n wArg1003A, Stack Eq_n wArg1003E, Stack Eq_n wArg10042, Stack Eq_n wArg10044, Stack Eq_n dwArg10046, Stack Eq_n wArg1004A, Stack Eq_n dwArg1004E, Stack Eq_n wArg10052, Stack Eq_n dwArg10056, Stack Eq_n wArg1005A, Stack Eq_n wArg1005E, Stack Eq_n wArg10062, Stack Eq_n wArg10066, Stack Eq_n wArg1006A, Stack Eq_n dwArg1006E, Stack Eq_n wArg10072, Stack Eq_n dwArg1007E, Stack Eq_n dwArg10086, Stack Eq_n dwArg1008E, Stack Eq_n dwArg10096, Stack Eq_n dwArg1009E, Stack Eq_n dwArg100A6, Stack Eq_n wArg100AE, Stack Eq_n wArg100B2, Sequence out Eq_n r9_r8Out, Register out Eq_n r0Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000B29A
+word32 fn0000A0E8(Eq_n r12, Eq_n r13, Eq_n dwArg10008, Eq_n dwArg10010, Eq_n dwArg10028, Eq_n dwArg10030, Eq_n wArg10036, Eq_n wArg1003A, Eq_n wArg1003E, Eq_n wArg10042, Eq_n wArg10044, Eq_n dwArg10046, Eq_n wArg1004A, Eq_n dwArg1004E, Eq_n wArg10052, Eq_n dwArg10056, Eq_n wArg1005A, Eq_n wArg1005E, Eq_n wArg10062, Eq_n wArg10066, Eq_n wArg1006A, Eq_n dwArg1006E, Eq_n wArg10072, Eq_n dwArg1007E, Eq_n dwArg10086, Eq_n dwArg1008E, Eq_n dwArg10096, Eq_n dwArg1009E, Eq_n dwArg100A6, Eq_n wArg100AE, Eq_n wArg100B2, union Eq_n & r9_r8Out, union Eq_n & r0Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r6_n = r12.u6[0x00002414];
+	Eq_n r10_n = r12.u6[9232];
+	if (r12.u6[9196] == 0x00)
+		fn0000A19A(r6_n, r10_n, r12);
+	else
+	{
+		ptr32 r12_n;
+		ptr32 r13_n;
+		word16 r2_n;
+		word16 r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		word16 r8_n;
+		word16 r9_n;
+		ptr32 ra_n;
+		word16 r10_n;
+		word16 r11_n;
+		Eq_n r0_n = fn0000A110(r13, r6_n, r10_n, 0x00, r12, r13, dwArg10010, dwArg10008, dwArg10028, dwArg10030, wArg10036, wArg1003A, wArg1003E, wArg10042, wArg10044, dwArg10046, wArg1004A, dwArg1004E, wArg10052, dwArg10056, wArg1005A, wArg1005E, wArg10062, wArg10066, wArg1006A, dwArg1006E, wArg10072, dwArg1007E, dwArg10086, dwArg1008E, dwArg10096, dwArg1009E, dwArg100A6, wArg100AE, wArg100B2, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+		r9_r8Out.u0 = <invalid>;
+		r0Out = r0_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return SEQ(r3_n, r2_n);
+	}
+}
+
+// 0000A110: Register Eq_n fn0000A110(Sequence Eq_n r5_r4, Register Eq_n r6, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack Eq_n dwArg12, Stack Eq_n dwArg32, Stack Eq_n dwArg3A, Stack Eq_n wArg40, Stack Eq_n wArg44, Stack Eq_n wArg48, Stack Eq_n wArg4C, Stack Eq_n wArg4E, Stack Eq_n dwArg50, Stack Eq_n wArg54, Stack Eq_n dwArg58, Stack Eq_n wArg5C, Stack Eq_n dwArg60, Stack Eq_n wArg64, Stack Eq_n wArg68, Stack Eq_n wArg6C, Stack Eq_n wArg70, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n wArg7C, Stack Eq_n dwArg88, Stack Eq_n dwArg90, Stack Eq_n dwArg98, Stack Eq_n dwArgA0, Stack Eq_n dwArgA8, Stack Eq_n dwArgB0, Stack Eq_n wArgB8, Stack Eq_n wArgBC, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn00009C04
+//      fn0000A0E8
+Eq_n fn0000A110(Eq_n r5_r4, Eq_n r6, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n dwArg00, Eq_n dwArg12, Eq_n dwArg32, Eq_n dwArg3A, Eq_n wArg40, Eq_n wArg44, Eq_n wArg48, Eq_n wArg4C, Eq_n wArg4E, Eq_n dwArg50, Eq_n wArg54, Eq_n dwArg58, Eq_n wArg5C, Eq_n dwArg60, Eq_n wArg64, Eq_n wArg68, Eq_n wArg6C, Eq_n wArg70, Eq_n wArg74, Eq_n dwArg78, Eq_n wArg7C, Eq_n dwArg88, Eq_n dwArg90, Eq_n dwArg98, Eq_n dwArgA0, Eq_n dwArgA8, Eq_n dwArgB0, Eq_n wArgB8, Eq_n wArgBC, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+fn0000A110_entry:
+	struct Eq_n * fp
+	Eq_n ra
+	Eq_n wLoc0E
+	Eq_n dwLoc0A
+	Eq_n dwArgC0
+	Eq_n wLoc06
+	Eq_n dwLoc04
+	Eq_n r5_r4_n = r5_r4
+	Eq_n dwArg50_n = dwArg50
+	Eq_n dwArg00_n = dwArg00
+	goto l0000A110
+l000089B2:
+l000089B4_thunk_fn000061B2:
+l00008C88:
+l00008CA0:
+l00008CA8:
+	ra.u4 = r3_r2_n.u1->t0038.u4
+	branch ra == 0x00 l00008CDE
+l00008CB0:
+	r7_r6_n = *ra.u4
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+l00008CB2:
+	r2_n = (word16) r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r6 = (word16) r7_r6_n
+	r0_n.u0 = ~0x01
+	v278_n = r7_r6_n == r3_r2_n
+	r5_r4_n = r5_r4_n
+l00008CB8:
+	Eq_n r4_n = (word16) r5_r4_n
+	Eq_n r5_n = SLICE(r5_r4_n, word16, 16)
+	branch v278_n l00008CBE
+l00008CBA:
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10
+	r11Out = r11
+	r12Out = r12
+	r13Out = r13
+	raOut = dwLoc04
+	return r0_n
+l00008CBE:
+	r11.u4 = (word32) r11 + 0x0000C0CC
+	branch ra.u6[4] < 0x1F l00008CBA
+l00008CCA:
+	r2_n = r2_n & 0x02
+	branch ra.u8->t0008.u1 == 0x00 l00008CBA
+l00008CD2:
+	ra.u6[24] = (struct Eq_n) r5_r4_n
+	r5_r4_n = r5_r4_n
+l00008CD4:
+	r5_r4_n->w0024 = 0x00
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = (word16) r5_r4_n
+	r5Out.u4 = SLICE(r5_r4_n, word16, 16)
+	r6Out = r6
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10
+	r11Out = r11
+	r12Out = r12
+	r13Out = r13
+	raOut = dwLoc04
+	return 0x00
+l00008CDE:
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10
+	r11Out = r11
+	r12Out = r12
+	r13Out = r13
+	raOut = dwLoc04
+	return ~0x01
+l00008CEE:
+l00008CF8:
+	r11_r10_n = r11_r10_n
+	branch SEQ(r3_n, r2_n)->dw0040 == 0x00 l0000905A
+l00008D02:
+	r1_n.u0 = SEQ(r3_n, r2_n)->t004A.u0
+	goto l00008D06
+l00008D04:
+l00008D06:
+	sp_n = fp - 2
+	dwLoc04 = SEQ((word16) r5_r4_n, wLoc04_n)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = r5_r4_n
+l00008D0C:
+	r13.u4 = r3_r2_n->t0038.u4
+	r11_r10_n = r11_r10_n
+	branch r13 == 0x00 l00009046
+l00008D16:
+	Eq_n r3_r2_n = *r13.u4
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r2_n = (word16) r3_r2_n
+	r0_n.u0 = ~0x01
+	v281_n = r3_r2_n == r12
+	r11_r10_n = r11_r10_n
+	r5_r4_n = r5_r4_n
+l00008D1E:
+	Eq_n r4_n = (word16) r5_r4_n
+	Eq_n r5_n = SLICE(r5_r4_n, word16, 16)
+	sp_n = fp - 0x0A
+	Eq_n r10_n = (word16) r11_r10_n
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16)
+	branch v281_n l00008D26
+l00008D20:
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return r0_n
+l00008D26:
+	r2_n.u0 = 0xC0CC
+	r1_n.u3 = (byte) r13.u6[4].b5728 + 27044
+	r3_r2_n = SEQ(r3_n, 0xC0CC)
+	r11_r10_n = r11_r10_n
+	r5_r4_n = r5_r4_n
+	branch false l00008D20
+l00008D34:
+	ptr32 r9_r8_n
+	r2_n = (word16) r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	word16 r10_n = (word16) r11_r10_n
+	cui16 r11_n = SLICE(r11_r10_n, word16, 16)
+	word16 r8_n = r12.u6[4]
+	branch r8_n != 0x00 l00008D44
+l00008D3A:
+	r0_n.u4 = r13.u6[88]
+	r9_r8_n = SEQ(r9_n, r8_n)
+	branch r0_n >= 0x07 l00009038
+l00008D44:
+	Eq_n r5_r4_n
+	word32 r1_r0_n
+	branch r1_n == 16211 l00008FDC
+l00008D4C:
+	r13.u6[4] = (struct Eq_n) 16211
+	cui16 r0_n = r13.u6[88]
+	r5_r4_n = __a_shift<word32,word16>(r13.u8->dw0050, 0x07)
+	r13.u8->dw0050 = (word32) r5_r4_n
+	r13.u6[88] = (struct Eq_n) (r0_n & 0x07)
+	word16 r4_n = (word16) r5_r4_n
+	r11_n = r11_n & ~0x07
+	branch (r0_n & 0x07) >= 0x07 l00008FFE
+l00008D72:
+	sp_n->t0000.u3 = (byte) (byte) r4_n
+	word16 r2_n = (word16) (r3_r2_n >> 0x18)
+	cu16 r0_n = (r0_n & 0x07) + ~0x07
+	r3_r2_n = r3_r2_n >> 0x18
+	Eq_n r5_r4_n = r3_r2_n
+	branch true l00008DA4
+l00008D82:
+	sp_n->b0001 = (byte) r2_n
+	word16 r2_n = (word16) (r3_r2_n >> 0x28)
+	r3_r2_n = r3_r2_n >> 0x28
+	r5_r4_n = r3_r2_n >> 0x18
+	branch true l00008DA4
+l00008D92:
+	sp_n->b0002 = (byte) r2_n
+	word16 r2_n = (word16) (r3_r2_n >> 0x30)
+	r3_r2_n = r3_r2_n >> 0x30
+	r5_r4_n = r3_r2_n >> 0x28
+	branch r0_n >= 0x17 l00008DA4
+l00008DA0:
+	sp_n->b0003 = (byte) r2_n
+	r3_r2_n.u0 = 0x00
+	r5_r4_n = r3_r2_n >> 0x28
+l00008DA4:
+	r13.u8->dw0050 = (word32) r3_r2_n
+	r13.u6[44] = (struct Eq_n) 0x00
+	r7_n.u0 = 0x07
+	r5_r4_n = r5_r4_n
+l00008DB0:
+	fn00008DC0(r3_r2_n, r5_r4_n, 0xFF, 0x00, 0x00, r6_n, r7_n, 0x04, ra, *((word16) r3_r2_n.u0 + 18), *((word16) r3_r2_n.u0 + 0x00A0))
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l00008DBE_thunk_fn00008DC0:
+l00008FDC:
+	r11_r10_n->dw0040 = SEQ(r1_n, r0_n)
+	r11_r10_n->dw0048 = SEQ(r9_n, r8_n)->dw0048
+	r11_r10_n->dw0050 = SEQ(r9_n, r8_n)->dw0050
+	r11_r10_n->dw0058 = SEQ(r9_n, r8_n)->dw0058
+	r1_r0_n = SEQ(r9_n, r8_n)->dw0060
+	r11_r10_n->dw0060 = r1_r0_n
+	r5_r4_n = r5_r4_n
+	goto l00009000
+l00008FFE:
+	r1_r0_n = SEQ(SLICE(SEQ(0x07, r0_n & 0x07) - 0xAF080034, word16, 16), (r0_n & 0x07) - 0x34)
+l00009000:
+	SEQ(r11_n, r10_n)->dw0068 = r1_r0_n
+	sp_n->wFFFFFFFE = 7076
+	fn0000DB24(r3_r2_n, r5_r4_n, r3_r2_n, out r13)
+	*r13.u5 = SEQ(r11_n, r10_n)
+	Eq_n sp_n = <invalid>
+	r4_n = (word16) r5_r4_n
+	word16 r3_n = SLICE((word32) r5_r4_n + 1292, word16, 16)
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r12 = r5_r4_n
+	Eq_n r1_r0_n = r5_r4_n.u6[0x0068]
+	sp_n = (struct Eq_n *) (sp_n.u6 + 4)
+	ptr32 r3_r2_n = SEQ(r3_n, (word32) r4_n + 1292)
+	branch (word32) r5_r4_n + 1292 <= r1_r0_n l0000906C
+l0000902E:
+	Eq_n r1_r0_n = r5_r4_n.u6[144]
+	word32 r3_r2_n = r3_r2_n - r1_r0_n
+	r2_n = (word16) r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r9_r8_n = r1_r0_n.u4 + ((word32) r13 + 1292)
+l00009038:
+	r13.u6[144] = (struct Eq_n) r9_r8_n
+	r8_n = (word16) r9_r8_n
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r1_r0_n.u4 = sp_n->t0000.u4
+	r11_r10_n = SEQ(r11_n, r10_n)
+	branch r1_r0_n == 0x00 l0000905C
+l00009042:
+	r1_n.u4 = r12.u6[56]
+	r11_r10_n = SEQ(r11_n, r10_n)
+l00009046:
+	Eq_n r0_n = __a_shift<word16,word16>(0x01, r1_n)
+	Eq_n r5_r4_n = r12.u6[72]
+	struct Eq_n * sp_n = sp_n - 2
+	sp_n->t0000.u0 = (wchar_t) r0_n
+	Eq_n r3_r2_n = sp_n->t0004.u4
+	fn0000DB24(r3_r2_n, r5_r4_n, r13, out r13)
+	Eq_n sp_n = <invalid>
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r2_n = (word16) r3_r2_n
+	sp_n = (struct Eq_n *) (sp_n.u6 + 4)
+	r11_r10_n = r11_r10_n
+l0000905A:
+	r1_r0_n.u4 = sp_n->t0000.u4
+	r11_r10_n = r11_r10_n
+l0000905C:
+	r13.u6[72] = (struct Eq_n) r1_r0_n
+	r11_r10_n->t0038.u4 = (cup16 *) r13
+	r10 = (word16) r11_r10_n
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+l00009064:
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10
+	r11Out = r11
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return 0x00
+l0000906C:
+	r5_n.u4 = SLICE((word32) r5_r4_n + 7064, word16, 16)
+	r4_n.u4 = (word32) r4_n + 7064
+	r3_r2_n = SEQ(r3_n, (word32) r4_n + 1292)
+	branch (word32) r5_r4_n + 7064 < r1_r0_n l0000902E
+l00009076:
+	r13.u6[0x0068] = (struct Eq_n) ((word32) r1_r0_n.u0 + ((word32) r13 + 1292))
+	ui32 r1_r0_n = r5_r4_n.u6[112]
+	r13.u6[112] = (struct Eq_n) (r1_r0_n + ((word32) r13 + 1292))
+	r3_r2_n = (word32) r5_r4_n + 1292 - r1_r0_n - r1_r0_n
+	goto l0000902E
+l00009210:
+	struct Eq_n * sp_n = &sp_n->dw00C0 + 0x00003FB4
+	sp_n->dw0098 = SEQ(r4_n, r3_n)
+	r1_r0_n.u4 = sp_n->t0086.u4
+	sp_n->t00A8.u4 = (cup16 *) r1_r0_n
+	word32 r4_r3_n = sp_n->dw008A
+	sp_n->dw00B0 = r4_r3_n
+	r12.u4 = &sp_n->t0086.u0
+	r4_n.u4 = SLICE(r4_r3_n, word16, 16)
+	r3_n = (word16) r4_r3_n
+	r9_r8_n = SEQ(r9_n, r8_n)
+	goto l0000922A
+l00009228:
+	r1_r0_n = SEQ(r1_n, r0_n)
+	r9_r8_n = r9_r8_n | 0xA4EC5400
+l0000922A:
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16)
+	Eq_n r0_n = (word16) r1_r0_n
+	sp_n = fp
+	byte bArg42_n = (byte) r1_n
+	wArg40 = r0_n
+	wArg48 = r0_n
+	byte bArg4A_n = (byte) r1_n
+	Eq_n wArg50_n = r0_n
+	wArg68 = r0_n
+	wArg70 = r0_n
+	int32 r7_r6_n = r7_r6_n
+	r9_r8_n = r9_r8_n
+	r1_n = r1_n
+	branch r5_n == 0x00 l0000927A
+l00009252:
+	r5_n.u4 = (word16) r5_n.u0 + 0x0000FFFF
+	word16 r9_n = SLICE((word32) dwArg98 + 0x00020000, word16, 16)
+	word16 r8_n = (word16) dwArg98
+	r7_r6_n = dwArg98
+l00009262:
+	Eq_n r7_r6_n
+	struct Eq_n * r1_r0_n = fp + ((word32) (*r7_r6_n.u4) * 0x02) / 0x00C4
+	word16 r1_n = SLICE(r1_r0_n, word16, 16)
+	r3_n.u0 = r1_r0_n->t0040.u0
+	SEQ(r1_n + 0x01, (word16) r1_r0_n)->t0040.u0 = (wchar_t) r3_n
+	word16 r6_n = (word16) r7_r6_n
+	word16 r7_n = SLICE(r7_r6_n.u6 + 2, word16, 16)
+	r1_n = r1_n + 0x01
+	r7_r6_n = SEQ(r7_n, r6_n + 0x02)
+	r7_r6_n = SEQ(r7_n, r6_n + 0x02)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	r7_r6_n = r7_r6_n
+	branch (word32) dwArg98 + 0x00020000 != r7_r6_n.u6 + 2 l00009262
+l0000927A:
+	word16 wArg8A_n = SLICE(dwArg88, word16, 16)
+	word16 wArg92_n = SLICE(dwArg90, word16, 16)
+	r6 = (word16) r7_r6_n
+	r7_n.u4 = SLICE(r7_r6_n, word16, 16)
+	Eq_n r8_n = (word16) r9_r8_n
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r10 = wArg7C
+	dwArg50_n = r1_r0_n
+	dwArg60 = dwArg60_n
+	dwArg78 = dwArg78_n
+	dwArg58 = dwArg58_n
+	branch wArg7C != 0x00 l0000A1C8
+l00009284:
+	word32 r5_r4_n
+	int32 r7_r6_n
+	bool v265_n
+	Eq_n r0_n
+	dwArg78_n = r1_r0_n
+	branch r0_n != 0x00 l00009338
+l0000928C:
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch wArg74 != 0x00 l0000A23A
+l00009296:
+	dwArg50_n = r1_r0_n
+	dwArg00_n = dwArg00_n
+	dwArg60 = dwArg60_n
+	dwArg58 = dwArg58_n
+	dwArg50_n = dwArg50_n
+	dwArg78 = dwArg78_n
+	branch r0_n != 0x00 l0000A250
+l000092A0:
+	r0_n = wArg6C
+	v250_n = wArg6C == 0x00
+	r7_r6_n = r7_r6_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch wArg6C != 0x00 l0000A2FA
+l000092AA:
+	r0_n = r0_n
+	v250_n = r0_n == 0x00
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch r0_n != 0x00 l0000A320
+l000092B4:
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch wArg64 != 0x00 l0000A336
+l000092BE:
+	dwArg60_n = r1_r0_n
+	r1_r0_n = SEQ(r1_n, r0_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch r0_n != 0x00 l0000A36C
+l000092C8:
+	dwArg58_n = r1_r0_n
+	r3_r2_n = SEQ(r3_n, r2_n)
+	dwArg50_n = r1_r0_n
+	dwArg00_n = dwArg00_n
+	dwArg58 = dwArg58_n
+	dwArg78 = dwArg78_n
+	dwArg60 = dwArg60_n
+	branch wArg5C != 0x00 l0000A1DE
+l000092D2:
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch r0_n != 0x00 l0000A388
+l000092DC:
+	r0_n = wArg54
+	branch wArg54 != 0x00 l0000A3E6
+l000092E6:
+	r0_n = r0_n
+	branch r0_n != 0x00 l0000A40C
+l000092F0:
+	r0_n = wArg4C
+	v265_n = wArg4C == 0x00
+	branch wArg4C != 0x00 l0000A39A
+l000092FA:
+	branch r0_n != 0x00 l00009300_thunk_fn0000A41C
+	goto l00009304
+l00009300_thunk_fn0000A41C:
+	Eq_n r3_n
+	Eq_n r4_n
+	Eq_n r5_n
+	r2Out = fn0000A41C(SEQ(r5_n, r4_n), wArg7C, r12, wArg02_n, out r3_n, out r4_n, out r5_n)
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l00009302:
+l00009304:
+	r0_n = wArg44
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch wArg44 != 0x00 l0000A346
+l0000930E:
+	struct Eq_n * r3_r2_n = *dwArg32.u5
+	r3_r2_n->w0000 = 0x0140
+	r3_r2_n->t0002.u0 = (wchar_t) r0_n
+	*dwArg32.u5 = (char *) &r3_r2_n->t0006 + 2
+	r3_r2_n->w0004 = 0x0140
+	r3_r2_n->t0006.u0 = (wchar_t) r0_n
+	*dwArg3A.u4 = 0x01
+	r2Out = (word16) r3_r2_n
+	r3Out.u4 = SLICE(r3_r2_n, word16, 16)
+	r4Out = (word16) r3_r2_n + 0x08
+	r5Out.u4 = SLICE((char *) &r3_r2_n->t0006 + 2, word16, 16)
+	r6Out = (word16) dwArg32
+	r7Out = wLoc06
+	r8Out.u4 = SLICE(dwArg3A, word16, 16)
+	r9Out = r9_n
+	r10Out = r10
+	r11Out = r11
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return r0_n
+l00009338:
+	r0_n = wArg44
+	branch wArg44 != 0x00 l0000933E_thunk_fn0000A44A
+	goto l00009342
+l0000933E_thunk_fn0000A44A:
+	fn0000A44A(SEQ(r3_n, r2_n), SEQ(r5_n, r4_n), r9_r8_n, wArg7C, r12, r13, ra, dwArg12, r0_n, dwArgA0)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l00009342:
+	r1_n = r0_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A2CC
+l0000934C:
+	Eq_n r1_r0_n
+	int32 r7_r6_n
+	byte * r1_r0_n
+	word32 r1_r0_n
+	word32 r5_r4_n
+	r13 = SEQ(SLICE(r13, word16, 16), 0x0E)
+	branch wArg4C != 0x00 l0000A14C
+l00009358:
+	r1_n = r0_n
+	v259_n = r0_n < 0x00
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A38E
+l00009362:
+	branch false l0000A1B8
+l00009368:
+	r1_n = wArg54
+	branch wArg54 != 0x00 l0000A1AE
+	goto l00009372
+l0000936E_thunk_fn0000A19A:
+	fn0000A19A(r6, wArg7C, r12)
+l00009372:
+	dwArg00_n = dwArg00_n
+	dwArg60 = dwArg60_n
+	dwArg90 = dwArg90_n
+	dwArg88 = dwArg88_n
+	dwArg58 = dwArg58_n
+	dwArg50_n = dwArg50_n
+	dwArg78 = dwArg78_n
+	dwArgA0 = dwArgA0_n
+	wArg44 = wArg44_n
+	branch false l0000A250
+l00009378:
+	r1_r0_n = SEQ(r0_n, wArg44)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A246
+l00009382:
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch false l0000A2A0
+l00009388:
+	r1_n = wArg5C
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch wArg5C != 0x00 l0000A296
+l00009392:
+	v250_n = false
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch false l0000A2F0
+l00009398:
+	r1_n = r0_n
+	v250_n = r0_n == 0x00
+	r7_r6_n = r7_r6_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A2E6
+l000093A2:
+	r7_r6_n = r7_r6_n
+	r1_r0_n = SEQ(r0_n, wArg44)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	wArg44 = wArg44_n
+	branch false l0000A16A
+l000093AA:
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch wArg64 != 0x00 l0000A3A0
+l000093B4:
+	r1_r0_n = SEQ(wArg64, wArg44)
+	wArg44 = wArg44_n
+	branch false l0000A15A
+l000093BA:
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A3A0
+l000093C4:
+	branch false l0000A148
+l000093CC:
+	r1_n = wArg6C
+	v265_n = wArg6C == 0x00
+	dwArgA0 = dwArgA0_n
+	wArg44 = wArg44_n
+	branch wArg6C != 0x00 l0000A39A
+l000093D6:
+	branch false l0000A138
+l000093DC:
+	r1_n = r0_n
+	v265_n = r0_n == 0x00
+	dwArgA0 = dwArgA0_n
+	wArg44 = wArg44_n
+	branch r0_n != 0x00 l0000A39A
+l000093E6:
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch false l0000A35C
+l000093EC:
+	r7_r6_n = r7_r6_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r1_r0_n = SEQ(wArg74, wArg44)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch wArg74 != 0x00 l0000A352
+l000093F6:
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	dwArg50_n = r1_r0_n
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg60 = dwArg60_n
+	dwArg78 = dwArg78_n
+	dwArg58 = dwArg58_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	wArg44 = wArg44_n
+	branch true l0000A114
+l000093FC:
+	word16 r9_n = 0x0E
+	branch r0_n != 0x00 l0000A394
+l00009408:
+	Eq_n r3_r2_n
+	struct Eq_n * r11_r10_n
+	Eq_n r5_r4_n
+	int32 r7_r6_n
+	bool v275_n
+	r1_n = 0x02
+	r0_n = wArg44 - 0x02
+	r9_r8_n = SEQ(0x0E, r8_n)
+	Eq_n r5_r4_n = SEQ(r5_n, r4_n)
+	r11_r10_n = SEQ(r11, wArg7C)
+	dwArg90 = dwArg90_n
+	branch true l000097F6
+l00009412:
+	struct Eq_n * r5_r4_n
+	struct Eq_n * r5_r4_n
+	Eq_n r9_n
+	int16 r1_n = 0x04
+	r3_n = r0_n - 0x04
+	r9_r8_n = SEQ(0x0E, r8_n)
+	struct Eq_n * r11_r10_n = SEQ(r11, wArg7C)
+	dwArg90 = dwArg90_n
+	branch true l000097E8
+l00009420:
+	r1_n = 0x08
+	r4_n = wArg4C - 0x08
+	struct Eq_n * r3_r2_n = SEQ(r0_n - 0x04, r2_n)
+	Eq_n r9_r8_n = SEQ(0x0E, r8_n)
+	struct Eq_n * r5_r4_n = SEQ(r5_n, wArg4C - 0x08)
+	struct Eq_n * r11_r10_n = SEQ(r11, wArg7C)
+	dwArg90 = dwArg90_n
+	branch true l000097DA
+l0000942E:
+	Eq_n r3_r2_n
+	Eq_n r7_r6_n
+	struct Eq_n * r5_r4_n
+	struct Eq_n * r5_r4_n
+	Eq_n r3_r2_n
+	Eq_n r7_r6_n
+	struct Eq_n * r5_r4_n
+	bool v278_n
+	r1_n = 0x10
+	Eq_n r7_r6_n = SEQ(r7_n, r0_n - 0x10)
+	Eq_n r3_r2_n = SEQ(r0_n - 0x04, r2_n)
+	Eq_n r9_r8_n = SEQ(0x0E, r8_n)
+	struct Eq_n * r11_r10_n = SEQ(r11, wArg7C)
+	dwArg90 = dwArg90_n
+	branch true l000097CC
+l0000943C:
+	int16 r1_n = 0x20
+	Eq_n r7_n = wArg54 - 0x20
+	Eq_n r7_r6_n = SEQ(wArg54 - 0x20, r0_n - 0x10)
+	Eq_n r3_r2_n = SEQ(r0_n - 0x04, r2_n)
+	struct Eq_n * r5_r4_n = SEQ(r5_n, wArg4C - 0x08)
+	Eq_n r9_r8_n = SEQ(0x0E, r8_n)
+	struct Eq_n * r11_r10_n = SEQ(r11, wArg7C)
+	dwArg90 = dwArg90_n
+	branch true l000097BE
+l0000944A:
+	Eq_n r9_r8_n
+	struct Eq_n * r11_r10_n
+	Eq_n r7_r6_n
+	struct Eq_n * r5_r4_n
+	r1_n = 0x40
+	r8_n = r0_n - 0x40
+	branch true l000097B0
+l00009458:
+	Eq_n r3_r2_n
+	struct Eq_n * r5_r4_n
+	Eq_n r6_n
+	Eq_n r1_n = 0x80
+	bool v269_n = true
+	dwArgC0_n = SEQ(wArgC2_n, wArg5C)
+	r11_r10_n = SEQ(wArg5C - 0x80, wArg7C)
+	Eq_n r7_r6_n = SEQ(wArg54 - 0x20, r0_n - 0x10)
+	r9_r8_n = SEQ(0x0E, r0_n - 0x40)
+	dwArgC0 = dwArgC0_n
+	dwArg90 = dwArg90_n
+	branch true l0000979E
+l0000946A:
+	Eq_n wArg80_n = r0_n
+	Eq_n r1_n = 0x0100
+	struct Eq_n * r11_r10_n = SEQ(r0_n - 0x0100, wArg7C)
+	Eq_n r7_r6_n = SEQ(wArg54 - 0x20, r0_n - 0x10)
+	Eq_n r9_r8_n = SEQ(0x0E, r0_n - 0x40)
+	dwArgC0 = dwArgC0_n
+	dwArg90 = dwArg90_n
+	branch true l00009788
+l00009480:
+	Eq_n r9_r8_n
+	r11.u0 = 0x0200
+	branch true l00009770
+l00009498:
+	r11.u0 = 0x0400
+	r1_n = r0_n - 0x0400
+	Eq_n wArg94_n = 0x0400
+	bool v272_n = false
+	dwArgC0 = dwArgC0_n
+	branch true l0000975A
+l000094AE:
+	r1_n.u0 = 0x0800
+	uint32 r3_r2_n = SEQ(r0_n - 0x04, r2_n)
+	dwArgC0 = dwArgC0_n
+	branch true l00009742
+l000094C6:
+	ptr32 r1_r0_n
+	word32 r5_r4_n
+	word32 r5_r4_n
+	wArg94_n = r0_n
+	r11 = r0_n - 0x1000
+	struct Eq_n * r3_r2_n = SEQ(r0_n - 0x04, r2_n)
+	word32 r5_r4_n = SEQ(r5_n, wArg4C - 0x08)
+	dwArgC0 = dwArgC0_n
+	branch true l0000972C
+l000094DC:
+	word32 r5_r4_n
+	Eq_n wArgA0_n = wArg74
+	r11.u0 = 0x2000
+	wArgB8.u0 = 0x2000
+	dwArgC0 = dwArgC0_n
+	branch true l00009714
+l000094F4:
+	r11.u0 = 0x4000
+	wArgB8.u0 = 0x4000
+	dwArg78_n = r1_r0_n
+	word32 r5_r4_n = SEQ(r5_n, wArg4C - 0x08)
+	dwArgC0 = dwArgC0_n
+	branch true l000096FE
+l0000950A:
+	branch true l00009602
+l00009514:
+	branch false l00009528
+l00009518:
+	branch (int16) (r2_n == 0x00) != 0x00 l00009602
+l00009520:
+	branch true l00009602
+l00009528:
+	r12 = dwArgB0
+	r10.u4 = *dwArgB0.u4
+	wArg02_n.u0 = 0x00
+	r6.u4 = r0_n.u4 + (wArg44 - 0x02)
+	Eq_n r8_n = r0_n.u4 + (wArg44 - 0x02)
+	r11.u4 = wArg74.u4 + (wArg44 - 0x02)
+	uint16 r1_n = r0_n.u4 + (wArg44 - 0x02)
+	dwArg3A = SEQ(wArg44 - 0x02, wArg3A_n)
+	dwArg12 = SEQ(wArg44 - 0x02, wArg44 - 0x02)
+	dwArg88_n = SEQ(wArg8A_n, r0_n)
+	dwArg90_n = SEQ(wArg92_n, wArg6C)
+	branch r5_n == 0x00 l000095BA
+l00009590:
+	r7_r6_n = dwArg98
+l00009596:
+	Eq_n r7_r6_n
+	word16 r6_n = (word16) r7_r6_n
+	word16 r0_n = *r7_r6_n.u4
+	branch r0_n == 0x00 l000095F8
+l0000959C:
+	word16 * r1_r0_n = fp + ((word32) r0_n * 0x02) / 0x00C4
+	word16 r4_n = *r1_r0_n
+	*r1_r0_n = 0x01
+	word16 * r1_r0_n = (word32) (r4_n + 0x01) * 0x02 + (word32) (r3_n < ~0x02)
+	*r1_r0_n = 0x00
+	r8_n.u0 = 0x01
+	r1_n = SLICE(r1_r0_n, word16, 16) + 0x01
+	r6 = r6_n + 0x02
+	r7_r6_n = SEQ(SLICE(r7_r6_n.u6 + 2, word16, 16), r6_n + 0x02)
+	branch r5_n != 0x00 l00009596
+l000095BA:
+	branch r10 <= 0x0E l000095C0
+l000095BE:
+	r10.u0 = 0x0E
+l000095C0:
+	wArg94_n = r10
+	branch r10 >= 0x0E l000095CC
+l000095C8:
+	wArg94_n.u0 = 0x0E
+l000095CC:
+	byte bArg6C_n
+	Eq_n dwArgD0_n
+	Eq_n dwArgC8_n
+	Eq_n r5_r4_n = *dwArgA8.u5
+	word16 r5_n = SLICE(r5_r4_n, word16, 16)
+	Eq_n r5_n = SEQ(SLICE(r5_n, byte, 8), bArg4A_n)
+	r3_n = (word16) dwArgA8
+	Eq_n r4_n = (word16) r5_r4_n
+	dwArgC0 = r5_r4_n
+	Eq_n r0_n = __a_shift<word16,word16>(0x01, r5_n)
+	branch r2_n == 0x00 l0000963C
+l000095E2:
+	branch r2_n != 0x01 l0000960C
+l000095E6:
+	r1_r0_n = SEQ(r1_n, r0_n)
+	dwArg50_n = r1_r0_n
+	dwArg00_n.u4 = (uint32) wArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg60 = dwArg60_n
+	dwArg78 = dwArg78_n
+	dwArg58 = dwArg58_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	wArg44 = wArg44_n
+	dwLoc04 = dwLoc04_n
+	branch r0_n >= 0x0354 l0000A1CA
+l000095EE:
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out.u0 = 0x0E
+	r10Out = r10
+	r11Out = r11
+	r12Out = dwArgB0
+	r13Out = dwLoc04_n
+	raOut = ra
+	return 0x01
+l000095F8:
+	r1_n = r1_n + 0x01
+	r6 = r6_n + 0x02
+	r7_r6_n = SEQ(SLICE(r7_r6_n.u6 + 2, word16, 16), r6_n + 0x02)
+	branch r5_n != 0x00 l00009596
+	goto l000095BA
+l00009602:
+	r2Out = r2_n
+	r3Out = r0_n - 0x04
+	r4Out = wArg4C - 0x08
+	r5Out = r5_n
+	r6Out = r0_n - 0x10
+	r7Out = wLoc06
+	r8Out = r0_n - 0x40
+	r9Out.u0 = 0x0E
+	r10Out = wArg7C - 0x4000
+	r11Out.u0 = 0x8000
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return ~0x00
+l0000960C:
+	byte v177_n = (byte) (r2_n == 0x02)
+	bArg6C_n = v177_n
+	branch (int16) (r0_n < 0x0250) == 0x00 l00009626
+l0000961E:
+	branch v177_n != 0x00 l000095EE
+l00009626:
+	wArg50_n.u0 = 0x00
+	dwArgC8_n.u0 = 61786
+	r3_n.u0 = ~0x0E65
+	dwArgD0_n.u0 = 0xF19A
+	goto l00009650
+l0000963C:
+	dwArgC8_n = ra
+	dwArgD0_n = ra
+	wArgA0_n.u0 = 0x14
+	bArg6C_n = v143_n
+l00009650:
+	cup16 r1_n = *ra.u4
+	r12 = r5_r4_n
+	wArgB8.u0 = ~0x00
+	r6.u0 = 0x0E
+	r7_n.u0 = 0x01
+	wArgBC = r0_n
+	wArg80_n.u0 = 0x00
+	r11.u0 = 0x0D
+	r9_n.u0 = 0x00
+	r10.u0 = 0xF3
+	bArg44_n = 0x0D
+	r0_n.u0 = 0x01
+	word16 r1_n = r1_n + 0x01
+	r8_n = SEQ(SLICE(wArg94_n, byte, 8), 0x00)
+	r2_n = wArgA0_n
+	dwArgA0_n = SEQ(wArgA2_n, wArgA0_n)
+	wArg6C = SEQ((byte) (r2_n == 0x01), bArg6C_n)
+	branch wArgA0_n > 0x01 l000096BE
+l000096A2:
+	wArg44_n = SEQ(bArg45_n, 0x0D)
+	branch wArgA0_n > r1_n + 0x01 l00009D90
+l000096A8:
+	ui32 r1_r0_n = (word32) (r1_n + 0x01)
+	word16 * r1_r0_n = (word16) dwArgD0_n.u0 + r1_r0_n * 0x02
+	r8_n = SEQ(SLICE(wArg94_n, byte, 8), *((word16) dwArgC8_n.u0 + r1_r0_n * 0x02))
+	r0_n = (word16) r1_r0_n
+	r1_n = *r1_r0_n
+l000096BE:
+	Eq_n r9_n = __a_shift<word16,word16>(0x01, SEQ(SLICE(r5_n, byte, 8), bArg42_n))
+	word32 r9_r8_n = (word32) (byte) r8_n
+	r10.u0 = 0xF3
+	Eq_n r5_n = __l_shift<word16,word16>(0x00, SEQ(SLICE(r0_n, byte, 8), 0x00))
+	Eq_n r0_n = r9_n
+	word16 r8_n = (word16) r9_r8_n
+	r9_n = SLICE(r9_r8_n, word16, 16)
+l000096E0:
+	struct Eq_n * r3_r2_n = r5_r4_n.u4 + ((word32) r5_n << 0x02)
+	r3_r2_n->w0000 = r8_n
+	r3_r2_n->w0002 = r1_n
+	r0_n = r0_n + r5_n
+	branch r0_n != 0x00 l000096E0
+l000096F4:
+	r11.u0 = 0x0C
+	r0_n = __a_shift<word16,word16>(0x01, ~0x00)
+	r5_r4_n = SEQ(r5_n, 0x00)
+	dwLoc04 = dwLoc04_n
+l000096FE:
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	branch r4_n == 0x00 l00009710
+l00009706:
+	r0_n = r0_n >> 0x0F & r4_n
+	branch r4_n != 0x00 l00009706
+l00009710:
+	r5_r4_n = r5_r4_n
+	branch r0_n == 0x00 l0000971C
+l00009714:
+	r0_n.u4 = (word16) r0_n.u0 + 0x0000FFFF
+	r5_r4_n = SEQ(r5_n, r4_n + r0_n) (alias)
+l0000971C:
+	r8_n = wArg80_n
+	r3_r2_n = (struct Eq_n *) (fp + ((word32) r11 * 0x02) / 0x00C4)
+	r5_r4_n = r5_r4_n
+l0000972C:
+	r1_n.u0 = r3_r2_n->t0040.u0
+	r3_r2_n->t0040.u0 = (wchar_t) r1_n
+	r4_n = (word16) r5_r4_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r9_n = r9_n + ~0x00
+	branch r1_n != 0x00 l00009754
+l0000973A:
+	wArg44 = SEQ(bArg45_n, bArg44_n)
+	r1_r0_n = SEQ(r1_n, r0_n)
+	r5_r4_n = r5_r4_n
+	branch r11 == 0x0E l00009DEC
+l00009740:
+	r3_r2_n = (word32) r8_n
+l00009742:
+	union Eq_n * r3_r2_n = dwArg98.u4 + (word32) (*((word32) ((word32) (r3_n < ~0x02)) + r3_r2_n * 0x02)) * 0x02
+	r4_n = (word16) dwArg98
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r11.u0 = r3_r2_n->u0
+l00009754:
+	r5_n = wArg94_n
+	v272_n = r11 <= wArg94_n
+l0000975A:
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch v272_n l00009CBE
+l0000975E:
+	r0_n = r0_n & wArgBC
+	r8_n = wArgB8
+	dwArg90_n = SEQ(wArg92_n, wArgBC)
+	r9_r8_n = SEQ(r9_n, wArgB8)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch wArgB8 == wArgBC l00009CAA
+	goto l00009772
+l00009770:
+	ra = dwArg00_n
+	sp_n = (struct Eq_n *) &fp->ptr0004
+	r9_r8_n = SEQ(0x0E, r0_n - 0x40)
+	dwArgC0 = dwArgC0_n
+	dwArg90 = dwArg90_n
+l00009772:
+	word16 r9_n = SLICE(r9_r8_n, word16, 16)
+	branch r10 != 0x00 l00009778
+l00009776:
+	r10 = r5_n
+l00009778:
+	sp_n->t0084.u0 = (wchar_t) r11
+	ui32 r3_r2_n = (word32) r9_n
+	r3_n.u4 = SLICE(r3_r2_n << 0x02, word16, 16)
+	r2_n = (word16) r3_r2_n << 0x02
+	r12.u4 = r12.u4 + (r3_r2_n << 0x02)
+	r1_n = r7_n
+	r11_r10_n = SEQ(r11, r10 - r11)
+	r7_r6_n = SEQ(r7_n, r11)
+	r9_r8_n = r9_r8_n
+l00009788:
+	Eq_n r6_n = (word16) r7_r6_n
+	Eq_n r8_n = (word16) r9_r8_n
+	Eq_n r10_n = (word16) r11_r10_n
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16)
+	r1_n = __a_shift<word16,word16>(r1_n, r6_n)
+	branch r11_n >= 0x0E l00009B9C
+l00009790:
+	r3_n.u4 = SLICE(sp_n + ((word32) r11_n * 0x02) / 0x00C4, word16, 16)
+	v269_n = r1_n >= 0x00
+	r11_r10_n = r11_r10_n
+	r7_r6_n = r7_r6_n
+	r9_r8_n = r9_r8_n
+l0000979E:
+	r8_n = (word16) r9_r8_n
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	word16 r7_n = SLICE(r7_r6_n, word16, 16)
+	r10 = (word16) r11_r10_n
+	word16 r6_n = (word16) r7_r6_n
+	r11_r10_n = r11_r10_n
+	r7_r6_n = r7_r6_n
+	r9_r8_n = r9_r8_n
+	branch v269_n l00009B8A
+l000097A2:
+	r6_n = r6_n + 0x01
+	r1_n = r1_n *16 0x02
+	r2_n = r10
+	r3_r2_n = SEQ(r3_n, r10)
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 1)
+	r7_r6_n = SEQ(r7_n, r6_n + 0x01)
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 1)
+	branch r10 >= 0x0E l00009B72
+	goto l000097B2
+l000097B0:
+	sp_n = fp - 2
+	dwLoc04 = SEQ(r2_n, wLoc04_n)
+	r7_r6_n = SEQ(wArg54 - 0x20, r0_n - 0x10)
+	r5_r4_n = SEQ(r5_n, wArg4C - 0x08)
+	r9_r8_n = SEQ(0x0E, r0_n - 0x40)
+	r11_r10_n = SEQ(r11, wArg7C)
+	dwArgC0 = dwArgC0_n
+	dwArg90 = dwArg90_n
+l000097B2:
+	struct Eq_n * r3_r2_n = sp_n + ((word32) r2_n * 0x02) / 0x00C4
+	r7_r6_n = r7_r6_n
+	r3_r2_n = SEQ(SLICE(r3_r2_n, word16, 16), r3_r2_n->w0040 - r1_n)
+	r5_r4_n = r5_r4_n
+	r9_r8_n = r9_r8_n
+	r11_r10_n = r11_r10_n
+l000097BE:
+	r8_n = (word16) r9_r8_n
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r7_n = SLICE(r7_r6_n, word16, 16)
+	r10 = (word16) r11_r10_n
+	word16 r6_n = (word16) r7_r6_n
+	r7_r6_n = r7_r6_n
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	branch r1_n >= 0x00 l00009B60
+l000097C4:
+	r4_n.u0 = 0x02
+	r1_n = r1_n * 0x02
+	r7_r6_n = SEQ(r7_n, r6_n + 0x02)
+	r3_r2_n = SEQ(r3_n, r10)
+	r9_r8_n = r9_r8_n
+	r11_r10_n = r11_r10_n
+l000097CC:
+	r2_n = (word16) r3_r2_n
+	r8_n = (word16) r9_r8_n
+	r10 = (word16) r11_r10_n
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r6 = (word16) r7_r6_n
+	r7_n.u4 = SLICE(r7_r6_n, word16, 16)
+	word16 r4_n = r4_n + r2_n
+	branch r2_n >= 0x0E l00009B50
+l000097D4:
+	r3_r2_n = (struct Eq_n *) (sp_n + ((word32) r2_n * 0x02) / 0x00C4)
+	r9_r8_n = r9_r8_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r11_r10_n = r11_r10_n
+l000097DA:
+	r8_n = (word16) r9_r8_n
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r10 = (word16) r11_r10_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r2_n = r3_r2_n->w0040 - r1_n
+	r5_r4_n = r5_r4_n
+	branch r1_n >= 0x00 l00009B3E
+l000097E6:
+	r4_n.u0 = 0x03
+	r9_r8_n = r9_r8_n
+	r11_r10_n = r11_r10_n
+l000097E8:
+	r10 = (word16) r11_r10_n
+	r4_n = r4_n + r10
+	r6 = r6 + r4_n
+	r8_n = (word16) r9_r8_n
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r1_n = r1_n * 0x02
+	r2_n = r10
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r11_r10_n = r11_r10_n
+	r7_r6_n = SEQ(r7_n, r6)
+	branch r10 >= 0x0E l00009B2E
+l000097F6:
+	struct Eq_n * r3_r2_n
+	Eq_n r5_r4_n
+	struct Eq_n * r3_r2_n = fp + ((word32) r2_n * 0x02) / 0x00C4
+	word16 wLoc04_n = (word16) dwLoc04
+	Eq_n r7_n = SLICE(r7_r6_n, word16, 16)
+	r8_n = (word16) r9_r8_n
+	Eq_n r9_n = SLICE(r9_r8_n, word16, 16)
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r10 = (word16) r11_r10_n
+	r6_n = (word16) r7_r6_n
+	sp_n = fp
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r2_n = r3_r2_n->w0040 - r1_n
+	branch r1_n >= 0x00 l00009B1C
+l00009808:
+	&r6_n.u6->a0000->u0 = r6_n.u6 + 4
+	r1_n = r1_n * 0x02
+	r2_n = r10
+	branch r10 >= 0x0E l00009B0C
+l00009818:
+	struct Eq_n * r3_r2_n = fp + ((word32) r10 * 0x02) / 0x00C4
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r2_n = r3_r2_n->w0040 - r1_n
+	branch r1_n >= 0x00 l00009AFA
+l0000982A:
+	r1_n = r1_n *16 0x02
+	r3_r2_n = SEQ(r3_n, r10)
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 5)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 9)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r10 >= 0x0E l00009AEA
+l0000983A:
+	struct Eq_n * r3_r2_n = fp + ((word32) r10 * 0x02) / 0x00C4
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r2_n = r3_r2_n->w0040 - r1_n *16 0x02
+	wArg44_n = SEQ(bArg45_n, bArg44_n)
+	branch r1_n *16 0x02 >= 0x00 l00009AD8
+l0000984C:
+	Eq_n r6_n = r6_n.u6 + 0x0F
+	Eq_n r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 6)
+	Eq_n r3_r2_n = SEQ(r3_n, r10)
+	branch r10 >= 0x0E l00009AC8
+l0000985C:
+	ui32 r5_r4_n
+	struct Eq_n * r3_r2_n = fp + ((word32) r10 * 0x02) / 0x00C4
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r2_n = r3_r2_n->w0040 - r1_n *16 0x04
+	branch r1_n *16 0x04 >= 0x00 l00009AB6
+l0000986E:
+	ui32 r5_r4_n
+	&r6_n.u6->a0000->u0 = r6_n.u6 + 22
+	branch r10 >= 0x0E l00009AA6
+l0000987E:
+	branch r1_n *16 0x08 >= 0x00 l00009A94
+l00009890:
+	r2_n = r10
+	r4_n.u4 = (word16) r10.u0 + 8
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 30)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+	branch r10 >= 0x0E l00009990
+l0000989E:
+	r2_n = *((char *) &(fp + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n *16 0x10
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 30)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+	branch r1_n *16 0x10 >= 0x00 l00009990
+l000098AE:
+	r2_n = r10
+	r4_n.u4 = (word16) r10.u0 + 9
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 39)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+	branch r10 >= 0x0E l00009990
+l000098BE:
+	r2_n = *((char *) &(fp + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n *16 0x20
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 39)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+	branch r1_n *16 0x20 >= 0x00 l00009990
+l000098CE:
+	r1_n = r1_n *16 0x40
+	r2_n = r10
+	r4_n.u4 = (word16) r10.u0 + 0x0A
+	v262_n = r10 >= 0x0E
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 49)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+l000098DA:
+	Eq_n r9_r8_n
+	int32 r7_r6_n
+	Eq_n dwArg00_n
+	int32 r7_r6_n
+	int32 r7_r6_n
+	int16 r1_n
+	word16 r4_n
+	word16 r7_n = SLICE(r7_r6_n, word16, 16)
+	word16 r6_n = (word16) r7_r6_n
+	Eq_n dwArg00_n = dwArg00_n
+	int32 r7_r6_n = r7_r6_n
+	branch v262_n l00009990
+l000098DC:
+	r2_n = *((char *) &(sp_n + ((word32) r2_n * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n
+	dwArg00_n = dwArg00_n
+	r7_r6_n = r7_r6_n
+	branch r1_n >= 0x00 l00009990
+l000098EC:
+	r4_n = 11
+	dwArg00_n = dwArg00_n
+	r7_r6_n = SEQ(r7_n, r6_n + 11)
+l000098F2:
+	word16 r7_n = SLICE(r7_r6_n, word16, 16)
+	word16 r6_n = (word16) r7_r6_n
+	int16 r1_n = r1_n *16 0x02
+	r2_n = r10
+	r4_n.u4 = r10.u4 + r4_n
+	dwArg00_n = dwArg00_n
+	r7_r6_n = r7_r6_n
+	branch (word16) r13 <= r10 l00009990
+l000098FC:
+	r2_n = *((char *) &(sp_n + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n
+	dwArg00_n = dwArg00_n
+	r7_r6_n = r7_r6_n
+	branch r1_n >= 0x00 l00009990
+l0000990C:
+	r1_n = r1_n * 0x02
+	r2_n = r10
+	&r4_n.u6->a0000->u0 = r10.u6 + 0x0C
+	dwArg00_n = dwArg00_n
+	r7_r6_n = SEQ(r7_n, r6_n + 0x0C)
+	branch (word16) r13 <= r10 l00009990
+l0000991A:
+	r2_n = *((char *) &(sp_n + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n * 0x02
+	dwArg00_n = dwArg00_n
+	r7_r6_n = SEQ(r7_n, r6_n + 0x0C)
+l00009926:
+	word16 r8_n = (word16) r9_r8_n
+	word16 r7_n = SLICE(r7_r6_n, word16, 16)
+	word16 r6_n = (word16) r7_r6_n
+	r7_r6_n = r7_r6_n
+	branch r1_n >= 0x00 l00009990
+l0000992A:
+	int16 r1_n = r1_n * 0x02
+	r2_n = r10
+	&r4_n.u6->a0000->u0 = r10.u6 + 0x0D
+	r7_r6_n = SEQ(r7_n, r6_n + 0x0D)
+	branch (word16) r13 <= r10 l00009990
+l00009938:
+	r2_n = *((char *) &(sp_n + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n
+	r7_r6_n = SEQ(r7_n, r6_n + 0x0D)
+	branch r1_n >= 0x00 l00009990
+l00009948:
+	r2_n = r10
+	&r4_n.u6->a0000->u0 = r10.u6 + 0x0E
+	r7_r6_n = SEQ(r7_n, r6_n + 0x1B)
+	branch (word16) r13 <= r10 l00009990
+l00009956:
+	r2_n = *((char *) &(sp_n + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n * 0x02
+	r7_r6_n = SEQ(r7_n, r6_n + 0x1B)
+	branch r1_n * 0x02 >= 0x00 l00009990
+l00009966:
+	r2_n = r10
+	&r4_n.u6->a0000->u0 = r10.u6 + 0x0F
+	r7_r6_n = SEQ(r7_n, r6_n + 0x2A)
+	branch (word16) r13 <= r10 l00009990
+l00009974:
+	r2_n = *((char *) &(sp_n + ((word32) r10 * 0x02) / 0x00C4)->ptr0004 + 60) - r1_n * 0x04
+	r7_r6_n = SEQ(r7_n, r6_n + 0x2A)
+	branch r1_n * 0x04 >= 0x00 l00009990
+l00009984:
+	sp_n->t0084.u0 = 0x10
+	dwArg00_n = dwArg00_n
+	r9_r8_n = SEQ(0x10, r8_n)
+	r7_r6_n = SEQ(r7_n, r6_n + 0x3A)
+	goto l00009994
+l00009990:
+	sp_n->t0084.u0 = (wchar_t) r4_n
+	dwArg00_n = dwArg00_n
+	r9_r8_n = r9_r8_n
+	r7_r6_n = r7_r6_n
+l00009994:
+	Eq_n r1_r0_n
+	Eq_n r9_r8_n
+	word16 r5_n
+	bool F_n
+	byte v143_n = sp_n->b0042
+	r3_n.u0 = sp_n->t00A4.u0
+	sp_n->t00A4.u0 = (wchar_t) r3_n
+	uint16 wArg3A_n = (word16) dwArg3A
+	word16 wArgC2_n = SLICE(dwArgC0, word16, 16)
+	Eq_n wArg02_n = SLICE(dwArg00_n, word16, 16)
+	word16 wLoc04_n = (word16) dwLoc04
+	Eq_n wArg00_n = (word16) dwArg00_n
+	word16 wArgA2_n = SLICE(dwArgA0, word16, 16)
+	byte bArg44_n = (byte) wArg44
+	byte bArg45_n = SLICE(wArg44, byte, 8)
+	r6 = (word16) r7_r6_n
+	word16 r8_n = (word16) r9_r8_n
+	word16 r9_n = SLICE(r9_r8_n, word16, 16)
+	r2_n = SEQ(SLICE(r2_n, byte, 8), v143_n)
+	int16 r1_n = (int16) (r3_n < 0x0354)
+	branch r1_n == 0x00 l000099BA
+l000099B0:
+	byte v144_n = sp_n->b006D
+	r4_n = SEQ(SLICE(r4_n, byte, 8), v144_n)
+	branch v144_n != 0x00 l00009228
+l000099BA:
+	r5_n.u0 = sp_n->t00A4.u0
+	wArg3A_n = (word16) dwArg3A
+	r1_n.u1 = (int16) (r5_n < 0x0250)
+	branch r1_n == 0x00 l000099D2
+l000099C8:
+	byte v146_n = sp_n->b006C
+	word16 r8_n = SEQ(SLICE(r8_n, byte, 8), v146_n)
+	branch v146_n != 0x00 l00009210
+l000099D2:
+	word32 r5_r4_n = sp_n->dw00C0
+	struct Eq_n * r3_r2_n = ((word32) sp_n->w0090 << 0x02) + r5_r4_n
+	byte v148_n = sp_n->b0042
+	r3_r2_n->b0000 = v148_n
+	r3_r2_n->b0001 = sp_n->b004A
+	word16 r4_n = (word16) r5_r4_n
+	word16 r5_n = SEQ(SLICE(r5_r4_n, byte, 24), v148_n)
+	word32 r9_r8_n = sp_n->dw00C0 - SEQ(r5_n, r4_n)
+	int32 r5_r4_n = SEQ(r5_n, r4_n)
+	r3_r2_n->w0002 = (word16) (r5_r4_n >> 0x1E)
+	sp_n->w00B8 = sp_n->w0090
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r2_n = (word16) r3_r2_n
+	r12 = SEQ(r5_n, r4_n)
+	r8_n = (word16) r9_r8_n
+	F_n = SLICE(cond(r9_r8_n), bool, 5)
+	r5_n = SLICE(r5_r4_n >> 0x1E, word16, 16)
+l00009A00:
+	r9_n.u0 = sp_n->t0080.u0
+	ra.u4 = (int32) F_n
+	r0_n.u0 = sp_n->t0044.u0
+	r5_r4_n = SEQ(r5_n, r0_n)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	branch r0_n != 0x00 l0000A346
+	goto l0000930E
+l00009A2E:
+	r4_n = (word16) r5_r4_n
+	Eq_n r6_n = (word16) r7_r6_n
+	Eq_n r7_n = SLICE(r7_r6_n, word16, 16)
+	sp_n = fp
+	r1_n = wArg48
+	r7_r6_n = r7_r6_n
+	dwArg00_n = dwArg00_n
+	branch wArg48 != 0x00 l00009C88
+l00009A38:
+	fn00009A3E(r3_r2_n, r5_r4_n, SEQ(0x03, r8_n), r0_n, wArg4C, r6_n, r7_n, r11, r12, r13, ra, dwArg12, dwArgA0)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l00009A3C_thunk_fn00009A3E:
+l00009A60:
+l00009A94:
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 7)
+	branch r0_n == 0x00 l00009AAC
+l00009A98:
+	struct Eq_n * r12_n = r12.u4 + ((word32) r0_n << 0x02)
+	r12_n->b0000 = 0x40
+	r11 = SEQ(SLICE(r11, byte, 8), bArg44_n)
+	r12_n->b0001 = bArg44_n
+	r12_n->w0002 = r1_n *16 0x08
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 7)
+	goto l00009AAC
+l00009AA6:
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 7) & ~0x0E432EE3
+	goto l00009AAC
+l00009AA8:
+l00009AAC:
+	r5_r4_n = r5_r4_n
+	goto l00009AB8
+l00009AB6:
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 6)
+	dwArgC0 = SEQ(r3_n, r2_n)
+l00009AB8:
+	r10 = r10 & 88
+	r11 = r11 & ~0x50B0
+	r5_r4_n = r5_r4_n | 3758333807
+	r3_r2_n = dwArgC0
+l00009AC8:
+	*r5_r4_n.u4 = (cup16) r6_n
+	fn00008B96(r3_r2_n, r5_r4_n, r9_r8_n, 0x00, r6_n, r7_n, r10, r13)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra
+	return r0_n
+l00009ACC_thunk_fn00008B96:
+l00009AD8:
+	v275_n = r0_n == 0x00
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r11_r10_n = r11_r10_n
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 5)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 9)
+	wArg44 = wArg44_n
+l00009ADA:
+	r10 = (word16) r11_r10_n
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r6_n = (word16) r7_r6_n
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	r7_r6_n = r7_r6_n
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch v275_n l00009A2E
+l00009ADC:
+	r9_n.u0 = 0x01
+	r3_r2_n = r3_r2_n
+	r11_r10_n = r11_r10_n
+	r5_r4_n = r5_r4_n
+	goto l00008D34
+l00009AE8:
+l00009AEA:
+	r10 = (word16) r11_r10_n
+	r11.u4 = SLICE(r11_r10_n, word16, 16)
+	r2_n = (word16) r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r6_n = (word16) r7_r6_n
+	r13 = SEQ(SLICE(r13, word16, 16), 0x0A)
+	v281_n = r0_n == 0x00
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	r7_r6_n = r7_r6_n
+	dwArg00_n = dwArg00_n
+	branch r0_n == 0x00 l00009A2E
+l00009AF2:
+	r9_n.u0 = 0x01
+	r11_r10_n = r11_r10_n
+	goto l00008D1E
+l00009AFA:
+	word16 r3_n = SLICE(SEQ(r3_n, r2_n) + 0x5ABD0009, word16, 16)
+	r3_r2_n = SEQ(r3_n, r2_n + 0x09)
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 4)
+	r7_r6_n = SEQ(r7_n, r6_n.u6 + 4)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n == 0x00 l00009A2E
+l00009B04:
+	r9_n.u0 = 0x01
+	r3_r2_n = SEQ(r3_n, r2_n + 0x09)
+	r5_r4_n = SEQ(r5_n, (word16) r10.u0 + 4)
+	goto l00008D0C
+l00009B0C:
+	r9_n.u0 = 0x02
+	r5_r4_n = SEQ(SLICE(SEQ(r5_n, (word16) r10.u0 + 4) + 0x56001800, word16, 16), (word16) r10.u0 + 6148)
+	goto l00008D06
+l00009B1C:
+	r13 = SEQ(SLICE(r13, word16, 16), 0x08)
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = r5_r4_n
+	r7_r6_n = r7_r6_n
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch r0_n == 0x00 l00009A2E
+l00009B22:
+	r9_n.u0 = 0x01
+	r12.u4[10902] = (cup16) (byte) fp
+	branch SEQ(r3_n, r2_n) == 0x00 l00009064
+	goto l00008CF8
+l00009B2E:
+	r13.u4[4] = (cup16) 0x0E
+	r0_n.u0 = sp_n->t0044.u0
+	r13 = SEQ(SLICE(r13, word16, 16), 0x06)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r7_r6_n = SEQ(r7_n, r6)
+	dwArg88 = dwArg88_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwArgA0 = dwArgA0_n
+	branch r0_n == 0x00 l00009926
+l00009B3C:
+	r9_n.u0 = 0x01
+	r5_r4_n = SEQ(r5_n, r4_n)
+l00009B3E:
+	r5_r4_n = r5_r4_n
+	goto l00008CD4
+l00009B50:
+	word16 r1_n = sp_n->w0048
+	r13 = SEQ(SLICE(r13, word16, 16), 0x03)
+	r9_n.u0 = 0x03
+	v278_n = r1_n == 0x00
+	r5_r4_n = SEQ(r5_n, r4_n)
+	branch r1_n == 0x00 l00008CB8
+l00009B5E:
+	r9_n.u0 = 0x02
+	r7_r6_n = r7_r6_n
+	r3_r2_n = r3_r2_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+l00009B60:
+	r7_r6_n = r7_r6_n
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	goto l00008CB2
+l00009B68:
+l00009B70:
+	r9_n.u0 = 0x01
+	r3_r2_n = SEQ(r3_n, r2_n.u6 + 2)
+l00009B72:
+	Eq_n r4_n = (word16) r5_r4_n
+	Eq_n r5_n = SLICE(r5_r4_n, word16, 16)
+	Eq_n r2_n = (word16) r3_r2_n
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16)
+	branch r3_r2_n.u1->dw0048 == 0x00 l00008CDE
+	goto l00008CA8
+l00009B80:
+l00009B88:
+	r11_r10_n = SEQ((word32) r11_n + 0x0000FFF3, r10)
+	r7_r6_n = SEQ(r7_n, r6_n >> 0x08)
+	r9_r8_n = SEQ(0x01, r8_n)
+l00009B8A:
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16)
+	Eq_n r10_n
+	Eq_n r2_n
+	Eq_n r3_n
+	Eq_n r4_n
+	Eq_n r5_n
+	Eq_n r6_n
+	Eq_n r7_n
+	Eq_n r8_n
+	Eq_n r9_n
+	Eq_n ra_n
+	word16 r1_n
+	Eq_n r0_n = fn000061B2(r7_r6_n, r9_r8_n, ra, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out ra_n)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12
+	r13Out = r13
+	raOut = ra_n
+	return r0_n
+l00009B9C:
+	fn00008C74()
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out.u0 = 0x01
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12
+	r13Out = r13_n
+	raOut = ra
+	return r0_n
+l00009B9E_thunk_fn00008C74:
+l00009C28:
+	r7_n.u4 = SLICE(r5_r4_n.u6 + 11, word16, 16)
+	dwLoc0A = r9_r8_n + (r5_r4_n + 11)
+	r10 = (word16) r13
+	word16 r8_n = r12.u4[2712]
+	Eq_n r5_n = r12.u4[0x0A96]
+	Eq_n r9_n = __a_shift<word16,word16>(r5_n, r7_n)
+	r12.u4[4616] = (cup16) r9_n
+	r0_n.u0 = 0x10
+	r3_r2_n = SEQ(wLoc0E | r9_n, r2_n)
+	dwLoc0A = SEQ(r9_n, r8_n - 0x10)
+	r5_r4_n = SEQ(r5_n, r8_n)
+	goto l00009F06
+l00009C46:
+	branch ra == dwLoc0A l00009C96
+l00009C48:
+	r3_r2_n = SEQ(wLoc0E, 0x03)
+	branch r1_n > 0x03 l00009F06
+l00009C4E:
+	r13.u4 = r12.u4 + ((int32) wLoc0E << 0x02)
+	word16 r1_n = r13.u4[2644]
+	r4_n.u4 = r13.u4[2642]
+	r5_n = __a_shift<word16,word16>(r4_n, r7_n)
+	r12.u6[9232] = (struct Eq_n) r5_n
+	r1_n = r1_n - 0x10
+	branch r7_n < 0x10 l00009CAA
+l00009C70:
+	ptr32 r3_r2_n = r12.u6[8]
+	int32 r7_r6_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	*((word32) r3_r2_n + r7_r6_n) = (ptr32) (byte) r5_n
+	r0_n = r12.u6[9232] >> 0x08
+	r3_r2_n.u4 = r12.u6[8]
+	r7_r6_n = (int32) r12.u6[20]
+l00009C88:
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	((word32) r3_r2_n + r7_r6_n)->u3 = (byte) r0_n
+	r8_n = (word16) r7_r6_n + 0x01
+	r7_n.u4 = r12.u6[0x00002414]
+l00009C96:
+	r5_n = __l_shift<word16,word16>(r4_n, SEQ(SLICE(r0_n, byte, 8), (byte) r7_n))
+	r12.u6[9232] = (struct Eq_n) r5_n
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+l00009CAA:
+	r12.u6[0x00002414] = (struct Eq_n) r1_n
+	branch r11 == 0x00 l00009D70
+l00009CB4:
+	r4_n.u4 = r13.u8->w14A4
+	r3_n = r4_n
+	dwArg00_n = dwArg00_n
+l00009CBE:
+	Eq_n r3_n = __a_shift<word16,word16>(r3_n, r1_n)
+	r12.u6[9232] = (struct Eq_n) r3_n
+	cui16 r5_n = r5_n | r3_n
+	branch r1_n < 0x10 l00009D0A
+l00009CD0:
+	ptr32 r1_r0_n = r12.u6[8]
+	int32 r7_r6_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	*((word32) r1_r0_n + r7_r6_n) = (ptr32) (byte) r3_n
+	word32 r7_r6_n = r12.u6[20]
+	cu16 r3_n = r12.u6[9232]
+	word32 r1_r0_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	byte * r1_r0_n = r1_r0_n + r7_r6_n
+	*r1_r0_n = (byte) (r3_n >> 0x08)
+	r1_n.u4 = r12.u6[0x00002414]
+	r3_n = __l_shift<word16,word16>(r4_n, SEQ(SLICE(r1_r0_n, byte, 8), (byte) r1_n))
+	r12.u6[9232] = (struct Eq_n) r3_n
+	r8_n = (word16) r7_r6_n + 0x01
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+l00009D0A:
+	r12.u6[0x00002414] = (struct Eq_n) r1_n
+	branch r11 == 0x01 l00009D70
+l00009D14:
+	word16 r6_n = r13.u8->w14A8
+	Eq_n r9_n = r13.u8->w14A4
+	r11 = __a_shift<word16,word16>(r9_n, r1_n)
+	r12.u6[9232] = (struct Eq_n) r11
+	r3_n = r3_n | r11
+	r6 = r6_n - 0x10
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	dwArg00_n = dwArg00_n
+	branch r1_n < 0x10 l0000A2CE
+l00009D32:
+	ptr32 r1_r0_n = r12.u6[8]
+	int32 r3_r2_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	*((word32) r1_r0_n + r3_r2_n) = (ptr32) (byte) r11
+	cu16 r7_n = r12.u6[9232]
+	word32 r1_r0_n = r12.u6[8]
+	word32 r3_r2_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	byte * r1_r0_n = r1_r0_n + r3_r2_n
+	*r1_r0_n = (byte) (r7_n >> 0x08)
+	r12.u6[9232] = (struct Eq_n) __l_shift<word16,word16>(r9_n, SEQ(SLICE(r1_r0_n, byte, 8), r12.u6[0x00002414]))
+	r12.u6[0x00002414] = (struct Eq_n) (r6_n - 0x10)
+l00009D70:
+	branch sp_n->t0000.u0 == 0x00 l0000A028
+l00009D76:
+	sp_n = sp_n - 2
+	sp_n->t0000.u0 = (wchar_t) r10
+	r1_r0_n = SEQ(r1_n, r0_n - 0x10)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r3_n = r3_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+l00009D78:
+	r5_r4_n = r5_r4_n
+	r1_r0_n = SEQ(r1_n, r0_n - 0x10)
+	r3_n = r3_n
+	branch r10 == r3_n l0000A152
+l00009D7E:
+	branch ra.u4 + 2 == sp_n->ptr0004 l0000A03A
+l00009D90:
+	sp_n = fp - 2
+	dwArg00_n.u4 = (uint32) wArg00_n
+	dwArgA0 = dwArgA0_n
+	dwLoc04 = dwLoc04_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+l00009D92:
+	r9_n.u4 = *ra.u4
+	r1_n.u0 = 0x01
+	r11.u0 = 0x0E
+	v275_n = true
+	dwLoc04_n = SEQ(r9_n, wLoc04_n)
+	r3_r2_n = SEQ(r3_n, wArgA0_n)
+	r11_r10_n = (struct Eq_n *) 0x000E00F3
+	r5_r4_n = SEQ(r5_n, 0x00)
+	r7_r6_n = 0x0001000E
+	dwLoc04 = dwLoc04_n
+	dwArg90 = dwArg90_n
+	wArg44 = wArg44_n
+	branch false l00009ADA
+l00009DA0:
+	r7_n.u4 = r5_r4_n.u6[0x00002414]
+	r3_n.u4 = r5_r4_n.u6[9232]
+	r5_r4_n = SEQ(r5_n, 0x00)
+	r1_r0_n = 0x00010001
+	dwArg00_n.u4 = (uint32) wArg00_n
+	dwArgA0 = dwArgA0_n
+	dwLoc04 = dwLoc04_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	branch false l0000A02A
+l00009DAE:
+	r5_r4_n = SEQ(r5_n, 0x00)
+	dwLoc04 = dwLoc04_n
+	wArg44 = wArg44_n
+	branch false l00009E1A
+l00009DB2:
+	word16 r4_n = r5_r4_n.u6[6260]
+	word16 r5_n = r5_r4_n.u6[6256]
+	r5_r4_n.u6[9232] = (struct Eq_n) r3_n
+	r4_n = r4_n - 0x10
+	r1_r0_n = SEQ(SLICE((word32) r5_r4_n + 0x03CC, word16, 16), 0x10)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	dwArg00_n.u4 = (uint32) wArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+	dwLoc04 = dwLoc04_n
+	branch r7_n < 0x10 l0000A24E
+l00009DD6:
+	ptr32 r1_r0_n = r5_r4_n.u6[8]
+	int32 r7_r6_n = r5_r4_n.u6[20]
+	r5_r4_n.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	*((word32) r1_r0_n + r7_r6_n) = (ptr32) (byte) r3_n
+	r8_n = r5_r4_n.u6[9232] >> 0x08
+	r1_r0_n = (ptr32) r5_r4_n.u6[8]
+	r5_r4_n = SEQ(r5_n, r4_n - 0x10)
+	dwLoc04 = dwLoc04_n
+	wArg44 = wArg44_n
+l00009DEC:
+	word32 r3_r2_n = r12.u4[0x0A]
+	r12.u4[0x0A] = (cup16) (r3_r2_n + 0x01)
+	byte * r1_r0_n = r1_r0_n + r3_r2_n
+	*r1_r0_n = (byte) r8_n
+	r12.u4[4616] = (cup16) __l_shift<word16,word16>(SLICE(r5_r4_n, word16, 16), SEQ(SLICE(r1_r0_n, byte, 8), r12.u4[4618]))
+	Eq_n r4_n = (word16) r5_r4_n
+	r12.u4[4618] = (cup16) r4_n
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+	r6 = (word16) r3_r2_n + 0x01
+	r7_n = r4_n
+	r1_n = r11
+	r5_r4_n = r5_r4_n
+l00009E1A:
+	Eq_n r0_n = r12.u4[0x0A94]
+	r8_n.u4 = r12.u4[0x0A92]
+	r9_n = __a_shift<word16,word16>(r8_n, r7_n)
+	r12.u4[4616] = (cup16) r9_n
+	r5_n = SLICE(r5_r4_n, word16, 16)
+	r2_n.u0 = 0x10
+	r0_n = r0_n - 0x10
+	branch r7_n < 0x10 l0000A0C8
+l00009E38:
+	ptr32 r3_r2_n = r12.u4[4]
+	int32 r5_r4_n = r12.u4[0x0A]
+	r12.u4[0x0A] = (cup16) (r5_r4_n + 0x01)
+	*((word32) r3_r2_n + r5_r4_n) = (ptr32) (byte) r9_n
+	r5_r4_n = (struct Eq_n *) r12.u4[0x0A]
+	cu16 r9_n = r12.u4[4616]
+	word32 r3_r2_n = r12.u4[4]
+	r12.u4[0x0A] = (cup16) ((char *) r5_r4_n + 1)
+	byte * r3_r2_n = r5_r4_n + r3_r2_n / 38
+	*r3_r2_n = (byte) (r9_n >> 0x08)
+	Eq_n r7_n = r12.u4[4618]
+	Eq_n r2_n = SEQ(SLICE(r3_r2_n, byte, 8), (byte) r7_n)
+	Eq_n r9_n = __l_shift<word16,word16>(r8_n, r2_n)
+	r12.u4[4616] = (cup16) r9_n
+	r12.u4[4618] = (cup16) (r0_n - 0x10)
+	cui16 r3_n = __a_shift<word16,word16>(r1_n, r0_n - 0x10) | r9_n
+	r12.u4[4616] = (cup16) r9_n
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r6_n = (word16) r5_r4_n + 0x01
+	word16 r7_n = r7_n + (r0_n - 0x10)
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFED
+	branch r0_n >= 0x1E l00009F74
+l00009E8A:
+	r3_r2_n = (ptr32) r12.u4[4]
+	r5_r4_n.u4 = r12.u4[0x0A]
+	r12.u4[0x0A] = (cup16) (r5_r4_n.u6 + 1)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+l00009E94:
+	byte * r3_r2_n
+	((word32) r5_r4_n + r3_r2_n)->u3 = SLICE(r9_r8_n, byte, 16)
+	Eq_n r5_r4_n = r12.u6[20]
+	cu16 r0_n = r12.u6[9232]
+	word32 r3_r2_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1)
+	byte * r3_r2_n = r5_r4_n.u4 + r3_r2_n
+	*r3_r2_n = (byte) (r0_n >> 0x08)
+	Eq_n r0_n = r12.u6[0x00002414]
+	Eq_n r2_n = SEQ(SLICE(r3_r2_n, byte, 8), (byte) r0_n)
+	r1_n = __l_shift<word16,word16>(r1_n, r2_n)
+	r12.u6[9232] = (struct Eq_n) r1_n
+	r12.u6[0x00002414] = (struct Eq_n) r0_n
+	word16 r8_n = (word16) r9_r8_n
+	sp_n = fp - 0x0E
+	Eq_n r5_n = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r7_n.u4 = SLICE(r5_r4_n.u6 + 1, word16, 16)
+	branch wLoc0E != 0x00 l00009C28
+l00009ECE:
+	r11.u0 = 0x00
+	r0_n.u0 = 0x8A
+	r10 = wLoc0E
+	&ra.u6->a0000->u0 = ra.u6 + 4
+	Eq_n r9_n = SLICE(dwLoc0A, word16, 16)
+	r8_n = (word16) dwLoc0A
+	branch ra != dwLoc0A l00009C46
+l00009EE4:
+	r2Out.u0 = 0x03
+	r3Out = wLoc0E
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r10
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wLoc0E
+	r11Out.u0 = 0x00
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return 0x8A
+l00009EEE:
+l00009F06:
+	r2_n = (word16) r3_r2_n
+	r9_n.u4 = SLICE(dwLoc0A, word16, 16)
+	r11.u0 = 0x00
+	Eq_n r8_n = (word16) dwLoc0A
+	r3_r2_n = r3_r2_n
+	r9_r8_n = dwLoc0A
+	branch r7_n > r0_n l0000A204
+l00009F0C:
+	r12.u6[0x00002414] = (struct Eq_n) r8_n
+	r3_n = __a_shift<word16,word16>(~0x01, r8_n) | r9_n
+	r12.u6[9232] = (struct Eq_n) r9_n
+	word16 r7_n = r7_n + r8_n
+	r11.u0 = ~0x01
+	r5_r4_n = r5_r4_n
+	branch r8_n >= 0x0D l0000A296
+l00009F26:
+	ptr32 r1_r0_n = r12.u6[8]
+	int32 r3_r2_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	*((word32) r1_r0_n + r3_r2_n) = (ptr32) (byte) r9_n
+	word32 r3_r2_n = r12.u6[20]
+	cu16 r6_n = r12.u6[9232]
+	word32 r1_r0_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	byte * r1_r0_n = r1_r0_n + r3_r2_n
+	*r1_r0_n = (byte) (r6_n >> 0x08)
+	r0_n.u4 = r12.u6[0x00002414]
+	byte v131_n = (byte) r0_n
+	r1_n = SEQ(SLICE(r1_r0_n, byte, 24), v131_n)
+	Eq_n r11_n = __l_shift<word16,word16>(~0x01, r1_n)
+	r12.u6[9232] = (struct Eq_n) r11_n
+	r12.u6[0x00002414] = (struct Eq_n) r0_n
+	r2_n = (word16) r3_r2_n
+	r5_n.u4 = SLICE(r3_r2_n + 0x01, word16, 16)
+	r4_n = (word16) r3_r2_n + 0x01
+	word16 r8_n = SEQ(SLICE(r8_n, byte, 8), 0x10 - v131_n)
+	r11.u4 = (word32) r11_n + 0x0000FFF3
+	Eq_n r7_r6_n
+	struct Eq_n * r11_r10_n
+	Eq_n r9_r8_n
+	r13 = SEQ(SLICE(r13, word16, 16), 0x04)
+	bool v262_n = r0_n <= 0x00
+	Eq_n dwArg00_n = dwArg00_n
+	Eq_n r9_r8_n = SEQ(r9_n, r8_n)
+	int32 r7_r6_n = SEQ(r7_n, r6_n >> 0x08)
+	branch r0_n == 0x00 l000098DA
+	goto l00009B88
+l00009F74:
+	r12.u4[4618] = (cup16) (r0_n - 0x10)
+	r13 = SEQ(SLICE(r13, word16, 16), 0x05)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	r9_r8_n = SEQ(r9_n, r8_n)
+	r7_r6_n = SEQ(r7_n, r6_n)
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	dwArgA0 = dwArgA0_n
+	branch r0_n == 0x10 l000098F2
+	goto l00009B70
+l00009F88:
+l00009FA4:
+	r12.u6[0x00002414] = (struct Eq_n) r8_n
+	&r11_n.u6->a0000->u0 = r11.u6 + 0x0000FFF6
+	r6_n = __a_shift<word16,word16>(r11_n, r8_n)
+	r12.u6[9232] = (struct Eq_n) r6_n
+	r7_n = r7_n + r8_n
+	r3_r2_n = SEQ(r3_n | r6_n, r2_n)
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+	branch r8_n >= 0x09 l0000A07C
+l00009FBE:
+	ptr32 r1_r0_n = r12.u6[8]
+	int32 r3_r2_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	*((word32) r1_r0_n + r3_r2_n) = (ptr32) (byte) r6_n
+	word32 r3_r2_n = r12.u6[20]
+	cu16 r6_n = r12.u6[9232]
+	word32 r1_r0_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r3_r2_n + 0x01)
+	byte * r1_r0_n = r1_r0_n + r3_r2_n
+	*r1_r0_n = (byte) (r6_n >> 0x08)
+	Eq_n r0_n = r12.u6[0x00002414]
+	byte v75_n = (byte) r0_n
+	Eq_n r11_n = __l_shift<word16,word16>(r11_n, SEQ(SLICE(r1_r0_n, byte, 24), v75_n))
+	r12.u6[9232] = (struct Eq_n) r11_n
+	r12.u6[0x00002414] = (struct Eq_n) r0_n
+	word16 r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r5_n = SLICE(r3_r2_n + 0x01, word16, 16)
+	word16 r4_n = (word16) r3_r2_n + 0x01
+	word16 r2_n = SEQ(SLICE(r3_r2_n, byte, 8), 0x10 - v75_n)
+	r0_n.u0 = sp_n->t0044.u0
+	r3_r2_n = SEQ(r3_n, r2_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r11_r10_n = SEQ((word32) r11_n + 0x0000FFF7, r10)
+	r7_r6_n = SEQ(r7_n, r6_n >> 0x08)
+	dwArg00_n = dwArg00_n
+	goto l00009AEA
+l0000A026:
+	r1_r0_n = (ptr32) r12.u6[8]
+l0000A028:
+	r5_r4_n = (int32) r12.u6[20]
+	r1_r0_n = r1_r0_n
+	dwArg00_n = dwArg00_n
+l0000A02A:
+	r12.u6[20] = (struct Eq_n) (r5_r4_n + 0x01)
+	*((word32) r1_r0_n + r5_r4_n) = (ptr32) (byte) r3_n
+	r3_n = r12.u6[9232] >> 0x08
+	dwArg00_n = dwArg00_n
+l0000A03A:
+	ptr32 r1_r0_n = r12.u6[8]
+	r5_r4_n.u4 = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1)
+	((word32) r5_r4_n + r1_r0_n)->u3 = (byte) r3_n
+	Eq_n r7_n = r12.u6[0x00002414]
+	Eq_n r3_n = __l_shift<word16,word16>(r2_n, SEQ(SLICE(r9_n, byte, 8), (byte) r10))
+	r12.u6[9232] = (struct Eq_n) r3_n
+	r12.u6[0x00002414] = (struct Eq_n) r8_n
+	cui16 r11_n = r11.u6 + 0x0000FFF0
+	r6_n = __a_shift<word16,word16>(r11_n + ~0x09, r8_n)
+	r12.u6[9232] = (struct Eq_n) r6_n
+	r7_n = r7_n - 0x10 + r8_n
+	r11_n = r11_n + ~0x09
+	r3_r2_n = SEQ(r3_n | r6_n, r2_n)
+	dwArg00_n = dwArg00_n
+	branch r8_n < 0x09 l00009FBE
+l0000A07C:
+	r12.u6[0x00002414] = (struct Eq_n) r8_n
+	r7_n.u4 = (word32) r7_n + 7
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	goto l00008DB0
+l0000A0C8:
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFFE
+	r3_n = __a_shift<word16,word16>(r11, r8_n) | r9_n
+	r12.u4[4616] = (cup16) r9_n
+	branch r8_n < 0x0D l00009D76
+l0000A0DC:
+	r12.u4[4618] = (cup16) r8_n
+	r3_n.u4 = (word32) r3_n + 3
+	F_n = SLICE(cond((word32) r3_n + 3), bool, 5)
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	goto l00009A00
+l0000A110:
+	word16 r3_r2_n[] = r12.u6[9200]
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n dwArg50_n = dwArg50_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A114:
+	Eq_n r0_n
+	word16 v10_n = r3_r2_n[r5_r4_n]
+	ra = SEQ(SLICE(ra, word16, 16), v10_n)
+	byte v13_n = r12.u6[9184].a0000[SEQ(SLICE(r5_r4_n, word16, 16) + 0x01, (word16) r5_r4_n) / 4]
+	branch v10_n != 0x00 l0000A1C6
+l0000A138:
+	r12.u6[9232] = (struct Eq_n) r10
+	r0_n.u0 = 0x10
+l0000A148:
+	branch r6 < r0_n l0000A62E
+l0000A14C:
+l0000A14C_thunk_fn0000A62E:
+	fn0000A62E(SEQ(r3_n, wArg00_n), r11, r1_r0_n)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12_n
+	r13Out = r13
+	raOut = ra
+	return r0_n
+l0000A14E:
+	r1_r0_n = (word32) r12.u4[4]
+	r5_r4_n = (word32) r12.u4[0x0A]
+	wArg44 = wArg44_n
+l0000A152:
+	r12.u4[0x0A] = (cup16) (r5_r4_n + 0x01)
+	r1_r0_n = r1_r0_n + r5_r4_n
+l0000A15A:
+	*r1_r0_n = (byte) r10
+	r5_r4_n.u4 = r12.u4[0x0A]
+	r8_n = r12.u4[4616] >> 0x08
+	r1_r0_n = r12.u4[4]
+	r7_r6_n = SEQ(SLICE(r5_r4_n.u6 + 1, word16, 16), (word16) r5_r4_n + 0x01)
+l0000A16A:
+	r12.u4[0x0A] = (cup16) r7_r6_n
+	Mem1966[r1_r0_n + r5_r4_n:byte] = SLICE(r8_n, byte, 0)
+	r10 = __l_shift<word16,word16>(r3_n, SEQ(SLICE(r9_n, byte, 8), (byte) ra))
+	r12.u4[4616] = (cup16) r10
+	r12.u4[4618] = ~0x0F
+	dwArg78 = r1_r0_n
+	r6.u0 = ~0x0F
+	dwArg50_n = SEQ(r1_n, wArg50_n)
+	dwArg00_n = SEQ(wArg02_n, wArg00_n)
+	dwArgA0 = dwArgA0_n
+	dwArg60 = dwArg60_n
+	dwArg58 = dwArg58_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	branch r11 < (r12.u4)[0x000011F6] l0000A110
+l0000A198_thunk_fn0000A19A:
+	fn0000A19A(~0x0F, r10, r12)
+l0000A1B6_thunk_fn0000A5F6:
+	fn0000A5F6(SEQ(r3_n, r2_n), r11, r12, wArg4E)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra
+	return r0_n
+l0000A1B8:
+l0000A1BA:
+	r12.u4[4618] = (cup16) r0_n
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6 + r0_n
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return wArg00_n
+l0000A1C6:
+	word32 r10_r9_n = (word32) v13_n
+	Eq_n r9_n = (word16) r10_r9_n
+	r10.u4 = SLICE(r10_r9_n, word16, 16)
+	Eq_n dwArg50_n = dwArg50_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A1C8:
+	struct Eq_n * r1_r0_n = (int32) r9_n
+	Eq_n dwArg50_n = dwArg50_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A1CA:
+	Eq_n dwLoc04_n
+	word32 r9_r8_n = (word32) r1_r0_n->bF32E
+	struct Eq_n * r3_r2_n = (word32) r13 + 0x0404
+	Eq_n dwArg50_n = dwArg50_n
+	Eq_n r9_r8_n = SEQ(SLICE(r9_r8_n, word16, 16), (word16) r9_r8_n + 0x0101)
+	Eq_n dwArg00_n = dwArg00_n
+l0000A1DE:
+	word16 r0_n = r3_r2_n->w0002
+	Eq_n r1_n = r3_r2_n->t0000.u0
+	r12.u6[9232] = (struct Eq_n) r10
+	Eq_n wArg52_n = SLICE(dwArg50_n, word16, 16)
+	Eq_n wArg50_n = (word16) dwArg50_n
+	struct Eq_n * sp_n = fp
+	word16 r8_n = (word16) r9_r8_n
+	Eq_n r9_n = SLICE(r9_r8_n, word16, 16)
+	r0_n = r0_n - 0x10
+	Eq_n dwArg50_n = dwArg50_n
+	branch r6 < 0x10 l0000A1F4_thunk_fn0000A570
+	goto l0000A1F8
+l0000A1F4_thunk_fn0000A570:
+	fn0000A570(SEQ(r1_n, r0_n - 0x10), 0x10, r8_n, r9_n, r10, r11, r12, r13, ra, wArg40, wArg48, wArg50_n, wArg52_n, dwArg58, dwArg60, wArg68, wArg70, wArg74, dwArg78, dwArg88, dwArg90)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l0000A1F8:
+	word32 r3_r2_n = r12.u6[8]
+	word32 r5_r4_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n + 0x01)
+	byte * r3_r2_n = r3_r2_n + r5_r4_n
+	Eq_n r9_r8_n = r9_r8_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A204:
+	*r3_r2_n = (byte) r10
+	word32 r5_r4_n = r12.u6[20]
+	cu16 r10_n = r12.u6[9232]
+	word32 r3_r2_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n + 0x01)
+	byte * r3_r2_n = r3_r2_n + r5_r4_n
+	*r3_r2_n = (byte) (r10_n >> 0x08)
+	byte v35_n = r12.u6[0x00002414]
+	r10 = __l_shift<word16,word16>(r1_n, SEQ(SLICE(r3_r2_n, byte, 24), v35_n))
+	r12.u6[9232] = (struct Eq_n) r10
+	r12.u6[0x00002414] = (struct Eq_n) r0_n
+	Eq_n r7_n = SLICE(r5_r4_n + 0x01, word16, 16)
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+	r6 = r0_n
+	r9_r8_n = r9_r8_n
+	Eq_n r5_r4_n = SEQ(SLICE(r5_r4_n, word24, 8), 0x10 - v35_n)
+	Eq_n dwArg00_n = dwArg00_n
+l0000A23A:
+	ui32 r1_r0_n = (word32) (word16) r9_r8_n
+	word16 * r3_r2_n = r1_r0_n * 0x02 + 64412
+	uint32 r1_r0_n = SEQ(SLICE(r1_r0_n * 0x02, word16, 16), (word16) r1_r0_n * 0x02)
+	Eq_n r3_r2_n = SEQ(SLICE(r3_r2_n, word16, 16), *r3_r2_n)
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A246:
+	word32 r1_r0_n
+	Eq_n r9_r8_n
+	Eq_n r5_r4_n
+	Eq_n r5_r4_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n r1_n
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16)
+	Eq_n r4_n = (word16) r5_r4_n
+	word16 r0_n = (word16) r1_r0_n
+	Eq_n r2_n = (word16) r3_r2_n
+	Eq_n r3_r2_n = r3_r2_n
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n dwArg00_n = dwArg00_n
+	branch r2_n == 0x00 l0000A2AA
+l0000A24A:
+	r1_r0_n = SEQ(SLICE(r1_r0_n + 0xF2F4, word16, 16), r0_n + ~0x0D0B)
+	r9_r8_n = r9_r8_n
+l0000A24E:
+	r1_n.u4 = SLICE(r1_r0_n, word16, 16)
+	r9_r8_n = r9_r8_n
+	dwArg00_n = dwArg00_n
+l0000A250:
+	r12.u6[9232] = (struct Eq_n) r10
+	sp_n = fp
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r2_n = r2_n - 0x10
+	branch r6 < 0x10 l0000A264_thunk_fn0000A534
+	goto l0000A268
+l0000A264_thunk_fn0000A534:
+	fn0000A534(SEQ(r3_n, r2_n), r9_r8_n, r1_n, r4_n, r7_n, r11, r12, r13, wArg40, wArg48, dwArg50_n, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6_n
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = r10_n
+	r11Out = r11_n
+	r12Out = r12_n
+	r13Out = r13_n
+	raOut = ra_n
+	return r0_n
+l0000A268:
+	ptr32 r1_r0_n = r12.u6[8]
+	int32 r5_r4_n = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n + 0x01)
+	*((word32) r1_r0_n + r5_r4_n) = (ptr32) (byte) r10
+	cu16 r3_n = r12.u6[9232]
+	word32 r1_r0_n = r12.u6[8]
+	r5_r4_n.u4 = r12.u6[20]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n.u6 + 1)
+	byte * r1_r0_n = r5_r4_n.u4 + r1_r0_n
+	*r1_r0_n = (byte) (r3_n >> 0x08)
+	r3_n.u4 = r12.u6[0x00002414]
+	r0_n = SEQ(SLICE(r1_r0_n, byte, 8), (byte) r3_n)
+	dwArg00_n = dwArg00_n
+l0000A296:
+	r10 = __l_shift<word16,word16>(r9_n, r0_n)
+	r12.u6[9232] = (struct Eq_n) r10
+	r6.u0 = ~0x0F
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A2A0:
+	r12.u6[0x00002414] = (struct Eq_n) r6
+	r3_r2_n = SEQ(r3_n + r6, r2_n + r6) (alias)
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A2AA:
+	Eq_n r3_r2_n
+	Eq_n r5_r4_n
+	Eq_n dwArg00_n
+	cup16 v50_n = (word16) ra
+	r9_n = v50_n + ~0x00
+	branch v50_n < 0x0100 l0000A39E
+l0000A2B4:
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A2BE:
+	struct Eq_n * r3_r2_n = sp_n->t0000.u4 + (r3_r2_n << 0x02)
+	ra = r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r1_n.u0 = r3_r2_n->t0002.u0
+	Eq_n r5_r4_n = r5_r4_n
+	r9_r8_n = SEQ(r9_n, r3_r2_n->w0000)
+	dwArg00_n = dwArg00_n
+l0000A2CC:
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n dwArg00_n = dwArg00_n
+l0000A2CE:
+	int32 r7_r6_n
+	int32 r5_r4_n
+	ptr32 r3_r2_n
+	Eq_n r5_r4_n
+	int32 r7_r6_n
+	word32 r3_r2_n
+	Eq_n r3_r2_n
+	Eq_n r1_r0_n
+	Eq_n r5_r4_n
+	struct Eq_n * r11_r10_n
+	Eq_n r3_r2_n
+	struct Eq_n * r11_r10_n
+	Eq_n r3_r2_n
+	int32 r7_r6_n
+	Eq_n r5_r4_n
+	int32 r5_r4_n
+	ptr32 r1_r0_n
+	Eq_n r5_r4_n
+	Eq_n r3_r2_n
+	struct Eq_n * r11_r10_n
+	struct Eq_n * r11_r10_n
+	Eq_n r5_r4_n
+	Eq_n r3_r2_n
+	Eq_n r5_r4_n
+	Eq_n r5_r4_n
+	ptr32 r1_r0_n
+	int32 r7_r6_n
+	struct Eq_n * r11_r10_n
+	struct Eq_n * r11_r10_n
+	int32 r7_r6_n
+	Eq_n r5_r4_n
+	Eq_n r5_r4_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n r9_n
+	Eq_n r8_n
+	Eq_n r6_n
+	Eq_n r5_n
+	Eq_n r4_n
+	Eq_n r8_n
+	Eq_n r7_n
+	Eq_n r1_n
+	Eq_n r3_n
+	Eq_n r3_n
+	Eq_n r4_n
+	Eq_n r7_n
+	Eq_n r7_n
+	Eq_n r11_n
+	Eq_n r3_n
+	Eq_n r0_n
+	Eq_n r2_n
+	bool v281_n
+	Eq_n r2_n
+	Eq_n r3_n
+	Eq_n r4_n
+	Eq_n r0_n
+	Eq_n r3_n
+	r12.u6[9232] = (struct Eq_n) r10
+	r1_n = r1_n - 0x10
+	bool v250_n = r6 == 0x10
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n r9_r8_n = r9_r8_n
+	Eq_n dwArg00_n = dwArg00_n
+	branch r6 < 0x10 l0000A396
+l0000A2E0:
+	r3_r2_n = (ptr32) r12.u6[8]
+	r5_r4_n = (int32) r12.u6[20]
+	r7_r6_n = 0x01
+l0000A2E6:
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + r5_r4_n)
+	*((word32) r3_r2_n + r5_r4_n) = (ptr32) (byte) r10
+	r0_n.u4 = r12.u6[9232]
+	dwArg00_n = dwArg00_n
+l0000A2F0:
+	r0_n = r0_n >> 0x08
+	r3_r2_n = (word32) r12.u6[8]
+	r5_r4_n.u4 = r12.u6[20]
+	r7_r6_n = 0x01
+	dwArg00_n = dwArg00_n
+l0000A2FA:
+	uipr32 r7_r6_n = r5_r4_n.u4 + r7_r6_n
+	r12.u6[20] = (struct Eq_n) r7_r6_n
+	byte * r3_r2_n = r5_r4_n.u4 + r3_r2_n
+	*r3_r2_n = (byte) r0_n
+	byte v57_n = r12.u6[0x00002414]
+	r0_n = SEQ(SLICE(r0_n, byte, 8), v57_n)
+	r10 = __l_shift<word16,word16>((word16) r9_r8_n, r0_n)
+	r12.u6[9232] = (struct Eq_n) r10
+	r12.u6[0x00002414] = (struct Eq_n) r1_n
+	r7_n.u4 = SLICE(r7_r6_n, word16, 16)
+	r3_n = SEQ(SLICE(r3_r2_n, byte, 24), 0x10 - v57_n)
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+	r6 = r1_n
+	dwArg00_n = dwArg00_n
+l0000A320:
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+	branch v250_n l0000A374
+l0000A322:
+	int32 r7_r6_n
+	ptr32 r1_r0_n
+	int32 r5_r4_n
+	byte * r1_r0_n
+	Eq_n r5_r4_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n dwArg00_n
+	Eq_n r0_n
+	ra = ra * 0x02
+	r2_n.u0 = ((Eq_n[]) 0xFB60)[ra].t0000.u0
+	r1_n = SLICE(ra + 0xFB60, word16, 16) (alias)
+	ptr32 r3_r2_n = SEQ(r3_n, r2_n)
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n dwArg00_n = dwArg00_n
+	branch r2_n == 0x00 l0000A388
+l0000A330:
+	ra.u4 = (word32) ra + 62136
+l0000A336:
+	r12.u6[9232] = (struct Eq_n) r10
+	r0_n.u0 = 0x10
+	r2_n = r2_n - 0x10
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A346:
+	r9_n.u4 = SLICE(r9_r8_n, word16, 16)
+	branch r6 < r0_n l0000A382
+l0000A34C:
+	r1_r0_n = (ptr32) r12.u6[8]
+	r5_r4_n = (int32) r12.u6[20]
+	r7_r6_n = 0x01
+l0000A352:
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + r5_r4_n)
+	*((word32) r1_r0_n + r5_r4_n) = (ptr32) (byte) r10
+	r3_n.u4 = r12.u6[9232]
+	dwArg00_n = dwArg00_n
+l0000A35C:
+	word32 r5_r4_n = r12.u6[20]
+	word32 r1_r0_n = r12.u6[8]
+	r12.u6[20] = (struct Eq_n) (r5_r4_n + 0x01)
+	r3_n = r3_n >> 0x08
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r7_n.u4 = SLICE(r5_r4_n + 0x01, word16, 16)
+	r1_r0_n = r1_r0_n + r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A36C:
+	*r1_r0_n = (byte) r3_n
+	r0_n = SEQ(SLICE(r1_r0_n, byte, 8), r12.u6[0x00002414])
+	dwArg00_n = dwArg00_n
+l0000A374:
+	word16 r4_n = SEQ(SLICE(r4_n, byte, 8), 0x10 - (byte) r0_n)
+	r10 = __l_shift<word16,word16>(r9_n, r0_n)
+	r2_n.u4 = r12.u8->w1534
+	r8_n = r12.u8->w1538 - 0x10
+	r12.u6[9232] = (struct Eq_n) r3_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	branch r7_n > 0x10 l0000A026
+	goto l00009FA4
+l0000A382:
+	r12.u6[0x00002414] = (struct Eq_n) r6
+	r3_r2_n = SEQ(r3_n, r2_n + r6) (alias)
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A388:
+	r7_n.u4 = r12.u6[9196]
+	bool v259_n = r11 < r7_n
+	ptr32 r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+l0000A38E:
+	r2_n = (word16) r3_r2_n
+	r3_n.u4 = SLICE(r3_r2_n, word16, 16)
+	r8_n = (word16) r9_r8_n
+	ptr32 r3_r2_n = r3_r2_n
+	Eq_n r5_r4_n = r5_r4_n
+	Eq_n r9_r8_n = r9_r8_n
+	dwArg00_n = dwArg00_n
+	branch v259_n l00009E94
+	goto l00009FA4
+l0000A394:
+	r13.u4[SEQ(r3_n, r2_n)] = (cup16) (byte) wArg44
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r9_r8_n = SEQ(0x0E, r8_n)
+	dwArg00_n = dwArg00_n
+	dwArgA0 = dwArgA0_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg78 = dwArg78_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	wArg44 = wArg44_n
+l0000A396:
+	r12.u4[4618] = (cup16) r6
+	r5_r4_n = r5_r4_n
+	r9_r8_n = r9_r8_n
+	dwArg00_n = dwArg00_n
+	goto l0000A39C
+l0000A39A:
+	dwArg78 = r1_r0_n
+	r7_r6_n = r7_r6_n
+	r5_r4_n = SEQ(r5_n, r4_n)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	dwArg00_n = dwArg00_n
+	dwArg88 = dwArg88_n
+	dwArg90 = dwArg90_n
+	dwArg50_n = dwArg50_n
+	dwArg58 = dwArg58_n
+	dwArg60 = dwArg60_n
+	branch v265_n l0000A3EE
+l0000A39C:
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+	goto l0000A322
+l0000A3A0:
+	r11.u4 = (word16) r11.u0 + 0x0100
+	r3_r2_n = r3_r2_n
+	r5_r4_n = r5_r4_n
+	dwArg00_n = dwArg00_n
+	goto l0000A2BE
+l0000A3E6:
+	branch wArg54 == 0x00 l0000A436
+l0000A3E8:
+	r3_n = r3_n >> 0x08
+	r5_r4_n = (word32) r12.u6[8]
+	r7_r6_n = (int32) r12.u6[20]
+l0000A3EE:
+	r12.u6[20] = (struct Eq_n) (r7_r6_n + 0x01)
+	byte * r5_r4_n = r5_r4_n + r7_r6_n
+	*r5_r4_n = (byte) r3_n
+	Eq_n r6_n = r12.u6[0x00002414]
+	byte v156_n = (byte) r6_n
+	r3_n = SEQ(SLICE(r3_n, byte, 8), v156_n)
+	r0_n = __l_shift<word16,word16>(r0_n, r3_n)
+	r12.u6[9232] = (struct Eq_n) r0_n
+	r9_n.u4 = SLICE(r7_r6_n + 0x01, word16, 16)
+	r8_n = (word16) r7_r6_n + 0x01
+	r5_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r4_n = (word16) r5_r4_n
+	r2_n = SEQ(SLICE(r2_n, byte, 8), v143_n - v156_n)
+	&r11.u6->a0000->u0 = r11.u6 + 0x0000FFF0
+	r6 = r6_n + r1_n
+l0000A40C:
+	r12.u6[0x00002414] = (struct Eq_n) r1_n
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6
+	r7Out = wLoc06
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12
+	r13Out = dwLoc04
+	raOut = ra
+	return r0_n
+l0000A436:
+	Eq_n r2_n
+	Eq_n r3_n
+	Eq_n r13_n
+	Eq_n r4_n
+	Eq_n r5_n
+	Eq_n r0_n = fn0000A438(wArg54, r2_n, r12, wArg02_n, out r2_n, out r3_n, out r4_n, out r5_n, out r13_n)
+	r2Out = r2_n
+	r3Out = r3_n
+	r4Out = r4_n
+	r5Out = r5_n
+	r6Out = r6
+	r7Out = r7_n
+	r8Out = r8_n
+	r9Out = r9_n
+	r10Out = wArg7C
+	r11Out = r11
+	r12Out = r12
+	r13Out = r13_n
+	raOut = ra
+	return r0_n
+l0000A436_thunk_fn0000A438:
+fn0000A110_exit:
+}
+
+// 0000A19A: void fn0000A19A(Register Eq_n r6, Register Eq_n r10, Register Eq_n r12)
+// Called from:
+//      fn00009C04
+//      fn0000A0E8
+void fn0000A19A(Eq_n r6, Eq_n r10, Eq_n r12)
+{
+fn0000A19A_entry:
+	r12.u6[9232] = (struct Eq_n) r10
+	branch r6 > 0x10 l0000A1B6_thunk_fn0000A5F6
+l0000A19A:
+l0000A1AC:
+l0000A1AE:
+fn0000A19A_exit:
+}
+
+// 0000A416: Sequence word32 fn0000A416(Sequence Eq_n r5_r4, Register Eq_n r10, Register Eq_n r12, Stack Eq_n wArgFFA8, Register out Eq_n r4Out, Register out Eq_n r5Out)
+// Called from:
+//      fn0000B218
+//      fn0000B29A
+word32 fn0000A416(Eq_n r5_r4, Eq_n r10, Eq_n r12, Eq_n wArgFFA8, union Eq_n & r4Out, union Eq_n & r5Out)
+{
+	word16 r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r2_n = fn0000A41C(r5_r4, r10, r12, wArgFFA8, out r3_n, out r4_n, out r5_n);
+	r4Out = r4_n;
+	r5Out = r5_n;
+	return SEQ(r3_n, r2_n);
+}
+
+// 0000A41C: Register word16 fn0000A41C(Sequence Eq_n r5_r4, Register Eq_n r10, Register Eq_n r12, Stack Eq_n wArg02, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out)
+// Called from:
+//      fn00009C04
+//      fn0000A416
+word16 fn0000A41C(Eq_n r5_r4, Eq_n r10, Eq_n r12, Eq_n wArg02, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out)
+{
+	r12.u6[0x0000552C] = (struct Eq_n) (byte) r10;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	word16 r2_n = fn0000A426(r5_r4, r12, wArg02, out r3_n, out r4_n, out r5_n);
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	return r2_n;
+}
+
+// 0000A426: Register word16 fn0000A426(Sequence Eq_n r5_r4, Register Eq_n r12, Stack Eq_n wArg02, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out)
+// Called from:
+//      fn00009C04
+//      fn0000A41C
+word16 fn0000A426(Eq_n r5_r4, Eq_n r12, Eq_n wArg02, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out)
+{
+	Eq_n r2_n = *r5_r4.u6[8].t000A;
+	r12.u6[4014] = (struct Eq_n) 0x00;
+	word16 r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	word32 r13_n;
+	fn0000A438(0x023D, r2_n, r12, wArg02, out r2_n, out r3_n, out r4_n, out r5_n, out r13_n);
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	return r2_n;
+}
+
+// 0000A438: Register Eq_n fn0000A438(Register Eq_n r0, Register Eq_n r2, Register Eq_n r12, Stack Eq_n wArg02, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out ptr32 r13Out)
+// Called from:
+//      fn00009C04
+//      fn0000A426
+Eq_n fn0000A438(Eq_n r0, Eq_n r2, Eq_n r12, Eq_n wArg02, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, ptr32 & r13Out)
+{
+	ptr32 r13;
+	Eq_n r3;
+	Eq_n r4;
+	Eq_n r5;
+	r12.u6[8032] = (struct Eq_n) r0;
+	if (r2 >= 0x00)
+	{
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r0_n = fn0000B9B2(r2, wArg02, out r2_n, out r3_n);
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4;
+		r5Out = r5;
+		r13Out = r13;
+		return r0_n;
+	}
+	else
+	{
+		ptr32 r13_n;
+		Eq_n r5_n;
+		Eq_n r4_n = fn0000A442(r12, out r5_n, out r13_n);
+		r2Out = r2;
+		r3Out = r3;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r13Out = r13_n;
+		return r0;
+	}
+}
+
+// 0000A442: Register word16 fn0000A442(Register Eq_n r12, Register out Eq_n r5Out, Register out ptr32 r13Out)
+// Called from:
+//      fn00009C04
+//      fn0000A416
+//      fn0000A438
+word16 fn0000A442(Eq_n r12, union Eq_n & r5Out, ptr32 & r13Out)
+{
+	ptr32 r3_r2;
+	word16 r5;
+	word16 r4;
+	word16 r9;
+	word16 r8;
+	Eq_n r10;
+	Eq_n r13;
+	Eq_n ra;
+	Eq_n r5_n = SLICE(r12.u6 + 0x0FB2, word16, 16);
+	word16 r4_n = (word16) r12 + 0x0FB2;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>;
+	Eq_n stackArg88 = <invalid>;
+	Eq_n stackArg160 = <invalid>;
+	fn0000A44A(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r10, r12, r13, ra, stackArg18, stackArg88, stackArg160);
+	r5Out = r5_n;
+	r13Out = r3_r2;
+	return r4_n;
+}
+
+// 0000A44A: void fn0000A44A(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r10, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg12, Stack Eq_n wArg58, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00009C04
+//      fn0000A416
+void fn0000A44A(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r10, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg12, Eq_n wArg58, Eq_n dwArgA0)
+{
+	Eq_n r0_n = *r3_r2.u4;
+	if (r0_n == 0x00)
+		fn0000A48C(r3_r2, r5_r4, r9_r8, r0_n, ~0x00, 0x00, wArg58, 0x00, r12, r13, ra, dwArg12, dwArgA0);
+	else
+		fn0000A460((uint32) r10, r9_r8);
+}
+
+// 0000A460: void fn0000A460(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8)
+// Called from:
+//      fn0000A44A
+//      fn0000A48C
+void fn0000A460(Eq_n r11_r10, Eq_n r9_r8)
+{
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg18.u0 = <invalid>;
+	stackArg160.u0 = <invalid>;
+	fn0000A48C(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160);
+}
+
+// 0000A48C: void fn0000A48C(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r0, Register Eq_n r1, Register Eq_n r6, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg12, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00008DC0
+//      fn00009A3E
+//      fn0000A416
+//      fn0000A44A
+//      fn0000A460
+//      fn0000A664
+//      fn0000AA58
+void fn0000A48C(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r0, Eq_n r1, Eq_n r6, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg12, Eq_n dwArgA0)
+{
+	word16 r10;
+	r3_r2.u6[2] = (struct Eq_n) r0;
+	if (r7 != 0x01)
+		fn0000A460(SEQ(r11, r10), SEQ(r9, r8));
+	else if (ra == 0x00)
+		fn0000B718(r5_r4.u6 + 1, r9_r8, r1, r6.u6 + 1, r13, dwArg12);
+	else
+		fn0000A4AE(r5_r4.u6 + 1, r12.u6 + 2, r11.u6 + 1, r12, r1, dwArgA0);
+}
+
+// 0000A4AE: void fn0000A4AE(Sequence (ptr32 word16) r5_r4, Sequence (ptr32 Eq_n) r7_r6, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArg98, Stack Eq_n dwArgA0)
+// Called from:
+//      fn0000A48C
+//      fn0000A8CA
+void fn0000A4AE(word16 * r5_r4, struct Eq_n * r7_r6, Eq_n r11, Eq_n r12, Eq_n wArg98, Eq_n dwArgA0)
+{
+	if (r11 < 0x01)
+		fn0000A500(wArg98, dwArgA0);
+	else
+		fn0000A4B8(r5_r4, r7_r6, 0x00, r11, r12, wArg98);
+}
+
+// 0000A4B8: void fn0000A4B8(Sequence (ptr32 word16) r5_r4, Sequence (ptr32 Eq_n) r7_r6, Register word16 r10, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArg98)
+// Called from:
+//      fn0000A48C
+//      fn0000A4AE
+//      fn0000A4D6
+void fn0000A4B8(word16 * r5_r4, struct Eq_n * r7_r6, word16 r10, Eq_n r11, Eq_n r12, Eq_n wArg98)
+{
+	Eq_n r0;
+	if (wArg98 >= 0x01)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg64 = <invalid>;
+		Eq_n stackArg72 = <invalid>;
+		Eq_n stackArg80 = <invalid>;
+		Eq_n stackArg82 = <invalid>;
+		Eq_n stackArg88 = <invalid>;
+		Eq_n stackArg96 = <invalid>;
+		Eq_n stackArg104 = <invalid>;
+		Eq_n stackArg112 = <invalid>;
+		Eq_n stackArg116 = <invalid>;
+		Eq_n stackArg120 = <invalid>;
+		Eq_n stackArg136 = <invalid>;
+		Eq_n stackArg144 = <invalid>;
+		fn0000A59C(r0, r1, r2, r8, r9, r11, r12, r13, ra, stackArg64, stackArg72, stackArg80, stackArg82, stackArg88, stackArg96, stackArg104, stackArg112, stackArg116, stackArg120, stackArg136, stackArg144);
+	}
+	else
+	{
+		r12.u6[8028] = (struct Eq_n) r11;
+		r7_r6->w1668 = r10;
+		*r5_r4 = 0x01;
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg160 = <invalid>;
+		fn0000A4D6(r0, r11, r12, wArg98, stackArg160);
+	}
+}
+
+// 0000A4D6: void fn0000A4D6(Register Eq_n r0, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArg98, Stack Eq_n dwArgA0)
+// Called from:
+//      fn0000A4B8
+//      fn0000A8CA
+void fn0000A4D6(Eq_n r0, Eq_n r11, Eq_n r12, Eq_n wArg98, Eq_n dwArgA0)
+{
+	word16 r5;
+	word16 r4;
+	word16 r10;
+	(r12.u4 + (int32) r0)[2009] = (cup16) 0x00;
+	r12.u6[9208] = (struct Eq_n) (r12.u6[9208].tFFFFFFFE.u6 + 1);
+	r12.u6[0x00002400] = r12.u6[0x00002400];
+	if (r11 >= 0x01)
+		fn0000A4B8(SEQ(r5, r4), SEQ(r7, r6), r10, r11, r12, wArg98);
+	else
+		fn0000A500(wArg98, dwArgA0);
+}
+
+// 0000A500: void fn0000A500(Stack Eq_n wArg98, Stack Eq_n dwArgA0)
+// Called from:
+//      fn0000A48C
+//      fn0000A4AE
+//      fn0000A4D6
+void fn0000A500(Eq_n wArg98, Eq_n dwArgA0)
+{
+	Eq_n r0;
+	Eq_n r1;
+	Eq_n r2;
+	word16 r8;
+	Eq_n r9;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n ra;
+	dwArgA0.u6[4] = (struct Eq_n) wArg98;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg72 = <invalid>;
+	Eq_n stackArg80 = <invalid>;
+	Eq_n stackArg82 = <invalid>;
+	Eq_n stackArg88 = <invalid>;
+	Eq_n stackArg96 = <invalid>;
+	Eq_n stackArg104 = <invalid>;
+	Eq_n stackArg112 = <invalid>;
+	Eq_n stackArg116 = <invalid>;
+	Eq_n stackArg120 = <invalid>;
+	Eq_n stackArg136 = <invalid>;
+	Eq_n stackArg144 = <invalid>;
+	fn0000A59C(r0, r1, r2, r8, r9, r11, r12, r13, ra, stackArg64, stackArg72, stackArg80, stackArg82, stackArg88, stackArg96, stackArg104, stackArg112, stackArg116, stackArg120, stackArg136, stackArg144);
+}
+
+// 0000A534: void fn0000A534(Sequence (ptr32 code) r3_r2, Sequence Eq_n r9_r8, Register Eq_n r1, Register Eq_n r4, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn00009C04
+//      fn0000A59C
+void fn0000A534(<anonymous> * r3_r2, Eq_n r9_r8, Eq_n r1, Eq_n r4, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	ci16 wArg50 = (word16) dwArg50;
+	ci16 wArg78 = (word16) dwArg78;
+	if (wArg78 < wArg50)
+		fn0000B732(SEQ(r11, wArg50), r3_r2, SEQ(wArg78, r4), r9_r8, r1, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+	else
+		fn0000A542();
+}
+
+// 0000A542: void fn0000A542()
+// Called from:
+//      fn0000A534
+//      fn0000A59C
+void fn0000A542()
+{
+	fn0000A57A();
+}
+
+// 0000A570: void fn0000A570(Sequence ptr32 r1_r0, Register Eq_n r2, Register word16 r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n wArg50, Stack Eq_n wArg52, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg68, Stack Eq_n wArg70, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn00009C04
+void fn0000A570(ptr32 r1_r0, Eq_n r2, word16 r8, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n wArg40, Eq_n wArg48, Eq_n wArg50, Eq_n wArg52, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg68, Eq_n wArg70, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	Eq_n r1_n = r13.u4[r1_r0];
+	if ((word16) ra < r10)
+		fn0000A59C(r10, r1_n, r2, r8, r9, r11, r12, r13, ra, wArg40, wArg48, wArg50, wArg52, dwArg58, dwArg60, wArg68, wArg70, wArg74, dwArg78, dwArg88, dwArg90);
+	else
+		fn0000A57A();
+}
+
+// 0000A57A: void fn0000A57A()
+// Called from:
+//      fn0000A570
+//      fn0000A59C
+void fn0000A57A()
+{
+	Eq_n r0;
+	Eq_n r1;
+	Eq_n r2;
+	word16 r8;
+	Eq_n r9;
+	Eq_n r11;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n ra;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg72 = <invalid>;
+	Eq_n stackArg80 = <invalid>;
+	Eq_n stackArg82 = <invalid>;
+	Eq_n stackArg88 = <invalid>;
+	Eq_n stackArg96 = <invalid>;
+	Eq_n stackArg104 = <invalid>;
+	Eq_n stackArg112 = <invalid>;
+	Eq_n stackArg116 = <invalid>;
+	Eq_n stackArg120 = <invalid>;
+	Eq_n stackArg136 = <invalid>;
+	Eq_n stackArg144 = <invalid>;
+	fn0000A59C(r0, r1, r2, r8, r9, r11, r12, r13, ra, stackArg64, stackArg72, stackArg80, stackArg82, stackArg88, stackArg96, stackArg104, stackArg112, stackArg116, stackArg120, stackArg136, stackArg144);
+}
+
+// 0000A59C: void fn0000A59C(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register word16 r8, Register Eq_n r9, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n wArg50, Stack Eq_n wArg52, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg68, Stack Eq_n wArg70, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000A48C
+//      fn0000A570
+//      fn0000A57A
+void fn0000A59C(Eq_n r0, Eq_n r1, Eq_n r2, word16 r8, Eq_n r9, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n wArg40, Eq_n wArg48, Eq_n wArg50, Eq_n wArg52, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg68, Eq_n wArg70, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	word16 r3;
+	Eq_n wArg78_n = (word16) dwArg78;
+	Eq_n r2_n;
+	r2_n = r2;
+	if (r1 <= r9)
+	{
+		if (r1 == r9)
+		{
+			fn0000A57A();
+			return;
+		}
+		word16 * r3_r2_n = r12.u4 + ((int32) r11 + 1434) * 0x02;
+		*r3_r2_n = r8;
+		r2_n = (word16) r3_r2_n;
+		r11 = r0 *16 0x02;
+		if ((word16) ra >= r0)
+		{
+			fn0000A542();
+			return;
+		}
+	}
+	union Eq_n * r1_r0_n = r12.u4 + ((int32) r11 + 1434) * 0x02;
+	r1_r0_n->u0 = (wchar_t) wArg68;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	Eq_n dwArg50_n = SEQ(wArg52, wArg50.u6 + 0x0000FFFE);
+	if (wArg70 != 0x00)
+	{
+		word16 r3_n = (word16) dwArg60 + ~0x01;
+		Eq_n r4_n = dwArg60.u6[0x00011666];
+		fn0000A534(SEQ(r3_n, r2_n), SEQ((word32) r9 + 0x0000FFFF, r8), r1_n, r4_n, wArg70, wArg50.u6 + 0x0000FFFE, r12, r13, wArg40, wArg48, dwArg50_n, dwArg58, dwArg60.u6 + 0x0000FFFE, wArg74, dwArg78, dwArg88, dwArg90);
+	}
+	else
+		fn0000A5F6(SEQ(r3, r2), wArg78_n, r12, (word16) dwArg58);
+}
+
+// 0000A5F6: void fn0000A5F6(Sequence word32 r3_r2, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArg58)
+// Called from:
+//      fn00009C04
+//      fn0000A59C
+void fn0000A5F6(word32 r3_r2, Eq_n r11, Eq_n r12, Eq_n wArg58)
+{
+	Eq_n r3_r2_n = r3_r2 + (int32) r11 * 0x02;
+	ui32 r3_r2_n = SEQ(wArg58, (word16) r3_r2_n);
+	fn0000A62E(r3_r2_n << 0x02, r11, r3_r2_n);
+}
+
+// 0000A62E: void fn0000A62E(Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r11, Stack Eq_n dwArg78)
+// Called from:
+//      fn00009C04
+//      fn0000A5F6
+void fn0000A62E(struct Eq_n * r3_r2, Eq_n r11, Eq_n dwArg78)
+{
+	word16 r5;
+	word16 r4;
+	word16 r9;
+	word16 r8;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n ra;
+	r3_r2->w166C = (word16) dwArg78.u6[0x00001668];
+	if (r11 == 0x02)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg18 = <invalid>;
+		Eq_n stackArg160 = <invalid>;
+		fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160);
+	}
+	else
+		fn0000A664();
+}
+
+// 0000A664: void fn0000A664()
+// Called from:
+//      fn00009C04
+//      fn0000A5F6
+void fn0000A664()
+{
+	word16 r3;
+	word16 r2;
+	word16 r5;
+	word16 r4;
+	word16 r9;
+	word16 r8;
+	Eq_n r0;
+	Eq_n r1;
+	Eq_n r6;
+	Eq_n r7;
+	Eq_n r11;
+	Eq_n r12;
+	Eq_n r13;
+	Eq_n ra;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>;
+	Eq_n stackArg160 = <invalid>;
+	fn0000A48C(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160);
+}
+
+// 0000A6C8: void fn0000A6C8()
+// Called from:
+//      fn0000A8CA
+//      fn0000A8D6
+void fn0000A6C8()
+{
+	fn0000A8D6();
+}
+
+// 0000A8CA: void fn0000A8CA(Sequence (ptr32 Eq_n) r3_r2, Sequence (ptr32 word16) r5_r4, Sequence (ptr32 Eq_n) r7_r6, Register Eq_n r0, Register Eq_n r11, Register Eq_n r12, Stack Eq_n wArg98, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00009C04
+void fn0000A8CA(struct Eq_n * r3_r2, word16 * r5_r4, struct Eq_n * r7_r6, Eq_n r0, Eq_n r11, Eq_n r12, Eq_n wArg98, Eq_n dwArgA0)
+{
+	word16 r2 = (word16) r3_r2;
+	word16 r4 = (word16) r5_r4;
+	if (r2 != 0x00)
+	{
+		if (r3_r2->b0FB2 < (byte) r4)
+			fn0000A4AE(r5_r4, r7_r6, r11, r12, wArg98, dwArgA0);
+		else
+			fn0000A4D6(r0, r11, r12, wArg98, dwArgA0);
+	}
+	else if (r3_r2->b0FB2 < (byte) r4)
+		fn0000A6C8();
+	else
+		fn0000A8D6();
+}
+
+// 0000A8D6: void fn0000A8D6()
+// Called from:
+//      fn0000A6C8
+//      fn0000A8CA
+void fn0000A8D6()
+{
+	fn0000A6C8();
+}
+
+// 0000AA58: void fn0000AA58(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r0, Register Eq_n r1, Register Eq_n r6, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg12, Stack Eq_n dwArgA0)
+// Called from:
+//      fn00009C04
+//      fn0000A6C8
+void fn0000AA58(Eq_n r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r0, Eq_n r1, Eq_n r6, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg12, Eq_n dwArgA0)
+{
+}
+
+// 0000AE66: void fn0000AE66(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000B73A
+void fn0000AE66(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+fn0000AE66_entry:
+	struct Eq_n * fp
+	Eq_n ra
+	word16 wArg6A
+	ci16 wArg80
+	Eq_n wArg70
+	Eq_n r2
+	word16 r3
+	int16 r4
+	word16 r5
+	Eq_n r0
+	Eq_n r1
+	Eq_n r6
+	struct Eq_n * sp_n = fp
+	Eq_n r9_r8_n = r9_r8
+	Eq_n r11_r10_n = r11_r10
+	Eq_n dwArg58_n = dwArg58
+	r12_n = r12
+	r7_n = r7
+	dwArg58_n = ra
+	r13_n = r13
+	goto l0000AE66
+l0000A56E:
+l0000A570:
+l0000A578_thunk_fn0000A59C:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg64 = <invalid>
+	Eq_n stackArg72 = <invalid>
+	Eq_n stackArg80 = <invalid>
+	Eq_n stackArg82 = <invalid>
+	Eq_n stackArg88 = <invalid>
+	Eq_n stackArg96 = <invalid>
+	Eq_n stackArg104 = <invalid>
+	Eq_n stackArg112 = <invalid>
+	Eq_n stackArg116 = <invalid>
+	Eq_n stackArg120 = <invalid>
+	Eq_n stackArg136 = <invalid>
+	Eq_n stackArg144 = <invalid>
+	fn0000A59C(r0, r1, r2, r8, r9, r11, r12, r13, ra, stackArg64, stackArg72, stackArg80, stackArg82, stackArg88, stackArg96, stackArg104, stackArg112, stackArg116, stackArg120, stackArg136, stackArg144)
+	return
+l0000A57A:
+	union Eq_n * r5_r4_n = r13_n.u4 + (SEQ(r5_n, r4_n) << 0x02)
+	r1_n = (int16) (r1_n.u6 + 1)
+	r7_n = r5_n
+	r6_n = r4_n
+	word16 r5_n = SLICE(r5_r4_n, word16, 16)
+	r4_n.u0 = r5_r4_n->u0
+	r11_r10_n = SEQ(0x01, wArg58_n)
+	branch r1_n.u6 + 1 > r4_n l0000ACA8
+l0000A594:
+	branch r1_n.u6 + 1 == r4_n l0000AB56
+l0000A59A:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg64 = <invalid>
+	Eq_n stackArg72 = <invalid>
+	Eq_n stackArg80 = <invalid>
+	Eq_n stackArg82 = <invalid>
+	Eq_n stackArg88 = <invalid>
+	Eq_n stackArg96 = <invalid>
+	Eq_n stackArg104 = <invalid>
+	Eq_n stackArg112 = <invalid>
+	Eq_n stackArg116 = <invalid>
+	Eq_n stackArg120 = <invalid>
+	Eq_n stackArg136 = <invalid>
+	Eq_n stackArg144 = <invalid>
+	fn0000A59C(r0, r1, r2, r8, r9, r11, r12, r13, ra, stackArg64, stackArg72, stackArg80, stackArg82, stackArg88, stackArg96, stackArg104, stackArg112, stackArg116, stackArg120, stackArg136, stackArg144)
+	return
+l0000A59A_thunk_fn0000A59C:
+l0000A672:
+l0000A684:
+	struct Eq_n * r11_r10_n
+	struct Eq_n * r5_r4_n
+	struct Eq_n * dwArg68_n
+	Eq_n r6_n
+	Eq_n r8_n
+	Eq_n r4_n
+	ci16 r9_n
+	Eq_n r2_n
+	struct Eq_n * r5_r4_n = r12_n.u4 + (int32) r10_n * 0x02
+	ci16 r3_n = SLICE(r1_r0_n, word16, 16)
+	Eq_n r1_n = r13_n.u4[r1_r0_n * 0x04]
+	branch r10_n >= (word16) dwArg58_n l0000A6C0
+l0000A69E:
+	cup16 * r5_r4_n = r13_n.u4 + (r5_r4_n << 0x02)
+	&r1_n.u6->a0000->u0 = r1_n.u6 + 1
+	wArg40.u4 = r5_r4_n->w166C
+	r7_n.u4 = SLICE(r5_r4_n, word16, 16)
+	r6_n = (word16) r5_r4_n
+	word16 r5_n = SLICE(r5_r4_n, word16, 16)
+	cup16 r4_n = *r5_r4_n
+	branch r1_n.u6 + 1 > r4_n l0000AB70
+l0000A6B8:
+	branch r1_n.u6 + 1 == r4_n l0000AA66
+	goto l0000A6BE
+l0000A6BA_thunk_fn0000AA58:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000A6BE:
+	r5_r4_n = SEQ(r5_n, r4_n)
+l0000A6C0:
+	struct Eq_n * r5_r4_n = r5_r4_n
+	branch r1_n > r9_n l0000A6E0
+l0000A6C4:
+	branch r1_n == r9_n l0000AAEA
+l0000A6C8:
+l0000A6C8_thunk_fn0000AA58:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000A6CA:
+	r12_n.u4[((int32) r11_n + 1434) * 0x02] = (cup16) r8_n
+	r10_n = 0x02
+	r11_n.u0 = 0x04
+	r1_r0_n = SEQ(r1_n, 0x04)
+	r5_r4_n = SEQ(r5_n, r4_n)
+	branch v34_n > 0x02 l0000A684
+l0000A6E0:
+	struct Eq_n * r3_r2_n
+	r12_n.u4[((int32) r11_n + 1434) * 0x02] = (cup16) wArg48
+	word16 r2_n = r12_n.u10->w166C
+	dwArg88.u6[0x00001668] = (struct Eq_n) wArg80
+	r12_n.u6[8032] = (struct Eq_n) wArg74
+	dwArg90.u6[0x00001668] = (struct Eq_n) r2_n
+	struct Eq_n * r7_r6_n = r13_n.u4 + (SEQ(wArg74, wArg48) << 0x02)
+	*dwArg60.u4 = r7_r6_n->w0000
+	struct Eq_n * r1_r0_n = r12_n.u4 + SEQ(wArg74, wArg48)
+	r5_r4_n = (struct Eq_n *) (r13_n.u4 + (r5_r4_n << 0x02))
+	cu8 v36_n = r1_r0_n->b0FB2
+	word32 r3_r2_n = r5_r4_n + r12_n
+	Eq_n v34_n = (word16) dwArg58_n
+	wArg48 = wArg74
+	r7_n.u4 = SLICE(r7_r6_n, word16, 16)
+	uint16 r4_n = (word16) r5_r4_n
+	wArg80 = (word16) r13_n
+	dwArg58_n = dwArg60
+	r13_n = r13_n - dwArg60
+	r11_n.u4 = SLICE(dwArg60, word16, 16)
+	Eq_n r10_n = (word16) dwArg60
+	Eq_n r0_n = SEQ(SLICE(r1_r0_n, byte, 8), v36_n)
+	r3_n = SLICE(r3_r2_n, word16, 16)
+	word16 r2_n = (word16) r3_r2_n
+	branch r3_r2_n->b0FB2 > v36_n l0000AAFC
+l0000A754:
+	dwArg50.u6[0x0FB2] = (struct Eq_n) v36_n
+	r5_r4_n->w0002 = (word16) wArg58_n
+	r7_r6_n->t0002.u0 = (wchar_t) wArg58_n
+	r12_n.u10->w166C = (word16) wArg58_n
+	word16 r1_n = (word16) dwArg50
+	r3_r2_n = SEQ(wArg58_n, wArg58_n)
+	branch v34_n == 0x01 l0000AB26
+l0000A77A:
+	Eq_n v45_n = *dwArg60.u4
+	word16 r11_n = 0x01
+	r9_n = v45_n
+	dwArg58_n = SEQ(SLICE(dwArg60, word16, 16), v34_n)
+	int32 r1_r0_n = SEQ(r1_n + 0x01, v34_n)
+l0000A78A:
+	struct Eq_n * r5_r4_n = r12_n.u6 + 4
+	Eq_n r4_n = (word16) r5_r4_n
+	r8_n.u0 = r5_r4_n->t1668.u0
+	Eq_n r1_n = r13_n.u4[r1_r0_n * 0x04]
+	branch v34_n <= 0x02 l0000A7C4
+l0000A7A4:
+	Eq_n r6_n = r5_r4_n->t166C.u0
+	&r1_n.u6->a0000->u0 = r1_n.u6 + 1
+	wArg40 = r6_n
+	r4_n.u4 = r13_n.u4[r5_r4_n * 0x04]
+	branch r1_n.u6 + 1 > r4_n l0000AA56
+l0000A7BE:
+	branch r1_n.u6 + 1 == r4_n l0000A8AA
+l0000A7C2:
+l0000A7C4:
+	branch r1_n > v45_n l0000A7E2
+l0000A7C8:
+	branch r1_n == v45_n l0000A8C0
+l0000A7CC:
+	r12_n.u4[((int32) r11_n + 1434) * 0x02] = (cup16) r8_n
+	r11_n = 0x04
+	r1_r0_n = SEQ(r1_n, 0x04)
+	branch v34_n > 0x02 l0000A78A
+l0000A7E2:
+	r12_n.u4[((int32) r11_n + 1434) * 0x02] = (cup16) wArg58_n
+	&dwArg78.u6->a0000->u0 = dwArg78.u6 + 0x0000FFFE
+	r3_n = r12_n.u10->w166C
+	Eq_n r5_n = dwArg78.u6[0x00001668]
+	r12_n.u10->w166C = (word16) r5_n
+	word16 r0_n = (word16) dwArg78 + ~0x01
+	word16 r1_n = (word16) dwArg60 + 0x04
+	&dwArg60.u6->a0000->u0 = dwArg60.u6 + 4
+	r2_n = (word16) dwArg50 + 0x01
+	&dwArg50.u6->a0000->u0 = dwArg50.u6 + 1
+	&dwArg88.u6->a0000->u0 = dwArg88.u6 + 0x0000FFFC
+	&dwArg90.u6->a0000->u0 = dwArg90.u6 + 0x0000FFFC
+	wArg80 = r3_n
+	r9_n = (ci16) ((word32) v34_n + 0x0000FFFF)
+	Eq_n r4_n = (word16) dwArg78
+	wArg48 = r5_n
+	dwArg68_n = SEQ(wArg6A, wArg58_n)
+	branch v34_n != 0x02 l0000A472
+	goto l0000A85C
+l0000A858_thunk_fn0000A460:
+	fn0000A460(SEQ(r11, r10), SEQ(r9, r8))
+	return
+l0000A85C:
+	r11_n.u0 = 0x01
+	ui32 r1_r0_n = SEQ(r1_n, r0_n)
+	Eq_n r1_n = r13_n.u4[r1_r0_n * 0x04]
+	r0_n = wArg58_n
+	branch v34_n < wArg58_n l0000A59C
+	goto l0000A57A
+l0000A8AA:
+	byte v63_n = Mem523[r5_r4_n + r12_n + 0x0FB2:byte]
+	r4_n = SEQ(SLICE(r4_n, byte, 8), v63_n)
+	branch (r12_n.u4 + r1_r0_n)[2009] < v63_n l0000A7C2
+l0000A8BA:
+	r8_n = r6_n
+	goto l0000A7C4
+l0000A8C0:
+	cu8 v57_n = dwArg50.u6[0x0FB2]
+	struct Eq_n * r3_r2_n = r12_n.u4 + (int32) r8_n
+	word16 r5_n = (word16) dwArg50
+	word16 r4_n = SEQ(SLICE(r4_n, byte, 8), v57_n)
+	cu8 v58_n = r3_r2_n->b0FB2
+	word16 r1_n = SEQ(SLICE(r1_n, byte, 8), v58_n)
+	branch v58_n < v57_n l0000A6C8
+	goto l0000A8D0_thunk_fn0000A8D6
+l0000A8CA:
+l0000A8D0_thunk_fn0000A8D6:
+	fn0000A8D6()
+	return
+l0000A9DC:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000A9E8_thunk_fn0000AA58:
+l0000AA56:
+l0000AA56_thunk_fn0000AA58:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000AA56_thunk_fn0000AA58:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000AAFC:
+	branch r2_n != 0x00 l0000AB00_thunk_fn0000B094
+	goto l0000AB04
+l0000AB00_thunk_fn0000B094:
+	word32 ra_n
+	word16 r11_n
+	word32 r13_n
+	word16 r9_n
+	word16 r10_n
+	word16 r2_n
+	word16 r3_n
+	word16 r7_n
+	word16 r6_n
+	fn0000B094(SEQ(r11, r10), SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r6, r7, r13, ra, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n)
+	return
+l0000AB04:
+	r0_n = r11_n
+	r2_n.u4 = r5_r4_n->w161C
+	r6_n = r10_n
+	branch r2_n != 0x00 l0000ABDE
+l0000AB10:
+	r0_n = wArg40
+	r2_n.u4 = r5_r4_n->w1618
+	r6_n = r11_n
+	branch r2_n != 0x00 l0000ABDE
+l0000AB1E:
+	r0_n = wArg58_n
+	r3_r2_n = SEQ(r3_n, r5_r4_n->w1614)
+l0000AB26:
+	r3_n = SLICE(r3_r2_n, word16, 16)
+	branch (word16) r3_r2_n != 0x00 l0000B158
+l0000AB2C:
+	branch r5_r4_n->w1610 != 0x00 l0000AB36_thunk_fn0000B29A
+	goto l0000AB3A
+l0000AB36_thunk_fn0000B29A:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>
+	Eq_n stackArg4 = <invalid>
+	Eq_n stackArg8 = <invalid>
+	Eq_n stackArg12 = <invalid>
+	Eq_n stackArg16 = <invalid>
+	Eq_n stackArg20 = <invalid>
+	Eq_n stackArg64 = <invalid>
+	Eq_n stackArg72 = <invalid>
+	Eq_n stackArg96 = <invalid>
+	fn0000B29A(r7, r12, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg64, stackArg72, stackArg96)
+	return
+l0000AB3A:
+	r6_n.u0 = ~0x06
+	branch r5_r4_n->w160C != 0x00 l0000AB48_thunk_fn0000B298
+	goto l0000AB4C
+l0000AB48_thunk_fn0000B298:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>
+	Eq_n stackArg4 = <invalid>
+	Eq_n stackArg8 = <invalid>
+	Eq_n stackArg12 = <invalid>
+	Eq_n stackArg16 = <invalid>
+	Eq_n stackArg20 = <invalid>
+	Eq_n stackArg64 = <invalid>
+	Eq_n stackArg72 = <invalid>
+	Eq_n stackArg96 = <invalid>
+	word32 r12_n
+	word32 r13_n
+	word16 r3_n
+	fn0000B298(r1, r7, r12, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg64, stackArg72, stackArg96, out r3_n, out r12_n, out r13_n)
+	return
+l0000AB4C:
+	r0_n.u0 = ~0x07
+	r7_n.u4 = (word32) r7_n + 0x0000FFF1
+	r1_n = ~0x07
+	r2_n.u4 = r5_r4_n->w1608
+	goto l0000AB58
+l0000AB56:
+	r5_r4_n = SEQ(r5_n, (byte) r4_n *s32 (byte) wArg58_n)
+l0000AB58:
+	branch r2_n != 0x00 l0000ABDE
+l0000AB5C:
+	ui16 r7_n = (word32) r7_n + 0x0000FFF7
+	r6_n.u0 = ~0x08
+	word16 r2_n = r5_r4_n->w1604
+	branch r2_n != 0x00 l0000B0E2_in_fn0000A416
+l0000AB6E:
+	r1_n.u0 = ~0x09
+	r7_n = r7_n + ~0x09
+	goto l0000AB74
+l0000AB70:
+	r5_r4_n->b3371 = (byte) fp
+	r5_r4_n = SEQ(r5_n, r4_n)
+	goto l0000AB74
+l0000AB72:
+l0000AB74:
+	r0_n = r1_n
+	r2_n.u4 = r5_r4_n->w1600
+	branch r2_n != 0x00 l0000ABDE
+l0000AB7E:
+	ui16 r7_n = (word32) r7_n + 0x0000FFF5
+	r6_n.u0 = ~0x0A
+	word16 r2_n = r5_r4_n->w15FC
+	branch r2_n != 0x00 l0000AB8C_thunk_fn0000B0C0
+	goto l0000AB90
+l0000AB8C_thunk_fn0000B0C0:
+	word16 r11_n
+	word32 ra_n
+	fn0000B0C0(SEQ(r3_n, r2_n), r11_n, out r11_n, out ra_n)
+	return
+l0000AB90:
+	r0_n.u0 = ~0x0B
+	r7_n = r7_n + ~0x0B
+	r2_n.u4 = r5_r4_n->w15F8
+	branch r2_n != 0x00 l0000ABDE
+l0000ABA0:
+	r6_n.u0 = ~0x0C
+	word16 r2_n = r5_r4_n->w15F4
+	branch r2_n != 0x00 l0000ABAE_thunk_fn0000B09E
+	goto l0000ABB2
+l0000ABAE_thunk_fn0000B09E:
+	word16 r11_n
+	word32 ra_n
+	word16 r7_n
+	word16 r4_n
+	word16 r5_n
+	word16 r6_n
+	fn0000B09E(SEQ(r3_n, r2_n), r11_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n)
+	return
+l0000ABB2:
+	r0_n.u0 = ~0x0D
+	r7_n = r7_n + ~0x26
+	r2_n.u4 = r5_r4_n->w15F0
+	branch r2_n != 0x00 l0000ABDE
+l0000ABC2:
+	r6_n.u0 = ~0x0E
+	branch r5_r4_n->w15EC != 0x00 l0000ABD0_thunk_fn0000B07C
+	goto l0000ABD4
+l0000ABD0_thunk_fn0000B07C:
+	word16 r9_n
+	word16 r10_n
+	word16 r11_n
+	word32 r13_n
+	word32 ra_n
+	word16 r7_n
+	word16 r2_n
+	word16 r6_n
+	word16 r3_n
+	fn0000B07C(SEQ(r11, r10), SEQ(r5, r4), SEQ(r9, r8), r2, r6, r13, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n)
+	return
+l0000ABD4:
+	r0_n.u0 = ~0x0F
+	r7_n = r7_n + 65466
+	r2_n.u4 = r5_r4_n->w15E8
+l0000ABDE:
+	r12_n.u4[((int32) r0_n + 1418) * 0x02] = (cup16) r2_n
+	struct Eq_n * r1_r0_n = r12_n.u4 + (int32) r6_n * 0x02
+	r1_r0_n->w1628 = r1_r0_n->w1628 + 0x02
+	r5_r4_n->w1628 = r5_r4_n->w1628
+	branch r3_n >= 0x00 l0000AC22
+	goto l0000AC0E
+l0000AC0A:
+l0000AC0E:
+	r2_n.u4 = r5_r4_n->w1624
+	branch r2_n == 0x00 l0000A9DC
+l0000AC1A:
+	r6_n = r7_n
+	r0_n = wArg70
+	goto l0000ABDE
+l0000AC22:
+	branch r7_n == 0x00 l0000ACD6
+l0000AC2A:
+	dwArg68_n = r5_r4_n
+	wArg48.u0 = 0x023D
+l0000AC36:
+	ci16 wArg50_n = (word16) dwArg50
+	Eq_n wArg58_n = (word16) dwArg58_n
+	word16 r10_n = (word16) dwArg68_n
+	Eq_n r11_n = dwArg68_n->w1628
+	dwArg58_n = dwArg58_n
+	branch r11_n == 0x00 l0000ACB8
+	goto l0000AC46
+l0000AC3E:
+l0000AC46:
+	Eq_n r11_r10_n = SEQ(r11_n, r10_n)
+	r11_r10_n = SEQ(r11_n, r10_n) + (int32) wArg48 * 0x02
+	r7_n = wArg48
+	r12_n = r11_r10_n
+	wArg70 = wArg58_n
+	ci16 r0_n = r11_r10_n->w1668
+	dwArg58_n = dwArg58_n
+	branch r0_n > wArg50_n l0000AC6A_thunk_fn0000AF16
+	goto l0000AC6E
+l0000AC6A_thunk_fn0000AF16:
+	fn0000AF16(SEQ(r1, r0), SEQ(r3, r2), ra)
+	return
+l0000AC6E:
+	int32 r1_r0_n = (int32) r0_n
+	struct Eq_n * r9_r8_n = dwArg60.u6 + (r1_r0_n << 0x02)
+	r1_n = SLICE(r1_r0_n << 0x02, word16, 16)
+	r9_n = SLICE(r9_r8_n, word16, 16)
+	r8_n = (word16) r9_r8_n
+	r0_n.u0 = r9_r8_n->t0002.u0
+	branch wArg58_n == r0_n l0000ACA4
+l0000AC82:
+	word32 r5_r4_n
+	fn0000D358(r2, r3, r4, r5, out r5_r4_n)
+	ui32 r1_r0_n = (r11_r10_n.u6[9208].a0000 + ((word32) r0_n - dwArg58_n) / 4).u5.u4
+	r11_r10_n.u6[9208] = (struct Eq_n) r1_r0_n
+	r9_r8_n->t0002.u0 = (wchar_t) wArg58_n
+	r1_n = SLICE(r1_r0_n, word16, 16)
+	r0_n = (word16) r1_r0_n
+l0000ACA4:
+	r4_n = r11_n
+	dwArg58_n = dwArg58_n
+l0000ACA8:
+	wArg6A = SLICE(dwArg68_n, word16, 16)
+	word16 r10_n = (word16) r11_r10_n
+	sp_n = fp
+	ci16 r9_n = r9_n + ~0x00
+	wArg40 = r4_n
+	word16 r11_n = SLICE(r11_r10_n + 1, word16, 16)
+	branch r4_n != 0x00 l0000AED4
+l0000ACB8:
+	dwArg58_n.u4 = (word32) dwArg58_n - 1
+	dwArg68_n = dwArg68_n + 1
+	branch (word16) dwArg58_n != 0x00 l0000AC36
+l0000ACD6:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg18 = <invalid>
+	Eq_n stackArg160 = <invalid>
+	fn0000AA58(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r0, r1, r6, r7, r11, r12, r13, ra, stackArg18, stackArg160)
+	return
+l0000AD24_thunk_fn0000AA58:
+l0000AE66:
+	Eq_n r13_n
+	Eq_n dwArg58_n
+	Eq_n r7_n
+	Eq_n r12_n
+	ci16 r5_n = r9_r8_n.u6[0x00001668]
+	struct Eq_n * r1_r0_n = (word32) r11_r10_n.u0 + ((int32) r5_n << 0x02)
+	word16 r1_n = SLICE(r1_r0_n, word16, 16)
+	Eq_n r0_n = (word16) r1_r0_n
+	word16 r4_n = Mem6[(CONVERT(Mem6[r1_r0_n + 0x02:word16], word16, word32) << 0x02) + r11_r10_n + 0x02:word16]
+	int16 r1_n = r1_n + 0x01
+	ci16 r2_n = sp_n->w0040
+	branch r4_n < r2_n l0000AE90
+l0000AE84:
+	sp_n->w0058 = sp_n->w0058
+	r1_n = r1_n + 0x02
+	r4_n = r2_n
+l0000AE90:
+	SEQ(r1_n, r0_n)->w0002 = r4_n
+	branch r5_n > sp_n->w0050 l0000AED6
+l0000AE9A:
+	struct Eq_n * r3_r2_n = r12_n.u4 + (int32) r4_n * 0x02
+	r3_r2_n->w1628 = r3_r2_n->w1628
+	word16 r1_n = r1_n + 0x01
+	r5_n < sp_n->w0078
+	word32 r5_r4_n
+	fn0000D358(r2, r3, r4, r5, out r5_r4_n)
+	r12_n.u6[9208] = (struct Eq_n) (r12_n.u6[9208].a0000 + SEQ(r1_n, r0_n) / 4).u5.u4
+l0000AEC2:
+l0000AED4:
+	r9_r8_n = SEQ(r9_n, r8_n)
+	r11_r10_n = SEQ(r11_n, r10_n + ~0x01)
+l0000AED4_thunk_fn0000AF0C:
+	fn0000AF0C(SEQ(r1, r0), SEQ(r3, r2), ra)
+	return
+l0000AED6:
+	word16 r9_n = SLICE(r9_r8_n.u6 + 2, word16, 16)
+	Eq_n wArg58_n = (word16) dwArg58_n
+	ci16 r10_n = (word16) r11_r10_n
+	Eq_n r11_n = SLICE(r11_r10_n, word16, 16)
+	word16 r1_n = r1_n + 0x01
+	r9_r8_n = SEQ(r9_n, (word16) r9_r8_n + 0x02)
+	branch r7_n != 0x023D l0000AE66
+l0000AEE0:
+	word32 r1_r0_n = r12_n.u4 + SEQ(r1_n, r0_n)
+	sp_n->dw0068 = r1_r0_n + 0x0FB2
+	Eq_n r9_n = (word16) dwArg58_n
+	dwArg58_n = SEQ(SLICE(dwArg58_n, word16, 16), r9_n)
+	ui32 r1_r0_n = SEQ(SLICE(r1_r0_n, word16, 16), r9_n)
+	goto l0000A684
+l0000B0E2_in_fn0000A416:
+	SEQ(r3_n, r2_n)->ptr0014 = (char *) r5_r4_n + 1
+	r5_r4_n[SEQ(r1_n, ~0x08) / 0x0000FFFE] = (struct Eq_n) ~0x08
+	cu16 r4_n = SEQ(r3_n, r2_n)->w2410
+	ptr32 r1_r0_n = SEQ(r3_n, r2_n)->ptr0008
+	int32 ra_n = SEQ(r3_n, r2_n)->dw0014
+	SEQ(r3_n, r2_n)->dw0014 = ra_n + 0x01
+	*((word32) r1_r0_n + ra_n) = (ptr32) (byte) (r4_n >> 0x08)
+	SEQ(r3_n, r2_n)->w1208 = 0x00
+	SEQ(r3_n, r2_n)->w120A = 0x00
+	return
+l0000B158:
+	r3_r2_n->w2410 = r4_n
+	r3_r2_n->t2414.u0 = (wchar_t) r0_n
+	uint16 r1_n = r4_n
+	branch r0_n < 0x09 l0000B1B0
+l0000B16C:
+	r3_r2_n->t2414.u0 = (wchar_t) r0_n
+	branch r0_n == 0x10 l0000B1EA
+l0000B178:
+	branch r0_n >= 0x07 l0000B1A0
+l0000B17C:
+	byte r5_r4_n[] = r3_r2_n->ptr0008
+	int32 r7_r6_n = r3_r2_n->dw0014
+	r3_r2_n->dw0014 = r7_r6_n + 0x01
+	r5_r4_n[r7_r6_n] = (byte) r1_n
+	r3_r2_n->w2410 = r3_r2_n->w2410 >> 0x08
+	r3_r2_n->t2414.u0 = r3_r2_n->t2414.u0
+l0000B1A0:
+	return
+l0000B1B0:
+	byte r5_r4_n[] = r3_r2_n->ptr0008
+	int32 r7_r6_n = r3_r2_n->dw0014
+	r3_r2_n->dw0014 = r7_r6_n + 0x01
+	r5_r4_n[r7_r6_n] = (byte) r4_n
+	uint16 r4_n = r3_r2_n->w2410
+	byte r1_r0_n[] = r3_r2_n->ptr0008
+	int32 r7_r6_n = r3_r2_n->dw0014
+	r3_r2_n->dw0014 = r7_r6_n + 0x01
+	r1_r0_n[r7_r6_n] = (byte) (r4_n >> 0x08)
+	r0_n.u0 = r3_r2_n->t2414.u0
+	r3_r2_n->w1208 = 0x00
+	r3_r2_n->t2414.u0 = (wchar_t) r0_n
+	r1_n = 0x00
+	branch r0_n != 0x10 l0000B178
+l0000B1EA:
+	byte r5_r4_n[] = r3_r2_n->ptr0008
+	int32 r7_r6_n = r3_r2_n->dw0014
+	r3_r2_n->dw0014 = r7_r6_n + 0x01
+	r5_r4_n[r7_r6_n] = (byte) r1_n
+	uint16 r4_n = r3_r2_n->w2410
+	byte r1_r0_n[] = r3_r2_n->ptr0008
+	int32 r7_r6_n = r3_r2_n->dw0014
+	r3_r2_n->dw0014 = r7_r6_n + 0x01
+	r1_r0_n[r7_r6_n] = (byte) (r4_n >> 0x08)
+	r3_r2_n->w1208 = 0x00
+	r3_r2_n->w120A = 0x00
+	return
+fn0000AE66_exit:
+}
+
+// 0000AF06: void fn0000AF06(Sequence (ptr32 Eq_n) r3_r2, Register Eq_n ra)
+// Called from:
+//      fn000046AC
+void fn0000AF06(struct Eq_n * r3_r2, Eq_n ra)
+{
+	fn0000AF0C(0x6A, r3_r2, ra);
+}
+
+// 0000AF0C: void fn0000AF0C(Sequence word32 r1_r0, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n ra)
+// Called from:
+//      fn0000A416
+//      fn0000AF06
+void fn0000AF0C(word32 r1_r0, struct Eq_n * r3_r2, Eq_n ra)
+{
+	r3_r2->dw15E0 = r3_r2 + r1_r0 / 5668;
+	fn0000AF16(62120, r3_r2, ra);
+}
+
+// 0000AF16: void fn0000AF16(Sequence word32 r1_r0, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n ra)
+// Called from:
+//      fn0000A416
+//      fn0000AF06
+//      fn0000AF0C
+void fn0000AF16(word32 r1_r0, struct Eq_n * r3_r2, Eq_n ra)
+{
+	r3_r2->dw15F0 = r1_r0;
+	r3_r2->ptr15F8 = (char *) r3_r2 + 0x095E;
+	r3_r2->dw1608 = 0xF298;
+	r3_r2->ptr1610 = (char *) r3_r2 + 2642;
+	r3_r2->dw1620 = 0xF288;
+	r3_r2->w1208 = 0x00;
+	r3_r2->w120A = 0x00;
+	fn0000AF50((struct Eq_n *) 0xF288, 0xF288, (word32) ra + 1144, ra);
+}
+
+// 0000AF50: void fn0000AF50(Sequence (ptr32 Eq_n) r1_r0, Sequence word32 r3_r2, Sequence ptr32 r5_r4, Register Eq_n ra)
+// Called from:
+//      fn0000AF06
+//      fn0000AF16
+void fn0000AF50(struct Eq_n * r1_r0, word32 r3_r2, ptr32 r5_r4, Eq_n ra)
+{
+	struct Eq_n * r1_r0_n = r1_r0;
+	do
+	{
+		r1_r0_n->w006A = 0x00;
+		word16 r0_n = (word16) r1_r0_n;
+		word16 r1_n = SLICE((char *) r1_r0_n + 4, word16, 16);
+		r1_r0_n = SEQ(r1_n, r0_n + 0x04);
+		r1_r0_n = r1_r0_n;
+	} while (r5_r4 != (char *) r1_r0_n + 4);
+	struct Eq_n * r1_r0_n = SEQ(r1_n, r0_n + 0x04);
+	do
+	{
+		r1_r0_n->w095E = 0x00;
+		r1_r0_n = SEQ(SLICE((char *) r1_r0_n + 4, word16, 16), (word16) r1_r0_n + 0x04);
+		r1_r0_n = r1_r0_n;
+	} while (r3_r2 + 0x78 != (char *) r1_r0_n + 4);
+	do
+	{
+		ra.u7->w0A52 = 0x00;
+		&ra.u6->a0000->u0 = ra.u6 + 4;
+	} while (ra != (char *) r1_r0_n + 80);
+	r1_r0_n->w046E = 0x01;
+	r1_r0_n->dw2404 = 0x00;
+	r1_r0_n->dw23FC = 0x00;
+	r1_r0_n->w1208 = 0x00;
+	r1_r0_n->w11FA = 0x00;
+}
+
+// 0000AF94: Sequence word32 fn0000AF94(Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r6, Register Eq_n r13, Stack Eq_n dwArg0C, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out (ptr32 Eq_n) r12Out, Register out (ptr32 Eq_n) r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn000033F8
+//      fn00004CD4
+word32 fn0000AF94(Eq_n r5_r4, Eq_n r9_r8, Eq_n r6, Eq_n r13, Eq_n dwArg0C, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, struct Eq_n & r12Out, struct Eq_n & r13Out, ptr32 & raOut)
+{
+	Eq_n r10_n;
+	Eq_n r11_n;
+	struct Eq_n * r12_n;
+	struct Eq_n * r13_n;
+	word16 r2_n;
+	Eq_n r3_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r1_n = fn0000AF98(r5_r4, r9_r8, r6, r13, dwArg0C, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return SEQ(r2_n, r1_n);
+}
+
+// 0000AF98: Register word16 fn0000AF98(Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r6, Register Eq_n r13, Stack Eq_n dwArg12, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000AF94
+//      fn0000B718
+word16 fn0000AF98(Eq_n r5_r4, Eq_n r9_r8, Eq_n r6, Eq_n r13, Eq_n dwArg12, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	ptr32 fp;
+	word32 r3_r2_n = r9_r8.u6[20];
+	Eq_n v9_n = r9_r8.u6[0x00002414];
+	byte * r1_r0_n = (r9_r8.u6[8].a0000 + r3_r2_n / 4).u5.u4;
+	Eq_n r7_n = __a_shift<word16,word16>(r6, SEQ(SLICE(r3_r2_n, byte, 8), (byte) v9_n));
+	r9_r8.u6[9232] = (struct Eq_n) r7_n;
+	word32 r12_n = SEQ(SLICE(fp + 0x12, word16, 16), v9_n);
+	if (v9_n < 0x0D)
+	{
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		word16 r1_n = fn0000B058(r1_r0_n, dwArg12, r5_r4, r9_r8, r6, r7_n, r13, r3_r2_n + 0x01, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out.u0 = <invalid>;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r1_n;
+	}
+	else
+	{
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		Eq_n r9_n;
+		ptr32 ra_n;
+		word16 r1_n = fn0000AFC4(r1_r0_n, dwArg12, r5_r4, r9_r8, r7_n, r12_n, r13, r3_r2_n + 0x01, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out.u0 = <invalid>;
+		r13Out = r13_n;
+		raOut = ra_n;
+		return r1_n;
+	}
+}
+
+// 0000AFC4: Register word16 fn0000AFC4(Sequence (ptr32 byte) r1_r0, Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r7, Register word32 r12, Register Eq_n r13, Register int32 ra, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000AF94
+//      fn0000AF98
+word16 fn0000AFC4(byte * r1_r0, Eq_n r11_r10, Eq_n r5_r4, Eq_n r9_r8, Eq_n r7, word32 r12, Eq_n r13, int32 ra, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n v5_n = (word16) r12;
+	r9_r8.u6[0x00002414] = (struct Eq_n) v5_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r1_n = fn0000B058(r1_r0, r11_r10, r5_r4, r9_r8, v5_n, r7, r13, ra, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r1_n;
+}
+
+// 0000AFCC: Register word16 fn0000AFCC(Sequence (ptr32 byte) r1_r0, Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r6, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000B058
+//      fn0000B094
+word16 fn0000AFCC(byte * r1_r0, Eq_n r11_r10, Eq_n r5_r4, Eq_n r9_r8, Eq_n r6, Eq_n r7, Eq_n r13, Eq_n ra, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n wLoc06;
+	word16 wLoc04;
+	word16 r9 = SLICE(r9_r8, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	cu16 r10 = (word16) r11_r10;
+	if (r6 >= 0x08)
+	{
+		if (r6 >= 0x00)
+			goto l0000AFE2;
+		r9_r8.u6[20] = (struct Eq_n) ra;
+		*r1_r0 = (byte) r7;
+	}
+	else
+	{
+		r9_r8.u6[20] = (struct Eq_n) ra;
+		*r1_r0 = (byte) r7;
+		Eq_n r6_n = r9_r8.u6[9232];
+		ptr32 r1_r0_n = r9_r8.u6[8];
+		Eq_n r3_r2_n = r9_r8.u6[20];
+		r9_r8.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+		((word32) r3_r2_n + r1_r0_n)->u3 = (byte) (r6_n >> 0x08);
+		r6 = r6_n >> 0x08;
+	}
+	Eq_n r3_r2_n = r9_r8.u6[20];
+	&ra.u6->a0000->u0 = r3_r2_n.u6 + 1;
+	r1_r0 = Mem48[r9_r8 + 0x08:word32] + r3_r2_n;
+l0000AFE2:
+	r9_r8.u6[4616] = (struct Eq_n) 0x00;
+	r9_r8.u6[4618] = (struct Eq_n) 0x00;
+	r9_r8.u6[20] = (struct Eq_n) ra;
+	*r1_r0 = (byte) r10;
+	ptr32 r1_r0_n = r9_r8.u6[8];
+	Eq_n r3_r2_n = r9_r8.u6[20];
+	r9_r8.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+	((word32) r3_r2_n + r1_r0_n)->u3 = (byte) (r10 >> 0x08);
+	ptr32 r1_r0_n = r9_r8.u6[8];
+	Eq_n r3_r2_n = r9_r8.u6[20];
+	r9_r8.u6[20] = (struct Eq_n) (r3_r2_n.u6 + 1);
+	((word32) r3_r2_n + r1_r0_n)->u3 = (byte) r10;
+	word16 r9_n = SEQ(SLICE(r9, byte, 8), ~(byte) r9);
+	ptr32 r1_r0_n = SEQ(r9_n, r8)->ptr0008;
+	int32 r3_r2_n = SEQ(r9_n, r8)->dw0014;
+	SEQ(r9_n, r8)->dw0014 = r3_r2_n + 0x01;
+	*((word32) r1_r0_n + r3_r2_n) = (ptr32) (byte) (r10 >> 0x08);
+	Eq_n r9_n = ~r9_n;
+	Eq_n r3_r2_n = SEQ(r9_n, r8)->dw0008 + SEQ(r9_n, r8)->dw0014;
+	ptr32 r13_n;
+	fn0000DB24(r3_r2_n, r5_r4, r13, out r13_n);
+	word32 r1_r0_n = SEQ(r9_n, r8)->dw0014;
+	word32 r11_r10_n = r11_r10.u4 + r1_r0_n;
+	SEQ(r9_n, r8)->dw0014 = r11_r10_n;
+	r2Out = (word16) r3_r2_n;
+	r3Out.u1 = SLICE(r3_r2_n, word16, 16);
+	r6Out = r6;
+	r7Out = wLoc06;
+	r9Out = r9_n;
+	r10Out = (word16) r11_r10_n;
+	r11Out.u1 = SLICE(r11_r10_n, word16, 16);
+	r13Out = r13_n;
+	raOut = SEQ(r10, wLoc04);
+	return SLICE(r1_r0_n, word16, 16);
+}
+
+// 0000B058: Register word16 fn0000B058(Sequence (ptr32 byte) r1_r0, Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r6, Register Eq_n r7, Register Eq_n r13, Register int32 ra, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000AF94
+//      fn0000AF98
+word16 fn0000B058(byte * r1_r0, Eq_n r11_r10, Eq_n r5_r4, Eq_n r9_r8, Eq_n r6, Eq_n r7, Eq_n r13, int32 ra, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	r9_r8.u6[20] = (struct Eq_n) ra;
+	*r1_r0 = (byte) r7;
+	int32 r3_r2_n = r9_r8.u6[20];
+	Eq_n r7_n = r9_r8.u6[9232];
+	ptr32 r1_r0_n = r9_r8.u6[8];
+	r9_r8.u6[20] = (struct Eq_n) (r3_r2_n + 0x01);
+	*((word32) r1_r0_n + r3_r2_n) = (ptr32) (byte) (r7_n >> 0x08);
+	Eq_n r2_n = SEQ(SLICE(r3_r2_n, byte, 8), r9_r8.u6[0x00002414]);
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r1_n = fn0000B07C(r11_r10, r5_r4, r9_r8, r2_n, r6, r13, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r1_n;
+}
+
+// 0000B07C: Register word16 fn0000B07C(Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r2, Register Eq_n r6, Register Eq_n r13, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000A416
+//      fn0000B058
+word16 fn0000B07C(Eq_n r11_r10, Eq_n r5_r4, Eq_n r9_r8, Eq_n r2, Eq_n r6, Eq_n r13, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	Eq_n r7_n = __l_shift<word16,word16>(r6, r2);
+	r9_r8.u6[9232] = (struct Eq_n) r7_n;
+	r9_r8.u6[0x00002414] = (struct Eq_n) ~0x0C;
+	word32 r3_r2_n = r9_r8.u6[20];
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r1_n = fn0000B094(r11_r10, r3_r2_n, r5_r4, r9_r8, ~0x0C, r7_n, r13, r3_r2_n + 0x01, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r1_n;
+}
+
+// 0000B094: Register word16 fn0000B094(Sequence Eq_n r11_r10, Sequence word32 r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r6, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000A416
+//      fn0000B058
+//      fn0000B07C
+word16 fn0000B094(Eq_n r11_r10, word32 r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r6, Eq_n r7, Eq_n r13, Eq_n ra, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out, ptr32 & raOut)
+{
+	byte * r1_r0_n = (r9_r8.u6[8].a0000 + r3_r2 / 4).u5.u4;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r9_n;
+	ptr32 ra_n;
+	word16 r1_n = fn0000AFCC(r1_r0_n, r11_r10, r5_r4, r9_r8, r6, r7, r13, ra, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r13_n, out ra_n);
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r13Out = r13_n;
+	raOut = ra_n;
+	return r1_n;
+}
+
+// 0000B09C: Register word16 fn0000B09C(Sequence Eq_n r3_r2, Register Eq_n r11, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out Eq_n raOut)
+// Called from:
+//      fn000033F8
+//      fn000034CE
+//      fn00003B2A
+//      fn00004ADC
+//      fn00004CD4
+word16 fn0000B09C(Eq_n r3_r2, Eq_n r11, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, union Eq_n & raOut)
+{
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n ra_n;
+	Eq_n r11_n;
+	word16 r1_n = fn0000B09E(r3_r2, r11, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	r11Out = r11_n;
+	raOut = ra_n;
+	return r1_n;
+}
+
+// 0000B09E: Register word16 fn0000B09E(Sequence Eq_n r3_r2, Register Eq_n r11, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000A416
+//      fn0000B09C
+word16 fn0000B09E(Eq_n r3_r2, Eq_n r11, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, ptr32 & raOut)
+{
+	Eq_n r0_n = r3_r2.u6[0x00002414];
+	if (r0_n == 0x10)
+	{
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r7_n;
+		ptr32 ra_n;
+		word16 r1_n = fn0000B0DA(r3_r2, out r4_n, out r5_n, out r6_n, out r7_n, out ra_n);
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r11Out = r11;
+		raOut = ra_n;
+		return r1_n;
+	}
+	else
+	{
+		Eq_n r11_n;
+		Eq_n r7_n;
+		ptr32 ra_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		word16 r1_n = fn0000B0AA(r3_r2, r0_n, r11, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out ra_n);
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r11Out = r11_n;
+		raOut = ra_n;
+		return r1_n;
+	}
+}
+
+// 0000B0AA: Register word16 fn0000B0AA(Sequence Eq_n r3_r2, Register Eq_n r0, Register Eq_n r11, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r11Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000B09C
+//      fn0000B09E
+word16 fn0000B0AA(Eq_n r3_r2, Eq_n r0, Eq_n r11, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r11Out, ptr32 & raOut)
+{
+	word16 r1;
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n r6;
+	if (r0 >= 0x07)
+	{
+		Eq_n r11_n;
+		ptr32 ra_n;
+		Eq_n r7_n = fn0000B0C0(r3_r2, r11, out r11_n, out ra_n);
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r7Out = r7_n;
+		r11Out = r11_n;
+		raOut = ra_n;
+		return r1;
+	}
+	else
+	{
+		word32 r5_r4_n = r3_r2.u6[20];
+		Eq_n r6_n = r3_r2.u6[9232];
+		word32 r1_r0_n = r3_r2.u6[8];
+		r3_r2.u6[20] = (struct Eq_n) (r5_r4_n + 0x01);
+		byte * r1_r0_n = r1_r0_n + r5_r4_n;
+		*r1_r0_n = (byte) r6_n;
+		Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+		Eq_n r4_n = (word16) r5_r4_n;
+		word16 r1_n = SLICE(r1_r0_n, word16, 16);
+		Eq_n r11_n;
+		ptr32 ra_n;
+		Eq_n r7_n = fn0000B0C0(r3_r2, r11, out r11_n, out ra_n);
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r11Out = r11_n;
+		raOut = ra_n;
+		return r1_n;
+	}
+}
+
+// 0000B0C0: Register word16 fn0000B0C0(Sequence Eq_n r3_r2, Register Eq_n r11, Register out Eq_n r11Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000A416
+//      fn0000B0AA
+word16 fn0000B0C0(Eq_n r3_r2, Eq_n r11, union Eq_n & r11Out, ptr32 & raOut)
+{
+	word16 wArg00;
+	ptr32 dwArg02;
+	r3_r2.u6[9232] = (struct Eq_n) (r3_r2.u6[9232] >> 0x08);
+	r3_r2.u6[0x00002414] = r3_r2.u6[0x00002414];
+	r11Out = (word32) r11 + 0x0000FFF8;
+	raOut = dwArg02;
+	return wArg00;
+}
+
+// 0000B0DA: Register word16 fn0000B0DA(Sequence Eq_n r3_r2, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 raOut)
+// Called from:
+//      fn0000B09C
+//      fn0000B09E
+word16 fn0000B0DA(Eq_n r3_r2, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & raOut)
+{
+	Eq_n wArg00;
+	ptr32 dwArg02;
+	int32 r5_r4_n = r3_r2.u6[20];
+	Eq_n r6_n = r3_r2.u6[9232];
+	ptr32 r1_r0_n = r3_r2.u6[8];
+	Eq_n r5_n = SLICE(r5_r4_n, word16, 16);
+	r3_r2.u6[20] = (struct Eq_n) (r5_r4_n + 0x01);
+	*((word32) r1_r0_n + r5_r4_n) = (ptr32) (byte) r6_n;
+	Eq_n r4_n = r3_r2.u6[9232];
+	int32 ra_n = r3_r2.u6[20];
+	ptr32 r1_r0_n = r3_r2.u6[8];
+	r3_r2.u6[20] = (struct Eq_n) (ra_n + 0x01);
+	byte * r1_r0_n = r1_r0_n + ra_n;
+	*r1_r0_n = (byte) (r4_n >> 0x08);
+	r3_r2.u6[4616] = (struct Eq_n) 0x00;
+	r3_r2.u6[4618] = (struct Eq_n) 0x00;
+	r4Out = r4_n >> 0x08;
+	r5Out = r5_n;
+	r6Out = (word16) ra_n + 0x01;
+	r7Out = wArg00;
+	raOut = dwArg02;
+	return SLICE(r1_r0_n, word16, 16);
+}
+
+// 0000B218: Sequence Eq_n fn0000B218(Sequence Eq_n r9_r8, Register Eq_n r4, Register Eq_n r5, Register Eq_n r10, Register Eq_n r13, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Stack Eq_n wArgFFEC, Stack Eq_n dwArg10010, Stack Eq_n dwArg1003A, Stack Eq_n wArg1FF92, Register out Eq_n r12Out, Register out (ptr32 Eq_n) r13Out)
+// Called from:
+//      fn000033F8
+//      fn00003B14
+//      fn00004CD4
+Eq_n fn0000B218(Eq_n r9_r8, Eq_n r4, Eq_n r5, Eq_n r10, Eq_n r13, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, Eq_n wArgFFEC, Eq_n dwArg10010, Eq_n dwArg1003A, Eq_n wArg1FF92, union Eq_n & r12Out, struct Eq_n & r13Out)
+{
+	Eq_n wArg00_n = (word16) dwArg00;
+	cui16 r5_n = r5 | r4;
+	Eq_n r0_n = r9_r8.u6[0x00C4];
+	Eq_n dwArgFFEA_n = SEQ(wArgFFEC, r4);
+	if (r0_n >= 0x00)
+	{
+		struct Eq_n * r13_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r1_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r8_n;
+		word16 r9_n;
+		fn0000BCFA(r9_r8, SEQ(r5_n, r4), r9_r8, r0_n, r13, dwArgFFEA_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r12Out = dwArg10010;
+		r13Out = r13_n;
+		return SEQ(r3_n, r2_n);
+	}
+	else if (*((word32) *r9_r8.u5 + 88) == 0x02)
+	{
+		struct Eq_n * r13_n = fn0000BB06(dwArg1003A);
+		r12Out = dwArg10010;
+		r13Out = r13_n;
+		return r9_r8;
+	}
+	else
+	{
+		word16 r4_n;
+		word16 r5_n;
+		struct Eq_n * r3_r2_n = fn0000A416((word32) r9_r8 + 2800, r10, dwArg10010, wArg1FF92, out r4_n, out r5_n);
+		Eq_n sp_n = <invalid>;
+		word16 r4_n;
+		word16 r5_n;
+		fn0000A416((word32) r9_r8 + 2812, r10, dwArg10010, sp_n.u6[0x0000FFA8], out r4_n, out r5_n);
+		Eq_n r6_n = r3_r2_n->t15E8.u0;
+		if (r3_r2_n->w00D8 == 0x00)
+		{
+			Eq_n r3_r2_n = (word32) r4_n;
+			struct Eq_n * r13_n = fn0000D984(r3_r2_n, (word32) r5_n, (char *) &r3_r2_n->dw0014 + 86);
+			r12Out = dwArg10010;
+			r13Out = r13_n;
+			return r3_r2_n;
+		}
+		else
+		{
+			struct Eq_n * r3_r2_n = (char *) &r3_r2_n->dw0014 + 86 + ((int32) r6_n + 0x01 << 0x02);
+			r3_r2_n->w0002 = ~0x00;
+			word16 r3_n = SLICE(r3_r2_n, word16, 16);
+			if (r6_n > 0x00)
+			{
+				struct Eq_n * r13_n;
+				word16 r3_n;
+				word32 r12_n;
+				Eq_n r2_n = fn0000B2F2((struct Eq_n *) 0x0004FFFF, r3_r2_n, r3_n, (char *) &r3_r2_n->dw0014 + 86, dwArg00, out r3_n, out r12_n, out r13_n);
+				r12Out = dwArg10010;
+				r13Out = r13_n;
+				return SEQ(r3_n, r2_n);
+			}
+			else
+			{
+				Eq_n r12_n;
+				struct Eq_n * r13_n;
+				word16 r3_n;
+				word16 r2_n = fn0000B298(0x07, r5, dwArg10010, wArg00_n, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, out r3_n, out r12_n, out r13_n);
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return SEQ(r3_n, r2_n);
+			}
+		}
+	}
+}
+
+// 0000B298: Register word16 fn0000B298(Register Eq_n r1, Register Eq_n r7, Register Eq_n r12, Stack Eq_n wArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Register out Eq_n r3Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000A416
+//      fn0000B218
+word16 fn0000B298(Eq_n r1, Eq_n r7, Eq_n r12, Eq_n wArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, union Eq_n & r3Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r3_n;
+	word16 r2_n = fn0000B29C(r1, r7, r12, wArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, out r3_n, out r12_n, out r13_n);
+	r3Out = r3_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000B29A: void fn0000B29A(Register Eq_n r7, Register Eq_n r12, Stack Eq_n wArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60)
+// Called from:
+//      fn0000A416
+void fn0000B29A(Eq_n r7, Eq_n r12, Eq_n wArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60)
+{
+	word16 r3_n;
+	word32 r12_n;
+	word32 r13_n;
+	fn0000B29C(24962, r7, r12, wArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, out r3_n, out r12_n, out r13_n);
+}
+
+// 0000B29C: Register Eq_n fn0000B29C(Register Eq_n r1, Register Eq_n r7, Register Eq_n r12, Stack Eq_n wArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Register out Eq_n r3Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B298
+//      fn0000B29A
+Eq_n fn0000B29C(Eq_n r1, Eq_n r7, Eq_n r12, Eq_n wArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, union Eq_n & r3Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n dwArg00_n = SEQ(r7, wArg00);
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r3_n;
+	Eq_n r2_n = fn0000B2B0(r1, 0x00, r12, dwArg00_n, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, out r3_n, out r12_n, out r13_n);
+	r3Out = r3_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000B2B0: Register word16 fn0000B2B0(Register Eq_n r1, Register ci16 r6, Register Eq_n r12, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg60, Register out Eq_n r3Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000B29C
+//      fn0000B308
+word16 fn0000B2B0(Eq_n r1, ci16 r6, Eq_n r12, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg60, union Eq_n & r3Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word16 r9;
+	word16 r8;
+	word16 r0;
+	word16 r7;
+	Eq_n r13;
+	if (r1.u6 + 1 < r6)
+	{
+		fn0000BB8E(r12, dwArg48);
+		r3Out = r3_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg24 = <invalid>;
+		Eq_n stackArg56 = <invalid>;
+		Eq_n stackArg58 = <invalid>;
+		Eq_n stackArg80 = <invalid>;
+		Eq_n stackArg88 = <invalid>;
+		Eq_n stackArg104 = <invalid>;
+		Eq_n stackArg65522 = <invalid>;
+		Eq_n stackArg65540 = <invalid>;
+		Eq_n stackArg65548 = <invalid>;
+		Eq_n stackArg65572 = <invalid>;
+		Eq_n stackArg65580 = <invalid>;
+		Eq_n stackArg65586 = <invalid>;
+		Eq_n stackArg65590 = <invalid>;
+		Eq_n stackArg65594 = <invalid>;
+		Eq_n stackArg65598 = <invalid>;
+		Eq_n stackArg65600 = <invalid>;
+		Eq_n stackArg65602 = <invalid>;
+		Eq_n stackArg65606 = <invalid>;
+		Eq_n stackArg65610 = <invalid>;
+		Eq_n stackArg65614 = <invalid>;
+		Eq_n stackArg65618 = <invalid>;
+		Eq_n stackArg65622 = <invalid>;
+		Eq_n stackArg65626 = <invalid>;
+		Eq_n stackArg65630 = <invalid>;
+		Eq_n stackArg65634 = <invalid>;
+		Eq_n stackArg65638 = <invalid>;
+		Eq_n stackArg65642 = <invalid>;
+		Eq_n stackArg65646 = <invalid>;
+		Eq_n stackArg65658 = <invalid>;
+		Eq_n stackArg65666 = <invalid>;
+		Eq_n stackArg65674 = <invalid>;
+		Eq_n stackArg65682 = <invalid>;
+		Eq_n stackArg65690 = <invalid>;
+		Eq_n stackArg65698 = <invalid>;
+		Eq_n stackArg65706 = <invalid>;
+		Eq_n stackArg65710 = <invalid>;
+		ptr32 r12_n;
+		Eq_n r3_n;
+		ptr32 r13_n;
+		word16 r2_n = fn0000B308(SEQ(r9, r8), r0, r6, r7, r12, r13, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, stackArg24, stackArg56, stackArg58, dwArg40, dwArg48, stackArg80, stackArg88, dwArg60, stackArg104, stackArg65522, stackArg65540, stackArg65548, stackArg65572, stackArg65580, stackArg65586, stackArg65590, stackArg65594, stackArg65598, stackArg65600, stackArg65602, stackArg65606, stackArg65610, stackArg65614, stackArg65618, stackArg65622, stackArg65626, stackArg65630, stackArg65634, stackArg65638, stackArg65642, stackArg65646, stackArg65658, stackArg65666, stackArg65674, stackArg65682, stackArg65690, stackArg65698, stackArg65706, stackArg65710, out r3_n, out r12_n, out r13_n);
+		r3Out = r3_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+}
+
+// 0000B2F2: Register word16 fn0000B2F2(Sequence (ptr32 Eq_n) r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register word16 r3, Register Eq_n r13, Stack Eq_n dwArg00, Register out Eq_n r3Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B218
+//      fn0000B308
+word16 fn0000B2F2(struct Eq_n * r5_r4, struct Eq_n * r9_r8, word16 r3, Eq_n r13, Eq_n dwArg00, union Eq_n & r3Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	ci16 r6;
+	word16 r7;
+	Eq_n r12;
+	word16 r8 = (word16) r9_r8;
+	word16 r2_n = SLICE(&r9_r8->w00D8 + 0x0443, word16, 16);
+	word16 r0_n = r9_r8->w12C0;
+	if (r0_n == 0x00)
+	{
+		ptr32 r13_n;
+		Eq_n r3_n;
+		word16 r2_n = fn0000BD84(SEQ(r8 + 0x095E, r0_n), SEQ(r3, r2_n), r5_r4, r9_r8, r13, dwArg00, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r12Out.u0 = <invalid>;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		Eq_n stackArg16 = <invalid>;
+		Eq_n stackArg20 = <invalid>;
+		Eq_n stackArg24 = <invalid>;
+		Eq_n stackArg56 = <invalid>;
+		Eq_n stackArg58 = <invalid>;
+		Eq_n stackArg64 = <invalid>;
+		Eq_n stackArg72 = <invalid>;
+		Eq_n stackArg80 = <invalid>;
+		Eq_n stackArg88 = <invalid>;
+		Eq_n stackArg96 = <invalid>;
+		Eq_n stackArg104 = <invalid>;
+		Eq_n stackArg65522 = <invalid>;
+		Eq_n stackArg65540 = <invalid>;
+		Eq_n stackArg65548 = <invalid>;
+		Eq_n stackArg65572 = <invalid>;
+		Eq_n stackArg65580 = <invalid>;
+		Eq_n stackArg65586 = <invalid>;
+		Eq_n stackArg65590 = <invalid>;
+		Eq_n stackArg65594 = <invalid>;
+		Eq_n stackArg65598 = <invalid>;
+		Eq_n stackArg65600 = <invalid>;
+		Eq_n stackArg65602 = <invalid>;
+		Eq_n stackArg65606 = <invalid>;
+		Eq_n stackArg65610 = <invalid>;
+		Eq_n stackArg65614 = <invalid>;
+		Eq_n stackArg65618 = <invalid>;
+		Eq_n stackArg65622 = <invalid>;
+		Eq_n stackArg65626 = <invalid>;
+		Eq_n stackArg65630 = <invalid>;
+		Eq_n stackArg65634 = <invalid>;
+		Eq_n stackArg65638 = <invalid>;
+		Eq_n stackArg65642 = <invalid>;
+		Eq_n stackArg65646 = <invalid>;
+		Eq_n stackArg65658 = <invalid>;
+		Eq_n stackArg65666 = <invalid>;
+		Eq_n stackArg65674 = <invalid>;
+		Eq_n stackArg65682 = <invalid>;
+		Eq_n stackArg65690 = <invalid>;
+		Eq_n stackArg65698 = <invalid>;
+		Eq_n stackArg65706 = <invalid>;
+		Eq_n stackArg65710 = <invalid>;
+		Eq_n r3_n;
+		ptr32 r13_n;
+		word32 r12_n;
+		word16 r2_n = fn0000B308(SEQ(r9, r8), r0, r6, r7, r12, r13, dwArg00, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg24, stackArg56, stackArg58, stackArg64, stackArg72, stackArg80, stackArg88, stackArg96, stackArg104, stackArg65522, stackArg65540, stackArg65548, stackArg65572, stackArg65580, stackArg65586, stackArg65590, stackArg65594, stackArg65598, stackArg65600, stackArg65602, stackArg65606, stackArg65610, stackArg65614, stackArg65618, stackArg65622, stackArg65626, stackArg65630, stackArg65634, stackArg65638, stackArg65642, stackArg65646, stackArg65658, stackArg65666, stackArg65674, stackArg65682, stackArg65690, stackArg65698, stackArg65706, stackArg65710, out r3_n, out r12_n, out r13_n);
+		r3Out = r3_n;
+		r12Out.u0 = <invalid>;
+		r13Out = r13_n;
+		return r2_n;
+	}
+}
+
+// 0000B308: Register Eq_n fn0000B308(Sequence word32 r9_r8, Register word16 r0, Register ci16 r6, Register word16 r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n wArg38, Stack Eq_n wArg3A, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n dwArg68, Stack Eq_n dwArgFFF2, Stack Eq_n dwArg10004, Stack Eq_n dwArg1000C, Stack Eq_n dwArg10024, Stack Eq_n dwArg1002C, Stack Eq_n wArg10032, Stack Eq_n wArg10036, Stack Eq_n wArg1003A, Stack Eq_n wArg1003E, Stack Eq_n wArg10040, Stack Eq_n dwArg10042, Stack Eq_n wArg10046, Stack Eq_n dwArg1004A, Stack Eq_n wArg1004E, Stack Eq_n dwArg10052, Stack Eq_n wArg10056, Stack Eq_n wArg1005A, Stack Eq_n wArg1005E, Stack Eq_n wArg10062, Stack Eq_n wArg10066, Stack Eq_n dwArg1006A, Stack Eq_n wArg1006E, Stack Eq_n dwArg1007A, Stack Eq_n dwArg10082, Stack Eq_n dwArg1008A, Stack Eq_n dwArg10092, Stack Eq_n dwArg1009A, Stack Eq_n dwArg100A2, Stack Eq_n wArg100AA, Stack Eq_n wArg100AE, Register out Eq_n r3Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn0000B2B0
+//      fn0000B2F2
+Eq_n fn0000B308(word32 r9_r8, word16 r0, ci16 r6, word16 r7, Eq_n r12, Eq_n r13, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n wArg38, Eq_n wArg3A, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n dwArg68, Eq_n dwArgFFF2, Eq_n dwArg10004, Eq_n dwArg1000C, Eq_n dwArg10024, Eq_n dwArg1002C, Eq_n wArg10032, Eq_n wArg10036, Eq_n wArg1003A, Eq_n wArg1003E, Eq_n wArg10040, Eq_n dwArg10042, Eq_n wArg10046, Eq_n dwArg1004A, Eq_n wArg1004E, Eq_n dwArg10052, Eq_n wArg10056, Eq_n wArg1005A, Eq_n wArg1005E, Eq_n wArg10062, Eq_n wArg10066, Eq_n dwArg1006A, Eq_n wArg1006E, Eq_n dwArg1007A, Eq_n dwArg10082, Eq_n dwArg1008A, Eq_n dwArg10092, Eq_n dwArg1009A, Eq_n dwArg100A2, Eq_n wArg100AA, Eq_n wArg100AE, union Eq_n & r3Out, union Eq_n & r12Out, union Eq_n & r13Out)
+{
+	Eq_n dwArg3A;
+	word16 r5;
+	word16 r4;
+	Eq_n r10;
+	Eq_n r1;
+	word16 r3;
+	word16 r8 = (word16) r9_r8;
+	word16 wArg0C_n = (word16) dwArg0C;
+	word16 wArg00_n = (word16) dwArg00;
+	word16 wArg0A_n = SLICE(dwArg08, word16, 16);
+	word16 wArg3A_n = (word16) dwArg3A;
+	Eq_n r11_r10_n = (int32) r6;
+	struct Eq_n * r3_r2_n = dwArg0C.u4 + (r11_r10_n.u6 + 1 << 0x02);
+	r3_r2_n->w0002 = ~0x00;
+	ci16 r5_n = 0x04;
+	ci16 r1_n = 0x07;
+	Eq_n ra_n = dwArg0C;
+	if (r6 <= 0x00)
+	{
+		ra_n.u4 = dwArg0C.u4 + ((r11_r10_n << 0x02) + 0x0A);
+		r6 = 0x00;
+		word16 * r3_r2_n = SEQ(SLICE(r9_r8 + 2404, word16, 16), r8 + 2404);
+		do
+		{
+			word16 * r3_r2_n;
+			Eq_n r2_n = (word16) r3_r2_n;
+			Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+			word16 r7_n = *r3_r2_n;
+			++r1_n;
+			if (r6 >= r1_n)
+			{
+				SEQ(r1_n, r0)->b000C = (byte) r5_n;
+				goto l0000BABE;
+			}
+			if (r0 != r7_n)
+			{
+				if (r6 < r5_n)
+				{
+					struct Eq_n * r5_r4_n = ((int32) r0 << 0x02) + r9_r8;
+					word16 r1_n = r5_r4_n->w14A4 + r6;
+					r5_r4_n->w14A4 = r6;
+					if (r7_n == 0x00)
+					{
+						struct Eq_n * r1_r0_n = r3_r2_n + SEQ(r1_n, r0);
+						SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->w00D4 = r1_r0_n->w00D4;
+						r3Out = r3_n;
+						r12Out = r12;
+						r13Out = r13;
+						return r2_n;
+					}
+					if (r0 == r7_n)
+					{
+						fn0000BB8E(r12, dwArg48);
+						r3Out = r3_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return r2_n;
+					}
+					r5_n = 0x04;
+					r1_n = 0x07;
+					r6 = 0x00;
+					goto l0000B36E;
+				}
+				r3_r2_n = (word16 *) 0xFC50;
+l0000BABE:
+				r3Out.u1 = SLICE(r3_r2_n, word16, 16);
+				r12Out = r12;
+				r13Out = r13;
+				return (word16) r3_r2_n;
+			}
+l0000B36E:
+			word16 r3_n = SLICE(r3_r2_n + 2, word16, 16);
+			r0 = r7_n;
+			r3_r2_n = SEQ(r3_n, (word16) r2_n.u1 + 4);
+			r3_r2_n = r3_r2_n;
+		} while (r3_r2_n + 2 != ra_n);
+		dwArg00 = SEQ(r7, wArg00_n);
+		r3_r2_n = SEQ(r3_n, (word16) r2_n.u1 + 4);
+		r11_r10_n.u0 = 0x0003008A;
+	}
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg65448 = <invalid>;
+	word16 r5_n;
+	word16 r4_n;
+	fn0000A416(SEQ(r5, r4), r10, r12, stackArg65448, out r4_n, out r5_n);
+	byte bArg06_n = SLICE(dwArg04, byte, 16);
+	Eq_n wArg04_n = (word16) dwArg04;
+	word16 wArg00_n = (word16) dwArg00;
+	word16 r11_n = SLICE(r11_r10_n, word16, 16);
+	Eq_n r2_n = (word16) r3_r2_n;
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+	word16 r0_n = r3_r2_n->w1520;
+	if (r0_n != 0x00)
+	{
+		Eq_n r12_n;
+		Eq_n r13_n;
+		Eq_n r2_n;
+		word16 r8_n;
+		word16 r1_n;
+		word16 r9_n;
+		fn0000BF1E(SEQ(r1_n, r0_n), r3_r2_n, r12, dwArg00, dwArg40, dwArg50, out r1_n, out r2_n, out r8_n, out r9_n, out r12_n, out r13_n);
+		r3Out = r3_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	if (r3_r2_n->w14B0 != 0x00)
+	{
+		fn0000BF84(r3_r2_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	word16 r0_n = r3_r2_n->w1518;
+	if (r0_n != 0x00)
+	{
+		Eq_n r13_n;
+		Eq_n r3_n;
+		Eq_n r2_n = fn0000BF56(SEQ(r1_n, r0_n), r11_r10_n, r3_r2_n, r12, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	if (r3_r2_n->w14B8 != 0x00)
+	{
+		fn0000BF60();
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	if (r3_r2_n->w1510 != 0x00)
+	{
+		word16 r1_n;
+		fn0000BF32(r12, dwArg50, out r1_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	if (r3_r2_n->w14C0 != 0x00)
+	{
+		fn0000BFA0();
+		r3Out = r3_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	if (r3_r2_n->w1508 != 0x00)
+	{
+		fn0000BF76();
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	if (r3_r2_n->w14C8 != 0x00)
+	{
+		fn0000BF7C();
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	word16 r0_n = r3_r2_n->w1500;
+	if (r0_n != 0x00)
+	{
+		Eq_n r13_n;
+		Eq_n r3_n;
+		Eq_n r2_n = fn0000BF52(SEQ(r1_n, r0_n), r11_r10_n, r3_r2_n, r12, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	word16 r0_n = r3_r2_n->w14D0;
+	if (r0_n != 0x00)
+	{
+		fn0000BFA8(r3_r2_n, r9_r8 + 0x0B08, r3_r2_n, r0_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	if (r3_r2_n->w14F8 != 0x00)
+	{
+		fn0000BF7E();
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	if (r3_r2_n->w14D8 != 0x00)
+	{
+		fn0000BF84(r3_r2_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	word16 r0_n = r3_r2_n->w14F0;
+	if (r0_n != 0x00)
+	{
+		fn0000BFAA(r3_r2_n, r9_r8 + 0x0B08, r3_r2_n, r0_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	word16 r0_n = r3_r2_n->w14E0;
+	if (r0_n != 0x00)
+	{
+		fn0000BFAA(r3_r2_n, r9_r8 + 0x0B08, r3_r2_n, r0_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	if (r3_r2_n->w14E8 != 0x00)
+	{
+		fn0000BF84(r3_r2_n);
+		r3Out = r3_n;
+		r12Out = r12;
+		r13Out = r13;
+		return r2_n;
+	}
+	if (r3_r2_n->w14A8 != 0x00)
+	{
+		Eq_n r13_n;
+		Eq_n r3_n;
+		Eq_n r2_n = fn0000BEB4(r11_r10_n, r3_r2_n, r9_r8 + 0x0B08, SEQ(r7, r6), r2_n, r12, r13, ra_n, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg50, dwArg68, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	r3_r2_n->dw23F8 += 0x17;
+	uint32 ra_n = r3_r2_n->dw2400 + 0x0A >> 0x1D;
+	Eq_n r2_n = 0x09;
+	Eq_n dwArg00_n = SEQ(0x02, wArg00_n);
+	if (ra_n < 0x09)
+		ra_n = 0x09;
+	if ((int16) (dwArg08 <= 0x09) != 0x00 && bArg06_n != 0x00)
+	{
+		fn0000BB0E();
+		r3Out.u1 = 0x00;
+		r12Out = r12;
+		r13Out = r13;
+		return 0x09;
+	}
+	Eq_n r4_n = r3_r2_n->t2414.u0;
+	Eq_n r5_n = r3_r2_n->t2410.u0;
+	int16 r0_n = (int16) (r3_r2_n->w00C8 == 0x04);
+	if (r0_n == 0x00)
+	{
+		Eq_n r0_n = (int16) (ra_n <= 0x09);
+		Eq_n dwArg38_n = SEQ(wArg3A_n, wArg38);
+		if (r0_n == 0x00)
+		{
+			Eq_n r10_n = __a_shift<word16,word16>(wArg04_n, r4_n.u6 + 4);
+			r3_r2_n->t2410.u0 = (wchar_t) r10_n;
+			cui16 r5_n = r5_n | r10_n;
+			if (r4_n >= 0x09)
+			{
+				Eq_n r13_n;
+				Eq_n r3_n;
+				Eq_n r2_n = fn0000BD82(0x09, SEQ(r5_n, r4_n.u6 + 4), r3_r2_n, r0_n, r13, dwArg00_n, out r3_n, out r13_n);
+				r3Out = r3_n;
+				r12Out = r12;
+				r13Out = r13_n;
+				return r2_n;
+			}
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			r3_r2_n[r5_r4_n] = (byte) r10_n;
+			Eq_n r10_n = r3_r2_n->t2410.u0;
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			r3_r2_n[r5_r4_n] = (byte) (r10_n >> 0x08);
+			Eq_n r4_n = r3_r2_n->t2414.u0;
+			Eq_n r10_n = __l_shift<word16,word16>(wArg04_n, r0_n);
+			r3_r2_n->t2410.u0 = (wchar_t) r10_n;
+			r3_r2_n->t2414.u0 = (wchar_t) (r4_n - 0x10);
+			Eq_n v34_n = r3_r2_n->t1600.u0;
+			Eq_n v36_n = r3_r2_n->t15E8.u0;
+			Eq_n r0_n = __a_shift<word16,word16>(v36_n, r4_n - 0x10);
+			r3_r2_n->t2410.u0 = (wchar_t) r0_n;
+			Eq_n r12_n = SEQ(SLICE(r12, word16, 16), v34_n);
+			Eq_n ra_n = SEQ(SLICE(ra_n, word16, 16), v36_n);
+			cui16 r10_n = r10_n | r0_n;
+			if (r4_n >= 0x1B)
+			{
+				Eq_n r12_n;
+				Eq_n r13_n;
+				Eq_n r3_n;
+				Eq_n r2_n = fn0000BD10(out r3_n, out r12_n, out r13_n);
+				r3Out = r3_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r2_n;
+			}
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			r3_r2_n[r5_r4_n] = (byte) r0_n;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			Eq_n r0_n = r3_r2_n->t2410.u0;
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			byte * r3_r2_n = r3_r2_n + r5_r4_n;
+			*r3_r2_n = (byte) (r0_n >> 0x08);
+			Eq_n r4_n = r3_r2_n->t2414.u0;
+			Eq_n r5_n = SEQ(SLICE(r5_r4_n, byte, 24), (byte) r4_n);
+			Eq_n r1_n = __l_shift<word16,word16>(v36_n, r5_n);
+			r3_r2_n->t2410.u0 = (wchar_t) r1_n;
+			r3_r2_n->t2414.u0 = (wchar_t) r4_n;
+			cui16 r1_n = __a_shift<word16,word16>(v34_n, r4_n) | r1_n;
+			r3_r2_n->t2410.u0 = (wchar_t) r1_n;
+			word16 r3_n = SLICE(r3_r2_n, word16, 16);
+			Eq_n dwArg0A_n = SEQ(wArg0C_n, wArg0A_n);
+			if (r4_n >= 11)
+			{
+				Eq_n r12_n;
+				Eq_n r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				word16 r4_n;
+				word16 r9_n;
+				word16 r5_n;
+				word16 r8_n;
+				word16 r1_n;
+				fn0000BCAC(SEQ(r1_n, r1_n), SEQ(r11_n + 65256, r10_n), SEQ(r5_n, r4_n), r5_r4_n + 0x01, r3_r2_n, r3_n, r12_n, r13, ra_n, dwArg00_n, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38_n, dwArg48, dwArg50, dwArg68, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+				r3Out = r3_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r2_n;
+			}
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			r3_r2_n[r5_r4_n] = (byte) r1_n;
+			int32 r3_r2_n = r3_r2_n->dw0014;
+			Eq_n r6_n = r3_r2_n->t2410.u0;
+			byte r1_r0_n[] = r3_r2_n->ptr0008;
+			r3_r2_n->dw0014 = r3_r2_n + 0x01;
+			byte * r1_r0_n = r1_r0_n + r3_r2_n;
+			*r1_r0_n = (byte) (r6_n >> 0x08);
+			Eq_n r4_n = r3_r2_n->t2414.u0;
+			Eq_n r2_n = __l_shift<word16,word16>(v34_n, SEQ(SLICE(r1_r0_n, byte, 24), (byte) r4_n));
+			r3_r2_n->t2410.u0 = (wchar_t) r2_n;
+			r3_r2_n->t2414.u0 = (wchar_t) r4_n;
+			r3_r2_n->t2410.u0 = (wchar_t) r2_n;
+			word16 r7_n = SLICE(r5_r4_n + 0x01, word16, 16);
+			word16 r5_n = SLICE(r3_r2_n + 0x01, word16, 16);
+			if (r4_n >= 0x0C)
+			{
+				fn0000BC42(SEQ(0x02, r2_n), SEQ(r5_n, r4_n), r7_n, r2_n, r12_n, ra_n, dwArg40, dwArg58);
+				r3Out = r3_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r2_n;
+			}
+			Eq_n dwArg00_n;
+			Eq_n r5_r4_n;
+			Eq_n r11_n;
+			Eq_n r4_n;
+			struct Eq_n * r11_r10_n;
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			r3_r2_n[r5_r4_n] = (byte) r2_n;
+			Eq_n r0_n = r3_r2_n->t2410.u0;
+			byte r3_r2_n[] = r3_r2_n->ptr0008;
+			int32 r5_r4_n = r3_r2_n->dw0014;
+			r3_r2_n->dw0014 = r5_r4_n + 0x01;
+			byte * r3_r2_n = r3_r2_n + r5_r4_n;
+			*r3_r2_n = (byte) (r0_n >> 0x08);
+			Eq_n r4_n = r3_r2_n->t2414.u0;
+			Eq_n r1_n = __l_shift<word16,word16>(0x02, SEQ(SLICE(r3_r2_n, byte, 24), (byte) r4_n));
+			r3_r2_n->t2410.u0 = (wchar_t) r1_n;
+			r3_r2_n->t2414.u0 = (wchar_t) r4_n;
+			Eq_n r5_n = r3_r2_n->t0A94.u0;
+			r3_r2_n->t2410.u0 = (wchar_t) r1_n;
+			Eq_n r0_n = r1_n;
+			Eq_n r10_n = 64294;
+			word16 r11_n = 0x00;
+			Eq_n wArg00_n = r5_n;
+			struct Eq_n * r11_r10_n = (struct Eq_n *) 64294;
+			Eq_n r5_r4_n = SEQ(r5_n, r4_n);
+			if (r4_n < 0x0D)
+			{
+				do
+				{
+					byte r3_r2_n[] = r3_r2_n->ptr0008;
+					int32 r5_r4_n = r3_r2_n->dw0014;
+					r3_r2_n->dw0014 = r5_r4_n + 0x01;
+					r3_r2_n[r5_r4_n] = (byte) r0_n;
+					Eq_n r0_n = r3_r2_n->t2410.u0;
+					int32 r3_r2_n = r3_r2_n->dw0014;
+					byte r1_r0_n[] = r3_r2_n->ptr0008;
+					r3_r2_n->dw0014 = r3_r2_n + 0x01;
+					byte * r1_r0_n = r1_r0_n + r3_r2_n;
+					*r1_r0_n = (byte) (r0_n >> 0x08);
+					r4_n.u0 = r3_r2_n->t2414.u0;
+					Eq_n r1_n = __l_shift<word16,word16>(wArg00_n, SEQ(SLICE(r1_r0_n, byte, 8), (byte) r4_n));
+					r3_r2_n->t2410.u0 = (wchar_t) r1_n;
+					r3_r2_n->t2414.u0 = (wchar_t) r4_n;
+					r11_n = r11_n + ~0x0C;
+					r12_n = SEQ(SLICE(r5_r4_n + 0x01, word16, 16), r0_n >> 0x08);
+					r0_n = r1_n;
+					dwArg00_n = SEQ(0x02, wArg00_n);
+					r11_r10_n = SEQ(r11_n, r10_n);
+					r5_r4_n = SEQ(SLICE(r3_r2_n + 0x01, word16, 16), r4_n);
+					if (false)
+						goto l0000B67A;
+l0000B64A:
+					Eq_n r5_n = (&(r3_r2_n + ((int32) r11_r10_n[1] + 660 << 0x02) / 9240)->w0002)[1];
+					r3_r2_n->t2410.u0 = (wchar_t) r0_n;
+					word16 r10_n = (word16) r11_r10_n;
+					r11_n = SLICE(r11_r10_n + 1, word16, 16);
+					r10_n = r10_n + 0x01;
+					wArg00_n = r5_n;
+					r11_r10_n = SEQ(r11_n, r10_n + 0x01);
+					r5_r4_n = SEQ(r5_n, r4_n);
+				} while (r4_n < 0x0D);
+			}
+			r4_n = (word16) r5_r4_n;
+			r3_r2_n->t2414.u0 = (wchar_t) r4_n;
+			r11_n.u4 = SLICE(r11_r10_n, word16, 16);
+			r10_n = (word16) r11_r10_n;
+			dwArg00_n = SEQ(0x02, wArg00_n);
+			r11_r10_n = r11_r10_n;
+			r5_r4_n = r5_r4_n;
+			if (false)
+			{
+l0000B67A:
+				Eq_n sp_n = <invalid>;
+				Eq_n r11_n;
+				Eq_n r12_n;
+				Eq_n r12_n;
+				word16 r11_n;
+				fn00009C04(sp_n.u6[0x0C], (word16) r12_n, fn00009C04(r5_r4_n, v36_n, r10_n, r11_n, SEQ(SLICE(r12_n, word16, 16), v34_n), dwArgFFF2, dwArg10004, dwArg10024, dwArg1002C, wArg10032, wArg10036, wArg1003A, wArg1003E, wArg10040, dwArg10042, wArg10046, dwArg1004A, wArg1004E, dwArg10052, wArg10056, wArg1005A, wArg1005E, wArg10062, wArg10066, dwArg1006A, wArg1006E, dwArg1007A, dwArg10082, dwArg1008A, dwArg10092, dwArg1009A, dwArg100A2, wArg100AA, wArg100AE, out r11_n, out r12_n), r11_n, r12_n, sp_n.u6[0x0000FFF2], sp_n.u6[0x00010004], sp_n.u6[65572], sp_n.u6[65580], sp_n.u6[65586], sp_n.u6[65590], sp_n.u6[65594], sp_n.u6[65598], sp_n.u6[0x00010040], sp_n.u6[65602], sp_n.u6[65606], sp_n.u6[65610], sp_n.u6[65614], sp_n.u6[65618], sp_n.u6[65622], sp_n.u6[65626], sp_n.u6[65630], sp_n.u6[65634], sp_n.u6[0x00010066], sp_n.u6[65642], sp_n.u6[65646], sp_n.u6[65658], sp_n.u6[65666], sp_n.u6[65674], sp_n.u6[65682], sp_n.u6[65690], sp_n.u6[65698], sp_n.u6[0x000100AA], sp_n.u6[0x000100AE], out r11_n, out r12_n);
+				word16 r0_n;
+				Eq_n r12_n;
+				Eq_n r13_n;
+				word16 r4_n;
+				ci16 r5_n;
+				word16 r7_n;
+				word32 ra_n;
+				Eq_n r9_r8_n;
+				ci16 r6_n;
+				word32 r3_r2_n = fn0000A0E8(r12_n, dwArg0A_n, dwArg10004, dwArg1000C, dwArg10024, dwArg1002C, wArg10032, wArg10036, wArg1003A, wArg1003E, wArg10040, dwArg10042, wArg10046, dwArg1004A, wArg1004E, dwArg10052, wArg10056, wArg1005A, wArg1005E, wArg10062, wArg10066, dwArg1006A, wArg1006E, dwArg1007A, dwArg10082, dwArg1008A, dwArg10092, dwArg1009A, dwArg100A2, wArg100AA, wArg100AE, out r9_r8_n, out r0_n, out r4_n, out r5_n, out r6_n, out r7_n, out r12_n, out r13_n, out ra_n);
+				word16 r2_n = (word16) r3_r2_n;
+				Eq_n dwArg08_n = SEQ(wArg0A_n, v34_n);
+				r9_r8_n.u6[0x00002414] = (struct Eq_n) (r4_n + 0x04);
+				if (r0_n != r7_n)
+				{
+					if (r5_n < r6_n)
+					{
+						fn0000BB84(r2_n, r12_n);
+						r3Out = r3_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return r2_n;
+					}
+					(r9_r8_n.u4 + ((int32) r0_n << 0x02))[2642] = r6_n;
+					if (r7_n == 0x00)
+					{
+						Eq_n r13_n;
+						Eq_n r3_n;
+						word16 r8_n;
+						word16 r9_n;
+						Eq_n r2_n = fn0000BAF2(r9_r8_n, out r3_n, out r8_n, out r9_n, out r13_n);
+						r3Out = r3_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return r2_n;
+					}
+					if (r0_n == r7_n)
+					{
+						fn0000BB8E(r12_n, dwArg48);
+						r3Out = r3_n;
+						r12Out = r12_n;
+						r13Out = r13_n;
+						return r2_n;
+					}
+					r6_n = 0x00;
+				}
+				if (ra_n != r3_r2_n + 0x04)
+				{
+					Eq_n r12_n;
+					Eq_n r3_n;
+					Eq_n r13_n;
+					Eq_n r2_n = fn0000B2B0(r1, r6_n, r12_n, dwArg00_n, dwArg04, dwArg08_n, dwArg0C, dwArg10, dwArg14, dwArg40, dwArg48, dwArg60, out r3_n, out r12_n, out r13_n);
+					r3Out = r3_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r2_n;
+				}
+				else
+				{
+					Eq_n r12_n;
+					Eq_n r3_n;
+					Eq_n r13_n;
+					Eq_n r2_n = fn0000B2F2(SEQ(r5, r4), SEQ(r9, r8), r3, r13_n, dwArg00_n, out r3_n, out r12_n, out r13_n);
+					r3Out = r3_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r2_n;
+				}
+			}
+			goto l0000B64A;
+		}
+	}
+	else
+		r2_n.u1 = null[(uint32) r0_n / 2].t0000.u1;
+	r3Out.u1 = 0x00;
+	r12Out = r12;
+	r13Out = dwArg3A;
+	return r2_n;
+}
+
+// 0000B718: void fn0000B718(Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r1, Register Eq_n r6, Register Eq_n r13, Stack Eq_n dwArg12)
+// Called from:
+//      fn0000A416
+void fn0000B718(Eq_n r5_r4, Eq_n r9_r8, Eq_n r1, Eq_n r6, Eq_n r13, Eq_n dwArg12)
+{
+	r9_r8.u6[5412] = (struct Eq_n) (r1.u6 + 1);
+	word16 r2_n;
+	word16 r3_n;
+	word16 r6_n;
+	word16 r7_n;
+	word16 r9_n;
+	word16 r10_n;
+	word16 r11_n;
+	word32 r12_n;
+	word32 r13_n;
+	word32 ra_n;
+	fn0000AF98(r5_r4, r9_r8, r6, r13, dwArg12, out r2_n, out r3_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out ra_n);
+}
+
+// 0000B726: void fn0000B726(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register word16 r0, Register word16 r4, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000A416
+void fn0000B726(Eq_n r11_r10, Eq_n r9_r8, word16 r0, word16 r4, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	if (r0 == r4)
+		fn0000B73A(r11_r10, r9_r8, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+	else
+	{
+		struct Eq_n * r5_r4_n = r9_r8.u4 + ((int32) r0 << 0x02);
+		Eq_n r1_n = r5_r4_n->t14A4.u0;
+		fn0000B734(r11_r10, r5_r4_n, r9_r8, r1_n, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+	}
+}
+
+// 0000B732: void fn0000B732(Sequence Eq_n r11_r10, Sequence (ptr32 code) r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r9_r8, Register Eq_n r1, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000A534
+//      fn0000A59C
+void fn0000B732(Eq_n r11_r10, <anonymous> * r3_r2, struct Eq_n * r5_r4, Eq_n r9_r8, Eq_n r1, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	bool L;
+	word16 r9 = SLICE(r9_r8, word16, 16);
+	word16 r8 = (word16) r9_r8;
+	word16 r11 = SLICE(r11_r10, word16, 16);
+	word16 r10 = (word16) r11_r10;
+	word16 r5 = SLICE(r5_r4, word16, 16);
+	word16 r4 = (word16) r5_r4;
+	word16 r3 = SLICE(r3_r2, word16, 16);
+	word16 r2 = (word16) r3_r2;
+	if (L)
+		fn0000B734(r11_r10, r5_r4, r9_r8, r1, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+	else
+		r3_r2();
+}
+
+// 0000B734: void fn0000B734(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r9_r8, Register Eq_n r1, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000B726
+//      fn0000B732
+void fn0000B734(Eq_n r11_r10, struct Eq_n * r5_r4, Eq_n r9_r8, Eq_n r1, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	r5_r4->t14A4.u0 = (wchar_t) (r1.u6 + 1);
+	fn0000B73A(r11_r10, r9_r8, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+}
+
+// 0000B73A: void fn0000B73A(Sequence Eq_n r11_r10, Sequence Eq_n r9_r8, Register Eq_n r7, Register Eq_n r12, Register Eq_n r13, Stack Eq_n wArg40, Stack Eq_n wArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg58, Stack Eq_n dwArg60, Stack Eq_n wArg74, Stack Eq_n dwArg78, Stack Eq_n dwArg88, Stack Eq_n dwArg90)
+// Called from:
+//      fn0000B726
+//      fn0000B732
+void fn0000B73A(Eq_n r11_r10, Eq_n r9_r8, Eq_n r7, Eq_n r12, Eq_n r13, Eq_n wArg40, Eq_n wArg48, Eq_n dwArg50, Eq_n dwArg58, Eq_n dwArg60, Eq_n wArg74, Eq_n dwArg78, Eq_n dwArg88, Eq_n dwArg90)
+{
+	r9_r8.u6[5412] = (struct Eq_n) r9_r8.u6[5412].b0001;
+	fn0000AE66(r11_r10, r9_r8, r7, r12, r13, wArg40, wArg48, dwArg50, dwArg58, dwArg60, wArg74, dwArg78, dwArg88, dwArg90);
+}
+
+// 0000B9B2: Register Eq_n fn0000B9B2(Register Eq_n r2, Stack Eq_n wArg02, Register out Eq_n r2Out, Register out Eq_n r3Out)
+// Called from:
+//      fn0000A416
+//      fn0000A438
+Eq_n fn0000B9B2(Eq_n r2, Eq_n wArg02, union Eq_n & r2Out, union Eq_n & r3Out)
+{
+	word16 r3;
+	word16 r5;
+	word16 r4;
+	word16 r7;
+	word16 r6;
+	Eq_n r0;
+	Eq_n r11;
+	Eq_n r12;
+	word32 r3_r2_n = SEQ(wArg02, r2);
+	word32 r3_r2_n = SEQ(wArg02, r2) + r3_r2_n;
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+	Eq_n r2_n = (word16) r3_r2_n;
+	Eq_n r0_n = r2.u4 + (word16) r3_r2_n;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg152 = <invalid>;
+	Eq_n stackArg160 = <invalid>;
+	fn0000A8CA(SEQ(r3, r2), SEQ(r5, r4), SEQ(r7, r6), r0, r11, r12, stackArg152, stackArg160);
+	r2Out = r2_n;
+	r3Out = r3_n;
+	return r0_n;
+}
+
+// 0000BAE0: Register word16 fn0000BAE0(Stack Eq_n dwArg10010, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r8Out, Register out Eq_n r9Out)
+// Called from:
+//      fn0000C0EE
+word16 fn0000BAE0(Eq_n dwArg10010, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r8Out, union Eq_n & r9Out)
+{
+	ptr32 fp;
+	Eq_n r1_n = SLICE(fp + 0x00010010, word16, 16);
+	word16 r0_n = (word16) fp + 0x10;
+	Eq_n r3_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	word32 r13_n;
+	Eq_n r2_n = fn0000BAF2(dwArg10010, out r3_n, out r8_n, out r9_n, out r13_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	return r0_n;
+}
+
+// 0000BAF2: Register word16 fn0000BAF2(Sequence Eq_n r9_r8, Register out Eq_n r3Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out (ptr32 Eq_n) r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BAE0
+word16 fn0000BAF2(Eq_n r9_r8, union Eq_n & r3Out, union Eq_n & r8Out, union Eq_n & r9Out, struct Eq_n & r13Out)
+{
+	word32 r13;
+	Eq_n r3_n = SLICE(r13, word16, 16);
+	word16 r2_n = (word16) r13;
+	Eq_n r8_n = (word16) r13;
+	struct Eq_n * r13_n = fn0000BB06(r9_r8);
+	r3Out = r3_n;
+	r8Out = r8_n;
+	r9Out.u1 = 0x00;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BB06: Register Eq_n fn0000BB06(Stack Eq_n dwArg50)
+// Called from:
+//      fn0000B218
+//      fn0000BAF2
+Eq_n fn0000BB06(Eq_n dwArg50)
+{
+	fn0000BB0E();
+	return dwArg50;
+}
+
+// 0000BB0E: void fn0000BB0E()
+// Called from:
+//      fn0000B2B0
+//      fn0000BB06
+void fn0000BB0E()
+{
+	bool Z;
+	word16 r3;
+	word16 r2;
+	word16 r5;
+	word16 r4;
+	Eq_n r13;
+	word16 r9;
+	word16 r8;
+	word16 r0;
+	if (Z)
+		fn0000BDB6(SEQ(r5, r4), SEQ(r9, r8), r0, r13);
+	else
+		fn0000BB12(SEQ(r3, r2), SEQ(r5, r4), r13);
+}
+
+// 0000BB12: void fn0000BB12(Sequence word32 r3_r2, Sequence word32 r5_r4, Register Eq_n r13)
+// Called from:
+//      fn0000B29A
+//      fn0000BAE0
+//      fn0000BB3E
+//      fn0000BC32
+void fn0000BB12(word32 r3_r2, word32 r5_r4, Eq_n r13)
+{
+	Eq_n r12;
+	word16 r2 = (word16) r3_r2;
+	if (r5_r4 == 0x00)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		Eq_n stackArg16 = <invalid>;
+		Eq_n stackArg20 = <invalid>;
+		Eq_n stackArg24 = <invalid>;
+		Eq_n stackArg52 = <invalid>;
+		Eq_n stackArg56 = <invalid>;
+		Eq_n stackArg60 = <invalid>;
+		Eq_n stackArg64 = <invalid>;
+		Eq_n stackArg68 = <invalid>;
+		Eq_n stackArg72 = <invalid>;
+		Eq_n stackArg76 = <invalid>;
+		Eq_n stackArg80 = <invalid>;
+		Eq_n stackArg100 = <invalid>;
+		Eq_n stackArg104 = <invalid>;
+		Eq_n stackArg258 = <invalid>;
+		Eq_n stackArg528 = <invalid>;
+		Eq_n stackArg532 = <invalid>;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		fn0000C674(SEQ(r1, r0), SEQ(r11, r10), SEQ(r7, r6), SEQ(r9, r8), r12, r13, ra, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg24, stackArg52, stackArg56, stackArg60, stackArg64, stackArg68, stackArg72, stackArg76, stackArg80, stackArg100, stackArg104, stackArg258, stackArg528, stackArg532, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	}
+	else if (r13 >= 0x0F)
+	{
+		if (r13 >= 0x0F)
+		{
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			Eq_n stackArg16 = <invalid>;
+			Eq_n stackArg20 = <invalid>;
+			Eq_n stackArg24 = <invalid>;
+			Eq_n stackArg52 = <invalid>;
+			Eq_n stackArg56 = <invalid>;
+			Eq_n stackArg60 = <invalid>;
+			Eq_n stackArg64 = <invalid>;
+			Eq_n stackArg68 = <invalid>;
+			Eq_n stackArg72 = <invalid>;
+			Eq_n stackArg76 = <invalid>;
+			Eq_n stackArg80 = <invalid>;
+			Eq_n stackArg100 = <invalid>;
+			Eq_n stackArg104 = <invalid>;
+			Eq_n stackArg258 = <invalid>;
+			Eq_n stackArg528 = <invalid>;
+			Eq_n stackArg532 = <invalid>;
+			word16 r1_n;
+			word16 r2_n;
+			word16 r3_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r6_n;
+			word16 r8_n;
+			word16 r9_n;
+			word16 r10_n;
+			word16 r11_n;
+			word32 r12_n;
+			word32 r13_n;
+			fn0000C3AC(SEQ(r1, r0), SEQ(r11, r10), SEQ(r5, r4), r12, r13, ra, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg24, stackArg52, stackArg56, stackArg60, stackArg64, stackArg68, stackArg72, stackArg76, stackArg80, stackArg100, stackArg104, stackArg258, stackArg528, stackArg532, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		}
+		else
+		{
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			Eq_n stackArg16 = <invalid>;
+			Eq_n stackArg20 = <invalid>;
+			Eq_n stackArg64 = <invalid>;
+			Eq_n stackArg80 = <invalid>;
+			Eq_n stackArg104 = <invalid>;
+			word16 r3_n;
+			word32 r13_n;
+			fn0000BEB4(SEQ(r11, r10), SEQ(r3, r2), SEQ(r5, r4), SEQ(r7, r6), r8, r12, r13, ra, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg64, stackArg80, stackArg104, out r3_n, out r13_n);
+		}
+	}
+	else if (r13 >= 5551)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		Eq_n stackArg16 = <invalid>;
+		Eq_n stackArg20 = <invalid>;
+		Eq_n stackArg24 = <invalid>;
+		Eq_n stackArg52 = <invalid>;
+		Eq_n stackArg56 = <invalid>;
+		Eq_n stackArg60 = <invalid>;
+		Eq_n stackArg64 = <invalid>;
+		Eq_n stackArg68 = <invalid>;
+		Eq_n stackArg72 = <invalid>;
+		Eq_n stackArg76 = <invalid>;
+		Eq_n stackArg80 = <invalid>;
+		Eq_n stackArg100 = <invalid>;
+		Eq_n stackArg104 = <invalid>;
+		Eq_n stackArg258 = <invalid>;
+		Eq_n stackArg528 = <invalid>;
+		Eq_n stackArg532 = <invalid>;
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r10_n;
+		word16 r11_n;
+		word32 r12_n;
+		word32 r13_n;
+		fn0000C68E(SEQ(r1, r0), SEQ(r11, r10), r12, r13, ra, stackArg0, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg24, stackArg52, stackArg56, stackArg60, stackArg64, stackArg68, stackArg72, stackArg76, stackArg80, stackArg100, stackArg104, stackArg258, stackArg528, stackArg532, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	}
+	else
+		fn0000BB84(r2, r12);
+}
+
+// 0000BB3E: void fn0000BB3E(Sequence word32 r3_r2, Sequence word32 r5_r4, Register Eq_n r13)
+// Called from:
+//      fn0000B29A
+void fn0000BB3E(word32 r3_r2, word32 r5_r4, Eq_n r13)
+{
+	fn0000BB12(r3_r2, r5_r4, r13);
+}
+
+// 0000BB84: void fn0000BB84(Register word16 r2, Register Eq_n r12)
+// Called from:
+//      fn0000B29A
+//      fn0000BB12
+void fn0000BB84(word16 r2, Eq_n r12)
+{
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg72 = <invalid>;
+	fn0000BB8E(r12, stackArg72);
+}
+
+// 0000BB8E: void fn0000BB8E(Register Eq_n r12, Stack Eq_n dwArg48)
+// Called from:
+//      fn0000B29A
+//      fn0000BB84
+void fn0000BB8E(Eq_n r12, Eq_n dwArg48)
+{
+	word16 r3;
+	if (dwArg48 != r12.u6 + 16)
+		fn0000BB3E(SEQ(r3, r2), SEQ(r5, r4), r13);
+	else
+		fn0000BC32();
+}
+
+// 0000BC32: void fn0000BC32()
+// Called from:
+//      fn0000B29A
+//      fn0000BB8E
+void fn0000BC32()
+{
+	word16 r3;
+	word16 r2;
+	Eq_n r13;
+	fn0000BB12(SEQ(r3, r2), SEQ(r5, r4), r13);
+}
+
+// 0000BC42: void fn0000BC42(Sequence word32 r1_r0, Sequence Eq_n r5_r4, Register word16 r7, Register Eq_n r8, Register Eq_n r12, Register Eq_n ra, Stack Eq_n dwArg40, Stack Eq_n dwArg58)
+// Called from:
+//      fn0000B29A
+//      fn0000BB84
+void fn0000BC42(word32 r1_r0, Eq_n r5_r4, word16 r7, Eq_n r8, Eq_n r12, Eq_n ra, Eq_n dwArg40, Eq_n dwArg58)
+{
+	Eq_n r1 = SLICE(r1_r0, word16, 16);
+	Eq_n r0 = (word16) r1_r0;
+	word16 r6_n;
+	word16 r9_n;
+	word32 r5_r4_n;
+	struct Eq_n * r3_r2_n = fn0000D4EC(dwArg40, r5_r4, r0, r1, out r5_r4_n, out r6_n, out r9_n);
+	word16 r5_n = SLICE(r5_r4_n, word16, 16);
+	cu16 r4_n = (word16) r5_r4_n;
+	if (dwArg58 >= 5551)
+		fn0000BFBE(r3_r2_n, r5_r4_n, SEQ(r9_n, r8), r0, r12);
+	else
+		fn0000BC5A(r3_r2_n, SEQ(r7, r6_n), r0, r4_n, r5_n, ra);
+}
+
+// 0000BC5A: void fn0000BC5A(Sequence (ptr32 Eq_n) r3_r2, Sequence int32 r7_r6, Register Eq_n r0, Register cu16 r4, Register word16 r5, Register Eq_n ra)
+// Called from:
+//      fn0000BAE0
+//      fn0000BC42
+void fn0000BC5A(struct Eq_n * r3_r2, int32 r7_r6, Eq_n r0, cu16 r4, word16 r5, Eq_n ra)
+{
+	*ra.u4 = r4;
+	ptr32 ra_n = r3_r2->ptr23E0;
+	r3_r2->t23EC.u0 = (wchar_t) r0;
+	*((word32) ra_n + r7_r6) = (ptr32) (byte) r5;
+	if (r4 == 0x00)
+	{
+		ui32 r1_r0_n = (word32) r5;
+		struct Eq_n * r1_r0_n = r3_r2 + (r1_r0_n << 0x02) / 9226;
+		SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->w00D4 = r1_r0_n->w00D4;
+	}
+	else
+	{
+		word16 r0_n;
+		r3_r2->w2408 = r3_r2->w2408;
+		struct Eq_n * r1_r0_n = r3_r2 + ((word32) ((byte[]) 62254)[(word32) r5] << 0x02) / 9226;
+		SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->w08DC = r1_r0_n->w08DC;
+		if (r4 < 0xFF)
+			r0_n = (word16) ((byte[]) 0xF42E)[(word32) (r4 >> 0x09)];
+		else
+			r0_n = (word16) ((byte[]) 0xF42E)[(word32) r4];
+		struct Eq_n * r1_r0_n = r3_r2 + ((int32) r0_n << 0x02) / 9226;
+		SEQ(SLICE(r1_r0_n, word16, 16) + 0x01, (word16) r1_r0_n)->w12BC = r1_r0_n->w12BC;
+	}
+}
+
+// 0000BCAC: Register word16 fn0000BCAC(Sequence Eq_n r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r7_r6, Sequence (ptr32 Eq_n) r9_r8, Register word16 r3, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg38, Stack Eq_n dwArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg68, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000C6E8
+word16 fn0000BCAC(Eq_n r1_r0, Eq_n r11_r10, struct Eq_n * r5_r4, Eq_n r7_r6, struct Eq_n * r9_r8, word16 r3, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg38, Eq_n dwArg48, Eq_n dwArg50, Eq_n dwArg68, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word32 r1_r0_n = r1_r0 + r9_r8;
+	if (r13 == 0x01)
+	{
+		Eq_n r1_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000BF00(r1_r0_n, r12, dwArg00, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, r1_r0_n, dwArg48, dwArg50, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000BCB8(r11_r10, r5_r4, r7_r6, r9_r8, r3, r12, r13, ra, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, r1_r0_n, dwArg48, dwArg50, dwArg68, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+}
+
+// 0000BCB8: Register Eq_n fn0000BCB8(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r7_r6, Sequence (ptr32 Eq_n) r9_r8, Register word16 r3, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg38, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg68, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BCAC
+//      fn0000BD10
+//      fn0000C6E8
+Eq_n fn0000BCB8(Eq_n r11_r10, struct Eq_n * r5_r4, Eq_n r7_r6, struct Eq_n * r9_r8, word16 r3, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg38, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg50, Eq_n dwArg68, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	word32 r1_r0_n = (word32) r5_r4->b0001;
+	Eq_n r9_r8_n = r9_r8 + r1_r0_n / 9240;
+	word32 r2_r1_n = dwArg40 + r9_r8_n;
+	word16 r0_n = (word16) r1_r0_n;
+	word16 r2_n = SLICE(r2_r1_n, word16, 16);
+	word16 r1_n = (word16) r2_r1_n;
+	if (r13 == 0x02)
+	{
+		ptr32 r13_n;
+		Eq_n r3_n;
+		Eq_n r2_n = fn0000BEE8(SEQ(r1_n, r0_n), r11_r10, SEQ(r3, r2_n), &r5_r4->b0004 + 1627971723, r7_r6, r9_r8_n, r12, r13, ra, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, r2_r1_n, dwArg48, dwArg50, dwArg68, out r3_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		word32 r1_r0_n = (word32) r5_r4->b0002;
+		Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+		Eq_n r0_n = (word16) r1_r0_n;
+		word32 r3_r2_n = r9_r8_n.u4 + SEQ(r3, r3);
+		if (r13 == 0x03)
+		{
+			Eq_n r1_n;
+			ptr32 r13_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			Eq_n r0_n = fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r12Out = r12;
+			r13Out = r13_n;
+			return r0_n;
+		}
+		else
+		{
+			word32 r1_r0_n = (word32) r5_r4->b0003;
+			Eq_n r0_n = (word16) r1_r0_n;
+			Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+			Eq_n r3_r2_n = r9_r8_n.u4 + r3_r2_n;
+			Eq_n r1_n;
+			ptr32 r13_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			Eq_n r0_n = fn0000BCFA(r3_r2_n, r5_r4, r9_r8_n, r0_n, r13, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r12Out = r12;
+			r13Out = r13_n;
+			return r0_n;
+		}
+	}
+}
+
+// 0000BCFA: Register Eq_n fn0000BCFA(Sequence Eq_n r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r9_r8, Register Eq_n r0, Register Eq_n r13, Stack Eq_n dwArg00, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B218
+//      fn0000BCB8
+Eq_n fn0000BCFA(Eq_n r3_r2, struct Eq_n * r5_r4, Eq_n r9_r8, Eq_n r0, Eq_n r13, Eq_n dwArg00, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r13Out)
+{
+	bool Z;
+	if (Z)
+	{
+		Eq_n r1_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000BDDA(r0, dwArg00, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000BCFC(r3_r2, r5_r4, r9_r8, r13, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+}
+
+// 0000BCFC: Register Eq_n fn0000BCFC(Sequence Eq_n r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r9_r8, Register Eq_n r13, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r13Out)
+// Called from:
+//      fn0000BCB8
+//      fn0000BCFA
+Eq_n fn0000BCFC(Eq_n r3_r2, struct Eq_n * r5_r4, Eq_n r9_r8, Eq_n r13, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r13Out)
+{
+	Eq_n r5 = SLICE(r5_r4, word16, 16);
+	Eq_n r4 = (word16) r5_r4;
+	word32 r1_r0_n = (word32) r5_r4->b0004;
+	Eq_n r9_r8_n = r9_r8.u4 + r1_r0_n;
+	word32 r3_r2_n = r3_r2 + r9_r8_n;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	Eq_n r0_n = (word16) r1_r0_n;
+	Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+	Eq_n r8_n = (word16) r9_r8_n;
+	Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+	Eq_n r2_n = (word16) r3_r2_n;
+	if (r13 == 0x05)
+	{
+		Eq_n r1_n;
+		Eq_n r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		word16 r3_n;
+		word32 r12_n;
+		word32 r13_n;
+		fn0000BD10(out r3_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4;
+		r5Out = r5;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r13Out = r13;
+		return r0_n;
+	}
+}
+
+// 0000BD10: Register word16 fn0000BD10(Register out Eq_n r3Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BCB8
+word16 fn0000BD10(union Eq_n & r3Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word16 r11;
+	word16 r10;
+	word16 r7;
+	word16 r6;
+	Eq_n ra;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	Eq_n stackArg16 = <invalid>;
+	Eq_n stackArg20 = <invalid>;
+	Eq_n stackArg24 = <invalid>;
+	Eq_n stackArg56 = <invalid>;
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg72 = <invalid>;
+	Eq_n stackArg80 = <invalid>;
+	Eq_n stackArg104 = <invalid>;
+	ptr32 r13_n;
+	word16 r2_n;
+	Eq_n r3_n;
+	ptr32 r12_n;
+	word16 r1_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r8_n;
+	word16 r9_n;
+	fn0000BCB8(SEQ(r11, r10), SEQ(r5, r4), SEQ(r7, r6), SEQ(r9, r8), r3, r12, r13, ra, stackArg4, stackArg8, stackArg12, stackArg16, stackArg20, stackArg24, stackArg56, stackArg64, stackArg72, stackArg80, stackArg104, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+	r3Out = r3_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BD36: void fn0000BD36()
+// Called from:
+//      fn0000B29A
+//      fn0000BF1E
+void fn0000BD36()
+{
+	word16 r1;
+	Eq_n r12;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg80 = <invalid>;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r8_n;
+	word16 r9_n;
+	word32 r12_n;
+	word32 r13_n;
+	fn0000BF1E(SEQ(r1, r0), SEQ(r9, r8), r12, stackArg0, stackArg64, stackArg80, out r1_n, out r2_n, out r8_n, out r9_n, out r12_n, out r13_n);
+}
+
+// 0000BD82: Register word16 fn0000BD82(Sequence word32 r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r0, Register Eq_n r13, Stack Eq_n dwArg00, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BF1E
+word16 fn0000BD82(word32 r3_r2, struct Eq_n * r5_r4, struct Eq_n * r9_r8, Eq_n r0, Eq_n r13, Eq_n dwArg00, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	if (r13 == 11)
+	{
+		ptr32 r13_n;
+		word16 r2_n;
+		Eq_n r3_n;
+		word16 r1_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r8_n;
+		word16 r9_n;
+		fn0000BDDA(r0, dwArg00, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		ptr32 r13_n;
+		Eq_n r3_n;
+		word16 r2_n = fn0000BD8C(r3_r2, r5_r4, r9_r8, r13, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+}
+
+// 0000BD84: Register word16 fn0000BD84(Sequence word32 r1_r0, Sequence word32 r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r13, Stack Eq_n dwArg00, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000B2F2
+//      fn0000BF00
+word16 fn0000BD84(word32 r1_r0, word32 r3_r2, struct Eq_n * r5_r4, struct Eq_n * r9_r8, Eq_n r13, Eq_n dwArg00, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	bool Z;
+	word16 r0 = (word16) r1_r0;
+	if (Z)
+	{
+		ptr32 r13_n;
+		word16 r2_n;
+		Eq_n r3_n;
+		word16 r1_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r8_n;
+		word16 r9_n;
+		fn0000BDDA(r0 + 11, dwArg00, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		ptr32 r13_n;
+		Eq_n r3_n;
+		word16 r2_n = fn0000BD8C(r3_r2, r5_r4, r9_r8, r13, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+}
+
+// 0000BD8C: Register word16 fn0000BD8C(Sequence word32 r3_r2, Sequence (ptr32 Eq_n) r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r13, Register out Eq_n r3Out, Register out Eq_n r13Out)
+// Called from:
+//      fn0000BD82
+//      fn0000BD84
+//      fn0000BF00
+word16 fn0000BD8C(word32 r3_r2, struct Eq_n * r5_r4, struct Eq_n * r9_r8, Eq_n r13, union Eq_n & r3Out, union Eq_n & r13Out)
+{
+	word32 r1_r0_n = (word32) r5_r4->b000B;
+	Eq_n r9_r8_n = r9_r8 + r1_r0_n / 9240;
+	Eq_n r0_n = (word16) r1_r0_n;
+	word32 r3_r2_n = r9_r8_n.u4 + r3_r2;
+	if (r13 == 0x0C)
+	{
+		Eq_n r13_n;
+		word16 r2_n;
+		Eq_n r3_n;
+		word16 r1_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r8_n;
+		word16 r9_n;
+		fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		word32 r1_r0_n = (word32) r5_r4->b000C;
+		Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+		word32 r3_r2_n = r9_r8_n.u4 + r3_r2_n;
+		Eq_n r0_n = (word16) r1_r0_n;
+		Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+		word16 r2_n = (word16) r3_r2_n;
+		if (r13 == 0x0D)
+		{
+			Eq_n r13_n;
+			word16 r2_n;
+			Eq_n r3_n;
+			word16 r1_n;
+			word16 r4_n;
+			word16 r5_n;
+			word16 r8_n;
+			word16 r9_n;
+			fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+			r3Out = r3_n;
+			r13Out = r13_n;
+			return r2_n;
+		}
+		else
+		{
+			fn0000BDB6(SEQ(r5, r4), SEQ(r9, r8), r0, r13);
+			r3Out = r3_n;
+			r13Out = r13;
+			return r2_n;
+		}
+	}
+}
+
+// 0000BDB6: void fn0000BDB6(Sequence (ptr32 Eq_n) r5_r4, Sequence word32 r9_r8, Register word16 r0, Register Eq_n r13)
+// Called from:
+//      fn0000B29A
+//      fn0000BAE0
+//      fn0000BF00
+void fn0000BDB6(struct Eq_n * r5_r4, word32 r9_r8, word16 r0, Eq_n r13)
+{
+	word32 r1_r0_n = (word32) (byte) r0;
+	Eq_n r0_n = (word16) r1_r0_n;
+	Eq_n r9_r8_n = r9_r8 + r1_r0_n;
+	if (r13 == 0x0E)
+	{
+		word16 r1_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r4_n;
+		word16 r5_n;
+		word16 r8_n;
+		word16 r9_n;
+		word32 r13_n;
+		fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+	}
+	else
+		fn0000BDC8(r5_r4, r9_r8_n);
+}
+
+// 0000BDC8: void fn0000BDC8(Sequence (ptr32 Eq_n) r5_r4, Sequence Eq_n r9_r8)
+// Called from:
+//      fn0000BDB6
+//      fn0000C6E8
+void fn0000BDC8(struct Eq_n * r5_r4, Eq_n r9_r8)
+{
+	word32 r1_r0_n = (word32) r5_r4->b000E;
+	Eq_n r0_n = (word16) r1_r0_n;
+	Eq_n r9_r8_n = r9_r8.u4 + r1_r0_n;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r8_n;
+	word16 r9_n;
+	word32 r13_n;
+	fn0000BDDA(r0_n, r9_r8_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r13_n);
+}
+
+// 0000BDDA: Register Eq_n fn0000BDDA(Register Eq_n r0, Stack Eq_n dwArg00, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BCFA
+//      fn0000BD82
+//      fn0000BD84
+//      fn0000BDB6
+//      fn0000C6E8
+Eq_n fn0000BDDA(Eq_n r0, Eq_n dwArg00, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r13Out)
+{
+	word32 dwArg40;
+	ptr32 dwArg3A;
+	word16 r3;
+	word16 r2;
+	word16 r5;
+	word16 r4;
+	Eq_n r1;
+	if (dwArg00 < 0xFFF0)
+		dwArg00 = SEQ(SLICE((word32) dwArg00 - 0x0000FFF1, word16, 16), (word16) dwArg00 + 0x0F);
+	word32 r5_r4_n;
+	word16 r6_n;
+	word16 r9_n;
+	fn0000D4EC(SEQ(r3, r2), SEQ(r5, r4), r0, r1, out r5_r4_n, out r6_n, out r9_n);
+	ui32 r1_r0_n = SEQ(r0, 0x00) | dwArg00;
+	r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+	r2Out = r0;
+	r3Out.u1 = SLICE(dwArg40, word16, 16);
+	r4Out.u1 = ~0x0E;
+	r5Out.u1 = 0x00;
+	r8Out = (word16) dwArg00;
+	r9Out.u1 = SLICE(dwArg00, word16, 16);
+	r13Out = dwArg3A;
+	return (word16) r1_r0_n;
+}
+
+// 0000BEB4: Register Eq_n fn0000BEB4(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Sequence ptr32 r5_r4, Sequence Eq_n r7_r6, Register Eq_n r8, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg40, Stack Eq_n dwArg50, Stack Eq_n dwArg68, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BAE0
+Eq_n fn0000BEB4(Eq_n r11_r10, struct Eq_n * r3_r2, ptr32 r5_r4, Eq_n r7_r6, Eq_n r8, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg40, Eq_n dwArg50, Eq_n dwArg68, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	Eq_n r9_r8_n = dwArg14.u4 + (word32) r8;
+	Eq_n r9_r8_n = r9_r8_n.u4 + (word32) (r12.u6)[0x0D];
+	Eq_n r9_r8_n = r9_r8_n.u4 + (word32) (r12.u6)[0x0E];
+	word32 r1_r0_n = (word32) r12.u6[0x0F];
+	ptr32 r13_n;
+	Eq_n r3_n;
+	Eq_n r2_n = fn0000BEE8(r1_r0_n, r11_r10, r3_r2, r5_r4, r7_r6, r9_r8_n, r12, r13, ra, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, r9_r8_n, r9_r8_n, dwArg40, r9_r8_n, dwArg50, dwArg68, out r3_n, out r13_n);
+	r3Out = r3_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BEE8: Register word16 fn0000BEE8(Sequence word32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Sequence ptr32 r5_r4, Sequence Eq_n r7_r6, Sequence Eq_n r9_r8, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg38, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg50, Stack Eq_n dwArg68, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BAE0
+//      fn0000BEB4
+//      fn0000C6E8
+word16 fn0000BEE8(word32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, ptr32 r5_r4, Eq_n r7_r6, Eq_n r9_r8, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg38, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg50, Eq_n dwArg68, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	Eq_n r9_r8_n = r9_r8.u4 + r1_r0;
+	word32 r1_r0_n = dwArg68 + r7_r6 + r5_r4 + r3_r2 + r11_r10 + ra + r13 + dwArg04;
+	ptr32 r13_n;
+	word16 r2_n;
+	Eq_n r3_n;
+	word16 r1_n;
+	word16 r4_n;
+	word16 r5_n;
+	word16 r8_n;
+	word16 r9_n;
+	word32 r12_n;
+	fn0000BF00(r1_r0_n, r12, r9_r8_n, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, dwArg40, dwArg48, dwArg50, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+	r3Out = r3_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BF00: Register word16 fn0000BF00(Sequence Eq_n r1_r0, Register Eq_n r12, Stack Eq_n dwArg00, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg38, Stack Eq_n dwArg40, Stack Eq_n dwArg48, Stack Eq_n dwArg50, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BCAC
+//      fn0000BEE8
+//      fn0000C6E8
+word16 fn0000BF00(Eq_n r1_r0, Eq_n r12, Eq_n dwArg00, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg38, Eq_n dwArg40, Eq_n dwArg48, Eq_n dwArg50, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r3_n = (word16) dwArg0C;
+	Eq_n r5_n = SLICE(dwArg10, word16, 16);
+	Eq_n r4_n = (word16) dwArg10;
+	word32 r9_r8_n = dwArg38 + (((((r1_r0 + dwArg08) + dwArg0C) + dwArg10) + dwArg14) + dwArg18);
+	Eq_n r1_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	word16 r0_n = fn0000BF1E(dwArg48, r9_r8_n, r12, dwArg00, dwArg40, dwArg50, out r1_n, out r2_n, out r8_n, out r9_n, out r12_n, out r13_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 0000BF1E: Register word16 fn0000BF1E(Sequence Eq_n r1_r0, Sequence (ptr32 Eq_n) r9_r8, Register Eq_n r12, Stack Eq_n dwArg00, Stack Eq_n dwArg40, Stack Eq_n dwArg50, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BD36
+//      fn0000BF00
+//      fn0000BF3C
+word16 fn0000BF1E(Eq_n r1_r0, struct Eq_n * r9_r8, Eq_n r12, Eq_n dwArg00, Eq_n dwArg40, Eq_n dwArg50, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word32 r9_r8_n = r9_r8 + r1_r0 + dwArg00;
+	Eq_n r2_n = SLICE(dwArg00, word16, 16);
+	Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+	Eq_n r8_n = (word16) r9_r8_n;
+	ptr32 r13_n = dwArg40.u4 + r9_r8_n;
+	Eq_n r1_n;
+	word16 r0_n = fn0000BF32(r12.u6 + 16, dwArg50, out r1_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r12Out = r12.u6 + 16;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 0000BF32: Register word16 fn0000BF32(Register Eq_n r12, Stack Eq_n dwArg50, Register out Eq_n r1Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BF1E
+word16 fn0000BF32(Eq_n r12, Eq_n dwArg50, union Eq_n & r1Out)
+{
+	if (dwArg50 != r12)
+	{
+		fn0000BD36();
+		return;
+	}
+	else
+	{
+		fn0000BF3C();
+		return;
+	}
+}
+
+// 0000BF3C: void fn0000BF3C()
+// Called from:
+//      fn0000B29A
+//      fn0000BF1E
+void fn0000BF3C()
+{
+	word16 r9;
+	word16 r8;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg64 = <invalid>;
+	Eq_n stackArg80 = <invalid>;
+	word16 r1_n;
+	word16 r2_n;
+	word16 r8_n;
+	word16 r9_n;
+	word32 r12_n;
+	word32 r13_n;
+	fn0000BF1E(SEQ(r1, r0), SEQ(r9, r8), r12, stackArg0, stackArg64, stackArg80, out r1_n, out r2_n, out r8_n, out r9_n, out r12_n, out r13_n);
+}
+
+// 0000BF52: Register word16 fn0000BF52(Sequence ui32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BF1E
+word16 fn0000BF52(ui32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, Eq_n r12, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	ptr32 r13_n;
+	Eq_n r3_n;
+	word16 r2_n = fn0000BF58(r1_r0 & 0x0F, r11_r10, r3_r2, r12, out r3_n, out r13_n);
+	r3Out = r3_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BF56: Register word16 fn0000BF56(Sequence ui32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BF52
+word16 fn0000BF56(ui32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, Eq_n r12, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	__invalidate_cache("idu");
+	ptr32 r13_n;
+	Eq_n r3_n;
+	word16 r2_n = fn0000BF58(r1_r0, r11_r10, r3_r2, r12, out r3_n, out r13_n);
+	r3Out = r3_n;
+	r13Out = r13_n;
+	return r2_n;
+}
+
+// 0000BF58: Register word16 fn0000BF58(Sequence ui32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BF52
+//      fn0000BF56
+word16 fn0000BF58(ui32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, Eq_n r12, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	ptr32 r13;
+	Eq_n r3 = SLICE(r3_r2, word16, 16);
+	word16 r2 = (word16) r3_r2;
+	if (r1_r0 == 0x00)
+	{
+		ptr32 r13_n;
+		Eq_n r3_n;
+		word16 r2_n = fn0000C1D6(r11_r10, r3_r2, r12, out r3_n, out r13_n);
+		r3Out = r3_n;
+		r13Out = r13_n;
+		return r2_n;
+	}
+	else
+	{
+		fn0000BF5E();
+		r3Out = r3;
+		r13Out = r13;
+		return r2;
+	}
+}
+
+// 0000BF5E: void fn0000BF5E()
+// Called from:
+//      fn0000BF00
+//      fn0000BF56
+//      fn0000BF58
+//      fn0000BF7A
+//      fn0000BF92
+//      fn0000BFBA
+//      fn0000C1A2
+//      fn0000C1BA
+void fn0000BF5E()
+{
+	fn0000BF60();
+}
+
+// 0000BF60: void fn0000BF60()
+// Called from:
+//      fn0000B29A
+//      fn0000BF5E
+void fn0000BF60()
+{
+	fn0000BF76();
+}
+
+// 0000BF76: void fn0000BF76()
+// Called from:
+//      fn0000B29A
+//      fn0000BF60
+void fn0000BF76()
+{
+	bool Z;
+	if (Z)
+		fn0000C1BA();
+	else
+		fn0000BF7A();
+}
+
+// 0000BF7A: void fn0000BF7A()
+// Called from:
+//      fn0000B29A
+//      fn0000BF5E
+void fn0000BF7A()
+{
+	fn0000BF5E();
+}
+
+// 0000BF7C: void fn0000BF7C()
+// Called from:
+//      fn0000B29A
+//      fn0000BF5E
+void fn0000BF7C()
+{
+	fn0000BF7E();
+}
+
+// 0000BF7E: void fn0000BF7E()
+// Called from:
+//      fn0000B29A
+//      fn0000BF7C
+void fn0000BF7E()
+{
+	word16 r3;
+	word16 r2;
+	fn0000BF84(SEQ(r3, r2));
+}
+
+// 0000BF84: void fn0000BF84(Sequence (ptr32 Eq_n) r3_r2)
+// Called from:
+//      fn0000B29A
+//      fn0000BF7C
+void fn0000BF84(struct Eq_n * r3_r2)
+{
+	if (r3_r2 == &g_t0001)
+		fn0000C1A2();
+	else
+		fn0000BF92();
+}
+
+// 0000BF92: void fn0000BF92()
+// Called from:
+//      fn0000B29A
+//      fn0000BF7C
+void fn0000BF92()
+{
+	fn0000BF5E();
+}
+
+// 0000BFA0: void fn0000BFA0()
+// Called from:
+//      fn0000B29A
+//      fn0000BF7C
+void fn0000BFA0()
+{
+	fn0000BFA6(SEQ(r3, r2), SEQ(r5, r4), SEQ(r9, r8), r12);
+}
+
+// 0000BFA6: void fn0000BFA6(Sequence (ptr32 Eq_n) r3_r2, Sequence word32 r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register (ptr32 Eq_n) r12)
+// Called from:
+//      fn0000BF5E
+//      fn0000BFA0
+void fn0000BFA6(struct Eq_n * r3_r2, word32 r5_r4, struct Eq_n * r9_r8, struct Eq_n * r12)
+{
+	word16 r0;
+	word16 r0_n = SEQ(SLICE(r0, byte, 8), r12->b0003);
+	fn0000BFA8(r3_r2, r5_r4, r9_r8, r0_n);
+}
+
+// 0000BFA8: void fn0000BFA8(Sequence (ptr32 Eq_n) r3_r2, Sequence word32 r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register word16 r0)
+// Called from:
+//      fn0000B29A
+//      fn0000BFA6
+void fn0000BFA8(struct Eq_n * r3_r2, word32 r5_r4, struct Eq_n * r9_r8, word16 r0)
+{
+	word16 r0_n = (word16) (byte) r0;
+	fn0000BFAA(r3_r2, r5_r4, r9_r8, r0_n);
+}
+
+// 0000BFAA: void fn0000BFAA(Sequence (ptr32 Eq_n) r3_r2, Sequence word32 r5_r4, Sequence (ptr32 Eq_n) r9_r8, Register word16 r0)
+// Called from:
+//      fn0000B29A
+//      fn0000BFA8
+void fn0000BFAA(struct Eq_n * r3_r2, word32 r5_r4, struct Eq_n * r9_r8, word16 r0)
+{
+	Eq_n r1_r0_n = (word32) r0;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	word32 r9_r8_n = r9_r8 + r1_r0_n;
+	Eq_n r5_r4_n = r9_r8_n.u4 + r5_r4;
+	if (r3_r2 == &g_t0001.w0002)
+	{
+		word32 r5_r4_n;
+		word16 r6_n;
+		word16 r9_n;
+		fn0000D4EC(r9_r8_n, 0xFFF1, r1_r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+		word32 r5_r4_n;
+		word16 r6_n;
+		word16 r9_n;
+		fn0000D4EC(r5_r4_n, 0xFFF1, r1_r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+	}
+	else
+		fn0000BFBA();
+}
+
+// 0000BFBA: void fn0000BFBA()
+// Called from:
+//      fn0000B29A
+//      fn0000BFA6
+void fn0000BFBA()
+{
+	fn0000BF5E();
+}
+
+// 0000BFBE: void fn0000BFBE(Sequence (ptr32 Eq_n) r3_r2, Sequence word32 r5_r4, Sequence word32 r9_r8, Register Eq_n r0, Register Eq_n r12)
+// Called from:
+//      fn0000BAE0
+//      fn0000BC42
+//      fn0000BF00
+void fn0000BFBE(struct Eq_n * r3_r2, word32 r5_r4, word32 r9_r8, Eq_n r0, Eq_n r12)
+{
+	Eq_n r1_r0_n = (word32) r0;
+	Eq_n r9_r8_n = r1_r0_n.u4 + r9_r8;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	Eq_n r5_r4_n = r9_r8_n.u4 + r5_r4;
+	if (r3_r2 == (char *) (&g_t0001.w0002) + 1)
+	{
+		word32 r5_r4_n;
+		word16 r6_n;
+		word16 r9_n;
+		fn0000D4EC(r9_r8_n, 0xFFF1, r1_r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+		word32 r5_r4_n;
+		word16 r6_n;
+		word16 r9_n;
+		fn0000D4EC(r5_r4_n, 0xFFF1, r1_r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+	}
+	else
+		fn0000BFCE(r3_r2, r5_r4_n, r9_r8_n, r12);
+}
+
+// 0000BFCE: void fn0000BFCE(Sequence (ptr32 Eq_n) r3_r2, Sequence Eq_n r5_r4, Sequence Eq_n r9_r8, Register Eq_n r12)
+// Called from:
+//      fn0000BFBE
+//      fn0000C686
+void fn0000BFCE(struct Eq_n * r3_r2, Eq_n r5_r4, Eq_n r9_r8, Eq_n r12)
+{
+	word32 r1_r0_n = (word32) r12.u6[5];
+	Eq_n r9_r8_n = r9_r8.u4 + r1_r0_n;
+	word32 r5_r4_n = r5_r4 + r9_r8_n;
+	Eq_n dwArg00_n = r9_r8_n;
+	Eq_n dwArg40_n = r5_r4_n;
+	if (r3_r2 != &g_t0001.w0002 + 1)
+	{
+		r1_r0_n = (word32) r12.u6[6];
+		Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+		word32 r5_r4_n = r5_r4_n + r9_r8_n;
+		dwArg00_n = r9_r8_n;
+		dwArg40_n = r5_r4_n;
+		if (r3_r2 != (char *) (&g_t0001.w0002) + 3)
+		{
+			word32 r9_r8_n = r9_r8_n.u4 + (word32) (r12.u6)[7];
+			word32 r5_r4_n = r5_r4_n.u4 + r9_r8_n;
+			r1_r0_n = (word32) r12.u8->t0008.u0;
+			Eq_n r9_r8_n = r9_r8_n + r1_r0_n;
+			Eq_n r5_r4_n = r9_r8_n.u4 + r5_r4_n;
+			dwArg00_n = r9_r8_n;
+			dwArg40_n = r5_r4_n;
+			if (r3_r2 != (char *) (&g_t0001.w0002) + 5)
+			{
+				r1_r0_n = (word32) r12.u6[9];
+				Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+				word32 r5_r4_n = r5_r4_n + r9_r8_n;
+				dwArg00_n = r9_r8_n;
+				dwArg40_n = r5_r4_n;
+				if (r3_r2 != &g_t0001.ptr0008)
+				{
+					r1_r0_n = (word32) r12.u6[0x0A];
+					Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+					word32 r5_r4_n = r5_r4_n + r9_r8_n;
+					dwArg00_n = r9_r8_n;
+					dwArg40_n = r5_r4_n;
+					if (r3_r2 != (char *) (&g_t0001.ptr0008) + 1)
+					{
+						r1_r0_n = (word32) r12.u6[11];
+						Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+						word32 r5_r4_n = r5_r4_n + r9_r8_n;
+						dwArg00_n = r9_r8_n;
+						dwArg40_n = r5_r4_n;
+						if (r3_r2 != (char *) (&g_t0001.ptr0008) + 2)
+						{
+							r1_r0_n = (word32) *((word32) r12 + 0x0C);
+							Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+							word32 r5_r4_n = r5_r4_n + r9_r8_n;
+							dwArg00_n = r9_r8_n;
+							dwArg40_n = r5_r4_n;
+							if (r3_r2 != (char *) (&g_t0001.ptr0008) + 3)
+							{
+								r1_r0_n = (word32) r12.u6[0x0D];
+								Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+								word32 r5_r4_n = r5_r4_n + r9_r8_n;
+								dwArg00_n = r9_r8_n;
+								dwArg40_n = r5_r4_n;
+								if (r3_r2 != (char *) (&g_t0001.ptr0008) + 4)
+								{
+									r1_r0_n = (word32) r12.u6[0x0E];
+									Eq_n r9_r8_n = r9_r8_n.u4 + r1_r0_n;
+									dwArg00_n = r9_r8_n;
+									dwArg40_n = r5_r4_n + r9_r8_n;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	Eq_n r0_n = (word16) r1_r0_n;
+	Eq_n r1_n = SLICE(r1_r0_n, word16, 16);
+	word32 r5_r4_n;
+	word16 r6_n;
+	word16 r9_n;
+	fn0000D4EC(dwArg00_n, 0xFFF1, r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+	word32 r5_r4_n;
+	word16 r6_n;
+	word16 r9_n;
+	fn0000D4EC(dwArg40_n, 0xFFF1, r0_n, r1_n, out r5_r4_n, out r6_n, out r9_n);
+}
+
+// 0000C004: Register Eq_n fn0000C004(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C224
+//      fn0000C3AC
+Eq_n fn0000C004(uint32 r1_r0, Eq_n r11_r10, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r0_n = fn0000C686(r1_r0 + 1450316808, r11_r10, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 0000C0EE: Sequence word32 fn0000C0EE(Stack Eq_n dwArg10008, Sequence out Eq_n r3_r2Out, Sequence out Eq_n r9_r8Out)
+// Called from:
+//      fn000033F8
+//      fn000046AC
+word32 fn0000C0EE(Eq_n dwArg10008, union Eq_n & r3_r2Out, union Eq_n & r9_r8Out)
+{
+	word16 r1_n;
+	word16 r2_n;
+	word16 r3_n;
+	word16 r8_n;
+	word16 r9_n;
+	word16 r0_n = fn0000BAE0(dwArg10008, out r1_n, out r2_n, out r3_n, out r8_n, out r9_n);
+	r3_r2Out.u0 = <invalid>;
+	r9_r8Out.u0 = <invalid>;
+	return SEQ(r1_n, r0_n);
+}
+
+// 0000C1A2: void fn0000C1A2()
+// Called from:
+//      fn0000B29A
+//      fn0000BF7C
+void fn0000C1A2()
+{
+	fn0000BF5E();
+}
+
+// 0000C1BA: void fn0000C1BA()
+// Called from:
+//      fn0000B29A
+//      fn0000BF5E
+void fn0000C1BA()
+{
+	fn0000BF5E();
+}
+
+// 0000C1D6: Register ui16 fn0000C1D6(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BF00
+//      fn0000BF56
+//      fn0000BF58
+ui16 fn0000C1D6(Eq_n r11_r10, struct Eq_n * r3_r2, Eq_n r12, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	ptr32 dwArg02;
+	word16 r10 = (word16) r11_r10;
+	word32 r3_r2_n = r3_r2 + r11_r10;
+	if (r3_r2_n < 131041)
+		r3_r2_n = SEQ(SLICE((word32) r11_r10 - 0x0000FFF1, word16, 16), r10 + 0x0F);
+	word16 r2_n = (word16) r3_r2_n;
+	if (r3_r2_n < 0xFFF0)
+		r3_r2_n = SEQ(SLICE((word32) r3_r2_n - 0x0000FFF1, word16, 16), r2_n + 0x0F);
+	r3Out = r3_r2_n;
+	r13Out = dwArg02;
+	return r3_r2_n << 0x10;
+}
+
+// 0000C224: Register Eq_n fn0000C224(Sequence Eq_n r1_r0, Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Register word16 r7, Register Eq_n r13, Register Eq_n ra, Stack word16 wArg00, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Stack Eq_n dwArg0A, Stack Eq_n wArg0E, Stack Eq_n dwArg10, Stack Eq_n wArg14, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg46, Stack Eq_n dwArg4A, Stack Eq_n dwArg5E, Stack Eq_n dwArg62, Stack Eq_n dwArgFC, Stack Eq_n wArg020A, Stack Eq_n wArg020E, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      fn0000CAF8
+Eq_n fn0000C224(Eq_n r1_r0, Eq_n r11_r10, Eq_n r5_r4, word16 r7, Eq_n r13, Eq_n ra, word16 wArg00, Eq_n dwArg02, Eq_n dwArg06, Eq_n dwArg0A, Eq_n wArg0E, Eq_n dwArg10, Eq_n wArg14, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg46, Eq_n dwArg4A, Eq_n dwArg5E, Eq_n dwArg62, Eq_n dwArgFC, Eq_n wArg020A, Eq_n wArg020E, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
+{
+	Eq_n r6;
+	Eq_n r8;
+	Eq_n r9;
+	Eq_n r1 = SLICE(r1_r0, word16, 16);
+	Eq_n r0 = (word16) r1_r0;
+	Eq_n r5 = SLICE(r13, word16, 16);
+	Eq_n r4 = (word16) r13;
+	Eq_n r11 = SLICE(r11_r10, word16, 16);
+	Eq_n r10 = (word16) r11_r10;
+	word16 wArg10_n = (word16) dwArg10;
+	word16 wArg12_n = SLICE(dwArg10, word16, 16);
+	Eq_n r12_n = dwArg10;
+	Eq_n r2_n = r0;
+	Eq_n r3_n = r1;
+	uint32 r1_r0_n = ~r1_r0;
+	Eq_n dwLoc02_n = SEQ(wArg00, SLICE(r13, word16, 16));
+	Eq_n dwArg0E_n = SEQ(wArg10_n, wArg0E);
+	Eq_n dwArg12_n = SEQ(wArg14, wArg12_n);
+	Eq_n dwLoc06_n = SEQ((word16) r13, r7);
+	if (dwArg10 == 0x00)
+	{
+l0000C27E:
+		word32 r1_r0_n = ~r1_r0_n;
+		r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4;
+		r5Out = r5;
+		r6Out = r6;
+		r8Out = r8;
+		r9Out = r9;
+		r10Out = r10;
+		r11Out = r11;
+		r12Out = r12_n;
+		r13Out = r13;
+		return (word16) r1_r0_n;
+	}
+	else
+	{
+		if ((r13 & 0x03) != 0x00)
+		{
+			ra.u0 = 64632;
+			do
+			{
+				word32 r3_r2_n = ((word32[]) 64632)[((word32) *r13 ^ r1_r0_n) & 0xFF];
+				r3_n.u1 = SLICE(r3_r2_n, word16, 16);
+				r2_n = (word16) r3_r2_n;
+				r1_r0_n = r1_r0_n >> 0x18 ^ r3_r2_n;
+				r12_n.u4 = (word32) r12_n - 1;
+				if (r12_n == 0x00)
+					goto l0000C27E;
+			} while ((r13 & 0x03) != 0x00);
+		}
+		if (r12_n >= 0x1F)
+		{
+			Eq_n r1_n;
+			Eq_n r10_n;
+			Eq_n r11_n;
+			Eq_n r12_n;
+			Eq_n r13_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r6_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			Eq_n r0_n = fn0000C686(r1_r0_n, r11_r10, r12_n, r13, ra, dwLoc06_n, dwLoc02_n, dwArg02, dwArg06, dwArg0A, dwArg0E_n, dwArg12_n, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg46, dwArg4A, dwArg5E, dwArg62, dwArgFC, wArg020A, wArg020E, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			return r0_n;
+		}
+		else
+		{
+			ui32 r1_r0_n = r13 >> 0x18 & 0xFF;
+			uint32 r3_r2_n = *((word32) r11_r10 + 4) ^ (((word32[]) 64632)[r13 >> 0x08] ^ ((word32[]) 64632)[(*r11_r10.u5 & 0xFF) + 0x0300]) ^ ((word32[]) 64632)[r1_r0_n + 0x0200];
+			uint32 r3_r2_n = ((uint32[]) 64632)[(r3_r2_n >> 0x18 & 0xFF) + 0x0200];
+			ui32 r1_r0_n = ((ui32[]) 64632)[(r3_r2_n >> 0x18 & 0xFF) + 0x0200];
+			Eq_n r13_n = r11_r10.u4 + (((word32) r12_n + 0x0000FFE0 & ~0x1F) + 0x20);
+			uint32 r5_r4_n = r11_r10.u6[0x0C] ^ (((word32[]) 64632)[((((r11_r10.u6)[8] ^ (((word32[]) 64632)[r3_r2_n >> 0x08] ^ ((word32[]) 64632)[((word32[]) 64632 + (r1_r0_n + 0x0200 << 0x02) / 4 & 0xFF) + 0x0300])) ^ r3_r2_n) & 0xFF) + 0x0300] ^ ((word32[]) 64632)[r3_r2_n >> 0x08]) ^ r1_r0_n;
+			Eq_n r1_n;
+			Eq_n r10_n;
+			Eq_n r11_n;
+			Eq_n r12_n;
+			Eq_n r13_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r6_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			Eq_n r0_n = fn0000C3AC(r1_r0_n, r11_r10, r5_r4_n, r12_n, r13_n, 64632, dwLoc06_n, dwLoc02_n, dwArg02, dwArg06, dwArg0A, dwArg0E_n, dwArg12_n, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg46, dwArg4A, dwArg5E, dwArg62, dwArgFC, wArg020A, wArg020E, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out = r6_n;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out = r10_n;
+			r11Out = r11_n;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			return r0_n;
+		}
+	}
+}
+
+// 0000C3AC: Register word16 fn0000C3AC(Sequence ui32 r1_r0, Sequence Eq_n r11_r10, Sequence uint32 r5_r4, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BAE0
+//      fn0000C224
+word16 fn0000C3AC(ui32 r1_r0, Eq_n r11_r10, uint32 r5_r4, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	uint32 r1_r0_n = ra.u5[((r5_r4 >> 0x18 & 0xFF) + 0x0200) * 0x04];
+	uint32 r3_r2_n = *((word32) r11_r10 + 16) ^ ((ra.u5)[((r1_r0 & 0xFF) + 0x0300) * 0x04] ^ (ra.u5)[(r5_r4 >> 0x08) * 0x04]) ^ r1_r0_n;
+	uint32 r5_r4_n = ra.u4 + (((((r11_r10.u6)[20] ^ ((ra.u5)[((r1_r0_n & 0xFF) + 0x0300) * 0x04] ^ (ra.u5)[(r3_r2_n >> 0x08) * 0x04])) ^ (ra.u5)[((r3_r2_n >> 0x18 & 0xFF) + 0x0200) * 0x04]) >> 0x08) << 0x02);
+	uint32 * r9_r8_n = ra.u4 + ((r5_r4_n >> 0x18 & 0xFF) + 0x0200 << 0x02);
+	uint32 r5_r4_n = ra.u4 + ((r5_r4_n >> 0x08) << 0x02);
+	uint32 r1_r0_n = *r9_r8_n;
+	struct Eq_n * r3_r2_n = ra.u4 + ((r5_r4_n >> 0x18 & 0xFF) + 0x0200 << 0x02);
+	uint32 r7_r6_n = ra.u5[((r1_r0_n >> 0x10 & 0xFF) + 0x0100) * 0x04];
+	uint32 r1_r0_n = ra.u5[((r1_r0_n & 0xFF) + 0x0300) * 0x04] ^ (ra.u5)[(r5_r4_n >> 0x08) * 0x04] ^ r3_r2_n->dw0000 ^ r7_r6_n;
+	if (r11_r10.u6 + 32 != r13)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000C004(r1_r0_n, r11_r10.u6 + 32, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000C556(r1_r0_n, r11_r10.u6 + 32, r3_r2_n, r7_r6_n, r9_r8_n, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+}
+
+// 0000C556: Register Eq_n fn0000C556(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Sequence uint32 r7_r6, Sequence (ptr32 uint32) r9_r8, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C224
+//      fn0000C3AC
+Eq_n fn0000C556(uint32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, uint32 r7_r6, uint32 * r9_r8, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	if ((r12 & 0x1F) >= 0x03)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000C976(r1_r0, r11_r10, r3_r2, r7_r6, r9_r8, r12 & 0x1F, ra, dwArg0102, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12 & 0x1F;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		ui32 r3_r2_n = *r13.u5 >> 0x10 & 0xFF;
+		ui32 r3_r2_n = r3_r2_n + 0x0100 << 0x02;
+		word32 r7_r6_n = ((word32[]) 64632)[((word32 *[]) 64632 + r3_r2_n / 4 & 0xFF) + 0x0300];
+		word32 * r9_r8_n = ((word32 *[]) 64632)[r3_r2_n + 0x0100];
+		uint32 r1_r0_n = ((word32[]) 64632)[((word32 *[]) 64632 + r3_r2_n / 4 >> 0x18 & 0xFF) + 0x0200] ^ (((word32[]) 64632)[(word32 *[]) 64632 + r3_r2_n / 4 >> 0x08] ^ r7_r6_n) ^ r9_r8_n;
+		Eq_n ra_n = (r12 & 0x1F) + 0xFFFC;
+		if (ra_n >= 0x03)
+		{
+			if (ra_n != 0x03)
+			{
+				Eq_n r1_n;
+				Eq_n r10_n;
+				Eq_n r11_n;
+				Eq_n r12_n;
+				ptr32 r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r6_n;
+				Eq_n r8_n;
+				Eq_n r9_n;
+				Eq_n r0_n = fn0000C686(r1_r0_n, 64632, r12 & 0x1F, r13, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r0_n;
+			}
+			else
+			{
+				*r9_r8_n = r7_r6_n;
+				if (r13 != 64636)
+				{
+					Eq_n r1_n;
+					Eq_n r10_n;
+					Eq_n r11_n;
+					Eq_n r12_n;
+					ptr32 r13_n;
+					Eq_n r2_n;
+					Eq_n r3_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					Eq_n r6_n;
+					Eq_n r8_n;
+					Eq_n r9_n;
+					Eq_n r0_n = fn0000C686(r1_r0_n, 64636, r12 & 0x1F, r13, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r0_n;
+				}
+				else
+				{
+					Eq_n r1_n;
+					Eq_n r10_n;
+					Eq_n r11_n;
+					Eq_n r12_n;
+					ptr32 r13_n;
+					Eq_n r2_n;
+					Eq_n r3_n;
+					Eq_n r4_n;
+					Eq_n r5_n;
+					Eq_n r6_n;
+					Eq_n r8_n;
+					Eq_n r9_n;
+					Eq_n r0_n = fn0000C686(r1_r0_n, 64636, r12 & 0x1F, r13, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+					r1Out = r1_n;
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4_n;
+					r5Out = r5_n;
+					r6Out = r6_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r12Out = r12_n;
+					r13Out = r13_n;
+					return r0_n;
+				}
+			}
+		}
+		else
+		{
+			ui32 r3_r2_n = *((word32) r13 + 4) >> 0x10 & 0xFF;
+			ui32 r3_r2_n = r3_r2_n + 0x0100 << 0x02;
+			uint32 r7_r6_n = ((uint32[]) 64632)[((uint32 *[]) 64632 + r3_r2_n / 4 & 0xFF) + 0x0300];
+			uint32 * r9_r8_n = ((uint32 *[]) 64632)[r3_r2_n + 0x0100];
+			uint32 r1_r0_n = ((word32[]) 64632)[((uint32 *[]) 64632 + r3_r2_n / 4 >> 0x18 & 0xFF) + 0x0200] ^ (((word32[]) 64632)[(uint32 *[]) 64632 + r3_r2_n / 4 >> 0x08] ^ r7_r6_n) ^ r9_r8_n;
+			struct Eq_n * r3_r2_n = (r12 & 0x1F) + 0xFFF8;
+			if (r3_r2_n >= &g_t0001.w0002)
+			{
+				Eq_n r1_n;
+				Eq_n r10_n;
+				Eq_n r11_n;
+				ptr32 r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r6_n;
+				Eq_n r8_n;
+				Eq_n r9_n;
+				Eq_n r0_n = fn0000C976(r1_r0_n, 64632, r3_r2_n, r7_r6_n, r9_r8_n, r12 & 0x1F, ra_n, dwArg0102, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r13_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12 & 0x1F;
+				r13Out = r13_n;
+				return r0_n;
+			}
+			else
+			{
+				ui32 r3_r2_n = r13.u6[8] >> 0x10 & 0xFF;
+				ui32 r3_r2_n = r3_r2_n + 0x0100 << 0x02;
+				uint32 r7_r6_n = ((uint32[]) 64632)[((uint32 *[]) 64632 + r3_r2_n / 4 & 0xFF) + 0x0300];
+				uint32 * r9_r8_n = ((uint32 *[]) 64632)[r3_r2_n + 0x0100];
+				ui32 r1_r0_n = ((word32[]) 64632)[((uint32 *[]) 64632 + r3_r2_n / 4 >> 0x18 & 0xFF) + 0x0200] ^ (((word32[]) 64632)[(uint32 *[]) 64632 + r3_r2_n / 4 >> 0x08] ^ r7_r6_n);
+				Eq_n r1_n;
+				Eq_n r10_n;
+				Eq_n r11_n;
+				ptr32 r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r6_n;
+				Eq_n r8_n;
+				Eq_n r9_n;
+				Eq_n r12_n;
+				Eq_n r0_n = fn0000C674(r1_r0_n, 64632, r7_r6_n, r9_r8_n, r12 & 0x1F, r13, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out = r6_n;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out = r10_n;
+				r11Out = r11_n;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r0_n;
+			}
+		}
+	}
+}
+
+// 0000C674: Register Eq_n fn0000C674(Sequence ui32 r1_r0, Sequence Eq_n r11_r10, Sequence uint32 r7_r6, Sequence (ptr32 uint32) r9_r8, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BAE0
+//      fn0000C556
+Eq_n fn0000C674(ui32 r1_r0, Eq_n r11_r10, uint32 r7_r6, uint32 * r9_r8, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	uint32 r1_r0_n = r1_r0 ^ r9_r8;
+	if (r12 >= ~0xFFF0)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000C976(r1_r0_n, r11_r10, r12.u6 + 0x0000FFF4, r7_r6, r9_r8, r12, ra, dwArg0102, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		Eq_n r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r0_n = fn0000C686(r1_r0_n, r11_r10, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+}
+
+// 0000C686: Register word16 fn0000C686(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C224
+//      fn0000C674
+word16 fn0000C686(uint32 r1_r0, Eq_n r11_r10, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r12_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	word16 r0_n = fn0000C68E(r1_r0, r11_r10, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 0000C68E: Register word16 fn0000C68E(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000BAE0
+//      fn0000C686
+word16 fn0000C68E(uint32 r1_r0, Eq_n r11_r10, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, ptr32 & r13Out)
+{
+	word32 * r1_r0_n = r11_r10.u4 + ((r1_r0 >> 0x10 & 0xFF) + 0x0100 << 0x02);
+	uint32 r1_r0_n = r11_r10.u5[(r1_r0_n >> 0x08) * 0x04];
+	uint32 r1_r0_n = r11_r10.u5[((r1_r0_n >> 0x18 & 0xFF) + 0x0200) * 0x04] ^ ((r11_r10.u5)[((r1_r0_n & 0xFF) + 0x0300) * 0x04] ^ r1_r0_n) ^ *r1_r0_n;
+	if (r12 >= ~0xFFEC)
+	{
+		Eq_n r1_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000C914(r11_r10, r12.u6 + 0x0000FFF0, r1_r0_n, r12, ra, dwArg0102, wArg0210, wArg0214, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		Eq_n r1_n;
+		ptr32 r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r6_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		Eq_n r10_n;
+		Eq_n r11_n;
+		word16 r0_n = fn0000C6E8(r1_r0_n, r11_r10, r12, r13, ra, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg34, dwArg38, dwArg3C, dwArg40, dwArg44, dwArg48, dwArg4C, dwArg50, dwArg64, dwArg68, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out = r10_n;
+		r11Out = r11_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+}
+
+// 0000C6E8: Register word16 fn0000C6E8(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Register Eq_n r12, Register Eq_n r13, Register Eq_n ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n dwArg18, Stack Eq_n dwArg34, Stack Eq_n dwArg38, Stack Eq_n dwArg3C, Stack Eq_n dwArg40, Stack Eq_n dwArg44, Stack Eq_n dwArg48, Stack Eq_n dwArg4C, Stack Eq_n dwArg50, Stack Eq_n dwArg64, Stack Eq_n dwArg68, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C686
+//      fn0000C68E
+word16 fn0000C6E8(uint32 r1_r0, Eq_n r11_r10, Eq_n r12, Eq_n r13, Eq_n ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, Eq_n dwArg18, Eq_n dwArg34, Eq_n dwArg38, Eq_n dwArg3C, Eq_n dwArg40, Eq_n dwArg44, Eq_n dwArg48, Eq_n dwArg4C, Eq_n dwArg50, Eq_n dwArg64, Eq_n dwArg68, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	word16 wArg04_n = (word16) dwArg04;
+	word16 wArg02_n = SLICE(dwArg00, word16, 16);
+	struct Eq_n ** r1_r0_n = r11_r10.u4 + ((r1_r0 >> 0x10 & 0xFF) + 0x0100 << 0x02);
+	struct Eq_n * r5_r4_n = r11_r10.u4 + ((r1_r0_n & 0xFF) + 0x0300 << 0x02);
+	Eq_n r1_r0_n = r11_r10.u5[(r1_r0_n >> 0x08) * 0x04];
+	struct Eq_n * r9_r8_n = *r1_r0_n;
+	Eq_n r1_r0_n = r11_r10.u5[((r1_r0_n >> 0x18 & 0xFF) + 0x0200) * 0x04] ^ ((r5_r4_n->t0000).u0 ^ r1_r0_n) ^ r9_r8_n;
+	word16 r3_n = SLICE((word32) r12 + 0x0000FFEC, word16, 16);
+	if (r12 < ~0xFFE8)
+	{
+		struct Eq_n ** r1_r0_n = r11_r10.u4 + ((r1_r0_n >> 0x10 & 0xFF) + 0x0100 << 0x02);
+		r9_r8_n = (struct Eq_n *) *r1_r0_n;
+		union Eq_n * r1_r0_n = r11_r10.u4 + ((r1_r0_n >> 0x08) << 0x02);
+		ui32 r5_r4_n = (r1_r0_n & 0xFF) + 0x0300;
+		r5_r4_n = (struct Eq_n *) (r11_r10.u4 + (r5_r4_n << 0x02));
+		r1_r0_n.u0 = r1_r0_n->u0;
+		r1_r0_n = r11_r10.u5[((r1_r0_n >> 0x18 & 0xFF) + 0x0200) * 0x04] ^ ((r5_r4_n->t0000).u0 ^ r1_r0_n) ^ r9_r8_n;
+		r3_n = SLICE((word32) r12 + 0x0000FFE8, word16, 16);
+		if (r12 < ~0xFFE4)
+		{
+			Eq_n r3_r2_n = r13.u6[24];
+			struct Eq_n ** r3_r2_n = r11_r10.u4 + ((r3_r2_n >> 0x10 & 0xFF) + 0x0100 << 0x02);
+			r9_r8_n = (struct Eq_n *) *r3_r2_n;
+			r5_r4_n = (struct Eq_n *) (r11_r10.u4 + ((r3_r2_n & 0xFF) + 0x0300 << 0x02));
+			r1_r0_n.u0 = r5_r4_n->t0000.u0;
+			ui32 r3_r2_n = r11_r10.u5[(r3_r2_n >> 0x08) * 0x04] ^ r1_r0_n;
+			r11_r10.u4 += (r3_r2_n >> 0x18 & 0xFF) + 0x0200 << 0x02;
+			r3_n = SLICE(r3_r2_n, word16, 16);
+			r1_r0_n = *r11_r10.u4 ^ r3_r2_n ^ r9_r8_n;
+		}
+	}
+	Eq_n ra_n = (ra & ~0x03) + 0x04;
+	word32 r13_n = r13 + ra_n;
+	if ((r12 & 0x03) == 0x00)
+	{
+		Eq_n r1_n;
+		Eq_n r12_n;
+		ptr32 r13_n;
+		Eq_n r2_n;
+		Eq_n r3_n;
+		Eq_n r4_n;
+		Eq_n r5_n;
+		Eq_n r8_n;
+		Eq_n r9_n;
+		word16 r0_n = fn0000BCB8(r11_r10, r5_r4_n, r1_r0_n, r9_r8_n, r3_n, r12 & 0x03, r13_n, ra_n, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, dwArg40, dwArg48, dwArg50, dwArg68, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+		r1Out = r1_n;
+		r2Out = r2_n;
+		r3Out = r3_n;
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out.u0 = <invalid>;
+		r8Out = r8_n;
+		r9Out = r9_n;
+		r10Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		return r0_n;
+	}
+	else
+	{
+		ui32 r3_r2_n = (word32) *r13_n ^ r1_r0_n;
+		word16 r3_n = SLICE((struct Eq_n *[]) 64632 + ((r3_r2_n & 0xFF) << 0x02) / 4, word16, 16);
+		struct Eq_n * r9_r8_n = ((struct Eq_n *[]) 64632)[r3_r2_n & 0xFF];
+		uint32 r1_r0_n = r1_r0_n >> 0x18 ^ r9_r8_n;
+		if ((r12 & 0x03) == 0x01)
+		{
+			Eq_n r1_n;
+			Eq_n r12_n;
+			ptr32 r13_n;
+			Eq_n r2_n;
+			Eq_n r3_n;
+			Eq_n r4_n;
+			Eq_n r5_n;
+			Eq_n r8_n;
+			Eq_n r9_n;
+			word16 r0_n = fn0000BCB8(r11_r10, (struct Eq_n *) 64632, r1_r0_n, r9_r8_n, r3_n, r12 & 0x03, r13_n, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg34, dwArg3C, dwArg44, dwArg4C, dwArg64, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+			r1Out = r1_n;
+			r2Out = r2_n;
+			r3Out = r3_n;
+			r4Out = r4_n;
+			r5Out = r5_n;
+			r6Out.u0 = <invalid>;
+			r8Out = r8_n;
+			r9Out = r9_n;
+			r10Out.u0 = <invalid>;
+			r11Out.u0 = <invalid>;
+			r12Out = r12_n;
+			r13Out = r13_n;
+			return r0_n;
+		}
+		else
+		{
+			ui32 r3_r2_n = (word32) r13_n.u6[1] ^ r1_r0_n;
+			struct Eq_n * r9_r8_n = ((struct Eq_n *[]) 64632)[r3_r2_n & 0xFF];
+			word16 r3_n = SLICE((struct Eq_n *[]) 64632 + ((r3_r2_n & 0xFF) << 0x02) / 4, word16, 16);
+			Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+			Eq_n r8_n = (word16) r9_r8_n;
+			uint32 r1_r0_n = r1_r0_n >> 0x18 ^ r9_r8_n;
+			ptr32 dwArg02_n = SEQ(wArg04_n, wArg02_n);
+			if ((r12 & 0x03) == 0x02)
+			{
+				Eq_n r1_n;
+				Eq_n r12_n;
+				ptr32 r13_n;
+				Eq_n r2_n;
+				Eq_n r3_n;
+				Eq_n r4_n;
+				Eq_n r5_n;
+				Eq_n r8_n;
+				Eq_n r9_n;
+				word16 r0_n = fn0000BCAC(dwArg40, r11_r10, (struct Eq_n *) 64632, r1_r0_n, r9_r8_n, r3_n, r12 & 0x03, r13_n, ra_n, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, dwArg14, dwArg18, dwArg38, dwArg48, dwArg50, dwArg68, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r12_n, out r13_n);
+				r1Out = r1_n;
+				r2Out = r2_n;
+				r3Out = r3_n;
+				r4Out = r4_n;
+				r5Out = r5_n;
+				r6Out.u0 = <invalid>;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out.u0 = <invalid>;
+				r11Out.u0 = <invalid>;
+				r12Out = r12_n;
+				r13Out = r13_n;
+				return r0_n;
+			}
+			else
+			{
+				ui32 r3_r2_n = (word32) r13_n.u6[2] ^ r1_r0_n;
+				word32 r3_r2_n = ((word32[]) 64632)[r3_r2_n & 0xFF];
+				ui32 r1_r0_n = ~(r1_r0_n >> 0x18 ^ r3_r2_n);
+				r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+				r2Out = (word16) r3_r2_n;
+				r3Out.u1 = SLICE(r3_r2_n, word16, 16);
+				ui32 r3_r2_n = (r3_r2_n & 0xFF) << 0x02;
+				r4Out = (word16) r3_r2_n + 64632;
+				r5Out.u1 = SLICE((word32[]) 64632 + r3_r2_n / 4, word16, 16);
+				r6Out.u0 = <invalid>;
+				r8Out = r8_n;
+				r9Out = r9_n;
+				r10Out.u0 = <invalid>;
+				r11Out.u0 = <invalid>;
+				r12Out = r12 & 0x03;
+				r13Out = dwArg02_n;
+				return (word16) r1_r0_n;
+			}
+		}
+	}
+}
+
+// 0000C914: Register Eq_n fn0000C914(Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Sequence uint32 r7_r6, Register Eq_n r12, Register Eq_n ra, Stack Eq_n dwArg0102, Stack Eq_n wArg0210, Stack Eq_n wArg0214, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C686
+//      fn0000C68E
+Eq_n fn0000C914(Eq_n r11_r10, struct Eq_n * r3_r2, uint32 r7_r6, Eq_n r12, Eq_n ra, Eq_n dwArg0102, Eq_n wArg0210, Eq_n wArg0214, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, ptr32 & r13Out)
+{
+	ptr32 fp;
+	Eq_n r11_r10_n = r11_r10.u4 + fp;
+	uint32 r7_r6_n = r7_r6;
+	struct Eq_n * r3_r2_n = r3_r2;
+	uint32 * r9_r8_n = SEQ(wArg0214, wArg0210);
+	do
+	{
+		word16 r8_n = (word16) r9_r8_n;
+		uint32 r1_r0_n = r7_r6_n;
+		if (r7_r6_n != 0x00)
+		{
+			uint32 r1_r0_n = r7_r6_n;
+			r7_r6_n = 0x00;
+			do
+			{
+				word16 r2_n = (word16) r3_r2_n;
+				if ((r1_r0_n & 0x01) == 0x00)
+					fn0000CB60(r12);
+				word16 r3_n = SLICE(&r3_r2_n->dw0000 + 1, word16, 16);
+				r7_r6_n = r7_r6_n ^ r3_r2_n->dw0000;
+				r1_r0_n = r1_r0_n >> 0x1F;
+				r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+				r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+				r1_r0_n = r1_r0_n >> 0x1F;
+				r1_r0_n = r1_r0_n;
+			} while (r1_r0_n >> 0x1F != 0x00);
+		}
+		*r9_r8_n = r7_r6_n;
+		&r12.u6->a0000->u0 = r12.u6 + 4;
+		r9_r8_n = SEQ(SLICE(r9_r8_n + 1, word16, 16), r8_n + 0x04);
+		r9_r8_n = r9_r8_n;
+	} while (r11_r10_n != r12);
+	Eq_n r1_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	ptr32 r13_n;
+	Eq_n r2_n;
+	Eq_n r3_n;
+	Eq_n r4_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r0_n = fn0000C976(r1_r0_n, r11_r10_n, r3_r2_n, r7_r6_n, r9_r8_n + 1, r12, ra, dwArg0102, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r13_n);
+	r1Out = r1_n;
+	r2Out = r2_n;
+	r3Out = r3_n;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12;
+	r13Out = r13_n;
+	return r0_n;
+}
+
+// 0000C976: Register word16 fn0000C976(Sequence uint32 r1_r0, Sequence Eq_n r11_r10, Sequence (ptr32 Eq_n) r3_r2, Sequence uint32 r7_r6, Sequence (ptr32 uint32) r9_r8, Register Eq_n r12, Register Eq_n ra, Stack Eq_n dwArg0102, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r13Out)
+// Called from:
+//      fn0000C224
+//      fn0000C674
+word16 fn0000C976(uint32 r1_r0, Eq_n r11_r10, struct Eq_n * r3_r2, uint32 r7_r6, uint32 * r9_r8, Eq_n r12, Eq_n ra, Eq_n dwArg0102, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r13Out)
+{
+	struct Eq_n * fp;
+	Eq_n r4;
+	Eq_n r5;
+	ptr32 dwLoc04;
+	struct Eq_n * sp_n = fp;
+	uint32 r1_r0_n = r1_r0;
+	struct Eq_n * r3_r2_n = r3_r2;
+	uint32 r7_r6_n = r7_r6;
+	Eq_n r11_r10_n = r11_r10;
+	uint32 * r9_r8_n = r9_r8;
+l0000C976:
+	Eq_n r11_r10_n;
+	word32 r9_r8_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	cui16 r1_n;
+	word16 r2_n = (word16) r3_r2_n;
+	word16 r3_n = SLICE(&r3_r2_n->dw0000 + 1, word16, 16);
+	r7_r6_n = r7_r6_n;
+	Eq_n r11_r10_n = r11_r10_n;
+	uint32 * r9_r8_n = r9_r8_n;
+	uint32 r1_r0_n = r1_r0_n >> 0x1F;
+	struct Eq_n * r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+	uint32 r7_r6_n = r7_r6_n;
+	r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+	if (r1_r0_n >> 0x1F == 0x00)
+	{
+		do
+		{
+			*r11_r10_n.u5 = r7_r6_n;
+			word16 r10_n = (word16) r11_r10_n;
+			word32 r1_r0_n = sp_n->dw0200;
+			word16 r8_n = (word16) r9_r8_n;
+			word16 r9_n = SLICE(r9_r8_n + 1, word16, 16);
+			r11_n.u1 = SLICE(r11_r10_n.u6 + 4, word16, 16);
+			r10_n = r10_n + 0x04;
+			r1_n = SLICE(r1_r0_n, word16, 16);
+			r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+			r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+			r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+			if (r1_r0_n == r9_r8_n + 1)
+			{
+l0000C98C:
+				Eq_n r6_n = (word16) r7_r6_n;
+				Eq_n r8_n = (word16) r9_r8_n;
+				Eq_n r9_n = SLICE(r9_r8_n, word16, 16);
+				int16 r0_n = sp_n->w0208;
+				cui16 r1_n = r1_n & 0x01;
+				struct Eq_n * r3_r2_n = r3_r2_n;
+				if (r0_n != 0x00)
+				{
+					r3_r2_n = r3_r2_n;
+					if (ra != 0x00)
+					{
+						struct Eq_n ** r1_r0_n = SEQ(r1_n, r0_n);
+						do
+						{
+							word16 r0_n = (word16) r1_r0_n;
+							r3_r2_n = ra & 0x01;
+							if (r3_r2_n == null)
+							{
+								ra >>= 0x1F;
+								r1_r0_n = SEQ(SLICE((char *) r1_r0_n + 4, word16, 16), r0_n + 0x04);
+								if (ra != 0x00)
+									continue;
+								r4 = (word16) ra;
+								r5.u1 = SLICE(ra, word16, 16);
+								goto l0000C996;
+							}
+							r3_r2_n = (struct Eq_n *) *r1_r0_n;
+							ra >>= 0x1F;
+							r1_r0_n = SEQ(SLICE((char *) r1_r0_n + 4, word16, 16), r0_n + 0x04);
+						} while (ra != 0x00);
+						r4 = (word16) ra;
+						r5.u1 = SLICE(ra, word16, 16);
+					}
+				}
+l0000C996:
+				int16 r1_n = sp_n->w0208;
+				sp_n->w020C = r1_n >> 0x0F;
+				Eq_n r2_n = (word16) r3_r2_n;
+				Eq_n r3_n = SLICE(r3_r2_n, word16, 16);
+				if (r1_n >> 0x0F == 0x00)
+				{
+l0000C9F4:
+					ui32 r1_r0_n = dwArg0102 ^ ra;
+					r1Out.u1 = SLICE(r1_r0_n, word16, 16);
+					r2Out = r2_n;
+					r3Out = r3_n;
+					r4Out = r4;
+					r5Out = r5;
+					r6Out = r6_n;
+					r8Out = r8_n;
+					r9Out = r9_n;
+					r10Out = r10_n;
+					r11Out = r11_n;
+					r13Out = dwLoc04;
+					return (word16) r1_r0_n;
+				}
+				uint32 r7_r6_n = r7_r6_n;
+				struct Eq_n * r3_r2_n = r3_r2_n;
+				uint32 * r11_r10_n = SEQ(sp_n->w0214, sp_n->w0210);
+				do
+				{
+l0000C9AE:
+					word16 r10_n = (word16) r11_r10_n;
+					word16 r8_n = (word16) r9_r8_n;
+					cui16 r1_n = SLICE(r7_r6_n, word16, 16);
+					if (r7_r6_n != 0x00)
+					{
+						uint32 r1_r0_n = r7_r6_n;
+						r7_r6_n = 0x00;
+						do
+						{
+							word16 r2_n = (word16) r3_r2_n;
+							r5.u1 = 0x00;
+							r4 = (word16) r1_r0_n & 0x01;
+							if ((r1_r0_n & 0x01) == 0x00)
+							{
+								word16 r3_n = SLICE(&r3_r2_n->dw0000 + 1, word16, 16);
+								r1_n = SLICE(r1_r0_n >> 0x1F, word16, 16);
+								r1_r0_n = r1_r0_n >> 0x1F;
+								r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+								r7_r6_n = r7_r6_n;
+								r1_r0_n = r1_r0_n;
+								r7_r6_n = r7_r6_n;
+								if (r1_r0_n >> 0x1F != 0x00)
+									continue;
+								*r11_r10_n = r7_r6_n;
+								r9_n.u1 = SLICE(r9_r8_n + 0x04, word16, 16);
+								word16 r11_n = SLICE(r11_r10_n + 1, word16, 16);
+								r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+								r7_r6_n = r7_r6_n;
+								r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+								r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+								r9_r8_n = r9_r8_n;
+								if (r9_r8_n + 0x04 != r12)
+									goto l0000C9AE;
+								r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+								r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+								goto l0000C9DC;
+							}
+							word32 r5_r4_n = r3_r2_n->dw0000;
+							word16 r3_n = SLICE(&r3_r2_n->dw0000 + 1, word16, 16);
+							r5.u1 = SLICE(r5_r4_n, word16, 16);
+							r4 = (word16) r5_r4_n;
+							r7_r6_n = r7_r6_n ^ r5_r4_n;
+							r1_n = SLICE(r1_r0_n >> 0x1F, word16, 16);
+							r1_r0_n = r1_r0_n >> 0x1F;
+							r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+							r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+							r1_r0_n = r1_r0_n;
+						} while (r1_r0_n >> 0x1F != 0x00);
+					}
+					*r11_r10_n = r7_r6_n;
+					r9_n.u1 = SLICE(r9_r8_n + 0x04, word16, 16);
+					word16 r11_n = SLICE(r11_r10_n + 1, word16, 16);
+					r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+					r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+					r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+					r9_r8_n = r9_r8_n;
+				} while (r9_r8_n + 0x04 != r12);
+l0000C9DC:
+				r8_n = r8_n + 0x04;
+				r6_n = (word16) r7_r6_n;
+				r10_n = (word16) r11_r10_n;
+				r11_n.u1 = SLICE(r11_r10_n, word16, 16);
+				int16 r0_n = sp_n->w020C;
+				cui16 r1_n = r1_n & 0x01;
+				struct Eq_n * r3_r2_n = r3_r2_n;
+				if (r0_n != 0x00)
+				{
+					r3_r2_n = r3_r2_n;
+					if (ra != 0x00)
+					{
+						sp_n = SEQ(r1_n, r0_n);
+						struct Eq_n ** r1_r0_n = SEQ(r1_n, r0_n);
+						do
+						{
+							word16 r0_n = (word16) r1_r0_n;
+							r3_r2_n = ra & 0x01;
+							if (r3_r2_n == null)
+							{
+								ra >>= 0x1F;
+								r1_r0_n = SEQ(SLICE((char *) r1_r0_n + 4, word16, 16), r0_n + 0x04);
+								if (ra != 0x00)
+									continue;
+								r4 = (word16) ra;
+								r5.u1 = SLICE(ra, word16, 16);
+								goto l0000C9E6;
+							}
+							r3_r2_n = (struct Eq_n *) *r1_r0_n;
+							ra >>= 0x1F;
+							r1_r0_n = SEQ(SLICE((char *) r1_r0_n + 4, word16, 16), r0_n + 0x04);
+						} while (ra != 0x00);
+						r4 = (word16) ra;
+						r5.u1 = SLICE(ra, word16, 16);
+					}
+				}
+l0000C9E6:
+				int16 r0_n = sp_n->w0208;
+				sp_n->w0208 = r0_n >> 0x0E;
+				r2_n = (word16) r3_r2_n;
+				r3_n.u1 = SLICE(r3_r2_n, word16, 16);
+				if (r0_n >> 0x0E == 0x00)
+					goto l0000C9F4;
+				r9_r8_n = SEQ(sp_n->w0214, sp_n->w0210);
+				r7_r6_n = r7_r6_n;
+				r3_r2_n = r3_r2_n;
+			}
+l0000C95A:
+			r11_r10_n = r11_r10_n;
+			r9_r8_n = r9_r8_n;
+		} while (r7_r6_n == 0x00);
+		sp_n = r3_r2_n;
+		r1_r0_n = r7_r6_n;
+		r7_r6_n = 0x00;
+		r11_r10_n = r11_r10_n;
+	}
+	do
+	{
+		word16 r8_n = (word16) r9_r8_n;
+		word16 r10_n = (word16) r11_r10_n;
+		word16 r2_n = (word16) r3_r2_n;
+		r5.u1 = 0x00;
+		r4 = (word16) r1_r0_n & 0x01;
+		if ((r1_r0_n & 0x01) != 0x00)
+		{
+			word32 r5_r4_n = r3_r2_n->dw0000;
+			r5.u1 = SLICE(r5_r4_n, word16, 16);
+			r4 = (word16) r5_r4_n;
+			r7_r6_n = r7_r6_n ^ r5_r4_n;
+			r1_r0_n = r1_r0_n;
+			r3_r2_n = r3_r2_n;
+			goto l0000C976;
+		}
+		word16 r3_n = SLICE(&r3_r2_n->dw0000 + 1, word16, 16);
+		r1_r0_n = r1_r0_n >> 0x1F;
+		r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+		r7_r6_n = r7_r6_n;
+		r11_r10_n = r11_r10_n;
+		r9_r8_n = r9_r8_n;
+		r1_r0_n = r1_r0_n;
+		r7_r6_n = r7_r6_n;
+		r11_r10_n = r11_r10_n;
+		r9_r8_n = r9_r8_n;
+	} while (r1_r0_n >> 0x1F != 0x00);
+	*r11_r10_n.u5 = r7_r6_n;
+	word32 r1_r0_n = sp_n->dw0200;
+	word16 r9_n = SLICE(r9_r8_n + 1, word16, 16);
+	r11_n.u1 = SLICE(r11_r10_n.u6 + 4, word16, 16);
+	r10_n = r10_n + 0x04;
+	r1_n = SLICE(r1_r0_n, word16, 16);
+	r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+	r7_r6_n = r7_r6_n;
+	r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+	r11_r10_n = SEQ(r11_n, r10_n + 0x04);
+	if (r1_r0_n == r9_r8_n + 1)
+	{
+		r9_r8_n = SEQ(r9_n, r8_n + 0x04);
+		r3_r2_n = SEQ(r3_n, r2_n + 0x04);
+		goto l0000C98C;
+	}
+	goto l0000C95A;
+}
+
+// 0000CAF8: Sequence Eq_n fn0000CAF8(Sequence Eq_n r1_r0, Sequence Eq_n r11_r10, Sequence Eq_n r5_r4, Register Eq_n r6, Register Eq_n r7, Register Eq_n r13, Register Eq_n ra, Stack Eq_n wArg00, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n wArg0C, Stack Eq_n dwArg26, Stack Eq_n dwArg2A, Stack Eq_n dwArg2E, Stack Eq_n dwArg32, Stack Eq_n dwArg36, Stack Eq_n dwArg3A, Stack Eq_n dwArg3E, Stack Eq_n dwArg42, Stack Eq_n dwArg56, Stack Eq_n dwArg5A, Stack Eq_n dwArgF4, Stack Eq_n wArg0202, Stack Eq_n wArg0206, Sequence out Eq_n r11_r10Out, Sequence out Eq_n r3_r2Out, Sequence out Eq_n r6_r5Out, Sequence out Eq_n r7_r6Out, Sequence out Eq_n r9_r8Out, Register out Eq_n r4Out, Register out (ptr32 Eq_n) r12Out, Register out Eq_n r13Out, Register out Eq_n raOut)
+// Called from:
+//      fn00003338
+//      fn000046AC
+//      fn00004CD4
+Eq_n fn0000CAF8(Eq_n r1_r0, Eq_n r11_r10, Eq_n r5_r4, Eq_n r6, Eq_n r7, Eq_n r13, Eq_n ra, Eq_n wArg00, Eq_n dwArg02, Eq_n wArg06, Eq_n dwArg08, Eq_n wArg0C, Eq_n dwArg26, Eq_n dwArg2A, Eq_n dwArg2E, Eq_n dwArg32, Eq_n dwArg36, Eq_n dwArg3A, Eq_n dwArg3E, Eq_n dwArg42, Eq_n dwArg56, Eq_n dwArg5A, Eq_n dwArgF4, Eq_n wArg0202, Eq_n wArg0206, union Eq_n & r11_r10Out, union Eq_n & r3_r2Out, union Eq_n & r6_r5Out, union Eq_n & r7_r6Out, union Eq_n & r9_r8Out, union Eq_n & r4Out, struct Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & raOut)
+{
+	struct Eq_n * r12;
+	Eq_n r4 = (word16) r5_r4;
+	Eq_n dwLoc06_n = SEQ((word16) ra, r7);
+	Eq_n dwLoc02_n = SEQ(wArg00, SLICE(ra, word16, 16));
+	if (r5_r4 == 0x00)
+	{
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r6_r5Out.u0 = <invalid>;
+		r7_r6Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r4Out = r4;
+		r12Out = r12;
+		r13Out = r13;
+		raOut.u0 = <invalid>;
+		return r5_r4;
+	}
+	else
+	{
+		word32 r7_r6_n = (word32) r6;
+		word16 r1_n;
+		struct Eq_n * r12_n;
+		word16 r2_n;
+		word16 r3_n;
+		word16 r10_n;
+		word16 r11_n;
+		Eq_n r13_n;
+		Eq_n r4_n;
+		word16 r5_n;
+		word16 r6_n;
+		word16 r8_n;
+		word16 r9_n;
+		word16 r0_n = fn0000C224(r1_r0, r11_r10, r5_r4, SLICE(r7_r6_n, word16, 16), r13, ra, (word16) r7_r6_n, dwLoc06_n, dwLoc02_n, dwArg02, wArg06, dwArg08, wArg0C, dwArg26, dwArg2A, dwArg2E, dwArg32, dwArg36, dwArg3A, dwArg3E, dwArg42, dwArg56, dwArg5A, dwArgF4, wArg0202, wArg0206, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n);
+		r11_r10Out.u0 = <invalid>;
+		r3_r2Out.u0 = <invalid>;
+		r6_r5Out.u0 = <invalid>;
+		r7_r6Out.u0 = <invalid>;
+		r9_r8Out.u0 = <invalid>;
+		r4Out = r4_n;
+		r12Out = r12_n;
+		r13Out = r13_n;
+		raOut.u0 = <invalid>;
+		return SEQ(r1_n, r0_n);
+	}
+}
+
+// 0000CB60: void fn0000CB60(Register Eq_n r12)
+// Called from:
+//      fn0000C224
+void fn0000CB60(Eq_n r12)
+{
+}
+
+// 0000D358: Sequence int32 fn0000D358(Register Eq_n r2, Register word16 r3, Register int16 r4, Register word16 r5, Sequence out Eq_n r5_r4Out)
+// Called from:
+//      fn0000A416
+int32 fn0000D358(Eq_n r2, word16 r3, int16 r4, word16 r5, union Eq_n & r5_r4Out)
+{
+	r5_r4Out.u0 = <invalid>;
+	int32 r1_r0_n = r4 *s32 r2;
+	return r1_r0_n;
+}
+
+// 0000D464: Register uint16 fn0000D464(Register Eq_n r2, Register Eq_n r3)
+// Called from:
+//      fn00004CD4
+uint16 fn0000D464(Eq_n r2, Eq_n r3)
+{
+	uint16 r1_n = 0x01;
+	if (r2 > r3 && r3 <= 0x00)
+	{
+		do
+		{
+			r3 *= 0x02;
+			r1_n *= 0x02;
+			if ((int16) (r3 < r2) == 0x00 || (int16) (r1_n != 0x00) == 0x00)
+			{
+				if (r1_n != 0x00)
+					break;
+				return r1_n;
+			}
+		} while (r3 < 0x00);
+	}
+	do
+	{
+		if (r3 <= r2)
+			r3 -= r2;
+		r1_n >>= 0x0F;
+		r3 >>= 0x0F;
+	} while (r1_n != 0x00);
+	return 0x00;
+}
+
+// 0000D4EC: Sequence Eq_n fn0000D4EC(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Register Eq_n r0, Register Eq_n r1, Sequence out Eq_n r5_r4Out, Register out Eq_n r6Out, Register out Eq_n r9Out)
+// Called from:
+//      fn0000B29A
+//      fn0000BAE0
+//      fn0000BC42
+//      fn0000BFBE
+//      fn0000C224
+Eq_n fn0000D4EC(Eq_n r3_r2, Eq_n r5_r4, Eq_n r0, Eq_n r1, union Eq_n & r5_r4Out, union Eq_n & r6Out, union Eq_n & r9Out)
+{
+	word16 r3_n;
+	word16 r4_n;
+	word16 r5_n;
+	Eq_n r9_n;
+	word16 r2_n = fn0000D4F8(r3_r2, r5_r4, r0, r1, 0x01, out r3_n, out r4_n, out r5_n, out r9_n);
+	r5_r4Out.u0 = <invalid>;
+	r6Out.u1 = 0x01;
+	r9Out = r9_n;
+	return SEQ(r3_n, r2_n);
+}
+
+// 0000D4F8: Register Eq_n fn0000D4F8(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Register Eq_n r0, Register Eq_n r1, Register word16 r6, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r9Out)
+// Called from:
+//      fn0000D4EC
+Eq_n fn0000D4F8(Eq_n r3_r2, Eq_n r5_r4, Eq_n r0, Eq_n r1, word16 r6, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r9Out)
+{
+	word32 ra;
+	Eq_n r9_n;
+	Eq_n r5_n;
+	Eq_n r4_n;
+	Eq_n r2_n;
+	uint32 r9_r8_n = 0x01;
+	if (r3_r2 > r5_r4)
+	{
+		ui32 r9_r8_n = 0x01;
+		r9_r8_n = 0x01;
+		if (r5_r4 <= 0x00)
+		{
+			do
+			{
+				r5_r4 *= 0x02;
+				ui32 r9_r8_n = r9_r8_n * 0x02;
+				r5_n.u1 = SLICE(r5_r4, word16, 16);
+				r4_n = (word16) r5_r4;
+				cui16 r9_n = SLICE(r9_r8_n, word16, 16);
+				cui16 r8_n = (word16) r9_r8_n;
+				r0.u1 = (int16) (r5_r4 < r3_r2);
+				if (r0 == 0x00)
+				{
+l0000D544:
+					r9_r8_n = SEQ(r9_n, r8_n);
+					if (SEQ(r9_n, r8_n) != 0x00)
+						break;
+					r9_n.u1 = SLICE(ra, word16, 16);
+					r2_n = r0;
+					goto l0000D53A;
+				}
+				r9_n |= r8_n;
+				r0.u1 = (int16) (r8_n != 0x00);
+				if (r0 == 0x00)
+					goto l0000D544;
+				r9_r8_n = SEQ(r9_n, r8_n);
+				r9_r8_n = SEQ(r9_n, r8_n);
+			} while (r5_r4 < 0x00);
+		}
+	}
+	r2_n = r0;
+	uint32 r9_r8_n = r9_r8_n;
+	Eq_n r5_r4_n = r5_r4;
+	do
+	{
+		Eq_n r5_r4_n = r5_r4_n;
+		if (r5_r4_n <= SEQ(r1, r0))
+			r5_r4_n = r5_r4_n - SEQ(r1, r0);
+		r9_n.u1 = SLICE(r9_r8_n >> 0x1F, word16, 16);
+		r5_n.u1 = SLICE(r5_r4_n >> 0x1F, word16, 16);
+		r4_n = (word16) (r5_r4_n >> 0x1F);
+		r9_r8_n = r9_r8_n >> 0x1F;
+		r5_r4_n = r5_r4_n >> 0x1F;
+		r9_r8_n = r9_r8_n;
+	} while (r9_r8_n >> 0x1F != 0x00);
+l0000D53A:
+	r3Out = r1;
+	r4Out = r4_n;
+	r5Out = r5_n;
+	r9Out = r9_n;
+	return r2_n;
+}
+
+// 0000D578: Register word16 fn0000D578(Register (ptr32 Eq_n) r13, Register out Eq_n r3Out, Register out ptr32 r13Out)
+// Called from:
+//      fn03B0
+word16 fn0000D578(struct Eq_n * r13, union Eq_n & r3Out, ptr32 & r13Out)
+{
+	word32 r3_r2_n = r13->dw000C;
+	r13->dw0000 = r3_r2_n;
+	word32 r1_r0_n = r13->dw0010;
+	r13->dw0004 = r1_r0_n;
+	ptr32 r13_n = r13->ptr0008;
+	r3Out.u1 = SLICE(r3_r2_n, word16, 16);
+	r13Out = r13_n;
+	return SLICE(r1_r0_n, word16, 16);
+}
+
+// 0000D974: void fn0000D974(Register Eq_n r2, Register Eq_n r13)
+// Called from:
+//      fn03B0
+void fn0000D974(Eq_n r2, Eq_n r13)
+{
+	*r13.u4 = (cup16) r2;
+}
+
+// 0000D984: Register (ptr32 Eq_n) fn0000D984(Sequence Eq_n r3_r2, Sequence word32 r5_r4, Register (ptr32 Eq_n) r13)
+// Called from:
+//      fn0000B218
+struct Eq_n * fn0000D984(Eq_n r3_r2, word32 r5_r4, struct Eq_n * r13)
+{
+	r13->t0000.u4 = (cup16 *) r3_r2;
+	r13->dw0004 = r5_r4;
+	return r13->ptr0008;
+}
+
+// 0000D99C: Register Eq_n fn0000D99C(Sequence Eq_n r3_r2, Register Eq_n r13)
+// Called from:
+//      fn00000BEC
+//      fn00001B74
+//      fn00002D76
+Eq_n fn0000D99C(Eq_n r3_r2, Eq_n r13)
+{
+	*r13.u5 = (word32) r3_r2;
+	return *((word32) r13 + 4);
+}
+
+// 0000D9B0: Register (ptr32 Eq_n) fn0000D9B0(Sequence word32 r3_r2, Register (ptr32 Eq_n) r13)
+// Called from:
+//      fn00000BEC
+struct Eq_n * fn0000D9B0(word32 r3_r2, struct Eq_n * r13)
+{
+	r13->dw0000 = r3_r2;
+	return r13->ptr0004;
+}
+
+// 0000DB24: Register word16 fn0000DB24(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Register Eq_n r13, Register out Eq_n r13Out)
+// Called from:
+//      fn000030F2
+//      fn000033F8
+//      fn00003540
+//      fn00004CD4
+//      fn00009C04
+//      fn0000A416
+//      fn0000AF94
+word16 fn0000DB24(Eq_n r3_r2, Eq_n r5_r4, Eq_n r13, union Eq_n & r13Out)
+{
+	*r13.u5 = (word32) r3_r2;
+	*((word32) r13 + 4) = r5_r4;
+	Eq_n r1_r0_n = *((word32) r13 + 16);
+	r13.u6[8] = (struct Eq_n) r1_r0_n;
+	r13Out.u4 = r13.u6[0x0C];
+	return SLICE(r1_r0_n, word16, 16);
+}
+
+// 0000DB44: Register Eq_n fn0000DB44(Sequence Eq_n r3_r2, Sequence Eq_n r6_r5, Register Eq_n r4, Register Eq_n r13)
+// Called from:
+//      fn000030F2
+//      fn000033F8
+//      fn00004CD4
+Eq_n fn0000DB44(Eq_n r3_r2, Eq_n r6_r5, Eq_n r4, Eq_n r13)
+{
+	*r13.u5 = (word32) r3_r2;
+	r13.u6[4] = (struct Eq_n) r4;
+	r13.u6[8] = (struct Eq_n) r6_r5;
+	return r13.u6[0x0C];
+}
+
+// 0000DB74: Register Eq_n fn0000DB74(Sequence Eq_n r3_r2, Register Eq_n r13)
+// Called from:
+//      fn00000BEC
+Eq_n fn0000DB74(Eq_n r3_r2, Eq_n r13)
+{
+	*r13.u5 = (word32) r3_r2;
+	return *((word32) r13 + 4);
+}
+
+// 0000DBF0: Register (ptr32 Eq_n) fn0000DBF0(Sequence word32 r3_r2, Sequence uipr32 r5_r4, Register (ptr32 Eq_n) r13)
+// Called from:
+//      fn00000BEC
+struct Eq_n * fn0000DBF0(word32 r3_r2, uipr32 r5_r4, struct Eq_n * r13)
+{
+	r13->dw0000 = r3_r2;
+	r13->dw0004 = r5_r4;
+	return r13->ptr0008;
+}
+
+// 0000DC28: void fn0000DC28(Sequence ptr32 r3_r2, Sequence word32 r5_r4, Register (ptr32 Eq_n) r13)
+// Called from:
+//      fn00000BEC
+void fn0000DC28(ptr32 r3_r2, word32 r5_r4, struct Eq_n * r13)
+{
+	r13->ptr0000 = r3_r2;
+	r13->dw0004 = r5_r4;
+}
+
+// 0000DD90: Register Eq_n fn0000DD90(Sequence Eq_n r4_r3, Sequence Eq_n r6_r5, Register Eq_n r2, Register Eq_n r13)
+// Called from:
+//      fn00002D76
+Eq_n fn0000DD90(Eq_n r4_r3, Eq_n r6_r5, Eq_n r2, Eq_n r13)
+{
+	*r13.u4 = (cup16) r2;
+	*((word32) r13 + 4) = r4_r3;
+	r13.u6[8] = (struct Eq_n) r6_r5;
+	return r13.u6[0x0C];
+}
+
+// 0000DDF0: Register Eq_n fn0000DDF0(Register Eq_n r2, Register Eq_n r13)
+// Called from:
+//      fn00001B74
+//      fn00002D76
+Eq_n fn0000DDF0(Eq_n r2, Eq_n r13)
+{
+	*r13.u4 = (cup16) r2;
+	return *((word32) r13 + 4);
 }
 
