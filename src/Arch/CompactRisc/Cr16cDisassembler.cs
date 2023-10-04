@@ -96,6 +96,7 @@ namespace Reko.Arch.CompactRisc
         private static readonly Bitfield[] bf_disp20 = Bf((8, 4), (16, 16));
         private static readonly Bitfield[] bf8_4_0_4 = Bf((8, 4), (0, 4));
         private static readonly Bitfield[] bf0_1_16_8_1_15 = Bf((0, 1), (16, 8), (1, 15));
+        private static readonly Bitfield[] bf16_1_0_4_8_4_17_15 = Bf((16, 1), (0, 4), (8, 4), (17, 15));
 
         private static Mutator<Cr16cDisassembler> Imm(int bitpos, int bitlen, int sign, PrimitiveType dt)
         {
@@ -103,15 +104,6 @@ namespace Reko.Arch.CompactRisc
             return (u, d) =>
             {
                 var imm = (ushort) immField.Read(u);
-                if (imm == 9)
-                {
-                    imm = 0xFFFF;
-                }
-                else if (imm == 11)
-                {
-                    if (!d.rdr.TryReadLeUInt16(out imm))
-                        return false;
-                }
                 Constant c = Constant.Create(dt, sign * (short) imm);
                 d.ops.Add(ImmediateOperand.Create(c));
                 return true;
@@ -119,15 +111,33 @@ namespace Reko.Arch.CompactRisc
         }
         private static readonly Mutator<Cr16cDisassembler> imm4_l = Imm(4, 4, 1, PrimitiveType.Word32);
         private static readonly Mutator<Cr16cDisassembler> imm4_b = Imm(4, 4, 1, PrimitiveType.Byte);
-        private static readonly Mutator<Cr16cDisassembler> neg_imm4_l = Imm(4, 4, -1, PrimitiveType.Int32);
-        private static readonly Mutator<Cr16cDisassembler> imm5_l = Imm(4, 5, 1, PrimitiveType.Int32);
-        private static readonly Mutator<Cr16cDisassembler> neg_imm5_l = Imm(4, 5, -1, PrimitiveType.Int32);
+        private static readonly Mutator<Cr16cDisassembler> imm4_w = Imm(4, 4, 1, PrimitiveType.Word16);
+
+        private static Mutator<Cr16cDisassembler> ShiftCount(int bitpos, int bitlen, int sign)
+        {
+            var field = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var n = sign * (int) field.Read(u);
+                d.ops.Add(ImmediateOperand.Int32(n));
+                return true;
+            };
+        }
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_3 = ShiftCount(4, 3, 1);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_3 = ShiftCount(4, 3, -1);
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_4 = ShiftCount(4, 4, 1);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_4 = ShiftCount(4, 4, -1);
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_5 = ShiftCount(4, 5, 1);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_5 = ShiftCount(4, 5, -1);
 
         private static bool imm32(uint uInstr, Cr16cDisassembler dasm)
         {
-            if (!dasm.rdr.TryReadUInt32(out var imm32))
+            // [sic]. The 16-bit parts are in big endian order.
+            if (!dasm.rdr.TryReadLeUInt16(out var hi))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(imm32));
+            if (!dasm.rdr.TryReadLeUInt16(out var lo))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word32((hi << 16) | lo));
             return true;
         }
 
@@ -159,7 +169,6 @@ namespace Reko.Arch.CompactRisc
         private static readonly Mutator<Cr16cDisassembler> imm4_16_b = imm4_16(PrimitiveType.Byte);
         private static readonly Mutator<Cr16cDisassembler> imm4_16_w = imm4_16(PrimitiveType.Word16);
         private static readonly Mutator<Cr16cDisassembler> imm4_16_l = imm4_16(PrimitiveType.Word32);
-
 
         private static bool Imm3_pushpop(uint uInstr, Cr16cDisassembler dasm)
         {
@@ -269,6 +278,7 @@ namespace Reko.Arch.CompactRisc
                 return true;
             };
         }
+        private static readonly Mutator<Cr16cDisassembler> rp_disp16_b = rp_disp16(PrimitiveType.Byte);
         private static readonly Mutator<Cr16cDisassembler> rp_disp16_w = rp_disp16(PrimitiveType.Word16);
 
         private static Mutator<Cr16cDisassembler> rp_disp20(PrimitiveType dt)
@@ -327,8 +337,8 @@ namespace Reko.Arch.CompactRisc
                 return false;
             uint codedDisp = (uInstr << 16) | low;
             var disp24 = Bitfield.ReadSignedFields(bf0_1_16_8_1_15, codedDisp);
-            var addrDst = dasm.addr + (disp24 << 1);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            var addrDst = ((uint)dasm.addr.Offset + (uint)(disp24 << 1)) & 0xFF_FFFFu;
+            dasm.ops.Add(AddressOperand.Ptr32(addrDst));
             return true;
         }
 
@@ -337,7 +347,7 @@ namespace Reko.Arch.CompactRisc
         /// </summary>
         private static bool edisp24(uint uInstr, Cr16cDisassembler dasm)
         {
-            var disp24 = Bitfield.ReadSignedFields(bf0_1_16_8_1_15, uInstr);
+            var disp24 = Bitfield.ReadSignedFields(bf16_1_0_4_8_4_17_15, uInstr);
             var addrDst = dasm.addr + (disp24 << 1);
             dasm.ops.Add(AddressOperand.Create(addrDst));
             return true;
@@ -420,24 +430,39 @@ namespace Reko.Arch.CompactRisc
             };
         }
 
+        private static bool vect(uint uInstr, Cr16cDisassembler dasm)
+        {
+            var v = vector[uInstr & 0xF];
+            if (v is null)
+                return false;
+            dasm.ops.Add(v);
+            return true;
+        }
+        private static readonly RegisterStorage?[] vector = new RegisterStorage?[16]
+        {
+            null,
+            null,
+            null,
+            null,
+            null,
+            Registers.SVC,
+            Registers.DVZ,
+            Registers.FLG,
+            Registers.BPT,
+            Registers.TRC,
+            Registers.UND,
+            null,
+            Registers.IAD,
+            null,
+            Registers.DBG,
+            Registers.ISE
+        };
 
         private static Mutator<Cr16cDisassembler> Mem(PrimitiveType dt, int displacementScale)
         {
             return (u, d) =>
             {
                 var op = (u >> 8) & 0xF;
-
-                //1001 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  loadw(prp) disp0 4 src(prp) 4 dest reg 4E
-                //1001 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadw(rp) disp16 4 src(rp)  4 dest reg 4F 16 src disp
-                //1001 xxxx xxxx xxxx Fmt18 1 ZZ loadw(rp) disp4  4 src(rp)  4 dest reg 4  src disp*2
-
-
-                //1101 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  storw(prp) disp0  4 dest(prp) 4 src reg 4E
-                //1101 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  storw(rp)  disp16 4 dest(rp)  4 src reg 4F 16 dest disp
-                //1101 xxxx xxxx xxxx  Fmt18 1 ZZ storw(rp) disp4 4 dest(rp) 4 src reg 4 dest disp*2
-                // 18 param444    1 4 opcode4 p3_4 p2_4 p1_4
-                // 19 param444_16 2 4 opcode4 p3_4 p2_4 p1_4..p4_1
-
                 MemoryOperand mem;
                 if (op == 0xE)
                 {
@@ -453,7 +478,6 @@ namespace Reko.Arch.CompactRisc
                     //    mem = MemoryOperand.Relative(dt, R((int)u & 0xF), 0);
                     //    d.ops.Add(mem);
                     //}
-                    return true;
                 }
                 else if (op == 0xF)
                 {
@@ -475,13 +499,35 @@ namespace Reko.Arch.CompactRisc
         private static readonly Mutator<Cr16cDisassembler> Memw = Mem(PrimitiveType.Word16, 2);
         private static readonly Mutator<Cr16cDisassembler> Memd = Mem(PrimitiveType.Word32, 2);
 
+
         #endregion
 
         #region Decoders
 
+        /// <summary>
+        /// Read the next 16 bits and treat them as the new opcode.
+        /// </summary>
+        /// <returns></returns>
+        private class Next16Decoder : Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction>
+        {
+            private readonly Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder;
+
+            public Next16Decoder(Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder)
+            {
+                this.decoder = decoder;
+            }
+
+            public override Cr16Instruction Decode(uint _, Cr16cDisassembler dasm)
+            {
+                if (!dasm.rdr.TryReadLeUInt16(out ushort uInstr))
+                    return dasm.CreateInvalidInstruction();
+                return decoder.Decode(uInstr, dasm);
+            }
+        }
+
         private class Next32Decoder : Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction>
         {
-            public readonly Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder;
+            private readonly Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder;
 
             public Next32Decoder(Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder)
             {
@@ -494,6 +540,12 @@ namespace Reko.Arch.CompactRisc
                     return dasm.CreateInvalidInstruction();
                 return decoder.Decode(uInstr, dasm);
             }
+        }
+
+
+        private static Decoder Next16(Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder)
+        {
+            return new Next16Decoder(decoder);
         }
 
         private static Decoder Next32(Decoder<Cr16cDisassembler, Mnemonic, Cr16Instruction> decoder)
@@ -543,10 +595,10 @@ namespace Reko.Arch.CompactRisc
                 param0(Mnemonic.res, InstrClass.Invalid),
                 param0(Mnemonic.retx, InstrClass.Transfer | InstrClass.Return),
 
-                param0(Mnemonic.di, InstrClass.Invalid),
-                param0(Mnemonic.ei, InstrClass.Invalid),
-                param0(Mnemonic.wait, InstrClass.Invalid),
-                param0(Mnemonic.eiwait, InstrClass.Invalid),
+                param0(Mnemonic.di, InstrClass.Linear | InstrClass.Privileged),
+                param0(Mnemonic.ei, InstrClass.Linear | InstrClass.Privileged),
+                param0(Mnemonic.wait, InstrClass.Linear),
+                param0(Mnemonic.eiwait, InstrClass.Linear),
 
                 param0(Mnemonic.res, InstrClass.Invalid),
                 param0(Mnemonic.res, InstrClass.Invalid),
@@ -581,12 +633,12 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.res, InstrClass.Invalid),
 
                 Nyi("Fmt2 3 ZZ ope 4  cbitb (reg) disp20 4 dest (reg) 3 pos imm 20 dest disp 4"),
-                Nyi("Fmt2 3 ZZ ope 5  cbitb (rp)  disp20 4 dest (rp)  3 pos imm 20 dest disp 4"),
+                Instr(Mnemonic.cbitb, bitpos_b, rp_disp20_b),
                 Nyi("Fmt2 3 ZZ ope 6  cbitb (rrp) disp20 4 dest (rrp) 3 pos imm 20 dest disp 4"),
                 Instr(Mnemonic.cbitb, bitpos_b, abs24_b),
 
                 Nyi("Fmt2 3 ZZ ope 8  sbitb (reg) disp20 4 dest (reg) 3 pos imm 20 dest disp 4"),
-                Nyi("Fmt2 3 ZZ ope 9  sbitb (rp) disp20 4 dest (rp) 3 pos imm 20 dest disp 4"),
+                Instr(Mnemonic.sbitb, bitpos_b, rp_disp20_b),
                 Nyi("Fmt2 3 ZZ ope 10  sbitb (rrp) disp20 4 dest (rrp) 3 pos imm 20 dest disp 4"),
                 Instr(Mnemonic.sbitb, bitpos_b, abs24_b),
 
@@ -617,7 +669,7 @@ namespace Reko.Arch.CompactRisc
                 Nyi("Fmt2 3 ZZ ope 0  storb imm(reg) disp20 4 dest(reg) 4 src imm 20 dest disp 4"),
                 Instr(Mnemonic.storb, R4, rp_disp20_b),
                 Nyi("Fmt2 3 ZZ ope 2  storb imm(rrp) disp20 4 dest(rrp) 4 src imm 20 dest disp 4"),
-                Nyi("Fmt3 3 ZZ ope 3  storb imm abs24 24 dest abs 4 src imm 4"),
+                Instr(Mnemonic.storb, imm4_b, abs24_b),
                 Nyi("Fmt2 3 ZZ ope 4  loadb (reg) disp20 4 src (reg) 4 dest reg 20 src disp 4"),
                 Instr(Mnemonic.loadb, rp_disp20_b, R4),
                 Nyi("Fmt2 3 ZZ ope 6  loadb (rrp) disp20 4 src (rrp) 4 dest reg 20 src disp 4"),
@@ -647,7 +699,7 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.stord, rp4, abs24_d),
 
                 Nyi("Fmt2 3 ZZ ope 12  storw (reg) disp20 4 dest (reg) 4 src reg 20 dest disp 4"),
-                Nyi("Fmt2 3 ZZ ope 13  storw (rp) disp20 4 dest (rp) 4 src reg 20 dest disp 4"),
+                Instr(Mnemonic.storw, R4, rp_disp20_w),
                 Nyi("Fmt2 3 ZZ ope 14  storw (rrp) disp20 4 dest (rrp) 4 src reg 20 dest disp 4"),
                 Instr(Mnemonic.storb, R4, abs24_b));
 
@@ -662,9 +714,9 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.res, InstrClass.Invalid),
 
                 Nyi("Instr(mnemonic.jal, InstrClass.Transfer|InstrClass.Call,  Fmt1 2 ZZ ope 8  jal(rp, rp) 4 link rp 4 dest rp * 2 4 res 0 4"),
-                Nyi("Fmt1 2 ZZ ope 9  ord rp, rp 4 dest rp 4 src rp 4"),
-                Nyi("Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4"),
-                Nyi("Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4"),
+                Instr(Mnemonic.ord, rp4, rp0),
+                Instr(Mnemonic.xord, rp4, rp0),
+                Instr(Mnemonic.andd, rp4, rp0),
 
                 Instr(Mnemonic.subd, rp0, rp4),
                 Nyi("Fmt1 2 ZZ ope 13  macqw 4 src2 reg 4 src1 reg 4 dest rp 4"),
@@ -693,7 +745,7 @@ namespace Reko.Arch.CompactRisc
                 Next32(decode0012),
                 Next32(decode0013),
 
-                Next32(decode0014),
+                Next16(decode0014),
                 invalid,
                 invalid,
                 invalid,
@@ -728,7 +780,7 @@ namespace Reko.Arch.CompactRisc
                     Nyi("Fmt6 1 ZZ  storm (reg) 3 count imm"),
                     Nyi("Fmt6 1 ZZ  stormp (rp) 3 count imm")),
 
-                Nyi("Fmt11 1 ZZ  excp 4 vect imm"),
+                Instr(Mnemonic.excp, vect),
                 Instr(Mnemonic.jal, InstrClass.Transfer|InstrClass.Call, RA, rp0),
                 invalid,
                 invalid);
@@ -749,10 +801,26 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.tbit, bitpos_b, R4),
                 Instr(Mnemonic.tbit, R0, R4),
 
-                Nyi("Fmt15 1 ZZ  Scond (reg) 4 dest reg 4 cond imm"),
+                Mask(4, 4, "  08",
+                    Instr(Mnemonic.seq, R0),
+                    Instr(Mnemonic.sne, R0),
+                    Instr(Mnemonic.scs, R0),
+                    Instr(Mnemonic.scc, R0),
+                    Instr(Mnemonic.shi, R0),
+                    Instr(Mnemonic.sls, R0),
+                    Instr(Mnemonic.sgt, R0),
+                    Instr(Mnemonic.sle, R0),
+                    Instr(Mnemonic.sfs, R0),
+                    Instr(Mnemonic.sfc, R0),
+                    Instr(Mnemonic.slo, R0),
+                    Instr(Mnemonic.shs, R0),
+                    Instr(Mnemonic.slt, R0),
+                    Instr(Mnemonic.sge, R0),
+                    Nyi(""),
+                    Nyi("")),
                 Mask(7, 1, "  09",
                     invalid, //        0000 1001 0xxx xxxx  ZZ res - undefined trap 2
-                    Nyi("Fmt9 1 ZZ  lshb cnt(right -), reg 4 dest reg 3 count imm")),
+                    Instr(Mnemonic.lshb, cnt_4_3, R0)),
                 Mask(4, 4, "  0A",
                     Instr(Mnemonic.jeq, InstrClass.ConditionalTransfer, rp0),
                     Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, rp0),
@@ -770,7 +838,7 @@ namespace Reko.Arch.CompactRisc
                     Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, rp0),
                     Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, rp0),
                     Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, rp0)),
-                Nyi("Fmt15 1 ZZ  mulsb reg,reg 4 dest reg 4 src reg"),
+                Instr(Mnemonic.mulsb, R4, R0),
 
                 Instr(Mnemonic.beq0b, R0, disp2xp1_4),
                 Instr(Mnemonic.bne0b, R0, disp2xp1_4),
@@ -793,7 +861,9 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.xorw, imm4_16_w, R4),
                 Instr(Mnemonic.xorw, R0, R4),
 
-                Instr(Mnemonic.addub, imm4_b, R4),
+                Select((0, 8), u => u == 0,
+                    Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding), 
+                    Instr(Mnemonic.addub, imm4_16_b, R4)),
                 Instr(Mnemonic.addub, R0, R4),
                 Instr(Mnemonic.adduw, imm4_16_w, R4),
                 Instr(Mnemonic.adduw, R0, R4));
@@ -821,33 +891,33 @@ namespace Reko.Arch.CompactRisc
 
             var decode4 = Mask(8, 4, "  4",
                 Mask(7, 1, "  40",
-                    Nyi("0100 0000 0xxx xxxx  Fmt9 1 ZZ  ashub cnt(left +), reg 4 dest reg 3 count imm"),
-                    Nyi("0100 0000 1xxx xxxx  Fmt9 1 ZZ  ashub cnt(right -), reg 4 dest reg 3 count imm")),
-                Nyi("0100 0001 xxxx xxxx  Fmt15 1 ZZ  ashub reg, reg 4 dest reg 4 count reg"),
-                Nyi("0100 0010 xxxx xxxx  Fmt15 1 ZZ  ashuw cnt(left +), reg 4 dest reg 4 count imm"),
-                Nyi("0100 0011 xxxx xxxx  Fmt15 1 ZZ  ashuw cnt(right -), reg 4 dest reg 4 count imm"),
+                    Instr(Mnemonic.ashub, cnt_4_3, R0),
+                    Instr(Mnemonic.ashub, neg_cnt_4_3, R0)),
+                Instr(Mnemonic.ashub, R4, R0),
+                Instr(Mnemonic.ashuw, cnt_4_4, R0),
+                Instr(Mnemonic.ashuw, neg_cnt_4_4, R0),
 
                 Nyi("0100 0100 xxxx xxxx  Fmt15 1 ZZ  lshb reg, reg 4 dest reg 4 count reg"),
-                Nyi("0100 0101 xxxx xxxx  Fmt15 1 ZZ  ashuw reg, reg 4 dest reg 4 count reg"),
-                Nyi("0100 0110 xxxx xxxx  Fmt15 1 ZZ  lshw reg, reg 4 dest reg 4 count reg"),
+                Instr(Mnemonic.ashuw, R4, R0),
+                Instr(Mnemonic.lshw, R4, R0),
                 Nyi("0100 0111 xxxx xxxx  Fmt15 1 ZZ  lshd reg, rp 4 dest rp 4 count reg"),
 
                 Instr(Mnemonic.ashud, R4, rp0),
-                Instr(Mnemonic.lshw, neg_imm4_l, R0),
-                Nyi("0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm"),
-                Nyi("0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm"),
+                Instr(Mnemonic.lshw, neg_cnt_4_4, R0),
+                Instr(Mnemonic.lshd, neg_cnt_4_5, rp0),
+                Instr(Mnemonic.lshd, neg_cnt_4_5, rp0),
 
-                Instr(Mnemonic.ashud, imm5_l, rp0),    // right +
-                Instr(Mnemonic.ashud, imm5_l, rp0),    // right +
-                Instr(Mnemonic.ashud, neg_imm5_l, rp0),    // right -
-                Instr(Mnemonic.ashud, neg_imm5_l, rp0));    // right -
+                Instr(Mnemonic.ashud, cnt_4_5, rp0),    // right +
+                Instr(Mnemonic.ashud, cnt_4_5, rp0),    // right +
+                Instr(Mnemonic.ashud, neg_cnt_4_5, rp0),    // right -
+                Instr(Mnemonic.ashud, neg_cnt_4_5, rp0));    // right -
             var decode5 = Mask(8, 4, "  5",
                 Instr(Mnemonic.cmpb, imm4_16_b, R0),
                 Instr(Mnemonic.cmpb, R0, R4),
                 Instr(Mnemonic.cmpw, imm4_16_w, R0),
                 Instr(Mnemonic.cmpw, R0, R4),
 
-                Nyi("ZZ movd imm4 / imm16, rp 4 dest rp 4 src imm 15 / 16 1 / 2"),
+                Instr(Mnemonic.movd, imm4_16_l, rp0),
                 Instr(Mnemonic.movd, rp0, rp4),
                 Instr(Mnemonic.cmpd, imm4_16_l, rp0),
                 Instr(Mnemonic.cmpd, rp0,rp4),
@@ -864,8 +934,8 @@ namespace Reko.Arch.CompactRisc
             var decode6 = Mask(8, 4, "  6",
                 Instr(Mnemonic.addd, imm4_16_l, rp0),
                 Instr(Mnemonic.addd, rp4, rp0),
-                Nyi("Fmt15 1 ZZ  mulsw reg, rp 4 dest rp 4 src reg"),
-                Nyi("Fmt15 1 ZZ  muluw reg, rp 4 dest rp 4 src reg"),
+                Instr(Mnemonic.mulsw, R4, rp0),
+                Instr(Mnemonic.muluw, R4, rp0),
 
                 Instr(Mnemonic.mulb, imm4_16_b, R0),
                 Instr(Mnemonic.mulb, R4, R0),
@@ -875,8 +945,8 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.cbitb, R4, abs20_b),
                 Instr(Mnemonic.cbitw, bitpos_w, rp_disp16_w),
                 Mask(6, 2, "  6A",
-                    Nyi("Fmt9 1 ZZ  cbitb(rp) disp0 4 dest(rp) 3 pos imm"),
-                    Nyi("Fmt9 1 ZZ  cbitb(rp) disp0 4 dest(rp) 3 pos imm"),
+                    Instr(Mnemonic.cbitb, bitpos_b, rp_disp0_b),
+                    Instr(Mnemonic.cbitb, bitpos_b, rp_disp0_b),
                     Nyi("Fmt17 2 ZZ  cbitb(prp) disp14 4 dest(prp) 3 pos imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  cbitw(prp) disp14 4 dest(prp) 4 pos imm 14 dest disp")),
                 Mask(7, 1, "  6B",
@@ -890,7 +960,7 @@ namespace Reko.Arch.CompactRisc
 
             var decode7 = Mask(8, 4, "  7",
                 Instr(Mnemonic.sbitb, bitpos_b, abs20_rel_b),
-                Nyi("Fmt16 2 ZZ  sbitw(rp) disp16 4 dest(rp) 4 pos imm 16 dest disp"),
+                Instr(Mnemonic.sbitw, bitpos_w, rp_disp16_w),
                 Mask(6, 2, "  72",
                     Instr(Mnemonic.sbitb, bitpos_b, rp_disp0_b),
                     Instr(Mnemonic.sbitb, bitpos_b, rp4),
@@ -908,8 +978,8 @@ namespace Reko.Arch.CompactRisc
                 Nyi("Fmt8 2 ZZ  tbitb abs20 rel 20 dest abs 3 pos imm 1 dest rs"),
                 Instr(Mnemonic.tbitw, bitpos_w, rp_disp16_w),
                 Mask(6, 2, "  7A",
-                    Nyi("Fmt9 1 ZZ  tbitb(rp) disp0 4 dest(rp) 3 pos imm"),
-                    Nyi("Fmt9 1 ZZ  tbitb(rp) disp0 4 dest(rp) 3 pos imm"),
+                    Instr(Mnemonic.tbitb, bitpos_b, rp_disp0_b),
+                    Instr(Mnemonic.tbitb, bitpos_b, rp_disp0_b),
                     Nyi("Fmt17 2 ZZ  tbitb(prp) disp14 4 dest(prp) 3 pos imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  tbitw(prp) disp14 4 dest(prp) 4 pos imm 14 dest disp")),
                 Mask(7, 1, "  7B",
@@ -922,14 +992,13 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.tbitw, bitpos_w, abs20_w));
 
             var decode8 = Mask(8, 4, "  8",
+                Instr(Mnemonic.res, InstrClass.Invalid),
+                Instr(Mnemonic.storb, imm4_b, abs20_b),
+                Instr(Mnemonic.storb, imm4_b, rp_disp0_b),
+                Instr(Mnemonic.storb, imm4_b, rp_disp16_b),
 
-                Nyi("Fmt15 1 ZZ  res - undefined trap"),
-                Nyi("Fmt12 2 ZZ  storb imm abs20 20 dest abs 4 src imm"),
-                Nyi("Fmt15 1 ZZ  storb imm(rp) disp0 4 dest(rp) 4 src imm"),
-                Nyi("Fmt16 2 ZZ  storb imm(rp) disp16 4 dest(rp) 4 src imm 16 dest disp"),
-
-                Nyi("Fmt13 2 ZZ  storb imm abs20 rel 20 dest abs 4 src imm 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  storb imm abs20 rel 20 dest abs 4 src imm 1 dest rs"),
+                Instr(Mnemonic.storb, imm4_b, abs20_rel_b),
+                Instr(Mnemonic.storb, imm4_b, abs20_rel_b),
                 Mask(6, 2, "  86",
                     Nyi("Fmt17 2 ZZ  storb imm(prp) disp14 4 dest(prp) 4 src imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  loadb(prp) disp14 4 src(prp) 4 dest reg 14 src disp"),
@@ -948,28 +1017,29 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.loadw, abs20_rel_w, R4));
 
             var decodeC = Mask(8, 4, "  C",
-                Instr(Mnemonic.bal, InstrClass.Transfer|InstrClass.Call, RA, disp24),
-                Nyi("Fmt12 2 ZZ  storw imm abs20 20 dest abs 4 src imm"),
-                Nyi("Fmt15 1 ZZ  storw imm(rp) disp0 4 dest(rp) 4 src imm"),
-                Nyi("Fmt16 2 ZZ  storw imm(rp) disp16 4 dest(rp) 4 src imm 16 dest disp"),
+                Instr(Mnemonic.bal, InstrClass.Transfer | InstrClass.Call, RA, disp24),
+                Instr(Mnemonic.storw, imm4_w, abs20_w),
+                Instr(Mnemonic.storw, imm4_w, rp_disp0_w),
+                Instr(Mnemonic.storw, imm4_w, rp_disp16_w),
 
                 Nyi("Fmt13 2 ZZ  storw imm abs20 rel 20 dest abs 4 src imm 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  storw imm abs20 rel 20 dest abs 4 src imm 1 dest rs"),
+                Instr(Mnemonic.storw, R4, abs20_rel_w),
                 Mask(6, 2, "  C6",
                     Nyi("Fmt17 2 ZZ  storw imm(prp) disp14 4 dest(prp) 4 src imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  storb(prp) disp14 4 dest(prp) 4 src reg 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  stord(prp) disp14 4 dest(prp) 4 src rp 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  storw(prp) disp14 4 dest(prp) 4 src reg 14 dest disp")),
+                Instr(Mnemonic.stord, rp4, abs20_d),
 
-                Nyi("Fmt12 2 ZZ  stord abs20 20 dest abs 4 src rp"),
                 Instr(Mnemonic.storb, R4, abs20_b),
                 Instr(Mnemonic.storw, R4, abs20_w),
-                Nyi("Fmt13 2 ZZ  storb abs20 rel 20 dest abs 4 src reg 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  storb abs20 rel 20 dest abs 4 src reg 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  stord abs20 rel 20 dest abs 4 src rp 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  stord abs20 rel 20 dest abs 4 src rp 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  storw abs20 rel 20 dest abs 4 src reg 1 dest rs"),
-                Nyi("Fmt13 2 ZZ  storw abs20 rel 20 dest abs 4 src reg 1 dest rs"));
+                Instr(Mnemonic.storb, R4, abs20_rel_b),
+                Instr(Mnemonic.storb, R4, abs20_rel_b),
+
+                Instr(Mnemonic.stord, rp4, abs20_rel_d),
+                Instr(Mnemonic.stord, rp4, abs20_rel_d),
+                Instr(Mnemonic.stord, rp4, abs20_rel_w),
+                Instr(Mnemonic.stord, rp4, abs20_rel_w));
 
             rootDecoder = Mask(12, 4, "CR16C",
                 decode0,

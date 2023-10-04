@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -27,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Reko.Arch.CompactRisc
 {
@@ -38,10 +40,11 @@ namespace Reko.Arch.CompactRisc
         public Cr16Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;
-            this.FramePointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
-            this.PointerType = PrimitiveType.Ptr16;
+            this.PointerType = PrimitiveType.Ptr32;
             this.StackRegister = Registers.GpRegisters[15];
             this.WordWidth = PrimitiveType.Word16;
         }
@@ -73,7 +76,11 @@ namespace Reko.Arch.CompactRisc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Word16;
+            var flagregister = Registers.PSR;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+            return fl;
+
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -102,14 +109,40 @@ namespace Reko.Arch.CompactRisc
             return Registers.GpRegisters;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.CF) != 0) yield return Registers.C;
+            if ((grf & (uint) FlagM.EF) != 0) yield return Registers.E;
+            if ((grf & (uint) FlagM.FF) != 0) yield return Registers.F;
+            if ((grf & (uint) FlagM.IF) != 0) yield return Registers.I;
+            if ((grf & (uint) FlagM.LF) != 0) yield return Registers.L;
+            if ((grf & (uint) FlagM.NF) != 0) yield return Registers.N;
+            if ((grf & (uint) FlagM.PF) != 0) yield return Registers.P;
+            if ((grf & (uint) FlagM.TF) != 0) yield return Registers.T;
+            if ((grf & (uint) FlagM.UF) != 0) yield return Registers.U;
+            if ((grf & (uint) FlagM.ZF) != 0) yield return Registers.Z;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint) FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint) FlagM.EF) != 0) s.Append('E');
+            if ((grf & (uint) FlagM.FF) != 0) s.Append('F');
+            if ((grf & (uint) FlagM.IF) != 0) s.Append('I');
+            if ((grf & (uint) FlagM.LF) != 0) s.Append('L');
+            if ((grf & (uint) FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint) FlagM.PF) != 0) s.Append('P');
+            if ((grf & (uint) FlagM.TF) != 0) s.Append('T');
+            if ((grf & (uint) FlagM.UF) != 0) s.Append('U');
+            if ((grf & (uint) FlagM.ZF) != 0) s.Append('Z');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr16(c.ToUInt16());
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -124,7 +157,7 @@ namespace Reko.Arch.CompactRisc
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
-            return Address.TryParse16(txtAddr, out addr);
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

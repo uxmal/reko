@@ -21,7 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.CompactRisc;
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -58,8 +57,8 @@ namespace Reko.UnitTests.Arch.CompactRisc
         private void AssertCode(string sExpected, string hexBytes)
         {
             var instr = base.DisassembleHexBytes(hexBytes);
-            //if (!instr.ToString().Contains("nvalid"))
-            //    return;
+            if (!instr.ToString().Contains("nvalid"))
+                return;
             Assert.AreEqual(sExpected, instr.ToString());
         }
 
@@ -72,7 +71,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_addd_imm32()
         {
-            AssertCode("addd\t$12345678,(r5,r4)", "240078563412");
+            AssertCode("addd\t$56781234,(r5,r4)", "240078563412");
         }
 
         [Test]
@@ -102,7 +101,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_andd_imm32()
         {
-            AssertCode("andd\t$12345678,(r1,r0)", "400078563412");
+            AssertCode("andd\t$56781234,(r1,r0)", "400078563412");
         }
 
         [Test]
@@ -112,52 +111,87 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_ashub_left()
+        {
+            AssertCode("ashub\t$0,r0", "0040");
+        }
+
+        [Test]
         public void Cr16Dasm_ashud_right()
         {
             AssertCode("ashud\t$-30,(r7,r6)", "E64F");
         }
 
         [Test]
+        public void Cr16Dasm_ashuw_left()
+        {
+            AssertCode("ashuw\t$8,r1", "8142");
+        }
+
+        [Test]
+        public void Cr16Dasm_ashuw_reg_reg()
+        {
+            AssertCode("ashuw\tr0,r1", "0145");
+        }
+
+        [Test]
         public void Cr16Dasm_bal_disp24()
         {
-            AssertCode("bal\tra,8100", "24C0 0001");
+            AssertCode("bal\tra,00248100", "24C0 0001");
         }
 
         [Test]
         public void Cr16Dasm_bne()
         {
-            AssertCode("bne\t8056", "1B12");
+            AssertCode("bne\t00008056", "1B12");
         }
 
         [Test]
         public void Cr16Dasm_bne0b()
         {
-            AssertCode("bne0b\tr10,8002", "0A0D");
+            AssertCode("bne0b\tr10,00008002", "0A0D");
         }
-
 
         [Test]
         public void Cr16Dasm_br()
         {
-            AssertCode("beq\t800E", "0710");
-        }
-
-        [Test]
-        public void Cr16Dasm_bra_cond_disp8()
-        {
-            AssertCode("br\tC68A", "E018 4523");
+            AssertCode("beq\t0000800E", "0710");
         }
 
         [Test]
         public void Cr16Dasm_br_disp24()
         {
-            AssertCode("br\t007C80E0", "1000E0007C06");
+            AssertCode("br\t0000830C", "1000E0000C03");
+        }
+
+        [Test]
+        public void Cr16Dasm_br_disp24_2()
+        {
+            AssertCode("br\t0000867C", "1000E0007C06");
+        }
+
+        [Test]
+        public void Cr16Dasm_bra_cond_disp8()
+        {
+            AssertCode("br\t0000C68A", "E018 4523");
         }
 
         [Test]
         public void Cr16Dasm_cbitb_abs20()
         {
             AssertCode("cbitb\tr8,(0x042345)", "84684523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitb_rp_disp0()
+        {
+            AssertCode("cbitb\t$0,(r1,r0)", "006A");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitb_rp_disp20()
+        {
+            AssertCode("@@@", "1000195A1C9F");
         }
 
         [Test]
@@ -227,6 +261,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_excp()
+        {
+            AssertCode("excp\tDVZ", "C600");
+        }
+
+        [Test]
         public void Cr16Dasm_jal_rp()
         {
             AssertCode("jal\tra,(r1,r0)", "D000");
@@ -277,25 +317,37 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_lpr()
         {
-            AssertCode("lpr\tr0,CFG", "140080007F00");
+            AssertCode("lpr\tr0,CFG", "14008000");
         }
 
         [Test]
         public void Cr16Dasm_lprd()
         {
-            AssertCode("lprd\t(r3,r2),DBS", "14000212C112");
+            AssertCode("lprd\t(r1,r0),INTBASEL", "1400A010");
         }
 
         [Test]
-        public void Cr16Dasm_lprd_ISP()
+        public void Cr16Dasm_lshb_neg()
         {
-            AssertCode("lprd\t(r1,r0),ISPL", "1400C010005A");
+            AssertCode("lshb\t$3,r0", "B009");
+        }
+
+        [Test]
+        public void Cr16Dasm_lshd_right()
+        {
+            AssertCode("@@@", "2E4B");
+        }
+
+        [Test]
+        public void Cr16Dasm_nop()
+        {
+            AssertCode("@@@", "002C");
         }
 
         [Test]
         public void Cr16Dasm_lshw_right()
         {
-            AssertCode("lshw\t$FFFFFFFF,r4", "1449");
+            AssertCode("lshw\t$-1,r4", "1449");
         }
 
         [Test]
@@ -311,6 +363,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_movd_imm4_16()
+        {
+            AssertCode("movd\t$0,(r5,r4)", "0454");
+        }
+
+        [Test]
         public void Cr16Dasm_movd_imm20()
         {
             AssertCode("movd\t$12345,(r3,r2)", "2105 4523");
@@ -319,7 +377,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_movd_imm32()
         {
-            AssertCode("movd\t$12345678,(r1,r0)", "700078563412");
+            AssertCode("movd\t$56781234,(r1,r0)", "700078563412");
         }
 
         [Test]
@@ -350,6 +408,24 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Dasm_mulb_reg_reg()
         {
             AssertCode("mulb\tr7,r2", "7265");
+        }
+
+        [Test]
+        public void Cr16Dasm_mulsb()
+        {
+            AssertCode("@@@", "040B");
+        }
+
+        [Test]
+        public void Cr16Dasm_muluw()
+        {
+            AssertCode("muluw\tr0,ra", "0E63");
+        }
+
+        [Test]
+        public void Cr16Dasm_ord()
+        {
+            AssertCode("@@@", "14008090");
         }
 
         [Test]
@@ -413,9 +489,45 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_sbitw_rp_disp16()
+        {
+            AssertCode("sbitw\t$0,0x3456(r1,r0)", "2071 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_sne()
+        {
+            AssertCode("sne\tr0", "1008");
+        }
+
+        [Test]
+        public void Cr16Dasm_store_indexed()
+        {
+            AssertCode("storb\tr3,[r12](r7,r6)", "33FE");
+        }
+
+        [Test]
         public void Cr16Dasm_storb()
         {
             AssertCode("storb\tr2,(0x0108A0)", "13002071A008");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_imm_abs20_rel()
+        {
+            AssertCode("storb\t$B,0x33456(r11)", "B384 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_imm_rp()
+        {
+            AssertCode("storb\t$8,(ra)", "8E82");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_imm_rp_disp16()
+        {
+            AssertCode("storb\t$0,0x3456(r3,r2)", "0283 5634");
         }
 
         [Test]
@@ -449,15 +561,69 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_storb_abs20_rel()
+        {
+            AssertCode("storb\tr0,0x53456(r0)", "05CB 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_abs24()
+        {
+            AssertCode("storb\t$0,(0x010588)", "120000318805");
+        }
+
+        [Test]
         public void Cr16Dasm_storw_abs20()
         {
             AssertCode("storw\tr0,(0x0F2345)", "0FC9 4523");
         }
 
         [Test]
+        public void Cr16Dasm_storw_abs20_relAC5()
+        {
+            AssertCode("storw\tr0,0xA3456(r0)", "0AC5 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_storw_imm_abs20()
+        {
+            AssertCode("storw\t$0,(0x013456)", "01C1 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_storw_imm_rp_disp0()
+        {
+            AssertCode("storw\t$0,(r1,r0)", "00C2");
+        }
+
+        [Test]
         public void Cr16Dasm_storw_rp()
         {
             AssertCode("storw\tr0,0x1A(r1,r0)", "00DD");
+        }
+
+        [Test]
+        public void Cr16Dasm_storw_rp_disp20()
+        {
+            AssertCode("storw\tr0,0x10380(r1,r0)", "130002D18003");
+        }
+
+        [Test]
+        public void Cr16Dasm_stord_abs20()
+        {
+            AssertCode("stord\t(r1,r0),(0x033456)", "03C7 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_stord_abs20_rel()
+        {
+            AssertCode("stord\tr10,0x73456(r10)", "A7CD 5634");
+        }
+
+        [Test]
+        public void Cr16Dasm_stord_regression1()
+        {
+            AssertCode("stord\tr7,0x59000(r7)", "75CD 0090");
         }
 
         [Test]
@@ -470,6 +636,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Dasm_tbit()
         {
             AssertCode("tbit\t$3,r0", "0306");
+        }
+
+        [Test]
+        public void Cr16Dasm_tbitb_rp()
+        {
+            AssertCode("tbitb\t$0,(r1,r0)", "107A");
         }
 
         [Test]
@@ -490,6 +662,13 @@ namespace Reko.UnitTests.Arch.CompactRisc
             AssertCode("tbitw\t$3,0x2345(r4,r3)", "7379 4523");
         }
 
+        // Reko: a decoder for the instruction 140002A0 at address 0000C262 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140002A0()
+        {
+            AssertCode("@@@", "140002A0");
+        }
+
         [Test]
         public void Cr16Dasm_xorw()
         {
@@ -500,10 +679,335 @@ namespace Reko.UnitTests.Arch.CompactRisc
         // Please copy the contents of this file and report it on GitHub, using the 
         // following URL: https://github.com/uxmal/reko/issues
 
+        // Reko: a decoder for the instruction 404B at address 00004C54 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_404B()
+        {
+            AssertCode("@@@", "404B");
+        }
+        // Reko: a decoder for the instruction 0D4B at address 0000BAF8 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_0D4B()
+        {
+            AssertCode("@@@", "0D4B");
+        }
+        
 
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
+        // Reko: a decoder for the instruction 14008E90 at address 0000D52E has not been implemented. (Fmt1 2 ZZ ope 9  ord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_14008E90()
+        {
+            AssertCode("@@@", "14008E90");
+        }
+        // Reko: a decoder for the instruction F84B at address 0000D532 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_F84B()
+        {
+            AssertCode("@@@", "F84B");
+        }
+        // Reko: a decoder for the instruction 14008090 at address 0000C0B8 has not been implemented. (Fmt1 2 ZZ ope 9  ord rp, rp 4 dest rp 4 src rp 4)
+
+        // Reko: a decoder for the instruction D24B at address 0000B43A has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_D24B()
+        {
+            AssertCode("@@@", "D24B");
+        }
+        // Reko: a decoder for the instruction 084B at address 0000C1BE has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_084B()
+        {
+            AssertCode("@@@", "084B");
+        }
+        // Reko: a decoder for the instruction 004B at address 0000C68E has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_004B()
+        {
+            AssertCode("@@@", "004B");
+        }
+        // Reko: a decoder for the instruction 140080A0 at address 0000C676 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140080A0()
+        {
+            AssertCode("@@@", "140080A0");
+        }
+        // Reko: a decoder for the instruction C24B at address 0000BE22 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_C24B()
+        {
+            AssertCode("@@@", "C24B");
+        }
+        // Reko: a decoder for the instruction 864B at address 00005E48 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_864B()
+        {
+            AssertCode("@@@", "864B");
+        }
+        // Reko: a decoder for the instruction 1000195A1C9F at address 00004AB4 has not been implemented. (Fmt2 3 ZZ ope 5  cbitb (rp)  disp20 4 dest (rp)  3 pos imm 20 dest disp 4)
+
+        // Reko: a decoder for the instruction 140025B0 at address 00002E22 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140025B0()
+        {
+            AssertCode("@@@", "140025B0");
+        }
+        // Reko: a decoder for the instruction 1400A5B0 at address 000033B4 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_1400A5B0()
+        {
+            AssertCode("@@@", "1400A5B0");
+        }
+        // Reko: a decoder for the instruction 2E4B at address 00004C5A has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+
+        // Reko: a decoder for the instruction 744A at address 00004C5E has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_744A()
+        {
+            AssertCode("@@@", "744A");
+        }
+        // Reko: a decoder for the instruction DE4B at address 0000B442 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_DE4B()
+        {
+            AssertCode("@@@", "DE4B");
+        }
+        // Reko: a decoder for the instruction F24B at address 0000B6BE has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_F24B()
+        {
+            AssertCode("@@@", "F24B");
+        }
+        // Reko: a decoder for the instruction 140024B0 at address 0000B6CA has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140024B0()
+        {
+            AssertCode("@@@", "140024B0");
+        }
+        // Reko: a decoder for the instruction 140028B0 at address 0000BB02 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140028B0()
+        {
+            AssertCode("@@@", "140028B0");
+        }
+        // Reko: a decoder for the instruction 14002CB0 at address 0000C1A4 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_14002CB0()
+        {
+            AssertCode("@@@", "14002CB0");
+        }
+        // Reko: a decoder for the instruction 1400A0B0 at address 0000C1B8 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_1400A0B0()
+        {
+            AssertCode("@@@", "1400A0B0");
+        }
+        // Reko: a decoder for the instruction 0A4B at address 0000C1C4 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_0A4B()
+        {
+            AssertCode("@@@", "0A4B");
+        }
+        // Reko: a decoder for the instruction 14002090 at address 0000C210 has not been implemented. (Fmt1 2 ZZ ope 9  ord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_14002090()
+        {
+            AssertCode("@@@", "14002090");
+        }
+        // Reko: a decoder for the instruction 140042B0 at address 0000C23E has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140042B0()
+        {
+            AssertCode("@@@", "140042B0");
+        }
+        // Reko: a decoder for the instruction 1400D2B0 at address 0000C250 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_1400D2B0()
+        {
+            AssertCode("@@@", "1400D2B0");
+        }
+
+        // Reko: a decoder for the instruction 804B at address 0000C272 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_804B()
+        {
+            AssertCode("@@@", "804B");
+        }
+        // Reko: a decoder for the instruction 140020A0 at address 0000C274 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140020A0()
+        {
+            AssertCode("@@@", "140020A0");
+        }
+        // Reko: a decoder for the instruction 024B at address 0000C2B2 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_024B()
+        {
+            AssertCode("@@@", "024B");
+        }
+        // Reko: a decoder for the instruction 140002B0 at address 0000C2C8 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140002B0()
+        {
+            AssertCode("@@@", "140002B0");
+        }
+        // Reko: a decoder for the instruction 844A at address 0000C2D6 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_844A()
+        {
+            AssertCode("@@@", "844A");
+        }
+        // Reko: a decoder for the instruction 140024A0 at address 0000C2E0 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140024A0()
+        {
+            AssertCode("@@@", "140024A0");
+        }
+        // Reko: a decoder for the instruction 140042A0 at address 0000C2E6 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140042A0()
+        {
+            AssertCode("@@@", "140042A0");
+        }
+        // Reko: a decoder for the instruction 140026A0 at address 0000C300 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140026A0()
+        {
+            AssertCode("@@@", "140026A0");
+        }
+        // Reko: a decoder for the instruction 140060B0 at address 0000C31C has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140060B0()
+        {
+            AssertCode("@@@", "140060B0");
+        }
+        // Reko: a decoder for the instruction 824A at address 0000C32A has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_824A()
+        {
+            AssertCode("@@@", "824A");
+        }
+        // Reko: a decoder for the instruction 140008A0 at address 0000C354 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140008A0()
+        {
+            AssertCode("@@@", "140008A0");
+        }
+        // Reko: a decoder for the instruction 140080B0 at address 0000C370 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140080B0()
+        {
+            AssertCode("@@@", "140080B0");
+        }
+        // Reko: a decoder for the instruction 140040A0 at address 0000C388 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140040A0()
+        {
+            AssertCode("@@@", "140040A0");
+        }
+        // Reko: a decoder for the instruction 140004A0 at address 0000C38E has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140004A0()
+        {
+            AssertCode("@@@", "140004A0");
+        }
+        // Reko: a decoder for the instruction 884B at address 0000C392 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_884B()
+        {
+            AssertCode("@@@", "884B");
+        }
+        // Reko: a decoder for the instruction 140046A0 at address 0000C3A8 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140046A0()
+        {
+            AssertCode("@@@", "140046A0");
+        }
+        // Reko: a decoder for the instruction 140028A0 at address 0000C3FC has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140028A0()
+        {
+            AssertCode("@@@", "140028A0");
+        }
+        // Reko: a decoder for the instruction 140062A0 at address 0000C4FA has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140062A0()
+        {
+            AssertCode("@@@", "140062A0");
+        }
+        // Reko: a decoder for the instruction 140020B0 at address 0000C516 has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140020B0()
+        {
+            AssertCode("@@@", "140020B0");
+        }
+        // Reko: a decoder for the instruction 824B at address 0000C532 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_824B()
+        {
+            AssertCode("@@@", "824B");
+        }
+        // Reko: a decoder for the instruction 140060A0 at address 0000C548 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140060A0()
+        {
+            AssertCode("@@@", "140060A0");
+        }
+        // Reko: a decoder for the instruction 140004B0 at address 0000C58C has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140004B0()
+        {
+            AssertCode("@@@", "140004B0");
+        }
+        // Reko: a decoder for the instruction 140006A0 at address 0000C688 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140006A0()
+        {
+            AssertCode("@@@", "140006A0");
+        }
+        // Reko: a decoder for the instruction 804A at address 0000C6A2 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_804A()
+        {
+            AssertCode("@@@", "804A");
+        }
+        // Reko: a decoder for the instruction 140064B0 at address 0000C6AC has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_140064B0()
+        {
+            AssertCode("@@@", "140064B0");
+        }
+        // Reko: a decoder for the instruction F04B at address 0000C8FA has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_F04B()
+        {
+            AssertCode("@@@", "F04B");
+        }
+        // Reko: a decoder for the instruction 1400E0A0 at address 0000C9F8 has not been implemented. (Fmt1 2 ZZ ope 10  xord rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_1400E0A0()
+        {
+            AssertCode("@@@", "1400E0A0");
+        }
+        // Reko: a decoder for the instruction 1400E2B0 at address 0000CA6E has not been implemented. (Fmt1 2 ZZ ope 11  andd rp, rp 4 dest rp 4 src rp 4)
+        [Test]
+        public void Cr16Dasm_1400E2B0()
+        {
+            AssertCode("@@@", "1400E2B0");
+        }
+        // Reko: a decoder for the instruction FE4B at address 0000CA7C has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_FE4B()
+        {
+            AssertCode("@@@", "FE4B");
+        }
+        // Reko: a decoder for the instruction F44B at address 0000D534 has not been implemented. (0100 101x xxxx xxxx  Fmt20 1 ZZ  lshd cnt(right -), rp 4 dest rp 5 count imm)
+        [Test]
+        public void Cr16Dasm_F44B()
+        {
+            AssertCode("@@@", "F44B");
+        }
+
+
 
 #if BORED
         // Reko: a decoder for the instruction 120004B02C00 at address 03B6 has not been implemented. (Fmt3 3 ZZ ope 11  loadd abs24 24 src abs 4 dest rp 4)

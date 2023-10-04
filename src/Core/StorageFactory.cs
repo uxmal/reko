@@ -67,6 +67,13 @@ namespace Reko.Core
             return reg;
         }
 
+        public RegisterStorage Replace(RegisterStorage regOld, RegisterStorage regNew)
+        {
+            DomainsToRegisters[regOld.Domain] = regNew;
+            NamesToRegisters[regOld.Name] = regNew;
+            return regNew;
+        }
+
         /// <summary>
         /// Create a 16-bit register.
         /// </summary>
