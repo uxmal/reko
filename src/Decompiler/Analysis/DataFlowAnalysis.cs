@@ -338,7 +338,7 @@ namespace Reko.Analysis
         {
             
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-#if FIND_BUGS
+#if !FIND_BUGS
 // This is currently disabled because of hard-to-fix problems with the UnalignedMemoryAccessFuser
             ssa.Validate(s =>
             {
@@ -354,10 +354,9 @@ namespace Reko.Analysis
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
             if (Program.User.DebugTraceProcedures.Contains(proc.Name) ||
-                proc.Name == "usb_device_info"||
-                proc.Name == "fn0002466C" ||
-                proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding" ||
-                false)
+                proc.Name == "fn0800_9828" ||
+                proc.Name == "fn0800_8F97" ||
+                proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
@@ -372,6 +371,7 @@ namespace Reko.Analysis
                     }
                     testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
                 }
+
             }
         }
     }

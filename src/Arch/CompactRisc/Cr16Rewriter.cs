@@ -611,11 +611,16 @@ namespace Reko.Arch.CompactRisc
 
         private void RewritePop()
         {
-            //$TODO: operand 0 is a count.
-            var reg = Operand(1);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(reg, m.Mem(reg.DataType, sp));
-            m.Assign(sp, m.IAddS(sp, reg.DataType.Size));
+            var ireg = (int) ((RegisterStorage) instr.Operands[1]).Domain;
+            var count = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            for (int i = count-1; i >= 0; --i)
+            {
+                var reg = arch.GetRegister((StorageDomain) ((ireg + i) & 0xF), default)!;
+                var id = binder.EnsureRegister(reg);
+                m.Assign(id, m.Mem(reg.DataType, sp));
+                m.Assign(sp, m.IAddS(sp, id.DataType.Size));
+            }
         }
 
         private void RewritePopret()
@@ -626,11 +631,16 @@ namespace Reko.Arch.CompactRisc
 
         public void RewritePush()
         {
-            //$TODO: operand 0 is a count
-            var reg = Operand(1);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(sp, m.ISubS(sp, reg.DataType.Size));
-            m.Assign(m.Mem(reg.DataType, sp), reg);
+            var ireg = (int)((RegisterStorage)instr.Operands[1]).Domain;
+            var count = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            for (int i = 0; i < count; ++i)
+            {
+                var reg = arch.GetRegister((StorageDomain) ((ireg + i) & 0xF), default)!;
+                var id = binder.EnsureRegister(reg);
+                m.Assign(sp, m.ISubS(sp, reg.DataType.Size));
+                m.Assign(m.Mem(reg.DataType, sp), id);
+            }
         }
 
         private void RewriteRetx()

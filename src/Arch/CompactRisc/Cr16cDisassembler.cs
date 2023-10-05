@@ -95,6 +95,7 @@ namespace Reko.Arch.CompactRisc
         private static readonly Bitfield[] bf_abs24 = Bf((0, 4), (8, 4), (16, 16));
         private static readonly Bitfield[] bf_disp20 = Bf((8, 4), (16, 16));
         private static readonly Bitfield[] bf8_4_0_4 = Bf((8, 4), (0, 4));
+        private static readonly Bitfield[] bf0_1_1_15 = Bf((0, 1), (1, 15));
         private static readonly Bitfield[] bf0_1_16_8_1_15 = Bf((0, 1), (16, 8), (1, 15));
         private static readonly Bitfield[] bf16_1_0_4_8_4_17_15 = Bf((16, 1), (0, 4), (8, 4), (17, 15));
 
@@ -170,14 +171,40 @@ namespace Reko.Arch.CompactRisc
         private static readonly Mutator<Cr16cDisassembler> imm4_16_w = imm4_16(PrimitiveType.Word16);
         private static readonly Mutator<Cr16cDisassembler> imm4_16_l = imm4_16(PrimitiveType.Word32);
 
+        private static Mutator<Cr16cDisassembler> simm4_16(PrimitiveType dt)
+        {
+            return (uint u, Cr16cDisassembler d) =>
+            {
+                var immCode = (u >> 4) & 0xF;
+                Constant c;
+                if (immCode == 11)
+                {
+                    if (!d.rdr.TryReadInt16(out var imm16))
+                        return false;
+                    c = Constant.Create(dt, (long)imm16);
+                }
+                else if (immCode == 9)
+                {
+                    c = Constant.Create(dt, -1L);
+                }
+                else
+                {
+                    c = Constant.Create(dt, immCode);
+                }
+                d.ops.Add(ImmediateOperand.Create(c));
+                return true;
+            };
+        }
+        private static readonly Mutator<Cr16cDisassembler> simm4_16_l = simm4_16(PrimitiveType.Int32);
+
         private static bool Imm3_pushpop(uint uInstr, Cr16cDisassembler dasm)
         {
             var imm = (int)bf4_3.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Int32(imm));
+            dasm.ops.Add(ImmediateOperand.Int32(imm+1));
             return true;
         }
 
-        private static Mutator<Cr16cDisassembler> Imm20(int bitpos)
+        private static Mutator<Cr16cDisassembler> Imm20(int bitpos, DataType dt)
         {
             var immField = new Bitfield(bitpos, 4);
             return (u, d) =>
@@ -186,11 +213,12 @@ namespace Reko.Arch.CompactRisc
                 if (!d.rdr.TryReadLeUInt16(out var low))
                     return false;
                 var imm = (high << 16) | low;
-                d.ops.Add(new ImmediateOperand(Constant.Create(Cr16Architecture.Word24, imm)));
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
                 return true;
             };
         }
-        private static readonly Mutator<Cr16cDisassembler> Imm20_0 = Imm20(0);
+        private static readonly Mutator<Cr16cDisassembler> Imm20_0 = Imm20(0, PrimitiveType.Word32);
+        private static readonly Mutator<Cr16cDisassembler> SImm20_0 = Imm20(0, PrimitiveType.Int32);
 
 
         private static bool bitpos_b(uint uInstr, Cr16cDisassembler dasm)
@@ -324,8 +352,9 @@ namespace Reko.Arch.CompactRisc
         /// </summary>
         private static bool disp16(uint uInstr, Cr16cDisassembler dasm)
         {
-            if (!dasm.rdr.TryReadInt16(out short disp))
+            if (!dasm.rdr.TryReadLeUInt16(out ushort encDisp))
                 return false;
+            var disp = (long) Bitfield.ReadSignedFields(bf0_1_1_15, encDisp);
             var addrDst = dasm.addr + (disp << 1);
             dasm.ops.Add(AddressOperand.Create(addrDst));
             return true;
@@ -796,7 +825,7 @@ namespace Reko.Arch.CompactRisc
                     Instr(Mnemonic.popret, Imm3_pushpop, R0),
                     Instr(Mnemonic.popret, Imm3_pushpop, R0, RA)),
 
-                Instr(Mnemonic.addd, Imm20_0, rp4),
+                Instr(Mnemonic.addd, SImm20_0, rp4),
                 Instr(Mnemonic.movd, Imm20_0, rp4),
                 Instr(Mnemonic.tbit, bitpos_b, R4),
                 Instr(Mnemonic.tbit, R0, R4),
@@ -932,7 +961,7 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.movxw, R4, rp0),
                 Instr(Mnemonic.movzw, R4, rp0));
             var decode6 = Mask(8, 4, "  6",
-                Instr(Mnemonic.addd, imm4_16_l, rp0),
+                Instr(Mnemonic.addd, simm4_16_l, rp0),
                 Instr(Mnemonic.addd, rp4, rp0),
                 Instr(Mnemonic.mulsw, R4, rp0),
                 Instr(Mnemonic.muluw, R4, rp0),
@@ -950,7 +979,7 @@ namespace Reko.Arch.CompactRisc
                     Nyi("Fmt17 2 ZZ  cbitb(prp) disp14 4 dest(prp) 3 pos imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  cbitw(prp) disp14 4 dest(prp) 4 pos imm 14 dest disp")),
                 Mask(7, 1, "  6B",
-                    Nyi("Fmt10 2 ZZ  cbitb(rp) disp16 4 dest(rp) 3 pos imm 16 dest disp"),
+                    Instr(Mnemonic.cbitb, bitpos_b, rp_disp16_b),
                     Instr(Mnemonic.cbitb, bitpos_b, abs20_b)),
 
                 Instr(Mnemonic.cbitw, bitpos_w, abs20_rel_w),
@@ -967,7 +996,7 @@ namespace Reko.Arch.CompactRisc
                     Nyi("Fmt17 2 ZZ  sbitb(prp) disp14 4 dest(prp) 3 pos imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  sbitw(prp) disp14 4 dest(prp) 4 pos imm 14 dest disp")),
                 Mask(7, 1, "  73",
-                    Nyi("Fmt10 2 ZZ  sbitb(rp) disp16 4 dest(rp) 3 pos imm 16 dest disp"),
+                    Instr(Mnemonic.sbitb, bitpos_b, rp_disp16_b),
                     Instr(Mnemonic.sbitb, bitpos_b, abs20_b)),
 
                 Instr(Mnemonic.sbitw, bitpos_w, abs20_rel_w),

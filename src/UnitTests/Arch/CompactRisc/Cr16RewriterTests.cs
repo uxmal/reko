@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("2F60");
             AssertCode(     // addd	$2,sp
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|sp = sp + 2<32>",
+                "1|L--|sp = sp + 2<i32>",
                 "2|L--|CF = cond(sp)");
         }
 
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("BF60F0FF");
             AssertCode(     // addd	$2,sp
                 "0|L--|00003000(4): 2 instructions",
-                "1|L--|sp = sp + 0xFFF0<32>",       //$BUG: this should be -0x10
+                "1|L--|sp = sp + -16<i32>",
                 "2|L--|CF = cond(sp)");
         }
 
@@ -283,7 +283,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("60184201");
             AssertCode(     // bgt	044E
                 "0|T--|00003000(4): 1 instructions",
-                "1|T--|if (Test(GT,N)) branch 00003284");
+                "1|T--|if (Test(GT,N)) branch 00003142");
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("E0183201");
             AssertCode(     // br	043E
                 "0|T--|00003000(4): 1 instructions",
-                "1|T--|goto 00003264");
+                "1|T--|goto 00003132");
         }
 
         [Test]
@@ -694,21 +694,25 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_popret()
         {
             Given_HexString("9703");
-            AssertCode(     // popret	$1,r7,ra
-                "0|L--|00003000(2): 3 instructions",
-                "1|L--|r7 = Mem0[sp:word16]",
+            AssertCode(     // popret	$2,r7,ra
+                "0|L--|00003000(2): 5 instructions",
+                "1|L--|r8 = Mem0[sp:word16]",
                 "2|L--|sp = sp + 2<i32>",
-                "3|R--|return (0,0)");
+                "3|L--|r7 = Mem0[sp:word16]",
+                "4|L--|sp = sp + 2<i32>",
+                "5|R--|return (0,0)");
         }
 
         [Test]
         public void Cr16Rw_push()
         {
             Given_HexString("1001");
-            AssertCode(     // push	$1,r0
-                "0|L--|00003000(2): 2 instructions",
+            AssertCode(     // push	$2,r0
+                "0|L--|00003000(2): 4 instructions",
                 "1|L--|sp = sp - 2<i32>",
-                "2|L--|Mem0[sp:word16] = r0");
+                "2|L--|Mem0[sp:word16] = r0",
+                "3|L--|sp = sp - 2<i32>",
+                "4|L--|Mem0[sp:word16] = r1");
         }
 
         [Test]

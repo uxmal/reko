@@ -62,13 +62,13 @@
 ;; fn03B0: 000003B0
 fn03B0 proc
 	movd	$E2C2,(r1,r0)
-	push	$1,r0
+	push	$2,r0
 	loadd	(0x40002C),r0
-	push	$1,r0
+	push	$2,r0
 	bal	ra,fn0000D578
 	movw	$1,r2
 	bal	ra,fn0000D974
-	push	$1,ra
+	push	$2,ra
 	cmpd	$0,(r3,r2)
 	beq	000003E2
 
@@ -79,15 +79,15 @@ l000003CE:
 
 l000003D6:
 	bal	ra,fn00002D76
-	popret	$1,ra
+	popret	$2,ra
 
 l000003DC:
 	bal	ra,fn00001B74
-	popret	$1,ra
+	popret	$2,ra
 
 l000003E2:
 	movw	$FFFE,r0
-	popret	$1,ra
+	popret	$2,ra
 000003E8                         9D 01 67 01 BF 60 FC FF         ..g..`..
 000003F0 2C 55 47 5B 5A 55 02 56 01 15 B2 54 70 00 00 C0 ,UG[ZU.V...Tp...
 00000400 B2 D5 08 55 00 56 0A 14 00 C3 14 00 B0 5A 00 20 ...U.V.......Z. 
@@ -221,11 +221,17 @@ l000003E2:
 ;; fn00000BEC: 00000BEC
 ;;   Called from:
 ;;     00001BB6 (in fn00001B74)
+;;     00001C96 (in fn00001BEC)
+;;     00001EC8 (in fn00001DFA)
+;;     00001F00 (in fn00001DFA)
+;;     0000200A (in fn00001F0C)
+;;     0000207E (in fn00001F0C)
 ;;     00002E3A (in fn00002D76)
 ;;     00002E6C (in fn00002D76)
+;;     00002F2C (in fn00002D76)
 fn00000BEC proc
-	push	$1,r13,ra
-	push	$6,r7
+	push	$2,r13,ra
+	push	$7,r7
 	movd	(r9,r8),(r3,r2)
 	movw	r4,r10
 	movw	r5,r11
@@ -305,14 +311,14 @@ l00000C66:
 	bal	ra,fn0000DC28
 
 l00000C80:
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l00000C84:
 	movw	$FFFC,r0
 	storw	r0,0x64(r9,r8)
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 00000C90 9D 01 67 01 BF 60 FC FF 28 55 BC 54 38 00 2C 61 ..g..`..(U.T8.,a
 00000CA0 02 9F 48 00 0F D1 BD 5A 00 40 E8 11 04 5A C2 55 ..H....Z.@...Z.U
 00000CB0 00 C0 FE 61 21 5A 01 33 B1 22 FB FF 01 52 0D 15 ...a!Z.3."...R..
@@ -557,8 +563,8 @@ l00000C84:
 ;;   Called from:
 ;;     000003DC (in fn03B0)
 fn00001B74 proc
-	push	$1,ra
-	push	$3,r7
+	push	$2,ra
+	push	$4,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
 	beq	00001BE0
@@ -607,33 +613,119 @@ l00001BB0:
 
 l00001BD2:
 	movw	r7,r0
-	pop	$3,r7
-	popret	$1,ra
+	pop	$4,r7
+	popret	$2,ra
 
 l00001BD8:
 	movw	$FFFF,r7
 	movw	r7,r0
-	pop	$3,r7
-	popret	$1,ra
+	pop	$4,r7
+	popret	$2,ra
 
 l00001BE0:
 	movw	$FFFE,r7
 	movw	r7,r0
-	pop	$3,r7
-	popret	$1,ra
-00001BEA                               00 00 1E 01 67 01           ....g.
-00001BF0 28 55 72 9B 72 5B 72 33 22 5F 00 C0 B6 BD 0A 55 (Ur.r[r3"_.....U
-00001C00 08 EC 0C 54 C0 57 03 14 08 9F 20 00 00 52 05 10 ...T.W.... ..R..
-00001C10 78 DA 00 5A 67 02 1E 03 72 5F 00 C0 96 BD 08 EF x..Zg...r_......
-00001C20 1C 00 00 56 01 13 C8 EF 58 00 C8 EF 5C 00 C8 EF ...V....X...\...
-00001C30 60 00 48 9F 2A 00 BF 60 FE FF B0 5A 38 00 00 01 `.H.*..`...Z8...
-00001C40 00 05 EC E4 10 01 08 9F 2C 00 00 01 85 5A 05 01 ........,....Z..
-00001C50 B6 5A 1F 00 B2 54 38 00 82 61 00 C0 CC 45 CF 60 .Z...T8..a...E.`
-00001C60 00 52 1F 11 C8 EF 38 00 18 9B 08 9F 20 00 18 DA .R....8..... ...
-00001C70 00 52 10 1D 18 DF 48 00 28 AF 1C 00 28 EF 44 00 .R....H.(...(.D.
-00001C80 28 E2 67 02 1E 03 A2 55 00 C0 14 BD 50 05 6C E4 (.g....U....P.l.
-00001C90 B4 5A FC FF 82 55 FF C0 57 EF 90 5A 67 02 1E 03 .Z...U..W..Zg...
-00001CA0 28 AF 1C 00 00 C0 F8 BC 28 AC 00 C0 F2 BC EF 1E (.......(.......
+	pop	$4,r7
+	popret	$2,ra
+00001BEA                               00 00                       ..    
+
+;; fn00001BEC: 00001BEC
+;;   Called from:
+;;     00001ED2 (in fn00001DFA)
+;;     00002044 (in fn00001F0C)
+;;     00002EFA (in fn00002D76)
+fn00001BEC proc
+	push	$2,ra
+	push	$7,r7
+	movd	(r9,r8),(r3,r2)
+	loadw	0x16(r3,r2),r7
+	movw	r7,r2
+	addw	r2,r7
+	movzw	r2,(r3,r2)
+	bal	ra,fn0000D9B0
+	movd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x18(r9,r8)
+	movd	$0,r12
+	cmpd	(r1,r0),r12
+	beq	00001C8C
+
+l00001C08:
+	loadw	0x40(r9,r8),r0
+	cmpw	$0,r0
+	beq	00001C18
+
+l00001C10:
+	storw	r7,0x14(r9,r8)
+
+l00001C12:
+	movw	$0,r0
+	pop	$7,r7
+	popret	$2,ra
+
+l00001C18:
+	movzw	r7,(r3,r2)
+	bal	ra,fn0000D9B0
+	stord	(r1,r0),0x38(r9,r8)
+	cmpd	$0,(r1,r0)
+	beq	00001C86
+
+l00001C26:
+	stord	r12,0xB0(r9,r8)
+	stord	r12,0xB8(r9,r8)
+	stord	r12,0xC0(r9,r8)
+	loadw	0x54(r9,r8),r4
+	addd	$-2,sp
+	movw	$38,r0
+	push	$1,r0
+	movd	$E4EC,(r1,r0)
+	push	$2,r0
+	loadw	0x58(r9,r8),r0
+	push	$1,r0
+	movw	$8,r5
+	push	$1,r5
+	movw	$1F,r6
+	movd	$38,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	bal	ra,fn00006226
+	addd	$12,sp
+	cmpw	$0,r0
+	bne	00001CA0
+
+l00001C64:
+	stord	r12,0x70(r9,r8)
+	loadw	0x16(r9,r8),r1
+	loadw	0x40(r9,r8),r0
+	storw	r1,0x14(r9,r8)
+	cmpw	$0,r0
+	bne	00001C12
+
+l00001C74:
+	storw	r1,0x90(r9,r8)
+	loadd	0x38(r9,r8),(r3,r2)
+	stord	(r3,r2),0x88(r9,r8)
+	stord	(r3,r2),4(r9,r8)
+	pop	$7,r7
+	popret	$2,ra
+
+l00001C86:
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000D99C
+
+l00001C8C:
+	movd	$E46C,(r6,r5)
+	movw	$FFFC,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	movw	$FFFF,r0
+	pop	$7,r7
+	popret	$2,ra
+
+l00001CA0:
+	loadd	0x38(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+	loadd	0x18(r9,r8),(r3,r2)
+	bal	ra,fn0000D99C
+	br	00001C8C
 00001CB0 00 00 9D 01 67 01 28 55 4C 5B 02 9A 00 52 0A 17 ....g.(UL[...R..
 00001CC0 78 9F 20 00 07 52 04 12 58 9F 3C 00 05 52 0C 11 x. ..R..X.<..R..
 00001CD0 38 AF 38 00 B7 5A 00 40 B5 52 00 40 B2 10 75 5B 8.8..Z.@.R.@..u[
@@ -654,49 +746,404 @@ l00001BE0:
 00001DC0 9D 03 D8 9F 48 00 0D 52 16 1B D8 9A D8 DF 48 00 ....H..R......H.
 00001DD0 08 AF 1C 00 08 EF 44 00 08 E2 ED 1A 50 05 56 E5 ......D.....P.V.
 00001DE0 04 5B 82 55 FF C0 09 EE 97 5A 70 5B 67 02 9D 03 .[.U.....Zp[g...
-00001DF0 5D 5B 0D 52 10 1A EA 1E 00 00 9D 01 67 01 28 55 ][.R........g.(U
-00001E00 02 9A 00 52 07 16 08 9F 20 00 00 52 1A 11 08 9F ...R.... ..R....
-00001E10 48 00 BC 5A 00 40 07 5A BA 54 38 00 8A 61 0D 5B H..Z.@.Z.T8..a.[
-00001E20 00 52 00 13 04 5A A2 55 00 C0 AC 2E B0 52 FE FF .R...Z.U.....R..
-00001E30 04 16 08 9F 48 00 D0 53 13 1F 00 5A 67 02 9D 03 ....H..S...Zg...
-00001E40 58 9F 3C 00 05 52 0A 1F 38 AF 38 00 B7 5A 00 40 X.<..R..8.8..Z.@
-00001E50 B5 52 00 40 B2 10 75 5B 55 5F 28 97 00 C0 34 BF .R.@..u[U_(...4.
-00001E60 00 52 6F 12 58 9F 3C 00 05 3B 58 DF 3C 00 00 5E .Ro.X.<..;X.<..^
-00001E70 38 AF 38 00 03 61 38 EF 38 00 05 52 1A 1E 00 5A 8.8..a8.8..R...Z
-00001E80 EE 1D 28 AF 44 00 08 A2 20 57 4A 10 ED 12 00 5E ..(.D... WJ....^
-00001E90 28 A2 20 61 08 E2 28 AF 44 00 02 57 B1 12 14 00 (. a..(.D..W....
-00001EA0 02 C0 B2 56 00 40 D3 10 C2 5B 73 5B 50 05 FF FF ...V.@...[s[P...
-00001EB0 14 00 25 B0 28 97 03 55 00 C0 D8 BE 00 52 78 1E ..%.(..U.....Rx.
-00001EC0 50 05 A8 E4 94 5A 82 55 FF C0 25 ED 90 5A 67 02 P....Z.U..%..Zg.
-00001ED0 9D 03 FF C0 1B FD 90 52 17 19 67 02 9D 03 D8 9F .......R..g.....
-00001EE0 48 00 0D 52 10 1A D8 9A D8 DF 48 00 08 AF 1C 00 H..R......H.....
-00001EF0 08 EF 44 00 08 E2 E7 19 50 05 56 E5 04 5B 82 55 ..D.....P.V..[.U
-00001F00 FF C0 ED EC 90 5A 67 02 9D 03 00 00 9D 01 67 01 .....Zg.......g.
-00001F10 BF 60 FC FF 28 55 4A 5B 02 9F 3C 00 00 52 10 18 .`..(UJ[..<..R..
-00001F20 68 01 0A 52 0A 14 B0 54 38 00 80 61 0F E0 11 5A h..R...T8..a...Z
-00001F30 BD 5A 00 40 0C 5A 08 9A A0 53 D2 08 02 52 01 14 .Z.@.Z...S...R..
-00001F40 0B 5B 00 52 6E 13 28 AC 01 52 07 10 B5 5F 04 5A .[.Rn.(..R..._.Z
-00001F50 00 C0 F4 BB 28 AC 08 9A B8 DF 3C 00 28 EF 38 00 ....(.....<.(.8.
-00001F60 18 94 B1 33 18 D4 00 52 0D 16 08 9F 20 00 00 52 ...3...R.... ..R
-00001F70 03 15 58 9F 3C 00 05 52 0C 11 38 AF 38 00 B7 5A ..X.<..R..8.8..Z
-00001F80 00 40 B5 52 00 40 B2 10 75 5B 55 5F 28 97 00 C0 .@.R.@..u[U_(...
-00001F90 02 BE 00 52 67 13 58 9F 3C 00 05 3B 58 DF 3C 00 ...Rg.X.<..;X.<.
-00001FA0 00 5E 38 AF 38 00 03 61 38 EF 38 00 05 52 1A 1E .^8.8..a8.8..R..
-00001FB0 BA 3B 01 5A 1A 53 10 1C 00 5A 4F 60 67 02 9D 03 .;.Z.S...ZO`g...
-00001FC0 AB 5B E2 1C 28 AF 44 00 08 A2 20 57 4A 10 E5 14 .[..(.D... WJ...
-00001FD0 00 5E 28 A2 20 61 08 E2 28 AF 44 00 02 57 B9 13 .^(. a..(.D..W..
-00001FE0 14 00 02 C0 B2 56 00 40 D3 10 D2 5B C3 5B 50 05 .....V.@...[.[P.
-00001FF0 FF FF 14 00 25 B0 28 97 03 55 00 C0 96 BD 00 52 ....%.(..U.....R
-00002000 78 1E 50 05 A8 E4 94 5A 82 55 FF C0 E3 EB 90 5A x.P....Z.U.....Z
-00002010 4F 60 67 02 9D 03 08 9F 48 00 07 5B 00 52 03 1D O`g.....H..[.R..
-00002020 04 5A 2F A0 00 C0 B0 2C B0 52 FE FF 05 12 08 9F .Z/....,.R......
-00002030 48 00 70 53 13 1F BA 3B 01 5A 1A 53 10 18 FB FE H.pS...;.Z.S....
-00002040 EC 1B 82 55 FF C0 A9 FB 90 52 10 19 90 5A E6 1B ...U.....R...Z..
-00002050 78 9F 48 00 07 52 15 1E 78 9A 78 DF 48 00 08 AF x.H..R..x.x.H...
-00002060 1C 00 08 EF 44 00 08 E2 04 5A 2F A0 00 C0 68 2C ....D....Z/...h,
-00002070 B0 52 FE FF 1D 1D 50 05 56 E5 04 5B 82 55 FF C0 .R....P.V..[.U..
-00002080 6F EB 90 5A EB 19 FF C0 75 FD 90 52 10 18 97 FE o..Z....u..R....
-00002090 90 5A E4 19 00 00 9D 01 67 01 BF 60 FC FF B0 54 .Z......g..`...T
+00001DF0 5D 5B 0D 52 10 1A EA 1E 00 00                   ][.R......      
+
+;; fn00001DFA: 00001DFA
+;;   Called from:
+;;     00002086 (in fn00001F0C)
+fn00001DFA proc
+	push	$2,r13,ra
+	push	$7,r7
+	movd	(r9,r8),(r3,r2)
+	loadw	0x14(r3,r2),r0
+	cmpw	$0,r0
+	beq	00001ED2
+
+l00001E06:
+	loadw	0x40(r9,r8),r0
+	cmpw	$0,r0
+	bne	00001E40
+
+l00001E0E:
+	loadw	0x90(r9,r8),r0
+	movw	$4000,r12
+	movw	$0,r7
+	movd	$38,(r11,r10)
+	addd	(r9,r8),(r11,r10)
+
+l00001E1E:
+	movw	r0,r13
+	cmpw	$0,r0
+	beq	00001E82
+
+l00001E24:
+	movw	$0,r4
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn00004CD4
+	cmpw	$FFFE,r0
+	beq	00001EF8
+
+l00001E32:
+	loadw	0x90(r9,r8),r0
+	cmpw	r0,r13
+	bne	00001E1E
+
+l00001E3A:
+	movw	$0,r0
+
+l00001E3C:
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00001E40:
+	loadw	0x78(r9,r8),r5
+	cmpw	$0,r5
+	beq	00001E3A
+
+l00001E48:
+	loadd	0x70(r9,r8),(r4,r3)
+	movw	$4000,r7
+
+l00001E50:
+	cmpw	$4000,r5
+	bhs	00001E58
+
+l00001E56:
+	movw	r7,r5
+
+l00001E58:
+	movzw	r5,(r6,r5)
+	loadw	0xE(r9,r8),r2
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	bgt	00001EC0
+
+l00001E64:
+	loadw	0x78(r9,r8),r5
+	subw	r5,r0
+	storw	r5,0x78(r9,r8)
+	movxw	r0,(r1,r0)
+	loadd	0x70(r9,r8),(r4,r3)
+	addd	(r1,r0),(r4,r3)
+	stord	(r4,r3),0x70(r9,r8)
+	cmpw	$0,r5
+	bne	00001E50
+
+l00001E7E:
+	movw	$0,r0
+	br	00001E3C
+
+l00001E82:
+	loadd	0x88(r9,r8),(r3,r2)
+	loadd	4(r9,r8),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
+	bhi	00001E9E
+
+l00001E8C:
+	br	00001EE6
+
+l00001E8E:
+	movxw	r0,(r1,r0)
+	loadd	4(r9,r8),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),4(r9,r8)
+	loadd	0x88(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
+	bhs	00001EDE
+
+l00001E9E:
+	subd	(r3,r2),(r1,r0)
+	cmpd	$4000,(r3,r2)
+	bge	00001EAC
+
+l00001EA8:
+	movw	r12,r2
+	movw	r7,r3
+
+l00001EAC:
+	movd	$FFFF,(r6,r5)
+	andd	(r3,r2),(r6,r5)
+	loadw	0xE(r9,r8),r2
+	movd	(r4,r3),(r1,r0)
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	ble	00001E8E
+
+l00001EC0:
+	movd	$E4A8,(r6,r5)
+	movw	$FFFF,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	movw	$FFFF,r0
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00001ED2:
+	bal	ra,fn00001BEC
+	cmpw	$FFFF,r0
+	bne	00001E06
+
+l00001EDA:
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00001EDE:
+	loadw	0x90(r9,r8),r13
+	cmpw	$0,r13
+	bne	00001E24
+
+l00001EE6:
+	loadw	0x14(r9,r8),r13
+	storw	r13,0x90(r9,r8)
+	loadd	0x38(r9,r8),(r1,r0)
+	stord	(r1,r0),0x88(r9,r8)
+	stord	(r1,r0),4(r9,r8)
+	br	00001E24
+
+l00001EF8:
+	movd	$E556,(r6,r5)
+	movw	r0,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	movw	$FFFF,r0
+	pop	$7,r7
+	popret	$2,r13,ra
+00001F0A                               00 00                       ..    
+
+;; fn00001F0C: 00001F0C
+;;   Called from:
+;;     00002EDA (in fn00002D76)
+fn00001F0C proc
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-4,sp
+	movd	(r9,r8),(r3,r2)
+	movw	r4,r10
+	loadw	0x78(r3,r2),r0
+	cmpw	$0,r0
+	bne	00002086
+
+l00001F22:
+	cmpw	$0,r10
+	beq	00001FB8
+
+l00001F26:
+	movd	$38,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	stord	(r1,r0),(sp)
+	movw	$1,r1
+	movw	$4000,r13
+	movw	$0,r12
+
+l00001F36:
+	loadw	0x14(r9,r8),r0
+	cmpw	r0,r10
+	sge	r2
+	cmpw	$0,r2
+	beq	00001FC0
+
+l00001F40:
+	movw	r0,r11
+	cmpw	$0,r0
+	bgt	00001FC0
+
+l00001F46:
+	loadd	0x18(r9,r8),(r3,r2)
+	cmpw	$0,r1
+	beq	00001F58
+
+l00001F4C:
+	movzw	r11,(r6,r5)
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	loadd	0x18(r9,r8),(r3,r2)
+	loadw	0x14(r9,r8),r0
+
+l00001F58:
+	storw	r11,0x78(r9,r8)
+	stord	(r3,r2),0x70(r9,r8)
+	loadw	8(r9,r8),r1
+	addw	r1,r11
+	storw	r1,8(r9,r8)
+	cmpw	$0,r0
+	beq	00002042
+
+l00001F6A:
+	loadw	0x40(r9,r8),r0
+	cmpw	$0,r0
+	beq	00002016
+
+l00001F72:
+	loadw	0x78(r9,r8),r5
+	cmpw	$0,r5
+	beq	00001FB0
+
+l00001F7A:
+	loadd	0x70(r9,r8),(r4,r3)
+	movw	$4000,r7
+
+l00001F82:
+	cmpw	$4000,r5
+	bhs	00001F8A
+
+l00001F88:
+	movw	r7,r5
+
+l00001F8A:
+	movzw	r5,(r6,r5)
+	loadw	0xE(r9,r8),r2
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	bgt	00002002
+
+l00001F96:
+	loadw	0x78(r9,r8),r5
+	subw	r5,r0
+	storw	r5,0x78(r9,r8)
+	movxw	r0,(r1,r0)
+	loadd	0x70(r9,r8),(r4,r3)
+	addd	(r1,r0),(r4,r3)
+	stord	(r4,r3),0x70(r9,r8)
+	cmpw	$0,r5
+	bne	00001F82
+
+l00001FB0:
+	subw	r10,r11
+	movw	$0,r1
+	cmpw	r10,r1
+	bne	00001F36
+
+l00001FB8:
+	movw	$0,r0
+
+l00001FBA:
+	addd	$4,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00001FC0:
+	movw	r10,r11
+	br	00001F46
+
+l00001FC4:
+	loadd	0x88(r9,r8),(r3,r2)
+	loadd	4(r9,r8),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
+	bhi	00001FE0
+
+l00001FCE:
+	br	00002058
+
+l00001FD0:
+	movxw	r0,(r1,r0)
+	loadd	4(r9,r8),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),4(r9,r8)
+	loadd	0x88(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
+	bhs	00002050
+
+l00001FE0:
+	subd	(r3,r2),(r1,r0)
+	cmpd	$4000,(r3,r2)
+	bge	00001FEE
+
+l00001FEA:
+	movw	r13,r2
+	movw	r12,r3
+
+l00001FEE:
+	movd	$FFFF,(r6,r5)
+	andd	(r3,r2),(r6,r5)
+	loadw	0xE(r9,r8),r2
+	movd	(r4,r3),(r1,r0)
+	bal	ra,fn0000DD90
+	cmpw	$0,r0
+	ble	00001FD0
+
+l00002002:
+	movd	$E4A8,(r6,r5)
+	movw	$FFFF,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	movw	$FFFF,r0
+	addd	$4,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00002016:
+	loadw	0x90(r9,r8),r0
+
+l0000201A:
+	movw	r0,r7
+	cmpw	$0,r0
+	beq	00001FC4
+
+l00002020:
+	movw	$0,r4
+	loadd	(sp),(r3,r2)
+	bal	ra,fn00004CD4
+	cmpw	$FFFE,r0
+	beq	00002076
+
+l0000202E:
+	loadw	0x90(r9,r8),r0
+	cmpw	r0,r7
+	bne	0000201A
+
+l00002036:
+	subw	r10,r11
+	movw	$0,r1
+	cmpw	r10,r1
+	bne	00001F36
+
+l00002040:
+	br	00001FB8
+
+l00002042:
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00001BEC
+	cmpw	$FFFF,r0
+	bne	00001F6A
+
+l0000204C:
+	movw	$FFFF,r0
+	br	00001FBA
+
+l00002050:
+	loadw	0x90(r9,r8),r7
+	cmpw	$0,r7
+	bne	00002020
+
+l00002058:
+	loadw	0x14(r9,r8),r7
+	storw	r7,0x90(r9,r8)
+	loadd	0x38(r9,r8),(r1,r0)
+	stord	(r1,r0),0x88(r9,r8)
+	stord	(r1,r0),4(r9,r8)
+	movw	$0,r4
+	loadd	(sp),(r3,r2)
+	bal	ra,fn00004CD4
+	cmpw	$FFFE,r0
+	bne	0000202E
+
+l00002076:
+	movd	$E556,(r6,r5)
+	movw	r0,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	movw	$FFFF,r0
+	br	00001FBA
+
+l00002086:
+	bal	ra,fn00001DFA
+	cmpw	$FFFF,r0
+	bne	00001F22
+
+l00002090:
+	movw	$FFFF,r0
+	br	00001FBA
+00002094             00 00 9D 01 67 01 BF 60 FC FF B0 54     ....g..`...T
 000020A0 1A 00 F0 61 2C 55 4D 55 20 A0 2F E0 02 56 0E 14 ...a,UMU ./..V..
 000020B0 0C 9A 00 52 01 15 0C 9F 30 00 00 52 1E 13 7C 9A ...R....0..R..|.
 000020C0 0C 9F 3C 00 72 5F 4F A0 24 57 5C 14 48 55 04 5B ..<.r_O.$W\.HU.[
@@ -908,22 +1355,22 @@ l00001BE0:
 ;;   Called from:
 ;;     000003D6 (in fn03B0)
 fn00002D76 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFFC,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-4,sp
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	fn000030F2
+	beq	00002F3A
 
 l00002D86:
 	loadw	0xC(r3,r2),r0
 	cmpw	$79B1,r0
-	bne	fn000030E8
+	bne	00002F3A
 
 l00002D90:
 	loadw	0x60(r3,r2),r0
 	cmpw	$0,r0
-	bne	fn0000300E
+	bne	00002ED2
 
 l00002D9A:
 	storw	$0,(sp)
@@ -931,7 +1378,7 @@ l00002D9A:
 	addd	(r9,r8),(r11,r10)
 	loadw	0x14(r9,r8),r0
 	cmpw	$0,r0
-	beq	fn0000304A
+	beq	00002EF8
 
 l00002DAA:
 	loadw	0x40(r9,r8),r0
@@ -958,12 +1405,12 @@ l00002DCC:
 	movd	(r3,r2),(r11,r10)
 	bal	ra,fn00004CD4
 	cmpw	$FFFE,r0
-	beq	fn00003070
+	beq	00002F24
 
 l00002DDC:
 	loadw	0x90(r9,r8),r1
 	cmpw	r1,r7
-	beq	fn00003082
+	beq	00002F32
 
 l00002DE6:
 	movw	r1,r7
@@ -979,7 +1426,7 @@ l00002DF0:
 	blo	00002E10
 
 l00002DFA:
-	br	fn0000301A
+	br	00002F0A
 
 l00002DFE:
 	movxw	r0,(r1,r0)
@@ -988,7 +1435,7 @@ l00002DFE:
 	stord	(r1,r0),4(r9,r8)
 	loadd	0x88(r9,r8),(r3,r2)
 	cmpd	(r3,r2),(r1,r0)
-	bhs	fn00003000
+	bhs	00002F06
 
 l00002E10:
 	subd	(r3,r2),(r1,r0)
@@ -1013,6 +1460,8 @@ l00002E32:
 	movw	$FFFF,r4
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn00000BEC
+
+l00002E3E:
 	loadw	0x64(r9,r8),r0
 	storw	r0,(sp)
 
@@ -1055,10 +1504,12 @@ l00002E82:
 l00002E84:
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000D99C
+
+l00002E8A:
 	movw	r7,r0
 	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l00002E92:
 	loadw	0x78(r9,r8),r5
@@ -1096,13 +1547,62 @@ l00002EB6:
 
 l00002ED0:
 	br	00002E44
-00002ED2       02 C3 30 00 42 9F 2E 00 FF C0 33 F0 90 52   ..0.B.....3..R
-00002EE0 10 18 BB FE 08 9F 32 00 0F D0 BA 54 38 00 8A 61 ......2....T8..a
-00002EF0 08 9A 00 52 10 18 B7 FE 82 55 FF C0 F3 EC 90 52 ...R.....U.....R
-00002F00 10 18 AB FE ED 19 78 9F 48 00 07 52 10 18 C1 FE ......x.H..R....
-00002F10 78 9A 78 DF 48 00 08 AF 1C 00 08 EF 44 00 08 E2 x.x.H.......D...
-00002F20 E0 18 AD FE 50 05 56 E5 04 5B 82 55 FF C0 C1 DC ....P.V..[.U....
-00002F30 E7 18 A2 55 00 C0 60 18 E6 18 B7 5A FE FF E6 1A ...U..`....Z....
+
+l00002ED2:
+	storw	$0,0x30(r3,r2)
+	loadw	0x5C(r3,r2),r4
+	bal	ra,fn00001F0C
+	cmpw	$FFFF,r0
+	bne	00002D9A
+
+l00002EE4:
+	loadw	0x64(r9,r8),r0
+	storw	r0,(sp)
+	movd	$38,(r11,r10)
+	addd	(r9,r8),(r11,r10)
+	loadw	0x14(r9,r8),r0
+	cmpw	$0,r0
+	bne	00002DAA
+
+l00002EF8:
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00001BEC
+	cmpw	$FFFF,r0
+	bne	00002DAA
+
+l00002F04:
+	br	00002E3E
+
+l00002F06:
+	loadw	0x90(r9,r8),r7
+
+l00002F0A:
+	cmpw	$0,r7
+	bne	00002DCC
+
+l00002F10:
+	loadw	0x14(r9,r8),r7
+	storw	r7,0x90(r9,r8)
+	loadd	0x38(r9,r8),(r1,r0)
+	stord	(r1,r0),0x88(r9,r8)
+	stord	(r1,r0),4(r9,r8)
+	br	00002DCC
+
+l00002F24:
+	movd	$E556,(r6,r5)
+	movw	r0,r4
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn00000BEC
+	br	00002E3E
+
+l00002F32:
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn00004794
+	br	00002E44
+
+l00002F3A:
+	movw	$FFFE,r7
+	br	00002E8A
 
 l00002F40:
 	loadw	0x14(r9,r8),r0
@@ -1111,412 +1611,43 @@ l00002F40:
 
 l00002F46:
 	br	00002E60
-
-;; fn00002F48: 00002F48
-;;   Called from:
-;;     00003EDE (in fn00003A36)
-fn00002F48 proc
-	push	$1,r13,ra
-	push	$6,r7
-
-;; fn00002F4C: 00002F4C
-;;   Called from:
-;;     00002F4A (in fn00002F48)
-;;     0000334E (in fn00003348)
-;;     0000334E (in fn00003348)
-fn00002F4C proc
-	addd	$FFE8,sp
-	movd	(r11,r10),(r3,r2)
-	loadw	0xBC(r3,r2),r1
-	loadd	0x60(r3,r2),r13
-	loadw	0xAC(r3,r2),r7
-	movzw	r7,(r3,r2)
-	movd	(r6,r5),r13
-	addd	(r3,r2),(r6,r5)
-	stord	(r6,r5),(sp)
-	loadw	0xB8(r11,r10),r9
-	movw	r9,r0
-	loadw	0xD0(r11,r10),r6
-	storw	r6,0xA(sp)
-	loadw	0x50(r11,r10),r6
-	movw	$FEFA,r8
-	addw	r8,r6
-	movw	$0,r5
-	cmpw	r7,r8
-	bhs	fn00002F8A
-
-;; fn00002F82: 00002F82
-;;   Called from:
-;;     00002F80 (in fn00002F4C)
-;;     00002F80 (in fn00002F4C)
-fn00002F82 proc
-	movw	$106,r5
-	addw	r5,r7
-	subw	r5,r6
-
-;; fn00002F8A: 00002F8A
-;;   Called from:
-;;     00002F80 (in fn00002F4C)
-;;     00002F80 (in fn00002F4C)
-;;     00002F88 (in fn00002F82)
-fn00002F8A proc
-	loadd	0x70(r11,r10),(r8,r7)
-	loadw	0x58(r11,r10),r6
-	storw	r6,8(sp)
-	addd	$102,(r3,r2)
-	movd	r12,r13
-	addd	(r3,r2),r12
-	stord	r12,0xC(sp)
-	movxw	r9,(r3,r2)
-	loadd	(sp),r12
-	addd	r12,(r3,r2)
-	movd	$FFFFFFFF,ra
-	addd	(r3,r2),ra
-	loadb	(ra),ra
-	storb	ra,4(sp)
-	loadb	(r3,r2),r6
-	loadw	0xCC(r11,r10),r2
-	cmpw	r9,r2
-	bhi	00002FB8
-
-;; fn00002FB6: 00002FB6
-;;   Called from:
-;;     00002FB4 (in fn00002F8A)
-;;     00002FB4 (in fn00002F8A)
-;;     0000330C (in fn000032CA)
-fn00002FB6 proc
-	lshw	$-14,r1
-
-l00002FB8:
-	loadw	0xB4(r11,r10),r2
-	storw	r2,6(sp)
-	loadw	0xA(sp),r3
-	cmpw	r2,r3
-	bls	00002FC6
-
-l00002FC4:
-	storw	r2,0xA(sp)
-
-l00002FC6:
-	movb	r6,r12
-	movw	r0,r6
-	movw	r5,ra
-	movw	r1,r5
-	stord	(r11,r10),0x10(sp)
-	loadw	8(sp),r11
-	br	fn00002FDA
-
-l00002FD4:
-	addw	$FFFF,r9
-	cmpw	$0,r5
-	beq	00003012
-
-;; fn00002FDA: 00002FDA
-;;   Called from:
-;;     00002FD2 (in fn00002FB6)
-;;     00002FD8 (in fn0000300E)
-fn00002FDA proc
-	movzw	r4,(r1,r0)
-	addd	r13,(r1,r0)
-	movxw	r6,(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	loadb	(r3,r2),r9
-	cmpb	r9,r12
-	bne	fn00003004
-
-l00002FE8:
-	addd	$FFFFFFFF,(r3,r2)
-	loadb	(r3,r2),r2
-	loadb	4(sp),r9
-	cmpb	r2,r9
-	bne	fn00003004
-
-l00002FF2:
-	loadb	(r1,r0),r3
-	loadd	(sp),(r10,r9)
-	loadb	(r10,r9),r2
-	cmpb	r3,r2
-	bne	fn00003004
-
-l00002FFC:
-	loadb	1(r1,r0),r3
-	loadb	1(r10,r9),r2
-
-;; fn00003000: 00003000
-;;   Called from:
-;;     00002E0C (in fn00002D76)
-;;     00002FFE (in fn00002FDA)
-fn00003000 proc
-	cmpb	r3,r2
-
-;; fn00003002: 00003002
-;;   Called from:
-;;     00003000 (in fn00003000)
-;;     00003000 (in fn00003000)
-;;     000032C0 (in fn000032BE)
-fn00003002 proc
-	beq	fn00003024
-
-;; fn00003004: 00003004
-;;   Called from:
-;;     00002FE6 (in fn00002FDA)
-;;     00002FF0 (in fn00002FDA)
-;;     00002FFA (in fn00002FDA)
-;;     00003002 (in fn00003002)
-;;     00003002 (in fn00003002)
-;;     00003094 (in fn00003086)
-;;     000030B4 (in fn00003086)
-fn00003004 proc
-	andw	r4,r11
-	movzw	r4,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	addd	(r8,r7),(r1,r0)
-	loadw	(r1,r0),r4
-
-;; fn0000300E: 0000300E
-;;   Called from:
-;;     00002D96 (in fn00002D76)
-;;     0000300C (in fn00003004)
-fn0000300E proc
-	cmpw	ra,r4
-	bhi	00002FD4
-
-l00003012:
-	movw	r6,r0
-
-;; fn00003014: 00003014
-;;   Called from:
-;;     00003012 (in fn0000300E)
-;;     000030EE (in fn000030EC)
-fn00003014 proc
-	loadw	6(sp),r9
-	cmpw	r0,r9
-	bhs	0000301C
-
-;; fn0000301A: 0000301A
-;;   Called from:
-;;     00002DFA (in fn00002D76)
-;;     00003018 (in fn00003014)
-;;     00003018 (in fn00003014)
-fn0000301A proc
-	movw	r9,r0
-
-l0000301C:
-	addd	$18,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-;; fn00003024: 00003024
-;;   Called from:
-;;     00003002 (in fn00003002)
-;;     00003002 (in fn00003002)
-fn00003024 proc
-	movd	(r3,r2),(r10,r9)
-	addd	$2,(r3,r2)
-	addd	$2,(r1,r0)
-	storw	r11,8(sp)
-	loadd	0xC(sp),(r11,r10)
-	storw	r4,0x14(sp)
-	br	fn00003078
-
-l00003032:
-	loadb	2(r3,r2),r4
-	loadb	2(r1,r0),r9
-	cmpb	r4,r9
-	bne	000030B6
-
-l0000303A:
-	loadb	3(r3,r2),r4
-	loadb	3(r1,r0),r9
-
-;; fn0000303E: 0000303E
-;;   Called from:
-;;     0000303C (in fn00003078)
-;;     0000323C (in fn000030F2)
-fn0000303E proc
-	cmpb	r4,r9
-	bne	fn000030BE
-
-;; fn00003042: 00003042
-;;   Called from:
-;;     00003040 (in fn0000303E)
-;;     00003040 (in fn0000303E)
-fn00003042 proc
-	loadb	4(r3,r2),r4
-	loadb	4(r1,r0),r9
-	cmpb	r4,r9
-	bne	000030C6
-
-;; fn0000304A: 0000304A
-;;   Called from:
-;;     00002DA6 (in fn00002D76)
-;;     00003048 (in fn00003042)
-fn0000304A proc
-	loadb	5(r3,r2),r4
-	loadb	5(r1,r0),r9
-	cmpb	r4,r9
-	bne	000030CE
-
-l00003052:
-	loadb	6(r3,r2),r4
-	loadb	6(r1,r0),r9
-	cmpb	r4,r9
-	bne	000030D6
-
-l0000305A:
-	loadb	7(r3,r2),r4
-	loadb	7(r1,r0),r9
-	cmpb	r4,r9
-	bne	000030DE
-
-l00003062:
-	addd	$8,(r3,r2)
-	addd	$8,(r1,r0)
-	loadb	(r3,r2),r4
-	loadb	(r1,r0),r9
-	cmpb	r4,r9
-	seq	r4
-	cmpd	(r11,r10),(r3,r2)
-
-;; fn00003070: 00003070
-;;   Called from:
-;;     00002DD8 (in fn00002D76)
-;;     0000306E (in fn0000304A)
-fn00003070 proc
-	slo	r9
-	andb	r9,r4
-	cmpb	$0,r9
-	beq	000030E6
-
-;; fn00003078: 00003078
-;;   Called from:
-;;     00003030 (in fn00003024)
-;;     00003076 (in fn00003070)
-fn00003078 proc
-	loadb	1(r3,r2),r4
-	loadb	1(r1,r0),r9
-	cmpb	r4,r9
-	beq	00003032
-
-l00003080:
-	loadw	8(sp),r11
-
-;; fn00003082: 00003082
-;;   Called from:
-;;     00002DE2 (in fn00002D76)
-;;     00003080 (in fn00003078)
-fn00003082 proc
-	loadw	0x14(sp),r4
-	addd	$1,(r3,r2)
-
-;; fn00003086: 00003086
-;;   Called from:
-;;     00003084 (in fn00003082)
-;;     000030C4 (in fn000030BE)
-;;     000030D4 (in fn0000304A)
-;;     000030DC (in fn0000304A)
-;;     000030E4 (in fn0000304A)
-;;     000030EA (in fn000030E8)
-fn00003086 proc
-	loadd	0xC(sp),(r1,r0)
-	subd	(r1,r0),(r3,r2)
-	movw	$102,r9
-	subw	r9,r0
-	cmpw	r6,r9
-	ble	fn00003004
-
-l00003096:
-	loadd	0x10(sp),(r1,r0)
-	storw	r4,0xB0(r1,r0)
-	loadw	0xA(sp),r1
-	cmpw	r1,r9
-	bge	fn000030EC
-
-l000030A2:
-	movxw	r9,(r3,r2)
-	loadd	(sp),r12
-	addd	r12,(r3,r2)
-	movd	$FFFFFFFF,(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadb	(r1,r0),r6
-	storb	r6,4(sp)
-	loadb	(r3,r2),r12
-	movw	r9,r6
-	br	fn00003004
-
-l000030B6:
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$2,(r3,r2)
-	br	fn00003086
-
-;; fn000030BE: 000030BE
-;;   Called from:
-;;     00003040 (in fn0000303E)
-;;     00003040 (in fn0000303E)
-;;     00003084 (in fn00003082)
-;;     00003086 (in fn00003086)
-;;     000030BC (in fn00003078)
-;;     000030CC (in fn00003042)
-fn000030BE proc
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$3,(r3,r2)
-	br	fn00003086
-
-l000030C6:
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$4,(r3,r2)
-	br	fn00003086
-
-l000030CE:
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$5,(r3,r2)
-	br	fn00003086
-
-l000030D6:
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$6,(r3,r2)
-	br	fn00003086
-
-l000030DE:
-	loadw	8(sp),r11
-	loadw	0x14(sp),r4
-	addd	$7,(r3,r2)
-	br	fn00003086
-
-l000030E6:
-	loadw	8(sp),r11
-
-;; fn000030E8: 000030E8
-;;   Called from:
-;;     00002D8C (in fn00002D76)
-;;     000030E6 (in fn00003070)
-fn000030E8 proc
-	loadw	0x14(sp),r4
-	br	fn00003086
-
-;; fn000030EC: 000030EC
-;;   Called from:
-;;     000030A0 (in fn00003086)
-fn000030EC proc
-	movw	r9,r0
-	br	fn00003014
+00002F48                         9D 01 67 01 BF 60 E8 FF         ..g..`..
+00002F50 2A 55 12 9F 5E 00 D2 AF 30 00 72 9F 56 00 72 5F *U..^...0.r.V.r_
+00002F60 D5 55 25 61 5F E0 9A 9F 5C 00 90 5B 6A 9F 68 00 .U%a_...\..[j.h.
+00002F70 6F D5 6A 9F 28 00 B8 5A FA FE 68 33 05 5A 87 53 o.j.(..Z..h3.Z.S
+00002F80 B5 10 B5 5A 06 01 75 33 65 3B 7A AF 38 00 6A 9F ...Z..u3e;z.8.j.
+00002F90 2C 00 6F D4 B2 60 02 01 DC 55 2C 61 CF E6 92 5E ,.o..`...U,a...^
+00002FA0 CF A0 C2 61 9E 54 2E 61 EE B0 EF F4 62 B0 2A 9F ...a.T.a....b.*.
+00002FB0 66 00 29 53 42 10 E1 49 2A 9F 5A 00 2F D3 3F 95 f.)SB..I*.Z./.?.
+00002FC0 32 53 52 10 2F D5 6C 59 06 5B 5E 5B 15 5B AF E8 2SR./.lY.[^[.[..
+00002FD0 BF 94 E4 10 95 32 05 52 0D 11 40 5F D0 61 62 5E .....2.R..@_.ab^
+00002FE0 02 61 92 B0 C9 51 1F 10 92 60 22 B0 9F B4 92 51 .a...Q...`"....Q
+00002FF0 1A 10 30 B0 9F A0 29 B0 23 51 15 10 30 B1 29 B1 ..0...).#Q..0.).
+00003000 23 51 01 11 B4 23 40 5F 00 61 70 61 40 90 4E 53 #Q...#@_.apa@.NS
+00003010 42 1E 60 5B 9F 93 90 53 B2 10 90 5B BF 60 18 00 B.`[...S...[.`..
+00003020 67 02 9D 03 92 55 22 60 20 60 BF D4 AF A6 4F DA g....U"` `....O.
+00003030 E4 12 42 B2 90 B2 94 51 1F 13 42 B3 90 B3 94 51 ..B....Q..B....Q
+00003040 1F 13 42 B4 90 B4 94 51 1F 13 42 B5 90 B5 94 51 ..B....Q..B....Q
+00003050 1F 13 42 B6 90 B6 94 51 1F 13 42 B7 90 B7 94 51 ..B....Q..B....Q
+00003060 1F 13 82 60 80 60 42 B0 90 B0 94 51 04 08 2A 57 ...`.`B....Q..*W
+00003070 A9 08 49 21 09 50 08 13 42 B1 90 B1 94 51 0A 1D ..I!.P..B....Q..
+00003080 BF 94 4F 9A 12 60 0F A6 14 00 20 C0 B9 5A 02 01 ..O..`.... ..Z..
+00003090 09 3B 96 53 78 1B 0F A8 40 DF 58 00 1F 95 91 53 .;.Sx...@.X....S
+000030A0 D6 12 92 5E CF A0 C2 61 90 54 20 61 60 B0 6F F4 ...^...a.T a`.o.
+000030B0 C2 B0 96 5B E8 1A BF 94 4F 9A 22 60 E5 1E BF 94 ...[....O."`....
+000030C0 4F 9A 32 60 E1 1E BF 94 4F 9A 42 60 ED 1D BF 94 O.2`....O.B`....
+000030D0 4F 9A 52 60 E9 1D BF 94 4F 9A 62 60 E5 1D BF 94 O.R`....O.b`....
+000030E0 4F 9A 72 60 E1 1D BF 94 4F 9A EE 1C 90 5B E3 19 O.r`....O....[..
 000030F0 00 00                                           ..              
 
 ;; fn000030F2: 000030F2
 ;;   Called from:
-;;     00002D82 (in fn00002D76)
-;;     00003B8A (in fn000030F2)
-;;     000044CA (in fn00004450)
-;;     00004544 (in fn00004450)
+;;     00005756 (in fn00004CD4)
+;;     00005A52 (in fn00004CD4)
 fn000030F2 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFF4,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-12,sp
 	movd	r13,(r3,r2)
 	loadw	0x50(r3,r2),r7
 	storw	r7,2(sp)
@@ -1551,16 +1682,16 @@ l00003132:
 	loadd	(r13),(r9,r8)
 	loadw	4(r9,r8),r7
 	cmpw	$0,r7
-	beq	fn00003348
+	beq	00003240
 
 l0000313C:
 	loadw	0xB4(r13),r11
 	cmpw	r7,r10
-	bhs	fn000034DE
+	bhs	00003310
 
 l00003146:
 	cmpw	$0,r10
-	bne	00003698
+	bne	000033F0
 
 l0000314C:
 	addw	r11,r10
@@ -1569,7 +1700,7 @@ l0000314C:
 	movw	r11,r0
 	addw	r0,r1
 	cmpw	$2,r0
-	blo	000033B0
+	blo	00003286
 
 l00003160:
 	cmpw	$105,r11
@@ -1608,7 +1739,7 @@ l00003192:
 	movzw	r0,(r1,r0)
 	loadd	8(sp),(r5,r4)
 	addd	(r3,r2),(r5,r4)
-	push	$1,r0
+	push	$2,r0
 	bal	ra,fn0000DB24
 	loadw	0xB0(r13),r0
 	loadw	6(sp),r1
@@ -1637,10 +1768,10 @@ l00003192:
 	addd	$4,sp
 
 l000031EE:
-	addd	$FFFE,(r1,r0)
+	addd	$-2,(r1,r0)
 	loadw	(r1,r0),r6
 	cmpw	r2,r6
-	blo	fn000034CE
+	blo	00003362
 
 l000031FA:
 	subw	r6,r2
@@ -1663,10 +1794,10 @@ l00003202:
 	movd	(r5,r4),(r7,r6)
 
 l0000321E:
-	addd	$FFFE,(r1,r0)
+	addd	$-2,(r1,r0)
 	loadw	(r1,r0),r6
 	cmpw	r2,r6
-	blo	fn0000347E
+	blo	00003352
 
 l0000322A:
 	subw	r6,r2
@@ -1677,10 +1808,12 @@ l0000322A:
 l00003232:
 	loadw	2(sp),r7
 	addw	r10,r7
+
+l00003236:
 	loadd	(r13),(r9,r8)
 	loadw	4(r9,r8),r7
 	cmpw	$0,r7
-	bne	fn0000303E
+	bne	0000313C
 
 l00003240:
 	loadd	0x2418(r13),(r3,r2)
@@ -1695,12 +1828,12 @@ l0000324C:
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
 	cmpd	(r3,r2),(r9,r8)
-	bls	fn000034C8
+	bls	00003392
 
 l00003260:
 	subd	(r11,r10),(r9,r8)
 	cmpd	$102,(r11,r10)
-	blo	fn00003540
+	blo	000033D4
 
 l0000326C:
 	loadd	0x60(r13),(r3,r2)
@@ -1712,31 +1845,42 @@ l0000326C:
 	stord	(r9,r8),0x2418(r13)
 
 l00003280:
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00003286                   8D 9F 56 00 18 3B CD AF 30 00       ..V..;..0.
-00003290 82 5F C2 61 42 B0 44 5D 4D DF 40 00 AD 9F 48 00 ._.aB.D]M.@...H.
-000032A0 0D 9F 46 00 0F D0 12 5A 82 33 22 5F C2 61 02 B0 ..F....Z.3"_.a..
-000032B0 00 5D A4 45 40 2B 2F 90 20 23 0D DF 40 00       .].E@+/. #..@.  
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
-;; fn000032BE: 000032BE
-;;   Called from:
-;;     0000330A (in fn000032CA)
-fn000032BE proc
+l00003286:
+	loadw	0xAC(r13),r8
+	subw	r8,r1
+	loadd	0x60(r13),r12
+	movzw	r8,(r3,r2)
+	addd	r12,(r3,r2)
+	loadb	(r3,r2),r4
+	movzb	r4,(r5,r4)
+	storw	r4,0x80(r13)
+	loadw	0x90(r13),r10
+	loadw	0x8C(r13),r0
+	storw	r0,(sp)
+	movw	$1,r2
+	addw	r2,r8
+	movzw	r2,(r3,r2)
+	addd	r12,(r3,r2)
+	loadb	(r3,r2),r0
+	movzb	r0,(r1,r0)
+	ashuw	r10,r4
+	xorw	r0,r4
+	loadw	(sp),r2
+	andw	r0,r2
+	storw	r0,0x80(r13)
+
+l000032BE:
 	cmpw	$0,r1
-	beq	fn00003002
+	beq	00003160
 
 l000032C4:
 	movw	$2,r2
 	addw	r2,r8
 	movzw	r2,(r3,r2)
-
-;; fn000032CA: 000032CA
-;;   Called from:
-;;     000032C8 (in fn000032BE)
-;;     00003578 (in fn00003A36)
-fn000032CA proc
 	addd	r12,(r3,r2)
 	loadb	(r3,r2),r2
 	movzb	r2,(r3,r2)
@@ -1764,18 +1908,33 @@ fn000032CA proc
 	movw	r11,r2
 	addw	r2,r1
 	cmpw	$2,r2
-	blo	fn000032BE
+	blo	000032BE
 
 l0000330C:
-	br	fn00002FB6
-00003310 02 5A 30 5F BA 5F A0 61 AD AF 30 00 0A 61 28 D2 .Z0_._.a..0..a(.
-00003320 7C 5F 48 A0 1C 01 A2 55 00 C0 FC A7 08 AF 1C 00 |_H....U........
-00003330 00 9C 4F 60 10 52 0C 11                         ..O`.R..        
+	br	00003160
 
-;; fn00003338: 00003338
-;;   Called from:
-;;     0000385A (in fn00003480)
-fn00003338 proc
+l00003310:
+	movw	$0,r2
+
+l00003312:
+	movzw	r3,(r1,r0)
+	movzw	r11,(r11,r10)
+	addd	(r11,r10),(r1,r0)
+	loadd	0x60(r13),(r11,r10)
+	addd	(r1,r0),(r11,r10)
+	storw	r2,4(r9,r8)
+	movzw	r7,r12
+	loadd	(r9,r8),(r5,r4)
+	push	$2,r12
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000DB24
+	loadd	0x38(r9,r8),(r1,r0)
+	loadw	0x18(r1,r0),r0
+	addd	$4,sp
+	cmpw	$1,r0
+	beq	0000336E
+
+l00003338:
 	cmpw	$2,r0
 	beq	00003380
 
@@ -1786,18 +1945,35 @@ l0000333C:
 	loadd	8(r9,r8),(r1,r0)
 	addd	(r1,r0),r12
 	stord	r12,8(r9,r8)
-
-;; fn00003348: 00003348
-;;   Called from:
-;;     00003138 (in fn000030F2)
-;;     00003346 (in fn00003338)
-fn00003348 proc
 	loadw	0xB4(r13),r11
 	movw	r7,r10
-	br	fn00002F4C
-00003352       00 C2 04 57 10 18 C9 FE 7F 91 7A 33 E0 18   ...W......z3..
-00003360 D9 FE 00 C2 04 57 10 18 89 FE E0 18 99 FE 28 AF .....W........(.
-00003370 30 00 76 5B A4 55 00 C0 78 8D 08 EF 30 00 EF 1D 0.v[.U..x...0...
+	br	0000314C
+
+l00003352:
+	storw	$0,(r1,r0)
+	cmpd	(r5,r4),(r1,r0)
+	bne	0000321E
+
+l0000335A:
+	loadw	2(sp),r7
+	addw	r10,r7
+	br	00003236
+
+l00003362:
+	storw	$0,(r1,r0)
+	cmpd	(r5,r4),(r1,r0)
+	bne	000031EE
+
+l0000336A:
+	br	00003202
+
+l0000336E:
+	loadd	0x60(r9,r8),(r3,r2)
+	movw	r7,r6
+	movd	(r5,r4),(r11,r10)
+	bal	ra,fn0000C0EE
+	stord	(r1,r0),0x60(r9,r8)
+	br	0000333C
 
 l00003380:
 	loadd	0x60(r9,r8),(r3,r2)
@@ -1806,8 +1982,22 @@ l00003380:
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r9,r8)
 	br	0000333C
-00003392       B0 54 02 01 80 61 02 57 50 18 E7 FE 14 00   .T...a.WP.....
-000033A0 28 C0 B8 60 02 01 14 00 2A C0 8A 57 B2 10 8A 55 (..`....*..W...U
+
+l00003392:
+	movd	$102,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+	cmpd	(r3,r2),(r1,r0)
+	bls	00003280
+
+l0000339E:
+	subd	(r9,r8),(r3,r2)
+	addd	$258,(r9,r8)
+	subd	(r11,r10),(r3,r2)
+	cmpd	(r11,r10),(r9,r8)
+	bhs	000033B0
+
+l000033AE:
+	movd	(r11,r10),(r9,r8)
 
 l000033B0:
 	movd	$FFFF,(r6,r5)
@@ -1819,26 +2009,40 @@ l000033B0:
 	loadd	0x2418(r13),(r1,r0)
 	addd	(r1,r0),(r11,r10)
 	stord	(r11,r10),0x2418(r13)
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-000033D4             BA 54 02 01 2D AF 30 00 82 61 A5 55     .T..-.0..a.U
-000033E0 04 5A 00 C0 62 A7 A8 61 8D EF 0C 12 E0 18 95 FE .Z..b..a........
-000033F0 72 5B A2 3B A7 5B EE 18                         r[.;.[..        
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l000033D4:
+	movd	$102,(r11,r10)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	movd	(r6,r5),(r11,r10)
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	addd	(r11,r10),(r9,r8)
+	stord	(r9,r8),0x2418(r13)
+	br	00003280
+
+l000033F0:
+	movw	r7,r2
+	subw	r2,r10
+	movw	r10,r7
+	br	00003312
 
 ;; fn000033F8: 000033F8
 ;;   Called from:
 ;;     000055CE (in fn00004CD4)
 fn000033F8 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFF0,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-16,sp
 	movd	r12,(r3,r2)
 	storw	r4,8(sp)
 	loadd	0xC(r3,r2),(r1,r0)
 	loadw	0x50(r3,r2),r2
 	movzw	r2,(r3,r2)
-	addd	$FFFB,(r1,r0)
+	addd	$-5,(r1,r0)
 	cmpd	(r1,r0),(r3,r2)
 	bhs	00003416
 
@@ -1851,12 +2055,14 @@ l00003416:
 	loadw	4(r13),r7
 	storw	r7,0xC(sp)
 	movw	r7,r10
+
+l00003420:
 	loadw	0x2414(r12),r0
 	addw	$2A,r11
 	ashuw	$-13,r0
 	loadw	0x10(r13),r7
 	cmpw	r7,r0
-	bhi	0000389A
+	bhi	00003664
 
 l00003432:
 	subw	r7,r0
@@ -1888,7 +2094,7 @@ l0000345A:
 l0000345C:
 	loadw	0xA(sp),r0
 	cmpw	r0,r7
-	bhs	fn00003780
+	bhs	000035F0
 
 l00003464:
 	cmpw	$0,r7
@@ -1898,40 +2104,28 @@ l00003464:
 	sne	r0
 	andb	r0,r1
 	cmpb	$0,r0
-	bne	00003856
+	bne	00003664
 
 l00003476:
 	cmpw	$0,r2
 	seq	r0
 	cmpw	$0,r0
-	bne	0000384C
+	bne	00003664
 
-;; fn0000347E: 0000347E
-;;   Called from:
-;;     00003226 (in fn000030F2)
-fn0000347E proc
-	push	$6,r8,ra
-
-;; fn00003480: 00003480
-;;   Called from:
-;;     00003472 (in fn000033F8)
-;;     0000347E (in fn0000347E)
-;;     0000347E (in fn0000347E)
-;;     0000347E (in fn0000347E)
-;;     0000384C (in fn0000347E)
-;;     000038AA (in fn000033F8)
-fn00003480 proc
+l00003480:
 	movw	r7,r0
 	subw	r0,r8
 	cmpw	r0,r10
-	bne	00003842
+	bne	00003664
 
 l0000348A:
 	cmpw	$4,r2
 	seq	r1
 	storw	r1,4(sp)
+
+l00003490:
 	movd	$0,(r1,r0)
-	push	$1,r0
+	push	$2,r0
 	loadw	8(sp),r6
 	movd	(r5,r4),(r1,r0)
 	movd	(r3,r2),r12
@@ -1939,88 +2133,54 @@ l0000348A:
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
-	addd	$FFFC,(r1,r0)
+	addd	$-4,(r1,r0)
 	storb	r7,(r1,r0)
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
-	addd	$FFFD,(r1,r0)
-
-l000034B4:
+	addd	$-3,(r1,r0)
 	movw	r7,r2
 	lshw	$-8,r2
 	storb	r2,(r1,r0)
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
-	addd	$FFFE,(r1,r0)
+	addd	$-2,(r1,r0)
 	movb	r7,r2
 	xorb	$FFFF,r9
-
-;; fn000034C8: 000034C8
-;;   Called from:
-;;     0000325C (in fn000030F2)
-;;     000034C6 (in fn00003480)
-fn000034C8 proc
 	storb	r2,(r1,r0)
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r3,r2)
-
-;; fn000034CE: 000034CE
-;;   Called from:
-;;     000031F6 (in fn000030F2)
-;;     000034CC (in fn000034C8)
-;;     000034CC (in fn000034C8)
-fn000034CE proc
 	addd	(r3,r2),(r1,r0)
-	addd	$FFFFFFFF,(r1,r0)
+	addd	$-1,(r1,r0)
 	movw	r7,r2
 	xorw	$FFFF,r9
 	lshw	$-8,r2
 	storb	r2,(r1,r0)
 	loadd	(r12),(r11,r10)
 	loadd	0x38(r11,r10),r13
-
-;; fn000034DE: 000034DE
-;;   Called from:
-;;     00003142 (in fn000030F2)
-;;     000034DC (in fn000034CE)
-fn000034DE proc
-	res
 	movd	(r3,r2),r13
 	bal	ra,fn0000B09C
 	loadw	0x14(r13),r0
 	loadw	0x10(r11,r10),r9
 	addd	$4,sp
 	cmpw	r9,r0
-	bhs	fn000034F2
+	bhs	000034F2
 
-;; fn000034F0: 000034F0
-;;   Called from:
-;;     000034EC (in fn000034DE)
-;;     000034EE (in fn000034CE)
-fn000034F0 proc
+l000034F0:
 	movw	r0,r9
 
-;; fn000034F2: 000034F2
-;;   Called from:
-;;     000034EC (in fn000034DE)
-;;     000034EE (in fn000034CE)
-;;     000034F0 (in fn000034F0)
-;;     000038AE (in fn000033F8)
-fn000034F2 proc
+l000034F2:
 	cmpw	$0,r9
 	beq	00003532
 
 l000034F6:
 	movzw	r9,(r2,r1)
-
-l000034F8:
 	stord	(r2,r1),(sp)
 	loadd	0xC(r11,r10),(r3,r2)
 	loadd	0x10(r13),(r5,r4)
 	loadd	(sp),(r1,r0)
-	push	$1,r0
+	push	$2,r0
 	bal	ra,fn0000DB24
 	loadd	0xC(r11,r10),(r1,r0)
 	loadd	4(sp),(r3,r2)
@@ -2049,21 +2209,15 @@ l0000352E:
 l00003532:
 	loadd	(r12),r13
 	cmpw	$0,r8
-	beq	fn0000356E
+	beq	0000356E
 
 l00003538:
 	movzw	r8,(r11,r10)
 	loadd	0xC(r13),(r3,r2)
 	loadd	0x60(r12),(r5,r4)
-
-;; fn00003540: 00003540
-;;   Called from:
-;;     00003268 (in fn000030F2)
-;;     0000353C (in fn000034F2)
-fn00003540 proc
 	loadd	0x98(r12),(r1,r0)
 	addd	(r1,r0),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadd	(r12),r13
 	loadd	0xC(r13),(r1,r0)
@@ -2081,15 +2235,7 @@ fn00003540 proc
 	subw	r7,r8
 	addd	$4,sp
 
-;; fn0000356E: 0000356E
-;;   Called from:
-;;     00003536 (in fn000034F2)
-;;     0000356C (in fn00003540)
-;;     0000356C (in fn00003540)
-;;     00003C70 (in fn00003C70)
-;;     00003C76 (in fn00003C76)
-;;     00003D1C (in fn00003D1C)
-fn0000356E proc
+l0000356E:
 	loadw	4(r13),r10
 	cmpw	$0,r7
 	bne	0000360A
@@ -2097,7 +2243,7 @@ fn0000356E proc
 l00003574:
 	loadw	4(sp),r7
 	cmpw	$0,r7
-	beq	fn000032CA
+	beq	00003420
 
 l0000357C:
 	loadw	0xC(sp),r7
@@ -2110,7 +2256,7 @@ l00003586:
 	loadw	0x50(r12),r0
 	loadd	0x60(r12),(r3,r2)
 	cmpw	r0,r7
-	bhs	00003AE8
+	bhs	0000383C
 
 l00003594:
 	loadw	0xAC(r12),r1
@@ -2119,19 +2265,21 @@ l00003594:
 	loadd	0x68(r12),(r5,r4)
 	subd	(r5,r4),ra
 	cmpd	(r5,r4),(r11,r10)
-	bhs	00003BBE
+	bhs	000038B2
 
 l000035AA:
 	addd	ra,(r3,r2)
 	loadd	(r13),(r5,r4)
 	subd	(r5,r4),(r11,r10)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadw	0xAC(r12),r8
 	addw	r8,r7
 	storw	r8,0xAC(r12)
 	loadw	0x50(r12),r0
 	addd	$4,sp
+
+l000035C8:
 	movzw	r8,(r3,r2)
 	stord	(r3,r2),0x98(r12)
 	loadw	0x240C(r12),r1
@@ -2146,17 +2294,29 @@ l000035DA:
 	addw	r0,r1
 	storw	r0,0x240C(r12)
 	cmpw	$0,r9
-	beq	00003AE6
+	beq	00003864
 
 l000035E6:
 	movw	$3,r0
 
 l000035E8:
-	addd	$10,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-000035F0 0F C3 04 00 3F 94 43 52 10 18 99 FE 70 5B 80 3B ....?.CR....p[.;
-00003600 A0 53 06 08 6F D2 E0 18 8B FE                   .S..o.....      
+	addd	$16,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l000035F0:
+	storw	$0,4(sp)
+	loadw	8(sp),r3
+	cmpw	$4,r3
+	bne	00003490
+
+l000035FC:
+	movw	r7,r0
+	subw	r0,r8
+	cmpw	r0,r10
+	seq	r6
+	storw	r6,4(sp)
+	br	00003490
 
 l0000360A:
 	loadd	0xC(r13),(r9,r8)
@@ -2165,7 +2325,7 @@ l0000360A:
 
 l00003610:
 	cmpw	$0,r10
-	bne	00003C6E
+	bne	00003940
 
 l00003616:
 	movzw	r7,(r1,r0)
@@ -2182,11 +2342,13 @@ l00003616:
 l0000362A:
 	storw	r7,(sp)
 	movw	r7,r3
+
+l0000362E:
 	subw	r10,r3
 	storw	r10,4(r13)
 	movzw	r3,(r11,r10)
 	loadd	(r13),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000DB24
 	loadd	0x38(r13),(r1,r0)
@@ -2197,13 +2359,11 @@ l0000362A:
 
 l0000364A:
 	cmpw	$2,r0
-	beq	00003A04
+	beq	00003828
 
 l00003650:
 	loadd	(r13),(r1,r0)
 	addd	(r11,r10),(r1,r0)
-
-l00003654:
 	stord	(r1,r0),(r13)
 	loadd	8(r13),(r1,r0)
 	addd	(r11,r10),(r1,r0)
@@ -2212,16 +2372,41 @@ l00003654:
 	loadd	0xC(r13),(r9,r8)
 	loadw	4(r13),r10
 	br	00003616
-00003664             7F 96 A7 3B 07 52 10 18 F4 01 8C 9F     ...;.R......
-00003670 56 00 0F 94 B0 22 FB FF 00 52 0A 10 0A 52 18 10 V...."...R...R..
-00003680 80 5F 4C AF 4C 00 40 57 11 15 10 5A             ._L.L.@W...Z    
 
-l0000368C:
+l00003664:
+	loadw	0xC(sp),r7
+	subw	r7,r10
+	cmpw	$0,r7
+	bne	0000385E
+
+l0000366E:
+	loadw	0xAC(r12),r8
+
+l00003672:
+	loadw	8(sp),r0
+	andw	$FFFB,r11
+	cmpw	$0,r0
+	beq	0000368E
+
+l0000367C:
+	cmpw	$0,r10
+	bne	0000368E
+
+l00003680:
+	movzw	r8,(r1,r0)
+	loadd	0x98(r12),(r5,r4)
+	cmpd	(r1,r0),(r5,r4)
+	bne	0000372A
+
+l0000368A:
+	movw	$1,r0
 	br	000035E8
-0000368E                                           7C 9F               |.
-00003690 34 00 97 32 87 3B A7 53                         4..2.;.S        
 
-l00003698:
+l0000368E:
+	loadw	0x68(r12),r7
+	addw	$FFFF,r9
+	subw	r7,r8
+	cmpw	r7,r10
 	bls	000036AA
 
 l0000369A:
@@ -2229,7 +2414,7 @@ l0000369A:
 	loadw	0x50(r12),r2
 	movzw	r2,(r1,r0)
 	cmpd	(r5,r4),(r1,r0)
-	ble	fn00003A32
+	ble	0000386C
 
 l000036AA:
 	cmpw	r7,r10
@@ -2264,7 +2449,7 @@ l000036D6:
 	loadd	0x60(r12),(r1,r0)
 	addd	(r1,r0),(r9,r8)
 	cmpw	r7,r10
-	bls	00003B88
+	bls	00003934
 
 l000036E4:
 	movw	r10,r0
@@ -2276,18 +2461,18 @@ l000036EA:
 	movzw	r10,(r1,r0)
 	stord	(r1,r0),4(sp)
 	loadd	(r13),(r5,r4)
-	push	$1,r0
+	push	$2,r0
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000DB24
 	loadd	0x38(r13),(r1,r0)
 	loadw	0x18(r1,r0),r0
 	addd	$4,sp
 	cmpw	$1,r0
-	beq	fn00003B14
+	beq	0000390C
 
 l00003708:
 	cmpw	$2,r0
-	beq	fn00003B36
+	beq	00003920
 
 l0000370E:
 	loadd	(r13),(r1,r0)
@@ -2305,17 +2490,9 @@ l0000371C:
 
 l00003726:
 	loadd	0x98(r12),(r5,r4)
+
+l0000372A:
 	loadw	0x2414(r12),r0
-
-l0000372C:
-	beq	fn00003780
-
-;; fn0000372E: 0000372E
-;;   Called from:
-;;     0000372A (in fn000030F2)
-;;     0000372C (in fn000030F2)
-;;     00003B7C (in fn00003B3C)
-fn0000372E proc
 	addw	$2A,r11
 	ashuw	$-13,r0
 	movzw	r0,(r1,r0)
@@ -2365,13 +2542,6 @@ l00003776:
 	cmpw	$0,r0
 	seq	r0
 	cmpw	$0,r0
-
-;; fn00003780: 00003780
-;;   Called from:
-;;     0000372C (in fn000030F2)
-;;     0000377E (in fn0000372E)
-;;     000037A6 (in fn0000372E)
-fn00003780 proc
 	beq	0000381E
 
 l00003782:
@@ -2407,7 +2577,7 @@ l000037A0:
 l000037A2:
 	loadw	8(sp),r7
 	cmpw	$4,r7
-	beq	fn00003A36
+	beq	000038EE
 
 l000037AA:
 	movw	$0,r13
@@ -2416,13 +2586,11 @@ l000037AC:
 	loadd	0x60(r12),(r1,r0)
 	addd	(r1,r0),(r5,r4)
 	movzw	r2,(r9,r8)
-	push	$1,r8
+	push	$2,r8
 	movw	r13,r6
 	movd	(r3,r2),r12
 	bal	ra,fn0000AF94
 	loadd	0x98(r12),(r1,r0)
-
-l000037C2:
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),0x98(r12)
 	loadd	(r12),(r9,r8)
@@ -2431,34 +2599,14 @@ l000037C2:
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
-
-;; fn000037D8: 000037D8
-;;   Called from:
-;;     000037D6 (in fn00003780)
-;;     00003BAA (in fn000030F2)
-fn000037D8 proc
 	addd	$4,sp
 	cmpw	r7,r0
-	bhs	fn000037E0
+	bhs	000037E0
 
-;; fn000037DE: 000037DE
-;;   Called from:
-;;     000037DC (in fn000037D8)
-;;     000037DC (in fn000037D8)
-fn000037DE proc
+l000037DE:
 	movw	r0,r7
 
-;; fn000037E0: 000037E0
-;;   Called from:
-;;     0000376C (in fn0000372E)
-;;     00003774 (in fn0000372E)
-;;     00003780 (in fn00003780)
-;;     00003788 (in fn00003780)
-;;     000037DC (in fn000037D8)
-;;     000037DC (in fn000037D8)
-;;     000037DE (in fn000037DE)
-;;     00003BDA (in fn00003A36)
-fn000037E0 proc
+l000037E0:
 	cmpw	$0,r7
 	beq	0000381A
 
@@ -2466,9 +2614,7 @@ l000037E4:
 	movzw	r7,r12
 	loadd	0xC(r9,r8),(r3,r2)
 	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r12
-
-l000037EC:
+	push	$2,r12
 	bal	ra,fn0000DB24
 	loadd	0xC(r9,r8),(r1,r0)
 	addd	r12,(r1,r0)
@@ -2499,35 +2645,59 @@ l0000381A:
 
 l0000381E:
 	movw	$0,r0
-	addd	$10,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00003828                         2D AF 30 00 6F 90 84 55         -.0.o..U
-00003830 00 C0 C8 92 0D EF 30 00 E0 18 19 FE 2C C3 04 12 ......0.....,...
-00003840 00 5F                                           ._              
+	addd	$16,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
-l00003842:
+l00003828:
+	loadd	0x60(r13),(r3,r2)
+	loadw	(sp),r6
+	movd	(r5,r4),(r9,r8)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r13)
+	br	00003650
+
+l0000383C:
+	storw	$2,0x1204(r12)
+	movzw	r0,(r1,r0)
 	loadd	(r13),(r5,r4)
 	subd	(r5,r4),(r1,r0)
-	push	$1,r0
+	push	$2,r0
 	bal	ra,fn0000DB24
-
-l0000384C:
-	loadd	4(r11,r10),r13
-
-l0000384E:
 	loadw	0x50(r12),r8
 	storw	r8,0xAC(r12)
-
-l00003856:
 	addd	$4,sp
 	movw	r8,r0
-	br	fn00003338
-0000385E                                           09 5A               .Z
-00003860 E0 18 27 FD DC A0 AD 92 E0 18 0B FE 14 00 04 C0 ..'.............
-00003870 4C EF 4C 00 28 3B 8C DF 56 00 2C AF 30 00 88 5F L.L.(;..V.,.0.._
-00003880 24 55 04 61 18 01 00 C0 9E A2 0C 9F 04 12 4F 60 $U.a..........O`
-00003890 10 52 A4 10 10 32 0C DF 04 12                   .R...2....      
+	br	000035C8
+
+l0000385E:
+	movw	$0,r9
+	br	00003586
+
+l00003864:
+	loadd	(r12),r13
+	loadw	4(r13),r10
+	br	00003672
+
+l0000386C:
+	subd	(r5,r4),(r1,r0)
+	stord	(r5,r4),0x98(r12)
+	subw	r8,r2
+	storw	r8,0xAC(r12)
+	loadd	0x60(r12),(r3,r2)
+	movzw	r8,(r9,r8)
+	movd	(r5,r4),(r3,r2)
+	addd	(r1,r0),(r5,r4)
+	push	$2,r8
+	bal	ra,fn0000DB24
+	loadw	0x2408(r12),r0
+	addd	$4,sp
+	cmpw	$1,r0
+	blo	0000389A
+
+l00003894:
+	addw	$1,r1
+	storw	r0,0x2408(r12)
 
 l0000389A:
 	loadw	0x50(r12),r0
@@ -2536,1023 +2706,215 @@ l0000389A:
 	loadw	4(r13),r10
 	loadw	0xAC(r12),r8
 	cmpw	r7,r10
-	blo	000034B4
+	blo	000036AE
 
 l000038AE:
-	br	000034F8
-000038B2       01 3B 1C DF 56 00 1E 5F 04 5F 24 61 1E 01   .;..V.._._$a..
-000038C0 00 C0 64 A2 0C 9F 04 12 4F 60 10 52 A4 10 10 32 ..d.....O`.R...2
-000038D0 0C DF 04 12 DC A0 2C AF 30 00 0C 9F 56 00 0E 5F ......,.0...V.._
-000038E0 E0 18 CB FC                                     ....            
+	br	000036D2
+
+l000038B2:
+	subw	r1,r0
+	storw	r1,0xAC(r12)
+	movzw	r1,ra
+	movzw	r0,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	push	$2,ra
+	bal	ra,fn0000DB24
+	loadw	0x2408(r12),r0
+	addd	$4,sp
+	cmpw	$1,r0
+	blo	000038D4
+
+l000038CE:
+	addw	$1,r1
+	storw	r0,0x2408(r12)
+
+l000038D4:
+	loadd	(r12),r13
+	loadd	0x60(r12),(r3,r2)
+	loadw	0xAC(r12),r0
+	movzw	r0,ra
+	br	000035AA
 
 l000038E4:
 	movw	$2,r0
-	addd	$10,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-000038EE                                           0C A0               ..
-000038F0 00 92 00 52 00 08 00 52 00 18 B3 FE 83 53 50 08 ...R...R.....SP.
-00003900 1D 5A 00 52 10 18 A9 FE E0 18 A3 FE 2D AF 30 00 .Z.R........-.0.
-00003910 A6 5B 84 55 00 C0 DA 87 0D EF 30 00 E0 18 F3 FD .[.U......0.....
-00003920 2D AF 30 00 A6 5B 84 55 00 C0 D0 91 0D EF 30 00 -.0..[.U......0.
-00003930 E0 18 DF FD 0A 52 00 18 E7 FD 00 5A E0 18 AF FD .....R.....Z....
-00003940 AF D0 A3 5B E0 18 EB FC 9D 01 67 01 BF 60 F4 FF ...[......g..`..
-00003950 2C 55 4F D4 BC 9F 5A 00 BB 52 05 01 B0 18 2C 02 ,UO...Z..R....,.
-00003960 1C 9F                                           ..              
+	addd	$16,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
-l00003962:
-	ord	$5A243314,(r7,r6)
-	movzw	r4,(r5,r4)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r3,r2)
-	loadw	0x90(r12),r3
-	loadw	0x80(r12),r0
-	ashuw	r3,r0
-	xorw	r2,r0
-	loadw	0x8C(r12),r0
-	andw	r2,r0
-	storw	r2,0x80(r12)
-
-l00003988:
-	andd	$5F226122,(r1,r0)
-
-l0000398A:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	loadd	0x78(r12),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadw	(r3,r2),r4
-	loadw	0x58(r12),r6
-	andw	r6,r1
-	movzw	r6,(r7,r6)
-	loadd	0x70(r12),(r9,r8)
-	addd	(r7,r6),(r7,r6)
-	addd	(r9,r8),(r7,r6)
-	storw	r4,(r7,r6)
-	storw	r1,(r3,r2)
-	cmpw	$0,r4
-	beq	000039C0
-
-l000039AE:
-	loadw	0x50(r12),r0
-	addw	$FEFA,r11
-	movw	r1,r2
-	subw	r2,r4
-	cmpw	r2,r0
-	bhs	00003DA8
-
-l000039C0:
-	loadw	0xA0(r12),r0
-	loadw	0x23EC(r12),r8
-	movzw	r8,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadd	0x23F0(r12),(r7,r6)
-	addd	(r3,r2),(r7,r6)
-	addw	$1,r1
-	loadd	0x23E0(r12),(r11,r10)
-	addd	(r11,r10),(r5,r4)
-	cmpw	$2,r0
-	bhs	00003DDE
-
-l000039E2:
-	movb	$FD,r2
-	addb	r2,r0
-	loadw	0xB0(r12),r0
-	subw	r1,r0
-	movw	r1,r0
-	storw	r1,(r7,r6)
-	storw	r8,0x23EC(r12)
-	storb	r2,(r5,r4)
-	addw	$FFFF,r9
-	movzb	r2,(r3,r2)
-	movxw	r2,(r3,r2)
-	addd	$F32E,(r3,r2)
-
-l00003A00:
-	storb	r2,3(ra)
-	loadb	(r3,r2),r2
-
-l00003A04:
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	r12,(r3,r2)
-	loadw	0x8DC(r3,r2),r1
-	addw	$1,r1
-	storw	r1,0x8DC(r3,r2)
-	cmpw	$FF,r0
-	bhs	00003A22
-
-l00003A1C:
-	lshw	$-9,r0
-	addw	$100,r11
-
-l00003A22:
-	movzw	r0,(r1,r0)
-	addd	$F42E,(r1,r0)
-	loadb	(r1,r0),r0
-	movzb	r0,(r1,r0)
-	movxw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	r12,(r1,r0)
-
-;; fn00003A32: 00003A32
-;;   Called from:
-;;     000036A6 (in fn000030F2)
-;;     00003A30 (in fn00003A36)
-fn00003A32 proc
-	loadw	0x12BC(r1,r0),r2
-
-;; fn00003A36: 00003A36
-;;   Called from:
-;;     0000372E (in fn0000372E)
-;;     00003780 (in fn00003780)
-;;     000037A6 (in fn0000372E)
-;;     00003A32 (in fn00003A32)
-;;     00003A32 (in fn00003A32)
-;;     0000405E (in fn0000402E)
-;;     00004286 (in fn0000402E)
-;;     0000436E (in fn0000402E)
-;;     00004376 (in fn0000402E)
-fn00003A36 proc
-	addw	$1,r1
-	storw	r2,0x12BC(r1,r0)
-	loadw	0x23E8(r12),r0
-	addw	$FFFF,r9
-	loadw	0x23EC(r12),r1
-	cmpw	r0,r1
-	seq	r9
-	loadw	0xA0(r12),r2
-	loadw	0xB4(r12),r11
-	subw	r11,r2
-	storw	r11,0xB4(r12)
-	loadw	0xAC(r12),r3
-	storw	r3,(sp)
-	loadd	0x60(r12),ra
-	loadw	0x90(r12),r8
-	loadw	0x8C(r12),r10
-	loadw	0xC0(r12),r0
-	cmpw	r2,r0
-
-l00003A70:
-	shs	r0
-	cmpw	$0,r0
-	beq	00003DE8
-
-l00003A78:
-	cmpw	$2,r11
-	slo	r0
-	cmpw	$0,r0
-	beq	00003DDE
-
-l00003A82:
-	movw	$FFFF,r3
-	addw	r3,r2
-	storw	r3,0xA0(r12)
-	loadd	0x78(r12),(r1,r0)
-	stord	(r1,r0),4(sp)
-	loadd	0x70(r12),r13
-	loadw	0x58(r12),r1
-	storw	r1,2(sp)
-	loadw	0x80(r12),r0
-	loadw	(sp),r1
-	addw	$1,r1
-	storw	r2,0xA(sp)
-	movw	r3,r6
-
-l00003AA6:
-	storw	r1,0xAC(r12)
-	movw	$2,r2
-	addw	r2,r1
-	movzw	r2,(r3,r2)
-	addd	ra,(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r3,r2)
-	ashuw	r8,r0
-	xorw	r0,r2
-	andw	r0,r10
-	storw	r0,0x80(r12)
-	movzw	r0,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	loadd	4(sp),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	loadw	(r5,r4),r7
-	loadw	2(sp),r2
-	andw	r2,r1
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	r13,(r3,r2)
-	storw	r7,(r3,r2)
-	storw	r1,(r5,r4)
-	addw	$FFFF,r9
-	storw	r6,0xA0(r12)
-	addw	$1,r1
-	cmpw	$0,r6
-	bne	00003AA6
-
-l00003AE4:
-	loadw	0xA(sp),r2
-
-l00003AE6:
-	loadw	(sp),r3
-
-l00003AE8:
-	addw	r2,r3
-	storw	r2,0xAC(r12)
-	cmpw	$0,r9
-	beq	000037C2
-
-l00003AF4:
-	loadd	0x98(r12),(r5,r4)
-	movzw	r2,(r3,r2)
-	subd	(r3,r2),(r5,r4)
-	cmpd	$0,(r5,r4)
-	bgt	00004060
-
-l00003B04:
-	andd	$FFFF,(r5,r4)
-
-l00003B0A:
-	loadd	0x60(r12),(r1,r0)
-	addd	(r1,r0),(r5,r4)
-	push	$1,r2
-	movw	$0,r6
-
-;; fn00003B14: 00003B14
-;;   Called from:
-;;     00003704 (in fn000030F2)
-;;     00003B12 (in fn00003A36)
-fn00003B14 proc
-	movd	(r3,r2),r12
-	bal	ra,fn0000B218
-	loadw	0xAC(r12),r0
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r12)
-	loadd	(r12),(r9,r8)
-	loadd	0x38(r9,r8),(r11,r10)
-
-l00003B28:
-	res
-
-;; fn00003B2A: 00003B2A
-;;   Called from:
-;;     00003B26 (in fn00003B14)
-;;     00003B28 (in fn00003B14)
-fn00003B2A proc
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-	loadw	0x14(r11,r10),r0
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-
-;; fn00003B36: 00003B36
-;;   Called from:
-;;     0000370A (in fn000030F2)
-;;     00003B34 (in fn00003B2A)
-;;     00003B34 (in fn00003B14)
-fn00003B36 proc
-	cmpw	r7,r0
-	bhs	fn00003B3C
-
-;; fn00003B3A: 00003B3A
-;;   Called from:
-;;     00003B38 (in fn00003B36)
-;;     00003B38 (in fn00003B36)
-fn00003B3A proc
-	movw	r0,r7
-
-;; fn00003B3C: 00003B3C
-;;   Called from:
-;;     00003AF0 (in fn00003A36)
-;;     00003B38 (in fn00003B36)
-;;     00003B38 (in fn00003B36)
-;;     00003B3A (in fn00003B3A)
-fn00003B3C proc
-	cmpw	$0,r7
-	beq	00003B76
-
-l00003B40:
-	movzw	r7,r13
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r13
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r13
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	00003B76
-
-l00003B72:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l00003B76:
+l000038EE:
 	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r0
+	loadw	4(r1,r0),r0
 	cmpw	$0,r0
-	bne	fn0000372E
+	seq	r0
+	cmpw	$0,r0
+	beq	000037AA
 
-l00003B80:
+l000038FC:
+	cmpw	r3,r8
+	sls	r0
+	movw	$1,r13
+	cmpw	$0,r0
+	bne	000037AC
+
+l00003908:
+	br	000037AA
+
+l0000390C:
+	loadd	0x60(r13),(r3,r2)
+	movw	r10,r6
+	movd	(r5,r4),(r9,r8)
+	bal	ra,fn0000C0EE
+	stord	(r1,r0),0x60(r13)
+	br	0000370E
+
+l00003920:
+	loadd	0x60(r13),(r3,r2)
+	movw	r10,r6
+	movd	(r5,r4),(r9,r8)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r13)
+	br	0000370E
+
+l00003934:
+	cmpw	$0,r10
+	beq	0000371C
+
+l0000393A:
 	movw	$0,r0
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	br	000036EA
 
-l00003B88:
-	movd	(r3,r2),r12
-	bal	ra,fn000030F2
-	loadw	0xB4(r12),r0
-	cmpw	$105,r0
-	blo	0000372C
-
-l00003B9A:
-	loadw	8(sp),r1
-	cmpw	$0,r1
-	beq	00003B80
-
-l00003BA0:
-	loadw	0xAC(r12),r1
-	cmpw	$0,r0
-	beq	00003C66
-
-l00003BA8:
-	cmpw	$2,r0
-	bhs	fn000037D8
-
-l00003BAE:
-	br	0000371C
-00003BB2       C2 55 FF C0 95 F3 0C DF 50 00 1C 9F         .U......P...  
-
-l00003BBE:
-	ord	$9F8C11F6,(r7,r6)
-	movzw	r8,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadd	0x23F0(r12),(r7,r6)
-	addd	(r3,r2),(r7,r6)
-	addw	$1,r1
-	loadd	0x23E0(r12),(r11,r10)
-	addd	(r11,r10),(r5,r4)
-	cmpw	$2,r0
-	blo	000037EC
-
-l00003BDE:
-	movzw	r1,(r1,r0)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	loadb	(r1,r0),r0
-	storw	$0,(r7,r6)
-	storw	r8,0x23EC(r12)
-	storb	r0,(r5,r4)
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	r12,(r1,r0)
-	loadw	0xD4(r1,r0),r2
-	addw	$1,r1
-	storw	r2,0xD4(r1,r0)
-	loadw	0x23E8(r12),r0
-	addw	$FFFF,r9
-	loadw	0x23EC(r12),r1
-	cmpw	r0,r1
-	seq	r9
-	loadw	0xB4(r12),r11
-	addw	$FFFF,r9
-	storw	r11,0xB4(r12)
-	loadw	0xAC(r12),r2
-	addw	$1,r1
-	storw	r2,0xAC(r12)
-	cmpw	$0,r9
-	beq	0000368C
-
-l00003C2A:
-	br	000039C0
-00003C2E                                           0F 90               ..
+l00003940:
+	storw	r10,(sp)
+	movw	r10,r3
+	br	0000362E
+00003948                         9D 01 67 01 BF 60 F4 FF         ..g..`..
+00003950 2C 55 4F D4 BC 9F 5A 00 BB 52 05 01 B0 18 2C 02 ,UO...Z..R....,.
+00003960 1C 9F 56 00 24 5A 14 33 44 5F 2C AF 30 00 42 61 ..V.$Z.3D_,.0.Ba
+00003970 22 B0 22 5D 3C 9F 48 00 0C 9F 40 00 30 45 02 2B "."]<.H...@.0E.+
+00003980 0C 9F 46 00 02 23 2C DF 40 00 22 5F 22 61 4C AF ..F..#,.@."_"aL.
+00003990 3C 00 42 61 42 90 6C 9F 2C 00 16 23 66 5F 8C AF <.BaB.l.,..#f_..
+000039A0 38 00 66 61 86 61 46 D0 12 D0 04 52 0A 10 0C 9F 8.fa.aF....R....
+000039B0 28 00 B0 32 FA FE 12 5B 42 3B 02 53 B0 18 F6 01 (..2...[B;.S....
+000039C0 0C 9F 50 00 8C 9F F6 11 84 5F 42 55 42 61 6C AF ..P......_BUBal.
+000039D0 F8 11 26 61 18 32 AC AF F0 11 A4 61 20 52 B0 18 ..&a.2.....a R..
+000039E0 00 02 B2 58 FD FF 02 31 0C 9F 58 00 01 3B 10 5B ...X...1..X..;.[
+000039F0 16 D0 8C DF F6 11 24 F0 90 32 22 5D 22 5E 20 04 ......$..2"]"^ .
+00003A00 2E F3 22 B0 22 5D 22 5F 22 4C C2 61 12 9F 6E 04 .."."]"_"L.a..n.
+00003A10 11 32 12 DF 6E 04 B0 52 FF 00 B4 10 90 49 B0 32 .2..n..R.....I.2
+00003A20 00 01 00 5F 00 04 2E F4 00 B0 00 5D 00 5E 20 4C ..._.......].^ L
+00003A30 C0 61 20 9F 5E 09 12 32 20 DF 5E 09 0C 9F F4 11 .a .^..2 .^.....
+00003A40 90 32 1C 9F F6 11 10 53 09 08 2C 9F 50 00 BC 9F .2.....S..,.P...
+00003A50 5A 00 2B 3B BC DF 5A 00 3C 9F 56 00 3F D0 EC AF Z.+;..Z.<.V.?...
+00003A60 30 00 8C 9F 48 00 AC 9F 46 00 0C 9F 60 00 02 53 0...H...F...`..S
+00003A70 B0 08 00 52 00 18 BA 01 2B 52 A0 08 00 52 00 18 ...R....+R...R..
+00003A80 B0 01 93 5A 23 33 3C DF 50 00 0C AF 3C 00 0F E2 ...Z#3<.P...<...
+00003A90 DC AF 38 00 1C 9F 2C 00 1F D1 0C 9F 40 00 1F 90 ..8...,.....@...
+00003AA0 11 32 2F D5 36 5B 1C DF 56 00 22 5A 12 33 22 5F .2/.6[..V."Z.3"_
+00003AB0 E2 61 22 B0 22 5D 80 45 20 2B A0 23 0C DF 40 00 .a"."].E +.#..@.
+00003AC0 04 5F 44 61 2F A2 24 61 74 90 2F 91 12 23 22 5F ._Da/.$at./..#"_
+00003AD0 22 61 D2 61 72 D0 14 D0 96 32 6C DF 50 00 11 32 "a.ar....2l.P..2
+00003AE0 06 52 12 1E 2F 95 3F 90 32 33 2C DF 56 00 09 52 .R../.?.23,.V..R
+00003AF0 00 18 69 FE 4C AF 4C 00 22 5F 14 00 42 C0 04 56 ..i.L.L."_..B..V
+00003B00 60 18 B0 02 44 00 00 00 FF FF 0C AF 30 00 04 61 `...D.......0..a
+00003B10 12 01 06 5A C2 55 00 C0 02 77 0C 9F 56 00 00 5F ...Z.U...w..V.._
+00003B20 0C EF 4C 00 8C A0 A8 AF 1C 00 A2 55 00 C0 70 75 ..L........U..pu
+00003B30 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0C 11 ..x.O`.S...[.R..
+00003B40 7D 5F 28 A6 4A A8 1D 01 00 C0 DC 9F 08 A6 D0 61 }_(.J..........a
+00003B50 08 E6 0A A8 D0 61 0A E8 08 AA D0 61 08 EA 08 98 .....a.....a....
+00003B60 70 3B 08 D8 0A AA 14 00 D0 C0 0A EA 4F 60 00 56 p;..........O`.V
+00003B70 13 10 0A A4 0A E8 0C A0 00 98 00 52 10 18 D9 FD ...........R....
+00003B80 00 5A CF 60 67 02 9D 03 C2 55 FF C0 69 F5 0C 9F .Z.`g....U..i...
+00003B90 5A 00 B0 52 05 01 A0 18 CB FD 1F 94 01 52 01 1F Z..R.........R..
+00003BA0 1C 9F 56 00 00 52 00 16 20 52 B0 18 17 FE E0 18 ..V..R.. R......
+00003BB0 B7 FD C2 55 FF C0 95 F3 0C DF 50 00 1C 9F 56 00 ...U......P...V.
+00003BC0 8C 9F F6 11 84 5F 42 55 42 61 6C AF F8 11 26 61 ....._BUBal...&a
+00003BD0 18 32 AC AF F0 11 A4 61 20 52 A0 18 09 FE 10 5F .2.....a R....._
+00003BE0 2C AF 30 00 20 61 00 B0 06 C2 8C DF F6 11 04 F0 ,.0. a..........
+00003BF0 00 5D 00 5F 20 4C C0 61 20 9F 6A 00 12 32 20 DF .]._ L.a .j..2 .
+00003C00 6A 00 0C 9F F4 11 90 32 1C 9F F6 11 10 53 09 08 j......2.....S..
+00003C10 BC 9F 5A 00 9B 32 BC DF 5A 00 2C 9F 56 00 12 32 ..Z..2..Z.,.V..2
+00003C20 2C DF 56 00 09 52 00 18 33 FD E0 18 CB FE 0F 90 ,.V..R..3.......
 00003C30 02 33 2C DF 56 00 0C C3 50 00 20 5F E0 61 30 B0 .3,.V...P. _.a0.
 00003C40 33 5D 3C DF 40 00 10 5A 20 33 00 5F 0E 61 0E B0 3]<.@..Z 3._.a..
-00003C50 00 5D 83 45 30 2B 0A 23 AC DF 40 00 09 52       .].E0+.#..@..R  
-
-l00003C5E:
-	beq	00003654
-
-l00003C62:
-	br	00003988
-
-l00003C66:
-	movw	r1,r0
-	cmpw	$2,r1
-	blo	00003D10
-
-l00003C6C:
-	storw	r0,0x240C(r12)
-
-l00003C6E:
-	beq	00003CBA
-
-;; fn00003C70: 00003C70
-;;   Called from:
-;;     00003C6C (in fn000030F2)
-;;     00003C6E (in fn0000356E)
-fn00003C70 proc
-	loadw	8(sp),r2
-	cmpw	$4,r2
-	beq	fn00003D1C
-
-;; fn00003C76: 00003C76
-;;   Called from:
-;;     00003C74 (in fn00003C70)
-;;     00003D1A (in fn000030F2)
-fn00003C76 proc
-	loadw	0x23EC(r12),r2
-
-l00003C78:
-	br	00003CA4
-00003C7A                               10 5A 02 52 02 18           .Z.R..
+00003C50 00 5D 83 45 30 2B 0A 23 AC DF 40 00 09 52 00 18 .].E0+.#..@..R..
+00003C60 FB FC E0 18 93 FE 10 5B 21 52 A3 15 0C DF 06 12 .......[!R......
+00003C70 2F 94 42 52 04 15 2C 9F F6 11 10 5A 02 52 02 18 /.BR..,....Z.R..
 00003C80 4C AF 4C 00 10 5F 14 00 40 C0 04 56 60 18 2C 01 L.L.._..@..V`.,.
 00003C90 44 00 00 00 FF FF 2C AF 30 00 24 61 10 01 06 5A D.....,.0.$a...Z
-00003CA0 C2 55 00 C0                                     .U..            
-
-l00003CA4:
-	sbitw	$6,0x69F0C(r7)
-	ord	$5F00EF0C,(r7,r6)
-	andd	$A08CAFA8,r12
-	res
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-
-l00003CBA:
-	sbitb	$4,(0x049A0A)
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-	cmpw	r7,r0
-	bhs	00003CC8
-
-l00003CC6:
-	movw	r0,r7
-
-l00003CC8:
-	cmpw	$0,r7
-	beq	00003D02
-
-l00003CCC:
-	movzw	r7,r13
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r13
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r13
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	00003D02
-
-l00003CFE:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l00003D02:
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r0
-	cmpw	$0,r0
-	sne	r0
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00003D10:
-	movw	$2,r0
-	storw	r0,0x240C(r12)
-	loadw	8(sp),r2
-	cmpw	$4,r2
-	bne	fn00003C76
-
-;; fn00003D1C: 00003D1C
-;;   Called from:
-;;     00003C74 (in fn00003C70)
-;;     00003D1A (in fn000030F2)
-fn00003D1C proc
-	loadd	0x98(r12),(r5,r4)
-	movzw	r1,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	bgt	00003DBE
-
-l00003D2A:
-	andd	$FFFF,(r5,r4)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-
-l00003D36:
-	push	$1,r0
-	movw	$1,r6
-	movd	(r3,r2),r12
-	bal	ra,fn0000B218
-
-l00003D40:
-	loadw	0xAC(r12),r0
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r12)
-
-l00003D4A:
-	loadd	(r12),(r9,r8)
-	loadd	0x38(r9,r8),(r11,r10)
-
-l00003D50:
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-	loadw	0x14(r11,r10),r0
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-	cmpw	r7,r0
-	bhs	00003D62
-
-l00003D60:
-	movw	r0,r7
-
-l00003D62:
-	cmpw	$0,r7
-	beq	00003D9C
-
-l00003D66:
-	movzw	r7,r13
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r13
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r13
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	00003D9C
-
-l00003D98:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l00003D9C:
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r1
-	movw	$3,r0
-	cmpw	$0,r1
-	bne	00003962
-
-l00003DA8:
-	movw	$2,r0
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00003DB0 04 5A 45 5B E0 18 5D FD 04 54 E0 18 E3 FE       .ZE[..]..T....  
-
-l00003DBE:
-	movd	$0,(r5,r4)
-	br	00003D36
-00003DC2       9D 01 67 01 BF 60 F8 FF 2C 55 4F D3 72 9F   ..g..`..,UO.r.
-00003DD0 5A 00 2D 5A                                     Z.-Z            
-
-l00003DD4:
-	cmpw	$105,r7
-	bhs	00004018
-
-l00003DDC:
-	loadw	0xAC(r12),r1
-
-l00003DDE:
-	ord	$9F5C0050,(r7,r6)
-
-l00003DE0:
-	loadw	0xA0(r12),r5
-	loadw	0xB0(r12),r10
-
-l00003DE8:
-	movw	$2,r6
-	addw	r6,r1
-	movzw	r6,(r7,r6)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r7,r6),(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r3,r2)
-	loadw	0x90(r12),r3
-	loadw	0x80(r12),r0
-	ashuw	r3,r0
-	xorw	r2,r0
-	loadw	0x8C(r12),r0
-	andw	r2,r0
-	storw	r2,0x80(r12)
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	loadd	0x78(r12),(r7,r6)
-	addd	(r7,r6),(r3,r2)
-	loadw	(r3,r2),r4
-	loadw	0x58(r12),r6
-	andw	r6,r1
-	movzw	r6,(r7,r6)
-	loadd	0x70(r12),(r9,r8)
-	addd	(r7,r6),(r7,r6)
-	addd	(r9,r8),(r7,r6)
-	storw	r4,(r7,r6)
-	storw	r1,(r3,r2)
-	storw	r5,0xB8(r12)
-	storw	r10,0xA4(r12)
-	storw	$2,0x50(r12)
-	cmpw	$0,r4
-	beq	00003EF4
-
-l00003E3E:
-	loadw	0xC0(r12),r0
-	cmpw	r0,r5
-	bhs	00003EF4
-
-l00003E46:
-	loadw	0x50(r12),r2
-	addw	$FEFA,r11
-	movw	r13,r0
-	movw	r1,r3
-	subw	r3,r4
-	cmpw	r3,r2
-	bhs	00003EDC
-
-l00003E58:
-	cmpw	$2,r5
-	bhs	00003E62
-
-l00003E5C:
-	cmpw	r5,r0
-	bls	000040A2
-
-l00003E62:
-	loadw	0xA8(r12),r0
-	cmpw	$0,r0
-	beq	00003F38
-
-l00003E6A:
-	addw	$FFFF,r9
-	movzw	r1,(r3,r2)
-	loadd	0x60(r12),(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadb	(r1,r0),r0
-	loadw	0x23EC(r12),r1
-	movzw	r1,(r5,r4)
-	loadd	0x23F0(r12),(r3,r2)
-	movd	(r7,r6),(r5,r4)
-	addd	(r5,r4),(r7,r6)
-	addd	(r7,r6),(r3,r2)
-	storw	$0,(r3,r2)
-	loadd	0x23E0(r12),(r3,r2)
-	addw	$1,r1
-	storw	r1,0x23EC(r12)
-	addd	(r5,r4),(r3,r2)
-	storb	r0,(r3,r2)
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	r12,(r1,r0)
-	loadw	0xD4(r1,r0),r2
-	addw	$1,r1
-	storw	r2,0xD4(r1,r0)
-	loadw	0x23E8(r12),r0
-	addw	$FFFF,r9
-	loadw	0x23EC(r12),r1
-	cmpw	r1,r0
-	beq	0000441C
-
-l00003EB8:
-	loadw	0xAC(r12),r0
-	addw	$1,r1
-	storw	r0,0xAC(r12)
-	loadw	0xB4(r12),r7
-	addw	$FFFF,r9
-	storw	r7,0xB4(r12)
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r0
-	cmpw	$0,r0
-	bne	00003DD4
-
-l00003ED4:
-	movw	$0,r0
-	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00003EDC:
-	movd	(r3,r2),r12
-	bal	ra,fn00002F48
-	storw	r0,0xA0(r12)
-	cmpw	$5,r0
-	bhs	00003F50
-
-l00003EEA:
-	loadw	0xB8(r12),r5
-	loadw	0xAC(r12),r1
-	br	00003E58
-
-l00003EF4:
-	movw	r13,r0
-	br	00003E58
-00003EF8                         C2 55 FF C0 F9 F1 0C 9F         .U......
+00003CA0 C2 55 00 C0 76 75 0C 9F 56 00 00 5F 0C EF 4C 00 .U..vu..V.._..L.
+00003CB0 8C A0 A8 AF 1C 00 A2 55 00 C0 E4 73 0A 9A 78 98 .......U...s..x.
+00003CC0 4F 60 07 53 B2 10 07 5B 07 52 0C 11 7D 5F 28 A6 O`.S...[.R..}_(.
+00003CD0 4A A8 1D 01 00 C0 50 9E 08 A6 D0 61 08 E6 0A A8 J.....P....a....
+00003CE0 D0 61 0A E8 08 AA D0 61 08 EA 08 98 70 3B 08 D8 .a.....a....p;..
+00003CF0 0A AA 14 00 D0 C0 0A EA 4F 60 00 56 13 10 0A A4 ........O`.V....
+00003D00 0A E8 0C A0 00 98 00 52 10 08 CF 60 67 02 9D 03 .......R...`g...
+00003D10 20 5A 0C DF 06 12 2F 94 42 52 1E 1A 4C AF 4C 00  Z..../.BR..L.L.
+00003D20 10 5F 14 00 40 C0 04 56 6B 14 44 00 00 00 FF FF ._..@..Vk.D.....
+00003D30 2C AF 30 00 24 61 10 01 16 5A C2 55 00 C0 DC 74 ,.0.$a...Z.U...t
+00003D40 0C 9F 56 00 00 5F 0C EF 4C 00 8C A0 A8 AF 1C 00 ..V.._..L.......
+00003D50 A2 55 00 C0 4A 73 0A 9A 78 98 4F 60 07 53 B2 10 .U..Js..x.O`.S..
+00003D60 07 5B 07 52 0C 11 7D 5F 28 A6 4A A8 1D 01 00 C0 .[.R..}_(.J.....
+00003D70 B6 9D 08 A6 D0 61 08 E6 0A A8 D0 61 0A E8 08 AA .....a.....a....
+00003D80 D0 61 08 EA 08 98 70 3B 08 D8 0A AA 14 00 D0 C0 .a....p;........
+00003D90 0A EA 4F 60 00 56 13 10 0A A4 0A E8 0C A0 10 98 ..O`.V..........
+00003DA0 30 5A 01 52 10 18 DF FD 20 5A CF 60 67 02 9D 03 0Z.R.... Z.`g...
+00003DB0 04 5A 45 5B E0 18 5D FD 04 54 E0 18 E3 FE 04 54 .ZE[..]..T.....T
+00003DC0 EB 1B 9D 01 67 01 BF 60 F8 FF 2C 55 4F D3 72 9F ....g..`..,UO.r.
+00003DD0 5A 00 2D 5A B7 52 05 01 B0 18 20 01 1C 9F 56 00 Z.-Z.R.... ...V.
+00003DE0 5C 9F 50 00 AC 9F 58 00 26 5A 16 33 66 5F 2C AF \.P...X.&Z.3f_,.
+00003DF0 30 00 62 61 22 B0 22 5D 3C 9F 48 00 0C 9F 40 00 0.ba"."]<.H...@.
+00003E00 30 45 02 2B 0C 9F 46 00 02 23 2C DF 40 00 22 5F 0E.+..F..#,.@."_
+00003E10 22 61 6C AF 3C 00 62 61 42 90 6C 9F 2C 00 16 23 "al.<.baB.l.,..#
+00003E20 66 5F 8C AF 38 00 66 61 86 61 46 D0 12 D0 5C DF f_..8.fa.aF...\.
+00003E30 5C 00 AC DF 52 00 2C C3 50 00 04 52 0C 15 0C 9F \...R.,.P..R....
+00003E40 60 00 50 53 B8 15 2C 9F 28 00 B2 32 FA FE D0 5B `.PS..,.(..2...[
+00003E50 13 5B 43 3B 23 53 B3 14 25 52 B4 10 05 53 50 18 .[C;#S..%R...SP.
+00003E60 22 01 0C 9F 54 00 00 52 08 16 91 32 12 5F 0C AF "...T..R...2._..
+00003E70 30 00 20 61 00 B0 1C 9F F6 11 14 5F 2C AF F8 11 0. a......._,...
+00003E80 46 55 46 61 62 61 02 C2 2C AF F0 11 11 32 1C DF FUFaba..,....2..
+00003E90 F6 11 42 61 02 F0 00 5D 00 5F 20 4C C0 61 20 9F ..Ba...]._ L.a .
+00003EA0 6A 00 12 32 20 DF 6A 00 0C 9F F4 11 90 32 1C 9F j..2 .j......2..
+00003EB0 F6 11 01 53 00 18 B4 02 0C 9F 56 00 10 32 0C DF ...S......V..2..
+00003EC0 56 00 7C 9F 5A 00 97 32 7C DF 5A 00 0C A0 00 98 V.|.Z..2|.Z.....
+00003ED0 00 52 11 18 00 5A 8F 60 67 02 9D 03 C2 55 FF C0 .R...Z.`g....U..
+00003EE0 6B F0 0C DF 50 00 50 52 B4 13 5C 9F 5C 00 1C 9F k...P.PR..\.\...
+00003EF0 56 00 E3 1B D0 5B E1 1B C2 55 FF C0 F9 F1 0C 9F V....[...U......
 00003F00 5A 00 B0 52 05 01 A0 18 D7 FE 1F 93 01 52 03 1E Z..R.........R..
 00003F10 00 52 00 18 0A 03 1C 9F 56 00 5C 9F 50 00 AC 9F .R......V.\.P...
 00003F20 58 00 20 52 A0 18 C5 FE 5C DF 5C 00 AC DF 52 00 X. R....\.\...R.
-00003F30 2C C3 50 00 D0 5B E1 19                         ,.P..[..        
-
-l00003F38:
-	storw	$1,0x54(r12)
-	addw	$1,r1
-	storw	r1,0xAC(r12)
-	loadw	0xB4(r12),r7
-	addw	$FFFF,r9
-	storw	r7,0xB4(r12)
-	br	00003C5E
-
-l00003F50:
-	loadw	0xAC(r12),r1
-	loadw	0xB8(r12),r5
-	loadw	0xC8(r12),r2
-	cmpw	$1,r2
-	beq	00003F76
-
-l00003F60:
-	cmpw	$3,r0
-	bne	00003D50
-
-l00003F66:
-	loadw	0xB0(r12),r2
-	movw	r1,r3
-	subw	r3,r2
-	cmpw	$1000,r3
-	bhs	00003D40
-
-l00003F76:
-	storw	$2,0x50(r12)
-	cmpw	$2,r5
-	bhs	00003D4A
-
-l00003F80:
-	loadw	0xB4(r12),r10
-	addw	$FFFD,r11
-	addw	r10,r1
-	movb	$FD,r0
-	addb	r5,r0
-	loadw	0xA4(r12),r0
-	movw	r1,r8
-	subw	r8,r0
-	loadw	0x23EC(r12),r4
-	movzw	r4,(r1,r0)
-	loadd	0x23F0(r12),(r7,r6)
-	movd	(r3,r2),(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	addd	(r7,r6),(r3,r2)
-	movw	$FFFF,r6
-	addw	r6,r8
-	storw	r6,(r3,r2)
-	loadd	0x23E0(r12),(r3,r2)
-	addw	$1,r1
-	storw	r4,0x23EC(r12)
-
-;; fn00003FB8: 00003FB8
-;;   Called from:
-;;     00003FB4 (in fn00003A36)
-;;     00005E7A (in fn00004CD4)
-fn00003FB8 proc
-	addd	(r3,r2),(r1,r0)
-	storb	r5,(r1,r0)
-	addw	$FFFE,r11
-	movzb	r5,(r3,r2)
-	movxw	r2,(r3,r2)
-	addd	$F32E,(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	r12,(r3,r2)
-	loadw	0x8DC(r3,r2),r0
-	addw	$1,r1
-	storw	r0,0x8DC(r3,r2)
-	cmpw	$FF,r8
-	blo	00004410
-
-l00003FE4:
-	movzw	r8,(r2,r1)
-	addd	$F42E,(r2,r1)
-	loadb	(r2,r1),r0
-	movzb	r0,(r1,r0)
-	movxw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	r12,(r1,r0)
-	loadw	0x12BC(r1,r0),r2
-	addw	$1,r1
-	storw	r2,0x12BC(r1,r0)
-	loadw	0x23EC(r12),ra
-	loadw	0x23E8(r12),r0
-	addw	$FFFF,r9
-	storw	r0,(sp)
-	loadw	0xB8(r12),r11
-	loadw	0xB4(r12),r7
-	addw	$1,r1
-	subw	r7,r11
-	storw	r7,0xB4(r12)
-
-l00004018:
-	ord	$5AB8FFFE,(r11,r10)
-
-;; fn0000401A: 0000401A
-;;   Called from:
-;;     00004016 (in fn00003FB8)
-;;     00004018 (in fn00003A36)
-fn0000401A proc
-	movw	$FFFE,r8
-	addw	r8,r11
-	storw	r8,0xB8(r12)
-	loadw	0xAC(r12),r9
-	movw	$1,r6
-	addw	r6,r9
-	storw	r7,4(sp)
-
-;; fn0000402E: 0000402E
-;;   Called from:
-;;     00003460 (in fn000033F8)
-;;     00003572 (in fn0000356E)
-;;     00003612 (in fn0000356E)
-;;     0000364C (in fn0000356E)
-;;     00003652 (in fn0000356E)
-;;     00003D3C (in fn00003D1C)
-;;     00004028 (in fn0000401A)
-;;     0000402C (in fn0000401A)
-;;     00004088 (in fn00003A36)
-fn0000402E proc
-	storw	r6,0xAC(r12)
-	cmpw	r10,r6
-	bhi	00004248
-
-l00004038:
-	movw	$2,r2
-	addw	r2,r6
-	movzw	r2,(r3,r2)
-	loadd	0x60(r12),(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadb	(r1,r0),r2
-	movzb	r2,(r3,r2)
-	loadw	0x90(r12),r1
-	loadw	0x80(r12),r0
-	ashuw	r1,r0
-	xorw	r2,r0
-	loadw	0x8C(r12),r0
-	andw	r2,r0
-	storw	r2,0x80(r12)
-	movzw	r2,(r3,r2)
-
-l00004060:
-	addd	(r3,r2),(r3,r2)
-	loadd	0x78(r12),(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	loadw	(r3,r2),r7
-	loadw	0x58(r12),r0
-	andw	r0,r6
-	movzw	r0,(r1,r0)
-	loadd	0x70(r12),(r5,r4)
-	addd	(r1,r0),(r1,r0)
-	addd	(r5,r4),(r1,r0)
-	storw	r7,(r1,r0)
-	storw	r6,(r3,r2)
-	addw	$FFFF,r9
-	storw	r8,0xB8(r12)
-	addw	$1,r1
-	cmpw	$0,r8
-	bne	fn0000402E
-
-l0000408A:
-	loadw	4(sp),r7
-	storw	$0,0x54(r12)
-	storw	$2,0x50(r12)
-	addw	r11,r9
-	addw	$FFFF,r9
-	storw	r11,0xAC(r12)
-	loadw	(sp),r1
-	cmpw	ra,r1
-	bne	00003B0A
-
-l000040A2:
-	storb	r3,0xD(r6,r5)
-
-l000040A4:
-	loadd	0x98(r12),(r5,r4)
-	movzw	r11,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	bgt	00004378
-
-l000040B4:
-	andd	$FFFF,(r5,r4)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	push	$1,r0
-	movw	$0,r6
-	movd	(r3,r2),r12
-	bal	ra,fn0000B218
-	loadw	0xAC(r12),r0
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r12)
-	loadd	(r12),(r9,r8)
-	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-	loadw	0x14(r11,r10),r0
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-	cmpw	r7,r0
-	bhs	000040EC
-
-l000040EA:
-	movw	r0,r7
-
-l000040EC:
-	cmpw	$0,r7
-	beq	0000412C
-
-l000040F0:
-	movzw	r7,(r3,r2)
-	stord	(r3,r2),(sp)
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	loadd	(sp),(r1,r0)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	loadd	4(sp),(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),(r3,r2)
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	0000412C
-
-l00004128:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l0000412C:
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r0
-	cmpw	$0,r0
-	beq	00003C78
-
-l00004136:
-	loadw	0xB4(r12),r7
-	br	00003A70
-0000413E                                           98 32               .2
+00003F30 2C C3 50 00 D0 5B E1 19 1C C3 54 00 11 32 1C DF ,.P..[....T..2..
+00003F40 56 00 7C 9F 5A 00 97 32 7C DF 5A 00 E0 18 89 FE V.|.Z..2|.Z.....
+00003F50 1C 9F 56 00 5C 9F 5C 00 2C 9F 64 00 12 52 0C 10 ..V.\.\.,.d..R..
+00003F60 30 52 10 18 F7 FE 2C 9F 58 00 13 5B 23 3B B3 52 0R....,.X..[#;.R
+00003F70 00 10 B0 18 E7 FE 2C C3 50 00 25 52 B0 18 E7 FE ......,.P.%R....
+00003F80 AC 9F 5A 00 BA 32 FD FF 1A 33 B0 58 FD FF 05 31 ..Z..2...3.X...1
+00003F90 0C 9F 52 00 18 5B 08 3B 4C 9F F6 11 40 5F 6C AF ..R..[.;L...@_l.
+00003FA0 F8 11 02 55 02 61 62 61 96 5A 86 33 62 D0 2C AF ...U.aba.Z.3b.,.
+00003FB0 F0 11 14 32 4C DF F6 11 20 61 50 F0 B8 32 FE FF ...2L... aP..2..
+00003FC0 52 5D 22 5E 20 04 2E F3 22 B0 22 5D 22 5F 22 4C R]"^ ..."."]"_"L
+00003FD0 C2 61 02 9F 6E 04 10 32 02 DF 6E 04 B8 52 FF 00 .a..n..2..n..R..
+00003FE0 A0 18 18 02 81 5F 10 04 2E F4 01 B0 00 5D 00 5E ....._.......].^
+00003FF0 20 4C C0 61 20 9F 5E 09 12 32 20 DF 5E 09 EC 9F  L.a .^..2 .^...
+00004000 F6 11 0C 9F F4 11 90 32 0F D0 BC 9F 5C 00 7C 9F .......2....\.|.
+00004010 5A 00 17 32 B7 3B 7C DF 5A 00 B8 5A FE FF B8 33 Z..2.;|.Z..Z...3
+00004020 8C DF 5C 00 9C 9F 56 00 16 5A 96 33 7F D2 6C DF ..\...V..Z.3..l.
+00004030 56 00 6A 53 40 18 0A 01 22 5A 62 33 22 5F 0C AF V.jS@..."Zb3"_..
+00004040 30 00 20 61 20 B0 22 5D 1C 9F 48 00 0C 9F 40 00 0. a ."]..H...@.
+00004050 10 45 02 2B 0C 9F 46 00 02 23 2C DF 40 00 22 5F .E.+..F..#,.@."_
+00004060 22 61 0C AF 3C 00 02 61 72 90 0C 9F 2C 00 60 23 "a..<..ar...,.`#
+00004070 00 5F 4C AF 38 00 00 61 40 61 70 D0 62 D0 98 32 ._L.8..a@ap.b..2
+00004080 8C DF 5C 00 16 32 08 52 13 1D 7F 92 0C C3 54 00 ..\..2.R......T.
+00004090 2C C3 50 00 9B 33 9B 32 BC DF 56 00 1F 90 1E 53 ,.P..3.2..V....S
+000040A0 10 18 35 FD 4C AF 4C 00 B0 5F 14 00 40 C0 04 56 ..5.L.L.._..@..V
+000040B0 60 18 64 01 44 00 00 00 FF FF 2C AF 30 00 24 61 `.d.D.....,.0.$a
+000040C0 10 01 06 5A C2 55 00 C0 52 71 0C 9F 56 00 00 5F ...Z.U..Rq..V.._
+000040D0 0C EF 4C 00 8C A0 A8 AF 1C 00 A2 55 00 C0 C0 6F ..L........U...o
+000040E0 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0F 11 ..x.O`.S...[.R..
+000040F0 72 5F 2F E0 28 A6 4A A8 0F A0 10 01 00 C0 28 9A r_/.(.J.......(.
+00004100 08 A6 2F A2 20 61 08 E6 0A A8 20 61 0A E8 08 AA ../. a.... a....
+00004110 20 61 08 EA 08 98 70 3B 08 D8 0A AA 14 00 20 C0  a....p;...... .
+00004120 0A EA 4F 60 00 56 13 10 0A A4 0A E8 0C A0 00 98 ..O`.V..........
+00004130 00 52 00 18 A3 FD 7C 9F 5A 00 E0 18 9B FC 98 32 .R....|.Z......2
 00004140 8C DF 5C 00 16 32 08 52 10 18 E7 FE 7F 92 0C C3 ..\..2.R........
 00004150 54 00 2C C3 50 00 9B 33 9B 32 BC DF 56 00 1F 90 T.,.P..3.2..V...
 00004160 1E 53 10 18 73 FC EF 19 4C AF 4C 00 0C 9F 56 00 .S..s...L.L...V.
@@ -3569,411 +2931,59 @@ l00004136:
 00004210 45 5B EA 1B 04 5A 45 5B E0 18 A9 FE 2C 9F 56 00 E[...ZE[....,.V.
 00004220 1C 9F 54 00 01 52 04 12 92 32 22 5F 4C AF 30 00 ..T..R...2"_L.0.
 00004230 42 61 12 B0 8C 9F F6 11 82 5F 4C AF F8 11 26 55 Ba......._L...&U
-00004240 26 61 64 61 04 D0 4C AF                         &ada..L.        
-
-l00004248:
-	br	00004268
-0000424A                               18 32 8C DF F6 11           .2....
+00004240 26 61 64 61 04 D0 4C AF F0 11 18 32 8C DF F6 11 &ada..L....2....
 00004250 42 61 12 F0 12 5D 22 5F 22 4C C2 61 12 9F 6A 00 Ba...]"_"L.a..j.
-00004260 11 32 12 DF 6A 00 0C DF                         .2..j...        
-
-l00004268:
-	ord	$9F2C0056,(r5,r4)
-	movw	r2,r0
-	cmpw	$2,r2
-	blo	0000431A
-
-l00004274:
-	storw	r0,0x240C(r12)
-	loadw	6(sp),r3
-	cmpw	$4,r3
-	beq	00004326
-
-l0000427E:
-	loadw	0x23EC(r12),r1
-	movw	$1,r0
-	cmpw	$0,r1
-	beq	00003B28
-
-l0000428A:
-	loadd	0x98(r12),(r5,r4)
-	movzw	r2,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	bgt	000044DE
-
-l0000429A:
-	andd	$FFFF,(r5,r4)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	push	$1,r0
-	movw	$0,r6
-	movd	(r3,r2),r12
-	bal	ra,fn0000B218
-	loadw	0xAC(r12),r0
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r12)
-	loadd	(r12),(r9,r8)
-	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-	loadw	0x14(r11,r10),r0
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-	cmpw	r7,r0
-	bhs	000042D2
-
-l000042D0:
-	movw	r0,r7
-
-l000042D2:
-	cmpw	$0,r7
-	beq	0000430C
-
-l000042D6:
-	movzw	r7,r13
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r13
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r13
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	0000430C
-
-l00004308:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l0000430C:
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r0
-	cmpw	$0,r0
-	sne	r0
-	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l0000431A:
-	movw	$2,r0
-	storw	r0,0x240C(r12)
-	loadw	6(sp),r3
-	cmpw	$4,r3
-	bne	0000427E
-
-l00004326:
-	loadd	0x98(r12),(r5,r4)
-	movzw	r2,(r1,r0)
-	subd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	bgt	000043C0
-
-l00004334:
-	andd	$FFFF,(r5,r4)
-	loadd	0x60(r12),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-
-l00004340:
-	push	$1,r0
-	movw	$1,r6
-	movd	(r3,r2),r12
-	bal	ra,fn0000B218
-	loadw	0xAC(r12),r0
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r12)
-	loadd	(r12),(r9,r8)
-	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn0000B09C
-	loadw	0x14(r11,r10),r0
-	loadw	0x10(r9,r8),r7
-	addd	$4,sp
-	cmpw	r7,r0
-	bhs	0000436C
-
-l0000436A:
-	movw	r0,r7
-
-l0000436C:
-	cmpw	$0,r7
-	beq	000043A6
-
-l00004370:
-	movzw	r7,r13
-	loadd	0xC(r9,r8),(r3,r2)
-	loadd	0x10(r11,r10),(r5,r4)
-	push	$1,r13
-
-l00004378:
-	bal	ra,fn0000DB24
-	loadd	0xC(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0xC(r9,r8)
-	loadd	0x10(r11,r10),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-	loadd	0x14(r9,r8),(r1,r0)
-	addd	r13,(r1,r0)
-	stord	(r1,r0),0x14(r9,r8)
-	loadw	0x10(r9,r8),r0
-	subw	r0,r7
-	storw	r0,0x10(r9,r8)
-	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r13
-	stord	(r1,r0),0x14(r11,r10)
-	addd	$4,sp
-	cmpd	$0,(r1,r0)
-	bne	000043A6
-
-l000043A2:
-	loadd	8(r11,r10),(r1,r0)
-	stord	(r1,r0),0x10(r11,r10)
-
-l000043A6:
-	loadd	(r12),(r1,r0)
-	loadw	0x10(r1,r0),r1
-	movw	$3,r0
-	cmpw	$0,r1
-	bne	00003A00
-
-l000043B2:
-	movw	$2,r0
-	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-000043BA                               04 54 E0 18 EB FE           .T....
-
-l000043C0:
-	movd	$0,(r5,r4)
-	br	00004340
-000043C4             9D 01 67 01 BF 60 F0 FF 2F E2 48 55     ..g..`../.HU
+00004260 11 32 12 DF 6A 00 0C DF 54 00 2C 9F 56 00 20 5B .2..j...T.,.V. [
+00004270 22 52 A4 15 0C DF 06 12 3F 93 43 52 05 15 1C 9F "R......?.CR....
+00004280 F6 11 10 5A 01 52 00 18 51 FC 4C AF 4C 00 20 5F ...Z.R..Q.L.L. _
+00004290 14 00 40 C0 04 56 60 18 24 01 44 00 00 00 FF FF ..@..V`.$.D.....
+000042A0 2C AF 30 00 24 61 10 01 06 5A C2 55 00 C0 6C 6F ,.0.$a...Z.U..lo
+000042B0 0C 9F 56 00 00 5F 0C EF 4C 00 8C A0 A8 AF 1C 00 ..V.._..L.......
+000042C0 A2 55 00 C0 DA 6D 0A 9A 78 98 4F 60 07 53 B2 10 .U...m..x.O`.S..
+000042D0 07 5B 07 52 0C 11 7D 5F 28 A6 4A A8 1D 01 00 C0 .[.R..}_(.J.....
+000042E0 46 98 08 A6 D0 61 08 E6 0A A8 D0 61 0A E8 08 AA F....a.....a....
+000042F0 D0 61 08 EA 08 98 70 3B 08 D8 0A AA 14 00 D0 C0 .a....p;........
+00004300 0A EA 4F 60 00 56 13 10 0A A4 0A E8 0C A0 00 98 ..O`.V..........
+00004310 00 52 10 08 8F 60 67 02 9D 03 20 5A 0C DF 06 12 .R...`g... Z....
+00004320 3F 93 43 52 1D 1A 4C AF 4C 00 20 5F 14 00 40 C0 ?.CR..L.L. _..@.
+00004330 04 56 67 14 44 00 00 00 FF FF 2C AF 30 00 24 61 .Vg.D.....,.0.$a
+00004340 10 01 16 5A C2 55 00 C0 D2 6E 0C 9F 56 00 00 5F ...Z.U...n..V.._
+00004350 0C EF 4C 00 8C A0 A8 AF 1C 00 A2 55 00 C0 40 6D ..L........U..@m
+00004360 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0C 11 ..x.O`.S...[.R..
+00004370 7D 5F 28 A6 4A A8 1D 01 00 C0 AC 97 08 A6 D0 61 }_(.J..........a
+00004380 08 E6 0A A8 D0 61 0A E8 08 AA D0 61 08 EA 08 98 .....a.....a....
+00004390 70 3B 08 D8 0A AA 14 00 D0 C0 0A EA 4F 60 00 56 p;..........O`.V
+000043A0 13 10 0A A4 0A E8 0C A0 10 98 30 5A 01 52 10 18 ..........0Z.R..
+000043B0 29 FB 20 5A 8F 60 67 02 9D 03 04 54 E0 18 EB FE ). Z.`g....T....
+000043C0 04 54 EF 1B 9D 01 67 01 BF 60 F0 FF 2F E2 48 55 .T....g..`../.HU
 000043D0 67 5B 02 56 00 18 BA 01 02 AF 20 00 00 56 00 18 g[.V...... ..V..
 000043E0 B0 01 02 AF 24 00 00 56 00 18 A6 01 D2 AF 1C 00 ....$..V........
 000043F0 0D 56 00 18 9C 01 24 55 2D A0 B0 5A FE FF 24 57 .V....$U-..Z..$W
-00004400 05 10                                           ..              
-
-l00004402:
-	addd	$10,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000440A                               2D 92 B2 52 2A 00           -..R*.
-
-l00004410:
-	sne	r3
-	cmpw	$45,r2
-	sne	r1
-	andb	r1,r3
-	cmpw	$5B,r2
-
-l0000441C:
-	ord	$8132131,(r12_l,r11)
-
-;; fn0000441E: 0000441E
-;;   Called from:
-;;     0000441A (in fn00003FB8)
-;;     0000441C (in fn00003A36)
-fn0000441E proc
-	sne	r3
-	andb	r1,r3
-	cmpw	$67,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$71,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$29A,r2
-	sne	r3
-	andb	r1,r3
-	cmpb	$0,r1
-	beq	fn00004450
-
-;; fn0000443E: 0000443E
-;;   Called from:
-;;     00004438 (in fn0000441E)
-;;     0000443C (in fn0000441E)
-fn0000443E proc
-	movw	$FFC7,r1
-	addw	r1,r2
-	andw	$FFEF,r11
-	cmpw	$0,r1
-	sne	r1
-	cmpw	$0,r1
-	bne	00004402
-
-;; fn00004450: 00004450
-;;   Called from:
-;;     00004296 (in fn0000402E)
-;;     00004438 (in fn0000441E)
-;;     0000443C (in fn0000441E)
-;;     0000444E (in fn0000443E)
-;;     0000444E (in fn0000443E)
-fn00004450 proc
-	cmpd	$0,(r9,r8)
-	beq	fn000046CA
-
-l00004456:
-	loadw	0x18(r13),r5
-	storw	r5,2(sp)
-	cmpw	$2,r5
-	beq	fn000046C0
-
-l00004460:
-	cmpw	$1,r5
-	beq	fn000046D2
-
-l00004466:
-	loadw	0xB4(r13),r1
-	movw	$FFFE,r0
-	cmpw	$0,r1
-	bne	00004402
-
-l00004472:
-	storw	r1,0x18(r13)
-	loadw	0x50(r13),r0
-	cmpw	r0,r7
-	blo	000044B6
-
-l0000447C:
-	cmpw	$0,r5
-	bne	000044AE
-
-l00004480:
-	movw	r5,r4
-	loadd	0x78(r13),(r3,r2)
-	loadw	0x84(r13),r5
-	addw	$FFFF,r9
-	movzw	r5,(r6,r5)
-	addd	(r6,r5),(r6,r5)
-	movd	(r1,r0),(r3,r2)
-	addd	(r6,r5),(r1,r0)
-	storw	r4,(r1,r0)
-	bal	ra,fn0000DB44
-	loadw	2(sp),r5
-	storw	r5,0xAC(r13)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x98(r13)
-	storw	r5,0x240C(r13)
-	loadw	0x50(r13),r0
-
-l000044AE:
-	subw	r7,r0
-	movzw	r7,(r3,r2)
-	addd	(r3,r2),(r9,r8)
-	movw	r0,r7
-
-l000044B6:
-	loadd	4(sp),(r1,r0)
-	loadw	4(r1,r0),r1
-	storw	r1,8(sp)
-	loadd	4(sp),(r3,r2)
-	loadd	(r3,r2),(r4,r3)
-	stord	(r4,r3),0xC(sp)
-	loadd	4(sp),(r5,r4)
-	storw	r7,4(r5,r4)
-	stord	(r9,r8),(r5,r4)
-	movd	(r3,r2),r13
-	bal	ra,fn000030F2
-	loadw	0xB4(r13),r3
-	cmpw	$2,r3
-	bhs	00004552
-
-l000044D6:
-	movw	r3,r9
-
-l000044D8:
-	loadw	0xAC(r13),r1
-	loadw	0x90(r13),r7
-
-l000044DE:
-	andd	$AFED0030,(r9,r8)
-	loadw	0x8C(r13),r5
-	storw	r5,(sp)
-	loadd	0x78(r13),(r11,r10)
-	loadd	0x70(r13),r12
-	loadw	0x58(r13),r6
-	loadw	0x80(r13),r0
-	movw	$FFFE,r2
-	addw	r2,r1
-	addw	r9,r2
-	movw	r7,r8
-	movw	r6,r7
-
-l00004506:
-	movw	$2,r2
-	addw	r2,r1
-	movzw	r2,(r3,r2)
-	addd	ra,(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r3,r2)
-	ashuw	r8,r0
-	xorw	r0,r2
-	loadw	(sp),r2
-	andw	r0,r2
-	storw	r0,0x80(r13)
-	movzw	r0,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	addd	(r11,r10),(r5,r4)
-	loadw	(r5,r4),r6
-	movw	r7,r2
-	andw	r2,r1
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	r12,(r3,r2)
-	storw	r6,(r3,r2)
-	storw	r1,(r5,r4)
-	addw	$1,r1
-	cmpw	r1,r9
-	bne	00004506
-
-l0000453A:
-	storw	r1,0xAC(r13)
-	storw	$2,0x5A(r13)
-	movd	(r3,r2),r13
-	bal	ra,fn000030F2
-	loadw	0xB4(r13),r9
-	cmpw	$2,r9
-	blo	000044D8
-
-l00004550:
-	movw	r9,r3
-
-l00004552:
-	loadw	0xAC(r13),r0
-	addw	r0,r3
-	storw	r0,0xAC(r13)
-	movzw	r0,(r1,r0)
-	stord	(r1,r0),0x98(r13)
-	storw	r3,0x240C(r13)
-	storw	$0,0x5A(r13)
-	storw	$2,0x5C(r13)
-	storw	$2,0x50(r13)
-	storw	$0,0x54(r13)
-	loadd	0xC(sp),(r1,r0)
-	loadd	4(sp),(r4,r3)
-	stord	(r1,r0),(r4,r3)
-	loadw	8(sp),r1
-	storw	r1,4(r4,r3)
-	loadw	2(sp),r2
-	storw	r2,0x18(r13)
-	movw	$0,r0
-	addd	$10,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000458E                                           B0 5A               .Z
+00004400 05 10 BF 60 10 00 67 02 9D 03 2D 92 B2 52 2A 00 ...`..g...-..R*.
+00004410 13 08 B2 52 45 00 11 08 31 21 B2 52 5B 00 13 08 ...RE...1!.R[...
+00004420 31 21 B2 52 67 00 13 08 31 21 B2 52 71 00 13 08 1!.Rg...1!.Rq...
+00004430 31 21 B2 52 9A 02 13 08 31 21 01 50 0A 10 B1 5A 1!.R....1!.P...Z
+00004440 C7 FF 21 33 B1 22 EF FF 01 52 11 08 01 52 1A 1D ..!3."...R...R..
+00004450 08 56 00 18 3C 01 5D 9C 5F D1 25 52 00 18 32 01 .V..<.]._.%R..2.
+00004460 15 52 00 18 38 01 1D 9F 5A 00 B0 5A FE FF 01 52 .R..8...Z..Z...R
+00004470 19 1C 1D DC 0D 9F 28 00 70 53 AE 11 05 52 18 11 ......(.pS...R..
+00004480 54 5B 2D AF 3C 00 5D 9F 42 00 95 32 55 5F 55 61 T[-.<.].B..2U_Ua
+00004490 20 55 50 61 40 D0 00 C0 AE 96 5F 91 5D DF 56 00  UPa@....._.].V.
+000044A0 00 54 0D EF 4C 00 5D DF 06 12 0D 9F 28 00 07 3B .T..L.].....(..;
+000044B0 72 5F 28 61 07 5B 0F A2 10 92 1F D4 2F A2 32 A0 r_(a.[....../.2.
+000044C0 3F E6 4F A2 74 D2 84 E0 D2 55 FF C0 29 EC 3D 9F ?.O.t....U..).=.
+000044D0 5A 00 23 52 BF 13 39 5B 1D 9F 56 00 7D 9F 48 00 Z.#R..9[..V.}.H.
+000044E0 ED AF 30 00 5D 9F 46 00 5F D0 AD AF 3C 00 CD AF ..0.].F._...<...
+000044F0 38 00 6D 9F 2C 00 0D 9F 40 00 B2 5A FE FF 12 33 8.m.,...@..Z...3
+00004500 29 33 78 5B 67 5B 22 5A 12 33 22 5F E2 61 22 B0 )3x[g["Z.3"_.a".
+00004510 22 5D 80 45 20 2B 2F 90 20 23 0D DF 40 00 04 5F "].E +/. #..@.._
+00004520 44 61 A4 61 64 90 72 5B 12 23 22 5F 22 61 C2 61 Da.ad.r[.#"_"a.a
+00004530 62 D0 14 D0 11 32 91 53 17 1E 1D DF 56 00 2D C3 b....2.S....V.-.
+00004540 5A 00 D2 55 FF C0 AF EB 9D 9F 5A 00 29 52 A5 1C Z..U......Z.)R..
+00004550 93 5B 0D 9F 56 00 30 33 0D DF 56 00 00 5F 0D EF .[..V.03..V.._..
+00004560 4C 00 3D DF 06 12 0D C3 5A 00 2D C3 5C 00 2D C3 L.=.....Z.-.\.-.
+00004570 50 00 0D C3 54 00 0F A6 3F A2 03 E0 1F 94 13 D2 P...T...?.......
+00004580 2F 91 2D DC 00 5A BF 60 10 00 67 02 9D 03 B0 5A /.-..Z.`..g....Z
 00004590 FE FF BF 60 10 00 67 02 9D 03 B2 52 2A 00 18 1F ...`..g....R*...
 000045A0 AD 9F 5A 00 0A 52 14 1F 0F A2 20 AF 30 00 76 5B ..Z..R.... .0.v[
 000045B0 84 55 00 C0 3C 7B 2F A2 02 EF 30 00 AD DC 0D 9F .U..<{/...0.....
@@ -3988,48 +2998,17 @@ l00004552:
 00004640 B2 22 EF FF 02 52 11 08 01 52 1D 1D 0E 9F 56 00 ."...R...R....V.
 00004650 4E 9F 5A 00 01 5B 41 33 7E 9F 28 00 17 53 B2 10 N.Z..[A3~.(..S..
 00004660 17 5B 61 5B 31 27 01 52 11 08 01 52 03 11 07 52 .[a[1'.R...R...R
-00004670 11 08 01 52                                     ...R            
-
-l00004674:
-	beq	00004692
-
-l00004676:
-	movzw	r7,(r11,r10)
-	movzw	r0,(r1,r0)
-	movzw	r4,(r5,r4)
-	addd	(r5,r4),(r1,r0)
-	subd	(r1,r0),(r11,r10)
-	loadd	0x60(ra),(r5,r4)
-	addd	(r1,r0),(r5,r4)
-	push	$1,r10
-	movw	r6,r2
-	bal	ra,fn0000DB24
-	addd	$4,sp
-
-l00004692:
-	cmpd	$0,(r9,r8)
-	beq	000046A6
-
-l00004696:
-	storw	r7,(r9,r8)
-	movw	$0,r0
-	pop	$6,r7
-	popret	$1,ra
-0000469E                                           B0 5A               .Z
-000046A0 FE FF 67 02 1E 03                               ..g...          
-
-l000046A6:
-	movw	$0,r0
-	pop	$6,r7
-	popret	$1,ra
+00004670 11 08 01 52 0F 10 7A 5F 00 5F 44 5F 40 61 14 00 ...R..z_._D_@a..
+00004680 A0 C0 4E AF 30 00 04 61 1A 01 62 5B 00 C0 98 94 ..N.0..a..b[....
+00004690 4F 60 08 56 09 10 78 D0 00 5A 67 02 1E 03 B0 5A O`.V..x..Zg....Z
+000046A0 FE FF 67 02 1E 03 00 5A 67 02 1E 03             ..g....Zg...    
 
 ;; fn000046AC: 000046AC
 ;;   Called from:
-;;     0000640E (in fn00004CD4)
-;;     00006674 (in fn00004CD4)
+;;     0000640E (in fn00006226)
 fn000046AC proc
-	push	$1,ra
-	push	$3,r8
+	push	$2,ra
+	push	$4,r8
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
 	beq	00004786
@@ -4041,58 +3020,25 @@ l000046B6:
 
 l000046BE:
 	loadd	0x48(r3,r2),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	00004786
 
-;; fn000046C0: 000046C0
-;;   Called from:
-;;     0000445C (in fn00004450)
-;;     000046BE (in fn000046AC)
-fn000046C0 proc
-	addd	$56001601,(r5,r4)
-
-;; fn000046C6: 000046C6
-;;   Called from:
-;;     000046B4 (in fn000046AC)
-;;     000046BC (in fn000046AC)
-;;     000046C0 (in fn000046C0)
-;;     000046C2 (in fn000046C0)
-;;     000046C2 (in fn000046C0)
-fn000046C6 proc
+l000046C6:
 	loadd	0x38(r3,r2),(r11,r10)
-
-;; fn000046CA: 000046CA
-;;   Called from:
-;;     00004452 (in fn00004450)
-;;     000046C6 (in fn000046C6)
-fn000046CA proc
 	cmpd	$0,(r11,r10)
 	beq	00004786
 
-;; fn000046CE: 000046CE
-;;   Called from:
-;;     000046CC (in fn000046CA)
-;;     000046CC (in fn000046CA)
-fn000046CE proc
+l000046CE:
 	loadd	(r11,r10),(r3,r2)
 	movw	$FFFE,r0
-
-;; fn000046D2: 000046D2
-;;   Called from:
-;;     00004462 (in fn00004450)
-;;     000046D0 (in fn000046CE)
-fn000046D2 proc
-	storb	sp,0x5728(ra)
-	beq	fn000046DC
+	cmpd	(r9,r8),(r3,r2)
+	beq	000046DC
 
 l000046D8:
-	pop	$3,r8
-	popret	$1,ra
+	pop	$4,r8
+	popret	$2,ra
 
-;; fn000046DC: 000046DC
-;;   Called from:
-;;     000046D4 (in fn000046D2)
-;;     000046D4 (in fn000046D2)
-;;     000046D6 (in fn000046D2)
-fn000046DC proc
+l000046DC:
 	loadw	4(r11,r10),r2
 	cmpw	$2A,r2
 	sne	r3
@@ -4159,8 +3105,8 @@ l00004750:
 	movd	(r3,r2),(r11,r10)
 	bal	ra,fn0000AF06
 	movw	$0,r0
-	pop	$3,r8
-	popret	$1,ra
+	pop	$4,r8
+	popret	$2,ra
 
 l00004764:
 	movw	$0,r1
@@ -4181,35 +3127,183 @@ l00004774:
 
 l00004786:
 	movw	$FFFE,r0
-	pop	$3,r8
-	popret	$1,ra
+	pop	$4,r8
+	popret	$2,ra
 
 l0000478E:
 	movw	$2A,r1
 	br	00004744
-00004794             1E 01 38 01 28 55 02 56 00 18 50 01     ..8.(U.V..P.
-000047A0 02 AF 20 00 00 56 00 18 46 01 02 AF 24 00 00 56 .. ..V..F...$..V
-000047B0 00 18 3C 01 A2 AF 1C 00 0A 56 00 18 32 01 2A A0 ..<......V..2.*.
-000047C0 B0 5A FE FF 28 57 03 10 38 02 1E 03 2A 92 B2 52 .Z..(W..8...*..R
-000047D0 2A 00 13 08 B2 52 45 00 11 08 31 21 B2 52 5B 00 *....RE...1!.R[.
-000047E0 13 08 31 21 B2 52 67 00 13 08 31 21 B2 52 71 00 ..1!.Rg...1!.Rq.
-000047F0 13 08 31 21 B2 52 9A 02 13 08 31 21 01 50 09 10 ..1!.R....1!.P..
-00004800 B2 32 C7 FF B2 22 EF FF 02 52 11 08 01 52 1D 1D .2..."...R...R..
-00004810 00 54 08 EA 08 E4 08 EC 28 C3 2C 00 0A EA 0A A4 .T......(.,.....
-00004820 0A E8 0A 9C 00 52 62 15 20 52 08 15 00 52 13 16 .....Rb. R...R..
-00004830 B1 5A 71 00 1A D2 06 5A 04 54 42 55 00 C0 B2 78 .Zq....Z.TBU...x
-00004840 08 EF 30 00 0A C3 26 00 A2 55 00 C0 BC 66 88 AF ..0...&..U...f..
-00004850 1C 00 08 9F 28 00 00 5F 00 61 08 EF 34 00 28 AF ....(.._.a..4.(.
-00004860 3C 00 58 9F 42 00 95 32 55 5F 55 61 20 55 50 61 <.X.B..2U_Ua UPa
-00004870 00 C2 04 5A 00 C0 D0 92 28 9F 62 00 22 5E 20 55 ...Z....(.b."^ U
-00004880 20 61 02 61 22 4C 00 05 A4 E5 20 61 20 91 28 DF  a.a"L.... a .(.
-00004890 60 00 20 90 28 DF 66 00 20 92 28 DF 68 00 00 93 `. .(.f. .(.h...
-000048A0 08 DF 5E 00 08 C3 56 00 00 54 08 EF 4C 00 08 C3 ..^...V..T..L...
-000048B0 5A 00 08 C3 06 12 28 C3 5C 00 28 C3 50 00 08 C3 Z.....(.\.(.P...
-000048C0 54 00 08 C3 40 00 38 02 1E 03 01 5A 01 3B 1A DC T...@.8....Z.;..
-000048D0 B1 5A 2A 00 B0 52 FE FF 1E 1A B0 5A 39 00 0A D2 .Z*..R.....Z9...
-000048E0 06 5A 04 54 42 55 00 C0 12 82 EB 1A B0 5A FE FF .Z.TBU.......Z..
-000048F0 38 02 1E 03 B1 5A 2A 00 EE 19 1E 01 07 01 02 56 8....Z*........V
+
+;; fn00004794: 00004794
+;;   Called from:
+;;     00002F34 (in fn00002D76)
+fn00004794 proc
+	push	$2,ra
+	push	$4,r8
+	movd	(r9,r8),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	000048EC
+
+l000047A0:
+	loadd	0x40(r3,r2),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	000048EC
+
+l000047AA:
+	loadd	0x48(r3,r2),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	000048EC
+
+l000047B4:
+	loadd	0x38(r3,r2),(r11,r10)
+	cmpd	$0,(r11,r10)
+	beq	000048EC
+
+l000047BE:
+	loadd	(r11,r10),(r3,r2)
+	movw	$FFFE,r0
+	cmpd	(r9,r8),(r3,r2)
+	beq	000047CC
+
+l000047C8:
+	pop	$4,r8
+	popret	$2,ra
+
+l000047CC:
+	loadw	4(r11,r10),r2
+	cmpw	$2A,r2
+	sne	r3
+	cmpw	$45,r2
+	sne	r1
+	andb	r1,r3
+	cmpw	$5B,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$67,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$71,r2
+	sne	r3
+	andb	r1,r3
+	cmpw	$29A,r2
+	sne	r3
+	andb	r1,r3
+	cmpb	$0,r1
+	beq	00004810
+
+l00004800:
+	addw	$FFC7,r11
+	andw	$FFEF,r11
+	cmpw	$0,r2
+	sne	r1
+	cmpw	$0,r1
+	bne	000047C8
+
+l00004810:
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	stord	(r1,r0),8(r9,r8)
+	stord	(r1,r0),0x18(r9,r8)
+	storw	$2,0x2C(r9,r8)
+	stord	(r1,r0),0x14(r11,r10)
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadw	0x18(r11,r10),r0
+	cmpw	$0,r0
+	bgt	000048CA
+
+l00004828:
+	cmpw	$2,r0
+	beq	000048DA
+
+l0000482C:
+	cmpw	$0,r0
+	bne	000048F4
+
+l00004830:
+	movw	$71,r1
+
+l00004834:
+	storw	r1,4(r11,r10)
+	movw	$0,r6
+	movd	$0,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	bal	ra,fn0000C0EE
+
+l00004840:
+	stord	(r1,r0),0x60(r9,r8)
+	storw	$0,0x26(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000AF06
+	loadd	0x38(r9,r8),(r9,r8)
+	loadw	0x50(r9,r8),r0
+	movzw	r0,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	stord	(r1,r0),0x68(r9,r8)
+	loadd	0x78(r9,r8),(r3,r2)
+	loadw	0x84(r9,r8),r5
+	addw	$FFFF,r9
+	movzw	r5,(r6,r5)
+	addd	(r6,r5),(r6,r5)
+	movd	(r1,r0),(r3,r2)
+	addd	(r6,r5),(r1,r0)
+	storw	$0,(r1,r0)
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	loadw	0xC4(r9,r8),r2
+	movxw	r2,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	addd	(r1,r0),(r3,r2)
+	ashud	$2,(r3,r2)
+	movd	$E5A4,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadw	2(r1,r0),r2
+	storw	r2,0xC0(r9,r8)
+	loadw	(r1,r0),r2
+	storw	r2,0xCC(r9,r8)
+	loadw	4(r1,r0),r2
+	storw	r2,0xD0(r9,r8)
+	loadw	6(r1,r0),r0
+	storw	r0,0xBC(r9,r8)
+	storw	$0,0x56(r9,r8)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x98(r9,r8)
+	storw	$0,0x5A(r9,r8)
+	storw	$0,0x1206(r9,r8)
+	storw	$2,0x5C(r9,r8)
+	storw	$2,0x50(r9,r8)
+	storw	$0,0x54(r9,r8)
+	storw	$0,0x40(r9,r8)
+	pop	$4,r8
+	popret	$2,ra
+
+l000048CA:
+	movw	$0,r1
+	subw	r1,r0
+	storw	r1,0x18(r11,r10)
+	movw	$2A,r1
+	cmpw	$FFFE,r0
+	bne	00004834
+
+l000048DA:
+	movw	$39,r0
+	storw	r0,4(r11,r10)
+	movw	$0,r6
+	movd	$0,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	bal	ra,fn0000CAF8
+	br	00004840
+
+l000048EC:
+	movw	$FFFE,r0
+	pop	$4,r8
+	popret	$2,ra
+
+l000048F4:
+	movw	$2A,r1
+	br	00004834
+000048FA                               1E 01 07 01 02 56           .....V
 00004900 0E 13 02 AF 20 00 00 56 0A 13 02 AF 24 00 00 56 .... ..V....$..V
 00004910 06 13 E2 AF 1C 00 0E 56 02 13 6E A0 B0 5A FE FF .......V..n..Z..
 00004920 62 57 03 10 07 02 1E 03 2E 92 B2 52 2A 00 13 08 bW.........R*...
@@ -4230,212 +3324,29 @@ l0000478E:
 00004A10 0A 12 06 D0 00 5A 27 02 1C 02 1E 03 B0 5A FE FF .....Z'......Z..
 00004A20 27 02 1C 02 1E 03 00 5A 27 02 1C 02 1E 03 1E 01 '......Z'.......
 00004A30 67 01 4B 5B 58 5B 02 56 00 11 02 AF 20 00 00 56 g.K[X[.V.... ..V
-00004A40 0C 10 02 AF 24 00 00 56 08 10 C2 AF             ....$..V....    
-
-;; fn00004A4C: 00004A4C
-;;   Called from:
-;;     00005162 (in fn00004CD4)
-fn00004A4C proc
-	res
-	cmpd	$0,r12
-	beq	00004A58
-	loadd	(r12),(r1,r0)
-	cmpd	(r3,r2),(r1,r0)
-	beq	00004A62
-	movw	$FFFE,r11
-	movw	r11,r0
-	pop	$6,r7
-	popret	$1,ra
-	loadw	4(r12),r1
-	cmpw	$2A,r1
-	sne	r2
-	cmpw	$45,r1
-	sne	r0
-	andb	r0,r2
-	cmpw	$5B,r1
-	sne	r2
-	andb	r0,r2
-	cmpw	$67,r1
-	sne	r2
-	andb	r0,r2
-	cmpw	$71,r1
-	sne	r2
-	andb	r0,r2
-	cmpw	$29A,r1
-	sne	r2
-	andb	r0,r2
-	cmpb	$0,r0
-	beq	00004AA6
-	addw	$FFC7,r11
-	andw	$FFEF,r11
-	cmpw	$0,r1
-	sne	r0
-	cmpw	$0,r0
-	bne	00004A58
-	loadd	0x10(r12),(r1,r0)
-	addd	$2,(r1,r0)
-	loadd	0x23F0(r12),(r3,r2)
-
-;; fn00004AAC: 00004AAC
-;;   Called from:
-;;     00005616 (in fn00004CD4)
-fn00004AAC proc
-	br	fn00004ADC
-00004AAE                                           02 57               .W
-00004AB0 45 12 BA 5A                                     E..Z            
-
-;; fn00004AB4: 00004AB4
-;;   Called from:
-;;     0000560E (in fn00004CD4)
-fn00004AB4 proc
-	cbitb	$1,0xA9F1C(r2,r1)
-
-l00004AB8:
-	loadw	0x2414(r12),r1
-
-;; fn00004ABA: 00004ABA
-;;   Called from:
-;;     00004AB4 (in fn00004AB4)
-fn00004ABA proc
-	beq	00004B0E
-
-l00004ABC:
-	movw	r10,r0
-	subw	r0,r1
-	movw	r11,r7
-	cmpw	r11,r0
-	bge	fn00004AC8
-
-;; fn00004AC6: 00004AC6
-;;   Called from:
-;;     00004AC2 (in fn00004AE8)
-;;     00004AC4 (in fn00004ABA)
-;;     00004AC8 (in fn00004AC8)
-;;     000055DA (in fn00004CD4)
-fn00004AC6 proc
-	movw	r0,r7
-
-;; fn00004AC8: 00004AC8
-;;   Called from:
-;;     00004AC4 (in fn00004ABA)
-;;     00004AC6 (in fn00004AC6)
-fn00004AC8 proc
-	movw	r9,r0
-	ashuw	r7,r0
-	addw	$FFFF,r9
-	andw	r0,r8
-	ashuw	r1,r0
-	loadw	0x2410(r12),r2
-	orw	r0,r2
-	storw	r0,0x2410(r12)
-
-;; fn00004ADC: 00004ADC
-;;   Called from:
-;;     00004AAC (in fn00004AAC)
-;;     00004AD8 (in fn00004AE8)
-fn00004ADC proc
-	addw	r1,r7
-	storw	r1,0x2414(r12)
-	movd	(r3,r2),r12
-	bal	ra,fn0000B09C
-
-;; fn00004AE8: 00004AE8
-;;   Called from:
-;;     00004AE4 (in fn00004ADC)
-;;     00004AE4 (in fn00004ADC)
-fn00004AE8 proc
-	movb	$0,r0
-	subb	r0,r7
-	ashuw	r0,r8
-	subw	r11,r7
-	cmpw	$0,r11
-	bne	00004AB8
-
-l00004AF4:
-	movw	r11,r0
-	pop	$6,r7
-	popret	$1,ra
-00004AFA                               BB 5A FB FF B0 5B           .Z...[
-00004B00 67 02 1E 03 00 00 1E 01 1C 01 07 01 AC 54       g............T  
-
-l00004B0E:
-	addd	sp,r12
-	loadw	(r12),r7
-	cmpd	$0,(r3,r2)
-	beq	00004B9A
-
-l00004B16:
-	loadd	0x40(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00004B9A
-
-l00004B1E:
-	loadd	0x48(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00004B9A
-
-l00004B26:
-	loadd	0x38(r3,r2),ra
-	cmpd	$0,ra
-	beq	00004B9A
-
-l00004B2E:
-	loadd	(ra),r12
-	movw	$FFFE,r0
-	cmpd	(r3,r2),r12
-	beq	00004B3E
-
-l00004B38:
-	pop	$0,r7
-	pop	$1,r12
-	popret	$1,ra
-
-l00004B3E:
-	loadw	4(ra),r2
-	cmpw	$2A,r2
-	sne	r3
-	cmpw	$45,r2
-	sne	r1
-	andb	r1,r3
-	cmpw	$5B,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$67,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$71,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$29A,r2
-	sne	r3
-	andb	r1,r3
-	cmpb	$0,r1
-	beq	00004B82
-
-l00004B72:
-	addw	$FFC7,r11
-	andw	$FFEF,r11
-	cmpw	$0,r2
-	sne	r1
-	cmpw	$0,r1
-	bne	00004B38
-
-l00004B82:
-	storw	r4,0xCC(ra)
-	storw	r5,0xC0(ra)
-	storw	r6,0xD0(ra)
-	storw	r7,0xBC(ra)
-	movw	$0,r0
-	pop	$0,r7
-	pop	$1,r12
-	popret	$1,ra
-
-l00004B9A:
-	movw	$FFFE,r0
-	pop	$0,r7
-	pop	$1,r12
-	popret	$1,ra
-00004BA4             1E 01 67 01 7E 54 4E 61 B0 54 3F 00     ..g.~TNa.T?.
+00004A40 0C 10 02 AF 24 00 00 56 08 10 C2 AF 1C 00 0C 56 ....$..V.......V
+00004A50 04 10 0C A0 02 57 06 10 BB 5A FE FF B0 5B 67 02 .....W...Z...[g.
+00004A60 1E 03 1C 92 B1 52 2A 00 12 08 B1 52 45 00 10 08 .....R*....RE...
+00004A70 20 21 B1 52 5B 00 12 08 20 21 B1 52 67 00 12 08  !.R[... !.Rg...
+00004A80 20 21 B1 52 71 00 12 08 20 21 B1 52 9A 02 12 08  !.Rq... !.R....
+00004A90 20 21 00 50 09 10 B1 32 C7 FF B1 22 EF FF 01 52  !.P...2..."...R
+00004AA0 10 08 00 52 1A 1D 0C A8 20 60 2C AF F8 11 02 57 ...R.... `,....W
+00004AB0 45 12 BA 5A 10 00 19 5A 1C 9F 0A 12 A0 5B 10 3B E..Z...Z.....[.;
+00004AC0 B7 5B 0B 53 D2 10 07 5B 90 5B 70 45 90 32 80 23 .[.S...[.[pE.2.#
+00004AD0 10 45 2C 9F 08 12 20 27 0C DF 08 12 71 33 1C DF .E,... '....q3..
+00004AE0 0A 12 C2 55 00 C0 B8 65 00 58 70 39 08 45 7B 3B ...U...e.Xp9.E{;
+00004AF0 0B 52 13 1E B0 5B 67 02 1E 03 BB 5A FB FF B0 5B .R...[g....Z...[
+00004B00 67 02 1E 03 00 00 1E 01 1C 01 07 01 AC 54 FC 61 g............T.a
+00004B10 7C 90 02 56 03 14 02 AF 20 00 00 56 0F 13 02 AF |..V.... ..V....
+00004B20 24 00 00 56 0B 13 E2 AF 1C 00 0E 56 07 13 CE A0 $..V.......V....
+00004B30 B0 5A FE FF C2 57 04 10 07 02 1C 02 1E 03 2E 92 .Z...W..........
+00004B40 B2 52 2A 00 13 08 B2 52 45 00 11 08 31 21 B2 52 .R*....RE...1!.R
+00004B50 5B 00 13 08 31 21 B2 52 67 00 13 08 31 21 B2 52 [...1!.Rg...1!.R
+00004B60 71 00 13 08 31 21 B2 52 9A 02 13 08 31 21 01 50 q...1!.R....1!.P
+00004B70 09 10 B2 32 C7 FF B2 22 EF FF 02 52 11 08 01 52 ...2..."...R...R
+00004B80 1C 1D 4E DF 66 00 5E DF 60 00 6E DF 68 00 7E DF ..N.f.^.`.n.h.~.
+00004B90 5E 00 00 5A 07 02 1C 02 1E 03 B0 5A FE FF 07 02 ^..Z.......Z....
+00004BA0 1C 02 1E 03 1E 01 67 01 7E 54 4E 61 B0 54 3F 00 ......g.~TNa.T?.
 00004BB0 40 61 A0 4B E6 55 D6 4B 60 61 40 61 02 56 00 11 @a.K.U.K`a@a.V..
 00004BC0 62 AF 20 00 06 56 0C 10 62 AF 24 00 06 56 08 10 b. ..V..b.$..V..
 00004BD0 82 AF 1C 00 08 56 04 10 68 A0 62 57 05 10 B0 60 .....V..h.bW...`
@@ -4444,84 +3355,47 @@ l00004B9A:
 00004C00 67 00 16 08 62 21 B3 52 71 00 16 08 62 21 B3 52 g...b!.Rq...b!.R
 00004C10 9A 02 16 08 62 21 02 50 09 10 B3 32 C7 FF B3 22 ....b!.P...2..."
 00004C20 EF FF 03 52 12 08 02 52 1B 1D 28 9C 12 52 06 14 ...R...R..(..R..
-00004C30 22 52 0D 11 02 52 09 11                         "R...R..        
-
-l00004C38:
-	movd	$6,(r7,r6)
-
-l00004C3A:
-	loadw	0x54(r9,r8),r2
-	cmpw	$F,r2
-	beq	00004C4A
-
-l00004C42:
-	addd	$5,(r1,r0)
-	addd	(r7,r6),(r1,r0)
-	pop	$6,r7
-	popret	$1,ra
-
-l00004C4A:
-	loadw	0x88(r9,r8),r2
-	cmpw	$F,r2
-	bne	00004C42
-
-l00004C52:
-	movd	(r1,r0),(r5,r4)
-	lshd	$-20,(r1,r0)
-	addd	ra,(r1,r0)
-	movd	ra,(r5,r4)
-	lshd	$-18,ra
-	addd	ra,(r1,r0)
-	lshd	$-7,(r5,r4)
-	addd	(r5,r4),(r1,r0)
-	addd	(r7,r6),(r1,r0)
-	pop	$6,r7
-	popret	$1,ra
-00004C68                         06 54 E8 1E C8 AF 1C 00         .T......
+00004C30 22 52 0D 11 02 52 09 11 66 54 28 9F 2A 00 F2 52 "R...R..fT(.*..R
+00004C40 05 10 50 60 60 61 67 02 1E 03 28 9F 44 00 F2 52 ..P``ag...(.D..R
+00004C50 19 1F 40 55 40 4B E0 61 4E 55 2E 4B E0 61 74 4A ..@U@K.aNU.K.atJ
+00004C60 40 61 60 61 67 02 1E 03 06 54 E8 1E C8 AF 1C 00 @a`ag....T......
 00004C70 0C 56 0A 12 2C A6 02 56 0A 12 6C 98 26 32 66 5F .V..,..V..l.&2f_
 00004C80 B6 60 12 00 AC AA 0A 56 08 10 16 60 1A 60 92 54 .`.....V...`.`.T
 00004C90 A2 61 22 B0 02 50 1A 1F AC AF 1C 00 0A 56 08 10 .a"..P.......V..
 00004CA0 16 60 1A 60 92 54 A2 61 22 B0 02 50 1A 1F 2C 9F .`.`.T.a"..P..,.
-00004CB0 22 00 02 52 03 1C 26 60 E1 1C                   "..R..&`..      
-
-l00004CBA:
-	loadw	0xAC(r9,r8),r2
-	cmpw	$0,r2
-	beq	00004C38
-
-l00004CC2:
-	movd	$A,(r7,r6)
-	br	00004C3A
-00004CC6                   B6 54 12 00 E8 1B B6 54 12 00       .T.....T..
+00004CB0 22 00 02 52 03 1C 26 60 E1 1C 28 9F 56 00 02 52 "..R..&`..(.V..R
+00004CC0 0C 1B A6 54 EB 1B B6 54 12 00 E8 1B B6 54 12 00 ...T...T.....T..
 00004CD0 EA 1D 00 00                                     ....            
 
 ;; fn00004CD4: 00004CD4
 ;;   Called from:
+;;     00001E28 (in fn00001DFA)
+;;     00002024 (in fn00001F0C)
+;;     0000206C (in fn00001F0C)
 ;;     00002DD0 (in fn00002D76)
-;;     0000600C (in fn00004CD4)
 fn00004CD4 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFF4,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-12,sp
 	movd	r12,(r3,r2)
 	storw	r4,(sp)
 	cmpd	$0,(r3,r2)
-	beq	000055EA
+	beq	00005166
 
 l00004CE6:
 	loadd	0x40(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	000055E0
+	beq	00005166
 
 l00004CF0:
 	loadd	0x48(r3,r2),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	000055D6
+	beq	00005166
 
 l00004CFA:
 	loadd	0x38(r3,r2),r13
 	cmpd	$0,r13
-	beq	000055CC
+	beq	00005166
 
 l00004D04:
 	loadd	(r13),(r3,r2)
@@ -4530,9 +3404,9 @@ l00004D04:
 	beq	00004D14
 
 l00004D0E:
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l00004D14:
 	loadw	4(r13),r2
@@ -4568,12 +3442,12 @@ l00004D48:
 l00004D5A:
 	loadw	(sp),r0
 	cmpw	$5,r0
-	blo	0000556E
+	blo	00005166
 
 l00004D62:
 	loadd	0xC(r12),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	00006D4A
+	beq	00005D58
 
 l00004D6A:
 	loadw	4(r12),r3
@@ -4583,7 +3457,7 @@ l00004D6A:
 l00004D70:
 	loadd	(r12),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	00006D3C
+	beq	00005D58
 
 l00004D78:
 	loadw	(sp),r1
@@ -4597,12 +3471,12 @@ l00004D78:
 
 l00004D8A:
 	cmpb	$0,r1
-	bne	00006D24
+	bne	00005D58
 
 l00004D90:
 	loadw	0x10(r12),r0
 	cmpw	$0,r0
-	beq	00006CC4
+	beq	00005D2C
 
 l00004D98:
 	loadw	0x4C(r13),r0
@@ -4610,11 +3484,11 @@ l00004D98:
 	storw	r4,0x4C(r13)
 	loadd	0x14(r13),(r5,r4)
 	cmpd	$0,(r5,r4)
-	bne	000054EA
+	bne	00005148
 
 l00004DAA:
 	cmpw	$0,r3
-	bne	00005158
+	bne	00004F82
 
 l00004DB0:
 	loadw	(sp),r4
@@ -4643,35 +3517,35 @@ l00004DC8:
 
 l00004DD0:
 	cmpb	$0,r1
-	bne	00006C86
+	bne	00005D2C
 
 l00004DD6:
 	cmpw	$29A,r2
-	bne	0000513A
+	bne	00004F8A
 
 l00004DDE:
 	loadw	4(r12),r3
 	cmpw	$0,r3
-	bne	00006C76
+	bne	00005D2C
 
 l00004DE6:
 	loadw	0xB4(r13),r0
 	cmpw	$0,r0
-	beq	00005E48
+	beq	0000561A
 
 l00004DF0:
 	loadw	0xC4(r13),r0
 	cmpw	$0,r0
-	beq	00005D9E
+	beq	000055CA
 
 l00004DFA:
 	loadw	0xC8(r13),r1
 	cmpw	$2,r1
-	beq	00006098
+	beq	0000574C
 
 l00004E04:
 	cmpw	$3,r1
-	beq	0000657E
+	beq	000059C2
 
 l00004E0A:
 	movxw	r0,(r1,r0)
@@ -4685,16 +3559,18 @@ l00004E0A:
 	loadw	(sp),r4
 	movd	(r3,r2),r13
 	jal	ra,(r1,r0)
+
+l00004E22:
 	movw	$FFFE,r1
 	addw	r1,r0
 	cmpw	$1,r1
-	bhs	000068CE
+	bhs	00005B7C
 
 l00004E2E:
 	movw	$FFFD,r1
 	andw	r1,r0
 	cmpw	$0,r1
-	beq	000055DE
+	beq	0000520A
 
 l00004E3A:
 	cmpw	$1,r0
@@ -4703,7 +3579,7 @@ l00004E3A:
 l00004E3E:
 	loadw	(sp),r3
 	cmpw	$1,r3
-	beq	00006C02
+	beq	00005D22
 
 l00004E46:
 	cmpw	$5,r3
@@ -4711,7 +3587,7 @@ l00004E46:
 
 l00004E4A:
 	movd	$0,(r9,r8)
-	push	$1,r8
+	push	$2,r8
 	movw	$0,r6
 	movd	(r5,r4),(r9,r8)
 	movd	(r3,r2),r13
@@ -4719,7 +3595,7 @@ l00004E4A:
 	addd	$4,sp
 	loadw	(sp),r4
 	cmpw	$3,r4
-	beq	00006F76
+	beq	00005EEA
 
 l00004E62:
 	loadd	0x38(r12),(r9,r8)
@@ -4741,7 +3617,7 @@ l00004E7A:
 	movzw	r7,(r11,r10)
 	loadd	0xC(r12),(r3,r2)
 	loadd	0x10(r9,r8),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadd	0xC(r12),(r1,r0)
 	addd	(r11,r10),(r1,r0)
@@ -4768,17 +3644,17 @@ l00004EAC:
 
 l00004EB0:
 	cmpw	$0,r0
-	beq	00005572
+	beq	00005212
 
 l00004EB6:
 	loadw	(sp),r0
 	cmpw	$4,r0
-	bne	fn00006182
+	bne	0000581E
 
 l00004EBE:
 	loadw	0x18(r13),r3
 	cmpw	$0,r3
-	bge	00006B6E
+	bge	00005D18
 
 l00004EC6:
 	loadw	0x60(r12),r8
@@ -4790,7 +3666,7 @@ l00004EC6:
 	addd	(r7,r6),(r1,r0)
 	stord	(r5,r4),0x14(r13)
 	cmpw	$2,r3
-	beq	00006D18
+	beq	00005DFA
 
 l00004EE0:
 	movw	r2,r3
@@ -4820,6 +3696,8 @@ l00004EE0:
 	stord	(r7,r6),0x14(r13)
 	addd	(r5,r4),(r1,r0)
 	storb	r2,(r1,r0)
+
+l00004F18:
 	loadd	0x38(r12),(r9,r8)
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000B09C
@@ -4839,7 +3717,7 @@ l00004F30:
 	movzw	r7,(r11,r10)
 	loadd	0xC(r12),(r3,r2)
 	loadd	0x10(r9,r8),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadd	0xC(r12),(r1,r0)
 	addd	(r11,r10),(r1,r0)
@@ -4880,47 +3758,260 @@ l00004F72:
 	orw	r0,r1
 	cmpw	$0,r0
 	seq	r0
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00004F82       B2 52 9A 02 00 18 A6 0D B2 52 2A 00 1D 16   .R.......R*...
-00004F90 7D 9F 2A 00 C7 42 B7 32 00 88 0D 9F 64 00 10 52 }.*..B.2....d..R
-00004FA0 D0 18 90 06 0D 9F 56 00 00 52 03 10 B7 26 20 00 ......V..R...& .
-00004FB0 B3 5A 1F 00 72 5B 00 C0 EE 84 B2 5A 1F 00 72 33 .Z..r[.....Z..r3
-00004FC0 02 3B 0D A4 4D AA 16 54 46 61 6D EA 40 61 23 5B .;..M..TFam.@a#[
-00004FD0 83 49 30 F0 0D A4 4D AA 16 54 46 61 6D EA 40 61 .I0...M..TFam.@a
-00004FE0 20 F0 0D 9F 56 00 00 52 05 12 2C 9F 32 00 0D A4  ...V..R..,.2...
-00004FF0 4D AA 16 54 46 61 6D EA 40 61 23 5B 83 49 30 F0 M..TFam.@a#[.I0.
-00005000 0D A4 4D AA 16 54 46 61 6D EA 40 61 20 F0 2C 9F ..M..TFam.@a .,.
-00005010 30 00 0D A4 4D AA 16 54 46 61 6D EA 40 61 23 5B 0...M..TFam.@a#[
-00005020 83 49 30 F0 0D A4 4D AA 16 54 46 61 6D EA 40 61 .I0...M..TFam.@a
-00005030 20 F0 06 5A 04 54 42 55 00 C0 B6 70 0C EF 30 00  ..Z.TBU...p..0.
-00005040 B0 5A 71 00 0D D2 8C AF 1C 00 82 55 00 C0 50 60 .Zq........U..P`
-00005050 08 9A 7C 98 07 53 A0 18 80 05 07 52 10 18 82 05 ..|..S.....R....
-00005060 0D AA 00 56 1B 16 2D 92 B2 52 39 00 00 18 EA 01 ...V..-..R9.....
-00005070 B2 52 45 00 00 18 A2 07 B2 52 49 00 00 18 C0 0C .RE......RI.....
-00005080 B2 52 5B 00 00 18 5A 0D B2 52 67 00 00 18 5A 0D .R[...Z..Rg...Z.
-00005090 3C 92 03 52 10 18 5D FD E0 18 4F FD 0D AF 1C 00 <..R..]...O.....
-000050A0 00 9F 22 00 00 52 00 18 1C 0B 6D AA 46 57 BE 10 .."..R....m.FW..
-000050B0 46 3B 0D A4 04 61 2C AF 30 00 00 C0 3E 7A 0C EF F;...a,.0...>z..
-000050C0 30 00 0D AF 1C 00 00 9F 22 00 B1 5A 67 00 1D D2 0......."..Zg...
-000050D0 00 52 00 18 F0 0A 2D AA 24 54 24 61 0D A6 04 57 .R....-.$T$a...W
-000050E0 B0 18 B0 0A 8C AF 1C 00 82 55 00 C0 B2 5F 08 9A .........U..._..
-000050F0 7C 98 07 53 B2 10 07 5B 07 52 0C 11 7A 5F 2C A6 |..S...[.R..z_,.
-00005100 48 A8 1A 01 00 C0 20 8A 0C A6 A0 61 0C E6 08 A8 H..... ....a....
-00005110 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 70 3B 0C D8 .a.....a....p;..
-00005120 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 13 10 08 A4 ........O`.V....
-00005130 08 E8 2D AA 02 56 00 18 5A 0A                   ..-..V..Z.      
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00004F82:
+	cmpw	$29A,r2
+	beq	00005D2C
+
+l00004F8A:
+	cmpw	$2A,r2
+	bne	00005068
+
+l00004F90:
+	loadw	0x54(r13),r7
+	ashuw	$12,r7
+	addw	$8800,r11
+	loadw	0xC8(r13),r0
+	cmpw	$1,r0
+	bge	00005630
+
+l00004FA4:
+	loadw	0xAC(r13),r0
+	cmpw	$0,r0
+	beq	00004FB0
+
+l00004FAC:
+	orw	$20,r11
+
+l00004FB0:
+	movw	$1F,r3
+	movw	r7,r2
+	bal	ra,fn0000D4A4
+	movw	$1F,r2
+	addw	r2,r7
+	subw	r2,r0
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	movw	r2,r3
+	lshw	$-8,r3
+	storb	r3,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+	loadw	0xAC(r13),r0
+	cmpw	$0,r0
+	beq	00005032
+
+l00004FEA:
+	loadw	0x64(r12),r2
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	movw	r2,r3
+	lshw	$-8,r3
+	storb	r3,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+	loadw	0x60(r12),r2
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	movw	r2,r3
+	lshw	$-8,r3
+	storb	r3,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+
+l00005032:
+	movw	$0,r6
+	movd	$0,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	bal	ra,fn0000C0EE
+	stord	(r1,r0),0x60(r12)
+	movw	$71,r0
+	storw	r0,4(r13)
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	blo	000055D6
+
+l0000505A:
+	cmpw	$0,r7
+	bne	000055DE
+
+l00005060:
+	loadd	0x14(r13),(r1,r0)
+	cmpd	$0,(r1,r0)
+	bne	0000513A
+
+l00005066:
+	loadw	4(r13),r2
+
+l00005068:
+	cmpw	$39,r2
+	beq	00005256
+
+l00005070:
+	cmpw	$45,r2
+	beq	00005816
+
+l00005078:
+	cmpw	$49,r2
+	beq	00005D3C
+
+l00005080:
+	cmpw	$5B,r2
+	beq	00005DDE
+
+l00005088:
+	cmpw	$67,r2
+	beq	00005DE6
+
+l00005090:
+	loadw	4(r12),r3
+	cmpw	$0,r3
+	bne	00004DF0
+
+l00005098:
+	br	00004DE6
+
+l0000509C:
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x44(r1,r0),r0
+	cmpw	$0,r0
+	beq	00005BC2
+
+l000050AA:
+	loadd	0x14(r13),(r7,r6)
+	cmpd	(r7,r6),(r5,r4)
+	bhs	000050CA
+
+l000050B0:
+	subw	r6,r4
+	loadd	8(r13),(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+	loadd	0x38(r13),(r1,r0)
+
+l000050C6:
+	loadw	0x44(r1,r0),r0
+
+l000050CA:
+	movw	$67,r1
+	storw	r1,4(r13)
+
+l000050D0:
+	cmpw	$0,r0
+	beq	00005BC2
+
+l000050D6:
+	loadd	0x14(r13),(r3,r2)
+	movd	$2,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	loadd	0xC(r13),(r1,r0)
+	cmpd	(r5,r4),(r1,r0)
+	bhs	00005B90
+
+l000050E4:
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	000050F8
+
+l000050F6:
+	movw	r0,r7
+
+l000050F8:
+	cmpw	$0,r7
+	beq	00005132
+
+l000050FC:
+	movzw	r7,(r11,r10)
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
+	push	$2,r10
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
+	subd	(r1,r0),(r11,r10)
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005132
+
+l0000512E:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00005132:
+	loadd	0x14(r13),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	00005B90
 
 l0000513A:
 	movw	$FFFF,r0
 	storw	r0,0x4C(r13)
 	movw	$0,r0
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00005148                         D2 55 00 C0 52 5F 0C 98         .U..R_..
-00005150 7D 9A 07 53 B2 10 07 5B                         }..S...[        
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00005148:
+	movd	(r3,r2),r13
+	bal	ra,fn0000B09C
+	loadw	0x10(r12),r0
+	loadw	0x14(r13),r7
+	cmpw	r7,r0
+	bhs	00005158
+
+l00005156:
+	movw	r0,r7
 
 l00005158:
 	cmpw	$0,r7
@@ -4932,17 +4023,64 @@ l0000515C:
 
 l00005160:
 	loadw	4(r13),r2
-	br	fn00004A4C
-00005166                   B0 5A FE FF CF 60 67 02 9D 03       .Z...`g...
-00005170 4D AF 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 M.L...V.._..@..V
-00005180 60 18 A4 0D 44 00 00 00 FF FF 2D AF 30 00 24 61 `...D.....-.0.$a
-00005190 10 01 16 5A D2 55 00 C0 82 60 0D 9F 56 00 00 5F ...Z.U...`..V.._
-000051A0 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 F0 5E ..L........U...^
-000051B0 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 ..x.O`.S...[.R..
-000051C0 70 5F 0F E0 28 A6 4A A8 10 01 00 C0 5A 89 08 A6 p_..(.J.....Z...
-000051D0 2F A2 20 61 08 E6 0A A8                         /. a....        
+	br	00004DD6
 
-l000051D8:
+l00005166:
+	movw	$FFFE,r0
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00005170:
+	loadd	0x98(r13),(r5,r4)
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005F24
+
+l00005184:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l00005190:
+	push	$2,r0
+	movw	$1,r6
+	movd	(r3,r2),r13
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	000051BC
+
+l000051BA:
+	movw	r0,r7
+
+l000051BC:
+	cmpw	$0,r7
+	beq	000051FA
+
+l000051C0:
+	movzw	r7,(r1,r0)
+	stord	(r1,r0),(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	push	$2,r0
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	loadd	4(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x10(r11,r10)
 	loadd	0x14(r9,r8),(r1,r0)
@@ -4966,27 +4104,29 @@ l000051FA:
 	loadd	(r13),(r1,r0)
 	loadw	0x10(r1,r0),r0
 	cmpw	$0,r0
-	bne	00006B18
+	bne	00005E8C
 
 l00005204:
 	movw	$29A,r0
 	storw	r0,4(r13)
+
+l0000520A:
 	loadw	0x10(r12),r0
 	cmpw	$0,r0
-	bne	00005E2E
+	bne	0000581E
 
 l00005212:
 	movw	$FFFF,r1
 	storw	r1,0x4C(r13)
-	addd	$C,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l0000521E:
 	movzw	r7,(r9,r8)
 	loadd	0xC(r12),(r3,r2)
 	loadd	0x10(r13),(r5,r4)
-	push	$1,r8
+	push	$2,r8
 	bal	ra,fn0000DB24
 	loadd	0xC(r12),(r1,r0)
 	addd	(r9,r8),(r1,r0)
@@ -5003,8 +4143,6 @@ l0000521E:
 	loadd	0x14(r13),(r3,r2)
 	subd	(r3,r2),(r9,r8)
 	stord	(r3,r2),0x14(r13)
-
-l0000524A:
 	addd	$4,sp
 	cmpd	$0,(r3,r2)
 	bne	0000515C
@@ -5013,61 +4151,367 @@ l00005250:
 	loadd	8(r13),(r3,r2)
 	stord	(r3,r2),0x10(r13)
 	br	0000515C
-00005256                   06 5A 04 54 42 55 00 C0 9C 78       .Z.TBU...x
-00005260 0C EF 30 00 0D A4 2D AA 14 54 24 61 4D EA 20 61 ..0...-..T$aM. a
-00005270 B2 58 1F 00 20 F0 0D A4 2D AA 14 54 24 61 4D EA .X.. ...-..T$aM.
-00005280 20 61 B2 58 8B FF 20 F0 0D A4 2D AA 14 54 24 61  a.X.. ...-..T$a
-00005290 4D EA 20 61 80 82 0D AF 1C 00 00 56 00 18 86 09 M. a.......V....
-000052A0 20 90 02 52 12 08 26 59 30 9F 22 00 03 52 03 10  ..R..&Y0."..R..
-000052B0 26 58 26 31 20 A6 02 56 02 10 46 30 20 AA 02 56 &X&1 ..V..F0 ..V
-000052C0 02 10 86 30 00 AF 1C 00 00 56 04 10 B0 58 10 00 ...0.....V...X..
-000052D0 06 31 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 .1..-..T$aM. a`.
-000052E0 0D AF 1C 00 60 92 0D A4 2D AA 14 54 24 61 4D EA ....`...-..T$aM.
-000052F0 20 61 60 F0 0D AF 1C 00 60 A2 86 4B 0D A4 2D AA  a`.....`..K..-.
-00005300 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 60 93 .T$aM. a`.....`.
-00005310 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 0D AF ..-..T$aM. a`...
-00005320 1C 00 60 93 86 49 0D A4 2D AA 14 54 24 61 4D EA ..`..I..-..T$aM.
-00005330 20 61 60 F0 0D 9F 62 00 B0 52 09 00 00 18 08 0A  a`...b..R......
-00005340 1D 9F 64 00 11 52 C1 08 01 52 10 18 08 0A 10 52 ..d..R...R.....R
-00005350 D6 08 06 50 10 18 FE 09 0D A4 2D AA 14 54 24 61 ...P......-..T$a
-00005360 4D EA 20 61 60 F0 0D AF 1C 00 60 95 0D A4 2D AA M. a`.....`...-.
-00005370 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 20 A6 .T$aM. a`..... .
-00005380 02 56 06 11 60 98 0D A4 2D AA 14 54 24 61 4D EA .V..`...-..T$aM.
-00005390 20 61 60 F0 0D AF 1C 00 60 98 86 49 0D A4 2D AA  a`.....`..I..-.
-000053A0 14 54 24 61 4D EA 20 61 60 F0 0D AF 1C 00 20 9F .T$aM. a`..... .
-000053B0 22 00 02 52 0B 10 6D 9A 4D A4 2C AF 30 00 00 C0 "..R..m.M.,.0...
-000053C0 3A 77 0C EF 30 00 0D AF 1C 00 02 54 2D EF 20 00 :w..0......T-. .
-000053D0 B2 5A 45 00 2D D2 40 A6 04 56 00 18 26 01 AD AA .ZE.-.@..V..&...
-000053E0 ED AF 20 00 70 98 E0 55 07 3B 7F D2 78 5F 0D A6 .. .p..U.;..x_..
-000053F0 A2 55 82 61 20 57 51 16 02 5B A2 3B 2F D4 28 5F .U.a WQ..[.;/.(_
-00005400 2D A4 A2 61 E4 61 18 01 00 C0 1C 87 0D A6 0D EA -..a.a..........
-00005410 2D AF 1C 00 4F 60 22 9F 22 00 02 52 12 08 02 52 -...O`"."..R...R
-00005420 0F 10 A0 57 A2 08 02 52 0B 10 06 5B A6 3B 4D A4 ...W...R...[.;M.
-00005430 A4 61 2C AF 30 00 00 C0 C2 76 0C EF 30 00 0D AF .a,.0....v..0...
-00005440 20 00 08 61 8D EF 20 00 8C AF 1C 00 82 55 00 C0  ..a.. ......U..
-00005450 4E 5C 08 9A 7C 98 07 53 B2 10 07 5B 07 52 0C 11 N\..|..S...[.R..
-00005460 7A 5F 2C A6 48 A8 1A 01 00 C0 BC 86 0C A6 A0 61 z_,.H..........a
-00005470 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 .....a.....a....
-00005480 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 p;..........O`.V
-00005490 13 10 08 A4 08 E8 AD AA 0A 56 10 18 A1 FC 3F 92 .........V....?.
-000054A0 4F 94 43 3B 3F D2 38 5F 0D A6 2D AF 1C 00 42 A6 O.C;?.8_..-...B.
-000054B0 ED AF 20 00 08 57 A1 1A 2D A4 A2 61 E4 61 18 01 .. ..W..-..a.a..
-000054C0 00 C0 64 86 6D AA 86 61 6D EA 0D AF 1C 00 4F 60 ..d.m..am.....O`
-000054D0 20 9F 22 00 02 52 12 08 02 52 00 11 A6 57 A2 08  ."..R...R...W..
-000054E0 02 52 0C 10 A6 3B 4D A4 A4 61                   .R...;M..a      
 
-l000054EA:
+l00005256:
+	movw	$0,r6
+	movd	$0,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	movb	$1F,r2
+	storb	r2,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	movb	$8B,r2
+	storb	r2,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$8,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	00005C22
+
+l000052A0:
+	loadw	(r1,r0),r2
+	cmpw	$0,r2
+	sne	r2
+	movb	r2,r6
+	loadw	0x44(r1,r0),r3
+	cmpw	$0,r3
+	beq	000052B4
+
+l000052B0:
+	movb	$2,r6
+	addb	r6,r2
+
+l000052B4:
+	loadd	0xC(r1,r0),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	000052BC
+
+l000052BA:
+	addb	$4,r4
+
+l000052BC:
+	loadd	0x14(r1,r0),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	000052C4
+
+l000052C2:
+	addb	$8,r8
+
+l000052C4:
+	loadd	0x38(r1,r0),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	000052D2
+
+l000052CC:
+	movb	$10,r0
+	addb	r6,r0
+
+l000052D2:
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadw	4(r1,r0),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadd	4(r1,r0),(r7,r6)
+	lshd	$-24,(r7,r6)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadw	6(r1,r0),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadw	6(r1,r0),r6
+	lshw	$-8,r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0xC4(r13),r0
+	cmpw	$9,r0
+	beq	00005D44
+
+l00005340:
+	loadw	0xC8(r13),r1
+	cmpw	$1,r1
+	slt	r1
+	cmpw	$0,r1
+	bne	00005D52
+
+l0000534E:
+	cmpw	$1,r0
+	sge	r6
+	cmpb	$0,r6
+	bne	00005D52
+
+l00005358:
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadw	0xA(r1,r0),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadd	0xC(r1,r0),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	000053AE
+
+l00005384:
+	loadw	0x10(r1,r0),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x10(r1,r0),r6
+	lshw	$-8,r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x38(r13),(r1,r0)
+
+l000053AE:
+	loadw	0x44(r1,r0),r2
+	cmpw	$0,r2
+	beq	000053CA
+
+l000053B6:
+	loadw	0x14(r13),r6
+	loadd	8(r13),(r5,r4)
 	loadd	0x60(r12),(r3,r2)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r12)
 	loadd	0x38(r13),(r1,r0)
+
+l000053CA:
 	movd	$0,(r3,r2)
 	stord	(r3,r2),0x40(r13)
+	movw	$45,r2
+	storw	r2,4(r13)
+
+l000053D6:
+	loadd	0xC(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	beq	00005500
+
+l000053DE:
+	loadd	0x14(r13),(r11,r10)
+	loadd	0x40(r13),ra
+	loadw	0x10(r1,r0),r7
+	movd	(r1,r0),ra
+	subw	r7,r0
+	storw	r7,4(sp)
+	movzw	r7,(r9,r8)
+	loadd	0xC(r13),(r1,r0)
+	movd	(r3,r2),(r11,r10)
+	addd	(r9,r8),(r3,r2)
+	cmpd	(r1,r0),(r3,r2)
+	bls	000054B8
+
+l000053F8:
+	movw	r0,r2
+	subw	r2,r10
+	storw	r2,8(sp)
+	movzw	r2,(r9,r8)
+	loadd	8(r13),(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	addd	ra,(r5,r4)
+	push	$2,r8
+	bal	ra,fn0000DB24
+	loadd	0xC(r13),(r1,r0)
+	stord	(r1,r0),0x14(r13)
+	loadd	0x38(r13),(r3,r2)
+	addd	$4,sp
+	loadw	0x44(r3,r2),r2
+	cmpw	$0,r2
+	sne	r2
+	cmpw	$0,r2
+	beq	0000543E
+
+l00005422:
+	cmpd	(r1,r0),(r11,r10)
+	slo	r2
+	cmpw	$0,r2
+	beq	0000543E
+
+l0000542A:
+	movw	r0,r6
+	subw	r6,r10
+	loadd	8(r13),(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+
+l0000543E:
+	loadd	0x40(r13),(r1,r0)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),0x40(r13)
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	0000545C
+
+l0000545A:
+	movw	r0,r7
+
+l0000545C:
+	cmpw	$0,r7
+	beq	00005496
+
+l00005460:
+	movzw	r7,(r11,r10)
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
+	push	$2,r10
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
+	subd	(r1,r0),(r11,r10)
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005496
+
+l00005492:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00005496:
+	loadd	0x14(r13),(r11,r10)
+	cmpd	$0,(r11,r10)
+	bne	0000513A
+
+l0000549E:
+	loadw	4(sp),r3
+	loadw	8(sp),r4
+	subw	r3,r4
+	storw	r3,4(sp)
+	movzw	r3,(r9,r8)
+	loadd	0xC(r13),(r1,r0)
+	loadd	0x38(r13),(r3,r2)
+	loadd	0xC(r3,r2),(r5,r4)
+	loadd	0x40(r13),ra
+	cmpd	(r9,r8),(r1,r0)
+	blo	000053F8
+
+l000054B8:
+	loadd	8(r13),(r3,r2)
+	addd	(r11,r10),(r3,r2)
+	addd	ra,(r5,r4)
+	push	$2,r8
+	bal	ra,fn0000DB24
+	loadd	0x14(r13),(r7,r6)
+	addd	(r9,r8),(r7,r6)
+	stord	(r7,r6),0x14(r13)
+	loadd	0x38(r13),(r1,r0)
+	addd	$4,sp
+	loadw	0x44(r1,r0),r2
+	cmpw	$0,r2
+	sne	r2
+	cmpw	$0,r2
+	beq	000054FA
+
+l000054DC:
+	cmpd	(r7,r6),(r11,r10)
+	slo	r2
+	cmpw	$0,r2
+	beq	000054FA
+
+l000054E4:
+	subw	r6,r10
+	loadd	8(r13),(r5,r4)
+	addd	(r11,r10),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+	loadd	0x38(r13),(r1,r0)
+
+l000054FA:
+	movd	$0,(r3,r2)
+	stord	(r3,r2),0x40(r13)
+
+l00005500:
 	movw	$49,r2
 	storw	r2,4(r13)
+
+l00005506:
 	loadd	0x14(r1,r0),(r3,r2)
 	cmpd	$0,(r3,r2)
-	beq	00006052
+	beq	00005AAE
 
 l0000550E:
 	loadd	0x14(r13),(r5,r4)
@@ -5089,7 +4533,7 @@ l00005514:
 	addd	(r7,r6),(r1,r0)
 	storb	r2,(r1,r0)
 	cmpb	$0,r2
-	beq	00005FCC
+	beq	00005A80
 
 l00005538:
 	loadd	0x14(r13),(r7,r6)
@@ -5123,15 +4567,8 @@ l00005558:
 
 l0000556A:
 	loadd	0x38(r12),(r9,r8)
-
-l0000556E:
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000B09C
-
-l00005572:
-	movw	r2,r12
-
-l00005574:
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
 	cmpw	r7,r0
@@ -5148,7 +4585,7 @@ l00005582:
 	movzw	r7,(r11,r10)
 	loadd	0xC(r12),(r3,r2)
 	loadd	0x10(r9,r8),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadd	0xC(r12),(r1,r0)
 	addd	(r11,r10),(r1,r0)
@@ -5176,35 +4613,31 @@ l000055B4:
 l000055B8:
 	loadd	0x14(r13),(r7,r6)
 	cmpd	$0,(r7,r6)
-	bne	00004CBA
+	bne	0000513A
 
 l000055C0:
 	loadd	0x38(r13),(r1,r0)
 	movw	$0,r4
 	movw	r4,r5
 	br	00005514
-000055CA                               4F 90                       O.    
 
-l000055CC:
+l000055CA:
+	loadw	(sp),r4
 	movd	(r3,r2),r13
 	bal	ra,fn000033F8
-	br	00004674
+	br	00004E22
 
 l000055D6:
 	movw	r0,r7
 	cmpw	$0,r7
-	beq	fn00004AE8
+	beq	00005060
 
 l000055DE:
 	movzw	r7,(r11,r10)
-
-l000055E0:
 	loadd	0xC(r12),(r3,r2)
 	loadd	0x10(r9,r8),(r5,r4)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
-
-l000055EA:
 	loadd	0xC(r12),(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0xC(r12)
@@ -5222,136 +4655,1000 @@ l000055EA:
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
-	bne	fn00004AB4
+	bne	00005060
 
 l00005612:
 	loadd	8(r9,r8),(r1,r0)
 	stord	(r1,r0),0x10(r9,r8)
-	br	fn00004AAC
-0000561A                               0F 90 00 52 00 18           ...R..
-00005620 00 02 0D 92 B0 52 9A 02 10 18 C9 F7 E0 18 8B F8 .....R..........
-00005630 0D 9F 62 00 10 52 D0 18 6F F9 50 52 D0 18 D4 06 ..b..R..o.PR....
-00005640 60 52 00 18 42 08 B7 26 C0 00 E0 18 5B F9 07 52 `R..B..&....[..R
-00005650 00 18 04 01 0D C3 50 00 0D 9F 56 00 02 5F 0D AF ......P...V.._..
-00005660 30 00 20 61 00 B0 1D 9F F6 11 14 5F 2D AF F8 11 0. a......._-...
-00005670 46 55 46 61 62 61 02 C2 2D AF F0 11 11 32 1D DF FUFaba..-....2..
-00005680 F6 11 42 61 02 F0 00 5D 00 5F 20 4C D0 61 20 9F ..Ba...]._ L.a .
-00005690 6A 00 12 32 20 DF 6A 00 2D 9F F6 11 1D 9F F4 11 j..2 .j.-.......
-000056A0 91 32 7D 9F 5A 00 97 32 7D DF 5A 00 0D 9F 56 00 .2}.Z..2}.Z...V.
-000056B0 10 32 0D DF 56 00 12 53 1B 1C 4D AF 4C 00 00 5F .2..V..S..M.L.._
-000056C0 14 00 40 C0 04 56 60 18 84 06 44 00 00 00 FF FF ..@..V`...D.....
-000056D0 2D AF 30 00 24 61 10 01 06 5A D2 55 00 C0 3C 5B -.0.$a...Z.U..<[
-000056E0 0D 9F 56 00 00 5F 0D EF 4C 00 8D A0 A8 AF 1C 00 ..V.._..L.......
-000056F0 A2 55 00 C0 AA 59 0A 9A 78 98 4F 60 07 53 B2 10 .U...Y..x.O`.S..
-00005700 07 5B 07 52 0F 11 72 5F 2F E2 28 A6 4A A8 0F A2 .[.R..r_/.(.J...
-00005710 10 01 00 C0 12 84 08 A6 2F A4 20 61 08 E6 0A A8 ......../. a....
-00005720 20 61 0A E8 08 AA 20 61 08 EA 08 98 70 3B 08 D8  a.... a....p;..
-00005730 0A AA 14 00 20 C0 0A EA 4F 60 00 56 13 10 0A A4 .... ...O`.V....
-00005740 0A E8 0D A0 00 98 00 52 00 18 C3 FA 7D 9F 5A 00 .......R....}.Z.
-00005750 07 52 11 18 D2 55 FF C0 9D D9 0D 9F 5A 00 00 52 .R...U......Z..R
-00005760 10 18 F5 FE 1F 90 01 52 00 18 A3 FA 7D DF 06 12 .......R....}...
-00005770 41 52 00 18 FF F9 0D 9F F6 11 00 52 00 18 C3 F6 AR.........R....
-00005780 4D AF 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 M.L...V.._..@..V
-00005790 60 18 8E 07 44 00 00 00 FF FF 2D AF 30 00 24 61 `...D.....-.0.$a
-000057A0 10 01 06 5A D2 55 00 C0 72 5A 0D 9F 56 00 00 5F ...Z.U..rZ..V.._
-000057B0 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 E0 58 ..L........U...X
-000057C0 0A 9A 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 ..x.O`.S...[.R..
-000057D0 70 5F 0F E2 28 A6 4A A8 10 01 00 C0 4A 83 08 A6 p_..(.J.....J...
-000057E0 2F A4 20 61 08 E6 0A A8 20 61 0A E8 08 AA 20 61 /. a.... a.... a
-000057F0 08 EA 08 98 70 3B 08 D8 0A AA 14 00 20 C0 0A EA ....p;...... ...
-00005800 4F 60 00 56 13 10 0A A4 0A E8 0D A0 00 98 00 52 O`.V...........R
-00005810 10 08 E0 18 1D F6 0D AF 1C 00 E0 18 BD FB 00 5A ...............Z
-00005820 CF 60 67 02 9D 03 60 B2 68 51 10 18 C6 01 60 B3 .`g...`.hQ....`.
-00005830 68 51 10 18 BE 01 30 60 B6 54 02 01 26 61 46 61 hQ....0`.T..&aFa
-00005840 2E 55 E3 12 A0 B2 A8 51 10 18 F6 06 A0 B3 A8 51 .U.....Q.......Q
-00005850 10 18 FE 06 A0 B4 A8 51 10 18 EE 06 A0 B5 A8 51 .......Q.......Q
-00005860 10 18 0C 07 A0 B6 A8 51 10 18 FC 06 A0 B7 A8 51 .......Q.......Q
-00005870 10 18 EC 06 80 60 A0 B0 8A 51 03 08 06 57 AA 08 .....`...Q...W..
-00005880 3A 21 0A 50 00 18 D2 06 A0 B1 A8 51 0C 1D E2 55 :!.P.......Q...U
-00005890 10 60 60 3B B1 5A 02 01 01 33 1D DF 50 00 B1 53 .``;.Z...3..P..S
-000058A0 B0 18 8A 06 BD DF 50 00 B1 5B B0 58 FD FF 10 31 ......P..[.X...1
-000058B0 1D 9F F6 11 12 5F 4D AF F8 11 26 55 26 61 64 61 ....._M...&U&ada
-000058C0 14 C2 4D AF F0 11 11 32 1D DF F6 11 42 61 02 F0 ..M....2....Ba..
-000058D0 00 5D 00 5E 00 04 2E F3 00 B0 00 5D 00 5F 20 4C .].^.......]._ L
-000058E0 D0 61 20 9F 6E 04 12 32 20 DF 6E 04 30 05 2E F4 .a .n..2 .n.0...
-000058F0 03 B0 00 5D 00 5F 20 4C D0 61 20 9F 5E 09 12 32 ...]._ L.a .^..2
-00005900 20 DF 5E 09 0D 9F F4 11 90 32 1D 9F F6 11 10 53  .^......2.....S
-00005910 01 08 0D 9F 50 00 BD 9F 5A 00 0B 3B BD DF 5A 00 ....P...Z..;..Z.
-00005920 2D 9F 56 00 20 33 0D DF 56 00 0D C3 50 00 01 52 -.V. 3..V...P..R
-00005930 0C 14 4D AF 4C 00 00 5F 14 00 40 C0 04 56 60 18 ..M.L.._..@..V`.
-00005940 B4 04 44 00 00 00 FF FF 2D AF 30 00 24 61 10 01 ..D.....-.0.$a..
-00005950 06 5A D2 55 00 C0 C4 58 0D 9F 56 00 00 5F 0D EF .Z.U...X..V.._..
-00005960 4C 00 8D A0 A8 AF 1C 00 A2 55 00 C0 32 57 0A 9A L........U..2W..
-00005970 78 98 4F 60 07 53 B2 10 07 5B 07 52 0E 11 70 5F x.O`.S...[.R..p_
-00005980 0F E2 28 A6 4A A8 10 01 00 C0 9C 81 08 A6 2F A4 ..(.J........./.
-00005990 20 61 08 E6 0A A8 20 61 0A E8 08 AA 20 61 08 EA  a.... a.... a..
-000059A0 08 98 70 3B 08 D8 0A AA 14 00 20 C0 0A EA 4F 60 ..p;...... ...O`
-000059B0 00 56 13 10 0A A4 0A E8 0D A0 00 98 00 52 00 18 .V...........R..
-000059C0 4D F8 BD 9F 5A 00 9F 90 BB 52 02 01 B2 14 0D C3 M...Z....R......
-000059D0 50 00 0D 9F 56 00 4D AF 30 00 02 5F 00 52 09 10 P...V.M.0.._.R..
-000059E0 90 54 20 61 40 61 80 B0 60 B1 68 51 00 18 3B FE .T a@a..`.hQ..;.
-000059F0 42 61 02 B0 1D 9F F6 11 12 5F 4D AF F8 11 26 55 Ba......._M...&U
-00005A00 26 61 64 61 04 C2 4D AF F0 11 11 32 1D DF F6 11 &ada..M....2....
-00005A10 42 61 02 F0 00 5D 00 5F 20 4C D0 61 20 9F 6A 00 Ba...]._ L.a .j.
-00005A20 12 32 20 DF 6A 00 0D 9F F4 11 90 32 1D 9F F6 11 .2 .j......2....
-00005A30 10 53 01 08 BD 9F 5A 00 9B 32 BD DF 5A 00 0D 9F .S....Z..2..Z...
-00005A40 56 00 10 32 0D DF 56 00 01 52 0F 1B E0 18 E7 FE V..2..V..R......
-00005A50 D2 55 FF C0 A1 D6 BD 9F 5A 00 BB 52 02 01 A8 1B .U......Z..R....
-00005A60 09 52 00 18 A9 F7 0B 52 00 18 00 03 0D C3 50 00 .R.....R......P.
-00005A70 0D 9F 56 00 4D AF 30 00 02 5F 2B 52 BA 1B EF 1A ..V.M.0.._+R....
-00005A80 0D AF 1C 00 20 9F 22 00 02 52 0F 10 6D AA 46 57 .... ."..R..m.FW
-00005A90 BC 10 46 3B 0D A4 04 61 2C AF 30 00 00 C0 5C 70 ..F;...a,.0...\p
-00005AA0 0C EF 30 00 0D AF 1C 00 02 54 2D EF 20 00 B2 5A ..0......T-. ..Z
-00005AB0 5B 00 2D D2 20 AF 1C 00 02 56 00 18 0D F6 4D AA [.-. ....V....M.
-00005AC0 46 55 E7 11 00 AF 1C 00 2D AF 20 00 18 54 28 61 FU......-. ..T(a
-00005AD0 8D EF 20 00 20 61 20 B0 0D A4 18 54 68 61 8D EA .. . a ....Tha..
-00005AE0 60 61 20 F0 02 50 00 18 B7 F5 6D AA 0D AF 1C 00 `a ..P....m.....
-00005AF0 2D A6 62 57 18 1E 00 9F 22 00 00 52 10 08 00 52 -.bW...."..R...R
-00005B00 0E 10 64 57 40 08 00 52 0A 10 46 3B 0D A4 04 61 ..dW@..R..F;...a
-00005B10 2C AF 30 00 00 C0 E4 6F 0C EF 30 00 8C AF 1C 00 ,.0....o..0.....
-00005B20 82 55 00 C0 7A 55 08 9A 7C 98 07 53 B2 10 07 5B .U..zU..|..S...[
-00005B30 07 52 0C 11 7A 5F 2C A6 48 A8 1A 01 00 C0 E8 7F .R..z_,.H.......
-00005B40 0C A6 A0 61 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 ...a.....a.....a
-00005B50 0C EA 0C 98 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA ....p;..........
-00005B60 4F 60 00 56 13 10 08 A4 08 E8 6D AA 06 56 10 18 O`.V......m..V..
-00005B70 CD F5 0D AF 1C 00 04 5A 45 5B E5 1A B1 5A 9A 02 .......ZE[...Z..
-00005B80 1D D2 B0 22 FD FF 00 52 10 18 2F F3 E0 18 7F F6 ..."...R../.....
-00005B90 6C 9F 30 00 0D A4 14 54 24 61 4D EA 20 61 60 F0 l.0....T$aM. a`.
-00005BA0 6C AF 30 00 86 4B 0D A4 2D AA 14 54 24 61 4D EA l.0..K..-..T$aM.
-00005BB0 20 61 60 F0 06 5A 04 54 42 55 00 C0 3E 6F 0C EF  a`..Z.TBU..>o..
-00005BC0 30 00 B0 5A 71 00 0D D2 8C AF 1C 00 82 55 00 C0 0..Zq........U..
-00005BD0 CE 54 08 9A 7C 98 07 53 B2 10 07 5B 07 52 0C 11 .T..|..S...[.R..
-00005BE0 7A 5F 2C A6 48 A8 1A 01 00 C0 3C 7F 0C A6 A0 61 z_,.H.....<....a
-00005BF0 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 0C EA 0C 98 .....a.....a....
-00005C00 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA 4F 60 00 56 p;..........O`.V
-00005C10 13 10 08 A4 08 E8 0D AA 00 56 00 18 77 F4 E0 18 .........V..w...
-00005C20 1D F5 0D A4 2D AA 14 54 24 61 4D EA 20 61 00 82 ....-..T$aM. a..
-00005C30 0D A4 2D AA 14 54 24 61 4D EA 20 61 00 82 0D A4 ..-..T$aM. a....
-00005C40 2D AA 14 54 24 61 4D EA 20 61 00 82 0D A4 2D AA -..T$aM. a....-.
-00005C50 14 54 24 61 4D EA 20 61 00 82 0D A4 2D AA 14 54 .T$aM. a....-..T
-00005C60 24 61 4D EA 20 61 00 82 0D 9F 62 00 B0 52 09 00 $aM. a....b..R..
-00005C70 07 15 1D 9F 64 00 11 52 C1 08 01 52 10 18 02 02 ....d..R...R....
-00005C80 10 52 D6 08 06 50 10 18 F8 01 0D A4 2D AA 14 54 .R...P......-..T
-00005C90 24 61 4D EA 20 61 60 F0 0D A4 2D AA 14 54 24 61 $aM. a`...-..T$a
-00005CA0 4D EA 20 61 30 82 B0 5A 71 00 0D D2 8C AF 1C 00 M. a0..Zq.......
-00005CB0 82 55 00 C0 EA 53 08 9A 7C 98 07 53 B2 10 07 5B .U...S..|..S...[
-00005CC0 07 52 0C 11 7A 5F 2C A6 48 A8 1A 01 00 C0 58 7E .R..z_,.H.....X~
-00005CD0 0C A6 A0 61 0C E6 08 A8 A0 61 08 E8 0C AA A0 61 ...a.....a.....a
-00005CE0 0C EA 0C 98 70 3B 0C D8 08 AA 14 00 A0 C0 08 EA ....p;..........
-00005CF0 4F 60 00 56 13 10 08 A4 08 E8 0D AA 00 56 10 18 O`.V.........V..
-00005D00 3D F4 2D 92 B2 52 45 00 10 18 71 F3 E0 18 0B FB =.-..RE...q.....
-00005D10 B7 26 40 00 E0 18 91 F2 10 5A E0 18 F5 EF 26 58 .&@......Z....&X
-00005D20 E5 1B D2 55 00 C0 E8 53 E0 18 3B F1 12 00 00 B0 ...U...S..;.....
-00005D30 6C FC 0C EC B0 5A FB FF E0 18 D7 EF 0D AF 1C 00 l....Z..........
-00005D40 E0 18 C7 F7 26 58 E0 18 13 F6 04 5A 45 5B E0 18 ....&X.....ZE[..
-00005D50 89 F9 46 58 E0 18 05 F6 12 00 00 B0 60 FC 0C EC ..FX........`...
-00005D60 B0 5A FE FF E0 18 AB EF BD DF 06 12 3F 90 43 52 .Z..........?.CR
-00005D70 00 18 26 01 0D 9F F6 11 00 52 00 18 C5 F0 4D AF ..&......R....M.
-00005D80 4C 00 0D 9F 56 00 00 5F 14 00 40 C0 04 56 60 18 L...V.._..@..V`.
-00005D90 A6 01 44 00 00 00 FF FF 2D AF 30 00 24 61       ..D.....-.0.$a  
+	br	00005060
+
+l0000561A:
+	loadw	(sp),r0
+	cmpw	$0,r0
+	beq	0000581E
+
+l00005622:
+	loadw	4(r13),r0
+	cmpw	$29A,r0
+	bne	00004DF0
+
+l0000562C:
+	br	00004EB6
+
+l00005630:
+	loadw	0xC4(r13),r0
+	cmpw	$1,r0
+	bge	00004FA4
+
+l0000563A:
+	cmpw	$5,r0
+	bge	00005D10
+
+l00005640:
+	cmpw	$6,r0
+	beq	00005E84
+
+l00005646:
+	orw	$C0,r11
+	br	00004FA4
+
+l0000564E:
+	cmpw	$0,r7
+	beq	00005754
+
+l00005654:
+	storw	$0,0x50(r13)
+	loadw	0xAC(r13),r0
+	movzw	r0,(r3,r2)
+	loadd	0x60(r13),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r0
+	loadw	0x23EC(r13),r1
+	movzw	r1,(r5,r4)
+	loadd	0x23F0(r13),(r3,r2)
+	movd	(r7,r6),(r5,r4)
+	addd	(r5,r4),(r7,r6)
+	addd	(r7,r6),(r3,r2)
+	storw	$0,(r3,r2)
+	loadd	0x23E0(r13),(r3,r2)
+	addw	$1,r1
+	storw	r1,0x23EC(r13)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	movzb	r0,(r1,r0)
+	movzw	r0,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	0xD4(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0xD4(r1,r0)
+	loadw	0x23EC(r13),r2
+	loadw	0x23E8(r13),r1
+	addw	$FFFF,r9
+	loadw	0xB4(r13),r7
+	addw	$FFFF,r9
+	storw	r7,0xB4(r13)
+	loadw	0xAC(r13),r0
+	addw	$1,r1
+	storw	r0,0xAC(r13)
+	cmpw	r2,r1
+	bne	0000564E
+
+l000056BA:
+	loadd	0x98(r13),(r5,r4)
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005D4A
+
+l000056CA:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l000056D6:
+	push	$2,r0
+	movw	$0,r6
+	movd	(r3,r2),r13
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	00005702
+
+l00005700:
+	movw	r0,r7
+
+l00005702:
+	cmpw	$0,r7
+	beq	00005742
+
+l00005706:
+	movzw	r7,(r3,r2)
+	stord	(r3,r2),4(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	loadd	4(sp),(r1,r0)
+	push	$2,r0
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	loadd	8(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),(r3,r2)
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005742
+
+l0000573E:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l00005742:
+	loadd	(r13),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	beq	0000520A
+
+l0000574C:
+	loadw	0xB4(r13),r7
+	cmpw	$0,r7
+	bne	00005654
+
+l00005754:
+	movd	(r3,r2),r13
+	bal	ra,fn000030F2
+	loadw	0xB4(r13),r0
+	cmpw	$0,r0
+	bne	00005654
+
+l00005764:
+	loadw	(sp),r1
+	cmpw	$0,r1
+	beq	0000520A
+
+l0000576C:
+	storw	r7,0x240C(r13)
+	cmpw	$4,r1
+	beq	00005170
+
+l00005776:
+	loadw	0x23EC(r13),r0
+	cmpw	$0,r0
+	beq	00004E3E
+
+l00005780:
+	loadd	0x98(r13),(r5,r4)
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005F1E
+
+l00005794:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l000057A0:
+	push	$2,r0
+	movw	$0,r6
+	movd	(r3,r2),r13
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	000057CC
+
+l000057CA:
+	movw	r0,r7
+
+l000057CC:
+	cmpw	$0,r7
+	beq	0000580A
+
+l000057D0:
+	movzw	r7,(r1,r0)
+	stord	(r1,r0),4(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+
+l000057D8:
+	push	$2,r0
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	loadd	8(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),(r3,r2)
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	0000580A
+
+l00005806:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l0000580A:
+	loadd	(r13),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	sne	r0
+	br	00004E2E
+
+l00005816:
+	loadd	0x38(r13),(r1,r0)
+	br	000053D6
+
+l0000581E:
+	movw	$0,r0
+	addd	$12,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00005826:
+	loadb	2(r1,r0),r6
+	cmpb	r8,r6
+	bne	000059F0
+
+l0000582E:
+	loadb	3(r1,r0),r6
+	cmpb	r8,r6
+	bne	000059F0
+
+l00005836:
+	addd	$3,(r1,r0)
+	movd	$102,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	movd	ra,(r3,r2)
+	br	00005888
+
+l00005844:
+	loadb	2(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F3E
+
+l0000584C:
+	loadb	3(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F4E
+
+l00005854:
+	loadb	4(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F46
+
+l0000585C:
+	loadb	5(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F6C
+
+l00005864:
+	loadb	6(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F64
+
+l0000586C:
+	loadb	7(r1,r0),r10
+	cmpb	r8,r10
+	bne	00005F5C
+
+l00005874:
+	addd	$8,(r1,r0)
+	loadb	(r1,r0),r10
+	cmpb	r10,r8
+	seq	r3
+	cmpd	(r7,r6),(r1,r0)
+	slo	r10
+	andb	r10,r3
+	cmpb	$0,r10
+	beq	00005F56
+
+l00005888:
+	loadb	1(r1,r0),r10
+	cmpb	r8,r10
+	beq	00005844
+
+l0000588E:
+	movd	(r3,r2),ra
+	addd	$1,(r1,r0)
+
+l00005892:
+	subw	r0,r6
+	movw	$102,r1
+	addw	r1,r0
+	storw	r1,0xA0(r13)
+	cmpw	r1,r11
+	bhs	00005F2A
+
+l000058A4:
+	storw	r11,0xA0(r13)
+	movw	r11,r1
+
+l000058AA:
+	movb	$FD,r0
+	addb	r0,r1
+	loadw	0x23EC(r13),r1
+	movzw	r1,(r3,r2)
+	loadd	0x23F0(r13),(r5,r4)
+	movd	(r7,r6),(r3,r2)
+	addd	(r3,r2),(r7,r6)
+	addd	(r7,r6),(r5,r4)
+	storw	$1,(r5,r4)
+	loadd	0x23E0(r13),(r5,r4)
+	addw	$1,r1
+	storw	r1,0x23EC(r13)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	movzb	r0,(r1,r0)
+	movxw	r0,(r1,r0)
+	addd	$62254,(r1,r0)
+	loadb	(r1,r0),r0
+	movzb	r0,(r1,r0)
+	movzw	r0,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	0x8DC(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0x8DC(r1,r0)
+	movd	$F42E,(r4,r3)
+	loadb	(r4,r3),r0
+	movzb	r0,(r1,r0)
+	movzw	r0,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	0x12BC(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0x12BC(r1,r0)
+	loadw	0x23E8(r13),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r13),r1
+	cmpw	r0,r1
+	seq	r1
+	loadw	0xA0(r13),r0
+	loadw	0xB4(r13),r11
+	subw	r11,r0
+	storw	r11,0xB4(r13)
+	loadw	0xAC(r13),r2
+	addw	r0,r2
+	storw	r0,0xAC(r13)
+	storw	$0,0x50(r13)
+	cmpw	$0,r1
+	beq	000059C8
+
+l00005932:
+	loadd	0x98(r13),(r5,r4)
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005DF2
+
+l00005942:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l0000594E:
+	push	$2,r0
+	movw	$0,r6
+	movd	(r3,r2),r13
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	0000597A
+
+l00005978:
+	movw	r0,r7
+
+l0000597A:
+	cmpw	$0,r7
+	beq	000059B8
+
+l0000597E:
+	movzw	r7,(r1,r0)
+	stord	(r1,r0),4(sp)
+	loadd	0xC(r9,r8),(r3,r2)
+	loadd	0x10(r11,r10),(r5,r4)
+	push	$2,r0
+	bal	ra,fn0000DB24
+	loadd	0xC(r9,r8),(r1,r0)
+	loadd	8(sp),(r3,r2)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0xC(r9,r8)
+	loadd	0x10(r11,r10),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+	loadd	0x14(r9,r8),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	stord	(r1,r0),0x14(r9,r8)
+	loadw	0x10(r9,r8),r0
+	subw	r0,r7
+	storw	r0,0x10(r9,r8)
+	loadd	0x14(r11,r10),(r1,r0)
+	subd	(r1,r0),(r3,r2)
+	stord	(r1,r0),0x14(r11,r10)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	000059B8
+
+l000059B4:
+	loadd	8(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r11,r10)
+
+l000059B8:
+	loadd	(r13),(r1,r0)
+	loadw	0x10(r1,r0),r0
+	cmpw	$0,r0
+	beq	0000520A
+
+l000059C2:
+	loadw	0xB4(r13),r11
+	loadw	(sp),r9
+
+l000059C8:
+	cmpw	$102,r11
+	bhs	00005A50
+
+l000059CE:
+	storw	$0,0x50(r13)
+	loadw	0xAC(r13),r0
+	loadd	0x60(r13),(r5,r4)
+	movzw	r0,(r3,r2)
+
+l000059DC:
+	cmpw	$0,r0
+	beq	000059F0
+
+l000059E0:
+	movd	$FFFFFFFF,(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	addd	(r5,r4),(r1,r0)
+	loadb	(r1,r0),r8
+	loadb	1(r1,r0),r6
+	cmpb	r8,r6
+	beq	00005826
+
+l000059F0:
+	addd	(r5,r4),(r3,r2)
+	loadb	(r3,r2),r0
+	loadw	0x23EC(r13),r1
+	movzw	r1,(r3,r2)
+	loadd	0x23F0(r13),(r5,r4)
+	movd	(r7,r6),(r3,r2)
+	addd	(r3,r2),(r7,r6)
+	addd	(r7,r6),(r5,r4)
+	storw	$0,(r5,r4)
+	loadd	0x23E0(r13),(r5,r4)
+	addw	$1,r1
+	storw	r1,0x23EC(r13)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	movzb	r0,(r1,r0)
+	movzw	r0,(r1,r0)
+	ashud	$2,(r1,r0)
+	addd	r13,(r1,r0)
+	loadw	0xD4(r1,r0),r2
+	addw	$1,r1
+	storw	r2,0xD4(r1,r0)
+	loadw	0x23E8(r13),r0
+	addw	$FFFF,r9
+	loadw	0x23EC(r13),r1
+	cmpw	r0,r1
+	seq	r1
+	loadw	0xB4(r13),r11
+	addw	$FFFF,r9
+	storw	r11,0xB4(r13)
+	loadw	0xAC(r13),r0
+	addw	$1,r1
+	storw	r0,0xAC(r13)
+	cmpw	$0,r1
+	beq	000059C8
+
+l00005A4C:
+	br	00005932
+
+l00005A50:
+	movd	(r3,r2),r13
+	bal	ra,fn000030F2
+	loadw	0xB4(r13),r11
+	cmpw	$102,r11
+	blo	000059CE
+
+l00005A60:
+	cmpw	$0,r9
+	beq	0000520A
+
+l00005A66:
+	cmpw	$0,r11
+	beq	00005D68
+
+l00005A6C:
+	storw	$0,0x50(r13)
+	loadw	0xAC(r13),r0
+	loadd	0x60(r13),(r5,r4)
+	movzw	r0,(r3,r2)
+	cmpw	$2,r11
+	bhs	000059F0
+
+l00005A7E:
+	br	000059DC
+
+l00005A80:
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x44(r1,r0),r2
+	cmpw	$0,r2
+	beq	00005AA8
+
+l00005A8C:
+	loadd	0x14(r13),(r7,r6)
+	cmpd	(r7,r6),(r5,r4)
+	bhs	00005AA8
+
+l00005A92:
+	subw	r6,r4
+	loadd	8(r13),(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+	loadd	0x38(r13),(r1,r0)
+
+l00005AA8:
+	movd	$0,(r3,r2)
+	stord	(r3,r2),0x40(r13)
+
+l00005AAE:
+	movw	$5B,r2
+	storw	r2,4(r13)
+
+l00005AB4:
+	loadd	0x38(r1,r0),(r3,r2)
+	cmpd	$0,(r3,r2)
+	beq	000050C6
+
+l00005ABE:
+	loadd	0x14(r13),(r5,r4)
+	movd	(r7,r6),(r5,r4)
+	br	00005AF0
+
+l00005AC4:
+	loadd	0x38(r1,r0),(r1,r0)
+	loadd	0x40(r13),(r3,r2)
+	movd	$1,(r9,r8)
+	addd	(r3,r2),(r9,r8)
+	stord	(r9,r8),0x40(r13)
+	addd	(r3,r2),(r1,r0)
+	loadb	(r1,r0),r2
+	loadd	8(r13),(r1,r0)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r13)
+	addd	(r7,r6),(r1,r0)
+	storb	r2,(r1,r0)
+	cmpb	$0,r2
+	beq	0000509C
+
+l00005AEA:
+	loadd	0x14(r13),(r7,r6)
+	loadd	0x38(r13),(r1,r0)
+
+l00005AF0:
+	loadd	0xC(r13),(r3,r2)
+	cmpd	(r3,r2),(r7,r6)
+	bne	00005AC4
+
+l00005AF6:
+	loadw	0x44(r1,r0),r0
+	cmpw	$0,r0
+	sne	r0
+	cmpw	$0,r0
+	beq	00005B1C
+
+l00005B02:
+	cmpd	(r5,r4),(r7,r6)
+	shi	r0
+	cmpw	$0,r0
+	beq	00005B1C
+
+l00005B0A:
+	subw	r6,r4
+	loadd	8(r13),(r1,r0)
+	addd	(r1,r0),(r5,r4)
+	loadd	0x60(r12),(r3,r2)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+
+l00005B1C:
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	00005B30
+
+l00005B2E:
+	movw	r0,r7
+
+l00005B30:
+	cmpw	$0,r7
+	beq	00005B6A
+
+l00005B34:
+	movzw	r7,(r11,r10)
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
+	push	$2,r10
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
+	subd	(r1,r0),(r11,r10)
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005B6A
+
+l00005B66:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00005B6A:
+	loadd	0x14(r13),(r7,r6)
+	cmpd	$0,(r7,r6)
+	bne	0000513A
+
+l00005B72:
+	loadd	0x38(r13),(r1,r0)
+	movw	$0,r4
+	movw	r4,r5
+	br	00005AC4
+
+l00005B7C:
+	movw	$29A,r1
+	storw	r1,4(r13)
+	andw	$FFFD,r11
+	cmpw	$0,r0
+	bne	00004EB6
+
+l00005B8C:
+	br	0000520A
+
+l00005B90:
+	loadw	0x60(r12),r6
+	loadd	8(r13),(r1,r0)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	0x60(r12),(r7,r6)
+	lshd	$-24,(r7,r6)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	movw	$0,r6
+	movd	$0,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	bal	ra,fn0000CAF8
+	stord	(r1,r0),0x60(r12)
+
+l00005BC2:
+	movw	$71,r0
+	storw	r0,4(r13)
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	00005BDC
+
+l00005BDA:
+	movw	r0,r7
+
+l00005BDC:
+	cmpw	$0,r7
+	beq	00005C16
+
+l00005BE0:
+	movzw	r7,(r11,r10)
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
+	push	$2,r10
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
+	subd	(r1,r0),(r11,r10)
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005C16
+
+l00005C12:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00005C16:
+	loadd	0x14(r13),(r1,r0)
+	cmpd	$0,(r1,r0)
+	beq	00005090
+
+l00005C1E:
+	br	0000513A
+
+l00005C22:
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$0,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$0,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$0,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$0,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$0,(r1,r0)
+	loadw	0xC4(r13),r0
+	cmpw	$9,r0
+	beq	00005D1E
+
+l00005C72:
+	loadw	0xC8(r13),r1
+	cmpw	$1,r1
+	slt	r1
+	cmpw	$0,r1
+	bne	00005E7E
+
+l00005C80:
+	cmpw	$1,r0
+	sge	r6
+	cmpb	$0,r6
+	bne	00005E7E
+
+l00005C8A:
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	$3,(r1,r0)
+	movw	$71,r0
+	storw	r0,4(r13)
+	loadd	0x38(r12),(r9,r8)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000B09C
+	loadw	0x14(r9,r8),r0
+	loadw	0x10(r12),r7
+	cmpw	r7,r0
+	bhs	00005CC0
+
+l00005CBE:
+	movw	r0,r7
+
+l00005CC0:
+	cmpw	$0,r7
+	beq	00005CFA
+
+l00005CC4:
+	movzw	r7,(r11,r10)
+	loadd	0xC(r12),(r3,r2)
+	loadd	0x10(r9,r8),(r5,r4)
+	push	$2,r10
+	bal	ra,fn0000DB24
+	loadd	0xC(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0xC(r12)
+	loadd	0x10(r9,r8),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+	loadd	0x14(r12),(r1,r0)
+	addd	(r11,r10),(r1,r0)
+	stord	(r1,r0),0x14(r12)
+	loadw	0x10(r12),r0
+	subw	r0,r7
+	storw	r0,0x10(r12)
+	loadd	0x14(r9,r8),(r1,r0)
+	subd	(r1,r0),(r11,r10)
+	stord	(r1,r0),0x14(r9,r8)
+	addd	$4,sp
+	cmpd	$0,(r1,r0)
+	bne	00005CFA
+
+l00005CF6:
+	loadd	8(r9,r8),(r1,r0)
+	stord	(r1,r0),0x10(r9,r8)
+
+l00005CFA:
+	loadd	0x14(r13),(r1,r0)
+	cmpd	$0,(r1,r0)
+	bne	0000513A
+
+l00005D02:
+	loadw	4(r13),r2
+	cmpw	$45,r2
+	bne	00005078
+
+l00005D0C:
+	br	00005816
+
+l00005D10:
+	orw	$40,r11
+	br	00004FA4
+
+l00005D18:
+	movw	$1,r0
+	br	00004D0E
+
+l00005D1E:
+	movb	$2,r6
+	br	00005C8A
+
+l00005D22:
+	movd	(r3,r2),r13
+	bal	ra,fn0000B10C
+	br	00004E62
+
+l00005D2C:
+	loadd	(0x00FC6C),r0
+	stord	(r1,r0),0x18(r12)
+	movw	$FFFB,r0
+	br	00004D0E
+
+l00005D3C:
+	loadd	0x38(r13),(r1,r0)
+	br	00005506
+
+l00005D44:
+	movb	$2,r6
+	br	00005358
+
+l00005D4A:
+	movw	$0,r4
+	movw	r4,r5
+	br	000056D6
+
+l00005D52:
+	movb	$4,r6
+	br	00005358
+
+l00005D58:
+	loadd	(0x00FC60),r0
+	stord	(r1,r0),0x18(r12)
+	movw	$FFFE,r0
+	br	00004D0E
+
+l00005D68:
+	storw	r11,0x240C(r13)
+	loadw	(sp),r3
+	cmpw	$4,r3
+	beq	00005E96
+
+l00005D74:
+	loadw	0x23EC(r13),r0
+	cmpw	$0,r0
+	beq	00004E3E
+
+l00005D7E:
+	loadd	0x98(r13),(r5,r4)
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005F34
+
+l00005D92:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
 
 l00005D9E:
-	push	$1,r0
+	push	$2,r0
 	movw	$0,r6
 	movd	(r3,r2),r13
 	bal	ra,fn0000B218
@@ -5373,7 +5670,7 @@ l00005DC8:
 
 l00005DCA:
 	cmpw	$0,r7
-	beq	0000524A
+	beq	0000580A
 
 l00005DD0:
 	movzw	r7,(r4,r3)
@@ -5381,15 +5678,46 @@ l00005DD0:
 	loadd	0xC(r9,r8),(r3,r2)
 	loadd	0x10(r11,r10),(r5,r4)
 	loadd	4(sp),(r1,r0)
-	br	000051D8
-00005DDE                                           0D AF               ..
-00005DE0 1C 00 E0 18 D3 FC 0D AF 1C 00 00 9F 22 00 E0 18 ............"...
-00005DF0 E3 F2 04 5A 45 5B E0 18 59 FB 80 F0 6C AF 30 00 ...ZE[..Y...l.0.
-00005E00 86 4B 0D A4 2D AA 14 54 24 61 4D EA 20 61 60 F0 .K..-..T$aM. a`.
-00005E10 6C 9F 32 00 0D A4 2D AA 14 54 24 61 4D EA 20 61 l.2...-..T$aM. a
-00005E20 60 F0 6C 9F 32 00 86 49 0D A4 2D AA 14 54       `.l.2..I..-..T  
+	br	000057D8
 
-l00005E2E:
+l00005DDE:
+	loadd	0x38(r13),(r1,r0)
+	br	00005AB4
+
+l00005DE6:
+	loadd	0x38(r13),(r1,r0)
+	loadw	0x44(r1,r0),r0
+	br	000050D0
+
+l00005DF2:
+	movw	$0,r4
+	movw	r4,r5
+	br	0000594E
+
+l00005DFA:
+	storb	r8,(r1,r0)
+	loadd	0x60(r12),(r7,r6)
+	lshd	$-24,(r7,r6)
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x64(r12),r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
+	addd	(r3,r2),(r5,r4)
+	stord	(r5,r4),0x14(r13)
+	addd	(r3,r2),(r1,r0)
+	storb	r6,(r1,r0)
+	loadw	0x64(r12),r6
+	lshw	$-8,r6
+	loadd	8(r13),(r1,r0)
+	loadd	0x14(r13),(r3,r2)
+	movd	$1,(r5,r4)
 	addd	(r3,r2),(r5,r4)
 	stord	(r5,r4),0x14(r13)
 	addd	(r3,r2),(r1,r0)
@@ -5403,8 +5731,6 @@ l00005E2E:
 	addd	(r3,r2),(r1,r0)
 	storb	r6,(r1,r0)
 	loadd	8(r12),(r7,r6)
-
-l00005E48:
 	lshd	$-24,(r7,r6)
 	loadd	8(r13),(r1,r0)
 	loadd	0x14(r13),(r3,r2)
@@ -5430,261 +5756,176 @@ l00005E48:
 	stord	(r5,r4),0x14(r13)
 	addd	(r3,r2),(r1,r0)
 	storb	r6,(r1,r0)
-	br	fn00003FB8
-00005E7E                                           46 58               FX
-00005E80 E0 18 0B FE B7 26 80 00 E0 18 1D F1 B0 5A 9A 02 .....&.......Z..
-00005E90 0D D2 E0 18 2D F0 4D AF 4C 00 0D 9F 56 00 00 5F ....-.M.L...V.._
-00005EA0 14 00 40 C0 04 56 6A 14 44 00 00 00 FF FF 2D AF ..@..Vj.D.....-.
-00005EB0 30 00 24 61 10 01 16 5A D2 55 00 C0 5E 53 0D 9F 0.$a...Z.U..^S..
-00005EC0 56 00 00 5F 0D EF 4C 00 8D A0 A8 AF 1C 00 A2 55 V.._..L........U
-00005ED0 00 C0 CC 51 0A 9A 78 98 4F 60 07 53 B2 10 07 5B ...Q..x.O`.S...[
-00005EE0 07 52 00 18 19 F3 E0 18 DB F2 2D AF 3C 00 5D 9F .R........-.<.].
-00005EF0 42 00 95 32 55 5F 55 61 20 55 50 61 00 C2 04 5A B..2U_Ua UPa...Z
-00005F00 00 C0 44 7C 0D 9F 5A 00 00 52 10 18 59 EF 0D DF ..D|..Z..R..Y...
-00005F10 56 00 8D EF 4C 00 0D DF 06 12 E0 18 49 EF 04 54 V...L.......I..T
-00005F20 E0 18 81 F8 04 54 E0 18 6B F2 21 52 A0 18 7F F9 .....T..k.!R....
-00005F30 E0 18 C1 FA 04 54 E0 18 69 FE 04 54 EC 1B E2 55 .....T..i..T...U
-00005F40 20 60 E0 18 51 F9 E2 55 40 60 E0 18 49 F9 E2 55  `..Q..U@`..I..U
-00005F50 30 60 E0 18 41 F9 E2 55 E0 18 3B F9 E2 55 70 60 0`..A..U..;..Up`
-00005F60 E0 18 33 F9 E2 55 60 60 E0 18 2B F9 E2 55 50 60 ..3..U``..+..UP`
-00005F70 E0 18 23 F9 9D 01 67 01 2A 55 47 5B 5C 5B 02 56 ..#...g.*UG[\[.V
+	br	00004F18
+
+l00005E7E:
+	movb	$4,r6
+	br	00005C8A
+
+l00005E84:
+	orw	$80,r11
+	br	00004FA4
+
+l00005E8C:
+	movw	$29A,r0
+	storw	r0,4(r13)
+	br	00004EBE
+
+l00005E96:
+	loadd	0x98(r13),(r5,r4)
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	subd	(r1,r0),(r5,r4)
+	cmpd	$0,(r5,r4)
+	bgt	00005F3A
+
+l00005EA8:
+	andd	$FFFF,(r5,r4)
+	loadd	0x60(r13),(r3,r2)
+	addd	(r3,r2),(r5,r4)
+
+l00005EB4:
+	push	$2,r0
+	movw	$1,r6
+	movd	(r3,r2),r13
+	bal	ra,fn0000B218
+	loadw	0xAC(r13),r0
+	movzw	r0,(r1,r0)
+	stord	(r1,r0),0x98(r13)
+	loadd	(r13),(r9,r8)
+	loadd	0x38(r9,r8),(r11,r10)
+	movd	(r3,r2),(r11,r10)
+	bal	ra,fn0000B09C
+	loadw	0x14(r11,r10),r0
+	loadw	0x10(r9,r8),r7
+	addd	$4,sp
+	cmpw	r7,r0
+	bhs	00005EE0
+
+l00005EDE:
+	movw	r0,r7
+
+l00005EE0:
+	cmpw	$0,r7
+	beq	000051FA
+
+l00005EE6:
+	br	000051C0
+
+l00005EEA:
+	loadd	0x78(r13),(r3,r2)
+	loadw	0x84(r13),r5
+	addw	$FFFF,r9
+	movzw	r5,(r6,r5)
+	addd	(r6,r5),(r6,r5)
+	movd	(r1,r0),(r3,r2)
+	addd	(r6,r5),(r1,r0)
+	storw	$0,(r1,r0)
+	movw	$0,r4
+	bal	ra,fn0000DB44
+	loadw	0xB4(r13),r0
+	cmpw	$0,r0
+	bne	00004E62
+
+l00005F0E:
+	storw	r0,0xAC(r13)
+	stord	(r9,r8),0x98(r13)
+	storw	r0,0x240C(r13)
+	br	00004E62
+
+l00005F1E:
+	movd	$0,(r5,r4)
+	br	000057A0
+
+l00005F24:
+	movd	$0,(r5,r4)
+	br	00005190
+
+l00005F2A:
+	cmpw	$2,r1
+	blo	000058AA
+
+l00005F30:
+	br	000059F0
+
+l00005F34:
+	movd	$0,(r5,r4)
+	br	00005D9E
+
+l00005F3A:
+	movd	$0,(r5,r4)
+	br	00005EB4
+
+l00005F3E:
+	movd	(r3,r2),ra
+	addd	$2,(r1,r0)
+	br	00005892
+
+l00005F46:
+	movd	(r3,r2),ra
+	addd	$4,(r1,r0)
+	br	00005892
+
+l00005F4E:
+	movd	(r3,r2),ra
+	addd	$3,(r1,r0)
+	br	00005892
+
+l00005F56:
+	movd	(r3,r2),ra
+	br	00005892
+
+l00005F5C:
+	movd	(r3,r2),ra
+	addd	$7,(r1,r0)
+	br	00005892
+
+l00005F64:
+	movd	(r3,r2),ra
+	addd	$6,(r1,r0)
+	br	00005892
+
+l00005F6C:
+	movd	(r3,r2),ra
+	addd	$5,(r1,r0)
+	br	00005892
+00005F74             9D 01 67 01 2A 55 47 5B 5C 5B 02 56     ..g.*UG[\[.V
 00005F80 00 11 02 AF 20 00 00 56 0C 10 02 AF 24 00 00 56 .... ..V....$..V
 00005F90 08 10 82 AF 1C 00 08 56 04 10 08 A0 02 57 05 10 .......V.....W..
-
-l00005FA0:
-	movw	$FFFE,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-00005FA8                         18 92 B1 52 2A 00 12 08         ...R*...
+00005FA0 B0 5A FE FF 67 02 9D 03 18 92 B1 52 2A 00 12 08 .Z..g......R*...
 00005FB0 B1 52 45 00 10 08 20 21 B1 52 5B 00 12 08 20 21 .RE... !.R[... !
-00005FC0 B1 52 67 00 12 08 20 21 B1 52 71 00             .Rg... !.Rq.    
-
-l00005FCC:
-	sne	r2
-	andb	r0,r2
-	cmpw	$29A,r1
-	sne	r2
-	andb	r0,r2
-	addw	$FFC7,r11
-	andw	$FFEF,r11
-	cmpw	$0,r1
-	sne	r1
-	andb	r0,r1
-	cmpb	$0,r0
-	bne	00005FA0
-
-l00005FEA:
-	cmpw	$FFFF,r4
-	beq	000060BE
-
-l00005FEE:
-	cmpw	$9,r4
-	slo	r0
-
-l00005FF4:
-	cmpw	$4,r12
-	slo	r1
-	cmpw	$0,r1
-	bne	00005FA0
-
-l00005FFC:
-	cmpb	$0,r0
-	bne	00005FA0
-
-l00006000:
-	loadw	0xC8(r9,r8),r0
-	cmpw	r0,r12
-	beq	00006092
-
-l00006008:
-	movw	$5,r4
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn00004CD4
-	cmpw	$FFFE,r0
-	beq	00005FA0
-
-l00006016:
-	loadw	0x10(r11,r10),r0
-	cmpw	$0,r0
-	beq	0000623E
-
-l0000601E:
-	loadw	0xC4(r9,r8),r3
-
-l00006022:
-	cmpw	r7,r3
-	beq	00006088
-
-l00006026:
-	cmpw	$0,r3
-	bne	0000605C
-
-l0000602A:
-	loadw	0x2408(r9,r8),r6
-	cmpw	$0,r6
-	beq	0000605C
-
-l00006032:
-	loadd	0x78(r9,r8),(r1,r0)
-	loadw	0x84(r9,r8),r2
-	movw	$FFFF,r4
-	addw	r4,r2
-	movzw	r4,(r5,r4)
-	movd	(r11,r10),(r5,r4)
-	addd	(r5,r4),(r11,r10)
-	cmpw	$1,r6
-	beq	000060C2
-
-l00006048:
-	movd	(r5,r4),(r1,r0)
-	addd	(r11,r10),(r5,r4)
-	storw	r3,(r5,r4)
-
-l0000604E:
-	movd	(r6,r5),(r11,r10)
-	movw	$0,r4
-
-l00006052:
-	movd	(r3,r2),(r1,r0)
-	bal	ra,fn0000DB44
-	storw	$0,0x1204(r9,r8)
-
-l0000605C:
-	storw	r7,0xC4(r9,r8)
-	movxw	r7,(r1,r0)
-	movd	(r3,r2),(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	ashud	$2,(r3,r2)
-	movd	$E5A4,(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadw	2(r1,r0),r2
-	storw	r2,0xC0(r9,r8)
-	loadw	(r1,r0),r2
-	storw	r2,0xCC(r9,r8)
-	loadw	4(r1,r0),r2
-	storw	r2,0xD0(r9,r8)
-	loadw	6(r1,r0),r0
-	storw	r0,0xBC(r9,r8)
-
-l00006088:
-	storw	r12,0xC8(r9,r8)
-	movw	$0,r0
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00006092:
-	loadw	0xC4(r9,r8),r3
-	movd	$E5A4,ra
-
-l00006098:
-	stord	(r11,r10),0xA(r5,r4)
-
-l0000609A:
-	movxw	r7,(r5,r4)
-	movd	(r1,r0),(r5,r4)
-	addd	(r5,r4),(r1,r0)
-	addd	(r5,r4),(r1,r0)
-	movd	r13,(r1,r0)
-	ashud	$2,r13
-	addd	ra,r13
-	movxw	r3,(r5,r4)
-	movd	(r1,r0),(r5,r4)
-	addd	(r5,r4),(r1,r0)
-	addd	(r5,r4),(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	ra,(r1,r0)
-	loadd	8(r13),(r5,r4)
-	loadd	8(r1,r0),(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
-	bne	00006008
-
-l000060BC:
-	br	00006022
-
-l000060BE:
-	movw	$6,r7
-	br	00005FF4
-
-l000060C2:
-	loadw	0x50(r9,r8),r6
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	addd	$1,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	movd	ra,(r3,r2)
-	subd	ra,(r5,r4)
-
-l000060D6:
-	addd	$FFFE,(r3,r2)
-	loadw	(r3,r2),r13
-	cmpw	r13,r6
-	bhi	0000611C
-
-l000060E0:
-	movw	r13,r4
-	subw	r4,r6
-	storw	r4,(r3,r2)
-	cmpd	(r3,r2),ra
-	bne	000060D6
-
-l000060EA:
-	movzw	r6,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	loadd	0x70(r9,r8),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	movw	$FFFF,r4
-	addw	r4,r6
-	movzw	r4,(r5,r4)
-	addd	$1,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	movd	ra,(r3,r2)
-	subd	ra,(r5,r4)
-
-l00006104:
-	addd	$FFFE,(r3,r2)
-	loadw	(r3,r2),r13
-	cmpw	r6,r13
-	blo	00006124
-
-l0000610E:
-	movw	r13,r4
-	subw	r4,r6
-	movw	r4,r13
-	storw	r4,(r3,r2)
-	cmpd	ra,(r3,r2)
-	bne	00006104
-
-l0000611A:
-	br	0000604E
-
-l0000611C:
-	storw	$0,(r3,r2)
-	cmpd	(r3,r2),ra
-	bne	000060D6
-
-l00006122:
-	br	000060EA
-
-l00006124:
-	storw	$0,(r3,r2)
-	cmpd	ra,(r3,r2)
-	bne	00006104
-
-l0000612A:
-	br	0000604E
-0000612C                                     B0 5A FB FF             .Z..
+00005FC0 B1 52 67 00 12 08 20 21 B1 52 71 00 12 08 20 21 .Rg... !.Rq... !
+00005FD0 B1 52 9A 02 12 08 20 21 B1 32 C7 FF B1 22 EF FF .R.... !.2..."..
+00005FE0 01 52 11 08 10 21 00 50 1C 1D 94 52 09 16 B4 52 .R...!.P...R...R
+00005FF0 09 00 A0 08 4C 52 A1 08 01 52 13 1D 00 50 11 1D ....LR...R...P..
+00006000 08 9F 64 00 C0 53 06 14 54 5A A2 55 FF C0 C9 EC ..d..S..TZ.U....
+00006010 B0 52 FE FF 06 1C 0A 98 00 52 00 18 12 01 38 9F .R.......R....8.
+00006020 62 00 37 53 02 13 03 52 1A 11 68 9F 04 12 06 52 b.7S...R..h....R
+00006030 06 11 08 AF 3C 00 28 9F 42 00 94 5A 24 33 44 5F ....<.(.B..Z$3D_
+00006040 4A 55 4A 61 16 52 0E 13 04 55 A4 61 34 D0 A5 55 JUJa.R...U.a4..U
+00006050 04 5A 02 55 00 C0 F0 7A 08 C3 04 12 78 DF 62 00 .Z.U...z....x.b.
+00006060 70 5E 02 55 02 61 02 61 22 4C 00 05 A4 E5 20 61 p^.U.a.a"L.... a
+00006070 20 91 28 DF 60 00 20 90 28 DF 66 00 20 92 28 DF  .(.`. .(.f. .(.
+00006080 68 00 00 93 08 DF 5E 00 C8 DF 64 00 00 5A 67 02 h.....^...d..Zg.
+00006090 9D 03 38 9F 62 00 E0 05 A4 E5 74 5E 40 55 40 61 ..8.b.....t^@U@a
+000060A0 40 61 0D 55 2D 4C ED 61 34 5E 40 55 40 61 40 61 @a.U-L.a4^@U@a@a
+000060B0 20 4C E0 61 4D A4 00 A4 04 57 17 1A E3 1B 67 5A  L.aM....W....gZ
+000060C0 EA 19 68 9F 28 00 22 5F 22 61 02 61 14 60 44 61 ..h.(."_"a.a.`Da
+000060D0 2E 55 14 00 4E C0 B2 60 FE FF D2 90 6D 53 4F 11 .U..N..`....mSO.
+000060E0 D4 5B 64 3B 42 D0 E2 57 17 1F 62 5F 22 61 48 AF .[d;B..W..b_"aH.
+000060F0 38 00 42 61 94 5A 64 33 44 5F 14 60 44 61 2E 55 8.Ba.Zd3D_.`Da.U
+00006100 14 00 4E C0 B2 60 FE FF D2 90 D6 53 AC 10 D4 5B ..N..`.....S...[
+00006110 64 3B 4D 5B 42 D0 2E 57 16 1F EA 19 02 C2 E2 57 d;M[B..W.......W
+00006120 1B 1D E4 1E 02 C2 2E 57 1E 1E E2 19 B0 5A FB FF .......W.....Z..
 00006130 67 02 9D 03                                     g...            
 
 ;; fn00006134: 00006134
 ;;   Called from:
 ;;     00002E54 (in fn00002D76)
-;;     00006744 (in fn00004CD4)
-;;     00006990 (in fn00004CD4)
+;;     00006502 (in fn00006226)
 fn00006134 proc
-	push	$1,ra
-	push	$3,r7
+	push	$2,ra
+	push	$4,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
 	beq	0000621C
@@ -5711,8 +5952,8 @@ l00006156:
 	beq	00006164
 
 l00006160:
-	pop	$3,r7
-	popret	$1,ra
+	pop	$4,r7
+	popret	$2,ra
 
 l00006164:
 	loadw	4(ra),r10
@@ -5726,12 +5967,6 @@ l00006164:
 	andb	r1,r2
 	cmpw	$67,r10
 	sne	r2
-
-;; fn00006182: 00006182
-;;   Called from:
-;;     00004EBA (in fn00004CD4)
-;;     00006180 (in fn00006134)
-fn00006182 proc
 	andb	r1,r2
 	cmpw	$71,r10
 	sne	r2
@@ -5755,31 +5990,15 @@ l000061AA:
 	loadd	8(ra),(r5,r4)
 	loadd	0x50(r9,r8),(r3,r2)
 	cmpd	$0,(r5,r4)
+	beq	000061C2
 
-;; fn000061B2: 000061B2
-;;   Called from:
-;;     000061B0 (in fn00006182)
-;;     000089B4 (in fn0000A110)
-fn000061B2 proc
-	beq	fn000061C2
-
-;; fn000061B4: 000061B4
-;;   Called from:
-;;     000061B2 (in fn000061B2)
-;;     000061B2 (in fn000061B2)
-fn000061B4 proc
+l000061B4:
 	jal	ra,(r7,r6)
 	loadd	0x38(r9,r8),ra
 	loadd	0x48(r9,r8),(r7,r6)
 	loadd	0x50(r9,r8),(r3,r2)
 
-;; fn000061C2: 000061C2
-;;   Called from:
-;;     000061A8 (in fn00006182)
-;;     000061B2 (in fn000061B2)
-;;     000061B2 (in fn000061B2)
-;;     000061BE (in fn000061B4)
-fn000061C2 proc
+l000061C2:
 	loadd	0x78(ra),(r5,r4)
 	cmpd	$0,(r5,r4)
 	beq	000061D8
@@ -5822,22 +6041,34 @@ l00006204:
 
 l00006214:
 	movw	$FFFD,r0
-	pop	$3,r7
-	popret	$1,ra
+	pop	$4,r7
+	popret	$2,ra
 
 l0000621C:
 	movw	$FFFE,r0
-	pop	$3,r7
-	popret	$1,ra
-00006224             00 00 9D 01 67 01 BF 60 F8 FF BC 54     ....g..`...T
-00006230 1E 00 FC 61 2A 55 4D 5B 0C 90 0F D0 1C 91       ...a*UM[......  
+	pop	$4,r7
+	popret	$2,ra
+00006224             00 00                                   ..          
 
-l0000623E:
+;; fn00006226: 00006226
+;;   Called from:
+;;     00001C5A (in fn00001BEC)
+fn00006226 proc
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-8,sp
+	movd	$1E,r12
+	addd	sp,r12
+	movd	(r11,r10),(r3,r2)
+	movw	r4,r13
+	loadw	(r12),r0
+	storw	r0,(sp)
+	loadw	2(r12),r1
 	storw	r1,4(sp)
 	loadd	4(r12),(r1,r0)
 	loadw	8(r12),r3
 	cmpd	$0,(r1,r0)
-	beq	00006792
+	beq	000064EC
 
 l0000624A:
 	loadb	(r1,r0),r0
@@ -5847,42 +6078,42 @@ l0000624A:
 	sne	r2
 	orb	r2,r0
 	cmpb	$0,r2
-	bne	0000677C
+	bne	000064EC
 
 l00006260:
 	cmpd	$0,(r11,r10)
-	beq	0000676A
+	beq	000064E6
 
 l00006266:
 	movd	$0,(r1,r0)
 	stord	(r1,r0),0x18(r11,r10)
 	loadd	0x40(r11,r10),(r1,r0)
 	cmpd	$0,(r1,r0)
-	beq	00006734
+	beq	000064D2
 
 l00006274:
 	loadd	0x48(r11,r10),(r9,r8)
 	cmpd	$0,(r9,r8)
-	beq	00006706
+	beq	000064C0
 
 l0000627E:
 	cmpw	$FFFF,r13
-	beq	000066BC
+	beq	0000649E
 
 l00006284:
 	cmpw	$0,r6
-	bgt	000066C6
+	bgt	000064A6
 
 l0000628A:
 	movw	$1,r7
 	cmpw	$F,r6
-	blt	000066DA
+	blt	000064B4
 
 l00006292:
 	loadw	(sp),r3
 	addw	$FFFF,r9
 	cmpw	$8,r3
-	blo	00006734
+	blo	000064E6
 
 l0000629C:
 	storw	r6,2(sp)
@@ -5891,26 +6122,26 @@ l0000629C:
 	cmpw	$7,r3
 	slo	r3
 	cmpw	$0,r3
-	bne	00006722
+	bne	000064E6
 
 l000062AE:
 	cmpw	$8,r5
 	sne	r3
 	cmpw	$0,r3
-	bne	00006718
+	bne	000064E6
 
 l000062B8:
 	loadw	4(sp),r3
 	cmpw	$4,r3
 	slo	r3
 	cmpw	$0,r3
-	bne	0000670C
+	bne	000064E6
 
 l000062C4:
 	cmpw	$9,r13
 	slo	r3
 	cmpw	$0,r3
-	bne	00006700
+	bne	000064E6
 
 l000062D0:
 	cmpw	$8,r6
@@ -5920,7 +6151,7 @@ l000062D0:
 
 l000062D8:
 	cmpb	$0,r2
-	bne	000066F2
+	bne	000064E6
 
 l000062DE:
 	cmpw	$8,r6
@@ -5937,7 +6168,7 @@ l000062E6:
 	movd	(r9,r8),(r1,r0)
 	movd	$0,r12
 	cmpd	(r1,r0),r12
-	beq	00006720
+	beq	0000650C
 
 l000062FC:
 	stord	(r1,r0),0x38(r11,r10)
@@ -5988,8 +6219,6 @@ l000062FC:
 	stord	(r1,r0),0x78(r9,r8)
 	stord	r12,0x2418(r9,r8)
 	loadw	(sp),r0
-
-l0000638C:
 	addw	$6,r6
 	movw	$1,r4
 	ashuw	r0,r4
@@ -6006,25 +6235,21 @@ l0000638C:
 	stord	(r5,r4),0xC(r9,r8)
 	loadd	0x60(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	beq	0000662E
+	beq	000064F2
 
 l000063BA:
 	loadd	0x70(r9,r8),(r5,r4)
 	cmpd	(r5,r4),r12
-	beq	00006624
+	beq	000064F2
 
 l000063C4:
 	loadw	0x78(r9,r8),r4
-
-l000063C6:
-	subd	$9F58003E,r12
+	loadw	0x7C(r9,r8),r5
 	orw	r4,r5
 	cmpw	$0,r4
-
-l000063D0:
 	seq	r4
 	cmpw	$0,r4
-	bne	00006610
+	bne	000064F2
 
 l000063D8:
 	movw	r0,r4
@@ -6032,7 +6257,7 @@ l000063D8:
 	cmpw	$0,r4
 	seq	r4
 	cmpw	$0,r4
-	bne	00006602
+	bne	000064F2
 
 l000063E6:
 	lshw	$-15,r6
@@ -6058,8 +6283,8 @@ l000063E6:
 l00006418:
 	movw	r7,r0
 	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l00006420:
 	loadd	0x38(r11,r10),(r9,r8)
@@ -6103,230 +6328,53 @@ l00006420:
 	storw	r7,0x80(r9,r8)
 	movw	r7,r0
 	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000649E                                           6D 5A               mZ
-000064A0 06 52 70 18 E9 FD 07 5A 72 5B 62 3B 26 5B 12 58 .Rp....Zr[b;&[.X
-000064B0 E0 18 E3 FD B6 32 F0 FF 72 59 27 5A E0 18 D7 FD .....2..rY'Z....
-000064C0 78 00 00 00 76 5D 8A EF 24 00 9D 52 10 18 B9 FD x...v]..$..R....
-000064D0 E7 1E 78 00 00 00 6E 5D 8A EF 20 00 0A EF 28 00 ..x...n].. ...(.
-000064E0 80 55 E0 18 93 FD B7 5A FE FF E7 19 B7 5A FA FF .U.....Z.....Z..
-000064F0 E4 19 B0 5A 9A 02 08 D2 12 00 00 B0 68 FC 0A EC ...Z........h...
-00006500 A2 55 FF C0 33 FC B7 5A FC FF E7 18 B7 5A FC FF .U..3..Z.....Z..
-00006510 E4 18 00 00 1E 01 67 01 BC 54 12 00 FC 61 2A 55 ......g..T...a*U
-00006520 47 5B 1C 90 05 56 00 18 04 02 05 B0 B0 50 31 00 G[...V.......P1.
-00006530 10 08 00 52 10 18 F6 01 B1 52 38 00 10 08 00 52 ...R.....R8....R
-00006540 10 18 EA 01 02 56 00 18 0C 02 00 54 02 EC 02 AF .....V.....T....
-00006550 20 00 00 56 00 18 C2 01 2A AF 24 00 02 56 00 18  ..V....*.$..V..
-00006560 A2 01 97 52 00 18 AC 01 B7 52 09 00 A0 18 E6 01 ...R.....R......
-00006570 2A AF 28 00 B5 5A 10 12 14 5A D0 00 08 55       *.(..Z...Z...U  
+	pop	$7,r7
+	popret	$2,r13,ra
 
-l0000657E:
-	movd	$0,r12
-	cmpd	(r1,r0),r12
-	beq	00006936
+l0000649E:
+	movw	$6,r13
+	cmpw	$0,r6
+	ble	0000628A
 
-l00006586:
-	stord	(r1,r0),0x38(r11,r10)
-	stord	(r11,r10),(r1,r0)
-	movw	$2A,r0
-	storw	r0,4(r9,r8)
-	storw	$1,0x18(r9,r8)
-	stord	r12,0x38(r9,r8)
-	storw	$F,0x2A(r9,r8)
+l000064A6:
+	movw	$0,r7
+	movw	r7,r2
+	subw	r2,r6
+	movw	r2,r6
+	movb	$1,r2
+	br	00006292
 
-l0000659E:
-	movw	$8000,r4
-	storw	r4,0x50(r9,r8)
-	movw	$7FFF,r0
-	storw	r0,0x58(r9,r8)
-	storw	$F,0x44(r9,r8)
-	storw	r4,0x84(r9,r8)
-	storw	r0,0x8C(r9,r8)
-	storw	$5,0x48(r9,r8)
-	loadd	0x50(r11,r10),(r3,r2)
-	loadd	0x40(r11,r10),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x60(r9,r8)
-	loadw	0x50(r9,r8),r4
-	loadd	0x50(r11,r10),(r3,r2)
-	loadd	0x40(r11,r10),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x70(r9,r8)
-	loadw	0x84(r9,r8),r4
-	loadd	0x50(r11,r10),(r3,r2)
-	loadd	0x40(r11,r10),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x78(r9,r8)
-	stord	r12,0x2418(r9,r8)
-	movw	$4000,r4
-	storw	r4,0x23E8(r9,r8)
+l000064B4:
+	addw	$FFF0,r11
+	movb	r7,r2
+	movw	$2,r7
+	br	00006292
 
-l00006602:
-	loadd	0x50(r11,r10),(r3,r2)
-	loadd	0x40(r11,r10),(r1,r0)
-	movw	$4,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),8(r9,r8)
+l000064C0:
+	movd	$5D76,(r9,r8)
+	stord	(r9,r8),0x48(r11,r10)
+	cmpw	$FFFF,r13
+	bne	00006284
 
-l00006610:
-	loadw	0x23E8(r9,r8),r6
-	movzw	r6,(r3,r2)
-	movd	(r5,r4),(r3,r2)
-	ashud	$2,(r5,r4)
-	stord	(r5,r4),0xC(r9,r8)
-	loadd	0x60(r9,r8),(r5,r4)
-	cmpd	(r5,r4),r12
-	beq	00006846
+l000064D0:
+	br	0000649E
 
-l00006624:
-	push	$1,r2
-
-l00006626:
-	loadd	0x70(r9,r8),(r5,r4)
-	cmpd	(r5,r4),r12
-	beq	0000683C
-
-l0000662E:
-	push	$0,r8
-
-l00006630:
-	loadw	0x78(r9,r8),r4
-	loadw	0x7C(r9,r8),r5
-	orw	r4,r5
-	cmpw	$0,r4
-	seq	r4
-	cmpw	$0,r4
-	bne	00006734
-
-l00006642:
-	movw	r0,r4
-	orw	r4,r1
-	cmpw	$0,r4
-	seq	r4
-	cmpw	$0,r4
-	bne	00006734
-
-l0000664E:
-	lshw	$-15,r6
-	movzw	r6,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	addd	(r1,r0),(r5,r4)
-	stord	(r5,r4),0x23F0(r9,r8)
-	movd	(r5,r4),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	stord	(r1,r0),0x23E0(r9,r8)
-	storw	r7,0xC4(r9,r8)
-	storw	$0,0x64(r9,r8)
-	storb	$8,0x24(r9,r8)
-	movd	(r3,r2),(r11,r10)
-	bal	ra,fn000046AC
-	movw	r0,r7
-	cmpw	$0,r0
-	beq	00006684
-
-l0000667E:
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-
-l00006684:
-	loadd	0x38(r11,r10),(r9,r8)
-	loadw	0x50(r9,r8),r0
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	stord	(r1,r0),0x68(r9,r8)
-	loadd	0x78(r9,r8),(r3,r2)
-	loadw	0x84(r9,r8),r5
-	addw	$FFFF,r9
-	movzw	r5,(r6,r5)
-	addd	(r6,r5),(r6,r5)
-	movd	(r1,r0),(r3,r2)
-	addd	(r6,r5),(r1,r0)
-	storw	r7,(r1,r0)
-	movw	r7,r4
-	bal	ra,fn0000DB44
-	loadw	0xC4(r9,r8),r2
-	movxw	r2,(r3,r2)
-	movd	(r1,r0),(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	ashud	$2,(r3,r2)
-
-l000066BC:
-	movd	$E5A4,(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadw	2(r1,r0),r2
-	storw	r2,0xC0(r9,r8)
-
-l000066C6:
-	xord	$9020DF28,(r1,r0)
-
-l000066C8:
-	loadw	(r1,r0),r2
-	storw	r2,0xCC(r9,r8)
-
-l000066CC:
-	xord	$9220DF28,(r7,r6)
-	xord	$9300DF08,(r9,r8)
-	ord	$DF780056,ra
-
-l000066DA:
-	storw	r7,0xAC(r9,r8)
-	stord	r12,0x98(r9,r8)
-	storw	r7,0xB4(r9,r8)
-	storw	r7,0x240C(r9,r8)
-	storw	$2,0x5C(r9,r8)
-	storw	$2,0x50(r9,r8)
-
-l000066F2:
-	storw	r7,0xA8(r9,r8)
-	storw	r7,0x80(r9,r8)
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-
-l00006700:
-	movd	$5D76,(r3,r2)
-
-l00006706:
-	stord	(r3,r2),0x48(r11,r10)
-	cmpw	$FFFF,r7
-
-l0000670C:
-	bne	000063C6
-
-l00006710:
-	movw	$6,r7
-	br	000063D0
-00006716                   72 00                               r.        
-
-l00006718:
-	res
-	movzb	r6,ra
-	stord	(r3,r2),0x40(r11,r10)
-
-l00006720:
+l000064D2:
+	movd	$5D6E,(r9,r8)
+	stord	(r9,r8),0x40(r11,r10)
 	stord	(r1,r0),0x50(r11,r10)
+	movd	(r1,r0),(r9,r8)
+	br	00006274
 
-l00006722:
-	addd	$552018E0,(r9,r8)
+l000064E6:
+	movw	$FFFE,r7
+	br	00006418
 
-l00006724:
-	movd	(r1,r0),(r3,r2)
-	br	0000638C
+l000064EC:
+	movw	$FFFA,r7
+	br	00006418
 
-l00006728:
-	storb	r3,[r12](r7,r6)
-0000672A                               B7 5A FA FF 70 5B           .Z..p[
-00006730 67 02 1E 03                                     g...            
-
-l00006734:
+l000064F2:
 	movw	$29A,r0
 	storw	r0,4(r9,r8)
 	loadd	(0x00FC68),r0
@@ -6334,249 +6382,84 @@ l00006734:
 	movd	(r3,r2),(r11,r10)
 	bal	ra,fn00006134
 	movw	$FFFC,r7
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-00006752       B7 5A FE FF 70 5B 67 02 1E 03 B7 5A FC FF   .Z..p[g....Z..
-00006760 70 5B 67 02 1E 03 9D 01 58 01                   p[g.....X.      
+	br	00006418
 
-l0000676A:
-	movd	r12,(r3,r2)
-	cmpd	$0,(r5,r4)
-	beq	00006B9E
-
-l00006772:
-	loadd	0x40(r5,r4),(r9,r8)
-	cmpd	$0,(r9,r8)
-	beq	00006B94
-
-l0000677C:
-	loadd	0x48(r5,r4),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006B8A
-
-l00006786:
-	loadd	0x38(r5,r4),r13
-	cmpd	$0,r13
-	beq	00006B80
-
-l00006790:
-	loadd	(r13),(r3,r2)
-
-l00006792:
-	movw	$FFFE,r0
-	cmpd	(r5,r4),(r3,r2)
-	beq	0000679E
-
-l0000679A:
-	pop	$5,r8
-	popret	$1,r13,ra
-
-l0000679E:
-	loadw	4(r13),r2
-	cmpw	$2A,r2
-	sne	r3
-	cmpw	$45,r2
-	sne	r1
-	andb	r1,r3
-	cmpw	$5B,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$67,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$71,r2
-	sne	r3
-	andb	r1,r3
-	cmpw	$29A,r2
-	sne	r3
-	andb	r1,r3
-	cmpb	$0,r1
-	beq	000067E2
-
-l000067D2:
-	addw	$FFC7,r11
-	andw	$FFEF,r11
-	cmpw	$0,r2
-	sne	r1
-	cmpw	$0,r1
-	bne	0000679A
-
-l000067E2:
-	cmpd	$0,r12
-	beq	00006B28
-
-l000067E8:
-	loadd	(r5,r4),(r1,r0)
-	stord	(r1,r0),(r12)
-	loadd	4(r5,r4),(r1,r0)
-	stord	(r1,r0),4(r12)
-	loadd	8(r5,r4),(r1,r0)
-	stord	(r1,r0),8(r12)
-	loadd	0xC(r5,r4),(r1,r0)
-	stord	(r1,r0),0xC(r12)
-	loadd	0x10(r5,r4),(r1,r0)
-	stord	(r1,r0),0x10(r12)
-	loadd	0x14(r5,r4),(r1,r0)
-	stord	(r1,r0),0x14(r12)
-	loadd	0x18(r5,r4),(r1,r0)
-	stord	(r1,r0),0x18(r12)
-	loadd	0x38(r5,r4),(r1,r0)
-	stord	(r1,r0),0x38(r12)
-	loadd	0x40(r5,r4),(r1,r0)
-	stord	(r1,r0),0x40(r12)
-	loadd	0x48(r5,r4),(r1,r0)
-	stord	(r1,r0),0x48(r12)
-	loadd	0x50(r5,r4),(r3,r2)
-	stord	(r3,r2),0x50(r12)
-	loadd	0x58(r5,r4),(r1,r0)
-	stord	(r1,r0),0x58(r12)
-	loadd	0x60(r5,r4),(r1,r0)
-	stord	(r1,r0),0x60(r12)
-	loadd	0x68(r5,r4),(r1,r0)
-	stord	(r1,r0),0x68(r12)
-
-l0000683C:
-	movw	$1210,r5
-	movw	$1,r4
-	jal	ra,(r9,r8)
-	movd	(r9,r8),(r1,r0)
-
-l00006846:
-	cmpd	$0,(r1,r0)
-	beq	00006AF0
-
-l0000684C:
-	stord	(r1,r0),0x38(r12)
-	movd	$1210,(r1,r0)
-	push	$1,r0
-	movd	(r5,r4),r13
-	movd	(r3,r2),(r9,r8)
-	bal	ra,fn0000DB24
-	stord	r12,(r9,r8)
-	loadw	0x50(r9,r8),r4
-	loadd	0x50(r12),(r3,r2)
-	loadd	0x40(r12),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x60(r9,r8)
-	loadw	0x50(r9,r8),r4
-	loadd	0x50(r12),(r3,r2)
-	loadd	0x40(r12),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x70(r9,r8)
-	loadw	0x84(r9,r8),r4
-	loadd	0x50(r12),(r3,r2)
-	loadd	0x40(r12),(r1,r0)
-	movw	$2,r5
-	jal	ra,(r1,r0)
-	stord	(r1,r0),0x78(r9,r8)
-	loadw	0x23E8(r9,r8),r4
-	loadd	0x50(r12),(r3,r2)
-	loadd	0x40(r12),(r1,r0)
-	movw	$4,r5
-	jal	ra,(r1,r0)
-	movd	(r11,r10),(r1,r0)
-	stord	(r1,r0),8(r9,r8)
-	loadd	0x60(r9,r8),(r3,r2)
-	addd	$4,sp
-	cmpd	$0,(r3,r2)
-	beq	0000698E
-
-l000068BA:
-	loadd	0x70(r9,r8),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000698E
-
-l000068C2:
-	loadw	0x78(r9,r8),r0
-	loadw	0x7C(r9,r8),r1
-	orw	r0,r1
-	cmpw	$0,r0
-
-l000068CE:
-	seq	r0
-	cmpw	$0,r0
-	bne	0000698E
-
-l000068D4:
-	movw	r10,r0
-	orw	r0,r11
-	cmpw	$0,r0
-	seq	r0
-	cmpw	$0,r0
-	bne	0000698E
-
-l000068E0:
-	loadw	0x50(r9,r8),r0
-	addw	r0,r0
-	movzw	r0,(r1,r0)
-	loadd	0x60(r13),(r5,r4)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	loadd	0x70(r9,r8),(r3,r2)
-	loadw	0x50(r9,r8),r0
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	loadd	0x70(r13),(r5,r4)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	loadd	0x78(r9,r8),(r3,r2)
-	loadw	0x84(r9,r8),r0
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	loadd	0x78(r13),(r5,r4)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	loadd	8(r9,r8),(r3,r2)
-	loadd	0xC(r9,r8),(r1,r0)
-	andd	$FFFF,(r1,r0)
-	loadd	8(r13),(r5,r4)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	loadd	8(r9,r8),(r3,r2)
-	loadd	0x10(r13),(r1,r0)
-	loadd	8(r13),(r5,r4)
-
-l00006936:
-	subd	(r1,r0),(r5,r4)
-	addd	(r3,r2),(r1,r0)
-	stord	(r1,r0),0x10(r9,r8)
-	loadw	0x23E8(r9,r8),r0
-	movw	r0,r4
-	lshw	$-15,r4
-	movzw	r4,(r5,r4)
-	addd	(r5,r4),(r5,r4)
-	addd	(r5,r4),(r11,r10)
-	stord	(r11,r10),0x23F0(r9,r8)
-	movzw	r0,(r1,r0)
-	movd	(r5,r4),(r1,r0)
-	addd	(r1,r0),(r5,r4)
-	addd	(r5,r4),(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	stord	(r3,r2),0x23E0(r9,r8)
-	movd	$6A,(r1,r0)
-	addd	(r9,r8),(r1,r0)
-	stord	(r1,r0),0x15E0(r9,r8)
-	movd	$95E,(r1,r0)
-	addd	(r9,r8),(r1,r0)
-	stord	(r1,r0),0x15F8(r9,r8)
-	movd	$A52,(r1,r0)
-	addd	(r9,r8),(r1,r0)
-	stord	(r1,r0),0x1610(r9,r8)
-	addd	$10,sp
-	movw	$0,r0
-	pop	$5,r8
-	popret	$1,r13,ra
-00006986                   B0 5A FE FF 58 02 9D 03             .Z..X...  
-
-l0000698E:
-	movd	(r3,r2),r12
-	bal	ra,fn00006134
-	movw	$FFFC,r0
-	br	0000659E
-0000699C                                     B0 5A FC FF             .Z..
+l0000650C:
+	movw	$FFFC,r7
+	br	00006418
+00006512       00 00 1E 01 67 01 BC 54 12 00 FC 61 2A 55   ....g..T...a*U
+00006520 47 5B 1C 90 05 56 00 18 04 02 05 B0 B0 50 31 00 G[...V.......P1.
+00006530 10 08 00 52 10 18 F6 01 B1 52 38 00 10 08 00 52 ...R.....R8....R
+00006540 10 18 EA 01 02 56 00 18 0C 02 00 54 02 EC 02 AF .....V.....T....
+00006550 20 00 00 56 00 18 C2 01 2A AF 24 00 02 56 00 18  ..V....*.$..V..
+00006560 A2 01 97 52 00 18 AC 01 B7 52 09 00 A0 18 E6 01 ...R.....R......
+00006570 2A AF 28 00 B5 5A 10 12 14 5A D0 00 08 55 0C 54 *.(..Z...Z...U.T
+00006580 C0 57 00 18 DA 01 0A EF 1C 00 A0 E0 B0 5A 2A 00 .W...........Z*.
+00006590 08 D2 18 C3 18 00 C8 EF 1C 00 F8 C3 2A 00 B4 5A ............*..Z
+000065A0 00 80 48 DF 28 00 B0 5A FF 7F 08 DF 2C 00 F8 C3 ..H.(..Z....,...
+000065B0 44 00 48 DF 42 00 08 DF 46 00 58 C3 48 00 2A AF D.H.B...F.X.H.*.
+000065C0 28 00 0A AF 20 00 25 5A D0 00 08 EF 30 00 48 9F (... .%Z....0.H.
+000065D0 28 00 2A AF 28 00 0A AF 20 00 25 5A D0 00 08 EF (.*.(... .%Z....
+000065E0 38 00 48 9F 42 00 2A AF 28 00 0A AF 20 00 25 5A 8.H.B.*.(... .%Z
+000065F0 D0 00 08 EF 3C 00 C8 EF 0C 12 B4 5A 00 40 48 DF ....<......Z.@H.
+00006600 F4 11 2A AF 28 00 0A AF 20 00 45 5A D0 00 08 E4 ..*.(... .EZ....
+00006610 68 9F F4 11 62 5F 24 55 24 4C 48 E6 48 AF 30 00 h...b_$U$LH.H.0.
+00006620 C4 57 00 18 12 01 48 AF 38 00 C4 57 00 18 08 01 .W....H.8..W....
+00006630 48 9F 3C 00 58 9F 3E 00 54 27 04 52 04 08 04 52 H.<.X.>.T'.R...R
+00006640 1A 17 04 5B 14 27 04 52 04 08 04 52 14 17 F6 49 ...[.'.R...R...I
+00006650 64 5F 44 61 04 61 48 EF F8 11 24 55 24 61 42 61 d_Da.aH...$U$aBa
+00006660 20 61 08 EF F0 11 78 DF 62 00 08 C3 64 00 88 83  a....x.b...d...
+00006670 24 00 A2 55 FF C0 39 E0 07 5B 00 52 04 10 70 5B $..U..9..[.R..p[
+00006680 67 02 1E 03 8A AF 1C 00 08 9F 28 00 00 5F 00 61 g.........(.._.a
+00006690 08 EF 34 00 28 AF 3C 00 58 9F 42 00 95 32 55 5F ..4.(.<.X.B..2U_
+000066A0 55 61 20 55 50 61 70 D0 74 5B 00 C0 9A 74 28 9F Ua UPap.t[...t(.
+000066B0 62 00 22 5E 20 55 20 61 02 61 22 4C 00 05 A4 E5 b."^ U a.a"L....
+000066C0 20 61 20 91 28 DF 60 00 20 90 28 DF 66 00 20 92  a .(.`. .(.f. .
+000066D0 28 DF 68 00 00 93 08 DF 5E 00 78 DF 56 00 C8 EF (.h.....^.x.V...
+000066E0 4C 00 78 DF 5A 00 78 DF 06 12 28 C3 5C 00 28 C3 L.x.Z.x...(.\.(.
+000066F0 50 00 78 DF 54 00 78 DF 40 00 70 5B 67 02 1E 03 P.x.T.x.@.p[g...
+00006700 72 00 00 00 76 5D 2A EF 24 00 97 52 10 18 5D FE r...v]*.$..R..].
+00006710 67 5A E0 18 5F FE 72 00 00 00 6E 5D 2A EF 20 00 gZ.._.r...n]*. .
+00006720 0A EF 28 00 20 55 E0 18 33 FE B7 5A FA FF 70 5B ..(. U..3..Z..p[
+00006730 67 02 1E 03 B0 5A 9A 02 08 D2 12 00 00 B0 68 FC g....Z........h.
+00006740 0A EC A2 55 FF C0 F1 F9 B7 5A FC FF 70 5B 67 02 ...U.....Z..p[g.
+00006750 1E 03 B7 5A FE FF 70 5B 67 02 1E 03 B7 5A FC FF ...Z..p[g....Z..
+00006760 70 5B 67 02 1E 03 9D 01 58 01 2C 55 04 56 00 18 p[g.....X.,U.V..
+00006770 18 02 84 AF 20 00 08 56 00 18 0E 02 04 AF 24 00 .... ..V......$.
+00006780 00 56 00 18 04 02 D4 AF 1C 00 0D 56 00 18 FA 01 .V.........V....
+00006790 2D A0 B0 5A FE FF 24 57 03 10 58 02 9D 03 2D 92 -..Z..$W..X...-.
+000067A0 B2 52 2A 00 13 08 B2 52 45 00 11 08 31 21 B2 52 .R*....RE...1!.R
+000067B0 5B 00 13 08 31 21 B2 52 67 00 13 08 31 21 B2 52 [...1!.Rg...1!.R
+000067C0 71 00 13 08 31 21 B2 52 9A 02 13 08 31 21 01 50 q...1!.R....1!.P
+000067D0 09 10 B2 32 C7 FF B2 22 EF FF 02 52 11 08 01 52 ...2..."...R...R
+000067E0 1D 1D 0C 56 00 18 A2 01 04 A0 0C E0 04 A2 0C E2 ...V............
+000067F0 04 A4 0C E4 04 A6 0C E6 04 A8 0C E8 04 AA 0C EA ................
+00006800 04 AC 0C EC 04 AF 1C 00 0C EF 1C 00 04 AF 20 00 .............. .
+00006810 0C EF 20 00 04 AF 24 00 0C EF 24 00 24 AF 28 00 .. ...$...$.$.(.
+00006820 2C EF 28 00 04 AF 2C 00 0C EF 2C 00 04 AF 30 00 ,.(...,...,...0.
+00006830 0C EF 30 00 04 AF 34 00 0C EF 34 00 B5 5A 10 12 ..0...4...4..Z..
+00006840 14 5A D8 00 08 55 00 56 00 18 54 01 0C EF 1C 00 .Z...U.V..T.....
+00006850 B0 54 10 12 10 01 D4 55 82 55 00 C0 CA 72 C8 E0 .T.....U.U...r..
+00006860 48 9F 28 00 2C AF 28 00 0C AF 20 00 25 5A D0 00 H.(.,.(... .%Z..
+00006870 08 EF 30 00 48 9F 28 00 2C AF 28 00 0C AF 20 00 ..0.H.(.,.(... .
+00006880 25 5A D0 00 08 EF 38 00 48 9F 42 00 2C AF 28 00 %Z....8.H.B.,.(.
+00006890 0C AF 20 00 25 5A D0 00 08 EF 3C 00 48 9F F4 11 .. .%Z....<.H...
+000068A0 2C AF 28 00 0C AF 20 00 45 5A D0 00 0A 55 08 E4 ,.(... .EZ...U..
+000068B0 28 AF 30 00 4F 60 02 56 0B 16 08 AF 38 00 00 56 (.0.O`.V....8..V
+000068C0 07 16 08 9F 3C 00 18 9F 3E 00 10 27 00 52 00 08 ....<...>..'.R..
+000068D0 00 52 1E 15 A0 5B B0 27 00 52 00 08 00 52 18 15 .R...[.'.R...R..
+000068E0 08 9F 28 00 00 33 00 5F 4D AF 30 00 10 01 00 C0 ..(..3._M.0.....
+000068F0 36 72 28 AF 38 00 08 9F 28 00 00 5F 00 61 4D AF 6r(.8...(.._.aM.
+00006900 38 00 10 01 00 C0 20 72 28 AF 3C 00 08 9F 42 00 8..... r(.<...B.
+00006910 00 5F 00 61 4D AF 3C 00 10 01 00 C0 0A 72 28 A4 ._.aM.<......r(.
+00006920 08 A6 40 00 00 00 FF FF 4D A4 10 01 00 C0 F8 71 ..@.....M......q
+00006930 28 A4 0D A8 4D A4 14 00 40 C0 20 61 08 E8 08 9F (...M...@. a....
+00006940 F4 11 04 5B F4 49 44 5F 44 61 4A 61 A8 EF F8 11 ...[.ID_DaJa....
+00006950 00 5F 04 55 04 61 40 61 02 61 28 EF F0 11 B0 54 ._.U.a@a.a(....T
+00006960 6A 00 80 61 08 EF F0 0A B0 54 5E 09 80 61 08 EF j..a.....T^..a..
+00006970 FC 0A B0 54 52 0A 80 61 08 EF 08 0B BF 60 10 00 ...TR..a.....`..
+00006980 00 5A 58 02 9D 03 B0 5A FE FF 58 02 9D 03 C2 55 .ZX....Z..X....U
+00006990 FF C0 A5 F7 B0 5A FC FF E0 18 03 FE B0 5A FC FF .....Z.......Z..
 000069A0 E0 18 FB FD 1E 01 07 01 0E 54 E2 57 06 14 02 AF .........T.W....
 000069B0 20 00 E0 57 02 14 02 AF 24 00 E0 57 0E 13 42 AF  ..W....$..W..B.
 000069C0 1C 00 E4 57 0A 13 64 A0 B0 5A FE FF 62 57 03 10 ...W..d..Z..bW..
@@ -6587,538 +6470,69 @@ l0000698E:
 00006A10 28 00 04 C3 2C 00 B0 54 0C 05 40 61 04 EF 48 00 (...,..T..@a..H.
 00006A20 04 EF 38 00 04 EF 34 00 14 C3 9C 1B 90 5A 04 DF ..8...4......Z..
 00006A30 9E 1B 00 5A 07 02 1E 03 B0 5A FE FF 07 02 1E 03 ...Z.....Z......
-
-;; fn00006A40: 00006A40
-;;   Called from:
-;;     00006CC2 (in fn00004CD4)
-;;     00006DBC (in fn00004CD4)
-;;     00008E54 (in fn00008DC0)
-fn00006A40 proc
-	push	$1,ra
-	push	$0,r7
-	movd	$0,ra
-	cmpd	(r3,r2),ra
-	beq	00006AE0
-
-l00006A4A:
-	loadd	0x40(r3,r2),(r1,r0)
-	cmpd	(r1,r0),ra
-	beq	00006AE0
-
-l00006A52:
-	loadd	0x48(r3,r2),(r1,r0)
-	cmpd	(r1,r0),ra
-	beq	00006AE0
-
-l00006A5A:
-	loadd	0x38(r3,r2),(r5,r4)
-	cmpd	(r5,r4),ra
-	beq	00006AE0
-
-l00006A62:
-	loadd	(r5,r4),(r7,r6)
-	movw	$FFFE,r0
-	cmpd	(r3,r2),(r7,r6)
-	beq	00006A70
-
-l00006A6C:
-	pop	$0,r7
-	popret	$1,ra
-
-l00006A70:
-	loadw	4(r5,r4),r1
-	addw	$C0CC,r11
-	cmpw	$1F,r1
-	blo	00006A6C
-
-l00006A7C:
-	storw	$0,0x1E(r5,r4)
-	storw	$0,0x20(r5,r4)
-	storw	$0,0x22(r5,r4)
-	stord	ra,0x14(r5,r4)
-	stord	ra,0x14(r3,r2)
-	stord	ra,8(r3,r2)
-	stord	ra,0x18(r3,r2)
-	loadw	8(r5,r4),r0
-	cmpw	$0,r0
-	beq	00006A9E
-
-l00006A96:
-	andw	$1,r1
-	movxw	r0,(r1,r0)
-	stord	(r1,r0),0x60(r3,r2)
-
-l00006A9E:
-	movw	$3F34,r0
-	storw	r0,4(r5,r4)
-	storw	$0,6(r5,r4)
-	storw	$0,0xA(r5,r4)
-	movw	$8000,r0
-	storw	r0,0xE(r5,r4)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x18(r5,r4)
-	stord	(r1,r0),0x50(r5,r4)
-	storw	$0,0x2C(r5,r4)
-	movd	$50C,(r1,r0)
-	addd	(r5,r4),(r1,r0)
-	stord	(r1,r0),0x90(r5,r4)
-	stord	(r1,r0),0x70(r5,r4)
-	stord	(r1,r0),0x68(r5,r4)
-	storw	$1,0x1B9C(r5,r4)
-	movw	$FFFF,r0
-	storw	r0,0x373C(r5,r4)
-	movw	$0,r0
-	pop	$0,r7
-	popret	$1,ra
-
-l00006AE0:
-	movw	$FFFE,r0
-	pop	$0,r7
-	popret	$1,ra
-00006AE8                         1E 01 67 01 28 55 47 5B         ..g.(UG[
-
-l00006AF0:
-	cmpd	$0,(r3,r2)
-	beq	00006B12
-
-l00006AF4:
-	loadd	0x40(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006B12
-
-l00006AFC:
-	loadd	0x48(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006B12
-
-l00006B04:
-	loadd	0x38(r3,r2),(r11,r10)
-	cmpd	$0,(r11,r10)
-	beq	00006B12
-
-l00006B0C:
-	loadd	(r11,r10),(r3,r2)
-	cmpd	(r9,r8),(r3,r2)
-	beq	00006B1A
-
-l00006B12:
-	movw	$FFFE,r0
-	pop	$6,r7
-
-l00006B18:
-	popret	$1,ra
-
-l00006B1A:
-	loadw	4(r11,r10),r2
-	addw	$C0CC,r11
-	cmpw	$1F,r2
-	blo	00006B12
-
-l00006B26:
-	cmpw	$0,r4
-
-l00006B28:
-	bgt	00006C0A
-
-l00006B2A:
-	movw	r4,r2
-	ashuw	$-12,r2
-	addw	$5,r5
-	movw	r2,r12
-	cmpw	$2F,r4
-	blt	00006B3A
-
-l00006B38:
-	andw	$F,sp
-
-l00006B3A:
-	movw	$FFF8,r2
-	addw	r2,r7
-	cmpw	$7,r2
-	slo	r2
-	cmpw	$0,r2
-	beq	00006B50
-
-l00006B48:
-	cmpw	$0,r7
-	sne	r2
-	cmpw	$0,r2
-	bne	00006B12
-
-l00006B50:
-	loadd	0x48(r11,r10),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	00006C02
-
-l00006B58:
-	loadw	0x38(r11,r10),r2
-	cmpw	r7,r2
-	beq	00006C02
-
-l00006B60:
-	loadd	0x50(r9,r8),(r3,r2)
-	jal	ra,(r1,r0)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x48(r11,r10)
-	loadd	0x40(r9,r8),(r1,r0)
-
-l00006B6E:
-	addd	$D4CADF7A,(r1,r0)
-
-l00006B70:
-	storw	r12,8(r11,r10)
-	storw	r7,0x38(r11,r10)
-	cmpd	$0,(r1,r0)
-	beq	00006B12
-
-l00006B7A:
-	loadd	0x48(r9,r8),(r1,r0)
-
-l00006B7E:
-	movd	$0,(r3,r2)
-
-l00006B80:
-	cmpd	(r1,r0),(r3,r2)
-	beq	00006B12
-
-l00006B84:
-	loadd	0x38(r9,r8),(r1,r0)
-	cmpd	(r1,r0),(r3,r2)
-
-l00006B8A:
-	beq	00006B12
-
-l00006B8C:
-	loadd	(r1,r0),(r5,r4)
-	cmpd	(r9,r8),(r5,r4)
-	bne	00006B12
-
-l00006B92:
-	loadw	4(r1,r0),r4
-
-l00006B94:
-	addw	$C0CC,r11
-	cmpw	$1F,r4
-	blo	00006B12
-
-l00006B9E:
-	storw	$0,0x1E(r1,r0)
-	storw	$0,0x20(r1,r0)
-	storw	$0,0x22(r1,r0)
-	stord	(r3,r2),0x14(r1,r0)
-	stord	(r3,r2),0x14(r9,r8)
-	stord	(r3,r2),8(r9,r8)
-	stord	(r3,r2),0x18(r9,r8)
-	loadw	8(r1,r0),r2
-	cmpw	$0,r2
-	beq	00006BC0
-
-l00006BB8:
-	andw	$1,r1
-	movxw	r2,(r3,r2)
-	stord	(r3,r2),0x60(r9,r8)
-
-l00006BC0:
-	movw	$3F34,r2
-	storw	r2,4(r1,r0)
-	storw	$0,6(r1,r0)
-	storw	$0,0xA(r1,r0)
-	movw	$8000,r2
-	storw	r2,0xE(r1,r0)
-	movd	$0,(r3,r2)
-	stord	(r3,r2),0x18(r1,r0)
-	stord	(r3,r2),0x50(r1,r0)
-	storw	$0,0x2C(r1,r0)
-	movd	$50C,(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	stord	(r3,r2),0x90(r1,r0)
-	stord	(r3,r2),0x70(r1,r0)
-	stord	(r3,r2),0x68(r1,r0)
-	storw	$1,0x1B9C(r1,r0)
-	movw	$FFFF,r2
-	storw	r2,0x373C(r1,r0)
-	movw	$0,r0
-	pop	$6,r7
-	popret	$1,ra
-
-l00006C02:
-	storw	r12,8(r11,r10)
-	storw	r7,0x38(r11,r10)
-	br	00006B7E
-
-l00006C0A:
-	movw	$0,r2
-	movw	r2,r3
-	subw	r3,r4
-	movw	r3,r7
-	movw	r2,r12
-	br	00006B3A
-00006C16                   1E 01 67 01 BC 54 12 00 FC 61       ..g..T...a
+00006A40 1E 01 07 01 0E 54 E2 57 0C 14 02 AF 20 00 E0 57 .....T.W.... ..W
+00006A50 08 14 02 AF 24 00 E0 57 04 14 42 AF 1C 00 E4 57 ....$..W..B....W
+00006A60 00 14 64 A0 B0 5A FE FF 62 57 03 10 07 02 1E 03 ..d..Z..bW......
+00006A70 14 92 B1 32 CC C0 B1 52 1F 00 A9 1F 04 C3 1E 00 ...2...R........
+00006A80 04 C3 20 00 04 C3 22 00 E4 EA E2 EA E2 E4 E2 EC .. ...".........
+00006A90 04 94 00 52 05 10 10 22 00 5E 02 EF 30 00 B0 5A ...R...".^..0..Z
+00006AA0 34 3F 04 D2 04 C3 06 00 04 C3 0A 00 B0 5A 00 80 4?...........Z..
+00006AB0 04 D7 00 54 04 EC 04 EF 28 00 04 C3 2C 00 B0 54 ...T....(...,..T
+00006AC0 0C 05 40 61 04 EF 48 00 04 EF 38 00 04 EF 34 00 ..@a..H...8...4.
+00006AD0 14 C3 9C 1B 90 5A 04 DF 9E 1B 00 5A 07 02 1E 03 .....Z.....Z....
+00006AE0 B0 5A FE FF 07 02 1E 03 1E 01 67 01 28 55 47 5B .Z........g.(UG[
+00006AF0 02 56 00 11 02 AF 20 00 00 56 0C 10 02 AF 24 00 .V.... ..V....$.
+00006B00 00 56 08 10 A2 AF 1C 00 0A 56 04 10 2A A0 28 57 .V.......V..*.(W
+00006B10 05 10 B0 5A FE FF 67 02 1E 03 2A 92 B2 32 CC C0 ...Z..g...*..2..
+00006B20 B2 52 1F 00 A7 1F 04 52 61 17 42 5B C2 43 52 32 .R.....Ra.B[.CR2
+00006B30 2C 5B B4 52 2F 00 C2 10 F7 22 B2 5A F8 FF 72 33 ,[.R/....".Z..r3
+00006B40 72 52 A2 08 02 52 05 10 07 52 12 08 02 52 12 1E rR...R...R...R..
+00006B50 4A AF 24 00 04 56 06 15 2A 9F 1C 00 27 53 02 15 J.$..V..*...'S..
+00006B60 28 AF 28 00 D0 00 00 54 0A EF 24 00 08 AF 20 00 (.(....T..$... .
+00006B70 CA D4 7A DF 1C 00 00 56 0D 1C 08 AF 24 00 02 54 ..z....V....$..T
+00006B80 20 57 08 1C 08 AF 1C 00 20 57 04 1C 40 A0 48 57  W...... W..@.HW
+00006B90 11 1C 40 92 B4 32 CC C0 B4 52 1F 00 AB 1B 00 C3 ..@..2...R......
+00006BA0 1E 00 00 C3 20 00 00 C3 22 00 20 EA 28 EA 28 E4 .... ...". .(.(.
+00006BB0 28 EC 20 94 02 52 05 10 12 22 22 5E 28 EF 30 00 (. ..R...""^(.0.
+00006BC0 B2 5A 34 3F 20 D2 00 C3 06 00 00 C3 0A 00 B2 5A .Z4? ..........Z
+00006BD0 00 80 20 D7 02 54 20 EC 20 EF 28 00 00 C3 2C 00 .. ..T . .(...,.
+00006BE0 B2 54 0C 05 02 61 20 EF 48 00 20 EF 38 00 20 EF .T...a .H. .8. .
+00006BF0 34 00 10 C3 9C 1B 92 5A 20 DF 9E 1B 00 5A 67 02 4......Z ....Zg.
+00006C00 1E 03 CA D4 7A DF 1C 00 EB 1B 02 5A 23 5B 43 3B ....z......Z#[C;
+00006C10 37 5B 2C 5B E3 19 1E 01 67 01 BC 54 12 00 FC 61 7[,[....g..T...a
 00006C20 28 55 47 5B 1C 90 05 56 00 18 FC 00 05 B0 B0 50 (UG[...V.......P
 00006C30 31 00 10 08 00 52 17 17 B1 52 38 00 10 08 00 52 1....R...R8....R
 00006C40 12 17 02 56 0A 17 00 54 02 EC 02 AF 20 00 00 56 ...V...T.... ..V
-00006C50 0C 15 22 9F 28 00 38 9F 2A 00                   ..".(.8.*.      
-
-l00006C5A:
-	loadd	0x48(r9,r8),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	00006CFC
-
-l00006C62:
-	movw	$1BA4,r5
-	movw	$1,r4
-	jal	ra,(r1,r0)
-	movd	(r11,r10),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006D2E
-
-l00006C70:
-	stord	(r1,r0),0x38(r9,r8)
-	stord	(r9,r8),(r1,r0)
-
-l00006C76:
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x48(r11,r10)
-	movw	$3F34,r0
-	storw	r0,4(r11,r10)
-	loadd	0x48(r9,r8),(r1,r0)
-
-l00006C86:
-	loadd	0x40(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	00006D1E
-
-l00006C8E:
-	cmpd	$0,(r1,r0)
-	beq	00006D1E
-
-l00006C92:
-	cmpw	$0,r7
-	bgt	00006CE4
-
-l00006C96:
-	movw	r7,r2
-	ashuw	$-12,r2
-	addw	$5,r5
-	cmpw	$2F,r7
-	blt	00006CA4
-
-l00006CA2:
-	andw	$F,sp
-
-l00006CA4:
-	movw	$FFF8,r3
-	addw	r3,r7
-	cmpw	$7,r3
-	slo	r3
-	cmpw	$0,r3
-	beq	00006CBA
-
-l00006CB2:
-	cmpw	$0,r7
-	sne	r3
-	cmpw	$0,r3
-	bne	00006D1E
-
-l00006CBA:
-	storw	r2,8(r11,r10)
-	storw	r7,0x38(r11,r10)
-	movd	(r3,r2),(r9,r8)
-	bal	ra,fn00006A40
-
-l00006CC4:
-	storb	r7,0xD(sp)
-
-l00006CC6:
-	movw	r0,r7
-	cmpw	$0,r0
-	beq	00006CDE
-
-l00006CCC:
-	loadd	0x48(r9,r8),(r1,r0)
-
-l00006CD0:
-	loadd	0x50(r9,r8),(r3,r2)
-	movd	(r5,r4),(r11,r10)
-	jal	ra,(r1,r0)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x38(r9,r8)
-
-l00006CDE:
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-
-l00006CE4:
-	movw	$0,r2
-	movw	r2,r3
-	subw	r3,r7
-	movw	r3,r7
-	movw	$FFF8,r3
-	addw	r3,r7
-	cmpw	$7,r3
-	slo	r3
-	cmpw	$0,r3
-	bne	00006CB2
-
-l00006CFA:
-	br	00006CBA
-
-l00006CFC:
-	movd	$5D76,(r5,r4)
-	stord	(r5,r4),0x48(r9,r8)
-	br	00006C62
-00006D08                         74 00 00 00 6E 5D 42 EF         t...n]B.
-00006D10 20 00 02 EF 28 00 02 5B                          ...(..[        
-
-l00006D18:
-	movw	r1,r3
-	movd	(r1,r0),(r5,r4)
-	br	00006C5A
-
-l00006D1E:
-	movw	$FFFE,r7
-	br	00006CD0
-
-l00006D24:
-	movw	$FFFA,r7
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-
-l00006D2E:
-	movw	$FFFC,r7
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-00006D38                         B7 5A FE FF                     .Z..    
-
-l00006D3C:
-	movw	r7,r0
-	pop	$6,r7
-	popret	$1,ra
-00006D42       1E 01 47 01 28 55 04 56                     ..G.(U.V      
-
-l00006D4A:
-	beq	00006E00
-
-l00006D4C:
-	loadb	(r5,r4),r0
-	cmpb	$31,r0
-	sne	r0
-	cmpw	$0,r0
-	bne	00006E00
-
-l00006D58:
-	cmpw	$38,r6
-	sne	r0
-	cmpw	$0,r0
-	bne	00006E00
-
-l00006D62:
-	cmpd	$0,(r3,r2)
-	beq	00006E1A
-
-l00006D66:
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x18(r3,r2)
-	loadd	0x40(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006DEA
-
-l00006D72:
-	loadw	0x50(r3,r2),r2
-	loadw	0x54(r9,r8),r3
-
-l00006D7A:
-	loadd	0x48(r9,r8),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	00006DDE
-
-l00006D82:
-	movw	$1BA4,r5
-	movw	$1,r4
-	jal	ra,(r1,r0)
-	movd	(r11,r10),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00006E10
-
-l00006D90:
-	stord	(r1,r0),0x38(r9,r8)
-	stord	(r9,r8),(r1,r0)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x48(r11,r10)
-	movw	$3F34,r0
-	storw	r0,4(r11,r10)
-	loadd	0x48(r9,r8),(r1,r0)
-	loadd	0x40(r9,r8),(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	00006E0A
-
-l00006DAE:
-	cmpd	$0,(r1,r0)
-	beq	00006E0A
-
-l00006DB2:
-	storw	$5,8(r11,r10)
-	storw	$F,0x1C(r11,r10)
-	movd	(r3,r2),(r9,r8)
-	bal	ra,fn00006A40
-	movw	r0,r7
-	cmpw	$0,r0
-	beq	00006DD8
-
-l00006DC6:
-	loadd	0x48(r9,r8),(r1,r0)
-
-l00006DCA:
-	loadd	0x50(r9,r8),(r3,r2)
-	movd	(r5,r4),(r11,r10)
-	jal	ra,(r1,r0)
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x38(r9,r8)
-
-l00006DD8:
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-
-l00006DDE:
-	movd	$5D76,(r5,r4)
-	stord	(r5,r4),0x48(r9,r8)
-	br	00006D82
-
-l00006DEA:
-	movd	$5D6E,(r5,r4)
-	stord	(r5,r4),0x40(r3,r2)
-	stord	(r1,r0),0x50(r3,r2)
-	movw	r0,r2
-	movw	r1,r3
-	movd	(r1,r0),(r5,r4)
-	br	00006D7A
-
-l00006E00:
-	movw	$FFFA,r7
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-
-l00006E0A:
-	movw	$FFFE,r7
-	br	00006DCA
-
-l00006E10:
-	movw	$FFFC,r7
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-
-l00006E1A:
-	movw	$FFFE,r7
-	movw	r7,r0
-	pop	$4,r7
-	popret	$1,ra
-00006E24             00 00 1E 01 07 01 02 56 0D 13 02 AF     .......V....
+00006C50 0C 15 22 9F 28 00 38 9F 2A 00 48 AF 24 00 04 56 ..".(.8.*.H.$..V
+00006C60 0E 14 B5 5A A4 1B 14 5A D0 00 0A 55 00 56 00 16 ...Z...Z...U.V..
+00006C70 08 EF 1C 00 80 E0 00 54 0A EF 24 00 B0 5A 34 3F .......T..$..Z4?
+00006C80 0A D2 08 AF 24 00 28 AF 20 00 02 56 09 14 00 56 ....$.(. ..V...V
+00006C90 07 14 07 52 68 12 72 5B C2 43 52 32 B7 52 2F 00 ...Rh.r[.CR2.R/.
+00006CA0 C2 10 F7 22 B3 5A F8 FF 73 33 73 52 A3 08 03 52 ...".Z..s3sR...R
+00006CB0 05 10 07 52 13 08 03 52 13 13 2A D4 7A DF 1C 00 ...R...R..*.z...
+00006CC0 82 55 FF C0 7F FD 07 5B 00 52 0A 10 08 AF 24 00 .U.....[.R....$.
+00006CD0 28 AF 28 00 A4 55 D0 00 00 54 08 EF 1C 00 70 5B (.(..U...T....p[
+00006CE0 67 02 1E 03 02 5A 23 5B 73 3B 37 5B B3 5A F8 FF g....Z#[s;7[.Z..
+00006CF0 73 33 73 52 A3 08 03 52 1D 1D E0 1E 74 00 00 00 s3sR...R....t...
+00006D00 76 5D 48 EF 24 00 EE 1A 74 00 00 00 6E 5D 42 EF v]H.$...t...n]B.
+00006D10 20 00 02 EF 28 00 02 5B 13 5B 40 55 EF 19 B7 5A  ...(..[.[@U...Z
+00006D20 FE FF E7 1D B7 5A FA FF 70 5B 67 02 1E 03 B7 5A .....Z..p[g....Z
+00006D30 FC FF 70 5B 67 02 1E 03 B7 5A FE FF 70 5B 67 02 ..p[g....Z..p[g.
+00006D40 1E 03 1E 01 47 01 28 55 04 56 0B 15 04 B0 B0 50 ....G.(U.V.....P
+00006D50 31 00 10 08 00 52 15 15 B6 52 38 00 10 08 00 52 1....R...R8....R
+00006D60 10 15 02 56 0B 15 00 54 02 EC 02 AF 20 00 00 56 ...V...T.... ..V
+00006D70 0D 13 22 9F 28 00 38 9F 2A 00 48 AF 24 00 04 56 ..".(.8.*.H.$..V
+00006D80 0F 12 B5 5A A4 1B 14 5A D0 00 0A 55 00 56 01 14 ...Z...Z...U.V..
+00006D90 08 EF 1C 00 80 E0 00 54 0A EF 24 00 B0 5A 34 3F .......T..$..Z4?
+00006DA0 0A D2 08 AF 24 00 28 AF 20 00 02 56 0F 12 00 56 ....$.(. ..V...V
+00006DB0 0D 12 5A C3 08 00 FA C3 1C 00 82 55 FF C0 85 FC ..Z........U....
+00006DC0 07 5B 00 52 0A 10 08 AF 24 00 28 AF 28 00 A4 55 .[.R....$.(.(..U
+00006DD0 D0 00 00 54 08 EF 1C 00 70 5B 47 02 1E 03 74 00 ...T....p[G...t.
+00006DE0 00 00 76 5D 48 EF 24 00 ED 1C 74 00 00 00 6E 5D ..v]H.$...t...n]
+00006DF0 42 EF 20 00 02 EF 28 00 02 5B 13 5B 40 55 EE 1B B. ...(..[.[@U..
+00006E00 B7 5A FA FF 70 5B 47 02 1E 03 B7 5A FE FF EE 1D .Z..p[G....Z....
+00006E10 B7 5A FC FF 70 5B 47 02 1E 03 B7 5A FE FF 70 5B .Z..p[G....Z..p[
+00006E20 47 02 1E 03 00 00 1E 01 07 01 02 56 0D 13 02 AF G..........V....
 00006E30 20 00 00 56 09 13 02 AF 24 00 00 56 05 13 E2 AF  ..V....$..V....
 00006E40 1C 00 0E 56 01 13 6E A0 B0 5A FE FF 62 57 03 10 ...V..n..Z..bW..
 00006E50 07 02 1E 03 1E 92 B1 32 CC C0 B1 52 1F 00 A9 1F .......2...R....
@@ -7139,13 +6553,7 @@ l00006E1A:
 00006F40 B5 54 CC 02 D5 61 5F EF 20 00 B2 54 48 00 D2 61 .T...a_. ..TH..a
 00006F50 2F EF 24 00 B3 54 4C 00 D3 61 3F EF 28 00 B4 54 /.$..TL..a?.(..T
 00006F60 3C 00 D4 61 4F EF 2C 00 B1 52 1E 00 AB 11 11 5F <..aO.,..R....._
-00006F70 21 4C 40 05 38 E8                               !L@.8.          
-
-l00006F76:
-	addd	(r2,r1),(r5,r4)
-	loadd	(r5,r4),(r1,r0)
-	jr	(r1,r0)
-00006F7C                                     07 52 07 1C             .R..
+00006F70 21 4C 40 05 38 E8 14 61 04 A0 E0 0A 07 52 07 1C !L@.8..a.....R..
 00006F80 E1 1B BB 5A FE FF BF D6 0F 96 BF 60 38 00 67 02 ...Z.......`8.g.
 00006F90 9D 03 BA 5A FE FF AF D6 E5 1A B7 5A FE FF 7F D6 ...Z.......Z....
 00006FA0 E1 1A BC 5A FE FF CF D6 ED 19 54 39 48 47 27 3B ...Z......T9HG';
@@ -7565,20 +6973,15 @@ l00006F76:
 00008980 B0 5A 3F 3F 0D D2 07 5A E0 18 23 EC AF E4 E0 18 .Z??...Z..#.....
 00008990 4D EF AF E4 1F C3 0C 00 E0 18 37 E8 B7 5A FC FF M.........7..Z..
 000089A0 7F D6 E0 18 41 E5 2F A8 E0 18 1B E6 AF E4 E0 18 ....A./.........
-000089B0 25 EE                                           %.              
-
-l000089B2:
-	stord	(r11,r10),8(sp)
-	br	fn000061B2
-000089B8                         AF E4 E0 18 F1 EB AF E4         ........
+000089B0 25 EE AF E4 E0 18 FF EB AF E4 E0 18 F1 EB AF E4 %...............
 000089C0 E0 18 E7 F5                                     ....            
 
 ;; fn000089C4: 000089C4
 ;;   Called from:
 ;;     00001B92 (in fn00001B74)
 fn000089C4 proc
-	push	$1,ra
-	push	$2,r7
+	push	$2,ra
+	push	$3,r7
 	movd	(r9,r8),(r3,r2)
 	cmpd	$0,(r3,r2)
 	beq	00008A28
@@ -7605,8 +7008,8 @@ l000089E6:
 	beq	000089F4
 
 l000089F0:
-	pop	$2,r7
-	popret	$1,ra
+	pop	$3,r7
+	popret	$2,ra
 
 l000089F4:
 	loadw	4(r5,r4),r1
@@ -7631,13 +7034,13 @@ l00008A1C:
 	jal	ra,(r7,r6)
 	movd	$0,(r1,r0)
 	stord	(r1,r0),0x38(r9,r8)
-	pop	$2,r7
-	popret	$1,ra
+	pop	$3,r7
+	popret	$2,ra
 
 l00008A28:
 	movw	$FFFE,r0
-	pop	$2,r7
-	popret	$1,ra
+	pop	$3,r7
+	popret	$2,ra
 00008A30 1E 01 58 01 BC 54 10 00 FC 61 4A 55 CC A0 02 56 ..X..T...aJU...V
 00008A40 09 14 02 AF 20 00 00 56 05 14 02 AF 24 00 00 56 .... ..V....$..V
 00008A50 01 14 82 AF 1C 00 08 56 0D 13 48 A0 B0 5A FE FF .......V..H..Z..
@@ -7658,481 +7061,60 @@ l00008A28:
 00008B40 04 54 42 55 00 C0 AA 35 76 5B C4 55 02 55 00 C0 .TBU...5v[.U.U..
 00008B50 A0 35 2D A8 02 57 10 18 32 01 8A AF 1C 00 74 5F .5-..W..2.....t_
 00008B60 C0 55 40 61 0F E0 28 AF 24 00 02 56 05 14 68 9F .U@a..(.$..V..h.
-00008B70 1E 00 06 52 1B 10 08 9F 1C 00                   ...R......      
-
-l00008B7A:
-	movw	$1,r6
-	ashuw	r0,r6
-	storw	r6,0x3C(r9,r8)
-	storw	$0,0x22(r9,r8)
-	storw	$0,0x20(r9,r8)
-	cmpw	r7,r6
-	bls	00008C24
-
-l00008B8E:
-	loadw	0x44(r9,r8),r0
-	subw	r6,r0
-	movw	r7,r10
-
-;; fn00008B96: 00008B96
-;;   Called from:
-;;     00008B94 (in fn00008DC0)
-;;     00009ACC (in fn0000A110)
-fn00008B96 proc
-	cmpw	r7,r6
-	bhs	fn00008B9C
-
-;; fn00008B9A: 00008B9A
-;;   Called from:
-;;     00008B98 (in fn00008B96)
-;;     00008B98 (in fn00008B96)
-fn00008B9A proc
-	movw	r6,r10
-
-;; fn00008B9C: 00008B9C
-;;   Called from:
-;;     00008B98 (in fn00008B96)
-;;     00008B98 (in fn00008B96)
-;;     00008B9A (in fn00008B9A)
-;;     00008C46 (in fn00008DC0)
-;;     00008C66 (in fn00009A3E)
-fn00008B9C proc
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	movzw	r10,(r1,r0)
-	push	$1,r0
-	movd	(r5,r4),r12
-	bal	ra,fn0000DB24
-	subw	r7,r10
-	addd	$4,sp
-	cmpw	$0,r7
-	bne	00008C52
-
-l00008BB2:
-	loadw	0x44(r9,r8),r0
-	addw	r0,r10
-	storw	r0,0x44(r9,r8)
-	loadw	0x3C(r9,r8),r1
-	cmpw	r0,r1
-	beq	00008C7A
-
-l00008BC4:
-	loadw	0x40(r9,r8),r0
-	cmpw	r1,r0
-	bhs	00008BD2
-
-l00008BCC:
-	addw	r10,r0
-	storw	r10,0x40(r9,r8)
-
-l00008BD2:
-	storw	$1,0xA(r13)
-	movw	$0,r0
-
-l00008BD8:
-	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00008BDE                                           D8 55               .U
+00008B70 1E 00 06 52 1B 10 08 9F 1C 00 16 5A 06 45 68 DF ...R.......Z.Eh.
+00008B80 1E 00 08 C3 22 00 08 C3 20 00 67 53 5C 14 08 9F ...."... .gS\...
+00008B90 22 00 06 3B 7A 5B 67 53 B2 10 6A 5B 00 5F 02 61 "..;z[gS..j[._.a
+00008BA0 A0 5F 10 01 C4 55 00 C0 7E 4F A7 3B 4F 60 07 52 ._...U..~O.;O`.R
+00008BB0 11 15 08 9F 22 00 A0 33 08 DF 22 00 18 9F 1E 00 ...."..3..".....
+00008BC0 10 53 0C 15 08 9F 20 00 01 53 B4 10 0A 33 A8 DF .S.... ..S...3..
+00008BD0 20 00 1D C3 0A 00 00 5A 4F 60 67 02 9D 03 D8 55  ......ZO`g....U
 00008BE0 B2 52 3E 3F 0D 1A 74 5F C0 55 40 61 0F E0 28 AF .R>?..t_.U@a..(.
 00008BF0 24 00 02 56 1D 1B 08 9F 1C 00 15 5A 54 5B 04 45 $..V.......ZT[.E
 00008C00 2A AF 28 00 0A AF 20 00 D0 00 02 55 08 EF 24 00 *.(... ....U..$.
 00008C10 00 56 1E 1A B0 5A 52 3F 0D D2 B0 5A FC FF 4F 60 .V...ZR?...Z..O`
-00008C20 67 02 9D 03                                     g...            
-
-l00008C24:
-	movzw	r6,(r7,r6)
-	loadd	(sp),(r5,r4)
-	subd	(r5,r4),(r7,r6)
-	push	$1,r6
-	bal	ra,fn0000DB24
-	storw	$0,0x22(r9,r8)
-	loadw	0x3C(r9,r8),r0
-	storw	r0,0x40(r9,r8)
-	addd	$4,sp
-	storw	$1,0xA(r13)
-	movw	$0,r0
-	br	00008BD8
-00008C48                         B0 5A FE FF 4F 60 67 02         .Z..O`g.
-00008C50 9D 03                                           ..              
-
-l00008C52:
-	movzw	r7,(r1,r0)
-	loadd	0x48(r9,r8),(r3,r2)
-	loadd	(sp),(r5,r4)
-	subd	(r5,r4),(r1,r0)
-	push	$1,r0
-	bal	ra,fn0000DB24
-	storw	r7,0x44(r9,r8)
-
-l00008C66:
-	addd	$9F08001E,(r3,r2)
-
-l00008C68:
-	loadw	0x3C(r9,r8),r0
-
-l00008C6C:
-	storw	r0,0x40(r9,r8)
-	addd	$4,sp
-	storw	$1,0xA(r13)
-
-;; fn00008C74: 00008C74
-;;   Called from:
-;;     00008BD6 (in fn00008B9C)
-;;     00008C72 (in fn00008B9C)
-;;     00009B9E (in fn0000A110)
-fn00008C74 proc
-	cinv	[i,,]
-	movw	$0,r0
-	br	00008BD8
-
-l00008C7A:
-	storw	r7,0x44(r9,r8)
-	loadw	0x40(r9,r8),r0
-	cmpw	r1,r0
-	blo	00008BCC
-
-l00008C86:
-	br	00008BD2
-
-l00008C88:
-	movw	$FFFD,r0
-	br	000089B2
+00008C20 67 02 9D 03 66 5F 4F A0 14 00 64 C0 16 01 00 C0 g...f_O...d.....
+00008C30 F6 4E 08 C3 22 00 08 9F 1E 00 08 DF 20 00 4F 60 .N.."....... .O`
+00008C40 1D C3 0A 00 00 5A E9 1C B0 5A FE FF 4F 60 67 02 .....Z...Z..O`g.
+00008C50 9D 03 70 5F 28 AF 24 00 4F A0 14 00 04 C0 10 01 ..p_(.$.O.......
+00008C60 00 C0 C4 4E 78 DF 22 00 08 9F 1E 00 08 DF 20 00 ...Nx."....... .
+00008C70 4F 60 1D C3 0A 00 00 5A E0 1B 78 DF 22 00 08 9F O`.....Z..x."...
+00008C80 20 00 01 53 A4 1A E6 1A B0 5A FD FF E0 18 93 FE  ..S.....Z......
 00008C90 1E 01 07 01 02 56 04 12 02 AF 20 00 00 56 00 12 .....V.... ..V..
-
-l00008CA0:
-	loadd	0x48(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	00008CDE
-
-l00008CA8:
-	loadd	0x38(r3,r2),ra
-	cmpd	$0,ra
-	beq	00008CDE
-
-l00008CB0:
-	loadd	(ra),(r7,r6)
-
-l00008CB2:
-	movw	$FFFE,r0
-	cmpd	(r3,r2),(r7,r6)
-
-l00008CB8:
-	beq	00008CBE
-
-l00008CBA:
-	pop	$0,r7
-	popret	$1,ra
-
-l00008CBE:
-	loadw	4(ra),r1
-	addw	$C0CC,r11
-	cmpw	$1F,r1
-	blo	00008CBA
-
-l00008CCA:
-	loadw	8(ra),r1
-	andw	$2,r2
-	cmpw	$0,r1
-	beq	00008CBA
-
-l00008CD2:
-	stord	(r5,r4),0x18(ra)
-
-l00008CD4:
-	storw	$0,0x24(r5,r4)
-	movw	$0,r0
-	pop	$0,r7
-	popret	$1,ra
-
-l00008CDE:
-	movw	$FFFE,r0
-	pop	$0,r7
-	popret	$1,ra
-00008CE6                   00 00 9D 01 67 01 BF 60             ....g..`  
-
-l00008CEE:
-	storb	sp,0x552C(r12)
-	cmpd	$0,(r3,r2)
-	beq	00009064
-
-l00008CF8:
-	loadd	0x40(r3,r2),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000905A
-
-l00008D02:
-	loadd	0x48(r3,r2),(r1,r0)
-
-l00008D04:
-	addd	$56001800,(r5,r4)
-
-l00008D06:
-	cmpd	$0,(r1,r0)
-	beq	00009050
-
-l00008D0C:
-	loadd	0x38(r3,r2),r13
-	cmpd	$0,r13
-	beq	00009046
-
-l00008D16:
-	loadd	(r13),(r3,r2)
-	movw	$FFFE,r0
-	cmpd	r12,(r3,r2)
-
-l00008D1E:
-	beq	00008D26
-
-l00008D20:
-	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00008D26:
-	loadw	4(r13),r1
-	movw	$C0CC,r2
-	addw	r2,r1
-	cmpw	$1F,r2
-	blo	00008D20
-
-l00008D34:
-	loadw	4(r12),r8
-	cmpw	$0,r8
-	bne	00008D44
-
-l00008D3A:
-	loadw	0x58(r13),r0
-	cmpw	$7,r0
-	bhs	00009038
-
-l00008D44:
-	cmpw	$3F53,r1
-	beq	00008FDC
-
-l00008D4C:
-	movw	$3F53,r0
-	storw	r0,4(r13)
-	loadw	0x58(r13),r0
-	movw	$7,r1
-	andw	r1,r0
-	loadd	0x50(r13),(r5,r4)
-	ashud	r1,(r5,r4)
-	stord	(r5,r4),0x50(r13)
-	andw	$FFF8,r11
-	storw	r0,0x58(r13)
-	cmpw	$7,r0
-	bhs	00008FFE
-
-l00008D72:
-	storb	r4,(sp)
-	movd	(r3,r2),(r5,r4)
-	lshd	$-24,(r3,r2)
-	movw	$FFF8,r7
-	addw	r7,r0
-	cmpw	$7,r7
-	bhs	00008DA4
-
-l00008D82:
-	storb	r2,1(sp)
-	movd	(r3,r2),(r5,r4)
-	lshd	$-16,(r3,r2)
-	movw	$FFF0,r1
-	addw	r1,r0
-	cmpw	$7,r1
-	bhs	00008DA4
-
-l00008D92:
-	storb	r2,2(sp)
-	movd	(r3,r2),(r5,r4)
-	lshd	$-8,(r3,r2)
-	addw	$FFE8,r11
-	cmpw	$7,r0
-	bhs	00008DA4
-
-l00008DA0:
-	storb	r2,3(sp)
-	movd	$0,(r3,r2)
-
-l00008DA4:
-	lshw	$-13,r7
-	addw	$1,r1
-	stord	(r3,r2),0x50(r13)
-	storw	$0,0x2C(r13)
-
-l00008DB0:
-	movd	(r3,r2),sp
-	movw	$0,r0
-	movw	r0,r1
-	movw	$FF,r8
-	movw	r0,r9
-	movb	$1,r10
-	movw	$4,r11
-
-;; fn00008DC0: 00008DC0
-;;   Called from:
-;;     00008DBE (in fn0000A110)
-;;     00009A40 (in fn00009A3E)
-;;     00009A48 (in fn00009A3E)
-fn00008DC0 proc
-	loadb	(r3,r2),r4
-	movzb	r4,(r7,r6)
-	movw	r8,r5
-	cmpw	$1,r0
-	bhs	00008E6A
-
-l00008DCA:
-	cmpw	r6,r5
-	beq	00008E70
-
-l00008DCE:
-	cmpb	$0,r4
-	bne	00008E8C
-
-l00008DD2:
-	movw	r11,r4
-	subw	r4,r0
-	movw	r4,r0
-	cmpw	$3,r4
-	shs	r6
-
-l00008DDC:
-	addw	$1,r1
-	addd	$1,(r3,r2)
-	cmpw	r7,r1
-	slo	r4
-	cmpw	$0,r4
-	beq	00008DEC
-
-l00008DE8:
-	cmpb	$0,r6
-	bne	fn00008DC0
-
-l00008DEC:
-	storw	r0,0x8C(r13)
-	loadw	4(r12),r8
-	loadd	(r12),(r5,r4)
-	cmpw	$0,r8
-	sne	r1
-	andb	r6,r1
-	movw	$0,r1
-	cmpb	$0,r6
-	beq	00008EA8
-
-l00008E00:
-	movw	$FF,r9
-	movw	r1,r10
-	movw	$4,r7
-
-l00008E08:
-	movzw	r1,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	loadb	(r3,r2),r2
-	movzb	r2,(r12_l,r11)
-	movw	r9,r3
-	cmpw	$1,r0
-	bhs	00008E78
-
-l00008E16:
-	cmpw	r3,r11
-	beq	00008E7E
-
-l00008E1A:
-	cmpb	$0,r2
-	bne	00008E86
-
-l00008E1E:
-	movw	r7,r2
-	subw	r2,r0
-	movw	r2,r0
-	cmpw	$3,r2
-	shs	r2
-
-l00008E28:
-	addw	$1,r1
-	cmpw	r8,r1
-	slo	r3
-	cmpw	$0,r3
-	beq	00008E36
-
-l00008E32:
-	cmpb	$0,r2
-	bne	00008E08
-
-l00008E36:
-	movzw	r1,(r9,r8)
-	addd	(r9,r8),(r5,r4)
-
-l00008E3A:
-	storw	r0,0x8C(r13)
-	loadw	4(r12),r2
-	subw	r2,r1
-	storw	r2,4(r12)
-	stord	(r5,r4),(r12)
-	loadd	8(r12),(r3,r2)
-	addd	(r3,r2),(r9,r8)
-	stord	(r9,r8),8(r12)
-	cmpw	$4,r0
-	bne	00008EC4
-
-l00008E50:
-	loadd	0x14(r12),(r11,r10)
-	movd	(r3,r2),r12
-	bal	ra,fn00006A40
-	stord	(r9,r8),8(r12)
-	stord	(r11,r10),0x14(r12)
-	movw	$3F3F,r0
-	storw	r0,4(r13)
-	movw	$0,r0
-	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00008E6A:
-	movw	r9,r5
-	cmpw	r6,r5
-	bne	00008DCE
-
-l00008E70:
-	addw	$1,r1
-	cmpw	$3,r0
-	shs	r6
-	br	00008DDC
-
-l00008E78:
-	movw	r10,r3
-	cmpw	r3,r11
-	bne	00008E1A
-
-l00008E7E:
-	addw	$1,r1
-	cmpw	$3,r0
-	shs	r2
-	br	00008E28
-
-l00008E86:
-	movb	r6,r2
-	movw	$0,r0
-	br	00008E28
-
-l00008E8C:
-	movb	r10,r6
-	movw	$0,r0
-	br	00008DDC
-00008E92       0D 9F 46 00 30 52 B6 08 4C A0 08 52 11 08   ..F.0R..L..R..
-00008EA0 16 21 01 5A 06 50 1D 1A                         .!.Z.P..        
-
-l00008EA8:
-	movd	$0,(r9,r8)
-	br	00008E3A
-00008EAC                                     B0 5A FE FF             .Z..
+00008CA0 02 AF 24 00 00 56 0C 11 E2 AF 1C 00 0E 56 08 11 ..$..V.......V..
+00008CB0 6E A0 B0 5A FE FF 62 57 03 10 07 02 1E 03 1E 92 n..Z..bW........
+00008CC0 B1 32 CC C0 B1 52 1F 00 A9 1F 1E 94 21 22 01 52 .2...R......!".R
+00008CD0 05 1F 4E EC 04 C3 24 00 00 5A 07 02 1E 03 B0 5A ..N...$..Z.....Z
+00008CE0 FE FF 07 02 1E 03 00 00 9D 01 67 01 BF 60 FC FF ..........g..`..
+00008CF0 2C 55 02 56 00 18 B8 01 02 AF 20 00 00 56 00 18 ,U.V...... ..V..
+00008D00 AE 01 02 AF 24 00 00 56 00 18 A4 01 D2 AF 1C 00 ....$..V........
+00008D10 0D 56 00 18 9A 01 2D A0 B0 5A FE FF 2C 57 04 10 .V....-..Z..,W..
+00008D20 4F 60 67 02 9D 03 1D 92 B2 5A CC C0 12 33 B2 52 O`g......Z...3.R
+00008D30 1F 00 A7 1F 8C 92 08 52 16 10 0D 9F 2C 00 70 52 .......R....,.pR
+00008D40 B0 18 7C 01 B1 52 53 3F 00 18 4A 01 B0 5A 53 3F ..|..RS?..J..ZS?
+00008D50 0D D2 0D 9F 2C 00 71 5A 01 23 4D AF 28 00 14 48 ....,.qZ.#M.(..H
+00008D60 4D EF 28 00 B0 22 F8 FF 0D DF 2C 00 70 52 B0 18 M.(.."....,.pR..
+00008D70 48 01 4F F0 42 55 82 4B B7 5A F8 FF 07 33 77 52 H.O.BU.K.Z...3wR
+00008D80 B2 11 2F F1 42 55 02 4B B1 5A F0 FF 01 33 71 52 ../.BU.K.Z...3qR
+00008D90 BA 10 2F F2 42 55 82 4A B0 32 E8 FF 70 52 B3 10 ../.BU.J.2..pR..
+00008DA0 2F F3 02 54 D7 49 17 32 2D EF 28 00 0D C3 2C 00 /..T.I.2-.(...,.
+00008DB0 F2 55 00 5A 01 5B B8 5A FF 00 09 5B 1A 58 4B 5A .U.Z.[.Z...[.XKZ
+00008DC0 42 B0 46 5D 85 5B 10 52 B1 15 56 53 02 15 04 50 B.F].[.R..VS...P
+00008DD0 1E 15 B4 5B 04 3B 40 5B 34 52 B6 08 11 32 12 60 ...[.;@[4R...2.`
+00008DE0 17 53 A4 08 04 52 03 10 06 50 1B 1E 0D DF 46 00 .S...R...P....F.
+00008DF0 8C 92 4C A0 08 52 11 08 16 21 01 5A 06 50 05 15 ..L..R...!.Z.P..
+00008E00 B9 5A FF 00 1A 5B 47 5A 12 5F 42 61 22 B0 2B 5D .Z...[GZ._Ba".+]
+00008E10 93 5B 10 52 B2 13 B3 53 03 13 02 50 15 13 72 5B .[.R...S...P..r[
+00008E20 02 3B 20 5B 32 52 B2 08 11 32 18 53 A3 08 03 52 .; [2R...2.S...R
+00008E30 03 10 02 50 1A 1E 18 5F 84 61 0D DF 46 00 2C 92 ...P..._.a..F.,.
+00008E40 12 3B 2C D2 4C E0 2C A4 28 61 8C E4 40 52 1B 13 .;,.L.,.(a..@R..
+00008E50 AC AA C2 55 FF C0 ED DB 8C E4 AC EA B0 5A 3F 3F ...U.........Z??
+00008E60 0D D2 00 5A 4F 60 67 02 9D 03 95 5B 56 53 10 1B ...ZO`g....[VS..
+00008E70 10 32 30 52 B6 08 E3 1B A3 5B B3 53 1F 1C 10 32 .20R.....[.S...2
+00008E80 30 52 B2 08 E2 1D 62 59 00 5A EF 1C A6 59 00 5A 0R....bY.Z...Y.Z
+00008E90 E6 1A 0D 9F 46 00 30 52 B6 08 4C A0 08 52 11 08 ....F.0R..L..R..
+00008EA0 16 21 01 5A 06 50 1D 1A 08 54 E8 1C B0 5A FE FF .!.Z.P...T...Z..
 00008EB0 4F 60 67 02 9D 03 16 58 00 5A E9 19 B0 5A FB FF O`g....X.Z...Z..
-00008EC0 E0 18 61 FE                                     ..a.            
-
-l00008EC4:
-	movw	$FFFD,r0
-	br	00008B7A
-00008ECC                                     1E 01 02 56             ...V
+00008EC0 E0 18 61 FE B0 5A FD FF E0 18 59 FE 1E 01 02 56 ..a..Z....Y....V
 00008ED0 03 12 02 AF 20 00 00 56 0F 11 02 AF 24 00 00 56 .... ..V....$..V
 00008EE0 0B 11 42 AF 1C 00 04 56 07 11 E4 A0 B0 5A FE FF ..B....V.....Z..
 00008EF0 E2 57 02 10 1E 03 14 92 B2 5A CC C0 12 33 B2 52 .W.......Z...3.R
@@ -8149,92 +7131,18 @@ l00008EC4:
 00008FA0 54 5B 04 45 28 AF 28 00 08 AF 20 00 D0 00 0F E0 T[.E(.(... .....
 00008FB0 00 56 08 17 08 A0 0A E0 08 A2 0A E2 08 A4 0A E4 .V..............
 00008FC0 08 A6 0A E6 08 A8 0A E8 08 AA 0A EA 08 AC 0A EC ................
-00008FD0 08 AF 1C 00 0A EF 1C 00 08 AF 20 00             .......... .    
-
-l00008FDC:
-	stord	(r1,r0),0x40(r11,r10)
-	loadd	0x48(r9,r8),(r1,r0)
-	stord	(r1,r0),0x48(r11,r10)
-	loadd	0x50(r9,r8),(r1,r0)
-	stord	(r1,r0),0x50(r11,r10)
-	loadd	0x58(r9,r8),(r1,r0)
-	stord	(r1,r0),0x58(r11,r10)
-	loadd	0x60(r9,r8),(r1,r0)
-	stord	(r1,r0),0x60(r11,r10)
-
-l00008FFE:
-	subd	$AF080034,(r1,r0)
-
-l00009000:
-	loadd	0x68(r9,r8),(r1,r0)
-	stord	(r1,r0),0x68(r11,r10)
-	movd	$1BA4,(r1,r0)
-	push	$1,r0
-	movd	(r5,r4),r12
-	movd	(r3,r2),r13
-	bal	ra,fn0000DB24
-	stord	(r11,r10),(r13)
-	loadd	0x68(r12),(r1,r0)
-	movd	$50C,(r3,r2)
-	addd	r12,(r3,r2)
-	movd	$50C,(r9,r8)
-	addd	r13,(r9,r8)
-	addd	$4,sp
-	cmpd	(r1,r0),(r3,r2)
-	bls	0000906C
-
-l0000902E:
-	loadd	0x90(r12),(r1,r0)
-	subd	(r1,r0),(r3,r2)
-	addd	(r1,r0),(r9,r8)
-
-l00009038:
-	stord	(r9,r8),0x90(r13)
-	loadd	(sp),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000905C
-
-l00009042:
-	loadw	0x38(r12),r1
-
-l00009046:
-	movw	$1,r0
-	ashuw	r1,r0
-	movzw	r0,(r1,r0)
-	loadd	0x48(r12),(r5,r4)
-	push	$1,r0
-	loadd	4(sp),(r3,r2)
-	bal	ra,fn0000DB24
-	addd	$4,sp
-
-l0000905A:
-	loadd	(sp),(r1,r0)
-
-l0000905C:
-	stord	(r1,r0),0x48(r13)
-	stord	r13,0x38(r11,r10)
-
-l00009064:
-	movw	$0,r0
-	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l0000906C:
-	movd	$1B98,(r5,r4)
-	addd	r12,(r5,r4)
-	cmpd	(r1,r0),(r5,r4)
-	blo	0000902E
-
-l00009076:
-	subd	(r1,r0),(r3,r2)
-	addd	(r9,r8),(r1,r0)
-	stord	(r1,r0),0x68(r13)
-	loadd	0x70(r12),(r1,r0)
-	subd	(r1,r0),(r3,r2)
-	addd	(r9,r8),(r1,r0)
-	stord	(r1,r0),0x70(r13)
-	br	0000902E
+00008FD0 08 AF 1C 00 0A EF 1C 00 08 AF 20 00 0A EF 20 00 .......... ... .
+00008FE0 08 AF 24 00 0A EF 24 00 08 AF 28 00 0A EF 28 00 ..$...$...(...(.
+00008FF0 08 AF 2C 00 0A EF 2C 00 08 AF 30 00 0A EF 30 00 ..,...,...0...0.
+00009000 08 AF 34 00 0A EF 34 00 B0 54 A4 1B 10 01 C4 55 ..4...4..T.....U
+00009010 D2 55 00 C0 12 4B AD E0 0C AF 34 00 B2 54 0C 05 .U...K....4..T..
+00009020 C2 61 B8 54 0C 05 D8 61 4F 60 20 57 50 12 0C AF .a.T...aO` WP...
+00009030 48 00 14 00 20 C0 08 61 8D EF 48 00 0F A0 00 56 H... ..a..H....V
+00009040 0E 10 1C 9F 1C 00 10 5A 10 45 00 5F 4C AF 24 00 .......Z.E._L.$.
+00009050 10 01 2F A2 00 C0 D0 4A 4F 60 0F A0 0D EF 24 00 ../....JO`....$.
+00009060 DA EF 1C 00 00 5A 4F 60 67 02 9D 03 B4 54 98 1B .....ZO`g....T..
+00009070 C4 61 40 57 AD 1D 14 00 20 C0 80 61 0D EF 34 00 .a@W.... ..a..4.
+00009080 0C AF 38 00 14 00 20 C0 80 61 0D EF 38 00 E0 1D ..8... ..a..8...
 00009090 B0 5A FE FF 4F 60 67 02 9D 03 B0 5A FC FF E0 18 .Z..O`g....Z....
 000090A0 B9 FE 28 AF 28 00 08 AF 24 00 D4 55 D0 00 B0 5A ..(.(...$..U...Z
 000090B0 FC FF E0 18 A5 FE 1E 01 02 56 03 11 02 AF 20 00 .........V.... .
@@ -8259,1271 +7167,160 @@ l00009076:
 000091E0 04 10 40 A0 42 57 03 10 90 54 EE 0A 20 92 B2 32 ..@.BW...T.. ..2
 000091F0 CC C0 B2 52 1F 00 A9 1F B2 54 0C 05 02 61 00 AF ...R.....T...a..
 00009200 48 00 14 00 20 C0 E0 4F EE 0A 00 00 9D 01 67 01 H... ..O......g.
-
-l00009210:
-	addd	$FF90,sp
-	movd	$86,r12
-	addd	sp,r12
-	stord	(r4,r3),0x98(sp)
-	loadd	(r12),(r1,r0)
-	stord	(r1,r0),0xA8(sp)
-	loadd	4(r12),(r4,r3)
-	stord	(r4,r3),0xB0(sp)
-
-l00009228:
-	ord	$A4EC5400,(r9,r8)
-
-l0000922A:
-	loadd	8(r12),ra
-	movd	$0,(r1,r0)
-	stord	(r1,r0),0x40(sp)
-	stord	(r1,r0),0x48(sp)
-	stord	(r1,r0),0x50(sp)
-	stord	(r1,r0),0x58(sp)
-	stord	(r1,r0),0x60(sp)
-	stord	(r1,r0),0x68(sp)
-	stord	(r1,r0),0x70(sp)
-	stord	(r1,r0),0x78(sp)
-	cmpw	$0,r5
-	beq	0000927A
-
-l00009252:
-	loadd	0x98(sp),(r7,r6)
-	movw	$FFFF,r8
-	addw	r8,r5
-	movzw	r8,(r9,r8)
-	addd	$1,(r9,r8)
-	addd	(r9,r8),(r9,r8)
-	addd	(r7,r6),(r9,r8)
-
-l00009262:
-	loadw	(r7,r6),r0
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	addd	sp,(r1,r0)
-	loadw	0x40(r1,r0),r3
-	addw	$1,r1
-	storw	r3,0x40(r1,r0)
-	addd	$2,(r7,r6)
-	cmpd	(r7,r6),(r9,r8)
-	bne	00009262
-
-l0000927A:
-	loadw	0x7C(sp),r10
-	cmpw	$0,r10
-	bne	0000A1C8
-
-l00009284:
-	loadw	0x78(sp),r0
-	cmpw	$0,r0
-	bne	00009338
-
-l0000928C:
-	loadw	0x74(sp),r0
-	cmpw	$0,r0
-	bne	0000A23A
-
-l00009296:
-	loadw	0x70(sp),r0
-	cmpw	$0,r0
-	bne	0000A250
-
-l000092A0:
-	loadw	0x6C(sp),r0
-	cmpw	$0,r0
-	bne	0000A2FA
-
-l000092AA:
-	loadw	0x68(sp),r0
-	cmpw	$0,r0
-	bne	0000A320
-
-l000092B4:
-	loadw	0x64(sp),r0
-	cmpw	$0,r0
-	bne	0000A336
-
-l000092BE:
-	loadw	0x60(sp),r0
-	cmpw	$0,r0
-	bne	0000A36C
-
-l000092C8:
-	loadw	0x5C(sp),r0
-	cmpw	$0,r0
-	bne	0000A1DE
-
-l000092D2:
-	loadw	0x58(sp),r0
-	cmpw	$0,r0
-	bne	0000A388
-
-l000092DC:
-	loadw	0x54(sp),r0
-	cmpw	$0,r0
-	bne	0000A3E6
-
-l000092E6:
-	loadw	0x50(sp),r0
-	cmpw	$0,r0
-	bne	0000A40C
-
-l000092F0:
-	loadw	0x4C(sp),r0
-	cmpw	$0,r0
-	bne	0000A39A
-
-l000092FA:
-	loadw	0x48(sp),r0
-	cmpw	$0,r0
-	bne	fn0000A41C
-
-l00009302:
-	sfs	ra
-
-l00009304:
-	loadw	0x44(sp),r0
-	cmpw	$0,r0
-	bne	0000A346
-
-l0000930E:
-	loadd	0xA8(sp),(r5,r4)
-	loadd	(r5,r4),(r3,r2)
-	movw	$140,r1
-	storw	r1,(r3,r2)
-	storw	r0,2(r3,r2)
-	movd	$8,(r5,r4)
-	addd	(r3,r2),(r5,r4)
-	loadd	0xA8(sp),(r7,r6)
-	stord	(r5,r4),(r7,r6)
-	storw	r1,4(r3,r2)
-	storw	r0,6(r3,r2)
-	loadd	0xB0(sp),(r8,r7)
-	storw	$1,(r8,r7)
-	addd	$70,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l00009338:
-	loadw	0x44(sp),r0
-	cmpw	$0,r0
-	bne	fn0000A44A
-
-l00009342:
-	loadw	0x48(sp),r1
-	cmpw	$0,r1
-	bne	0000A2CC
-
-l0000934C:
-	loadw	0x4C(sp),r1
-	movw	$E,r13
-	cmpw	$0,r1
-	bne	0000A14C
-
-l00009358:
-	loadw	0x50(sp),r1
-	cmpw	$0,r1
-	bne	0000A38E
-
-l00009362:
-	cmpw	$5,r13
-	beq	0000A1B8
-
-l00009368:
-	loadw	0x54(sp),r1
-	cmpw	$0,r1
-	bne	0000A1AE
-
-l00009372:
-	cmpw	$6,r13
-	beq	0000A250
-
-l00009378:
-	loadw	0x58(sp),r1
-	cmpw	$0,r1
-	bne	0000A246
-
-l00009382:
-	cmpw	$7,r13
-	beq	0000A2A0
-
-l00009388:
-	loadw	0x5C(sp),r1
-	cmpw	$0,r1
-	bne	0000A296
-
-l00009392:
-	cmpw	$8,r13
-	beq	0000A2F0
-
-l00009398:
-	loadw	0x60(sp),r1
-	cmpw	$0,r1
-	bne	0000A2E6
-
-l000093A2:
-	cmpw	$9,r13
-	beq	0000A16A
-
-l000093AA:
-	loadw	0x64(sp),r1
-	cmpw	$0,r1
-	bne	0000A3A0
-
-l000093B4:
-	cmpw	$A,r13
-	beq	0000A15A
-
-l000093BA:
-	loadw	0x68(sp),r1
-	cmpw	$0,r1
-	bne	0000A3A0
-
-l000093C4:
-	cmpw	$B,r13
-	beq	0000A148
-
-l000093CC:
-	loadw	0x6C(sp),r1
-	cmpw	$0,r1
-	bne	0000A39A
-
-l000093D6:
-	cmpw	$C,r13
-	beq	0000A138
-
-l000093DC:
-	loadw	0x70(sp),r1
-	cmpw	$0,r1
-	bne	0000A39A
-
-l000093E6:
-	cmpw	$D,r13
-	beq	0000A35C
-
-l000093EC:
-	loadw	0x74(sp),r1
-	cmpw	$0,r1
-	bne	0000A352
-
-l000093F6:
-	cmpw	$F,r13
-	bne	0000A114
-
-l000093FC:
-	loadw	0x78(sp),r1
-	movw	r13,r9
-	cmpw	$0,r1
-	bne	0000A394
-
-l00009408:
-	movw	$2,r1
-	subw	r1,r0
-	cmpw	$0,r1
-	bgt	000097F6
-
-l00009412:
-	loadw	0x48(sp),r3
-	addw	r1,r1
-	subw	r1,r3
-	cmpw	$0,r1
-	bgt	000097E8
-
-l00009420:
-	loadw	0x4C(sp),r4
-	addw	r1,r1
-	subw	r1,r4
-	cmpw	$0,r1
-	bgt	000097DA
-
-l0000942E:
-	loadw	0x50(sp),r6
-	addw	r1,r1
-	subw	r1,r6
-	cmpw	$0,r1
-	bgt	000097CC
-
-l0000943C:
-	loadw	0x54(sp),r7
-	addw	r1,r1
-	subw	r1,r7
-	cmpw	$0,r1
-	bgt	000097BE
-
-l0000944A:
-	loadw	0x58(sp),r8
-	addw	r1,r1
-	subw	r1,r8
-	cmpw	$0,r1
-	bgt	000097B0
-
-l00009458:
-	loadw	0x5C(sp),r11
-	storw	r11,0xC0(sp)
-	addw	r1,r1
-	subw	r1,r11
-	cmpw	$0,r1
-	bgt	0000979E
-
-l0000946A:
-	loadw	0x60(sp),r11
-	storw	r11,0x80(sp)
-	addw	r1,r1
-	subw	r1,r11
-	storw	r1,0x90(sp)
-	cmpw	$0,r1
-	bgt	00009788
-
-l00009480:
-	movw	r1,r11
-	loadw	0x64(sp),r1
-	storw	r1,0x84(sp)
-	addw	r11,r11
-	subw	r11,r1
-	storw	r11,0x90(sp)
-	cmpw	$0,r11
-	bgt	00009770
-
-l00009498:
-	loadw	0x68(sp),r1
-	storw	r1,0x88(sp)
-	addw	r11,r11
-	subw	r11,r1
-	storw	r11,0x94(sp)
-	cmpw	$0,r11
-	bgt	0000975A
-
-l000094AE:
-	movw	r11,r1
-	loadw	0x6C(sp),r11
-	storw	r11,0x90(sp)
-	addw	r1,r1
-	subw	r1,r11
-	storw	r1,0xA0(sp)
-	cmpw	$0,r1
-	bgt	00009742
-
-l000094C6:
-	loadw	0x70(sp),r11
-	storw	r11,0x94(sp)
-	addw	r1,r1
-	subw	r1,r11
-	storw	r1,0xA4(sp)
-	cmpw	$0,r1
-	bgt	0000972C
-
-l000094DC:
-	movw	r1,r11
-	loadw	0x74(sp),r1
-	storw	r1,0xA0(sp)
-	addw	r11,r11
-	subw	r11,r1
-	storw	r11,0xB8(sp)
-	cmpw	$0,r11
-	bgt	00009714
-
-l000094F4:
-	loadw	0x78(sp),r1
-	storw	r1,0xA4(sp)
-	addw	r11,r11
-	subw	r11,r1
-	storw	r11,0xB8(sp)
-	cmpw	$0,r11
-	bgt	000096FE
-
-l0000950A:
-	movw	r11,r1
-	addw	r1,r11
-	subw	r1,r10
-	cmpw	$0,r1
-	bgt	00009602
-
-l00009514:
-	cmpw	$0,r1
-	beq	00009528
-
-l00009518:
-	cmpw	$0,r2
-	seq	r1
-	cmpw	$0,r1
-	bne	00009602
-
-l00009520:
-	cmpw	$1,r13
-	sne	r1
-	cmpw	$0,r1
-	bne	00009602
-
-l00009528:
-	loadd	0xB0(sp),r12
-	loadw	(r12),r10
-	storw	$0,2(sp)
-	storw	r0,4(sp)
-	addw	r0,r3
-	storw	r0,6(sp)
-	addw	r0,r4
-	storw	r0,8(sp)
-	addw	r0,r6
-	storw	r0,0xA(sp)
-	addw	r0,r7
-	storw	r0,0xC(sp)
-	addw	r0,r8
-	storw	r0,0xE(sp)
-	loadw	0xC0(sp),r1
-	addw	r0,r1
-	storw	r0,0x10(sp)
-	loadw	0x80(sp),r3
-	addw	r0,r3
-	storw	r0,0x12(sp)
-	loadw	0x84(sp),r4
-	addw	r0,r4
-	storw	r0,0x14(sp)
-	loadw	0x88(sp),r6
-	addw	r0,r6
-	storw	r0,0x16(sp)
-	loadw	0x90(sp),r7
-	addw	r0,r7
-	storw	r0,0x18(sp)
-	loadw	0x94(sp),r8
-	addw	r0,r8
-	storw	r0,0x1A(sp)
-	loadw	0xA0(sp),r11
-	addw	r0,r11
-	storw	r0,0x38(sp)
-	loadw	0xA4(sp),r1
-	addw	r0,r1
-	storw	r0,0x3C(sp)
-	cmpw	$0,r5
-	beq	000095BA
-
-l00009590:
-	loadd	0x98(sp),(r7,r6)
-	movw	$0,r3
-
-l00009596:
-	loadw	(r7,r6),r0
-	cmpw	$0,r0
-	beq	000095F8
-
-l0000959C:
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	addd	sp,(r1,r0)
-	loadw	(r1,r0),r4
-	movw	$1,r8
-	addw	r8,r4
-	storw	r8,(r1,r0)
-	movzw	r4,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	addd	ra,(r1,r0)
-	storw	r3,(r1,r0)
-	addw	$1,r1
-	addd	$2,(r7,r6)
-	cmpw	r5,r3
-	bne	00009596
-
-l000095BA:
-	cmpw	r10,r13
-	bhs	000095C0
-
-l000095BE:
-	movw	r13,r10
-
-l000095C0:
-	storw	r10,0x94(sp)
-	cmpw	r10,r9
-	bls	000095CC
-
-l000095C8:
-	storw	r9,0x94(sp)
-
-l000095CC:
-	loadd	0xA8(sp),(r4,r3)
-	loadd	(r4,r3),(r5,r4)
-	stord	(r5,r4),0xC0(sp)
-	movw	$1,r0
-	loadb	0x4A(sp),r5
-	ashuw	r5,r0
-	cmpw	$0,r2
-	beq	0000963C
-
-l000095E2:
-	cmpw	$1,r2
-	bne	0000960C
-
-l000095E6:
-	cmpw	$354,r0
-	bhs	0000A1CA
-
-l000095EE:
-	movw	$1,r0
-	addd	$70,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l000095F8:
-	addw	$1,r1
-	addd	$2,(r7,r6)
-	cmpw	r5,r3
-	bne	00009596
-
-l00009600:
-	br	000095BA
-
-l00009602:
-	movw	$FFFF,r0
-	addd	$70,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l0000960C:
-	cmpw	$2,r2
-	seq	r1
-	storb	r1,0x6C(sp)
-	cmpw	$250,r0
-	slo	r1
-	cmpw	$0,r1
-	beq	00009626
-
-l0000961E:
-	loadb	0x6C(sp),r7
-	cmpb	$0,r7
-	bne	000095EE
-
-l00009626:
-	storw	$0,0x50(sp)
-	movd	$F15A,r12
-	stord	r12,0xC8(sp)
-	movd	$F19A,(r4,r3)
-	stord	(r4,r3),0xD0(sp)
-	br	00009650
-
-l0000963C:
-	stord	ra,0xC8(sp)
-	stord	ra,0xD0(sp)
-	movw	$14,r4
-	storw	r4,0xA0(sp)
-	storb	r2,0x6C(sp)
-
-l00009650:
-	cmpw	$1,r2
-	seq	r2
-	storb	r2,0x6D(sp)
-	loadd	0xC0(sp),r12
-	storw	r0,0xA4(sp)
-	loadw	0x94(sp),r8
-	storw	r8,0x84(sp)
-	movw	$FFFF,r11
-	storw	r11,0xB8(sp)
-	movw	$0,r4
-	movw	r4,r10
-	movw	r9,r6
-	movw	$1,r7
-	addw	$FFFF,r9
-	storw	r0,0xBC(sp)
-	storw	r4,0x80(sp)
-	movw	r9,r11
-	movw	r4,r9
-	movb	r11,r8
-	subb	r8,r10
-	storb	r8,0x44(sp)
-	movzw	r9,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	addd	ra,(r1,r0)
-	loadw	(r1,r0),r1
-	movw	$1,r0
-	addw	r0,r1
-	movb	$0,r8
-	loadw	0xA0(sp),r2
-	cmpw	r0,r2
-	bhi	000096BE
-
-l000096A2:
-	cmpw	r1,r2
-	bhi	00009D90
-
-l000096A8:
-	subw	r1,r2
-	movzw	r1,(r1,r0)
-	addd	(r1,r0),(r1,r0)
-	loadd	0xC8(sp),(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	loadb	(r3,r2),r8
-	loadd	0xD0(sp),(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	loadw	(r1,r0),r1
-
-l000096BE:
-	movw	r7,r3
-	ashuw	r6,r3
-	movw	r3,r6
-	movw	r7,r9
-	loadb	0x42(sp),r5
-	ashuw	r5,r9
-	movb	$0,r0
-	subb	r0,r10
-	movw	r4,r5
-	lshw	r0,r5
-	movw	r9,r0
-	movzb	r8,(r9,r8)
-	loadb	0x44(sp),r2
-	ashuw	$8,r2
-	orw	r8,r2
-
-l000096E0:
-	subw	r0,r6
-	movw	r5,r2
-	addw	r2,r0
-	movzw	r2,(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	r12,(r3,r2)
-	storw	r8,(r3,r2)
-	storw	r1,2(r3,r2)
-	cmpw	$0,r0
-	bne	000096E0
-
-l000096F4:
-	movw	$FFFF,r0
-	addw	r0,r11
-	movw	r7,r6
-	ashuw	r0,r6
-	movw	r6,r0
-
-l000096FE:
-	movw	r4,r1
-	andw	r1,r6
-	cmpw	$0,r1
-	beq	00009710
-
-l00009706:
-	lshw	$-15,r0
-	movw	r4,r1
-	andw	r1,r0
-	cmpw	$0,r1
-	bne	00009706
-
-l00009710:
-	cmpw	$0,r0
-	beq	0000971C
-
-l00009714:
-	movw	$FFFF,r1
-	addw	r1,r0
-	andw	r4,r1
-	addw	r0,r4
-
-l0000971C:
-	loadw	0x80(sp),r8
-	addw	$1,r1
-	storw	r8,0x80(sp)
-	movzw	r11,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-
-l0000972C:
-	loadw	0x40(r3,r2),r1
-	addw	$FFFF,r9
-	storw	r1,0x40(r3,r2)
-	cmpw	$0,r1
-	bne	00009754
-
-l0000973A:
-	cmpw	r11,r13
-	beq	00009DEC
-
-l00009740:
-	movzw	r8,(r3,r2)
-
-l00009742:
-	addd	(r3,r2),(r3,r2)
-	addd	ra,(r3,r2)
-	loadw	(r3,r2),r2
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	loadd	0x98(sp),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadw	(r3,r2),r11
-
-l00009754:
-	loadw	0x94(sp),r5
-	cmpw	r5,r11
-
-l0000975A:
-	bls	00009CBE
-
-l0000975E:
-	loadw	0xBC(sp),r6
-	andw	r6,r0
-	storw	r6,0x90(sp)
-	loadw	0xB8(sp),r8
-	cmpw	r6,r8
-	beq	00009CAA
-
-l00009770:
-	pop	$1,ra,ra
-
-l00009772:
-	cmpw	$0,r10
-	bne	00009778
-
-l00009776:
-	movw	r5,r10
-
-l00009778:
-	movzw	r9,(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	(r3,r2),r12
-	movw	r11,r6
-	subw	r6,r10
-	storw	r6,0x84(sp)
-	movw	r7,r1
-
-l00009788:
-	ashuw	r6,r1
-	cmpw	r11,r13
-	bls	00009B9C
-
-l00009790:
-	movzw	r11,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-
-l0000979E:
-	bge	00009B8A
-
-l000097A2:
-	movw	$1,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009B72
-
-l000097B0:
-	push	$6,r2,ra
-
-l000097B2:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-
-l000097BE:
-	cmpw	$0,r1
-	bge	00009B60
-
-l000097C4:
-	movw	$2,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-
-l000097CC:
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009B50
-
-l000097D4:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-
-l000097DA:
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009B3E
-
-l000097E6:
-	movw	$3,r4
-
-l000097E8:
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009B2E
-
-l000097F6:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009B1C
-
-l00009808:
-	movw	$4,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009B0C
-
-l00009818:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009AFA
-
-l0000982A:
-	movw	$5,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009AEA
-
-l0000983A:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009AD8
-
-l0000984C:
-	movw	$6,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009AC8
-
-l0000985C:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009AB6
-
-l0000986E:
-	movw	$7,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009AA6
-
-l0000987E:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009A94
-
-l00009890:
-	movw	$8,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l0000989E:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l000098AE:
-	movw	$9,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l000098BE:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l000098CE:
-	movw	$A,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-
-l000098DA:
-	bls	00009990
-
-l000098DC:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l000098EC:
-	movw	$B,r4
-	addw	r4,r6
-
-l000098F2:
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l000098FC:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l0000990C:
-	movw	$C,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l0000991A:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-
-l00009926:
-	cmpw	$0,r1
-	bge	00009990
-
-l0000992A:
-	movw	$D,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l00009938:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l00009948:
-	movw	$E,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l00009956:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l00009966:
-	movw	$F,r4
-	addw	r4,r6
-	addw	r1,r1
-	movw	r10,r2
-	addw	r2,r4
-	cmpw	r2,r13
-	bls	00009990
-
-l00009974:
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r3,r2)
-	addd	sp,(r3,r2)
-	loadw	0x40(r3,r2),r2
-	subw	r1,r2
-	cmpw	$0,r1
-	bge	00009990
-
-l00009984:
-	movw	$10,r9
-	addw	r9,r6
-	storw	r9,0x84(sp)
-	br	00009994
-
-l00009990:
-	storw	r4,0x84(sp)
-
-l00009994:
-	movw	r7,r1
-	loadb	0x42(sp),r2
-	ashuw	r2,r1
-	loadw	0xA4(sp),r3
-	addw	r3,r1
-	storw	r3,0xA4(sp)
-	cmpw	$354,r3
-	slo	r1
-	cmpw	$0,r1
-	beq	000099BA
-
-l000099B0:
-	loadb	0x6D(sp),r4
-	cmpb	$0,r4
-	bne	00009228
-
-l000099BA:
-	loadw	0xA4(sp),r5
-	cmpw	$250,r5
-	slo	r1
-	cmpw	$0,r1
-	beq	000099D2
-
-l000099C8:
-	loadb	0x6C(sp),r8
-	cmpb	$0,r8
-	bne	00009210
-
-l000099D2:
-	loadw	0x90(sp),r9
-	movzw	r9,(r3,r2)
-	ashud	$2,(r3,r2)
-	loadd	0xC0(sp),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadb	0x42(sp),r5
-	storb	r5,(r3,r2)
-	loadb	0x4A(sp),r8
-	storb	r8,1(r3,r2)
-	movd	(r5,r4),r12
-	loadd	0xC0(sp),(r9,r8)
-	subd	(r5,r4),(r9,r8)
-	ashud	$-30,(r5,r4)
-	storw	r4,2(r3,r2)
-	loadw	0x90(sp),r9
-	storw	r9,0xB8(sp)
-
-l00009A00:
-	ord	$5B049F9F,r12
-	andd	$18E0FC7D,(r1,r0)
-00009A0C                                     B6 5B A6 3B             .[.;
+00009210 BF 60 90 FF BC 54 86 00 FC 61 3F EF 4C 00 0C A0 .`...T...a?.L...
+00009220 0F EF 54 00 3C A2 3F EF 58 00 EC A4 00 54 0F EF ..T.<.?.X....T..
+00009230 20 00 0F EF 24 00 0F EF 28 00 0F EF 2C 00 0F EF  ...$...(...,...
+00009240 30 00 0F EF 34 00 0F EF 38 00 0F EF 3C 00 05 52 0...4...8...<..R
+00009250 05 11 6F AF 4C 00 98 5A 58 33 88 5F 18 60 88 61 ..o.L..ZX3._.`.a
+00009260 68 61 06 90 00 5F 00 61 F0 61 30 9F 20 00 13 32 ha..._.a.a0. ..2
+00009270 30 DF 20 00 26 60 86 57 15 1F AF 9F 3E 00 0A 52 0. .&`.W....>..R
+00009280 10 18 A4 07 0F 9F 3C 00 00 52 17 15 0F 9F 3A 00 ......<..R....:.
+00009290 00 52 10 18 D4 07 0F 9F 38 00 00 52 10 18 DA 07 .R......8..R....
+000092A0 0F 9F 36 00 00 52 10 18 2A 08 0F 9F 34 00 00 52 ..6..R..*...4..R
+000092B0 10 18 38 08 0F 9F 32 00 00 52 10 18 3E 08 0F 9F ..8...2..R..>...
+000092C0 30 00 00 52 10 18 54 08 0F 9F 2E 00 00 52 10 18 0..R..T......R..
+000092D0 88 07 0F 9F 2C 00 00 52 10 18 58 08 0F 9F 2A 00 ....,..R..X...*.
+000092E0 00 52 10 18 82 08 0F 9F 28 00 00 52 10 18 90 08 .R......(..R....
+000092F0 0F 9F 26 00 00 52 10 18 52 08 0F 9F 24 00 00 52 ..&..R..R...$..R
+00009300 10 18 8E 08 0F 9F 22 00 00 52 10 18 1E 08 4F AF ......"..R....O.
+00009310 54 00 24 A0 B1 5A 40 01 12 D0 02 D1 84 54 24 61 T.$..Z@......T$a
+00009320 6F AF 54 00 46 E0 12 D2 02 D3 7F AF 58 00 17 C2 o.T.F.......X...
+00009330 BF 60 70 00 67 02 9D 03 0F 9F 22 00 00 52 10 18 .`p.g....."..R..
+00009340 86 08 1F 9F 24 00 01 52 10 18 C2 07 1F 9F 26 00 ....$..R......&.
+00009350 ED 5A 01 52 10 18 FC 06 1F 9F 28 00 01 52 10 18 .Z.R......(..R..
+00009360 18 08 5D 52 00 18 2A 07 1F 9F 2A 00 01 52 10 18 ..]R..*...*..R..
+00009370 20 07 6D 52 00 18 6E 07 1F 9F 2C 00 01 52 10 18  .mR..n...,..R..
+00009380 64 07 7D 52 00 18 8E 07 1F 9F 2E 00 01 52 10 18 d.}R.........R..
+00009390 84 07 8D 52 00 18 AE 07 1F 9F 30 00 01 52 10 18 ...R......0..R..
+000093A0 A4 07 BD 52 09 00 00 18 E2 06 1F 9F 32 00 01 52 ...R........2..R
+000093B0 10 18 F8 07 AD 52 00 18 D2 06 1F 9F 34 00 01 52 .....R......4..R
+000093C0 10 18 F0 07 BD 52 0B 00 00 18 C0 06 1F 9F 36 00 .....R........6.
+000093D0 01 52 10 18 E4 07 CD 52 00 18 B0 06 1F 9F 38 00 .R.....R......8.
+000093E0 01 52 10 18 DC 07 DD 52 00 18 BA 07 1F 9F 3A 00 .R.....R......:.
+000093F0 01 52 10 18 B0 07 FD 52 10 18 8E 06 1F 9F 3C 00 .R.....R......<.
+00009400 D9 5B 01 52 10 18 C8 07 21 5A 01 3B 01 52 60 18 .[.R....!Z.;.R`.
+00009410 F4 01 3F 9F 24 00 11 33 31 3B 01 52 60 18 E6 01 ..?.$..31;.R`...
+00009420 4F 9F 26 00 11 33 41 3B 01 52 60 18 D8 01 6F 9F O.&..3A;.R`...o.
+00009430 28 00 11 33 61 3B 01 52 60 18 CA 01 7F 9F 2A 00 (..3a;.R`.....*.
+00009440 11 33 71 3B 01 52 60 18 BC 01 8F 9F 2C 00 11 33 .3q;.R`.....,..3
+00009450 81 3B 01 52 60 18 AE 01 BF 9F 2E 00 BF DF 60 00 .;.R`.........`.
+00009460 11 33 B1 3B 01 52 60 18 9C 01 BF 9F 30 00 BF DF .3.;.R`.....0...
+00009470 40 00 11 33 B1 3B 1F DF 48 00 01 52 60 18 86 01 @..3.;..H..R`...
+00009480 1B 5B 1F 9F 32 00 1F DF 42 00 BB 33 1B 3B BF DF .[..2...B..3.;..
+00009490 48 00 0B 52 60 18 6E 01 1F 9F 34 00 1F DF 44 00 H..R`.n...4...D.
+000094A0 BB 33 1B 3B BF DF 4A 00 0B 52 60 18 58 01 B1 5B .3.;..J..R`.X..[
+000094B0 BF 9F 36 00 BF DF 48 00 11 33 B1 3B 1F DF 50 00 ..6...H..3.;..P.
+000094C0 01 52 60 18 40 01 BF 9F 38 00 BF DF 4A 00 11 33 .R`.@...8...J..3
+000094D0 B1 3B 1F DF 52 00 01 52 60 18 2A 01 1B 5B 1F 9F .;..R..R`.*..[..
+000094E0 3A 00 1F DF 50 00 BB 33 1B 3B BF DF 5C 00 0B 52 :...P..3.;..\..R
+000094F0 60 18 12 01 1F 9F 3C 00 1F DF 52 00 BB 33 1B 3B `.....<...R..3.;
+00009500 BF DF 5C 00 0B 52 60 18 FC 00 B1 5B B1 33 A1 3B ..\..R`....[.3.;
+00009510 01 52 68 17 01 52 09 10 02 52 01 08 01 52 12 17 .Rh..R...R...R..
+00009520 1D 52 11 08 01 52 1E 16 CF AF 58 00 AC 90 0F C3 .R...R....X.....
+00009530 02 00 0F D2 30 33 0F D3 40 33 0F D4 60 33 0F D5 ....03..@3..`3..
+00009540 70 33 0F D6 80 33 0F D7 1F 9F 60 00 10 33 0F D8 p3...3....`..3..
+00009550 3F 9F 40 00 30 33 0F D9 4F 9F 42 00 40 33 0F DA ?.@.03..O.B.@3..
+00009560 6F 9F 44 00 60 33 0F DB 7F 9F 48 00 70 33 0F DC o.D.`3....H.p3..
+00009570 8F 9F 4A 00 80 33 0F DD BF 9F 50 00 B0 33 0F DF ..J..3....P..3..
+00009580 1C 00 1F 9F 52 00 10 33 0F DF 1E 00 05 52 06 11 ....R..3.....R..
+00009590 6F AF 4C 00 03 5A 06 90 00 52 0F 12 00 5F 00 61 o.L..Z...R..._.a
+000095A0 F0 61 40 90 18 5A 48 33 80 D0 40 5F 00 61 E0 61 .a@..ZH3..@_.a.a
+000095B0 30 D0 13 32 26 60 35 53 1F 1E DA 53 B2 10 DA 5B 0..2&`5S...S...[
+000095C0 AF DF 4A 00 9A 53 53 10 9F DF 4A 00 3F AF 54 00 ..J..SS...J.?.T.
+000095D0 43 A0 4F EF 60 00 10 5A 5F BF 4A 00 50 45 02 52 C.O.`..Z_.J.PE.R
+000095E0 0E 12 12 52 14 11 B0 52 54 03 B0 18 F0 05 10 5A ...R...RT......Z
+000095F0 BF 60 70 00 67 02 9D 03 13 32 26 60 35 53 1C 1C .`p.g....2&`5S..
+00009600 ED 1D 90 5A BF 60 70 00 67 02 9D 03 22 52 01 08 ...Z.`p.g..."R..
+00009610 1F FF 6C 00 B0 52 50 02 A1 08 01 52 05 10 7F BF ..l..RP....R....
+00009620 6C 00 07 50 15 1E 0F C3 50 00 C0 05 5A F1 CF EF l..P....P...Z...
+00009630 64 00 30 05 9A F1 3F EF 68 00 EB 10 EF EF 64 00 d.0...?.h.....d.
+00009640 EF EF 68 00 B4 5A 14 00 4F DF 50 00 2F FF 6C 00 ..h..Z..O.P./.l.
+00009650 12 52 02 08 2F FF 6D 00 CF AF 60 00 0F DF 52 00 .R../.m...`...R.
+00009660 8F 9F 4A 00 8F DF 42 00 9B 5A BF DF 5C 00 04 5A ..J...B..Z..\..Z
+00009670 4A 5B 96 5B 17 5A 90 32 0F DF 5E 00 4F DF 40 00 J[.[.Z.2..^.O.@.
+00009680 9B 5B 49 5B B8 59 A8 39 8F FF 44 00 90 5F 00 61 .[I[.Y.9..D.._.a
+00009690 E0 61 10 90 10 5A 10 33 08 58 2F 9F 50 00 20 53 .a...Z.3.X/.P. S
+000096A0 4F 10 21 53 40 18 76 03 21 3B 10 5F 00 61 2F AF O.!S@.v.!;._.a/.
+000096B0 64 00 02 61 82 B0 2F AF 68 00 20 61 10 90 73 5B d..a../.h. a..s[
+000096C0 63 45 36 5B 79 5B 5F BF 42 00 59 45 00 58 A0 39 cE6[y[_.B.YE.X.9
+000096D0 45 5B 05 46 90 5B 88 5D 2F BF 44 00 82 42 28 27 E[.F.[.]/.D..B('
+000096E0 60 3B 52 5B 02 33 22 5F 22 4C C2 61 82 D0 12 D1 `;R[.3"_"L.a....
+000096F0 00 52 17 1F 90 5A B0 33 76 5B 06 45 60 5B 41 5B .R...Z.3v[.E`[A[
+00009700 61 23 01 52 06 10 F0 49 41 5B 01 23 01 52 1C 1F a#.R...IA[.#.R..
+00009710 00 52 05 10 91 5A 01 33 14 23 40 33 8F 9F 40 00 .R...Z.3.#@3..@.
+00009720 18 32 8F DF 40 00 B2 5F 22 61 F2 61 12 9F 20 00 .2..@.._"a.a.. .
+00009730 91 32 12 DF 20 00 01 52 1E 10 DB 53 00 18 58 03 .2.. ..R...S..X.
+00009740 82 5F 22 61 E2 61 22 90 22 5F 22 61 4F AF 4C 00 ._"a.a"."_"aO.L.
+00009750 42 61 B2 90 5F 9F 4A 00 B5 53 50 18 B2 02 6F 9F Ba.._.J..SP...o.
+00009760 5E 00 06 23 6F DF 48 00 8F 9F 5C 00 86 53 00 18 ^..#o.H...\..S..
+00009770 9E 02 0A 52 12 10 5A 5B 92 5F 22 4C 2C 61 B6 5B ...R..Z[._"L,a.[
+00009780 A6 3B 6F DF 42 00 71 5B 61 45 DB 53 50 18 08 02 .;o.B.q[aE.SP...
+00009790 B2 5F 22 61 F2 61 22 9F 20 00 21 3B 01 52 D0 18 ._"a.a". .!;.R..
+000097A0 F6 01 14 5A 64 33 11 33 A2 5B 42 33 D2 53 50 18 ...Zd3.3.[B3.SP.
+000097B0 E2 01 22 5F 22 61 F2 61 22 9F 20 00 21 3B 01 52 .."_"a.a". .!;.R
+000097C0 D0 18 D0 01 24 5A 64 33 11 33 A2 5B 42 33 D2 53 ....$Zd3.3.[B3.S
+000097D0 50 18 C0 01 22 5F 22 61 F2 61 22 9F 20 00 21 3B P..."_"a.a". .!;
+000097E0 01 52 D0 18 AE 01 34 5A 64 33 11 33 A2 5B 42 33 .R....4Zd3.3.[B3
+000097F0 D2 53 50 18 9E 01 22 5F 22 61 F2 61 22 9F 20 00 .SP..."_"a.a". .
+00009800 21 3B 01 52 D0 18 8C 01 44 5A 64 33 11 33 A2 5B !;.R....DZd3.3.[
+00009810 42 33 D2 53 50 18 7C 01 22 5F 22 61 F2 61 22 9F B3.SP.|."_"a.a".
+00009820 20 00 21 3B 01 52 D0 18 6A 01 54 5A 64 33 11 33  .!;.R..j.TZd3.3
+00009830 A2 5B 42 33 D2 53 50 18 5A 01 22 5F 22 61 F2 61 .[B3.SP.Z."_"a.a
+00009840 22 9F 20 00 21 3B 01 52 D0 18 48 01 64 5A 64 33 ". .!;.R..H.dZd3
+00009850 11 33 A2 5B 42 33 D2 53 50 18 38 01 22 5F 22 61 .3.[B3.SP.8."_"a
+00009860 F2 61 22 9F 20 00 21 3B 01 52 D0 18 26 01 74 5A .a". .!;.R..&.tZ
+00009870 64 33 11 33 A2 5B 42 33 D2 53 50 18 16 01 22 5F d3.3.[B3.SP..."_
+00009880 22 61 F2 61 22 9F 20 00 21 3B 01 52 D0 18 04 01 "a.a". .!;.R....
+00009890 84 5A 64 33 11 33 A2 5B 42 33 D2 53 5A 17 22 5F .Zd3.3.[B3.SZ."_
+000098A0 22 61 F2 61 22 9F 20 00 21 3B 01 52 D2 17 B4 5A "a.a". .!;.R...Z
+000098B0 09 00 64 33 11 33 A2 5B 42 33 D2 53 5A 16 22 5F ..d3.3.[B3.SZ."_
+000098C0 22 61 F2 61 22 9F 20 00 21 3B 01 52 D2 16 A4 5A "a.a". .!;.R...Z
+000098D0 64 33 11 33 A2 5B 42 33 D2 53 5B 15 22 5F 22 61 d3.3.[B3.S[."_"a
+000098E0 F2 61 22 9F 20 00 21 3B 01 52 D3 15 B4 5A 0B 00 .a". .!;.R...Z..
+000098F0 64 33 11 33 A2 5B 42 33 D2 53 5B 14 22 5F 22 61 d3.3.[B3.S[."_"a
+00009900 F2 61 22 9F 20 00 21 3B 01 52 D3 14 C4 5A 64 33 .a". .!;.R...Zd3
+00009910 11 33 A2 5B 42 33 D2 53 5C 13 22 5F 22 61 F2 61 .3.[B3.S\."_"a.a
+00009920 22 9F 20 00 21 3B 01 52 D4 13 D4 5A 64 33 11 33 ". .!;.R...Zd3.3
+00009930 A2 5B 42 33 D2 53 5D 12 22 5F 22 61 F2 61 22 9F .[B3.S]."_"a.a".
+00009940 20 00 21 3B 01 52 D5 12 E4 5A 64 33 11 33 A2 5B  .!;.R...Zd3.3.[
+00009950 42 33 D2 53 5E 11 22 5F 22 61 F2 61 22 9F 20 00 B3.S^."_"a.a". .
+00009960 21 3B 01 52 D6 11 F4 5A 64 33 11 33 A2 5B 42 33 !;.R...Zd3.3.[B3
+00009970 D2 53 5F 10 22 5F 22 61 F2 61 22 9F 20 00 21 3B .S_."_"a.a". .!;
+00009980 01 52 D7 10 B9 5A 10 00 69 33 9F DF 42 00 E3 10 .R...Z..i3..B...
+00009990 4F DF 42 00 71 5B 2F BF 42 00 21 45 3F 9F 52 00 O.B.q[/.B.!E?.R.
+000099A0 13 33 3F DF 52 00 B3 52 54 03 A1 08 01 52 06 10 .3?.R..RT....R..
+000099B0 4F BF 6D 00 04 50 10 18 39 FC 5F 9F 52 00 B5 52 O.m..P..9._.R..R
+000099C0 50 02 A1 08 01 52 06 10 8F BF 6C 00 08 50 10 18 P....R....l..P..
+000099D0 21 FC 9F 9F 48 00 92 5F 22 4C 4F AF 60 00 42 61 !...H.._"LO.`.Ba
+000099E0 5F BF 42 00 52 F0 8F BF 4A 00 82 F1 C4 55 8F AF _.B.R...J....U..
+000099F0 60 00 14 00 84 C0 E4 4F 42 D1 9F 9F 48 00 9F DF `......OB...H...
+00009A00 5C 00 04 5B 9F 9F 40 00 E0 18 7D FC B6 5B A6 3B \..[..@...}..[.;
 00009A10 04 5B 9F 9F 40 00 E0 18 6F FC 01 5A B8 58 60 00 .[..@...o..Z.X`.
-00009A20 E0 18 9F FC 0F 9F 22 00 FD 5A 00 52 1A 11       ......"..Z.R..  
-
-l00009A2E:
-	loadw	0x48(sp),r1
-	cmpw	$0,r1
-	bne	00009C88
-
-l00009A38:
-	loadw	0x4C(sp),r1
-	movw	$3,r9
-
-;; fn00009A3E: 00009A3E
-;;   Called from:
-;;     00009A3C (in fn0000A110)
-;;     0000AF00 (in fn0000AA58)
-fn00009A3E proc
-	cmpw	$0,r1
-	bne	00008DD2
-
-l00009A44:
-	movw	$4,r9
-	cmpw	r13,r9
-	beq	00008DCA
-
-l00009A4C:
-	br	00008C66
+00009A20 E0 18 9F FC 0F 9F 22 00 FD 5A 00 52 1A 11 1F 9F ......"..Z.R....
+00009A30 24 00 01 52 10 18 2A 01 1F 9F 26 00 39 5A 01 52 $..R..*...&.9Z.R
+00009A40 10 18 C9 F9 49 5A 9D 53 00 18 C1 F9 E0 18 0D F9 ....IZ.S........
 00009A50 39 5A E0 18 B7 F9 0F 9F 22 00 7D 5A 00 52 08 1E 9Z......".}Z.R..
-
-l00009A60:
-	movw	$1,r9
-	br	00008DB0
-00009A66                   0F 9F 22 00 DD 5A 00 52 00 1E       .."..Z.R..
+00009A60 19 5A E0 18 A7 F9 0F 9F 22 00 DD 5A 00 52 00 1E .Z......"..Z.R..
 00009A70 19 5A E0 18 97 F9 0F 9F 22 00 CD 5A 00 52 08 1D .Z......"..Z.R..
 00009A80 19 5A E0 18 87 F9 ED 5A D9 5B E0 18 7F F9 59 5A .Z.....Z.[....YZ
-00009A90 E0 18 79 F9                                     ..y.            
-
-l00009A94:
-	cmpw	$0,r0
-	beq	00009AAC
-
-l00009A98:
-	movzw	r0,(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	(r3,r2),r12
-	movb	$40,r0
-	storb	r0,(r12)
-	loadb	0x44(sp),r11
-
-l00009AA6:
-	andd	$F1BCD11C,(r5,r4)
-
-l00009AA8:
-	storb	r11,1(r12)
-	storw	r1,2(r12)
-
-l00009AAC:
-	loadw	0xA4(sp),r12
-	movzw	r12,(r1,r0)
-	ashud	$2,(r1,r0)
-	loadd	0xC0(sp),(r3,r2)
-
-l00009AB6:
-	xord	$6120AF3F,(r1,r0)
-
-l00009AB8:
-	addd	(r3,r2),(r1,r0)
-	loadd	0xA8(sp),(r4,r3)
-	stord	(r1,r0),(r4,r3)
-	loadw	0x94(sp),r6
-	loadd	0xB0(sp),(r5,r4)
-
-l00009AC8:
-	storw	r6,(r5,r4)
-	movw	$0,r0
-	br	fn00008B96
-00009AD0 0F 9F 22 00 BD 5A 0B 00                         .."..Z..        
-
-l00009AD8:
-	cmpw	$0,r0
-
-l00009ADA:
-	beq	00009A2E
-
-l00009ADC:
-	movw	$1,r9
-	br	00008D34
-00009AE2       69 5A E0 18 25 F9                           iZ..%.        
-
-l00009AE8:
-	loadw	0x44(sp),r0
-
-l00009AEA:
-	addd	$5AAD5200,(r3,r2)
-	beq	00009A2E
-
-l00009AF2:
-	movw	$1,r9
-	br	00008D1E
-00009AF8                         0F 9F                           ..      
-
-l00009AFA:
-	addd	$5ABD0009,(r3,r2)
-	cmpw	$0,r0
-	beq	00009A2E
-
-l00009B04:
-	movw	$1,r9
-	br	00008D0C
-00009B0A                               ED 5A                       .Z    
-
-l00009B0C:
-	movw	$2,r9
-	br	00008D04
-00009B12       79 5A E0 18 F5 F8 0F 9F 22 00               yZ......".    
-
-l00009B1C:
-	movw	$8,r13
-	cmpw	$0,r0
-	beq	00009A2E
-
-l00009B22:
-	movw	$1,r9
-	br	00008CEE
-00009B28                         1D 5A D9 5B E0 18               .Z.[..  
-
-l00009B2E:
-	storb	r13,8(r13)
-	loadw	0x44(sp),r0
-	movw	$6,r13
-	cmpw	$0,r0
-	beq	00009926
-
-l00009B3C:
-	movw	$1,r9
-
-l00009B3E:
-	br	00008CD4
-00009B42       89 5A E0 18 C5 F8 0F 9F 22 00 00 52 12 14   .Z......"..R..
-
-l00009B50:
-	loadw	0x48(sp),r1
-	movw	$3,r13
-	movw	r13,r9
-	cmpw	$0,r1
-	beq	00008CB8
-
-l00009B5E:
-	movw	$2,r9
-
-l00009B60:
-	br	00008CB2
-00009B64             0F 9F 22 00                             ..".        
-
-l00009B68:
-	movw	$5,r13
-	cmpw	$0,r0
-	beq	000098F2
-
-l00009B70:
-	movw	$1,r9
-
-l00009B72:
-	br	00008CA0
-00009B76                   49 5A E0 18 91 F8 0F 9F 22 00       IZ......".
-
-l00009B80:
-	movw	$4,r13
-	cmpw	$0,r0
-	beq	000098DA
-
-l00009B88:
-	movw	$1,r9
-
-l00009B8A:
-	br	00008C88
-00009B8E                                           0F 9F               ..
-00009B90 22 00 2D 5A D9 5B 00 52 00 18 71 F8             ".-Z.[.R..q.    
-
-l00009B9C:
-	movw	$1,r9
-	br	fn00008C74
-00009BA2       D9 5A E0 18 65 F8 B9 5A 09 00 E0 18 5D F8   .Z..e..Z....].
+00009A90 E0 18 79 F9 00 52 0B 10 02 5F 22 4C 2C 61 B0 58 ..y..R..._"L,a.X
+00009AA0 40 00 0C F0 BF BF 44 00 BC F1 1C D1 CF 9F 52 00 @.....D.......R.
+00009AB0 C0 5F 20 4C 2F AF 60 00 20 61 3F AF 54 00 03 E0 ._ L/.`. a?.T...
+00009AC0 6F 9F 4A 00 4F AF 58 00 64 D0 00 5A E0 18 65 F8 o.J.O.X.d..Z..e.
+00009AD0 0F 9F 22 00 BD 5A 0B 00 00 52 0A 1A 19 5A E0 18 .."..Z...R...Z..
+00009AE0 2B F9 69 5A E0 18 25 F9 0F 9F 22 00 AD 5A 00 52 +.iZ..%..."..Z.R
+00009AF0 0F 19 19 5A E0 18 15 F9 0F 9F 22 00 BD 5A 09 00 ...Z......"..Z..
+00009B00 00 52 06 19 19 5A E0 18 03 F9 ED 5A 29 5A E0 18 .R...Z.....Z)Z..
+00009B10 FB F8 79 5A E0 18 F5 F8 0F 9F 22 00 8D 5A 00 52 ..yZ......"..Z.R
+00009B20 07 18 19 5A E0 18 E5 F8 1D 5A D9 5B E0 18 DD F8 ...Z.....Z.[....
+00009B30 0F 9F 22 00 6D 5A 00 52 00 18 F7 FE 19 5A E0 18 ..".mZ.R.....Z..
+00009B40 CB F8 89 5A E0 18 C5 F8 0F 9F 22 00 00 52 12 14 ...Z......"..R..
+00009B50 1F 9F 24 00 3D 5A D9 5B 01 52 00 18 AF F8 29 5A ..$.=Z.[.R....)Z
+00009B60 E0 18 A9 F8 0F 9F 22 00 5D 5A 00 52 00 18 C3 FE ......".]Z.R....
+00009B70 19 5A E0 18 97 F8 49 5A E0 18 91 F8 0F 9F 22 00 .Z....IZ......".
+00009B80 4D 5A 00 52 00 18 AB FE 19 5A E0 18 7F F8 0F 9F MZ.R.....Z......
+00009B90 22 00 2D 5A D9 5B 00 52 00 18 71 F8 19 5A E0 18 ".-Z.[.R..q..Z..
+00009BA0 6B F8 D9 5A E0 18 65 F8 B9 5A 09 00 E0 18 5D F8 k..Z..e..Z....].
 00009BB0 A9 5A E0 18 57 F8 B9 5A 0B 00 E0 18 4F F8 C9 5A .Z..W..Z....O..Z
 00009BC0 E0 18 49 F8 ED 5A 19 5A E0 18 41 F8 E9 5A E0 18 ..I..Z.Z..A..Z..
 00009BD0 3B F8 3D 5A 19 5A E0 18 33 F8 B5 5A 01 01 5F DF ;.=Z.Z..3..Z.._.
@@ -9533,47 +7330,48 @@ l00009B9C:
 
 ;; fn00009C04: 00009C04
 ;;   Called from:
-;;     0000B682 (in fn0000B308)
-;;     0000B68C (in fn0000B308)
+;;     0000B682 (in fn0000B218)
+;;     0000B68C (in fn0000B218)
 fn00009C04 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFF8,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-8,sp
 	movd	r12,(r3,r2)
 	loadw	2(r5,r4),r13
 	cmpw	$0,r13
-	beq	fn0000A426
+	beq	0000A01C
 
 l00009C16:
 	movw	$4,r2
 	movw	$7,r0
+
+l00009C1A:
 	cmpw	$0,r6
-	bgt	0000A1AC
+	bgt	00009EE4
 
 l00009C20:
 	movd	$6,ra
 	addd	(r5,r4),ra
 	movxw	r6,(r7,r6)
 	ashud	$2,(r7,r6)
-
-l00009C28:
-	addd	$A,(r7,r6)
+	addd	$10,(r7,r6)
 	movd	(r9,r8),(r5,r4)
 	addd	(r7,r6),(r9,r8)
 	stord	(r9,r8),4(sp)
 	movw	$0,r11
 	movw	$FFFF,r6
 	movw	r13,r10
-	br	00009EEE
-00009C3A                               A9 53 00 18 CC 03           .S....
-00009C40 7C 9F 0A 12 3C 9F                               |...<.          
+	br	00009D92
 
-l00009C46:
-	beq	00009C96
+l00009C3A:
+	cmpw	r9,r10
+	beq	0000A008
 
-l00009C48:
+l00009C40:
+	loadw	0x2414(r12),r7
+	loadw	0x2410(r12),r3
 	cmpw	r1,r2
-	ble	00009F06
+	ble	00009DA8
 
 l00009C4E:
 	movxw	r10,r13
@@ -9602,16 +7400,12 @@ l00009C70:
 	lshw	$-8,r0
 	loadd	8(r12),(r3,r2)
 	loadd	0x14(r12),(r7,r6)
-
-l00009C88:
 	movd	$1,(r9,r8)
 	addd	(r7,r6),(r9,r8)
 	stord	(r9,r8),0x14(r12)
 	addd	(r7,r6),(r3,r2)
 	storb	r0,(r3,r2)
 	loadw	0x2414(r12),r7
-
-l00009C96:
 	movb	r7,r0
 	movb	$10,r2
 	subb	r0,r2
@@ -9630,8 +7424,6 @@ l00009CB4:
 	loadw	0x14A8(r13),r2
 	loadw	0x14A4(r13),r4
 	movw	r4,r3
-
-l00009CBE:
 	ashuw	r1,r3
 	orw	r3,r5
 	movw	$10,r0
@@ -9682,7 +7474,7 @@ l00009D14:
 	subw	r0,r6
 	storw	r11,0x2410(r12)
 	cmpw	r0,r1
-	ble	0000A2CE
+	ble	00009FFE
 
 l00009D32:
 	loadd	8(r12),(r1,r0)
@@ -9714,14 +7506,11 @@ l00009D32:
 l00009D70:
 	loadw	(sp),r3
 	cmpw	$0,r3
-	beq	0000A028
-
-l00009D76:
-	push	$5,r10
+	beq	00009ECE
 
 l00009D78:
 	cmpw	r3,r10
-	beq	0000A152
+	beq	00009F66
 
 l00009D7E:
 	movw	r10,r6
@@ -9729,13 +7518,12 @@ l00009D7E:
 	movw	$7,r0
 	movw	$0,r11
 	movw	r3,r10
+
+l00009D88:
 	addd	$4,ra
 	loadd	4(sp),(r9,r8)
 	cmpd	(r9,r8),ra
-	beq	0000A03A
-
-l00009D90:
-	push	$5,r6
+	beq	00009EE4
 
 l00009D92:
 	loadw	(ra),r9
@@ -9743,13 +7531,15 @@ l00009D92:
 	movw	$1,r1
 	addw	r1,r11
 	cmpw	r1,r0
-	bgt	00009ADA
+	bgt	00009C3A
 
 l00009DA0:
 	loadw	0x2414(r12),r7
 	loadw	0x2410(r12),r3
+
+l00009DA8:
 	cmpw	$0,r10
-	beq	0000A02A
+	beq	00009EEA
 
 l00009DAE:
 	cmpw	r10,r6
@@ -9768,7 +7558,7 @@ l00009DB2:
 	subw	r0,r4
 	storw	r3,0x2410(r12)
 	cmpw	r0,r7
-	ble	0000A24E
+	ble	0000A010
 
 l00009DD6:
 	loadd	8(r12),(r1,r0)
@@ -9781,8 +7571,6 @@ l00009DD6:
 	loadw	0x2410(r12),r8
 	lshw	$-8,r8
 	loadd	8(r12),(r1,r0)
-
-l00009DEC:
 	loadd	0x14(r12),(r3,r2)
 	movd	$1,(r7,r6)
 	addd	(r3,r2),(r7,r6)
@@ -9812,7 +7600,7 @@ l00009E1A:
 	subw	r2,r0
 	storw	r9,0x2410(r12)
 	cmpw	r2,r7
-	ble	0000A0C8
+	ble	00009F7E
 
 l00009E38:
 	loadd	8(r12),(r3,r2)
@@ -9841,6 +7629,8 @@ l00009E38:
 	addw	$FFF0,r11
 	addw	r0,r7
 	storw	r0,0x2414(r12)
+
+l00009E78:
 	addw	$FFFD,r11
 	movw	r1,r3
 	ashuw	r0,r3
@@ -9855,8 +7645,6 @@ l00009E8A:
 	movd	$1,(r7,r6)
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
-
-l00009E94:
 	addd	(r5,r4),(r3,r2)
 	storb	r9,(r3,r2)
 	loadw	0x2410(r12),r0
@@ -9878,7 +7666,7 @@ l00009E94:
 	storw	r0,0x2414(r12)
 	loadw	(sp),r3
 	cmpw	$0,r3
-	bne	00009C28
+	bne	00009D78
 
 l00009ECE:
 	movw	$0,r11
@@ -9889,13 +7677,16 @@ l00009ECE:
 	addd	$4,ra
 	loadd	4(sp),(r9,r8)
 	cmpd	(r9,r8),ra
-	bne	00009C46
+	bne	00009D92
 
 l00009EE4:
 	addd	$8,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-00009EEA                               A1 52 CE 14                 .R..  
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l00009EEA:
+	cmpw	$A,r1
+	blt	00009F88
 
 l00009EEE:
 	loadw	0x1530(r12),r8
@@ -9906,10 +7697,8 @@ l00009EEE:
 	movw	$10,r0
 	subw	r0,r8
 	storw	r9,0x2410(r12)
-
-l00009F06:
 	cmpw	r0,r7
-	bgt	0000A204
+	bgt	0000A086
 
 l00009F0C:
 	addw	r8,r7
@@ -9920,7 +7709,7 @@ l00009F0C:
 	orw	r9,r3
 	storw	r9,0x2410(r12)
 	cmpw	$D,r8
-	bge	0000A296
+	bge	0000A0DC
 
 l00009F26:
 	loadd	8(r12),(r1,r0)
@@ -9947,16 +7736,25 @@ l00009F26:
 	storw	r11,0x2410(r12)
 	addw	$FFF3,r11
 	storw	r0,0x2414(r12)
-	br	00009B80
-00009F66                   36 5B 32 5A 60 5A 0B 5A 3A 5B       6[2Z`Z.Z:[
-00009F70 E0 18 19 FE                                     ....            
+	br	00009D70
+
+l00009F66:
+	movw	r3,r6
+	movw	$3,r2
+	movw	$6,r0
+	movw	$0,r11
+	movw	r3,r10
+	br	00009D88
 
 l00009F74:
 	addw	$2,r2
 	storw	r0,0x2414(r12)
-	br	00009B68
-00009F7E                                           70 33               p3
-00009F80 0C DF 0A 12 E0 18 F5 FE                         ........        
+	br	00009D70
+
+l00009F7E:
+	addw	r0,r7
+	storw	r0,0x2414(r12)
+	br	00009E78
 
 l00009F88:
 	loadw	0x1538(r12),r8
@@ -10006,19 +7804,32 @@ l00009FBE:
 	storw	r11,0x2410(r12)
 	addw	$FFF7,r11
 	storw	r0,0x2414(r12)
-	br	00009AE8
-00009FFE                                           61 33               a3
-0000A000 1C DF 0A 12 E0 18 6D FD 1B 5B 9A 5B E0 18 7D FD ......m..[.[..}.
-0000A010 47 33 7C DF 0A 12 B1 5B E0 18 03 FE 32 5A B0 5A G3|....[....2Z.Z
-0000A020 8A 00 E0 18 F9 FB                               ......          
+	br	00009D70
+
+l00009FFE:
+	addw	r1,r6
+	storw	r1,0x2414(r12)
+	br	00009D70
+
+l0000A008:
+	movw	r1,r11
+	movw	r9,r10
+	br	00009D88
+
+l0000A010:
+	addw	r7,r4
+	storw	r7,0x2414(r12)
+	movw	r11,r1
+	br	00009E1A
+
+l0000A01C:
+	movw	$3,r2
+	movw	$8A,r0
+	br	00009C1A
 
 l0000A026:
 	loadd	8(r12),(r1,r0)
-
-l0000A028:
 	loadd	0x14(r12),(r5,r4)
-
-l0000A02A:
 	movd	$1,(r7,r6)
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
@@ -10026,8 +7837,6 @@ l0000A02A:
 	storb	r3,(r1,r0)
 	loadw	0x2410(r12),r3
 	lshw	$-8,r3
-
-l0000A03A:
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r5,r4)
 	movd	$1,(r7,r6)
@@ -10057,35 +7866,58 @@ l0000A03A:
 l0000A07C:
 	addw	$7,r7
 	storw	r8,0x2414(r12)
-	br	00009A60
-0000A086                   0C A4 2C AA 16 54 26 61 6C EA       ..,..T&al.
-0000A090 20 61 90 F0 4C 9F 08 12 84 49 0C A4 2C AA 16 54  a..L....I..,..T
-0000A0A0 26 61 6C EA 20 61 40 F0 7C 9F 0A 12 B0 5A 10 00 &al. a@.|....Z..
-0000A0B0 70 3B A4 59 04 39 59 5B 49 46 9C DF 08 12 B8 32 p;.Y.9Y[IF.....2
-0000A0C0 F0 FF 78 33 8C DF 0A 12                         ..x3....        
+	br	00009D70
 
-l0000A0C8:
+l0000A086:
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r9,(r1,r0)
+	loadw	0x2410(r12),r4
+	lshw	$-8,r4
+	loadd	8(r12),(r1,r0)
+	loadd	0x14(r12),(r3,r2)
+	movd	$1,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x14(r12)
+	addd	(r3,r2),(r1,r0)
+	storb	r4,(r1,r0)
+	loadw	0x2414(r12),r7
+	movw	$10,r0
+	subw	r0,r7
+	movb	r10,r4
+	subb	r4,r0
+	movw	r5,r9
+	lshw	r4,r9
+	storw	r9,0x2410(r12)
+	addw	$FFF0,r11
+	addw	r8,r7
+	storw	r8,0x2414(r12)
 	addw	$FFFE,r11
 	movw	r11,r3
 	ashuw	r8,r3
 	orw	r9,r3
 	storw	r9,0x2410(r12)
 	cmpw	$D,r8
-	blt	00009D76
+	blt	00009F26
 
 l0000A0DC:
 	addw	$3,r3
 	storw	r8,0x2414(r12)
-	br	00009A00
+	br	00009D70
 0000A0E6                   00 00                               ..        
 
 ;; fn0000A0E8: 0000A0E8
 ;;   Called from:
-;;     0000B698 (in fn0000B308)
+;;     0000B698 (in fn0000B218)
+;;     0000B8D8 (in fn0000B218)
 fn0000A0E8 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFFC,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-4,sp
 	movd	$1A,(r1,r0)
 	addd	sp,(r1,r0)
 	movd	r12,(r3,r2)
@@ -10096,21 +7928,14 @@ fn0000A0E8 proc
 	loadw	0x2410(r12),r10
 	loadw	0x23EC(r12),r7
 	cmpw	$0,r7
-	beq	fn0000A19A
+	beq	0000A19A
 
 l0000A10E:
 	movw	$0,r11
 
-;; fn0000A110: 0000A110
-;;   Called from:
-;;     00009C26 (in fn00009C04)
-;;     0000A10E (in fn0000A0E8)
-fn0000A110 proc
+l0000A110:
 	movzw	r11,(r1,r0)
 	loadd	0x23F0(r12),(r3,r2)
-
-l0000A114:
-	br	0000A144
 	movd	(r5,r4),(r1,r0)
 	addd	(r1,r0),(r5,r4)
 	addd	(r5,r4),(r3,r2)
@@ -10129,33 +7954,22 @@ l0000A12C:
 	addd	r13,(r1,r0)
 	loadw	2(r1,r0),r2
 	loadw	(r1,r0),r3
-
-l0000A138:
 	movw	r3,r0
 	ashuw	r6,r0
 	orw	r10,r0
 	movw	$10,r0
 	subw	r0,r2
 	storw	r10,0x2410(r12)
-
-l0000A148:
 	cmpw	r0,r6
-	ble	fn0000A62E
-
-l0000A14C:
-	pop	$7,r2
+	ble	0000A3BC
 
 l0000A14E:
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r5,r4)
-
-l0000A152:
 	movd	$1,(r7,r6)
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r1,r0)
-
-l0000A15A:
 	storb	r10,(r1,r0)
 	loadw	0x2410(r12),r8
 	lshw	$-8,r8
@@ -10163,8 +7977,6 @@ l0000A15A:
 	loadd	0x14(r12),(r5,r4)
 	movd	$1,(r7,r6)
 	addd	(r5,r4),(r7,r6)
-
-l0000A16A:
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r1,r0)
 	storb	r8,(r1,r0)
@@ -10175,6 +7987,8 @@ l0000A16A:
 	subb	r9,r0
 	movw	r3,r10
 	lshw	r9,r10
+
+l0000A182:
 	storw	r10,0x2410(r12)
 	movw	$FFF0,r6
 	addw	r6,r2
@@ -10182,49 +7996,32 @@ l0000A16A:
 	storw	r6,0x2414(r12)
 	loadw	0x23EC(r12),r7
 	cmpw	r7,r11
-	blo	fn0000A110
+	blo	0000A110
 
-;; fn0000A19A: 0000A19A
-;;   Called from:
-;;     0000936E (in fn0000A110)
-;;     00009C1C (in fn00009C04)
-;;     0000A10C (in fn0000A0E8)
-;;     0000A198 (in fn0000A110)
-fn0000A19A proc
+l0000A19A:
 	loadw	0x804(r13),r1
 	loadw	0x800(r13),r0
 	movw	r0,r9
 	ashuw	r6,r9
 	orw	r10,r9
 	movw	$10,r2
-
-l0000A1AC:
 	movw	r2,r3
-
-l0000A1AE:
 	subw	r3,r1
 	storw	r10,0x2410(r12)
 	cmpw	r3,r6
-	bgt	fn0000A5F6
-
-l0000A1B8:
-	pop	$2,r0
+	bgt	0000A3D6
 
 l0000A1BA:
 	addw	r1,r6
 	storw	r1,0x2414(r12)
 	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l0000A1C6:
 	movzb	r9,(r10,r9)
-
-l0000A1C8:
 	movxw	r9,(r1,r0)
-
-l0000A1CA:
-	addd	$F32E,(r1,r0)
+	addd	$62254,(r1,r0)
 	loadb	(r1,r0),r8
 	movzb	r8,(r9,r8)
 	movw	$101,r2
@@ -10232,8 +8029,6 @@ l0000A1CA:
 	movzw	r2,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	r13,(r3,r2)
-
-l0000A1DE:
 	loadw	2(r3,r2),r0
 	loadw	(r3,r2),r1
 	movw	r1,r2
@@ -10243,7 +8038,7 @@ l0000A1DE:
 	subw	r2,r0
 	storw	r10,0x2410(r12)
 	cmpw	r2,r6
-	ble	fn0000A570
+	ble	0000A3B2
 
 l0000A1F8:
 	loadd	8(r12),(r3,r2)
@@ -10252,8 +8047,6 @@ l0000A1F8:
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r3,r2)
-
-l0000A204:
 	storb	r10,(r3,r2)
 	loadw	0x2410(r12),r10
 	lshw	$-8,r10
@@ -10282,18 +8075,12 @@ l0000A23A:
 	movd	$FB9C,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	loadw	(r3,r2),r2
-
-l0000A246:
 	cmpw	$0,r2
 	beq	0000A2AA
 
 l0000A24A:
-	addd	$F2F4,(r1,r0)
-
-l0000A24E:
+	addd	$62196,(r1,r0)
 	loadw	(r1,r0),r0
-
-l0000A250:
 	subw	r9,r0
 	movw	r9,r0
 	ashuw	r6,r0
@@ -10302,7 +8089,7 @@ l0000A250:
 	subw	r0,r2
 	storw	r10,0x2410(r12)
 	cmpw	r0,r6
-	ble	fn0000A534
+	ble	0000A3CC
 
 l0000A268:
 	loadd	8(r12),(r1,r0)
@@ -10325,15 +8112,11 @@ l0000A268:
 	movb	r3,r0
 	movb	$10,r1
 	subb	r0,r1
-
-l0000A296:
 	movw	r9,r10
 	lshw	r0,r10
 	storw	r10,0x2410(r12)
 	movw	$FFF0,r6
-
-l0000A2A0:
-	storb	sp,0x3326(r1,r0)
+	addw	r6,r2
 	addw	r6,r3
 	storw	r6,0x2414(r12)
 
@@ -10345,7 +8128,7 @@ l0000A2AA:
 
 l0000A2B4:
 	movzw	r9,(r1,r0)
-	addd	$F42E,(r1,r0)
+	addd	$62510,(r1,r0)
 	loadb	(r1,r0),ra
 	movzb	ra,ra
 
@@ -10357,11 +8140,7 @@ l0000A2BE:
 	addd	(r1,r0),(r3,r2)
 	loadw	2(r3,r2),r1
 	loadw	(r3,r2),r8
-
-l0000A2CC:
 	movw	r8,r0
-
-l0000A2CE:
 	ashuw	r6,r0
 	orw	r10,r0
 	movw	$10,r0
@@ -10374,22 +8153,15 @@ l0000A2E0:
 	loadd	8(r12),(r3,r2)
 	loadd	0x14(r12),(r5,r4)
 	movd	$1,(r7,r6)
-
-l0000A2E6:
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r3,r2)
 	storb	r10,(r3,r2)
 	loadw	0x2410(r12),r0
-
-l0000A2F0:
-	beq	0000A340
 	lshw	$-8,r0
 	loadd	8(r12),(r3,r2)
 	loadd	0x14(r12),(r5,r4)
 	movd	$1,(r7,r6)
-
-l0000A2FA:
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r3,r2)
@@ -10406,9 +8178,6 @@ l0000A2FA:
 	addw	r6,r2
 	storw	r6,0x2414(r12)
 
-l0000A320:
-	beq	0000A374
-
 l0000A322:
 	addd	ra,ra
 	movd	$FB60,(r1,r0)
@@ -10418,10 +8187,8 @@ l0000A322:
 	beq	0000A388
 
 l0000A330:
-	addd	$F2B8,ra
+	addd	$62136,ra
 	loadw	(ra),r0
-
-l0000A336:
 	subw	r9,r0
 	movw	r9,r0
 	ashuw	r6,r0
@@ -10429,9 +8196,6 @@ l0000A336:
 	movw	$10,r0
 	subw	r0,r2
 	storw	r10,0x2410(r12)
-
-l0000A346:
-	beq	0000A396
 	cmpw	r0,r6
 	ble	0000A382
 
@@ -10439,16 +8203,11 @@ l0000A34C:
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r5,r4)
 	movd	$1,(r7,r6)
-
-l0000A352:
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r1,r0)
 	storb	r10,(r1,r0)
 	loadw	0x2410(r12),r3
-
-l0000A35C:
-	beq	0000A3AC
 	lshw	$-8,r3
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r5,r4)
@@ -10456,18 +8215,14 @@ l0000A35C:
 	addd	(r5,r4),(r7,r6)
 	stord	(r7,r6),0x14(r12)
 	addd	(r5,r4),(r1,r0)
-
-l0000A36C:
 	storb	r3,(r1,r0)
 	loadw	0x2414(r12),r1
 	movb	r1,r0
-
-l0000A374:
 	movb	$10,r4
 	subb	r0,r4
 	movw	r9,r10
 	lshw	r0,r10
-	br	00009F88
+	br	0000A182
 
 l0000A382:
 	addw	r6,r2
@@ -10476,51 +8231,57 @@ l0000A382:
 l0000A388:
 	loadw	0x23EC(r12),r7
 	cmpw	r7,r11
-
-l0000A38E:
-	blo	00009E94
+	blo	0000A110
 
 l0000A392:
-	br	00009FA4
-
-l0000A394:
-	storb	r0,[r13](r3,r2)
+	br	0000A19A
 
 l0000A396:
 	addw	r6,r1
 	storw	r6,0x2414(r12)
-
-l0000A39A:
-	beq	0000A3EE
-
-l0000A39C:
 	br	0000A322
 
 l0000A39E:
 	movw	r9,r0
-
-l0000A3A0:
 	lshw	$-9,r0
 	addw	$100,r11
 	movzw	r0,(r1,r0)
-	addd	$F42E,(r1,r0)
+	addd	$62510,(r1,r0)
 	loadb	(r1,r0),ra
 	movzb	ra,ra
 	br	0000A2BE
-0000A3B2       06 33 6C DF 0A 12 E0 18 83 FE 26 33 6C DF   .3l.......&3l.
-0000A3C0 0A 12 B7 53 A0 18 4D FD E0 18 D3 FD 26 33 6C DF ...S..M.....&3l.
-0000A3D0 0A 12 E0 18 D9 FE 4C A4 6C AA 18 54 68 61 8C EA ......L.l..Tha..
-0000A3E0 64 61 A4 F0 3C 9F                               da..<.          
 
-l0000A3E6:
-	beq	0000A436
+l0000A3B2:
+	addw	r6,r0
+	storw	r6,0x2414(r12)
+	br	0000A23A
 
-l0000A3E8:
+l0000A3BC:
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+	cmpw	r7,r11
+	blo	0000A110
+
+l0000A3C8:
+	br	0000A19A
+
+l0000A3CC:
+	addw	r6,r2
+	storw	r6,0x2414(r12)
+	br	0000A2AA
+
+l0000A3D6:
+	loadd	8(r12),(r5,r4)
+	loadd	0x14(r12),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r12)
+	addd	(r7,r6),(r5,r4)
+	storb	r10,(r5,r4)
+	loadw	0x2410(r12),r3
 	lshw	$-8,r3
 	loadd	8(r12),(r5,r4)
 	loadd	0x14(r12),(r7,r6)
-
-l0000A3EE:
 	movd	$1,(r9,r8)
 	addd	(r7,r6),(r9,r8)
 	stord	(r9,r8),0x14(r12)
@@ -10533,72 +8294,37 @@ l0000A3EE:
 	storw	r0,0x2410(r12)
 	addw	$FFF0,r11
 	addw	r1,r6
-
-l0000A40C:
 	storw	r1,0x2414(r12)
 	addd	$4,sp
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 ;; fn0000A416: 0000A416
 ;;   Called from:
 ;;     0000B25E (in fn0000B218)
 ;;     0000B26A (in fn0000B218)
-;;     0000B380 (in fn0000B308)
+;;     0000B380 (in fn0000B218)
 fn0000A416 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFAC,sp
-
-;; fn0000A41C: 0000A41C
-;;   Called from:
-;;     00009300 (in fn0000A110)
-;;     0000A41A (in fn0000A416)
-fn0000A41C proc
-	storb	r10,0x552C(r12)
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-84,sp
+	movd	r12,(r3,r2)
 	stord	(r5,r4),0xA0(sp)
 	loadd	(r5,r4),r13
-
-;; fn0000A426: 0000A426
-;;   Called from:
-;;     00009C12 (in fn00009C04)
-;;     0000A422 (in fn0000A41C)
-;;     0000A424 (in fn0000A41C)
-fn0000A426 proc
 	loadd	8(r5,r4),(r1,r0)
 	loadd	(r1,r0),ra
 	loadw	0xA(r1,r0),r2
 	storw	r2,0x58(sp)
 	storw	$0,0xFAE(r12)
 	movw	$23D,r0
-
-l0000A436:
-	pop	$3,r13
-
-;; fn0000A438: 0000A438
-;;   Called from:
-;;     0000A434 (in fn0000A426)
-;;     0000A436 (in fn0000A110)
-fn0000A438 proc
 	storw	r0,0x1F60(r12)
 	cmpw	$0,r2
-	bge	fn0000B9B2
+	bge	0000AEF8
 
-;; fn0000A442: 0000A442
-;;   Called from:
-;;     0000A43E (in fn0000A438)
-;;     0000A43E (in fn0000A438)
-;;     0000A43E (in fn0000A426)
-fn0000A442 proc
+l0000A442:
 	movd	(r3,r2),r13
 	movd	$FB2,(r5,r4)
 	addd	r12,(r5,r4)
-
-;; fn0000A44A: 0000A44A
-;;   Called from:
-;;     0000933E (in fn0000A110)
-;;     0000A448 (in fn0000A442)
-fn0000A44A proc
 	movw	$0,r11
 	movw	$FFFF,r7
 	storw	r7,0x98(sp)
@@ -10607,30 +8333,23 @@ fn0000A44A proc
 	loadw	0x58(sp),r7
 	loadw	(r3,r2),r0
 	cmpw	$0,r0
-	beq	fn0000A48C
+	beq	0000A48C
 
-;; fn0000A460: 0000A460
-;;   Called from:
-;;     0000A45E (in fn0000A44A)
-;;     0000A498 (in fn0000A48C)
-;;     0000A858 (in fn0000AE66)
-fn0000A460 proc
+l0000A460:
 	addw	$1,r1
 	storw	r11,0x1F5C(r12)
 	movxw	r11,(r1,r0)
-	addd	$59A,(r1,r0)
+	addd	$1434,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	addd	r12,(r1,r0)
 	storw	r6,(r1,r0)
-
-l0000A472:
 	storb	$0,(r5,r4)
 	movw	$1,r0
 	addw	r0,r6
 	addd	$4,(r3,r2)
 	addd	$1,(r5,r4)
 	cmpw	r7,r0
-	beq	fn0000B726
+	beq	0000ADD2
 
 l0000A482:
 	movw	r6,r1
@@ -10639,20 +8358,9 @@ l0000A484:
 	movw	r0,r6
 	loadw	(r3,r2),r0
 	cmpw	$0,r0
-	bne	fn0000A460
+	bne	0000A460
 
-;; fn0000A48C: 0000A48C
-;;   Called from:
-;;     00008DC0 (in fn00008DC0)
-;;     00009A3E (in fn00009A3E)
-;;     0000A45E (in fn0000A44A)
-;;     0000A45E (in fn0000A44A)
-;;     0000A45E (in fn0000A44A)
-;;     0000A460 (in fn0000A460)
-;;     0000A48A (in fn0000A460)
-;;     0000A664 (in fn0000A664)
-;;     0000AA58 (in fn0000AA58)
-fn0000A48C proc
+l0000A48C:
 	storw	r0,2(r3,r2)
 	movw	$1,r0
 	addw	r0,r6
@@ -10663,8 +8371,10 @@ fn0000A48C proc
 
 l0000A49A:
 	storw	r1,0x98(sp)
+
+l0000A49E:
 	cmpd	$0,ra
-	beq	fn0000B718
+	beq	0000ADDC
 
 l0000A4A4:
 	movw	$1,r6
@@ -10672,49 +8382,33 @@ l0000A4A4:
 	movxw	r6,(r7,r6)
 	addd	(r7,r6),(r7,r6)
 	addd	r12,(r7,r6)
-
-;; fn0000A4AE: 0000A4AE
-;;   Called from:
-;;     0000A4AC (in fn0000A48C)
-;;     0000A8E8 (in fn0000A8CA)
-fn0000A4AE proc
 	movw	$0,r8
 	movw	r8,r9
 	movw	r8,r10
 	cmpw	$1,r11
-	blt	fn0000A500
+	blt	0000A500
 
-;; fn0000A4B8: 0000A4B8
-;;   Called from:
-;;     0000A4B6 (in fn0000A4AE)
-;;     0000A4B6 (in fn0000A4AE)
-;;     0000A4FE (in fn0000A4D6)
-;;     0000A4FE (in fn0000A4D6)
-fn0000A4B8 proc
+l0000A4B8:
 	loadw	0x98(sp),r0
 	cmpw	$1,r0
-	bge	0000AC0A
+	bge	0000A864
 
 l0000A4C2:
 	movd	(r5,r4),r13
 	movw	r8,r2
 	movw	r9,r3
 	movw	r10,r0
+
+l0000A4CA:
 	addw	$1,r1
 	storw	r11,0x1F5C(r12)
 	storw	r0,0x1668(r7,r6)
 	storw	$1,(r5,r4)
-
-;; fn0000A4D6: 0000A4D6
-;;   Called from:
-;;     0000A4D4 (in fn0000A4B8)
-;;     0000A8EC (in fn0000A8CA)
-fn0000A4D6 proc
 	movxw	r0,(r1,r0)
 	addd	r12,(r1,r0)
 	storb	$0,0xFB2(r1,r0)
 	loadd	0x23F8(r12),(r1,r0)
-	addd	$FFFFFFFF,(r1,r0)
+	addd	$-1,(r1,r0)
 	stord	(r1,r0),0x23F8(r12)
 	addd	ra,(r3,r2)
 	loadw	2(r3,r2),r2
@@ -10724,16 +8418,12 @@ fn0000A4D6 proc
 	stord	(r1,r0),0x2400(r12)
 	addd	$2,(r7,r6)
 	cmpw	$1,r11
-	bge	fn0000A4B8
+	bge	0000A4B8
 
-;; fn0000A500: 0000A500
-;;   Called from:
-;;     0000A4B6 (in fn0000A4AE)
-;;     0000A4B6 (in fn0000A4AE)
-;;     0000A4FE (in fn0000A4D6)
-;;     0000A4FE (in fn0000A4D6)
-fn0000A500 proc
+l0000A500:
 	loadw	0x98(sp),r7
+
+l0000A504:
 	loadd	0xA0(sp),(r2,r1)
 	storw	r7,4(r2,r1)
 	movw	r11,r10
@@ -10752,23 +8442,12 @@ l0000A528:
 	loadd	0x60(sp),(r4,r3)
 	loadw	0x1668(r4,r3),r4
 	storw	r4,0x68(sp)
-
-;; fn0000A534: 0000A534
-;;   Called from:
-;;     0000A264 (in fn0000A110)
-;;     0000A530 (in fn0000A59C)
-fn0000A534 proc
 	loadw	0x50(sp),r10
 	loadw	0x78(sp),r5
 	cmpw	r10,r5
-	blt	fn0000B732
+	blt	0000AE38
 
-;; fn0000A542: 0000A542
-;;   Called from:
-;;     0000A53E (in fn0000A534)
-;;     0000A53E (in fn0000A534)
-;;     0000A5BA (in fn0000A59C)
-fn0000A542 proc
+l0000A542:
 	movxw	r4,(r1,r0)
 	movd	(r3,r2),(r1,r0)
 	ashud	$2,(r3,r2)
@@ -10789,29 +8468,14 @@ l0000A560:
 	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
 	movd	(r1,r0),(r3,r2)
-
-l0000A56E:
 	ashud	$2,(r1,r0)
-
-;; fn0000A570: 0000A570
-;;   Called from:
-;;     0000A1F4 (in fn0000A110)
-fn0000A570 proc
 	addd	r13,(r1,r0)
 	loadw	(r1,r0),r1
 	movw	r10,r0
 	cmpw	r10,ra
-	ble	fn0000A59C
+	ble	0000A59C
 
-;; fn0000A57A: 0000A57A
-;;   Called from:
-;;     0000A56C (in fn0000A542)
-;;     0000A578 (in fn0000A570)
-;;     0000A5A2 (in fn0000A59C)
-;;     0000A660 (in fn0000A5F6)
-;;     0000A670 (in fn0000A664)
-;;     0000B744 (in fn0000B73A)
-fn0000A57A proc
+l0000A57A:
 	addw	$1,r1
 	loadw	0x166C(r5,r4),r7
 	storw	r7,0x40(sp)
@@ -10821,34 +8485,26 @@ fn0000A57A proc
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
 	cmpw	r4,r1
-	bhi	0000ACA8
+	bhi	0000A91C
 
 l0000A594:
 	cmpw	r4,r1
-	beq	0000AB56
+	beq	0000A876
 
 l0000A59A:
 	movw	r10,r0
 
-;; fn0000A59C: 0000A59C
-;;   Called from:
-;;     0000A4BE (in fn0000A4B8)
-;;     0000A524 (in fn0000A500)
-;;     0000A578 (in fn0000A570)
-;;     0000A578 (in fn0000AE66)
-;;     0000A57A (in fn0000A57A)
-;;     0000A59A (in fn0000AE66)
-fn0000A59C proc
+l0000A59C:
 	cmpw	r9,r1
 	bhi	0000A5BC
 
 l0000A5A0:
 	cmpw	r9,r1
-	beq	0000AC3E
+	beq	0000A8F0
 
 l0000A5A6:
 	movxw	r11,(r3,r2)
-	addd	$59A,(r3,r2)
+	addd	$1434,(r3,r2)
 	addd	(r3,r2),(r3,r2)
 	addd	r12,(r3,r2)
 	storw	r8,(r3,r2)
@@ -10860,7 +8516,7 @@ l0000A5A6:
 
 l0000A5BC:
 	movxw	r11,(r1,r0)
-	addd	$59A,(r1,r0)
+	addd	$1434,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	addd	r12,(r1,r0)
 	loadw	0x68(sp),r6
@@ -10869,7 +8525,7 @@ l0000A5BC:
 	addw	$FFFF,r9
 	storw	r7,0x70(sp)
 	loadd	0x60(sp),(r11,r10)
-	addd	$FFFE,(r11,r10)
+	addd	$-2,(r11,r10)
 	stord	(r11,r10),0x60(sp)
 	loadw	0x50(sp),r11
 	addw	$FFFE,r11
@@ -10879,12 +8535,6 @@ l0000A5BC:
 
 l0000A5F2:
 	loadw	0x78(sp),r11
-
-;; fn0000A5F6: 0000A5F6
-;;   Called from:
-;;     0000A1B6 (in fn0000A110)
-;;     0000A5F2 (in fn0000A59C)
-fn0000A5F6 proc
 	loadw	0x1F60(r12),r0
 	storw	r0,0x74(sp)
 	movxw	r11,(r1,r0)
@@ -10906,16 +8556,10 @@ fn0000A5F6 proc
 	addw	$FFFF,r9
 	movxw	r0,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-
-;; fn0000A62E: 0000A62E
-;;   Called from:
-;;     0000A14C (in fn0000A110)
-;;     0000A62C (in fn0000A5F6)
-fn0000A62E proc
 	movd	(r7,r6),r12
 	addd	(r1,r0),(r7,r6)
 	stord	(r7,r6),0x88(sp)
-	addd	$FFFE,(r1,r0)
+	addd	$-2,(r1,r0)
 	movd	(r3,r2),r12
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x90(sp)
@@ -10928,13 +8572,9 @@ fn0000A62E proc
 	storw	r5,0x48(sp)
 	storw	r5,0x166C(r12)
 	cmpw	$1,r9
-	beq	fn0000AA58
+	beq	0000A85C
 
-;; fn0000A664: 0000A664
-;;   Called from:
-;;     0000A660 (in fn0000A62E)
-;;     0000A660 (in fn0000A5F6)
-fn0000A664 proc
+l0000A664:
 	movxw	r5,(r1,r0)
 	movd	(r3,r2),(r1,r0)
 	ashud	$2,(r3,r2)
@@ -10942,8 +8582,6 @@ fn0000A664 proc
 	loadw	(r3,r2),ra
 	movw	$1,r11
 	movw	$2,r10
-
-l0000A672:
 	addd	r12,(r1,r0)
 	movd	$FB2,(r7,r6)
 	addd	(r1,r0),(r7,r6)
@@ -10976,11 +8614,11 @@ l0000A69E:
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
 	cmpw	r4,r1
-	bhi	0000AB70
+	bhi	0000A912
 
 l0000A6B8:
 	cmpw	r4,r1
-	beq	0000AA66
+	beq	0000A890
 
 l0000A6BE:
 	movw	r10,r0
@@ -10991,18 +8629,11 @@ l0000A6C0:
 
 l0000A6C4:
 	cmpw	r9,r1
-	beq	0000AAEA
-
-;; fn0000A6C8: 0000A6C8
-;;   Called from:
-;;     0000A8D2 (in fn0000A8CA)
-;;     0000A8D6 (in fn0000A8D6)
-fn0000A6C8 proc
-	pop	$1,r2
+	beq	0000A8D8
 
 l0000A6CA:
 	movxw	r11,(r3,r2)
-	addd	$59A,(r3,r2)
+	addd	$1434,(r3,r2)
 	addd	(r3,r2),(r3,r2)
 	addd	r12,(r3,r2)
 	storw	r8,(r3,r2)
@@ -11015,8 +8646,10 @@ l0000A6CA:
 l0000A6E0:
 	movw	ra,r9
 	loadw	0x48(sp),r6
+
+l0000A6E6:
 	movxw	r11,(r1,r0)
-	addd	$59A,(r1,r0)
+	addd	$1434,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	addd	r12,(r1,r0)
 	storw	r6,(r1,r0)
@@ -11051,7 +8684,7 @@ l0000A6E0:
 	addd	r12,(r3,r2)
 	loadb	0xFB2(r3,r2),r1
 	cmpb	r0,r1
-	bhi	0000AAFC
+	bhi	0000A926
 
 l0000A754:
 	addb	$1,r1
@@ -11065,7 +8698,7 @@ l0000A754:
 	loadw	0x58(sp),r3
 	storw	r3,0x166C(r12)
 	cmpw	$1,r9
-	beq	0000AB26
+	beq	0000A94E
 
 l0000A77A:
 	loadd	0x60(sp),(r5,r4)
@@ -11100,7 +8733,7 @@ l0000A7A4:
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
 	cmpw	r4,r1
-	bhi	0000AA56
+	bhi	0000A908
 
 l0000A7BE:
 	cmpw	r4,r1
@@ -11119,7 +8752,7 @@ l0000A7C8:
 
 l0000A7CC:
 	movxw	r11,(r3,r2)
-	addd	$59A,(r3,r2)
+	addd	$1434,(r3,r2)
 	addd	(r3,r2),(r3,r2)
 	addd	r12,(r3,r2)
 	storw	r8,(r3,r2)
@@ -11132,13 +8765,13 @@ l0000A7CC:
 l0000A7E2:
 	movw	ra,r9
 	movxw	r11,(r1,r0)
-	addd	$59A,(r1,r0)
+	addd	$1434,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	addd	r12,(r1,r0)
 	loadw	0x58(sp),r11
 	storw	r11,(r1,r0)
 	loadd	0x78(sp),(r1,r0)
-	addd	$FFFE,(r1,r0)
+	addd	$-2,(r1,r0)
 	stord	(r1,r0),0x78(sp)
 	loadd	0x60(sp),(r2,r1)
 	addd	$4,(r2,r1)
@@ -11147,10 +8780,10 @@ l0000A7E2:
 	addd	$1,(r3,r2)
 	stord	(r3,r2),0x50(sp)
 	loadd	0x88(sp),(r4,r3)
-	addd	$FFFC,(r4,r3)
+	addd	$-4,(r4,r3)
 	stord	(r4,r3),0x88(sp)
 	loadd	0x90(sp),(r5,r4)
-	addd	$FFFC,(r5,r4)
+	addd	$-4,(r5,r4)
 	stord	(r5,r4),0x90(sp)
 	loadw	0x48(sp),r7
 	storw	r7,0x74(sp)
@@ -11164,17 +8797,45 @@ l0000A7E2:
 	storw	r5,0x48(sp)
 	storw	r5,0x166C(r12)
 	cmpw	$1,r9
-	bne	0000A472
+	bne	0000A664
 
 l0000A85C:
 	movw	$1,r11
 	movw	r5,r6
-	br	0000A56E
-0000A864             10 32 0F DF 4C 00 02 5E 22 4C D4 55     .2..L..^"L.U
-0000A870 24 61 E0 18 59 FC C6 61 C2 61 46 BF B2 0F 22 BF $a..Y..a.aF...".
-0000A880 B2 0F 24 51 A0 18 17 FD 8F 9F 20 00 E0 18 11 FD ..$Q...... .....
-0000A890 C6 61 C2 61 46 BF B2 0F 22 BF B2 0F 24 51 A0 18 .a.aF..."...$Q..
-0000A8A0 21 FE 8F 9F 20 00 E0 18 1B FE                   !... .....      
+	br	0000A6E6
+
+l0000A864:
+	addw	$1,r1
+	storw	r0,0x98(sp)
+	movxw	r0,(r3,r2)
+	ashud	$2,(r3,r2)
+	movd	(r5,r4),r13
+	addd	(r3,r2),(r5,r4)
+	br	0000A4CA
+
+l0000A876:
+	addd	r12,(r7,r6)
+	addd	r12,(r3,r2)
+	loadb	0xFB2(r7,r6),r4
+	loadb	0xFB2(r3,r2),r2
+	cmpb	r4,r2
+	blo	0000A59A
+
+l0000A888:
+	loadw	0x40(sp),r8
+	br	0000A59C
+
+l0000A890:
+	addd	r12,(r7,r6)
+	addd	r12,(r3,r2)
+	loadb	0xFB2(r7,r6),r4
+	loadb	0xFB2(r3,r2),r2
+	cmpb	r4,r2
+	blo	0000A6BE
+
+l0000A8A2:
+	loadw	0x40(sp),r8
+	br	0000A6C0
 
 l0000A8AA:
 	addd	r12,(r7,r6)
@@ -11193,52 +8854,119 @@ l0000A8C0:
 	addd	r12,(r3,r2)
 	loadd	0x50(sp),(r6,r5)
 	loadb	0xFB2(r6,r5),r4
-
-;; fn0000A8CA: 0000A8CA
-;;   Called from:
-;;     0000AEF4 (in fn0000B9B2)
-fn0000A8CA proc
-	bne0w	r2,0000A8E2
-
-l0000A8CC:
 	loadb	0xFB2(r3,r2),r1
 	cmpb	r4,r1
-	blo	fn0000A6C8
+	blo	0000A7CC
 
-;; fn0000A8D6: 0000A8D6
-;;   Called from:
-;;     0000A6C8 (in fn0000A6C8)
-;;     0000A8D0 (in fn0000AE66)
-;;     0000A8D2 (in fn0000A8CA)
-fn0000A8D6 proc
+l0000A8D6:
 	br	0000A7E2
-0000A8D8                         82 5E C2 61 5F AF 34 00         .^.a_.4.
-0000A8E0 45 B0                                           E.              
 
-l0000A8E2:
+l0000A8D8:
+	movxw	r8,(r3,r2)
+	addd	r12,(r3,r2)
+	loadd	0x68(sp),(r6,r5)
+	loadb	(r6,r5),r4
 	loadb	0xFB2(r3,r2),r1
 	cmpb	r4,r1
-	blo	fn0000A4AE
+	blo	0000A6CA
 
 l0000A8EC:
-	br	fn0000A4D6
-0000A8F0 82 5E C2 61 5F AF 24 00 45 B0 12 BF B2 0F 14 51 .^.a_.$.E......Q
-0000A900 A0 18 A7 FC E0 18 B9 FC 41 5B 8F 9F 20 00 E0 18 ........A[.. ...
-0000A910 B7 FE 41 5B 8F 9F 20 00 E0 18 A9 FD 41 5B 8F 9F ..A[.. .....A[..
-0000A920 20 00 E0 18 7B FC 10 58 10 31 1F AF 28 00 01 FF  ...{..X.1..(...
-0000A930 B2 0F 2F 9F 2C 00 24 D1 26 D1 12 32 2F DF 34 00 ../.,.$.&..2/.4.
-0000A940 3F 9F 2C 00 3C DF 36 0B 19 52 10 18 31 FE 9C DF ?.,.<.6..R..1...
-0000A950 AE 0F 0F 9F 3A 00 B0 32 FD FF 0C DF B0 0F 00 5E ....:..2.......^
-0000A960 B0 60 9A 05 00 61 C0 61 30 D0 0F AF 50 00 10 A0 .`...a.a0...P...
-0000A970 1F EF 30 00 2F AF 50 00 32 92 3F DF 28 00 4F AF ..0./.P.2.?.(.O.
-0000A980 50 00 04 A4 A0 A0 AF EF 44 00 A0 A2 AF EF 48 00 P.......D.....H.
-0000A990 B0 94 BF DF 3C 00 70 96 02 54 2C EF 14 0B B0 54 ....<.p..T,....T
-0000A9A0 14 0B C0 61 20 E2 20 E4 20 E6 20 E8 20 EA 20 EC ...a . . . . . .
-0000A9B0 20 EF 1C 00 AF AF 30 00 EA 61 0A C3 02 00 AF 9F  .....0..a......
-0000A9C0 24 00 BA 52 3C 02 C0 18 10 03 AF AF 44 00 0A 56 $..R<.......D..V
-0000A9D0 00 18 78 04 AF 9F 24 00 A0 5E 00 61             ..x...$..^.a    
+	br	0000A6E0
 
-l0000A9DC:
+l0000A8F0:
+	movxw	r8,(r3,r2)
+	addd	r12,(r3,r2)
+	loadd	0x48(sp),(r6,r5)
+	loadb	(r6,r5),r4
+	loadb	0xFB2(r3,r2),r1
+	cmpb	r4,r1
+	blo	0000A5A6
+
+l0000A904:
+	br	0000A5BC
+
+l0000A908:
+	movw	r4,r1
+	loadw	0x40(sp),r8
+	br	0000A7C4
+
+l0000A912:
+	movw	r4,r1
+	loadw	0x40(sp),r8
+	br	0000A6C0
+
+l0000A91C:
+	movw	r4,r1
+	loadw	0x40(sp),r8
+	br	0000A59C
+
+l0000A926:
+	movb	$1,r0
+	addb	r0,r1
+	loadd	0x50(sp),(r2,r1)
+	storb	r0,0xFB2(r2,r1)
+	loadw	0x58(sp),r2
+	storw	r2,2(r5,r4)
+	storw	r2,2(r7,r6)
+	addw	$1,r1
+	storw	r2,0x68(sp)
+	loadw	0x58(sp),r3
+	storw	r3,0x166C(r12)
+	cmpw	$1,r9
+	bne	0000A77A
+
+l0000A94E:
+	storw	r9,0x1F5C(r12)
+	loadw	0x74(sp),r0
+	addw	$FFFD,r11
+	storw	r0,0x1F60(r12)
+	movxw	r0,(r1,r0)
+	addd	$1434,(r1,r0)
+	addd	(r1,r0),(r1,r0)
+	addd	r12,(r1,r0)
+	storw	r3,(r1,r0)
+	loadd	0xA0(sp),(r1,r0)
+	loadd	(r1,r0),(r2,r1)
+	stord	(r2,r1),0x60(sp)
+	loadd	0xA0(sp),(r3,r2)
+	loadw	4(r3,r2),r3
+	storw	r3,0x50(sp)
+	loadd	0xA0(sp),(r5,r4)
+	loadd	8(r5,r4),(r1,r0)
+	loadd	(r1,r0),(r11,r10)
+	stord	(r11,r10),0x88(sp)
+	loadd	4(r1,r0),(r11,r10)
+	stord	(r11,r10),0x90(sp)
+	loadw	8(r1,r0),r11
+	storw	r11,0x78(sp)
+	loadw	0xC(r1,r0),r7
+	movd	$0,(r3,r2)
+	stord	(r3,r2),0x1628(r12)
+	movd	$B14,(r1,r0)
+	addd	r12,(r1,r0)
+	stord	(r3,r2),4(r1,r0)
+	stord	(r3,r2),8(r1,r0)
+	stord	(r3,r2),0xC(r1,r0)
+	stord	(r3,r2),0x10(r1,r0)
+	stord	(r3,r2),0x14(r1,r0)
+	stord	(r3,r2),0x18(r1,r0)
+	stord	(r3,r2),0x38(r1,r0)
+	loadd	0x60(sp),(r11,r10)
+	addd	ra,(r11,r10)
+	storw	$0,2(r11,r10)
+	loadw	0x48(sp),r10
+	cmpw	$23C,r10
+	blt	0000ACD6
+
+l0000A9CA:
+	loadd	0x88(sp),(r11,r10)
+	cmpd	$0,(r11,r10)
+	beq	0000AE48
+
+l0000A9D4:
+	loadw	0x48(sp),r10
+	movxw	r10,(r1,r0)
+	addd	(r1,r0),(r1,r0)
 	movd	(r11,r10),r12
 	addd	(r1,r0),(r11,r10)
 	loadw	0x70(sp),r0
@@ -11294,24 +9022,8 @@ l0000AA4E:
 	movxw	r0,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	loadd	0x90(sp),(r7,r6)
-
-l0000AA56:
-	andd	$61609070,(r9,r8)
-
-;; fn0000AA58: 0000AA58
-;;   Called from:
-;;     0000A660 (in fn0000A62E)
-;;     0000A6BA (in fn0000AE66)
-;;     0000A6C8 (in fn0000AE66)
-;;     0000A9E8 (in fn0000AE66)
-;;     0000AA56 (in fn0000AE66)
-;;     0000AA56 (in fn0000AE66)
-;;     0000AD24 (in fn0000AE66)
-fn0000AA58 proc
 	addd	(r7,r6),(r1,r0)
 	loadw	(r1,r0),r7
-
-l0000AA5C:
 	addw	r2,r7
 
 l0000AA5E:
@@ -11319,8 +9031,6 @@ l0000AA5E:
 	movzw	r8,(r9,r8)
 	movzw	r2,(r3,r2)
 	movd	(r5,r4),(r9,r8)
-
-l0000AA66:
 	bal	ra,fn0000D358
 	loadd	0x23F8(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
@@ -11347,9 +9057,11 @@ l0000AA94:
 
 l0000AAA6:
 	loadw	0x68(sp),r7
+
+l0000AAAA:
 	loadw	0x58(sp),r10
 	cmpw	$0,r10
-	beq	0000AEFC
+	beq	0000ACD6
 
 l0000AAB4:
 	movw	r10,r3
@@ -11372,17 +9084,16 @@ l0000AAB4:
 	addw	r1,r7
 	storw	r1,0x48(sp)
 	storw	r11,0x40(sp)
-
-l0000AAEA:
-	addd	$5BAB5B6A,(r1,r0)
+	movw	r10,r11
+	movw	r6,r10
 	storw	r0,0x58(sp)
-	br	0000AD28
-0000AAF8                         A0 5B 24 9F                     .[$.    
+	br	0000AC0E
 
-l0000AAFC:
-	mulsb	r1,r0
+l0000AAF8:
+	movw	r10,r0
+	loadw	0x1620(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B094
+	bne	0000ADCA
 
 l0000AB04:
 	movw	r11,r0
@@ -11401,16 +9112,14 @@ l0000AB10:
 l0000AB1E:
 	loadw	0x58(sp),r0
 	loadw	0x1614(r5,r4),r2
-
-l0000AB26:
 	cmpw	$0,r2
-	bne	0000B158
+	bne	0000AE40
 
 l0000AB2C:
 	loadw	0x48(sp),r0
 	loadw	0x1610(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B29A
+	bne	0000AEE8
 
 l0000AB3A:
 	movw	$FFF9,r0
@@ -11418,18 +9127,13 @@ l0000AB3A:
 	movw	r0,r6
 	loadw	0x160C(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B298
+	bne	0000AEF0
 
 l0000AB4C:
 	movw	$FFF8,r0
 	addw	r0,r7
 	movw	r0,r1
 	loadw	0x1608(r5,r4),r2
-
-l0000AB56:
-	mulsb	r0,r4
-
-l0000AB58:
 	cmpw	$0,r2
 	bne	0000ABDE
 
@@ -11439,18 +9143,11 @@ l0000AB5C:
 	movw	r0,r6
 	loadw	0x1604(r5,r4),r2
 	cmpw	$0,r2
-	bne	0000B0E2
+	bne	0000AE26
 
 l0000AB6E:
 	movw	$FFF6,r1
-
-l0000AB70:
-	storb	sp,0x3371(r7,r6)
-
-l0000AB72:
 	addw	r1,r7
-
-l0000AB74:
 	movw	r1,r0
 	loadw	0x1600(r5,r4),r2
 	cmpw	$0,r2
@@ -11462,7 +9159,7 @@ l0000AB7E:
 	movw	r0,r6
 	loadw	0x15FC(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B0C0
+	bne	0000AE26
 
 l0000AB90:
 	movw	$FFF4,r0
@@ -11478,7 +9175,7 @@ l0000ABA0:
 	movw	r0,r6
 	loadw	0x15F4(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B09E
+	bne	0000AE26
 
 l0000ABB2:
 	movw	$FFF2,r0
@@ -11494,7 +9191,7 @@ l0000ABC2:
 	movw	r0,r6
 	loadw	0x15EC(r5,r4),r2
 	cmpw	$0,r2
-	bne	fn0000B07C
+	bne	0000AE26
 
 l0000ABD4:
 	movw	$FFF0,r0
@@ -11503,7 +9200,7 @@ l0000ABD4:
 
 l0000ABDE:
 	movxw	r0,(r1,r0)
-	addd	$58A,(r1,r0)
+	addd	$1418,(r1,r0)
 	addd	(r1,r0),(r1,r0)
 	addd	r12,(r1,r0)
 	addw	$FFFF,r9
@@ -11518,8 +9215,6 @@ l0000ABDE:
 	addw	$FFFF,r9
 	storw	r0,0x1628(r5,r4)
 	addw	$FFFE,r11
-
-l0000AC0A:
 	cmpw	$0,r3
 	bge	0000AC22
 
@@ -11527,7 +9222,7 @@ l0000AC0E:
 	movd	ra,(r9,r8)
 	loadw	0x1624(r5,r4),r2
 	cmpw	$0,r2
-	beq	0000A9DC
+	beq	0000AAF8
 
 l0000AC1A:
 	movw	r7,r6
@@ -11547,8 +9242,6 @@ l0000AC2A:
 l0000AC36:
 	loadd	0x68(sp),(r11,r10)
 	loadw	0x1628(r11,r10),r11
-
-l0000AC3E:
 	storw	r11,0x40(sp)
 	cmpw	$0,r11
 	beq	0000ACB8
@@ -11562,11 +9255,13 @@ l0000AC46:
 	addd	(r1,r0),(r11,r10)
 	loadw	0x58(sp),r0
 	storw	r0,0x70(sp)
+
+l0000AC5C:
 	storw	r7,0x48(sp)
 	loadw	0x1668(r11,r10),r0
 	loadw	0x50(sp),r1
 	cmpw	r1,r0
-	bgt	fn0000AF16
+	bgt	0000ADC0
 
 l0000AC6E:
 	movxw	r0,(r1,r0)
@@ -11593,20 +9288,18 @@ l0000AC82:
 
 l0000ACA4:
 	loadw	0x40(sp),r4
-
-l0000ACA8:
 	addw	$FFFF,r9
 	storw	r4,0x40(sp)
-	addd	$FFFE,(r11,r10)
+	addd	$-2,(r11,r10)
 	cmpw	$0,r4
-	bne	0000AED4
+	bne	0000ADC4
 
 l0000ACB8:
 	loadd	0x58(sp),(r11,r10)
-	addd	$FFFFFFFF,(r11,r10)
+	addd	$-1,(r11,r10)
 	stord	(r11,r10),0x58(sp)
 	loadd	0x68(sp),(r11,r10)
-	addd	$FFFE,(r11,r10)
+	addd	$-2,(r11,r10)
 	stord	(r11,r10),0x68(sp)
 	loadw	0x58(sp),r11
 	cmpw	$0,r11
@@ -11645,8 +9338,6 @@ l0000ACD6:
 	addw	r0,r0
 	storw	r0,0x10(sp)
 	loadw	0x1648(r12),r1
-
-l0000AD28:
 	addw	r0,r1
 	addw	r0,r0
 	storw	r0,0x12(sp)
@@ -11722,25 +9413,97 @@ l0000ADB2:
 	bne	0000AD84
 
 l0000ADB8:
-	addd	$54,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000ADC0 BA 60 FE FF 97 32 E0 18 97 FE 6F 9F 38 00 E0 18 .`...2....o.8...
-0000ADD0 11 FE 6F DF 4C 00 0E 56 10 18 CD F6 12 5A B2 33 ..o.L..V.....Z.3
-0000ADE0 22 5E 22 61 C2 61 04 5A 5F 9F 4C 00 1B 52 C7 11 "^"a.a.Z_.L..R..
-0000ADF0 15 52 DD 11 D6 55 40 5B 1B 32 BC DF AE 0F 02 DF .R...U@[.2......
-0000AE00 34 0B 16 C2 00 5E C0 61 00 83 B2 0F 0C AF FC 11 4....^.a........
-0000AE10 90 60 0C EF FC 11 22 60 1B 52 DB 1E 5F DF 4C 00 .`...."`.R.._.L.
-0000AE20 57 5B E0 18 E3 F6 16 5B E0 18 B7 FD 15 32 56 5E W[.....[.....2V^
-0000AE30 26 4C D6 61 50 5B E1 1E BF 9F 38 00 E0 18 81 F7 &L.aP[....8.....
-0000AE40 6F 9F 20 00 E0 18 9B FD BF 9F 24 00 B8 5E 88 61 o. .......$..^.a
-0000AE50 C8 61 AF 9F 38 00 AF DF 2C 00 AF AF 30 00 7F DF .a..8...,...0...
-0000AE60 20 00 7F 9F 24 00                                ...$.          
+	addd	$84,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
-;; fn0000AE66: 0000AE66
-;;   Called from:
-;;     0000B744 (in fn0000B73A)
-fn0000AE66 proc
+l0000ADC0:
+	addd	$-2,(r11,r10)
+
+l0000ADC4:
+	addw	$FFFF,r9
+	br	0000AC5C
+
+l0000ADCA:
+	loadw	0x70(sp),r6
+	br	0000ABDE
+
+l0000ADD2:
+	storw	r6,0x98(sp)
+	cmpd	$0,ra
+	bne	0000A4A4
+
+l0000ADDC:
+	movw	$1,r2
+	addw	r2,r11
+	movxw	r2,(r3,r2)
+	addd	(r3,r2),(r3,r2)
+	addd	r12,(r3,r2)
+	movw	$0,r4
+	loadw	0x98(sp),r5
+	cmpw	$1,r11
+	blt	0000AE1C
+
+l0000ADF0:
+	cmpw	$1,r5
+	bge	0000AE2C
+
+l0000ADF4:
+	movd	(r7,r6),r13
+	movw	r4,r0
+
+l0000ADF8:
+	addw	$1,r1
+	storw	r11,0x1F5C(r12)
+	storw	r0,0x1668(r3,r2)
+	storw	$1,(r7,r6)
+	movxw	r0,(r1,r0)
+	addd	r12,(r1,r0)
+	storb	$0,0xFB2(r1,r0)
+	loadd	0x23F8(r12),(r1,r0)
+	addd	$-1,(r1,r0)
+	stord	(r1,r0),0x23F8(r12)
+	addd	$2,(r3,r2)
+	cmpw	$1,r11
+	bge	0000ADF0
+
+l0000AE1C:
+	storw	r5,0x98(sp)
+	movw	r5,r7
+	br	0000A504
+
+l0000AE26:
+	movw	r1,r6
+	br	0000ABDE
+
+l0000AE2C:
+	addw	$1,r1
+	movxw	r5,(r7,r6)
+	ashud	$2,(r7,r6)
+	addd	r13,(r7,r6)
+	movw	r5,r0
+	br	0000ADF8
+
+l0000AE38:
+	loadw	0x70(sp),r11
+	br	0000A5BC
+
+l0000AE40:
+	loadw	0x40(sp),r6
+	br	0000ABDE
+
+l0000AE48:
+	loadw	0x48(sp),r11
+	movxw	r11,(r9,r8)
+	addd	(r9,r8),(r9,r8)
+	addd	r12,(r9,r8)
+	loadw	0x70(sp),r10
+	storw	r10,0x58(sp)
+	loadd	0x60(sp),(r11,r10)
+	storw	r7,0x40(sp)
+	loadw	0x48(sp),r7
+
+l0000AE66:
 	loadw	0x1668(r9,r8),r5
 	movxw	r5,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -11796,52 +9559,41 @@ l0000AEC2:
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x23F8(r12)
 
-l0000AED4:
-	br	fn0000AF0C
-
 l0000AED6:
 	addw	$1,r1
 	addd	$2,(r9,r8)
 	cmpw	$23D,r7
-	bne	fn0000AE66
+	bne	0000AE66
 
 l0000AEE0:
 	loadw	0x40(sp),r7
-	br	0000A672
-0000AEE8                         6F 9F 2C 00 E0 18 F3 FC         o.,.....
-0000AEF0 6F 9F 24 00                                     o.$.            
+	br	0000AAAA
 
-l0000AEF4:
-	br	fn0000A8CA
-0000AEF8                         0B 5A 9A 5A                     .Z.Z    
+l0000AEE8:
+	loadw	0x58(sp),r6
+	br	0000ABDE
 
-l0000AEFC:
+l0000AEF0:
+	loadw	0x48(sp),r6
+	br	0000ABDE
+
+l0000AEF8:
+	movw	$0,r11
+	movw	$FFFF,r10
 	storw	r10,0x98(sp)
-	br	fn00009A3E
+	br	0000A49E
 0000AF04             00 00                                   ..          
 
 ;; fn0000AF06: 0000AF06
 ;;   Called from:
-;;     0000475A (in fn000046DC)
+;;     0000475A (in fn000046AC)
+;;     0000484A (in fn00004794)
 fn0000AF06 proc
-	push	$1,ra
+	push	$2,ra
 	movd	$6A,(r1,r0)
-
-;; fn0000AF0C: 0000AF0C
-;;   Called from:
-;;     0000AED4 (in fn0000AE66)
-;;     0000AF08 (in fn0000AF06)
-fn0000AF0C proc
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x15E0(r3,r2)
 	movd	$F2A8,(r1,r0)
-
-;; fn0000AF16: 0000AF16
-;;   Called from:
-;;     0000AC6A (in fn0000AE66)
-;;     0000AF12 (in fn0000AF0C)
-;;     0000AF12 (in fn0000AF0C)
-fn0000AF16 proc
 	stord	(r1,r0),0x15F0(r3,r2)
 	movd	$95E,(r1,r0)
 	addd	(r3,r2),(r1,r0)
@@ -11860,15 +9612,11 @@ fn0000AF16 proc
 	addd	(r3,r2),(r5,r4)
 	movd	(r1,r0),(r3,r2)
 
-;; fn0000AF50: 0000AF50
-;;   Called from:
-;;     0000AF4E (in fn0000AF16)
-;;     0000AF4E (in fn0000AF16)
-fn0000AF50 proc
+l0000AF50:
 	storw	$0,0x6A(r1,r0)
 	addd	$4,(r1,r0)
 	cmpd	(r1,r0),(r5,r4)
-	bne	fn0000AF50
+	bne	0000AF50
 
 l0000AF5A:
 	movd	$78,(r5,r4)
@@ -11898,22 +9646,17 @@ l0000AF7C:
 	stord	(r1,r0),0x23F8(r3,r2)
 	storw	$0,0x1204(r3,r2)
 	storw	$0,0x11F6(r3,r2)
-	popret	$1,ra
+	popret	$2,ra
 
 ;; fn0000AF94: 0000AF94
 ;;   Called from:
-;;     0000349A (in fn00003480)
-;;     000037BA (in fn00003780)
+;;     0000349A (in fn000033F8)
+;;     000037BA (in fn000033F8)
 ;;     00004E54 (in fn00004CD4)
+;;     0000B7BE (in fn0000B218)
 fn0000AF94 proc
-	push	$1,ra
-	push	$6,r7
-
-;; fn0000AF98: 0000AF98
-;;   Called from:
-;;     0000AF96 (in fn0000AF94)
-;;     0000B71E (in fn0000B718)
-fn0000AF98 proc
+	push	$2,ra
+	push	$7,r7
 	movd	$12,r12
 	addd	sp,r12
 	movd	(r9,r8),(r3,r2)
@@ -11931,22 +9674,14 @@ fn0000AF98 proc
 	orw	r7,r2
 	storw	r7,0x2410(r9,r8)
 	cmpw	$D,r12
-	blt	fn0000B058
+	blt	0000B058
 
-;; fn0000AFC4: 0000AFC4
-;;   Called from:
-;;     0000AFC2 (in fn0000AF98)
-;;     0000AFC2 (in fn0000AF98)
-fn0000AFC4 proc
+l0000AFC4:
 	movw	r12,r6
 	addw	$3,r3
 	storw	r6,0x2414(r9,r8)
 
-;; fn0000AFCC: 0000AFCC
-;;   Called from:
-;;     0000B098 (in fn0000B094)
-;;     0000B098 (in fn0000B094)
-fn0000AFCC proc
+l0000AFCC:
 	cmpw	$8,r6
 	blt	0000B03E
 
@@ -12001,14 +9736,14 @@ l0000AFE2:
 	loadd	8(r9,r8),(r3,r2)
 	loadd	0x14(r9,r8),(r1,r0)
 	addd	(r1,r0),(r3,r2)
-	push	$1,r10
+	push	$2,r10
 	bal	ra,fn0000DB24
 	loadd	0x14(r9,r8),(r1,r0)
 	addd	(r1,r0),(r11,r10)
 	stord	(r11,r10),0x14(r9,r8)
 	addd	$4,sp
-	pop	$6,r7
-	popret	$1,ra
+	pop	$7,r7
+	popret	$2,ra
 
 l0000B03E:
 	stord	ra,0x14(r9,r8)
@@ -12024,12 +9759,7 @@ l0000B03E:
 	storb	r6,(r1,r0)
 	br	0000AFD8
 
-;; fn0000B058: 0000B058
-;;   Called from:
-;;     0000AFC2 (in fn0000AF98)
-;;     0000AFC2 (in fn0000AF98)
-;;     0000AFC8 (in fn0000AFC4)
-fn0000B058 proc
+l0000B058:
 	stord	ra,0x14(r9,r8)
 	storb	r7,(r1,r0)
 	loadw	0x2410(r9,r8),r7
@@ -12045,12 +9775,6 @@ fn0000B058 proc
 	movw	$10,r1
 	movb	r0,r2
 	subb	r2,r1
-
-;; fn0000B07C: 0000B07C
-;;   Called from:
-;;     0000ABD0 (in fn0000AE66)
-;;     0000B07A (in fn0000B058)
-fn0000B07C proc
 	movw	r6,r7
 	lshw	r2,r7
 	storw	r7,0x2410(r9,r8)
@@ -12060,53 +9784,39 @@ fn0000B07C proc
 	loadd	0x14(r9,r8),(r3,r2)
 	movd	$1,ra
 	addd	(r3,r2),ra
-
-;; fn0000B094: 0000B094
-;;   Called from:
-;;     0000AB00 (in fn0000AE66)
-;;     0000B092 (in fn0000B07C)
-;;     0000B092 (in fn0000B07C)
-fn0000B094 proc
 	loadd	8(r9,r8),(r1,r0)
 	addd	(r3,r2),(r1,r0)
-	br	fn0000AFCC
+	br	0000AFCC
 0000B09A                               00 00                       ..    
 
 ;; fn0000B09C: 0000B09C
 ;;   Called from:
-;;     000034E2 (in fn000034DE)
-;;     000034E2 (in fn000034CE)
-;;     000037D0 (in fn00003780)
-;;     00003B2C (in fn00003B14)
-;;     00003B2C (in fn00003B2A)
-;;     00003D52 (in fn00003A36)
-;;     000040DC (in fn00003A36)
-;;     000042C2 (in fn0000402E)
-;;     0000435C (in fn0000402E)
-;;     00004AE4 (in fn00004ADC)
-;;     00004AE4 (in fn00004ADC)
+;;     000034E2 (in fn000033F8)
+;;     000037D0 (in fn000033F8)
 ;;     00004E68 (in fn00004CD4)
 ;;     00004F1E (in fn00004CD4)
+;;     0000504C (in fn00004CD4)
+;;     000050EA (in fn00004CD4)
+;;     0000514A (in fn00004CD4)
+;;     000051AC (in fn00004CD4)
+;;     0000544E (in fn00004CD4)
 ;;     00005570 (in fn00004CD4)
+;;     000056F2 (in fn00004CD4)
+;;     000057BC (in fn00004CD4)
+;;     0000596A (in fn00004CD4)
+;;     00005B22 (in fn00004CD4)
+;;     00005BCE (in fn00004CD4)
+;;     00005CB2 (in fn00004CD4)
 ;;     00005DBA (in fn00004CD4)
+;;     00005ED0 (in fn00004CD4)
 fn0000B09C proc
-	push	$1,ra
-
-;; fn0000B09E: 0000B09E
-;;   Called from:
-;;     0000ABAE (in fn0000AE66)
-;;     0000B09C (in fn0000B09C)
-fn0000B09E proc
-	push	$0,r7
+	push	$2,ra
+	push	$1,r7
 	loadw	0x2414(r3,r2),r0
 	cmpw	$10,r0
-	beq	fn0000B0DA
+	beq	0000B0DA
 
-;; fn0000B0AA: 0000B0AA
-;;   Called from:
-;;     0000B0A8 (in fn0000B09E)
-;;     0000B0A8 (in fn0000B09E)
-fn0000B0AA proc
+l0000B0AA:
 	cmpw	$7,r0
 	bge	0000B0D6
 
@@ -12119,13 +9829,6 @@ l0000B0AE:
 	stord	ra,0x14(r3,r2)
 	addd	(r5,r4),(r1,r0)
 	storb	r6,(r1,r0)
-
-;; fn0000B0C0: 0000B0C0
-;;   Called from:
-;;     0000AB8C (in fn0000AE66)
-;;     0000B0AC (in fn0000B0AA)
-;;     0000B0BE (in fn0000B0AA)
-fn0000B0C0 proc
 	loadw	0x2410(r3,r2),r0
 	lshw	$-8,r0
 	storw	r0,0x2410(r3,r2)
@@ -12134,19 +9837,13 @@ fn0000B0C0 proc
 	storw	r0,0x2414(r3,r2)
 
 l0000B0D6:
-	pop	$0,r7
-	popret	$1,ra
+	pop	$1,r7
+	popret	$2,ra
 
-;; fn0000B0DA: 0000B0DA
-;;   Called from:
-;;     0000B0A8 (in fn0000B09E)
-;;     0000B0A8 (in fn0000B09E)
-fn0000B0DA proc
+l0000B0DA:
 	loadw	0x2410(r3,r2),r6
 	loadd	8(r3,r2),(r1,r0)
 	loadd	0x14(r3,r2),(r5,r4)
-
-l0000B0E2:
 	movd	$1,ra
 	addd	(r5,r4),ra
 	stord	ra,0x14(r3,r2)
@@ -12163,16 +9860,47 @@ l0000B0E2:
 	storb	r4,(r1,r0)
 	storw	$0,0x1208(r3,r2)
 	storw	$0,0x120A(r3,r2)
-	pop	$0,r7
-	popret	$1,ra
-0000B10C                                     1E 01 27 01             ..'.
-0000B110 02 9F 0A 12 24 5A 45 5B 05 45 12 9F 08 12 51 27 ....$ZE[.E....Q'
-0000B120 12 DF 08 12 D0 52 DF 13 E2 A4 62 AA 18 54 68 61 .....R....b..Tha
-0000B130 82 EA 6E 61 1E F0 52 9F 08 12 85 49 02 A4 E2 AA ..na..R....I....
-0000B140 16 54 E6 61 62 EA E0 61 50 F0 02 9F 0A 12 B1 5A .T.ab..aP......Z
-0000B150 10 00 05 59 15 39 54 46                         ...Y.9TF        
+	pop	$1,r7
+	popret	$2,ra
 
-l0000B158:
+;; fn0000B10C: 0000B10C
+;;   Called from:
+;;     00005D24 (in fn00004CD4)
+fn0000B10C proc
+	push	$2,ra
+	push	$3,r7
+	loadw	0x2414(r3,r2),r0
+	movw	$2,r4
+	movw	r4,r5
+	ashuw	r0,r5
+	loadw	0x2410(r3,r2),r1
+	orw	r1,r5
+	storw	r1,0x2410(r3,r2)
+	cmpw	$D,r0
+	bge	0000B1A4
+
+l0000B128:
+	loadd	8(r3,r2),ra
+	loadd	0x14(r3,r2),(r7,r6)
+	movd	$1,(r9,r8)
+	addd	(r7,r6),(r9,r8)
+	stord	(r9,r8),0x14(r3,r2)
+	addd	(r7,r6),ra
+	storb	r1,(ra)
+	loadw	0x2410(r3,r2),r5
+	lshw	$-8,r5
+	loadd	8(r3,r2),(r1,r0)
+	loadd	0x14(r3,r2),ra
+	movd	$1,(r7,r6)
+	addd	ra,(r7,r6)
+	stord	(r7,r6),0x14(r3,r2)
+	addd	ra,(r1,r0)
+	storb	r5,(r1,r0)
+	loadw	0x2414(r3,r2),r0
+	movw	$10,r1
+	movb	r0,r5
+	subb	r5,r1
+	lshw	r5,r4
 	movw	r4,r1
 	storw	r4,0x2410(r3,r2)
 	addw	$FFF3,r11
@@ -12206,9 +9934,14 @@ l0000B17C:
 	storw	r0,0x2414(r3,r2)
 
 l0000B1A0:
-	pop	$2,r7
-	popret	$1,ra
-0000B1A4             30 32 02 DF 0A 12 B0 52 09 00 DF 1D     02.....R....
+	pop	$3,r7
+	popret	$2,ra
+
+l0000B1A4:
+	addw	$3,r3
+	storw	r0,0x2414(r3,r2)
+	cmpw	$9,r0
+	bge	0000B16C
 
 l0000B1B0:
 	loadd	8(r3,r2),(r5,r4)
@@ -12254,22 +9987,21 @@ l0000B1EA:
 	storb	r4,(r1,r0)
 	storw	$0,0x1208(r3,r2)
 	storw	$0,0x120A(r3,r2)
-	pop	$2,r7
-	popret	$1,ra
+	pop	$3,r7
+	popret	$2,ra
 
 ;; fn0000B218: 0000B218
 ;;   Called from:
-;;     00003B16 (in fn00003B14)
-;;     00003B16 (in fn00003B14)
-;;     00003D3C (in fn00003D1C)
-;;     000040C6 (in fn00003A36)
-;;     000042AC (in fn0000402E)
-;;     00004346 (in fn0000402E)
+;;     00005196 (in fn00004CD4)
+;;     000056DC (in fn00004CD4)
+;;     000057A6 (in fn00004CD4)
+;;     00005954 (in fn00004CD4)
 ;;     00005DA4 (in fn00004CD4)
+;;     00005EBA (in fn00004CD4)
 fn0000B218 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFF0,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-16,sp
 	movd	$26,r12
 	addd	sp,r12
 	movd	(r9,r8),(r3,r2)
@@ -12287,13 +10019,13 @@ fn0000B218 proc
 	storb	r0,6(sp)
 	loadw	0xC4(r3,r2),r0
 	cmpw	$0,r0
-	bge	fn0000BCFA
+	bge	0000B7A0
 
 l0000B24A:
 	loadd	(r3,r2),ra
 	loadw	0x58(ra),r0
 	cmpw	$2,r0
-	beq	fn0000BB06
+	beq	0000B6AC
 
 l0000B256:
 	movd	$AF0,(r5,r4)
@@ -12309,11 +10041,13 @@ l0000B256:
 	addd	(r9,r8),r13
 	loadw	0xD8(r9,r8),r0
 	cmpw	$0,r0
-	beq	0000BAC6
+	beq	0000B6A2
 
 l0000B282:
 	movw	$4,r5
 	movw	$7,r1
+
+l0000B286:
 	movxw	r6,(r11,r10)
 	movd	$1,(r3,r2)
 	addd	(r11,r10),(r3,r2)
@@ -12322,29 +10056,13 @@ l0000B282:
 	movw	$FFFF,r4
 	storw	r4,2(r3,r2)
 	cmpw	$0,r6
-	bgt	fn0000B2F2
+	bgt	0000B2F2
 
-;; fn0000B298: 0000B298
-;;   Called from:
-;;     0000AB48 (in fn0000AE66)
-;;     0000B296 (in fn0000B218)
-fn0000B298 proc
+l0000B298:
 	movd	$70,(r3,r2)
-
-;; fn0000B29A: 0000B29A
-;;   Called from:
-;;     0000AB36 (in fn0000AE66)
-fn0000B29A proc
-	movd	$61824C2A,(r1,r0)
-
-;; fn0000B29C: 0000B29C
-;;   Called from:
-;;     0000B298 (in fn0000B298)
-;;     0000B29A (in fn0000B29A)
-fn0000B29C proc
 	addd	(r9,r8),(r3,r2)
 	ashud	$2,(r11,r10)
-	addd	$A,(r11,r10)
+	addd	$10,(r11,r10)
 	movd	ra,r13
 	addd	(r11,r10),ra
 	movw	$0,r6
@@ -12352,16 +10070,11 @@ fn0000B29C proc
 	movw	$8A,r10
 	storw	r7,2(sp)
 
-;; fn0000B2B0: 0000B2B0
-;;   Called from:
-;;     0000B2AA (in fn0000B29C)
-;;     0000B2AE (in fn0000B29C)
-;;     0000B2EE (in fn0000B308)
-fn0000B2B0 proc
+l0000B2B0:
 	loadw	(r3,r2),r7
 	addw	$1,r1
 	cmpw	r6,r1
-	ble	fn0000BB8E
+	ble	0000B722
 
 l0000B2BA:
 	cmpw	r7,r0
@@ -12369,7 +10082,7 @@ l0000B2BA:
 
 l0000B2BE:
 	cmpw	r6,r5
-	ble	fn0000BB84
+	ble	0000B722
 
 l0000B2C4:
 	movxw	r0,(r5,r4)
@@ -12378,12 +10091,14 @@ l0000B2C4:
 	loadw	0x14A4(r5,r4),r1
 	addw	r6,r1
 	storw	r6,0x14A4(r5,r4)
+
+l0000B2D4:
 	cmpw	$0,r7
-	beq	fn0000BAF2
+	beq	0000B6E4
 
 l0000B2DA:
 	cmpw	r7,r0
-	beq	0000BBFC
+	beq	0000B76C
 
 l0000B2E0:
 	movw	r0,r4
@@ -12395,32 +10110,25 @@ l0000B2E8:
 	addd	$4,(r3,r2)
 	movw	r7,r0
 	cmpd	(r3,r2),ra
-	bne	fn0000B2B0
+	bne	0000B2B0
 
 l0000B2F0:
 	loadw	2(sp),r7
 
-;; fn0000B2F2: 0000B2F2
-;;   Called from:
-;;     0000B296 (in fn0000B218)
-;;     0000B2F0 (in fn0000B308)
-fn0000B2F2 proc
+l0000B2F2:
 	loadw	0x1600(r9,r8),r6
 	movd	$95E,(r2,r1)
 	addd	(r9,r8),(r2,r1)
 	stord	(r2,r1),0xC(sp)
 	loadw	0x12C0(r9,r8),r0
 	cmpw	$0,r0
-	beq	fn0000BD84
+	beq	0000B844
 
-;; fn0000B308: 0000B308
-;;   Called from:
-;;     0000B2B6 (in fn0000B2B0)
-;;     0000B304 (in fn0000B2F2)
-;;     0000B304 (in fn0000B2F2)
-fn0000B308 proc
+l0000B308:
 	movw	$4,r5
 	movw	$7,r1
+
+l0000B30C:
 	movxw	r6,(r11,r10)
 	movd	$1,(r3,r2)
 	addd	(r11,r10),(r3,r2)
@@ -12436,7 +10144,7 @@ l0000B320:
 	movd	$964,(r3,r2)
 	addd	(r9,r8),(r3,r2)
 	ashud	$2,(r11,r10)
-	addd	$A,(r11,r10)
+	addd	$10,(r11,r10)
 	addd	(r11,r10),ra
 	movw	$0,r6
 	movw	$3,r11
@@ -12447,7 +10155,7 @@ l0000B336:
 	loadw	(r3,r2),r7
 	addw	$1,r1
 	cmpw	r1,r6
-	bge	0000BABC
+	bge	0000B6FC
 
 l0000B340:
 	cmpw	r7,r0
@@ -12455,7 +10163,7 @@ l0000B340:
 
 l0000B344:
 	cmpw	r5,r6
-	bge	0000BAB2
+	bge	0000B6FC
 
 l0000B34A:
 	movxw	r0,(r5,r4)
@@ -12464,12 +10172,14 @@ l0000B34A:
 	loadw	0x14A4(r5,r4),r1
 	addw	r6,r1
 	storw	r6,0x14A4(r5,r4)
+
+l0000B35A:
 	cmpw	$0,r7
-	beq	0000BA84
+	beq	0000B6F0
 
 l0000B360:
 	cmpw	r7,r0
-	beq	fn0000BB8E
+	beq	0000B778
 
 l0000B366:
 	movw	r0,r4
@@ -12493,94 +10203,96 @@ l0000B378:
 	bal	ra,fn0000A416
 	loadw	0x1520(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF1E
+	bne	0000B954
 
 l0000B38E:
 	loadw	0x14B0(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF84
+	bne	0000B98C
 
 l0000B398:
 	loadw	0x1518(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF56
+	bne	0000B97A
 
 l0000B3A2:
 	loadw	0x14B8(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF60
+	bne	0000B984
 
 l0000B3AC:
 	loadw	0x1510(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF32
+	bne	0000B972
 
 l0000B3B6:
 	loadw	0x14C0(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BFA0
+	bne	0000B9AE
 
 l0000B3C0:
 	loadw	0x1508(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF76
+	bne	0000B99E
 
 l0000B3CA:
 	loadw	0x14C8(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF7C
+	bne	0000B9A6
 
 l0000B3D4:
 	loadw	0x1500(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF52
+	bne	0000B996
 
 l0000B3DE:
 	loadw	0x14D0(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BFA8
+	bne	0000B9C6
 
 l0000B3E8:
 	loadw	0x14F8(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF7E
+	bne	0000B9B6
 
 l0000B3F2:
 	loadw	0x14D8(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BF84
+	bne	0000B9BE
 
 l0000B3FC:
 	loadw	0x14F0(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BFAA
+	bne	0000B9D6
 
 l0000B406:
 	loadw	0x14E0(r9,r8),r0
 	cmpw	$0,r0
-	bne	0000BFB0
+	bne	0000B9DE
 
 l0000B410:
 	loadw	0x14E8(r9,r8),r0
 	cmpw	$0,r0
-	bne	0000BF86
+	bne	0000B9CE
 
 l0000B41A:
 	loadw	0x14A8(r9,r8),r0
 	cmpw	$0,r0
-	bne	fn0000BEB4
+	bne	0000B96A
 
 l0000B424:
 	movd	$9,(r1,r0)
 	storw	$2,2(sp)
+
+l0000B42C:
 	loadd	0x23F8(r9,r8),(r3,r2)
-	addd	$E,(r3,r2)
+	addd	$14,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x23F8(r9,r8)
-	addd	$A,(r3,r2)
+	addd	$10,(r3,r2)
 	lshd	$-29,(r3,r2)
 	loadd	0x2400(r9,r8),ra
-	addd	$A,ra
+	addd	$10,ra
 	lshd	$-29,ra
 	movd	(r1,r0),(r3,r2)
 	cmpd	(r3,r2),ra
@@ -12599,7 +10311,7 @@ l0000B44C:
 l0000B456:
 	loadb	6(sp),r5
 	cmpb	$0,r5
-	bne	fn0000BB0E
+	bne	0000B7B4
 
 l0000B45E:
 	loadw	0x2414(r9,r8),r4
@@ -12608,13 +10320,13 @@ l0000B45E:
 	cmpw	$4,r0
 	seq	r0
 	cmpw	$0,r0
-	bne	0000BC8C
+	bne	0000B87E
 
 l0000B474:
 	cmpd	(r3,r2),ra
 	sls	r0
 	cmpw	$0,r0
-	bne	0000BC82
+	bne	0000B87E
 
 l0000B47E:
 	loadw	4(sp),r1
@@ -12624,7 +10336,7 @@ l0000B47E:
 	orw	r10,r5
 	storw	r10,0x2410(r9,r8)
 	cmpw	$D,r4
-	bge	fn0000BD82
+	bge	0000B908
 
 l0000B492:
 	loadd	8(r9,r8),(r3,r2)
@@ -12652,6 +10364,8 @@ l0000B492:
 	storw	r10,0x2410(r9,r8)
 	addw	$FFF3,r11
 	storw	r4,0x2414(r9,r8)
+
+l0000B4D0:
 	loadw	0x1600(r9,r8),r12
 	loadw	0x15E8(r9,r8),ra
 	movw	ra,r1
@@ -12661,7 +10375,7 @@ l0000B492:
 	orw	r0,r10
 	storw	r0,0x2410(r9,r8)
 	cmpw	$B,r4
-	bge	fn0000BD10
+	bge	0000B8FE
 
 l0000B4F0:
 	loadd	8(r9,r8),(r3,r2)
@@ -12689,12 +10403,14 @@ l0000B4F0:
 	storw	r1,0x2410(r9,r8)
 	addw	$FFF5,r11
 	storw	r4,0x2414(r9,r8)
+
+l0000B52E:
 	movw	r12,r1
 	ashuw	r4,r1
 	orw	r0,r1
 	storw	r0,0x2410(r9,r8)
 	cmpw	$B,r4
-	bge	fn0000BCAC
+	bge	0000B8F4
 
 l0000B540:
 	loadd	8(r9,r8),(r3,r2)
@@ -12723,6 +10439,8 @@ l0000B540:
 	storw	r2,0x2410(r9,r8)
 	addw	$FFF5,r11
 	storw	r4,0x2414(r9,r8)
+
+l0000B580:
 	loadw	2(sp),r1
 	addw	$FFFD,r11
 	movw	r1,r2
@@ -12730,7 +10448,7 @@ l0000B540:
 	orw	r0,r2
 	storw	r0,0x2410(r9,r8)
 	cmpw	$C,r4
-	bge	fn0000BC42
+	bge	0000B8EA
 
 l0000B596:
 	loadd	8(r9,r8),(r3,r2)
@@ -12758,6 +10476,8 @@ l0000B596:
 	storw	r1,0x2410(r9,r8)
 	addw	$FFF4,r11
 	storw	r4,0x2414(r9,r8)
+
+l0000B5D4:
 	movd	$FB26,(r11,r10)
 	movb	$10,r2
 	movw	$0,r1
@@ -12766,7 +10486,7 @@ l0000B596:
 	movw	r1,r6
 	movzb	r2,(r3,r2)
 	movxw	r2,(r3,r2)
-	addd	$294,(r3,r2)
+	addd	$660,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r9,r8),(r3,r2)
 	loadw	4(r3,r2),r5
@@ -12815,7 +10535,7 @@ l0000B64A:
 	addd	$1,(r11,r10)
 	movzb	r2,(r3,r2)
 	movxw	r2,(r3,r2)
-	addd	$294,(r3,r2)
+	addd	$660,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r9,r8),(r3,r2)
 	loadw	4(r3,r2),r5
@@ -12846,106 +10566,388 @@ l0000B67A:
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn00009C04
 	loadd	0xC(sp),(r5,r4)
-	push	$1,r4
+	push	$2,r4
 	movd	(r5,r4),r13
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000A0E8
 	addd	$4,sp
-	br	0000B8EA
-0000B6A2       35 5A B1 5A 8A 00 E0 18 DF FB 2D 55 BA 54   5Z.Z......-U.T
-0000B6B0 80 00 2A 61 20 55 72 00 FF F3 7F C0 E6 10 F2 4B ..*a Ur........K
-0000B6C0 40 60 0A 57 00 18 4E 02 14 54 14 00 24 B0 04 56 @`.W..N..T..$..V
-0000B6D0 07 1F 40 9F 6A 00 04 52 03 1F 00 5A 0E DF 2C 00 ..@.j..R...Z..,.
-0000B6E0 E0 18 77 FB 76 5B 04 5B B5 5B A1 5B E0 18 FD FB ..w.v[.[.[.[....
-0000B6F0 76 5B 04 5B B5 5B A1 5B E0 18 77 FC 00 52 0E 12 v[.[.[.[..w..R..
-0000B700 04 53 09 10 04 5E 24 4C 84 61 14 9F 52 0A 11 32 .S...^$L.a..R..2
-0000B710 14 DF 52 0A 18 9F 92 0A                         ..R.....        
+	br	0000B7C4
 
-;; fn0000B718: 0000B718
-;;   Called from:
-;;     0000A4A0 (in fn0000A48C)
-fn0000B718 proc
+l0000B6A2:
+	movw	$3,r5
+	movw	$8A,r1
+	br	0000B286
+
+l0000B6AC:
+	movd	r13,(r3,r2)
+	movd	$80,(r11,r10)
+	addd	(r3,r2),(r11,r10)
+	movd	(r1,r0),(r3,r2)
+	movd	$F3FFC07F,(r3,r2)
+	br	0000B6C8
+
+l0000B6BE:
+	lshd	$-31,(r3,r2)
+	addd	$4,(r1,r0)
+	cmpd	(r11,r10),(r1,r0)
+	beq	0000B912
+
+l0000B6C8:
+	movd	$1,(r5,r4)
+	andd	(r3,r2),(r5,r4)
+	cmpd	$0,(r5,r4)
+	beq	0000B6BE
+
+l0000B6D2:
+	loadw	0xD4(r1,r0),r4
+	cmpw	$0,r4
+	beq	0000B6BE
+
+l0000B6DA:
+	movw	$0,r0
+
+l0000B6DC:
+	storw	r0,0x58(ra)
+	br	0000B256
+
+l0000B6E4:
+	movw	r7,r6
+	movw	r0,r4
+	movw	r11,r5
+	movw	r10,r1
+	br	0000B2E8
+
+l0000B6F0:
+	movw	r7,r6
+	movw	r0,r4
+	movw	r11,r5
+	movw	r10,r1
+	br	0000B36E
+
+l0000B6FC:
+	cmpw	$0,r0
+	beq	0000B75A
+
+l0000B700:
+	cmpw	r4,r0
+	beq	0000B714
+
+l0000B704:
+	movxw	r0,(r5,r4)
+	ashud	$2,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	loadw	0x14A4(r5,r4),r1
+	addw	$1,r1
+	storw	r1,0x14A4(r5,r4)
+
+l0000B714:
+	loadw	0x1524(r9,r8),r1
 	addw	$1,r1
 	storw	r1,0x1524(r9,r8)
-	br	fn0000AF98
-0000B722       00 52 02 11                                 .R..          
+	br	0000B35A
 
-;; fn0000B726: 0000B726
-;;   Called from:
-;;     0000A47E (in fn0000A460)
-fn0000B726 proc
+l0000B722:
+	cmpw	$0,r0
+	beq	0000B748
+
+l0000B726:
 	cmpw	r4,r0
-	beq	fn0000B73A
+	beq	0000B73A
 
 l0000B72A:
 	movxw	r0,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r9,r8),(r5,r4)
 	loadw	0x14A4(r5,r4),r1
-
-;; fn0000B732: 0000B732
-;;   Called from:
-;;     0000A53E (in fn0000A534)
-;;     0000A53E (in fn0000A534)
-fn0000B732 proc
-	jls	(r3,r2)
-
-;; fn0000B734: 0000B734
-;;   Called from:
-;;     0000B730 (in fn0000B726)
-;;     0000B732 (in fn0000B732)
-fn0000B734 proc
 	addw	$1,r1
 	storw	r1,0x14A4(r5,r4)
 
-;; fn0000B73A: 0000B73A
-;;   Called from:
-;;     0000B728 (in fn0000B726)
-;;     0000B736 (in fn0000B734)
-fn0000B73A proc
+l0000B73A:
 	loadw	0x1524(r9,r8),r1
 	addw	$1,r1
 	storw	r1,0x1524(r9,r8)
-	br	fn0000AE66
-0000B748                         A6 52 CD 11 18 9F 96 0A         .R......
-0000B750 11 32 18 DF 96 0A E0 18 7F FB A6 52 CB 11 18 9F .2.........R....
-0000B760 96 0A 11 32 18 DF 96 0A E0 18 F3 FB 74 5B B5 5B ...2........t[.[
-0000B770 61 5A 06 5A E0 18 75 FB 74 5B B5 5B 61 5A 06 5A aZ.Z..u.t[.[aZ.Z
-0000B780 E0 18 EF FB 18 9F 9A 0A 11 32 18 DF 9A 0A E0 18 .........2......
-0000B790 47 FB 18 9F 9A 0A 11 32 18 DF 9A 0A E0 18 BF FB G......2........
-0000B7A0 50 54 C0 61 EF A4 E0 57 50 08 00 52 05 16 0F B6 PT.a...WP..R....
-0000B7B0 00 50 02 16 1C 01 6F 94 4F 92 75 5B 82 55 FF C0 .P....o.O.u[.U..
-0000B7C0 D7 F7 4F 60 82 55 B4 54 78 04 84 61 80 55 00 C3 ..O`.U.Tx..a.U..
-0000B7D0 6A 00 40 60 04 57 1C 1F B4 54 78 00 84 61 80 55 j.@`.W...Tx..a.U
-0000B7E0 00 C3 5E 09 40 60 40 57 1C 1F B0 54 4C 00 80 61 ..^.@`@W...TL..a
-0000B7F0 02 C3 52 0A 42 60 20 57 1C 1F 18 C3 6A 04 00 54 ..R.B` W....j..T
-0000B800 08 EF 00 12 08 EF FC 11 08 C3 04 12 08 C3 F6 11 ................
-0000B810 5F 92 05 52 04 11 08 9F 0A 12 80 52 C9 11 00 52 _..R.......R...R
-0000B820 DA 10 48 9F 08 12 08 A4 28 AA 16 54 26 61 68 EA ..H.....(..T&ah.
-0000B830 20 61 40 F0 08 C3 08 12 08 C3 0A 12 BF 60 10 00  a@..........`..
-0000B840 67 02 9D 03 35 5A B1 5A 8A 00 E0 18 C3 FA 48 9F g...5Z.Z......H.
-0000B850 08 12 08 A4 28 AA 16 54 26 61 68 EA 20 61 40 F0 ....(..T&ah. a@.
-0000B860 28 9F 08 12 82 49 08 A4 48 AA 16 54 46 61 68 EA (....I..H..TFah.
-0000B870 40 61 20 F0 E0 1E 48 9F 0A 12 58 9F 08 12 1F 92 @a ...H...X.....
-0000B880 21 32 1A 5B 4A 45 5A 27 A8 DF 08 12 D4 52 DA 12 !2.[JEZ'.....R..
-0000B890 28 A4 48 AA 16 54 46 61 68 EA 42 61 A2 F0 08 9F (.H..TFah.Ba....
-0000B8A0 08 12 80 49 28 A4 48 AA 16 54 46 61 68 EA 42 61 ...I(.H..TFah.Ba
-0000B8B0 02 F0 08 9F 0A 12 B2 5A 10 00 03 59 23 39 31 46 .......Z...Y#91F
-0000B8C0 18 DF 08 12 B0 32 F3 FF 08 DF 0A 12 00 05 2E F6 .....2..........
-0000B8D0 10 01 40 05 A6 F6 82 55 FF C0 11 E8 4F 60 E0 18 ..@....U....O`..
-0000B8E0 E7 FE 34 32 48 DF 0A 12 E2 1F                   ..42H.....      
+	br	0000B2D4
+
+l0000B748:
+	cmpw	$A,r6
+	blt	0000B784
+
+l0000B74C:
+	loadw	0x152C(r9,r8),r1
+	addw	$1,r1
+	storw	r1,0x152C(r9,r8)
+	br	0000B2D4
+
+l0000B75A:
+	cmpw	$A,r6
+	blt	0000B792
+
+l0000B75E:
+	loadw	0x152C(r9,r8),r1
+	addw	$1,r1
+	storw	r1,0x152C(r9,r8)
+	br	0000B35A
+
+l0000B76C:
+	movw	r7,r4
+	movw	r11,r5
+	movw	$6,r1
+	movw	$0,r6
+	br	0000B2E8
+
+l0000B778:
+	movw	r7,r4
+	movw	r11,r5
+	movw	$6,r1
+	movw	$0,r6
+	br	0000B36E
+
+l0000B784:
+	loadw	0x1534(r9,r8),r1
+	addw	$1,r1
+	storw	r1,0x1534(r9,r8)
+	br	0000B2D4
+
+l0000B792:
+	loadw	0x1534(r9,r8),r1
+	addw	$1,r1
+	storw	r1,0x1534(r9,r8)
+	br	0000B35A
+
+l0000B7A0:
+	movd	$5,(r1,r0)
+	addd	r12,(r1,r0)
+	loadd	8(sp),ra
+	cmpd	(r1,r0),ra
+	sls	r0
+	cmpw	$0,r0
+	beq	0000B876
+
+l0000B7AE:
+	loadb	6(sp),r0
+	cmpb	$0,r0
+	beq	0000B876
+
+l0000B7B4:
+	push	$2,r12
+	loadw	8(sp),r6
+	loadw	4(sp),r4
+	movw	r7,r5
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000AF94
+	addd	$4,sp
+
+l0000B7C4:
+	movd	(r3,r2),(r9,r8)
+	movd	$478,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	movd	(r1,r0),(r9,r8)
+
+l0000B7CE:
+	storw	$0,0x6A(r1,r0)
+	addd	$4,(r1,r0)
+	cmpd	(r5,r4),(r1,r0)
+	bne	0000B7CE
+
+l0000B7D8:
+	movd	$78,(r5,r4)
+	addd	(r9,r8),(r5,r4)
+	movd	(r1,r0),(r9,r8)
+
+l0000B7E0:
+	storw	$0,0x95E(r1,r0)
+	addd	$4,(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
+	bne	0000B7E0
+
+l0000B7EA:
+	movd	$4C,(r1,r0)
+	addd	(r9,r8),(r1,r0)
+
+l0000B7F0:
+	storw	$0,0xA52(r3,r2)
+	addd	$4,(r3,r2)
+	cmpd	(r1,r0),(r3,r2)
+	bne	0000B7F0
+
+l0000B7FA:
+	storw	$1,0x46A(r9,r8)
+	movd	$0,(r1,r0)
+	stord	(r1,r0),0x2400(r9,r8)
+	stord	(r1,r0),0x23F8(r9,r8)
+	storw	$0,0x1204(r9,r8)
+	storw	$0,0x11F6(r9,r8)
+	loadw	4(sp),r5
+	cmpw	$0,r5
+	beq	0000B83C
+
+l0000B816:
+	loadw	0x2414(r9,r8),r0
+	cmpw	$8,r0
+	blt	0000B84E
+
+l0000B81E:
+	cmpw	$0,r0
+	bge	0000B834
+
+l0000B822:
+	loadw	0x2410(r9,r8),r4
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r4,(r1,r0)
+
+l0000B834:
+	storw	$0,0x1208(r9,r8)
+	storw	$0,0x120A(r9,r8)
+
+l0000B83C:
+	addd	$16,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l0000B844:
+	movw	$3,r5
+	movw	$8A,r1
+	br	0000B30C
+
+l0000B84E:
+	loadw	0x2410(r9,r8),r4
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r3,r2)
+	movd	$1,(r7,r6)
+	addd	(r3,r2),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r3,r2),(r1,r0)
+	storb	r4,(r1,r0)
+	loadw	0x2410(r9,r8),r2
+	lshw	$-8,r2
+	loadd	8(r9,r8),(r1,r0)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r1,r0)
+	storb	r2,(r1,r0)
+	br	0000B834
+
+l0000B876:
+	loadw	0x2414(r9,r8),r4
+	loadw	0x2410(r9,r8),r5
+
+l0000B87E:
+	loadw	4(sp),r1
+	addw	$2,r2
+	movw	r1,r10
+	ashuw	r4,r10
+	orw	r10,r5
+	storw	r10,0x2410(r9,r8)
+	cmpw	$D,r4
+	bge	0000B8E2
+
+l0000B890:
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r10,(r3,r2)
+	loadw	0x2410(r9,r8),r0
+	lshw	$-8,r0
+	loadd	8(r9,r8),(r3,r2)
+	loadd	0x14(r9,r8),(r5,r4)
+	movd	$1,(r7,r6)
+	addd	(r5,r4),(r7,r6)
+	stord	(r7,r6),0x14(r9,r8)
+	addd	(r5,r4),(r3,r2)
+	storb	r0,(r3,r2)
+	loadw	0x2414(r9,r8),r0
+	movw	$10,r2
+	movb	r0,r3
+	subb	r3,r2
+	lshw	r3,r1
+	storw	r1,0x2410(r9,r8)
+	addw	$FFF3,r11
+	storw	r0,0x2414(r9,r8)
+
+l0000B8CC:
+	movd	$F62E,(r1,r0)
+	push	$2,r0
+	movd	$F6A6,(r5,r4)
+	movd	(r3,r2),(r9,r8)
+	bal	ra,fn0000A0E8
+	addd	$4,sp
+	br	0000B7C4
+
+l0000B8E2:
+	addw	$3,r3
+	storw	r4,0x2414(r9,r8)
+	br	0000B8CC
 
 l0000B8EA:
 	addw	$4,r4
 	storw	r4,0x2414(r9,r8)
-	br	0000B2BA
-0000B8F4             54 32 48 DF 0A 12 E0 18 87 FC 54 32     T2H.......T2
-0000B900 48 DF 0A 12 E0 18 2B FC 34 32 48 DF 0A 12 E0 18 H.....+.42H.....
-0000B910 C3 FB 18 9F 8E 00 10 5A 01 52 10 18 C3 FD 18 9F .......Z.R......
-0000B920 92 00 01 52 10 18 B9 FD 18 9F 9E 00 01 52 10 18 ...R.........R..
-0000B930 AF FD B2 54 80 03 82 61 E5 10 4D 60 2D 57 00 18 ...T...a..M`-W..
-0000B940 9F FD 0D 9F EA 00 00 52 09 1F 10 5A 0E DF 2C 00 .......R...Z..,.
-0000B950 E0 18 07 F9 B0 5A 12 00 0F D1 03 5B             .....Z.....[    
+	br	0000B5D4
+
+l0000B8F4:
+	addw	$5,r5
+	storw	r4,0x2414(r9,r8)
+	br	0000B580
+
+l0000B8FE:
+	addw	$5,r5
+	storw	r4,0x2414(r9,r8)
+	br	0000B52E
+
+l0000B908:
+	addw	$3,r3
+	storw	r4,0x2414(r9,r8)
+	br	0000B4D0
+
+l0000B912:
+	loadw	0x11C(r9,r8),r1
+	movw	$1,r0
+	cmpw	$0,r1
+	bne	0000B6DC
+
+l0000B91E:
+	loadw	0x124(r9,r8),r1
+	cmpw	$0,r1
+	bne	0000B6DC
+
+l0000B928:
+	loadw	0x13C(r9,r8),r1
+	cmpw	$0,r1
+	bne	0000B6DC
+
+l0000B932:
+	movd	$380,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	br	0000B942
+
+l0000B93A:
+	addd	$4,r13
+	cmpd	r13,(r3,r2)
+	beq	0000B6DC
+
+l0000B942:
+	loadw	0x1D4(r13),r0
+	cmpw	$0,r0
+	beq	0000B93A
+
+l0000B94A:
+	movw	$1,r0
+	storw	r0,0x58(ra)
+	br	0000B256
+
+l0000B954:
+	movw	$12,r0
+	storw	r0,2(sp)
+	movw	r0,r3
 
 l0000B95C:
 	movxw	r3,(r1,r0)
@@ -12953,204 +10955,147 @@ l0000B95C:
 	movd	(r3,r2),(r1,r0)
 	addd	(r1,r0),(r3,r2)
 	addd	(r3,r2),(r1,r0)
-	br	0000AEF4
-0000B96A                               3F C3 02 00 3F 91           ?...?.
-0000B970 E6 1F EF C3 02 00 3F 91 E2 1F B2 5A 10 00 2F D1 ......?....Z../.
-0000B980 23 5B ED 1E FF C3 02 00 3F 91 E9 1E B1 5A 11 00 #[......?....Z..
-0000B990 1F D1 13 5B E4 1E AF C3 02 00 3F 91 E0 1E CF C3 ...[......?.....
-0000B9A0 02 00 3F 91 EC 1D BF C3 02 00 3F 91 E8 1D DF C3 ..?.......?.....
-0000B9B0 02 00                                           ..              
+	br	0000B42C
 
-;; fn0000B9B2: 0000B9B2
-;;   Called from:
-;;     0000A43E (in fn0000A426)
-;;     0000A43E (in fn0000A438)
-;;     0000A43E (in fn0000A438)
-fn0000B9B2 proc
+l0000B96A:
+	storw	$3,2(sp)
 	loadw	2(sp),r3
 	br	0000B95C
-0000B9B6                   8F C3 02 00 3F 91 E0 1D 7F C3       ....?.....
-0000B9C0 02 00 3F 91 EC 1C 9F C3 02 00 3F 91 E8 1C 4F C3 ..?.......?...O.
-0000B9D0 02 00 3F 91 E4 1C 6F C3 02 00 3F 91 E0 1C 5F C3 ..?...o...?..._.
-0000B9E0 02 00 3F 91 EC 1B 00 00 1E 01 27 01 02 9F F6 11 ..?.......'.....
-0000B9F0 06 5F E2 AF F8 11 68 55 68 61 8E 61             ._....hUha.a    
 
-l0000B9FC:
-	storw	r4,(ra)
-	loadd	0x23E0(r3,r2),ra
-	addw	$1,r1
-	storw	r0,0x23EC(r3,r2)
-	addd	(r7,r6),ra
-	storb	r5,(ra)
-	cmpw	$0,r4
-	beq	0000BA80
+l0000B972:
+	storw	$E,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BA10:
-	loadw	0x2408(r3,r2),r0
-	addw	$1,r1
-	storw	r0,0x2408(r3,r2)
-	addw	$FFFF,r9
-	movzw	r5,(r1,r0)
-	movd	$F32E,(r7,r6)
-	addd	(r7,r6),(r1,r0)
-	loadb	(r1,r0),r0
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadw	0x8DC(r1,r0),r5
-	addw	$1,r1
-	storw	r5,0x8DC(r1,r0)
-	cmpw	$FF,r4
-	bhs	0000BA72
+l0000B97A:
+	movw	$10,r2
+	storw	r2,2(sp)
+	movw	r2,r3
+	br	0000B95C
 
-l0000BA3E:
-	lshw	$-9,r4
-	addw	$100,r11
-	movzw	r4,(r5,r4)
-	movd	$F42E,(r1,r0)
-	addd	(r1,r0),(r5,r4)
-	loadb	(r5,r4),r0
-	movzb	r0,(r1,r0)
+l0000B984:
+	storw	$F,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BA50:
-	movxw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	addd	(r3,r2),(r1,r0)
-	loadw	0x12BC(r1,r0),r4
-	addw	$1,r1
-	storw	r4,0x12BC(r1,r0)
-	loadw	0x23E8(r3,r2),r0
-	addw	$FFFF,r9
-	loadw	0x23EC(r3,r2),r1
-	cmpw	r0,r1
-	seq	r0
-	pop	$2,r7
-	popret	$1,ra
+l0000B98C:
+	movw	$11,r1
+	storw	r1,2(sp)
+	movw	r1,r3
+	br	0000B95C
 
-l0000BA72:
-	movzw	r4,(r1,r0)
-	movd	$F42E,(r5,r4)
-	addd	(r1,r0),(r5,r4)
-	loadb	(r5,r4),r0
-	movzb	r0,(r1,r0)
-	br	0000BA50
+l0000B996:
+	storw	$A,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BA80:
-	movzw	r5,(r1,r0)
-	ashud	$2,(r1,r0)
+l0000B99E:
+	storw	$C,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BA84:
-	addd	(r3,r2),(r1,r0)
-	loadw	0xD4(r1,r0),r4
-	addw	$1,r1
-	storw	r4,0xD4(r1,r0)
-	loadw	0x23E8(r3,r2),r0
-	addw	$FFFF,r9
-	loadw	0x23EC(r3,r2),r1
-	cmpw	r0,r1
-	seq	r0
-	pop	$2,r7
-	popret	$1,ra
-0000BAA2       00 00 00 05 EC E4 EE 0A 70 00 00 02 14 00   ........p.....
-0000BAB0 EE 0A                                           ..              
+l0000B9A6:
+	storw	$B,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BAB2:
-	movw	$2,r0
-	subw	r0,r2
-	movxw	r0,(r1,r0)
-	ashud	$2,(r1,r0)
-	movd	$FC50,(r3,r2)
+l0000B9AE:
+	storw	$D,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BABC:
-	storb	r5,0xC(r1,r0)
+l0000B9B6:
+	storw	$8,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BABE:
-	addd	(r3,r2),(r1,r0)
-	loadd	(r1,r0),(r1,r0)
-	jr	ra
-0000BAC4             1E 01                                   ..          
+l0000B9BE:
+	storw	$7,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
 
-l0000BAC6:
-	movw	r4,r2
-	movzw	r5,(r5,r4)
-	movzw	r2,(r3,r2)
-	bal	ra,fn0000D984
-	popret	$1,ra
-0000BAD2       00 00 1E 01 42 55 00 C0 C4 1E 1E 03 00 00   ....BU........
+l0000B9C6:
+	storw	$9,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
+
+l0000B9CE:
+	storw	$4,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
+
+l0000B9D6:
+	storw	$6,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
+
+l0000B9DE:
+	storw	$5,2(sp)
+	loadw	2(sp),r3
+	br	0000B95C
+0000B9E6                   00 00 1E 01 27 01 02 9F F6 11       ....'.....
+0000B9F0 06 5F E2 AF F8 11 68 55 68 61 8E 61 4E D0 E2 AF ._....hUha.aN...
+0000BA00 F0 11 10 32 02 DF F6 11 6E 61 5E F0 04 52 09 13 ...2....na^..R..
+0000BA10 02 9F 04 12 10 32 02 DF 04 12 94 32 50 5F 60 05 .....2.....2P_`.
+0000BA20 2E F3 60 61 00 B0 00 5D 00 5F 20 4C 20 61 50 9F ..`a...]._ L aP.
+0000BA30 6E 04 15 32 50 DF 6E 04 B4 52 FF 00 BB 11 94 49 n..2P.n..R.....I
+0000BA40 B4 32 00 01 44 5F 00 05 2E F4 04 61 04 B0 00 5D .2..D_.....a...]
+0000BA50 00 5E 20 4C 20 61 40 9F 5E 09 14 32 40 DF 5E 09 .^ L a@.^..2@.^.
+0000BA60 02 9F F4 11 90 32 12 9F F6 11 10 53 00 08 27 02 .....2.....S..'.
+0000BA70 1E 03 40 5F 40 05 2E F4 04 61 04 B0 00 5D E9 1E ..@_@....a...]..
+0000BA80 50 5F 20 4C 20 61 40 9F 6A 00 14 32 40 DF 6A 00 P_ L a@.j..2@.j.
+0000BA90 02 9F F4 11 90 32 12 9F F6 11 10 53 00 08 27 02 .....2.....S..'.
+0000BAA0 1E 03 00 00 00 05 EC E4 EE 0A 70 00 00 02 14 00 ..........p.....
+0000BAB0 EE 0A 20 5A 20 3B 00 5E 20 4C 20 05 50 FC 20 61 .. Z ;.^ L .P. a
+0000BAC0 00 A0 EE 0A 1E 01 42 5B 54 5F 22 5F 00 C0 B8 1E ......B[T_"_....
+0000BAD0 1E 03 00 00 1E 01 42 55 00 C0 C4 1E 1E 03 00 00 ......BU........
 
 ;; fn0000BAE0: 0000BAE0
 ;;   Called from:
 ;;     0000C0F6 (in fn0000C0EE)
 fn0000BAE0 proc
-	push	$1,r13,ra
-	push	$6,r7
-	addd	$FFC8,sp
+	push	$2,r13,ra
+	push	$7,r7
+	addd	$-56,sp
 	movd	$4E,(r1,r0)
 	addd	sp,(r1,r0)
 	movd	r12,(r5,r4)
 	loadd	(r1,r0),(r9,r8)
-
-;; fn0000BAF2: 0000BAF2
-;;   Called from:
-;;     0000B2D6 (in fn0000B308)
-;;     0000BAF0 (in fn0000BAE0)
-fn0000BAF2 proc
 	stord	(r9,r8),0x50(sp)
 	movd	r13,(r3,r2)
 	lshd	$-16,r13
 	stord	r13,0x40(sp)
 	movd	$FFFF,(r9,r8)
 	andd	(r3,r2),(r9,r8)
-
-;; fn0000BB06: 0000BB06
-;;   Called from:
-;;     0000B252 (in fn0000B218)
-;;     0000BB02 (in fn0000BAF2)
-;;     0000BB02 (in fn0000BAF2)
-fn0000BB06 proc
 	stord	(r9,r8),(sp)
 	loadd	0x50(sp),r13
 	cmpd	$1,r13
+	beq	0000BC62
 
-;; fn0000BB0E: 0000BB0E
-;;   Called from:
-;;     0000B45A (in fn0000B308)
-;;     0000BB0C (in fn0000BB06)
-fn0000BB0E proc
-	beq	fn0000BDB6
-
-;; fn0000BB12: 0000BB12
-;;   Called from:
-;;     0000BB0E (in fn0000BB0E)
-;;     0000BB0E (in fn0000BB06)
-;;     0000BB3E (in fn0000BB3E)
-;;     0000BC32 (in fn0000BC32)
-fn0000BB12 proc
+l0000BB12:
 	cmpd	$0,(r5,r4)
-	beq	fn0000C674
+	beq	0000C0C4
 
 l0000BB18:
 	cmpd	$F,r13
-	bhs	0000BE12
+	bhs	0000BC96
 
 l0000BB1E:
 	cmpd	$15AF,r13
-	bhs	fn0000C68E
+	bhs	0000C0D8
 
 l0000BB26:
 	loadd	(sp),(r9,r8)
 	loadd	0x50(sp),r13
-	addd	$EA50,r13
+
+l0000BB2C:
+	addd	$-5552,r13
 	stord	r13,0x58(sp)
 	movd	$15B0,(r1,r0)
 	addd	r12,(r1,r0)
 	stord	(r1,r0),0x48(sp)
 
-;; fn0000BB3E: 0000BB3E
-;;   Called from:
-;;     0000BC30 (in fn0000BB8E)
-fn0000BB3E proc
+l0000BB3E:
 	loadb	(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13184,25 +11129,11 @@ fn0000BB3E proc
 	addd	(r3,r2),(r5,r4)
 	stord	(r5,r4),0x10(sp)
 	loadb	6(r12),r2
-
-;; fn0000BB84: 0000BB84
-;;   Called from:
-;;     0000B2C0 (in fn0000B308)
-;;     0000BB3A (in fn0000BB12)
-fn0000BB84 proc
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
 	addd	(r3,r2),(r5,r4)
 	stord	(r5,r4),0x14(sp)
 	loadb	7(r12),r2
-
-;; fn0000BB8E: 0000BB8E
-;;   Called from:
-;;     0000B2B6 (in fn0000B2B0)
-;;     0000B2DC (in fn0000B308)
-;;     0000B362 (in fn0000B308)
-;;     0000BB8C (in fn0000BB84)
-fn0000BB8E proc
 	movzb	r2,(r3,r2)
 	movzw	r2,(r3,r2)
 	addd	(r3,r2),(r5,r4)
@@ -13253,8 +11184,6 @@ fn0000BB8E proc
 	loadd	0x10(sp),r13
 	addd	r13,(r1,r0)
 	loadd	0x14(sp),r13
-
-l0000BBFC:
 	addd	r13,(r1,r0)
 	loadd	0x18(sp),r13
 	addd	r13,(r1,r0)
@@ -13272,81 +11201,70 @@ l0000BBFC:
 	loadd	0x40(sp),r13
 	addd	(r1,r0),r13
 	stord	r13,0x40(sp)
-	addd	$10,r12
+	addd	$16,r12
 	loadd	0x48(sp),(r1,r0)
 	cmpd	r12,(r1,r0)
-	bne	fn0000BB3E
+	bne	0000BB3E
 
-;; fn0000BC32: 0000BC32
-;;   Called from:
-;;     0000BC30 (in fn0000BB8E)
-;;     0000BC30 (in fn0000BB3E)
-fn0000BC32 proc
+l0000BC32:
 	movd	$FFF1,(r5,r4)
 	movd	(r3,r2),(r9,r8)
 	bal	ra,fn0000D4EC
 	movd	(r9,r8),(r1,r0)
 	movd	$FFF1,(r5,r4)
-
-;; fn0000BC42: 0000BC42
-;;   Called from:
-;;     0000B592 (in fn0000B308)
-;;     0000BC3E (in fn0000BC32)
-fn0000BC42 proc
 	loadd	0x40(sp),(r3,r2)
 	bal	ra,fn0000D4EC
 	stord	(r1,r0),0x40(sp)
 	loadd	0x58(sp),r13
 	cmpd	$15AF,r13
-	bhs	fn0000BFBE
+	bhs	0000BE0A
 
-;; fn0000BC5A: 0000BC5A
-;;   Called from:
-;;     0000BC56 (in fn0000BC42)
-;;     0000BC56 (in fn0000BC42)
-fn0000BC5A proc
+l0000BC5A:
 	stord	r13,0x50(sp)
-	br	0000B9FC
-0000BC62       04 B0 00 5D 02 5F 82 61 92 00 00 00 F0 FF   ...]._.a......
-0000BC70 A0 18 5E 04 0F AF 20 00 20 61 90 00 00 00 F0 FF ..^... . a......
-0000BC80 B4 10                                           ..              
+	br	0000BB2C
+
+l0000BC62:
+	loadb	(r5,r4),r0
+	movzb	r0,(r1,r0)
+	movzw	r0,(r3,r2)
+	addd	(r9,r8),(r3,r2)
+	cmpd	$FFF0,(r3,r2)
+	blo	0000C0CE
+
+l0000BC74:
+	loadd	0x40(sp),(r1,r0)
+	addd	(r3,r2),(r1,r0)
+	cmpd	$FFF0,(r1,r0)
+	bhs	0000BC88
 
 l0000BC82:
 	addd	$FFFF000F,(r1,r0)
+
+l0000BC88:
 	ashud	$16,(r1,r0)
 	ord	(r3,r2),(r1,r0)
+	addd	$56,sp
+	pop	$7,r7
+	popret	$2,r13,ra
 
-l0000BC8C:
-	loadw	(r1,r0),r2
+l0000BC96:
+	cmpd	$0,r13
+	beq	0000BDDA
 
-l0000BC8E:
-	addd	$38,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000BC96                   0D 56 00 18 42 01 04 B0 00 5D       .V..B....]
-0000BCA0 00 5F 8F A0 08 61 8F E0                         ._...a..        
-
-l0000BCA8:
+l0000BC9C:
+	loadb	(r5,r4),r0
+	movzb	r0,(r1,r0)
+	movzw	r0,(r1,r0)
+	loadd	(sp),(r9,r8)
+	addd	(r1,r0),(r9,r8)
+	stord	(r9,r8),(sp)
 	loadd	0x40(sp),(r1,r0)
-
-;; fn0000BCAC: 0000BCAC
-;;   Called from:
-;;     0000B53C (in fn0000B308)
-;;     0000BCA8 (in fn0000C6E8)
-fn0000BCAC proc
 	addd	(r9,r8),(r1,r0)
 	stord	(r1,r0),0x40(sp)
 	cmpd	$1,r13
-	beq	fn0000BF00
+	beq	0000BDDA
 
-;; fn0000BCB8: 0000BCB8
-;;   Called from:
-;;     0000BCB4 (in fn0000BCAC)
-;;     0000BCB4 (in fn0000BCAC)
-;;     0000BCD0 (in fn0000C6E8)
-;;     0000BD10 (in fn0000BD10)
-;;     0000C80E (in fn0000C6E8)
-fn0000BCB8 proc
+l0000BCB8:
 	loadb	1(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13355,16 +11273,8 @@ fn0000BCB8 proc
 	loadd	0x40(sp),(r2,r1)
 	addd	(r9,r8),(r2,r1)
 	stord	(r2,r1),0x40(sp)
-
-l0000BCCA:
-	addd	$562D1800,(r1,r0)
-
-l0000BCCC:
 	cmpd	$2,r13
-	beq	0000BEE6
-
-l0000BCD0:
-	push	$0,r12
+	beq	0000BDDA
 
 l0000BCD2:
 	movd	(r3,r2),(r2,r1)
@@ -13376,32 +11286,20 @@ l0000BCD2:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$3,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BCE8:
 	loadb	3(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
-
-l0000BCF0:
 	stord	(r9,r8),(sp)
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$4,r13
+	beq	0000BDDA
 
-;; fn0000BCFA: 0000BCFA
-;;   Called from:
-;;     0000B246 (in fn0000B218)
-;;     0000BCF8 (in fn0000BCB8)
-fn0000BCFA proc
-	beq	fn0000BDDA
-
-;; fn0000BCFC: 0000BCFC
-;;   Called from:
-;;     0000BCFA (in fn0000BCFA)
-;;     0000BCFA (in fn0000BCFA)
-fn0000BCFC proc
+l0000BCFC:
 	loadb	4(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13410,13 +11308,9 @@ fn0000BCFC proc
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$5,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
-;; fn0000BD10: 0000BD10
-;;   Called from:
-;;     0000B4EC (in fn0000B308)
-;;     0000BD0E (in fn0000BCFC)
-fn0000BD10 proc
+l0000BD10:
 	loadb	5(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13425,7 +11319,7 @@ fn0000BD10 proc
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$6,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BD24:
 	loadb	6(r5,r4),r0
@@ -13436,13 +11330,7 @@ l0000BD24:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$7,r13
-
-;; fn0000BD36: 0000BD36
-;;   Called from:
-;;     0000BF38 (in fn0000BF32)
-;;     0000BF38 (in fn0000BF1E)
-fn0000BD36 proc
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BD38:
 	loadb	7(r5,r4),r0
@@ -13453,7 +11341,7 @@ l0000BD38:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$8,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BD4C:
 	loadb	8(r5,r4),r0
@@ -13464,7 +11352,7 @@ l0000BD4C:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$9,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BD62:
 	loadb	9(r5,r4),r0
@@ -13475,7 +11363,7 @@ l0000BD62:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$A,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BD76:
 	loadb	0xA(r5,r4),r0
@@ -13484,29 +11372,11 @@ l0000BD76:
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),(sp)
 	addd	(r9,r8),(r3,r2)
-
-;; fn0000BD82: 0000BD82
-;;   Called from:
-;;     0000B48E (in fn0000B308)
-;;     0000BD80 (in fn0000BD36)
-fn0000BD82 proc
 	stord	(r3,r2),0x40(sp)
+	cmpd	$B,r13
+	beq	0000BDDA
 
-;; fn0000BD84: 0000BD84
-;;   Called from:
-;;     0000B304 (in fn0000B2F2)
-;;     0000B304 (in fn0000B2F2)
-;;     0000BD82 (in fn0000BD82)
-fn0000BD84 proc
-	addd	$56BD000B,(r1,r0)
-	beq	fn0000BDDA
-
-;; fn0000BD8C: 0000BD8C
-;;   Called from:
-;;     0000BD88 (in fn0000BD84)
-;;     0000BD8A (in fn0000BD82)
-;;     0000BD8A (in fn0000BD84)
-fn0000BD8C proc
+l0000BD8C:
 	loadb	0xB(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13515,7 +11385,7 @@ fn0000BD8C proc
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$C,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BDA0:
 	loadb	0xC(r5,r4),r0
@@ -13526,17 +11396,10 @@ l0000BDA0:
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$D,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
 l0000BDB4:
 	loadb	0xD(r5,r4),r0
-
-;; fn0000BDB6: 0000BDB6
-;;   Called from:
-;;     0000BB0E (in fn0000BB06)
-;;     0000BB0E (in fn0000BB0E)
-;;     0000BDB4 (in fn0000BD8C)
-fn0000BDB6 proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
@@ -13544,13 +11407,9 @@ fn0000BDB6 proc
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 	cmpd	$E,r13
-	beq	fn0000BDDA
+	beq	0000BDDA
 
-;; fn0000BDC8: 0000BDC8
-;;   Called from:
-;;     0000BDC6 (in fn0000BDB6)
-;;     0000BDC6 (in fn0000BDB6)
-fn0000BDC8 proc
+l0000BDC8:
 	loadb	0xE(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13559,26 +11418,7 @@ fn0000BDC8 proc
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x40(sp)
 
-;; fn0000BDDA: 0000BDDA
-;;   Called from:
-;;     0000BCE6 (in fn0000BCB8)
-;;     0000BCFA (in fn0000BCFA)
-;;     0000BCFA (in fn0000BCFA)
-;;     0000BD0E (in fn0000BCFC)
-;;     0000BD22 (in fn0000BD10)
-;;     0000BD36 (in fn0000BD36)
-;;     0000BD4A (in fn0000BD36)
-;;     0000BD60 (in fn0000BD36)
-;;     0000BD74 (in fn0000BD36)
-;;     0000BD8A (in fn0000BD84)
-;;     0000BD8A (in fn0000BD82)
-;;     0000BD8A (in fn0000BD84)
-;;     0000BD9E (in fn0000BD8C)
-;;     0000BDB2 (in fn0000BD8C)
-;;     0000BDC6 (in fn0000BDB6)
-;;     0000BDC6 (in fn0000BDB6)
-;;     0000BDD6 (in fn0000BDC8)
-fn0000BDDA proc
+l0000BDDA:
 	loadd	(sp),(r9,r8)
 	cmpd	$FFF0,(r9,r8)
 	bhs	0000BDEC
@@ -13595,19 +11435,22 @@ l0000BDEC:
 	movd	$0,(r1,r0)
 	movw	r2,r1
 	ord	(r9,r8),(r1,r0)
-	addd	$38,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000BE0A                               8F E0 0D 56 00 18           ...V..
-0000BE10 A8 02                                           ..              
+	addd	$56,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l0000BE0A:
+	stord	(r9,r8),(sp)
+	cmpd	$0,r13
+	beq	0000C0B6
 
 l0000BE12:
 	cmpd	$F,r13
-	bhs	fn0000C3AC
+	bhs	0000C0E0
 
 l0000BE18:
 	loadd	0x58(sp),(r1,r0)
-	addd	$FFF0,(r1,r0)
+	addd	$-16,(r1,r0)
 	movd	(r3,r2),(r1,r0)
 	lshd	$-28,(r3,r2)
 	stord	(r3,r2),0x60(sp)
@@ -13617,6 +11460,8 @@ l0000BE18:
 	movd	(r4,r3),r12
 	addd	(r1,r0),(r4,r3)
 	stord	(r4,r3),0x50(sp)
+
+l0000BE36:
 	loadb	(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13679,12 +11524,6 @@ l0000BE18:
 	stord	(r9,r8),0x14(sp)
 	loadb	0xC(r12),r8
 	movzb	r8,(r9,r8)
-
-;; fn0000BEB4: 0000BEB4
-;;   Called from:
-;;     0000B420 (in fn0000B308)
-;;     0000BEB2 (in fn0000BB12)
-fn0000BEB4 proc
 	movzw	r8,(r1,r0)
 	loadd	0x14(sp),(r9,r8)
 	addd	(r1,r0),(r9,r8)
@@ -13705,16 +11544,6 @@ fn0000BEB4 proc
 	movzb	r8,(r9,r8)
 	movzw	r8,(r1,r0)
 	loadd	0x48(sp),(r9,r8)
-
-l0000BEE6:
-	addd	$6108E08F,(r5,r4)
-
-;; fn0000BEE8: 0000BEE8
-;;   Called from:
-;;     0000BEE4 (in fn0000BEB4)
-;;     0000BEE4 (in fn0000BEB4)
-;;     0000BEE6 (in fn0000BCB8)
-fn0000BEE8 proc
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),(sp)
 	loadd	0x68(sp),(r1,r0)
@@ -13726,15 +11555,6 @@ fn0000BEE8 proc
 	addd	r13,(r1,r0)
 	loadd	4(sp),r13
 	addd	r13,(r1,r0)
-
-;; fn0000BF00: 0000BF00
-;;   Called from:
-;;     0000BCB4 (in fn0000BCAC)
-;;     0000BCB4 (in fn0000BCAC)
-;;     0000BD34 (in fn0000BD10)
-;;     0000BEFA (in fn0000BEE8)
-;;     0000BEFE (in fn0000BEE8)
-fn0000BF00 proc
 	loadd	8(sp),(r3,r2)
 	addd	(r3,r2),(r1,r0)
 	loadd	0xC(sp),(r4,r3)
@@ -13748,83 +11568,30 @@ fn0000BF00 proc
 	loadd	0x38(sp),(r9,r8)
 	addd	(r1,r0),(r9,r8)
 	loadd	0x48(sp),(r1,r0)
-
-;; fn0000BF1E: 0000BF1E
-;;   Called from:
-;;     0000B38A (in fn0000B308)
-;;     0000BD36 (in fn0000BD36)
-;;     0000BF1A (in fn0000BF00)
-;;     0000BF3C (in fn0000BF3C)
-fn0000BF1E proc
 	addd	(r1,r0),(r9,r8)
 	loadd	(sp),(r2,r1)
 	addd	(r2,r1),(r9,r8)
 	loadd	0x40(sp),r13
 	addd	(r9,r8),r13
 	stord	r13,0x40(sp)
-	addd	$10,r12
-
-;; fn0000BF32: 0000BF32
-;;   Called from:
-;;     0000B3B2 (in fn0000B308)
-;;     0000BF2E (in fn0000BF1E)
-fn0000BF32 proc
+	addd	$16,r12
 	loadd	0x50(sp),(r1,r0)
 	cmpd	r12,(r1,r0)
-	bne	fn0000BD36
+	bne	0000BE36
 
-;; fn0000BF3C: 0000BF3C
-;;   Called from:
-;;     0000BF38 (in fn0000BF32)
-;;     0000BF38 (in fn0000BF1E)
-fn0000BF3C proc
+l0000BF3C:
 	loadd	0x58(sp),(r3,r2)
-	addd	$FFEF,(r3,r2)
+	addd	$-17,(r3,r2)
 	loadd	0x60(sp),(r1,r0)
 	ashud	$4,(r1,r0)
 	subd	(r3,r2),(r1,r0)
 	loadd	0x58(sp),(r1,r0)
-
-;; fn0000BF52: 0000BF52
-;;   Called from:
-;;     0000B3DA (in fn0000B308)
-;;     0000BF4E (in fn0000BF3C)
-fn0000BF52 proc
 	andd	$F,(r1,r0)
-
-;; fn0000BF56: 0000BF56
-;;   Called from:
-;;     0000B39E (in fn0000B308)
-;;     0000BF52 (in fn0000BF52)
-fn0000BF56 proc
-	cinv	[i,d,u]
-
-;; fn0000BF58: 0000BF58
-;;   Called from:
-;;     0000BF52 (in fn0000BF52)
-;;     0000BF56 (in fn0000BF56)
-fn0000BF58 proc
 	cmpd	$0,(r1,r0)
-	beq	fn0000C1D6
+	beq	0000C098
 
-;; fn0000BF5E: 0000BF5E
-;;   Called from:
-;;     0000BF58 (in fn0000BF56)
-;;     0000BF5A (in fn0000BF58)
-;;     0000BF5A (in fn0000BF58)
-;;     0000BF7A (in fn0000BF7A)
-;;     0000BF92 (in fn0000BF92)
-;;     0000BFBA (in fn0000BFBA)
-;;     0000C1A2 (in fn0000C1A2)
-;;     0000C1BA (in fn0000C1BA)
-fn0000BF5E proc
+l0000BF5E:
 	loadb	(r12),r0
-
-;; fn0000BF60: 0000BF60
-;;   Called from:
-;;     0000B3A8 (in fn0000B308)
-;;     0000BF5E (in fn0000BF5E)
-fn0000BF60 proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
 	loadd	(sp),(r9,r8)
@@ -13834,58 +11601,21 @@ fn0000BF60 proc
 	addd	(r9,r8),(r1,r0)
 	stord	(r1,r0),0x40(sp)
 	cmpd	$0,(r3,r2)
+	beq	0000C098
 
-;; fn0000BF76: 0000BF76
-;;   Called from:
-;;     0000B3C6 (in fn0000B308)
-;;     0000BF74 (in fn0000BF60)
-fn0000BF76 proc
-	beq	fn0000C1BA
-
-;; fn0000BF7A: 0000BF7A
-;;   Called from:
-;;     0000BF76 (in fn0000BF76)
-;;     0000BF76 (in fn0000BF60)
-fn0000BF7A proc
+l0000BF7A:
 	movd	(r5,r4),(r1,r0)
-
-;; fn0000BF7C: 0000BF7C
-;;   Called from:
-;;     0000B3D0 (in fn0000B308)
-;;     0000BF7A (in fn0000BF7A)
-fn0000BF7C proc
 	loadb	1(r12),r0
-
-;; fn0000BF7E: 0000BF7E
-;;   Called from:
-;;     0000B3EE (in fn0000B308)
-;;     0000BF7C (in fn0000BF7C)
-fn0000BF7E proc
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
-
-;; fn0000BF84: 0000BF84
-;;   Called from:
-;;     0000B394 (in fn0000B308)
-;;     0000B3F8 (in fn0000B308)
-;;     0000B416 (in fn0000B308)
-;;     0000BF82 (in fn0000BF7E)
-;;     0000BF82 (in fn0000BF7C)
-fn0000BF84 proc
 	stord	(r9,r8),(sp)
-
-l0000BF86:
 	addd	(r9,r8),(r5,r4)
 	stord	(r5,r4),0x40(sp)
 	cmpd	$1,(r3,r2)
-	beq	fn0000C1A2
+	beq	0000C098
 
-;; fn0000BF92: 0000BF92
-;;   Called from:
-;;     0000BF8E (in fn0000BF84)
-;;     0000BF8E (in fn0000BF84)
-fn0000BF92 proc
+l0000BF92:
 	loadb	2(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13893,58 +11623,23 @@ fn0000BF92 proc
 	stord	(r9,r8),(sp)
 	addd	(r9,r8),(r5,r4)
 	stord	(r5,r4),0x40(sp)
+	cmpd	$2,(r3,r2)
+	beq	0000C098
 
-;; fn0000BFA0: 0000BFA0
-;;   Called from:
-;;     0000B3BC (in fn0000B308)
-;;     0000BF9E (in fn0000BF92)
-fn0000BFA0 proc
-	addd	$5622170A,(r1,r0)
-
-;; fn0000BFA6: 0000BFA6
-;;   Called from:
-;;     0000BFA0 (in fn0000BFA0)
-;;     0000BFA2 (in fn0000BFA0)
-fn0000BFA6 proc
+l0000BFA6:
 	loadb	3(r12),r0
-
-;; fn0000BFA8: 0000BFA8
-;;   Called from:
-;;     0000B3E4 (in fn0000B308)
-;;     0000BFA6 (in fn0000BFA6)
-fn0000BFA8 proc
 	movzb	r0,(r1,r0)
-
-;; fn0000BFAA: 0000BFAA
-;;   Called from:
-;;     0000B402 (in fn0000B308)
-;;     0000B40C (in fn0000B308)
-;;     0000BFA8 (in fn0000BFA8)
-fn0000BFAA proc
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),(sp)
-
-l0000BFB0:
 	addd	(r9,r8),(r5,r4)
 	stord	(r5,r4),0x40(sp)
 	cmpd	$3,(r3,r2)
 	beq	0000C098
 
-;; fn0000BFBA: 0000BFBA
-;;   Called from:
-;;     0000BFB8 (in fn0000BFAA)
-;;     0000BFB8 (in fn0000BFA8)
-fn0000BFBA proc
+l0000BFBA:
 	loadb	4(r12),r0
 	movzb	r0,(r1,r0)
-
-;; fn0000BFBE: 0000BFBE
-;;   Called from:
-;;     0000BC56 (in fn0000BC42)
-;;     0000BC56 (in fn0000BC42)
-;;     0000BFBC (in fn0000BFBA)
-fn0000BFBE proc
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),(sp)
@@ -13953,14 +11648,7 @@ fn0000BFBE proc
 	cmpd	$4,(r3,r2)
 	beq	0000C098
 
-;; fn0000BFCE: 0000BFCE
-;;   Called from:
-;;     0000BFA4 (in fn0000BFA0)
-;;     0000BFB8 (in fn0000BFA8)
-;;     0000BFCC (in fn0000BFBE)
-;;     0000BFCC (in fn0000BFBE)
-;;     0000BFCC (in fn0000BFBE)
-fn0000BFCE proc
+l0000BFCE:
 	loadb	5(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -13990,17 +11678,10 @@ l0000BFF6:
 	stord	(r9,r8),(sp)
 	addd	(r9,r8),(r5,r4)
 	stord	(r5,r4),0x40(sp)
-
-;; fn0000C004: 0000C004
-;;   Called from:
-;;     0000C552 (in fn0000C3AC)
-;;     0000C552 (in fn0000C3AC)
-fn0000C004 proc
-	addd	$56721408,(r1,r0)
-
-l0000C006:
 	cmpd	$7,(r3,r2)
 	beq	0000C098
+
+l0000C00A:
 	loadb	8(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -14085,28 +11766,51 @@ l0000C098:
 	bal	ra,fn0000D4EC
 	stord	(r1,r0),0x40(sp)
 	loadd	(sp),(r9,r8)
+
+l0000C0B6:
 	ashud	$16,(r1,r0)
 	ord	(r9,r8),(r1,r0)
-	addd	$38,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-0000C0C4             10 54 BF 60 38 00 67 02 9D 03 22 00     .T.`8.g...".
-0000C0D0 FF FF 0F 00 E0 18 A1 FB DF EF 2C 00 E0 18 3D FD ..........,...=.
-0000C0E0 2F AF 28 00 B2 60 4F EA E0 18 77 FE 00 00       /.(..`O...w...  
+	addd	$56,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l0000C0C4:
+	movd	$1,(r1,r0)
+	addd	$56,sp
+	pop	$7,r7
+	popret	$2,r13,ra
+
+l0000C0CE:
+	addd	$FFFF000F,(r3,r2)
+	br	0000BC74
+
+l0000C0D8:
+	stord	r13,0x58(sp)
+	br	0000BE18
+
+l0000C0E0:
+	loadd	0x50(sp),(r3,r2)
+	addd	$-5553,(r3,r2)
+	br	0000BF5E
+0000C0EC                                     00 00                   ..  
 
 ;; fn0000C0EE: 0000C0EE
 ;;   Called from:
-;;     000036C8 (in fn0000356E)
-;;     0000474C (in fn000046DC)
+;;     00003376 (in fn000030F2)
+;;     000036C8 (in fn000033F8)
+;;     00003914 (in fn000033F8)
+;;     0000474C (in fn000046AC)
+;;     0000483C (in fn00004794)
+;;     00005038 (in fn00004CD4)
 fn0000C0EE proc
-	push	$1,ra
-	push	$0,r7
+	push	$2,ra
+	push	$1,r7
 	movzw	r6,(r7,r6)
-	push	$1,r6
+	push	$2,r6
 	bal	ra,fn0000BAE0
 	addd	$4,sp
-	pop	$0,r7
-	popret	$1,ra
+	pop	$1,r7
+	popret	$2,ra
 0000C100 00 00 9D 01 58 01 28 55 4A 55 06 52 60 14 C0 05 ....X.(UJU.R`...
 0000C110 FF FF 14 00 2C B0 6D 5E D4 55 C2 55 00 C0 3C 12 ....,.m^.U.U..<.
 0000C120 02 55 00 05 FF FF 14 00 A0 B0 0C 61 08 4B 14 00 .U.........a.K..
@@ -14117,93 +11821,22 @@ fn0000C0EE proc
 0000C170 00 00 F0 FF B4 10 22 00 FF FF 0F 00 02 4D 14 00 ......"......M..
 0000C180 20 90 58 02 9D 03 00 05 F0 FF EA 1E 90 54 58 02  .X..........TX.
 0000C190 9D 03 00 00 9D 01 58 01 28 55 4A 55 06 52 60 14 ......X.(UJU.R`.
-0000C1A0 C0 05                                           ..              
-
-;; fn0000C1A2: 0000C1A2
-;;   Called from:
-;;     0000BF8E (in fn0000BF84)
-;;     0000BF8E (in fn0000BF84)
-fn0000C1A2 proc
-	Invalid
-	andd	(r3,r2),r12
-	movxw	r6,r13
-	movd	(r5,r4),r13
-	movd	(r3,r2),r12
-	bal	ra,fn0000D358
-	movd	(r3,r2),(r1,r0)
-	movd	$FFFF,(r1,r0)
-	andd	(r11,r10),(r1,r0)
-
-;; fn0000C1BA: 0000C1BA
-;;   Called from:
-;;     0000BF76 (in fn0000BF76)
-;;     0000BF76 (in fn0000BF60)
-fn0000C1BA proc
-	loadb	(r1,r0),r10
-	addd	(r1,r0),r12
-	lshd	$-16,(r9,r8)
-	subd	(r9,r8),r13
-	lshd	$-16,(r11,r10)
-	addd	(r9,r8),(r11,r10)
-	movd	$FFF1,(r5,r4)
-	bal	ra,fn0000D4EC
-	addd	(r1,r0),(r11,r10)
-	movd	$FFF1,(r3,r2)
-
-;; fn0000C1D6: 0000C1D6
-;;   Called from:
-;;     0000BF58 (in fn0000BF56)
-;;     0000BF5A (in fn0000BF58)
-;;     0000BF5A (in fn0000BF58)
-;;     0000C1D2 (in fn0000C1BA)
-fn0000C1D6 proc
-	addd	(r11,r10),(r3,r2)
-	cmpd	$0,r12
-	beq	0000C218
-
-l0000C1DC:
-	movd	$FFFFFFFF,(r1,r0)
-	addd	r12,(r1,r0)
-	cmpd	$FFF0,(r1,r0)
-	bhs	0000C1F0
-
-l0000C1E8:
-	movd	$FFFF000E,(r1,r0)
-	addd	r12,(r1,r0)
-
-l0000C1F0:
-	cmpd	$1FFE1,(r3,r2)
-	bhs	0000C200
-
-l0000C1F8:
-	movd	$FFFF000F,(r3,r2)
-	addd	(r11,r10),(r3,r2)
-
-l0000C200:
-	cmpd	$FFF0,(r3,r2)
-	bhs	0000C20E
-
-l0000C208:
-	addd	$FFFF000F,(r3,r2)
-
-l0000C20E:
-	ashud	$16,(r3,r2)
-	ord	(r3,r2),(r1,r0)
-	pop	$5,r8
-	popret	$1,r13,ra
-
-l0000C218:
-	movd	$FFF0,(r1,r0)
-	br	0000C1F0
-0000C21E                                           90 54               .T
+0000C1A0 C0 05 FF FF 14 00 2C B0 6D 5E D4 55 C2 55 00 C0 ......,.m^.U.U..
+0000C1B0 AA 11 02 55 00 05 FF FF 14 00 A0 B0 0C 61 08 4B ...U.........a.K
+0000C1C0 14 00 D8 C0 0A 4B 8A 61 40 05 F1 FF 00 C0 20 13 .....K.a@..... .
+0000C1D0 0A 61 20 05 F1 FF A2 61 0C 56 0F 11 90 54 C0 61 .a ....a.V...T.a
+0000C1E0 90 00 00 00 F0 FF B5 10 70 00 FF FF 0E 00 C0 61 ........p......a
+0000C1F0 92 00 01 00 E1 FF B5 10 72 00 FF FF 0F 00 A2 61 ........r......a
+0000C200 92 00 00 00 F0 FF B4 10 22 00 FF FF 0F 00 02 4D ........"......M
+0000C210 14 00 20 90 58 02 9D 03 00 05 F0 FF EA 1E 90 54 .. .X..........T
 0000C220 58 02 9D 03                                     X...            
 
 ;; fn0000C224: 0000C224
 ;;   Called from:
 ;;     0000CB04 (in fn0000CAF8)
 fn0000C224 proc
-	push	$1,r13,ra
-	push	$6,r7
+	push	$2,r13,ra
+	push	$7,r7
 	movd	$16,r12
 	addd	sp,r12
 	loadd	(r12),r12
@@ -14242,42 +11875,44 @@ l0000C258:
 	loadd	(r3,r2),(r3,r2)
 	lshd	$-24,(r1,r0)
 	xord	(r3,r2),(r1,r0)
-	addd	$FFFFFFFF,r12
+	addd	$-1,r12
 	cmpd	$0,r12
 	bne	0000C24C
 
 l0000C27E:
 	xord	$FFFFFFFF,(r1,r0)
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 
 l0000C288:
 	movd	r13,(r5,r4)
 
 l0000C28A:
 	cmpd	$1F,r12
-	bhs	0000C82A
+	bhs	0000C55C
 
 l0000C292:
 	movd	(r11,r10),r13
 	movd	$FFE0,(r3,r2)
 	addd	r12,(r3,r2)
 	andd	$FFFFFFE0,(r3,r2)
-	addd	$20,(r3,r2)
+	addd	$32,(r3,r2)
 	addd	(r3,r2),r13
 	movd	$FC78,ra
+
+l0000C2AA:
 	loadd	(r11,r10),(r3,r2)
 	xord	(r3,r2),(r1,r0)
 	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$100,(r3,r2)
+	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r3,r2),(r7,r6)
 	movd	$FF,(r3,r2)
 	andd	(r1,r0),(r3,r2)
-	addd	$300,(r3,r2)
+	addd	$768,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	movd	(r5,r4),(r1,r0)
@@ -14291,7 +11926,7 @@ l0000C292:
 	xord	(r5,r4),(r3,r2)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r5,r4)
@@ -14300,13 +11935,13 @@ l0000C292:
 	movd	(r1,r0),(r7,r6)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r9,r8)
 	movd	$FF,(r1,r0)
 	andd	(r7,r6),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r3,r2),(r7,r6)
@@ -14320,7 +11955,7 @@ l0000C292:
 	xord	(r3,r2),(r1,r0)
 	lshd	$-24,(r7,r6)
 	andd	$FF,(r7,r6)
-	addd	$200,(r7,r6)
+	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
 	addd	ra,(r7,r6)
 	loadd	(r7,r6),(r3,r2)
@@ -14329,13 +11964,13 @@ l0000C292:
 	movd	(r1,r0),(r9,r8)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r7,r6)
 	movd	$FF,(r1,r0)
 	andd	(r9,r8),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r3,r2),(r9,r8)
@@ -14349,28 +11984,22 @@ l0000C292:
 	xord	(r1,r0),(r5,r4)
 	lshd	$-24,(r9,r8)
 	andd	$FF,(r9,r8)
-	addd	$200,(r9,r8)
+	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
 	addd	ra,(r9,r8)
 	loadd	(r9,r8),(r1,r0)
 	xord	(r1,r0),(r5,r4)
 	xord	(r5,r4),(r7,r6)
-
-;; fn0000C3AC: 0000C3AC
-;;   Called from:
-;;     0000BE14 (in fn0000BB12)
-;;     0000C3A8 (in fn0000C224)
-fn0000C3AC proc
 	movd	(r1,r0),(r7,r6)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r9,r8)
 	movd	$FF,(r1,r0)
 	andd	(r7,r6),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r5,r4),(r7,r6)
@@ -14384,7 +12013,7 @@ fn0000C3AC proc
 	xord	(r1,r0),(r3,r2)
 	lshd	$-24,(r7,r6)
 	andd	$FF,(r7,r6)
-	addd	$200,(r7,r6)
+	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
 	addd	ra,(r7,r6)
 	loadd	(r7,r6),(r1,r0)
@@ -14393,13 +12022,13 @@ fn0000C3AC proc
 	movd	(r1,r0),(r9,r8)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r7,r6)
 	movd	$FF,(r1,r0)
 	andd	(r9,r8),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r3,r2),(r9,r8)
@@ -14413,7 +12042,7 @@ fn0000C3AC proc
 	xord	(r1,r0),(r5,r4)
 	lshd	$-24,(r9,r8)
 	andd	$FF,(r9,r8)
-	addd	$200,(r9,r8)
+	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
 	addd	ra,(r9,r8)
 	loadd	(r9,r8),(r1,r0)
@@ -14422,13 +12051,13 @@ fn0000C3AC proc
 	movd	(r1,r0),(r7,r6)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r9,r8)
 	movd	$FF,(r1,r0)
 	andd	(r7,r6),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r5,r4),(r7,r6)
@@ -14442,7 +12071,7 @@ fn0000C3AC proc
 	xord	(r1,r0),(r3,r2)
 	lshd	$-24,(r7,r6)
 	andd	$FF,(r7,r6)
-	addd	$200,(r7,r6)
+	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
 	addd	ra,(r7,r6)
 	loadd	(r7,r6),(r1,r0)
@@ -14451,13 +12080,13 @@ fn0000C3AC proc
 	movd	(r1,r0),(r9,r8)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r7,r6)
 	movd	$FF,(r1,r0)
 	andd	(r9,r8),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r5,r4),(r9,r8)
@@ -14471,7 +12100,7 @@ fn0000C3AC proc
 	xord	(r1,r0),(r3,r2)
 	lshd	$-24,(r9,r8)
 	andd	$FF,(r9,r8)
-	addd	$200,(r9,r8)
+	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
 	addd	ra,(r9,r8)
 	loadd	(r9,r8),(r1,r0)
@@ -14480,13 +12109,13 @@ fn0000C3AC proc
 	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	loadd	(r1,r0),(r7,r6)
 	movd	$FF,(r1,r0)
 	andd	(r3,r2),(r1,r0)
-	addd	$300,(r1,r0)
+	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
 	movd	(r5,r4),(r3,r2)
@@ -14498,24 +12127,22 @@ fn0000C3AC proc
 	xord	(r5,r4),(r1,r0)
 	lshd	$-24,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$200,(r3,r2)
+	addd	$512,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r3,r2),(r5,r4)
 	xord	(r5,r4),(r1,r0)
 	xord	(r7,r6),(r1,r0)
-	addd	$20,(r11,r10)
+	addd	$32,(r11,r10)
 	cmpd	r13,(r11,r10)
-	bne	fn0000C004
+	bne	0000C2AA
 
-;; fn0000C556: 0000C556
-;;   Called from:
-;;     0000C552 (in fn0000C3AC)
-;;     0000C552 (in fn0000C3AC)
-fn0000C556 proc
+l0000C556:
 	andd	$1F,r12
+
+l0000C55C:
 	cmpd	$3,r12
-	bhs	0000CABA
+	bhs	0000C80C
 
 l0000C562:
 	loadd	(r13),(r3,r2)
@@ -14524,7 +12151,7 @@ l0000C562:
 	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$100,(r3,r2)
+	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
@@ -14534,7 +12161,7 @@ l0000C562:
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
 	andd	(r1,r0),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	loadd	(r3,r2),(r3,r2)
@@ -14542,7 +12169,7 @@ l0000C562:
 	xord	(r7,r6),(r3,r2)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
@@ -14551,7 +12178,7 @@ l0000C562:
 	movd	$FFFC,ra
 	addd	r12,ra
 	cmpd	$3,ra
-	bhs	0000CA36
+	bhs	0000C7FC
 
 l0000C5C6:
 	loadd	4(r13),(r3,r2)
@@ -14559,7 +12186,7 @@ l0000C5C6:
 	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$100,(r3,r2)
+	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
@@ -14569,7 +12196,7 @@ l0000C5C6:
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
 	andd	(r1,r0),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	loadd	(r3,r2),(r3,r2)
@@ -14577,7 +12204,7 @@ l0000C5C6:
 	xord	(r7,r6),(r3,r2)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
@@ -14586,7 +12213,7 @@ l0000C5C6:
 	movd	$FFF8,(r3,r2)
 	addd	r12,(r3,r2)
 	cmpd	$3,(r3,r2)
-	bhs	0000C9D6
+	bhs	0000C7FC
 
 l0000C626:
 	loadd	8(r13),(r3,r2)
@@ -14594,7 +12221,7 @@ l0000C626:
 	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$100,(r3,r2)
+	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
@@ -14604,7 +12231,7 @@ l0000C626:
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
 	andd	(r1,r0),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	loadd	(r3,r2),(r3,r2)
@@ -14612,46 +12239,24 @@ l0000C626:
 	xord	(r7,r6),(r3,r2)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
 	xord	(r3,r2),(r1,r0)
-
-;; fn0000C674: 0000C674
-;;   Called from:
-;;     0000BB14 (in fn0000BB12)
-;;     0000C672 (in fn0000C556)
-fn0000C674 proc
-	loadd	(r1,r0),(r3,r2)
 	xord	(r9,r8),(r1,r0)
 	movd	$FFF4,(r3,r2)
 	addd	r12,(r3,r2)
 	cmpd	$3,(r3,r2)
-	bhs	fn0000C976
+	bhs	0000C7FC
 
-;; fn0000C686: 0000C686
-;;   Called from:
-;;     0000C004 (in fn0000C004)
-;;     0000C28E (in fn0000C224)
-;;     0000C680 (in fn0000C674)
-;;     0000C682 (in fn0000C674)
-;;     0000CA36 (in fn0000C556)
-;;     0000CA42 (in fn0000C556)
-;;     0000CA46 (in fn0000C556)
-fn0000C686 proc
+l0000C686:
 	loadd	0xC(r13),(r7,r6)
 	xord	(r1,r0),(r7,r6)
 	movd	(r1,r0),(r7,r6)
-
-;; fn0000C68E: 0000C68E
-;;   Called from:
-;;     0000BB22 (in fn0000BB12)
-;;     0000C68C (in fn0000C686)
-fn0000C68E proc
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
@@ -14661,7 +12266,7 @@ fn0000C68E proc
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
 	andd	(r7,r6),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	loadd	(r1,r0),(r1,r0)
@@ -14670,7 +12275,7 @@ fn0000C68E proc
 	movd	(r1,r0),(r7,r6)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
@@ -14679,19 +12284,15 @@ fn0000C68E proc
 	movd	$FFF0,(r3,r2)
 	addd	r12,(r3,r2)
 	cmpd	$3,(r3,r2)
-	bhs	fn0000C914
+	bhs	0000C7FC
 
-;; fn0000C6E8: 0000C6E8
-;;   Called from:
-;;     0000C6E4 (in fn0000C68E)
-;;     0000C6E4 (in fn0000C68E)
-fn0000C6E8 proc
+l0000C6E8:
 	loadd	0x10(r13),(r7,r6)
 	xord	(r1,r0),(r7,r6)
 	movd	(r1,r0),(r7,r6)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
@@ -14701,7 +12302,7 @@ fn0000C6E8 proc
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
 	andd	(r7,r6),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	loadd	(r1,r0),(r1,r0)
@@ -14710,7 +12311,7 @@ fn0000C6E8 proc
 	movd	(r1,r0),(r7,r6)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
@@ -14727,7 +12328,7 @@ l0000C748:
 	movd	(r1,r0),(r7,r6)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$100,(r1,r0)
+	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
@@ -14737,10 +12338,8 @@ l0000C748:
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
 	andd	(r7,r6),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
-
-l0000C778:
 	addd	(r11,r10),(r5,r4)
 	loadd	(r1,r0),(r1,r0)
 	loadd	(r5,r4),(r3,r2)
@@ -14748,15 +12347,12 @@ l0000C778:
 	movd	(r1,r0),(r7,r6)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r1,r0)
 	xord	(r3,r2),(r1,r0)
 	xord	(r9,r8),(r1,r0)
-
-l0000C79C:
-	loadd	(r1,r0),(r9,r8)
 	movd	$FFE8,(r3,r2)
 	addd	r12,(r3,r2)
 	cmpd	$3,(r3,r2)
@@ -14768,18 +12364,16 @@ l0000C7A8:
 	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
-	addd	$100,(r3,r2)
+	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
 	movd	$FF,(r5,r4)
 	andd	(r1,r0),(r5,r4)
-	addd	$300,(r5,r4)
+	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
 	movd	(r3,r2),(r1,r0)
-
-l0000C7D4:
 	lshd	$-8,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
@@ -14788,7 +12382,7 @@ l0000C7D4:
 	xord	(r7,r6),(r3,r2)
 	lshd	$-24,(r1,r0)
 	andd	$FF,(r1,r0)
-	addd	$200,(r1,r0)
+	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r1,r0),(r11,r10)
 	loadd	(r11,r10),(r1,r0)
@@ -14800,8 +12394,10 @@ l0000C7FC:
 	addd	$4,ra
 	addd	ra,r13
 	andd	$3,r12
+
+l0000C80C:
 	cmpd	$0,r12
-	beq	0000BCF0
+	beq	0000C27E
 
 l0000C812:
 	movd	$FC78,(r5,r4)
@@ -14812,13 +12408,11 @@ l0000C812:
 	andd	$FF,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r5,r4),(r3,r2)
-
-l0000C82A:
 	loadd	(r3,r2),(r9,r8)
 	lshd	$-24,(r1,r0)
 	xord	(r9,r8),(r1,r0)
 	cmpd	$1,r12
-	beq	0000BCCA
+	beq	0000C27E
 
 l0000C838:
 	loadb	1(r13),r2
@@ -14832,7 +12426,7 @@ l0000C838:
 	lshd	$-24,(r1,r0)
 	xord	(r9,r8),(r1,r0)
 	cmpd	$2,r12
-	beq	0000BCA8
+	beq	0000C27E
 
 l0000C85A:
 	loadb	2(r13),r2
@@ -14846,8 +12440,8 @@ l0000C85A:
 	lshd	$-24,(r1,r0)
 	xord	(r3,r2),(r1,r0)
 	xord	$FFFFFFFF,(r1,r0)
-	pop	$6,r7
-	popret	$1,r13,ra
+	pop	$7,r7
+	popret	$2,r13,ra
 0000C880 00 00 9D 01 67 01 BF 60 F0 FE 2E 55 4F EF 0C 01 ....g..`...UO...
 0000C890 6F DF 04 01 06 52 D0 18 2E 02 70 00 B8 ED 20 83 o....R....p... .
 0000C8A0 0F E0 F0 55 FF DF 08 01 1F DF 0A 01 B4 54 7C 00 ...U.........T|.
@@ -14857,1142 +12451,213 @@ l0000C85A:
 0000C8E0 00 56 00 11 06 54 F2 55 14 54 14 00 04 B0 04 56 .V...T.U.T.....V
 0000C8F0 00 18 40 01 42 A0 14 00 46 A0 F0 4B 42 60 00 56 ..@.B...F..KB`.V
 0000C900 14 1F 68 E0 4A 60 48 60 AD 57 19 1E AF EF 00 01 ..h.J`H`.W......
-0000C910 BA 54 00 01                                     .T..            
-
-;; fn0000C914: 0000C914
-;;   Called from:
-;;     0000C6E4 (in fn0000C68E)
-;;     0000C6E4 (in fn0000C68E)
-fn0000C914 proc
-	addd	sp,(r11,r10)
-	loadw	0x210(sp),r8
-	loadw	0x214(sp),r9
-	movd	r12,r13
-
-l0000C920:
-	loadd	(r12),(r1,r0)
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000C946
-
-l0000C928:
-	movd	$0,(r7,r6)
-	movd	(r3,r2),r13
-
-l0000C92C:
-	movd	$1,(r5,r4)
-	andd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	fn0000CB60
-
-l0000C938:
-	loadd	(r3,r2),(r5,r4)
-	xord	(r5,r4),(r7,r6)
-	lshd	$-31,(r1,r0)
-	addd	$4,(r3,r2)
-	cmpd	$0,(r1,r0)
-	bne	0000C92C
-
-l0000C946:
-	stord	(r7,r6),(r9,r8)
-	addd	$4,r12
-	addd	$4,(r9,r8)
-	cmpd	r12,(r11,r10)
-	bne	0000C920
-
-l0000C950:
-	movd	(r11,r10),r13
-	loadw	0x210(sp),r8
-	loadw	0x214(sp),r9
-
-l0000C95A:
-	loadd	(r9,r8),(r1,r0)
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000C97E
-
-l0000C962:
-	movd	$0,(r7,r6)
-	movd	(r3,r2),sp
-
-l0000C966:
-	movd	$1,(r5,r4)
-	andd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	0000CA04
-
-l0000C970:
-	loadd	(r3,r2),(r5,r4)
-	xord	(r5,r4),(r7,r6)
-
-;; fn0000C976: 0000C976
-;;   Called from:
-;;     0000C55E (in fn0000C556)
-;;     0000C622 (in fn0000C556)
-;;     0000C680 (in fn0000C674)
-;;     0000C682 (in fn0000C674)
-;;     0000C94E (in fn0000C914)
-fn0000C976 proc
-	lshd	$-31,(r1,r0)
-	addd	$4,(r3,r2)
-	cmpd	$0,(r1,r0)
-	bne	0000C966
-
-l0000C97E:
-	stord	(r7,r6),(r11,r10)
-	addd	$4,(r9,r8)
-	addd	$4,(r11,r10)
-	loadd	0x200(sp),(r1,r0)
-	cmpd	(r9,r8),(r1,r0)
-	bne	0000C95A
-
-l0000C98C:
-	loadw	0x208(sp),r0
-	andw	$1,r1
-	cmpw	$0,r0
-	bne	0000CA64
-
-l0000C996:
-	loadw	0x208(sp),r1
-	ashuw	$-15,r1
-	storw	r1,0x20C(sp)
-	cmpw	$0,r1
-	beq	0000C9F4
-
-l0000C9A4:
-	loadw	0x210(sp),r10
-	loadw	0x214(sp),r11
-	movd	(r9,r8),r13
-
-l0000C9AE:
-	loadd	(r9,r8),(r1,r0)
-	movd	(r7,r6),(r1,r0)
-	cmpd	$0,(r1,r0)
-	beq	0000C9D2
-
-l0000C9B6:
-	movd	$0,(r7,r6)
-	movd	(r3,r2),r13
-
-l0000C9BA:
-	movd	$1,(r5,r4)
-	andd	(r1,r0),(r5,r4)
-	cmpd	$0,(r5,r4)
-	beq	0000CA1C
-
-l0000C9C4:
-	loadd	(r3,r2),(r5,r4)
-	xord	(r5,r4),(r7,r6)
-	lshd	$-31,(r1,r0)
-	addd	$4,(r3,r2)
-	cmpd	$0,(r1,r0)
-	bne	0000C9BA
-
-l0000C9D2:
-	stord	(r7,r6),(r11,r10)
-	addd	$4,(r9,r8)
-
-l0000C9D6:
-	addd	$4,(r11,r10)
-	cmpd	r12,(r9,r8)
-	bne	0000C9AE
-
-l0000C9DC:
-	loadw	0x20C(sp),r0
-	andw	$1,r1
-	cmpw	$0,r0
-	bne	0000CA94
-
-l0000C9E6:
-	loadw	0x208(sp),r0
-	ashuw	$-14,r0
-	storw	r0,0x208(sp)
-	cmpw	$0,r0
-	bne	0000C950
-
-l0000C9F4:
-	loadd	0x218(sp),(r1,r0)
-	xord	ra,(r1,r0)
-	addd	$110,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-
-l0000CA04:
-	lshd	$-31,(r1,r0)
-	addd	$4,(r3,r2)
-	cmpd	$0,(r1,r0)
-	bne	0000C966
-
-l0000CA0C:
-	stord	(r7,r6),(r11,r10)
-	addd	$4,(r9,r8)
-	addd	$4,(r11,r10)
-	loadd	0x200(sp),(r1,r0)
-	cmpd	(r9,r8),(r1,r0)
-	bne	0000C95A
-
-l0000CA1A:
-	br	0000C98C
-
-l0000CA1C:
-	lshd	$-31,(r1,r0)
-	addd	$4,(r3,r2)
-	cmpd	$0,(r1,r0)
-	bne	0000C9BA
-
-l0000CA24:
-	stord	(r7,r6),(r11,r10)
-	addd	$4,(r9,r8)
-	addd	$4,(r11,r10)
-	cmpd	r12,(r9,r8)
-	bne	0000C9AE
-
-l0000CA2E:
-	br	0000C9DC
-0000CA30 F0 4B 42 60 00 56                               .KB`.V          
-
-l0000CA36:
-	bne	0000C79C
-
-l0000CA3A:
-	stord	(r7,r6),(r9,r8)
-	addd	$4,(r11,r10)
-	addd	$4,(r9,r8)
-	cmpd	r13,(r11,r10)
-	bne	0000C778
-
-l0000CA46:
-	br	0000C7D4
-0000CA4A                               F0 4B 42 60 00 56           .KB`.V
+0000C910 BA 54 00 01 FA 61 8F 9F 08 01 9F 9F 0A 01 DC 55 .T...a.........U
+0000C920 0C A0 06 55 00 56 00 11 06 54 D2 55 14 54 14 00 ...U.V...T.U.T..
+0000C930 04 B0 04 56 00 18 16 01 42 A0 14 00 46 A0 F0 4B ...V....B...F..K
+0000C940 42 60 00 56 14 1F 68 E0 4C 60 48 60 AC 57 19 1E B`.V..h.L`H`.W..
+0000C950 DA 55 8F 9F 08 01 9F 9F 0A 01 08 A0 06 55 00 56 .U...........U.V
+0000C960 0F 10 06 54 F2 55 14 54 14 00 04 B0 04 56 0B 14 ...T.U.T.....V..
+0000C970 42 A0 14 00 46 A0 F0 4B 42 60 00 56 15 1F 6A E0 B...F..KB`.V..j.
+0000C980 48 60 4A 60 0F AF 00 01 08 57 18 1E 0F 9F 04 01 H`J`.....W......
+0000C990 10 22 00 52 18 16 1F 9F 04 01 F1 43 1F DF 06 01 .".R.......C....
+0000C9A0 01 52 09 12 AF 9F 08 01 BF 9F 0A 01 D8 55 08 A0 .R...........U..
+0000C9B0 06 55 00 56 0F 10 06 54 D2 55 14 54 14 00 04 B0 .U.V...T.U.T....
+0000C9C0 04 56 0D 12 42 A0 14 00 46 A0 F0 4B 42 60 00 56 .V..B...F..KB`.V
+0000C9D0 15 1F 6A E0 48 60 4A 60 8C 57 1A 1E 0F 9F 06 01 ..j.H`J`.W......
+0000C9E0 10 22 00 52 18 15 0F 9F 04 01 E0 43 0F DF 04 01 .".R.......C....
+0000C9F0 00 52 1F 1A 0F AF 0C 01 14 00 E0 A0 BF 60 10 01 .R...........`..
+0000CA00 67 02 9D 03 F0 4B 42 60 00 56 1E 1A 6A E0 48 60 g....KB`.V..j.H`
+0000CA10 4A 60 0F AF 00 01 08 57 11 1A E9 1B F0 4B 42 60 J`.....W.....KB`
+0000CA20 00 56 1C 1C 6A E0 48 60 4A 60 8C 57 11 1C E7 1D .V..j.H`J`.W....
+0000CA30 F0 4B 42 60 00 56 10 18 B3 FE 68 E0 4A 60 48 60 .KB`.V....h.J`H`
+0000CA40 AD 57 10 18 9B FE E0 18 C7 FE F0 4B 42 60 00 56 .W.........KB`.V
 0000CA50 10 18 DD FE 68 E0 4C 60 48 60 AC 57 10 18 C5 FE ....h.L`H`.W....
-0000CA60 E0 18 F1 FE                                     ....            
-
-l0000CA64:
-	cmpd	$0,ra
-	beq	0000C996
-
-l0000CA68:
-	movd	$0,(r5,r4)
-	movd	(r1,r0),r13
-
-l0000CA6C:
-	movd	$1,(r3,r2)
-	andd	ra,(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0000CA88
-
-l0000CA76:
-	loadd	(r1,r0),(r3,r2)
-	xord	(r3,r2),(r5,r4)
-	lshd	$-31,ra
-	addd	$4,(r1,r0)
-	cmpd	$0,ra
-	bne	0000CA6C
-
-l0000CA84:
-	movd	ra,(r5,r4)
-	br	0000C996
-
-l0000CA88:
-	lshd	$-31,ra
-	addd	$4,(r1,r0)
-	cmpd	$0,ra
-	bne	0000CA6C
-
-l0000CA90:
-	movd	ra,(r5,r4)
-	br	0000C996
-
-l0000CA94:
-	cmpd	$0,ra
-	beq	0000C9E6
-
-l0000CA98:
-	movd	$0,(r5,r4)
-	movd	(r1,r0),sp
-
-l0000CA9C:
-	movd	$1,(r3,r2)
-	andd	ra,(r3,r2)
-	cmpd	$0,(r3,r2)
-	beq	0000CAB8
-
-l0000CAA6:
-	loadd	(r1,r0),(r3,r2)
-	xord	(r3,r2),(r5,r4)
-	lshd	$-31,ra
-	addd	$4,(r1,r0)
-	cmpd	$0,ra
-	bne	0000CA9C
-
-l0000CAB4:
-	movd	ra,(r5,r4)
-	br	0000C9E6
-
-l0000CAB8:
-	lshd	$-31,ra
-
-l0000CABA:
-	addd	$4,(r1,r0)
-	cmpd	$0,ra
-	bne	0000CA9C
-
-l0000CAC0:
-	movd	ra,(r5,r4)
-	br	0000C9E6
-0000CAC4             20 55 BF 60 10 01 67 02 9D 03 00 05      U.`..g.....
+0000CA60 E0 18 F1 FE 0E 56 08 19 04 54 D0 55 12 54 14 00 .....V...T.U.T..
+0000CA70 E2 B0 02 56 0A 10 20 A0 14 00 24 A0 FE 4B 40 60 ...V.. ...$..K@`
+0000CA80 0E 56 15 1F 4E 55 E8 18 FE 4B 40 60 0E 56 1F 1E .V..NU...K@`.V..
+0000CA90 4E 55 E2 18 0E 56 08 1A 04 54 F0 55 12 54 14 00 NU...V...T.U.T..
+0000CAA0 E2 B0 02 56 0A 10 20 A0 14 00 24 A0 FE 4B 40 60 ...V.. ...$..K@`
+0000CAB0 0E 56 15 1F 4E 55 E8 19 FE 4B 40 60 0E 56 1F 1E .V..NU...K@`.V..
+0000CAC0 4E 55 E2 19 20 55 BF 60 10 01 67 02 9D 03 00 05 NU.. U.`..g.....
 0000CAD0 78 FC EE 0A 1E 01 1C 01 8C 54 FC 61 0C A0 04 56 x........T.a...V
 0000CAE0 07 10 10 01 FF C0 41 F7 4F 60 1C 02 1E 03 40 5B ......A.O`....@[
 0000CAF0 51 5B 1C 02 1E 03 00 00                         Q[......        
 
 ;; fn0000CAF8: 0000CAF8
 ;;   Called from:
-;;     00003388 (in fn00003338)
-;;     00004780 (in fn000046DC)
+;;     00003388 (in fn000030F2)
+;;     00003830 (in fn000033F8)
+;;     00003928 (in fn000033F8)
+;;     00004780 (in fn000046AC)
+;;     000048E6 (in fn00004794)
+;;     000050BA (in fn00004CD4)
+;;     0000525C (in fn00004CD4)
+;;     000053BE (in fn00004CD4)
+;;     00005436 (in fn00004CD4)
 ;;     000054EE (in fn00004CD4)
 ;;     00005562 (in fn00004CD4)
+;;     00005A9C (in fn00004CD4)
+;;     00005B14 (in fn00004CD4)
+;;     00005BBA (in fn00004CD4)
 fn0000CAF8 proc
-	push	$1,ra
-	push	$0,r7
+	push	$2,ra
+	push	$1,r7
 	cmpd	$0,(r5,r4)
 	beq	0000CB0E
 
 l0000CB00:
 	movzw	r6,(r7,r6)
-	push	$1,r6
+	push	$2,r6
 	bal	ra,fn0000C224
 	addd	$4,sp
-	pop	$0,r7
-	popret	$1,ra
+	pop	$1,r7
+	popret	$2,ra
 
 l0000CB0E:
 	movw	r4,r0
 	movw	r5,r1
-	pop	$0,r7
-	popret	$1,ra
+	pop	$1,r7
+	popret	$2,ra
 0000CB16                   00 00 1E 01 FF C0 69 FD 1E 03       ......i...
 0000CB20 1E 01 FF C0 61 FD 1E 03 9D 01 67 01 BF 60 A8 FF ....a.....g..`..
 0000CB30 28 55 C2 AF 1C 00 02 A0 0F E0 02 92 B0 32 FB FF (U...........2..
 0000CB40 00 5F 2F A0 02 61 2F E8 D8 A6 08 98 04 3B 44 5F ._/..a/......;D_
 0000CB50 D6 55 14 00 46 C0 6F EF 2C 00 B0 32 FF FE 00 5F .U..F.o.,..2..._
-
-;; fn0000CB60: 0000CB60
-;;   Called from:
-;;     0000C934 (in fn0000C914)
-fn0000CB60 proc
-	movd	(r3,r2),r13
-	addd	(r1,r0),(r3,r2)
-	stord	(r3,r2),0x14(sp)
-	loadw	0x3C(r12),r3
-	storw	r3,0xA(sp)
-	loadw	0x40(r12),r4
-	storw	r4,0x60(sp)
-	loadw	0x44(r12),r5
-	storw	r5,8(sp)
-	loadd	0x48(r12),(r7,r6)
-	stord	(r7,r6),0xC(sp)
-	loadd	0x50(r12),(r11,r10)
-	loadw	0x58(r12),r5
-	loadd	0x68(r12),ra
-	loadd	0x70(r12),(r1,r0)
-	stord	(r1,r0),4(sp)
-	loadw	0x7C(r12),r1
-	movw	$1,r0
-	movw	r0,r2
-	ashuw	r1,r2
-	movw	r2,r1
-	addw	$FFFF,r9
-	loadw	0x78(r12),r2
-	ashuw	r2,r0
-	addw	$FFFF,r9
-	movzw	r0,(r4,r3)
-	stord	(r4,r3),0x18(sp)
-	loadw	8(sp),r4
-	lshw	$-15,r4
-	storw	r4,0x70(sp)
-	loadw	8(sp),r6
-	andw	$FFFE,r11
-	storw	r6,0x40(sp)
-	movzw	r6,(r3,r2)
-	stord	(r3,r2),0x38(sp)
-	loadd	0xC(sp),(r7,r6)
-	addd	(r3,r2),(r7,r6)
-	stord	(r7,r6),0x68(sp)
-	movzw	r1,(r3,r2)
-	stord	(r3,r2),0x50(sp)
-	loadw	0xA(sp),r3
-	loadw	8(sp),r4
-	addw	r3,r4
-	storw	r3,0x64(sp)
-	loadd	0xC(sp),(r7,r6)
-	addd	$2,(r7,r6)
-	stord	(r7,r6),0x78(sp)
-	addw	$FFFF,r9
-	storw	r4,0x44(sp)
-	movzw	r4,(r1,r0)
-	addd	$1,(r1,r0)
-	loadd	0xC(sp),(r3,r2)
-	addd	(r1,r0),(r3,r2)
-	stord	(r3,r2),0x80(sp)
-	movw	r5,r6
-	stord	(r9,r8),0x48(sp)
-	loadd	(sp),(r8,r7)
-	cmpw	$E,r6
-	blo	0000CC20
-
-l0000CC02:
-	loadb	1(r8,r7),r0
-	movzb	r0,(r1,r0)
-	movzw	r0,(r1,r0)
-	movw	$8,r2
-	addw	r2,r6
-	ashud	r2,(r1,r0)
-	loadb	(r8,r7),r2
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	ashud	r6,(r3,r2)
-	addd	(r3,r2),(r1,r0)
-	addd	(r1,r0),(r11,r10)
-	addw	$10,r11
-	addd	$2,(r8,r7)
-
-l0000CC20:
-	loadd	0x18(sp),(r3,r2)
-	andd	(r11,r10),(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	ra,(r3,r2)
-	loadb	(r3,r2),r1
-	loadw	2(r3,r2),r0
-	loadb	1(r3,r2),r2
-	movzb	r2,(r4,r3)
-	movb	$0,r4
-	subb	r4,r2
-	Invalid
-	subw	r6,r3
-	movzb	r1,(r3,r2)
-	cmpw	$0,r2
-	beq	0000CC9C
-	movb	$10,r3
-	andb	r3,r1
-	cmpb	$0,r3
-	bne	0000CCC0
-	movb	$40,r3
-	andb	r3,r1
-	cmpb	$0,r3
-	bne	0000D012
-	movw	$1,r4
-	br	0000CC70
-	movb	$10,r3
-	andb	r3,r1
-	cmpb	$0,r3
-	bne	0000CCC0
-	movb	$40,r3
-	andb	r3,r1
-	cmpb	$0,r3
-	bne	0000CFF8
-	movw	r4,r1
-	ashuw	r2,r1
-	movw	r1,r2
-	addw	$FFFF,r9
-	movzw	r2,(r3,r2)
-	andd	(r11,r10),(r3,r2)
-	movzw	r0,(r1,r0)
-	addd	(r1,r0),(r3,r2)
-	ashud	$2,(r3,r2)
-	addd	ra,(r3,r2)
-	loadb	(r3,r2),r1
-	loadw	2(r3,r2),r0
-	loadb	1(r3,r2),r2
-	movzb	r2,(r4,r3)
-	movb	$0,r5
-	subb	r5,r2
-	Invalid
-	subw	r6,r3
-	movzb	r1,(r3,r2)
-	cmpw	$0,r2
-	bne	0000CC5A
-	storb	r0,(r13)
-	addd	$1,r13
-	loadd	0x10(sp),(r1,r0)
-	cmpd	(r8,r7),(r1,r0)
-	shi	r0
-	cmpw	$0,r0
-	beq	0000CCB4
-	loadd	0x14(sp),(r2,r1)
-	cmpd	r13,(r2,r1)
-	shi	r0
-	cmpw	$0,r0
-	bne	0000CBFE
-	stord	(r8,r7),(sp)
-	movw	r6,r5
-	loadd	0x48(sp),(r9,r8)
-	br	0000CFE0
-	andb	$F,sp
-	cmpb	$0,r1
-	beq	0000CCEC
-	movzb	r1,(r5,r4)
-	cmpw	r4,r6
-	bhs	0000CCDA
-	loadb	(r8,r7),r2
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	ashud	r6,(r3,r2)
-	addd	(r3,r2),(r11,r10)
-	addw	$8,r8
-	addd	$1,(r8,r7)
-	movw	$FFFF,r2
-	ashuw	r1,r2
-	xorw	$FFFF,r9
-	andw	r2,r10
-	addw	r0,r2
-	movb	$0,r5
-	subb	r5,r1
-	Invalid
-	subw	r6,r4
-	cmpw	$E,r6
-	bhs	0000D052
-	loadd	0x50(sp),(r5,r4)
-	andd	(r11,r10),(r5,r4)
-	ashud	$2,(r5,r4)
-	loadd	4(sp),(r2,r1)
-	addd	(r2,r1),(r5,r4)
-	loadb	(r5,r4),r3
-	loadw	2(r5,r4),r2
-	loadb	1(r5,r4),r1
-	movzb	r1,(r5,r4)
-	movb	$0,r5
-	subb	r5,r1
-	Invalid
-	subw	r6,r4
-	movzb	r3,(r5,r4)
-	movb	$10,r1
-	andb	r1,r3
-	cmpb	$0,r1
-	bne	0000CD68
-	andb	$40,r11
-	cmpb	$0,r3
-	bne	0000D0CA
-	movw	$1,r1
-	br	0000CD34
-	andb	$40,r11
-	cmpb	$0,r3
-	bne	0000D0BC
-	movw	r1,r5
-	ashuw	r4,r5
-	movw	r5,r4
-	addw	$FFFF,r9
-	movzw	r4,(r5,r4)
-	andd	(r11,r10),(r5,r4)
-	movzw	r2,(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	ashud	$2,(r5,r4)
-	loadd	4(sp),(r3,r2)
-	addd	(r3,r2),(r5,r4)
-	loadb	(r5,r4),r3
-	loadw	2(r5,r4),r2
-	loadb	1(r5,r4),r4
-	movzb	r4,(r6,r5)
-	movb	$0,r9
-	subb	r9,r4
-	Invalid
-	subw	r6,r5
-	movzb	r3,(r5,r4)
-	movb	$10,r5
-	andb	r5,r3
-	cmpb	$0,r5
-	beq	0000CD2A
-	movb	$F,r1
-	andb	r1,r3
-	movzb	r1,(r4,r3)
-	cmpw	r3,r6
-	bhs	0000CD8A
-	loadb	(r8,r7),r4
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	ashud	r6,(r5,r4)
-	addd	(r5,r4),(r11,r10)
-	movw	$8,r9
-	addw	r9,r6
-	cmpw	r3,r9
-	blo	0000D326
-	addd	$1,(r8,r7)
-	movw	r9,r6
-	movw	$FFFF,r4
-	ashuw	r1,r4
-	xorw	$FFFF,r9
-	andw	r4,r10
-	movw	r4,r9
-	addw	r9,r2
-	movb	$0,r2
-	subb	r2,r1
-	Invalid
-	subw	r6,r3
-	movd	(r3,r2),r13
-	loadd	0x58(sp),(r5,r4)
-	subd	(r3,r2),(r5,r4)
-	cmpw	r9,r2
-	bhs	0000D266
-	movw	r9,r5
-	subw	r5,r2
-	storw	r5,0x9C(sp)
-	loadw	0x60(sp),r1
-	cmpw	r1,r5
-	bls	0000CDC8
-	loadw	0x3738(r12),r2
-	cmpw	$0,r2
-	bne	0000D4E0
-	loadw	8(sp),r2
-	cmpw	$0,r2
-	bne	0000D04C
-	loadw	0xA(sp),r2
-	loadw	0x9C(sp),r3
-	subw	r2,r3
-	movzw	r2,(r5,r4)
-	loadd	0xC(sp),(r2,r1)
-	addd	(r5,r4),(r2,r1)
-	stord	(r2,r1),0xA8(sp)
-	cmpw	r0,r3
-	blo	0000D4FC
-	loadd	0xA8(sp),(r5,r4)
-	movd	(r3,r2),r13
-	cmpw	$2,r0
-	bhs	0000CE16
-	stord	(r11,r10),(sp)
-	loadb	(r5,r4),r1
-	storb	r1,(r13)
-	loadb	1(r5,r4),r1
-	storb	r1,1(r13)
-	movd	$3,(r10,r9)
-	addd	(r5,r4),(r10,r9)
-	movd	$3,(r3,r2)
-	addd	r13,(r3,r2)
-	loadb	2(r5,r4),r1
-	storb	r1,2(r13)
-	addw	$FFFD,r11
-	movd	r13,(r3,r2)
-	movd	(r5,r4),(r10,r9)
-	cmpw	$2,r0
-	blo	0000CDF4
-	loadd	(sp),(r11,r10)
-	movd	r13,(r3,r2)
-	cmpw	$0,r0
-	beq	0000CB28
-	loadb	(r5,r4),r1
-	storb	r1,(r3,r2)
-	cmpw	$2,r0
-	bne	0000D4B0
-	addd	$2,r13
-	loadb	1(r5,r4),r0
-	storb	r0,1(r3,r2)
-	br	0000CB14
-	stord	(r8,r7),(sp)
-	movw	r6,r5
-	loadd	0x48(sp),(r9,r8)
-	andb	$20,r11
-	cmpb	$0,r1
-	bne	0000CEC2
-	movd	$E7BA,(r1,r0)
-	stord	(r1,r0),0x18(r9,r8)
-	movw	$3F51,r0
-	storw	r0,4(r12)
-	movw	r5,r0
-	lshw	$-13,r0
-	movzw	r0,(r1,r0)
-	loadd	(sp),(r3,r2)
-	subd	(r3,r2),(r1,r0)
-	movd	(r1,r0),(r3,r2)
-	andw	$7,r7
-	movw	$1,r2
-	ashuw	r5,r2
-	addw	$FFFF,r9
-	movzw	r2,(r3,r2)
-	andd	(r3,r2),(r11,r10)
-	stord	(r1,r0),(r9,r8)
-	stord	r13,0xC(r9,r8)
-	loadd	0x10(sp),(r4,r3)
-	cmpd	(r4,r3),(r1,r0)
-	bhs	0000CECA
-	subd	(r4,r3),(r1,r0)
-	movd	(r1,r0),(r4,r3)
-	addw	$5,r5
-	storw	r0,4(r9,r8)
-	loadd	0x14(sp),(r7,r6)
-	cmpd	r13,(r7,r6)
-	bhi	0000CEDA
-	loadw	0x14(sp),r0
-	movd	(r2,r1),r13
-	subw	r0,r1
-	addw	$101,r11
-	storw	r0,0x10(r9,r8)
-	stord	(r11,r10),0x50(r12)
-	storw	r5,0x58(r12)
-	addd	$58,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-	loadb	1(r8,r7),r2
-	movzb	r2,(r3,r2)
-	movzw	r2,(r3,r2)
-	movw	$8,r1
-	addw	r1,r6
-	ashud	r1,(r3,r2)
-	loadb	(r8,r7),r4
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	ashud	r6,(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	addd	(r3,r2),(r11,r10)
-	addw	$10,r11
-	addd	$2,(r8,r7)
-	br	0000CB28
-	movw	$3F3F,r0
-	storw	r0,4(r12)
-	br	0000CE4E
-	loadw	0x10(sp),r4
-	subw	r4,r0
-	movw	r4,r0
-	addw	$5,r5
-	storw	r0,4(r9,r8)
-	loadd	0x14(sp),(r7,r6)
-	cmpd	r13,(r7,r6)
-	bls	0000CE84
-	movd	(r1,r0),(r7,r6)
-	subd	(r1,r0),r13
-	addw	$101,r11
-	storw	r0,0x10(r9,r8)
-	stord	(r11,r10),0x50(r12)
-	storw	r5,0x58(r12)
-	addd	$58,sp
-	pop	$6,r7
-	popret	$1,r13,ra
-	stord	(r8,r7),(sp)
-	movw	r6,r5
-	loadd	0x48(sp),(r9,r8)
-	movd	$E7D6,(r1,r0)
-	stord	(r1,r0),0x18(r9,r8)
-	movw	$3F51,r0
-	storw	r0,4(r12)
-	br	0000CE4E
-	loadw	0x9C(sp),r1
-	cmpw	r2,r1
-	bls	0000D1BE
-	loadw	0x64(sp),r2
-	subw	r2,r1
-	movzw	r2,(r3,r2)
-	loadd	0xC(sp),(r5,r4)
-	addd	(r3,r2),(r5,r4)
-	stord	(r5,r4),0xA8(sp)
-	loadw	8(sp),r5
-	subw	r1,r5
-	storw	r1,0x9C(sp)
-	cmpw	r0,r1
-	bhs	0000CCA2
-	subw	r0,r1
-	movd	$2,(r5,r4)
-	addd	(r3,r2),(r5,r4)
-	loadd	0xC(sp),(r2,r1)
-	addd	(r2,r1),(r5,r4)
-	cmpd	r13,(r5,r4)
-	sls	r1
-	movd	$2,(r3,r2)
-	addd	r13,(r3,r2)
-	loadd	0xA8(sp),(r5,r4)
-	cmpd	(r5,r4),(r3,r2)
-	sls	r2
-	movb	r1,r3
-	orb	r3,r2
-	loadw	0x9C(sp),r5
-	cmpw	$C,r5
-	slo	r2
-	andb	r2,r3
-	cmpb	$0,r2
-	beq	0000D6BA
-	loadd	0xA8(sp),(r3,r2)
-	ord	r13,(r3,r2)
-	xord	$FFFFFFFF,(r3,r2)
-	andb	$1,r1
-	cmpb	$0,r2
-	beq	0000D6A4
-	lshw	$-15,r5
-	storw	r5,(sp)
-	stord	r13,0x88(sp)
-	loadd	0xA8(sp),(r3,r2)
-	storw	$0,0x3A(sp)
-	movd	(r5,r4),(r3,r2)
-	storw	r0,0x90(sp)
-	storw	r6,0x94(sp)
-	storw	r9,0x98(sp)
-	movd	(r1,r0),r13
-	loadw	0x74(sp),r6
-	loadw	(r3,r2),r9
-	storw	r9,(r1,r0)
-	addw	$1,r1
-	addd	$2,(r1,r0)
-	addd	$2,(r3,r2)
-	loadw	(sp),r9
-	cmpw	r6,r9
-	bhi	0000CF9C
-	stord	(r5,r4),0xA8(sp)
-	loadw	0x90(sp),r0
-	loadw	0x94(sp),r6
-	loadw	0x98(sp),r9
-	loadw	0x9C(sp),r1
-	andw	$FFFE,r11
-	movzw	r1,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	addd	r13,(r3,r2)
-	stord	(r3,r2),0x88(sp)
-	loadd	0xA8(sp),(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	loadw	0x9C(sp),r4
-	cmpw	r4,r1
-	beq	0000D5C2
-	movw	r4,r1
-	loadb	(r3,r2),r2
-	loadd	0x88(sp),(r4,r3)
-	storb	r2,(r4,r3)
-	addw	$FFFF,r9
-	movzw	r1,(r5,r4)
-	movd	$1,(r2,r1)
-	addd	(r5,r4),(r2,r1)
-	addd	r13,(r2,r1)
-	stord	(r2,r1),(sp)
-	loadw	8(sp),r2
-	cmpw	r2,r0
-	bhi	0000D4B4
-	loadd	0xC(sp),(r2,r1)
-	stord	(r2,r1),0xA8(sp)
-	loadd	(sp),r13
-	br	0000CBCE
-	movzw	r9,(r3,r2)
-	movd	(r5,r4),r13
-	subd	(r5,r4),(r3,r2)
-	movd	(r3,r2),(r5,r4)
-	movd	(r5,r4),r13
-	stord	(r11,r10),(sp)
-	br	0000D01A
-	movd	(r5,r4),r13
-	movd	(r10,r9),(r3,r2)
-	loadb	(r3,r2),r1
-	storb	r1,(r13)
-	loadb	1(r3,r2),r1
-	storb	r1,1(r13)
-	addd	$3,r13
-	loadb	2(r3,r2),r1
-	storb	r1,2(r5,r4)
-	addw	$FFFD,r11
-	addd	$3,(r3,r2)
-	cmpw	$2,r0
-	blo	0000D018
-	movd	(r3,r2),(r10,r9)
-	loadd	(sp),(r11,r10)
-	cmpw	$0,r0
-	beq	0000C908
-	loadb	3(r3,r2),r1
-	storb	r1,3(r5,r4)
-	cmpw	$2,r0
-	bne	0000D250
-	movd	$5,r13
-	addd	(r5,r4),r13
-	loadb	4(r3,r2),r0
-	storb	r0,4(r5,r4)
-	br	0000C8F2
-	loadb	1(r8,r7),r4
-	movzb	r4,(r5,r4)
-	movzw	r4,(r5,r4)
-	ashud	r9,(r5,r4)
-	addd	(r5,r4),(r11,r10)
-	addw	$10,r11
-	addd	$2,(r8,r7)
-	br	0000CAB2
-	subw	r2,r1
-	movzw	r2,(r3,r2)
-	loadd	0xC(sp),(r5,r4)
-	addd	(r3,r2),(r5,r4)
-	stord	(r5,r4),0xA8(sp)
-	loadw	0x9C(sp),r5
-	cmpw	r0,r5
-	bhs	0000CB58
-	subw	r0,r5
-	movd	$2,(r5,r4)
-	addd	(r3,r2),(r5,r4)
-	loadd	0xC(sp),(r2,r1)
-	addd	(r2,r1),(r5,r4)
-	cmpd	r13,(r5,r4)
-	sls	r1
-	movd	$2,(r3,r2)
-	addd	r13,(r3,r2)
-	loadd	0xA8(sp),(r5,r4)
-	cmpd	(r5,r4),(r3,r2)
-	sls	r2
-	orb	r2,r1
-	loadw	0x9C(sp),r5
-	cmpw	$C,r5
-	slo	r3
-	andb	r2,r3
-	cmpb	$0,r2
-	beq	0000D506
-	loadd	0xA8(sp),(r3,r2)
-	ord	r13,(r3,r2)
-	xord	$FFFFFFFF,(r3,r2)
-	andb	$1,r1
-	cmpb	$0,r2
-	beq	0000D4F0
-	movw	r5,r2
-	addw	$FFFE,r11
-	lshw	$-15,r2
-	addw	$1,r1
-	storw	r2,(sp)
-	stord	r13,0x88(sp)
-	loadd	0xA8(sp),(r3,r2)
-	storw	$0,0x3A(sp)
-	movd	(r5,r4),(r3,r2)
-	storw	r0,0x90(sp)
-	storw	r6,0x94(sp)
-	storw	r9,0x98(sp)
-	movd	(r1,r0),r13
-	loadw	0x74(sp),r6
-	loadw	(r3,r2),r9
-	storw	r9,(r1,r0)
-	addw	$1,r1
-	addd	$2,(r1,r0)
-	addd	$2,(r3,r2)
-	loadw	(sp),r9
-	cmpw	r6,r9
-	bhi	0000D0EC
-	movw	r9,r1
-	stord	(r5,r4),0xA8(sp)
-	loadw	0x90(sp),r0
-	loadw	0x94(sp),r6
-	loadw	0x98(sp),r9
-	addw	r1,r1
-	movzw	r1,(r5,r4)
-	movd	(r3,r2),(r5,r4)
-	addd	r13,(r3,r2)
-	stord	(r3,r2),0x88(sp)
-	loadd	0xA8(sp),(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	loadw	0x9C(sp),r4
-	cmpw	r4,r1
-	beq	0000D214
-	movw	r4,r1
-	loadb	(r3,r2),r2
-	loadd	0x88(sp),(r4,r3)
-	storb	r2,(r4,r3)
-	addw	$FFFF,r9
-	movzw	r1,(r3,r2)
-	addd	$1,(r3,r2)
-	addd	(r3,r2),r13
-	movzw	r9,(r3,r2)
-	movd	(r5,r4),r13
-	subd	(r5,r4),(r3,r2)
-	stord	(r5,r4),0xA8(sp)
-	br	0000CA8C
-	movd	$4,r13
-	addd	(r5,r4),r13
-	br	0000C7F4
-	stord	(r8,r7),(sp)
-	movw	r6,r5
-	loadd	0x48(sp),(r9,r8)
-	movd	$E7EC,(r1,r0)
-	stord	(r1,r0),0x18(r9,r8)
-	movw	$3F51,r0
-	storw	r0,4(r12)
-	br	0000CB38
-	addd	$1,r13
-	br	0000C7D6
-	subw	r0,r3
-	movd	$2,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	loadd	0xC(sp),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	cmpd	r13,(r3,r2)
-	sls	r1
-	movd	$2,(r3,r2)
-	addd	r13,(r3,r2)
-	loadd	0xA8(sp),(r5,r4)
-	cmpd	(r5,r4),(r3,r2)
-	sls	r2
-	orb	r2,r1
-	loadw	0x9C(sp),r5
-	cmpw	$C,r5
-	slo	r3
-	andb	r2,r3
-	cmpb	$0,r2
-	beq	0000D21A
-	loadd	0xA8(sp),(r3,r2)
-	ord	r13,(r3,r2)
-	xord	$FFFFFFFF,(r3,r2)
-	andb	$1,r1
-	cmpb	$0,r2
-	beq	0000D21A
-	movw	r5,r2
-	addw	$FFFE,r11
-	lshw	$-15,r2
-	addw	$1,r1
-	storw	r2,(sp)
-	stord	r13,0x88(sp)
-	loadd	0xA8(sp),(r2,r1)
-	stord	(r2,r1),0xA0(sp)
-	loadw	8(sp),r1
-	loadd	0xA8(sp),(r5,r4)
-	storw	r0,0x90(sp)
-	movd	(r3,r2),(r5,r4)
-	storw	r6,0x94(sp)
-	movw	r1,r6
-	storw	r9,0x74(sp)
-	loadw	0x9C(sp),r9
-	storw	r9,0x98(sp)
-	movd	(r1,r0),r13
-	loadw	(r3,r2),r9
-	storw	r9,(r1,r0)
-	addw	$1,r1
-	addd	$2,(r1,r0)
-	addd	$2,(r3,r2)
-	loadw	(sp),r9
-	cmpw	r6,r9
-	bhi	0000D1E6
-	stord	(r5,r4),0xA8(sp)
-	loadw	0x90(sp),r0
-	loadw	0x94(sp),r6
-	loadw	0x74(sp),r9
-	loadw	0x98(sp),r1
-	storw	r1,0x9C(sp)
-	loadw	(sp),r1
-	br	0000D00E
-	movw	r4,r1
-	addw	$FFFF,r9
-	br	0000D134
-	loadd	0xA8(sp),(r5,r4)
-	stord	r13,(sp)
-	loadw	0x9C(sp),r1
-	addw	$FFFF,r9
-	movzw	r1,(r3,r2)
-	addd	$1,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	storw	r0,0x88(sp)
-	storw	r6,0x74(sp)
-	storw	r1,0x90(sp)
-	movd	(r1,r0),r13
-	loadb	(r5,r4),r6
-	storb	r6,(r1,r0)
-	addd	$1,(r5,r4)
-	addd	$1,(r1,r0)
-	cmpd	(r3,r2),(r5,r4)
-	bne	0000D23A
-	loadw	0x88(sp),r0
-	loadw	0x74(sp),r6
-	loadw	0x90(sp),r1
-	br	0000D018
-	subw	r0,r2
-	movd	$3,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	addd	r13,(r3,r2)
-	loadd	0xC(sp),(r5,r4)
-	cmpd	(r5,r4),(r3,r2)
-	sls	r1
-	loadd	(sp),(r3,r2)
-	loadd	0x78(sp),(r5,r4)
-	cmpd	(r3,r2),(r5,r4)
-	sls	r2
-	orb	r1,r2
-	loadw	8(sp),r5
-	cmpw	$C,r5
-	slo	r2
-	andb	r1,r2
-	cmpb	$0,r1
-	beq	0000D342
-	loadd	(sp),(r3,r2)
-	loadd	0xC(sp),r13
-	ord	r13,(r3,r2)
-	xord	$FFFFFFFF,(r3,r2)
-	andb	$1,r1
-	cmpb	$0,r2
-	beq	0000D342
-	loadd	(sp),(r3,r2)
-	movw	$0,r4
-	loadw	(r13),r1
-	storw	r1,(r3,r2)
-	addw	$1,r1
-	addd	$2,(r3,r2)
-	addd	$2,r13
-	loadw	0x70(sp),r1
-	cmpw	r4,r1
-	bhi	0000D294
-	loadd	(sp),(r3,r2)
-	loadd	0x38(sp),(r5,r4)
-	addd	(r5,r4),(r3,r2)
-	loadw	8(sp),r5
-	loadw	0x40(sp),r13
-	cmpw	r5,r13
-	beq	0000D2C0
-	loadd	0x68(sp),(r5,r4)
-	loadb	(r5,r4),r1
-	storb	r1,(r3,r2)
-	loadw	0x44(sp),r1
-	movzw	r1,r13
-	addd	$1,r13
-	loadd	(sp),(r3,r2)
-	br	0000CFA8
-	movw	r4,r1
-	addw	$FFFF,r9
-	br	0000CD04
-	loadd	0xA8(sp),(r5,r4)
-	stord	r13,(sp)
-	loadw	0x9C(sp),r1
-	addw	$FFFF,r9
-	movzw	r1,(r3,r2)
-	addd	$1,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	stord	(r8,r7),0x88(sp)
-	storw	r6,0x74(sp)
-	movd	(r7,r6),r13
-	loadb	(r5,r4),r8
-	storb	r8,(r7,r6)
-	addd	$1,(r5,r4)
-	addd	$1,(r7,r6)
-	stord	(r7,r6),(sp)
-	cmpd	(r3,r2),(r5,r4)
-	bne	0000D2F2
-	loadd	0x88(sp),(r8,r7)
-	loadw	0x74(sp),r6
-	br	0000CF62
-	loadd	0xA8(sp),(r5,r4)
-	stord	r13,(sp)
-	loadw	0x9C(sp),r1
-	addw	$FFFF,r9
-	movzw	r1,(r3,r2)
-	addd	$1,(r3,r2)
-	addd	(r5,r4),(r3,r2)
-	stord	(r8,r7),0x88(sp)
-	storw	r6,0x74(sp)
-	movd	(r7,r6),r13
-	loadb	(r5,r4),r8
-	storb	r8,(r7,r6)
-	addd	$1,(r5,r4)
-	addd	$1,(r7,r6)
-	stord	(r7,r6),(sp)
-	cmpd	(r3,r2),(r5,r4)
-	bne	0000D328
-	loadd	0x88(sp),(r8,r7)
-	loadw	0x74(sp),r6
-	br	0000CC98
-	loadd	0xC(sp),(r3,r2)
-	loadd	(sp),(r5,r4)
-	loadd	0x80(sp),r13
-	loadb	(r3,r2),r1
-	storb	r1,(r5,r4)
-	addd	$1,(r3,r2)
-	addd	$1,(r5,r4)
-	cmpd	r13,(r3,r2)
-	bne	0000D34A
-	br	0000D2C0
+0000CB60 D2 55 02 61 2F EA 3C 9F 1E 00 3F D5 4C 9F 20 00 .U.a/.<...?.L. .
+0000CB70 4F DF 30 00 5C 9F 22 00 5F D4 6C AF 24 00 6F E6 O.0.\."._.l.$.o.
+0000CB80 AC AF 28 00 5C 9F 2C 00 EC AF 34 00 0C AF 38 00 ..(.\.,...4...8.
+0000CB90 0F E2 1C 9F 3E 00 10 5A 02 5B 12 45 21 5B 91 32 ....>..Z.[.E![.2
+0000CBA0 2C 9F 3C 00 20 45 90 32 03 5F 3F EC 4F 94 F4 49 ,.<. E.2._?.O..I
+0000CBB0 4F DF 38 00 6F 94 B6 22 FE FF 6F DF 20 00 62 5F O.8.o.."..o. .b_
+0000CBC0 2F EF 1C 00 6F A6 26 61 6F EF 34 00 12 5F 2F EF /...o.&ao.4.._/.
+0000CBD0 28 00 3F 95 4F 94 43 33 3F DF 32 00 6F A6 26 60 (.?.O.C3?.2.o.&`
+0000CBE0 6F EF 3C 00 94 32 4F DF 22 00 40 5F 10 60 2F A6 o.<..2O.".@_.`/.
+0000CBF0 02 61 2F EF 40 00 56 5B 8F EF 24 00 7F A0 E6 52 .a/.@.V[..$....R
+0000CC00 A0 11 07 B1 00 5D 00 5F 82 5A 62 33 20 48 27 B0 .....]._.Zb3 H'.
+0000CC10 22 5D 22 5F 62 48 20 61 0A 61 B6 32 10 00 27 60 "]"_bH a.a.2..'`
+0000CC20 2F AC 14 00 A2 B0 22 4C E2 61 12 B0 02 91 22 B1 /....."L.a....".
+0000CC30 23 5D 04 58 24 39 4A 47 36 3B 12 5D 02 52 0F 12 #].X$9JG6;.].R..
+0000CC40 B3 58 10 00 13 21 03 50 1C 13 B3 58 40 00 13 21 .X...!.P...X@..!
+0000CC50 03 50 10 18 E0 01 14 5A EC 10 B3 58 10 00 13 21 .P.....Z...X...!
+0000CC60 03 50 1F 12 B3 58 40 00 13 21 03 50 10 18 C6 01 .P...X@..!.P....
+0000CC70 41 5B 21 45 12 5B 92 32 22 5F 14 00 A2 B0 00 5F A[!E.[.2"_....._
+0000CC80 02 61 22 4C E2 61 12 B0 02 91 22 B1 23 5D 05 58 .a"L.a....".#].X
+0000CC90 25 39 5A 47 36 3B 12 5D 02 52 10 1E 0D F0 1D 60 %9ZG6;.].R.....`
+0000CCA0 0F A8 07 57 40 08 00 52 06 10 1F AA 1D 57 40 08 ...W@..R.....W@.
+0000CCB0 00 52 16 1A 7F E0 65 5B 8F AF 24 00 E0 18 92 01 .R....e[..$.....
+0000CCC0 F1 20 01 50 04 11 14 5D 64 53 B8 10 27 B0 22 5D . .P...]dS..'."]
+0000CCD0 22 5F 62 48 2A 61 86 32 17 60 92 5A 12 45 92 2A "_bH*a.2.`.Z.E.*
+0000CCE0 A2 23 20 33 05 58 15 39 5A 47 46 3B E6 52 B0 18 .# 3.X.9ZGF;.R..
+0000CCF0 B2 01 4F AF 28 00 14 00 A4 B0 24 4C 1F A2 14 61 ..O.(.....$L...a
+0000CD00 34 B0 24 91 14 B1 14 5D 05 58 15 39 5A 47 46 3B 4.$....].X.9ZGF;
+0000CD10 34 5D B1 58 10 00 31 21 01 50 17 12 B3 20 40 00 4].X..1!.P... @.
+0000CD20 03 50 10 18 D4 01 11 5A E6 10 B3 20 40 00 03 50 .P.....Z... @..P
+0000CD30 10 18 C6 01 15 5B 45 45 54 5B 94 32 44 5F 14 00 .....[EET[.2D_..
+0000CD40 A4 B0 22 5F 24 61 24 4C 2F A2 24 61 34 B0 24 91 .."_$a$L/.$a4.$.
+0000CD50 44 B1 45 5D 09 58 49 39 9A 47 56 3B 34 5D B5 58 D.E].XI9.GV;4].X
+0000CD60 10 00 35 21 05 50 02 1E F1 58 31 21 13 5D 63 53 ..5!.P...X1!.]cS
+0000CD70 BD 10 47 B0 44 5D 44 5F 64 48 4A 61 89 5A 69 33 ..G.D]D_dHJa.Zi3
+0000CD80 93 53 A0 18 D2 02 17 60 96 5B 94 5A 14 45 94 2A .S.....`.[.Z.E.*
+0000CD90 A4 23 49 5B 29 33 02 58 12 39 2A 47 36 3B D2 55 .#I[)3.X.9*G6;.U
+0000CDA0 4F AF 2C 00 14 00 42 C0 29 53 B0 18 5E 02 95 5B O.,...B.)S..^..[
+0000CDB0 25 3B 5F DF 4E 00 1F 9F 30 00 51 53 56 10 2C 9F %;_.N...0.QSV.,.
+0000CDC0 9C 1B 02 52 10 18 8E 03 2F 94 02 52 10 18 40 01 ...R..../..R..@.
+0000CDD0 2F 95 3F 9F 4E 00 32 3B 24 5F 1F A6 41 61 1F EF /.?.N.2;$_..Aa..
+0000CDE0 54 00 30 53 A0 18 8C 03 4F AF 54 00 D2 55 20 52 T.0S....O.T..U R
+0000CDF0 B3 11 AF E0 14 B0 1D F0 14 B1 1D F1 39 54 49 61 ............9TIa
+0000CE00 32 54 D2 61 14 B2 1D F2 B0 32 FD FF 2D 55 94 55 2T.a.....2..-U.U
+0000CE10 20 52 A1 1F AF A0 2D 55 00 52 00 18 87 FE 14 B0  R....-U.R......
+0000CE20 12 F0 20 52 10 18 46 03 2D 60 04 B1 02 F1 E0 18 .. R..F.-`......
+0000CE30 73 FE 7F E0 65 5B 8F AF 24 00 B1 20 20 00 01 50 s...e[..$..  ..P
+0000CE40 11 14 00 05 BA E7 08 EC B0 5A 51 3F 0C D2 50 5B .........ZQ?..P[
+0000CE50 D0 49 00 5F 2F A0 14 00 02 C0 20 55 75 22 12 5A .I._/..... Uu".Z
+0000CE60 52 45 92 32 22 5F 14 00 2A B0 08 E0 D8 E6 3F A8 RE.2"_..*.....?.
+0000CE70 03 57 BC 12 14 00 03 C0 30 55 50 32 08 D2 6F AA .W......0UP2..o.
+0000CE80 6D 57 4C 12 0F 9A D1 55 10 3B B0 32 01 01 08 D8 mWL....U.;.2....
+0000CE90 AC EF 28 00 5C DF 2C 00 BF 60 58 00 67 02 9D 03 ..(.\.,..`X.g...
+0000CEA0 27 B1 22 5D 22 5F 81 5A 61 33 12 48 47 B0 44 5D '."]"_.Za3.HG.D]
+0000CEB0 44 5F 64 48 42 61 2A 61 B6 32 10 00 27 60 E0 18 D_dHBa*a.2..'`..
+0000CEC0 35 FE B0 5A 3F 3F 0C D2 E3 1C 4F 98 04 3B 40 5B 5..Z??....O..;@[
+0000CED0 50 32 08 D2 6F AA 6D 57 56 1D 60 55 14 00 D0 C0 P2..o.mWV.`U....
+0000CEE0 B0 32 01 01 08 D8 AC EF 28 00 5C DF 2C 00 BF 60 .2......(.\.,..`
+0000CEF0 58 00 67 02 9D 03 7F E0 65 5B 8F AF 24 00 00 05 X.g.....e[..$...
+0000CF00 D6 E7 08 EC B0 5A 51 3F 0C D2 E2 1A 1F 9F 4E 00 .....ZQ?......N.
+0000CF10 12 53 50 18 56 01 2F 9F 32 00 12 3B 22 5F 4F A6 .SP.V./.2..;"_O.
+0000CF20 24 61 4F EF 54 00 5F 94 51 3B 1F DF 4E 00 10 53 $aO.T._.Q;..N..S
+0000CF30 B0 18 B9 FE 10 3B 24 54 24 61 1F A6 14 61 4D 57 .....;$T$a...aMW
+0000CF40 51 08 22 54 D2 61 4F AF 54 00 24 57 52 08 13 59 Q."T.aO.T.$WR..Y
+0000CF50 23 25 5F 9F 4E 00 C5 52 A2 08 32 21 02 50 00 18 #%_.N..R..2!.P..
+0000CF60 AE 03 2F AF 54 00 14 00 D2 90 62 00 FF FF FF FF ../.T.....b.....
+0000CF70 12 20 02 50 00 18 98 03 F5 49 5F D0 DF EF 44 00 . .P.....I_...D.
+0000CF80 2F AF 54 00 0F C3 3A 00 24 55 0F DF 48 00 6F DF /.T...:.$U..H.o.
+0000CF90 4A 00 9F DF 4C 00 D0 55 6F 9F 3A 00 92 90 90 D0 J...L..Uo.:.....
+0000CFA0 16 32 20 60 22 60 9F 90 96 53 49 1F 4F EF 54 00 .2 `"`...SI.O.T.
+0000CFB0 0F 9F 48 00 6F 9F 4A 00 9F 9F 4C 00 1F 9F 4E 00 ..H.o.J...L...N.
+0000CFC0 B1 22 FE FF 14 5F 42 55 D2 61 2F EF 44 00 2F AF ."..._BU.a/.D./.
+0000CFD0 54 00 42 61 4F 9F 4E 00 14 53 00 18 F4 02 41 5B T.BaO.N..S....A[
+0000CFE0 22 B0 3F AF 44 00 23 F0 91 32 14 5F 11 54 41 61 ".?.D.#..2._.TAa
+0000CFF0 D1 61 1F E0 2F 94 02 53 40 18 5E 02 1F A6 1F EF .a../..S@.^.....
+0000D000 54 00 DF A0 E0 18 E5 FD 92 5F D4 55 14 00 24 C0 T........_.U..$.
+0000D010 42 55 D4 55 AF E0 E2 10 D4 55 29 55 12 B0 1D F0 BU.U.....U)U....
+0000D020 12 B1 1D F1 3D 60 12 B2 14 F2 B0 32 FD FF 32 60 ....=`.....2..2`
+0000D030 20 52 A3 1F 92 55 AF A0 00 52 00 18 67 FC 12 B3  R...U...R..g...
+0000D040 14 F3 20 52 10 18 06 01 5D 54 4D 61 02 B4 04 F4 .. R....]TMa....
+0000D050 E0 18 51 FC 47 B1 44 5D 44 5F 94 48 4A 61 B6 32 ..Q.G.D]D_.HJa.2
+0000D060 10 00 27 60 E0 18 27 FD 12 3B 22 5F 4F A6 24 61 ..'`..'..;"_O.$a
+0000D070 4F EF 54 00 5F 9F 4E 00 50 53 B0 18 6F FD 50 3B O.T._.N.PS..o.P;
+0000D080 24 54 24 61 1F A6 14 61 4D 57 51 08 22 54 D2 61 $T$a...aMWQ."T.a
+0000D090 4F AF 54 00 24 57 52 08 12 25 5F 9F 4E 00 C5 52 O.T.$WR..%_.N..R
+0000D0A0 A3 08 32 21 02 50 00 18 30 02 2F AF 54 00 14 00 ..2!.P..0./.T...
+0000D0B0 D2 90 62 00 FF FF FF FF 12 20 02 50 00 18 1A 02 ..b...... .P....
+0000D0C0 52 5B B2 32 FE FF F2 49 12 32 2F D0 DF EF 44 00 R[.2...I.2/...D.
+0000D0D0 2F AF 54 00 0F C3 3A 00 24 55 0F DF 48 00 6F DF /.T...:.$U..H.o.
+0000D0E0 4A 00 9F DF 4C 00 D0 55 6F 9F 3A 00 92 90 90 D0 J...L..Uo.:.....
+0000D0F0 16 32 20 60 22 60 9F 90 96 53 49 1F 91 5B 4F EF .2 `"`...SI..[O.
+0000D100 54 00 0F 9F 48 00 6F 9F 4A 00 9F 9F 4C 00 11 33 T...H.o.J...L..3
+0000D110 14 5F 42 55 D2 61 2F EF 44 00 2F AF 54 00 42 61 ._BU.a/.D./.T.Ba
+0000D120 4F 9F 4E 00 14 53 07 17 41 5B 22 B0 3F AF 44 00 O.N..S..A[".?.D.
+0000D130 23 F0 91 32 12 5F 12 60 2D 61 92 5F D4 55 14 00 #..2._.`-a._.U..
+0000D140 24 C0 4F EF 54 00 E0 18 A3 FC 4D 54 4D 61 E0 18 $.O.T.....MTMa..
+0000D150 53 FB 7F E0 65 5B 8F AF 24 00 00 05 EC E7 08 EC S...e[..$.......
+0000D160 B0 5A 51 3F 0C D2 E0 18 E9 FC 1D 60 E0 18 35 FB .ZQ?.......`..5.
+0000D170 30 3B 22 54 42 61 4F A6 42 61 2D 57 51 08 22 54 0;"TBaO.Ba-WQ."T
+0000D180 D2 61 4F AF 54 00 24 57 52 08 12 25 5F 9F 4E 00 .aO.T.$WR..%_.N.
+0000D190 C5 52 A3 08 32 21 02 50 01 14 2F AF 54 00 14 00 .R..2!.P../.T...
+0000D1A0 D2 90 62 00 FF FF FF FF 12 20 02 50 07 13 52 5B ..b...... .P..R[
+0000D1B0 B2 32 FE FF F2 49 12 32 2F D0 DF EF 44 00 1F AF .2...I.2/...D...
+0000D1C0 54 00 1F EF 50 00 1F 94 4F AF 54 00 0F DF 48 00 T...P...O.T...H.
+0000D1D0 42 55 6F DF 4A 00 16 5B 9F DF 3A 00 9F 9F 4E 00 BUo.J..[..:...N.
+0000D1E0 9F DF 4C 00 D0 55 92 90 90 D0 16 32 20 60 22 60 ..L..U.....2 `"`
+0000D1F0 9F 90 96 53 49 1F 4F EF 54 00 0F 9F 48 00 6F 9F ...SI.O.T...H.o.
+0000D200 4A 00 9F 9F 3A 00 1F 9F 4C 00 1F DF 4E 00 1F 90 J...:...L...N...
+0000D210 E0 18 FF FE 41 5B 91 32 EE 18 4F AF 54 00 DF E0 ....A[.2..O.T...
+0000D220 1F 9F 4E 00 91 32 12 5F 12 60 42 61 0F DF 44 00 ..N..2._.`Ba..D.
+0000D230 6F DF 3A 00 1F DF 48 00 D0 55 64 B0 60 F0 14 60 o.:...H..Ud.`..`
+0000D240 10 60 42 57 1B 1F 0F 9F 44 00 6F 9F 3A 00 1F 9F .`BW....D.o.:...
+0000D250 48 00 E0 18 E3 FE 20 3B 32 54 42 61 D2 61 4F A6 H..... ;2TBa.aO.
+0000D260 24 57 51 08 2F A0 4F AF 3C 00 42 57 52 08 21 25 $WQ./.O.<.BWR.!%
+0000D270 5F 94 C5 52 A2 08 21 21 01 50 04 16 2F A0 DF A6 _..R..!!.P../...
+0000D280 14 00 D2 90 62 00 FF FF FF FF 12 20 02 50 0A 15 ....b...... .P..
+0000D290 2F A0 04 5A 1D 90 12 D0 14 32 22 60 2D 60 1F 9F /..Z.....2"`-`..
+0000D2A0 38 00 14 53 48 1F 2F A0 4F AF 1C 00 42 61 5F 94 8..SH./.O...Ba_.
+0000D2B0 DF 9F 20 00 D5 53 05 10 4F AF 34 00 14 B0 12 F0 .. ..S..O.4.....
+0000D2C0 1F 9F 22 00 1D 5F 1D 60 2F A0 E0 18 6F FE 41 5B ..".._.`/...o.A[
+0000D2D0 91 32 E0 18 19 FD 4F AF 54 00 DF E0 1F 9F 4E 00 .2....O.T.....N.
+0000D2E0 91 32 12 5F 12 60 42 61 7F EF 44 00 6F DF 3A 00 .2._.`Ba..D.o.:.
+0000D2F0 D6 55 84 B0 86 F0 14 60 16 60 6F E0 42 57 1A 1F .U.....`.`o.BW..
+0000D300 7F AF 44 00 6F 9F 3A 00 E0 18 2D FE 4F AF 54 00 ..D.o.:...-.O.T.
+0000D310 DF E0 1F 9F 4E 00 91 32 12 5F 12 60 42 61 7F EF ....N..2._.`Ba..
+0000D320 44 00 6F DF 3A 00 D6 55 84 B0 86 F0 14 60 16 60 D.o.:..U.....`.`
+0000D330 6F E0 42 57 1A 1F 7F AF 44 00 6F 9F 3A 00 E0 18 o.BW....D.o.:...
+0000D340 AD FC 2F A6 4F A0 DF AF 40 00 12 B0 14 F0 12 60 ../.O...@......`
+0000D350 14 60 2D 57 1B 1F E5 1B                         .`-W....        
 
 ;; fn0000D358: 0000D358
 ;;   Called from:
-;;     0000AA66 (in fn0000AA58)
-;;     0000AA86 (in fn0000AA58)
-;;     0000AC90 (in fn0000AE66)
-;;     0000AEC8 (in fn0000AE66)
+;;     0000AA66 (in fn0000A416)
+;;     0000AA86 (in fn0000A416)
+;;     0000AC90 (in fn0000A416)
+;;     0000AEC8 (in fn0000A416)
 fn0000D358 proc
 	movw	r4,r0
 	movw	r2,r1
@@ -16022,7 +12687,7 @@ fn0000D358 proc
 
 ;; fn0000D464: 0000D464
 ;;   Called from:
-;;     00006344 (in fn00004CD4)
+;;     00006344 (in fn00006226)
 fn0000D464 proc
 	movw	r2,r4
 	movw	$1,r1
@@ -16078,38 +12743,83 @@ l0000D49C:
 l0000D4A0:
 	movw	r1,r0
 	jr	ra
-0000D4A4             20 5B 11 5A 23 53 5F 10 03 52 6D 10      [.Z#S_..Rm.
-0000D4B0 33 33 11 33 32 53 A4 08 04 52 0F 10 01 52 14 08 33.32S...R...R..
-0000D4C0 04 52 0B 10 03 52 75 1F 30 53 42 10 30 3B F1 49 .R...Ru.0SB.0;.I
-0000D4D0 F3 49 01 52 1A 1F EE 0A 01 52 17 1F EE 0A 00 00 .I.R.....R......
+
+;; fn0000D4A4: 0000D4A4
+;;   Called from:
+;;     00004FB6 (in fn00004CD4)
+fn0000D4A4 proc
+	movw	r2,r0
+	movw	$1,r1
+	cmpw	r3,r2
+	bls	0000D4C8
+
+l0000D4AC:
+	cmpw	$0,r3
+	bgt	0000D4C8
+
+l0000D4B0:
+	addw	r3,r3
+	addw	r1,r1
+	cmpw	r2,r3
+	slo	r4
+	cmpw	$0,r4
+	beq	0000D4D8
+
+l0000D4BC:
+	cmpw	$0,r1
+	sne	r4
+	cmpw	$0,r4
+	beq	0000D4D8
+
+l0000D4C4:
+	cmpw	$0,r3
+	ble	0000D4B0
+
+l0000D4C8:
+	cmpw	r0,r3
+	bhi	0000D4CE
+
+l0000D4CC:
+	subw	r0,r3
+
+l0000D4CE:
+	lshw	$-15,r1
+	lshw	$-15,r3
+	cmpw	$0,r1
+	bne	0000D4C8
+
+l0000D4D6:
+	jr	ra
+
+l0000D4D8:
+	cmpw	$0,r1
+	bne	0000D4C8
+
+l0000D4DC:
+	jr	ra
+0000D4DE                                           00 00               ..
 0000D4E0 1E 01 06 5A 00 C0 14 00 1E 03 00 00             ...Z........    
 
 ;; fn0000D4EC: 0000D4EC
 ;;   Called from:
-;;     0000BC38 (in fn0000BC32)
-;;     0000BC46 (in fn0000BC42)
-;;     0000BC46 (in fn0000BC42)
-;;     0000BDF4 (in fn0000BDDA)
-;;     0000C09E (in fn0000BFCE)
-;;     0000C09E (in fn0000BFBE)
-;;     0000C09E (in fn0000BFAA)
-;;     0000C0AC (in fn0000BFCE)
-;;     0000C0AC (in fn0000BFBE)
-;;     0000C0AC (in fn0000BFAA)
-;;     0000C1CC (in fn0000C1BA)
+;;     0000BC38 (in fn0000BAE0)
+;;     0000BC46 (in fn0000BAE0)
+;;     0000BDF4 (in fn0000BAE0)
+;;     0000C09E (in fn0000BAE0)
+;;     0000C0AC (in fn0000BAE0)
 fn0000D4EC proc
-	push	$1,ra
+	push	$2,ra
 	movw	$1,r6
 	bal	ra,fn0000D4F8
-	popret	$1,ra
+	popret	$2,ra
 0000D4F6                   00 00                               ..        
 
 ;; fn0000D4F8: 0000D4F8
 ;;   Called from:
 ;;     0000D4F0 (in fn0000D4EC)
 fn0000D4F8 proc
-	push	$1,ra
-	push	$1,r8
+	push	$2,ra
+	push	$2,r8
 	movd	$1,(r9,r8)
 	cmpd	(r5,r4),(r3,r2)
 	bls	0000D522
@@ -16164,8 +12874,8 @@ l0000D53E:
 	movd	(r1,r0),ra
 
 l0000D540:
-	pop	$1,r8
-	popret	$1,ra
+	pop	$2,r8
+	popret	$2,ra
 
 l0000D544:
 	cmpd	$0,(r9,r8)
@@ -16184,8 +12894,8 @@ l0000D548:
 ;;   Called from:
 ;;     000003BE (in fn03B0)
 fn0000D578 proc
-	push	$1,r13
-	addd	$FFF8,sp
+	push	$2,r13
+	addd	$-8,sp
 	movd	r13,sp
 	movd	$C,(r1,r0)
 	addd	r13,(r1,r0)
@@ -16196,7 +12906,7 @@ fn0000D578 proc
 	nop
 	movd	sp,r13
 	addd	$8,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000D596                   00 00 1D 01 BF 60 F8 FF FD 55       .....`...U
 0000D5A0 C0 54 D0 61 20 A0 2D E0 00 A2 0D E2 00 2C DF 55 .T.a .-......,.U
@@ -16266,29 +12976,15 @@ fn0000D578 proc
 ;;   Called from:
 ;;     000003C4 (in fn03B0)
 fn0000D974 proc
-	addd	$FFFC,sp
+	addd	$-4,sp
 	movd	r13,sp
 	storw	r2,(r13)
 	nop
 	movd	sp,r13
 	addd	$4,sp
 	jr	ra
-
-;; fn0000D984: 0000D984
-;;   Called from:
-;;     0000BACC (in fn0000B218)
-fn0000D984 proc
-	push	$1,r13
-	addd	$FFF8,sp
-	movd	r13,sp
-	stord	(r3,r2),(r13)
-	stord	(r5,r4),4(r13)
-	nop
-	movd	sp,r13
-	addd	$8,sp
-	pop	$1,r13
-	jr	ra
-0000D99A                               00 00                       ..    
+0000D984             1D 01 BF 60 F8 FF FD 55 2D E0 4D E2     ...`...U-.M.
+0000D990 00 2C DF 55 8F 60 1D 02 EE 0A 00 00             .,.U.`......    
 
 ;; fn0000D99C: 0000D99C
 ;;   Called from:
@@ -16297,33 +12993,38 @@ fn0000D984 proc
 ;;     00001BA0 (in fn00001B74)
 ;;     00001BBC (in fn00001B74)
 ;;     00001BCA (in fn00001B74)
+;;     00001C88 (in fn00001BEC)
+;;     00001CA4 (in fn00001BEC)
+;;     00001CAA (in fn00001BEC)
 ;;     00002E5C (in fn00002D76)
 ;;     00002E62 (in fn00002D76)
 ;;     00002E72 (in fn00002D76)
 ;;     00002E86 (in fn00002D76)
 fn0000D99C proc
-	push	$1,r13
-	addd	$FFFC,sp
+	push	$2,r13
+	addd	$-4,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	nop
 	movd	sp,r13
 	addd	$4,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 
 ;; fn0000D9B0: 0000D9B0
 ;;   Called from:
 ;;     00000C5A (in fn00000BEC)
+;;     00001BFA (in fn00001BEC)
+;;     00001C1A (in fn00001BEC)
 fn0000D9B0 proc
-	push	$1,r13
-	addd	$FFFC,sp
+	push	$2,r13
+	addd	$-4,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	nop
 	movd	sp,r13
 	addd	$4,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000D9C4             1D 01 BF 60 F8 FF FD 55 2D E0 4D E2     ...`...U-.M.
 0000D9D0 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 1D 01 BF 60 .,.U.`.........`
@@ -16352,40 +13053,36 @@ fn0000D9B0 proc
 ;; fn0000DB24: 0000DB24
 ;;   Called from:
 ;;     000031A2 (in fn000030F2)
-;;     00003502 (in fn000034F2)
-;;     00003548 (in fn00003540)
-;;     00003548 (in fn00003540)
-;;     000035B4 (in fn00003A36)
-;;     0000363A (in fn0000356E)
-;;     000036F6 (in fn000030F2)
-;;     000037EC (in fn000037E0)
-;;     0000384A (in fn00003480)
-;;     00003B48 (in fn00003B3C)
-;;     00003CD4 (in fn0000356E)
-;;     00003D6E (in fn00003A36)
-;;     000040FC (in fn00003A36)
-;;     000042DE (in fn0000402E)
-;;     00004378 (in fn00003A36)
-;;     0000468C (in fn00004CD4)
+;;     00003328 (in fn000030F2)
+;;     00003502 (in fn000033F8)
+;;     00003548 (in fn000033F8)
+;;     000035B4 (in fn000033F8)
+;;     0000363A (in fn000033F8)
+;;     000036F6 (in fn000033F8)
+;;     000037EC (in fn000033F8)
+;;     0000384A (in fn000033F8)
+;;     00003886 (in fn000033F8)
+;;     000038C0 (in fn000033F8)
 ;;     00004E82 (in fn00004CD4)
 ;;     00004F38 (in fn00004CD4)
+;;     00005104 (in fn00004CD4)
+;;     000051CA (in fn00004CD4)
 ;;     00005226 (in fn00004CD4)
+;;     00005408 (in fn00004CD4)
+;;     00005468 (in fn00004CD4)
+;;     000054C0 (in fn00004CD4)
 ;;     0000558A (in fn00004CD4)
 ;;     000055E6 (in fn00004CD4)
-;;     0000685A (in fn00004CD4)
-;;     000068EE (in fn00004CD4)
-;;     00006904 (in fn00004CD4)
-;;     0000691A (in fn00004CD4)
-;;     0000692C (in fn00004CD4)
-;;     00008BA6 (in fn00008B9C)
-;;     00008C2E (in fn00008DC0)
-;;     00008C60 (in fn00008B9C)
-;;     00009012 (in fn0000A110)
-;;     00009054 (in fn0000A110)
-;;     0000B02E (in fn0000AFCC)
+;;     00005712 (in fn00004CD4)
+;;     000057DA (in fn00004CD4)
+;;     00005988 (in fn00004CD4)
+;;     00005B3C (in fn00004CD4)
+;;     00005BE8 (in fn00004CD4)
+;;     00005CCC (in fn00004CD4)
+;;     0000B02E (in fn0000AF94)
 fn0000DB24 proc
-	push	$1,r13
-	addd	$FFF4,sp
+	push	$2,r13
+	addd	$-12,sp
 	movd	r13,sp
 	movd	$10,(r1,r0)
 	addd	r13,(r1,r0)
@@ -16395,29 +13092,30 @@ fn0000DB24 proc
 	stord	(r1,r0),8(r13)
 	nop
 	movd	sp,r13
-	addd	$C,sp
-	pop	$1,r13
+	addd	$12,sp
+	pop	$2,r13
 	jr	ra
 
 ;; fn0000DB44: 0000DB44
 ;;   Called from:
+;;     00001F50 (in fn00001F0C)
 ;;     00003276 (in fn000030F2)
 ;;     000033C0 (in fn000030F2)
-;;     00004496 (in fn00004450)
-;;     00006054 (in fn00004CD4)
-;;     00006446 (in fn00004CD4)
-;;     000066AA (in fn00004CD4)
+;;     000033E2 (in fn000030F2)
+;;     00004874 (in fn00004794)
+;;     00005F00 (in fn00004CD4)
+;;     00006446 (in fn00006226)
 fn0000DB44 proc
-	push	$1,r13
-	addd	$FFF4,sp
+	push	$2,r13
+	addd	$-12,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	storw	r4,4(r13)
 	stord	(r6,r5),8(r13)
 	nop
 	movd	sp,r13
-	addd	$C,sp
-	pop	$1,r13
+	addd	$12,sp
+	pop	$2,r13
 	jr	ra
 0000DB5C                                     1D 01 BF 60             ...`
 0000DB60 F4 FF FD 55 2D E0 4D D2 5D E4 00 2C DF 55 CF 60 ...U-.M.]..,.U.`
@@ -16428,14 +13126,14 @@ fn0000DB44 proc
 ;;     00000C46 (in fn00000BEC)
 ;;     00000C50 (in fn00000BEC)
 fn0000DB74 proc
-	push	$1,r13
-	addd	$FFFC,sp
+	push	$2,r13
+	addd	$-4,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	nop
 	movd	sp,r13
 	addd	$4,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000DB88                         1D 01 BF 60 F8 FF FD 55         ...`...U
 0000DB90 2D E0 4D E2 00 2C DF 55 8F 60 1D 02 EE 0A 00 00 -.M..,.U.`......
@@ -16449,15 +13147,15 @@ fn0000DB74 proc
 ;;   Called from:
 ;;     00000C6A (in fn00000BEC)
 fn0000DBF0 proc
-	push	$1,r13
-	addd	$FFF8,sp
+	push	$2,r13
+	addd	$-8,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	stord	(r5,r4),4(r13)
 	nop
 	movd	sp,r13
 	addd	$8,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000DC06                   00 00 1D 01 BF 60 F4 FF FD 55       .....`...U
 0000DC10 B0 54 10 00 D0 61 2D E0 4D E2 00 A0 0D E4 00 2C .T...a-.M......,
@@ -16467,15 +13165,15 @@ fn0000DBF0 proc
 ;;   Called from:
 ;;     00000C7C (in fn00000BEC)
 fn0000DC28 proc
-	push	$1,r13
-	addd	$FFF8,sp
+	push	$2,r13
+	addd	$-8,sp
 	movd	r13,sp
 	stord	(r3,r2),(r13)
 	stord	(r5,r4),4(r13)
 	nop
 	movd	sp,r13
 	addd	$8,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000DC3E                                           00 00               ..
 0000DC40 1D 01 BF 60 F4 FF FD 55 B0 54 10 00 D0 61 2D E0 ...`...U.T...a-.
@@ -16502,19 +13200,23 @@ fn0000DC28 proc
 
 ;; fn0000DD90: 0000DD90
 ;;   Called from:
+;;     00001E5C (in fn00001DFA)
+;;     00001EB8 (in fn00001DFA)
+;;     00001F8E (in fn00001F0C)
+;;     00001FFA (in fn00001F0C)
 ;;     00002E2A (in fn00002D76)
 ;;     00002EAE (in fn00002D76)
 fn0000DD90 proc
-	push	$1,r13
-	addd	$FFF4,sp
+	push	$2,r13
+	addd	$-12,sp
 	movd	r13,sp
 	storw	r2,(r13)
 	stord	(r4,r3),4(r13)
 	stord	(r6,r5),8(r13)
 	nop
 	movd	sp,r13
-	addd	$C,sp
-	pop	$1,r13
+	addd	$12,sp
+	pop	$2,r13
 	jr	ra
 0000DDA8                         1D 01 BF 60 F4 FF FD 55         ...`...U
 0000DDB0 2D D0 3D E2 5D E4 00 2C DF 55 CF 60 1D 02 EE 0A -.=.]..,.U.`....
@@ -16527,14 +13229,14 @@ fn0000DD90 proc
 ;;     00001BC2 (in fn00001B74)
 ;;     00002E78 (in fn00002D76)
 fn0000DDF0 proc
-	push	$1,r13
-	addd	$FFFC,sp
+	push	$2,r13
+	addd	$-4,sp
 	movd	r13,sp
 	storw	r2,(r13)
 	nop
 	movd	sp,r13
 	addd	$4,sp
-	pop	$1,r13
+	pop	$2,r13
 	jr	ra
 0000DE04             1D 01 BF 60 FC FF FD 55 2D E0 00 2C     ...`...U-..,
 0000DE10 DF 55 4F 60 1D 02 EE 0A 1D 01 BF 60 F8 FF FD 55 .UO`.......`...U
