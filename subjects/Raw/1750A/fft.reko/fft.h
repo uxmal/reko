@@ -318,22 +318,11 @@ Eq_953: (union "Eq_953" (real32 u0) (real48 u1))
 	T_1035 (in Mem46[0x0579<p16>:real48] @ 046B : real48)
 	T_1036 (in gp12_gp13_311 * g_t0579.u1 @ 046B : real48)
 	T_1127 (in Mem147[0x0579<p16>:real48] @ 0493 : real48)
-Eq_1050: (union "Eq_1050" (ui32 u0) (word16 u1))
-	T_1050 (in gp2_96 @ 047A : Eq_1050)
-	T_1057 (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 047A : word16)
-Eq_1051: (fn ui32 (int16))
+Eq_1051: (fn Eq_1054 (int16))
 	T_1051 (in __xbr @ 047A : ptr32)
 	T_1052 (in signature of __xbr : void)
-Eq_1056: (union "Eq_1056" (int16 u0) (ui32 u1))
-	T_1056 (in gp2_93 % 0xA<16> @ 047A : word16)
-Eq_1063: (union "Eq_1063" (ui32 u0) (word16 u1))
-	T_1063 (in 0x3030<16> @ 0482 : word16)
-Eq_1064: (union "Eq_1064" (ui32 u0) (word16 u1))
-	T_1064 (in gp2_96 | 0x3030<16> @ 0482 : word16)
-	T_1067 (in Mem102[gp11 + 6<16>:word16] @ 0482 : word16)
-Eq_1068: (union "Eq_1068" (ui32 u0) (word16 u1))
-	T_1068 (in gp2_96 | 0x3030<16> @ 047F : word16)
-	T_1071 (in Mem103[gp11 + 9<16>:word16] @ 047F : word16)
+Eq_1054: (union "Eq_1054" (cui16 u0) (word32 u1))
+	T_1054 (in __xbr(gp2_93) @ 047A : word32)
 Eq_1089: (union "Eq_1089" (byte u0) (word16 u1))
 	T_1089 (in SEQ(0x2E<8>, Mem137[gp11 + 1<16>:byte]) @ 0491 : word16)
 	T_1092 (in Mem142[gp11 + 1<16>:word16] @ 0491 : word16)
@@ -4637,10 +4626,10 @@ T_1049: (in gp2_192 / 0xA<16> @ 0478 : word16)
   Class: Eq_1047
   DataType: int16
   OrigDataType: int16
-T_1050: (in gp2_96 @ 047A : Eq_1050)
+T_1050: (in gp2_96 @ 047A : cui16)
   Class: Eq_1050
-  DataType: Eq_1050
-  OrigDataType: (union (ui32 u1) (word16 u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_1051: (in __xbr @ 047A : ptr32)
   Class: Eq_1051
   DataType: (ptr32 Eq_1051)
@@ -4655,20 +4644,20 @@ T_1053: (in p1 @ 047A : word16)
   OrigDataType: 
 T_1054: (in __xbr(gp2_93) @ 047A : word32)
   Class: Eq_1054
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: Eq_1054
+  OrigDataType: (union (cui16 u0) (word32 u1))
 T_1055: (in 0xA<16> @ 047A : word16)
   Class: Eq_1055
   DataType: int16
   OrigDataType: int16
 T_1056: (in gp2_93 % 0xA<16> @ 047A : word16)
   Class: Eq_1056
-  DataType: Eq_1056
-  OrigDataType: (union (int16 u0) (ui32 u1))
+  DataType: int16
+  OrigDataType: int16
 T_1057: (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 047A : word16)
   Class: Eq_1050
-  DataType: Eq_1050
-  OrigDataType: ui32
+  DataType: cui16
+  OrigDataType: cui16
 T_1058: (in 6<16> @ 047E : word16)
   Class: Eq_955
   DataType: word16
@@ -4691,12 +4680,12 @@ T_1062: (in __mov(gp11, 0x0582<p16>) @ 044D : void)
   OrigDataType: void
 T_1063: (in 0x3030<16> @ 0482 : word16)
   Class: Eq_1063
-  DataType: ui32
-  OrigDataType: (union (ui32 u0) (word16 u1))
+  DataType: cui16
+  OrigDataType: cui16
 T_1064: (in gp2_96 | 0x3030<16> @ 0482 : word16)
   Class: Eq_1064
-  DataType: Eq_1064
-  OrigDataType: ui32
+  DataType: cui16
+  OrigDataType: cui16
 T_1065: (in 6<16> @ 0482 : word16)
   Class: Eq_1065
   DataType: word16
@@ -4707,12 +4696,12 @@ T_1066: (in gp11 + 6<16> @ 0482 : word16)
   OrigDataType: ptr16
 T_1067: (in Mem102[gp11 + 6<16>:word16] @ 0482 : word16)
   Class: Eq_1064
-  DataType: Eq_1064
+  DataType: cui16
   OrigDataType: word16
 T_1068: (in gp2_96 | 0x3030<16> @ 047F : word16)
   Class: Eq_1068
-  DataType: Eq_1068
-  OrigDataType: ui32
+  DataType: cui16
+  OrigDataType: cui16
 T_1069: (in 9<16> @ 047F : word16)
   Class: Eq_1069
   DataType: word16
@@ -4723,7 +4712,7 @@ T_1070: (in gp11 + 9<16> @ 047F : word16)
   OrigDataType: ptr16
 T_1071: (in Mem103[gp11 + 9<16>:word16] @ 047F : word16)
   Class: Eq_1068
-  DataType: Eq_1068
+  DataType: cui16
   OrigDataType: word16
 T_1072: (in gp2_gp3_121 @ 0488 : int32)
   Class: Eq_1072
@@ -5850,32 +5839,12 @@ typedef union Eq_953 {
 	real48 u1;
 } Eq_953;
 
-typedef union Eq_1050 {
-	ui32 u0;
-	word16 u1;
-} Eq_1050;
+typedef Eq_1054 (Eq_1051)(int16);
 
-typedef ui32 (Eq_1051)(int16);
-
-typedef union Eq_1056 {
-	int16 u0;
-	ui32 u1;
-} Eq_1056;
-
-typedef union Eq_1063 {
-	ui32 u0;
-	word16 u1;
-} Eq_1063;
-
-typedef union Eq_1064 {
-	ui32 u0;
-	word16 u1;
-} Eq_1064;
-
-typedef union Eq_1068 {
-	ui32 u0;
-	word16 u1;
-} Eq_1068;
+typedef union Eq_1054 {
+	cui16 u0;
+	word32 u1;
+} Eq_1054;
 
 typedef union Eq_1089 {
 	byte u0;

@@ -788,10 +788,10 @@ void fn0000000140001E7C(Eq_n rdx, struct Eq_n * r9)
 //      fn0000000140001E7C
 void fn0000000140001E9C(Eq_n rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 qwArg00)
 {
-	ui32 r11d_n = r8->dw0000 & ~0x07;
+	ui32 r11d_n = r8->t0000.u0 & ~0x07;
 	Eq_n r9_n = rcx;
 	Eq_n r10_n = rcx;
-	if ((r8->dw0000 & 0x04) != 0x00)
+	if ((r8->t0000.u1 & 0x04) != 0x00)
 		r10_n = (word64) rcx + (int64) r8->dw0004 & (int64) (-r8->dw0008);
 	word64 rdx_n = *((word64) r10_n + (int64) r11d_n);
 	struct Eq_n * rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;

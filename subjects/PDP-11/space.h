@@ -1124,8 +1124,6 @@ Eq_1718: (union "Eq_1718" (ci8 u0) (cui16 u1))
 	T_2733 (in Mem21[r4 + 0<16>:word16] @ 1856 : word16)
 	T_2735 (in r4->t0000.u1 & 0x7FFF<16> @ 1856 : word16)
 	T_2738 (in Mem26[r4 + 0<16>:word16] @ 1856 : word16)
-Eq_1747: (union "Eq_1747" (byte u0) (word16 u1))
-	T_1747 (in 0x20<16> @ 12EC : word16)
 Eq_1756: (fn void ((ptr16 char)))
 	T_1756 (in PRINT @ 12DE : ptr16)
 	T_1757 (in signature of PRINT : void)
@@ -8608,7 +8606,7 @@ T_1742: (in r4_10->t0000.u0 > 0<8> @ 12D8 : bool)
 T_1743: (in v19_26 @ 12EC : Eq_1718)
   Class: Eq_1718
   DataType: Eq_1718
-  OrigDataType: (union (byte u0) (word16 u1))
+  OrigDataType: cui16
 T_1744: (in 0<16> @ 12EC : word16)
   Class: Eq_1744
   DataType: word16
@@ -8620,15 +8618,15 @@ T_1745: (in r4_10 + 0<16> @ 12EC : word16)
 T_1746: (in Mem25[r4_10 + 0<16>:word16] @ 12EC : word16)
   Class: Eq_1718
   DataType: Eq_1718
-  OrigDataType: ci8
+  OrigDataType: (union (ci8 u0) (cui16 u1))
 T_1747: (in 0x20<16> @ 12EC : word16)
   Class: Eq_1747
-  DataType: byte
-  OrigDataType: (union (byte u0) (word16 u1))
+  DataType: cui16
+  OrigDataType: cui16
 T_1748: (in r4_10->t0000.u1 & 0x20<16> @ 12EC : word16)
   Class: Eq_1718
   DataType: Eq_1718
-  OrigDataType: byte
+  OrigDataType: cui16
 T_1749: (in 0<16> @ 12EC : word16)
   Class: Eq_1749
   DataType: word16
@@ -19227,11 +19225,6 @@ typedef union Eq_1718 {
 	ci8 u0;
 	cui16 u1;
 } Eq_1718;
-
-typedef union Eq_1747 {
-	byte u0;
-	word16 u1;
-} Eq_1747;
 
 typedef void (Eq_1756)(char *);
 

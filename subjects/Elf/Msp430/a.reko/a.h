@@ -58,7 +58,7 @@ Eq_1: (struct "Globals"
 		(5B78 (arr byte) a5B78)
 		(FFFF Eq_2727 tFFFF))
 	globals_t (in globals : (ptr16 (struct "Globals")))
-Eq_3: (union "Eq_3" (uint20 u0) (byte u1) (word16 u2))
+Eq_3: (union "Eq_3" (uint20 u0) (word16 u1))
 	T_3 (in r8 : Eq_3)
 	T_40 (in r8 @ 00004036 : Eq_3)
 	T_43 (in r8 @ 00004036 : Eq_3)
@@ -493,12 +493,14 @@ Eq_348: (union "Eq_348" (byte u0) (word20 u1))
 Eq_349: (fn Eq_348 (ui40, Eq_170))
 	T_349 (in msp430_compute_modulator_bits @ 0000432E : ptr16)
 	T_350 (in signature of msp430_compute_modulator_bits @ 420E : void)
-Eq_355: (fn cui16 (Eq_296))
+Eq_355: (fn Eq_358 (Eq_296))
 	T_355 (in __swpb @ 0000433E : ptr32)
 	T_356 (in signature of __swpb : void)
-Eq_359: (union "Eq_359" (cui16 u0) (byte u1))
+Eq_358: (union "Eq_358" (ui20 u0) (word16 u1))
+	T_358 (in __swpb(wLoc10) @ 0000433E : word16)
+Eq_359: (union "Eq_359" (ui20 u0) (byte u1))
 	T_359 (in 0xFF<8> @ 0000433E : byte)
-Eq_360: (union "Eq_360" (cui16 u0) (byte u1))
+Eq_360: (union "Eq_360" (ui20 u0) (byte u1))
 	T_360 (in __swpb(wLoc10) & 0xFF<8> @ 0000433E : word20)
 	T_362 (in Mem100[0x007D<p16>:byte] @ 0000433E : byte)
 Eq_367: (union "Eq_367" (byte u0) (word16 u1))
@@ -542,7 +544,7 @@ Eq_400: (union "Eq_400" (ptr16 u0) ((ptr20 Eq_3818) u1))
 	T_1861 (in Mem152[r11_120 + 4<i16>:word16] @ 00004E00 : word16)
 	T_1871 (in r15_182 @ 00004E0C : Eq_400)
 	T_1874 (in Mem178[r11_120 + 4<i16>:word16] @ 00004E0C : word16)
-	T_1878 (in r11_120.u2->t0004.u0 + ((r11_120.u2)->t002C).u2 @ 00004E0C : word20)
+	T_1878 (in r11_120.u2->t0004.u0 + ((r11_120.u2)->t002C).u1 @ 00004E0C : word20)
 	T_1881 (in Mem183[r11_120 + 4<i16>:word16] @ 00004E10 : word16)
 	T_1884 (in Mem183[r11_120 + 2<i16>:word16] @ 00004E18 : word16)
 	T_1934 (in Mem183[r11_120 + 0<20>:word16] @ 00004E1A : word16)
@@ -550,7 +552,7 @@ Eq_400: (union "Eq_400" (ptr16 u0) ((ptr20 Eq_3818) u1))
 	T_2013 (in Mem8[r15 + 4<i16>:word16] @ 4EA0 : word16)
 	T_2023 (in r15_37 @ 4EAC : Eq_400)
 	T_2026 (in Mem33[r15 + 4<i16>:word16] @ 4EAC : word16)
-	T_2030 (in r15.u2->t0004.u0 + ((r15.u2)->t002C).u2 @ 4EAC : word20)
+	T_2030 (in r15.u2->t0004.u0 + ((r15.u2)->t002C).u1 @ 4EAC : word20)
 	T_2033 (in Mem38[r15 + 4<i16>:word16] @ 4EB0 : word16)
 	T_2036 (in Mem38[r15 + 2<i16>:word16] @ 4EB8 : word16)
 	T_2046 (in Mem38[r15 + 0<20>:word16] @ 4EBA : word16)
@@ -1262,7 +1264,7 @@ Eq_1443: (union "Eq_1443" (word16 u0) ((ptr20 Eq_3835) u1))
 Eq_1454: (fn ui20 (ui20, Eq_1457, Eq_296, Eq_1443))
 	T_1454 (in memset @ 00004AF6 : ptr16)
 	T_1455 (in signature of memset @ 5A68 : void)
-Eq_1457: (union "Eq_1457" (uint20 u0) (byte u1) (ptr16 u2))
+Eq_1457: (union "Eq_1457" (uint20 u0) (ptr16 u1))
 	T_1457 (in r13 @ 00004AF6 : Eq_1457)
 	T_1460 (in r15 *20 2<20> @ 00004AF6 : word20)
 	T_1853 (in r13 @ 00004E00 : Eq_1457)
@@ -1690,6 +1692,20 @@ Eq_2815: (union "Eq_2815" (ci16 u0) (word20 u1))
 	T_3182 (in 0<16> @ 559A : word16)
 	T_3270 (in PRINT(r14_581, r15_584) @ 5570 : word20)
 	T_3271 (in 0<16> @ 5570 : word16)
+Eq_2820: (union "Eq_2820" (ui20 u0) (byte u1))
+	T_2820 (in bLoc1E_1013 @ 000053D6 : Eq_2820)
+	T_2821 (in 0<8> @ 000053D6 : byte)
+	T_2870 (in bLoc1E_1013 | 8<8> @ 58D4 : byte)
+	T_2886 (in (bLoc1E_1013 | 0x10<16>) & 0xFFDF<16> @ 58AE : byte)
+	T_2948 (in bLoc1E_1013 | 0x20<16> @ 582E : byte)
+	T_2980 (in bLoc1E_1013 | 4<8> @ 581A : byte)
+	T_2988 (in bLoc1E_1013 | 1<8> @ 5498 : byte)
+	T_2996 (in bLoc1E_1013 | 1<8> @ 5806 : byte)
+	T_3010 (in bLoc1E_1013 | 1<8> @ 57A8 : byte)
+	T_3020 (in bLoc1E_1013 | 0x40<16> @ 5796 : byte)
+	T_3040 (in bLoc1E_1013 | 1<8> @ 5706 : byte)
+	T_3089 (in bLoc1E_1013 | 0x40<16> @ 5616 : byte)
+	T_3105 (in bLoc1E_1013 & 0xFFDF<16> @ 5628 : byte)
 Eq_2822: (union "Eq_2822" (ci8 u0) (ci16 u1) (ptr16 u2) ((ptr20 byte) u3))
 	T_2822 (in bLoc17_1014 @ 000053DA : Eq_2822)
 	T_2823 (in 0<8> @ 000053DA : byte)
@@ -1856,11 +1872,14 @@ Eq_3104: (union "Eq_3104" (byte u0) (word16 u1))
 	T_3104 (in 0xFFDF<16> @ 5628 : word16)
 Eq_3109: (union "Eq_3109" (byte u0) (word16 u1))
 	T_3109 (in 0x40<16> @ 554C : word16)
-Eq_3113: (union "Eq_3113" (byte u0) (word16 u1))
+Eq_3113: (union "Eq_3113" (ui20 u0) (word16 u1))
 	T_3113 (in 0x30<16> @ 557A : word16)
-Eq_3114: (union "Eq_3114" (byte u0) (word16 u1))
+Eq_3114: (union "Eq_3114" (ui20 u0) (word16 u1))
 	T_3114 (in bLoc1E_1013 & 0x30<16> @ 557A : word20)
 	T_3115 (in 0x20<16> @ 557A : word16)
+Eq_3122: (union "Eq_3122" (ui20 u0) (byte u1))
+	T_3122 (in bLoc1E_1013 & 0x30<16> @ 551A : word20)
+	T_3123 (in 0<8> @ 551A : byte)
 Eq_3125: (union "Eq_3125" (byte u0) (ptr16 u1) (word20 u2))
 	T_3125 (in 2<8> @ 55F6 : byte)
 Eq_3138: (union "Eq_3138" (ui16 u0) (byte u1))
@@ -3676,16 +3695,16 @@ T_357: (in p1 @ 0000433E : word16)
   OrigDataType: 
 T_358: (in __swpb(wLoc10) @ 0000433E : word16)
   Class: Eq_358
-  DataType: cui16
-  OrigDataType: cui16
+  DataType: Eq_358
+  OrigDataType: (union (ui20 u0) (word16 u1))
 T_359: (in 0xFF<8> @ 0000433E : byte)
   Class: Eq_359
-  DataType: cui16
-  OrigDataType: (union (cui16 u0) (byte u1))
+  DataType: ui20
+  OrigDataType: (union (ui20 u0) (byte u1))
 T_360: (in __swpb(wLoc10) & 0xFF<8> @ 0000433E : word20)
   Class: Eq_360
   DataType: Eq_360
-  OrigDataType: cui16
+  OrigDataType: ui20
 T_361: (in 007D @ 0000433E : ptr16)
   Class: Eq_361
   DataType: (ptr16 Eq_360)
@@ -9742,7 +9761,7 @@ T_1861: (in Mem152[r11_120 + 4<i16>:word16] @ 00004E00 : word16)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: (union (word20 u1) (word16 u0))
-T_1862: (in memcpy(sr_148, r11_120.u2->t002C.u2, r9_102, r11_120.u2->t0004.u0) @ 00004E00 : word20)
+T_1862: (in memcpy(sr_148, r11_120.u2->t002C.u1, r9_102, r11_120.u2->t0004.u0) @ 00004E00 : word20)
   Class: Eq_509
   DataType: ui20
   OrigDataType: word20
@@ -9806,7 +9825,7 @@ T_1877: (in Mem178[r11_120 + 44<i16>:word16] @ 00004E0C : word16)
   Class: Eq_1457
   DataType: Eq_1457
   OrigDataType: (union (word20 u0) (word16 u1))
-T_1878: (in r11_120.u2->t0004.u0 + ((r11_120.u2)->t002C).u2 @ 00004E0C : word20)
+T_1878: (in r11_120.u2->t0004.u0 + ((r11_120.u2)->t002C).u1 @ 00004E0C : word20)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: (union (word20 u1) (cup16 u0))
@@ -10358,7 +10377,7 @@ T_2013: (in Mem8[r15 + 4<i16>:word16] @ 4EA0 : word16)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: (union (word20 u1) (word16 u0))
-T_2014: (in memcpy(sr, r15.u2->t002C.u2, r14, r15.u2->t0004.u0) @ 4EA0 : word20)
+T_2014: (in memcpy(sr, r15.u2->t002C.u1, r14, r15.u2->t0004.u0) @ 4EA0 : word20)
   Class: Eq_509
   DataType: ui20
   OrigDataType: word20
@@ -10422,7 +10441,7 @@ T_2029: (in Mem33[r15 + 44<i16>:word16] @ 4EAC : word16)
   Class: Eq_1457
   DataType: Eq_1457
   OrigDataType: (union (word20 u0) (word16 u1))
-T_2030: (in r15.u2->t0004.u0 + ((r15.u2)->t002C).u2 @ 4EAC : word20)
+T_2030: (in r15.u2->t0004.u0 + ((r15.u2)->t002C).u1 @ 4EAC : word20)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: (union (word20 u1) (cup16 u0))
@@ -13219,7 +13238,7 @@ T_2724: (in signature of vuprintf @ 537E : void)
 T_2725: (in r8 @ 00005314 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
-  OrigDataType: (union (byte u0) (uint20 u1))
+  OrigDataType: ui20
 T_2726: (in r13 @ 00005314 : Eq_2726)
   Class: Eq_2726
   DataType: Eq_2726
@@ -13596,10 +13615,10 @@ T_2819: (in r6_47 + 1<16> @ 000053D4 : word20)
   Class: Eq_2727
   DataType: (ptr20 Eq_2727)
   OrigDataType: (union ((ptr20 (struct 0001 (0 byte b0000))) u0) ((ptr16 byte) u1))
-T_2820: (in bLoc1E_1013 @ 000053D6 : byte)
+T_2820: (in bLoc1E_1013 @ 000053D6 : Eq_2820)
   Class: Eq_2820
-  DataType: byte
-  OrigDataType: byte
+  DataType: Eq_2820
+  OrigDataType: (union (ui20 u1) (byte u0))
 T_2821: (in 0<8> @ 000053D6 : byte)
   Class: Eq_2820
   DataType: byte
@@ -13798,7 +13817,7 @@ T_2869: (in 8<8> @ 58D4 : byte)
   OrigDataType: byte
 T_2870: (in bLoc1E_1013 | 8<8> @ 58D4 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2871: (in 0x2D<16> @ 5428 : word16)
   Class: Eq_2831
@@ -13862,7 +13881,7 @@ T_2885: (in 0xFFDF<16> @ 58AE : word16)
   OrigDataType: (union (byte u0) (word16 u1))
 T_2886: (in (bLoc1E_1013 | 0x10<16>) & 0xFFDF<16> @ 58AE : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2887: (in -v40_829 @ 58CE : byte)
   Class: Eq_2824
@@ -14110,7 +14129,7 @@ T_2947: (in 0x20<16> @ 582E : word16)
   OrigDataType: (union (byte u0) (word16 u1))
 T_2948: (in bLoc1E_1013 | 0x20<16> @ 582E : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2949: (in 0x68<16> @ 5490 : word16)
   Class: Eq_2831
@@ -14238,7 +14257,7 @@ T_2979: (in 4<8> @ 581A : byte)
   OrigDataType: byte
 T_2980: (in bLoc1E_1013 | 4<8> @ 581A : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2981: (in 0x6C<16> @ 5496 : word16)
   Class: Eq_2831
@@ -14270,7 +14289,7 @@ T_2987: (in 1<8> @ 5498 : byte)
   OrigDataType: byte
 T_2988: (in bLoc1E_1013 | 1<8> @ 5498 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2989: (in 2<16> @ 5812 : word16)
   Class: Eq_2989
@@ -14302,7 +14321,7 @@ T_2995: (in 1<8> @ 5806 : byte)
   OrigDataType: byte
 T_2996: (in bLoc1E_1013 | 1<8> @ 5806 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_2997: (in 0x64<16> @ 54AE : word16)
   Class: Eq_2831
@@ -14358,7 +14377,7 @@ T_3009: (in 1<8> @ 57A8 : byte)
   OrigDataType: byte
 T_3010: (in bLoc1E_1013 | 1<8> @ 57A8 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_3011: (in 0x6F<16> @ 54C0 : word16)
   Class: Eq_2831
@@ -14398,7 +14417,7 @@ T_3019: (in 0x40<16> @ 5796 : word16)
   OrigDataType: (union (byte u0) (word16 u1))
 T_3020: (in bLoc1E_1013 | 0x40<16> @ 5796 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_3021: (in 0x78<16> @ 579C : word16)
   Class: Eq_2831
@@ -14478,7 +14497,7 @@ T_3039: (in 1<8> @ 5706 : byte)
   OrigDataType: byte
 T_3040: (in bLoc1E_1013 | 1<8> @ 5706 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_3041: (in 0x75<16> @ 54D8 : word16)
   Class: Eq_2831
@@ -14674,7 +14693,7 @@ T_3088: (in 0x40<16> @ 5616 : word16)
   OrigDataType: (union (byte u0) (word16 u1))
 T_3089: (in bLoc1E_1013 | 0x40<16> @ 5616 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_3090: (in 0<16> @ 5614 : word16)
   Class: Eq_2851
@@ -14738,7 +14757,7 @@ T_3104: (in 0xFFDF<16> @ 5628 : word16)
   OrigDataType: (union (byte u0) (word16 u1))
 T_3105: (in bLoc1E_1013 & 0xFFDF<16> @ 5628 : byte)
   Class: Eq_2820
-  DataType: byte
+  DataType: Eq_2820
   OrigDataType: byte
 T_3106: (in 1<16> @ 55E4 : word16)
   Class: Eq_2737
@@ -14770,12 +14789,12 @@ T_3112: (in (bLoc1E_1013 & 0x40<16>) == 0<8> @ 554C : bool)
   OrigDataType: bool
 T_3113: (in 0x30<16> @ 557A : word16)
   Class: Eq_3113
-  DataType: byte
-  OrigDataType: (union (byte u0) (word16 u1))
+  DataType: ui20
+  OrigDataType: (union (ui20 u0) (word16 u1))
 T_3114: (in bLoc1E_1013 & 0x30<16> @ 557A : word20)
   Class: Eq_3114
   DataType: Eq_3114
-  OrigDataType: byte
+  OrigDataType: ui20
 T_3115: (in 0x20<16> @ 557A : word16)
   Class: Eq_3114
   DataType: word16
@@ -14803,11 +14822,11 @@ T_3120: (in r11_517 + r10_522 @ 5510 : word20)
 T_3121: (in bLoc1E_1013 & 0x30<16> @ 5516 : word20)
   Class: Eq_3
   DataType: Eq_3
-  OrigDataType: byte
+  OrigDataType: ui20
 T_3122: (in bLoc1E_1013 & 0x30<16> @ 551A : word20)
   Class: Eq_3122
-  DataType: byte
-  OrigDataType: byte
+  DataType: Eq_3122
+  OrigDataType: ui20
 T_3123: (in 0<8> @ 551A : byte)
   Class: Eq_3122
   DataType: byte
@@ -15343,7 +15362,7 @@ T_3255: (in out r15_r14_2098 @ 56AE : ptr16)
 T_3256: (in out r8 @ 56AE : ptr16)
   Class: Eq_1457
   DataType: Eq_1457
-  OrigDataType: (union (byte u1) (ptr16 u2) (word20 u0))
+  OrigDataType: (union (ui20 u0) (ptr16 u1))
 T_3257: (in fn00005B4E((uint40) wLoc14_1668, r8_427, wLoc1C_1108, wLoc1A_1109, out r13_r12_2097, out r15_r14_2098, out r8) @ 56AE : bool)
   Class: Eq_3161
   DataType: bool
@@ -16987,7 +17006,7 @@ T_3666: (in SLICE(r11_r10, word20, 20) @ 00005B04 : word20)
 T_3667: (in r8_18 @ 00005B04 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
-  OrigDataType: (union (ui20 u0) (word16 u1))
+  OrigDataType: (union (uint20 u0) (word16 u1))
 T_3668: (in 0<16> @ 00005B04 : word16)
   Class: Eq_3
   DataType: word16
@@ -17803,8 +17822,7 @@ struct Globals {
 
 typedef union Eq_3 {
 	uint20 u0;
-	byte u1;
-	word16 u2;
+	word16 u1;
 } Eq_3;
 
 typedef void (Eq_37)(ui20, Eq_3);
@@ -18089,15 +18107,20 @@ typedef union Eq_348 {
 
 typedef Eq_348 (Eq_349)(ui40, Eq_170);
 
-typedef cui16 (Eq_355)(Eq_296);
+typedef Eq_358 (Eq_355)(Eq_296);
+
+typedef union Eq_358 {
+	ui20 u0;
+	word16 u1;
+} Eq_358;
 
 typedef union Eq_359 {
-	cui16 u0;
+	ui20 u0;
 	byte u1;
 } Eq_359;
 
 typedef union Eq_360 {
-	cui16 u0;
+	ui20 u0;
 	byte u1;
 } Eq_360;
 
@@ -18699,8 +18722,7 @@ typedef ui20 (Eq_1454)(ui20, Eq_1457, Eq_296, Eq_1443);
 
 typedef union Eq_1457 {
 	uint20 u0;
-	byte u1;
-	ptr16 u2;
+	ptr16 u1;
 } Eq_1457;
 
 typedef void (Eq_1463)();
@@ -19181,6 +19203,11 @@ typedef union Eq_2815 {
 	word20 u1;
 } Eq_2815;
 
+typedef union Eq_2820 {
+	ui20 u0;
+	byte u1;
+} Eq_2820;
+
 typedef union Eq_2822 {
 	ci8 u0;
 	ci16 u1;
@@ -19356,14 +19383,19 @@ typedef union Eq_3109 {
 } Eq_3109;
 
 typedef union Eq_3113 {
-	byte u0;
+	ui20 u0;
 	word16 u1;
 } Eq_3113;
 
 typedef union Eq_3114 {
-	byte u0;
+	ui20 u0;
 	word16 u1;
 } Eq_3114;
+
+typedef union Eq_3122 {
+	ui20 u0;
+	byte u1;
+} Eq_3122;
 
 typedef union Eq_3125 {
 	byte u0;

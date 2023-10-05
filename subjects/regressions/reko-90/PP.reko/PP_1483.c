@@ -352,7 +352,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 			while (true)
 			{
 				P_n = SLICE(P_n, bool, 5);
-				Eq_n P_n = SLICE(P_n, bool, 5);
+				bool P_n = SLICE(P_n, bool, 5);
 				Eq_n bx_n = (word16) ds_bx_n;
 				sp_n = (word16) fp + 420;
 				byte cl_n = (byte) cx_n;
@@ -381,7 +381,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 					byte al_n = al_n | ch_n;
 					word16 si_n = si_n + 1 + 2;
 					word16 Eq_n::* di_n = &Eq_n::w0000;
-					byte SCZOP_n = cond(al_n) | P_n;
+					Eq_n SCZOP_n = cond(al_n) | P_n;
 					word16 cx_n = SEQ(ch_n, cl_n);
 					if (al_n == 0x00)
 					{

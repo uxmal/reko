@@ -526,7 +526,7 @@ l0458:
 		else
 			gp11[5] = (struct Eq_n) gp0_n;
 		int16 gp2_n = gp2_n / 0x0A;
-		Eq_n gp2_n = __xbr(gp2_n) | gp2_n % 0x0A;
+		cui16 gp2_n = __xbr(gp2_n) | gp2_n % 0x0A;
 		if (gp1 != 0x06)
 			gp11[9] = (struct Eq_n) (gp2_n | 0x3030);
 		else

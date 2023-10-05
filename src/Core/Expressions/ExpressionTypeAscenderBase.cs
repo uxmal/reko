@@ -128,7 +128,7 @@ namespace Reko.Core.Expressions
                 break;
             case OperatorType.And:
             case OperatorType.Or:
-                dt = PrimitiveType.CreateWord(dtLeft.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
+                dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
                 break;
             case OperatorType.IMul:
             case OperatorType.Shl:

@@ -1087,9 +1087,9 @@ ui20 xQueueSend(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 		r10_n.u0 = ~0x02;
 	else
 	{
-		sr_n = memcpy(sr_n, r11_n.u2->t002C.u2, r9_n, r11_n.u2->t0004.u0);
+		sr_n = memcpy(sr_n, r11_n.u2->t002C.u1, r9_n, r11_n.u2->t0004.u0);
 		++r11_n.u2->w0028;
-		Eq_n r15_n = r11_n.u2->t0004.u0 + ((r11_n.u2)->t002C).u2;
+		Eq_n r15_n = r11_n.u2->t0004.u0 + ((r11_n.u2)->t002C).u1;
 		r11_n.u2->t0004.u0 = (ptr16) r15_n;
 		if (r15_n < ((r11_n.u2)->t0002).u0)
 			r11_n.u2->t0004.u0 = r11_n.u2->t0000.u0;
@@ -1135,9 +1135,9 @@ ui20 xQueueSendFromISR(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Ou
 	Eq_n r13_n;
 	if (r15.u2->w0028 >= (r15.u2)->w002A)
 	{
-		sr = memcpy(sr, r15.u2->t002C.u2, r14, r15.u2->t0004.u0);
+		sr = memcpy(sr, r15.u2->t002C.u1, r14, r15.u2->t0004.u0);
 		++r15.u2->w0028;
-		Eq_n r15_n = r15.u2->t0004.u0 + ((r15.u2)->t002C).u2;
+		Eq_n r15_n = r15.u2->t0004.u0 + ((r15.u2)->t002C).u1;
 		r15.u2->t0004.u0 = (ptr16) r15_n;
 		if (r15_n < ((r15.u2)->t0002).u0)
 			r15.u2->t0004.u0 = r15.u2->t0000.u0;
@@ -1217,7 +1217,7 @@ ui20 xQueueReceive(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 	cup16 v19_n = r11_n.u2->w0028;
 	if (v19_n != 0x00)
 	{
-		Eq_n v20_n = r11_n.u2->t002C.u2;
+		Eq_n v20_n = r11_n.u2->t002C.u1;
 		Eq_n r15_n = (word24) v20_n + ((r11_n.u2)->t0006).u0;
 		r11_n.u2->t0006.u0 = (ptr16) r15_n;
 		if (r15_n < ((r11_n.u2)->t0002).u0)
@@ -1269,7 +1269,7 @@ Eq_n xQueueReceiveFromISR(ui20 sr, word16 * r13, Eq_n r14, Eq_n r15)
 	cup16 v10_n = r15.u2->w0028;
 	if (v10_n != 0x00)
 	{
-		Eq_n v13_n = r15.u2->t002C.u2;
+		Eq_n v13_n = r15.u2->t002C.u1;
 		Eq_n r15_n = (word24) v13_n + ((r15.u2)->t0006).u0;
 		r15.u2->t0006.u0 = (ptr16) r15_n;
 		if (r15_n < ((r15.u2)->t0002).u0)
@@ -1625,7 +1625,7 @@ l53A6:
 	if (r13_n != 0x00 && PRINT(r13_n, r6_n) < 0x00 || r7_n == 0x00)
 		return;
 	r6_n = r6_n + 0x01;
-	byte bLoc1E_n = 0x00;
+	Eq_n bLoc1E_n = 0x00;
 	Eq_n bLoc17_n = 0x00;
 	Eq_n bLoc1D_n = 0x00;
 	Eq_n r11_n = ~0x00;

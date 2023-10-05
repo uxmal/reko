@@ -1667,12 +1667,6 @@ Eq_2077: (fn bool (byte, byte))
 Eq_2102: (fn bool (byte, byte))
 	T_2102 (in __in_bit @ 032A : ptr32)
 	T_2103 (in signature of __in_bit : void)
-Eq_2146: (union "Eq_2146" (cui16 u0) (byte u1))
-	T_2146 (in a_311 | null @ 02F4 : byte)
-	T_2147 (in 0<8> @ 02F4 : byte)
-Eq_2159: (union "Eq_2159" (cui16 u0) (byte u1))
-	T_2159 (in a_425 | null @ 0338 : byte)
-	T_2160 (in 0<8> @ 0338 : byte)
 Eq_2162: (fn bool (byte, byte))
 	T_2162 (in __in_bit @ 0310 : ptr32)
 	T_2163 (in signature of __in_bit : void)
@@ -10285,11 +10279,11 @@ T_2144: (in Mem317[0x0051<p16>:ui16] @ 02F2 : ui16)
 T_2145: (in Mem317[null:byte] @ 02F4 : byte)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: (union (cui16 u0) (byte u1))
+  OrigDataType: byte
 T_2146: (in a_311 | null @ 02F4 : byte)
   Class: Eq_2146
-  DataType: Eq_2146
-  OrigDataType: cui16
+  DataType: byte
+  OrigDataType: byte
 T_2147: (in 0<8> @ 02F4 : byte)
   Class: Eq_2146
   DataType: byte
@@ -10337,11 +10331,11 @@ T_2157: (in Mem431[0x0056<p16>:ui16] @ 0336 : ui16)
 T_2158: (in Mem431[null:byte] @ 0338 : byte)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: (union (cui16 u0) (byte u1))
+  OrigDataType: byte
 T_2159: (in a_425 | null @ 0338 : byte)
   Class: Eq_2159
-  DataType: Eq_2159
-  OrigDataType: cui16
+  DataType: byte
+  OrigDataType: byte
 T_2160: (in 0<8> @ 0338 : byte)
   Class: Eq_2159
   DataType: byte
@@ -12092,16 +12086,6 @@ typedef bool (Eq_2066)(byte, byte);
 typedef bool (Eq_2077)(byte, byte);
 
 typedef bool (Eq_2102)(byte, byte);
-
-typedef union Eq_2146 {
-	cui16 u0;
-	byte u1;
-} Eq_2146;
-
-typedef union Eq_2159 {
-	cui16 u0;
-	byte u1;
-} Eq_2159;
 
 typedef bool (Eq_2162)(byte, byte);
 

@@ -349,7 +349,7 @@ int32 fn00001D80(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, ptr32 &
 			}
 			else
 			{
-				__bset<word16>(a2_n->t000F.u0, 0x05, out a2_n->t000F.u0);
+				__bset<word16>(a2_n->t000F.u1, 0x05, out a2_n->t000F.u1);
 				d3_n = -1;
 			}
 		}
@@ -467,7 +467,7 @@ l00001EDA:
 			dwArg08->t000C.u2 = (struct Eq_n *) d0_n;
 			dwArg08->dw0004 = 0;
 			int32 d4_n = 0;
-			if ((dwArg08->t000C.u1 & 0x010C) == 0x00)
+			if ((dwArg08->t000C.u0 & 0x010C) == 0x00)
 			{
 				if (dwArg08 == (char *) a5 - 2656 || dwArg08 == (char *) a5 - 2624)
 				{
@@ -557,7 +557,7 @@ l00001F1C:
 			}
 			else
 			{
-				__bset<word16>(a2_n->t0003.u0, 0x05, out a2_n->t0003.u0);
+				__bset<word16>(a2_n->t0003.u1, 0x05, out a2_n->t0003.u1);
 				struct Eq_n * a7_n = a7_n + 1;
 				ptr32 d4_n = a7_n->ptr0000;
 				ptr32 d5_n = a7_n->ptr0004;
@@ -630,12 +630,12 @@ struct Eq_n * fn00002014(struct Eq_n * a2, struct Eq_n * a5, struct Eq_n * a6, s
 	a2_n->ptr0008 = d0_n;
 	if (d0_n != 0x00)
 	{
-		__bset<word16>(a2_n->t000F.u0, 0x03, out a2_n->t000F.u0);
+		__bset<word16>(a2_n->t000F.u1, 0x03, out a2_n->t000F.u1);
 		a2_n->dw0018 = 0x0200;
 	}
 	else
 	{
-		__bset<word16>(a2_n->t000F.u0, 0x02, out a2_n->t000F.u0);
+		__bset<word16>(a2_n->t000F.u1, 0x02, out a2_n->t000F.u1);
 		a2_n->ptr0008 = (char *) &a2_n->t000F + 5;
 		a2_n->dw0018 = 1;
 	}

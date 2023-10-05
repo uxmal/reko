@@ -605,7 +605,7 @@ Eq_533: (struct "Eq_533" 0002 (DAC ui16 w0DAC) (DB8 word16 w0DB8) (DD4 word16 w0
 	T_534 (in 0<16> @ 050A : word16)
 	T_553 (in r2_107 + 2<16> @ 051A : word16)
 	T_554 (in 0xA<16> @ 0520 : word16)
-Eq_585: (union "Eq_585" (ci16 u0) (cu8 u1))
+Eq_585: (union "Eq_585" (ci16 u0) (cu8 u1) (Eq_660 u2) (Eq_662 u3))
 	T_585 (in r3_131 @ 0530 : Eq_585)
 	T_586 (in 0<16> @ 0530 : word16)
 	T_737 (in Mem130[r0_100 + 0<16>:word16] @ 052C : word16)
@@ -618,8 +618,13 @@ Eq_605: (struct "Eq_605" (EF0 byte b0EF0) (EF3 byte b0EF3))
 Eq_654: (union "Eq_654" (cu8 u0) (word16 u1))
 	T_654 (in r1_197 @ 0542 : Eq_654)
 	T_657 (in Mem130[r0_100 + 0<16>:word16] @ 0542 : word16)
-Eq_661: (union "Eq_661" (byte u0) (word16 u1))
-	T_661 (in 0x8000<16> @ 0544 : word16)
+Eq_660: (union "Eq_660" (cu8 u0) (cui16 u1))
+	T_660 (in Mem130[r0_100 + 0<16>:word16] @ 0544 : word16)
+Eq_662: (union "Eq_662" (cu8 u0) (cui16 u1) (Eq_660 u2))
+	T_662 (in r0_100.u1->t0000.u1 | 0x8000<16> @ 0544 : word16)
+	T_665 (in Mem199[r0_100 + 0<16>:word16] @ 0544 : word16)
+Eq_664: (union "Eq_664" (cu8 u0) (cui16 u1) (Eq_660 u2) (Eq_662 u3))
+	T_664 (in r0_100 + 0<16> @ 0544 : word16)
 Eq_681: (struct "Eq_681" (0 byte b0000) (1 Eq_66 t0001))
 	T_681 (in sp_206 @ 0554 : (ptr16 Eq_681))
 	T_683 (in sp_138 - 1<16> @ 0554 : word16)
@@ -635,6 +640,8 @@ Eq_718: (struct "Eq_718" 0002 (EF0 cu8 b0EF0) (EF3 byte b0EF3))
 	T_718 (in r5Out @ 056A : (ptr16 Eq_718))
 	T_719 (in out r5_102 @ 056A : ptr16)
 	T_1751 (in r5_23 @ 0B30 : (ptr16 Eq_718))
+Eq_736: (union "Eq_736" (ci16 u0) (cu8 u1) (Eq_585 u2) (Eq_660 u3) (Eq_662 u4))
+	T_736 (in r0_100 + 0<16> @ 052C : word16)
 Eq_762: (fn ui16 ())
 	T_762 (in fn0A94 @ 05F0 : ptr16)
 	T_763 (in signature of fn0A94 @ 0A94 : void)
@@ -815,7 +822,7 @@ Eq_2095: (union "Eq_2095" (wchar_t u0) (byte u1) (Eq_1160 u2) (Eq_1163 u3) (Eq_1
 	T_2095
 Eq_2096: (struct "Eq_2096" 0001 (0 Eq_844 t0000))
 	T_2096
-Eq_2097: (union "Eq_2097" (cu8 u0) (word16 u1))
+Eq_2097: (union "Eq_2097" (cu8 u0) (cui16 u1) (Eq_585 u2) (Eq_660 u3) (Eq_662 u4))
 	T_2097
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
@@ -3157,7 +3164,7 @@ T_584: (in r1_126 != 0<16> @ 05B2 : bool)
 T_585: (in r3_131 @ 0530 : Eq_585)
   Class: Eq_585
   DataType: Eq_585
-  OrigDataType: (union (ci16 u0) (cu8 u1))
+  OrigDataType: (union (cu8 u0) (ci16 u1) (T_660 u2) (T_665 u3) (T_737 u4))
 T_586: (in 0<16> @ 0530 : word16)
   Class: Eq_585
   DataType: ci16
@@ -3456,28 +3463,28 @@ T_659: (in r0_100 + 0<16> @ 0544 : word16)
   OrigDataType: (ptr16 cu8)
 T_660: (in Mem130[r0_100 + 0<16>:word16] @ 0544 : word16)
   Class: Eq_660
-  DataType: cu8
-  OrigDataType: cu8
+  DataType: Eq_660
+  OrigDataType: (union (cu8 u0) (cui16 u1))
 T_661: (in 0x8000<16> @ 0544 : word16)
   Class: Eq_661
-  DataType: byte
-  OrigDataType: (union (byte u0) (word16 u1))
+  DataType: cui16
+  OrigDataType: cui16
 T_662: (in r0_100.u1->t0000.u1 | 0x8000<16> @ 0544 : word16)
   Class: Eq_662
-  DataType: cu8
-  OrigDataType: byte
+  DataType: Eq_662
+  OrigDataType: cui16
 T_663: (in 0<16> @ 0544 : word16)
   Class: Eq_663
   DataType: word16
   OrigDataType: word16
 T_664: (in r0_100 + 0<16> @ 0544 : word16)
   Class: Eq_664
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 cu8)
+  DataType: (ptr16 Eq_664)
+  OrigDataType: (ptr16 (union (cu8 u0) (cui16 u1) (Eq_660 u2) (Eq_662 u3)))
 T_665: (in Mem199[r0_100 + 0<16>:word16] @ 0544 : word16)
   Class: Eq_662
-  DataType: cu8
-  OrigDataType: cu8
+  DataType: Eq_662
+  OrigDataType: (union (cu8 u0) (cui16 u1) (Eq_660 u2) (Eq_662 u3))
 T_666: (in r0_200 @ 0548 : Eq_66)
   Class: Eq_66
   DataType: Eq_66
@@ -3760,12 +3767,12 @@ T_735: (in 0<16> @ 052C : word16)
   OrigDataType: word16
 T_736: (in r0_100 + 0<16> @ 052C : word16)
   Class: Eq_736
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 cu8)
+  DataType: (ptr16 Eq_736)
+  OrigDataType: (ptr16 (union (cu8 u0) (ci16 u1) (T_660 u2) (T_665 u3) (T_737 u4)))
 T_737: (in Mem130[r0_100 + 0<16>:word16] @ 052C : word16)
   Class: Eq_585
   DataType: Eq_585
-  OrigDataType: cu8
+  OrigDataType: (union (cu8 u0) (ci16 u1) (T_660 u2) (T_665 u3) (T_737 u4))
 T_738: (in 0<16> @ 052E : word16)
   Class: Eq_585
   DataType: ci16
@@ -9483,6 +9490,8 @@ typedef struct Eq_533 {	// size: 2 2
 typedef union Eq_585 {
 	ci16 u0;
 	cu8 u1;
+	Eq_660 u2;
+	Eq_662 u3;
 } Eq_585;
 
 typedef struct Eq_588 {
@@ -9501,10 +9510,23 @@ typedef union Eq_654 {
 	word16 u1;
 } Eq_654;
 
-typedef union Eq_661 {
-	byte u0;
-	word16 u1;
-} Eq_661;
+typedef union Eq_660 {
+	cu8 u0;
+	cui16 u1;
+} Eq_660;
+
+typedef union Eq_662 {
+	cu8 u0;
+	cui16 u1;
+	Eq_660 u2;
+} Eq_662;
+
+typedef union Eq_664 {
+	cu8 u0;
+	cui16 u1;
+	Eq_660 u2;
+	Eq_662 u3;
+} Eq_664;
 
 typedef struct Eq_681 {
 	byte b0000;	// 0
@@ -9519,6 +9541,14 @@ typedef struct Eq_718 {	// size: 2 2
 	cu8 b0EF0;	// EF0
 	byte b0EF3;	// EF3
 } Eq_718;
+
+typedef union Eq_736 {
+	ci16 u0;
+	cu8 u1;
+	Eq_585 u2;
+	Eq_660 u3;
+	Eq_662 u4;
+} Eq_736;
 
 typedef ui16 (Eq_762)();
 
@@ -9721,6 +9751,9 @@ typedef struct Eq_2096 {	// size: 1 1
 
 typedef union Eq_2097 {
 	cu8 u0;
-	word16 u1;
+	cui16 u1;
+	Eq_585 u2;
+	Eq_660 u3;
+	Eq_662 u4;
 } Eq_2097;
 

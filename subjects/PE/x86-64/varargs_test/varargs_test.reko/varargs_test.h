@@ -725,14 +725,12 @@ Eq_1304: (struct "Eq_1304" (8 word64 qw0008) (10 (ptr64 Eq_1338) ptr0010) (38 (p
 Eq_1306: (fn void (Eq_1303, (ptr64 Eq_1304), (ptr64 Eq_1310), word64))
 	T_1306 (in fn0000000140001E9C @ 0000000140001E8A : ptr64)
 	T_1307 (in signature of fn0000000140001E9C @ 0000000140001E9C : void)
-Eq_1310: (struct "Eq_1310" (0 ui32 dw0000) (4 word32 dw0004) (8 word32 dw0008))
+Eq_1310: (struct "Eq_1310" (0 Eq_1319 t0000) (4 word32 dw0004) (8 word32 dw0008))
 	T_1310 (in r8 @ 0000000140001E8A : (ptr64 Eq_1310))
 	T_1314 (in Mem0[r9 + 56<i64>:word64] @ 0000000140001E8A : word64)
-Eq_1327: (union "Eq_1327" (ui32 u0) (byte u1))
-	T_1327 (in 4<8> @ 0000000140001EB2 : byte)
-Eq_1328: (union "Eq_1328" (ui32 u0) (byte u1))
-	T_1328 (in r8->dw0000 & 4<8> @ 0000000140001EB2 : byte)
-	T_1329 (in 0<8> @ 0000000140001EB2 : byte)
+Eq_1319: (union "Eq_1319" (ui32 u0) (byte u1))
+	T_1319 (in Mem5[r8 + 0<64>:word32] @ 0000000140001EA4 : word32)
+	T_1326 (in Mem5[r8 + 0<64>:byte] @ 0000000140001EB2 : byte)
 Eq_1335: (struct "Eq_1335" (3 byte b0003))
 	T_1335 (in rcx_44 @ 0000000140001ED5 : (ptr64 Eq_1335))
 	T_1346 (in (uint64) rdx->ptr0010->dw0008 + rdx->qw0008 @ 0000000140001ED5 : word64)
@@ -6015,13 +6013,13 @@ T_1318: (in r8 + 0<64> @ 0000000140001EA4 : word64)
   OrigDataType: word64
 T_1319: (in Mem5[r8 + 0<64>:word32] @ 0000000140001EA4 : word32)
   Class: Eq_1319
-  DataType: ui32
+  DataType: Eq_1319
   OrigDataType: ui32
 T_1320: (in 0xFFFFFFF8<32> @ 0000000140001EA4 : word32)
   Class: Eq_1320
   DataType: ui32
   OrigDataType: ui32
-T_1321: (in r8->dw0000 & 0xFFFFFFF8<32> @ 0000000140001EA4 : word32)
+T_1321: (in r8->t0000.u0 & 0xFFFFFFF8<32> @ 0000000140001EA4 : word32)
   Class: Eq_1316
   DataType: ui32
   OrigDataType: ui32
@@ -6043,21 +6041,21 @@ T_1325: (in r8 + 0<64> @ 0000000140001EB2 : word64)
   OrigDataType: (ptr64 ui32)
 T_1326: (in Mem5[r8 + 0<64>:byte] @ 0000000140001EB2 : byte)
   Class: Eq_1319
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: Eq_1319
+  OrigDataType: (union (ui32 u0) (byte u1))
 T_1327: (in 4<8> @ 0000000140001EB2 : byte)
   Class: Eq_1327
-  DataType: ui32
-  OrigDataType: (union (ui32 u0) (byte u1))
-T_1328: (in r8->dw0000 & 4<8> @ 0000000140001EB2 : byte)
+  DataType: byte
+  OrigDataType: byte
+T_1328: (in r8->t0000.u1 & 4<8> @ 0000000140001EB2 : byte)
   Class: Eq_1328
-  DataType: Eq_1328
-  OrigDataType: ui32
+  DataType: byte
+  OrigDataType: byte
 T_1329: (in 0<8> @ 0000000140001EB2 : byte)
   Class: Eq_1328
   DataType: byte
   OrigDataType: byte
-T_1330: (in (r8->dw0000 & 4<8>) == 0<8> @ 0000000140001EB2 : bool)
+T_1330: (in (r8->t0000.u1 & 4<8>) == 0<8> @ 0000000140001EB2 : bool)
   Class: Eq_1330
   DataType: bool
   OrigDataType: bool
@@ -7069,20 +7067,15 @@ typedef struct Eq_1304 {
 typedef void (Eq_1306)(Eq_1303, Eq_1304 *, Eq_1310 *, word64);
 
 typedef struct Eq_1310 {
-	ui32 dw0000;	// 0
+	Eq_1319 t0000;	// 0
 	word32 dw0004;	// 4
 	word32 dw0008;	// 8
 } Eq_1310;
 
-typedef union Eq_1327 {
+typedef union Eq_1319 {
 	ui32 u0;
 	byte u1;
-} Eq_1327;
-
-typedef union Eq_1328 {
-	ui32 u0;
-	byte u1;
-} Eq_1328;
+} Eq_1319;
 
 typedef struct Eq_1335 {
 	byte b0003;	// 3

@@ -130,7 +130,7 @@ word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 			gp2_n = (word16) gp0_gp1_gp2_n;
 			gp6_n = (gp6_n >> 0x08) + 0x01;
 		}
-		cui16 gp1_n = gp1_n & 0xFF00 | (__xbr(gp1_n) >> 0x08) + gp6_n /16 0x02 & 0xFF;
+		word16 gp1_n = gp1_n & 0xFF00 | (__xbr(gp1_n) >> 0x08) + gp6_n /16 0x02 & 0xFF;
 		gp2Out = gp2_n;
 		return SEQ(gp0_n, gp1_n);
 	}
@@ -304,7 +304,7 @@ l00000406:
 		else
 			gp11[5] = (struct Eq_n) gp0_n;
 		int16 gp2_n = gp2_n / 0x0A;
-		Eq_n gp2_n = __xbr(gp2_n) | gp2_n % 0x0A;
+		cui16 gp2_n = __xbr(gp2_n) | gp2_n % 0x0A;
 		if (gp1 != 0x06)
 			gp11[9] = (struct Eq_n) (gp2_n | 0x3030);
 		else

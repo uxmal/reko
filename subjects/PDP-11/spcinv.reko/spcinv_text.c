@@ -307,7 +307,7 @@ l0524:
 													if ((&r5_n->u0)[0x0EF0] < ((r0_n.u1)->t0000).u0)
 														break;
 													Eq_n r1_n = r0_n.u1->t0000.u1;
-													r0_n.u1->t0000.u1 = (word16) (r0_n.u1->t0000.u1 | 0x8000);
+													r0_n.u1->t0000.u1 = (cui16) (r0_n.u1->t0000.u1 | 0x8000);
 													Eq_n r0_n = r0_n - r2_n[0x06D6];
 													g_t0F0A.u1 = (struct Eq_n *) r0_n;
 													r0_n.u1[0x06E2] = (struct Eq_n) (r0_n.u1[0x06E2] - 0x01);
