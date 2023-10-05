@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_addb_imm()
         {
-            AssertCode("addb\t$1,r1", "1030");
+            AssertCode("addb\t$1,r0", "1030");
         }
 
         [Test]
@@ -89,13 +89,13 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_addw_imm4_16()
         {
-            AssertCode("addw\t$1,r1", "1232");
+            AssertCode("addw\t$1,r2", "1232");
         }
 
         [Test]
         public void Cr16Dasm_andb_imm4()
         {
-            AssertCode("andb\t$34,r11", "B020 3412");
+            AssertCode("andb\t$34,r0", "B020 3412");
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_andw_imm16()
         {
-            AssertCode("andw\t$2345,r11", "B322 4523");
+            AssertCode("andw\t$2345,r3", "B322 4523");
         }
 
         [Test]
@@ -437,7 +437,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_orw_imm4_16_reg()
         {
-            AssertCode("orw\t$2345,r11", "B0264523");
+            AssertCode("orw\t$2345,r0", "B0264523");
         }
 
         [Test]
@@ -641,7 +641,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_subw_reg_reg()
         {
-            AssertCode("subw\tr1,r0", "013B");
+            AssertCode("subw\tr0,r1", "013B");
         }
 
         [Test]
@@ -683,7 +683,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_xorw()
         {
-            AssertCode("xorw\t$FFFF,r9", "912A");
+            AssertCode("xorw\t$FFFF,r1", "912A");
         }
     }
 }

@@ -36,17 +36,16 @@ namespace Reko.UnitTests.Arch.CompactRisc
 
         public override Address LoadAddress { get; }
 
-
         [Test]
         public void Cr16Rw_addb()
         {
             Given_HexString("2030");
-            AssertCode(     // addb	$2,r2
+            AssertCode(     // addb	$2,r0
                 "0|L--|00003000(2): 5 instructions",
-                "1|L--|v4 = SLICE(r2, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|v5 = SLICE(2<16>, byte, 0)",
                 "3|L--|v6 = v4 + v5",
-                "4|L--|r2 = SEQ(SLICE(r2, byte, 8), v6)",
+                "4|L--|r0 = SEQ(SLICE(r0, byte, 8), v6)",
                 "5|L--|CF = cond(v4)");
         }
 
@@ -74,22 +73,22 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_addw()
         {
             Given_HexString("9032");
-            AssertCode(     // addw	$FFFF,r9
+            AssertCode(     // addw	$FFFF,r0
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|r9 = r9 + 0xFFFF<16>",
-                "2|L--|CF = cond(r9)");
+                "1|L--|r0 = r0 + 0xFFFF<16>",
+                "2|L--|CF = cond(r0)");
         }
 
         [Test]
         public void Cr16Rw_addcb()
         {
             Given_HexString("8E34");
-            AssertCode(     // addcb	$8,r8
+            AssertCode(     // addcb	$8,ra
                 "0|L--|00003000(2): 5 instructions",
-                "1|L--|v4 = SLICE(r8, byte, 0)",
+                "1|L--|v4 = SLICE(ra, byte, 0)",
                 "2|L--|v5 = SLICE(8<16>, byte, 0)",
                 "3|L--|v7 = v4 + v5 + C",
-                "4|L--|r8 = SEQ(SLICE(r8, byte, 8), v7)",
+                "4|L--|ra = SEQ(SLICE(ra, word24, 8), v7)",
                 "5|L--|CF = cond(v4)");
         }
 
@@ -97,10 +96,10 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_addcw()
         {
             Given_HexString("3936");
-            AssertCode(     // addcw	$3,r3
+            AssertCode(     // addcw	$3,r9
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|r3 = r3 + 3<16> + C",
-                "2|L--|CF = cond(r3)");
+                "1|L--|r9 = r9 + 3<16> + C",
+                "2|L--|CF = cond(r9)");
         }
 
         [Test]
@@ -130,11 +129,11 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_andb()
         {
             Given_HexString("8020");
-            AssertCode(     // andb	$8,r8
+            AssertCode(     // andb	$8,r0
                 "0|L--|00003000(2): 3 instructions",
-                "1|L--|v4 = SLICE(r8, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|v5 = v4 & 8<8>",
-                "3|L--|r8 = SEQ(SLICE(r8, byte, 8), v5)");
+                "3|L--|r0 = SEQ(SLICE(r0, byte, 8), v5)");
         }
 
         [Test]
@@ -150,9 +149,9 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_andw()
         {
             Given_HexString("B622F801");
-            AssertCode(     // andw	$1F8,r11
+            AssertCode(     // andw	$1F8,r6
                 "0|L--|00003000(4): 1 instructions",
-                "1|L--|r11 = r11 & 0x1F8<16>");
+                "1|L--|r6 = r6 & 0x1F8<16>");
         }
 
         [Test]
@@ -665,11 +664,11 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_orb()
         {
             Given_HexString("8024");
-            AssertCode(     // orb	$8,r8
+            AssertCode(     // orb	$0,r8
                 "0|L--|00003000(2): 3 instructions",
-                "1|L--|v4 = SLICE(r8, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|v5 = v4 | 8<8>",
-                "3|L--|r8 = SEQ(SLICE(r8, byte, 8), v5)");
+                "3|L--|r0 = SEQ(SLICE(r0, byte, 8), v5)");
         }
 
         [Test]
@@ -685,9 +684,9 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_orw()
         {
             Given_HexString("B0261001");
-            AssertCode(     // orw	$110,r11
+            AssertCode(     // orw	$110,r0
                 "0|L--|00003000(4): 1 instructions",
-                "1|L--|r11 = r11 | 0x110<16>");
+                "1|L--|r0 = r0 | 0x110<16>");
         }
 
         [Test]
@@ -820,12 +819,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_subb()
         {
             Given_HexString("4039");
-            AssertCode(     // subb	r0,r4
+            AssertCode(     // subb	r4,r0
                 "0|L--|00003000(2): 5 instructions",
-                "1|L--|v4 = SLICE(r4, byte, 0)",
-                "2|L--|v6 = SLICE(r0, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
+                "2|L--|v6 = SLICE(r4, byte, 0)",
                 "3|L--|v7 = v4 - v6",
-                "4|L--|r4 = SEQ(SLICE(r4, byte, 8), v7)",
+                "4|L--|r0 = SEQ(SLICE(r0, byte, 8), v7)",
                 "5|L--|CF = cond(v4)");
         }
 
@@ -843,12 +842,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_subcb()
         {
             Given_HexString("D43D");
-            AssertCode(     // subcb	r4,r13
+            AssertCode(     // subcb	r13,r4
                 "0|L--|00003000(2): 5 instructions",
-                "1|L--|v4 = SLICE(r13, byte, 0)",
-                "2|L--|v6 = SLICE(r4, byte, 0)",
+                "1|L--|v4 = SLICE(r4, byte, 0)",
+                "2|L--|v6 = SLICE(r13, byte, 0)",
                 "3|L--|v8 = v4 - v6 - C",
-                "4|L--|r13 = SEQ(SLICE(r13, word24, 8), v8)",
+                "4|L--|r4 = SEQ(SLICE(r4, byte, 8), v8)",
                 "5|L--|CF = cond(v4)");
         }
 
@@ -856,10 +855,10 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_subcw()
         {
             Given_HexString("B63F");
-            AssertCode(     // subcw	r6,r11
+            AssertCode(     // subcw	r11,r6
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|r11 = r11 - r6 - C",
-                "2|L--|CF = cond(r11)");
+                "1|L--|r6 = r6 - r11 - C",
+                "2|L--|CF = cond(r6)");
         }
 
         [Test]
@@ -904,10 +903,10 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("9228");
             AssertCode(     // xorb	$FFFF,r9
                 "0|L--|00003000(2): 4 instructions",
-                "1|L--|v4 = SLICE(r9, byte, 0)",
+                "1|L--|v4 = SLICE(r2, byte, 0)",
                 "2|L--|v5 = SLICE(0xFFFF<16>, byte, 0)",
                 "3|L--|v6 = v4 ^ v5",
-                "4|L--|r9 = SEQ(SLICE(r9, byte, 8), v6)");
+                "4|L--|r2 = SEQ(SLICE(r2, byte, 8), v6)");
         }
 
         [Test]

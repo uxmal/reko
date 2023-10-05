@@ -477,7 +477,7 @@ namespace Reko.Arch.CompactRisc
             }
             else
             {
-                m.Goto(Operand(0));
+                m.Goto(m.Shl(Operand(0), 1));
             }
         }
 
