@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("4716");
             AssertCode(     // bhi	000011A2
                 "0|T--|00003000(2): 1 instructions",
-                "1|T--|if (Test(UGT,L)) branch 000030CE");
+                "1|T--|if (Test(ULT,L)) branch 000030CE");
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("BC1F");
             AssertCode(     // bhs	0000C3E8
                 "0|T--|00003000(2): 1 instructions",
-                "1|T--|if (Test(UGE,LZ)) branch 00002FF8");
+                "1|T--|if (Test(ULE,LZ)) branch 00002FF8");
         }
 
         [Test]
@@ -309,7 +309,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("A810");
             AssertCode(     // blo	0000B114
                 "0|T--|00003000(2): 1 instructions",
-                "1|T--|if (Test(ULT,LZ)) branch 00003010");
+                "1|T--|if (Test(UGT,LZ)) branch 00003010");
         }
 
         [Test]

@@ -97,11 +97,11 @@ namespace Reko.Arch.CompactRisc
                 case Mnemonic.bfs: RewriteBccSet(Registers.F); break;
                 case Mnemonic.bge: RewriteBcc(ConditionCode.GE, Registers.NZ); break;
                 case Mnemonic.bgt: RewriteBcc(ConditionCode.GT, Registers.N); break;
-                case Mnemonic.bhi: RewriteBcc(ConditionCode.UGT, Registers.L); break;
-                case Mnemonic.bhs: RewriteBcc(ConditionCode.UGE, Registers.LZ); break;
+                case Mnemonic.bhi: RewriteBcc(ConditionCode.ULT, Registers.L); break;
+                case Mnemonic.bhs: RewriteBcc(ConditionCode.ULE, Registers.LZ); break;
                 case Mnemonic.ble: RewriteBcc(ConditionCode.LT, Registers.N); break;
-                case Mnemonic.blo: RewriteBcc(ConditionCode.ULT, Registers.LZ); break;
-                case Mnemonic.bls: RewriteBcc(ConditionCode.ULE, Registers.L); break;
+                case Mnemonic.blo: RewriteBcc(ConditionCode.UGT, Registers.LZ); break;
+                case Mnemonic.bls: RewriteBcc(ConditionCode.UGE, Registers.L); break;
                 case Mnemonic.blt: RewriteBcc(ConditionCode.LT, Registers.NZ); break;
                 case Mnemonic.bne: RewriteBcc(ConditionCode.NE, Registers.Z); break;
                 case Mnemonic.bne0b: RewriteBne0(PrimitiveType.Byte); break;
