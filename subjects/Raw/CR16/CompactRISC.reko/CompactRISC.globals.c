@@ -5,18 +5,14 @@
 #include "CompactRISC.h"
 
 Eq_n g_aE5AC[];
-Eq_n g_tF288;
-cup16 g_aF2B8[];
+cu16 g_aF2B8[];
 word16 g_aF2F4[];
-Eq_n g_tF2FC;
 byte g_aF32E[];
 byte g_bF42E; // 0000F42E
 Eq_n g_tFB26;
 ci16 g_aFB60[];
-word32 g_dwFC60; // 0000FC60
+ci16 g_aFB9C[];
+uint32 g_dwFC60; // 0000FC60
 word32 g_dwFC68; // 0000FC68
-word32 g_dwFC6C; // 0000FC6C
+uint32 g_dwFC6C; // 0000FC6C
 word32 g_aFC78[];
-Eq_n g_a1000C[];
-Eq_n g_a10010[];
-Eq_n g_a10014[];

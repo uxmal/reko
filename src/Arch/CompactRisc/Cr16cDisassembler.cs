@@ -114,22 +114,22 @@ namespace Reko.Arch.CompactRisc
         private static readonly Mutator<Cr16cDisassembler> imm4_b = Imm(4, 4, 1, PrimitiveType.Byte);
         private static readonly Mutator<Cr16cDisassembler> imm4_w = Imm(4, 4, 1, PrimitiveType.Word16);
 
-        private static Mutator<Cr16cDisassembler> ShiftCount(int bitpos, int bitlen, int sign)
+        private static Mutator<Cr16cDisassembler> ShiftCount(int bitpos, int bitlen, int offset)
         {
             var field = new Bitfield(bitpos, bitlen);
             return (u, d) =>
             {
-                var n = sign * (int) field.Read(u);
+                var n = (int) field.Read(u) + offset;
                 d.ops.Add(ImmediateOperand.Int32(n));
                 return true;
             };
         }
-        private static readonly Mutator<Cr16cDisassembler> cnt_4_3 = ShiftCount(4, 3, 1);
-        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_3 = ShiftCount(4, 3, -1);
-        private static readonly Mutator<Cr16cDisassembler> cnt_4_4 = ShiftCount(4, 4, 1);
-        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_4 = ShiftCount(4, 4, -1);
-        private static readonly Mutator<Cr16cDisassembler> cnt_4_5 = ShiftCount(4, 5, 1);
-        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_5 = ShiftCount(4, 5, -1);
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_3 = ShiftCount(4, 3, 0);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_3 = ShiftCount(4, 3, -8);
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_4 = ShiftCount(4, 4, 0);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_4 = ShiftCount(4, 4, -16);
+        private static readonly Mutator<Cr16cDisassembler> cnt_4_5 = ShiftCount(4, 5, 0);
+        private static readonly Mutator<Cr16cDisassembler> neg_cnt_4_5 = ShiftCount(4, 5, -32);
 
         private static bool imm32(uint uInstr, Cr16cDisassembler dasm)
         {
@@ -747,7 +747,7 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.xord, rp4, rp0),
                 Instr(Mnemonic.andd, rp4, rp0),
 
-                Instr(Mnemonic.subd, rp0, rp4),
+                Instr(Mnemonic.subd, rp4, rp0),
                 Nyi("Fmt1 2 ZZ ope 13  macqw 4 src2 reg 4 src1 reg 4 dest rp 4"),
                 Nyi("Fmt1 2 ZZ ope 14  macuw 4 src2 reg 4 src1 reg 4 dest rp 4"),
                 Nyi("Fmt1 2 ZZ ope 15  macsw 4 src2 reg 4 src1 reg 4 dest rp 4"));
@@ -795,9 +795,9 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.addd, imm32, rp0),
                 Instr(Mnemonic.subd, imm32, rp0),
 
-                Instr(Mnemonic.andd, imm32,rp0),
-                Instr(Mnemonic.ord, imm32,rp0),
-                Instr(Mnemonic.xord, imm32,rp0),
+                Instr(Mnemonic.andd, imm32, rp0),
+                Instr(Mnemonic.ord, imm32, rp0),
+                Instr(Mnemonic.xord, imm32, rp0),
                 Instr(Mnemonic.movd, imm32, rp0),
 
                 invalid, // - undefined trap for coprocessor inst 4 ci imm 32 cinst imm"),
@@ -892,7 +892,7 @@ namespace Reko.Arch.CompactRisc
 
                 Select((0, 8), u => u == 0,
                     Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding), 
-                    Instr(Mnemonic.addub, imm4_16_b, R4)),
+                    Instr(Mnemonic.addub, imm4_16_b, R0)),
                 Instr(Mnemonic.addub, R4, R0),
                 Instr(Mnemonic.adduw, imm4_16_w, R0),
                 Instr(Mnemonic.adduw, R4, R0));
@@ -942,14 +942,14 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.ashud, neg_cnt_4_5, rp0));    // right -
             var decode5 = Mask(8, 4, "  5",
                 Instr(Mnemonic.cmpb, imm4_16_b, R0),
-                Instr(Mnemonic.cmpb, R0, R4),
+                Instr(Mnemonic.cmpb, R4, R0),
                 Instr(Mnemonic.cmpw, imm4_16_w, R0),
-                Instr(Mnemonic.cmpw, R0, R4),
+                Instr(Mnemonic.cmpw, R4, R0),
 
                 Instr(Mnemonic.movd, imm4_16_l, rp0),
-                Instr(Mnemonic.movd, rp0, rp4),
+                Instr(Mnemonic.movd, rp4, rp0),
                 Instr(Mnemonic.cmpd, imm4_16_l, rp0),
-                Instr(Mnemonic.cmpd, rp0,rp4),
+                Instr(Mnemonic.cmpd, rp4,rp0),
 
                 Instr(Mnemonic.movb, imm4_16_b, R0),
                 Instr(Mnemonic.movb, R4, R0),
@@ -992,7 +992,7 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.sbitw, bitpos_w, rp_disp16_w),
                 Mask(6, 2, "  72",
                     Instr(Mnemonic.sbitb, bitpos_b, rp_disp0_b),
-                    Instr(Mnemonic.sbitb, bitpos_b, rp4),
+                    Instr(Mnemonic.sbitb, bitpos_b, rp_disp0_b),
                     Nyi("Fmt17 2 ZZ  sbitb(prp) disp14 4 dest(prp) 3 pos imm 14 dest disp"),
                     Nyi("Fmt17 2 ZZ  sbitw(prp) disp14 4 dest(prp) 4 pos imm 14 dest disp")),
                 Mask(7, 1, "  73",
@@ -1125,31 +1125,5 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.stord, rp4, Memd),
                 If(u => u != 0xFFFF, Instr(Mnemonic.storb, R4, Memb)));
         }
-        /*
-        1001 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  loadw (prp) disp0 4 src (prp) 4 dest reg 4E 
-        1001 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadw (rp) disp16 4 src (rp) 4 dest reg 4F 16 src disp 
-        1001 xxxx xxxx xxxx  Fmt18 1 ZZ  loadw (rp) disp4 4 src (rp) 4 dest reg 4 src disp*2 
-
-        1010 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  loadd (prp) disp0 4 src (prp) 4 dest rp 4E 
-        1010 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadd (rp) disp16 4 src (rp) 4 dest rp 4F 16 src disp 
-        1010 xxxx xxxx xxxx  Fmt18 1 ZZ  loadd (rp) disp4 4 src (rp) 4 dest rp 4 src disp*2 
-
-        1011 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  loadb (prp) disp0 4 src (prp) 4 dest reg 4E 
-        1011 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadb (rp) disp16 4 src (rp) 4 dest reg 4F 16 src disp 
-        1011 xxxx xxxx xxxx  Fmt18 1 ZZ  loadb (rp) disp4 4 src (rp) 4 dest reg 4 src disp 
-
-        1101 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  storw (prp) disp0 4 dest (prp) 4 src reg 4E 
-        1101 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  storw (rp) disp16 4 dest (rp) 4 src reg 4F 16 dest disp 
-        1101 xxxx xxxx xxxx  Fmt18 1 ZZ  storw (rp) disp4 4 dest (rp) 4 src reg 4 dest disp*2 
-
-        1110 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  stord (prp) disp0 4 dest (prp) 4 src rp 4E 
-        1110 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  stord (rp) disp16 4 dest (rp) 4 src rp 4F 16 dest disp 
-        1110 xxxx xxxx xxxx  Fmt18 1 ZZ  stord (rp) disp4 4 dest (rp) 4 src rp 4 dest disp*2 
-
-        1111 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  storb (prp) disp0 4 dest (prp) 4 src reg 4E 
-        1111 1111 xxxx xxxx  Fmt19 2 ZZ  storb (rp) disp16 4 dest (rp) 4 src reg 4 ope  0F 16 dest disp 
-        1111 xxxx xxxx xxxx  Fmt18 1 ZZ  storb (rp) disp4a 4 dest (rp) 4 src reg 4 dest disp 
-        1111 1111 1111 1111  Fmt1 2 ZZ  res - undefined trap 
-        */
     }
 }

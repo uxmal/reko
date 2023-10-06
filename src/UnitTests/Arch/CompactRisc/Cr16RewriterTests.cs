@@ -106,11 +106,11 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Rw_addub()
         {
             Given_HexString("402C");
-            AssertCode(     // addub $4,r4
+            AssertCode(     // addub $4,r0
                 "0|L--|00003000(2): 3 instructions",
-                "1|L--|v4 = SLICE(r4, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|v5 = v4 + 4<8>",
-                "3|L--|r4 = SEQ(SLICE(r4, byte, 8), v5)");
+                "3|L--|r0 = SEQ(SLICE(r0, byte, 8), v5)");
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("C243");
             AssertCode(     // ashuw	$-12,r2
                 "0|L--|00003000(2): 1 instructions",
-                "1|L--|r2 = r2 >> 0xC<16>");
+                "1|L--|r2 = r2 >> 4<16>");
         }
 
         [Test]
@@ -523,7 +523,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("164A");
             AssertCode(     // lshd	$-1,(r7,r6)
                 "0|L--|00003000(2): 1 instructions",
-                "1|L--|r7_r6 = r7_r6 >>u 1<8>");
+                "1|L--|r7_r6 = r7_r6 >>u 0x1F<8>");
         }
 
         [Test]
@@ -532,7 +532,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("7049");
             AssertCode(     // lshw	$7,r0
                 "0|L--|00003000(2): 1 instructions",
-                "1|L--|r0 = r0 >>u 7<8>");
+                "1|L--|r0 = r0 >>u 9<8>");
         }
 
         [Test]

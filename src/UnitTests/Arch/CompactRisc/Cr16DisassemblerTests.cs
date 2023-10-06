@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_addub()
         {
-            AssertCode("addub\t$3,r3", "362C");
+            AssertCode("addub\t$3,r6", "362C");
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_ashud_right()
         {
-            AssertCode("ashud\t$-30,(r7,r6)", "E64F");
+            AssertCode("ashud\t$-2,(r7,r6)", "E64F");
         }
 
         [Test]
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_cmpb_reg_reg()
         {
-            AssertCode("cmpb\tr2,r0", "0251");
+            AssertCode("cmpb\tr0,r2", "0251");
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_cmpd_rp_rp()
         {
-            AssertCode("cmpd\t(r1,r0),(r3,r2)", "2057");
+            AssertCode("cmpd\t(r3,r2),(r1,r0)", "2057");
         }
 
         [Test]
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_cmpw_reg_reg()
         {
-            AssertCode("cmpw\tr0,r2", "2053");
+            AssertCode("cmpw\tr2,r0", "2053");
         }
 
         [Test]
@@ -341,7 +341,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_lshd_right()
         {
-            AssertCode("lshd\t$-18,ra", "2E4B");
+            AssertCode("lshd\t$-14,ra", "2E4B");
         }
 
         [Test]
@@ -353,7 +353,13 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_lshw_right()
         {
-            AssertCode("lshw\t$-1,r4", "1449");
+            AssertCode("lshw\t$-15,r4", "1449");
+        }
+
+        [Test]
+        public void Cr16Dasm_lshw_regression()
+        {
+            AssertCode("lshw\t$-13,r0", "3049");
         }
 
         [Test]
@@ -389,7 +395,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_movd_rp_rp()
         {
-            AssertCode("movd\t(r7,r6),(r5,r4)", "4655");
+            AssertCode("movd\t(r5,r4),(r7,r6)", "4655");
         }
 
         [Test]

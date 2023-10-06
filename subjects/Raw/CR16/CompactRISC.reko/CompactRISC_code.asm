@@ -232,7 +232,7 @@ l000003E2:
 fn00000BEC proc
 	push	$2,r13,ra
 	push	$7,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	movw	r4,r10
 	movw	r5,r11
 	movw	r6,r7
@@ -284,13 +284,13 @@ l00000C38:
 
 l00000C42:
 	loadd	0x10(r9,r8),r12
-	movd	(r3,r2),r12
+	movd	r12,(r3,r2)
 	bal	ra,fn0000DB74
-	movd	r13,(r1,r0)
+	movd	(r1,r0),r13
 	movw	r11,r2
 	movw	r7,r3
 	bal	ra,fn0000DB74
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	addd	$3,(r3,r2)
 	bal	ra,fn0000D9B0
@@ -299,8 +299,8 @@ l00000C42:
 	beq	00000C84
 
 l00000C66:
-	movd	(r5,r4),r12
-	movd	(r3,r2),(r1,r0)
+	movd	r12,(r5,r4)
+	movd	(r1,r0),(r3,r2)
 	bal	ra,fn0000DBF0
 	movw	$203A,r2
 	storw	r2,(r1,r0)
@@ -565,7 +565,7 @@ l00000C84:
 fn00001B74 proc
 	push	$2,ra
 	push	$4,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	00001BE0
 
@@ -599,14 +599,14 @@ l00001BAE:
 l00001BB0:
 	movd	$0,(r6,r5)
 	movw	$0,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	loadd	0x10(r9,r8),(r3,r2)
 	bal	ra,fn0000D99C
 	loadw	0xE(r9,r8),r2
 	bal	ra,fn0000DDF0
 	movw	r0,r10
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000D99C
 	cmpw	$0,r10
 	bne	00001BD8
@@ -637,16 +637,16 @@ l00001BE0:
 fn00001BEC proc
 	push	$2,ra
 	push	$7,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	loadw	0x16(r3,r2),r7
 	movw	r7,r2
 	addw	r7,r2
 	movzw	r2,(r3,r2)
 	bal	ra,fn0000D9B0
-	movd	(r11,r10),(r1,r0)
+	movd	(r1,r0),(r11,r10)
 	stord	(r1,r0),0x18(r9,r8)
 	movd	$0,r12
-	cmpd	(r1,r0),r12
+	cmpd	r12,(r1,r0)
 	beq	00001C8C
 
 l00001C08:
@@ -708,13 +708,13 @@ l00001C74:
 	popret	$2,ra
 
 l00001C86:
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000D99C
 
 l00001C8C:
 	movd	$E46C,(r6,r5)
 	movw	$FFFC,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	movw	$FFFF,r0
 	pop	$7,r7
@@ -754,7 +754,7 @@ l00001CA0:
 fn00001DFA proc
 	push	$2,r13,ra
 	push	$7,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	loadw	0x14(r3,r2),r0
 	cmpw	$0,r0
 	beq	00001ED2
@@ -778,14 +778,14 @@ l00001E1E:
 
 l00001E24:
 	movw	$0,r4
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00004CD4
 	cmpw	$FFFE,r0
 	beq	00001EF8
 
 l00001E32:
 	loadw	0x90(r9,r8),r0
-	cmpw	r0,r13
+	cmpw	r13,r0
 	bne	00001E1E
 
 l00001E3A:
@@ -836,7 +836,7 @@ l00001E7E:
 l00001E82:
 	loadd	0x88(r9,r8),(r3,r2)
 	loadd	4(r9,r8),(r1,r0)
-	cmpd	(r1,r0),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
 	bhi	00001E9E
 
 l00001E8C:
@@ -848,11 +848,11 @@ l00001E8E:
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),4(r9,r8)
 	loadd	0x88(r9,r8),(r3,r2)
-	cmpd	(r3,r2),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
 	bhs	00001EDE
 
 l00001E9E:
-	subd	(r3,r2),(r1,r0)
+	subd	(r1,r0),(r3,r2)
 	cmpd	$4000,(r3,r2)
 	bge	00001EAC
 
@@ -864,7 +864,7 @@ l00001EAC:
 	movd	$FFFF,(r6,r5)
 	andd	(r3,r2),(r6,r5)
 	loadw	0xE(r9,r8),r2
-	movd	(r4,r3),(r1,r0)
+	movd	(r1,r0),(r4,r3)
 	bal	ra,fn0000DD90
 	cmpw	$0,r0
 	ble	00001E8E
@@ -872,7 +872,7 @@ l00001EAC:
 l00001EC0:
 	movd	$E4A8,(r6,r5)
 	movw	$FFFF,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	movw	$FFFF,r0
 	pop	$7,r7
@@ -903,7 +903,7 @@ l00001EE6:
 l00001EF8:
 	movd	$E556,(r6,r5)
 	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	movw	$FFFF,r0
 	pop	$7,r7
@@ -917,7 +917,7 @@ fn00001F0C proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-4,sp
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	movw	r4,r10
 	loadw	0x78(r3,r2),r0
 	cmpw	$0,r0
@@ -937,7 +937,7 @@ l00001F26:
 
 l00001F36:
 	loadw	0x14(r9,r8),r0
-	cmpw	r0,r10
+	cmpw	r10,r0
 	sge	r2
 	cmpw	$0,r2
 	beq	00001FC0
@@ -1010,7 +1010,7 @@ l00001F96:
 l00001FB0:
 	subw	r11,r10
 	movw	$0,r1
-	cmpw	r10,r1
+	cmpw	r1,r10
 	bne	00001F36
 
 l00001FB8:
@@ -1028,7 +1028,7 @@ l00001FC0:
 l00001FC4:
 	loadd	0x88(r9,r8),(r3,r2)
 	loadd	4(r9,r8),(r1,r0)
-	cmpd	(r1,r0),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
 	bhi	00001FE0
 
 l00001FCE:
@@ -1040,11 +1040,11 @@ l00001FD0:
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),4(r9,r8)
 	loadd	0x88(r9,r8),(r3,r2)
-	cmpd	(r3,r2),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
 	bhs	00002050
 
 l00001FE0:
-	subd	(r3,r2),(r1,r0)
+	subd	(r1,r0),(r3,r2)
 	cmpd	$4000,(r3,r2)
 	bge	00001FEE
 
@@ -1056,7 +1056,7 @@ l00001FEE:
 	movd	$FFFF,(r6,r5)
 	andd	(r3,r2),(r6,r5)
 	loadw	0xE(r9,r8),r2
-	movd	(r4,r3),(r1,r0)
+	movd	(r1,r0),(r4,r3)
 	bal	ra,fn0000DD90
 	cmpw	$0,r0
 	ble	00001FD0
@@ -1064,7 +1064,7 @@ l00001FEE:
 l00002002:
 	movd	$E4A8,(r6,r5)
 	movw	$FFFF,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	movw	$FFFF,r0
 	addd	$4,sp
@@ -1088,20 +1088,20 @@ l00002020:
 
 l0000202E:
 	loadw	0x90(r9,r8),r0
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bne	0000201A
 
 l00002036:
 	subw	r11,r10
 	movw	$0,r1
-	cmpw	r10,r1
+	cmpw	r1,r10
 	bne	00001F36
 
 l00002040:
 	br	00001FB8
 
 l00002042:
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00001BEC
 	cmpw	$FFFF,r0
 	bne	00001F6A
@@ -1130,7 +1130,7 @@ l00002058:
 l00002076:
 	movd	$E556,(r6,r5)
 	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	movw	$FFFF,r0
 	br	00001FBA
@@ -1358,7 +1358,7 @@ fn00002D76 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-4,sp
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	00002F3A
 
@@ -1402,14 +1402,14 @@ l00002DC4:
 
 l00002DCC:
 	movw	$4,r4
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00004CD4
 	cmpw	$FFFE,r0
 	beq	00002F24
 
 l00002DDC:
 	loadw	0x90(r9,r8),r1
-	cmpw	r1,r7
+	cmpw	r7,r1
 	beq	00002F32
 
 l00002DE6:
@@ -1422,7 +1422,7 @@ l00002DE6:
 l00002DF0:
 	loadd	0x88(r9,r8),(r3,r2)
 	loadd	4(r9,r8),(r1,r0)
-	cmpd	(r3,r2),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
 	blo	00002E10
 
 l00002DFA:
@@ -1434,11 +1434,11 @@ l00002DFE:
 	addd	(r3,r2),(r1,r0)
 	stord	(r1,r0),4(r9,r8)
 	loadd	0x88(r9,r8),(r3,r2)
-	cmpd	(r3,r2),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
 	bhs	00002F06
 
 l00002E10:
-	subd	(r3,r2),(r1,r0)
+	subd	(r1,r0),(r3,r2)
 	cmpd	$4000,(r3,r2)
 	bge	00002E1E
 
@@ -1450,7 +1450,7 @@ l00002E1E:
 	movd	$FFFF,(r6,r5)
 	andd	(r3,r2),(r6,r5)
 	loadw	0xE(r9,r8),r2
-	movd	(r4,r3),(r1,r0)
+	movd	(r1,r0),(r4,r3)
 	bal	ra,fn0000DD90
 	cmpw	$0,r0
 	ble	00002DFE
@@ -1458,7 +1458,7 @@ l00002E1E:
 l00002E32:
 	movd	$E4A8,(r6,r5)
 	movw	$FFFF,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 
 l00002E3E:
@@ -1476,7 +1476,7 @@ l00002E4A:
 	bne	00002E60
 
 l00002E52:
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00006134
 	loadd	0x38(r9,r8),(r3,r2)
 	bal	ra,fn0000D99C
@@ -1488,7 +1488,7 @@ l00002E60:
 l00002E66:
 	movd	$0,(r6,r5)
 	movw	$0,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	loadd	0x10(r9,r8),(r3,r2)
 	bal	ra,fn0000D99C
@@ -1502,7 +1502,7 @@ l00002E82:
 	loadw	(sp),r7
 
 l00002E84:
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000D99C
 
 l00002E8A:
@@ -1565,7 +1565,7 @@ l00002EE4:
 	bne	00002DAA
 
 l00002EF8:
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00001BEC
 	cmpw	$FFFF,r0
 	bne	00002DAA
@@ -1591,12 +1591,12 @@ l00002F10:
 l00002F24:
 	movd	$E556,(r6,r5)
 	movw	r0,r4
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00000BEC
 	br	00002E3E
 
 l00002F32:
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00004794
 	br	00002E44
 
@@ -1648,7 +1648,7 @@ fn000030F2 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-12,sp
-	movd	r13,(r3,r2)
+	movd	(r3,r2),r13
 	loadw	0x50(r3,r2),r7
 	storw	r7,2(sp)
 	loadw	0xB4(r3,r2),r11
@@ -1675,7 +1675,7 @@ l00003128:
 l0000312A:
 	loadw	4(sp),r7
 	addw	r7,r0
-	cmpw	r3,r0
+	cmpw	r0,r3
 	bls	00003192
 
 l00003132:
@@ -1686,7 +1686,7 @@ l00003132:
 
 l0000313C:
 	loadw	0xB4(r13),r11
-	cmpw	r7,r10
+	cmpw	r10,r7
 	bhs	00003310
 
 l00003146:
@@ -1729,7 +1729,7 @@ l00003186:
 	movw	$FFFE,r10
 	loadw	4(sp),r7
 	addw	r7,r0
-	cmpw	r3,r0
+	cmpw	r0,r3
 	bhi	00003132
 
 l00003192:
@@ -1750,7 +1750,7 @@ l00003192:
 	storw	r3,0xAC(r13)
 	loadd	0x98(r13),(r1,r0)
 	loadd	0xC(sp),(r5,r4)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadw	0x50(r13),r2
 	loadw	0x84(r13),r4
@@ -1762,21 +1762,21 @@ l00003192:
 	movzw	r4,(r5,r4)
 	addd	$1,(r5,r4)
 	addd	(r5,r4),(r5,r4)
-	movd	(r7,r6),(r1,r0)
-	subd	(r7,r6),(r5,r4)
-	movd	(r5,r4),(r7,r6)
+	movd	(r1,r0),(r7,r6)
+	subd	(r5,r4),(r7,r6)
+	movd	(r7,r6),(r5,r4)
 	addd	$4,sp
 
 l000031EE:
 	addd	$-2,(r1,r0)
 	loadw	(r1,r0),r6
-	cmpw	r2,r6
+	cmpw	r6,r2
 	blo	00003362
 
 l000031FA:
 	subw	r2,r6
 	storw	r6,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bne	000031EE
 
 l00003202:
@@ -1789,20 +1789,20 @@ l00003202:
 	movzw	r4,(r5,r4)
 	addd	$1,(r5,r4)
 	addd	(r5,r4),(r5,r4)
-	movd	(r7,r6),(r1,r0)
-	subd	(r7,r6),(r5,r4)
-	movd	(r5,r4),(r7,r6)
+	movd	(r1,r0),(r7,r6)
+	subd	(r5,r4),(r7,r6)
+	movd	(r7,r6),(r5,r4)
 
 l0000321E:
 	addd	$-2,(r1,r0)
 	loadw	(r1,r0),r6
-	cmpw	r2,r6
+	cmpw	r6,r2
 	blo	00003352
 
 l0000322A:
 	subw	r2,r6
 	storw	r6,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bne	0000321E
 
 l00003232:
@@ -1818,7 +1818,7 @@ l00003236:
 l00003240:
 	loadd	0x2418(r13),(r3,r2)
 	loadd	0x68(r13),(r11,r10)
-	cmpd	(r3,r2),(r11,r10)
+	cmpd	(r11,r10),(r3,r2)
 	bls	00003280
 
 l0000324C:
@@ -1827,18 +1827,18 @@ l0000324C:
 	loadw	0xB4(r13),r0
 	movzw	r0,(r1,r0)
 	addd	(r1,r0),(r9,r8)
-	cmpd	(r3,r2),(r9,r8)
+	cmpd	(r9,r8),(r3,r2)
 	bls	00003392
 
 l00003260:
-	subd	(r11,r10),(r9,r8)
+	subd	(r9,r8),(r11,r10)
 	cmpd	$102,(r11,r10)
 	blo	000033D4
 
 l0000326C:
 	loadd	0x60(r13),(r3,r2)
 	addd	(r9,r8),(r3,r2)
-	movd	(r6,r5),(r11,r10)
+	movd	(r11,r10),(r6,r5)
 	movw	$0,r4
 	bal	ra,fn0000DB44
 	addd	(r11,r10),(r9,r8)
@@ -1926,7 +1926,7 @@ l00003312:
 	movzw	r7,r12
 	loadd	(r9,r8),(r5,r4)
 	push	$2,r12
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000DB24
 	loadd	0x38(r9,r8),(r1,r0)
 	loadw	0x18(r1,r0),r0
@@ -1951,7 +1951,7 @@ l0000333C:
 
 l00003352:
 	storw	$0,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bne	0000321E
 
 l0000335A:
@@ -1961,7 +1961,7 @@ l0000335A:
 
 l00003362:
 	storw	$0,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bne	000031EE
 
 l0000336A:
@@ -1970,7 +1970,7 @@ l0000336A:
 l0000336E:
 	loadd	0x60(r9,r8),(r3,r2)
 	movw	r7,r6
-	movd	(r5,r4),(r11,r10)
+	movd	(r11,r10),(r5,r4)
 	bal	ra,fn0000C0EE
 	stord	(r1,r0),0x60(r9,r8)
 	br	0000333C
@@ -1978,7 +1978,7 @@ l0000336E:
 l00003380:
 	loadd	0x60(r9,r8),(r3,r2)
 	movw	r7,r6
-	movd	(r5,r4),(r11,r10)
+	movd	(r11,r10),(r5,r4)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r9,r8)
 	br	0000333C
@@ -1986,18 +1986,18 @@ l00003380:
 l00003392:
 	movd	$102,(r1,r0)
 	addd	(r9,r8),(r1,r0)
-	cmpd	(r3,r2),(r1,r0)
+	cmpd	(r1,r0),(r3,r2)
 	bls	00003280
 
 l0000339E:
-	subd	(r9,r8),(r3,r2)
+	subd	(r3,r2),(r9,r8)
 	addd	$258,(r9,r8)
-	subd	(r11,r10),(r3,r2)
-	cmpd	(r11,r10),(r9,r8)
+	subd	(r3,r2),(r11,r10)
+	cmpd	(r9,r8),(r11,r10)
 	bhs	000033B0
 
 l000033AE:
-	movd	(r11,r10),(r9,r8)
+	movd	(r9,r8),(r11,r10)
 
 l000033B0:
 	movd	$FFFF,(r6,r5)
@@ -2017,7 +2017,7 @@ l000033D4:
 	movd	$102,(r11,r10)
 	loadd	0x60(r13),(r3,r2)
 	addd	(r9,r8),(r3,r2)
-	movd	(r6,r5),(r11,r10)
+	movd	(r11,r10),(r6,r5)
 	movw	$0,r4
 	bal	ra,fn0000DB44
 	addd	(r11,r10),(r9,r8)
@@ -2037,17 +2037,17 @@ fn000033F8 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-16,sp
-	movd	r12,(r3,r2)
+	movd	(r3,r2),r12
 	storw	r4,8(sp)
 	loadd	0xC(r3,r2),(r1,r0)
 	loadw	0x50(r3,r2),r2
 	movzw	r2,(r3,r2)
 	addd	$-5,(r1,r0)
-	cmpd	(r1,r0),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
 	bhs	00003416
 
 l00003414:
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 
 l00003416:
 	storw	r0,0xA(sp)
@@ -2059,9 +2059,9 @@ l00003416:
 l00003420:
 	loadw	0x2414(r12),r0
 	addw	$2A,r0
-	ashuw	$-13,r0
+	ashuw	$-3,r0
 	loadw	0x10(r13),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhi	00003664
 
 l00003432:
@@ -2078,14 +2078,14 @@ l00003432:
 l0000344C:
 	movw	r8,r0
 	addw	r10,r0
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00003456
 
 l00003454:
 	movw	r0,r7
 
 l00003456:
-	cmpw	r8,r7
+	cmpw	r7,r8
 	bhs	0000345C
 
 l0000345A:
@@ -2093,7 +2093,7 @@ l0000345A:
 
 l0000345C:
 	loadw	0xA(sp),r0
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bhs	000035F0
 
 l00003464:
@@ -2115,7 +2115,7 @@ l00003476:
 l00003480:
 	movw	r7,r0
 	subw	r8,r0
-	cmpw	r0,r10
+	cmpw	r10,r0
 	bne	00003664
 
 l0000348A:
@@ -2127,8 +2127,8 @@ l00003490:
 	movd	$0,(r1,r0)
 	push	$2,r0
 	loadw	8(sp),r6
-	movd	(r5,r4),(r1,r0)
-	movd	(r3,r2),r12
+	movd	(r1,r0),(r5,r4)
+	movd	r12,(r3,r2)
 	bal	ra,fn0000AF94
 	loadd	8(r12),(r1,r0)
 	loadd	0x14(r12),(r3,r2)
@@ -2159,12 +2159,12 @@ l00003490:
 	storb	r2,(r1,r0)
 	loadd	(r12),(r11,r10)
 	loadd	0x38(r11,r10),r13
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r13),r0
 	loadw	0x10(r11,r10),r9
 	addd	$4,sp
-	cmpw	r9,r0
+	cmpw	r0,r9
 	bhs	000034F2
 
 l000034F0:
@@ -2196,7 +2196,7 @@ l000034F6:
 	subw	r9,r0
 	storw	r0,0x10(r11,r10)
 	loadd	0x14(r13),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x14(r13)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -2255,7 +2255,7 @@ l0000357C:
 l00003586:
 	loadw	0x50(r12),r0
 	loadd	0x60(r12),(r3,r2)
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bhs	0000383C
 
 l00003594:
@@ -2263,14 +2263,14 @@ l00003594:
 	movzw	r1,ra
 	movzw	r7,(r11,r10)
 	loadd	0x68(r12),(r5,r4)
-	subd	(r5,r4),ra
-	cmpd	(r5,r4),(r11,r10)
+	subd	ra,(r5,r4)
+	cmpd	(r11,r10),(r5,r4)
 	bhs	000038B2
 
 l000035AA:
 	addd	ra,(r3,r2)
 	loadd	(r13),(r5,r4)
-	subd	(r5,r4),(r11,r10)
+	subd	(r11,r10),(r5,r4)
 	push	$2,r10
 	bal	ra,fn0000DB24
 	loadw	0xAC(r12),r8
@@ -2284,7 +2284,7 @@ l000035C8:
 	stord	(r3,r2),0x98(r12)
 	loadw	0x240C(r12),r1
 	subw	r1,r0
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bhs	000035DA
 
 l000035D8:
@@ -2313,14 +2313,14 @@ l000035F0:
 l000035FC:
 	movw	r7,r0
 	subw	r8,r0
-	cmpw	r0,r10
+	cmpw	r10,r0
 	seq	r6
 	storw	r6,4(sp)
 	br	00003490
 
 l0000360A:
 	loadd	0xC(r13),(r9,r8)
-	cmpw	r7,r10
+	cmpw	r10,r7
 	bhi	0000362A
 
 l00003610:
@@ -2349,7 +2349,7 @@ l0000362E:
 	movzw	r3,(r11,r10)
 	loadd	(r13),(r5,r4)
 	push	$2,r10
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000DB24
 	loadd	0x38(r13),(r1,r0)
 	loadw	0x18(r1,r0),r0
@@ -2395,7 +2395,7 @@ l0000367C:
 l00003680:
 	movzw	r8,(r1,r0)
 	loadd	0x98(r12),(r5,r4)
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	bne	0000372A
 
 l0000368A:
@@ -2406,18 +2406,18 @@ l0000368E:
 	loadw	0x68(r12),r7
 	addw	$FFFF,r7
 	subw	r8,r7
-	cmpw	r7,r10
+	cmpw	r10,r7
 	bls	000036AA
 
 l0000369A:
 	loadd	0x98(r12),(r5,r4)
 	loadw	0x50(r12),r2
 	movzw	r2,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	ble	0000386C
 
 l000036AA:
-	cmpw	r7,r10
+	cmpw	r10,r7
 	bhs	000036D2
 
 l000036AE:
@@ -2435,7 +2435,7 @@ l000036B2:
 l000036C0:
 	loadd	0x60(r13),(r3,r2)
 	loadw	(sp),r6
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000C0EE
 	stord	(r1,r0),0x60(r13)
 	br	00003650
@@ -2448,7 +2448,7 @@ l000036D6:
 	movzw	r8,(r9,r8)
 	loadd	0x60(r12),(r1,r0)
 	addd	(r1,r0),(r9,r8)
-	cmpw	r7,r10
+	cmpw	r10,r7
 	bls	00003934
 
 l000036E4:
@@ -2462,7 +2462,7 @@ l000036EA:
 	stord	(r1,r0),4(sp)
 	loadd	(r13),(r5,r4)
 	push	$2,r0
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000DB24
 	loadd	0x38(r13),(r1,r0)
 	loadw	0x18(r1,r0),r0
@@ -2494,12 +2494,12 @@ l00003726:
 l0000372A:
 	loadw	0x2414(r12),r0
 	addw	$2A,r0
-	ashuw	$-13,r0
+	ashuw	$-3,r0
 	movzw	r0,(r1,r0)
 	loadd	0xC(r12),(r3,r2)
-	movd	(r7,r6),(r3,r2)
-	subd	(r7,r6),(r1,r0)
-	movd	(r1,r0),(r7,r6)
+	movd	(r3,r2),(r7,r6)
+	subd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	cmpd	$FFFF,(r7,r6)
 	bhs	0000374C
 
@@ -2510,14 +2510,14 @@ l0000374C:
 	movw	r0,r3
 	subw	r4,r8
 	loadw	0x50(r12),r2
-	cmpw	r2,r0
+	cmpw	r0,r2
 	bhs	0000375A
 
 l00003758:
 	movw	r0,r2
 
 l0000375A:
-	cmpw	r2,r8
+	cmpw	r8,r2
 	bhs	0000379A
 
 l0000375E:
@@ -2545,14 +2545,14 @@ l00003776:
 	beq	0000381E
 
 l00003782:
-	cmpw	r3,r8
+	cmpw	r8,r3
 	sls	r0
 	cmpw	$0,r0
 	beq	0000381E
 
 l0000378A:
 	movw	r3,r2
-	cmpw	r3,r8
+	cmpw	r8,r3
 	bhs	00003792
 
 l00003790:
@@ -2568,7 +2568,7 @@ l00003796:
 
 l0000379A:
 	movw	r3,r2
-	cmpw	r3,r8
+	cmpw	r8,r3
 	bhs	000037A2
 
 l000037A0:
@@ -2588,19 +2588,19 @@ l000037AC:
 	movzw	r2,(r9,r8)
 	push	$2,r8
 	movw	r13,r6
-	movd	(r3,r2),r12
+	movd	r12,(r3,r2)
 	bal	ra,fn0000AF94
 	loadd	0x98(r12),(r1,r0)
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),0x98(r12)
 	loadd	(r12),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	000037E0
 
 l000037DE:
@@ -2629,7 +2629,7 @@ l000037E4:
 	subw	r7,r0
 	storw	r0,0x10(r9,r8)
 	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),r12
+	subd	r12,(r1,r0)
 	stord	(r1,r0),0x14(r11,r10)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -2652,7 +2652,7 @@ l0000381E:
 l00003828:
 	loadd	0x60(r13),(r3,r2)
 	loadw	(sp),r6
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r13)
 	br	00003650
@@ -2661,7 +2661,7 @@ l0000383C:
 	storw	$2,0x1204(r12)
 	movzw	r0,(r1,r0)
 	loadd	(r13),(r5,r4)
-	subd	(r5,r4),(r1,r0)
+	subd	(r1,r0),(r5,r4)
 	push	$2,r0
 	bal	ra,fn0000DB24
 	loadw	0x50(r12),r8
@@ -2680,13 +2680,13 @@ l00003864:
 	br	00003672
 
 l0000386C:
-	subd	(r5,r4),(r1,r0)
+	subd	(r1,r0),(r5,r4)
 	stord	(r5,r4),0x98(r12)
 	subw	r2,r8
 	storw	r8,0xAC(r12)
 	loadd	0x60(r12),(r3,r2)
 	movzw	r8,(r9,r8)
-	movd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
 	addd	(r1,r0),(r5,r4)
 	push	$2,r8
 	bal	ra,fn0000DB24
@@ -2705,7 +2705,7 @@ l0000389A:
 	loadd	(r12),r13
 	loadw	4(r13),r10
 	loadw	0xAC(r12),r8
-	cmpw	r7,r10
+	cmpw	r10,r7
 	blo	000036AE
 
 l000038AE:
@@ -2750,7 +2750,7 @@ l000038EE:
 	beq	000037AA
 
 l000038FC:
-	cmpw	r3,r8
+	cmpw	r8,r3
 	sls	r0
 	movw	$1,r13
 	cmpw	$0,r0
@@ -2762,7 +2762,7 @@ l00003908:
 l0000390C:
 	loadd	0x60(r13),(r3,r2)
 	movw	r10,r6
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000C0EE
 	stord	(r1,r0),0x60(r13)
 	br	0000370E
@@ -2770,7 +2770,7 @@ l0000390C:
 l00003920:
 	loadd	0x60(r13),(r3,r2)
 	movw	r10,r6
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r13)
 	br	0000370E
@@ -3009,7 +3009,7 @@ l00003940:
 fn000046AC proc
 	push	$2,ra
 	push	$4,r8
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	00004786
 
@@ -3031,7 +3031,7 @@ l000046C6:
 l000046CE:
 	loadd	(r11,r10),(r3,r2)
 	movw	$FFFE,r0
-	cmpd	(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r9,r8)
 	beq	000046DC
 
 l000046D8:
@@ -3096,13 +3096,13 @@ l00004744:
 	storw	r1,4(r11,r10)
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000C0EE
 
 l00004750:
 	stord	(r1,r0),0x60(r9,r8)
 	storw	$0,0x26(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000AF06
 	movw	$0,r0
 	pop	$4,r8
@@ -3121,7 +3121,7 @@ l00004774:
 	storw	r0,4(r11,r10)
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000CAF8
 	br	00004750
 
@@ -3140,7 +3140,7 @@ l0000478E:
 fn00004794 proc
 	push	$2,ra
 	push	$4,r8
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	000048EC
 
@@ -3162,7 +3162,7 @@ l000047B4:
 l000047BE:
 	loadd	(r11,r10),(r3,r2)
 	movw	$FFFE,r0
-	cmpd	(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r9,r8)
 	beq	000047CC
 
 l000047C8:
@@ -3227,13 +3227,13 @@ l00004834:
 	storw	r1,4(r11,r10)
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000C0EE
 
 l00004840:
 	stord	(r1,r0),0x60(r9,r8)
 	storw	$0,0x26(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000AF06
 	loadd	0x38(r9,r8),(r9,r8)
 	loadw	0x50(r9,r8),r0
@@ -3245,14 +3245,14 @@ l00004840:
 	addw	$FFFF,r5
 	movzw	r5,(r6,r5)
 	addd	(r6,r5),(r6,r5)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	addd	(r6,r5),(r1,r0)
 	storw	$0,(r1,r0)
 	movw	$0,r4
 	bal	ra,fn0000DB44
 	loadw	0xC4(r9,r8),r2
 	movxw	r2,(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	addd	(r3,r2),(r1,r0)
 	addd	(r1,r0),(r3,r2)
 	ashud	$2,(r3,r2)
@@ -3291,7 +3291,7 @@ l000048DA:
 	storw	r0,4(r11,r10)
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000CAF8
 	br	00004840
 
@@ -3377,7 +3377,7 @@ fn00004CD4 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-12,sp
-	movd	r12,(r3,r2)
+	movd	(r3,r2),r12
 	storw	r4,(sp)
 	cmpd	$0,(r3,r2)
 	beq	00005166
@@ -3400,7 +3400,7 @@ l00004CFA:
 l00004D04:
 	loadd	(r13),(r3,r2)
 	movw	$FFFE,r0
-	cmpd	r12,(r3,r2)
+	cmpd	(r3,r2),r12
 	beq	00004D14
 
 l00004D0E:
@@ -3510,7 +3510,7 @@ l00004DC4:
 	addw	$FFF7,r3
 
 l00004DC8:
-	cmpw	r4,r3
+	cmpw	r3,r4
 	sge	r0
 	cmpw	$0,r0
 	beq	00004DD6
@@ -3549,7 +3549,7 @@ l00004E04:
 
 l00004E0A:
 	movxw	r0,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	addd	(r3,r2),(r1,r0)
 	ashud	$2,(r1,r0)
@@ -3557,7 +3557,7 @@ l00004E0A:
 	addd	(r3,r2),(r1,r0)
 	loadd	8(r1,r0),(r1,r0)
 	loadw	(sp),r4
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	jal	ra,(r1,r0)
 
 l00004E22:
@@ -3589,8 +3589,8 @@ l00004E4A:
 	movd	$0,(r9,r8)
 	push	$2,r8
 	movw	$0,r6
-	movd	(r5,r4),(r9,r8)
-	movd	(r3,r2),r13
+	movd	(r9,r8),(r5,r4)
+	movd	r13,(r3,r2)
 	bal	ra,fn0000AF94
 	addd	$4,sp
 	loadw	(sp),r4
@@ -3599,11 +3599,11 @@ l00004E4A:
 
 l00004E62:
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x10(r12),r0
 	loadw	0x14(r9,r8),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00004E76
 
 l00004E74:
@@ -3632,7 +3632,7 @@ l00004E7A:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r3,r2)
-	subd	(r3,r2),(r11,r10)
+	subd	(r11,r10),(r3,r2)
 	stord	(r3,r2),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r3,r2)
@@ -3699,11 +3699,11 @@ l00004EE0:
 
 l00004F18:
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00004F2C
 
 l00004F2A:
@@ -3732,7 +3732,7 @@ l00004F30:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -3852,17 +3852,17 @@ l00004FEA:
 l00005032:
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000C0EE
 	stord	(r1,r0),0x60(r12)
 	movw	$71,r0
 	storw	r0,4(r13)
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	blo	000055D6
 
 l0000505A:
@@ -3913,7 +3913,7 @@ l0000509C:
 
 l000050AA:
 	loadd	0x14(r13),(r7,r6)
-	cmpd	(r7,r6),(r5,r4)
+	cmpd	(r5,r4),(r7,r6)
 	bhs	000050CA
 
 l000050B0:
@@ -3941,16 +3941,16 @@ l000050D6:
 	movd	$2,(r5,r4)
 	addd	(r3,r2),(r5,r4)
 	loadd	0xC(r13),(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bhs	00005B90
 
 l000050E4:
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	000050F8
 
 l000050F6:
@@ -3979,7 +3979,7 @@ l000050FC:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4003,11 +4003,11 @@ l0000513A:
 	popret	$2,r13,ra
 
 l00005148:
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x10(r12),r0
 	loadw	0x14(r13),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005158
 
 l00005156:
@@ -4035,7 +4035,7 @@ l00005170:
 	loadd	0x98(r13),(r5,r4)
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005F24
 
@@ -4047,19 +4047,19 @@ l00005184:
 l00005190:
 	push	$2,r0
 	movw	$1,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	000051BC
 
 l000051BA:
@@ -4090,7 +4090,7 @@ l000051C0:
 	subw	r7,r0
 	storw	r0,0x10(r9,r8)
 	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x14(r11,r10)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4141,7 +4141,7 @@ l0000521E:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r13),(r3,r2)
-	subd	(r3,r2),(r9,r8)
+	subd	(r9,r8),(r3,r2)
 	stord	(r3,r2),0x14(r13)
 	addd	$4,sp
 	cmpd	$0,(r3,r2)
@@ -4155,7 +4155,7 @@ l00005250:
 l00005256:
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r12)
 	loadd	8(r13),(r1,r0)
@@ -4242,7 +4242,7 @@ l000052D2:
 	storb	r6,(r1,r0)
 	loadd	0x38(r13),(r1,r0)
 	loadd	4(r1,r0),(r7,r6)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	loadd	8(r13),(r1,r0)
 	loadd	0x14(r13),(r3,r2)
 	movd	$1,(r5,r4)
@@ -4357,14 +4357,14 @@ l000053DE:
 	loadd	0x14(r13),(r11,r10)
 	loadd	0x40(r13),ra
 	loadw	0x10(r1,r0),r7
-	movd	(r1,r0),ra
+	movd	ra,(r1,r0)
 	subw	r0,r7
 	storw	r7,4(sp)
 	movzw	r7,(r9,r8)
 	loadd	0xC(r13),(r1,r0)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	addd	(r9,r8),(r3,r2)
-	cmpd	(r1,r0),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
 	bls	000054B8
 
 l000053F8:
@@ -4388,7 +4388,7 @@ l000053F8:
 	beq	0000543E
 
 l00005422:
-	cmpd	(r1,r0),(r11,r10)
+	cmpd	(r11,r10),(r1,r0)
 	slo	r2
 	cmpw	$0,r2
 	beq	0000543E
@@ -4407,11 +4407,11 @@ l0000543E:
 	addd	(r1,r0),(r9,r8)
 	stord	(r9,r8),0x40(r13)
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	0000545C
 
 l0000545A:
@@ -4440,7 +4440,7 @@ l00005460:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4465,7 +4465,7 @@ l0000549E:
 	loadd	0x38(r13),(r3,r2)
 	loadd	0xC(r3,r2),(r5,r4)
 	loadd	0x40(r13),ra
-	cmpd	(r9,r8),(r1,r0)
+	cmpd	(r1,r0),(r9,r8)
 	blo	000053F8
 
 l000054B8:
@@ -4486,7 +4486,7 @@ l000054B8:
 	beq	000054FA
 
 l000054DC:
-	cmpd	(r7,r6),(r11,r10)
+	cmpd	(r11,r10),(r7,r6)
 	slo	r2
 	cmpw	$0,r2
 	beq	000054FA
@@ -4515,7 +4515,7 @@ l00005506:
 
 l0000550E:
 	loadd	0x14(r13),(r5,r4)
-	movd	(r7,r6),(r5,r4)
+	movd	(r5,r4),(r7,r6)
 	br	0000553E
 
 l00005514:
@@ -4541,7 +4541,7 @@ l00005538:
 
 l0000553E:
 	loadd	0xC(r13),(r3,r2)
-	cmpd	(r3,r2),(r7,r6)
+	cmpd	(r7,r6),(r3,r2)
 	bne	00005514
 
 l00005544:
@@ -4552,7 +4552,7 @@ l00005544:
 	beq	0000556A
 
 l00005550:
-	cmpd	(r5,r4),(r7,r6)
+	cmpd	(r7,r6),(r5,r4)
 	shi	r0
 	cmpw	$0,r0
 	beq	0000556A
@@ -4567,11 +4567,11 @@ l00005558:
 
 l0000556A:
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	0000557E
 
 l0000557C:
@@ -4600,7 +4600,7 @@ l00005582:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4623,7 +4623,7 @@ l000055C0:
 
 l000055CA:
 	loadw	(sp),r4
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn000033F8
 	br	00004E22
 
@@ -4651,7 +4651,7 @@ l000055DE:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4706,7 +4706,7 @@ l00005654:
 	loadw	0x23EC(r13),r1
 	movzw	r1,(r5,r4)
 	loadd	0x23F0(r13),(r3,r2)
-	movd	(r7,r6),(r5,r4)
+	movd	(r5,r4),(r7,r6)
 	addd	(r5,r4),(r7,r6)
 	addd	(r7,r6),(r3,r2)
 	storw	$0,(r3,r2)
@@ -4731,13 +4731,13 @@ l00005654:
 	loadw	0xAC(r13),r0
 	addw	$1,r0
 	storw	r0,0xAC(r13)
-	cmpw	r2,r1
+	cmpw	r1,r2
 	bne	0000564E
 
 l000056BA:
 	loadd	0x98(r13),(r5,r4)
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005D4A
 
@@ -4749,19 +4749,19 @@ l000056CA:
 l000056D6:
 	push	$2,r0
 	movw	$0,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005702
 
 l00005700:
@@ -4793,7 +4793,7 @@ l00005706:
 	subw	r7,r0
 	storw	r0,0x10(r9,r8)
 	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x14(r11,r10)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4815,7 +4815,7 @@ l0000574C:
 	bne	00005654
 
 l00005754:
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn000030F2
 	loadw	0xB4(r13),r0
 	cmpw	$0,r0
@@ -4840,7 +4840,7 @@ l00005780:
 	loadd	0x98(r13),(r5,r4)
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005F1E
 
@@ -4852,19 +4852,19 @@ l00005794:
 l000057A0:
 	push	$2,r0
 	movw	$0,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	000057CC
 
 l000057CA:
@@ -4897,7 +4897,7 @@ l000057D8:
 	subw	r7,r0
 	storw	r0,0x10(r9,r8)
 	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x14(r11,r10)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -4926,12 +4926,12 @@ l0000581E:
 
 l00005826:
 	loadb	2(r1,r0),r6
-	cmpb	r8,r6
+	cmpb	r6,r8
 	bne	000059F0
 
 l0000582E:
 	loadb	3(r1,r0),r6
-	cmpb	r8,r6
+	cmpb	r6,r8
 	bne	000059F0
 
 l00005836:
@@ -4939,45 +4939,45 @@ l00005836:
 	movd	$102,(r7,r6)
 	addd	(r3,r2),(r7,r6)
 	addd	(r5,r4),(r7,r6)
-	movd	ra,(r3,r2)
+	movd	(r3,r2),ra
 	br	00005888
 
 l00005844:
 	loadb	2(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F3E
 
 l0000584C:
 	loadb	3(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F4E
 
 l00005854:
 	loadb	4(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F46
 
 l0000585C:
 	loadb	5(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F6C
 
 l00005864:
 	loadb	6(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F64
 
 l0000586C:
 	loadb	7(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	bne	00005F5C
 
 l00005874:
 	addd	$8,(r1,r0)
 	loadb	(r1,r0),r10
-	cmpb	r10,r8
+	cmpb	r8,r10
 	seq	r3
-	cmpd	(r7,r6),(r1,r0)
+	cmpd	(r1,r0),(r7,r6)
 	slo	r10
 	andb	r3,r10
 	cmpb	$0,r10
@@ -4985,11 +4985,11 @@ l00005874:
 
 l00005888:
 	loadb	1(r1,r0),r10
-	cmpb	r8,r10
+	cmpb	r10,r8
 	beq	00005844
 
 l0000588E:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$1,(r1,r0)
 
 l00005892:
@@ -4997,7 +4997,7 @@ l00005892:
 	movw	$102,r1
 	addw	r0,r1
 	storw	r1,0xA0(r13)
-	cmpw	r1,r11
+	cmpw	r11,r1
 	bhs	00005F2A
 
 l000058A4:
@@ -5010,7 +5010,7 @@ l000058AA:
 	loadw	0x23EC(r13),r1
 	movzw	r1,(r3,r2)
 	loadd	0x23F0(r13),(r5,r4)
-	movd	(r7,r6),(r3,r2)
+	movd	(r3,r2),(r7,r6)
 	addd	(r3,r2),(r7,r6)
 	addd	(r7,r6),(r5,r4)
 	storw	$1,(r5,r4)
@@ -5042,7 +5042,7 @@ l000058AA:
 	loadw	0x23E8(r13),r0
 	addw	$FFFF,r0
 	loadw	0x23EC(r13),r1
-	cmpw	r0,r1
+	cmpw	r1,r0
 	seq	r1
 	loadw	0xA0(r13),r0
 	loadw	0xB4(r13),r11
@@ -5058,7 +5058,7 @@ l000058AA:
 l00005932:
 	loadd	0x98(r13),(r5,r4)
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005DF2
 
@@ -5070,19 +5070,19 @@ l00005942:
 l0000594E:
 	push	$2,r0
 	movw	$0,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	0000597A
 
 l00005978:
@@ -5113,7 +5113,7 @@ l0000597E:
 	subw	r7,r0
 	storw	r0,0x10(r9,r8)
 	loadd	0x14(r11,r10),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x14(r11,r10)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -5153,7 +5153,7 @@ l000059E0:
 	addd	(r5,r4),(r1,r0)
 	loadb	(r1,r0),r8
 	loadb	1(r1,r0),r6
-	cmpb	r8,r6
+	cmpb	r6,r8
 	beq	00005826
 
 l000059F0:
@@ -5162,7 +5162,7 @@ l000059F0:
 	loadw	0x23EC(r13),r1
 	movzw	r1,(r3,r2)
 	loadd	0x23F0(r13),(r5,r4)
-	movd	(r7,r6),(r3,r2)
+	movd	(r3,r2),(r7,r6)
 	addd	(r3,r2),(r7,r6)
 	addd	(r7,r6),(r5,r4)
 	storw	$0,(r5,r4)
@@ -5181,7 +5181,7 @@ l000059F0:
 	loadw	0x23E8(r13),r0
 	addw	$FFFF,r0
 	loadw	0x23EC(r13),r1
-	cmpw	r0,r1
+	cmpw	r1,r0
 	seq	r1
 	loadw	0xB4(r13),r11
 	addw	$FFFF,r11
@@ -5196,7 +5196,7 @@ l00005A4C:
 	br	00005932
 
 l00005A50:
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn000030F2
 	loadw	0xB4(r13),r11
 	cmpw	$102,r11
@@ -5229,7 +5229,7 @@ l00005A80:
 
 l00005A8C:
 	loadd	0x14(r13),(r7,r6)
-	cmpd	(r7,r6),(r5,r4)
+	cmpd	(r5,r4),(r7,r6)
 	bhs	00005AA8
 
 l00005A92:
@@ -5256,7 +5256,7 @@ l00005AB4:
 
 l00005ABE:
 	loadd	0x14(r13),(r5,r4)
-	movd	(r7,r6),(r5,r4)
+	movd	(r5,r4),(r7,r6)
 	br	00005AF0
 
 l00005AC4:
@@ -5282,7 +5282,7 @@ l00005AEA:
 
 l00005AF0:
 	loadd	0xC(r13),(r3,r2)
-	cmpd	(r3,r2),(r7,r6)
+	cmpd	(r7,r6),(r3,r2)
 	bne	00005AC4
 
 l00005AF6:
@@ -5293,7 +5293,7 @@ l00005AF6:
 	beq	00005B1C
 
 l00005B02:
-	cmpd	(r5,r4),(r7,r6)
+	cmpd	(r7,r6),(r5,r4)
 	shi	r0
 	cmpw	$0,r0
 	beq	00005B1C
@@ -5308,11 +5308,11 @@ l00005B0A:
 
 l00005B1C:
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005B30
 
 l00005B2E:
@@ -5341,7 +5341,7 @@ l00005B34:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -5381,7 +5381,7 @@ l00005B90:
 	addd	(r3,r2),(r1,r0)
 	storb	r6,(r1,r0)
 	loadd	0x60(r12),(r7,r6)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	loadd	8(r13),(r1,r0)
 	loadd	0x14(r13),(r3,r2)
 	movd	$1,(r5,r4)
@@ -5391,7 +5391,7 @@ l00005B90:
 	storb	r6,(r1,r0)
 	movw	$0,r6
 	movd	$0,(r5,r4)
-	movd	(r3,r2),(r5,r4)
+	movd	(r5,r4),(r3,r2)
 	bal	ra,fn0000CAF8
 	stord	(r1,r0),0x60(r12)
 
@@ -5399,11 +5399,11 @@ l00005BC2:
 	movw	$71,r0
 	storw	r0,4(r13)
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005BDC
 
 l00005BDA:
@@ -5432,7 +5432,7 @@ l00005BE0:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -5521,11 +5521,11 @@ l00005C8A:
 	movw	$71,r0
 	storw	r0,4(r13)
 	loadd	0x38(r12),(r9,r8)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r9,r8),r0
 	loadw	0x10(r12),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005CC0
 
 l00005CBE:
@@ -5554,7 +5554,7 @@ l00005CC4:
 	subw	r7,r0
 	storw	r0,0x10(r12)
 	loadd	0x14(r9,r8),(r1,r0)
-	subd	(r1,r0),(r11,r10)
+	subd	(r11,r10),(r1,r0)
 	stord	(r1,r0),0x14(r9,r8)
 	addd	$4,sp
 	cmpd	$0,(r1,r0)
@@ -5590,7 +5590,7 @@ l00005D1E:
 	br	00005C8A
 
 l00005D22:
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B10C
 	br	00004E62
 
@@ -5638,7 +5638,7 @@ l00005D7E:
 	loadd	0x98(r13),(r5,r4)
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005F34
 
@@ -5650,19 +5650,19 @@ l00005D92:
 l00005D9E:
 	push	$2,r0
 	movw	$0,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005DCA
 
 l00005DC8:
@@ -5697,7 +5697,7 @@ l00005DF2:
 l00005DFA:
 	storb	r8,(r1,r0)
 	loadd	0x60(r12),(r7,r6)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	loadd	8(r13),(r1,r0)
 	loadd	0x14(r13),(r3,r2)
 	movd	$1,(r5,r4)
@@ -5731,7 +5731,7 @@ l00005DFA:
 	addd	(r3,r2),(r1,r0)
 	storb	r6,(r1,r0)
 	loadd	8(r12),(r7,r6)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	loadd	8(r13),(r1,r0)
 	loadd	0x14(r13),(r3,r2)
 	movd	$1,(r5,r4)
@@ -5775,7 +5775,7 @@ l00005E96:
 	loadd	0x98(r13),(r5,r4)
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	cmpd	$0,(r5,r4)
 	bgt	00005F3A
 
@@ -5787,19 +5787,19 @@ l00005EA8:
 l00005EB4:
 	push	$2,r0
 	movw	$1,r6
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	bal	ra,fn0000B218
 	loadw	0xAC(r13),r0
 	movzw	r0,(r1,r0)
 	stord	(r1,r0),0x98(r13)
 	loadd	(r13),(r9,r8)
 	loadd	0x38(r9,r8),(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn0000B09C
 	loadw	0x14(r11,r10),r0
 	loadw	0x10(r9,r8),r7
 	addd	$4,sp
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bhs	00005EE0
 
 l00005EDE:
@@ -5818,7 +5818,7 @@ l00005EEA:
 	addw	$FFFF,r5
 	movzw	r5,(r6,r5)
 	addd	(r6,r5),(r6,r5)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	addd	(r6,r5),(r1,r0)
 	storw	$0,(r1,r0)
 	movw	$0,r4
@@ -5857,36 +5857,36 @@ l00005F3A:
 	br	00005EB4
 
 l00005F3E:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$2,(r1,r0)
 	br	00005892
 
 l00005F46:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$4,(r1,r0)
 	br	00005892
 
 l00005F4E:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$3,(r1,r0)
 	br	00005892
 
 l00005F56:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	br	00005892
 
 l00005F5C:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$7,(r1,r0)
 	br	00005892
 
 l00005F64:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$6,(r1,r0)
 	br	00005892
 
 l00005F6C:
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	addd	$5,(r1,r0)
 	br	00005892
 00005F74             9D 01 67 01 2A 55 47 5B 5C 5B 02 56     ..g.*UG[\[.V
@@ -5926,7 +5926,7 @@ l00005F6C:
 fn00006134 proc
 	push	$2,ra
 	push	$4,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	0000621C
 
@@ -5948,7 +5948,7 @@ l0000614E:
 l00006156:
 	loadd	(ra),(r3,r2)
 	movw	$FFFE,r0
-	cmpd	(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r9,r8)
 	beq	00006164
 
 l00006160:
@@ -6032,7 +6032,7 @@ l000061F6:
 	loadd	0x50(r9,r8),(r3,r2)
 
 l00006204:
-	movd	(r5,r4),ra
+	movd	ra,(r5,r4)
 	jal	ra,(r7,r6)
 	movd	$0,(r1,r0)
 	stord	(r1,r0),0x38(r9,r8)
@@ -6059,7 +6059,7 @@ fn00006226 proc
 	addd	$-8,sp
 	movd	$1E,r12
 	addd	sp,r12
-	movd	(r11,r10),(r3,r2)
+	movd	(r3,r2),(r11,r10)
 	movw	r4,r13
 	loadw	(r12),r0
 	storw	r0,(sp)
@@ -6165,9 +6165,9 @@ l000062E6:
 	movw	$1210,r5
 	movw	$1,r4
 	jal	ra,(r1,r0)
-	movd	(r9,r8),(r1,r0)
+	movd	(r1,r0),(r9,r8)
 	movd	$0,r12
-	cmpd	(r1,r0),r12
+	cmpd	r12,(r1,r0)
 	beq	0000650C
 
 l000062FC:
@@ -6230,16 +6230,16 @@ l000062FC:
 	stord	(r1,r0),8(r9,r8)
 	loadw	0x23E8(r9,r8),r6
 	movzw	r6,(r3,r2)
-	movd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
 	ashud	$2,(r5,r4)
 	stord	(r5,r4),0xC(r9,r8)
 	loadd	0x60(r9,r8),(r5,r4)
-	cmpd	(r5,r4),r12
+	cmpd	r12,(r5,r4)
 	beq	000064F2
 
 l000063BA:
 	loadd	0x70(r9,r8),(r5,r4)
-	cmpd	(r5,r4),r12
+	cmpd	r12,(r5,r4)
 	beq	000064F2
 
 l000063C4:
@@ -6260,12 +6260,12 @@ l000063D8:
 	bne	000064F2
 
 l000063E6:
-	lshw	$-15,r6
+	lshw	$-1,r6
 	movzw	r6,(r7,r6)
 	addd	(r7,r6),(r7,r6)
 	addd	(r1,r0),(r7,r6)
 	stord	(r7,r6),0x23F0(r9,r8)
-	movd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
 	addd	(r3,r2),(r5,r4)
 	addd	(r5,r4),(r3,r2)
 	addd	(r3,r2),(r1,r0)
@@ -6274,7 +6274,7 @@ l000063E6:
 	loadw	4(sp),r2
 	storw	r2,0xC8(r9,r8)
 	storb	$8,0x24(r9,r8)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn000046AC
 	movw	r0,r7
 	cmpw	$0,r0
@@ -6297,14 +6297,14 @@ l00006420:
 	addw	$FFFF,r5
 	movzw	r5,(r6,r5)
 	addd	(r6,r5),(r6,r5)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	addd	(r6,r5),(r1,r0)
 	storw	r7,(r1,r0)
 	movw	r7,r4
 	bal	ra,fn0000DB44
 	loadw	0xC4(r9,r8),r2
 	movxw	r2,(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	addd	(r3,r2),(r1,r0)
 	addd	(r1,r0),(r3,r2)
 	ashud	$2,(r3,r2)
@@ -6363,7 +6363,7 @@ l000064D2:
 	movd	$5D6E,(r9,r8)
 	stord	(r9,r8),0x40(r11,r10)
 	stord	(r1,r0),0x50(r11,r10)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 	br	00006274
 
 l000064E6:
@@ -6379,7 +6379,7 @@ l000064F2:
 	storw	r0,4(r9,r8)
 	loadd	(0x00FC68),r0
 	stord	(r1,r0),0x18(r11,r10)
-	movd	(r3,r2),(r11,r10)
+	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00006134
 	movw	$FFFC,r7
 	br	00006418
@@ -6982,7 +6982,7 @@ l0000650C:
 fn000089C4 proc
 	push	$2,ra
 	push	$3,r7
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	cmpd	$0,(r3,r2)
 	beq	00008A28
 
@@ -7004,7 +7004,7 @@ l000089DE:
 l000089E6:
 	loadd	(r5,r4),(r3,r2)
 	movw	$FFFE,r0
-	cmpd	(r9,r8),(r3,r2)
+	cmpd	(r3,r2),(r9,r8)
 	beq	000089F4
 
 l000089F0:
@@ -7024,7 +7024,7 @@ l00008A00:
 	beq	00008A1C
 
 l00008A0C:
-	movd	(r5,r4),(r1,r0)
+	movd	(r1,r0),(r5,r4)
 	jal	ra,(r7,r6)
 	loadd	0x48(r9,r8),(r7,r6)
 	loadd	0x38(r9,r8),(r5,r4)
@@ -7336,7 +7336,7 @@ fn00009C04 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-8,sp
-	movd	r12,(r3,r2)
+	movd	(r3,r2),r12
 	loadw	2(r5,r4),r13
 	cmpw	$0,r13
 	beq	0000A01C
@@ -7355,7 +7355,7 @@ l00009C20:
 	movxw	r6,(r7,r6)
 	ashud	$2,(r7,r6)
 	addd	$10,(r7,r6)
-	movd	(r9,r8),(r5,r4)
+	movd	(r5,r4),(r9,r8)
 	addd	(r7,r6),(r9,r8)
 	stord	(r9,r8),4(sp)
 	movw	$0,r11
@@ -7364,13 +7364,13 @@ l00009C20:
 	br	00009D92
 
 l00009C3A:
-	cmpw	r9,r10
+	cmpw	r10,r9
 	beq	0000A008
 
 l00009C40:
 	loadw	0x2414(r12),r7
 	loadw	0x2410(r12),r3
-	cmpw	r1,r2
+	cmpw	r2,r1
 	ble	00009DA8
 
 l00009C4E:
@@ -7385,7 +7385,7 @@ l00009C4E:
 	movw	$10,r0
 	subw	r1,r0
 	storw	r5,0x2410(r12)
-	cmpw	r0,r7
+	cmpw	r7,r0
 	ble	00009CAA
 
 l00009C70:
@@ -7429,7 +7429,7 @@ l00009CB4:
 	movw	$10,r0
 	subw	r2,r0
 	storw	r3,0x2410(r12)
-	cmpw	r0,r1
+	cmpw	r1,r0
 	ble	00009D0A
 
 l00009CD0:
@@ -7473,7 +7473,7 @@ l00009D14:
 	movw	$10,r0
 	subw	r6,r0
 	storw	r11,0x2410(r12)
-	cmpw	r0,r1
+	cmpw	r1,r0
 	ble	00009FFE
 
 l00009D32:
@@ -7509,7 +7509,7 @@ l00009D70:
 	beq	00009ECE
 
 l00009D78:
-	cmpw	r3,r10
+	cmpw	r10,r3
 	beq	00009F66
 
 l00009D7E:
@@ -7522,7 +7522,7 @@ l00009D7E:
 l00009D88:
 	addd	$4,ra
 	loadd	4(sp),(r9,r8)
-	cmpd	(r9,r8),ra
+	cmpd	ra,(r9,r8)
 	beq	00009EE4
 
 l00009D92:
@@ -7530,7 +7530,7 @@ l00009D92:
 	storw	r9,(sp)
 	movw	$1,r1
 	addw	r11,r1
-	cmpw	r1,r0
+	cmpw	r0,r1
 	bgt	00009C3A
 
 l00009DA0:
@@ -7542,7 +7542,7 @@ l00009DA8:
 	beq	00009EEA
 
 l00009DAE:
-	cmpw	r10,r6
+	cmpw	r6,r10
 	beq	00009E1A
 
 l00009DB2:
@@ -7557,7 +7557,7 @@ l00009DB2:
 	movw	$10,r0
 	subw	r4,r0
 	storw	r3,0x2410(r12)
-	cmpw	r0,r7
+	cmpw	r7,r0
 	ble	0000A010
 
 l00009DD6:
@@ -7599,7 +7599,7 @@ l00009E1A:
 	movw	$10,r2
 	subw	r0,r2
 	storw	r9,0x2410(r12)
-	cmpw	r2,r7
+	cmpw	r7,r2
 	ble	00009F7E
 
 l00009E38:
@@ -7676,7 +7676,7 @@ l00009ECE:
 	movw	r3,r10
 	addd	$4,ra
 	loadd	4(sp),(r9,r8)
-	cmpd	(r9,r8),ra
+	cmpd	ra,(r9,r8)
 	bne	00009D92
 
 l00009EE4:
@@ -7697,7 +7697,7 @@ l00009EEE:
 	movw	$10,r0
 	subw	r8,r0
 	storw	r9,0x2410(r12)
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bgt	0000A086
 
 l00009F0C:
@@ -7765,7 +7765,7 @@ l00009F88:
 	movw	$10,r0
 	subw	r8,r0
 	storw	r3,0x2410(r12)
-	cmpw	r0,r7
+	cmpw	r7,r0
 	bgt	0000A026
 
 l00009FA4:
@@ -7920,8 +7920,8 @@ fn0000A0E8 proc
 	addd	$-4,sp
 	movd	$1A,(r1,r0)
 	addd	sp,(r1,r0)
-	movd	r12,(r3,r2)
-	movd	r13,(r5,r4)
+	movd	(r3,r2),r12
+	movd	(r5,r4),r13
 	loadd	(r1,r0),(r3,r2)
 	stord	(r3,r2),(sp)
 	loadw	0x2414(r12),r6
@@ -7936,7 +7936,7 @@ l0000A10E:
 l0000A110:
 	movzw	r11,(r1,r0)
 	loadd	0x23F0(r12),(r3,r2)
-	movd	(r5,r4),(r1,r0)
+	movd	(r1,r0),(r5,r4)
 	addd	(r1,r0),(r5,r4)
 	addd	(r5,r4),(r3,r2)
 	loadw	(r3,r2),ra
@@ -7960,7 +7960,7 @@ l0000A12C:
 	movw	$10,r0
 	subw	r2,r0
 	storw	r10,0x2410(r12)
-	cmpw	r0,r6
+	cmpw	r6,r0
 	ble	0000A3BC
 
 l0000A14E:
@@ -7995,7 +7995,7 @@ l0000A182:
 	addw	r1,r6
 	storw	r6,0x2414(r12)
 	loadw	0x23EC(r12),r7
-	cmpw	r7,r11
+	cmpw	r11,r7
 	blo	0000A110
 
 l0000A19A:
@@ -8008,7 +8008,7 @@ l0000A19A:
 	movw	r2,r3
 	subw	r1,r3
 	storw	r10,0x2410(r12)
-	cmpw	r3,r6
+	cmpw	r6,r3
 	bgt	0000A3D6
 
 l0000A1BA:
@@ -8037,7 +8037,7 @@ l0000A1C6:
 	movw	$10,r2
 	subw	r0,r2
 	storw	r10,0x2410(r12)
-	cmpw	r2,r6
+	cmpw	r6,r2
 	ble	0000A3B2
 
 l0000A1F8:
@@ -8088,7 +8088,7 @@ l0000A24A:
 	movw	$10,r0
 	subw	r2,r0
 	storw	r10,0x2410(r12)
-	cmpw	r0,r6
+	cmpw	r6,r0
 	ble	0000A3CC
 
 l0000A268:
@@ -8134,7 +8134,7 @@ l0000A2B4:
 
 l0000A2BE:
 	movzw	ra,ra
-	movd	(r3,r2),ra
+	movd	ra,(r3,r2)
 	ashud	$2,(r3,r2)
 	loadd	(sp),(r1,r0)
 	addd	(r1,r0),(r3,r2)
@@ -8146,7 +8146,7 @@ l0000A2BE:
 	movw	$10,r0
 	subw	r1,r0
 	storw	r10,0x2410(r12)
-	cmpw	r0,r6
+	cmpw	r6,r0
 	ble	0000A396
 
 l0000A2E0:
@@ -8196,7 +8196,7 @@ l0000A330:
 	movw	$10,r0
 	subw	r2,r0
 	storw	r10,0x2410(r12)
-	cmpw	r0,r6
+	cmpw	r6,r0
 	ble	0000A382
 
 l0000A34C:
@@ -8230,7 +8230,7 @@ l0000A382:
 
 l0000A388:
 	loadw	0x23EC(r12),r7
-	cmpw	r7,r11
+	cmpw	r11,r7
 	blo	0000A110
 
 l0000A392:
@@ -8243,7 +8243,7 @@ l0000A396:
 
 l0000A39E:
 	movw	r9,r0
-	lshw	$-9,r0
+	lshw	$-7,r0
 	addw	$100,r0
 	movzw	r0,(r1,r0)
 	addd	$62510,(r1,r0)
@@ -8259,7 +8259,7 @@ l0000A3B2:
 l0000A3BC:
 	addw	r2,r6
 	storw	r6,0x2414(r12)
-	cmpw	r7,r11
+	cmpw	r11,r7
 	blo	0000A110
 
 l0000A3C8:
@@ -8308,7 +8308,7 @@ fn0000A416 proc
 	push	$2,r13,ra
 	push	$7,r7
 	addd	$-84,sp
-	movd	r12,(r3,r2)
+	movd	(r3,r2),r12
 	stord	(r5,r4),0xA0(sp)
 	loadd	(r5,r4),r13
 	loadd	8(r5,r4),(r1,r0)
@@ -8322,7 +8322,7 @@ fn0000A416 proc
 	bge	0000AEF8
 
 l0000A442:
-	movd	(r3,r2),r13
+	movd	r13,(r3,r2)
 	movd	$FB2,(r5,r4)
 	addd	r12,(r5,r4)
 	movw	$0,r11
@@ -8348,7 +8348,7 @@ l0000A460:
 	addw	r6,r0
 	addd	$4,(r3,r2)
 	addd	$1,(r5,r4)
-	cmpw	r7,r0
+	cmpw	r0,r7
 	beq	0000ADD2
 
 l0000A482:
@@ -8366,7 +8366,7 @@ l0000A48C:
 	addw	r6,r0
 	addd	$4,(r3,r2)
 	addd	$1,(r5,r4)
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bne	0000A484
 
 l0000A49A:
@@ -8394,7 +8394,7 @@ l0000A4B8:
 	bge	0000A864
 
 l0000A4C2:
-	movd	(r5,r4),r13
+	movd	r13,(r5,r4)
 	movw	r8,r2
 	movw	r9,r3
 	movw	r10,r0
@@ -8414,7 +8414,7 @@ l0000A4CA:
 	loadw	2(r3,r2),r2
 	movzw	r2,(r3,r2)
 	loadd	0x2400(r12),(r1,r0)
-	subd	(r1,r0),(r3,r2)
+	subd	(r3,r2),(r1,r0)
 	stord	(r1,r0),0x2400(r12)
 	addd	$2,(r7,r6)
 	cmpw	$1,r11
@@ -8427,11 +8427,11 @@ l0000A504:
 	loadd	0xA0(sp),(r2,r1)
 	storw	r7,4(r2,r1)
 	movw	r11,r10
-	ashuw	$-15,r10
+	ashuw	$-1,r10
 	storw	r10,0x70(sp)
 	movxw	r10,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-	movd	(r3,r2),r12
+	movd	r12,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x60(sp)
 	addw	r10,r10
@@ -8444,12 +8444,12 @@ l0000A528:
 	storw	r4,0x68(sp)
 	loadw	0x50(sp),r10
 	loadw	0x78(sp),r5
-	cmpw	r10,r5
+	cmpw	r5,r10
 	blt	0000AE38
 
 l0000A542:
 	movxw	r4,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	r13,(r3,r2)
 	loadw	(r3,r2),ra
@@ -8467,12 +8467,12 @@ l0000A560:
 	addd	r12,(r5,r4)
 	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	r13,(r1,r0)
 	loadw	(r1,r0),r1
 	movw	r10,r0
-	cmpw	r10,ra
+	cmpw	ra,r10
 	ble	0000A59C
 
 l0000A57A:
@@ -8480,26 +8480,26 @@ l0000A57A:
 	loadw	0x166C(r5,r4),r7
 	storw	r7,0x40(sp)
 	movxw	r7,(r7,r6)
-	movd	(r5,r4),(r7,r6)
+	movd	(r7,r6),(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
-	cmpw	r4,r1
+	cmpw	r1,r4
 	bhi	0000A91C
 
 l0000A594:
-	cmpw	r4,r1
+	cmpw	r1,r4
 	beq	0000A876
 
 l0000A59A:
 	movw	r10,r0
 
 l0000A59C:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	bhi	0000A5BC
 
 l0000A5A0:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	beq	0000A8F0
 
 l0000A5A6:
@@ -8511,7 +8511,7 @@ l0000A5A6:
 	movw	r0,r10
 	addw	r0,r10
 	movw	r0,r11
-	cmpw	r10,ra
+	cmpw	ra,r10
 	bge	0000A560
 
 l0000A5BC:
@@ -8539,28 +8539,28 @@ l0000A5F2:
 	storw	r0,0x74(sp)
 	movxw	r11,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-	movd	(r3,r2),r12
+	movd	r12,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x78(sp)
 	loadw	0x58(sp),r3
 	movxw	r3,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	ashud	$2,(r3,r2)
-	movd	(r5,r4),r13
+	movd	r13,(r5,r4)
 	addd	(r3,r2),(r5,r4)
 	stord	(r5,r4),0x60(sp)
-	movd	(r6,r5),r12
+	movd	r12,(r6,r5)
 	addd	(r1,r0),(r6,r5)
 	stord	(r6,r5),0x50(sp)
 	loadw	0x74(sp),r0
 	addw	$FFFF,r0
 	movxw	r0,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-	movd	(r7,r6),r12
+	movd	r12,(r7,r6)
 	addd	(r1,r0),(r7,r6)
 	stord	(r7,r6),0x88(sp)
 	addd	$-2,(r1,r0)
-	movd	(r3,r2),r12
+	movd	r12,(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x90(sp)
 	movw	r11,r9
@@ -8576,7 +8576,7 @@ l0000A5F2:
 
 l0000A664:
 	movxw	r5,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	r13,(r3,r2)
 	loadw	(r3,r2),ra
@@ -8596,12 +8596,12 @@ l0000A684:
 	addd	r12,(r5,r4)
 	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	r13,(r1,r0)
 	loadw	(r1,r0),r1
 	movw	r10,r0
-	cmpw	ra,r10
+	cmpw	r10,ra
 	bge	0000A6C0
 
 l0000A69E:
@@ -8609,26 +8609,26 @@ l0000A69E:
 	loadw	0x166C(r5,r4),r7
 	storw	r7,0x40(sp)
 	movxw	r7,(r7,r6)
-	movd	(r5,r4),(r7,r6)
+	movd	(r7,r6),(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
-	cmpw	r4,r1
+	cmpw	r1,r4
 	bhi	0000A912
 
 l0000A6B8:
-	cmpw	r4,r1
+	cmpw	r1,r4
 	beq	0000A890
 
 l0000A6BE:
 	movw	r10,r0
 
 l0000A6C0:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	bhi	0000A6E0
 
 l0000A6C4:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	beq	0000A8D8
 
 l0000A6CA:
@@ -8640,7 +8640,7 @@ l0000A6CA:
 	movw	r0,r10
 	addw	r0,r10
 	movw	r0,r11
-	cmpw	ra,r10
+	cmpw	r10,ra
 	ble	0000A684
 
 l0000A6E0:
@@ -8664,16 +8664,16 @@ l0000A6E6:
 	loadd	0x90(sp),(r11,r10)
 	storw	r2,0x1668(r11,r10)
 	movxw	r0,(r1,r0)
-	movd	(r7,r6),(r1,r0)
+	movd	(r1,r0),(r7,r6)
 	ashud	$2,(r7,r6)
 	addd	r13,(r7,r6)
 	movxw	r2,(r3,r2)
-	movd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	r13,(r5,r4)
 	stord	r13,0x80(sp)
 	loadd	0x60(sp),ra
-	subd	ra,r13
+	subd	r13,ra
 	loadw	(r7,r6),r8
 	loadw	(r5,r4),r10
 	addw	r10,r8
@@ -8683,7 +8683,7 @@ l0000A6E6:
 	loadb	0xFB2(r1,r0),r0
 	addd	r12,(r3,r2)
 	loadb	0xFB2(r3,r2),r1
-	cmpb	r0,r1
+	cmpb	r1,r0
 	bhi	0000A926
 
 l0000A754:
@@ -8715,12 +8715,12 @@ l0000A78A:
 	addd	r12,(r5,r4)
 	loadw	0x1668(r5,r4),r8
 	movxw	r8,(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	r13,(r1,r0)
 	loadw	(r1,r0),r1
 	movw	r10,r0
-	cmpw	ra,r10
+	cmpw	r10,ra
 	bge	0000A7C4
 
 l0000A7A4:
@@ -8728,26 +8728,26 @@ l0000A7A4:
 	loadw	0x166C(r5,r4),r6
 	storw	r6,0x40(sp)
 	movxw	r6,(r7,r6)
-	movd	(r5,r4),(r7,r6)
+	movd	(r7,r6),(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	r13,(r5,r4)
 	loadw	(r5,r4),r4
-	cmpw	r4,r1
+	cmpw	r1,r4
 	bhi	0000A908
 
 l0000A7BE:
-	cmpw	r4,r1
+	cmpw	r1,r4
 	beq	0000A8AA
 
 l0000A7C2:
 	movw	r10,r0
 
 l0000A7C4:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	bhi	0000A7E2
 
 l0000A7C8:
-	cmpw	r9,r1
+	cmpw	r1,r9
 	beq	0000A8C0
 
 l0000A7CC:
@@ -8759,7 +8759,7 @@ l0000A7CC:
 	movw	r0,r10
 	addw	r0,r10
 	movw	r0,r11
-	cmpw	ra,r10
+	cmpw	r10,ra
 	ble	0000A78A
 
 l0000A7E2:
@@ -8809,7 +8809,7 @@ l0000A864:
 	storw	r0,0x98(sp)
 	movxw	r0,(r3,r2)
 	ashud	$2,(r3,r2)
-	movd	(r5,r4),r13
+	movd	r13,(r5,r4)
 	addd	(r3,r2),(r5,r4)
 	br	0000A4CA
 
@@ -8818,7 +8818,7 @@ l0000A876:
 	addd	r12,(r3,r2)
 	loadb	0xFB2(r7,r6),r4
 	loadb	0xFB2(r3,r2),r2
-	cmpb	r4,r2
+	cmpb	r2,r4
 	blo	0000A59A
 
 l0000A888:
@@ -8830,7 +8830,7 @@ l0000A890:
 	addd	r12,(r3,r2)
 	loadb	0xFB2(r7,r6),r4
 	loadb	0xFB2(r3,r2),r2
-	cmpb	r4,r2
+	cmpb	r2,r4
 	blo	0000A6BE
 
 l0000A8A2:
@@ -8842,7 +8842,7 @@ l0000A8AA:
 	addd	r12,(r3,r2)
 	loadb	0xFB2(r7,r6),r4
 	loadb	0xFB2(r3,r2),r2
-	cmpb	r4,r2
+	cmpb	r2,r4
 	blo	0000A7C2
 
 l0000A8BA:
@@ -8855,7 +8855,7 @@ l0000A8C0:
 	loadd	0x50(sp),(r6,r5)
 	loadb	0xFB2(r6,r5),r4
 	loadb	0xFB2(r3,r2),r1
-	cmpb	r4,r1
+	cmpb	r1,r4
 	blo	0000A7CC
 
 l0000A8D6:
@@ -8867,7 +8867,7 @@ l0000A8D8:
 	loadd	0x68(sp),(r6,r5)
 	loadb	(r6,r5),r4
 	loadb	0xFB2(r3,r2),r1
-	cmpb	r4,r1
+	cmpb	r1,r4
 	blo	0000A6CA
 
 l0000A8EC:
@@ -8879,7 +8879,7 @@ l0000A8F0:
 	loadd	0x48(sp),(r6,r5)
 	loadb	(r6,r5),r4
 	loadb	0xFB2(r3,r2),r1
-	cmpb	r4,r1
+	cmpb	r1,r4
 	blo	0000A5A6
 
 l0000A904:
@@ -8967,7 +8967,7 @@ l0000A9D4:
 	loadw	0x48(sp),r10
 	movxw	r10,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-	movd	(r11,r10),r12
+	movd	r12,(r11,r10)
 	addd	(r1,r0),(r11,r10)
 	loadw	0x70(sp),r0
 	storw	r0,0x58(sp)
@@ -8976,7 +8976,7 @@ l0000A9D4:
 l0000A9EC:
 	loadw	0x1668(r11,r10),r0
 	movxw	r0,(r3,r2)
-	movd	(r5,r4),(r3,r2)
+	movd	(r3,r2),(r5,r4)
 	ashud	$2,(r5,r4)
 	stord	(r5,r4),0x40(sp)
 	loadd	0x60(sp),(r5,r4)
@@ -8990,7 +8990,7 @@ l0000A9EC:
 	loadw	2(r3,r2),r2
 	addw	$1,r2
 	loadw	0x68(sp),r7
-	cmpw	r7,r2
+	cmpw	r2,r7
 	ble	0000AA28
 
 l0000AA1C:
@@ -9002,7 +9002,7 @@ l0000AA1C:
 l0000AA28:
 	storw	r2,2(r5,r4)
 	loadw	0x50(sp),r7
-	cmpw	r7,r0
+	cmpw	r0,r7
 	bgt	0000AA94
 
 l0000AA32:
@@ -9014,7 +9014,7 @@ l0000AA32:
 	storw	r1,0x1628(r7,r6)
 	loadw	0x70(sp),r7
 	loadw	0x78(sp),r1
-	cmpw	r1,r0
+	cmpw	r0,r1
 	blt	0000AA5E
 
 l0000AA4E:
@@ -9030,7 +9030,7 @@ l0000AA5E:
 	loadw	(r5,r4),r8
 	movzw	r8,(r9,r8)
 	movzw	r2,(r3,r2)
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000D358
 	loadd	0x23F8(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
@@ -9041,7 +9041,7 @@ l0000AA5E:
 	loadw	2(r1,r0),r2
 	addw	r7,r2
 	movzw	r2,(r3,r2)
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	bal	ra,fn0000D358
 	loadd	0x2400(r12),(r3,r2)
 	addd	(r3,r2),(r1,r0)
@@ -9069,7 +9069,7 @@ l0000AAB4:
 	addw	r7,r11
 	storw	r11,0x70(sp)
 	movxw	r7,(r9,r8)
-	movd	(r5,r4),(r9,r8)
+	movd	(r9,r8),(r5,r4)
 	addd	(r9,r8),(r5,r4)
 	addd	r12,(r5,r4)
 	movw	$FFFE,r6
@@ -9219,7 +9219,7 @@ l0000ABDE:
 	bge	0000AC22
 
 l0000AC0E:
-	movd	ra,(r9,r8)
+	movd	(r9,r8),ra
 	loadw	0x1624(r5,r4),r2
 	cmpw	$0,r2
 	beq	0000AAF8
@@ -9251,7 +9251,7 @@ l0000AC46:
 	addw	$FFFF,r7
 	movxw	r7,(r1,r0)
 	addd	(r1,r0),(r1,r0)
-	movd	(r11,r10),r12
+	movd	r12,(r11,r10)
 	addd	(r1,r0),(r11,r10)
 	loadw	0x58(sp),r0
 	storw	r0,0x70(sp)
@@ -9260,7 +9260,7 @@ l0000AC5C:
 	storw	r7,0x48(sp)
 	loadw	0x1668(r11,r10),r0
 	loadw	0x50(sp),r1
-	cmpw	r1,r0
+	cmpw	r0,r1
 	bgt	0000ADC0
 
 l0000AC6E:
@@ -9270,13 +9270,13 @@ l0000AC6E:
 	addd	(r1,r0),(r9,r8)
 	loadw	2(r9,r8),r0
 	loadw	0x70(sp),r2
-	cmpw	r0,r2
+	cmpw	r2,r0
 	beq	0000ACA4
 
 l0000AC82:
 	movzw	r0,(r1,r0)
 	loadd	0x58(sp),(r3,r2)
-	subd	(r3,r2),(r1,r0)
+	subd	(r1,r0),(r3,r2)
 	loadw	(r9,r8),r4
 	movzw	r4,(r5,r4)
 	bal	ra,fn0000D358
@@ -9396,7 +9396,7 @@ l0000AD9A:
 	movw	$1,r0
 	andw	r2,r0
 	orw	r3,r0
-	lshw	$-15,r2
+	lshw	$-1,r2
 	movw	r0,r3
 	addw	r0,r3
 	addw	$FFFF,r1
@@ -9409,7 +9409,7 @@ l0000ADAC:
 
 l0000ADB2:
 	addd	$4,(r7,r6)
-	cmpd	(r5,r4),(r7,r6)
+	cmpd	(r7,r6),(r5,r4)
 	bne	0000AD84
 
 l0000ADB8:
@@ -9449,7 +9449,7 @@ l0000ADF0:
 	bge	0000AE2C
 
 l0000ADF4:
-	movd	(r7,r6),r13
+	movd	r13,(r7,r6)
 	movw	r4,r0
 
 l0000ADF8:
@@ -9515,7 +9515,7 @@ l0000AE66:
 	loadw	2(r3,r2),r4
 	addw	$1,r4
 	loadw	0x40(sp),r2
-	cmpw	r2,r4
+	cmpw	r4,r2
 	ble	0000AE90
 
 l0000AE84:
@@ -9527,7 +9527,7 @@ l0000AE84:
 l0000AE90:
 	storw	r4,2(r1,r0)
 	loadw	0x50(sp),r6
-	cmpw	r6,r5
+	cmpw	r5,r6
 	bgt	0000AED6
 
 l0000AE9A:
@@ -9538,7 +9538,7 @@ l0000AE9A:
 	addw	$1,r6
 	storw	r6,0x1628(r3,r2)
 	loadw	0x78(sp),r2
-	cmpw	r2,r5
+	cmpw	r5,r2
 	blt	0000AEC2
 
 l0000AEB2:
@@ -9607,26 +9607,26 @@ fn0000AF06 proc
 	stord	(r1,r0),0x1620(r3,r2)
 	storw	$0,0x1208(r3,r2)
 	storw	$0,0x120A(r3,r2)
-	movd	ra,(r3,r2)
+	movd	(r3,r2),ra
 	movd	$478,(r5,r4)
 	addd	(r3,r2),(r5,r4)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 
 l0000AF50:
 	storw	$0,0x6A(r1,r0)
 	addd	$4,(r1,r0)
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	bne	0000AF50
 
 l0000AF5A:
 	movd	$78,(r5,r4)
 	addd	(r3,r2),(r5,r4)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 
 l0000AF62:
 	storw	$0,0x95E(r1,r0)
 	addd	$4,(r1,r0)
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	bne	0000AF62
 
 l0000AF6C:
@@ -9636,7 +9636,7 @@ l0000AF6C:
 l0000AF72:
 	storw	$0,0xA52(ra)
 	addd	$4,ra
-	cmpd	(r1,r0),ra
+	cmpd	ra,(r1,r0)
 	bne	0000AF72
 
 l0000AF7C:
@@ -9659,7 +9659,7 @@ fn0000AF94 proc
 	push	$7,r7
 	movd	$12,r12
 	addd	sp,r12
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	loadd	(r12),(r11,r10)
 	loadw	0x2414(r3,r2),r12
 	loadd	0x14(r3,r2),(r3,r2)
@@ -10004,7 +10004,7 @@ fn0000B218 proc
 	addd	$-16,sp
 	movd	$26,r12
 	addd	sp,r12
-	movd	(r9,r8),(r3,r2)
+	movd	(r3,r2),(r9,r8)
 	storw	r4,(sp)
 	movw	r5,r7
 	loadd	(r12),r12
@@ -10030,11 +10030,11 @@ l0000B24A:
 l0000B256:
 	movd	$AF0,(r5,r4)
 	addd	(r9,r8),(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000A416
 	movd	$AFC,(r5,r4)
 	addd	(r9,r8),(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000A416
 	loadw	0x15E8(r9,r8),r6
 	movd	$6A,r13
@@ -10063,7 +10063,7 @@ l0000B298:
 	addd	(r9,r8),(r3,r2)
 	ashud	$2,(r11,r10)
 	addd	$10,(r11,r10)
-	movd	ra,r13
+	movd	r13,ra
 	addd	(r11,r10),ra
 	movw	$0,r6
 	movw	$3,r11
@@ -10073,15 +10073,15 @@ l0000B298:
 l0000B2B0:
 	loadw	(r3,r2),r7
 	addw	$1,r6
-	cmpw	r6,r1
+	cmpw	r1,r6
 	ble	0000B722
 
 l0000B2BA:
-	cmpw	r7,r0
+	cmpw	r0,r7
 	beq	0000B2E8
 
 l0000B2BE:
-	cmpw	r6,r5
+	cmpw	r5,r6
 	ble	0000B722
 
 l0000B2C4:
@@ -10097,7 +10097,7 @@ l0000B2D4:
 	beq	0000B6E4
 
 l0000B2DA:
-	cmpw	r7,r0
+	cmpw	r0,r7
 	beq	0000B76C
 
 l0000B2E0:
@@ -10109,7 +10109,7 @@ l0000B2E0:
 l0000B2E8:
 	addd	$4,(r3,r2)
 	movw	r7,r0
-	cmpd	(r3,r2),ra
+	cmpd	ra,(r3,r2)
 	bne	0000B2B0
 
 l0000B2F0:
@@ -10154,15 +10154,15 @@ l0000B320:
 l0000B336:
 	loadw	(r3,r2),r7
 	addw	$1,r6
-	cmpw	r1,r6
+	cmpw	r6,r1
 	bge	0000B6FC
 
 l0000B340:
-	cmpw	r7,r0
+	cmpw	r0,r7
 	beq	0000B36E
 
 l0000B344:
-	cmpw	r5,r6
+	cmpw	r6,r5
 	bge	0000B6FC
 
 l0000B34A:
@@ -10178,7 +10178,7 @@ l0000B35A:
 	beq	0000B6F0
 
 l0000B360:
-	cmpw	r7,r0
+	cmpw	r0,r7
 	beq	0000B778
 
 l0000B366:
@@ -10190,7 +10190,7 @@ l0000B366:
 l0000B36E:
 	addd	$4,(r3,r2)
 	movw	r7,r0
-	cmpd	ra,(r3,r2)
+	cmpd	(r3,r2),ra
 	bne	0000B336
 
 l0000B376:
@@ -10199,7 +10199,7 @@ l0000B376:
 l0000B378:
 	movd	$B08,(r5,r4)
 	addd	(r9,r8),(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000A416
 	loadw	0x1520(r9,r8),r0
 	cmpw	$0,r0
@@ -10290,20 +10290,20 @@ l0000B42C:
 	addd	(r1,r0),(r3,r2)
 	stord	(r3,r2),0x23F8(r9,r8)
 	addd	$10,(r3,r2)
-	lshd	$-29,(r3,r2)
+	lshd	$-3,(r3,r2)
 	loadd	0x2400(r9,r8),ra
 	addd	$10,ra
-	lshd	$-29,ra
-	movd	(r1,r0),(r3,r2)
-	cmpd	(r3,r2),ra
+	lshd	$-3,ra
+	movd	(r3,r2),(r1,r0)
+	cmpd	ra,(r3,r2)
 	bhs	0000B44C
 
 l0000B44A:
-	movd	(r1,r0),ra
+	movd	ra,(r1,r0)
 
 l0000B44C:
 	loadd	8(sp),(r5,r4)
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	sls	r0
 	cmpw	$0,r0
 	beq	0000B45E
@@ -10323,7 +10323,7 @@ l0000B45E:
 	bne	0000B87E
 
 l0000B474:
-	cmpd	(r3,r2),ra
+	cmpd	ra,(r3,r2)
 	sls	r0
 	cmpw	$0,r0
 	bne	0000B87E
@@ -10527,7 +10527,7 @@ l0000B604:
 	storw	r4,0x2414(r9,r8)
 	addw	$1,r6
 	loadw	2(sp),r2
-	cmpw	r2,r6
+	cmpw	r6,r2
 	bgt	0000B67A
 
 l0000B64A:
@@ -10552,23 +10552,23 @@ l0000B66C:
 	storw	r4,0x2414(r9,r8)
 	addw	$1,r6
 	loadw	2(sp),r3
-	cmpw	r3,r6
+	cmpw	r6,r3
 	ble	0000B64A
 
 l0000B67A:
 	loadw	8(sp),r12
 	movw	ra,r6
-	movd	(r5,r4),r13
-	movd	(r3,r2),(r9,r8)
+	movd	r13,(r5,r4)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00009C04
 	movw	r12,r6
 	loadd	0xC(sp),(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn00009C04
 	loadd	0xC(sp),(r5,r4)
 	push	$2,r4
-	movd	(r5,r4),r13
-	movd	(r3,r2),(r9,r8)
+	movd	r13,(r5,r4)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000A0E8
 	addd	$4,sp
 	br	0000B7C4
@@ -10579,17 +10579,17 @@ l0000B6A2:
 	br	0000B286
 
 l0000B6AC:
-	movd	r13,(r3,r2)
+	movd	(r3,r2),r13
 	movd	$80,(r11,r10)
 	addd	(r3,r2),(r11,r10)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	movd	$F3FFC07F,(r3,r2)
 	br	0000B6C8
 
 l0000B6BE:
-	lshd	$-31,(r3,r2)
+	lshd	$-1,(r3,r2)
 	addd	$4,(r1,r0)
-	cmpd	(r11,r10),(r1,r0)
+	cmpd	(r1,r0),(r11,r10)
 	beq	0000B912
 
 l0000B6C8:
@@ -10629,7 +10629,7 @@ l0000B6FC:
 	beq	0000B75A
 
 l0000B700:
-	cmpw	r4,r0
+	cmpw	r0,r4
 	beq	0000B714
 
 l0000B704:
@@ -10651,7 +10651,7 @@ l0000B722:
 	beq	0000B748
 
 l0000B726:
-	cmpw	r4,r0
+	cmpw	r0,r4
 	beq	0000B73A
 
 l0000B72A:
@@ -10718,7 +10718,7 @@ l0000B7A0:
 	movd	$5,(r1,r0)
 	addd	r12,(r1,r0)
 	loadd	8(sp),ra
-	cmpd	(r1,r0),ra
+	cmpd	ra,(r1,r0)
 	sls	r0
 	cmpw	$0,r0
 	beq	0000B876
@@ -10733,31 +10733,31 @@ l0000B7B4:
 	loadw	8(sp),r6
 	loadw	4(sp),r4
 	movw	r7,r5
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000AF94
 	addd	$4,sp
 
 l0000B7C4:
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	movd	$478,(r5,r4)
 	addd	(r9,r8),(r5,r4)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 
 l0000B7CE:
 	storw	$0,0x6A(r1,r0)
 	addd	$4,(r1,r0)
-	cmpd	(r5,r4),(r1,r0)
+	cmpd	(r1,r0),(r5,r4)
 	bne	0000B7CE
 
 l0000B7D8:
 	movd	$78,(r5,r4)
 	addd	(r9,r8),(r5,r4)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 
 l0000B7E0:
 	storw	$0,0x95E(r1,r0)
 	addd	$4,(r1,r0)
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	bne	0000B7E0
 
 l0000B7EA:
@@ -10767,7 +10767,7 @@ l0000B7EA:
 l0000B7F0:
 	storw	$0,0xA52(r3,r2)
 	addd	$4,(r3,r2)
-	cmpd	(r1,r0),(r3,r2)
+	cmpd	(r3,r2),(r1,r0)
 	bne	0000B7F0
 
 l0000B7FA:
@@ -10878,7 +10878,7 @@ l0000B8CC:
 	movd	$F62E,(r1,r0)
 	push	$2,r0
 	movd	$F6A6,(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000A0E8
 	addd	$4,sp
 	br	0000B7C4
@@ -10931,7 +10931,7 @@ l0000B932:
 
 l0000B93A:
 	addd	$4,r13
-	cmpd	r13,(r3,r2)
+	cmpd	(r3,r2),r13
 	beq	0000B6DC
 
 l0000B942:
@@ -10952,7 +10952,7 @@ l0000B954:
 l0000B95C:
 	movxw	r3,(r1,r0)
 	addd	$1,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	addd	(r1,r0),(r3,r2)
 	addd	(r3,r2),(r1,r0)
 	br	0000B42C
@@ -11059,10 +11059,10 @@ fn0000BAE0 proc
 	addd	$-56,sp
 	movd	$4E,(r1,r0)
 	addd	sp,(r1,r0)
-	movd	r12,(r5,r4)
+	movd	(r5,r4),r12
 	loadd	(r1,r0),(r9,r8)
 	stord	(r9,r8),0x50(sp)
-	movd	r13,(r3,r2)
+	movd	(r3,r2),r13
 	lshd	$-16,r13
 	stord	r13,0x40(sp)
 	movd	$FFFF,(r9,r8)
@@ -11099,7 +11099,7 @@ l0000BB3E:
 	loadb	(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	addd	(r9,r8),(r3,r2)
 	stord	(r3,r2),(sp)
 	loadb	1(r12),r0
@@ -11203,14 +11203,14 @@ l0000BB3E:
 	stord	r13,0x40(sp)
 	addd	$16,r12
 	loadd	0x48(sp),(r1,r0)
-	cmpd	r12,(r1,r0)
+	cmpd	(r1,r0),r12
 	bne	0000BB3E
 
 l0000BC32:
 	movd	$FFF1,(r5,r4)
-	movd	(r3,r2),(r9,r8)
+	movd	(r9,r8),(r3,r2)
 	bal	ra,fn0000D4EC
-	movd	(r9,r8),(r1,r0)
+	movd	(r1,r0),(r9,r8)
 	movd	$FFF1,(r5,r4)
 	loadd	0x40(sp),(r3,r2)
 	bal	ra,fn0000D4EC
@@ -11277,7 +11277,7 @@ l0000BCB8:
 	beq	0000BDDA
 
 l0000BCD2:
-	movd	(r3,r2),(r2,r1)
+	movd	(r2,r1),(r3,r2)
 	loadb	2(r5,r4),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -11451,13 +11451,13 @@ l0000BE12:
 l0000BE18:
 	loadd	0x58(sp),(r1,r0)
 	addd	$-16,(r1,r0)
-	movd	(r3,r2),(r1,r0)
-	lshd	$-28,(r3,r2)
-	stord	(r3,r2),0x60(sp)
 	movd	(r1,r0),(r3,r2)
+	lshd	$-4,(r3,r2)
+	stord	(r3,r2),0x60(sp)
+	movd	(r3,r2),(r1,r0)
 	addd	$1,(r1,r0)
 	ashud	$4,(r1,r0)
-	movd	(r4,r3),r12
+	movd	r12,(r4,r3)
 	addd	(r1,r0),(r4,r3)
 	stord	(r4,r3),0x50(sp)
 
@@ -11495,7 +11495,7 @@ l0000BE36:
 	loadb	7(r12),r8
 	movzb	r8,(r1,r0)
 	movzw	r0,(r1,r0)
-	movd	(r9,r8),(r1,r0)
+	movd	(r1,r0),(r9,r8)
 	addd	r13,(r9,r8)
 	stord	(r9,r8),4(sp)
 	loadb	8(r12),r8
@@ -11576,7 +11576,7 @@ l0000BE36:
 	stord	r13,0x40(sp)
 	addd	$16,r12
 	loadd	0x50(sp),(r1,r0)
-	cmpd	r12,(r1,r0)
+	cmpd	(r1,r0),r12
 	bne	0000BE36
 
 l0000BF3C:
@@ -11584,7 +11584,7 @@ l0000BF3C:
 	addd	$-17,(r3,r2)
 	loadd	0x60(sp),(r1,r0)
 	ashud	$4,(r1,r0)
-	subd	(r3,r2),(r1,r0)
+	subd	(r1,r0),(r3,r2)
 	loadd	0x58(sp),(r1,r0)
 	andd	$F,(r1,r0)
 	cmpd	$0,(r1,r0)
@@ -11604,7 +11604,7 @@ l0000BF5E:
 	beq	0000C098
 
 l0000BF7A:
-	movd	(r5,r4),(r1,r0)
+	movd	(r1,r0),(r5,r4)
 	loadb	1(r12),r0
 	movzb	r0,(r1,r0)
 	movzw	r0,(r1,r0)
@@ -11840,7 +11840,7 @@ fn0000C224 proc
 	movd	$16,r12
 	addd	sp,r12
 	loadd	(r12),r12
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	xord	$FFFFFFFF,(r1,r0)
 	cmpd	$0,r12
 	beq	0000C27E
@@ -11856,7 +11856,7 @@ l0000C246:
 	br	0000C258
 
 l0000C24C:
-	movd	(r5,r4),r13
+	movd	r13,(r5,r4)
 	movd	$3,(r3,r2)
 	andd	r13,(r3,r2)
 	cmpd	$0,(r3,r2)
@@ -11873,7 +11873,7 @@ l0000C258:
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r3,r2),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	xord	(r3,r2),(r1,r0)
 	addd	$-1,r12
 	cmpd	$0,r12
@@ -11885,14 +11885,14 @@ l0000C27E:
 	popret	$2,r13,ra
 
 l0000C288:
-	movd	r13,(r5,r4)
+	movd	(r5,r4),r13
 
 l0000C28A:
 	cmpd	$1F,r12
 	bhs	0000C55C
 
 l0000C292:
-	movd	(r11,r10),r13
+	movd	r13,(r11,r10)
 	movd	$FFE0,(r3,r2)
 	addd	r12,(r3,r2)
 	andd	$FFFFFFE0,(r3,r2)
@@ -11903,7 +11903,7 @@ l0000C292:
 l0000C2AA:
 	loadd	(r11,r10),(r3,r2)
 	xord	(r3,r2),(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$256,(r3,r2)
@@ -11915,8 +11915,8 @@ l0000C2AA:
 	addd	$768,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
-	movd	(r5,r4),(r1,r0)
-	lshd	$-8,(r5,r4)
+	movd	(r1,r0),(r5,r4)
+	lshd	$-24,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	ra,(r5,r4)
 	loadd	(r3,r2),(r3,r2)
@@ -11924,7 +11924,7 @@ l0000C2AA:
 	xord	(r3,r2),(r5,r4)
 	loadd	4(r11,r10),(r3,r2)
 	xord	(r5,r4),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -11932,7 +11932,7 @@ l0000C2AA:
 	loadd	(r1,r0),(r5,r4)
 	xord	(r5,r4),(r3,r2)
 	xord	(r3,r2),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -11944,8 +11944,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r3,r2),(r7,r6)
-	lshd	$-8,(r3,r2)
+	movd	(r7,r6),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r1,r0),(r1,r0)
@@ -11953,7 +11953,7 @@ l0000C2AA:
 	xord	(r1,r0),(r3,r2)
 	loadd	8(r11,r10),(r1,r0)
 	xord	(r3,r2),(r1,r0)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	andd	$FF,(r7,r6)
 	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
@@ -11961,7 +11961,7 @@ l0000C2AA:
 	loadd	(r7,r6),(r3,r2)
 	xord	(r3,r2),(r1,r0)
 	xord	(r1,r0),(r9,r8)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -11973,8 +11973,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r3,r2),(r9,r8)
-	lshd	$-8,(r3,r2)
+	movd	(r9,r8),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r1,r0),(r1,r0)
@@ -11982,7 +11982,7 @@ l0000C2AA:
 	xord	(r5,r4),(r1,r0)
 	loadd	0xC(r11,r10),(r5,r4)
 	xord	(r1,r0),(r5,r4)
-	lshd	$-24,(r9,r8)
+	lshd	$-8,(r9,r8)
 	andd	$FF,(r9,r8)
 	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
@@ -11990,7 +11990,7 @@ l0000C2AA:
 	loadd	(r9,r8),(r1,r0)
 	xord	(r1,r0),(r5,r4)
 	xord	(r5,r4),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -12002,8 +12002,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r5,r4),(r7,r6)
-	lshd	$-8,(r5,r4)
+	movd	(r7,r6),(r5,r4)
+	lshd	$-24,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	ra,(r5,r4)
 	loadd	(r1,r0),(r1,r0)
@@ -12011,7 +12011,7 @@ l0000C2AA:
 	xord	(r3,r2),(r1,r0)
 	loadd	0x10(r11,r10),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	andd	$FF,(r7,r6)
 	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
@@ -12019,7 +12019,7 @@ l0000C2AA:
 	loadd	(r7,r6),(r1,r0)
 	xord	(r1,r0),(r3,r2)
 	xord	(r3,r2),(r9,r8)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -12031,8 +12031,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r3,r2),(r9,r8)
-	lshd	$-8,(r3,r2)
+	movd	(r9,r8),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	ra,(r3,r2)
 	loadd	(r1,r0),(r1,r0)
@@ -12040,7 +12040,7 @@ l0000C2AA:
 	xord	(r5,r4),(r1,r0)
 	loadd	0x14(r11,r10),(r5,r4)
 	xord	(r1,r0),(r5,r4)
-	lshd	$-24,(r9,r8)
+	lshd	$-8,(r9,r8)
 	andd	$FF,(r9,r8)
 	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
@@ -12048,7 +12048,7 @@ l0000C2AA:
 	loadd	(r9,r8),(r1,r0)
 	xord	(r1,r0),(r5,r4)
 	xord	(r5,r4),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -12060,8 +12060,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r5,r4),(r7,r6)
-	lshd	$-8,(r5,r4)
+	movd	(r7,r6),(r5,r4)
+	lshd	$-24,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	ra,(r5,r4)
 	loadd	(r1,r0),(r1,r0)
@@ -12069,7 +12069,7 @@ l0000C2AA:
 	xord	(r3,r2),(r1,r0)
 	loadd	0x18(r11,r10),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	lshd	$-24,(r7,r6)
+	lshd	$-8,(r7,r6)
 	andd	$FF,(r7,r6)
 	addd	$512,(r7,r6)
 	ashud	$2,(r7,r6)
@@ -12077,7 +12077,7 @@ l0000C2AA:
 	loadd	(r7,r6),(r1,r0)
 	xord	(r1,r0),(r3,r2)
 	xord	(r3,r2),(r9,r8)
-	movd	(r1,r0),(r9,r8)
+	movd	(r9,r8),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -12089,8 +12089,8 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r5,r4),(r9,r8)
-	lshd	$-8,(r5,r4)
+	movd	(r9,r8),(r5,r4)
+	lshd	$-24,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	ra,(r5,r4)
 	loadd	(r1,r0),(r1,r0)
@@ -12098,7 +12098,7 @@ l0000C2AA:
 	xord	(r3,r2),(r1,r0)
 	loadd	0x38(r11,r10),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	lshd	$-24,(r9,r8)
+	lshd	$-8,(r9,r8)
 	andd	$FF,(r9,r8)
 	addd	$512,(r9,r8)
 	ashud	$2,(r9,r8)
@@ -12106,7 +12106,7 @@ l0000C2AA:
 	loadd	(r9,r8),(r1,r0)
 	xord	(r1,r0),(r3,r2)
 	xord	(r7,r6),(r3,r2)
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
@@ -12118,14 +12118,14 @@ l0000C2AA:
 	addd	$768,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	ra,(r1,r0)
-	movd	(r5,r4),(r3,r2)
-	lshd	$-8,(r5,r4)
+	movd	(r3,r2),(r5,r4)
+	lshd	$-24,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	ra,(r5,r4)
 	loadd	(r1,r0),(r1,r0)
 	loadd	(r5,r4),(r5,r4)
 	xord	(r5,r4),(r1,r0)
-	lshd	$-24,(r3,r2)
+	lshd	$-8,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$512,(r3,r2)
 	ashud	$2,(r3,r2)
@@ -12134,7 +12134,7 @@ l0000C2AA:
 	xord	(r5,r4),(r1,r0)
 	xord	(r7,r6),(r1,r0)
 	addd	$32,(r11,r10)
-	cmpd	r13,(r11,r10)
+	cmpd	(r11,r10),r13
 	bne	0000C2AA
 
 l0000C556:
@@ -12148,15 +12148,15 @@ l0000C562:
 	loadd	(r13),(r3,r2)
 	xord	(r3,r2),(r1,r0)
 	movd	$FC78,(r11,r10)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
-	movd	(r3,r2),(r1,r0)
-	lshd	$-8,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
@@ -12167,7 +12167,7 @@ l0000C562:
 	loadd	(r3,r2),(r3,r2)
 	loadd	(r5,r4),(r7,r6)
 	xord	(r7,r6),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12183,15 +12183,15 @@ l0000C562:
 l0000C5C6:
 	loadd	4(r13),(r3,r2)
 	xord	(r3,r2),(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
-	movd	(r3,r2),(r1,r0)
-	lshd	$-8,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
@@ -12202,7 +12202,7 @@ l0000C5C6:
 	loadd	(r3,r2),(r3,r2)
 	loadd	(r5,r4),(r7,r6)
 	xord	(r7,r6),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12218,15 +12218,15 @@ l0000C5C6:
 l0000C626:
 	loadd	8(r13),(r3,r2)
 	xord	(r3,r2),(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$256,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
-	movd	(r3,r2),(r1,r0)
-	lshd	$-8,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	movd	$FF,(r5,r4)
@@ -12237,7 +12237,7 @@ l0000C626:
 	loadd	(r3,r2),(r3,r2)
 	loadd	(r5,r4),(r7,r6)
 	xord	(r7,r6),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12253,15 +12253,15 @@ l0000C626:
 l0000C686:
 	loadd	0xC(r13),(r7,r6)
 	xord	(r1,r0),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-8,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-24,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
@@ -12272,8 +12272,8 @@ l0000C686:
 	loadd	(r1,r0),(r1,r0)
 	loadd	(r5,r4),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-24,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12289,15 +12289,15 @@ l0000C686:
 l0000C6E8:
 	loadd	0x10(r13),(r7,r6)
 	xord	(r1,r0),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-8,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-24,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
@@ -12308,8 +12308,8 @@ l0000C6E8:
 	loadd	(r1,r0),(r1,r0)
 	loadd	(r5,r4),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-24,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12325,15 +12325,15 @@ l0000C6E8:
 l0000C748:
 	loadd	0x14(r13),(r7,r6)
 	xord	(r1,r0),(r7,r6)
-	movd	(r1,r0),(r7,r6)
+	movd	(r7,r6),(r1,r0)
 	lshd	$-16,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$256,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	loadd	(r1,r0),(r9,r8)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-8,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-24,(r1,r0)
 	ashud	$2,(r1,r0)
 	addd	(r11,r10),(r1,r0)
 	movd	$FF,(r5,r4)
@@ -12344,8 +12344,8 @@ l0000C748:
 	loadd	(r1,r0),(r1,r0)
 	loadd	(r5,r4),(r3,r2)
 	xord	(r1,r0),(r3,r2)
-	movd	(r1,r0),(r7,r6)
-	lshd	$-24,(r1,r0)
+	movd	(r7,r6),(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12361,7 +12361,7 @@ l0000C748:
 l0000C7A8:
 	loadd	0x18(r13),(r3,r2)
 	xord	(r3,r2),(r1,r0)
-	movd	(r3,r2),(r1,r0)
+	movd	(r1,r0),(r3,r2)
 	lshd	$-16,(r3,r2)
 	andd	$FF,(r3,r2)
 	addd	$256,(r3,r2)
@@ -12373,14 +12373,14 @@ l0000C7A8:
 	addd	$768,(r5,r4)
 	ashud	$2,(r5,r4)
 	addd	(r11,r10),(r5,r4)
-	movd	(r3,r2),(r1,r0)
-	lshd	$-8,(r3,r2)
+	movd	(r1,r0),(r3,r2)
+	lshd	$-24,(r3,r2)
 	ashud	$2,(r3,r2)
 	addd	(r11,r10),(r3,r2)
 	loadd	(r5,r4),(r7,r6)
 	loadd	(r3,r2),(r3,r2)
 	xord	(r7,r6),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	andd	$FF,(r1,r0)
 	addd	$512,(r1,r0)
 	ashud	$2,(r1,r0)
@@ -12409,7 +12409,7 @@ l0000C812:
 	ashud	$2,(r3,r2)
 	addd	(r5,r4),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	xord	(r9,r8),(r1,r0)
 	cmpd	$1,r12
 	beq	0000C27E
@@ -12423,7 +12423,7 @@ l0000C838:
 	ashud	$2,(r3,r2)
 	addd	(r5,r4),(r3,r2)
 	loadd	(r3,r2),(r9,r8)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	xord	(r9,r8),(r1,r0)
 	cmpd	$2,r12
 	beq	0000C27E
@@ -12437,7 +12437,7 @@ l0000C85A:
 	ashud	$2,(r3,r2)
 	addd	(r3,r2),(r5,r4)
 	loadd	(r5,r4),(r3,r2)
-	lshd	$-24,(r1,r0)
+	lshd	$-8,(r1,r0)
 	xord	(r3,r2),(r1,r0)
 	xord	$FFFFFFFF,(r1,r0)
 	pop	$7,r7
@@ -12691,7 +12691,7 @@ fn0000D358 proc
 fn0000D464 proc
 	movw	r2,r4
 	movw	$1,r1
-	cmpw	r3,r2
+	cmpw	r2,r3
 	bls	0000D488
 
 l0000D46C:
@@ -12701,7 +12701,7 @@ l0000D46C:
 l0000D470:
 	addw	r3,r3
 	addw	r1,r1
-	cmpw	r2,r3
+	cmpw	r3,r2
 	slo	r0
 	cmpw	$0,r0
 	beq	0000D49C
@@ -12720,7 +12720,7 @@ l0000D488:
 	movw	$0,r0
 
 l0000D48A:
-	cmpw	r4,r3
+	cmpw	r3,r4
 	bhi	0000D492
 
 l0000D48E:
@@ -12728,8 +12728,8 @@ l0000D48E:
 	orw	r1,r0
 
 l0000D492:
-	lshw	$-15,r1
-	lshw	$-15,r3
+	lshw	$-1,r1
+	lshw	$-1,r3
 	cmpw	$0,r1
 	bne	0000D48A
 
@@ -12750,7 +12750,7 @@ l0000D4A0:
 fn0000D4A4 proc
 	movw	r2,r0
 	movw	$1,r1
-	cmpw	r3,r2
+	cmpw	r2,r3
 	bls	0000D4C8
 
 l0000D4AC:
@@ -12760,7 +12760,7 @@ l0000D4AC:
 l0000D4B0:
 	addw	r3,r3
 	addw	r1,r1
-	cmpw	r2,r3
+	cmpw	r3,r2
 	slo	r4
 	cmpw	$0,r4
 	beq	0000D4D8
@@ -12776,15 +12776,15 @@ l0000D4C4:
 	ble	0000D4B0
 
 l0000D4C8:
-	cmpw	r0,r3
+	cmpw	r3,r0
 	bhi	0000D4CE
 
 l0000D4CC:
 	subw	r3,r0
 
 l0000D4CE:
-	lshw	$-15,r1
-	lshw	$-15,r3
+	lshw	$-1,r1
+	lshw	$-1,r3
 	cmpw	$0,r1
 	bne	0000D4C8
 
@@ -12821,7 +12821,7 @@ fn0000D4F8 proc
 	push	$2,ra
 	push	$2,r8
 	movd	$1,(r9,r8)
-	cmpd	(r5,r4),(r3,r2)
+	cmpd	(r3,r2),(r5,r4)
 	bls	0000D522
 
 l0000D502:
@@ -12831,7 +12831,7 @@ l0000D502:
 l0000D506:
 	addd	(r5,r4),(r5,r4)
 	addd	(r9,r8),(r9,r8)
-	cmpd	(r3,r2),(r5,r4)
+	cmpd	(r5,r4),(r3,r2)
 	slo	r0
 	cmpw	$0,r0
 	beq	0000D544
@@ -12849,20 +12849,20 @@ l0000D51E:
 	ble	0000D506
 
 l0000D522:
-	movd	(r1,r0),(r3,r2)
+	movd	(r3,r2),(r1,r0)
 	movd	$0,ra
 
 l0000D526:
-	cmpd	(r1,r0),(r5,r4)
+	cmpd	(r5,r4),(r1,r0)
 	bhi	0000D532
 
 l0000D52A:
-	subd	(r1,r0),(r5,r4)
+	subd	(r5,r4),(r1,r0)
 	ord	(r9,r8),ra
 
 l0000D532:
-	lshd	$-31,(r9,r8)
-	lshd	$-31,(r5,r4)
+	lshd	$-1,(r9,r8)
+	lshd	$-1,(r5,r4)
 	cmpd	$0,(r9,r8)
 	bne	0000D526
 
@@ -12871,7 +12871,7 @@ l0000D53A:
 	bne	0000D540
 
 l0000D53E:
-	movd	(r1,r0),ra
+	movd	ra,(r1,r0)
 
 l0000D540:
 	pop	$2,r8
@@ -12882,8 +12882,8 @@ l0000D544:
 	bne	0000D522
 
 l0000D548:
-	movd	ra,(r9,r8)
-	movd	(r1,r0),(r3,r2)
+	movd	(r9,r8),ra
+	movd	(r3,r2),(r1,r0)
 	br	0000D53A
 0000D54E                                           00 00               ..
 0000D550 1D 01 FD 55 00 2C DF 55 1D 02 EE 0A 1D 01 BF 60 ...U.,.U.......`
@@ -12896,7 +12896,7 @@ l0000D548:
 fn0000D578 proc
 	push	$2,r13
 	addd	$-8,sp
-	movd	r13,sp
+	movd	sp,r13
 	movd	$C,(r1,r0)
 	addd	r13,(r1,r0)
 	loadd	(r1,r0),(r3,r2)
@@ -12904,7 +12904,7 @@ fn0000D578 proc
 	loadd	4(r1,r0),(r1,r0)
 	stord	(r1,r0),4(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$8,sp
 	pop	$2,r13
 	jr	ra
@@ -12977,10 +12977,10 @@ fn0000D578 proc
 ;;     000003C4 (in fn03B0)
 fn0000D974 proc
 	addd	$-4,sp
-	movd	r13,sp
+	movd	sp,r13
 	storw	r2,(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$4,sp
 	jr	ra
 0000D984             1D 01 BF 60 F8 FF FD 55 2D E0 4D E2     ...`...U-.M.
@@ -13003,10 +13003,10 @@ fn0000D974 proc
 fn0000D99C proc
 	push	$2,r13
 	addd	$-4,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$4,sp
 	pop	$2,r13
 	jr	ra
@@ -13019,10 +13019,10 @@ fn0000D99C proc
 fn0000D9B0 proc
 	push	$2,r13
 	addd	$-4,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$4,sp
 	pop	$2,r13
 	jr	ra
@@ -13083,7 +13083,7 @@ fn0000D9B0 proc
 fn0000DB24 proc
 	push	$2,r13
 	addd	$-12,sp
-	movd	r13,sp
+	movd	sp,r13
 	movd	$10,(r1,r0)
 	addd	r13,(r1,r0)
 	stord	(r3,r2),(r13)
@@ -13091,7 +13091,7 @@ fn0000DB24 proc
 	loadd	(r1,r0),(r1,r0)
 	stord	(r1,r0),8(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$12,sp
 	pop	$2,r13
 	jr	ra
@@ -13108,12 +13108,12 @@ fn0000DB24 proc
 fn0000DB44 proc
 	push	$2,r13
 	addd	$-12,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	storw	r4,4(r13)
 	stord	(r6,r5),8(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$12,sp
 	pop	$2,r13
 	jr	ra
@@ -13128,10 +13128,10 @@ fn0000DB44 proc
 fn0000DB74 proc
 	push	$2,r13
 	addd	$-4,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$4,sp
 	pop	$2,r13
 	jr	ra
@@ -13149,11 +13149,11 @@ fn0000DB74 proc
 fn0000DBF0 proc
 	push	$2,r13
 	addd	$-8,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	stord	(r5,r4),4(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$8,sp
 	pop	$2,r13
 	jr	ra
@@ -13167,11 +13167,11 @@ fn0000DBF0 proc
 fn0000DC28 proc
 	push	$2,r13
 	addd	$-8,sp
-	movd	r13,sp
+	movd	sp,r13
 	stord	(r3,r2),(r13)
 	stord	(r5,r4),4(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$8,sp
 	pop	$2,r13
 	jr	ra
@@ -13209,12 +13209,12 @@ fn0000DC28 proc
 fn0000DD90 proc
 	push	$2,r13
 	addd	$-12,sp
-	movd	r13,sp
+	movd	sp,r13
 	storw	r2,(r13)
 	stord	(r4,r3),4(r13)
 	stord	(r6,r5),8(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$12,sp
 	pop	$2,r13
 	jr	ra
@@ -13231,10 +13231,10 @@ fn0000DD90 proc
 fn0000DDF0 proc
 	push	$2,r13
 	addd	$-4,sp
-	movd	r13,sp
+	movd	sp,r13
 	storw	r2,(r13)
 	nop
-	movd	sp,r13
+	movd	r13,sp
 	addd	$4,sp
 	pop	$2,r13
 	jr	ra
