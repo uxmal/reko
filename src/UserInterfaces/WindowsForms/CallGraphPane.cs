@@ -20,7 +20,7 @@
 
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
-using Reko.Gui;
+using Reko.Gui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

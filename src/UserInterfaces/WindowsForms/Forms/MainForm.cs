@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using Keys = System.Windows.Forms.Keys;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {

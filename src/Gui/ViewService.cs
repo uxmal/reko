@@ -20,6 +20,7 @@
 
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using System;
 
 namespace Reko.Gui

@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Services;
 using System;
 using System.Collections;

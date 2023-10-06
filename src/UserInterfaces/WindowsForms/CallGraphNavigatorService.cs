@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Graphs;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Tools;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;

@@ -19,14 +19,13 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     public class SelectedAddressService : ISelectedAddressService
     {
@@ -57,7 +56,7 @@ namespace Reko.Gui
                     if (value is not null && addressRange == value)
                         return;
                 }
-                this.addressRange = value;
+                addressRange = value;
                 SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -77,7 +76,7 @@ namespace Reko.Gui
                     if (value == proc)
                         return;
                 }
-                this.proc = value;
+                proc = value;
                 SelectedProcedureChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -89,7 +88,7 @@ namespace Reko.Gui
             {
                 if (value == program)
                     return;
-                this.program = value;
+                program = value;
                 SelectedProgramChanged?.Invoke(this, EventArgs.Empty);
             }
         }

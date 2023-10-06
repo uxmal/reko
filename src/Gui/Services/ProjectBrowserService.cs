@@ -23,7 +23,6 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
@@ -31,7 +30,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
     /// Interactor class used to display the decompiler project as a tree view
@@ -52,7 +51,7 @@ namespace Reko.Gui
             : base(treeView, services)
         {
             this.tabPage = tabPage;
-            this.tree = treeView;
+            tree = treeView;
         }
 
         public Program? CurrentProgram => FindCurrentProgram();
@@ -79,7 +78,7 @@ namespace Reko.Gui
                 tree.Nodes.Clear();
                 tree.Nodes.Add(tree.CreateNode("(No project loaded)"));
             }
-            else 
+            else
             {
                 AddComponents(project.Programs);
                 AddComponents(project.MetadataFiles);
@@ -153,15 +152,16 @@ namespace Reko.Gui
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            var des = base.GetSelectedDesigner();
+            var des = GetSelectedDesigner();
             if (des != null)
                 return des.QueryStatus(cmdId, status, text);
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch ((CmdIds)cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
-                case CmdIds.CreateUserSegment: status.Status = 
+                case CmdIds.CreateUserSegment:
+                    status.Status =
                         IsSegmentSelected()
                             ? MenuStatus.Visible | MenuStatus.Enabled
                             : MenuStatus.Visible;
@@ -181,7 +181,7 @@ namespace Reko.Gui
             }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch ((CmdIds)cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: tree.CollapseAll(); return true;
                 case CmdIds.CreateUserSegment: await CreateUserSegment(); return true;

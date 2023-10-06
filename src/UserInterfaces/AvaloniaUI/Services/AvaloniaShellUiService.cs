@@ -25,6 +25,7 @@ using MsBox.Avalonia.Enums;
 using Reko.Core.Diagnostics;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Docks;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;

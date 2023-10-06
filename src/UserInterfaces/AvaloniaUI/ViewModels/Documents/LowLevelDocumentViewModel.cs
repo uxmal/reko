@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Documents;
 using System;
 using System.Collections.Generic;

@@ -25,6 +25,7 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Loading;
 using Reko.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;

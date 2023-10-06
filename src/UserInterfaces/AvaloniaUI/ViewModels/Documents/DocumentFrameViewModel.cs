@@ -19,7 +19,7 @@
 #endregion
 
 using Dock.Model.ReactiveUI.Controls;
-using Reko.Gui;
+using Reko.Gui.ViewModels;
 using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents

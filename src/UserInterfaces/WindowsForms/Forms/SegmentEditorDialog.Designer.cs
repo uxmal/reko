@@ -28,297 +28,320 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SegmentEditorDialog));
-            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel3 = new Reko.Gui.TextViewing.EmptyEditorModel();
-            this.txtFileOffset = new System.Windows.Forms.TextBox();
-            this.memView = new Reko.UserInterfaces.WindowsForms.Controls.MemoryControl();
-            this.txtLength = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblFileData = new System.Windows.Forms.Label();
-            this.ddlArch = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtLoadAddress = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.dasmView = new Reko.UserInterfaces.WindowsForms.Controls.DisassemblyControl();
-            this.lblDisassembly = new System.Windows.Forms.Label();
-            this.txtSegmentName = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkExecute = new System.Windows.Forms.CheckBox();
-            this.chkWrite = new System.Windows.Forms.CheckBox();
-            this.chkRead = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
+            System.Text.ASCIIEncoding asciiEncodingSealed1 = new System.Text.ASCIIEncoding();
+            System.Text.DecoderReplacementFallback decoderReplacementFallback1 = new System.Text.DecoderReplacementFallback();
+            System.Text.EncoderReplacementFallback encoderReplacementFallback1 = new System.Text.EncoderReplacementFallback();
+            Gui.TextViewing.EmptyEditorModel emptyEditorModel1 = new Gui.TextViewing.EmptyEditorModel();
+            txtFileOffset = new System.Windows.Forms.TextBox();
+            memView = new Controls.MemoryControl();
+            txtLength = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            lblFileData = new System.Windows.Forms.Label();
+            ddlArch = new System.Windows.Forms.ComboBox();
+            label4 = new System.Windows.Forms.Label();
+            txtLoadAddress = new System.Windows.Forms.TextBox();
+            label5 = new System.Windows.Forms.Label();
+            dasmView = new Controls.DisassemblyControl();
+            lblDisassembly = new System.Windows.Forms.Label();
+            txtSegmentName = new System.Windows.Forms.TextBox();
+            label7 = new System.Windows.Forms.Label();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            btnOK = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            chkExecute = new System.Windows.Forms.CheckBox();
+            chkWrite = new System.Windows.Forms.CheckBox();
+            chkRead = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize) splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            groupBox1.SuspendLayout();
+            SuspendLayout();
             // 
             // txtFileOffset
             // 
-            this.txtFileOffset.Location = new System.Drawing.Point(161, 22);
-            this.txtFileOffset.Name = "txtFileOffset";
-            this.txtFileOffset.Size = new System.Drawing.Size(136, 20);
-            this.txtFileOffset.TabIndex = 2;
+            txtFileOffset.Location = new System.Drawing.Point(188, 25);
+            txtFileOffset.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtFileOffset.Name = "txtFileOffset";
+            txtFileOffset.Size = new System.Drawing.Size(158, 23);
+            txtFileOffset.TabIndex = 2;
             // 
             // memView
             // 
-            this.memView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.memView.Architecture = null;
-            this.memView.BytesPerRow = ((uint)(16u));
-            this.memView.Encoding = ((System.Text.Encoding)(resources.GetObject("memView.Encoding")));
-            this.memView.ImageMap = null;
-            this.memView.Procedures = null;
-            this.memView.Location = new System.Drawing.Point(0, 14);
-            this.memView.Name = "memView";
-            this.memView.SegmentMap = null;
-            this.memView.SelectedAddress = null;
-            this.memView.Services = null;
-            this.memView.Size = new System.Drawing.Size(433, 200);
-            this.memView.TabIndex = 7;
-            this.memView.TopAddress = null;
-            this.memView.WordSize = ((uint)(1u));
+            memView.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            memView.Architecture = null;
+            memView.BytesPerRow =  16U;
+            asciiEncodingSealed1.DecoderFallback = decoderReplacementFallback1;
+            asciiEncodingSealed1.EncoderFallback = encoderReplacementFallback1;
+            memView.Encoding = asciiEncodingSealed1;
+            memView.ImageMap = null;
+            memView.IsTextSideSelected = false;
+            memView.Location = new System.Drawing.Point(0, 16);
+            memView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            memView.Name = "memView";
+            memView.Procedures = null;
+            memView.SegmentMap = null;
+            memView.SelectedAddress = null;
+            memView.Services = null;
+            memView.Size = new System.Drawing.Size(504, 231);
+            memView.TabIndex = 7;
+            memView.TopAddress = null;
+            memView.WordSize =  1U;
             // 
             // txtLength
             // 
-            this.txtLength.Location = new System.Drawing.Point(303, 22);
-            this.txtLength.Name = "txtLength";
-            this.txtLength.Size = new System.Drawing.Size(139, 20);
-            this.txtLength.TabIndex = 3;
-            this.txtLength.Text = "8";
+            txtLength.Location = new System.Drawing.Point(354, 25);
+            txtLength.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtLength.Name = "txtLength";
+            txtLength.Size = new System.Drawing.Size(162, 23);
+            txtLength.TabIndex = 3;
+            txtLength.Text = "8";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(158, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "File &Offset";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(184, 7);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(60, 15);
+            label1.TabIndex = 4;
+            label1.Text = "File &Offset";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(300, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "&Length";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(350, 7);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(44, 15);
+            label2.TabIndex = 5;
+            label2.Text = "&Length";
             // 
             // lblFileData
             // 
-            this.lblFileData.AutoSize = true;
-            this.lblFileData.Location = new System.Drawing.Point(3, 0);
-            this.lblFileData.Name = "lblFileData";
-            this.lblFileData.Size = new System.Drawing.Size(146, 13);
-            this.lblFileData.TabIndex = 6;
-            this.lblFileData.Text = "Preview data att offset 00420";
+            lblFileData.AutoSize = true;
+            lblFileData.Location = new System.Drawing.Point(4, 0);
+            lblFileData.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblFileData.Name = "lblFileData";
+            lblFileData.Size = new System.Drawing.Size(157, 15);
+            lblFileData.TabIndex = 6;
+            lblFileData.Text = "Preview data att offset 00420";
             // 
             // ddlArch
             // 
-            this.ddlArch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlArch.FormattingEnabled = true;
-            this.ddlArch.Location = new System.Drawing.Point(161, 66);
-            this.ddlArch.Name = "ddlArch";
-            this.ddlArch.Size = new System.Drawing.Size(136, 21);
-            this.ddlArch.TabIndex = 5;
+            ddlArch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            ddlArch.FormattingEnabled = true;
+            ddlArch.Location = new System.Drawing.Point(188, 76);
+            ddlArch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ddlArch.Name = "ddlArch";
+            ddlArch.Size = new System.Drawing.Size(158, 23);
+            ddlArch.TabIndex = 5;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(158, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "&Processor architecture";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(184, 58);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(124, 15);
+            label4.TabIndex = 8;
+            label4.Text = "&Processor architecture";
             // 
             // txtLoadAddress
             // 
-            this.txtLoadAddress.Location = new System.Drawing.Point(13, 66);
-            this.txtLoadAddress.Name = "txtLoadAddress";
-            this.txtLoadAddress.Size = new System.Drawing.Size(138, 20);
-            this.txtLoadAddress.TabIndex = 4;
+            txtLoadAddress.Location = new System.Drawing.Point(15, 76);
+            txtLoadAddress.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtLoadAddress.Name = "txtLoadAddress";
+            txtLoadAddress.Size = new System.Drawing.Size(160, 23);
+            txtLoadAddress.TabIndex = 4;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Load &address:";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(12, 58);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(79, 15);
+            label5.TabIndex = 10;
+            label5.Text = "Load &address:";
             // 
             // dasmView
             // 
-            this.dasmView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dasmView.Location = new System.Drawing.Point(3, 14);
-            this.dasmView.Model = emptyEditorModel3;
-            this.dasmView.Name = "dasmView";
-            this.dasmView.Program = null;
-            this.dasmView.SelectedObject = null;
-            this.dasmView.Services = null;
-            this.dasmView.ShowPcRelative = false;
-            this.dasmView.Size = new System.Drawing.Size(413, 200);
-            this.dasmView.StartAddress = null;
-            this.dasmView.StyleClass = null;
-            this.dasmView.TabIndex = 8;
-            this.dasmView.TopAddress = null;
+            dasmView.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            dasmView.Architecture = null;
+            dasmView.Location = new System.Drawing.Point(4, 16);
+            dasmView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dasmView.Model = emptyEditorModel1;
+            dasmView.Name = "dasmView";
+            dasmView.Program = null;
+            dasmView.SelectedObject = null;
+            dasmView.Services = null;
+            dasmView.ShowPcRelative = false;
+            dasmView.Size = new System.Drawing.Size(483, 231);
+            dasmView.StartAddress = null;
+            dasmView.StyleClass = null;
+            dasmView.TabIndex = 8;
+            dasmView.TopAddress = null;
             // 
             // lblDisassembly
             // 
-            this.lblDisassembly.AutoSize = true;
-            this.lblDisassembly.Location = new System.Drawing.Point(3, 0);
-            this.lblDisassembly.Name = "lblDisassembly";
-            this.lblDisassembly.Size = new System.Drawing.Size(145, 13);
-            this.lblDisassembly.TabIndex = 12;
-            this.lblDisassembly.Text = "Disassembly (X86 real mode):";
+            lblDisassembly.AutoSize = true;
+            lblDisassembly.Location = new System.Drawing.Point(4, 0);
+            lblDisassembly.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblDisassembly.Name = "lblDisassembly";
+            lblDisassembly.Size = new System.Drawing.Size(161, 15);
+            lblDisassembly.TabIndex = 12;
+            lblDisassembly.Text = "Disassembly (X86 real mode):";
             // 
             // txtSegmentName
             // 
-            this.txtSegmentName.Location = new System.Drawing.Point(12, 22);
-            this.txtSegmentName.Name = "txtSegmentName";
-            this.txtSegmentName.Size = new System.Drawing.Size(139, 20);
-            this.txtSegmentName.TabIndex = 1;
+            txtSegmentName.Location = new System.Drawing.Point(14, 25);
+            txtSegmentName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtSegmentName.Name = "txtSegmentName";
+            txtSegmentName.Size = new System.Drawing.Size(162, 23);
+            txtSegmentName.TabIndex = 1;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Segment &name";
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(10, 7);
+            label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(87, 15);
+            label7.TabIndex = 14;
+            label7.Text = "Segment &name";
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(12, 192);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            splitContainer1.Location = new System.Drawing.Point(14, 222);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.memView);
-            this.splitContainer1.Panel1.Controls.Add(this.lblFileData);
+            splitContainer1.Panel1.Controls.Add(memView);
+            splitContainer1.Panel1.Controls.Add(lblFileData);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.dasmView);
-            this.splitContainer1.Panel2.Controls.Add(this.lblDisassembly);
-            this.splitContainer1.Size = new System.Drawing.Size(856, 214);
-            this.splitContainer1.SplitterDistance = 436;
-            this.splitContainer1.TabIndex = 15;
+            splitContainer1.Panel2.Controls.Add(dasmView);
+            splitContainer1.Panel2.Controls.Add(lblDisassembly);
+            splitContainer1.Size = new System.Drawing.Size(999, 247);
+            splitContainer1.SplitterDistance = 508;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 15;
             // 
             // btnOK
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(712, 412);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 9;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            btnOK.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnOK.Location = new System.Drawing.Point(831, 475);
+            btnOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new System.Drawing.Size(88, 27);
+            btnOK.TabIndex = 9;
+            btnOK.Text = "OK";
+            btnOK.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(793, 412);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 10;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCancel.Location = new System.Drawing.Point(925, 475);
+            btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(88, 27);
+            btnCancel.TabIndex = 10;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.chkExecute);
-            this.groupBox1.Controls.Add(this.chkWrite);
-            this.groupBox1.Controls.Add(this.chkRead);
-            this.groupBox1.Location = new System.Drawing.Point(12, 93);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(285, 93);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Access mode";
+            groupBox1.Controls.Add(chkExecute);
+            groupBox1.Controls.Add(chkWrite);
+            groupBox1.Controls.Add(chkRead);
+            groupBox1.Location = new System.Drawing.Point(14, 107);
+            groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox1.Size = new System.Drawing.Size(332, 107);
+            groupBox1.TabIndex = 6;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Access mode";
             // 
             // chkExecute
             // 
-            this.chkExecute.AutoSize = true;
-            this.chkExecute.Location = new System.Drawing.Point(6, 66);
-            this.chkExecute.Name = "chkExecute";
-            this.chkExecute.Size = new System.Drawing.Size(65, 17);
-            this.chkExecute.TabIndex = 2;
-            this.chkExecute.Text = "E&xecute";
-            this.chkExecute.UseVisualStyleBackColor = true;
+            chkExecute.AutoSize = true;
+            chkExecute.Location = new System.Drawing.Point(7, 76);
+            chkExecute.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkExecute.Name = "chkExecute";
+            chkExecute.Size = new System.Drawing.Size(67, 19);
+            chkExecute.TabIndex = 2;
+            chkExecute.Text = "E&xecute";
+            chkExecute.UseVisualStyleBackColor = true;
             // 
             // chkWrite
             // 
-            this.chkWrite.AutoSize = true;
-            this.chkWrite.Location = new System.Drawing.Point(6, 43);
-            this.chkWrite.Name = "chkWrite";
-            this.chkWrite.Size = new System.Drawing.Size(51, 17);
-            this.chkWrite.TabIndex = 1;
-            this.chkWrite.Text = "&Write";
-            this.chkWrite.UseVisualStyleBackColor = true;
+            chkWrite.AutoSize = true;
+            chkWrite.Location = new System.Drawing.Point(7, 50);
+            chkWrite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkWrite.Name = "chkWrite";
+            chkWrite.Size = new System.Drawing.Size(54, 19);
+            chkWrite.TabIndex = 1;
+            chkWrite.Text = "&Write";
+            chkWrite.UseVisualStyleBackColor = true;
             // 
             // chkRead
             // 
-            this.chkRead.AutoSize = true;
-            this.chkRead.Location = new System.Drawing.Point(6, 19);
-            this.chkRead.Name = "chkRead";
-            this.chkRead.Size = new System.Drawing.Size(52, 17);
-            this.chkRead.TabIndex = 0;
-            this.chkRead.Text = "&Read";
-            this.chkRead.UseVisualStyleBackColor = true;
+            chkRead.AutoSize = true;
+            chkRead.Location = new System.Drawing.Point(7, 22);
+            chkRead.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkRead.Name = "chkRead";
+            chkRead.Size = new System.Drawing.Size(52, 19);
+            chkRead.TabIndex = 0;
+            chkRead.Text = "&Read";
+            chkRead.UseVisualStyleBackColor = true;
             // 
             // SegmentEditorDialog
             // 
-            this.AcceptButton = this.btnOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(880, 447);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.txtSegmentName);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtLoadAddress);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.ddlArch);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtLength);
-            this.Controls.Add(this.txtFileOffset);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "SegmentEditorDialog";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Specify segment properties";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AcceptButton = btnOK;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = btnCancel;
+            ClientSize = new System.Drawing.Size(1027, 516);
+            Controls.Add(groupBox1);
+            Controls.Add(btnCancel);
+            Controls.Add(btnOK);
+            Controls.Add(splitContainer1);
+            Controls.Add(label7);
+            Controls.Add(txtSegmentName);
+            Controls.Add(label5);
+            Controls.Add(txtLoadAddress);
+            Controls.Add(label4);
+            Controls.Add(ddlArch);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(txtLength);
+            Controls.Add(txtFileOffset);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "SegmentEditorDialog";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Specify segment properties";
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize) splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

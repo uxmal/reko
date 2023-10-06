@@ -25,7 +25,6 @@ using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
-using Reko.Gui;
 using Moq;
 using Reko.Gui.Services;
 using Reko.Scanning;

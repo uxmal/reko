@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Services;
 using System;
 using System.ComponentModel.Design;

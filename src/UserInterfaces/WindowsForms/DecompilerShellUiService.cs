@@ -20,6 +20,7 @@
 
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;

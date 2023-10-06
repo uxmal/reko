@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Gui.ViewModels;
 
 namespace Reko.Gui.Services
 {

@@ -22,13 +22,12 @@ using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
-using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
     /// This interface abstracts the creation of dialog windows between

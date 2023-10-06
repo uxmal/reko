@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
-using Reko.Gui;
+using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using System;
 using System.Diagnostics;

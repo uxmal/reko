@@ -53,7 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public TextBox Length => txtLength;
         public TextBox Address => txtLoadAddress;
         public ComboBox Architectures => ddlArch;
-        
+
         public CheckBox ReadMode => chkRead;
         public CheckBox WriteMode => chkWrite;
         public CheckBox ExecuteMode => chkExecute;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2023 John Källén.
  *
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.ViewModels
 {
     public interface IWindowFrame
     {

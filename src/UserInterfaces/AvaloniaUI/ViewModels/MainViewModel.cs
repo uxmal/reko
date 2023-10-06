@@ -25,6 +25,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System.Collections.Generic;

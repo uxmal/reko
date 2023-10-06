@@ -20,6 +20,7 @@
 
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using System;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;

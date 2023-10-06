@@ -20,9 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.Drawing;
 

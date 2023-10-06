@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -20,7 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using Reko.Gui;
+using Reko.Gui.ViewModels;
 using System;
 using System.Linq;
 using System.Windows.Forms;

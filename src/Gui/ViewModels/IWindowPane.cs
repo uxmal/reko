@@ -22,22 +22,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.ViewModels
 {
-    /// <summary>
-    /// Abstracts the notion of an item in a list view, for future platform
-    /// independence.
-    /// </summary>
-    public interface IListViewItem
+    public interface IWindowPane
     {
-        string Text { get; set; }
-        object Tag { get; set; }
+        /// <summary>
+        /// The WindowFrame that encloses this pane.
+        /// </summary>
+        IWindowFrame? Frame { get; set; }
 
-        void AddSubItem(string text);
-    }
+        /// <summary>
+        /// Creates the UI widget handled by this pane.
+        /// </summary>
+        /// <returns>The created widget.</returns>
+        object CreateControl();
+        void SetSite(IServiceProvider services);
 
-    public interface IListViewSubItem
-    {
-        string Text { get; set; }
+        /// <summary>
+        /// Destroys the UI widget created by CreateControl.
+        /// </summary>
+        void Close();
     }
 }

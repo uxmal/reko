@@ -31,6 +31,7 @@ using Reko.Gui;
 using Reko.Gui.Components;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Documents;
 using Reko.Gui.Visualizers;
 using Reko.Services;

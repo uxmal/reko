@@ -23,12 +23,11 @@ using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Services;
 using Reko.Services;
 using System;
 using System.ComponentModel.Design;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
     /// Decouples the creation of services, so that proper unit testing can be done.

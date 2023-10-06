@@ -19,8 +19,8 @@
 #endregion
 
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Controls;
+using Reko.Gui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
