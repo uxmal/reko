@@ -29,11 +29,14 @@ using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public partial class DecompilerMenus : MenuSystem
+    /// <summary>
+    /// View model used to build Avalonia menus and toolbars.
+    /// </summary>
+    public partial class DecompilerCommandItems : MenuSystem
     {
         private readonly Dictionary<int, ObservableCollection<CommandItem>> menus;
 
-        public DecompilerMenus(CommandDefinitions cmdDefs, ICommandTarget target) : base(target)
+        public DecompilerCommandItems(CommandDefinitions cmdDefs, ICommandTarget target) : base(target)
         {
             this.menus = new();
 

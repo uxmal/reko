@@ -21,7 +21,9 @@
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
+using Reko.Core.Services;
 using Reko.Gui;
+using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Tools;
 using System;
 using System.Collections.ObjectModel;
@@ -30,12 +32,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
     public class SearchResultsToolViewModel : Tool
     {
+        private readonly IServiceProvider services;
         private ISearchResult? searchResult;
 
-        public SearchResultsToolViewModel()
+        public SearchResultsToolViewModel(IServiceProvider services)
         {
+            this.services = services;
             this.SearchResults = new();
         }
+
         public FindResultsViewModel ViewModel { get; set; } = null!;
 
         public string Friend { get; } = "Friend";
@@ -82,6 +87,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
                 return;
             this.searchResult.View = SearchResultsView;
             ReloadColumns();
+        }
+
+        public void OnGotFocus()
+        {
+            var srSvc = this.services.GetService<ISearchResultService>();
+            if (srSvc is { })
+            {
+                this.services.RequireService<ICommandRouterService>().ActiveCommandTarget = (ICommandTarget) srSvc;
+            }
         }
     }
 }

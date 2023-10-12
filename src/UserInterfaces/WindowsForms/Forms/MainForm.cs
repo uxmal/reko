@@ -84,7 +84,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.dm = new DecompilerMenus(new CommandDefinitions(), interactor);
             this.uiSvc = new DecompilerShellUiService(this, dm, this.OpenFileDialog, this.SaveFileDialog, services);
             services.AddService(typeof(IDecompilerShellUiService), this.uiSvc);
-
             this.DataBindings.Add(nameof(Text), interactor, nameof(MainFormInteractor.TitleText));
         }
 
@@ -391,6 +390,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 return GetEnumerator();
             }
+        }
+
+        private void treeBrowser_GotFocus(object sender, EventArgs e)
+        {
+            interactor.ProjectBrowser_GotFocus();
         }
     }
 }

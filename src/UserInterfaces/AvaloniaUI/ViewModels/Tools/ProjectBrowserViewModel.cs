@@ -22,16 +22,28 @@ using Avalonia.Collections;
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Controls;
+using Reko.Gui.Services;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
+    /// <summary>
+    /// This is the view model for the tool window that hosts the 
+    /// <see cref="ProjectBrowserService"/>.
+    /// </summary>
     public class ProjectBrowserViewModel : Tool, ITabPage
     {
-        public ProjectBrowserViewModel()
+        private readonly IServiceProvider services;
+
+        public ProjectBrowserViewModel(IServiceProvider services)
         {
+            this.services = services;
             this.TreeView = new TreeViewModel();
         }
 
@@ -46,21 +58,44 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 
         void ITabPage.Select()
         {
-            //$TODO: 
+        }
+
+        public void OnGotFocus()
+        {
+            var crSvc = services.RequireService<ICommandRouterService>();
+            var pbSvc = services.GetService<IProjectBrowserService>();
+            if (pbSvc is { })
+            {
+                crSvc.ActiveCommandTarget = pbSvc;
+            }
+        }
+
+        public void SetMenuStatus(IList items)
+        {
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            uiSvc.SetStatusForMenuItems(items);
         }
     }
 
-    public class TreeViewModel : ReactiveObject, ITreeView
+    public class TreeViewModel : ReactiveObject, ITreeView, ICommandItemSource
     {
+        private ObservableCollection<CommandItem> commandItems;
+
         public TreeViewModel()
         {
             this.Nodes = new TreeNodeCollection();
+            this.commandItems = new ObservableCollection<CommandItem>();
+        }
+
+        public ObservableCollection<CommandItem> CommandItems { 
+            get => commandItems;
+            set => this.RaiseAndSetIfChanged(ref this.commandItems, value);
         }
 
         public bool Focused
         {
             get => focused;
-            set => this.RaiseAndSetIfChanged(ref focused, value);
+            set =>this.RaiseAndSetIfChanged(ref focused, value);
         }
         private bool focused;
 

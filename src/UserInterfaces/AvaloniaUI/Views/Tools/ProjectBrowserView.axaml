@@ -33,6 +33,10 @@
 					  <Setter Property="Padding" Value="1" />
 				  </Style>
 			  </TreeView.Styles>
+
+			  <TreeView.ContextMenu>
+				  <ContextMenu ItemsSource="{Binding TreeView.CommandItems}" />
+			  </TreeView.ContextMenu>
 		  </TreeView>
       </ScrollViewer>
     </StackPanel>

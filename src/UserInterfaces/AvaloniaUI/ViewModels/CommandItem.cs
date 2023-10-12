@@ -18,14 +18,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
+using Reko.Gui.Components;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
@@ -33,7 +28,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     /// <summary>
     /// View model class for menu items, toolbar buttons, etc.
     /// </summary>
-    public class CommandItem : Reko.Gui.Components.ReactingObject
+    public class CommandItem : ReactingObject
     {
         public CommandItem()
         {

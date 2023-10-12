@@ -59,5 +59,7 @@ namespace Reko.Gui.Services
         Errors = 1,
         Warnings = 2,
         Information = 4,
+
+        All = Errors|Warnings|Information
     }
 }

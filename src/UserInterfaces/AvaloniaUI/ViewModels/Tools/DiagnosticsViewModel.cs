@@ -22,6 +22,7 @@ using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
@@ -32,18 +33,20 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
     public class DiagnosticsViewModel : Tool
     {
+        private readonly IServiceProvider services;
         private List<(ICodeLocation, Diagnostic)> diagnosticItems;
         private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
         private SynchronizationContext syncCtx;
 
         public DiagnosticsViewModel(SynchronizationContext syncCtx, IServiceProvider services)
         {
+            this.services = services;
             this.diagnosticItems = new();
             this.pending = new();
             this.FilteredDiagnostics = new();
             this.syncCtx = syncCtx;
             var settings = services.RequireService<ISettingsService>();
-            this.Filter = (DiagnosticFilters) settings.Get(IDiagnosticsService.FilterSetting, -1);
+            this.Filter = (DiagnosticFilters) settings.Get(IDiagnosticsService.FilterSetting, -1)!;
         }
 
         public ObservableCollection<DiagnosticItem> FilteredDiagnostics { get; }
@@ -92,6 +95,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
                 Location = location.Text,
                 Description = d.Message
             };
+        }
+
+        public void OnGotFocus()
+        {
+            services.RequireService<ICommandRouterService>().ActiveCommandTarget =
+                (ICommandTarget) services.RequireService<IDiagnosticsService>();
         }
     }
 

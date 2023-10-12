@@ -2,11 +2,13 @@ using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using Form = System.Windows.Forms.Form;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+
 namespace Reko.WindowsItp
 {
     public class FakeDecompilerShellUiService : IDecompilerShellUiService
@@ -127,6 +129,16 @@ namespace Reko.WindowsItp
         public void WithWaitCursor(Action action)
         {
             action();
+        }
+
+        public object GetContextMenu(int menuID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetStatusForMenuItems(IList menuItems)
+        {
+            throw new NotImplementedException();
         }
     }
 }

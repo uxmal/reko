@@ -19,7 +19,10 @@
 #endregion
 
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
+using System.Diagnostics;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
@@ -28,11 +31,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         public DiagnosticsView()
         {
             InitializeComponent();
+            this.diagnosticsView.AddHandler(DataGrid.GotFocusEvent, diagnosticsView_GotFocus);
         }
 
-        private void InitializeComponent()
+        public DiagnosticsViewModel? ViewModel => (DiagnosticsViewModel?) DataContext;
+
+        private void diagnosticsView_GotFocus(object? sender, RoutedEventArgs e)
         {
-            AvaloniaXamlLoader.Load(this);
+            ViewModel?.OnGotFocus();
         }
     }
 }

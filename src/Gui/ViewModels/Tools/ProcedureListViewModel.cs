@@ -19,7 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Reactive;
+using Reko.Gui.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -31,10 +34,12 @@ namespace Reko.Gui.ViewModels.Tools
     /// </summary>
     public class ProcedureListViewModel : ChangeNotifyingObject
     {
+        private readonly IServiceProvider services;
         private readonly List<ProcedureItem> modelProcedures;
 
-        public ProcedureListViewModel()
+        public ProcedureListViewModel(IServiceProvider services)
         {
+            this.services = services;
             this.searchCriterion = "";
             this.baseFilter = ProcedureBaseFilter.All;
             this.modelProcedures = new List<ProcedureItem>();
@@ -122,6 +127,15 @@ namespace Reko.Gui.ViewModels.Tools
         private ProcedureItem CreateProcedureItem((Program program, Procedure proc) pp)
         {
             return new ProcedureItem(pp.proc.Name, pp.proc.EntryAddress.ToString(), pp.program, pp.proc);
+        }
+
+        public void GotFocus()
+        {
+            var plSvc = this.services.GetService<IProcedureListService>();
+            if (plSvc is { })
+            {
+                this.services.RequireService<ICommandRouterService>().ActiveCommandTarget = plSvc;
+            }
         }
 
         public class ProcedureItem

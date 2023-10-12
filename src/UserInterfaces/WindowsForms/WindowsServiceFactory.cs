@@ -279,6 +279,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             Debug.Assert(SynchronizationContext.Current is not null);
             return new EventBus(SynchronizationContext.Current);
-        } 
+        }
+
+        public ICommandRouterService CreateCommandRouterService()
+        {
+            return new CommandRouterService();
+        }
     }
 }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Serialization;
@@ -32,6 +33,7 @@ using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,6 +50,11 @@ namespace Reko.Gui.Forms
         ReactingObject,
         ICommandTarget
     {
+        private static readonly TraceSwitch trace = new(nameof(MainFormInteractor), "MainFormInteractor events")
+        {
+            Level = TraceLevel.Verbose
+        };
+
         private IDecompilerShellUiService uiSvc;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
@@ -66,6 +73,7 @@ namespace Reko.Gui.Forms
         private IServiceContainer sc;
         private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
+        private ICommandRouterService commandRouter;
         private ICommandTarget subWindowCommandTarget;
 
         private const int MaxMruItems = 9;
@@ -142,7 +150,7 @@ namespace Reko.Gui.Forms
                 pageScanned,
                 pageAnalyzed,
                 pageFinal);
-    }
+        }
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
@@ -154,6 +162,9 @@ namespace Reko.Gui.Forms
 
             var cmdFactory = new Commands.CommandFactory(sc);
             sc.AddService<ICommandFactory>(cmdFactory);
+
+            this.commandRouter = svcFactory.CreateCommandRouterService();
+            sc.AddService<ICommandRouterService>(this.commandRouter);
 
             diagnosticsSvc = svcFactory.CreateDiagnosticsService();
             sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
@@ -884,29 +895,14 @@ namespace Reko.Gui.Forms
 
         #region ICommandTarget members
 
-        /// <summary>
-        /// Determines a command target that should be handling commands. This 
-        /// is in essence the "router" that routes commands.
-        /// </summary>
-        /// <returns></returns>
-        private ICommandTarget GetSubCommandTarget()
-        {
-            if (searchResultsTabControl.ContainsFocus)
-                return searchResultsTabControl;
-            if (projectBrowserSvc.ContainsFocus)
-                return projectBrowserSvc;
-            if (procedureListSvc.ContainsFocus)
-                return procedureListSvc;
-            return subWindowCommandTarget;
-        }
-
         public bool QueryStatus(CommandID cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
-            var ct = GetSubCommandTarget();
-            if (ct != null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
+            trace.Verbose("QS: cmdId: {0}, ActiveCommandTarget {1}", cmdId, this.commandRouter?.ActiveCommandTarget?.ToString() ?? "(None)");
+            var ct = this.commandRouter?.ActiveCommandTarget;
+            if (ct is not null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
             
-            if (currentPhase != null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
+            if (currentPhase is not null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -941,7 +937,7 @@ namespace Reko.Gui.Forms
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     break;
                 case CmdIds.ActionNextPhase:
-                    cmdStatus.Status = currentPhase!.CanAdvance
+                    cmdStatus.Status = currentPhase?.CanAdvance ?? false
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
@@ -986,13 +982,13 @@ namespace Reko.Gui.Forms
         /// <returns></returns>
         public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            var ct = GetSubCommandTarget();
-            if (ct != null && await ct.ExecuteAsync(cmdId))
+            var ct = commandRouter.ActiveCommandTarget;
+            if (ct is not null && await ct.ExecuteAsync(cmdId))
             {
                 form.UpdateToolbarState();
                 return true;
             }
-            if (currentPhase != null && await currentPhase.ExecuteAsync(cmdId))
+            if (currentPhase is not null && await currentPhase.ExecuteAsync(cmdId))
             {
                 form.UpdateToolbarState();
                 return true;
@@ -1088,7 +1084,7 @@ namespace Reko.Gui.Forms
         {
             get
             {
-                if (decompilerSvc.Decompiler == null)
+                if (decompilerSvc?.Decompiler == null)
                     return false;
                 return decompilerSvc.Decompiler.Project != null;
             }
@@ -1118,6 +1114,11 @@ namespace Reko.Gui.Forms
         private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
         {
             UpdateWindowTitle();
+        }
+
+        public void ProjectBrowser_GotFocus()
+        {
+            this.commandRouter.ActiveCommandTarget = projectBrowserSvc;
         }
     }
 }

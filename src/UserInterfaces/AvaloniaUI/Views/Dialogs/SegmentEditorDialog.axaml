@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.SegmentEditorDialog"
+		x:DataType="vm:SegmentEditorViewModel"
+        Title="SegmentEditorDialog">
+	<Grid RowDefinitions="auto,auto,auto" ColumnDefinitions="*,*" >
+		<StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
+			<Grid RowDefinitions="*,*" ColumnDefinitions="auto,auto,auto">
+				<StackPanel Grid.Row="0" Grid.Column="0">
+					<Label>Segment _name:</Label>
+					<TextBox Name="txtSegmentName" />
+				</StackPanel>
+				<StackPanel Grid.Row="0" Grid.Column="1">
+					<Label>File _offset:</Label>
+					<TextBox Name="txtFileOffset" />
+				</StackPanel>
+				<StackPanel Grid.Row="0" Grid.Column="2">
+					<Label>_Length:</Label>
+					<TextBox Name="txtLength" />
+				</StackPanel>
+
+				<StackPanel Grid.Row="1" Grid.Column="0">
+					<Label>Load _address:</Label>
+					<TextBox Name="txtLoadAddress" />
+				</StackPanel>
+				<StackPanel Grid.Row="1" Grid.Column="1">
+					<Label>_Processor architecture:</Label>
+					<ComboBox Name="ddlArchitecture" Width="{Binding #txtFileOffset.Width}"/>
+				</StackPanel>
+			</Grid>
+			<StackPanel>
+				<Label>Access _mode:</Label>
+				<CheckBox Name="chkRead">_Read</CheckBox>
+				<CheckBox Name="chkWrite">_Write</CheckBox>
+				<CheckBox Name="chkExecute">_Execute</CheckBox>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Grid.Row="1" Grid.Column="0">
+			<Label>Preview data at file offset {0}</Label>
+			<Label Height="100" Background="#204020">
+				{Placeholder until hex viewer is implemented}
+			</Label>
+		</StackPanel>
+		<StackPanel Grid.Row="1" Grid.Column="1">
+			<Label>Disassembly</Label>
+			<Label Height="100" Background="#404020">
+				{Placeholder until dasm viewer is implemented}
+			</Label>
+		</StackPanel>
+
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button>OK</Button>
+			<Button>Cancel</Button>
+		</StackPanel>
+	</Grid>
+</Window>

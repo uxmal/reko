@@ -111,7 +111,7 @@ namespace Reko.Gui.Services
             });
         }
 
-        public override void Set(string name, object value)
+        public override void Set(string name, object? value)
         {
             throw new NotImplementedException();
         }

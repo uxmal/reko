@@ -21,6 +21,7 @@
 using Reko.Core.Services;
 using Reko.Gui.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
@@ -44,6 +45,10 @@ namespace Reko.Gui.Services
         IWindowFrame FindWindow(string windowType);
         IWindowFrame? FindDocumentWindow(string documentType, object docItem);
         void SetContextMenu(object control, int menuID);
+        object GetContextMenu(int menuID);
+        void SetStatusForMenuItems(IList menuItems);
+
+
         ValueTask<DialogResult> ShowModalDialog(IDialog dlg);
         ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg);
         void WithWaitCursor(Action action);

@@ -60,6 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             syncCtx = SynchronizationContext.Current;
             listView.DoubleClick += listView_DoubleClick;
             listView.HandleCreated += listView_HandleCreated;
+            listView.GotFocus += ListView_GotFocus;
             if (btnFilter is not null)
             {
                 btnFilter.Click += btnFilter_Click;
@@ -343,6 +344,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             default:
                 return true;
             }
+        }
+
+        private void ListView_GotFocus(object sender, EventArgs e)
+        {
+            services.RequireService<ICommandRouterService>().ActiveCommandTarget = this;
         }
     }
 }

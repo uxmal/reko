@@ -32,11 +32,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         public ProcedureListToolView()
         {
             InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            procedureListTool.AddHandler(DataGrid.GotFocusEvent, procList_GotFocus);
         }
 
         private ProcedureListViewModel? ViewModel
@@ -80,6 +76,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             if (vm is null)
                 return;
             vm.BaseFilter = ProcedureBaseFilter.Leaves;
+        }
+
+        private void procList_GotFocus(object? sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            if (vm is null)
+                return;
+            vm.GotFocus();
         }
     }
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
@@ -33,6 +34,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         {
             InitializeComponent();
             DataContextChanged += SearchResultsToolView_DataContextChanged;
+            gridResults.AddHandler(DataGrid.GotFocusEvent, gridResults_GotFocus);
         }
 
         private void SearchResultsToolView_DataContextChanged(object? sender, EventArgs e)
@@ -46,6 +48,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         public ISearchResultView CreateSearchResultView()
         {
             return new DataGridSearchResultView(gridResults);
+        }
+
+        private void gridResults_GotFocus(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is SearchResultsToolViewModel viewModel)
+            {
+                viewModel.OnGotFocus();
+            }
         }
 
         private class DataGridSearchResultView : ISearchResultView

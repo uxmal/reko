@@ -18,20 +18,16 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.Forms
+namespace Reko.Gui.Services
 {
-    public interface ISegmentEditorDialog : IDialog
+    public class CommandRouterService : ICommandRouterService
     {
-        void LoadUserSegment(MemoryArea mem, UserSegment segment);
-        UserSegment CreateUserSegment();
+        public ICommandTarget? ActiveCommandTarget { get; set; }
     }
 }

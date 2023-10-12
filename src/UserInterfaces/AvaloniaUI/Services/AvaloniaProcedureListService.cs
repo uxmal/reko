@@ -76,7 +76,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Load(Project project)
         {
-            procedureVm.ProcedureList = new ProcedureListViewModel();
+            procedureVm.ProcedureList = new ProcedureListViewModel(services);
             procedureVm.ProcedureList?.LoadProcedures(project.Programs.SelectMany(program =>
                 program.Procedures.Values.Select(p => (program, p))));
         }

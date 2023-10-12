@@ -23,6 +23,7 @@ using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -195,11 +196,22 @@ namespace Reko.UserInterfaces.WindowsForms
             return ct.ExecuteAsync(cmdId);
         }
 
+        public object GetContextMenu(int menuId)
+        {
+            var ctxMenu = dm.GetContextMenu(menuId);
+            return ctxMenu;
+        }
+
         public virtual void SetContextMenu(object control, int menuId)
         {
             var ctxMenu = dm.GetContextMenu(menuId);
             var ctxMenuProp = control.GetType().GetProperty("ContextMenuStrip");
             ctxMenuProp.SetValue(control, ctxMenu);
+        }
+
+        public void SetStatusForMenuItems(IList menuItems)
+        {
+            dm.SetStatusForMenuItems(menuItems);
         }
 
         public void WithWaitCursor(Action action)

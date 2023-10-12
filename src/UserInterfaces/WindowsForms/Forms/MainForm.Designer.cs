@@ -62,8 +62,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl2 = new System.Windows.Forms.TabControl();
             tabProject = new System.Windows.Forms.TabPage();
             tabProcedures = new System.Windows.Forms.TabPage();
-            tabDocuments = new System.Windows.Forms.TabControl();
             procedureListPanel = new ProcedureListPanel();
+            tabDocuments = new System.Windows.Forms.TabControl();
             statusStrip.SuspendLayout();
             tabControl1.SuspendLayout();
             tabDiagnostics.SuspendLayout();
@@ -133,6 +133,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             treeBrowser.SelectedImageIndex = 0;
             treeBrowser.Size = new System.Drawing.Size(191, 344);
             treeBrowser.TabIndex = 0;
+            treeBrowser.GotFocus += treeBrowser_GotFocus;
             // 
             // imlBrowser
             // 
@@ -404,6 +405,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabProcedures.Text = "Procedures";
             tabProcedures.UseVisualStyleBackColor = true;
             // 
+            // procedureListPanel
+            // 
+            procedureListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            procedureListPanel.Location = new System.Drawing.Point(4, 4);
+            procedureListPanel.Name = "procedureListPanel";
+            procedureListPanel.Size = new System.Drawing.Size(191, 344);
+            procedureListPanel.TabIndex = 0;
+            // 
             // tabDocuments
             // 
             tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -414,14 +423,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabDocuments.SelectedIndex = 0;
             tabDocuments.Size = new System.Drawing.Size(703, 380);
             tabDocuments.TabIndex = 0;
-            // 
-            // procedureListPanel1
-            // 
-            procedureListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            procedureListPanel.Location = new System.Drawing.Point(4, 4);
-            procedureListPanel.Name = "procedureListPanel1";
-            procedureListPanel.Size = new System.Drawing.Size(191, 344);
-            procedureListPanel.TabIndex = 0;
             // 
             // MainForm
             // 

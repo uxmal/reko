@@ -21,13 +21,7 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using Reko.Gui;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {

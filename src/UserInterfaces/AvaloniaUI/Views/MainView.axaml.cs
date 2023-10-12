@@ -69,13 +69,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
                     return;
                 if (mi.DataContext is not CommandItem item)
                     return;
-                var n = mi.DataContext?.GetType()?.Name;
                 if (this.DataContext is MainViewModel vm)
                 {
                     vm.SetMenuStatus(item.Items);
                 };
             });
-
         }
     }
 }

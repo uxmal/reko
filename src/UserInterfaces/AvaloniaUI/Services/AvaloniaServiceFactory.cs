@@ -98,7 +98,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IDiagnosticsService CreateDiagnosticsService()
         {
-            return new AvaloniaDiagnosticsService(mainViewModel.DiagnosticsList, SynchronizationContext.Current!);
+            return new AvaloniaDiagnosticsService(
+                services,
+                mainViewModel.DiagnosticsList,
+                SynchronizationContext.Current!);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()
@@ -155,10 +158,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IProjectBrowserService CreateProjectBrowserService()
         {
-            return new ProjectBrowserService(
+            var pbSvc = new ProjectBrowserService(
                 services,
                 mainViewModel.ProjectBrowser,
                 mainViewModel.ProjectBrowser?.TreeView);
+            return pbSvc;
         }
 
         public IResourceEditorService CreateResourceEditorService()
@@ -272,6 +276,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             Debug.Assert(SynchronizationContext.Current is not null);
             return new EventBus(SynchronizationContext.Current);
+        }
+
+        public ICommandRouterService CreateCommandRouterService()
+        {
+            return new CommandRouterService();
         }
     }
 }

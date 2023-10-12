@@ -8,7 +8,7 @@
              d:DesignWidth="300" d:DesignHeight="400"
              x:DataType="vm:DiagnosticsViewModel" x:CompileBindings="True">
   <Grid Focusable="True">
-      <DataGrid ItemsSource="{Binding FilteredDiagnostics}">
+      <DataGrid Name="diagnosticsView" ItemsSource="{Binding FilteredDiagnostics}">
 		  <DataGrid.Columns>
 			  <DataGridTextColumn x:DataType="vm:DiagnosticItem" Header="Location" Binding="{Binding Location}"></DataGridTextColumn>
 			  <DataGridTextColumn x:DataType="vm:DiagnosticItem" Header="Description" Binding="{Binding Description}" Width="6*"></DataGridTextColumn>

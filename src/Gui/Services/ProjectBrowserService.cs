@@ -153,13 +153,15 @@ namespace Reko.Gui.Services
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             var des = GetSelectedDesigner();
-            if (des != null)
-                return des.QueryStatus(cmdId, status, text);
+            if (des != null && des.QueryStatus(cmdId, status, text))
+                return true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch ((CmdIds) cmdId.ID)
                 {
-                case CmdIds.CollapseAllNodes: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                case CmdIds.CollapseAllNodes: 
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
                 case CmdIds.CreateUserSegment:
                     status.Status =
                         IsSegmentSelected()
@@ -201,7 +203,7 @@ namespace Reko.Gui.Services
         private async ValueTask CreateUserSegment()
         {
             var des = GetSelectedDesigner();
-            if (des == null)
+            if (des is null)
                 return;
             var program = FindCurrentProgram();
             if (program is null)

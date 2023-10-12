@@ -63,6 +63,7 @@ namespace Reko.Gui
             txtProcedureFilter.GotFocus += TxtProcedureFilter_GotFocus;
             txtProcedureFilter.LostFocus += TxtProcedureFilter_LostFocus;
             txtProcedureFilter.TextChanged += TxtProcedureFilter_TextChanged;
+            listProcedures.GotFocus += ListProcedures_GotFocus;
             listProcedures.DoubleClick += ListProcedures_DoubleClick;
             procedureListPanel.AllProceduresMenuItem.Click += AllProceduresMenuItem_Click;
             procedureListPanel.LeafProceduresMenuItem.Click += LeafProceduresMenuItem_Click;
@@ -367,6 +368,11 @@ namespace Reko.Gui
                 return;
             services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
             services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
+        }
+
+        private void ListProcedures_GotFocus(object sender, EventArgs e)
+        {
+            services.RequireService<ICommandRouterService>().ActiveCommandTarget = this;
         }
 
         private struct ProgramProcedure

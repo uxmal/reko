@@ -19,9 +19,14 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
@@ -41,11 +46,23 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             tree.AddHandler(DragDrop.DragEnterEvent, projectItems_Drop);
             tree.AddHandler(Control.GotFocusEvent, tree_GotFocus);
             tree.AddHandler(Control.LostFocusEvent, tree_LostFocus);
+            tree.ContextMenu?.AddHandler(ContextMenu.OpenedEvent, contextMenu_Opening);
         }
 
-        private void InitializeComponent()
+        //$REFACTOR: this will need to be done for every context menu. Find a way
+        // to do this in one place. Perhaps context menus' Opened event can be 
+        // captured as a bubbled event in MainView?
+        private void contextMenu_Opening(object? sender, RoutedEventArgs e)
         {
-            AvaloniaXamlLoader.Load(this);
+            if (e.Source is not ContextMenu ctxMenu)
+                return;
+            if (ctxMenu.ItemsSource is not IList items)
+                return;
+
+            if (this.DataContext is ProjectBrowserViewModel vm)
+            {
+                vm.SetMenuStatus(items);
+            }
         }
 
         protected void tree_GotFocus(object? sender, EventArgs e)
@@ -53,6 +70,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             if (DataContext is ProjectBrowserViewModel viewModel)
             {
                 viewModel.TreeView.Focused = true;
+                viewModel.OnGotFocus();
             }
         }
 
@@ -81,10 +99,5 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             //$TODO:
             // await interactor.OpenBinary(filenames[0]);
         }
-
-
-
     }
-
-
 }

@@ -20,17 +20,7 @@
 		ColumnDefinitions="Auto,*"
 		Background="Transparent">
 	<Menu Name="mainMenu" ItemsSource="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
-		  <Menu.Styles>
-			  <Style Selector="MenuItem" x:DataType="vm:CommandItem">
-				  <Setter Property="Header" Value="{Binding Text}" />
-				  <Setter Property="ItemsSource" Value="{Binding Items}"/>
-				  <Setter Property="Command" Value="{Binding Command}" />
-				  <Setter Property="CommandParameter" Value="{Binding CommandID}" />
-				  <Setter Property="IsVisible" Value="{Binding IsVisible}" />
-				  <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
-			  </Style>
-		  </Menu.Styles>
-	  </Menu>
+	</Menu>
 	<!--
 	  <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
       <MenuItem Header="_File">

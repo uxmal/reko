@@ -20,11 +20,13 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,13 +34,18 @@ using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    public class AvaloniaDiagnosticsService : IDiagnosticsService
+    public class AvaloniaDiagnosticsService : IDiagnosticsService, ICommandTarget
     {
+        private readonly IServiceProvider services;
         private readonly DiagnosticsViewModel diagnosticsVm;
         private readonly SynchronizationContext syncCtx;
 
-        public AvaloniaDiagnosticsService(DiagnosticsViewModel diagnosticsVm, SynchronizationContext ctx)
+        public AvaloniaDiagnosticsService(
+            IServiceProvider services, 
+            DiagnosticsViewModel diagnosticsVm, 
+            SynchronizationContext ctx)
         {
+            this.services = services;
             this.diagnosticsVm = diagnosticsVm;
             this.syncCtx = ctx;
         }
@@ -131,6 +138,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
             Warn(location, string.Format(message, args));
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

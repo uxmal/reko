@@ -52,6 +52,8 @@ namespace Reko.UserInterfaces.AvaloniaUI
             MakeServices(sc, docFactory, mainWindow);
             var mvvm = new MainViewModel(sc, docFactory, mainWindow);
             mainWindow.DataContext = mvvm;
+            mvvm.Interactor.Attach(mainWindow);
+
             switch (ApplicationLifetime)
             {
             case IClassicDesktopStyleApplicationLifetime desktop:

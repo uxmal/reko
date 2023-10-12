@@ -18,20 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Gui.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
-namespace Reko.Gui.Forms
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public interface ISegmentEditorDialog : IDialog
+    public interface ICommandItemSource
     {
-        void LoadUserSegment(MemoryArea mem, UserSegment segment);
-        UserSegment CreateUserSegment();
+        public ObservableCollection<CommandItem> CommandItems { get; set; }
     }
 }

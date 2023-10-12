@@ -31,6 +31,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels.Docks;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -131,10 +132,22 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return ValueTask.FromResult(false);
         }
 
+        public object GetContextMenu(int menuID)
+        {
+            return GetDecompilerCommandItems().GetContextMenu(menuID);
+        }
+
         public void SetContextMenu(object control, int menuID)
         {
-            trace.Warn("WIP: Need to implement", nameof(SetContextMenu));
+            var aControl = (ICommandItemSource) control;
+            aControl.CommandItems = GetDecompilerCommandItems().GetContextMenu(menuID);
         }
+
+        public void SetStatusForMenuItems(IList menuItems)
+        {
+            GetDecompilerCommandItems().SetStatusForMenuItems((IList<CommandItem>)menuItems);
+        }
+
 
         public async ValueTask ShowError(Exception ex, string format, params object[] args)
         {
@@ -202,6 +215,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public void WithWaitCursor(Action p)
         {
             throw new NotImplementedException();
+        }
+
+        private DecompilerCommandItems GetDecompilerCommandItems()
+        {
+            var vm = (MainViewModel) mainWindow.DataContext!;
+            return vm.CommandItems;
         }
     }
 }

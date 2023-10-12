@@ -8,7 +8,7 @@
              d:DesignWidth="300" d:DesignHeight="400"
              x:DataType="vm:ProcedureListToolViewModel">
   <!--x:CompileBindings="True">-->
-  <Panel Focusable="True" HorizontalAlignment="Stretch">
+  <Panel Name="procedureListTool" Focusable="True" HorizontalAlignment="Stretch">
 
 
 		<Grid RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="*">

@@ -51,6 +51,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.listView.RetrieveVirtualItem += listView_RetrieveVirtualItem;
             this.listView.CacheVirtualItems += listView_CacheVirtualItems;
             this.listView.DoubleClick += listView_DoubleClick;
+            this.listView.GotFocus += ListView_GotFocus;
 
             SetSearchResults(new EmptyResult());
         }
@@ -291,6 +292,11 @@ namespace Reko.UserInterfaces.WindowsForms
                 }
             }
             return false;
+        }
+
+        private void ListView_GotFocus(object sender, EventArgs e)
+        {
+            services.RequireService<ICommandRouterService>().ActiveCommandTarget = this;
         }
     }
 }

@@ -77,5 +77,6 @@ namespace Reko.Gui.Services
         IStructureEditorService CreateStructureEditorService();
         ICallGraphNavigatorService CreateCallGraphNavigatorService();
         IEventBus CreateEventBus();
+        ICommandRouterService CreateCommandRouterService();
     }
 }

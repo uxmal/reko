@@ -39,8 +39,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(MainViewModel), "Trace events in the MainViewModel");
 
-        private DecompilerMenus menus;
-        private MainFormInteractor interactor;
         private readonly DockFactory dockFactory;
 
         public MainViewModel(IServiceContainer services, DockFactory dockFactory, IMainForm mainForm)
@@ -52,7 +50,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             var svcFactory = new AvaloniaServiceFactory(services, this);
             services.AddService<IServiceFactory>(svcFactory);
-
             this.Layout = dockFactory.CreateLayout();
             if (Layout is not null)
             {
@@ -70,10 +67,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.CallGraphNavigator = dockFactory.CallGraphNavigatorTool!;
 
             var cmdDefs = new CommandDefinitions();
-            this.interactor = new MainFormInteractor(services);
-            interactor.PropertyChanged += Interactor_PropertyChanged;
-            interactor.Attach(mainForm);
-            this.menus = new DecompilerMenus(cmdDefs, this.interactor);
+            this.Interactor = new MainFormInteractor(services);
+            Interactor.PropertyChanged += Interactor_PropertyChanged;
+            this.CommandItems = new DecompilerCommandItems(cmdDefs, this.Interactor);
         }
 
         private void Interactor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -93,7 +89,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         private IRootDock? layout;
 
-        public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
+        public MainFormInteractor Interactor { get; private set; }
+
+        public DecompilerCommandItems CommandItems { get; private set; }
+
+        public ObservableCollection<CommandItem> MainMenu => this.CommandItems.GetMenu(MenuIds.MainMenu);
 
         public ProjectBrowserViewModel ProjectBrowser { get; set; }
 
@@ -108,8 +108,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         
         public string? WindowTitle 
         {
-            get { return interactor.TitleText; }
-            set { interactor.TitleText = value!; }
+            get { return Interactor.TitleText; }
+            set { Interactor.TitleText = value!; }
         }
 
         [Conditional("DEBUG")]
@@ -242,7 +242,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public void SetMenuStatus(IList<CommandItem> items)
         {
-            menus.SetStatusForMenuItems(items);
+            CommandItems.SetStatusForMenuItems(items);
         }
     }
 }
