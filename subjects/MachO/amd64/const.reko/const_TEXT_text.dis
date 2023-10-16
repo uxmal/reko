@@ -1,5 +1,5 @@
 void f(word32 eax)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  eax:[0..31]
 // LiveOut:

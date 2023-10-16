@@ -1,5 +1,5 @@
 // void fn0C00_0000(Sequence segptr32 ds_si)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut:
 // Trashed: SCZO ax Top

@@ -1,5 +1,5 @@
 void fn0000C02A(word32 a0, word32 a1)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a0:[0..31] a1:[0..31]
 // LiveOut:

@@ -1,5 +1,5 @@
 // void fn0C00_0000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ax bx es Top
@@ -16,7 +16,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // void fn0C00_0004()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ax bx es Top

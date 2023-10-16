@@ -1,5 +1,5 @@
 // void fn0C00_0000(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx dx Top
@@ -16,7 +16,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // Register word16 fn0C00_000B(Register word16 cx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  cx:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax cx dx Top

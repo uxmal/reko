@@ -36,7 +36,7 @@ l0800_014F:
 
 
 void fn0800_0162(selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  cs:[0..15] ds:[0..15]
 // LiveOut:
@@ -55,7 +55,7 @@ fn0800_0162_exit:
 
 
 void __restorezero(selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __exit
@@ -74,7 +74,7 @@ __restorezero_exit:
 
 
 void fn0800_01DA(char * ds_dx, word16 cx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __exit
@@ -92,7 +92,7 @@ fn0800_01DA_exit:
 
 
 void _abort()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __setargv
@@ -112,7 +112,7 @@ _abort_exit:
 
 
 void fn0800_01E9(word16 cx, word16 dx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __setenvp
@@ -129,7 +129,7 @@ l0800_01E9:
 
 
 void _f3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_01E9
@@ -145,7 +145,7 @@ _f3_exit:
 
 
 void _f2()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      f1_name_overridden
@@ -170,7 +170,7 @@ _f2_exit:
 
 
 void f1_name_overridden()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _f0
@@ -195,7 +195,7 @@ f1_name_overridden_exit:
 
 
 void _f0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _main
@@ -219,7 +219,7 @@ _f0_exit:
 
 
 void _main(word16 cx, word16 dx, word16 bx, selector es, selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] es:[0..15] ss:[0..15]
 // LiveOut:
@@ -258,7 +258,7 @@ _main_exit:
 
 
 word16 __IOERROR(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __read
@@ -294,7 +294,7 @@ __IOERROR_exit:
 
 
 void _exit(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut:
@@ -433,7 +433,7 @@ l0800_03BB:
 
 
 byte fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, ptr16 & axOut, ptr16 & cxOut, ptr16 & siOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __setargv
@@ -478,7 +478,7 @@ fn0800_03BF_exit:
 
 
 void __setenvp(selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15]
 // LiveOut:
@@ -520,7 +520,7 @@ __setenvp_exit:
 
 
 void ___pull_free_block(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _malloc
@@ -547,7 +547,7 @@ ___pull_free_block_exit:
 
 
 word16 fn0800_04BF(selector ds, word16 wArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _malloc
@@ -573,7 +573,7 @@ fn0800_04BF_exit:
 
 
 word16 fn0800_04F9(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _malloc
@@ -599,7 +599,7 @@ fn0800_04F9_exit:
 
 
 word16 fn0800_0536(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _malloc
@@ -625,7 +625,7 @@ fn0800_0536_exit:
 
 
 word16 _malloc(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __setenvp
@@ -671,7 +671,7 @@ _malloc_exit:
 
 
 void ___brk(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _brk
@@ -693,7 +693,7 @@ ___brk_exit:
 
 
 word16 ___sbrk(selector ds, word32 dwArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_04F9
@@ -725,7 +725,7 @@ ___sbrk_exit:
 
 
 void _brk(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_1606
@@ -742,7 +742,7 @@ _brk_exit:
 
 
 word16 fn0800_065B(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fseek
@@ -777,7 +777,7 @@ fn0800_065B_exit:
 
 
 void _fseek(selector ds, word16 wArg02, ui32 dwArg04, word16 wArg08)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _setvbuf
@@ -813,7 +813,7 @@ _fseek_exit:
 
 
 void fn0800_075B(selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_0782
@@ -841,7 +841,7 @@ fn0800_075B_exit:
 
 
 word16 fn0800_0782(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fgetc
@@ -880,7 +880,7 @@ fn0800_0782_exit:
 
 
 void _fgetc(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut:
@@ -953,7 +953,7 @@ _fgetc_exit:
 
 
 word16 _isatty(word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fgetc
@@ -970,7 +970,7 @@ _isatty_exit:
 
 
 void _setvbuf(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fgetc
@@ -1038,7 +1038,7 @@ _setvbuf_exit:
 
 
 word16 _read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_0782
@@ -1102,7 +1102,7 @@ _read_exit:
 
 
 word16 __read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fgetc
@@ -1124,7 +1124,7 @@ __read_exit:
 
 
 word16 _write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fflush
@@ -1198,7 +1198,7 @@ _write_exit:
 
 
 word16 __write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _write
@@ -1228,7 +1228,7 @@ __write_exit:
 
 
 word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & dxOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fseek
@@ -1258,7 +1258,7 @@ _lseek_exit:
 
 
 void __LONGTOA(selector ds, byte bArg02, byte bArg04, word16 wArg06, word16 wArg08, word32 dwArg0A)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 14; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __VPRINTER
@@ -1332,7 +1332,7 @@ l0800_0C9B:
 
 
 word16 _eof(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fgetc
@@ -1385,7 +1385,7 @@ _eof_exit:
 
 
 word16 _fflush(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _fseek
@@ -1433,7 +1433,7 @@ _fflush_exit:
 
 
 word16 _printf(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _main
@@ -1451,7 +1451,7 @@ _printf_exit:
 
 
 void __fputc(selector ds, byte bArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..7] Stack +0004:[0..15]
 // LiveOut:
@@ -1467,7 +1467,7 @@ __fputc_exit:
 
 
 void _fputc(selector ds, byte bArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __fputc
@@ -1549,7 +1549,7 @@ __REALCVT_exit:
 
 
 word16 fn0800_1048(segptr32 es_di, selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __VPRINTER
@@ -1572,7 +1572,7 @@ fn0800_1048_exit:
 
 
 word16 __VPRINTER(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _printf
@@ -2056,7 +2056,7 @@ l0800_10EE:
 
 
 word16 fn0800_108C(word16 di, selector es)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __VPRINTER
@@ -2080,7 +2080,7 @@ fn0800_108C_exit:
 
 
 word16 fn0800_1099(segptr32 ds_di, segptr32 ss_bp, byte al, word16 cx, word16 dx, word16 bx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __VPRINTER
@@ -2103,7 +2103,7 @@ fn0800_1099_exit:
 
 
 word16 fn0800_10A1(segptr32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __VPRINTER
@@ -2132,7 +2132,7 @@ fn0800_10A1_exit:
 
 
 void fn0800_1596(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_165F
@@ -2159,7 +2159,7 @@ fn0800_1596_exit:
 
 
 void fn0800_15CF(selector ds, word16 wArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0800_165F
@@ -2182,7 +2182,7 @@ fn0800_15CF_exit:
 
 
 void fn0800_1606(selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _free
@@ -2219,7 +2219,7 @@ fn0800_1606_exit:
 
 
 void fn0800_165F(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _free
@@ -2252,7 +2252,7 @@ fn0800_165F_exit:
 
 
 void _free(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _setvbuf
@@ -2276,7 +2276,7 @@ _free_exit:
 
 
 word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, ptr16 & bxOut, ptr16 & bpOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _main
@@ -2299,7 +2299,7 @@ _scanf_exit:
 
 
 word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & bxOut, ptr16 & bpOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _scanf
@@ -2750,7 +2750,7 @@ __scanner_exit:
 
 
 ptr32 fn0800_1708(segptr32 ss_bp, selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __scanner
@@ -3054,7 +3054,7 @@ __scanpop_exit:
 
 
 bool fn0800_1B9E(byte cl, byte bl)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __scantol
@@ -3092,7 +3092,7 @@ fn0800_1B9E_exit:
 
 
 word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, ptr16 & dxOut, ptr16 & bxOut, ptr16 & diOut, ptr16 & esOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __scanner
@@ -3331,7 +3331,7 @@ __scantol_exit:
 
 
 void _tell(selector ds, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut:

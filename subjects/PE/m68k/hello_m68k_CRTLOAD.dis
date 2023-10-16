@@ -1,5 +1,5 @@
 void fn00001498()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -40,7 +40,7 @@ l000014E2:
 
 
 void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a3:[0..15] a5:[0..31] Stack +0000:[0..15] Stack +0002:[0..31]
 // LiveOut:

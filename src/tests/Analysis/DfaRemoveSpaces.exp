@@ -1,5 +1,5 @@
 // void fn0C00_0000(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  cs:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx di es si sp Top
@@ -18,7 +18,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // void fn0C00_0015(Stack segptr32 ptrArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZO di es si Top
@@ -53,7 +53,7 @@ l0C00_002C:
 fn0C00_0015_exit:
 
 // Register word16 fn0C00_002F(Stack segptr32 ptrArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0002:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax cx si Top

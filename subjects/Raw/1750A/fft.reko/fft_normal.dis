@@ -1,5 +1,5 @@
 word16 reverse(word16 gp0, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0100
@@ -28,7 +28,7 @@ reverse_exit:
 
 
 word16 init_fft(ptr16 & gp4Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -58,7 +58,7 @@ init_fft_exit:
 
 
 word16 compute_output()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -87,7 +87,7 @@ compute_output_exit:
 
 
 void fft(word16 gp3, word16 gp4)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -140,7 +140,7 @@ fft_exit:
 
 
 void main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -177,7 +177,7 @@ main_exit:
 
 
 word16 frex(word16 gp1, word16 gp3)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      sqrt
@@ -207,7 +207,7 @@ frex_exit:
 
 
 real48 sqrt(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      compute_output
@@ -247,7 +247,7 @@ sqrt_exit:
 
 
 word32 auxasin(real48 gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      asin
@@ -268,7 +268,7 @@ auxasin_exit:
 
 
 void asin(word32 gp0_gp1, word16 gp2)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
 // LiveOut:
@@ -311,7 +311,7 @@ asin_exit:
 
 
 void rsin()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -324,7 +324,7 @@ rsin_exit:
 
 
 void rcos()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -337,7 +337,7 @@ rcos_exit:
 
 
 word16 sincos(word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      sin
@@ -385,7 +385,7 @@ sincos_exit:
 
 
 word48 sin(word32 gp0_gp1, word16 gp2, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fft
@@ -430,7 +430,7 @@ sin_exit:
 
 
 word48 cos(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fft
@@ -468,7 +468,7 @@ cos_exit:
 
 
 word16 cvia(word16 gp0, word16 gp1)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_dec_word
@@ -517,7 +517,7 @@ cvia_exit:
 
 
 word16 cvla(word32 gp12_gp13, word16 gp0, word16 gp1, word16 gp2)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_long_word
@@ -580,7 +580,7 @@ cvla_exit:
 
 
 word16 cvfa(word32 gp1_gp2, word16 gp0, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_fp_num
@@ -598,7 +598,7 @@ cvfa_exit:
 
 
 word16 cvea(word32 gp1_gp2, word16 gp0, word16 gp3)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_efp_num
@@ -616,7 +616,7 @@ cvea_exit:
 
 
 word16 fn043E(real48 gp12_gp13_gp14, word16 gp0, word16 gp1, word16 gp11)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      cvfa
@@ -716,7 +716,7 @@ l0460:
 
 
 void putchar(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      puts
@@ -733,7 +733,7 @@ putchar_exit:
 
 
 void puts(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_dec_word
@@ -764,7 +764,7 @@ l04BA:
 
 
 void pr_nibble(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_hex_byte
@@ -787,7 +787,7 @@ pr_nibble_exit:
 
 
 word16 pr_hex_byte(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      pr_hex_word
@@ -804,7 +804,7 @@ pr_hex_byte_exit:
 
 
 void pr_hex_word(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  gp0:[0..15]
 // LiveOut:
@@ -818,7 +818,7 @@ pr_hex_word_exit:
 
 
 void pr_dec_word(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  gp0:[0..15]
 // LiveOut:
@@ -832,7 +832,7 @@ pr_dec_word_exit:
 
 
 void pr_long_word(word32 gp0_gp1, word32 gp12_gp13)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Sequence gp0:gp1:[0..31] Sequence gp12:gp13:[0..31]
 // LiveOut:
@@ -848,7 +848,7 @@ pr_long_word_exit:
 
 
 word16 pr_fp_num(word32 gp0_gp1)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -865,7 +865,7 @@ pr_fp_num_exit:
 
 
 void pr_efp_num(word32 gp0_gp1, word16 gp2)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
 // LiveOut:

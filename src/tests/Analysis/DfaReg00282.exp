@@ -1,5 +1,5 @@
 // void fn0C00_0000(Register word16 ax)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ax:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx Top

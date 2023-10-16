@@ -30,7 +30,7 @@ test1_exit:
 
 
 void test2(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
@@ -62,7 +62,7 @@ indirect_call_test3_exit:
 
 
 void test4()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -76,7 +76,7 @@ test4_exit:
 
 
 void test5()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -106,7 +106,7 @@ test6_exit:
 
 
 void test7(real64 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
@@ -124,7 +124,7 @@ test7_exit:
 
 
 void nested_if_blocks_test8(real64 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      loop_test11
@@ -147,7 +147,7 @@ nested_if_blocks_test8_exit:
 
 
 void loop_test9(real32 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      loop_test11
@@ -170,7 +170,7 @@ l0040123F:
 
 
 void const_div_test10(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
@@ -192,7 +192,7 @@ const_div_test10_exit:
 
 
 void loop_test11(real64 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
@@ -222,7 +222,7 @@ l0040131E:
 
 
 void nested_structs_test12(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      nested_structs_test13
@@ -255,7 +255,7 @@ nested_structs_test13_exit:
 
 
 void gbl_nested_structs_test14()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:

@@ -1,5 +1,5 @@
 // void fn0C00_0000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  cs:[0..15]
 // LiveOut:
 // Trashed: SCZO ax ds dx Top
@@ -20,7 +20,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // Sequence ui32 fn0C00_001B(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:[0..15]
 // LiveOut: dx:ax
 // Trashed: ax dx Top

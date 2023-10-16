@@ -1,5 +1,5 @@
 void _GetExceptDLLinfo(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
@@ -14,7 +14,7 @@ __GetExceptDLLinfo_exit:
 
 
 void fn00401084()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -27,7 +27,7 @@ fn00401084_exit:
 
 
 void fn0040110B()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -48,7 +48,7 @@ fn0040110B_exit:
 
 
 word32 fn00401158()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _GetExceptDLLinfo
@@ -79,7 +79,7 @@ main_exit:
 
 
 void fn0040117C()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -92,7 +92,7 @@ fn0040117C_exit:
 
 
 void fn00401180()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -105,7 +105,7 @@ fn00401180_exit:
 
 
 void fn004011B0(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
@@ -129,7 +129,7 @@ fn004011B0_exit:
 
 
 void fn004011FC(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _GetExceptDLLinfo
