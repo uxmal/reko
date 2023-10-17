@@ -1,5 +1,5 @@
 // Register word32 fn10000000(Stack word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax Top

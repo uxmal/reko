@@ -16,7 +16,7 @@ l00000110:
 
 
 void fn0111()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0100
@@ -111,7 +111,7 @@ fn0111_exit:
 
 
 word32 fn01E6(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
@@ -157,7 +157,7 @@ fn01E6_exit:
 
 
 word16 fn02BF(word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn032A
@@ -199,7 +199,7 @@ fn02BF_exit:
 
 
 word32 fn032A(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
@@ -240,7 +240,7 @@ fn032A_exit:
 
 
 word32 fn034E(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
@@ -276,7 +276,7 @@ fn034E_exit:
 
 
 word16 fn03E0(word32 gp1_gp2, word16 gp0, word16 gp3, ptr16 & gp14Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn04AE
@@ -294,7 +294,7 @@ fn03E0_exit:
 
 
 word16 fn03EC(real48 gp12_gp13_gp14, word16 gp0, word16 gp1, word16 gp11)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn03E0
@@ -393,7 +393,7 @@ l0000040E:
 
 
 void fn045A(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
@@ -411,7 +411,7 @@ fn045A_exit:
 
 
 void fn045D(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn04AE
@@ -439,7 +439,7 @@ l00000468:
 
 
 word16 fn04AE(word32 gp0_gp1, word16 gp2)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
@@ -456,7 +456,7 @@ fn04AE_exit:
 
 
 void fn04B9(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111

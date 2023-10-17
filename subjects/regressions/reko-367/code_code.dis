@@ -1,5 +1,5 @@
 void fn80000000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -13,7 +13,7 @@ fn80000000_exit:
 
 
 real96 fn80000132(real96 rArg04, real96 rArg10)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn800001F2
@@ -39,7 +39,7 @@ l8000015A:
 
 
 real96 fn8000018E(real96 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn800001F2
@@ -65,7 +65,7 @@ l800001B8:
 
 
 real96 fn800001F2(real96 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn8000036C
@@ -94,7 +94,7 @@ l80000224:
 
 
 real96 fn800002AE(real96 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn8000036C
@@ -122,7 +122,7 @@ l800002E2:
 
 
 void fn8000036C(real96 rArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn800003CC
@@ -139,7 +139,7 @@ fn8000036C_exit:
 
 
 void fn800003CC()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn80000000

@@ -1,5 +1,5 @@
 void fn12340000(word32 ecx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ecx:[0..31]
 // LiveOut:

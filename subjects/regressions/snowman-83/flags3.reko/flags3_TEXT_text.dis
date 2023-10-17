@@ -1,5 +1,5 @@
 void foo(word64 rdi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63]
 // LiveOut:

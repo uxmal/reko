@@ -1,5 +1,5 @@
 // void fn10000000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
 // Trashed: eax ebx ecx Top
@@ -17,7 +17,7 @@ l10000000:
 fn10000000_exit:
 
 // void fn10000013(Stack word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: eax Top
@@ -36,7 +36,7 @@ l10000013_thunk_fn10000020:
 fn10000013_exit:
 
 // void fn10000018(Register word32 ebx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ebx:[0..31]
 // LiveOut:
 // Trashed: eax ecx Top
@@ -53,7 +53,7 @@ l10000018:
 fn10000018_exit:
 
 // void fn10000020(Stack word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: eax Top

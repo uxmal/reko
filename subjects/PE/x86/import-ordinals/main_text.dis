@@ -1,5 +1,5 @@
 word32 fn00401000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401010
@@ -14,7 +14,7 @@ fn00401000_exit:
 
 
 void fn00401010(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401040
@@ -37,7 +37,7 @@ fn00401010_exit:
 
 
 word32 fn00401040(word32 ecx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -184,7 +184,7 @@ Win32CrtStartup_exit:
 
 
 word32 fn004013F6(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040153F
@@ -218,7 +218,7 @@ fn004013F6_exit:
 
 
 byte fn0040143A()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -250,7 +250,7 @@ fn0040143A_exit:
 
 
 byte fn0040146F(word32 edx, word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -278,7 +278,7 @@ fn0040146F_exit:
 
 
 byte fn0040153F(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -330,7 +330,7 @@ fn0040153F_exit:
 
 
 void fn004015C9(byte bArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -351,7 +351,7 @@ fn004015C9_exit:
 
 
 void fn004015E6(byte bArg08)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -373,7 +373,7 @@ fn004015E6_exit:
 
 
 void fn0040165E()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -415,7 +415,7 @@ fn0040165E_exit:
 
 
 word32 fn00401761()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -430,7 +430,7 @@ fn00401761_exit:
 
 
 word32 fn00401767()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -445,7 +445,7 @@ fn00401767_exit:
 
 
 void fn0040176D(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -480,7 +480,7 @@ l00401783:
 
 
 byte fn0040188B()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -526,7 +526,7 @@ fn00401972_exit:
 
 
 word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -551,7 +551,7 @@ fn00401980_exit:
 
 
 word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
@@ -577,7 +577,7 @@ fn004019C6_exit:
 
 
 void fn004019FE(word32 edx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040146F
@@ -650,7 +650,7 @@ fn004019FE_exit:
 
 
 word32 fn00401B98()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040143A
@@ -666,7 +666,7 @@ fn00401B98_exit:
 
 
 byte fn00401C46()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040146F

@@ -151,7 +151,7 @@ l5AD8:
 
 
 word20 msp430_compute_modulator_bits(ui40 r13_r12, ui40 r15_r14)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      init_uart_isr
@@ -198,7 +198,7 @@ msp430_compute_modulator_bits_exit:
 
 
 word20 init_uart_isr(word40 r14_r13, word20 sr, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
@@ -245,7 +245,7 @@ init_uart_isr_exit:
 
 
 void getchar(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  sr:[0..19]
 // LiveOut:
@@ -263,7 +263,7 @@ getchar_exit:
 
 
 void uart_putchar_isr_mode(word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
@@ -279,7 +279,7 @@ uart_putchar_isr_mode_exit:
 
 
 word20 putchar(word20 sr, word20 r15, ptr16 & r11Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      task_1
@@ -317,7 +317,7 @@ putchar_exit:
 
 
 word20 x_getchar(word20 sr, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      getchar
@@ -338,7 +338,7 @@ x_getchar_exit:
 
 
 word20 x_putchar(word20 sr, word20 r14, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      putchar
@@ -379,7 +379,7 @@ x_putchar_exit:
 
 
 void vRxISR(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  sr:[0..19]
 // LiveOut:
@@ -403,7 +403,7 @@ vRxISR_exit:
 
 
 void vTxISR(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  sr:[0..19]
 // LiveOut:
@@ -425,7 +425,7 @@ vTxISR_exit:
 
 
 word20 xTaskCreate(word20 sr, word20 r12, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
@@ -505,7 +505,7 @@ xTaskCreate_exit:
 
 
 void vTaskDelete(word20 sr, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut:
@@ -549,7 +549,7 @@ vTaskDelete_exit:
 
 
 word20 vTaskDelayUntil(word20 sr, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      task_1
@@ -608,7 +608,7 @@ vTaskDelayUntil_exit:
 
 
 void vTaskDelay(word20 sr, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut:
@@ -649,7 +649,7 @@ vTaskDelay_exit:
 
 
 void vTaskStartScheduler(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
@@ -674,7 +674,7 @@ vTaskStartScheduler_exit:
 
 
 void vTaskEndScheduler()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -689,7 +689,7 @@ vTaskEndScheduler_exit:
 
 
 word20 vTaskSuspendAll(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskDelayUntil
@@ -720,7 +720,7 @@ vTaskSuspendAll_exit:
 
 
 word20 xTaskResumeAll(word20 sr, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskDelayUntil
@@ -802,7 +802,7 @@ l000047D4:
 
 
 word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      task_idle
@@ -833,7 +833,7 @@ xTaskGetTickCount_exit:
 
 
 void uxTaskGetNumberOfTasks()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -855,7 +855,7 @@ uxTaskGetNumberOfTasks_exit:
 
 
 void vTaskIncrementTick()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskResumeAll
@@ -909,7 +909,7 @@ l000048AC:
 
 
 void vTaskPlaceOnEventList(word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueSend
@@ -940,7 +940,7 @@ vTaskPlaceOnEventList_exit:
 
 
 word20 xTaskRemoveFromEventList(word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueSendFromISR
@@ -1011,7 +1011,7 @@ l49B6:
 
 
 void prvInitialiseTCBVariables(word20 r12, word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
@@ -1040,7 +1040,7 @@ prvInitialiseTCBVariables_exit:
 
 
 void prvInitialiseTaskLists()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
@@ -1067,7 +1067,7 @@ prvInitialiseTaskLists_exit:
 
 
 word20 prvCheckTasksWaitingTermination(word20 sr)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvIdleTask
@@ -1116,7 +1116,7 @@ prvCheckTasksWaitingTermination_exit:
 
 
 word20 prvAllocateTCBAndStack(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
@@ -1147,7 +1147,7 @@ prvAllocateTCBAndStack_exit:
 
 
 void prvDeleteTCB()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvCheckTasksWaitingTermination
@@ -1164,7 +1164,7 @@ prvDeleteTCB_exit:
 
 
 void vTaskSwitchContext()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vPortYield
@@ -1195,7 +1195,7 @@ vTaskSwitchContext_exit:
 
 
 void vListInitialise(word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvInitialiseTaskLists
@@ -1218,7 +1218,7 @@ vListInitialise_exit:
 
 
 void vListInitialiseItem(word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvInitialiseTCBVariables
@@ -1235,7 +1235,7 @@ vListInitialiseItem_exit:
 
 
 void vListInsertEnd(word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
@@ -1262,7 +1262,7 @@ vListInsertEnd_exit:
 
 
 void vListInsert(word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskDelayUntil
@@ -1306,7 +1306,7 @@ vListInsert_exit:
 
 
 void vListRemove(word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskDelete
@@ -1339,7 +1339,7 @@ vListRemove_exit:
 
 
 word20 xQueueCreate(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      init_uart_isr
@@ -1364,7 +1364,7 @@ xQueueCreate_exit:
 
 
 word20 xQueueSend(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      x_putchar
@@ -1476,7 +1476,7 @@ xQueueSend_exit:
 
 
 word20 xQueueSendFromISR(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vRxISR
@@ -1518,7 +1518,7 @@ xQueueSendFromISR_exit:
 
 
 word20 xQueueReceive(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      x_getchar
@@ -1633,7 +1633,7 @@ xQueueReceive_exit:
 
 
 word20 xQueueReceiveFromISR(word20 sr, word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTxISR
@@ -1678,7 +1678,7 @@ xQueueReceiveFromISR_exit:
 
 
 void uxQueueMessagesWaiting()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -1700,7 +1700,7 @@ uxQueueMessagesWaiting_exit:
 
 
 void vQueueDelete()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -1715,7 +1715,7 @@ vQueueDelete_exit:
 
 
 word20 prvUnlockQueue(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueSend
@@ -1775,7 +1775,7 @@ prvUnlockQueue_exit:
 
 
 word20 prvIsQueueEmpty(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueReceive
@@ -1806,7 +1806,7 @@ prvIsQueueEmpty_exit:
 
 
 word20 prvIsQueueFull(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueSend
@@ -1837,7 +1837,7 @@ prvIsQueueFull_exit:
 
 
 word20 pvPortMalloc(word20 sr, word20 r15, ptr16 & r15Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvAllocateTCBAndStack
@@ -1872,7 +1872,7 @@ pvPortMalloc_exit:
 
 
 void vPortFree()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvAllocateTCBAndStack
@@ -1889,7 +1889,7 @@ vPortFree_exit:
 
 
 void vPortInitialiseBlocks()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -1903,7 +1903,7 @@ vPortInitialiseBlocks_exit:
 
 
 word20 pxPortInitialiseStack(word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
@@ -1933,7 +1933,7 @@ pxPortInitialiseStack_exit:
 
 
 void xPortStartScheduler()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskStartScheduler
@@ -1950,7 +1950,7 @@ xPortStartScheduler_exit:
 
 
 void vPortEndScheduler()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskEndScheduler
@@ -1965,7 +1965,7 @@ vPortEndScheduler_exit:
 
 
 word20 vPortYield(word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16 & r11Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vRxISR
@@ -2000,7 +2000,7 @@ vPortYield_exit:
 
 
 void prvSetupTimerInterrupt()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xPortStartScheduler
@@ -2022,7 +2022,7 @@ prvSetupTimerInterrupt_exit:
 
 
 void prvTickISR()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -2040,7 +2040,7 @@ prvTickISR_exit:
 
 
 void printf(word20 r8)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
@@ -2058,7 +2058,7 @@ printf_exit:
 
 
 word20 PRINT(word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
@@ -2094,7 +2094,7 @@ PRINT_exit:
 
 
 word20 __write_pad(word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
@@ -2131,7 +2131,7 @@ __write_pad_exit:
 
 
 void vuprintf(word20 r8, word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      printf
@@ -2559,7 +2559,7 @@ vuprintf_exit:
 
 
 word20 memchr(word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
@@ -2589,7 +2589,7 @@ memchr_exit:
 
 
 void strncpy(word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvInitialiseTCBVariables
@@ -2625,7 +2625,7 @@ strncpy_exit:
 
 
 word20 memcpy(word20 sr, word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xQueueSend
@@ -2738,7 +2738,7 @@ memcpy_exit:
 
 
 word20 memset(word20 sr, word20 r13, word20 r14, word20 r15)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvAllocateTCBAndStack
@@ -2798,7 +2798,7 @@ memset_exit:
 
 
 ui40 fn00005ADC(word20 r10, word20 r11, word20 r12, word20 r13)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      msp430_compute_modulator_bits
@@ -2821,7 +2821,7 @@ fn00005ADC_exit:
 
 
 word20 fn00005B04(ui40 r11_r10, ui40 r13_r12)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      msp430_compute_modulator_bits
@@ -2865,7 +2865,7 @@ fn00005B04_exit:
 
 
 bool fn00005B4E(ui40 r11_r10, word20 r8, word20 r12, word20 r13, ptr16 & r13_r12Out, ptr16 & r15_r14Out, ptr16 & r8Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf

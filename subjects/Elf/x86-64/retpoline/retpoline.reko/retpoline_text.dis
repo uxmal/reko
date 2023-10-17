@@ -17,7 +17,7 @@ l0000000000400480:
 
 
 void deregister_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __do_global_dtors_aux
@@ -40,7 +40,7 @@ deregister_tm_clones_exit:
 
 
 void register_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      frame_dummy
@@ -63,7 +63,7 @@ register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -82,7 +82,7 @@ __do_global_dtors_aux_exit:
 
 
 void frame_dummy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -97,7 +97,7 @@ frame_dummy_exit:
 
 
 void my1(word32 esi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      branches
@@ -113,7 +113,7 @@ my1_exit:
 
 
 void my2(byte sil, word64 rdi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63] sil:[0..7]
 // LiveOut:
@@ -127,7 +127,7 @@ my2_exit:
 
 
 void branches(word32 esi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  esi:[0..31] rdi:[0..31]
 // LiveOut:
@@ -159,7 +159,7 @@ branches_exit:
 
 
 void main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -191,7 +191,7 @@ l00000000004006F5:
 
 
 void fn0000000000400700()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __llvm_retpoline_r11
@@ -206,7 +206,7 @@ fn0000000000400700_exit:
 
 
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
@@ -232,7 +232,7 @@ __libc_csu_init_exit:
 
 
 void __libc_csu_fini()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:

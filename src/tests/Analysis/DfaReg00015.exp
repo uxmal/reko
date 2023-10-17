@@ -35,7 +35,7 @@ l0C00_001E:
 fn0C00_0000_exit:
 
 // void fn0C00_0037(Register word16 ax, Register word16 dx, Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15]
 // LiveOut:
 // Trashed: Top

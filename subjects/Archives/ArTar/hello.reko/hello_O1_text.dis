@@ -17,7 +17,7 @@ l0000000000001080:
 
 
 void deregister_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __do_global_dtors_aux
@@ -39,7 +39,7 @@ deregister_tm_clones_exit:
 
 
 void register_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      frame_dummy
@@ -62,7 +62,7 @@ register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -85,7 +85,7 @@ __do_global_dtors_aux_exit:
 
 
 void frame_dummy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __libc_csu_init
@@ -102,7 +102,7 @@ frame_dummy_exit:
 
 
 word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -118,7 +118,7 @@ Q_rsqrt_exit:
 
 
 word128 lib_rsqrt(word128 xmm0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
@@ -138,7 +138,7 @@ lib_rsqrt_exit:
 
 
 void main(word64 rsi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rsi:[0..63]
 // LiveOut:
@@ -161,7 +161,7 @@ main_exit:
 
 
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
@@ -187,7 +187,7 @@ __libc_csu_init_exit:
 
 
 void __libc_csu_fini()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:

@@ -1,5 +1,5 @@
 // void fn0C00_0000(Register word16 bp, Register word16 si, Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bp:[0..15] ds:[0..15] si:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bp bx cx dx si Top
@@ -16,7 +16,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // void fn0C00_0004(Register word16 bp, Register word16 si, Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bp:[0..15] ds:[0..15] si:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bp bx cx dx si Top

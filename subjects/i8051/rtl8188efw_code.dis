@@ -1,5 +1,5 @@
 void fn0000(selector __data)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  __data:[0..15]
 // LiveOut:

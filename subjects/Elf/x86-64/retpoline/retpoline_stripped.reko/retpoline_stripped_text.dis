@@ -17,7 +17,7 @@ l0000000000400480:
 
 
 void fn00000000004004B0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -38,7 +38,7 @@ fn00000000004004B0_exit:
 
 
 void fn0000000000400560(word32 esi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  edi:[0..31] esi:[0..31]
 // LiveOut:
@@ -68,7 +68,7 @@ l00000000004006F5:
 
 
 void fn0000000000400700()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00000000004006F0

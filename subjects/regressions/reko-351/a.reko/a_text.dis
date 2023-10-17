@@ -1,5 +1,5 @@
 void deregister_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __do_global_dtors_aux
@@ -20,7 +20,7 @@ deregister_tm_clones_exit:
 
 
 void register_tm_clones()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      frame_dummy
@@ -47,7 +47,7 @@ register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -86,7 +86,7 @@ __do_global_dtors_aux_exit:
 
 
 void call___do_global_dtors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -99,7 +99,7 @@ call___do_global_dtors_aux_exit:
 
 
 void frame_dummy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -127,7 +127,7 @@ frame_dummy_exit:
 
 
 void call_frame_dummy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -226,7 +226,7 @@ l800003E0:
 
 
 void main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -270,7 +270,7 @@ l80000530:
 
 
 void __do_global_ctors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -297,7 +297,7 @@ __do_global_ctors_aux_exit:
 
 
 void call___do_global_ctors_aux()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:

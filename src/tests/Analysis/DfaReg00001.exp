@@ -1,5 +1,5 @@
 // void fn00400000(Stack word32 dwArg00, Stack word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0000:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZOP eax ecx edx
@@ -16,7 +16,7 @@ l00400000:
 fn00400000_exit:
 
 // Register word32 fn0040000C(Stack word32 dwArg04, Stack word32 dwArg08)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax
 // Trashed: SCZOP eax ecx edx

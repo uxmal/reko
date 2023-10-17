@@ -1,5 +1,5 @@
 void fn1483_0ADB()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -12,7 +12,7 @@ fn1483_0ADB_exit:
 
 
 void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, word16 wArg00, word16 wArg04, word16 wArg0A, selector psegArg01A2)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000A:[0..15] Stack +01A2:[0..15]
 // LiveOut:
@@ -27,7 +27,7 @@ fn1483_0ADC_exit:
 
 
 word16 fn1483_0C11(segptr32 ds_si, segptr32 es_di, byte al, word16 cx, word16 bx, word16 bp)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0C55
@@ -91,7 +91,7 @@ l1483_0C24:
 
 
 word32 fn1483_0C55()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0C11
@@ -117,7 +117,7 @@ fn1483_0C55_exit:
 
 
 word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, byte al, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0C11
@@ -237,7 +237,7 @@ fn1483_0CED_exit:
 
 
 word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0D3F
@@ -260,7 +260,7 @@ fn1483_0CFA_exit:
 
 
 word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0CED
@@ -319,7 +319,7 @@ fn1483_0D06_exit:
 
 
 segptr32 fn1483_0D3F(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: -9582; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0ADC
@@ -541,7 +541,7 @@ fn1483_0D3F_exit:
 
 
 void fn1483_1777(byte al, byte bl, byte bh, word16 si, selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  al:[0..7] bh:[0..7] bl:[0..7] ds:[0..15] si:[0..15]
 // LiveOut:
@@ -633,7 +633,7 @@ fn1483_1BB8_exit:
 
 
 word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_1B91

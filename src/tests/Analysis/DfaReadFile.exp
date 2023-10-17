@@ -1,5 +1,5 @@
 // void fn0C00_0000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO bx cx ds dx Top
@@ -38,7 +38,7 @@ l0C00_001F:
 fn0C00_001F_exit:
 
 // Register word16 fn0C00_0023(Sequence word32 ds_dx, Register word16 cx, Register word16 bx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bx:[0..15] cx:[0..15] Sequence ds:dx:[0..31]
 // LiveOut: ax
 // Trashed: C ax Top

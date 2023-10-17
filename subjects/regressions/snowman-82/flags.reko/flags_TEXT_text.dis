@@ -1,5 +1,5 @@
 void foo(byte sil, word64 rdi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63] sil:[0..7]
 // LiveOut:
@@ -17,7 +17,7 @@ foo_exit:
 
 
 void bar()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      foo

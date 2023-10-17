@@ -104,6 +104,15 @@ namespace Reko.Analysis
             ProcessInputStorages(ssa, flow, sb);
             ProcessOutputStorages(ssa, flow, sb);
             var sig = sb.BuildSignature();
+            if (ssa.Procedure.Signature.StackDelta != 0)
+            {
+                sig.StackDelta = ssa.Procedure.Signature.StackDelta;
+            }
+            var fpuStackDelta = flow.GetFpuStackDelta(ssa.Procedure.Architecture);
+            if (fpuStackDelta != 0)
+            {
+                sig.FpuStackDelta = -fpuStackDelta;
+            }
             return sig;
         }
 
