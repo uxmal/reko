@@ -34,6 +34,6 @@ int32 waittime.5325 = 0; // 00454548
 word32 once.5585 = 0x00; // 0045454C
 Eq_n scope_id.5415 = // 00454550
 	{
-		0x00
+		0
 	};
 word32 cmsglen = 0x00; // 00454554

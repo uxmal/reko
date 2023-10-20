@@ -1497,7 +1497,6 @@ l0040D5B8: warning: Non-integral switch expression
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
-00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
 00412060: warning: Expected sizes of arrays to have been determined by now
@@ -1510,7 +1509,6 @@ l0040D5B8: warning: Non-integral switch expression
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
-00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
 
@@ -2504,4 +2502,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 83.97 seconds.
+Decompiled 91 binaries in 86.13 seconds.

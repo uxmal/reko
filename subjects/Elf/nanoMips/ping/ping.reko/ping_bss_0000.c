@@ -4,15 +4,18 @@
 
 #include "ping.h"
 
+byte g_b4303C0 = 0x00; // 004303C0
+Eq_n g_t431488 = // 00431488
+	{
+		0x00
+	};
 Eq_n g_t43148C = // 0043148C
 	{
 		0
 	};
-struct Eq_n g_t431498 = // 00431498
+Eq_n g_t431498 = // 00431498
 	{
-		
-		{
-		},
+		0x00
 	};
 Eq_n in_pr_addr = // 004314C0
 	{
@@ -32,7 +35,7 @@ Eq_n ni_subject = // 004314D4
 		0
 	};
 ui32 ni_flag = 0x00; // 004314D8
-byte g_b4324DE = 0x00; // 004324DE
+word16 g_w4324DE = 0x00; // 004324DE
 Eq_n g_t4324E4 = // 004324E4
 	{
 		0x00
@@ -41,12 +44,15 @@ byte g_b4324E5 = 0x00; // 004324E5
 word32 g_dw4324E8 = 0x00; // 004324E8
 word32 g_dw4324EC = 0x00; // 004324EC
 word32 g_dw4324F0 = 0x00; // 004324F0
-byte g_b4324F4 = 0x00; // 004324F4
+Eq_n g_t4324F4 = // 004324F4
+	{
+		0
+	};
 word16 g_w4324FA = 0x00; // 004324FA
 uint16 g_w432500 = 0x00; // 00432500
 Eq_n g_t432510 = // 00432510
 	{
-		0x00
+		0
 	};
 struct Eq_n * program_invocation_name = null; // 00432520
 struct Eq_n * program_invocation_short_name = null; // 00432524
@@ -57,11 +63,18 @@ Eq_n end.2906 = // 00432540
 	{
 		0
 	};
+Eq_n g_t432544 = // 00432544
+	{
+		0
+	};
 word32 g_dw432548 = 0x00; // 00432548
-word32 g_a432550[] = // 00432550
+uint32 g_a432550[] = // 00432550
 	{
 	};
-word32 g_dw432554 = 0x00; // 00432554
+Eq_n g_t432554 = // 00432554
+	{
+		0
+	};
 Eq_n g_t432958 = // 00432958
 	{
 		0

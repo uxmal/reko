@@ -1217,16 +1217,6 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsRw_aluipc()
-        {
-            Given_NanoDecoder();
-            Given_HexString("E0C00002");   // aluipc	r6,00008048
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = 0x100<32>");
-        }
-
-        [Test]
         public void MipsRw_bltiuc()
         {
             Given_NanoDecoder();

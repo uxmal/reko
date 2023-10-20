@@ -19,7 +19,7 @@ l00400108:
 	swpc	r6,00430078
 
 l00400110:
-	aluipc	r6,00000400
+	aluipc	r6,00000454
 	lhu	r8,0518(r6)
 	subu	r5,r4,r8
 	seh	r5,r5
@@ -477,7 +477,7 @@ l004008BC:
 ;; __do_global_dtors_aux: 004008BE
 __do_global_dtors_aux proc
 	save	00000010,ra,00000002
-	aluipc	r7,00000400
+	aluipc	r7,00000430
 	lbu	r6,03C0(r7)
 	move	r16,r7
 	bnezc	r6,004008E4
@@ -996,7 +996,7 @@ l00400C24:
 l00400C28:
 	lw	r20,0000(r21)
 	addiupc	r19,0003085A
-	aluipc	r7,00000400
+	aluipc	r7,00000431
 	li	r6,00000002
 	sw	r0,0488(r7)
 	addiupc	r5,00030850
@@ -1135,7 +1135,7 @@ l00400D5A:
 	beqzc	r7,00400D76
 
 l00400D6C:
-	aluipc	r7,00000400
+	aluipc	r7,00000431
 	lw	r7,0498(r7)
 	sw	r7,002C(sp)
 
@@ -3153,7 +3153,7 @@ fn00401BA0 proc
 ;;     00402BA4 (in main_loop)
 ;;     00402C74 (in main_loop)
 in_flight proc
-	aluipc	r6,00000401
+	aluipc	r6,00000454
 	lwpc	r7,004544E4
 	lhu	r6,0518(r6)
 	subu	r6,r7,r6
@@ -3175,7 +3175,7 @@ l00401BD6:
 ;;     004020C6 (in pinger)
 advance_ntransmitted proc
 	lwpc	r6,004544E4
-	aluipc	r5,00000401
+	aluipc	r5,00000454
 	addiu	r7,r6,00000001
 	lhu	r4,0518(r5)
 	swpc	r7,004544E4
@@ -3610,7 +3610,7 @@ l00401EAA:
 	beqc	r0,r7,004020FC
 
 l00401EB4:
-	aluipc	r19,00000401
+	aluipc	r19,00000454
 	move	r5,r0
 	lw	r7,0490(r19)
 	move	r18,r19
@@ -4289,7 +4289,7 @@ l00402432:
 	swpc	r6,00430078
 
 l0040243A:
-	aluipc	r6,00000402
+	aluipc	r6,00000454
 	lhu	r4,0518(r6)
 	subu	r5,r16,r4
 	seh	r5,r5
@@ -4366,7 +4366,7 @@ l004024E0:
 	bnec	r0,r18,004025DE
 
 l004024E4:
-	aluipc	r6,00000402
+	aluipc	r6,00000454
 	sra	r5,r22,0000001F
 	lw	r7,0480(r6)
 	lw	r4,0484(r6)
@@ -4376,7 +4376,7 @@ l004024E4:
 	addu	r7,r7,r5
 	sw	r17,0480(r6)
 	sw	r7,0484(r6)
-	aluipc	r5,00000402
+	aluipc	r5,00000454
 	mul	r6,r22,r22
 	muh	r4,r22,r22
 	lw	r7,0488(r5)
@@ -4638,7 +4638,7 @@ fn0040271C proc
 ;;     00402C92 (in main_loop)
 finish proc
 	save	00000050,r30,0000000A
-	aluipc	r7,00000402
+	aluipc	r7,00000454
 	lw	r16,0490(r7)
 	addiupc	r7,00051D62
 	lw	r20,0001(r7)
@@ -4652,7 +4652,7 @@ l0040273E:
 	addiu	r20,r20,000F4240
 
 l00402746:
-	aluipc	r7,00000402
+	aluipc	r7,00000454
 	li	r4,0000000A
 	lw	r5,0498(r7)
 	subu	r16,r16,r5
@@ -4726,7 +4726,7 @@ l004027F8:
 
 l00402802:
 	lwpc	r7,004544E0
-	aluipc	r18,00000402
+	aluipc	r18,00000454
 	addu	r17,r17,r7
 	lw	r4,0480(r18)
 	sra	r21,r17,0000001F
@@ -4736,7 +4736,7 @@ l00402802:
 	movep	r19,r22,r4,r5
 	sw	r19,0480(r18)
 	sw	r22,0484(r18)
-	aluipc	r18,00000402
+	aluipc	r18,00000454
 	lw	r4,0488(r18)
 	lw	r5,048C(r18)
 	movep	r6,r7,r17,r21
@@ -4954,7 +4954,7 @@ l00402A14:
 
 l00402A1C:
 	lwpc	r7,004544E0
-	aluipc	r5,00000402
+	aluipc	r5,00000454
 	addu	r6,r6,r7
 	lw	r4,0480(r5)
 	lw	r5,0484(r5)
@@ -6119,7 +6119,7 @@ l004031D0:
 	swpc	r6,00430078
 
 l004031D8:
-	aluipc	r6,00000403
+	aluipc	r6,00000454
 	lhu	r17,0518(r6)
 	subu	r5,r4,r17
 	seh	r5,r5
@@ -9798,7 +9798,7 @@ l00404D0A:
 
 l00404D14:
 	sync	00000000
-	aluipc	r5,00000404
+	aluipc	r5,00000432
 
 l00404D1C:
 	ori	r6,r5,00000550
@@ -10054,7 +10054,7 @@ l00404EE6:
 
 l00404EF0:
 	sync	00000000
-	aluipc	r5,00000404
+	aluipc	r5,00000432
 
 l00404EF8:
 	ori	r6,r5,00000550
@@ -10373,7 +10373,7 @@ l00405140:
 	bc	00404FBA
 
 l00405150:
-	aluipc	r4,00000405
+	aluipc	r4,00000432
 	subu	r7,r0,r16
 	lw	r10,0550(r4)
 	slti	r22,r16,00000020
@@ -10560,7 +10560,7 @@ l004052B0:
 	sw	r0,000C(sp)
 
 l004052BE:
-	aluipc	r23,00000405
+	aluipc	r23,00000432
 
 l004052C2:
 	lw	r4,0550(r23)
@@ -10635,7 +10635,7 @@ l0040534C:
 
 l00405370:
 	lw	r17,0008(sp)
-	aluipc	r17,00000405
+	aluipc	r17,00000432
 	lw	r7,0003(r22)
 	addiu	r6,r6,00000010
 	sw	r6,001C(sp)
@@ -24139,7 +24139,7 @@ l0040B0D4:
 
 l0040B0D6:
 	li	r6,00000001
-	aluipc	r7,0000040B
+	aluipc	r7,00000454
 	sw	r6,0430(r7)
 
 l0040B0E0:

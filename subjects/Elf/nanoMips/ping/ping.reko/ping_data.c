@@ -4,7 +4,7 @@
 
 #include "ping.h"
 
-byte g_b430018 = 0x15; // 00430018
+word16 g_w430018 = 0x15; // 00430018
 byte g_b43001A = 0x00; // 0043001A
 byte g_b43001B = 0x01; // 0043001B
 int32 pmtudisc = -1; // 00430048
@@ -38,7 +38,7 @@ Eq_n interval = // 0043008C
 	{
 		-24
 	};
-byte g_b4300A0 = 0x15; // 004300A0
+word16 g_w4300A0 = 0x15; // 004300A0
 byte g_b4300A2 = 0x00; // 004300A2
 byte g_b4300A3 = 0x01; // 004300A3
 struct Eq_n g_t4300D0 = // 004300D0

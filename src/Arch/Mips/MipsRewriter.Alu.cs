@@ -70,8 +70,9 @@ namespace Reko.Arch.Mips
         private void RewriteAluipc(MipsInstruction instr)
         {
             var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, src);
+            var offset = (((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 12);
+            var addr = instr.Address.NewOffset(offset);
+            m.Assign(dst, addr);
         }
 
         private void RewriteAnd(MipsInstruction instr)

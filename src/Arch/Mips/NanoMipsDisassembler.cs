@@ -550,7 +550,7 @@ namespace Reko.Arch.Mips
             Bitfield[] aluipcFields = Bf((0, 1), (2, 10), (12, 9));
             return (u, d) =>
             {
-                var s = (uint) Bitfield.ReadSignedFields(aluipcFields, u);
+                var s = (uint) Bitfield.ReadSignedFields(aluipcFields, u) << 12;
                 var uAddr = d.rdr.Address.ToUInt32() + (ulong)s;
                 uAddr >>= 12;
                 d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uAddr)));
@@ -1255,18 +1255,18 @@ namespace Reko.Arch.Mips
                         invalid, // (MIPS64)
                         invalid)), // (MIPS64)
                 Mask(12, 4, "  P.LS.U12",
-                    Instr(Mnemonic.lb, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Mnemonic.lb, R21,Mu(PrimitiveType.SByte,16,12)),
                     Instr(Mnemonic.sb, R21,Mu(PrimitiveType.Byte,16,12)),
                     Instr(Mnemonic.lbu, R21,Mu(PrimitiveType.Byte,16,12)),
                     Nyi("P.PREF[U12]"),
 
-                    Instr(Mnemonic.lh, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Mnemonic.sh, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Mnemonic.lhu, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.lh, R21, Mu(PrimitiveType.Int16, 16, 12)),
+                    Instr(Mnemonic.sh, R21, Mu(PrimitiveType.Word16, 16, 12)),
+                    Instr(Mnemonic.lhu, R21, Mu(PrimitiveType.Word16, 16, 12)),
                     invalid,    // (MIPS64)
 
-                    Instr(Mnemonic.lw, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Mnemonic.sw, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.lw, R21, Mu(PrimitiveType.Word32, 16, 12)),
+                    Instr(Mnemonic.sw, R21, Mu(PrimitiveType.Word32, 16, 12)),
                     invalid,    // (CP1)
                     invalid,    // (CP1)
 

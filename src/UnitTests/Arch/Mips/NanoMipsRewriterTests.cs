@@ -52,6 +52,15 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsRw_aluipc()
+        {
+            Given_HexString("E3E0 0210");
+            AssertCode(     // aluipc r7,00000400
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = 00131000");
+        }
+
+        [Test]
         public void NanoMipsRw_balrsc()
         {
             Given_HexString("4E495484");
@@ -77,15 +86,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(     // cachee	0000000F,-00F8(r12)
                 "0|S--|00100000(4): 1 instructions",
                 "1|S--|__cache_EVA(0xF<32>, &Mem0[r12 - 0xF8<32>:word16])");
-        }
-
-        [Test]
-        public void NanoMipsRw_swx()
-        {
-            Given_HexString("89208734");
-            AssertCode(     // swx	r6,r9(r4)
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r4 + r9:word32] = r6");
         }
 
         [Test]
@@ -125,23 +125,6 @@ namespace Reko.UnitTests.Arch.Mips
                 "2|L--|Mem0[sp + 44<i32>:word32] = r7");
         }
 
-        [Test]
-        public void NanoMipsRw_seqi()
-        {
-            Given_HexString("E7802560");
-            AssertCode(     // seqi	r7,r7,00000025
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = CONVERT(r7 == 0x25<32>, bool, word32)");
-        }
-
-        [Test]
-        public void NanoMipsRw_sbx()
-        {
-            Given_HexString("62218760");
-            AssertCode(     // sbx	r12,r2(r11)
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r11 + r2:byte] = SLICE(r12, byte, 0)");
-        }
 
         [Test]
         public void NanoMipsRw_jalrc_hb()
@@ -164,6 +147,25 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsRw_lh()
+        {
+            Given_HexString("9284 8844");
+            //Given_HexString("8492 8488");
+            AssertCode(     // lh r4,0488(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = CONVERT(Mem0[r18 + 0x488<32>:int16], int16, word32)");
+        }
+
+        [Test]
+        public void NanoMipsRw_lhu()
+        {
+            Given_HexString("9284 8864");
+            AssertCode(     // lhu r4,0488(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = CONVERT(Mem0[r18 + 0x488<32>:uint16], uint16, word32)");
+        }
+
+        [Test]
         public void NanoMipsRw_lhuxs()
         {
             Given_HexString("87234753");
@@ -179,6 +181,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(     // lhxs	r4,r4(r7)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = CONVERT(Mem0[r7 + r4 * 2<32>:int16], int16, int32)");
+        }
+
+        [Test]
+        public void NanoMipsRw_lw()
+        {
+            Given_HexString("9284 8884");
+            AssertCode(     // lw r4,0488(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = Mem0[r18 + 0x488<32>:word32]");
         }
 
         [Test]
@@ -209,12 +220,21 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void NanoMipsRw_shxs()
+        public void NanoMipsRw_seqi()
         {
-            Given_HexString("8722C702");
-            AssertCode(     // shxs	r0,r7(r20)
+            Given_HexString("E7802560");
+            AssertCode(     // seqi	r7,r7,00000025
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r20 + r7 * 2<32>:word16] = SLICE(0<32>, word16, 0)");
+                "1|L--|r7 = CONVERT(r7 == 0x25<32>, bool, word32)");
+        }
+
+        [Test]
+        public void NanoMipsRw_sbx()
+        {
+            Given_HexString("62218760");
+            AssertCode(     // sbx	r12,r2(r11)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r11 + r2:byte] = SLICE(r12, byte, 0)");
         }
 
         [Test]
@@ -227,6 +247,35 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsRw_sh()
+        {
+            Given_HexString("9284 8854");
+            //Given_HexString("8492 9488");
+            AssertCode(     // sw r4,0488(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r18 + 0x488<32>:word16] = SLICE(r4, word16, 0)");
+        }
+
+        [Test]
+        public void NanoMipsRw_shxs()
+        {
+            Given_HexString("8722C702");
+            AssertCode(     // shxs	r0,r7(r20)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r20 + r7 * 2<32>:word16] = SLICE(0<32>, word16, 0)");
+        }
+
+        [Test]
+        public void NanoMipsRw_sw()
+        {
+            Given_HexString("9284 8894");
+            //Given_HexString("8492 9488");
+            AssertCode(     // sw r4,0488(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r18 + 0x488<32>:word32] = r4");
+        }
+
+        [Test]
         public void NanoMipsRw_swpc()
         {
             Given_HexString("EF6016280500");
@@ -235,15 +284,14 @@ namespace Reko.UnitTests.Arch.Mips
                 "1|L--|Mem0[0x0015281C<p32>:word32] = r7");
         }
 
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-
-
-
-
-
-
+        [Test]
+        public void NanoMipsRw_swx()
+        {
+            Given_HexString("89208734");
+            AssertCode(     // swx	r6,r9(r4)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r4 + r9:word32] = r6");
+        }
 
     }
 }
