@@ -37,6 +37,11 @@ namespace Reko.Core.Graphs
             this.blocks = blocks;
         }
 
+        /// <summary>
+        /// Removes a block from the graph, as well as any edges
+        /// to other blocks in the graph.
+        /// </summary>
+        /// <param name="block"></param>
         public void RemoveBlock(Block block)
         {
             var preds = block.Pred.ToList();
