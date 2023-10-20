@@ -19,7 +19,7 @@ namespace Reko.Core.Collections
     /// Interval structure
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Interval<T> where T : IComparable<T>
+    public readonly struct Interval<T> where T : IComparable<T>
     {
         public readonly T Start;
         public readonly T End;
@@ -35,7 +35,7 @@ namespace Reko.Core.Collections
             this.End = end;
         }
 
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             if (obj is not Interval<T> that)
                 return false;
@@ -54,7 +54,7 @@ namespace Reko.Core.Collections
                    a.End.CompareTo(b.End) == 0;
         }
 
-        public static bool operator !=(Interval<T> a, Interval<T> b)
+        public static bool operator != (Interval<T> a, Interval<T> b)
         {
             return a.Start.CompareTo(b.Start) != 0 ||
                    a.End.CompareTo(b.End) != 0;
@@ -260,10 +260,7 @@ namespace Reko.Core.Collections
         /// <param name="list">The list.</param>
         public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>, TypeValue>> list)
         {
-            if (this.root != null)
-            {
-                this.root.GetIntervalsOverlappingWith(toFind, ref list);
-            }
+            this.root?.GetIntervalsOverlappingWith(toFind, ref list);
         }
 
         /// <summary>
@@ -493,10 +490,7 @@ namespace Reko.Core.Collections
         /// <param name="visitor">The visitor.</param>
         private void Visit(Action<IntervalNode,int> visitor)
         {
-            if (this.root != null)
-            {
-                this.root.Visit(visitor, 0);
-            }
+            this.root?.Visit(visitor, 0);
         }
 
         #endregion
@@ -1031,26 +1025,17 @@ namespace Reko.Core.Collections
                 if (toFind.End.CompareTo(this.Interval.Start) <= 0)
                 {
                     ////toFind ends before subtree.Data begins, prune the right subtree
-                    if (this.Left != null)
-                    {
-                        this.Left.GetIntervalsOverlappingWith(toFind, ref list);
-                    }
+                    this.Left?.GetIntervalsOverlappingWith(toFind, ref list);
                 }
                 else if (toFind.Start.CompareTo(this.Max) >= 0)
                 {
                     ////toFind begins after the subtree.Max ends, prune the left subtree
-                    if (this.Right != null)
-                    {
-                        this.Right.GetIntervalsOverlappingWith(toFind, ref list);
-                    }
+                    this.Right?.GetIntervalsOverlappingWith(toFind, ref list);
                 }
                 else
                 {
                     //// search the left subtree
-                    if (this.Left != null)
-                    {
-                        this.Left.GetIntervalsOverlappingWith(toFind, ref list);
-                    }
+                    this.Left?.GetIntervalsOverlappingWith(toFind, ref list);
 
                     if (this.Interval.OverlapsWith(toFind))
                     {
@@ -1077,10 +1062,7 @@ namespace Reko.Core.Collections
                     }
 
                     //// search the right subtree
-                    if (this.Right != null)
-                    {
-                        this.Right.GetIntervalsOverlappingWith(toFind, ref list);
-                    }
+                    this.Right?.GetIntervalsOverlappingWith(toFind, ref list);
                 }
             }
 
@@ -1156,17 +1138,11 @@ namespace Reko.Core.Collections
 
             public void Visit(Action<IntervalNode, int> visitor, int level)
             {
-                if (this.Left != null)
-                {
-                    this.Left.Visit(visitor, level + 1);
-                }
+                this.Left?.Visit(visitor, level + 1);
 
                 visitor(this, level);
 
-                if (this.Right != null)
-                {
-                    this.Right.Visit(visitor, level + 1);
-                }
+                this.Right?.Visit(visitor, level + 1);
             }
 
             /// <summary>

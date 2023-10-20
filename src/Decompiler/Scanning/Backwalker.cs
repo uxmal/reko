@@ -269,9 +269,8 @@ namespace Reko.Scanning
 
                     // Some architectures have pc-relative addressing, which the rewriters
                     // should convert to an _address_.
-                    var addr = binEa.Left as Address;
                     baseReg = GetBaseRegister(binEa.Right);
-                    if (!(addr is null || VectorAddress is null))
+                    if (!(binEa.Left is not Address addr || VectorAddress is null))
                     {
                         this.VectorAddress = addr;
                         Index = baseReg;
