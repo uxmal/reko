@@ -55,28 +55,6 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
-        [Ignore("This is already covered by unit tests, remove next commit.")]
-        public void X86RwDivideTests()
-        {
-            Procedure proc = DoRewrite(@".i86
-	mov	ebx,32
-	mov eax,100
-	cdq
-	idiv ebx
-	mov cx,[si]
-	mov ax,[si+2]
-	mov dx,[si+4]
-	div cx
-	ret
-");
-            using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwDivideTests.txt"))
-            {
-                proc.Write(false, fut.TextWriter);
-                fut.AssertFilesEqual();
-            }
-        }
-
-        [Test]
         public void X86Rw_MemOperations()
         {
             DoRewriteFile("Fragments/memoperations.asm");
