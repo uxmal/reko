@@ -901,6 +901,9 @@ namespace Reko.Gui.Forms
             var ct = this.commandRouter?.ActiveCommandTarget;
             if (ct is not null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
+            ct = subWindowCommandTarget;
+            if (ct is not null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
+                return true;
             
             if (currentPhase is not null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
@@ -983,6 +986,12 @@ namespace Reko.Gui.Forms
         public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             var ct = commandRouter.ActiveCommandTarget;
+            if (ct is not null && await ct.ExecuteAsync(cmdId))
+            {
+                form.UpdateToolbarState();
+                return true;
+            }
+            ct = subWindowCommandTarget;
             if (ct is not null && await ct.ExecuteAsync(cmdId))
             {
                 form.UpdateToolbarState();
