@@ -358,6 +358,33 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
+        /// <summary>
+        /// Sign extend the expression <paramref name="exp"/> to the same size as 
+        /// <paramref name="newSize"/>.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <param name="newSize"></param>
+        /// <returns></returns>
+        public Conversion ExtendS(Expression exp, DataType newSize)
+        {
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, newSize.BitSize);
+            return new Conversion(exp, exp.DataType, dtDst);
+        }
+
+        /// <summary>
+        /// Zero extend the expression <paramref name="exp"/> to the same size as 
+        /// <paramref name="newSize"/>.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <param name="newSize"></param>
+        /// <returns></returns>
+        public Conversion ExtendZ(Expression exp, DataType newSize)
+        {
+            var dtDst = PrimitiveType.CreateWord(newSize.BitSize);
+            return new Conversion(exp, exp.DataType, dtDst);
+        }
+
+
         // Floating point operations.
 
         /// <summary>

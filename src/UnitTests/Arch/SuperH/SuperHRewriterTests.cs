@@ -633,6 +633,26 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void ShRw_mov_w_load()
+        {
+            Given_HexString("8799");    // mov.w\t(00100112),r9
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r9 = CONVERT(Mem0[0x00100112<p32>:word16], word16, int32)");
+        }
+
+        [Test]
+        public void ShRw_mov_w_postinc()
+        {
+            Given_HexString("1462");
+            AssertCode(     // mov.b @r1+,r2
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v3 = Mem0[r1:byte]",
+                "2|L--|r1 = r1 + 1<i32>",
+                "3|L--|r2 = CONVERT(v3, byte, int32)");
+        }
+
+        [Test]
         public void SHRw_mov()
         {
             Given_HexString("8669"); // mov.l\t@r8+,r9
@@ -649,7 +669,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("3390"); // mov.w\t@(66,pc),r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = Mem0[0x0010006A<p32>:word16]");
+                "1|L--|r0 = CONVERT(Mem0[0x0010006A<p32>:word16], word16, int32)");
         }
 
         [Test]

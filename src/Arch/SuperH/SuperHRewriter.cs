@@ -282,7 +282,12 @@ namespace Reko.Arch.SuperH
             {
             case RegisterStorage regOp:
                 var id = binder.EnsureRegister(regOp);
-                m.Assign(id, fn(id, src));
+                var result = fn(id, src);
+                if (result.DataType.BitSize < regOp.DataType.BitSize)
+                {
+                    result = m.ExtendS(result, regOp.DataType);
+                }
+                m.Assign(id, result);
                 return id;
 
             case MemoryOperand mem:
@@ -311,7 +316,12 @@ namespace Reko.Arch.SuperH
             {
             case RegisterStorage regOp:
                 var id = binder.EnsureRegister(regOp);
-                m.Assign(id, fn(src));
+                var result = fn(src);
+                if (result.DataType.BitSize < regOp.DataType.BitSize)
+                {
+                    result = m.ExtendS(result, regOp.DataType);
+                }
+                m.Assign(id, result);
                 return id;
             case MemoryOperand mem:
                 Identifier r0;
