@@ -919,7 +919,7 @@ l00002DF0:
 l00002E04:
 	branch r9_33 != r5_34 l00002E12
 l00002E08:
-	Mem46[r11 + -24<i32>:word32] = False<1>
+	Mem46[r11 + -24<i32>:word32] = False<32>
 l00002E12:
 	word32 r8_50 = Mem48[r11 + 24<i32>:word32]
 	word32 lr_51 = Mem48[r11 + 16<i32>:word32]

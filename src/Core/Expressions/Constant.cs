@@ -204,21 +204,23 @@ namespace Reko.Core.Expressions
         /// <param name="dt"></param>
         /// <param name="bits"></param>
         /// <returns></returns>
-		public static Constant RealFromBitpattern(PrimitiveType dt, Constant bits)
+		public static Constant RealFromBitpattern(DataType dt, Constant bits)
         {
-            if (dt == PrimitiveType.Real80)
+            if (dt.Domain == Domain.Real)
             {
-                var rawBits = bits.ToBigInteger();
-                var exponent = (int) (rawBits >> 64);
-                var mantissa = rawBits & ((BigInteger.One << 64) - BigInteger.One);
-                return ConstantReal.Real80(new Float80((ushort) exponent, (ulong) mantissa));
+                if (dt.BitSize == 80)
+                {
+                    var rawBits = bits.ToBigInteger();
+                    var exponent = (int) (rawBits >> 64);
+                    var mantissa = rawBits & ((BigInteger.One << 64) - BigInteger.One);
+                    return ConstantReal.Real80(new Float80((ushort) exponent, (ulong) mantissa));
+                }
+                if (dt.BitSize == 32)
+                    return FloatFromBitpattern(bits.ToInt64());
+                if (dt.BitSize == 64)
+                    return DoubleFromBitpattern(bits.ToInt64());
             }
-            if (dt == PrimitiveType.Real32)
-                return FloatFromBitpattern(bits.ToInt64());
-            else if (dt == PrimitiveType.Real64)
-                return DoubleFromBitpattern(bits.ToInt64());
-            else
-                throw new ArgumentException(string.Format("Data type {0} is not a floating point type.", dt));
+            throw new ArgumentException($"Data type {dt} is not a floating point type.");
         }
 
         public static Constant FloatFromBitpattern(long bits)

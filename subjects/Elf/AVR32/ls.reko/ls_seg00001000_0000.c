@@ -678,7 +678,7 @@ void fn00002DF0(word32 r0, word32 r1, word32 r2, word32 r7, struct Eq_n * r11)
 	if (r8_n >> 0x02 == 0x00)
 		return;
 	if (r9_n == r5_n)
-		r11->tFFFFFFE8.u1 = (word32) 0x00;
+		r11->tFFFFFFE8.u1 = (word32) False<32>;
 	ui32 r8_n = r11->dw0018;
 	int32 lr_n = r11->dw0010;
 	int32 r9_n = r11->dw0004;

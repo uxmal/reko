@@ -1259,5 +1259,33 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("CONVERT(foo_1, word32, int64)", exp.ToString());
         }
+
+        [Test]
+        public void Exs_simd_abs()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.Fn(
+                Simd.Abs.MakeInstance(new ArrayType(PrimitiveType.SByte, 8)),
+                Constant.Create(PrimitiveType.Word64, 0xFFF8C07F_0280FFFF));
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("0x108407F02800101<64>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_simd_array_element()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp =
+                new ArrayAccess(
+                    PrimitiveType.Word16,
+                    Constant.Create(
+                        new ArrayType(PrimitiveType.Word16, 4),
+                        0x0000111122223333),
+                    m.Int32(1));
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("0x2222<16>", exp.ToString());
+        }
     }
 }

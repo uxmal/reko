@@ -22,7 +22,6 @@ update_gen_entry:
 	word32 arg0_1 = arg0
 l000C0060:
 	word32 v16_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
-	word32 loc7_27 = false
 	word32 loc13_105 = 0<32>
 l000C00AC:
 	arg0_1 = 0<32>
@@ -39,7 +38,7 @@ l000C0124:
 	branch true l000C0060
 l000C0137:
 	arg0_1 = 1<32>
-	branch loc7_27 == 0<32> l000C0060
+	branch true l000C0060
 l000C0151:
 	return
 update_gen_exit:

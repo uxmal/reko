@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -144,6 +145,15 @@ namespace Reko.Core.Types
 			{
 				return AreCompatible(aa.ElementType, ab.ElementType, ++depth);
 			}
+            if (aa is not null && b.IsWord)
+            {
+                return aa.Size == b.Size;
+            }
+            else if (ab is not null && a.IsWord)
+            {
+                return ab.Size == a.Size;
+            }
+            
 
 			UnionType? ua = a as UnionType;
 			UnionType? ub = b as UnionType;
@@ -422,8 +432,16 @@ namespace Reko.Core.Types
 				arrB.ElementType = Unify(arrB.ElementType, a)!;
 				return arrB;
 			}
+            if (arrA is not null && b.IsWord && a.Size == b.Size)
+            {
+                return arrA;
+            }
+            else if (arrB is not null && a.IsWord && b.Size == a.Size)
+            {
+                return arrB;
+            }
 
-			StructureType? strA = a as StructureType;
+            StructureType? strA = a as StructureType;
 			StructureType? strB = b as StructureType;
 			if (strA != null && strB != null)
 			{

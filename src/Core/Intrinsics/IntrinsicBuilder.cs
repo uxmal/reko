@@ -287,6 +287,14 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        public static IntrinsicProcedure SimdUnary(string name, IFunctionalUnit fn)
+        {
+            return new IntrinsicBuilder(name, fn)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+        }
+
         public static IntrinsicProcedure GenericBinary(string name, bool hasSideEffect)
         {
             return new IntrinsicBuilder(name, hasSideEffect)

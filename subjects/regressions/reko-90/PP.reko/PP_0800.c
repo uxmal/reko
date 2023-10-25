@@ -4887,7 +4887,7 @@ word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & siOut, un
 		*ptrLoc0A_n = 0x00;
 		word16 dx_n;
 		word16 cx_n;
-		if (fn0800-33CD(ds, 0x00, 0x10, ptrArg02, out cx_n, out dx_n) != 0x00 && fn0800-8E52(ds, ptrArg02) != 0x00)
+		if (fn0800-33CD(ds, 0<32>, 0x10, ptrArg02, out cx_n, out dx_n) != 0x00 && fn0800-8E52(ds, ptrArg02) != 0x00)
 		{
 			word16 di_n;
 			word16 bx_n;
@@ -14339,7 +14339,7 @@ Eq_n fn0800_A614(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut, union Eq_n & dsOut)
 		ptrArg02.u6->t0004.u2 = ~0x00;
 		if (*((word32) ptrArg02 + 16) != 0x00)
 		{
-			char * dx_ax_n = fn0800-8E6A(ds, *((word32) ptrArg02 + 16), 0x00, 0x00, 0x00);
+			char * dx_ax_n = fn0800-8E6A(ds, *((word32) ptrArg02 + 16), 0x00, 0x00, 0<32>);
 			dx = fn0800-97F8(ds, dx_ax_n);
 			((word32) ptrArg02 + 16)->u4 = 0x00;
 			cx.u4 = SLICE(dx_ax_n, word16, 16);
@@ -15791,7 +15791,7 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 		{
 			word16 dx_n;
 			word16 cx_n;
-			fn0800-8E29(ds, (int16) ptrArg02.u6->t0004.u2, 0x00, 0x02, out cx_n, out dx_n);
+			fn0800-8E29(ds, (int16) ptrArg02.u6->t0004.u2, 0<32>, 0x02, out cx_n, out dx_n);
 		}
 		word16 dx_n;
 		word16 bx_n;
@@ -15812,7 +15812,7 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 		{
 			word16 cx_n;
 			word16 dx_n;
-			fn0800-8E29(ds, (int16) ptrArg02.u6->t0004.u2, 0x00, 0x02, out cx_n, out dx_n);
+			fn0800-8E29(ds, (int16) ptrArg02.u6->t0004.u2, 0<32>, 0x02, out cx_n, out dx_n);
 		}
 		word16 cx_n;
 		word16 dx_n;

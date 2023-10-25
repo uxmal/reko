@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
@@ -79,6 +80,7 @@ namespace Reko.Core.Intrinsics
             int cLanes = bitsInput / bitsInputLane;
             var output = BigInteger.Zero;
             var laneOutputs = new Constant[cLanes];
+            var laneMask = Bits.Mask(0, bitsInputLane);
             for (int iLane = cLanes - 1; iLane >= 0; --iLane)
             {
                 for (int i = 0; i < cs.Length; ++i)
@@ -90,7 +92,7 @@ namespace Reko.Core.Intrinsics
                 if (laneResult is null)
                     return null;
                 output <<= dtOutputLane.BitSize;
-                output |= laneResult.ToBigInteger();
+                output |= laneResult.ToUInt64() & laneMask;
             }
             return Constant.Create(dt, output);
         }

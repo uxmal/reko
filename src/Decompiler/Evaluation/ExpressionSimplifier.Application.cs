@@ -32,17 +32,36 @@ namespace Reko.Evaluation
         {
             bool changed = false;
             var args = new Expression[appl.Arguments.Length];
+            var constArgs = new Constant[appl.Arguments.Length];
+            bool allConst = true;
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 var (arg, argChanged) = appl.Arguments[i].Accept(this);
                 args[i] = arg;
+                if (arg is Constant c)
+                {
+                    constArgs[i] = c;
+                }
+                else
+                {
+                    allConst = false;
+                }
                 changed |= argChanged;
             }
-            // Rotations-with-carries that rotate in a false carry 
-            // flag can be simplified to shifts.
+
             if (appl.Procedure is ProcedureConstant pc &&
                 pc.Procedure is IntrinsicProcedure intrinsic)
             {
+                if (allConst)
+                {
+                    var cResult = intrinsic.ApplyConstants(appl.DataType, constArgs);
+                    if (cResult is not null)
+                        return (cResult, true);
+                }
+
+                // Rotations-with-carries that rotate in a false carry 
+                // flag can be simplified to shifts.
+
                 if (intrinsic.Name == CommonOps.RolC.Name)
                 {
                     if (IsSingleBitRotationWithClearCarryIn(args))

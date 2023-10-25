@@ -128,9 +128,9 @@ l414C:
 	Mem6[0x0032<p16>:byte] = 7<16>
 	Mem7[0x0031<p16>:byte] = 7<16>
 	init_uart_isr(0<16>, 0x8000<32>, 0x10<8>)
-	uart_putchar_isr_mode(0<8>)
+	uart_putchar_isr_mode(0<16>)
 	printf(r8, 0x411D<16>)
-	uart_putchar_isr_mode(1<8>)
+	uart_putchar_isr_mode(1<16>)
 	word16 r15_155
 	word16 r15_156
 	word16 r15_157

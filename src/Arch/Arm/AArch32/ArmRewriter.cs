@@ -411,7 +411,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.wfi: RewriteWfi(); break;
                 case Mnemonic.yield: RewriteYield(); break;
 
-                case Mnemonic.vabs: RewriteVectorUnaryOp(vabs_intrinsic); break;
+                case Mnemonic.vabs: RewriteVectorUnaryOp(Simd.Abs); break;
                 case Mnemonic.vaba: RewriteVectorBinOp(vaba_intrinsic); break;
                 case Mnemonic.vabal: RewriteVectorBinOpWiden(vabal_intrinsic); break;
                 case Mnemonic.vabd: RewriteVectorBinOp(vabd_intrinsic); break;
@@ -1400,7 +1400,6 @@ namespace Reko.Arch.Arm.AArch32
             .GenericTypes("TArraySrc", "TArrayDst")
             .Params("TArraySrc", "TArraySrc")
             .Returns("TArrayDst");
-        private static readonly IntrinsicProcedure vabs_intrinsic = IntrinsicBuilder.GenericUnary("__vabs");
         private static readonly IntrinsicProcedure vabs_cge_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cge");
         private static readonly IntrinsicProcedure vabs_cgt_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cgt");
         private static readonly IntrinsicProcedure vadd_intrinsic = IntrinsicBuilder.GenericBinary("__vadd", false);

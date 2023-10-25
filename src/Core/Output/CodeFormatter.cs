@@ -264,24 +264,23 @@ namespace Reko.Core.Output
 
         public virtual void VisitConstant(Constant c)
         {
-            var pt = c.DataType.ResolveAs<PrimitiveType>();
+            var dt = c.DataType;
+            var pt = dt.ResolveAs<PrimitiveType>();
             if (!c.IsValid && (c is InvalidConstant || pt is null || pt.Domain != Domain.Real))
             {
                 InnerFormatter.Write("<invalid>");
                 return;
             }
-            if (pt != null)
+            switch (dt.Domain)
             {
-                switch (pt.Domain)
-                {
-                case Domain.Boolean:
-                    InnerFormatter.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
-                    break;
-                case Domain.Real:
+            case Domain.Boolean:
+                InnerFormatter.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
+                break;
+            case Domain.Real:
                 {
                     string sr;
 
-                    if (pt.Size == 4)
+                    if (dt.Size == 4)
                     {
                         sr = c.ToFloat().ToString("g", CultureInfo.InvariantCulture);
                     }
@@ -293,34 +292,34 @@ namespace Reko.Core.Output
                     {
                         sr += ".0";
                     }
-                    if (pt.Size == 4)
+                    if (dt.Size == 4)
                     {
                         sr += "F";
                     }
                     InnerFormatter.Write(sr);
                     break;
                 }
-                case Domain.Character:
-                    if (pt.Size == 1)
-                    {
-                        InnerFormatter.Write("'");
-                    }
-                    else
-                    {
-                        InnerFormatter.Write("L'"); 
-                    }
-                    WriteEscapedCharacter(Convert.ToChar(c.GetValue()));
+            case Domain.Character:
+                if (dt.Size == 1)
+                {
                     InnerFormatter.Write("'");
-                    break;
-                default:
-                    object v = c.GetValue();
-                    var (fmtNumber, fmtSigil) = FormatStrings(pt, v);
-                    InnerFormatter.Write(fmtNumber, v);
-                    InnerFormatter.Write(fmtSigil, pt.BitSize);
-                    break;
                 }
-                return;
+                else
+                {
+                    InnerFormatter.Write("L'");
+                }
+                WriteEscapedCharacter(Convert.ToChar(c.GetValue()));
+                InnerFormatter.Write("'");
+                break;
+            case Domain.Array:
+            default:
+                object v = c.GetValue();
+                var (fmtNumber, fmtSigil) = FormatStrings(dt, v);
+                InnerFormatter.Write(fmtNumber, v);
+                InnerFormatter.Write(fmtSigil, dt.BitSize);
+                break;
             }
+            return;
         }
 
 
@@ -939,7 +938,7 @@ namespace Reko.Core.Output
             return (bitSize + 3) / 4;
         }
 
-        private (string,string) FormatStrings(PrimitiveType type, object value)
+        private (string,string) FormatStrings(DataType type, object value)
         {
             string format;
             switch (type.Domain)

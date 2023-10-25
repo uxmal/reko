@@ -113,9 +113,9 @@ void main(cui16 sr, uint16 r8)
 	((union Eq_n *) 0x32)->u1 = 0x07;
 	((union Eq_n *) 0x31)->u1 = 0x07;
 	init_uart_isr(0x00, 0x8000, 0x10);
-	uart_putchar_isr_mode(0x00);
+	uart_putchar_isr_mode(0<16>);
 	printf(r8, &g_t411D);
-	uart_putchar_isr_mode(0x01);
+	uart_putchar_isr_mode(1<16>);
 	word16 r15_n;
 	word16 r15_n;
 	word16 r15_n;

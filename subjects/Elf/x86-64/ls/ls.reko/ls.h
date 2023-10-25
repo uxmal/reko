@@ -11782,7 +11782,7 @@ T_1147: (in 0<64> @ 0000000000404393 : word64)
   Class: Eq_19
   DataType: byte
   OrigDataType: word64
-T_1148: (in *((word64) rax_2311 + 24<i32>) != 0<64> @ 0000000000404393 : bool)
+T_1148: (in *((word32) rax_2311 + 24<i32>) != 0<64> @ 0000000000404393 : bool)
   Class: Eq_1148
   DataType: bool
   OrigDataType: bool
@@ -12534,7 +12534,7 @@ T_1335: (in &tLoc0380 @ 00000000004046CE : (ptr64 (struct 0008 (0 int32 dw0000))
   Class: Eq_1330
   DataType: (ptr64 Eq_1330)
   OrigDataType: (ptr64 (struct 0008 (0 int32 dw0000)))
-T_1336: (in fn00000000004049E0((word64) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) @ 00000000004046CE : byte)
+T_1336: (in fn00000000004049E0((word32) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) @ 00000000004046CE : byte)
   Class: Eq_1336
   DataType: cu8
   OrigDataType: cu8
@@ -12542,15 +12542,15 @@ T_1337: (in 1<8> @ 00000000004046CE : byte)
   Class: Eq_1336
   DataType: cu8
   OrigDataType: cu8
-T_1338: (in fn00000000004049E0((word64) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8> @ 00000000004046CE : bool)
+T_1338: (in fn00000000004049E0((word32) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8> @ 00000000004046CE : bool)
   Class: Eq_1338
   DataType: bool
   OrigDataType: bool
-T_1339: (in CONVERT(fn00000000004049E0((word64) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) <u 1<8>, bool, word32) @ 00000000004046CE : word32)
+T_1339: (in CONVERT(fn00000000004049E0((word32) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) <u 1<8>, bool, word32) @ 00000000004046CE : word32)
   Class: Eq_1339
   DataType: word32
   OrigDataType: word32
-T_1340: (in 0<32> - (word32) (fn00000000004049E0((word64) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8>) @ 00000000004046CE : word32)
+T_1340: (in 0<32> - (word32) (fn00000000004049E0((word32) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8>) @ 00000000004046CE : word32)
   Class: Eq_1340
   DataType: ui32
   OrigDataType: ui32
@@ -12558,7 +12558,7 @@ T_1341: (in 5<32> @ 00000000004046CE : word32)
   Class: Eq_1341
   DataType: ui32
   OrigDataType: ui32
-T_1342: (in 0<32> - (word32) (fn00000000004049E0((word64) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8>) & 5<32> @ 00000000004046CE : word32)
+T_1342: (in 0<32> - (word32) (fn00000000004049E0((word32) r13_1340 + 16<i32>, 0<8>, &tLoc0380, qwLoc0398_3982) < 1<8>) & 5<32> @ 00000000004046CE : word32)
   Class: Eq_1105
   DataType: uint32
   OrigDataType: ui32
@@ -14122,7 +14122,7 @@ T_1732: (in Mem3258[qwLoc03A0_3994 + 8<i64>:word64] @ 00000000004034B2 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: (ptr64 void)
-T_1733: (in free(*((word64) qwLoc03A0_3994 + 8<i32>)) @ 00000000004034B2 : void)
+T_1733: (in free(*((word32) qwLoc03A0_3994 + 8<i32>)) @ 00000000004034B2 : void)
   Class: Eq_1733
   DataType: void
   OrigDataType: void

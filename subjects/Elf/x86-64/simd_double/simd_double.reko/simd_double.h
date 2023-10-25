@@ -83,16 +83,9 @@ Eq_98: (fn word64 (uint64, ptr64, Eq_82, uint64))
 Eq_108: (fn void ((ptr64 (arr Eq_291))))
 	T_108 (in free @ 00000000000007A0 : ptr64)
 	T_109 (in signature of free : void)
-Eq_127: (fn Eq_129 (Eq_129, Eq_129))
+Eq_127: (fn (arr real64 4) ((arr real64 4), (arr real64 4)))
 	T_127 (in __simd_fadd<real64[4]> @ 0000000000000878 : ptr32)
 	T_128 (in signature of __simd_fadd : void)
-Eq_129: (union "Eq_129" (word256 u0) ((arr real64 4) u1))
-	T_129 (in p1 @ 0000000000000878 : (arr real64 4))
-	T_130 (in p2 @ 0000000000000878 : (arr real64 4))
-	T_133 (in rdx[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
-	T_136 (in rcx[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
-	T_137 (in __simd_fadd<real64[4]>(rdx[qwLoc28_90].u1.u0, rcx[qwLoc28_90].u1.u0) @ 0000000000000878 : (arr real64 4))
-	T_140 (in rsi[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
 Eq_145: (fn (ptr64 (arr Eq_291)) (uint64, Eq_82))
 	T_145 (in _mm_malloc @ 00000000000008B8 : ptr64)
 	T_146 (in signature of _mm_malloc @ 000000000000072A : void)
@@ -141,7 +134,7 @@ Eq_281: (union "Eq_281" (int64 u0) (uint64 u1))
 	T_282 (in 0<u64> @ 0000000000000AA6 : uint64)
 	T_287 (in rbx_47 + 1<64> @ 0000000000000ABD : word64)
 	T_288 (in rbp_31 >> 3<64> @ 0000000000000AC4 : word64)
-Eq_291: (union "Eq_291" (real64 u0) (Eq_129 u1))
+Eq_291: (union "Eq_291" (real64 u0) ((arr real64 4) u1))
 	T_291
 	T_293
 	T_295
@@ -662,11 +655,11 @@ T_128: (in signature of __simd_fadd : void)
   OrigDataType: 
 T_129: (in p1 @ 0000000000000878 : (arr real64 4))
   Class: Eq_129
-  DataType: Eq_129
+  DataType: (arr real64 4)
   OrigDataType: 
 T_130: (in p2 @ 0000000000000878 : (arr real64 4))
-  Class: Eq_129
-  DataType: Eq_129
+  Class: Eq_130
+  DataType: (arr real64 4)
   OrigDataType: 
 T_131: (in 0x20<64> @ 0000000000000878 : ui64)
   Class: Eq_131
@@ -678,8 +671,8 @@ T_132: (in qwLoc28_90 * 0x20<64> @ 0000000000000878 : word64)
   OrigDataType: ui64
 T_133: (in rdx[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
   Class: Eq_129
-  DataType: Eq_129
-  OrigDataType: (union (word256 u0) ((arr real64 4) u1))
+  DataType: (arr real64 4)
+  OrigDataType: (arr real64 4)
 T_134: (in 0x20<64> @ 0000000000000878 : ui64)
   Class: Eq_134
   DataType: ui64
@@ -689,12 +682,12 @@ T_135: (in qwLoc28_90 * 0x20<64> @ 0000000000000878 : word64)
   DataType: ui64
   OrigDataType: ui64
 T_136: (in rcx[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
-  Class: Eq_129
-  DataType: Eq_129
-  OrigDataType: (union (word256 u0) ((arr real64 4) u1))
-T_137: (in __simd_fadd<real64[4]>(rdx[qwLoc28_90].u1.u0, rcx[qwLoc28_90].u1.u0) @ 0000000000000878 : (arr real64 4))
-  Class: Eq_129
-  DataType: Eq_129
+  Class: Eq_130
+  DataType: (arr real64 4)
+  OrigDataType: (arr real64 4)
+T_137: (in __simd_fadd<real64[4]>((&rdx[qwLoc28_90].u1)[0<i32>], (&rcx[qwLoc28_90].u1)[0<i32>]) @ 0000000000000878 : (arr real64 4))
+  Class: Eq_137
+  DataType: (arr real64 4)
   OrigDataType: (arr real64 4)
 T_138: (in 0x20<64> @ 0000000000000878 : ui64)
   Class: Eq_138
@@ -705,8 +698,8 @@ T_139: (in qwLoc28_90 * 0x20<64> @ 0000000000000878 : word64)
   DataType: ui64
   OrigDataType: ui64
 T_140: (in rsi[qwLoc28_90 * 0x20<64>] @ 0000000000000878 : word256)
-  Class: Eq_129
-  DataType: Eq_129
+  Class: Eq_137
+  DataType: (arr real64 4)
   OrigDataType: word256
 T_141: (in 1<64> @ 000000000000087C : word64)
   Class: Eq_141
@@ -1433,12 +1426,7 @@ typedef word64 (Eq_98)(uint64, ptr64, size_t, uint64);
 
 typedef void (Eq_108)(Eq_291 *[]);
 
-typedef Eq_129 (Eq_127)(Eq_129, Eq_129);
-
-typedef union Eq_129 {
-	word256 u0;
-	real64 u1[4];
-} Eq_129;
+typedef real64[4] (Eq_127)(real64[4], real64[4]);
 
 typedef Eq_291 *[] (Eq_145)(uint64, size_t);
 
@@ -1497,6 +1485,6 @@ typedef union Eq_281 {
 
 typedef union Eq_291 {
 	real64 u0;
-	Eq_129 u1;
+	real64 u1[4];
 } Eq_291;
 

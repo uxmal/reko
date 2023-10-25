@@ -50,26 +50,22 @@ namespace Reko.Evaluation
             var dt = unifier.Unify(src.DataType, idDst.DataType);
             var pt = dt?.ResolveAs<PrimitiveType>();
             var ptr = dt?.ResolveAs<Pointer>();
-            if (pt == null && ptr == null)
-                return null;
-            if (pt != null)
+            if (ptr is null)
             {
                 ctx.RemoveIdentifierUse(idDst);
-                var ptDst = idDst.DataType.ResolveAs<PrimitiveType>();
                 var cNew = src!.CloneExpression();
                 if (src.DataType.IsWord &&
                     cSrc is not null &&
-                    ptDst is not null &&
-                    ptDst.Domain == Domain.Real)
+                    idDst.DataType.Domain == Domain.Real)
                 {
                     // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector
                     // as a floating-point constant.
-                    cNew = Constant.RealFromBitpattern(pt, cSrc);
+                    cNew = Constant.RealFromBitpattern(idDst.DataType, cSrc);
                 }
                 cNew.DataType = dt!;
                 return cNew;
             }
-            if (ptr != null)
+            else
             {
                 if (cSrc is not null)
                 {

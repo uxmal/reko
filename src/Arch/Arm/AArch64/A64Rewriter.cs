@@ -84,7 +84,7 @@ namespace Reko.Arch.Arm.AArch64
                         iclass = InstrClass.Invalid;
                         m.Invalid();
                         break;
-                    case Mnemonic.abs: RewriteSimdUnary(abs_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.abs: RewriteSimdUnary(Simd.Abs, Domain.SignedInt); break;
                     case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
                     case Mnemonic.adcs: RewriteAdcSbc(m.IAdd, this.NZCV); break;
                     case Mnemonic.add: RewriteMaybeSimdBinary(m.IAdd, Simd.Add); break;
@@ -628,7 +628,6 @@ namespace Reko.Arch.Arm.AArch64
             IntrinsicProcedure Scalar,
             IntrinsicProcedure Vector);
 
-        private static readonly IntrinsicProcedure abs_intrinsic = IntrinsicBuilder.GenericUnary("__abs");
         private static readonly IntrinsicProcedure addhn_intrinsic = IntrinsicBuilder.GenericBinary("__addhn");
         private static readonly IntrinsicProcedure addhn2_intrinsic = IntrinsicBuilder.GenericBinary("__addhn2");
         private static readonly IntrinsicProcedure addp_intrinsic = IntrinsicBuilder.GenericBinary("__addp");

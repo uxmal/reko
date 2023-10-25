@@ -626,5 +626,14 @@ namespace Reko.UnitTests.Decompiler.Typing
             Assert.IsFalse(un.AreCompatible(t1, t2));
             Assert.AreEqual("(union (<unknown32> u0) (<unknown64> u1))", un.Unify(t1, t2).ToString());
         }
+
+        [Test]
+        public void Unify_Array_Bitvector()
+        {
+            var t1 = PrimitiveType.Word128;
+            var t2 = new ArrayType(PrimitiveType.Word32, 4);
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+            Assert.AreEqual("(arr word32 4)", un.Unify(t1, t2).ToString());
+        }
     }
 }

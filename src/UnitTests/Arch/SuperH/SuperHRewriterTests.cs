@@ -1171,6 +1171,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                "0|L--|00100000(2): 1 instructions",
                "1|L--|fr0 = fr0 * fr11");
         }
+
     }
 }
 

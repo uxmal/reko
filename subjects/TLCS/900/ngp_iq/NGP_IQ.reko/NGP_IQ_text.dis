@@ -21,14 +21,14 @@ l0020009B:
 	b_14 = b_14 - 1<8>
 	branch b_14 != 0<8> l0020009B
 l002000A4:
-	Mem28[0x00008002<p32>:byte] = 0<8>
-	Mem30[0x00008003<p32>:byte] = 0<8>
-	Mem32[0x00008004<p32>:byte] = 0xA0<8>
-	Mem34[0x00008005<p32>:byte] = 0x98<8>
+	Mem28[0x00008002<p32>:byte] = 0<32>
+	Mem30[0x00008003<p32>:byte] = 0<32>
+	Mem32[0x00008004<p32>:byte] = 0xA0<32>
+	Mem34[0x00008005<p32>:byte] = 0x98<32>
 	word32 xhl_36 = 0xA000<32>
 	word16 bc_37 = 0x200<16>
 l002000C2:
-	Mem41[xhl_36:word16] = 0<16>
+	Mem41[xhl_36:word16] = 0<32>
 	xhl_36 = xhl_36 + 2<32>
 	bc_37 = bc_37 - 1<16>
 	branch bc_37 != 0<16> l002000C2
@@ -55,9 +55,9 @@ l002000EA:
 	bc_68 = bc_68 - 1<16>
 	branch bc_68 != 0<16> l002000EA
 l002000EC:
-	Mem84[0x000083E0<p32>:byte] = 0x33<8>
-	Mem86[0x000083E1<p32>:byte] = 7<8>
-	Mem88[0x00008118<p32>:byte] = 0x80<8>
+	Mem84[0x000083E0<p32>:byte] = 0x33<32>
+	Mem86[0x000083E1<p32>:byte] = 7<32>
+	Mem88[0x00008118<p32>:byte] = 0x80<32>
 l00200111:
 	fn00200557(1<8>, 0<8>, 0x2000FD<32>)
 l00200136:
@@ -173,7 +173,7 @@ fn002004F2_entry:
 	word32 xwa
 	byte w_20 = SLICE(xwa, byte, 8)
 l002004F2:
-	Mem7[0x00004004<p32>:byte] = 0<8>
+	Mem7[0x00004004<p32>:byte] = 0<32>
 l002004F8:
 	branch Mem7[0x00004004<p32>:byte] != w_20 l002004F8
 l00200508:
@@ -268,7 +268,7 @@ l002005B8:
 	word32 xbc_3 = 0x9000<32>
 	word16 hl_10 = 0x4C0<16>
 l002005C0:
-	Mem7[xbc_3:byte] = 0<8>
+	Mem7[xbc_3:byte] = 0<32>
 	xbc_3 = xbc_3 + 1<32>
 	hl_10 = hl_10 - 1<16>
 	branch hl_10 != 0<16> l002005C0
@@ -276,7 +276,7 @@ l002005CF:
 	word32 xbc_14 = 0x9800<32>
 	word16 hl_15 = 0x4C0<16>
 l002005D7:
-	Mem18[xbc_14:byte] = 0<8>
+	Mem18[xbc_14:byte] = 0<32>
 	xbc_14 = xbc_14 + 1<32>
 	hl_15 = hl_15 - 1<16>
 	branch hl_15 != 0<16> l002005D7
@@ -317,7 +317,7 @@ l0020060C:
 	branch Mem0[0x00006F91<p32>:byte] != 0<8> l0020061C
 l00200613:
 	Mem9[0x00006F83<p32>:byte] = Mem0[0x00006F83<p32>:byte] & 0xF7<8>
-	Mem11[0x00006DA0<p32>:byte] = 0<8>
+	Mem11[0x00006DA0<p32>:byte] = 0<32>
 l0020061C:
 	return
 fn0020060C_exit:

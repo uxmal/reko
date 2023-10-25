@@ -520,16 +520,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteVectorUnaryOp(IntrinsicProcedure intrinsic, ArmVectorData elemType)
+        private void RewriteSimdUnary(IntrinsicProcedure intrinsic, ArmVectorData elemType)
         {
             var src1 = this.Operand(1);
             var dst = this.Operand(0, PrimitiveType.Word32, true);
-            var dstType = dst.DataType;
             var srcType = src1.DataType;
             var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcElemSize, celemSrc);
-            var arrDst = new ArrayType(dstType, celemSrc);
             intrinsic = intrinsic.MakeInstance(arrSrc);
             m.Assign(dst, m.Fn(intrinsic, src1));
         }

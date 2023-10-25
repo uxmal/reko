@@ -19,7 +19,6 @@ void update_gen(ui32 arg0)
 		do
 		{
 			byte * v16_n = (0x01 - arg0_n) * 10000 + 0x10;
-			Eq_n loc7_n = false;
 			word32 loc13_n = 0x00;
 			arg0_n = 0x00;
 			Eq_n v16_n = (word80000) ((Eq_n[]) ~0x52)[arg0_n] + (((Eq_n[]) ~0x54))[arg0_n].b0000 + (word32) ((Eq_n[]) 115)[arg0_n] + (word32) ((Eq_n[]) 117)[arg0_n];
@@ -35,7 +34,7 @@ void update_gen(ui32 arg0)
 			*v16_n = (byte) loc13_n;
 		} while (true);
 		arg0_n = 0x01;
-	} while (loc7_n == 0x00);
+	} while (true);
 }
 
 // 000C0153: Stack word32 main()

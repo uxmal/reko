@@ -787,20 +787,20 @@ l0000000000402985:
 										Eq_n rax_n = g_t61B120.u3;
 										tLoc0380.dw0000 = tLoc0380.dw0000 + 0x01;
 										g_t61B120.u3 = (size_t) rax_n;
-										*((word64) rax_n + 32) = rax_n;
-										((word64) rax_n + 8)->u3 = tLoc0378.u3;
+										*((word32) rax_n + 32) = rax_n;
+										((word32) rax_n + 8)->u3 = tLoc0378.u3;
 										r13_n = rax_n;
 										edx_n = (0x00 - (word32) (fn00000000004049E0(rax_n, 0x01, &tLoc0380, qwLoc0398_n) < 0x01) & 0x02) + 0x03;
 										goto l000000000040451F;
 									}
 									if (cl_n == 0x3A)
 									{
-										tLoc0380.dw0000 = (int32) ((word64) rax_n + 1);
+										tLoc0380.dw0000 = (word32) rax_n + 1;
 										goto l000000000040451F;
 									}
 									if (cl_n == 0x00)
 										goto l000000000040478E;
-									tLoc0380.dw0000 = (int32) ((word64) rax_n + 1);
+									tLoc0380.dw0000 = (word32) rax_n + 1;
 									bLoc0388 = *rax_n.u1;
 									edx_n = 0x01;
 									break;
@@ -809,13 +809,13 @@ l0000000000402985:
 									edx_n = 0x05;
 									if (*rax_n.u1 != 0x00)
 									{
-										tLoc0380.dw0000 = (int32) ((word64) rax_n + 1);
+										tLoc0380.dw0000 = (word32) rax_n + 1;
 										edx_n = 0x02;
 									}
 									break;
 								case 0x02:
 									Eq_n rax_n = tLoc0380.dw0000;
-									tLoc0380.dw0000 = (int32) ((word64) rax_n + 1);
+									tLoc0380.dw0000 = (word32) rax_n + 1;
 									uint64 r15_n = 0x00;
 									edx_n = 0x05;
 									if (*rax_n.u1 == 0x3D)
@@ -829,7 +829,7 @@ l0000000000402985:
 											++r15_n;
 										} while (strcmp(&bLoc0388, rsi_n) != 0x00);
 										Eq_n rcx_n = (r14_n << 0x04) + 6398944;
-										((word64) rcx_n + 8)->u3 = tLoc0378.u3;
+										((word32) rcx_n + 8)->u3 = tLoc0378.u3;
 										edx_n = 0x00;
 										if (fn00000000004049E0(rcx_n, 0x00, &tLoc0380, qwLoc0398_n) == 0x00)
 										{
@@ -842,12 +842,12 @@ l0000000000404857:
 									break;
 								case 0x03:
 									Eq_n rax_n = tLoc0380.dw0000;
-									tLoc0380.dw0000 = (int32) ((word64) rax_n + 1);
+									tLoc0380.dw0000 = (word32) rax_n + 1;
 									edx_n = 0x05;
 									if (*rax_n.u1 == 0x3D)
 									{
-										((word64) r13_n + 24)->u3 = tLoc0378.u3;
-										edx_n = 0x00 - (word32) (fn00000000004049E0((word64) r13_n + 16, 0x00, &tLoc0380, qwLoc0398_n) < 0x01) & 0x05;
+										((word32) r13_n + 24)->u3 = tLoc0378.u3;
+										edx_n = 0x00 - (word32) (fn00000000004049E0((word32) r13_n + 16, 0x00, &tLoc0380, qwLoc0398_n) < 0x01) & 0x05;
 										goto l000000000040451F;
 									}
 									break;
@@ -859,7 +859,7 @@ l0000000000404857:
 									Eq_n rdi_n = g_t61B120.u3;
 									while (rdi_n != 0x00)
 									{
-										Eq_n r13_n = *((word64) rdi_n + 32);
+										Eq_n r13_n = *((word32) rdi_n + 32);
 										free(rdi_n);
 										rdi_n = r13_n;
 									}
@@ -1034,7 +1034,7 @@ l00000000004034D2:
 								exit(g_dw61B030);
 							}
 							Eq_n r14_n;
-							g_t61B190.u3 = (size_t) *((word64) qwLoc03A0_n + 24);
+							g_t61B190.u3 = (size_t) *((word32) qwLoc03A0_n + 24);
 							if (g_ptr61B1C8 != null)
 							{
 								r14_n = *qwLoc03A0_n;
@@ -1067,8 +1067,8 @@ l00000000004034C6:
 							}
 							else
 								r14_n = *qwLoc03A0_n;
-							byte cl_n = *((word64) qwLoc03A0_n + 16);
-							Eq_n rbx_n = *((word64) qwLoc03A0_n + 8);
+							byte cl_n = *((word32) qwLoc03A0_n + 16);
+							Eq_n rbx_n = *((word32) qwLoc03A0_n + 8);
 							Eq_n rax_n = __errno_location();
 							rax_n->u4 = 0x00;
 							Eq_n rax_n = opendir(r14_n);
@@ -1237,7 +1237,7 @@ l0000000000403770:
 									fn00000000004079F0(rax_n, fs);
 l00000000004034A1:
 								free(*qwLoc03A0_n);
-								free(*((word64) qwLoc03A0_n + 8));
+								free(*((word32) qwLoc03A0_n + 8));
 								free(qwLoc03A0_n);
 								g_b61B0D0 = 0x01;
 								goto l00000000004034C6;
@@ -1259,7 +1259,7 @@ l00000000004034A1:
 							Eq_n rax_n = fn0000000000410C40(0x10);
 							struct Eq_n * rdi_n = g_ptr61B1C8;
 							*rax_n = rcx_n;
-							*((word64) rax_n + 8) = rdx_n;
+							*((word32) rax_n + 8) = rdx_n;
 							Eq_n rax_n = fn000000000040BB50(rax_n, rdi_n);
 							if (rax_n != 0x00)
 							{
@@ -1289,7 +1289,7 @@ l00000000004043BB:
 					}
 					Eq_n rax_n = g_t61B190.u3;
 					qwLoc03A0_n = rax_n;
-					if (r13d_n <= 0x01 && (rax_n != 0x00 && *((word64) rax_n + 24) == 0x00))
+					if (r13d_n <= 0x01 && (rax_n != 0x00 && *((word32) rax_n + 24) == 0x00))
 						g_b61B0D0 = 0x00;
 					goto l00000000004034D2;
 				}

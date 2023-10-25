@@ -193,8 +193,8 @@ Eq_152: (fn void (Eq_154))
 	T_160 (in uart_putchar_isr_mode @ 419E : ptr16)
 Eq_154: (union "Eq_154" (byte u0) (word16 u1))
 	T_154 (in r15 @ 4188 : Eq_154)
-	T_155 (in 0<8> @ 4188 : byte)
-	T_161 (in 1<8> @ 419E : byte)
+	T_155 (in 0<16> @ 4188 : (union (byte u0) (word16 u1)))
+	T_161 (in 1<16> @ 419E : (union (byte u0) (word16 u1)))
 	T_377 (in Mem4[0x0200<p16>:byte] @ 0000439C : byte)
 	T_386 (in Mem5[0x0200<p16>:byte] @ 000043B0 : byte)
 	T_387 (in 0<8> @ 000043B0 : byte)
@@ -1807,11 +1807,11 @@ T_154: (in r15 @ 4188 : Eq_154)
   Class: Eq_154
   DataType: Eq_154
   OrigDataType: word16
-T_155: (in 0<8> @ 4188 : byte)
+T_155: (in 0<16> @ 4188 : (union (byte u0) (word16 u1)))
   Class: Eq_154
   DataType: byte
   OrigDataType: (union (byte u0) (word16 u1))
-T_156: (in uart_putchar_isr_mode(0<8>) @ 4188 : void)
+T_156: (in uart_putchar_isr_mode(0<16>) @ 4188 : void)
   Class: Eq_156
   DataType: void
   OrigDataType: void
@@ -1831,11 +1831,11 @@ T_160: (in uart_putchar_isr_mode @ 419E : ptr16)
   Class: Eq_152
   DataType: (ptr16 Eq_152)
   OrigDataType: (ptr16 (fn T_162 (T_161)))
-T_161: (in 1<8> @ 419E : byte)
+T_161: (in 1<16> @ 419E : (union (byte u0) (word16 u1)))
   Class: Eq_154
   DataType: byte
   OrigDataType: (union (byte u0) (word16 u1))
-T_162: (in uart_putchar_isr_mode(1<8>) @ 419E : void)
+T_162: (in uart_putchar_isr_mode(1<16>) @ 419E : void)
   Class: Eq_156
   DataType: void
   OrigDataType: void

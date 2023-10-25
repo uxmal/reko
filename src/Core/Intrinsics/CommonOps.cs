@@ -23,9 +23,6 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace Reko.Core.Intrinsics
 {
@@ -98,14 +95,26 @@ namespace Reko.Core.Intrinsics
 
         private static Constant EvalAbs(DataType dt, params Constant[] inputs)
         {
-            throw new NotImplementedException();
+            if (inputs.Length != 1)
+                throw new ArgumentException(nameof(inputs), "One argument is required for 'abs'.");
+            if ((dt.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
+            {
+                int iSignbit = dt.BitSize - 1;
+                ulong signExtended = Bits.SignExtend(inputs[0].ToUInt64(), dt.BitSize);
+                ulong allOnesIfSigned = (ulong) ((long) signExtended >> iSignbit);
+                ulong result =
+                    (signExtended & ~allOnesIfSigned) |
+                    ((0-signExtended) & allOnesIfSigned);
+                return Constant.Create(dt, result);
+            }
+            throw new NotImplementedException($"abs not implemented for {dt} yet.");
         }
 
         private static Constant EvalMax(DataType dt, params Constant[] inputs)
         {
             if (inputs.Length == 0)
                 throw new ArgumentException(nameof(inputs), "Must have at least one input parameter to EvalMax.");
-            if (dt.Domain is Domain.SignedInt)
+            if (dt.Domain == Domain.SignedInt)
             {
                 throw new NotImplementedException();
             }

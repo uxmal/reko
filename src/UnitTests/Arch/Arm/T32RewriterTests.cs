@@ -7625,7 +7625,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("B9FF2043");	// vabs.s32 d4, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d4 = __vabs<int32[2]>(d16)");
+                "1|L--|d4 = __simd_abs<int32[2]>(d16)");
         }
 
         [Test]

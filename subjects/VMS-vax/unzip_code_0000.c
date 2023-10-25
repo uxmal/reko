@@ -2061,7 +2061,7 @@ word32 fn0000C022(struct Eq_n * r3, struct Eq_n * ap, struct Eq_n * fp, struct E
 	if ((r0_n & 0x01) != 0x00)
 	{
 		int32 r0_n = fp_n->dwFFFFFFF8;
-		*((word32) (r3_n + 0x000105C5) + r0_n) = (ptr32) 0x00;
+		*((word32) (r3_n + 0x000105C5) + r0_n) = (ptr32) 0<32>;
 		sp_n->dwFFFFFFFC = 0x01;
 		sp_n->ptrFFFFFFF8 = r3_n + 0x000105C5;
 		sp_n->dwFFFFFFF4 = ap_n->dw0004;
@@ -2349,7 +2349,7 @@ struct Eq_n * fn0000C6FA(struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * r8, s
 			*r6->ptr10CDC = 0x00;
 			if (r6->dw10CD0 != 0x00)
 			{
-				r6->ptr10CC4[r6->dw10CD0 - 0x01] = 0x5D;
+				r6->ptr10CC4[r6->dw10CD0 - 0x01] = 0x5D<32>;
 				sp_n = (struct Eq_n *) <invalid>;
 				if (fn0000E2EA(ap, fp, out r6_n, out r7_n, out r8_n, out ap_n, out fp_n) != 0x00)
 				{

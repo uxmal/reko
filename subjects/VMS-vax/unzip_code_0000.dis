@@ -1296,7 +1296,7 @@ l00009866:
 	Mem217 = Mem190
 	branch r2_103 != 0x3FD39<32> l00009884
 l00009884:
-	Mem221[Mem217[Mem217[ap_101 + 16<i32>:word32]:word32] + (r8_106 - 1<32>):word32] = 0<8>
+	Mem221[Mem217[Mem217[ap_101 + 16<i32>:word32]:word32] + (r8_106 - 1<32>):word32] = 0<32>
 l0000986F:
 	Mem230[Mem217[Mem217[ap_101 + 16<i32>:word32]:word32] + (r8_106 - 1<32>):word32] = CONVERT(Mem217[ap_101 + 12<i32>:int32], int32, int8)
 l00009893:
@@ -2817,7 +2817,7 @@ l0000C022:
 	branch (r0_36 & 1<32>) != 0<32> l0000C094
 l0000C094:
 	word32 r0_40 = Mem28[fp_33 + -8<i32>:word32]
-	Mem42[r3_34 + 0x105C5<32> + r0_40:word32] = 0<8>
+	Mem42[r3_34 + 0x105C5<32> + r0_40:word32] = 0<32>
 	Mem44[sp_32 - 4<32>:word32] = 1<32>
 	Mem47[sp_32 - 8<32>:word32] = r3_34 + 0x105C5<32>
 	Mem50[sp_32 - 0xC<32>:word32] = Mem47[ap_35 + 4<i32>:word32]
@@ -3285,7 +3285,7 @@ l0000CC1F:
 l0000CC24:
 	Mem459[r6_394 + 0x10CF0<32>:word32] = 1<32>
 l0000CB6A:
-	Mem465[Mem374[r6 + 0x10CC4<32>:word32] + (Mem374[r6 + 0x10CD0<32>:word32] - 1<32>):word32] = 0x5D<8>
+	Mem465[Mem374[r6 + 0x10CC4<32>:word32] + (Mem374[r6 + 0x10CD0<32>:word32] - 1<32>):word32] = 0x5D<32>
 	sp_389 = <invalid>
 	branch fn0000E2EA(ap, fp, out r6_394, out r7_398, out r8_400, out ap_391, out fp_393) != 0<32> l0000CB9B
 l0000CB9B:

@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // abs	v1.8b,v17.8b
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = d17",
-                "2|L--|d1 = __abs<int8[8]>(v3)");
+                "2|L--|d1 = __simd_abs<int8[8]>(v3)");
         }
 
         [Test]

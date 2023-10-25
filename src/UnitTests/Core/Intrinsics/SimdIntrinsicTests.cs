@@ -30,6 +30,17 @@ namespace Reko.UnitTests.Core.Intrinsics
     [TestFixture]
     public class SimdIntrinsicTests
     {
+        private static BigInteger Repeat(int bitsize, ulong value, int reps)
+        {
+            var seed = new BigInteger(value);
+            var result = BigInteger.Zero;
+            for (int i = 0; i < reps; ++i)
+            {
+                result = (result << bitsize) | seed;
+            }
+            return result;
+        }
+
         [Test]
         public void Simd_ApplyToLanes()
         {
@@ -38,6 +49,26 @@ namespace Reko.UnitTests.Core.Intrinsics
             var max = Simd.Max.MakeInstance(new ArrayType(PrimitiveType.Byte, 16));
             var result = max.ApplyConstants(PrimitiveType.Word128, c1, c2);
             Assert.AreEqual("0x332233<128>", result.ToString());
+        }
+
+        [Test]
+        public void Simd_Abs_8()
+        {
+            var c = Constant.Create(PrimitiveType.Word256, Repeat(8, 0xF0, 32));
+            var abs = Simd.Abs.MakeInstance(new ArrayType(PrimitiveType.Byte, 32));
+            var result = abs.ApplyConstants(PrimitiveType.Word256, c);
+            Assert.AreEqual("0x0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0<256>", c.ToString());
+            Assert.AreEqual( "0x1010101010101010101010101010101010101010101010101010101010101010<256>", result.ToString());
+        }
+
+        [Test]
+        public void Simd_Abs_16()
+        {
+            var c = Constant.Create(PrimitiveType.Word128, Repeat(32, 0xFFFA_7FFF, 4));
+            var abs = Simd.Abs.MakeInstance(new ArrayType(PrimitiveType.Word16, 8));
+            var result = abs.ApplyConstants(PrimitiveType.Word128, c);
+            Assert.AreEqual("0x0FFFA7FFFFFFA7FFFFFFA7FFFFFFA7FFF<128>", c.ToString());
+            Assert.AreEqual(    "0x67FFF00067FFF00067FFF00067FFF<128>", result.ToString());
         }
     }
 }
