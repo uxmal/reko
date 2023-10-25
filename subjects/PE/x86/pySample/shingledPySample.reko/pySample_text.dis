@@ -476,7 +476,7 @@ l100016DE:
 	word32 eax_9 = Mem0[dwArg04 + 60<i32>:word32] + dwArg04
 	branch Mem0[eax_9:word32] != 0x4550<32> l100016DB
 l100016EB:
-	return CONVERT(CONVERT(Mem0[eax_9 + 24<i32>:word16] == 0x10B<16>, bool, int8), int8, uint32)
+	return CONVERT(Mem0[eax_9 + 24<i32>:word16] == 0x10B<16>, bool, uint32)
 l100016DB:
 	return 0<32>
 fn100016D0_exit:

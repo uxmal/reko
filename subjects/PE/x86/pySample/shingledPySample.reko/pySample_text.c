@@ -355,7 +355,7 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 	struct Eq_n * eax_n = dwArg04 + dwArg04->dw003C / 64;
 	if (eax_n->dw0000 != 0x4550)
 		return 0x00;
-	return (uint32) (int8) (eax_n->w0018 == 0x010B);
+	return (uint32) (eax_n->w0018 == 0x010B);
 }
 
 // 10001700: Register (ptr32 Eq_n) fn10001700(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08)

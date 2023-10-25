@@ -52,7 +52,8 @@ namespace Reko.Evaluation
             {
                 // Only match widening / narrowing. 
                 if (!ptC.IsWord && !ptInner.IsWord &&
-                    (ptC.Domain != ptInner.Domain || ptC.Domain != ptExp.Domain))
+                    (ptC.Domain != ptInner.Domain || ptC.Domain != ptExp.Domain) &&
+                     ptExp.Domain != Domain.Boolean)
                     return null;
             }
             
@@ -64,7 +65,7 @@ namespace Reko.Evaluation
                 else
                     return new Conversion(origExp, innerConv.SourceDataType, ptC);
             }
-            return origExp!;
+            return origExp;
         }
     }
 }

@@ -1559,7 +1559,7 @@ l000000010000436C:
 l0000000100004686:
 	Mem901 = PHI((Mem883, l000000010000436C), (Mem1199, l0000000100004675))
 	al_888 = PHI((al_884, l000000010000436C), (al_1197, l0000000100004675))
-	branch acl_get_entry(rbp_860 - 3160<i64>, CONVERT(SLICE(al_888, bool, 0), bool, int32), Mem901[rbp_860 - 3224<i64>:word64]) == 0<32> l00000001000043A7
+	branch acl_get_entry(rbp_860 - 3160<i64>, CONVERT(SLICE(al_888, bool, 0), bool, word32), Mem901[rbp_860 - 3224<i64>:word64]) == 0<32> l00000001000043A7
 l00000001000043A7:
 	branch acl_get_tag_type(rbp_860 - 3164<i64>, Mem901[rbp_860 + 0xC58<64>:word32]) != 0<32> l0000000100004675
 l00000001000043C5:

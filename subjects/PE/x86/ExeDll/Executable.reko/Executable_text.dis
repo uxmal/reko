@@ -925,7 +925,7 @@ word32 fn00401B98()
 // Preserved: esp
 fn00401B98_entry:
 l00401B98:
-	return CONVERT(CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8), int8, uint32)
+	return CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, uint32)
 fn00401B98_exit:
 
 

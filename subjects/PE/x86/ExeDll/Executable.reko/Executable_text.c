@@ -617,7 +617,7 @@ void fn004019FE(word32 edx)
 //      fn004015CE
 uint32 fn00401B98()
 {
-	return (uint32) (int8) (g_dw403014 != 0x00);
+	return (uint32) (g_dw403014 != 0x00);
 }
 
 // 00401BA4: void fn00401BA4()

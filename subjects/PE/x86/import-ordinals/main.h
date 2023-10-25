@@ -156,7 +156,7 @@ Eq_89: (union "Eq_89" (int32 u0) (DWORD u1))
 	T_707 (in 0x17<32> @ 00401781 : word32)
 	T_887 (in ProcessorFeature @ 00401A1E : DWORD)
 	T_888 (in 0xA<32> @ 00401A1E : word32)
-Eq_92: (union "Eq_92" (byte u0) ((ptr32 Eq_1060) u1))
+Eq_92: (union "Eq_92" (byte u0) ((ptr32 Eq_1059) u1))
 	T_92 (in esi @ 004012C9 : Eq_92)
 	T_93 (in edi @ 004012C9 : Eq_92)
 	T_105 (in esi @ 00401161 : Eq_92)
@@ -530,8 +530,8 @@ Eq_899: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32)
 Eq_978: (fn word64 (word32))
 	T_978 (in __xgetbv @ 00401B5C : ptr32)
 	T_979 (in signature of __xgetbv : void)
-Eq_1060: (struct "Eq_1060" (0 Eq_92 t0000))
-	T_1060
+Eq_1059: (struct "Eq_1059" (0 Eq_92 t0000))
+	T_1059
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -4573,22 +4573,22 @@ T_1010: (in g_dw403014 != 0<32> @ 00401BA3 : bool)
   Class: Eq_1010
   DataType: bool
   OrigDataType: bool
-T_1011: (in CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8) @ 00401BA3 : int8)
-  Class: Eq_1011
-  DataType: int8
-  OrigDataType: int8
-T_1012: (in CONVERT(CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8), int8, uint32) @ 00401BA3 : uint32)
+T_1011: (in CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, uint32) @ 00401BA3 : uint32)
   Class: Eq_1006
   DataType: uint32
   OrigDataType: uint32
-T_1013: (in al @ 00401BA3 : byte)
-  Class: Eq_1013
+T_1012: (in al @ 00401BA3 : byte)
+  Class: Eq_1012
   DataType: byte
   OrigDataType: byte
-T_1014: (in 1<8> @ 00401C48 : byte)
-  Class: Eq_1013
+T_1013: (in 1<8> @ 00401C48 : byte)
+  Class: Eq_1012
   DataType: byte
   OrigDataType: byte
+T_1014:
+  Class: Eq_1014
+  DataType: word32
+  OrigDataType: word32
 T_1015:
   Class: Eq_1015
   DataType: word32
@@ -4767,11 +4767,7 @@ T_1058:
   OrigDataType: word32
 T_1059:
   Class: Eq_1059
-  DataType: word32
-  OrigDataType: word32
-T_1060:
-  Class: Eq_1060
-  DataType: Eq_1060
+  DataType: Eq_1059
   OrigDataType: 
 */
 typedef struct Globals {
@@ -4926,7 +4922,7 @@ typedef union Eq_89 {
 
 typedef union Eq_92 {
 	byte u0;
-	struct Eq_1060 * u1;
+	struct Eq_1059 * u1;
 } Eq_92;
 
 typedef union Eq_95 {
@@ -5249,7 +5245,7 @@ typedef void (Eq_899)(word32, word32, word32 *, word32 *, word32 *, word32 *);
 
 typedef word64 (Eq_978)(word32);
 
-typedef struct Eq_1060 {
+typedef struct Eq_1059 {
 	Eq_92 t0000;	// 0
-} Eq_1060;
+} Eq_1059;
 

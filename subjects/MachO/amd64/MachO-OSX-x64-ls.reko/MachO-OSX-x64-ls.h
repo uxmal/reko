@@ -1066,7 +1066,7 @@ Eq_2142: (fn void ())
 	T_2142 (in listxattr @ 0000000100003E22 : ptr64)
 	T_2143 (in signature of listxattr @ 0000000100004E9E : void)
 	T_2482 (in listxattr @ 00000001000042AC : ptr64)
-Eq_2149: (fn word32 ((ptr64 Eq_2151), int32, Eq_58))
+Eq_2149: (fn word32 ((ptr64 Eq_2151), word32, Eq_58))
 	T_2149 (in acl_get_entry @ 0000000100003DF1 : ptr64)
 	T_2150 (in signature of acl_get_entry @ 0000000100004DD2 : void)
 	T_2626 (in acl_get_entry @ 00000001000046A7 : ptr64)
@@ -10064,9 +10064,9 @@ T_2151: (in rdx @ 0000000100003DF1 : (ptr64 Eq_2151))
   Class: Eq_2151
   DataType: (ptr64 Eq_2151)
   OrigDataType: (ptr64 (struct "acl_entry_t"))
-T_2152: (in esi @ 0000000100003DF1 : int32)
+T_2152: (in esi @ 0000000100003DF1 : word32)
   Class: Eq_2152
-  DataType: int32
+  DataType: word32
   OrigDataType: word32
 T_2153: (in rdi @ 0000000100003DF1 : Eq_58)
   Class: Eq_58
@@ -10082,7 +10082,7 @@ T_2155: (in rbp_860 - 3192<i64> @ 0000000100003DF1 : word64)
   OrigDataType: ptr64
 T_2156: (in 0<32> @ 0000000100003DF1 : word32)
   Class: Eq_2152
-  DataType: int32
+  DataType: word32
   OrigDataType: word32
 T_2157: (in acl_get_entry(rbp_860 - 3192<i64>, 0<32>, rax_262) @ 0000000100003DF1 : word32)
   Class: Eq_2157
@@ -11976,10 +11976,10 @@ T_2629: (in SLICE(al_888, bool, 0) @ 00000001000046A7 : bool)
   Class: Eq_2629
   DataType: bool
   OrigDataType: bool
-T_2630: (in CONVERT(SLICE(al_888, bool, 0), bool, int32) @ 00000001000046A7 : int32)
+T_2630: (in CONVERT(SLICE(al_888, bool, 0), bool, word32) @ 00000001000046A7 : word32)
   Class: Eq_2152
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_2631: (in -3224<i64> @ 00000001000046A7 : int64)
   Class: Eq_2631
   DataType: int64
@@ -11992,7 +11992,7 @@ T_2633: (in Mem901[rbp_860 + -3224<i64>:word64] @ 00000001000046A7 : word64)
   Class: Eq_58
   DataType: Eq_58
   OrigDataType: word64
-T_2634: (in acl_get_entry(rbp_860 - 3160<i64>, (int32) (bool) al_888, rbp_860->tFFFFF368.u0) @ 00000001000046A7 : word32)
+T_2634: (in acl_get_entry(rbp_860 - 3160<i64>, (word32) (bool) al_888, rbp_860->tFFFFF368.u0) @ 00000001000046A7 : word32)
   Class: Eq_2157
   DataType: word32
   OrigDataType: word32
@@ -12000,7 +12000,7 @@ T_2635: (in 0<32> @ 00000001000046A7 : word32)
   Class: Eq_2157
   DataType: word32
   OrigDataType: word32
-T_2636: (in acl_get_entry(rbp_860 - 3160<i64>, (int32) (bool) al_888, rbp_860->tFFFFF368.u0) == 0<32> @ 00000001000046A7 : bool)
+T_2636: (in acl_get_entry(rbp_860 - 3160<i64>, (word32) (bool) al_888, rbp_860->tFFFFF368.u0) == 0<32> @ 00000001000046A7 : bool)
   Class: Eq_2636
   DataType: bool
   OrigDataType: bool
@@ -16905,7 +16905,7 @@ typedef void (Eq_2131)();
 
 typedef void (Eq_2142)();
 
-typedef word32 (Eq_2149)(acl_entry_t *, int32, Eq_58);
+typedef word32 (Eq_2149)(acl_entry_t *, word32, Eq_58);
 
 typedef struct acl_entry_t {
 } Eq_2151;

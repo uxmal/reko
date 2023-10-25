@@ -57,10 +57,10 @@ void acl_free()
 	acl_free();
 }
 
-// 0000000100004DD2: Register int32 acl_get_entry(Register (ptr64 Eq_n) rdx, Register int32 esi, Register Eq_n rdi)
+// 0000000100004DD2: Register int32 acl_get_entry(Register (ptr64 Eq_n) rdx, Register word32 esi, Register Eq_n rdi)
 // Called from:
 //      fn0000000100003AA8
-int32 acl_get_entry(struct acl_entry_t * rdx, int32 esi, Eq_n rdi)
+int32 acl_get_entry(struct acl_entry_t * rdx, word32 esi, Eq_n rdi)
 {
 	word64 rsi;
 	return acl_get_entry(rdi, (int32) rsi, rdx);

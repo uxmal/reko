@@ -471,7 +471,7 @@ void fn004019FE(word32 edx)
 //      fn004015C9
 uint32 fn00401B98()
 {
-	return (uint32) (int8) (g_dw403014 != 0x00);
+	return (uint32) (g_dw403014 != 0x00);
 }
 
 // 00401C46: Register byte fn00401C46()

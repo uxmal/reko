@@ -1287,5 +1287,21 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("0x2222<16>", exp.ToString());
         }
+
+        [Test]
+        public void Exs_Convert_Convert()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.Convert(
+                m.Convert(
+                    m.Ne0(foo),
+                    PrimitiveType.Bool,
+                    PrimitiveType.Int8),
+                PrimitiveType.Int8,
+                PrimitiveType.UInt32);
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("CONVERT(foo_1 != 0<32>, bool, uint32)", exp.ToString());
+        }
     }
 }

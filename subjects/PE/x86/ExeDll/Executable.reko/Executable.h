@@ -168,7 +168,7 @@ Eq_63: (union "Eq_63" (int32 u0) (DWORD u1))
 	T_857 (in 0x17<32> @ 00401788 : word32)
 	T_1059 (in ProcessorFeature @ 00401A1E : DWORD)
 	T_1060 (in 0xA<32> @ 00401A1E : word32)
-Eq_66: (union "Eq_66" (byte u0) ((ptr32 Eq_1233) u1))
+Eq_66: (union "Eq_66" (byte u0) ((ptr32 Eq_1232) u1))
 	T_66 (in esi @ 004012CE : Eq_66)
 	T_67 (in edi @ 004012CE : Eq_66)
 	T_79 (in esi @ 00401166 : Eq_66)
@@ -645,8 +645,8 @@ Eq_1071: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32
 Eq_1150: (fn word64 (word32))
 	T_1150 (in __xgetbv @ 00401B5C : ptr32)
 	T_1151 (in signature of __xgetbv : void)
-Eq_1233: (struct "Eq_1233" (0 Eq_66 t0000))
-	T_1233
+Eq_1232: (struct "Eq_1232" (0 Eq_66 t0000))
+	T_1232
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -5376,22 +5376,22 @@ T_1182: (in g_dw403014 != 0<32> @ 00401BA3 : bool)
   Class: Eq_1182
   DataType: bool
   OrigDataType: bool
-T_1183: (in CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8) @ 00401BA3 : int8)
-  Class: Eq_1183
-  DataType: int8
-  OrigDataType: int8
-T_1184: (in CONVERT(CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8), int8, uint32) @ 00401BA3 : uint32)
+T_1183: (in CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, uint32) @ 00401BA3 : uint32)
   Class: Eq_1178
   DataType: uint32
   OrigDataType: uint32
-T_1185: (in al @ 00401BA4 : byte)
-  Class: Eq_1185
+T_1184: (in al @ 00401BA4 : byte)
+  Class: Eq_1184
   DataType: byte
   OrigDataType: byte
-T_1186: (in 1<8> @ 00401C4A : byte)
-  Class: Eq_1185
+T_1185: (in 1<8> @ 00401C4A : byte)
+  Class: Eq_1184
   DataType: byte
   OrigDataType: byte
+T_1186:
+  Class: Eq_1186
+  DataType: word32
+  OrigDataType: word32
 T_1187:
   Class: Eq_1187
   DataType: word32
@@ -5567,18 +5567,14 @@ T_1229:
 T_1230:
   Class: Eq_1230
   DataType: word32
-  OrigDataType: word32
+  OrigDataType: (struct 0004 (0 T_994 t0000))
 T_1231:
   Class: Eq_1231
-  DataType: word32
-  OrigDataType: (struct 0004 (0 T_994 t0000))
+  DataType: (arr word32 1)
+  OrigDataType: (arr T_1230 1)
 T_1232:
   Class: Eq_1232
-  DataType: (arr word32 1)
-  OrigDataType: (arr T_1231 1)
-T_1233:
-  Class: Eq_1233
-  DataType: Eq_1233
+  DataType: Eq_1232
   OrigDataType: 
 */
 typedef Eq_1struct _EXCEPTION_POINTERS;
@@ -5737,7 +5733,7 @@ typedef union Eq_63 {
 
 typedef union Eq_66 {
 	byte u0;
-	struct Eq_1233 * u1;
+	struct Eq_1232 * u1;
 } Eq_66;
 
 typedef union Eq_69 {
@@ -6123,7 +6119,7 @@ typedef void (Eq_1071)(word32, word32, word32 *, word32 *, word32 *, word32 *);
 
 typedef word64 (Eq_1150)(word32);
 
-typedef struct Eq_1233 {
+typedef struct Eq_1232 {
 	Eq_66 t0000;	// 0
-} Eq_1233;
+} Eq_1232;
 
