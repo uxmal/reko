@@ -7,14 +7,14 @@
 // 000F07BB: Stack Eq_n fn000F07BB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000F07BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v20.u3 = g_t140030.u3;
+	&v20.u5->t0000.u0 = g_t140030.u5;
 	loc16 = v20;
-	v20.u3 = g_t140030.u3;
+	&v20.u5->t0000.u0 = g_t140030.u5;
 	v21.u0 = 0x10;
 	v20 += v21;
-	g_t140030.u3 = (word32 *) v20;
-	v20.u3 = g_t140030.u3;
-	v21.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v20;
+	&v20.u5->t0000.u0 = g_t140030.u5;
+	&v21.u5->t0000.u0 = g_t140034.u5;
 	v22 = v20 >= v21;
 	if (v22)
 	{
@@ -119,22 +119,24 @@ Eq_n fn000F07BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		loc19 = v23;
 	}
 	v20 = loc16;
-	g_t140030.u3 = (word32 *) v20;
+	g_t140030.u5 = (struct Eq_n *) v20;
 	v23 = loc19;
 	return v23;
 }
 
 // 000F089A: Stack Eq_n fn000F089A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000E9B8F
 Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v184.u3 = g_t140030.u3;
+	&v184.u5->t0000.u0 = g_t140030.u5;
 	loc186 = v184;
-	v184.u3 = g_t140030.u3;
+	&v184.u5->t0000.u0 = g_t140030.u5;
 	v185.u0 = 0xE0;
 	v184 += v185;
-	g_t140030.u3 = (word32 *) v184;
-	v184.u3 = g_t140030.u3;
-	v185.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v184;
+	&v184.u5->t0000.u0 = g_t140030.u5;
+	&v185.u5->t0000.u0 = g_t140034.u5;
 	v186 = v184 >= v185;
 	if (v186)
 	{
@@ -220,7 +222,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc95 = v184;
 	v184 = loc95;
 	v190 = *v184.u0;
-	v184.u3 = (word32) v190;
+	&v184.u5->t0000.u0 = (word32) v190;
 	loc96 = v184;
 	v184 = loc96;
 	v185.u0 = 0x18;
@@ -238,7 +240,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v184 += v185;
 		loc98 = v184;
 		v184 = loc98;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc99 = v184;
 		v184 = loc99;
 		v185.u0 = 0x7FFFFFFF;
@@ -257,16 +259,16 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc101 = v184;
 	}
 	v184.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v184;
+	g_t140048.u5 = (struct Eq_n *) v184;
 	v184.u0 = 0x017A;
 	v185 = loc171;
 	v187 = loc101;
 	v188.u0 = 0x00;
 	invoke_viii(v184, v185, v187, v188);
-	v184.u3 = g_t140048.u3;
+	&v184.u5->t0000.u0 = g_t140048.u5;
 	loc102 = v184;
 	v184.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v184;
+	g_t140048.u5 = (struct Eq_n *) v184;
 	v184 = loc102;
 	v185.u0 = 0x01;
 	v184 &= v185;
@@ -276,7 +278,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v184 = ___cxa_find_matching_catch_n();
 		loc164 = v184;
-		v184.u3 = g_t140094.u3;
+		&v184.u5->t0000.u0 = g_t140094.u5;
 		loc165 = v184;
 		v184 = loc164;
 		loc9 = v184;
@@ -285,8 +287,8 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F114F;
 	}
 	v184 = loc95;
-	v191.u3 = *v184.u3;
-	v184.u3 = (word32) v191;
+	v191.u1 = v184.u5->t0000.u1;
+	&v184.u5->t0000.u0 = (word32) v191;
 	loc104 = v184;
 	v184 = loc104;
 	v185.u0 = 0x18;
@@ -297,7 +299,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v186 = v184 < v185;
 	loc105 = v186;
 	v184 = loc171;
-	v184.u3 = *v184.u3;
+	&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 	loc106 = v184;
 	v184 = loc105;
 	if (v184)
@@ -309,13 +311,13 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc107 = v184;
 		v184 = loc20;
 		v185 = loc107;
-		*v184.u3 = (word32) v185;
+		v184.u5->t0000.u5 = (struct Eq_n *) v185;
 		v184 = loc42;
 		v185 = loc31;
-		*v184.u3 = (word32) v185;
+		v184.u5->t0000.u5 = (struct Eq_n *) v185;
 		v184 = loc53;
 		v185.u0 = 0x00;
-		*v184.u3 = (word32) v185;
+		v184.u5->t0000.u5 = (struct Eq_n *) v185;
 		v184 = loc171;
 		v185.u0 = 0x04;
 		v184 += v185;
@@ -325,7 +327,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v184 += v185;
 		loc109 = v184;
 		v184 = arg1;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc13 = v184;
 		v184 = loc107;
 		loc8 = v184;
@@ -375,15 +377,15 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v184 = *v184.u0;
 				loc118 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc118;
 				v185 = loc15;
 				v184 = invoke_ii(v184, v185);
 				loc119 = v184;
-				v184.u3 = g_t140048.u3;
+				&v184.u5->t0000.u0 = g_t140048.u5;
 				loc120 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc120;
 				v185.u0 = 0x01;
 				v184 &= v185;
@@ -488,15 +490,15 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v184 = *v184.u0;
 				loc133 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc133;
 				v185 = loc124;
 				v184 = invoke_ii(v184, v185);
 				loc134 = v184;
-				v184.u3 = g_t140048.u3;
+				&v184.u5->t0000.u0 = g_t140048.u5;
 				loc135 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc135;
 				v185.u0 = 0x01;
 				v184 &= v185;
@@ -565,7 +567,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc139 = v184;
 		v184 = loc95;
 		v192 = *v184.u0;
-		v184.u3 = (word32) v192;
+		&v184.u5->t0000.u0 = (word32) v192;
 		loc140 = v184;
 		v184 = loc140;
 		v185.u0 = 0x18;
@@ -576,7 +578,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v186 = v184 < v185;
 		loc141 = v186;
 		v184 = loc108;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc142 = v184;
 		v184 = loc140;
 		v185.u0 = 0xFF;
@@ -604,16 +606,16 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v184 <<= v185;
 			loc147 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184.u0 = 0x017A;
 			v185 = loc171;
 			v187 = loc147;
 			v188.u0 = 0x00;
 			invoke_viii(v184, v185, v187, v188);
-			v184.u3 = g_t140048.u3;
+			&v184.u5->t0000.u0 = g_t140048.u5;
 			loc148 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc148;
 			v185.u0 = 0x01;
 			v184 &= v185;
@@ -627,7 +629,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v184 = loc95;
 			v193 = *v184.u0;
-			v184.u3 = (word32) v193;
+			&v184.u5->t0000.u0 = (word32) v193;
 			loc151 = v184;
 			v184 = loc151;
 			v185.u0 = 0x18;
@@ -641,7 +643,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v184)
 			{
 				v184 = loc109;
-				v184.u3 = *v184.u3;
+				&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 				loc153 = v184;
 				v184 = loc153;
 				v185.u0 = 0x7FFFFFFF;
@@ -660,16 +662,16 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc155 = v184;
 			}
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184.u0 = 0x017A;
 			v185 = loc171;
 			v187 = loc155;
 			v188.u0 = 0x00;
 			invoke_viii(v184, v185, v187, v188);
-			v184.u3 = g_t140048.u3;
+			&v184.u5->t0000.u0 = g_t140048.u5;
 			loc156 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc156;
 			v185.u0 = 0x01;
 			v184 &= v185;
@@ -683,7 +685,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v184 = loc95;
 			v194 = *v184.u0;
-			v184.u3 = (word32) v194;
+			&v184.u5->t0000.u0 = (word32) v194;
 			loc158 = v184;
 			v184 = loc158;
 			v185.u0 = 0x18;
@@ -694,7 +696,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v186 = v184 < v185;
 			loc159 = v186;
 			v184 = loc171;
-			v184.u3 = *v184.u3;
+			&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 			loc161 = v184;
 			v184 = loc159;
 			if (v184)
@@ -708,7 +710,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc163 = v184;
 			v184 = loc20;
 			v185 = loc163;
-			*v184.u3 = (word32) v185;
+			v184.u5->t0000.u5 = (struct Eq_n *) v185;
 			v184 = loc162;
 			loc10 = v184;
 		}
@@ -722,14 +724,14 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v184 += v185;
 		loc173 = v184;
 		v184 = loc173;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc174 = v184;
 		v184 = loc14;
 		v185.u0 = 0x10;
 		v184 += v185;
 		loc175 = v184;
 		v184 = loc175;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc176 = v184;
 		v184 = loc174;
 		v185 = loc176;
@@ -739,25 +741,25 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v184)
 		{
 			v184 = loc14;
-			v184.u3 = *v184.u3;
+			&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 			loc178 = v184;
 			v184 = loc178;
 			v185.u0 = 0x24;
 			v184 += v185;
 			loc179 = v184;
 			v184 = loc179;
-			v184.u3 = *v184.u3;
+			&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 			loc180 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc180;
 			v185 = loc14;
 			v184 = invoke_ii(v184, v185);
 			loc181 = v184;
-			v184.u3 = g_t140048.u3;
+			&v184.u5->t0000.u0 = g_t140048.u5;
 			loc21 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc21;
 			v185.u0 = 0x01;
 			v184 &= v185;
@@ -776,7 +778,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v184 = loc174;
 			v195 = *v184.u0;
-			v184.u3 = (word32) v195;
+			&v184.u5->t0000.u0 = (word32) v195;
 			loc23 = v184;
 			v184 = loc23;
 			v185.u0 = 0xFF;
@@ -790,8 +792,8 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v184 &= v185;
 		loc25 = v184;
 		v184 = loc149;
-		v196.u1 = v184.u4->t0000.u1;
-		v184.u3 = (word32) v196;
+		v196.u1 = v184.u5->t0000.u1;
+		&v184.u5->t0000.u0 = (word32) v196;
 		loc26 = v184;
 		v184 = loc25;
 		v185 = loc64;
@@ -850,14 +852,14 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v184 = *v184.u0;
 		loc35 = v184;
 		v184.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v184;
+		g_t140048.u5 = (struct Eq_n *) v184;
 		v184 = loc35;
 		v185 = loc14;
 		v184 = invoke_ii(v184, v185);
-		v184.u3 = g_t140048.u3;
+		&v184.u5->t0000.u0 = g_t140048.u5;
 		loc36 = v184;
 		v184.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v184;
+		g_t140048.u5 = (struct Eq_n *) v184;
 		v184 = loc36;
 		v185.u0 = 0x01;
 		v184 &= v185;
@@ -888,7 +890,7 @@ l000F0E98:
 	{
 		v184 = ___cxa_find_matching_catch_n();
 		loc166 = v184;
-		v184.u3 = g_t140094.u3;
+		&v184.u5->t0000.u0 = g_t140094.u5;
 		loc167 = v184;
 		v184 = loc166;
 		loc17 = v184;
@@ -903,7 +905,7 @@ l000F0E98:
 	{
 		v184 = ___cxa_find_matching_catch_n();
 		loc170 = v184;
-		v184.u3 = g_t140094.u3;
+		&v184.u5->t0000.u0 = g_t140094.u5;
 		loc172 = v184;
 		v184 = loc170;
 		loc17 = v184;
@@ -936,8 +938,8 @@ l000F114F:
 	v184 += v185;
 	loc39 = v184;
 	v184 = loc39;
-	v203.u3 = *v184.u3;
-	v184.u3 = (word32) v203;
+	v203.u1 = v184.u5->t0000.u1;
+	&v184.u5->t0000.u0 = (word32) v203;
 	loc40 = v184;
 	v184 = loc40;
 	v185.u0 = 0x18;
@@ -952,7 +954,7 @@ l000F114F:
 	v184 += v185;
 	loc43 = v184;
 	v184 = loc43;
-	v184.u3 = *v184.u3;
+	&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 	loc44 = v184;
 	v184 = loc40;
 	v185.u0 = 0xFF;
@@ -973,7 +975,7 @@ l000F114F:
 	if (v186)
 	{
 		v184 = loc42;
-		v184.u3 = *v184.u3;
+		&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 		loc48 = v184;
 		v184 = loc48;
 		loc49 = v184;
@@ -991,7 +993,7 @@ l000F114F:
 		if (v184)
 		{
 			v184 = loc53;
-			v184.u3 = *v184.u3;
+			&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 			loc54 = v184;
 			v184 = loc48;
 			v185.u0 = 0x04;
@@ -999,17 +1001,17 @@ l000F114F:
 			loc55 = v184;
 			v184 = loc42;
 			v185 = loc55;
-			*v184.u3 = (word32) v185;
+			v184.u5->t0000.u5 = (struct Eq_n *) v185;
 			v184 = loc48;
 			v185 = loc54;
-			*v184.u3 = (word32) v185;
+			v184.u5->t0000.u5 = (struct Eq_n *) v185;
 		}
 	}
 	v184 = loc20;
-	v184.u3 = *v184.u3;
+	&v184.u5->t0000.u0 = v184.u5->t0000.u5;
 	loc56 = v184;
 	v184.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v184;
+	g_t140048.u5 = (struct Eq_n *) v184;
 	v184.u0 = 393;
 	v185 = loc12;
 	v187 = loc56;
@@ -1017,10 +1019,10 @@ l000F114F:
 	v197 = loc64;
 	v184 = invoke_iiiii(v184, v185, v187, v188, v197);
 	loc57 = v184;
-	v184.u3 = g_t140048.u3;
+	&v184.u5->t0000.u0 = g_t140048.u5;
 	loc58 = v184;
 	v184.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v184;
+	g_t140048.u5 = (struct Eq_n *) v184;
 	v184 = loc58;
 	v185.u0 = 0x01;
 	v184 &= v185;
@@ -1032,7 +1034,7 @@ l000F114F:
 l000F112F:
 		v184 = ___cxa_find_matching_catch_n();
 		loc168 = v184;
-		v184.u3 = g_t140094.u3;
+		&v184.u5->t0000.u0 = g_t140094.u5;
 		loc169 = v184;
 		v184 = loc168;
 		loc17 = v184;
@@ -1097,15 +1099,15 @@ l000F112F:
 				v184 = *v184.u0;
 				loc70 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc70;
 				v185 = loc14;
 				v184 = invoke_ii(v184, v185);
 				loc71 = v184;
-				v184.u3 = g_t140048.u3;
+				&v184.u5->t0000.u0 = g_t140048.u5;
 				loc72 = v184;
 				v184.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v184;
+				g_t140048.u5 = (struct Eq_n *) v184;
 				v184 = loc72;
 				v185.u0 = 0x01;
 				v184 &= v185;
@@ -1185,15 +1187,15 @@ l000F112F:
 			v184 = *v184.u0;
 			loc87 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc87;
 			v185 = loc16;
 			v184 = invoke_ii(v184, v185);
 			loc88 = v184;
-			v184.u3 = g_t140048.u3;
+			&v184.u5->t0000.u0 = g_t140048.u5;
 			loc89 = v184;
 			v184.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v184;
+			g_t140048.u5 = (struct Eq_n *) v184;
 			v184 = loc89;
 			v185.u0 = 0x01;
 			v184 &= v185;
@@ -1260,7 +1262,7 @@ l000F10E1:
 		v184 = loc160;
 		fn0011BAF7(v184);
 		v184 = loc186;
-		g_t140030.u3 = (word32 *) v184;
+		g_t140030.u5 = (struct Eq_n *) v184;
 		v184 = loc19;
 		return v184;
 	}
@@ -1269,14 +1271,14 @@ l000F10E1:
 // 000F1165: Stack Eq_n fn000F1165(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000F1165(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v22.u3 = g_t140030.u3;
+	&v22.u5->t0000.u0 = g_t140030.u5;
 	loc21 = v22;
-	v22.u3 = g_t140030.u3;
+	&v22.u5->t0000.u0 = g_t140030.u5;
 	v23.u0 = 0x10;
 	v22 += v23;
-	g_t140030.u3 = (word32 *) v22;
-	v22.u3 = g_t140030.u3;
-	v23.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v22;
+	&v22.u5->t0000.u0 = g_t140030.u5;
+	&v23.u5->t0000.u0 = g_t140034.u5;
 	v24 = v22 >= v23;
 	if (v24)
 	{
@@ -1396,7 +1398,7 @@ l000F1272:
 				loc5 = v22;
 l000F1277:
 				v22 = loc21;
-				g_t140030.u3 = (word32 *) v22;
+				g_t140030.u5 = (struct Eq_n *) v22;
 				v22 = loc5;
 				return v22;
 			}
@@ -1421,14 +1423,14 @@ l000F1277:
 // 000F1281: Stack Eq_n fn000F1281(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v230.u3 = g_t140030.u3;
+	&v230.u5->t0000.u0 = g_t140030.u5;
 	loc233 = v230;
-	v230.u3 = g_t140030.u3;
+	&v230.u5->t0000.u0 = g_t140030.u5;
 	v231.u0 = 0x70;
 	v230 += v231;
-	g_t140030.u3 = (word32 *) v230;
-	v230.u3 = g_t140030.u3;
-	v231.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v230;
+	&v230.u5->t0000.u0 = g_t140030.u5;
+	&v231.u5->t0000.u0 = g_t140034.u5;
 	v232 = v230 >= v231;
 	if (v232)
 	{
@@ -1469,13 +1471,13 @@ Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v230)
 		{
 			v230.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v230;
+			g_t140048.u5 = (struct Eq_n *) v230;
 			v230.u0 = 0x018A;
 			invoke_v(v230);
-			v230.u3 = g_t140048.u3;
+			&v230.u5->t0000.u0 = g_t140048.u5;
 			loc98 = v230;
 			v230.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v230;
+			g_t140048.u5 = (struct Eq_n *) v230;
 			v230 = loc98;
 			v231.u0 = 0x01;
 			v230 &= v231;
@@ -1485,7 +1487,7 @@ Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			{
 				v230 = ___cxa_find_matching_catch_n();
 				loc120 = v230;
-				v230.u3 = g_t140094.u3;
+				&v230.u5->t0000.u0 = g_t140094.u5;
 				loc131 = v230;
 				v230 = loc120;
 				loc40 = v230;
@@ -1547,7 +1549,7 @@ l000F1D4A:
 		loc149 = v230;
 		v230 = loc149;
 		v233 = *v230.u0;
-		v230.u3 = (word32) v233;
+		&v230.u5->t0000.u0 = (word32) v233;
 		loc150 = v230;
 		v230 = loc150;
 		v231.u0 = 0x18;
@@ -1565,7 +1567,7 @@ l000F1D4A:
 			v230 += v231;
 			loc152 = v230;
 			v230 = loc152;
-			v230.u3 = *v230.u3;
+			&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 			loc153 = v230;
 			v230 = loc153;
 			loc156 = v230;
@@ -1589,7 +1591,7 @@ l000F1D4A:
 			v230 = loc12;
 			v231.u0 = 0x02;
 			v234 = (byte) v231;
-			v230.u4->t0000.u0 = (bool) v234;
+			v230.u5->t0000.u0 = (bool) v234;
 			v230 = loc14;
 			v231.u0 = ~0x00;
 			v230 += v231;
@@ -1608,7 +1610,7 @@ l000F1D4A:
 			v230 = loc12;
 			v231.u0 = 0x01;
 			v235 = (byte) v231;
-			v230.u4->t0000.u0 = (bool) v235;
+			v230.u5->t0000.u0 = (bool) v235;
 			v230 = loc13;
 			loc22 = v230;
 			v230 = loc14;
@@ -1685,15 +1687,15 @@ l000F1415:
 			v230 = *v230.u0;
 			loc170 = v230;
 			v230.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v230;
+			g_t140048.u5 = (struct Eq_n *) v230;
 			v230 = loc170;
 			v231 = loc161;
 			v230 = invoke_ii(v230, v231);
 			loc171 = v230;
-			v230.u3 = g_t140048.u3;
+			&v230.u5->t0000.u0 = g_t140048.u5;
 			loc172 = v230;
 			v230.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v230;
+			g_t140048.u5 = (struct Eq_n *) v230;
 			v230 = loc172;
 			v231.u0 = 0x01;
 			v230 &= v231;
@@ -1778,15 +1780,15 @@ l000F14F6:
 					v230 = *v230.u0;
 					loc186 = v230;
 					v230.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v230;
+					g_t140048.u5 = (struct Eq_n *) v230;
 					v230 = loc186;
 					v231 = loc177;
 					v230 = invoke_ii(v230, v231);
 					loc187 = v230;
-					v230.u3 = g_t140048.u3;
+					&v230.u5->t0000.u0 = g_t140048.u5;
 					loc188 = v230;
 					v230.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v230;
+					g_t140048.u5 = (struct Eq_n *) v230;
 					v230 = loc188;
 					v231.u0 = 0x01;
 					v230 &= v231;
@@ -1882,15 +1884,15 @@ l000F14F6:
 				v230 = *v230.u0;
 				loc47 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc47;
 				v231 = loc194;
 				v230 = invoke_ii(v230, v231);
 				loc48 = v230;
-				v230.u3 = g_t140048.u3;
+				&v230.u5->t0000.u0 = g_t140048.u5;
 				loc49 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc49;
 				v231.u0 = 0x01;
 				v230 &= v231;
@@ -1909,7 +1911,7 @@ l000F14F6:
 			{
 				v230 = loc228;
 				v236 = *v230.u0;
-				v230.u3 = (word32) v236;
+				&v230.u5->t0000.u0 = (word32) v236;
 				loc51 = v230;
 				v230 = loc51;
 				v231.u0 = 0xFF;
@@ -1931,26 +1933,26 @@ l000F14F6:
 			else
 			{
 				v230 = arg4;
-				v230.u3 = *v230.u3;
+				&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 				loc55 = v230;
 				v230 = loc55;
 				v231.u0 = 0x0C;
 				v230 += v231;
 				loc56 = v230;
 				v230 = loc56;
-				v230.u3 = *v230.u3;
+				&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 				loc57 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc57;
 				v231 = arg4;
 				v237 = loc53;
 				v230 = invoke_iii(v230, v231, v237);
 				loc58 = v230;
-				v230.u3 = g_t140048.u3;
+				&v230.u5->t0000.u0 = g_t140048.u5;
 				loc59 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc59;
 				v231.u0 = 0x01;
 				v230 &= v231;
@@ -1990,7 +1992,7 @@ l000F14F6:
 					break;
 				v230 = loc21;
 				v238 = *v230.u0;
-				v230.u3 = (word32) v238;
+				&v230.u5->t0000.u0 = (word32) v238;
 				loc66 = v230;
 				v230 = loc66;
 				v231.u0 = 0x18;
@@ -2008,8 +2010,8 @@ l000F14F6:
 					v230 += v231;
 					loc68 = v230;
 					v230 = loc68;
-					v239.u1 = v230.u4->t0000.u1;
-					v230.u3 = (word32) v239;
+					v239.u1 = v230.u5->t0000.u1;
+					&v230.u5->t0000.u0 = (word32) v239;
 					loc69 = v230;
 					v230 = loc69;
 					v231.u0 = 0x18;
@@ -2023,7 +2025,7 @@ l000F14F6:
 					if (v230)
 					{
 						v230 = loc19;
-						v230.u3 = *v230.u3;
+						&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 						loc71 = v230;
 						v230 = loc71;
 						loc73 = v230;
@@ -2038,8 +2040,8 @@ l000F14F6:
 					v230 += v231;
 					loc72 = v230;
 					v230 = loc72;
-					v240.u1 = v230.u4->t0000.u1;
-					v230.u3 = (word32) v240;
+					v240.u1 = v230.u5->t0000.u1;
+					&v230.u5->t0000.u0 = (word32) v240;
 					loc74 = v230;
 					v230 = arg6;
 					if (v230)
@@ -2050,26 +2052,26 @@ l000F14F6:
 					else
 					{
 						v230 = arg4;
-						v230.u3 = *v230.u3;
+						&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 						loc75 = v230;
 						v230 = loc75;
 						v231.u0 = 0x0C;
 						v230 += v231;
 						loc77 = v230;
 						v230 = loc77;
-						v230.u3 = *v230.u3;
+						&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 						loc78 = v230;
 						v230.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v230;
+						g_t140048.u5 = (struct Eq_n *) v230;
 						v230 = loc78;
 						v231 = arg4;
 						v237 = loc74;
 						v230 = invoke_iii(v230, v231, v237);
 						loc79 = v230;
-						v230.u3 = g_t140048.u3;
+						&v230.u5->t0000.u0 = g_t140048.u5;
 						loc80 = v230;
 						v230.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v230;
+						g_t140048.u5 = (struct Eq_n *) v230;
 						v230 = loc80;
 						v231.u0 = 0x01;
 						v230 &= v231;
@@ -2118,7 +2120,7 @@ l000F14F6:
 					}
 					v230 = loc68;
 					v242 = *v230.u0;
-					v230.u3 = (word32) v242;
+					&v230.u5->t0000.u0 = (word32) v242;
 					loc85 = v230;
 					v230 = loc85;
 					v231.u0 = 0x18;
@@ -2136,7 +2138,7 @@ l000F14F6:
 						v230 += v231;
 						loc88 = v230;
 						v230 = loc88;
-						v230.u3 = *v230.u3;
+						&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 						loc89 = v230;
 						v230 = loc89;
 						loc92 = v230;
@@ -2168,7 +2170,7 @@ l000F14F6:
 						v230 = loc21;
 						v231.u0 = 0x02;
 						v243 = (byte) v231;
-						v230.u4->t0000.u0 = (bool) v243;
+						v230.u5->t0000.u0 = (bool) v243;
 						v230.u0 = 0x01;
 						loc24 = v230;
 						v230 = loc94;
@@ -2262,14 +2264,14 @@ l000F185F:
 				v230 = *v230.u0;
 				loc107 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc107;
 				v231 = loc99;
 				v230 = invoke_ii(v230, v231);
-				v230.u3 = g_t140048.u3;
+				&v230.u5->t0000.u0 = g_t140048.u5;
 				loc108 = v230;
 				v230.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v230;
+				g_t140048.u5 = (struct Eq_n *) v230;
 				v230 = loc108;
 				v231.u0 = 0x01;
 				v230 &= v231;
@@ -2292,7 +2294,7 @@ l000F1A03:
 						{
 							v230 = ___cxa_find_matching_catch_n();
 							loc225 = v230;
-							v230.u3 = g_t140094.u3;
+							&v230.u5->t0000.u0 = g_t140094.u5;
 							loc226 = v230;
 							v230 = loc225;
 							loc38 = v230;
@@ -2308,7 +2310,7 @@ l000F1A03:
 							{
 								v230 = ___cxa_find_matching_catch_n();
 								loc61 = v230;
-								v230.u3 = g_t140094.u3;
+								&v230.u5->t0000.u0 = g_t140094.u5;
 								loc62 = v230;
 								v230 = loc61;
 								loc38 = v230;
@@ -2324,7 +2326,7 @@ l000F1A03:
 								{
 									v230 = ___cxa_find_matching_catch_n();
 									loc82 = v230;
-									v230.u3 = g_t140094.u3;
+									&v230.u5->t0000.u0 = g_t140094.u5;
 									loc83 = v230;
 									v230 = loc82;
 									loc38 = v230;
@@ -2340,7 +2342,7 @@ l000F1A03:
 									{
 										v230 = ___cxa_find_matching_catch_n();
 										loc115 = v230;
-										v230.u3 = g_t140094.u3;
+										&v230.u5->t0000.u0 = g_t140094.u5;
 										loc116 = v230;
 										v230 = loc115;
 										loc38 = v230;
@@ -2422,15 +2424,15 @@ l000F1D1E:
 							v230 = *v230.u0;
 							loc204 = v230;
 							v230.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v230;
+							g_t140048.u5 = (struct Eq_n *) v230;
 							v230 = loc204;
 							v231 = loc194;
 							v230 = invoke_ii(v230, v231);
 							loc205 = v230;
-							v230.u3 = g_t140048.u3;
+							&v230.u5->t0000.u0 = g_t140048.u5;
 							loc206 = v230;
 							v230.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v230;
+							g_t140048.u5 = (struct Eq_n *) v230;
 							v230 = loc206;
 							v231.u0 = 0x01;
 							v230 &= v231;
@@ -2473,7 +2475,7 @@ l000F1AE2:
 l000F1C9C:
 									v230 = ___cxa_find_matching_catch_n();
 									loc134 = v230;
-									v230.u3 = g_t140094.u3;
+									&v230.u5->t0000.u0 = g_t140094.u5;
 									loc135 = v230;
 									v230 = loc134;
 									loc38 = v230;
@@ -2526,15 +2528,15 @@ l000F1C9C:
 										v230 = *v230.u0;
 										loc219 = v230;
 										v230.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v230;
+										g_t140048.u5 = (struct Eq_n *) v230;
 										v230 = loc219;
 										v231 = loc37;
 										v230 = invoke_ii(v230, v231);
 										loc221 = v230;
-										v230.u3 = g_t140048.u3;
+										&v230.u5->t0000.u0 = g_t140048.u5;
 										loc222 = v230;
 										v230.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v230;
+										g_t140048.u5 = (struct Eq_n *) v230;
 										v230 = loc222;
 										v231.u0 = 0x01;
 										v230 &= v231;
@@ -2621,7 +2623,7 @@ l000F1BAC:
 											break;
 										v230 = loc28;
 										v247 = *v230.u0;
-										v230.u3 = (word32) v247;
+										&v230.u5->t0000.u0 = (word32) v247;
 										loc137 = v230;
 										v230 = loc137;
 										v231.u0 = 0x18;
@@ -2660,7 +2662,7 @@ l000F1C50:
 									if (v232)
 									{
 										v230 = arg5;
-										v230.u3 = *v230.u3;
+										&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 										loc141 = v230;
 										v230 = loc141;
 										v231.u0 = 0x04;
@@ -2668,7 +2670,7 @@ l000F1C50:
 										loc143 = v230;
 										v230 = arg5;
 										v231 = loc143;
-										*v230.u3 = (word32) v231;
+										v230.u5->t0000.u5 = (struct Eq_n *) v231;
 										v230 = arg3;
 										loc17 = v230;
 									}
@@ -2686,7 +2688,7 @@ l000F1C50:
 										_free(v230);
 									}
 									v230 = loc233;
-									g_t140030.u3 = (word32 *) v230;
+									g_t140030.u5 = (struct Eq_n *) v230;
 									v230 = loc17;
 									return v230;
 								}
@@ -2741,7 +2743,7 @@ l000F1C50:
 						break;
 					v230 = loc25;
 					v244 = *v230.u0;
-					v230.u3 = (word32) v244;
+					&v230.u5->t0000.u0 = (word32) v244;
 					loc117 = v230;
 					v230 = loc117;
 					v231.u0 = 0x18;
@@ -2759,8 +2761,8 @@ l000F1C50:
 						v230 += v231;
 						loc119 = v230;
 						v230 = loc119;
-						v245.u1 = v230.u4->t0000.u1;
-						v230.u3 = (word32) v245;
+						v245.u1 = v230.u5->t0000.u1;
+						&v230.u5->t0000.u0 = (word32) v245;
 						loc121 = v230;
 						v230 = loc121;
 						v231.u0 = 0x18;
@@ -2778,7 +2780,7 @@ l000F1C50:
 							v230 += v231;
 							loc123 = v230;
 							v230 = loc123;
-							v230.u3 = *v230.u3;
+							&v230.u5->t0000.u0 = v230.u5->t0000.u5;
 							loc124 = v230;
 							v230 = loc124;
 							loc127 = v230;
@@ -2811,7 +2813,7 @@ l000F1C50:
 							v230 = loc25;
 							v231.u0 = 0x00;
 							v246 = (byte) v231;
-							v230.u4->t0000.u0 = (bool) v246;
+							v230.u5->t0000.u0 = (bool) v246;
 							v230 = loc128;
 							loc34 = v230;
 						}
@@ -2863,14 +2865,14 @@ l000F1C50:
 // 000F1D53: void fn000F1D53(Stack Eq_n arg0)
 void fn000F1D53(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 }
 
 // 000F1D5C: void fn000F1D5C(Stack Eq_n arg0)
 void fn000F1D5C(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 	v5 = arg0;
 	fn0011B709(v5);
@@ -2879,14 +2881,14 @@ void fn000F1D5C(Eq_n arg0)
 // 000F1D6A: Stack Eq_n fn000F1D6A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v73.u3 = g_t140030.u3;
+	&v73.u5->t0000.u0 = g_t140030.u5;
 	loc75 = v73;
-	v73.u3 = g_t140030.u3;
+	&v73.u5->t0000.u0 = g_t140030.u5;
 	v74.u0 = 0x40;
 	v73 += v74;
-	g_t140030.u3 = (word32 *) v73;
-	v73.u3 = g_t140030.u3;
-	v74.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v73;
+	&v73.u5->t0000.u0 = g_t140030.u5;
+	&v74.u5->t0000.u0 = g_t140034.u5;
 	v75 = v73 >= v74;
 	if (v75)
 	{
@@ -2997,14 +2999,14 @@ Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F20CE: Stack Eq_n fn000F20CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3054,7 +3056,7 @@ Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F81B1(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3062,14 +3064,14 @@ Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F214A: Stack Eq_n fn000F214A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3119,7 +3121,7 @@ Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F78C3(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3127,14 +3129,14 @@ Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F21C6: Stack Eq_n fn000F21C6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3184,7 +3186,7 @@ Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F6FD6(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3192,14 +3194,14 @@ Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F2242: Stack Eq_n fn000F2242(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3249,7 +3251,7 @@ Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F66E9(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3257,14 +3259,14 @@ Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F22BE: Stack Eq_n fn000F22BE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3314,7 +3316,7 @@ Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F5DFC(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3322,14 +3324,14 @@ Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F233A: Stack Eq_n fn000F233A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3379,7 +3381,7 @@ Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F539A(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3387,14 +3389,14 @@ Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F23B6: Stack Eq_n fn000F23B6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3444,7 +3446,7 @@ Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F4A65(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3452,14 +3454,14 @@ Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F2432: Stack Eq_n fn000F2432(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3509,7 +3511,7 @@ Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F4131(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3517,14 +3519,14 @@ Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F24AE: Stack Eq_n fn000F24AE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -3574,7 +3576,7 @@ Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn000F3224(v12, v13, v15, v16, v17, v18);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -3582,14 +3584,14 @@ Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000F252A: Stack Eq_n fn000F252A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v207.u3 = g_t140030.u3;
+	&v207.u5->t0000.u0 = g_t140030.u5;
 	loc209 = v207;
-	v207.u3 = g_t140030.u3;
+	&v207.u5->t0000.u0 = g_t140030.u5;
 	v208.u0 = 0x0140;
 	v207 += v208;
-	g_t140030.u3 = (word32 *) v207;
-	v207.u3 = g_t140030.u3;
-	v208.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v207;
+	&v207.u5->t0000.u0 = g_t140030.u5;
+	&v208.u5->t0000.u0 = g_t140034.u5;
 	v209 = v207 >= v208;
 	if (v209)
 	{
@@ -3666,15 +3668,15 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc7 = v207;
 	}
 	v207.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v207;
+	g_t140048.u5 = (struct Eq_n *) v207;
 	v207.u0 = 0x0167;
 	v208 = arg3;
 	v207 = invoke_ii(v207, v208);
 	loc95 = v207;
-	v207.u3 = g_t140048.u3;
+	&v207.u5->t0000.u0 = g_t140048.u5;
 	loc106 = v207;
 	v207.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v207;
+	g_t140048.u5 = (struct Eq_n *) v207;
 	v207 = loc106;
 	v208.u0 = 0x01;
 	v207 &= v208;
@@ -3684,7 +3686,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v207 = ___cxa_find_matching_catch_n();
 		loc199 = v207;
-		v207.u3 = g_t140094.u3;
+		&v207.u5->t0000.u0 = g_t140094.u5;
 		loc200 = v207;
 		v207 = loc199;
 		loc6 = v207;
@@ -3698,16 +3700,16 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v208 = loc95;
 	*v207.u0 = v208;
 	v207.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v207;
+	g_t140048.u5 = (struct Eq_n *) v207;
 	v207.u0 = 0x0164;
 	v208 = loc181;
 	v211.u0 = 0x4C90;
 	v207 = invoke_iii(v207, v208, v211);
 	loc118 = v207;
-	v207.u3 = g_t140048.u3;
+	&v207.u5->t0000.u0 = g_t140048.u5;
 	loc119 = v207;
 	v207.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v207;
+	g_t140048.u5 = (struct Eq_n *) v207;
 	v207 = loc119;
 	v208.u0 = 0x01;
 	v207 &= v208;
@@ -3727,17 +3729,17 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v207 = *v207.u0;
 		loc123 = v207;
 		v207.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v207;
+		g_t140048.u5 = (struct Eq_n *) v207;
 		v207 = loc123;
 		v208 = loc118;
 		v211.u0 = 14251;
 		v212.u0 = 14277;
 		v213 = loc159;
 		v207 = invoke_iiiii(v207, v208, v211, v212, v213);
-		v207.u3 = g_t140048.u3;
+		&v207.u5->t0000.u0 = g_t140048.u5;
 		loc124 = v207;
 		v207.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v207;
+		g_t140048.u5 = (struct Eq_n *) v207;
 		v207 = loc124;
 		v208.u0 = 0x01;
 		v207 &= v208;
@@ -3789,7 +3791,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc128 = v207;
 			v207 = loc128;
 			v214 = *v207.u0;
-			v207.u3 = (word32) v214;
+			&v207.u5->t0000.u0 = (word32) v214;
 			loc129 = v207;
 			v207 = loc129;
 			v208.u0 = 0x18;
@@ -3807,7 +3809,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v207 += v208;
 				loc131 = v207;
 				v207 = loc131;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc132 = v207;
 				v207 = loc132;
 				v208.u0 = 0x7FFFFFFF;
@@ -3826,16 +3828,16 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc134 = v207;
 			}
 			v207.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v207;
+			g_t140048.u5 = (struct Eq_n *) v207;
 			v207.u0 = 0x017A;
 			v208 = loc192;
 			v211 = loc134;
 			v212.u0 = 0x00;
 			invoke_viii(v207, v208, v211, v212);
-			v207.u3 = g_t140048.u3;
+			&v207.u5->t0000.u0 = g_t140048.u5;
 			loc135 = v207;
 			v207.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v207;
+			g_t140048.u5 = (struct Eq_n *) v207;
 			v207 = loc135;
 			v208.u0 = 0x01;
 			v207 &= v208;
@@ -3845,7 +3847,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			{
 				v207 = ___cxa_find_matching_catch_n();
 				loc30 = v207;
-				v207.u3 = g_t140094.u3;
+				&v207.u5->t0000.u0 = g_t140094.u5;
 				loc31 = v207;
 				v207 = loc30;
 				loc17 = v207;
@@ -3854,8 +3856,8 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				goto l000F2EFD;
 			}
 			v207 = loc128;
-			v215.u3 = *v207.u3;
-			v207.u3 = (word32) v215;
+			v215.u1 = v207.u5->t0000.u1;
+			&v207.u5->t0000.u0 = (word32) v215;
 			loc137 = v207;
 			v207 = loc137;
 			v208.u0 = 0x18;
@@ -3866,7 +3868,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v209 = v207 < v208;
 			loc138 = v209;
 			v207 = loc192;
-			v207.u3 = *v207.u3;
+			&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 			loc139 = v207;
 			v207 = loc138;
 			if (v207)
@@ -3878,13 +3880,13 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc140 = v207;
 				v207 = loc29;
 				v208 = loc140;
-				*v207.u3 = (word32) v208;
+				v207.u5->t0000.u5 = (struct Eq_n *) v208;
 				v207 = loc51;
 				v208 = loc40;
-				*v207.u3 = (word32) v208;
+				v207.u5->t0000.u5 = (struct Eq_n *) v208;
 				v207 = loc62;
 				v208.u0 = 0x00;
-				*v207.u3 = (word32) v208;
+				v207.u5->t0000.u5 = (struct Eq_n *) v208;
 				v207 = loc192;
 				v208.u0 = 0x04;
 				v207 += v208;
@@ -3894,7 +3896,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v207 += v208;
 				loc142 = v207;
 				v207 = arg1;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc22 = v207;
 				v207 = loc140;
 				loc14 = v207;
@@ -3946,15 +3948,15 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						v207 = *v207.u0;
 						loc151 = v207;
 						v207.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v207;
+						g_t140048.u5 = (struct Eq_n *) v207;
 						v207 = loc151;
 						v208 = loc24;
 						v207 = invoke_ii(v207, v208);
 						loc152 = v207;
-						v207.u3 = g_t140048.u3;
+						&v207.u5->t0000.u0 = g_t140048.u5;
 						loc153 = v207;
 						v207.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v207;
+						g_t140048.u5 = (struct Eq_n *) v207;
 						v207 = loc153;
 						v208.u0 = 0x01;
 						v207 &= v208;
@@ -4047,15 +4049,15 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						v207 = *v207.u0;
 						loc167 = v207;
 						v207.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v207;
+						g_t140048.u5 = (struct Eq_n *) v207;
 						v207 = loc167;
 						v208 = loc157;
 						v207 = invoke_ii(v207, v208);
 						loc168 = v207;
-						v207.u3 = g_t140048.u3;
+						&v207.u5->t0000.u0 = g_t140048.u5;
 						loc169 = v207;
 						v207.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v207;
+						g_t140048.u5 = (struct Eq_n *) v207;
 						v207 = loc169;
 						v208.u0 = 0x01;
 						v207 &= v208;
@@ -4134,7 +4136,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc174 = v207;
 				v207 = loc128;
 				v216 = *v207.u0;
-				v207.u3 = (word32) v216;
+				&v207.u5->t0000.u0 = (word32) v216;
 				loc175 = v207;
 				v207 = loc175;
 				v208.u0 = 0x18;
@@ -4145,7 +4147,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v209 = v207 < v208;
 				loc176 = v209;
 				v207 = loc141;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc177 = v207;
 				v207 = loc175;
 				v208.u0 = 0xFF;
@@ -4173,16 +4175,16 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					v207 <<= v208;
 					loc183 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207.u0 = 0x017A;
 					v208 = loc192;
 					v211 = loc183;
 					v212.u0 = 0x00;
 					invoke_viii(v207, v208, v211, v212);
-					v207.u3 = g_t140048.u3;
+					&v207.u5->t0000.u0 = g_t140048.u5;
 					loc184 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc184;
 					v208.u0 = 0x01;
 					v207 &= v208;
@@ -4196,7 +4198,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					}
 					v207 = loc128;
 					v217 = *v207.u0;
-					v207.u3 = (word32) v217;
+					&v207.u5->t0000.u0 = (word32) v217;
 					loc186 = v207;
 					v207 = loc186;
 					v208.u0 = 0x18;
@@ -4210,7 +4212,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					if (v207)
 					{
 						v207 = loc142;
-						v207.u3 = *v207.u3;
+						&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 						loc188 = v207;
 						v207 = loc188;
 						v208.u0 = 0x7FFFFFFF;
@@ -4229,16 +4231,16 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						loc190 = v207;
 					}
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207.u0 = 0x017A;
 					v208 = loc192;
 					v211 = loc190;
 					v212.u0 = 0x00;
 					invoke_viii(v207, v208, v211, v212);
-					v207.u3 = g_t140048.u3;
+					&v207.u5->t0000.u0 = g_t140048.u5;
 					loc191 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc191;
 					v208.u0 = 0x01;
 					v207 &= v208;
@@ -4252,7 +4254,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					}
 					v207 = loc128;
 					v218 = *v207.u0;
-					v207.u3 = (word32) v218;
+					&v207.u5->t0000.u0 = (word32) v218;
 					loc194 = v207;
 					v207 = loc194;
 					v208.u0 = 0x18;
@@ -4263,7 +4265,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					v209 = v207 < v208;
 					loc195 = v209;
 					v207 = loc192;
-					v207.u3 = *v207.u3;
+					&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 					loc196 = v207;
 					v207 = loc195;
 					if (v207)
@@ -4277,7 +4279,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					loc198 = v207;
 					v207 = loc29;
 					v208 = loc198;
-					*v207.u3 = (word32) v208;
+					v207.u5->t0000.u5 = (struct Eq_n *) v208;
 					v207 = loc197;
 					loc16 = v207;
 				}
@@ -4291,14 +4293,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v207 += v208;
 				loc38 = v207;
 				v207 = loc38;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc39 = v207;
 				v207 = loc23;
 				v208.u0 = 0x10;
 				v207 += v208;
 				loc41 = v207;
 				v207 = loc41;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc42 = v207;
 				v207 = loc39;
 				v208 = loc42;
@@ -4308,25 +4310,25 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				if (v207)
 				{
 					v207 = loc23;
-					v207.u3 = *v207.u3;
+					&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 					loc44 = v207;
 					v207 = loc44;
 					v208.u0 = 0x24;
 					v207 += v208;
 					loc45 = v207;
 					v207 = loc45;
-					v207.u3 = *v207.u3;
+					&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 					loc46 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc46;
 					v208 = loc23;
 					v207 = invoke_ii(v207, v208);
 					loc47 = v207;
-					v207.u3 = g_t140048.u3;
+					&v207.u5->t0000.u0 = g_t140048.u5;
 					loc48 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc48;
 					v208.u0 = 0x01;
 					v207 &= v208;
@@ -4406,14 +4408,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v207 = *v207.u0;
 				loc59 = v207;
 				v207.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v207;
+				g_t140048.u5 = (struct Eq_n *) v207;
 				v207 = loc59;
 				v208 = loc23;
 				v207 = invoke_ii(v207, v208);
-				v207.u3 = g_t140048.u3;
+				&v207.u5->t0000.u0 = g_t140048.u5;
 				loc60 = v207;
 				v207.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v207;
+				g_t140048.u5 = (struct Eq_n *) v207;
 				v207 = loc60;
 				v208.u0 = 0x01;
 				v207 &= v208;
@@ -4444,7 +4446,7 @@ l000F2C3D:
 			{
 				v207 = ___cxa_find_matching_catch_n();
 				loc32 = v207;
-				v207.u3 = g_t140094.u3;
+				&v207.u5->t0000.u0 = g_t140094.u5;
 				loc33 = v207;
 				v207 = loc32;
 				loc26 = v207;
@@ -4459,7 +4461,7 @@ l000F2C3D:
 			{
 				v207 = ___cxa_find_matching_catch_n();
 				loc36 = v207;
-				v207.u3 = g_t140094.u3;
+				&v207.u5->t0000.u0 = g_t140094.u5;
 				loc37 = v207;
 				v207 = loc36;
 				loc26 = v207;
@@ -4487,7 +4489,7 @@ l000F2EFD:
 				goto l000F2F30;
 			}
 			v207 = loc29;
-			v207.u3 = *v207.u3;
+			&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 			loc64 = v207;
 			v207 = loc18;
 			loc65 = v207;
@@ -4496,16 +4498,16 @@ l000F2EFD:
 			v207 -= v208;
 			loc66 = v207;
 			v207.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v207;
+			g_t140048.u5 = (struct Eq_n *) v207;
 			v207.u0 = 0x017A;
 			v208 = loc192;
 			v211 = loc66;
 			v212.u0 = 0x00;
 			invoke_viii(v207, v208, v211, v212);
-			v207.u3 = g_t140048.u3;
+			&v207.u5->t0000.u0 = g_t140048.u5;
 			loc67 = v207;
 			v207.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v207;
+			g_t140048.u5 = (struct Eq_n *) v207;
 			v207 = loc67;
 			v208.u0 = 0x01;
 			v207 &= v208;
@@ -4516,20 +4518,20 @@ l000F2EFD:
 			{
 				v207 = loc128;
 				v224 = *v207.u0;
-				v207.u3 = (word32) v224;
+				&v207.u5->t0000.u0 = (word32) v224;
 				loc69 = v207;
 				v207 = loc192;
-				v207.u3 = *v207.u3;
+				&v207.u5->t0000.u0 = v207.u5->t0000.u5;
 				loc70 = v207;
 				v207.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v207;
+				g_t140048.u5 = (struct Eq_n *) v207;
 				v207.u0 = 0x017B;
 				v207 = invoke_i(v207);
 				loc71 = v207;
-				v207.u3 = g_t140048.u3;
+				&v207.u5->t0000.u0 = g_t140048.u5;
 				loc72 = v207;
 				v207.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v207;
+				g_t140048.u5 = (struct Eq_n *) v207;
 				v207 = loc72;
 				v208.u0 = 0x01;
 				v207 &= v208;
@@ -4553,7 +4555,7 @@ l000F2EFD:
 						v207 = loc192;
 					loc76 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc207;
 					v208 = arg5;
 					*v207.u0 = v208;
@@ -4564,10 +4566,10 @@ l000F2EFD:
 					v213 = loc207;
 					v207 = invoke_iiiii(v207, v208, v211, v212, v213);
 					loc77 = v207;
-					v207.u3 = g_t140048.u3;
+					&v207.u5->t0000.u0 = g_t140048.u5;
 					loc78 = v207;
 					v207.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v207;
+					g_t140048.u5 = (struct Eq_n *) v207;
 					v207 = loc78;
 					v208.u0 = 0x01;
 					v207 &= v208;
@@ -4632,15 +4634,15 @@ l000F2EFD:
 								v207 = *v207.u0;
 								loc90 = v207;
 								v207.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v207;
+								g_t140048.u5 = (struct Eq_n *) v207;
 								v207 = loc90;
 								v208 = loc23;
 								v207 = invoke_ii(v207, v208);
 								loc91 = v207;
-								v207.u3 = g_t140048.u3;
+								&v207.u5->t0000.u0 = g_t140048.u5;
 								loc92 = v207;
 								v207.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v207;
+								g_t140048.u5 = (struct Eq_n *) v207;
 								v207 = loc92;
 								v208.u0 = 0x01;
 								v207 &= v208;
@@ -4721,15 +4723,15 @@ l000F2EFD:
 							v207 = *v207.u0;
 							loc105 = v207;
 							v207.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v207;
+							g_t140048.u5 = (struct Eq_n *) v207;
 							v207 = loc105;
 							v208 = loc25;
 							v207 = invoke_ii(v207, v208);
 							loc107 = v207;
-							v207.u3 = g_t140048.u3;
+							&v207.u5->t0000.u0 = g_t140048.u5;
 							loc108 = v207;
 							v207.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v207;
+							g_t140048.u5 = (struct Eq_n *) v207;
 							v207 = loc108;
 							v208.u0 = 0x01;
 							v207 &= v208;
@@ -4807,7 +4809,7 @@ l000F2E8E:
 						v207 = loc170;
 						fn0011BAF7(v207);
 						v207 = loc209;
-						g_t140030.u3 = (word32 *) v207;
+						g_t140030.u5 = (struct Eq_n *) v207;
 						v207 = loc28;
 						return v207;
 					}
@@ -4816,7 +4818,7 @@ l000F2E8E:
 l000F2EE1:
 			v207 = ___cxa_find_matching_catch_n();
 			loc34 = v207;
-			v207.u3 = g_t140094.u3;
+			&v207.u5->t0000.u0 = g_t140094.u5;
 			loc35 = v207;
 			v207 = loc34;
 			loc26 = v207;
@@ -4827,7 +4829,7 @@ l000F2EE1:
 	}
 	v207 = ___cxa_find_matching_catch_n();
 	loc201 = v207;
-	v207.u3 = g_t140094.u3;
+	&v207.u5->t0000.u0 = g_t140094.u5;
 	loc202 = v207;
 	v207 = loc95;
 	v207 = fn0011B43F(v207);
@@ -4857,12 +4859,20 @@ l000F2F30:
 }
 
 // 000F2F51: Stack Eq_n fn000F2F51(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9)
+// Called from:
+//      fn000F252A
+//      fn000F539A
+//      fn000F5DFC
+//      fn000F66E9
+//      fn000F6FD6
+//      fn000F78C3
+//      fn000F81B1
 Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9)
 {
-	v63.u3 = g_t140030.u3;
+	&v63.u5->t0000.u0 = g_t140030.u5;
 	loc69 = v63;
 	v63 = arg3;
-	v63.u3 = *v63.u3;
+	&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 	loc15 = v63;
 	v63 = loc15;
 	v64 = arg2;
@@ -4876,7 +4886,7 @@ Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v63 += v64;
 		loc17 = v63;
 		v63 = loc17;
-		v63.u3 = *v63.u3;
+		&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 		loc18 = v63;
 		v63 = loc18;
 		v64 = arg0;
@@ -4891,7 +4901,7 @@ Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v63 += v64;
 			loc20 = v63;
 			v63 = loc20;
-			v63.u3 = *v63.u3;
+			&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 			loc21 = v63;
 			v63 = loc21;
 			v64 = arg0;
@@ -4946,7 +4956,7 @@ l000F2FDB:
 		loc25 = v63;
 		v63 = loc25;
 		v67 = *v63.u0;
-		v63.u3 = (word32) v67;
+		&v63.u5->t0000.u0 = (word32) v67;
 		loc26 = v63;
 		v63 = loc26;
 		v64.u0 = 0x18;
@@ -4961,7 +4971,7 @@ l000F2FDB:
 		v63 += v64;
 		loc28 = v63;
 		v63 = loc28;
-		v63.u3 = *v63.u3;
+		&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 		loc29 = v63;
 		v63 = loc26;
 		v64.u0 = 0xFF;
@@ -4989,7 +4999,7 @@ l000F2FDB:
 		if (v63)
 		{
 			v63 = arg8;
-			v63.u3 = *v63.u3;
+			&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 			loc34 = v63;
 			v63 = loc34;
 			loc35 = v63;
@@ -5157,7 +5167,7 @@ l000F30E2:
 						loc56 = v63;
 						v63 = loc56;
 						v69 = *v63.u0;
-						v63.u3 = (word32) v69;
+						&v63.u5->t0000.u0 = (word32) v69;
 						loc57 = v63;
 						v63 = loc57;
 						v64.u0 = 0x18;
@@ -5185,7 +5195,7 @@ l000F30E2:
 							loc59 = v63;
 							v63 = loc59;
 							v70 = *v63.u0;
-							v63.u3 = (word32) v70;
+							&v63.u5->t0000.u0 = (word32) v70;
 							loc60 = v63;
 							v63 = loc15;
 							v64.u0 = 0x01;
@@ -5193,11 +5203,11 @@ l000F30E2:
 							loc61 = v63;
 							v63 = arg3;
 							v64 = loc61;
-							*v63.u3 = (word32) v64;
+							v63.u5->t0000.u5 = (struct Eq_n *) v64;
 							v63 = loc15;
 							v64 = loc60;
 							v71 = (byte) v64;
-							v63.u4->t0000.u0 = (bool) v71;
+							v63.u5->t0000.u0 = (bool) v71;
 							v63.u0 = 0x00;
 							loc14 = v63;
 						}
@@ -5231,7 +5241,7 @@ l000F31DD:
 			loc62 = v63;
 			v63 = loc62;
 			v72 = *v63.u0;
-			v63.u3 = (word32) v72;
+			&v63.u5->t0000.u0 = (word32) v72;
 			loc63 = v63;
 			v63 = loc15;
 			v64.u0 = 0x01;
@@ -5239,13 +5249,13 @@ l000F31DD:
 			loc64 = v63;
 			v63 = arg3;
 			v64 = loc64;
-			*v63.u3 = (word32) v64;
+			v63.u5->t0000.u5 = (struct Eq_n *) v64;
 			v63 = loc15;
 			v64 = loc63;
 			v73 = (byte) v64;
-			v63.u4->t0000.u0 = (bool) v73;
+			v63.u5->t0000.u0 = (bool) v73;
 			v63 = arg4;
-			v63.u3 = *v63.u3;
+			&v63.u5->t0000.u0 = v63.u5->t0000.u5;
 			loc65 = v63;
 			v63 = loc65;
 			v64.u0 = 0x01;
@@ -5253,7 +5263,7 @@ l000F31DD:
 			loc66 = v63;
 			v63 = arg4;
 			v64 = loc66;
-			*v63.u3 = (word32) v64;
+			v63.u5->t0000.u5 = (struct Eq_n *) v64;
 			v63.u0 = 0x00;
 			loc14 = v63;
 		}
@@ -5262,16 +5272,18 @@ l000F31DD:
 }
 
 // 000F3224: Stack Eq_n fn000F3224(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F24AE
 Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	loc196 = v195;
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	v196.u0 = 0x0160;
 	v195 += v196;
-	g_t140030.u3 = (word32 *) v195;
-	v195.u3 = g_t140030.u3;
-	v196.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v195;
+	&v195.u5->t0000.u0 = g_t140030.u5;
+	&v196.u5->t0000.u0 = g_t140034.u5;
 	v197 = v195 >= v196;
 	if (v197)
 	{
@@ -5367,7 +5379,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc106 = v195;
 	v195 = loc106;
 	v202 = *v195.u0;
-	v195.u3 = (word32) v202;
+	&v195.u5->t0000.u0 = (word32) v202;
 	loc107 = v195;
 	v195 = loc107;
 	v196.u0 = 0x18;
@@ -5385,7 +5397,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc109 = v195;
 		v195 = loc109;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc110 = v195;
 		v195 = loc110;
 		v196.u0 = 0x7FFFFFFF;
@@ -5404,16 +5416,16 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v195;
 	}
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x017A;
 	v196 = loc24;
 	v198 = loc112;
 	v199.u0 = 0x00;
 	invoke_viii(v195, v196, v198, v199);
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc113 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc113;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -5423,7 +5435,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc176 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc177 = v195;
 		v195 = loc176;
 		loc13 = v195;
@@ -5432,8 +5444,8 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F3B43;
 	}
 	v195 = loc106;
-	v203.u3 = *v195.u3;
-	v195.u3 = (word32) v203;
+	v203.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v203;
 	loc115 = v195;
 	v195 = loc115;
 	v196.u0 = 0x18;
@@ -5444,7 +5456,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v197 = v195 < v196;
 	loc116 = v197;
 	v195 = loc24;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc117 = v195;
 	v195 = loc116;
 	if (v195)
@@ -5456,21 +5468,21 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc118 = v195;
 		v195 = loc35;
 		v196 = loc118;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc57;
 		v196 = loc46;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc67;
 		v196.u0 = 0x00;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc78;
 		v196.u0 = 0x01;
 		v204 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v204;
+		v195.u5->t0000.u0 = (bool) v204;
 		v195 = loc89;
 		v196.u0 = 0x45;
 		v205 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v205;
+		v195.u5->t0000.u0 = (bool) v205;
 		v195 = loc24;
 		v196.u0 = 0x04;
 		v195 += v196;
@@ -5480,7 +5492,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc120 = v195;
 		v195 = arg1;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc17 = v195;
 		v195 = loc118;
 		loc12 = v195;
@@ -5532,15 +5544,15 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc129 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc129;
 				v196 = loc19;
 				v195 = invoke_ii(v195, v196);
 				loc130 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc131 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc131;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -5633,15 +5645,15 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc144 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc144;
 				v196 = loc135;
 				v195 = invoke_ii(v195, v196);
 				loc145 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc146 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc146;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -5720,7 +5732,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc151 = v195;
 		v195 = loc106;
 		v206 = *v195.u0;
-		v195.u3 = (word32) v206;
+		&v195.u5->t0000.u0 = (word32) v206;
 		loc152 = v195;
 		v195 = loc152;
 		v196.u0 = 0x18;
@@ -5731,7 +5743,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v197 = v195 < v196;
 		loc153 = v197;
 		v195 = loc119;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc154 = v195;
 		v195 = loc152;
 		v196.u0 = 0xFF;
@@ -5759,16 +5771,16 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v195 <<= v196;
 			loc160 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc160;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc161 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc161;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -5782,7 +5794,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v207 = *v195.u0;
-			v195.u3 = (word32) v207;
+			&v195.u5->t0000.u0 = (word32) v207;
 			loc163 = v195;
 			v195 = loc163;
 			v196.u0 = 0x18;
@@ -5796,7 +5808,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v195)
 			{
 				v195 = loc120;
-				v195.u3 = *v195.u3;
+				&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 				loc165 = v195;
 				v195 = loc165;
 				v196.u0 = 0x7FFFFFFF;
@@ -5815,16 +5827,16 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc167 = v195;
 			}
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc167;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc168 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc168;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -5838,7 +5850,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v208 = *v195.u0;
-			v195.u3 = (word32) v208;
+			&v195.u5->t0000.u0 = (word32) v208;
 			loc171 = v195;
 			v195 = loc171;
 			v196.u0 = 0x18;
@@ -5849,7 +5861,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v197 = v195 < v196;
 			loc172 = v197;
 			v195 = loc24;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc173 = v195;
 			v195 = loc172;
 			if (v195)
@@ -5863,7 +5875,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc174;
 			loc14 = v195;
 		}
@@ -5877,14 +5889,14 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc185 = v195;
 		v195 = loc185;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
 		v195 += v196;
 		loc187 = v195;
 		v195 = loc187;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc188 = v195;
 		v195 = loc186;
 		v196 = loc188;
@@ -5894,25 +5906,25 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v195)
 		{
 			v195 = loc18;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
 			v195 += v196;
 			loc25 = v195;
 			v195 = loc25;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc26 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc26;
 			v196 = loc18;
 			v195 = invoke_ii(v195, v196);
 			loc27 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc28 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc28;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -6000,14 +6012,14 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 = *v195.u0;
 		loc41 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc41;
 		v196 = loc18;
 		v195 = invoke_ii(v195, v196);
-		v195.u3 = g_t140048.u3;
+		&v195.u5->t0000.u0 = g_t140048.u5;
 		loc42 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc42;
 		v196.u0 = 0x01;
 		v195 &= v196;
@@ -6038,7 +6050,7 @@ l000F3855:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc178 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc179 = v195;
 		v195 = loc178;
 		loc21 = v195;
@@ -6053,7 +6065,7 @@ l000F3855:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc183 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc184 = v195;
 		v195 = loc183;
 		loc21 = v195;
@@ -6086,8 +6098,8 @@ l000F3B43:
 	v195 += v196;
 	loc45 = v195;
 	v195 = loc45;
-	v216.u3 = *v195.u3;
-	v195.u3 = (word32) v216;
+	v216.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v216;
 	loc47 = v195;
 	v195 = loc47;
 	v196.u0 = 0x18;
@@ -6102,7 +6114,7 @@ l000F3B43:
 	v195 += v196;
 	loc49 = v195;
 	v195 = loc49;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc50 = v195;
 	v195 = loc47;
 	v196.u0 = 0xFF;
@@ -6119,8 +6131,8 @@ l000F3B43:
 	v197 = v195 == v196;
 	loc53 = v197;
 	v195 = loc78;
-	v217.u1 = v195.u4->t0000.u1;
-	v195.u3 = (word32) v217;
+	v217.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v217;
 	loc54 = v195;
 	v195 = loc54;
 	v196.u0 = 0x18;
@@ -6139,7 +6151,7 @@ l000F3B43:
 	if (v197)
 	{
 		v195 = loc57;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc56 = v195;
 		v195 = loc56;
 		loc58 = v195;
@@ -6157,7 +6169,7 @@ l000F3B43:
 		if (v195)
 		{
 			v195 = loc67;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
@@ -6165,27 +6177,27 @@ l000F3B43:
 			loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc56;
 			v196 = loc62;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		}
 	}
 	v195 = loc35;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc64 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x0181;
 	v196 = loc16;
 	v198 = loc64;
 	v199 = arg4;
 	v218 = invoke_diii(v195, v196, v198, v199);
 	loc197 = v218;
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc65 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc65;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -6197,7 +6209,7 @@ l000F3B43:
 l000F3B23:
 		v195 = ___cxa_find_matching_catch_n();
 		loc181 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc182 = v195;
 		v195 = loc181;
 		loc21 = v195;
@@ -6262,15 +6274,15 @@ l000F3B23:
 				v195 = *v195.u0;
 				loc77 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc77;
 				v196 = loc18;
 				v195 = invoke_ii(v195, v196);
 				loc79 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc80 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc80;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -6351,15 +6363,15 @@ l000F3B23:
 			v195 = *v195.u0;
 			loc93 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc93;
 			v196 = loc20;
 			v195 = invoke_ii(v195, v196);
 			loc94 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc95 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc95;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -6437,23 +6449,27 @@ l000F3AD6:
 		v195 = loc180;
 		fn0011BAF7(v195);
 		v195 = loc196;
-		g_t140030.u3 = (word32 *) v195;
+		g_t140030.u5 = (struct Eq_n *) v195;
 		v195 = loc23;
 		return v195;
 	}
 }
 
 // 000F3B58: void fn000F3B58(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+// Called from:
+//      fn000F3224
+//      fn000F4131
+//      fn000F4A65
 void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v41.u3 = g_t140030.u3;
+	&v41.u5->t0000.u0 = g_t140030.u5;
 	loc42 = v41;
-	v41.u3 = g_t140030.u3;
+	&v41.u5->t0000.u0 = g_t140030.u5;
 	v42.u0 = 0x10;
 	v41 += v42;
-	g_t140030.u3 = (word32 *) v41;
-	v41.u3 = g_t140030.u3;
-	v42.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v41;
+	&v41.u5->t0000.u0 = g_t140030.u5;
+	&v42.u5->t0000.u0 = g_t140034.u5;
 	v43 = v41 >= v42;
 	if (v43)
 	{
@@ -6469,16 +6485,16 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v42 = loc37;
 	*v41.u0 = v42;
 	v41.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v41;
+	g_t140048.u5 = (struct Eq_n *) v41;
 	v41.u0 = 0x0164;
 	v42 = loc36;
 	v44.u0 = 0x4C90;
 	v41 = invoke_iii(v41, v42, v44);
 	loc38 = v41;
-	v41.u3 = g_t140048.u3;
+	&v41.u5->t0000.u0 = g_t140048.u5;
 	loc39 = v41;
 	v41.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v41;
+	g_t140048.u5 = (struct Eq_n *) v41;
 	v41 = loc39;
 	v42.u0 = 0x01;
 	v41 &= v42;
@@ -6502,17 +6518,17 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v41 = *v41.u0;
 		loc9 = v41;
 		v41.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v41;
+		g_t140048.u5 = (struct Eq_n *) v41;
 		v41 = loc9;
 		v42 = loc38;
 		v44.u0 = 14251;
 		v45 = 0x37CB;
 		v46 = arg2;
 		v41 = invoke_iiiii(v41, v42, v44, v45, v46);
-		v41.u3 = g_t140048.u3;
+		&v41.u5->t0000.u0 = g_t140048.u5;
 		loc10 = v41;
 		v41.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v41;
+		g_t140048.u5 = (struct Eq_n *) v41;
 		v41 = loc10;
 		v42.u0 = 0x01;
 		v41 &= v42;
@@ -6526,16 +6542,16 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		else
 		{
 			v41.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v41;
+			g_t140048.u5 = (struct Eq_n *) v41;
 			v41.u0 = 0x0164;
 			v42 = loc36;
 			v44.u0 = 0x4C98;
 			v41 = invoke_iii(v41, v42, v44);
 			loc12 = v41;
-			v41.u3 = g_t140048.u3;
+			&v41.u5->t0000.u0 = g_t140048.u5;
 			loc13 = v41;
 			v41.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v41;
+			g_t140048.u5 = (struct Eq_n *) v41;
 			v41 = loc13;
 			v42.u0 = 0x01;
 			v41 &= v42;
@@ -6559,15 +6575,15 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v41 = *v41.u0;
 				loc17 = v41;
 				v41.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v41;
+				g_t140048.u5 = (struct Eq_n *) v41;
 				v41 = loc17;
 				v42 = loc12;
 				v41 = invoke_ii(v41, v42);
 				loc18 = v41;
-				v41.u3 = g_t140048.u3;
+				&v41.u5->t0000.u0 = g_t140048.u5;
 				loc19 = v41;
 				v41.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v41;
+				g_t140048.u5 = (struct Eq_n *) v41;
 				v41 = loc19;
 				v42.u0 = 0x01;
 				v41 &= v42;
@@ -6590,15 +6606,15 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 					v41 = *v41.u0;
 					loc23 = v41;
 					v41.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v41;
+					g_t140048.u5 = (struct Eq_n *) v41;
 					v41 = loc23;
 					v42 = loc12;
 					v41 = invoke_ii(v41, v42);
 					loc24 = v41;
-					v41.u3 = g_t140048.u3;
+					&v41.u5->t0000.u0 = g_t140048.u5;
 					loc25 = v41;
 					v41.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v41;
+					g_t140048.u5 = (struct Eq_n *) v41;
 					v41 = loc25;
 					v42.u0 = 0x01;
 					v41 &= v42;
@@ -6621,15 +6637,15 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 						v41 = *v41.u0;
 						loc29 = v41;
 						v41.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v41;
+						g_t140048.u5 = (struct Eq_n *) v41;
 						v41 = loc29;
 						v42 = arg0;
 						v44 = loc12;
 						invoke_vii(v41, v42, v44);
-						v41.u3 = g_t140048.u3;
+						&v41.u5->t0000.u0 = g_t140048.u5;
 						loc30 = v41;
 						v41.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v41;
+						g_t140048.u5 = (struct Eq_n *) v41;
 						v41 = loc30;
 						v42.u0 = 0x01;
 						v41 &= v42;
@@ -6641,14 +6657,14 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 							v41 = loc37;
 							v41 = fn0011B43F(v41);
 							v41 = loc42;
-							g_t140030.u3 = (word32 *) v41;
+							g_t140030.u5 = (struct Eq_n *) v41;
 							return;
 						}
 					}
 				}
 				v41 = ___cxa_find_matching_catch_n();
 				loc34 = v41;
-				v41.u3 = g_t140094.u3;
+				&v41.u5->t0000.u0 = g_t140094.u5;
 				loc35 = v41;
 				v41 = loc34;
 				loc5 = v41;
@@ -6664,7 +6680,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v41 = ___cxa_find_matching_catch_n();
 		loc32 = v41;
-		v41.u3 = g_t140094.u3;
+		&v41.u5->t0000.u0 = g_t140094.u5;
 		loc33 = v41;
 		v41 = loc32;
 		loc5 = v41;
@@ -6678,9 +6694,13 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 }
 
 // 000F3D09: Stack Eq_n fn000F3D09(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
+// Called from:
+//      fn000F3224
+//      fn000F4131
+//      fn000F4A65
 Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10, Eq_n arg11)
 {
-	v99.u3 = g_t140030.u3;
+	&v99.u5->t0000.u0 = g_t140030.u5;
 	loc107 = v99;
 	v99 = arg0;
 	v100 = arg5;
@@ -6690,8 +6710,8 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	if (v99)
 	{
 		v99 = arg1;
-		v102.u3 = *v99.u3;
-		v99.u3 = (word32) v102;
+		v102.u1 = v99.u5->t0000.u1;
+		&v99.u5->t0000.u0 = (word32) v102;
 		loc19 = v99;
 		v99 = loc19;
 		v100.u0 = 0x18;
@@ -6733,7 +6753,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc23 = v99;
 			v99 = loc23;
 			v105 = *v99.u0;
-			v99.u3 = (word32) v105;
+			&v99.u5->t0000.u0 = (word32) v105;
 			loc24 = v99;
 			v99 = loc24;
 			v100.u0 = 0x18;
@@ -6748,7 +6768,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v99 += v100;
 			loc26 = v99;
 			v99 = loc26;
-			v99.u3 = *v99.u3;
+			&v99.u5->t0000.u0 = v99.u5->t0000.u5;
 			loc27 = v99;
 			v99 = loc24;
 			v100.u0 = 0xFF;
@@ -6828,7 +6848,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc39 = v99;
 		v99 = loc39;
 		v106 = *v99.u0;
-		v99.u3 = (word32) v106;
+		&v99.u5->t0000.u0 = (word32) v106;
 		loc40 = v99;
 		v99 = loc40;
 		v100.u0 = 0x18;
@@ -6843,7 +6863,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v99 += v100;
 		loc42 = v99;
 		v99 = loc42;
-		v99.u3 = *v99.u3;
+		&v99.u5->t0000.u0 = v99.u5->t0000.u5;
 		loc43 = v99;
 		v99 = loc40;
 		v100.u0 = 0xFF;
@@ -6864,8 +6884,8 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v101)
 		{
 			v99 = arg1;
-			v107.u1 = v99.u4->t0000.u1;
-			v99.u3 = (word32) v107;
+			v107.u1 = v99.u5->t0000.u1;
+			&v99.u5->t0000.u0 = (word32) v107;
 			loc47 = v99;
 			v99 = loc47;
 			v100.u0 = 0x18;
@@ -7006,7 +7026,7 @@ l000F412A:
 	loc65 = v99;
 	v99 = loc65;
 	v109 = *v99.u0;
-	v99.u3 = (word32) v109;
+	&v99.u5->t0000.u0 = (word32) v109;
 	loc66 = v99;
 	v99 = loc63;
 	v100.u0 = 22;
@@ -7026,7 +7046,7 @@ l000F3FE1:
 		v113 = (byte) v100;
 		*v99.u0 = v113;
 		v99 = arg4;
-		v99.u3 = *v99.u3;
+		&v99.u5->t0000.u0 = v99.u5->t0000.u5;
 		loc102 = v99;
 		v99 = loc102;
 		v100.u0 = 0x01;
@@ -7034,11 +7054,11 @@ l000F3FE1:
 		loc103 = v99;
 		v99 = arg4;
 		v100 = loc103;
-		*v99.u3 = (word32) v100;
+		v99.u5->t0000.u5 = (struct Eq_n *) v100;
 		v99 = loc102;
 		v100 = loc66;
 		v119 = (byte) v100;
-		v99.u4->t0000.u0 = (bool) v119;
+		v99.u5->t0000.u0 = (bool) v119;
 		v99 = loc62;
 		v100.u0 = 0x54;
 		v101 = v99 > v100;
@@ -7067,7 +7087,7 @@ l000F3FE1:
 		goto l000F4129;
 	}
 	v99 = arg4;
-	v99.u3 = *v99.u3;
+	&v99.u5->t0000.u0 = v99.u5->t0000.u5;
 	loc67 = v99;
 	v99 = loc67;
 	v100 = arg3;
@@ -7082,8 +7102,8 @@ l000F3FE1:
 		v99 += v100;
 		loc69 = v99;
 		v99 = loc69;
-		v110.u1 = v99.u4->t0000.u1;
-		v99.u3 = (word32) v110;
+		v110.u1 = v99.u5->t0000.u1;
+		&v99.u5->t0000.u0 = (word32) v110;
 		loc70 = v99;
 		v99 = loc70;
 		v100.u0 = 0xFF;
@@ -7094,8 +7114,8 @@ l000F3FE1:
 		v99 &= v100;
 		loc72 = v99;
 		v99 = arg2;
-		v111.u1 = v99.u4->t0000.u1;
-		v99.u3 = (word32) v111;
+		v111.u1 = v99.u5->t0000.u1;
+		&v99.u5->t0000.u0 = (word32) v111;
 		loc73 = v99;
 		v99 = loc73;
 		v100.u0 = 0xFF;
@@ -7137,16 +7157,18 @@ l000F412B:
 }
 
 // 000F4131: Stack Eq_n fn000F4131(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F2432
 Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	loc196 = v195;
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	v196.u0 = 0x0160;
 	v195 += v196;
-	g_t140030.u3 = (word32 *) v195;
-	v195.u3 = g_t140030.u3;
-	v196.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v195;
+	&v195.u5->t0000.u0 = g_t140030.u5;
+	&v196.u5->t0000.u0 = g_t140034.u5;
 	v197 = v195 >= v196;
 	if (v197)
 	{
@@ -7242,7 +7264,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc106 = v195;
 	v195 = loc106;
 	v202 = *v195.u0;
-	v195.u3 = (word32) v202;
+	&v195.u5->t0000.u0 = (word32) v202;
 	loc107 = v195;
 	v195 = loc107;
 	v196.u0 = 0x18;
@@ -7260,7 +7282,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc109 = v195;
 		v195 = loc109;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc110 = v195;
 		v195 = loc110;
 		v196.u0 = 0x7FFFFFFF;
@@ -7279,16 +7301,16 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v195;
 	}
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x017A;
 	v196 = loc24;
 	v198 = loc112;
 	v199.u0 = 0x00;
 	invoke_viii(v195, v196, v198, v199);
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc113 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc113;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -7298,7 +7320,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc176 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc177 = v195;
 		v195 = loc176;
 		loc13 = v195;
@@ -7307,8 +7329,8 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F4A50;
 	}
 	v195 = loc106;
-	v203.u3 = *v195.u3;
-	v195.u3 = (word32) v203;
+	v203.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v203;
 	loc115 = v195;
 	v195 = loc115;
 	v196.u0 = 0x18;
@@ -7319,7 +7341,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v197 = v195 < v196;
 	loc116 = v197;
 	v195 = loc24;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc117 = v195;
 	v195 = loc116;
 	if (v195)
@@ -7331,21 +7353,21 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc118 = v195;
 		v195 = loc35;
 		v196 = loc118;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc57;
 		v196 = loc46;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc67;
 		v196.u0 = 0x00;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc78;
 		v196.u0 = 0x01;
 		v204 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v204;
+		v195.u5->t0000.u0 = (bool) v204;
 		v195 = loc89;
 		v196.u0 = 0x45;
 		v205 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v205;
+		v195.u5->t0000.u0 = (bool) v205;
 		v195 = loc24;
 		v196.u0 = 0x04;
 		v195 += v196;
@@ -7355,7 +7377,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc120 = v195;
 		v195 = arg1;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc17 = v195;
 		v195 = loc118;
 		loc12 = v195;
@@ -7407,15 +7429,15 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc129 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc129;
 				v196 = loc19;
 				v195 = invoke_ii(v195, v196);
 				loc130 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc131 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc131;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -7508,15 +7530,15 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc144 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc144;
 				v196 = loc135;
 				v195 = invoke_ii(v195, v196);
 				loc145 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc146 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc146;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -7595,7 +7617,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc151 = v195;
 		v195 = loc106;
 		v206 = *v195.u0;
-		v195.u3 = (word32) v206;
+		&v195.u5->t0000.u0 = (word32) v206;
 		loc152 = v195;
 		v195 = loc152;
 		v196.u0 = 0x18;
@@ -7606,7 +7628,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v197 = v195 < v196;
 		loc153 = v197;
 		v195 = loc119;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc154 = v195;
 		v195 = loc152;
 		v196.u0 = 0xFF;
@@ -7634,16 +7656,16 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v195 <<= v196;
 			loc160 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc160;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc161 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc161;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -7657,7 +7679,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v207 = *v195.u0;
-			v195.u3 = (word32) v207;
+			&v195.u5->t0000.u0 = (word32) v207;
 			loc163 = v195;
 			v195 = loc163;
 			v196.u0 = 0x18;
@@ -7671,7 +7693,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v195)
 			{
 				v195 = loc120;
-				v195.u3 = *v195.u3;
+				&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 				loc165 = v195;
 				v195 = loc165;
 				v196.u0 = 0x7FFFFFFF;
@@ -7690,16 +7712,16 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc167 = v195;
 			}
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc167;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc168 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc168;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -7713,7 +7735,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v208 = *v195.u0;
-			v195.u3 = (word32) v208;
+			&v195.u5->t0000.u0 = (word32) v208;
 			loc171 = v195;
 			v195 = loc171;
 			v196.u0 = 0x18;
@@ -7724,7 +7746,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v197 = v195 < v196;
 			loc172 = v197;
 			v195 = loc24;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc173 = v195;
 			v195 = loc172;
 			if (v195)
@@ -7738,7 +7760,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc174;
 			loc14 = v195;
 		}
@@ -7752,14 +7774,14 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc185 = v195;
 		v195 = loc185;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
 		v195 += v196;
 		loc187 = v195;
 		v195 = loc187;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc188 = v195;
 		v195 = loc186;
 		v196 = loc188;
@@ -7769,25 +7791,25 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v195)
 		{
 			v195 = loc18;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
 			v195 += v196;
 			loc25 = v195;
 			v195 = loc25;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc26 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc26;
 			v196 = loc18;
 			v195 = invoke_ii(v195, v196);
 			loc27 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc28 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc28;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -7875,14 +7897,14 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 = *v195.u0;
 		loc41 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc41;
 		v196 = loc18;
 		v195 = invoke_ii(v195, v196);
-		v195.u3 = g_t140048.u3;
+		&v195.u5->t0000.u0 = g_t140048.u5;
 		loc42 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc42;
 		v196.u0 = 0x01;
 		v195 &= v196;
@@ -7913,7 +7935,7 @@ l000F4762:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc178 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc179 = v195;
 		v195 = loc178;
 		loc21 = v195;
@@ -7928,7 +7950,7 @@ l000F4762:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc183 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc184 = v195;
 		v195 = loc183;
 		loc21 = v195;
@@ -7961,8 +7983,8 @@ l000F4A50:
 	v195 += v196;
 	loc45 = v195;
 	v195 = loc45;
-	v216.u3 = *v195.u3;
-	v195.u3 = (word32) v216;
+	v216.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v216;
 	loc47 = v195;
 	v195 = loc47;
 	v196.u0 = 0x18;
@@ -7977,7 +7999,7 @@ l000F4A50:
 	v195 += v196;
 	loc49 = v195;
 	v195 = loc49;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc50 = v195;
 	v195 = loc47;
 	v196.u0 = 0xFF;
@@ -7994,8 +8016,8 @@ l000F4A50:
 	v197 = v195 == v196;
 	loc53 = v197;
 	v195 = loc78;
-	v217.u1 = v195.u4->t0000.u1;
-	v195.u3 = (word32) v217;
+	v217.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v217;
 	loc54 = v195;
 	v195 = loc54;
 	v196.u0 = 0x18;
@@ -8014,7 +8036,7 @@ l000F4A50:
 	if (v197)
 	{
 		v195 = loc57;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc56 = v195;
 		v195 = loc56;
 		loc58 = v195;
@@ -8032,7 +8054,7 @@ l000F4A50:
 		if (v195)
 		{
 			v195 = loc67;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
@@ -8040,27 +8062,27 @@ l000F4A50:
 			loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc56;
 			v196 = loc62;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		}
 	}
 	v195 = loc35;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc64 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x0182;
 	v196 = loc16;
 	v198 = loc64;
 	v199 = arg4;
 	v218 = invoke_diii(v195, v196, v198, v199);
 	loc197 = v218;
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc65 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc65;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -8072,7 +8094,7 @@ l000F4A50:
 l000F4A30:
 		v195 = ___cxa_find_matching_catch_n();
 		loc181 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc182 = v195;
 		v195 = loc181;
 		loc21 = v195;
@@ -8137,15 +8159,15 @@ l000F4A30:
 				v195 = *v195.u0;
 				loc77 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc77;
 				v196 = loc18;
 				v195 = invoke_ii(v195, v196);
 				loc79 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc80 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc80;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -8226,15 +8248,15 @@ l000F4A30:
 			v195 = *v195.u0;
 			loc93 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc93;
 			v196 = loc20;
 			v195 = invoke_ii(v195, v196);
 			loc94 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc95 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc95;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -8312,23 +8334,25 @@ l000F49E3:
 		v195 = loc180;
 		fn0011BAF7(v195);
 		v195 = loc196;
-		g_t140030.u3 = (word32 *) v195;
+		g_t140030.u5 = (struct Eq_n *) v195;
 		v195 = loc23;
 		return v195;
 	}
 }
 
 // 000F4A65: Stack Eq_n fn000F4A65(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F23B6
 Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	loc196 = v195;
-	v195.u3 = g_t140030.u3;
+	&v195.u5->t0000.u0 = g_t140030.u5;
 	v196.u0 = 0x0160;
 	v195 += v196;
-	g_t140030.u3 = (word32 *) v195;
-	v195.u3 = g_t140030.u3;
-	v196.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v195;
+	&v195.u5->t0000.u0 = g_t140030.u5;
+	&v196.u5->t0000.u0 = g_t140034.u5;
 	v197 = v195 >= v196;
 	if (v197)
 	{
@@ -8424,7 +8448,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc106 = v195;
 	v195 = loc106;
 	v202 = *v195.u0;
-	v195.u3 = (word32) v202;
+	&v195.u5->t0000.u0 = (word32) v202;
 	loc107 = v195;
 	v195 = loc107;
 	v196.u0 = 0x18;
@@ -8442,7 +8466,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc109 = v195;
 		v195 = loc109;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc110 = v195;
 		v195 = loc110;
 		v196.u0 = 0x7FFFFFFF;
@@ -8461,16 +8485,16 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v195;
 	}
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x017A;
 	v196 = loc24;
 	v198 = loc112;
 	v199.u0 = 0x00;
 	invoke_viii(v195, v196, v198, v199);
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc113 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc113;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -8480,7 +8504,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc176 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc177 = v195;
 		v195 = loc176;
 		loc13 = v195;
@@ -8489,8 +8513,8 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F5385;
 	}
 	v195 = loc106;
-	v203.u3 = *v195.u3;
-	v195.u3 = (word32) v203;
+	v203.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v203;
 	loc115 = v195;
 	v195 = loc115;
 	v196.u0 = 0x18;
@@ -8501,7 +8525,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v197 = v195 < v196;
 	loc116 = v197;
 	v195 = loc24;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc117 = v195;
 	v195 = loc116;
 	if (v195)
@@ -8513,21 +8537,21 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc118 = v195;
 		v195 = loc35;
 		v196 = loc118;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc57;
 		v196 = loc46;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc67;
 		v196.u0 = 0x00;
-		*v195.u3 = (word32) v196;
+		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc78;
 		v196.u0 = 0x01;
 		v204 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v204;
+		v195.u5->t0000.u0 = (bool) v204;
 		v195 = loc89;
 		v196.u0 = 0x45;
 		v205 = (byte) v196;
-		v195.u4->t0000.u0 = (bool) v205;
+		v195.u5->t0000.u0 = (bool) v205;
 		v195 = loc24;
 		v196.u0 = 0x04;
 		v195 += v196;
@@ -8537,7 +8561,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc120 = v195;
 		v195 = arg1;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc17 = v195;
 		v195 = loc118;
 		loc12 = v195;
@@ -8589,15 +8613,15 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc129 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc129;
 				v196 = loc19;
 				v195 = invoke_ii(v195, v196);
 				loc130 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc131 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc131;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -8690,15 +8714,15 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v195 = *v195.u0;
 				loc144 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc144;
 				v196 = loc135;
 				v195 = invoke_ii(v195, v196);
 				loc145 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc146 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc146;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -8777,7 +8801,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc151 = v195;
 		v195 = loc106;
 		v206 = *v195.u0;
-		v195.u3 = (word32) v206;
+		&v195.u5->t0000.u0 = (word32) v206;
 		loc152 = v195;
 		v195 = loc152;
 		v196.u0 = 0x18;
@@ -8788,7 +8812,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v197 = v195 < v196;
 		loc153 = v197;
 		v195 = loc119;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc154 = v195;
 		v195 = loc152;
 		v196.u0 = 0xFF;
@@ -8816,16 +8840,16 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v195 <<= v196;
 			loc160 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc160;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc161 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc161;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -8839,7 +8863,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v207 = *v195.u0;
-			v195.u3 = (word32) v207;
+			&v195.u5->t0000.u0 = (word32) v207;
 			loc163 = v195;
 			v195 = loc163;
 			v196.u0 = 0x18;
@@ -8853,7 +8877,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v195)
 			{
 				v195 = loc120;
-				v195.u3 = *v195.u3;
+				&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 				loc165 = v195;
 				v195 = loc165;
 				v196.u0 = 0x7FFFFFFF;
@@ -8872,16 +8896,16 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc167 = v195;
 			}
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195.u0 = 0x017A;
 			v196 = loc24;
 			v198 = loc167;
 			v199.u0 = 0x00;
 			invoke_viii(v195, v196, v198, v199);
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc168 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc168;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -8895,7 +8919,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v195 = loc106;
 			v208 = *v195.u0;
-			v195.u3 = (word32) v208;
+			&v195.u5->t0000.u0 = (word32) v208;
 			loc171 = v195;
 			v195 = loc171;
 			v196.u0 = 0x18;
@@ -8906,7 +8930,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v197 = v195 < v196;
 			loc172 = v197;
 			v195 = loc24;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc173 = v195;
 			v195 = loc172;
 			if (v195)
@@ -8920,7 +8944,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc174;
 			loc14 = v195;
 		}
@@ -8934,14 +8958,14 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 += v196;
 		loc185 = v195;
 		v195 = loc185;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
 		v195 += v196;
 		loc187 = v195;
 		v195 = loc187;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc188 = v195;
 		v195 = loc186;
 		v196 = loc188;
@@ -8951,25 +8975,25 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v195)
 		{
 			v195 = loc18;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
 			v195 += v196;
 			loc25 = v195;
 			v195 = loc25;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc26 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc26;
 			v196 = loc18;
 			v195 = invoke_ii(v195, v196);
 			loc27 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc28 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc28;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -9057,14 +9081,14 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v195 = *v195.u0;
 		loc41 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc41;
 		v196 = loc18;
 		v195 = invoke_ii(v195, v196);
-		v195.u3 = g_t140048.u3;
+		&v195.u5->t0000.u0 = g_t140048.u5;
 		loc42 = v195;
 		v195.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v195;
+		g_t140048.u5 = (struct Eq_n *) v195;
 		v195 = loc42;
 		v196.u0 = 0x01;
 		v195 &= v196;
@@ -9095,7 +9119,7 @@ l000F5096:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc178 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc179 = v195;
 		v195 = loc178;
 		loc21 = v195;
@@ -9110,7 +9134,7 @@ l000F5096:
 	{
 		v195 = ___cxa_find_matching_catch_n();
 		loc183 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc184 = v195;
 		v195 = loc183;
 		loc21 = v195;
@@ -9143,8 +9167,8 @@ l000F5385:
 	v195 += v196;
 	loc45 = v195;
 	v195 = loc45;
-	v216.u3 = *v195.u3;
-	v195.u3 = (word32) v216;
+	v216.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v216;
 	loc47 = v195;
 	v195 = loc47;
 	v196.u0 = 0x18;
@@ -9159,7 +9183,7 @@ l000F5385:
 	v195 += v196;
 	loc49 = v195;
 	v195 = loc49;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc50 = v195;
 	v195 = loc47;
 	v196.u0 = 0xFF;
@@ -9176,8 +9200,8 @@ l000F5385:
 	v197 = v195 == v196;
 	loc53 = v197;
 	v195 = loc78;
-	v217.u1 = v195.u4->t0000.u1;
-	v195.u3 = (word32) v217;
+	v217.u1 = v195.u5->t0000.u1;
+	&v195.u5->t0000.u0 = (word32) v217;
 	loc54 = v195;
 	v195 = loc54;
 	v196.u0 = 0x18;
@@ -9196,7 +9220,7 @@ l000F5385:
 	if (v197)
 	{
 		v195 = loc57;
-		v195.u3 = *v195.u3;
+		&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 		loc56 = v195;
 		v195 = loc56;
 		loc58 = v195;
@@ -9214,7 +9238,7 @@ l000F5385:
 		if (v195)
 		{
 			v195 = loc67;
-			v195.u3 = *v195.u3;
+			&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 			loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
@@ -9222,28 +9246,28 @@ l000F5385:
 			loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 			v195 = loc56;
 			v196 = loc62;
-			*v195.u3 = (word32) v196;
+			v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		}
 	}
 	v195 = loc35;
-	v195.u3 = *v195.u3;
+	&v195.u5->t0000.u0 = v195.u5->t0000.u5;
 	loc64 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195.u0 = 0x0183;
 	v196 = loc16;
 	v198 = loc64;
 	v199 = arg4;
 	v218 = invoke_fiii(v195, v196, v198, v199);
-	v219.u3 = (real32) v218;
+	&v219.u5->t0000.u0 = (real32) v218;
 	loc197 = v219;
-	v195.u3 = g_t140048.u3;
+	&v195.u5->t0000.u0 = g_t140048.u5;
 	loc65 = v195;
 	v195.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v195;
+	g_t140048.u5 = (struct Eq_n *) v195;
 	v195 = loc65;
 	v196.u0 = 0x01;
 	v195 &= v196;
@@ -9255,7 +9279,7 @@ l000F5385:
 l000F5365:
 		v195 = ___cxa_find_matching_catch_n();
 		loc181 = v195;
-		v195.u3 = g_t140094.u3;
+		&v195.u5->t0000.u0 = g_t140094.u5;
 		loc182 = v195;
 		v195 = loc181;
 		loc21 = v195;
@@ -9320,15 +9344,15 @@ l000F5365:
 				v195 = *v195.u0;
 				loc77 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc77;
 				v196 = loc18;
 				v195 = invoke_ii(v195, v196);
 				loc79 = v195;
-				v195.u3 = g_t140048.u3;
+				&v195.u5->t0000.u0 = g_t140048.u5;
 				loc80 = v195;
 				v195.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v195;
+				g_t140048.u5 = (struct Eq_n *) v195;
 				v195 = loc80;
 				v196.u0 = 0x01;
 				v195 &= v196;
@@ -9409,15 +9433,15 @@ l000F5365:
 			v195 = *v195.u0;
 			loc93 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc93;
 			v196 = loc20;
 			v195 = invoke_ii(v195, v196);
 			loc94 = v195;
-			v195.u3 = g_t140048.u3;
+			&v195.u5->t0000.u0 = g_t140048.u5;
 			loc95 = v195;
 			v195.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v195;
+			g_t140048.u5 = (struct Eq_n *) v195;
 			v195 = loc95;
 			v196.u0 = 0x01;
 			v195 &= v196;
@@ -9495,23 +9519,25 @@ l000F5318:
 		v195 = loc180;
 		fn0011BAF7(v195);
 		v195 = loc196;
-		g_t140030.u3 = (word32 *) v195;
+		g_t140030.u5 = (struct Eq_n *) v195;
 		v195 = loc23;
 		return v195;
 	}
 }
 
 // 000F539A: Stack Eq_n fn000F539A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F233A
 Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc190 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -9597,7 +9623,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc99 = v189;
 	v189 = loc99;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc100 = v189;
 	v189 = loc100;
 	v190.u0 = 0x18;
@@ -9615,7 +9641,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc102 = v189;
 		v189 = loc102;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc103 = v189;
 		v189 = loc103;
 		v190.u0 = 0x7FFFFFFF;
@@ -9634,16 +9660,16 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc105 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc175;
 	v192 = loc105;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc106 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc106;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -9653,7 +9679,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc169 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc170 = v189;
 		v189 = loc169;
 		loc13 = v189;
@@ -9662,8 +9688,8 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F5C72;
 	}
 	v189 = loc99;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc108 = v189;
 	v189 = loc108;
 	v190.u0 = 0x18;
@@ -9674,7 +9700,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc109 = v191;
 	v189 = loc175;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc110 = v189;
 	v189 = loc109;
 	if (v189)
@@ -9686,13 +9712,13 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc111 = v189;
 		v189 = loc24;
 		v190 = loc111;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc175;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -9702,7 +9728,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc113 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc111;
 		loc12 = v189;
@@ -9754,15 +9780,15 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc122 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc122;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc123 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc124 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc124;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -9855,15 +9881,15 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc137 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc137;
 				v190 = loc128;
 				v189 = invoke_ii(v189, v190);
 				loc138 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc139 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc139;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -9942,7 +9968,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc144 = v189;
 		v189 = loc99;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc145 = v189;
 		v189 = loc145;
 		v190.u0 = 0x18;
@@ -9953,7 +9979,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc146 = v191;
 		v189 = loc112;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc147 = v189;
 		v189 = loc145;
 		v190.u0 = 0xFF;
@@ -9981,16 +10007,16 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc152 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc175;
 			v192 = loc152;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc154 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc154;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -10004,7 +10030,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc99;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc156 = v189;
 			v189 = loc156;
 			v190.u0 = 0x18;
@@ -10018,7 +10044,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc113;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc158 = v189;
 				v189 = loc158;
 				v190.u0 = 0x7FFFFFFF;
@@ -10037,16 +10063,16 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc160 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc175;
 			v192 = loc160;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc161 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc161;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -10060,7 +10086,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc99;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc163 = v189;
 			v189 = loc163;
 			v190.u0 = 0x18;
@@ -10071,7 +10097,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc165 = v191;
 			v189 = loc175;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc166 = v189;
 			v189 = loc165;
 			if (v189)
@@ -10085,7 +10111,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc168 = v189;
 			v189 = loc24;
 			v190 = loc168;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc167;
 			loc14 = v189;
 		}
@@ -10099,14 +10125,14 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc178 = v189;
 		v189 = loc178;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc179 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc180 = v189;
 		v189 = loc180;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc181 = v189;
 		v189 = loc179;
 		v190 = loc181;
@@ -10116,25 +10142,25 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc183 = v189;
 			v189 = loc183;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc184 = v189;
 			v189 = loc184;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc185 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc185;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -10217,14 +10243,14 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -10255,7 +10281,7 @@ l000F599D:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc171 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc172 = v189;
 		v189 = loc171;
 		loc21 = v189;
@@ -10270,7 +10296,7 @@ l000F599D:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc176 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc177 = v189;
 		v189 = loc176;
 		loc21 = v189;
@@ -10303,8 +10329,8 @@ l000F5C72:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -10319,7 +10345,7 @@ l000F5C72:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -10340,7 +10366,7 @@ l000F5C72:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -10358,7 +10384,7 @@ l000F5C72:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -10366,17 +10392,17 @@ l000F5C72:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 388;
 	v190 = loc16;
 	v192 = loc59;
@@ -10384,10 +10410,10 @@ l000F5C72:
 	v200 = loc67;
 	v207 = fn0011F5F3(v189, v190, v192, v193, v200);
 	loc191 = v207;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc60 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc60;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -10399,7 +10425,7 @@ l000F5C72:
 l000F5C52:
 		v189 = ___cxa_find_matching_catch_n();
 		loc173 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc174 = v189;
 		v189 = loc173;
 		loc21 = v189;
@@ -10464,15 +10490,15 @@ l000F5C52:
 				v189 = *v189.u0;
 				loc72 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc72;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc73 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc74 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc74;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -10553,15 +10579,15 @@ l000F5C52:
 			v189 = *v189.u0;
 			loc87 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc87;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc88 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc90 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc90;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -10639,23 +10665,30 @@ l000F5C04:
 		v189 = loc164;
 		fn0011BAF7(v189);
 		v189 = loc190;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
 }
 
 // 000F5C88: void fn000F5C88(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+// Called from:
+//      fn000F539A
+//      fn000F5DFC
+//      fn000F66E9
+//      fn000F6FD6
+//      fn000F78C3
+//      fn000F81B1
 void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v35.u3 = g_t140030.u3;
+	&v35.u5->t0000.u0 = g_t140030.u5;
 	loc35 = v35;
-	v35.u3 = g_t140030.u3;
+	&v35.u5->t0000.u0 = g_t140030.u5;
 	v36.u0 = 0x10;
 	v35 += v36;
-	g_t140030.u3 = (word32 *) v35;
-	v35.u3 = g_t140030.u3;
-	v36.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v35;
+	&v35.u5->t0000.u0 = g_t140030.u5;
+	&v36.u5->t0000.u0 = g_t140034.u5;
 	v37 = v35 >= v36;
 	if (v37)
 	{
@@ -10671,16 +10704,16 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v36 = loc29;
 	*v35.u0 = v36;
 	v35.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v35;
+	g_t140048.u5 = (struct Eq_n *) v35;
 	v35.u0 = 0x0164;
 	v36 = loc28;
 	v38.u0 = 0x4C90;
 	v35 = invoke_iii(v35, v36, v38);
 	loc30 = v35;
-	v35.u3 = g_t140048.u3;
+	&v35.u5->t0000.u0 = g_t140048.u5;
 	loc31 = v35;
 	v35.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v35;
+	g_t140048.u5 = (struct Eq_n *) v35;
 	v35 = loc31;
 	v36.u0 = 0x01;
 	v35 &= v36;
@@ -10704,17 +10737,17 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v35 = *v35.u0;
 		loc7 = v35;
 		v35.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v35;
+		g_t140048.u5 = (struct Eq_n *) v35;
 		v35 = loc7;
 		v36 = loc30;
 		v38.u0 = 14251;
 		v39 = 14277;
 		v40 = arg2;
 		v35 = invoke_iiiii(v35, v36, v38, v39, v40);
-		v35.u3 = g_t140048.u3;
+		&v35.u5->t0000.u0 = g_t140048.u5;
 		loc8 = v35;
 		v35.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v35;
+		g_t140048.u5 = (struct Eq_n *) v35;
 		v35 = loc8;
 		v36.u0 = 0x01;
 		v35 &= v36;
@@ -10728,16 +10761,16 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		else
 		{
 			v35.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v35;
+			g_t140048.u5 = (struct Eq_n *) v35;
 			v35.u0 = 0x0164;
 			v36 = loc28;
 			v38.u0 = 0x4C98;
 			v35 = invoke_iii(v35, v36, v38);
 			loc10 = v35;
-			v35.u3 = g_t140048.u3;
+			&v35.u5->t0000.u0 = g_t140048.u5;
 			loc11 = v35;
 			v35.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v35;
+			g_t140048.u5 = (struct Eq_n *) v35;
 			v35 = loc11;
 			v36.u0 = 0x01;
 			v35 &= v36;
@@ -10761,15 +10794,15 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 				v35 = *v35.u0;
 				loc15 = v35;
 				v35.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v35;
+				g_t140048.u5 = (struct Eq_n *) v35;
 				v35 = loc15;
 				v36 = loc10;
 				v35 = invoke_ii(v35, v36);
 				loc16 = v35;
-				v35.u3 = g_t140048.u3;
+				&v35.u5->t0000.u0 = g_t140048.u5;
 				loc17 = v35;
 				v35.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v35;
+				g_t140048.u5 = (struct Eq_n *) v35;
 				v35 = loc17;
 				v36.u0 = 0x01;
 				v35 &= v36;
@@ -10792,15 +10825,15 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 					v35 = *v35.u0;
 					loc21 = v35;
 					v35.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v35;
+					g_t140048.u5 = (struct Eq_n *) v35;
 					v35 = loc21;
 					v36 = arg0;
 					v38 = loc10;
 					invoke_vii(v35, v36, v38);
-					v35.u3 = g_t140048.u3;
+					&v35.u5->t0000.u0 = g_t140048.u5;
 					loc22 = v35;
 					v35.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v35;
+					g_t140048.u5 = (struct Eq_n *) v35;
 					v35 = loc22;
 					v36.u0 = 0x01;
 					v35 &= v36;
@@ -10812,13 +10845,13 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 						v35 = loc29;
 						v35 = fn0011B43F(v35);
 						v35 = loc35;
-						g_t140030.u3 = (word32 *) v35;
+						g_t140030.u5 = (struct Eq_n *) v35;
 						return;
 					}
 				}
 				v35 = ___cxa_find_matching_catch_n();
 				loc26 = v35;
-				v35.u3 = g_t140094.u3;
+				&v35.u5->t0000.u0 = g_t140094.u5;
 				loc27 = v35;
 				v35 = loc26;
 				loc4 = v35;
@@ -10834,7 +10867,7 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	{
 		v35 = ___cxa_find_matching_catch_n();
 		loc24 = v35;
-		v35.u3 = g_t140094.u3;
+		&v35.u5->t0000.u0 = g_t140094.u5;
 		loc25 = v35;
 		v35 = loc24;
 		loc4 = v35;
@@ -10848,16 +10881,18 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 }
 
 // 000F5DFC: Stack Eq_n fn000F5DFC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F22BE
 Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc191 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -10943,7 +10978,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc100 = v189;
 	v189 = loc100;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc101 = v189;
 	v189 = loc101;
 	v190.u0 = 0x18;
@@ -10961,7 +10996,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc103 = v189;
 		v189 = loc103;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc104 = v189;
 		v189 = loc104;
 		v190.u0 = 0x7FFFFFFF;
@@ -10980,16 +11015,16 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc106 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc176;
 	v192 = loc106;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc107 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc107;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -10999,7 +11034,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc170 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc171 = v189;
 		v189 = loc170;
 		loc13 = v189;
@@ -11008,8 +11043,8 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F66D3;
 	}
 	v189 = loc100;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc109 = v189;
 	v189 = loc109;
 	v190.u0 = 0x18;
@@ -11020,7 +11055,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc110 = v191;
 	v189 = loc176;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc111 = v189;
 	v189 = loc110;
 	if (v189)
@@ -11032,13 +11067,13 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v189;
 		v189 = loc24;
 		v190 = loc112;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc176;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -11048,7 +11083,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc114 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc112;
 		loc12 = v189;
@@ -11100,15 +11135,15 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc123 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc123;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc124 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc125 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc125;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -11201,15 +11236,15 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc138 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc138;
 				v190 = loc129;
 				v189 = invoke_ii(v189, v190);
 				loc139 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc140 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc140;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -11288,7 +11323,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc145 = v189;
 		v189 = loc100;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc146 = v189;
 		v189 = loc146;
 		v190.u0 = 0x18;
@@ -11299,7 +11334,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc147 = v191;
 		v189 = loc113;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc148 = v189;
 		v189 = loc146;
 		v190.u0 = 0xFF;
@@ -11327,16 +11362,16 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc153 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc153;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc155 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc155;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -11350,7 +11385,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc157 = v189;
 			v189 = loc157;
 			v190.u0 = 0x18;
@@ -11364,7 +11399,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc114;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc159 = v189;
 				v189 = loc159;
 				v190.u0 = 0x7FFFFFFF;
@@ -11383,16 +11418,16 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc161 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc161;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc162 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc162;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -11406,7 +11441,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc164 = v189;
 			v189 = loc164;
 			v190.u0 = 0x18;
@@ -11417,7 +11452,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc166 = v191;
 			v189 = loc176;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc167 = v189;
 			v189 = loc166;
 			if (v189)
@@ -11431,7 +11466,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc168;
 			loc14 = v189;
 		}
@@ -11445,14 +11480,14 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc179 = v189;
 		v189 = loc179;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc181 = v189;
 		v189 = loc181;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc182 = v189;
 		v189 = loc180;
 		v190 = loc182;
@@ -11462,25 +11497,25 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc185 = v189;
 			v189 = loc185;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc186 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc186;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -11563,14 +11598,14 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -11601,7 +11636,7 @@ l000F6401:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc172 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc173 = v189;
 		v189 = loc172;
 		loc21 = v189;
@@ -11616,7 +11651,7 @@ l000F6401:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc177 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc178 = v189;
 		v189 = loc177;
 		loc21 = v189;
@@ -11649,8 +11684,8 @@ l000F66D3:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -11665,7 +11700,7 @@ l000F66D3:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -11686,7 +11721,7 @@ l000F66D3:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -11704,7 +11739,7 @@ l000F66D3:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -11712,17 +11747,17 @@ l000F66D3:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x0185;
 	v190 = loc16;
 	v192 = loc59;
@@ -11730,10 +11765,10 @@ l000F66D3:
 	v200 = loc68;
 	v189 = invoke_iiiii(v189, v190, v192, v193, v200);
 	loc60 = v189;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc61 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc61;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -11745,7 +11780,7 @@ l000F66D3:
 l000F66B3:
 		v189 = ___cxa_find_matching_catch_n();
 		loc174 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc175 = v189;
 		v189 = loc174;
 		loc21 = v189;
@@ -11810,15 +11845,15 @@ l000F66B3:
 				v189 = *v189.u0;
 				loc73 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc73;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc74 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc75 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc75;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -11899,15 +11934,15 @@ l000F66B3:
 			v189 = *v189.u0;
 			loc88 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc88;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc89 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc91 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc91;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -11985,23 +12020,25 @@ l000F6665:
 		v189 = loc165;
 		fn0011BAF7(v189);
 		v189 = loc191;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
 }
 
 // 000F66E9: Stack Eq_n fn000F66E9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F2242
 Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc191 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -12087,7 +12124,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc100 = v189;
 	v189 = loc100;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc101 = v189;
 	v189 = loc101;
 	v190.u0 = 0x18;
@@ -12105,7 +12142,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc103 = v189;
 		v189 = loc103;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc104 = v189;
 		v189 = loc104;
 		v190.u0 = 0x7FFFFFFF;
@@ -12124,16 +12161,16 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc106 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc176;
 	v192 = loc106;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc107 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc107;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -12143,7 +12180,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc170 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc171 = v189;
 		v189 = loc170;
 		loc13 = v189;
@@ -12152,8 +12189,8 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F6FC0;
 	}
 	v189 = loc100;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc109 = v189;
 	v189 = loc109;
 	v190.u0 = 0x18;
@@ -12164,7 +12201,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc110 = v191;
 	v189 = loc176;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc111 = v189;
 	v189 = loc110;
 	if (v189)
@@ -12176,13 +12213,13 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v189;
 		v189 = loc24;
 		v190 = loc112;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc176;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -12192,7 +12229,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc114 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc112;
 		loc12 = v189;
@@ -12244,15 +12281,15 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc123 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc123;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc124 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc125 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc125;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -12345,15 +12382,15 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc138 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc138;
 				v190 = loc129;
 				v189 = invoke_ii(v189, v190);
 				loc139 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc140 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc140;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -12432,7 +12469,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc145 = v189;
 		v189 = loc100;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc146 = v189;
 		v189 = loc146;
 		v190.u0 = 0x18;
@@ -12443,7 +12480,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc147 = v191;
 		v189 = loc113;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc148 = v189;
 		v189 = loc146;
 		v190.u0 = 0xFF;
@@ -12471,16 +12508,16 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc153 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc153;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc155 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc155;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -12494,7 +12531,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc157 = v189;
 			v189 = loc157;
 			v190.u0 = 0x18;
@@ -12508,7 +12545,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc114;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc159 = v189;
 				v189 = loc159;
 				v190.u0 = 0x7FFFFFFF;
@@ -12527,16 +12564,16 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc161 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc161;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc162 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc162;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -12550,7 +12587,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc164 = v189;
 			v189 = loc164;
 			v190.u0 = 0x18;
@@ -12561,7 +12598,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc166 = v191;
 			v189 = loc176;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc167 = v189;
 			v189 = loc166;
 			if (v189)
@@ -12575,7 +12612,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc168;
 			loc14 = v189;
 		}
@@ -12589,14 +12626,14 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc179 = v189;
 		v189 = loc179;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc181 = v189;
 		v189 = loc181;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc182 = v189;
 		v189 = loc180;
 		v190 = loc182;
@@ -12606,25 +12643,25 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc185 = v189;
 			v189 = loc185;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc186 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc186;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -12707,14 +12744,14 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -12745,7 +12782,7 @@ l000F6CEE:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc172 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc173 = v189;
 		v189 = loc172;
 		loc21 = v189;
@@ -12760,7 +12797,7 @@ l000F6CEE:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc177 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc178 = v189;
 		v189 = loc177;
 		loc21 = v189;
@@ -12793,8 +12830,8 @@ l000F6FC0:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -12809,7 +12846,7 @@ l000F6FC0:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -12830,7 +12867,7 @@ l000F6FC0:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -12848,7 +12885,7 @@ l000F6FC0:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -12856,17 +12893,17 @@ l000F6FC0:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x0186;
 	v190 = loc16;
 	v192 = loc59;
@@ -12874,10 +12911,10 @@ l000F6FC0:
 	v200 = loc68;
 	v189 = invoke_iiiii(v189, v190, v192, v193, v200);
 	loc60 = v189;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc61 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc61;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -12889,7 +12926,7 @@ l000F6FC0:
 l000F6FA0:
 		v189 = ___cxa_find_matching_catch_n();
 		loc174 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc175 = v189;
 		v189 = loc174;
 		loc21 = v189;
@@ -12954,15 +12991,15 @@ l000F6FA0:
 				v189 = *v189.u0;
 				loc73 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc73;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc74 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc75 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc75;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -13043,15 +13080,15 @@ l000F6FA0:
 			v189 = *v189.u0;
 			loc88 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc88;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc89 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc91 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc91;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -13129,23 +13166,25 @@ l000F6F52:
 		v189 = loc165;
 		fn0011BAF7(v189);
 		v189 = loc191;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
 }
 
 // 000F6FD6: Stack Eq_n fn000F6FD6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F21C6
 Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc191 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -13231,7 +13270,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc100 = v189;
 	v189 = loc100;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc101 = v189;
 	v189 = loc101;
 	v190.u0 = 0x18;
@@ -13249,7 +13288,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc103 = v189;
 		v189 = loc103;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc104 = v189;
 		v189 = loc104;
 		v190.u0 = 0x7FFFFFFF;
@@ -13268,16 +13307,16 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc106 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc176;
 	v192 = loc106;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc107 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc107;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -13287,7 +13326,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc170 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc171 = v189;
 		v189 = loc170;
 		loc13 = v189;
@@ -13296,8 +13335,8 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F78AD;
 	}
 	v189 = loc100;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc109 = v189;
 	v189 = loc109;
 	v190.u0 = 0x18;
@@ -13308,7 +13347,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc110 = v191;
 	v189 = loc176;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc111 = v189;
 	v189 = loc110;
 	if (v189)
@@ -13320,13 +13359,13 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v189;
 		v189 = loc24;
 		v190 = loc112;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc176;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -13336,7 +13375,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc114 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc112;
 		loc12 = v189;
@@ -13388,15 +13427,15 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc123 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc123;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc124 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc125 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc125;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -13489,15 +13528,15 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc138 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc138;
 				v190 = loc129;
 				v189 = invoke_ii(v189, v190);
 				loc139 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc140 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc140;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -13576,7 +13615,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc145 = v189;
 		v189 = loc100;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc146 = v189;
 		v189 = loc146;
 		v190.u0 = 0x18;
@@ -13587,7 +13626,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc147 = v191;
 		v189 = loc113;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc148 = v189;
 		v189 = loc146;
 		v190.u0 = 0xFF;
@@ -13615,16 +13654,16 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc153 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc153;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc155 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc155;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -13638,7 +13677,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc157 = v189;
 			v189 = loc157;
 			v190.u0 = 0x18;
@@ -13652,7 +13691,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc114;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc159 = v189;
 				v189 = loc159;
 				v190.u0 = 0x7FFFFFFF;
@@ -13671,16 +13710,16 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc161 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc161;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc162 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc162;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -13694,7 +13733,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc164 = v189;
 			v189 = loc164;
 			v190.u0 = 0x18;
@@ -13705,7 +13744,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc166 = v191;
 			v189 = loc176;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc167 = v189;
 			v189 = loc166;
 			if (v189)
@@ -13719,7 +13758,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc168;
 			loc14 = v189;
 		}
@@ -13733,14 +13772,14 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc179 = v189;
 		v189 = loc179;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc181 = v189;
 		v189 = loc181;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc182 = v189;
 		v189 = loc180;
 		v190 = loc182;
@@ -13750,25 +13789,25 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc185 = v189;
 			v189 = loc185;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc186 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc186;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -13851,14 +13890,14 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -13889,7 +13928,7 @@ l000F75DB:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc172 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc173 = v189;
 		v189 = loc172;
 		loc21 = v189;
@@ -13904,7 +13943,7 @@ l000F75DB:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc177 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc178 = v189;
 		v189 = loc177;
 		loc21 = v189;
@@ -13937,8 +13976,8 @@ l000F78AD:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -13953,7 +13992,7 @@ l000F78AD:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -13974,7 +14013,7 @@ l000F78AD:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -13992,7 +14031,7 @@ l000F78AD:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -14000,17 +14039,17 @@ l000F78AD:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x0187;
 	v190 = loc16;
 	v192 = loc59;
@@ -14018,10 +14057,10 @@ l000F78AD:
 	v200 = loc68;
 	v189 = invoke_iiiii(v189, v190, v192, v193, v200);
 	loc60 = v189;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc61 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc61;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -14033,7 +14072,7 @@ l000F78AD:
 l000F788D:
 		v189 = ___cxa_find_matching_catch_n();
 		loc174 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc175 = v189;
 		v189 = loc174;
 		loc21 = v189;
@@ -14099,15 +14138,15 @@ l000F788D:
 				v189 = *v189.u0;
 				loc73 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc73;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc74 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc75 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc75;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -14188,15 +14227,15 @@ l000F788D:
 			v189 = *v189.u0;
 			loc88 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc88;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc89 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc91 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc91;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -14274,23 +14313,25 @@ l000F783F:
 		v189 = loc165;
 		fn0011BAF7(v189);
 		v189 = loc191;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
 }
 
 // 000F78C3: Stack Eq_n fn000F78C3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F214A
 Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc190 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -14376,7 +14417,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc99 = v189;
 	v189 = loc99;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc100 = v189;
 	v189 = loc100;
 	v190.u0 = 0x18;
@@ -14394,7 +14435,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc102 = v189;
 		v189 = loc102;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc103 = v189;
 		v189 = loc103;
 		v190.u0 = 0x7FFFFFFF;
@@ -14413,16 +14454,16 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc105 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc175;
 	v192 = loc105;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc106 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc106;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -14432,7 +14473,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc169 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc170 = v189;
 		v189 = loc169;
 		loc13 = v189;
@@ -14441,8 +14482,8 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F819B;
 	}
 	v189 = loc99;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc108 = v189;
 	v189 = loc108;
 	v190.u0 = 0x18;
@@ -14453,7 +14494,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc109 = v191;
 	v189 = loc175;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc110 = v189;
 	v189 = loc109;
 	if (v189)
@@ -14465,13 +14506,13 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc111 = v189;
 		v189 = loc24;
 		v190 = loc111;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc175;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -14481,7 +14522,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc113 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc111;
 		loc12 = v189;
@@ -14533,15 +14574,15 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc122 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc122;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc123 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc124 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc124;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -14634,15 +14675,15 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc137 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc137;
 				v190 = loc128;
 				v189 = invoke_ii(v189, v190);
 				loc138 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc139 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc139;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -14721,7 +14762,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc144 = v189;
 		v189 = loc99;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc145 = v189;
 		v189 = loc145;
 		v190.u0 = 0x18;
@@ -14732,7 +14773,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc146 = v191;
 		v189 = loc112;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc147 = v189;
 		v189 = loc145;
 		v190.u0 = 0xFF;
@@ -14760,16 +14801,16 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc152 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc175;
 			v192 = loc152;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc154 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc154;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -14783,7 +14824,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc99;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc156 = v189;
 			v189 = loc156;
 			v190.u0 = 0x18;
@@ -14797,7 +14838,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc113;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc158 = v189;
 				v189 = loc158;
 				v190.u0 = 0x7FFFFFFF;
@@ -14816,16 +14857,16 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc160 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc175;
 			v192 = loc160;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc161 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc161;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -14839,7 +14880,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc99;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc163 = v189;
 			v189 = loc163;
 			v190.u0 = 0x18;
@@ -14850,7 +14891,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc165 = v191;
 			v189 = loc175;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc166 = v189;
 			v189 = loc165;
 			if (v189)
@@ -14864,7 +14905,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc168 = v189;
 			v189 = loc24;
 			v190 = loc168;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc167;
 			loc14 = v189;
 		}
@@ -14878,14 +14919,14 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc178 = v189;
 		v189 = loc178;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc179 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc180 = v189;
 		v189 = loc180;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc181 = v189;
 		v189 = loc179;
 		v190 = loc181;
@@ -14895,25 +14936,25 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc183 = v189;
 			v189 = loc183;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc184 = v189;
 			v189 = loc184;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc185 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc185;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -14996,14 +15037,14 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -15034,7 +15075,7 @@ l000F7EC6:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc171 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc172 = v189;
 		v189 = loc171;
 		loc21 = v189;
@@ -15049,7 +15090,7 @@ l000F7EC6:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc176 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc177 = v189;
 		v189 = loc176;
 		loc21 = v189;
@@ -15082,8 +15123,8 @@ l000F819B:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -15098,7 +15139,7 @@ l000F819B:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -15119,7 +15160,7 @@ l000F819B:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -15137,7 +15178,7 @@ l000F819B:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -15145,17 +15186,17 @@ l000F819B:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x0188;
 	v190 = loc16;
 	v192 = loc59;
@@ -15163,10 +15204,10 @@ l000F819B:
 	v200 = loc67;
 	v207 = fn0011F5F3(v189, v190, v192, v193, v200);
 	loc191 = v207;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc60 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc60;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -15178,7 +15219,7 @@ l000F819B:
 l000F817B:
 		v189 = ___cxa_find_matching_catch_n();
 		loc173 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc174 = v189;
 		v189 = loc173;
 		loc21 = v189;
@@ -15243,15 +15284,15 @@ l000F817B:
 				v189 = *v189.u0;
 				loc72 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc72;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc73 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc74 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc74;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -15332,15 +15373,15 @@ l000F817B:
 			v189 = *v189.u0;
 			loc87 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc87;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc88 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc90 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc90;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -15418,23 +15459,25 @@ l000F812D:
 		v189 = loc164;
 		fn0011BAF7(v189);
 		v189 = loc190;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
 }
 
 // 000F81B1: Stack Eq_n fn000F81B1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000F20CE
 Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	loc191 = v189;
-	v189.u3 = g_t140030.u3;
+	&v189.u5->t0000.u0 = g_t140030.u5;
 	v190.u0 = 0x0130;
 	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v189;
+	&v189.u5->t0000.u0 = g_t140030.u5;
+	&v190.u5->t0000.u0 = g_t140034.u5;
 	v191 = v189 >= v190;
 	if (v191)
 	{
@@ -15520,7 +15563,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	loc100 = v189;
 	v189 = loc100;
 	v195 = *v189.u0;
-	v189.u3 = (word32) v195;
+	&v189.u5->t0000.u0 = (word32) v195;
 	loc101 = v189;
 	v189 = loc101;
 	v190.u0 = 0x18;
@@ -15538,7 +15581,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc103 = v189;
 		v189 = loc103;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc104 = v189;
 		v189 = loc104;
 		v190.u0 = 0x7FFFFFFF;
@@ -15557,16 +15600,16 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc106 = v189;
 	}
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 0x017A;
 	v190 = loc176;
 	v192 = loc106;
 	v193.u0 = 0x00;
 	invoke_viii(v189, v190, v192, v193);
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc107 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc107;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -15576,7 +15619,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc170 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc171 = v189;
 		v189 = loc170;
 		loc13 = v189;
@@ -15585,8 +15628,8 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		goto l000F8A88;
 	}
 	v189 = loc100;
-	v196.u3 = *v189.u3;
-	v189.u3 = (word32) v196;
+	v196.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v196;
 	loc109 = v189;
 	v189 = loc109;
 	v190.u0 = 0x18;
@@ -15597,7 +15640,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v191 = v189 < v190;
 	loc110 = v191;
 	v189 = loc176;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc111 = v189;
 	v189 = loc110;
 	if (v189)
@@ -15609,13 +15652,13 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc112 = v189;
 		v189 = loc24;
 		v190 = loc112;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc46;
 		v190 = loc35;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc57;
 		v190.u0 = 0x00;
-		*v189.u3 = (word32) v190;
+		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc176;
 		v190.u0 = 0x04;
 		v189 += v190;
@@ -15625,7 +15668,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc114 = v189;
 		v189 = arg1;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc17 = v189;
 		v189 = loc112;
 		loc12 = v189;
@@ -15677,15 +15720,15 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc123 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc123;
 				v190 = loc19;
 				v189 = invoke_ii(v189, v190);
 				loc124 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc125 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc125;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -15778,15 +15821,15 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v189 = *v189.u0;
 				loc138 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc138;
 				v190 = loc129;
 				v189 = invoke_ii(v189, v190);
 				loc139 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc140 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc140;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -15865,7 +15908,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		loc145 = v189;
 		v189 = loc100;
 		v197 = *v189.u0;
-		v189.u3 = (word32) v197;
+		&v189.u5->t0000.u0 = (word32) v197;
 		loc146 = v189;
 		v189 = loc146;
 		v190.u0 = 0x18;
@@ -15876,7 +15919,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v191 = v189 < v190;
 		loc147 = v191;
 		v189 = loc113;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc148 = v189;
 		v189 = loc146;
 		v190.u0 = 0xFF;
@@ -15904,16 +15947,16 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v189 <<= v190;
 			loc153 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc153;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc155 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc155;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -15927,7 +15970,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v198 = *v189.u0;
-			v189.u3 = (word32) v198;
+			&v189.u5->t0000.u0 = (word32) v198;
 			loc157 = v189;
 			v189 = loc157;
 			v190.u0 = 0x18;
@@ -15941,7 +15984,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			if (v189)
 			{
 				v189 = loc114;
-				v189.u3 = *v189.u3;
+				&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 				loc159 = v189;
 				v189 = loc159;
 				v190.u0 = 0x7FFFFFFF;
@@ -15960,16 +16003,16 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				loc161 = v189;
 			}
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189.u0 = 0x017A;
 			v190 = loc176;
 			v192 = loc161;
 			v193.u0 = 0x00;
 			invoke_viii(v189, v190, v192, v193);
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc162 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc162;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -15983,7 +16026,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			}
 			v189 = loc100;
 			v199 = *v189.u0;
-			v189.u3 = (word32) v199;
+			&v189.u5->t0000.u0 = (word32) v199;
 			loc164 = v189;
 			v189 = loc164;
 			v190.u0 = 0x18;
@@ -15994,7 +16037,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v191 = v189 < v190;
 			loc166 = v191;
 			v189 = loc176;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc167 = v189;
 			v189 = loc166;
 			if (v189)
@@ -16008,7 +16051,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc168;
 			loc14 = v189;
 		}
@@ -16022,14 +16065,14 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 += v190;
 		loc179 = v189;
 		v189 = loc179;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
 		v189 += v190;
 		loc181 = v189;
 		v189 = loc181;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc182 = v189;
 		v189 = loc180;
 		v190 = loc182;
@@ -16039,25 +16082,25 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v189)
 		{
 			v189 = loc18;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
 			v189 += v190;
 			loc185 = v189;
 			v189 = loc185;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc186 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc186;
 			v190 = loc18;
 			v189 = invoke_ii(v189, v190);
 			loc25 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc26 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc26;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -16140,14 +16183,14 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v189 = *v189.u0;
 		loc38 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc38;
 		v190 = loc18;
 		v189 = invoke_ii(v189, v190);
-		v189.u3 = g_t140048.u3;
+		&v189.u5->t0000.u0 = g_t140048.u5;
 		loc39 = v189;
 		v189.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v189;
+		g_t140048.u5 = (struct Eq_n *) v189;
 		v189 = loc39;
 		v190.u0 = 0x01;
 		v189 &= v190;
@@ -16178,7 +16221,7 @@ l000F87B6:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc172 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc173 = v189;
 		v189 = loc172;
 		loc21 = v189;
@@ -16193,7 +16236,7 @@ l000F87B6:
 	{
 		v189 = ___cxa_find_matching_catch_n();
 		loc177 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc178 = v189;
 		v189 = loc177;
 		loc21 = v189;
@@ -16226,8 +16269,8 @@ l000F8A88:
 	v189 += v190;
 	loc42 = v189;
 	v189 = loc42;
-	v206.u3 = *v189.u3;
-	v189.u3 = (word32) v206;
+	v206.u1 = v189.u5->t0000.u1;
+	&v189.u5->t0000.u0 = (word32) v206;
 	loc43 = v189;
 	v189 = loc43;
 	v190.u0 = 0x18;
@@ -16242,7 +16285,7 @@ l000F8A88:
 	v189 += v190;
 	loc45 = v189;
 	v189 = loc45;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc47 = v189;
 	v189 = loc43;
 	v190.u0 = 0xFF;
@@ -16263,7 +16306,7 @@ l000F8A88:
 	if (v191)
 	{
 		v189 = loc46;
-		v189.u3 = *v189.u3;
+		&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 		loc51 = v189;
 		v189 = loc51;
 		loc52 = v189;
@@ -16281,7 +16324,7 @@ l000F8A88:
 		if (v189)
 		{
 			v189 = loc57;
-			v189.u3 = *v189.u3;
+			&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 			loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
@@ -16289,17 +16332,17 @@ l000F8A88:
 			loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 			v189 = loc51;
 			v190 = loc56;
-			*v189.u3 = (word32) v190;
+			v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		}
 	}
 	v189 = loc24;
-	v189.u3 = *v189.u3;
+	&v189.u5->t0000.u0 = v189.u5->t0000.u5;
 	loc59 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189.u0 = 393;
 	v190 = loc16;
 	v192 = loc59;
@@ -16307,10 +16350,10 @@ l000F8A88:
 	v200 = loc68;
 	v189 = invoke_iiiii(v189, v190, v192, v193, v200);
 	loc60 = v189;
-	v189.u3 = g_t140048.u3;
+	&v189.u5->t0000.u0 = g_t140048.u5;
 	loc61 = v189;
 	v189.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v189;
+	g_t140048.u5 = (struct Eq_n *) v189;
 	v189 = loc61;
 	v190.u0 = 0x01;
 	v189 &= v190;
@@ -16322,7 +16365,7 @@ l000F8A88:
 l000F8A68:
 		v189 = ___cxa_find_matching_catch_n();
 		loc174 = v189;
-		v189.u3 = g_t140094.u3;
+		&v189.u5->t0000.u0 = g_t140094.u5;
 		loc175 = v189;
 		v189 = loc174;
 		loc21 = v189;
@@ -16387,15 +16430,15 @@ l000F8A68:
 				v189 = *v189.u0;
 				loc73 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc73;
 				v190 = loc18;
 				v189 = invoke_ii(v189, v190);
 				loc74 = v189;
-				v189.u3 = g_t140048.u3;
+				&v189.u5->t0000.u0 = g_t140048.u5;
 				loc75 = v189;
 				v189.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v189;
+				g_t140048.u5 = (struct Eq_n *) v189;
 				v189 = loc75;
 				v190.u0 = 0x01;
 				v189 &= v190;
@@ -16476,15 +16519,15 @@ l000F8A68:
 			v189 = *v189.u0;
 			loc88 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc88;
 			v190 = loc20;
 			v189 = invoke_ii(v189, v190);
 			loc89 = v189;
-			v189.u3 = g_t140048.u3;
+			&v189.u5->t0000.u0 = g_t140048.u5;
 			loc91 = v189;
 			v189.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v189;
+			g_t140048.u5 = (struct Eq_n *) v189;
 			v189 = loc91;
 			v190.u0 = 0x01;
 			v189 &= v190;
@@ -16562,7 +16605,7 @@ l000F8A1A:
 		v189 = loc165;
 		fn0011BAF7(v189);
 		v189 = loc191;
-		g_t140030.u3 = (word32 *) v189;
+		g_t140030.u5 = (struct Eq_n *) v189;
 		v189 = loc23;
 		return v189;
 	}
@@ -16571,14 +16614,14 @@ l000F8A1A:
 // 000F8A9E: Stack Eq_n fn000F8A9E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v240.u3 = g_t140030.u3;
+	&v240.u5->t0000.u0 = g_t140030.u5;
 	loc243 = v240;
-	v240.u3 = g_t140030.u3;
+	&v240.u5->t0000.u0 = g_t140030.u5;
 	v241.u0 = 0x70;
 	v240 += v241;
-	g_t140030.u3 = (word32 *) v240;
-	v240.u3 = g_t140030.u3;
-	v241.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v240;
+	&v240.u5->t0000.u0 = g_t140030.u5;
+	&v241.u5->t0000.u0 = g_t140034.u5;
 	v242 = v240 >= v241;
 	if (v242)
 	{
@@ -16619,13 +16662,13 @@ Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		if (v240)
 		{
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240.u0 = 0x018A;
 			invoke_v(v240);
-			v240.u3 = g_t140048.u3;
+			&v240.u5->t0000.u0 = g_t140048.u5;
 			loc102 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc102;
 			v241.u0 = 0x01;
 			v240 &= v241;
@@ -16635,7 +16678,7 @@ Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			{
 				v240 = ___cxa_find_matching_catch_n();
 				loc124 = v240;
-				v240.u3 = g_t140094.u3;
+				&v240.u5->t0000.u0 = g_t140094.u5;
 				loc135 = v240;
 				v240 = loc124;
 				loc44 = v240;
@@ -16701,7 +16744,7 @@ l000F95BA:
 		loc158 = v240;
 		v240 = loc158;
 		v243 = *v240.u0;
-		v240.u3 = (word32) v243;
+		&v240.u5->t0000.u0 = (word32) v243;
 		loc159 = v240;
 		v240 = loc159;
 		v241.u0 = 0x18;
@@ -16719,7 +16762,7 @@ l000F95BA:
 			v240 += v241;
 			loc161 = v240;
 			v240 = loc161;
-			v240.u3 = *v240.u3;
+			&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 			loc162 = v240;
 			v240 = loc162;
 			loc165 = v240;
@@ -16743,7 +16786,7 @@ l000F95BA:
 			v240 = loc19;
 			v241.u0 = 0x02;
 			v244 = (byte) v241;
-			v240.u4->t0000.u0 = (bool) v244;
+			v240.u5->t0000.u0 = (bool) v244;
 			v240 = loc21;
 			v241.u0 = ~0x00;
 			v240 += v241;
@@ -16762,7 +16805,7 @@ l000F95BA:
 			v240 = loc19;
 			v241.u0 = 0x01;
 			v245 = (byte) v241;
-			v240.u4->t0000.u0 = (bool) v245;
+			v240.u5->t0000.u0 = (bool) v245;
 			v240 = loc20;
 			loc26 = v240;
 			v240 = loc21;
@@ -16840,15 +16883,15 @@ l000F95BA:
 				v240 = *v240.u0;
 				loc179 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc179;
 				v241 = loc170;
 				v240 = invoke_ii(v240, v241);
 				loc180 = v240;
-				v240.u3 = g_t140048.u3;
+				&v240.u5->t0000.u0 = g_t140048.u5;
 				loc181 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc181;
 				v241.u0 = 0x01;
 				v240 &= v241;
@@ -16946,15 +16989,15 @@ l000F95BA:
 				v240 = *v240.u0;
 				loc194 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc194;
 				v241 = loc185;
 				v240 = invoke_ii(v240, v241);
 				loc195 = v240;
-				v240.u3 = g_t140048.u3;
+				&v240.u5->t0000.u0 = g_t140048.u5;
 				loc196 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc196;
 				v241.u0 = 0x01;
 				v240 &= v241;
@@ -17051,15 +17094,15 @@ l000F95BA:
 			v240 = *v240.u0;
 			loc54 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc54;
 			v241 = loc204;
 			v240 = invoke_ii(v240, v241);
 			loc55 = v240;
-			v240.u3 = g_t140048.u3;
+			&v240.u5->t0000.u0 = g_t140048.u5;
 			loc56 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc56;
 			v241.u0 = 0x01;
 			v240 &= v241;
@@ -17101,16 +17144,16 @@ l000F95BA:
 			v240 = *v240.u0;
 			loc62 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc62;
 			v241 = arg4;
 			v246 = loc8;
 			v240 = invoke_iii(v240, v241, v246);
 			loc63 = v240;
-			v240.u3 = g_t140048.u3;
+			&v240.u5->t0000.u0 = g_t140048.u5;
 			loc64 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc64;
 			v241.u0 = 0x01;
 			v240 &= v241;
@@ -17150,7 +17193,7 @@ l000F95BA:
 				break;
 			v240 = loc25;
 			v247 = *v240.u0;
-			v240.u3 = (word32) v247;
+			&v240.u5->t0000.u0 = (word32) v247;
 			loc71 = v240;
 			v240 = loc71;
 			v241.u0 = 0x18;
@@ -17172,8 +17215,8 @@ l000F95BA:
 				v240 += v241;
 				loc74 = v240;
 				v240 = loc74;
-				v248.u1 = v240.u4->t0000.u1;
-				v240.u3 = (word32) v248;
+				v248.u1 = v240.u5->t0000.u1;
+				&v240.u5->t0000.u0 = (word32) v248;
 				loc75 = v240;
 				v240 = loc75;
 				v241.u0 = 0x18;
@@ -17187,7 +17230,7 @@ l000F95BA:
 				if (v240)
 				{
 					v240 = loc14;
-					v240.u3 = *v240.u3;
+					&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 					loc77 = v240;
 					v240 = loc77;
 					loc79 = v240;
@@ -17204,7 +17247,7 @@ l000F95BA:
 				v240 += v241;
 				loc78 = v240;
 				v240 = loc78;
-				v240.u3 = *v240.u3;
+				&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 				loc81 = v240;
 				v240 = arg6;
 				if (v240)
@@ -17215,26 +17258,26 @@ l000F95BA:
 				else
 				{
 					v240 = arg4;
-					v240.u3 = *v240.u3;
+					&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 					loc82 = v240;
 					v240 = loc82;
 					v241.u0 = 0x1C;
 					v240 += v241;
 					loc83 = v240;
 					v240 = loc83;
-					v240.u3 = *v240.u3;
+					&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 					loc84 = v240;
 					v240.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v240;
+					g_t140048.u5 = (struct Eq_n *) v240;
 					v240 = loc84;
 					v241 = arg4;
 					v246 = loc81;
 					v240 = invoke_iii(v240, v241, v246);
 					loc85 = v240;
-					v240.u3 = g_t140048.u3;
+					&v240.u5->t0000.u0 = g_t140048.u5;
 					loc86 = v240;
 					v240.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v240;
+					g_t140048.u5 = (struct Eq_n *) v240;
 					v240 = loc86;
 					v241.u0 = 0x01;
 					v240 &= v241;
@@ -17275,7 +17318,7 @@ l000F95BA:
 				}
 				v240 = loc74;
 				v250 = *v240.u0;
-				v240.u3 = (word32) v250;
+				&v240.u5->t0000.u0 = (word32) v250;
 				loc92 = v240;
 				v240 = loc92;
 				v241.u0 = 0x18;
@@ -17293,7 +17336,7 @@ l000F95BA:
 					v240 += v241;
 					loc94 = v240;
 					v240 = loc94;
-					v240.u3 = *v240.u3;
+					&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 					loc95 = v240;
 					v240 = loc95;
 					loc98 = v240;
@@ -17325,7 +17368,7 @@ l000F95BA:
 					v240 = loc25;
 					v241.u0 = 0x02;
 					v251 = (byte) v241;
-					v240.u4->t0000.u0 = (bool) v251;
+					v240.u5->t0000.u0 = (bool) v251;
 					v240.u0 = 0x01;
 					loc28 = v240;
 					v240 = loc100;
@@ -17411,14 +17454,14 @@ l000F908E:
 				v240 = *v240.u0;
 				loc114 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc114;
 				v241 = loc105;
 				v240 = invoke_ii(v240, v241);
-				v240.u3 = g_t140048.u3;
+				&v240.u5->t0000.u0 = g_t140048.u5;
 				loc115 = v240;
 				v240.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v240;
+				g_t140048.u5 = (struct Eq_n *) v240;
 				v240 = loc115;
 				v241.u0 = 0x01;
 				v240 &= v241;
@@ -17469,7 +17512,7 @@ l000F908E:
 						break;
 					v240 = loc29;
 					v252 = *v240.u0;
-					v240.u3 = (word32) v252;
+					&v240.u5->t0000.u0 = (word32) v252;
 					loc123 = v240;
 					v240 = loc123;
 					v241.u0 = 0x18;
@@ -17491,8 +17534,8 @@ l000F908E:
 						v240 += v241;
 						loc127 = v240;
 						v240 = loc127;
-						v253.u1 = v240.u4->t0000.u1;
-						v240.u3 = (word32) v253;
+						v253.u1 = v240.u5->t0000.u1;
+						&v240.u5->t0000.u0 = (word32) v253;
 						loc128 = v240;
 						v240 = loc128;
 						v241.u0 = 0x18;
@@ -17510,7 +17553,7 @@ l000F908E:
 							v240 += v241;
 							loc130 = v240;
 							v240 = loc130;
-							v240.u3 = *v240.u3;
+							&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 							loc131 = v240;
 							v240 = loc131;
 							loc134 = v240;
@@ -17543,7 +17586,7 @@ l000F908E:
 							v240 = loc29;
 							v241.u0 = 0x00;
 							v254 = (byte) v241;
-							v240.u4->t0000.u0 = (bool) v254;
+							v240.u5->t0000.u0 = (bool) v254;
 							v240 = loc136;
 							loc38 = v240;
 						}
@@ -17608,7 +17651,7 @@ l000F9249:
 		{
 			v240 = ___cxa_find_matching_catch_n();
 			loc236 = v240;
-			v240.u3 = g_t140094.u3;
+			&v240.u5->t0000.u0 = g_t140094.u5;
 			loc237 = v240;
 			v240 = loc236;
 			loc42 = v240;
@@ -17624,7 +17667,7 @@ l000F9249:
 			{
 				v240 = ___cxa_find_matching_catch_n();
 				loc66 = v240;
-				v240.u3 = g_t140094.u3;
+				&v240.u5->t0000.u0 = g_t140094.u5;
 				loc67 = v240;
 				v240 = loc66;
 				loc42 = v240;
@@ -17640,7 +17683,7 @@ l000F9249:
 				{
 					v240 = ___cxa_find_matching_catch_n();
 					loc88 = v240;
-					v240.u3 = g_t140094.u3;
+					&v240.u5->t0000.u0 = g_t140094.u5;
 					loc89 = v240;
 					v240 = loc88;
 					loc42 = v240;
@@ -17656,7 +17699,7 @@ l000F9249:
 					{
 						v240 = ___cxa_find_matching_catch_n();
 						loc121 = v240;
-						v240.u3 = g_t140094.u3;
+						&v240.u5->t0000.u0 = g_t140094.u5;
 						loc122 = v240;
 						v240 = loc121;
 						loc42 = v240;
@@ -17738,15 +17781,15 @@ l000F958E:
 			v240 = *v240.u0;
 			loc214 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc214;
 			v241 = loc204;
 			v240 = invoke_ii(v240, v241);
 			loc215 = v240;
-			v240.u3 = g_t140048.u3;
+			&v240.u5->t0000.u0 = g_t140048.u5;
 			loc216 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc216;
 			v241.u0 = 0x01;
 			v240 &= v241;
@@ -17804,7 +17847,7 @@ l000F933A:
 l000F950C:
 		v240 = ___cxa_find_matching_catch_n();
 		loc141 = v240;
-		v240.u3 = g_t140094.u3;
+		&v240.u5->t0000.u0 = g_t140094.u5;
 		loc142 = v240;
 		v240 = loc141;
 		loc42 = v240;
@@ -17857,15 +17900,15 @@ l000F950C:
 			v240 = *v240.u0;
 			loc230 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc230;
 			v241 = loc41;
 			v240 = invoke_ii(v240, v241);
 			loc231 = v240;
-			v240.u3 = g_t140048.u3;
+			&v240.u5->t0000.u0 = g_t140048.u5;
 			loc232 = v240;
 			v240.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v240;
+			g_t140048.u5 = (struct Eq_n *) v240;
 			v240 = loc232;
 			v241.u0 = 0x01;
 			v240 &= v241;
@@ -17964,7 +18007,7 @@ l000F941C:
 				break;
 			v240 = loc32;
 			v255 = *v240.u0;
-			v240.u3 = (word32) v255;
+			&v240.u5->t0000.u0 = (word32) v255;
 			loc144 = v240;
 			v240 = loc144;
 			v241.u0 = 0x18;
@@ -18003,7 +18046,7 @@ l000F94C0:
 		if (v242)
 		{
 			v240 = arg5;
-			v240.u3 = *v240.u3;
+			&v240.u5->t0000.u0 = v240.u5->t0000.u5;
 			loc149 = v240;
 			v240 = loc149;
 			v241.u0 = 0x04;
@@ -18011,7 +18054,7 @@ l000F94C0:
 			loc150 = v240;
 			v240 = arg5;
 			v241 = loc150;
-			*v240.u3 = (word32) v241;
+			v240.u5->t0000.u5 = (struct Eq_n *) v241;
 			v240 = arg3;
 			loc24 = v240;
 		}
@@ -18029,7 +18072,7 @@ l000F94C0:
 			_free(v240);
 		}
 		v240 = loc243;
-		g_t140030.u3 = (word32 *) v240;
+		g_t140030.u5 = (struct Eq_n *) v240;
 		v240 = loc24;
 		return v240;
 	}
@@ -18038,14 +18081,14 @@ l000F94C0:
 // 000F95C3: void fn000F95C3(Stack Eq_n arg0)
 void fn000F95C3(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 }
 
 // 000F95CC: void fn000F95CC(Stack Eq_n arg0)
 void fn000F95CC(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 	v5 = arg0;
 	fn0011B709(v5);
@@ -18054,14 +18097,14 @@ void fn000F95CC(Eq_n arg0)
 // 000F95DA: Stack Eq_n fn000F95DA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v72.u3 = g_t140030.u3;
+	&v72.u5->t0000.u0 = g_t140030.u5;
 	loc73 = v72;
-	v72.u3 = g_t140030.u3;
+	&v72.u5->t0000.u0 = g_t140030.u5;
 	v73.u0 = 0x20;
 	v72 += v73;
-	g_t140030.u3 = (word32 *) v72;
-	v72.u3 = g_t140030.u3;
-	v73.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v72;
+	&v72.u5->t0000.u0 = g_t140030.u5;
+	&v73.u5->t0000.u0 = g_t140034.u5;
 	v74 = v72 >= v73;
 	if (v74)
 	{
@@ -18138,14 +18181,14 @@ Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000F98EA: Stack Eq_n fn000F98EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x50;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -18197,7 +18240,7 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35.u0 = 0x04;
 	v33 += v35;
 	v36 = *v33.u0;
-	v33.u3 = (word32) v36;
+	&v33.u5->t0000.u0 = (word32) v36;
 	v37 = (word16) v33;
 	*v32.u0 = v37;
 	v32 = loc26;
@@ -18244,7 +18287,7 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x018C;
 	v33 = loc27;
 	v35 = loc14;
@@ -18254,10 +18297,10 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v41 = loc30;
 	v42 = loc6;
 	invoke_viiiiiii(v32, v33, v35, v38, v39, v40, v41, v42);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -18266,26 +18309,26 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v35 = loc20;
@@ -18295,7 +18338,7 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000D0874(v32, v33, v35, v38, v39, v40);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -18303,10 +18346,10 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -18320,14 +18363,14 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000F9A50: Stack Eq_n fn000F9A50(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x70;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -18415,7 +18458,7 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x018C;
 	v33 = loc27;
 	v36 = loc14;
@@ -18425,10 +18468,10 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v40 = loc30;
 	v41 = loc6;
 	invoke_viiiiiii(v32, v33, v36, v37, v38, v39, v40, v41);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -18437,26 +18480,26 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v36 = loc20;
@@ -18466,7 +18509,7 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000D0874(v32, v33, v36, v37, v38, v39);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -18474,10 +18517,10 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -18491,14 +18534,14 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000F9BA0: Stack Eq_n fn000F9BA0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x50;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -18550,7 +18593,7 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35.u0 = 0x04;
 	v33 += v35;
 	v36 = *v33.u0;
-	v33.u3 = (word32) v36;
+	&v33.u5->t0000.u0 = (word32) v36;
 	v37 = (word16) v33;
 	*v32.u0 = v37;
 	v32 = loc26;
@@ -18597,7 +18640,7 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x018C;
 	v33 = loc27;
 	v35 = loc14;
@@ -18607,10 +18650,10 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v41 = loc30;
 	v42 = loc6;
 	invoke_viiiiiii(v32, v33, v35, v38, v39, v40, v41, v42);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -18619,26 +18662,26 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v35 = loc20;
@@ -18648,7 +18691,7 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000D0874(v32, v33, v35, v38, v39, v40);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -18656,10 +18699,10 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -18673,14 +18716,14 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000F9D06: Stack Eq_n fn000F9D06(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x70;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -18768,7 +18811,7 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x018C;
 	v33 = loc27;
 	v36 = loc14;
@@ -18778,10 +18821,10 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v40 = loc30;
 	v41 = loc6;
 	invoke_viiiiiii(v32, v33, v36, v37, v38, v39, v40, v41);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -18790,26 +18833,26 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v36 = loc20;
@@ -18819,7 +18862,7 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000D0874(v32, v33, v36, v37, v38, v39);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -18827,10 +18870,10 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -18844,14 +18887,14 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000F9E56: Stack Eq_n fn000F9E56(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	loc111 = v110;
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	v111.u0 = 0xB0;
 	v110 += v111;
-	g_t140030.u3 = (word32 *) v110;
-	v110.u3 = g_t140030.u3;
-	v111.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v110;
+	&v110.u5->t0000.u0 = g_t140030.u5;
+	&v111.u5->t0000.u0 = g_t140034.u5;
 	v112 = v110 >= v111;
 	if (v112)
 	{
@@ -18988,14 +19031,14 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc38 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc39 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc39;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19012,7 +19055,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110 = *v110.u0;
 				loc42 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc106;
 				v111 = loc42;
 				*v110.u0 = v111;
@@ -19030,10 +19073,10 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc106;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc43 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc44 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc44;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -19052,14 +19095,14 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		else
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc48 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc49 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc49;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19069,7 +19112,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			if (v112)
 			{
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc107;
 				v115 = arg4;
 				*v110.u0 = v115;
@@ -19080,10 +19123,10 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc107;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc51 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc52 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc52;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -19128,13 +19171,13 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				goto l000FA0CD;
 			}
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc57 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc57;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19161,7 +19204,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		}
 		v110 = ___cxa_find_matching_catch_n();
 		loc46 = v110;
-		v110.u3 = g_t140094.u3;
+		&v110.u5->t0000.u0 = g_t140094.u5;
 		loc47 = v110;
 		v110 = loc47;
 		loc15 = v110;
@@ -19171,7 +19214,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	else
 	{
 		v110 = loc87;
-		v110.u3 = *v110.u3;
+		&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 		loc19 = v110;
 		v110 = loc5;
 		loc12 = v110;
@@ -19236,13 +19279,13 @@ l000FA317:
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc67 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc67;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19252,7 +19295,7 @@ l000FA317:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc69 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc70 = v110;
 				v110 = loc69;
 				loc13 = v110;
@@ -19261,7 +19304,7 @@ l000FA317:
 				goto l000FA179;
 			}
 			v110 = loc87;
-			v110.u3 = *v110.u3;
+			&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 			loc21 = v110;
 			v110 = loc21;
 			loc20 = v110;
@@ -19289,15 +19332,15 @@ l000FA179:
 	if (v112)
 	{
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110.u0 = 0x0167;
 		v111 = arg2;
 		v110 = invoke_ii(v110, v111);
 		loc72 = v110;
-		v110.u3 = g_t140048.u3;
+		&v110.u5->t0000.u0 = g_t140048.u5;
 		loc73 = v110;
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110 = loc73;
 		v111.u0 = 0x01;
 		v110 &= v111;
@@ -19307,7 +19350,7 @@ l000FA179:
 		{
 			v110 = ___cxa_find_matching_catch_n();
 			loc91 = v110;
-			v110.u3 = g_t140094.u3;
+			&v110.u5->t0000.u0 = g_t140094.u5;
 			loc92 = v110;
 			v110 = loc91;
 			loc7 = v110;
@@ -19322,7 +19365,7 @@ l000FA179:
 			v111 = loc72;
 			*v110.u0 = v111;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018E;
 			v111 = loc75;
 			v114 = loc61;
@@ -19332,10 +19375,10 @@ l000FA179:
 			v119 = loc25;
 			v120 = loc26;
 			invoke_viiiiiii(v110, v111, v114, v116, v117, v118, v119, v120);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc77 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc77;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19345,10 +19388,10 @@ l000FA179:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc93 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc94 = v110;
 				v110 = loc26;
-				v110.u3 = *v110.u3;
+				&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 				loc95 = v110;
 				v110 = loc95;
 				v110 = fn0011B43F(v110);
@@ -19379,7 +19422,7 @@ l000FA179:
 				v110 = *v110.u0;
 				loc82 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc17;
 				v111 = loc27;
 				v111 = *v111.u0;
@@ -19393,10 +19436,10 @@ l000FA179:
 				v119 = arg3;
 				v110 = invoke_iiiiiii(v110, v111, v114, v116, v117, v118, v119);
 				loc83 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc84 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc84;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -19406,7 +19449,7 @@ l000FA179:
 				{
 					v110 = arg1;
 					v111 = loc83;
-					*v110.u3 = (word32) v111;
+					v110.u5->t0000.u5 = (struct Eq_n *) v111;
 					v110 = loc23;
 					v111.u0 = 0x00;
 					v112 = v110 == v111;
@@ -19434,13 +19477,13 @@ l000FA179:
 						_free(v110);
 					}
 					v110 = loc111;
-					g_t140030.u3 = (word32 *) v110;
+					g_t140030.u5 = (struct Eq_n *) v110;
 					v110 = loc83;
 					return v110;
 				}
 				v110 = ___cxa_find_matching_catch_n();
 				loc96 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc97 = v110;
 				v110 = loc96;
 				loc10 = v110;
@@ -19511,14 +19554,14 @@ l000FA179:
 // 000FA320: Stack Eq_n fn000FA320(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	loc111 = v110;
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	v111.u0 = 0xB0;
 	v110 += v111;
-	g_t140030.u3 = (word32 *) v110;
-	v110.u3 = g_t140030.u3;
-	v111.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v110;
+	&v110.u5->t0000.u0 = g_t140030.u5;
+	&v111.u5->t0000.u0 = g_t140034.u5;
 	v112 = v110 >= v111;
 	if (v112)
 	{
@@ -19655,14 +19698,14 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc38 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc39 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc39;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19679,7 +19722,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110 = *v110.u0;
 				loc42 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc106;
 				v111 = loc42;
 				*v110.u0 = v111;
@@ -19697,10 +19740,10 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc106;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc43 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc44 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc44;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -19719,14 +19762,14 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		else
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc48 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc49 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc49;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19736,7 +19779,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			if (v112)
 			{
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc107;
 				v115 = arg4;
 				*v110.u0 = v115;
@@ -19747,10 +19790,10 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc107;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc51 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc52 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc52;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -19795,13 +19838,13 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				goto l000FA597;
 			}
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc57 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc57;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19828,7 +19871,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		}
 		v110 = ___cxa_find_matching_catch_n();
 		loc46 = v110;
-		v110.u3 = g_t140094.u3;
+		&v110.u5->t0000.u0 = g_t140094.u5;
 		loc47 = v110;
 		v110 = loc47;
 		loc15 = v110;
@@ -19838,7 +19881,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	else
 	{
 		v110 = loc87;
-		v110.u3 = *v110.u3;
+		&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 		loc19 = v110;
 		v110 = loc5;
 		loc12 = v110;
@@ -19903,13 +19946,13 @@ l000FA7E1:
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc67 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc67;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -19919,7 +19962,7 @@ l000FA7E1:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc69 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc70 = v110;
 				v110 = loc69;
 				loc13 = v110;
@@ -19928,7 +19971,7 @@ l000FA7E1:
 				goto l000FA643;
 			}
 			v110 = loc87;
-			v110.u3 = *v110.u3;
+			&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 			loc21 = v110;
 			v110 = loc21;
 			loc20 = v110;
@@ -19956,15 +19999,15 @@ l000FA643:
 	if (v112)
 	{
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110.u0 = 0x0167;
 		v111 = arg2;
 		v110 = invoke_ii(v110, v111);
 		loc72 = v110;
-		v110.u3 = g_t140048.u3;
+		&v110.u5->t0000.u0 = g_t140048.u5;
 		loc73 = v110;
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110 = loc73;
 		v111.u0 = 0x01;
 		v110 &= v111;
@@ -19974,7 +20017,7 @@ l000FA643:
 		{
 			v110 = ___cxa_find_matching_catch_n();
 			loc91 = v110;
-			v110.u3 = g_t140094.u3;
+			&v110.u5->t0000.u0 = g_t140094.u5;
 			loc92 = v110;
 			v110 = loc91;
 			loc7 = v110;
@@ -19989,7 +20032,7 @@ l000FA643:
 			v111 = loc72;
 			*v110.u0 = v111;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018E;
 			v111 = loc75;
 			v114 = loc61;
@@ -19999,10 +20042,10 @@ l000FA643:
 			v119 = loc25;
 			v120 = loc26;
 			invoke_viiiiiii(v110, v111, v114, v116, v117, v118, v119, v120);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc77 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc77;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -20012,10 +20055,10 @@ l000FA643:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc93 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc94 = v110;
 				v110 = loc26;
-				v110.u3 = *v110.u3;
+				&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 				loc95 = v110;
 				v110 = loc95;
 				v110 = fn0011B43F(v110);
@@ -20046,7 +20089,7 @@ l000FA643:
 				v110 = *v110.u0;
 				loc82 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc17;
 				v111 = loc27;
 				v111 = *v111.u0;
@@ -20060,10 +20103,10 @@ l000FA643:
 				v119 = arg3;
 				v110 = invoke_iiiiiii(v110, v111, v114, v116, v117, v118, v119);
 				loc83 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc84 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc84;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -20073,7 +20116,7 @@ l000FA643:
 				{
 					v110 = arg1;
 					v111 = loc83;
-					*v110.u3 = (word32) v111;
+					v110.u5->t0000.u5 = (struct Eq_n *) v111;
 					v110 = loc23;
 					v111.u0 = 0x00;
 					v112 = v110 == v111;
@@ -20101,13 +20144,13 @@ l000FA643:
 						_free(v110);
 					}
 					v110 = loc111;
-					g_t140030.u3 = (word32 *) v110;
+					g_t140030.u5 = (struct Eq_n *) v110;
 					v110 = loc83;
 					return v110;
 				}
 				v110 = ___cxa_find_matching_catch_n();
 				loc96 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc97 = v110;
 				v110 = loc96;
 				loc10 = v110;
@@ -20178,14 +20221,14 @@ l000FA643:
 // 000FA7EA: Stack Eq_n fn000FA7EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v34.u3 = g_t140030.u3;
+	&v34.u5->t0000.u0 = g_t140030.u5;
 	loc35 = v34;
-	v34.u3 = g_t140030.u3;
+	&v34.u5->t0000.u0 = g_t140030.u5;
 	v35.u0 = 0x60;
 	v34 += v35;
-	g_t140030.u3 = (word32 *) v34;
-	v34.u3 = g_t140030.u3;
-	v35.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v34;
+	&v34.u5->t0000.u0 = g_t140030.u5;
+	&v35.u5->t0000.u0 = g_t140034.u5;
 	v36 = v34 >= v35;
 	if (v36)
 	{
@@ -20229,7 +20272,7 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v37.u0 = 0x04;
 	v35 += v37;
 	v38 = *v35.u0;
-	v35.u3 = (word32) v38;
+	&v35.u5->t0000.u0 = (word32) v38;
 	v39 = (word16) v35;
 	*v34.u0 = v39;
 	v34 = fn000EAD0D();
@@ -20260,16 +20303,16 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35 = loc11;
 	*v34.u0 = v35;
 	v34.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v34;
+	g_t140048.u5 = (struct Eq_n *) v34;
 	v34.u0 = 0x0164;
 	v35 = loc31;
 	v37.u0 = 0x4C70;
 	v34 = invoke_iii(v34, v35, v37);
 	loc12 = v34;
-	v34.u3 = g_t140048.u3;
+	&v34.u5->t0000.u0 = g_t140048.u5;
 	loc13 = v34;
 	v34.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v34;
+	g_t140048.u5 = (struct Eq_n *) v34;
 	v34 = loc13;
 	v35.u0 = 0x01;
 	v34 &= v35;
@@ -20280,14 +20323,14 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v34 = loc11;
 		v34 = fn0011B43F(v34);
 		v34 = loc12;
-		v34.u3 = *v34.u3;
+		&v34.u5->t0000.u0 = v34.u5->t0000.u5;
 		loc15 = v34;
 		v34 = loc15;
 		v35.u0 = 0x20;
 		v34 += v35;
 		loc16 = v34;
 		v34 = loc16;
-		v34.u3 = *v34.u3;
+		&v34.u5->t0000.u0 = v34.u5->t0000.u5;
 		loc17 = v34;
 		v34 = loc12;
 		v35 = loc29;
@@ -20297,13 +20340,13 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v42 = 0x01FF;
 		v41 &= v42;
 		v42 = 0x2520;
-		v41.u3 += v42;
+		&v41.u5->t0000.u0 = v41.u5 + v42 / 8;
 	}
 	else
 	{
 		v34 = ___cxa_find_matching_catch_n();
 		loc26 = v34;
-		v34.u3 = g_t140094.u3;
+		&v34.u5->t0000.u0 = g_t140094.u5;
 		loc27 = v34;
 		v34 = loc11;
 		v34 = fn0011B43F(v34);
@@ -20313,16 +20356,31 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 }
 
 // 000FA95B: Stack Eq_n fn000FA95B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+// Called from:
+//      fn000F98EA
+//      fn000F9A50
+//      fn000F9BA0
+//      fn000F9D06
+//      fn000F9E56
+//      fn000FA320
+//      fn000FA7EA
+//      fn000FC3DF
+//      fn000FC549
+//      fn000FC69B
+//      fn000FC805
+//      fn000FC957
+//      fn000FCE21
+//      fn000FD2EB
 Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v13.u3 = g_t140030.u3;
+	&v13.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v13;
-	v13.u3 = g_t140030.u3;
+	&v13.u5->t0000.u0 = g_t140030.u5;
 	v14.u0 = 0x10;
 	v13 += v14;
-	g_t140030.u3 = (word32 *) v13;
-	v13.u3 = g_t140030.u3;
-	v14.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v13;
+	&v13.u5->t0000.u0 = g_t140030.u5;
+	&v14.u5->t0000.u0 = g_t140034.u5;
 	v15 = v13 >= v14;
 	if (v15)
 	{
@@ -20352,14 +20410,14 @@ Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (v15)
 	{
 		v13.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v13;
+		g_t140048.u5 = (struct Eq_n *) v13;
 		v13.u0 = 0x017E;
 		v14 = loc8;
 		v13 = invoke_ii(v13, v14);
-		v13.u3 = g_t140048.u3;
+		&v13.u5->t0000.u0 = g_t140048.u5;
 		loc11 = v13;
 		v13.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v13;
+		g_t140048.u5 = (struct Eq_n *) v13;
 		v13 = loc11;
 		v14.u0 = 0x01;
 		v13 &= v14;
@@ -20370,29 +20428,44 @@ Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			v13.u0 = 0x00;
 			v13 = ___cxa_find_matching_catch_n(v13);
 			loc5 = v13;
-			v13.u3 = g_t140094.u3;
+			&v13.u5->t0000.u0 = g_t140094.u5;
 			loc6 = v13;
 			v13 = loc5;
 			fn000D0E65(v13);
 		}
 	}
 	v13 = loc14;
-	g_t140030.u3 = (word32 *) v13;
+	g_t140030.u5 = (struct Eq_n *) v13;
 	v13 = loc9;
 	return v13;
 }
 
 // 000FA9D7: Stack Eq_n fn000FA9D7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// Called from:
+//      fn000F98EA
+//      fn000F9A50
+//      fn000F9BA0
+//      fn000F9D06
+//      fn000F9E56
+//      fn000FA320
+//      fn000FA7EA
+//      fn000FC3DF
+//      fn000FC549
+//      fn000FC69B
+//      fn000FC805
+//      fn000FC957
+//      fn000FCE21
+//      fn000FD2EB
 Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v21.u3 = g_t140030.u3;
+	&v21.u5->t0000.u0 = g_t140030.u5;
 	loc20 = v21;
 	v21 = arg2;
 	v22.u0 = 0x04;
 	v21 += v22;
 	loc10 = v21;
 	v21 = loc10;
-	v21.u3 = *v21.u3;
+	&v21.u5->t0000.u0 = v21.u5->t0000.u5;
 	loc11 = v21;
 	v21 = loc11;
 	v22.u0 = 0xB0;
@@ -20413,8 +20486,8 @@ Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	{
 	case 0x00:
 		v21 = arg0;
-		v23.u1 = v21.u4->t0000.u1;
-		v21.u3 = (word32) v23;
+		v23.u1 = v21.u5->t0000.u1;
+		&v21.u5->t0000.u0 = (word32) v23;
 		loc13 = v21;
 		v21 = loc13;
 		v22.u0 = 0x18;
@@ -20462,8 +20535,8 @@ Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 				v21 += v22;
 				loc7 = v21;
 				v21 = loc7;
-				v25.u1 = v21.u4->t0000.u1;
-				v21.u3 = (word32) v25;
+				v25.u1 = v21.u5->t0000.u1;
+				&v21.u5->t0000.u0 = (word32) v25;
 				loc8 = v21;
 				v21 = loc8;
 				v22.u0 = 0x18;
@@ -20573,9 +20646,14 @@ l000FAB07:
 }
 
 // 000FAB19: Stack Eq_n fn000FAB19(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// Called from:
+//      fn000F9E56
+//      fn000FA320
+//      fn000FC957
+//      fn000FCE21
 Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v34.u3 = g_t140030.u3;
+	&v34.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v34;
 	v34 = arg2;
 	v35.u0 = 0x0800;
@@ -20600,7 +20678,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 		v34 = arg0;
 		v35.u0 = 0x2B;
 		v37 = (byte) v35;
-		*v34.u3 = (word32) v37;
+		v34.u5->t0000.u0 = (bool) v37;
 		v34 = loc25;
 		loc3 = v34;
 	}
@@ -20627,7 +20705,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 		v34 = loc3;
 		v35.u0 = 0x23;
 		v38 = (byte) v35;
-		*v34.u3 = (word32) v38;
+		v34.u5->t0000.u0 = (bool) v38;
 		v34 = loc28;
 		loc6 = v34;
 	}
@@ -20682,7 +20760,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 		loc7 = v34;
 		v34 = loc4;
 		v41 = *v34.u0;
-		v34.u3 = (word32) v41;
+		&v34.u5->t0000.u0 = (word32) v41;
 		loc13 = v34;
 		v34 = loc13;
 		v35.u0 = 0x18;
@@ -20706,7 +20784,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 		v34 = loc7;
 		v35 = loc13;
 		v42 = (byte) v35;
-		v34.u4->t0000.u0 = (bool) v42;
+		v34.u5->t0000.u0 = (bool) v42;
 		v34 = loc15;
 		loc4 = v34;
 		v34 = loc16;
@@ -20744,14 +20822,14 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 			v34 = loc7;
 			v35.u0 = 0x66;
 			v43 = (byte) v35;
-			v34.u4->t0000.u0 = (bool) v43;
+			v34.u5->t0000.u0 = (bool) v43;
 		}
 		else
 		{
 			v34 = loc7;
 			v35.u0 = 0x46;
 			v44 = (byte) v35;
-			v34.u4->t0000.u0 = (bool) v44;
+			v34.u5->t0000.u0 = (bool) v44;
 		}
 		break;
 	case 0x01:
@@ -20769,14 +20847,14 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 			v34 = loc7;
 			v35.u0 = 101;
 			v45 = (byte) v35;
-			v34.u4->t0000.u0 = (bool) v45;
+			v34.u5->t0000.u0 = (bool) v45;
 		}
 		else
 		{
 			v34 = loc7;
 			v35.u0 = 0x45;
 			v46 = (byte) v35;
-			v34.u4->t0000.u0 = (bool) v46;
+			v34.u5->t0000.u0 = (bool) v46;
 		}
 		break;
 	case 0x02:
@@ -21047,14 +21125,14 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 				v34 = loc7;
 				v35.u0 = 0x41;
 				v47 = (byte) v35;
-				v34.u4->t0000.u0 = (bool) v47;
+				v34.u5->t0000.u0 = (bool) v47;
 			}
 			else
 			{
 				v34 = loc7;
 				v35.u0 = 0x61;
 				v48 = (byte) v35;
-				v34.u4->t0000.u0 = (bool) v48;
+				v34.u5->t0000.u0 = (bool) v48;
 			}
 		}
 		else
@@ -21065,14 +21143,14 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 				v34 = loc7;
 				v35.u0 = 0x47;
 				v49 = (byte) v35;
-				v34.u4->t0000.u0 = (bool) v49;
+				v34.u5->t0000.u0 = (bool) v49;
 			}
 			else
 			{
 				v34 = loc7;
 				v35.u0 = 0x67;
 				v50 = (byte) v35;
-				v34.u4->t0000.u0 = (bool) v50;
+				v34.u5->t0000.u0 = (bool) v50;
 			}
 		}
 		break;
@@ -21084,14 +21162,14 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 // 000FADDC: Stack Eq_n fn000FADDC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v22.u3 = g_t140030.u3;
+	&v22.u5->t0000.u0 = g_t140030.u5;
 	loc22 = v22;
-	v22.u3 = g_t140030.u3;
+	&v22.u5->t0000.u0 = g_t140030.u5;
 	v23.u0 = 0x10;
 	v22 += v23;
-	g_t140030.u3 = (word32 *) v22;
-	v22.u3 = g_t140030.u3;
-	v23.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v22;
+	&v22.u5->t0000.u0 = g_t140030.u5;
+	&v23.u5->t0000.u0 = g_t140034.u5;
 	v24 = v22 >= v23;
 	if (v24)
 	{
@@ -21107,17 +21185,17 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v22 = fn000DB419(v22);
 	loc15 = v22;
 	v22.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v22;
+	g_t140048.u5 = (struct Eq_n *) v22;
 	v22.u0 = 399;
 	v23 = arg0;
 	v25 = arg2;
 	v26 = loc14;
 	v22 = invoke_iiii(v22, v23, v25, v26);
 	loc16 = v22;
-	v22.u3 = g_t140048.u3;
+	&v22.u5->t0000.u0 = g_t140048.u5;
 	loc17 = v22;
 	v22.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v22;
+	g_t140048.u5 = (struct Eq_n *) v22;
 	v22 = loc17;
 	v23.u0 = 0x01;
 	v22 &= v23;
@@ -21134,14 +21212,14 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		if (v24)
 		{
 			v22.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v22;
+			g_t140048.u5 = (struct Eq_n *) v22;
 			v22.u0 = 0x017E;
 			v23 = loc15;
 			v22 = invoke_ii(v22, v23);
-			v22.u3 = g_t140048.u3;
+			&v22.u5->t0000.u0 = g_t140048.u5;
 			loc20 = v22;
 			v22.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v22;
+			g_t140048.u5 = (struct Eq_n *) v22;
 			v22 = loc20;
 			v23.u0 = 0x01;
 			v22 &= v23;
@@ -21152,14 +21230,14 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 				v22.u0 = 0x00;
 				v22 = ___cxa_find_matching_catch_n(v22);
 				loc5 = v22;
-				v22.u3 = g_t140094.u3;
+				&v22.u5->t0000.u0 = g_t140094.u5;
 				loc6 = v22;
 				v22 = loc5;
 				fn000D0E65(v22);
 			}
 		}
 		v22 = loc22;
-		g_t140030.u3 = (word32 *) v22;
+		g_t140030.u5 = (struct Eq_n *) v22;
 		v22 = loc16;
 		return v22;
 	}
@@ -21167,7 +21245,7 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	{
 		v22 = ___cxa_find_matching_catch_n();
 		loc7 = v22;
-		v22.u3 = g_t140094.u3;
+		&v22.u5->t0000.u0 = g_t140094.u5;
 		loc8 = v22;
 		v22 = loc15;
 		v23.u0 = 0x00;
@@ -21178,14 +21256,14 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		if (v24)
 		{
 			v22.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v22;
+			g_t140048.u5 = (struct Eq_n *) v22;
 			v22.u0 = 0x017E;
 			v23 = loc15;
 			v22 = invoke_ii(v22, v23);
-			v22.u3 = g_t140048.u3;
+			&v22.u5->t0000.u0 = g_t140048.u5;
 			loc10 = v22;
 			v22.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v22;
+			g_t140048.u5 = (struct Eq_n *) v22;
 			v22 = loc10;
 			v23.u0 = 0x01;
 			v22 &= v23;
@@ -21196,7 +21274,7 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 				v22.u0 = 0x00;
 				v22 = ___cxa_find_matching_catch_n(v22);
 				loc12 = v22;
-				v22.u3 = g_t140094.u3;
+				&v22.u5->t0000.u0 = g_t140094.u5;
 				loc13 = v22;
 				v22 = loc12;
 				fn000D0E65(v22);
@@ -21212,14 +21290,14 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 // 000FAEBB: void fn000FAEBB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v212.u3 = g_t140030.u3;
+	&v212.u5->t0000.u0 = g_t140030.u5;
 	loc215 = v212;
-	v212.u3 = g_t140030.u3;
+	&v212.u5->t0000.u0 = g_t140030.u5;
 	v213.u0 = 0x10;
 	v212 += v213;
-	g_t140030.u3 = (word32 *) v212;
-	v212.u3 = g_t140030.u3;
-	v213.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v212;
+	&v212.u5->t0000.u0 = g_t140030.u5;
+	&v213.u5->t0000.u0 = g_t140034.u5;
 	v214 = v212 >= v213;
 	if (v214)
 	{
@@ -21252,13 +21330,22 @@ void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v216 = 0x01FF;
 	v215 &= v216;
 	v216 = 0x0700;
-	v215.u3 += v216;
+	&v215.u5->t0000.u0 = v215.u5 + v216 / 8;
 }
 
 // 000FB8CE: void fn000FB8CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+// Called from:
+//      fn000F98EA
+//      fn000F9A50
+//      fn000F9BA0
+//      fn000F9D06
+//      fn000FC3DF
+//      fn000FC549
+//      fn000FC69B
+//      fn000FC805
 void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v23.u3 = g_t140030.u3;
+	&v23.u5->t0000.u0 = g_t140030.u5;
 	loc23 = v23;
 	v23 = arg3;
 	v24.u0 = 0x0800;
@@ -21283,7 +21370,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v23 = arg0;
 		v24.u0 = 0x2B;
 		v26 = (byte) v24;
-		*v23.u3 = (word32) v26;
+		v23.u5->t0000.u0 = (bool) v26;
 		v23 = loc16;
 		loc4 = v23;
 	}
@@ -21312,7 +21399,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v23 = loc4;
 		v24.u0 = 0x23;
 		v27 = (byte) v24;
-		*v23.u3 = (word32) v27;
+		v23.u5->t0000.u0 = (bool) v27;
 		v23 = arg1;
 		loc5 = v23;
 		v23 = loc19;
@@ -21321,8 +21408,8 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	while (true)
 	{
 		v23 = loc5;
-		v28.u3 = *v23.u3;
-		v23.u3 = (word32) v28;
+		v28.u1 = v23.u5->t0000.u1;
+		&v23.u5->t0000.u0 = (word32) v28;
 		loc7 = v23;
 		v23 = loc7;
 		v24.u0 = 0x18;
@@ -21346,7 +21433,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v23 = loc6;
 		v24 = loc7;
 		v29 = (byte) v24;
-		v23.u4->t0000.u0 = (bool) v29;
+		v23.u5->t0000.u0 = (bool) v29;
 		v23 = loc9;
 		loc5 = v23;
 		v23 = loc10;
@@ -21377,7 +21464,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v23 = loc6;
 		v24.u0 = 111;
 		v30 = (byte) v24;
-		v23.u4->t0000.u0 = (bool) v30;
+		v23.u5->t0000.u0 = (bool) v30;
 		break;
 	case 0x01:
 		v23 = arg3;
@@ -21394,14 +21481,14 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 			v23 = loc6;
 			v24.u0 = 0x78;
 			v31 = (byte) v24;
-			v23.u4->t0000.u0 = (bool) v31;
+			v23.u5->t0000.u0 = (bool) v31;
 		}
 		else
 		{
 			v23 = loc6;
 			v24.u0 = 88;
 			v32 = (byte) v24;
-			v23.u4->t0000.u0 = (bool) v32;
+			v23.u5->t0000.u0 = (bool) v32;
 		}
 		break;
 	case 0x02:
@@ -21465,14 +21552,14 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 			v23 = loc6;
 			v24.u0 = 100;
 			v33 = (byte) v24;
-			v23.u4->t0000.u0 = (bool) v33;
+			v23.u5->t0000.u0 = (bool) v33;
 		}
 		else
 		{
 			v23 = loc6;
 			v24.u0 = 117;
 			v34 = (byte) v24;
-			v23.u4->t0000.u0 = (bool) v34;
+			v23.u5->t0000.u0 = (bool) v34;
 		}
 		break;
 	}
@@ -21481,14 +21568,14 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 // 000FBA39: void fn000FBA39(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v147.u3 = g_t140030.u3;
+	&v147.u5->t0000.u0 = g_t140030.u5;
 	loc150 = v147;
-	v147.u3 = g_t140030.u3;
+	&v147.u5->t0000.u0 = g_t140030.u5;
 	v148.u0 = 0x10;
 	v147 += v148;
-	g_t140030.u3 = (word32 *) v147;
-	v147.u3 = g_t140030.u3;
-	v148.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v147;
+	&v147.u5->t0000.u0 = g_t140030.u5;
+	&v148.u5->t0000.u0 = g_t140034.u5;
 	v149 = v147 >= v148;
 	if (v149)
 	{
@@ -21521,20 +21608,20 @@ void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v151 = 0x01FF;
 	v150 &= v151;
 	v151 = 0x0700;
-	v150.u3 += v151;
+	&v150.u5->t0000.u0 = v150.u5 + v151 / 8;
 }
 
 // 000FC0C8: void fn000FC0C8(Stack Eq_n arg0)
 void fn000FC0C8(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 }
 
 // 000FC0D1: void fn000FC0D1(Stack Eq_n arg0)
 void fn000FC0D1(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 	v5 = arg0;
 	fn0011B709(v5);
@@ -21543,14 +21630,14 @@ void fn000FC0D1(Eq_n arg0)
 // 000FC0DF: Stack Eq_n fn000FC0DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v73.u3 = g_t140030.u3;
+	&v73.u5->t0000.u0 = g_t140030.u5;
 	loc74 = v73;
-	v73.u3 = g_t140030.u3;
+	&v73.u5->t0000.u0 = g_t140030.u5;
 	v74.u0 = 0x20;
 	v73 += v74;
-	g_t140030.u3 = (word32 *) v73;
-	v73.u3 = g_t140030.u3;
-	v74.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v73;
+	&v73.u5->t0000.u0 = g_t140030.u5;
+	&v74.u5->t0000.u0 = g_t140034.u5;
 	v75 = v73 >= v74;
 	if (v75)
 	{
@@ -21627,14 +21714,14 @@ Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000FC3DF: Stack Eq_n fn000FC3DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x90;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -21686,7 +21773,7 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35.u0 = 0x04;
 	v33 += v35;
 	v36 = *v33.u0;
-	v33.u3 = (word32) v36;
+	&v33.u5->t0000.u0 = (word32) v36;
 	v37 = (word16) v33;
 	*v32.u0 = v37;
 	v32 = loc26;
@@ -21733,7 +21820,7 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x0192;
 	v33 = loc27;
 	v35 = loc14;
@@ -21743,10 +21830,10 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v41 = loc30;
 	v42 = loc6;
 	invoke_viiiiiii(v32, v33, v35, v38, v39, v40, v41, v42);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -21755,26 +21842,26 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v35 = loc20;
@@ -21784,7 +21871,7 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000FD465(v32, v33, v35, v38, v39, v40);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -21792,10 +21879,10 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -21809,14 +21896,14 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000FC549: Stack Eq_n fn000FC549(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0xF0;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -21904,7 +21991,7 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x0192;
 	v33 = loc27;
 	v36 = loc14;
@@ -21914,10 +22001,10 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v40 = loc30;
 	v41 = loc6;
 	invoke_viiiiiii(v32, v33, v36, v37, v38, v39, v40, v41);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -21926,26 +22013,26 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v36 = loc20;
@@ -21955,7 +22042,7 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000FD465(v32, v33, v36, v37, v38, v39);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -21963,10 +22050,10 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -21980,14 +22067,14 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000FC69B: Stack Eq_n fn000FC69B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0x80;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -22039,7 +22126,7 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35.u0 = 0x04;
 	v33 += v35;
 	v36 = *v33.u0;
-	v33.u3 = (word32) v36;
+	&v33.u5->t0000.u0 = (word32) v36;
 	v37 = (word16) v33;
 	*v32.u0 = v37;
 	v32 = loc26;
@@ -22086,7 +22173,7 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x0192;
 	v33 = loc27;
 	v35 = loc14;
@@ -22096,10 +22183,10 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v41 = loc30;
 	v42 = loc6;
 	invoke_viiiiiii(v32, v33, v35, v38, v39, v40, v41, v42);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -22108,26 +22195,26 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v35 = loc20;
@@ -22137,7 +22224,7 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000FD465(v32, v33, v35, v38, v39, v40);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -22145,10 +22232,10 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -22162,14 +22249,14 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000FC805: Stack Eq_n fn000FC805(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	loc33 = v32;
-	v32.u3 = g_t140030.u3;
+	&v32.u5->t0000.u0 = g_t140030.u5;
 	v33.u0 = 0xF0;
 	v32 += v33;
-	g_t140030.u3 = (word32 *) v32;
-	v32.u3 = g_t140030.u3;
-	v33.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v32;
+	&v32.u5->t0000.u0 = g_t140030.u5;
+	&v33.u5->t0000.u0 = g_t140034.u5;
 	v34 = v32 >= v33;
 	if (v34)
 	{
@@ -22257,7 +22344,7 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v33 = loc15;
 	*v32.u0 = v33;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32.u0 = 0x0192;
 	v33 = loc27;
 	v36 = loc14;
@@ -22267,10 +22354,10 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v40 = loc30;
 	v41 = loc6;
 	invoke_viiiiiii(v32, v33, v36, v37, v38, v39, v40, v41);
-	v32.u3 = g_t140048.u3;
+	&v32.u5->t0000.u0 = g_t140048.u5;
 	loc16 = v32;
 	v32.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v32;
+	g_t140048.u5 = (struct Eq_n *) v32;
 	v32 = loc16;
 	v33.u0 = 0x01;
 	v32 &= v33;
@@ -22279,26 +22366,26 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	if (!v32)
 	{
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc18 = v32;
 		v32 = loc18;
 		v32 = fn0011B43F(v32);
 		v32 = arg1;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc19 = v32;
 		v32 = loc7;
 		v33 = loc19;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc29;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc20 = v32;
 		v32 = loc30;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc21 = v32;
 		v32 = loc5;
 		v33 = loc7;
 		v33 = *v33.u0;
-		*v32.u3 = (word32) v33;
+		v32.u5->t0000.u5 = (struct Eq_n *) v33;
 		v32 = loc5;
 		v33 = loc28;
 		v36 = loc20;
@@ -22308,7 +22395,7 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v32 = fn000FD465(v32, v33, v36, v37, v38, v39);
 		loc22 = v32;
 		v32 = loc33;
-		g_t140030.u3 = (word32 *) v32;
+		g_t140030.u5 = (struct Eq_n *) v32;
 		v32 = loc22;
 		return v32;
 	}
@@ -22316,10 +22403,10 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v32 = ___cxa_find_matching_catch_n();
 		loc23 = v32;
-		v32.u3 = g_t140094.u3;
+		&v32.u5->t0000.u0 = g_t140094.u5;
 		loc24 = v32;
 		v32 = loc6;
-		v32.u3 = *v32.u3;
+		&v32.u5->t0000.u0 = v32.u5->t0000.u5;
 		loc25 = v32;
 		v32 = loc25;
 		v32 = fn0011B43F(v32);
@@ -22333,14 +22420,14 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 // 000FC957: Stack Eq_n fn000FC957(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	loc111 = v110;
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	v111.u0 = 0x0160;
 	v110 += v111;
-	g_t140030.u3 = (word32 *) v110;
-	v110.u3 = g_t140030.u3;
-	v111.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v110;
+	&v110.u5->t0000.u0 = g_t140030.u5;
+	&v111.u5->t0000.u0 = g_t140034.u5;
 	v112 = v110 >= v111;
 	if (v112)
 	{
@@ -22477,14 +22564,14 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc38 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc39 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc39;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -22501,7 +22588,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110 = *v110.u0;
 				loc42 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc106;
 				v111 = loc42;
 				*v110.u0 = v111;
@@ -22519,10 +22606,10 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc106;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc43 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc44 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc44;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -22541,14 +22628,14 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		else
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc48 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc49 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc49;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -22558,7 +22645,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			if (v112)
 			{
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc107;
 				v115 = arg4;
 				*v110.u0 = v115;
@@ -22569,10 +22656,10 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc107;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc51 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc52 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc52;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -22617,13 +22704,13 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				goto l000FCBCE;
 			}
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc57 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc57;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -22650,7 +22737,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		}
 		v110 = ___cxa_find_matching_catch_n();
 		loc46 = v110;
-		v110.u3 = g_t140094.u3;
+		&v110.u5->t0000.u0 = g_t140094.u5;
 		loc47 = v110;
 		v110 = loc47;
 		loc15 = v110;
@@ -22660,7 +22747,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	else
 	{
 		v110 = loc87;
-		v110.u3 = *v110.u3;
+		&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 		loc19 = v110;
 		v110 = loc5;
 		loc12 = v110;
@@ -22725,13 +22812,13 @@ l000FCE18:
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc67 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc67;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -22741,7 +22828,7 @@ l000FCE18:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc69 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc70 = v110;
 				v110 = loc69;
 				loc13 = v110;
@@ -22750,7 +22837,7 @@ l000FCE18:
 				goto l000FCC7A;
 			}
 			v110 = loc87;
-			v110.u3 = *v110.u3;
+			&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 			loc21 = v110;
 			v110 = loc21;
 			loc20 = v110;
@@ -22778,15 +22865,15 @@ l000FCC7A:
 	if (v112)
 	{
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110.u0 = 0x0167;
 		v111 = arg2;
 		v110 = invoke_ii(v110, v111);
 		loc72 = v110;
-		v110.u3 = g_t140048.u3;
+		&v110.u5->t0000.u0 = g_t140048.u5;
 		loc73 = v110;
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110 = loc73;
 		v111.u0 = 0x01;
 		v110 &= v111;
@@ -22796,7 +22883,7 @@ l000FCC7A:
 		{
 			v110 = ___cxa_find_matching_catch_n();
 			loc91 = v110;
-			v110.u3 = g_t140094.u3;
+			&v110.u5->t0000.u0 = g_t140094.u5;
 			loc92 = v110;
 			v110 = loc91;
 			loc7 = v110;
@@ -22811,7 +22898,7 @@ l000FCC7A:
 			v111 = loc72;
 			*v110.u0 = v111;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x0193;
 			v111 = loc75;
 			v114 = loc61;
@@ -22821,10 +22908,10 @@ l000FCC7A:
 			v119 = loc25;
 			v120 = loc26;
 			invoke_viiiiiii(v110, v111, v114, v116, v117, v118, v119, v120);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc77 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc77;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -22834,10 +22921,10 @@ l000FCC7A:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc93 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc94 = v110;
 				v110 = loc26;
-				v110.u3 = *v110.u3;
+				&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 				loc95 = v110;
 				v110 = loc95;
 				v110 = fn0011B43F(v110);
@@ -22868,7 +22955,7 @@ l000FCC7A:
 				v110 = *v110.u0;
 				loc82 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc17;
 				v111 = loc27;
 				v111 = *v111.u0;
@@ -22882,10 +22969,10 @@ l000FCC7A:
 				v119 = arg3;
 				v110 = invoke_iiiiiii(v110, v111, v114, v116, v117, v118, v119);
 				loc83 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc84 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc84;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -22895,7 +22982,7 @@ l000FCC7A:
 				{
 					v110 = arg1;
 					v111 = loc83;
-					*v110.u3 = (word32) v111;
+					v110.u5->t0000.u5 = (struct Eq_n *) v111;
 					v110 = loc23;
 					v111.u0 = 0x00;
 					v112 = v110 == v111;
@@ -22923,13 +23010,13 @@ l000FCC7A:
 						_free(v110);
 					}
 					v110 = loc111;
-					g_t140030.u3 = (word32 *) v110;
+					g_t140030.u5 = (struct Eq_n *) v110;
 					v110 = loc83;
 					return v110;
 				}
 				v110 = ___cxa_find_matching_catch_n();
 				loc96 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc97 = v110;
 				v110 = loc96;
 				loc10 = v110;
@@ -23000,14 +23087,14 @@ l000FCC7A:
 // 000FCE21: Stack Eq_n fn000FCE21(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	loc111 = v110;
-	v110.u3 = g_t140030.u3;
+	&v110.u5->t0000.u0 = g_t140030.u5;
 	v111.u0 = 0x0160;
 	v110 += v111;
-	g_t140030.u3 = (word32 *) v110;
-	v110.u3 = g_t140030.u3;
-	v111.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v110;
+	&v110.u5->t0000.u0 = g_t140030.u5;
+	&v111.u5->t0000.u0 = g_t140034.u5;
 	v112 = v110 >= v111;
 	if (v112)
 	{
@@ -23144,14 +23231,14 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc38 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc39 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc39;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -23168,7 +23255,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110 = *v110.u0;
 				loc42 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc106;
 				v111 = loc42;
 				*v110.u0 = v111;
@@ -23186,10 +23273,10 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc106;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc43 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc44 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc44;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -23208,14 +23295,14 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		else
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x017B;
 			v110 = invoke_i(v110);
 			loc48 = v110;
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc49 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc49;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -23225,7 +23312,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			if (v112)
 			{
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc107;
 				v115 = arg4;
 				*v110.u0 = v115;
@@ -23236,10 +23323,10 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v117 = loc107;
 				v110 = invoke_iiiii(v110, v111, v114, v116, v117);
 				loc51 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc52 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc52;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -23284,13 +23371,13 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				goto l000FD098;
 			}
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc57 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc57;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -23317,7 +23404,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		}
 		v110 = ___cxa_find_matching_catch_n();
 		loc46 = v110;
-		v110.u3 = g_t140094.u3;
+		&v110.u5->t0000.u0 = g_t140094.u5;
 		loc47 = v110;
 		v110 = loc47;
 		loc15 = v110;
@@ -23327,7 +23414,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	else
 	{
 		v110 = loc87;
-		v110.u3 = *v110.u3;
+		&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 		loc19 = v110;
 		v110 = loc5;
 		loc12 = v110;
@@ -23392,13 +23479,13 @@ l000FD2E2:
 		if (v110)
 		{
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x018A;
 			invoke_v(v110);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc67 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc67;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -23408,7 +23495,7 @@ l000FD2E2:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc69 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc70 = v110;
 				v110 = loc69;
 				loc13 = v110;
@@ -23417,7 +23504,7 @@ l000FD2E2:
 				goto l000FD144;
 			}
 			v110 = loc87;
-			v110.u3 = *v110.u3;
+			&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 			loc21 = v110;
 			v110 = loc21;
 			loc20 = v110;
@@ -23445,15 +23532,15 @@ l000FD144:
 	if (v112)
 	{
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110.u0 = 0x0167;
 		v111 = arg2;
 		v110 = invoke_ii(v110, v111);
 		loc72 = v110;
-		v110.u3 = g_t140048.u3;
+		&v110.u5->t0000.u0 = g_t140048.u5;
 		loc73 = v110;
 		v110.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v110;
+		g_t140048.u5 = (struct Eq_n *) v110;
 		v110 = loc73;
 		v111.u0 = 0x01;
 		v110 &= v111;
@@ -23463,7 +23550,7 @@ l000FD144:
 		{
 			v110 = ___cxa_find_matching_catch_n();
 			loc91 = v110;
-			v110.u3 = g_t140094.u3;
+			&v110.u5->t0000.u0 = g_t140094.u5;
 			loc92 = v110;
 			v110 = loc91;
 			loc7 = v110;
@@ -23478,7 +23565,7 @@ l000FD144:
 			v111 = loc72;
 			*v110.u0 = v111;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110.u0 = 0x0193;
 			v111 = loc75;
 			v114 = loc61;
@@ -23488,10 +23575,10 @@ l000FD144:
 			v119 = loc25;
 			v120 = loc26;
 			invoke_viiiiiii(v110, v111, v114, v116, v117, v118, v119, v120);
-			v110.u3 = g_t140048.u3;
+			&v110.u5->t0000.u0 = g_t140048.u5;
 			loc77 = v110;
 			v110.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v110;
+			g_t140048.u5 = (struct Eq_n *) v110;
 			v110 = loc77;
 			v111.u0 = 0x01;
 			v110 &= v111;
@@ -23501,10 +23588,10 @@ l000FD144:
 			{
 				v110 = ___cxa_find_matching_catch_n();
 				loc93 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc94 = v110;
 				v110 = loc26;
-				v110.u3 = *v110.u3;
+				&v110.u5->t0000.u0 = v110.u5->t0000.u5;
 				loc95 = v110;
 				v110 = loc95;
 				v110 = fn0011B43F(v110);
@@ -23535,7 +23622,7 @@ l000FD144:
 				v110 = *v110.u0;
 				loc82 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc17;
 				v111 = loc27;
 				v111 = *v111.u0;
@@ -23549,10 +23636,10 @@ l000FD144:
 				v119 = arg3;
 				v110 = invoke_iiiiiii(v110, v111, v114, v116, v117, v118, v119);
 				loc83 = v110;
-				v110.u3 = g_t140048.u3;
+				&v110.u5->t0000.u0 = g_t140048.u5;
 				loc84 = v110;
 				v110.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v110;
+				g_t140048.u5 = (struct Eq_n *) v110;
 				v110 = loc84;
 				v111.u0 = 0x01;
 				v110 &= v111;
@@ -23562,7 +23649,7 @@ l000FD144:
 				{
 					v110 = arg1;
 					v111 = loc83;
-					*v110.u3 = (word32) v111;
+					v110.u5->t0000.u5 = (struct Eq_n *) v111;
 					v110 = loc23;
 					v111.u0 = 0x00;
 					v112 = v110 == v111;
@@ -23590,13 +23677,13 @@ l000FD144:
 						_free(v110);
 					}
 					v110 = loc111;
-					g_t140030.u3 = (word32 *) v110;
+					g_t140030.u5 = (struct Eq_n *) v110;
 					v110 = loc83;
 					return v110;
 				}
 				v110 = ___cxa_find_matching_catch_n();
 				loc96 = v110;
-				v110.u3 = g_t140094.u3;
+				&v110.u5->t0000.u0 = g_t140094.u5;
 				loc97 = v110;
 				v110 = loc96;
 				loc10 = v110;
@@ -23667,14 +23754,14 @@ l000FD144:
 // 000FD2EB: Stack Eq_n fn000FD2EB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v34.u3 = g_t140030.u3;
+	&v34.u5->t0000.u0 = g_t140030.u5;
 	loc35 = v34;
-	v34.u3 = g_t140030.u3;
+	&v34.u5->t0000.u0 = g_t140030.u5;
 	v35.u0 = 0xC0;
 	v34 += v35;
-	g_t140030.u3 = (word32 *) v34;
-	v34.u3 = g_t140030.u3;
-	v35.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v34;
+	&v34.u5->t0000.u0 = g_t140030.u5;
+	&v35.u5->t0000.u0 = g_t140034.u5;
 	v36 = v34 >= v35;
 	if (v36)
 	{
@@ -23718,7 +23805,7 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v37.u0 = 0x04;
 	v35 += v37;
 	v38 = *v35.u0;
-	v35.u3 = (word32) v38;
+	&v35.u5->t0000.u0 = (word32) v38;
 	v39 = (word16) v35;
 	*v34.u0 = v39;
 	v34 = fn000EAD0D();
@@ -23749,16 +23836,16 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v35 = loc11;
 	*v34.u0 = v35;
 	v34.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v34;
+	g_t140048.u5 = (struct Eq_n *) v34;
 	v34.u0 = 0x0164;
 	v35 = loc31;
 	v37.u0 = 0x4C90;
 	v34 = invoke_iii(v34, v35, v37);
 	loc12 = v34;
-	v34.u3 = g_t140048.u3;
+	&v34.u5->t0000.u0 = g_t140048.u5;
 	loc13 = v34;
 	v34.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v34;
+	g_t140048.u5 = (struct Eq_n *) v34;
 	v34 = loc13;
 	v35.u0 = 0x01;
 	v34 &= v35;
@@ -23769,14 +23856,14 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v34 = loc11;
 		v34 = fn0011B43F(v34);
 		v34 = loc12;
-		v34.u3 = *v34.u3;
+		&v34.u5->t0000.u0 = v34.u5->t0000.u5;
 		loc15 = v34;
 		v34 = loc15;
 		v35.u0 = 0x30;
 		v34 += v35;
 		loc16 = v34;
 		v34 = loc16;
-		v34.u3 = *v34.u3;
+		&v34.u5->t0000.u0 = v34.u5->t0000.u5;
 		loc17 = v34;
 		v34 = loc12;
 		v35 = loc29;
@@ -23786,13 +23873,13 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v42 = 0x01FF;
 		v41 &= v42;
 		v42 = 0x2520;
-		v41.u3 += v42;
+		&v41.u5->t0000.u0 = v41.u5 + v42 / 8;
 	}
 	else
 	{
 		v34 = ___cxa_find_matching_catch_n();
 		loc26 = v34;
-		v34.u3 = g_t140094.u3;
+		&v34.u5->t0000.u0 = g_t140094.u5;
 		loc27 = v34;
 		v34 = loc11;
 		v34 = fn0011B43F(v34);
@@ -23802,16 +23889,21 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 }
 
 // 000FD465: Stack Eq_n fn000FD465(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// Called from:
+//      fn000FC3DF
+//      fn000FC549
+//      fn000FC69B
+//      fn000FC805
 Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v51.u3 = g_t140030.u3;
+	&v51.u5->t0000.u0 = g_t140030.u5;
 	loc53 = v51;
-	v51.u3 = g_t140030.u3;
+	&v51.u5->t0000.u0 = g_t140030.u5;
 	v52.u0 = 0x10;
 	v51 += v52;
-	g_t140030.u3 = (word32 *) v51;
-	v51.u3 = g_t140030.u3;
-	v52.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v51;
+	&v51.u5->t0000.u0 = g_t140030.u5;
+	&v52.u5->t0000.u0 = g_t140034.u5;
 	v53 = v51 >= v52;
 	if (v53)
 	{
@@ -23908,14 +24000,14 @@ Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FD67D: void fn000FD67D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v212.u3 = g_t140030.u3;
+	&v212.u5->t0000.u0 = g_t140030.u5;
 	loc215 = v212;
-	v212.u3 = g_t140030.u3;
+	&v212.u5->t0000.u0 = g_t140030.u5;
 	v213.u0 = 0x10;
 	v212 += v213;
-	g_t140030.u3 = (word32 *) v212;
-	v212.u3 = g_t140030.u3;
-	v213.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v212;
+	&v212.u5->t0000.u0 = g_t140030.u5;
+	&v213.u5->t0000.u0 = g_t140034.u5;
 	v214 = v212 >= v213;
 	if (v214)
 	{
@@ -23948,20 +24040,20 @@ void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v216 = 0x01FF;
 	v215 &= v216;
 	v216 = 0x0700;
-	v215.u3 += v216;
+	&v215.u5->t0000.u0 = v215.u5 + v216 / 8;
 }
 
 // 000FE09E: void fn000FE09E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v144.u3 = g_t140030.u3;
+	&v144.u5->t0000.u0 = g_t140030.u5;
 	loc147 = v144;
-	v144.u3 = g_t140030.u3;
+	&v144.u5->t0000.u0 = g_t140030.u5;
 	v145.u0 = 0x10;
 	v144 += v145;
-	g_t140030.u3 = (word32 *) v144;
-	v144.u3 = g_t140030.u3;
-	v145.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v144;
+	&v144.u5->t0000.u0 = g_t140030.u5;
+	&v145.u5->t0000.u0 = g_t140034.u5;
 	v146 = v144 >= v145;
 	if (v146)
 	{
@@ -23994,20 +24086,20 @@ void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v148 = 0x01FF;
 	v147 &= v148;
 	v148 = 0x0700;
-	v147.u3 += v148;
+	&v147.u5->t0000.u0 = v147.u5 + v148 / 8;
 }
 
 // 000FE711: void fn000FE711(Stack Eq_n arg0)
 void fn000FE711(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 }
 
 // 000FE71A: void fn000FE71A(Stack Eq_n arg0)
 void fn000FE71A(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 	v5 = arg0;
 	fn0011B709(v5);
@@ -24016,7 +24108,7 @@ void fn000FE71A(Eq_n arg0)
 // 000FE728: Stack Eq_n fn000FE728(Stack Eq_n arg0)
 Eq_n fn000FE728(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
+	&v5.u5->t0000.u0 = g_t140030.u5;
 	loc2 = v5;
 	v5.u0 = 0x02;
 	return v5;
@@ -24025,14 +24117,14 @@ Eq_n fn000FE728(Eq_n arg0)
 // 000FE733: Stack Eq_n fn000FE733(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	loc14 = v12;
-	v12.u3 = g_t140030.u3;
+	&v12.u5->t0000.u0 = g_t140030.u5;
 	v13.u0 = 0x10;
 	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v12;
+	&v12.u5->t0000.u0 = g_t140030.u5;
+	&v13.u5->t0000.u0 = g_t140034.u5;
 	v14 = v12 >= v13;
 	if (v14)
 	{
@@ -24084,7 +24176,7 @@ Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12 = fn001003A9(v12, v13, v15, v16, v17, v18, v19, v20);
 	loc8 = v12;
 	v12 = loc14;
-	g_t140030.u3 = (word32 *) v12;
+	g_t140030.u5 = (struct Eq_n *) v12;
 	v12 = loc8;
 	return v12;
 }
@@ -24092,14 +24184,14 @@ Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FE7B7: Stack Eq_n fn000FE7B7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE7B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v27.u3 = g_t140030.u3;
+	&v27.u5->t0000.u0 = g_t140030.u5;
 	loc29 = v27;
-	v27.u3 = g_t140030.u3;
+	&v27.u5->t0000.u0 = g_t140030.u5;
 	v28.u0 = 0x10;
 	v27 += v28;
-	g_t140030.u3 = (word32 *) v27;
-	v27.u3 = g_t140030.u3;
-	v28.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v27;
+	&v27.u5->t0000.u0 = g_t140030.u5;
+	&v28.u5->t0000.u0 = g_t140034.u5;
 	v29 = v27 >= v28;
 	if (v29)
 	{
@@ -24145,14 +24237,14 @@ Eq_n fn000FE7B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FE8BB: Stack Eq_n fn000FE8BB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	loc19 = v17;
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	v18.u0 = 0x10;
 	v17 += v18;
-	g_t140030.u3 = (word32 *) v17;
-	v17.u3 = g_t140030.u3;
-	v18.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v17;
+	&v17.u5->t0000.u0 = g_t140030.u5;
+	&v18.u5->t0000.u0 = g_t140034.u5;
 	v19 = v17 >= v18;
 	if (v19)
 	{
@@ -24176,16 +24268,16 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v18 = loc16;
 	*v17.u0 = v18;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17.u0 = 0x0164;
 	v18 = loc14;
 	v20.u0 = 0x4C70;
 	v17 = invoke_iii(v17, v18, v20);
 	loc17 = v17;
-	v17.u3 = g_t140048.u3;
+	&v17.u5->t0000.u0 = g_t140048.u5;
 	loc8 = v17;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17 = loc8;
 	v18.u0 = 0x01;
 	v17 &= v18;
@@ -24200,15 +24292,15 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 += v18;
 		loc10 = v17;
 		v17 = arg2;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc11 = v17;
 		v17 = loc15;
 		v18 = loc11;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = loc6;
 		v18 = loc15;
 		v18 = *v18.u0;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = arg0;
 		v18 = loc10;
 		v20 = arg1;
@@ -24217,10 +24309,10 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v23 = loc17;
 		fn00100228(v17, v18, v20, v21, v22, v23);
 		v17 = arg1;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc7 = v17;
 		v17 = loc19;
-		g_t140030.u3 = (word32 *) v17;
+		g_t140030.u5 = (struct Eq_n *) v17;
 		v17 = loc7;
 		return v17;
 	}
@@ -24228,7 +24320,7 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v17 = ___cxa_find_matching_catch_n();
 		loc12 = v17;
-		v17.u3 = g_t140094.u3;
+		&v17.u5->t0000.u0 = g_t140094.u5;
 		loc13 = v17;
 		v17 = loc16;
 		v17 = fn0011B43F(v17);
@@ -24242,14 +24334,14 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FE973: Stack Eq_n fn000FE973(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	loc19 = v17;
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	v18.u0 = 0x10;
 	v17 += v18;
-	g_t140030.u3 = (word32 *) v17;
-	v17.u3 = g_t140030.u3;
-	v18.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v17;
+	&v17.u5->t0000.u0 = g_t140030.u5;
+	&v18.u5->t0000.u0 = g_t140034.u5;
 	v19 = v17 >= v18;
 	if (v19)
 	{
@@ -24273,16 +24365,16 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v18 = loc16;
 	*v17.u0 = v18;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17.u0 = 0x0164;
 	v18 = loc14;
 	v20.u0 = 0x4C70;
 	v17 = invoke_iii(v17, v18, v20);
 	loc17 = v17;
-	v17.u3 = g_t140048.u3;
+	&v17.u5->t0000.u0 = g_t140048.u5;
 	loc8 = v17;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17 = loc8;
 	v18.u0 = 0x01;
 	v17 &= v18;
@@ -24297,15 +24389,15 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 += v18;
 		loc10 = v17;
 		v17 = arg2;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc11 = v17;
 		v17 = loc15;
 		v18 = loc11;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = loc6;
 		v18 = loc15;
 		v18 = *v18.u0;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = arg0;
 		v18 = loc10;
 		v20 = arg1;
@@ -24314,10 +24406,10 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v23 = loc17;
 		fn001002E5(v17, v18, v20, v21, v22, v23);
 		v17 = arg1;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc7 = v17;
 		v17 = loc19;
-		g_t140030.u3 = (word32 *) v17;
+		g_t140030.u5 = (struct Eq_n *) v17;
 		v17 = loc7;
 		return v17;
 	}
@@ -24325,7 +24417,7 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v17 = ___cxa_find_matching_catch_n();
 		loc12 = v17;
-		v17.u3 = g_t140094.u3;
+		&v17.u5->t0000.u0 = g_t140094.u5;
 		loc13 = v17;
 		v17 = loc16;
 		v17 = fn0011B43F(v17);
@@ -24339,14 +24431,14 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FEA2B: Stack Eq_n fn000FEA2B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	loc19 = v17;
-	v17.u3 = g_t140030.u3;
+	&v17.u5->t0000.u0 = g_t140030.u5;
 	v18.u0 = 0x10;
 	v17 += v18;
-	g_t140030.u3 = (word32 *) v17;
-	v17.u3 = g_t140030.u3;
-	v18.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v17;
+	&v17.u5->t0000.u0 = g_t140030.u5;
+	&v18.u5->t0000.u0 = g_t140034.u5;
 	v19 = v17 >= v18;
 	if (v19)
 	{
@@ -24370,16 +24462,16 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v18 = loc16;
 	*v17.u0 = v18;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17.u0 = 0x0164;
 	v18 = loc14;
 	v20.u0 = 0x4C70;
 	v17 = invoke_iii(v17, v18, v20);
 	loc17 = v17;
-	v17.u3 = g_t140048.u3;
+	&v17.u5->t0000.u0 = g_t140048.u5;
 	loc8 = v17;
 	v17.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v17;
+	g_t140048.u5 = (struct Eq_n *) v17;
 	v17 = loc8;
 	v18.u0 = 0x01;
 	v17 &= v18;
@@ -24394,15 +24486,15 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 += v18;
 		loc10 = v17;
 		v17 = arg2;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc11 = v17;
 		v17 = loc15;
 		v18 = loc11;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = loc6;
 		v18 = loc15;
 		v18 = *v18.u0;
-		*v17.u3 = (word32) v18;
+		v17.u5->t0000.u5 = (struct Eq_n *) v18;
 		v17 = arg0;
 		v18 = loc10;
 		v20 = arg1;
@@ -24411,10 +24503,10 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v23 = loc17;
 		fn0010195D(v17, v18, v20, v21, v22, v23);
 		v17 = arg1;
-		v17.u3 = *v17.u3;
+		&v17.u5->t0000.u0 = v17.u5->t0000.u5;
 		loc7 = v17;
 		v17 = loc19;
-		g_t140030.u3 = (word32 *) v17;
+		g_t140030.u5 = (struct Eq_n *) v17;
 		v17 = loc7;
 		return v17;
 	}
@@ -24422,7 +24514,7 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v17 = ___cxa_find_matching_catch_n();
 		loc12 = v17;
-		v17.u3 = g_t140094.u3;
+		&v17.u5->t0000.u0 = g_t140094.u5;
 		loc13 = v17;
 		v17 = loc16;
 		v17 = fn0011B43F(v17);
@@ -24436,14 +24528,14 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 000FEAE3: Stack Eq_n fn000FEAE3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v163.u3 = g_t140030.u3;
+	&v163.u5->t0000.u0 = g_t140030.u5;
 	loc167 = v163;
-	v163.u3 = g_t140030.u3;
+	&v163.u5->t0000.u0 = g_t140030.u5;
 	v164.u0 = 0x0100;
 	v163 += v164;
-	g_t140030.u3 = (word32 *) v163;
-	v163.u3 = g_t140030.u3;
-	v164.u3 = g_t140034.u3;
+	g_t140030.u5 = (struct Eq_n *) v163;
+	&v163.u5->t0000.u0 = g_t140030.u5;
+	&v164.u5->t0000.u0 = g_t140034.u5;
 	v165 = v163 >= v164;
 	if (v165)
 	{
@@ -24710,16 +24802,16 @@ Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v164 = loc104;
 	*v163.u0 = v164;
 	v163.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v163;
+	g_t140048.u5 = (struct Eq_n *) v163;
 	v163.u0 = 0x0164;
 	v164 = loc144;
 	v166.u0 = 0x4C70;
 	v163 = invoke_iii(v163, v164, v166);
 	loc105 = v163;
-	v163.u3 = g_t140048.u3;
+	&v163.u5->t0000.u0 = g_t140048.u5;
 	loc106 = v163;
 	v163.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v163;
+	g_t140048.u5 = (struct Eq_n *) v163;
 	v163 = loc106;
 	v164.u0 = 0x01;
 	v163 &= v164;
@@ -24729,7 +24821,7 @@ Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v163 = ___cxa_find_matching_catch_n();
 		loc109 = v163;
-		v163.u3 = g_t140094.u3;
+		&v163.u5->t0000.u0 = g_t140094.u5;
 		loc110 = v163;
 		v163 = loc104;
 		v163 = fn0011B43F(v163);
@@ -24810,15 +24902,15 @@ l000FEE5F:
 	v163 += v164;
 	loc111 = v163;
 	v163 = arg2;
-	v163.u3 = *v163.u3;
+	&v163.u5->t0000.u0 = v163.u5->t0000.u5;
 	loc112 = v163;
 	v163 = loc155;
 	v164 = loc112;
-	*v163.u3 = (word32) v164;
+	v163.u5->t0000.u5 = (struct Eq_n *) v164;
 	v163 = loc8;
 	v164 = loc155;
 	v164 = *v164.u0;
-	*v163.u3 = (word32) v164;
+	v163.u5->t0000.u5 = (struct Eq_n *) v164;
 	v163 = arg0;
 	v164 = loc111;
 	v166 = arg1;
@@ -24833,11 +24925,11 @@ l000FEE5F:
 // 000FF5D5: Stack Eq_n fn000FF5D5(Stack Eq_n arg0)
 Eq_n fn000FF5D5(Eq_n arg0)
 {
-	v51.u3 = g_t140030.u3;
+	&v51.u5->t0000.u0 = g_t140030.u5;
 	loc48 = v51;
 	v51.u0 = 0x43D8;
 	v52 = *v51.u0;
-	v51.u3 = (word32) v52;
+	&v51.u5->t0000.u0 = (word32) v52;
 	loc2 = v51;
 	v51 = loc2;
 	v53.u0 = 0x18;
@@ -24863,7 +24955,7 @@ Eq_n fn000FF5D5(Eq_n arg0)
 		{
 			v51.u0 = 0x43E0;
 			v55 = *v51.u0;
-			v51.u3 = (word32) v55;
+			&v51.u5->t0000.u0 = (word32) v55;
 			loc41 = v51;
 			v51 = loc41;
 			v53.u0 = 0x18;
@@ -24947,15 +25039,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 				}
 			}
 			v51.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v51;
+			g_t140048.u5 = (struct Eq_n *) v51;
 			v51.u0 = 0x0196;
 			v53.u0 = 20272;
 			v57 = 0x3A39;
 			v51 = invoke_iii(v51, v53, v57);
-			v51.u3 = g_t140048.u3;
+			&v51.u5->t0000.u0 = g_t140048.u5;
 			loc7 = v51;
 			v51.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v51;
+			g_t140048.u5 = (struct Eq_n *) v51;
 			v51 = loc7;
 			v53.u0 = 0x01;
 			v51 &= v53;
@@ -24965,15 +25057,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 			if (v54)
 			{
 				v51.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v51;
+				g_t140048.u5 = (struct Eq_n *) v51;
 				v51.u0 = 0x0196;
 				v53.u0 = 20284;
 				v57 = 0x3A40;
 				v51 = invoke_iii(v51, v53, v57);
-				v51.u3 = g_t140048.u3;
+				&v51.u5->t0000.u0 = g_t140048.u5;
 				loc9 = v51;
 				v51.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v51;
+				g_t140048.u5 = (struct Eq_n *) v51;
 				v51 = loc9;
 				v53.u0 = 0x01;
 				v51 &= v53;
@@ -24983,15 +25075,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 				if (v54)
 				{
 					v51.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v51;
+					g_t140048.u5 = (struct Eq_n *) v51;
 					v51.u0 = 0x0196;
 					v53.u0 = 0x4F48;
 					v57 = 14919;
 					v51 = invoke_iii(v51, v53, v57);
-					v51.u3 = g_t140048.u3;
+					&v51.u5->t0000.u0 = g_t140048.u5;
 					loc11 = v51;
 					v51.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v51;
+					g_t140048.u5 = (struct Eq_n *) v51;
 					v51 = loc11;
 					v53.u0 = 0x01;
 					v51 &= v53;
@@ -25001,15 +25093,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 					if (v54)
 					{
 						v51.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v51;
+						g_t140048.u5 = (struct Eq_n *) v51;
 						v51.u0 = 0x0196;
 						v53.u0 = 0x4F54;
 						v57 = 0x3A4F;
 						v51 = invoke_iii(v51, v53, v57);
-						v51.u3 = g_t140048.u3;
+						&v51.u5->t0000.u0 = g_t140048.u5;
 						loc14 = v51;
 						v51.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v51;
+						g_t140048.u5 = (struct Eq_n *) v51;
 						v51 = loc14;
 						v53.u0 = 0x01;
 						v51 &= v53;
@@ -25019,15 +25111,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 						if (v54)
 						{
 							v51.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v51;
+							g_t140048.u5 = (struct Eq_n *) v51;
 							v51.u0 = 0x0196;
 							v53.u0 = 20320;
 							v57 = 0x3A59;
 							v51 = invoke_iii(v51, v53, v57);
-							v51.u3 = g_t140048.u3;
+							&v51.u5->t0000.u0 = g_t140048.u5;
 							loc16 = v51;
 							v51.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v51;
+							g_t140048.u5 = (struct Eq_n *) v51;
 							v51 = loc16;
 							v53.u0 = 0x01;
 							v51 &= v53;
@@ -25037,15 +25129,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 							if (v54)
 							{
 								v51.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v51;
+								g_t140048.u5 = (struct Eq_n *) v51;
 								v51.u0 = 0x0196;
 								v53.u0 = 20332;
 								v57 = 14946;
 								v51 = invoke_iii(v51, v53, v57);
-								v51.u3 = g_t140048.u3;
+								&v51.u5->t0000.u0 = g_t140048.u5;
 								loc18 = v51;
 								v51.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v51;
+								g_t140048.u5 = (struct Eq_n *) v51;
 								v51 = loc18;
 								v53.u0 = 0x01;
 								v51 &= v53;
@@ -25055,15 +25147,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 								if (v54)
 								{
 									v51.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v51;
+									g_t140048.u5 = (struct Eq_n *) v51;
 									v51.u0 = 0x0196;
 									v53.u0 = 20344;
 									v57 = 0x3A69;
 									v51 = invoke_iii(v51, v53, v57);
-									v51.u3 = g_t140048.u3;
+									&v51.u5->t0000.u0 = g_t140048.u5;
 									loc20 = v51;
 									v51.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v51;
+									g_t140048.u5 = (struct Eq_n *) v51;
 									v51 = loc20;
 									v53.u0 = 0x01;
 									v51 &= v53;
@@ -25073,15 +25165,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 									if (v54)
 									{
 										v51.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v51;
+										g_t140048.u5 = (struct Eq_n *) v51;
 										v51.u0 = 0x0196;
 										v53.u0 = 0x4F84;
 										v57 = 0x3A72;
 										v51 = invoke_iii(v51, v53, v57);
-										v51.u3 = g_t140048.u3;
+										&v51.u5->t0000.u0 = g_t140048.u5;
 										loc22 = v51;
 										v51.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v51;
+										g_t140048.u5 = (struct Eq_n *) v51;
 										v51 = loc22;
 										v53.u0 = 0x01;
 										v51 &= v53;
@@ -25091,15 +25183,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 										if (v54)
 										{
 											v51.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v51;
+											g_t140048.u5 = (struct Eq_n *) v51;
 											v51.u0 = 0x0196;
 											v53.u0 = 0x4F90;
 											v57 = 14966;
 											v51 = invoke_iii(v51, v53, v57);
-											v51.u3 = g_t140048.u3;
+											&v51.u5->t0000.u0 = g_t140048.u5;
 											loc25 = v51;
 											v51.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v51;
+											g_t140048.u5 = (struct Eq_n *) v51;
 											v51 = loc25;
 											v53.u0 = 0x01;
 											v51 &= v53;
@@ -25109,15 +25201,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 											if (v54)
 											{
 												v51.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v51;
+												g_t140048.u5 = (struct Eq_n *) v51;
 												v51.u0 = 0x0196;
 												v53.u0 = 20380;
 												v57 = 0x3A7A;
 												v51 = invoke_iii(v51, v53, v57);
-												v51.u3 = g_t140048.u3;
+												&v51.u5->t0000.u0 = g_t140048.u5;
 												loc27 = v51;
 												v51.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v51;
+												g_t140048.u5 = (struct Eq_n *) v51;
 												v51 = loc27;
 												v53.u0 = 0x01;
 												v51 &= v53;
@@ -25127,15 +25219,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 												if (v54)
 												{
 													v51.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v51;
+													g_t140048.u5 = (struct Eq_n *) v51;
 													v51.u0 = 0x0196;
 													v53.u0 = 20392;
 													v57 = 14974;
 													v51 = invoke_iii(v51, v53, v57);
-													v51.u3 = g_t140048.u3;
+													&v51.u5->t0000.u0 = g_t140048.u5;
 													loc29 = v51;
 													v51.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v51;
+													g_t140048.u5 = (struct Eq_n *) v51;
 													v51 = loc29;
 													v53.u0 = 0x01;
 													v51 &= v53;
@@ -25145,15 +25237,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 													if (v54)
 													{
 														v51.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v51;
+														g_t140048.u5 = (struct Eq_n *) v51;
 														v51.u0 = 0x0196;
 														v53.u0 = 20404;
 														v57 = 0x3A82;
 														v51 = invoke_iii(v51, v53, v57);
-														v51.u3 = g_t140048.u3;
+														&v51.u5->t0000.u0 = g_t140048.u5;
 														loc31 = v51;
 														v51.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v51;
+														g_t140048.u5 = (struct Eq_n *) v51;
 														v51 = loc31;
 														v53.u0 = 0x01;
 														v51 &= v53;
@@ -25163,15 +25255,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 														if (v54)
 														{
 															v51.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v51;
+															g_t140048.u5 = (struct Eq_n *) v51;
 															v51.u0 = 0x0196;
 															v53.u0 = 0x4FC0;
 															v57 = 0x3A86;
 															v51 = invoke_iii(v51, v53, v57);
-															v51.u3 = g_t140048.u3;
+															&v51.u5->t0000.u0 = g_t140048.u5;
 															loc33 = v51;
 															v51.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v51;
+															g_t140048.u5 = (struct Eq_n *) v51;
 															v51 = loc33;
 															v53.u0 = 0x01;
 															v51 &= v53;
@@ -25181,15 +25273,15 @@ Eq_n fn000FF5D5(Eq_n arg0)
 															if (v54)
 															{
 																v51.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v51;
+																g_t140048.u5 = (struct Eq_n *) v51;
 																v51.u0 = 0x0196;
 																v53.u0 = 0x4FCC;
 																v57 = 0x3A8A;
 																v51 = invoke_iii(v51, v53, v57);
-																v51.u3 = g_t140048.u3;
+																&v51.u5->t0000.u0 = g_t140048.u5;
 																loc36 = v51;
 																v51.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v51;
+																g_t140048.u5 = (struct Eq_n *) v51;
 																v51 = loc36;
 																v53.u0 = 0x01;
 																v51 &= v53;
@@ -25218,7 +25310,7 @@ Eq_n fn000FF5D5(Eq_n arg0)
 			}
 			v51 = ___cxa_find_matching_catch_n();
 			loc39 = v51;
-			v51.u3 = g_t140094.u3;
+			&v51.u5->t0000.u0 = g_t140094.u5;
 			loc40 = v51;
 			v51 = loc39;
 			___resumeException(v51);
@@ -25235,11 +25327,11 @@ l000FF8F5:
 // 000FF904: Stack Eq_n fn000FF904(Stack Eq_n arg0)
 Eq_n fn000FF904(Eq_n arg0)
 {
-	v71.u3 = g_t140030.u3;
+	&v71.u5->t0000.u0 = g_t140030.u5;
 	loc68 = v71;
 	v71.u0 = 0x43C8;
 	v72 = *v71.u0;
-	v71.u3 = (word32) v72;
+	&v71.u5->t0000.u0 = (word32) v72;
 	loc2 = v71;
 	v71 = loc2;
 	v73.u0 = 0x18;
@@ -25275,7 +25367,7 @@ l000FFDB5:
 	}
 	v71.u0 = 0x43D0;
 	v75 = *v71.u0;
-	v71.u3 = (word32) v75;
+	&v71.u5->t0000.u0 = (word32) v75;
 	loc46 = v71;
 	v71 = loc46;
 	v73.u0 = 0x18;
@@ -25359,15 +25451,15 @@ l000FFDB5:
 		}
 	}
 	v71.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v71;
+	g_t140048.u5 = (struct Eq_n *) v71;
 	v71.u0 = 0x0196;
 	v73.u0 = 0x4E0C;
 	v77 = 14775;
 	v71 = invoke_iii(v71, v73, v77);
-	v71.u3 = g_t140048.u3;
+	&v71.u5->t0000.u0 = g_t140048.u5;
 	loc7 = v71;
 	v71.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v71;
+	g_t140048.u5 = (struct Eq_n *) v71;
 	v71 = loc7;
 	v73.u0 = 0x01;
 	v71 &= v73;
@@ -25377,15 +25469,15 @@ l000FFDB5:
 	if (v74)
 	{
 		v71.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v71;
+		g_t140048.u5 = (struct Eq_n *) v71;
 		v71.u0 = 0x0196;
 		v73.u0 = 19992;
 		v77 = 0x39BF;
 		v71 = invoke_iii(v71, v73, v77);
-		v71.u3 = g_t140048.u3;
+		&v71.u5->t0000.u0 = g_t140048.u5;
 		loc9 = v71;
 		v71.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v71;
+		g_t140048.u5 = (struct Eq_n *) v71;
 		v71 = loc9;
 		v73.u0 = 0x01;
 		v71 &= v73;
@@ -25395,15 +25487,15 @@ l000FFDB5:
 		if (v74)
 		{
 			v71.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v71;
+			g_t140048.u5 = (struct Eq_n *) v71;
 			v71.u0 = 0x0196;
 			v73.u0 = 20004;
 			v77 = 0x39C8;
 			v71 = invoke_iii(v71, v73, v77);
-			v71.u3 = g_t140048.u3;
+			&v71.u5->t0000.u0 = g_t140048.u5;
 			loc11 = v71;
 			v71.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v71;
+			g_t140048.u5 = (struct Eq_n *) v71;
 			v71 = loc11;
 			v73.u0 = 0x01;
 			v71 &= v73;
@@ -25413,15 +25505,15 @@ l000FFDB5:
 			if (v74)
 			{
 				v71.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v71;
+				g_t140048.u5 = (struct Eq_n *) v71;
 				v71.u0 = 0x0196;
 				v73.u0 = 0x4E30;
 				v77 = 0x39CE;
 				v71 = invoke_iii(v71, v73, v77);
-				v71.u3 = g_t140048.u3;
+				&v71.u5->t0000.u0 = g_t140048.u5;
 				loc14 = v71;
 				v71.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v71;
+				g_t140048.u5 = (struct Eq_n *) v71;
 				v71 = loc14;
 				v73.u0 = 0x01;
 				v71 &= v73;
@@ -25431,15 +25523,15 @@ l000FFDB5:
 				if (v74)
 				{
 					v71.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v71;
+					g_t140048.u5 = (struct Eq_n *) v71;
 					v71.u0 = 0x0196;
 					v73.u0 = 20028;
 					v77 = 14804;
 					v71 = invoke_iii(v71, v73, v77);
-					v71.u3 = g_t140048.u3;
+					&v71.u5->t0000.u0 = g_t140048.u5;
 					loc16 = v71;
 					v71.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v71;
+					g_t140048.u5 = (struct Eq_n *) v71;
 					v71 = loc16;
 					v73.u0 = 0x01;
 					v71 &= v73;
@@ -25449,15 +25541,15 @@ l000FFDB5:
 					if (v74)
 					{
 						v71.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v71;
+						g_t140048.u5 = (struct Eq_n *) v71;
 						v71.u0 = 0x0196;
 						v73.u0 = 20040;
 						v77 = 14808;
 						v71 = invoke_iii(v71, v73, v77);
-						v71.u3 = g_t140048.u3;
+						&v71.u5->t0000.u0 = g_t140048.u5;
 						loc18 = v71;
 						v71.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v71;
+						g_t140048.u5 = (struct Eq_n *) v71;
 						v71 = loc18;
 						v73.u0 = 0x01;
 						v71 &= v73;
@@ -25467,15 +25559,15 @@ l000FFDB5:
 						if (v74)
 						{
 							v71.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v71;
+							g_t140048.u5 = (struct Eq_n *) v71;
 							v71.u0 = 0x0196;
 							v73.u0 = 20052;
 							v77 = 0x39DD;
 							v71 = invoke_iii(v71, v73, v77);
-							v71.u3 = g_t140048.u3;
+							&v71.u5->t0000.u0 = g_t140048.u5;
 							loc20 = v71;
 							v71.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v71;
+							g_t140048.u5 = (struct Eq_n *) v71;
 							v71 = loc20;
 							v73.u0 = 0x01;
 							v71 &= v73;
@@ -25485,15 +25577,15 @@ l000FFDB5:
 							if (v74)
 							{
 								v71.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v71;
+								g_t140048.u5 = (struct Eq_n *) v71;
 								v71.u0 = 0x0196;
 								v73.u0 = 0x4E60;
 								v77 = 14818;
 								v71 = invoke_iii(v71, v73, v77);
-								v71.u3 = g_t140048.u3;
+								&v71.u5->t0000.u0 = g_t140048.u5;
 								loc22 = v71;
 								v71.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v71;
+								g_t140048.u5 = (struct Eq_n *) v71;
 								v71 = loc22;
 								v73.u0 = 0x01;
 								v71 &= v73;
@@ -25503,15 +25595,15 @@ l000FFDB5:
 								if (v74)
 								{
 									v71.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v71;
+									g_t140048.u5 = (struct Eq_n *) v71;
 									v71.u0 = 0x0196;
 									v73.u0 = 20076;
 									v77 = 0x39E9;
 									v71 = invoke_iii(v71, v73, v77);
-									v71.u3 = g_t140048.u3;
+									&v71.u5->t0000.u0 = g_t140048.u5;
 									loc25 = v71;
 									v71.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v71;
+									g_t140048.u5 = (struct Eq_n *) v71;
 									v71 = loc25;
 									v73.u0 = 0x01;
 									v71 &= v73;
@@ -25521,15 +25613,15 @@ l000FFDB5:
 									if (v74)
 									{
 										v71.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v71;
+										g_t140048.u5 = (struct Eq_n *) v71;
 										v71.u0 = 0x0196;
 										v73.u0 = 20088;
 										v77 = 0x39F3;
 										v71 = invoke_iii(v71, v73, v77);
-										v71.u3 = g_t140048.u3;
+										&v71.u5->t0000.u0 = g_t140048.u5;
 										loc27 = v71;
 										v71.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v71;
+										g_t140048.u5 = (struct Eq_n *) v71;
 										v71 = loc27;
 										v73.u0 = 0x01;
 										v71 &= v73;
@@ -25539,15 +25631,15 @@ l000FFDB5:
 										if (v74)
 										{
 											v71.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v71;
+											g_t140048.u5 = (struct Eq_n *) v71;
 											v71.u0 = 0x0196;
 											v73.u0 = 20100;
 											v77 = 14843;
 											v71 = invoke_iii(v71, v73, v77);
-											v71.u3 = g_t140048.u3;
+											&v71.u5->t0000.u0 = g_t140048.u5;
 											loc29 = v71;
 											v71.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v71;
+											g_t140048.u5 = (struct Eq_n *) v71;
 											v71 = loc29;
 											v73.u0 = 0x01;
 											v71 &= v73;
@@ -25557,15 +25649,15 @@ l000FFDB5:
 											if (v74)
 											{
 												v71.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v71;
+												g_t140048.u5 = (struct Eq_n *) v71;
 												v71.u0 = 0x0196;
 												v73.u0 = 20112;
 												v77 = 0x3A04;
 												v71 = invoke_iii(v71, v73, v77);
-												v71.u3 = g_t140048.u3;
+												&v71.u5->t0000.u0 = g_t140048.u5;
 												loc31 = v71;
 												v71.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v71;
+												g_t140048.u5 = (struct Eq_n *) v71;
 												v71 = loc31;
 												v73.u0 = 0x01;
 												v71 &= v73;
@@ -25575,15 +25667,15 @@ l000FFDB5:
 												if (v74)
 												{
 													v71.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v71;
+													g_t140048.u5 = (struct Eq_n *) v71;
 													v71.u0 = 0x0196;
 													v73.u0 = 20124;
 													v77 = 0x3A0D;
 													v71 = invoke_iii(v71, v73, v77);
-													v71.u3 = g_t140048.u3;
+													&v71.u5->t0000.u0 = g_t140048.u5;
 													loc33 = v71;
 													v71.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v71;
+													g_t140048.u5 = (struct Eq_n *) v71;
 													v71 = loc33;
 													v73.u0 = 0x01;
 													v71 &= v73;
@@ -25593,15 +25685,15 @@ l000FFDB5:
 													if (v74)
 													{
 														v71.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v71;
+														g_t140048.u5 = (struct Eq_n *) v71;
 														v71.u0 = 0x0196;
 														v73.u0 = 0x4EA8;
 														v77 = 0x3A11;
 														v71 = invoke_iii(v71, v73, v77);
-														v71.u3 = g_t140048.u3;
+														&v71.u5->t0000.u0 = g_t140048.u5;
 														loc36 = v71;
 														v71.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v71;
+														g_t140048.u5 = (struct Eq_n *) v71;
 														v71 = loc36;
 														v73.u0 = 0x01;
 														v71 &= v73;
@@ -25611,15 +25703,15 @@ l000FFDB5:
 														if (v74)
 														{
 															v71.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v71;
+															g_t140048.u5 = (struct Eq_n *) v71;
 															v71.u0 = 0x0196;
 															v73.u0 = 0x4EB4;
 															v77 = 0x3A15;
 															v71 = invoke_iii(v71, v73, v77);
-															v71.u3 = g_t140048.u3;
+															&v71.u5->t0000.u0 = g_t140048.u5;
 															loc38 = v71;
 															v71.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v71;
+															g_t140048.u5 = (struct Eq_n *) v71;
 															v71 = loc38;
 															v73.u0 = 0x01;
 															v71 &= v73;
@@ -25629,15 +25721,15 @@ l000FFDB5:
 															if (v74)
 															{
 																v71.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v71;
+																g_t140048.u5 = (struct Eq_n *) v71;
 																v71.u0 = 0x0196;
 																v73.u0 = 0x4EC0;
 																v77 = 0x3A19;
 																v71 = invoke_iii(v71, v73, v77);
-																v71.u3 = g_t140048.u3;
+																&v71.u5->t0000.u0 = g_t140048.u5;
 																loc40 = v71;
 																v71.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v71;
+																g_t140048.u5 = (struct Eq_n *) v71;
 																v71 = loc40;
 																v73.u0 = 0x01;
 																v71 &= v73;
@@ -25646,15 +25738,15 @@ l000FFDB5:
 																if (!v71)
 																{
 																	v71.u0 = 0x00;
-																	g_t140048.u3 = (word32 *) v71;
+																	g_t140048.u5 = (struct Eq_n *) v71;
 																	v71.u0 = 0x0196;
 																	v73.u0 = 0x4ECC;
 																	v77 = 14804;
 																	v71 = invoke_iii(v71, v73, v77);
-																	v71.u3 = g_t140048.u3;
+																	&v71.u5->t0000.u0 = g_t140048.u5;
 																	loc42 = v71;
 																	v71.u0 = 0x00;
-																	g_t140048.u3 = (word32 *) v71;
+																	g_t140048.u5 = (struct Eq_n *) v71;
 																	v71 = loc42;
 																	v73.u0 = 0x01;
 																	v71 &= v73;
@@ -25663,15 +25755,15 @@ l000FFDB5:
 																	if (!v71)
 																	{
 																		v71.u0 = 0x00;
-																		g_t140048.u3 = (word32 *) v71;
+																		g_t140048.u5 = (struct Eq_n *) v71;
 																		v71.u0 = 0x0196;
 																		v73.u0 = 0x4ED8;
 																		v77 = 14877;
 																		v71 = invoke_iii(v71, v73, v77);
-																		v71.u3 = g_t140048.u3;
+																		&v71.u5->t0000.u0 = g_t140048.u5;
 																		loc44 = v71;
 																		v71.u0 = 0x00;
-																		g_t140048.u3 = (word32 *) v71;
+																		g_t140048.u5 = (struct Eq_n *) v71;
 																		v71 = loc44;
 																		v73.u0 = 0x01;
 																		v71 &= v73;
@@ -25680,15 +25772,15 @@ l000FFDB5:
 																		if (!v71)
 																		{
 																			v71.u0 = 0x00;
-																			g_t140048.u3 = (word32 *) v71;
+																			g_t140048.u5 = (struct Eq_n *) v71;
 																			v71.u0 = 0x0196;
 																			v73.u0 = 0x4EE4;
 																			v77 = 14881;
 																			v71 = invoke_iii(v71, v73, v77);
-																			v71.u3 = g_t140048.u3;
+																			&v71.u5->t0000.u0 = g_t140048.u5;
 																			loc47 = v71;
 																			v71.u0 = 0x00;
-																			g_t140048.u3 = (word32 *) v71;
+																			g_t140048.u5 = (struct Eq_n *) v71;
 																			v71 = loc47;
 																			v73.u0 = 0x01;
 																			v71 &= v73;
@@ -25697,15 +25789,15 @@ l000FFDB5:
 																			if (!v71)
 																			{
 																				v71.u0 = 0x00;
-																				g_t140048.u3 = (word32 *) v71;
+																				g_t140048.u5 = (struct Eq_n *) v71;
 																				v71.u0 = 0x0196;
 																				v73.u0 = 20208;
 																				v77 = 14885;
 																				v71 = invoke_iii(v71, v73, v77);
-																				v71.u3 = g_t140048.u3;
+																				&v71.u5->t0000.u0 = g_t140048.u5;
 																				loc49 = v71;
 																				v71.u0 = 0x00;
-																				g_t140048.u3 = (word32 *) v71;
+																				g_t140048.u5 = (struct Eq_n *) v71;
 																				v71 = loc49;
 																				v73.u0 = 0x01;
 																				v71 &= v73;
@@ -25714,15 +25806,15 @@ l000FFDB5:
 																				if (!v71)
 																				{
 																					v71.u0 = 0x00;
-																					g_t140048.u3 = (word32 *) v71;
+																					g_t140048.u5 = (struct Eq_n *) v71;
 																					v71.u0 = 0x0196;
 																					v73.u0 = 20220;
 																					v77 = 14889;
 																					v71 = invoke_iii(v71, v73, v77);
-																					v71.u3 = g_t140048.u3;
+																					&v71.u5->t0000.u0 = g_t140048.u5;
 																					loc51 = v71;
 																					v71.u0 = 0x00;
-																					g_t140048.u3 = (word32 *) v71;
+																					g_t140048.u5 = (struct Eq_n *) v71;
 																					v71 = loc51;
 																					v73.u0 = 0x01;
 																					v71 &= v73;
@@ -25731,15 +25823,15 @@ l000FFDB5:
 																					if (!v71)
 																					{
 																						v71.u0 = 0x00;
-																						g_t140048.u3 = (word32 *) v71;
+																						g_t140048.u5 = (struct Eq_n *) v71;
 																						v71.u0 = 0x0196;
 																						v73.u0 = 20232;
 																						v77 = 0x3A2D;
 																						v71 = invoke_iii(v71, v73, v77);
-																						v71.u3 = g_t140048.u3;
+																						&v71.u5->t0000.u0 = g_t140048.u5;
 																						loc53 = v71;
 																						v71.u0 = 0x00;
-																						g_t140048.u3 = (word32 *) v71;
+																						g_t140048.u5 = (struct Eq_n *) v71;
 																						v71 = loc53;
 																						v73.u0 = 0x01;
 																						v71 &= v73;
@@ -25748,15 +25840,15 @@ l000FFDB5:
 																						if (!v71)
 																						{
 																							v71.u0 = 0x00;
-																							g_t140048.u3 = (word32 *) v71;
+																							g_t140048.u5 = (struct Eq_n *) v71;
 																							v71.u0 = 0x0196;
 																							v73.u0 = 20244;
 																							v77 = 0x3A31;
 																							v71 = invoke_iii(v71, v73, v77);
-																							v71.u3 = g_t140048.u3;
+																							&v71.u5->t0000.u0 = g_t140048.u5;
 																							loc55 = v71;
 																							v71.u0 = 0x00;
-																							g_t140048.u3 = (word32 *) v71;
+																							g_t140048.u5 = (struct Eq_n *) v71;
 																							v71 = loc55;
 																							v73.u0 = 0x01;
 																							v71 &= v73;
@@ -25765,15 +25857,15 @@ l000FFDB5:
 																							if (!v71)
 																							{
 																								v71.u0 = 0x00;
-																								g_t140048.u3 = (word32 *) v71;
+																								g_t140048.u5 = (struct Eq_n *) v71;
 																								v71.u0 = 0x0196;
 																								v73.u0 = 0x4F20;
 																								v77 = 0x3A35;
 																								v71 = invoke_iii(v71, v73, v77);
-																								v71.u3 = g_t140048.u3;
+																								&v71.u5->t0000.u0 = g_t140048.u5;
 																								loc58 = v71;
 																								v71.u0 = 0x00;
-																								g_t140048.u3 = (word32 *) v71;
+																								g_t140048.u5 = (struct Eq_n *) v71;
 																								v71 = loc58;
 																								v73.u0 = 0x01;
 																								v71 &= v73;
@@ -25813,7 +25905,7 @@ l000FFDB5:
 l000FFDA7:
 	v71 = ___cxa_find_matching_catch_n();
 	loc61 = v71;
-	v71.u3 = g_t140094.u3;
+	&v71.u5->t0000.u0 = g_t140094.u5;
 	loc62 = v71;
 	v71 = loc61;
 	___resumeException(v71);
@@ -25823,11 +25915,11 @@ l000FFDA7:
 // 000FFDC5: Stack Eq_n fn000FFDC5(Stack Eq_n arg0)
 Eq_n fn000FFDC5(Eq_n arg0)
 {
-	v27.u3 = g_t140030.u3;
+	&v27.u5->t0000.u0 = g_t140030.u5;
 	loc24 = v27;
 	v27.u0 = 17336;
 	v28 = *v27.u0;
-	v27.u3 = (word32) v28;
+	&v27.u5->t0000.u0 = (word32) v28;
 	loc2 = v27;
 	v27 = loc2;
 	v29.u0 = 0x18;
@@ -25853,7 +25945,7 @@ Eq_n fn000FFDC5(Eq_n arg0)
 		{
 			v27.u0 = 0x43C0;
 			v31 = *v27.u0;
-			v27.u3 = (word32) v31;
+			&v27.u5->t0000.u0 = (word32) v31;
 			loc17 = v27;
 			v27 = loc17;
 			v29.u0 = 0x18;
@@ -25937,15 +26029,15 @@ Eq_n fn000FFDC5(Eq_n arg0)
 				}
 			}
 			v27.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v27;
+			g_t140048.u5 = (struct Eq_n *) v27;
 			v27.u0 = 0x0196;
 			v29.u0 = 19688;
 			v33 = 0x39B1;
 			v27 = invoke_iii(v27, v29, v33);
-			v27.u3 = g_t140048.u3;
+			&v27.u5->t0000.u0 = g_t140048.u5;
 			loc7 = v27;
 			v27.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v27;
+			g_t140048.u5 = (struct Eq_n *) v27;
 			v27 = loc7;
 			v29.u0 = 0x01;
 			v27 &= v29;
@@ -25955,15 +26047,15 @@ Eq_n fn000FFDC5(Eq_n arg0)
 			if (v30)
 			{
 				v27.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v27;
+				g_t140048.u5 = (struct Eq_n *) v27;
 				v27.u0 = 0x0196;
 				v29.u0 = 0x4CF4;
 				v33 = 14772;
 				v27 = invoke_iii(v27, v29, v33);
-				v27.u3 = g_t140048.u3;
+				&v27.u5->t0000.u0 = g_t140048.u5;
 				loc9 = v27;
 				v27.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v27;
+				g_t140048.u5 = (struct Eq_n *) v27;
 				v27 = loc9;
 				v29.u0 = 0x01;
 				v27 &= v29;
@@ -25980,7 +26072,7 @@ Eq_n fn000FFDC5(Eq_n arg0)
 			}
 			v27 = ___cxa_find_matching_catch_n();
 			loc12 = v27;
-			v27.u3 = g_t140094.u3;
+			&v27.u5->t0000.u0 = g_t140094.u5;
 			loc14 = v27;
 			v27 = loc12;
 			___resumeException(v27);
@@ -25997,11 +26089,11 @@ l000FFF11:
 // 000FFF20: Stack Eq_n fn000FFF20(Stack Eq_n arg0)
 Eq_n fn000FFF20(Eq_n arg0)
 {
-	v13.u3 = g_t140030.u3;
+	&v13.u5->t0000.u0 = g_t140030.u5;
 	loc10 = v13;
 	v13.u0 = 0x43B0;
 	v14 = *v13.u0;
-	v13.u3 = (word32) v14;
+	&v13.u5->t0000.u0 = (word32) v14;
 	loc1 = v13;
 	v13 = loc1;
 	v15.u0 = 0x18;
@@ -26034,16 +26126,16 @@ Eq_n fn000FFF20(Eq_n arg0)
 			v15.u0 = 0x00;
 			*v13.u0 = v15;
 			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
+			g_t140048.u5 = (struct Eq_n *) v13;
 			v13.u0 = 0x0199;
 			v15.u0 = 0x4CDC;
 			v18 = 0x399C;
 			v19 = 0x14;
 			invoke_viii(v13, v15, v18, v19);
-			v13.u3 = g_t140048.u3;
+			&v13.u5->t0000.u0 = g_t140048.u5;
 			loc5 = v13;
 			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
+			g_t140048.u5 = (struct Eq_n *) v13;
 			v13 = loc5;
 			v15.u0 = 0x01;
 			v13 &= v15;
@@ -26059,7 +26151,7 @@ Eq_n fn000FFF20(Eq_n arg0)
 			}
 			v13 = ___cxa_find_matching_catch_n();
 			loc7 = v13;
-			v13.u3 = g_t140094.u3;
+			&v13.u5->t0000.u0 = g_t140094.u5;
 			loc8 = v13;
 			v13 = loc7;
 			___resumeException(v13);
@@ -26073,11 +26165,11 @@ l000FFFB0:
 // 000FFFB8: Stack Eq_n fn000FFFB8(Stack Eq_n arg0)
 Eq_n fn000FFFB8(Eq_n arg0)
 {
-	v13.u3 = g_t140030.u3;
+	&v13.u5->t0000.u0 = g_t140030.u5;
 	loc10 = v13;
 	v13.u0 = 0x43A8;
 	v14 = *v13.u0;
-	v13.u3 = (word32) v14;
+	&v13.u5->t0000.u0 = (word32) v14;
 	loc1 = v13;
 	v13 = loc1;
 	v15.u0 = 0x18;
@@ -26110,16 +26202,16 @@ Eq_n fn000FFFB8(Eq_n arg0)
 			v15.u0 = 0x00;
 			*v13.u0 = v15;
 			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
+			g_t140048.u5 = (struct Eq_n *) v13;
 			v13.u0 = 0x0199;
 			v15.u0 = 0x4CD0;
 			v18 = 0x3990;
 			v19 = 11;
 			invoke_viii(v13, v15, v18, v19);
-			v13.u3 = g_t140048.u3;
+			&v13.u5->t0000.u0 = g_t140048.u5;
 			loc5 = v13;
 			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
+			g_t140048.u5 = (struct Eq_n *) v13;
 			v13 = loc5;
 			v15.u0 = 0x01;
 			v13 &= v15;
@@ -26135,7 +26227,7 @@ Eq_n fn000FFFB8(Eq_n arg0)
 			}
 			v13 = ___cxa_find_matching_catch_n();
 			loc7 = v13;
-			v13.u3 = g_t140094.u3;
+			&v13.u5->t0000.u0 = g_t140094.u5;
 			loc8 = v13;
 			v13 = loc7;
 			___resumeException(v13);

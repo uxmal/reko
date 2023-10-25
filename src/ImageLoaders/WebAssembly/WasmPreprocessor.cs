@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
@@ -51,6 +52,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             var segmentMap = BuildSegmentMap(wasmFile.Sections);
             var program = new Program(segmentMap, arch, platform);
+            program.NeedsScanning = false;
             GenerateProcedures(program);
             return program;
         }
@@ -69,25 +71,60 @@ namespace Reko.ImageLoaders.WebAssembly
                     var proc = procBuilder.GenerateProcedure();
                     program.Procedures.Add(proc.EntryAddress, proc);
                     program.CallGraph.AddProcedure(proc);
+                    PopulateImageMap(proc, program.ImageMap);
                 } 
                 catch
                 {
 
                 }
+
             }
             CreateCallGraph(program);
         }
 
+        private void PopulateImageMap(Procedure proc, ImageMap imageMap)
+        {
+            foreach (var block in proc.ControlGraph.Blocks)
+            {
+                if (block == proc.EntryBlock || block == proc.ExitBlock)
+                    continue;
+                var blockItem = new ImageMapBlock(block.Address)
+                {
+                    Block = block,
+                };
+                imageMap.AddItem(block.Address, blockItem);
+            }
+        }
+
         private void CreateCallGraph(Program program)
         {
+            static Expression? CallTargetOf(Statement stm)
+            {
+                switch (stm.Instruction)
+                {
+                case CallInstruction call:
+                    return call.Callee;
+                case Assignment ass:
+                    if (ass.Src is Application appl)
+                        return appl.Procedure;
+                    break;
+                case SideEffect side:
+                    if (side.Expression is Application appl2)
+                        return appl2.Procedure;
+                    break;
+                }
+                return null;
+            }
+
+                
             foreach (var proc in program.Procedures.Values)
             {
                 foreach (var stm in proc.Statements)
                 {
-                    if (stm.Instruction is CallInstruction call &&
-                        call.Callee is ProcedureConstant pc &&
-                        pc.Procedure is Procedure procCallee)
-                    {
+                    var callTarget = CallTargetOf(stm);
+                    if (callTarget is ProcedureConstant pc &&
+                    pc.Procedure is Procedure procCallee)
+                    { 
                         program.CallGraph.AddEdge(stm, procCallee);
                     }
                 }

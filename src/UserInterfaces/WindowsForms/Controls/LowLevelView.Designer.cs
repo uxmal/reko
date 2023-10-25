@@ -241,7 +241,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             dasmCtrl.Location = new System.Drawing.Point(0, 21);
             dasmCtrl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            dasmCtrl.Model = emptyEditorModel1;
             dasmCtrl.Name = "dasmCtrl";
             dasmCtrl.Program = null;
             dasmCtrl.SelectedObject = null;

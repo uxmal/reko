@@ -5,6 +5,8 @@
 #include "nbody.h"
 
 // 000E0000: void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2)
+// Called from:
+//      _run
 void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 {
 	if (arg0 <= 0x00)
@@ -172,6 +174,8 @@ real64 _run(int32 arg0)
 }
 
 // 000E076E: void runPostSets()
+// Called from:
+//      __post_instantiate
 void runPostSets()
 {
 }

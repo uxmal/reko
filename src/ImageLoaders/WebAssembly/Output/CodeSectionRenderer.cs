@@ -28,10 +28,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 
 namespace Reko.ImageLoaders.WebAssembly.Output
 {
+    /// <summary>
+    /// Renders WASM code sections.
+    /// </summary>
     public class CodeSectionRenderer : ImageSegmentRenderer
     {
         private readonly WasmArchitecture arch;

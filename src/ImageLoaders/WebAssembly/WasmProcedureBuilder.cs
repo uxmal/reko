@@ -279,7 +279,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 default:
                     EmitUnitTest(dasm, rdr);
-                    Console.WriteLine($"Unhandled mnemonic {instr.Mnemonic}.");
+                    Console.WriteLine($"Unhandled Wasm mnemonic {instr.Mnemonic}.");
                     return;
                 }
             }

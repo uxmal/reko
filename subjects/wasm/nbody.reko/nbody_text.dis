@@ -1,6 +1,8 @@
 void _advance(word32 arg0, word32 arg1, real64 arg2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _run
 // MayUse:  Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..63]
 // LiveOut:
 // Trashed:
@@ -209,6 +211,8 @@ l000E0762:
 void runPostSets()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __post_instantiate
 // MayUse: 
 // LiveOut:
 // Trashed:

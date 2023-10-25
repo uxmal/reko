@@ -30,6 +30,9 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly.Output
 {
+    /// <summary>
+    /// Renders WASM Export sections.
+    /// </summary>
     public class ExportSectionRenderer : ImageSegmentRenderer
     {
         private readonly WasmArchitecture arch;
