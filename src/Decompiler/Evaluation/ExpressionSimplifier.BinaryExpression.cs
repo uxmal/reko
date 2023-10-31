@@ -193,6 +193,28 @@ namespace Reko.Evaluation
                         }
                     }
                     break;
+                case OperatorType.Eq:
+                    // x == false ==> !x
+                    // x == true ==>  x
+                    if (cRight.DataType.BitSize == 1)
+                    {
+                        if (cRight.IsIntegerZero)
+                            return (m.Not(left), true);
+                        else
+                            return (left, true);
+                    }
+                    break;
+                case OperatorType.Ne:
+                    // x != false ==> x
+                    // x != true ==> !x
+                    if (cRight.DataType.BitSize == 1)
+                    {
+                        if (!cRight.IsIntegerZero)
+                            return (m.Not(left), true);
+                        else
+                            return (left, true);
+                    }
+                    break;
                 }
             }
 

@@ -1165,10 +1165,15 @@ namespace Reko.Arch.X86.Rewriter
             var src = SrcOp(1);
             var dst = SrcOp(0);
             var value = EmitBinOp(Operator.Sar, 0, instrCur.dataWidth, dst, src);
-            EmitCcInstr(value, Registers.SCZ);
+
             if (src is Constant c && c.ToInt32() == 1)
             {
+                EmitCcInstr(value, Registers.SCZ);
                 m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+            }
+            else
+            {
+                EmitCcInstr(value, Registers.SCZO);
             }
         }
 

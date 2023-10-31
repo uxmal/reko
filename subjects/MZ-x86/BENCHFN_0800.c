@@ -279,13 +279,14 @@ l0800_nE7:
 l0800_nA3:
 			word16 ax_n;
 			fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
-			bool Z_n = <invalid>;
 			bool C_n = <invalid>;
+			bool Z_n = <invalid>;
+			bool v36_n = C_n;
 			if (!(Z_n | C_n))
 			{
 				do
 				{
-					if (C_n)
+					if (v36_n)
 					{
 						word16 cx_n = ss->*((char *) di_n - 2);
 						struct Eq_n * ds_n = seg0800->ptr0332;
@@ -313,8 +314,9 @@ l0800_nA3:
 						return;
 					}
 					fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
+					bool C_n = <invalid>;
 					bool Z_n = <invalid>;
-					C_n = <invalid>;
+					v36_n = C_n;
 				} while (Z_n | C_n);
 			}
 			byte ah_n = SLICE(ax_n, byte, 8);

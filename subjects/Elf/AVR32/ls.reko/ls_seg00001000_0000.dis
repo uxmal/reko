@@ -4933,7 +4933,7 @@ l000066FA:
 		uses: lr:lr_67,Mem:Mem29,r0:r0_59,r1:r1_60,r10:r7_66,r11:r12_71,r12:r0_59,r2:r2_61,r3:r12_71,r4:r12_71,r5:r5_64,r6:r6_65,r7:r7_66
 		defs: lr:lr_89,r0:r0_81,r1:r1_82,r10:r10_94,r11:r11_90,r12:r12_93,r2:r2_83,r3:r3_84,r4:r4_85,r6:r6_87,r7:r7_88,r9:r9_91,VNZC:VNZC_95
 	word32 r5_104 = r12_93
-	branch SLICE(VNZC_95, bool, 3) l00006722
+	branch SLICE(VNZC_95, bool, 3) & 0xC<8> l00006722
 l00006708:
 	word32 r12_111
 	call Mem29[r6_105 + 28<i32>:word32] (retsize: 0;)
@@ -11378,7 +11378,7 @@ l00009CBC:
 		uses: lr:lr_135,Mem:Mem128,r0:r0_129,r1:r1_123,r10:r10_136,r11:r1_123,r12:r2_125,r2:r2_125,r3:r3_130,r4:r4_131,r5:r5_132,r6:r6_133,r7:r7_134,r8:r8_153,r9:r9_122
 		defs: lr:lr_146,r0:r0_138,r1:r1_139,r10:r10_148,r2:r2_140,r3:r3_141,r4:r4_142,r5:r5_143,r6:r6_144,r7:r7_145,r9:r9_149,sp:sp_137,VNZC:VNZC_152
 	word32 r8_153 = Mem128[sp_120:word32]
-	branch SLICE(VNZC_152, bool, 3) l00009CDC
+	branch SLICE(VNZC_152, bool, 3) & 0xE<8> l00009CDC
 l00009CDC:
 	Mem155[r5_143 + -4<i32>:word32] = r1_113
 	r7_118 = r7_118 + 1<32>
@@ -11420,7 +11420,7 @@ l00009D1E:
 	call Mem220[sp_183 + 4<i32>:word32] (retsize: 0;)
 		uses: lr:lr_232,Mem:Mem220,r0:r0_226,r1:r1_227,r10:r10_233,r11:r2_222,r12:r4_224,r2:r2_222,r3:r3_228,r4:r4_224,r5:r5_229,r6:r6_230,r7:r7_231,r8:r8_249,r9:r9_234
 		defs: lr:lr_244,r0:r0_236,r1:r1_237,r10:r10_246,r2:r2_238,r3:r3_239,r4:r4_240,r5:r5_241,r6:r6_242,r7:r7_243,r8:r8_249,sp:sp_235,VNZC:VNZC_250
-	branch SLICE(VNZC_250, bool, 3) l00009D3A
+	branch SLICE(VNZC_250, bool, 3) & 0xE<8> l00009D3A
 l00009D3A:
 	Mem252[r5_241:word32] = r2_210
 	r7_216 = r7_216 + 1<32>
@@ -11458,7 +11458,7 @@ l00009C5A:
 	call r9 (retsize: 0;)
 		uses: lr:lr,Mem:Mem38,r0:r0,r1:r1,r10:r10,r11:r7_301,r12:v20_298,r2:r2,r3:r12,r4:v20_298,r5:r12 + 4<i32>,r6:r6_32,r7:r7_301,r8:r8_318,r9:r9
 		defs: lr:lr_313,r10:r10_315,r3:r3_308,r4:r4_309,r5:r5_310,r7:r7_312,r8:r8_318,VNZC:VNZC_319
-	branch SLICE(VNZC_319, bool, 3) l00009D62
+	branch SLICE(VNZC_319, bool, 3) & 0xE<8> l00009D62
 l00009C6A:
 	Mem321[r3_308:word32] = r7_312
 	Mem322[r5_310:word32] = r4_309

@@ -353,10 +353,10 @@ l0800_0363:
 l0800_036D:
 	branch cx_225 == 0<16> l0800_036F
 l0800_036D_1:
-	di_31 = di_345 + 1<i16>
+	di_31 = di_347 + 1<i16>
 	cx_225 = cx_225 - 1<16>
-	di_345 = di_31
-	branch Mem9[es_30:di_345:byte] == 0<8> l0800_036D
+	di_347 = di_31
+	branch Mem9[es_30:di_347:byte] == 0<8> l0800_036D
 l0800_036F:
 	byte cl_47 = SLICE(cx_225, byte, 0)
 	byte ch_62 = SLICE(cx_225, byte, 8)
@@ -378,11 +378,12 @@ l0800_0387:
 l0800_03A3:
 	word16 ax_118
 	fn0800_03BF(SEQ(es_11, si_102), SEQ(ss, di_89 + 1<i16>), ax_106, cx_104, out ax_118, out cx_104, out si_102)
-	bool Z_123 = <invalid>
 	bool C_122 = <invalid>
+	bool Z_123 = <invalid>
+	bool v36_263 = C_122
 	branch Z_123 | C_122 l0800_03AF
 l0800_03A8:
-	branch C_122 l0800_03EA
+	branch v36_263 l0800_03EA
 l0800_03EA:
 	word16 cx_133 = Mem92[ss:di_67 - 2<i16>:word16]
 	selector ds_134 = Mem92[0800:0332:selector]
@@ -416,9 +417,10 @@ l0800_0417:
 __setargv_exit:
 l0800_03AA:
 	fn0800_03BF(SEQ(es_11, si_102), SEQ(ss, di_89 + 1<i16>), ax_118, cx_104, out ax_118, out cx_104, out si_102)
+	bool C_207 = <invalid>
 	bool Z_208 = <invalid>
-	C_122 = <invalid>
-	branch Z_208 | C_122 l0800_03A8
+	v36_263 = C_207
+	branch Z_208 | C_207 l0800_03A8
 l0800_03AF:
 	byte ah_234 = SLICE(ax_118, byte, 8)
 	byte al_211 = SLICE(ax_118, byte, 0)

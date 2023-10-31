@@ -1303,5 +1303,16 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("CONVERT(foo_1 != 0<32>, bool, uint32)", exp.ToString());
         }
+
+        [Test]
+        public void Exs_Eq_false()
+        {
+            Given_ExpressionSimplifier();
+            var c = Given_Tmp("c", PrimitiveType.Bool);
+            Expression exp = m.Eq0(c);
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("!c_3", exp.ToString());
+        }
     }
 }

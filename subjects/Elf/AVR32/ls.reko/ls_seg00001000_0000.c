@@ -4299,7 +4299,7 @@ bool fn000066D0(Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, up32 r11, 
 		word32 r2_n;
 		r6_n->ptr0224();
 		byte * r5_n = r12_n;
-		if (!SLICE(VNZC_n, bool, 3))
+		if (!(SLICE(VNZC_n, bool, 3) & 0x0C))
 		{
 			word32 * r12_n;
 			r6_n->ptr001C();
@@ -9961,7 +9961,7 @@ Eq_n fn00009C40(Eq_n r0, Eq_n r1, Eq_n r2, <anonymous> * r9, word32 * r10, uint3
 			word32 r8_n;
 			byte VNZC_n;
 			r9();
-			if (!SLICE(VNZC_n, bool, 3))
+			if (!(SLICE(VNZC_n, bool, 3) & 0x0E))
 			{
 				*r3_n = r7_n;
 				*r5_n = r4_n;
@@ -10013,7 +10013,7 @@ l00009CBC:
 	byte VNZC_n;
 	r9_n();
 	Eq_n r8_n = sp_n->t0000.u4;
-	if (!SLICE(VNZC_n, bool, 3))
+	if (!(SLICE(VNZC_n, bool, 3) & 0x0E))
 	{
 		r5_n->dwFFFFFFFC = r2_n;
 		&r8_n.u7->a0000->u0->u0 = r8_n.u7 + 1;
@@ -10053,7 +10053,7 @@ l00009D1E:
 	word32 r8_n;
 	byte VNZC_n;
 	sp_n->ptr0004();
-	if (!SLICE(VNZC_n, bool, 3))
+	if (!(SLICE(VNZC_n, bool, 3) & 0x0E))
 	{
 		*r5_n = r4_n;
 		++r1_n;

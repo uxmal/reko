@@ -98,7 +98,6 @@ namespace Reko.Analysis
                     try
                     {
                         useStm = u;
-
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
                         useStm.Instruction.Accept(this);
                         trace.Inform("CCE:    now {0}", useStm.Instruction);
@@ -231,6 +230,7 @@ namespace Reko.Analysis
         public Expression UseGrfConditionally(
             SsaIdentifier sid,
             ConditionCode cc,
+            FlagGroupStorage? testedFlags,
             bool forceIdentifier)
         {
             var defs = ClosureOfReachingDefinitions(sid);
@@ -286,15 +286,42 @@ namespace Reko.Analysis
                     }
                     return newCond;
                 case Application _:
-                    return sid.Identifier;
+                    return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
+                case MemoryAccess _:
+                    return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
                 case PhiFunction phi:
                     return InsertNewPhi(sid, cc, phi);
+                case Identifier _:
+                    return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
                 default:
                     throw new NotImplementedException("NYI: e: " + e.ToString());
                 }
             }
             return sid.Identifier;
 		}
+
+        private Expression UseDirectly(
+            SsaIdentifier sid, 
+            ConditionCode cc,
+            FlagGroupStorage? testedFlags,
+            bool forceIdentifier, 
+            bool isNegated)
+        {
+            Expression e = sid.Identifier;
+            if (testedFlags is not null)
+            {
+                e = m.And(e, testedFlags.FlagGroupBits);
+            }
+            if (isNegated)
+            {
+                    e = m.Not(e);
+            }
+            if (forceIdentifier)
+            {
+                e = InsertNewAssignment(e, cc, sid);
+            }
+            return e;
+        }
 
         private bool IsZero(Expression expr)
         {
@@ -323,7 +350,7 @@ namespace Reko.Analysis
             foreach (var arg in phi.Arguments)
             {
                 var sidArg = ssaIds[(Identifier) arg.Value];
-                var id = (Identifier) UseGrfConditionally(sidArg, cc, true);
+                var id = (Identifier) UseGrfConditionally(sidArg, cc, null, true);
                 newArgs.Add(new PhiArgument(arg.Block, id));
             }
 
@@ -391,7 +418,6 @@ namespace Reko.Analysis
                 }
                 return a;
             }
-
             return a;
         }
 
@@ -409,7 +435,7 @@ namespace Reko.Analysis
                 return a;
 
             var oldSid = ssaIds[(Identifier)u];
-            u = UseGrfConditionally(sidGrf, ConditionCode.ULT, false);
+            u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
             if (c != null)
             {
                 binUse.Right = new Conversion(u, u.DataType, c.DataType);
@@ -574,9 +600,10 @@ namespace Reko.Analysis
 
         public override Expression VisitTestCondition(TestCondition tc)
 		{
-			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
+            var id = (Identifier) tc.Expression;
+            SsaIdentifier sid = ssaIds[id];
 			sid.Uses.Remove(useStm!);
-			Expression c = UseGrfConditionally(sid, tc.ConditionCode, false);
+			Expression c = UseGrfConditionally(sid, tc.ConditionCode, id.Storage as FlagGroupStorage, false);
 			Use(c, useStm!);
 			return c;
 		}

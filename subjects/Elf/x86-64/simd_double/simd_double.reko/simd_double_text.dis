@@ -257,12 +257,12 @@ l0000000000000A70:
 	word64 rbp_31 = 0x0000000000200DF0<p64> - 0x0000000000200DE8<p64>
 	branch rbp_31 >> 3<64> == 0<64> l0000000000000AC6
 l0000000000000AA6:
-	word64 rbx_47 = 0<u64>
+	word64 rbx_46 = 0<u64>
 l0000000000000AB0:
-	call Mem26[0x0000000000200DE8<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
+	call Mem26[0x0000000000200DE8<p64> + rbx_46 * 8<64>:word64] (retsize: 8;)
 		uses: Mem:Mem26,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_47 = rbx_47 + 1<64>
-	branch rbp_31 >> 3<64> != rbx_47 l0000000000000AB0
+	rbx_46 = rbx_46 + 1<64>
+	branch rbp_31 >> 3<64> != rbx_46 l0000000000000AB0
 l0000000000000AC6:
 	return
 __libc_csu_init_exit:

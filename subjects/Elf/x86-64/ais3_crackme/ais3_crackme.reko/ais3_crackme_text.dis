@@ -191,12 +191,12 @@ l0000000000400620:
 	word64 rbp_19 = 0x0000000000600E00<p64> - 0x0000000000600DF8<p64>
 	branch rbp_19 >> 3<64> == 0<64> l0000000000400686
 l000000000040066A:
-	word64 rbx_41 = 0<u64>
+	word64 rbx_40 = 0<u64>
 l0000000000400670:
-	call Mem17[0x0000000000600DF8<p64> + rbx_41 * 8<64>:word64] (retsize: 8;)
+	call Mem17[0x0000000000600DF8<p64> + rbx_40 * 8<64>:word64] (retsize: 8;)
 		uses: Mem:Mem17,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_41 = rbx_41 + 1<64>
-	branch rbx_41 != rbp_19 >> 3<64> l0000000000400670
+	rbx_40 = rbx_40 + 1<64>
+	branch rbx_40 != rbp_19 >> 3<64> l0000000000400670
 l0000000000400686:
 	return
 __libc_csu_init_exit:

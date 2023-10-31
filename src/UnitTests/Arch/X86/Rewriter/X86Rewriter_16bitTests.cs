@@ -770,10 +770,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "3|L--|O = false",
                 "4|L--|0C00:0002(2): 2 instructions",
                 "5|L--|bx = bx >> cl",
-                "6|L--|SCZ = cond(bx)",
+                "6|L--|SCZO = cond(bx)",
                 "7|L--|0C00:0004(3): 2 instructions",
                 "8|L--|dx = dx >> 4<16>",
-                "9|L--|SCZ = cond(dx)");
+                "9|L--|SCZO = cond(dx)");
         }
 
         [Test]

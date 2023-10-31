@@ -117,9 +117,15 @@ namespace Reko.Analysis
 
 		public override void VisitDefInstruction(DefInstruction def)
 		{
-		}
-		
-		public override void VisitPhiFunction(PhiFunction phi)
+            defExpr = def.Identifier;
+        }
+
+        public override void VisitMemoryAccess(MemoryAccess access)
+        {
+            defExpr = access;
+        }
+
+        public override void VisitPhiFunction(PhiFunction phi)
 		{
 			defExpr = phi;
 		}

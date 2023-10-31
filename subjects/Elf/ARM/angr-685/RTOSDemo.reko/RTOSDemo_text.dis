@@ -1040,8 +1040,9 @@ l000086FA:
 l00008716:
 	branch r3_10 != 0x196<32> l00008712
 l0000871C:
-	v24_115 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)
-	branch v24_115 l0000876E
+	bool Z_58 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)
+	v24_115 = Z_58
+	branch Z_58 l0000876E
 l0000876E:
 	Mem65[r0 + 52<i32>:word16] = 0x182<u16>
 l0000872C:

@@ -273,9 +273,10 @@ void fn060E(ui8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 {
 	ptr32 fp;
 	bool C;
+	bool C_n = C;
 	do
 	{
-		cu8 a_n = a + ix->bFFFFFFDB + (byte) C;
+		cu8 a_n = a + ix->bFFFFFFDB + (byte) C_n;
 		cu8 a_n = ix->tFFFFFFE0.u0 + ix->bFFFFFFDC + (byte) (a_n < 0x00);
 		byte a_n = ix->bFFFFFFE1 + ix->bFFFFFFDD + (byte) (a_n < 0x00);
 		ix->tFFFFFFFC.u0 = (ui8) (ix->tFFFFFFFC.u0 ^ c);
@@ -286,14 +287,14 @@ void fn060E(ui8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		uint32 h_l_b_c_n = SEQ(ix->bFFFFFFE1, ix->tFFFFFFE0.u0, ix->bFFFFFFDF, ix->tFFFFFFDE.u0);
 		for (a_n = 0x05; a_n != 0x00; --a_n)
 		{
-			uint32 v69_n = h_l_b_c_n >> 1;
-			uint24 v68_n = SLICE(v69_n, uint24, 8);
-			uint16 v67_n = SLICE(v68_n, uint16, 8);
-			byte h_n = SLICE(v67_n, byte, 8);
-			byte l_n = (byte) v67_n;
-			ui8 b_n = (byte) v68_n;
-			uint8 c_n = (byte) v69_n;
-			h_l_b_c_n = v69_n;
+			uint32 v70_n = h_l_b_c_n >> 1;
+			uint24 v69_n = SLICE(v70_n, uint24, 8);
+			uint16 v68_n = SLICE(v69_n, uint16, 8);
+			byte h_n = SLICE(v68_n, byte, 8);
+			byte l_n = (byte) v68_n;
+			ui8 b_n = (byte) v69_n;
+			uint8 c_n = (byte) v70_n;
+			h_l_b_c_n = v70_n;
 		}
 		ui16 a_a_n = SEQ(b_n, c_n) + SEQ(v34_n, ix->bFFFFFFF2);
 		cu8 a_n = SLICE(a_a_n, byte, 8);
@@ -323,7 +324,7 @@ void fn060E(ui8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		ix->bFFFFFFE5 = a_n;
 		c = v49_n + ~0x00;
 		a = a_n | a_n | a_n | v49_n + ~0x00;
-		C = false;
+		C_n = false;
 	} while (a != 0x00);
 	Eq_n hl_n = fp + 0x0C;
 	word16 bc_n;

@@ -12761,14 +12761,14 @@ l0800_8C8A:
 	branch cl >=u 0x10<8> l0800_8CA2
 l0800_8CA2:
 	clOut = cl - 0x10<8>
-	int32 dx_ax_21 = CONVERT(dx, word16, int32)
-	dxOut = SLICE(dx_ax_21, word16, 16)
-	return SLICE(dx_ax_21, word16, 0) >> cl - 0x10<8>
+	int32 dx_ax_20 = CONVERT(dx, word16, int32)
+	dxOut = SLICE(dx_ax_20, word16, 16)
+	return SLICE(dx_ax_20, word16, 0) >> cl - 0x10<8>
 l0800_8C92:
-	byte cl_29 = -cl
-	clOut = cl_29 + 0x10<8>
+	byte cl_28 = -cl
+	clOut = cl_28 + 0x10<8>
 	dxOut = dx >> cl
-	return ax >>u cl | dx << cl_29 + 0x10<8>
+	return ax >>u cl | dx << cl_28 + 0x10<8>
 fn0800_8C8A_exit:
 
 
@@ -16336,23 +16336,22 @@ word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, w
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A817_entry:
-	mp16 fp
 	byte SCZDOP
 l0800_A817:
 	word16 ax_54
 	char * es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg06)
-	word16 cx_32 = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP
+	byte SCZDOP_30 = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP
 	msdos_set_DTA(es_bx_12)
 	word16 ax_36 = SEQ(0x4E<8>, al)
 	word16 dx_40 = SLICE(es_bx_12, word16, 0)
-	branch fp - 6<i16> l0800_A844
+	branch SLICE(SCZDOP_30, bool, 1) l0800_A844
 l0800_A844:
 	ax_54 = fn0800_8D2B(ds, ax_36)
 l0800_A840:
 	ax_54 = 0<16>
 l0800_A848:
-	cxOut = cx_32
+	cxOut = SCZDOP_30
 	dxOut = dx_40
 	return ax_54
 fn0800_A817_exit:
@@ -16368,23 +16367,22 @@ word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A84A_entry:
-	mp16 fp
 	byte SCZDOP
 l0800_A84A:
 	word16 ax_50
 	char * es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg02)
-	word16 cx_28 = msdos_find_next_file() | SCZDOP
+	byte SCZDOP_26 = msdos_find_next_file() | SCZDOP
 	msdos_set_DTA(es_bx_12)
 	word16 ax_32 = SEQ(0x4F<8>, al)
 	word16 dx_36 = SLICE(es_bx_12, word16, 0)
-	branch fp - 6<i16> l0800_A871
+	branch SLICE(SCZDOP_26, bool, 1) l0800_A871
 l0800_A871:
 	ax_50 = fn0800_8D2B(ds, ax_32)
 l0800_A86D:
 	ax_50 = 0<16>
 l0800_A875:
-	cxOut = cx_28
+	cxOut = SCZDOP_26
 	dxOut = dx_36
 	return ax_50
 fn0800_A84A_exit:

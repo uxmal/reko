@@ -265,82 +265,82 @@ l000000000040149A:
 	png_error(rax_78, 0x40199A<u64>)
 l00000000004014AB:
 	png_start_read_image(rax_78)
-	word32 dwLoc68_736 = 0<32>
+	word32 dwLoc68_735 = 0<32>
 l0000000000401673:
-	branch dwLoc68_736 < dwLoc6C l00000000004014C3
+	branch dwLoc68_735 < dwLoc6C l00000000004014C3
 l00000000004014C3:
-	word32 dwLoc5C_743
-	word32 dwLoc58_742
-	word32 dwLoc60_740
-	word32 dwLoc64_741
+	word32 dwLoc5C_742
+	word32 dwLoc58_741
+	word32 dwLoc60_739
+	word32 dwLoc64_740
 	branch dwLoc78 != 1<32> l00000000004015CE
 l00000000004015CE:
-	dwLoc60_740 = 0<32>
-	dwLoc64_741 = 0<32>
-	dwLoc58_742 = 1<32>
-	dwLoc5C_743 = 1<32>
+	dwLoc60_739 = 0<32>
+	dwLoc64_740 = 0<32>
+	dwLoc58_741 = 1<32>
+	dwLoc5C_742 = 1<32>
 l00000000004014CF:
 	word32 eax_309
-	branch dwLoc68_736 <= 1<32> l00000000004014EF
+	branch dwLoc68_735 <= 1<32> l00000000004014EF
 l00000000004014EF:
 	eax_309 = 7<32> (alias)
 l00000000004014D5:
-	eax_309 = (1<32> << SLICE(7<32> - dwLoc68_736 >> 1<32>, byte, 0)) - 1<32> (alias)
+	eax_309 = (1<32> << SLICE(7<32> - dwLoc68_735 >> 1<32>, byte, 0)) - 1<32> (alias)
 l00000000004014F4:
 	word32 eax_377
-	word32 edx_385 = eax_309 - ((dwLoc68_736 & 1<32>) << 3<8> - SLICE(dwLoc68_736 + 1<32> >> 1<32>, byte, 0) & 7<32>) + dwLoc88
-	branch dwLoc68_736 <= 1<32> l0000000000401531
+	word32 edx_385 = eax_309 - ((dwLoc68_735 & 1<32>) << 3<8> - SLICE(dwLoc68_735 + 1<32> >> 1<32>, byte, 0) & 7<32>) + dwLoc88
+	branch dwLoc68_735 <= 1<32> l0000000000401531
 l0000000000401531:
 	eax_377 = 3<32> (alias)
 l0000000000401525:
-	eax_377 = 7<32> - dwLoc68_736 >> 1<32> (alias)
+	eax_377 = 7<32> - dwLoc68_735 >> 1<32> (alias)
 l0000000000401536:
 	branch edx_385 >>u SLICE(eax_377, byte, 0) == 0<32> l000000000040166E
 l000000000040166E:
 l0000000000401544:
-	word32 eax_527
-	dwLoc60_740 = (dwLoc68_736 & 1<32>) << 3<8> - SLICE(dwLoc68_736 + 1<32> >> 1<32>, byte, 0) & 7<32>
-	dwLoc64_741 = CONVERT((dwLoc68_736 & 1<32>) == 0<32>, bool, word32) << 3<8> - SLICE(dwLoc68_736 >> 1<32>, byte, 0) & 7<32>
-	dwLoc58_742 = 1<32> << SLICE(7<32> - dwLoc68_736 >> 1<32>, byte, 0)
-	branch dwLoc68_736 <= 2<32> l00000000004015C4
+	word32 eax_526
+	dwLoc60_739 = (dwLoc68_735 & 1<32>) << 3<8> - SLICE(dwLoc68_735 + 1<32> >> 1<32>, byte, 0) & 7<32>
+	dwLoc64_740 = CONVERT((dwLoc68_735 & 1<32>) == 0<32>, bool, word32) << 3<8> - SLICE(dwLoc68_735 >> 1<32>, byte, 0) & 7<32>
+	dwLoc58_741 = 1<32> << SLICE(7<32> - dwLoc68_735 >> 1<32>, byte, 0)
+	branch dwLoc68_735 <= 2<32> l00000000004015C4
 l00000000004015C4:
-	eax_527 = 8<32> (alias)
+	eax_526 = 8<32> (alias)
 l00000000004015AF:
-	eax_527 = 8<32> >> SLICE(dwLoc68_736 - 1<32> >> 1<32>, byte, 0) (alias)
+	eax_526 = 8<32> >> SLICE(dwLoc68_735 - 1<32> >> 1<32>, byte, 0) (alias)
 l00000000004015C9:
-	dwLoc5C_743 = eax_527
+	dwLoc5C_742 = eax_526
 l00000000004015E8:
-	word32 dwLoc54_754 = dwLoc64_741
+	word32 dwLoc54_753 = dwLoc64_740
 l0000000000401664:
-	branch dwLoc54_754 <u dwLoc84 l00000000004015F0
+	branch dwLoc54_753 <u dwLoc84 l00000000004015F0
 l00000000004015F0:
 	puts(0x4019B6<u64>)
 	png_read_row(rax_157, 0x4019B6<u64>, rax_78, 0<u64>, rax_157)
-	branch CONVERT(dwLoc54_754, word32, uint64) != rax_44 l000000000040165E
+	branch CONVERT(dwLoc54_753, word32, uint64) != rax_44 l000000000040165E
 l000000000040161B:
-	word32 dwLoc50_762 = dwLoc60_740
-	word32 dwLoc4C_763 = 0<32>
+	word32 dwLoc50_761 = dwLoc60_739
+	word32 dwLoc4C_762 = 0<32>
 l0000000000401656:
-	branch dwLoc50_762 <u dwLoc88 l000000000040162A
+	branch dwLoc50_761 <u dwLoc88 l000000000040162A
 l000000000040162A:
-	branch CONVERT(dwLoc50_762, word32, uint64) != rax_36 l000000000040164C
+	branch CONVERT(dwLoc50_761, word32, uint64) != rax_36 l000000000040164C
 l000000000040164C:
-	dwLoc50_762 = dwLoc50_762 + dwLoc58_742
-	dwLoc4C_763 = dwLoc4C_763 + 1<32>
+	dwLoc50_761 = dwLoc50_761 + dwLoc58_741
+	dwLoc4C_762 = dwLoc4C_762 + 1<32>
 l0000000000401633:
-	print_pixel(dwLoc4C_763, rax_157, rax_103, rax_78, fs)
+	print_pixel(dwLoc4C_762, rax_157, rax_103, rax_78, fs)
 l000000000040165E:
-	dwLoc54_754 = dwLoc54_754 + dwLoc5C_743
+	dwLoc54_753 = dwLoc54_753 + dwLoc5C_742
 l000000000040166C:
 l000000000040166F:
-	dwLoc68_736 = dwLoc68_736 + 1<32>
+	dwLoc68_735 = dwLoc68_735 + 1<32>
 l000000000040167F:
 	png_free(rax_78, rax_157, rax_157, 0<64>)
 	png_destroy_info_struct(rax_78, fp - 56<i64>, fp - 56<i64>)
 l00000000004016DE:
 	png_destroy_read_struct(fp - 64<i64>, 0<u64>, 0<u64>)
 l000000000040175D:
-	branch (rax_14 ^ Mem693[fs:0x28<32>:word64]) == 0<64> l0000000000401777
+	branch (rax_14 ^ Mem692[fs:0x28<32>:word64]) == 0<64> l0000000000401777
 l0000000000401777:
 	return
 main_exit:
@@ -363,12 +363,12 @@ l0000000000401780:
 	word64 rbp_31 = 0x0000000000601E08<p64> - 0x0000000000601E00<p64>
 	branch rbp_31 >> 3<64> == 0<64> l00000000004017D6
 l00000000004017B6:
-	word64 rbx_47 = 0<u64>
+	word64 rbx_46 = 0<u64>
 l00000000004017C0:
-	call Mem26[0x0000000000601E00<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
+	call Mem26[0x0000000000601E00<p64> + rbx_46 * 8<64>:word64] (retsize: 8;)
 		uses: Mem:Mem26,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_47 = rbx_47 + 1<64>
-	branch rbx_47 != rbp_31 >> 3<64> l00000000004017C0
+	rbx_46 = rbx_46 + 1<64>
+	branch rbx_46 != rbp_31 >> 3<64> l00000000004017C0
 l00000000004017D6:
 	return
 __libc_csu_init_exit:

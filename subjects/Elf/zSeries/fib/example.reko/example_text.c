@@ -61,7 +61,7 @@ void frame_dummy()
 	ptr64 fp;
 	ci8 * r13_n = &g_b08D8;
 	ptr64 r15_n = fp - 320;
-	Eq_n CC_n = g_b08D8 > g_b1E18;
+	Eq_n v12_n = g_b08D8 > g_b1E18;
 	if (g_b08D8 == g_b1E18)
 	{
 l0000000000000740:
@@ -69,16 +69,20 @@ l0000000000000740:
 		struct Eq_n * v9_n = r15_n + 264;
 		r13_n = v9_n->ptr0000;
 		r15_n = v9_n->ptr0010;
-		if (CC_n)
+		if (v12_n)
 		{
 			register_tm_clones();
 			return;
 		}
 	}
 	<anonymous> * r1_n = g_ptr2048;
-	CC_n = r1_n > null;
+	v12_n = r1_n > null;
 	if (r1_n != null)
+	{
+		Eq_n CC_n;
 		r1_n();
+		v12_n = CC_n;
+	}
 	goto l0000000000000740;
 }
 

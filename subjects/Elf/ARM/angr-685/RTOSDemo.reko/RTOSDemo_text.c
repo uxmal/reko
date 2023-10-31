@@ -853,8 +853,9 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, word32 cpsr)
 		}
 		else if (r3_n != 0x00)
 			return;
-		v24_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, cpsr, out r0_n);
-		if (v24_n)
+		bool Z_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, cpsr, out r0_n);
+		v24_n = Z_n;
+		if (Z_n)
 		{
 			r0->w0034 = 0x0182;
 			return;

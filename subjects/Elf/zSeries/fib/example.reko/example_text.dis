@@ -105,26 +105,28 @@ frame_dummy_entry:
 l0000000000000720:
 	word64 r13_12 = 0x00000000000008D8<p64>
 	word64 r15_13 = fp - 320<i64>
-	byte CC_44 = Mem11[0x00000000000008D8<p64>:byte] > Mem11[0x0000000000001E18<p64>:byte]
+	bool v12_45 = Mem11[0x00000000000008D8<p64>:byte] > Mem11[0x0000000000001E18<p64>:byte]
 	branch Mem11[0x00000000000008D8<p64>:byte] != Mem11[0x0000000000001E18<p64>:byte] l000000000000074C
 l0000000000000740:
 	Mem18 = Mem11 (alias)
 	word64 v9_17 = r15_13 + 264<i64>
 	r13_12 = Mem18[v9_17:word64]
 	r15_13 = Mem18[v9_17 + 16<i64>:word64]
-	branch CC_44 l0000000000000680
+	branch v12_45 l0000000000000680
 l0000000000000746_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 frame_dummy_exit:
 l000000000000074C:
 	word64 r1_32 = Mem11[0x0000000000002048<p64>:word64]
-	CC_44 = r1_32 > 0<64>
+	v12_45 = r1_32 > 0<64>
 	branch r1_32 == 0<64> l0000000000000740
 l0000000000000760:
+	byte CC_44
 	call r1_32 (retsize: 0;)
 		uses: Mem:Mem11,r13:r13_36,r14:0x0000000000000762<p64>
 		defs: CC:CC_44,r15:r15_38
+	v12_45 = CC_44
 
 
 word64 fib(word64 r2, ptr64 & r10Out, ptr64 & r11Out)

@@ -213,6 +213,13 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitTestCondition(TestCondition tc)
         {
             var (e, changed) = tc.Expression.Accept(this);
+            if (e is BinaryExpression {
+                Operator: { Type: OperatorType.Or }, 
+                Right: Constant { DataType: { Domain: Domain.Boolean } } } bin)
+            {
+                e = bin.Left;
+                changed = true;
+            }
             if (changed)
                 tc = new TestCondition(tc.ConditionCode, e);
             return (tc, changed);
