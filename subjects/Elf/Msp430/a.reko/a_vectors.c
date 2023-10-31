@@ -9,6 +9,6 @@ struct Eq_n g_tFFFFFFFF = // FFFF
 		0x40,
 		
 		{
-			?? /* Can't read byte at address FFFD */ 
+			
 		},
 	};

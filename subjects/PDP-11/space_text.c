@@ -112,7 +112,7 @@ Eq_n g_t0028 = // 0028
 	{
 		&g_t5AA2,
 		0x00,
-		?? /* Can't read cui16 at address 0022 */ ,
+		,
 	};
 Eq_n g_t002A = // 002A
 	{
@@ -209,7 +209,7 @@ Eq_n g_t0076 = // 0076
 	{
 		null,
 		0x00,
-		?? /* Can't read cui16 at address 0070 */ ,
+		,
 	};
 Eq_n g_t0077 = // 0077
 	{
@@ -351,7 +351,7 @@ struct Eq_n g_t0202 = // 0202
 	{
 		&g_t1DC3,
 		117,
-		?? /* Can't read cui16 at address 01FC */ ,
+		,
 	};
 Eq_n g_t0215 = // 0215
 	{
@@ -399,13 +399,13 @@ struct Eq_n g_t0280 = // 0280
 	{
 		&g_t0106,
 		0x1F,
-		?? /* Can't read cui16 at address 027A */ ,
+		,
 	};
 Eq_n g_t02F2 = // 02F2
 	{
 		&g_t15B3,
 		~0x4C,
-		?? /* Can't read cui16 at address 02EC */ ,
+		,
 	};
 word16 g_w0303 = 0x0A11; // 0303
 Eq_n g_t0305 = // 0305
@@ -449,7 +449,7 @@ Eq_n g_t030C = // 030C
 	{
 		&g_tFFFF8332,
 		0xB8,
-		?? /* Can't read cui16 at address 0306 */ ,
+		,
 	};
 word16 g_w0315 = 0xB815; // 0315
 word16 g_w034A = 5508; // 034A
@@ -975,7 +975,7 @@ struct Eq_n g_t07EC = // 07EC
 	{
 		&g_t6002,
 		133,
-		?? /* Can't read cui16 at address 07E6 */ ,
+		,
 	};
 // 0818: void fn0818(Register (ptr16 word16) r5)
 void fn0818(word16 * r5)
@@ -1116,7 +1116,7 @@ Eq_n g_t0ABF = // 0ABF
 	{
 		&g_tFFFF800A,
 		0x01,
-		?? /* Can't read cui16 at address 0AB9 */ ,
+		,
 	};
 <anonymous> g_t0AC0 = <code>; // 0AC0
 Eq_n g_t0AC3 = // 0AC3
@@ -2218,7 +2218,7 @@ Eq_n g_t1583 = // 1583
 	{
 		&g_t0A00,
 		~0x01,
-		?? /* Can't read cui16 at address 157D */ ,
+		,
 	};
 word16 g_w1589 = ~0x08FC; // 1589
 <anonymous> g_t15B3 = <code>; // 15B3
@@ -2911,7 +2911,7 @@ Eq_n g_t1F24 = // 1F24
 	{
 		&g_t5464,
 		0x3D,
-		?? /* Can't read cui16 at address 1F1E */ ,
+		,
 	};
 Eq_n g_t1F6E = // 1F6E
 	{
@@ -3096,7 +3096,7 @@ Eq_n g_t241E = // 241E
 	{
 		&g_t1DC0,
 		~0x00,
-		?? /* Can't read cui16 at address 2418 */ ,
+		,
 	};
 // 243A: void fn243A(Register (ptr16 word16) r5)
 void fn243A(word16 * r5)
@@ -3201,7 +3201,7 @@ Eq_n g_t33A2 = // 33A2
 	{
 		&g_t59F0,
 		~0x00,
-		?? /* Can't read cui16 at address 339C */ ,
+		,
 	};
 Eq_n g_t3402 = // 3402
 	{
@@ -3396,7 +3396,7 @@ Eq_n g_t361F = // 361F
 	{
 		&g_t0200,
 		0x00,
-		?? /* Can't read cui16 at address 3619 */ ,
+		,
 	};
 // 395C: void fn395C(Register (ptr16 word16) r5)
 void fn395C(word16 * r5)
@@ -4313,7 +4313,7 @@ Eq_n g_t5800 = // 5800
 word16 g_w5808 = 0x00; // 5808
 Eq_n g_t5854 = // 5854
 	{
-		?? /* Can't read byte at address 5E03 */ ,
+		,
 	};
 word16 g_w5864 = 0x00; // 5864
 word16 g_w586E = 0x00; // 586E

@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 
 namespace Reko.UnitTests.Core.Output
@@ -383,6 +384,13 @@ Second abstract syntax comment line");
             var product = m.SMul(r1, r2);
             product.DataType = PrimitiveType.Word64;
             Assert.AreEqual("r1 *s64 r2", product.ToString());
+        }
+
+        [Test]
+        public void CfmtChar_Apostrophe()
+        {
+            var apos = Constant.Create(PrimitiveType.Char, (int) '\'');
+            Assert.AreEqual(@"'\''", apos.ToString());
         }
     }
 }

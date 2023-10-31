@@ -308,7 +308,7 @@ namespace Reko.Core.Output
                 {
                     InnerFormatter.Write("L'");
                 }
-                WriteEscapedCharacter(Convert.ToChar(c.GetValue()));
+                WriteEscapedCharacter(Convert.ToChar(c.GetValue()), false);
                 InnerFormatter.Write("'");
                 break;
             case Domain.Array:
@@ -323,7 +323,7 @@ namespace Reko.Core.Output
         }
 
 
-        private void WriteEscapedCharacter(char ch)
+        private void WriteEscapedCharacter(char ch, bool inString)
         {
             switch (ch)
             {
@@ -335,7 +335,8 @@ namespace Reko.Core.Output
             case '\r': InnerFormatter.Write("\\r"); break;
             case '\t': InnerFormatter.Write("\\t"); break;
             case '\v': InnerFormatter.Write("\\v"); break;
-            case '\"': InnerFormatter.Write("\\\""); break;
+            case '\'': InnerFormatter.Write(inString ? "'" : "\\'"); break;
+            case '\"': InnerFormatter.Write(inString ? "\\\"" : "\""); break;
             case '\\': InnerFormatter.Write("\\\\"); break;
             default:
                 // The awful hack allows us to reuse .NET encodings
@@ -727,7 +728,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write('"');
             foreach (var ch in s.ToString())
             {
-                WriteEscapedCharacter(ch);
+                WriteEscapedCharacter(ch, true);
             }
             InnerFormatter.Write('"');
             return;

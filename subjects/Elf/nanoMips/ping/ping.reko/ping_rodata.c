@@ -82,7 +82,7 @@ Eq_n g_a413240[] = // 00413240
 struct Eq_n g_t41326D = // 0041326D
 	{
 		~0x00,
-		?? /* Can't read byte at address 008264DA */ ,
+		,
 	};
 Eq_n g_a413370[] = // 00413370
 	{

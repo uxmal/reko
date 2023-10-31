@@ -32,7 +32,7 @@ namespace Reko.Core.Output
     /// <summary>
     /// Writes out initialized global variables.
     /// </summary>
-    public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
+    public class GlobalDataWriter : IDataTypeVisitor<bool>
     {
         private readonly Program program;
         private readonly IServiceProvider services;
@@ -194,7 +194,7 @@ namespace Reko.Core.Output
             };
         }
 
-        public CodeFormatter VisitArray(ArrayType at)
+        public bool VisitArray(ArrayType at)
         {
             if (at.Length == 0)
             {
@@ -209,67 +209,68 @@ namespace Reko.Core.Output
             fmt.Write("{");
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
-            
+
+            bool ok = true;
             for (int i = 0; i < at.Length; ++i)
             {
                 fmt.Indent();
-                at.ElementType.Accept(this);
+                ok = at.ElementType.Accept(this);
                 fmt.Terminate(",");
             }
 
             fmt.Indentation -= fmt.TabSize;
             fmt.Indent();
             fmt.Write("}");
-            return codeFormatter;
+            return ok;
         }
 
-        public CodeFormatter VisitClass(ClassType ct)
+        public bool VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
-        public CodeFormatter VisitCode(CodeType c)
+        public bool VisitCode(CodeType c)
         {
             codeFormatter.InnerFormatter.Write("<code>");
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitEnum(EnumType e)
+        public bool VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
 
-        public CodeFormatter VisitEquivalenceClass(EquivalenceClass eq)
+        public bool VisitEquivalenceClass(EquivalenceClass eq)
         {
             if (recursionGuard > 100)
-            { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return codeFormatter; }
+            { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return true; }
             else
             {
                 if (eq.DataType != null)
                 {
                     //$TODO: this should go away once we figure out why type inference loops.
                     ++recursionGuard;
-                    var cf = eq.DataType.Accept(this);
+                    bool ok = eq.DataType.Accept(this);
                     --recursionGuard;
-                    return cf;
+                    return ok;
                 }
                 else
                 {
                     Debug.Print("WARNING: eq.DataType is null for {0}", eq.Name);
-                    return codeFormatter;
+                    return true;
                 }
             }
         }
 
-        public CodeFormatter VisitFunctionType(FunctionType ft)
+        public bool VisitFunctionType(FunctionType ft)
         {
             codeFormatter.InnerFormatter.Write("??");
             codeFormatter.InnerFormatter.Write("/* Unexpected function type {0} */ ", ft);
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitPrimitive(PrimitiveType pt)
+        public bool VisitPrimitive(PrimitiveType pt)
         {
             if (IsLargeBlob(pt))
             {
@@ -278,17 +279,15 @@ namespace Reko.Core.Output
             }
             else
             {
-                if (program.Platform.Architecture.TryRead(rdr, pt, out var cValue))
-                {
-                    cValue.Accept(codeFormatter);
-                    return codeFormatter;
-                }
-                else
-                {
-                    codeFormatter.InnerFormatter.Write("?? /* Can't read {0} at address {1} */ ", pt, rdr.Address);
-                }
+                // #1279: when array sizes are miscalculated and Reko tries to read nonexistent memory,
+                // the error spew is very verbose. Just don't emit anything if bad memory addresses
+                // are being generated.
+                if (!program.Platform.Architecture.TryRead(rdr, pt, out var cValue))
+                    return false;
+
+                cValue.Accept(codeFormatter);
             }
-            return codeFormatter;
+            return true;
         }
 
         private static bool IsLargeBlob(PrimitiveType pt)
@@ -319,24 +318,24 @@ namespace Reko.Core.Output
             fmt.Write("}");
         }
 
-        public CodeFormatter VisitMemberPointer(MemberPointer memptr)
+        public bool VisitMemberPointer(MemberPointer memptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Offset, memptr.BitSize), out var c))
-                return codeFormatter;
+                return false;
             c.Accept(codeFormatter);
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitPointer(Pointer ptr)
+        public bool VisitPointer(Pointer ptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
-                return codeFormatter;
+                return false;
             var addr = program.Platform.MakeAddressFromConstant(c, false);
             // Check if it is pointer to function
             if (addr is not null && program.Procedures.TryGetValue(addr, out Procedure proc))
             {
                 codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
-                return codeFormatter;
+                return true;
             }
             int offset = c.ToInt32();
             if (offset == 0)
@@ -367,15 +366,15 @@ namespace Reko.Core.Output
                 }
                 codeFormatter.InnerFormatter.Write("&{0}", program.NamingPolicy.GlobalName(field));
             }
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitReference(ReferenceTo refTo)
+        public bool VisitReference(ReferenceTo refTo)
         {
             throw new NotSupportedException("Global variables cannot be references.");
         }
 
-        public CodeFormatter VisitString(StringType str)
+        public bool VisitString(StringType str)
         {
             var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
@@ -385,10 +384,10 @@ namespace Reko.Core.Output
             {
                 rdr.Offset = offset + str.Length * str.ElementType.Size;
             }
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitStructure(StructureType str)
+        public bool VisitStructure(StructureType str)
         {
             var fmt = codeFormatter.InnerFormatter;
             fmt.Terminate();
@@ -398,11 +397,12 @@ namespace Reko.Core.Output
             fmt.Indentation += fmt.TabSize;
 
             var structOffset = rdr.Offset;
-            for (int i = 0; i < str.Fields.Count; ++i)
+            bool ok = true;
+            for (int i = 0; ok && i < str.Fields.Count; ++i)
             {
                 fmt.Indent();
                 rdr.Offset = structOffset + str.Fields[i].Offset;
-                str.Fields[i].DataType.Accept(this);
+                ok = str.Fields[i].DataType.Accept(this);
                 fmt.Terminate(",");
             }
             rdr.Offset = structOffset + str.GetInferredSize();
@@ -410,20 +410,20 @@ namespace Reko.Core.Output
             fmt.Indentation -= fmt.TabSize;
             fmt.Indent();
             fmt.Write("}");
-            return codeFormatter;
+            return ok;
         }
 
-        public CodeFormatter VisitTypeReference(TypeReference typeref)
+        public bool VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
-        public CodeFormatter VisitTypeVariable(TypeVariable tv)
+        public bool VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
-        public CodeFormatter VisitUnion(UnionType ut)
+        public bool VisitUnion(UnionType ut)
         {
             var fmt = codeFormatter.InnerFormatter;
             fmt.Terminate();
@@ -439,25 +439,25 @@ namespace Reko.Core.Output
             var alt = ut.Alternatives.Values.OrderBy(v => v.DataType, cmp).First();
 
             fmt.Indent();
-            alt.DataType.Accept(this);
+            bool ok = alt.DataType.Accept(this);
             fmt.Terminate();
 
             fmt.Indentation -= fmt.TabSize;
             fmt.Indent();
             fmt.Write("}");
-            return codeFormatter;
+            return ok;
         }
 
-        public CodeFormatter VisitUnknownType(UnknownType ut)
+        public bool VisitUnknownType(UnknownType ut)
         {
-            return codeFormatter;
+            return true;
         }
 
-        public CodeFormatter VisitVoidType(VoidType voidType)
+        public bool VisitVoidType(VoidType voidType)
         {
             // This "can't happen": data can't have void type.
             codeFormatter.InnerFormatter.Write("??void??");
-            return codeFormatter;
+            return true;
         }
     }
 }

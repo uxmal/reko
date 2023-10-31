@@ -36,7 +36,7 @@ Eq_n g_t4040 = // 4040
 		0x0A,
 		
 		{
-			?? /* Can't read byte at address 403E */ 
+			
 		},
 	};
 // 4048: void task_idle(Register uint16 r8)
@@ -97,7 +97,7 @@ Eq_n g_t411D = // 411D
 		0x0A,
 		
 		{
-			?? /* Can't read byte at address 411B */ 
+			
 		},
 	};
 byte g_b414B = 0x00; // 414B
