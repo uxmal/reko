@@ -59,18 +59,17 @@ namespace Reko.UserInterfaces.AvaloniaUI
             case IClassicDesktopStyleApplicationLifetime desktop:
                 {
                     desktop.MainWindow = mainWindow;
-                    mainWindow.Closing += (_, _) =>
+                    mainWindow.Closing += delegate
                     {
                         mvvm.CloseLayout();
                     };
 
                     desktop.MainWindow = mainWindow;
 
-                    desktop.Exit += (_, _) =>
+                    desktop.Exit += delegate
                     {
                         mvvm.CloseLayout();
                     };
-
                     break;
                 }
             case ISingleViewApplicationLifetime singleView:
@@ -81,7 +80,6 @@ namespace Reko.UserInterfaces.AvaloniaUI
                     };
 
                     singleView.MainView = mainView;
-
                     break;
                 }
             }

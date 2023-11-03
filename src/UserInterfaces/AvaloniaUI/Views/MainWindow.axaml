@@ -16,9 +16,7 @@
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
-		x:CompileBindings="true"
 		x:DataType="vm:MainViewModel"
-        Title="{Binding WindowTitle}"
 		Icon="/Assets/App.ico"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome"
@@ -29,17 +27,19 @@
     <vm:MainViewModel />
   </Design.DataContext>
   <Panel>
-    <ExperimentalAcrylicBorder IsHitTestVisible="False">
+	<ExperimentalAcrylicBorder IsHitTestVisible="False">
       <ExperimentalAcrylicBorder.Material>
-        <ExperimentalAcrylicMaterial BackgroundSource="Digger"
-                                     TintColor="{DynamicResource SystemAltHighColor}"
-                                     TintOpacity="1"
-                                     FallbackColor="{DynamicResource AcrylicFallbackColor}"
-                                     MaterialOpacity="0.55" />
+        <ExperimentalAcrylicMaterial
+			BackgroundSource="Digger"
+			TintColor="{DynamicResource SystemAltHighColor}"
+			TintOpacity="1"
+			FallbackColor="{DynamicResource AcrylicFallbackColor}"
+			MaterialOpacity="0.55" />
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
-    <Panel Margin="{Binding #mainWindow.OffScreenMargin}">
-      <Panel Margin="{Binding #mainWindow.WindowDecorationMargin}">
+	  <Panel Margin="{Binding #mainWindow.OffScreenMargin}">
+		  <TextBlock Margin="8,2,0,2" Text="{Binding WindowTitle}" />
+		  <Panel Margin="{Binding #mainWindow.WindowDecorationMargin}">
         <v:MainView />
       </Panel>
     </Panel>

@@ -75,7 +75,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         private void Interactor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainFormInteractor.TitleText))
-                this.RaisePropertyChanged(nameof(WindowTitle));
+                this.WindowTitle = Interactor.TitleText;
         }
 
         /// <summary>
@@ -105,12 +105,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public CallGraphNavigatorToolViewModel CallGraphNavigator { get; set; }
 
         public AvaloniaStatusBarService? Status { get; set; }
-        
+
         public string? WindowTitle 
         {
-            get { return Interactor.TitleText; }
-            set { Interactor.TitleText = value!; }
+            get { return windowTitle ?? Interactor.TitleText; }
+            set {
+                this.RaiseAndSetIfChanged(ref windowTitle, value);
+                Interactor.TitleText = value!;
+            }
         }
+        private string? windowTitle;
 
         [Conditional("DEBUG")]
         private void DebugFactoryEvents(IFactory factory)

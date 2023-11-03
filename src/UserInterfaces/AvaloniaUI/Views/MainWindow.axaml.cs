@@ -36,16 +36,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 #endif
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         System.Drawing.Size IMainForm.Size
         {
             get { return new System.Drawing.Size((int) this.Bounds.Width, (int) this.Bounds.Height); }
             set { this.Height = value.Height; this.Width = value.Width; }
-    }
+        }
 
         FormWindowState IMainForm.WindowState {
             get => this.WindowState switch
