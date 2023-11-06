@@ -62,7 +62,7 @@ namespace Reko.Gui.TextViewing
             program.SegmentMap.TryFindSegment(curPos.Address, out var seg);
             program.ImageMap.TryFindItem(curPos.Address, out var item);
 
-            SpanGenerator? sp = CreateSpanifier(item, seg.MemoryArea, curPos);
+            SpanGenerator? sp = CreateSpanifier(item, seg?.MemoryArea, curPos);
             while (count != 0 && seg != null && item != null)
             {
                 if (TryReadComment(out var commentLine))
@@ -116,7 +116,7 @@ namespace Reko.Gui.TextViewing
                             break;
                         }
                     }
-                    sp = CreateSpanifier(item, seg.MemoryArea, curPos);
+                    sp = CreateSpanifier(item, seg?.MemoryArea, curPos);
                 }
             }
             curPos = SanitizePosition(curPos);
@@ -125,8 +125,8 @@ namespace Reko.Gui.TextViewing
         }
 
         private SpanGenerator CreateSpanifier(
-            ImageMapItem item,
-            MemoryArea mem,
+            ImageMapItem? item,
+            MemoryArea? mem,
             ModelPosition pos)
         {
             SpanGenerator sp;
@@ -142,7 +142,7 @@ namespace Reko.Gui.TextViewing
             }
             else
             {
-                sp = new MemSpanifyer(this,program, mem, item, pos);
+                sp = new MemSpanifyer(this,program, mem!, item!, pos);
             }
             return sp;
         }
@@ -172,7 +172,7 @@ namespace Reko.Gui.TextViewing
             private readonly MachineInstruction[] instrs;
             private int offset;
             private ModelPosition position;
-            private readonly Address addrSelected;
+            private readonly Address? addrSelected;
 
             public AsmSpanifyer(
                 AbstractMixedCodeDataModel model,
@@ -180,7 +180,7 @@ namespace Reko.Gui.TextViewing
                 IProcessorArchitecture arch,
                 MachineInstruction[] instrs,
                 ModelPosition pos,
-                Address addrSelected)
+                Address? addrSelected)
             {
                 this.model = model;
                 this.instrs = instrs;

@@ -99,7 +99,7 @@ namespace Reko.Gui
             var program = hit.Program;
             var addr = hits[i].Address;
             program.ImageMap.TryFindItem(addr, out var item);
-            if (program.Architecture == null)
+            if (program.Architecture is null)
             {
                 return new SearchResultItem(
                     new string[] {
@@ -118,7 +118,7 @@ namespace Reko.Gui
                 new string[] {
                         program.Name ?? "<Program>",
                         addr.ToString(),
-                        item.DataType != null ? item.DataType.ToString() : "<null>",
+                        item?.DataType?.ToString() ?? "<null>",
                         sData,
                 },
                 ImageIndex: 0,
@@ -126,9 +126,9 @@ namespace Reko.Gui
         }
 
 
-        private static int SelectBgColor(ImageMapItem item)
+        private static int SelectBgColor(ImageMapItem? item)
         {
-            if (item.DataType is UnknownType)
+            if (item is null || item.DataType is UnknownType)
                 return -1;
             //$TODO: colors should come from settings.
             if (item.DataType is CodeType) 

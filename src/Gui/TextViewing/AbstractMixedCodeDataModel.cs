@@ -525,12 +525,16 @@ namespace Reko.Gui.TextViewing
 
         public class DataItemNode
         {
-            public Address StartAddress { get; internal set; }
-            public Address EndAddress { get; internal set; }
+            public Address? StartAddress { get; set; }
+            public Address? EndAddress { get; set; }
             public Procedure? Proc { get; private set; }
-            public int NumLines { get; internal set; }
-            public TextModelNode ModelNode { get; set; }
-            public DataItemNode(Procedure? proc, int numLines) { this.Proc = proc;  this.NumLines = numLines; }
+            public int NumLines { get; set; }
+            public TextModelNode? ModelNode { get; set; }
+            public DataItemNode(Procedure? proc, int numLines)
+            {
+                this.Proc = proc;
+                this.NumLines = numLines;
+            }
         }
 
         public Collection<DataItemNode> GetDataItemNodes()

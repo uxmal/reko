@@ -3,15 +3,17 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+[assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("windows")]
+
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PowerPC.Design")]
+[assembly: AssemblyTitle("Reko UI components for PowerPC architecture.")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PowerPC.Design")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCompany(AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

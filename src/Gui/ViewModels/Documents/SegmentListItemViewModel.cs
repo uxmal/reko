@@ -37,6 +37,6 @@ namespace Reko.Gui.ViewModels.Documents
         public bool IsSelected { get; set; }
 
         public string Access { get => $"{Read}{Write}{Execute}"; }
-        public ImageSegment Segment { get; set; }
+        public ImageSegment? Segment { get; set; }
     }
 }

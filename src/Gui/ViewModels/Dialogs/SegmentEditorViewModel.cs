@@ -107,12 +107,12 @@ namespace Reko.Gui.ViewModels.Dialogs
         }
         private bool executeAccess;
 
-        public object DataView
+        public object? DataView
         {
             get { return dataView; }
             set { this.RaiseAndSetIfChanged(ref this.dataView, value); }
         }
-        private object dataView;
+        private object? dataView;
 
 
         public object? Disassembly

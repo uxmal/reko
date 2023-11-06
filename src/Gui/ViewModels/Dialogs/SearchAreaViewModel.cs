@@ -100,7 +100,7 @@ namespace Reko.Gui.ViewModels.Dialogs
             foreach (SegmentListItemViewModel sitem in selectedItems)
             {
                 var segment = sitem.Segment;
-                this.Areas.Add(SearchArea.FromSegment(program, segment));
+                this.Areas.Add(SearchArea.FromSegment(program, segment!));
             }
         }
     }
