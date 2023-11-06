@@ -296,6 +296,7 @@ namespace Reko.Gui.Forms
                 if (!await DecompilerPhases.Initial.OpenBinary(fileName))
                     return;
                 SelectProgram();
+                UpdateWindowTitle();
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
@@ -312,6 +313,7 @@ namespace Reko.Gui.Forms
                 if (!await DecompilerPhases.Initial.OpenBinary(fileName))
                     return;
                 RememberFilenameInMru(fileName);
+                UpdateWindowTitle();
                 SelectProgram();
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -369,6 +371,7 @@ namespace Reko.Gui.Forms
                 var metadata = projectLoader.LoadMetadataFile(metadataUri);
                 decompilerSvc.Decompiler.Project!.MetadataFiles.Add(metadata);
                 RememberFilenameInMru(fileName);
+                UpdateWindowTitle();
             }
             catch (Exception e)
             {
@@ -534,6 +537,7 @@ namespace Reko.Gui.Forms
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
+            UpdateWindowTitle();
         }
 
         private void CloseAllDocumentWindows()
@@ -1072,6 +1076,7 @@ namespace Reko.Gui.Forms
                         var project = this.decompilerSvc.Decompiler!.Project;
                         SelectProgram(project.Programs[0]);
                         RememberFilenameInMru(file);
+                        UpdateWindowTitle();
                         if (file.EndsWith(Project_v5.FileExtension))
                         {
                             ProjectFileName = file;
