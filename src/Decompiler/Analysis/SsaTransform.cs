@@ -576,7 +576,7 @@ namespace Reko.Analysis
                 }
                 // Signature is known: build the application immediately,
                 // after removing all uses of the old call.
-                ssa.RemoveUses(stmCur!);
+                ssa.RemoveUses(stmCur);
                 var pc = new ProcedureConstant(ci.Callee.DataType, callee);
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, ci);
                 var instr = ab.CreateInstruction(pc, callee.Signature, callee.Characteristics);

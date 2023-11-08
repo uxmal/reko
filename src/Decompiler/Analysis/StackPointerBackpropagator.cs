@@ -123,8 +123,7 @@ namespace Reko.Analysis
                 return noMatch;
             if (ass.Src is not BinaryExpression bin)
                 return noMatch;
-            if (bin.Operator.Type != OperatorType.IAdd &&
-                bin.Operator.Type != OperatorType.ISub)
+            if (!bin.Operator.Type.IsAddOrSub())
                 return noMatch;
             if (bin.Left is not Identifier id)
                 return noMatch;
