@@ -2722,10 +2722,9 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        [Ignore("Discovered by RekoSifter tool")]
         public void X86Dis_pushw_64()
         {
-            AssertCode64("pushw\t0x33f1", "66 68 F1 33");
+            AssertCode64("pushw\t33F1h", "66 68 F1 33");
         }
 
         [Test]
