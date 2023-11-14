@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -158,6 +159,19 @@ namespace Reko.Core
         public abstract bool OffsetsAdjacent(long oLsb, long oMsb, long size);
 
         /// <summary>
+        /// Given the components of a <see cref="MemoryAccess"/>, construct a new memory
+        /// access instance that is the result of slicing that memory access.
+        /// </summary>
+        /// <param name="memoryId">MemoryID of the resulting memory access.</param>
+        /// <param name="effectiveAddress">The effective address of the memory access.</param>
+        /// <param name="dataType">The original data type of the memory access.</param>
+        /// <param name="bitRange">The bitrange of the slice being taken.</param>
+        /// <param name="granularity">Number of bits per memory unit of the currecnt architecture.</param>
+        /// <returns>A <see cref="MemoryAccess"/> instance with the offset correctly adjusted
+        /// for endianness.</returns>
+        public abstract MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity);
+
+        /// <summary>
         /// Given a stack storage, generate a slice of said storage.
         /// </summary>
         /// <param name="stg">The storage to slice.</param>
@@ -197,6 +211,34 @@ namespace Reko.Core
             return newBytes;
         }
 
+
+        protected MemoryAccess MakeSlicedMemoryAccess(
+            MemoryIdentifier memoryId,
+            Expression effectiveAddress,
+            int byteOffset,
+            BitRange bitRange)
+        {
+            var eaBitsize = effectiveAddress.DataType.BitSize;
+            if (byteOffset != 0)
+            {
+                if (effectiveAddress is Address addr)
+                {
+                    effectiveAddress = addr.Add(byteOffset);
+                }
+                else
+                {
+                    effectiveAddress = new BinaryExpression(
+                        Operator.IAdd,
+                        effectiveAddress.DataType,
+                        effectiveAddress,
+                        Constant.Create(
+                            PrimitiveType.Create(Domain.SignedInt, eaBitsize),
+                            byteOffset));
+                }
+            }
+            var dt = PrimitiveType.CreateWord(bitRange.Extent);
+            return new MemoryAccess(memoryId, effectiveAddress, dt);
+        }
 
         private class LeServices : EndianServices
         {
@@ -263,6 +305,18 @@ namespace Reko.Core
             {
                 return oLsb + size == oMsb;
             }
+
+            /// <summary>
+            /// <inheritdoc />
+            /// </summary>
+            public override MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
+            {
+                var byteOffset = bitRange.Lsb / granularity;
+
+                var mem = MakeSlicedMemoryAccess(memoryId, effectiveAddress, byteOffset, bitRange);
+                return mem;
+            }
+
 
             public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange, int granularity)
             {
@@ -346,6 +400,17 @@ namespace Reko.Core
             public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
             {
                 return oMsb + size == oLsb;
+            }
+
+            /// <summary>
+            /// <inheritdoc />
+            /// </summary>
+            public override MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
+            {
+                var byteOffset = (dataType.BitSize - bitRange.Msb) / granularity;
+
+                var mem = MakeSlicedMemoryAccess(memoryId, effectiveAddress, byteOffset, bitRange);
+                return mem;
             }
 
             public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange, int granularity)
