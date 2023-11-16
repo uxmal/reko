@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Reko.Arch.X86</AssemblyName>
     <RootNamespace>Reko.Arch.X86</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

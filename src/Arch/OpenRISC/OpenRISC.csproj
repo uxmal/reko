@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Reko.Arch.OpenRISC</AssemblyName>
     <RootNamespace>Reko.Arch.OpenRISC</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

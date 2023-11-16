@@ -4,7 +4,7 @@
 	<!-- Public API tracking slows down the build by a lot. 
   <Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>
   -->
-	<PropertyGroup>
+  <PropertyGroup>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <AssemblyName>Reko.Decompiler</AssemblyName>
     <RootNamespace>Reko</RootNamespace>

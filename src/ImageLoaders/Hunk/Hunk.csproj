@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.Hunk</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Hunk</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

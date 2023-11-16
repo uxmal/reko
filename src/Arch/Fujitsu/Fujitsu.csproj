@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 	  <OutputType>Library</OutputType>
 	  <RootNamespace>Reko.Arch.Fujitsu</RootNamespace>
 	  <AssemblyName>Reko.Arch.Fujitsu</AssemblyName>
-	  <TargetFramework>net6.0</TargetFramework>
+	  <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
