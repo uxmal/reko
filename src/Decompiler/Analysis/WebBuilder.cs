@@ -115,7 +115,7 @@ namespace Reko.Analysis
                         VisitStatement(id.DefStatement);
                 }
 
-                InsertDeclarations();
+                // InsertDeclarations();
 
                 var replacer = new WebReplacer(this);
                 foreach (Block bl in ssa.Procedure.ControlGraph.Blocks)
@@ -133,7 +133,7 @@ namespace Reko.Analysis
 
                 foreach (Web w in webs)
                 {
-                    if (w.InductionVariable  != null)
+                    if (w.InductionVariable is not null)
                     {
                         ivs.Add(w.Identifier!, w.InductionVariable );
                     }

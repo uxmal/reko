@@ -2,10 +2,9 @@
 // Return size: 0
 void FramePointerFragment()
 FramePointerFragment_entry:
-	struct frame_t frame
 	// succ:  l1
 l1:
-	word32 framep_4 = &frame
+	framep_4 = &frame
 	Mem6[framep_4 + 4<32>:word32] = Mem0[framep_4 + 8<32>:word32]
 FramePointerFragment_exit:
 
@@ -19,11 +18,11 @@ T_2: (in frame : (struct "frame_t"))
   Class: Eq_2
   DataType: (struct "frame_t")
   OrigDataType: (struct "frame_t")
-T_3: (in framep_4 : word32)
+T_3: (in &frame : ptr32)
   Class: Eq_3
   DataType: (ptr32 (struct "frame_t"))
   OrigDataType: (ptr32 (struct "frame_t"))
-T_4: (in &frame : ptr32)
+T_4: (in framep_4 : word32)
   Class: Eq_3
   DataType: (ptr32 (struct "frame_t"))
   OrigDataType: (ptr32 (struct "frame_t"))

@@ -4,7 +4,6 @@ void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	byte al_5
 	branch fn0C00_000A(al, out al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
@@ -21,7 +20,6 @@ void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	byte al_5
 	branch fn0C00_000A(al, out al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
@@ -56,7 +54,7 @@ l0C00_001E:
 	branch al >u 0x66<8> l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	byte al_19 = al - 0x30<8>
+	al_19 = al - 0x30<8>
 	branch al <u 0x3A<8> l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
@@ -91,7 +89,7 @@ l0C00_0016:
 l0C00_001A:
 l0C00_001E:
 l0C00_0022:
-	byte al_19 = al - 0x30<8>
+	al_19 = al - 0x30<8>
 	branch al <u 0x3A<8> l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:

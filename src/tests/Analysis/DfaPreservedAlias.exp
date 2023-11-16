@@ -10,7 +10,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_6 = Mem0[ds:0x100<16>:word16]
+	ax_6 = Mem0[ds:0x100<16>:word16]
 	fn0C00_000C(ds)
 	Mem7[ds:0x102<16>:word16] = ax_6
 	return

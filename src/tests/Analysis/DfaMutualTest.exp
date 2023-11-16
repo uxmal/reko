@@ -10,7 +10,6 @@ void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_11
 	fn0C00_0004(dx, out dx_11)
 	return
 	// succ:  fn0C00_0000_exit
@@ -28,7 +27,6 @@ word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 dx_11
 	branch dx != 0x1E<16> l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
@@ -56,7 +54,6 @@ word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:
 	// succ:  l0C00_0013
 l0C00_0013:
-	word16 dx_11
 	branch dx < 0x14<16> l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:

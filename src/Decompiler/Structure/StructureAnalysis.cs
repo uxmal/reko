@@ -87,6 +87,8 @@ namespace Reko.Structure
             // Post processing steps
             var iftosw = new IfCascadeToSwitchRewriter(proc);
             iftosw.Transform();
+            var deci = new DeclarationInserter(proc);
+            deci.Transform();
             var flr = new ForLoopRewriter(proc);
             flr.Transform();
             var trrm = new TailReturnRemover(proc);

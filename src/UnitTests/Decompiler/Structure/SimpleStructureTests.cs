@@ -381,9 +381,8 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
             var pm = new ProgramBuilder();
             pm.Add(nameof(StrPollingLoop), m =>
             {
-                var pollFn = Identifier.Create(new TemporaryStorage("poll", 1, PrimitiveType.Ptr32));
                 m.Label("lupe");
-                m.BranchIf(m.Fn(pollFn), "lupe");
+                m.BranchIf(m.Fn("poll"), "lupe");
                 m.Return();
             });
             var sExp =

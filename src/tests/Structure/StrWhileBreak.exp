@@ -2,8 +2,8 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	word16 ax_22 = 0<16>
-	word16 bx_10 = Mem0[ds:0x200<16>:word16]
+	ax_22 = 0<16>
+	bx_10 = Mem0[ds:0x200<16>:word16]
 	goto l0C00_0006
 	// succ:  l0C00_0006
 l0C00_0000:

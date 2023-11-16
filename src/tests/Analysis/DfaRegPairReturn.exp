@@ -8,11 +8,10 @@
 // Return size: 0
 void fn0C00_0000()
 fn0C00_0000_entry:
-	selector cs
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem12[cs:0x2C<16>:word16] = SLICE(fn0C00_001B(cs), word16, 0)
-	ui32 dx_ax_29 = fn0C00_001B(cs)
+	dx_ax_29 = fn0C00_001B(cs)
 	Mem20[cs:0x28<16>:word16] = SLICE(dx_ax_29, word16, 0) + 3<16>
 	Mem21[cs:0x2A<16>:word16] = SLICE(dx_ax_29 + 3<32>, word16, 16)
 	return

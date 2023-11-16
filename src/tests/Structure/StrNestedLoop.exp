@@ -2,12 +2,12 @@
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
-	word16 dx_21 = 4<16>
+	dx_21 = 4<16>
 	goto l0C00_0003
 	// succ:  l0C00_0003
 l0C00_0000:
 l0C00_0003:
-	word16 cx_18 = 4<16>
+	cx_18 = 4<16>
 	// succ:  l0C00_0006
 l0C00_0006:
 	Mem14[ds:di:word32] = Mem8[ds:si:word32] + Mem8[ds:bx:word32]

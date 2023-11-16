@@ -4,11 +4,11 @@ void fn0C00_0000(selector ds, word16 wArg04)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 bx_19 = 0<16>
+	bx_19 = 0<16>
 	branch wArg04 <= 0<16> l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
-	word16 cx_20 = wArg04
+	cx_20 = wArg04
 	// succ:  l0C00_000E
 l0C00_000E:
 	bx_19 = bx_19 + cx_20

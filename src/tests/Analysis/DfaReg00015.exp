@@ -9,17 +9,15 @@
 // Return size: 0
 void fn0C00_0000(word16 ax, word16 dx, word16 bx)
 fn0C00_0000_entry:
-	selector ss
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem8[ss:0x6B6<16>:word16] = bx
 	Mem11[ss:0x6B4<16>:word16] = ax
 	Mem14[ss:0x6B2<16>:word16] = dx
-	word16 ax_21
 	msdos_open_file(0800:0887, 1<8>, out ax_21)
-	word16 dx_26 = Mem14[ss:0x6B4<16>:word16]
-	selector ds_24 = Mem14[ss:0x6B2<16>:selector]
-	word16 si_28 = dx_26
+	dx_26 = Mem14[ss:0x6B4<16>:word16]
+	ds_24 = Mem14[ss:0x6B2<16>:selector]
+	si_28 = dx_26
 	// succ:  l0C00_0019
 l0C00_0019:
 	si_28 = si_58 + 1<i16>
@@ -27,7 +25,6 @@ l0C00_0019:
 	branch Mem14[ds_24:si_58:byte] != 0<8> l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
-	word16 ax_44
 	msdos_write_file(ax_21, si_28 - dx_26 - 1<16>, SEQ(ds_24, dx_26), out ax_44)
 	Mem51[ss:0x6B6<16>:word16] = Mem14[ss:0x6B6<16>:word16]
 	fn0C00_0037(0<16>, 0xFF<16>, ds_24)

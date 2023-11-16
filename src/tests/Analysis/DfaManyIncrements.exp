@@ -27,8 +27,8 @@ l3:
 	r0 = r0_6 + 1<32>
 	// succ:  loopTop
 loopTop:
-	word32 r1_5 = Mem4[r0:byte]
-	word32 r0_6 = r0 + 1<32>
+	r1_5 = Mem4[r0:byte]
+	r0_6 = r0 + 1<32>
 	branch r1_5 != 1<i8> not1
 	goto l2
 	// succ:  l2 not1

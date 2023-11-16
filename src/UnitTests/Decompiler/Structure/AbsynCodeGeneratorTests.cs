@@ -141,6 +141,8 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "NestedIfs()" + nl +
                 "{" + nl +
+                "	int16 ax;" + nl +
+                "	byte cl;" + nl +
                 "	if (ax >= 0)" + nl +
                 "	{" + nl +
                 "		cl = 0x00;" + nl +
@@ -164,7 +166,8 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "WhileLoopFragment()" + nl + 
                 "{" + nl + 
-                "	sum = 0;" + nl + 
+                "	int32 i;" + nl +
+                "	int32 sum = 0;" + nl +
                 "	for (i = 0; i < 100; ++i)" + nl +
                 "		sum += i;" + nl + 
                 "	return sum;" + nl + 
@@ -249,6 +252,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "UnstructuredIfsMock()" + nl +
                 "{" + nl +
+                "	bool foo;" + nl +
                 "	if (!foo)" + nl +
                 "		quux();" + nl +
                 "	else if (!bar)" + nl +
@@ -267,10 +271,11 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "MockWhileBreak()" + nl +
                 "{" + nl +
-                "	r2 = 0;" + nl +
+                "	word32 r2 = 0;" + nl +
+                "	word32 r1;" + nl +
                 "	while (r1 != 0)" + nl +
                 "	{" + nl +
-                "		r3 = Mem0[r1:word32];" + nl +
+                "		word r3 = Mem0[r1:word32];" + nl +
                 "		r2 += r3;" + nl +
                 "		r3 = Mem0[r1 + 4:word32];" + nl +
                 "		if (r3 == 0)" + nl +
@@ -291,6 +296,7 @@ namespace Reko.UnitTests.Decompiler.Structure
                 "	Beginning();" + nl +
                 "JumpBack:" + nl +
                 "	DoWorkBeforeSwitch();" + nl +
+                "	word32 n;" + nl +
                 "	switch (n)" + nl +
                 "	{" + nl +
                 "	case 0x00:" + nl +
@@ -313,6 +319,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "MockCaseStatement()" + nl +
                 "{" + nl +
+                "	word16 w;" + nl +
                 "	switch (w)" + nl +
                 "	{" + nl +
                 "	case 0x00:" + nl +
@@ -350,9 +357,10 @@ namespace Reko.UnitTests.Decompiler.Structure
         {
             CompileTest(m =>
             {
+                var done = m.Local32("done");
                 m.Label("head");
-                m.BranchIf(m.Local32("done"), "loop_done");
-                m.Assign(m.Local32("done"), m.Fn("fn"));
+                m.BranchIf(done, "loop_done");
+                m.Assign(done, m.Fn("fn"));
                 m.BranchIf(m.Local32("breakomatic"), "done");
                 m.Assign(m.Local32("grux"), m.Fn("foo"));
                 m.Goto("head");
@@ -364,12 +372,14 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "ProcedureBuilder()" + nl +
                 "{" + nl +
+                "	word32 done;" + nl +
                 "	while (!done)" + nl +
                 "	{" + nl +
                 "\t\tdone = fn();" + nl +
+                "		word32 breakomatic;" + nl +
                 "		if (breakomatic)" + nl +
                 "\t\t\treturn;" + nl +
-                "		grux = foo();" + nl +
+                "		word32 grux = foo();" + nl +
                 "\t}" + nl +
                 "\textra();" + nl +
                 "}" + nl);
@@ -383,6 +393,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
                 "MockWhileWithDeclarations()" + nl +
                 "{" + nl +
+                "	word32 i;" + nl +
                 "	while (true)" + nl +
                 "	{" + nl +
                 "		byte v = Mem0[i:byte];" + nl +
@@ -420,13 +431,14 @@ namespace Reko.UnitTests.Decompiler.Structure
             RunTest(
 "ProcedureBuilder()" + nl +
 "{" + nl +
-"	a1 = fn0540();" + nl +
-"	tmp = Mem0[33814:word16];" + nl +
+"	word16 a1 = fn0540();" + nl +
+"	word16 tmp = Mem0[33814:word16];" + nl +
 "	if (tmp != 0x00)" + nl +
 "		return a1;" + nl +
 "	Mem0[0x8414:word16] = 0x00;" + nl +
 "	if (0x8414 == 0x00)" + nl +
 "		return a1;" + nl +
+"	word16 ax_96;" + nl +
 "	fn02A9(&ax_96);" + nl +
 "	return ax_96;" + nl +
 "}" + nl);

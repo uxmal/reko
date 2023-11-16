@@ -3,8 +3,6 @@
 // Return size: 0
 void proc1()
 proc1_entry:
-	selector ds
-	word16 bx
 	// succ:  l1
 l1:
 	Mem6[ds:0x300<16>:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
@@ -17,8 +15,6 @@ proc1_exit:
 // Return size: 0
 void proc1()
 proc1_entry:
-	struct Eq_2 * ds
-	word16 Eq_2::* Eq_2::* bx
 	// succ:  l1
 l1:
 	ds->w0300 = ds->*(ds->*bx)
@@ -30,17 +26,17 @@ proc1_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "Eq_2" (300 word16 w0300))
-	T_2 (in ds : (ptr16 Eq_2))
+	T_2 (in ds : selector)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in ds : (ptr16 Eq_2))
+T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment (300 T_14 t0300)))
-T_3: (in bx : (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_2) word16)))
+T_3: (in bx : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_2) word16))
   OrigDataType: (memptr T_2 (struct (0 T_7 t0000)))

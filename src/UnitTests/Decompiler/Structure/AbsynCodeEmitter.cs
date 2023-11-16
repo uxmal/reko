@@ -18,13 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
+using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
-using Reko.Core;
-using Reko.Core.Code;
+using Reko.Core.Operators;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Decompiler.Structure
 {
@@ -44,6 +44,13 @@ namespace Reko.UnitTests.Decompiler.Structure
             return ass;
         }
 
+        public AbsynAssignment CAssign(Expression dst, BinaryOperator op, Expression src)
+        {
+            var cass = new AbsynCompoundAssignment(dst, Bin(op, dst, src));
+            stmts.Add(cass);
+            return cass;
+        }
+
         public void Declare(Identifier id, Expression initializer=null)
         {
             var decl = new AbsynDeclaration(id, initializer);
@@ -56,6 +63,14 @@ namespace Reko.UnitTests.Decompiler.Structure
             var m = new AbsynCodeEmitter(bodyStmts);
             bodyGen(m);
             stmts.Add(new AbsynDoWhile(bodyStmts, cond));
+        }
+
+        public Application Fn(string name, params Expression[] exps)
+        {
+            var appl = new Application(
+                new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(name, true, VoidType.Instance, 0)),
+                PrimitiveType.Word32, exps);
+            return appl;
         }
 
         public void For(

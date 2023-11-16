@@ -27,15 +27,15 @@ void fn0C00_0004(word16 bp, word16 si, selector ds)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	byte al_12 = (Mem6[ds:si:byte] >>u 4<8>) + 0x30<8>
+	al_12 = (Mem6[ds:si:byte] >>u 4<8>) + 0x30<8>
 	branch al_12 <= 0x39<8> l0C00_0016
 	// succ:  l0C00_0014 l0C00_0016
 l0C00_0014:
 	al_12 = al_12 + 7<8>
 	// succ:  l0C00_0016
 l0C00_0016:
-	byte ah_22 = (Mem6[ds:si:byte] & 0xF<8>) + 0x30<8>
-	word16 ax_27 = SEQ(ah_22, al_12)
+	ah_22 = (Mem6[ds:si:byte] & 0xF<8>) + 0x30<8>
+	ax_27 = SEQ(ah_22, al_12) (alias)
 	branch ah_22 <= 0x39<8> l0C00_0026
 	// succ:  l0C00_0023 l0C00_0026
 l0C00_0023:
@@ -43,7 +43,6 @@ l0C00_0023:
 	// succ:  l0C00_0026
 l0C00_0026:
 	Mem32[ds:0x5427<16>:word16] = ax_27
-	word16 ax_38
 	msdos_write_file(Mem32[ds:0x5424<16>:word16], 4<16>, SEQ(ds, 0x5427<16>), out ax_38)
 	si = si + 1<16>
 	bp = bp - 1<16>

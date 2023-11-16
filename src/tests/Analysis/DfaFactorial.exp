@@ -27,7 +27,6 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 ax_13
 	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:

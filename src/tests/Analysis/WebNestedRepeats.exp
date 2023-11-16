@@ -4,9 +4,9 @@ void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_15 = 0<16>
-	word16 cx_18 = 4<16>
-	word16 di_21 = 4<16>
+	dx_15 = 0<16>
+	cx_18 = 4<16>
+	di_21 = 4<16>
 	// succ:  l0C00_0008
 l0C00_0008:
 	si = si + 2<i16>

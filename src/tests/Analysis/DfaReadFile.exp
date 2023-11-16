@@ -10,7 +10,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_13 = fn0C00_0023(0D00:3000, 0x100<16>, Mem6[0D00:0300:word16])
+	ax_13 = fn0C00_0023(0D00:3000, 0x100<16>, Mem6[0D00:0300:word16])
 	branch ax_13 >= 0<16> l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:
@@ -49,7 +49,6 @@ word16 fn0C00_0023(word32 ds_dx, word16 cx, word16 bx)
 fn0C00_0023_entry:
 	// succ:  l0C00_0023
 l0C00_0023:
-	word16 ax_10
 	branch msdos_read_file(bx, cx, ds_dx, out ax_10) l0C00_002C
 	// succ:  l0C00_0029 l0C00_002C
 l0C00_0029:

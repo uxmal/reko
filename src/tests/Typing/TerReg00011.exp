@@ -16,10 +16,10 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_36 = 0xFFF<16>
+	bx_36 = 0xFFF<16> (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	byte bl_10 = SLICE(bx_39, byte, 0)
+	bl_10 = SLICE(bx_39, byte, 0) (alias)
 	Mem23[0x4DE1<16>:bx_39:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
 	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) (alias)
 	bx_39 = bx_36
@@ -48,10 +48,10 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	Eq_6 bx_36 = 0xFFF<16>
+	bx_36.u0 = 0xFFF<16>
 	// succ:  l0C00_000C
 l0C00_000C:
-	byte bl_10 = (byte) bx_39
+	bl_10 = (byte) bx_39
 	0x4DE1<16>->*bx_39 = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
 	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>)
 	bx_39 = bx_36
@@ -71,9 +71,9 @@ Eq_3: (fn void ())
 	T_3 (in fn0C00_0004 : segptr32)
 	T_4 (in signature of fn0C00_0004 : void)
 Eq_6: (union "Eq_6" (int16 u0) ((memptr (ptr16 Eq_25) byte) u1))
-	T_6 (in bx_36 : Eq_6)
-	T_7 (in 0xFFF<16> : cui16)
-	T_9 (in bx_39 : word16)
+	T_6 (in 0xFFF<16> : cui16)
+	T_7 (in bx_36 : word16)
+	T_8 (in bx_39 : word16)
 	T_30 (in 1<16> : word16)
 	T_35 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
 Eq_25: (segment "Eq_25")
@@ -99,24 +99,24 @@ T_5: (in fn0C00_0004() : void)
   Class: Eq_5
   DataType: void
   OrigDataType: void
-T_6: (in bx_36 : Eq_6)
-  Class: Eq_6
-  DataType: Eq_6
-  OrigDataType: cui16
-T_7: (in 0xFFF<16> : cui16)
+T_6: (in 0xFFF<16> : cui16)
   Class: Eq_6
   DataType: int16
   OrigDataType: cui16
-T_8: (in bl_10 : byte)
-  Class: Eq_8
-  DataType: byte
-  OrigDataType: byte
-T_9: (in bx_39 : word16)
+T_7: (in bx_36 : word16)
+  Class: Eq_6
+  DataType: Eq_6
+  OrigDataType: int16
+T_8: (in bx_39 : word16)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: (union (int16 u1) ((memptr (ptr16 Eq_25) byte) u0))
-T_10: (in SLICE(bx_39, byte, 0) : byte)
-  Class: Eq_8
+T_9: (in SLICE(bx_39, byte, 0) : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte
+T_10: (in bl_10 : byte)
+  Class: Eq_9
   DataType: byte
   OrigDataType: byte
 T_11: (in 0xF0<8> : byte)

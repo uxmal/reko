@@ -21,9 +21,7 @@ l0C00_0016:
 	Mem23[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_25
-	word16 si_10
-	word16 ax_9 = Mem8[ds:si_10:word16]
+	ax_9 = Mem8[ds:si_10:word16]
 	si_10 = si_10 + 2<i16>
 	branch ax_9 != 0x20<16> l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
@@ -38,11 +36,10 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(word16 si, word16 di, selector ds)
 {
-	si_10 = si;
+	word16 si_10 = si;
+	word16 ax_25;
 	while (true)
 	{
-		word16 ax_25;
-		word16 si_10;
 		word16 ax_9 = Mem8[ds:si_10:word16];
 		si_10 += 2<i16>;
 		if (ax_9 == 0x20<16>)

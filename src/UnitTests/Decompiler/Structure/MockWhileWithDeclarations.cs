@@ -34,7 +34,8 @@ namespace Reko.UnitTests.Decompiler.Structure
         {
             Identifier i = Local32("i");
             Label("loopHeader");
-            Identifier v = Declare(PrimitiveType.Byte, "v", Mem(PrimitiveType.Byte, i));
+            Identifier v = Procedure.Frame.CreateTemporary("v", PrimitiveType.Byte);
+            Assign(v, Mem(PrimitiveType.Byte, i));
             Assign(i, IAdd(i, 1));
             BranchIf(Eq(v, 0x20), "exit_loop");
 

@@ -8,11 +8,10 @@
 // Return size: 0
 void fn0C00_0000(word16 ax)
 fn0C00_0000_entry:
-	byte al_8 = SLICE(ax, byte, 0)
+	al_8 = SLICE(ax, byte, 0) (alias)
 	// succ:  l0C00_0000
 l0C00_0000:
 	msdos_set_memory_allocation_strategy(al_8)
-	word16 ax_17
 	msdos_set_UMB_link_state(ax >>u 8<16>, out ax_17)
 	return
 	// succ:  fn0C00_0000_exit

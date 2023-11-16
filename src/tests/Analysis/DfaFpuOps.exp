@@ -28,9 +28,9 @@ void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
-	real64 rLoc1_36 = Mem7[ds:wArg02:real64]
-	real64 rLoc2_38 = Mem7[ds:wArg02 + 8<i16>:real64]
-	real64 rLoc2_41 = Mem7[ds:wArg02 + 16<i16>:real64]
+	rLoc1_36 = Mem7[ds:wArg02:real64]
+	rLoc2_38 = Mem7[ds:wArg02 + 8<i16>:real64]
+	rLoc2_41 = Mem7[ds:wArg02 + 16<i16>:real64]
 	Mem25[ds:wArg04:real64] = rLoc1_36 * rLoc1_36 + rLoc2_38 * rLoc2_38 + rLoc2_41 * rLoc2_41
 	Mem29[ds:wArg04 + 40<i16>:real64] = CONVERT(Mem25[ds:wArg04 + 32<i16>:int16], int16, real64)
 	return

@@ -10,9 +10,8 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_8 = Mem0[ds:Mem0[ds:0x9CFD<16>:word16] * 2<16> + 0x99F8<16>:word16]
+	dx_8 = Mem0[ds:Mem0[ds:0x9CFD<16>:word16] * 2<16> + 0x99F8<16>:word16]
 	Mem9[ds:0x9CFF<16>:word16] = dx_8
-	word16 ax_20
 	msdos_read_file(Mem9[ds:0x99D0<16>:word16], 0x180<16>, SEQ(0x6041<16>, dx_8), out ax_20)
 	msdos_close_file(Mem16[ds:0x99D0<16>:word16])
 	Mem31[ds:0xC36A<16>:word16] = Mem16[ds:Mem16[ds:0x9CFD<16>:word16] * 2<16> + 0x542E<16>:word16]

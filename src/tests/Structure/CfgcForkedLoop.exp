@@ -4,11 +4,11 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_21 = 0<16>
+	ax_21 = 0<16>
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0005:
-	word16 si_14 = Mem0[ds:0x300<16>:word16]
+	si_14 = Mem0[ds:0x300<16>:word16]
 	branch si_14 == 0<16> l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
@@ -30,12 +30,12 @@ fn0C00_0000_exit:
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
-	word16 ax_21 = 0<16>
+	ax_21 = 0<16>
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0000:
 l0C00_0005:
-	word16 si_14 = Mem0[ds:0x300<16>:word16]
+	si_14 = Mem0[ds:0x300<16>:word16]
 	branch si_14 == 0<16> l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:

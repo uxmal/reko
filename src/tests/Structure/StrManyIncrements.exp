@@ -37,9 +37,12 @@ ManyIncrements_exit:
 
 define ManyIncrements
 {
-	r63 = fp;
+	ptr32 fp;
+	word32 r63 = fp;
 	while (true)
 	{
+		word32 r1;
+		word32 r0;
 		while (true)
 		{
 			r1 = Mem0[r0:byte];

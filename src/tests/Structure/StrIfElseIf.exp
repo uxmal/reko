@@ -44,10 +44,11 @@ MockIfElseIf_exit:
 
 define MockIfElseIf
 {
+	word32 r;
 	switch (r)
 	{
 	case 0<32>:
-		x = 0<32>;
+		word32 x = 0<32>;
 		break;
 	case 1<32>:
 		x = 1<32>;

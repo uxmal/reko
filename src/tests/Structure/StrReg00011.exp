@@ -58,18 +58,27 @@ Reg00011Mock_exit:
 define Reg00011Mock
 {
 	++Mem0[0x8416<16>:word16];
-	loc02_26 = Mem0[0x53BA<16>:word16];
+	word16 loc02_26 = Mem0[0x53BA<16>:word16];
+	word16 ds;
+	word16 ax_80;
 	do
 	{
+		word16 ax_36;
+		word16 cx_37;
+		word16 bx_38 ;
 		if (!fn1B96_3CA2(&ax_36, &cx_37, &bx_38 ))
 		{
 			if (__bt(Mem0[0x8418<16>:word16], ax_36))
 				continue;
-			fs_41 = Mem0[0x7E50<16>:word16];
+			word16 fs_41 = Mem0[0x7E50<16>:word16];
 			if (Mem0[0x7E50<16>:word16] == Mem0[0x53C2<16>:word16])
+			{
+				word16 dx_49;
+				word16 bx_50;
 				fn1B96_0540(Mem0[0x7E52<16>:word16], ds, &dx_49, &bx_50);
+			}
 			Mem0[ax_36 *u 2<16> + 0x841A<16>:word16]();
-			loc04_63 = Mem0[0x48<16>:word16];
+			word16 loc04_63 = Mem0[0x48<16>:word16];
 			Mem0[0x4A<16>:word16] = Mem0[0x4A<16>:word16];
 			Mem0[0x48<16>:word16] = loc04_63;
 			Mem0[0x8410<16>:word16] = 0<16>;
@@ -79,14 +88,15 @@ define Reg00011Mock
 		ax_80 = Mem0[0x840E<16>:word16];
 		Mem0[0x8414<16>:word16] |= ax_80;
 	} while (ax_80 != 0<16>);
-	ax_88 = fn1B96_0540(loc02_26, ds);
-	v19_89 = Mem0[0x8416<16>:word16] - 1<16>;
+	word16 ax_88 = fn1B96_0540(loc02_26, ds);
+	word16 v19_89 = Mem0[0x8416<16>:word16] - 1<16>;
 	Mem0[0x8416<16>:word16] = v19_89;
 	if (v19_89 != 0<16>)
 		return ax_88;
 	Mem0[0x8414<16>:word16] = 0<16>;
 	if (Mem0[0x8414<16>:word16] == 0<16>)
 		return ax_88;
+	word16 ax_96;
 	fn1B96_02A9(ds, &ax_96);
 	return ax_96;
 }

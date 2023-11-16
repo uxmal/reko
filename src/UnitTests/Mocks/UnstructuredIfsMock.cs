@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,8 @@ namespace Reko.UnitTests.Mocks
             Goto("done");
 
             Label("then1");
-            BranchIf(Declare(PrimitiveType.Bool, "bar"), "inside");
+            var bar = Identifier.Global("bar", PrimitiveType.Bool);
+            BranchIf(bar, "inside");
             SideEffect(Fn("baz"));
             Label("done");
             Return();

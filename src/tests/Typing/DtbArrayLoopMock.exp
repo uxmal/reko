@@ -8,7 +8,7 @@ done:
 	return
 	// succ:  ArrayLoopMock_exit
 l1:
-	word32 ptr_3 = 0x4000000<32>
+	ptr_3 = 0x4000000<32>
 	goto looptest
 	// succ:  looptest
 l2:
@@ -25,8 +25,8 @@ ArrayLoopMock_exit:
 Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (ptr32 (struct 0004 (0 word32 dw0000)))
-	T_2 (in ptr_3 : word32)
-	T_3 (in 0x4000000<32> : word32)
+	T_2 (in 0x4000000<32> : word32)
+	T_3 (in ptr_3 : word32)
 	T_4 (in 0x4001000<32> : word32)
 	T_11 (in ptr_3 + 4<32> : word32)
 Eq_5: bool
@@ -49,14 +49,14 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 (struct "Globals"))
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in ptr_3 : word32)
-  Class: Eq_2
-  DataType: (ptr32 (struct 0004 (0 word32 dw0000)))
-  OrigDataType: (ptr32 (struct 0004 (0 word32 dw0000)))
-T_3: (in 0x4000000<32> : word32)
+T_2: (in 0x4000000<32> : word32)
   Class: Eq_2
   DataType: (ptr32 (struct 0004 (0 word32 dw0000)))
   OrigDataType: word32
+T_3: (in ptr_3 : word32)
+  Class: Eq_2
+  DataType: (ptr32 (struct 0004 (0 word32 dw0000)))
+  OrigDataType: (ptr32 (struct 0004 (0 word32 dw0000)))
 T_4: (in 0x4001000<32> : word32)
   Class: Eq_2
   DataType: (ptr32 (struct 0004 (0 word32 dw0000)))

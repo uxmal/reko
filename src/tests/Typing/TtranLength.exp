@@ -4,7 +4,7 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_14 = 0<16>
+	ax_14 = 0<16>
 	// succ:  l0C00_0002
 l0C00_0002:
 	branch bx == 0<16> l0C00_000D
@@ -48,11 +48,11 @@ T_4: (in ds : selector)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
   OrigDataType: (ptr16 (segment (200 T_9 t0200)))
-T_5: (in ax_14 : word16)
+T_5: (in 0<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_6: (in 0<16> : word16)
+T_6: (in ax_14 : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16

@@ -32,7 +32,7 @@ bool fn0C00_000C(byte al, selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	bool C_6 = SLICE(cond(al - 0x20<8>), bool, 1)
+	C_6 = SLICE(cond(al - 0x20<8>), bool, 1) (alias)
 	branch al <u 0x20<8> l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:

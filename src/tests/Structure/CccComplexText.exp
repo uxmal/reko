@@ -4,7 +4,6 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_11
 	branch ax != 1<16> l0C00_0015
 	// succ:  l0C00_0005 l0C00_0015
 l0C00_0005:
@@ -21,7 +20,6 @@ l0C00_0015:
 	ax_11 = 0<16>
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_25
 	Mem20[ds:0x300<16>:word16] = ax_11
 	branch ax_11 != 0xA<16> l0C00_002E
 	// succ:  l0C00_0023 l0C00_002E
@@ -47,7 +45,6 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_11
 	branch ax != 1<16> || (ax != 2<16> || ax != 3<16>) l0C00_0015
 	goto l0C00_000F
 	// succ:  l0C00_000F l0C00_0015
@@ -61,7 +58,6 @@ l0C00_0015:
 	ax_11 = 0<16>
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_25
 	Mem20[ds:0x300<16>:word16] = ax_11
 	branch ax_11 != 0xA<16> || ax_11 != 0xB<16> l0C00_002E
 	goto l0C00_0028

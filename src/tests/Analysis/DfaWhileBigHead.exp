@@ -10,7 +10,7 @@ void fn0C00_0000(segptr32 ds_si)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_26 = Mem0[ds_si:word16]
+	ax_26 = Mem0[ds_si:word16]
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_0005:

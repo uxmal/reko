@@ -15,7 +15,6 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 ax_13
 	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
@@ -80,22 +79,22 @@ T_12: (in ax : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_13: (in ax_13 : word16)
-  Class: Eq_12
-  DataType: int16
-  OrigDataType: int16
-T_14: (in 1<16> : word16)
+T_13: (in 1<16> : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_15: (in wArg02 == 1<16> : bool)
-  Class: Eq_15
+T_14: (in wArg02 == 1<16> : bool)
+  Class: Eq_14
   DataType: bool
   OrigDataType: bool
-T_16: (in 1<16> : word16)
+T_15: (in 1<16> : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
+T_16: (in ax_13 : word16)
+  Class: Eq_12
+  DataType: int16
+  OrigDataType: int16
 T_17: (in fn0C00_000F : segptr32)
   Class: Eq_4
   DataType: (ptr32 (fn T_19 (T_18)))

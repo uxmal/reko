@@ -31,7 +31,7 @@ namespace Reko.Core.Absyn
 	{
 		public AbsynDoWhile(List<AbsynStatement> body, Expression condition) : base(condition, body)
 		{
-			if (body == null)
+			if (body is null)
 				throw new ArgumentNullException(nameof(body), "Body of do-while mustn't be null");
 		}
 

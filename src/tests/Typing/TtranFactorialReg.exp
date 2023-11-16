@@ -15,7 +15,6 @@ word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
-	word16 ax_11
 	branch cx <= 1<16> l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
@@ -90,22 +89,22 @@ T_12: (in ax : word16)
   Class: Eq_12
   DataType: int16
   OrigDataType: word16
-T_13: (in ax_11 : word16)
-  Class: Eq_12
-  DataType: int16
-  OrigDataType: int16
-T_14: (in 1<16> : word16)
+T_13: (in 1<16> : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: ci16
-T_15: (in cx <= 1<16> : bool)
-  Class: Eq_15
+T_14: (in cx <= 1<16> : bool)
+  Class: Eq_14
   DataType: bool
   OrigDataType: bool
-T_16: (in 1<16> : word16)
+T_15: (in 1<16> : word16)
   Class: Eq_12
   DataType: int16
   OrigDataType: word16
+T_16: (in ax_11 : word16)
+  Class: Eq_12
+  DataType: int16
+  OrigDataType: int16
 T_17: (in fn0C00_000B : segptr32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)

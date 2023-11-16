@@ -15,10 +15,10 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_36 = 0xFFF<16>
+	bx_36 = 0xFFF<16> (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	byte bl_10 = SLICE(bx_39, byte, 0)
+	bl_10 = SLICE(bx_39, byte, 0) (alias)
 	Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
 	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) (alias)
 	bx_39 = bx_36
@@ -40,14 +40,14 @@ Eq_3: (ptr32 (fn T_5 ()))
 Eq_5: void
 	T_5 (in fn0C00_0004() : void)
 Eq_6: (union (int16 u1) ((memptr T_25 (struct (0 T_29 t0000))) u0))
-	T_6 (in bx_36 : word16)
-	T_7 (in 0xFFF<16> : cui16)
-	T_9 (in bx_39 : word16)
+	T_6 (in 0xFFF<16> : cui16)
+	T_7 (in bx_36 : word16)
+	T_8 (in bx_39 : word16)
 	T_30 (in 1<16> : word16)
 	T_35 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
-Eq_8: byte
-	T_8 (in bl_10 : byte)
-	T_10 (in SLICE(bx_39, byte, 0) : byte)
+Eq_9: byte
+	T_9 (in SLICE(bx_39, byte, 0) : byte)
+	T_10 (in bl_10 : byte)
 Eq_11: byte
 	T_11 (in 0xF0<8> : byte)
 Eq_12: byte
@@ -116,24 +116,24 @@ T_5: (in fn0C00_0004() : void)
   Class: Eq_5
   DataType: void
   OrigDataType: void
-T_6: (in bx_36 : word16)
+T_6: (in 0xFFF<16> : cui16)
   Class: Eq_6
   DataType: (union (int16 u1) ((memptr T_25 (struct (0 T_29 t0000))) u0))
   OrigDataType: cui16
-T_7: (in 0xFFF<16> : cui16)
+T_7: (in bx_36 : word16)
   Class: Eq_6
   DataType: (union (int16 u1) ((memptr T_25 (struct (0 T_29 t0000))) u0))
   OrigDataType: cui16
-T_8: (in bl_10 : byte)
-  Class: Eq_8
-  DataType: byte
-  OrigDataType: byte
-T_9: (in bx_39 : word16)
+T_8: (in bx_39 : word16)
   Class: Eq_6
   DataType: (union (int16 u1) ((memptr T_25 (struct (0 T_29 t0000))) u0))
   OrigDataType: (union (int16 u1) ((memptr T_25 (struct (0 T_29 t0000))) u0))
-T_10: (in SLICE(bx_39, byte, 0) : byte)
-  Class: Eq_8
+T_9: (in SLICE(bx_39, byte, 0) : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte
+T_10: (in bl_10 : byte)
+  Class: Eq_9
   DataType: byte
   OrigDataType: byte
 T_11: (in 0xF0<8> : byte)

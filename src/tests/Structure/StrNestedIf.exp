@@ -2,7 +2,6 @@
 // Return size: 0
 void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
-	byte cl_11
 	branch ax < 0<16> l0C00_0012
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_0012

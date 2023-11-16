@@ -32,8 +32,8 @@ void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:
 	// succ:  l0C00_0026
 l0C00_0026:
-	word16 cx_16 = Mem0[ds:0x400<16>:word16]
-	word16 di_12 = Mem0[ds:0x402<16>:word16]
+	cx_16 = Mem0[ds:0x400<16>:word16]
+	di_12 = Mem0[ds:0x402<16>:word16]
 	// succ:  l0C00_0030
 l0C00_0030:
 	branch cx_16 == 0<16> l0C00_0032

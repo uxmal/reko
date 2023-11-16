@@ -43,7 +43,7 @@ word16 fn0C00_000F(word16 dx)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 si_15 = 0<16>
+	si_15 = 0<16>
 	goto l0C00_0018
 	// succ:  l0C00_0018
 l0C00_0015:

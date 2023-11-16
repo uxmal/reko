@@ -16,7 +16,7 @@ void fn0C00_0007(word16 cx, selector ds)
 fn0C00_0007_entry:
 	// succ:  l0C00_0007
 l0C00_0007:
-	word16 di_21 = 0x5388<16>
+	di_21 = 0x5388<16>
 	// succ:  l0C00_000A
 l0C00_000A:
 	fn0C00_003D(0x2D<8>, Mem7[ds:di_21 + 0<16>:word16], ds)
@@ -137,14 +137,14 @@ T_15: (in fn0C00_001D(bx, ds) : void)
   Class: Eq_15
   DataType: void
   OrigDataType: void
-T_16: (in di_21 : word16)
-  Class: Eq_16
-  DataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
-  OrigDataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
-T_17: (in 0x5388<16> : word16)
+T_16: (in 0x5388<16> : word16)
   Class: Eq_16
   DataType: word16
   OrigDataType: word16
+T_17: (in di_21 : word16)
+  Class: Eq_16
+  DataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
+  OrigDataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
 T_18: (in fn0C00_003D : segptr32)
   Class: Eq_18
   DataType: (ptr32 (fn T_28 (T_23, T_27, T_9)))

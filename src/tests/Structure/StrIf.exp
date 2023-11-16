@@ -2,7 +2,6 @@
 // Return size: 0
 void fn0C00_0000(segptr32 ds_si, word16 ax)
 fn0C00_0000_entry:
-	word16 bx_7
 	branch ax != 0<16> l0C00_000B
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_000B

@@ -27,10 +27,10 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_36 = 0xFFF<16>
+	bx_36 = 0xFFF<16> (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	byte bl_10 = SLICE(bx_39, byte, 0)
+	bl_10 = SLICE(bx_39, byte, 0) (alias)
 	Mem23[0x4DE1<16>:bx_39:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
 	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) (alias)
 	bx_39 = bx_36

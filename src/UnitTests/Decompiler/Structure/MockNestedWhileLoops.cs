@@ -30,12 +30,14 @@ namespace Reko.UnitTests.Decompiler.Structure
     {
         protected override void BuildBody()
         {
-            Identifier i = Declare(PrimitiveType.Int32, "i", Int32(0));
+            Identifier i = Procedure.Frame.CreateTemporary("i", PrimitiveType.Int32);
+            Identifier j = Procedure.Frame.CreateTemporary("j", PrimitiveType.Int32);
+            Assign(i, Int32(0));
 
             Label("outer");
             BranchIf(Ge(i, 10), "done");
 
-                Identifier j = Declare(PrimitiveType.Int32, "j", Int32(0));
+                Assign(j, Int32(0));
 
                 Label("inner");
                 BranchIf(Ge(j, 10), "done_inner");

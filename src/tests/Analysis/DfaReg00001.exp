@@ -27,16 +27,16 @@ word32 fn0040000C(word32 dwArg04, word32 dwArg08)
 fn0040000C_entry:
 	// succ:  l0040000C
 l0040000C:
-	word32 ecx_11 = Mem7[dwArg04 + 60<i32>:word32] + dwArg04
-	word32 esi_19 = CONVERT(Mem18[ecx_11 + 6<i32>:word16], word16, word32)
-	word32 edx_20 = 0<32>
-	word32 eax_23 = CONVERT(Mem7[ecx_11 + 20<i32>:word16], word16, word32) + 18<i32> + ecx_11
+	ecx_11 = Mem7[dwArg04 + 60<i32>:word32] + dwArg04
+	esi_19 = CONVERT(Mem18[ecx_11 + 6<i32>:word16], word16, word32)
+	edx_20 = 0<32>
+	eax_23 = CONVERT(Mem7[ecx_11 + 20<i32>:word16], word16, word32) + 18<i32> + ecx_11
 	branch esi_19 <=u 0<32> l0040004B
 	// succ:  l0040002E l0040004B
 l0040002E:
 	// succ:  l00400031
 l00400031:
-	word32 ecx_32 = Mem22[eax_23 + 12<i32>:word32]
+	ecx_32 = Mem22[eax_23 + 12<i32>:word32]
 	branch dwArg08 <u ecx_32 l00400041
 	// succ:  l00400038 l00400041
 l00400038:

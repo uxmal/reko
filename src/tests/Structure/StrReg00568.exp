@@ -19,8 +19,8 @@ word16 fn0C00_000B(word16 si, selector ds)
 fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
-	word16 dx_39 = 0<16>
-	word16 cx_17 = 0<16>
+	dx_39 = 0<16>
+	cx_17 = 0<16>
 	branch Mem0[ds:si:byte] != 0x2D<8> l0C00_001B
 	// succ:  l0C00_0016 l0C00_001B
 l0C00_0016:
@@ -35,7 +35,7 @@ l0C00_0020:
 	si = si + 1<16>
 	// succ:  l0C00_0021
 l0C00_0021:
-	byte al_22 = Mem0[ds:si:byte]
+	al_22 = Mem0[ds:si:byte]
 	si = si + 1<i16>
 	branch al_22 == 0<8> l0C00_003C
 	// succ:  l0C00_0026 l0C00_003C
@@ -43,7 +43,7 @@ l0C00_0026:
 	branch al_22 <u 0x30<8> l0C00_003C
 	// succ:  l0C00_002A l0C00_003C
 l0C00_002A:
-	word16 ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16)
+	ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16) (alias)
 	branch al_22 >u 0x39<8> || al_22 <u 0x30<8> l0C00_003C
 	// succ:  l0C00_002E l0C00_003C
 l0C00_002E:

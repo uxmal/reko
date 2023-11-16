@@ -10,7 +10,7 @@ l0C00_0005:
 	ax = ax - 3<16> >> 1<16>
 	// succ:  l0C00_000A
 l0C00_000A:
-	word16 ax_14 = ax *s ax
+	ax_14 = ax *s ax (alias)
 	ax = ax_14
 	branch ax_14 != 0<16> l0C00_0005
 	// succ:  l0C00_0011 l0C00_0005
