@@ -8,7 +8,6 @@
     <AssemblyName>Reko.ImageLoaders.Elf</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>9.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
