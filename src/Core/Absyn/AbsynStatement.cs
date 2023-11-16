@@ -34,6 +34,8 @@ namespace Reko.Core.Absyn
 
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
 
+        public abstract T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context);
+
 		public override sealed string ToString()
 		{
 			StringWriter sw = new StringWriter();

@@ -34,5 +34,10 @@ namespace Reko.Core.Absyn
         {
             return visitor.VisitContinue(this);
         }
-	}
+
+        public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitContinue(this, context);
+        }
+    }
 }

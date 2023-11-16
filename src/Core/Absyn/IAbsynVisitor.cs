@@ -66,4 +66,25 @@ namespace Reko.Core.Absyn
         T VisitSwitch(AbsynSwitch absynSwitch);
         T VisitWhile(AbsynWhile loop);
     }
+
+    public interface IAbsynVisitor<T, C>
+    {
+        T VisitAssignment(AbsynAssignment ass, C context);
+        T VisitBreak(AbsynBreak brk, C context);
+        T VisitCase(AbsynCase absynCase, C context);
+        T VisitCompoundAssignment(AbsynCompoundAssignment compound, C context);
+        T VisitContinue(AbsynContinue cont, C context);
+        T VisitDeclaration(AbsynDeclaration decl, C context);
+        T VisitDefault(AbsynDefault decl, C context);
+        T VisitDoWhile(AbsynDoWhile loop, C context);
+        T VisitFor(AbsynFor forLoop, C context);
+        T VisitGoto(AbsynGoto gotoStm, C context);
+        T VisitIf(AbsynIf ifStm, C context);
+        T VisitLabel(AbsynLabel lbl, C context);
+        T VisitLineComment(AbsynLineComment comment, C context);
+        T VisitReturn(AbsynReturn ret, C context);
+        T VisitSideEffect(AbsynSideEffect side, C context);
+        T VisitSwitch(AbsynSwitch absynSwitch, C context);
+        T VisitWhile(AbsynWhile loop, C context);
+    }
 }

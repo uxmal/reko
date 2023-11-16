@@ -44,5 +44,10 @@ namespace Reko.Core.Absyn
         {
             return visitor.VisitSideEffect(this);
         }
-	}
+
+        public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitSideEffect(this, context);
+        }
+    }
 }

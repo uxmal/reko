@@ -44,9 +44,14 @@ namespace Reko.Core.Absyn
         {
             return visitor.VisitCase(this);
         }
+
+        public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitCase(this, context);
+        }
     }
 
-    public class AbsynDefault: AbsynStatement
+    public class AbsynDefault : AbsynStatement
     {
         public AbsynDefault()
         {
@@ -60,6 +65,11 @@ namespace Reko.Core.Absyn
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitDefault(this);
+        }
+
+        public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitDefault(this, context);
         }
     }
 }
