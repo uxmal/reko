@@ -252,7 +252,7 @@ namespace Reko.Core.Loading
                 name = $"seg{addr}";
             }
             var dt = PrimitiveType.SegmentSelector;
-            var stg = new TemporaryStorage(name, 0, dt);
+            var stg = new GlobalStorage(name, dt);
             return Identifier.Create(stg);
         }
     }
