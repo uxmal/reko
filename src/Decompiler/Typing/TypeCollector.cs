@@ -216,6 +216,7 @@ namespace Reko.Typing
         {
         }
 
+        /*
         public void VisitDeclaration(Declaration decl)
         {
             // Pattern after VisitAssignment
@@ -236,6 +237,7 @@ namespace Reko.Typing
                 desc.MeetDataType(decl.Identifier, dtExp);
             }
         }
+        */
 
         public void VisitDefInstruction(DefInstruction def)
         {

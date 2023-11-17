@@ -201,6 +201,7 @@ namespace Reko.Analysis
             return (comment, false);
         }
 
+        /*
         public (Instruction, bool) VisitDeclaration(Declaration decl)
         {
             bool changed = false;
@@ -208,6 +209,7 @@ namespace Reko.Analysis
                 (decl.Expression, changed) = decl.Expression.Accept(eval);
             return (decl, changed);
         }
+        */
 
         public (Instruction, bool) VisitDefInstruction(DefInstruction def)
         {

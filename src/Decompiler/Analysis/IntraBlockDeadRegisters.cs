@@ -288,10 +288,12 @@ namespace Reko.Analysis
             return false;
         }
 
+        /*
         public bool VisitDeclaration(Declaration decl)
         {
             return false;
         }
+        */
 
         public bool VisitDefInstruction(DefInstruction def)
         {

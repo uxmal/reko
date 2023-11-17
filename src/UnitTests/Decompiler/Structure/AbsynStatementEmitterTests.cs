@@ -44,6 +44,8 @@ namespace Reko.UnitTests.Decompiler.Structure
             emitter = new AbsynStatementEmitter(stms);
         }
 
+        /*
+
         [Test]
         public void DeclarationWithExpression()
         {
@@ -57,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Structure
         [Test]
         public void DeclarationWithoutExpression()
         {
-            emitter.EmitStatement(m.Declare(m.Local32("dwLoc14"), null));
+            emitter.EmitStatement(m.Assign(m.Local32("dwLoc14"), null));
             Assert.AreEqual(1, stms.Count);
             AbsynDeclaration decl = (AbsynDeclaration) stms[0];
             Assert.IsNull(decl.Expression);
@@ -74,6 +76,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             AbsynAssignment ass= (AbsynAssignment) stms[0];
             Assert.AreEqual("dwLoc18 = 1<32>;", ass.ToString());
         }
+        */
 
     }
 }

@@ -36,7 +36,7 @@ T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment (300 T_14 t0300)))
-T_3: (in bx : word16)
+T_3: (in bx : (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_2) word16)))
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_2) word16))
   OrigDataType: (memptr T_2 (struct (0 T_7 t0000)))

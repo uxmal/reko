@@ -28,7 +28,7 @@ PointerChainFragment_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (4 (ptr32 Eq_5) ptr0004))
-	T_2 (in r1 : word32)
+	T_2 (in r1 : (ptr32 Eq_2))
 Eq_5: (struct "Eq_5" (8 (ptr32 Eq_8) ptr0008))
 	T_5 (in Mem0[r1 + 4<32>:word32] : word32)
 Eq_8: (struct "Eq_8" (10 byte b0010))
@@ -38,7 +38,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in r1 : word32)
+T_2: (in r1 : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (4 T_5 t0004)))
@@ -86,7 +86,7 @@ T_13: (in r2 : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
-T_14: (in r3 : word32)
+T_14: (in r3 : (ptr32 (ptr32 (ptr32 (ptr32 word16)))))
   Class: Eq_14
   DataType: (ptr32 (ptr32 (ptr32 (ptr32 word16))))
   OrigDataType: (ptr32 (struct (0 T_17 t0000)))

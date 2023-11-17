@@ -36,7 +36,7 @@ T_2: (in p : (arr Eq_13))
   Class: Eq_2
   DataType: (ptr32 (arr Eq_13))
   OrigDataType: (ptr32 (struct (0 (arr T_13) a0000) (4 T_16 t0004)))
-T_3: (in i : word32)
+T_3: (in i : ui32)
   Class: Eq_3
   DataType: ui32
   OrigDataType: ui32

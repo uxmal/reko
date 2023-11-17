@@ -76,7 +76,7 @@ namespace Reko.Structure
             stms.Add(doWhile);
         }
 
-        public bool StripDeclarations { get; set; }
+        // public bool StripDeclarations { get; set; }
 
 
         #region InstructionVisitor Members
@@ -101,6 +101,7 @@ namespace Reko.Structure
             stms.Add(new AbsynLineComment(comment.Text));
         }
 
+        /*
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
             if (StripDeclarations)
@@ -115,6 +116,7 @@ namespace Reko.Structure
                 stms.Add(new AbsynDeclaration(decl.Identifier, decl.Expression));
             }
         }
+        */
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {

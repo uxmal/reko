@@ -47,15 +47,15 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
     private readonly Procedure proc;
     private readonly Dictionary<AbsynStatement, List<AbsynStatement>> containingStatements;
     private readonly Dictionary<Identifier, List<Path>> paths;
-    private readonly HashSet<Identifier> parameters;
+    private readonly HashSet<string> parameters;
     private readonly List<AbsynStatement> statements;
 
     public DeclarationInserter(Procedure proc)
     {
         this.proc = proc;
         this.parameters = proc.Signature.ParametersValid
-            ? proc.Signature.Parameters!.ToHashSet()
-            : new HashSet<Identifier>();
+            ? proc.Signature.Parameters!.Select(p => p.Name).ToHashSet()
+            : new HashSet<string>();
         this.statements = proc.Body!;
         this.containingStatements = new Dictionary<AbsynStatement, List<AbsynStatement>>();
         this.paths = new Dictionary<Identifier, List<Path>>();
@@ -172,10 +172,14 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
 
     private bool IsLocalIdentifier(Identifier id)
     {
-        return
-            id.Storage is not GlobalStorage &&
-            id.Storage is not MemoryStorage &&
-            !parameters.Contains(id);
+        switch (id.Storage)
+        {
+        case GlobalStorage: return false;
+        case MemoryStorage: return false;
+        case StackStorage stk:
+            return !proc.Architecture.IsStackArgumentOffset(stk.StackOffset);
+        }
+        return !parameters.Contains(id.Name);
     }
 
     public int VisitBreak(AbsynBreak b, Path _)

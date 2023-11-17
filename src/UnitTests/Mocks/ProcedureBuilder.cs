@@ -209,6 +209,7 @@ namespace Reko.UnitTests.Mocks
             return Procedure.Frame.CreateTemporary(name, dt);
         }
 
+        /*
         public Identifier Declare(DataType dt, string name, Expression expr)
         {
             Identifier id = Procedure.Frame.CreateTemporary(name, dt);
@@ -220,6 +221,7 @@ namespace Reko.UnitTests.Mocks
         {
             return Emit(new Declaration(id, initial));
         }
+        */
 
         public override Statement Emit(Instruction instr)
         {

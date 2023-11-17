@@ -414,7 +414,7 @@ failed:
             m.BranchIf(m.Ge(r1, 4), "done1");
 
                 m.Label("body1");
-                m.Declare(r2, m.Word32(0));
+                m.Assign(r2, m.Word32(0));
                 m.Label("head2");
                 m.BranchIf(m.Ge(r2, 4), "done2");
 
@@ -439,7 +439,7 @@ failed:
             #region Expected 
  @"    while (r1 < 0x04)
     {
-        word32 r2 = 0x00;
+        r2 = 0x00;
         while (r2 < 0x04)
         {
             Mem0[0x01232100 + (r1 * 0x04 + r2):byte] = 0x00;

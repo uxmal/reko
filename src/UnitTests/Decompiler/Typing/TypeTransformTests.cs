@@ -512,7 +512,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             {
                 var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
+                m.Assign(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
@@ -535,7 +535,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 });
                 var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
+                m.Assign(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
@@ -612,11 +612,11 @@ namespace Reko.UnitTests.Decompiler.Typing
                 Identifier rdi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdi");
 
                 m.Label("l000000000040EC30");
-                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.Assign(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
                 m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
 
                 m.Label("l000000000040EC40");
-                m.Declare(rax_22, m.Word64(0x10000040));
+                m.Assign(rax_22, m.Word64(0x10000040));
 
                 m.Label("l000000000040EC50");
                 m.MStore(m.IAdd(rdi, rbx_18), m.Convert(m.Mem32(

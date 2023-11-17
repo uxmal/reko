@@ -42,7 +42,7 @@ T_4: (in 42<i32> : int32)
   Class: Eq_4
   DataType: int32
   OrigDataType: int32
-T_5: (in i : word32)
+T_5: (in i : ui32)
   Class: Eq_5
   DataType: ui32
   OrigDataType: ui32

@@ -4,7 +4,7 @@ define TypedAddressOf
 TypedAddressOf_entry:
 	// succ:  l1
 l1:
-	word32 r1 = &foo
+	r1 = &foo
 	Mem0[r1 + 0<32>:word16] = 0x1234<16>
 	Mem0[r1 + 4<32>:byte] = 0xA<8>
 	return
@@ -15,26 +15,26 @@ TypedAddressOf_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: foo
-	T_2 (in r1 : word32)
-	T_4 (in &foo : ptr32)
+	T_2 (in foo : foo)
 Eq_3: foo
-	T_3 (in foo : foo)
+	T_3 (in &foo : ptr32)
+	T_4 (in r1 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in r1 : word32)
+T_2: (in foo : foo)
   Class: Eq_2
-  DataType: (ptr32 Eq_2)
-  OrigDataType: (ptr32 foo)
-T_3: (in foo : foo)
-  Class: Eq_3
-  DataType: Eq_3
+  DataType: Eq_2
   OrigDataType: foo
-T_4: (in &foo : ptr32)
-  Class: Eq_2
-  DataType: (ptr32 Eq_2)
+T_3: (in &foo : ptr32)
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
+  OrigDataType: (ptr32 foo)
+T_4: (in r1 : word32)
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
   OrigDataType: (ptr32 foo)
 T_5: (in 0x1234<16> : word16)
   Class: Eq_5

@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
 			Identifier ptr = Local32("ptr");
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
-            Declare(ptr, Word32(0x10000004));
+            Assign(ptr, Word32(0x10000004));
 			MStore(ptr, Constant.Real32(0.75F));
 			MStore(Word32(0x10000000), Constant.Real32(0.5F));
 		}

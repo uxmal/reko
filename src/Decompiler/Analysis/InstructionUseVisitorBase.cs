@@ -40,11 +40,13 @@ namespace Reko.Analysis
                 use.Expression.Accept(this);
         }
 
+        /*
         public override void VisitDeclaration(Declaration decl)
         {
             if (decl.Expression != null)
                 decl.Expression.Accept(this);
         }
+        */
 
         public override void VisitDefInstruction(DefInstruction def)
         {

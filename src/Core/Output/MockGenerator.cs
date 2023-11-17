@@ -293,6 +293,7 @@ namespace Reko.Core.Output
             writer.WriteLine(");");
         }
 
+        /*
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
             Method("Declare");
@@ -304,6 +305,7 @@ namespace Reko.Core.Output
             }
             writer.WriteLine(");");
         }
+        */
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {

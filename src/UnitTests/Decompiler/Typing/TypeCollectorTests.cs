@@ -211,8 +211,8 @@ namespace Reko.UnitTests.Decompiler.Typing
                     }
                 };
                 var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
-                m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
-                m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
+                m.Assign(eax, m.Mem(PrimitiveType.Word32, v));
+                m.Assign(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
         }
 

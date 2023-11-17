@@ -25,7 +25,7 @@ Eq_1: (struct "Globals" (A0000 Eq_2 tA0000))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (140 (arr byte) a0140))
 	T_2 (in 0xA0000<32> : word32)
-	T_3 (in pa : word32)
+	T_3 (in pa : (ptr32 Eq_2))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -35,7 +35,7 @@ T_2: (in 0xA0000<32> : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_3: (in pa : word32)
+T_3: (in pa : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (140 (arr T_10) a0140)))

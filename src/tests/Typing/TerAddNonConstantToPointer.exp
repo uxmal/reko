@@ -26,7 +26,7 @@ proc1_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))
-	T_3 (in p : word16)
+	T_3 (in p : (ptr16 Eq_3))
 	T_12 (in p + i : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -37,7 +37,7 @@ T_2: (in 4<16> : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
-T_3: (in p : word16)
+T_3: (in p : (ptr16 Eq_3))
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (struct (0 T_6 t0000) (4 T_10 t0004)))
@@ -69,7 +69,7 @@ T_10: (in Mem0[p + 4<16>:word16] : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_11: (in i : word16)
+T_11: (in i : int16)
   Class: Eq_11
   DataType: int16
   OrigDataType: int16

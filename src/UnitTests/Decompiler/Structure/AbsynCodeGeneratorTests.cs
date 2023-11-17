@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Decompiler.Structure
                 "	word32 r1;" + nl +
                 "	while (r1 != 0)" + nl +
                 "	{" + nl +
-                "		word r3 = Mem0[r1:word32];" + nl +
+                "		word32 r3 = Mem0[r1:word32];" + nl +
                 "		r2 += r3;" + nl +
                 "		r3 = Mem0[r1 + 4:word32];" + nl +
                 "		if (r3 == 0)" + nl +

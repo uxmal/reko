@@ -72,8 +72,8 @@ Eq_3: (fn void ())
 	T_4 (in signature of fn0C00_0004 : void)
 Eq_6: (union "Eq_6" (int16 u0) ((memptr (ptr16 Eq_25) byte) u1))
 	T_6 (in 0xFFF<16> : cui16)
-	T_7 (in bx_36 : word16)
-	T_8 (in bx_39 : word16)
+	T_7 (in bx_36 : Eq_6)
+	T_8 (in bx_39 : Eq_6)
 	T_30 (in 1<16> : word16)
 	T_35 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
 Eq_25: (segment "Eq_25")
@@ -103,11 +103,11 @@ T_6: (in 0xFFF<16> : cui16)
   Class: Eq_6
   DataType: int16
   OrigDataType: cui16
-T_7: (in bx_36 : word16)
+T_7: (in bx_36 : Eq_6)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: int16
-T_8: (in bx_39 : word16)
+T_8: (in bx_39 : Eq_6)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: (union (int16 u1) ((memptr (ptr16 Eq_25) byte) u0))

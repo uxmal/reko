@@ -31,7 +31,7 @@ Eq_2: (segment "Eq_2" (66 word16 w0066) (5420 word16 w5420) (5422 (ptr16 Eq_7) p
 Eq_3: (segment "Eq_3" (1 (ptr16 Eq_2) ptr0001))
 	T_3 (in 0x1796<16> : selector)
 Eq_7: (segment "Eq_7")
-	T_7 (in ds : selector)
+	T_7 (in ds : (ptr16 Eq_7))
 	T_10 (in Mem0[0x800<16>:0x5422<16>:word16] : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -58,7 +58,7 @@ T_6: (in Mem0[0x1796<16>:1<16>:word16] : word16)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: word16
-T_7: (in ds : selector)
+T_7: (in ds : (ptr16 Eq_7))
   Class: Eq_7
   DataType: (ptr16 Eq_7)
   OrigDataType: (ptr16 (segment))

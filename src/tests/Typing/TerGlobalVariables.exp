@@ -6,7 +6,7 @@ GlobalVariablesMock_entry:
 	// succ:  l1
 l1:
 	r63 = fp
-	word32 ptr = 0x10000004<32>
+	ptr = 0x10000004<32>
 	Mem0[ptr:real32] = 0.75F
 	Mem0[0x10000000<32>:real32] = 0.5F
 GlobalVariablesMock_exit:
@@ -19,7 +19,7 @@ GlobalVariablesMock_entry:
 	// succ:  l1
 l1:
 	r63 = fp
-	real32 * ptr = &g_r10000004
+	ptr = &g_r10000004
 	*ptr = 0.75F
 	g_r10000000 = 0.5F
 GlobalVariablesMock_exit:
@@ -36,18 +36,18 @@ T_2: (in fp : ptr32)
   Class: Eq_2
   DataType: ptr32
   OrigDataType: ptr32
-T_3: (in r63 : word32)
+T_3: (in r63 : ptr32)
   Class: Eq_2
   DataType: ptr32
   OrigDataType: ptr32
-T_4: (in ptr : (ptr32 real32))
-  Class: Eq_4
-  DataType: (ptr32 real32)
-  OrigDataType: (ptr32 (struct (0 T_9 t0000)))
-T_5: (in 0x10000004<32> : word32)
+T_4: (in 0x10000004<32> : word32)
   Class: Eq_4
   DataType: (ptr32 real32)
   OrigDataType: word32
+T_5: (in ptr : (ptr32 real32))
+  Class: Eq_4
+  DataType: (ptr32 real32)
+  OrigDataType: (ptr32 (struct (0 T_9 t0000)))
 T_6: (in 0.75F : real32)
   Class: Eq_6
   DataType: real32

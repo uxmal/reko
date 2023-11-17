@@ -81,6 +81,7 @@ namespace Reko.Analysis
 
 		public void InsertDeclarations()
 		{
+            /*
 			var deci = new DeclarationInserter(doms);
 			foreach (Web web in this.webs)
 			{
@@ -100,6 +101,7 @@ namespace Reko.Analysis
                     }
                 }
 			}
+            */
 		}
 
 		public void Transform()

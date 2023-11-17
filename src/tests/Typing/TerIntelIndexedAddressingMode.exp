@@ -39,7 +39,7 @@ Eq_4: (segment "Eq_4" (CA4 (memptr (ptr16 Eq_4) Eq_18) ptr0CA4) (1C0A int16 w1C0
 	T_4 (in ds : word16)
 Eq_18: (struct "Eq_18" (A (arr byte) a000A))
 	T_18 (in Mem0[ds:0xCA4<16>:word16] : word16)
-	T_19 (in bx : word16)
+	T_19 (in bx : (memptr (ptr16 Eq_4) Eq_18))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -49,7 +49,7 @@ T_2: (in fp : ptr32)
   Class: Eq_2
   DataType: ptr32
   OrigDataType: ptr32
-T_3: (in r63 : word32)
+T_3: (in r63 : ptr32)
   Class: Eq_2
   DataType: ptr32
   OrigDataType: ptr32
@@ -77,7 +77,7 @@ T_9: (in 0x4A<16> : word16)
   Class: Eq_9
   DataType: int16
   OrigDataType: word16
-T_10: (in ax : word16)
+T_10: (in ax : int16)
   Class: Eq_9
   DataType: int16
   OrigDataType: int16
@@ -97,7 +97,7 @@ T_14: (in ax *s ds->w1C0A : int16)
   Class: Eq_14
   DataType: int16
   OrigDataType: int16
-T_15: (in si : word16)
+T_15: (in si : int16)
   Class: Eq_14
   DataType: int16
   OrigDataType: int16
@@ -113,7 +113,7 @@ T_18: (in Mem0[ds:0xCA4<16>:word16] : word16)
   Class: Eq_18
   DataType: (memptr (ptr16 Eq_4) Eq_18)
   OrigDataType: word16
-T_19: (in bx : word16)
+T_19: (in bx : (memptr (ptr16 Eq_4) Eq_18))
   Class: Eq_18
   DataType: (memptr (ptr16 Eq_4) Eq_18)
   OrigDataType: (memptr T_4 (struct (A (arr T_26) a000A)))

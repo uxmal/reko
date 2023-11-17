@@ -243,6 +243,7 @@ namespace Reko.Typing
             EnsureTypeVariable(conversion);
         }
 
+        /*
         public override void VisitDeclaration(Declaration decl)
 		{
 			decl.Identifier.Accept(this);
@@ -252,6 +253,7 @@ namespace Reko.Typing
 				store.MergeClasses(store.GetTypeVariable(decl.Identifier), store.GetTypeVariable(decl.Expression));
 			}
 		}
+        */
 
 		public override void VisitDefInstruction(DefInstruction def)
 		{

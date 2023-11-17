@@ -64,7 +64,7 @@ T_4: (in 0x201028<64> : word64)
   Class: Eq_4
   DataType: int64
   OrigDataType: word64
-T_5: (in rsi : word64)
+T_5: (in rsi : int64)
   Class: Eq_4
   DataType: int64
   OrigDataType: int64

@@ -26,7 +26,7 @@ proc1_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (union "Eq_2" (ci16 u0) (uint16 u1))
-	T_2 (in bx : word16)
+	T_2 (in bx : Eq_2)
 	T_4 (in bx >> 2<8> : word16)
 	T_5 (in 4<16> : word16)
 	T_8 (in 4<16> : word16)
@@ -35,7 +35,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in bx : word16)
+T_2: (in bx : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ci16

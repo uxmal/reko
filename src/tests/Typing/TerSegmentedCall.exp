@@ -52,7 +52,7 @@ T_5: (in Mem0[ds:0x2040<16>:word16] : word16)
   Class: Eq_5
   DataType: (memptr (ptr16 Eq_7) code)
   OrigDataType: word16
-T_6: (in bx : word16)
+T_6: (in bx : (memptr (ptr16 Eq_7) code))
   Class: Eq_5
   DataType: (memptr (ptr16 Eq_7) code)
   OrigDataType: (memptr T_7 code)

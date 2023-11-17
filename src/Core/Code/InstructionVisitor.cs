@@ -32,7 +32,7 @@ namespace Reko.Core.Code
 		void VisitCallInstruction(CallInstruction ci);
         void VisitComment(CodeComment code);
 
-        void VisitDeclaration(Declaration decl);
+        //void VisitDeclaration(Declaration decl);
 		void VisitDefInstruction(DefInstruction def);
         void VisitGotoInstruction(GotoInstruction gotoInstruction);
 		void VisitPhiAssignment(PhiAssignment phi);
@@ -49,7 +49,7 @@ namespace Reko.Core.Code
         T VisitBranch(Branch branch);
         T VisitComment(CodeComment comment);
         T VisitCallInstruction(CallInstruction ci);
-        T VisitDeclaration(Declaration decl);
+        //T VisitDeclaration(Declaration decl);
         T VisitDefInstruction(DefInstruction def);
         T VisitGotoInstruction(GotoInstruction gotoInstruction);
         T VisitPhiAssignment(PhiAssignment phi);
@@ -66,7 +66,7 @@ namespace Reko.Core.Code
         T VisitBranch(Branch branch, C ctx);
         T VisitComment(CodeComment comment, C ctx);
         T VisitCallInstruction(CallInstruction ci, C ctx);
-        T VisitDeclaration(Declaration decl, C ctx);
+        //T VisitDeclaration(Declaration decl, C ctx);
         T VisitDefInstruction(DefInstruction def, C ctx);
         T VisitGotoInstruction(GotoInstruction gotoInstruction, C ctx);
         T VisitPhiAssignment(PhiAssignment phi, C ctx);
@@ -105,12 +105,14 @@ namespace Reko.Core.Code
         {
         }
 
+        /*
 		public virtual void VisitDeclaration(Declaration decl)
 		{
 			decl.Identifier.Accept(this);
 			if (decl.Expression != null)
 				decl.Expression.Accept(this);
 		}
+        */
 
 		public virtual void VisitDefInstruction(DefInstruction def)
 		{

@@ -292,10 +292,12 @@ namespace Reko.Analysis
             return brFn | brArgs;
         }
 
+        /*
         public BitRange VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
+        */
 
         public BitRange VisitDefInstruction(DefInstruction def)
         {

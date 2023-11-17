@@ -56,7 +56,7 @@ T_2: (in 0x5388<16> : word16)
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) word16)
   OrigDataType: word16
-T_3: (in di_3 : word16)
+T_3: (in di_3 : (memptr (ptr16 Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) word16)
   OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))

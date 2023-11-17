@@ -505,6 +505,7 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /*
         public DataType? VisitDeclaration(Declaration decl)
         {
             var dtId = decl.Identifier.Accept(this);
@@ -514,6 +515,7 @@ namespace Reko.Typing
             decl.Expression.Accept(this);
             return handler.EqualTrait(decl.Identifier, decl.Expression);
         }
+        */
 
 		public DataType VisitDereference(Dereference deref)
 		{

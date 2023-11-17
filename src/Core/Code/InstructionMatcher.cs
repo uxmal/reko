@@ -76,10 +76,12 @@ namespace Reko.Core.Code
             return true;
         }
 
+        /*
         public bool VisitDeclaration(Declaration decl, ExpressionMatch m)
         {
             return false;
         }
+        */
 
         public bool VisitDefInstruction(DefInstruction def, ExpressionMatch m)
         {

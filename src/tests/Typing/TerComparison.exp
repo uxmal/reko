@@ -22,7 +22,7 @@ proc1_exit:
 Eq_1: (struct "Globals" (1028 Eq_5 t1028))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (4 (ptr32 Eq_5) ptr0004))
-	T_2 (in p : word32)
+	T_2 (in p : (ptr32 Eq_2))
 Eq_5: (struct "foo" 0008)
 	T_5 (in Mem0[p + 4<32>:(ptr32 (struct "foo" 0008))] : (ptr32 (struct "foo" 0008)))
 	T_6 (in 0x1028<32> : word32)
@@ -31,7 +31,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in p : word32)
+T_2: (in p : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (4 T_5 t0004)))

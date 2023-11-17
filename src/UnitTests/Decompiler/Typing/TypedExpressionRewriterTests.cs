@@ -736,7 +736,6 @@ proc1_exit:
             pm.Add("proc1", m =>
             {
                 var eax = m.Reg32("eax", 0);
-                m.Declare(eax, null);
                 m.MStore(m.Ptr32(0x01000), m.Mem16(eax));
                 m.MStore(m.Ptr32(0x01002), m.Mem16(m.IAdd(eax, 2)));
             });
@@ -749,7 +748,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	word32 eax
 	Mem0[0x00001000<p32>:word16] = Mem0[eax:word16]
 	Mem0[0x00001002<p32>:word16] = Mem0[eax + 2<32>:word16]
 proc1_exit:
@@ -761,7 +759,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	struct Eq_2 * eax
 	g_w1000 = eax->w0000
 	g_w1002 = eax->w0002
 proc1_exit:
@@ -780,7 +777,6 @@ proc1_exit:
                 var eax1 = m.Reg32("eax1", 0);
                 var eax2 = m.Reg32("eax2", 0);
                 var eax3 = m.Reg32("eax3", 0);
-                m.Declare(eax1, null);
                 m.Assign(eax2, m.Mem32(eax1));
                 m.Assign(eax3, m.Mem32(eax2));
                 m.MStore(m.Ptr32(0x01004), m.Mem(PrimitiveType.Real32, eax3));
@@ -794,7 +790,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	word32 eax1
 	eax2 = Mem0[eax1:word32]
 	eax3 = Mem0[eax2:word32]
 	Mem0[0x00001004<p32>:real32] = Mem0[eax3:real32]
@@ -807,7 +802,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
 	g_r1004 = *eax3
@@ -825,7 +819,6 @@ proc1_exit:
             pm.Add("proc1", m =>
             {
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, null);
                 m.Assign(r1, m.Mem32(r1));
                 m.MStore(m.Ptr32(0x01004), m.Mem(
                     PrimitiveType.Char,
@@ -843,7 +836,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	word32 r1
 	r1 = Mem0[r1:word32]
 	Mem0[0x00001004<p32>:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 4<32>:char]
 proc1_exit:
@@ -855,7 +847,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	struct Eq_2 * r1
 	r1 = r1->ptr0000
 	g_b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
@@ -873,8 +864,6 @@ proc1_exit:
             {
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
-                m.Declare(r1, null);
-                m.Declare(r2, null);
                 m.Assign(r1, m.Mem32(r1));
                 m.MStore(m.Word32(0x01004), m.Mem(
                     PrimitiveType.Char,
@@ -893,8 +882,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	word32 r1
-	word32 r2
 	r1 = Mem0[r1:word32]
 	Mem0[0x1004<32>:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 4<32>:char]
 	r2 = r1 + 4<32>
@@ -907,8 +894,6 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	struct Eq_2 * r1
-	ptr32 r2
 	r1 = r1->ptr0000
 	g_b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
@@ -960,6 +945,7 @@ test_exit:
             },sExp);
         }
 
+        /*
         [Test]
         public void TerDeclaration2()
         {
@@ -989,6 +975,7 @@ test_exit:
                 m.Declare(PrimitiveType.Word32, "foo", m.Word32(1));
             }, sExp);
         }
+        */
 
         [Test(Description = "Tests that user-provided global names are used in the output")]
         public void TerNamedGlobal()
@@ -1100,8 +1087,8 @@ test_exit:
                     }
                 };
                 var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
-                m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
-                m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
+                m.Assign(eax, m.Mem(PrimitiveType.Word32, v));
+                m.Assign(ecx, m.Mem(PrimitiveType.Word32, eax));
             });
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
@@ -1114,7 +1101,7 @@ test_exit:
             {
                 var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
+                m.Assign(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
@@ -1137,7 +1124,7 @@ test_exit:
                 });
                 var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
+                m.Assign(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
@@ -1253,11 +1240,11 @@ define test
 test_entry:
 	// succ:  l000000000040EC30
 l000000000040EC30:
-	word64 rbx_18 = rdx - 1<64>
+	rbx_18 = rdx - 1<64>
 	branch rdx == 0<64> l000000000040EC69
 	// succ:  l000000000040EC40 l000000000040EC69
 l000000000040EC40:
-	word64 rax_22 = 0x10000040<64>
+	rax_22 = 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
 	Mem0[rdi + rbx_18:byte] = CONVERT(Mem0[Mem0[rax_22:word64] + CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, uint64) * 4<64>:word32], word32, byte)
@@ -1276,11 +1263,11 @@ define test
 test_entry:
 	// succ:  l000000000040EC30
 l000000000040EC30:
-	int64 rbx_18 = rdx - 1<64>
+	rbx_18 = rdx - 1<64>
 	branch rdx == 0<64> l000000000040EC69
 	// succ:  l000000000040EC40 l000000000040EC69
 l000000000040EC40:
-	word32 (** rax_22)[] = (word32 (**)[]) 0x10000040<64>
+	rax_22 = (word32 (**)[]) 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
 	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (*((word64) rsi + rbx_18))) * 4<64>)
@@ -1305,11 +1292,11 @@ test_exit:
                 Identifier rdi = m.Local(PrimitiveType.Word64, "rdi");
 
                 m.Label("l000000000040EC30");
-                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.Assign(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
                 m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
 
                 m.Label("l000000000040EC40");
-                m.Declare(rax_22, m.Word64(0x10000040));
+                m.Assign(rax_22, m.Word64(0x10000040));
 
                 m.Label("l000000000040EC50");
                 m.MStore(m.IAdd(rdi, rbx_18), m.Convert(

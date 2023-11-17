@@ -645,6 +645,7 @@ namespace Reko.Core.Output
             compound.Src.Right.Accept(this);
         }
 
+        /*
         public void VisitDeclaration(Declaration decl)
 		{
 			InnerFormatter.Indent();
@@ -660,6 +661,7 @@ namespace Reko.Core.Output
 			}
 			InnerFormatter.Terminate();
 		}
+        */
 
 		public void VisitDefInstruction(DefInstruction def)
 		{

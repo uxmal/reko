@@ -53,7 +53,7 @@ Eq_3: (segment "Eq_3" (9A26 word16 w9A26) (9A2E word16 w9A2E))
 	T_3 (in ds : (ptr16 Eq_3))
 Eq_12: (struct "Eq_12" 0026 (0 word16 w0000))
 	T_12 (in 0<16> : word16)
-	T_13 (in si_13 : word16)
+	T_13 (in si_13 : (memptr (ptr16 Eq_15) Eq_12))
 	T_29 (in si_13 + 0x26<16> : word16)
 Eq_15: (segment "Eq_15" (0 (arr Eq_32) a0000))
 	T_15 (in 0x5CE1<16> : selector)
@@ -108,7 +108,7 @@ T_12: (in 0<16> : word16)
   Class: Eq_12
   DataType: (memptr (ptr16 Eq_15) Eq_12)
   OrigDataType: word16
-T_13: (in si_13 : word16)
+T_13: (in si_13 : (memptr (ptr16 Eq_15) Eq_12))
   Class: Eq_12
   DataType: (memptr (ptr16 Eq_15) Eq_12)
   OrigDataType: (memptr T_15 (struct 0026 (0 word16 w0000)))

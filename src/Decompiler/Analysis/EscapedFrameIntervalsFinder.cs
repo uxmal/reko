@@ -150,6 +150,7 @@ namespace Reko.Analysis
         {
         }
 
+        /*
         public void VisitDeclaration(Declaration decl)
         {
             if (decl.Expression is not null)
@@ -158,6 +159,7 @@ namespace Reko.Analysis
                 e.Accept(this);
             }
         }
+        */
 
         public void VisitDefInstruction(DefInstruction def)
         {

@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Core.Output
             CompileClassTest(m =>
             {
                 Identifier id = m.Local16("id");
-                m.Declare(id, m.Word16(0x1234));
+                m.Assign(id, m.Word16(0x1234));
                 m.Return();
             });
             string sExp = 
@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Core.Output
 "    Identifier id = Local(PrimitiveType.Word16, \"id\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
-"    Declare(id, Word16(0x1234));" + nl + 
+"    Assign(id, Word16(0x1234));" + nl + 
 "    Return();" + nl + 
 "}" + nl + 
 "" + nl;

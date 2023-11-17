@@ -26,18 +26,18 @@ proc1_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 ci16 w5404))
-	T_2 (in ds : selector)
-	T_3 (in ds2 : selector)
+	T_2 (in ds : (ptr16 Eq_2))
+	T_3 (in ds2 : (ptr16 Eq_2))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in ds : selector)
+T_2: (in ds : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment (5400 T_11 t5400) (5404 T_6 t5404)))
-T_3: (in ds2 : selector)
+T_3: (in ds2 : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment (5404 T_15 t5404)))

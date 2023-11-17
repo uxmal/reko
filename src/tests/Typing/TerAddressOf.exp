@@ -5,7 +5,7 @@ define AddressOf
 AddressOf_entry:
 	// succ:  l1
 l1:
-	word32 r1 = &foo
+	r1 = &foo
 	Mem0[r1:word16] = 0x1234<16>
 	Mem0[r1 + 4<32>:byte] = 0xA<8>
 	return
@@ -19,7 +19,7 @@ define AddressOf
 AddressOf_entry:
 	// succ:  l1
 l1:
-	struct Eq_2 * r1 = &foo
+	r1 = &foo
 	r1->w0000 = 0x1234<16>
 	r1->b0004 = 0xA<8>
 	return
@@ -29,28 +29,28 @@ AddressOf_exit:
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (struct "Eq_2" (0 word16 w0000) (4 byte b0004))
-	T_2 (in r1 : (ptr32 Eq_2))
-	T_4 (in &foo : ptr32)
-Eq_3: <unknown>
-	T_3 (in foo : <unknown>)
+Eq_2: <unknown>
+	T_2 (in foo : Eq_2)
+Eq_3: (struct "Eq_3" (0 word16 w0000) (4 byte b0004))
+	T_3 (in &foo : ptr32)
+	T_4 (in r1 : (ptr32 Eq_3))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in r1 : (ptr32 Eq_2))
+T_2: (in foo : Eq_2)
   Class: Eq_2
-  DataType: (ptr32 Eq_2)
-  OrigDataType: (ptr32 (struct (0 T_8 t0000) (4 T_12 t0004)))
-T_3: (in foo : <unknown>)
-  Class: Eq_3
-  DataType: Eq_3
+  DataType: Eq_2
   OrigDataType: <unknown>
-T_4: (in &foo : ptr32)
-  Class: Eq_2
-  DataType: (ptr32 Eq_2)
+T_3: (in &foo : ptr32)
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
   OrigDataType: (ptr32 <unknown>)
+T_4: (in r1 : (ptr32 Eq_3))
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
+  OrigDataType: (ptr32 (struct "Eq_3"))
 T_5: (in 0x1234<16> : word16)
   Class: Eq_5
   DataType: word16

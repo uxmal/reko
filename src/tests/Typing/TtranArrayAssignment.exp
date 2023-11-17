@@ -4,11 +4,11 @@ define Fn
 Fn_entry:
 	// succ:  l000000000040EC30
 l000000000040EC30:
-	word64 rbx_18 = rdx - 1<64>
+	rbx_18 = rdx - 1<64>
 	branch rdx == 0<64> l000000000040EC69
 	// succ:  l000000000040EC40 l000000000040EC69
 l000000000040EC40:
-	word64 rax_22 = 0x10000040<64>
+	rax_22 = 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
 	Mem0[rdi + rbx_18:byte] = CONVERT(Mem0[rax_22 + 0<64>:word64][CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) * 4<64>], word32, byte)
@@ -28,38 +28,38 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in rbx_18 : word64)
+T_2: (in rdx : word64)
   Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_3: (in 1<64> : word64)
+  Class: Eq_3
+  DataType: word64
+  OrigDataType: word64
+T_4: (in rdx - 1<64> : word64)
+  Class: Eq_4
+  DataType: int64
+  OrigDataType: word64
+T_5: (in rbx_18 : word64)
+  Class: Eq_4
   DataType: int64
   OrigDataType: int64
-T_3: (in rdx : word64)
-  Class: Eq_3
-  DataType: word64
-  OrigDataType: word64
-T_4: (in 1<64> : word64)
-  Class: Eq_4
-  DataType: word64
-  OrigDataType: word64
-T_5: (in rdx - 1<64> : word64)
-  Class: Eq_2
-  DataType: int64
-  OrigDataType: word64
 T_6: (in 0<64> : word64)
-  Class: Eq_3
+  Class: Eq_2
   DataType: word64
   OrigDataType: word64
 T_7: (in rdx == 0<64> : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool
-T_8: (in rax_22 : word64)
-  Class: Eq_8
-  DataType: (ptr64 (ptr64 (arr word32)))
-  OrigDataType: (ptr64 (struct (0 T_12 t0000)))
-T_9: (in 0x10000040<64> : word64)
+T_8: (in 0x10000040<64> : word64)
   Class: Eq_8
   DataType: (ptr64 (ptr64 (arr word32)))
   OrigDataType: word64
+T_9: (in rax_22 : word64)
+  Class: Eq_8
+  DataType: (ptr64 (ptr64 (arr word32)))
+  OrigDataType: (ptr64 (struct (0 T_12 t0000)))
 T_10: (in 0<64> : word64)
   Class: Eq_10
   DataType: word64
@@ -125,11 +125,11 @@ T_25: (in 1<64> : word64)
   DataType: int64
   OrigDataType: int64
 T_26: (in rbx_18 - 1<64> : word64)
-  Class: Eq_2
+  Class: Eq_4
   DataType: int64
   OrigDataType: int64
 T_27: (in 0xFFFFFFFFFFFFFFFF<64> : word64)
-  Class: Eq_2
+  Class: Eq_4
   DataType: int64
   OrigDataType: word64
 T_28: (in rbx_18 != 0xFFFFFFFFFFFFFFFF<64> : bool)

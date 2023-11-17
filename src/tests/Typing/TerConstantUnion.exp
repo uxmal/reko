@@ -25,7 +25,7 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_2 (in 3<i32> : int32)
-	T_3 (in x : word32)
+	T_3 (in x : Eq_2)
 	T_4 (in 3.0F : real32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -36,7 +36,7 @@ T_2: (in 3<i32> : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_3: (in x : word32)
+T_3: (in x : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: real32

@@ -152,12 +152,14 @@ namespace Reko.Typing
             return new SideEffect(new Application(exp, VoidType.Instance));
         }
 
+        /*
         public override Instruction TransformDeclaration(Declaration decl)
         {
             base.TransformDeclaration(decl);
             decl.Identifier.DataType = store.GetTypeVariable(decl.Identifier).DataType;
             return decl;
         }
+        */
 
         public override Instruction TransformStore(Store store)
         {
@@ -284,6 +286,12 @@ namespace Reko.Typing
         public override Expression VisitConstant(Constant c)
         {
             return tcr.Rewrite(c, basePtr, dereferencedType);
+        }
+
+        public override Expression VisitIdentifier(Identifier id)
+        {
+            id.DataType = store.GetTypeVariable(id).DataType;
+            return id;
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)

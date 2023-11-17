@@ -26,6 +26,7 @@ namespace Reko.Core.Code
 	/// <summary>
 	/// Represents a declaration of an identifier, with an optional initial value assignment.
 	/// </summary>
+    [Obsolete("", true)]
 	public class Declaration : Instruction
 	{
 		public Declaration(Identifier id, Expression? init)
@@ -40,24 +41,25 @@ namespace Reko.Core.Code
 
 		public Expression? Expression { get; set; }
 
+
 		public override Instruction Accept(InstructionTransformer xform)
 		{
-			return xform.TransformDeclaration(this);
+            throw new NotSupportedException("return xform.TransformDeclaration(this);");
 		}
 
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
-            return visitor.VisitDeclaration(this);
+            throw new NotSupportedException("return visitor.VisitDeclaration(this);");
         }
 
 		public override void Accept(InstructionVisitor v)
 		{
-			v.VisitDeclaration(this);
+            throw new NotSupportedException("v.VisitDeclaration(this);");
 		}
 
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
-            return visitor.VisitDeclaration(this, ctx);
+            throw new NotSupportedException("return visitor.VisitDeclaration(this, ctx);");
         }
 	}
 }

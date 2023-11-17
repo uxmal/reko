@@ -428,6 +428,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /*
         public bool VisitDeclaration(Declaration decl)
         {
             if (decl.Expression != null)
@@ -438,6 +439,7 @@ namespace Reko.Analysis
             }
             return true;
         }
+        */
 
         public bool VisitDefInstruction(DefInstruction def)
         {
