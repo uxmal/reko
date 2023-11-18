@@ -134,7 +134,8 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
             var i = stms.IndexOf(stm);
             if (i >= 0)
             {
-                if (stm is AbsynAssignment ass)
+                if (stm is AbsynAssignment ass && 
+                    ass.Dst == id)
                 {
                     stms[i] = new AbsynDeclaration(id, ass.Src);
                 }
@@ -160,12 +161,7 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
 
     public int VisitAssignment(AbsynAssignment ass, Path path)
     {
-        if (ass.Dst is Identifier id)
-        {
-            if (!IsLocalIdentifier(id))
-                return 0;
-            EnsurePath(id, path);
-        }
+        AnalyzeExp(path, ass.Dst);
         AnalyzeExp(path, ass.Src);
         return 0;
     }

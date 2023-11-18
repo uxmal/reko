@@ -21,18 +21,16 @@
 namespace Reko.UnitTests.Decompiler.Structure;
 
 using NUnit.Framework;
-using Reko.Core.Output;
 using Reko.Core;
 using Reko.Core.Absyn;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.ImageLoaders.Elf.Relocators;
-using Reko.Core.Operators;
 
 public class DeclarationInserterTests
 {
@@ -267,6 +265,32 @@ test()
         RunTest(sExp, m => {
             var chunk = Identifier.CreateTemporary("chunk", PrimitiveType.Int32);
             m.SideEffect(m.Fn("process", m.Out(chunk.DataType, chunk)));
+        });
+    }
+
+    [Test]
+    public void Deci_Struct_Field_Assigment()
+    {
+        var sExp =
+@"
+test()
+{
+    struct struct_t id;
+    id.foo = 3;
+}
+";
+        RunTest(sExp, m =>
+        {
+            var foo = new StructureField(0, PrimitiveType.Int32, "foo");
+            var id = Identifier.CreateTemporary("id", new StructureType
+            {
+                Name = "struct_t",
+                Fields =
+                {
+                    foo
+                }
+            });
+            m.Assign(m.Field(foo.DataType, id, foo), Constant.Int32(3));
         });
     }
 }

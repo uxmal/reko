@@ -237,8 +237,8 @@ void fn0C00_0000(selector ds)
 		fn0C00_025A(Mem82[0800:53C0:word16], 0x800<16>);
 		selector es_84 = Mem82[0800:53C2:selector];
 		word16 sp_88 = sp_53 - 2<i16>;
-		Mem92[ss:sp_88:word16] = 0x6C34<16>;
 		selector ss;
+		Mem92[ss:sp_88:word16] = 0x6C34<16>;
 		memcpy(es_84:0<16>, Mem92[ss:sp_88:selector]:0<16>, 0x10000<u32>);
 		Mem105[ss:sp_88:word16] = 0x800<16>;
 		selector ds_106 = Mem105[ss:sp_88:selector];
