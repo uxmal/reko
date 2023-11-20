@@ -41,7 +41,7 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// Renders the operand as a string, according to the specified
-        // <paramref name="options" />.
+        /// <paramref name="options" />.
         string ToString(MachineInstructionRendererOptions options);
 
         /// <summary>
@@ -277,28 +277,6 @@ namespace Reko.Core.Machine
         }
     }
 
-    /// <summary>
-    /// Represents a FPU operand.
-    /// </summary>
-	public class FpuOperand : AbstractMachineOperand
-	{
-		private readonly int fpuReg;
-
-		public FpuOperand(int f) : base(PrimitiveType.Real64)
-		{
-			fpuReg = f;
-		}
-
-		public int StNumber
-		{
-			get { return fpuReg; }
-		}
-
-		protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-			renderer.WriteString("st(" + fpuReg + ")");
-		}
-	}
 }
 
 

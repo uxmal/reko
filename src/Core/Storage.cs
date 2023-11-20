@@ -758,6 +758,11 @@ namespace Reko.Core
             Render(renderer, options);
     }
 
+    /// <summary>
+    /// Represents a value that is stored sequentially as a tuple of sub-
+    /// storages (like the dx:ax idiom on x86). Sub-storages are not 
+    /// restricted to being <see cref="RegisterStorage"/>s.
+    /// </summary>
     public class SequenceStorage : Storage, MachineOperand
     {
         public SequenceStorage(params Storage[] elements) : this(
