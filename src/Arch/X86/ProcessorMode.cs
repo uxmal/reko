@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
             var ss = binder.EnsureRegister(Registers.ss);
             var spOffset = MemoryAccess.CreateEffectiveAddress(sp, offset);
             var ea = new SegmentedPointer(this.PointerType, ss, spOffset);
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, dataType);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, dataType);
         }
 
         public RegisterStorage? GetControlRegister(int n)

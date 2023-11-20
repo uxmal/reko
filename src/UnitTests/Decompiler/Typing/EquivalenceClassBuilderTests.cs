@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
 			MemoryAccess mps = new MemoryAccess(
-                MemoryIdentifier.GlobalMemory,
+                MemoryStorage.GlobalMemory,
                 SegmentedPointer.Create(ds, bx),
                 PrimitiveType.Word32);
 			mps.Accept(eqb);

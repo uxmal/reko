@@ -106,9 +106,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         private static List<UserRegisterValue> registersAtPOR
             = new List<UserRegisterValue>();
 
-        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32, MemoryStorage.Instance);
-        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte, MemoryStorage.Instance);
-        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32, MemoryStorage.Instance);
+        public static Identifier GlobalStack = new Identifier("Stack", PrimitiveType.Ptr32, MemoryStorage.Instance);
+        public static Identifier GlobalData = new Identifier("Data", PrimitiveType.Byte, MemoryStorage.Instance);
+        public static Identifier GlobalCode = new Identifier("Code", PrimitiveType.Ptr32, MemoryStorage.Instance);
 
 
         /// <summary>

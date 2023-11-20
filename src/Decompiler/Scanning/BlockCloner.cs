@@ -260,7 +260,7 @@ namespace Reko.Scanning
 
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
-            var mem = (MemoryIdentifier) access.MemoryId.Accept(this);
+            var mem = (Identifier) access.MemoryId.Accept(this);
             var ea = access.EffectiveAddress.Accept(this);
             return new MemoryAccess(mem, ea, access.DataType);
         }

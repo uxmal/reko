@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Mocks
 	{
 		private static RegisterStorage [] registers;
         private static RegisterStorage FlagRegister = RegisterStorage.Reg32("flags", 70);
-        private static MemoryIdentifier ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+        private static Identifier ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
         private static RegisterStorage Top = RegisterStorage.Reg8("Top", 76);
 
         private RtlTraceBuilder rewriters;
@@ -282,7 +282,7 @@ namespace Reko.UnitTests.Mocks
 		}
 
 
-        public MemoryIdentifier FpuStackBase { get; set; }
+        public Identifier FpuStackBase { get; set; }
 
         public override List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {

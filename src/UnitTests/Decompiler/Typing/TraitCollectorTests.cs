@@ -153,9 +153,9 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public void TrcoInductionVariable()
 		{
 			Identifier i = new Identifier("i", PrimitiveType.Word32, null);
-			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
+			MemoryAccess load = new MemoryAccess(MemoryStorage.GlobalMemory, i, PrimitiveType.Int32);
 			Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
-			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
+			MemoryAccess ld2 = new MemoryAccess(MemoryStorage.GlobalMemory, i2, PrimitiveType.Int32);
 
 			LinearInductionVariable iv = new LinearInductionVariable(
 				Constant.Word32(0), 

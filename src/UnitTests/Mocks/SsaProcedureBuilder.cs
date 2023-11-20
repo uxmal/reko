@@ -232,20 +232,21 @@ namespace Reko.UnitTests.Mocks
             ProcessInstruction(phi, stm);
         }
 
-        private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)
+        private Identifier AddMemIdToSsa(Identifier idOld)
         {
             if (Ssa.Identifiers.Contains(idOld))
                 return idOld;
-            MemoryIdentifier idNew;
+            Identifier idNew;
             if (idOld.Storage == MemoryStorage.Instance)
             {
-                idNew = new MemoryIdentifier(
-                    Ssa.Identifiers.Count,
-                    idOld.DataType);
+                idNew = new Identifier(
+                    "Mem" + Ssa.Identifiers.Count,
+                    idOld.DataType,
+                    idOld.Storage);
             }
             else
             {
-                idNew = new MemoryIdentifier(
+                idNew = new Identifier(
                     idOld.Name,
                     idOld.DataType,
                     idOld.Storage);
@@ -256,7 +257,7 @@ namespace Reko.UnitTests.Mocks
         }
 
         public override MemoryAccess Mem(
-            MemoryIdentifier mid,
+            Identifier mid,
             DataType dt,
             Expression ea)
         {

@@ -118,7 +118,7 @@ namespace Reko.Arch.X86.Rewriter
             }
             else
             {
-                return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
+                return m.Mem(dt, expr);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public virtual MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, expr, dt);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, 
+            return new MemoryAccess(MemoryStorage.GlobalMemory, 
                 new SegmentedPointer(
                     arch.ProcessorMode.PointerType,
                     AluRegister(Registers.ss), expr),

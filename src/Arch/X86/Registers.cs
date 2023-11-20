@@ -21,12 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -273,7 +270,7 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage eiz;
 
         public static readonly RegisterStorage Top;     // The x87 stack pointer is modelled explicitly.
-        public static readonly MemoryIdentifier ST;
+        public static readonly Identifier ST;
 
         public static readonly RegisterStorage mxcsr;
 
@@ -539,7 +536,7 @@ namespace Reko.Arch.X86
             // index into the FPU stack, while ST is the memory identifier that
             // identifies the address space that the FPU stack constitutes.
             Top = factory.Reg("Top", PrimitiveType.SByte);
-            ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+            ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
 
             // Control registers: 80 - 88
             // Debug registers: 89 - 96

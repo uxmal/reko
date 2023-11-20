@@ -100,7 +100,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
 
         /// <summary> Hardware Return Address Stack of the PIC. </summary>
-        public static MemoryIdentifier HWStack { get; private set; }
+        public static Identifier HWStack { get; private set; }
 
         /// <summary>
         /// This method sets each of the standard "core" registers of the PIC18.

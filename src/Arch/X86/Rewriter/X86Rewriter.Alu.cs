@@ -1218,7 +1218,7 @@ namespace Reko.Arch.X86.Rewriter
         public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
         {
             var ea = MemIndexPtr(iOp, defaultSeg, indexRegister);
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, instrCur.dataWidth);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, instrCur.dataWidth);
         }
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
@@ -1228,7 +1228,7 @@ namespace Reko.Arch.X86.Rewriter
             {
                 effectiveAddress = new SegmentedPointer(ptrType, defaultSegment, effectiveAddress);
             }
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, instrCur.dataWidth);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, effectiveAddress, instrCur.dataWidth);
         }
 
 		public Identifier RegAl

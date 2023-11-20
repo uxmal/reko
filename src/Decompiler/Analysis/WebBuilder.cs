@@ -86,7 +86,7 @@ namespace Reko.Analysis
 			{
                 bool isLive = web.Uses.Count > 0;
                 bool isOnlyUsedByPhis = web.Uses.All(u => u.Instruction is PhiAssignment);
-                bool isMemoryId = web.Identifier is MemoryIdentifier;
+                bool isMemoryId = web.Identifier?.Storage is MemoryStorage;
                 if (isLive && !isOnlyUsedByPhis && !isMemoryId)
                 {
                     deci.InsertDeclaration(web);
@@ -111,7 +111,7 @@ namespace Reko.Analysis
 
                 foreach (SsaIdentifier id in ssaIds)
                 {
-                    if (id.DefStatement != null && id.Identifier is not MemoryIdentifier)
+                    if (id.DefStatement != null && id.Identifier.Storage is not MemoryStorage)
                         VisitStatement(id.DefStatement);
                 }
 

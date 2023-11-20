@@ -295,7 +295,7 @@ namespace Reko.Typing
 
 		public DataType VisitIdentifier(Identifier id)
 		{
-			if (id is MemoryIdentifier)
+			if (id.Storage is MemoryStorage)
                 return id.DataType ;
 
 			var dt = handler.DataTypeTrait(id, id.DataType);

@@ -230,6 +230,8 @@ namespace Reko.Analysis
         public override Instruction TransformStore(Store store)
         {
             store.Src = store.Src.Accept(this);
+            if (store.Dst.ToString() == "FakeST[Top - 1<8>:real64]")
+                _ = this; //$DEBUG
             store.Dst = TransformDst(store.Dst);
             return store;
         }
@@ -306,12 +308,12 @@ namespace Reko.Analysis
                 this.outer = outer;
             }
 
-            public abstract Expression VisitMemoryIdentifier(MemoryIdentifier id);
+            public abstract Expression VisitMemoryIdentifier(Identifier id);
 
             public override Expression VisitIdentifier(Identifier id)
             {
-                if (id is MemoryIdentifier memoryId)
-                    return VisitMemoryIdentifier(memoryId);
+                if (id.Storage is MemoryStorage)
+                    return VisitMemoryIdentifier(id);
                 var usedId = FindUsedId(outer.call!, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
@@ -329,7 +331,7 @@ namespace Reko.Analysis
                 this.outer = outer;
             }
 
-            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            public override Expression VisitMemoryIdentifier(Identifier id)
             {
                 var sid = outer.ssa.Identifiers.Add(
                     id, outer.stm, false);
@@ -349,7 +351,7 @@ namespace Reko.Analysis
                 this.outer = outer;
             }
 
-            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            public override Expression VisitMemoryIdentifier(Identifier id)
             {
                 var sid = outer.ssa.Identifiers.Add(
                     id, outer.stm, false);

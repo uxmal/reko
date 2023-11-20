@@ -503,7 +503,7 @@ Constants: cl:0x00
             builder.Add("TrfFpuReturn", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
@@ -527,7 +527,7 @@ Constants: cl:0x00
             builder.Add("TrfFpuReturnTwoValues", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
 
@@ -553,7 +553,7 @@ Constants: cl:0x00
             builder.Add("TrfFpuMultiplyAdd", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
                 var dt = PrimitiveType.Real64;
 

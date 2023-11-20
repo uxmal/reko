@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
 		protected MemoryAccess MemLoad(Identifier id, int offset, DataType size)
 		{
-			return new MemoryAccess(MemoryIdentifier.GlobalMemory, 
+			return new MemoryAccess(MemoryStorage.GlobalMemory, 
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(offset)),
 				size);
 		}

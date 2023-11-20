@@ -31,15 +31,15 @@ namespace Reko.UnitTests.Decompiler.Analysis
     public class FpuStackReturnGuesserTests
     {
         private SsaProcedureBuilder m;
-        private MemoryIdentifier ST;
+        private Identifier ST;
         private RegisterStorage Top;
 
         [SetUp]
         public void Setup()
         {
             m = new SsaProcedureBuilder();
-            var stStg = m.RegisterStorage("FakeST", PrimitiveType.Word32);
-            ST = new MemoryIdentifier(stStg.Name, stStg.DataType, stStg);
+            var stStg = new MemoryStorage("FakeST", StorageDomain.Register + 400);
+            ST = new Identifier(stStg.Name, stStg.DataType, stStg);
             ((FakeArchitecture) m.Architecture).FpuStackBase = ST;
             Top = m.Architecture.FpuStackRegister;
         }

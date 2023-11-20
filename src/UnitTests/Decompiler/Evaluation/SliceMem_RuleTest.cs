@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 		public void SliceMem()
 		{
 			var s = new Slice(PrimitiveType.Byte,
-				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
+				new MemoryAccess(MemoryStorage.GlobalMemory, 
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
 			var r = new SliceMem_Rule();
 			var e = r.Match(s, ctx.Object);
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 		public void SliceMem0()
 		{
 			var s = new Slice(PrimitiveType.Word16,
-				new MemoryAccess(MemoryIdentifier.GlobalMemory,
+				new MemoryAccess(MemoryStorage.GlobalMemory,
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
 			var r = new SliceMem_Rule();
 			var e = r.Match(s, ctx.Object);
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var s = new Slice(PrimitiveType.Byte,
                 new MemoryAccess(
-                    MemoryIdentifier.GlobalMemory,
+                    MemoryStorage.GlobalMemory,
                     SegmentedPointer.Create(
                         new Identifier("seg", PrimitiveType.Word16, null),
                         new Identifier("ptr", PrimitiveType.Word16, null)),

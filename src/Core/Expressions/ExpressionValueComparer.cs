@@ -244,15 +244,6 @@ namespace Reko.Core.Expressions
                     return GetHashCodeImpl(m.MemoryId) ^ m.DataType.GetHashCode() ^ 47 * GetHashCodeImpl(m.EffectiveAddress);
                 });
 
-            Add(typeof(MemoryIdentifier),
-                (ea, eb) =>
-                {
-                    return ((MemoryIdentifier)ea).Name == ((Identifier)eb).Name;
-                },
-                delegate(Expression x)
-                {
-                    return ((Identifier)x).Name.GetHashCode();
-                });
             Add(typeof(MkSequence),
                 (ea, eb) =>
                 {

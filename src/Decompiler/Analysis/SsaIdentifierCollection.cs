@@ -38,8 +38,8 @@ namespace Reko.Analysis
 			Identifier idNew;
 			if (stmDef != null)
 			{
-				idNew = idOld is MemoryIdentifier
-					? new MemoryIdentifier(ReplaceNumericSuffix(idOld.Name, i), idOld.DataType, idOld.Storage)
+				idNew = idOld.Storage is MemoryStorage
+					? new Identifier(ReplaceNumericSuffix(idOld.Name, i), idOld.DataType, idOld.Storage)
 					: new Identifier(FormatSsaName(idOld, i), idOld.DataType, StorageOf(idOld));
 			}
 			else

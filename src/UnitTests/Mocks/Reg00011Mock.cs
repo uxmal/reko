@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Mocks
 
         private MemoryAccess LoadW(ushort i)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word16(i), PrimitiveType.Word16);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, Constant.Word16(i), PrimitiveType.Word16);
         }
 	}
 }

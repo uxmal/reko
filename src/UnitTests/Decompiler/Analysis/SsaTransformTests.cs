@@ -2774,7 +2774,7 @@ proc1_exit:
 
             RunTest_FrameAccesses(sExp, m =>
             {
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new Identifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
                 m.Assign(Top, 0);
@@ -3965,7 +3965,7 @@ SsaLocalStackCommonSequence_exit:
                 var a = m.Reg32("a", 1);
                 var stStg = new RegisterStorage(
                     "FakeST", 2, 0, PrimitiveType.Word32);
-                var st = new MemoryIdentifier(
+                var st = new Identifier(
                     stStg.Name, stStg.DataType, stStg);
                 m.Label("init");
                 m.Assign(a, m.Mem(st, PrimitiveType.Word32, m.Word32(0x1)));

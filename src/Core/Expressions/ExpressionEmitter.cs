@@ -780,7 +780,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public MemoryAccess Mem(DataType dt, Expression ea)
         {
-            return Mem(MemoryIdentifier.GlobalMemory, dt, ea);
+            return Mem(MemoryStorage.GlobalMemory, dt, ea);
         }
 
         /// <summary>
@@ -790,7 +790,7 @@ namespace Reko.Core.Expressions
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem(
-            MemoryIdentifier mid,
+            Identifier mid,
             DataType dt,
             Expression ea)
         {
@@ -805,7 +805,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem8(Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Byte);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Byte);
         }
 
         /// <summary>
@@ -816,7 +816,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem16(Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Word16);
         }
 
         /// <summary>
@@ -827,7 +827,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem32(Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word32);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Word32);
         }
 
         /// <summary>
@@ -838,7 +838,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem64(Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word64);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Word64);
         }
 
         /// <summary>
@@ -1155,7 +1155,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public virtual MemoryAccess SegMem(MemoryIdentifier mid, DataType dt, Expression basePtr, Expression offset)
+        public virtual MemoryAccess SegMem(Identifier mid, DataType dt, Expression basePtr, Expression offset)
         {
             int segptrBitsize = basePtr.DataType.BitSize + offset.DataType.BitSize;
             return new MemoryAccess(mid, 
@@ -1173,7 +1173,7 @@ namespace Reko.Core.Expressions
         /// <returns>A segmented memory access expression.</returns>
         public virtual MemoryAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
-            return SegMem(MemoryIdentifier.GlobalMemory, dt, basePtr, offset);
+            return SegMem(MemoryStorage.GlobalMemory, dt, basePtr, offset);
         }
 
         /// <summary>

@@ -86,7 +86,7 @@ namespace Reko.Core
 			// There is always a "variable" for the global memory and the frame
 			// pointer.
 
-            this.Memory = new MemoryIdentifier(0, new UnknownType());
+            this.Memory = new Identifier("Mem0", new UnknownType(), MemoryStorage.Instance);
             this.Identifiers.Add(Memory);
 			this.FramePointer = CreateTemporary("fp", framePointerSize);
             this.Continuation = CreateTemporary("%continuation", codeAddressSize);

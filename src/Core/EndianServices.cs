@@ -169,7 +169,7 @@ namespace Reko.Core
         /// <param name="granularity">Number of bits per memory unit of the currecnt architecture.</param>
         /// <returns>A <see cref="MemoryAccess"/> instance with the offset correctly adjusted
         /// for endianness.</returns>
-        public abstract MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity);
+        public abstract MemoryAccess SliceMemoryAccess(Identifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity);
 
         /// <summary>
         /// Given a stack storage, generate a slice of said storage.
@@ -213,7 +213,7 @@ namespace Reko.Core
 
 
         protected MemoryAccess MakeSlicedMemoryAccess(
-            MemoryIdentifier memoryId,
+            Identifier memoryId,
             Expression effectiveAddress,
             int byteOffset,
             BitRange bitRange)
@@ -309,7 +309,7 @@ namespace Reko.Core
             /// <summary>
             /// <inheritdoc />
             /// </summary>
-            public override MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
+            public override MemoryAccess SliceMemoryAccess(Identifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
             {
                 var byteOffset = bitRange.Lsb / granularity;
 
@@ -405,7 +405,7 @@ namespace Reko.Core
             /// <summary>
             /// <inheritdoc />
             /// </summary>
-            public override MemoryAccess SliceMemoryAccess(MemoryIdentifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
+            public override MemoryAccess SliceMemoryAccess(Identifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
             {
                 var byteOffset = (dataType.BitSize - bitRange.Msb) / granularity;
 

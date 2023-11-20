@@ -385,10 +385,32 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Storage is some unspecified part of global memory.
+    /// This class identifies an address space within a program.
     /// </summary>
+    /// <remarks>
+    /// Instances of <see cref="Reko.Core.Expressions.MemoryAccess"/> need to
+    /// indicate what address space is being used to perform the memory access.
+    /// On von Neumann architectures, where all of memory is treated equal,
+    /// there is only need for the <see cref="GlobalMemory"/>. On
+    /// Harvard architectures, where there may be two or more separate address
+    /// spaces (e.g. one for instructions and one for data), the corresponding 
+    /// <see cref="IProcessorArchitecture"/> implementation must define an 
+    /// appropriate MemoryIdentifier for each separate address space. The 
+    /// IProcessorarchitecture must then ensure that when RtlInstructions for
+    /// memory accesses are generated, they refer to the correct address space.
+    /// <para>
+    /// Later, SSA analysis will break apart memory access
+    /// after each store operation, giving rise to new address space identifiers
+    /// MEM1, MEM2 &c. If ambitious, memory alias analysis can be done. In this
+    /// case, we will have several MEMx variables before SSA, each MEMx variable
+    /// will be an alias class. 
+    /// </para>
+    /// </remarks>
     public class MemoryStorage : Storage
     {
+        public static MemoryStorage Instance { get; } = new MemoryStorage("Mem", StorageDomain.Memory);
+        public static Identifier GlobalMemory { get; } = new Identifier("Mem0", new UnknownType(), MemoryStorage.Instance);
+
         public MemoryStorage(string name, StorageDomain domain) : base(domain, name, null!)
         {
             this.BitAddress = 0;
@@ -432,12 +454,6 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static MemoryStorage Instance { get; }
-
-        static MemoryStorage()
-        {
-            Instance = new MemoryStorage("Mem", StorageDomain.Memory);
-        }
     }
 
     /// <summary>

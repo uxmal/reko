@@ -154,6 +154,7 @@ namespace Reko.Core.Expressions
     /// will be an alias class. 
     /// </para>
     /// </remarks>
+    [Obsolete("", true)]
     public class MemoryIdentifier : Identifier
 	{
 		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, dt, MemoryStorage.Instance)
@@ -163,12 +164,5 @@ namespace Reko.Core.Expressions
         public MemoryIdentifier(string name, DataType dt, Storage stg) : base(name, dt, stg)
         {
         }
-
-		static MemoryIdentifier()
-		{
-			GlobalMemory = new MemoryIdentifier(0, new UnknownType());
-		}
-
-		public static MemoryIdentifier GlobalMemory { get; }
-	}
+    }
 }

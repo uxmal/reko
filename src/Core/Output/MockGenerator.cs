@@ -164,7 +164,7 @@ namespace Reko.Core.Output
         {
             foreach (Identifier id in identifiers)
             {
-                if (id is MemoryIdentifier)
+                if (id.Storage is MemoryStorage)
                     continue;
                 writer.Write("Identifier {0} = ", id.Name);
                 if (id == proc.Frame.FramePointer)

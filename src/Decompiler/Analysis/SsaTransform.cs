@@ -692,11 +692,10 @@ namespace Reko.Analysis
             {
                 var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(fpuStackRegister);
                 var src = m.AddSubSignedInt(fpuStackReg, fpuStackDelta);
-                var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
+                var iCur = stmCur.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(iCur + 1,
                     stmCur.Address,
                     new Assignment(fpuStackReg, src));
-
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
             }
         }
@@ -786,7 +785,7 @@ namespace Reko.Analysis
             // If the guess is wrong, the user can correct it with a 
             // decompilation directive.
 
-            var ids = GuessParameterIdentifiers(ci, stmCur!)
+            var ids = GuessParameterIdentifiers(ci, stmCur)
                 .Concat(ssa.Procedure.EntryBlock.Statements
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
@@ -818,12 +817,12 @@ namespace Reko.Analysis
                      arch.IsStackArgumentOffset(stack.StackOffset) ||
                      calleeStg is MemoryStorage))
                 {
-                    idNew = NewUse(id, stmCur!, true);
+                    idNew = NewUse(id, stmCur, true);
                     ci.Uses.Add(new CallBinding(calleeStg, idNew));
                     existingUses.Add(calleeStg);
                 }
             }
-            //idNew = NewUse(frame.Memory, stmCur!, true);
+            //idNew = NewUse(frame.Memory, stmCur, true);
             //ci.Uses.Add(new CallBinding(frame.Memory.Storage, idNew));
             //existingUses.Add(frame.Memory.Storage);
 
@@ -1002,10 +1001,10 @@ namespace Reko.Analysis
                 {
                     if (acc.EffectiveAddress is SegmentedPointer segptr && segptr.BasePointer is Identifier idSeg)
                     {
-                        ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
+                        ssa.Identifiers[idSeg].Uses.Remove(stmCur);
                     }
-                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
-                    ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur!);
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                    ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur);
                     ssa.Identifiers[acc.MemoryId].DefStatement = null!;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, false);
@@ -1023,7 +1022,7 @@ namespace Reko.Analysis
                     var ea = acc.EffectiveAddress.Accept(this);
                     var memId = acc.MemoryId;
                     if (!this.RenameFrameAccesses)
-                        memId = UpdateMemoryIdentifier(memId, true);
+                        memId = UpdateMemoryIdentifierStore(memId);
                     return new MemoryAccess(memId, ea, acc.DataType);
                 }
             }
@@ -1102,7 +1101,7 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return NewUse(id, stmCur!, false);
+            return NewUse(id, stmCur, false);
         }
 
         public override Expression VisitOutArgument(OutArgument outArg)
@@ -1138,7 +1137,7 @@ namespace Reko.Analysis
             }
             var sid = ssa.Identifiers.Add(idOld, stmCur, isSideEffect);
             var bs = blockstates[block!];
-            var x = factory.Create(idOld, stmCur!);
+            var x = factory.Create(idOld, stmCur);
             return x.WriteVariable(bs, sid);
         }
 
@@ -1161,20 +1160,20 @@ namespace Reko.Analysis
                 {
                     if (access.EffectiveAddress is SegmentedPointer segptr && segptr.BasePointer is Identifier idSeg)
                     {
-                        ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
+                        ssa.Identifiers[idSeg].Uses.Remove(stmCur);
                     }
-                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
-                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                     var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                    var idNew = NewUse(idFrame, stmCur!, true);
+                    var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
                 if (IsConstFpuStackAccess(access))
                 {
-                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
                         ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
-                    var idNew = NewUse(idFrame, stmCur!, true);
+                    var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
             }
@@ -1190,7 +1189,7 @@ namespace Reko.Analysis
                     //$HEURKAPETE
                     // Replace id + c  where id = cOther with c
                     c = bin.Operator.ApplyConstants(bin.DataType, cOther, c);
-                    sid.Uses.Remove(stmCur!);
+                    sid.Uses.Remove(stmCur);
                 }
                 else
                 {
@@ -1202,16 +1201,16 @@ namespace Reko.Analysis
                 c = (ea as Constant)!;
             }
 
-            if (c != null &&
+            if (c is not null &&
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var e = dynamicLinker.ResolveToImportedValue(stmCur!, c);
+                var e = dynamicLinker.ResolveToImportedValue(stmCur, c);
                 if (e != null)
                     return e;
                 ea = c;
             }
-            var memId = UpdateMemoryIdentifier(access.MemoryId, false);
+            var memId = UpdateMemoryIdentifierRead(access.MemoryId);
             return new MemoryAccess(memId, ea, access.DataType);
         }
 
@@ -1222,18 +1221,16 @@ namespace Reko.Analysis
             return new SegmentedPointer(segptr.DataType, basePtr, ea);
         }
 
-        private MemoryIdentifier UpdateMemoryIdentifier(MemoryIdentifier memId, bool storing)
+        private Identifier UpdateMemoryIdentifierStore(Identifier memId)
         {
-            if (storing)
-            {
-                var sid = ssa.Identifiers.Add(memId, this.stmCur!, false);
-                var ss = new RegisterTransformer(memId, stmCur!, this);
-                return (MemoryIdentifier)ss.WriteVariable(blockstates[block!], sid);
-            }
-            else
-            {
-                return (MemoryIdentifier)memId.Accept(this);
-            }
+            var sid = ssa.Identifiers.Add(memId, this.stmCur, false);
+            var ss = new RegisterTransformer(memId, stmCur, this);
+            return ss.WriteVariable(blockstates[block!], sid);
+        }
+
+        private Identifier UpdateMemoryIdentifierRead(Identifier memId)
+        {
+            return (Identifier)memId.Accept(this);
         }
 
         private static bool IsFrameAccess(Procedure proc, Expression e)

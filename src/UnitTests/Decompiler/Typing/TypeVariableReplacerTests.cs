@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
 		private MemoryAccess MemLoad(Identifier id, int offset, PrimitiveType size)
 		{
-			return new MemoryAccess(MemoryIdentifier.GlobalMemory,
+			return new MemoryAccess(MemoryStorage.GlobalMemory,
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Int32, id, Constant.Word32(offset)),
 				size);
 		}

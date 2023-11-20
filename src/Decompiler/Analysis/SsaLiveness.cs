@@ -38,8 +38,8 @@ namespace Reko.Analysis
                 this.LiveOut = new List<SsaIdentifier>();
             }
 
-            public List<SsaIdentifier> LiveIn { get; private set; }
-            public List<SsaIdentifier> LiveOut { get; private set; }
+            public List<SsaIdentifier> LiveIn { get; }
+            public List<SsaIdentifier> LiveOut { get; }
         }
 
 		private readonly SsaIdentifierCollection ssaIds;

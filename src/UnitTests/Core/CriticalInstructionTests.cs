@@ -48,13 +48,13 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void LoadTest()
 		{
-			Assert.IsFalse(CriticalInstruction.IsCritical(new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(1), PrimitiveType.Byte)));
+			Assert.IsFalse(CriticalInstruction.IsCritical(new MemoryAccess(MemoryStorage.GlobalMemory, Constant.Word32(1), PrimitiveType.Byte)));
 		}
 
 		[Test]
 		public void StoreTest()
 		{
-			Assert.IsTrue(CriticalInstruction.IsCritical(new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, foo, PrimitiveType.Byte), Constant.Word32(3))));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new Store(new MemoryAccess(MemoryStorage.GlobalMemory, foo, PrimitiveType.Byte), Constant.Word32(3))));
 		}
 
 		[Test]

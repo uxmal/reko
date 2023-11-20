@@ -210,7 +210,7 @@ namespace Reko.Analysis
             // Attempt to inject a Mem[sp_xx + offset] expression if possible.
             if (guessStackArgs &&
                 map.TryGetValue(arch.StackRegister, out var stackBinding) &&
-                this.TryFindMemBeforeCall(this.uses.Values, out MemoryIdentifier? memId))
+                this.TryFindMemBeforeCall(this.uses.Values, out Identifier? memId))
             {
                 var sp_ssa = stackBinding.Expression;
                 if (sp_ssa != null)
@@ -231,7 +231,7 @@ namespace Reko.Analysis
 
         private bool TryFindMemBeforeCall(
             IEnumerable<CallBinding> uses,
-            [MaybeNullWhen(false)] out MemoryIdentifier? memId)
+            [MaybeNullWhen(false)] out Identifier? memId)
         {
             // See if there is a Mem captured by the call. This happens in
             // SsaTransform.GenerateUseDefsVarargs and SsaTransform.GenerateUseDefsForUnknownCallee
@@ -242,7 +242,7 @@ namespace Reko.Analysis
             {
                 if (use.Storage is MemoryStorage)
                 {
-                    memId = (MemoryIdentifier) use.Expression;
+                    memId = (Identifier) use.Expression;
                     return true;
                 }
             }

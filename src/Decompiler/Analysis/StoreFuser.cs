@@ -66,7 +66,7 @@ namespace Reko.Analysis
         private record Candidate(
             BitRange Slice, 
             Statement Statement, 
-            MemoryIdentifier MemoryId,
+            Identifier MemoryId,
             Expression? Segment, 
             Expression? EffectiveAddress, 
             long Displacement);

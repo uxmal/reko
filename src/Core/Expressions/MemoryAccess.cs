@@ -41,7 +41,7 @@ namespace Reko.Core.Expressions
         public MemoryAccess(Expression ea, DataType dt)
             : base(dt)
         {
-            this.MemoryId = MemoryIdentifier.GlobalMemory;
+            this.MemoryId = MemoryStorage.GlobalMemory;
             this.EffectiveAddress = ea;
         }
 
@@ -52,14 +52,14 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="effectiveAddress">Effective address of the access.</param>
         /// <param name="dt">Data type of the access.</param>
-        public MemoryAccess(MemoryIdentifier space, Expression effectiveAddress, DataType dt)
+        public MemoryAccess(Identifier space, Expression effectiveAddress, DataType dt)
             : base(dt)
         {
             this.MemoryId = space;
             this.EffectiveAddress = effectiveAddress ?? throw new ArgumentNullException(nameof(effectiveAddress));
         }
 
-        public MemoryIdentifier MemoryId { get; }
+        public Identifier MemoryId { get; }
         public Expression EffectiveAddress { get; }
 
         public override IEnumerable<Expression> Children
@@ -89,7 +89,7 @@ namespace Reko.Core.Expressions
 
         public static MemoryAccess Create(Expression baseRegister, int offset, DataType dt)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, CreateEffectiveAddress(baseRegister, offset), dt);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, CreateEffectiveAddress(baseRegister, offset), dt);
         }
 
         public static Expression CreateEffectiveAddress(Expression baseRegister, int offset)

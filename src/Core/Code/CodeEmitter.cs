@@ -87,7 +87,7 @@ namespace Reko.Core.Code
 
         public void LoadId(Identifier reg, Expression ea)
         {
-            Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
+            Assign(reg, new MemoryAccess(MemoryStorage.GlobalMemory, ea, reg.DataType));
         }
 
         public virtual void Return()
@@ -137,11 +137,11 @@ namespace Reko.Core.Code
         /// <param name="src">R-Value.</param>
         public Statement MStore(Expression ea, Expression src)
         {
-            var s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
+            var s = new Store(new MemoryAccess(MemoryStorage.GlobalMemory, ea, src.DataType), src);
             return Emit(s);
         }
 
-        public Statement MStore(MemoryIdentifier mem, Expression ea, Expression src)
+        public Statement MStore(Identifier mem, Expression ea, Expression src)
         {
             var s = new Store(new MemoryAccess(mem, ea, src.DataType), src);
             return Emit(s);

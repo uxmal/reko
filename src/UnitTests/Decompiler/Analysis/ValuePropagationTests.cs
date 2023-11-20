@@ -320,7 +320,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
 			Identifier r = m.Reg32("r");
 
-            var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
+            var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryStorage.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			var exp = sub.Accept(vp).Item1;
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());

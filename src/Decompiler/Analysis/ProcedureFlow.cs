@@ -40,7 +40,7 @@ namespace Reko.Analysis
         public FunctionType? Signature { get; set; }
 
         /// <summary>
-        /// A collection of all each storage that is live-in to the procedure,
+        /// A collection of each storage that is live-in to the procedure,
         /// and the bits that are live in.
         /// </summary>
         public Dictionary<Storage, BitRange> BitsUsed;

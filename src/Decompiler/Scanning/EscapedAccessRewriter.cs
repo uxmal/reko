@@ -43,7 +43,7 @@ namespace Reko.Scanning
 		private Instruction Def(Identifier id, Expression src)
 		{
 			if (IsLocal(id))
-				return new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, EffectiveAddress(id), id.DataType), src);
+				return new Store(new MemoryAccess(MemoryStorage.GlobalMemory, EffectiveAddress(id), id.DataType), src);
 			else 
 				return new Assignment(id, src);
 		}
@@ -122,7 +122,7 @@ namespace Reko.Scanning
 		public override Expression VisitIdentifier(Identifier id)
 		{
 			if (IsLocal(id))
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, EffectiveAddress(id), id.DataType);
+				return new MemoryAccess(MemoryStorage.GlobalMemory, EffectiveAddress(id), id.DataType);
 			else
 				return id;
 		}

@@ -222,7 +222,7 @@ namespace Reko.Core.Code
 		public virtual Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			var ea = access.EffectiveAddress.Accept(this);
-			var memId = (MemoryIdentifier) access.MemoryId.Accept(this);
+			var memId = (Identifier) access.MemoryId.Accept(this);
 			return new MemoryAccess(memId, ea, access.DataType);
 		}
 
