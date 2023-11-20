@@ -172,8 +172,6 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         {
         case GlobalStorage: return false;
         case MemoryStorage: return false;
-        case StackStorage stk:
-            return !proc.Architecture.IsStackArgumentOffset(stk.StackOffset);
         }
         return !parameters.Contains(id.Name);
     }
