@@ -133,7 +133,7 @@ namespace Reko.Core.Loading
     /// </summary>
     public class OrdinalImportReference : ImportReference
     {
-        public int Ordinal;
+        public int Ordinal { get; }
 
         public OrdinalImportReference(Address addr, string moduleName, int ordinal, SymbolType symType)
             : base(addr, moduleName, MakeEntryName(moduleName, ordinal), symType)

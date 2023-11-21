@@ -101,23 +101,6 @@ namespace Reko.Structure
             stms.Add(new AbsynLineComment(comment.Text));
         }
 
-        /*
-        void InstructionVisitor.VisitDeclaration(Declaration decl)
-        {
-            if (StripDeclarations)
-            {
-                if (decl.Expression != null)
-                {
-                    stms.Add(new AbsynAssignment(decl.Identifier, decl.Expression));
-                }
-            }
-            else
-            {
-                stms.Add(new AbsynDeclaration(decl.Identifier, decl.Expression));
-            }
-        }
-        */
-
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
             stms.Add(new AbsynLineComment(def.ToString()));

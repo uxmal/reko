@@ -49,7 +49,7 @@ namespace Reko.Core.Expressions
 		void VisitPointerAddition(PointerAddition pa);
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
-		void VisitSegmentedAddress(SegmentedPointer address);
+        void VisitSegmentedAddress(SegmentedPointer address);
         void VisitSlice(Slice slice);
         void VisitStringConstant(StringConstant str);
         void VisitTestCondition(TestCondition tc);

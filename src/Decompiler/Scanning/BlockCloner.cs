@@ -123,13 +123,6 @@ namespace Reko.Scanning
             return new CodeComment(comment.Text);
         }
 
-        /*
-        public Instruction VisitDeclaration(Declaration decl)
-        {
-            throw new NotImplementedException();
-        }
-        */
-
         public Instruction VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();

@@ -132,7 +132,6 @@ namespace Reko.Core.Operators
         {
             return type switch
             {
-
                 OperatorType.Eq or OperatorType.Ne or
                 OperatorType.Ge or OperatorType.Gt or
                 OperatorType.Le or OperatorType.Lt or

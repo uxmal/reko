@@ -38,10 +38,6 @@ namespace Reko.Core.Assemblers
         /// </summary>
         Program Assemble(Address baseAddress, string filename, TextReader reader);
 
-        [Obsolete("", true)]
-        public Program Assemble(Address baseAddress, TextReader reader) =>
-            this.Assemble(baseAddress, "<unknown>", reader);
-
         Program AssembleFragment(Address baseAddress, string asmFragment);
 
         /// <summary>

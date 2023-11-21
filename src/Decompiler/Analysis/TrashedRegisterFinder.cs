@@ -428,19 +428,6 @@ namespace Reko.Analysis
             return true;
         }
 
-        /*
-        public bool VisitDeclaration(Declaration decl)
-        {
-            if (decl.Expression != null)
-            {
-                var (value, _) = decl.Expression.Accept(eval!);
-                trace.Verbose("{0} = [{1}]", decl.Identifier, value);
-                ctx!.SetValue(decl.Identifier, value);
-            }
-            return true;
-        }
-        */
-
         public bool VisitDefInstruction(DefInstruction def)
         {
             var id = def.Identifier;

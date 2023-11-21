@@ -59,7 +59,8 @@ namespace Reko.Core.IO
 			data.Span.CopyTo(dest.Span, dstOffset);
 		}
 
-		public unsafe static void WriteBytes(this Span<byte> data, int offset, byte[] bytes) {
+        public unsafe static void WriteBytes(this Span<byte> data, int offset, byte[] bytes)
+        {
 			var start = data.Slice(offset, bytes.Length);
 			var dspan = new Span<byte>(bytes);
 			dspan.CopyTo(start);

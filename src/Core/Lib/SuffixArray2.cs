@@ -202,7 +202,7 @@ namespace Reko.Core.Lib
             return new SuffixArray2(sa, lcp);
         }
 
-        public SuffixArray2(int[] sa, int [] lcp)
+        public SuffixArray2(int[] sa, int[] lcp)
         {
             this.SuffixArray = sa;
             this.Lcp = lcp;

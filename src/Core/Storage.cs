@@ -388,7 +388,7 @@ namespace Reko.Core
     /// This class identifies an address space within a program.
     /// </summary>
     /// <remarks>
-    /// Instances of <see cref="Reko.Core.Expressions.MemoryAccess"/> need to
+    /// Instances of <see cref="MemoryAccess"/> need to
     /// indicate what address space is being used to perform the memory access.
     /// On von Neumann architectures, where all of memory is treated equal,
     /// there is only need for the <see cref="GlobalMemory"/>. On

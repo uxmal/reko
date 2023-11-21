@@ -1454,10 +1454,10 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("cpush (illegal scope); (4)");
                 break;
             case 1:
-                dasm.g_dasm_str = string.Format("cpushl  {0}, (A%d); (4)", (uInstr >> 6) & 3, uInstr & 7);
+                dasm.g_dasm_str = string.Format("cpushl  {0}, (A{1}); (4)", (uInstr >> 6) & 3, uInstr & 7);
                 break;
             case 2:
-                dasm.g_dasm_str = string.Format("cpushp  {0}, (A%d); (4)", (uInstr >> 6) & 3, uInstr & 7);
+                dasm.g_dasm_str = string.Format("cpushp  {0}, (A{1}); (4)", (uInstr >> 6) & 3, uInstr & 7);
                 break;
             case 3:
                 dasm.g_dasm_str = string.Format("cpusha  {0}; (4)", (uInstr >> 6) & 3);

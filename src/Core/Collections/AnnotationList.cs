@@ -22,8 +22,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Collections
 {
@@ -54,7 +52,7 @@ namespace Reko.Core.Collections
             }
             set
             {
-                if (value == null)
+                if (value is null)
                     annotations.Remove(addr);
                 else
                     annotations[addr] = value;

@@ -69,15 +69,6 @@ namespace Reko.Core.Code
             return codeComment;
         }
 
-        /*
-        public virtual Instruction TransformDeclaration(Declaration decl)
-		{
-			if (decl.Expression != null)
-				decl.Expression = decl.Expression.Accept(this);
-			return decl;
-		}
-        */
-
 		public virtual Instruction TransformDefInstruction(DefInstruction def)
 		{
 			return def;

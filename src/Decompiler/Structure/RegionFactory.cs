@@ -78,13 +78,6 @@ namespace Reko.Structure
             return new AbsynLineComment(comment.Text);
         }
 
-        /*
-        public AbsynStatement VisitDeclaration(Declaration decl)
-        {
-            return new AbsynDeclaration(decl.Identifier, decl.Expression);
-        }
-        */
-
         public AbsynStatement VisitDefInstruction(DefInstruction def)
         {
             //$TODO: should there be a warning? DefInstructions should have been

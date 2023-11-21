@@ -49,7 +49,7 @@ namespace Reko.Core.Expressions
             return v.VisitScopeResolution(this);
         }
 
-		public override void Accept(IExpressionVisitor visit)
+        public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitScopeResolution(this);
 		}

@@ -115,13 +115,6 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
-        /*
-        public void VisitDeclaration(Declaration decl)
-        {
-            throw new NotImplementedException();
-        }
-        */
-
         public void VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();

@@ -293,20 +293,6 @@ namespace Reko.Core.Output
             writer.WriteLine(");");
         }
 
-        /*
-        void InstructionVisitor.VisitDeclaration(Declaration decl)
-        {
-            Method("Declare");
-            writer.Write(decl.Identifier.Name);
-            if (decl.Expression != null)
-            {
-                writer.Write(", ");
-                decl.Expression.Accept(this);
-            }
-            writer.WriteLine(");");
-        }
-        */
-
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
             Method("Def");

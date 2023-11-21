@@ -18,16 +18,14 @@
  */
 #endregion
 
-using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Reko.Core.Collections
 {
-	/// <summary>
-	/// Extension methods on SortedList that provide support for lower- and
+    /// <summary>
+    /// Extension methods on SortedList that provide support for lower- and
     /// upper bound searchers.
-	/// </summary>
+    /// </summary>
     public static class SortedListEx
     {
         public static bool TryGetLowerBound<K,V>(this SortedList<K, V> list, K key, out V value)

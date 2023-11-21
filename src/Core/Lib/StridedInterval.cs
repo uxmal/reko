@@ -32,16 +32,16 @@ namespace Reko.Core.Lib
     /// A stride of 0 implies a constant value or singleton.
     /// A negative stride is interpreted as the empty set.
     /// </remarks>
-    public struct StridedInterval
+    public readonly struct StridedInterval
     {
         public readonly long Low;
         public readonly long High;
         public readonly int Stride;
 
         // The empty set.
-        public readonly static StridedInterval Empty = new StridedInterval(-1, 0, 0);
+        public static StridedInterval Empty { get; } = new StridedInterval(-1, 0, 0);
         // The universal set.
-        public readonly static StridedInterval All = new StridedInterval(1, long.MinValue, long.MaxValue);
+        public static StridedInterval All { get; } = new StridedInterval(1, long.MinValue, long.MaxValue);
 
         /// <summary>
         /// Creates a strided interval containing a single value <paramref name="c"/>.

@@ -56,13 +56,6 @@ namespace Reko.Core.Code
             d.VisitComment(comment);
         }
 
-        /*
-        public void VisitDeclaration(Declaration decl)
-        {
-            d.VisitDeclaration(decl);
-        }
-        */
-
         public void VisitDefInstruction(DefInstruction def)
         {
             d.VisitDefInstruction(def);

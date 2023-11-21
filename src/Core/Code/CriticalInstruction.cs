@@ -64,15 +64,6 @@ namespace Reko.Core.Code
             return true;
         }
 
-        /*
-        public bool VisitDeclaration(Declaration decl)
-        {
-            return decl.Expression != null
-                ? decl.Expression.Accept(this)
-                : false;
-        }
-        */
-
         public bool VisitDefInstruction(DefInstruction def)
         {
             return false;

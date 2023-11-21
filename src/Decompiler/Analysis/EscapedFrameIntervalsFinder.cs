@@ -150,17 +150,6 @@ namespace Reko.Analysis
         {
         }
 
-        /*
-        public void VisitDeclaration(Declaration decl)
-        {
-            if (decl.Expression is not null)
-            {
-                var (e, _) = decl.Expression.Accept(eval);
-                e.Accept(this);
-            }
-        }
-        */
-
         public void VisitDefInstruction(DefInstruction def)
         {
         }

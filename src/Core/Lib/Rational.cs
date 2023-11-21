@@ -28,7 +28,7 @@ namespace Reko.Core.Lib
     /// <summary>
     /// Simplistic implementation of rational numbers.
     /// </summary>
-    public struct Rational
+    public readonly struct Rational
     {
         public static Rational FromIntegers(long num, long den)
         {
@@ -117,7 +117,7 @@ namespace Reko.Core.Lib
             return (double)Numerator / (double)Denominator;
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format("{0}/{1}", Numerator, Denominator);
         }

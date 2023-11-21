@@ -645,24 +645,6 @@ namespace Reko.Core.Output
             compound.Src.Right.Accept(this);
         }
 
-        /*
-        public void VisitDeclaration(Declaration decl)
-		{
-			InnerFormatter.Indent();
-            Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
-
-            var tf = new TypeReferenceFormatter(InnerFormatter);
-            tf.WriteDeclaration(decl.Identifier.DataType ?? new UnknownType(), decl.Identifier.Name);
-            
-            if (decl.Expression != null)
-			{
-				InnerFormatter.Write(" = ");
-				decl.Expression.Accept(this);
-			}
-			InnerFormatter.Terminate();
-		}
-        */
-
 		public void VisitDefInstruction(DefInstruction def)
 		{
 			InnerFormatter.Indent();

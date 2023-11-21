@@ -152,15 +152,6 @@ namespace Reko.Typing
             return new SideEffect(new Application(exp, VoidType.Instance));
         }
 
-        /*
-        public override Instruction TransformDeclaration(Declaration decl)
-        {
-            base.TransformDeclaration(decl);
-            decl.Identifier.DataType = store.GetTypeVariable(decl.Identifier).DataType;
-            return decl;
-        }
-        */
-
         public override Instruction TransformStore(Store store)
         {
             return MakeAssignment(store.Dst, store.Src);

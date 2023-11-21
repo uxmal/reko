@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable disable
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -55,7 +53,9 @@ namespace Reko.Core.Hll.C
             this.grammar = new CGrammar();
         }
 
-        public ParserState ParserState { get; private set; }
+        public ParserState ParserState { get; }
+
+#nullable disable
 
         //------------------ token sets ------------------------------------
 

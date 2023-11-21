@@ -48,7 +48,6 @@ override Reko.Analysis.InstructionUseAdder.UseIdentifier(Reko.Core.Expressions.I
 override Reko.Analysis.InstructionUseCollector.UseIdentifier(Reko.Core.Expressions.Identifier! id) -> void
 override Reko.Analysis.InstructionUseVisitorBase.VisitAssignment(Reko.Core.Code.Assignment! a) -> void
 override Reko.Analysis.InstructionUseVisitorBase.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> void
-override Reko.Analysis.InstructionUseVisitorBase.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> void
 override Reko.Analysis.InstructionUseVisitorBase.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> void
 override Reko.Analysis.InstructionUseVisitorBase.VisitIdentifier(Reko.Core.Expressions.Identifier! id) -> void
 override Reko.Analysis.InstructionUseVisitorBase.VisitOutArgument(Reko.Core.Expressions.OutArgument! outArg) -> void
@@ -180,7 +179,6 @@ override Reko.Typing.EquivalenceClassBuilder.VisitConditionalExpression(Reko.Cor
 override Reko.Typing.EquivalenceClassBuilder.VisitConditionOf(Reko.Core.Expressions.ConditionOf! cof) -> void
 override Reko.Typing.EquivalenceClassBuilder.VisitConstant(Reko.Core.Expressions.Constant! c) -> void
 override Reko.Typing.EquivalenceClassBuilder.VisitConversion(Reko.Core.Expressions.Conversion! conversion) -> void
-override Reko.Typing.EquivalenceClassBuilder.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> void
 override Reko.Typing.EquivalenceClassBuilder.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> void
 override Reko.Typing.EquivalenceClassBuilder.VisitDereference(Reko.Core.Expressions.Dereference! deref) -> void
 override Reko.Typing.EquivalenceClassBuilder.VisitFieldAccess(Reko.Core.Expressions.FieldAccess! acc) -> void
@@ -217,7 +215,6 @@ override Reko.Typing.PtrPrimitiveReplacer.VisitStructure(Reko.Core.Types.Structu
 override Reko.Typing.PtrPrimitiveReplacer.VisitTypeVariable(Reko.Core.Types.TypeVariable! tv) -> Reko.Core.Types.DataType!
 override Reko.Typing.TypedExpressionRewriter.TransformAssignment(Reko.Core.Code.Assignment! a) -> Reko.Core.Code.Instruction!
 override Reko.Typing.TypedExpressionRewriter.TransformCallInstruction(Reko.Core.Code.CallInstruction! ci) -> Reko.Core.Code.Instruction!
-override Reko.Typing.TypedExpressionRewriter.TransformDeclaration(Reko.Core.Code.Declaration! decl) -> Reko.Core.Code.Instruction!
 override Reko.Typing.TypedExpressionRewriter.TransformSideEffect(Reko.Core.Code.SideEffect! side) -> Reko.Core.Code.Instruction!
 override Reko.Typing.TypedExpressionRewriter.TransformStore(Reko.Core.Code.Store! store) -> Reko.Core.Code.Instruction!
 override Reko.Typing.TypedExpressionRewriter.VisitAddress(Reko.Core.Address! addr) -> Reko.Core.Expressions.Expression!
@@ -357,7 +354,6 @@ Reko.Analysis.EscapedFrameIntervalsFinder.VisitAssignment(Reko.Core.Code.Assignm
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitBranch(Reko.Core.Code.Branch! branch) -> void
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> void
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitComment(Reko.Core.Code.CodeComment! code) -> void
-Reko.Analysis.EscapedFrameIntervalsFinder.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> void
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> void
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! gotoInstruction) -> void
 Reko.Analysis.EscapedFrameIntervalsFinder.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> void
@@ -408,7 +404,6 @@ Reko.Analysis.IntraBlockDeadRegisters.VisitAssignment(Reko.Core.Code.Assignment!
 Reko.Analysis.IntraBlockDeadRegisters.VisitBranch(Reko.Core.Code.Branch! branch) -> bool
 Reko.Analysis.IntraBlockDeadRegisters.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> bool
 Reko.Analysis.IntraBlockDeadRegisters.VisitComment(Reko.Core.Code.CodeComment! comment) -> bool
-Reko.Analysis.IntraBlockDeadRegisters.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> bool
 Reko.Analysis.IntraBlockDeadRegisters.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> bool
 Reko.Analysis.IntraBlockDeadRegisters.VisitFlagGroupStorage(Reko.Core.FlagGroupStorage! grf, bool defining) -> bool
 Reko.Analysis.IntraBlockDeadRegisters.VisitFpuStackStorage(Reko.Core.FpuStackStorage! fpu, bool defining) -> bool
@@ -795,7 +790,6 @@ Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Reko.Core.Code.Assignment! a
 Reko.Analysis.TrashedRegisterFinder.VisitBranch(Reko.Core.Code.Branch! branch) -> bool
 Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> bool
 Reko.Analysis.TrashedRegisterFinder.VisitComment(Reko.Core.Code.CodeComment! comment) -> bool
-Reko.Analysis.TrashedRegisterFinder.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> bool
 Reko.Analysis.TrashedRegisterFinder.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> bool
 Reko.Analysis.TrashedRegisterFinder.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! g) -> bool
 Reko.Analysis.TrashedRegisterFinder.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> bool
@@ -842,7 +836,6 @@ Reko.Analysis.UsedRegisterFinder.VisitConditionalExpression(Reko.Core.Expression
 Reko.Analysis.UsedRegisterFinder.VisitConditionOf(Reko.Core.Expressions.ConditionOf! cof) -> Reko.Core.BitRange
 Reko.Analysis.UsedRegisterFinder.VisitConstant(Reko.Core.Expressions.Constant! c) -> Reko.Core.BitRange
 Reko.Analysis.UsedRegisterFinder.VisitConversion(Reko.Core.Expressions.Conversion! conversion) -> Reko.Core.BitRange
-Reko.Analysis.UsedRegisterFinder.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> Reko.Core.BitRange
 Reko.Analysis.UsedRegisterFinder.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> Reko.Core.BitRange
 Reko.Analysis.UsedRegisterFinder.VisitDereference(Reko.Core.Expressions.Dereference! deref) -> Reko.Core.BitRange
 Reko.Analysis.UsedRegisterFinder.VisitFieldAccess(Reko.Core.Expressions.FieldAccess! acc) -> Reko.Core.BitRange
@@ -874,7 +867,6 @@ Reko.Analysis.ValuePropagator.VisitAssignment(Reko.Core.Code.Assignment! a) -> (
 Reko.Analysis.ValuePropagator.VisitBranch(Reko.Core.Code.Branch! b) -> (Reko.Core.Code.Instruction!, bool)
 Reko.Analysis.ValuePropagator.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> (Reko.Core.Code.Instruction!, bool)
 Reko.Analysis.ValuePropagator.VisitComment(Reko.Core.Code.CodeComment! comment) -> (Reko.Core.Code.Instruction!, bool)
-Reko.Analysis.ValuePropagator.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> (Reko.Core.Code.Instruction!, bool)
 Reko.Analysis.ValuePropagator.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> (Reko.Core.Code.Instruction!, bool)
 Reko.Analysis.ValuePropagator.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! gotoInstruction) -> (Reko.Core.Code.Instruction!, bool)
 Reko.Analysis.ValuePropagator.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> (Reko.Core.Code.Instruction!, bool)
@@ -999,7 +991,6 @@ Reko.Evaluation.InstructionMatcher.VisitAssignment(Reko.Core.Code.Assignment! as
 Reko.Evaluation.InstructionMatcher.VisitBranch(Reko.Core.Code.Branch! branch) -> bool
 Reko.Evaluation.InstructionMatcher.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> bool
 Reko.Evaluation.InstructionMatcher.VisitComment(Reko.Core.Code.CodeComment! comment) -> bool
-Reko.Evaluation.InstructionMatcher.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> bool
 Reko.Evaluation.InstructionMatcher.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> bool
 Reko.Evaluation.InstructionMatcher.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! gotoInstruction) -> bool
 Reko.Evaluation.InstructionMatcher.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> bool
@@ -1311,7 +1302,6 @@ Reko.Scanning.BlockCloner.VisitConditionalExpression(Reko.Core.Expressions.Condi
 Reko.Scanning.BlockCloner.VisitConditionOf(Reko.Core.Expressions.ConditionOf! cof) -> Reko.Core.Expressions.Expression!
 Reko.Scanning.BlockCloner.VisitConstant(Reko.Core.Expressions.Constant! c) -> Reko.Core.Expressions.Expression!
 Reko.Scanning.BlockCloner.VisitConversion(Reko.Core.Expressions.Conversion! conversion) -> Reko.Core.Expressions.Expression!
-Reko.Scanning.BlockCloner.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> Reko.Core.Code.Instruction!
 Reko.Scanning.BlockCloner.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> Reko.Core.Code.Instruction!
 Reko.Scanning.BlockCloner.VisitDereference(Reko.Core.Expressions.Dereference! deref) -> Reko.Core.Expressions.Expression!
 Reko.Scanning.BlockCloner.VisitFieldAccess(Reko.Core.Expressions.FieldAccess! acc) -> Reko.Core.Expressions.Expression!
@@ -1932,7 +1922,6 @@ Reko.Structure.RegionFactory.VisitAssignment(Reko.Core.Code.Assignment! ass) -> 
 Reko.Structure.RegionFactory.VisitBranch(Reko.Core.Code.Branch! branch) -> Reko.Core.Absyn.AbsynStatement?
 Reko.Structure.RegionFactory.VisitCallInstruction(Reko.Core.Code.CallInstruction! ci) -> Reko.Core.Absyn.AbsynStatement!
 Reko.Structure.RegionFactory.VisitComment(Reko.Core.Code.CodeComment! comment) -> Reko.Core.Absyn.AbsynStatement!
-Reko.Structure.RegionFactory.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> Reko.Core.Absyn.AbsynStatement!
 Reko.Structure.RegionFactory.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> Reko.Core.Absyn.AbsynStatement!
 Reko.Structure.RegionFactory.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! gotoInstruction) -> Reko.Core.Absyn.AbsynStatement!
 Reko.Structure.RegionFactory.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> Reko.Core.Absyn.AbsynStatement!
@@ -2230,7 +2219,6 @@ Reko.Typing.TraitCollector.VisitConditionalExpression(Reko.Core.Expressions.Cond
 Reko.Typing.TraitCollector.VisitConditionOf(Reko.Core.Expressions.ConditionOf! cof) -> Reko.Core.Types.DataType!
 Reko.Typing.TraitCollector.VisitConstant(Reko.Core.Expressions.Constant! c) -> Reko.Core.Types.DataType!
 Reko.Typing.TraitCollector.VisitConversion(Reko.Core.Expressions.Conversion! conversion) -> Reko.Core.Types.DataType!
-Reko.Typing.TraitCollector.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> Reko.Core.Types.DataType?
 Reko.Typing.TraitCollector.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> Reko.Core.Types.DataType?
 Reko.Typing.TraitCollector.VisitDereference(Reko.Core.Expressions.Dereference! deref) -> Reko.Core.Types.DataType!
 Reko.Typing.TraitCollector.VisitFieldAccess(Reko.Core.Expressions.FieldAccess! acc) -> Reko.Core.Types.DataType!
@@ -2268,7 +2256,6 @@ Reko.Typing.TypeCollector.VisitAssignment(Reko.Core.Code.Assignment! ass) -> voi
 Reko.Typing.TypeCollector.VisitBranch(Reko.Core.Code.Branch! branch) -> void
 Reko.Typing.TypeCollector.VisitCallInstruction(Reko.Core.Code.CallInstruction! call) -> void
 Reko.Typing.TypeCollector.VisitComment(Reko.Core.Code.CodeComment! comment) -> void
-Reko.Typing.TypeCollector.VisitDeclaration(Reko.Core.Code.Declaration! decl) -> void
 Reko.Typing.TypeCollector.VisitDefInstruction(Reko.Core.Code.DefInstruction! def) -> void
 Reko.Typing.TypeCollector.VisitGotoInstruction(Reko.Core.Code.GotoInstruction! g) -> void
 Reko.Typing.TypeCollector.VisitPhiAssignment(Reko.Core.Code.PhiAssignment! phi) -> void

@@ -19,11 +19,9 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Reko.Core.Code
 {
@@ -34,8 +32,9 @@ namespace Reko.Core.Code
     {
         private int localStackOffset;
 
-        public abstract Statement Emit(Instruction instr);
         public abstract Frame Frame { get; }
+
+        public abstract Statement Emit(Instruction instr);
 
         public virtual AliasAssignment Alias(Identifier dst, Expression src)
         {
@@ -53,7 +52,7 @@ namespace Reko.Core.Code
 
         public virtual Assignment Assign(Identifier dst, int n)
         {
-            return Assign(dst, Constant.Create((PrimitiveType) dst.DataType, n));
+            return Assign(dst, Constant.Create(dst.DataType, n));
         }
 
         public virtual Assignment Assign(Identifier dst, bool f)

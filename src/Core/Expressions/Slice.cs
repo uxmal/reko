@@ -64,7 +64,7 @@ namespace Reko.Core.Expressions
             return v.VisitSlice(this);
         }
 
-		public override void Accept(IExpressionVisitor v)
+        public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitSlice(this);
 		}

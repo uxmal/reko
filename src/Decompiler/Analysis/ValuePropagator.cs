@@ -201,16 +201,6 @@ namespace Reko.Analysis
             return (comment, false);
         }
 
-        /*
-        public (Instruction, bool) VisitDeclaration(Declaration decl)
-        {
-            bool changed = false;
-            if (decl.Expression != null)
-                (decl.Expression, changed) = decl.Expression.Accept(eval);
-            return (decl, changed);
-        }
-        */
-
         public (Instruction, bool) VisitDefInstruction(DefInstruction def)
         {
             return (def, false);

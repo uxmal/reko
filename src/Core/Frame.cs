@@ -102,8 +102,8 @@ namespace Reko.Core
         /// <summary>
         /// A virtual register that is a constant pointer to 
         /// </summary>
-        public Identifier FramePointer { get; private set; }
-        public Identifier Continuation { get; private set; }
+        public Identifier FramePointer { get; }
+        public Identifier Continuation { get; }
         public List<Identifier> Identifiers { get { return identifiers; } }
         public Identifier Memory { get; private set; }
 

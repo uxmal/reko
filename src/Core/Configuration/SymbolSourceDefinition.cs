@@ -28,9 +28,9 @@ namespace Reko.Core.Configuration
 {
     public class SymbolSourceDefinition
     {
-        public string? Description { get;  set; }
-        public string? Extension { get;  set; }
-        public string? Name { get;  set; }
-        public string? TypeName { get;  set; }
+        public string? Description { get; set; }
+        public string? Extension { get; set; }
+        public string? Name { get; set; }
+        public string? TypeName { get; set; }
     }
 }

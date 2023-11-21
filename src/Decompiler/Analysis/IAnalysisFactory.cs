@@ -19,12 +19,6 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Analysis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Analysis
 {

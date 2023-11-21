@@ -119,7 +119,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Indicate that a sequence is returned.
         /// </summary>
-        void SequenceReturn(params Storage [] stgs);
+        void SequenceReturn(params Storage[] stgs);
         void SequenceReturn(SequenceStorage seq);
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Reko.Core.Machine
             ImplicitThis = dtThis;
         }
 
-        public void ImplicitThisStack(DataType dt)
+        void ICallingConventionEmitter.ImplicitThisStack(DataType dt)
         {
             ImplicitThis = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
@@ -264,7 +264,7 @@ namespace Reko.Core.Machine
             {
                 sb.AppendFormat("Fpu: {0} ", FpuStackDelta);
             }
-            if (Return != null)
+            if (Return is not null)
             {
                 sb.AppendFormat("{0} ", Return);
             }

@@ -98,7 +98,6 @@ namespace Reko.Core.Operators
         public override Operator Negate() => Flt;
 
         public override string ToString() => " > ";
-
     }
 
     public class RleOperator : RealConditionalOperator

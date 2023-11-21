@@ -34,7 +34,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Creates an access to the memory whose effective address is <paramref name="ea"/>.
         /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
-        /// takes place in the <see cref="MemoryIdentifier.GlobalMemory"/> address space.
+        /// takes place in the <see cref="MemoryStorage.GlobalMemory"/> address space.
         /// </summary>
         /// <param name="ea">Effective address of the access.</param>
         /// <param name="dt">Data type of the access.</param>
