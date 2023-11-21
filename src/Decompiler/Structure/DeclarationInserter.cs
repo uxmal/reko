@@ -249,8 +249,9 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return 0;
     }
 
-    public int VisitReturn(AbsynReturn _, Path path)
+    public int VisitReturn(AbsynReturn ret, Path path)
     {
+        AnalyzeExp(path, ret.Value);
         return 0;
     }
 

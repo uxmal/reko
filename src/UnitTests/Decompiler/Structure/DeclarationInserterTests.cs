@@ -293,4 +293,23 @@ test()
             m.Assign(m.Field(foo.DataType, id, foo), Constant.Int32(3));
         });
     }
+
+    [Test]
+    public void Deci_Return()
+    {
+        var sExp =
+@"
+test()
+{
+    word32 mystery;
+    return foo(mystery);
+}
+";
+
+        RunTest(sExp, m =>
+        {
+            var mystery = Identifier.CreateTemporary("mystery", PrimitiveType.Word32);
+            m.Return(m.Fn("foo", mystery));
+        });
+    }
 }
