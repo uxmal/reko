@@ -8,7 +8,6 @@ void _start(word32 g1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, wo
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr32 fp
 l00010958:
 	Mem8[0x20E60<32>:word32] = fp + 0x44<32>
 	Mem13[0x20E3C<32>:word32] = fp + 0x44<32> + ((dwArg40 << 2<32>) + 4<32>)
@@ -145,12 +144,11 @@ void main(word32 o0)
 // Preserved: o2 o3 o4 o5 o7 sp
 main_entry:
 l00010B0C:
-	word32 o0_20 = 1<32>
+	o0_20 = 1<32>
 	branch o0 <= 1<32> l00010B1C_ds_t
 l00010B1C_ds_t:
 	o0_20 = 0<32>
 l00010B20:
-	word32 o0_31
 	branch o0_20 == 0<32> l00010B28_ds_t
 l00010B28_ds_t:
 l00010B34:
@@ -159,7 +157,6 @@ l00010B28_ds_f:
 l00010B2C:
 	o0_31 = 0x10A5C<32>
 l00010B3C:
-	word32 o3_37
 	branch o0_20 == 0<32> l00010B40_ds_t
 l00010B40_ds_t:
 l00010B4C:
@@ -168,7 +165,6 @@ l00010B40_ds_f:
 l00010B44:
 	o3_37 = 0x10A8C<32>
 l00010B54:
-	word32 o2_43
 	branch o0_20 == 0<32> l00010B58_ds_t
 l00010B58_ds_t:
 l00010B64:
@@ -177,7 +173,6 @@ l00010B58_ds_f:
 l00010B5C:
 	o2_43 = 0x10ABC<32>
 l00010B6C:
-	word32 o1_49
 	branch o0_20 == 0<32> l00010B70_ds_t
 l00010B70_ds_t:
 l00010B7C:
@@ -186,8 +181,6 @@ l00010B70_ds_f:
 l00010B74:
 	o1_49 = 0x10AEC<32>
 l00010B84:
-	bool v25_215
-	word32 i1_114
 	branch o0_20 == 0<32> l00010B88_ds_t
 l00010B88_ds_t:
 l00010BE8:

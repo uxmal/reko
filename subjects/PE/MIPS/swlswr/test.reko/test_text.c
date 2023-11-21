@@ -53,6 +53,7 @@ void fn0001116C(struct Eq_n * r2, word32 ** r4)
 //      Win32CrtStartup
 void fn000111C4()
 {
+	uint32 r2_n;
 	ui32 r8_n = g_dw13030;
 	if (r8_n != 0x00 && r8_n != 0xB064)
 		g_dw13034 = ~r8_n;
@@ -110,7 +111,7 @@ l00011374:
 				goto l00011374;
 			}
 		} while (*g_ptr1303C == null);
-		<anonymous> * r8_n = *g_ptr1303C;
+		<anonymous> * r8_n = (<anonymous> *) *g_ptr1303C;
 		r8_n();
 	}
 }
@@ -171,9 +172,9 @@ void fn000114E4()
 word32 fn0001152C()
 {
 	ptr32 fp;
-	word32 dwLoc0C;
 	<anonymous> ** r8_n = g_ptr13040;
 	struct Eq_n * sp_n = fp + -56;
+	word32 dwLoc0C;
 	if (g_ptr1303C >= r8_n)
 	{
 		if (r8_n != null)

@@ -30,12 +30,12 @@ void register_tm_clones()
 // Preserved: a6 a7
 register_tm_clones_entry:
 l800000AE:
-	word32 d0_12 = 0<32>
+	d0_12 = 0<32>
 	branch false l800000C6
 l800000C4:
 	d0_12 = 1<32>
 l800000C6:
-	word32 d0_20 = d0_12 >> 1<32>
+	d0_20 = d0_12 >> 1<32>
 	branch d0_20 == 0<32> l800000E0
 l800000CA:
 	branch null == 0<32> l800000E0
@@ -54,20 +54,17 @@ void __do_global_dtors_aux()
 // Trashed: CVZNX a0 a2 a6 a7 d0 d1 d2
 // Preserved:
 __do_global_dtors_aux_entry:
-	ptr32 fp
 l800000E4:
-	word32 a6_37 = fp - 4<32>
+	a6_37 = fp - 4<32>
 	branch Mem13[0x80002724<p32>:byte] != 0<8> l8000014C
 l800000F4:
-	word32 d0_19 = Mem13[0x80002726<p32>:word32]
-	word32 a2_18 = 0x80002714<p32>
-	word32 d2_23 = 0<32>
+	d0_19 = Mem13[0x80002726<p32>:word32]
+	a2_18 = 0x80002714<p32>
+	d2_23 = 0<32>
 	branch d0_19 >=u 0<32> l8000012C
 l80000114:
-	word32 d0_29 = d0_19 + 1<32>
+	d0_29 = d0_19 + 1<32>
 	Mem31[0x80002726<p32>:word32] = d0_29
-	word32 a0_45
-	word32 d1_97
 	call Mem31[a2_18 + d0_29 * 4<i32>:word32] (retsize: 4;)
 		uses: a0:a0_45,a2:a2_35,a6:a6_37,d0:d0_29,d1:d1_97,d2:d2_38,Mem:Mem31
 		defs: a0:a0_45,a2:a2_42,a6:a6_41,d1:d1_97,d2:d2_43
@@ -165,7 +162,7 @@ void factorial(int32 dwArg04)
 // Preserved:
 _ZL9factoriali_entry:
 l8000033C:
-	word32 dwLoc08_36 = 2<i32>
+	dwLoc08_36 = 2<i32>
 l8000034C:
 	branch dwLoc08_36 > dwArg04 l8000036A
 l8000036A:
@@ -186,7 +183,7 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _ZL7pow_intdi_entry:
 l80000372:
-	word32 dwLoc08_48 = 0<32>
+	dwLoc08_48 = 0<32>
 l80000386:
 	branch dwLoc08_48 >= dwArg0C l800003A8
 l800003A8:
@@ -205,11 +202,11 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _Z11sine_taylordi_entry:
 l800003BC:
-	word32 dwLoc08_121 = 3<i32>
+	dwLoc08_121 = 3<i32>
 l800003D6:
 	branch dwLoc08_121 > dwArg0C l80000428
 l80000428:
-	word32 dwLoc08_124 = 5<i32>
+	dwLoc08_124 = 5<i32>
 l8000042E:
 	branch dwLoc08_124 > dwArg0C l80000480
 l80000480:
@@ -233,7 +230,6 @@ void main()
 // Trashed: CVZNX d0
 // Preserved: a6 a7
 main_entry:
-	ptr32 fp
 l8000049A:
 	sine_taylor(3.14)
 	_sin(3.14, 0.003, fp - 8<32>)
@@ -252,10 +248,10 @@ void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // Preserved:
 _Z4_sinddRi_entry:
 l800004DE:
-	real64 rLoc0C_115 = rArg04
-	real64 v12_14 = CONVERT(CONVERT(rArg04, real64, real96) *96 rArg04, real96, real64)
-	word32 dwLoc20_121 = 2<32>
-	real64 rLoc14_123 = 0x3FF0000000000000<64>
+	rLoc0C_115 = rArg04 (alias)
+	v12_14 = CONVERT(CONVERT(rArg04, real64, real96) *96 rArg04, real96, real64)
+	dwLoc20_121 = 2<32>
+	rLoc14_123 = 0x3FF0000000000000<64> (alias)
 l8000051A:
 	branch CONVERT(CONVERT(rLoc0C_115, real64, real96) /96 rLoc14_123, real96, real64) < rArg0C l8000060E
 l8000060E:
@@ -263,7 +259,7 @@ l8000060E:
 _Z4_sinddRi_exit:
 l80000530:
 	Mem105[tArg14:word32] = Mem98[tArg14:word32] + 1<32>
-	word32 v19_57 = dwLoc20_121 + 0<32>
+	v19_57 = dwLoc20_121 + 0<32>
 	rLoc0C_115 = CONVERT(CONVERT(rLoc0C_115, real64, real96) *96 v12_14 *96 v12_14, real96, real64)
 	dwLoc20_121 = v19_57 + 3<32>
 	rLoc14_123 = CONVERT(CONVERT(rLoc14_123, real64, real96) *96 CONVERT(CONVERT(v19_57, word32, real96), real96, real80) *96 CONVERT(CONVERT(v19_57 + 1<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v19_57 + 2<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v19_57 + 3<32>, word32, real96), real96, real80), real96, real64)
@@ -277,14 +273,12 @@ void __do_global_ctors_aux()
 // Trashed: CVZN a0 a2 a6 a7 d0
 // Preserved:
 __do_global_ctors_aux_entry:
-	ptr32 fp
 l80000624:
-	word32 a0_11 = Mem10[0x8000270C<p32>:word32]
-	word32 a6_18 = fp - 4<32>
-	word32 a2_12 = 0x8000270C<p32>
+	a0_11 = Mem10[0x8000270C<p32>:word32]
+	a6_18 = fp - 4<32>
+	a2_12 = 0x8000270C<p32>
 	branch a0_11 == -1<i32> l80000646
 l8000063C:
-	word32 a2_24
 	call a0_11 (retsize: 4;)
 		uses: a2:a2_19,a6:a6_18,Mem:Mem10
 		defs: a2:a2_24,a6:a6_23

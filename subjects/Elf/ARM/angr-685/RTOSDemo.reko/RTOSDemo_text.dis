@@ -35,11 +35,11 @@ void ResetISR(word32 cpsr)
 ResetISR_exit:
 ResetISR_entry:
 l00008008:
-	word32 r3_18 = Mem0[0x0000802C<p32>:word32]
-	word32 r0_7 = Mem0[0x00008030<p32>:word32]
+	r3_18 = Mem0[0x0000802C<p32>:word32]
+	r0_7 = Mem0[0x00008030<p32>:word32]
 	branch r3_18 >=u r0_7 l00008026
 l00008010:
-	word32 r2_15 = (~r3_18 + r0_7 & 0xFFFFFFFC<32>) + 4<32> + r3_18
+	r2_15 = (~r3_18 + r0_7 & 0xFFFFFFFC<32>) + 4<32> + r3_18
 l0000801E:
 	Mem19[r3_18:word32] = 0<32>
 	r3_18 = r3_18 + 4<i32>
@@ -72,11 +72,9 @@ void vPrintTask(word32 cpsr)
 // Terminates process
 vPrintTask_exit:
 vPrintTask_entry:
-	ptr32 fp
-	word32 dwLoc14
 l00008038:
-	word32 r4_11 = 0<32>
-	word32 r5_12 = Mem10[0x00008064<p32>:word32]
+	r4_11 = 0<32>
+	r5_12 = Mem10[0x00008064<p32>:word32]
 l00008040:
 	MPU_xQueueGenericReceive(Mem10[r5_12:word32], fp - 20<i32>, 0xFFFFFFFF<32>, 0<32>, cpsr)
 	OSRAMClear()
@@ -94,10 +92,9 @@ void vCheckTask(word32 cpsr)
 // Terminates process
 vCheckTask_exit:
 vCheckTask_entry:
-	ptr32 fp
 l00008068:
 	MPU_xTaskGetTickCount(cpsr)
-	word32 r5_22 = Mem13[0x0000809C<p32>:word32]
+	r5_22 = Mem13[0x0000809C<p32>:word32]
 l0000807C:
 	MPU_vTaskDelayUntil(fp - 24<i32>, 0x1388<32>, cpsr)
 	MPU_xQueueGenericSend(Mem25[r5_22:word32], fp - 20<i32>, 0xFFFFFFFF<32>, 0<32>, cpsr)
@@ -134,16 +131,14 @@ void vUART_ISR(word32 r4, word32 r5, word32 r6, word32 cpsr)
 // Trashed: NZC lr r0 r1 r2 r3 r4 r5 r6
 // Preserved: V sp
 vUART_ISR_entry:
-	ptr32 %continuation
-	struct <anonymous> tLoc15
 l00008108:
 	Mem7[&tLoc15 + 5<i32>:word32] = r4
 	Mem9[&tLoc15 + 9<i32>:word32] = r5
 	Mem11[&tLoc15 + 13<i32>:word32] = r6
 	Mem12[&tLoc15 + 17<i32>:word32] = %continuation
-	word32 r5_14 = Mem12[0x00008174<p32>:word32]
+	r5_14 = Mem12[0x00008174<p32>:word32]
 	Mem18[&tLoc15 + 1<i32>:word32] = 0<32>
-	word32 r0_20 = UARTIntStatus(r5_14, 1<32>)
+	r0_20 = UARTIntStatus(r5_14, 1<32>)
 	UARTIntClear(r5_14, r0_20)
 	branch r0_20 << 27<i32> >= 0<32> l00008130
 l00008128:
@@ -154,12 +149,12 @@ l0000815E:
 l00008130:
 	branch r0_20 << 26<i32> >= 0<32> l0000813C
 l00008134:
-	word32 r2_53 = Mem52[0x0000817C<p32>:word32]
-	word32 r3_54 = CONVERT(Mem52[r2_53:byte], byte, word32)
+	r2_53 = Mem52[0x0000817C<p32>:word32]
+	r3_54 = CONVERT(Mem52[r2_53:byte], byte, word32)
 	branch r3_54 <=u 0x7A<32> l0000814C
 l0000814C:
-	word32 r1_58 = Mem52[Mem52[0x00008178<p32>:word32]:word32]
-	word32 r1_59 = r1_58 << 26<i32>
+	r1_58 = Mem52[Mem52[0x00008178<p32>:word32]:word32]
+	r1_59 = r1_58 << 26<i32>
 	branch r1_58 << 26<i32> < 0<32> l00008156
 l00008154_1:
 	r1_59 = Mem52[0x00008174<p32>:word32]
@@ -228,7 +223,7 @@ l000081F2:
 l000081F8:
 	branch false l00008200
 l00008200:
-	word32 r0_52 = vSetErrorLED(cpsr)
+	r0_52 = vSetErrorLED(cpsr)
 	r4Out = <invalid>
 	r5Out = <invalid>
 	r6Out = <invalid>
@@ -279,7 +274,7 @@ l00008220:
 	GPIODirModeSet(0x40004000<32>, 0x34<32>, 2<32>)
 	GPIODirModeSet(0x40004000<32>, 8<32>, 1<32>)
 	GPIOPadConfigSet(0x40004000<32>, 4<32>, 2<32>, 0xA<32>)
-	word32 r5_61 = Mem10[0x00008294<p32>:word32]
+	r5_61 = Mem10[0x00008294<p32>:word32]
 	SSIConfig(r5_61, 0<32>, 0<32>, Mem10[0x00008298<p32>:word32], 8<32>)
 	SSIEnable(r5_61)
 	GPIOPinWrite(0x40004000<32>, 8<32>, 0<32>)
@@ -301,9 +296,8 @@ word32 PDCWrite(word32 r0, word32 r1)
 // Trashed: NZC lr r0 r1 r2 r3
 // Preserved: r4 r5 sp
 PDCWrite_entry:
-	struct <anonymous> tLoc14
 l0000829C:
-	word32 r4_13 = Mem10[0x000082CC<p32>:word32]
+	r4_13 = Mem10[0x000082CC<p32>:word32]
 	SSIDataPut(r4_13, r0 & 0xF<32>)
 	SSIDataPut(r4_13, r1)
 	SSIDataGet(r4_13, &tLoc14)
@@ -376,10 +370,10 @@ void vListInsertEnd(word32 r0, word32 r1)
 // Preserved: r4 sp
 vListInsertEnd_entry:
 l000082F0:
-	word32 r3_8 = Mem0[r0 + 4<i32>:word32]
-	word32 r2_7 = Mem0[r0:word32]
+	r3_8 = Mem0[r0 + 4<i32>:word32]
+	r2_7 = Mem0[r0:word32]
 	Mem16[r1 + 8<i32>:word32] = Mem11[r3_8 + 8<i32>:word32]
-	word32 r4_17 = Mem16[r3_8 + 8<i32>:word32]
+	r4_17 = Mem16[r3_8 + 8<i32>:word32]
 	Mem18[r1 + 4<i32>:word32] = r3_8
 	Mem19[r4_17 + 4<i32>:word32] = r1
 	Mem20[r3_8 + 8<i32>:word32] = r1
@@ -401,11 +395,8 @@ bool vListInsert(word32 r0, word32 r1)
 // Trashed: NZCV lr r2 r3
 // Preserved: r4 r5 sp
 vListInsert_entry:
-	bool Z
 l0000830C:
-	word32 r2_15
-	word32 r3_16
-	word32 r5_11 = Mem9[r1:word32]
+	r5_11 = Mem9[r1:word32]
 	branch Z l00008338
 l00008338:
 	r2_15 = Mem9[r0 + 16<i32>:word32]
@@ -418,7 +409,7 @@ l0000831C:
 l0000831A:
 	r2_15 = r3_16
 l00008324:
-	word32 r4_29 = Mem9[r0:word32]
+	r4_29 = Mem9[r0:word32]
 	Mem33[r1 + 4<i32>:word32] = r3_16
 	Mem36[r3_16 + 8<i32>:word32] = r1
 	Mem38[r1 + 8<i32>:word32] = r2_15
@@ -452,17 +443,17 @@ word32 uxListRemove(word32 r0)
 // Preserved: r4 sp
 uxListRemove_entry:
 l00008340:
-	word32 r2_7 = Mem0[r0 + 16<i32>:word32]
-	word32 r3_8 = Mem0[r0 + 4<i32>:word32]
+	r2_7 = Mem0[r0 + 16<i32>:word32]
+	r3_8 = Mem0[r0 + 4<i32>:word32]
 	Mem13[r3_8 + 8<i32>:word32] = Mem0[r0 + 8<i32>:word32]
-	word32 r4_14 = Mem13[r2_7 + 4<i32>:word32]
-	word32 r1_15 = Mem13[r0 + 8<i32>:word32]
+	r4_14 = Mem13[r2_7 + 4<i32>:word32]
+	r1_15 = Mem13[r0 + 8<i32>:word32]
 	Mem17[r1_15 + 4<i32>:word32] = r3_8
 	branch r0 != r4_14 l00008356
 l00008354_1:
 	Mem19[r2_7 + 4<i32>:word32] = r1_15
 l00008356:
-	word32 r3_23 = Mem22[r2_7:word32]
+	r3_23 = Mem22[r2_7:word32]
 	Mem25[r0 + 16<i32>:word32] = 0<32>
 	Mem27[r2_7:word32] = r3_23 - 1<32>
 	return r3_23 - 1<32>
@@ -486,10 +477,10 @@ l00008364:
 	vPortEnterCritical(cpsr)
 	branch Mem12[r0 + 56<i32>:word32] == Mem12[r0 + 60<i32>:word32] l000083B2
 l000083B2:
-	bool Z_36 = vPortExitCritical(cpsr)
+	Z_36 = vPortExitCritical(cpsr)
 	branch r2 != 0<32> l000083D8
 l000083D8:
-	bool Z_47 = vCoRoutineAddToDelayedList(r2, r0 + 0x10<32>)
+	Z_47 = vCoRoutineAddToDelayedList(r2, r0 + 0x10<32>)
 	__msr(cpsr, 0<32>)
 	r0Out = 0xFFFFFFFC<32>
 	return Z_47
@@ -503,18 +494,15 @@ l00008388:
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r2_72 = Mem12[r0 + 56<i32>:word32]
-	word32 r3_73 = Mem12[r0 + 60<i32>:word32]
-	word32 r0_102 = 0<32>
-	bool Z_101 = SLICE(cond(r2_72 - r3_73), bool, 2)
+	r2_72 = Mem12[r0 + 56<i32>:word32]
+	r3_73 = Mem12[r0 + 60<i32>:word32]
+	r0_102 = 0<32>
+	Z_101 = SLICE(cond(r2_72 - r3_73), bool, 2) (alias)
 	branch r2_72 <u r3_73 l000083C0
 l000083C0:
-	word32 r0_173
-	word32 r7_174
 	Z_101 = prvCopyDataToQueue(r0, r1, 0<32>, out r0_173, out r7_174)
 	branch Mem12[r0 + 36<i32>:word32] != 0<32> l000083EE
 l000083EE:
-	word32 r0_92
 	xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_92)
 	Z_101 = SLICE(cond(r0_92 - 0<32>), bool, 2) (alias)
 	branch r0_92 == 0<32> l000083CE
@@ -541,28 +529,24 @@ bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 cpsr, ptr32 & r0Out
 // Trashed: NZCV lr r0 r1 r2 r6 r7
 // Preserved: r3 r4 r5 sp
 xQueueCRReceive_entry:
-	word32 r6
-	bool Z
 l00008400:
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r5_17 = Mem12[r0 + 56<i32>:word32]
+	r5_17 = Mem12[r0 + 56<i32>:word32]
 	branch r5_17 != 0<32> l00008424
 l00008424:
-	word32 r0_141
 	__msr(cpsr, 0<32>)
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r2_20 = Mem12[r0 + 56<i32>:word32]
+	r2_20 = Mem12[r0 + 56<i32>:word32]
 	branch r2_20 != 0<32> l00008448
 l00008448:
-	word32 r1_31
-	word32 r2_23 = Mem12[r0 + 64<i32>:word32]
-	word32 r3_25 = Mem12[r0 + 4<i32>:word32]
-	word32 r1_26 = Mem12[r0 + 12<i32>:word32] + r2_23
-	word32 r3_28 = Mem12[r0 + 56<i32>:word32]
+	r2_23 = Mem12[r0 + 64<i32>:word32]
+	r3_25 = Mem12[r0 + 4<i32>:word32]
+	r1_26 = Mem12[r0 + 12<i32>:word32] + r2_23
+	r3_28 = Mem12[r0 + 56<i32>:word32]
 	Mem29[r0 + 12<i32>:word32] = r1_26
 	r1_31 = r1_26
 	branch r1_26 <u r3_25 l0000845C
@@ -574,13 +558,9 @@ l0000845C:
 l00008464_1:
 	Mem38[r0 + 12<i32>:word32] = r1_31
 l00008466:
-	word32 r4_49
-	word32 r7_189
-	word32 r5_188
 	Z = memcpy(r1, r1_31, r2_23, out r4_49, out r5_188, out r6, out r7_189)
 	branch Mem58[r4_49 + 16<i32>:word32] != 0<32> l00008478
 l00008478:
-	word32 r0_62
 	xCoRoutineRemoveFromEventList(r4_49 + 0x10<32>, out r0_62)
 	Z = SLICE(cond(r0_62 - 0<32>), bool, 2) (alias)
 	branch r0_62 == 0<32> l0000846E
@@ -599,10 +579,10 @@ l00008440:
 	r6Out = r6
 	return Z
 l00008418:
-	bool Z_97 = SLICE(cond(r2 - 0<32>), bool, 2)
+	Z_97 = SLICE(cond(r2 - 0<32>), bool, 2) (alias)
 	branch r2 != 0<32> l0000848A
 l0000848A:
-	bool Z_106 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
+	Z_106 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
 	__msr(cpsr, r5_17)
 	r0Out = 0xFFFFFFFC<32>
 	r6Out = r6
@@ -626,14 +606,11 @@ xQueueCRSendFromISR_entry:
 l000084A0:
 	branch Mem12[r0 + 56<i32>:word32] <u Mem12[r0 + 60<i32>:word32] l000084B0
 l000084B0:
-	word32 r7_103
-	word32 r0_102
 	prvCopyDataToQueue(r0, r1, 0<32>, out r0_102, out r7_103)
 	branch r2 != 0<32> l000084AC
 l000084BC:
 	branch Mem12[r0 + 36<i32>:word32] == 0<32> l000084AC
 l000084C2:
-	word32 r0_104
 	branch xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_104) l000084D0
 l000084CE_1:
 l000084D0:
@@ -655,11 +632,10 @@ l000084D4:
 l00008514:
 	return
 l000084DA:
-	word32 r3_40
-	word32 lr_28 = Mem16[r0 + 64<i32>:word32]
-	word32 r4_29 = Mem16[r0 + 4<i32>:word32]
-	word32 r3_30 = Mem16[r0 + 12<i32>:word32] + lr_28
-	word32 r7_37 = Mem16[r0 + 56<i32>:word32]
+	lr_28 = Mem16[r0 + 64<i32>:word32]
+	r4_29 = Mem16[r0 + 4<i32>:word32]
+	r3_30 = Mem16[r0 + 12<i32>:word32] + lr_28
+	r7_37 = Mem16[r0 + 56<i32>:word32]
 	Mem38[r0 + 12<i32>:word32] = r3_30
 	r3_40 = r3_30
 	branch r3_30 <u r4_29 l000084F4
@@ -671,16 +647,11 @@ l000084FA_1:
 	Mem46[r0 + 12<i32>:word32] = r3_40
 l000084FC:
 	Mem58[r0 + 56<i32>:word32] = r7_37 + 0xFFFFFFFF<32>
-	word32 r4_64
-	word32 r5_65
-	word32 r7_159
-	word32 r6_158
 	memcpy(r1, r3_40, lr_28, out r4_64, out r5_65, out r6_158, out r7_159)
 	branch Mem58[r5_65:word32] != 0<32> l00008510
 l0000850C:
 	branch Mem58[r4_64 + 16<i32>:word32] != 0<32> l00008518
 l00008518:
-	word32 r0_77
 	xCoRoutineRemoveFromEventList(r4_64 + 0x10<32>, out r0_77)
 	branch r0_77 == 0<32> l00008510
 l00008524:
@@ -717,7 +688,6 @@ void xTaskNotifyStateClear(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 xTaskNotifyStateClear_entry:
 l00008534:
-	word32 r4_15
 	branch r0 == 0<32> l00008558
 l00008558:
 	r4_15 = Mem12[Mem12[0x00008560<p32>:word32] + 4<i32>:word32]
@@ -725,7 +695,7 @@ l00008538:
 	r4_15 = r0
 l0000853A:
 	vPortEnterCritical(cpsr)
-	word32 r3_28 = CONVERT(Mem12[r4_15 + 100<i32>:byte], byte, word32)
+	r3_28 = CONVERT(Mem12[r4_15 + 100<i32>:byte], byte, word32)
 	branch r3_28 != 2<32> l00008548
 l00008546_1:
 	r3_28 = 0<32>
@@ -823,11 +793,11 @@ void vPortEnterCritical(word32 cpsr)
 // Preserved: r3 sp
 vPortEnterCritical_entry:
 l00008578:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r2_16 = Mem8[0x000085AC<p32>:word32]
+	r2_16 = Mem8[0x000085AC<p32>:word32]
 	Mem20[r2_16:word32] = Mem8[r2_16:word32] + 1<32>
 	branch r0_11 == 1<32> l000085A8
 l0000859C:
@@ -866,15 +836,15 @@ bool vPortExitCritical(word32 cpsr)
 // Preserved: r3 sp
 vPortExitCritical_entry:
 l000085B0:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
-	word32 r2_15 = Mem8[0x000085D8<p32>:word32]
-	word32 r3_16 = Mem8[r2_15:word32]
+	r0_11 = xPortRaisePrivilege(cpsr)
+	r2_15 = Mem8[0x000085D8<p32>:word32]
+	r3_16 = Mem8[r2_15:word32]
 	Mem19[r2_15:word32] = r3_16 - 1<32>
 	branch r3_16 != 1<32> l000085C4
 l000085C0:
 	__msr(cpsr, r3_16 - 1<32>)
 l000085C4:
-	bool Z_22 = SLICE(cond(r0_11 - 1<32>), bool, 2)
+	Z_22 = SLICE(cond(r0_11 - 1<32>), bool, 2) (alias)
 	branch r0_11 == 1<32> l000085D4
 l000085C8:
 	__msr(cpsr, __mrs(cpsr) | 1<32>)
@@ -893,7 +863,7 @@ void vParTestInitialise()
 vParTestInitialise_entry:
 l000085DC:
 	PDCInit()
-	word32 r1_20 = CONVERT(Mem8[Mem8[0x000085F0<p32>:word32]:byte], byte, word32)
+	r1_20 = CONVERT(Mem8[Mem8[0x000085F0<p32>:word32]:byte], byte, word32)
 l000085EC_thunk_PDCWrite:
 	PDCWrite(5<32>, r1_20)
 	return
@@ -911,12 +881,12 @@ word32 vParTestSetLED(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 sp
 vParTestSetLED_entry:
 l000085F4:
-	word32 r0_19 = MPU_vTaskSuspendAll(cpsr)
+	r0_19 = MPU_vTaskSuspendAll(cpsr)
 	branch r0 >u 7<32> l0000861C
 l00008602:
-	word32 r3_30 = Mem12[0x0000862C<p32>:word32]
-	word32 r0_32 = CONVERT(1<8> << SLICE(r0, byte, 0), byte, uint32)
-	word32 r2_33 = CONVERT(Mem12[r3_30:byte], byte, word32)
+	r3_30 = Mem12[0x0000862C<p32>:word32]
+	r0_32 = CONVERT(1<8> << SLICE(r0, byte, 0), byte, uint32)
+	r2_33 = CONVERT(Mem12[r3_30:byte], byte, word32)
 	branch r1 == 0<32> l00008624
 l00008624:
 	Mem36[r3_30:byte] = SLICE(r2_33 & ~r0_32, byte, 0)
@@ -945,9 +915,9 @@ l00008630:
 	MPU_vTaskSuspendAll(cpsr)
 	branch r0 >u 7<32> l0000865A
 l0000863C:
-	word32 r0_24 = 1<32> << r0
-	word32 r3_23 = Mem8[0x0000866C<p32>:word32]
-	word32 r2_27 = CONVERT(SLICE(r0_24, byte, 0), byte, uint32)
+	r0_24 = 1<32> << r0
+	r3_23 = Mem8[0x0000866C<p32>:word32]
+	r2_27 = CONVERT(SLICE(r0_24, byte, 0), byte, uint32)
 	branch (r2_27 & CONVERT(Mem8[r3_23:byte], byte, word32)) != 0<32> l00008662
 l00008662:
 	Mem33[r3_23:byte] = Mem8[r3_23:byte] & SLICE(~r0_24, byte, 0)
@@ -970,13 +940,8 @@ void prvFlashCoRoutine(word32 r0, word32 cpsr)
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: cpsr r4 r5 r6 sp
 prvFlashCoRoutine_entry:
-	ptr32 fp
-	word32 dwLoc14
 l00008670:
-	word32 r5_110
-	word32 r6_108
-	word32 r0_26
-	word32 r3_14 = CONVERT(Mem12[r0 + 52<i32>:word16], word16, word32)
+	r3_14 = CONVERT(Mem12[r0 + 52<i32>:word16], word16, word32)
 	branch r3_14 == 0x1C2<32> l000086B6
 l000086B6:
 	r5_110 = Mem12[0x000086E0<p32>:word32]
@@ -992,7 +957,7 @@ l000086D2:
 	r5_110 = Mem12[0x000086E0<p32>:word32]
 	r6_108 = fp - 20<i32>
 l00008696:
-	bool Z_57 = xQueueCRReceive(Mem47[r5_110:word32], r6_108, 0xFFFFFFFF<32>, cpsr, out r0_26, out r6_108)
+	Z_57 = xQueueCRReceive(Mem47[r5_110:word32], r6_108, 0xFFFFFFFF<32>, cpsr, out r0_26, out r6_108)
 	branch Z_57 l000086D8
 l000086D8:
 	Mem64[r0 + 52<i32>:word16] = 0x1C2<u16>
@@ -1020,12 +985,8 @@ void prvFixedDelayCoRoutine(word32 r0, word32 r1, word32 cpsr)
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: r4 sp
 prvFixedDelayCoRoutine_entry:
-	ptr32 fp
 l000086E8:
-	bool v24_115
-	word32 r0_82
-	word32 r0_23
-	word32 r3_10 = CONVERT(Mem8[r0 + 52<i32>:word16], word16, word32)
+	r3_10 = CONVERT(Mem8[r0 + 52<i32>:word16], word16, word32)
 	branch r3_10 == 0x182<32> l00008750
 l00008750:
 	v24_115 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)
@@ -1040,7 +1001,7 @@ l000086FA:
 l00008716:
 	branch r3_10 != 0x196<32> l00008712
 l0000871C:
-	bool Z_58 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)
+	Z_58 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)
 	v24_115 = Z_58
 	branch Z_58 l0000876E
 l0000876E:
@@ -1089,14 +1050,14 @@ l000087C2:
 l0000879E:
 	branch r0 == 0<32> l000087B4
 l000087A0:
-	word32 r4_43 = 0<32>
-	word32 r6_44 = Mem37[0x000087C8<p32>:word32]
+	r4_43 = 0<32>
+	r6_44 = Mem37[0x000087C8<p32>:word32]
 l000087A4:
 	xCoRoutineCreate(r6_44, 0<32>, r4_43, cpsr)
 	r4_43 = r4_43 + 1<32>
 	branch r4_43 != r0 l000087A4
 l000087B4:
-	word32 r0_75 = Mem37[0x000087CC<p32>:word32]
+	r0_75 = Mem37[0x000087CC<p32>:word32]
 l000087BE_thunk_xCoRoutineCreate:
 	xCoRoutineCreate(r0_75, 1<32>, 0<32>, cpsr)
 	return
@@ -1125,7 +1086,7 @@ void MPU_xTaskCreateRestricted(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xTaskCreateRestricted_entry:
 l000087DC:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xTaskCreateRestricted(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008802
 l000087F6:
@@ -1146,7 +1107,7 @@ void MPU_xTaskCreate(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, wo
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 MPU_xTaskCreate_entry:
 l00008808:
-	word32 r0_34 = xPortRaisePrivilege(cpsr)
+	r0_34 = xPortRaisePrivilege(cpsr)
 	xTaskCreate(r0, r1, r2, r3, cpsr, dwArg00, dwArg04)
 	branch r0_34 == 1<32> l00008842
 l00008836:
@@ -1165,7 +1126,7 @@ void MPU_vTaskAllocateMPURegions(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_vTaskAllocateMPURegions_entry:
 l0000884C:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	vTaskAllocateMPURegions(r0, r1)
 	branch r0_19 == 1<32> l00008870
 l00008864:
@@ -1186,7 +1147,7 @@ void MPU_vTaskDelayUntil(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_vTaskDelayUntil_entry:
 l00008874:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	vTaskDelayUntil(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008898
 l0000888C:
@@ -1205,7 +1166,7 @@ void MPU_vTaskDelay(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_vTaskDelay_entry:
 l0000889C:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	vTaskDelay(r0, cpsr)
 	branch r0_17 == 1<32> l000088BC
 l000088B0:
@@ -1227,11 +1188,11 @@ word32 MPU_vTaskSuspendAll(word32 cpsr)
 // Preserved: r4 sp
 MPU_vTaskSuspendAll_entry:
 l000088C0:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	vTaskSuspendAll()
 	branch r0_11 == 1<32> l000088DC
 l000088D0:
-	word32 r0_25 = __mrs(cpsr)
+	r0_25 = __mrs(cpsr)
 	__msr(cpsr, r0_25 | 1<32>)
 	r0_11 = r0_25 | 1<32>
 l000088DC:
@@ -1251,7 +1212,7 @@ void MPU_xTaskResumeAll(word32 cpsr)
 // Preserved: r4 sp
 MPU_xTaskResumeAll_entry:
 l000088E0:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	xTaskResumeAll(cpsr)
 	branch r0_11 == 1<32> l000088FE
 l000088F2:
@@ -1273,7 +1234,7 @@ void MPU_xTaskGetTickCount(word32 cpsr)
 // Preserved: r4 sp
 MPU_xTaskGetTickCount_entry:
 l00008904:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	xTaskGetTickCount()
 	branch r0_11 == 1<32> l00008922
 l00008916:
@@ -1292,7 +1253,7 @@ void MPU_uxTaskGetNumberOfTasks(word32 cpsr)
 // Preserved: r4 sp
 MPU_uxTaskGetNumberOfTasks_entry:
 l00008928:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	uxTaskGetNumberOfTasks()
 	branch r0_11 == 1<32> l00008946
 l0000893A:
@@ -1311,7 +1272,7 @@ void MPU_pcTaskGetName(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_pcTaskGetName_entry:
 l0000894C:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	pcTaskGetName(r0)
 	branch r0_17 == 1<32> l0000896E
 l00008962:
@@ -1330,7 +1291,7 @@ void MPU_vTaskSetTimeOutState(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_vTaskSetTimeOutState_entry:
 l00008974:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	vTaskSetTimeOutState(r0)
 	branch r0_17 == 1<32> l00008994
 l00008988:
@@ -1349,7 +1310,7 @@ void MPU_xTaskCheckForTimeOut(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xTaskCheckForTimeOut_entry:
 l00008998:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xTaskCheckForTimeOut(r0, r1, cpsr)
 	branch r0_19 == 1<32> l000089BE
 l000089B2:
@@ -1368,7 +1329,7 @@ void MPU_xTaskGenericNotify(word32 r0, word32 r1, word32 r2, word32 r3, word32 c
 // Preserved: r4 r5 r6 r7 r8 sp
 MPU_xTaskGenericNotify_entry:
 l000089C4:
-	word32 r0_27 = xPortRaisePrivilege(cpsr)
+	r0_27 = xPortRaisePrivilege(cpsr)
 	xTaskGenericNotify(r0, r1, r2, r3, cpsr)
 	branch r0_27 == 1<32> l000089F4
 l000089E8:
@@ -1387,7 +1348,7 @@ void MPU_xTaskNotifyWait(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr
 // Preserved: r4 r5 r6 r7 r8 sp
 MPU_xTaskNotifyWait_entry:
 l000089FC:
-	word32 r0_27 = xPortRaisePrivilege(cpsr)
+	r0_27 = xPortRaisePrivilege(cpsr)
 	xTaskNotifyWait(r0, r1, r2, r3, cpsr)
 	branch r0_27 == 1<32> l00008A2C
 l00008A20:
@@ -1406,7 +1367,7 @@ void MPU_ulTaskNotifyTake(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r1 r4 r5 r6 sp
 MPU_ulTaskNotifyTake_entry:
 l00008A34:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	ulTaskNotifyTake(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008A5A
 l00008A4E:
@@ -1425,7 +1386,7 @@ void MPU_xTaskNotifyStateClear(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_xTaskNotifyStateClear_entry:
 l00008A60:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	xTaskNotifyStateClear(r0, cpsr)
 	branch r0_17 == 1<32> l00008A82
 l00008A76:
@@ -1447,7 +1408,7 @@ void MPU_xQueueGenericCreate(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r0 r3 r4 r5 r6 r7 sp
 MPU_xQueueGenericCreate_entry:
 l00008A88:
-	word32 r0_25 = xPortRaisePrivilege(cpsr)
+	r0_25 = xPortRaisePrivilege(cpsr)
 	xQueueGenericCreate(r0, r1, cpsr)
 	branch r0_25 == 1<32> l00008AB2
 l00008AA6:
@@ -1466,7 +1427,7 @@ void MPU_xQueueGenericReset(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xQueueGenericReset_entry:
 l00008AB8:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xQueueGenericReset(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008ADE
 l00008AD2:
@@ -1487,7 +1448,7 @@ void MPU_xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 cp
 // Preserved: r4 r5 r6 r7 r8 sp
 MPU_xQueueGenericSend_entry:
 l00008AE4:
-	word32 r0_27 = xPortRaisePrivilege(cpsr)
+	r0_27 = xPortRaisePrivilege(cpsr)
 	xQueueGenericSend(r0, r1, r2, r3, cpsr)
 	branch r0_27 == 1<32> l00008B14
 l00008B08:
@@ -1506,7 +1467,7 @@ void MPU_uxQueueMessagesWaiting(word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_uxQueueMessagesWaiting_entry:
 l00008B1C:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	uxQueueMessagesWaiting(cpsr)
 	branch r0_17 == 1<32> l00008B3E
 l00008B32:
@@ -1525,7 +1486,7 @@ void MPU_uxQueueSpacesAvailable(word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_uxQueueSpacesAvailable_entry:
 l00008B44:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	uxQueueSpacesAvailable(cpsr)
 	branch r0_17 == 1<32> l00008B66
 l00008B5A:
@@ -1546,7 +1507,7 @@ void MPU_xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32
 // Preserved: r4 r5 r6 r7 r8 sp
 MPU_xQueueGenericReceive_entry:
 l00008B6C:
-	word32 r0_27 = xPortRaisePrivilege(cpsr)
+	r0_27 = xPortRaisePrivilege(cpsr)
 	xQueueGenericReceive(r0, r1, r2, r3, cpsr)
 	branch r0_27 == 1<32> l00008B9C
 l00008B90:
@@ -1565,7 +1526,7 @@ void MPU_xQueuePeekFromISR(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xQueuePeekFromISR_entry:
 l00008BA4:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xQueuePeekFromISR(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008BCA
 l00008BBE:
@@ -1584,7 +1545,7 @@ void MPU_xQueueGetMutexHolder(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_xQueueGetMutexHolder_entry:
 l00008BD0:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	xQueueGetMutexHolder(r0, cpsr)
 	branch r0_17 == 1<32> l00008BF2
 l00008BE6:
@@ -1603,7 +1564,7 @@ void MPU_xQueueCreateMutex(word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_xQueueCreateMutex_entry:
 l00008BF8:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	xQueueCreateMutex(cpsr)
 	branch r0_17 == 1<32> l00008C1A
 l00008C0E:
@@ -1622,7 +1583,7 @@ void MPU_xQueueTakeMutexRecursive(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xQueueTakeMutexRecursive_entry:
 l00008C20:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xQueueTakeMutexRecursive(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008C46
 l00008C3A:
@@ -1641,7 +1602,7 @@ void MPU_xQueueGiveMutexRecursive(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_xQueueGiveMutexRecursive_entry:
 l00008C4C:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	xQueueGiveMutexRecursive(r0, cpsr)
 	branch r0_17 == 1<32> l00008C6E
 l00008C62:
@@ -1660,7 +1621,7 @@ void MPU_vQueueDelete(word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_vQueueDelete_entry:
 l00008C74:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	vQueueDelete()
 	branch r0_17 == 1<32> l00008C94
 l00008C88:
@@ -1679,7 +1640,7 @@ void MPU_pvPortMalloc(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_pvPortMalloc_entry:
 l00008C98:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	pvPortMalloc(r0, cpsr)
 	branch r0_17 == 1<32> l00008CBA
 l00008CAE:
@@ -1698,7 +1659,7 @@ void MPU_vPortFree(word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_vPortFree_entry:
 l00008CC0:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	vPortFree()
 	branch r0_17 == 1<32> l00008CE0
 l00008CD4:
@@ -1717,7 +1678,7 @@ void MPU_vPortInitialiseBlocks(word32 cpsr)
 // Preserved: r4 sp
 MPU_vPortInitialiseBlocks_entry:
 l00008CE4:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	vPortInitialiseBlocks()
 	branch r0_11 == 1<32> l00008D00
 l00008CF4:
@@ -1736,7 +1697,7 @@ void MPU_xPortGetFreeHeapSize(word32 cpsr)
 // Preserved: r4 sp
 MPU_xPortGetFreeHeapSize_entry:
 l00008D04:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	xPortGetFreeHeapSize()
 	branch r0_11 == 1<32> l00008D22
 l00008D16:
@@ -1755,7 +1716,7 @@ void MPU_xEventGroupCreate(word32 cpsr)
 // Preserved: r4 sp
 MPU_xEventGroupCreate_entry:
 l00008D28:
-	word32 r0_11 = xPortRaisePrivilege(cpsr)
+	r0_11 = xPortRaisePrivilege(cpsr)
 	xEventGroupCreate(cpsr)
 	branch r0_11 == 1<32> l00008D46
 l00008D3A:
@@ -1774,7 +1735,7 @@ void MPU_xEventGroupWaitBits(word32 r0, word32 r1, word32 r2, word32 r3, word32 
 // Preserved: r4 r5 r6 r7 r8 r9 sp
 MPU_xEventGroupWaitBits_entry:
 l00008D4C:
-	word32 r0_31 = xPortRaisePrivilege(cpsr)
+	r0_31 = xPortRaisePrivilege(cpsr)
 	xEventGroupWaitBits(r0, r1, r2, r3, cpsr, dwArg00)
 	branch r0_31 == 1<32> l00008D82
 l00008D76:
@@ -1793,7 +1754,7 @@ void MPU_xEventGroupClearBits(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r1 r4 r5 r6 sp
 MPU_xEventGroupClearBits_entry:
 l00008D8C:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xEventGroupClearBits(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008DB2
 l00008DA6:
@@ -1812,7 +1773,7 @@ void MPU_xEventGroupSetBits(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 r5 r6 sp
 MPU_xEventGroupSetBits_entry:
 l00008DB8:
-	word32 r0_19 = xPortRaisePrivilege(cpsr)
+	r0_19 = xPortRaisePrivilege(cpsr)
 	xEventGroupSetBits(r0, r1, cpsr)
 	branch r0_19 == 1<32> l00008DDE
 l00008DD2:
@@ -1831,7 +1792,7 @@ void MPU_xEventGroupSync(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr
 // Preserved: r4 r5 r6 r7 r8 sp
 MPU_xEventGroupSync_entry:
 l00008DE4:
-	word32 r0_27 = xPortRaisePrivilege(cpsr)
+	r0_27 = xPortRaisePrivilege(cpsr)
 	xEventGroupSync(r0, r1, r2, r3, cpsr)
 	branch r0_27 == 1<32> l00008E14
 l00008E08:
@@ -1850,7 +1811,7 @@ void MPU_vEventGroupDelete(word32 r0, word32 cpsr)
 // Preserved: r3 r4 r5 sp
 MPU_vEventGroupDelete_entry:
 l00008E1C:
-	word32 r0_17 = xPortRaisePrivilege(cpsr)
+	r0_17 = xPortRaisePrivilege(cpsr)
 	vEventGroupDelete(r0, cpsr)
 	branch r0_17 == 1<32> l00008E3C
 l00008E30:
@@ -1871,13 +1832,13 @@ void xCoRoutineCreate(word32 r0, word32 r1, word32 r2, word32 cpsr)
 // Preserved: fp r10 r3 r4 r5 r6 r7 r8 r9 sp
 xCoRoutineCreate_entry:
 l00008E40:
-	word32 r5_102 = r1
-	word32 r0_34 = pvPortMalloc(0x38<32>, cpsr)
+	r5_102 = r1
+	r0_34 = pvPortMalloc(0x38<32>, cpsr)
 	branch r0_34 == 0<32> l00008EE4
 l00008EE4:
 	return
 l00008E54:
-	word32 r7_56 = Mem24[0x00008EEC<p32>:word32]
+	r7_56 = Mem24[0x00008EEC<p32>:word32]
 	branch Mem24[r7_56:word32] == 0<32> l00008EAC
 l00008EAC:
 	Mem60[r7_56:word32] = r0_34
@@ -1900,8 +1861,8 @@ l00008E66:
 	Mem109[r0_34:word32] = r0
 	vListInitialiseItem(r0_34 + 4<i32>)
 	vListInitialiseItem(r0_34 + 0x18<32>)
-	word32 r0_117 = Mem109[r0_34 + 44<i32>:word32]
-	word32 r5_121 = 2<32> - r5_102
+	r0_117 = Mem109[r0_34 + 44<i32>:word32]
+	r5_121 = 2<32> - r5_102
 	branch r0_117 <=u Mem109[r7_56 + 112<i32>:word32] l00008E92
 l00008E90_1:
 	Mem124[r7_56 + 112<i32>:word32] = r0_117
@@ -1927,21 +1888,21 @@ bool vCoRoutineAddToDelayedList(word32 r0, word32 r1)
 // Preserved: r4 r5 r6 sp
 vCoRoutineAddToDelayedList_entry:
 l00008EF0:
-	word32 r4_15 = Mem12[0x00008F28<p32>:word32]
-	word32 r5_19 = Mem12[r4_15 + 116<i32>:word32] + r0
+	r4_15 = Mem12[0x00008F28<p32>:word32]
+	r5_19 = Mem12[r4_15 + 116<i32>:word32] + r0
 	uxListRemove(Mem12[r4_15:word32] + 4<32>)
-	word32 r3_31 = Mem12[r4_15 + 116<i32>:word32]
-	word32 r1_32 = Mem12[r4_15:word32]
+	r3_31 = Mem12[r4_15 + 116<i32>:word32]
+	r1_32 = Mem12[r4_15:word32]
 	Mem34[r1_32 + 4<i32>:word32] = r5_19
 	branch r5_19 >=u r3_31 l00008F0E
 l00008F0C_1:
 l00008F0E:
-	bool Z_47 = vListInsert(Mem34[r4_15 + 104<i32>:word32], r1_32 + 4<32>)
+	Z_47 = vListInsert(Mem34[r4_15 + 104<i32>:word32], r1_32 + 4<32>)
 	branch r1 == 0<32> l00008F26
 l00008F26:
 	return Z_47
 l00008F18:
-	word32 r1_57 = Mem34[r4_15:word32]
+	r1_57 = Mem34[r4_15:word32]
 l00008F22_thunk_vListInsert:
 	return vListInsert(r1, r1_57 + 0x18<32>)
 vCoRoutineAddToDelayedList_exit:
@@ -1957,20 +1918,19 @@ word32 vCoRoutineSchedule(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7,
 // Trashed: NZCV cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8
 // Preserved: sp
 vCoRoutineSchedule_entry:
-	ptr32 %continuation
 l00008F2C:
-	word32 r5_17 = Mem16[0x00009088<p32>:word32]
+	r5_17 = Mem16[0x00009088<p32>:word32]
 	branch Mem16[r5_17 + 84<i32>:word32] == 0<32> l00008F82
 l00008F36:
 l00008F3C:
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r4_26 = Mem24[Mem24[r5_17 + 96<i32>:word32] + 12<i32>:word32]
+	r4_26 = Mem24[Mem24[r5_17 + 96<i32>:word32] + 12<i32>:word32]
 	uxListRemove(r4_26 + 0x18<32>)
 	__msr(cpsr, 0<32>)
 	uxListRemove(r4_26 + 4<32>)
-	word32 r3_49 = Mem24[r4_26 + 44<i32>:word32]
+	r3_49 = Mem24[r4_26 + 44<i32>:word32]
 	r0 = r5_17 + 4<32> + r3_49 * 0x14<32>
 	branch r3_49 <=u Mem24[r5_17 + 112<i32>:word32] l00008F78
 l00008F76_1:
@@ -1980,14 +1940,13 @@ l00008F78:
 	branch Mem68[r5_17 + 84<i32>:word32] != 0<32> l00008F3C
 l00008F82:
 	MPU_xTaskGetTickCount(cpsr)
-	word32 r3_179 = Mem83[r5_17 + 116<i32>:word32]
-	word32 r0_187 = r0 - Mem83[r5_17 + 120<i32>:word32]
-	word32 r8_89 = Mem83[0x00009090<p32>:word32]
+	r3_179 = Mem83[r5_17 + 116<i32>:word32]
+	r0_187 = r0 - Mem83[r5_17 + 120<i32>:word32]
+	r8_89 = Mem83[0x00009090<p32>:word32]
 	Mem90[r5_17 + 124<i32>:word32] = r0_187
 l00008F94:
 	branch r0_187 == 0<32> l00009014
 l00008F98:
-	word32 r2_104
 	r3_179 = r3_179 + 1<32>
 	Mem99[r5_17 + 116<i32>:word32] = r3_179
 	r0_187 = r0_187 - 1<32>
@@ -2002,28 +1961,28 @@ l00008FA4:
 l00008FA6:
 	branch Mem109[r2_104:word32] == 0<32> l00008F94
 l00008FAC:
-	word32 r4_114 = Mem109[Mem109[r2_104 + 12<i32>:word32] + 12<i32>:word32]
+	r4_114 = Mem109[Mem109[r2_104 + 12<i32>:word32] + 12<i32>:word32]
 	branch r3_179 >=u Mem109[r4_114 + 4<i32>:word32] l00008FC4
 l00008FC4:
 	__msr(cpsr, 0xBF<32>)
 	__instruction_sync_barrier("sy")
 	__data_sync_barrier("sy")
-	word32 r6_122 = r4_114 + 4<32>
+	r6_122 = r4_114 + 4<32>
 	uxListRemove(r6_122)
-	word32 r0_135 = r4_114 + 0x18<32>
+	r0_135 = r4_114 + 0x18<32>
 	branch Mem133[r4_114 + 40<i32>:word32] == 0<32> l00008FE8
 l00008FE4:
 	uxListRemove(r0_135)
 l00008FE8:
 	__msr(cpsr, 0<32>)
-	word32 r3_150 = Mem133[r4_114 + 44<i32>:word32]
-	word32 r0_160 = r8_89 + r3_150 * 0x14<32>
+	r3_150 = Mem133[r4_114 + 44<i32>:word32]
+	r0_160 = r8_89 + r3_150 * 0x14<32>
 	branch r3_150 <=u Mem133[r5_17 + 112<i32>:word32] l00009000
 l00008FFE_1:
 	Mem162[r5_17 + 112<i32>:word32] = r3_150
 l00009000:
 	vListInsertEnd(r0_160, r6_122)
-	word32 r3_174 = Mem173[r5_17 + 104<i32>:word32]
+	r3_174 = Mem173[r5_17 + 104<i32>:word32]
 	branch Mem173[r3_174:word32] != 0<32> l00008FB8
 l00008FB8:
 	r4_114 = Mem173[Mem173[r3_174 + 12<i32>:word32] + 12<i32>:word32]
@@ -2035,10 +1994,9 @@ l0000900E:
 	r0_187 = Mem173[r5_17 + 124<i32>:word32]
 	branch r0_187 != 0<32> l00008F98
 l00009014:
-	word32 r2_205
-	word32 r1_194 = Mem192[r5_17 + 112<i32>:word32]
+	r1_194 = Mem192[r5_17 + 112<i32>:word32]
 	Mem198[r5_17 + 120<i32>:word32] = r3_179
-	word32 r3_199 = r1_194 << 2<i32>
+	r3_199 = r1_194 << 2<i32>
 	branch Mem198[r5_17 + r1_194 * 0x14<32> + 4<i32>:word32] != 0<32> l00009084
 l00009084:
 	r2_205 = r1_194
@@ -2059,25 +2017,22 @@ l00009038:
 l00009056:
 	Mem235[r5_17 + 112<i32>:word32] = r2_205
 l00009058:
-	word32 r2_251
-	word32 r3_239 = r3_199 + r2_205
-	word32 r1_242 = r5_17 + (r3_239 << 2<i32>)
-	word32 r2_246 = Mem243[Mem243[r1_242 + 8<i32>:word32] + 4<i32>:word32]
-	word32 r3_247 = (r3_239 << 2<i32>) + Mem243[0x0000908C<p32>:word32]
+	r3_239 = r3_199 + r2_205
+	r1_242 = r5_17 + (r3_239 << 2<i32>)
+	r2_246 = Mem243[Mem243[r1_242 + 8<i32>:word32] + 4<i32>:word32]
+	r3_247 = (r3_239 << 2<i32>) + Mem243[0x0000908C<p32>:word32]
 	Mem249[r1_242 + 8<i32>:word32] = r2_246
 	r2_251 = r2_246
 	branch r2_246 != r3_247 l0000906E
 l0000906C_1:
 	r2_251 = Mem249[r2_246 + 4<i32>:word32]
 l0000906E:
-	word32 r0_254 = Mem249[r2_251 + 12<i32>:word32]
+	r0_254 = Mem249[r2_251 + 12<i32>:word32]
 	branch r2_246 != r3_247 l00009074
 l00009072_1:
 	Mem257[r1_242 + 8<i32>:word32] = r2_251
 l00009074:
 	Mem261[r5_17:word32] = r0_254
-	word32 pc_290
-	word32 cpsr_292
 	call Mem261[r0_254:word32] (retsize: 0;)
 		uses: cpsr:cpsr,lr:%continuation,Mem:Mem261,pc:pc_290,r0:r0_254,r1:Mem261[r0_254 + 48<i32>:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8
 		defs: cpsr:cpsr_292,pc:pc_290
@@ -2103,13 +2058,13 @@ bool xCoRoutineRemoveFromEventList(word32 r0, ptr32 & r0Out)
 // Preserved: r4 r5 r6 sp
 xCoRoutineRemoveFromEventList_entry:
 l00009094:
-	word32 r4_16 = Mem15[Mem0[r0 + 12<i32>:word32] + 12<i32>:word32]
-	word32 r5_17 = Mem15[0x000090C0<p32>:word32]
+	r4_16 = Mem15[Mem0[r0 + 12<i32>:word32] + 12<i32>:word32]
+	r5_17 = Mem15[0x000090C0<p32>:word32]
 	uxListRemove(r4_16 + 0x18<32>)
 	vListInsertEnd(r5_17 + 0x54<32>, r4_16 + 0x18<32>)
-	word32 r0_39 = Mem15[r4_16 + 44<i32>:word32]
-	word32 r3_40 = Mem15[Mem15[r5_17:word32] + 44<i32>:word32]
-	bool Z_70 = SLICE(cond(r0_39 - r3_40), bool, 2)
+	r0_39 = Mem15[r4_16 + 44<i32>:word32]
+	r3_40 = Mem15[Mem15[r5_17:word32] + 44<i32>:word32]
+	Z_70 = SLICE(cond(r0_39 - r3_40), bool, 2) (alias)
 	branch r0_39 >=u r3_40 l000090BC
 l000090BA_1:
 l000090BC:
@@ -2127,14 +2082,14 @@ void GPIOGetIntNumber(word32 r0)
 // Preserved: sp
 GPIOGetIntNumber_entry:
 l000090C4:
-	word32 r3_6 = Mem0[0x00009104<p32>:word32]
+	r3_6 = Mem0[0x00009104<p32>:word32]
 	branch r0 == r3_6 l000090FE
 l000090FE:
 	return
 l000090CA:
 	branch r0 >u r3_6 l000090DE
 l000090DE:
-	word32 r3_12 = Mem0[0x00009108<p32>:word32]
+	r3_12 = Mem0[0x00009108<p32>:word32]
 	branch r0 == r3_12 l000090F6
 l000090F6:
 	return
@@ -2166,13 +2121,13 @@ void GPIODirModeSet(word32 r0, word32 r1, word32 r2)
 // Preserved: sp
 GPIODirModeSet_entry:
 l0000910C:
-	word32 r3_12 = Mem0[r0 + 1024<i32>:word32]
+	r3_12 = Mem0[r0 + 1024<i32>:word32]
 	branch (r2 & 1<32>) == 0<32> l00009118
 l00009116_1:
 	r3_12 = r3_12 | r1
 l00009118:
 	Mem17[r0 + 1024<i32>:word32] = r3_12 & ~r1
-	word32 r3_18 = Mem17[r0 + 1056<i32>:word32]
+	r3_18 = Mem17[r0 + 1056<i32>:word32]
 	branch r2 << 30<i32> >= 0<32> l00009128
 l00009126_1:
 	r1 = r1 | r3_18
@@ -2191,8 +2146,8 @@ void GPIODirModeGet(word32 r0, word32 r1)
 // Preserved: r4 sp
 GPIODirModeGet_entry:
 l00009134:
-	word32 r1_14 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
-	word32 r2_15 = Mem8[r0 + 1056<i32>:word32]
+	r1_14 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
+	r2_15 = Mem8[r0 + 1056<i32>:word32]
 	branch (Mem8[r0 + 1024<i32>:word32] & r1_14) != 0<32> l0000914C
 l0000914A_1:
 l0000914C:
@@ -2212,19 +2167,19 @@ void GPIOIntTypeSet(word32 r0, word32 r1, word32 r2)
 // Preserved: sp
 GPIOIntTypeSet_entry:
 l0000915C:
-	word32 r3_12 = Mem0[r0 + 1032<i32>:word32]
+	r3_12 = Mem0[r0 + 1032<i32>:word32]
 	branch (r2 & 1<32>) == 0<32> l00009168
 l00009166_1:
 	r3_12 = r3_12 | r1
 l00009168:
 	Mem17[r0 + 1032<i32>:word32] = r3_12 & ~r1
-	word32 r3_18 = Mem17[r0 + 1028<i32>:word32]
+	r3_18 = Mem17[r0 + 1028<i32>:word32]
 	branch (r2 & 2<32>) == 0<32> l0000917A
 l00009178_1:
 	r3_18 = r3_18 | r1
 l0000917A:
 	Mem27[r0 + 1028<i32>:word32] = r3_18 & ~r1
-	word32 r3_28 = Mem27[r0 + 1036<i32>:word32]
+	r3_28 = Mem27[r0 + 1036<i32>:word32]
 	branch r2 << 29<i32> >= 0<32> l0000918A
 l00009188_1:
 	r1 = r1 | r3_28
@@ -2243,9 +2198,9 @@ void GPIOIntTypeGet(word32 r0, word32 r1)
 // Preserved: sp
 GPIOIntTypeGet_entry:
 l00009194:
-	word32 r1_12 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
-	word32 r3_13 = Mem0[r0 + 1028<i32>:word32]
-	word32 r0_15 = Mem0[r0 + 1036<i32>:word32]
+	r1_12 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
+	r3_13 = Mem0[r0 + 1028<i32>:word32]
+	r0_15 = Mem0[r0 + 1036<i32>:word32]
 	branch (Mem0[r0 + 1032<i32>:word32] & r1_12) == 0<32> l000091AE
 l000091AC_1:
 l000091AE:
@@ -2274,49 +2229,49 @@ void GPIOPadConfigSet(word32 r0, word32 r1, word32 r2, word32 r3)
 // Preserved: r4 sp
 GPIOPadConfigSet_entry:
 l000091C8:
-	word32 r4_14 = Mem7[r0 + 1280<i32>:word32]
+	r4_14 = Mem7[r0 + 1280<i32>:word32]
 	branch (r2 & 1<32>) == 0<32> l000091D6
 l000091D4_1:
 	r4_14 = r4_14 | r1
 l000091D6:
 	Mem19[r0 + 1280<i32>:word32] = r4_14 & ~r1
-	word32 r4_20 = Mem19[r0 + 1284<i32>:word32]
+	r4_20 = Mem19[r0 + 1284<i32>:word32]
 	branch (r2 & 2<32>) == 0<32> l000091E8
 l000091E6_1:
 	r4_20 = r4_20 | r1
 l000091E8:
 	Mem29[r0 + 1284<i32>:word32] = r4_20 & ~r1
-	word32 r4_30 = Mem29[r0 + 1288<i32>:word32]
+	r4_30 = Mem29[r0 + 1288<i32>:word32]
 	branch (r2 & 4<32>) == 0<32> l000091FA
 l000091F8_1:
 	r4_30 = r4_30 | r1
 l000091FA:
 	Mem39[r0 + 1288<i32>:word32] = r4_30 & ~r1
-	word32 r2_42 = Mem39[r0 + 1304<i32>:word32]
+	r2_42 = Mem39[r0 + 1304<i32>:word32]
 	branch (r2 & 8<32>) == 0<32> l0000920C
 l0000920A_1:
 	r2_42 = r2_42 | r1
 l0000920C:
 	Mem49[r0 + 1304<i32>:word32] = r2_42 & ~r1
-	word32 r2_50 = Mem49[r0 + 1292<i32>:word32]
+	r2_50 = Mem49[r0 + 1292<i32>:word32]
 	branch r3 << 31<i32> >= 0<32> l0000921C
 l0000921A_1:
 	r2_50 = r2_50 | r1
 l0000921C:
 	Mem64[r0 + 1292<i32>:word32] = r2_50 & ~r1
-	word32 r2_65 = Mem64[r0 + 1296<i32>:word32]
+	r2_65 = Mem64[r0 + 1296<i32>:word32]
 	branch r3 << 30<i32> >= 0<32> l0000922C
 l0000922A_1:
 	r2_65 = r2_65 | r1
 l0000922C:
 	Mem75[r0 + 1296<i32>:word32] = r2_65 & ~r1
-	word32 r2_76 = Mem75[r0 + 1300<i32>:word32]
+	r2_76 = Mem75[r0 + 1300<i32>:word32]
 	branch r3 << 29<i32> >= 0<32> l0000923C
 l0000923A_1:
 	r2_76 = r2_76 | r1
 l0000923C:
 	Mem86[r0 + 1300<i32>:word32] = r2_76 & ~r1
-	word32 r3_89 = Mem86[r0 + 1308<i32>:word32]
+	r3_89 = Mem86[r0 + 1308<i32>:word32]
 	branch (r3 & 8<32>) == 0<32> l00009250
 l0000924E_1:
 	r1 = r1 | r3_89
@@ -2335,13 +2290,13 @@ void GPIOPadConfigGet(word32 r0, word32 r1, word32 r2, word32 r3)
 // Preserved: r4 r5 r6 r7 sp
 GPIOPadConfigGet_entry:
 l0000925C:
-	word32 r1_20 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
-	word32 r4_21 = Mem13[r0 + 1284<i32>:word32]
-	word32 r5_23 = Mem13[r0 + 1288<i32>:word32]
+	r1_20 = CONVERT(1<8> << SLICE(r1, byte, 0), byte, uint32)
+	r4_21 = Mem13[r0 + 1284<i32>:word32]
+	r5_23 = Mem13[r0 + 1288<i32>:word32]
 	branch (Mem13[r0 + 1280<i32>:word32] & r1_20) == 0<32> l00009278
 l00009276_1:
 l00009278:
-	word32 r4_32 = Mem13[r0 + 1304<i32>:word32]
+	r4_32 = Mem13[r0 + 1304<i32>:word32]
 	branch (r4_21 & r1_20) == 0<32> l00009284
 l00009282_1:
 l00009284:
@@ -2352,15 +2307,15 @@ l0000928C:
 l00009292_1:
 l00009294:
 	Mem64[r2:word32] = 0<32>
-	word32 r5_109 = 0<32>
-	word32 r2_68 = Mem64[r0 + 1292<i32>:word32]
-	word32 r4_69 = Mem64[r0 + 1296<i32>:word32]
-	word32 r6_72 = Mem64[r0 + 1300<i32>:word32]
+	r5_109 = 0<32>
+	r2_68 = Mem64[r0 + 1292<i32>:word32]
+	r4_69 = Mem64[r0 + 1296<i32>:word32]
+	r6_72 = Mem64[r0 + 1300<i32>:word32]
 	branch (r1_20 & r2_68) == 0<32> l000092B0
 l000092AE_1:
 	r5_109 = 1<32>
 l000092B0:
-	word32 r2_77 = Mem64[r0 + 1308<i32>:word32]
+	r2_77 = Mem64[r0 + 1308<i32>:word32]
 	branch (r1_20 & r2_68) != 0<32> l000092B8
 l000092B6_1:
 	r5_109 = 0<32>
@@ -2447,7 +2402,7 @@ void GPIOPortIntRegister(word32 r0, word32 r1)
 // Preserved: r4 sp
 GPIOPortIntRegister_entry:
 l00009314:
-	word32 r3_6 = Mem0[0x000093A8<p32>:word32]
+	r3_6 = Mem0[0x000093A8<p32>:word32]
 	branch r0 == r3_6 l00009396
 l00009396:
 	IntRegister(0x12<32>, r1)
@@ -2457,7 +2412,7 @@ l000093A4_thunk_IntEnable:
 l0000931C:
 	branch r0 >u r3_6 l0000933E
 l0000933E:
-	word32 r3_37 = Mem10[0x000093AC<p32>:word32]
+	r3_37 = Mem10[0x000093AC<p32>:word32]
 	branch r0 == r3_37 l00009372
 l00009372:
 	IntRegister(0x13<32>, r1)
@@ -2502,7 +2457,7 @@ void GPIOPortIntUnregister(word32 r0)
 // Preserved: r4 sp
 GPIOPortIntUnregister_entry:
 l000093B0:
-	word32 r3_6 = Mem0[0x00009444<p32>:word32]
+	r3_6 = Mem0[0x00009444<p32>:word32]
 	branch r0 == r3_6 l00009432
 l00009432:
 	IntDisable(0x12<32>)
@@ -2512,7 +2467,7 @@ l00009440_thunk_IntUnregister:
 l000093B8:
 	branch r0 >u r3_6 l000093DA
 l000093DA:
-	word32 r3_32 = Mem10[0x00009448<p32>:word32]
+	r3_32 = Mem10[0x00009448<p32>:word32]
 	branch r0 == r3_32 l0000940E
 l0000940E:
 	IntDisable(0x13<32>)
@@ -2586,7 +2541,7 @@ void GPIOPinTypeComparator(word32 r0, word32 r1)
 // Preserved: r4 r5 r6 sp
 GPIOPinTypeComparator_entry:
 l0000945C:
-	word32 r5_13 = ~r1
+	r5_13 = ~r1
 	Mem19[r0 + 1024<i32>:word32] = Mem11[r0 + 1024<i32>:word32] & r5_13
 	Mem24[r0 + 1056<i32>:word32] = r5_13 & Mem19[r0 + 1056<i32>:word32]
 l0000947A_thunk_GPIOPadConfigSet:
@@ -2755,10 +2710,10 @@ void IntRegister(word32 r0, word32 r1)
 // Preserved: r4 r5 sp
 IntRegister_entry:
 l00009504:
-	word32 r4_13 = Mem11[0x00009534<p32>:word32]
+	r4_13 = Mem11[0x00009534<p32>:word32]
 	branch Mem11[Mem0[0x00009530<p32>:word32]:word32] == r4_13 l00009526
 l00009510:
-	word32 r3_16 = r4_13
+	r3_16 = r4_13
 l00009516:
 	Mem23[r3_16:word32] = Mem21[r3_16 - r4_13:word32]
 	r3_16 = r3_16 + 4<i32>
@@ -2814,10 +2769,10 @@ void IntPriorityGroupingGet()
 // Preserved: sp
 IntPriorityGroupingGet_entry:
 l00009568:
-	word32 r3_13 = 0x700<32>
-	word32 r0_17 = 0<32>
-	word32 r1_9 = Mem0[Mem0[0x00009588<p32>:word32]:word32]
-	word32 r2_10 = Mem0[0x0000958C<p32>:word32]
+	r3_13 = 0x700<32>
+	r0_17 = 0<32>
+	r1_9 = Mem0[Mem0[0x00009588<p32>:word32]:word32]
+	r2_10 = Mem0[0x0000958C<p32>:word32]
 l0000957C:
 	branch r3_13 == (r1_9 & 0x700<32>) l00009586
 l00009580:
@@ -2840,8 +2795,8 @@ void IntPrioritySet(word32 r0, word32 r1)
 // Preserved: r4 sp
 IntPrioritySet_entry:
 l00009590:
-	word32 r4_15 = Mem10[Mem0[0x000095B8<p32>:word32] + (r0 & 0xFFFFFFFC<32>) + 32<i32>:word32]
-	word32 r0_18 = (r0 & 3<32>) << 3<i32>
+	r4_15 = Mem10[Mem0[0x000095B8<p32>:word32] + (r0 & 0xFFFFFFFC<32>) + 32<i32>:word32]
+	r0_18 = (r0 & 3<32>) << 3<i32>
 	Mem25[r4_15:word32] = r1 << r0_18 | Mem10[r4_15:word32] & ~(0xFF<32> << r0_18)
 	return
 IntPrioritySet_exit:
@@ -2877,25 +2832,25 @@ IntEnable_entry:
 l000095DC:
 	branch r0 == 4<32> l00009608
 l00009608:
-	word32 r2_9 = Mem0[0x00009634<p32>:word32]
+	r2_9 = Mem0[0x00009634<p32>:word32]
 	Mem12[r2_9:word32] = Mem0[r2_9:word32] | 0x10000<32>
 	return
 l000095E0:
 	branch r0 == 5<32> l00009614
 l00009614:
-	word32 r2_15 = Mem0[0x00009634<p32>:word32]
+	r2_15 = Mem0[0x00009634<p32>:word32]
 	Mem18[r2_15:word32] = Mem0[r2_15:word32] | 0x20000<32>
 	return
 l000095E4:
 	branch r0 == 6<32> l00009620
 l00009620:
-	word32 r2_21 = Mem0[0x00009634<p32>:word32]
+	r2_21 = Mem0[0x00009634<p32>:word32]
 	Mem24[r2_21:word32] = Mem0[r2_21:word32] | 0x40000<32>
 	return
 l000095E8:
 	branch r0 == 0xF<32> l000095FC
 l000095FC:
-	word32 r2_27 = Mem0[0x00009630<p32>:word32]
+	r2_27 = Mem0[0x00009630<p32>:word32]
 	Mem30[r2_27:word32] = Mem0[r2_27:word32] | 2<32>
 	return
 l000095EC:
@@ -2924,25 +2879,25 @@ IntDisable_entry:
 l00009638:
 	branch r0 == 4<32> l00009664
 l00009664:
-	word32 r2_9 = Mem0[0x00009690<p32>:word32]
+	r2_9 = Mem0[0x00009690<p32>:word32]
 	Mem12[r2_9:word32] = Mem0[r2_9:word32] & 0xFFFEFFFF<32>
 	return
 l0000963C:
 	branch r0 == 5<32> l00009670
 l00009670:
-	word32 r2_15 = Mem0[0x00009690<p32>:word32]
+	r2_15 = Mem0[0x00009690<p32>:word32]
 	Mem18[r2_15:word32] = Mem0[r2_15:word32] & 0xFFFDFFFF<32>
 	return
 l00009640:
 	branch r0 == 6<32> l0000967C
 l0000967C:
-	word32 r2_21 = Mem0[0x00009690<p32>:word32]
+	r2_21 = Mem0[0x00009690<p32>:word32]
 	Mem24[r2_21:word32] = Mem0[r2_21:word32] & 0xFFFBFFFF<32>
 	return
 l00009644:
 	branch r0 == 0xF<32> l00009658
 l00009658:
-	word32 r2_27 = Mem0[0x0000968C<p32>:word32]
+	r2_27 = Mem0[0x0000968C<p32>:word32]
 	Mem30[r2_27:word32] = Mem0[r2_27:word32] & 0xFFFFFFFD<32>
 	return
 l00009648:
@@ -2989,7 +2944,7 @@ void OSRAMWriteFirst(word32 r0)
 // Preserved: r3 r4 r5 sp
 OSRAMWriteFirst_entry:
 l0000969C:
-	word32 r4_15 = Mem12[0x000096C0<p32>:word32]
+	r4_15 = Mem12[0x000096C0<p32>:word32]
 	I2CMasterSlaveAddrSet(r4_15, 0x3D<32>, 0<32>)
 	I2CMasterDataPut(r4_15, r0)
 l000096BC_thunk_I2CMasterControl:
@@ -3016,10 +2971,10 @@ l000096C4:
 l000096FA:
 	return
 l000096C6:
-	word32 r5_19 = r0
-	word32 r7_20 = Mem17[0x000096FC<p32>:word32]
-	word32 r4_21 = Mem17[0x00009700<p32>:word32]
-	word32 r6_22 = r0 + r1
+	r5_19 = r0
+	r7_20 = Mem17[0x000096FC<p32>:word32]
+	r4_21 = Mem17[0x00009700<p32>:word32]
+	r6_22 = r0 + r1
 l000096D0:
 	branch I2CMasterIntStatus(r4_21, 0<32>) == 0<32> l000096D0
 l000096DC:
@@ -3052,7 +3007,7 @@ l00009708:
 l00009714:
 	OSRAMDelay(Mem8[Mem8[0x00009734<p32>:word32]:word32])
 	I2CMasterDataPut(Mem8[0x00009730<p32>:word32], r0)
-	word32 r0_39 = Mem8[0x00009730<p32>:word32]
+	r0_39 = Mem8[0x00009730<p32>:word32]
 l0000972C_thunk_I2CMasterControl:
 	I2CMasterControl(r0_39, 1<32>)
 	return
@@ -3074,19 +3029,19 @@ void OSRAMWriteFinal(word32 r0)
 // Preserved: r4 r5 r6 sp
 OSRAMWriteFinal_entry:
 l00009738:
-	word32 r4_15 = Mem12[0x00009778<p32>:word32]
+	r4_15 = Mem12[0x00009778<p32>:word32]
 l0000973E:
 	branch I2CMasterIntStatus(r4_15, 0<32>) == 0<32> l0000973E
 l0000974A:
-	word32 r5_28 = Mem12[0x0000977C<p32>:word32]
-	word32 r4_29 = Mem12[0x00009778<p32>:word32]
+	r5_28 = Mem12[0x0000977C<p32>:word32]
+	r4_29 = Mem12[0x00009778<p32>:word32]
 	OSRAMDelay(Mem12[r5_28:word32])
 	I2CMasterDataPut(r4_29, r0)
 	I2CMasterControl(r4_29, 5<32>)
 l00009764:
 	branch I2CMasterIntStatus(r4_29, 0<32>) == 0<32> l00009764
 l00009770:
-	word32 r0_57 = Mem12[r5_28:word32]
+	r0_57 = Mem12[r5_28:word32]
 l00009776_thunk_OSRAMDelay:
 	OSRAMDelay(r0_57)
 	return
@@ -3107,7 +3062,7 @@ OSRAMClear_entry:
 l00009780:
 	OSRAMWriteFirst(0x80<32>)
 	OSRAMWriteArray(Mem8[0x000097C4<p32>:word32], 6<32>)
-	word32 r4_23 = 0x5F<32>
+	r4_23 = 0x5F<32>
 l00009792:
 	OSRAMWriteByte(0<32>)
 	r4_23 = r4_23 - 1<32>
@@ -3116,7 +3071,7 @@ l0000979C:
 	OSRAMWriteFinal(r4_23)
 	OSRAMWriteFirst(0x80<32>)
 	OSRAMWriteArray(Mem8[0x000097C8<p32>:word32], 6<32>)
-	word32 r4_60 = 0x5F<32>
+	r4_60 = 0x5F<32>
 l000097B2:
 	OSRAMWriteByte(0<32>)
 	r4_60 = r4_60 - 1<32>
@@ -3141,8 +3096,8 @@ void OSRAMStringDraw(word32 r0, word32 r1, word32 r2)
 OSRAMStringDraw_entry:
 l000097CC:
 	OSRAMWriteFirst(0x80<32>)
-	word32 r4_110 = r1
-	word32 r5_114 = r0
+	r4_110 = r1
+	r5_114 = r0
 	branch r2 != 0<32> l000097E0
 l000097DE_1:
 l000097E0:
@@ -3152,12 +3107,12 @@ l000097E0:
 	OSRAMWriteByte(0x80<32>)
 	OSRAMWriteByte(CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32) | 0x10<32>)
 	OSRAMWriteByte(0x40<32>)
-	word32 r3_128 = CONVERT(Mem12[r0:byte], byte, word32)
+	r3_128 = CONVERT(Mem12[r0:byte], byte, word32)
 	branch r3_128 == 0<32> l00009876
 l00009876:
 	return
 l00009814:
-	word32 r6_94 = Mem12[0x00009878<p32>:word32]
+	r6_94 = Mem12[0x00009878<p32>:word32]
 	branch r1 <=u 0x5A<32> l00009830
 l00009830:
 	OSRAMWriteArray(r6_94 + (r3_128 - 0x20<32>) * 5<32>, 5<32>)
@@ -3180,10 +3135,10 @@ l0000984A_thunk_OSRAMWriteFinal:
 	return
 l0000981A:
 l0000984C:
-	word32 r4_157 = 0x5F<32> - r4_110
+	r4_157 = 0x5F<32> - r4_110
 	OSRAMWriteArray(r6_94 + (r3_128 - 0x20<32>) * 5<32>, r4_157)
-	word32 r3_170 = CONVERT(Mem12[r5_114:byte], byte, word32)
-	word32 r0_177 = CONVERT(Mem12[r3_170 - 0x20<32> + (r3_170 - 0x20<32> << 2<u32>) + Mem12[0x0000987C<p32>:word32] + r4_157 + 16<i32>:byte], byte, word32)
+	r3_170 = CONVERT(Mem12[r5_114:byte], byte, word32)
+	r0_177 = CONVERT(Mem12[r3_170 - 0x20<32> + (r3_170 - 0x20<32> << 2<u32>) + Mem12[0x0000987C<p32>:word32] + r4_157 + 16<i32>:byte], byte, word32)
 l00009872_thunk_OSRAMWriteFinal:
 	OSRAMWriteFinal(r0_177)
 	return
@@ -3201,11 +3156,11 @@ OSRAMImageDraw_entry:
 l00009880:
 	branch dwArg00 == 0<32> l000098EA
 l00009888:
-	word32 r5_104 = r0
-	word32 r4_121 = r2
-	word32 r8_30 = CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32)
-	word32 r6_31 = dwArg00 + r2
-	word32 r7_34 = r1 + 0x24<32> & 0xF<32>
+	r5_104 = r0
+	r4_121 = r2
+	r8_30 = CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32)
+	r6_31 = dwArg00 + r2
+	r7_34 = r1 + 0x24<32> & 0xF<32>
 l000098A2:
 	OSRAMWriteFirst(0x80<32>)
 	branch r4_121 == 0<32> l000098AE
@@ -3242,18 +3197,18 @@ l000098F0:
 	SysCtlPeripheralEnable(Mem16[0x00009960<p32>:word32])
 	GPIOPinTypeI2C(Mem16[0x00009964<p32>:word32], 0xC<32>)
 	I2CMasterInit(Mem16[0x00009968<p32>:word32], r0)
-	word32 r7_56 = Mem16[0x00009970<p32>:word32]
+	r7_56 = Mem16[0x00009970<p32>:word32]
 	Mem61[Mem16[0x0000996C<p32>:word32]:word32] = 1<32>
-	word32 r6_103 = 0xE3<32>
-	word32 r4_58 = 4<32>
-	word32 r0_100 = 0x80<32>
-	word32 r5_60 = 0<32>
+	r6_103 = 0xE3<32>
+	r4_58 = 4<32>
+	r0_100 = 0x80<32>
+	r5_60 = 0<32>
 l00009938:
 	OSRAMWriteFirst(r0_100)
 	OSRAMWriteArray(r5_60 + 2<32> + (r7_56 + 0x1EC<32>), r4_58 - 2<32>)
 	OSRAMWriteFinal(r6_103)
 	r5_60 = r5_60 + (r4_58 + 1<32>)
-	word32 r3_96 = r7_56 + r5_60
+	r3_96 = r7_56 + r5_60
 	branch r5_60 <=u 0x70<32> l0000992A
 l0000992A:
 	r4_58 = CONVERT(Mem61[r3_96 + 492<i32>:byte], byte, word32)
@@ -3275,17 +3230,17 @@ void OSRAMDisplayOn()
 // Preserved: r4 r5 r6 r7 r8 sp
 OSRAMDisplayOn_entry:
 l00009974:
-	word32 r7_17 = Mem16[0x000099BC<p32>:word32]
-	word32 r6_18 = 0xE3<32>
-	word32 r4_19 = 4<32>
-	word32 r0_20 = 0x80<32>
-	word32 r5_21 = 0<32>
+	r7_17 = Mem16[0x000099BC<p32>:word32]
+	r6_18 = 0xE3<32>
+	r4_19 = 4<32>
+	r0_20 = 0x80<32>
+	r5_21 = 0<32>
 l00009996:
 	OSRAMWriteFirst(r0_20)
 	OSRAMWriteArray(r5_21 + 2<32> + (r7_17 + 0x1EC<32>), r4_19 - 2<32>)
 	OSRAMWriteFinal(r6_18)
 	r5_21 = r5_21 + (r4_19 + 1<32>)
-	word32 r3_56 = r7_17 + r5_21
+	r3_56 = r7_17 + r5_21
 	branch r5_21 <=u 0x70<32> l00009988
 l00009988:
 	r4_19 = CONVERT(Mem16[r3_56 + 492<i32>:byte], byte, word32)
@@ -3327,8 +3282,8 @@ void SSIConfig(word32 r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 // Preserved: r4 r5 r6 r7 r8 sp
 SSIConfig_entry:
 l000099E8:
-	word32 r7_18 = r2
-	word32 r0_27 = SysCtlClockGet()
+	r7_18 = r2
+	r0_27 = SysCtlClockGet()
 	branch r2 == 2<32> l00009A30
 l00009A30:
 	r7_18 = 0xC<32>
@@ -3338,11 +3293,11 @@ l00009A02_1:
 	r7_18 = 4<32>
 l00009A04:
 	Mem47[r0 + 4<i32>:word32] = r7_18
-	word32 r3_43 = r0_27 /u r3
-	word32 r4_44 = 0<32>
+	r3_43 = r0_27 /u r3
+	r4_44 = 0<32>
 l00009A0C:
 	r4_44 = r4_44 + 2<32>
-	word32 r2_51 = r3_43 /u r4_44
+	r2_51 = r3_43 /u r4_44
 	branch r2_51 >u 0x100<32> || r2_51 <u 1<32> l00009A0C
 l00009A18:
 	Mem67[r0 + 16<i32>:word32] = r4_44
@@ -3536,8 +3491,8 @@ void SSIDataNonBlockingGet(word32 r0, word32 r1)
 // Preserved: sp
 SSIDataNonBlockingGet_entry:
 l00009AC8:
-	word32 r3_7 = Mem0[r0 + 12<i32>:word32]
-	word32 r3_11 = r3_7 & 4<32>
+	r3_7 = Mem0[r0 + 12<i32>:word32]
+	r3_11 = r3_7 & 4<32>
 	branch (r3_7 & 4<32>) == 0<32> l00009AD2
 l00009AD0_1:
 	r3_11 = Mem0[r0 + 8<i32>:word32]
@@ -3614,9 +3569,9 @@ void SysCtlPeripheralReset(word32 r0)
 // Preserved: r4 sp
 SysCtlPeripheralReset_entry:
 l00009B3C:
-	word32 r2_14 = Mem12[Mem0[0x00009B78<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 16<i32>:word32]
+	r2_14 = Mem12[Mem0[0x00009B78<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 16<i32>:word32]
 	Mem19[r2_14:word32] = r0 & 0xFFFFFFF<32> | Mem12[r2_14:word32]
-	word32 dwLoc0C_45 = 0<32>
+	dwLoc0C_45 = 0<32>
 	branch true l00009B6A
 l00009B5E:
 	dwLoc0C_45 = dwLoc0C_45 + 1<32>
@@ -3639,7 +3594,7 @@ void SysCtlPeripheralEnable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralEnable_entry:
 l00009B7C:
-	word32 r3_10 = Mem0[Mem0[0x00009B94<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 28<i32>:word32]
+	r3_10 = Mem0[Mem0[0x00009B94<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 28<i32>:word32]
 	Mem15[r3_10:word32] = r0 & 0xFFFFFFF<32> | Mem0[r3_10:word32]
 	return
 SysCtlPeripheralEnable_exit:
@@ -3654,7 +3609,7 @@ void SysCtlPeripheralDisable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralDisable_entry:
 l00009B98:
-	word32 r2_11 = Mem0[Mem0[0x00009BB0<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 28<i32>:word32]
+	r2_11 = Mem0[Mem0[0x00009BB0<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 28<i32>:word32]
 	Mem15[r2_11:word32] = Mem0[r2_11:word32] & ~(r0 & 0xFFFFFFF<32>)
 	return
 SysCtlPeripheralDisable_exit:
@@ -3669,7 +3624,7 @@ void SysCtlPeripheralSleepEnable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralSleepEnable_entry:
 l00009BB4:
-	word32 r3_10 = Mem0[Mem0[0x00009BCC<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 40<i32>:word32]
+	r3_10 = Mem0[Mem0[0x00009BCC<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 40<i32>:word32]
 	Mem15[r3_10:word32] = r0 & 0xFFFFFFF<32> | Mem0[r3_10:word32]
 	return
 SysCtlPeripheralSleepEnable_exit:
@@ -3684,7 +3639,7 @@ void SysCtlPeripheralSleepDisable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralSleepDisable_entry:
 l00009BD0:
-	word32 r2_11 = Mem0[Mem0[0x00009BE8<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 40<i32>:word32]
+	r2_11 = Mem0[Mem0[0x00009BE8<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 40<i32>:word32]
 	Mem15[r2_11:word32] = Mem0[r2_11:word32] & ~(r0 & 0xFFFFFFF<32>)
 	return
 SysCtlPeripheralSleepDisable_exit:
@@ -3699,7 +3654,7 @@ void SysCtlPeripheralDeepSleepEnable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralDeepSleepEnable_entry:
 l00009BEC:
-	word32 r3_10 = Mem0[Mem0[0x00009C04<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 52<i32>:word32]
+	r3_10 = Mem0[Mem0[0x00009C04<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 52<i32>:word32]
 	Mem15[r3_10:word32] = r0 & 0xFFFFFFF<32> | Mem0[r3_10:word32]
 	return
 SysCtlPeripheralDeepSleepEnable_exit:
@@ -3714,7 +3669,7 @@ void SysCtlPeripheralDeepSleepDisable(word32 r0)
 // Preserved: sp
 SysCtlPeripheralDeepSleepDisable_entry:
 l00009C08:
-	word32 r2_11 = Mem0[Mem0[0x00009C20<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 52<i32>:word32]
+	r2_11 = Mem0[Mem0[0x00009C20<p32>:word32] + ((r0 >>u 28<i32>) << 2<u32>) + 52<i32>:word32]
 	Mem15[r2_11:word32] = Mem0[r2_11:word32] & ~(r0 & 0xFFFFFFF<32>)
 	return
 SysCtlPeripheralDeepSleepDisable_exit:
@@ -3729,8 +3684,8 @@ void SysCtlPeripheralClockGating(word32 r0)
 // Preserved: sp
 SysCtlPeripheralClockGating_entry:
 l00009C24:
-	word32 r2_6 = Mem0[0x00009C3C<p32>:word32]
-	word32 r3_7 = Mem0[r2_6:word32]
+	r2_6 = Mem0[0x00009C3C<p32>:word32]
+	r3_7 = Mem0[r2_6:word32]
 	branch r0 != 0<32> l00009C32
 l00009C32:
 	Mem10[r2_6:word32] = r3_7 | 0x8000000<32>
@@ -3782,7 +3737,7 @@ void SysCtlIntEnable(word32 r0)
 // Preserved: sp
 SysCtlIntEnable_entry:
 l00009C68:
-	word32 r2_6 = Mem0[0x00009C74<p32>:word32]
+	r2_6 = Mem0[0x00009C74<p32>:word32]
 	Mem11[r2_6:word32] = r0 | Mem0[r2_6:word32]
 	return
 SysCtlIntEnable_exit:
@@ -3797,7 +3752,7 @@ void SysCtlIntDisable(word32 r0)
 // Preserved: sp
 SysCtlIntDisable_entry:
 l00009C78:
-	word32 r2_6 = Mem0[0x00009C84<p32>:word32]
+	r2_6 = Mem0[0x00009C84<p32>:word32]
 	Mem10[r2_6:word32] = Mem0[r2_6:word32] & ~r0
 	return
 SysCtlIntDisable_exit:
@@ -3914,7 +3869,7 @@ void SysCtlDeepSleep()
 // Preserved: r4 sp
 SysCtlDeepSleep_entry:
 l00009CE4:
-	word32 r4_9 = Mem8[0x00009D00<p32>:word32]
+	r4_9 = Mem8[0x00009D00<p32>:word32]
 	Mem12[r4_9:word32] = Mem8[r4_9:word32] | 4<32>
 	CPUwfi()
 	Mem16[r4_9:word32] = Mem12[r4_9:word32] & 0xFFFFFFFB<32>
@@ -3944,7 +3899,7 @@ void SysCtlResetCauseClear(word32 r0)
 // Preserved: sp
 SysCtlResetCauseClear_entry:
 l00009D10:
-	word32 r2_6 = Mem0[0x00009D1C<p32>:word32]
+	r2_6 = Mem0[0x00009D1C<p32>:word32]
 	Mem10[r2_6:word32] = Mem0[r2_6:word32] & ~r0
 	return
 SysCtlResetCauseClear_exit:
@@ -3973,28 +3928,28 @@ void SysCtlClockSet(word32 r0)
 // Preserved: r0 r4 r5 r6 r7 sp
 SysCtlClockSet_entry:
 l00009D30:
-	word32 r4_17 = Mem14[0x00009DE0<p32>:word32]
-	word32 r3_19 = Mem14[r4_17:word32]
-	word32 r5_27 = Mem14[0x00009DE8<p32>:word32]
-	word32 r2_30 = r0 & 0x33F0<32> | (Mem14[0x00009DE4<p32>:word32] & r3_19 | 0x800<32>) & (r0 | 0xFFFFFFFC<32>)
+	r4_17 = Mem14[0x00009DE0<p32>:word32]
+	r3_19 = Mem14[r4_17:word32]
+	r5_27 = Mem14[0x00009DE8<p32>:word32]
+	r2_30 = r0 & 0x33F0<32> | (Mem14[0x00009DE4<p32>:word32] & r3_19 | 0x800<32>) & (r0 | 0xFFFFFFFC<32>)
 	Mem31[r4_17:word32] = r3_19 & 0xFFBFFFFF<32> | 0x800<32>
 	Mem32[r5_27:word32] = 0x40<32>
 	Mem33[r4_17:word32] = r2_30
-	word32 dwLoc14_119 = 0<32>
+	dwLoc14_119 = 0<32>
 	branch true l00009D76
 l00009D6A:
 	dwLoc14_119 = dwLoc14_119 + 1<32>
 	branch dwLoc14_119 <=u 0xF<32> l00009D6A
 l00009D76:
-	word32 r2_54 = r2_30 & 0xFFFFFFFC<32> | r0 & 3<32>
+	r2_54 = r2_30 & 0xFFFFFFFC<32> | r0 & 3<32>
 	Mem57[Mem49[0x00009DE0<p32>:word32]:word32] = r2_54
-	word32 r1_60 = r0 & 0x7C00000<32> | r2_54 & 0xF83FFFFF<32>
+	r1_60 = r0 & 0x7C00000<32> | r2_54 & 0xF83FFFFF<32>
 	branch r0 << 20<i32> < 0<32> l00009DBE
 l00009D94:
-	word32 dwLoc14_122 = 0x8000<32>
+	dwLoc14_122 = 0x8000<32>
 	branch false l00009DBA
 l00009D9E:
-	word32 r2_66 = Mem64[0x00009DEC<p32>:word32]
+	r2_66 = Mem64[0x00009DEC<p32>:word32]
 	branch Mem64[r2_66:word32] << 25<i32> >= 0<32> l00009DAE
 l00009DAE:
 	dwLoc14_122 = dwLoc14_122 - 1<32>
@@ -4006,7 +3961,7 @@ l00009DBA:
 	r1_60 = r1_60 & 0xFFFFF7FF<32>
 l00009DBE:
 	Mem92[Mem88[0x00009DE0<p32>:word32]:word32] = r1_60
-	word32 dwLoc14_125 = 0<32>
+	dwLoc14_125 = 0<32>
 	branch true l00009DD8
 l00009DCC:
 	dwLoc14_125 = dwLoc14_125 + 1<32>
@@ -4030,8 +3985,7 @@ word32 SysCtlClockGet()
 // Preserved: sp
 SysCtlClockGet_entry:
 l00009DF0:
-	word32 r0_11
-	word32 r3_7 = Mem0[Mem0[0x00009E54<p32>:word32]:word32]
+	r3_7 = Mem0[Mem0[0x00009E54<p32>:word32]:word32]
 	branch (r3_7 & 0x30<32>) == 0x10<32> l00009E4E
 l00009E4E:
 	r0_11 = Mem0[0x00009E64<p32>:word32]
@@ -4046,7 +4000,7 @@ l00009E06:
 l00009E12:
 	branch r3_7 << 20<i32> < 0<32> l00009E3A
 l00009E16:
-	word32 r2_25 = Mem0[Mem0[0x00009E5C<p32>:word32]:word32]
+	r2_25 = Mem0[Mem0[0x00009E5C<p32>:word32]:word32]
 	r0_11 = r0_11 * (CONVERT(SLICE(r2_25, ui9, 5), ui9, uint32) + 2<32>) /u ((r2_25 & 0x1F<32>) + 2<32>)
 	branch r2_25 << 17<i32> >= 0<32> l00009E34
 l00009E32_1:
@@ -4075,7 +4029,7 @@ void SysCtlPWMClockSet(word32 r0)
 // Preserved: sp
 SysCtlPWMClockSet_entry:
 l00009E68:
-	word32 r2_6 = Mem0[0x00009E78<p32>:word32]
+	r2_6 = Mem0[0x00009E78<p32>:word32]
 	Mem12[r2_6:word32] = r0 | Mem0[r2_6:word32] & 0xFFE1FFFF<32>
 	return
 SysCtlPWMClockSet_exit:
@@ -4103,9 +4057,9 @@ void SysCtlADCSpeedSet(word32 r0)
 // Preserved: r4 sp
 SysCtlADCSpeedSet_entry:
 l00009E8C:
-	word32 r4_8 = Mem7[0x00009EB8<p32>:word32]
-	word32 r1_9 = Mem7[0x00009EBC<p32>:word32]
-	word32 r2_11 = Mem7[0x00009EC0<p32>:word32]
+	r4_8 = Mem7[0x00009EB8<p32>:word32]
+	r1_9 = Mem7[0x00009EBC<p32>:word32]
+	r2_11 = Mem7[0x00009EC0<p32>:word32]
 	Mem15[r4_8:word32] = Mem7[r4_8:word32] & 0xFFFFF0FF<32> | r0
 	Mem21[r1_9:word32] = Mem15[r1_9:word32] & 0xFFFFF0FF<32> | r0
 	Mem26[r2_11:word32] = r0 | Mem21[r2_11:word32] & 0xFFFFF0FF<32>
@@ -4135,8 +4089,8 @@ void SysCtlIOSCVerificationSet(word32 r0)
 // Preserved: sp
 SysCtlIOSCVerificationSet_entry:
 l00009ED4:
-	word32 r2_6 = Mem0[0x00009EEC<p32>:word32]
-	word32 r3_7 = Mem0[r2_6:word32]
+	r2_6 = Mem0[0x00009EEC<p32>:word32]
+	r3_7 = Mem0[r2_6:word32]
 	branch r0 != 0<32> l00009EE2
 l00009EE2:
 	Mem10[r2_6:word32] = r3_7 | 8<32>
@@ -4156,8 +4110,8 @@ void SysCtlMOSCVerificationSet(word32 r0)
 // Preserved: sp
 SysCtlMOSCVerificationSet_entry:
 l00009EF0:
-	word32 r2_6 = Mem0[0x00009F08<p32>:word32]
-	word32 r3_7 = Mem0[r2_6:word32]
+	r2_6 = Mem0[0x00009F08<p32>:word32]
+	r3_7 = Mem0[r2_6:word32]
 	branch r0 != 0<32> l00009EFE
 l00009EFE:
 	Mem10[r2_6:word32] = r3_7 | 4<32>
@@ -4177,8 +4131,8 @@ void SysCtlPLLVerificationSet(word32 r0)
 // Preserved: sp
 SysCtlPLLVerificationSet_entry:
 l00009F0C:
-	word32 r2_6 = Mem0[0x00009F24<p32>:word32]
-	word32 r3_7 = Mem0[r2_6:word32]
+	r2_6 = Mem0[0x00009F24<p32>:word32]
+	r3_7 = Mem0[r2_6:word32]
 	branch r0 != 0<32> l00009F1A
 l00009F1A:
 	Mem10[r2_6:word32] = r3_7 | 0x400<32>
@@ -4198,7 +4152,7 @@ void SysCtlClkVerificationClear()
 // Preserved: sp
 SysCtlClkVerificationClear_entry:
 l00009F28:
-	word32 r3_8 = Mem0[0x00009F34<p32>:word32]
+	r3_8 = Mem0[0x00009F34<p32>:word32]
 	Mem9[r3_8:word32] = 1<32>
 	Mem10[r3_8:word32] = 0<32>
 	return
@@ -4242,13 +4196,13 @@ void UARTConfigSet(word32 r0, word32 r1, word32 r2)
 UARTConfigSet_entry:
 l00009F4C:
 l00009F56:
-	word32 r4_27 = Mem16[r0 + 0x18<32>:word32]
+	r4_27 = Mem16[r0 + 0x18<32>:word32]
 	branch (r4_27 & 8<32>) != 0<32> l00009F56
 l00009F5E:
 	Mem34[r0 + 44<i32>:word32] = Mem16[r0 + 44<i32>:word32] & 0xFFFFFFEF<32>
 	Mem38[r0 + 48<i32>:word32] = Mem34[r0 + 48<i32>:word32] & 0xFFFFFCFF<32> & 0xFFFFFFFE<32>
-	word32 r0_40 = SysCtlClockGet()
-	word32 r2_50 = r0_40 /u (r1 << 4<i32>)
+	r0_40 = SysCtlClockGet()
+	r2_50 = r0_40 /u (r1 << 4<i32>)
 	Mem58[r0 + 36<i32>:word32] = r2_50
 	Mem59[r0 + 40<i32>:word32] = (r0_40 - (r1 << 4<i32>) * r2_50 << 3<i32>) /u r1 + 1<32> >>u 1<i32>
 	Mem61[r0 + 44<i32>:word32] = r2
@@ -4408,7 +4362,7 @@ void UARTBreakCtl(word32 r0, word32 r1)
 // Preserved: sp
 UARTBreakCtl_entry:
 l0000A064:
-	word32 r3_7 = Mem0[r0 + 44<i32>:word32]
+	r3_7 = Mem0[r0 + 44<i32>:word32]
 	branch r1 != 0<32> l0000A070
 l0000A070:
 	Mem10[r0 + 44<i32>:word32] = r3_7 | 1<32>
@@ -4581,9 +4535,9 @@ void I2CMasterInit(word32 r0, word32 r1)
 I2CMasterInit_entry:
 l0000A0F4:
 	Mem19[r0 + 32<i32>:word32] = Mem12[r0 + 32<i32>:word32] | 0x10<32>
-	word32 r0_21 = SysCtlClockGet()
-	word32 r3_29 = Mem19[0x0000A120<p32>:word32]
-	word32 r2_30 = Mem19[0x0000A124<p32>:word32]
+	r0_21 = SysCtlClockGet()
+	r3_29 = Mem19[0x0000A120<p32>:word32]
+	r2_30 = Mem19[0x0000A124<p32>:word32]
 	branch r1 != 1<32> l0000A112
 l0000A110_1:
 	r3_29 = r2_30
@@ -4770,16 +4724,16 @@ I2CMasterIntStatus_entry:
 l0000A1C8:
 	branch r1 != 0<32> l0000A1D4
 l0000A1D4:
-	word32 r0_8 = Mem0[r0 + 24<i32>:word32]
-	word32 r0_12 = r0_8
+	r0_8 = Mem0[r0 + 24<i32>:word32]
+	r0_12 = r0_8
 	branch r0_8 == 0<32> l0000A1DC
 l0000A1DA_1:
 	r0_12 = 1<32>
 l0000A1DC:
 	return r0_12
 l0000A1CA:
-	word32 r0_13 = Mem0[r0 + 20<i32>:word32]
-	word32 r0_14 = r0_13
+	r0_13 = Mem0[r0 + 20<i32>:word32]
+	r0_14 = r0_13
 	branch r0_13 == 0<32> l0000A1D2
 l0000A1D0_1:
 	r0_14 = 1<32>
@@ -4910,7 +4864,7 @@ void I2CMasterErr(word32 r0)
 // Preserved: sp
 I2CMasterErr_entry:
 l0000A224:
-	word32 r3_7 = Mem0[r0 + 4<i32>:word32]
+	r3_7 = Mem0[r0 + 4<i32>:word32]
 	branch r3_7 << 31<i32> < 0<32> l0000A236
 l0000A236:
 l0000A22A:

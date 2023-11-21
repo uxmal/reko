@@ -31,8 +31,9 @@ ptr32 fn00401050()
 //      fn00401000
 void fn00401060(word32 dwArg04)
 {
-	ptr32 fp;
 	word32 eax_n = _acrt_iob_func(0x01);
+	struct Eq_n * esp_n;
+	ptr32 fp;
 	esp_n->ptr0000 = fp + 8;
 	esp_n->dwFFFFFFFC = 0x00;
 	esp_n->dwFFFFFFF8 = dwArg04;
@@ -45,15 +46,15 @@ void fn00401060(word32 dwArg04)
 Eq_n Win32CrtStartup()
 {
 	ptr32 fp;
-	word32 ebx;
-	Eq_n esi;
-	Eq_n edi;
-	word32 edx;
 	Eq_n dwLoc0C;
+	Eq_n edi;
+	Eq_n esi;
+	word32 ebx;
 	word24 ebx_24_8_n = SLICE(ebx, word24, 8);
 	fn00401663();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	word32 * esp_n = fp - 8;
+	word32 edx;
 	if (fn00401474(edx, 0x01) == 0x00)
 	{
 l00401177:
@@ -69,8 +70,8 @@ l00401177:
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
 	if (eax_n != 0x01)
 	{
-		Eq_n eax_n;
 		struct Eq_n * esp_n;
+		Eq_n eax_n;
 		if (eax_n == 0x00)
 		{
 			g_dw403334 = 0x01;
@@ -97,21 +98,22 @@ l00401177:
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000.u1 = ebp_n->tFFFFFFDC.u1;
 		fn004015CE(esp_n->t0000.u0);
-		struct Eq_n * esp_n = (char *) &esp_n->t0000 + 4;
+		struct Eq_n * esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		Eq_n eax_n = fn00401768();
-		Eq_n edi_n = 0x00;
+		Eq_n edi_n;
+		edi_n.u0 = 0x00;
 		if (eax_n.u1->t0000.u1 != 0x00)
 		{
 			esp_n->t0000.u1 = (struct Eq_n *) eax_n;
 			esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
-			<anonymous> ** esi_n;
 			word32 edx_n;
+			<anonymous> ** esi_n;
 			if (fn00401544(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				esp_n->t0000.u1 = (struct Eq_n *) edi_n;
 				esp_n->dwFFFFFFFC = 0x02;
 				esp_n->tFFFFFFF8.u1 = (struct Eq_n *) edi_n;
-				<anonymous> * esi_n = *esi_n;
+				<anonymous> * esi_n = (<anonymous> *) *esi_n;
 				fn00401976();
 				esi_n();
 			}
@@ -120,14 +122,15 @@ l00401177:
 		if (eax_n.u1->t0000.u1 != edi_n)
 		{
 			esp_n->tFFFFFFFC.u1 = (struct Eq_n *) eax_n;
-			word32 * esi_n;
 			word32 edx_n;
+			word32 * esi_n;
 			word32 edi_n;
 			if (fn00401544(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 				register_thread_local_exe_atexit_callback(*esi_n);
 		}
 		char *** eax_n = __p___argv();
 		int32 * eax_n = __p___argc();
+		struct Eq_n * esp_n;
 		esp_n->tFFFFFFFC.u0 = (int32) get_initial_narrow_environment();
 		esp_n->dwFFFFFFF8 = *eax_n;
 		esp_n->dwFFFFFFF4 = *eax_n;
@@ -150,8 +153,8 @@ l00401177:
 		eax_n = eax_n;
 l004012C8:
 		word32 ebp_n;
-		word32 edi_n;
 		word32 esi_n;
+		word32 edi_n;
 		fn004019C6(ebp_n, esp_n->tFFFFFFFC.u0, out ebp_n, out esi_n, out edi_n);
 		return eax_n;
 	}
@@ -171,10 +174,10 @@ void fn004012D8(struct _EXCEPTION_POINTERS * dwArg04)
 //      fn00401544
 struct Eq_n * fn004013FB(struct Eq_n * dwArg04, uint32 dwArg08, struct Eq_n & edxOut)
 {
-	struct Eq_n * eax_n;
-	struct Eq_n * ecx_n = dwArg04 + dwArg04->dw003C / 64;
-	struct Eq_n * edx_n = &ecx_n->w0014 + 2 + (word32) ecx_n->w0014 / 22;
+	struct Eq_n * ecx_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
+	struct Eq_n * edx_n = (struct Eq_n *) (&ecx_n->w0014 + 2 + (word32) ecx_n->w0014 / 22);
 	struct Eq_n * esi_n = edx_n + (word32) ecx_n->w0006;
+	struct Eq_n * eax_n;
 	for (; edx_n != esi_n; ++edx_n)
 	{
 		if (dwArg08 >= edx_n->dw000C && dwArg08 < edx_n->dw0008 + edx_n->dw000C)
@@ -194,15 +197,15 @@ l00401438:
 //      Win32CrtStartup
 byte fn0040143F()
 {
-	struct Eq_n * fs;
+	selector fs;
 	word32 eax_n = fn00401B98();
 	if (eax_n == 0x00)
 		return 0x00;
 	word32 edx_n = fs->ptr0018->dw0004;
+	word32 eax_n;
 	do
 	{
 		__lock();
-		word32 eax_n;
 		__cmpxchg<word32>(g_dw403338, edx_n, 0x00, out eax_n);
 		if (eax_n == 0x00)
 			return 0x00;
@@ -251,10 +254,10 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	{
 		fn00401774(0x05);
 		int3();
-		word32 ebp_n;
-		word32 esi_n;
 		word32 edx_n;
 		word32 ebx_n;
+		word32 ebp_n;
+		word32 esi_n;
 		word32 edi_n;
 		fn00401544(ebx, dwArg04, edi, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
 	}
@@ -266,12 +269,15 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 //      fn004014AD
 byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, struct Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	Eq_n dwLoc0C;
+	ptr32 edi_n;
+	ptr32 esi_n;
+	struct Eq_n * ebp_n;
 	ptr32 edx;
-	word32 eax_n;
+	Eq_n dwLoc0C;
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC = 0x00;
 	word24 eax_24_8_n = 0x5A;
+	word32 eax_n;
 	if (g_w400000 == 23117)
 	{
 		struct Eq_n * eax_n = g_ptr40003C;
@@ -287,9 +293,6 @@ byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, 
 				ebp_n->dwFFFFFFFC = ~0x01;
 				eax_n = SEQ(eax_24_8_n, 0x01);
 l004015C8:
-				struct Eq_n * ebp_n;
-				ptr32 edi_n;
-				ptr32 esi_n;
 				ptr32 ebx_n = fn004019C6(ebp_n, dwLoc0C, out ebp_n, out esi_n, out edi_n);
 				edxOut = edx;
 				ebxOut = ebx_n;
@@ -331,8 +334,9 @@ void fn004015EB(Eq_n bArg08)
 //      fn0040164E
 ui32 fn00401613(ui32 dwArg04)
 {
+	Eq_n eax_n;
+	eax_n.u0 = g_t403004.u0;
 	word32 eax_n;
-	Eq_n eax_n = g_t403004.u0;
 	if (__ror<word32,byte>(eax_n ^ g_dw40333C, (byte) eax_n & 0x1F) == ~0x00)
 		eax_n = crt_atexit();
 	else
@@ -352,17 +356,18 @@ void fn0040164E(ui32 dwArg04)
 void fn00401663()
 {
 	ptr32 fp;
-	Eq_n tLoc18;
 	Eq_n tLoc10;
 	tLoc10.dwLowDateTime = (DWORD) 0x00;
 	tLoc10.dwHighDateTime = (DWORD) 0x00;
-	Eq_n eax_n = g_t403004.u0;
+	Eq_n eax_n;
+	eax_n.u0 = g_t403004.u0;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
 		g_t403000.u0 = (ui32) ~eax_n;
 	else
 	{
 		GetSystemTimeAsFileTime(&tLoc10);
 		ui32 v17_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
+		Eq_n tLoc18;
 		QueryPerformanceCounter(&tLoc18);
 		Eq_n ecx_n = tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v17_n ^ fp - 8;
 		if (ecx_n == 0xBB40E64E)
@@ -455,16 +460,16 @@ ptr32 fn0040176E()
 //      fn00401718
 void fn00401774(word32 dwArg04)
 {
-	ptr32 fp;
-	word32 dwLoc5C;
-	Eq_n tLoc0C;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw403368 = 0x00;
+		ptr32 fp;
 		memset(fp - 808, 0x00, 0x02CC);
+		word32 dwLoc5C;
 		memset(&dwLoc5C, 0x00, 0x50);
 		dwLoc5C = 0x40000015;
 		Eq_n eax_n = IsDebuggerPresent();
+		Eq_n tLoc0C;
 		tLoc0C.ExceptionRecord = (PEXCEPTION_RECORD) &dwLoc5C;
 		tLoc0C.ContextRecord = (PCONTEXT) (fp - 808);
 		SetUnhandledExceptionFilter(null);
@@ -484,7 +489,7 @@ int8 fn0040188F()
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
 		return 0x00;
-	word32 eax_n = Mem5[eax_n + 60:word32] + eax_n;
+	struct Eq_n * eax_n = Mem5[eax_n + 60:word32] + eax_n;
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
 		return 0x00;
 	return (int8) (eax_n->dw00E8 != 0x00);
@@ -531,13 +536,13 @@ void fn00401976()
 ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 {
 	ptr32 fp;
-	struct Eq_n * fs;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
 	esp_n->dwFFFFFFFC = ebx;
 	esp_n->tFFFFFFF8.u1 = (struct Eq_n *) esi;
 	esp_n->tFFFFFFF4.u1 = (struct Eq_n *) edi;
 	esp_n->tFFFFFFF0.u1 = (word32) (g_t403004.u0 ^ fp + 8);
 	esp_n->tFFFFFFEC.u0 = (ui32) dwArg00;
+	selector fs;
 	fs->ptr0000 = fp - 8;
 	return fp + 8;
 }
@@ -548,16 +553,17 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 //      fn00401544
 word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_n * fs;
-	ptr32 dwArg08;
-	ptr32 dwArg0C;
-	word32 dwArg10;
+	selector fs;
 	fs->dw0000 = ebp->dwFFFFFFF0;
-	Eq_n ebp_n = ebp->t0000.u0;
+	Eq_n ebp_n;
+	ebp_n.u0 = ebp->t0000.u0;
 	ebp->t0000.u0 = (ui32) dwArg00;
 	ebpOut = ebp_n;
+	ptr32 dwArg0C;
 	esiOut = dwArg0C;
+	ptr32 dwArg08;
 	ediOut = dwArg08;
+	word32 dwArg10;
 	return dwArg10;
 }
 
@@ -570,12 +576,12 @@ void fn004019FE(word32 edx)
 	g_dw403010 |= 0x01;
 	if (IsProcessorFeaturePresent(0x0A) != 0x00)
 	{
-		ui32 edi_n;
 		g_dw403010 |= 0x02;
 		g_dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
 		byte bLoc14_n = 0x00;
+		ui32 edi_n;
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (false || (false || (false || (false || (false || false))))))
 		{
 			ui32 edi_n = g_dw403370;

@@ -117,7 +117,7 @@ Eq_53: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 Eq_65: cdecl_class
 	T_65 (in c @ 0040109D : (ptr32 Eq_65))
 Eq_66: cdecl_class
-	T_66 (in c @ 004010C4 : (ptr32 cdecl_class))
+	T_66 (in c @ 004010C4 : (ptr32 Eq_66))
 Eq_68: cdecl_class_vtbl
 	T_68 (in c + 0<32> @ 004010C4 : word32)
 Eq_69: cdecl_class_vtbl
@@ -154,7 +154,7 @@ Eq_91: (union "Eq_91" ((fn void ((ptr32 cdecl_class), int32)) u0) ((fn void (Eq_
 Eq_97: cdecl_class
 	T_97 (in c @ 00401119 : (ptr32 Eq_97))
 Eq_100: cdecl_class
-	T_100 (in c @ 00401150 : (ptr32 cdecl_class))
+	T_100 (in c @ 00401150 : (ptr32 Eq_100))
 Eq_102: cdecl_class_vtbl
 	T_102 (in c + 0<32> @ 00401150 : word32)
 Eq_103: cdecl_class_vtbl
@@ -245,7 +245,7 @@ Eq_236: (fn void (real32))
 	T_237 (in signature of loop_test9 @ 00401230 : void)
 Eq_244: nested_structs_type
 	T_244 (in dwArg04 @ 004012E1 : (ptr32 Eq_244))
-	T_264 (in str @ 00401367 : (ptr32 nested_structs_type))
+	T_264 (in str @ 00401367 : (ptr32 Eq_244))
 Eq_261: nested_structs_type
 	T_261 (in str @ 0040135B : (ptr32 Eq_261))
 Eq_262: (fn void ((ptr32 Eq_244)))
@@ -522,7 +522,7 @@ T_65: (in c @ 0040109D : (ptr32 Eq_65))
   Class: Eq_65
   DataType: (ptr32 Eq_65)
   OrigDataType: (ptr32 cdecl_class)
-T_66: (in c @ 004010C4 : (ptr32 cdecl_class))
+T_66: (in c @ 004010C4 : (ptr32 Eq_66))
   Class: Eq_66
   DataType: (ptr32 Eq_66)
   OrigDataType: (ptr32 (union (cdecl_class u1)))
@@ -658,7 +658,7 @@ T_99: (in b @ 00401119 : int32)
   Class: Eq_99
   DataType: int32
   OrigDataType: int32
-T_100: (in c @ 00401150 : (ptr32 cdecl_class))
+T_100: (in c @ 00401150 : (ptr32 Eq_100))
   Class: Eq_100
   DataType: (ptr32 Eq_100)
   OrigDataType: (ptr32 cdecl_class)
@@ -962,14 +962,14 @@ T_175: (in rArg04 @ 0040120B : real32)
   Class: Eq_175
   DataType: real32
   OrigDataType: real32
-T_176: (in dwLoc08_70 @ 00401236 : int32)
-  Class: Eq_176
-  DataType: int32
-  OrigDataType: int32
-T_177: (in 0<32> @ 00401236 : word32)
+T_176: (in 0<32> @ 00401236 : word32)
   Class: Eq_176
   DataType: int32
   OrigDataType: word32
+T_177: (in dwLoc08_70 @ 00401236 : int32)
+  Class: Eq_176
+  DataType: int32
+  OrigDataType: int32
 T_178: (in Mem25[0x00403034<p32>:word32] @ 00401276 : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
@@ -1070,22 +1070,22 @@ T_202: (in dwArg04 @ 00401245 : word32)
   Class: Eq_202
   DataType: word32
   OrigDataType: word32
-T_203: (in eax_19 @ 004012A3 : uint32)
-  Class: Eq_203
-  DataType: uint32
-  OrigDataType: uint32
-T_204: (in 0xA<32> @ 004012A3 : word32)
+T_203: (in 0xA<32> @ 004012A3 : word32)
   Class: Eq_203
   DataType: uint32
   OrigDataType: word32
-T_205: (in ecx_21 @ 004012A8 : uint32)
-  Class: Eq_205
+T_204: (in eax_19 @ 004012A3 : uint32)
+  Class: Eq_203
   DataType: uint32
   OrigDataType: uint32
-T_206: (in 3<32> @ 004012A8 : word32)
+T_205: (in 3<32> @ 004012A8 : word32)
   Class: Eq_205
   DataType: uint32
   OrigDataType: word32
+T_206: (in ecx_21 @ 004012A8 : uint32)
+  Class: Eq_205
+  DataType: uint32
+  OrigDataType: uint32
 T_207: (in 0<32> @ 004012B2 : word32)
   Class: Eq_202
   DataType: word32
@@ -1122,24 +1122,24 @@ T_215: (in rArg04 @ 004012B8 : real64)
   Class: Eq_140
   DataType: real64
   OrigDataType: real64
-T_216: (in dwLoc08_104 @ 004012D6 : int32)
-  Class: Eq_216
-  DataType: int32
-  OrigDataType: int32
-T_217: (in 5<32> @ 004012D6 : word32)
+T_216: (in 5<32> @ 004012D6 : word32)
   Class: Eq_216
   DataType: int32
   OrigDataType: word32
-T_218: (in eax_19 @ 004012E6 : ui32)
+T_217: (in dwLoc08_104 @ 004012D6 : int32)
+  Class: Eq_216
+  DataType: int32
+  OrigDataType: int32
+T_218: (in 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_218
   DataType: ui32
   OrigDataType: ui32
-T_219: (in 0x80000001<32> @ 004012E6 : word32)
+T_219: (in dwLoc08_104 & 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_219
   DataType: ui32
   OrigDataType: ui32
-T_220: (in dwLoc08_104 & 0x80000001<32> @ 004012E6 : word32)
-  Class: Eq_218
+T_220: (in eax_19 @ 004012E6 : ui32)
+  Class: Eq_219
   DataType: ui32
   OrigDataType: ui32
 T_221: (in dwLoc08_104 & 0x80000001<32> @ 004012EB : word32)
@@ -1155,7 +1155,7 @@ T_223: (in (dwLoc08_104 & 0x80000001<32>) >= 0<32> @ 004012EB : bool)
   DataType: bool
   OrigDataType: bool
 T_224: (in 0<32> @ 004012F4 : word32)
-  Class: Eq_218
+  Class: Eq_219
   DataType: ui32
   OrigDataType: word32
 T_225: (in eax_19 != 0<32> @ 004012F4 : bool)
@@ -1187,7 +1187,7 @@ T_231: (in 1<32> @ 004012F1 : word32)
   DataType: word32
   OrigDataType: word32
 T_232: (in ((dwLoc08_104 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32> @ 004012F1 : word32)
-  Class: Eq_218
+  Class: Eq_219
   DataType: ui32
   OrigDataType: ui32
 T_233: (in nested_if_blocks_test8 @ 00401316 : ptr32)
@@ -1314,7 +1314,7 @@ T_263: (in signature of nested_structs_test12 @ 00401330 : void)
   Class: Eq_262
   DataType: (ptr32 Eq_262)
   OrigDataType: 
-T_264: (in str @ 00401367 : (ptr32 nested_structs_type))
+T_264: (in str @ 00401367 : (ptr32 Eq_244))
   Class: Eq_244
   DataType: (ptr32 Eq_244)
   OrigDataType: (ptr32 nested_structs_type)

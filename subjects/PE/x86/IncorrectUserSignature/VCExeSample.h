@@ -89,7 +89,7 @@ Eq_1: (struct "Globals"
 Eq_2: cdecl_class
 	T_2 (in c : (ptr32 Eq_2))
 Eq_5: cdecl_class
-	T_5 (in c @ 00401138 : (ptr32 cdecl_class))
+	T_5 (in c @ 00401138 : (ptr32 Eq_5))
 Eq_7: cdecl_class_vtbl
 	T_7 (in c + 0<32> @ 00401138 : word32)
 Eq_8: cdecl_class_vtbl
@@ -119,7 +119,7 @@ T_4: (in b : int32)
   Class: Eq_4
   DataType: int32
   OrigDataType: int32
-T_5: (in c @ 00401138 : (ptr32 cdecl_class))
+T_5: (in c @ 00401138 : (ptr32 Eq_5))
   Class: Eq_5
   DataType: (ptr32 Eq_5)
   OrigDataType: (ptr32 cdecl_class)
@@ -159,11 +159,11 @@ T_14: (in c->vtbl->sum(c, a, b) @ 00401138 : void)
   Class: Eq_14
   DataType: void
   OrigDataType: void
-T_15: (in eax_25 @ 00401138 : word32)
+T_15: (in <invalid> @ 00401138 : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in <invalid> @ 00401138 : word32)
+T_16: (in eax_25 @ 00401138 : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
@@ -190,7 +190,7 @@ T_21: (in Mem37[c + 0<32>:word32] + 4<i32> @ 00401150 : word32)
 T_22: (in Mem37[Mem37[c + 0<32>:word32] + 4<i32>:word32] @ 00401150 : word32)
   Class: Eq_22
   DataType: (ptr32 Eq_22)
-  OrigDataType: (ptr32 (fn T_23 (T_5, T_15)))
+  OrigDataType: (ptr32 (fn T_23 (T_5, T_16)))
 T_23: (in c->vtbl->method04(c, eax_25) @ 00401150 : void)
   Class: Eq_23
   DataType: void

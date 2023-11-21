@@ -12,16 +12,16 @@ bool memcpy(word32 r0, word32 r1, word32 r2, ptr32 & r4Out, ptr32 & r5Out, ptr32
 // Preserved:
 memcpy_entry:
 l0000A5C4:
-	word32 r5_142 = r0
+	r5_142 = r0
 	branch r2 <=u 0xF<32> l0000A62C
 l0000A5CC:
 	branch (r1 | r0) << 30<i32> != 0<32> l0000A642
 l0000A642:
 	r5_142 = r0
 l0000A5D4:
-	word32 r4_28 = r1
-	word32 r3_29 = r0
-	word32 r5_36 = r0 + ((r2 - 0x10<32> >>u 4<i32>) + 1<32> << 4<i32>)
+	r4_28 = r1
+	r3_29 = r0
+	r5_36 = r0 + ((r2 - 0x10<32> >>u 4<i32>) + 1<32> << 4<i32>)
 l0000A5E4:
 	Mem41[r3_29:word32] = Mem38[r4_28:word32]
 	Mem43[r3_29 + 4<i32>:word32] = Mem41[r4_28 + 4<i32>:word32]
@@ -31,29 +31,29 @@ l0000A5E4:
 	r4_28 = r4_28 + 0x10<32>
 	branch r5_36 != r3_29 l0000A5E4
 l0000A5FC:
-	word32 r6_55 = r2 - 0x10<32> & 0xFFFFFFF0<32>
+	r6_55 = r2 - 0x10<32> & 0xFFFFFFF0<32>
 	r5_142 = r0 + (r6_55 + 0x10<32>)
 	r1 = r1 + (r6_55 + 0x10<32>)
 	branch (r2 & 0xF<32>) <=u 3<32> l0000A646
 l0000A646:
 	r2 = r2 & 0xF<32>
 l0000A60C:
-	word32 r6_66 = (r2 & 0xF<32>) - 4<32>
-	word32 r3_67 = 0<32>
-	word32 r4_69 = (r6_66 >>u 2<i32>) + 1<32>
+	r6_66 = (r2 & 0xF<32>) - 4<32>
+	r3_67 = 0<32>
+	r4_69 = (r6_66 >>u 2<i32>) + 1<32>
 l0000A616:
 	Mem78[r5_142 + r3_67:word32] = Mem75[r1 + r3_67:word32]
 	r3_67 = r3_67 + 4<32>
 	branch r3_67 != r4_69 << 2<i32> l0000A616
 l0000A620:
-	word32 r3_86 = (r6_66 & 0xFFFFFFFC<32>) + 4<32>
+	r3_86 = (r6_66 & 0xFFFFFFFC<32>) + 4<32>
 	r2 = r2 & 3<32>
 	r1 = r1 + r3_86
 	r5_142 = r5_142 + r3_86
 l0000A62C:
 	branch r2 == 0<32> l0000A63C
 l0000A630:
-	word32 r3_103 = 0<32>
+	r3_103 = 0<32>
 l0000A632:
 	Mem102[r5_142 + r3_103:byte] = Mem98[r1 + r3_103:byte]
 	r3_103 = r3_103 + 1<32>

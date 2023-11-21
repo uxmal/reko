@@ -23,9 +23,9 @@ void puts(word16 gp0)
 // Preserved: C gp15
 puts_entry:
 l0105:
-	word16 gp1_11 = gp0
+	gp1_11 = gp0
 l0106:
-	word16 gp0_8 = Mem0[gp1_11:word16]
+	gp0_8 = Mem0[gp1_11:word16]
 	branch gp0_8 == 0<16> l010D
 l010D:
 	return

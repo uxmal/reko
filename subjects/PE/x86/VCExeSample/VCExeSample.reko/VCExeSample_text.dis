@@ -157,7 +157,7 @@ void loop_test9(real32 rArg04)
 // Preserved: ebp esp
 loop_test9_entry:
 l00401230:
-	word32 dwLoc08_70 = 0<32>
+	dwLoc08_70 = 0<32>
 l00401248:
 	branch Mem25[Mem25[Mem25[0x00403034<p32>:word32]:word32] + 4<i32>:word32](Mem25[0x00403034<p32>:word32], dwLoc08_70, CONVERT(rArg04, real32, real64)) <= CONVERT(dwLoc08_70, word32, real64) l00401294
 l00401294:
@@ -178,8 +178,8 @@ void const_div_test10(word32 dwArg04)
 // Preserved: ebp esp
 const_div_test10_entry:
 l004012A0:
-	word32 eax_19 = 0xA<32>
-	word32 ecx_21 = 3<32>
+	eax_19 = 0xA<32>
+	ecx_21 = 3<32>
 	branch dwArg04 == 0<32> l004012BA
 l004012B4:
 	eax_19 = 3<u32>
@@ -200,14 +200,14 @@ void loop_test11(real64 rArg04)
 // Preserved: P eax ebp ecx edx esp FPU -1 FPUF
 loop_test11_entry:
 l004012D0:
-	word32 dwLoc08_104 = 5<32>
+	dwLoc08_104 = 5<32>
 l004012DD:
 	branch dwLoc08_104 <= 0<32> l00401329
 l00401329:
 	return
 loop_test11_exit:
 l004012E3:
-	word32 eax_19 = dwLoc08_104 & 0x80000001<32>
+	eax_19 = dwLoc08_104 & 0x80000001<32>
 	branch (dwLoc08_104 & 0x80000001<32>) >= 0<32> l004012F2
 l004012ED:
 	eax_19 = ((dwLoc08_104 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32>

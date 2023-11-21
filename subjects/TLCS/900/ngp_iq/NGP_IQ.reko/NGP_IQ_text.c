@@ -8,6 +8,9 @@ word32 g_dw200040 = 0x00200088; // 00200040
 // 00200089: void fn00200089()
 void fn00200089()
 {
+	word32 xhl_n;
+	word32 xhl_n;
+	word32 xhl_n;
 	fn0020060C();
 	*(byte *) 0x6F86 |= 64;
 	word32 * xix_n = &g_dw200040;
@@ -69,7 +72,6 @@ void fn00200089()
 		++xde_n;
 	}
 	fn002004F2(a_n);
-	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 3334));
@@ -91,7 +93,6 @@ void fn00200089()
 		++xde_n;
 	}
 	fn002004F2(a_n);
-	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 3338));
@@ -113,7 +114,6 @@ void fn00200089()
 		++xde_n;
 	}
 	fn002004F2(a_n);
-	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 0x0D0E));
@@ -156,8 +156,9 @@ byte g_a2004B5[] = // 002004B5
 //      fn00200089
 void fn002004F2(byte w)
 {
+	Eq_n w_n;
 	word32 xwa;
-	Eq_n w_n = SLICE(xwa, byte, 8);
+	w_n.u0 = SLICE(xwa, byte, 8);
 	((union Eq_n *) 0x4004)->u0 = 0<32>;
 	while (*(union Eq_n *) 0x4004 != w_n)
 		;
@@ -194,15 +195,16 @@ word32 fn00200557(bui8 c, byte b, byte * xhl)
 	word24 xwa_24_8_n = 0x00;
 	struct Eq_n * xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b * 0x40;
 	byte b_n;
+	word32 xwa_n;
 	for (b_n = 0x13; b_n != 0x00; --b_n)
 	{
 		cu8 v18_n = *xhl;
 		word16 xwa_16_16_n = SLICE(xwa_24_8_n, word16, 8);
-		word32 xwa_n = SEQ(xwa_24_8_n, v18_n);
+		xwa_n = SEQ(xwa_24_8_n, v18_n);
 		if (v18_n == 0x00)
 			return xwa_n;
 		++xhl;
-		word32 * xde_n = xde_n + 1;
+		word32 * xde_n = (word32 *) (xde_n + 1);
 		word32 v25_n = *xde_n;
 		xde_n = (struct Eq_n *) ((char *) xde_n + 1);
 		xwa_24_8_n = SEQ(xwa_16_16_n, v25_n);
@@ -237,7 +239,7 @@ void fn002005F5(bui8 w, byte a, word16 xwa_16_n, word32 xix, word16 sr)
 {
 	__ldf(0x03);
 	<anonymous> *** xwa_n = SEQ(xwa_16_n, w * 0x04, a);
-	<anonymous> ** v10_n = *xwa_n;
+	<anonymous> ** v10_n = (<anonymous> **) *xwa_n;
 	(*v10_n)();
 }
 

@@ -58,10 +58,9 @@ real96 fn800001F2(real96 rArg04)
 {
 	real96 rLoc1C_n = *(real96 *) 0x80000514;
 	int32 dwLoc20_n = 3;
-	fp1_n = rArg04;
+	real96 fp1_n = rArg04;
 	while (true)
 	{
-		real96 fp1_n;
 		real96 rLoc10_n = SEQ((word32) fp1_n, SLICE(fp1_n, word32, 32), SLICE(fp1_n, word32, 64));
 		if (dwLoc20_n > 100)
 			break;

@@ -18,8 +18,8 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001050: Register (ptr32 Eq_n) fn10001050(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	int32 dwLoc08;
 	int32 dwLoc04;
+	int32 dwLoc08;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc08 - dwLoc04);
@@ -29,8 +29,8 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010A0: Register (ptr32 Eq_n) fn100010A0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	int32 dwLoc08;
 	int32 dwLoc04;
+	int32 dwLoc08;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", (int64) dwLoc08 /32 dwLoc04);
@@ -40,8 +40,8 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010F0: Register (ptr32 Eq_n) fn100010F0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	real32 rLoc08;
 	real32 rLoc04;
+	real32 rLoc08;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
@@ -59,13 +59,10 @@ void initpySample()
 //      fn10001388
 word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
+	selector fs;
 	ptr32 fp;
-	ptr32 ebx;
-	ptr32 esi;
-	ptr32 edi;
-	struct Eq_n * fs;
-	word32 eax_n;
 	Eq_n ebp_n = 0x00;
+	word32 eax_n;
 	if (dwArg08 == 0x00)
 	{
 		if (g_dw10003070 <= 0x00)
@@ -101,10 +98,10 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr3
 		{
 			eax_n = 0x00;
 l10001381:
-			struct Eq_n * esp_n = esp_n + 1;
-			edi = *esp_n;
-			esi = esp_n->ptr0000;
-			ebx = esp_n->ptr0004;
+			struct Eq_n * esp_n = (struct Eq_n *) (esp_n + 1);
+			ptr32 edi = *esp_n;
+			ptr32 esi = esp_n->ptr0000;
+			ptr32 ebx = esp_n->ptr0004;
 l10001384:
 			ebxOut = ebx;
 			esiOut = esi;
@@ -121,11 +118,7 @@ l10001384:
 			esp_n = fp - 16;
 			word32 edi_n;
 			if (fn10001742(InterlockedCompareExchange, 268448684, 0x02, out edi_n) != 0x00)
-			{
-				word32 ecx_n;
-				word32 edx_n;
 				g_ptr100033B8();
-			}
 		}
 		++g_dw10003070;
 		break;
@@ -147,11 +140,7 @@ l10001384:
 					break;
 				<anonymous> * eax_n = *edi_n;
 				if (eax_n != null)
-				{
-					word32 ecx_n;
-					word32 edx_n;
 					eax_n();
-				}
 			}
 			word32 ** esp_n = esp_n - 4;
 			*esp_n = eax_n;
@@ -178,6 +167,9 @@ l10001384:
 //      DllMain
 Eq_n fn10001388(Eq_n ecx, Eq_n edx, ptr32 ebx, ptr32 esi, word32 edi)
 {
+	word32 edi_n;
+	word32 esi_n;
+	word32 ebx_n;
 	ptr32 fp;
 	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
@@ -245,9 +237,6 @@ l1000147A:
 		esp_n->t0000 = edi_n;
 		esp_n->tFFFFFFFC = esi_n;
 		esp_n->tFFFFFFF8 = ebx_n;
-		word32 ebx_n;
-		word32 esi_n;
-		word32 edi_n;
 		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
@@ -269,11 +258,11 @@ void fn10001493()
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
 Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 {
+	if (dwReason == 0x01)
+		fn10001864();
 	ptr32 ebx;
 	ptr32 esi;
 	word32 edi;
-	if (dwReason == 0x01)
-		fn10001864();
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
 }
 
@@ -284,7 +273,7 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 {
 	if (dwArg04->w0000 != 23117)
 		return 0x00;
-	struct Eq_n * eax_n = dwArg04 + dwArg04->dw003C / 64;
+	struct Eq_n * eax_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
 	if (eax_n->dw0000 != 0x4550)
 		return 0x00;
 	return (uint32) (eax_n->w0018 == 0x010B);
@@ -295,10 +284,10 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 //      fn10001742
 struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 {
-	struct Eq_n * ecx_n = dwArg04 + dwArg04->dw003C / 64;
+	struct Eq_n * ecx_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
 	up32 esi_n = (word32) ecx_n->w0006;
 	up32 edx_n = 0x00;
-	struct Eq_n * eax_n = ecx_n + ((word32) ecx_n->w0014 + 24) / 22;
+	struct Eq_n * eax_n = (struct Eq_n *) (ecx_n + ((word32) ecx_n->w0014 + 24) / 22);
 	if (esi_n > 0x00)
 	{
 		do
@@ -320,10 +309,11 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 {
 	word32 dwLoc0C;
-	ui32 eax_n;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC = 0x00;
-	Eq_n dwLoc0C_n = 0x10000000;
+	Eq_n dwLoc0C_n;
+	dwLoc0C_n.u1 = 0x10000000;
+	ui32 eax_n;
 	if (fn100016D0(&g_t10000000) != 0x00)
 	{
 		Eq_n eax_n = ebp_n->t0008;
@@ -360,13 +350,13 @@ word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 ptr32 fn100017E8(ptr32 ebx, ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 {
 	ptr32 fp;
-	struct Eq_n * fs;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
 	esp_n->ptrFFFFFFFC = ebx;
 	esp_n->ptrFFFFFFF8 = esi;
 	esp_n->dwFFFFFFF4 = edi;
 	esp_n->dwFFFFFFF0 = g_dw10003000 ^ fp + 8;
 	esp_n->dwFFFFFFEC = dwArg00;
+	selector fs;
 	fs->ptr0000 = fp - 8;
 	return fp + 8;
 }
@@ -377,10 +367,10 @@ ptr32 fn100017E8(ptr32 ebx, ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 //      fn10001742
 word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 {
-	struct Eq_n * fs;
-	word32 dwArg08;
+	selector fs;
 	fs->dw0000 = ebp->dwFFFFFFF0;
 	ebp->t0000.u0 = (ui32) dwArg00;
+	word32 dwArg08;
 	return dwArg08;
 }
 
@@ -389,9 +379,8 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 //      DllMain
 void fn10001864()
 {
-	Eq_n tLoc14;
-	Eq_n tLoc0C;
 	ui32 eax_n = g_dw10003000;
+	Eq_n tLoc0C;
 	tLoc0C.dwLowDateTime = (DWORD) 0x00;
 	tLoc0C.dwHighDateTime = (DWORD) 0x00;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
@@ -400,6 +389,7 @@ void fn10001864()
 	{
 		GetSystemTimeAsFileTime(&tLoc0C);
 		ui32 esi_n = tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
+		Eq_n tLoc14;
 		QueryPerformanceCounter(&tLoc14);
 		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ (tLoc14.u).LowPart);
 		if (esi_n == 0xBB40E64E)

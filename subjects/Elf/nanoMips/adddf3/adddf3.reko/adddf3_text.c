@@ -113,8 +113,8 @@ l0804D064:
 		}
 		if (r11_n != 0x00)
 		{
-			uint32 r8_n;
 			int32 r11_n;
+			uint32 r8_n;
 			if (r13_n == 0x00)
 			{
 				if ((r8_n | r4 << 0x03) == 0x00)
@@ -201,7 +201,7 @@ l0804D060:
 				goto l0804D064;
 			}
 			uint32 r6_n = (r4 << 0x03) + (r6 << 0x03);
-			word32 r2_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
+			uint32 r2_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
 			r12_n = r2_n << 0x1F | r6_n >> 0x01;
 			r8_n = r2_n >> 0x01;
 l0804D27A:
@@ -243,8 +243,8 @@ l0804D4D2:
 			r10_n.u0 = 0x07FF;
 			if ((r9_n | r6 << 0x03) != 0x00)
 			{
-				uint32 r7_n;
 				uint32 r10_n = r8_n >> 0x03;
+				uint32 r7_n;
 				if (__bit<word32,word32>(r9_n >> 0x03 | r8_n >> 0x03, 0x13))
 				{
 					r7_n = r8_n << 0x1D | __ext<word32,word32>(r4, 0x00, 0x1D);
@@ -267,8 +267,6 @@ l0804D2D2:
 		r10_n.u0 = 0x07FF;
 		goto l0804D27A;
 	}
-	Eq_n r11_n;
-	Eq_n r4_n;
 	Eq_n r14_n = r11_n;
 	if (r11_n > 0x00)
 	{
@@ -329,10 +327,12 @@ l0804D36E:
 		r12_n = r6_n;
 		goto l0804D332;
 	}
+	Eq_n r4_n;
+	Eq_n r11_n;
 	if (r11_n != 0x00)
 	{
-		uint32 r8_n;
 		int32 r11_n;
+		uint32 r8_n;
 		if (r13_n == 0x00)
 		{
 			if ((r8_n | r4 << 0x03) == 0x00)
@@ -404,8 +404,8 @@ l0804D548:
 		word32 r7_n = __count_leading_zeros<word32>(r4_n);
 		if (r4_n == 0x00)
 			r7_n = __count_leading_zeros<word32>(r11_n) + 0x20;
-		Eq_n r8_n;
 		Eq_n r10_n = r7_n + ~0x07;
+		Eq_n r8_n;
 		if (r10_n < 0x20)
 		{
 			r12_n = r11_n << r10_n;
@@ -465,8 +465,8 @@ l0804D2D0:
 			r10_n.u0 = 0x07FF;
 			if (r7_n == 0x00)
 				goto l0804D27A;
-			uint32 r4_n;
 			uint32 r7_n = r8_n >> 0x03;
+			uint32 r4_n;
 			if (__bit<word32,word32>(r9_n >> 0x03 | r8_n >> 0x03, 0x13))
 			{
 				r4_n = r8_n << 0x1D | __ext<word32,word32>(r4, 0x00, 0x1D);

@@ -7,10 +7,10 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 // Preserved:
 py_unused_entry:
 l10001140:
-	word32 eax_10 = PyArg_ParseTuple(args, 0x1000216C<32>)
+	eax_10 = PyArg_ParseTuple(args, 0x1000216C<32>)
 	branch eax_10 != 0<32> l10001158
 l10001158:
-	word32 eax_17 = &_Py_NoneStruct
+	eax_17 = &_Py_NoneStruct
 	Mem19[eax_17:word32] = Mem9[eax_17:word32] + 1<32>
 	return &_Py_NoneStruct
 l10001157:

@@ -7,9 +7,9 @@
 // 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
 void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 {
-	void * fp;
-	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
+	word64 qwArg00;
+	void * fp;
 	__libc_start_main(&g_t4012F9, (int32) qwArg00, &ptrArg08, &g_t401780, &g_t4017F0, rdx, fp);
 	__halt();
 }
@@ -62,7 +62,7 @@ void frame_dummy()
 word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
 {
 	word64 rcx;
-	Eq_n ecx = (word32) rcx;
+	ecx = (word32) rcx;
 	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s ecx;
 	struct Eq_n * v18_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
 	if (ecx > 0x10)
@@ -114,7 +114,7 @@ l0000000000400EC1:
 //      main
 void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * fs)
 {
-	ptr64 fp;
+	word64 rax_n;
 	word64 rax_n = fs->qw0028;
 	Eq_n eax_n = (word32) (byte) png_get_bit_depth(rdi, rsi, rsi, rdx, rsi, rdi, rax_n);
 	png_get_color_type(rdi, rsi, rsi, eax_n);
@@ -134,7 +134,9 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 			break;
 		case 0x03:
 			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
+			ptr64 fp;
 			png_get_PLTE(fp - 80, rdi, fp - 64, rsi, 0x00, eax_n, 0x00);
+			word64 rax_n;
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
 			{
 				if (((word32) png_get_tRNS(0x00, fp - 76, rdi, fp - 56, rsi, 0x00, 0x00) & 0x10) != 0x00 && (false && false))
@@ -173,11 +175,6 @@ l00000000004012C9:
 // 00000000004012F9: void main(Register (ptr64 Eq_n) rsi, Register word32 edi, Register (ptr32 Eq_n) fs)
 void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 {
-	ptr64 fp;
-	word32 dwLoc78;
-	int32 dwLoc6C;
-	uint32 dwLoc88;
-	uint32 dwLoc84;
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
@@ -207,8 +204,11 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 		png_read_info(rax_n, rax_n, rax_n);
 		word64 rax_n = png_get_rowbytes(rax_n, rax_n, rax_n);
 		word64 rax_n = png_malloc(rax_n, rax_n, rax_n);
+		ptr64 fp;
 		if ((word32) png_get_IHDR(fp - 0x0080, fp - 0x007C, fp - 0x0084, fp - 112, fp - 116, fp - 0x0078, rax_n, fp - 0x0088, rax_n, fp - 0x0078, fp - 116, fp - 112, rax_n, rax_n) != 0x00)
 		{
+			word32 dwLoc78;
+			int32 dwLoc6C;
 			if (dwLoc78 != 0x00)
 			{
 				if (dwLoc78 != 0x01)
@@ -222,10 +222,11 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 			int32 dwLoc68_n;
 			for (dwLoc68_n = 0x00; dwLoc68_n < dwLoc6C; ++dwLoc68_n)
 			{
-				int32 dwLoc5C_n;
-				ui32 dwLoc58_n;
+				uint32 dwLoc88;
 				uint32 dwLoc60_n;
 				uint32 dwLoc64_n;
+				ui32 dwLoc58_n;
+				int32 dwLoc5C_n;
 				if (dwLoc78 == 0x01)
 				{
 					ui32 eax_n;
@@ -233,18 +234,18 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 						eax_n = (0x01 << (byte) (0x07 - dwLoc68_n >> 0x01)) - 0x01;
 					else
 						eax_n = 0x07;
-					int32 eax_n;
 					uint32 edx_n = eax_n - ((dwLoc68_n & 0x01) << 0x03 - (byte) (dwLoc68_n + 0x01 >> 0x01) & 0x07) + dwLoc88;
+					int32 eax_n;
 					if (dwLoc68_n > 0x01)
 						eax_n = 0x07 - dwLoc68_n >> 0x01;
 					else
 						eax_n = 0x03;
 					if (edx_n >> (byte) eax_n == 0x00)
 						goto l000000000040166F;
-					int32 eax_n;
 					dwLoc60_n = (dwLoc68_n & 0x01) << 0x03 - (byte) (dwLoc68_n + 0x01 >> 0x01) & 0x07;
 					dwLoc64_n = (word32) ((dwLoc68_n & 0x01) == 0x00) << 0x03 - (byte) (dwLoc68_n >> 0x01) & 0x07;
 					dwLoc58_n = 0x01 << (byte) (0x07 - dwLoc68_n >> 0x01);
+					int32 eax_n;
 					if (dwLoc68_n > 0x02)
 						eax_n = 0x08 >> (byte) (dwLoc68_n - 0x01 >> 0x01);
 					else
@@ -259,6 +260,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 					dwLoc5C_n = 0x01;
 				}
 				uint32 dwLoc54_n;
+				uint32 dwLoc84;
 				for (dwLoc54_n = dwLoc64_n; dwLoc54_n < dwLoc84; dwLoc54_n += dwLoc5C_n)
 				{
 					puts("png_read_row");
@@ -300,12 +302,13 @@ l000000000040175D:
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word64 rdi;
-	word32 edi = (word32) rdi;
+	edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00601E08 - g_a601E00;
 	if (rbp_n >> 0x03 != 0x00)
 	{
-		Eq_n rbx_n = 0x00;
+		Eq_n rbx_n;
+		rbx_n.u1 = 0x00;
 		do
 		{
 			(*((char *) g_a601E00 + rbx_n * 0x08))();

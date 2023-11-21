@@ -7,8 +7,6 @@
 // 00001000: void fn00001000(Register int32 d0, Register (ptr32 byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
-	struct Eq_n * fp;
-	int32 dwLoc10;
 	struct Eq_n * a6_n = *(struct Eq_n **) 0x04;
 	int32 d2_n = d0;
 	byte * a2_n = a0;
@@ -22,14 +20,15 @@ void fn00001000(int32 d0, byte * a0)
 			++a0_n;
 		}
 	}
+	struct Eq_n * fp;
 	g_ptr1494 = fp;
 	g_ptr1498 = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
 	word32 d0_n = OpenLibrary(0x12BC, 0);
 	if (d0_n != 0x00)
 	{
-		int32 d4_n;
 		g_dw149C = d0_n;
+		int32 d4_n;
 		if (d0_n->dw00AC == 0x00)
 		{
 			d4_n = 2;
@@ -39,6 +38,7 @@ void fn00001000(int32 d0, byte * a0)
 		{
 			byte * a0_n = a0;
 			d4_n = 3;
+			byte * a0_n;
 			do
 			{
 				if (*a0_n == 0x20)
@@ -53,13 +53,13 @@ void fn00001000(int32 d0, byte * a0)
 		struct Eq_n * d0_n = AllocMem(d0_n + 0x11, 0x00010001);
 		if (d0_n != null)
 		{
-			struct Eq_n * dwLoc0C_n;
-			word32 a0_n;
 			d0_n->dw0000 = d0_n + 0x11;
 			d0_n->dw000C = d4_n - 0x01;
 			d0_n->ptr0008 = (char *) &d0_n->ptr0010 + d0_n;
 			null = null;
 			ui32 d0_n = d0_n->dw00AC;
+			struct Eq_n * dwLoc0C_n;
+			word32 a0_n;
 			if (d0_n == 0x00)
 			{
 				struct Eq_n * d0_n = fn00001214(d0_n);
@@ -90,25 +90,27 @@ l000011F8:
 			}
 			ui32 d0_n = ((ui32[]) 16)[d0_n];
 			byte * a1_n = d0_n->ptr0008;
-			byte a0_n[] = (d0_n << 0x02) + 1;
+			byte (* a0_n)[] = (d0_n << 0x02) + 1;
 			a0_n[(uint32) null[d0_n].b0000] = 0x00;
 			d0_n->ptr0010 = a0_n;
-			word32 * a6_n = (char *) &d0_n->ptr0010 + 4;
+			word32 * a6_n = (word32 *) ((char *) &d0_n->ptr0010 + 4);
 			int32 d3_n = 1;
-			struct Eq_n * a0_n = a0 + d2_n;
+			struct Eq_n * a0_n = (struct Eq_n *) (a0 + d2_n);
+			word16 v30_n;
 			do
 			{
 				--a0_n;
 				if (a0_n->b0000 > 0x20)
 					break;
-				word16 v30_n = (word16) d2_n;
+				v30_n = (word16) d2_n;
 				d2_n = SEQ(SLICE(d2_n, word16, 16), v30_n - 1);
 			} while (v30_n != 0x00);
 			a0_n[1] = (struct Eq_n) 0x00;
+			byte v32_n;
 			do
 			{
 l000010E6:
-				byte v32_n = *a2_n;
+				v32_n = *a2_n;
 				++a2_n;
 				d1_n = SEQ(SLICE(d1_n, word24, 8), v32_n);
 				if (v32_n == 0x00)
@@ -175,7 +177,7 @@ l00001148:
 			ui32 d0_n = execPrivate5();
 			*(ui32 *) 5292 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
-			dwLoc10 = d3_n;
+			int32 dwLoc10 = d3_n;
 			if (g_ptr1498->w0014 >= 0x24)
 			{
 				ui32 v65_n = d0_n->dw00E0;
@@ -310,23 +312,27 @@ void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 //      fn00001468
 int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 {
-	Eq_n d4_n = 0;
+	Eq_n d4_n;
+	d4_n.u0 = 0;
 	while (d4_n < 5)
 	{
 		int32 d3_n;
 		for (d3_n = 0; d3_n < 4; ++d3_n)
 		{
-			Eq_n d2_n = 0;
+			Eq_n d2_n;
+			d2_n.u0 = 0;
 			while (d2_n < 4)
 			{
 				uint32 d1_n = __swap(20) *32 (word16) d2_n;
 				union Eq_n * a1_n = dwArg08 + ((word16) d2_n *32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d2_n) * 0x14)), word16, 16), 0x00)) + (d3_n << 0x02);
-				Eq_n d0_n = (dwArg04 + (d4_n << 0x04))[d2_n].u0;
-				Eq_n d1_n = a1_n->u0;
+				Eq_n d0_n;
+				d0_n.u0 = (dwArg04 + (d4_n << 0x04))[d2_n].u0;
+				Eq_n d1_n;
+				d1_n.u0 = a1_n->u0;
 				uint32 d5_n = __swap(d0_n) *32 (word16) d1_n;
 				uint32 d0_n = d0_n *32 (word16) d1_n + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d1_n) * (word16) d0_n)), word16, 16), 0x00);
 				uint32 d5_n = __swap(20) *32 (word16) d4_n;
-				word32 d0_n = d0_n + (dwArg0C + (SLICE(d4_n, word16, 0) *u32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d4_n) * 0x14)), word16, 16), 0x00)))[d3_n * 0x04];
+				uint32 d0_n = d0_n + (dwArg0C + (SLICE(d4_n, word16, 0) *u32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d4_n) * 0x14)), word16, 16), 0x00)))[d3_n * 0x04];
 				uint32 d5_n = __swap(20) *32 (word16) d4_n;
 				(dwArg0C + (SLICE(d4_n, word16, 0) *u32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d4_n) * 0x14)), word16, 16), 0x00)))[d3_n * 0x04] = d0_n;
 				d2_n = (word32) d2_n.u0 + 1;

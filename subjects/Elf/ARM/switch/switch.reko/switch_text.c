@@ -18,14 +18,15 @@ void (* g_ptr8368)() = __libc_csu_init; // 00008368
 //      _init
 word32 call_gmon_start()
 {
-	word32 r10;
 	ptr32 r10_n = 0x8380 + g_dw8394;
 	<anonymous> * r3_n = *((word32) r10_n + g_dw8398);
 	if (r3_n == null)
+	{
+		word32 r10;
 		return r10;
-	word32 r10_n;
-	word32 pc_n;
+	}
 	r3_n();
+	word32 r10_n;
 	return r10_n;
 }
 
@@ -40,15 +41,13 @@ void __do_global_dtors_aux()
 	if ((word32) *r5_n != 0x00)
 		return;
 	<anonymous> *** r4_n = g_ptr83F8;
-	<anonymous> * r2_n = **r4_n;
+	<anonymous> * r2_n = (<anonymous> *) **r4_n;
 	if (r2_n == null)
 		*r5_n = 0x01;
 	else
 	{
-		<anonymous> ** r3_n = *r4_n;
+		<anonymous> ** r3_n = (<anonymous> **) *r4_n;
 		*r4_n = (<anonymous> ***) ((char *) r3_n + 4);
-		word32 pc_n;
-		word32 r2_n;
 		r2_n();
 	}
 }
@@ -95,9 +94,10 @@ Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 word32 bazulate(Eq_n r0, Eq_n r1)
 {
 	struct Eq_n * fp_n = frobulate(r0, r1);
-	word32 r0_n = __divsi3(r0 + r1, r0);
+	Eq_n r0_n = __divsi3(r0 + r1, r0);
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	Eq_n r0_n = fp_n->tFFFFFFE8.u0;
+	Eq_n r0_n;
+	r0_n.u0 = fp_n->tFFFFFFE8.u0;
 	struct Eq_n * fp_n = frobulate(r0_n, sp_n->u0);
 	__divsi3(r0_n, r0_n);
 	return fp_n->dw0000;
@@ -149,11 +149,12 @@ void main(Eq_n r0)
 //      bazulate
 Eq_n __divsi3(Eq_n r0, Eq_n r1)
 {
-	Eq_n r1_n;
 	int32 ip_n = r0 ^ r1;
-	Eq_n r3_n = 0x01;
-	Eq_n r2_n = 0x00;
-	r1_n = r1;
+	Eq_n r3_n;
+	r3_n.u0 = 0x01;
+	Eq_n r2_n;
+	r2_n.u0 = 0x00;
+	Eq_n r1_n = r1;
 	if (r1 < 0x00)
 		r1_n = 0x00 - r1;
 	if (r1 == 0x00)
@@ -167,9 +168,10 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 			r0 = 0x00 - r0;
 		if (r0 >= r1_n)
 		{
+			bool v21_n;
 			do
 			{
-				bool v21_n = r1_n < 0x10000000;
+				v21_n = r1_n < 0x10000000;
 				bool v18_n = r1_n >= 0x10000000;
 				if (r1_n < 0x10000000)
 				{
@@ -182,9 +184,10 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					r3_n <<= 4;
 				}
 			} while (v21_n);
+			bool v27_n;
 			do
 			{
-				bool v27_n = r1_n < 0x80000000;
+				v27_n = r1_n < 0x80000000;
 				bool v24_n = r1_n >= 0x80000000;
 				if (r1_n < 0x80000000)
 				{
@@ -197,6 +200,7 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					r3_n <<= 1;
 				}
 			} while (v27_n);
+			bool v33_n;
 			do
 			{
 				if (r0 >= r1_n)
@@ -219,7 +223,7 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					r0 -= r1_n >> 3;
 					r2_n |= r3_n >> 3;
 				}
-				bool v33_n = r0 != 0x00;
+				v33_n = r0 != 0x00;
 				bool v30_n = r0 == 0x00;
 				if (r0 != 0x00)
 				{
@@ -284,15 +288,15 @@ int32 g_dw8708 = 36; // 00008708
 //      _init
 word32 __do_global_ctors_aux()
 {
-	word32 r4;
 	struct Eq_n * r3_n = g_ptr8740;
 	<anonymous> * r2_n = r3_n->ptrFFFFFFFC;
 	if (r2_n == (<anonymous> *) ~0x00)
+	{
+		word32 r4;
 		return r4;
-	word32 r4_n;
-	word32 r3_n;
-	word32 pc_n;
+	}
 	r2_n();
+	word32 r4_n;
 	return r4_n;
 }
 

@@ -9,7 +9,7 @@ void reko_array_byref(word64 rcx)
 // Preserved: rbp rsp
 reko_array_byref_entry:
 l00000002121D1000:
-	word32 dwLoc0C_38 = 0<32>
+	dwLoc0C_38 = 0<32>
 l00000002121D102B:
 	branch dwLoc0C_38 <= 0x1F<32> l00000002121D1015
 l00000002121D1015:
@@ -42,9 +42,8 @@ void reko_array_local()
 // Trashed: SCZO rax rdx
 // Preserved: rbp rsp
 reko_array_local_entry:
-	ptr64 fp
 l00000002121D105E:
-	word32 dwLoc0C_39 = 0<32>
+	dwLoc0C_39 = 0<32>
 l00000002121D1081:
 	branch dwLoc0C_39 <=u 0x1F<32> l00000002121D106F
 l00000002121D106F:

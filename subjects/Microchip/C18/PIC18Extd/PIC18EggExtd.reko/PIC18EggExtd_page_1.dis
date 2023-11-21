@@ -29,10 +29,10 @@ l00000E:
 	Data13[0x00C5<p16>:byte] = TABLAT
 	__tblrd(TBLPTR, 1<8>)
 	Data16[0x00C6<p16>:byte] = TABLAT
-	byte TBLPTRL_4 = 6<8>
-	byte TBLPTRH_46 = 0<8>
-	byte TBLPTRU_49 = 0<8>
-	bool v21_98 = TABLAT != 0<8>
+	TBLPTRL_4 = 6<8>
+	TBLPTRH_46 = 0<8>
+	TBLPTRU_49 = 0<8>
+	v21_98 = TABLAT != 0<8>
 l000028:
 	branch v21_98 l000030
 l00002A:
@@ -64,7 +64,7 @@ l000030:
 	Data47[0x00C8<p16>:byte] = TBLPTRH_46
 	Data50[0x00C9<p16>:byte] = TBLPTRU_49
 	Data55[0x00C3<p16>:byte] = Data50[0x00C3<p16>:byte]
-	bool v24_101 = Data55[0x00C3<p16>:byte] != 0<8>
+	v24_101 = Data55[0x00C3<p16>:byte] != 0<8>
 l000080:
 	branch v24_101 l000086
 l000082:

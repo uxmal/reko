@@ -18,14 +18,14 @@ T_2: (in rcx : (arr byte))
   Class: Eq_2
   DataType: (ptr64 (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_30) a0000)))
-T_3: (in dwLoc0C_38 @ 00000002121D100C : int32)
-  Class: Eq_3
-  DataType: int32
-  OrigDataType: int32
-T_4: (in 0<32> @ 00000002121D100C : word32)
+T_3: (in 0<32> @ 00000002121D100C : word32)
   Class: Eq_3
   DataType: int32
   OrigDataType: word32
+T_4: (in dwLoc0C_38 @ 00000002121D100C : int32)
+  Class: Eq_3
+  DataType: int32
+  OrigDataType: int32
 T_5: (in 0x1F<32> @ 00000002121D102F : word32)
   Class: Eq_3
   DataType: int32
@@ -74,30 +74,30 @@ T_16: (in reko_array_byref(g_a121D5000) @ 00000002121D104E : void)
   Class: Eq_16
   DataType: void
   OrigDataType: void
-T_17: (in fp @ 00000002121D105E : ptr64)
+T_17: (in 0<32> @ 00000002121D1066 : word32)
   Class: Eq_17
-  DataType: ptr64
-  OrigDataType: ptr64
-T_18: (in dwLoc0C_39 @ 00000002121D1066 : up32)
-  Class: Eq_18
-  DataType: up32
-  OrigDataType: up32
-T_19: (in 0<32> @ 00000002121D1066 : word32)
-  Class: Eq_18
   DataType: up32
   OrigDataType: word32
-T_20: (in 0x1F<32> @ 00000002121D1087 : word32)
-  Class: Eq_18
+T_18: (in dwLoc0C_39 @ 00000002121D1066 : up32)
+  Class: Eq_17
   DataType: up32
   OrigDataType: up32
-T_21: (in dwLoc0C_39 <= 0x1F<32> @ 00000002121D1087 : bool)
-  Class: Eq_21
+T_19: (in 0x1F<32> @ 00000002121D1087 : word32)
+  Class: Eq_17
+  DataType: up32
+  OrigDataType: up32
+T_20: (in dwLoc0C_39 <= 0x1F<32> @ 00000002121D1087 : bool)
+  Class: Eq_20
   DataType: bool
   OrigDataType: bool
-T_22: (in SLICE(dwLoc0C_39, byte, 0) @ 00000002121D1079 : byte)
-  Class: Eq_22
+T_21: (in SLICE(dwLoc0C_39, byte, 0) @ 00000002121D1079 : byte)
+  Class: Eq_21
   DataType: byte
   OrigDataType: byte
+T_22: (in fp @ 00000002121D1079 : ptr64)
+  Class: Eq_22
+  DataType: ptr64
+  OrigDataType: ptr64
 T_23: (in 56<i64> @ 00000002121D1079 : int64)
   Class: Eq_23
   DataType: int64
@@ -115,7 +115,7 @@ T_26: (in fp - 56<i64> + CONVERT(dwLoc0C_39, word32, int64) @ 00000002121D1079 :
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_27 t0000)))
 T_27: (in Mem27[fp - 56<i64> + CONVERT(dwLoc0C_39, word32, int64):byte] @ 00000002121D1079 : byte)
-  Class: Eq_22
+  Class: Eq_21
   DataType: byte
   OrigDataType: byte
 T_28: (in 1<32> @ 00000002121D107D : word32)
@@ -123,7 +123,7 @@ T_28: (in 1<32> @ 00000002121D107D : word32)
   DataType: up32
   OrigDataType: up32
 T_29: (in dwLoc0C_39 + 1<32> @ 00000002121D107D : word32)
-  Class: Eq_18
+  Class: Eq_17
   DataType: up32
   OrigDataType: up32
 T_30:

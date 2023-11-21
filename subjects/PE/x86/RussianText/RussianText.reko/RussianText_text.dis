@@ -37,7 +37,7 @@ fn0040110B_entry:
 l0040110B:
 	branch Mem0[0x0040208B<p32>:word32] <u 0<32> l0040113C
 l00401114:
-	word32 eax_11 = __CRTL_TLS_GetValue(Mem0[0x0040208B<p32>:word32])
+	eax_11 = __CRTL_TLS_GetValue(Mem0[0x0040208B<p32>:word32])
 	branch eax_11 == 0<32> l0040113C
 l00401123:
 	HeapFree(GetProcessHeap(), 8<32>, eax_11)
@@ -58,7 +58,6 @@ word32 fn00401158()
 // Trashed: eax edx Top
 // Preserved: esp
 fn00401158_entry:
-	selector fs
 l00401158:
 	return Mem0[Mem0[fs:0x2C<16>:word32] + Mem0[0x0040208B<p32>:word32] * 4<32>:word32]
 fn00401158_exit:
@@ -112,9 +111,8 @@ void fn004011B0(word32 dwArg04)
 // Trashed: SCZOP eax ecx edx Top
 // Preserved: ebp ebx esp
 fn004011B0_entry:
-	struct <anonymous> tLoc0C
 l004011B0:
-	word32 ebx_12 = dwArg04
+	ebx_12 = dwArg04
 	branch dwArg04 != 0<32> l004011D7
 l004011C6:
 	branch dwArg04 != 0<32> l004011D7

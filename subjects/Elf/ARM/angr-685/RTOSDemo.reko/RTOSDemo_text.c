@@ -73,15 +73,15 @@ void raise()
 // 00008038: void vPrintTask(Register word32 cpsr)
 void vPrintTask(word32 cpsr)
 {
-	ptr32 fp;
-	byte * dwLoc14;
 	ui32 r4_n = 0x00;
 	struct Eq_n ** r5_n = g_ptr8064;
 	while (true)
 	{
+		ptr32 fp;
 		MPU_xQueueGenericReceive(*r5_n, fp - 20, ~0x00, 0x00, cpsr);
 		OSRAMClear();
 		++r4_n;
+		byte * dwLoc14;
 		OSRAMStringDraw(dwLoc14, r4_n & 0x3F, r4_n & 0x01);
 	}
 }
@@ -90,11 +90,11 @@ struct Eq_n ** g_ptr8064 = &g_ptr20000880; // 00008064
 // 00008068: void vCheckTask(Register word32 cpsr)
 void vCheckTask(word32 cpsr)
 {
-	ptr32 fp;
 	MPU_xTaskGetTickCount(cpsr);
 	struct Eq_n ** r5_n = g_ptr809C;
 	while (true)
 	{
+		ptr32 fp;
 		MPU_vTaskDelayUntil(fp - 24, 5000, cpsr);
 		MPU_xQueueGenericSend(*r5_n, fp - 20, ~0x00, 0x00, cpsr);
 	}
@@ -126,11 +126,11 @@ byte * g_ptr8104 = &g_bA268; // 00008104
 // 00008108: void vUART_ISR(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 cpsr)
 void vUART_ISR(word32 r4, word32 r5, word32 r6, word32 cpsr)
 {
-	ptr32 %continuation;
 	Eq_n tLoc15;
 	tLoc15.dw0005 = r4;
 	tLoc15.dw0009 = r5;
 	tLoc15.dw000D = r6;
+	ptr32 %continuation;
 	tLoc15.ptr0011 = %continuation;
 	struct Eq_n * r5_n = g_ptr8174;
 	tLoc15.dw0001 = 0x00;
@@ -237,10 +237,10 @@ uint32 g_dw8298 = 1000000; // 00008298
 //      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
-	Eq_n tLoc14;
 	struct Eq_n * r4_n = g_ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
+	Eq_n tLoc14;
 	SSIDataGet(r4_n, &tLoc14);
 	SSIDataGet(r4_n, &tLoc14);
 	return r4_n;
@@ -307,10 +307,10 @@ void vListInsertEnd(struct Eq_n * r0, struct Eq_n * r1)
 //      vCoRoutineAddToDelayedList
 bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 {
+	up32 r5_n = r1->dw0000;
 	bool Z;
 	struct Eq_n * r2_n;
 	struct Eq_n * r3_n;
-	up32 r5_n = r1->dw0000;
 	if (!Z)
 	{
 		r2_n = (struct Eq_n *) (&r0->dw0000 + 2);
@@ -401,7 +401,8 @@ bool xQueueCRSend(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, unio
 	__data_sync_barrier("sy");
 	up32 r2_n = r0->dw0038;
 	up32 r3_n = r0->dw003C;
-	Eq_n r0_n = 0x00;
+	Eq_n r0_n;
+	r0_n.u0 = 0x00;
 	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
 	if (r2_n < r3_n)
 	{
@@ -437,12 +438,15 @@ l000083AA:
 //      prvFlashCoRoutine
 bool xQueueCRReceive(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out, ptr32 & r6Out)
 {
-	ptr32 r6;
-	bool Z;
+	word32 r7_n;
+	word32 r5_n;
+	struct Eq_n * r4_n;
 	__msr(cpsr, 191);
 	__instruction_sync_barrier("sy");
 	__data_sync_barrier("sy");
-	Eq_n r5_n = r0->t0038.u0;
+	Eq_n r5_n;
+	r5_n.u0 = r0->t0038.u0;
+	ptr32 r6;
 	if (r5_n == 0x00)
 	{
 		bool Z_n = SLICE(cond(r2 - 0x00), bool, 2);
@@ -462,30 +466,28 @@ bool xQueueCRReceive(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, u
 			return Z_n;
 		}
 	}
-	Eq_n r0_n;
 	__msr(cpsr, 0x00);
 	__msr(cpsr, 191);
 	__instruction_sync_barrier("sy");
 	__data_sync_barrier("sy");
-	Eq_n r2_n = r0->t0038.u0;
+	Eq_n r2_n;
+	r2_n.u0 = r0->t0038.u0;
+	Eq_n r0_n;
 	if (r2_n != 0x00)
 	{
-		struct Eq_n * r1_n;
 		struct Eq_n * r2_n = r0->ptr0040;
 		struct Eq_n * r3_n = r0->ptr0004;
-		word32 r1_n = Mem12[r0 + 0x0C:word32] + r2_n;
-		Eq_n r3_n = r0->t0038.u0;
+		struct Eq_n * r1_n = Mem12[r0 + 0x0C:word32] + r2_n;
+		Eq_n r3_n;
+		r3_n.u0 = r0->t0038.u0;
 		r0->ptr000C = r1_n;
-		r1_n = r1_n;
+		struct Eq_n * r1_n = r1_n;
 		if (r1_n >= r3_n)
 			r1_n = r0->ptr0000;
-		r0->t0038.u0 = (word32) r3_n - 1;
+		r0->t0038.u0 = (word32) r3_n.u0 - 1;
 		if (r1_n >= r3_n)
 			r0->ptr000C = r1_n;
-		struct Eq_n * r4_n;
-		word32 r7_n;
-		word32 r5_n;
-		Z = memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6, out r7_n);
+		bool Z = memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6, out r7_n);
 		if (r4_n->dw0010 != 0x00)
 		{
 			word32 r0_n;
@@ -518,8 +520,8 @@ void xQueueCRSendFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 r2)
 {
 	if (r0->dw0038 < r0->dw003C)
 	{
-		word32 r7_n;
 		word32 r0_n;
+		word32 r7_n;
 		prvCopyDataToQueue(r0, r1, 0x00, out r0_n, out r7_n);
 		if (r2 == 0x00 && r0->dw0024 != 0x00)
 		{
@@ -534,13 +536,12 @@ void xQueueCRReceiveFromISR(struct Eq_n * r0, struct Eq_n * r1)
 {
 	if (r0->dw0038 == 0x00)
 		return;
-	struct Eq_n * r3_n;
 	struct Eq_n * lr_n = r0->ptr0040;
 	struct Eq_n * r4_n = r0->ptr0004;
-	word32 r3_n = Mem16[r0 + 0x0C:word32] + lr_n;
+	struct Eq_n * r3_n = Mem16[r0 + 0x0C:word32] + lr_n;
 	word32 r7_n = r0->dw0038;
 	r0->ptr000C = r3_n;
-	r3_n = r3_n;
+	struct Eq_n * r3_n = r3_n;
 	if (r3_n >= r4_n)
 		r3_n = r0->ptr0000;
 	if (r3_n >= r4_n)
@@ -548,8 +549,8 @@ void xQueueCRReceiveFromISR(struct Eq_n * r0, struct Eq_n * r1)
 	r0->dw0038 = r7_n + ~0x00;
 	struct Eq_n * r4_n;
 	word32 * r5_n;
-	word32 r7_n;
 	word32 r6_n;
+	word32 r7_n;
 	memcpy(r1, r3_n, lr_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	if (*r5_n != 0x00 || r4_n->dw0010 == 0x00)
 		return;
@@ -759,12 +760,11 @@ byte * g_ptr866C = &g_b200007F4; // 0000866C
 // 00008670: void prvFlashCoRoutine(Register (ptr32 Eq_n) r0, Register word32 cpsr)
 void prvFlashCoRoutine(struct Eq_n * r0, word32 cpsr)
 {
-	ptr32 fp;
-	up32 dwLoc14;
+	word32 r3_n = (word32) r0->w0034;
 	struct Eq_n ** r5_n;
 	struct Eq_n * r6_n;
+	ptr32 fp;
 	word32 r0_n;
-	word32 r3_n = (word32) r0->w0034;
 	if (r3_n != 0x01C2)
 	{
 		if (r3_n == 0x01C3)
@@ -793,6 +793,7 @@ l000086AA:
 				goto l00008696;
 			}
 l00008690:
+			up32 dwLoc14;
 			vParTestToggleLED(dwLoc14, cpsr);
 			goto l00008696;
 		}
@@ -837,11 +838,10 @@ word32 * g_ptr86E4 = &g_dw200000C0; // 000086E4
 // 000086E8: void prvFixedDelayCoRoutine(Register (ptr32 Eq_n) r0, Register ui32 r1, Register word32 cpsr)
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, word32 cpsr)
 {
-	ptr32 fp;
-	bool v24_n;
-	Eq_n r0_n;
-	word32 r0_n;
 	up32 r3_n = (word32) r0->w0034;
+	ptr32 fp;
+	word32 r0_n;
+	bool v24_n;
 	if (r3_n != 0x0182)
 	{
 		if (r3_n > 0x0182)
@@ -868,6 +868,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, word32 cpsr)
 		r0->w0034 = 0x0183;
 		return;
 	}
+	Eq_n r0_n;
 	if (r0_n != 0x01)
 	{
 		*g_ptr8780 = 0x00;
@@ -1382,7 +1383,6 @@ struct Eq_n * g_ptr8F28 = &g_t200007FC; // 00008F28
 //      vApplicationIdleHook
 word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 cpsr)
 {
-	ptr32 %continuation;
 	struct Eq_n * r5_n = g_ptr9088;
 	while (r5_n->dw0054 != 0x00)
 	{
@@ -1407,11 +1407,11 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 l00008F94:
 	while (r0_n != 0x00)
 	{
-		struct Eq_n * r2_n;
 		++r3_n;
 		r5_n->dw0074 = r3_n;
 		--r0_n;
 		r5_n->dw007C = r0_n;
+		struct Eq_n * r2_n;
 		if (r3_n != 0x00)
 			r2_n = r5_n->ptr0068;
 		else
@@ -1430,9 +1430,9 @@ l00008F94:
 			__msr(cpsr, 191);
 			__instruction_sync_barrier("sy");
 			__data_sync_barrier("sy");
-			struct Eq_n * r6_n = &r4_n->dw0004;
+			struct Eq_n * r6_n = (struct Eq_n *) &r4_n->dw0004;
 			uxListRemove(r6_n);
-			struct Eq_n * r0_n = &r4_n->dw0004 + 5;
+			struct Eq_n * r0_n = (struct Eq_n *) (&r4_n->dw0004 + 5);
 			if (r4_n->dw0028 != 0x00)
 				uxListRemove(r0_n);
 			__msr(cpsr, 0x00);
@@ -1452,10 +1452,10 @@ l00008F94:
 		} while (r4_n->dw0004 <= r3_n);
 		r0_n = r5_n->dw007C;
 	}
-	uint32 r2_n;
 	uint32 r1_n = r5_n->dw0070;
 	r5_n->dw0078 = r3_n;
 	ui32 r3_n = r1_n << 2;
+	uint32 r2_n;
 	if (*((char *) &(r5_n + (r1_n * 0x14) / 0x0080)->ptr0000 + 4) == 0x00)
 	{
 		if (r1_n == 0x00)
@@ -1479,22 +1479,20 @@ l00009046:
 	}
 	else
 		r2_n = r1_n;
-	struct Eq_n * r2_n;
 	ui32 r3_n = r3_n + r2_n;
-	struct Eq_n * r1_n = r5_n + (r3_n << 2) / 0x0080;
+	struct Eq_n * r1_n = (struct Eq_n *) (r5_n + (r3_n << 2) / 0x0080);
 	struct Eq_n * r2_n = r1_n->ptr0008->ptr0004;
 	struct Eq_n * r3_n = (r3_n << 2) + g_dw908C;
 	r1_n->ptr0008 = r2_n;
-	r2_n = r2_n;
+	struct Eq_n * r2_n = r2_n;
 	if (r2_n == r3_n)
 		r2_n = r2_n->ptr0004;
 	<anonymous> ** r0_n = r2_n->ptr000C;
 	if (r2_n == r3_n)
 		r1_n->ptr0008 = r2_n;
 	r5_n->ptr0000 = r0_n;
-	word32 pc_n;
-	word32 cpsr_n;
 	(*r0_n)();
+	word32 cpsr_n;
 	return cpsr_n;
 }
 
@@ -2312,10 +2310,11 @@ void SSIConfig(struct Eq_n * r0, ui32 r1, ui32 r2, uint32 r3, ui32 dwArg00)
 	r0->dw0004 = r7_n;
 	uint32 r3_n = r0_n /u r3;
 	uint32 r4_n = 0x00;
+	uint32 r2_n;
 	do
 	{
 		r4_n += 0x02;
-		uint32 r2_n = r3_n /u r4_n;
+		r2_n = r3_n /u r4_n;
 	} while (r2_n > 0x0100 || r2_n < 0x01);
 	r0->dw0010 = r4_n;
 	r0->dw0000 = dwArg00 - 0x01 | (r1 & 0x30 | r1 << 0x06) | r2_n - 0x01 << 0x08;
@@ -2680,8 +2679,8 @@ ui32 * g_ptr9DEC = &g_dw400FE050; // 00009DEC
 //      I2CMasterInit
 uint32 SysCtlClockGet()
 {
-	uint32 r0_n;
 	ui32 r3_n = *g_ptr9E54;
+	uint32 r0_n;
 	switch (r3_n & 0x30)
 	{
 	case 0x10:
@@ -2809,10 +2808,10 @@ void UARTParityModeGet()
 // 00009F4C: void UARTConfigSet(Register (ptr32 Eq_n) r0, Register uint32 r1, Register ui32 r2)
 void UARTConfigSet(struct Eq_n * r0, uint32 r1, ui32 r2)
 {
+	ui32 r4_n;
 	do
-	{
-		ui32 r4_n = r0->dw0018;
-	} while ((r4_n & 0x08) != 0x00);
+		r4_n = r0->dw0018;
+	while ((r4_n & 0x08) != 0x00);
 	r0->dw002C &= ~0x10;
 	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
 	uint32 r0_n = SysCtlClockGet();

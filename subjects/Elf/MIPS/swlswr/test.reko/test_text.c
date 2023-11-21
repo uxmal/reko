@@ -57,14 +57,14 @@ void __do_global_dtors_aux()
 			word32 * r2_n = g_ptr10AAC;
 			__cxa_finalize(*r2_n);
 		}
-		Eq_n r2_n = dtor_idx.6258.u0;
+		Eq_n r2_n;
+		r2_n.u0 = dtor_idx.6258.u0;
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
-			Eq_n r2_n = (word32) r2_n + 1;
+			Eq_n r2_n = (word32) r2_n.u0 + 1;
 			dtor_idx.6258.u0 = (int32) r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
-			word32 r4_n;
 			(*r2_n)();
 			r2_n.u0 = dtor_idx.6258.u0;
 		}
@@ -84,19 +84,19 @@ void main()
 {
 	ptr32 fp;
 	word32 dwLoc14;
-	byte bLoc10;
 	memset(&dwLoc14, 0x00, (size_t) 5);
 	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
 	r2_n->t0000.u1 = dwLoc14;
+	byte bLoc10;
 	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;
 	r2_n->dw0001 = 0x00;
 	dwLoc14 = (word32) 66;
 	dwLoc14.ptr0001 = r2_n;
-	r30_n = fp + -48;
-	r2_n = r2_n;
-	r2_n = r2_n;
-	r2_n = r2_n;
+	ptr32 r30_n = fp + -48;
+	struct Eq_n * r2_n = r2_n;
+	struct Eq_n * r2_n = r2_n;
+	struct Eq_n * r2_n = r2_n;
 }
 
 // 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6)

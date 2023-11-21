@@ -78,7 +78,7 @@ __VPRINTER: error: An error occurred while renaming variables.
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 90
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 61
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 40
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 l0800_17AE: warning: Non-integral switch expression
 
 === Hunk-m68k\BENCHLNG
@@ -236,7 +236,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
    at Reko.Evaluation.ExpressionSimplifier.PostVisitBinaryExpression(BinaryExpression binExp, ValueTuple`2[] simpExps) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 226
    at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
-   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 134
+   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 133
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 70
    at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 48
@@ -1213,7 +1213,7 @@ Unhandled Wasm mnemonic call_indirect.
 Unhandled Wasm mnemonic call_indirect.
 d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occurred while analyzing d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm.
     The method or operation is not implemented.
-       at Reko.Analysis.UsedRegisterFinder.VisitReturnInstruction(ReturnInstruction ret) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 326
+       at Reko.Analysis.UsedRegisterFinder.VisitReturnInstruction(ReturnInstruction ret) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 328
    at Reko.Core.Code.ReturnInstruction.Accept[T](InstructionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 116
    at Reko.Analysis.UsedRegisterFinder.<Classify>b__13_0(BitRange w, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 161
    at System.Linq.Enumerable.Aggregate[TSource,TAccumulate](IEnumerable`1 source, TAccumulate seed, Func`3 func)
@@ -1225,15 +1225,68 @@ d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occu
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 128
    at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 113
 l000D03E2: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+l000D182D: warning: Non-integral switch expression
+l000D3AB6: warning: Non-integral switch expression
+l000D39C9: warning: Non-integral switch expression
+l000D2FB7: warning: Non-integral switch expression
+l000D63D4: warning: Non-integral switch expression
+fn000D6EB2_entry: warning: Non-integral switch expression
+l000D7BAC: warning: Non-integral switch expression
+l000D835F: warning: Non-integral switch expression
+l000D7FBC: warning: Non-integral switch expression
+l000D7E4F: warning: Non-integral switch expression
+fn000D7B90_entry: warning: Non-integral switch expression
+fn000DA625_entry: warning: Non-integral switch expression
+l000DD0E6: warning: Non-integral switch expression
+l000DC4DA: warning: Non-integral switch expression
+l000DCF8B: warning: Non-integral switch expression
+l000DC12D: warning: Non-integral switch expression
+l000DC92E: warning: Non-integral switch expression
+l000DC676: warning: Non-integral switch expression
+l000DC5CC: warning: Non-integral switch expression
+l000DC38E: warning: Non-integral switch expression
+l000DC05F: warning: Non-integral switch expression
+l000DBDD1: warning: Non-integral switch expression
+l000DBBE7: warning: Non-integral switch expression
+l000DD8AF: warning: Non-integral switch expression
+l000EABF5: warning: Non-integral switch expression
+l000EBD39: warning: Non-integral switch expression
+fn000EDE83_entry: warning: Non-integral switch expression
+l000F310B: warning: Non-integral switch expression
+l000F3F38: warning: Non-integral switch expression
+l000FAA8D: warning: Non-integral switch expression
+l000FAA24: warning: Non-integral switch expression
+fn000FA9D7_entry: warning: Non-integral switch expression
+l000FABE2: warning: Non-integral switch expression
+l000FB94E: warning: Non-integral switch expression
+fn000FEAE3_entry: warning: Non-integral switch expression
+fn00102A6A_entry: warning: Non-integral switch expression
+l0010A9D7: warning: Non-integral switch expression
+l001082A8: warning: Non-integral switch expression
+l0010F92C: warning: Non-integral switch expression
+fn0010CE53_entry: warning: Non-integral switch expression
+l00112A75: warning: Non-integral switch expression
+l00114CF5: warning: Non-integral switch expression
+l001160FE: warning: Non-integral switch expression
+l00116268: warning: Non-integral switch expression
+l001166E3: warning: Non-integral switch expression
+l00116856: warning: Non-integral switch expression
 fn00116E5E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00117125' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 95
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
+l0011780B: warning: Non-integral switch expression
+l00117ACC: warning: Non-integral switch expression
 fn001179EC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+l00117DE4: warning: Non-integral switch expression
+l0011834F: warning: Non-integral switch expression
+l001184DB: warning: Non-integral switch expression
+l0011898D: warning: Non-integral switch expression
+l00118B09: warning: Non-integral switch expression
 
 *** PE\x86\import-ordinals\import-ordinals
 Signature of 'Microsoft Visual C++ 8' detected.
@@ -1260,7 +1313,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
    at Reko.Evaluation.ExpressionSimplifier.PostVisitBinaryExpression(BinaryExpression binExp, ValueTuple`2[] simpExps) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 226
    at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
-   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 134
+   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 133
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 70
    at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 48
@@ -2377,11 +2430,11 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 980
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 930
-   at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 310
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 283
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 170
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
+   at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 l00009F1C: warning: Non-integral switch expression
@@ -2647,7 +2700,7 @@ fn0000000100003AA8: error: An error occurred while rewriting procedure to high-l
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 
@@ -2670,6 +2723,8 @@ fn0001B2AC: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+00000083: warning: Expected sizes of arrays to have been determined by now
+0000FFFF: warning: Expected sizes of arrays to have been determined by now
 000171BC: warning: Expected sizes of arrays to have been determined by now
 000171D4: warning: Expected sizes of arrays to have been determined by now
 00017734: warning: Expected sizes of arrays to have been determined by now
@@ -2691,6 +2746,8 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 0001B4A8: warning: Expected sizes of arrays to have been determined by now
 0001C5D0: warning: Expected sizes of arrays to have been determined by now
 0001D1D0: warning: Expected sizes of arrays to have been determined by now
+00000083: warning: Expected sizes of arrays to have been determined by now
+0000FFFF: warning: Expected sizes of arrays to have been determined by now
 000171BC: warning: Expected sizes of arrays to have been determined by now
 000171D4: warning: Expected sizes of arrays to have been determined by now
 00017734: warning: Expected sizes of arrays to have been determined by now
@@ -2743,7 +2800,7 @@ finish: error: An error occurred while renaming variables.
    at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 169
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 99
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 42
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
 l0040478C: warning: Non-integral switch expression
@@ -2838,7 +2895,7 @@ fn0800_9828: error: An error occurred while renaming variables.
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 90
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 61
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 40
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
     Dominator graph calculation timed out.
        at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
@@ -2849,41 +2906,42 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 109
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+l0800_031A: warning: Non-integral switch expression
 l0800_0663: warning: Non-integral switch expression
+l0800_0EE8: warning: Non-integral switch expression
+l0800_11D8: warning: Non-integral switch expression
 0800:4F14: warning: Expected sizes of arrays to have been determined by now
 0800:4F1C: warning: Expected sizes of arrays to have been determined by now
 0800:4F24: warning: Expected sizes of arrays to have been determined by now
@@ -3187,7 +3245,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 73
-       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 166
+       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 152
    at Reko.Environments.Windows.MipsCallingConvention.Generate(ICallingConventionEmitter ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 92
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 142
@@ -3724,21 +3782,13 @@ fn00009746: error: An internal error occurred while building the expressions of 
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 255
-fn000125CA: error: An error occurred while renaming variables.
-    Value cannot be null. (Parameter 'key')
-       at System.Collections.Generic.Dictionary`2.FindValue(TKey key)
-   at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
-   at Reko.Core.Graphs.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 100
-   at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 61
-   at Reko.Analysis.WebBuilder.InsertDeclarations() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 92
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 118
 l00008081: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000802E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 fn00009746: error: An error occurred while rewriting procedure to high-level language.
@@ -3746,7 +3796,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -3806,7 +3856,7 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
    at Reko.Evaluation.ExpressionSimplifier.PostVisitBinaryExpression(BinaryExpression binExp, ValueTuple`2[] simpExps) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 226
    at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.BinaryExpression.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
-   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 134
+   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in d:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 133
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 70
    at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 48
@@ -4496,4 +4546,4 @@ fn0000000140001BFC_exit:
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 73.18 seconds.
+Decompiled 91 binaries in 106.50 seconds.

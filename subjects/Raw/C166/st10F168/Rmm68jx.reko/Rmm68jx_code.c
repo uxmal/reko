@@ -17,29 +17,31 @@ void fn0000(struct Eq_n * SP)
 // 0034: void fn0034()
 void fn0034()
 {
-	ptr16 fp;
 	__disable_watchdog_timer();
 	__end_of_initialization();
 	word16 S0TIC_n = 0x00;
 	word16 S0RIC_n = 0x00;
+	cui16 r0_n;
 	do
 	{
 		while (true)
 		{
 			fn0128(&g_b013E, S0TIC_n);
 			S0RIC_n = fn011C(S0RIC_n);
-			cui16 r0_n = <invalid>;
+			r0_n = <invalid>;
 			if ((r0_n & 223) != 0x44)
 				break;
+			word16 S0RIC_n;
 			while (true)
 			{
+				cui16 r0_n;
 				do
 				{
-					cui16 r0_n = <invalid>;
+					r0_n = <invalid>;
 					S0RIC_n = fn011C(S0RIC_n);
 				} while ((byte) r0_n == 0x3A);
 				cui16 r0_n = <invalid>;
-				word16 S0RIC_n = fn011C(S0RIC_n);
+				S0RIC_n = fn011C(S0RIC_n);
 				if ((byte) r0_n == 0x00)
 					break;
 				cui16 r0_n = <invalid>;
@@ -47,6 +49,7 @@ void fn0034()
 				cu16 r2_n = r0_n & 0xFF;
 				word16 S0RIC_n = fn011C(fn011C(fn011C(S0RIC_n)));
 				byte * r1_n = SEQ((byte) r0_n, (byte) r0_n);
+				cu16 r2_n;
 				do
 				{
 					cui16 r0_n = <invalid>;
@@ -65,6 +68,7 @@ void fn0034()
 	} while ((r0_n & 223) != 0x47);
 	fn011C(fn011C(S0RIC_n));
 	cui16 r0_n = <invalid>;
+	ptr16 fp;
 	*(word16 *) ~0x0401 = SEQ((byte) r0_n, (byte) fp);
 }
 

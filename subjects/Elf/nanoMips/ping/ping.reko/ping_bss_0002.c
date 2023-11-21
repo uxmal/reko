@@ -125,7 +125,7 @@ Eq_n ident = // 004544C4
 	};
 word32 mark = 0x00; // 004544C8
 word32 nchecksum = 0x00; // 004544CC
-ui32 nerrors = 0x00; // 004544D0
+word32 nerrors = 0x00; // 004544D0
 Eq_n ni_group = // 004544D4
 	{
 		0
@@ -134,7 +134,7 @@ Eq_n npackets = // 004544D8
 	{
 		0
 	};
-ui32 nreceived = 0x00; // 004544DC
+word32 nreceived = 0x00; // 004544DC
 word32 nrepeats = 0x00; // 004544E0
 Eq_n ntransmitted = // 004544E4
 	{

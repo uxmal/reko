@@ -7,9 +7,9 @@
 // 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
 void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 {
-	void * fp;
-	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
+	word64 qwArg00;
+	void * fp;
 	__libc_start_main(&g_t0898, (int32) qwArg00, &ptrArg08, &g_t0A70, &g_t0AE0, rdx, fp);
 	__halt();
 }
@@ -57,18 +57,20 @@ void frame_dummy()
 //      main
 void * _mm_malloc(uint64 rsi, Eq_n rdi)
 {
-	ptr64 fp;
-	void * qwLoc10;
-	void * rax_n;
 	uint64 qwLoc28_n = rsi;
+	void * rax_n;
 	if (rsi == 0x01)
 		rax_n = malloc(rdi);
 	else
 	{
 		if (rsi == 0x02 || rsi == 0x04)
 			qwLoc28_n = 0x08;
+		ptr64 fp;
 		if ((word32) posix_memalign(qwLoc28_n, fp - 16, rdi, qwLoc28_n) == 0x00)
+		{
+			void * qwLoc10;
 			rax_n = qwLoc10;
+		}
 		else
 			rax_n = null;
 	}
@@ -99,11 +101,12 @@ void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], word64 rdi)
 // 0000000000000898: void main()
 void main()
 {
+	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
+	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
+	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
+	Eq_n qwLoc10_n;
+	qwLoc10_n.u0 = 0x00;
 	word128 xmm0;
-	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
-	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
-	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
-	Eq_n qwLoc10_n = 0x00;
 	while (qwLoc10_n < 0x0400)
 	{
 		real64 * rcx_n = &(rax_n + (qwLoc10_n * 0x08) /64 32)->u0;
@@ -116,22 +119,23 @@ void main()
 			xmm0 = SEQ(0x00, v27_n + v27_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc10_n = (word64) qwLoc10_n + 1;
+		qwLoc10_n = (word64) qwLoc10_n.u0 + 1;
 	}
-	Eq_n qwLoc18_n = 0x00;
+	Eq_n qwLoc18_n;
+	qwLoc18_n.u0 = 0x00;
 	while (qwLoc18_n < 0x0400)
 	{
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
 		real64 * rcx_n = &(rax_n + (qwLoc18_n * 0x08) /64 32)->u0;
 		if (qwLoc18_n >= ~0x00)
-			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
+			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n.u0 + 1));
 		else
 		{
-			real64 v22_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
+			real64 v22_n = (real64) ((word64) qwLoc18_n.u0 + 1 >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm0 = SEQ(0x00, v22_n + v22_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc18_n = (word64) qwLoc18_n + 1;
+		qwLoc18_n = (word64) qwLoc18_n.u0 + 1;
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
@@ -149,12 +153,13 @@ void main()
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word64 rdi;
-	word32 edi = (word32) rdi;
+	edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00200DF0 - g_a200DE8;
 	if (rbp_n >> 0x03 != 0x00)
 	{
-		Eq_n rbx_n = 0x00;
+		Eq_n rbx_n;
+		rbx_n.u1 = 0x00;
 		do
 		{
 			(*((char *) g_a200DE8 + rbx_n * 0x08))();

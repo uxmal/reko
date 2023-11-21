@@ -9,6 +9,7 @@ void fn0000(struct Eq_n * __data)
 {
 	__data->b001D = 0x00;
 	fn4EF3();
+	selector __data_n;
 	__data_n->b0157 = 0x05;
 	if ((__data_n->b80EA >> 0x02 & 0x01) == 0x00)
 		fn4AC0();

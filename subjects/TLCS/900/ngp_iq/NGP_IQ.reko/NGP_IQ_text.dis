@@ -11,9 +11,9 @@ fn00200089_entry:
 l00200089:
 	fn0020060C()
 	Mem11[0x00006F86<p32>:byte] = Mem0[0x00006F86<p32>:byte] | 64<i8>
-	word32 xix_12 = 0x00200040<p32>
-	word32 xiy_13 = 0x00006FB8<p32>
-	byte b_14 = 0x12<8>
+	xix_12 = 0x00200040<p32>
+	xiy_13 = 0x00006FB8<p32>
+	b_14 = 0x12<8>
 l0020009B:
 	Mem23[xiy_13:word32] = Mem18[xix_12:word32]
 	xix_12 = xix_12 + 4<i32>
@@ -25,17 +25,17 @@ l002000A4:
 	Mem30[0x00008003<p32>:byte] = 0<32>
 	Mem32[0x00008004<p32>:byte] = 0xA0<32>
 	Mem34[0x00008005<p32>:byte] = 0x98<32>
-	word32 xhl_36 = 0xA000<32>
-	word16 bc_37 = 0x200<16>
+	xhl_36 = 0xA000<32>
+	bc_37 = 0x200<16>
 l002000C2:
 	Mem41[xhl_36:word16] = 0<32>
 	xhl_36 = xhl_36 + 2<32>
 	bc_37 = bc_37 - 1<16>
 	branch bc_37 != 0<16> l002000C2
 l002000C8:
-	word16 bc_45 = 0x250<16>
-	word32 xde_46 = 0xA400<32>
-	word32 xhl_47 = 0x20061D<32>
+	bc_45 = 0x250<16>
+	xde_46 = 0xA400<32>
+	xhl_47 = 0x20061D<32>
 l002000D5:
 	Mem52[xde_46:word16] = Mem49[xhl_47:word16]
 	xhl_47 = xhl_47 + 2<i32>
@@ -45,9 +45,9 @@ l002000D5:
 l002000D7:
 	fn002005B8()
 	__ei(0<8>)
-	word16 bc_68 = 0x10<16>
-	word32 xde_69 = 0x8300<32>
-	word32 xhl_70 = 0x200ABD<32>
+	bc_68 = 0x10<16>
+	xde_69 = 0x8300<32>
+	xhl_70 = 0x200ABD<32>
 l002000EA:
 	Mem75[xde_69:word16] = Mem72[xhl_70:word16]
 	xhl_70 = xhl_70 + 2<i32>
@@ -67,11 +67,11 @@ l00200154:
 l0020016E:
 	fn00200557(4<8>, 5<8>, 0x200165<32>)
 l00200186:
-	word32 xwa_142 = fn00200557(4<8>, 6<8>, 0x20017F<32>)
-	byte a_166 = SLICE(xwa_142, byte, 0)
-	word32 xde_149 = 0x7000<32>
-	word32 xhl_150 = 0x200363<32>
-	word16 bc_151 = 0x12F<16>
+	xwa_142 = fn00200557(4<8>, 6<8>, 0x20017F<32>)
+	a_166 = SLICE(xwa_142, byte, 0) (alias)
+	xde_149 = 0x7000<32>
+	xhl_150 = 0x200363<32>
+	bc_151 = 0x12F<16>
 l002001A2:
 	Mem156[xde_149:byte] = Mem153[xhl_150:byte]
 	xhl_150 = xhl_150 + 1<i32>
@@ -80,11 +80,10 @@ l002001A2:
 	branch bc_151 != 0<16> l002001A2
 l002001A4:
 	fn002004F2(a_166)
-	word32 xhl_188
 	call Mem156[0x7000<32>:word32] (retsize: 4;)
 		uses: Mem:Mem156,xwa:0x7000<32>
 		defs: xhl:xhl_188
-	word16 xhl_16_16_196 = SLICE(xhl_188, word16, 16)
+	xhl_16_16_196 = SLICE(xhl_188, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_196, 0xD06<16>))
 	branch fn00200532(SEQ(xhl_16_16_196, 0xD05<16>)) l002001E6
 l002001E6:
@@ -99,11 +98,11 @@ l00200206:
 l00200220:
 	fn00200557(4<8>, 9<8>, 0x200217<32>)
 l00200238:
-	word32 xwa_270 = fn00200557(4<8>, 0xA<8>, 0x200231<32>)
-	byte a_294 = SLICE(xwa_270, byte, 0)
-	word32 xde_277 = 0x7000<32>
-	word32 xhl_278 = 0x200492<32>
-	word16 bc_279 = 0x23<16>
+	xwa_270 = fn00200557(4<8>, 0xA<8>, 0x200231<32>)
+	a_294 = SLICE(xwa_270, byte, 0) (alias)
+	xde_277 = 0x7000<32>
+	xhl_278 = 0x200492<32>
+	bc_279 = 0x23<16>
 l00200254:
 	Mem284[xde_277:byte] = Mem281[xhl_278:byte]
 	xhl_278 = xhl_278 + 1<i32>
@@ -112,11 +111,10 @@ l00200254:
 	branch bc_279 != 0<16> l00200254
 l00200256:
 	fn002004F2(a_294)
-	word32 xhl_313
 	call Mem284[0x7000<32>:word32] (retsize: 4;)
 		uses: Mem:Mem284,xwa:0x7000<32>
 		defs: xhl:xhl_313
-	word16 xhl_16_16_320 = SLICE(xhl_313, word16, 16)
+	xhl_16_16_320 = SLICE(xhl_313, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_320, 0xD0A<16>))
 	branch fn00200532(SEQ(xhl_16_16_320, 0xD09<16>)) l00200298
 l00200298:
@@ -131,11 +129,11 @@ l002002BA:
 l002002D4:
 	fn00200557(4<8>, 0xD<8>, 0x2002CB<32>)
 l002002EC:
-	word32 xwa_394 = fn00200557(4<8>, 0xE<8>, 0x2002E5<32>)
-	byte a_418 = SLICE(xwa_394, byte, 0)
-	word32 xde_401 = 0x7000<32>
-	word32 xhl_402 = 0x2004B5<32>
-	word16 bc_403 = 0x2B<16>
+	xwa_394 = fn00200557(4<8>, 0xE<8>, 0x2002E5<32>)
+	a_418 = SLICE(xwa_394, byte, 0) (alias)
+	xde_401 = 0x7000<32>
+	xhl_402 = 0x2004B5<32>
+	bc_403 = 0x2B<16>
 l00200308:
 	Mem408[xde_401:byte] = Mem405[xhl_402:byte]
 	xhl_402 = xhl_402 + 1<i32>
@@ -144,11 +142,10 @@ l00200308:
 	branch bc_403 != 0<16> l00200308
 l0020030A:
 	fn002004F2(a_418)
-	word32 xhl_437
 	call Mem408[0x7000<32>:word32] (retsize: 4;)
 		uses: Mem:Mem408,xwa:0x7000<32>
 		defs: xhl:xhl_437
-	word16 xhl_16_16_444 = SLICE(xhl_437, word16, 16)
+	xhl_16_16_444 = SLICE(xhl_437, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_444, 0xD0E<16>))
 	branch fn00200532(SEQ(xhl_16_16_444, 0xD0D<16>)) l0020034C
 l0020034C:
@@ -170,8 +167,7 @@ void fn002004F2(byte w)
 // Trashed: SZHVNC
 // Preserved: xsp xwa
 fn002004F2_entry:
-	word32 xwa
-	byte w_20 = SLICE(xwa, byte, 8)
+	w_20 = SLICE(xwa, byte, 8) (alias)
 l002004F2:
 	Mem7[0x00004004<p32>:byte] = 0<32>
 l002004F8:
@@ -191,9 +187,8 @@ bool fn0020050A(word16 hl)
 // Trashed: SZHVNC a w
 // Preserved: xbc xde xhl xsp
 fn0020050A_entry:
-	word32 xhl
-	byte h_13 = SLICE(xhl, byte, 8)
-	byte l_22 = SLICE(xhl, byte, 0)
+	h_13 = SLICE(xhl, byte, 8) (alias)
+	l_22 = SLICE(xhl, byte, 0) (alias)
 l0020050A:
 	return SLICE(cond(CONVERT(CONVERT(h_13, byte, uint16) *u 2<16> + 0x9800<16> + CONVERT(l_22, byte, uint16) *u 0x40<16>, word16, uint32) + 1<32>), bool, 4)
 fn0020050A_exit:
@@ -209,9 +204,9 @@ bool fn00200532(word32 xhl)
 // Trashed: SZHVNC
 // Preserved: xbc xhl xsp xwa
 fn00200532_entry:
-	byte h_30 = SLICE(xhl, byte, 8)
-	word16 xhl_16_16_34 = SLICE(xhl, word16, 16)
-	byte l_35 = SLICE(xhl, byte, 0)
+	h_30 = SLICE(xhl, byte, 8) (alias)
+	xhl_16_16_34 = SLICE(xhl, word16, 16) (alias)
+	l_35 = SLICE(xhl, byte, 0) (alias)
 l00200532:
 	fn0020050A(SLICE(xhl, word16, 0))
 	return fn0020050A(SLICE(SEQ(xhl_16_16_34, h_30 + 1<8>, l_35), word16, 0))
@@ -229,21 +224,21 @@ word32 fn00200557(byte c, byte b, word32 xhl)
 // Preserved: xde xhl xsp
 fn00200557_entry:
 l00200557:
-	word24 xwa_24_8_106 = 0<24>
-	word32 xde_26 = CONVERT(c * 2<8>, byte, uint32) + 0x9800<32> + CONVERT(b, byte, uint16) *u 0x40<16>
-	byte b_29 = 0x13<8>
+	xwa_24_8_106 = 0<24> (alias)
+	xde_26 = CONVERT(c * 2<8>, byte, uint32) + 0x9800<32> + CONVERT(b, byte, uint16) *u 0x40<16>
+	b_29 = 0x13<8>
 l00200579:
-	byte v18_32 = Mem8[xhl:byte]
-	word16 xwa_16_16_108 = SLICE(xwa_24_8_106, word16, 8)
-	word32 xwa_105 = SEQ(xwa_24_8_106, v18_32)
+	v18_32 = Mem8[xhl:byte]
+	xwa_16_16_108 = SLICE(xwa_24_8_106, word16, 8) (alias)
+	xwa_105 = SEQ(xwa_24_8_106, v18_32) (alias)
 	branch v18_32 == 0<8> l0020059E
 l0020057F:
 	xhl = xhl + 1<32>
 	branch v18_32 <u 0x5B<8> l00200589
 l00200586:
 l00200589:
-	word32 xde_57 = xde_26 + 1<32>
-	word32 v25_58 = Mem8[xde_57:word32]
+	xde_57 = xde_26 + 1<32>
+	v25_58 = Mem8[xde_57:word32]
 	xde_26 = xde_57 + 1<32>
 	b_29 = b_29 - 1<8>
 	xwa_24_8_106 = SEQ(xwa_16_16_108, v25_58) (alias)
@@ -265,16 +260,16 @@ void fn002005B8()
 // Preserved: xsp
 fn002005B8_entry:
 l002005B8:
-	word32 xbc_3 = 0x9000<32>
-	word16 hl_10 = 0x4C0<16>
+	xbc_3 = 0x9000<32>
+	hl_10 = 0x4C0<16>
 l002005C0:
 	Mem7[xbc_3:byte] = 0<32>
 	xbc_3 = xbc_3 + 1<32>
 	hl_10 = hl_10 - 1<16>
 	branch hl_10 != 0<16> l002005C0
 l002005CF:
-	word32 xbc_14 = 0x9800<32>
-	word16 hl_15 = 0x4C0<16>
+	xbc_14 = 0x9800<32>
+	hl_15 = 0x4C0<16>
 l002005D7:
 	Mem18[xbc_14:byte] = 0<32>
 	xbc_14 = xbc_14 + 1<32>
@@ -295,8 +290,8 @@ void fn002005F5(byte w, byte a, word16 xwa_16_16, word32 xix, word16 sr)
 fn002005F5_entry:
 l002005F5:
 	__ldf(3<8>)
-	word32 xwa_16 = SEQ(xwa_16_16, w * 4<8>, a)
-	word32 v10_17 = Mem8[xwa_16:word32]
+	xwa_16 = SEQ(xwa_16_16, w * 4<8>, a) (alias)
+	v10_17 = Mem8[xwa_16:word32]
 	call Mem8[v10_17:word32] (retsize: 4;)
 		uses: Mem:Mem8,sr:sr,Stack +0004:xix,xix:v10_17,xwa:xwa_16
 	return

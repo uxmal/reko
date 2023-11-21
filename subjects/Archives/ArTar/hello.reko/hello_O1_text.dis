@@ -8,8 +8,6 @@ void _start(word64 rdx, word32 dwArg00, char * ptrArg08)
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr64 fp
-	word64 qwArg00
 l0000000000001080:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x00000000000011E0<p64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x0000000000001280<p64>, 0x00000000000012E0<p64>, rdx, fp)
@@ -49,7 +47,7 @@ void register_tm_clones()
 // Preserved: rsp
 register_tm_clones_entry:
 l00000000000010E0:
-	word64 rsi_6 = 0x0000000000004048<p64> - 0x0000000000004048<p64>
+	rsi_6 = 0x0000000000004048<p64> - 0x0000000000004048<p64>
 	branch (rsi_6 >>u 0x3F<64>) + (rsi_6 >> 3<64>) >> 1<64> == 0<64> l0000000000001118
 l0000000000001104:
 	branch _ITM_registerTMCloneTable == 0<64> l0000000000001118
@@ -112,7 +110,7 @@ word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
 // Preserved: rsp
 Q_rsqrt_entry:
 l0000000000001169:
-	word128 xmm2_16 = CONVERT(0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0), word32, word128)
+	xmm2_16 = CONVERT(0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0), word32, word128)
 	return SEQ(0<96>, (Mem5[0x0000000000002078<p64>:real32] - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0))
 Q_rsqrt_exit:
 
@@ -145,15 +143,14 @@ void main(word64 rsi)
 // Trashed: SCZOP rax rdi rdx rsi Top xmm0 xmm1 xmm2
 // Preserved: rbx rsp
 main_entry:
-	word32 dwLoc20
 l00000000000011E0:
 	printf("Hello %s, I'm inside an archive.\n", Mem6[rsi + 8<i64>:word64])
 	puts(0x0000000000002030<p64>)
-	word64 rdi_17 = Mem6[rsi + 16<i64>:word64]
-	word128 xmm0_20 = SEQ(0<96>, strtof(rdi_17, 0<u64>))
-	real32 rLoc10_59 = strtof(rdi_17, 0<u64>)
-	real32 rLoc0C_61 = SLICE(Q_rsqrt(xmm0_20, dwLoc20), real32, 0)
-	real32 rLoc10_62 = SLICE(lib_rsqrt(SEQ(0<96>, rLoc10_59)), real32, 0)
+	rdi_17 = Mem6[rsi + 16<i64>:word64]
+	xmm0_20 = SEQ(0<96>, strtof(rdi_17, 0<u64>))
+	rLoc10_59 = strtof(rdi_17, 0<u64>)
+	rLoc0C_61 = SLICE(Q_rsqrt(xmm0_20, dwLoc20), real32, 0)
+	rLoc10_62 = SLICE(lib_rsqrt(SEQ(0<96>, rLoc10_59)), real32, 0)
 	printf("    Quick:   %g\n", CONVERT(rLoc0C_61, real32, real64))
 	printf("    Library: %g\n", CONVERT(rLoc10_62, real32, real64))
 	return
@@ -168,14 +165,13 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
-	word64 rdi
-	word32 edi = SLICE(rdi, word32, 0)
+	edi = SLICE(rdi, word32, 0)
 l0000000000001280:
 	_init()
-	word64 rbp_31 = 0x0000000000003DE0<p64> - 0x0000000000003DD8<p64>
+	rbp_31 = 0x0000000000003DE0<p64> - 0x0000000000003DD8<p64>
 	branch rbp_31 >> 3<64> == 0<64> l00000000000012CE
 l00000000000012B3:
-	word64 rbx_45 = 0<u64>
+	rbx_45 = 0<u64>
 l00000000000012B8:
 	call Mem30[0x0000000000003DD8<p64> + rbx_45 * 8<64>:word64] (retsize: 8;)
 		uses: Mem:Mem30,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi

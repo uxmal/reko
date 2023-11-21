@@ -97,12 +97,9 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
-	word32 dwLoc1C
-	word32 dwLoc14
-	word32 dwLoc10
 l004010D0:
-	word32 eax_10 = new_data_struct()
-	word32 dwLoc0C_162 = 1<32>
+	eax_10 = new_data_struct()
+	dwLoc0C_162 = 1<32>
 l004010F0:
 	branch dwLoc0C_162 >= argc - 1<32> l004011EF
 l004011EF:

@@ -9,8 +9,8 @@ word32 __fixunsdfsi(word32 r4, word32 r5)
 // Preserved: sp
 __fixunsdfsi_entry:
 l00410110:
-	word32 r6_5 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
-	word32 r9_9 = __ext<word32,word32>(r5, 0<32>, 0x14<32>)
+	r6_5 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
+	r9_9 = __ext<word32,word32>(r5, 0<32>, 0x14<32>)
 	branch r6_5 <= 0x3FE<32> l0041016E
 l00410128:
 	branch r5 >>u 0x1F<32> != 0<32> l00410166
@@ -23,7 +23,7 @@ l0041012A:
 l00410154:
 	return (r5 >>u 0x1F<32>) + 0xFFFFFFFF<32>
 l00410132:
-	word32 r5_18 = 0x433<32> - r6_5
+	r5_18 = 0x433<32> - r6_5
 	branch r5_18 >= 0x20<32> l0041015A
 l0041015A:
 	return (r9_9 | 0x1000000<32>) >>u 0x413<32> - r6_5
@@ -44,10 +44,6 @@ word32 __floatsidf(word32 r4)
 // Preserved: sp
 __floatsidf_entry:
 l00410170:
-	word32 r4_21
-	word32 r8_10
-	word32 r6_16
-	word32 r7_20
 	branch r4 == 0<32> l004101C4
 l004101C4:
 	r7_20 = 0<32>
@@ -55,11 +51,11 @@ l004101C4:
 	r6_16 = 0<32>
 	r8_10 = 0<32>
 l00410172:
-	word32 r4_13 = (r4 ^ r4 >> 0x1F<32>) - (r4 >> 0x1F<32>)
-	word32 r9_15 = __count_leading_zeros<word32>(r4_13)
+	r4_13 = (r4 ^ r4 >> 0x1F<32>) - (r4 >> 0x1F<32>)
+	r9_15 = __count_leading_zeros<word32>(r4_13)
 	r6_16 = 0x41E<32> - r9_15
 	r8_10 = r4 >>u 0x1F<32>
-	word32 r5_17 = 0x433<32> - r6_16
+	r5_17 = 0x433<32> - r6_16
 	branch r5_17 >= 0x20<32> l004101B6
 l004101B6:
 	r7_20 = r4_13 << 0x413<32> - r6_16
@@ -85,18 +81,15 @@ word32 __floatunsidf(word32 r4, ptr32 & r5Out)
 // Preserved: sp
 __floatunsidf_entry:
 l004101D0:
-	word32 r4_16
-	word32 r6_10
-	word32 r7_15
 	branch r4 == 0<32> l00410218
 l00410218:
 	r7_15 = 0<32>
 	r4_16 = 0<32>
 	r6_10 = 0<32>
 l004101D2:
-	word32 r8_8 = __count_leading_zeros<word32>(r4)
+	r8_8 = __count_leading_zeros<word32>(r4)
 	r6_10 = 0x41E<32> - r8_8
-	word32 r5_12 = 0x433<32> - r6_10
+	r5_12 = 0x433<32> - r6_10
 	branch r5_12 >= 0x20<32> l0041020A
 l0041020A:
 	r7_15 = r4 << 0x413<32> - r6_10
@@ -122,11 +115,9 @@ void __truncdfsf2(word32 r4, word32 r5)
 // Preserved: r11 sp
 __truncdfsf2_entry:
 l00410220:
-	word32 r8_16
-	word32 r7_15
-	word32 r9_5 = __ext<word32,word32>(r5, 0<32>, 0x14<32>)
-	word32 r10_6 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
-	word32 r9_10 = r4 >>u 0x1D<32> | r9_5 << 3<32>
+	r9_5 = __ext<word32,word32>(r5, 0<32>, 0x14<32>)
+	r10_6 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
+	r9_10 = r4 >>u 0x1D<32> | r9_5 << 3<32>
 	branch (r10_6 + 1<32> & 0x7FF<32>) < 2<32> l004102D4
 l004102D4:
 	r7_15 = r9_10 | r4 << 3<32>
@@ -154,11 +145,11 @@ l00410332:
 	r7_15 = 1<32>
 	r8_16 = 0<32>
 l0041025E:
-	word32 r4_36 = 0x1E<32> - (r10_6 + 0xFFFFFC80<32>)
+	r4_36 = 0x1E<32> - (r10_6 + 0xFFFFFC80<32>)
 	branch r4_36 >= 0x20<32> l0041028E
 l0041028E:
-	word32 r11_39 = 0<32>
-	word32 r8_41 = (r9_10 | 0x8000000<32>) >>u 0xFFFFFFFE<32> - (r10_6 + 0xFFFFFC80<32>)
+	r11_39 = 0<32>
+	r8_41 = (r9_10 | 0x8000000<32>) >>u 0xFFFFFFFE<32> - (r10_6 + 0xFFFFFC80<32>)
 	branch r4_36 == 0x20<32> l004102A8
 l004102A0:
 	r11_39 = (r9_10 | 0x8000000<32>) << r10_6 + 0xFFFFFCA2<32>
@@ -184,7 +175,7 @@ l00410300:
 l0041030E:
 	r7_15 = 0<32>
 l00410310:
-	word32 r7_74 = r7_15 >>u 3<32>
+	r7_74 = r7_15 >>u 3<32>
 	branch r8_16 != 0xFF<32> l00410322
 l0041031A:
 	branch r7_74 == 0<32> l00410322

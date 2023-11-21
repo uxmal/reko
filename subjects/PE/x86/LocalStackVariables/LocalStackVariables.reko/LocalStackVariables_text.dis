@@ -6,8 +6,6 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
-	struct <anonymous> tLoc2C
-	struct <anonymous> tLoc1C
 l00401000:
 	// s1.i = 0
 	Mem10[&tLoc2C:word32] = 0<32>
@@ -19,7 +17,7 @@ l00401000:
 	Mem18[&tLoc1C + 8<i32>:real64] = Mem15[0x004020F8<p32>:real64]
 	// res = GetMin(&s1, &s2)
 	// s1.i = 100
-	word32 eax_26 = GetMin(&tLoc2C, &tLoc1C)
+	eax_26 = GetMin(&tLoc2C, &tLoc1C)
 	Mem37[&tLoc2C:word32] = 0x64<32>
 	// res->i = 5
 	Mem39[eax_26:word32] = 5<32>
@@ -54,7 +52,6 @@ word32 GetMin(word32 dwArg04, word32 dwArg08)
 // Preserved: ebp esp
 GetMin_entry:
 l004010D0:
-	word32 eax_30
 	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010E4
 l004010E4:
 	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010F5

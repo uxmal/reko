@@ -8,8 +8,6 @@ void _start(word64 rdx, word32 dwArg00, char * ptrArg08)
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr64 fp
-	word64 qwArg00
 l0000000000400440:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x40053D<64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x400550<64>, 0x4005C0<64>, rdx, fp)
@@ -141,12 +139,11 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
-	word64 rdi
-	word32 edi = SLICE(rdi, word32, 0)
+	edi = SLICE(rdi, word32, 0)
 l0000000000400550:
 	_init()
-	word64 rbp_31 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
-	word64 rbx_33 = 0<u64>
+	rbp_31 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
+	rbx_33 = 0<u64>
 	branch rbp_31 >> 3<64> == 0<64> l00000000004005A6
 l0000000000400588:
 l0000000000400590:

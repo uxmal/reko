@@ -35,7 +35,7 @@ void fn0040110B()
 //      fn004011B0
 word32 fn00401158()
 {
-	struct Eq_n * fs;
+	selector fs;
 	return fs->ptr002C[g_dw40208B];
 }
 
@@ -59,10 +59,10 @@ void fn00401180()
 // 004011B0: void fn004011B0(Stack (ptr32 void) dwArg04)
 void fn004011B0(void * dwArg04)
 {
-	Eq_n tLoc0C;
 	void * ebx_n = dwArg04;
 	if (dwArg04 == null && dwArg04 == null)
 	{
+		Eq_n tLoc0C;
 		fn004011FC(&tLoc0C);
 		ebx_n = tLoc0C.ptr0004;
 	}

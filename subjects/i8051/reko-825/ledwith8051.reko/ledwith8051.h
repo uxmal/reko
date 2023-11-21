@@ -21,11 +21,11 @@ T_2: (in __data : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment))
-T_3: (in R0_10 @ 002C : byte)
+T_3: (in 0x7F<8> @ 002C : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
-T_4: (in 0x7F<8> @ 002C : byte)
+T_4: (in R0_10 @ 002C : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
@@ -89,19 +89,19 @@ T_19: (in fn0003() @ 0027 : void)
   Class: Eq_17
   DataType: void
   OrigDataType: void
-T_20: (in R7_24 @ 0004 : byte)
+T_20: (in 0<8> @ 0004 : byte)
   Class: Eq_20
   DataType: byte
   OrigDataType: byte
-T_21: (in 0<8> @ 0004 : byte)
+T_21: (in R7_24 @ 0004 : byte)
   Class: Eq_20
   DataType: byte
   OrigDataType: byte
-T_22: (in R6_30 @ 0005 : byte)
+T_22: (in 0<8> @ 0005 : byte)
   Class: Eq_22
   DataType: byte
   OrigDataType: byte
-T_23: (in 0<8> @ 0005 : byte)
+T_23: (in R6_30 @ 0005 : byte)
   Class: Eq_22
   DataType: byte
   OrigDataType: byte

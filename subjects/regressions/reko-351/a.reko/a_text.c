@@ -42,8 +42,6 @@ void __do_global_dtors_aux()
 			{
 				uint32 d0_n = d0_n + 0x01;
 				dtor_idx.3228 = d0_n;
-				word32 a0_n;
-				word32 d1_n;
 				a2_n[d0_n]();
 				d0_n = dtor_idx.3228;
 			} while (d2_n > d0_n);
@@ -126,8 +124,8 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // 8000049A: void main()
 void main()
 {
-	ptr32 fp;
 	sine_taylor(3.14);
+	ptr32 fp;
 	_sin(3.14, 0.003, fp - 0x08);
 }
 
@@ -159,8 +157,8 @@ void __do_global_ctors_aux()
 	<anonymous> ** a2_n = &g_ptr8000270C;
 	while (a0_n != (<anonymous> *) -1)
 	{
-		struct Eq_n * a2_n;
 		a0_n();
+		struct Eq_n * a2_n;
 		a0_n = a2_n->ptrFFFFFFFC;
 		a2_n = a2_n - 4;
 	}

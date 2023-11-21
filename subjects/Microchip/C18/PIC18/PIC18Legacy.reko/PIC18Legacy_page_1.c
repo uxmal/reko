@@ -26,6 +26,7 @@ void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 	byte TBLPTRH_n = 0x00;
 	byte TBLPTRU_n = 0x00;
 	bool v20_n = TABLAT != 0x00;
+	bool v23_n;
 	while (true)
 	{
 		if (!v20_n && g_b00C5 == 0x00)
@@ -51,7 +52,7 @@ void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 		g_b00C8 = TBLPTRH_n;
 		g_b00C9 = TBLPTRU_n;
 		g_b00C3 = g_b00C3;
-		bool v23_n = g_b00C3 != 0x00;
+		v23_n = g_b00C3 != 0x00;
 l000080:
 		if (v23_n)
 			break;

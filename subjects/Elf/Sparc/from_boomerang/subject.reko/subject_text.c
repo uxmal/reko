@@ -94,8 +94,8 @@ void main(int32 o0)
 		o1_n = 68332;
 	else
 		o1_n = 0x00010B04;
-	bool v25_n;
 	word32 i1_n;
+	bool v25_n;
 	if (o0_n != 0x00)
 	{
 		if (o0_n != 68188 || (o3_n != 68236 || (o2_n != 68284 || o1_n != 68332)))

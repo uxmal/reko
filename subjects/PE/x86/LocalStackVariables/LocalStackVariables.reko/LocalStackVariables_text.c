@@ -7,13 +7,13 @@
 // 00401000: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char ** argv)
 {
-	Eq_n tLoc2C;
-	Eq_n tLoc1C;
 	// s1.i = 0
+	Eq_n tLoc2C;
 	tLoc2C.dw0000 = 0x00;
 	// s1.d = 1.0
 	tLoc2C.r0008 = 1.0;
 	// s2.i = 10
+	Eq_n tLoc1C;
 	tLoc1C.dw0000 = 0x0A;
 	// s2.d = 11.0
 	tLoc1C.r0008 = 11.0;

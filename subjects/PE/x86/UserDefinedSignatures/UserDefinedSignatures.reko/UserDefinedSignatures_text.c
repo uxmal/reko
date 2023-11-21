@@ -58,9 +58,6 @@ void * new_data_struct()
 // 004010D0: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char ** argv)
 {
-	word32 dwLoc1C;
-	word32 dwLoc14;
-	word32 dwLoc10;
 	struct Eq_n * eax_n = new_data_struct();
 	int32 dwLoc0C_n;
 	for (dwLoc0C_n = 0x01; dwLoc0C_n < argc - 0x01; ++dwLoc0C_n)
@@ -68,19 +65,19 @@ int32 main(int32 argc, char ** argv)
 		if (strcmp(argv[dwLoc0C_n].u0, "i32") == 0x00)
 		{
 			++dwLoc0C_n;
-			dwLoc10 = atoi(argv[dwLoc0C_n].u0);
+			word32 dwLoc10 = atoi(argv[dwLoc0C_n].u0);
 			setParameter(eax_n, 0x00, &dwLoc10);
 		}
 		else if (strcmp(argv[dwLoc0C_n].u0, "r32") == 0x00)
 		{
 			++dwLoc0C_n;
-			dwLoc14 = (real32) atof(argv[dwLoc0C_n].u0);
+			word32 dwLoc14 = (real32) atof(argv[dwLoc0C_n].u0);
 			setParameter(eax_n, 0x01, &dwLoc14);
 		}
 		else if (strcmp(argv[dwLoc0C_n].u0, "r64") == 0x00)
 		{
 			++dwLoc0C_n;
-			dwLoc1C = (word32) atof(argv[dwLoc0C_n].u0);
+			word32 dwLoc1C = (word32) atof(argv[dwLoc0C_n].u0);
 			setParameter(eax_n, 0x02, &dwLoc1C);
 		}
 	}

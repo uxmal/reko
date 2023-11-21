@@ -8,8 +8,6 @@ void fn0000000000400480(word64 rdx, word32 dwArg00, char * ptrArg08)
 // Terminates process
 fn0000000000400480_exit:
 fn0000000000400480_entry:
-	ptr64 fp
-	word64 qwArg00
 l0000000000400480:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x400660<64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x400710<64>, 0x400780<64>, rdx, fp)

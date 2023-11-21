@@ -7,9 +7,9 @@
 // 0000000000400410: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
 void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 {
-	void * fp;
-	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
+	word64 qwArg00;
+	void * fp;
 	__libc_start_main(&g_t4005C5, (int32) qwArg00, &ptrArg08, &g_t400620, &g_t4006B0, rdx, fp);
 	__halt();
 }
@@ -71,11 +71,9 @@ void frame_dummy()
 word32 verify(byte rdi[])
 {
 	word32 dwLoc0C_n = 0x00;
-	while (true)
+	uint64 rax_n;
+	while (rdi[(int64) dwLoc0C_n] != 0x00)
 	{
-		uint64 rax_n;
-		if (rdi[(int64) dwLoc0C_n] == 0x00)
-			break;
 		ui8 al_n = (byte) dwLoc0C_n ^ rdi[(int64) dwLoc0C_n];
 		if (g_a601020[(int64) dwLoc0C_n] != ((byte) ((word32) al_n >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | al_n << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
 		{
@@ -103,12 +101,13 @@ void main(struct Eq_n * rsi, word32 edi)
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word64 rdi;
-	word32 edi = (word32) rdi;
+	edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00600E00 - g_a600DF8;
 	if (rbp_n >> 0x03 != 0x00)
 	{
-		Eq_n rbx_n = 0x00;
+		Eq_n rbx_n;
+		rbx_n.u1 = 0x00;
 		do
 		{
 			(*((char *) g_a600DF8 + rbx_n * 0x08))();

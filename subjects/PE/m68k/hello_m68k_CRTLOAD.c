@@ -45,7 +45,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 	}
 	else
 	{
-		struct Eq_n * a3_n = *dwLoc12_n;
+		struct Eq_n * a3_n = (struct Eq_n *) *dwLoc12_n;
 		uint32 d0_n = a3_n->dw0000;
 		word16 * a2_n = a5 - d0_n;
 		word16 * a0_n = a2_n;
@@ -75,13 +75,13 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 			} while (d0_n != 0x00);
 		}
 		union Eq_n * a2_n = a2_n - a3_n->dw000C;
-		struct Eq_n * a3_n = &a3_n->dw000C + 1 + a3_n->dw0004 / 16 + a3_n->dw000C / 16;
+		struct Eq_n * a3_n = (struct Eq_n *) (&a3_n->dw000C + 1 + a3_n->dw0004 / 16 + a3_n->dw000C / 16);
 		__syscall<word16>(0xA02E);
 l00001556:
-		ui32 d0_n;
 		ci8 v18_n = a3_n->b0000;
 		++a3_n;
 		uint32 d0_n = (uint32) v18_n;
+		ui32 d0_n;
 		if (v18_n <= 0x00)
 		{
 			if (v18_n >= 0x00)

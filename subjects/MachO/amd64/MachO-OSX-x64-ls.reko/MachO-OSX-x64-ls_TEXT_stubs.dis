@@ -109,7 +109,6 @@ word32 acl_get_entry(word64 rdx, word32 esi, word64 rdi)
 // Trashed: eax
 // Preserved: rsp
 acl_get_entry_entry:
-	word64 rsi
 l0000000100004DD2:
 	return acl_get_entry(rdi, SLICE(rsi, int32, 0), rdx)
 acl_get_entry_exit:
@@ -221,7 +220,6 @@ word32 acl_get_tag_type(word64 rsi, word32 edi)
 // Trashed: eax
 // Preserved: rsp
 acl_get_tag_type_entry:
-	word64 rdi
 l0000000100004DFC:
 	return acl_get_tag_type(SLICE(rdi, acl_entry_t, 0), rsi)
 acl_get_tag_type_exit:
@@ -292,7 +290,6 @@ void exit(word32 edi)
 // Terminates process
 exit_exit:
 exit_entry:
-	word64 rdi
 l0000000100004E14:
 	exit(SLICE(rdi, int32, 0))
 
@@ -487,7 +484,6 @@ word64 getgrgid(word32 edi)
 // Trashed: rax
 // Preserved: rsp
 getgrgid_entry:
-	word64 rdi
 l0000000100004E5C:
 	return getgrgid(SLICE(rdi, gid_t, 0))
 getgrgid_exit:
@@ -503,7 +499,6 @@ word32 getopt(word64 rdx, word64 rsi, word32 edi)
 // Trashed: eax
 // Preserved: rsp
 getopt_entry:
-	word64 rdi
 l0000000100004E62:
 	return getopt(SLICE(rdi, int32, 0), rsi, rdx)
 getopt_exit:
@@ -533,7 +528,6 @@ word64 getpwuid(word32 edi)
 // Trashed: rax
 // Preserved: rsp
 getpwuid_entry:
-	word64 rdi
 l0000000100004E6E:
 	return getpwuid(SLICE(rdi, uid_t, 0))
 getpwuid_exit:
@@ -612,8 +606,6 @@ word32 ioctl(word32 esi, word32 edi)
 // Trashed: eax
 // Preserved: rsp
 ioctl_entry:
-	word64 rdi
-	word64 rsi
 l0000000100004E8C:
 	return ioctl(SLICE(rdi, int32, 0), SLICE(rsi, uint32, 0), 0<32>)
 ioctl_exit:
@@ -629,7 +621,6 @@ word32 isatty(word32 edi)
 // Trashed: eax
 // Preserved: rsp
 isatty_entry:
-	word64 rdi
 l0000000100004E92:
 	return isatty(SLICE(rdi, int32, 0))
 isatty_exit:
@@ -675,7 +666,6 @@ word64 localtime(word32 edi)
 // Trashed: rax
 // Preserved: rsp
 localtime_entry:
-	word64 rdi
 l0000000100004EA4:
 	return localtime(SLICE(rdi, time_t, 0))
 localtime_exit:
@@ -773,7 +763,6 @@ word64 nl_langinfo(word32 edi)
 // Trashed: rax
 // Preserved: rsp
 nl_langinfo_entry:
-	word64 rdi
 l0000000100004EC8:
 	return nl_langinfo(SLICE(rdi, nl_item, 0))
 nl_langinfo_exit:
@@ -812,7 +801,6 @@ word32 putchar(word32 edi)
 // Trashed: eax
 // Preserved: rsp
 putchar_entry:
-	word64 rdi
 l0000000100004ED4:
 	return putchar(SLICE(rdi, int32, 0))
 putchar_exit:
@@ -873,7 +861,6 @@ void setlocale(word64 rsi, word32 edi)
 // Trashed: rax
 // Preserved: rsp
 setlocale_entry:
-	word64 rdi
 l0000000100004EEC:
 	setlocale(SLICE(rdi, int32, 0), rsi)
 	return
@@ -890,7 +877,6 @@ void signal(word64 rsi, word32 edi)
 // Trashed: rax
 // Preserved: rsp
 signal_entry:
-	word64 rdi
 l0000000100004EF2:
 	signal(SLICE(rdi, int32, 0), rsi)
 	return
@@ -986,7 +972,6 @@ word64 strerror(word32 edi)
 // Trashed: rax
 // Preserved: rsp
 strerror_entry:
-	word64 rdi
 l0000000100004F16:
 	return strerror(SLICE(rdi, int32, 0))
 strerror_exit:
@@ -1182,7 +1167,6 @@ word32 wcwidth(word16 di)
 // Trashed: eax
 // Preserved: rsp
 wcwidth_entry:
-	word64 rdi
 l0000000100004F5E:
 	return wcwidth(SLICE(rdi, wchar_t, 0))
 wcwidth_exit:
@@ -1196,7 +1180,6 @@ void write(word64 rdx, word64 rsi, word32 edi)
 // Trashed: rax
 // Preserved: rsp
 write_entry:
-	word64 rdi
 l0000000100004F64:
 	write(SLICE(rdi, int32, 0), rsi, rdx)
 	return

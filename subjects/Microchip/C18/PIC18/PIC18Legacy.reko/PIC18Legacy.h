@@ -193,40 +193,40 @@ T_32: (in Data16[0x00C6<p16>:byte] @ 000026 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_33: (in TBLPTRL_4 @ 000010 : byte)
+T_33: (in 6<8> @ 000010 : byte)
   Class: Eq_33
   DataType: byte
   OrigDataType: byte
-T_34: (in 6<8> @ 000010 : byte)
+T_34: (in TBLPTRL_4 @ 000010 : byte)
   Class: Eq_33
   DataType: byte
   OrigDataType: byte
-T_35: (in TBLPTRH_46 @ 000014 : byte)
+T_35: (in 0<8> @ 000014 : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_36: (in 0<8> @ 000014 : byte)
+T_36: (in TBLPTRH_46 @ 000014 : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_37: (in TBLPTRU_49 @ 000018 : byte)
+T_37: (in 0<8> @ 000018 : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_38: (in 0<8> @ 000018 : byte)
+T_38: (in TBLPTRU_49 @ 000018 : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_39: (in v20_98 @ 000024 : bool)
-  Class: Eq_39
-  DataType: bool
-  OrigDataType: bool
-T_40: (in 0<8> @ 000024 : byte)
+T_39: (in 0<8> @ 000024 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_41: (in TABLAT != 0<8> @ 000024 : bool)
-  Class: Eq_39
+T_40: (in TABLAT != 0<8> @ 000024 : bool)
+  Class: Eq_40
+  DataType: bool
+  OrigDataType: bool
+T_41: (in v20_98 @ 000024 : bool)
+  Class: Eq_40
   DataType: bool
   OrigDataType: bool
 T_42: (in __tblrd @ 000030 : ptr32)
@@ -445,20 +445,20 @@ T_95: (in Data55[0x00C3<p16>:byte] @ 00007E : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_96: (in v23_101 @ 00007E : bool)
-  Class: Eq_96
+T_96: (in Data55[0x00C3<p16>:byte] @ 00007E : byte)
+  Class: Eq_2
+  DataType: cu8
+  OrigDataType: byte
+T_97: (in 0<8> @ 00007E : byte)
+  Class: Eq_2
+  DataType: cu8
+  OrigDataType: byte
+T_98: (in g_b00C3 != 0<8> @ 00007E : bool)
+  Class: Eq_98
   DataType: bool
   OrigDataType: bool
-T_97: (in Data55[0x00C3<p16>:byte] @ 00007E : byte)
-  Class: Eq_2
-  DataType: cu8
-  OrigDataType: byte
-T_98: (in 0<8> @ 00007E : byte)
-  Class: Eq_2
-  DataType: cu8
-  OrigDataType: byte
-T_99: (in g_b00C3 != 0<8> @ 00007E : bool)
-  Class: Eq_96
+T_99: (in v23_101 @ 00007E : bool)
+  Class: Eq_98
   DataType: bool
   OrigDataType: bool
 T_100: (in Data19[0x00C5<p16>:byte] @ 00002A : byte)
@@ -530,7 +530,7 @@ T_116: (in 0<8> @ 00008C : byte)
   DataType: cu8
   OrigDataType: byte
 T_117: (in g_b00C3 != 0<8> @ 00008C : bool)
-  Class: Eq_96
+  Class: Eq_98
   DataType: bool
   OrigDataType: bool
 T_118: (in Data80[0x00C3<p16>:byte] @ 00008E : byte)
@@ -630,7 +630,7 @@ T_141: (in 0<8> @ 0000A6 : byte)
   DataType: cu8
   OrigDataType: byte
 T_142: (in g_b00C6 != 0<8> @ 0000A6 : bool)
-  Class: Eq_39
+  Class: Eq_40
   DataType: bool
   OrigDataType: bool
 T_143: (in Data80[0x00C4<p16>:byte] @ 000090 : byte)

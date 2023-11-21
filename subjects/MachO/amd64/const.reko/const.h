@@ -15,11 +15,11 @@ T_2: (in eax : (ptr32 byte))
   Class: Eq_2
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 (struct (0 T_7 t0000)))
-T_3: (in al_5 @ 00000004 : byte)
+T_3: (in SLICE(eax, byte, 0) @ 00000004 : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
-T_4: (in SLICE(eax, byte, 0) @ 00000004 : byte)
+T_4: (in al_5 @ 00000004 : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte

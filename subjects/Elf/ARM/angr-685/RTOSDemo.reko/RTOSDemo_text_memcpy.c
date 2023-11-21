@@ -26,10 +26,15 @@ l0000A630:
 				++r3_n;
 			} while (r3_n != r2);
 l0000A63C:
+			ptr32 r4_n;
 			r4Out = r4_n;
+			ptr32 r5_n;
 			r5Out = r5_n;
+			ptr32 r6_n;
 			r6Out = r6_n;
+			ptr32 r7_n;
 			r7Out = r7_n;
+			bool Z_n;
 			return Z_n;
 		}
 		struct Eq_n * r4_n = r1;

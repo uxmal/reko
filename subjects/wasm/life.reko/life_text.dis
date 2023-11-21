@@ -19,13 +19,13 @@ void update_gen(word32 arg0)
 // Trashed:
 // Preserved:
 update_gen_entry:
-	word32 arg0_1 = arg0
+	arg0_1 = arg0
 l000C0060:
-	word32 v16_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
-	word32 loc13_105 = 0<32>
+	v16_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
+	loc13_105 = 0<32>
 l000C00AC:
 	arg0_1 = 0<32>
-	word32 v16_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
+	v16_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
 	branch v16_91 == 3<32> l000C011F
 l000C011F:
 	loc13_105 = 1<32>

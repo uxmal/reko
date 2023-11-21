@@ -36,10 +36,10 @@ Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5)
 //      __floatscan
 Eq_n __floatsidf(Eq_n r4)
 {
-	Eq_n r4_n;
-	Eq_n r8_n;
 	Eq_n r6_n;
+	Eq_n r8_n;
 	Eq_n r7_n;
+	Eq_n r4_n;
 	if (r4 != 0x00)
 	{
 		Eq_n r4_n = (r4 ^ r4 >> 0x1F) - (r4 >> 0x1F);
@@ -75,9 +75,9 @@ Eq_n __floatsidf(Eq_n r4)
 //      __floatscan
 Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
 {
-	Eq_n r4_n;
 	Eq_n r6_n;
 	Eq_n r7_n;
+	Eq_n r4_n;
 	if (r4 != 0x00)
 	{
 		Eq_n r8_n = __count_leading_zeros<word32>(r4);
@@ -110,12 +110,12 @@ Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
 //      __isoc99_vfscanf
 void __truncdfsf2(Eq_n r4, Eq_n r5)
 {
-	Eq_n r8_n;
-	Eq_n r7_n;
 	Eq_n r9_n = __ext<word32,word32>(r5, 0x00, 0x14);
 	Eq_n r10_n = __ext<word32,word32>(r5, 0x04, 11);
 	ui32 r9_n = r4 >> 0x1D | r9_n << 0x03;
-	if ((r10_n.u11 + 1 & 0x07FF) >= 0x02)
+	Eq_n r8_n;
+	Eq_n r7_n;
+	if ((r10_n.u7 + 1 & 0x07FF) >= 0x02)
 	{
 		r8_n.u3 = (word32) r10_n - 896;
 		if (r10_n > 1150)
@@ -160,7 +160,7 @@ l004102C8:
 			if ((r7_n & 0x07) == 0x00 || (r7_n & 0x0F) == 0x04)
 				goto l004102FC;
 l00410336:
-			&r7_n.u11->a0000->u0 = r7_n.u11 + 4;
+			&r7_n.u7->a0000->u0 = r7_n.u7 + 4;
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{

@@ -7,6 +7,7 @@
 // 1000:0007: void function()
 void function()
 {
+	selector seg1046;
 	seg1046->theGlobal = 0x1337;
 }
 

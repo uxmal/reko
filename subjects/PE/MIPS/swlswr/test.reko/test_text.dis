@@ -8,10 +8,9 @@ word32 fn00011000()
 // Trashed: r2 r4 r5 r6 r8
 // Preserved: ra sp
 fn00011000_entry:
-	word32 dwLoc14
 l00011000:
 	memset(&dwLoc14, 0<32>, 5<i32>)
-	word32 r2_20 = calloc(1<i32>, 5<i32>)
+	r2_20 = calloc(1<i32>, 5<i32>)
 	memcpy(r2_20, &dwLoc14, 5<i32>)
 	Mem28[r2_20:byte] = 0xC<8>
 	Mem32[r2_20 + 1<i32>:word32] = 0<32>
@@ -47,7 +46,7 @@ word32 fn000110E8()
 fn000110E8_entry:
 l000110E8:
 	fn000114E4()
-	word32 r2_25 = fn00011000()
+	r2_25 = fn00011000()
 	fn00011278(r2_25)
 l00011154:
 	return r2_25
@@ -83,14 +82,14 @@ void fn000111C4()
 // Preserved: r2 ra sp
 fn000111C4_entry:
 l000111C4:
-	word32 r8_7 = Mem5[0x13030<32>:word32]
+	r8_7 = Mem5[0x13030<32>:word32]
 	branch r8_7 == 0<32> l0001120C
 l000111E4:
 	branch r8_7 == 0xB064<32> l0001120C
 l0001120C:
 	COREDLL.dll!Ordinal_2696()
-	word32 r8_25 = r2_17 >>u 0x10<8> ^ r2_17 & 0xFFFF<32>
-	word32 dwLoc0C_51 = r8_25
+	r8_25 = r2_17 >>u 0x10<8> ^ r2_17 & 0xFFFF<32>
+	dwLoc0C_51 = r8_25
 	branch r8_25 != 0<32> l0001124C
 l00011244:
 	dwLoc0C_51 = 0xB064<32>
@@ -159,7 +158,7 @@ l0001131C:
 	branch Mem39[Mem39[0x1303C<32>:word32]:word32] == 0<32> l00011344
 l00011344:
 l00011330:
-	word32 r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
+	r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
 	call r8_64 (retsize: 0;)
 		uses: Mem:Mem39,r4:r4,r5:r5,r6:r6,r8:r8_64
 
@@ -233,7 +232,7 @@ void fn0001147C(word32 r4, word32 r5)
 // Preserved: ra sp
 fn0001147C_entry:
 l0001147C:
-	word32 dwArg00_33 = r4
+	dwArg00_33 = r4
 l0001148C:
 	branch CONVERT(dwArg00_33 <u r5, bool, word32) == 0<32> l000114D4
 l000114D4:
@@ -274,11 +273,9 @@ word32 fn0001152C()
 // Trashed: r2 r4 r5 r8 r9
 // Preserved: ra sp
 fn0001152C_entry:
-	ptr32 fp
-	word32 dwLoc0C
 l0001152C:
-	word32 r8_10 = Mem8[0x13040<32>:word32]
-	word32 sp_3 = fp + -56<i32>
+	r8_10 = Mem8[0x13040<32>:word32]
+	sp_3 = fp + -56<i32>
 	branch Mem11[0x1303C<32>:word32] >= r8_10 l00011588
 l00011588:
 	branch r8_10 == 0<32> l000115B0

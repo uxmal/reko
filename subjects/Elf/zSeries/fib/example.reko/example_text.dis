@@ -8,10 +8,8 @@ void _start()
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr64 %continuation
-	ptr64 fp
 l0000000000000600:
-	word64 r15_9 = fp - 160<i64> & 0xFFFFFFFFFFFFFFF0<64>
+	r15_9 = fp - 160<i64> & 0xFFFFFFFFFFFFFFF0<64>
 	Mem12[r15_9 - 176<i64>:byte] = 0<8>
 	Mem15[r15_9 - 16<i64>:word64] = %continuation
 	Mem17[r15_9 - 8<i64>:word64] = r15_9 - 176<i64>
@@ -31,7 +29,7 @@ deregister_tm_clones_entry:
 l0000000000000648:
 	branch 0x000000000000206F<p64> - 0x0000000000002068<p64> > Mem0[0x00000000000008C8<p64>:word64] l000000000000066A
 l000000000000066A:
-	word64 r1_13 = Mem0[0x0000000000002030<p64>:word64]
+	r1_13 = Mem0[0x0000000000002030<p64>:word64]
 	branch r1_13 != 0<64> l000000000000067C
 l000000000000067C:
 	call r1_13 (retsize: 0;)
@@ -55,10 +53,10 @@ void register_tm_clones()
 // Preserved: r15
 register_tm_clones_entry:
 l0000000000000680:
-	word64 r3_7 = 0x0000000000002068<p64> - 0x0000000000002068<p64>
+	r3_7 = 0x0000000000002068<p64> - 0x0000000000002068<p64>
 	branch (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >>u 63<i32>) >> 1<i32> != 0<64> l00000000000006A8
 l00000000000006A8:
-	word64 r1_15 = Mem0[0x0000000000002050<p64>:word64]
+	r1_15 = Mem0[0x0000000000002050<p64>:word64]
 	branch r1_15 != 0<64> l00000000000006BA
 l00000000000006BA:
 	call r1_15 (retsize: 0;)
@@ -101,15 +99,14 @@ void frame_dummy()
 // Trashed: CC r1 r13 r14 r15 r2 r3
 // Preserved:
 frame_dummy_entry:
-	ptr64 fp
 l0000000000000720:
-	word64 r13_12 = 0x00000000000008D8<p64>
-	word64 r15_13 = fp - 320<i64>
-	bool v12_45 = Mem11[0x00000000000008D8<p64>:byte] > Mem11[0x0000000000001E18<p64>:byte]
+	r13_12 = 0x00000000000008D8<p64>
+	r15_13 = fp - 320<i64>
+	v12_45 = Mem11[0x00000000000008D8<p64>:byte] > Mem11[0x0000000000001E18<p64>:byte]
 	branch Mem11[0x00000000000008D8<p64>:byte] != Mem11[0x0000000000001E18<p64>:byte] l000000000000074C
 l0000000000000740:
 	Mem18 = Mem11 (alias)
-	word64 v9_17 = r15_13 + 264<i64>
+	v9_17 = r15_13 + 264<i64>
 	r13_12 = Mem18[v9_17:word64]
 	r15_13 = Mem18[v9_17 + 16<i64>:word64]
 	branch v12_45 l0000000000000680
@@ -118,11 +115,10 @@ l0000000000000746_thunk_register_tm_clones:
 	return
 frame_dummy_exit:
 l000000000000074C:
-	word64 r1_32 = Mem11[0x0000000000002048<p64>:word64]
+	r1_32 = Mem11[0x0000000000002048<p64>:word64]
 	v12_45 = r1_32 > 0<64>
 	branch r1_32 == 0<64> l0000000000000740
 l0000000000000760:
-	byte CC_44
 	call r1_32 (retsize: 0;)
 		uses: Mem:Mem11,r13:r13_36,r14:0x0000000000000762<p64>
 		defs: CC:CC_44,r15:r15_38
@@ -140,27 +136,19 @@ word64 fib(word64 r2, ptr64 & r10Out, ptr64 & r11Out)
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r4
 // Preserved: r15
 fib_entry:
-	ptr64 fp
 l0000000000000768:
-	word64 r1_76
-	word64 r11_22 = fp - 328<i64>
-	word32 dwLocA4_115 = SLICE(r2, word32, 0)
+	r11_22 = fp - 328<i64>
+	dwLocA4_115 = SLICE(r2, word32, 0)
 	branch r2 >u 1<64> l0000000000000792
 l0000000000000792:
-	word64 r11_41
-	word64 r10_121
 	fib(CONVERT(dwLocA4_115 - 1<i32>, word32, int64), out r10_121, out r11_41)
-	word64 r10_63
-	word64 r2_68 = fib(CONVERT(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_63, out r11_22)
+	r2_68 = fib(CONVERT(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_63, out r11_22)
 	r1_76 = SEQ(SLICE(r2_68, word32, 32), SLICE(r2_68 + r10_63, int32, 0))
 l000000000000078A:
 	r1_76 = r2
 l00000000000007CA:
-	word64 v29_87 = r11_22 + 248<i64>
-	word64 r1_82 = CONVERT(SLICE(r1_76, word32, 0), word32, int64)
-	word64 r10_100
-	word64 r11_101
-	word64 r2_105
+	v29_87 = r11_22 + 248<i64>
+	r1_82 = CONVERT(SLICE(r1_76, word32, 0), word32, int64)
 	call Mem25[r11_22 + 280<i64>:word64] (retsize: 0;)
 		uses: Mem:Mem25,r1:r1_82,r10:Mem25[v29_87:word64],r11:Mem25[v29_87 + 8<i64>:word64],r12:Mem25[v29_87 + 16<i64>:word64],r13:Mem25[v29_87 + 24<i64>:word64],r14:Mem25[v29_87 + 32<i64>:word64],r2:r1_82
 		defs: r10:r10_100,r11:r11_101,r2:r2_105
@@ -179,9 +167,7 @@ void main(word64 r3)
 // Preserved: r15
 main_entry:
 l00000000000007E0:
-	word64 r11_30
-	word64 r10_71
-	word64 r1_39 = CONVERT(SLICE(fib(0xA<64>, out r10_71, out r11_30), word32, 0), word32, int64)
+	r1_39 = CONVERT(SLICE(fib(0xA<64>, out r10_71, out r11_30), word32, 0), word32, int64)
 	call Mem25[r11_30 + 288<i64>:word64] (retsize: 0;)
 		uses: Mem:Mem25,r1:r1_39,r11:Mem25[r11_30 + 264<i64>:word64],r12:Mem25[r11_30 + 272<i64>:word64],r13:Mem25[r11_30 + 280<i64>:word64],r14:Mem25[r11_30 + 288<i64>:word64],r2:r1_39,r3:r3
 	return
@@ -196,30 +182,23 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r3 r4 r6 r7 r8 r9
 // Preserved: r15
 __libc_csu_init_entry:
-	ptr64 fp
 l0000000000000820:
-	word64 r11_54 = 0x0000000000001E10<p64> - 0x0000000000001E08<p64>
-	word64 r15_30 = fp - 320<i64>
-	word64 r8_49
-	word64 r9_50
-	word64 r10_41
-	word64 r12_43
-	word64 r13_44
-	word64 r6_114 = _init(r6, r7, r4, r3, r2, r11, r13, out r8_49, out r9_50, out r10_41, out r12_43, out r13_44)
-	word64 r11_55 = r11_54 >> 3<i32>
+	r11_54 = 0x0000000000001E10<p64> - 0x0000000000001E08<p64>
+	r15_30 = fp - 320<i64>
+	r6_114 = _init(r6, r7, r4, r3, r2, r11, r13, out r8_49, out r9_50, out r10_41, out r12_43, out r13_44)
+	r11_55 = r11_54 >> 3<i32>
 	branch r11_54 >> 3<i32> == 0<64> l0000000000000876
 l0000000000000856:
-	word64 r7_57 = 0x0000000000001E08<p64>
+	r7_57 = 0x0000000000001E08<p64>
 l000000000000085A:
-	word64 r11_80
 	call Mem29[r7_57:word64] (retsize: 0;)
 		uses: Mem:Mem29,r10:r10_65,r11:r11_70,r12:r12_71,r13:r13_72,r14:0x0000000000000872<p64>,r2:r10_65,r3:r9_63,r4:r8_61,r6:r6_73,r7:r7_58 + 8<i64>,r8:r8_61,r9:r9_63
 		defs: r10:r10_79,r11:r11_80,r12:r12_81,r13:r13_82,r15:r15_75,r2:r2_84,r3:r3_85,r6:r6_88,r7:r7_76,r8:r8_77,r9:r9_78
 	r11_55 = r11_80 - 1<i64>
 	branch r11_80 != 1<64> l000000000000085A
 l0000000000000876:
-	word64 v18_94 = r15_30 + 216<i64>
-	word64 r4_93 = Mem29[r15_30 + 272<i64>:word64]
+	v18_94 = r15_30 + 216<i64>
+	r4_93 = Mem29[r15_30 + 272<i64>:word64]
 	call r4_93 (retsize: 0;)
 		uses: Mem:Mem29,r10:Mem29[v18_94 + 24<i64>:word64],r11:Mem29[v18_94 + 32<i64>:word64],r12:Mem29[v18_94 + 40<i64>:word64],r13:Mem29[v18_94 + 48<i64>:word64],r14:Mem29[v18_94 + 56<i64>:word64],r2:r2_112,r3:r3_113,r4:r4_93,r6:r6_114,r7:Mem29[v18_94:word64],r8:Mem29[v18_94 + 8<i64>:word64],r9:Mem29[v18_94 + 16<i64>:word64]
 	return

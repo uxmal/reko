@@ -16,7 +16,7 @@ void _fini(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, str
 //      _fini
 void fn00010CC8(struct Eq_n * o7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, ptr32 i6, struct Eq_n * i7)
 {
-	<anonymous> * l0_n = *((char *) (o7 + o7->dw0008 / 0x0C) - 4);
+	<anonymous> * l0_n = (<anonymous> *) *((char *) (o7 + o7->dw0008 / 0x0C) - 4);
 	if (l0_n == null)
 		return;
 	l0_n();
