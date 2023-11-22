@@ -152,7 +152,12 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.ToolbarBackButton.Enabled = false;
             this.Control.ToolbarForwardButton.Enabled = false;
 
-            typeMarker = new TypeMarker(control.MemoryView);
+            typeMarker = new TypeMarker
+            {
+                Parent = control,
+                Visible = false,
+                Font = new Font("Tahoma", 9F)
+            };
 
             return control;
         }
@@ -333,7 +338,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     {
                     case CmdIds.EditCopy: return CopySelectionToClipboard();
                     case CmdIds.ViewGoToAddress: GotoAddress(); return true;
-                    case CmdIds.ActionMarkType: return MarkType();
+                    case CmdIds.ActionMarkType: await MarkType(); return true;
                     case CmdIds.ActionMarkProcedure: await MarkAndScanProcedure(); return true;
                     case CmdIds.ActionEditSignature: await EditProcedureSignature(); return true;
                     case CmdIds.ViewFindWhatPointsHere: return await ViewWhatPointsHere();
@@ -459,28 +464,27 @@ namespace Reko.UserInterfaces.WindowsForms
             return true;
         }
 
-        public bool MarkType()
+        public async Task MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();
             if (addrRange.IsValid)
             {
-                typeMarker.Show(
-                    control.MemoryView.AddressToPoint(addrRange.Begin),
-                    typeMarker_TextAccepted);
+                var ptScreen = control.MemoryView.PointToScreen(
+                    control.MemoryView.AddressToPoint(addrRange.Begin));
+                var ptParent = Control.PointToClient(ptScreen);
+                var text = await typeMarker.ShowAsync(program, addrRange.Begin, ptParent);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, text);
+                    if (item is null)
+                        return;
+                    // Advance selection to beyond item.
+                    this.SelectedAddress = item.Address + item.Size;
+
+                    // Github #1219: need to reestablish focus after TypeMarker window is closed.
+                    this.Control.MemoryView.Focus();
+                }
             }
-            return true;
-        }
-
-        private void typeMarker_TextAccepted(string text)
-        {
-            var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, text);
-            if (item is null)
-                return;
-            // Advance selection to beyond item.
-            this.SelectedAddress = item.Address + item.Size;
-
-            // Github #1219: need to reestablish focus after TypeMarker window is closed.
-            this.Control.MemoryView.Focus();
         }
 
         private bool IsProcedureStart(Address addr)

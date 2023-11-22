@@ -18,11 +18,13 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -61,6 +63,6 @@ namespace Reko.Gui
 
         void AddColumn(string columnTitle, int width);
         void Invalidate();
-        void ShowTypeMarker(Action<string> action);
+        Task<string> ShowTypeMarker(Program program, Address addr);
     }
 }

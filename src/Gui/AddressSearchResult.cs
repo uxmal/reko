@@ -211,7 +211,7 @@ namespace Reko.Gui
                 View.Invalidate(); break;
             case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); break;
             case CmdIds.ActionMarkProcedure: await MarkProcedures(); break;
-            case CmdIds.ActionMarkType: MarkType(); break;
+            case CmdIds.ActionMarkType: await MarkType(); break;
             case CmdIds.ActionMarkStrings: MarkStrings(); break;
             default: result = false; break;
             }
@@ -225,21 +225,25 @@ namespace Reko.Gui
             return services.RequireService<ICommandFactory>().MarkProcedures(procAddrs).DoAsync();
         }
 
-        public void MarkType()
+        public async Task MarkType()
         {
             if (View is null)
                 return;
-            View.ShowTypeMarker(userText =>
+            var firstHit = SelectedHits().FirstOrDefault();
+            if (firstHit is null)
+                return;
+            string userText = await View.ShowTypeMarker(firstHit.Program, firstHit.Address);
+            if (!string.IsNullOrEmpty(userText))
             {
                 var dataType = HungarianParser.Parse(userText);
-                if (dataType == null)
+                if (dataType is null)
                     return;
                 foreach (var pa in SelectedHits())
                 {
                     pa.Program.AddUserGlobalItem(pa.Program.Architecture, pa.Address, dataType);
                 }
                 View.Invalidate();
-            });
+            }
         }
 
         public void MarkStrings()

@@ -21,10 +21,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Reko.Core;
 using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
@@ -86,7 +88,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
                 throw new NotImplementedException();
             }
 
-            public void ShowTypeMarker(Action<string> action)
+            public Task<string> ShowTypeMarker(Program program, Address addr)
             {
                 throw new NotImplementedException();
             }

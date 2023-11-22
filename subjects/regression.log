@@ -1213,7 +1213,7 @@ Unhandled Wasm mnemonic call_indirect.
 Unhandled Wasm mnemonic call_indirect.
 d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occurred while analyzing d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm.
     The method or operation is not implemented.
-       at Reko.Analysis.UsedRegisterFinder.VisitReturnInstruction(ReturnInstruction ret) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 328
+       at Reko.Analysis.UsedRegisterFinder.VisitReturnInstruction(ReturnInstruction ret) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 321
    at Reko.Core.Code.ReturnInstruction.Accept[T](InstructionVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 116
    at Reko.Analysis.UsedRegisterFinder.<Classify>b__13_0(BitRange w, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 161
    at System.Linq.Enumerable.Aggregate[TSource,TAccumulate](IEnumerable`1 source, TAccumulate seed, Func`3 func)
@@ -2430,12 +2430,12 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 l00009F1C: warning: Non-integral switch expression
 fn0000ACB0: error: Removing edge (l0000AD24, l0000B67C) caused loss of some code blocks
@@ -2906,6 +2906,7 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -2913,6 +2914,7 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -2920,6 +2922,7 @@ fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -3245,7 +3248,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 73
-       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 152
+       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 166
    at Reko.Environments.Windows.MipsCallingConvention.Generate(ICallingConventionEmitter ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 92
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 142
@@ -3787,7 +3790,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
@@ -3795,7 +3798,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
@@ -4546,4 +4549,4 @@ fn0000000140001BFC_exit:
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 106.50 seconds.
+Decompiled 91 binaries in 99.38 seconds.

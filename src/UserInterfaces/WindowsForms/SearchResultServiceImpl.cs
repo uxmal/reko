@@ -27,6 +27,7 @@ using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -182,7 +183,12 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 this.listView = lv;
                 this.listView.Columns.Clear();
-                this.typeMarker = new TypeMarker(listView);
+                this.typeMarker = new TypeMarker
+                {
+                    Parent = listView,
+                    Visible = false,
+                    Font = new Font("Segoe UI", 9)
+                };
             }
 
             public bool IsFocused { get { return listView.Focused; } }
@@ -205,12 +211,10 @@ namespace Reko.UserInterfaces.WindowsForms
                 listView.Invalidate();
             }
 
-            public void ShowTypeMarker(Action<string> action)
+            public Task<string> ShowTypeMarker(Program program, Address addr)
             {
                 var i = listView.TopItem;
-                var rc = listView.DisplayRectangle;
-
-                typeMarker.Show(i.Position, action);
+                return typeMarker.ShowAsync(program, addr, i.Position);
             }
         }
 

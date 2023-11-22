@@ -18,89 +18,63 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Keys = System.Windows.Forms.Keys;
-using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-    public class TypeMarker : ITypeMarker
+    public partial class TypeMarker : UserControl, ITypeMarker
     {
-        private TextBox text;
-        private Label label;
-
         private const string TypeMarkerEnterType = "<Enter type>";
-        private Action<string> accept;
+        private TaskCompletionSource<string> closeTask;
 
-        public TypeMarker(Control bgControl)
+        public TypeMarker()
         {
-            Debug.Print(bgControl.GetType().FullName);
-            text = new TextBox
-            {
-                BorderStyle = BorderStyle.FixedSingle,
-                Parent = bgControl,
-                Visible = false,
-            };
-            label = new Label
-            {
-                ForeColor = SystemColors.GrayText,
-                BackColor = SystemColors.Info,
-                BorderStyle = BorderStyle.FixedSingle,
-                AutoSize = true,
-                Parent = bgControl,
-                Text = TypeMarkerEnterType,
-                Visible = false,
-            };
+            InitializeComponent();
 
-            text.LostFocus += text_LostFocus;
-            text.TextChanged += text_TextChanged;
-            text.KeyDown += text_KeyDown;
+            txtUserText.TextChanged += text_TextChanged;
+            btnClose.Click += btnClose_Click;
         }
 
-        void text_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (e.KeyCode)
+            switch (keyData)
             {
             case Keys.Escape:
                 HideControls();
-                e.SuppressKeyPress = true;
-                e.Handled = true;
-                break;
+                this.closeTask.SetResult("");
+                return true;
             case Keys.Enter:
-                if (!string.IsNullOrEmpty(text.Text))
+                if (!string.IsNullOrEmpty(txtUserText.Text))
                 {
-                    accept(text.Text);
+                    this.closeTask.SetResult(txtUserText.Text);
                 }
                 HideControls();
-                e.SuppressKeyPress = true;
-                e.Handled = true;
-                return;
+                return true;
             }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        public void Show(Point location, Action<string> accept)
+        public Task<string> ShowAsync(Program program, Address addr, Point location)
         {
-            this.accept = accept;
-            text.Location = location;
-            label.Location = new Point(location.X, location.Y + text.Height + 3);
-            label.BringToFront();
-            text.Visible = true;
-            label.Visible = true;
-            text.BringToFront();
-            text.Focus();
+            this.Location = new Point(location.X, location.Y + txtUserText.Height + 3);
+            this.BringToFront();
+            this.Visible = true;
+            this.txtUserText.Focus();
+            this.closeTask = new TaskCompletionSource<string>();
+            this.lblCaption.Text = "Enter the &type and, optionally, the name for object at address " + addr;
+            return this.closeTask.Task;
         }
 
         public void HideControls()
         {
-            text.Visible = false;
-            label.Visible = false;
+            this.Visible = false;
         }
 
         public string FormatText(string text)
@@ -110,16 +84,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         void text_TextChanged(object sender, EventArgs e)
         {
-            var formattedText = FormatType(text.Text);
+            var formattedText = FormatType(txtUserText.Text);
             if (formattedText.Length > 0)
             {
-                label.ForeColor = SystemColors.ControlText;
-                label.Text = formattedText;
+                lblRenderedType.ForeColor = SystemColors.ControlText;
+                lblRenderedType.Text = formattedText;
             }
             else
             {
-                label.ForeColor = SystemColors.GrayText;
-                label.Text = TypeMarkerEnterType;
+                lblRenderedType.ForeColor = SystemColors.GrayText;
+                lblRenderedType.Text = TypeMarkerEnterType;
             }
         }
 
@@ -128,7 +102,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             try
             {
                 var dataType = HungarianParser.Parse(text);
-                if (dataType == null)
+                if (dataType is null)
                     return " - Null - ";
                 else
                     return dataType.ToString();
@@ -139,18 +113,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        void text_LostFocus(object sender, EventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            text.Visible = false;
-            label.Visible = false;
-        }
-
-        public void Dispose()
-        {
-            if (text != null) text.Dispose();
-            if (label != null) label.Dispose();
-            text = null;
-            label = null;
+            this.Visible = false;
+            this.closeTask?.SetResult(txtUserText.Text);
         }
     }
 }

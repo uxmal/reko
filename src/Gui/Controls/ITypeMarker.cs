@@ -18,23 +18,14 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
+using Reko.Core;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Controls
 {
-    public interface ITypeMarker : IDisposable
+    public interface ITypeMarker
     {
-        void Show(Point location, Action<string> accepted);
-    }
-
-    public class TypeMarkerEventArgs : EventArgs
-    {
-        public TypeMarkerEventArgs(string userText) { UserText = userText; }
-        public string UserText { get; private set; }
-        public string? FormattedType { get; set; }
+        Task<string> ShowAsync(Program program, Address addr, Point location);
     }
 }
