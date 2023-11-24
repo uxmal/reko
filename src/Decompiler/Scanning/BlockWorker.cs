@@ -403,6 +403,7 @@ namespace Reko.Scanning
             {
                 instrs.Add(cluster);
             }
+
             // The trace may have moved if a delay slot was consumed.
             cluster = this.Trace.Current;
             var addrFallthrough = cluster.Address + cluster.Length;

@@ -24,6 +24,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Services;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
@@ -159,7 +160,13 @@ namespace Reko.Scanning
 
         protected override void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state)
         {
+            if (IsBadCallTarget(edge.To))
+            {
+                blockCaller.MarkLastInstructionInvalid();
+                return;
+            }
             shScanner.RegisterSpeculativeProcedure(edge.To);
+
             // Assume that the call returns. This is true the majority of the time. Users
             // can always override this by adding user annotations like [[noreturn]]
             if (!shScanner.IsExecutableAddress(blockCaller.FallThrough))
@@ -170,6 +177,12 @@ namespace Reko.Scanning
             }
             var fallThrough = new Edge(blockCaller.Address, blockCaller.FallThrough, EdgeType.Fallthrough);
             shScanner.RegisterEdge(fallThrough);
+        }
+
+        private bool IsBadCallTarget(Address addrTarget)
+        {
+            Debug.Assert(shScanner.IsExecutableAddress(addrTarget), "BlockWorker shoudn't allowed invalid call target.");
+            return false;
         }
 
         protected override void ProcessReturn()

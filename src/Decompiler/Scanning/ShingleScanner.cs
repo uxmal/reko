@@ -55,6 +55,12 @@ namespace Reko.Scanning
 
         public ScanResultsV2 ScanProgram()
         {
+            var gaps = FindUnscannedExecutableGaps();
+            return ScanProgram(gaps);
+        }
+
+        public ScanResultsV2 ScanProgram(IEnumerable<(Address, long)> gaps)
+        {
             var chunks = MakeScanChunks();
             var sr = ProcessChunks(chunks);
             sr = RegisterPredecessors();
@@ -64,6 +70,12 @@ namespace Reko.Scanning
         }
 
         public List<ChunkWorker> MakeScanChunks()
+        {
+            var gaps = FindUnscannedExecutableGaps();
+            return gaps.Select(g => this.MakeChunkWorker(g.Item1, g.Item2)).ToList();
+        }
+
+        public List<(Address, long)> FindUnscannedExecutableGaps()
         {
             var sortedBlocks = new BTreeDictionary<Address, RtlBlock>();
             foreach (var block in sr.Blocks.Values)
@@ -171,7 +183,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <param name="sortedBlocks"></param>
         /// <returns></returns>
-        private IEnumerable<ChunkWorker> PartitionSegment(
+        private IEnumerable<(Address, long)> PartitionSegment(
             ImageSegment segment, 
             BTreeDictionary<Address, RtlBlock> sortedBlocks)
         {
@@ -182,7 +194,6 @@ namespace Reko.Scanning
 
             long iGapOffset = 0;
             long length;
-            ChunkWorker? chunk;
             int unitAlignment = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             while (iGapOffset < segment.Size)
             {
@@ -192,27 +203,23 @@ namespace Reko.Scanning
                     break;
                 var gapSize = nextBlock.Address - addrGapStart;
                 gapSize = Math.Min(gapSize, spaceLeft);
-                chunk = MakeChunkWorker(addrGapStart, gapSize);
-                if (chunk is not null)
+                if (gapSize >= 1)
                 {
-                    yield return chunk;
+                    yield return (addrGapStart, gapSize);
                 }
                 iGapOffset = Align(iGapOffset + gapSize + nextBlock.Length, unitAlignment);
             }
 
             // Consume the remainder of the segment.
             length = segment.Size - iGapOffset;
-            chunk = MakeChunkWorker(segment.Address + iGapOffset, length);
-            if (chunk is not null)
+            if (length >= 1)
             {
-                yield return chunk;
+                yield return (segment.Address + iGapOffset, length);
             }
         }
 
-        private ChunkWorker? MakeChunkWorker(Address addr, long length)
+        public ChunkWorker MakeChunkWorker(Address addr, long length)
         {
-            if (length <= 0)
-                return null;
             return new ChunkWorker(
                 this,
                 program.Architecture,
@@ -222,7 +229,7 @@ namespace Reko.Scanning
                 listener);
         }
 
-        private ScanResultsV2 ProcessChunks(List<ChunkWorker> chunks)
+        private ScanResultsV2 ProcessChunks(IEnumerable<ChunkWorker> chunks)
         {
             //$TODO: this should be parallelizable, but we
             // do it first in series to make it correct.

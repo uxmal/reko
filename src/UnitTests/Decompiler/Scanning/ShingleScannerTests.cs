@@ -84,13 +84,26 @@ namespace Reko.UnitTests.Decompiler.Scanning
             cfg.Blocks.TryAdd(addr, block);
         }
 
+        private void Given_RecursiveProc(uint uAddr)
+        {
+            var proc = new Proc(
+                Address.Ptr32(uAddr),
+                ProvenanceType.Scanning,
+                this.program.Architecture,
+                $"fn{uAddr:X4}");
+            var added = cfg.Procedures.TryAdd(Address.Ptr32(uAddr), proc);
+            Assert.IsTrue(added);
+        }
+
+
         private List<ChunkWorker> When_MakeScanChunks()
         {
             var dynLinker = new Mock<IDynamicLinker>();
             var listener = new Mock<IDecompilerEventListener>();
             var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
-            var chunks = scanner.MakeScanChunks();
-            return chunks;
+            var gaps = scanner.FindUnscannedExecutableGaps();
+            var chunks = gaps.Select(g => scanner.MakeChunkWorker(g.Item1, g.Item2));
+            return chunks.ToList();
         }
 
         private void RunTest(string sExpected)
@@ -167,6 +180,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 segmentMap,
                 arch,
                 platform);
+        }
+
+        private void Given_ExecutableSegment(string name, uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var mem = new ByteMemoryArea(addr, new byte[len]);
+            program.SegmentMap.AddSegment(mem, name, AccessMode.ReadExecute);
         }
 
         private void Given_CodeBlock(IProcessorArchitecture arch, uint uAddr, int len)
@@ -920,6 +940,53 @@ l00001008: // l:8; ft:00001010
 00001003-00001006 (3): Lin 00001006
 00001004-00001006 (2): End 00001004
 00001006-00001007 (1): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
+        }
+
+        [Test]
+        public void Shsc_Call_RecursiveProcedure()
+        {
+            CreateScanner(0x1000);
+            Given_RecursiveProc(0x2004);
+            Given_ExecutableSegment(".text2", 0x2000, 0x100);
+
+            // If shingle scan a call to a procedure that was previously
+            // found by recursive calls, we're OK.
+            Lin(0x1000, 2, 0x1002);
+            Call(0x1002, 2, 0x1004, 0x2000);    // 0x2000 is a valid call target.
+            End(0x1004, 2);
+
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+                @"
+00001000-00001004 (4): Cal 00001004
+00001004-00001006 (2): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
+        }
+
+        [Test]
+        public void Shsc_Call_Hyperspace()
+        {
+            // If shingle scan a call to non-executable space,
+            // we should mark the block as invalid.
+            Lin(0x1000, 2, 0x1002);
+            Call(0x1002, 2, 0x1004, 0x2000);    // 0x2000 is an invalid call target.
+            End(0x1004, 2);
+
+            CreateScanner(0x1000);
+
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+                @"
+00001004-00001006 (2): End
 ";
             #endregion
             AssertBlocks(sExp, sr.Blocks);

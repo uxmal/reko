@@ -20,7 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Rtl;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Scanning
 {
@@ -130,6 +132,19 @@ namespace Reko.Scanning
         public override string ToString()
         {
             return string.Format("block({0})", Address);
+        }
+
+        public void MarkLastInstructionInvalid()
+        {
+            Debug.Assert(this.Instructions.Count > 0);
+            int iLast = this.Instructions.Count - 1;
+            var cluster = this.Instructions[iLast];
+            this.Instructions.RemoveAt(iLast);
+            this.Instructions.Add(new RtlInstructionCluster(
+                cluster.Address,
+                cluster.Length,
+                new RtlInvalid()));
+            this.IsValid = false;
         }
     }
 }

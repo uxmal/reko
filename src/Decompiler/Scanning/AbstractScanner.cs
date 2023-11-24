@@ -430,10 +430,11 @@ namespace Reko.Scanning
                from b in blocks.Values
                orderby b.Address
                select string.Format(
-                   "{0:X8}-{1:X8} ({2}): {3}{4}",
+                   "{0:X8}-{1:X8} ({2}){3}: {4}{5}",
                        b.Address,
                        b.FallThrough,
                        b.Length,
+                       b.IsValid ? "" : " - Invalid",
                        RenderType(b.Instructions[^1].Class),
                        RenderSuccessors(sr, b))));
 
