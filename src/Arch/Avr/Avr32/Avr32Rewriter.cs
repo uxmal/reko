@@ -288,6 +288,8 @@ namespace Reko.Arch.Avr.Avr32
             case RegisterStorage reg:
                 if (reg == Registers.pc)
                 {
+                    if (src is Constant c)
+                        src = arch.MakeAddressFromConstant(c, true);
                     m.Goto(src);
                     return src;
                 }

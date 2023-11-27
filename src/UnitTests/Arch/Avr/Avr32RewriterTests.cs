@@ -851,5 +851,14 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|NZ = cond(0x00100000<p32> & r0)");
         }
+
+        [Test]
+        public void Avr32Rw_mov_pc_const()
+        {
+            Given_Instruction("325F");  // mov pc,0x25
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto 00000025");
+        }
     }
 }
