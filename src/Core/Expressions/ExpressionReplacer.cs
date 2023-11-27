@@ -214,7 +214,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(tc, original))
+                return replacement;
+            var exp = tc.Expression.Accept(this);
+            return new TestCondition(tc.ConditionCode, exp);
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
