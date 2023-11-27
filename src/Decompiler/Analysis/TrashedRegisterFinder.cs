@@ -797,7 +797,8 @@ namespace Reko.Analysis
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
-                    else if (oldValue is not InvalidConstant && !cmp.Equals(oldValue, value))
+                    else if (oldValue is not InvalidConstant &&
+                        (oldValue.DataType.BitSize != value.DataType.BitSize || !cmp.Equals(oldValue, value)))
                     {
                         trace.Verbose("Trf: Stack Offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
