@@ -434,7 +434,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitTestCondition(TestCondition tc, BitRange bitRange)
         {
-            throw new NotImplementedException();
+            return ValueSet.Any;
         }
 
         public ValueSet VisitUnaryExpression(UnaryExpression unary, BitRange bitRange)
