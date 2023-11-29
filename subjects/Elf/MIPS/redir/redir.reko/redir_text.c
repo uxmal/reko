@@ -2007,7 +2007,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 								if ((word32) (r2_n < 1) == 0x00)
 								{
 									if (r2_n == 2)
-										*((char *) &g_ptr10000A40->a0004->ptr0000 + (dwLoc014C_n * 0x98 + 144)) = (word32) (strchr("1yY", *r2_n) > null);
+										*((word32) &g_ptr10000A40->a0004[dwLoc014C_n].t0004 + 0x008C) = (Eq_n[]) (word32) (strchr("1yY", *r2_n) > null);
 								}
 								else
 									strncpy((char *) &g_ptr10000A40->a0004->t0004 + 5 + dwLoc014C_n * 0x98, r2_n, 20);
@@ -2016,7 +2016,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 							{
 								g_t4053F0();
 								word32 r2_n;
-								*((char *) &g_ptr10000A40->a0004->ptr0000 + (dwLoc014C_n * 0x98 + 144)) = r2_n;
+								*((word32) &g_ptr10000A40->a0004[dwLoc014C_n].t0004 + 0x008C) = (Eq_n[]) r2_n;
 							}
 						}
 						++dwLoc014C_n;
@@ -2114,7 +2114,7 @@ l00406004:
 						ptr32 r25_n = r28_n->ptrFFFF801C;
 						(*((word32) r25_n + 21488))();
 						word32 r2_n;
-						*((char *) &g_ptr10000A40->a0004->ptr0000 + (dwLoc24_n * 0x98 + 144)) = r2_n;
+						*((word32) &g_ptr10000A40->a0004[dwLoc24_n].t0004 + 0x008C) = (Eq_n[]) r2_n;
 						r28_n = (struct Eq_n *) 0x10008860;
 					}
 				}
@@ -2158,7 +2158,7 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 		}
 		else
 		{
-			char ** r2_n = (char **) ((char *) &g_ptr10000A40->a0004->ptr0000 + dwLoc18_n * 0x98);
+			char ** r2_n = (char **) (g_ptr10000A40->a0004 + dwLoc18_n).ptr0000;
 			printf("-%c %s ", (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000, *r2_n);
 		}
 		++dwLoc18_n;

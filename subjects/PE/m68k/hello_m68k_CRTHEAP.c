@@ -355,7 +355,7 @@ int32 fn000028A0(Eq_n a0, struct Eq_n * a2, struct Eq_n * a5, Eq_n dwArg04, unio
 					return 0;
 				}
 			}
-			&a0.u1->a0000->u0 = a5->tFFFFFADC.u1->a0000[0].u1;
+			a0.u1->a0000 = a5->tFFFFFADC.u1->a0000[0].u1;
 			if (a0.u1[d7_n / 4] == 0x00)
 			{
 				d5_n = d4_n;
@@ -384,12 +384,12 @@ l000029B4:
 	}
 	if (a5->tFFFFFADC.u1 != 0x00)
 	{
-		&a0.u1->a0000->u0 = a5->tFFFFFADC.u1;
+		a0.u1->a0000 = a5->tFFFFFADC.u1;
 		__syscall<word16>(0xA024);
 	}
 	if (a5->tFFFFFADC.u1 != 0x00)
 	{
-		&a0.u1->a0000->u0 = a5->tFFFFFAF0.u1;
+		a0.u1->a0000 = a5->tFFFFFAF0.u1;
 		if (a0.u1->a0000[0].u0 == 0x00)
 			goto l00002974;
 	}
@@ -413,7 +413,7 @@ l000029B4:
 	}
 	a5->tFFFFFADC.u1 = (struct Eq_n *) a0;
 l00002974:
-	&a0.u1->a0000->u0 = a5->tFFFFFADC.u1->a0000[0].u1 + (a5->dwFFFFFAE0 << 0x04) / 4;
+	a0.u1->a0000 = a5->tFFFFFADC.u1->a0000[0].u1 + (a5->dwFFFFFAE0 << 0x04) / 4;
 	int32 d0_n = 7;
 	word16 v30_n;
 	do
@@ -436,7 +436,7 @@ l00002974:
 		a0_n->dw0034 = 0;
 		a0_n->dw0038 = 0;
 		v30_n = (word16) d0_n;
-		&a0.u1->a0000->u0 = &a0_n->dw0038 + 1;
+		a0.u1->a0000 = &a0_n->dw0038 + 1;
 		d0_n = SEQ(SLICE(d0_n, word16, 16), v30_n - 1);
 	} while (v30_n != 0x00);
 	d5_n = a5->dwFFFFFAE0;
@@ -460,7 +460,7 @@ int32 fn000029C8(Eq_n a0, struct Eq_n * a5, int32 dwArg04, up32 dwArg08, struct 
 	if (a0 != 0x00)
 	{
 		Eq_n a1_n;
-		&a1_n.u1->a0000->u0 = a5->tFFFFFADC.u1->a0000[0].u1;
+		a1_n.u1->a0000 = a5->tFFFFFADC.u1->a0000[0].u1;
 		if (((word16) a0 & 0x03) != 0x00)
 			a1_n.u1[dwArg04 * 4] = (struct Eq_n) SEQ(SLICE((word128) a0 + 3, word16, 16), (word16) a0 + 0x03 & ~0x03);
 		else
@@ -560,7 +560,7 @@ void fn00002AE0(struct Eq_n * a5, Eq_n dwArg04)
 	if (a5->tFFFFFADC.u1->a0000[0].u1[dwArg04 * 4] != 0x00)
 		__syscall<word16>(0xA01F);
 	Eq_n a0_n;
-	&a0_n.u1->a0000->u0 = a5->tFFFFFADC.u1->a0000[0].u1;
+	a0_n.u1->a0000 = a5->tFFFFFADC.u1->a0000[0].u1;
 	a0_n.u1[dwArg04 * 4] = (struct Eq_n) 0;
 	a0_n.u1->a0004[dwArg04].dw0000 = 0;
 	a0_n.u1->a0004[dwArg04].dw0004 = 0;

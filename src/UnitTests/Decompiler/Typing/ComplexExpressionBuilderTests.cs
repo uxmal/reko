@@ -283,6 +283,34 @@ namespace Reko.UnitTests.Decompiler.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToStruct_StructArrayField()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var innerStr = Struct(Fld(0, PrimitiveType.Byte));
+            innerStr.Size = 32;
+            var arrayOfStructs = new ArrayType(innerStr, 0);
+            var str = Struct(Fld(4, arrayOfStructs));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(null, id, null, 4);
+            var e = ceb.BuildComplex(null);
+            Assert.AreEqual("id->a0004", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToStruct_StructArrayFieldFetch()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var innerStr = Struct(Fld(0, PrimitiveType.Byte));
+            innerStr.Size = 32;
+            var arrayOfStructs = new ArrayType(innerStr, 0);
+            var str = Struct(Fld(4, arrayOfStructs));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(null, id, null, 4);
+            var e = ceb.BuildComplex(PrimitiveType.Byte);
+            Assert.AreEqual("id->a0004[0<i32>].b0000", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildPointerToInteger()
         {
             var id = new Identifier("id", PrimitiveType.Word32, null);

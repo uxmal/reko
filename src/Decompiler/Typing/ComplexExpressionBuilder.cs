@@ -157,6 +157,8 @@ namespace Reko.Typing
 
         public Expression VisitArray(ArrayType at)
         {
+            if (offset == 0 && index is null && !Dereferenced)
+                return expComplex!;
             int i = (int)(offset / at.ElementType.Size);
             int r = (int)(offset % at.ElementType.Size);
             index = ScaleDownIndex(index, at.ElementType.Size);

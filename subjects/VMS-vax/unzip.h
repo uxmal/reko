@@ -88050,7 +88050,7 @@ T_20566: (in fp_237 + -1356<i32> + (Mem568[Mem568[sp_236 + 8<i32>:word32] + 0<32
   Class: Eq_20469
   DataType: (ptr32 (arr Eq_20591))
   OrigDataType: ptr32
-T_20567: (in r8_295 < &(fp_237->aFFFFFAB4)->u0 + (*((word32) (sp_236)[2<i32>].dwFFFFFFFC + 4<i32>) << 2<i8>) @ 00018ACE : bool)
+T_20567: (in r8_295 < fp_237->aFFFFFAB4 + (*((word32) (sp_236)[2<i32>].dwFFFFFFFC + 4<i32>) << 2<i8>) / 4<i32> @ 00018ACE : bool)
   Class: Eq_20567
   DataType: bool
   OrigDataType: bool

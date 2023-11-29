@@ -2440,12 +2440,12 @@ union Eq_n * fn004035CC(union Eq_n * r2, struct Eq_n * r29, struct Eq_n * r30, E
 union Eq_n * fn00403618(union Eq_n * r2, Eq_n r3, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, struct Eq_n & r29Out, struct Eq_n & r30Out, union Eq_n & r31Out)
 {
 	Eq_n r8_n;
-	&r8_n.u0->u0 = (&r2->u0)[0x00EC];
+	r8_n.u0 = (&r2->u0)[0x00EC];
 	ui32 r10_n = 0x00;
 	Eq_n r11_n = r8_n;
 	while (*r11_n != r3)
 	{
-		&r11_n.u0->u0 = (word32) r11_n + 8;
+		r11_n.u0 = (word32) r11_n + 8;
 		++r10_n;
 		if (r11_n >= r8_n + 88)
 			break;

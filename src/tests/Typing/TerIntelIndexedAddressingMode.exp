@@ -27,7 +27,7 @@ l1:
 	ax = 0x4A<16>
 	si = ax *s ds->w1C0A
 	bx = ds->ptr0CA4
-	(&(ds->*(ds->*bx).a000A))[si] = 0xF8<8>
+	(ds->*bx).a000A[si] = 0xF8<8>
 	return
 	// succ:  IntelIndexedAddressingMode_exit
 IntelIndexedAddressingMode_exit:

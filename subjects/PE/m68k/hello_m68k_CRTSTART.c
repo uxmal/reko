@@ -199,7 +199,7 @@ struct Eq_n * fn0000243C(struct Eq_n * a5, Eq_n dwArg04, ptr32 & a6Out)
 	ptr32 fp;
 	ptr32 * a6_n = fp - 0x04;
 	int32 d1_n = 0;
-	struct Eq_n * d2_n = (struct Eq_n *) &a5->aFFFFFBB4->t0000.u0;
+	struct Eq_n * d2_n = (struct Eq_n *) a5->aFFFFFBB4;
 	while (dwArg04 != d2_n->dw0000)
 	{
 		++d2_n;
