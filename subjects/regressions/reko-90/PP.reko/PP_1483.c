@@ -667,7 +667,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 			sp_n = (&(ds->*bx.u0).b2CF2)[17784] *s16 0x46 + 0x10;
 		}
 		bp = ds->*((word16) si + 101) *s 14948;
-		(&&(ss->*(ss->*si).b0000))[(&si[0].b0000)[101]].b0000 = si[(&si[0].b0000)[101]].b0000 & al_n;
+		si[(&si[0].b0000)[101]].b0000 &= al_n;
 		ui8 dh_n = dh_n ^ Mem175[ds:bx + di:byte];
 		word16 ax_n = __in<word16>(0x0C);
 		Mem190[ds:0x2CF2:byte] = Mem175[ds:0x2CF2:byte] ^ cl_n;
