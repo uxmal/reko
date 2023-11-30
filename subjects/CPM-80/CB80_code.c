@@ -376,8 +376,8 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 		{
 			Eq_n hl_n;
 			hl_n.u1 = g_t1678.u1;
-			byte a_n = hl_n.u1[0];
-			hl_n.u1[0] = a_n + 0x01;
+			byte a_n = (byte) *hl_n;
+			hl_n->u0 = a_n + 0x01;
 			g_t1678.u1[(uint16) (a_n + 0x01)] = g_b167C;
 		}
 		++g_b167A;
@@ -388,8 +388,8 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 	hl_n.u1 = g_t1678.u1;
 	Eq_n hl_n;
 	hl_n.u1 = g_t1676.u1;
-	byte a_n = hl_n.u1[0];
-	hl_n.u1[0] = a_n + 0x01;
+	byte a_n = (byte) *hl_n;
+	hl_n->u0 = a_n + 0x01;
 	g_t1678.u1[(uint16) (a_n + 0x01)] = (byte) hl_n + 0x30;
 }
 
@@ -693,20 +693,20 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	g_t1692.u0 = (byte) c;
 	Eq_n hl_n;
 	hl_n.u1 = g_t168B.u1;
-	fn0390(SLICE((char *) hl_n.u1 + 1, byte, 8), (byte) hl_n + 0x01, 0x20, 11);
+	fn0390(SLICE((word16) hl_n + 1, byte, 8), (byte) hl_n + 0x01, 0x20, 11);
 	g_t1696.u0 = g_t1692.u1->a0000[0].u0;
 	Eq_n hl_n;
-	hl_n.u1->a0000 = g_t1692.u1;
-	g_t1692.u1 = (struct Eq_n *) ((char *) hl_n.u1->a0000 + 1);
+	hl_n.u1 = g_t1692.u1;
+	g_t1692.u1 = (word16) hl_n + 1;
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	if (hl_n.u1->b0002 == 0x3A)
 	{
 		Eq_n af_n = fn03CB(g_t1692.u1->a0000[0].u0);
 		Eq_n hl_n;
-		hl_n.u1->a0000 = g_t1692.u1;
+		hl_n.u1 = g_t1692.u1;
 		sp_n->tFFFFFFFE.u1 = (byte *) af_n;
 		f = (byte) af_n;
-		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) ((((hl_n.u1)->a0000))[0].u0 < 0x41) | sp_n->b0003, f);
+		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) (*hl_n < 0x41) | sp_n->b0003, f);
 		bcu8 a_n = SLICE(0x02 - (uint16) g_t1696.u0, byte, 8) & sp_n->b0003;
 		Eq_n C_n = cond(a_n >> 0x01);
 		if (a_n >> 0x01 >= 0x00)
@@ -804,7 +804,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(b_n, 0x03);
 	Eq_n hl_n;
 	hl_n.u1 = g_t168B.u1;
-	fn0390(SLICE((char *) hl_n.u1 + 0x0C, byte, 8), (byte) hl_n + 0x0C, 0x00, sp_n->b0002);
+	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) hl_n + 0x0C, 0x00, sp_n->b0002);
 	*((char *) g_t168B.u1 + 32) = (Fcb *) 0x00;
 	g_b1697 = 0x00;
 	while (g_b1697 <= 0x07)
@@ -918,7 +918,7 @@ Eq_n fn0D64(union Eq_n & aOut)
 void fn0D6F()
 {
 	Eq_n hl_n;
-	hl_n.u1->a0000 = g_t1521.u1;
+	hl_n.u1 = g_t1521.u1;
 	hl_n.u1->b0009 |= 0x02;
 }
 
@@ -929,7 +929,7 @@ void fn0D84()
 	if (__rcr<byte,byte>(a_n, 0x01, fn0D64(out a_n)) < 0x00)
 		fn075C(0x00, 0x02, 0x00, 0x00);
 	Eq_n hl_n;
-	hl_n.u1->a0000 = g_t1521.u1;
+	hl_n.u1 = g_t1521.u1;
 	hl_n.u1->b0009 |= 0x01;
 }
 
@@ -942,7 +942,7 @@ void fn0DB9()
 void fn0DCB()
 {
 	Eq_n hl_n;
-	hl_n.u1->a0000 = g_t1521.u1;
+	hl_n.u1 = g_t1521.u1;
 	hl_n.u1->b0009 |= 0x08;
 }
 
@@ -962,8 +962,8 @@ void fn0E63(byte c)
 		if (g_b16A6 == (g_t1521.u1)->b0002 && __rcr<byte,byte>(a_n, 0x01, fn0EAB(out a_n)) < 0x00)
 			return;
 		Eq_n hl_n;
-		hl_n.u1->a0000 = g_t1521.u1;
-		g_t1521.u1 = hl_n.u1->a0000[0].u1;
+		hl_n.u1 = g_t1521.u1;
+		g_t1521.u1 = (struct Eq_n *) *hl_n;
 	}
 }
 

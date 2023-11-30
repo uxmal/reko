@@ -3117,7 +3117,7 @@ T_704: (in 0<u64> @ 00000000004017B6 : uint64)
 T_705: (in rbx_46 @ 00000000004017B6 : Eq_704)
   Class: Eq_704
   DataType: Eq_704
-  OrigDataType: word64
+  OrigDataType: uint64
 T_706: (in 8<64> @ 00000000004017C9 : word64)
   Class: Eq_706
   DataType: ui64

@@ -419,7 +419,7 @@ T_87: (in 0<u64> @ 0000000000400574 : uint64)
 T_88: (in rbx_33 @ 0000000000400574 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
-  OrigDataType: word64
+  OrigDataType: uint64
 T_89: (in 3<64> @ 0000000000400586 : word64)
   Class: Eq_89
   DataType: word64

@@ -121,12 +121,7 @@ namespace Reko.Typing
                 UnionType? uSrc = dtSrc.ResolveAs<UnionType>();
                 if (uDst != null)
                 {
-                    // ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
-                    tvDst.DataType = dtDst;
-                    tvDst.OriginalDataType = dtSrc;
-                    store.SetTypeVariable(dst, tvDst); //$REVIEW: looks fishy.
-                    var ceb = new ComplexExpressionBuilder(program, store, null, dst, null, 0);
-                    dst = ceb.BuildComplex(null);
+                    dst = RewriteUnionLValue(dst, uDst, dtSrc);
                 }
                 else if (uSrc != null)
                 {
@@ -144,6 +139,16 @@ namespace Reko.Typing
                 return new Assignment(idDst, src);
             else
                 return new Store(dst, src);
+        }
+
+        private Expression RewriteUnionLValue(
+            Expression dst, UnionType uDst, DataType dtSrc)
+        {
+            var alt = uDst.FindAlternative(dtSrc);
+            alt ??= UnionAlternativeChooser.Choose(uDst, null, false, 0);
+            if (alt is null)
+                return dst;
+            return new FieldAccess(alt.DataType, dst, alt);
         }
 
         public override Instruction TransformCallInstruction(CallInstruction ci)

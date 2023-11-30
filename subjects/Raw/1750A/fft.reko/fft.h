@@ -519,7 +519,7 @@ T_25: (in 0<16> @ 0118 : word16)
 T_26: (in gp0_25 @ 0118 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int16
+  OrigDataType: cui16
 T_27: (in 0<16> @ 0119 : word16)
   Class: Eq_27
   DataType: word16
@@ -659,7 +659,7 @@ T_60: (in 0<16> @ 0131 : word16)
 T_61: (in gp3_42 @ 0131 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: word32
+  OrigDataType: ui16
 T_62: (in 1<16> @ 0133 : word16)
   Class: Eq_62
   DataType: word16
@@ -703,7 +703,7 @@ T_71: (in Mem12[gp14_11 + 1<16>:word16] @ 013A : word16)
 T_72: (in gp3_26 @ 013A : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: (struct "Eq_58" 0001 (1 word16 w0001))
+  OrigDataType: int16
 T_73: (in 0x8000<16> @ 0141 : word16)
   Class: Eq_73
   DataType: (ptr16 (arr Eq_1254))
@@ -1893,7 +1893,7 @@ T_365: (in 0<16> @ 0213 : word16)
 T_366: (in gp3_129 @ 0213 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: word32
+  OrigDataType: ui16
 T_367: (in 0x8090<16> @ 0217 : word16)
   Class: Eq_367
   DataType: (ptr16 (arr Eq_1280))
@@ -1961,7 +1961,7 @@ T_382: (in Mem108[gp14_107 + 1<16>:word16] @ 021D : word16)
 T_383: (in gp3_128 @ 021D : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: (struct "Eq_363" 0001 (1 word16 w0001))
+  OrigDataType: ci16
 T_384: (in 1<16> @ 021F : word16)
   Class: Eq_384
   DataType: word16

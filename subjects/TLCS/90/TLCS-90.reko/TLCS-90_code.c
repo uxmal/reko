@@ -861,8 +861,8 @@ void fn0E3B(byte b, byte c, Eq_n de)
 	word16 bc_n = SEQ(b + 1, c);
 	do
 	{
-		*de.u1 = (byte) *hl_n.u0;
-		hl_n.u0 = (word16) hl_n.u0 + 1;
+		*de.u1 = *hl_n.u1;
+		hl_n.u1 = (word32) hl_n + 1;
 		++de;
 		--bc_n;
 	} while (bc_n != 0x00);

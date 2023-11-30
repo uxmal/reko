@@ -1559,7 +1559,7 @@ T_159: (in r1 @ 030E : (ptr16 Eq_6))
 T_160: (in r2_r3Out @ 030E : Eq_160)
   Class: Eq_160
   DataType: Eq_160
-  OrigDataType: ui32
+  OrigDataType: ptr16
 T_161: (in 0064 @ 030E : ptr16)
   Class: Eq_161
   DataType: (ptr16 (ptr16 Eq_6))
@@ -4907,7 +4907,7 @@ T_996: (in <invalid> @ 0B06 : ptr16)
 T_997: (in stackArg0 @ 0B06 : Eq_160)
   Class: Eq_160
   DataType: Eq_160
-  OrigDataType: ui32
+  OrigDataType: ptr16
 T_998: (in fn13AA @ 0B06 : ptr16)
   Class: Eq_998
   DataType: (ptr16 Eq_998)
@@ -5331,7 +5331,7 @@ T_1102: (in Mem116[0x34C2<p16>:word16] @ 0BC6 : word16)
 T_1103: (in stackArg0 @ 0BCA : Eq_160)
   Class: Eq_160
   DataType: Eq_160
-  OrigDataType: ui32
+  OrigDataType: ptr16
 T_1104: (in fn13AA @ 0BCA : ptr16)
   Class: Eq_998
   DataType: (ptr16 Eq_998)
@@ -6847,7 +6847,7 @@ T_1481: (in g_w00AE <= 0xC0<16> @ 0E90 : bool)
 T_1482: (in stackArg0 @ 0E92 : Eq_160)
   Class: Eq_160
   DataType: Eq_160
-  OrigDataType: ui32
+  OrigDataType: ptr16
 T_1483: (in fn13AA @ 0E92 : ptr16)
   Class: Eq_998
   DataType: (ptr16 Eq_998)
@@ -11379,7 +11379,7 @@ T_2614: (in r3_332 + 1<16> @ 1386 : word16)
 T_2615: (in r3_354 @ 1386 : Eq_175)
   Class: Eq_175
   DataType: Eq_175
-  OrigDataType: word16
+  OrigDataType: ui16
 T_2616: (in r2_339 + r0 @ 12EE : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)

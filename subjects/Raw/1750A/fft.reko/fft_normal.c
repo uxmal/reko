@@ -46,10 +46,10 @@ int16 init_fft(ptr16 & gp4Out)
 		real48 gp4_gp5_gp6_n = (real48) g_tFFFF8000.t0000;
 		g_aFFFF8060[gp0_n] = (struct Eq_n) gp4_gp5_gp6_n;
 		gp4_n = SLICE(gp4_gp5_gp6_n, word16, 32);
-		gp3_n = (word32) gp3_n + 1;
+		gp3_n = (word16) gp3_n.u0 + 1;
 	} while (gp3_n <= 0x0E);
 	gp4Out = gp4_n;
-	return (word32) gp3_n + 1;
+	return (word16) gp3_n.u0 + 1;
 }
 
 // 014E: Register (ptr16 Eq_n) compute_output()

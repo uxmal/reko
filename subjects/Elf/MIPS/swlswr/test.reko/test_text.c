@@ -62,7 +62,7 @@ void __do_global_dtors_aux()
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
-			Eq_n r2_n = (word32) r2_n.u0 + 1;
+			Eq_n r2_n = (word32) r2_n + 1;
 			dtor_idx.6258.u0 = (int32) r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			(*r2_n)();

@@ -617,7 +617,7 @@ T_135: (in 0<u64> @ 0000000000400746 : uint64)
 T_136: (in rbx_46 @ 0000000000400746 : Eq_135)
   Class: Eq_135
   DataType: Eq_135
-  OrigDataType: word64
+  OrigDataType: uint64
 T_137: (in 8<64> @ 0000000000400759 : word64)
   Class: Eq_137
   DataType: ui64

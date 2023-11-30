@@ -2393,7 +2393,7 @@ T_437: (in Mem7[ebp_13 + 8<i32>:word32] @ 10001398 : word32)
 T_438: (in ebx_115 @ 10001398 : Eq_168)
   Class: Eq_168
   DataType: Eq_168
-  OrigDataType: _onexit_t
+  OrigDataType: word32
 T_439: (in 1<32> @ 1000139E : word32)
   Class: Eq_169
   DataType: Eq_169
@@ -3697,7 +3697,7 @@ T_763: (in Mem57[ebp_13 + 8<i32>:word32] @ 10001628 : word32)
 T_764: (in v18_58 @ 10001628 : Eq_168)
   Class: Eq_168
   DataType: Eq_168
-  OrigDataType: _onexit_t
+  OrigDataType: word32
 T_765: (in __dllonexit @ 10001630 : ptr32)
   Class: Eq_765
   DataType: (ptr32 Eq_765)
@@ -3897,7 +3897,7 @@ T_813: (in Mem84[ebp_13 + -36<i32>:word32] @ 1000165C : word32)
 T_814: (in eax_112 @ 1000165C : Eq_168)
   Class: Eq_168
   DataType: Eq_168
-  OrigDataType: _onexit_t
+  OrigDataType: (union (_onexit_t u1))
 T_815: (in _onexit @ 100015F5 : ptr32)
   Class: Eq_815
   DataType: (ptr32 Eq_815)
@@ -4361,7 +4361,7 @@ T_929: (in 0x10000000<p32> @ 10001757 : ptr32)
 T_930: (in dwLoc0C_90 @ 10001757 : Eq_488)
   Class: Eq_488
   DataType: Eq_488
-  OrigDataType: ptr32
+  OrigDataType: (union (ui32 u0) (ptr32 u1))
 T_931: (in fn100016D0 @ 10001760 : ptr32)
   Class: Eq_931
   DataType: (ptr32 Eq_931)
@@ -4425,7 +4425,7 @@ T_945: (in Mem25[ebp_13 + 8<i32>:word32] @ 10001762 : word32)
 T_946: (in eax_38 @ 10001762 : Eq_168)
   Class: Eq_168
   DataType: Eq_168
-  OrigDataType: _onexit_t
+  OrigDataType: ui32
 T_947: (in 0x10000000<p32> @ 10001767 : ptr32)
   Class: Eq_947
   DataType: ui32

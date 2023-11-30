@@ -173,7 +173,8 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, ptr32 ebx, ptr32 esi, word32 edi)
 	ptr32 fp;
 	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
-	Eq_n ebx_n = Mem7[ebp_n + 8:word32];
+	Eq_n ebx_n;
+	ebx_n.u0 = ebp_n->t0008.u0;
 	ebp_n->tFFFFFFE4 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
 	g_t10003008 = (Eq_n) edx;
@@ -293,7 +294,8 @@ Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->ptr0000);
 		void * v17_n = g_ptr100033B0;
 		ebp_n->ptrFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
-		Eq_n v18_n = Mem57[ebp_n + 8:word32];
+		Eq_n v18_n;
+		v18_n.u0 = ebp_n->t0008.u0;
 		ebp_n->tFFFFFFDC.u0 = (_onexit_t) __dllonexit(esp_n->tFFFFFFF0.u0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
 		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v18_n, ebp_n - 28, ebp_n - 32, v17_n, v16_n);
 		g_ptr100033B0 = encode_pointer(ebp_n->ptrFFFFFFE0);
@@ -301,7 +303,7 @@ Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 		fn10001665();
 		word32 esp_n;
 		esp_n = esp_n + 0x1C;
-		eax_n = Mem84[ebp_n + -36:word32];
+		eax_n.u0 = ebp_n->tFFFFFFDC.u0;
 	}
 	fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 	return eax_n;
@@ -386,7 +388,8 @@ ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 	ui32 eax_n;
 	if (fn100016D0(&g_t10000000) != 0x00)
 	{
-		Eq_n eax_n = Mem25[ebp_n + 8:word32];
+		Eq_n eax_n;
+		eax_n.u0 = ebp_n->t0008.u0;
 		dwLoc0C_n = eax_n - 0x10000000;
 		struct Eq_n * eax_n = fn10001700(&g_t10000000, eax_n - 0x10000000);
 		if (eax_n != null)

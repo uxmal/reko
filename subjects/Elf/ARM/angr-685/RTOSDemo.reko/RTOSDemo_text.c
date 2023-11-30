@@ -484,7 +484,7 @@ bool xQueueCRReceive(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, u
 		struct Eq_n * r1_n = r1_n;
 		if (r1_n >= r3_n)
 			r1_n = r0->ptr0000;
-		r0->t0038.u0 = (word32) r3_n.u0 - 1;
+		r0->t0038.u0 = (word32) r3_n - 1;
 		if (r1_n >= r3_n)
 			r0->ptr000C = r1_n;
 		bool Z = memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6, out r7_n);

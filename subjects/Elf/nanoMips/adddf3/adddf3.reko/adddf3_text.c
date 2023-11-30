@@ -72,7 +72,7 @@ l0804D12C:
 l0804D156:
 				Eq_n r6_n = r6_n + (r4 << 0x03);
 				r10_n = r13_n;
-				r8_n = (word32) (r6_n < r4 << 0x03) + ((word32) r8_n + r7_n);
+				r8_n = (word32) (r6_n < r4 << 0x03) + ((word32) r8_n.u1 + r7_n);
 				r12_n = r6_n;
 				goto l0804D0CC;
 			}
@@ -207,9 +207,9 @@ l0804D060:
 l0804D27A:
 			if ((r12_n & 0x07) != 0x00 && (r12_n & 0x0F) != 0x04)
 			{
-				Eq_n r6_n = (word32) r12_n.u0 + 4;
+				Eq_n r6_n = (word32) r12_n.u1 + 4;
 				r12_n = r6_n;
-				r8_n = (word32) r8_n.u0 + (word32) (r6_n < r12_n);
+				r8_n = (word32) r8_n.u1 + (word32) (r6_n < r12_n);
 			}
 			goto l0804D064;
 		}

@@ -106,7 +106,7 @@ T_6: (in 0xFFF<16> : cui16)
 T_7: (in bx_36 : Eq_6)
   Class: Eq_6
   DataType: Eq_6
-  OrigDataType: int16
+  OrigDataType: cui16
 T_8: (in bx_39 : Eq_6)
   Class: Eq_6
   DataType: Eq_6
@@ -193,7 +193,7 @@ T_28: (in 0x4DE1<16>:bx_39 + 0<16> : segptr32)
   OrigDataType: segptr32
 T_29: (in Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] : byte)
   Class: Eq_24
-  DataType: Eq_6
+  DataType: byte
   OrigDataType: byte
 T_30: (in 1<16> : word16)
   Class: Eq_6

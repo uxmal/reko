@@ -1768,7 +1768,7 @@ l0800_nB5:
 							union Eq_n Eq_n::* sp_n = sp_n - 2;
 							(ss->*sp_n).u2 = (struct Eq_n *) ds;
 							union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->t0002.u0;
-							ptr32 es_di_n = (ptr32) di_n.u2;
+							ptr32 es_di_n = (ptr32) di_n;
 						}
 						else
 						{
