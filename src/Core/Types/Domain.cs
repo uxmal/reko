@@ -60,7 +60,7 @@ namespace Reko.Core.Types
         Composite = 0x1000,
         Structure = 0x2000 | Composite, // A product type (T_1 x T_2 x ... x T_n)
         Array = 0x4000 | Composite,     // An array of values
-        Union = 0x5000 | Composite,     // A union type
+        Union = 0x6000 | Composite,     // A union type
         Class = 0x8000 | Composite,     // A C++ class, a fancy version of Structure
         Function = 0xA000 | Composite,  // Executable code.
 
