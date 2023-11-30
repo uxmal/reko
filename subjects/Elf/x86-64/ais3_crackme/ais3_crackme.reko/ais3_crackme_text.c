@@ -30,7 +30,7 @@ void deregister_tm_clones()
 {
 	if (false || true)
 		return;
-	null();
+	0x00();
 }
 
 // 0000000000400490: void register_tm_clones()
@@ -40,7 +40,7 @@ void register_tm_clones()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 00000000004004D0: void __do_global_dtors_aux()
@@ -75,7 +75,7 @@ word32 verify(byte rdi[])
 	while (rdi[(int64) dwLoc0C_n] != 0x00)
 	{
 		ui8 al_n = (byte) dwLoc0C_n ^ rdi[(int64) dwLoc0C_n];
-		if (g_a601020[(int64) dwLoc0C_n] != ((byte) ((word32) al_n >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | al_n << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
+		if (*((word64) (int64) dwLoc0C_n + 0x00601020) != ((byte) ((word32) al_n >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | al_n << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
 		{
 			rax_n = 0x00;
 			return (word32) rax_n;
@@ -90,11 +90,11 @@ word32 verify(byte rdi[])
 void main(struct Eq_n * rsi, word32 edi)
 {
 	if (edi != 0x02)
-		puts("You need to enter the secret key!");
+		puts(0x004006C8);
 	else if (verify(rsi->ptr0008) != 0x00)
-		puts("Correct! that is the secret key!");
+		puts(0x004006F0);
 	else
-		puts("I'm sorry, that's the wrong secret key!");
+		puts(0x00400718);
 }
 
 // 0000000000400620: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
@@ -103,14 +103,14 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x00600E00 - g_a600DF8;
+	int64 rbp_n = 0x00600E00 - 0x00600DF8;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n;
 		rbx_n.u1 = 0x00;
 		do
 		{
-			(*((char *) g_a600DF8 + rbx_n * 0x08))();
+			(*((word64) 0x00600DF8 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}

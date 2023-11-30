@@ -11,12 +11,12 @@
 void acknowledge(Eq_n r4)
 {
 	Eq_n r7_n;
-	r7_n.u3 = ntransmitted.u3;
+	r7_n.u0 = ntransmitted.u0;
 	Eq_n r5_n = r7_n - r4;
 	if (__bit<word32,word32>(r5_n, 0x0F))
 	{
-		if ((r5_n & 0xFFFF) >= pipesize.u3)
-			pipesize.u3 = (byte *) ((r5_n & 0xFFFF) + 0x01);
+		if ((r5_n & 0xFFFF) >= pipesize.u0)
+			pipesize.u0 = (int32) ((r5_n & 0xFFFF) + 0x01);
 		int32 r8_n = (word32) g_w454518;
 		if ((int32) (word16) (r4 - r8_n) > 0x00 || (r7_n & 0xFFFF) - r8_n > 0x7FFF)
 			g_w454518 = (word16) r4;
@@ -92,9 +92,9 @@ void main(Eq_n r0, Eq_n r4, Eq_n r5)
 	word32 r10_n;
 	memset(&tLoc40, 0x00, 0x20, out r6_n, out r7_n, out r8_n, out r10_n);
 	tLoc40 = (Eq_n) 0x02;
-	Eq_n (* r8_n)[] = limit_capabilities(r0);
+	Eq_n r8_n = limit_capabilities(r0);
 	Eq_n r17_n;
-	r17_n.u3 = *r5.u5;
+	r17_n.u4 = *r5.u6;
 	Eq_n sp_n = fp - 96;
 	Eq_n r16_n = r4;
 	Eq_n r18_n = r5;
@@ -138,16 +138,16 @@ l004001B0:
 			word32 r6_n;
 			word32 r11_n;
 			word32 r12_n;
-			fputs_unlocked(0x004108C4, stderr.u3, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
+			fputs_unlocked(0x004108C4, stderr.u0, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
 			goto l004001EA;
 		}
 	}
 	else
 	{
 		Eq_n r7_n;
-		r7_n.u1 = optind.u1;
+		r7_n.u0 = optind.u0;
 		r16_n -= r7_n;
-		r18_n.u3 += r7_n << 0x02;
+		r18_n.u4 += r7_n << 0x02;
 		if (r16_n != 0x00)
 			goto l0040072C;
 	}
@@ -160,7 +160,7 @@ l00400728:
 	usage(out r3_n, out r7_n, out r11_n, out r12_n, out r17_n);
 l0040072C:
 	Eq_n r20_n;
-	r20_n.u3 = r18_n.u5[(word32) r16_n + 0x3FFFFFFF];
+	r20_n.u4 = r18_n.u6[(word32) r16_n + 0x3FFFFFFF];
 	word32 r3_n;
 	word32 r4_n;
 	Eq_n r6_n;
@@ -272,7 +272,7 @@ l004007AA:
 			r4_n = ping6_run(r0, r2, r3, r16_n, r18_n, r17_n, fp - 0x4C, r12, r20_n, r21, r22, r23, r28, ra, out r8_n, out r11_n);
 			if (r4_n == 0x00)
 				break;
-			r17_n.u3 = r17_n.u11[28];
+			r17_n.u4 = r17_n.u11[28];
 		}
 		word32 r3_n;
 		word32 r11_n;
@@ -292,8 +292,8 @@ l004001F2:
 	goto l004001B0;
 }
 
-// 00400832: void fn00400832(Register (ptr32 byte) r4)
-void fn00400832(byte * r4)
+// 00400832: void fn00400832(Register Eq_n r4)
+void fn00400832(Eq_n r4)
 {
 	atoi(r4);
 }
@@ -310,7 +310,7 @@ void _start(Eq_n r0)
 //      _start
 void _start_c(Eq_n r0, union Eq_n * r4)
 {
-	__libc_start_main(r0, r4->u1, (char *) r4 + 4);
+	__libc_start_main(r0, r4->u0, (char *) r4 + 4);
 }
 
 // 00400880: void deregister_tm_clones()
@@ -355,20 +355,20 @@ void frame_dummy(word32 r5)
 	register_tm_clones(r5);
 }
 
-// 00400920: Register (ptr32 Eq_n) in_cksum(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register int32 r6)
+// 00400920: Register Eq_n in_cksum(Register Eq_n r4, Register Eq_n r5, Register int32 r6)
 // Called from:
 //      ping4_send_probe
 //      ping4_parse_reply
-struct Eq_n * in_cksum(struct Eq_n * r4, Eq_n r5, int32 r6)
+Eq_n in_cksum(Eq_n r4, Eq_n r5, int32 r6)
 {
 	while (r5 >= 0x02)
 	{
-		++r4;
-		r5.u3 = &r5.u12->bFFFFFFFE;
-		r6 += (word32) r4->wFFFFFFFE;
+		++r4.u1;
+		r5.u4 = (word32) r5.u0 - 2;
+		r6 += (word32) r4.u1->wFFFFFFFE;
 	}
 	if (r5 == 0x01)
-		r6 += (word32) r4->b0000;
+		r6 += (word32) r4.u1->b0000;
 	int32 r6_n = (r6 >> 0x10) + (r6 & 0xFFFF);
 	return ~(r6_n + (r6_n >> 0x10)) & 0xFFFF;
 }
@@ -386,7 +386,7 @@ word32 usage(ptr32 & r3Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r12Out, union
 	word32 r17_n;
 	ptr32 r12_n;
 	ptr32 r11_n;
-	word32 r8_n = fn00400B5A(4260696, stderr.u3, out r11_n, out r12_n);
+	word32 r8_n = fn00400B5A(4260696, stderr.u0, out r11_n, out r12_n);
 	Eq_n r6_n = ping6_usage(0x01, out r17_n);
 	Eq_n r17_n = fn00400B66();
 	word32 r2_n = create_socket((struct Eq_n *) 0x02, r6_n, r8_n, out r3_n, out r6_n, out r7_n, out r8_n);
@@ -423,7 +423,7 @@ Eq_n create_socket(struct Eq_n * r4, Eq_n r6, word32 r8, ptr32 & r3Out, ptr32 & 
 		if (*r4_n == 33 || r16_n != 0x01)
 			break;
 		r16_n.u0 = 0x03;
-		if (!__bit<word32,word32>(options.u3, 0x08))
+		if (!__bit<word32,word32>(options.u0, 0x08))
 		{
 			byte ** r4_n;
 			fn00400B56(out r4_n);
@@ -446,13 +446,13 @@ l004009D6:
 			if (*r4_n == 33)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = options.u3;
+				r7_n.u0 = options.u0;
 				if (__bit<word32,word32>(r7_n, 0x08))
 				{
 					r3Out = r3_n;
 					r6Out = r6_n;
 					r7Out = r7_n;
-					r8Out.u0 = (Eq_n (*)[]) <invalid>;
+					r8Out.u0 = <invalid>;
 					return <invalid>;
 				}
 			}
@@ -471,7 +471,7 @@ l004009BA:
 		}
 	}
 	else
-		r4->t0001.u3 = (byte *) r16_n;
+		r4->t0001.u0 = (int32) r16_n;
 	r3Out = r3_n;
 	r6Out = r6_n;
 	r7Out = r7_n;
@@ -504,21 +504,21 @@ void write_stdout(up32 r5)
 	} while (r16_n < r5 || r4_n < 0x00);
 }
 
-// 00400A20: void ping4_send_probe(Register (ptr32 Eq_n) r5)
-void ping4_send_probe(struct Eq_n * r5)
+// 00400A20: void ping4_send_probe(Register Eq_n r5)
+void ping4_send_probe(Eq_n r5)
 {
-	r5->b0000 = 0x08;
-	r5->b0001 = 0x00;
+	r5.u1->b0000 = 0x08;
+	r5.u1->b0001 = 0x00;
 	Eq_n r4_n;
-	r4_n.u3 = ntransmitted.u3;
-	r5[1] = (struct Eq_n) 0x00;
+	r4_n.u0 = ntransmitted.u0;
+	r5.u1[1] = (struct Eq_n) 0x00;
 	word32 r4_n = fn00400B62(r4_n.u11 + 1 & 0xFFFF);
-	r5[2] = (struct Eq_n) ident.u1;
-	r5[3] = (struct Eq_n) (word16) r4_n;
+	r5.u1[2] = (struct Eq_n) ident.u1;
+	r5.u1[3] = (struct Eq_n) (word16) r4_n;
 	ptr32 fp;
 	if (timing != 0x00)
 	{
-		if (!__bit<word32,word32>(options.u3, 0x0C))
+		if (!__bit<word32,word32>(options.u0, 0x0C))
 		{
 			word32 r4_n;
 			word32 r6_n;
@@ -537,15 +537,15 @@ void ping4_send_probe(struct Eq_n * r5)
 			memcpy(r17_n, fp - 0x18, 0x08, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 		}
 		else
-			fn00400B4E(r5 + 4, 0x00, 0x08);
+			fn00400B4E(r5.u1 + 4, 0x00, 0x08);
 	}
 	Eq_n r17_n;
-	r17_n.u3 = datalen.u3;
+	r17_n.u0 = datalen.u0;
 	Eq_n r4_n = in_cksum(r5, r17_n.u11 + 8, 0x00);
 	word32 r7_n = timing;
-	r5[1] = (struct Eq_n) (word16) r4_n;
+	r5.u1[1] = (struct Eq_n) (word16) r4_n;
 	word32 r17_n = r17_n.u11 + 8;
-	if (r7_n != 0x00 && __bit<word32,word32>(options.u3, 0x0C))
+	if (r7_n != 0x00 && __bit<word32,word32>(options.u0, 0x0C))
 	{
 		word32 r4_n;
 		word32 r6_n;
@@ -553,8 +553,8 @@ void ping4_send_probe(struct Eq_n * r5)
 		word32 r3_n;
 		word32 r11_n;
 		word32 r12_n;
-		fn00400B52(r5 + 4, fp - 0x18, 0x08, out r3_n, out r11_n, out r12_n);
-		r5[1] = (struct Eq_n) (word16) in_cksum(fp - 0x18, 0x08, ~(word32) r5[1] & 0xFFFF);
+		fn00400B52(r5.u1 + 4, fp - 0x18, 0x08, out r3_n, out r11_n, out r12_n);
+		r5.u1[1] = (struct Eq_n) (word16) in_cksum(fp - 0x18, 0x08, ~(word32) r5.u1[1] & 0xFFFF);
 	}
 	word32 r7_n;
 	word32 r10_n;
@@ -567,7 +567,7 @@ void ping4_install_filter()
 	if (once.5593 != 0x00)
 		return;
 	Eq_n wLoc14_n;
-	wLoc14_n.u2 = ident.u2;
+	wLoc14_n.u1 = ident.u1;
 	once.5593 = 0x01;
 	fn00400B62((word32) wLoc14_n);
 	g_b43001A = 0x00;
@@ -720,23 +720,23 @@ l00400C24:
 			if (r17_n <= 0x00)
 				break;
 			Eq_n r20_n;
-			r20_n.u3 = *r21_n.u5;
-			0x00431488 = (int8) 0x00;
-			((word32) sp_n + 0x0044)->u0 = 0x00;
-			(&sp_n.u21->u1)[72] = (struct Eq_n) 0x00;
+			r20_n.u4 = *r21_n.u6;
+			0x00431488 = 0x00;
+			sp_n.u11[0x0044] = (struct Eq_n) 0x00;
+			sp_n.u11[72] = (struct Eq_n) 0x00;
 			sp_n.u11[76] = (struct Eq_n) 0x00;
-			0x00431488 = (int8) 0x02;
+			0x00431488 = (int32) 0x02;
 			word32 r4_n;
 			word32 r6_n;
 			word32 r8_n;
 			word32 r9_n;
-			r2 = __inet_aton(r2, r3, r20_n, &g_t43148C, r12, out r3, out r4_n, out r6_n, out r8_n, out r9_n, out r11, out r12);
+			r2 = __inet_aton(r2, r3, r20_n, 0x0043148C, r12, out r3, out r4_n, out r6_n, out r8_n, out r9_n, out r11, out r12);
 			if (r4_n == 0x01)
 			{
-				hostname.u3 = (byte *) r20_n;
+				hostname.u0 = (int32) r20_n;
 				if (r17_n != 0x01)
 					goto l00400C06;
-				options.u3 = (byte *) (options.u3 | 0x04);
+				options.u0 = (int32) (options.u0 | 0x04);
 			}
 			else
 			{
@@ -754,14 +754,15 @@ l00400C24:
 					}
 				}
 				Eq_n r20_n;
-				r20_n.u3 = (word32) sp_n + 96;
+				r20_n.u12 = sp_n.u12 + 48;
 				r2 = fn00400B52(0x00431488, r6.u11[20], 0x10, out r3, out r11, out r12);
 				fn00400B4E(r20_n, 0x00, 0xFF);
-				Eq_n r5_n = *((word32) r6 + 24);
+				Eq_n r5_n;
+				r5_n.u4 = r6.u11[24];
 				if (r5_n != 0x00)
 					strncpy(r20_n, r5_n, 0xFE);
-				r17_n = sp_n.u11[56];
-				hostname.u3 = (byte *) r20_n;
+				r17_n.u4 = sp_n.u11[56];
+				hostname.u0 = (int32) r20_n;
 				if (r20_n != 0x00)
 					r2 = freeaddrinfo(r0, r20_n, r11, out r3, out r11);
 				if (r17_n != 0x01)
@@ -769,12 +770,12 @@ l00400C24:
 l00400C06:
 					int32 r7_n = nroute;
 					Eq_n r5_n;
-					r5_n.u3 = g_t43148C.u3;
+					r5_n.u0 = 0x0043148C;
 					nroute = r7_n + 0x01;
 					(&g_t431498.u0)[r7_n] = (word32) r5_n;
 				}
 			}
-			r17_n = (word32) r17_n - 1;
+			r17_n.u4 = (word32) r17_n.u0 - 1;
 			r21_n.u11 += 4;
 		}
 		r18_n.u0 = 0x0043004C;
@@ -786,10 +787,10 @@ l00400C06:
 l00400E36:
 			Eq_n r17_n;
 			r17_n.u0 = 0x00431488;
-			if (g_t43148C.u3 == 0x00)
-				((word32) sp_n + 0x0044)->u3 = r18_n.u11[4];
+			if (0x0043148C == 0x00)
+				sp_n.u11[0x0044] = r18_n.u11[4];
 			Eq_n r19_n;
-			r19_n.u3 = device.u3;
+			r19_n.u0 = device.u0;
 			if (r19_n != 0x00)
 			{
 				fn00400B4E(sp_n.u11 + 56, 0x00, 0x20);
@@ -806,20 +807,20 @@ l00400D02:
 				}
 				cmsg_len = 0x18;
 			}
-			if (broadcast_pings != 0x00 || __ins<word32,word32>(ntohl(g_t43148C.u3), 0x00, 0x00, 0x01) == 0x00)
+			if (broadcast_pings != 0x00 || __ins<word32,word32>(ntohl(0x0043148C), 0x00, 0x00, 0x01) == 0x00)
 			{
-				if (uid.u3 != 0x00)
+				if (uid.u0 != 0x00)
 				{
-					if (interval.u3 <= 999)
+					if (interval.u0 <= 999)
 					{
-						r5_n.u3 = stderr.u3;
+						r5_n.u0 = stderr.u0;
 						r4_n.u0 = 0x00410670;
 						goto l00400E0A;
 					}
 					int32 r7_n = pmtudisc;
 					if (r7_n >= 0x00 && r7_n != 0x02)
 					{
-						r5_n.u3 = stderr.u3;
+						r5_n.u0 = stderr.u0;
 						r4_n.u0 = 0x004106A0;
 						goto l00400E0A;
 					}
@@ -839,7 +840,7 @@ l00400EE0:
 			if (pmtudisc < 0x00)
 			{
 l00400F30:
-				if (!__bit<word32,word32>(options.u3, 0x0F) && bind() == ~0x00)
+				if (!__bit<word32,word32>(options.u0, 0x0F) && bind() == ~0x00)
 				{
 					r4_n.u0 = 0x004106E4;
 					goto l00400C92;
@@ -861,7 +862,7 @@ l00400F30:
 					word32 r8_n;
 					word32 r11_n;
 					word32 r12_n;
-					fputs_unlocked(0x00410710, stderr.u3, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
+					fputs_unlocked(0x00410710, stderr.u0, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
 				}
 				if (r7->dw0004 == 0x01)
 				{
@@ -871,19 +872,19 @@ l00400F30:
 					if (fn00401280(out r5_n) != 0x00)
 						r5_n = fn00401284(0x00410764, out r17_n);
 				}
-				if (!__bit<word32,word32>(options.u3, 0x05))
+				if (!__bit<word32,word32>(options.u0, 0x05))
 				{
 					word32 r6_n;
 					fn00401366(sp_n.u11 + 56, 0x00, 0x28, out r6_n);
 					sp_n.u11[56] = (struct Eq_n) 0x01;
-					(&sp_n.u21->u1)[57] = (struct Eq_n) 0x07;
-					(&sp_n.u21->u1)[58] = (struct Eq_n) 0x27;
-					(&sp_n.u21->u1)[59] = (struct Eq_n) 0x04;
+					sp_n.u11[57] = (struct Eq_n) 0x07;
+					sp_n.u11[58] = (struct Eq_n) 0x27;
+					sp_n.u11[59] = (struct Eq_n) 0x04;
 					optlen = 0x28;
 					if (fn00401280(out r5_n) < 0x00)
 						goto l0040100C;
 				}
-				if (!__bit<word32,word32>(options.u3, 0x09))
+				if (!__bit<word32,word32>(options.u0, 0x09))
 				{
 					word32 r6_n;
 					fn00401366(sp_n.u11 + 56, 0x00, 0x28, out r6_n);
@@ -892,13 +893,13 @@ l00400F30:
 					word32 r7_n = ts_type;
 					if (r7_n == 0x00)
 						r6_n = 0x28;
-					(&sp_n.u21->u1)[59] = (struct Eq_n) (byte) r7_n;
-					(&sp_n.u21->u1)[57] = (struct Eq_n) (byte) r6_n;
-					(&sp_n.u21->u1)[58] = (struct Eq_n) 0x05;
+					sp_n.u11[59] = (struct Eq_n) (byte) r7_n;
+					sp_n.u11[57] = (struct Eq_n) (byte) r6_n;
+					sp_n.u11[58] = (struct Eq_n) 0x05;
 					if (r7_n == 0x03)
 					{
 						int32 r5_n = nroute;
-						(&sp_n.u21->u1)[57] = (struct Eq_n) (((byte) r5_n << 0x03) + 0x04);
+						sp_n.u11[57] = (struct Eq_n) (((byte) r5_n << 0x03) + 0x04);
 						struct Eq_n * r6_n = (struct Eq_n *) (sp_n.u11 + 56);
 						int32 r7_n = 0x00;
 						while (true)
@@ -912,7 +913,7 @@ l00400F30:
 					}
 					if (fn00401280(out r5_n) < 0x00)
 					{
-						(&sp_n.u21->u1)[59] = (struct Eq_n) 0x02;
+						sp_n.u11[59] = (struct Eq_n) 0x02;
 						if (fn00401280(out r5_n) < 0x00)
 						{
 							r4_n.u0 = 0x00410798;
@@ -922,7 +923,7 @@ l00400F30:
 					optlen = 0x28;
 				}
 				Eq_n r19_n;
-				r19_n.u3 = options.u3;
+				r19_n.u0 = options.u0;
 				if (!__bit<word32,word32>(r19_n, 0x0A))
 				{
 					Eq_n r20_n;
@@ -934,15 +935,15 @@ l00400F30:
 					if ((r19_n & 0x80) == 0x00)
 						r7_n = 131;
 					int32 r8_n = nroute;
-					(&sp_n.u21->u1)[58] = (struct Eq_n) (((byte) r8_n << 0x02) + 0x03);
-					(&sp_n.u21->u1)[59] = (struct Eq_n) 0x04;
-					(&sp_n.u21->u1)[57] = (struct Eq_n) (byte) r7_n;
+					sp_n.u11[58] = (struct Eq_n) (((byte) r8_n << 0x02) + 0x03);
+					sp_n.u11[59] = (struct Eq_n) 0x04;
+					sp_n.u11[57] = (struct Eq_n) (byte) r7_n;
 					int32 r6_n = 0x00;
 					struct Eq_n * r7_n = (struct Eq_n *) &g_t431498;
 					while (r6_n < r8_n)
 					{
 						++r6_n;
-						r20_n.u5[r6_n] = r7_n->a0000[0].t0000.u3;
+						r20_n.u6[r6_n] = r7_n->a0000[0].t0000.u0;
 						++r7_n;
 					}
 					if (fn00401280(out r5_n) < 0x00)
@@ -953,8 +954,7 @@ l0040100C:
 					}
 					optlen = 0x28;
 				}
-				Eq_n r5_n;
-				r5_n.u3 = datalen.u3 + 8 + r5_n *s (optlen + 0x0104);
+				Eq_n r5_n = r5_n *s (optlen + 0x0104) + (datalen.u0 + 0x08);
 				sp_n.u11[28] = (struct Eq_n) r5_n;
 				r11 = sock_setbufs(r5_n);
 				word32 r5_n;
@@ -963,7 +963,7 @@ l0040100C:
 					r4_n.u0 = 0x004107A8;
 					goto l00400C92;
 				}
-				if (!__bit<word32,word32>(options.u3, 0x10))
+				if (!__bit<word32,word32>(options.u0, 0x10))
 				{
 					sp_n.u11[40] = (struct Eq_n) 0x00;
 					word32 r5_n;
@@ -973,9 +973,9 @@ l0040100C:
 						goto l00400C92;
 					}
 				}
-				if (!__bit<word32,word32>(options.u3, 0x11))
+				if (!__bit<word32,word32>(options.u0, 0x11))
 				{
-					sp_n.u11[40] = (struct Eq_n) ttl;
+					sp_n.u11[40] = (struct Eq_n) ttl.u1;
 					word32 r5_n;
 					if (fn00401280(out r5_n) == ~0x00)
 					{
@@ -990,7 +990,7 @@ l0040100C:
 					}
 				}
 				Eq_n r6_n;
-				r6_n.u3 = datalen.u3;
+				r6_n.u0 = datalen.u0;
 				if (0xFFE3 - optlen < r6_n)
 				{
 l00400BC6:
@@ -1009,10 +1009,10 @@ l00400BC6:
 				if (r4_n != 0x00)
 				{
 					Eq_n r21_n;
-					r21_n.u3 = hostname.u3;
+					r21_n.u0 = hostname.u0;
 					fn00401590(r17_n.u11[4]);
 					fn00401594(4262028);
-					if (device.u3 != 0x00 || !__bit<word32,word32>(options.u3, 0x0F))
+					if (device.u0 != 0x00 || !__bit<word32,word32>(options.u0, 0x0F))
 					{
 						fn00401590(r18_n.u11[4]);
 						fn00401594(4262044);
@@ -1020,7 +1020,7 @@ l00400BC6:
 					fn00401594(4262060);
 					main_loop(r0, setup(r0, r7), 0x0043005C, r7, (word32) r6_n + 0x0088, r21_n, r22_n);
 				}
-				r5_n.u3 = stderr.u3;
+				r5_n.u0 = stderr.u0;
 				r4_n.u0 = 4262004;
 l00400E0A:
 				word32 r12_n;
@@ -1054,7 +1054,7 @@ l00400C96:
 			fn00400B66();
 		}
 		Eq_n r19_n;
-		r19_n.u3 = device.u3;
+		r19_n.u0 = device.u0;
 		if (r19_n == 0x00)
 		{
 l00400D38:
@@ -1071,7 +1071,7 @@ l00400D38:
 			}
 			word32 r4_n = fn00400B62(0x0401);
 			int32 r7_n = nroute;
-			(&sp_n.u21->u1)[42] = (struct Eq_n) (word16) r4_n;
+			sp_n.u11[42] = (struct Eq_n) (word16) r4_n;
 			if (r7_n != 0x00)
 				sp_n.u11[44] = (struct Eq_n) g_t431498.u0;
 			uint32 r4_n = connect(out r5_n);
@@ -1085,7 +1085,7 @@ l00400DD0:
 					r4_n.u0 = 0x004105F8;
 					goto l00400C92;
 				}
-				sp_n.u12[3] = (struct Eq_n) stderr.u3;
+				((word32) sp_n + 0x0C)->u0 = stderr.u0;
 				r4_n.u0 = 0x00410594;
 				if (broadcast_pings == 0x00)
 					goto l00400E0A;
@@ -1112,30 +1112,30 @@ l00400DD0:
 				goto l00400C92;
 			}
 			Eq_n r7_n;
-			r7_n.u3 = device.u3;
-			r18_n.u16->w0002 = 0x00;
+			r7_n.u0 = device.u0;
+			r18_n.u11[2] = (struct Eq_n) 0x00;
 			if (r7_n != 0x00)
 			{
 				Eq_n r11_n = getifaddrs(r0, r11);
 				if (sp_n != ~0x37)
 				{
-					r5_n.u3 = stderr.u3;
+					r5_n.u0 = stderr.u0;
 					r4_n.u0 = 0x0041060C;
 					goto l00400E0A;
 				}
-				r22_n.u3 = device.u3;
+				r22_n.u0 = device.u0;
 				Eq_n r19_n = r21_n;
 				while (r19_n != 0x00)
 				{
 					Eq_n r20_n;
-					r20_n.u1 = r19_n.u16->ptr0003;
+					r20_n.u1 = r19_n.u11[3];
 					word32 r6_n;
 					word32 r7_n;
 					word32 r8_n;
 					word32 r9_n;
 					if (r20_n != 0x00 && ((word32) (*r20_n.u1) == 0x02 && (strncmp((r19_n.u11)[4], r22_n, 0x03, out r6_n) == 0x00 && memcmp((word32) r20_n + 4, 0x00430050, 0x04, out r7_n, out r8_n, out r9_n) == 0x00)))
 						break;
-					r19_n.u3 = *r19_n.u5;
+					r19_n.u4 = *r19_n.u6;
 				}
 				r11 = freeifaddrs(r0, r21_n, r11_n);
 				if (r19_n == 0x00)
@@ -1164,7 +1164,7 @@ l00400DD0:
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
-		strlen(device.u3, out r5_n, out r6_n, out r7_n);
+		strlen(device.u0, out r5_n, out r6_n, out r7_n);
 		word32 r3_n;
 		int32 r4_n;
 		word32 r5_n;
@@ -1183,13 +1183,13 @@ l00400DD0:
 		if (__ins<word32,word32>(ntohl(r4_n), 0x00, 0x00, 0x01) == 0x00)
 		{
 			int32 r4_n;
-			word32 r7_n;
+			<anonymous> * r7_n;
 			ioctl(out r4_n, out r7_n);
 			if (r4_n < 0x00)
 				goto l00400D02;
 			sp_n.u11[28] = (struct Eq_n) 0x00;
 			sp_n.u11[36] = (struct Eq_n) r7_n;
-			(&sp_n.u21->u1)[32] = (struct Eq_n) 0x00;
+			sp_n.u11[32] = (struct Eq_n) 0x00;
 			if (r4_n == fn00400B4A())
 			{
 				r4_n.u0 = 0x00410540;
@@ -1201,7 +1201,7 @@ l00400DD0:
 		goto l00400C92;
 	}
 	Eq_n r7_n;
-	r7_n.u3 = options.u3;
+	r7_n.u0 = options.u0;
 	if (!__bit<word32,word32>(r7_n, 0x05))
 	{
 l00400B80:
@@ -1218,7 +1218,7 @@ l00400B80:
 	}
 	if (r17_n < 11)
 	{
-		options.u3 = (byte *) (r7_n | 0x0400);
+		options.u0 = (int32) (r7_n | 0x0400);
 		goto l00400C24;
 	}
 	goto l00400B80;
@@ -1276,7 +1276,7 @@ Eq_n pr_addr(Eq_n r0, Eq_n r4, Eq_n r18, Eq_n r19, Eq_n r20, Eq_n r21, Eq_n r22,
 	fn00401366(fp - 0x020C, 0x00, 0xFB, out r6_n);
 	Eq_n r5_n = fn00401366(&tLoc010C, 0x00, 0xFB, out r6_n);
 	Eq_n r7_n;
-	r7_n.u3 = last_salen.5581.u3;
+	r7_n.u0 = last_salen.5581.u0;
 	if (r6_n == r7_n)
 	{
 		r5_n.u0 = 4396000;
@@ -1285,13 +1285,13 @@ Eq_n pr_addr(Eq_n r0, Eq_n r4, Eq_n r18, Eq_n r19, Eq_n r20, Eq_n r21, Eq_n r22,
 		if (memcmp(&tLoc010C, 4396000, r6_n, out r7_n, out r8_n, out r9_n) == 0x00)
 			return r4;
 	}
-	last_salen.5581.u3 = (byte *) r7_n;
+	last_salen.5581.u0 = (int32) r7_n;
 	Eq_n r5_n = fn00401608(4396000, r5_n, r7_n, out r7_n);
 	Eq_n r4_n;
-	r4_n.u3 = (word32) (_setjmp(&g_t454340, 0xFB, r4, r18, r19, r20, r21, r22, r23, r28, r30, ra) < 0x01);
-	in_pr_addr.u3 = (byte *) r4_n;
+	r4_n.u4 = (word32) (_setjmp(&g_t454340, 0xFB, r4, r18, r19, r20, r21, r22, r23, r28, r30, ra) < 0x01);
+	in_pr_addr.u0 = (int32) r4_n;
 	Eq_n r4_n = getnameinfo(r4_n, r5_n, fp - 0x0110, 0xFF, 0x01, r21, out r5_n);
-	if (exiting == 0x00 && __bit<word32,word32>(options.u3, 0x02))
+	if (exiting == 0x00 && __bit<word32,word32>(options.u0, 0x02))
 	{
 		word32 r5_n;
 		getnameinfo(r4_n, r5_n, fp - 0x0210, 0xFF, 0x00, r21, out r5_n);
@@ -1300,7 +1300,7 @@ Eq_n pr_addr(Eq_n r0, Eq_n r4, Eq_n r18, Eq_n r19, Eq_n r20, Eq_n r21, Eq_n r22,
 		snprintf(0x004303E0, 0x1000, 0x00410C70);
 	else
 		snprintf(0x004303E0, 0x1000, 0x00410C68);
-	in_pr_addr.u3 = (byte *) r0;
+	in_pr_addr.u0 = (int32) r0;
 	return r4;
 }
 
@@ -1327,16 +1327,16 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 {
 	Eq_n r16_n = r4;
 	Eq_n r20_n;
-	r20_n.u3 = &r5.u12->dwFFFFFFEC;
+	r20_n.u4 = &r5.u11->dwFFFFFFEC;
 	while (r20_n > 0x00)
 	{
-		up32 r5_n = (word32) *r16_n.u3;
+		up32 r5_n = (word32) *r16_n.u4;
 		if (r5_n == 0x00)
 			return;
 		if (r5_n != 0x01)
 		{
 			Eq_n r19_n;
-			r19_n.u3 = (word32) r16_n.u11[1];
+			r19_n.u4 = (word32) r16_n.u11[1];
 			if (r19_n < 0x02 || r20_n < r19_n)
 				return;
 			ptr32 fp;
@@ -1344,15 +1344,15 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 			if (r5_n == 0x04)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = (word32) r16_n.u11[2];
+				r7_n.u4 = (word32) r16_n.u11[2];
 				if ((word32) (r7_n < r19_n) == 0x00)
 					r7_n = r19_n;
 				Eq_n r18_n;
-				r18_n.u3 = (word32) r7_n - 5;
+				r18_n.u4 = (word32) r7_n.u0 - 5;
 				if (r18_n <= 0x00)
 					goto l004013FA;
 				Eq_n r21_n;
-				r21_n.u3 = (word32) r16_n.u11[3];
+				r21_n.u4 = (word32) r16_n.u11[3];
 				fn00401594(0x00410CB0);
 				r30.u11 = r16_n.u11 + 4;
 				r23.u0 = 0x00;
@@ -1373,12 +1373,12 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 							r17_n = pr_addr(r0, fp - 0x40, r18_n, r19_n, r20_n, r21_n, r22, r23, r28, r30, ra);
 							fn00401594(0x00410C94);
 						}
-						r18_n.u3 = &r18_n.u12->dwFFFFFFFC;
+						r18_n.u4 = (word32) r18_n.u0 - 4;
 						if (r18_n <= 0x00)
 							break;
 					}
 					r30.u11 = r17_n.u11 + 4;
-					Eq_n r17_n = (word32) r17_n.u11[3] + ((word32) (r17_n.u11)[2] + ((word32) (r17_n.u11)[1] + ((word32) (*r17_n.u3) << 0x08) << 0x08) << 0x08);
+					Eq_n r17_n = (word32) r17_n.u11[3] + ((word32) (r17_n.u11)[2] + ((word32) (r17_n.u11)[1] + ((word32) (*r17_n.u4) << 0x08) << 0x08) << 0x08);
 					if (r17_n < 0x00)
 					{
 						Eq_n r17_n = __ext<word32,word32>(r17_n, 0x00, 0x1F);
@@ -1401,7 +1401,7 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 						r22 = r17_n;
 					}
 					fn00401766(0x0A);
-					r18_n.u3 = &r18_n.u12->dwFFFFFFFC;
+					r18_n.u4 = (word32) r18_n.u0 - 4;
 				} while (r18_n > 0x00);
 				r4_n.u0 = 0x00410D00;
 				if (r21_n >> 0x04 != 0x00)
@@ -1413,11 +1413,11 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 				if (r5_n != 0x07)
 					goto l004013A2;
 				Eq_n r7_n;
-				r7_n.u3 = (word32) r16_n.u11[2];
+				r7_n.u4 = (word32) r16_n.u11[2];
 				if ((word32) (r7_n < r19_n) == 0x00)
 					r7_n = r19_n;
 				Eq_n r17_n;
-				r17_n.u3 = &r7_n.u12->dwFFFFFFFC;
+				r17_n.u4 = (word32) r7_n.u0 - 4;
 				if (r17_n > 0x00)
 				{
 					Eq_n r18_n;
@@ -1425,11 +1425,11 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 					word32 r7_n;
 					word32 r8_n;
 					word32 r9_n;
-					if (old_rrlen.5543.u3 == r17_n && (memcmp(r18_n, 0x00431460, r17_n, out r7_n, out r8_n, out r9_n) == 0x00 && __bit<word32,word32>(options.u3, 0x00)))
+					if (old_rrlen.5543.u0 == r17_n && (memcmp(r18_n, 0x00431460, r17_n, out r7_n, out r8_n, out r9_n) == 0x00 && __bit<word32,word32>(options.u0, 0x00)))
 						fn00401594(4263064);
 					else
 					{
-						old_rrlen.5543.u3 = (byte *) r17_n;
+						old_rrlen.5543.u0 = (int32) r17_n;
 						word32 r7_n;
 						fn00401608(0x00431460, r18_n, r17_n, out r7_n);
 						fn00401594(0x00410CA8);
@@ -1439,7 +1439,7 @@ void pr_options(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r22, Eq_n r23, word32 r28, Eq_n 
 						do
 						{
 							word32 r7_n;
-							fn00401608(fp - 0x44, r18_n.u3 + (r17_n - r17_n), 0x04, out r7_n);
+							fn00401608(fp - 0x44, r18_n.u4 + (r17_n - r17_n), 0x04, out r7_n);
 							if (r7_n == 0x00)
 								fn00401594(0x00410C88);
 							else
@@ -1467,7 +1467,7 @@ l0040158C:
 				word32 r14_n;
 				printf(0x00410C7C, out r4_n, out r7_n, out r11_n, out r14_n);
 				Eq_n r21_n;
-				r21_n.u3 = (word32) r16_n.u11[1];
+				r21_n.u4 = (word32) r16_n.u11[1];
 				if (r21_n >= 0x05)
 				{
 					Eq_n r18_n;
@@ -1494,7 +1494,7 @@ l004013FA:
 			continue;
 		}
 		fn00401594(0x00410C74);
-		r20_n.u3 = &r20_n.u11->bFFFFFFFF;
+		r20_n.u4 = (word32) r20_n.u0 - 1;
 		++r16_n.u11;
 	}
 }
@@ -1530,18 +1530,18 @@ void fn00401594(Eq_n r4)
 void pr_iph(Eq_n r0, struct Eq_n * r4, Eq_n r22, Eq_n r23, word32 r28, Eq_n r30, word32 ra)
 {
 	fn00401762(4263212);
-	__ext<word32,word32>(r4->t0000.u3, 0x04, 0x04);
+	__ext<word32,word32>(r4->t0000.u0, 0x04, 0x04);
 	fn00401594(0x00410D70);
 	__ext<word32,word32>((word32) r4->w0006, 0x00, 0x0D);
 	fn00401594(0x00410D8C);
 	fn00401594(4263320);
-	fn00401590(r4->t000C.u3);
+	fn00401590(r4->t000C.u0);
 	word32 r4_n;
 	word32 r7_n;
 	word32 r11_n;
 	word32 r14_n;
 	printf(4263340, out r4_n, out r7_n, out r11_n, out r14_n);
-	fn00401590(r4->t0010.u3);
+	fn00401590(r4->t0010.u0);
 	word32 r4_n;
 	word32 r7_n;
 	word32 r11_n;
@@ -1572,11 +1572,11 @@ Eq_n fn00401608(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r7Out)
 	return r5_n;
 }
 
-// 0040160C: void pr_icmph(Register Eq_n r0, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r7, Register Eq_n r18, Register Eq_n r19, Register Eq_n r20, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register word32 r28, Register Eq_n r30, Register word32 ra)
+// 0040160C: void pr_icmph(Register Eq_n r0, Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register Eq_n r18, Register Eq_n r19, Register Eq_n r20, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register word32 r28, Register Eq_n r30, Register word32 ra)
 // Called from:
 //      ping4_receive_error_msg
 //      ping4_parse_reply
-void pr_icmph(Eq_n r0, Eq_n r4, Eq_n r5, struct Eq_n * r7, Eq_n r18, Eq_n r19, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, word32 r28, Eq_n r30, word32 ra)
+void pr_icmph(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r18, Eq_n r19, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, word32 r28, Eq_n r30, word32 ra)
 {
 	if (r4 >= 0x13)
 	{
@@ -1715,15 +1715,15 @@ l00401634:
 			fn00401762(r4_n);
 			goto l00401652;
 		case 0x0C:
-			if (r7 != null)
-				fn0040193C(r7[2]);
+			if (r7 != 0x00)
+				fn0040193C(r7.u1[2]);
 			r4_n.u0 = 4264144;
 l00401650:
 			fn00401594(r4_n);
 l00401652:
-			if (r7 == null || __bit<word32,word32>(options.u3, 0x08))
+			if (r7 == 0x00 || __bit<word32,word32>(options.u0, 0x08))
 				return;
-			pr_iph(r0, r7 + 4, r22, r23, r28, r30, ra);
+			pr_iph(r0, r7.u1 + 4, r22, r23, r28, r30, ra);
 			return;
 		case 0x0D:
 			r4_n.u0 = 0x004110F4;
@@ -1778,13 +1778,14 @@ void ping4_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 	union Eq_n * r4_n;
 	__errno_location(out r4_n);
 	Eq_n r19_n;
-	r19_n.u3 = r4_n->u3;
+	r19_n.u0 = r4_n->u0;
 	Eq_n r4_n = recvmsg(out r5_n, out r6_n);
 	if (r4_n >= 0x00)
 	{
 		Eq_n r6_n;
 		r6_n.u0 = 0x0200;
-		struct Eq_n * r7_n = null;
+		Eq_n r7_n;
+		r7_n.u0 = 0x00;
 		if (true)
 		{
 			ptr32 fp;
@@ -1792,21 +1793,21 @@ void ping4_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 		}
 		Eq_n r18_n;
 		r18_n.u0 = 0x00;
-		struct Eq_n * r7_n;
-		while (r7_n != null)
+		Eq_n r7_n;
+		while (r7_n != 0x00)
 		{
-			if (r7_n->dw0004 == 0x00 && r7_n->dw0008 == 11)
-				r18_n.u3 = &r7_n->dw0008 + 1;
-			r6_n.u3 = r7_n->t0000.u3;
+			if (r7_n.u1->dw0004 == 0x00 && (r7_n.u1)->dw0008 == 11)
+				r18_n.u4 = (word32) r7_n + 0x0C;
+			r6_n.u0 = r7_n.u1->t0000.u0;
 			if (r6_n >= 0x0C)
 			{
 				r6_n = __ins<word32,word32>(r6_n.u11 + 3, 0x00, 0x00, 0x01);
 				r7_n = r7_n + r6_n;
 				r7_n = r7_n;
-				if (r6_n.u12 + 3 < (r5_n + 0x0200) - r7_n)
+				if (r6_n.u11 + 0x0C < (r5_n + 0x0200) - r7_n)
 					continue;
 			}
-			r7_n = null;
+			r7_n.u0 = 0x00;
 		}
 		if (r18_n == 0x00)
 			abort(r0);
@@ -1815,7 +1816,7 @@ void ping4_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 		if (r5_n == 0x01)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = options.u3;
+			r7_n.u0 = options.u0;
 			r16_n = r7_n & 0x10;
 			if ((r7_n & 0x10) == 0x00)
 			{
@@ -1823,7 +1824,7 @@ void ping4_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 					fn00401BA0(r5_n);
 				else
 				{
-					byte * r4_n = *r18_n.u5;
+					byte * r4_n = *r18_n.u6;
 					if (r4_n != (byte *) 0x1A)
 					{
 						word32 r4_n;
@@ -1847,11 +1848,11 @@ l00401938:
 			byte bLoc0254;
 			Eq_n dwLoc0248;
 			uint16 wLoc0250;
-			if (r4_n >= 0x08 && (g_t43148C.u3 == r6_n && ((word32) bLoc0254 == 0x08 && is_ours(dwLoc0248, (word32) wLoc0250) != 0x00)))
+			if (r4_n >= 0x08 && (0x0043148C == r6_n && ((word32) bLoc0254 == 0x08 && is_ours(dwLoc0248, (word32) wLoc0250) != 0x00)))
 			{
 				uint16 wLoc024E;
 				acknowledge(fn00401B9C((word32) wLoc024E));
-				if (dwLoc0248.u11[4] == 0x03 && (dwLoc0248.u11)[8] == 0x00)
+				if (dwLoc0248.u11[4] == 0x03 && (dwLoc0248.u13)[2] == 0x00)
 				{
 					word32 r3_n;
 					word32 r4_n;
@@ -1872,7 +1873,7 @@ l00401938:
 					}
 				}
 				Eq_n r16_n;
-				r16_n.u3 = options.u3;
+				r16_n.u0 = options.u0;
 				++nerrors;
 				if ((r16_n & 0x10) == 0x00)
 				{
@@ -1884,11 +1885,11 @@ l00401938:
 					}
 					word32 r11_n;
 					print_timestamp(out r11_n);
-					pr_addr(r0, r18_n.u12 + 4, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
+					pr_addr(r0, r18_n.u11 + 16, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
 					fn00401B9C((word32) wLoc024E);
 					fn00401594(4264428);
-					pr_icmph(r0, (word32) r18_n.u11[5], (word32) r18_n.u11[6], null, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
-					fn00401B98(stdout.u3);
+					pr_icmph(r0, (word32) r18_n.u11[5], (word32) r18_n.u11[6], 0x00, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
+					fn00401B98(stdout.u0);
 				}
 				r16_n = 0x01;
 				goto l00401836;
@@ -1911,18 +1912,18 @@ void fn0040193C(Eq_n r4)
 void ping4_parse_reply(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r7, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, word32 r28, Eq_n r30, word32 ra)
 {
 	Eq_n r16_n;
-	r16_n.u3 = r5->ptr0008->u3;
-	struct Eq_n * r7_n;
+	r16_n.u0 = r5->ptr0008->u0;
+	Eq_n r7_n;
 	Eq_n r23_n;
 	Eq_n r21_n;
 	Eq_n r22_n;
 	if (r4.u11[4] == 0x03)
 	{
-		ui32 r5_n = *r16_n.u5;
+		ui32 r5_n = *r16_n.u6;
 		r7_n = (r5_n & 0x0F) << 0x02;
-		if ((char *) &r7_n->dw0004 + 3 >= r6 || (r5_n & 0x0F) < 0x05)
+		if ((word32) r7_n + 7 >= r6 || (r5_n & 0x0F) < 0x05)
 		{
-			if (!__bit<word32,word32>(options.u3, 0x08))
+			if (!__bit<word32,word32>(options.u0, 0x08))
 			{
 				pr_addr(r0, r7, r7, r19, r6, r21, r22, r23, r28, r30, ra);
 				word32 r7_n;
@@ -1930,37 +1931,38 @@ void ping4_parse_reply(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r7, Eq_
 			}
 			return;
 		}
-		r23_n.u3 = (word32) r16_n.u11[8];
+		r23_n.u4 = (word32) r16_n.u11[8];
 		r21_n.u11 = r16_n.u11 + 20;
-		r22_n.u3 = (char *) r7_n - 20;
+		r22_n.u4 = (word32) r7_n - 20;
 	}
 	else
 	{
 		up32 r19_n = r5->dw0014;
 		if (r19_n >= 0x0C)
 		{
-			struct Eq_n * r5_n = r5->ptr0010;
+			Eq_n r5_n;
+			r5_n.u0 = r5->t0010.u0;
 			r21_n = r16_n;
 			r22_n.u0 = 0x00;
 			r23_n.u0 = 0x00;
 			r7_n = r5_n;
-			struct Eq_n * r7_n;
-			while (r7_n != null)
+			Eq_n r7_n;
+			while (r7_n != 0x00)
 			{
 				Eq_n r4_n;
-				r4_n.u3 = r7_n->t0000.u3;
-				if (r7_n->dw0004 == 0x00)
+				r4_n.u0 = r7_n.u1->t0000.u0;
+				if (r7_n.u1->dw0004 == 0x00)
 				{
-					word32 r6_n = r7_n->dw0008;
+					word32 r6_n = r7_n.u1->dw0008;
 					if (r6_n == 0x02)
 					{
 						if (r4_n < 0x04)
 							goto l00401A26;
-						r23_n.u3 = (word32) r7_n->b000C;
+						r23_n.u4 = (word32) r7_n.u1->b000C;
 					}
 					else if (r6_n == 0x07)
 					{
-						r21_n.u3 = &r7_n->b000C;
+						r21_n.u4 = &r7_n.u1->b000C;
 						r22_n = r4_n;
 					}
 				}
@@ -1969,11 +1971,11 @@ void ping4_parse_reply(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r7, Eq_
 					Eq_n r4_n = __ins<word32,word32>(r4_n.u11 + 3, 0x00, 0x00, 0x01);
 					r7_n = r7_n + r4_n;
 					r7_n = r7_n;
-					if (r4_n.u12 + 3 < (&(r5_n->t0000).u0 + r19_n) - r7_n)
+					if (r4_n.u11 + 0x0C < ((char *) (&((r5_n.u1)->t0000).u0) + r19_n) - r7_n)
 						continue;
 				}
 l00401A26:
-				r7_n = null;
+				r7_n.u0 = 0x00;
 			}
 		}
 		else
@@ -1981,13 +1983,13 @@ l00401A26:
 			r21_n = r16_n;
 			r22_n.u0 = 0x00;
 			r23_n.u0 = 0x00;
-			r7_n = null;
+			r7_n.u0 = 0x00;
 		}
 	}
 	Eq_n r20_n = r6 - r7_n;
-	struct Eq_n * r16_n = r16_n + r7_n;
+	Eq_n r16_n = r16_n + r7_n;
 	Eq_n r4_n = in_cksum(r16_n, r20_n, 0x00);
-	word32 r7_n = (word32) r16_n->b0000;
+	word32 r7_n = (word32) r16_n.u1->b0000;
 	if (r7_n != 0x00)
 	{
 		uint32 r7_n = r7_n + ~0x02 & 0xFF;
@@ -1998,15 +2000,15 @@ l00401A26:
 			{
 				if (r20_n < 0x24)
 					return;
-				ui32 r17_n = (r16_n[4] & 0x0F) + 0x04;
+				ui32 r17_n = (r16_n.u1[4] & 0x0F) + 0x04;
 				if (r20_n < r17_n << 0x02)
 					return;
-				struct Eq_n * r17_n = (struct Eq_n *) (&r16_n->b0000 + ((r17_n << 0x02) + ~0x07));
-				if ((word32) r17_n->b0000 != 0x08 || (g_t43148C.u3 != r16_n[0x0C] || is_ours(r4, (word32) r17_n->w0004) == 0x00))
+				struct Eq_n * r17_n = (struct Eq_n *) (&r16_n.u1->b0000 + ((r17_n << 0x02) + ~0x07));
+				if ((word32) r17_n->b0000 != 0x08 || (0x0043148C != (r16_n.u1)[0x0C] || is_ours(r4, (word32) r17_n->w0004) == 0x00))
 					return;
-				if (((word32) r16_n->b0000 + ~0x03 & 0xFF) < 0x02)
+				if (((word32) r16_n.u1->b0000 + ~0x03 & 0xFF) < 0x02)
 				{
-					if ((options.u3 & 0x11) == 0x00)
+					if ((options.u0 & 0x11) == 0x00)
 					{
 						word32 r11_n;
 						print_timestamp(out r11_n);
@@ -2015,10 +2017,10 @@ l00401A26:
 						if (r4_n != 0x00)
 							fn00401B94(0x00411248);
 						Eq_n r17_n;
-						r17_n.u3 = (word32) r16_n->b0000;
+						r17_n.u4 = (word32) r16_n.u1->b0000;
 						Eq_n r18_n;
-						r18_n.u3 = (word32) r16_n->b0001;
-						fn0040193C(r16_n[2]);
+						r18_n.u4 = (word32) r16_n.u1->b0001;
+						fn0040193C(r16_n.u1[2]);
 						pr_icmph(r0, r17_n, r18_n, r16_n, r18_n, r4_n, r20_n, r21_n, r22_n, r23_n, r28, r30, ra);
 					}
 					return;
@@ -2033,10 +2035,10 @@ l00401A26:
 				return;
 		}
 		Eq_n r7_n;
-		r7_n.u3 = options.u3;
+		r7_n.u0 = options.u0;
 		if ((r7_n & 0x0111) != 0x01)
 		{
-			if (__bit<word32,word32>(r7_n, 0x08) || uid.u3 != 0x00)
+			if (__bit<word32,word32>(r7_n, 0x08) || uid.u0 != 0x00)
 				return;
 			if (!__bit<word32,word32>(r7_n, 0x13))
 			{
@@ -2052,10 +2054,10 @@ l00401A26:
 			if (r4_n == 0x00)
 			{
 				Eq_n r18_n;
-				r18_n.u3 = (word32) r16_n->b0000;
+				r18_n.u4 = (word32) r16_n.u1->b0000;
 				Eq_n r19_n;
-				r19_n.u3 = (word32) r16_n->b0001;
-				fn0040193C(r16_n[2]);
+				r19_n.u4 = (word32) r16_n.u1->b0001;
+				fn0040193C(r16_n.u1[2]);
 				pr_icmph(r0, r18_n, r19_n, r16_n, r18_n, r19_n, r20_n, r21_n, r22_n, r23_n, r28, r30, ra);
 				return;
 			}
@@ -2076,29 +2078,29 @@ l00401A26:
 			return;
 		}
 	}
-	if (is_ours(r4, (word32) r16_n[2]) == 0x00)
+	if (is_ours(r4, (word32) r16_n.u1[2]) == 0x00)
 		return;
-	Eq_n r4_n = fn00401B9C((word32) r16_n[3]);
+	Eq_n r4_n = fn00401B9C((word32) r16_n.u1[3]);
 	if (gather_statistics(r16_n, 0x08, r20_n, r4_n, r23_n, 0x00, pr_addr(r0, r7, r7, r4_n, r20_n, r21_n, r22_n, r23_n, r28, r30, ra), 0x004009EE) != 0x00)
 	{
-		fn00401B98(stdout.u3);
+		fn00401B98(stdout.u0);
 		return;
 	}
-	if (!__bit<word32,word32>(options.u3, 0x0D))
+	if (!__bit<word32,word32>(options.u0, 0x0D))
 	{
 		fn00401766(0x07);
-		if (__bit<word32,word32>(options.u3, 0x00))
+		if (__bit<word32,word32>(options.u0, 0x00))
 		{
 l00401B7C:
-			pr_options(r0, r21_n, r22_n.u11 + 20, r22_n, r23_n, r28, r30, ra);
+			pr_options(r0, r21_n, (word32) r22_n.u2 + 20, r22_n, r23_n, r28, r30, ra);
 			word32 r17_n;
 			putchar(0x0A, out r17_n);
-			fn00401B98(stdout.u3);
+			fn00401B98(stdout.u0);
 			return;
 		}
-		fn00401B98(stdout.u3);
+		fn00401B98(stdout.u0);
 	}
-	if (!__bit<word32,word32>(options.u3, 0x00))
+	if (!__bit<word32,word32>(options.u0, 0x00))
 		return;
 	goto l00401B7C;
 }
@@ -2151,7 +2153,7 @@ void fn00401BA0(up32 r5)
 ui32 in_flight(union Eq_n & r7Out)
 {
 	Eq_n r7_n;
-	r7_n.u3 = ntransmitted.u3;
+	r7_n.u0 = ntransmitted.u0;
 	Eq_n r6_n = r7_n - (word32) g_w454518;
 	ui32 r4_n = r6_n & 0xFFFF;
 	if (!__bit<word32,word32>(r6_n, 0x0F))
@@ -2169,9 +2171,9 @@ ui32 in_flight(union Eq_n & r7Out)
 void advance_ntransmitted()
 {
 	Eq_n r6_n;
-	r6_n.u3 = ntransmitted.u3;
+	r6_n.u0 = ntransmitted.u0;
 	int32 r4_n = (word32) g_w454518;
-	ntransmitted.u3 = (byte *) (r6_n.u11 + 1);
+	ntransmitted.u0 = (int32) (r6_n.u11 + 1);
 	if ((r6_n.u11 + 1 & 0xFFFF) - r4_n > 0x7FFF)
 		g_w454518 = (word16) r6_n + 0x02;
 }
@@ -2179,7 +2181,7 @@ void advance_ntransmitted()
 // 00401C04: void sigstatus()
 void sigstatus()
 {
-	status_snapshot.u3 = (byte *) 0x01;
+	status_snapshot.u0 = 0x01;
 }
 
 // 00401C0E: void update_interval()
@@ -2189,12 +2191,12 @@ void sigstatus()
 void update_interval()
 {
 	Eq_n r6_n;
-	r6_n.u3 = rtt_addend.u3;
+	r6_n.u0 = rtt_addend.u0;
 	Eq_n r7_n;
-	r7_n.u3 = uid.u3;
-	interval.u3 = (byte *) r6_n;
+	r7_n.u0 = uid.u0;
+	interval.u0 = (int32) r6_n;
 	if (r7_n != 0x00 && r6_n <= 199)
-		interval.u3 = (byte *) 200;
+		interval.u0 = 200;
 }
 
 // 00401C60: void write_stdout(Register up32 r5)
@@ -2231,7 +2233,7 @@ void set_signal(up32 r4, ptr32 r5)
 void sigexit(Eq_n r0)
 {
 	exiting = 0x01;
-	if (in_pr_addr.u3 == 0x00)
+	if (in_pr_addr.u0 == 0x00)
 		return;
 	_longjmp(0x00);
 	limit_capabilities(r0);
@@ -2246,7 +2248,7 @@ word32 limit_capabilities(Eq_n r0)
 	word32 r7_n;
 	word32 r6_n;
 	word32 r5_n;
-	uid.u3 = (byte *) fn00401E82();
+	uid.u0 = (int32) fn00401E82();
 	euid = geteuid();
 	word32 r3_n;
 	word32 r4_n;
@@ -2351,12 +2353,12 @@ word32 fill(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r6)
 	Eq_n r16_n = r4;
 	while (true)
 	{
-		uint32 r4_n = (word32) *r16_n.u3;
+		uint32 r4_n = (word32) *r16_n.u4;
 		if (r4_n == 0x00)
 			break;
 		if (isxdigit(r4_n) == 0x00)
 		{
-			fn00402126(0x00411290, stderr.u3);
+			fn00402126(0x00411290, stderr.u0);
 			word32 r5_n;
 			word32 r6_n;
 			word32 r7_n;
@@ -2365,23 +2367,23 @@ word32 fill(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r6)
 		++r16_n.u11;
 	}
 	word32 r3_n = __isoc99_sscanf(r0, r4, &g_t4112C4, r6, r4, out r4_n);
-	up32 r6_n = 0x00;
+	Eq_n r6_n;
+	r6_n.u0 = 0x00;
 	if (r4_n > 0x00)
 	{
-		while (&r6.u12->dwFFFFFFF8 - r4_n >= r6_n)
+		for (; r6.u11->aFFFFFFF8 - r4_n >= r6_n; r6_n += r4_n)
 		{
 			Eq_n r7_n;
 			r7_n.u0 = 0x00;
 			do
 			{
 				ptr32 fp;
-				*((word32) ((word32) r5 + ((word32) r7_n + r6_n)) + 8) = (word32) (fp - 0x60)[r7_n].b0000;
+				Mem143[r5 + (r7_n + r6_n) + 0x08:byte] = (fp - 0x60)[r7_n * 0x04];
 				r7_n = (word32) r7_n + 1;
 			} while (r7_n != r4_n);
-			r6_n = (word32) r4_n + r6_n;
 		}
 	}
-	if (__bit<word32,word32>(options.u3, 0x04))
+	if (__bit<word32,word32>(options.u0, 0x04))
 	{
 		word32 r11_n;
 		fn0040212A(4264696, out r11_n);
@@ -2411,7 +2413,7 @@ Eq_n __schedule_exit(Eq_n r4)
 	if (nreceived != 0x00)
 	{
 		Eq_n r7_n;
-		r7_n.u3 = interval.u3;
+		r7_n.u0 = interval.u0;
 		int32 r6_n = tmax;
 		waittime.5325 = r6_n << 0x01;
 		r7_n = r7_n *s 1000;
@@ -2444,7 +2446,7 @@ word32 print_timestamp(ptr32 & r11Out)
 {
 	word32 r4;
 	ptr32 r11;
-	if (!__bit<word32,word32>(options.u3, 0x13))
+	if (!__bit<word32,word32>(options.u0, 0x13))
 	{
 		ptr32 fp;
 		word32 r4_n;
@@ -2493,9 +2495,9 @@ Eq_n fn00401E7A(Eq_n r4, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8
 Eq_n fn00401E7E(union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	exit();
-	r5Out.u0 = (Eq_n (*)[]) <invalid>;
-	r6Out.u0 = (Eq_n (*)[]) <invalid>;
-	r7Out.u0 = (Eq_n (*)[]) <invalid>;
+	r5Out.u0 = <invalid>;
+	r6Out.u0 = <invalid>;
+	r7Out.u0 = <invalid>;
 	return <invalid>;
 }
 
@@ -2521,16 +2523,16 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 	if (exiting == 0x00)
 	{
 		Eq_n r7_n;
-		r7_n.u3 = npackets.u3;
-		if (r7_n == 0x00 || (ntransmitted.u3 < r7_n || deadline != 0x00))
+		r7_n.u0 = npackets.u0;
+		if (r7_n == 0x00 || (ntransmitted.u0 < r7_n || deadline != 0x00))
 		{
 			word32 r17_n;
-			if (g_ptr454490 == null)
+			if (0x00454490 == 0x00)
 			{
 				word32 r4_n;
 				word32 r6_n;
-				fn004021B0(&g_ptr454490, out r4_n, out r6_n, out r17_n);
-				tokens.5340.u3 = (byte *) ((preload.u3 + -1) *s interval.u3);
+				fn004021B0(0x00454490, out r4_n, out r6_n, out r17_n);
+				tokens.5340.u0 = (int32) ((preload.u0 + ~0x00) *s interval.u0);
 			}
 			else
 			{
@@ -2539,21 +2541,22 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 				word32 r6_n;
 				word32 r17_n;
 				fn004021B0(fp - 0x28, out r4_n, out r6_n, out r17_n);
-				struct Eq_n * r8_n = g_ptr454490;
-				struct Eq_n * r7_n = (struct Eq_n *) &g_ptr454490;
+				Eq_n r8_n;
+				r8_n.u0 = 0x00454490;
+				Eq_n r7_n;
+				r7_n.u0 = 0x00454490;
 				Eq_n r9_n;
-				r9_n.u3 = preload.u3;
+				r9_n.u0 = preload.u0;
 				Eq_n r5_n;
-				r5_n.u3 = interval.u3;
-				int32 r8_n = r8_n + (r4_n - r8_n) * 0x007D;
+				r5_n.u0 = interval.u0;
+				int32 r8_n = (word32) r8_n.u0 + (r4_n - r8_n) *s 1000;
 				if (r5_n == 0x00 && (r8_n < 0x0A && in_flight(out r7_n) >= r9_n))
 				{
 					r12Out = r12;
 					return 0x0A - r8_n;
 				}
 				Eq_n r9_n = r9_n *s r5_n;
-				Eq_n r4_n;
-				r4_n.u3 = tokens.5340.u3 + r8_n;
+				Eq_n r4_n = tokens.5340.u0 + r8_n;
 				if ((word32) (r4_n < r9_n) == 0x00)
 					r4_n = r9_n;
 				if (r4_n < r5_n)
@@ -2561,16 +2564,16 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 					r12Out = r12;
 					return r5_n - r4_n;
 				}
-				tokens.5340.u3 = (byte *) (r4_n - r5_n);
-				g_ptr454490 = r7_n;
-				g_ptr454491 = r7_n;
+				tokens.5340.u0 = (int32) (r4_n - r5_n);
+				0x00454490 = (int32) r7_n;
+				g_t454491.u0 = (int32) r7_n;
 				word32 dwLoc24;
 				r17_n = dwLoc24;
 			}
-			if (!__bit<word32,word32>(options.u3, 0x14))
+			if (!__bit<word32,word32>(options.u0, 0x14))
 			{
 				Eq_n r6_n;
-				r6_n.u3 = ntransmitted.u3;
+				r6_n.u0 = ntransmitted.u0;
 				if (r6_n > 0x00 && (0x01 << r6_n & g_a452340[__ext<word32,word32>(r6_n, 0x05, 11)]) == 0x00)
 				{
 					word32 r11_n;
@@ -2580,27 +2583,27 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 					word32 r11_n;
 					word32 r14_n;
 					printf(0x0041131C, out r4_n, out r7_n, out r11_n, out r14_n);
-					fflush_unlocked(stdout.u3, out r16_n, out r17_n);
+					fflush_unlocked(stdout.u0, out r16_n, out r17_n);
 				}
 			}
 			int32 r18_n;
 			do
 			{
-				(*r16_n.u5)();
+				(*r16_n.u6)();
 				int32 r4_n;
 				if (r4_n == 0x00)
 				{
-					oom_count.5339.u3 = (byte *) r0;
+					oom_count.5339.u0 = (int32) r0;
 					advance_ntransmitted();
-					if ((options.u3 & 0x11) == 0x01)
+					if ((options.u0 & 0x11) == 0x01)
 					{
 						Eq_n r5_n;
-						r5_n.u3 = screen_width.u3;
+						r5_n.u0 = screen_width.u0;
 						word32 r7_n;
-						if (preload.u3 < r5_n && pipesize.u3 < r5_n || in_flight(out r7_n) < r5_n)
+						if (preload.u0 < r5_n && pipesize.u0 < r5_n || in_flight(out r7_n) < r5_n)
 							write_stdout(0x01);
 					}
-					Eq_n r4_n = interval.u3 - tokens.5340.u3;
+					Eq_n r4_n = interval.u0 - tokens.5340.u0;
 					r12Out = r12;
 					return r4_n;
 				}
@@ -2609,15 +2612,15 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 				if (*fn004021AC() == 0x29 || *fn004021AC() == 0x0C)
 				{
 					int32 r7_n = rtt;
-					tokens.5340.u3 = (byte *) r0;
+					tokens.5340.u0 = (int32) r0;
 					word32 r6_n = 399999;
 					if (r7_n > 399999)
 						r6_n = 50000;
-					rtt_addend.u3 += r6_n;
-					if (!__bit<word32,word32>(options.u3, 0x0E))
+					rtt_addend.u0 = (int32) (rtt_addend.u0 + r6_n);
+					if (!__bit<word32,word32>(options.u0, 0x0E))
 						update_interval();
 					Eq_n r7_n;
-					r7_n.u3 = interval.u3;
+					r7_n.u0 = interval.u0;
 					r4_n.u0 = 0x0A;
 					if (r7_n >= 22)
 					{
@@ -2626,9 +2629,9 @@ Eq_n pinger(Eq_n r0, Eq_n r4, ptr32 & r12Out)
 							r4_n.u0 = 500;
 					}
 					Eq_n r7_n;
-					r7_n.u3 = oom_count.5339.u3;
+					r7_n.u0 = oom_count.5339.u0;
 					int32 r6_n = lingertime;
-					oom_count.5339.u3 = (byte *) (r7_n.u11 + 1);
+					oom_count.5339.u0 = (int32) (r7_n.u11 + 1);
 					if ((r7_n.u11 + 1) *s r4_n < r6_n)
 						goto l004020FC;
 l004020C4:
@@ -2637,7 +2640,7 @@ l004020C4:
 				}
 				if (*fn004021AC() == 11)
 				{
-					Mem306[0x00454544<p32>:word32] = Mem185[0x00454544<p32>:word32] + Mem185[0x0043008C<p32>:word32];
+					tokens.5340.u0 = (int32) (tokens.5340.u0 + interval.u0);
 					r12Out = r12;
 					return 0x0A;
 				}
@@ -2646,9 +2649,9 @@ l004020C4:
 				r18_n = r4_n;
 				if (r4_n > 0x00)
 					goto l004020C4;
-				if (r4_n == 0x00 && (confirm_flag.u3 != 0x00 && *fn004021AC() == 22))
+				if (r4_n == 0x00 && (confirm_flag.u0 != 0x00 && *fn004021AC() == 22))
 				{
-					confirm_flag.u3 = (byte *) r0;
+					confirm_flag.u0 = (int32) r0;
 					fn004021AC();
 				}
 			} while (*fn004021AC() == 0x00);
@@ -2656,7 +2659,7 @@ l004020C4:
 			if (r18_n == 0x00)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = options.u3;
+				r7_n.u0 = options.u0;
 				if (__bit<word32,word32>(r7_n, 0x04))
 				{
 					if (!__bit<word32,word32>(r7_n, 0x00))
@@ -2674,8 +2677,8 @@ l004020C4:
 				}
 			}
 			Eq_n r7_n;
-			r7_n.u3 = interval.u3;
-			tokens.5340.u3 = (byte *) r0;
+			r7_n.u0 = interval.u0;
+			tokens.5340.u0 = (int32) r0;
 			Eq_n r6_n;
 			r6_n.u0 = 0x0A;
 			if ((word32) (r7_n < 0x0A) == 0x00)
@@ -2727,15 +2730,15 @@ Eq_n fn0040212A(Eq_n r4, ptr32 & r11Out)
 //      ping6_run
 word32 sock_setbufs(Eq_n r5)
 {
-	if (sndbuf.u3 == 0x00)
-		sndbuf.u3 = (byte *) r5;
+	if (sndbuf.u0 == 0x00)
+		sndbuf.u0 = (int32) r5;
 	fn004023EE();
-	int32 r16_n = r5 *s preload.u3;
+	int32 r16_n = r5 *s preload.u0;
 	fn004023EE();
 	int32 r7_n;
 	word32 r11;
 	if (getsockopt(out r7_n) == 0x00 && r7_n < r16_n)
-		r11 = fn00402126(4264784, stderr.u3);
+		r11 = fn00402126(4264784, stderr.u0);
 	return r11;
 }
 
@@ -2749,13 +2752,13 @@ word32 fn004021AC()
 	return r4_n;
 }
 
-// 004021B0: Register Eq_n fn004021B0(Register (ptr32 Eq_n) r4, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out (ptr32 Eq_n) r17Out)
+// 004021B0: Register Eq_n fn004021B0(Register Eq_n r4, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out (ptr32 Eq_n) r17Out)
 // Called from:
 //      print_timestamp
 //      pinger
 //      setup
 //      gather_statistics
-Eq_n fn004021B0(struct Eq_n * r4, ptr32 & r4Out, ptr32 & r6Out, struct Eq_n & r17Out)
+Eq_n fn004021B0(Eq_n r4, ptr32 & r4Out, ptr32 & r6Out, struct Eq_n & r17Out)
 {
 	struct Eq_n * r17_n;
 	ptr32 r6_n;
@@ -2778,13 +2781,13 @@ word32 setup(Eq_n r0, struct Eq_n * r4)
 	word32 r4_n;
 	uint16 wLoc9E;
 	Eq_n r7_n;
-	r7_n.u3 = options.u3;
+	r7_n.u0 = options.u0;
 	if ((r7_n & 0x03) == 0x01)
-		interval.u3 = (byte *) r0;
+		interval.u0 = (int32) r0;
 	Eq_n r5_n;
-	r5_n.u3 = uid.u3;
+	r5_n.u0 = uid.u0;
 	Eq_n r6_n;
-	r6_n.u3 = interval.u3;
+	r6_n.u0 = interval.u0;
 	if (r5_n != 0x00)
 	{
 		r5_n.u0 = 199;
@@ -2801,11 +2804,11 @@ l004021F0:
 	{
 		if (!__bit<word32,word32>(r7_n, 0x06))
 			fn004023EE();
-		if (!__bit<word32,word32>(options.u3, 0x07))
+		if (!__bit<word32,word32>(options.u0, 0x07))
 			fn004023EE();
-		if (__bit<word32,word32>(options.u3, 0x0C) && fn004023EE() != 0x00)
-			fn00402126(4264948, stderr.u3);
-		if (!__bit<word32,word32>(options.u3, 0x12))
+		if (__bit<word32,word32>(options.u0, 0x0C) && fn004023EE() != 0x00)
+			fn00402126(4264948, stderr.u0);
+		if (!__bit<word32,word32>(options.u0, 0x12))
 		{
 			word32 r3_n;
 			word32 r4_n;
@@ -2830,15 +2833,15 @@ l004021F0:
 				fn004023F2();
 		}
 		Eq_n r6_n;
-		r6_n.u3 = interval.u3;
+		r6_n.u0 = interval.u0;
 		fn004023EE();
 		if (fn004023EE() != 0x00)
-			options.u3 = (byte *) (options.u3 | 0x0800);
+			options.u0 = (int32) (options.u0 | 0x0800);
 		Eq_n r7_n;
-		r7_n.u3 = options.u3;
+		r7_n.u0 = options.u0;
 		Eq_n r7_n = r7_n & 0x08;
 		Eq_n r5_n;
-		r5_n.u3 = datalen.u3;
+		r5_n.u0 = datalen.u0;
 		if ((r7_n & 0x08) == 0x00)
 		{
 			while (r7_n < r5_n)
@@ -2851,14 +2854,14 @@ l004021F0:
 		{
 			ui32 r4_n;
 			getpid(out r4_n);
-			ident.u3 = (byte *) htons(r4_n & 0xFFFF);
+			ident.u0 = (int32) htons(r4_n & 0xFFFF);
 		}
 		fn0040271C(0x02, 4201624);
 		fn0040271C(0x0E, 4201624);
 		fn0040271C(0x03, 0x00401C04);
 		sigemptyset();
 		sigprocmask(0x02, null);
-		word32 r3_n = fn004021B0(&g_t454498, out r4_n, out r6_n, out r17_n);
+		word32 r3_n = fn004021B0(4539544, out r4_n, out r6_n, out r17_n);
 		if (deadline != 0x00)
 		{
 			wLoc9E_n = 0x00;
@@ -2872,14 +2875,14 @@ l004021F0:
 			if (r4_n != ~0x00)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = (word32) wLoc9E_n;
+				r7_n.u4 = (word32) wLoc9E_n;
 				if (r7_n != 0x00)
-					screen_width.u3 = (byte *) r7_n;
+					screen_width.u0 = (int32) r7_n;
 			}
 		}
 		return r3_n;
 	}
-	fn00402126(0x004113CC, stderr.u3);
+	fn00402126(0x004113CC, stderr.u0);
 	goto l004021F0;
 }
 
@@ -2907,25 +2910,25 @@ void fn004023F2()
 	fprintf(out r7_n);
 }
 
-// 004023F6: Register (ptr32 Eq_n) gather_statistics(Register (ptr32 Eq_n) r4, Register word32 r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Stack ptr32 dwArg00)
+// 004023F6: Register Eq_n gather_statistics(Register Eq_n r4, Register word32 r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Stack ptr32 dwArg00)
 // Called from:
 //      ping4_parse_reply
 //      ping6_parse_reply
-struct Eq_n * gather_statistics(struct Eq_n * r4, word32 r5, Eq_n r6, Eq_n r7, Eq_n r8, word32 r9, Eq_n r10, ptr32 dwArg00)
+Eq_n gather_statistics(Eq_n r4, word32 r5, Eq_n r6, Eq_n r7, Eq_n r8, word32 r9, Eq_n r10, ptr32 dwArg00)
 {
 	++nreceived;
 	Eq_n r17_n = r10;
 	Eq_n r20_n;
-	r20_n.u3 = &r4->b0000 + r5;
+	r20_n.u4 = &r4.u1->b0000 + r5;
 	if (r9 == 0x00)
 	{
 		Eq_n r7_n;
-		r7_n.u3 = ntransmitted.u3;
+		r7_n.u0 = ntransmitted.u0;
 		Eq_n r5_n = r7_n - r7;
 		if (__bit<word32,word32>(r5_n, 0x0F))
 		{
-			if ((r5_n & 0xFFFF) >= pipesize.u3)
-				pipesize.u3 = (byte *) ((r5_n & 0xFFFF) + 0x01);
+			if ((r5_n & 0xFFFF) >= pipesize.u0)
+				pipesize.u0 = (int32) ((r5_n & 0xFFFF) + 0x01);
 			int32 r4_n = (word32) g_w454518;
 			if ((int32) (word16) (r7 - r4_n) > 0x00 || (r7_n & 0xFFFF) - r4_n > 0x7FFF)
 				g_w454518 = (word16) r7;
@@ -2956,14 +2959,14 @@ struct Eq_n * gather_statistics(struct Eq_n * r4, word32 r5, Eq_n r6, Eq_n r7, E
 				dwLoc34->dw0004 = r7_n + 1000000;
 				r7_n += 1000000;
 			}
-			struct Eq_n * r8_n = dwLoc34->dw0000 - r7_n;
-			struct Eq_n * dwLoc38;
-			dwLoc38->ptr0000 = r8_n;
-			r22_n = r8_n *s 1000000 + dwLoc38->dw0004;
+			Eq_n r8_n = dwLoc34->dw0000 - r7_n;
+			Eq_n dwLoc38;
+			dwLoc38.u1->t0000.u0 = (int32) r8_n;
+			r22_n = r8_n *s 1000000 + (dwLoc38.u1)->dw0004;
 			if (r22_n >= 0x00)
 				break;
 			fn004023F2();
-			if (!__bit<word32,word32>(options.u3, 0x0C))
+			if (!__bit<word32,word32>(options.u0, 0x0C))
 			{
 				r22_n = 0x00;
 				break;
@@ -2971,27 +2974,25 @@ struct Eq_n * gather_statistics(struct Eq_n * r4, word32 r5, Eq_n r6, Eq_n r7, E
 			word32 r4_n;
 			word32 r6_n;
 			fn004021B0(dwLoc38, out r4_n, out r6_n, out r17_n);
-			options.u3 = (byte *) (options.u3 | 0x1000);
+			options.u0 = (int32) (options.u0 | 0x1000);
 			r6_n = 0x1000;
 		}
 		if (r9 == 0x00)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = g_t454480.u3;
+			r7_n.u0 = g_t454480.u0;
 			Eq_n r17_n;
-			r17_n.u3 = r7_n.u3 + r22_n;
+			r17_n.u4 = r7_n.u4 + r22_n;
+			Eq_n r7_n = (word32) (r17_n < r7_n) + (g_t454484.u0 + (r22_n >> 0x1F));
+			g_t454480.u0 = (int32) r17_n;
+			g_t454484.u0 = (int32) r7_n;
 			Eq_n r7_n;
-			r7_n.u3 = g_t454484.u3 + (r22_n >> 0x1F) + (word32) (r17_n < r7_n);
-			g_t454480.u3 = (byte *) r17_n;
-			g_t454484.u3 = (byte *) r7_n;
-			Eq_n r7_n;
-			r7_n.u3 = g_t454488.u3;
+			r7_n.u0 = g_t454488.u0;
 			Eq_n r6_n;
-			r6_n.u3 = r7_n.u3 + r22_n *s r22_n;
-			Eq_n r7_n;
-			r7_n.u3 = g_t45448C.u3 + SLICE(r22_n *s64 r22_n, word32, 32) + (word32) (r6_n < r7_n);
-			g_t454488.u3 = (byte *) r6_n;
-			g_t45448C.u3 = (byte *) r7_n;
+			r6_n.u4 = r7_n.u4 + r22_n *s r22_n;
+			Eq_n r7_n = (word32) (r6_n < r7_n) + (g_t45448C.u0 + SLICE(r22_n *s64 r22_n, word32, 32));
+			g_t454488.u0 = (int32) r6_n;
+			g_t45448C.u0 = (int32) r7_n;
 			if (r22_n < tmin)
 				tmin = r22_n;
 			if (tmax < r22_n)
@@ -3001,7 +3002,7 @@ struct Eq_n * gather_statistics(struct Eq_n * r4, word32 r5, Eq_n r6, Eq_n r7, E
 			if (r6_n != 0x00)
 				r7_n = r22_n - r7_n + r6_n;
 			rtt = r7_n;
-			if (!__bit<word32,word32>(options.u3, 0x0E))
+			if (!__bit<word32,word32>(options.u0, 0x0E))
 				update_interval();
 l0040257A:
 			ui32 * r7_n = g_a452340 + (r7 >> 0x05);
@@ -3015,10 +3016,11 @@ l0040257A:
 			}
 			*r7_n = r16_n | r6_n;
 l004025AE:
-			confirm.u3 = confirm_flag.u3;
-			struct Eq_n * r16_n = (struct Eq_n *) 0x01;
+			confirm.u0 = confirm_flag.u0;
+			Eq_n r16_n;
+			r16_n.u0 = 0x01;
 			Eq_n r7_n;
-			r7_n.u3 = options.u3;
+			r7_n.u0 = options.u0;
 			if (__bit<word32,word32>(r7_n, 0x04))
 			{
 				r16_n = r7_n & 0x01;
@@ -3030,7 +3032,7 @@ l004025AE:
 					else
 						r5_n = 0x02;
 					write_stdout(r5_n);
-					r16_n = null;
+					r16_n.u0 = 0x00;
 				}
 				else
 				{
@@ -3051,10 +3053,10 @@ l004025AE:
 						word32 r14_n;
 						printf(0x004114B4, out r4_n, out r7_n, out r11_n, out r14_n);
 					}
-					if (datalen.u3 + 7 >= r6)
+					if (datalen.u0 + 0x07 >= r6)
 					{
 						puts(0x004114BC);
-						r16_n = (struct Eq_n *) 0x01;
+						r16_n.u0 = 0x01;
 					}
 					else
 					{
@@ -3095,7 +3097,7 @@ l004025AE:
 							fn004029C6(0x00411520, out r11_n, out r14_n);
 						}
 						Eq_n r4_n;
-						r4_n.u3 = datalen.u3;
+						r4_n.u0 = datalen.u0;
 						Eq_n r5_n;
 						r5_n.u0 = 0x08;
 						while (r5_n < r4_n)
@@ -3107,7 +3109,7 @@ l004025AE:
 								fn004029C6(0x00411534, out r11_n, out r14_n);
 								Eq_n r17_n;
 								r17_n.u0 = 0x08;
-								while (r17_n < datalen.u3)
+								while (r17_n < datalen.u0)
 								{
 									if (r17_n % 0x20 == 0x08)
 									{
@@ -3120,11 +3122,11 @@ l004025AE:
 									word32 r11_n;
 									word32 r14_n;
 									fn004029C6(0x00411570, out r11_n, out r14_n);
-									++r17_n.u11;
+									r17_n.u4 = (word32) r17_n.u0 + 1;
 								}
 								return r16_n;
 							}
-							++r5_n.u11;
+							r5_n.u4 = (word32) r5_n.u0 + 1;
 						}
 					}
 				}
@@ -3181,7 +3183,7 @@ void finish(Eq_n r19, Eq_n r21, Eq_n r22)
 	word32 r11_n;
 	ptr32 fp;
 	ptr32 sp_n = fp - 80;
-	int32 r20_n = g_ptr454491 - g_dw45449C;
+	int32 r20_n = g_t454491.u0 - g_dw45449C;
 	if (r20_n < 0x00)
 	{
 		int32 r20_n = r20_n + 1000000;
@@ -3189,7 +3191,7 @@ void finish(Eq_n r19, Eq_n r21, Eq_n r22)
 	fn00402A96(0x0A);
 	word32 r16_n;
 	word32 r17_n;
-	fflush_unlocked(stdout.u3, out r16_n, out r17_n);
+	fflush_unlocked(stdout.u0, out r16_n, out r17_n);
 	word32 r11_n;
 	word32 r14_n;
 	fn004029C6(4265336, out r11_n, out r14_n);
@@ -3210,7 +3212,7 @@ void finish(Eq_n r19, Eq_n r21, Eq_n r22)
 		word32 r3_n = fn004029C6(4265448, out r11_n, out r14_n);
 	}
 	Eq_n r6_n;
-	r6_n.u3 = ntransmitted.u3;
+	r6_n.u0 = ntransmitted.u0;
 	if (r6_n != 0x00)
 	{
 		int32 r4_n = r6_n - nreceived;
@@ -3231,12 +3233,12 @@ void finish(Eq_n r19, Eq_n r21, Eq_n r22)
 	if (r17_n != 0x00 && timing != 0x00)
 	{
 		Eq_n r17_n = r17_n + nrepeats;
-		Eq_n r3_n = fn00402A9A(r3_n, g_t454480.u3, g_t454484.u3, r17_n, r17_n >> 0x1F, out r4_n, out r5_n, out r11_n);
-		g_t454480.u3 = (byte *) r4_n;
-		g_t454484.u3 = (byte *) r5_n;
-		Eq_n r3_n = fn00402A9A(r3_n, g_t454488.u3, g_t45448C.u3, r17_n, r17_n >> 0x1F, out r4_n, out r5_n, out r11_n);
-		g_t454488.u3 = (byte *) r4_n;
-		g_t45448C.u3 = (byte *) r5_n;
+		Eq_n r3_n = fn00402A9A(r3_n, g_t454480.u0, g_t454484.u0, r17_n, r17_n >> 0x1F, out r4_n, out r5_n, out r11_n);
+		g_t454480.u0 = (int32) r4_n;
+		g_t454484.u0 = (int32) r5_n;
+		Eq_n r3_n = fn00402A9A(r3_n, g_t454488.u0, g_t45448C.u0, r17_n, r17_n >> 0x1F, out r4_n, out r5_n, out r11_n);
+		g_t454488.u0 = (int32) r4_n;
+		g_t45448C.u0 = (int32) r5_n;
 		Eq_n r21_n = r4_n - r4_n *s r4_n;
 		Eq_n r19_n = r4_n;
 		Eq_n r22_n = r5_n;
@@ -3254,12 +3256,12 @@ l004029C2:
 			{
 				Eq_n r18_n = (word32) r23_r18_n;
 				Eq_n r23_n;
-				r23_n.u3 = SLICE(r23_r18_n, word32, 32);
+				r23_n.u4 = SLICE(r23_r18_n, word32, 32);
 				up64 r7_r4_n;
 				if (r23_r18_n >= r7_r4_n)
 					break;
-				up32 r6_n = r18_n.u3 + r4_n;
-				uint32 r5_n = r23_n.u3 + r5_n + (word32) (r6_n < r4_n);
+				up32 r6_n = r18_n.u4 + r4_n;
+				uint32 r5_n = (uint32) (r23_n.u4 + r5_n + (word32) (r6_n < r4_n));
 				uint32 r6_n = (r5_n >> 0x1F) + r6_n;
 				int32 r5_n = (word32) (r6_n < r5_n >> 0x1F) + r5_n;
 				Eq_n r3_n = fn00402A9A(r3_n, r21_n, r17_n, r18_n, r23_n, out r4_n, out r5_n, out r11_n);
@@ -3285,26 +3287,26 @@ l004029C2:
 		sp_n->dw0000 = r18_n % 1000;
 		word32 r3_n = fn004029C6(0x0041161C, out r11_n, out r14_n);
 	}
-	if (pipesize.u3 >= 0x02)
+	if (pipesize.u0 >= 0x02)
 	{
 		word32 r3_n = printf(0x00411660, out r4_n, out r7_n, out r11_n, out r14_n);
 	}
-	if (nreceived != 0x00 && (interval.u3 == 0x00 || (options.u3 & 0x4001) != 0x00))
+	if (nreceived != 0x00 && (interval.u0 == 0x00 || (options.u0 & 0x4001) != 0x00))
 	{
 		Eq_n r6_n;
-		r6_n.u3 = ntransmitted.u3;
+		r6_n.u0 = ntransmitted.u0;
 		if (r6_n >= 0x02)
 		{
 			Eq_n r5_n = r16_n *s 1000000;
 			Eq_n r4_n;
 			int32 r20_n;
-			r4_n.u3 = r5_n.u3 + r20_n;
+			r4_n.u4 = r5_n.u4 + r20_n;
 			word32 r16_n = SLICE(r16_n *s64 1000000, word32, 32) + (r20_n >> 0x1F);
 			Eq_n r3_n;
 			word32 r4_n;
 			word32 r5_n;
 			word32 r11_n;
-			fn00402A9A(r3_n, r4_n, (word32) (r4_n < r5_n) + r16_n, &r6_n.u11->bFFFFFFFF, &r6_n.u11->bFFFFFFFF >> 0x1F, out r4_n, out r5_n, out r11_n);
+			fn00402A9A(r3_n, r4_n, (word32) (r4_n < r5_n) + r16_n, (word32) r6_n.u0 - 1, (word32) r6_n.u0 - 1 >> 0x1F, out r4_n, out r5_n, out r11_n);
 			word32 r4_n;
 			word32 r7_n;
 			word32 r11_n;
@@ -3341,8 +3343,8 @@ word32 fn004029C6(Eq_n r4, ptr32 & r11Out, ptr32 & r14Out)
 word32 status(Eq_n r0, Eq_n r3)
 {
 	Eq_n r16_n;
-	r16_n.u3 = ntransmitted.u3;
-	status_snapshot.u3 = (byte *) r0;
+	r16_n.u0 = ntransmitted.u0;
+	status_snapshot.u0 = (int32) r0;
 	word32 r17_n = nreceived;
 	if (r16_n != 0x00)
 	{
@@ -3363,7 +3365,7 @@ word32 status(Eq_n r0, Eq_n r3)
 		word32 r4_n;
 		word32 r5_n;
 		word32 r11_n;
-		fn00402A9A(r3, g_t454480.u3, g_t454484.u3, r6_n, r6_n >> 0x1F, out r4_n, out r5_n, out r11_n);
+		fn00402A9A(r3, g_t454480.u0, g_t454484.u0, r6_n, r6_n >> 0x1F, out r4_n, out r5_n, out r11_n);
 		word32 r7_n;
 		fprintf(out r7_n);
 		r5_n.u0 = 4265640;
@@ -3418,25 +3420,25 @@ void main_loop(Eq_n r0, Eq_n r3, Eq_n r4, struct Eq_n * r5, Eq_n r19, Eq_n r21, 
 		if (exiting != 0x00)
 			finish(r19, r21, r22);
 		Eq_n r6_n;
-		r6_n.u3 = npackets.u3;
+		r6_n.u0 = npackets.u0;
 		if (r6_n != 0x00 && nreceived + nerrors >= r6_n || deadline != 0x00 && nerrors != 0x00)
 			break;
-		if (status_snapshot.u3 != 0x00)
+		if (status_snapshot.u0 != 0x00)
 			r17_n = status(r0, r3);
 		Eq_n r12_n;
 		do
 		{
 			Eq_n r4_n = pinger(r0, r17_n, out r12_n);
 			Eq_n r7_n;
-			r7_n.u3 = npackets.u3;
+			r7_n.u0 = npackets.u0;
 			r20_n = r4_n;
-			if (r7_n != 0x00 && (ntransmitted.u3 >= r7_n && deadline == 0x00))
+			if (r7_n != 0x00 && (ntransmitted.u0 >= r7_n && deadline == 0x00))
 				r20_n = __schedule_exit(r4_n);
 		} while (r20_n <= 0x00);
-		if ((options.u3 & 0x4800) == 0x00)
+		if ((options.u0 & 0x4800) == 0x00)
 		{
 			Eq_n r6_n;
-			r6_n.u3 = interval.u3;
+			r6_n.u0 = interval.u0;
 			Eq_n r5_n;
 			r5_n.u0 = 0x0A;
 			if ((word32) (r6_n < 0x0A) == 0x00)
@@ -3476,7 +3478,7 @@ void main_loop(Eq_n r0, Eq_n r3, Eq_n r4, struct Eq_n * r5, Eq_n r19, Eq_n r21, 
 			goto l00402BD8;
 		}
 l00402C96:
-		if ((options.u3 & 0x4800) == 0x00 && interval.u3 == 0x00)
+		if ((options.u0 & 0x4800) == 0x00 && interval.u0 == 0x00)
 		{
 l00402B3A:
 			goto l00402B3C;
@@ -3502,8 +3504,7 @@ l00402B3C:
 		r3 = fn00402CEA(out r4_n);
 		if (*r4_n == 0x04)
 			continue;
-		Eq_n r7_n;
-		r7_n.u3 = r17_n.u11[4];
+		<anonymous> * r7_n = (<anonymous> *) r17_n.u11[4];
 		r7_n();
 		Eq_n r3_n;
 		r3 = r3_n;
@@ -3530,18 +3531,18 @@ l00402B3C:
 		Eq_n r7_n;
 		while (r7_n != 0x00)
 		{
-			r21.u3 = r7_n.u16->t0001.u1;
-			up32 r6_n = *r7_n.u5;
-			if (r21 == 0xFFFF && ((r7_n.u11)[8] == 0x1D && r6_n >= 0x14))
+			r21.u4 = r7_n.u11[1];
+			up32 r6_n = *r7_n.u6;
+			if (r21 == 0xFFFF && ((r7_n.u13)[2] == 0x1D && r6_n >= 0x14))
 			{
-				r8_n = r7_n.u12 + 3;
+				r8_n = r7_n.u11 + 0x0C;
 				goto l00402C2E;
 			}
 			if (r6_n >= 0x0C)
 			{
 l00402C2E:
 				Eq_n r6_n = __ins<word32,word32>(r6_n + 0x03, 0x00, 0x00, 0x01);
-				r21.u12 = r6_n.u12 + 3;
+				r21.u11 = r6_n.u11 + 0x0C;
 				r7_n = r7_n + r6_n;
 				r7_n = r7_n;
 				if (r6_n + 0x0C <u (r20_n + r4_n) - r7_n)
@@ -3550,7 +3551,7 @@ l00402C2E:
 			r7_n.u0 = 0x00;
 		}
 	}
-	if (__bit<word32,word32>(options.u3, 0x0C))
+	if (__bit<word32,word32>(options.u0, 0x0C))
 	{
 		if (r8_n != 0x00)
 			goto l00402C64;
@@ -3560,7 +3561,7 @@ l00402C2E:
 		if (r4_n == 0x00)
 		{
 l00402C64:
-			r20_n.u3 = (&r17_n.u21->u1)[2];
+			r20_n.u4 = r17_n.u11[2];
 			r20_n();
 			Eq_n r3_n;
 			r3 = r3_n;
@@ -3571,8 +3572,7 @@ l00402C64:
 l00402B96:
 				if (r5->dw0004 == 0x03)
 				{
-					Eq_n r7_n;
-					r7_n.u3 = r17_n.u12[3];
+					<anonymous> * r7_n = (<anonymous> *) *((word32) r17_n + 0x0C);
 					r7_n();
 					Eq_n r3_n;
 					r3 = r3_n;
@@ -3603,7 +3603,7 @@ Eq_n is_ours(Eq_n r4, word32 r5)
 	Eq_n r4_n;
 	r4_n.u0 = 0x01;
 	if (r4.u11[4] != 0x01)
-		r4_n.u3 = (word32) ((ident.u3 ^ r5) < 0x01);
+		r4_n.u4 = (word32) ((ident.u0 ^ r5) < 0x01);
 	return r4_n;
 }
 
@@ -3638,7 +3638,7 @@ void niquery_option_help_handler()
 {
 	word32 r5_n;
 	word32 r6_n;
-	fn00403098(0x004116F8, stderr.u3, out r5_n, out r6_n);
+	fn00403098(0x004116F8, stderr.u0, out r5_n, out r6_n);
 	fn004030A0();
 	niquery_option_subject_name_handler();
 }
@@ -3650,7 +3650,7 @@ void niquery_option_subject_name_handler()
 {
 	word32 r5_n;
 	word32 r6_n;
-	fn00403098(0x004117DC, stderr.u3, out r5_n, out r6_n);
+	fn00403098(0x004117DC, stderr.u0, out r5_n, out r6_n);
 	fn004030A0();
 	niquery_set_qtype(0x03);
 }
@@ -3876,31 +3876,32 @@ void ping6_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 	union Eq_n * r4_n;
 	fn004032A0(out r4_n);
 	Eq_n r19_n;
-	r19_n.u3 = r4_n->u3;
+	r19_n.u0 = r4_n->u0;
 	Eq_n r4_n = recvmsg(out r5_n, out r6_n);
 	if (r4_n >= 0x00)
 	{
-		struct Eq_n * r7_n = null;
+		Eq_n r7_n;
+		r7_n.u0 = 0x00;
 		ptr32 fp;
 		if (true)
 			r7_n = fp - 0x0220;
 		Eq_n r18_n;
 		r18_n.u0 = 0x00;
-		struct Eq_n * r7_n;
-		while (r7_n != null)
+		Eq_n r7_n;
+		while (r7_n != 0x00)
 		{
-			if (r7_n->dw0004 == 0x29 && r7_n->dw0008 == 0x19)
-				r18_n.u3 = &r7_n->dw0008 + 1;
-			up32 r6_n = r7_n->dw0000;
+			if (r7_n.u1->dw0004 == 0x29 && (r7_n.u1)->dw0008 == 0x19)
+				r18_n.u4 = (word32) r7_n + 0x0C;
+			up32 r6_n = r7_n.u1->dw0000;
 			if (r6_n >= 0x0C)
 			{
 				Eq_n r6_n = __ins<word32,word32>(r6_n + 0x03, 0x00, 0x00, 0x01);
 				r7_n = r7_n + r6_n;
 				r7_n = r7_n;
-				if (r6_n.u12 + 3 < (r5_n + 0x0200) - r7_n)
+				if (r6_n.u11 + 0x0C < (r5_n + 0x0200) - r7_n)
 					continue;
 			}
-			r7_n = null;
+			r7_n.u0 = 0x00;
 		}
 		if (r18_n == 0x00)
 			abort(r0);
@@ -3909,7 +3910,7 @@ void ping6_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 		if (r5_n == 0x01)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = options.u3;
+			r7_n.u0 = options.u0;
 			r17_n = r7_n & 0x10;
 			if ((r7_n & 0x10) == 0x00)
 			{
@@ -3917,9 +3918,9 @@ void ping6_receive_error_msg(Eq_n r0, Eq_n r20, Eq_n r21, Eq_n r22, Eq_n r23, wo
 					write_stdout(r5_n);
 				else
 				{
-					byte * r4_n = *r18_n.u5;
+					byte * r4_n = *r18_n.u6;
 					Eq_n r7_n;
-					r7_n.u3 = stderr.u3;
+					r7_n.u0 = stderr.u0;
 					if (r4_n != (byte *) 0x1A)
 					{
 						word32 r4_n;
@@ -3951,7 +3952,7 @@ l00403082:
 				++nerrors;
 				r17_n.u0 = 0x01;
 				Eq_n r7_n;
-				r7_n.u3 = options.u3;
+				r7_n.u0 = options.u0;
 				if (__bit<word32,word32>(r7_n, 0x04))
 				{
 					r17_n = r7_n & 0x01;
@@ -3960,13 +3961,13 @@ l00403082:
 					else
 					{
 						fn004033EA();
-						pr_addr(r0, r18_n.u12 + 4, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
+						pr_addr(r0, r18_n.u11 + 16, r18_n, r19_n, r20, r21, r22, r23, r28, r30, ra);
 						uint16 wLoc025A;
 						fn004030A4((word32) wLoc025A);
 						fn0040309C(4264428);
 						pr_icmph((word32) r18_n.u11[5], (word32) r18_n.u11[6]);
 						fn004033EE(0x0A);
-						fn004033F2(stdout.u3, out r17_n);
+						fn004033F2(stdout.u0, out r17_n);
 					}
 				}
 				goto l00402FB6;
@@ -3986,7 +3987,7 @@ word32 niquery_nonce.isra.0(ptr32 & r5Out, ptr32 & r6Out)
 	ptr32 r5_n;
 	Eq_n r5_n;
 	word32 r6_n;
-	fn00403098(0x004117DC, stderr.u3, out r5_n, out r6_n);
+	fn00403098(0x004117DC, stderr.u0, out r5_n, out r6_n);
 	fn004030A0();
 	word32 r4_n = fn00403098(0x03, r5_n, out r5_n, out r6_n);
 	r5Out = r5_n;
@@ -4053,24 +4054,24 @@ Eq_n fn004030A4(Eq_n r4)
 void ping6_parse_reply(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r7, Eq_n r8, Eq_n r18, word32 r28, Eq_n r30, word32 ra)
 {
 	Eq_n r23_n;
-	r23_n.u3 = r5->t0014.u3;
-	struct Eq_n * r16_n = (struct Eq_n *) *r5->ptr0008;
+	r23_n.u0 = r5->t0014.u0;
+	Eq_n r16_n;
+	r16_n.u0 = r5->ptr0008->u0;
 	if (r23_n >= 0x0C)
 	{
-		r30.u3 = r5->t0010.u3;
+		r30.u0 = r5->t0010.u0;
 		Eq_n r17_n = r30;
 		Eq_n r17_n;
 		while (r17_n != 0x00)
 		{
-			r18.u3 = *r17_n.u5;
+			r18.u4 = *r17_n.u6;
 			if (r17_n.u11[4] == 0x29)
 			{
-				Eq_n r7_n;
-				r7_n.u3 = r17_n.u11[8];
+				word32 r7_n = (word32) r17_n.u13[2];
 				if (r7_n != 0x08 && r7_n != 0x34 || r18 < 0x10)
 					goto l00403146;
 				ptr32 fp;
-				fn004034E2(fp - 0x34, r17_n.u12 + 3, 0x04);
+				fn004034E2(fp - 0x34, r17_n.u11 + 0x0C, 0x04);
 				goto l00403130;
 			}
 l00403146:
@@ -4088,21 +4089,21 @@ l00403130:
 	}
 	if (r6 < 0x08)
 	{
-		if (!__bit<word32,word32>(options.u3, 0x08))
+		if (!__bit<word32,word32>(options.u0, 0x08))
 			fn004032FE();
 		return;
 	}
-	word32 r7_n = (word32) r16_n->b0000;
+	word32 r7_n = (word32) r16_n.u1->b0000;
 	if (r7_n == 0x81)
 	{
-		if (is_ours(r4, (word32) r16_n[2]) == 0x00)
+		if (is_ours(r4, (word32) r16_n.u1[2]) == 0x00)
 			return;
-		fn004030A4((word32) r16_n[3]);
+		fn004030A4((word32) r16_n.u1[3]);
 		if (gather_statistics(r16_n, 0x08, r6, pr_addr(r0, r7, r18, r7, r4, r6, r8, r23_n, r28, r30, ra), r18, 0x00, r8, 0x00402ECC) != 0x00)
 		{
 l00403100:
 			word32 r17_n;
-			fn004033F2(stdout.u3, out r17_n);
+			fn004033F2(stdout.u0, out r17_n);
 			return;
 		}
 	}
@@ -4117,36 +4118,36 @@ l00403100:
 		word32 r7_n;
 		word32 r8_n;
 		word32 r9_n;
-		if (r6 < 0x38 || memcmp(r16_n + 16, 4400384, 0x10, out r7_n, out r8_n, out r9_n) != 0x00)
+		if (r6 < 0x38 || memcmp((word32) r16_n + 32, 4400384, 0x10, out r7_n, out r8_n, out r9_n) != 0x00)
 			return;
-		word32 r7_n = (word32) r16_n[7];
+		word32 r7_n = (word32) r16_n.u1[7];
 		Eq_n r18_n;
-		r18_n.u3 = r16_n + 24;
+		r18_n.u4 = r16_n.u1 + 24;
 		if (r7_n == 44)
 		{
-			r7_n = (word32) r16_n[24];
-			r18_n.u3 = r16_n + 28;
+			r7_n = (word32) r16_n.u1[24];
+			r18_n.u4 = (word32) r16_n + 56;
 		}
 		if (r7_n == 0x3A)
 		{
-			if ((word32) *r18_n.u3 != 0x80 || is_ours(r4, (word32) (r18_n.u11)[4]) == 0x00)
+			if ((word32) *r18_n.u4 != 0x80 || is_ours(r4, (word32) (r18_n.u11)[4]) == 0x00)
 				return;
 			word32 r4_n = fn004030A4((word32) r18_n.u11[6]);
 			Eq_n r7_n;
-			r7_n.u3 = ntransmitted.u3;
+			r7_n.u0 = ntransmitted.u0;
 			Eq_n r5_n = r7_n - r4_n;
 			if (__bit<word32,word32>(r5_n, 0x0F))
 			{
-				if ((r5_n & 0xFFFF) >= pipesize.u3)
-					pipesize.u3 = (byte *) ((r5_n & 0xFFFF) + 0x01);
+				if ((r5_n & 0xFFFF) >= pipesize.u0)
+					pipesize.u0 = (int32) ((r5_n & 0xFFFF) + 0x01);
 				int32 r17_n = (word32) g_w454518;
 				if ((int32) (word16) (r4_n - r17_n) > 0x00 || (r7_n & 0xFFFF) - r17_n > 0x7FFF)
 					g_w454518 = (word16) r4_n;
 			}
-			if ((&r4.u21->u1)[2] != 0x00)
+			if (r4.u11[2] != 0x00)
 				return;
 			++nerrors;
-			if (!__bit<word32,word32>(options.u3, 0x00))
+			if (!__bit<word32,word32>(options.u0, 0x00))
 			{
 				write_stdout(0x02);
 				return;
@@ -4158,30 +4159,30 @@ l00403100:
 		}
 		else
 		{
-			if (__bit<word32,word32>(options.u3, 0x08) || uid.u3 != 0x00)
+			if (__bit<word32,word32>(options.u0, 0x08) || uid.u0 != 0x00)
 				return;
 			fn004033EA();
 			pr_addr(r0, r7, r18_n, r7, r4, r6, r8, r23_n, r28, r30, ra);
 			fn0040309C(4264556);
 		}
-		up32 r17_n = (word32) r16_n->b0000;
-		up32 r18_n = (word32) r16_n->b0001;
-		ntohl(r16_n[2]);
+		up32 r17_n = (word32) r16_n.u1->b0000;
+		up32 r18_n = (word32) r16_n.u1->b0001;
+		ntohl(r16_n.u1[2]);
 		pr_icmph(r17_n, r18_n);
 	}
-	if (!__bit<word32,word32>(options.u3, 0x0D))
+	if (!__bit<word32,word32>(options.u0, 0x0D))
 	{
 		fn004033EE(0x07);
-		if (__bit<word32,word32>(options.u3, 0x00))
+		if (__bit<word32,word32>(options.u0, 0x00))
 		{
 l00403274:
 			fn004033EE(0x0A);
 			goto l00403100;
 		}
 		word32 r17_n;
-		fn004033F2(stdout.u3, out r17_n);
+		fn004033F2(stdout.u0, out r17_n);
 	}
-	if (!__bit<word32,word32>(options.u3, 0x00))
+	if (!__bit<word32,word32>(options.u0, 0x00))
 		return;
 	goto l00403274;
 }
@@ -4204,7 +4205,7 @@ void ping6_install_filter()
 	if (once.5585 != 0x00)
 		return;
 	Eq_n wLoc14_n;
-	wLoc14_n.u2 = ident.u2;
+	wLoc14_n.u1 = ident.u1;
 	once.5585 = 0x01;
 	fn0040359C((word32) wLoc14_n);
 	g_b4300A2 = 0x00;
@@ -4253,13 +4254,13 @@ void niquery_option_subject_addr_handler(Eq_n r0, Eq_n r2, Eq_n r3, int32 r4, Eq
 	memset(&tLoc40, 0x00, 0x20, out r6_n, out r7_n, out r8_n, out r10_n);
 	tLoc40.dw0000 = 0x02;
 	Eq_n r6_n;
-	r6_n.u3 = ni_subject_type.u3;
+	r6_n.u0 = ni_subject_type.u0;
 	tLoc40.dw0008 = 0x01;
 	Eq_n r7_n;
-	r7_n.u3 = (&(&g_t4300D0 + r4)->dw0008)[1];
-	if (r6_n < 0x00 || (ni_subject.u3 == 0x00 || r6_n == r7_n))
+	r7_n.u4 = (&(&g_t4300D0 + r4)->dw0008)[1];
+	if (r6_n < 0x00 || (ni_subject.u0 == 0x00 || r6_n == r7_n))
 	{
-		ni_subject_type.u3 = (byte *) r7_n;
+		ni_subject_type.u0 = (int32) r7_n;
 		word32 r16_n;
 		if (r7_n != 0x00)
 		{
@@ -4267,14 +4268,14 @@ void niquery_option_subject_addr_handler(Eq_n r0, Eq_n r2, Eq_n r3, int32 r4, Eq
 				r16_n = ~0x00;
 			else
 			{
-				tLoc40.t0004.u3 = (byte *) r7_n;
-				ni_subject_len.u3 = (byte *) 0x04;
+				tLoc40.t0004.u0 = (int32) r7_n;
+				ni_subject_len.u0 = 0x04;
 				r16_n = 0x04;
 			}
 		}
 		else
 		{
-			ni_subject_len.u3 = (byte *) 0x10;
+			ni_subject_len.u0 = 0x10;
 			tLoc40.dw0004 = 0x0A;
 			r16_n = 0x08;
 		}
@@ -4289,7 +4290,7 @@ void niquery_option_subject_addr_handler(Eq_n r0, Eq_n r2, Eq_n r3, int32 r4, Eq
 			for (; r18 != null; r18 = r18->ptr001C)
 			{
 				Eq_n r20_n;
-				r20_n.u3 = ni_subject_len.u3;
+				r20_n.u0 = ni_subject_len.u0;
 				word32 r3_n;
 				word32 r6_n;
 				word32 r8_n;
@@ -4301,8 +4302,8 @@ void niquery_option_subject_addr_handler(Eq_n r0, Eq_n r2, Eq_n r3, int32 r4, Eq
 					word32 r7_n;
 					word32 r8_n;
 					word32 r9_n;
-					free(r0, ni_subject.u3, fn004034E2(r4_n, r18->dw0014 + r16_n, r20_n), out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n);
-					ni_subject.u3 = (byte *) r4_n;
+					free(r0, ni_subject.u0, fn004034E2(r4_n, r18->dw0014 + r16_n, r20_n), out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n);
+					ni_subject.u0 = (int32) r4_n;
 					break;
 				}
 			}
@@ -4391,7 +4392,7 @@ void niquery_option_handler(Eq_n r4)
 	while (true)
 	{
 		Eq_n r4_n;
-		r4_n.u3 = r16_n->a0000[0];
+		r4_n.u4 = r16_n->a0000[0];
 		if (r4_n == 0x00)
 			break;
 		Eq_n r18_n = r16_n->dw0004;
@@ -4459,7 +4460,7 @@ struct Eq_n * build_echo(struct Eq_n * r4)
 	r4->b0001 = 0x00;
 	r4->b0000 = 0x80;
 	r4->w0002 = 0x00;
-	uint32 r4_n = fn0040359C(ntransmitted.u3 + 1 & 0xFFFF);
+	uint32 r4_n = fn0040359C(ntransmitted.u0 + 0x01 & 0xFFFF);
 	r4->t0004.u1 = ident.u1;
 	word32 r7_n = timing;
 	r4->w0006 = (word16) r4_n;
@@ -4470,7 +4471,7 @@ struct Eq_n * build_echo(struct Eq_n * r4)
 		word32 r17_n;
 		gettimeofday(&r4->b0008, out r4_n, out r6_n, out r17_n);
 	}
-	return datalen.u3 + 8;
+	return datalen.u0 + 0x08;
 }
 
 // 004034B2: Register (ptr32 Eq_n) build_niquery(Register Eq_n r0, Register (ptr32 Eq_n) r4)
@@ -4483,8 +4484,8 @@ struct Eq_n * build_niquery(Eq_n r0, struct Eq_n * r4)
 	r4->b0000 = 0x8B;
 	r4->w0002 = 0x00;
 	Eq_n r4_n;
-	r4_n.u3 = ntransmitted.u3;
-	datalen.u3 = (byte *) r0;
+	r4_n.u0 = ntransmitted.u0;
+	datalen.u0 = (int32) r0;
 	uint32 r4_n = fn0040359C(r4_n.u11 + 1 & 0xFFFF);
 	r4->b0008 = (byte) r4_n;
 	r4->b0009 = (byte) (r4_n >> 0x08);
@@ -4529,7 +4530,7 @@ void ping6_send_probe(Eq_n r0, struct Eq_n * r5)
 			word32 r10_n;
 			r4_n = sendto(out r7_n, out r10_n);
 l0040353E:
-			confirm.u3 = (byte *) r0;
+			confirm.u0 = (int32) r0;
 			return;
 		}
 	}
@@ -4581,14 +4582,14 @@ Eq_n ping6_run(Eq_n r0, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, struct Eq_n
 	{
 		word32 r4_n;
 		word32 r6_n;
-		r3 = gettimeofday(&g_t454470, out r4_n, out r6_n, out r17_n);
+		r3 = gettimeofday(0x00454470, out r4_n, out r6_n, out r17_n);
 		word32 r4_n;
 		r2 = getpid(out r4_n);
-		if (ni_subject_type.u3 < 0x00 || ni_subject.u3 == 0x00)
+		if (ni_subject_type.u0 < 0x00 || ni_subject.u0 == 0x00)
 		{
-			ni_subject.u3 = (byte *) 4400384;
-			ni_subject_len.u3 = (byte *) 0x10;
-			ni_subject_type.u3 = (byte *) r0;
+			ni_subject.u0 = 4400384;
+			ni_subject_len.u0 = 0x10;
+			ni_subject_type.u0 = (int32) r0;
 		}
 	}
 	if (r17_n >= 0x02)
@@ -4598,7 +4599,7 @@ Eq_n ping6_run(Eq_n r0, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, struct Eq_n
 		word32 r6_n;
 		word32 r8_n;
 		word32 r11_n;
-		r2 = fputs_unlocked(0x00411B64, stderr.u3, out r3, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12);
+		r2 = fputs_unlocked(0x00411B64, stderr.u0, out r3, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12);
 l004035F2:
 		ping6_usage(0x00, out r17_n);
 	}
@@ -4606,14 +4607,14 @@ l004035F2:
 	if (r17_n != 0x01)
 	{
 l0040362C:
-		if (ni_query >= 0x00 || ni_subject_type.u3 == 0x01)
+		if (ni_query >= 0x00 || ni_subject_type.u0 == 0x01)
 		{
-			r17_n.u3 = ni_group.u3;
+			r17_n.u0 = ni_group.u0;
 			goto l004035FC;
 		}
 		goto l004035F2;
 	}
-	r17_n.u3 = *r18_n.u5;
+	r17_n.u4 = *r18_n.u6;
 l004035FC:
 	if (r19_n == 0x00)
 	{
@@ -4655,7 +4656,7 @@ l004035FC:
 	word32 r6_n;
 	word32 r8_n;
 	if (memchr(r17_n, 0x3A, strlen(r17_n, out r5_n, out r6_n, out r7_n), out r5_n, out r6_n, out r8_n) != 0x00)
-		options.u3 = (byte *) (options.u3 | 0x04);
+		options.u0 = (int32) (options.u0 | 0x04);
 	r19_n.u0 = 4400348;
 	r20.u0 = 4400348;
 	Eq_n r5_n;
@@ -4665,7 +4666,7 @@ l004035FC:
 l004036CC:
 		Eq_n r6_n;
 		r6_n.u1 = g_t430224.u1;
-		hostname.u3 = (byte *) r17_n;
+		hostname.u0 = (int32) r17_n;
 		Eq_n r17_n;
 		r17_n.u0 = 0x0043021C;
 		Eq_n r4_n;
@@ -4674,7 +4675,7 @@ l004036CC:
 		if (r6_n != 0x00 || (g_dw430228 != 0x00 || (g_dw43022C != 0x00 || g_dw430230 != 0x00)))
 		{
 			Eq_n r4_n;
-			r4_n.u3 = device.u3;
+			r4_n.u0 = device.u0;
 			if (r4_n == 0x00)
 				goto l0040382A;
 			word32 r7_n = (word32) g_t430224.u0;
@@ -4686,38 +4687,38 @@ l004036CC:
 			else if (r7_n != 0xFF || ((word32) g_b430225 & 0x0F) != 0x02)
 				goto l0040382A;
 			sp_n.u0 = <invalid>;
-			(&sp_n.u21->u1)[88] = (struct Eq_n) if_name2index(r4_n, out r11_n, out r16_n);
+			sp_n.u11[88] = (struct Eq_n) if_name2index(r4_n, out r11_n, out r16_n);
 l0040382A:
-			r19_n.u3 = device.u3;
+			r19_n.u0 = device.u0;
 			if (r19_n != 0x00)
 			{
 				word32 r7_n = cmsglen;
 				cmsglen = r7_n + 0x20;
-				(&sp_n.u21->u1)[64] = (struct Eq_n) 0x20;
-				((word32) sp_n + 0x0044)->u0 = 0x29;
-				(&sp_n.u21->u1)[72] = (struct Eq_n) 0x32;
+				sp_n.u11[64] = (struct Eq_n) 0x20;
+				sp_n.u11[0x0044] = (struct Eq_n) 0x29;
+				sp_n.u11[72] = (struct Eq_n) 0x32;
 				word32 r6_n;
 				word32 r7_n;
 				word32 r8_n;
 				word32 r10_n;
 				memset(r7_n + 0x004314DC + 0x0C, 0x00, 0x14, out r6_n, out r7_n, out r8_n, out r10_n);
 				sp_n.u0 = <invalid>;
-				(&sp_n.u21->u1)[92] = (struct Eq_n) if_name2index(r19_n, out r11_n, out r16_n);
+				sp_n.u11[92] = (struct Eq_n) if_name2index(r19_n, out r11_n, out r16_n);
 			}
 			if (fn0040359C(0xFF00) == ((word32) 4400384 & fn0040359C(0xFF00)))
 			{
-				if (uid.u3 != 0x00)
+				if (uid.u0 != 0x00)
 				{
-					if (interval.u3 <= 999)
+					if (interval.u0 <= 999)
 					{
-						r5_n.u3 = stderr.u3;
+						r5_n.u0 = stderr.u0;
 						r4_n.u0 = 0x00411BE4;
 						goto l004036BE;
 					}
 					int32 r7_n = pmtudisc;
 					if (r7_n >= 0x00 && r7_n != 0x02)
 					{
-						r5_n.u3 = stderr.u3;
+						r5_n.u0 = stderr.u0;
 						r4_n.u0 = 0x00411C14;
 						goto l004036BE;
 					}
@@ -4732,13 +4733,13 @@ l0040382A:
 				r4_n.u0 = 0x00411C40;
 				goto l00403790;
 			}
-			if (!__bit<word32,word32>(options.u3, 0x0F) && bind() == ~0x00)
+			if (!__bit<word32,word32>(options.u0, 0x0F) && bind() == ~0x00)
 			{
 				r4_n.u0 = 0x00411C58;
 				goto l00403790;
 			}
 			Eq_n r17_n;
-			r17_n.u3 = datalen.u3;
+			r17_n.u0 = datalen.u0;
 			if (r17_n >= 0x08 && ni_query < 0x00)
 				timing = 0x01;
 			word32 r3_n;
@@ -4750,7 +4751,7 @@ l0040382A:
 			r19_n = r4_n;
 			if (r4_n == 0x00)
 			{
-				r5_n.u3 = stderr.u3;
+				r5_n.u0 = stderr.u0;
 				r4_n.u0 = 4262004;
 l004036BE:
 				word32 r4_n;
@@ -4764,7 +4765,7 @@ l00403626:
 				sp_n.u0 = <invalid>;
 				goto l0040362C;
 			}
-			sp_n.u11[8] = (struct Eq_n) 0x01;
+			sp_n.u13[2] = (struct Eq_n) 0x01;
 			int32 r5_n;
 			word32 r7_n;
 			if (fn00403C9A(out r5_n, out r7_n) != 0x00)
@@ -4775,10 +4776,10 @@ l00403626:
 				word32 r8_n;
 				word32 r11_n;
 				word32 r12_n;
-				fputs_unlocked(0x00410710, stderr.u3, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
-				sp_n.u11[8] = (struct Eq_n) 0x00;
+				fputs_unlocked(0x00410710, stderr.u0, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
+				sp_n.u13[2] = (struct Eq_n) 0x00;
 			}
-			sock_setbufs(datalen.u3 + 8 + r5_n *s 0x0118);
+			sock_setbufs(r5_n *s 0x0118 + (datalen.u0 + 0x08));
 			if (r16_n->dw0004 == 0x03)
 			{
 				word32 r5_n;
@@ -4792,7 +4793,7 @@ l00403626:
 					word32 r8_n;
 					word32 r11_n;
 					word32 r12_n;
-					fputs_unlocked(0x00411C70, stderr.u3, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
+					fputs_unlocked(0x00411C70, stderr.u0, out r3_n, out r4_n, out r5_n, out r6_n, out r8_n, out r11_n, out r12_n);
 				}
 				word32 r6_n;
 				word32 r7_n;
@@ -4800,7 +4801,7 @@ l00403626:
 				word32 r10_n;
 				memset(&tLoc50, 0xFF, 0x20, out r6_n, out r7_n, out r8_n, out r10_n);
 				if (r16_n->dw0008 == 0x00)
-					tLoc50.u3 = (byte *) __ins<word32,word32>(tLoc50.u3, 0x00, 0x01, 0x01);
+					tLoc50.u0 = (int32) __ins<word32,word32>(tLoc50.u0, 0x00, 0x01, 0x01);
 				Eq_n r7_n;
 				if (ni_query >= 0x00)
 					r7_n = __ins<word32,word32>(dwLoc40, 0x00, 0x0C, 0x01);
@@ -4817,12 +4818,12 @@ l00403626:
 			}
 			word32 r5_n;
 			word32 r7_n;
-			if (!__bit<word32,word32>(options.u3, 0x10) && fn00403C9A(out r5_n, out r7_n) == ~0x00)
+			if (!__bit<word32,word32>(options.u0, 0x10) && fn00403C9A(out r5_n, out r7_n) == ~0x00)
 			{
 				r4_n.u0 = 0x00411CC0;
 				goto l00403790;
 			}
-			if (!__bit<word32,word32>(options.u3, 0x11))
+			if (!__bit<word32,word32>(options.u0, 0x11))
 			{
 				r20.u0 = ~0x00;
 				word32 r5_n;
@@ -4851,12 +4852,12 @@ l00403626:
 			}
 			word32 r5_n;
 			word32 r7_n;
-			if (!__bit<word32,word32>(options.u3, 0x0A) && fn00403C9A(out r5_n, out r7_n) == ~0x00)
+			if (!__bit<word32,word32>(options.u0, 0x0A) && fn00403C9A(out r5_n, out r7_n) == ~0x00)
 			{
 				r4_n.u0 = 0x00411D38;
 				goto l00403790;
 			}
-			if (!__bit<word32,word32>(options.u3, 0x09))
+			if (!__bit<word32,word32>(options.u0, 0x09))
 			{
 				Eq_n sp_n = sp_n - __ins<word32,word32>(cmsglen + 0x2F, 0x00, 0x00, 0x01);
 				word32 r6_n;
@@ -4864,10 +4865,10 @@ l00403626:
 				word32 r8_n;
 				word32 r10_n;
 				memset(sp_n, 0x00, 0x20, out r6_n, out r7_n, out r8_n, out r10_n);
-				sp_n.u12[4] = (struct Eq_n) htonl(__ext<word32,word32>(flowlabel.u3, 0x00, 0x14));
-				((word32) sp_n + 21)->u3 = 0x01;
-				((word32) sp_n + 22)->u3 = 0x01;
-				sp_n.u12[5] = (struct Eq_n) 0x00;
+				sp_n.u11[16] = (struct Eq_n) htonl(__ext<word32,word32>(flowlabel.u0, 0x00, 0x14));
+				sp_n.u11[21] = (struct Eq_n) 0x01;
+				sp_n.u11[22] = (struct Eq_n) 0x01;
+				sp_n.u11[20] = (struct Eq_n) 0x00;
 				word32 r3_n;
 				word32 r5_n;
 				word32 r6_n;
@@ -4888,7 +4889,7 @@ l00403626:
 					r4_n.u0 = 4267344;
 					goto l00403790;
 				}
-				flowlabel.u3 = (byte *) r7_n;
+				flowlabel.u0 = (int32) r7_n;
 				sp_n.u11[4] = (struct Eq_n) r7_n;
 				word32 r5_n;
 				word32 r7_n;
@@ -4906,23 +4907,23 @@ l00403790:
 					goto l00403626;
 				}
 			}
-			pr_addr(r0, 4400376, hostname.u3, r4_n, r20, r21, r22, r23, r28, fp + ~0x0FFF, ra);
+			pr_addr(r0, 4400376, hostname.u0, r4_n, r20, r21, r22, r23, r28, fp + ~0x0FFF, ra);
 			fn00403C9E(0x00411D78);
 			Eq_n r4_n;
-			r4_n.u3 = flowlabel.u3;
+			r4_n.u0 = flowlabel.u0;
 			if (r4_n != 0x00)
 			{
 				ntohl(r4_n);
 				fn00403C9E(0x00411D88);
 			}
 			Eq_n r18_n;
-			r18_n.u3 = options.u3;
-			if (device.u3 != 0x00 || !__bit<word32,word32>(r18_n, 0x0F))
+			r18_n.u0 = options.u0;
+			if (device.u0 != 0x00 || !__bit<word32,word32>(r18_n, 0x0F))
 			{
-				options.u3 = (byte *) (r18_n | 0x04);
+				options.u0 = (int32) (r18_n | 0x04);
 				pr_addr(r0, 0x0043021C, r18_n, r4_n, r20, r21, r22, r23, r28, fp + ~0x0FFF, ra);
 				fn00403C9E(4262044);
-				options.u3 = (byte *) r18_n;
+				options.u0 = (int32) r18_n;
 			}
 			fn00403C9E(4267416);
 			setup(r0, r16_n);
@@ -4939,7 +4940,7 @@ l00403790:
 		if (r4_n < 0x00)
 			goto l00403790;
 		Eq_n r4_n;
-		r4_n.u3 = device.u3;
+		r4_n.u0 = device.u0;
 		if (r4_n == 0x00)
 		{
 l0040379C:
@@ -4956,12 +4957,12 @@ l0040379C:
 				r4_n.u0 = 0x00410600;
 				goto l00403790;
 			}
-			r17_n.u16->w0002 = 0x00;
+			r17_n.u11[2] = (struct Eq_n) 0x00;
 			word32 r4_n;
 			word32 r6_n;
 			word32 r8_n;
 			close(out r4_n, out r6_n, out r8_n);
-			if (device.u3 != 0x00)
+			if (device.u0 != 0x00)
 			{
 				Eq_n r11_n = getifaddrs(r0, r11_n);
 				if (fp != 0x50)
@@ -4969,24 +4970,24 @@ l0040379C:
 					r4_n.u0 = 4266968;
 					goto l00403790;
 				}
-				r23.u3 = r17_n.u12[4];
-				r20.u3 = device.u3;
+				r23.u4 = r17_n.u11[16];
+				r20.u0 = device.u0;
 				Eq_n r8_n;
-				r8_n.u3 = r17_n.u11[20];
-				r21.u3 = r17_n.u11[8];
-				r22.u3 = r17_n.u12[3];
+				r8_n.u4 = r17_n.u11[20];
+				r21.u4 = r17_n.u13[2];
+				r22 = *((word32) r17_n + 0x0C);
 				struct Eq_n * r19_n;
 				for (r19_n = (struct Eq_n *) tLoc50; r19_n != null; r19_n = r19_n->ptr0000)
 				{
 					struct Eq_n * r17_n = r19_n->ptr000C;
 					word32 r6_n;
-					if (r17_n != null && ((word32) r17_n->w0000 == 0x0A && (strncmp((r19_n->t0004).u3, r20, 0x03, out r6_n) == 0x00 && (((r17_n->dw0008 - r21 | r17_n->dw000C - r22) | r17_n->dw0010 - r23) | r17_n->dw0014 - r8_n) == 0x00)))
+					if (r17_n != null && ((word32) r17_n->w0000 == 0x0A && (strncmp((r19_n->t0004).u0, r20, 0x03, out r6_n) == 0x00 && (((r17_n->dw0008 - r21 | r17_n->dw000C - r22) | r17_n->dw0010 - r23) | r17_n->dw0014 - r8_n) == 0x00)))
 						goto l00403822;
 				}
 				word32 r7_n;
 				fprintf(out r7_n);
 l00403822:
-				r11_n = freeifaddrs(r0, tLoc50.u3, r11_n);
+				r11_n = freeifaddrs(r0, tLoc50.u0, r11_n);
 			}
 			goto l0040382A;
 		}
@@ -5002,7 +5003,7 @@ l00403822:
 		}
 		else if (r7_n != 0xFF || ((word32) g_b4324E5 & 0x0F) != 0x02)
 			goto l00403750;
-		g_t4324F4.u3 = (byte *) r4_n;
+		g_t4324F4.u0 = (int32) r4_n;
 l00403750:
 		word32 r3_n;
 		word32 r4_n;
@@ -5021,7 +5022,7 @@ l00403750:
 		r21 = r4_n;
 		if (r4_n == ~0x00)
 		{
-			r22.u3 = device.u3;
+			r22.u0 = device.u0;
 			word32 r5_n;
 			word32 r6_n;
 			word32 r7_n;
@@ -5050,17 +5051,17 @@ l00403750:
 	{
 		r11_n = fn004034E2(0x004324E4, 4400384, 0x10);
 		Eq_n r7_n;
-		r7_n.u3 = g_t432510.u3;
+		r7_n.u0 = g_t432510.u0;
 		Eq_n r6_n;
-		r6_n.u3 = scope_id.5415.u3;
-		(&sp_n.u21->u1)[88] = (struct Eq_n) r7_n;
+		r6_n.u0 = scope_id.5415.u0;
+		sp_n.u11[88] = (struct Eq_n) r7_n;
 		if (r7_n != 0x00)
 		{
 			if (r6_n != 0x00)
 			{
 				if (r6_n != r7_n)
 				{
-					r5_n.u3 = stderr.u3;
+					r5_n.u0 = stderr.u0;
 					r4_n.u0 = 4266904;
 					goto l004036BE;
 				}
@@ -5069,7 +5070,7 @@ l00403750:
 		}
 		else if (r6_n != 0x00)
 			goto l004036CC;
-		scope_id.5415.u3 = (byte *) r7_n;
+		scope_id.5415.u0 = (int32) r7_n;
 		goto l004036CC;
 	}
 }
@@ -5159,10 +5160,10 @@ Eq_n __divdi3(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, u
 				if (r6_n < r4_n)
 				{
 					r6_n += r9_n;
-					r11_n.u3 = &r3.u11->bFFFFFFFF;
+					r11_n.u4 = (word32) r3.u0 - 1;
 					if (r6_n >= r9_n && r6_n < r4_n)
 					{
-						r11_n.u3 = &r3.u12->bFFFFFFFE;
+						r11_n.u4 = (word32) r3.u0 - 2;
 						r6_n += r9_n;
 					}
 				}
@@ -5172,10 +5173,10 @@ Eq_n __divdi3(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, u
 				if (r5_n < r7_n)
 				{
 					r5_n += r9_n;
-					r6_n.u3 = &r3.u11->bFFFFFFFF;
+					r6_n.u4 = (word32) r3.u0 - 1;
 					if (r5_n >= r9_n && r5_n < r7_n)
 					{
-						r6_n.u3 = &r3.u12->bFFFFFFFE;
+						r6_n.u4 = (word32) r3.u0 - 2;
 						r5_n += r9_n;
 					}
 				}
@@ -5191,10 +5192,10 @@ Eq_n __divdi3(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, u
 		if (r6_n < r5_n)
 		{
 			r6_n += r9_n;
-			r7_n.u3 = &r3.u11->bFFFFFFFF;
+			r7_n.u4 = (word32) r3.u0 - 1;
 			if (r6_n >= r9_n && r6_n < r5_n)
 			{
-				r7_n.u3 = &r3.u12->bFFFFFFFE;
+				r7_n.u4 = (word32) r3.u0 - 2;
 				r6_n += r9_n;
 			}
 		}
@@ -5204,9 +5205,9 @@ Eq_n __divdi3(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, u
 		if (r10_n < r8_n)
 		{
 			Eq_n r10_n = r10_n + r9_n;
-			r4_n.u3 = &r3.u11->bFFFFFFFF;
+			r4_n.u4 = (word32) r3.u0 - 1;
 			if (r10_n >= r9_n && r10_n < r8_n)
-				r4_n.u3 = &r3.u12->bFFFFFFFE;
+				r4_n.u4 = (word32) r3.u0 - 2;
 		}
 		r7_n = r7_n << 0x10 | r4_n;
 	}
@@ -5253,10 +5254,10 @@ Eq_n __divdi3(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, u
 				if (r5_n < r10_n)
 				{
 					r5_n += r12_n;
-					r7_n.u3 = &r6_n.u11->bFFFFFFFF;
+					r7_n.u4 = r6_n.u11->aFFFFFFFF;
 					if (r5_n >= r12_n && r5_n < r10_n)
 					{
-						r7_n.u3 = &r6_n.u12->bFFFFFFFE;
+						r7_n.u4 = &r6_n.u11->bFFFFFFFE;
 						r5_n += r12_n;
 					}
 				}
@@ -5729,7 +5730,7 @@ l004045DA:
 						if ((r8_n & 0x07) != 0x00 && (r8_n & 0x0F) != 0x04)
 						{
 							uint32 r6_n = r8_n + 0x04;
-							r7_n.u3 += (word32) (r6_n < r8_n);
+							r7_n.u4 = (word32) r7_n.u2 + (word32) (r6_n < r8_n);
 							r8_n = r6_n;
 						}
 						if (__bit<word32,word32>(r7_n, 0x17))
@@ -5762,7 +5763,7 @@ l00404588:
 					{
 						Eq_n r7_n;
 						r7_n.u11 = r8_n.u11 + 4;
-						r11_n.u3 += (word32) (r7_n < r8_n);
+						r11_n.u4 += (word32) (r7_n < r8_n);
 						r8_n = r7_n;
 					}
 					if (!__bit<word32,word32>(r11_n, 0x18))
@@ -5784,7 +5785,7 @@ l004045C6:
 					goto l00404588;
 				}
 				r4_n = r6 >> 0x1D | 0x08000000 | r4_n << 0x03;
-				r6_n.u3 = (word32) r6_n - 0x03FF;
+				r6_n.u4 = (word32) r6_n - 0x03FF;
 				r9_n = r6 << 0x03;
 			}
 			else
@@ -5799,11 +5800,11 @@ l004045C6:
 				}
 				Eq_n r2_n = __count_leading_zeros<word32>(r4_n);
 				if (r4_n == 0x00)
-					r2_n.u16 = __count_leading_zeros<word32>(r6).u16 + 2;
+					r2_n.u11 = __count_leading_zeros<word32>(r6).u11 + 32;
 				int32 r6_n = (word32) r2_n - 11;
 				if (r6_n < 0x1D)
 				{
-					word32 r9_n = &r2_n.u12->dwFFFFFFF8;
+					word32 r9_n = (word32) r2_n.u11->aFFFFFFF8;
 					r9_n = r6 << r9_n;
 					r4_n = r6 >> 0x1D - r6_n | r4_n << r9_n;
 				}
@@ -5819,7 +5820,7 @@ l004045C6:
 		}
 		r11_n = r4 >> 0x1D | 0x08000000 | r11_n << 0x03;
 		r8_n = r4 << 0x03;
-		r10_n.u3 = (word32) r10_n - 0x03FF;
+		r10_n.u4 = (word32) r10_n - 0x03FF;
 	}
 	else
 	{
@@ -5833,11 +5834,11 @@ l004045C6:
 		}
 		Eq_n r9_n = __count_leading_zeros<word32>(r11_n);
 		if (r11_n == 0x00)
-			r9_n.u16 = __count_leading_zeros<word32>(r4).u16 + 2;
+			r9_n.u11 = __count_leading_zeros<word32>(r4).u11 + 32;
 		int32 r6_n = (word32) r9_n - 11;
 		if (r6_n < 0x1D)
 		{
-			word32 r8_n = &r9_n.u12->dwFFFFFFF8;
+			word32 r8_n = (word32) r9_n.u11->aFFFFFFF8;
 			r8_n = r4 << r8_n;
 			r11_n = r4 >> 0x1D - r6_n | r11_n << r8_n;
 		}
@@ -5878,44 +5879,44 @@ Eq_n __fixdfsi(Eq_n r4, Eq_n r5, union Eq_n & r5Out, union Eq_n & r6Out)
 		{
 			Eq_n r5_n = (r5 >> 0x1F) + 0x7FFFFFFF;
 			r5Out = r5_n;
-			r6Out.u0 = (Eq_n (*)[]) <invalid>;
+			r6Out.u0 = <invalid>;
 			return r5_n;
 		}
 		int32 r8_n = 0x0433 - r6_n;
 		if (r8_n < 0x20)
-			r4_n = (r8_n | 0x01000000) << (word32) r6_n - 0x0413 | r4 >> r8_n;
+			r4_n = (r8_n | 0x01000000) << (word32) r6_n.u0 - 0x0413 | r4 >> r8_n;
 		else
 			r4_n = (r8_n | 0x01000000) >> 0x0413 - r6_n;
 		if (r5 >> 0x1F != 0x00)
 			r4_n = -r4_n;
 	}
 	r5Out = r5 >> 0x1F;
-	r6Out.u0 = (Eq_n (*)[]) <invalid>;
+	r6Out.u0 = <invalid>;
 	return r4_n;
 }
 
-// 00404730: Register Eq_n sysconf(Register Eq_n r4, Register Eq_n r12, Register out (ptr32 Eq_n) r7Out, Register out ptr32 r17Out)
+// 00404730: Register Eq_n sysconf(Register Eq_n r4, Register Eq_n r12, Register out Eq_n r7Out, Register out ptr32 r17Out)
 // Called from:
 //      fn00402CEE
-Eq_n sysconf(Eq_n r4, Eq_n r12, struct Eq_n & r7Out, ptr32 & r17Out)
+Eq_n sysconf(Eq_n r4, Eq_n r12, union Eq_n & r7Out, ptr32 & r17Out)
 {
 	word32 r6_n;
 	Eq_n r3_n;
-	struct Eq_n * r7_n;
+	Eq_n r7_n;
 	Eq_n r4_n;
 	if (r4 > 0xF8)
 	{
 l00404748:
 		word32 r4_n;
 		__errno_location(out r4_n);
-		r7_n = (struct Eq_n *) 22;
+		r7_n.u0 = 22;
 		r4_n.u0 = ~0x00;
 		goto l00404752;
 	}
-	r4_n.u3 = (int32) g_a412368[r4];
+	r4_n.u0 = (int32) g_a412368[r4];
 	if (r4_n == 0x00)
 		goto l00404748;
-	r7_n = (struct Eq_n *) ~0x00;
+	r7_n.u0 = ~0x00;
 	ptr32 r17;
 	if (r4_n < ~0x00)
 	{
@@ -5925,12 +5926,12 @@ l00404748:
 			__ext<word32,word32>(r4_n, 0x00, 0x0E);
 			word32 r6_n;
 			r4_n = getrlimit64(&tLoc0148, out r6_n);
-			r7_n = (struct Eq_n *) 0x7FFFFFFF;
+			r7_n.u0 = 0x7FFFFFFF;
 			r17 = tLoc0148.ptr0000;
 			if (r6_n == 0x00)
 			{
 l0040477C:
-				r7_n = (struct Eq_n *) 0x7FFFFFFF;
+				r7_n.u0 = 0x7FFFFFFF;
 				if (r4_n <= 0x7FFFFFFF)
 					goto l00404752;
 			}
@@ -5939,10 +5940,10 @@ l00404830:
 		}
 		else
 		{
-			r7_n = &r4_n.u11->bFFFFFFFF & 0xFF;
-			if (r7_n < (struct Eq_n *) 0x0A)
+			r7_n = r4_n.u11->aFFFFFFFF & 0xFF;
+			if (r7_n < 0x0A)
 			{
-				r7_n = (struct Eq_n *) *((char *) g_a412340 + r7_n * 0x04);
+				r7_n.u0 = (&g_a412340->u0)[r7_n];
 				switch (r7_n)
 				{
 				case 0x00:
@@ -5955,8 +5956,8 @@ l00404830:
 					r4_n.u0 = 0x8000;
 					break;
 				case 0x03:
-					r7_n = (struct Eq_n *) &g_t454430;
-					r4_n.u3 = g_t454454.u3;
+					r7_n.u0 = 0x00454430;
+					r4_n.u0 = g_t454454.u0;
 					break;
 				case 0x04:
 					goto l00404830;
@@ -5976,7 +5977,7 @@ l00404830:
 					word32 r9_n;
 					__syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
 					r4_n.u0 = 0x00;
-					r7_n = null;
+					r7_n.u0 = 0x00;
 					do
 					{
 						while (true)
@@ -5987,8 +5988,8 @@ l00404830:
 							Mem119[r7_n + &tLoc0148:byte] = SLICE(r6_n, byte, 0) & SLICE(r6_n, byte, 0) + ~0x00;
 							++r4_n.u11;
 						}
-						++r7_n;
-					} while (r7_n != (struct Eq_n *) 0x80);
+						r7_n.u2 = (word32) r7_n + 1;
+					} while (r7_n != 0x80);
 					break;
 				case 0x07:
 				case 0x08:
@@ -6011,8 +6012,8 @@ l00404830:
 					word32 r9_n;
 					word32 r11_n;
 					word32 r13_n;
-					__udivdi3(r2_n, r3_n, dwLoc0114 *s r4, r4 *s 0x00 + SLICE(r4 *64 dwLoc0114, word32, 32), g_t454454.u3, 0x00, r12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r13_n);
-					r7_n = (struct Eq_n *) 0x7FFFFFFF;
+					__udivdi3(r2_n, r3_n, dwLoc0114 *s r4, r4 *s 0x00 + SLICE(r4 *64 dwLoc0114, word32, 32), g_t454454.u0, 0x00, r12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r13_n);
+					r7_n.u0 = 0x7FFFFFFF;
 					if (r5_n != 0x00)
 						goto l00404830;
 					goto l0040477C;
@@ -6059,10 +6060,10 @@ void __init_ssp()
 {
 }
 
-// 00404874: void __init_libc(Register Eq_n r0, Register (arr word32) r4, Register (ptr32 Eq_n) r5)
+// 00404874: void __init_libc(Register Eq_n r0, Register (arr word32) r4, Register Eq_n r5)
 // Called from:
 //      __libc_start_main
-void __init_libc(Eq_n r0, word32 r4[], struct Eq_n * r5)
+void __init_libc(Eq_n r0, word32 r4[], Eq_n r5)
 {
 	Eq_n tLocA8;
 	word32 r6_n;
@@ -6071,7 +6072,7 @@ void __init_libc(Eq_n r0, word32 r4[], struct Eq_n * r5)
 	word32 r10_n;
 	memset(&tLocA8, 0x00, 0x98, out r6_n, out r7_n, out r8_n, out r10_n);
 	___environ = r4;
-	struct Eq_n * r16_n = r5;
+	Eq_n r16_n = r5;
 	ui32 r4_n = 0x00;
 	ui32 r4_n;
 	do
@@ -6094,18 +6095,18 @@ void __init_libc(Eq_n r0, word32 r4[], struct Eq_n * r5)
 	__hwcap = r7_n;
 	word32 dwLoc28;
 	__sysinfo = dwLoc28;
-	if (r5 != null)
+	if (r5 != 0x00)
 	{
 l00404940:
-		program_invocation_name = r16_n;
+		program_invocation_name.u0 = (int32) r16_n;
 		while (true)
 		{
-			program_invocation_short_name = r16_n;
+			program_invocation_short_name.u0 = (int32) r16_n;
 			word32 r7_n;
 			do
 			{
-				++r16_n;
-				r7_n = (word32) r16_n->bFFFFFFFF;
+				r16_n = (word32) r16_n + 1;
+				r7_n = (word32) r16_n.u1->bFFFFFFFF;
 				if (r7_n == 0x00)
 					goto l004048CE;
 			} while (r7_n != 0x2F);
@@ -6130,7 +6131,7 @@ l004048CE:
 			word32 r8_n;
 			word32 r9_n;
 			__syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
-			r16_n = null;
+			r16_n.u0 = 0x00;
 			do
 			{
 				if (!__bit<word32,word32>(CONVERT(Mem91[fp - 0xC0 + r16_n + 0x06:uint16], uint16, word32), 0x05))
@@ -6144,13 +6145,13 @@ l004048CE:
 					__syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
 					if (r4_n < 0x00)
 					{
-						*r0.u3 = 0x00;
+						*r0.u4 = 0x00;
 						__syscall<word32>(0x00);
 						goto l00404940;
 					}
 				}
-				r16_n += 8;
-			} while (r16_n != (struct Eq_n *) 0x18);
+				r16_n = (word32) r16_n + 8;
+			} while (r16_n != 0x18);
 		}
 	}
 }
@@ -6174,7 +6175,7 @@ void __libc_start_init()
 //      _start_c
 void __libc_start_main(Eq_n r0, Eq_n r5, Eq_n r6)
 {
-	__init_libc(r0, r6.u3 + (&(r5.u1)->b0001 << 0x02), *r6.u5);
+	__init_libc(r0, r6.u4 + (r5.u11 + 1 << 0x02), *r6.u6);
 	__libc_start_init();
 	main(r0, r5, r6);
 	exit();
@@ -6281,7 +6282,7 @@ void abort(Eq_n r0)
 {
 	raise();
 	__block_all_sigs();
-	*r0.u3 = 0x00;
+	*r0.u4 = 0x00;
 	__syscall<word32>(0x00);
 	__reserved_instruction(0x00);
 }
@@ -6307,7 +6308,7 @@ void __libc_exit_fini()
 	_fini();
 }
 
-// 00404A50: Register word32 __syscall(Register out (ptr32 Eq_n) r4Out, Register out (ptr32 word32) r5Out, Register out (ptr32 Eq_n) r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r9Out)
+// 00404A50: Register word32 __syscall(Register out Eq_n r4Out, Register out Eq_n r5Out, Register out (ptr32 Eq_n) r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out)
 // Called from:
 //      fn00401E82
 //      fn00402CEE
@@ -6366,12 +6367,12 @@ void __libc_exit_fini()
 //      open64
 //      sem_post
 //      lseek64
-word32 __syscall(struct Eq_n & r4Out, word32 & r5Out, struct Eq_n & r6Out, ptr32 & r7Out, union Eq_n & r8Out, struct Eq_n & r9Out)
+word32 __syscall(union Eq_n & r4Out, union Eq_n & r5Out, struct Eq_n & r6Out, ptr32 & r7Out, union Eq_n & r8Out, union Eq_n & r9Out)
 {
 	__syscall<word32>(0x00);
-	struct Eq_n * r5;
+	Eq_n r5;
 	r4Out = r5;
-	word32 * r6;
+	Eq_n r6;
 	r5Out = r6;
 	struct Eq_n * r7;
 	r6Out = r7;
@@ -6379,7 +6380,7 @@ word32 __syscall(struct Eq_n & r4Out, word32 & r5Out, struct Eq_n & r6Out, ptr32
 	r7Out = r8;
 	Eq_n r9;
 	r8Out = r9;
-	struct Eq_n * r10;
+	Eq_n r10;
 	r9Out = r10;
 	word32 r4;
 	return r4;
@@ -6453,7 +6454,7 @@ void __simple_malloc(uint32 r4)
 					goto l00404ACA;
 				}
 			} while (r16_n < 0x10);
-			__lock(&g_dw432538);
+			__lock(4400440);
 			r7_n = cur.1422;
 			r16_n = r16_n + ~0x00 & -r7_n;
 			if (r4 > 0x8000000F)
@@ -6471,7 +6472,7 @@ l00404AE0:
 					__expand_heap(&tLoc14, out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r11_n);
 					if (r4_n == 0x00)
 					{
-						__unlock(&g_dw432538);
+						__unlock(4400440);
 						return;
 					}
 					if (r4_n != end.1423)
@@ -6482,7 +6483,7 @@ l00404AE0:
 					end.1423 = r4_n + r6_n;
 				}
 				cur.1422 = r7_n + r17_n;
-				__unlock(&g_dw432538);
+				__unlock(4400440);
 				return;
 			}
 		}
@@ -6491,7 +6492,7 @@ l00404AE0:
 			r16_n = 0x00;
 			r17_n = 0x01;
 l00404ACA:
-			__lock(&g_dw432538);
+			__lock(4400440);
 			r7_n = cur.1422;
 			r16_n = r16_n & -r7_n;
 		}
@@ -6507,11 +6508,11 @@ l00404ACA:
 	goto l00404AE0;
 }
 
-// 00404B80: Register Eq_n alloc_fwd(Register (ptr32 Eq_n) r4, Register out ptr32 r4Out, Register out ptr32 r8Out, Register out Eq_n r19Out, Register out ptr32 r22Out)
+// 00404B80: Register Eq_n alloc_fwd(Register Eq_n r4, Register out ptr32 r4Out, Register out ptr32 r8Out, Register out Eq_n r19Out, Register out ptr32 r22Out)
 // Called from:
 //      free
 //      realloc
-Eq_n alloc_fwd(struct Eq_n * r4, ptr32 & r4Out, ptr32 & r8Out, union Eq_n & r19Out, ptr32 & r22Out)
+Eq_n alloc_fwd(Eq_n r4, ptr32 & r4Out, ptr32 & r8Out, union Eq_n & r19Out, ptr32 & r22Out)
 {
 	word32 r9_n;
 	ptr32 r8_n;
@@ -6523,7 +6524,7 @@ Eq_n alloc_fwd(struct Eq_n * r4, ptr32 & r4Out, ptr32 & r8Out, union Eq_n & r19O
 	ptr32 dwLoc20_n = r22;
 l00404B84:
 	Eq_n r18_n;
-	r18_n.u3 = r4->t0004.u3;
+	r18_n.u0 = r4.u1->t0004.u0;
 l00404B86:
 	Eq_n r2;
 	ptr32 r8;
@@ -6566,11 +6567,10 @@ l00404B86:
 				r17_n.u0 = 0x3F;
 				r20_n = 0x03F0;
 			}
-			Eq_n r16_n;
-			r16_n.u0 = (char *) g_a432550 + r16_n;
+			Eq_n r16_n = r16_n + 4400464;
 			if (g_dw45443C == 0x00)
 			{
-				if (((char *) g_a432550 + r20_n)[16] != 0x00)
+				if ((4400464 + r20_n)->dw0010 != 0x00)
 					goto l00404C8E;
 				r7_n = r18_n;
 				goto l00404BB8;
@@ -6580,31 +6580,31 @@ l00404B86:
 				__sync(0x00);
 				Eq_n r6_n;
 				do
-					r6_n = __load_linked<word32>(&*r16_n.u0);
-				while (__store_conditional<word32>(&*r16_n.u0, 0x01) == 0x00);
+					r6_n = __load_linked<word32>(&*r16_n.u1);
+				while (__store_conditional<word32>(&*r16_n.u1, 0x01) == 0x00);
 				__sync(0x00);
 				if (r6_n == 0x00)
 					break;
 				word32 r4_n;
 				word32 r5_n;
 				word32 r9_n;
-				r2 = __wait(r16_n, &r16_n.u1->dw0004, 0x01, 0x01, out r4_n, out r5_n, out r8, out r9_n);
+				r2 = __wait(r16_n, &r16_n.u2->t0004.u0, 0x01, 0x01, out r4_n, out r5_n, out r8, out r9_n);
 			}
-			r7_n.u3 = r4->t0004.u3;
-			if (((char *) g_a432550 + r20_n)[16] == 0x00)
+			r7_n.u0 = r4.u1->t0004.u0;
+			if ((4400464 + r20_n)->dw0010 == 0x00)
 			{
 l00404BB8:
-				struct Eq_n * r20_n = (struct Eq_n *) ((char *) g_a432550 + r20_n);
-				ui32 r6_n = (char *) g_a432550 + ((r22_n << 0x04) + 0x08);
-				r20_n->dw0010 = r6_n;
-				r20_n->dw0014 = r6_n;
+				Eq_n r20_n = r20_n + 4400464;
+				ui32 r6_n = (r22_n << 0x04) + 0x08 + 4400464;
+				r20_n.u1->dw0010 = r6_n;
+				r20_n.u1->dw0014 = r6_n;
 			}
 			if (r18_n == r7_n)
 			{
 l00404C8E:
 				Eq_n r7_n;
-				r7_n.u0 = r4->t000C.u0;
-				if (r4->t0008.u0 == r7_n)
+				r7_n.u0 = r4.u1->t000C.u0;
+				if (r4.u1->t0008.u0 == r7_n)
 				{
 					uint32 r7_n = 0x01 >> -r17_n;
 					word32 r5_n = (word32) (r17_n < 0x20);
@@ -6620,28 +6620,28 @@ l00404C8E:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&*(0x00432000 | 0x0550), __load_linked<word32>(&*(0x00432000 | 0x0550)) & r4_n) == 0x00)
+						while (__store_conditional<word32>(&*(0x00432000 | 0x0550).u1, __load_linked<word32>(&*(0x00432000 | 0x0550).u1) & r4_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&g_t432554.u3, __load_linked<word32>(&g_t432554.u3) & r7_n) == 0x00)
+						while (__store_conditional<word32>(&g_t432554.u0, __load_linked<word32>(&g_t432554.u0) & r7_n) == 0x00)
 							;
 						__sync(0x00);
 					}
-					r18_n.u3 = r4->t0004.u3;
-					r7_n.u0 = r4->t000C.u0;
+					r18_n.u0 = r4.u1->t0004.u0;
+					r7_n.u0 = r4.u1->t000C.u0;
 				}
 				Eq_n r5_n = __ins<word32,word32>(r18_n, 0x00, 0x00, 0x01);
 				Mem206[r4 + r5_n:word32] = Mem196[r4 + r5_n:word32] | 0x01;
-				if (*r16_n.u0 != 0x00)
+				if (*r16_n.u1 != 0x00)
 				{
 					__sync(0x00);
 					__sync(0x00);
 					dwLoc20_n = 0x00;
-					if (r16_n.u1->dw0004 != 0x00)
+					if (r16_n.u2->t0004.u0 != 0x00)
 					{
 						word32 r4_n;
 						word32 r5_n;
@@ -6666,12 +6666,12 @@ l00404C8E:
 				r22Out = dwLoc20_n;
 				return r2;
 			}
-			if (*r16_n.u0 != 0x00)
+			if (*r16_n.u1 != 0x00)
 			{
 				__sync(0x00);
 				__sync(0x00);
 				dwLoc20_n = 0x00;
-				if (r16_n.u1->dw0004 == 0x00)
+				if (r16_n.u2->t0004.u0 == 0x00)
 					goto l00404B84;
 				word32 r4_n;
 				word32 r5_n;
@@ -6687,7 +6687,7 @@ l00404C8E:
 				word32 r7_n;
 				word32 r9_n;
 				r2 = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9_n);
-				r18_n.u3 = r4->t0004.u3;
+				r18_n.u0 = r4.u1->t0004.u0;
 				goto l00404B86;
 			}
 			r18_n = r7_n;
@@ -6717,7 +6717,7 @@ Eq_n alloc_rev(Eq_n r4, ptr32 & r4Out, union Eq_n & r5Out, ptr32 & r8Out, struct
 	ptr32 dwLoc20_n = r22;
 l00404D58:
 	Eq_n r18_n;
-	r18_n.u3 = *r4.u5;
+	r18_n.u4 = *r4.u6;
 l00404D5A:
 	Eq_n r2;
 	Eq_n r5;
@@ -6762,11 +6762,10 @@ l00404D5A:
 				r17_n.u0 = 0x3F;
 				r20_n = 0x03F0;
 			}
-			Eq_n r16_n;
-			r16_n.u0 = (char *) g_a432550 + r16_n;
+			Eq_n r16_n = r16_n + 4400464;
 			if (g_dw45443C == 0x00)
 			{
-				if (((char *) g_a432550 + r20_n)[16] != 0x00)
+				if ((4400464 + r20_n)->dw0010 != 0x00)
 					goto l00404E62;
 				r7_n = r18_n;
 				goto l00404D8C;
@@ -6776,22 +6775,22 @@ l00404D5A:
 				__sync(0x00);
 				Eq_n r6_n;
 				do
-					r6_n = __load_linked<word32>(&*r16_n.u0);
-				while (__store_conditional<word32>(&*r16_n.u0, 0x01) == 0x00);
+					r6_n = __load_linked<word32>(&*r16_n.u1);
+				while (__store_conditional<word32>(&*r16_n.u1, 0x01) == 0x00);
 				__sync(0x00);
 				if (r6_n == 0x00)
 					break;
 				word32 r4_n;
-				r2 = __wait(r16_n, &r16_n.u1->dw0004, 0x01, 0x01, out r4_n, out r5, out r8, out r9);
+				r2 = __wait(r16_n, &r16_n.u2->t0004.u0, 0x01, 0x01, out r4_n, out r5, out r8, out r9);
 			}
-			r7_n.u3 = *r4.u5;
-			if (((char *) g_a432550 + r20_n)[16] == 0x00)
+			r7_n.u4 = *r4.u6;
+			if ((4400464 + r20_n)->dw0010 == 0x00)
 			{
 l00404D8C:
-				struct Eq_n * r20_n = (struct Eq_n *) ((char *) g_a432550 + r20_n);
-				ui32 r6_n = (char *) g_a432550 + ((r22_n << 0x04) + 0x08);
-				r20_n->dw0010 = r6_n;
-				r20_n->dw0014 = r6_n;
+				Eq_n r20_n = r20_n + 4400464;
+				ui32 r6_n = (r22_n << 0x04) + 0x08 + 4400464;
+				r20_n.u1->dw0010 = r6_n;
+				r20_n.u1->dw0014 = r6_n;
 			}
 			if (r18_n == r7_n)
 			{
@@ -6813,28 +6812,28 @@ l00404E62:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&*(0x00432000 | 0x0550), __load_linked<word32>(&*(0x00432000 | 0x0550)) & r4_n) == 0x00)
+						while (__store_conditional<word32>(&*(0x00432000 | 0x0550).u1, __load_linked<word32>(&*(0x00432000 | 0x0550).u1) & r4_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&g_t432554.u3, __load_linked<word32>(&g_t432554.u3) & r7_n) == 0x00)
+						while (__store_conditional<word32>(&g_t432554.u0, __load_linked<word32>(&g_t432554.u0) & r7_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 				}
-				Eq_n r4_n = __ins<word32,word32>(r19_n->t0004.u3, 0x00, 0x00, 0x01);
+				Eq_n r4_n = __ins<word32,word32>(r19_n->t0004.u0, 0x00, 0x00, 0x01);
 				ui32 r5_n = Mem198[r19_n + r4_n:word32];
 				Mem208[r19_n + r4_n:word32] = r5_n | 0x01;
 				Eq_n r5_n = r5_n | 0x01;
-				if (*r16_n.u0 != 0x00)
+				if (*r16_n.u1 != 0x00)
 				{
 					__sync(0x00);
 					__sync(0x00);
 					dwLoc20_n = 0x00;
-					if (r16_n.u1->dw0004 != 0x00)
+					if (r16_n.u2->t0004.u0 != 0x00)
 					{
 						word32 r4_n;
 						word32 r6_n;
@@ -6859,12 +6858,12 @@ l00404E62:
 				r22Out = dwLoc20_n;
 				return r2;
 			}
-			if (*r16_n.u0 != 0x00)
+			if (*r16_n.u1 != 0x00)
 			{
 				__sync(0x00);
 				__sync(0x00);
 				dwLoc20_n = 0x00;
-				if (r16_n.u1->dw0004 == 0x00)
+				if (r16_n.u2->t0004.u0 == 0x00)
 					goto l00404D58;
 				word32 r4_n;
 				word32 r6_n;
@@ -6876,7 +6875,7 @@ l00404E62:
 				word32 r6_n;
 				word32 r7_n;
 				r2 = __syscall(out r4_n, out r5, out r6_n, out r7_n, out r8, out r9);
-				r18_n.u3 = *r4.u5;
+				r18_n.u4 = *r4.u6;
 				goto l00404D5A;
 			}
 			r18_n = r7_n;
@@ -6931,22 +6930,22 @@ Eq_n free(Eq_n r0, Eq_n r4, Eq_n r11, ptr32 & r3Out, union Eq_n & r4Out, ptr32 &
 		return r2;
 	}
 	Eq_n r7_n;
-	r7_n.u3 = r4.u12->dwFFFFFFFC;
+	r7_n.u0 = r4.u11->tFFFFFFFC.u0;
 	Eq_n r17_n;
-	r17_n.u3 = &r4.u12->dwFFFFFFF8;
+	r17_n.u4 = r4.u11->aFFFFFFF8;
 	Eq_n r22_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
 	if (__bit<word32,word32>(r7_n, 0x00))
 	{
-		r7_n.u3 = r4.u12->dwFFFFFFF8;
+		r7_n.u4 = r4.u14->dwFFFFFFF8;
 		if (__bit<word32,word32>(r7_n, 0x00))
 			goto l00404F6E;
-		*r0.u3 = 0x00;
+		*r0.u4 = 0x00;
 		__syscall<word32>(0x00);
 	}
-	struct Eq_n * r18_n = r4 + ~0x07 + r22_n;
+	Eq_n r18_n = r4 + ~0x07 + r22_n;
 	if (Mem37[r4 + ~0x07 + r22_n:word32] != r7_n)
 	{
-		*r0.u3 = 0x00;
+		*r0.u4 = 0x00;
 		__syscall<word32>(0x00);
 l00404F6E:
 		Eq_n r2_n = munmap(out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n);
@@ -6963,7 +6962,7 @@ l00404F6E:
 	Eq_n dwLoc38_n;
 	dwLoc38_n.u0 = 0x00;
 l00404F82:
-	if (__bit<word32,word32>(*r17_n.u5 & (r18_n->t0004).u3, 0x00))
+	if (__bit<word32,word32>(*r17_n.u6 & ((r18_n.u1)->t0004).u0, 0x00))
 	{
 l0040500C:
 		word32 r4_n;
@@ -6974,11 +6973,11 @@ l0040500C:
 		alloc_rev(r17_n, out r4_n, out r5_n, out r8_n, out r9_n, out r22_n);
 		if (r4_n != 0x00)
 		{
-			r17_n -= __ins<word32,word32>(*r17_n.u5, 0x00, 0x00, 0x01);
+			r17_n -= __ins<word32,word32>(*r17_n.u6, 0x00, 0x00, 0x01);
 			Eq_n r7_n = __ins<word32,word32>(r17_n.u11[4], 0x00, 0x00, 0x01);
 			Eq_n r5_n;
 			r5_n.u0 = 0x00280000;
-			up32 r6_n = r7_n.u3 + r22_n;
+			up32 r6_n = r7_n.u4 + r22_n;
 			if (r6_n > 0x00280000)
 			{
 				r17_n = dwLoc38_n;
@@ -6993,8 +6992,8 @@ l0040500C:
 		r2 = alloc_fwd(r18_n, out r4_n, out r8_n, out r19_n, out r22_n);
 		if (r4_n != 0x00)
 		{
-			Eq_n r7_n = __ins<word32,word32>(r18_n->t0004.u3, 0x00, 0x00, 0x01);
-			up32 r6_n = r7_n.u3 + r22_n;
+			Eq_n r7_n = __ins<word32,word32>(r18_n.u1->t0004.u0, 0x00, 0x00, 0x01);
+			up32 r6_n = r7_n.u4 + r22_n;
 			r19_n += r7_n;
 			if (r6_n > 0x00280000)
 			{
@@ -7032,7 +7031,8 @@ l0040500C:
 				dwLoc34_n.u0 = 0x3F;
 			}
 l00404FBA:
-			Eq_n r23_n = 0x00432550<p32> + r8_n;
+			Eq_n r23_n;
+			r23_n.u1 = (word32) r8_n.u0 + 4400464;
 			if (g_dw454433 != 0x00)
 			{
 				while (true)
@@ -7040,18 +7040,18 @@ l00404FBA:
 					__sync(0x00);
 					Eq_n r6_n;
 					do
-						r6_n = __load_linked<word32>(&*r23_n.u0);
-					while (__store_conditional<word32>(&*r23_n.u0, 0x01) == 0x00);
+						r6_n = __load_linked<word32>(&*r23_n.u1);
+					while (__store_conditional<word32>(&*r23_n.u1, 0x01) == 0x00);
 					__sync(0x00);
 					if (r6_n == 0x00)
 						break;
 					word32 r4_n;
 					word32 r5_n;
 					word32 r9_n;
-					r2 = __wait(r23_n, &r23_n.u1->dw0004, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
+					r2 = __wait(r23_n, &r23_n.u2->t0004.u0, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
 				}
 			}
-			if (((char *) g_a432550 + r20_n)[16] == 0x00)
+			if ((4400464 + r20_n)->dw0010 == 0x00)
 				r17_n = dwLoc34_n;
 			if (g_dw454433 != 0x00)
 			{
@@ -7060,26 +7060,26 @@ l00404FBA:
 					__sync(0x00);
 					Eq_n r6_n;
 					do
-						r6_n = __load_linked<word32>(&g_t432958.u3);
-					while (__store_conditional<word32>(&g_t432958.u3, 0x01) == 0x00);
+						r6_n = __load_linked<word32>(&4401496);
+					while (__store_conditional<word32>(&4401496, 0x01) == 0x00);
 					__sync(0x00);
 					if (r6_n == 0x00)
 						break;
 					word32 r4_n;
 					word32 r5_n;
 					word32 r9_n;
-					r2 = __wait(&g_t432958, &g_t43295C, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
+					r2 = __wait(4401496, &g_t43295C, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
 				}
 			}
-			if (!__bit<word32,word32>(*r17_n.u5 & (r18_n->t0004).u3, 0x00))
+			if (!__bit<word32,word32>(*r17_n.u6 & ((r18_n.u1)->t0004).u0, 0x00))
 			{
 				uint32 r7_n = -r16_n;
 				Eq_n r11_n;
-				r11_n.u3 = g_t432554.u3;
+				r11_n.u0 = g_t432554.u0;
 				Eq_n r4_n;
 				r4_n.u0 = 0x00432000;
 				word32 r22_n = (word32) (r16_n < 0x20);
-				uint32 r6_n = g_a432550[0] >> r16_n;
+				uint32 r6_n = 4400464 >> r16_n;
 				ui32 r5_n = r11_n << r7_n;
 				Eq_n r10_n = r11_n >> r16_n;
 				if (r16_n == 0x00)
@@ -7100,26 +7100,26 @@ l00404FBA:
 					if (r5_n != 0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&*(0x00432000 | 0x0550), __load_linked<word32>(&*(0x00432000 | 0x0550)) | r5_n) == 0x00)
+						while (__store_conditional<word32>(&*(0x00432000 | 0x0550).u1, __load_linked<word32>(&*(0x00432000 | 0x0550).u1) | r5_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 					if (r7_n != 0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&g_t432554.u3, __load_linked<word32>(&g_t432554.u3) | r7_n) == 0x00)
+						while (__store_conditional<word32>(&g_t432554.u0, __load_linked<word32>(&g_t432554.u0) | r7_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 				}
 				Eq_n r7_n;
-				r7_n.u3 = g_t432958.u3;
+				r7_n.u0 = 4401496;
 				if (r7_n != 0x00)
 				{
 					__sync(0x00);
-					g_t432958.u3 = (byte *) 0x00;
+					4401496 = 0x00;
 					__sync(0x00);
-					r7_n.u3 = g_t43295C.u3;
+					r7_n.u0 = g_t43295C.u0;
 					if (r7_n != 0x00)
 					{
 						word32 r5_n;
@@ -7137,19 +7137,19 @@ l00404FBA:
 						}
 					}
 				}
-				ptr32 r6_n = (ptr32) ((char *) g_a432550 + r20_n)[20];
-				struct Eq_n * r9_n = (struct Eq_n *) (g_a432550 + (r7_n.u11 + 1) * 4);
-				r9_n->t0001.u3 = (byte *) dwLoc34_n;
-				if (dwLoc34_n.u12[3] != 0x00)
+				ptr32 r6_n = (4400464 + r20_n)->ptr0014;
+				struct Eq_n * r9_n = 4400464 + (r7_n.u11 + 1 << 0x04);
+				r9_n->t0001.u0 = (int32) dwLoc34_n;
+				if (*((word32) dwLoc34_n + 0x0C) != 0x00)
 					r2 = madvise(out r3, out r4_n, out r6_n, out r8_n, out r9_n);
 				Eq_n r7_n;
-				r7_n.u3 = *r23_n.u0;
+				r7_n.u4 = *r23_n.u1;
 				if (r7_n != 0x00)
 				{
 					__sync(0x00);
-					*r23_n.u0 = (word32) r11_n;
+					*r23_n.u1 = (word32) r11_n;
 					__sync(0x00);
-					r7_n.u3 = r23_n.u1->t0001.u3;
+					r7_n.u0 = r23_n.u2->t0001.u0;
 					if (r7_n != 0x00)
 					{
 						word32 r5_n;
@@ -7182,9 +7182,9 @@ l00404FBA:
 			if (4401496 != 0x00)
 			{
 				__sync(0x00);
-				g_t432958.u3 = (byte *) 0x00;
+				4401496 = 0x00;
 				__sync(0x00);
-				if (g_t43295C.u3 != 0x00)
+				if (g_t43295C.u0 != 0x00)
 				{
 					word32 r4_n;
 					word32 r5_n;
@@ -7205,12 +7205,12 @@ l00404FBA:
 					}
 				}
 			}
-			if (*r23_n.u0 != 0x00)
+			if (*r23_n.u1 != 0x00)
 			{
 				__sync(0x00);
-				*r23_n.u0 = (word32) r11;
+				*r23_n.u1 = (word32) r11;
 				__sync(0x00);
-				if (r23_n.u1->t0001.u3 != 0x00)
+				if (r23_n.u2->t0001.u0 != 0x00)
 				{
 					word32 r4_n;
 					word32 r5_n;
@@ -7233,7 +7233,7 @@ l00404FBA:
 			}
 			goto l0040500C;
 		}
-		r16_n.u3 = (word32) *((word32) ((word32) (r16_n + ~0x00 >> 0x03) + 4271328) - 4);
+		r16_n.u4 = (word32) *((word32) ((word32) (r16_n + ~0x00 >> 0x03) + 4271328) - 4);
 	}
 	r20_n = r16_n << 0x04;
 	dwLoc34_n = r16_n;
@@ -7259,7 +7259,7 @@ Eq_n malloc(Eq_n r0, Eq_n r4, Eq_n r11, union Eq_n & r3Out, union Eq_n & r4Out, 
 	word32 r5_n;
 	word32 r4_n;
 	Eq_n r6_n;
-	r6_n.u3 = g_t454454.u3;
+	r6_n.u0 = g_t454454.u0;
 	ptr32 r8;
 	Eq_n r2;
 	uint32 r21_n;
@@ -7270,7 +7270,7 @@ Eq_n malloc(Eq_n r0, Eq_n r4, Eq_n r11, union Eq_n & r3Out, union Eq_n & r4Out, 
 	Eq_n r3;
 	Eq_n r6_n;
 	ptr32 r8_n;
-	if (0x7FFFFFEF - r6_n < &(r4.u11)->bFFFFFFFF)
+	if (0x7FFFFFEF - r6_n < (r4.u11)->aFFFFFFFF)
 	{
 		if (r4 != 0x00)
 		{
@@ -7341,10 +7341,11 @@ Eq_n malloc(Eq_n r0, Eq_n r4, Eq_n r11, union Eq_n & r3Out, union Eq_n & r4Out, 
 		r20_n = -r7_n - (word32) (r6_n > 0x00);
 	}
 l004052C2:
-	Eq_n r4_n = g_a432550[0];
+	Eq_n r4_n;
+	r4_n.u0 = 4400464;
 	ui32 r7_n = r4_n & r21_n;
-	ui32 r6_n = g_t432554.u3 & r20_n;
-	struct Eq_n * r9_n;
+	ui32 r6_n = g_t432554.u0 & r20_n;
+	Eq_n r9_n;
 	Eq_n r5_n;
 	Eq_n r7_n;
 	Eq_n r7_n;
@@ -7353,12 +7354,12 @@ l004052C2:
 	{
 		Eq_n r19_n;
 		if (r7_n == 0x00)
-			r19_n = (word32) ((-r6_n & r6_n) *s 124511785 >> 0x1B)->b412CC0 + 0x20;
+			r19_n = (word32) ((-r6_n & r6_n) *s 124511785 >> 0x1B).u1->b412CC0 + 0x20;
 		else
-			r19_n = (word32) ((r7_n & -r7_n) *s 124511785 >> 0x1B)->b412CC0;
-		int32 r17_n = r19_n << 0x04;
+			r19_n = (word32) ((r7_n & -r7_n) *s 124511785 >> 0x1B).u1->b412CC0;
+		Eq_n r17_n = r19_n << 0x04;
 		Eq_n r30_n;
-		r30_n.u0 = (char *) g_a432550 + (r17_n + 0x08);
+		r30_n.u1 = &r17_n.u1->t0008.u0 + 1100116;
 		if (g_dw454433 != 0x00)
 		{
 			while (true)
@@ -7366,23 +7367,24 @@ l004052C2:
 				__sync(0x00);
 				Eq_n r6_n;
 				do
-					r6_n = __load_linked<word32>(&*r30_n.u0);
-				while (__store_conditional<word32>(&*r30_n.u0, 0x01) == 0x00);
+					r6_n = __load_linked<word32>(&*r30_n.u1);
+				while (__store_conditional<word32>(&*r30_n.u1, 0x01) == 0x00);
 				__sync(0x00);
 				if (r6_n == 0x00)
 					break;
 				word32 r5_n;
 				word32 r9_n;
-				r2 = __wait(r30_n, &r30_n.u1->dw0004, 0x01, 0x01, out r4_n, out r5_n, out r8, out r9_n);
+				r2 = __wait(r30_n, &r30_n.u2->t0004.u0, 0x01, 0x01, out r4_n, out r5_n, out r8, out r9_n);
 			}
 		}
-		struct Eq_n * r7_n = (struct Eq_n *) ((char *) g_a432550 + (r17_n + 0x08));
-		r9_n = (struct Eq_n *) ((char *) g_a432550 + r17_n)[16];
-		if (r9_n != null && r7_n != r9_n)
+		Eq_n r7_n;
+		r7_n.u2 = &r17_n.u1->t0008.u0 + 1100116;
+		r9_n.u2 = *((word32) ((word32) r17_n + 4400464) + 16);
+		if (r9_n != 0x00 && r7_n != r9_n)
 		{
 			Eq_n r17_n;
-			r17_n.u3 = r9_n->t0002.u3;
-			r5_n.u3 = r9_n->t0003.u3;
+			r17_n.u0 = r9_n.u2->t0002.u0;
+			r5_n.u0 = r9_n.u2->t0003.u0;
 			if (r19_n < 0x28)
 			{
 l00405610:
@@ -7402,24 +7404,24 @@ l00405610:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&*(0x00432000 | 0x0550), __load_linked<word32>(&*(0x00432000 | 0x0550)) & r5_n) == 0x00)
+						while (__store_conditional<word32>(&*(0x00432000 | 0x0550).u1, __load_linked<word32>(&*(0x00432000 | 0x0550).u1) & r5_n) == 0x00)
 							;
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						while (__store_conditional<word32>(&g_t432554.u3, __load_linked<word32>(&g_t432554.u3) & r7_n) == 0x00)
+						while (__store_conditional<word32>(&g_t432554.u0, __load_linked<word32>(&g_t432554.u0) & r7_n) == 0x00)
 							;
 						__sync(0x00);
 					}
-					r5_n.u3 = r9_n->t0003.u3;
+					r5_n.u0 = r9_n.u2->t0003.u0;
 				}
 				Eq_n r7_n;
-				r7_n.u3 = r9_n->t0001.u3;
+				r7_n.u0 = r9_n.u2->t0001.u0;
 				Eq_n r4_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-				ui32 r6_n = Mem163[r9_n + r4_n:word32];
-				r9_n->t0001.u3 = (byte *) (r7_n | 0x01);
+				Eq_n r6_n = Mem163[r9_n + r4_n:word32];
+				r9_n.u2->t0001.u0 = (int32) (r7_n | 0x01);
 				Mem346[r9_n + r4_n:word32] = r6_n | 0x01;
 				r7_n = r7_n | 0x01;
 				goto l0040556E;
@@ -7427,15 +7429,15 @@ l00405610:
 			r17_n = dwLoc44_n;
 			Eq_n r6_n;
 			Eq_n r18_n;
-			if (r7_n + 0x02 < r19_n)
+			if (&r7_n.u2->t0002.u0 < r19_n)
 			{
-				r6_n = __ins<word32,word32>(r9_n->t0001.u3, 0x00, 0x00, 0x01);
-				r18_n = r6_n - (r7_n + 0x02);
+				r6_n = __ins<word32,word32>(r9_n.u2->t0001.u0, 0x00, 0x00, 0x01);
+				r18_n = r6_n - &((r7_n.u2)->t0002).u0;
 				goto l0040552E;
 			}
 			if (r19_n != 0x3F)
 				goto l00405610;
-			r6_n = __ins<word32,word32>(r9_n->t0001.u3, 0x00, 0x00, 0x01);
+			r6_n = __ins<word32,word32>(r9_n.u2->t0001.u0, 0x00, 0x00, 0x01);
 			r17_n = dwLoc48_n;
 			r18_n = r6_n - r4_n;
 			if (r18_n <= 0x001C0000)
@@ -7454,19 +7456,19 @@ l0040552E:
 				r7_n.u0 = 0x3F;
 			if (r7_n != r19_n)
 				goto l00405610;
-			r7_n = g_a432550 | 0x01;
-			r5_n = Mem354[r9_n + 0x00432550<p32> + 0x08:word32];
-			Mem357[r9_n + 0x00432550<p32>:word32] = r7_n;
+			r7_n = 4400464 | 0x01;
+			r5_n.u0 = (&r9_n.u2->t432550.u0)[2];
+			r9_n.u2->t432550.u0 = (int32) r7_n;
 			Mem362[r9_n + r6_n:word32] = r18_n;
-			r9_n->t0001.u3 = (byte *) r7_n;
+			r9_n.u2->t0001.u0 = (int32) r7_n;
 l0040556E:
-			if (*r30_n.u0 == 0x00)
+			if (*r30_n.u1 == 0x00)
 				goto l00405412;
 			__sync(0x00);
-			*r30_n.u0 = (word32) 0x00;
+			*r30_n.u1 = 0x00;
 			__sync(0x00);
 			Eq_n r7_n;
-			if (r30_n.u1->dw0004 != 0x00)
+			if (r30_n.u2->t0004.u0 != 0x00)
 			{
 				word32 r4_n;
 				word32 r6_n;
@@ -7478,24 +7480,24 @@ l0040556E:
 					word32 r6_n;
 					word32 r7_n;
 					r2 = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9_n);
-					r7_n.u3 = r9_n->t0001.u3;
+					r7_n.u0 = r9_n.u2->t0001.u0;
 l0040558C:
 					r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r6_n.u3 = &r7_n.u12->dwFFFFFFF0;
-					if (r5_n < &(r7_n.u12)->dwFFFFFFF0)
+					r6_n.u4 = &r7_n.u11->dwFFFFFFF0;
+					if (r5_n < &(r7_n.u11)->dwFFFFFFF0)
 						goto l004055CE;
 					goto l00405420;
 				}
 			}
-			r7_n.u3 = r9_n->t0001.u3;
+			r7_n.u0 = r9_n.u2->t0001.u0;
 			goto l0040558C;
 		}
-		if (*((char *) g_a432550 + (r17_n + 0x08)) == 0x00)
+		if ((&r17_n.u1->t0008.u0)[1100116] == 0x00)
 			goto l004052C2;
 		__sync(0x00);
-		*((char *) g_a432550 + (r17_n + 0x08)) = 0x00;
+		(&r17_n.u1->t0008.u0)[1100116] = 0x00;
 		__sync(0x00);
-		if (r30_n.u1->dw0004 == 0x00)
+		if (r30_n.u2->t0004.u0 == 0x00)
 			goto l004052C2;
 		word32 r4_n;
 		word32 r5_n;
@@ -7511,9 +7513,9 @@ l0040558C:
 		word32 r7_n;
 		word32 r9_n;
 		r2 = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9_n);
-		r4_n = g_a432550[0];
+		r4_n.u0 = 4400464;
 		r7_n = r4_n & r21_n;
-		r6_n = g_t432554.u3 & r20_n;
+		r6_n = g_t432554.u0 & r20_n;
 	}
 	word32 r7_n = g_dw454433;
 	Eq_n tLoc34 = (Eq_n) (r6_n + 0x10);
@@ -7524,8 +7526,8 @@ l0040558C:
 			__sync(0x00);
 			Eq_n r6_n;
 			do
-				r6_n = __load_linked<word32>(&*(0x00432000 | 0x0544));
-			while (__store_conditional<word32>(&*(0x00432000 | 0x0544), 0x01) == 0x00);
+				r6_n = __load_linked<word32>(&*(0x00432000 | 0x0544).u1);
+			while (__store_conditional<word32>(&*(0x00432000 | 0x0544).u1, 0x01) == 0x00);
 			__sync(0x00);
 			if (r6_n == 0x00)
 				break;
@@ -7533,7 +7535,7 @@ l0040558C:
 			word32 r5_n;
 			word32 r8_n;
 			word32 r9_n;
-			__wait(&g_t432544, &g_dw432548, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
+			__wait(4400452, &g_dw432548, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
 		}
 	}
 	Eq_n r4_n;
@@ -7542,23 +7544,23 @@ l0040558C:
 	if (r4_n != 0x00)
 	{
 		Eq_n r18_n;
-		r18_n.u3 = end.2906.u3;
+		r18_n.u0 = end.2906.u0;
 		struct Eq_n * r17_n = (struct Eq_n *) tLoc34;
 		if (r18_n != r4_n)
 		{
 			tLoc34 = (Eq_n) (r7_n + ~0x0F);
 			r7_n += ~0x0F;
-			r18_n.u12 = r4_n.u12 + 4;
+			r18_n.u11 = r4_n.u11 + 16;
 		}
 		word32 r5_n = r17_n->dw0544;
-		r6_n.u3 = r18_n.u3 + r7_n;
+		r6_n.u4 = r18_n.u4 + r7_n;
 		Eq_n r7_n = r7_n | 0x01;
-		r6_n.u12->dwFFFFFFF8 = (ui32) r7_n;
-		end.2906.u3 = (byte *) r6_n;
-		r6_n.u12->dwFFFFFFFC = (word32) 0x01;
-		r18_n.u12->dwFFFFFFFC = (word32) r7_n;
+		r6_n.u14->dwFFFFFFF8 = (ui32) r7_n;
+		end.2906.u0 = (int32) r6_n;
+		r6_n.u11->tFFFFFFFC.u0 = 0x01;
+		r18_n.u11->tFFFFFFFC.u0 = (int32) r7_n;
 		Eq_n r9_n;
-		r9_n.u3 = &r18_n.u12->dwFFFFFFF8;
+		r9_n.u4 = r18_n.u11->aFFFFFFF8;
 		if (r5_n != 0x00)
 		{
 			__sync(0x00);
@@ -7587,21 +7589,21 @@ l0040558C:
 			Eq_n r16_n;
 			if (r4_n != 0x00)
 			{
-				r5_n.u3 = r9_n.u12->dwFFFFFFFC;
-				struct Eq_n * r6_n = r9_n - __ins<word32,word32>((r9_n.u12)->dwFFFFFFF8, 0x00, 0x00, 0x01);
+				r5_n.u0 = r9_n.u11->tFFFFFFFC.u0;
+				Eq_n r6_n = r9_n - __ins<word32,word32>((r9_n.u14)->dwFFFFFFF8, 0x00, 0x00, 0x01);
 				Eq_n r7_n;
-				r7_n.u3 = r6_n->t0004.u3;
+				r7_n.u0 = r6_n.u2->t0004.u0;
 				Eq_n r4_n = __ins<word32,word32>(r5_n, 0x00, 0x00, 0x01);
 				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01) + r5_n;
 				Mem684[r9_n + r4_n:word32] = r7_n;
 				r9_n = r6_n;
 l00405412:
 				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-				r6_n.u3 = &r7_n.u12->dwFFFFFFF0;
-				if (r5_n >= &(r7_n.u12)->dwFFFFFFF0)
+				r6_n.u4 = &r7_n.u11->dwFFFFFFF0;
+				if (r5_n >= &(r7_n.u11)->dwFFFFFFF0)
 				{
 l00405420:
-					r16_n.u3 = (char *) &r9_n->t0004 + 4;
+					r16_n.u4 = &r9_n.u2->t0008.u0;
 l00405424:
 					r3Out = r3;
 					r4Out = r16_n;
@@ -7613,16 +7615,16 @@ l00405424:
 			}
 			else
 			{
-				r7_n = __ins<word32,word32>(r9_n.u12->dwFFFFFFFC, 0x00, 0x00, 0x01);
-				r6_n.u3 = &r7_n.u12->dwFFFFFFF0;
-				if (r5_n >= &(r7_n.u12)->dwFFFFFFF0)
+				r7_n = __ins<word32,word32>(r9_n.u11->tFFFFFFFC.u0, 0x00, 0x00, 0x01);
+				r6_n.u4 = &r7_n.u11->dwFFFFFFF0;
+				if (r5_n >= &(r7_n.u11)->dwFFFFFFF0)
 					goto l00405420;
 			}
 l004055CE:
 			Eq_n r5_n = r5_n | 0x01;
 			Mem706[r9_n + r5_n:word32] = r5_n;
 			Mem709[r9_n + r7_n:word32] = r7_n - r5_n | 0x01;
-			r9_n->t0001.u3 = (byte *) r5_n;
+			r9_n.u2->t0001.u0 = (int32) r5_n;
 			word32 r4_n;
 			word32 r7_n;
 			word32 r9_n;
@@ -7634,7 +7636,7 @@ l004055CE:
 	else if (4400452 != 0x00)
 	{
 		__sync(0x00);
-		g_t432544.u3 = (byte *) 0x00;
+		4400452 = 0x00;
 		__sync(0x00);
 		if (g_dw432548 != 0x00)
 		{
@@ -7675,13 +7677,13 @@ Eq_n __malloc0(Eq_n r0, Eq_n r4, Eq_n r11, union Eq_n & r4Out, ptr32 & r6Out, un
 	word32 r8_n;
 	word32 r11_n;
 	malloc(r0, r4, r11, out r3_n, out r4_n, out r6_n, out r8_n, out r11_n);
-	if (r4_n == null || (__bit<word32,word32>((r4_n->tFFFFFFFC).u3, 0x00) || r4.u11 + 3 >> 0x02 == 0x00))
+	if (r4_n == null || (__bit<word32,word32>((r4_n->tFFFFFFFC).u0, 0x00) || r4.u11 + 3 >> 0x02 == 0x00))
 	{
 l004057CE:
-		r4Out.u0 = (Eq_n (*)[]) <invalid>;
+		r4Out.u0 = <invalid>;
 		r6Out = r6_n;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
-		r11Out.u0 = (Eq_n (*)[]) <invalid>;
+		r8Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
 		return <invalid>;
 	}
 	else
@@ -7700,10 +7702,10 @@ l004057CE:
 			}
 			++r7_n;
 		} while (r7_n != r5_n);
-		r4Out.u0 = (Eq_n (*)[]) <invalid>;
+		r4Out.u0 = <invalid>;
 		r6Out = r6_n;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
-		r11Out.u0 = (Eq_n (*)[]) <invalid>;
+		r8Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
 		return <invalid>;
 	}
 }
@@ -7752,7 +7754,7 @@ Eq_n realloc(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r11, union Eq_n & r3Out, union Eq_n
 		return r2_n;
 	}
 	Eq_n r4_n;
-	r4_n.u3 = g_t454454.u3;
+	r4_n.u0 = g_t454454.u0;
 	Eq_n r5_n = r5;
 	Eq_n r8_n;
 	Eq_n r8;
@@ -7763,11 +7765,11 @@ Eq_n realloc(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r11, union Eq_n & r3Out, union Eq_n
 	Eq_n r19_n;
 	Eq_n r3_n;
 	Eq_n r18_n;
-	if (0x7FFFFFEF - r4_n < &(r5.u11)->bFFFFFFFF)
+	if (0x7FFFFFEF - r4_n < (r5.u11)->aFFFFFFFF)
 	{
 l00405822:
 		r8_n = r8;
-		r6_n = &r5.u11->bFFFFFFFF;
+		r6_n.u2 = r5.u11->aFFFFFFFF;
 		r2_n = r2;
 		r11_n = r11;
 		r19_n.u0 = 0x10;
@@ -7784,9 +7786,9 @@ l00405822:
 	r19_n = r5_n;
 l004057FA:
 	Eq_n r7_n;
-	r7_n.u3 = r4.u12->dwFFFFFFFC;
+	r7_n.u0 = r4.u11->tFFFFFFFC.u0;
 	r8_n = r8;
-	r6_n = &r5.u11->bFFFFFFFF;
+	r6_n.u2 = r5.u11->aFFFFFFFF;
 	Eq_n r3;
 	r3_n = r3;
 	r2_n = r2;
@@ -7796,12 +7798,12 @@ l004057FA:
 	if (__bit<word32,word32>(r7_n, 0x00))
 	{
 		Eq_n r22_n;
-		r22_n.u3 = r4.u12->dwFFFFFFF8;
+		r22_n.u4 = r4.u14->dwFFFFFFF8;
 		Eq_n r17_n = r17_n + r22_n;
 		Eq_n r20_n = r22_n + r19_n;
 		if (!__bit<word32,word32>(r22_n, 0x00))
 		{
-			*r0.u3 = 0x00;
+			*r0.u4 = 0x00;
 			__syscall<word32>(0x00);
 			goto l00405822;
 		}
@@ -7821,7 +7823,7 @@ l004057FA:
 				ptr32 r12_n;
 				word32 r13_n;
 				word32 r14_n;
-				memcpy(r4_n, r4, &r19_n.u12->dwFFFFFFF8, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+				memcpy(r4_n, r4, r19_n.u11->aFFFFFFF8, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 				Eq_n r2_n = free(r0, r4, r11_n, out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n);
 				r3Out = r3_n;
 				r4Out = r4_n;
@@ -7831,7 +7833,7 @@ l004057FA:
 				r12Out = r12_n;
 				return r2_n;
 			}
-			r4_n.u3 = g_t454454.u3;
+			r4_n.u0 = g_t454454.u0;
 		}
 		Eq_n r20_n = -r4_n & r4_n + (r20_n + ~0x00);
 		if (r17_n != r20_n)
@@ -7840,10 +7842,10 @@ l004057FA:
 			r2_n = mremap(r20_n, 0x01, out r3_n, out r4_n, out r6_n, out r8_n);
 			if (r4_n != ~0x00)
 			{
-				struct Eq_n * r4_n = (struct Eq_n *) (r22_n.u3 + r4_n);
+				struct Eq_n * r4_n = (word32) r22_n.u2 + r4_n;
 				r4_n->dw0001 = r20_n - r22_n;
 				r3Out = r3_n;
-				r4Out.u3 = (char *) &r4_n->dw0001 + 7;
+				r4Out.u4 = (char *) &r4_n->dw0001 + 7;
 				r6Out = r6_n;
 				r8Out = r8_n;
 				r11Out = r11_n;
@@ -7874,10 +7876,10 @@ l00405898:
 l00405896:
 		goto l00405898;
 	}
-	struct Eq_n * r18_n = r4 + ~0x07 + r17_n;
+	Eq_n r18_n = r4 + ~0x07 + r17_n;
 	if (Mem49[r4 + ~0x07 + r17_n:word32] != r7_n)
 	{
-		*r0.u3 = 0x00;
+		*r0.u4 = 0x00;
 		__syscall<word32>(0x00);
 	}
 	Eq_n r7_n;
@@ -7888,22 +7890,22 @@ l00405896:
 		r2_n = alloc_fwd(r18_n, out r4_n, out r8_n, out r19_n, out r22_n);
 		if (r4_n != 0x00)
 		{
-			Eq_n r6_n = __ins<word32,word32>(r18_n->t0004.u3, 0x00, 0x00, 0x01);
+			Eq_n r6_n = __ins<word32,word32>(r18_n.u1->t0004.u0, 0x00, 0x00, 0x01);
 			Eq_n r5_n = r17_n + r6_n;
-			r4.u12->dwFFFFFFFC = (word32) (r5_n | 0x01);
+			r4.u11->tFFFFFFFC.u0 = (int32) (r5_n | 0x01);
 			Mem84[r18_n + r6_n:word32] = r5_n | 0x01;
 			r7_n = r5_n | 0x01;
 			if (r5_n >= r19_n)
 			{
 l0040588A:
 				Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-				r6_n = &r7_n.u12->dwFFFFFFF0;
-				if (r19_n < &(r7_n.u12)->dwFFFFFFF0)
+				r6_n.u2 = &r7_n.u11->dwFFFFFFF0;
+				if (r19_n < &(r7_n.u11)->dwFFFFFFF0)
 				{
 					Eq_n r5_n = r19_n | 0x01;
 					Mem162[r4 + ~0x07 + r19_n:word32] = r5_n;
 					Mem168[r4 + ~0x07 + r7_n:word32] = r7_n - r19_n | 0x01;
-					r4.u12->dwFFFFFFFC = (word32) r5_n;
+					r4.u11->tFFFFFFFC.u0 = (int32) r5_n;
 					Eq_n r2_n = free(r0, r4 + ~0x07 + r19_n + 0x08, r11, out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n);
 					r3Out = r3_n;
 					r4Out = r4;
@@ -7918,11 +7920,11 @@ l0040588A:
 		}
 		else
 		{
-			r4.u12->dwFFFFFFFC = (word32) (r17_n | 0x01);
+			r4.u11->tFFFFFFFC.u0 = (int32) (r17_n | 0x01);
 			Mem77[r4 + ~0x07 + r17_n:word32] = r17_n | 0x01;
 		}
 		Eq_n r4_n;
-		r2_n = malloc(r0, &r19_n.u12->dwFFFFFFF8, r11, out r3_n, out r4_n, out r6_n, out r8_n, out r11_n);
+		r2_n = malloc(r0, r19_n.u11->aFFFFFFF8, r11, out r3_n, out r4_n, out r6_n, out r8_n, out r11_n);
 		r18_n = r4_n;
 		if (r4_n != 0x00)
 		{
@@ -7936,7 +7938,7 @@ l0040588A:
 			ptr32 r12_n;
 			word32 r13_n;
 			word32 r14_n;
-			memcpy(r4_n, r4, &r17_n.u12->dwFFFFFFF8, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+			memcpy(r4_n, r4, r17_n.u11->aFFFFFFF8, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 			Eq_n r2_n = free(r0, r4, r11_n, out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
@@ -7950,7 +7952,7 @@ l0040588A:
 	}
 	else
 	{
-		r4.u12->dwFFFFFFFC = (word32) (r17_n | 0x01);
+		r4.u11->tFFFFFFFC.u0 = (int32) (r17_n | 0x01);
 		Mem152[r4 + ~0x07 + r17_n:word32] = r17_n | 0x01;
 		r7_n = r17_n | 0x01;
 		goto l0040588A;
@@ -7963,7 +7965,7 @@ l0040588A:
 word32 __getopt_msg(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7)
 {
 	Eq_n r16_n;
-	r16_n.u3 = stderr.u3;
+	r16_n.u0 = stderr.u0;
 	__lctrans_cur();
 	flockfile(r16_n);
 	word32 r3_n;
@@ -8004,37 +8006,37 @@ word32 __getopt_msg(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7)
 	return funlockfile(r16_n);
 }
 
-// 0040598A: Register Eq_n __posix_getopt(Register Eq_n r0, Register Eq_n r4, Register Eq_n r5, Register (ptr32 byte) r6, Register (ptr32 (arr Eq_n)) r8, Register out (ptr32 (arr Eq_n)) r8Out)
+// 0040598A: Register Eq_n __posix_getopt(Register Eq_n r0, Register Eq_n r4, Register Eq_n r5, Register (ptr32 byte) r6, Register Eq_n r8, Register out Eq_n r8Out)
 // Called from:
 //      main
-Eq_n __posix_getopt(Eq_n r0, Eq_n r4, Eq_n r5, byte * r6, Eq_n (* r8)[], Eq_n (& r8Out)
+Eq_n __posix_getopt(Eq_n r0, Eq_n r4, Eq_n r5, byte * r6, Eq_n r8, union Eq_n & r8Out)
 {
 	word32 r7_n;
 	word32 r6_n;
 	ptr32 fp;
 	byte * r17_n = r6;
-	if (optind.u1 == 0x00 || optreset.u3 != 0x00)
+	if (optind.u0 == 0x00 || optreset.u0 != 0x00)
 	{
-		optreset.u3 = (byte *) r0;
-		__optpos.u3 = (byte *) r0;
-		optind.u1 = (struct Eq_n *) 0x01;
+		optreset.u0 = (int32) r0;
+		__optpos.u0 = (int32) r0;
+		optind.u0 = 0x01;
 	}
 	Eq_n r7_n;
-	r7_n.u1 = optind.u1;
+	r7_n.u0 = optind.u0;
 	Eq_n r4_n;
 	r4_n.u0 = ~0x00;
 	if (r7_n < r4)
 	{
 		Eq_n r5_n;
-		r5_n.u3 = r5.u5[r7_n];
+		r5_n.u4 = r5.u6[r7_n];
 		if (r5_n == 0x00)
 			goto l00405B00;
-		if ((word32) *r5_n.u3 != 0x2D)
+		if ((word32) *r5_n.u4 != 0x2D)
 		{
 			if ((word32) *r6 == 0x2D)
 			{
-				optarg.u3 = (byte *) r5_n;
-				optind.u1 = (struct Eq_n *) &r7_n.u1->b0001;
+				optarg.u0 = (int32) r5_n;
+				optind.u0 = (word32) r7_n.u0 + 1;
 				r8Out = r8;
 				return 0x01;
 			}
@@ -8046,34 +8048,35 @@ Eq_n __posix_getopt(Eq_n r0, Eq_n r4, Eq_n r5, byte * r6, Eq_n (* r8)[], Eq_n (&
 			goto l00405B00;
 		if (r6_n == 0x2D && (word32) (r5_n.u11)[2] == 0x00)
 		{
-			optind.u1 = (struct Eq_n *) &r7_n.u1->b0001;
+			optind.u0 = (word32) r7_n.u0 + 1;
 			r8Out = r8;
 			return ~0x00;
 		}
-		if (__optpos.u3 == 0x00)
-			__optpos.u3 = (byte *) 0x01;
-		int32 r4_n = mbtowc(fp - 0x28, r5_n + Mem47[0x004544A4<p32>:word32], 0x04, r8, out r6_n, out r7_n, out r8);
+		if (__optpos.u0 == 0x00)
+			__optpos.u0 = 0x01;
+		int32 r4_n = mbtowc(fp - 0x28, r5_n.u4 + __optpos.u0, 0x04, r8, out r6_n, out r7_n, out r8);
 		int32 r7_n = r4_n;
 		if (r4_n < 0x00)
 			r7_n = 0x01;
 		Eq_n r5_n;
-		r5_n.u1 = optind.u1;
+		r5_n.u0 = optind.u0;
 		Eq_n r6_n;
-		r6_n.u3 = __optpos.u3;
+		r6_n.u0 = __optpos.u0;
 		Eq_n r4_n;
-		r4_n.u3 = r5.u5[r5_n];
+		r4_n.u4 = r5.u6[r5_n];
 		Eq_n r6_n;
-		r6_n.u3 = r6_n.u3 + r7_n;
-		__optpos.u3 = (byte *) r6_n;
+		r6_n.u4 = r6_n.u4 + r7_n;
+		__optpos.u0 = (int32) r6_n;
 		Eq_n r20_n = r4_n + r6_n;
 		if (CONVERT(Mem84[r4_n + r6_n:byte], byte, word32) == 0x00)
 		{
-			__optpos.u3 = (byte *) r0;
-			optind.u1 = (struct Eq_n *) &r5_n.u1->b0001;
+			__optpos.u0 = (int32) r0;
+			optind.u0 = (int32) (r5_n.u11 + 1);
 		}
 		if (((word32) *r6 + ~0x2A & 0xFD) == 0x00)
 			r17_n = r6 + 1;
-		byte * r16_n = null;
+		Eq_n r16_n;
+		r16_n.u0 = 0x00;
 		Eq_n r5_n;
 		Eq_n r6_n;
 		Eq_n r7_n;
@@ -8083,10 +8086,10 @@ Eq_n __posix_getopt(Eq_n r0, Eq_n r4, Eq_n r5, byte * r6, Eq_n (* r8)[], Eq_n (&
 			int32 r4_n = mbtowc(fp - 0x24, r5_n, 0x04, r8, out r6_n, out r7_n, out r8);
 			r17_n = null;
 			if (r4_n > 0x00)
-				r16_n += r4_n;
+				r16_n.u1 += r4_n;
 			else
 			{
-				++r16_n;
+				r16_n.u1 = (word32) r16_n + 1;
 				if (r4_n == 0x00)
 					break;
 			}
@@ -8095,37 +8098,39 @@ Eq_n __posix_getopt(Eq_n r0, Eq_n r4, Eq_n r5, byte * r6, Eq_n (* r8)[], Eq_n (&
 		Eq_n r5_n;
 		if (r5_n != r6_n)
 		{
-			optopt.u1 = (struct Eq_n *) r6_n;
+			optopt.u0 = (int32) r6_n;
 			if ((word32) null == 0x3A || opterr == 0x00)
 				goto l00405AA0;
 			r5_n.u0 = 0x00411EBC;
 			goto l00405AB2;
 		}
-		Eq_n r6_n = (word32) *r16_n;
+		Eq_n r6_n;
+		r6_n.u4 = (word32) *r16_n.u1;
 		if (r6_n == 0x3A)
 		{
-			byte * r16_n = r16_n + 1;
-			if ((word32) *r16_n == 0x3A)
+			Eq_n r16_n;
+			r16_n.u1 = (word32) r16_n + 1;
+			if ((word32) *r16_n.u1 == 0x3A)
 			{
-				optarg.u3 = (byte *) r0;
+				optarg.u0 = (int32) r0;
 l00405AD2:
 				Eq_n r6_n;
-				r6_n.u3 = __optpos.u3;
-				if ((word32) *r16_n != 0x3A || r6_n != 0x00)
+				r6_n.u0 = __optpos.u0;
+				if ((word32) *r16_n.u1 != 0x3A || r6_n != 0x00)
 				{
 					Eq_n r7_n;
-					r7_n.u1 = optind.u1;
+					r7_n.u0 = optind.u0;
 					Eq_n r7_n;
-					r7_n.u3 = r5.u5[r7_n];
-					optind.u1 = (struct Eq_n *) &r7_n.u1->b0001;
-					__optpos.u3 = (byte *) r0;
+					r7_n.u4 = r5.u6[r7_n];
+					optind.u0 = (int32) (r7_n.u11 + 1);
+					__optpos.u0 = (int32) r0;
 					Mem192[0x004544E8<p32>:word32] = r7_n + r6_n;
 				}
 				goto l00405B00;
 			}
-			if (optind.u1 < r4)
+			if (optind.u0 < r4)
 				goto l00405AD2;
-			optopt.u1 = (struct Eq_n *) r6_n;
+			optopt.u0 = (int32) r6_n;
 			r4_n = r6_n;
 			if ((word32) null != 0x3A)
 			{
@@ -8133,7 +8138,7 @@ l00405AD2:
 					goto l00405AA0;
 				r5_n.u0 = 0x00411ED4;
 l00405AB2:
-				r8 = __getopt_msg(*r5.u5, r5_n, r20_n, r7_n);
+				r8 = __getopt_msg(*r5.u6, r5_n, r20_n, r7_n);
 l00405AA0:
 				r8Out = r8;
 				return 0x3F;
@@ -8208,10 +8213,10 @@ Eq_n ioctl(ptr32 & r4Out, ptr32 & r7Out)
 	return r3_n;
 }
 
-// 00405BC0: Register Eq_n madvise(Register out Eq_n r3Out, Register out (ptr32 Eq_n) r4Out, Register out ptr32 r6Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r9Out)
+// 00405BC0: Register Eq_n madvise(Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r9Out)
 // Called from:
 //      free
-Eq_n madvise(union Eq_n & r3Out, struct Eq_n & r4Out, ptr32 & r6Out, union Eq_n & r8Out, struct Eq_n & r9Out)
+Eq_n madvise(union Eq_n & r3Out, union Eq_n & r4Out, ptr32 & r6Out, union Eq_n & r8Out, struct Eq_n & r9Out)
 {
 	struct Eq_n * r9_n;
 	Eq_n r8_n;
@@ -8220,7 +8225,7 @@ Eq_n madvise(union Eq_n & r3Out, struct Eq_n & r4Out, ptr32 & r6Out, union Eq_n 
 	word32 r5_n;
 	Eq_n r4_n;
 	Eq_n r2_n = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
-	struct Eq_n * r4_n;
+	Eq_n r4_n;
 	word32 r7_n;
 	r3Out = __syscall_ret(r4_n, out r4_n, out r7_n);
 	r4Out = r4_n;
@@ -8353,10 +8358,10 @@ Eq_n munmap(union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr
 	return r2_n;
 }
 
-// 00405CE0: Register ptr32 mbtowc(Register ptr32 r4, Register Eq_n r5, Register Eq_n r6, Register (arr Eq_n) r8, Register out Eq_n r6Out, Register out ptr32 r7Out, Register out (ptr32 (arr Eq_n)) r8Out)
+// 00405CE0: Register ptr32 mbtowc(Register ptr32 r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r8, Register out Eq_n r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out)
 // Called from:
 //      __posix_getopt
-ptr32 mbtowc(ptr32 r4, Eq_n r5, Eq_n r6, Eq_n r8[], union Eq_n & r6Out, ptr32 & r7Out, Eq_n (& r8Out)
+ptr32 mbtowc(ptr32 r4, Eq_n r5, Eq_n r6, Eq_n r8, union Eq_n & r6Out, ptr32 & r7Out, union Eq_n & r8Out)
 {
 	ptr32 r7_n = 0x00;
 	if (r5 == 0x00)
@@ -8371,13 +8376,13 @@ l00405CFE:
 	{
 		Eq_n r7_n;
 		r7_n.u0 = (int32) (byte) r8;
-		if (r8 >= null)
+		if (r8 >= 0x00)
 		{
 			r7_n = (word32) (r7_n > 0x00);
 			goto l00405CFE;
 		}
-		r8 = (Eq_n (*)[]) *__read_user_local()->ptrFFFFFFC8;
-		if (r8 == null)
+		r8.u0 = __read_user_local().u1->ptrFFFFFFC8->u0;
+		if (r8 == 0x00)
 		{
 			r6.u0 = 0xDFFF;
 			r7_n = 0x01;
@@ -8385,23 +8390,23 @@ l00405CFE:
 		}
 		if (r7_n < 0xF5)
 		{
-			r8 = g_a413370;
+			r8.u0 = 0x00413370;
 			Eq_n r7_n;
-			r7_n.u3 = *((char *) &g_a413370->u3 + ((word32) r7_n - 0x00C2) * 0x04);
+			r7_n.u0 = *((word32) 0x00413370 + ((word32) r7_n - 0x00C2) * 0x04);
 			if (r6 >= 0x04)
 			{
 l00405D42:
-				r8 = (word32) r5.u1->b0001;
+				r8.u2 = (word32) r5.u11[1];
 				r6 = (r8 >> 0x03) + ~0x0F;
 				if (__ins<word32,word32>((r7_n >> 0x1A) + (r8 >> 0x03) | r6, 0x00, 0x00, 0x01) == 0x00)
 				{
-					r6 = &(r8 + -32)->u0 | r7_n << 0x06;
+					r6 = (word32) r8 - 0x0080 | r7_n << 0x06;
 					if (r6 >= 0x00)
 					{
 						r7_n = 0x02;
 						goto l00405CFE;
 					}
-					up32 r7_n = (word32) r5.u1->b0002;
+					up32 r7_n = (word32) r5.u11[2];
 					if (r7_n < 0x80)
 					{
 						r6 <<= 0x06;
@@ -8410,7 +8415,7 @@ l00405D42:
 							r7_n = 0x03;
 							goto l00405CFE;
 						}
-						up32 r6_n = (word32) r5.u1->b0003;
+						up32 r6_n = (word32) r5.u11[3];
 						r6 = r6_n + ~0x7F;
 						if (r6_n < 0x80)
 						{
@@ -8552,8 +8557,8 @@ Eq_n getaddrinfo(Eq_n r0, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_n * r6, 
 	Eq_n r11;
 	if (r6 != null)
 	{
-		r16_n.u3 = r6->t0000.u3;
-		r17_n.u3 = r6->t0004.u3;
+		r16_n.u0 = r6->t0000.u0;
+		r17_n.u0 = r6->t0004.u0;
 		r7_n = r6->ptr0008;
 		r19_n = r6->dw000C;
 		r30_n.u0 = ~0x00;
@@ -8594,7 +8599,7 @@ l00405E58:
 			Eq_n r4_n = strlen(&tLoc0670, out r5_n, out r6_n, out r7_n);
 			Eq_n r4_n[];
 			word32 r6_n;
-			r2 = calloc(r0, 0x01, r4_n.u3 + (r16_n *s 0x3C + 0x01), 0x3C, r11, out r4_n, out r6_n, out r8, out r11);
+			r2 = calloc(r0, 0x01, r4_n.u4 + (r16_n *s 0x3C + 0x01), 0x3C, r11, out r4_n, out r6_n, out r8, out r11);
 			Eq_n (* r18_n)[] = r4_n;
 			if (r4_n != null)
 			{
@@ -8602,7 +8607,7 @@ l00405E58:
 				r22_n.u0 = 0x00;
 				if (r4_n != 0x00)
 				{
-					r22_n.u3 = &(r4_n + r16_n)->dwFFFFFFE0 + 8;
+					r22_n.u4 = &(r4_n + r16_n)->dwFFFFFFE0 + 8;
 					word32 r3_n;
 					word32 r5_n;
 					word32 r6_n;
@@ -8622,25 +8627,24 @@ l00405E58:
 					dwLoc06A4_n.u0 = 0x00;
 					while (r7_n != r4_n)
 					{
-						Eq_n (* r10_n)[] = dwLoc06A4_n.u12->dwFFFFFFF8;
+						Eq_n (* r10_n)[] = (Eq_n (*)[]) dwLoc06A4_n.u14->dwFFFFFFF8;
 						Eq_n r7_n;
 						r7_n.u0 = 0x10;
-						Eq_n r3_n;
-						r3_n.u3 = (word32) r21_n->b0003;
+						word32 r3_n = (word32) r21_n->b0003;
 						Eq_n r2_n;
-						r2_n.u3 = (word32) r21_n->b0002;
+						r2_n.u4 = (word32) r21_n->b0002;
 						if ((r10_n ^ 0x02) != 0x00)
 							r7_n.u0 = 0x1C;
 						word32 r6_n;
 						word32 r7_n;
 						word32 r10_n;
 						memset(r20, 0x00, 0x20, out r6_n, out r7_n, out r8, out r10_n);
-						r20.u12[4] = (struct Eq_n) r7_n;
-						r20.u16->t0001.u1 = r10_n;
-						r20.u11[8] = (struct Eq_n) r3_n;
-						r20.u12[3] = (struct Eq_n) r2_n;
-						r20.u11[20] = (struct Eq_n) (r20.u16 + 2);
-						*((word32) r20 + 24) = r22_n;
+						r20.u11[16] = (struct Eq_n) r7_n;
+						r20.u11[1] = (struct Eq_n) r10_n;
+						r20.u13[2] = (struct Eq_n) r3_n;
+						*((word32) r20 + 0x0C) = r2_n;
+						r20.u11[20] = (struct Eq_n) (r20.u11 + 32);
+						r20.u11[24] = (struct Eq_n) r22_n;
 						r20.u11[28] = (struct Eq_n) ((word32) r20 + 60);
 						r11 = r7_n;
 						r18_n = r10_n;
@@ -8652,16 +8656,16 @@ l00405E58:
 						{
 							if (r10_n != 0x0A)
 								goto l00405F3E;
-							r20.u16[2] = (struct Eq_n) (word16) r10_n;
-							(&r20.u21->u1)[0x0022] = (struct Eq_n) (word16) htons((word32) r21_n->w0000);
-							r20.u11[56] = (struct Eq_n) dwLoc06A4_n.u12->dwFFFFFFFC;
+							r20.u11[32] = (struct Eq_n) (word16) r10_n;
+							r20.u11[0x0022] = (struct Eq_n) (word16) htons((word32) r21_n->w0000);
+							r20.u11[56] = (struct Eq_n) dwLoc06A4_n.u11->tFFFFFFFC.u0;
 							r4_n.u11 = r20.u11 + 40;
 							r6_n.u0 = 0x10;
 						}
 						else
 						{
-							r20.u16[2] = (struct Eq_n) (word16) r10_n;
-							(&r20.u21->u1)[0x0022] = (struct Eq_n) (word16) htons((word32) r21_n->w0000);
+							r20.u11[32] = (struct Eq_n) (word16) r10_n;
+							r20.u11[0x0022] = (struct Eq_n) (word16) htons((word32) r21_n->w0000);
 							r6_n.u0 = 0x04;
 							r4_n.u11 = r20.u11 + 36;
 						}
@@ -8701,15 +8705,15 @@ word32 copy_addr(word32 * r4, word32 r5, struct Eq_n * r6, Eq_n r7, Eq_n r8, Eq_
 	Eq_n r6_n;
 	if (r5 == 0x02)
 	{
-		r4_n.u3 = &r6->w0000 + 2;
+		r4_n.u4 = &r6->w0000 + 2;
 		r6_n.u0 = 0x04;
 		goto l00405FD4;
 	}
 	word32 r11;
 	if (r5 != 0x0A)
 		return r11;
-	word32 r10_n = (word32) *r7.u3;
-	r4_n.u3 = &r6->w0000 + 4;
+	word32 r10_n = (word32) *r7.u4;
+	r4_n.u4 = &r6->w0000 + 4;
 	if (r10_n == 0xFE)
 	{
 		if (((word32) r7.u11[1] & 0xC0) != 0x80)
@@ -8722,7 +8726,7 @@ word32 copy_addr(word32 * r4, word32 r5, struct Eq_n * r6, Eq_n r7, Eq_n r8, Eq_
 		if (r10_n != 0xFF || ((word32) (r7.u11)[1] & 0x0F) != 0x02)
 			goto l00405FD4;
 	}
-	r6->t0018.u3 = (byte *) r9;
+	r6->t0018.u0 = (int32) r9;
 l00405FFE:
 	r6_n.u0 = 0x10;
 l00405FD4:
@@ -8744,21 +8748,21 @@ l00405FD4:
 	return r11;
 }
 
-// 0040601E: Register (ptr32 Eq_n) netlink_msg_to_ifaddr(Register Eq_n r0, Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register Eq_n r11, Register out Eq_n r11Out)
+// 0040601E: Register (ptr32 Eq_n) netlink_msg_to_ifaddr(Register Eq_n r0, Register (ptr32 Eq_n) r4, Register Eq_n r5, Register Eq_n r11, Register out Eq_n r11Out)
 // Called from:
 //      __netlink_enumerate
-struct Eq_n * netlink_msg_to_ifaddr(Eq_n r0, struct Eq_n * r4, struct Eq_n * r5, Eq_n r11, union Eq_n & r11Out)
+struct Eq_n * netlink_msg_to_ifaddr(Eq_n r0, struct Eq_n * r4, Eq_n r5, Eq_n r11, union Eq_n & r11Out)
 {
 	Eq_n r7_n;
 	struct Eq_n * r4_n;
-	if ((word32) r5[1] != 0x10)
+	if ((word32) r5.u1[1] != 0x10)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r5[5];
+		r6_n.u4 = r5.u1[5];
 		struct Eq_n * r18_n;
 		for (r18_n = (struct Eq_n *) (r4 + (r6_n & 0x3F))[2]; r18_n != null; r18_n = r18_n->ptr001C)
 		{
-			r7_n.u3 = r18_n->t008C.u3;
+			r7_n.u0 = r18_n->t008C.u0;
 			if (r6_n == r7_n)
 				goto l00406036;
 		}
@@ -8766,13 +8770,14 @@ l004060A8:
 		r4_n = null;
 		goto l004060AA;
 	}
-	r7_n.u3 = r5 + 8;
-	struct Eq_n * r6_n = r5 + Mem19[r5 + 0x00:word32];
+	r7_n.u4 = (word32) r5 + 32;
+	Eq_n r6_n;
+	r6_n.u1 = (char *) &r5.u1->t0000.u0 + ((r5.u1)->t0000).u0;
 	word32 r5_n;
 	while (r6_n - r7_n >= 0x04)
 	{
-		word32 r5_n = (word32) *r7_n.u4;
-		if ((word32) r7_n.u16->w0002 == 0x07)
+		word32 r5_n = (word32) *r7_n.u5;
+		if ((word32) r7_n.u11[2] == 0x07)
 		{
 			r5_n = r5_n + ~0x03;
 			goto l0040604E;
@@ -8793,32 +8798,33 @@ l004060AA:
 		r11Out = r11;
 		return r4_n;
 	}
-	if ((word32) r5[1] == 0x10)
+	if ((word32) r5.u1[1] == 0x10)
 	{
-		((word32) r4_n + 0x008C)->u3 = r5[5];
-		struct Eq_n * r18_n = (struct Eq_n *) (r5 + 8);
-		while (r5 + Mem301[r5 + 0x00:word32] - r18_n >=u 0x04)
+		r4_n.u11[0x008C] = (struct Eq_n) r5.u1[5];
+		Eq_n r18_n;
+		r18_n.u1 = (word32) r5 + 32;
+		while ((char *) &r5.u1->t0000.u0 + ((r5.u1)->t0000).u0 - r18_n >= 0x04)
 		{
-			up32 r7_n = (word32) r18_n->w0002;
-			up32 r6_n = (word32) r18_n->t0000.u0;
+			up32 r7_n = (word32) r18_n.u1->w0002;
+			up32 r6_n = (word32) r18_n.u1->t0000.u1;
 			if (r7_n != 0x02)
 			{
 				if (r7_n < 0x03)
 				{
 					if (r7_n == 0x01 && r6_n < 0x1D)
 					{
-						word32 r7_n = (word32) r5->w0012;
-						r4_n.u16[2] = (struct Eq_n) 0x11;
-						r4_n.u16->w0028 = (word16) r7_n;
-						r4_n.u16->b002B = (byte) r6_n + 252;
-						r11 = fn0040628E(r4_n.u11 + 44, r18_n + 0x04, r6_n + ~0x03);
-						r4_n.u16->ptr0003 = (word16 *) (r4_n.u16 + 2);
+						word32 r7_n = (word32) r5.u1->w0012;
+						r4_n.u11[32] = (struct Eq_n) 0x11;
+						r4_n.u11[40] = (struct Eq_n) (word16) r7_n;
+						r4_n.u11[43] = (struct Eq_n) ((byte) r6_n + 252);
+						r11 = fn0040628E(r4_n.u11 + 44, &r18_n.u1->t0004.u0, r6_n + ~0x03);
+						r4_n.u11[3] = (struct Eq_n) (r4_n.u11 + 32);
 					}
 				}
 				else if (r7_n != 0x03)
 				{
 					if (r7_n == 0x07)
-						r11 = fn0040628E((word32) r4_n + 0x00A4, r18_n + 0x04, r6_n + ~0x03);
+						r11 = fn0040628E((word32) r4_n + 0x00A4, &r18_n.u1->t0004.u0, r6_n + ~0x03);
 				}
 				else if (r6_n < 0x15)
 				{
@@ -8831,23 +8837,23 @@ l004060AA:
 					word32 r12_n;
 					word32 r13_n;
 					word32 r14_n;
-					memcpy((word32) r4_n + 144, r18_n + 0x04, r6_n + ~0x03, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12_n, out r13_n, out r14_n);
-					r4_n.u16->t0001.u1 = (word32) r4_n + 144;
+					memcpy((word32) r4_n + 144, &r18_n.u1->t0004.u0, r6_n + ~0x03, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12_n, out r13_n, out r14_n);
+					r4_n.u11[1] = (struct Eq_n) ((word32) r4_n + 144);
 				}
 			}
 			else if (r6_n < 0x1D)
 			{
 				Eq_n r5_n;
-				r5_n.u3 = r5[5];
-				word32 r7_n = (word32) r5->w0012;
+				r5_n.u4 = r5.u1[5];
+				word32 r7_n = (word32) r5.u1->w0012;
 				r4_n.u11[0x0068] = (struct Eq_n) 0x11;
-				*((word32) r4_n + 0x006C) = r5_n;
+				r4_n.u11[0x006C] = (struct Eq_n) r5_n;
 				r4_n.u11[112] = (struct Eq_n) (word16) r7_n;
-				r4_n.u16->b0073 = (byte) r6_n + 252;
-				r11 = fn0040628E(r4_n.u11 + 116, r18_n + 0x04, r6_n + ~0x03);
+				r4_n.u11[115] = (struct Eq_n) ((byte) r6_n + 252);
+				r11 = fn0040628E(r4_n.u11 + 116, &r18_n.u1->t0004.u0, r6_n + ~0x03);
 				r4_n.u11[20] = (struct Eq_n) (r4_n.u11 + 0x0068);
 			}
-			r18_n += __ins<word32,word32>((word32) r18_n->t0000.u0 + 0x03, 0x00, 0x00, 0x01);
+			r18_n += __ins<word32,word32>((word32) r18_n.u1->t0000.u1 + 0x03, 0x00, 0x00, 0x01);
 		}
 		if (r4_n.u11[4] == 0x00)
 		{
@@ -8861,14 +8867,15 @@ l00406288:
 			free(r0, r4_n, r11, out r3_n, out r4_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11);
 			goto l004060A8;
 		}
-		*((char *) &(r4 + (*((word32) r4_n + 0x008C) & 0x3F))->t0001 + 1) = (struct Eq_n *) r4_n;
+		*((char *) &(r4 + ((r4_n.u11)[0x008C] & 0x3F))->t0001 + 1) = (struct Eq_n *) r4_n;
 	}
 	else
 	{
-		struct Eq_n * r18_n = (struct Eq_n *) (r5 + 6);
-		while (r5 + Mem99[r5 + 0x00:word32] - r18_n >=u 0x04)
+		Eq_n r18_n;
+		r18_n.u1 = (word32) r5 + 24;
+		while ((char *) &r5.u1->t0000.u0 + ((r5.u1)->t0000).u0 - r18_n >= 0x04)
 		{
-			up32 r7_n = (word32) r18_n->w0002;
+			up32 r7_n = (word32) r18_n.u1->w0002;
 			Eq_n r7_n;
 			word32 r5_n;
 			Eq_n r8_n;
@@ -8877,16 +8884,16 @@ l00406288:
 			word32 * r4_n;
 			if (r7_n != 0x02)
 			{
-				up32 r8_n = (word32) r18_n->t0000.u0;
+				up32 r8_n = (word32) r18_n.u1->t0000.u1;
 				if (r7_n < 0x03)
 				{
 					if (r7_n != 0x01)
 						goto l004061F6;
-					r7_n.u3 = &r18_n->t0004.u0;
-					r5_n = (word32) r5[4];
+					r7_n.u4 = &r18_n.u1->t0004.u0;
+					r5_n = (word32) r5.u1[4];
 					r8_n = r8_n + ~0x03;
-					r9_n.u3 = r5[5];
-					if (r4_n.u12[3] != 0x00)
+					r9_n.u4 = r5.u1[5];
+					if (*((word32) r4_n + 0x0C) != 0x00)
 						goto l00406230;
 					goto l00406238;
 				}
@@ -8894,9 +8901,9 @@ l00406288:
 				{
 					if (r7_n != 0x04)
 						goto l004061F6;
-					r7_n = r18_n + 0x04;
-					r5_n = (word32) r5[4];
-					r9_n.u3 = r5[5];
+					r7_n.u4 = &r18_n.u1->t0004.u0;
+					r5_n = (word32) r5.u1[4];
+					r9_n.u4 = r5.u1[5];
 l00406230:
 					r8_n = r8_n + ~0x03;
 					r6_n = (struct Eq_n *) (r4_n.u11 + 0x0068);
@@ -8914,38 +8921,38 @@ l00406230:
 					word32 r12_n;
 					word32 r13_n;
 					word32 r14_n;
-					memcpy((word32) r4_n + 144, r18_n + 0x04, r8_n + ~0x03, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12_n, out r13_n, out r14_n);
-					r4_n.u16->t0001.u1 = (word32) r4_n + 144;
+					memcpy((word32) r4_n + 144, &r18_n.u1->t0004.u0, r8_n + ~0x03, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12_n, out r13_n, out r14_n);
+					r4_n.u11[1] = (struct Eq_n) ((word32) r4_n + 144);
 				}
 			}
 			else
 			{
-				if (r4_n.u12[3] != 0x00)
+				if (*((word32) r4_n + 0x0C) != 0x00)
 				{
-					fn0040628E(r4_n.u11 + 0x0068, r4_n.u16 + 2, 0x24);
+					fn0040628E(r4_n.u11 + 0x0068, r4_n.u11 + 32, 0x24);
 					word32 r6_n;
 					word32 r7_n;
 					word32 r8_n;
 					word32 r10_n;
-					memset(r4_n.u16 + 2, 0x00, 0x24, out r6_n, out r7_n, out r8_n, out r10_n);
+					memset(r4_n.u11 + 32, 0x00, 0x24, out r6_n, out r7_n, out r8_n, out r10_n);
 				}
-				r7_n = r18_n + 0x04;
-				r5_n = (word32) r5[4];
-				r8_n = (word32) r18_n->t0000.u0 + ~0x03;
-				r9_n.u3 = r5[5];
+				r7_n.u4 = &r18_n.u1->t0004.u0;
+				r5_n = (word32) r5.u1[4];
+				r8_n = (word32) r18_n.u1->t0000.u1 + ~0x03;
+				r9_n.u4 = r5.u1[5];
 l00406238:
-				r6_n = (struct Eq_n *) (r4_n.u16 + 2);
-				r4_n = (word32 *) (r4_n.u12 + 3);
+				r6_n = (struct Eq_n *) (r4_n.u11 + 32);
+				r4_n = (word32 *) (r4_n.u11 + 0x0C);
 l0040623A:
 				r11 = copy_addr(r4_n, r5_n, r6_n, r7_n, r8_n, r9_n);
 			}
 l004061F6:
-			r18_n += __ins<word32,word32>((word32) r18_n->t0000.u0 + 0x03, 0x00, 0x00, 0x01);
+			r18_n += __ins<word32,word32>((word32) r18_n.u1->t0000.u1 + 0x03, 0x00, 0x00, 0x01);
 		}
-		if (r4_n.u12[3] != 0x00)
+		if (*((word32) r4_n + 0x0C) != 0x00)
 		{
-			uint32 r7_n = (word32) r5->b0011;
-			word32 r21_n = (word32) r5[4];
+			uint32 r7_n = (word32) r5.u1->b0011;
+			word32 r21_n = (word32) r5.u1[4];
 			Eq_n tLoc30 = (Eq_n) 0x00;
 			uint32 r17_n = r7_n;
 			if (r7_n > 0x80)
@@ -8961,7 +8968,7 @@ l004061F6:
 				ptr32 fp;
 				(fp - 0x20 + (r17_n >> 0x03))->bFFFFFFF0 = -1 << 8 - ((int8) r17_n & 7);
 			}
-			r11 = copy_addr(r4_n.u12 + 4, r21_n, (word32) r4_n + 0x0044, &tLoc30, 0x10, 0x00);
+			r11 = copy_addr(r4_n.u11 + 16, r21_n, r4_n.u11 + 0x0044, &tLoc30, 0x10, 0x00);
 		}
 	}
 	if (r4_n.u11[4] != 0x00)
@@ -8970,8 +8977,8 @@ l004061F6:
 			r4->a0000[0] = (Eq_n) r4_n;
 		union Eq_n * r7_n = (union Eq_n *) r4[1];
 		if (r7_n != null)
-			r7_n->u3 = (byte *) r4_n;
-		r4->t0001.u3 = (byte *) r4_n;
+			r7_n->u0 = (int32) r4_n;
+		r4->t0001.u0 = (int32) r4_n;
 		goto l004060A8;
 	}
 	goto l00406288;
@@ -9006,7 +9013,7 @@ Eq_n freeifaddrs(Eq_n r0, Eq_n r4, Eq_n r11)
 	while (r4 != 0x00)
 	{
 		Eq_n r16_n;
-		r16_n.u3 = *r4.u5;
+		r16_n.u4 = *r4.u6;
 		word32 r3_n;
 		word32 r4_n;
 		word32 r6_n;
@@ -9038,8 +9045,8 @@ Eq_n getifaddrs(Eq_n r0, Eq_n r11)
 	return r11_n;
 }
 
-// 004062E0: void dns_parse_callback(Register (ptr32 byte) r4, Register word32 r5, Register Eq_n r6, Register Eq_n r8)
-void dns_parse_callback(byte * r4, word32 r5, Eq_n r6, Eq_n r8)
+// 004062E0: void dns_parse_callback(Register Eq_n r4, Register word32 r5, Register Eq_n r6, Register Eq_n r8)
+void dns_parse_callback(Eq_n r4, word32 r5, Eq_n r6, Eq_n r8)
 {
 	if (r5 == 0x0C)
 	{
@@ -9049,7 +9056,7 @@ void dns_parse_callback(byte * r4, word32 r5, Eq_n r6, Eq_n r8)
 		word32 r12_n;
 		dn_expand(r8, (word32) r8 + 0x0200, r6, r4, 0x0100, out r4_n, out r8_n, out r11_n, out r12_n);
 		if (r4_n <= 0x00)
-			*r4 = 0x00;
+			*r4.u1 = 0x00;
 	}
 }
 
@@ -9076,7 +9083,7 @@ Eq_n getnameinfo(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r10, Eq_n r21, union E
 	word32 r5_n;
 	word32 r4_n;
 	Eq_n r3_n;
-	word32 r20_n = (word32) *r4.u4;
+	word32 r20_n = (word32) *r4.u5;
 	Eq_n r19_n = r10;
 	Eq_n r4_n;
 	Eq_n r17_n;
@@ -9117,7 +9124,7 @@ Eq_n getnameinfo(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r10, Eq_n r21, union E
 		}
 		else
 			r5 = sprintf(fp - 0x0818, 4267764, out r7_n);
-		r18_n = *((word32) r4 + 24);
+		r18_n.u4 = r4.u11[24];
 	}
 	else
 	{
@@ -9137,7 +9144,7 @@ l004065BE:
 		r4_n.u0 = 0x00;
 		if (r7_n == 0x00 || r7_n == 0x00)
 			goto l004065A0;
-		Eq_n r4_n = ntohs((word32) r4.u16->w0002);
+		Eq_n r4_n = ntohs((word32) r4.u11[2]);
 		tLoc0738.b0000 = 0x00;
 		if (__bit<word32,word32>(r19_n, 0x01))
 		{
@@ -9158,19 +9165,19 @@ l004065BE:
 					if (r4_n != 0x00)
 					{
 						r4_n.u11[1] = (struct Eq_n) 0x00;
-						*r4_n.u3 = 0x0A;
+						*r4_n.u4 = 0x0A;
 					}
 					Eq_n r6_n = &tLoc07C8;
 					while (true)
 					{
-						up32 r7_n = (word32) *r6_n.u3;
+						up32 r7_n = (word32) *r6_n.u4;
 						if (r7_n == 0x00)
 							break;
 						Eq_n r16_n;
 						r16_n.u11 = r6_n.u11 + 1;
 						if (r7_n == 0x20 || r7_n < 0x0E)
 						{
-							*r6_n.u3 = 0x00;
+							*r6_n.u4 = 0x00;
 							word32 r3_n;
 							Eq_n r4_n;
 							word32 r6_n;
@@ -9218,8 +9225,8 @@ l0040669C:
 			r16_n = fp - 0x0829;
 			do
 			{
-				r16_n.u3 = &r16_n.u11->bFFFFFFFF;
-				*r16_n.u3 = (byte) (r4_n % 0x0A) + 0x30;
+				r16_n.u4 = r16_n.u11->aFFFFFFFF;
+				*r16_n.u4 = (byte) (r4_n % 0x0A) + 0x30;
 			} while (r4_n != 0x00);
 		}
 		Eq_n r4_n = strlen(r16_n, out r5, out r6_n, out r7_n);
@@ -9276,18 +9283,18 @@ l0040659C:
 				if (r4_n != 0x00)
 				{
 					r4_n.u11[1] = (struct Eq_n) 0x00;
-					*r4_n.u3 = 0x0A;
+					*r4_n.u4 = 0x0A;
 				}
 				Eq_n r6_n = &tLoc0638;
 				while (true)
 				{
-					uint32 r5_n = (word32) *r6_n.u3;
+					uint32 r5_n = (word32) *r6_n.u4;
 					r22_n.u11 = r6_n.u11 + 1;
 					if ((r5_n & 223) == 0x00 || r5_n < 0x0E)
 						break;
 					r6_n = r22_n;
 				}
-				*r6_n.u3 = 0x00;
+				*r6_n.u4 = 0x00;
 				Eq_n r4_n;
 				word32 r6_n;
 				word32 r8_n;
@@ -9318,7 +9325,7 @@ l0040659C:
 				Eq_n r6_n;
 				while (true)
 				{
-					up32 r6_n = (word32) *r22_n.u3;
+					up32 r6_n = (word32) *r22_n.u4;
 					if (r6_n == 0x00)
 						break;
 					if (r6_n != 0x20 && r6_n >= 0x0E)
@@ -9326,7 +9333,7 @@ l0040659C:
 						r6_n = r22_n;
 						while (true)
 						{
-							uint32 r5_n = (word32) *r6_n.u3;
+							uint32 r5_n = (word32) *r6_n.u4;
 							if ((r5_n & 223) == 0x00 || r5_n < 0x0E)
 								break;
 							++r6_n.u11;
@@ -9337,7 +9344,7 @@ l0040659C:
 				}
 				r6_n = r22_n;
 l00406432:
-				*r6_n.u3 = 0x00;
+				*r6_n.u4 = 0x00;
 				r6_n = r6_n - r22_n;
 			} while (r6_n > 0xFF);
 			word32 r3_n;
@@ -9391,7 +9398,7 @@ l0040644A:
 			struct Eq_n * r4_n;
 			if (__bit<word32,word32>(r19_n, 0x08))
 			{
-				word32 r7_n = (word32) *r17_n.u3;
+				word32 r7_n = (word32) *r17_n.u4;
 				if (r7_n == 0xFE)
 				{
 					if (((word32) r17_n.u11[1] & 0xC0) != 0x80)
@@ -9586,11 +9593,11 @@ Eq_n if_nametoindex(Eq_n r4, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out, ptr32 
 	return r2_n;
 }
 
-// 004067A0: Register Eq_n __inet_aton(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r11Out, Register out Eq_n r12Out)
+// 004067A0: Register Eq_n __inet_aton(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r12, Register out Eq_n r3Out, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r11Out, Register out Eq_n r12Out)
 // Called from:
 //      ping4_run
 //      __lookup_ipliteral
-Eq_n __inet_aton(Eq_n r2, Eq_n r3, Eq_n r4, union Eq_n * r5, Eq_n r12, union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out, union Eq_n & r12Out)
+Eq_n __inet_aton(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r12, union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out, union Eq_n & r12Out)
 {
 	ui32 r16_n;
 	Eq_n r17_n = r4;
@@ -9633,25 +9640,25 @@ l00406812:
 				Mem87[r7_n + r5:byte] = SLICE(r6_n, byte, 0);
 				r7_n = (word32) r7_n + 1;
 			} while (r7_n != 0x04);
-			r3Out.u0 = (Eq_n (*)[]) <invalid>;
+			r3Out.u0 = <invalid>;
 			r4Out = 0x01;
 			r6Out = r6_n;
-			r8Out.u0 = (Eq_n (*)[]) <invalid>;
-			r9Out.u0 = (Eq_n (*)[]) <invalid>;
-			r11Out.u0 = (Eq_n (*)[]) <invalid>;
-			r12Out.u0 = (Eq_n (*)[]) <invalid>;
+			r8Out.u0 = <invalid>;
+			r9Out.u0 = <invalid>;
+			r11Out.u0 = <invalid>;
+			r12Out.u0 = <invalid>;
 			return <invalid>;
 		}
 		r17_n = fp - 0x1F;
 	}
 l004067C0:
-	r3Out.u0 = (Eq_n (*)[]) <invalid>;
+	r3Out.u0 = <invalid>;
 	r4Out = 0x00;
 	r6Out = r6_n;
-	r8Out.u0 = (Eq_n (*)[]) <invalid>;
-	r9Out.u0 = (Eq_n (*)[]) <invalid>;
-	r11Out.u0 = (Eq_n (*)[]) <invalid>;
-	r12Out.u0 = (Eq_n (*)[]) <invalid>;
+	r8Out.u0 = <invalid>;
+	r9Out.u0 = <invalid>;
+	r11Out.u0 = <invalid>;
+	r12Out.u0 = <invalid>;
 	return <invalid>;
 }
 
@@ -9670,7 +9677,6 @@ void inet_ntoa(Eq_n r4)
 //      getnameinfo
 void inet_ntop(word32 r4, Eq_n r5, Eq_n r6, Eq_n r7)
 {
-	ptr32 fp;
 	if (r4 != 0x02)
 	{
 		if (r4 != 0x0A)
@@ -9682,22 +9688,22 @@ void inet_ntop(word32 r4, Eq_n r5, Eq_n r6, Eq_n r7)
 		word32 r7_n;
 		word32 r8_n;
 		word32 r9_n;
-		Eq_n tLoc84;
+		ptr32 fp;
 		if (memcmp(r5, 4271664, 0x0C, out r7_n, out r8_n, out r9_n) != 0x00)
-			snprintf(&tLoc84, 100, 0x00411F54);
+			snprintf(fp - 0x84, 100, 0x00411F54);
 		else
-			snprintf(&tLoc84, 100, 4267884);
+			snprintf(fp - 0x84, 100, 4267884);
 		int32 r19_n = 0x00;
 		int32 r21_n = 0x02;
 		int32 r16_n = 0x00;
 		while (true)
 		{
-			word32 r7_n = (word32) (&tLoc84)[r16_n];
+			word32 r7_n = (word32) *((word32) (fp - 0x84) + r16_n);
 			if (r7_n == 0x00)
 				break;
 			if (r16_n == 0x00 || r7_n == 0x3A)
 			{
-				int32 r4_n = strspn(&tLoc84 + r16_n, &g_t411F8C);
+				int32 r4_n = strspn(fp - 0x84 + r16_n, &g_t411F8C);
 				if (r21_n < r4_n)
 				{
 					r19_n = r16_n;
@@ -9715,17 +9721,17 @@ void inet_ntop(word32 r4, Eq_n r5, Eq_n r6, Eq_n r7)
 			word32 r9_n;
 			word32 r11_n;
 			word32 r12_n;
-			memmove(&tLoc84 + (r19_n + 0x02), &tLoc84 + (r21_n + r19_n), r16_n - r19_n - r21_n + 0x01, out r8_n, out r9_n, out r11_n, out r12_n);
+			memmove(fp - 0x84 + (r19_n + 0x02), fp - 0x84 + (r21_n + r19_n), r16_n - r19_n - r21_n + 0x01, out r8_n, out r9_n, out r11_n, out r12_n);
 		}
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
-		if (strlen(&tLoc84, out r5_n, out r6_n, out r7_n) < r7)
+		if (strlen(fp - 0x84, out r5_n, out r6_n, out r7_n) < r7)
 		{
 			word32 r6_n;
 			word32 r7_n;
 			word32 r8_n;
-			strcpy(r6, &tLoc84, out r6_n, out r7_n, out r8_n);
+			strcpy(r6, fp - 0x84, out r6_n, out r7_n, out r8_n);
 			return;
 		}
 	}
@@ -9772,10 +9778,10 @@ Eq_n inet_pton(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r4Out, union Eq_n & r6Out, ptr
 					r6 = r4;
 					break;
 				}
-				r6.u1 = (word32) r6 + 1;
+				r6.u1 = (word32) r6.u0 + 1;
 				r5_n = r5_n *s 0x0A + r17_n + ~0x2F;
 			} while (r6 != 0x03);
-			if ((word32) *r16_n.u3 == 0x30)
+			if ((word32) *r16_n.u4 == 0x30)
 				break;
 l004069FA:
 			if (r5_n > 0xFF)
@@ -9794,7 +9800,7 @@ l004069FA:
 			}
 			if (r5_n != 0x2E)
 				break;
-			r6.u1 = (word32) r6 + 1;
+			r6.u1 = (word32) r6.u0 + 1;
 			r7_n = (byte (*)[]) (r7_n + 1);
 			r16_n += r6;
 		} while (r7_n != (byte (*)[]) 0x04);
@@ -9819,7 +9825,7 @@ l004069EA:
 		r12Out = r12;
 		return r2;
 	}
-	if ((word32) *r5.u3 == 0x3A)
+	if ((word32) *r5.u4 == 0x3A)
 	{
 		if ((word32) r5.u11[1] != 0x3A)
 			goto l004069EA;
@@ -9831,7 +9837,7 @@ l00406A46:
 	ptr32 fp;
 	Eq_n r7_n;
 	word32 r18_n;
-	if ((word32) *r16_n.u3 == 0x3A && r4_n == ~0x00)
+	if ((word32) *r16_n.u4 == 0x3A && r4_n == ~0x00)
 	{
 		r6.u1 = (word32) r16_n.u11[1];
 		(&(&(fp - 0x20 + (r17_n & 0x07))->wFFFFFFF0 + 8)[-8].wFFFFFFF0)[8] = 0;
@@ -9855,7 +9861,7 @@ l00406A6E:
 		int32 r7_n;
 		for (r7_n = 0x00; r7_n != 0x04; ++r7_n)
 		{
-			uint32 r18_n = (word32) r16_n.u3[r7_n];
+			uint32 r18_n = (word32) r16_n.u4[r7_n];
 			ui32 r6_n = r18_n + ~0x2F;
 			if (r18_n >= 0x3A)
 			{
@@ -9871,14 +9877,14 @@ l00406A6E:
 			r5_n = (r5_n << 0x04) + r6_n;
 		}
 		(&(&(fp - 0x20 + (r17_n & 0x07))->wFFFFFFF0 + 8)[-8].wFFFFFFF0)[8] = (int16) r5_n;
-		r6.u1 = (word32) r16_n.u3[r7_n];
+		r6.u1 = (word32) r16_n.u4[r7_n];
 		if (r6 != 0x00)
 		{
 			if (r17_n == 0x07)
 				goto l004069EA;
 			if (r6 == 0x3A)
 			{
-				r7_n.u3 = r16_n.u3 + (r7_n + 0x01);
+				r7_n.u4 = r16_n.u4 + (r7_n + 0x01);
 				goto l00406A6E;
 			}
 			if (r6 != 0x2E)
@@ -9901,7 +9907,7 @@ l00406ADE:
 			r2 = memmove(fp - 48 + ((r4_n + 0x07) - r17_n << 0x01), r20_n, r17_n + 0x01 - r4_n << 0x01, out r8, out r9, out r11, out r12);
 			int32 r7_n;
 			for (r7_n = 0x00; r7_n < 0x07 - r17_n; ++r7_n)
-				r20_n.u4[r7_n] = 0x00;
+				r20_n.u5[r7_n] = 0x00;
 			goto l00406B0E;
 		}
 		if (r4_n == ~0x00)
@@ -9931,7 +9937,7 @@ l00406B0E:
 			}
 			else
 			{
-				Eq_n r2_n = inet_pton(0x02, r16_n, (word32) r6 + 0x0C, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
+				Eq_n r2_n = inet_pton(0x02, r16_n, (word32) r6.u0 + 0x0C, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
 				r4Out = (word32) (r4_n > 0x00);
 				r6Out = r6_n;
 				r8Out = r8_n;
@@ -9954,6 +9960,7 @@ l00406B0E:
 //      __get_resolv_conf
 Eq_n __lookup_ipliteral(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r11Out, union Eq_n & r12Out)
 {
+	byte bLoc70;
 	Eq_n r12_n;
 	ptr32 r11_n;
 	ptr32 r9_n;
@@ -9988,13 +9995,12 @@ l00406B78:
 			word32 r11_n;
 			word32 r12_n;
 			fn00406C24(fp - 0x60, r5, r19_n, out r3_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
-			(r19_n.u3 + (fp - 0x20))[-64] = 0;
+			*((word32) ((word32) r19_n.u0 + (fp - 0x20)) - 64) = (word32) 0;
 			r18_n = fp - 0x60;
 		}
 	}
-	Eq_n tLoc70;
 	int32 r4_n;
-	r2_n = inet_pton(0x0A, r18_n, &tLoc70, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
+	r2_n = inet_pton(0x0A, r18_n, fp - 0x70, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
 	r7_n = 0x00;
 	if (r4_n <= 0x00)
 	{
@@ -10011,7 +10017,7 @@ l00406B7A:
 	{
 		Eq_n r3_n;
 		word32 r6_n;
-		r2_n = fn00406C24(r4.u11 + 8, &tLoc70, 0x10, out r3_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
+		r2_n = fn00406C24(r4.u11 + 8, fp - 0x70, 0x10, out r3_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
 		r6_n = 0x0A;
 		if (r4_n == 0x00)
 		{
@@ -10031,7 +10037,7 @@ l00406BFE:
 				goto l00406BFE;
 			goto l00406B64;
 		}
-		word32 r7_n = (word32) tLoc70;
+		word32 r7_n = (word32) bLoc70;
 		byte bLoc6F;
 		if (r7_n == 0xFE)
 		{
@@ -10093,30 +10099,30 @@ ptr32 __isspace(ptr32 r4, ptr32 & r7Out)
 	return r7_n;
 }
 
-// 00406C42: Register (ptr32 Eq_n) scopeof(Register (ptr32 Eq_n) r4)
+// 00406C42: Register Eq_n scopeof(Register Eq_n r4)
 // Called from:
 //      __lookup_name
-struct Eq_n * scopeof(struct Eq_n * r4)
+Eq_n scopeof(Eq_n r4)
 {
-	word32 r6_n = (word32) r4->t0000.u0;
+	word32 r6_n = (word32) r4.u1->t0000.u0;
 	if (r6_n == 0xFF)
-		return (word32) r4->b0001 & 0x0F;
-	struct Eq_n * r4_n;
+		return (word32) r4.u1->b0001 & 0x0F;
+	Eq_n r4_n;
 	if (r6_n == 0xFE)
 	{
-		r4_n = (struct Eq_n *) 0x02;
-		if (((word32) r4->b0001 & 0xC0) == 0x80)
+		r4_n.u0 = 0x02;
+		if (((word32) r4.u1->b0001 & 0xC0) == 0x80)
 			return r4_n;
 	}
-	if (r4->t0000.u1 == 0x00 && (r4->dw0004 == 0x00 && (r4->dw0008 == 0x00 && ((word32) r4->b000C == 0x00 && ((word32) r4->b000D == 0x00 && (word32) r4->b000E == 0x00)))))
+	if (r4.u1->t0000.u1 == 0x00 && ((r4.u1)->dw0004 == 0x00 && ((r4.u1)->dw0008 == 0x00 && ((word32) (r4.u1)->b000C == 0x00 && ((word32) (r4.u1)->b000D == 0x00 && (word32) (r4.u1)->b000E == 0x00)))))
 	{
-		r4_n = (struct Eq_n *) 0x02;
-		if ((word32) r4->b000F == 0x01)
+		r4_n.u0 = 0x02;
+		if ((word32) r4.u1->b000F == 0x01)
 			return r4_n;
 	}
-	r4_n = (struct Eq_n *) 0x0E;
-	if (r6_n == 0xFE && ((word32) r4->b0001 & 0xC0 ^ 0xC0) == 0x00)
-		r4_n = (struct Eq_n *) 0x05;
+	r4_n.u0 = 0x0E;
+	if (r6_n == 0xFE && ((word32) (r4.u1)->b0001 & 0xC0 ^ 0xC0) == 0x00)
+		r4_n.u0 = 0x05;
 	return r4_n;
 }
 
@@ -10126,8 +10132,9 @@ struct Eq_n * scopeof(struct Eq_n * r4)
 //      trinkle
 Eq_n addrcmp(Eq_n r4, Eq_n r5, union Eq_n & r7Out)
 {
-	Eq_n r7_n = *((word32) r5 + 24);
-	Eq_n r4_n = r7_n - *((word32) r4 + 24);
+	Eq_n r7_n;
+	r7_n.u4 = r5.u11[24];
+	Eq_n r4_n = r7_n - (r4.u11)[24];
 	r7Out = r7_n;
 	return r4_n;
 }
@@ -10139,7 +10146,7 @@ word32 name_from_dns(Eq_n r4, Eq_n r6, Eq_n r7, struct Eq_n * r8, ptr32 & r4Out,
 {
 	byte bLoc041D;
 	Eq_n tLoc065C;
-	tLoc065C.t0000.u3 = (byte *) r4;
+	tLoc065C.t0000.u0 = (int32) r4;
 	word32 r2_n;
 	ptr32 fp;
 	ptr32 r8_n;
@@ -10168,7 +10175,7 @@ l00406D10:
 				{
 					++r17_n.u11;
 					word32 r5_n;
-					r2_n = __dns_parse(fp - 0x0420 + (r17_n << 0x09), (fp - 0x0664)[r17_n].u3, &tLoc065C, r11_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n);
+					r2_n = __dns_parse(fp - 0x0420 + (r17_n << 0x09), (fp - 0x0664)[r17_n].u0, &tLoc065C, r11_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n);
 				}
 				if (r7_n == 0x00)
 				{
@@ -10204,7 +10211,7 @@ l00406D90:
 	word32 r4_n;
 	r2_n = res_mkquery(0x00, r6, 0x01, 0x1C, r16_n *s 0x0118 + (fp - 1616), 0x0118, out r4_n, out r8_n, out r11_n, out r12_n);
 	(fp + ~0x101F + r16_n)[621] = (Eq_n) r4_n;
-	++r16_n.u11;
+	r16_n.u4 = (word32) r16_n.u0 + 1;
 	if (r4_n == ~0x00)
 		goto l00406D8C;
 	goto l00406D10;
@@ -10221,7 +10228,7 @@ Eq_n policyof(Eq_n r4, union Eq_n & r7Out)
 	while (true)
 	{
 		Eq_n r18_n;
-		r18_n.u3 = (word32) r16_n.u12[4];
+		r18_n.u4 = (word32) r16_n.u17->b0010;
 		word32 r7_n;
 		word32 r8_n;
 		word32 r9_n;
@@ -10235,7 +10242,7 @@ Eq_n policyof(Eq_n r4, union Eq_n & r7Out)
 			}
 		}
 		++r17_n;
-		r16_n.u11 += 20;
+		++r16_n.u17;
 	}
 }
 
@@ -10268,7 +10275,7 @@ Eq_n is_valid_hostname(Eq_n r4, ptr32 & r5Out, ptr32 & r6Out, union Eq_n & r7Out
 					if (r7_n >= 0x02 && isalnum(r4_n, out r6_n, out r7_n) == 0x00)
 					{
 						Eq_n r4_n;
-						r4_n.u3 = (word32) ((word32) *r16_n.u3 < 0x01);
+						r4_n.u4 = (word32) ((word32) *r16_n.u4 < 0x01);
 						r5Out = r5_n;
 						r6Out = r6_n;
 						r7Out = r7_n;
@@ -10330,7 +10337,7 @@ Eq_n name_from_hosts(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, ptr
 			if (r4_n != 0x00)
 			{
 				r4_n.u11[1] = (struct Eq_n) 0x00;
-				*r4_n.u3 = 0x0A;
+				*r4_n.u4 = 0x0A;
 			}
 			Eq_n r4_n = fp - 1591;
 			while (true)
@@ -10346,21 +10353,21 @@ Eq_n name_from_hosts(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, ptr
 					Eq_n r17_n;
 					while (true)
 					{
-						ptr32 r4_n = (word32) *r6_n.u3;
+						ptr32 r4_n = (word32) *r6_n.u4;
 						r17_n.u11 = r6_n.u11 + 1;
 						word32 r7_n;
 						if (r4_n == 0x00 || fn00406F46(r4_n, out r7_n) != 0x00)
 							break;
 						r6_n = r17_n;
 					}
-					*r6_n.u3 = 0x00;
+					*r6_n.u4 = 0x00;
 					word32 r4_n;
 					word32 r6_n;
 					word32 r8_n;
 					word32 r9_n;
 					word32 r11_n;
 					word32 r12_n;
-					__lookup_ipliteral(r2_n, r3_n, r4.u3 + r18_n *s 0x1C, &tLoc0638, r7, r12, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
+					__lookup_ipliteral(r2_n, r3_n, r4.u4 + r18_n *s 0x1C, &tLoc0638, r7, r12, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
 					if (r4_n != 0x00)
 					{
 						if (r4_n == 0x01)
@@ -10368,7 +10375,7 @@ Eq_n name_from_hosts(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, ptr
 							Eq_n r21_n;
 							while (true)
 							{
-								ptr32 r4_n = (word32) *r17_n.u3;
+								ptr32 r4_n = (word32) *r17_n.u4;
 								if (r4_n == 0x00)
 									break;
 								word32 r7_n;
@@ -10377,7 +10384,7 @@ Eq_n name_from_hosts(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, ptr
 									r21_n = r17_n;
 									while (true)
 									{
-										ptr32 r4_n = (word32) *r21_n.u3;
+										ptr32 r4_n = (word32) *r21_n.u4;
 										word32 r7_n;
 										if (r4_n == 0x00 || fn00406F46(r4_n, out r7_n) != 0x00)
 											break;
@@ -10389,7 +10396,7 @@ Eq_n name_from_hosts(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, ptr
 							}
 							r21_n = r17_n;
 l00406F16:
-							*r21_n.u3 = 0x00;
+							*r21_n.u4 = 0x00;
 							word32 r5_n;
 							word32 r6_n;
 							word32 r7_n;
@@ -10414,7 +10421,7 @@ l00406F16:
 					}
 					break;
 				}
-				r4_n.u3 = &r4_n->bFFFFFFFF + 2;
+				r4_n.u4 = &r4_n->bFFFFFFFF + 2;
 			}
 		}
 		if (r18_n != 0x00)
@@ -10467,11 +10474,11 @@ Eq_n dns_parse_callback(Eq_n r4, int32 r5, Eq_n r6, Eq_n r7, Eq_n r8, ptr32 r11,
 	{
 		ptr32 fp;
 		r7 = fp - 272;
-		r5_n.u3 = (word32) r8 + 0x0200;
+		r5_n.u4 = (word32) r8 + 0x0200;
 		int32 r4_n;
 		r2 = dn_expand(r8, (word32) r8 + 0x0200, r6, fp - 272, 0x0100, out r4_n, out r8, out r11, out r12);
 		if (r4_n > 0x00 && is_valid_hostname(fp - 272, out r5_n, out r6, out r7, out r8, out r18) != 0x00)
-			r5_n = strcpy(r4.u0[4], fp - 272, out r6, out r7, out r8);
+			r5_n = strcpy(r4.u1[4], fp - 272, out r6, out r7, out r8);
 		goto l00406F84;
 	}
 	ptr32 r4_n;
@@ -10494,19 +10501,20 @@ l00406F86:
 			r18Out = r18;
 			return r2;
 		}
-		word32 * r4_n = r4.u1->dw0000 + (r4.u0)[8] *s32 0x1C;
+		word32 * r4_n = (word32 *) (r4->u1 + (r4.u1)[8] *s32 0x1C);
 		*r4_n = 0x02;
-		r4_n.u3 = r4_n + 2;
+		r4_n.u4 = r4_n + 2;
 	}
 	else
 	{
 		r4_n = ~0x00;
 		if (r7 != 0x10)
 			goto l00406F86;
-		struct Eq_n * r9_n = r5 *s32 (r4.u0)[8] + (r4.u1)->dw0000;
-		r9_n->dw0000 = 0x0A;
-		r9_n->ptr0001 = r11;
-		r4_n.u3 = (char *) &r9_n->ptr0001 + 7;
+		Eq_n r9_n;
+		r9_n.u1 = r4->u1 + r5 *s32 (r4.u1)[8];
+		r9_n.u1->dw0000 = 0x0A;
+		r9_n.u1->ptr0001 = r11;
+		r4_n.u4 = (word32) r9_n + 8;
 	}
 	word32 r3_n;
 	word32 r9_n;
@@ -10527,7 +10535,7 @@ Eq_n __lookup_name(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8
 	word32 r7_n;
 	word32 r6_n;
 	word32 r5_n;
-	*r5.u3 = 0x00;
+	*r5.u4 = 0x00;
 	Eq_n r19_n = r7;
 	Eq_n r18_n = r8;
 	Eq_n r8_n = r8;
@@ -10543,7 +10551,7 @@ Eq_n __lookup_name(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8
 	if (!__bit<word32,word32>(r8, 0x03))
 	{
 		if (r7 != 0x0A)
-			r18_n.u3 = &r8.u12->dwFFFFFFF8;
+			r18_n.u4 = r8.u11->aFFFFFFF8;
 		else
 			r19_n.u0 = 0x00;
 	}
@@ -10578,7 +10586,7 @@ Eq_n __lookup_name(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8
 		if (r19_n != 0x0A)
 		{
 			r4.u11[8] = (struct Eq_n) 0x7F;
-			(&r4.u21->u1)[11] = (struct Eq_n) 0x01;
+			r4.u11[11] = (struct Eq_n) 0x01;
 			dwLoc019C.u0 = 0x00;
 			if (r19_n == 0x02)
 			{
@@ -10596,7 +10604,7 @@ l0040702E:
 		tLoc0194.dw0030 = 0x00;
 		tLoc0194.dw0034 = 0x00;
 		tLoc0194.dw003C = 0x00;
-		(r4.u3 + r7_n *s 0x1C)[23] = 0x01;
+		(r4.u4 + r7_n *s 0x1C)[23] = 0x01;
 		r20_n = r7_n + 0x01;
 	}
 	else
@@ -10636,7 +10644,7 @@ l00406FF4:
 						break;
 					if (r6_n == 0x2E)
 						++r7_n;
-					++r23_n;
+					++r23_n.u11;
 				}
 				if (r7_n >= r6_n || CONVERT(Mem35[(r6 + r23_n) + -1:byte], byte, word32) == 0x2E)
 					tLoc0130 = (Eq_n) 0x00;
@@ -10667,7 +10675,7 @@ l00406FF8:
 				Eq_n r4_n;
 				do
 				{
-					if ((word32) *r20_n.u3 == 0x00)
+					if ((word32) *r20_n.u4 == 0x00)
 					{
 l004071B4:
 						*r30_n = 0x00;
@@ -10683,12 +10691,12 @@ l004071B4:
 					}
 					Eq_n r5_n = r20_n;
 					word32 r7_n;
-					while (__isspace((word32) *r5_n.u3, out r7_n) != 0x00)
+					while (__isspace((word32) *r5_n.u4, out r7_n) != 0x00)
 						++r5_n.u11;
 					r20_n = r5_n;
 					while (true)
 					{
-						ptr32 r4_n = (word32) *r20_n.u3;
+						ptr32 r4_n = (word32) *r20_n.u4;
 						word32 r7_n;
 						if (r4_n == 0x00 || __isspace(r4_n, out r7_n) != 0x00)
 							break;
@@ -10699,7 +10707,8 @@ l004071B4:
 					Eq_n r17_n = r20_n - r5_n;
 					if (r17_n >= 0xFF - r23_n)
 						continue;
-					byte * r7_n = r23_n + 0x01;
+					Eq_n r7_n;
+					r7_n.u1 = r23_n.u11 + 1;
 					word32 r3_n;
 					word32 r7_n;
 					word32 r8_n;
@@ -10728,15 +10737,15 @@ l00407054:
 			do
 			{
 				int32 r17_n = r21_n *s 0x1C;
-				if (r4.u5[r21_n * 7] == 0x0A)
+				if (r4.u6[r21_n * 7] == 0x0A)
 				{
 					if (r21_n < r20_n)
 					{
 						Eq_n r17_n;
-						r17_n.u3 = r4.u3 + r17_n;
+						r17_n.u4 = r4.u4 + r17_n;
 						do
 						{
-							if (*r17_n.u5 == 0x0A)
+							if (*r17_n.u6 == 0x0A)
 							{
 								r18_n = (word32) r18_n.u0 + 1;
 								word32 r3_n;
@@ -10746,7 +10755,7 @@ l00407054:
 								word32 r9_n;
 								word32 r13_n;
 								word32 r14_n;
-								r2 = memcpy(r4.u3 + r18_n *s 0x1C, r17_n, 0x1C, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
+								r2 = memcpy(r4.u4 + r18_n *s 0x1C, r17_n, 0x1C, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
 							}
 							r21_n = (word32) r21_n.u0 + 1;
 							r17_n.u11 += 28;
@@ -10763,10 +10772,10 @@ l00407054:
 		r17_n.u0 = 0x00;
 		while (r20_n != r17_n)
 		{
-			if (r18_n.u12->dwFFFFFFEC == 0x02)
+			if (r18_n.u11->dwFFFFFFEC == 0x02)
 			{
 				Eq_n r21_n;
-				r21_n.u3 = &r18_n.u12->dwFFFFFFF4;
+				r21_n.u4 = &r18_n.u11->dwFFFFFFF4;
 				word32 r3_n;
 				word32 r7_n;
 				word32 r8_n;
@@ -10781,7 +10790,7 @@ l00407054:
 				word32 r13_n;
 				word32 r14_n;
 				r2 = memcpy(r21_n, 0x00412E40, 0x0C, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
-				r18_n.u12->dwFFFFFFEC = 0x0A;
+				r18_n.u11->dwFFFFFFEC = 0x0A;
 			}
 			r17_n = (word32) r17_n.u0 + 1;
 			r18_n.u11 += 28;
@@ -10793,7 +10802,7 @@ l00407054:
 		r7_n.u0 = 0x00;
 		do
 		{
-			if (r4.u5[r7_n * 7] != 0x02)
+			if (r4.u6[r7_n * 7] != 0x02)
 			{
 				if (r17_n != r7_n)
 				{
@@ -10809,7 +10818,7 @@ l00407054:
 						tLoc0130.w0000 = 0x0A;
 						Eq_n tLoc0128;
 						tLoc0128.dw0000 = 0x00;
-						word32 r7_n = r19_n.u12->dwFFFFFFF8;
+						word32 r7_n = r19_n.u14->dwFFFFFFF8;
 						tLoc0128.dw0004 = 0x00;
 						tLoc0128.dw0008 = 0x00;
 						tLoc0128.dw000C = 0x00;
@@ -10829,7 +10838,7 @@ l00407054:
 							word32 r12_n;
 							fn0040738E(&tLoc0128, 0x00412E40, 0x0C, out r3_n, out r7_n, out r8_n, out r11_n, out r12_n);
 							r6_n.u0 = 0x04;
-							r4_n.u3 = (char *) &tLoc0128 + 0x0C;
+							r4_n.u4 = (char *) &tLoc0128 + 0x0C;
 						}
 						word32 r3_n;
 						word32 r7_n;
@@ -10969,7 +10978,7 @@ Eq_n __lookup_serv(Eq_n r2, Eq_n r3, struct Eq_n * r4, Eq_n r5, word32 r6, byte 
 	ptr32 r11;
 	if (r5 != 0x00)
 	{
-		if ((word32) *r5.u3 == 0x00)
+		if ((word32) *r5.u4 == 0x00)
 			goto l00407408;
 		word32 r6_n;
 		word32 r9_n;
@@ -11044,7 +11053,7 @@ l00407424:
 					if (r4_n != 0x00)
 					{
 						r4_n.u11[1] = (struct Eq_n) 0x00;
-						*r4_n.u3 = 0x0A;
+						*r4_n.u4 = 0x0A;
 					}
 					Eq_n r4_n = &tLoc0548;
 					while (true)
@@ -11054,7 +11063,7 @@ l00407424:
 							break;
 						if (&tLoc0548 < r4_n)
 						{
-							up32 r7_n = (word32) r4_n->bFFFFFFFF;
+							up32 r7_n = (word32) r4_n->tFFFFFFFF.b0000;
 							if (r7_n != 0x20 && r7_n >= 0x0E)
 								goto l004074D0;
 						}
@@ -11063,7 +11072,7 @@ l00407424:
 						{
 							while (true)
 							{
-								uint32 r7_n = (word32) *r17_n.u3;
+								uint32 r7_n = (word32) *r17_n.u4;
 								if ((r7_n & 223) == 0x00 || r7_n < 0x0E)
 									break;
 								++r17_n.u11;
@@ -11102,7 +11111,7 @@ l00407424:
 							break;
 						}
 l004074D0:
-						r4_n.u3 = r4_n + 1;
+						r4_n.u4 = r4_n + 1;
 					}
 				}
 				__fclose_ca(r21_n);
@@ -11133,13 +11142,13 @@ int32 __netlink_enumerate(Eq_n r0, struct Eq_n * r9, Eq_n r11, union Eq_n & r11O
 	{
 		while (true)
 		{
-			struct Eq_n * r4_n = recv();
-			if (r4_n <= null)
+			Eq_n r4_n = recv();
+			if (r4_n <= 0x00)
 				break;
-			struct Eq_n * r16_n = &tLoc2020;
+			Eq_n r16_n = &tLoc2020;
 			while (&tLoc2020 + r4_n - r16_n >=u 0x10)
 			{
-				word32 r7_n = (word32) r16_n[1];
+				word32 r7_n = (word32) r16_n.u1[1];
 				if (r7_n == 0x03)
 				{
 					r4_n = 0x00;
@@ -11150,7 +11159,7 @@ int32 __netlink_enumerate(Eq_n r0, struct Eq_n * r9, Eq_n r11, union Eq_n & r11O
 				r4_n = netlink_msg_to_ifaddr(r0, r9, r16_n, r11, out r11);
 				if (r4_n != 0x00)
 					goto l004075C8;
-				r16_n += __ins<word32,word32>((char *) &r16_n->t0000.u2->w0002 + 1, 0x00, 0x00, 0x01);
+				r16_n += __ins<word32,word32>(r16_n.u1->t0000.u0 + 0x03, 0x00, 0x00, 0x01);
 			}
 		}
 l004075C6:
@@ -11278,9 +11287,9 @@ Eq_n res_mkquery(up32 r4, Eq_n r5, up32 r6, up32 r7, Eq_n r11, Eq_n dwArg00, uni
 	Eq_n r4_n = strnlen(r5, 0xFF, out r5_n, out r6_n, out r8_n);
 	Eq_n r17_n = r4_n;
 	if (r4_n != 0x00 && (CONVERT(Mem23[r5 + (r4_n + ~0x00):byte], byte, word32) ^ 0x2E) == 0x00)
-		r17_n.u3 = &r4_n.u11->bFFFFFFFF;
+		r17_n.u4 = r4_n.u11->aFFFFFFFF;
 	Eq_n r16_n;
-	r16_n.u3 = &r17_n.u12->b0011 + (word32) (r17_n > 0x00);
+	r16_n.u11 = r17_n.u11 + 0x0011 + (word32) (r17_n > 0x00);
 	Eq_n r19_n = r16_n;
 	Eq_n r2;
 	ptr32 r12;
@@ -11388,18 +11397,18 @@ void cleanup()
 	__syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
 }
 
-// 004077AA: Register Eq_n __res_msend_rc(Register Eq_n r4, Register Eq_n r7, Register Eq_n r8, Register Eq_n r9, Register (ptr32 Eq_n) r10, Register Eq_n r21, Register out ptr32 r4Out, Register out (ptr32 Eq_n) r6Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r11Out, Register out ptr32 r12Out)
+// 004077AA: Register Eq_n __res_msend_rc(Register Eq_n r4, Register Eq_n r7, Register Eq_n r8, Register Eq_n r9, Register (ptr32 Eq_n) r10, Register Eq_n r21, Register out ptr32 r4Out, Register out Eq_n r6Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r11Out, Register out ptr32 r12Out)
 // Called from:
 //      name_from_dns
 //      __res_msend
-Eq_n __res_msend_rc(Eq_n r4, Eq_n r7, Eq_n r8, Eq_n r9, struct Eq_n * r10, Eq_n r21, ptr32 & r4Out, struct Eq_n & r6Out, ptr32 & r8Out, union Eq_n & r11Out, ptr32 & r12Out)
+Eq_n __res_msend_rc(Eq_n r4, Eq_n r7, Eq_n r8, Eq_n r9, struct Eq_n * r10, Eq_n r21, ptr32 & r4Out, union Eq_n & r6Out, ptr32 & r8Out, union Eq_n & r11Out, ptr32 & r12Out)
 {
 	ptr32 r8_n;
 	word32 r6_n;
 	Eq_n r4_n;
 	word32 r9_n;
 	ptr32 r8_n;
-	struct Eq_n * r6_n;
+	Eq_n r6_n;
 	Eq_n r4_n;
 	word32 r3_n;
 	Eq_n tLocA0;
@@ -11414,7 +11423,7 @@ Eq_n __res_msend_rc(Eq_n r4, Eq_n r7, Eq_n r8, Eq_n r9, struct Eq_n * r10, Eq_n 
 	fn00407A82(0x01, fp - 0xC0);
 	Eq_n r18_n = r4;
 	Eq_n r23_n;
-	r23_n.u3 = (char *) r10 + 8;
+	r23_n.u4 = (char *) r10 + 8;
 	union Eq_n * r16_n = &tLoc84;
 	word32 r17_n = 0x02;
 	Eq_n r20_n;
@@ -11423,9 +11432,9 @@ Eq_n __res_msend_rc(Eq_n r4, Eq_n r7, Eq_n r8, Eq_n r9, struct Eq_n * r10, Eq_n 
 	r19_n.u0 = 0x10;
 	union Eq_n * r11;
 	ptr32 r12;
-	while (r20_n < (r10->t0054).u3)
+	while (r20_n < (r10->t0054).u0)
 	{
-		word32 r7_n = r23_n.u12->dwFFFFFFF8;
+		word32 r7_n = r23_n.u14->dwFFFFFFF8;
 		if (r7_n == 0x02)
 		{
 			word32 r3_n;
@@ -11469,7 +11478,7 @@ Eq_n __res_msend_rc(Eq_n r4, Eq_n r7, Eq_n r8, Eq_n r9, struct Eq_n * r10, Eq_n 
 		if (r17_n != 0x0A)
 			goto l00407846;
 		__errno_location(out r4_n);
-		if (*r4_n.u5 != 33)
+		if (*r4_n.u6 != 33)
 		{
 l00407846:
 			fn00407A82(r4_n, 0x00);
@@ -11503,7 +11512,7 @@ l00407846:
 			r23_n.u0 = 0x00;
 			while (r20_n != r23_n)
 			{
-				if ((word32) r17_n.u7->wFFFFFFFC == 0x02)
+				if ((word32) r17_n.u11->tFFFFFFFC.u1 == 0x02)
 				{
 					word32 r3_n;
 					word32 r5_n;
@@ -11515,7 +11524,7 @@ l00407846:
 					word32 r12_n;
 					word32 r13_n;
 					word32 r14_n;
-					memcpy(r17_n.u12 + 4, r17_n, 0x04, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+					memcpy(r17_n.u11 + 16, r17_n, 0x04, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 					r4_n.u11 = r17_n.u11 + 4;
 					word32 r3_n;
 					word32 r5_n;
@@ -11526,7 +11535,7 @@ l00407846:
 					word32 r13_n;
 					word32 r14_n;
 					memcpy(r4_n, 4271816, 0x0C, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
-					((word32) r17_n - 4)->u1 = 0x0A;
+					((word32) r17_n - 4)->u4 = 0x0A;
 				}
 				++r23_n.u11;
 				r17_n.u11 += 28;
@@ -11538,7 +11547,7 @@ l00407846:
 		word32 r10_n;
 		memset(r4_n, 0x00, r4 << 0x02, out r6_n, out r7_n, out r8_n, out r10_n);
 		Eq_n r2_n = mtime(out r4_n, out r6_n, out r8_n);
-		struct Eq_n * r6_n = &tLoc84;
+		Eq_n r6_n = &tLoc84;
 		Eq_n r30_n = r4_n - r23_n;
 		Eq_n r10_n = r4_n;
 		while (r10_n - r4_n < r6_n)
@@ -11549,7 +11558,7 @@ l00407846:
 				r21.u0 = 0x00;
 				while (r21 < r18_n)
 				{
-					r7_n.u3 = r7_n.u5[r21];
+					r7_n.u4 = r7_n.u6[r21];
 					if (r7_n == 0x00)
 					{
 						r7_n = &tLoc84;
@@ -11561,20 +11570,20 @@ l00407846:
 							r18_n = r10_n;
 						}
 					}
-					++r21.u11;
+					r21.u4 = (word32) r21.u0 + 1;
 				}
 				r30_n = r10_n;
 			}
 			int32 r4_n;
 			Eq_n r7_n;
-			poll(r30_n.u3 + (r23_n - r10_n), out r4_n, out r7_n);
+			poll(r23_n - r10_n + r30_n, out r4_n, out r7_n);
 			if (r4_n > 0x00)
 			{
 				while (true)
 				{
 l004079EE:
 					Eq_n r10_n;
-					r10_n.u3 = r7_n.u3 + (r7 << 0x02);
+					r10_n.u4 = r7_n.u4 + (r7 << 0x02);
 					Eq_n r4_n;
 					Eq_n r9_n;
 					do
@@ -11596,12 +11605,12 @@ l004079EE:
 							while (r7_n < r9_n)
 							{
 								Eq_n r5_n;
-								r5_n.u3 = *r10_n.u5;
-								r6_n.u3 = r6_n.u5[r7_n];
-								r11 = (word32) *r5_n.u3;
-								if (r11 == (word32) (*r6_n.u3))
+								r5_n.u4 = *r10_n.u6;
+								r6_n.u4 = r6_n.u6[r7_n];
+								r11 = (word32) *r5_n.u4;
+								if (r11 == (word32) (*r6_n.u4))
 								{
-									r6_n.u3 = (word32) r6_n.u11[1];
+									r6_n.u4 = (word32) r6_n.u11[1];
 									if (r6_n == (word32) (r5_n.u11)[1])
 										goto l004079BA;
 								}
@@ -11610,12 +11619,12 @@ l004079EE:
 							if (r7_n == r9_n)
 								break;
 l004079BA:
-							r11 = (union Eq_n *) (r6_n.u3 + (r7_n << 0x02));
+							r11 = (union Eq_n *) (r6_n.u4 + (r7_n << 0x02));
 							Eq_n r17_n = r8;
-							if (r11->u3 != 0x00)
+							if (r11->u0 != 0x00)
 								break;
 							Eq_n r5_n;
-							r5_n.u3 = *r10_n.u5;
+							r5_n.u4 = *r10_n.u6;
 							ui32 r6_n = (word32) r5_n.u11[3];
 							r6_n = r6_n & 0x0F;
 							if ((r6_n & 0x0F) == 0x02)
@@ -11624,7 +11633,7 @@ l004079BA:
 								{
 									word32 r10_n;
 									sendto(out r7_n, out r10_n);
-									r21.u3 = &r21.u11->bFFFFFFFF;
+									r21.u4 = (word32) r21.u0 - 1;
 								}
 								break;
 							}
@@ -11632,12 +11641,12 @@ l004079BA:
 							{
 								if ((r6_n & 0x0F) != 0x03 && (r6_n & 0x0F) != 0x00)
 									break;
-								r11->u3 = (byte *) r9_n;
+								r11->u0 = (int32) r9_n;
 								if (r7_n == r8)
 								{
 									while (r17_n < r9_n)
 									{
-										r7_n.u3 = r7_n.u5[r8];
+										r7_n.u4 = r7_n.u6[r8];
 										if (r7_n == 0x00)
 											goto l004079EE;
 										r17_n.u11 = r8.u11 + 1;
@@ -11651,7 +11660,7 @@ l004079BA:
 									word32 r9_n;
 									word32 r13_n;
 									word32 r14_n;
-									r2_n = memcpy(null[r7_n].t0000.u3, r5_n, r9_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
+									r2_n = memcpy(null[r7_n].t0000.u0, r5_n, r9_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12, out r13_n, out r14_n);
 								}
 								if (r9_n == r17_n)
 									goto l00407A76;
@@ -11716,17 +11725,17 @@ Eq_n __res_msend(Eq_n r4, Eq_n r12, Eq_n r21, ptr32 & r11Out)
 	return r6_n;
 }
 
-// 00407AC0: Register int32 res_send(Register Eq_n r12, Register Eq_n r21, Register out ptr32 r11Out, Register out (ptr32 Eq_n) r17Out)
+// 00407AC0: Register int32 res_send(Register Eq_n r12, Register Eq_n r21, Register out ptr32 r11Out, Register out Eq_n r17Out)
 // Called from:
 //      getnameinfo
-int32 res_send(Eq_n r12, Eq_n r21, ptr32 & r11Out, struct Eq_n & r17Out)
+int32 res_send(Eq_n r12, Eq_n r21, ptr32 & r11Out, union Eq_n & r17Out)
 {
 	ptr32 r11_n;
 	int32 r4_n = __res_msend(0x01, r12, r21, out r11_n);
-	struct Eq_n * r17;
+	Eq_n r17;
 	if (r4_n >= 0x00)
 	{
-		struct Eq_n * r7;
+		Eq_n r7;
 		r17 = r7;
 	}
 	r11Out = r11_n;
@@ -11763,11 +11772,11 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 	word32 r5_n;
 	Eq_n r4_n;
 	Eq_n tLoc02B0;
-	(&r4.u21->u1)[92] = (struct Eq_n) 0x01;
-	((word32) r4 + 96)->u3 = 0x05;
-	(&r4.u21->u1)[88] = (struct Eq_n) 0x02;
+	r4.u11[92] = (struct Eq_n) 0x01;
+	r4.u12[48] = (struct Eq_n) 0x05;
+	r4.u11[88] = (struct Eq_n) 0x02;
 	if (r5 != 0x00)
-		*r5.u3 = 0x00;
+		*r5.u4 = 0x00;
 	Eq_n r2_n = __fopen_rb_ca(&tLoc02B0, out r4_n, out r5_n, out r8_n, out r9_n, out r19_n);
 	Eq_n r17_n;
 	r17_n.u0 = 0x00;
@@ -11794,7 +11803,7 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 			r2_n = fgets_unlocked(&tLoc0220, 0x0100, r4_n, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n, out r11, out r12, out r21_n);
 			if (r4_n == 0x00)
 				break;
-			if (strchr(&tLoc0220, 0x0A) == 0x00 && __bit<word32,word32>(*r4_n.u5, 0x04))
+			if (strchr(&tLoc0220, 0x0A) == 0x00 && __bit<word32,word32>(*r4_n.u6, 0x04))
 			{
 				word32 r4_n;
 				do
@@ -11812,7 +11821,7 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 					Eq_n r2_n = fn00407D04(&tLoc0220, 0x00411FB8, out r4_n);
 					if (r4_n != null && (word32) r4_n->b0006 < 0x3A)
 					{
-						Eq_n r4_n;
+						up32 r4_n;
 						word32 r6_n;
 						word32 r7_n;
 						word32 r8_n;
@@ -11822,14 +11831,14 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 						if (&r4_n->b0006 != dwLoc02B4)
 						{
 							if ((word32) (r4_n < 0x10) == 0x00)
-								r4_n.u0 = 0x0F;
-							(&r4.u21->u1)[92] = (struct Eq_n) r4_n;
+								r4_n = 0x0F;
+							r4.u11[92] = (struct Eq_n) r4_n;
 						}
 					}
 					Eq_n r2_n = fn00407D04(&tLoc0220, 0x00411FC0, out r4_n);
 					if (r4_n != null && (word32) r4_n->b0009 < 0x3A)
 					{
-						Eq_n r4_n;
+						up32 r4_n;
 						word32 r6_n;
 						byte * r7_n;
 						word32 r8_n;
@@ -11840,8 +11849,8 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 						if (&r4_n->b0009 != r7_n)
 						{
 							if ((word32) (r4_n < 11) == 0x00)
-								r4_n.u0 = 0x0A;
-							(&r4.u21->u1)[88] = (struct Eq_n) r4_n;
+								r4_n = 0x0A;
+							r4.u11[88] = (struct Eq_n) r4_n;
 						}
 					}
 					Eq_n r2_n = fn00407D04(&tLoc0220, 0x00411FCC, out r4_n);
@@ -11864,7 +11873,7 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 							{
 								if ((word32) (r4_n < 0x3D) == 0x00)
 									r4_n = 0x3C;
-								((word32) r4 + 96)->u3 = r4_n;
+								r4.u12[48] = (struct Eq_n) r4_n;
 							}
 						}
 					}
@@ -11878,26 +11887,26 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 						Eq_n r5_n = fp - 533;
 						if (r17_n < 0x03)
 						{
-							while (fn00407D08((word32) *r5_n.u3) != 0x00)
+							while (fn00407D08((word32) *r5_n.u4) != 0x00)
 								++r5_n.u11;
 							dwLoc02B4 = r5_n;
 							while (true)
 							{
 								r17_n = dwLoc02B4;
-								up32 r4_n = (word32) *r6_n.u3;
+								up32 r4_n = (word32) *r6_n.u4;
 								if (r4_n == 0x00 || fn00407D08(r4_n) != 0x00)
 									break;
 								++r6_n.u11;
 								dwLoc02B4 = r6_n;
 							}
-							*r6_n.u3 = 0x00;
+							*r6_n.u4 = 0x00;
 							int32 r4_n;
 							word32 r6_n;
 							word32 r8_n;
 							word32 r9_n;
 							word32 r11_n;
 							word32 r12_n;
-							__lookup_ipliteral(r2_n, r3_n, r4.u3 + dwLoc02B4 *s 0x1C, r5_n, 0x00, r12, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
+							__lookup_ipliteral(r2_n, r3_n, r4.u4 + dwLoc02B4 *s 0x1C, r5_n, 0x00, r12, out r4_n, out r6_n, out r8_n, out r9_n, out r11_n, out r12_n);
 							if (r4_n > 0x00)
 								r17_n.u11 = dwLoc02B4.u11 + 1;
 						}
@@ -11912,7 +11921,7 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 							byte bLoc021A;
 							if (fn00407D08((word32) bLoc021A) != 0x00)
 							{
-								while (fn00407D08((word32) *r18_n.u3) != 0x00)
+								while (fn00407D08((word32) *r18_n.u4) != 0x00)
 									++r18_n.u11;
 								Eq_n r4_n = strlen(r18_n, out r5_n, out r6_n, out r7_n);
 								if (r4_n < r21_n)
@@ -11939,7 +11948,7 @@ Eq_n __get_resolv_conf(Eq_n r4, Eq_n r5, Eq_n r12, ptr32 & r4Out, ptr32 & r8Out,
 		if (r17_n != 0x00)
 		{
 l00407B64:
-			*((word32) r4 + 84) = r17_n;
+			r4.u12[42] = (struct Eq_n) r17_n;
 			r4_n = 0x00;
 l00407B6A:
 			r4Out = r4_n;
@@ -12013,13 +12022,13 @@ word32 sendmsg()
 	return r4_n;
 }
 
-// 00407D40: Register word32 sendto(Register out (ptr32 Eq_n) r7Out, Register out Eq_n r10Out)
+// 00407D40: Register word32 sendto(Register out Eq_n r7Out, Register out Eq_n r10Out)
 // Called from:
 //      ping4_send_probe
 //      ping6_send_probe
 //      __res_msend_rc
 //      send
-word32 sendto(struct Eq_n & r7Out, union Eq_n & r10Out)
+word32 sendto(union Eq_n & r7Out, union Eq_n & r10Out)
 {
 	Eq_n r4_n;
 	word32 r5_n;
@@ -12027,7 +12036,7 @@ word32 sendto(struct Eq_n & r7Out, union Eq_n & r10Out)
 	word32 r8_n;
 	__syscall_cp(out r4_n, out r5_n, out r6_n, out r8_n);
 	word32 r4_n;
-	struct Eq_n * r7_n;
+	Eq_n r7_n;
 	__syscall_ret(r4_n, out r4_n, out r7_n);
 	r7Out = r7_n;
 	Eq_n r9;
@@ -12065,7 +12074,7 @@ Eq_n setsockopt(union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r7Out)
 	return r2_n;
 }
 
-// 00407D80: Register Eq_n socket(Register Eq_n r5, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r4Out, Register out ptr32 r6Out, Register out ptr32 r8Out, Register out ptr32 r9Out)
+// 00407D80: Register Eq_n socket(Register Eq_n r5, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out ptr32 r8Out, Register out ptr32 r9Out)
 // Called from:
 //      create_socket
 //      ping4_run
@@ -12078,7 +12087,7 @@ Eq_n setsockopt(union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r7Out)
 Eq_n socket(Eq_n r5, union Eq_n & r3Out, union Eq_n & r4Out, ptr32 & r6Out, ptr32 & r8Out, ptr32 & r9Out)
 {
 	word32 r7_n;
-	union Eq_n * r4_n;
+	Eq_n r4_n;
 	ptr32 r9_n;
 	ptr32 r8_n;
 	word32 r7_n;
@@ -12087,8 +12096,8 @@ Eq_n socket(Eq_n r5, union Eq_n & r3Out, union Eq_n & r4Out, ptr32 & r6Out, ptr3
 	Eq_n r4_n;
 	Eq_n r2_n = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
 	Eq_n r3_n = __syscall_ret(r4_n, out r4_n, out r7_n);
-	union Eq_n * r16_n = r4_n;
-	if (r4_n < null)
+	Eq_n r16_n = r4_n;
+	if (r4_n < 0x00)
 	{
 		word32 * r4_n;
 		r3_n = __errno_location(out r4_n);
@@ -12105,11 +12114,11 @@ Eq_n socket(Eq_n r5, union Eq_n & r3Out, union Eq_n & r4Out, ptr32 & r6Out, ptr3
 			word32 r5_n;
 			word32 r7_n;
 			r2_n = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
-			union Eq_n * r4_n;
+			Eq_n r4_n;
 			word32 r7_n;
 			r3_n = __syscall_ret(r4_n, out r4_n, out r7_n);
 			r16_n = r4_n;
-			if (r4_n >= null)
+			if (r4_n >= 0x00)
 			{
 				if (!__bit<word32,word32>(r5, 0x13))
 				{
@@ -12189,14 +12198,14 @@ struct Eq_n * _setjmp(struct Eq_n * r4, word32 r16, Eq_n r17, Eq_n r18, Eq_n r19
 	ptr32 fp;
 	r4->ptr0004 = fp;
 	r4->dw0008 = r16;
-	r4->t000C.u3 = (byte *) r17;
-	r4->t0010.u3 = (byte *) r18;
-	r4->t0014.u3 = (byte *) r19;
-	r4->t0018.u3 = (byte *) r20;
-	r4->t001C.u3 = (byte *) r21;
-	r4->t0020.u3 = (byte *) r22;
-	r4->t0024.u3 = (byte *) r23;
-	r4->t0028.u3 = (byte *) r30;
+	r4->t000C.u0 = (int32) r17;
+	r4->t0010.u0 = (int32) r18;
+	r4->t0014.u0 = (int32) r19;
+	r4->t0018.u0 = (int32) r20;
+	r4->t001C.u0 = (int32) r21;
+	r4->t0020.u0 = (int32) r22;
+	r4->t0024.u0 = (int32) r23;
+	r4->t0028.u0 = (int32) r30;
 	r4->dw002C = r28;
 	return null;
 }
@@ -12420,7 +12429,7 @@ void sigprocmask(up32 r4, struct Eq_n * r6)
 //      __get_resolv_conf
 void __fclose_ca(Eq_n r4)
 {
-	r4.u12[3]();
+	(*((word32) r4 + 0x0C))();
 }
 
 // 00408070: Register Eq_n __fopen_rb_ca(Register Eq_n r5, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r8Out, Register out ptr32 r9Out, Register out ptr32 r19Out)
@@ -12547,14 +12556,14 @@ Eq_n fflush_unlocked(Eq_n r4, <anonymous> & r16Out, ptr32 & r17Out)
 	if (r4 == 0x00)
 	{
 		r17_n.u0 = 0x00;
-		if (__stdout_used.u3 != 0x00)
+		if (__stdout_used.u0 != 0x00)
 		{
 			word32 r16_n;
 			word32 r17_n;
-			r17_n = fflush_unlocked(__stdout_used.u3, out r16_n, out r17_n);
+			r17_n = fflush_unlocked(__stdout_used.u0, out r16_n, out r17_n);
 		}
 		Eq_n r16_n;
-		r16_n.u3 = __ofl_lock()->u3;
+		r16_n.u0 = __ofl_lock()->u0;
 		while (r16_n != 0x00)
 		{
 			if (r16_n.u11[28] < (r16_n.u11)[20])
@@ -12563,7 +12572,7 @@ Eq_n fflush_unlocked(Eq_n r4, <anonymous> & r16Out, ptr32 & r17Out)
 				word32 r17_n;
 				r17_n |= fflush_unlocked(r16_n, out r16_n, out r17_n);
 			}
-			r16_n.u3 = r16_n.u11[56];
+			r16_n.u4 = r16_n.u11[56];
 		}
 		__ofl_unlock();
 		goto l004081DA;
@@ -12598,10 +12607,8 @@ Eq_n fflush_unlocked(Eq_n r4, <anonymous> & r16Out, ptr32 & r17Out)
 			goto l004081DA;
 		}
 	}
-	Eq_n r6_n;
-	r6_n.u3 = r4.u11[4];
-	Eq_n r7_n;
-	r7_n.u3 = r4.u11[8];
+	up32 r6_n = (up32) r4.u11[4];
+	up32 r7_n = (up32) r4.u13[2];
 	if (r6_n < r7_n)
 	{
 		up32 r6_n = r6_n - r7_n;
@@ -12653,7 +12660,7 @@ Eq_n fgets_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out
 		r21_n = r4_n;
 	}
 	Eq_n r20_n;
-	r20_n.u3 = (word32) r5.u0 - 1;
+	r20_n.u4 = (word32) r5.u0 - 1;
 	Eq_n r17_n = r4;
 	Eq_n r17_n;
 	ptr32 r11;
@@ -12672,7 +12679,7 @@ Eq_n fgets_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out
 		r17_n.u0 = 0x00;
 		if (r5 == 0x01)
 		{
-			*r4.u3 = 0x00;
+			*r4.u4 = 0x00;
 			r17_n = r4;
 		}
 	}
@@ -12681,17 +12688,17 @@ Eq_n fgets_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out
 		while (r20_n != 0x00)
 		{
 			Eq_n r4_n;
-			r4_n.u3 = r6.u11[4];
-			Eq_n r4_n = memchr(r4_n, 0x0A, r6.u11[8] - r4_n, out r5_n, out r6_n, out r8_n);
+			r4_n.u4 = r6.u11[4];
+			Eq_n r4_n = memchr(r4_n, 0x0A, r6.u13[2] - r4_n, out r5_n, out r6_n, out r8_n);
 			Eq_n r7_n;
-			r7_n.u3 = r6.u11[4];
+			r7_n.u4 = r6.u11[4];
 			Eq_n r18_n;
 			if (r4_n != 0x00)
 				r18_n = r4_n - r7_n + 0x01;
 			else
-				r18_n = r6.u11[8] - r7_n;
+				r18_n = r6.u13[2] - r7_n;
 			Eq_n r5_n;
-			r5_n.u3 = r6.u11[4];
+			r5_n.u4 = r6.u11[4];
 			if ((word32) (r20_n < r18_n) != 0x00)
 				r18_n = r20_n;
 			word32 r6_n;
@@ -12706,10 +12713,10 @@ Eq_n fgets_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out
 			if (r4_n != 0x00 || r20_n == 0x00)
 				break;
 			Eq_n r4_n;
-			if (r7_n < (r6.u11)[8])
+			if (r7_n < (r6.u13)[2])
 			{
 				dwLoc1C_n = r7_n + 1;
-				r4_n.u3 = (word32) *r7_n;
+				r4_n.u4 = (word32) *r7_n;
 			}
 			else
 			{
@@ -12718,21 +12725,21 @@ Eq_n fgets_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out
 				r4_n = __uflow(r6, out r5_n, out r6_n, out r7_n);
 				if (r4_n < 0x00)
 				{
-					if (r17_n != r4 && !__bit<word32,word32>(*r6.u5, 0x04))
+					if (r17_n != r4 && !__bit<word32,word32>(*r6.u6, 0x04))
 						break;
 					r19_n.u0 = 0x00;
 					goto l004082A0;
 				}
 			}
 			ui32 r4_n = r4_n & 0xFF;
-			*r17_n.u3 = (byte) r4_n;
+			*r17_n.u4 = (byte) r4_n;
 			r20_n = r20_n + ~0x00;
 			++r17_n.u11;
 			if (r4_n == 0x0A)
 				break;
 		}
 		if (r4 != 0x00)
-			*r17_n.u3 = 0x00;
+			*r17_n.u4 = 0x00;
 l004082A0:
 		r17_n = r19_n;
 		if (r21_n != 0x00)
@@ -12762,14 +12769,14 @@ void flockfile(Eq_n r4)
 	while (ftrylockfile(r4) != 0x00)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r4.u11[76];
+		r6_n.u4 = r4.u11[76];
 		if (r6_n != 0x00)
 		{
 			word32 r4_n;
 			word32 r5_n;
 			word32 r8_n;
 			word32 r9_n;
-			__wait(r4.u11 + 76, (word32) r4 + 80, r6_n, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
+			__wait(r4.u11 + 76, r4.u11 + 80, r6_n, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
 		}
 	}
 }
@@ -12819,7 +12826,7 @@ Eq_n fputc(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r5Out, ptr32 & r6Out, u
 	if (r5.u11[76] < 0x00)
 	{
 l00408390:
-		if ((word32) *((word32) r5 + 75) == (r4 & 0xFF))
+		if ((word32) r5.u11[75] == (r4 & 0xFF))
 		{
 l00408398:
 			Eq_n r5_n;
@@ -12834,10 +12841,10 @@ l00408398:
 			r17Out = r17;
 			return r2;
 		}
-		r7_n.u3 = r5.u11[20];
-		if (r7_n >= (r5.u12)[4])
+		r7_n.u4 = r5.u11[20];
+		if (r7_n >= (r5.u11)[16])
 			goto l00408398;
-		*r7_n.u3 = (byte) r4;
+		*r7_n.u4 = (byte) r4;
 		r6_n = r7_n.u11 + 1;
 		dwLoc0C_n = r7_n.u11 + 1;
 l004083D6:
@@ -12854,13 +12861,13 @@ l004083D6:
 	r2 = __lockfile(r5, out r3, out r4_n, out r5_n, out r8, out r9_n);
 	if (r4_n == 0x00)
 		goto l00408390;
-	if ((r4 & 0xFF) != (word32) (*((word32) r5 + 75)))
+	if ((r4 & 0xFF) != (word32) (r5.u11)[75])
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r5.u11[20];
-		if (r7_n < (r5.u12)[4])
+		r7_n.u4 = r5.u11[20];
+		if (r7_n < (r5.u11)[16])
 		{
-			*r7_n.u3 = (byte) r4;
+			*r7_n.u4 = (byte) r4;
 			dwLoc0C_n = r7_n.u11 + 1;
 l004083C0:
 			word32 r4_n;
@@ -12914,7 +12921,7 @@ word32 fputs_unlocked(Eq_n r4, Eq_n r5, ptr32 & r3Out, ptr32 & r4Out, union Eq_n
 void __do_orphaned_stdio_locks()
 {
 	struct Eq_n * r7_n;
-	for (r7_n = __read_user_local()->ptrFFFFFFF4; r7_n != null; r7_n = r7_n->ptr0084)
+	for (r7_n = __read_user_local().u1->ptrFFFFFFF4; r7_n != null; r7_n = r7_n->ptr0084)
 	{
 		__sync(0x00);
 		r7_n->dw004C = 0x00;
@@ -12927,17 +12934,20 @@ void __do_orphaned_stdio_locks()
 //      __getopt_msg
 void __unlist_locked_file(Eq_n r4)
 {
-	if (*((word32) r4 + 0x0044) == 0x00)
+	if (r4.u11[0x0044] == 0x00)
 		return;
-	Eq_n r6_n = *((word32) r4 + 0x0080);
-	Eq_n r7_n = *((word32) r4 + 0x0084);
+	Eq_n r6_n;
+	r6_n.u4 = r4.u11[0x0080];
+	Eq_n r7_n;
+	r7_n.u4 = r4.u11[0x0084];
 	if (r7_n != 0x00)
-		*((word32) r7_n + 0x0080) = r6_n;
-	Eq_n r6_n = *((word32) r4 + 0x0080);
+		r7_n.u11[0x0080] = (struct Eq_n) r6_n;
+	Eq_n r6_n;
+	r6_n.u4 = r4.u11[0x0080];
 	if (r6_n == 0x00)
-		__read_user_local()->tFFFFFFF4.u3 = (byte *) *((word32) r4 + 0x0084);
+		__read_user_local().u1->tFFFFFFF4.u0 = (int32) r4.u11[0x0084];
 	else
-		*((word32) r6_n + 0x0084) = r7_n;
+		r6_n.u11[0x0084] = (struct Eq_n) r7_n;
 }
 
 // 0040845C: Register Eq_n ftrylockfile(Register Eq_n r4)
@@ -12945,9 +12955,9 @@ void __unlist_locked_file(Eq_n r4)
 //      flockfile
 Eq_n ftrylockfile(Eq_n r4)
 {
-	struct Eq_n * r3_n = __read_user_local();
+	Eq_n r3_n = __read_user_local();
 	Eq_n r8_n;
-	r8_n.u3 = r3_n->tFFFFFF6C.u3;
+	r8_n.u0 = r3_n.u1->tFFFFFF6C.u0;
 	if (r8_n != (r4.u11)[76])
 	{
 		if (r4.u11[76] < 0x00)
@@ -12962,22 +12972,23 @@ Eq_n ftrylockfile(Eq_n r4)
 		__sync(0x00);
 		if (r4_n != 0x00)
 			return ~0x00;
-		((word32) r4 + 0x0080)->u0 = 0x00;
-		((word32) r4 + 0x0044)->u0 = 0x01;
+		r4.u11[0x0080] = (struct Eq_n) 0x00;
+		r4.u11[0x0044] = (struct Eq_n) 0x01;
 		Eq_n r6_n;
-		r6_n.u3 = r3_n->tFFFFFFF4.u3;
-		*((word32) r4 + 0x0084) = r6_n;
+		r6_n.u0 = r3_n.u1->tFFFFFFF4.u0;
+		r4.u11[0x0084] = (struct Eq_n) r6_n;
 		if (r6_n != 0x00)
-			*((word32) r6_n + 0x0080) = r4;
-		r3_n->tFFFFFFF4.u3 = (byte *) r4;
+			r6_n.u11[0x0080] = (struct Eq_n) r4;
+		r3_n.u1->tFFFFFFF4.u0 = (int32) r4;
 		return r4_n;
 	}
 	else
 	{
-		Eq_n r6_n = *((word32) r4 + 0x0044);
+		Eq_n r6_n;
+		r6_n.u4 = r4.u11[0x0044];
 		if (r6_n == 0x7FFFFFFF)
 			return ~0x00;
-		((word32) r4 + 0x0044)->u11 = r6_n.u11 + 1;
+		r4.u11[0x0044] = (struct Eq_n) (r6_n.u11 + 1);
 		return 0x00;
 	}
 }
@@ -12987,11 +12998,12 @@ Eq_n ftrylockfile(Eq_n r4)
 //      __getopt_msg
 word32 funlockfile(Eq_n r4)
 {
-	Eq_n r7_n = *((word32) r4 + 0x0044);
+	Eq_n r7_n;
+	r7_n.u4 = r4.u11[0x0044];
 	if (r7_n == 0x01)
 	{
 		__unlist_locked_file(r4);
-		((word32) r4 + 0x0044)->u0 = 0x00;
+		r4.u11[0x0044] = (struct Eq_n) 0x00;
 		word32 r4_n;
 		word32 r5_n;
 		word32 r6_n;
@@ -13003,7 +13015,7 @@ word32 funlockfile(Eq_n r4)
 	}
 	else
 	{
-		((word32) r4 + 0x0044)->u3 = &r7_n.u11->bFFFFFFFF;
+		r4.u11[0x0044] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 		word32 r8;
 		return r8;
 	}
@@ -13030,7 +13042,7 @@ Eq_n __fwritex(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out, uni
 	ptr32 r6_n;
 	ptr32 r7_n;
 	ptr32 r17;
-	if (r6.u12[4] == 0x00 && __towrite(r6, out r6_n, out r7_n) != 0x00)
+	if (r6.u11[16] == 0x00 && __towrite(r6, out r6_n, out r7_n) != 0x00)
 	{
 		ptr32 r3;
 		r3Out = r3;
@@ -13052,17 +13064,17 @@ Eq_n __fwritex(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out, uni
 		Eq_n r2;
 		return r2;
 	}
-	else if (r6.u12[4] - (r6.u11)[20] >= r5)
+	else if (r6.u11[16] - (r6.u11)[20] >= r5)
 	{
 		Eq_n r17_n = r5;
-		if ((word32) *((word32) r6 + 75) < 0x00)
+		if ((word32) r6.u11[75] < 0x00)
 			r17_n.u0 = 0x00;
 		else
 		{
 			while (r17_n != 0x00)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = &r17_n.u11->bFFFFFFFF;
+				r7_n.u4 = r17_n.u11->aFFFFFFFF;
 				if (CONVERT(Mem13[r4 + r7_n:byte], byte, word32) == 0x0A)
 				{
 					r6.u11[36]();
@@ -13166,7 +13178,7 @@ Eq_n fwrite_unlocked(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r3Out, union Eq
 	ptr32 r3_n;
 	Eq_n r16_n = r6;
 	Eq_n r7_n;
-	r7_n.u3 = r7.u11[76];
+	r7_n.u4 = r7.u11[76];
 	word32 r21_n = 0x00;
 	Eq_n r20_n = r5 *s r6;
 	if (r5 == 0x00)
@@ -13220,12 +13232,11 @@ Eq_n _IO_getc(Eq_n r4, ptr32 & r17Out)
 		__lockfile(r4, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n);
 		if (r4_n != 0x00)
 		{
-			Eq_n r7_n;
-			r7_n.u3 = r4.u11[4];
-			if (r7_n < (r4.u11)[8])
+			byte * r7_n = (byte *) r4.u11[4];
+			if (r7_n < (r4.u13)[2])
 			{
-				dwLoc0C_n = r7_n.u11 + 1;
-				r17_n.u3 = (word32) *r7_n.u3;
+				dwLoc0C_n = r7_n + 1;
+				r17_n.u4 = (word32) *r7_n;
 			}
 			else
 			{
@@ -13244,16 +13255,15 @@ Eq_n _IO_getc(Eq_n r4, ptr32 & r17Out)
 			goto l00408602;
 		}
 	}
-	Eq_n r7_n;
-	r7_n.u3 = r4.u11[4];
-	if (r7_n >= (r4.u11)[8])
+	byte * r7_n = (byte *) r4.u11[4];
+	if (r7_n >= (r4.u13)[2])
 	{
 		Eq_n r4_n = __uflow(r4, out r5_n, out r6_n, out r7_n);
 		r17Out = r17;
 		return r4_n;
 	}
-	dwLoc0C_n = r7_n.u11 + 1;
-	r17_n.u3 = (word32) *r7_n.u3;
+	dwLoc0C_n = r7_n + 1;
+	r17_n.u4 = (word32) *r7_n;
 l00408602:
 	r17Out = dwLoc0C_n;
 	return r17_n;
@@ -13274,7 +13284,7 @@ ptr32 __ofl_lock()
 //      fflush_unlocked
 void __ofl_unlock()
 {
-	__unlock(&g_dw4329A0);
+	__unlock(0x004329A0);
 }
 
 // 00408630: Register Eq_n perror(Register Eq_n r4, Register out ptr32 r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out (ptr32 Eq_n) r17Out)
@@ -13308,7 +13318,7 @@ Eq_n perror(Eq_n r4, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out,
 	ptr32 r5_n;
 	ptr32 r3_n;
 	Eq_n r16_n;
-	r16_n.u3 = stderr.u3;
+	r16_n.u0 = stderr.u0;
 	byte ** r4_n;
 	__errno_location(out r4_n);
 	Eq_n r4_n;
@@ -13354,7 +13364,7 @@ Eq_n perror(Eq_n r4, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out,
 			return r2_n;
 		}
 	}
-	if ((word32) *r4.u3 != 0x00)
+	if ((word32) *r4.u4 != 0x00)
 	{
 		word32 r5_n;
 		word32 r6_n;
@@ -13447,7 +13457,7 @@ word32 printf(Eq_n r4, ptr32 & r4Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r14
 	word32 r5_n;
 	ptr32 r4_n;
 	ptr32 fp;
-	word32 r3_n = vfprintf(stdout.u3, r4, fp - 0x40, out r4_n, out r5_n, out r7_n, out r11_n, out r14_n);
+	word32 r3_n = vfprintf(stdout.u0, r4, fp - 0x40, out r4_n, out r5_n, out r7_n, out r11_n, out r14_n);
 	r4Out = r4_n;
 	r7Out = r7_n;
 	r11Out = r11_n;
@@ -13463,13 +13473,13 @@ void _IO_putc(Eq_n r4, Eq_n r5)
 	if (r5.u11[76] < 0x00)
 	{
 l00408710:
-		if ((word32) *((word32) r5 + 75) != (r4 & 0xFF))
+		if ((word32) r5.u11[75] != (r4 & 0xFF))
 		{
 			Eq_n r7_n;
-			r7_n.u3 = r5.u11[20];
-			if (r7_n < (r5.u12)[4])
+			r7_n.u4 = r5.u11[20];
+			if (r7_n < (r5.u11)[16])
 			{
-				*r7_n.u3 = (byte) r4;
+				*r7_n.u4 = (byte) r4;
 				return;
 			}
 		}
@@ -13487,13 +13497,13 @@ l00408710:
 	__lockfile(r5, out r3_n, out r4_n, out r5_n, out r8_n, out r9_n);
 	if (r4_n == 0x00)
 		goto l00408710;
-	if ((r4 & 0xFF) != (word32) (*((word32) r5 + 75)))
+	if ((r4 & 0xFF) != (word32) (r5.u11)[75])
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r5.u11[20];
-		if (r7_n < (r5.u12)[4])
+		r7_n.u4 = r5.u11[20];
+		if (r7_n < (r5.u11)[16])
 		{
-			*r7_n.u3 = (byte) r4;
+			*r7_n.u4 = (byte) r4;
 l00408740:
 			word32 r4_n;
 			word32 r5_n;
@@ -13522,7 +13532,7 @@ l00408740:
 word32 putchar(Eq_n r4, ptr32 & r17Out)
 {
 	Eq_n r5_n;
-	r5_n.u3 = stdout.u3;
+	r5_n.u0 = stdout.u0;
 	word32 r3_n;
 	word32 r5_n;
 	word32 r6_n;
@@ -13543,7 +13553,7 @@ word32 putchar(Eq_n r4, ptr32 & r17Out)
 void puts(Eq_n r4)
 {
 	Eq_n r16_n;
-	r16_n.u3 = stdout.u3;
+	r16_n.u0 = stdout.u0;
 	word32 r18_n = 0x00;
 	if (r16_n.u11[76] >= 0x00)
 	{
@@ -13579,13 +13589,13 @@ l004087C0:
 	}
 	else
 	{
-		if ((word32) *((word32) r16_n + 75) != 0x0A)
+		if ((word32) r16_n.u11[75] != 0x0A)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = r16_n.u11[20];
-			if (r7_n < (r16_n.u12)[4])
+			r7_n.u4 = r16_n.u11[20];
+			if (r7_n < (r16_n.u11)[16])
 			{
-				*r7_n.u3 = 0x0A;
+				*r7_n.u4 = 0x0A;
 				goto l004087C0;
 			}
 		}
@@ -13672,8 +13682,8 @@ Eq_n fmt_u(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r13, union Eq_n & r5Out, union Eq_n &
 	while (r18_n != 0x00)
 	{
 		Eq_n r2_n = __umoddi3(r16_n, r18_n, 0x0A, 0x00, r13, out r3_n, out r4_n, out r8_n, out r12_n);
-		r17_n.u3 = &r17_n.u11->bFFFFFFFF;
-		*r17_n.u3 = (byte) r4_n + 0x30;
+		r17_n.u4 = r17_n.u11->aFFFFFFFF;
+		*r17_n.u4 = (byte) r4_n + 0x30;
 		word32 r3_n;
 		Eq_n r4_n;
 		word32 r6_n;
@@ -13684,8 +13694,8 @@ Eq_n fmt_u(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r13, union Eq_n & r5Out, union Eq_n &
 	}
 	while (r16_n != 0x00)
 	{
-		r17_n.u3 = &r17_n.u11->bFFFFFFFF;
-		*r17_n.u3 = (byte) (r16_n % 0x0A) + 0x30;
+		r17_n.u4 = r17_n.u11->aFFFFFFFF;
+		*r17_n.u4 = (byte) (r16_n % 0x0A) + 0x30;
 		r7 = r16_n;
 	}
 	r5Out = r5;
@@ -13707,8 +13717,8 @@ Eq_n getint(Eq_n r4, union Eq_n & r5Out, union Eq_n & r7Out)
 	while (true)
 	{
 		Eq_n r8_n;
-		r8_n.u3 = *r4;
-		Eq_n r6_n = (word32) *r8_n.u3;
+		r8_n.u4 = *r4;
+		Eq_n r6_n = (word32) *r8_n.u4;
 		if (r6_n >= 0x3A)
 			break;
 		r5.u0 = 0x0CCCCCCC;
@@ -13719,14 +13729,14 @@ Eq_n getint(Eq_n r4, union Eq_n & r5Out, union Eq_n & r7Out)
 			if (r5_n + 0x7FFFFFFF < (word32) r6_n - 48)
 				goto l00408928;
 			r5.u0 = 0x0A;
-			r7_n.u0 = (word32) (r7_n *s 0x0A) + ((word32) r6_n - 48);
+			r7_n.u1 = (word32) (r7_n *s 0x0A) + ((word32) r6_n - 48);
 		}
 		else
 		{
 l00408928:
 			r7_n.u0 = ~0x00;
 		}
-		r4->u0 = r8_n.u11 + 1;
+		r4->u1 = r8_n.u11 + 1;
 	}
 	r5Out = r5;
 	r7Out = r7_n;
@@ -13740,7 +13750,7 @@ l00408928:
 word32 out(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & r11Out, ptr32 & r13Out, ptr32 & r14Out, ptr32 & r17Out)
 {
 	Eq_n r6_n;
-	r6_n.u3 = *r4.u5;
+	r6_n.u4 = *r4.u6;
 	if (!__bit<word32,word32>(r6_n, 0x05))
 	{
 		r4Out = r5;
@@ -13792,82 +13802,82 @@ Eq_n pop_arg(Eq_n r5, Eq_n r6, union Eq_n & r6Out, union Eq_n & r7Out)
 	Eq_n r7;
 	if (r5 < 0x1D)
 	{
-		r5.u3 = (word32) r5 - 9;
+		r5.u4 = (word32) r5 - 9;
 		if (r5 < 0x1B)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = (word32) (&r6.u21->u1)[0x0C];
+			r7_n.u4 = (word32) r6.u11[0x0C];
 			Eq_n r7_n;
 			switch ((word32) r5)
 			{
 			case 0x09:
 				Eq_n r5_n;
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					r5_n.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5_n;
 					if (r5_n < 0x00)
 						goto l004089AC;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l004089AC:
-					r7_n = *r6.u5;
-					r5_n.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5_n.u4 = (char *) &r7_n->t0000 + 4;
 				}
 				Eq_n r7_n;
-				r7_n.u3 = r7_n->u3;
+				r7_n.u2 = r7_n->t0000.u2;
 				r6Out = r6;
 				r7Out = r7_n;
 				return r5_n;
 			case 0x0A:
 			case 0x0D:
 			case 0x17:
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 < 0x00)
 						goto l00408AA2;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l00408AA2:
-					r7_n = *r6.u5;
-					r5.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5.u4 = (char *) &r7_n->t0000 + 4;
 				}
 				Eq_n r7_n;
-				r7_n.u3 = r7_n->u3;
+				r7_n.u2 = r7_n->t0000.u2;
 				goto l004089CE;
 			case 11:
 			case 0x0E:
 			case 0x14:
 			case 0x18:
 				Eq_n r5_n;
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					r5_n.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5_n;
 					if (r5_n < 0x00)
 						goto l00408AC6;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l00408AC6:
-					r7_n = *r6.u5;
-					r5_n.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5_n.u4 = (char *) &r7_n->t0000 + 4;
 				}
 				Eq_n r7_n;
-				r7_n.u3 = r7_n->u3;
+				r7_n.u2 = r7_n->t0000.u2;
 				goto l004089F8;
 			case 0x0C:
 			case 0x13:
@@ -13877,8 +13887,8 @@ l00408AC6:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + ~0x07);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 < 0x00)
 						goto l00408A78;
 					r7_n = r6.u11[4] - r7_n;
@@ -13886,89 +13896,89 @@ l00408AC6:
 				else
 				{
 l00408A78:
-					r7_n = __ins<word32,word32>(*r6.u5 + 0x07, 0x00, 0x00, 0x01);
+					r7_n = __ins<word32,word32>(*r6.u6 + 0x07, 0x00, 0x00, 0x01);
 					r5.u11 = r7_n.u11 + 8;
 				}
-				r6.u3 = *r7_n.u5;
-				r7.u3 = r7_n.u11[4];
+				r6.u4 = *r7_n.u6;
+				r7.u4 = r7_n.u11[4];
 				goto l00408A74;
 			case 0x0F:
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 < 0x00)
 						goto l004089D6;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l004089D6:
-					r7_n = *r6.u5;
-					r5.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5.u4 = (char *) &r7_n->t0000 + 4;
 				}
-				r7_n.u3 = (word32) r7_n->u1;
+				r7_n.u4 = (word32) r7_n->t0000.u1;
 				goto l004089CE;
 			case 0x10:
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					r5_n.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5_n;
 					if (r5_n < 0x00)
 						goto l004089FE;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l004089FE:
-					r7_n = *r6.u5;
-					r5_n.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5_n.u4 = (char *) &r7_n->t0000 + 4;
 				}
-				r7_n.u3 = (word32) r7_n->u2;
+				r7_n.u4 = (word32) r7_n->t0000.u3;
 				goto l004089F8;
 			case 0x11:
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 < 0x00)
 						goto l00408A22;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l00408A22:
-					r7_n = *r6.u5;
-					r5.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5.u4 = (char *) &r7_n->t0000 + 4;
 				}
-				r7_n.u3 = (word32) r7_n->u0;
+				r7_n.u4 = (word32) r7_n->t0000.u0;
 l004089CE:
 				r7 = r7_n >> 0x1F;
 				goto l00408A74;
 			case 0x12:
-				union Eq_n * r7_n;
+				struct Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					r5_n.u0 = (int32) ((byte) r7_n + 252);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5_n;
 					if (r5_n < 0x00)
 						goto l00408A46;
-					r6.u3 = r6.u11[4];
+					r6.u4 = r6.u11[4];
 					r7_n = r6 - r7_n;
 				}
 				else
 				{
 l00408A46:
-					r7_n = *r6.u5;
-					r5_n.u3 = (char *) r7_n + 4;
+					r7_n = *r6.u6;
+					r5_n.u4 = (char *) &r7_n->t0000 + 4;
 				}
-				r7_n.u3 = (word32) r7_n->u0;
+				r7_n.u4 = (word32) r7_n->t0000.u0;
 l004089F8:
 				r6Out = r6;
 				r7Out = r7_n;
@@ -13977,8 +13987,8 @@ l004089F8:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + ~0x07);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 >= 0x00)
 					{
 						r7_n = r6.u11[4] - r7_n;
@@ -13990,8 +14000,8 @@ l004089F8:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					r5.u0 = (int32) ((byte) r7_n + ~0x07);
+					r6.u11[0x0C] = (struct Eq_n) (byte) r5;
 					if (r5 >= 0x00)
 					{
 						r7_n = r6.u11[4] - r7_n;
@@ -14000,11 +14010,11 @@ l004089F8:
 				}
 				break;
 			}
-			r7_n = __ins<word32,word32>(*r6.u5 + 0x07, 0x00, 0x00, 0x01);
+			r7_n = __ins<word32,word32>(*r6.u6 + 0x07, 0x00, 0x00, 0x01);
 			r5.u11 = r7_n.u11 + 8;
 l00408AEE:
-			r6.u3 = *r7_n.u5;
-			r7.u3 = r7_n.u11[4];
+			r6.u4 = *r7_n.u6;
+			r7.u4 = r7_n.u11[4];
 l00408A74:
 		}
 	}
@@ -14013,13 +14023,14 @@ l00408A74:
 	return r5;
 }
 
-// 00408B22: Register Eq_n pad(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register out (ptr32 (arr Eq_n)) r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 r11Out, Register out ptr32 r13Out, Register out ptr32 r14Out)
+// 00408B22: Register Eq_n pad(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 r11Out, Register out ptr32 r13Out, Register out ptr32 r14Out)
 // Called from:
 //      printf_core
-Eq_n pad(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, Eq_n (& r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & r11Out, ptr32 & r13Out, ptr32 & r14Out)
+Eq_n pad(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & r11Out, ptr32 & r13Out, ptr32 & r14Out)
 {
 	Eq_n r17_n = r4;
-	Eq_n (* r4_n)[] = (Eq_n (*)[]) 0x00120000;
+	Eq_n r4_n;
+	r4_n.u0 = 0x00120000;
 	Eq_n r3;
 	ptr32 r11;
 	ptr32 r13;
@@ -14048,7 +14059,7 @@ Eq_n pad(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, Eq_n (& r4Out, union Eq_n 
 			word32 r13_n;
 			word32 r14_n;
 			out(r17_n, &tLoc0110, 0x0100, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
-			r16_n.u3 = (word32) r16_n - 0x0100;
+			r16_n.u4 = (word32) r16_n - 0x0100;
 		}
 		word32 r17_n;
 		r3 = out(r17_n, &tLoc0110, r16_n & 0xFF, out r4_n, out r5, out r6, out r7, out r11, out r13, out r14, out r17_n);
@@ -14083,7 +14094,7 @@ Eq_n printf_core(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r13, Eq_n r21, union Eq_n & r4O
 	word32 r8_n;
 	word32 r7_n;
 	int32 r8_n;
-	int8 * r7_n;
+	Eq_n r7_n;
 	word32 r9_n;
 	word32 r8_n;
 	word32 r7_n;
@@ -14119,7 +14130,7 @@ Eq_n printf_core(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r13, Eq_n r21, union Eq_n & r4O
 	Eq_n r18_n;
 	Eq_n r5_n;
 	Eq_n tLoc0294;
-	tLoc0294.u3 = (byte *) r5;
+	tLoc0294.u0 = (int32) r5;
 	Eq_n r22_n;
 	r22_n.u0 = 0x00;
 	Eq_n r16_n = r4;
@@ -14142,9 +14153,9 @@ l00408D8E:
 			goto l00408D40;
 		}
 		r7_n = r6 + r22_n;
-		r5.u3 = tLoc0294.u3;
+		r5.u0 = tLoc0294.u0;
 		bLoc02DC_n = (byte) r7_n;
-		r7_n.u3 = (word32) *r21.u3;
+		r7_n.u4 = (word32) *r21.u4;
 		if (r7_n == 0x00)
 		{
 			if (r16_n != 0x00)
@@ -14154,19 +14165,19 @@ l00408D8E:
 			{
 				do
 				{
-					r5.u3 = r7_n.u5[r16_n];
+					r5.u4 = r7_n.u6[r16_n];
 					if (r5 == 0x00)
 					{
 						do
 						{
-							r7_n.u3 = r7_n.u5[r16_n];
+							r7_n.u4 = r7_n.u6[r16_n];
 							if (r7_n != 0x00)
 								goto l00408D3A;
 							++r16_n;
 						} while (r16_n != 0x0A);
 						break;
 					}
-					r4.u3 = r7_n.u3 + (r16_n << 0x03);
+					r4.u4 = r7_n.u4 + (r16_n << 0x03);
 					++r16_n;
 					r5 = pop_arg(r5, r6, out r6, out r7_n);
 				} while (r16_n != 0x0A);
@@ -14186,18 +14197,18 @@ l00408E02:
 		struct Eq_n * r7_n;
 		while (true)
 		{
-			r5.u3 = tLoc0294.u3;
-			r7_n = (word32) *r22_n.u3;
+			r5.u0 = tLoc0294.u0;
+			r7_n = (word32) *r22_n.u4;
 			if (r7_n == null)
 				break;
 			if (r7_n == (struct Eq_n *) 0x25)
 			{
 				while (true)
 				{
-					r6.u3 = (word32) r7_n->b0000;
+					r6.u4 = (word32) r7_n->b0000;
 					if (r6 != 0x25)
 						break;
-					r6.u3 = (word32) r7_n->b0001;
+					r6.u4 = (word32) r7_n->b0001;
 					if (r6 != 0x25)
 						break;
 					++r7_n;
@@ -14207,7 +14218,7 @@ l00408E02:
 				break;
 			}
 			++r22_n.u11;
-			tLoc0294.u3 = (byte *) r22_n;
+			tLoc0294.u0 = (int32) r22_n;
 		}
 		r20_n = (word32 *) 0x7FFFFFFF;
 		r22_n -= r21;
@@ -14226,22 +14237,22 @@ l00408E02:
 	Eq_n r7_n;
 	if (r19_n < 0x3A && (word32) (r7_n.u11)[2] == 0x24)
 	{
-		tLoc0294 = (Eq_n) (r7_n.u11 + 3);
+		tLoc0294.u0 = (int32) (r7_n.u11 + 3);
 		r7_n.u0 = 0x01;
 	}
 	else
 	{
 		r7_n.u11 = r7_n.u11 + 1;
-		tLoc0294.u3 = (byte *) r7_n;
+		tLoc0294.u0 = (int32) r7_n;
 		r19_n = ~0x00;
 	}
 	while (true)
 	{
-		r4.u3 = (word32) *r7_n.u3;
+		r4.u4 = (word32) *r7_n.u4;
 		if (r4 >= 0x40 || __bit<word32,word32>(0x00012889 >> (word32) r4 - 32, 0x00))
 			break;
 		++r7_n.u11;
-		tLoc0294.u3 = (byte *) r7_n;
+		tLoc0294.u0 = (int32) r7_n;
 	}
 	Eq_n dwLoc02E0_n;
 	if (r4 != 0x2A)
@@ -14256,15 +14267,15 @@ l00408E02:
 	r5 = r6_n + ~0x2F;
 	if (r6_n < 0x3A)
 	{
-		r5.u3 = (word32) r7_n.u11[2];
+		r5.u4 = (word32) r7_n.u11[2];
 		if (r5 == 0x24)
 		{
-			r4.u5[r6_n + 0x3FFFFFD0] = 0x0A;
+			r4.u6[r6_n + 0x3FFFFFD0] = 0x0A;
 			word32 r6_n = (word32) r7_n.u11[1];
-			tLoc0294 = (Eq_n) (r7_n.u11 + 3);
+			tLoc0294.u0 = (int32) (r7_n.u11 + 3);
 			r5.u0 = 0x0A;
 			r7_n.u0 = 0x01;
-			dwLoc02E0_n.u3 = ((Eq_n[]) 0x0A)[r6_n + 0x1FFFFFD0].t0000.u3;
+			dwLoc02E0_n.u0 = ((Eq_n[]) 0x0A)[r6_n + 0x1FFFFFD0].t0000.u0;
 			goto l00408C82;
 		}
 	}
@@ -14275,7 +14286,7 @@ l00408E02:
 	{
 l00408D6E:
 		r7_n.u11 = r7_n.u11 + 1;
-		tLoc0294.u3 = (byte *) r7_n;
+		tLoc0294.u0 = (int32) r7_n;
 l00408C82:
 		if (r7_n < 0x00)
 		{
@@ -14286,17 +14297,17 @@ l00408C96:
 		uint32 r30_n = 0x00;
 		Eq_n r18_n;
 		r18_n.u0 = ~0x00;
-		if ((word32) *r7_n.u3 != 0x2E)
+		if ((word32) *r7_n.u4 != 0x2E)
 		{
 l00408CE2:
 			Eq_n r23_n;
 			r23_n.u0 = 0x00;
-			while ((word32) *r7_n.u3 < 0x7B)
+			while ((word32) *r7_n.u4 < 0x7B)
 			{
-				Mem299[&tLoc0294 + 0x00:word32] = r7_n + 0x01;
-				r6.u3 = (word32) *r7_n.u3;
-				r5.u3 = (word32) (r6.u3 + ((word32) (r23_n *s 0x3A) + 4272208))[-65];
-				r7_n = r5 + ~0x00;
+				tLoc0294.u0 = (int32) (r7_n.u11 + 1);
+				r6.u4 = (word32) *r7_n.u4;
+				r5.u4 = (word32) (r6.u4 + ((word32) (r23_n *s 0x3A) + 4272208))[-65];
+				r7_n.u4 = r5.u11->aFFFFFFFF;
 				if (r5 >= 0x09)
 				{
 					if (r5 == 0x00)
@@ -14314,8 +14325,8 @@ l00408CE2:
 					{
 						*((word32) r5 + (r19_n * 0x04 - 1)) = r5;
 						Eq_n r19_n = r5 + ~0x00 + (r19_n << 0x03);
-						r6.u3 = r19_n.u0->t0000.u3;
-						r7_n.u3 = r19_n.u0->t0004.u3;
+						r6.u0 = r19_n.u1->t0000.u0;
+						r7_n.u0 = r19_n.u1->t0004.u0;
 						dwLoc0288 = r6;
 						dwLoc0284 = r7_n;
 l00408D1A:
@@ -14331,15 +14342,15 @@ l00408D1A:
 						r5 = pop_arg(r5, r6, out r6_n, out r7_n);
 					}
 					Eq_n r17_n;
-					r17_n.u3 = tLoc0294.u3;
+					r17_n.u0 = tLoc0294.u0;
 					Eq_n r19_n;
-					r19_n.u3 = (word32) r7_n.u11->bFFFFFFFF;
+					r19_n.u4 = (word32) r7_n.u12->bFFFFFFFF;
 					if (r23_n != 0x00 && (r19_n & 0x0F) == 0x03)
 						r19_n = __ins<word32,word32>(r19_n, 0x00, 0x05, 0x01);
 					if (!__bit<word32,word32>(r17_n, 0x0D))
 						r17_n = __ins<word32,word32>(r17_n, 0x00, 0x00, 0x01);
 					Eq_n r7_n;
-					r7_n.u3 = (word32) r19_n - 65;
+					r7_n.u4 = (word32) r19_n.u0 - 65;
 					Eq_n r19_n;
 					Eq_n r23_n;
 					Eq_n r30_n;
@@ -14354,7 +14365,7 @@ l004099D2:
 						goto l00408FC8;
 					}
 					r6.u0 = 0x00412F40;
-					r7_n.u0 = *((byte) 0x00412F40 + r7_n * 0x04);
+					r7_n.u0 = *((word32) 0x00412F40 + r7_n * 0x04);
 					Eq_n r19_n;
 					switch (r7_n)
 					{
@@ -14372,14 +14383,14 @@ l004099D2:
 						Eq_n r6_n;
 						if (r7_n >> 0x1F != 0x00)
 						{
-							r7_n.u3 = (word32) r7_n - -0x80000000;
+							r7_n.u4 = (word32) r7_n - -0x80000000;
 							r6_n.u0 = 0x00412008;
 							goto l00409120;
 						}
 						Eq_n dwLoc02C8_n;
 						if (__bit<word32,word32>(dwLoc0284, 11))
 						{
-							dwLoc02D0_n.u3 = (word32) ((dwLoc0284 & 0x01) > 0x00);
+							dwLoc02D0_n.u4 = (word32) ((dwLoc0284 & 0x01) > 0x00);
 							Eq_n r4_n;
 							r4_n.u0 = 0x0041200E;
 							if ((dwLoc0284 & 0x01) == 0x00)
@@ -14544,18 +14555,18 @@ l00409120:
 							int32 r4_n = r7_n >> 0x1F;
 							Eq_n r4_n = (r7_n ^ r4_n) - r4_n;
 							Eq_n r4_n = fmt_u(r4_n, r4_n >> 0x1F, fp - 616, r13_n, out r5_n, out r7_n, out r8_n, out r11, out r13_n);
-							if (r4_n == fp - (struct Eq_n *) 616)
+							if (r4_n == fp - 616)
 							{
 								r7_n = 0x30;
 								r4_n = fp - 0x0269;
 							}
 							word32 r6_n = 0x2D;
-							int32 r19_n = &r19_n.u21->u1 + 0x0F;
-							Eq_n r30_n = fp - (struct Eq_n *) 616;
+							int32 r19_n = (word32) r19_n.u0 + 0x0F;
+							Eq_n r30_n = fp - 616;
 							if ((word32) (r7_n < 0x00) == 0x00)
 								r6_n = 0x2B;
-							r4_n.u12->bFFFFFFFE = (int8) r19_n;
-							r4_n.u11->bFFFFFFFF = (byte) (int8) r6_n;
+							r4_n.u11->bFFFFFFFE = (int8) r19_n;
+							r4_n.u12->bFFFFFFFF = (int8) r6_n;
 							while (true)
 							{
 								Eq_n r4_n = __fixdfsi(r21_n, r20_n, out r5_n, out r6_n);
@@ -14573,15 +14584,16 @@ l00409120:
 								word32 r10_n;
 								word32 r11_n;
 								word32 r12_n;
-								__muldf3(__subdf3(r11, r20_n, __floatsidf(r4_n), r5_n, out r5_n, out r7_n, out r13_n), r5_n, r7_n->t0268.u3, r7_n->t026C.u3, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14);
-								Eq_n r19_n = r30_n + 0x01;
+								__muldf3(__subdf3(r11, r20_n, __floatsidf(r4_n), r5_n, out r5_n, out r7_n, out r13_n), r5_n, r7_n->t0268.u0, r7_n->t026C.u0, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14);
+								Eq_n r19_n;
+								r19_n.u2 = &r30_n.u2->b0001;
 								Eq_n r18_n = r21_n;
 								r11 = r4_n;
 								r21_n = r4_n;
 								r20_n = r5_n;
 								Eq_n r6_n;
 								Eq_n r7_n;
-								if (r19_n - (fp - (struct Eq_n *) 616) == 0x01)
+								if (r19_n - (fp - 616) == 0x01)
 								{
 									word32 r4_n;
 									word32 r8_n;
@@ -14591,18 +14603,18 @@ l00409120:
 									if (r4_n == 0x00 && (r4_n <= 0x00 && __bit<word32,word32>(0x04120000, 0x03)))
 									{
 l0040929E:
-										Eq_n r23_n = fp - (struct Eq_n *) 616 - r7_n;
+										Eq_n r23_n = fp - 616 - r7_n;
 										Eq_n r7_n = 0x7FFFFFFD - r23_n - r6_n;
 										if (r7_n < r18_n)
 											goto l00408D8E;
-										Eq_n r19_n = r19_n - (fp - (struct Eq_n *) 616);
+										Eq_n r19_n = r19_n - (fp - 616);
 										Eq_n r20_n;
 										if (r18_n != 0x00)
 										{
-											r7_n = r19_n + ~0x00;
-											if (r18_n >= r19_n + ~0x00)
+											r7_n.u4 = r19_n.u11->aFFFFFFFF;
+											if (r18_n >= (r19_n.u11)->aFFFFFFFF)
 											{
-												r20_n = r18_n + 0x02 + r23_n;
+												r20_n.u2 = r23_n.u4 + ((word32) r18_n.u0 + 2);
 l004092CE:
 												r21 = r7_n + r20_n;
 												word32 r4_n;
@@ -14638,7 +14650,7 @@ l004092CE:
 												word32 r13_n;
 												word32 r14_n;
 												word32 r17_n;
-												out(r16_n, fp - (struct Eq_n *) 616, r19_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
+												out(r16_n, fp - 616, r19_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
 												word32 r4_n;
 												Eq_n r5_n;
 												word32 r6_n;
@@ -14665,8 +14677,8 @@ l004092CE:
 										r20_n = r23_n + r19_n;
 										goto l004092CE;
 									}
-									r30_n.u1->b0001 = 0x2E;
-									r19_n = r30_n + 0x02;
+									r30_n.u2->b0001 = 0x2E;
+									r19_n.u2 = (word32) r30_n + 2;
 								}
 								word32 r4_n;
 								word32 r8_n;
@@ -14703,7 +14715,7 @@ l004092CE:
 						do
 						{
 							Eq_n r4_n = __fixunsdfsi(r21_n, r20_n);
-							*r30_n.u5 = (word32) r4_n;
+							*r30_n.u6 = (word32) r4_n;
 							Eq_n r5_n;
 							Eq_n r5_n;
 							word32 r7_n;
@@ -14739,39 +14751,42 @@ l004092CE:
 							if ((word32) (r2_n < 0x1E) != 0x00)
 								r7_n = r2_n;
 							Eq_n r21_n;
+							r21_n.u4 = &r30_n.u11->tFFFFFFFC.u0;
 							Eq_n r3_n = r7_n;
 							r20_n.u0 = 0x00;
-							for (r21_n = r30_n + ~0x03; r21_n >= r23_n; r21_n += ~0x03)
+							while (r21_n >= r23_n)
 							{
-								Eq_n r4_n = __ashldi3(*r21_n.u5, 0x00, r3_n, out r5_n);
+								Eq_n r4_n = __ashldi3(*r21_n.u6, 0x00, r3_n, out r5_n);
 								Eq_n r20_n = r20_n + r4_n;
 								Eq_n r8_n = (word32) (r20_n < r4_n) + r5_n;
 								Eq_n r2_n = __umoddi3(r20_n, r8_n, 1000000000, 0x00, r13, out r3_n, out r4_n, out r8_n, out r12_n);
-								*r21_n.u5 = (word32) r4_n;
+								*r21_n.u6 = (word32) r4_n;
 								r18_n = r8_n;
 								Eq_n r4_n;
 								word32 r6_n;
 								word32 r7_n;
 								word32 r8_n;
 								r2_n = __udivdi3(r2_n, r3_n, r20_n, r8_n, 1000000000, 0x00, r12_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r13);
+								r21_n.u4 = &r21_n.u11->tFFFFFFFC.u0;
 								r20_n = r4_n;
 								r16_n = r2_n;
 							}
 							if (r20_n != 0x00)
 							{
-								r23_n.u12->dwFFFFFFFC = (word32) r20_n;
-								r23_n.u3 = &r23_n.u12->dwFFFFFFFC;
+								r23_n.u11->tFFFFFFFC.u0 = (int32) r20_n;
+								r23_n.u4 = &r23_n.u11->tFFFFFFFC.u0;
 							}
 							while (r23_n < r30_n)
 							{
-								Eq_n r7_n = r30_n + ~0x03;
-								if (*r7_n.u5 != 0x00)
+								Eq_n r7_n;
+								r7_n.u4 = &r30_n.u11->tFFFFFFFC.u0;
+								if (*r7_n.u6 != 0x00)
 									break;
 								r30_n = r7_n;
 							}
 							r7_n = 0x01;
 						}
-						int32 r20_n = r20_n.u11 + 1;
+						int32 r20_n = (int32) (r20_n.u11 + 1);
 						Eq_n r7_n;
 						r7_n.u0 = 0x00;
 						for (; r5_n < 0x00; r5_n += r4_n)
@@ -14788,19 +14803,19 @@ l004092CE:
 							r21_n.u0 = 0x00;
 							while (r7_n < r30_n)
 							{
-								uint32 r8_n = *r7_n.u5;
-								*r7_n.u5 = r21_n.u3 + (r8_n >> r4_n);
+								uint32 r8_n = *r7_n.u6;
+								*r7_n.u6 = (word32) r21_n.u0 + (r8_n >> r4_n);
 								r21_n = (r8_n & r6_n + ~0x00) *s r3_n;
 								r7_n.u11 += 4;
 							}
 							Eq_n r7_n;
-							r7_n.u3 = *r23_n.u5;
+							r7_n.u4 = *r23_n.u6;
 							if (r7_n == 0x00)
 								r23_n.u11 += 4;
 							if (r21_n != 0x00)
 							{
-								*r30_n.u5 = (word32) r21_n;
-								r30_n += 0x04;
+								*r30_n.u6 = (word32) r21_n;
+								r30_n.u11 += 4;
 							}
 							if ((r7_n ^ 0x66) != 0x00)
 								r6_n = r23_n;
@@ -14814,7 +14829,7 @@ l004092CE:
 						{
 							int32 r21_n = r7_n - r23_n;
 							Eq_n r6_n;
-							r6_n.u3 = *r23_n.u5;
+							r6_n.u4 = *r23_n.u6;
 							r7_n.u0 = 0x0A;
 							r21_n = (r21_n >> 0x02) + ((r21_n >> 0x02) << 0x03);
 							for (; r6_n >= r7_n; r7_n *= 0x0A)
@@ -14830,7 +14845,7 @@ l004092CE:
 						Eq_n r6_n;
 						r6_n.u0 = 0x00;
 						if (r5_n == 0x27)
-							r6_n.u0 = (word32) (r18_n > 0x00);
+							r6_n.u1 = (word32) (r18_n > 0x00);
 						Eq_n r7_n = r7_n - r6_n;
 						int32 r6_n = (r30_n - r6_n >> 0x02) + ~0x00;
 						if (r7_n < r6_n * 0x09)
@@ -14840,13 +14855,13 @@ l004092CE:
 							r8_n.u0 = 0x0A;
 							Eq_n r20_n = r6_n * 0x09 + (r20_n + 0x3FFFFC01 << 0x02);
 							int32 r7_n;
-							for (r7_n = r6_n.u11 + 1; r7_n != 0x09; ++r7_n)
+							for (r7_n = (int32) (r6_n.u11 + 1); r7_n != 0x09; ++r7_n)
 							{
 								r6_n.u0 = 0x0A;
 								r8_n *= 0x0A;
 							}
 							Eq_n r2_n;
-							r2_n.u3 = *r20_n.u5;
+							r2_n.u4 = *r20_n.u6;
 							Eq_n r7_n = r2_n % r8_n;
 							if (r7_n == 0x00)
 							{
@@ -14859,7 +14874,7 @@ l004092CE:
 l00409530:
 								Eq_n r4_n;
 								Eq_n r5_n;
-								if (__bit<word32,word32>(r6_n, 0x00) && (r8_n != 1000000000 || (r23_n >= r20_n || __bit<word32,word32>((r20_n.u12)->dwFFFFFFFC, 0x00))))
+								if (__bit<word32,word32>(r6_n, 0x00) && (r8_n != 1000000000 || (r23_n >= r20_n || __bit<word32,word32>(((r20_n.u11)->tFFFFFFFC).u0, 0x00))))
 								{
 									r4_n.u0 = 0x00;
 									r5_n = *(union Eq_n *) 0x04120244;
@@ -14887,7 +14902,7 @@ l00409530:
 									(word32) *r9_n != 0x2D;
 								}
 								Eq_n r2_n = r2_n - r7_n;
-								*r20_n.u5 = (word32) r2_n;
+								*r20_n.u6 = (word32) r2_n;
 								r16_n = r5_n;
 								r19_n = r4_n;
 								Eq_n r2_n = __nedf2(r12_n, __adddf3(r4_n, r5_n, 0x00, r6_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14), r4_n, r5_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r13);
@@ -14896,26 +14911,26 @@ l00409530:
 									r16_n = r2_n;
 									r18_n = r8_n;
 									Eq_n r7_n;
-									r7_n.u3 = r2_n.u3 + r8_n;
+									r7_n.u4 = r2_n.u4 + r8_n;
 									Eq_n r7_n;
 									while (true)
 									{
-										*r20_n.u5 = (word32) r7_n;
-										r7_n.u3 = *r20_n.u5;
+										*r20_n.u6 = (word32) r7_n;
+										r7_n.u4 = *r20_n.u6;
 										if (r7_n <= 999999999)
 											break;
-										r20_n.u3 = &r20_n.u12->dwFFFFFFFC;
-										r20_n.u16->t0001.u1 = (ptr32) r11;
+										r20_n.u4 = &r20_n.u11->tFFFFFFFC.u0;
+										r20_n.u11[1] = (struct Eq_n) r11;
 										if (r20_n < r23_n)
 										{
-											r23_n.u12->dwFFFFFFFC = 0x00;
-											r23_n.u3 = &r23_n.u12->dwFFFFFFFC;
+											r23_n.u11->tFFFFFFFC.u0 = 0x00;
+											r23_n.u4 = &r23_n.u11->tFFFFFFFC.u0;
 										}
-										r7_n = *r20_n.u5 + 0x01;
+										r7_n = *r20_n.u6 + 0x01;
 									}
 									int32 r21_n = r7_n - r23_n;
 									Eq_n r6_n;
-									r6_n.u3 = *r23_n.u5;
+									r6_n.u4 = *r23_n.u6;
 									Eq_n r7_n;
 									r7_n.u0 = 0x0A;
 									r21_n = (r21_n >> 0x02) + ((r21_n >> 0x02) << 0x03);
@@ -14925,14 +14940,14 @@ l00409530:
 							}
 							Eq_n r20_n;
 							r20_n.u11 = r20_n.u11 + 4;
-							r7_n.u3 = (word32) (r20_n < r30_n);
+							r7_n.u4 = (word32) (r20_n < r30_n);
 							if (r7_n != 0x00)
 								r30_n = r20_n;
 						}
 						while (r23_n < r30_n)
 						{
-							r7_n = r30_n + ~0x03;
-							if (*r7_n.u5 != 0x00)
+							r7_n.u4 = &r30_n.u11->tFFFFFFFC.u0;
+							if (*r7_n.u6 != 0x00)
 								break;
 							r30_n = r7_n;
 						}
@@ -14948,27 +14963,27 @@ l00409530:
 								r7_n.u0 = ~0x03;
 								if (r21_n < ~0x03)
 									goto l00409772;
-								r7_n.u0 = r21_n.u11 + 1;
-								r19_n.u3 = &r19_n.u11->bFFFFFFFF;
+								r7_n.u2 = r21_n.u11 + 1;
+								r19_n.u4 = (word32) r19_n.u0 - 1;
 								r18_n -= r7_n;
 							}
 							else
 							{
 l00409772:
-								r19_n.u3 = &r19_n.u12->bFFFFFFFE;
-								r18_n += ~0x00;
+								r19_n.u4 = (word32) r19_n.u0 - 2;
+								r18_n.u4 = r18_n.u11->aFFFFFFFF;
 							}
 							if (!__bit<word32,word32>(r7_n, 0x03))
 								goto l004097B0;
 							if (r23_n < r30_n)
 							{
-								uint32 r6_n = r30_n.u12->dwFFFFFFFC;
+								uint32 r6_n = (uint32) r30_n.u11->tFFFFFFFC.u0;
 								r7_n.u0 = 0x0A;
 								if (r6_n == 0x00)
 									goto l00409742;
 								while (r6_n % r7_n == 0x00)
 								{
-									++r22_n;
+									++r22_n.u11;
 									r7_n *= 0x0A;
 								}
 							}
@@ -14981,7 +14996,7 @@ l00409742:
 							r17_n = dwLoc02D8_n;
 							ui32 r7_n = r7_n * 0x09;
 							if ((r19_n | 0x20) != 0x26)
-								r7_n = r21_n.u3 + r7_n * 0x09;
+								r7_n = (ui32) (r21_n.u4 + r7_n * 0x09);
 							Eq_n r22_n = r7_n - r22_n;
 							if ((word32) (r22_n < 0x00) != 0x00)
 								r22_n.u0 = 0x00;
@@ -14996,7 +15011,7 @@ l004097B0:
 						r5 = 0x7FFFFFFE - r6_n;
 						if (r5 < r18_n)
 							goto l00408D8E;
-						int8 * r22_n = r18_n + 0x01 + r6_n;
+						Eq_n r22_n = r18_n + 0x01 + r6_n;
 						ui32 r20_n = r19_n | 0x20;
 						Eq_n r7_n = 0x7FFFFFFF - r22_n;
 						if (r20_n == 0x26)
@@ -15011,20 +15026,20 @@ l004097B0:
 							int32 r6_n = r21_n >> 0x1F;
 							Eq_n r4_n = (r6_n ^ r21_n) - r6_n;
 							Eq_n r4_n = fn004099EA(r4_n, r4_n >> 0x1F, fp - 616, r13, out r7_n, out r8_n, out r11, out r13);
-							r18_n = fp - (struct Eq_n *) 616;
+							r18_n = fp - 616;
 							while (r8_n - r4_n < 0x02)
 							{
-								r4_n.u3 = &r4_n.u11->bFFFFFFFF;
-								*r4_n.u3 = 0x30;
+								r4_n.u4 = r4_n.u11->aFFFFFFFF;
+								*r4_n.u4 = 0x30;
 							}
-							r4_n.u12->bFFFFFFFE = (int8) r19_n;
+							r4_n.u11->bFFFFFFFE = (int8) r19_n;
 							word32 r6_n = 0x2D;
 							r5.u0 = 0x2B;
 							if ((word32) (r21_n < 0x00) == 0x00)
 								r6_n = 0x2B;
-							r6_n.u3 = &r4_n.u12->bFFFFFFFE;
-							r4_n.u11->bFFFFFFFF = (int8) r6_n;
-							int8 * r8_n = r8_n - r6_n;
+							r6_n.u4 = &r4_n.u11->bFFFFFFFE;
+							r4_n.u12->bFFFFFFFF = (int8) r6_n;
+							Eq_n r8_n = r8_n - r6_n;
 							if (r7_n < r8_n)
 								goto l00408D8E;
 							r22_n += r8_n;
@@ -15062,22 +15077,23 @@ l004097B0:
 						{
 							if ((word32) (r23_n < r7_n) != 0x00)
 								r7_n = r23_n;
+							r21 = r7_n;
 							Eq_n r7_n = r7_n;
-							for (r21 = r7_n; r7_n >= r21; r21 += 0x04)
+							while (r7_n >= r21)
 							{
-								Eq_n r4_n = fn004099EA(*r21.u5, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
+								Eq_n r4_n = fn004099EA(*r21.u6, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
 								Eq_n r5_n = r4_n;
 								if (r7_n == r21)
 								{
-									if (r4_n == fp - (struct Eq_n *) 0x025F)
+									if (r4_n == fp - 0x025F)
 										r5_n = fp - 0x0260;
 								}
 								else
 								{
 									while (fp - 616 < r5_n)
 									{
-										r5_n += ~0x00;
-										*r5_n.u3 = 0x30;
+										r5_n.u4 = r5_n.u11->aFFFFFFFF;
+										*r5_n.u4 = 0x30;
 									}
 								}
 								word32 r4_n;
@@ -15086,7 +15102,8 @@ l004097B0:
 								word32 r11_n;
 								word32 r14_n;
 								word32 r17_n;
-								out(r16_n, r5_n, fp - (struct Eq_n *) 0x025F - r5_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
+								out(r16_n, r5_n, fp - 0x025F - r5_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
+								r21.u11 += 4;
 							}
 							if (r18_n != 0x00 || !__bit<word32,word32>(dwLoc02D8_n, 0x03))
 							{
@@ -15101,11 +15118,11 @@ l004097B0:
 							}
 							while (r21 < r30_n && r18_n > 0x00)
 							{
-								Eq_n r5_n = fn004099EA(*r21.u5, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
+								Eq_n r5_n = fn004099EA(*r21.u6, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
 								while (fp - 616 < r5_n)
 								{
-									r5_n.u3 = &r5_n.u11->bFFFFFFFF;
-									*r5_n.u3 = 0x30;
+									r5_n.u4 = r5_n.u11->aFFFFFFFF;
+									*r5_n.u4 = 0x30;
 								}
 								Eq_n r7_n;
 								r7_n.u0 = 0x09;
@@ -15119,8 +15136,8 @@ l004097B0:
 								word32 r14_n;
 								word32 r17_n;
 								out(r16_n, r5_n, r7_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
-								r21 += 0x04;
-								r18_n += ~0x08;
+								r21.u11 += 4;
+								r18_n.u4 = (word32) r18_n - 9;
 							}
 							word32 r4_n;
 							word32 r5_n;
@@ -15128,7 +15145,7 @@ l004097B0:
 							word32 r11_n;
 							word32 r13_n;
 							word32 r14_n;
-							pad(r16_n, 0x30, r18_n + 0x09, 0x09, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n);
+							pad(r16_n, 0x30, r18_n.u11 + 9, 0x09, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n);
 						}
 						else
 						{
@@ -15137,9 +15154,9 @@ l004097B0:
 							r21 = r23_n;
 							while (r21 < r30_n && r18_n >= 0x00)
 							{
-								Eq_n r4_n = fn004099EA(*r21.u5, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
+								Eq_n r4_n = fn004099EA(*r21.u6, 0x00, fp - 0x025F, r13_n, out r7_n, out r8_n, out r11_n, out r13_n);
 								Eq_n r5_n = r4_n;
-								if (r4_n == fp - (struct Eq_n *) 0x025F)
+								if (r4_n == fp - 0x025F)
 									r5_n = fp - 0x0260;
 								Eq_n r22_n = r5_n;
 								if (r21 == r23_n)
@@ -15153,7 +15170,7 @@ l004097B0:
 									word32 r14_n;
 									Eq_n r17_n;
 									out(r16_n, r5_n, 0x01, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
-									r22_n = r5_n + 0x01;
+									r22_n.u11 = r5_n.u11 + 1;
 									if (r18_n != 0x00 || !__bit<word32,word32>(r17_n, 0x03))
 									{
 										word32 r4_n;
@@ -15171,11 +15188,11 @@ l004097B0:
 								{
 									while (fp - 616 < r22_n)
 									{
-										r22_n += ~0x00;
-										*r22_n.u3 = 0x30;
+										r22_n.u4 = r22_n.u11->aFFFFFFFF;
+										*r22_n.u4 = 0x30;
 									}
 								}
-								Eq_n r20_n = fp - (struct Eq_n *) 0x025F - r22_n;
+								Eq_n r20_n = fp - 0x025F - r22_n;
 								Eq_n r7_n = r20_n;
 								if ((word32) (r20_n < r18_n) == 0x00)
 									r7_n = r18_n;
@@ -15187,7 +15204,7 @@ l004097B0:
 								word32 r14_n;
 								word32 r17_n;
 								out(r16_n, r22_n, r7_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n, out r17_n);
-								r21 += 0x04;
+								r21.u11 += 4;
 								r18_n -= r20_n;
 							}
 							word32 r4_n;
@@ -15197,7 +15214,7 @@ l004097B0:
 							word32 r11_n;
 							word32 r13_n;
 							word32 r14_n;
-							pad(r16_n, 0x30, r18_n + 0x12, 0x12, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n);
+							pad(r16_n, 0x30, r18_n.u11 + 18, 0x12, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r13_n, out r14_n);
 							word32 r4_n;
 							word32 r5_n;
 							word32 r7_n;
@@ -15254,7 +15271,7 @@ l0040908E:
 						r19_n.u0 = 0x00;
 						for (; r19_n < r18_n; r19_n += r4)
 						{
-							r5.u3 = *r20_n;
+							r5.u4 = *r20_n;
 							if (r5 == 0x00)
 								break;
 							++r20_n;
@@ -15282,14 +15299,14 @@ l00408D42:
 						while (r20_n < r19_n)
 						{
 							Eq_n r5_n;
-							r5_n.u3 = *r21.u5;
+							r5_n.u4 = *r21.u6;
 							if (r5_n == 0x00)
 								break;
 							Eq_n r4_n;
 							word32 r5_n;
 							word32 r6_n;
 							wctomb(fp - 656, r5_n, out r4_n, out r5_n, out r6_n);
-							r21 += 0x04;
+							r21.u11 += 4;
 							r20_n += r4_n;
 							r6_n = r4_n;
 							if (r19_n < r20_n)
@@ -15329,7 +15346,7 @@ l00409330:
 								uint32 r23_n = r17_n & 0x01;
 								Eq_n r19_n;
 								r19_n.u0 = 4268022;
-								r22_n.u3 = (word32) (r23_n > 0x00);
+								r22_n.u4 = (word32) (r23_n > 0x00);
 								if (r23_n == 0x00)
 									r19_n.u0 = 0x00411FF4;
 								r23_n = r19_n;
@@ -15372,11 +15389,11 @@ l00409330:
 								r6 = 0x00412F40 >> 0x1F;
 								break;
 							case 0x03:
-								r6.u3 = (word32) wLoc02DC_n;
+								r6.u4 = (word32) wLoc02DC_n;
 								r7_n->u1 = (word16) (word16) r6;
 								break;
 							case 0x04:
-								r6.u3 = (word32) bLoc02DC_n;
+								r6.u4 = (word32) bLoc02DC_n;
 								r7_n->u0 = (byte) (byte) r6;
 								break;
 							case 0x05:
@@ -15389,23 +15406,23 @@ l00409330:
 						r17_n = dwLoc0284;
 						while ((r6 | r5) != 0x00)
 						{
-							r21 += ~0x00;
-							*r21.u3 = (byte) (((byte) r6 & 0x07) + 0x30);
+							r21.u4 = r21.u11->aFFFFFFFF;
+							*r21.u4 = (int8) (((byte) r6 & 0x07) + 0x30);
 							r6 = r6 >> 0x03 | r5 << 0x1D;
 							r5 >>= 0x03;
 						}
 						r23_n.u0 = 0x00411FF4;
 						if (!__bit<word32,word32>(dwLoc0284, 0x03))
 						{
-							up32 r22_n = (word32) (fp - (struct Eq_n *) 0x0228 - r21 < r18_n);
+							up32 r22_n = (word32) (fp - 0x0228 - r21 < r18_n);
 							r23_n.u0 = 0x00411FF9;
 							if (r22_n != 0x00)
 								r23_n.u0 = 0x00411FF4;
-							r22_n.u3 = (word32) (r22_n < 0x01);
+							r22_n.u4 = (word32) (r22_n < 0x01);
 						}
 						break;
 					case 0x2F:
-						r6.u3 = (word32) (r18_n < 0x08);
+						r6.u4 = (word32) (r18_n < 0x08);
 						if (r6 != 0x00)
 							r18_n.u0 = 0x08;
 						r19_n.u0 = 0x78;
@@ -15417,8 +15434,8 @@ l00408E88:
 						r5 = r23_n;
 						while ((r7_n | r5) != 0x00)
 						{
-							r21 += ~0x00;
-							*r21.u3 = (byte) ((byte) r8_n | g_a413040[r7_n & 0x0F]);
+							r21.u4 = r21.u11->aFFFFFFFF;
+							*r21.u4 = (int8) ((byte) r8_n | g_a413040[r7_n & 0x0F]);
 							r7_n = r7_n >> 0x04 | r5 << 0x1C;
 							r5 >>= 0x04;
 						}
@@ -15439,7 +15456,7 @@ l00409048:
 							r7_n = r18_n;
 						Eq_n r4_n = strnlen(r21, r7_n, out r5, out r6_n, out r8_n);
 						r19_n = r21 + r4_n;
-						if (r18_n < 0x00 && (word32) (r19_n.u1)->b0000 != 0x00)
+						if (r18_n < 0x00 && (word32) (r19_n.u1)->u3 != 0x00)
 							goto l00408D8E;
 						__ins<word32,word32>(r17_n, 0x00, 0x00, 0x01);
 						r18_n = r4_n;
@@ -15464,13 +15481,12 @@ l00408EC2:
 						uint32 r6_n = dwLoc0288 | dwLoc0284;
 						if (r6_n == 0x00 && r18_n == 0x00)
 						{
-							r21 = fp - (struct Eq_n *) 0x0228;
-							r19_n = fp - (struct Eq_n *) 0x0228;
+							r21 = fp - 0x0228;
+							r19_n = fp - 0x0228;
 						}
 						else
 						{
-							Eq_n r7_n;
-							r7_n.u3 = &(fp - 0x0228 - r21).u1->b0000 + (word32) (r6_n < 0x01);
+							Eq_n r7_n = fp - 0x0228 - r21 + (word32) (r6_n < 0x01);
 							r19_n = fp - 0x0228;
 							if ((word32) (r18_n < r7_n) != 0x00)
 								r18_n = r7_n;
@@ -15486,7 +15502,7 @@ l00408FAC:
 l00408FC8:
 							Eq_n r20_n = r30_n + r22_n;
 							Eq_n r7_n;
-							r7_n.u3 = (word32) (r7_n < r20_n);
+							r7_n.u4 = (word32) (r7_n < r20_n);
 							if (r7_n != 0x00)
 								r18_n = r20_n;
 							if (r7_n >= r18_n)
@@ -15558,7 +15574,7 @@ l00408D40:
 		}
 		if ((word32) r7_n.u11[1] != 0x2A)
 		{
-			tLoc0294 = (Eq_n) (r7_n.u11 + 1);
+			tLoc0294.u0 = (int32) (r7_n.u11 + 1);
 			r4 = getint(&tLoc0294, out r5, out r7_n);
 			r30_n = 0x01;
 			r18_n = r4;
@@ -15568,13 +15584,13 @@ l00408D40:
 		r5 = r6_n + ~0x2F;
 		if (r6_n < 0x3A)
 		{
-			r5.u3 = (word32) r7_n.u11[3];
+			r5.u4 = (word32) r7_n.u11[3];
 			if (r5 == 0x24)
 			{
-				r4.u5[r6_n + 0x3FFFFFD0] = 0x0A;
+				r4.u6[r6_n + 0x3FFFFFD0] = 0x0A;
 				r5.u0 = 0x0A;
 				r7_n.u11 += 4;
-				r18_n.u3 = ((Eq_n[]) 0x0A)[(word32) r7_n.u11[2] + 0x1FFFFFD0].t0000.u3;
+				r18_n.u0 = ((Eq_n[]) 0x0A)[(word32) r7_n.u11[2] + 0x1FFFFFD0].t0000.u0;
 				goto l00408CD8;
 			}
 		}
@@ -15586,42 +15602,42 @@ l00408D40:
 l00408DBE:
 			r7_n.u11 += 2;
 l00408CD8:
-			tLoc0294.u3 = (byte *) r7_n;
+			tLoc0294.u0 = (int32) r7_n;
 			r30_n = ~r18_n >> 0x1F;
 			goto l00408CE2;
 		}
-		r5.u3 = (word32) (&r7_n.u21->u1)[0x0C];
+		r5.u4 = (word32) r7_n.u11[0x0C];
 		if (r5 > 0x00)
 		{
 			int32 r6_n = (int32) ((byte) r5 + 252);
-			(&r7_n.u21->u1)[0x0C] = (struct Eq_n) (byte) r6_n;
+			r7_n.u11[0x0C] = (struct Eq_n) (byte) r6_n;
 			if (r6_n >= 0x00)
 			{
 				r7_n = r7_n.u11[4] - r5;
 l00408DBC:
-				r18_n.u3 = *r7_n.u5;
+				r18_n.u4 = *r7_n.u6;
 				goto l00408DBE;
 			}
 		}
-		r7_n.u3 = *r7_n.u5;
+		r7_n.u4 = *r7_n.u6;
 		goto l00408DBC;
 	}
-	r5.u3 = (word32) (&r7_n.u21->u1)[0x0C];
+	r5.u4 = (word32) r7_n.u11[0x0C];
 	Eq_n r7_n;
 	if (r5 > 0x00)
 	{
 		int32 r6_n = (int32) ((byte) r5 + 252);
-		(&r7_n.u21->u1)[0x0C] = (struct Eq_n) (byte) r6_n;
+		r7_n.u11[0x0C] = (struct Eq_n) (byte) r6_n;
 		if (r6_n >= 0x00)
 		{
 			r7_n = r7_n.u11[4] - r5;
 l00408D6A:
-			r7_n.u3 = r7_n.u1->u3;
+			r7_n.u4 = *r7_n.u6;
 			dwLoc02E0_n = r7_n;
 			goto l00408D6E;
 		}
 	}
-	r7_n.u1 = *r7_n.u5;
+	r7_n.u4 = *r7_n.u6;
 	goto l00408D6A;
 }
 
@@ -15701,12 +15717,13 @@ word32 vfprintf(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r4Out, union Eq_n & r5Out, un
 			r20_n = r4_n;
 		}
 		Eq_n r7_n;
-		r7_n.u3 = *r4.u5;
+		r7_n.u4 = *r4.u6;
 		if ((word32) r4.u11[74] <= 0x00)
 			__ins<word32,word32>(r7_n, 0x00, 0x05, 0x01);
-		word32 r19_n = 0x00;
+		Eq_n r19_n;
+		r19_n.u0 = 0x00;
 		if (r4.u11[48] == 0x00)
-			r19_n = (word32) r4.u11[44];
+			r19_n = r4.u11[44];
 		ptr32 r4_n;
 		word32 r5_n;
 		word32 r7_n;
@@ -15719,7 +15736,7 @@ word32 vfprintf(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r4Out, union Eq_n & r5Out, un
 			if (r4.u11[20] == 0x00)
 				r17_n = ~0x00;
 		}
-		r7_n.u3 = *r4.u5;
+		r7_n.u4 = *r4.u6;
 		r5_n = r7_n & 0x20;
 		if ((r7_n & 0x20) != 0x00)
 			r17_n = ~0x00;
@@ -15745,9 +15762,9 @@ void sn_write(struct Eq_n * r4, Eq_n r5, Eq_n r6)
 {
 	struct Eq_n * r16_n = r4->ptr0054;
 	Eq_n r5_n;
-	r5_n.u3 = r4->t001C.u3;
+	r5_n.u0 = r4->t001C.u0;
 	Eq_n r6_n;
-	r6_n.u3 = r16_n->t0004.u3;
+	r6_n.u0 = r16_n->t0004.u0;
 	Eq_n r7_n = r4->dw0014 - r5_n;
 	if ((word32) (r6_n < r7_n) == 0x00)
 		r6_n = r7_n;
@@ -15763,10 +15780,10 @@ void sn_write(struct Eq_n * r4, Eq_n r5, Eq_n r6)
 		word32 r12_n;
 		word32 r13_n;
 		word32 r14_n;
-		memcpy(r16_n->t0000.u3, r5_n, r6_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+		memcpy(r16_n->t0000.u0, r5_n, r6_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 	}
 	Eq_n r7_n;
-	r7_n.u3 = r16_n->t0004.u3;
+	r7_n.u0 = r16_n->t0004.u0;
 	if ((word32) (r6 < r7_n) != 0x00)
 		r7_n = r6;
 	if (r7_n != 0x00)
@@ -15781,9 +15798,9 @@ void sn_write(struct Eq_n * r4, Eq_n r5, Eq_n r6)
 		word32 r12_n;
 		word32 r13_n;
 		word32 r14_n;
-		memcpy(r16_n->t0000.u3, r5, r7_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+		memcpy(r16_n->t0000.u0, r5, r7_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 	}
-	*r16_n->t0000.u3 = 0x00;
+	*r16_n->t0000.u0 = (int32) 0x00;
 }
 
 // 00409B10: Register Eq_n vsnprintf(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r5Out, Register out ptr32 r7Out)
@@ -15827,7 +15844,7 @@ Eq_n vsnprintf(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r5Out, ptr32 & r
 	}
 	else
 	{
-		*r17_n.u3 = 0x00;
+		*r17_n.u4 = 0x00;
 		Eq_n r4_n;
 		Eq_n r5_n;
 		ptr32 r7_n;
@@ -15895,28 +15912,28 @@ word32 __isoc99_vsscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, E
 	word32 r10_n;
 	memset(&tLocA0, 0x00, 0x90, out r6_n, out r7_n, out r8_n, out r10_n);
 	tLocA0.ptr0020 = 0x00409B90;
-	tLocA0.t002C.u3 = (byte *) r4;
-	tLocA0.t0054.u3 = (byte *) r4;
+	tLocA0.t002C.u0 = (int32) r4;
+	tLocA0.t0054.u0 = (int32) r4;
 	tLocA0.dw004C = ~0x00;
 	word32 r3_n = __isoc99_vfscanf(r0, &tLocA0, r5, &tLocB0, r19, r20, out r4_n);
 	r4Out = r4_n;
 	return r3_n;
 }
 
-// 00409BD0: Register (ptr32 byte) atoi(Register (ptr32 byte) r4)
+// 00409BD0: Register Eq_n atoi(Register Eq_n r4)
 // Called from:
 //      fn00400832
 //      __synccall
-byte * atoi(byte * r4)
+Eq_n atoi(Eq_n r4)
 {
-	byte * r7_n = r4;
+	Eq_n r7_n = r4;
 	up32 r6_n;
 	while (true)
 	{
-		r6_n = (word32) *r7_n;
+		r6_n = (word32) *r7_n.u1;
 		if (r6_n != 0x20 && r6_n >= 0x0E)
 			break;
-		++r7_n;
+		r7_n.u1 = (word32) r7_n + 1;
 	}
 	word32 r5_n;
 	if (r6_n != 0x2B)
@@ -15930,15 +15947,16 @@ byte * atoi(byte * r4)
 	}
 	else
 		r5_n = 0x00;
-	++r7_n;
+	r7_n.u1 = (word32) r7_n + 1;
 l00409BD8:
-	byte * r4_n = null;
+	Eq_n r4_n;
+	r4_n.u0 = 0x00;
 	while (true)
 	{
-		Eq_n r6_n = (word32) *r7_n;
+		Eq_n r6_n = (word32) *r7_n.u1;
 		if (r6_n >= 0x3A)
 			break;
-		++r7_n;
+		r7_n.u1 = (word32) r7_n + 1;
 		r4_n = r4_n *s 0x0A - ((word32) r6_n - 48);
 	}
 	if (r5_n != 0x00)
@@ -15988,7 +16006,7 @@ Eq_n cycle(Eq_n r4, struct Eq_n * r5, int32 r6, union Eq_n & r4Out, ptr32 & r7Ou
 	{
 		union Eq_n * r22_n = (union Eq_n *) (r5 + r6);
 		ptr32 fp;
-		r22_n->u3 = (byte *) (fp - 288);
+		r22_n->u0 = (int32) (fp - 288);
 		for (; r18_n != 0x00; r18_n -= r7_n)
 		{
 			Eq_n r7_n;
@@ -16005,12 +16023,12 @@ Eq_n cycle(Eq_n r4, struct Eq_n * r5, int32 r6, union Eq_n & r4Out, ptr32 & r7Ou
 			word32 r12_n;
 			word32 r13_n;
 			word32 r14_n;
-			memcpy(r22_n->u3, r5->dw0000, r7_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+			memcpy(r22_n->u0, r5->dw0000, r7_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 			struct Eq_n * r17_n = r5;
 			int32 r21_n = 0x00;
 			do
 			{
-				r4.u3 = r17_n->dw0000;
+				r4.u4 = r17_n->dw0000;
 				word32 r3_n;
 				word32 r5_n;
 				word32 r6_n;
@@ -16020,7 +16038,7 @@ Eq_n cycle(Eq_n r4, struct Eq_n * r5, int32 r6, union Eq_n & r4Out, ptr32 & r7Ou
 				word32 r14_n;
 				r2 = memcpy(r4, r17_n[1], r7_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8, out r9_n, out r11, out r12, out r13_n, out r14_n);
 				++r21_n;
-				r7 = r7_n.u3 + r17_n->dw0000;
+				r7 = r7_n.u4 + r17_n->dw0000;
 				++r17_n;
 			} while (r6 != r21_n);
 		}
@@ -16046,7 +16064,7 @@ word32 sift(Eq_n r4, Eq_n r5, Eq_n r7, word32 r8[], union Eq_n & r4Out, ptr32 & 
 	Eq_n r4_n;
 	word32 r7_n;
 	Eq_n tLoc0104;
-	tLoc0104.u3 = (byte *) r4;
+	tLoc0104.u0 = (int32) r4;
 	Eq_n r16_n = r4;
 	Eq_n r17_n = r7;
 	int32 r18_n = 0x01;
@@ -16054,9 +16072,9 @@ word32 sift(Eq_n r4, Eq_n r5, Eq_n r7, word32 r8[], union Eq_n & r4Out, ptr32 & 
 	{
 		word32 r7_n = -r5;
 		word32 r17_n = (word32) tLoc0104;
-		r16_n.u3 += r7_n - r8[(word32) r17_n.u0 + 0x3FFFFFFE];
+		r16_n.u4 += r7_n - r8[(word32) r17_n.u0 + 0x3FFFFFFE];
 		Eq_n r19_n;
-		r19_n.u3 = r16_n.u3 + r7_n;
+		r19_n.u4 = r16_n.u4 + r7_n;
 		Eq_n r4_n = addrcmp(r4, r16_n, out r7_n);
 		if (r4_n >= 0x00)
 		{
@@ -16121,7 +16139,7 @@ word32 trinkle(Eq_n r4, Eq_n r5, struct Eq_n * r7, Eq_n r8, word32 r9, word32 r1
 	tLoc011C.dw0000 = r7->dw0000;
 	tLoc011C.ptr0004 = r7_n;
 	Eq_n tLoc0114;
-	tLoc0114.u3 = (byte *) r4;
+	tLoc0114.u0 = (int32) r4;
 	Eq_n r18_n = r8;
 	word32 r19_n = r9;
 	int32 r20_n = 0x01;
@@ -16131,7 +16149,7 @@ word32 trinkle(Eq_n r4, Eq_n r5, struct Eq_n * r7, Eq_n r8, word32 r9, word32 r1
 		Eq_n r17_n;
 		if (r7_n == 0x01)
 		{
-			r17_n.u3 = tLoc011C.t0004.u3;
+			r17_n.u0 = tLoc011C.t0004.u0;
 			if (r7_n == 0x00)
 			{
 l00409DD0:
@@ -16140,7 +16158,7 @@ l00409DD0:
 				goto l00409DD2;
 			}
 		}
-		r17_n.u3 = tLoc0114.u3;
+		r17_n.u0 = tLoc0114.u0;
 		Eq_n r16_n = r17_n - r10[r18_n];
 		int32 r30_n = r18_n << 0x02;
 		r4 = addrcmp(r16_n, r5_n, out r7_n);
@@ -16150,10 +16168,10 @@ l00409DD0:
 		{
 			word32 r4_n = -r5;
 			Eq_n r19_n;
-			r19_n.u3 = r17_n.u3 + (r4_n - ((char *) r10 + r30_n)[-8]);
+			r19_n.u4 = r17_n.u4 + (r4_n - ((char *) r10 + r30_n)[-8]);
 			word32 r7_n;
 			word32 r7_n;
-			if (addrcmp(r17_n.u3 + r4_n, r16_n, out r7_n) >= 0x00 || addrcmp(r19_n, r16_n, out r7_n) >= 0x00)
+			if (addrcmp(r17_n.u4 + r4_n, r16_n, out r7_n) >= 0x00 || addrcmp(r19_n, r16_n, out r7_n) >= 0x00)
 			{
 l00409DD2:
 				word32 r4_n;
@@ -16212,7 +16230,7 @@ l00409EEC:
 	Eq_n r7_n;
 	do
 	{
-		r7_n = r6.u3 + ((word32) (r6_n)[1].dw0000 + r6_n->dw0000);
+		r7_n = (word32) r6.u0 + ((word32) (r6_n)[1].dw0000 + r6_n->dw0000);
 		tLocF8.t0000.u0 = (int32) r7_n;
 		++r6_n;
 	} while (r7_n < r5_n);
@@ -16224,7 +16242,7 @@ l00409EEC:
 	for (r18_n = r4; r18_n < r22_n; r18_n += r17_n)
 	{
 		Eq_n r17_n;
-		r17_n.u3 = tLocF8.t0000.u3;
+		r17_n.u0 = tLocF8.t0000.u0;
 		ui32 r7_n;
 		if ((r7_n & 0x03) == 0x03)
 		{
@@ -16270,7 +16288,7 @@ l00409EEC:
 				r16_n.u0 = 0x01;
 			}
 		}
-		r17_n.u3 = tLocF8.t0000.u3;
+		r17_n.u0 = tLocF8.t0000.u0;
 		r7_n = r7_n | 0x01;
 		tLocF8.t0000.u0 = (int32) r7_n;
 		r19_n -= r17_n;
@@ -16291,7 +16309,7 @@ l00409EDE:
 		{
 			ui32 r7_n = fn00409F48(&tLocF8, 0x02);
 			Eq_n r17_n;
-			r17_n.u3 = tLocF8.t0000.u3;
+			r17_n.u0 = tLocF8.t0000.u0;
 			tLocF8.dw0000 = r7_n ^ 0x07;
 			word32 r8_n;
 			fn00409F4C(&tLocF8, 0x01, out r8_n);
@@ -16301,10 +16319,10 @@ l00409EDE:
 			word32 r8_n;
 			word32 r11_n;
 			word32 r12_n;
-			trinkle(r18_n - (r17_n.u3 + (&((&((fp - 0x30) + r19_n)->dwFFFFFF40 + 48))[-48].dwFFFFFF40)[48]), r17_n, &tLocF8, (word32) r16_n.u0 - 1, 0x01, &dwLocF0, out r4_n, out r7_n, out r8_n, out r11_n, out r12_n);
+			trinkle(r18_n - (r17_n.u4 + (&((&((fp - 0x30) + r19_n)->dwFFFFFF40 + 48))[-48].dwFFFFFF40)[48]), r17_n, &tLocF8, (word32) r16_n.u0 - 1, 0x01, &dwLocF0, out r4_n, out r7_n, out r8_n, out r11_n, out r12_n);
 			ui32 r7_n = fn00409F48(&tLocF8, 0x01);
 			Eq_n r17_n;
-			r17_n.u3 = tLocF8.t0000.u3;
+			r17_n.u0 = tLocF8.t0000.u0;
 			tLocF8.dw0000 = r7_n | 0x01;
 			r2 = trinkle(r22_n, r17_n, &tLocF8, r19_n, 0x01, &dwLocF0, out r4, out r7_n, out r8, out r11, out r12);
 l00409EDA:
@@ -16355,8 +16373,8 @@ void strtox(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r6, Eq_n r12)
 	memset(&tLocA0, 0x00, 0x90, out r6_n, out r7_n, out r8_n, out r10_n);
 	tLocA0.dw0008 = ~0x00;
 	tLocA0.dw004C = ~0x00;
-	tLocA0.t0004.u3 = (byte *) r4;
-	tLocA0.t002C.u3 = (byte *) r4;
+	tLocA0.t0004.u0 = (int32) r4;
+	tLocA0.t002C.u0 = (int32) r4;
 	word32 r8_n;
 	word32 r9_n;
 	word32 r11_n;
@@ -16378,7 +16396,7 @@ void strtox(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r6, Eq_n r12)
 	{
 		if ((r7_n | r6_n) != 0x00)
 			r16_n = r4 + r6_n;
-		r17_n->u3 = (byte *) r16_n;
+		r17_n->u0 = (int32) r16_n;
 	}
 }
 
@@ -16420,11 +16438,11 @@ Eq_n strtox(Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n
 	ptr32 r3_n;
 	Eq_n tLocA0;
 	tLocA0.dw0000 = 0x00;
-	tLocA0.t0004.u3 = (byte *) r4;
-	tLocA0.t002C.u3 = (byte *) r4;
+	tLocA0.t0004.u0 = (int32) r4;
+	tLocA0.t002C.u0 = (int32) r4;
 	int32 r7_n = ~0x00;
 	if (r4 >= 0x00)
-		r7_n = (word32) r4 + 0x7FFFFFFF;
+		r7_n = (word32) r4.u0 + 0x7FFFFFFF;
 	tLocA0.dw0008 = r7_n;
 	tLocA0.dw004C = ~0x00;
 	word32 r8_n;
@@ -16436,7 +16454,7 @@ Eq_n strtox(Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n
 	{
 		r6_n = tLocA0.ptr0078;
 		r7_n = r7_n - r6_n + r6_n;
-		*tLocA0.ptr0004 = r4.u3 + r7_n;
+		*tLocA0.ptr0004 = (word32) r4.u0 + r7_n;
 	}
 	r3Out = r3_n;
 	r4Out = r4_n;
@@ -16571,10 +16589,10 @@ Eq_n memchr(Eq_n r4, ui32 r5, Eq_n r6, union Eq_n & r5Out, union Eq_n & r6Out, u
 	{
 		if (r6 != 0x00)
 		{
-			while ((r5 & 0xFF) != (word32) (*r4.u3))
+			while ((r5 & 0xFF) != (word32) (*r4.u4))
 			{
 				++r4.u11;
-				r6.u3 = &r6.u11->bFFFFFFFF;
+				r6.u4 = r6.u11->aFFFFFFFF;
 				if ((r4 & 0x03) == 0x00)
 					goto l0040A072;
 				if (r6 == 0x00)
@@ -16583,7 +16601,7 @@ Eq_n memchr(Eq_n r4, ui32 r5, Eq_n r6, union Eq_n & r5Out, union Eq_n & r6Out, u
 			goto l0040A0FC;
 		}
 l0040A0F8:
-		r5Out.u0 = (Eq_n (*)[]) <invalid>;
+		r5Out.u0 = <invalid>;
 		r6Out = r6;
 		r8Out = r8;
 		return 0x00;
@@ -16591,7 +16609,7 @@ l0040A0F8:
 l0040A072:
 	if (r6 == 0x00)
 		goto l0040A0F8;
-	if ((r5 & 0xFF) != (word32) (*r4.u3))
+	if ((r5 & 0xFF) != (word32) (*r4.u4))
 	{
 		ui32 r9_n = ((r5 & 0xFF) << 0x08) + (r5 & 0xFF);
 		if (r6 < 0x04)
@@ -16605,12 +16623,12 @@ l0040A0E0:
 				r4 = r7_n;
 				if (r7_n == r6)
 					goto l0040A0F8;
-				r8.u3 = (word32) *r7_n.u3;
+				r8.u4 = (word32) *r7_n.u4;
 				++r7_n.u11;
 			} while ((r5 & 0xFF) != r8);
 			goto l0040A0FC;
 		}
-		ui32 r7_n = r9_n * 0x00010001 ^ *r4.u5;
+		ui32 r7_n = r9_n * 0x00010001 ^ *r4.u6;
 		r8.u0 = 0x80808080;
 		if ((~r7_n & r7_n + ~0x01010100 & 0x80808080) != 0x00)
 			goto l0040A0E0;
@@ -16618,7 +16636,7 @@ l0040A0E0:
 		ui32 r7_n;
 		do
 		{
-			r6.u3 = &r6.u12->dwFFFFFFFC;
+			r6.u4 = &r6.u11->tFFFFFFFC.u0;
 			r8.u11 += 4;
 			if (r6 < 0x04)
 			{
@@ -16626,14 +16644,14 @@ l0040A0E0:
 					break;
 				goto l0040A0F8;
 			}
-			r7_n = r9_n * 0x00010001 ^ *r8.u5;
+			r7_n = r9_n * 0x00010001 ^ *r8.u6;
 		} while ((~r7_n & r7_n + ~0x01010100 & 0x80808080) == 0x00);
 		r4 = r8;
-		if ((r5 & 0xFF) != (word32) (*r8.u3))
+		if ((r5 & 0xFF) != (word32) (*r8.u4))
 			goto l0040A0E0;
 	}
 l0040A0FC:
-	r5Out.u0 = (Eq_n (*)[]) <invalid>;
+	r5Out.u0 = <invalid>;
 	r6Out = r6;
 	r8Out = r8;
 	return r4;
@@ -16666,8 +16684,8 @@ l0040A12A:
 	}
 	else
 	{
-		r8 = (word32) *r4.u3;
-		r9 = (word32) *r5.u3;
+		r8 = (word32) *r4.u4;
+		r9 = (word32) *r5.u4;
 		if (r9 == r8)
 		{
 			r7.u0 = 0x01;
@@ -16675,7 +16693,7 @@ l0040A12A:
 			{
 				if (r6 == r7)
 					goto l0040A12A;
-				++r7.u11;
+				r7.u4 = (word32) r7.u0 + 1;
 				r8 = CONVERT(Mem0[r4 + r7:byte], byte, word32);
 				r9 = CONVERT(Mem0[r5 + r7 + -1:byte], byte, word32);
 			} while (r8 == r9);
@@ -16687,7 +16705,7 @@ l0040A12A:
 	}
 }
 
-// 0040A130: Register (ptr32 Eq_n) memcpy(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out (ptr32 Eq_n) r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out)
+// 0040A130: Register Eq_n memcpy(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out)
 // Called from:
 //      ping4_send_probe
 //      fn00400B52
@@ -16726,16 +16744,16 @@ l0040A12A:
 //      __string_read
 //      arg_n
 //      __isoc99_vfscanf
-struct Eq_n * memcpy(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out)
+Eq_n memcpy(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out)
 {
 	Eq_n r7_n = r5 & 0x03;
 	Eq_n r13;
 	Eq_n r3;
 	Eq_n r9;
-	union Eq_n * r11;
+	Eq_n r11;
 	Eq_n r12;
 	Eq_n r14;
-	struct Eq_n * r2;
+	Eq_n r2;
 	if ((r5 & 0x03) != 0x00)
 	{
 		if (r6 != 0x00)
@@ -16746,9 +16764,9 @@ struct Eq_n * memcpy(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r3Out, union Eq_n &
 			{
 				++r5.u11;
 				++r13.u11;
-				r8_n.u3 = (word32) r5.u11->bFFFFFFFF;
-				r13.u11->bFFFFFFFF = (int8) r8_n;
-				r6.u3 = &r6.u11->bFFFFFFFF;
+				r8_n.u4 = (word32) r5.u12->bFFFFFFFF;
+				r13.u12->bFFFFFFFF = (int8) r8_n;
+				r6.u4 = r6.u11->aFFFFFFFF;
 				if ((r5 & 0x03) == 0x00)
 					goto l0040A154;
 			} while (r6 != 0x00);
@@ -16775,22 +16793,22 @@ l0040A154:
 		ui32 r16_n;
 		if (r6 >= 0x10)
 		{
-			r12.u3 = &r6.u12->dwFFFFFFF0;
+			r12.u4 = &r6.u11->dwFFFFFFF0;
 			r8 = r5;
 			Eq_n r7_n = r13;
 			r3 = r13 + (__ins<word32,word32>(r12, 0x00, 0x00, 0x01) + 0x10);
 			do
 			{
-				r2 = *r8.u5;
-				r11 = r8.u16->t0001.u1;
-				word32 r10_n = (word32) (&r8.u21->u1)[2];
-				r9.u3 = r8.u16->ptr0003;
-				*r7_n.u5 = r2;
+				r2.u1 = *r8.u6;
+				r11.u1 = r8.u11[1];
+				word32 r10_n = (word32) r8.u11[2];
+				r9.u4 = r8.u11[3];
+				*r7_n.u6 = (word32) r2;
 				r7_n.u11[4] = (struct Eq_n) r11;
-				(&r7_n.u21->u1)[2] = (struct Eq_n) r10_n;
-				r7_n.u16->ptr0003 = (word16 *) r9;
-				r8.u12 += 4;
-				r7_n.u12 += 4;
+				r7_n.u11[2] = (struct Eq_n) r10_n;
+				r7_n.u11[3] = (struct Eq_n) r9;
+				r8.u11 += 16;
+				r7_n.u11 += 16;
 			} while (r7_n != r3);
 			Eq_n r7_n = __ins<word32,word32>(r12, 0x00, 0x00, 0x01);
 			r17_n = r6 & 0x08;
@@ -16809,105 +16827,107 @@ l0040A154:
 		}
 		if (r17_n != 0x00)
 		{
-			r8.u3 = *r5.u5;
+			r8.u4 = *r5.u6;
 			word32 r17_n = (word32) r5.u11[4];
-			*r13.u5 = (word32) r8;
+			*r13.u6 = (word32) r8;
 			r13.u11[4] = (struct Eq_n) r17_n;
 			r5.u11 += 8;
 			r13.u11 += 8;
 		}
 		if (r16_n != 0x00)
 		{
-			*r13.u5 = *r5.u5;
+			*r13.u6 = *r5.u6;
 			r5.u11 += 4;
 			r13.u11 += 4;
 		}
 		if (r7_n != 0x00)
 		{
-			r7_n.u3 = (word32) r5.u11[1];
-			*r13.u3 = *r5.u3;
+			r7_n.u4 = (word32) r5.u11[1];
+			*r13.u4 = *r5.u4;
 			r13.u11[1] = (struct Eq_n) (byte) r7_n;
 			r5.u11 += 2;
 			r13.u11 += 2;
 		}
 		if (r6 != 0x00)
 		{
-			r7_n.u3 = (word32) *r5.u3;
-			*r13.u3 = (byte) r7_n;
+			r7_n.u4 = (word32) *r5.u4;
+			*r13.u4 = (byte) r7_n;
 		}
 		goto l0040A1EA;
 	}
 	if (r6 >= 0x20)
 	{
-		word32 r9_n = (word32) *r5.u3;
-		Eq_n r7_n = *r5.u5;
-		struct Eq_n * r24_n;
-		struct Eq_n * r5_n;
+		word32 r9_n = (word32) *r5.u4;
+		uint32 r7_n = *r5.u6;
+		Eq_n r24_n;
+		Eq_n r5_n;
 		uint32 r6_n;
 		Eq_n r13_n;
 		if (r8 == 0x02)
 		{
 			r13.u11[1] = r5.u11[1];
-			*r13.u3 = (byte) (byte) r9_n;
+			*r13.u4 = (byte) r9_n;
 			Eq_n r16_n;
-			r16_n.u3 = &r6.u12->dwFFFFFFEC;
-			r24_n = (struct Eq_n *) (r13.u11 + 2);
-			r5_n = (struct Eq_n *) (r5.u11 + 2);
-			struct Eq_n * r25_n = r24_n + ((r16_n >> 0x04) + 0x01);
+			r16_n.u4 = &r6.u11->dwFFFFFFEC;
+			r24_n.u1 = r13.u11 + 2;
+			r5_n.u1 = r5.u11 + 2;
+			Eq_n r25_n = r24_n + ((r16_n >>u 0x04) + 0x01 << 0x04);
 			r2 = r5_n;
-			struct Eq_n * r8_n = r24_n;
+			Eq_n r8_n = r24_n;
 			do
 			{
-				uint32 r11_n = r2->dw0002;
-				uint32 r10_n = r2->dw0006;
-				r7_n = r2->dw000E;
-				uint32 r9_n = r2->dw000A;
+				uint32 r11_n = (uint32) r2.u1[2];
+				uint32 r10_n = (uint32) r2.u1[6];
+				r7_n = (uint32) r2.u1[0x0E];
+				uint32 r9_n = (uint32) r2.u1[0x0A];
 				r3 = r7_n >> 0x10 | r11_n << 0x10;
-				r8_n->t0000.u1 = (word32) r3;
+				r8_n.u1->t0000.u1 = (word32) r3;
 				r11 = r11_n >> 0x10 | r10_n << 0x10;
-				r8_n->dw0004 = r11;
-				r8_n->dw0002 = r10_n >> 0x10 | r9_n << 0x10;
-				r8_n->dw0003 = r9_n >> 0x10 | r7_n << 0x10;
+				r8_n.u1[4] = (struct Eq_n) r11;
+				r8_n.u1[2] = (struct Eq_n) (r10_n >> 0x10 | r9_n << 0x10);
+				r8_n.u1[3] = (struct Eq_n) (r9_n >> 0x10 | r7_n << 0x10);
 				r14 = r10_n << 0x10;
 				r12 = r7_n << 0x10;
-				++r2;
-				++r8_n;
+				r2.u1 = (word32) r2 + 16;
+				r8_n.u1 = (word32) r8_n + 16;
 			} while (r8_n != r25_n);
 			r6_n = (word32) r6 - 18;
 			r13_n = __ins<word32,word32>(r16_n, 0x00, 0x00, 0x01);
 l0040A312:
-			int32 r13_n = r13_n.u12 + 4;
-			r5.u3 = &r5_n->b0000 + r13_n;
-			r6 = r6_n - __align(&(r6.u12)->dwFFFFFFEC, 16);
-			r13.u3 = &r24_n->t0000.u0 + r13_n;
+			Eq_n r13_n;
+			r13_n.u1 = r13_n.u11 + 16;
+			r5 = r5_n + r13_n;
+			r6 = r6_n - __align(&(r6.u11)->dwFFFFFFEC, 16);
+			r13 = r24_n + r13_n;
 			goto l0040A322;
 		}
 		if (r8 == 0x03)
 		{
 			Eq_n r16_n;
-			r16_n.u3 = &r6.u12->dwFFFFFFEC;
-			struct Eq_n * r25_n = (struct Eq_n *) (r13.u3 + (__align(r16_n, 16) + 0x11));
-			*r13.u3 = (byte) (byte) r9_n;
-			r5_n = (struct Eq_n *) (r5.u11 + 1);
-			r24_n = (struct Eq_n *) (r13.u11 + 1);
+			r16_n.u4 = &r6.u11->dwFFFFFFEC;
+			Eq_n r25_n;
+			r25_n.u1 = r13.u4 + ((word32) __align(r16_n, 16) + 0x0011);
+			*r13.u4 = (byte) r9_n;
+			r5_n.u1 = r5.u11 + 1;
+			r24_n.u1 = r13.u11 + 1;
 			r2 = r5_n;
-			struct Eq_n * r8_n = r24_n;
+			Eq_n r8_n = r24_n;
 			do
 			{
-				uint32 r11_n = r2->dw0003;
-				uint32 r10_n = r2->dw0007;
-				r7_n = r2->dw000F;
-				uint32 r9_n = r2->dw000B;
+				uint32 r11_n = (uint32) r2.u1[3];
+				uint32 r10_n = (uint32) r2.u1[7];
+				r7_n = (uint32) r2.u1[0x0F];
+				uint32 r9_n = (uint32) r2.u1[11];
 				r3 = r7_n >> 0x08 | r11_n << 0x18;
-				r8_n->t0000.u1 = (word32) r3;
+				r8_n.u1->t0000.u1 = (word32) r3;
 				r11 = r11_n >> 0x08 | r10_n << 0x18;
-				r8_n->dw0004 = r11;
-				r8_n->dw0002 = r10_n >> 0x08 | r9_n << 0x18;
-				r8_n->dw0003 = r9_n >> 0x08 | r7_n << 0x18;
+				r8_n.u1[4] = (struct Eq_n) r11;
+				r8_n.u1[2] = (struct Eq_n) (r10_n >> 0x08 | r9_n << 0x18);
+				r8_n.u1[3] = (struct Eq_n) (r9_n >> 0x08 | r7_n << 0x18);
 				r14 = r10_n << 0x18;
 				r12 = r7_n << 0x18;
-				++r2;
-				++r8_n;
+				r2.u1 = (word32) r2 + 16;
+				r8_n.u1 = (word32) r8_n + 16;
 			} while (r8_n != r25_n);
 			r6_n = (word32) r6 - 0x0011;
 			r13_n = __ins<word32,word32>(r16_n, 0x00, 0x00, 0x01);
@@ -16915,31 +16935,33 @@ l0040A312:
 		}
 		word32 r17_n = (word32) r5.u11[2];
 		r13.u11[1] = r5.u11[1];
-		*r13.u3 = (byte) (byte) r9_n;
+		*r13.u4 = (byte) r9_n;
 		r13.u11[2] = (struct Eq_n) (byte) r17_n;
 		Eq_n r24_n;
-		r24_n.u3 = &r6.u12->dwFFFFFFEC;
-		struct Eq_n * r16_n = (struct Eq_n *) (r13.u11 + 3);
-		struct Eq_n * r5_n = (struct Eq_n *) (r5.u11 + 3);
-		struct Eq_n * r15_n = r16_n + ((r24_n >> 0x04) + 0x01);
+		r24_n.u4 = &r6.u11->dwFFFFFFEC;
+		Eq_n r16_n;
+		r16_n.u1 = r13.u11 + 3;
+		Eq_n r5_n;
+		r5_n.u1 = r5.u11 + 3;
+		Eq_n r15_n = r16_n + ((r24_n >>u 0x04) + 0x01 << 0x04);
 		r2 = r5_n;
-		struct Eq_n * r8_n = r16_n;
+		Eq_n r8_n = r16_n;
 		do
 		{
-			uint32 r11_n = r2->dw0001;
-			uint32 r10_n = r2->dw0005;
-			r7_n = r2->dw000D;
-			uint32 r9_n = r2->dw0009;
+			uint32 r11_n = (uint32) r2.u1[1];
+			uint32 r10_n = (uint32) r2.u1[5];
+			r7_n = (uint32) r2.u1[0x0D];
+			uint32 r9_n = (uint32) r2.u1[9];
 			r3 = r7_n >> 0x18 | r11_n << 0x08;
-			r8_n->dw0000 = (word32) r3;
+			r8_n.u1->t0000.u1 = (word32) r3;
 			r11 = r11_n >> 0x18 | r10_n << 0x08;
-			r8_n->dw0004 = r11;
-			r8_n->dw0002 = r10_n >> 0x18 | r9_n << 0x08;
-			r8_n->dw0003 = r9_n >> 0x18 | r7_n << 0x08;
+			r8_n.u1[4] = (struct Eq_n) r11;
+			r8_n.u1[2] = (struct Eq_n) (r10_n >> 0x18 | r9_n << 0x08);
+			r8_n.u1[3] = (struct Eq_n) (r9_n >> 0x18 | r7_n << 0x08);
 			r14 = r10_n << 0x08;
 			r12 = r7_n << 0x08;
-			++r2;
-			++r8_n;
+			r2.u1 = (word32) r2 + 16;
+			r8_n.u1 = (word32) r8_n + 16;
 		} while (r8_n != r15_n);
 		Eq_n r13_n = __ins<word32,word32>(r24_n, 0x00, 0x00, 0x01);
 		r6 = (word32) r6 - 19 - __align(r24_n, 16);
@@ -16955,7 +16977,7 @@ l0040A322:
 	{
 		word32 r6_n = (word32) r5.u11[1];
 		r13.u11[2] = r5.u11[2];
-		word32 r7_n = (word32) *r5.u3;
+		word32 r7_n = (word32) *r5.u4;
 		r13.u11[3] = r5.u11[3];
 		word32 r25_n = (word32) r5.u11[6];
 		r13.u11[4] = r5.u11[4];
@@ -16963,27 +16985,27 @@ l0040A322:
 		word32 r24_n = (word32) r5.u11[7];
 		word32 r15_n = (word32) r5.u11[8];
 		r14 = (word32) r5.u11[9];
-		r12.u3 = (word32) (&r5.u21->u1)[0x0A];
-		r3.u3 = (word32) (&r5.u21->u1)[11];
-		r2 = (word32) (&r5.u21->u1)[0x0C];
-		r11 = (word32) (&r5.u21->u1)[0x0D];
+		r12.u4 = (word32) r5.u11[0x0A];
+		r3.u4 = (word32) r5.u11[11];
+		r2.u1 = (word32) r5.u11[0x0C];
+		r11.u1 = (word32) r5.u11[0x0D];
 		r13.u11[1] = (struct Eq_n) (byte) r6_n;
 		r13.u11[5] = (struct Eq_n) (byte) r9_n;
-		word32 r9_n = (word32) (&r5.u21->u1)[0x0E];
-		word32 r5_n = (word32) (&r5.u21->u1)[0x0F];
-		*r13.u3 = (byte) r7_n;
+		word32 r9_n = (word32) r5.u11[0x0E];
+		word32 r5_n = (word32) r5.u11[0x0F];
+		*r13.u4 = (byte) r7_n;
 		r13.u11[6] = (struct Eq_n) (byte) r25_n;
 		r13.u11[7] = (struct Eq_n) (byte) r24_n;
 		r13.u11[8] = (struct Eq_n) (byte) r15_n;
 		r13.u11[9] = (struct Eq_n) (byte) r14;
-		(&r13.u21->u1)[0x0A] = (struct Eq_n) (byte) r12;
-		(&r13.u21->u1)[11] = (struct Eq_n) (byte) r3;
-		(&r13.u21->u1)[0x0C] = (struct Eq_n) (byte) r2;
-		(&r13.u21->u1)[0x0D] = (struct Eq_n) (byte) r11;
-		(&r13.u21->u1)[0x0E] = (struct Eq_n) (byte) r9_n;
-		(&r13.u21->u1)[0x0F] = (struct Eq_n) (byte) r5_n;
-		r6.u12 = r5.u12 + 4;
-		r7_n.u12 = r13.u12 + 4;
+		r13.u11[0x0A] = (struct Eq_n) (byte) r12;
+		r13.u11[11] = (struct Eq_n) (byte) r3;
+		r13.u11[0x0C] = (struct Eq_n) (byte) r2;
+		r13.u11[0x0D] = (struct Eq_n) (byte) r11;
+		r13.u11[0x0E] = (struct Eq_n) (byte) r9_n;
+		r13.u11[0x0F] = (struct Eq_n) (byte) r5_n;
+		r6.u11 = r5.u11 + 16;
+		r7_n.u11 = r13.u11 + 16;
 	}
 	else
 	{
@@ -16992,15 +17014,15 @@ l0040A322:
 	}
 	if (r8_n != 0x00)
 	{
-		r14 = (word32) *r6.u3;
+		r14 = (word32) *r6.u4;
 		word32 r13_n = (word32) r6.u11[1];
-		r12.u3 = (word32) r6.u11[2];
-		r3.u3 = (word32) r6.u11[3];
-		r2 = (word32) r6.u11[4];
-		r11 = (word32) r6.u11[5];
+		r12.u4 = (word32) r6.u11[2];
+		r3.u4 = (word32) r6.u11[3];
+		r2.u1 = (word32) r6.u11[4];
+		r11.u1 = (word32) r6.u11[5];
 		word32 r5_n = (word32) r6.u11[6];
-		r6.u3 = (word32) r6.u11[7];
-		*r7_n.u3 = (byte) r14;
+		r6.u4 = (word32) r6.u11[7];
+		*r7_n.u4 = (byte) r14;
 		r7_n.u11[1] = (struct Eq_n) (byte) r13_n;
 		r7_n.u11[2] = (struct Eq_n) (byte) r12;
 		r7_n.u11[3] = (struct Eq_n) (byte) r3;
@@ -17018,11 +17040,11 @@ l0040A322:
 	}
 	if (r10_n != 0x00)
 	{
-		r11 = (word32) *r9.u3;
+		r11.u1 = (word32) *r9.u4;
 		word32 r10_n = (word32) r9.u11[1];
-		r6.u3 = (word32) r9.u11[2];
-		r7_n.u3 = (word32) r9.u11[3];
-		*r8.u3 = (byte) r11;
+		r6.u4 = (word32) r9.u11[2];
+		r7_n.u4 = (word32) r9.u11[3];
+		*r8.u4 = (byte) r11;
 		r8.u11[1] = (struct Eq_n) (byte) r10_n;
 		r8.u11[2] = (struct Eq_n) (byte) r6;
 		r8.u11[3] = (struct Eq_n) (byte) r7_n;
@@ -17036,17 +17058,17 @@ l0040A322:
 	}
 	if (r17_n != 0x00)
 	{
-		r6.u3 = (word32) *r5.u3;
-		r7_n.u3 = (word32) r5.u11[1];
-		*r13.u3 = (byte) r6;
+		r6.u4 = (word32) *r5.u4;
+		r7_n.u4 = (word32) r5.u11[1];
+		*r13.u4 = (byte) r6;
 		r13.u11[1] = (struct Eq_n) (byte) r7_n;
 		r5.u11 += 2;
 		r13.u11 += 2;
 	}
 	if (r16_n != 0x00)
 	{
-		r7_n.u3 = (word32) *r5.u3;
-		*r13.u3 = (byte) r7_n;
+		r7_n.u4 = (word32) *r5.u4;
+		*r13.u4 = (byte) r7_n;
 	}
 l0040A1EE:
 	r3Out = r3;
@@ -17108,7 +17130,7 @@ l0040A688:
 						Eq_n r7_n;
 						if ((r7_n & 0x03) != 0x00)
 						{
-							r7_n.u3 = &r6.u11->bFFFFFFFF;
+							r7_n.u4 = r6.u11->aFFFFFFFF;
 							if (r6 != 0x00)
 							{
 								do
@@ -17118,7 +17140,7 @@ l0040A688:
 									r9.u0 = ~0x00;
 									if ((r4 + r7_n & 0x03) == 0x00)
 										goto l0040A642;
-									r7_n += ~0x00;
+									r7_n.u4 = r7_n.u11->aFFFFFFFF;
 								} while (r7_n != ~0x00);
 							}
 							goto l0040A688;
@@ -17130,7 +17152,7 @@ l0040A642:
 						{
 							do
 							{
-								r6 += ~0x03;
+								r6.u4 = &r6.u11->tFFFFFFFC.u0;
 								r8 = Mem47[r5 + r6:word32];
 								Mem50[r4 + r6:word32] = r8;
 							} while (r6 >= 0x04);
@@ -17139,7 +17161,7 @@ l0040A642:
 					}
 					while (r6 != 0x00)
 					{
-						r6 += ~0x00;
+						r6.u4 = r6.u11->aFFFFFFFF;
 						Mem59[r6 + r4:byte] = Mem56[r5 + r6:byte];
 					}
 					goto l0040A688;
@@ -17149,7 +17171,7 @@ l0040A642:
 				{
 					if ((r4 & 0x03) != 0x00)
 					{
-						r8.u3 = &r6.u11->bFFFFFFFF;
+						r8.u4 = r6.u11->aFFFFFFFF;
 						r7_n = r4;
 						if (r6 != 0x00)
 						{
@@ -17157,11 +17179,11 @@ l0040A642:
 							{
 								++r5.u11;
 								++r7_n.u11;
-								r9 = (word32) r5.u11->bFFFFFFFF;
-								r7_n.u11->bFFFFFFFF = (int8) r9;
+								r9.u4 = (word32) r5.u12->bFFFFFFFF;
+								r7_n.u12->bFFFFFFFF = (int8) r9;
 								if ((r7_n & 0x03) == 0x00)
 									goto l0040A55A;
-								r8.u3 = &r8.u11->bFFFFFFFF;
+								r8.u4 = (word32) r8.u2 - 1;
 							} while (r8 != ~0x00);
 						}
 						goto l0040A688;
@@ -17172,14 +17194,15 @@ l0040A55A:
 					if (r8 >= 0x04)
 					{
 						Eq_n r11_n;
-						r11_n.u3 = &r8.u12->dwFFFFFFFC;
-						int32 r6_n = 0x00;
+						r11_n.u4 = (word32) r8.u2 - 4;
+						Eq_n r6_n;
+						r6_n.u0 = 0x00;
 						Eq_n r10_n = __ins<word32,word32>(r11_n, 0x00, 0x00, 0x01);
 						do
 						{
-							r9 = *((char *) r5.u5 + r6_n);
-							((char *) r7_n.u5 + r6_n)->u3 = r9;
-							r6_n += 0x04;
+							r9 = Mem86[r5 + r6_n:word32];
+							Mem89[r7_n + r6_n:word32] = r9;
+							r6_n.u2 = (word32) r6_n + 4;
 						} while (r6_n != r10_n.u11 + 4);
 						r11 = __ins<word32,word32>(r11_n, 0x00, 0x00, 0x01);
 						r6 = r8 & 0x03;
@@ -17212,24 +17235,24 @@ l0040A55A:
 						return r2;
 					}
 					uint32 r9_n = 0x00;
-					uint32 r8_n = (&r6.u12->dwFFFFFFFC >> 0x02) + 0x01;
+					uint32 r8_n = (&r6.u11->tFFFFFFFC.u0 >> 0x02) + 0x01;
 					do
 					{
-						r7_n.u5[r9_n] = r5.u5[r9_n];
+						r7_n.u6[r9_n] = r5.u6[r9_n];
 						++r9_n;
 					} while (r9_n < r8_n);
 					r8 = r6 - (r8_n << 0x02);
-					r9 = r7_n.u3 + (r8_n << 0x02);
-					r11.u3 = r5.u3 + (r8_n << 0x02);
+					r9 = r7_n + (r8_n << 0x02);
+					r11 = r5 + (r8_n << 0x02);
 					if (r6 != r8_n << 0x02)
 					{
-						r7_n.u3[r8_n * 0x04] = r5.u3[r8_n * 0x04];
+						r7_n.u4[r8_n * 0x04] = r5.u4[r8_n * 0x04];
 						if (r8 != 0x01)
 						{
-							r9.u1->t0001.u0 = (int8) r11.u11[1];
+							r9.u11[1] = r11.u11[1];
 							if (r8 != 0x02)
 							{
-								r9.u1->b0002 = (byte) r11.u11[2];
+								r9.u11[2] = r11.u11[2];
 								r8Out = r8;
 								r9Out = r9;
 								r11Out = r11;
@@ -17251,7 +17274,7 @@ l0040A55A:
 	}
 }
 
-// 0040A690: Register Eq_n memset(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r10Out)
+// 0040A690: Register Eq_n memset(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r10Out)
 // Called from:
 //      main
 //      fn00400B4E
@@ -17276,56 +17299,56 @@ l0040A55A:
 //      __isoc99_vfscanf
 //      stpncpy
 //      fn0040E008
-Eq_n memset(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, struct Eq_n & r10Out)
+Eq_n memset(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r10Out)
 {
 	Eq_n r8;
 	Eq_n r7;
-	struct Eq_n * r10;
+	Eq_n r10;
 	if (r6 != 0x00)
 	{
 		r8 = r4 + r6;
-		r8.u11->bFFFFFFFF = (byte) (int8) r5;
-		*r4.u3 = (byte) (byte) r5;
+		r8.u12->bFFFFFFFF = (int8) (int8) r5;
+		*r4.u4 = (int8) (byte) r5;
 		r7 = r5 & 0xFF;
 		if (r6 >= 0x03)
 		{
-			r8.u12->bFFFFFFFE = (int8) r5;
+			r8.u11->bFFFFFFFE = (int8) r5;
 			r4.u11[1] = (struct Eq_n) (byte) r5;
-			r8.u12->bFFFFFFFD = (int8) r5;
+			r8.u11->bFFFFFFFD = (int8) r5;
 			r4.u11[2] = (struct Eq_n) (byte) r5;
 			if (r6 >= 0x07)
 			{
-				r8.u13->tFFFFFFFC.u0 = (int8) (int8) r5;
+				r8.u11->tFFFFFFFC.u3 = (byte) (int8) r5;
 				r4.u11[3] = (struct Eq_n) (byte) r5;
 				if (r6 >= 0x09)
 				{
-					struct Eq_n * r9_n = -r4;
+					Eq_n r9_n = -r4;
 					Eq_n r6_n = __ins<word32,word32>(r6 - (r9_n & 0x03), 0x00, 0x00, 0x01);
 					r5 = ((r5 & 0xFF) << 0x08) + (r5 & 0xFF);
-					((char *) r4.u5 + (r9_n & 0x03))->u3 = r5 * 0x00010001;
-					r7.u0 = r4.u3 + (r9_n & 0x03);
+					((char *) r4.u6 + (r9_n & 0x03))->u4 = r5 * 0x00010001;
+					r7.u2 = r4.u4 + (r9_n & 0x03);
 					r10 = r7 + r6_n;
-					r10->tFFFFFFFC.u1 = (ui32) (r5 * 0x00010001);
+					r10.u1->tFFFFFFFC.u0 = (int32) (r5 * 0x00010001);
 					r8 = r6_n;
 					r6 = r5 * 0x00010001;
 					if (r6_n >= 0x09)
 					{
-						r10->dwFFFFFFF4 = r5 * 0x00010001;
-						r10->dwFFFFFFF8 = r5 * 0x00010001;
+						r10.u1->dwFFFFFFF4 = r5 * 0x00010001;
+						r10.u1->dwFFFFFFF8 = r5 * 0x00010001;
 						if (r6_n >= 0x19)
 						{
 							r5 = (r7 & 0x04) + 0x18;
-							r10->dwFFFFFFE4 = r5 * 0x00010001;
-							r10->dwFFFFFFE8 = r5 * 0x00010001;
-							r10->dwFFFFFFEC = r5 * 0x00010001;
-							r10->dwFFFFFFF0 = r5 * 0x00010001;
+							r10.u1->dwFFFFFFE4 = r5 * 0x00010001;
+							r10.u1->dwFFFFFFE8 = r5 * 0x00010001;
+							r10.u1->dwFFFFFFEC = r5 * 0x00010001;
+							r10.u1->dwFFFFFFF0 = r5 * 0x00010001;
 							r8 = r6_n - r5;
 							r7 += r5;
 							if (r8 >= 0x20)
 							{
-								r5 = r7 + (__ins<word32,word32>(r8 + ~0x1F, 0x00, 0x00, 0x01) + 0x20);
+								r5 = r7 + (__ins<word32,word32>((word32) r8 - 32, 0x00, 0x00, 0x01) + 0x20);
 								do
-									r7 += 0x20;
+									r7.u2 = (word32) r7 + 32;
 								while (r7 != r5);
 							}
 						}
@@ -17366,7 +17389,7 @@ void strcat(Eq_n r4)
 Eq_n strchr(Eq_n r4, ui32 r5)
 {
 	Eq_n r4_n = strchrnul(r4, r5);
-	if (((word32) *r4_n.u3 ^ r5 & 0xFF) != 0x00)
+	if (((word32) *r4_n.u4 ^ r5 & 0xFF) != 0x00)
 		r4_n.u0 = 0x00;
 	return r4_n;
 }
@@ -17386,34 +17409,34 @@ Eq_n strchrnul(Eq_n r4, ui32 r5)
 	}
 	while ((r16_n & 0x03) != 0x00)
 	{
-		ui32 r7_n = (word32) *r16_n.u3;
+		ui32 r7_n = (word32) *r16_n.u4;
 		if (r7_n == 0x00 || (r5 & 0xFF) == r7_n)
 			return r16_n;
 		++r16_n.u11;
 	}
-	Eq_n r7_n = *r16_n.u5;
+	word32 r7_n = *r16_n.u6;
 	ui32 r10_n = ((r5 & 0xFF) << 0x08) + (r5 & 0xFF);
 	ui32 r7_n = r10_n * 0x00010001 ^ r7_n;
-	if (((~r7_n & r7_n + ~0x01010100 | (word32) r7_n - 0x01010101 & ~r7_n) & 0x80808080) == 0x00)
+	if (((~r7_n & r7_n + ~0x01010100 | r7_n + ~0x01010100 & ~r7_n) & 0x80808080) == 0x00)
 	{
 		Eq_n r4_n = r16_n;
-		Eq_n r8_n;
+		word32 r8_n;
 		ui32 r9_n;
 		do
 		{
 			r4_n.u11 += 4;
-			r8_n = *r4_n.u5;
+			r8_n = *r4_n.u6;
 			r9_n = r10_n * 0x00010001 ^ r8_n;
-		} while ((((word32) r8_n - 0x01010101 & ~r8_n | r9_n + ~0x01010100 & ~r9_n) & 0x80808080) == 0x00);
+		} while (((r8_n + ~0x01010100 & ~r8_n | r9_n + ~0x01010100 & ~r9_n) & 0x80808080) == 0x00);
 		r16_n = r4_n;
 	}
-	ui32 r7_n = (word32) *r16_n.u3;
+	ui32 r7_n = (word32) *r16_n.u4;
 	if (r7_n != 0x00)
 	{
 		while ((r5 & 0xFF) != r7_n)
 		{
 			++r16_n.u11;
-			r7_n = (word32) *r16_n.u3;
+			r7_n = (word32) *r16_n.u4;
 			if (r7_n == 0x00)
 				return r16_n;
 		}
@@ -17520,7 +17543,7 @@ l0040A8AA:
 		ptr32 r5_n;
 		while (true)
 		{
-			word32 r5_n = *r7_n.u5;
+			word32 r5_n = *r7_n.u6;
 			r5_n = 0x80808080;
 			if ((r5_n + ~0x01010100 & ~r5_n & 0x80808080) != 0x00)
 				break;
@@ -17528,13 +17551,13 @@ l0040A8AA:
 		}
 		Eq_n r6_n = r7_n;
 		Eq_n r7_n;
-		r7_n.u3 = (word32) *r7_n.u3;
+		r7_n.u4 = (word32) *r7_n.u4;
 		if (r7_n != 0x00)
 		{
 			do
 			{
 				++r6_n.u11;
-				r5_n = (word32) *r6_n.u3;
+				r5_n = (word32) *r6_n.u4;
 			} while (r5_n != 0x00);
 		}
 		r5Out = r5_n;
@@ -17545,7 +17568,7 @@ l0040A8AA:
 	else
 	{
 		Eq_n r6_n;
-		r6_n.u3 = (word32) *r4.u3;
+		r6_n.u4 = (word32) *r4.u4;
 		ptr32 r5;
 		if (r6_n != 0x00)
 		{
@@ -17555,7 +17578,7 @@ l0040A8AA:
 				++r7_n.u11;
 				if ((r7_n & 0x03) == 0x00)
 					goto l0040A8AA;
-				r6_n.u3 = (word32) *r7_n.u3;
+				r6_n.u4 = (word32) *r7_n.u4;
 			} while (r6_n != 0x00);
 			r5Out = r5;
 			r6Out = r6_n;
@@ -17587,8 +17610,8 @@ Eq_n strncmp(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r6Out)
 		r6Out = r6;
 		return 0x00;
 	}
-	word32 r7_n = (word32) *r4.u3;
-	word32 r9_n = (word32) *r5.u3;
+	word32 r7_n = (word32) *r4.u4;
+	word32 r9_n = (word32) *r5.u4;
 	word32 r8_n;
 	if (r7_n == 0x00)
 	{
@@ -17603,7 +17626,7 @@ Eq_n strncmp(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r6Out)
 			int32 r7_n = 0x01;
 			do
 			{
-				r8_n = (word32) r4.u3[r7_n];
+				r8_n = (word32) r4.u4[r7_n];
 				Eq_n r10_n;
 				r10_n.u11 = r5.u11 + 1;
 				r9_n = (word32) r5.u11[1];
@@ -17647,31 +17670,31 @@ Eq_n strnlen(Eq_n r4, Eq_n r5, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_
 	Eq_n r4_n = memchr(r4, 0x00, r5, out r5_n, out r6_n, out r8_n);
 	if (r4_n == 0x00)
 	{
-		r5Out.u0 = (Eq_n (*)[]) <invalid>;
-		r6Out.u0 = (Eq_n (*)[]) <invalid>;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r8Out.u0 = <invalid>;
 		return r5;
 	}
 	else
 	{
-		r5Out.u0 = (Eq_n (*)[]) <invalid>;
-		r6Out.u0 = (Eq_n (*)[]) <invalid>;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
+		r5Out.u0 = <invalid>;
+		r6Out.u0 = <invalid>;
+		r8Out.u0 = <invalid>;
 		return r4_n - r4;
 	}
 }
 
-// 0040A960: Register (ptr32 byte) strspn(Register (ptr32 byte) r4, Register (ptr32 Eq_n) r5)
+// 0040A960: Register Eq_n strspn(Register Eq_n r4, Register (ptr32 Eq_n) r5)
 // Called from:
 //      inet_ntop
-byte * strspn(byte * r4, struct Eq_n * r5)
+Eq_n strspn(Eq_n r4, struct Eq_n * r5)
 {
 	uint32 r7_n = (word32) r5->b0000;
 	if (r7_n == 0x00)
-		return null;
-	byte * r6_n = r4;
-	uint32 r9_n = (word32) *r4;
-	byte * r4_n;
+		return 0x00;
+	Eq_n r6_n = r4;
+	uint32 r9_n = (word32) *r4.u1;
+	Eq_n r4_n;
 	if ((word32) r5[1] != 0x00)
 	{
 		ptr32 fp;
@@ -17689,26 +17712,26 @@ byte * strspn(byte * r4, struct Eq_n * r5)
 			r4_n->dwFFFFFFE0 = r7_n;
 		} while (r7_n != 0x00);
 		if (r9_n == 0x00)
-			return null;
+			return 0x00;
 		r4_n = 0x01 << r9_n & (&((&((fp - 0x10) + (r9_n >> 0x05))->dwFFFFFFE0 + 8))[-8].dwFFFFFFE0)[8];
-		if (r4_n == null)
+		if (r4_n == 0x00)
 			return r4_n;
 		uint32 r5_n;
 		ui32 r7_n;
 		do
 		{
-			++r6_n;
-			r5_n = (word32) *r6_n;
+			r6_n.u1 = (word32) r6_n + 1;
+			r5_n = (word32) *r6_n.u1;
 			r7_n = 0x01 << r5_n;
 		} while (r5_n != 0x00 && (r7_n & (&((&((fp - 0x10) + (r5_n >> 0x05))->dwFFFFFFE0 + 8))[-8].dwFFFFFFE0)[8]) != 0x00);
 	}
 	else
 	{
 		if (r9_n != r7_n)
-			return null;
+			return 0x00;
 		do
-			++r6_n;
-		while ((word32) *r6_n == r9_n);
+			r6_n.u1 = (word32) r6_n + 1;
+		while ((word32) *r6_n.u1 == r9_n);
 	}
 	r4_n = r6_n - r4;
 	return r4_n;
@@ -17722,7 +17745,7 @@ Eq_n twoway_strstr(Eq_n r4, Eq_n r5)
 	word32 r8_n;
 	word32 r6_n;
 	word32 r5_n;
-	uint32 r6_n = (word32) *r5.u3;
+	uint32 r6_n = (word32) *r5.u4;
 	Eq_n r22_n = r4;
 	Eq_n r20_n;
 	ptr32 fp;
@@ -17732,7 +17755,7 @@ Eq_n twoway_strstr(Eq_n r4, Eq_n r5)
 	if (r6_n != 0x00)
 	{
 		r20_n.u0 = 0x00;
-		if ((word32) *r4.u3 != 0x00)
+		if ((word32) *r4.u4 != 0x00)
 		{
 			do
 			{
@@ -17773,7 +17796,7 @@ l0040AA86:
 						}
 						else if (r6_n != r21_n)
 						{
-							r6_n = (word32) r6_n.u0 + 1;
+							r6_n.u2 = (word32) r6_n.u0 + 1;
 							goto l0040AA86;
 						}
 						r16_n = r7_n;
@@ -17791,10 +17814,10 @@ l0040AA86:
 					r23_n.u0 = ~0x00;
 l0040AABC:
 					Eq_n r7_n = r16_n + r6_n;
-					ptr32 r5_n = r5 + r23_n;
+					Eq_n r5_n = r5 + r23_n;
 					while (r7_n < r20_n)
 					{
-						up32 r4_n = (word32) *((word32) r6_n.u0 + r5_n);
+						up32 r4_n = CONVERT(Mem61[r5_n + r6_n:byte], byte, word32);
 						up32 r5_n = CONVERT(Mem61[r5 + r7_n:byte], byte, word32);
 						if (r4_n != r5_n)
 						{
@@ -17810,7 +17833,7 @@ l0040AABC:
 						}
 						else if (r17_n != r6_n)
 						{
-							r6_n = (word32) r6_n.u0 + 1;
+							r6_n.u2 = (word32) r6_n + 1;
 							goto l0040AABC;
 						}
 						r16_n = r7_n;
@@ -17842,11 +17865,11 @@ l0040AAF6:
 	Eq_n dwLoc0454_n;
 	if (memcmp(r5, r5 + r17_n, r30_n, out r7_n, out r8_n, out r9_n) != 0x00)
 	{
-		Eq_n r7_n = &r20_n.u11->bFFFFFFFF - r23_n;
+		Eq_n r7_n = r20_n.u11->aFFFFFFFF - r23_n;
 		dwLoc0454_n.u0 = 0x00;
 		if ((word32) (r7_n < r23_n) != 0x00)
 			r7_n = r23_n;
-		r17_n = r7_n.u11 + 1;
+		r17_n.u2 = r7_n.u11 + 1;
 	}
 	else
 		dwLoc0454_n = r20_n - r17_n;
@@ -17861,7 +17884,7 @@ l0040AB24:
 		{
 			Mem216 = Mem333;
 			Eq_n r4_n = r16_n + r20_n;
-			uint32 r6_n = (word32) r4_n.u11->bFFFFFFFF;
+			uint32 r6_n = (word32) r4_n.u12->bFFFFFFFF;
 			if ((0x01 << r6_n & ((fp + ~0x102F) + (r6_n >> 0x05))[760]) == 0x00)
 			{
 				r16_n = r4_n;
@@ -17897,7 +17920,7 @@ l0040AB24:
 					{
 						if (r21_n >= r7_n)
 							return r16_n;
-						r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+						r7_n.u4 = r7_n.u11->aFFFFFFFF;
 					} while (CONVERT(Mem216[r5 + r7_n:byte], byte, word32) == CONVERT(Mem216[r16_n + r7_n:byte], byte, word32));
 				}
 				r16_n += r17_n;
@@ -17934,7 +17957,7 @@ l0040AB86:
 //      fn00407D04
 ui32 strstr(Eq_n r4, Eq_n r5, union Eq_n & r4Out)
 {
-	ui32 r6_n = (word32) *r5.u3;
+	ui32 r6_n = (word32) *r5.u4;
 	ui32 r2;
 	if (r6_n != 0x00)
 	{
@@ -17953,15 +17976,15 @@ ui32 strstr(Eq_n r4, Eq_n r5, union Eq_n & r4Out)
 				ui32 r9_n = (word32) r5.u11[2];
 				if (r9_n == 0x00)
 				{
-					byte * r4_n = &(r4_n.u11 + 1)->bFFFFFFFF;
-					ui32 r5_n = r5_n | (word32) (*r5.u3) << 0x08;
-					ui32 r7_n = (word32) *r4_n.u3 << 0x08 | r8_n;
+					byte * r4_n = (byte *) (r4_n.u11 + 1)->aFFFFFFFF;
+					ui32 r5_n = r5_n | (word32) (*r5.u4) << 0x08;
+					ui32 r7_n = (word32) *r4_n.u4 << 0x08 | r8_n;
 					ui32 r6_n;
 					do
 					{
 						if (r5_n == r7_n)
 						{
-							r4Out.u3 = r4_n;
+							r4Out.u4 = r4_n;
 							return r2;
 						}
 						++r4_n;
@@ -17982,15 +18005,15 @@ ui32 strstr(Eq_n r4, Eq_n r5, union Eq_n & r4Out)
 						{
 							if ((word32) r5.u11[4] == 0x00)
 							{
-								ui32 r5_n = r5_n << 0x10 | (word32) (*r5.u3) << 0x18 | r11_n | r9_n << 0x08;
-								ui32 r6_n = (word32) *r4_n.u3 << 0x18 | r8_n << 0x10 | r2 | r10_n << 0x08;
-								byte * r4_n = (char *) &(r4_n.u11 + 3)->ptrFFFFFFC8 + 53;
+								ui32 r5_n = r5_n << 0x10 | (word32) (*r5.u4) << 0x18 | r11_n | r9_n << 0x08;
+								ui32 r6_n = (word32) *r4_n.u4 << 0x18 | r8_n << 0x10 | r2 | r10_n << 0x08;
+								byte * r4_n = &(r4_n.u11 + 3)->bFFFFFFFD;
 								ui32 r7_n;
 								do
 								{
 									if (r5_n == r6_n)
 									{
-										r4Out.u3 = r4_n;
+										r4Out.u4 = r4_n;
 										return r2;
 									}
 									++r4_n;
@@ -18009,15 +18032,15 @@ ui32 strstr(Eq_n r4, Eq_n r5, union Eq_n & r4Out)
 					}
 					else
 					{
-						ui32 r9_n = r5_n << 0x10 | (word32) (*r5.u3) << 0x18 | r9_n << 0x08;
-						ui32 r6_n = (word32) *r4_n.u3 << 0x18 | r8_n << 0x10 | r10_n << 0x08;
-						byte * r4_n = (char *) &(r4_n.u11 + 2)->ptrFFFFFFC8 + 54;
+						ui32 r9_n = r5_n << 0x10 | (word32) (*r5.u4) << 0x18 | r9_n << 0x08;
+						ui32 r6_n = (word32) *r4_n.u4 << 0x18 | r8_n << 0x10 | r10_n << 0x08;
+						byte * r4_n = &(r4_n.u11 + 2)->bFFFFFFFE;
 						ui32 r7_n;
 						do
 						{
 							if (r9_n == r6_n)
 							{
-								r4Out.u3 = r4_n;
+								r4Out.u4 = r4_n;
 								return r2;
 							}
 							++r4_n;
@@ -18053,8 +18076,8 @@ void __lock(Eq_n r4)
 		__sync(0x00);
 		Eq_n r5_n;
 		do
-			r5_n = __load_linked<word32>(&*r4.u0);
-		while (__store_conditional<word32>(&*r4.u0, 0x01) == 0x00);
+			r5_n = __load_linked<word32>(&*r4.u1);
+		while (__store_conditional<word32>(&*r4.u1, 0x01) == 0x00);
 		__sync(0x00);
 		if (r5_n == 0x00)
 			break;
@@ -18062,7 +18085,7 @@ void __lock(Eq_n r4)
 		word32 r5_n;
 		word32 r8_n;
 		word32 r9_n;
-		__wait(r4, &r4.u1->dw0004, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
+		__wait(r4, &r4.u2->t0004.u0, 0x01, 0x01, out r4_n, out r5_n, out r8_n, out r9_n);
 	}
 }
 
@@ -18074,11 +18097,11 @@ void __lock(Eq_n r4)
 //      rewinddir
 void __unlock(Eq_n r4)
 {
-	if (*r4.u0 == 0x00)
+	if (*r4.u1 == 0x00)
 		return;
 	__sync(0x00);
 	__sync(0x00);
-	if (r4.u1->dw0004 == 0x00)
+	if (r4.u2->t0004.u0 == 0x00)
 		return;
 	word32 r4_n;
 	word32 r5_n;
@@ -18162,7 +18185,7 @@ Eq_n __wait(Eq_n r4, word32 * r5, Eq_n r6, word32 r7, union Eq_n & r4Out, word32
 			break;
 		if (r5 != null && *r5 != 0x00)
 			goto l0040ADD6;
-		if (*r4.u0 != r6)
+		if (*r4.u1 != r6)
 			goto l0040AE08;
 		__sync(0x00);
 	}
@@ -18177,7 +18200,7 @@ l0040ADD6:
 	Eq_n r2;
 	Eq_n r8;
 	ptr32 r9;
-	while (r6 == *r4.u0)
+	while (r6 == *r4.u1)
 	{
 		word32 r6_n;
 		word32 r7_n;
@@ -18192,7 +18215,7 @@ l0040ADD6:
 	if (r5 != null)
 	{
 		__sync(0x00);
-		while (__store_conditional<word32>(&*r5, &__load_linked<word32>(&*r5).u11->bFFFFFFFF) == 0x00)
+		while (__store_conditional<word32>(&*r5, __load_linked<word32>(&*r5).u11->aFFFFFFFF) == 0x00)
 			;
 		__sync(0x00);
 	}
@@ -18219,7 +18242,7 @@ void __do_cleanup_push()
 void _pthread_cleanup_push(struct Eq_n * r4, ptr32 r5, Eq_n r6)
 {
 	r4->ptr0000 = r5;
-	r4->t0004.u3 = (byte *) r6;
+	r4->t0004.u0 = (int32) r6;
 	__do_cleanup_push();
 }
 
@@ -18247,8 +18270,8 @@ Eq_n __pthread_setcancelstate(Eq_n r4, ptr32 r5, union Eq_n & r7Out)
 	r7_n.u0 = 22;
 	if (r4 < 0x03)
 	{
-		struct Eq_n * r3_n = __read_user_local();
-		r3_n->tFFFFFF80.u3 = (byte *) r4;
+		Eq_n r3_n = __read_user_local();
+		r3_n.u1->tFFFFFF80.u0 = (int32) r4;
 		r7_n.u0 = 0x00;
 	}
 	r7Out = r7_n;
@@ -18275,8 +18298,8 @@ up32 pthread_sigmask(up32 r4, struct Eq_n * r6)
 	r4_n = 0x00;
 	if (r6 != null)
 	{
-		__ext<word32,word32>(r6->t0000.u3, 0x00, 0x1F);
-		__ins<word32,word32>(r6->t0004.u3, 0x00, 0x00, 0x01);
+		__ext<word32,word32>(r6->t0000.u0, 0x00, 0x1F);
+		__ins<word32,word32>(r6->t0004.u0, 0x00, 0x00, 0x01);
 	}
 	return r4_n;
 }
@@ -18354,7 +18377,7 @@ l0040AF3C:
 	return r2_n;
 }
 
-// 0040AF40: Register word32 gettimeofday(Register (ptr32 Eq_n) r4, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out (ptr32 Eq_n) r17Out)
+// 0040AF40: Register word32 gettimeofday(Register Eq_n r4, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out Eq_n r17Out)
 // Called from:
 //      ping4_send_probe
 //      ping4_parse_reply
@@ -18362,12 +18385,12 @@ l0040AF3C:
 //      main_loop
 //      build_echo
 //      ping6_run
-word32 gettimeofday(struct Eq_n * r4, ptr32 & r4Out, ptr32 & r6Out, struct Eq_n & r17Out)
+word32 gettimeofday(Eq_n r4, ptr32 & r4Out, ptr32 & r6Out, union Eq_n & r17Out)
 {
 	word32 r3;
 	ptr32 r6;
-	struct Eq_n * r17;
-	if (r4 != null)
+	Eq_n r17;
+	if (r4 != 0x00)
 	{
 		Eq_n tLoc18;
 		word32 r4_n;
@@ -18377,7 +18400,7 @@ word32 gettimeofday(struct Eq_n * r4, ptr32 & r4Out, ptr32 & r6Out, struct Eq_n 
 		word32 r8_n;
 		__clock_gettime(0x00, &tLoc18, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n);
 		r6 = 1000;
-		r17 = tLoc18.ptr0004;
+		r17.u0 = tLoc18.t0004.u0;
 	}
 	r4Out = 0x00;
 	r6Out = r6;
@@ -18390,7 +18413,7 @@ void dummy()
 {
 }
 
-// 0040AF72: Register word32 close(Register out (ptr32 Eq_n) r4Out, Register out ptr32 r6Out, Register out ptr32 r8Out)
+// 0040AF72: Register word32 close(Register out Eq_n r4Out, Register out ptr32 r6Out, Register out ptr32 r8Out)
 // Called from:
 //      ping4_run
 //      ping6_run
@@ -18407,7 +18430,7 @@ word32 close(union Eq_n & r4Out, ptr32 & r6Out, ptr32 & r8Out)
 	word32 r2_n = __syscall_cp(out r4_n, out r5_n, out r6_n, out r8_n);
 	if ((r4_n ^ ~0x03) == 0x00)
 		r4_n.u0 = 0x00;
-	union Eq_n * r4_n;
+	Eq_n r4_n;
 	word32 r7_n;
 	__syscall_ret(r4_n, out r4_n, out r7_n);
 	r4Out = r4_n;
@@ -18631,7 +18654,7 @@ struct Eq_n * __init_tp(struct Eq_n * r4)
 	if (r4_n >= 0x00)
 	{
 		if (r4_n == 0x00)
-			g_t454430.u1 = 0x01;
+			0x00454430 = 0x01;
 		word32 r4_n;
 		word32 r5_n;
 		word32 r6_n;
@@ -18646,21 +18669,21 @@ struct Eq_n * __init_tp(struct Eq_n * r4)
 	return r7_n;
 }
 
-// 0040B100: Register (ptr32 Eq_n) __copy_tls(Register (ptr32 Eq_n) r4)
+// 0040B100: Register Eq_n __copy_tls(Register Eq_n r4)
 // Called from:
 //      __init_tls
-struct Eq_n * __copy_tls(struct Eq_n * r4)
+Eq_n __copy_tls(Eq_n r4)
 {
-	word32 r16_n = r4 + (Mem15[0x00454448<p32>:word32] + (~Mem15[0x00454450<p32>:word32] << 0x02));
+	word32 r16_n = (word32) r4.u0 + (g_t454448.u0 + (~g_dw454450 << 0x02));
 	struct Eq_n * r19_n;
-	struct Eq_n * r17_n = (struct Eq_n *) ((char *) r4 + (g_dw45444C + ~0x00 & ~0xAF - r4));
+	Eq_n r17_n = (word32) r4.u0 + (g_dw45444C + ~0x00 & ~0xAF - r4);
 	word32 * r20_n = r16_n + 0x04;
 	for (r19_n = g_ptr454444; r19_n != null; r19_n = r19_n->ptr0000)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r19_n->t0008.u3;
+		r6_n.u0 = r19_n->t0008.u0;
 		Eq_n r4_n;
-		r4_n.u3 = (char *) r17_n + (r19_n->dw0014 + 0xB0);
+		r4_n.u4 = (word32) r17_n + (r19_n->dw0014 + 0xB0);
 		*r20_n = (word32) r4_n;
 		word32 r3_n;
 		word32 r5_n;
@@ -18672,11 +18695,11 @@ struct Eq_n * __copy_tls(struct Eq_n * r4)
 		word32 r12_n;
 		word32 r13_n;
 		word32 r14_n;
-		memcpy(r4_n, r19_n->t0004.u3, r6_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
+		memcpy(r4_n, r19_n->t0004.u0, r6_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 		++r20_n;
 	}
-	r17_n->dw0001 = r16_n;
-	r17_n->dw00AC = r16_n;
+	r17_n.u1->dw0001 = r16_n;
+	r17_n.u1->dw00AC = r16_n;
 	return r17_n;
 }
 
@@ -18709,9 +18732,10 @@ void __init_tls(Eq_n r0, struct Eq_n * r4)
 	ui32 r5_n = (-(g_dw432DE4 + r5_n) & r8_n + ~0x00) + r5_n;
 	up32 r7_n = g_dw432DF0;
 	Eq_n r6_n = __ins<word32,word32>(r7_n + 0xBB + r5_n, 0x00, 0x00, 0x01);
-	g_t454448.u3 = (byte *) r6_n;
+	g_t454448.u0 = (int32) r6_n;
 	g_dw45444C = r7_n;
-	struct Eq_n * r4_n = (struct Eq_n *) &g_t432DF8;
+	Eq_n r4_n;
+	r4_n.u0 = 4402680;
 	if (r6_n > 244)
 	{
 		word32 r5_n;
@@ -18723,7 +18747,7 @@ void __init_tls(Eq_n r0, struct Eq_n * r4)
 	}
 	if (__init_tp(__copy_tls(r4_n)) < 0x00)
 	{
-		*r0.u3 = 0x00;
+		*r0.u4 = 0x00;
 		__syscall<word32>(0x00);
 	}
 }
@@ -18745,15 +18769,15 @@ void _Exit()
 	}
 }
 
-// 0040B250: Register Eq_n scanexp(Register Eq_n r4, Register Eq_n r5, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out (ptr32 Eq_n) r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out ptr32 r12Out)
+// 0040B250: Register Eq_n scanexp(Register Eq_n r4, Register Eq_n r5, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out ptr32 r12Out)
 // Called from:
 //      __floatscan
-Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, ptr32 & r12Out)
+Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, ptr32 & r12Out)
 {
 	Eq_n r7_n;
-	r7_n.u3 = r4.u11[4];
+	r7_n.u4 = r4.u11[4];
 	Eq_n r9_n;
-	r9_n.u3 = r4.u11[0x0068];
+	r9_n.u4 = r4.u11[0x0068];
 	Eq_n r6_n;
 	Eq_n r17_n;
 	Eq_n r2;
@@ -18763,7 +18787,7 @@ Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & 
 	if (r7_n < r9_n)
 	{
 		r6_n = r7_n.u11 + 1;
-		r17_n.u3 = (word32) *r7_n.u3;
+		r17_n.u4 = (word32) *r7_n.u4;
 	}
 	else
 	{
@@ -18772,7 +18796,7 @@ Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & 
 		word32 r9_n;
 		word32 r11_n;
 		r2 = __shgetc(r4, out r3, out r4_n, out r5, out r6_n, out r7_n, out r8, out r9_n, out r11_n, out r12);
-		r9_n.u3 = r4.u11[0x0068];
+		r9_n.u4 = r4.u11[0x0068];
 		r17_n = r5;
 	}
 	Eq_n r7_n;
@@ -18780,7 +18804,7 @@ Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & 
 	Eq_n r7_n;
 	if (r17_n != 0x2B && r17_n != 0x2D)
 	{
-		r7_n.u3 = (word32) r17_n - 48;
+		r7_n.u4 = (word32) r17_n - 48;
 		if (r7_n < 0x0A)
 		{
 			r18_n = 0x00;
@@ -18790,12 +18814,12 @@ Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & 
 	else
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[4];
+		r7_n.u4 = r4.u11[4];
 		Eq_n r4_n;
 		if (r7_n < r9_n)
 		{
 			r6_n = r7_n.u11 + 1;
-			r4_n.u3 = (word32) *r7_n.u3;
+			r4_n.u4 = (word32) *r7_n.u4;
 		}
 		else
 		{
@@ -18803,12 +18827,12 @@ Eq_n scanexp(Eq_n r4, Eq_n r5, ptr32 & r3Out, union Eq_n & r4Out, struct Eq_n & 
 			word32 r9_n;
 			word32 r11_n;
 			r2 = __shgetc(r4, out r3, out r4_n, out r5, out r6_n, out r7_n, out r8, out r9_n, out r11_n, out r12);
-			r9_n.u3 = r4.u11[0x0068];
+			r9_n.u4 = r4.u11[0x0068];
 			r17_n = r5;
 		}
-		r7_n.u3 = (word32) r4_n - 48;
+		r7_n.u4 = (word32) r4_n - 48;
 		Eq_n r16_n;
-		struct Eq_n * r20_n;
+		Eq_n r20_n;
 		if (r7_n < 0x0A)
 		{
 			r18_n = (word32) (r17_n == 0x2D);
@@ -18819,9 +18843,9 @@ l0040B278:
 			up32 r10_n;
 			do
 			{
-				r16_n = r17_n.u3 + r16_n * 0x0A;
+				r16_n = (int32) (r17_n.u4 + r16_n * 0x0A);
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				r16_n = r16_n + ~0x2F;
 				if (r7_n >= r9_n)
 				{
@@ -18833,7 +18857,7 @@ l0040B278:
 					word32 r9_n;
 					word32 r11_n;
 					r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12);
-					r9_n.u3 = r4.u11[0x0068];
+					r9_n.u4 = r4.u11[0x0068];
 					r17_n = r4_n;
 					r10_n = (word32) r4_n - 48;
 					if (r4_n >= 0x3A)
@@ -18841,7 +18865,7 @@ l0040B278:
 				}
 				else
 				{
-					r17_n.u3 = (word32) *r7_n.u3;
+					r17_n.u4 = (word32) *r7_n.u4;
 					r10_n = (word32) r17_n - 48;
 					if (r17_n >= 0x3A)
 						break;
@@ -18852,21 +18876,21 @@ l0040B278:
 			{
 				uint32 r6_n = r16_n << 0x02;
 				uint32 r8_n = (word32) r16_n.u0 + r6_n;
-				uint32 r6_n = r17_n.u3 + (r8_n << 0x01);
+				uint32 r6_n = (uint32) (r17_n.u4 + (r8_n << 0x01));
 				r8 = r8_n >> 0x1F;
-				r7_n = (word32) (r6_n < r8_n << 0x01) + (((r20_n + (r20_n << 0x02 | r16_n >> 0x1E)) + (word32) (r8_n < r6_n) << 0x01 | r8_n >> 0x1F) + (r17_n >> 0x1F));
+				r7_n = (word32) (r6_n < r8_n << 0x01) + (((r20_n.u2 + (r20_n << 0x02 | r16_n >> 0x1E)) + (word32) (r8_n < r6_n) << 0x01 | r8_n >> 0x1F) + (r17_n >> 0x1F));
 				r6_n = (word32) (r6_n + ~0x2F < r6_n);
 				if (r10_n >= 0x0A)
 					break;
-				if (r20_n > (struct Eq_n *) 0x0147AE14 || r20_n == (struct Eq_n *) 0x0147AE14 && r16_n > 0x7AE147AD)
+				if (r20_n > 0x0147AE14 || r20_n == 0x0147AE14 && r16_n > 0x7AE147AD)
 				{
 					while (r10_n < 0x0A)
 					{
-						r7_n.u3 = r4.u11[4];
+						r7_n.u4 = r4.u11[4];
 						if (r7_n < r9_n)
 						{
 							r6_n = r7_n.u11 + 1;
-							r10_n = (word32) *r7_n.u3 + ~0x2F;
+							r10_n = (word32) *r7_n.u4 + ~0x2F;
 						}
 						else
 						{
@@ -18875,19 +18899,19 @@ l0040B278:
 							word32 r9_n;
 							word32 r11_n;
 							r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9_n, out r11_n, out r12);
-							r9_n.u3 = r4.u11[0x0068];
+							r9_n.u4 = r4.u11[0x0068];
 							r10_n = r4_n + ~0x2F;
 						}
 					}
 					break;
 				}
 				Eq_n r5_n;
-				r5_n.u3 = r4.u11[4];
+				r5_n.u4 = r4.u11[4];
 				r16_n = r6_n + ~0x2F;
 				r20_n = r6_n + (r7_n + ~0x00);
 				if (r5_n < r9_n)
 				{
-					r17_n.u3 = (word32) *r5_n.u3;
+					r17_n.u4 = (word32) *r5_n.u4;
 					r10_n = (word32) r17_n - 48;
 				}
 				else
@@ -18900,13 +18924,13 @@ l0040B278:
 					word32 r9_n;
 					word32 r11_n;
 					r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12);
-					r9_n.u3 = r4.u11[0x0068];
+					r9_n.u4 = r4.u11[0x0068];
 					r17_n = r4_n;
 					r10_n = (word32) r4_n - 48;
 				}
 			}
 			if (r9_n != 0x00)
-				r7_n.u3 = r4.u11[4].bFFFFFFFF;
+				r7_n.u4 = r4.u11[4].aFFFFFFFF;
 			if (r18_n != 0x00)
 			{
 				r3Out = r3;
@@ -18934,22 +18958,22 @@ l0040B344:
 		{
 			if (r9_n != 0x00)
 			{
-				r7_n.u3 = r4.u11[4].bFFFFFFFF;
+				r7_n.u4 = r4.u11[4].aFFFFFFFF;
 l0040B33A:
-				r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+				r7_n.u4 = r7_n.u11->aFFFFFFFF;
 				r16_n.u0 = 0x00;
-				r20_n = null;
+				r20_n.u0 = 0x00;
 				goto l0040B344;
 			}
 l0040B3F2:
 			r16_n.u0 = 0x00;
-			r20_n = null;
+			r20_n.u0 = 0x00;
 			goto l0040B344;
 		}
 	}
 	if (r9_n != 0x00)
 	{
-		r7_n.u3 = r4.u11[4];
+		r7_n.u4 = r4.u11[4];
 		goto l0040B33A;
 	}
 	goto l0040B3F2;
@@ -18975,7 +18999,7 @@ Eq_n decfloat(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r9, Eq_
 	word32 r8_n;
 	Eq_n r5_n;
 	word32 r8_n;
-	struct Eq_n * r10_n;
+	Eq_n r10_n;
 	word32 r8_n;
 	Eq_n r5_n;
 	word32 r14_n;
@@ -19011,11 +19035,11 @@ Eq_n decfloat(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r9, Eq_
 	else
 	{
 l0040B410:
-		r6_n.u3 = r4.u11[0x0068];
+		r6_n.u4 = r4.u11[0x0068];
 		do
 		{
 			Eq_n r7_n;
-			r7_n.u3 = r4.u11[4];
+			r7_n.u4 = r4.u11[4];
 			if (r7_n >= r6_n)
 			{
 				word32 r3_n;
@@ -19033,7 +19057,7 @@ l0040B410:
 				goto l0040B42A;
 			}
 			dwLoc025C_n.u11 = r7_n.u11 + 1;
-			r5.u3 = (word32) *r7_n.u3;
+			r5.u4 = (word32) *r7_n.u4;
 		} while (r5 == 0x30);
 		dwLoc0260_n.u0 = 0x01;
 	}
@@ -19050,12 +19074,12 @@ l0040B42A:
 	else
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[4];
+		r7_n.u4 = r4.u11[4];
 		if (r7_n < (r4.u11)[0x0068])
 		{
 			r6_n.u11 = r7_n.u11 + 1;
 			dwLoc025C_n.u11 = r7_n.u11 + 1;
-			r5.u3 = (word32) *r7_n.u3;
+			r5.u4 = (word32) *r7_n.u4;
 		}
 		else
 		{
@@ -19071,17 +19095,17 @@ l0040B42A:
 		}
 		if (r5 == 0x30)
 		{
-			r6_n.u3 = r4.u11[0x0068];
+			r6_n.u4 = r4.u11[0x0068];
 			r23_n.u0 = 0x00;
 			r18_n.u0 = 0x00;
 			do
 			{
 				Eq_n r5_n;
-				r5_n.u3 = &r23_n.u11->bFFFFFFFF;
+				r5_n.u4 = r23_n.u11->aFFFFFFFF;
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				r23_n = r5_n;
-				r18_n.u3 = &r18_n.u11->bFFFFFFFF + (word32) (r5_n < r23_n);
+				r18_n = (word32) (r5_n < r23_n) + ((word32) r18_n.u0 - 1);
 				if (r7_n >= r6_n)
 				{
 					word32 r3_n;
@@ -19095,11 +19119,11 @@ l0040B42A:
 					r5 = r4_n;
 					if (r4_n != 0x30)
 						break;
-					r6_n.u3 = r4.u11[0x0068];
+					r6_n.u4 = r4.u11[0x0068];
 					continue;
 				}
-				r4.u16->t0001.u1 = r7_n.u11 + 1;
-				r5.u3 = (word32) *r7_n.u3;
+				r4.u11[1] = (struct Eq_n) (r7_n.u11 + 1);
+				r5.u4 = (word32) *r7_n.u4;
 			} while (r5 == 0x30);
 			r21_n = 0x01;
 			dwLoc0260_n.u0 = 0x01;
@@ -19117,11 +19141,12 @@ l0040B42A:
 	r22_n.u0 = 0x00;
 	Eq_n r17_n;
 	r17_n.u0 = 0x00;
-	struct Eq_n * r30_n = null;
+	Eq_n r30_n;
+	r30_n.u0 = 0x00;
 	int32 r20_n = 0x00;
 l0040B440:
 	up32 r7_n = (word32) r5 - 48;
-	ptr32 fp;
+	Eq_n fp;
 	Eq_n r7_n;
 	if (r7_n < 0x0A)
 	{
@@ -19131,21 +19156,21 @@ l0040B472:
 			Eq_n r6_n;
 			r6_n.u11 = r22_n.u11 + 1;
 			r22_n = r6_n;
-			r17_n.u3 += (word32) (r6_n < r22_n);
-			if (r30_n < (struct Eq_n *) 0x3D)
+			r17_n.u4 += (word32) (r6_n < r22_n);
+			if (r30_n < 0x3D)
 			{
 				int32 r4_n = r20_n + 0x01;
 				if ((r5 ^ 0x30) != 0x00)
 					r19_n = r6_n;
 				if (r20_n != 0x00)
 				{
-					struct Eq_n * r5_n = fp + ~0x102F + (r30_n << 0x02);
+					struct Eq_n * r5_n = (word32) fp - 4144 + (r30_n << 0x02);
 					r5_n->dw0E00 = r7_n + r5_n->dw0E00 * 0x0A;
 					if (r4_n == 0x09)
 					{
 						dwLoc0260_n.u0 = 0x01;
-						++r30_n;
-						r7_n.u3 = r4.u11[4];
+						r30_n = (word32) r30_n + 1;
+						r7_n.u4 = r4.u11[4];
 						r20_n = 0x00;
 						if (r7_n >= (r4.u11)[0x0068])
 						{
@@ -19168,7 +19193,7 @@ l0040B4C4:
 				}
 				else
 				{
-					(fp + ~0x102F + r30_n)[896] = (Eq_n) r7_n;
+					((word32) fp - 4144 + (r30_n << 0x02))->dw0E00 = r7_n;
 					r20_n = 0x01;
 					dwLoc0260_n.u0 = 0x01;
 				}
@@ -19189,12 +19214,12 @@ l0040B44C:
 			r18_n = r17_n;
 			r21_n = 0x01;
 l0040B458:
-			r7_n.u3 = r4.u11[4];
+			r7_n.u4 = r4.u11[4];
 			if (r7_n >= (r4.u11)[0x0068])
 				goto l0040B4C4;
 l0040B462:
 			r6_n.u11 = r7_n.u11 + 1;
-			r5.u3 = (word32) *r7_n.u3;
+			r5.u4 = (word32) *r7_n.u4;
 			dwLoc025C_n = r6_n;
 			r7_n = (word32) r5 - 48;
 			if (r5 < 0x3A)
@@ -19238,14 +19263,14 @@ l0040B652:
 		{
 			if (r5 < 0x00)
 				goto l0040B4F8;
-			r7_n.u3 = r4.u11[0x0068];
+			r7_n.u4 = r4.u11[0x0068];
 			if (r7_n != 0x00)
 			{
 l0040B4EC:
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
-				r7_n.u3 = &r7_n.u11->bFFFFFFFF;
-				dwLoc025C_n.u3 = &r7_n.u11->bFFFFFFFF;
+				r7_n.u4 = r4.u11[4];
+				r7_n.u4 = r7_n.u11->aFFFFFFFF;
+				dwLoc025C_n.u4 = r7_n.u11->aFFFFFFFF;
 				r17_n = dwLoc0260_n;
 				if (r7_n != 0x01)
 					goto l0040B4F8;
@@ -19275,25 +19300,25 @@ l0040B65A:
 						r5_n = 0x00;
 						goto l0040B662;
 					}
-					r7_n.u3 = r4.u11[0x0068];
+					r7_n.u4 = r4.u11[0x0068];
 					if (r7_n != 0x00)
 					{
 						Eq_n r7_n;
-						r7_n.u3 = r4.u11[4];
+						r7_n.u4 = r4.u11[4];
 						r5_n = 0x00;
-						r7_n.u3 = &r7_n.u11->bFFFFFFFF;
-						dwLoc025C_n.u3 = &r7_n.u11->bFFFFFFFF;
+						r7_n.u4 = r7_n.u11->aFFFFFFFF;
+						dwLoc025C_n.u4 = r7_n.u11->aFFFFFFFF;
 					}
 					else
 						r5_n = 0x00;
 				}
 			}
 			Eq_n r4_n;
-			r4_n.u3 = r23_n.u3 + r4_n;
-			r5.u3 = r18_n.u3 + r5_n;
+			r4_n.u4 = r23_n.u4 + r4_n;
+			r5.u4 = (word32) r18_n.u0 + r5_n;
 			r17_n = r9;
 			r23_n = r4_n;
-			r18_n.u3 = r5.u3 + (word32) (r4_n < r23_n);
+			r18_n.u4 = r5.u4 + (word32) (r4_n < r23_n);
 		}
 l0040B4F8:
 		if (r4 == 0x00)
@@ -19354,7 +19379,7 @@ l0040B4F8:
 				if (r20_n < 0x09)
 				{
 					int32 r5_n = r30_n << 0x02;
-					ui32 r7_n = (fp + ~0x102F + r5_n)->dw0E00;
+					ui32 r7_n = ((word32) fp - 4144 + r5_n)->dw0E00;
 					ui32 r6_n = r7_n * 0x0A;
 					if (r20_n != 0x08)
 					{
@@ -19382,10 +19407,10 @@ l0040B4F8:
 							}
 						}
 					}
-					r5 = fp + ~0x102F + r5_n;
+					r5 = (word32) fp - 4144 + r5_n;
 					r5.u11[0x0E00] = (struct Eq_n) r6_n;
 				}
-				++r30_n;
+				r30_n = (word32) r30_n + 1;
 			}
 			Eq_n r20_n = r23_n;
 			Eq_n r4_n = __floatsidf(0x00);
@@ -19394,25 +19419,25 @@ l0040B4F8:
 l0040B668:
 				while (true)
 				{
-					struct Eq_n * r7_n = (struct Eq_n *) ((char *) r30_n - 1);
+					Eq_n r7_n = (word32) r30_n - 1;
 					if ((fp - 0x0230)[r7_n] != 0x00)
 						break;
 					r30_n = r7_n;
 				}
-				struct Eq_n * r7_n = r23_n >> 0x1F;
-				struct Eq_n * r17_n = r23_n - ((SLICE(r23_n *s64 0x38E38E39, word32, 32) >> 0x01) - r7_n) * 0x09;
-				if (r17_n != null)
+				Eq_n r7_n = r23_n >> 0x1F;
+				Eq_n r17_n = r23_n - ((SLICE(r23_n *s64 0x38E38E39, word32, 32) >> 0x01) - r7_n) * 0x09;
+				if (r17_n != 0x00)
 				{
 					if (r23_n < 0x00)
-						r17_n += 9;
+						r17_n = (word32) r17_n.u0 + 9;
 					r7_n = 0x08 - r17_n;
-					r16_n.u3 = *((char *) &g_a413240->u3 + r7_n * 0x04);
-					struct Eq_n * r18_n;
-					if (r30_n != null)
+					r16_n.u0 = (&g_a413240->u0)[r7_n];
+					Eq_n r18_n;
+					if (r30_n != 0x00)
 					{
 						int32 r5_n = 0x00;
-						r18_n = null;
-						r7_n = null;
+						r18_n.u0 = 0x00;
+						r7_n.u0 = 0x00;
 						if (r16_n == r0)
 							__syscall<word32>(0x07);
 						do
@@ -19428,54 +19453,55 @@ l0040B668:
 							r5_n = r5_n *s r19_n;
 							if (r7_n != r18_n || r6_n != 0x00)
 							{
-								++r7_n;
+								r7_n = (word32) r7_n + 1;
 								if (r30_n != r7_n)
 									continue;
 								break;
 							}
-							++r7_n;
-							r20_n.u3 = (word32) r20_n - 9;
-							r18_n = r18_n + 1 & 0x7F;
+							r7_n = (word32) r7_n + 1;
+							r20_n.u4 = (word32) r20_n.u0 - 9;
+							r18_n = (word32) r18_n + 1 & 0x7F;
 						} while (r30_n != r7_n);
 						if (r5_n != 0x00)
 						{
-							r7_n = fp + ~0x102F + (r30_n << 0x02);
-							r7_n[0x0E00] = (struct Eq_n) r5_n;
-							++r30_n;
+							r7_n = (word32) fp - 4144 + (r30_n << 0x02);
+							r7_n.u1[0x0E00] = (struct Eq_n) r5_n;
+							r30_n = (word32) r30_n + 1;
 						}
 					}
 					else
-						r18_n = null;
+						r18_n.u0 = 0x00;
 					r17_n = r18_n;
 					r20_n = r20_n - r17_n + 0x09;
 				}
-				struct Eq_n * dwLoc0260_n = null;
+				Eq_n dwLoc0260_n;
+				dwLoc0260_n.u0 = 0x00;
 l0040B710:
-				struct Eq_n * dwLoc0260_n;
+				Eq_n dwLoc0260_n;
 				if (r20_n < 0x12)
 				{
 l0040B72E:
-					r16_n.u3 = (char *) r30_n - 1;
+					r16_n.u4 = (word32) r30_n - 1;
 					r17_n = dwLoc0260_n;
-					struct Eq_n * r22_n = r16_n & 0x7F;
+					Eq_n r22_n = r16_n & 0x7F;
 					word32 r21_n = 0x00;
-					dwLoc0260_n = r7_n + ~0x1C;
+					dwLoc0260_n = (word32) r7_n - 29;
 					while (true)
 					{
 l0040B740:
-						int32 r23_n = r22_n << 0x02;
-						uint32 r5_n = (fp + ~0x102F + r23_n)->dw0E00;
+						Eq_n r23_n = r22_n << 0x02;
+						uint32 r5_n = *((word32) ((word32) r23_n + ((word32) fp - 4144)) + 0x0E00);
 						r19_n = (r5_n << 0x1D) + r21_n;
 						Eq_n r18_n = (word32) (r19_n < r5_n << 0x1D) + (r5_n >> 0x03);
 						Eq_n r4_n;
 						ui32 r6_n;
 						if (r18_n == 0x00 && r19_n <= 1000000000)
 						{
-							(r23_n + (fp + ~0x102F))->t0E00.u3 = (byte *) r19_n;
+							*((word32) ((word32) r23_n + ((word32) fp - 4144)) + 0x0E00) = (word32) r19_n;
 							r4_n = r19_n;
 							r7_n = r16_n & 0x7F;
 							r21_n = 0x00;
-							r6_n = (char *) r22_n - 1;
+							r6_n = (word32) r22_n - 1;
 							if (r22_n == r7_n)
 							{
 l0040B7C2:
@@ -19484,7 +19510,7 @@ l0040B7C2:
 									if (r4_n == 0x00)
 										r30_n = r7_n;
 									r22_n = r6_n & 0x7F;
-									r16_n = r30_n + ~0x00;
+									r16_n.u4 = (word32) r30_n - 1;
 									goto l0040B740;
 								}
 								r7_n = dwLoc0260_n;
@@ -19492,16 +19518,16 @@ l0040B7D6:
 								dwLoc0260_n = dwLoc0260_n;
 								if (r21_n != 0x00)
 								{
-									r20_n.u11 += 9;
-									r17_n = dwLoc0260_n + ~0x00 & 0x7F;
+									r20_n.u4 = (word32) r20_n.u0 + 9;
+									r17_n = (word32) dwLoc0260_n - 1 & 0x7F;
 									if (r30_n == r17_n)
 									{
-										struct Eq_n * r7_n = fp + ~0x102F + ((r7_n + ~0x00 & 0x7F) << 0x02);
-										r7_n->dw0E00 |= (fp + ~0x102F + r7_n)[896];
+										Eq_n r7_n = (word32) (((word32) r7_n - 1 & 0x7F) << 0x02) + ((word32) fp - 4144);
+										r7_n.u1->t0E00.u0 = (int32) (r7_n.u1->t0E00.u0 | *((word32) ((word32) (r7_n << 0x02) + ((word32) fp - 4144)) + 0x0E00));
 										r30_n = r7_n;
 									}
-									r7_n = fp + ~0x102F + (r17_n << 0x02);
-									r7_n[0x0E00] = (struct Eq_n) r21_n;
+									r7_n = (word32) (r17_n << 0x02) + ((word32) fp - 4144);
+									r7_n.u1[0x0E00] = (struct Eq_n) r21_n;
 								}
 								goto l0040B710;
 							}
@@ -19521,10 +19547,10 @@ l0040B7D6:
 							word32 r3_n;
 							word32 r8_n;
 							r2_n = __umoddi3(r19_n, r18_n, 1000000000, 0x00, r13_n, out r3_n, out r4_n, out r8_n, out r12_n);
-							(r23_n + (fp + ~0x102F))->t0E00.u3 = (byte *) r4_n;
+							*((word32) ((word32) r23_n + ((word32) fp - 4144)) + 0x0E00) = (word32) r4_n;
 							r21_n = r4_n;
 							r7_n = r16_n & 0x7F;
-							r6_n = (char *) r22_n - 1;
+							r6_n = (word32) r22_n - 1;
 							if (r22_n == r7_n)
 								goto l0040B7C2;
 						}
@@ -19535,25 +19561,26 @@ l0040B7D6:
 				}
 				if (r20_n == 0x12)
 				{
-					r7_n = (struct Eq_n *) (fp + ~0x102F + r17_n)[896];
-					if (r7_n <= (struct Eq_n *) 9007198)
+					r7_n.u0 = ((word32) fp - 4144 + (r17_n << 0x02))->t0E00.u0;
+					if (r7_n <= 9007198)
 						goto l0040B72E;
 				}
-				struct Eq_n * r6_n = r17_n & 0x7F;
-				struct Eq_n * r18_n = (struct Eq_n *) (r17_n + 1);
+				Eq_n r6_n = r17_n & 0x7F;
+				Eq_n r18_n = (word32) r17_n.u0 + 1;
 l0040B898:
 				if (r30_n != r6_n)
 				{
-					struct Eq_n * r6_n;
+					Eq_n r6_n;
 					do
 					{
-						up32 r7_n = (up32) (fp + ~0x102F + r6_n)[896];
+						Eq_n r7_n;
+						r7_n.u4 = *((word32) ((word32) (r6_n << 0x02) + ((word32) fp - 4144)) + 0x0E00);
 						if (r7_n <= 9007198)
 							break;
 						if (r7_n == 9007199)
 						{
-							struct Eq_n * r7_n = r18_n & 0x7F;
-							if (r30_n == r7_n || ((fp + ~0x102F) + r7_n)[896] <= 0x0F2F09FF)
+							Eq_n r7_n = r18_n & 0x7F;
+							if (r30_n == r7_n || *((word32) ((word32) (r7_n << 0x02) + ((word32) fp - 4144)) + 0x0E00) <= 0x0F2F09FF)
 								break;
 						}
 l0040B8DA:
@@ -19567,20 +19594,22 @@ l0040B8DA:
 							r11_n = 0x01;
 						if (r23_n == 0x00)
 							r7_n = 0x01FF;
-						struct Eq_n * r17_n = dwLoc0260_n;
+						Eq_n r17_n = dwLoc0260_n;
 						dwLoc0260_n = r7_n + r11_n;
 						if (dwLoc0260_n == r30_n)
 							goto l0040B898;
-						struct Eq_n * r7_n = dwLoc0260_n;
+						Eq_n r7_n = dwLoc0260_n;
 						r19_n.u0 = 0x00;
-						struct Eq_n * r22_n;
+						Eq_n r22_n;
 						do
 						{
-							struct Eq_n * r4_n = fp + ~0x102F + (r7_n << 0x02);
-							uint32 r6_n = r4_n->dw0E00;
-							uint32 r5_n = r19_n.u3 + (r6_n >> r11_n);
-							r4_n->dw0E00 = r5_n;
-							r22_n = r7_n + 0x01;
+							Eq_n r4_n = (word32) (r7_n << 0x02) + ((word32) fp - 4144);
+							Eq_n r6_n;
+							r6_n.u0 = r4_n.u1->t0E00.u0;
+							Eq_n r5_n;
+							r5_n.u4 = r19_n.u4 + (r6_n >> r11_n);
+							r4_n.u1->t0E00.u0 = (int32) r5_n;
+							r22_n = (word32) r7_n + 1;
 							r19_n = (r6_n & r7_n) *s r2_n;
 							if (r7_n != r17_n || r5_n != 0x00)
 							{
@@ -19591,23 +19620,23 @@ l0040B8DA:
 							}
 							r17_n = r18_n & 0x7F;
 							r7_n = r22_n & 0x7F;
-							r20_n.u3 = (word32) r20_n - 9;
-							r18_n = r17_n + 0x01;
+							r20_n.u4 = (word32) r20_n.u0 - 9;
+							r18_n = (word32) r17_n + 1;
 						} while (r30_n != (r22_n & 0x7F));
 						if (r19_n == 0x00)
 						{
 							r6_n = r17_n & 0x7F;
 							goto l0040B898;
 						}
-						r6_n = r30_n + 0x01;
+						r6_n = (word32) r30_n + 1;
 						if (r17_n == (r6_n & 0x7F))
 						{
-							struct Eq_n * r7_n = fp + ~0x102F + ((r30_n + ~0x00 & 0x7F) << 0x02);
-							r7_n->dw0E00 |= 0x01;
+							Eq_n r7_n = (word32) (((word32) r30_n - 1 & 0x7F) << 0x02) + ((word32) fp - 4144);
+							r7_n.u1->t0E00.u0 = (int32) (r7_n.u1->t0E00.u0 | 0x01);
 							r6_n = r6_n & 0x7F;
 							goto l0040B898;
 						}
-						(fp + ~0x102F + r30_n)[896] = (Eq_n) r19_n;
+						*((word32) ((word32) (r30_n << 0x02) + ((word32) fp - 4144)) + 0x0E00) = (word32) r19_n;
 						r6_n = r17_n & 0x7F;
 						r30_n = r6_n & 0x7F;
 					} while ((r6_n & 0x7F) != r6_n);
@@ -19616,8 +19645,8 @@ l0040B8DA:
 				{
 					if (r30_n == r6_n)
 					{
-						struct Eq_n * r8_n = r30_n + 0x01;
-						(fp + ~0x102F + (r8_n & 0x7F))[895] = (Eq_n) 0x00;
+						Eq_n r8_n = (word32) r30_n + 1;
+						*((word32) ((word32) ((r8_n & 0x7F) << 0x02) + ((word32) fp - 4144)) + 0x0DFC) = 0x00;
 						r30_n = r8_n & 0x7F;
 					}
 					Eq_n r5_n;
@@ -19630,12 +19659,12 @@ l0040B8DA:
 					word32 r12_n;
 					word32 r13_n;
 					word32 r14_n;
-					__adddf3(__floatunsidf((fp + ~0x102F + r6_n)[896], out r5_n), r5_n, 0x00, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
-					struct Eq_n * r18_n = r18_n & 0x7F;
+					__adddf3(__floatunsidf(*((word32) ((word32) (r6_n << 0x02) + ((word32) fp - 4144)) + 0x0E00), out r5_n), r5_n, 0x00, 0x00, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
+					Eq_n r18_n = r18_n & 0x7F;
 					if (r18_n == r30_n)
 					{
-						struct Eq_n * r8_n = r30_n + 0x01;
-						(fp + ~0x102F + (r8_n & 0x7F))[895] = (Eq_n) 0x00;
+						Eq_n r8_n = (word32) r30_n + 1;
+						*((word32) ((word32) ((r8_n & 0x7F) << 0x02) + ((word32) fp - 4144)) + 0x0DFC) = 0x00;
 						r30_n = r8_n & 0x7F;
 					}
 					word32 r3_n;
@@ -19660,12 +19689,12 @@ l0040B8DA:
 					word32 r12_n;
 					word32 r13_n;
 					word32 r14_n;
-					__adddf3(__floatunsidf((fp + ~0x102F + r18_n)[896], out r5_n), r5_n, r4_n, r5_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
+					__adddf3(__floatunsidf(*((word32) ((word32) (r18_n << 0x02) + ((word32) fp - 4144)) + 0x0E00), out r5_n), r5_n, r4_n, r5_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
 					word32 r3_n;
 					Eq_n r4_n;
 					Eq_n r5_n;
 					word32 r6_n;
-					struct Eq_n * r7_n;
+					Eq_n r7_n;
 					word32 r8_n;
 					word32 r9_n;
 					word32 r10_n;
@@ -19673,22 +19702,22 @@ l0040B8DA:
 					word32 r12_n;
 					word32 r14_n;
 					__muldf3(r4_n, r5_n, r4_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14_n);
-					struct Eq_n * r16_n = r16_n + 0x35;
-					struct Eq_n * r16_n = r16_n - r19_n;
+					Eq_n r16_n = (word32) r16_n + 53;
+					Eq_n r16_n = r16_n - r19_n;
 					Eq_n r22_n = r4_n;
 					Eq_n r23_n = r5_n;
 					Eq_n r10_n;
-					struct Eq_n * r6_n;
+					Eq_n r6_n;
 					Eq_n dwLoc0240_n;
 					Eq_n dwLoc023C_n;
 					Eq_n r18_n;
 					Eq_n r19_n;
 					if (r16_n < r7_n)
 					{
-						if (r16_n < null)
+						if (r16_n < 0x00)
 						{
 							r10_n.u0 = 0x35;
-							r6_n = (struct Eq_n *) 0x69;
+							r6_n.u0 = 0x69;
 l0040BB46:
 							Eq_n r19_n = *(union Eq_n *) 68289116;
 							Eq_n r4_n = scalbn(*(union Eq_n *) 68289112, r19_n, r6_n, out r5_n, out r8_n, out r10_n);
@@ -19714,7 +19743,7 @@ l0040BB46:
 							r22_n = r4_n;
 							r23_n = r5_n;
 l0040BA00:
-							struct Eq_n * r7_n = r6.u11 + 2 & 0x7F;
+							Eq_n r7_n = r6.u11 + 2 & 0x7F;
 							if (r30_n == r7_n)
 							{
 l0040BA7E:
@@ -19728,12 +19757,12 @@ l0040BA7E:
 								word32 r13_n;
 								word32 r14_n;
 								__adddf3(r22_n, r23_n, r18_n, r19_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
-								struct Eq_n * r30_n = r16_n - r16_n;
+								Eq_n r30_n = r16_n - r16_n;
 								Eq_n r4_n = __subdf3(r6, r5_n, dwLoc0240_n, dwLoc023C_n, out r5_n, out r7_n, out r13_n);
-								struct Eq_n * r6_n = r30_n + ~0x00;
+								Eq_n r6_n = (word32) r30_n - 1;
 								Eq_n r20_n = r4_n;
 								Eq_n r21_n = r5_n;
-								if (__ext<word32,word32>(r7_n, 0x00, 0x1F) >= r30_n + ~0x00)
+								if (__ext<word32,word32>(r7_n, 0x00, 0x1F) >= (word32) r30_n - 1)
 								{
 									word32 r7_n;
 									if (__gtdf2(r4_n, fabs(r5_n), *(union Eq_n *) 0x04120240, *(union Eq_n *) 0x04120244, out r6_n, out r7_n) >= 0x00)
@@ -19751,10 +19780,10 @@ l0040BA7E:
 										r20_n = r4_n;
 										r21_n = r5_n;
 									}
-									struct Eq_n * r7_n = r7_n + 0x34;
-									if (r7_n < r30_n + 0x03)
+									Eq_n r7_n = r7_n + 0x34;
+									if (r7_n < (word32) r30_n + 3)
 									{
-										if (r7_n == null)
+										if (r7_n == 0x00)
 											goto l0040BAAA;
 										word32 r4_n;
 										word32 r5_n;
@@ -19786,7 +19815,8 @@ l0040BAAA:
 								}
 							}
 							int32 r6_n = 499999999;
-							up32 r7_n = (up32) (fp + ~0x102F + r7_n)[896];
+							Eq_n r7_n;
+							r7_n.u4 = *((word32) ((word32) (r7_n << 0x02) + ((word32) fp - 4144)) + 0x0E00);
 							Eq_n r6_n;
 							Eq_n r7_n;
 							if (r7_n <= 499999999)
@@ -19863,10 +19893,10 @@ l0040BA4E:
 							goto l0040BA7E;
 						}
 						r7_n = r16_n;
-						if (r16_n >= (struct Eq_n *) 0x35)
+						if (r16_n >= 0x35)
 							goto l0040B9F8;
 					}
-					else if (r7_n >= (struct Eq_n *) 0x35)
+					else if (r7_n >= 0x35)
 					{
 l0040B9F8:
 						r18_n.u0 = 0x00;
@@ -19906,14 +19936,14 @@ l0040B9F8:
 				word32 r12_n;
 				int32 r14_n;
 				__muldf3(__floatunsidf(r4, out r5_n), r5_n, r4_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14_n);
-				r4_n = __divdf3(r4_n, r5_n, __floatsidf(*((char *) &g_a413240->u3 + (0x08 - r23_n) * 0x04)), r5_n, r14_n, out r5_n);
+				r4_n = __divdf3(r4_n, r5_n, __floatsidf((&g_a413240->u0)[0x08 - r23_n]), r5_n, r14_n, out r5_n);
 				goto l0040B662;
 			}
 			int32 r7_n = (word32) r23_n - 9;
 			int32 r7_n = r7_n * 0x03 + (r7_n << 0x02);
 			if (r7_n < 0x1F && r4 >> r7_n != 0x00)
 				goto l0040B668;
-			r18_n = __floatsidf(*((char *) &g_a413240->u3 + ((word32) r23_n - 0x0A) * 0x04));
+			r18_n = __floatsidf((&g_a413240->u0)[(word32) r23_n - 0x0A]);
 			Eq_n r5_n;
 			word32 r3_n;
 			word32 r6_n;
@@ -19965,7 +19995,7 @@ l0040B662:
 	}
 }
 
-// 0040BD5C: Register Eq_n __floatscan(Register Eq_n r0, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r12, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r4Out, Register out ptr32 r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 r11Out, Register out Eq_n r12Out)
+// 0040BD5C: Register Eq_n __floatscan(Register Eq_n r0, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r12, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 r11Out, Register out Eq_n r12Out)
 // Called from:
 //      strtold_l
 //      __isoc99_vfscanf
@@ -19976,7 +20006,7 @@ Eq_n __floatscan(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, union Eq
 	Eq_n r7_n;
 	Eq_n r6_n;
 	ptr32 r5_n;
-	union Eq_n * r4_n;
+	Eq_n r4_n;
 	Eq_n r3_n;
 	word32 r13_n;
 	word32 r7_n;
@@ -19989,10 +20019,10 @@ Eq_n __floatscan(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, union Eq
 	Eq_n r7_n;
 	Eq_n r6_n;
 	ptr32 r5_n;
-	union Eq_n * r4_n;
+	Eq_n r4_n;
 	Eq_n r3_n;
 	word32 r4_n;
-	union Eq_n * r22_n;
+	Eq_n r22_n;
 	ptr32 r23_n;
 	uint32 r19_n;
 	Eq_n dwLoc78_n;
@@ -20002,7 +20032,7 @@ Eq_n __floatscan(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, union Eq
 	{
 		if (r5 < 0x00 || r5 >= 0x03)
 		{
-			r22_n = null;
+			r22_n.u0 = 0x00;
 			r23_n = 0x00;
 			goto l0040BEA4;
 		}
@@ -20018,19 +20048,19 @@ Eq_n __floatscan(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, union Eq
 		r18_n.u0 = ~0x94;
 		r17_n.u0 = 0x18;
 	}
-	struct Eq_n * r30_n;
+	Eq_n r30_n;
 	Eq_n r4_n;
 	Eq_n r3;
 	ptr32 r11;
 	do
 	{
-		r30_n = null;
+		r30_n.u0 = 0x00;
 		Eq_n r7_n;
-		r7_n.u3 = r4.u16->t0001.u1;
+		r7_n.u4 = r4.u11[1];
 		if (r7_n < (r4.u11)[0x0068])
 		{
-			r4.u16->t0001.u1 = r7_n.u11 + 1;
-			r4_n.u3 = (word32) *r7_n.u3;
+			r4.u11[1] = (struct Eq_n) (r7_n.u11 + 1);
+			r4_n.u4 = (word32) *r7_n.u4;
 			if (r4_n == 0x20)
 				continue;
 		}
@@ -20053,26 +20083,26 @@ Eq_n __floatscan(Eq_n r0, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r12, union Eq
 		if (r4_n != 0x2D)
 		{
 			r8_n.u0 = 0x01;
-			r22_n = *(union Eq_n **) 0x041202A0;
+			r22_n = *(union Eq_n *) 0x041202A0;
 			r23_n = *(ptr32 *) 68289188;
 			goto l0040BDC8;
 		}
 		r8_n.u0 = ~0x00;
-		r22_n = *(union Eq_n **) 0x04120298;
+		r22_n = *(union Eq_n *) 0x04120298;
 		r23_n = *(ptr32 *) 68289180;
 	}
 	else
 	{
 		r8_n.u0 = 0x01;
-		r22_n = *(union Eq_n **) 0x041202A0;
+		r22_n = *(union Eq_n *) 0x041202A0;
 		r23_n = *(ptr32 *) 68289188;
 	}
 	Eq_n r7_n;
-	r7_n.u3 = r4.u16->t0001.u1;
+	r7_n.u4 = r4.u11[1];
 	if (r7_n < (r4.u11)[0x0068])
 	{
-		r4.u16->t0001.u1 = r7_n.u11 + 1;
-		r5_n.u3 = (word32) *r7_n.u3;
+		r4.u11[1] = (struct Eq_n) (r7_n.u11 + 1);
+		r5_n.u4 = (word32) *r7_n.u4;
 	}
 	else
 	{
@@ -20091,13 +20121,13 @@ l0040BDC8:
 	if (r7_n == 0x29)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r4.u16->t0001.u1;
-		r7.u3 = r4.u11[0x0068];
+		r6_n.u4 = r4.u11[1];
+		r7.u4 = r4.u11[0x0068];
 		ui32 r4_n;
 		if (r6_n < r7)
 		{
-			r4.u16->t0001.u1 = r6_n.u11 + 1;
-			r4_n = (word32) *r6_n.u3;
+			r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+			r4_n = (word32) *r6_n.u4;
 		}
 		else
 		{
@@ -20107,17 +20137,17 @@ l0040BDC8:
 			word32 r8_n;
 			word32 r9_n;
 			r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12);
-			r7.u3 = r4.u11[0x0068];
+			r7.u4 = r4.u11[0x0068];
 		}
 		if ((r4_n | 0x20) == 0x2E)
 		{
 			Eq_n r6_n;
-			r6_n.u3 = r4.u16->t0001.u1;
+			r6_n.u4 = r4.u11[1];
 			ui32 r4_n;
 			if (r6_n < r7)
 			{
-				r4.u16->t0001.u1 = r6_n.u11 + 1;
-				r4_n = (word32) *r6_n.u3;
+				r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+				r4_n = (word32) *r6_n.u4;
 			}
 			else
 			{
@@ -20127,16 +20157,16 @@ l0040BDC8:
 				word32 r8_n;
 				word32 r9_n;
 				r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12);
-				r7.u3 = r4.u11[0x0068];
+				r7.u4 = r4.u11[0x0068];
 			}
 			if ((r4_n | 0x20) == 0x26)
 			{
-				r6.u3 = r4.u16->t0001.u1;
+				r6.u4 = r4.u11[1];
 				ui32 r4_n;
 				if (r6 < r7)
 				{
-					r4.u16->t0001.u1 = r6.u11 + 1;
-					r4_n = (word32) *r6.u3;
+					r4.u11[1] = (struct Eq_n) (r6.u11 + 1);
+					r4_n = (word32) *r6.u4;
 				}
 				else
 				{
@@ -20145,17 +20175,17 @@ l0040BDC8:
 					word32 r8_n;
 					word32 r9_n;
 					r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r11, out r12);
-					r7.u3 = r4.u11[0x0068];
+					r7.u4 = r4.u11[0x0068];
 				}
 				word32 r5_n;
 				if ((r4_n | 0x20) == 0x29)
 				{
-					r6.u3 = r4.u16->t0001.u1;
+					r6.u4 = r4.u11[1];
 					ui32 r4_n;
 					if (r6 < r7)
 					{
-						r4.u16->t0001.u1 = r6.u11 + 1;
-						r4_n = (word32) *r6.u3;
+						r4.u11[1] = (struct Eq_n) (r6.u11 + 1);
+						r4_n = (word32) *r6.u4;
 					}
 					else
 					{
@@ -20164,16 +20194,16 @@ l0040BDC8:
 						word32 r8_n;
 						word32 r9_n;
 						r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r11, out r12);
-						r7.u3 = r4.u11[0x0068];
+						r7.u4 = r4.u11[0x0068];
 					}
 					if ((r4_n | 0x20) == 0x2E)
 					{
-						r6.u3 = r4.u16->t0001.u1;
+						r6.u4 = r4.u11[1];
 						ui32 r4_n;
 						if (r6 < r7)
 						{
-							r4.u16->t0001.u1 = r6.u11 + 1;
-							r4_n = (word32) *r6.u3;
+							r4.u11[1] = (struct Eq_n) (r6.u11 + 1);
+							r4_n = (word32) *r6.u4;
 						}
 						else
 						{
@@ -20182,16 +20212,16 @@ l0040BDC8:
 							word32 r8_n;
 							word32 r9_n;
 							r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r11, out r12);
-							r7.u3 = r4.u11[0x0068];
+							r7.u4 = r4.u11[0x0068];
 						}
 						if ((r4_n | 0x20) == 0x29)
 						{
-							r6.u3 = r4.u16->t0001.u1;
+							r6.u4 = r4.u11[1];
 							ui32 r4_n;
 							if (r6 < r7)
 							{
-								r4.u16->t0001.u1 = r6.u11 + 1;
-								r4_n = (word32) *r6.u3;
+								r4.u11[1] = (struct Eq_n) (r6.u11 + 1);
+								r4_n = (word32) *r6.u4;
 							}
 							else
 							{
@@ -20200,17 +20230,17 @@ l0040BDC8:
 								word32 r8_n;
 								word32 r9_n;
 								r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r11, out r12);
-								r7.u3 = r4.u11[0x0068];
+								r7.u4 = r4.u11[0x0068];
 							}
 							if ((r4_n | 0x20) == 0x34)
 							{
-								r6.u3 = r4.u16->t0001.u1;
+								r6.u4 = r4.u11[1];
 								ui32 r4_n;
 								if (r6 < r7)
 								{
-									r4.u16->t0001.u1 = r6.u11 + 1;
+									r4.u11[1] = (struct Eq_n) (r6.u11 + 1);
 									r7.u11 = r6.u11 + 1;
-									r4_n = (word32) *r6.u3;
+									r4_n = (word32) *r6.u4;
 								}
 								else
 								{
@@ -20232,7 +20262,7 @@ l0040BEA4:
 									return r2;
 								}
 								r5_n = 0x07;
-								r7.u3 = r4.u11[0x0068];
+								r7.u4 = r4.u11[0x0068];
 								if (r6 == 0x00)
 									goto l0040BE78;
 							}
@@ -20262,31 +20292,31 @@ l0040BEA4:
 				if (r7 != 0x00)
 				{
 					Eq_n r6_n;
-					r6_n.u3 = r4.u16->t0001.u1;
-					r4.u16->t0001.u1 = &r6_n.u11->bFFFFFFFF;
-					r6.u3 = &r6_n.u11->bFFFFFFFF;
+					r6_n.u4 = r4.u11[1];
+					r4.u11[1] = (struct Eq_n) r6_n.u11->aFFFFFFFF;
+					r6.u4 = r6_n.u11->aFFFFFFFF;
 				}
 				if (r6 != 0x00 && (r5_n != 0x03 && r7 != 0x00))
 				{
-					r7.u3 = r4.u16->t0001.u1;
-					r4.u16->t0001.u1 = &r7.u11->bFFFFFFFF;
-					r6.u3 = &r7.u11->bFFFFFFFF;
+					r7.u4 = r4.u11[1];
+					r4.u11[1] = (struct Eq_n) r7.u11->aFFFFFFFF;
+					r6.u4 = r7.u11->aFFFFFFFF;
 					if (r5_n != 0x04)
 					{
-						r4.u16->t0001.u1 = &r7.u12->bFFFFFFFE;
-						r6.u3 = &r7.u12->bFFFFFFFE;
+						r4.u11[1] = (struct Eq_n) &r7.u11->bFFFFFFFE;
+						r6.u4 = &r7.u11->bFFFFFFFE;
 						if (r5_n != 0x05)
 						{
-							r4.u16->t0001.u1 = &r7.u12->bFFFFFFFD;
-							r6.u3 = &r7.u12->bFFFFFFFD;
+							r4.u11[1] = (struct Eq_n) &r7.u11->bFFFFFFFD;
+							r6.u4 = &r7.u11->bFFFFFFFD;
 							if (r5_n == 0x07)
 							{
-								r4.u16->t0001.u1 = &r7.u12->dwFFFFFFFC;
+								r4.u11[1] = (struct Eq_n) &r7.u11->tFFFFFFFC.u0;
 								r3Out = r3;
 								r4Out = r22_n;
 								r5Out = r23_n;
-								r6Out.u3 = &r7.u12->bFFFFFFFD;
-								r7Out.u3 = &r7.u12->dwFFFFFFFC;
+								r6Out.u4 = &r7.u11->bFFFFFFFD;
+								r7Out.u4 = &r7.u11->tFFFFFFFC.u0;
 								r11Out = r11;
 								r12Out = r12;
 								return r2;
@@ -20302,13 +20332,13 @@ l0040BEA4:
 	if (r7_n == 0x2E)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r4.u16->t0001.u1;
-		r7.u3 = r4.u11[0x0068];
+		r6_n.u4 = r4.u11[1];
+		r7.u4 = r4.u11[0x0068];
 		ui32 r4_n;
 		if (r6_n < r7)
 		{
-			r4.u16->t0001.u1 = r6_n.u11 + 1;
-			r4_n = (word32) *r6_n.u3;
+			r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+			r4_n = (word32) *r6_n.u4;
 		}
 		else
 		{
@@ -20318,17 +20348,17 @@ l0040BEA4:
 			word32 r8_n;
 			word32 r9_n;
 			r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12);
-			r7.u3 = r4.u11[0x0068];
+			r7.u4 = r4.u11[0x0068];
 		}
 		if ((r4_n | 0x20) == 33)
 		{
 			Eq_n r6_n;
-			r6_n.u3 = r4.u16->t0001.u1;
+			r6_n.u4 = r4.u11[1];
 			ui32 r4_n;
 			if (r6_n < r7)
 			{
-				r4.u16->t0001.u1 = r6_n.u11 + 1;
-				r4_n = (word32) *r6_n.u3;
+				r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+				r4_n = (word32) *r6_n.u4;
 			}
 			else
 			{
@@ -20338,16 +20368,16 @@ l0040BEA4:
 				word32 r8_n;
 				word32 r9_n;
 				r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12);
-				r7.u3 = r4.u11[0x0068];
+				r7.u4 = r4.u11[0x0068];
 			}
 			if ((r4_n | 0x20) == 0x2E)
 			{
 				Eq_n r6_n;
-				r6_n.u3 = r4.u16->t0001.u1;
+				r6_n.u4 = r4.u11[1];
 				if (r6_n < r7)
 				{
-					r4.u16->t0001.u1 = r6_n.u11 + 1;
-					r6.u3 = (word32) (((word32) *r6_n.u3 ^ 0x28) > 0x00);
+					r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+					r6.u4 = (word32) (((word32) *r6_n.u4 ^ 0x28) > 0x00);
 				}
 				else
 				{
@@ -20358,36 +20388,36 @@ l0040BEA4:
 					word32 r8_n;
 					word32 r9_n;
 					r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11, out r12);
-					r7.u3 = r4.u11[0x0068];
-					r6.u3 = (word32) ((r4_n ^ 0x28) > 0x00);
+					r7.u4 = r4.u11[0x0068];
+					r6.u4 = (word32) ((r4_n ^ 0x28) > 0x00);
 				}
 				if (r6 != 0x00)
 				{
 					if (r7 != 0x00)
 					{
 						Eq_n r7_n;
-						r7_n.u3 = r4.u16->t0001.u1;
-						r22_n = *(union Eq_n **) 68289192;
+						r7_n.u4 = r4.u11[1];
+						r22_n = *(union Eq_n *) 68289192;
 						r23_n = *(ptr32 *) 68289196;
-						r4.u16->t0001.u1 = &r7_n.u11->bFFFFFFFF;
+						r4.u11[1] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 						r6.u0 = 0x04120000;
-						r7.u3 = &r7_n.u11->bFFFFFFFF;
+						r7.u4 = r7_n.u11->aFFFFFFFF;
 						goto l0040BEA4;
 					}
 					goto l0040BFA8;
 				}
 				Eq_n r6_n;
-				r6_n.u3 = r4.u16->t0001.u1;
+				r6_n.u4 = r4.u11[1];
 				word32 r17_n = 0x01;
 				Eq_n r4_n;
 				if (r6_n < r7)
 				{
 					do
 					{
-						r4.u16->t0001.u1 = r6_n.u11 + 1;
-						r4_n.u3 = (word32) *r6_n.u3;
+						r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+						r4_n.u4 = (word32) *r6_n.u4;
 l0040BF6C:
-						r6.u3 = (word32) r4_n - 48;
+						r6.u4 = (word32) r4_n - 48;
 						Eq_n r7_n = __ins<word32,word32>(r4_n, 0x00, 0x05, 0x01);
 						if (r6 >= 0x0A && (r7_n >= 0x5B && r4_n != 0x1F))
 						{
@@ -20396,10 +20426,10 @@ l0040BF6C:
 								if (r4.u11[0x0068] != 0x00)
 								{
 									Eq_n r7_n;
-									r7_n.u3 = r4.u16->t0001.u1;
-									r4.u16->t0001.u1 = &r7_n.u11->bFFFFFFFF;
+									r7_n.u4 = r4.u11[1];
+									r4.u11[1] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 									Eq_n r7_n;
-									r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+									r7_n.u4 = r7_n.u11->aFFFFFFFF;
 									if (r6 == 0x00)
 									{
 l0040BE80:
@@ -20409,7 +20439,7 @@ l0040BE80:
 										ptr32 r11_n;
 										__shlim(r4, 0x00, 0x00, out r8_n, out r9_n, out r11_n);
 										r3Out = r3_n;
-										r4Out = null;
+										r4Out.u0 = 0x00;
 										r5Out = 0x00;
 										r6Out.u0 = 0x00;
 										r7Out.u0 = 0x00;
@@ -20423,8 +20453,8 @@ l0040BE80:
 										r6.u0 = ~0x00;
 										if (r17_n == ~0x00)
 											break;
-										r7_n.u3 = &r7_n.u11->bFFFFFFFF;
-										r4.u16->t0001.u1 = (ptr32) r7_n;
+										r7_n.u4 = r7_n.u11->aFFFFFFFF;
+										r4.u11[1] = (struct Eq_n) r7_n;
 									}
 								}
 								else if (r6 == 0x00)
@@ -20432,12 +20462,12 @@ l0040BE80:
 							}
 l0040BFA8:
 							r7.u0 = 0x04120000;
-							r22_n = *(union Eq_n **) 68289192;
+							r22_n = *(union Eq_n *) 68289192;
 							r23_n = *(ptr32 *) 68289196;
 							goto l0040BEA4;
 						}
 						++r17_n;
-						r6_n.u3 = r4.u16->t0001.u1;
+						r6_n.u4 = r4.u11[1];
 					} while (r6_n < (r4.u11)[0x0068]);
 				}
 				word32 r5_n;
@@ -20451,7 +20481,7 @@ l0040BFA8:
 		}
 l0040BE78:
 		if (r7 != 0x00)
-			r4.u16->t0001.u1 = (ptr32) (r4.u16->t0001.u1 + ~0x00);
+			r4.u11[1] = (struct Eq_n) r4.u11[1].aFFFFFFFF;
 		goto l0040BE80;
 	}
 	if (r5_n != 0x30)
@@ -20468,14 +20498,14 @@ l0040BFF0:
 		return r2_n;
 	}
 	Eq_n r6_n;
-	r6_n.u3 = r4.u16->t0001.u1;
+	r6_n.u4 = r4.u11[1];
 	Eq_n r7_n;
-	r7_n.u3 = r4.u11[0x0068];
+	r7_n.u4 = r4.u11[0x0068];
 	ui32 r4_n;
 	if (r6_n < r7_n)
 	{
-		r4.u16->t0001.u1 = r6_n.u11 + 1;
-		r4_n = (word32) *r6_n.u3;
+		r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+		r4_n = (word32) *r6_n.u4;
 	}
 	else
 	{
@@ -20485,23 +20515,23 @@ l0040BFF0:
 		word32 r9_n;
 		word32 r11_n;
 		r2 = __shgetc(r4, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12);
-		r7_n.u3 = r4.u11[0x0068];
+		r7_n.u4 = r4.u11[0x0068];
 		r17_n = r5_n;
 		r18_n = r8_n;
 	}
 	if ((r4_n | 0x20) != 0x38)
 	{
 		if (r7_n != 0x00)
-			r4.u16->t0001.u1 = (ptr32) (r4.u16->t0001.u1 + ~0x00);
+			r4.u11[1] = (struct Eq_n) r4.u11[1].aFFFFFFFF;
 		goto l0040BFF0;
 	}
 	Eq_n r6_n;
-	r6_n.u3 = r4.u16->t0001.u1;
+	r6_n.u4 = r4.u11[1];
 	Eq_n r4_n;
 	if (r6_n < r7_n)
 	{
-		r4.u16->t0001.u1 = r6_n.u11 + 1;
-		r4_n = (word32) *r6_n.u3;
+		r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
+		r4_n = (word32) *r6_n.u4;
 	}
 	else
 	{
@@ -20518,11 +20548,11 @@ l0040BFF0:
 	if (r4_n == 0x30)
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[0x0068];
+		r7_n.u4 = r4.u11[0x0068];
 		do
 		{
 			Eq_n r6_n;
-			r6_n.u3 = r4.u16->t0001.u1;
+			r6_n.u4 = r4.u11[1];
 			if (r6_n >= r7_n)
 			{
 				word32 r3_n;
@@ -20535,12 +20565,12 @@ l0040BFF0:
 				__shgetc(r4, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n);
 				if (r4_n != 0x30)
 					break;
-				r7_n.u3 = r4.u11[0x0068];
+				r7_n.u4 = r4.u11[0x0068];
 				continue;
 			}
-			r4.u16->t0001.u1 = r6_n.u11 + 1;
+			r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
 			r5_n.u11 = r6_n.u11 + 1;
-			r4_n = (word32) *r6_n.u3;
+			r4_n = (word32) *r6_n.u4;
 		} while (r4_n == 0x30);
 		r6_n = 0x01;
 	}
@@ -20552,11 +20582,11 @@ l0040BFF0:
 		dwLoc50_n = 0x00;
 	else
 	{
-		r5_n.u3 = r4.u16->t0001.u1;
+		r5_n.u4 = r4.u11[1];
 		if (r5_n < (r4.u11)[0x0068])
 		{
-			Mem239[r4 + 0x01:word32] = r5_n + 0x01;
-			r4_n = (word32) *r5_n.u3;
+			r4.u11[1] = (struct Eq_n) (r5_n.u11 + 1);
+			r4_n = (word32) *r5_n.u4;
 		}
 		else
 		{
@@ -20571,15 +20601,15 @@ l0040BFF0:
 		if (r4_n == 0x30)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = r4.u11[0x0068];
+			r7_n.u4 = r4.u11[0x0068];
 			Eq_n r22_n;
 			r22_n.u0 = 0x00;
-			r30_n = (struct Eq_n *) ~0x00;
+			r30_n.u0 = ~0x00;
 			do
 			{
 				Eq_n r6_n;
-				r6_n.u3 = r4.u16->t0001.u1;
-				r5_n = r22_n + ~0x00;
+				r6_n.u4 = r4.u11[1];
+				r5_n.u4 = r22_n.u11->aFFFFFFFF;
 				if (r6_n >= r7_n)
 				{
 					word32 r3_n;
@@ -20590,15 +20620,15 @@ l0040BFF0:
 					word32 r11_n;
 					word32 r12_n;
 					__shgetc(r4, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n);
-					r22_n.u3 = &r22_n.u11->bFFFFFFFF;
+					r22_n.u4 = r22_n.u11->aFFFFFFFF;
 					if (r4_n != 0x30)
 						break;
-					r7_n.u3 = r4.u11[0x0068];
+					r7_n.u4 = r4.u11[0x0068];
 					continue;
 				}
-				r4.u16->t0001.u1 = r6_n.u11 + 1;
+				r4.u11[1] = (struct Eq_n) (r6_n.u11 + 1);
 				r22_n = r5_n;
-				r4_n = (word32) *r6_n.u3;
+				r4_n = (word32) *r6_n.u4;
 			} while (r4_n == 0x30);
 			r6_n = 0x01;
 			dwLoc50_n = 0x00;
@@ -20627,7 +20657,7 @@ l0040C140:
 		do
 		{
 			r5_n = r4_n | 0x20;
-			r7_n.u3 = (word32) r5_n - 97;
+			r7_n.u4 = (word32) r5_n - 97;
 			if (r5_n < 0x67)
 				break;
 			if (r4_n != 0x2E)
@@ -20651,39 +20681,39 @@ l0040C158:
 						r5_n.u0 = 0x2E;
 l0040C25E:
 						Eq_n r7_n;
-						r7_n.u11 = r22_n.u11 + 1;
+						r7_n.u4 = (word32) r22_n.u2 + 1;
 						r23_n <<= 0x04;
-						r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+						r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 						if (r7_n != 0x08 || r6_n != 0x00)
 						{
 							Eq_n r7_n;
-							r7_n.u11 = r22_n.u11 + 2;
+							r7_n.u4 = (word32) r22_n.u2 + 2;
 							r23_n <<= 0x04;
-							r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+							r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 							if (r7_n != 0x08 || r6_n != 0x00)
 							{
 								Eq_n r7_n;
-								r7_n.u11 = r22_n.u11 + 3;
+								r7_n.u4 = (word32) r22_n.u2 + 3;
 								r23_n <<= 0x08;
-								r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+								r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 								if (r7_n != 0x08 || r6_n != 0x00)
 								{
 									Eq_n r7_n;
-									r7_n.u11 = r22_n.u11 + 4;
+									r7_n.u4 = (word32) r22_n.u2 + 4;
 									r23_n <<= 0x0C;
-									r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+									r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 									if (r7_n != 0x08 || r6_n != 0x00)
 									{
 										Eq_n r7_n;
-										r7_n.u11 = r22_n.u11 + 5;
+										r7_n.u4 = (word32) r22_n.u2 + 5;
 										r23_n <<= 0x10;
-										r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+										r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 										if (r7_n != 0x08 || r6_n != 0x00)
 										{
 											Eq_n r7_n;
-											r7_n.u11 = r22_n.u11 + 6;
+											r7_n.u4 = (word32) r22_n.u2 + 6;
 											r23_n <<= 0x14;
-											r6_n = r11_n.u3 + (word32) (r7_n < r22_n);
+											r6_n = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 											if (r7_n != 0x08 || r6_n != 0x00)
 											{
 												r23_n <<= 0x18;
@@ -20712,31 +20742,31 @@ l0040C2DA:
 							__shlim(r4, 0x00, 0x00, out r8_n, out r9_n, out r11);
 							r6.u0 = 0x00;
 							r7.u0 = 0x00;
-							r22_n = null;
+							r22_n.u0 = 0x00;
 							r23_n = 0x00;
 							goto l0040BEA4;
 						}
-						r7_n.u3 = r4.u11[0x0068];
+						r7_n.u4 = r4.u11[0x0068];
 						if (r7_n == 0x00)
 							goto l0040C5CE;
 						Eq_n r7_n;
-						r7_n.u3 = r4.u16->t0001.u1;
-						r4.u16->t0001.u1 = &r7_n.u11->bFFFFFFFF;
+						r7_n.u4 = r4.u11[1];
+						r4.u11[1] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 						r5_n.u0 = 0x00;
-						r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+						r7_n.u4 = r7_n.u11->aFFFFFFFF;
 					}
 					else
 					{
 l0040C2DE:
-						r7_n.u3 = r4.u11[0x0068];
+						r7_n.u4 = r4.u11[0x0068];
 						if (r7_n != 0x00)
 						{
 							Eq_n r7_n;
-							r7_n.u3 = r4.u16->t0001.u1;
-							r4.u16->t0001.u1 = &r7_n.u11->bFFFFFFFF;
+							r7_n.u4 = r4.u11[1];
+							r4.u11[1] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 							r4_n = 0x00;
 							r5_n.u0 = 0x00;
-							r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+							r7_n.u4 = r7_n.u11->aFFFFFFFF;
 						}
 						else
 						{
@@ -20749,13 +20779,13 @@ l0040C2EE:
 					if (r23_n == 0x00)
 						goto l0040C432;
 					Eq_n r16_n;
-					r16_n.u3 = &r7_n.u12->dwFFFFFFF8;
-					struct Eq_n * r4_n = (r16_n << 0x02) + r4_n;
-					struct Eq_n * r6_n = (struct Eq_n *) (r5_n.u3 + ((word32) (r16_n < r7_n) + (r6_n + ~0x00) << 0x02 | r16_n >> 0x1E));
-					struct Eq_n * r7_n = r6_n + (word32) (r4_n < r16_n << 0x02);
-					struct Eq_n * r16_n = r4_n;
-					struct Eq_n * r21_n = r7_n;
-					if (r30_n < r7_n || r7_n == null && r6_n < r4_n)
+					r16_n.u4 = r7_n.u11->aFFFFFFF8;
+					Eq_n r4_n = (r16_n << 0x02) + r4_n;
+					Eq_n r6_n = r5_n.u4 + ((word32) (r16_n < r7_n) + (r6_n + ~0x00) << 0x02 | r16_n >> 0x1E);
+					Eq_n r7_n = (word32) r6_n.u1 + (word32) (r4_n < r16_n << 0x02);
+					Eq_n r16_n = r4_n;
+					Eq_n r21_n = r7_n;
+					if (r30_n < r7_n || r7_n == 0x00 && r6_n < r4_n)
 					{
 						word32 r4_n;
 						__errno_location(out r4_n);
@@ -20771,7 +20801,7 @@ l0040C2EE:
 						word32 r12_n;
 						word32 r14_n;
 						__muldf3(__floatsidf(r8_n), r5_n, *(union Eq_n *) 0x04120220, *(union Eq_n *) 0x04120224, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14_n);
-						union Eq_n * r4_n;
+						Eq_n r4_n;
 						ptr32 r5_n;
 						word32 r8_n;
 						word32 r9_n;
@@ -20782,7 +20812,7 @@ l0040C2EE:
 						r23_n = r5_n;
 						goto l0040BEA4;
 					}
-					if (r7_n < (struct Eq_n *) ~0x00 || r7_n == (struct Eq_n *) ~0x00 && r4_n < r7_n)
+					if (r7_n < ~0x00 || r7_n == ~0x00 && r4_n < r7_n)
 					{
 						word32 r4_n;
 						__errno_location(out r4_n);
@@ -20798,7 +20828,7 @@ l0040C2EE:
 						word32 r12_n;
 						word32 r14_n;
 						__muldf3(__floatsidf(r8_n), r5_n, *(union Eq_n *) 0x04120280, *(union Eq_n *) 0x04120284, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14_n);
-						union Eq_n * r4_n;
+						Eq_n r4_n;
 						ptr32 r5_n;
 						word32 r8_n;
 						word32 r9_n;
@@ -20811,10 +20841,10 @@ l0040C2EE:
 					}
 					if (r23_n >= 0x00)
 					{
-						struct Eq_n * r17_n = r4_n;
+						Eq_n r17_n = r4_n;
 						Eq_n r16_n = r23_n;
 						Eq_n r4_n;
-						struct Eq_n * r7_n;
+						Eq_n r7_n;
 						do
 						{
 							r16_n <<= 0x01;
@@ -20824,8 +20854,8 @@ l0040C2EE:
 							word32 r7_n;
 							if (__gtdf2(r22_n, r23_n, *(union Eq_n *) 0x04120250, *(union Eq_n *) 0x04120254, out r6_n, out r7_n) >= 0x00)
 							{
-								r17_n = (struct Eq_n *) 0x04120000;
-								++r16_n.u11;
+								r17_n.u0 = 0x04120000;
+								r16_n.u4 = (word32) r16_n.u0 + 1;
 								Eq_n r5_n;
 								word32 r7_n;
 								word32 r13_n;
@@ -20840,24 +20870,24 @@ l0040C2EE:
 							word32 r13_n;
 							word32 r14_n;
 							__adddf3(r22_n, r23_n, r6_n, r7_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r11_n, out r12_n, out r13_n, out r14_n);
-							r7_n = (struct Eq_n *) ((char *) r17_n - 1);
+							r7_n = (word32) r17_n.u1 - 1;
 							r22_n = r4_n;
 							r23_n = r5_n;
 							r17_n = r7_n;
-							r21_n = (struct Eq_n *) ((char *) r21_n - 1 + (word32) (r7_n < r17_n));
+							r21_n = (word32) r21_n - 1 + (word32) (r7_n < r17_n);
 						} while (r16_n >= 0x00);
 						dwLoc60_n = r4_n;
 						dwLoc5C_n = r5_n;
 						r23_n = r16_n;
 						r16_n = r7_n;
 					}
-					struct Eq_n * r6_n = r16_n + 32;
-					struct Eq_n * r19_n = r6_n - r19_n;
-					struct Eq_n * r6_n = (word32) (r6_n < r19_n);
+					Eq_n r6_n = (word32) r16_n.u1 + 32;
+					Eq_n r19_n = r6_n - r19_n;
+					Eq_n r6_n = (word32) (r6_n < r19_n);
 					Eq_n r8_n = r8_n;
-					struct Eq_n * r7_n = r21_n + (word32) (r6_n < r16_n) + 1 - r6_n;
+					Eq_n r7_n = (word32) r21_n + (word32) (r6_n < r16_n) + 0x01 - r6_n;
 					Eq_n r17_n;
-					if (r7_n >= null)
+					if (r7_n >= 0x00)
 					{
 						r17_n.u0 = 0x00;
 						if (r6_n != r7_n)
@@ -20876,7 +20906,7 @@ l0040C3B2:
 						Eq_n r5_n;
 						Eq_n r8_n;
 						word32 r10_n;
-						scalbn(r7_n[600], r7_n[604], (struct Eq_n *) 0x54, out r5_n, out r8_n, out r10_n);
+						scalbn(r7_n.u2[600], r7_n.u2[604], 0x54, out r5_n, out r8_n, out r10_n);
 						__floatsidf(r8_n);
 						r19_n = copysignl(r5_n, r5_n, out r8_n);
 						goto l0040C576;
@@ -20892,7 +20922,7 @@ l0040C3BC:
 						}
 						else
 						{
-							Eq_n r4_n = scalbn(r7_n[600], r7_n[604], (struct Eq_n *) 4226678868, out r5_n, out r8_n, out r10_n);
+							Eq_n r4_n = scalbn(r7_n.u2[600], r7_n.u2[604], 4226678868, out r5_n, out r8_n, out r10_n);
 							__floatsidf(r8_n);
 							r5_n = copysignl(r5_n, r5_n, out r8_n);
 							r18_n = r4_n;
@@ -20910,7 +20940,7 @@ l0040C576:
 								r18_n = r8_n;
 								if (r4_n != 0x00 && __bit<word32,word32>(r23_n, 0x00))
 								{
-									++r23_n;
+									++r23_n.u11;
 									dwLoc60_n.u0 = 0x00;
 									dwLoc5C_n.u0 = 0x00;
 								}
@@ -20992,13 +21022,13 @@ l0040C410:
 				if (r4.u11[0x0068] != 0x00)
 				{
 					Eq_n r7_n;
-					r7_n.u3 = r4.u16->t0001.u1;
-					r4.u16->t0001.u1 = &r7_n.u11->bFFFFFFFF;
+					r7_n.u4 = r4.u11[1];
+					r4.u11[1] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
 					if (r6 == 0x00)
 						goto l0040C4F4;
-					r4.u16->t0001.u1 = &r7_n.u12->bFFFFFFFE;
+					r4.u11[1] = (struct Eq_n) &r7_n.u11->bFFFFFFFE;
 					if (r7_n != 0x02)
-						r4.u16->t0001.u1 = &r7_n.u12->bFFFFFFFD;
+						r4.u11[1] = (struct Eq_n) &r7_n.u11->bFFFFFFFD;
 				}
 				else if (r6 == 0x00)
 				{
@@ -21008,7 +21038,7 @@ l0040C4F4:
 					r5_n = __shlim(r4, 0x00, 0x00, out r8_n, out r9_n, out r11_n);
 				}
 l0040C432:
-				union Eq_n * r4_n;
+				Eq_n r4_n;
 				ptr32 r5_n;
 				word32 r8_n;
 				word32 r9_n;
@@ -21021,7 +21051,7 @@ l0040C432:
 			}
 			dwLoc50_n = 0x01;
 l0040C166:
-			r7_n.u3 = r4.u16->t0001.u1;
+			r7_n.u4 = r4.u11[1];
 			if (r7_n >= (r4.u11)[0x0068])
 			{
 				word32 r3_n;
@@ -21031,8 +21061,8 @@ l0040C166:
 				r18_n = r11_n;
 				goto l0040C140;
 			}
-			r4.u16->t0001.u1 = r7_n.u11 + 1;
-			r4_n = (word32) *r7_n.u3;
+			r4.u11[1] = (struct Eq_n) (r7_n.u11 + 1);
+			r4_n = (word32) *r7_n.u4;
 			r5_n.u11 = r7_n.u11 + 1;
 			r9_n = (word32) r4_n - 48;
 		} while (r4_n >= 0x3A);
@@ -21045,7 +21075,7 @@ l0040C166:
 		{
 			if (r11_n != 0x00 || r22_n < 0x08)
 			{
-				r23_n.u3 = (word32) r9_n + (r23_n << 0x04);
+				r23_n.u4 = (word32) r9_n + (r23_n << 0x04);
 				goto l0040C1DE;
 			}
 			if (r22_n < 0x0E)
@@ -21089,10 +21119,10 @@ l0040C166:
 				dwLoc5C_n = r5_n;
 l0040C1DE:
 				Eq_n r7_n;
-				r7_n.u11 = r22_n.u11 + 1;
+				r7_n.u4 = (word32) r22_n.u2 + 1;
 				r6_n = 0x01;
 				r22_n = r7_n;
-				r11_n.u3 += (word32) (r7_n < r22_n);
+				r11_n.u4 = (word32) r11_n.u0 + (word32) (r7_n < r22_n);
 				goto l0040C166;
 			}
 		}
@@ -21147,20 +21177,20 @@ l0040C736:
 	if (r5 == 0x01)
 		goto l0040C736;
 	Eq_n r19_n;
-	r19_n.u3 = r4.u11[0x0068];
+	r19_n.u4 = r4.u11[0x0068];
 	Eq_n r16_n = r4;
 	Eq_n r5_n = r5;
-	struct Eq_n * r4_n;
+	Eq_n r4_n;
 	ptr32 r11;
 	do
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[4];
+		r7_n.u4 = r4.u11[4];
 		if (r7_n < r19_n)
 		{
 			dwLoc4C_n.u11 = r7_n.u11 + 1;
-			r4_n = (word32) *r7_n.u3;
-			if (r4_n == (struct Eq_n *) 0x20)
+			r4_n.u1 = (word32) *r7_n.u4;
+			if (r4_n == 0x20)
 				continue;
 		}
 		else
@@ -21168,30 +21198,30 @@ l0040C736:
 			word32 r6_n;
 			word32 r7_n;
 			r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-			r19_n.u3 = r4.u11[0x0068];
-			if (r4_n == (struct Eq_n *) 0x20)
+			r19_n.u4 = r4.u11[0x0068];
+			if (r4_n == 0x20)
 				continue;
 		}
-	} while (r4_n < (struct Eq_n *) 0x0E);
+	} while (r4_n < 0x0E);
 	ui32 r23_n;
-	if (r4_n != (struct Eq_n *) 0x2B && r4_n != (struct Eq_n *) 0x2D)
+	if (r4_n != 0x2B && r4_n != 0x2D)
 		r23_n = 0x00;
 	else
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[4];
-		r23_n = -(word32) (r4_n == (struct Eq_n *) 0x2D);
+		r7_n.u4 = r4.u11[4];
+		r23_n = -(word32) (r4_n == 0x2D);
 		if (r7_n < r19_n)
 		{
 			dwLoc4C_n.u11 = r7_n.u11 + 1;
-			r4_n = (word32) *r7_n.u3;
+			r4_n.u1 = (word32) *r7_n.u4;
 		}
 		else
 		{
 			word32 r6_n;
 			word32 r7_n;
 			r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-			r19_n.u3 = r4.u11[0x0068];
+			r19_n.u4 = r4.u11[0x0068];
 		}
 	}
 	Eq_n r18_n;
@@ -21202,35 +21232,35 @@ l0040C736:
 	{
 		if (r5 != 0x10)
 		{
-			if (CONVERT(Mem96[0x0041326D<p32> + r4_n:byte], byte, word32) <u r5)
+			if ((word32) r4_n.u1->b41326D < r5)
 				goto l0040C6C2;
 			goto l0040C728;
 		}
 		Eq_n r7_n;
 		Eq_n r20_n;
-		if (r4_n == (struct Eq_n *) 0x30)
+		if (r4_n == 0x30)
 		{
 l0040C95E:
 			Eq_n r7_n;
-			r7_n.u3 = r4.u11[4];
+			r7_n.u4 = r4.u11[4];
 			if (r7_n < r19_n)
 			{
 				dwLoc4C_n.u11 = r7_n.u11 + 1;
-				r4_n = (word32) *r7_n.u3;
+				r4_n.u1 = (word32) *r7_n.u4;
 			}
 			else
 			{
 				word32 r6_n;
 				word32 r7_n;
 				r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-				r19_n.u3 = r4.u11[0x0068];
+				r19_n.u4 = r4.u11[0x0068];
 			}
 			if ((r4_n | 0x20) != 0x38)
 			{
 				if (r5 == 0x00)
 				{
 					r7_n.u0 = 0x05;
-					r20_n = CONVERT(Mem128[0x0041326D<p32> + r4_n:byte], byte, word32);
+					r20_n.u4 = (word32) r4_n.u1->b41326D;
 					r30_n.u0 = 0x08;
 					goto l0040C9B0;
 				}
@@ -21239,21 +21269,21 @@ l0040C6C2:
 					goto l0040C6CC;
 				goto l0040C75A;
 			}
-			r7_n.u3 = r4.u11[4];
-			struct Eq_n * r4_n;
+			r7_n.u4 = r4.u11[4];
+			Eq_n r4_n;
 			if (r7_n < r19_n)
 			{
 				r6.u11 = r7_n.u11 + 1;
 				dwLoc4C_n.u11 = r7_n.u11 + 1;
-				r4_n = (word32) *r7_n.u3;
+				r4_n.u1 = (word32) *r7_n.u4;
 			}
 			else
 			{
 				word32 r5_n;
 				r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6, out r7_n, out r8, out r9, out r11, out r12);
-				r19_n.u3 = r4.u11[0x0068];
+				r19_n.u4 = r4.u11[0x0068];
 			}
-			r20_n = CONVERT(Mem151[0x0041326D<p32> + r4_n:byte], byte, word32);
+			r20_n.u4 = (word32) *((word32) r4_n + 4272749);
 			if (r20_n < 0x10)
 			{
 				r7_n.u0 = 0x03;
@@ -21263,14 +21293,14 @@ l0040C6C2:
 			if (r19_n != 0x00)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				if (r6 != 0x00)
 				{
 					r3Out = r3;
 					r4Out.u0 = 0x00;
 					r5Out.u0 = 0x00;
-					r6Out.u3 = &r7_n.u11->bFFFFFFFF;
-					r7Out.u3 = &r7_n.u12->bFFFFFFFE;
+					r6Out.u4 = r7_n.u11->aFFFFFFFF;
+					r7Out.u4 = &r7_n.u11->bFFFFFFFE;
 					r8Out = r8;
 					r9Out = r9;
 					r11Out = r11;
@@ -21307,11 +21337,11 @@ l0040C73E:
 			r12Out = r12;
 			return r2;
 		}
-		if (CONVERT(Mem96[0x0041326D<p32> + r4_n:byte], byte, word32) <u 0x10)
+		if ((word32) r4_n.u1->b41326D < 0x10)
 		{
 l0040C6CC:
-			r20_n = CONVERT(Mem372[0x0041326D<p32> + r4_n:byte], byte, word32);
-			if ((&r5.u11->bFFFFFFFF & r5) != 0x00)
+			r20_n.u4 = (word32) r4_n.u1->b41326D;
+			if ((r5.u11->aFFFFFFFF & r5) != 0x00)
 			{
 				Eq_n r17_n;
 				r17_n.u0 = 0x00;
@@ -21321,22 +21351,22 @@ l0040C6CC:
 					if (r20_n >= r5 || r17_n > 0x071C71C6)
 						break;
 					Eq_n r7_n;
-					r7_n.u3 = r4.u11[4];
-					r17_n.u3 = r20_n.u3 + r6_n;
+					r7_n.u4 = r4.u11[4];
+					r17_n.u4 = r20_n.u4 + r6_n;
 					r5_n.u11 = r7_n.u11 + 1;
 					if (r7_n < r19_n)
 					{
 						dwLoc4C_n.u11 = r7_n.u11 + 1;
-						r20_n.u3 = (word32) (&g_t41326D.t0000.u0)[(word32) *r7_n.u3];
+						r20_n.u4 = (word32) *((word32) 4272749 + (word32) (*r7_n.u4));
 					}
 					else
 					{
-						struct Eq_n * r4_n;
+						Eq_n r4_n;
 						word32 r6_n;
 						word32 r7_n;
 						r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-						r19_n.u3 = r4.u11[0x0068];
-						r20_n = CONVERT(Mem857[0x0041326D<p32> + r4_n:byte], byte, word32);
+						r19_n.u4 = r4.u11[0x0068];
+						r20_n.u4 = (word32) *((word32) r4_n + 4272749);
 					}
 				}
 				r18_n.u0 = 0x00;
@@ -21351,7 +21381,7 @@ l0040C6CC:
 					word32 r11_n;
 					word32 r13_n;
 					__udivdi3(r2, r3, ~0x00, ~0x00, r5, 0x00, r12, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11_n, out r13_n);
-					r21_n.u3 = r4.u16->t0001.u1;
+					r21_n.u4 = r4.u11[1];
 					int32 r7_n = r18_n *s r5;
 					r11 = SLICE(r17_n *64 r5, word32, 32);
 					r2.u11 = r21_n.u11 + 1;
@@ -21367,16 +21397,16 @@ l0040C6CC:
 					if (r21_n < r19_n)
 					{
 						r4.u11[4] = (struct Eq_n) (r21_n.u11 + 1);
-						r20_n.u3 = (word32) (&g_t41326D.t0000.u0)[(word32) *r21_n.u3];
+						r20_n.u4 = (word32) *((word32) 4272749 + (word32) (*r21_n.u4));
 					}
 					else
 					{
-						struct Eq_n * r4_n;
+						Eq_n r4_n;
 						word32 r6_n;
 						word32 r7_n;
 						r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-						r19_n.u3 = r4.u11[0x0068];
-						r20_n = CONVERT(Mem582[0x0041326D<p32> + r4_n:byte], byte, word32);
+						r19_n.u4 = r4.u11[0x0068];
+						r20_n.u4 = (word32) *((word32) r4_n + 4272749);
 					}
 				}
 				goto l0040C846;
@@ -21385,31 +21415,31 @@ l0040C6CC:
 l0040C9B0:
 			Eq_n r17_n;
 			r17_n.u0 = 0x00;
-			r5_n.u3 = (word32) r7_n.u11[4272736];
+			r5_n.u4 = (word32) r7_n.u11[4272736];
 			while (true)
 			{
 				ui32 r6_n = r17_n << r5_n;
 				if (r20_n >= r30_n || r17_n > 0x07FFFFFF)
 					break;
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				r17_n = r20_n | r6_n;
 				if (r7_n < r19_n)
 				{
 					dwLoc4C_n.u11 = r7_n.u11 + 1;
-					r20_n.u3 = (word32) (&g_t41326D.t0000.u0)[(word32) *r7_n.u3];
+					r20_n.u4 = (word32) *((word32) 4272749 + (word32) (*r7_n.u4));
 				}
 				else
 				{
 					word32 r3_n;
-					struct Eq_n * r4_n;
+					Eq_n r4_n;
 					word32 r6_n;
 					word32 r7_n;
 					word32 r11_n;
 					__shgetc(r4, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11_n, out r12);
-					r19_n.u3 = r4.u11[0x0068];
+					r19_n.u4 = r4.u11[0x0068];
 					r17_n = r5_n;
-					r20_n = CONVERT(Mem526[0x0041326D<p32> + r4_n:byte], byte, word32);
+					r20_n.u4 = (word32) *((word32) r4_n + 4272749);
 				}
 			}
 			r2 = -r5_n;
@@ -21436,7 +21466,7 @@ l0040C9B0:
 				if (r20_n >= r30_n)
 					break;
 				Eq_n r7_n = r7_n | r4_n;
-				r21_n.u3 = r16_n.u16->t0001.u1;
+				r21_n.u4 = r16_n.u11[1];
 				if (r10_n < r18_n)
 					goto l0040C8FE;
 				if (r11_n == 0x00)
@@ -21450,17 +21480,17 @@ l0040C9B0:
 				if (r21_n < r19_n)
 				{
 					dwLoc4C_n.u11 = r21_n.u11 + 1;
-					r20_n.u3 = (word32) (&g_t41326D.t0000.u0)[(word32) *r21_n.u3];
+					r20_n.u4 = (word32) *((word32) 4272749 + (word32) (*r21_n.u4));
 				}
 				else
 				{
-					struct Eq_n * r4_n;
+					Eq_n r4_n;
 					word32 r6_n;
 					word32 r7_n;
 					word32 r11_n;
 					r2 = __shgetc(r16_n, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11_n, out r12);
-					r20_n = CONVERT(Mem485[0x0041326D<p32> + r4_n:byte], byte, word32);
-					r19_n.u3 = r16_n.u11[0x0068];
+					r20_n.u4 = (word32) *((word32) r4_n + 4272749);
+					r19_n.u4 = r16_n.u11[0x0068];
 					r17_n = r5_n;
 					r16_n = r2;
 				}
@@ -21470,21 +21500,21 @@ l0040C9B0:
 	}
 	else
 	{
-		if (r4_n == (struct Eq_n *) 0x30)
+		if (r4_n == 0x30)
 			goto l0040C95E;
-		if (CONVERT(Mem96[r4_n + 0x0041326D<p32>:byte], byte, word32) <u 0x0A)
+		if ((word32) r4_n.u1->b41326D < 0x0A)
 		{
 l0040C75A:
 			uint32 r17_n = 0x00;
 l0040C75C:
-			r6_n = r4_n + ~0x2F;
+			r6_n.u4 = (word32) r4_n - 48;
 			r7_n = r4_n + r17_n * 0x0A;
 			if (r6_n < 0x0A)
 			{
 				while (r17_n <= 0x19999998)
 				{
 					Eq_n r6_n;
-					r6_n.u3 = r4.u11[4];
+					r6_n.u4 = r4.u11[4];
 					r17_n = (word32) r7_n - 48;
 					if (r6_n >= r19_n)
 					{
@@ -21492,14 +21522,14 @@ l0040C75C:
 						word32 r6_n;
 						word32 r7_n;
 						r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-						r19_n.u3 = r4.u11[0x0068];
+						r19_n.u4 = r4.u11[0x0068];
 						goto l0040C75C;
 					}
-					r4_n = (word32) *r6_n.u3;
+					r4_n.u1 = (word32) *r6_n.u4;
 					dwLoc4C_n.u11 = r6_n.u11 + 1;
-					r6_n.u3 = (char *) r4_n - 48;
+					r6_n.u4 = (word32) r4_n - 48;
 					r7_n = r4_n + r17_n * 0x0A;
-					if (r4_n >= (struct Eq_n *) 0x3A)
+					if (r4_n >= 0x3A)
 						break;
 				}
 			}
@@ -21511,19 +21541,19 @@ l0040C75C:
 				if (r18_n > 0x19999999 || r18_n == 0x19999999 && r17_n > 0x99999999)
 				{
 l0040C838:
-					r7_n = CONVERT(Mem323[0x0041326D<p32> + r4_n:byte], byte, word32);
+					r7_n.u4 = (word32) r4_n.u1->b41326D;
 					if (r7_n >= 0x0A)
 						break;
-					r21_n.u3 = r4.u16->t0001.u1;
+					r21_n.u4 = r4.u11[1];
 					r30_n.u0 = 0x0A;
 l0040C8FE:
 					while (r21_n >= r19_n)
 					{
 						word32 r3_n;
-						struct Eq_n * r4_n;
+						Eq_n r4_n;
 						word32 r7_n;
 						r2 = __shgetc(r16_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-						if (CONVERT(Mem637[0x0041326D<p32> + r4_n:byte], byte, word32) >=u r30_n)
+						if ((word32) *((word32) r4_n + 4272749) >= r30_n)
 						{
 l0040C92E:
 							word32 r4_n;
@@ -21531,7 +21561,7 @@ l0040C92E:
 							r17_n = r8;
 							if (__bit<word32,word32>(0x22, 0x00))
 							{
-								r7_n.u3 = r16_n.u11[0x0068];
+								r7_n.u4 = r16_n.u11[0x0068];
 								if (r7_n != 0x00)
 									goto l0040C848;
 								if (r23_n == 0x00)
@@ -21541,59 +21571,58 @@ l0040C92E:
 							}
 							else
 							{
-								r7_n.u3 = r16_n.u11[0x0068];
+								r7_n.u4 = r16_n.u11[0x0068];
 								r23_n = 0x00;
 								if (r7_n == 0x00)
 									goto l0040C854;
 								goto l0040C848;
 							}
 						}
-						r19_n.u3 = r16_n.u11[0x0068];
-						r21_n.u3 = r16_n.u16->t0001.u1;
+						r19_n.u4 = r16_n.u11[0x0068];
+						r21_n.u4 = r16_n.u11[1];
 l0040C916:
 					}
-					if ((word32) (&g_t41326D.t0000.u0)[(word32) *r21_n.u3] >= r30_n)
+					if ((word32) *((word32) 4272749 + (word32) (*r21_n.u4)) >= r30_n)
 						goto l0040C92E;
-					r21_n.u3 = r16_n.u16->t0001.u1;
+					r21_n.u4 = r16_n.u11[1];
 					goto l0040C916;
 				}
 				uint32 r7_n = r17_n << 0x02;
 				int32 r20_n = r6_n >> 0x1F;
 				uint32 r5_n = r7_n + r17_n;
 				Eq_n r30_n = ~r20_n;
-				Eq_n r7_n = r18_n.u3 + (r18_n << 0x02 | r17_n >> 0x1E) + (word32) (r5_n < r7_n) << 0x01 | r5_n >> 0x1F;
+				Eq_n r7_n = r18_n.u4 + (r18_n << 0x02 | r17_n >> 0x1E) + (word32) (r5_n < r7_n) << 0x01 | r5_n >> 0x1F;
 				r5_n = r5_n << 0x01;
 				r8 = ~r6_n;
 				if (r30_n < r7_n || r7_n == r30_n && r8 < r5_n << 0x01)
 					goto l0040C838;
-				r17_n = r6_n.u3 + (r5_n << 0x01);
-				r5_n.u3 = (word32) (r17_n < r5_n << 0x01);
+				r17_n = (uint32) (r6_n.u4 + (r5_n << 0x01));
+				r5_n.u4 = (word32) (r17_n < r5_n << 0x01);
 				Eq_n r4_n;
-				r4_n.u3 = r4.u11[4];
-				r18_n.u3 = r5_n.u3 + ((word32) r7_n.u1 + r20_n);
+				r4_n.u4 = r4.u11[4];
+				r18_n.u4 = r5_n.u4 + ((word32) r7_n.u1 + r20_n);
 				if (r4_n < r19_n)
 				{
-					r4_n = (word32) *r4_n.u3;
+					r4_n.u1 = (word32) *r4_n.u4;
 					r7_n.u11 = r4_n.u11 + 1;
 					dwLoc4C_n.u11 = r4_n.u11 + 1;
-					r6_n = r4_n + ~0x2F;
+					r6_n.u4 = (word32) r4_n - 48;
 				}
 				else
 				{
 					word32 r6_n;
 					r2 = __shgetc(r4, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r11, out r12);
-					r19_n.u3 = r4.u11[0x0068];
-					r6_n = r4_n + ~0x2F;
+					r19_n.u4 = r4.u11[0x0068];
+					r6_n.u4 = (word32) r4_n - 48;
 				}
 			}
 l0040C846:
 			if (r19_n != 0x00)
 			{
 l0040C848:
-				Eq_n r7_n;
-				r7_n.u3 = r16_n.u11[4];
-				r7_n.u3 = &r7_n.u11->bFFFFFFFF;
-				dwLoc4C_n.u3 = &r7_n.u11->bFFFFFFFF;
+				word32 r7_n = (word32) r16_n.u11[4];
+				r7_n = r7_n + ~0x00;
+				dwLoc4C_n = r7_n + ~0x00;
 			}
 			r17_n = dwLoc4C_n;
 			if (r18_n >= r7_n)
@@ -21611,9 +21640,10 @@ l0040C848:
 l0040CAE2:
 						word32 r4_n;
 						r3Out = __errno_location(out r4_n);
-						Eq_n r7_n = r6_n + ~0x00;
+						Eq_n r7_n;
+						r7_n.u4 = r6_n.u11->aFFFFFFFF;
 						r4Out = r7_n;
-						r5Out = CONVERT(r7_n <u r6_n, bool, word32) + (r6_n + ~0x00);
+						r5Out.u4 = r6_n.u11->aFFFFFFFF + (word32) (r7_n < r6_n);
 						r6Out.u0 = 0x22;
 						r7Out = r7_n;
 						r8Out = r8;
@@ -21669,19 +21699,18 @@ l0040C728:
 	goto l0040C736;
 }
 
-// 0040CB40: Register Eq_n __shlim(Register Eq_n r4, Register Eq_n r6, Register int32 r7, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r11Out)
+// 0040CB40: Register Eq_n __shlim(Register Eq_n r4, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r11Out)
 // Called from:
 //      strtold_l
 //      strtox
 //      __floatscan
 //      __intscan
 //      __isoc99_vfscanf
-Eq_n __shlim(Eq_n r4, Eq_n r6, int32 r7, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out)
+Eq_n __shlim(Eq_n r4, Eq_n r6, Eq_n r7, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out)
 {
-	Eq_n r10_n;
-	r10_n.u3 = r4.u16->t0001.u1;
+	word32 r10_n = (word32) r4.u11[1];
 	Eq_n r5_n;
-	r5_n.u3 = r4.u11[8];
+	r5_n.u4 = r4.u13[2];
 	r4.u11[112] = (struct Eq_n) r6;
 	r4.u11[116] = (struct Eq_n) r7;
 	Eq_n r8_n = r5_n - r10_n;
@@ -21690,18 +21719,19 @@ Eq_n __shlim(Eq_n r4, Eq_n r6, int32 r7, union Eq_n & r8Out, union Eq_n & r9Out,
 	if ((r6 | r7) == 0x00 || r7 >= r8_n >> 0x1F && (r8_n >> 0x1F != r7 || r6 >= r8_n))
 	{
 		r4.u11[0x0068] = (struct Eq_n) r5_n;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
-		r9Out.u0 = (Eq_n (*)[]) <invalid>;
-		r11Out.u0 = (Eq_n (*)[]) <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
 		return r5_n;
 	}
 	else
 	{
-		Eq_n r5_n = r10_n + r6;
+		Eq_n r5_n;
+		r5_n.u4 = (word32) r6.u2 + r10_n;
 		r4.u11[0x0068] = (struct Eq_n) r5_n;
-		r8Out.u0 = (Eq_n (*)[]) <invalid>;
-		r9Out.u0 = (Eq_n (*)[]) <invalid>;
-		r11Out.u0 = (Eq_n (*)[]) <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
+		r11Out.u0 = <invalid>;
 		return r5_n;
 	}
 }
@@ -21716,9 +21746,9 @@ Eq_n __shlim(Eq_n r4, Eq_n r6, int32 r7, union Eq_n & r8Out, union Eq_n & r9Out,
 Eq_n __shgetc(Eq_n r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r11Out, union Eq_n & r12Out)
 {
 	Eq_n r6_n;
-	r6_n.u3 = r4.u11[112];
+	r6_n.u4 = r4.u11[112];
 	Eq_n r7_n;
-	r7_n.u3 = r4.u11[116];
+	r7_n.u4 = r4.u11[116];
 	Eq_n r5_n;
 	Eq_n r3;
 	Eq_n r11;
@@ -21726,7 +21756,7 @@ Eq_n __shgetc(Eq_n r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Ou
 	Eq_n r2;
 	if ((r6_n | r7_n) != 0x00)
 	{
-		r5_n.u3 = r4.u11[0x007C];
+		r5_n.u4 = r4.u11[0x007C];
 		if (r5_n < r7_n)
 			goto l0040CB8E;
 		if (r5_n != r7_n)
@@ -21746,7 +21776,7 @@ l0040CC26:
 			r12Out = r12;
 			return r2;
 		}
-		r7_n.u3 = r4.u11[0x0078];
+		r7_n.u4 = r4.u11[0x0078];
 		if (r7_n >= r6_n)
 			goto l0040CC26;
 	}
@@ -21755,43 +21785,42 @@ l0040CB8E:
 	if (r4_n >= 0x00)
 	{
 		Eq_n r6_n;
-		r6_n.u3 = r4.u11[112];
+		r6_n.u4 = r4.u11[112];
 		Eq_n r5_n;
-		r5_n.u3 = r4.u11[116];
-		Eq_n r8_n;
-		r8_n.u3 = r4.u16->t0001.u1;
+		r5_n.u4 = r4.u11[116];
+		Eq_n r8_n = r4.u11[1];
 		Eq_n r9_n = r6_n | r5_n;
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[8];
+		r7_n.u4 = r4.u13[2];
 		Eq_n r6_n;
 		if (r9_n != 0x00)
 		{
-			r9_n.u3 = r4.u11[0x0078];
+			r9_n.u4 = r4.u11[0x0078];
 			r11 = r6_n - r9_n;
-			r12.u3 = r4.u11[0x007C];
+			r12.u4 = r4.u11[0x007C];
 			r3 = (word32) (r6_n < r11);
 			r2 = r7_n - r8_n;
 			r5_n = r5_n - r12 - r3;
 			if (r2 >> 0x1F >= r5_n && (r5_n != r2 >> 0x1F || r2 >= r11))
 			{
-				r6_n.u3 = r8_n.u3 + (&(r6_n.u11)->bFFFFFFFF - r9_n);
+				r6_n.u4 = (word32) r8_n + (((word32) r6_n.u2 - 1) - r9_n);
 l0040CBAC:
 				r4.u11[0x0068] = (struct Eq_n) r6_n;
 				if (r7_n != 0x00)
 				{
 					Eq_n r6_n;
-					r6_n.u3 = r4.u11[0x0078];
+					r6_n.u4 = r4.u11[0x0078];
 					ui32 r7_n = r7_n - r8_n;
-					r9_n.u3 = r6_n.u3 + (r7_n + 0x01);
-					r5_n.u3 = r4.u11[0x007C];
+					r9_n.u4 = r6_n.u4 + (r7_n + 0x01);
+					r5_n.u4 = r4.u11[0x007C];
 					r4.u11[0x0078] = (struct Eq_n) r9_n;
-					r6_n.u3 = (word32) (r9_n < r6_n);
+					r6_n.u4 = (word32) (r9_n < r6_n);
 					Mem72[r4 + 0x7C:word32] = r6_n + (r5_n + (r7_n + 0x01 >> 0x1F));
 				}
 				Eq_n r7_n;
-				r7_n.u3 = (word32) r8_n.u11->bFFFFFFFF;
+				r7_n.u4 = (word32) r8_n.u2->bFFFFFFFF;
 				if (r4_n != r7_n)
-					r8_n.u11->bFFFFFFFF = (int8) r4_n;
+					r8_n.u2->bFFFFFFFF = (int8) r4_n;
 				r3Out = r3;
 				r4Out = r4_n;
 				r5Out = r5_n;
@@ -21869,8 +21898,8 @@ Eq_n __syscall_ret(Eq_n r4, union Eq_n & r4Out, ptr32 & r7Out)
 byte * __vdsosym(byte * r4, byte * r5)
 {
 	Eq_n r17_n;
-	r17_n.u3 = g_t454440.u3;
-	word32 r7_n = *r17_n.u5;
+	r17_n.u0 = g_t454440.u0;
+	word32 r7_n = *r17_n.u6;
 	int32 r16_n;
 	if (r7_n != 33)
 	{
@@ -21881,7 +21910,7 @@ byte * __vdsosym(byte * r4, byte * r5)
 			do
 			{
 				ui32 r6_n = r16_n + 0x02;
-				r7_n = r17_n.u5[r6_n];
+				r7_n = r17_n.u6[r6_n];
 				if (r7_n == 33)
 				{
 					r16_n = r16_n + 0x00 << 0x02;
@@ -21895,7 +21924,7 @@ byte * __vdsosym(byte * r4, byte * r5)
 	{
 		r16_n = 0x04;
 l0040CC78:
-		struct Eq_n * r11_n = (struct Eq_n *) *((char *) r17_n.u5 + r16_n);
+		struct Eq_n * r11_n = (struct Eq_n *) *((char *) r17_n.u6 + r16_n);
 		if (r11_n != null)
 		{
 			word32 r9_n = (word32) r11_n->w002C;
@@ -22063,7 +22092,7 @@ Eq_n __expand_heap(uint32 * r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq
 	word32 r5_n;
 	Eq_n r4_n;
 	Eq_n r6_n;
-	r6_n.u3 = g_t454454.u3;
+	r6_n.u0 = g_t454454.u0;
 	uint32 r16_n = *r4;
 	ptr32 r11;
 	if (0x7FFFFFFF - r6_n < r16_n)
@@ -22082,8 +22111,8 @@ Eq_n __expand_heap(uint32 * r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq
 	else
 	{
 		Eq_n r4_n;
-		r4_n.u3 = brk.1530.u3;
-		uint32 r16_n = r16_n + (-r16_n & &(r6_n.u11)->bFFFFFFFF);
+		r4_n.u0 = brk.1530.u0;
+		uint32 r16_n = r16_n + (-r16_n & (word32) r6_n.u2 - 1);
 		if (r4_n == 0x00)
 		{
 			word32 r4_n;
@@ -22093,15 +22122,15 @@ Eq_n __expand_heap(uint32 * r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq
 			word32 r8_n;
 			word32 r9_n;
 			__syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
-			r6_n.u3 = g_t454454.u3;
-			r4_n = (-r4_n & &(r6_n.u11)->bFFFFFFFF) + r4_n;
-			brk.1530.u3 = (byte *) r4_n;
+			r6_n.u0 = g_t454454.u0;
+			r4_n = (-r4_n & (word32) r6_n.u2 - 1) + r4_n;
+			brk.1530.u0 = (int32) r4_n;
 		}
 		if (r16_n < ~r4_n)
 		{
 			Eq_n r7_n;
-			r7_n.u3 = g_t454440.u3;
-			ptr32 r5_n = r4_n.u3 + r16_n;
+			r7_n.u0 = g_t454440.u0;
+			ptr32 r5_n = (word32) r4_n.u2 + r16_n;
 			ptr32 r8_n;
 			if (r7_n > 0x08000000)
 				r8_n = (word32) r7_n - 0x00800000;
@@ -22119,12 +22148,12 @@ Eq_n __expand_heap(uint32 * r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq
 				{
 					Eq_n r2_n = __syscall(out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n);
 					Eq_n r7_n;
-					r7_n.u3 = brk.1530.u3;
+					r7_n.u0 = brk.1530.u0;
 					Eq_n r6_n;
-					r6_n.u3 = r7_n.u3 + r16_n;
+					r6_n.u4 = r7_n.u4 + r16_n;
 					if (r4_n == r6_n)
 					{
-						brk.1530.u3 = (byte *) r4_n;
+						brk.1530.u0 = (int32) r4_n;
 						*r4 = r16_n;
 						Eq_n r3;
 						r3Out = r3;
@@ -22135,7 +22164,7 @@ Eq_n __expand_heap(uint32 * r4, union Eq_n & r3Out, union Eq_n & r4Out, union Eq
 						r11Out = r11;
 						return r2_n;
 					}
-					r6_n.u3 = g_t454454.u3;
+					r6_n.u0 = g_t454454.u0;
 				}
 			}
 		}
@@ -22212,10 +22241,10 @@ Eq_n frexpl(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r5Out, ptr32 & r18Out)
 	return r4_n;
 }
 
-// 0040CF40: Register Eq_n scalbn(Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register out ptr32 r5Out, Register out ptr32 r8Out, Register out ptr32 r10Out)
+// 0040CF40: Register Eq_n scalbn(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out ptr32 r5Out, Register out ptr32 r8Out, Register out ptr32 r10Out)
 // Called from:
 //      __floatscan
-Eq_n scalbn(Eq_n r4, Eq_n r5, struct Eq_n * r6, ptr32 & r5Out, ptr32 & r8Out, ptr32 & r10Out)
+Eq_n scalbn(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r5Out, ptr32 & r8Out, ptr32 & r10Out)
 {
 	ptr32 r10_n;
 	ptr32 r8_n;
@@ -22228,48 +22257,48 @@ Eq_n scalbn(Eq_n r4, Eq_n r5, struct Eq_n * r6, ptr32 & r5Out, ptr32 & r8Out, pt
 	Eq_n r5_n;
 	Eq_n r8_n = r4;
 	Eq_n r9_n = r5;
-	struct Eq_n * r16_n;
-	if (r6 > (struct Eq_n *) 0x03FF)
+	Eq_n r16_n;
+	if (r6 > 0x03FF)
 	{
 		Eq_n r4_n = fn0040CFCC(r4, r5, *(union Eq_n *) 68289208, *(union Eq_n *) 68289212, out r5_n, out r8_n, out r10_n);
-		r16_n = (struct Eq_n *) ((char *) r6 - 0x03FF);
+		r16_n = (word32) r6.u0 - 0x03FF;
 		r8_n = r4_n;
 		r9_n = r5_n;
-		if (r6 > (struct Eq_n *) 0x07FE)
+		if (r6 > 0x07FE)
 		{
-			r16_n = (struct Eq_n *) ((char *) r6 - 0x07FE);
+			r16_n = (word32) r6.u0 - 0x07FE;
 			Eq_n r5_n;
 			word32 r8_n;
 			word32 r10_n;
 			r8_n = fn0040CFCC(r4_n, r5_n, *(union Eq_n *) 68289208, *(union Eq_n *) 68289212, out r5_n, out r8_n, out r10_n);
 			r9_n = r5_n;
-			if ((word32) (r6 < (struct Eq_n *) 3070) == 0x00)
-				r16_n = (struct Eq_n *) 0x03FF;
+			if ((word32) (r6 < 3070) == 0x00)
+				r16_n.u0 = 0x03FF;
 		}
 	}
 	else
 	{
 		r16_n = r6;
-		if (r6 < (struct Eq_n *) ~0x03FD)
+		if (r6 < ~0x03FD)
 		{
 			Eq_n r4_n = fn0040CFCC(r4, r5, *(union Eq_n *) 0x041202C0, *(union Eq_n *) 68289220, out r5_n, out r8_n, out r10_n);
-			r16_n = r6 + 969;
+			r16_n = (word32) r6.u0 + 969;
 			r8_n = r4_n;
 			r9_n = r5_n;
-			if (r6 < (struct Eq_n *) ~0x07C6)
+			if (r6 < ~0x07C6)
 			{
-				r16_n = r6 + 0x0792;
+				r16_n = (word32) r6.u0 + 0x0792;
 				Eq_n r5_n;
 				word32 r8_n;
 				word32 r10_n;
 				r8_n = fn0040CFCC(r4_n, r5_n, *(union Eq_n *) 0x041202C0, *(union Eq_n *) 68289220, out r5_n, out r8_n, out r10_n);
 				r9_n = r5_n;
-				if ((word32) (r6 < (struct Eq_n *) ~0x0B8F) != 0x00)
-					r16_n = (struct Eq_n *) ~0x03FD;
+				if ((word32) (r6 < ~0x0B8F) != 0x00)
+					r16_n.u0 = ~0x03FD;
 			}
 		}
 	}
-	Eq_n r4_n = fn0040CFCC(r8_n, r9_n, 0x00, r16_n + 0x03FF << 0x14, out r5_n, out r8_n, out r10_n);
+	Eq_n r4_n = fn0040CFCC(r8_n, r9_n, 0x00, (word32) r16_n.u0 + 0x03FF << 0x14, out r5_n, out r8_n, out r10_n);
 	r5Out = r5_n;
 	r8Out = r8_n;
 	r10Out = r10_n;
@@ -22299,10 +22328,10 @@ Eq_n fn0040CFCC(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r5Out, ptr32 & r8Out
 	return r4_n;
 }
 
-// 0040CFD0: Register word32 scalbnl(Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r11Out, Register out ptr32 r12Out)
+// 0040CFD0: Register word32 scalbnl(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r11Out, Register out ptr32 r12Out)
 // Called from:
 //      __floatscan
-word32 scalbnl(Eq_n r4, Eq_n r5, struct Eq_n * r6, ptr32 & r3Out, union Eq_n & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r12Out)
+word32 scalbnl(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r3Out, union Eq_n & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r12Out)
 {
 	word32 r10_n;
 	word32 r8_n;
@@ -22334,7 +22363,7 @@ Eq_n mbstowcs(Eq_n r4, Eq_n r5, Eq_n r6, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r
 	ptr32 r6_n;
 	ptr32 r5_n;
 	Eq_n tLoc14;
-	tLoc14.u3 = (byte *) r5;
+	tLoc14.u0 = (int32) r5;
 	Eq_n r4_n = mbsrtowcs(r4, &tLoc14, r6, null, out r5_n, out r6_n, out r8_n, out r18_n);
 	r5Out = r5_n;
 	r6Out = r6_n;
@@ -22370,15 +22399,15 @@ word32 wctomb(Eq_n r4, Eq_n r5, union Eq_n & r4Out, union Eq_n & r5Out, union Eq
 	}
 }
 
-// 0040D000: Register (ptr32 byte) dn_expand(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register (ptr32 byte) r7, Register Eq_n r8, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out (ptr32 byte) r11Out, Register out ptr32 r12Out)
+// 0040D000: Register Eq_n dn_expand(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out Eq_n r11Out, Register out ptr32 r12Out)
 // Called from:
 //      dns_parse_callback
 //      dns_parse_callback
-byte * dn_expand(Eq_n r4, Eq_n r5, Eq_n r6, byte * r7, Eq_n r8, union Eq_n & r4Out, union Eq_n & r8Out, byte & r11Out, ptr32 & r12Out)
+Eq_n dn_expand(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, union Eq_n & r4Out, union Eq_n & r8Out, union Eq_n & r11Out, ptr32 & r12Out)
 {
-	byte * r11;
+	Eq_n r11;
 	Eq_n r9_n;
-	byte * r2;
+	Eq_n r2;
 	ptr32 r12;
 	if (r5 != r6 && r8 > 0x00)
 	{
@@ -22387,19 +22416,20 @@ byte * dn_expand(Eq_n r4, Eq_n r5, Eq_n r6, byte * r7, Eq_n r8, union Eq_n & r4O
 		Eq_n r13_n = r6;
 		r8 += r7;
 		r11 = r7;
-		byte * r14_n = null;
+		Eq_n r14_n;
+		r14_n.u0 = 0x00;
 		r9_n.u0 = ~0x00;
 		while (true)
 		{
 			r2 = r5 - r4;
 			if (r14_n >= r2)
 				break;
-			ui32 r10_n = (word32) *r13_n.u3;
+			ui32 r10_n = (word32) *r13_n.u4;
 			if ((r10_n & 0xC0) != 0x00)
 			{
 				if (r5 == r13_n.u11 + 1)
 					break;
-				byte * r10_n = r10_n << 0x08 & 0x3F00 | (word32) (r13_n.u11)[1];
+				Eq_n r10_n = r10_n << 0x08 & 0x3F00 | (word32) (r13_n.u11)[1];
 				if (r9_n < 0x00)
 					r9_n = r13_n.u11 + 2 - r6;
 				if (r10_n >= r2)
@@ -22410,7 +22440,7 @@ byte * dn_expand(Eq_n r4, Eq_n r5, Eq_n r6, byte * r7, Eq_n r8, union Eq_n & r4O
 			{
 				if (r10_n == 0x00)
 				{
-					*r11 = 0x00;
+					*r11.u1 = 0x00;
 					if (r9_n < 0x00)
 						r9_n = r13_n.u11 + 1 - r6;
 					goto l0040D006;
@@ -22418,27 +22448,31 @@ byte * dn_expand(Eq_n r4, Eq_n r5, Eq_n r6, byte * r7, Eq_n r8, union Eq_n & r4O
 				r2 = r7;
 				if (r11 != r7)
 				{
-					*r11 = 0x2E;
-					r2 = r11 + 1;
+					*r11.u1 = 0x2E;
+					r2.u1 = (word32) r11 + 1;
 				}
-				byte * r3_n = (byte *) (r13_n.u11 + 1);
-				byte * r10_n = (word32) *r13_n.u3;
+				Eq_n r3_n;
+				r3_n.u1 = r13_n.u11 + 1;
+				Eq_n r10_n;
+				r10_n.u1 = (word32) *r13_n.u4;
 				r11 = r5 - r3_n;
 				if (r10_n >= r11)
 					break;
 				r11 = r8 - r2;
 				if (r10_n >= r11)
 					break;
-				byte * r11_n;
-				for (r11_n = null; r10_n != r11_n; ++r11_n)
+				Eq_n r11_n;
+				r11_n.u0 = 0x00;
+				while (r10_n != r11_n)
 				{
 					r12 = CONVERT(Mem53[r13_n + r11_n + 0x01:byte], byte, word32);
 					Mem56[r11_n + r2:byte] = SLICE(r12, byte, 0);
+					r11_n.u1 = (word32) r11_n + 1;
 				}
 				r11 = r2 + r10_n;
 				r13_n = r3_n + r10_n;
 			}
-			r14_n += 2;
+			r14_n.u1 = (word32) r14_n.u0 + 2;
 		}
 	}
 	r9_n.u0 = ~0x00;
@@ -22463,30 +22497,30 @@ word32 __dns_parse(Eq_n r4, Eq_n r5, Eq_n r7, ptr32 r11, union Eq_n & r5Out, uni
 	ptr32 r12;
 	if (r5 >= 0x0C)
 	{
-		ui32 r7_n = (word32) r4.u0[3];
+		ui32 r7_n = (word32) r4.u1[3];
 		r7 = r7_n & 0x0F;
 		if ((r7_n & 0x0F) == 0x00)
 		{
-			r6 = ((word32) r4.u0[4] << 0x08) + (word32) (r4.u0)[5];
-			ui32 r19_n = ((word32) r4.u0[6] << 0x08) + (word32) (r4.u0)[7];
-			r7.u0 = (word32) r4 + 0x0C;
-			r5.u3 = r6.u0 + r19_n;
+			r6 = ((word32) r4.u1[4] << 0x08) + (word32) (r4.u1)[5];
+			ui32 r19_n = ((word32) r4.u1[6] << 0x08) + (word32) (r4.u1)[7];
+			r7.u1 = (word32) r4 + 0x0C;
+			r5.u4 = r6.u1 + r19_n;
 			if (r5 >= 0x01)
 				goto l0040D0DA;
 			while (true)
 			{
-				r6.u0 = (word32) r6 - 1;
+				r6.u1 = (word32) r6 - 1;
 				r5.u0 = ~0x00;
 				if (r6 == ~0x00)
 					break;
 				while (true)
 				{
-					r5.u3 = (word32) r7.u0->b0000;
+					r5.u4 = (word32) r7.u1->b0000;
 					if (r7 - r4 >= r5 || r5 >= 0x40)
 						break;
-					++r7;
+					++r7.u1;
 				}
-				if (r5 > 0xC1 || r5 == 0xC1 && (word32) (r7.u0)[1] == 0xFF || r4 + (r5 + ~0x05) <u r7)
+				if (r5 > 0xC1 || r5 == 0xC1 && (word32) (r7.u1)[1] == 0xFF || r4.u1 + ((word32) r5 - 6) < r7)
 					goto l0040D0DA;
 				Eq_n r4_n;
 				r4_n.u0 = 0x06;
@@ -22503,22 +22537,22 @@ word32 __dns_parse(Eq_n r4, Eq_n r5, Eq_n r7, ptr32 r11, union Eq_n & r5Out, uni
 				up32 r16_n;
 				while (true)
 				{
-					r16_n = (word32) r7.u0->b0000;
+					r16_n = (word32) r7.u1->b0000;
 					if (r7 - r18_n >= r5 || r16_n >= 0x40)
 						break;
-					++r7;
+					++r7.u1;
 				}
 				r6.u0 = 0xC1;
 				if (r16_n > 0xC1)
 					goto l0040D0DA;
 				if (r16_n == 0xC1)
 				{
-					r5.u3 = (word32) r7.u0[1];
+					r5.u4 = (word32) r7.u1[1];
 					r6.u0 = 0xFF;
 					if (r5 == 0xFF)
 						goto l0040D0DA;
 				}
-				r6 = r18_n + (r5 + ~0x05);
+				r6.u1 = r18_n.u1 + ((word32) r5 - 6);
 				if (r6 < r7)
 					goto l0040D0DA;
 				Eq_n r6_n;
@@ -22527,13 +22561,13 @@ word32 __dns_parse(Eq_n r4, Eq_n r5, Eq_n r7, ptr32 r11, union Eq_n & r5Out, uni
 				if (r16_n == 0x00)
 					r6_n.u0 = 0x01;
 				Eq_n r16_n = r7 + r6_n;
-				Eq_n r17_n = ((word32) r16_n.u0[8] << 0x08) + (word32) (r16_n.u0)[9];
+				Eq_n r17_n = ((word32) r16_n.u1[8] << 0x08) + (word32) (r16_n.u1)[9];
 				r6 = r18_n + r5;
 				r7 = r16_n + r17_n;
 				if (r6 < r7)
 					goto l0040D0DA;
 				int32 r4_n;
-				r2 = dns_parse_callback(r7, (word32) r16_n.u0[1], r16_n + 0x0A, r17_n, r18_n, r11, out r4_n, out r5, out r6, out r7, out r8, out r11, out r12, out r18_n);
+				r2 = dns_parse_callback(r7, (word32) r16_n.u1[1], (word32) r16_n + 0x0A, r17_n, r18_n, r11, out r4_n, out r5, out r6, out r7, out r8, out r11, out r12, out r18_n);
 				if (r4_n < 0x00)
 					goto l0040D0DA;
 				r7 = r16_n + (r17_n + 0x0A);
@@ -22589,7 +22623,7 @@ void __restore(Eq_n r4)
 Eq_n __lockfile(Eq_n r4, union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r8Out, ptr32 & r9Out)
 {
 	Eq_n r17_n;
-	r17_n.u3 = __read_user_local()->tFFFFFF6C.u3;
+	r17_n.u0 = __read_user_local().u1->tFFFFFF6C.u0;
 	Eq_n r2;
 	ptr32 r5;
 	ptr32 r8;
@@ -22607,9 +22641,9 @@ Eq_n __lockfile(Eq_n r4, union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32
 			if (r6_n == 0x00)
 				break;
 			word32 r4_n;
-			r2 = __wait(r4.u11 + 76, (word32) r4 + 80, r6_n, 0x01, out r4_n, out r5, out r8, out r9);
+			r2 = __wait(r4.u11 + 76, r4.u11 + 80, r6_n, 0x01, out r4_n, out r5, out r8, out r9);
 		}
-		r3Out.u0 = (Eq_n (*)[]) <invalid>;
+		r3Out.u0 = <invalid>;
 		r4Out = 0x01;
 		r5Out = r5;
 		r8Out = r8;
@@ -22618,7 +22652,7 @@ Eq_n __lockfile(Eq_n r4, union Eq_n & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32
 	}
 	else
 	{
-		r3Out.u0 = (Eq_n (*)[]) <invalid>;
+		r3Out.u0 = <invalid>;
 		r4Out = 0x00;
 		r5Out = r5;
 		r8Out = r8;
@@ -22651,7 +22685,7 @@ Eq_n __unlockfile(Eq_n r4, union Eq_n & r4Out, union Eq_n & r5Out, ptr32 & r6Out
 	__sync(0x00);
 	r4.u11[76] = (struct Eq_n) 0x00;
 	__sync(0x00);
-	Eq_n r7_n = *((word32) r4 + 80);
+	Eq_n r7_n = r4.u11[80];
 	Eq_n r2;
 	Eq_n r5;
 	ptr32 r6;
@@ -22693,17 +22727,17 @@ Eq_n __overflow(Eq_n r4, Eq_n r5, union Eq_n & r5Out, ptr32 & r6Out, union Eq_n 
 	byte bLoc11_n = (byte) r5;
 	ptr32 r6_n;
 	Eq_n r7_n;
-	if (r4.u12[4] != 0x00 || __towrite(r4, out r6_n, out r7_n) == 0x00)
+	if (r4.u11[16] != 0x00 || __towrite(r4, out r6_n, out r7_n) == 0x00)
 	{
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[20];
-		if (r7_n < (r4.u12)[4])
+		r7_n.u4 = r4.u11[20];
+		if (r7_n < (r4.u11)[16])
 		{
 			Eq_n r4_n;
-			r4_n.u3 = (word32) bLoc11_n;
-			if (r4_n != (word32) (*((word32) r4 + 75)))
+			r4_n.u4 = (word32) bLoc11_n;
+			if (r4_n != (word32) (r4.u11)[75])
 			{
-				*r7_n.u3 = (byte) r4_n;
+				*r7_n.u4 = (byte) r4_n;
 				r5Out = r5;
 				r6Out = r7_n.u11 + 1;
 				r7Out = r7_n;
@@ -22766,7 +22800,7 @@ void __stdio_write(struct Eq_n * r4, word32 r6)
 // 0040D320: void __stdout_write(Register (ptr32 Eq_n) r4, Register word32 r6)
 void __stdout_write(struct Eq_n * r4, word32 r6)
 {
-	if (__bit<word32,word32>(r4->t0000.u3, 0x06))
+	if (__bit<word32,word32>(r4->t0000.u0, 0x06))
 	{
 		word32 r4_n;
 		word32 r5_n;
@@ -22790,9 +22824,9 @@ void __string_read(struct Eq_n * r4, Eq_n r5, Eq_n r6)
 	word32 r6_n;
 	word32 r5_n;
 	Eq_n r16_n;
-	r16_n.u3 = r4->t0054.u3;
+	r16_n.u0 = r4->t0054.u0;
 	Eq_n r18_n;
-	r18_n.u3 = (word32) r6 + 0x0100;
+	r18_n.u4 = (word32) r6 + 0x0100;
 	Eq_n r20_n = r6;
 	Eq_n r4_n = memchr(r16_n, 0x00, (word32) r6 + 0x0100, out r5_n, out r6_n, out r8_n);
 	if (r4_n != 0x00)
@@ -22811,20 +22845,20 @@ void __string_read(struct Eq_n * r4, Eq_n r5, Eq_n r6)
 	word32 r14_n;
 	memcpy(r5, r16_n, r20_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 	Eq_n r16_n = r16_n + r18_n;
-	r4->t0002.u3 = (byte *) r16_n;
-	r4->t0054.u3 = (byte *) r16_n;
+	r4->t0002.u0 = (int32) r16_n;
+	r4->t0054.u0 = (int32) r16_n;
 }
 
-// 0040D3A0: Register Eq_n __towrite(Register Eq_n r4, Register out ptr32 r6Out, Register out Eq_n r7Out)
+// 0040D3A0: Register Eq_n __towrite(Register Eq_n r4, Register out Eq_n r6Out, Register out Eq_n r7Out)
 // Called from:
 //      fputc
 //      __fwritex
-Eq_n __towrite(Eq_n r4, ptr32 & r6Out, union Eq_n & r7Out)
+Eq_n __towrite(Eq_n r4, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	word32 r7_n = (word32) r4.u11[74];
 	r4.u11[74] = (struct Eq_n) ((byte) r7_n | (byte) r7_n + ~0x00);
 	Eq_n r7_n;
-	r7_n.u3 = *r4.u5;
+	r7_n.u4 = *r4.u6;
 	if (!__bit<word32,word32>(r7_n, 0x03))
 	{
 		r6Out = r7_n + ~0x00;
@@ -22833,8 +22867,9 @@ Eq_n __towrite(Eq_n r4, ptr32 & r6Out, union Eq_n & r7Out)
 	}
 	else
 	{
-		ptr32 r6_n = (ptr32) r4.u11[48];
-		Eq_n r7_n = r4.u11[44].a0000.u3.u3 + r6_n;
+		Eq_n r6_n;
+		r6_n.u4 = r4.u11[48];
+		Eq_n r7_n = Mem9[r4 + 44:word32] + r6_n;
 		r6Out = r6_n;
 		r7Out = r7_n;
 		return 0x00;
@@ -22887,10 +22922,10 @@ void store_int(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7)
 		switch ((word32) r5.u1)
 		{
 		case ~0x01:
-			*r4.u3 = (byte) (byte) r6;
+			*r4.u4 = (int8) (byte) r6;
 			return;
 		case ~0x00:
-			*r4.u4 = (word16) (word16) r6;
+			*r4.u5 = (word16) (word16) r6;
 			return;
 		case 0x00:
 		case 0x01:
@@ -22898,7 +22933,7 @@ void store_int(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7)
 		case 0x02:
 			break;
 		case 0x03:
-			*r4.u5 = (word32) r6;
+			*r4.u6 = (word32) r6;
 			r4.u11[4] = (struct Eq_n) r7;
 			break;
 		}
@@ -22910,7 +22945,6 @@ void store_int(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7)
 //      __isoc99_vfscanf
 Eq_n arg_n(Eq_n r4, up32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r11Out, ptr32 & r12Out)
 {
-	int8 bLoc24;
 	word32 r14_n;
 	word32 r13_n;
 	ptr32 r12_n;
@@ -22935,16 +22969,18 @@ Eq_n arg_n(Eq_n r4, up32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r11Out, ptr32
 	memcpy(fp - 0x20, r4, 0x10, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
 	up32 r16_n;
 	Eq_n r2_n = memcpy(fp - 48, fp - 0x20, 0x10, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n, out r13_n, out r14_n);
-	ptr32 * r7_n = (word32) bLoc24;
+	Eq_n r7_n;
+	int8 bLoc24;
+	r7_n.u1 = (word32) bLoc24;
 	word32 r6_n = 0x00;
 	word32 r4_n = 0x00;
 	for (r16_n = r5; r16_n >= 0x02; r16_n += ~0x00)
 	{
-		if (r7_n > null)
+		if (r7_n > 0x00)
 		{
 			r6_n = 0x01;
-			r7_n = (int32) ((byte) r7_n + 252);
-			if (r7_n < null)
+			r7_n.u0 = (int32) ((byte) r7_n + 252);
+			if (r7_n < 0x00)
 				goto l0040D45C;
 		}
 		else
@@ -22953,14 +22989,14 @@ l0040D45C:
 			r4_n = 0x01;
 		}
 	}
-	if (r7_n > null)
+	if (r7_n > 0x00)
 	{
 		int32 r6_n = (int32) ((byte) r7_n + 252);
 		if (r6_n >= 0x00)
 		{
 			r7_n = r6_n - r7_n;
 l0040D49A:
-			ptr32 r4_n = *r7_n;
+			ptr32 r4_n = *r7_n.u1;
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r11Out = r11_n;
@@ -22991,7 +23027,7 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 	struct Eq_n * r16_n = r5;
 	Eq_n r4_n = fp - 0x0144;
 	Eq_n dwLoc0178_n;
-	dwLoc0178_n.u3 = (word32) (&r6.u21->u1)[0x0C];
+	dwLoc0178_n.u4 = (word32) r6.u11[0x0C];
 	if (r4.u11[76] >= 0x00)
 	{
 		word32 r5_n;
@@ -23004,7 +23040,7 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 	Eq_n r7_n;
 	while (true)
 	{
-		r7_n.u3 = (word32) r16_n->b0000;
+		r7_n.u4 = (word32) r16_n->b0000;
 		if (r7_n == 0x00)
 			break;
 		if (r7_n == 0x20 || r7_n < 0x0E)
@@ -23023,11 +23059,11 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 			do
 			{
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				if (r7_n < (r4.u11)[0x0068])
 				{
 					r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
-					r4_n = (word32) *r7_n.u3;
+					r4_n = (word32) *r7_n.u4;
 				}
 				else
 				{
@@ -23040,8 +23076,8 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 				}
 			} while (r4_n == 0x20 || r4_n < 0x0E);
 			if (r4.u11[0x0068] != 0x00)
-				r4.u11[4] = (struct Eq_n) r4.u11[4].bFFFFFFFF;
-			r4_n.u3 = r4.u11[0x007C];
+				r4.u11[4] = (struct Eq_n) r4.u11[4].aFFFFFFFF;
+			r4_n.u4 = r4.u11[0x007C];
 			r23_n = Mem1428[r4 + 0x04:word32] - Mem1428[r4 + 0x08:word32] + Mem1428[r4 + 0x78:word32] + r23_n;
 			goto l0040DBC6;
 		}
@@ -23060,7 +23096,7 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 			}
 			if (r5_n < 0x3A)
 			{
-				r7_n.u3 = (word32) r16_n[2];
+				r7_n.u4 = (word32) r16_n[2];
 				if (r7_n != 0x24)
 					goto l0040D5EC;
 				Eq_n r4_n;
@@ -23073,7 +23109,7 @@ l0040D5EC:
 			Eq_n r6_n;
 			if (r7_n > 0x00)
 			{
-				r6_n.u3 = (int32) ((byte) r7_n + 252);
+				r6_n.u0 = (int32) ((byte) r7_n + 252);
 				if (r6_n >= 0x00)
 				{
 					r4_n = dwLoc0178_n;
@@ -23085,9 +23121,10 @@ l0040D5EC:
 l0040D608:
 			r7_n = r16_n + 1;
 			dwLoc0178_n = r6_n;
-			r18_n.u3 = *r4_n.u5;
+			r18_n.u4 = *r4_n.u6;
 l0040D586:
-			Eq_n (* dwLoc0184_n)[] = null;
+			Eq_n dwLoc0184_n;
+			dwLoc0184_n.u0 = 0x00;
 			up32 r6_n;
 			struct Eq_n * r5_n;
 			while (true)
@@ -23112,8 +23149,9 @@ l0040D586:
 			Eq_n r6_n = (word32) r7_n->b0000 + ~0x40 & 0xFF;
 			if (r6_n < 0x3A)
 			{
-				Eq_n (* r5_n)[] = g_a413454;
-				r6_n.u3 = *((char *) &g_a413454->u3 + r6_n * 0x04);
+				Eq_n r5_n;
+				r5_n.u0 = 0x00413454;
+				r6_n.u0 = *((word32) 0x00413454 + r6_n * 0x04);
 				Eq_n r21_n;
 				switch (r6_n)
 				{
@@ -23177,7 +23215,7 @@ l0040D586:
 					r21_n.u0 = 0x02;
 					break;
 				case 0x27:
-					r6_n.u3 = (word32) r7_n[1];
+					r6_n.u4 = (word32) r7_n[1];
 					r21_n.u0 = ~0x00;
 					if (r6_n == 0x28)
 					{
@@ -23188,7 +23226,7 @@ l0040D586:
 				case 0x29:
 					goto l0040D700;
 				case 0x2B:
-					r6_n.u3 = (word32) r7_n[1];
+					r6_n.u4 = (word32) r7_n[1];
 					r21_n.u0 = 0x01;
 					if (r6_n == 44)
 					{
@@ -23224,11 +23262,11 @@ l0040D700:
 							do
 							{
 								Eq_n r7_n;
-								r7_n.u3 = r4.u11[4];
+								r7_n.u4 = r4.u11[4];
 								if (r7_n < (r4.u11)[0x0068])
 								{
 									r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
-									r4_n = (word32) *r7_n.u3;
+									r4_n = (word32) *r7_n.u4;
 								}
 								else
 								{
@@ -23242,11 +23280,11 @@ l0040D700:
 								}
 							} while (r4_n == 0x20 || r4_n < 0x0E);
 							if (r4.u11[0x0068] != 0x00)
-								r4.u11[4] = (struct Eq_n) r4.u11[4].bFFFFFFFF;
-							Eq_n r7_n = r4.u11[4] - (r4.u11)[8];
+								r4.u11[4] = (struct Eq_n) r4.u11[4].aFFFFFFFF;
+							Eq_n r7_n = r4.u11[4] - (r4.u13)[2];
 							Eq_n r6_n = r7_n + Mem297[r4 + 0x78:word32];
 							Eq_n r4_n;
-							r4_n.u3 = r4.u11[0x007C];
+							r4_n.u4 = r4.u11[0x007C];
 							r6_n = r6_n + r23_n;
 							r7_n = CONVERT(r6_n <u r23_n, bool, word32) + (r4_n + (CONVERT(r6_n <u r7_n, bool, word32) + ((r7_n >> 0x1F) + r4_n)));
 							r23_n = r6_n;
@@ -23257,17 +23295,17 @@ l0040D700:
 					r4_n = r18_n;
 					goto l0040DBC8;
 				}
-				r6_n.u3 = (word32) ((r17_n & 0x2F) > 0x00);
+				r6_n.u4 = (word32) ((r17_n & 0x2F) > 0x00);
 				r7_n = 0x01;
 				if (r6_n == 0x00)
-					r5_n = (Eq_n (*)[]) 0x01;
+					r5_n.u0 = 0x01;
 				dwLoc0184_n = r5_n;
 l0040D662:
 				word32 r8_n;
 				word32 r9_n;
 				__shlim(r4, r6_n, r7_n >> 0x1F, out r8_n, out r9_n, out r11_n);
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
+				r7_n.u4 = r4.u11[4];
 				if (r7_n < (r4.u11)[0x0068])
 				{
 					r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
@@ -23282,9 +23320,9 @@ l0040D662:
 					goto l0040D7B4;
 l0040D684:
 				if (r4.u11[0x0068] != 0x00)
-					r4.u11[4] = (struct Eq_n) r4.u11[4].bFFFFFFFF;
+					r4.u11[4] = (struct Eq_n) r4.u11[4].aFFFFFFFF;
 				Eq_n r5_n;
-				if (dwLoc0184_n == (Eq_n (*)[]) 0x24)
+				if (dwLoc0184_n == 0x24)
 				{
 l0040DAE6:
 					r5_n.u0 = 0x0A;
@@ -23295,35 +23333,35 @@ l0040D84C:
 					word32 r8_n;
 					word32 r9_n;
 					r2_n = __intscan(r2_n, r3_n, r4, r5_n, 0x00, ~0x00, ~0x00, r12_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r11_n, out r12_n);
-					Eq_n r22_n = r4.u11[4] - (r4.u11)[8];
+					Eq_n r22_n = r4.u11[4] - (r4.u13)[2];
 					Eq_n r8_n = Mem466[r4 + 0x78:word32] + r22_n;
 					r7_n = r5_n;
-					if ((r8_n | (((((r4.u11))[0x007C].a0000).u3).u3 + (r22_n >> 0x1F)) + (word32) (r8_n < r22_n)) == 0x00)
+					if ((r8_n | (((((r4.u11))[0x007C].a0000).u5).u4 + (r22_n >> 0x1F)) + (word32) (r8_n < r22_n)) == 0x00)
 						goto l0040D974;
-					if (dwLoc0184_n != (Eq_n (*)[]) 0x30 || r18_n == 0x00)
+					if (dwLoc0184_n != 0x30 || r18_n == 0x00)
 						store_int(r18_n, r21_n, r4_n, r5_n);
 l0040D6B4:
-					r4_n.u3 = r4.u11[0x007C];
+					r4_n.u4 = r4.u11[0x007C];
 					r23_n = Mem1249[r4 + 0x04:word32] - Mem1249[r4 + 0x08:word32] + Mem1249[r4 + 0x78:word32] + r23_n;
 					goto l0040DBC8;
 				}
 				Eq_n tLoc0134;
 				word32 r7_n;
-				if (dwLoc0184_n < (Eq_n (*)[]) 0x25)
+				if (dwLoc0184_n < 0x25)
 				{
-					if (dwLoc0184_n == (Eq_n (*)[]) 0x18)
+					if (dwLoc0184_n == 0x18)
 						goto l0040D8A0;
-					if (dwLoc0184_n < (Eq_n (*)[]) 0x19)
+					if (dwLoc0184_n < 0x19)
 					{
-						if (dwLoc0184_n != (Eq_n (*)[]) 0x01 && (dwLoc0184_n < (Eq_n (*)[]) 0x01 || dwLoc0184_n >= (Eq_n (*)[]) 0x48))
+						if (dwLoc0184_n != 0x01 && (dwLoc0184_n < 0x01 || dwLoc0184_n >= 0x48))
 							goto l0040D6B4;
 						goto l0040DAF8;
 					}
-					if (dwLoc0184_n == (Eq_n (*)[]) 33)
+					if (dwLoc0184_n == 33)
 						goto l0040DAF8;
-					if (dwLoc0184_n == (Eq_n (*)[]) 0x23)
+					if (dwLoc0184_n == 0x23)
 						goto l0040D8AE;
-					if (dwLoc0184_n != (Eq_n (*)[]) 0x1B)
+					if (dwLoc0184_n != 0x1B)
 						goto l0040D6B4;
 					Eq_n r22_n;
 					if ((word32) r16_n[1] != 0x1E)
@@ -23341,7 +23379,7 @@ l0040D6B4:
 					int32 r8_n;
 					word32 r10_n;
 					memset(&tLoc0134, r22_n, 0x0101, out r6_n, out r7_n, out r8_n, out r10_n);
-					r6_n.u3 = (word32) r16_n->b0000;
+					r6_n.u4 = (word32) r16_n->b0000;
 					tLoc0134.b0000 = 0x00;
 					r4_n = &tLoc0134;
 					r18_n = &tLoc0134;
@@ -23385,17 +23423,17 @@ l0040D6B4:
 					}
 					goto l0040D8DA;
 				}
-				if (dwLoc0184_n == (Eq_n (*)[]) 0x2F)
+				if (dwLoc0184_n == 0x2F)
 				{
 					r5_n.u0 = 0x08;
 					goto l0040D84C;
 				}
-				if (dwLoc0184_n < (Eq_n (*)[]) 0x30)
+				if (dwLoc0184_n < 0x30)
 				{
-					if (dwLoc0184_n >= (Eq_n (*)[]) 0x28)
+					if (dwLoc0184_n >= 0x28)
 					{
 						r5_n.u0 = 0x00;
-						if (dwLoc0184_n == (Eq_n (*)[]) 0x29)
+						if (dwLoc0184_n == 0x29)
 							goto l0040D84C;
 						goto l0040D6B4;
 					}
@@ -23404,9 +23442,9 @@ l0040DAF8:
 					word32 r6_n;
 					word32 r7_n;
 					r2_n = __floatscan(r0, r2_n, r4, r21_n, 0x00, r12_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r11_n, out r12_n);
-					Eq_n r7_n = r4.u11[4] - (r4.u11)[8];
+					Eq_n r7_n = r4.u11[4] - (r4.u13)[2];
 					Eq_n r6_n = r7_n + Mem466[r4 + 0x78:word32];
-					r7_n = r4.u11[0x007C].a0000.u3.u3 + (r7_n >> 0x1F) + (word32) (r6_n < r7_n) | r6_n;
+					r7_n = r4.u11[0x007C].a0000.u5.u4 + (r7_n >> 0x1F) + (word32) (r6_n < r7_n) | r6_n;
 					if (r7_n == 0x00)
 						goto l0040D974;
 					if (r18_n != 0x00)
@@ -23418,23 +23456,23 @@ l0040DAF8:
 						}
 						else
 						{
-							*r18_n.u5 = (word32) r4_n;
+							*r18_n.u6 = (word32) r4_n;
 							r18_n.u11[4] = (struct Eq_n) r5_n;
 						}
 					}
 					goto l0040D6B4;
 				}
-				if (dwLoc0184_n != (Eq_n (*)[]) 0x33)
+				if (dwLoc0184_n != 0x33)
 				{
-					if (dwLoc0184_n < (Eq_n (*)[]) 0x34)
+					if (dwLoc0184_n < 0x34)
 					{
-						if (dwLoc0184_n == (Eq_n (*)[]) 0x30)
+						if (dwLoc0184_n == 0x30)
 							goto l0040D8A0;
 						goto l0040D6B4;
 					}
-					if (dwLoc0184_n == (Eq_n (*)[]) 0x35)
+					if (dwLoc0184_n == 0x35)
 						goto l0040DAE6;
-					if (dwLoc0184_n != (Eq_n (*)[]) 0x38)
+					if (dwLoc0184_n != 0x38)
 						goto l0040D6B4;
 l0040D8A0:
 					r5_n.u0 = 0x10;
@@ -23447,7 +23485,7 @@ l0040D8AE:
 				memset(&tLoc0134, ~0x00, 0x0101, out r6_n, out r7_n, out r8_n, out r10_n);
 				tLoc0134.b0000 = 0x00;
 				Eq_n r22_n;
-				if (dwLoc0184_n == (Eq_n (*)[]) 0x33)
+				if (dwLoc0184_n == 0x33)
 				{
 l0040D8DA:
 					r22_n.u0 = 0x1F;
@@ -23455,7 +23493,7 @@ l0040D8DA:
 				else
 				{
 					r22_n.u0 = 0x1F;
-					if (dwLoc0184_n == (Eq_n (*)[]) 0x23)
+					if (dwLoc0184_n == 0x23)
 						r22_n = r7_n + 0x01;
 				}
 				word32 r6_n;
@@ -23474,12 +23512,12 @@ l0040D8DA:
 						while (true)
 						{
 							Eq_n r7_n;
-							r7_n.u3 = r4.u11[4];
+							r7_n.u4 = r4.u11[4];
 							int32 r4_n;
 							if (r7_n < (r4.u11)[0x0068])
 							{
 								r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
-								r4_n = (word32) *r7_n.u3;
+								r4_n = (word32) *r7_n.u4;
 							}
 							else
 							{
@@ -23518,11 +23556,11 @@ l0040D8DA:
 						do
 						{
 							Eq_n r7_n;
-							r7_n.u3 = r4.u11[4];
+							r7_n.u4 = r4.u11[4];
 							if (r7_n < (r4.u11)[0x0068])
 							{
 								r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
-								r4_n = (word32) *r7_n.u3;
+								r4_n = (word32) *r7_n.u4;
 							}
 							else
 							{
@@ -23540,13 +23578,13 @@ l0040D8DA:
 						while (true)
 						{
 							Eq_n r7_n;
-							r7_n.u3 = r4.u11[4];
+							r7_n.u4 = r4.u11[4];
 							r8_n = r19_n;
 							int32 r4_n;
 							if (r7_n < (r4.u11)[0x0068])
 							{
 								r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
-								r4_n = (word32) *r7_n.u3;
+								r4_n = (word32) *r7_n.u4;
 							}
 							else
 							{
@@ -23557,7 +23595,7 @@ l0040D8DA:
 							if ((word32) (fp + ~0x102F + r4_n)->b0EFD == 0x00)
 								break;
 							Mem636[r19_n + r18_n:byte] = SLICE(r4_n, byte, 0);
-							++r19_n.u11;
+							r19_n.u4 = (word32) r19_n.u0 + 1;
 						}
 						r19 = r18_n;
 l0040DA46:
@@ -23565,13 +23603,13 @@ l0040DA46:
 					}
 l0040D930:
 					Eq_n r7_n;
-					r7_n.u3 = r4.u11[4];
+					r7_n.u4 = r4.u11[4];
 					if (r4.u11[0x0068] != 0x00)
-						r4.u11[4] = (struct Eq_n) &r7_n.u11->bFFFFFFFF;
-					Eq_n r7_n = r4.u11[4] - (r4.u11)[8];
-					r4_n.u3 = r4.u11[0x007C];
+						r4.u11[4] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
+					Eq_n r7_n = r4.u11[4] - (r4.u13)[2];
+					r4_n.u4 = r4.u11[0x007C];
 					Eq_n r6_n = r7_n + Mem927[r4 + 0x78:word32];
-					r7_n.u3 = r4_n.u3 + (r7_n >> 0x1F) + (word32) (r6_n < r7_n);
+					r7_n.u4 = r4_n.u4 + (r7_n >> 0x1F) + (word32) (r6_n < r7_n);
 					Eq_n r5_n = r6_n | r7_n;
 					if (r5_n == 0x00)
 						goto l0040D974;
@@ -23587,7 +23625,7 @@ l0040D930:
 					{
 l0040DBD2:
 						if (r21_n == 0x01)
-							*r18_n.u5 = (word32) r20;
+							*r18_n.u6 = (word32) r20;
 						if (dwLoc017C_n != 0x23)
 							goto l0040DBDC;
 					}
@@ -23595,7 +23633,7 @@ l0040DBD2:
 					{
 l0040DBDC:
 						if (r20 != 0x00)
-							r20.u5[r8_n] = 0x00;
+							r20.u6[r8_n] = 0x00;
 						if (r19 != 0x00)
 							Mem1009[r19 + r8_n:byte] = 0x00;
 					}
@@ -23610,13 +23648,13 @@ l0040D8F6:
 					while (true)
 					{
 						Eq_n r7_n;
-						r7_n.u3 = r4.u11[4];
+						r7_n.u4 = r4.u11[4];
 						int32 r4_n;
 						if (r7_n < (r4.u11)[0x0068])
 						{
 							r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
 							r6_n.u11 = r7_n.u11 + 1;
-							r4_n = (word32) *r7_n.u3;
+							r4_n = (word32) *r7_n.u4;
 						}
 						else
 							r2_n = fn0040DC0C(r4, out r3_n, out r4_n, out r6_n, out r8_n, out r11_n, out r12_n);
@@ -23633,7 +23671,7 @@ l0040D8F6:
 						}
 						if (r20 != 0x00)
 						{
-							r20.u5[r8_n] = ~0x00;
+							r20.u6[r8_n] = ~0x00;
 							++r8_n.u11;
 						}
 						if (false || r8_n != r22_n)
@@ -23694,13 +23732,13 @@ l0040D50E:
 		__shlim(r4, 0x00, 0x00, out r8_n, out r9_n, out r11_n);
 		r16_n += (word32) (r7_n == 0x25);
 		Eq_n r7_n;
-		r7_n.u3 = r4.u11[4];
+		r7_n.u4 = r4.u11[4];
 		ptr32 r6_n;
 		if (r7_n < (r4.u11)[0x0068])
 		{
 			r4.u11[4] = (struct Eq_n) (r7_n.u11 + 1);
 			r6_n = r7_n.u11 + 1;
-			r4_n.u3 = (word32) *r7_n.u3;
+			r4_n.u4 = (word32) *r7_n.u4;
 		}
 		else
 		{
@@ -23712,13 +23750,13 @@ l0040D50E:
 		}
 		if (r4_n != (word32) r16_n->b0000)
 		{
-			r7_n.u3 = r4.u11[0x0068];
+			r7_n.u4 = r4.u11[0x0068];
 			if (r7_n != 0x00)
 			{
 				Eq_n r7_n;
-				r7_n.u3 = r4.u11[4];
-				r4.u11[4] = (struct Eq_n) &r7_n.u11->bFFFFFFFF;
-				r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+				r7_n.u4 = r4.u11[4];
+				r4.u11[4] = (struct Eq_n) r7_n.u11->aFFFFFFFF;
+				r7_n.u4 = r7_n.u11->aFFFFFFFF;
 			}
 			if (r4_n < 0x00)
 				r7_n.u0 = ~0x00;
@@ -23766,46 +23804,46 @@ Eq_n fn0040DC0C(Eq_n r4, ptr32 & r3Out, ptr32 & r4Out, union Eq_n & r6Out, union
 	return r2_n;
 }
 
-// 0040DC10: Register Eq_n stpcpy(Register Eq_n r4, Register Eq_n r5, Register out Eq_n r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out)
+// 0040DC10: Register Eq_n stpcpy(Register Eq_n r4, Register Eq_n r5, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out)
 // Called from:
 //      strcpy
-Eq_n stpcpy(Eq_n r4, Eq_n r5, union Eq_n & r6Out, ptr32 & r7Out, union Eq_n & r8Out)
+Eq_n stpcpy(Eq_n r4, Eq_n r5, ptr32 & r6Out, ptr32 & r7Out, union Eq_n & r8Out)
 {
-	Eq_n r6;
+	ptr32 r6;
 	Eq_n r8;
 	if (((r4 ^ r5) & 0x03) == 0x00)
 	{
 		ptr32 r7_n;
 		if ((r5 & 0x03) != 0x00)
 		{
-			r7_n = (word32) *r5.u3;
-			*r4.u3 = (byte) r7_n;
+			r7_n = (word32) *r5.u4;
+			*r4.u4 = (byte) r7_n;
 			while (r7_n != 0x00)
 			{
 				++r5.u11;
 				++r4.u11;
 				if ((r5 & 0x03) == 0x00)
 					goto l0040DC32;
-				r7_n = (word32) *r5.u3;
-				*r4.u3 = (byte) r7_n;
+				r7_n = (word32) *r5.u4;
+				*r4.u4 = (byte) r7_n;
 			}
 			goto l0040DC88;
 		}
 l0040DC32:
-		r6 = *r5.u5;
+		r6 = *r5.u6;
 		r8 = r4;
 		Eq_n r9_n = r5;
-		if (((word32) r6 - 0x01010101 & ~r6 & 0x80808080) == 0x00)
+		if ((r6 + ~0x01010100 & ~r6 & 0x80808080) == 0x00)
 		{
 			do
 			{
 				r8.u11 += 4;
-				r8.u12->dwFFFFFFFC = (word32) r6;
+				r8.u11->tFFFFFFFC.u0 = (int32) r6;
 				r9_n.u11 += 4;
-				r6 = *r9_n.u5;
-			} while (((word32) r6 - 0x01010101 & ~r6 & 0x80808080) == 0x00);
-			r7_n = (word32) *r9_n.u3;
-			*r8.u3 = (byte) r7_n;
+				r6 = *r9_n.u6;
+			} while ((r6 + ~0x01010100 & ~r6 & 0x80808080) == 0x00);
+			r7_n = (word32) *r9_n.u4;
+			*r8.u4 = (byte) r7_n;
 			r4 = r8;
 			r5 = r9_n;
 			if (r7_n == 0x00)
@@ -23821,8 +23859,8 @@ l0040DC7C:
 			++r4.u11;
 		}
 	}
-	ptr32 r7_n = (word32) *r5.u3;
-	*r4.u3 = (byte) r7_n;
+	ptr32 r7_n = (word32) *r5.u4;
+	*r4.u4 = (byte) r7_n;
 	if (r7_n == 0x00)
 	{
 		r6Out = r6;
@@ -23850,12 +23888,12 @@ l0040DD0A:
 	{
 		if (r6 == 0x00)
 			goto l0040DD1A;
-		word32 r7_n = (word32) *r5.u3;
-		*r16_n.u3 = (byte) r7_n;
+		word32 r7_n = (word32) *r5.u4;
+		*r16_n.u4 = (byte) r7_n;
 		if (r7_n == 0x00)
 			goto l0040DD1A;
 		++r5.u11;
-		r6.u3 = &r6.u11->bFFFFFFFF;
+		r6.u4 = r6.u11->aFFFFFFFF;
 		++r16_n.u11;
 	}
 	if (r6 == 0x00)
@@ -23868,37 +23906,37 @@ l0040DD1A:
 		memset(r16_n, 0x00, r6, out r6_n, out r7_n, out r8_n, out r10_n);
 		return;
 	}
-	word32 r9_n = (word32) *r5.u3;
+	word32 r9_n = (word32) *r5.u4;
 	if (r9_n == 0x00)
 		goto l0040DD1A;
 	if (r6 >= 0x04)
 	{
-		Eq_n r4_n = *r5.u5;
-		if ((~r4_n & (word32) r4_n - 0x01010101 & 0x80808080) == 0x00)
+		word32 r4_n = *r5.u6;
+		if ((~r4_n & r4_n + ~0x01010100 & 0x80808080) == 0x00)
 		{
-			Eq_n r4_n;
+			word32 r4_n;
 			do
 			{
-				r6.u3 = &r6.u12->dwFFFFFFFC;
+				r6.u4 = &r6.u11->tFFFFFFFC.u0;
 				r5.u11 += 4;
 				r16_n.u11 += 4;
 				if (r6 < 0x04)
 					goto l0040DD0A;
-				r4_n = *r5.u5;
-			} while (((word32) r4_n - 0x01010101 & ~r4_n & 0x80808080) == 0x00);
+				r4_n = *r5.u6;
+			} while ((r4_n + ~0x01010100 & ~r4_n & 0x80808080) == 0x00);
 			goto l0040DD0C;
 		}
 	}
-	*r16_n.u3 = (byte) r9_n;
+	*r16_n.u4 = (byte) r9_n;
 l0040DD12:
-	r6.u3 = &r6.u11->bFFFFFFFF;
+	r6.u4 = r6.u11->aFFFFFFFF;
 	++r5.u11;
 	++r16_n.u11;
 	if (r6 == 0x00)
 		goto l0040DD1A;
 l0040DD0C:
-	word32 r7_n = (word32) *r5.u3;
-	*r16_n.u3 = (byte) r7_n;
+	word32 r7_n = (word32) *r5.u4;
+	*r16_n.u4 = (byte) r7_n;
 	if (r7_n == 0x00)
 		goto l0040DD1A;
 	goto l0040DD12;
@@ -24002,13 +24040,13 @@ void handler()
 	word32 r7_n;
 	__pthread_setcancelstate(0x01, fp - 2392, out r7_n);
 	word32 r7_n = g_dw454431;
-	4402968 = (int8) r0;
+	4402968 = (int32) r0;
 	if (r7_n != 0x00)
 	{
 		callback = r4;
 		context = r5;
 		__sync(0x00);
-		__block_new_threads.u3 = (byte *) 0x01;
+		__block_new_threads.u0 = 0x01;
 		__sync(0x00);
 		fn0040E008((char *) &tLoc08CC + 4, ~0x00, 0x80);
 		__libc_sigaction(0x22, &tLoc08CC, null);
@@ -24044,7 +24082,7 @@ l0040DEFE:
 					if (r4_n != r4_n && r4_n != 0x00)
 					{
 						__sync(0x00);
-						0x00432F0C = (int8) r4_n;
+						0x00432F0C = (int32) r4_n;
 						__sync(0x00);
 						Eq_n r7_n;
 						r7_n.u0 = 4402968;
@@ -24052,7 +24090,7 @@ l0040DEFE:
 						{
 							if (r7_n.u11[4] == r4_n)
 								goto l0040DEFE;
-							r7_n.u3 = *r7_n.u5;
+							r7_n.u4 = *r7_n.u6;
 						}
 						word32 r4_n;
 						word32 r5_n;
@@ -24097,8 +24135,8 @@ l0040DEFE:
 		while (r16_n != 0x00)
 		{
 			sem_post(r16_n.u11 + 8);
-			sem_wait((word32) r16_n + 24);
-			r16_n.u3 = *r16_n.u5;
+			sem_wait(r16_n.u11 + 24);
+			r16_n.u4 = *r16_n.u6;
 		}
 		tLoc08CC.dw0000 = 0x01;
 		__libc_sigaction(0x22, &tLoc08CC, null);
@@ -24109,20 +24147,20 @@ l0040DEFE:
 	while (r4_n != 0x00)
 	{
 		Eq_n r16_n;
-		r16_n.u3 = *r4_n.u5;
+		r16_n.u4 = *r4_n.u6;
 		sem_post(r4_n.u11 + 8);
 		r4_n = r16_n;
 	}
 l0040DEA4:
 	__sync(0x00);
-	__block_new_threads.u3 = (byte *) r0;
+	__block_new_threads.u0 = (int32) r0;
 	__sync(0x00);
 	Eq_n r4_n = fn0040E00C();
 	if (r4_n == ~0x25)
 		r4_n = fn0040E00C();
 	word32 r7_n;
 	__pthread_setcancelstate(r4_n, 0x00, out r7_n);
-	__unlock(&g_dw432F10);
+	__unlock(4402960);
 	return __restore_sigs();
 }
 
@@ -24282,7 +24320,7 @@ l0040E178:
 			uint32 r5_n = r4 << 0x0C;
 			while (r7_n >= 0x00)
 			{
-				r16_n.u3 = &r16_n.u11->bFFFFFFFF;
+				r16_n.u4 = (word32) r16_n.u0 - 1;
 				r7_n = r7_n << 0x01 | r5_n >> 0x1F;
 				r5_n <<= 0x01;
 			}
@@ -24304,7 +24342,7 @@ l0040E178:
 			uint32 r5_n = r6 << 0x0C;
 			while (r7_n >= 0x00)
 			{
-				r30_n.u3 = &r30_n.u11->bFFFFFFFF;
+				r30_n.u4 = (word32) r30_n.u0 - 1;
 				r7_n = r7_n << 0x01 | r5_n >> 0x1F;
 				r5_n <<= 0x01;
 			}
@@ -24336,7 +24374,7 @@ l0040E178:
 			}
 			r18_n = r18_n << 0x01 | r17_n >> 0x1F;
 			r17_n <<= 0x01;
-			r16_n.u3 = &r16_n.u11->bFFFFFFFF;
+			r16_n.u4 = (word32) r16_n.u0 - 1;
 		}
 		if (r6_n >= 0x00)
 		{
@@ -24368,7 +24406,7 @@ l0040E186:
 		{
 			r7_n = r7_n << 0x01 | r4_n >> 0x1F;
 			r4_n <<= 0x01;
-			r16_n.u3 = &r16_n.u11->bFFFFFFFF;
+			r16_n.u4 = (word32) r16_n.u0 - 1;
 		}
 		ui32 r5_n;
 		if (r16_n > 0x00)
@@ -24430,7 +24468,7 @@ Eq_n frexp(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r5Out, ptr32 & r18Out)
 			word32 r18_n;
 			r17_n = frexp(r4_n, r5_n, r6, out r5_n, out r18_n);
 			r16_n = r5_n;
-			dwLoc10_n = r6.u2->u0 + ~0x3F;
+			dwLoc10_n = (word32) *r6 - 64;
 		}
 		else
 			dwLoc10_n = 0x00;
@@ -24446,7 +24484,7 @@ Eq_n frexp(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n & r5Out, ptr32 & r18Out)
 	return r17_n;
 }
 
-// 0040E320: Register (ptr32 int32) mbrtowc(Register (ptr32 int32) r4, Register (ptr32 Eq_n) r5, Register Eq_n r6, Register (ptr32 int32) r7, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r4Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r11Out)
+// 0040E320: Register (ptr32 int32) mbrtowc(Register (ptr32 int32) r4, Register (ptr32 Eq_n) r5, Register Eq_n r6, Register (ptr32 int32) r7, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r11Out)
 // Called from:
 //      __isoc99_vfscanf
 int32 * mbrtowc(int32 * r4, struct Eq_n * r5, Eq_n r6, int32 * r7, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r11Out)
@@ -24463,7 +24501,7 @@ int32 * mbrtowc(int32 * r4, struct Eq_n * r5, Eq_n r6, int32 * r7, union Eq_n & 
 		if (r9_n == 0x00)
 		{
 			r3Out = r3;
-			r4Out = null;
+			r4Out.u0 = 0x00;
 			r6Out = r6;
 			r8Out = r8;
 			r11Out = r11;
@@ -24476,7 +24514,8 @@ int32 * mbrtowc(int32 * r4, struct Eq_n * r5, Eq_n r6, int32 * r7, union Eq_n & 
 		ptr32 fp;
 		r2_n = fp - 0x14;
 	}
-	union Eq_n * r4_n = (union Eq_n *) ~0x01;
+	Eq_n r4_n;
+	r4_n.u0 = ~0x01;
 	if (r6 == 0x00)
 	{
 l0040E3FE:
@@ -24493,7 +24532,7 @@ l0040E3FE:
 		{
 			*r2_n = 0x00FE;
 			r3Out = r3;
-			r4Out = (union Eq_n *) 0x01;
+			r4Out.u0 = 0x01;
 			r6Out = r6;
 			r8Out.u0 = 0x00FE;
 			r11Out = r11;
@@ -24504,7 +24543,7 @@ l0040E3FE:
 		{
 			*r2_n = (word32) r5->b0000 & 0xDFFF;
 			r3Out = r3;
-			r4Out = (union Eq_n *) 0x01;
+			r4Out.u0 = 0x01;
 			r6Out.u0 = 0xDFFF;
 			r8Out.u0 = 0x00FE;
 			r11Out = r11;
@@ -24516,7 +24555,7 @@ l0040E3FE:
 l0040E3F2:
 			word32 r4_n;
 			r3 = __errno_location(out r4_n);
-			r4_n = (union Eq_n *) ~0x00;
+			r4_n.u0 = ~0x00;
 			goto l0040E3FE;
 		}
 		++r5;
@@ -24527,7 +24566,7 @@ l0040E3F2:
 l0040E398:
 			*r7 = r9_n;
 			r3Out = r3;
-			r4Out = (union Eq_n *) ~0x01;
+			r4Out.u0 = ~0x01;
 			r6Out = r6;
 			r8Out = r8;
 			r11Out = r11;
@@ -24585,20 +24624,20 @@ Eq_n mbsrtowcs(Eq_n r4, Eq_n r5, Eq_n r6, union Eq_n * r7, union Eq_n & r5Out, u
 	ptr32 dwLoc10_n = r18;
 	Eq_n r17_n = r4;
 	Eq_n r16_n;
-	r16_n.u3 = *r5.u5;
+	r16_n.u4 = *r5.u6;
 	Eq_n r8;
 	Eq_n r7_n;
 	Eq_n r5_n;
 	if (r7 != null)
 	{
-		r8.u3 = r7->u3;
+		r8.u0 = r7->u0;
 		if (r8 != 0x00)
 		{
 			if (r4 != 0x00)
 			{
 				r7_n = r6;
 l0040E426:
-				uint32 r9_n = (word32) *r16_n.u3;
+				uint32 r9_n = (word32) *r16_n.u4;
 				r5_n = (r9_n >> 0x03) + ~0x0F;
 				if (__ins<word32,word32>((r8 >> 0x1A) + (r9_n >> 0x03) | r5_n, 0x00, 0x00, 0x01) == 0x00)
 				{
@@ -24625,19 +24664,19 @@ l0040E426:
 							r16_n.u11 += 3;
 							r8 = r5_n + ~0x7F | r8 << 0x06;
 l0040E454:
-							*r17_n.u5 = (word32) r8;
+							*r17_n.u6 = (word32) r8;
 l0040E4BC:
-							r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+							r7_n.u4 = r7_n.u11->aFFFFFFFF;
 							r17_n.u11 += 4;
 							goto l0040E49E;
 						}
 					}
 l0040E556:
-					r16_n.u3 = &r16_n.u11->bFFFFFFFF;
+					r16_n.u4 = r16_n.u11->aFFFFFFFF;
 					goto l0040E558;
 				}
 l0040E530:
-				r16_n.u3 = &r16_n.u11->bFFFFFFFF;
+				r16_n.u4 = r16_n.u11->aFFFFFFFF;
 				if (r8 != 0x00)
 					goto l0040E558;
 				goto l0040E536;
@@ -24645,7 +24684,7 @@ l0040E530:
 			r7_n = r6;
 l0040E51A:
 			Mem62 = Mem11;
-			uint32 r5_n = (word32) *r16_n.u3;
+			uint32 r5_n = (word32) *r16_n.u4;
 			r5_n = (r5_n >> 0x03) + ~0x0F;
 			r17_n = r4;
 			if (__ins<word32,word32>((r8 >> 0x1A) + (r5_n >> 0x03) | r5_n, 0x00, 0x00, 0x01) != 0x00)
@@ -24671,35 +24710,35 @@ l0040E4FE:
 				r16_n.u11 += 3;
 			}
 l0040E500:
-			r7_n.u3 = &r7_n.u11->bFFFFFFFF;
+			r7_n.u4 = r7_n.u11->aFFFFFFFF;
 l0040E4C2:
 			Mem81 = Mem11;
 			r17_n = r4;
-			if ((word32) *r16_n.u3 < 0x40 && (r16_n & 0x03) == 0x00)
+			if ((word32) *r16_n.u4 < 0x40 && (r16_n & 0x03) == 0x00)
 			{
 				Eq_n r5_n = r16_n;
 				while (true)
 				{
-					Eq_n r9_n = *r5_n.u5;
-					r8.u3 = r16_n.u3 + (r7_n - r5_n);
-					if ((((word32) r9_n - 0x01010101 | r9_n) & 0x80808080) != 0x00)
+					ui32 r9_n = *r5_n.u6;
+					r8 = r7_n - r5_n + r16_n;
+					if (((r9_n + ~0x01010100 | r9_n) & 0x80808080) != 0x00)
 						break;
 					r5_n.u11 += 4;
 				}
 				r16_n = r5_n;
 				r7_n = r8;
 			}
-			up32 r5_n = (word32) *r16_n.u3;
+			up32 r5_n = (word32) *r16_n.u4;
 			if (r5_n < 0x40)
 				goto l0040E4FE;
 			if (r5_n >= 0xF5)
 				goto l0040E536;
 			++r16_n.u11;
-			r8.u3 = *((char *) &g_a413370->u3 + (r5_n + ~0xC1) * 0x04);
+			r8.u0 = *((word32) 0x00413370 + (r5_n + ~0xC1) * 0x04);
 			goto l0040E51A;
 		}
 	}
-	if (*__read_user_local()->ptrFFFFFFC8 == 0x00)
+	if (*__read_user_local().u1->ptrFFFFFFC8 == 0x00)
 	{
 		r5_n = r6;
 		if (r4 == 0x00)
@@ -24711,9 +24750,9 @@ l0040E4C2:
 			r18Out = r18;
 			return r4_n;
 		}
-		for (; r5_n != 0x00; r5_n += ~0x00)
+		while (r5_n != 0x00)
 		{
-			word32 r7_n = (word32) *r16_n.u3;
+			word32 r7_n = (word32) *r16_n.u4;
 			if (r7_n == 0x00)
 			{
 				r6 -= r5_n;
@@ -24721,11 +24760,12 @@ l0040E4C2:
 				goto l0040E496;
 			}
 			r17_n.u11 += 4;
-			r17_n.u12->dwFFFFFFFC = (int32) (byte) r7_n & 0xDFFF;
+			r17_n.u11->tFFFFFFFC.u0 = (int32) (byte) r7_n & 0xDFFF;
 			++r16_n.u11;
+			r5_n.u4 = r5_n.u11->aFFFFFFFF;
 		}
 l0040E48C:
-		*r5.u5 = (word32) r16_n;
+		*r5.u6 = (word32) r16_n;
 		goto l0040E496;
 	}
 	r7_n = r6;
@@ -24736,24 +24776,24 @@ l0040E49E:
 		dwLoc10_n = r18;
 		if (r7_n == 0x00)
 			goto l0040E48C;
-		if ((word32) *r16_n.u3 < 0x40 && (r16_n & 0x03) == 0x00)
+		if ((word32) *r16_n.u4 < 0x40 && (r16_n & 0x03) == 0x00)
 		{
 			while (true)
 			{
-				r8.u3 = (word32) *r16_n.u3;
+				r8.u4 = (word32) *r16_n.u4;
 				if (r7_n < 0x05)
 					break;
-				Eq_n r4_n = *r16_n.u5;
-				if ((((word32) r4_n - 0x01010101 | r4_n) & 0x80808080) != 0x00)
+				ui32 r4_n = *r16_n.u6;
+				if (((r4_n + ~0x01010100 | r4_n) & 0x80808080) != 0x00)
 					break;
-				*r17_n.u5 = (word32) r8;
+				*r17_n.u6 = (word32) r8;
 				r16_n.u11 += 4;
-				r17_n.u12 += 4;
-				r17_n.u12->dwFFFFFFFC = (word32) r16_n.u11->bFFFFFFFF;
-				r7_n.u3 = &r7_n.u12->dwFFFFFFFC;
+				r17_n.u11 += 16;
+				r17_n.u11->tFFFFFFFC.u0 = (word32) r16_n.u12->bFFFFFFFF;
+				r7_n.u4 = &r7_n.u11->tFFFFFFFC.u0;
 			}
 		}
-		r5_n.u3 = (word32) *r16_n.u3;
+		r5_n.u4 = (word32) *r16_n.u4;
 		if (r5_n < 0x40)
 		{
 			++r16_n.u11;
@@ -24762,12 +24802,12 @@ l0040E49E:
 		if (r5_n < 0xF5)
 		{
 			++r16_n.u11;
-			r8 = 0x00413370<p32>[(r5_n + ~0xC1) * 0x04];
+			r8.u0 = *((word32) 0x00413370 + ((word32) r5_n - 0x00C2) * 0x04);
 			goto l0040E426;
 		}
 l0040E536:
 		dwLoc10_n = r18;
-		r5_n.u3 = (word32) *r16_n.u3;
+		r5_n.u4 = (word32) *r16_n.u4;
 		if (r5_n == 0x00)
 		{
 			if (r17_n != 0x00)
@@ -24805,7 +24845,7 @@ Eq_n wcrtomb(Eq_n r4, Eq_n r5, ptr32 & r4Out, union Eq_n & r5Out, union Eq_n & r
 		if (r5 < 0x80)
 		{
 l0040E60E:
-			r4.u1->b0000 = (byte) r5;
+			r4->u2 = (byte) r5;
 			r7_n = 0x01;
 			goto l0040E612;
 		}
@@ -24819,9 +24859,9 @@ l0040E60E:
 		}
 		if (r5 <= 0x07FF)
 		{
-			r4.u1->b0000 = (byte) (r5 >> 0x06) | 0xC0;
+			r4->u2 = (byte) (r5 >> 0x06) | 0xC0;
 			r5 = r5 & 0x3F | ~0x7F;
-			r4.u1[1] = (struct Eq_n) (byte) r5;
+			r4.u3->b0001 = (byte) r5;
 			r6.u0 = ~0x3F;
 			r7_n = 0x02;
 		}
@@ -24837,21 +24877,21 @@ l0040E62E:
 				goto l0040E612;
 			}
 			Eq_n r6_n = __ext<word32,word32>(r5, 0x0C, 0x06);
-			r4.u1->b0000 = (byte) (r5 >> 0x12) | 0xF0;
-			r4.u1[1] = (struct Eq_n) ((byte) r6_n | 0x80);
+			r4->u2 = (byte) (r5 >> 0x12) | 0xF0;
+			r4.u3->b0001 = (byte) r6_n | 0x80;
 			Eq_n r6_n = __ext<word32,word32>(r5, 0x06, 0x06);
-			r4.u1[2] = (struct Eq_n) ((byte) r6_n | 0x80);
+			r4.u3->b0002 = (byte) r6_n | 0x80;
 			r5 = r5 & 0x3F | ~0x7F;
-			r4.u1[3] = (struct Eq_n) (byte) r5;
+			r4.u3->b0003 = (byte) r5;
 			r6 = r6_n | ~0x7F;
 			r7_n = 0x04;
 		}
 		else
 		{
-			r4.u1->b0000 = (byte) (r5 >> 0x0C) | 0xE0;
-			r4.u1[1] = (struct Eq_n) ((byte) __ext<word32,word32>(r5, 0x06, 0x06) | 0x80);
+			r4->u2 = (byte) (r5 >> 0x0C) | 0xE0;
+			r4.u3->b0001 = (byte) __ext<word32,word32>(r5, 0x06, 0x06) | 0x80;
 			r5 = r5 & 0x3F | ~0x7F;
-			r4.u1[2] = (struct Eq_n) (byte) r5;
+			r4.u3->b0002 = (byte) r5;
 			r6.u0 = ~0x7F;
 			r7_n = 0x03;
 		}
@@ -24881,10 +24921,8 @@ void close_file(Eq_n r4)
 	}
 	if (r4.u11[28] < (r4.u11)[20])
 		r4.u11[36]();
-	Eq_n r6_n;
-	r6_n.u3 = r4.u11[4];
-	Eq_n r7_n;
-	r7_n.u3 = r4.u11[8];
+	up32 r6_n = (up32) r4.u11[4];
+	up32 r7_n = (up32) r4.u13[2];
 	if (r6_n >= r7_n)
 		return;
 	up32 r6_n = r6_n - r7_n;
@@ -24899,46 +24937,49 @@ void close_file(Eq_n r4)
 void __stdio_exit_needed()
 {
 	Eq_n r16_n;
-	r16_n.u3 = __ofl_lock()->u3;
+	r16_n.u0 = __ofl_lock()->u0;
 	while (r16_n != 0x00)
 	{
 		close_file(r16_n);
-		r16_n.u3 = r16_n.u11[56];
+		r16_n.u4 = r16_n.u11[56];
 	}
-	close_file(__stdin_used.u3);
+	close_file(__stdin_used.u0);
 	Eq_n r4_n;
-	r4_n.u3 = __stdout_used.u3;
+	r4_n.u0 = __stdout_used.u0;
 	close_file(r4_n);
 }
 
-// 0040E750: Register Eq_n __toread(Register Eq_n r4, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r16Out)
+// 0040E750: Register Eq_n __toread(Register Eq_n r4, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r16Out)
 // Called from:
 //      __uflow
-Eq_n __toread(Eq_n r4, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r16Out)
+Eq_n __toread(Eq_n r4, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r16Out)
 {
 	word32 r7_n = (word32) r4.u11[74];
-	ptr32 r6_n = (ptr32) r4.u11[28];
+	Eq_n r6_n;
+	r6_n.u4 = r4.u11[28];
 	r4.u11[74] = (struct Eq_n) ((byte) r7_n | (byte) r7_n + ~0x00);
-	ptr32 r7_n = (ptr32) r4.u11[20];
+	Eq_n r7_n;
+	r7_n.u4 = r4.u11[20];
 	if (r6_n < r7_n)
 		r4.u11[36]();
 	Eq_n r4_n;
-	r4_n.u3 = *r4.u5;
+	r4_n.u4 = *r4.u6;
 	if (!__bit<word32,word32>(r4_n, 0x02))
 	{
 		r6Out = r6_n;
 		r7Out = r7_n;
-		ptr32 r16;
+		Eq_n r16;
 		r16Out = r16;
 		return ~0x00;
 	}
 	else
 	{
-		word32 r7_n = (word32) r4.u11[44];
+		Eq_n r7_n = r4.u11[44];
 		Eq_n r4_n = __ext<word32,word32>(r4_n, 0x04, 0x01);
-		ptr32 r6_n = (ptr32) r4.u11[48];
+		Eq_n r6_n;
+		r6_n.u4 = r4.u11[48];
 		r6Out = r6_n;
-		ptr32 r7_n = r7_n + r6_n;
+		Eq_n r7_n = r7_n + r6_n;
 		r7Out = r7_n;
 		r16Out = r7_n;
 		return -r4_n;
@@ -24974,7 +25015,7 @@ void sem_post(struct Eq_n * r4)
 	Eq_n r8_n;
 	do
 	{
-		r7_n.u3 = r4->t0000.u3;
+		r7_n.u0 = r4->t0000.u0;
 		r9_n = r4->dw0001;
 		if (r7_n == 0x7FFFFFFF)
 		{
@@ -24986,8 +25027,8 @@ void sem_post(struct Eq_n * r4)
 		Eq_n r5_n;
 		r5_n.u11 = r7_n.u11 + 1 + (r7_n >> 0x1F);
 		do
-			r8_n = __load_linked<word32>(&r4->t0000.u3);
-		while (r7_n == r8_n && __store_conditional<word32>(&(r4->t0000).u3, r5_n) == 0x00);
+			r8_n = __load_linked<word32>(&r4->t0000.u0);
+		while (r7_n == r8_n && __store_conditional<word32>(&(r4->t0000).u0, r5_n) == 0x00);
 		__sync(0x00);
 	} while (r7_n != r8_n);
 	if (r7_n < 0x00 || r9_n != 0x00)
@@ -25042,7 +25083,7 @@ void lseek64()
 void cleanup(word32 * r4)
 {
 	__sync(0x00);
-	while (__store_conditional<word32>(&*r4, &__load_linked<word32>(&*r4).u11->bFFFFFFFF) == 0x00)
+	while (__store_conditional<word32>(&*r4, __load_linked<word32>(&*r4).u11->aFFFFFFFF) == 0x00)
 		;
 	__sync(0x00);
 }
@@ -25059,7 +25100,7 @@ void sem_timedwait(struct Eq_n * r4, struct Eq_n * r5)
 	while (true)
 	{
 		r7_n += ~0x00;
-		if (r7_n == 0x00 || ((r4->t0000).u3 > 0x00 || r4->dw0004 != 0x00))
+		if (r7_n == 0x00 || ((r4->t0000).u0 > 0x00 || r4->dw0004 != 0x00))
 			break;
 		__sync(0x00);
 	}
@@ -25073,7 +25114,7 @@ void sem_timedwait(struct Eq_n * r4, struct Eq_n * r5)
 			;
 		__sync(0x00);
 		__sync(0x00);
-		while (__load_linked<word32>(&r4->t0000.u3) == 0x00 && __store_conditional<word32>(&(r4->t0000).u3, ~0x00) == 0x00)
+		while (__load_linked<word32>(&r4->t0000.u0) == 0x00 && __store_conditional<word32>(&(r4->t0000).u0, ~0x00) == 0x00)
 			;
 		__sync(0x00);
 		Eq_n tLoc1C;
@@ -25094,7 +25135,7 @@ struct Eq_n * sem_trywait(struct Eq_n * r4)
 	Eq_n r8_n;
 	do
 	{
-		r7_n.u3 = r4->t0000.u3;
+		r7_n.u0 = r4->t0000.u0;
 		if (r7_n <= 0x00)
 		{
 			word32 r4_n;
@@ -25105,10 +25146,10 @@ struct Eq_n * sem_trywait(struct Eq_n * r4)
 		if (r7_n == 0x01)
 			r6_n = (word32) (r4->dw0004 > 0x00);
 		__sync(0x00);
-		Eq_n r5_n = &r7_n.u11->bFFFFFFFF - r6_n;
+		Eq_n r5_n = (word32) r7_n.u0 - 1 - r6_n;
 		do
-			r8_n = __load_linked<word32>(&r4->t0000.u3);
-		while (r7_n == r8_n && __store_conditional<word32>(&(r4->t0000).u3, r5_n) == 0x00);
+			r8_n = __load_linked<word32>(&r4->t0000.u0);
+		while (r7_n == r8_n && __store_conditional<word32>(&(r4->t0000).u0, r5_n) == 0x00);
 		__sync(0x00);
 	} while (r7_n != r8_n);
 	return null;
@@ -25270,7 +25311,7 @@ Eq_n __udivdi3(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r12, u
 				r7_n.u0 = 0x01;
 				goto l0040EB48;
 			}
-			r6.u3 = (word32) (r4 < r6);
+			r6.u4 = (word32) (r4 < r6);
 			r7_n = r6 ^ 0x01;
 		}
 		else
@@ -25311,7 +25352,7 @@ Eq_n __udivdi3(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r12, u
 			r7_n = r8_n << 0x10 | r7_n;
 			r9_n = r5_n - r9_n;
 			r8_n = r7_n *s r6_n;
-			r6.u3 = SLICE(r7_n *64 r6_n, word32, 32);
+			r6.u4 = SLICE(r7_n *64 r6_n, word32, 32);
 			if (r9_n >= r6)
 			{
 				r5_n.u0 = 0x00;
@@ -25359,10 +25400,10 @@ l0040EB48:
 			if (r6_n < r4_n)
 			{
 				r6_n += r9_n;
-				r7_n.u3 = &r3.u11->bFFFFFFFF;
+				r7_n.u4 = r3.u11->aFFFFFFFF;
 				if (r6_n >= r9_n && r6_n < r4_n)
 				{
-					r7_n.u3 = &r3.u12->bFFFFFFFE;
+					r7_n.u4 = &r3.u11->bFFFFFFFE;
 					r6_n += r9_n;
 				}
 			}
@@ -25374,9 +25415,9 @@ l0040EB48:
 			if (r10_n < r8_n)
 			{
 				Eq_n r10_n = r10_n + r9_n;
-				r4_n.u3 = &r11_n.u11->bFFFFFFFF;
+				r4_n.u4 = r11_n.u11->aFFFFFFFF;
 				if (r10_n >= r9_n && r10_n < r8_n)
-					r4_n.u3 = &r11_n.u12->bFFFFFFFE;
+					r4_n.u4 = &r11_n.u11->bFFFFFFFE;
 			}
 		}
 		else
@@ -25402,10 +25443,10 @@ l0040EB48:
 				if (r7_n < r6_n)
 				{
 					r7_n += r9_n;
-					r4_n.u3 = &r2.u11->bFFFFFFFF;
+					r4_n.u4 = r2.u11->aFFFFFFFF;
 					if (r7_n >= r9_n && r7_n < r6_n)
 					{
-						r4_n.u3 = &r2.u12->bFFFFFFFE;
+						r4_n.u4 = &r2.u11->bFFFFFFFE;
 						r7_n += r9_n;
 					}
 				}
@@ -25415,10 +25456,10 @@ l0040EB48:
 				if (r8_n < r6_n)
 				{
 					r8_n += r9_n;
-					r7_n.u3 = &r2.u11->bFFFFFFFF;
+					r7_n.u4 = r2.u11->aFFFFFFFF;
 					if (r8_n >= r9_n && r8_n < r6_n)
 					{
-						r7_n.u3 = &r2.u12->bFFFFFFFE;
+						r7_n.u4 = &r2.u11->bFFFFFFFE;
 						r8_n += r9_n;
 					}
 				}
@@ -25433,10 +25474,10 @@ l0040EB48:
 			if (r6_n < r4_n)
 			{
 				r6_n += r9_n;
-				r7_n.u3 = &r3.u11->bFFFFFFFF;
+				r7_n.u4 = r3.u11->aFFFFFFFF;
 				if (r6_n >= r9_n && r6_n < r4_n)
 				{
-					r7_n.u3 = &r3.u12->bFFFFFFFE;
+					r7_n.u4 = &r3.u11->bFFFFFFFE;
 					r6_n += r9_n;
 				}
 			}
@@ -25448,9 +25489,9 @@ l0040EB48:
 			if (r10_n < r8_n)
 			{
 				Eq_n r10_n = r10_n + r9_n;
-				r4_n.u3 = &r3.u11->bFFFFFFFF;
+				r4_n.u4 = r3.u11->aFFFFFFFF;
 				if (r10_n >= r9_n && r10_n < r8_n)
-					r4_n.u3 = &r3.u12->bFFFFFFFE;
+					r4_n.u4 = &r3.u11->bFFFFFFFE;
 			}
 		}
 		r7_n = r7_n << 0x10 | r4_n;
@@ -25609,7 +25650,7 @@ Eq_n __umoddi3(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r13, union Eq_n & r3Out,
 			if (r10_n < r11_n || r10_n == r11_n && r4_n < r2)
 			{
 				r7_n = r2 - r6_n;
-				r2.u3 = (word32) (r2 < r7_n);
+				r2.u4 = (word32) (r2 < r7_n);
 				r5_n = r11_n - r8_n - r2;
 			}
 			Eq_n r7_n = r4_n - r7_n;
@@ -25651,7 +25692,7 @@ Eq_n __adddf3(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, union Eq_n
 			{
 				if ((r9_n | r6 << 0x03) == 0x00)
 					goto l0040F012;
-				r7_n.u3 = &r11_n.u11->bFFFFFFFF;
+				r7_n.u4 = r11_n.u11->aFFFFFFFF;
 				if (r11_n == 0x01)
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
@@ -25697,7 +25738,7 @@ l0040F0EC:
 l0040F116:
 				Eq_n r6_n = r6_n + (r4 << 0x03);
 				r10_n = r13_n;
-				r8_n.u3 = r8_n.u3 + r7_n + (word32) (r6_n < r4 << 0x03);
+				r8_n.u4 = r8_n.u4 + r7_n + (word32) (r6_n < r4 << 0x03);
 				r12_n = r6_n;
 				goto l0040F08C;
 			}
@@ -25762,7 +25803,7 @@ l0040F024:
 					r12_n = (r4 << 0x03) + (r6 << 0x03);
 					r8_n = r8_n + r9_n;
 l0040F182:
-					r8_n.u3 = (word32) r8_n + (word32) (r12_n < r6 << 0x03);
+					r8_n.u4 = (word32) r8_n + (word32) (r12_n < r6 << 0x03);
 l0040F08C:
 					if (!__bit<word32,word32>(r8_n, 0x17))
 					{
@@ -25822,8 +25863,8 @@ l0040F1B8:
 			r8_n = r11_n + r9_n;
 			goto l0040F182;
 		}
-		r10_n.u11 = r13_n.u11 + 1;
-		if ((r13_n.u11 + 1 & 0x07FF) >= 0x02)
+		r10_n.u4 = (word32) r13_n.u0 + 1;
+		if (((word32) r13_n.u0 + 1 & 0x07FF) >= 0x02)
 		{
 			if (r13_n == 0x07FE)
 			{
@@ -25840,9 +25881,9 @@ l0040F23A:
 			if ((r12_n & 0x07) != 0x00 && (r12_n & 0x0F) != 0x04)
 			{
 				Eq_n r6_n;
-				r6_n.u11 = r12_n.u11 + 4;
+				r6_n.u4 = (word32) r12_n.u2 + 4;
 				r12_n = r6_n;
-				r8_n.u3 += (word32) (r6_n < r12_n);
+				r8_n.u4 += (word32) (r6_n < r12_n);
 			}
 			goto l0040F024;
 		}
@@ -25914,7 +25955,7 @@ l0040F012:
 					goto l0040F020;
 				goto l0040F23A;
 			}
-			r7_n.u3 = &r11_n.u11->bFFFFFFFF;
+			r7_n.u4 = r11_n.u11->aFFFFFFFF;
 			if (r11_n == 0x01)
 			{
 				Eq_n r6_n = (r4 << 0x03) - (r6 << 0x03);
@@ -26034,9 +26075,9 @@ l0040F2F2:
 l0040F508:
 		Eq_n r7_n = __count_leading_zeros<word32>(r4_n);
 		if (r4_n == 0x00)
-			r7_n.u16 = __count_leading_zeros<word32>(r11_n).u16 + 2;
+			r7_n.u11 = __count_leading_zeros<word32>(r11_n).u11 + 32;
 		Eq_n r10_n;
-		r10_n.u3 = &r7_n.u12->dwFFFFFFF8;
+		r10_n.u4 = r7_n.u11->aFFFFFFF8;
 		Eq_n r8_n;
 		if (r10_n < 0x20)
 		{
@@ -26072,7 +26113,7 @@ l0040F508:
 		}
 		goto l0040F492;
 	}
-	if ((r13_n.u11 + 1 & 0x07FF) < 0x02)
+	if (((word32) r13_n.u0 + 1 & 0x07FF) < 0x02)
 	{
 		r10_n = r8_n | r4 << 0x03;
 		ui32 r7_n = r9_n | r6 << 0x03;
@@ -26314,7 +26355,7 @@ l0040F9BE:
 							if ((r9_n & 0x07) != 0x00 && (r9_n & 0x0F) != 0x04)
 							{
 								uint32 r7_n = r9_n + 0x04;
-								r8_n.u3 += (word32) (r7_n < r9_n);
+								r8_n.u4 = (word32) r8_n.u2 + (word32) (r7_n < r9_n);
 								r9_n = r7_n;
 							}
 							if (__bit<word32,word32>(r8_n, 0x17))
@@ -26336,7 +26377,7 @@ l0040F960:
 						{
 							Eq_n r7_n;
 							r7_n.u11 = r9_n.u11 + 4;
-							r8_n.u3 += (word32) (r7_n < r9_n);
+							r8_n.u4 += (word32) (r7_n < r9_n);
 							r9_n = r7_n;
 						}
 						if (!__bit<word32,word32>(r8_n, 0x18))
@@ -26399,7 +26440,7 @@ l0040FA5A:
 					Eq_n r3_n = r3_n << 0x10 | r6_n;
 					Eq_n r9_n = r9_n - r8_n;
 					Eq_n r6_n;
-					r6_n.u3 = SLICE(r3_n *64 r7_n, word32, 32);
+					r6_n.u4 = SLICE(r3_n *64 r7_n, word32, 32);
 					Eq_n r5_n = r3_n *s r7_n;
 					if (r9_n >= r6_n)
 					{
@@ -26441,7 +26482,7 @@ l0040F84A:
 							Eq_n r5_n = r9_n << 0x10 | r2_n;
 							Eq_n r6_n = r6_n - r3_n;
 							Eq_n r2_n;
-							r2_n.u3 = SLICE(r7_n *64 r5_n, word32, 32);
+							r2_n.u4 = SLICE(r7_n *64 r5_n, word32, 32);
 							Eq_n r3_n = r7_n *s r5_n;
 							if (r6_n >= r2_n)
 							{
@@ -26452,7 +26493,7 @@ l0040F84A:
 									goto l0040F91A;
 							}
 							Eq_n r6_n = r4_n + r6_n;
-							r9_n.u3 = &r5_n.u11->bFFFFFFFF;
+							r9_n.u4 = r5_n.u11->aFFFFFFFF;
 							if (r6_n >= r4_n)
 							{
 								if (r6_n >= r2_n)
@@ -26469,9 +26510,9 @@ l0040F916:
 										goto l0040F91A;
 									}
 								}
-								r9_n.u3 = &r5_n.u12->bFFFFFFFE;
+								r9_n.u4 = &r5_n.u11->bFFFFFFFE;
 								r7_n <<= 0x01;
-								r6_n += CONVERT(r7_n << 0x01 <u r7_n, bool, word32) + r4_n;
+								r6_n.u4 = (word32) r6_n.u2 + ((word32) r4_n.u2 + (word32) (r7_n << 0x01 < r7_n));
 							}
 							if (r6_n != r2_n)
 								goto l0040F916;
@@ -26479,20 +26520,20 @@ l0040F916:
 						}
 					}
 					r2_n += r7_n;
-					r14 = r4_n.u3 + (word32) (r2_n < r7_n);
-					r8_n.u3 = &r3_n.u11->bFFFFFFFF;
-					r9_n.u3 += r14;
+					r14 = (word32) r4_n.u2 + (word32) (r2_n < r7_n);
+					r8_n.u4 = r3_n.u11->aFFFFFFFF;
+					r9_n.u4 = (word32) r9_n.u2 + r14;
 					if ((r4_n < r9_n || r4_n == r9_n && r2_n >= r7_n) && (r9_n < r6_n || r6_n == r9_n && r2_n < r5_n))
 					{
 						r2_n += r7_n;
-						r8_n.u3 = &r3_n.u12->bFFFFFFFE;
-						r9_n += CONVERT(r2_n <u r7_n, bool, word32) + r4_n;
+						r8_n.u4 = &r3_n.u11->bFFFFFFFE;
+						r9_n.u4 = (word32) r9_n.u2 + ((word32) r4_n.u2 + (word32) (r2_n < r7_n));
 					}
 					goto l0040F84A;
 				}
 				r7_n = r6 << 0x03;
 				r4_n = r6 >> 0x1D | 0x08000000 | r4_n << 0x03;
-				r6_n.u3 = (word32) r11_n - 0x03FF;
+				r6_n.u4 = (word32) r11_n - 0x03FF;
 			}
 			else
 			{
@@ -26506,11 +26547,11 @@ l0040F916:
 				}
 				Eq_n r11_n = __count_leading_zeros<word32>(r4_n);
 				if (r4_n == 0x00)
-					r11_n.u16 = __count_leading_zeros<word32>(r6).u16 + 2;
+					r11_n.u11 = __count_leading_zeros<word32>(r6).u11 + 32;
 				int32 r3_n = (word32) r11_n - 11;
 				if (r3_n < 0x1D)
 				{
-					word32 r7_n = &r11_n.u12->dwFFFFFFF8;
+					word32 r7_n = (word32) r11_n.u11->aFFFFFFF8;
 					r7_n = r6 << r7_n;
 					r4_n = r6 >> 0x1D - r3_n | r4_n << r7_n;
 				}
@@ -26526,7 +26567,7 @@ l0040F916:
 		}
 		r8_n = r4 >> 0x1D | 0x08000000 | r10_n << 0x03;
 		r9_n = r4 << 0x03;
-		r2_n.u3 = (word32) r11_n - 0x03FF;
+		r2_n.u4 = (word32) r11_n - 0x03FF;
 	}
 	else
 	{
@@ -26540,11 +26581,11 @@ l0040F916:
 		}
 		Eq_n r11_n = __count_leading_zeros<word32>(r10_n);
 		if (r10_n == 0x00)
-			r11_n.u16 = __count_leading_zeros<word32>(r4).u16 + 2;
+			r11_n.u11 = __count_leading_zeros<word32>(r4).u11 + 32;
 		int32 r2_n = (word32) r11_n - 11;
 		if (r2_n < 0x1D)
 		{
-			word32 r9_n = &r11_n.u12->dwFFFFFFF8;
+			word32 r9_n = (word32) r11_n.u11->aFFFFFFF8;
 			r9_n = r4 << r9_n;
 			r8_n = r4 >> 0x1D - r2_n | r10_n << r9_n;
 		}
@@ -26581,13 +26622,13 @@ ui32 __nedf2(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r4Out, union Eq_n & r5O
 		if (r10_n != r9_n)
 		{
 			r4Out = 0x01;
-			r5Out.u0 = (Eq_n (*)[]) <invalid>;
+			r5Out.u0 = <invalid>;
 			r6Out = r6;
-			r7Out.u0 = (Eq_n (*)[]) <invalid>;
-			r8Out.u0 = (Eq_n (*)[]) <invalid>;
-			r9Out.u0 = (Eq_n (*)[]) <invalid>;
-			r11Out.u0 = (Eq_n (*)[]) <invalid>;
-			r13Out.u0 = (Eq_n (*)[]) <invalid>;
+			r7Out.u0 = <invalid>;
+			r8Out.u0 = <invalid>;
+			r9Out.u0 = <invalid>;
+			r11Out.u0 = <invalid>;
+			r13Out.u0 = <invalid>;
 			return r2;
 		}
 	}
@@ -26606,13 +26647,13 @@ l0040FAB2:
 			if (r9_n == 0x00)
 			{
 				r4Out = (word32) ((r8_n | r4) > 0x00);
-				r5Out.u0 = (Eq_n (*)[]) <invalid>;
+				r5Out.u0 = <invalid>;
 				r6Out = r6;
-				r7Out.u0 = (Eq_n (*)[]) <invalid>;
-				r8Out.u0 = (Eq_n (*)[]) <invalid>;
-				r9Out.u0 = (Eq_n (*)[]) <invalid>;
-				r11Out.u0 = (Eq_n (*)[]) <invalid>;
-				r13Out.u0 = (Eq_n (*)[]) <invalid>;
+				r7Out.u0 = <invalid>;
+				r8Out.u0 = <invalid>;
+				r9Out.u0 = <invalid>;
+				r11Out.u0 = <invalid>;
+				r13Out.u0 = <invalid>;
 				return r2;
 			}
 		}
@@ -26621,13 +26662,13 @@ l0040FAB2:
 	}
 l0040FAD2:
 	r4Out = r4_n;
-	r5Out.u0 = (Eq_n (*)[]) <invalid>;
+	r5Out.u0 = <invalid>;
 	r6Out = r6;
-	r7Out.u0 = (Eq_n (*)[]) <invalid>;
-	r8Out.u0 = (Eq_n (*)[]) <invalid>;
-	r9Out.u0 = (Eq_n (*)[]) <invalid>;
-	r11Out.u0 = (Eq_n (*)[]) <invalid>;
-	r13Out.u0 = (Eq_n (*)[]) <invalid>;
+	r7Out.u0 = <invalid>;
+	r8Out.u0 = <invalid>;
+	r9Out.u0 = <invalid>;
+	r11Out.u0 = <invalid>;
+	r13Out.u0 = <invalid>;
 	return r2;
 }
 
@@ -26658,7 +26699,7 @@ Eq_n __subdf3(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r5Out, union Eq_n
 			{
 				if ((r9_n | r6 << 0x03) == 0x00)
 					goto l0040FB42;
-				r7_n.u3 = &r11_n.u11->bFFFFFFFF;
+				r7_n.u4 = r11_n.u11->aFFFFFFFF;
 				if (r11_n == 0x01)
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
@@ -26703,7 +26744,7 @@ l0040FC1C:
 l0040FC46:
 				Eq_n r6_n = r6_n + (r4 << 0x03);
 				r10_n = r13_n;
-				r8_n.u3 = r8_n.u3 + r7_n + (word32) (r6_n < r4 << 0x03);
+				r8_n = (word32) (r6_n < r4 << 0x03) + ((word32) r8_n.u2 + r7_n);
 				r3_n = r6_n;
 				goto l0040FBBC;
 			}
@@ -26722,7 +26763,7 @@ l0040FC02:
 l0040FB54:
 			if (!__bit<word32,word32>(r8_n, 0x17))
 			{
-				++r10_n.u11;
+				r10_n.u4 = (word32) r10_n.u0 + 1;
 				r8_n = __ins<word32,word32>(r8_n, 0x00, 0x07, 0x01);
 				if (r10_n == 0x07FF)
 				{
@@ -26766,7 +26807,7 @@ l0040FCB2:
 l0040FBBC:
 					if (!__bit<word32,word32>(r8_n, 0x17))
 					{
-						++r10_n.u11;
+						r10_n.u4 = (word32) r10_n.u0 + 1;
 						if (r10_n != 0x07FF)
 						{
 							Eq_n r6_n = __ins<word32,word32>(r8_n, 0x00, 0x07, 0x01);
@@ -26820,11 +26861,11 @@ l0040FC9E:
 			r11_n = 0x00;
 l0040FCE8:
 			r3_n = r3_n + (r6 << 0x03);
-			r8_n = r9_n.u3 + r11_n;
+			r8_n = (word32) r9_n.u2 + r11_n;
 			goto l0040FCB2;
 		}
-		r10_n.u11 = r13_n.u11 + 1;
-		if ((r13_n.u11 + 1 & 0x07FF) >= 0x02)
+		r10_n.u4 = (word32) r13_n.u0 + 1;
+		if (((word32) r13_n.u0 + 1 & 0x07FF) >= 0x02)
 		{
 			if (r13_n == 0x07FE)
 			{
@@ -26841,9 +26882,9 @@ l0040FD6A:
 			if ((r3_n & 0x07) != 0x00 && (r3_n & 0x0F) != 0x04)
 			{
 				Eq_n r6_n;
-				r6_n.u11 = r3_n.u11 + 4;
+				r6_n.u4 = (word32) r3_n.u2 + 4;
 				r3_n = r6_n;
-				r8_n.u3 += (word32) (r6_n < r3_n);
+				r8_n.u4 = (word32) r8_n.u2 + (word32) (r6_n < r3_n);
 			}
 			goto l0040FB54;
 		}
@@ -26914,7 +26955,7 @@ l0040FB42:
 					goto l0040FB50;
 				goto l0040FD6A;
 			}
-			r7_n.u3 = &r11_n.u11->bFFFFFFFF;
+			r7_n.u4 = r11_n.u11->aFFFFFFFF;
 			if (r11_n == 0x01)
 			{
 				Eq_n r6_n = (r4 << 0x03) - (r6 << 0x03);
@@ -27036,9 +27077,9 @@ l0040FE1E:
 l00410034:
 		Eq_n r7_n = __count_leading_zeros<word32>(r4_n);
 		if (r4_n == 0x00)
-			r7_n.u16 = __count_leading_zeros<word32>(r11_n).u16 + 2;
+			r7_n.u11 = __count_leading_zeros<word32>(r11_n).u11 + 32;
 		Eq_n r10_n;
-		r10_n.u3 = &r7_n.u12->dwFFFFFFF8;
+		r10_n.u4 = r7_n.u11->aFFFFFFF8;
 		Eq_n r8_n;
 		if (r10_n < 0x20)
 		{
@@ -27074,7 +27115,7 @@ l00410034:
 		}
 		goto l0040FFBE;
 	}
-	if ((r13_n.u11 + 1 & 0x07FF) < 0x02)
+	if (((word32) r13_n.u0 + 1 & 0x07FF) < 0x02)
 	{
 		r10_n = r8_n | r4 << 0x03;
 		ui32 r7_n = r9_n | r6 << 0x03;

@@ -166,24 +166,25 @@ l004012C3:
 	goto l00401172;
 }
 
-// 004013F6: Register (ptr32 Eq_n) fn004013F6(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out (ptr32 Eq_n) edxOut)
+// 004013F6: Register Eq_n fn004013F6(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out Eq_n edxOut)
 // Called from:
 //      fn0040153F
-struct Eq_n * fn004013F6(struct Eq_n * dwArg04, uint32 dwArg08, struct Eq_n & edxOut)
+Eq_n fn004013F6(struct Eq_n * dwArg04, uint32 dwArg08, union Eq_n & edxOut)
 {
 	struct Eq_n * ecx_n = (struct Eq_n *) ((char *) dwArg04 + dwArg04->dw003C);
-	struct Eq_n * edx_n = (struct Eq_n *) ((char *) (&ecx_n->w0014 + 2) + (word32) ecx_n->w0014);
-	struct Eq_n * esi_n = edx_n + (word32) ecx_n->w0006;
-	struct Eq_n * eax_n;
-	for (; edx_n != esi_n; ++edx_n)
+	Eq_n edx_n = (char *) (&ecx_n->w0014 + 2) + (word32) ecx_n->w0014;
+	Eq_n esi_n = (word32) edx_n + (word32) ecx_n->w0006 *s 0x28;
+	Eq_n eax_n;
+	while (edx_n != esi_n)
 	{
-		if (dwArg08 >= edx_n->dw000C && dwArg08 < edx_n->dw0008 + edx_n->dw000C)
+		if (dwArg08 >= (edx_n.u1)->dw000C && dwArg08 < (edx_n.u1)->dw0008 + (edx_n.u1)->dw000C)
 		{
 			eax_n = edx_n;
 			goto l00401433;
 		}
+		edx_n = (word32) edx_n + 40;
 	}
-	eax_n = null;
+	eax_n.u0 = 0x00;
 l00401433:
 	edxOut = edx_n;
 	return eax_n;
@@ -370,10 +371,10 @@ int8 fn0040188B()
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
 		return 0x00;
-	struct Eq_n * eax_n = Mem5[eax_n + 60:word32] + eax_n;
-	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
+	Eq_n eax_n = Mem5[eax_n + 60:word32] + eax_n;
+	if (eax_n.u1->dw0000 != 0x4550 || ((eax_n.u1)->w0018 != 0x010B || (eax_n.u1)->dw0074 <= 0x0E))
 		return 0x00;
-	return (int8) (eax_n->dw00E8 != 0x00);
+	return (int8) (eax_n.u1->dw00E8 != 0x00);
 }
 
 // 00401972: void fn00401972()

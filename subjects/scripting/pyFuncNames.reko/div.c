@@ -4,13 +4,13 @@
 
 #include "pySample.h"
 
-// 100010A0: Register (ptr32 Eq_n) div_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * div_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
+// 100010A0: Register Eq_n div_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n div_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	int32 dwLoc04;
 	int32 dwLoc08;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
+	if (eax_n != 0x00)
 		return Py_BuildValue("i", (int64) dwLoc08 /32 dwLoc04);
 	return eax_n;
 }

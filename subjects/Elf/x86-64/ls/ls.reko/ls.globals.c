@@ -5,6 +5,4 @@
 #include "ls.h"
 
 char g_b0001; // 0000000000000001
-char g_b0009; // 0000000000000009
-char g_b000A; // 000000000000000A
 word32 g_dwFFBED370; // FFFFFFFFFFBED370

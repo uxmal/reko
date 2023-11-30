@@ -6,6 +6,9 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (FFFFFFAB (arr Eq_57) aFFFFFFAB))
 	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_14: (union "Eq_14" (ui32 u0) ((ptr32 byte) u1))
+	T_14 (in (1<32> - arg0_1) * 0x2710<32> + 0x10<32> @ 000C007A : word32)
+	T_15 (in v16_15 @ 000C007A : Eq_14)
 Eq_36: (union "Eq_36" (byte u0) (word32 u1))
 	T_36 (in (word80000) ((Eq_55[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_57[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_59[]) 0x73<32>)[arg0_1] + (word32) ((Eq_61[]) 0x75<32>)[arg0_1] @ 000C0104 : word32)
 	T_37 (in v16_91 @ 000C0104 : Eq_36)
@@ -76,12 +79,12 @@ T_13: (in 0x10<32> @ 000C007A : word32)
   OrigDataType: word32
 T_14: (in (1<32> - arg0_1) * 0x2710<32> + 0x10<32> @ 000C007A : word32)
   Class: Eq_14
-  DataType: (ptr32 byte)
+  DataType: Eq_14
   OrigDataType: ui32
-T_15: (in v16_15 @ 000C007A : (ptr32 byte))
+T_15: (in v16_15 @ 000C007A : Eq_14)
   Class: Eq_14
-  DataType: (ptr32 byte)
-  OrigDataType: (ptr32 (struct (0 T_50 t0000)))
+  DataType: Eq_14
+  OrigDataType: (union (ui32 u0) ((ptr32 byte) u1))
 T_16: (in 0<32> @ 000C00AA : word32)
   Class: Eq_16
   DataType: word32
@@ -282,6 +285,11 @@ T_64:
 typedef struct Globals {
 	Eq_57 aFFFFFFAB[];	// FFFFFFAB
 } Eq_1;
+
+typedef union Eq_14 {
+	ui32 u0;
+	byte * u1;
+} Eq_14;
 
 typedef union Eq_36 {
 	byte u0;

@@ -14,7 +14,7 @@ Eq_n g_t3C5F4;
 word32 g_dw3D218; // 0003D218
 word32 g_dw3FC00; // 0003FC00
 Eq_n g_t80000000;
-word32 g_dw807FFFFF; // 807FFFFF
+Eq_n g_t80800000;
 <anonymous> g_tC00000A8; // C00000A8
 word32 g_aC0000294[];
 word32 g_dwC0001F60; // C0001F60

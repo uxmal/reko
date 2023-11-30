@@ -93,7 +93,7 @@ void fn000112A8(Eq_n r4, int32 r5, int32 r6)
 			return;
 		TerminateProcess(fn00011460(), r4);
 	}
-	else if (g_ptr13040 == null)
+	else if (g_t13040.u0 == 0x00)
 	{
 l00011374:
 		fn0001147C(&g_dw12010, &g_dw12014);
@@ -102,16 +102,16 @@ l00011374:
 	{
 		do
 		{
-			g_ptr1303C = (<anonymous> **) ((char *) g_ptr1303C - 4);
-			if ((word32) (g_ptr1303C < g_ptr13040) != 0x00)
+			g_t1303C.u0 = (int32) (g_t1303C.u0 + -4);
+			if ((word32) (g_t1303C.u0 < g_t13040.u0) != 0x00)
 			{
-				free(g_ptr13040);
-				g_ptr1303C = null;
-				g_ptr13040 = g_ptr1303C;
+				free(g_t13040.u0);
+				g_t1303C.u0 = 0x00;
+				g_t13040.u0 = g_t1303C.u0;
 				goto l00011374;
 			}
-		} while (*g_ptr1303C == null);
-		<anonymous> * r8_n = (<anonymous> *) *g_ptr1303C;
+		} while (*g_t1303C.u0 == null);
+		<anonymous> * r8_n = (<anonymous> *) *g_t1303C.u0;
 		r8_n();
 	}
 }
@@ -172,42 +172,43 @@ void fn000114E4()
 word32 fn0001152C()
 {
 	ptr32 fp;
-	<anonymous> ** r8_n = g_ptr13040;
+	Eq_n r8_n;
+	r8_n.u0 = g_t13040.u0;
 	struct Eq_n * sp_n = fp + -56;
 	word32 dwLoc0C;
-	if (g_ptr1303C >= r8_n)
+	if (g_t1303C.u0 >= r8_n)
 	{
-		if (r8_n != null)
+		if (r8_n != 0x00)
 		{
 			msize();
 			sp_n = fp + ~0x33;
 		}
 		if ((word32) (sp_n->t0018.u0 < (sp_n->t0024).u0) != 0x00)
 		{
-			if (sp_n->ptr001C == null)
-				sp_n->ptr0014 = malloc(16);
+			if (sp_n->t001C.u0 == 0x00)
+				sp_n->t0014.u0 = (int32) malloc(16);
 			else
 			{
 				sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 << 0x01);
 				if ((word32) (sp_n->t0018.u0 < 513) == 0x00)
 					sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 + 0x0200);
 				if ((word32) (sp_n->t0018.u0 < (sp_n->t0020).u0) != 0x00)
-					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0020.u0);
-				if (sp_n->ptr0014 == null && (word32) ((sp_n->t0018).u0 < (sp_n->t0024).u0) != 0x00)
-					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0024.u0);
+					sp_n->t0014.u0 = (int32) realloc(sp_n->t001C.u0, sp_n->t0020.u0);
+				if (sp_n->t0014.u0 == 0x00 && (word32) ((sp_n->t0018).u0 < (sp_n->t0024).u0) != 0x00)
+					sp_n->t0014.u0 = (int32) realloc(sp_n->t001C.u0, sp_n->t0024.u0);
 			}
-			if (sp_n->ptr0014 == null)
+			if (sp_n->t0014.u0 == 0x00)
 			{
 				sp_n->ptr002C = null;
 				return dwLoc0C;
 			}
-			sp_n->ptr0028 = (<anonymous> **) ((char *) sp_n->ptr0014 + __align(sp_n->ptr0028 - sp_n->ptr001C, 4));
-			sp_n->ptr001C = sp_n->ptr0014;
+			sp_n->t0028.u0 = (int32) (sp_n->t0014.u0 + __align((sp_n->t0028).u0 - (sp_n->t001C).u0, 4));
+			sp_n->t001C.u0 = sp_n->t0014.u0;
 		}
-		*sp_n->ptr0028 = (<anonymous> **) sp_n->ptr0038;
-		sp_n->ptr0028 = (<anonymous> **) ((char *) sp_n->ptr0028 + 4);
-		g_ptr1303C = sp_n->ptr0028;
-		g_ptr13040 = sp_n->ptr001C;
+		*sp_n->t0028.u0 = (int32) sp_n->ptr0038;
+		sp_n->t0028.u0 = (int32) (sp_n->t0028.u0 + 4);
+		g_t1303C.u0 = sp_n->t0028.u0;
+		g_t13040.u0 = sp_n->t001C.u0;
 		sp_n->ptr002C = sp_n->ptr0038;
 		return dwLoc0C;
 	}

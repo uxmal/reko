@@ -19,7 +19,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (&g_b4048 == &g_b4048 || _ITM_deregisterTMCloneTable == null)
+	if (0x4048 == 0x4048 || _ITM_deregisterTMCloneTable == null)
 		return;
 	_ITM_deregisterTMCloneTable();
 }
@@ -29,7 +29,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	Eq_n rsi_n = &g_b4048 - &g_b4048;
+	Eq_n rsi_n = 0x4048 - 0x4048;
 	if ((rsi_n >>u 0x3F) + (rsi_n >> 0x03) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
@@ -38,12 +38,12 @@ void register_tm_clones()
 // 0000000000001120: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (g_b4048 != 0x00)
+	if (0x4048 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
 		__cxa_finalize(g_qw4040);
 	deregister_tm_clones();
-	g_b4048 = 0x01;
+	0x4048 = (int64) 0x01;
 }
 
 // 0000000000001160: void frame_dummy()
@@ -81,8 +81,8 @@ void main(struct Eq_n * rsi)
 	printf("Hello %s, I'm inside an archive.\n", rsi->ptr0008);
 	puts("Inverse square root computation.");
 	char * rdi_n = rsi->ptr0010;
-	word128 xmm0_n = SEQ(0, strtof(rdi_n, null));
-	real32 rLoc10_n = strtof(rdi_n, null);
+	word128 xmm0_n = SEQ(0, strtof(rdi_n, 0x00));
+	real32 rLoc10_n = strtof(rdi_n, 0x00);
 	real32 rLoc0C_n = (real32) Q_rsqrt(xmm0_n, dwLoc20);
 	real32 rLoc10_n = (real32) lib_rsqrt(SEQ(0, rLoc10_n));
 	printf("    Quick:   %g\n", (real64) rLoc0C_n);
@@ -95,14 +95,14 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x3DE0 - g_a3DD8;
+	int64 rbp_n = 0x3DE0 - 0x3DD8;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n;
 		rbx_n.u1 = 0x00;
 		do
 		{
-			(*((char *) g_a3DD8 + rbx_n * 0x08))();
+			(*((word64) 0x00003DD8 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbp_n >> 0x03 != rbx_n);
 	}

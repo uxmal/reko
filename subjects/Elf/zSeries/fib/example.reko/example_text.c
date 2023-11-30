@@ -8,11 +8,11 @@
 void _start()
 {
 	Eq_n fp;
-	struct Eq_n * r15_n = fp - 0x00A0 & ~0x0F;
-	r15_n->bFFFFFF50 = 0x00;
+	Eq_n r15_n = fp - 0x00A0 & ~0x0F;
+	r15_n.u1->bFFFFFF50 = 0x00;
 	ptr64 %continuation;
-	r15_n->ptrFFFFFFF0 = %continuation;
-	r15_n->ptrFFFFFFF8 = r15_n - 0x00B0;
+	r15_n.u1->ptrFFFFFFF0 = %continuation;
+	r15_n.u1->tFFFFFFF8.u0 = (int64) (r15_n - 0x00B0);
 	__libc_start_main();
 }
 
@@ -21,7 +21,7 @@ void _start()
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (8303 - &g_b2068 <= g_qw08C8)
+	if (8303 - 0x2068 <= g_qw08C8)
 		return;
 	<anonymous> * r1_n = g_ptr2030;
 	if (r1_n == null)
@@ -34,7 +34,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	byte * r3_n = &g_b2068 - &g_b2068;
+	Eq_n r3_n = 0x2068 - 0x2068;
 	if ((r3_n >> 3) + ((r3_n >> 3) >>u 63) >> 1 == 0x00)
 		return;
 	<anonymous> * r1_n = g_ptr2050;
@@ -46,12 +46,12 @@ void register_tm_clones()
 // 00000000000006C8: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (g_b2068 == 0x00)
+	if (0x2068 == 0x00)
 	{
 		if (g_b08D0 != g_b2028)
 			__cxa_finalize();
 		deregister_tm_clones();
-		g_b2068 = 0x01;
+		0x2068 = (int64) 0x01;
 	}
 }
 
@@ -75,9 +75,10 @@ l0000000000000740:
 			return;
 		}
 	}
-	<anonymous> * r1_n = g_ptr2048;
-	v12_n = r1_n > null;
-	if (r1_n != null)
+	Eq_n r1_n;
+	r1_n.u0 = g_t2048.u0;
+	v12_n = r1_n > 0x00;
+	if (r1_n != 0x00)
 	{
 		r1_n();
 		Eq_n CC_n;
@@ -136,17 +137,18 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 	word64 r9_n;
 	word64 r8_n;
 	ptr64 fp;
-	int64 r11_n = 0x1E10 - &g_ptr1E08;
+	int64 r11_n = 0x1E10 - 7688;
 	struct Eq_n * r15_n = fp - 320;
 	word64 r6_n = _init(r6, r7, r4, r3, r2, r11, r13, out r8_n, out r9_n, out r10_n, out r12_n, out r13_n);
 	int64 r11_n = r11_n >> 3;
 	if (r11_n >> 3 != 0x00)
 	{
-		<anonymous> ** r7_n = &g_ptr1E08;
+		Eq_n r7_n;
+		r7_n.u0 = 7688;
 		word64 r11_n;
 		do
 		{
-			(*r7_n)();
+			(*r7_n.u1)();
 			r11_n = r11_n - 1;
 		} while (r11_n != 0x01);
 	}

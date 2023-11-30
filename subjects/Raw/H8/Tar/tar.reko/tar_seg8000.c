@@ -1131,7 +1131,7 @@ word32 fn00008F4E(word16 er0_16_n, ptr32 er4, Eq_n r6, ptr32 & er4Out)
 	uint16 r2_n = (uint16) (__bset<byte,byte>(r2l_n << 1, (bool) cond(r2l_n << 1), 0x00) & 0x01) + r3_n;
 	bci8 r2h_n = SLICE(r2_n, byte, 8);
 	int16 r2_n = SEQ(r2h_n >> 1, __rcr<byte,byte>((byte) r2_n, 0x01, (bool) cond(r2h_n >> 1)));
-	*((char *) &g_uFFFF9E36 + 2) = r2_n;
+	*((char *) &g_uFFFF9E36 + 2) = (struct Globals *) r2_n;
 	word16 er0_16_16_n = SLICE(fn00009B90(SEQ(SLICE(fn00009BB6(SEQ(er0_16_16_n, 0x1FF2), 0x3001, r2_n, r6_n, 0x3002), word16, 16), 10184), r6_n), word16, 16);
 	g_wFFFF9E3E = 0x00;
 	g_wFFFF9E3C = 2000;

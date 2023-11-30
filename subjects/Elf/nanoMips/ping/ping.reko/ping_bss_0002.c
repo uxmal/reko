@@ -69,11 +69,6 @@ Eq_n g_t454454 = // 00454454
 	{
 		0
 	};
-struct Eq_n g_t454470 = // 00454470
-	{
-		null,
-		0x00,
-	};
 Eq_n g_t454480 = // 00454480
 	{
 		0
@@ -90,12 +85,13 @@ Eq_n g_t45448C = // 0045448C
 	{
 		0
 	};
-struct Eq_n * g_ptr454490 = null; // 00454490
-struct Eq_n * g_ptr454491 = null; // 00454491
-struct Eq_n g_t454498 = // 00454498
+Eq_n g_t454490 = // 00454490
 	{
-		null,
-		0x00,
+		0
+	};
+Eq_n g_t454491 = // 00454491
+	{
+		0
 	};
 word32 g_dw45449C = 0x00; // 0045449C
 uint32 __hwcap = 0x00; // 004544A0
@@ -150,7 +146,7 @@ Eq_n options = // 004544EC
 	};
 Eq_n optopt = // 004544F0
 	{
-		0x00
+		0
 	};
 int32 rtt = 0; // 004544F4
 Eq_n rtt_addend = // 004544F8
@@ -168,7 +164,10 @@ Eq_n status_snapshot = // 00454500
 word32 tclass = 0x00; // 00454504
 word32 timing = 0x00; // 00454508
 int32 tmax = 0; // 0045450C
-word32 ttl = 0x00; // 00454510
+Eq_n ttl = // 00454510
+	{
+		0x00
+	};
 Eq_n uid = // 00454514
 	{
 		0

@@ -5,22 +5,14 @@
 #include "ping.h"
 
 byte g_b0000; // 00000000
-Eq_n g_t0001;
+byte g_b0001; // 00000001
 Eq_n g_t0002;
 Eq_n g_a000A[];
-Eq_n g_t000E;
-Eq_n g_t0018;
 byte g_b001A; // 0000001A
 Eq_n g_t0025;
-Eq_n g_t0054;
-Eq_n g_t0069;
 Eq_n g_t0267;
 Eq_n g_t026B;
-Eq_n g_t03FF;
-Eq_n g_t07FE;
-Eq_n g_t0BFE;
 Eq_n g_tF4240;
-Eq_n g_t4120000;
 Eq_n g_t4120220;
 Eq_n g_t4120224;
 Eq_n g_t4120238;
@@ -43,11 +35,11 @@ Eq_n g_t4120288;
 Eq_n g_t412028C;
 Eq_n g_t4120290;
 Eq_n g_t4120294;
-union Eq_n * g_ptr4120298; // 04120298
+Eq_n g_t4120298;
 ptr32 g_ptr412029C; // 0412029C
-union Eq_n * g_ptr41202A0; // 041202A0
+Eq_n g_t41202A0;
 ptr32 g_ptr41202A4; // 041202A4
-union Eq_n * g_ptr41202A8; // 041202A8
+Eq_n g_t41202A8;
 ptr32 g_ptr41202AC; // 041202AC
 Eq_n g_t41202B0;
 Eq_n g_t41202B4;
@@ -58,8 +50,4 @@ Eq_n g_t41202C4;
 Eq_n g_t41202C8;
 Eq_n g_t41202CC;
 Eq_n g_a7FFFFFFF[];
-Eq_n g_tFBEE0054;
-Eq_n g_tFFFFF470;
-Eq_n g_tFFFFF839;
-Eq_n g_tFFFFFC02;
 byte g_bFFFFFFFF; // FFFFFFFF

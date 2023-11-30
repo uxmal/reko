@@ -13,7 +13,6 @@ Eq_1: (struct "Globals"
 		(A70 (fn void ()) t0A70)
 		(AE0 (fn void ()) t0AE0)
 		(B00 uint64 double_size.21529)
-		(200DE8 (arr (ptr64 code)) a200DE8)
 		(200FD8 (ptr64 code) _ITM_deregisterTMCloneTable_GOT)
 		(200FE0 (ptr64 code) __libc_start_main_GOT)
 		(200FE8 (ptr64 code) __gmon_start___GOT)
@@ -50,6 +49,8 @@ Eq_22: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 000000000000064A : ptr32)
 	T_34 (in signature of __halt : void)
+Eq_36: (union "Eq_36" (int64 u0) ((ptr64 byte) u1))
+	T_36 (in 0000000000201048 @ 0000000000000665 : ptr64)
 Eq_38: (fn word64 ())
 	T_38 (in _ITM_deregisterTMCloneTable @ 0000000000000671 : ptr64)
 	T_40 (in 0<64> @ 0000000000000671 : word64)
@@ -72,6 +73,12 @@ Eq_72: (fn word64 (word64))
 Eq_77: (fn void ())
 	T_77 (in register_tm_clones @ 0000000000000725 : ptr64)
 	T_78 (in signature of register_tm_clones @ 0000000000000690 : void)
+Eq_80: (union "Eq_80" (uint64 u0) ((ptr64 void) u1))
+	T_80 (in rax @ 0000000000000725 : Eq_80)
+	T_91 (in malloc(rdi) @ 0000000000000748 : (ptr64 void))
+	T_92 (in rax_44 @ 0000000000000748 : Eq_80)
+	T_105 (in 0<u64> @ 0000000000000786 : uint64)
+	T_106 (in qwLoc10 @ 0000000000000780 : Eq_80)
 Eq_82: size_t
 	T_82 (in rdi @ 0000000000000725 : Eq_82)
 	T_90 (in size @ 0000000000000748 : size_t)
@@ -97,6 +104,9 @@ Eq_159: (union "Eq_159" (int64 u0) (uint64 u1))
 	T_161 (in 0x400<64> @ 0000000000000947 : word64)
 	T_169 (in 0<64> @ 0000000000000918 : word64)
 	T_195 (in qwLoc10_211 + 1<64> @ 000000000000093A : word64)
+Eq_165: (union "Eq_165" (ui64 u0) ((ptr64 real64) u1))
+	T_165 (in qwLoc10_211 * 8<64> + rax_16 @ 000000000000090D : word64)
+	T_166 (in rcx_61 @ 000000000000090D : Eq_165)
 Eq_171: (union "Eq_171" (int64 u0) (uint64 u1))
 	T_171 (in 0<64> @ 0000000000000949 : word64)
 	T_172 (in qwLoc18_217 @ 0000000000000949 : Eq_171)
@@ -105,6 +115,9 @@ Eq_171: (union "Eq_171" (int64 u0) (uint64 u1))
 	T_232 (in qwLoc18_217 + 1<64> @ 0000000000000993 : word64)
 Eq_194: (union "Eq_194" (int64 u0) (uint64 u1))
 	T_194 (in 1<64> @ 000000000000093A : word64)
+Eq_202: (union "Eq_202" (ui64 u0) ((ptr64 real64) u1))
+	T_202 (in qwLoc18_217 * 8<64> + rax_30 @ 000000000000096B : word64)
+	T_203 (in rcx_101 @ 000000000000096B : Eq_202)
 Eq_210: (union "Eq_210" (int64 u0) (uint64 u1))
 	T_210 (in 1<64> @ 0000000000000986 : word64)
 Eq_211: (union "Eq_211" (int64 u0) (uint64 u1))
@@ -129,6 +142,8 @@ Eq_270: (fn void ())
 	T_271 (in signature of _init @ 00000000000005A0 : void)
 Eq_273: (union "Eq_273" (int64 u0) (ptr64 u1))
 	T_273 (in 0000000000200DF0 @ 0000000000000A91 : ptr64)
+Eq_274: (union "Eq_274" (int64 u0) ((ptr64 (arr (ptr64 code))) u1))
+	T_274 (in 0000000000200DE8 @ 0000000000000A91 : ptr64)
 Eq_281: (union "Eq_281" (int64 u0) (uint64 u1))
 	T_281 (in 0<u64> @ 0000000000000AA6 : uint64)
 	T_282 (in rbx_46 @ 0000000000000AA6 : Eq_281)
@@ -283,9 +298,9 @@ T_35: (in __halt() @ 000000000000064A : void)
   OrigDataType: void
 T_36: (in 0000000000201048 @ 0000000000000665 : ptr64)
   Class: Eq_36
-  DataType: (ptr64 byte)
-  OrigDataType: (union ((ptr64 byte) u1) (ptr64 u0))
-T_37: (in &g_b201048 == &g_b201048 @ 0000000000000665 : bool)
+  DataType: int64
+  OrigDataType: (union (int64 u0) ((ptr64 byte) u1))
+T_37: (in 0x201048<u64> == 0x201048<u64> @ 0000000000000665 : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool
@@ -309,7 +324,7 @@ T_42: (in _ITM_deregisterTMCloneTable() @ 0000000000000674 : word64)
   Class: Eq_42
   DataType: word64
   OrigDataType: word64
-T_43: (in &g_b201048 - &g_b201048 @ 000000000000069F : word64)
+T_43: (in 0x201048<u64> - 0x201048<u64> @ 000000000000069F : word64)
   Class: Eq_43
   DataType: int64
   OrigDataType: int64
@@ -385,7 +400,7 @@ T_61: (in 0<8> @ 00000000000006E7 : byte)
   Class: Eq_60
   DataType: byte
   OrigDataType: byte
-T_62: (in g_b201048 != 0<8> @ 00000000000006E7 : bool)
+T_62: (in 0x201048<u64> != 0<8> @ 00000000000006E7 : bool)
   Class: Eq_62
   DataType: bool
   OrigDataType: bool
@@ -457,9 +472,9 @@ T_79: (in register_tm_clones() @ 0000000000000725 : void)
   Class: Eq_79
   DataType: void
   OrigDataType: void
-T_80: (in rax @ 0000000000000725 : (ptr64 void))
+T_80: (in rax @ 0000000000000725 : Eq_80)
   Class: Eq_80
-  DataType: (ptr64 void)
+  DataType: Eq_80
   OrigDataType: word64
 T_81: (in rsi @ 0000000000000725 : uint64)
   Class: Eq_81
@@ -503,12 +518,12 @@ T_90: (in size @ 0000000000000748 : size_t)
   OrigDataType: 
 T_91: (in malloc(rdi) @ 0000000000000748 : (ptr64 void))
   Class: Eq_80
-  DataType: (ptr64 void)
+  DataType: Eq_80
   OrigDataType: (ptr64 void)
-T_92: (in rax_44 @ 0000000000000748 : (ptr64 void))
+T_92: (in rax_44 @ 0000000000000748 : Eq_80)
   Class: Eq_80
-  DataType: (ptr64 void)
-  OrigDataType: (ptr64 void)
+  DataType: Eq_80
+  OrigDataType: (union (uint64 u0) ((ptr64 void) u2))
 T_93: (in 8<64> @ 000000000000075D : word64)
   Class: Eq_81
   DataType: uint64
@@ -559,11 +574,11 @@ T_104: (in (word32) posix_memalign(qwLoc28_56, fp - 16<i64>, rdi, qwLoc28_56) !=
   OrigDataType: bool
 T_105: (in 0<u64> @ 0000000000000786 : uint64)
   Class: Eq_80
-  DataType: (ptr64 void)
+  DataType: uint64
   OrigDataType: uint64
-T_106: (in qwLoc10 @ 0000000000000780 : (ptr64 void))
+T_106: (in qwLoc10 @ 0000000000000780 : Eq_80)
   Class: Eq_80
-  DataType: (ptr64 void)
+  DataType: Eq_80
   OrigDataType: word64
 T_107: (in rdi @ 0000000000000780 : (ptr64 (arr Eq_291)))
   Class: Eq_107
@@ -799,12 +814,12 @@ T_164: (in qwLoc10_211 * 8<64> @ 000000000000090D : word64)
   OrigDataType: ui64
 T_165: (in qwLoc10_211 * 8<64> + rax_16 @ 000000000000090D : word64)
   Class: Eq_165
-  DataType: (ptr64 real64)
+  DataType: Eq_165
   OrigDataType: ui64
-T_166: (in rcx_61 @ 000000000000090D : (ptr64 real64))
+T_166: (in rcx_61 @ 000000000000090D : Eq_165)
   Class: Eq_165
-  DataType: (ptr64 real64)
-  OrigDataType: (ptr64 (struct (0 T_193 t0000)))
+  DataType: Eq_165
+  OrigDataType: (union (ui64 u0) ((ptr64 real64) u1))
 T_167: (in SLICE(qwLoc10_211, word32, 0) @ 0000000000000911 : word32)
   Class: Eq_167
   DataType: ui32
@@ -947,12 +962,12 @@ T_201: (in qwLoc18_217 * 8<64> @ 000000000000096B : word64)
   OrigDataType: ui64
 T_202: (in qwLoc18_217 * 8<64> + rax_30 @ 000000000000096B : word64)
   Class: Eq_202
-  DataType: (ptr64 real64)
+  DataType: Eq_202
   OrigDataType: ui64
-T_203: (in rcx_101 @ 000000000000096B : (ptr64 real64))
+T_203: (in rcx_101 @ 000000000000096B : Eq_202)
   Class: Eq_202
-  DataType: (ptr64 real64)
-  OrigDataType: (ptr64 (struct (0 T_230 t0000)))
+  DataType: Eq_202
+  OrigDataType: (union (ui64 u0) ((ptr64 real64) u1))
 T_204: (in 0xFFFFFFFFFFFFFFFF<64> @ 0000000000000971 : word64)
   Class: Eq_171
   DataType: int64
@@ -1236,9 +1251,9 @@ T_273: (in 0000000000200DF0 @ 0000000000000A91 : ptr64)
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_274: (in 0000000000200DE8 @ 0000000000000A91 : ptr64)
   Class: Eq_274
-  DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (union ((ptr64 (arr Eq_301)) u1) ((ptr64 (arr Eq_301)) u0))
-T_275: (in 0x200DF0<u64> - g_a200DE8 @ 0000000000000A91 : word64)
+  DataType: int64
+  OrigDataType: (union (int64 u1) ((ptr64 (arr Eq_301)) u0) ((ptr64 (arr Eq_301)) u2))
+T_275: (in 0x200DF0<u64> - 0x200DE8<u64> @ 0000000000000A91 : word64)
   Class: Eq_275
   DataType: int64
   OrigDataType: int64
@@ -1360,7 +1375,6 @@ typedef Eq_1Eq_1Eq_1struct Globals {
 	void t0A70();	// A70
 	void t0AE0();	// AE0
 	uint64 double_size.21529;	// B00
-	<anonymous> * a200DE8[];	// 200DE8
 	<anonymous> * _ITM_deregisterTMCloneTable_GOT;	// 200FD8
 	<anonymous> * __libc_start_main_GOT;	// 200FE0
 	<anonymous> * __gmon_start___GOT;	// 200FE8
@@ -1389,6 +1403,11 @@ typedef void (Eq_21)();
 typedef void (Eq_22)();
 
 typedef void (Eq_33)();
+
+typedef union Eq_36 {
+	int64 u0;
+	byte * u1;
+} Eq_36;
 
 typedef word64 (Eq_38)();
 
@@ -1420,6 +1439,11 @@ typedef word64 (Eq_72)(word64);
 
 typedef void (Eq_77)();
 
+typedef union Eq_80 {
+	uint64 u0;
+	void * u1;
+} Eq_80;
+
 typedef size_t Eq_82;
 
 typedef word64 (Eq_96)(uint64, ptr64, size_t, uint64);
@@ -1435,6 +1459,11 @@ typedef union Eq_159 {
 	uint64 u1;
 } Eq_159;
 
+typedef union Eq_165 {
+	ui64 u0;
+	real64 * u1;
+} Eq_165;
+
 typedef union Eq_171 {
 	int64 u0;
 	uint64 u1;
@@ -1444,6 +1473,11 @@ typedef union Eq_194 {
 	int64 u0;
 	uint64 u1;
 } Eq_194;
+
+typedef union Eq_202 {
+	ui64 u0;
+	real64 * u1;
+} Eq_202;
 
 typedef union Eq_210 {
 	int64 u0;
@@ -1477,6 +1511,11 @@ typedef union Eq_273 {
 	int64 u0;
 	ptr64 u1;
 } Eq_273;
+
+typedef union Eq_274 {
+	int64 u0;
+	<anonymous> * (* u1)[];
+} Eq_274;
 
 typedef union Eq_281 {
 	int64 u0;

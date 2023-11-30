@@ -34,7 +34,7 @@ Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (ptr16 (segment "seg0C00_t" 002A))
 	T_2 (in seg0C00 : selector)
-Eq_3: (ptr32 (fn T_5 ()))
+Eq_3: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
 	T_3 (in fn0C00_0004 : segptr32)
 	T_4 (in signature of fn0C00_0004 : void)
 Eq_5: void
@@ -106,11 +106,11 @@ T_2: (in seg0C00 : selector)
   OrigDataType: (ptr16 (segment "seg0C00_t" 002A))
 T_3: (in fn0C00_0004 : segptr32)
   Class: Eq_3
-  DataType: (ptr32 (fn T_5 ()))
-  OrigDataType: (ptr32 (fn T_5 ()))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
 T_4: (in signature of fn0C00_0004 : void)
   Class: Eq_3
-  DataType: (ptr32 (fn T_5 ()))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
   OrigDataType: 
 T_5: (in fn0C00_0004() : void)
   Class: Eq_5

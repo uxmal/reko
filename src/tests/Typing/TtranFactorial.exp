@@ -36,7 +36,7 @@ Eq_2: (segment "seg0C00_t" 002B)
 	T_2 (in seg0C00 : selector)
 Eq_3: (segment (64 int16 w0064))
 	T_3 (in ds : selector)
-Eq_4: (fn int16 (int16))
+Eq_4: (union (segptr32 u0) ((ptr32 (fn int16 (int16))) u1))
 	T_4 (in fn0C00_000F : segptr32)
 	T_5 (in signature of fn0C00_000F : void)
 	T_17 (in fn0C00_000F : segptr32)
@@ -55,11 +55,11 @@ T_3: (in ds : selector)
   OrigDataType: (ptr16 (segment (64 T_11 t0064)))
 T_4: (in fn0C00_000F : segptr32)
   Class: Eq_4
-  DataType: (ptr32 Eq_4)
-  OrigDataType: (ptr32 (fn T_8 (T_7)))
+  DataType: Eq_4
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_8 (T_7))) u1))
 T_5: (in signature of fn0C00_000F : void)
   Class: Eq_4
-  DataType: (ptr32 Eq_4)
+  DataType: Eq_4
   OrigDataType: 
 T_6: (in wArg02 : word16)
   Class: Eq_6
@@ -107,8 +107,8 @@ T_16: (in ax_13 : word16)
   OrigDataType: int16
 T_17: (in fn0C00_000F : segptr32)
   Class: Eq_4
-  DataType: (ptr32 Eq_4)
-  OrigDataType: (ptr32 (fn T_19 (T_18)))
+  DataType: Eq_4
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_19 (T_18))) u1))
 T_18: (in wArg02 - 1<16> : word16)
   Class: Eq_6
   DataType: int16

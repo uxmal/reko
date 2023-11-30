@@ -41,8 +41,8 @@ T_2: (in seg0C00 : selector)
   OrigDataType: (ptr16 (segment "seg0C00_t" 002A))
 T_3: (in fn0C00_0004 : segptr32)
   Class: Eq_3
-  DataType: (ptr32 (fn T_5 ()))
-  OrigDataType: (ptr32 (fn T_5 ()))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_5 ())) u1))
 T_4: (in signature of fn0C00_0004 : void)
   Class: Eq_3
   DataType: 

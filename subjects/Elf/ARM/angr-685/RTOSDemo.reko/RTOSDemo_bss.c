@@ -4,7 +4,6 @@
 
 #include "RTOSDemo.h"
 
-word32 g_dw20000160 = 0x00; // 20000160
 byte g_b2000022C = 0x00; // 2000022C
 word32 pucAlignedHeap.5129 = 0x00; // 20000230
 word32 xNextFreeByte = 0x00; // 200007F0

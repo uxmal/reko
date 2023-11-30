@@ -15,7 +15,6 @@ Eq_1: (struct "Globals"
 		(2074 real32 r2074)
 		(2078 real32 r2078)
 		(207C real32 r207C)
-		(3DD8 (arr (ptr64 code)) a3DD8)
 		(3FD8 (ptr64 code) _ITM_deregisterTMCloneTable_GOT)
 		(3FE0 (ptr64 code) __libc_start_main_GOT)
 		(3FE8 (ptr64 code) __gmon_start___GOT)
@@ -51,11 +50,13 @@ Eq_22: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 00000000000010AA : ptr32)
 	T_34 (in signature of __halt : void)
+Eq_36: (union "Eq_36" (int64 u0) ((ptr64 byte) u1))
+	T_36 (in 0000000000004048 @ 00000000000010C1 : ptr64)
 Eq_38: (fn word64 ())
 	T_38 (in _ITM_deregisterTMCloneTable @ 00000000000010CD : ptr64)
 	T_40 (in 0<64> @ 00000000000010CD : word64)
 Eq_43: (union "Eq_43" (int64 u0) (uint64 u1))
-	T_43 (in &g_b4048 - &g_b4048 @ 00000000000010EE : word64)
+	T_43 (in 0x4048<u64> - 0x4048<u64> @ 00000000000010EE : word64)
 	T_44 (in rsi_6 @ 00000000000010EE : Eq_43)
 Eq_46: (union "Eq_46" (int64 u0) (uint64 u1))
 	T_46 (in rsi_6 >> 0x3F<64> @ 0000000000001102 : word64)
@@ -96,9 +97,12 @@ Eq_131: (fn int32 ((ptr64 char), (ptr64 char)))
 Eq_140: (fn int32 ((ptr64 char)))
 	T_140 (in puts @ 0000000000001204 : ptr64)
 	T_141 (in signature of puts : void)
-Eq_150: (fn real32 ((ptr64 char), (ptr64 (ptr64 char))))
+Eq_150: (fn real32 ((ptr64 char), Eq_153))
 	T_150 (in strtof @ 0000000000001212 : ptr64)
 	T_151 (in signature of strtof : void)
+Eq_153: (union "Eq_153" (uint64 u0) ((ptr64 (ptr64 char)) u1))
+	T_153 (in endptr @ 0000000000001212 : (ptr64 (ptr64 char)))
+	T_154 (in 0<u64> @ 0000000000001212 : uint64)
 Eq_160: (fn word128 (word128, int32))
 	T_160 (in Q_rsqrt @ 0000000000001222 : ptr64)
 	T_161 (in signature of Q_rsqrt @ 0000000000001169 : void)
@@ -116,6 +120,8 @@ Eq_190: (fn void ())
 	T_191 (in signature of _init @ 0000000000001000 : void)
 Eq_193: (union "Eq_193" (int64 u0) (ptr64 u1))
 	T_193 (in 0000000000003DE0 @ 00000000000012A1 : ptr64)
+Eq_194: (union "Eq_194" (int64 u0) ((ptr64 (arr (ptr64 code))) u1))
+	T_194 (in 0000000000003DD8 @ 00000000000012A1 : ptr64)
 Eq_201: (union "Eq_201" (int64 u0) (uint64 u1))
 	T_201 (in 0<u64> @ 00000000000012B3 : uint64)
 	T_202 (in rbx_45 @ 00000000000012B3 : Eq_201)
@@ -264,9 +270,9 @@ T_35: (in __halt() @ 00000000000010AA : void)
   OrigDataType: void
 T_36: (in 0000000000004048 @ 00000000000010C1 : ptr64)
   Class: Eq_36
-  DataType: (ptr64 byte)
-  OrigDataType: (union ((ptr64 byte) u1) (ptr64 u0))
-T_37: (in &g_b4048 == &g_b4048 @ 00000000000010C1 : bool)
+  DataType: int64
+  OrigDataType: (union (int64 u0) ((ptr64 byte) u1))
+T_37: (in 0x4048<u64> == 0x4048<u64> @ 00000000000010C1 : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool
@@ -290,7 +296,7 @@ T_42: (in _ITM_deregisterTMCloneTable() @ 00000000000010CF : word64)
   Class: Eq_42
   DataType: word64
   OrigDataType: word64
-T_43: (in &g_b4048 - &g_b4048 @ 00000000000010EE : word64)
+T_43: (in 0x4048<u64> - 0x4048<u64> @ 00000000000010EE : word64)
   Class: Eq_43
   DataType: Eq_43
   OrigDataType: int64
@@ -362,7 +368,7 @@ T_60: (in 0<8> @ 000000000000112B : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_61: (in g_b4048 != 0<8> @ 000000000000112B : bool)
+T_61: (in 0x4048<u64> != 0<8> @ 000000000000112B : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -733,17 +739,17 @@ T_152: (in str @ 0000000000001212 : (ptr64 char))
   OrigDataType: 
 T_153: (in endptr @ 0000000000001212 : (ptr64 (ptr64 char)))
   Class: Eq_153
-  DataType: (ptr64 (ptr64 char))
+  DataType: Eq_153
   OrigDataType: 
 T_154: (in 0<u64> @ 0000000000001212 : uint64)
   Class: Eq_153
-  DataType: (ptr64 (ptr64 char))
-  OrigDataType: (ptr64 (ptr64 char))
-T_155: (in strtof(rdi_17, null) @ 0000000000001212 : real32)
+  DataType: uint64
+  OrigDataType: (union (uint64 u0) ((ptr64 (ptr64 char)) u1))
+T_155: (in strtof(rdi_17, 0<u64>) @ 0000000000001212 : real32)
   Class: Eq_155
   DataType: real32
   OrigDataType: real32
-T_156: (in SEQ(0<96>, strtof(rdi_17, null)) @ 0000000000001212 : word128)
+T_156: (in SEQ(0<96>, strtof(rdi_17, 0<u64>)) @ 0000000000001212 : word128)
   Class: Eq_79
   DataType: word128
   OrigDataType: word128
@@ -751,7 +757,7 @@ T_157: (in xmm0_20 @ 0000000000001212 : word128)
   Class: Eq_79
   DataType: word128
   OrigDataType: word128
-T_158: (in strtof(rdi_17, null) @ 0000000000001217 : real32)
+T_158: (in strtof(rdi_17, 0<u64>) @ 0000000000001217 : real32)
   Class: Eq_155
   DataType: real32
   OrigDataType: real32
@@ -899,9 +905,9 @@ T_193: (in 0000000000003DE0 @ 00000000000012A1 : ptr64)
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_194: (in 0000000000003DD8 @ 00000000000012A1 : ptr64)
   Class: Eq_194
-  DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (union ((ptr64 (arr Eq_210)) u1) ((ptr64 (arr Eq_210)) u0))
-T_195: (in 0x3DE0<u64> - g_a3DD8 @ 00000000000012A1 : word64)
+  DataType: int64
+  OrigDataType: (union (int64 u1) ((ptr64 (arr Eq_210)) u0) ((ptr64 (arr Eq_210)) u2))
+T_195: (in 0x3DE0<u64> - 0x3DD8<u64> @ 00000000000012A1 : word64)
   Class: Eq_195
   DataType: int64
   OrigDataType: int64
@@ -981,7 +987,6 @@ typedef Eq_1Eq_1Eq_1struct Globals {
 	real32 r2074;	// 2074
 	real32 r2078;	// 2078
 	real32 r207C;	// 207C
-	<anonymous> * a3DD8[];	// 3DD8
 	<anonymous> * _ITM_deregisterTMCloneTable_GOT;	// 3FD8
 	<anonymous> * __libc_start_main_GOT;	// 3FE0
 	<anonymous> * __gmon_start___GOT;	// 3FE8
@@ -1010,6 +1015,11 @@ typedef void (Eq_21)();
 typedef void (Eq_22)();
 
 typedef void (Eq_33)();
+
+typedef union Eq_36 {
+	int64 u0;
+	byte * u1;
+} Eq_36;
 
 typedef word64 (Eq_38)();
 
@@ -1069,7 +1079,12 @@ typedef int32 (Eq_131)(char *, char *);
 
 typedef int32 (Eq_140)(char *);
 
-typedef real32 (Eq_150)(char *, char * *);
+typedef real32 (Eq_150)(char *, Eq_153);
+
+typedef union Eq_153 {
+	uint64 u0;
+	char ** u1;
+} Eq_153;
 
 typedef word128 (Eq_160)(word128, int32);
 
@@ -1085,6 +1100,11 @@ typedef union Eq_193 {
 	int64 u0;
 	ptr64 u1;
 } Eq_193;
+
+typedef union Eq_194 {
+	int64 u0;
+	<anonymous> * (* u1)[];
+} Eq_194;
 
 typedef union Eq_201 {
 	int64 u0;

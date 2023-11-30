@@ -152,14 +152,15 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 void __do_global_ctors_aux()
 {
 	ptr32 fp;
-	<anonymous> * a0_n = g_ptr8000270C;
+	Eq_n a0_n;
+	a0_n.u0 = g_t8000270C.u0;
 	ptr32 a6_n = fp - 0x04;
-	<anonymous> ** a2_n = &g_ptr8000270C;
-	while (a0_n != (<anonymous> *) -1)
+	union Eq_n * a2_n = &g_t8000270C;
+	while (a0_n != -1)
 	{
 		a0_n();
 		struct Eq_n * a2_n;
-		a0_n = a2_n->ptrFFFFFFFC;
+		a0_n.u0 = a2_n->tFFFFFFFC.u0;
 		a2_n = a2_n - 4;
 	}
 }

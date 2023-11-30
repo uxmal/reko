@@ -26,7 +26,7 @@ Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5)
 		int32 r5_n = 0x0433 - r6_n;
 		if (r5_n >= 0x20)
 			return (r9_n | 0x01000000) >> 0x0413 - r6_n;
-		return (r9_n | 0x01000000) << (word32) r6_n - 0x0413 | r4 >> r5_n;
+		return (r9_n | 0x01000000) << (word32) r6_n.u0 - 0x0413 | r4 >> r5_n;
 	}
 }
 
@@ -115,9 +115,9 @@ void __truncdfsf2(Eq_n r4, Eq_n r5)
 	ui32 r9_n = r4 >> 0x1D | r9_n << 0x03;
 	Eq_n r8_n;
 	Eq_n r7_n;
-	if ((r10_n.u11 + 1 & 0x07FF) >= 0x02)
+	if (((word32) r10_n.u0 + 1 & 0x07FF) >= 0x02)
 	{
-		r8_n.u3 = (word32) r10_n - 896;
+		r8_n.u4 = (word32) r10_n.u0 - 896;
 		if (r10_n > 1150)
 		{
 			r7_n.u0 = 0x00;
@@ -135,15 +135,15 @@ void __truncdfsf2(Eq_n r4, Eq_n r5)
 			r8_n.u0 = 0x00;
 			goto l00410336;
 		}
-		int32 r4_n = 0x1E - ((word32) r10_n - 896);
+		int32 r4_n = 0x1E - ((word32) r10_n.u0 - 896);
 		if (r4_n < 0x20)
-			r7_n = (word32) (r4 << 0x03 << (word32) r10_n - 894 > 0x00) | (r9_n | 0x08000000) << (word32) r10_n - 894 | (r4 << 0x03) >> r4_n;
+			r7_n = (word32) (r4 << 0x03 << (word32) r10_n.u0 - 894 > 0x00) | (r9_n | 0x08000000) << (word32) r10_n.u0 - 894 | (r4 << 0x03) >> r4_n;
 		else
 		{
 			ui32 r11_n = 0x00;
-			uint32 r8_n = (r9_n | 0x08000000) >> ~0x01 - ((word32) r10_n - 896);
+			uint32 r8_n = (r9_n | 0x08000000) >> ~0x01 - ((word32) r10_n.u0 - 896);
 			if (r4_n != 0x20)
-				r11_n = (r9_n | 0x08000000) << (word32) r10_n - 862;
+				r11_n = (r9_n | 0x08000000) << (word32) r10_n.u0 - 862;
 			r7_n = r8_n | (word32) ((r11_n | r4 << 0x03) > 0x00);
 		}
 	}
@@ -160,7 +160,7 @@ l004102C8:
 			if ((r7_n & 0x07) == 0x00 || (r7_n & 0x0F) == 0x04)
 				goto l004102FC;
 l00410336:
-			r7_n.u11 += 4;
+			r7_n.u4 = (word32) r7_n.u2 + 4;
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{
@@ -175,7 +175,7 @@ l004102FC:
 			__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r8_n, 0x07, 0x01), r5 >> 0x1F, 0x0F, 0x01);
 			return;
 		}
-		r7_n.u3 = (word32) (r7_n > 0x00);
+		r7_n.u4 = (word32) (r7_n > 0x00);
 	}
 	r8_n.u0 = 0x00;
 	goto l004102C8;

@@ -4,12 +4,12 @@
 
 #include "PP.h"
 
-Eq_n g_tFFFF9D35;
-Eq_n g_tFFFF9D37;
-Eq_n g_tFFFF9D39;
-Eq_n g_tFFFF9D3B;
-word16 g_wFFFF9D3D; // F800:9D3D
-word16 g_wFFFF9D3F; // F800:9D3F
+<unknown> g_tFFFF9D35;
+<unknown> g_tFFFF9D37;
+<unknown> g_tFFFF9D39;
+<unknown> g_tFFFF9D3B;
+<unknown> g_tFFFF9D3D;
+<unknown> g_tFFFF9D3F;
 int16 g_aFFFFBC39[];
 Eq_n g_aFFFFBC41[];
 int16 g_aFFFFBE1F[];

@@ -51,8 +51,6 @@ word32 g_dwFFFF806A = 0x00; // 806A
 word16 g_wFFFF806C = 0x00; // 806C
 struct Eq_n g_tFFFF806E = // 806E
 							{
-								0x00,
-								0x00,
-								0x00,
-								0x00,
-							};
+								
+								{
+									;

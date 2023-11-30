@@ -5,10 +5,7 @@
 #include "BENCHFN.h"
 
 struct Eq_n * g_ptr0000; // 00000000
-word32 g_dw0001; // 00000001
 struct Eq_n * g_ptr0004; // 00000004
-word32 g_a0008[];
-ui32 g_a0010[];
 word32 g_dw3FB0; // 00003FB0
 word32 g_dw3FBC; // 00003FBC
 struct Eq_n * g_ptr3FC8; // 00003FC8

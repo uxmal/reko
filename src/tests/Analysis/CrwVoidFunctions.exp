@@ -118,7 +118,7 @@ void fn0C00_0029(Sequence segptr32 ds_di, Register word16 ax)
 // MayUse:  ax:[0..15] Sequence ds:di:[0..31]
 // DataTypes: 
 //   ax: word16
-//   Sequence ds:di: (ptr32 (struct 0002))
+//   Sequence ds:di: (union (segptr32 u0) ((ptr32 (struct 0002 (0 T_2 t0000))) u1))
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
@@ -147,7 +147,7 @@ fn0C00_0029_exit:
 void fn0C00_002C(Sequence segptr32 ds_di, Stack word16 wArg02)
 // MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
 // DataTypes: 
-//   Sequence ds:di: (ptr32 (struct 0002))
+//   Sequence ds:di: (union (segptr32 u0) ((ptr32 (struct 0002 (0 T_2 t0000))) u1))
 //   Stack +0002: word16
 // LiveOut:
 // Trashed: ax Top

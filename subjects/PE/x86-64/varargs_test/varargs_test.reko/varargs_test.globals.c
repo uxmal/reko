@@ -7,7 +7,6 @@
 word16 g_w40000000; // 0000000040000000
 word32 g_dw4000003C; // 000000004000003C
 int32 g_t40001ABC(struct _exception * rcx); // 0000000040001ABC
-LONG g_t40001B24(struct _EXCEPTION_POINTERS * ExceptionInfo); // 0000000040001B24
 <anonymous> * __imp__RtlLookupFunctionEntry; // 0000000040002000
 <anonymous> * __imp__RtlVirtualUnwind; // 0000000040002008
 <anonymous> * __imp__UnhandledExceptionFilter; // 0000000040002010

@@ -101,12 +101,12 @@ void fft(uint16 gp3, uint16 gp4)
 				int16 gp0_n;
 				for (gp0_n = gp14_n->w0003; gp0_n < 0x10; gp0_n += gp14_n->w0001)
 				{
-					real48 * gp11_n = (gp14_n->w0002 + gp0_n) * 0x03 + 0x8060;
-					real48 gp8_gp9_gp10_n = gp14_n->r0004 * (g_aFFFF8030)[0].r0000 - (gp14_n->t0007).u0 * *gp11_n;
-					real48 gp5_gp6_gp7_n = gp14_n->t0007.u0 * (g_aFFFF8030)[0].r0000 + gp14_n->r0004 * *gp11_n;
+					Eq_n gp11_n = (gp14_n->w0002 + gp0_n) * 0x03 + 0x8060;
+					real48 gp8_gp9_gp10_n = gp14_n->r0004 * (g_aFFFF8030)[0].r0000 - (gp14_n->t0007).u0 * *gp11_n.u1;
+					real48 gp5_gp6_gp7_n = gp14_n->t0007.u0 * (g_aFFFF8030)[0].r0000 + gp14_n->r0004 * *gp11_n.u1;
 					g_aFFFF8030[0].r0000 = (real48) (g_aFFFF8030[0].r0000 - gp8_gp9_gp10_n);
 					real48 gp2_gp3_gp4_n = g_aFFFF8060[gp0_n] - gp5_gp6_gp7_n;
-					*gp11_n = gp2_gp3_gp4_n;
+					*gp11_n.u1 = gp2_gp3_gp4_n;
 					g_aFFFF8030[0].r0000 = (real48) (gp8_gp9_gp10_n + (g_aFFFF8030)[0].r0000);
 					g_aFFFF8060[gp0_n] = (struct Eq_n) (gp5_gp6_gp7_n + g_aFFFF8060[gp0_n]);
 					gp3 = SLICE(gp2_gp3_gp4_n, word16, 16);
@@ -268,7 +268,7 @@ word16 sincos(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3O
 	ci16 gp2_n = gp1;
 	if (gp1 < 0x00)
 		gp2_n = gp1 + 0x07;
-	struct Eq_n * gp2_n = gp2_n & ~0x07;
+	Eq_n gp2_n = gp2_n & ~0x07;
 	if ((uint32) (gp1 - gp2_n) > 0x07)
 	{
 		real48 gp3_gp4_gp5_n = g_rFFFF8051;
@@ -282,7 +282,7 @@ word16 sincos(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3O
 	}
 	else
 	{
-		<anonymous> * gp2_n = gp2_n->ptr032C;
+		<anonymous> * gp2_n = gp2_n.u1->ptr032C;
 		gp2_n();
 		ptr16 gp1_n;
 		gp1Out = gp1_n;
@@ -327,7 +327,7 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	}
 	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = (char *) &((*((char *) &g_dwFFFF805D + 2))->aFFFF8060 + 0x00002A8A)->r0000 + ((word16) gp0_gp1_n + 2);
+		gp1_n = (ci16) ((char *) &((*((char *) &g_dwFFFF805D + 2))->aFFFF8060 + 0x00002A8A)->r0000 + ((word16) gp0_gp1_n + 2));
 	word16 gp0_n = sincos(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp3Out = gp3_n;
 	gp4Out = gp4_n;
@@ -366,77 +366,77 @@ word48 cos(int32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 	return SEQ(gp0_n, gp1_n, gp2_n);
 }
 
-// 03BF: Register (ptr16 Eq_n) cvia(Register (ptr16 Eq_n) gp0, Register (ptr16 Eq_n) gp1)
+// 03BF: Register Eq_n cvia(Register Eq_n gp0, Register Eq_n gp1)
 // Called from:
 //      pr_dec_word
-struct Eq_n * cvia(struct Eq_n * gp0, struct Eq_n * gp1)
+Eq_n cvia(Eq_n gp0, Eq_n gp1)
 {
-	gp0->w0000 = 0x2020;
-	gp0[1] = (struct Eq_n) 0x2020;
-	gp0[2] = (struct Eq_n) 0x2020;
-	gp0[3] = (struct Eq_n) 0x00;
-	struct Eq_n * gp11_n = gp0;
+	gp0.u1->w0000 = 0x2020;
+	gp0.u1[1] = (struct Eq_n) 0x2020;
+	gp0.u1[2] = (struct Eq_n) 0x2020;
+	gp0.u1[3] = (struct Eq_n) 0x00;
+	Eq_n gp11_n = gp0;
 	cui16 gp13_n = 0x00;
 	word16 gp10_n = 0x20;
-	struct Eq_n * gp1_n = gp1;
-	if (gp1 < null)
+	Eq_n gp1_n = gp1;
+	if (gp1 < 0x00)
 	{
 		gp10_n = 0x2D;
 		gp1_n = -gp1;
 	}
 	cui16 gp9_n = 0x00;
-	struct Eq_n * gp1_n;
+	Eq_n gp1_n;
 	do
 	{
 		++gp9_n;
 		gp1_n = gp1_n / 0x0A;
 		gp13_n |= 0x30;
 		if ((gp9_n & 0x8000) != 0x00)
-			gp11_n[2] = (struct Eq_n) SEQ(gp11_n[2], (byte) gp13_n);
+			gp11_n.u1[2] = (struct Eq_n) SEQ(*((word16) gp11_n + 2), (byte) gp13_n);
 		else
 		{
-			gp11_n[2] = (struct Eq_n) SEQ((byte) gp13_n, gp11_n[2]);
+			gp11_n.u1[2] = (struct Eq_n) SEQ((byte) gp13_n, *((word16) gp11_n + 2));
 			--gp11_n;
 		}
 		gp1_n = gp1_n;
-	} while (gp1_n != null);
+	} while (gp1_n != 0x00);
 	if ((gp9_n & 0x8000) != 0x00)
-		gp11_n[2] = (struct Eq_n) SEQ((byte) gp10_n, gp11_n[2]);
+		gp11_n.u1[2] = (struct Eq_n) SEQ((byte) gp10_n, *((word16) gp11_n + 2));
 	else
-		gp11_n[2] = (struct Eq_n) SEQ(gp11_n[2], (byte) gp10_n);
+		gp11_n.u1[2] = (struct Eq_n) SEQ(*((word16) gp11_n + 2), (byte) gp10_n);
 	return gp1;
 }
 
-// 03ED: Register (ptr16 Eq_n) cvla(Sequence int32 gp12_gp13, Register (ptr16 Eq_n) gp0, Register (ptr16 Eq_n) gp1, Register uint16 gp2)
+// 03ED: Register Eq_n cvla(Sequence int32 gp12_gp13, Register Eq_n gp0, Register Eq_n gp1, Register uint16 gp2)
 // Called from:
 //      pr_long_word
-struct Eq_n * cvla(int32 gp12_gp13, struct Eq_n * gp0, struct Eq_n * gp1, uint16 gp2)
+Eq_n cvla(int32 gp12_gp13, Eq_n gp0, Eq_n gp1, uint16 gp2)
 {
-	struct Eq_n * gp11_n = gp0;
+	Eq_n gp11_n = gp0;
 	cui16 gp9_n;
 	for (gp9_n = 0x06; gp9_n != 0x00; --gp9_n)
 	{
-		gp11_n->w0000 = 0x2020;
-		++gp11_n;
+		gp11_n.u1->w0000 = 0x2020;
+		++gp11_n.u1;
 	}
-	gp11_n->wFFFFFFFF = SEQ(gp11_n[1], (byte) gp9_n);
+	gp11_n.u1->wFFFFFFFF = SEQ(gp11_n.u1[1], (byte) gp9_n);
 	byte * gp11_n = gp11_n - 0x01;
 	word16 gp10_n = 0x20;
-	struct Eq_n * gp1_n = gp1;
-	if (gp1 < null)
+	Eq_n gp1_n = gp1;
+	if (gp1 < 0x00)
 	{
 		gp10_n = 0x2D;
-		if (gp1 == &g_tFFFF8000 && gp2 == 0x00)
+		if (gp1 == 0x8000 && gp2 == 0x00)
 			++gp2;
-		word32 gp1_gp2_n = -gp2;
-		gp1_n = SLICE(gp1_gp2_n, word16, 16);
+		word32 gp1_gp2_n = -SEQ(gp1, gp2);
+		gp1_n.u1 = SLICE(gp1_gp2_n, word16, 16);
 		gp2 = (word16) gp1_gp2_n;
 	}
 	int32 gp12_gp13_n = gp12_gp13;
 	int32 gp12_gp13_n;
 	do
 	{
-		ui32 gp2_gp3_n = gp2 /32 0x0A * 0x0A;
+		ui32 gp2_gp3_n = SEQ(gp1_n, gp2) / 0x0A * 0x0A;
 		++gp9_n;
 		gp2 = SLICE(gp2_gp3_n, word16, 16);
 		uint16 gp5_n = gp2 - (word16) gp2_gp3_n;
@@ -633,18 +633,19 @@ void pr_hex_word(int16 gp0)
 	pr_hex_byte(pr_hex_byte(__xbr(gp0)));
 }
 
-// 04E2: void pr_dec_word(Register (ptr16 Eq_n) gp0)
-void pr_dec_word(struct Eq_n * gp0)
+// 04E2: void pr_dec_word(Register Eq_n gp0)
+void pr_dec_word(Eq_n gp0)
 {
-	puts(cvia(&g_tFFFF806E, gp0));
+	puts(cvia(0x806E, gp0));
 }
 
 // 04EC: void pr_long_word(Sequence word32 gp0_gp1, Sequence int32 gp12_gp13)
 void pr_long_word(word32 gp0_gp1, int32 gp12_gp13)
 {
 	uint16 gp1 = (word16) gp0_gp1;
-	struct Eq_n * gp0 = SLICE(gp0_gp1, word16, 16);
-	puts(cvla(gp12_gp13, &g_tFFFF806E, gp0, gp1));
+	Eq_n gp0;
+	gp0.u1 = SLICE(gp0_gp1, word16, 16);
+	puts(cvla(gp12_gp13, 0x806E, gp0, gp1));
 }
 
 // 04F6: Register word16 pr_fp_num(Sequence word32 gp0_gp1)

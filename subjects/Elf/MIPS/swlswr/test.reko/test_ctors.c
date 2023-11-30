@@ -4,4 +4,7 @@
 
 #include "test.h"
 
-<anonymous> * g_ptr10A60 = &g_tFFFFFFFF; // 00010A60
+Eq_n g_t10A60 = // 00010A60
+	{
+		-1
+	};

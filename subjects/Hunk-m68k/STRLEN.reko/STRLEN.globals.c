@@ -6,8 +6,6 @@
 
 struct Eq_n * g_ptr0000; // 00000000
 struct Eq_n * g_ptr0004; // 00000004
-word32 g_a0008[];
-ui32 g_a0010[];
 ui32 g_dw13E0; // 000013E0
 ui32 g_dw13E4; // 000013E4
 word32 g_dw13F0; // 000013F0

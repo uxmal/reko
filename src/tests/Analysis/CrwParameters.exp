@@ -47,7 +47,7 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
-//   Sequence ds:si: (ptr32 (struct 0002))
+//   Sequence ds:si: (union (segptr32 u0) ((ptr32 (struct 0002)) u1))
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp
@@ -80,7 +80,7 @@ fn0C00_0025_exit:
 Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
-//   Sequence ds:si: (ptr32 (struct 0002))
+//   Sequence ds:si: (union (segptr32 u0) ((ptr32 (struct 0002)) u1))
 // LiveOut: ax si
 // Trashed: SCZO ax si Top
 // Preserved: sp
@@ -127,7 +127,7 @@ fn0C00_0027_exit:
 Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
-//   Sequence ds:si: (ptr32 (struct 0006))
+//   Sequence ds:si: (union (segptr32 u0) ((ptr32 (struct 0006)) u1))
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp

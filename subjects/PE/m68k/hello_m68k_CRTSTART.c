@@ -68,8 +68,8 @@ void fn000022C4(word32 a2, ptr32 a5)
 	struct Eq_n * a7_n;
 	fn000023B4(a5 + -744, a5 + -740);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	a7_n->t0004.u0 = (word32 *) (a5 + -748);
-	a7_n->t0000.u0 = (word32 *) (a5 + -752);
+	a7_n->t0004.u0 = (int32) (a5 + -748);
+	a7_n->t0000.u0 = (int32) (a5 + -752);
 	struct Eq_n * a6_n = fn000023B4(a7_n->t0000.u0, a7_n->t0004.u0);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	a7_n->w0002 = ~0x5760;
@@ -113,15 +113,15 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 			a7_n = &a7_n->t0008.u0;
 		}
 		struct Eq_n * a7_n = a7_n - 4;
-		a7_n->t0000.u0 = (word32 *) ((char *) &a5->ptrFFFFFAA0 + 0x0288);
-		a7_n->tFFFFFFFC.u0 = (word32 *) ((char *) &a5->ptrFFFFFAA0 + 640);
+		a7_n->t0000.u0 = (int32) ((char *) &a5->ptrFFFFFAA0 + 0x0288);
+		a7_n->tFFFFFFFC.u0 = (int32) ((char *) &a5->ptrFFFFFAA0 + 640);
 		fn000023B4(a7_n->tFFFFFFFC.u0, a7_n->t0000.u0);
 		struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 		a7_n = &a7_n->t0008.u0;
 	}
 	struct Eq_n * a7_n = a7_n - 4;
-	a7_n->t0000.u0 = (word32 *) ((char *) &a5->ptrFFFFFAA0 + 656);
-	a7_n->tFFFFFFFC.u0 = (word32 *) ((char *) &a5->ptrFFFFFAA0 + 652);
+	a7_n->t0000.u0 = (int32) ((char *) &a5->ptrFFFFFAA0 + 656);
+	a7_n->tFFFFFFFC.u0 = (int32) ((char *) &a5->ptrFFFFFAA0 + 652);
 	struct Eq_n * a6_n = fn000023B4(a7_n->tFFFFFFFC.u0, a7_n->t0000.u0);
 	if (a6_n->dw0010 == 0x00)
 	{
@@ -140,17 +140,19 @@ word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 {
 	ptr32 fp;
 	word32 * a6_n = fp - 0x04;
-	<anonymous> * d5_n = (<anonymous> *) -1;
+	Eq_n d5_n;
+	d5_n.u0 = -1;
 	Eq_n d4_n = dwArg08;
 	Eq_n d3_n = dwArg04;
 	if (dwArg08 > dwArg04)
 	{
 		do
 		{
-			<anonymous> * d0_n = *d3_n.u0;
-			if (d0_n != null && d0_n != d5_n)
+			Eq_n d0_n;
+			d0_n.u1 = *d3_n.u1;
+			if (d0_n != 0x00 && d0_n != d5_n)
 				d0_n();
-			d3_n.u0 = (word32) d3_n + 4;
+			++d3_n.u1;
 		} while (d4_n > d3_n);
 	}
 	return *a6_n;
@@ -184,7 +186,7 @@ struct Eq_n * fn00002418(struct Eq_n * a5, ptr32 & a6Out)
 	if (a0_n != null)
 		a0_n();
 	union Eq_n * a7_n = a7_n - 4;
-	a7_n->u0 = (word32 *) 0xFF;
+	a7_n->u0 = 0xFF;
 	struct Eq_n * a5_n = fn0000243C(a5_n, a7_n->u0, out a6_n);
 	a6Out = *a6_n;
 	return a5_n;

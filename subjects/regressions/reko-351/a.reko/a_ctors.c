@@ -4,4 +4,7 @@
 
 #include "a.h"
 
-<anonymous> * g_ptr8000270C = &g_tFFFFFFFF; // 8000270C
+Eq_n g_t8000270C = // 8000270C
+	{
+		-1
+	};

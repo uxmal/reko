@@ -54,11 +54,16 @@ Eq_n g_t432510 = // 00432510
 	{
 		0
 	};
-struct Eq_n * program_invocation_name = null; // 00432520
-struct Eq_n * program_invocation_short_name = null; // 00432524
+Eq_n program_invocation_name = // 00432520
+	{
+		0
+	};
+Eq_n program_invocation_short_name = // 00432524
+	{
+		0
+	};
 up32 end.1423 = 0x00; // 00432530
 up32 cur.1422 = 0x00; // 00432534
-word32 g_dw432538 = 0x00; // 00432538
 Eq_n end.2906 = // 00432540
 	{
 		0
@@ -68,7 +73,7 @@ Eq_n g_t432544 = // 00432544
 		0
 	};
 word32 g_dw432548 = 0x00; // 00432548
-uint32 g_a432550[] = // 00432550
+Eq_n g_a432550[] = // 00432550
 	{
 	};
 Eq_n g_t432554 = // 00432554
@@ -89,17 +94,11 @@ Eq_n optreset = // 00432960
 	};
 word32 unmask_done = 0x00; // 00432988
 word32 dummy = 0x00; // 00432990
-word32 g_dw4329A0 = 0x00; // 004329A0
 word32 ofl_head = 0x00; // 004329A8
 word32 (* ___environ)[] = null; // 00432DD0
 word32 g_dw432DE4 = 0x00; // 00432DE4
 word32 g_dw432DEC = 0x00; // 00432DEC
 up32 g_dw432DF0 = 0x00; // 00432DF0
-struct Eq_n g_t432DF8 = // 00432DF8
-	{
-		0x00,
-		0x00,
-	};
 uint32 mmap_step.1531 = 0x00; // 00432EF0
 Eq_n brk.1530 = // 00432EF4
 	{
@@ -115,7 +114,6 @@ Eq_n target_tid = // 00432F0C
 	{
 		0
 	};
-word32 g_dw432F10 = 0x00; // 00432F10
 Eq_n head = // 00432F18
 	{
 		0

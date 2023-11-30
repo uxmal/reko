@@ -802,8 +802,8 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	eax2 = *eax1
-	eax3 = *eax2
+	eax2 = (real32 **) *eax1
+	eax3 = (real32 *) *eax2
 	g_r1004 = *eax3
 proc1_exit:
 
@@ -1513,7 +1513,7 @@ define main
 main_entry:
 	// succ:  l1
 l1:
-	(0xC00<16>->*((char *) bx + 4<i32>))()
+	(0xC00<16>->*(bx + 4<16>))()
 main_exit:
 
 ";

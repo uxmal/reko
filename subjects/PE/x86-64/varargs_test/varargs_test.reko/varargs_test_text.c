@@ -126,10 +126,10 @@ void fn00000001400012A0()
 	set_new_mode(eax_n, (uint64) eax_n);
 }
 
-// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register Eq_n rax)
 // Called from:
 //      Win32CrtStartup
-word32 fn00000001400012BC(<anonymous> ** rax)
+word32 fn00000001400012BC(Eq_n rax)
 {
 	word64 rsi;
 	word56 rsi_56_8_n = SLICE(rsi, word56, 8);
@@ -137,7 +137,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	word32 ecx;
 	word32 edx;
 	fn0000000140001600(ecx, edx);
-	<anonymous> ** rax_n = rax;
+	Eq_n rax_n = rax;
 	word64 qwLoc40;
 	Eq_n tLoc30;
 	if (al == 0x00)
@@ -149,7 +149,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	struct Eq_n * gs;
 	fn00000001400015C4(gs);
 	word32 ecx_n = g_dw400035B0;
-	<anonymous> ** rax_n = rax_n;
+	Eq_n rax_n = rax_n;
 	if (ecx_n == 0x01)
 	{
 		word64 rcx_n;
@@ -178,21 +178,21 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	fn00000001400017B4(cl);
 	fn0000000140001964();
 	byte sil_n = (byte) rsi_n;
-	if (*rax_n != null)
+	if (*rax_n.u1 != null)
 	{
 		rax_n = fn0000000140001718(rax_n);
 		byte al_n = (byte) rax_n;
 		word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 		if (al_n != 0x00)
 		{
-			<anonymous> * rbx_n = (<anonymous> *) *rax_n;
+			<anonymous> * rbx_n = (<anonymous> *) *rax_n.u1;
 			fn0000000140001BF4();
 			rbx_n();
 		}
 	}
 	fn000000014000196C();
-	if (*rax_n != null && (byte) fn0000000140001718(rax_n) != 0x00)
-		register_thread_local_exe_atexit_callback(*rax_n);
+	if (*rax_n.u1 != null && (byte) fn0000000140001718(rax_n) != 0x00)
+		register_thread_local_exe_atexit_callback(*rax_n.u1);
 	_p___argv();
 	_p___argc();
 	get_initial_narrow_environment();
@@ -216,7 +216,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 Eq_n Win32CrtStartup()
 {
 	Eq_n tLoc18;
-	<anonymous> ** rax_n = fn000000014000186C(tLoc18);
+	Eq_n rax_n = fn000000014000186C(tLoc18);
 	return fn00000001400012BC(rax_n);
 }
 
@@ -225,7 +225,7 @@ Eq_n Win32CrtStartup()
 //      fn00000001400011B0
 void fn0000000140001448(struct _EXCEPTION_POINTERS * rcx)
 {
-	word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
+	word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(0x00), word32, 32);
 	UnhandledExceptionFilter(rcx);
 	TerminateProcess(SEQ(rax_32_32_n, GetCurrentProcess()), 0xC0000409);
 }
@@ -268,7 +268,7 @@ void fn0000000140001550(Eq_n rcx, Eq_n tArg08)
 	do
 	{
 		word32 edi_n = (word32) rdi_n;
-		Eq_n rax_n = RtlLookupFunctionEntry(rsi_n, &tArg08, null);
+		Eq_n rax_n = RtlLookupFunctionEntry(rsi_n, &tArg08, 0x00);
 		if (rax_n == null)
 			return;
 		ptr64 fp;
@@ -325,7 +325,7 @@ byte fn000000014000164C(up32 ecx)
 	{
 		word64 qwLoc50;
 		Eq_n tLoc40;
-		<anonymous> ** rcx_n;
+		Eq_n rcx_n;
 		fn0000000140001974(0x05, qwLoc50, tLoc40, out rcx_n);
 		int3();
 		int3();
@@ -363,46 +363,48 @@ byte fn000000014000164C(up32 ecx)
 	}
 }
 
-// 0000000140001718: Register word64 fn0000000140001718(Register (ptr64 (ptr64 code)) rcx)
+// 0000000140001718: Register word64 fn0000000140001718(Register Eq_n rcx)
 // Called from:
 //      Win32CrtStartup
 //      fn000000014000164C
-word64 fn0000000140001718(<anonymous> ** rcx)
+word64 fn0000000140001718(Eq_n rcx)
 {
 	word56 rax_56_8_n = 0x5A;
 	word64 rax_n;
-	if (g_w40000000 == 23117)
+	if (0x140000000 == 23117)
 	{
 		int64 rax_n = (int64) g_dw4000003C;
 		rax_56_8_n = SLICE(rax_n, word56, 8);
-		struct Eq_n * rcx_n = (struct Eq_n *) ((char *) &g_w40000000 + rax_n);
-		if (rcx_n->dw0000 == 0x4550)
+		Eq_n rcx_n = rax_n + 0x140000000;
+		if (rcx_n.u1->dw0000 == 0x4550)
 		{
 			rax_56_8_n = 0x02;
-			if (rcx_n->w0018 == 0x020B)
+			if (rcx_n.u1->w0018 == 0x020B)
 			{
-				uint64 rax_n = (uint64) rcx_n->w0006;
-				struct Eq_n * rdx_n = (struct Eq_n *) ((char *) &rcx_n->w0018 + (uint64) rcx_n->w0014);
-				uint64 r8_n = rcx - &g_w40000000;
+				uint64 rax_n = (uint64) rcx_n.u1->w0006;
+				Eq_n rdx_n;
+				rdx_n.u2 = (char *) &rcx_n.u1->w0018 + (uint64) (rcx_n.u1)->w0014;
+				uint64 r8_n = rcx - 0x140000000;
 				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
-				struct Eq_n * r9_n = rdx_n + rax_n;
-				for (; rdx_n != r9_n; rdx_n += 0x28)
+				Eq_n r9_n = rdx_n + rax_n * 0x28;
+				while (rdx_n != r9_n)
 				{
-					uint64 rcx_n = (uint64) rdx_n->dw000C;
+					uint64 rcx_n = (uint64) rdx_n.u2->dw000C;
 					word32 ecx_n = (word32) rcx_n;
 					if (r8_n >= rcx_n)
 					{
-						uint64 rax_n = (uint64) (rdx_n->dw0008 + ecx_n);
+						uint64 rax_n = (uint64) (rdx_n.u2->dw0008 + ecx_n);
 						rax_56_8_n = SLICE(rax_n, word56, 8);
 						if (r8_n < rax_n)
 							goto l000000014000178F;
 					}
+					rdx_n.u2 = (word64) rdx_n + 40;
 				}
-				rdx_n = null;
+				rdx_n.u1 = 0x00;
 l000000014000178F:
-				if (rdx_n == null)
+				if (rdx_n == 0x00)
 					rax_n = SEQ(rax_56_8_n, 0x00);
-				else if (rdx_n->dw0024 < 0x00)
+				else if (rdx_n.u2->dw0024 < 0x00)
 					rax_n = SEQ(rax_56_8_n, 0x00);
 				else
 					rax_n = SEQ(rax_56_8_n, 0x01);
@@ -568,7 +570,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		RtlCaptureContext(&tLoc04D8);
 		Eq_n rbx_n;
 		rbx_n.u1 = tLoc04D8.t00F8.u1;
-		Eq_n rax_n = RtlLookupFunctionEntry(rbx_n, &tArg10, null);
+		Eq_n rax_n = RtlLookupFunctionEntry(rbx_n, &tArg10, 0x00);
 		ptr64 fp;
 		if (rax_n != null)
 			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rbx_n, rax_n, fp + 24, fp + 32, &tLoc04D8, 0x00, tArg10, &tLoc04D8, fp + 32, fp + 24, 0x00);
@@ -582,7 +584,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		Eq_n tLoc0588;
 		tLoc0588.ExceptionRecord = (PEXCEPTION_RECORD) &qwLoc0578;
 		tLoc0588.ptr0008 = &tLoc04D8;
-		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
+		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(0x00), word32, 32);
 		Eq_n eax_n = UnhandledExceptionFilter(&tLoc0588);
 		int8 bl_n = (int8) (eax_n == 0x01);
 		struct _EXCEPTION_POINTERS * rcx_n = &tLoc0588;
@@ -613,11 +615,12 @@ word32 fn0000000140001ABC()
 //      Win32CrtStartup
 void fn0000000140001AC0()
 {
-	Eq_n rax_n = GetModuleHandleW(null);
+	Eq_n rax_n = GetModuleHandleW(0x00);
 	if (rax_n == null || rax_n->unused != 23117)
 		return;
-	struct Eq_n * rax_n = (struct Eq_n *) ((char *) &rax_n->unused + (int64) (&rax_n->unused)[0x0F]);
-	if (rax_n->dw0000 != 0x4550 || (rax_n->w0018 != 0x020B || rax_n->dw0084 <= 0x0E))
+	Eq_n rax_n;
+	rax_n.u1 = (char *) &rax_n->unused + (int64) (&rax_n->unused)[0x0F];
+	if (rax_n.u1->dw0000 != 0x4550 || ((rax_n.u1)->w0018 != 0x020B || (rax_n.u1)->dw0084 <= 0x0E))
 		;
 }
 
@@ -626,7 +629,7 @@ void fn0000000140001AC0()
 //      fn00000001400012A0
 void fn0000000140001B14()
 {
-	SetUnhandledExceptionFilter(&g_t40001B24);
+	SetUnhandledExceptionFilter(0x140001B24);
 }
 
 // 0000000140001B24: void fn0000000140001B24(Register (ptr64 (ptr64 Eq_n)) rcx)
@@ -797,11 +800,11 @@ void fn0000000140001E9C(Eq_n rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 qw
 	Eq_n r9_n = rcx;
 	Eq_n r10_n = rcx;
 	if ((r8->t0000.u1 & 0x04) != 0x00)
-		r10_n = (word64) rcx + (int64) r8->dw0004 & (int64) (-r8->dw0008);
-	word64 rdx_n = (word64) *((word64) r10_n + (int64) r11d_n);
-	struct Eq_n * rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
-	if ((rcx_n->b0003 & 0x0F) != 0x00)
-		r9_n = (word64) rcx + (uint64) ((word32) rcx_n->b0003 & ~0x0F);
+		r10_n = (char *) rcx.u1 + (int64) r8->dw0004 & (int64) (-r8->dw0008);
+	word64 rdx_n = (word64) *((char *) r10_n.u1 + (int64) r11d_n);
+	Eq_n rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
+	if ((rcx_n.u1->b0003 & 0x0F) != 0x00)
+		r9_n.u1 = (char *) rcx.u1 + (uint64) ((word32) (rcx_n.u1)->b0003 & ~0x0F);
 	ui64 r9_n = r9_n ^ rdx_n;
 	fn00000001400011B0(r9_n, qwArg00);
 }

@@ -872,7 +872,7 @@ void fn0BE4(byte f)
 	byte f_n = fn082F(f, 0x00, 0x5C, 0x10, hl_n->wFFFFFFFC, hl_n->wFFFFFFFE);
 	hl_n->wFFFFFFFA = 0x5C;
 	byte l_n;
-	fn1326(0x07, fn1346(&g_w0108, &g_w0103), out l_n);
+	fn1326(0x07, fn1346(0x0108, &g_w0103), out l_n);
 	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
 	word16 hl_n = g_w0108;
 	fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, (byte) hl_n, hl_n->wFFFFFFFA);
@@ -950,8 +950,8 @@ void fn0DCB()
 void fn0E63(byte c)
 {
 	g_b16A6 = c;
-	union Eq_n * hl_n = (uint16) fn0C93() * 0x02 + 0x152C;
-	g_t1521.u1 = hl_n->u1;
+	Eq_n hl_n = (uint16) fn0C93() * 0x02 + 0x152C;
+	g_t1521.u1 = hl_n.u1->u1;
 	while (true)
 	{
 		struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
@@ -980,10 +980,11 @@ bool fn0EAB(union Eq_n & aOut)
 		C_n = (bool) cond(a_n - g_b16A7);
 		if (a_n < g_b16A7)
 			break;
-		struct Eq_n * hl_n = (uint16) g_b16A7;
+		Eq_n hl_n;
+		hl_n.u0 = (uint16) g_b16A7;
 		byte a_n = Mem24[Mem5[0x1521:word16] + (CONVERT(Mem5[5799:byte], byte, uint16) + 0x0A):byte];
-		bool C_n = (bool) cond(a_n - hl_n->b138C);
-		if (a_n != hl_n->b138C)
+		bool C_n = (bool) cond(a_n - (hl_n.u1)->b138C);
+		if (a_n != (hl_n.u1)->b138C)
 		{
 			aOut.u0 = 0x00;
 			return C_n;
@@ -1254,10 +1255,10 @@ void fn133C()
 {
 }
 
-// 1346: Register word16 fn1346(Register (ptr16 ui16) bc, Register (ptr16 ui16) de)
+// 1346: Register word16 fn1346(Register Eq_n bc, Register (ptr16 ui16) de)
 // Called from:
 //      fn0BE4
-word16 fn1346(ui16 * bc, ui16 * de)
+word16 fn1346(Eq_n bc, ui16 * de)
 {
 	word16 de_n;
 	word16 hl_n;
@@ -1265,13 +1266,13 @@ word16 fn1346(ui16 * bc, ui16 * de)
 	return hl_n;
 }
 
-// 1348: FlagGroup bool fn1348(Register (ptr16 ui16) de, Register (ptr16 ui16) hl, Register out ptr16 deOut, Register out Eq_n hlOut)
+// 1348: FlagGroup bool fn1348(Register (ptr16 ui16) de, Register Eq_n hl, Register out ptr16 deOut, Register out Eq_n hlOut)
 // Called from:
 //      fn063E
 //      fn1346
-bool fn1348(ui16 * de, ui16 * hl, ptr16 & deOut, union Eq_n & hlOut)
+bool fn1348(ui16 * de, Eq_n hl, ptr16 & deOut, union Eq_n & hlOut)
 {
-	Eq_n a_a_n = *de - *hl;
+	Eq_n a_a_n = *de - *hl.u1;
 	deOut = (char *) de + 1;
 	hlOut = a_a_n;
 	return (bool) cond(SLICE(a_a_n, byte, 8));

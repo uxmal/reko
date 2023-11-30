@@ -239,14 +239,14 @@ cu16 putchar(cui16 sr, Eq_n r15)
 	return <invalid>;
 }
 
-// 43E4: Register (ptr16 byte) x_getchar(Register cui16 sr, Register word16 r14, Register (ptr16 byte) r15)
+// 43E4: Register Eq_n x_getchar(Register cui16 sr, Register word16 r14, Register Eq_n r15)
 // Called from:
 //      getchar
-byte * x_getchar(cui16 sr, word16 r14, byte * r15)
+Eq_n x_getchar(cui16 sr, word16 r14, Eq_n r15)
 {
 	if (xQueueReceive(sr, r14, r15, xRxedChars[0].u1) == 0x00)
-		return null;
-	return (byte *) 0x01;
+		return 0x00;
+	return 0x01;
 }
 
 // 43FC: Register Eq_n x_putchar(Register cui16 sr, Register word16 r14, Register Eq_n r15)
@@ -391,7 +391,7 @@ void vTaskDelete(struct Eq_n * r15)
 	vListRemove(r10_n);
 	if (r11_n->w001A != 0x00)
 		vListRemove(&r11_n->w0012);
-	vListInsertEnd(r10_n, &g_w0296);
+	vListInsertEnd(r10_n, 662);
 	++uxTasksDeleted;
 	if (usCriticalNesting != 0x00)
 	{
@@ -758,7 +758,7 @@ struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r15)
 	else
 		r10_n = null;
 	vListRemove(&r10_n->w0008 + 5);
-	struct Eq_n * r15_n;
+	Eq_n r15_n;
 	struct Eq_n * r14_n;
 	if (uxSchedulerSuspended == 0x00)
 	{
@@ -773,7 +773,7 @@ struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r15)
 	else
 	{
 		r14_n = (struct Eq_n *) (&r10_n->w0008 + 5);
-		r15_n = (struct Eq_n *) &g_w0286;
+		r15_n.u0 = 646;
 	}
 	vListInsertEnd(r14_n, r15_n);
 	struct Eq_n * r15_n;
@@ -834,12 +834,12 @@ void prvInitialiseTaskLists()
 		vListInitialise(r11_n * 0x10 + 0x0222);
 		++r11_n;
 	} while (r11_n >= 0x04);
-	vListInitialise(&g_t0262);
-	vListInitialise(&g_t0272);
-	vListInitialise(&g_w0286);
-	vListInitialise(&g_w0296);
-	pxDelayedTaskList = (struct Eq_n *) &g_t0262;
-	pxOverflowDelayedTaskList = (struct Eq_n *) &g_t0272;
+	vListInitialise(0x0262);
+	vListInitialise(0x0272);
+	vListInitialise(646);
+	vListInitialise(662);
+	pxDelayedTaskList = &g_t0262;
+	pxOverflowDelayedTaskList = &g_t0272;
 }
 
 // 4A5E: void prvCheckTasksWaitingTermination()
@@ -895,10 +895,10 @@ cui16 prvAllocateTCBAndStack(cui16 sr, ui16 r15, ptr16 & r5Out, ptr16 & r6Out, p
 	struct Eq_n * r11_n = r15_n;
 	if (r15_n != null)
 	{
-		byte * r15_n;
+		Eq_n r15_n;
 		pvPortMalloc(r15 * 0x02, out r5_n, out r6_n, out r7_n, out r15_n);
-		r15_n->ptr0002 = r15_n;
-		if (r15_n == null)
+		r15_n->t0002.u0 = (cui16) r15_n;
+		if (r15_n == 0x00)
 		{
 			vPortFree();
 			r11_n = null;
@@ -930,28 +930,28 @@ void vTaskSwitchContext()
 {
 	if (uxSchedulerSuspended == 0x00)
 	{
-		while ((&g_w0222)[uxTopReadyPriority *16 8] == 0x00)
+		while (*((word16) 0x0222 + uxTopReadyPriority * 0x10) == 0x00)
 			uxTopReadyPriority += ~0x00;
 		g_a0226[uxTopReadyPriority] = *g_a0226[uxTopReadyPriority].ptr0002;
 		if (g_a0226[uxTopReadyPriority] == g_a0224[uxTopReadyPriority])
-			g_a0226[uxTopReadyPriority] = *g_a0226[uxTopReadyPriority].ptr0002;
-		pxCurrentTCB = (&g_a0226[uxTopReadyPriority].ptr0002->w0002)[1];
+			*((word16) 550 + uxTopReadyPriority * 0x10) = *((word16) *((word16) 550 + uxTopReadyPriority * 0x10) + 2);
+		pxCurrentTCB = (struct Eq_n *) *((word16) *((word16) 550 + uxTopReadyPriority * 0x10) + 6);
 	}
 }
 
-// 4BD4: void vListInitialise(Register (ptr16 Eq_n) r15)
+// 4BD4: void vListInitialise(Register Eq_n r15)
 // Called from:
 //      prvInitialiseTaskLists
-void vListInitialise(struct Eq_n * r15)
+void vListInitialise(Eq_n r15)
 {
-	r15->w0002 = &r15->w0006;
-	r15->ptr0004 = &r15->w0006;
-	r15->w0006 = ~0x00;
-	r15->ptr0008 = &r15->w0006;
-	r15->ptr000A = &r15->w0006;
-	r15->w000C = 0x00;
-	vListInitialiseItem(&r15->w0006);
-	r15->w0000 = 0x00;
+	r15.u1->w0002 = &r15.u1->w0006;
+	r15.u1->ptr0004 = &r15.u1->w0006;
+	r15.u1->w0006 = ~0x00;
+	r15.u1->ptr0008 = &r15.u1->w0006;
+	r15.u1->ptr000A = &r15.u1->w0006;
+	r15.u1->w000C = 0x00;
+	vListInitialiseItem(&r15.u1->w0006);
+	r15.u1->w0000 = 0x00;
 }
 
 // 4C00: void vListInitialiseItem(Register (ptr16 Eq_n) r15)
@@ -963,23 +963,23 @@ void vListInitialiseItem(struct Eq_n * r15)
 	r15->w0008 = 0x00;
 }
 
-// 4C06: void vListInsertEnd(Register (ptr16 Eq_n) r14, Register (ptr16 Eq_n) r15)
+// 4C06: void vListInsertEnd(Register (ptr16 Eq_n) r14, Register Eq_n r15)
 // Called from:
 //      xTaskCreate
 //      vTaskDelete
 //      xTaskResumeAll
 //      vTaskIncrementTick
 //      xTaskRemoveFromEventList
-void vListInsertEnd(struct Eq_n * r14, struct Eq_n * r15)
+void vListInsertEnd(struct Eq_n * r14, Eq_n r15)
 {
-	struct Eq_n * v6_n = r15->ptr0004;
+	struct Eq_n * v6_n = r15.u1->ptr0004;
 	r14->ptr0002 = v6_n->ptr0002;
-	r14->ptr0004 = r15->ptr0004;
+	r14->ptr0004 = r15.u1->ptr0004;
 	v6_n->ptr0002->ptr0004 = r14;
 	v6_n->ptr0002 = r14;
-	r15->ptr0004 = r14;
-	r14->ptr0008 = r15;
-	++r15->w0000;
+	r15.u1->ptr0004 = r14;
+	r14->t0008.u0 = (ui16) r15;
+	++r15.u1->w0000;
 }
 
 // 4C32: void vListInsert(Register (ptr16 Eq_n) r14, Register (ptr16 Eq_n) r15)
@@ -1043,11 +1043,12 @@ void vListRemove(struct Eq_n * r15)
 	v6_n->ptr0004 = r15->ptr0004;
 	struct Eq_n * v8_n = r15->ptr0004;
 	v8_n->ptr0002 = v6_n;
-	struct Eq_n * v10_n = r15->ptr0008;
-	if (v10_n->ptr0004 == r15)
-		v10_n->ptr0004 = v8_n;
-	r15->ptr0008 = null;
-	v10_n->w0000 += ~0x00;
+	Eq_n v10_n;
+	v10_n.u0 = r15->t0008.u0;
+	if (v10_n.u1->ptr0004 == r15)
+		v10_n.u1->ptr0004 = v8_n;
+	r15->t0008.u0 = 0x00;
+	v10_n.u1->w0000 += ~0x00;
 }
 
 // 4CC4: Register word16 xQueueCreate(Register Eq_n r15, Register out ptr16 r6Out, Register out ptr16 r7Out, Register out ptr16 r15Out)
@@ -1072,10 +1073,10 @@ word16 xQueueCreate(Eq_n r15, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
 	return r4;
 }
 
-// 4D7E: Register cui16 xQueueSend(Register cui16 sr, Register word16 r13, Register (ptr16 byte) r14, Register Eq_n r15, Register out ptr16 r15Out)
+// 4D7E: Register cui16 xQueueSend(Register cui16 sr, Register word16 r13, Register Eq_n r14, Register Eq_n r15, Register out ptr16 r15Out)
 // Called from:
 //      x_putchar
-cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
+cui16 xQueueSend(cui16 sr, word16 r13, Eq_n r14, Eq_n r15, ptr16 & r15Out)
 {
 	vTaskSuspendAll();
 	__disable_interrupts();
@@ -1083,7 +1084,7 @@ cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
 	++r15.u1->w002E;
 	++r15.u1->w0030;
 	Eq_n r11_n = r15;
-	byte * r9_n = r14;
+	Eq_n r9_n = r14;
 	if (usCriticalNesting != 0x00)
 	{
 		word16 v16_n = usCriticalNesting;
@@ -1138,12 +1139,12 @@ cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
 		r10_n = ~0x02;
 	else
 	{
-		sr = memcpy(sr, r11_n.u1->t002C.u0, r9_n, r11_n.u1->ptr0004);
+		sr = memcpy(sr, r11_n.u1->t002C.u0, r9_n, r11_n.u1->t0004.u0);
 		++r11_n.u1->w0028;
-		byte * r15_n = r11_n.u1->ptr0004 + ((r11_n.u1)->t002C).u0;
-		r11_n.u1->ptr0004 = r15_n;
-		if (r15_n < (r11_n.u1)->ptr0002)
-			r11_n.u1->ptr0004 = r11_n.u1->ptr0000;
+		Eq_n r15_n = r11_n.u1->t0004.u0 + ((r11_n.u1)->t002C).u0;
+		r11_n.u1->t0004.u0 = (cu16) r15_n;
+		if (r15_n < ((r11_n.u1)->t0002).u0)
+			r11_n.u1->t0004.u0 = r11_n.u1->t0000.u0;
 		++r11_n.u1->w0030;
 		r10_n = 0x01;
 	}
@@ -1184,20 +1185,20 @@ cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
 	return sr;
 }
 
-// 4E84: Register Eq_n xQueueSendFromISR(Register cui16 sr, Register Eq_n r13, Register (ptr16 byte) r14, Register Eq_n r15)
+// 4E84: Register Eq_n xQueueSendFromISR(Register cui16 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      vRxISR
-Eq_n xQueueSendFromISR(cui16 sr, Eq_n r13, byte * r14, Eq_n r15)
+Eq_n xQueueSendFromISR(cui16 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r13_n;
 	if (r15.u1->w0028 >= (r15.u1)->w002A)
 	{
-		memcpy(sr, r15.u1->t002C.u0, r14, r15.u1->ptr0004);
+		memcpy(sr, r15.u1->t002C.u0, r14, r15.u1->t0004.u0);
 		++r15.u1->w0028;
-		byte * r15_n = r15.u1->ptr0004 + ((r15.u1)->t002C).u0;
-		r15.u1->ptr0004 = r15_n;
-		if (r15_n < (r15.u1)->ptr0002)
-			r15.u1->ptr0004 = r15.u1->ptr0000;
+		Eq_n r15_n = r15.u1->t0004.u0 + ((r15.u1)->t002C).u0;
+		r15.u1->t0004.u0 = (cu16) r15_n;
+		if (r15_n < ((r15.u1)->t0002).u0)
+			r15.u1->t0004.u0 = r15.u1->t0000.u0;
 		ci16 v21_n = r15.u1->w0030;
 		if (v21_n != ~0x00)
 			r15.u1->w0030 = v21_n + 0x01;
@@ -1211,11 +1212,11 @@ Eq_n xQueueSendFromISR(cui16 sr, Eq_n r13, byte * r14, Eq_n r15)
 	return r13_n;
 }
 
-// 4EF0: Register Eq_n xQueueReceive(Register cui16 sr, Register word16 r13, Register (ptr16 byte) r14, Register Eq_n r15)
+// 4EF0: Register Eq_n xQueueReceive(Register cui16 sr, Register word16 r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      x_getchar
 //      x_putchar
-Eq_n xQueueReceive(cui16 sr, word16 r13, byte * r14, Eq_n r15)
+Eq_n xQueueReceive(cui16 sr, word16 r13, Eq_n r14, Eq_n r15)
 {
 	vTaskSuspendAll();
 	__disable_interrupts();
@@ -1223,7 +1224,7 @@ Eq_n xQueueReceive(cui16 sr, word16 r13, byte * r14, Eq_n r15)
 	++r15.u1->w002E;
 	++r15.u1->w0030;
 	Eq_n r11_n = r15;
-	byte * r9_n = r14;
+	Eq_n r9_n = r14;
 	if (usCriticalNesting != 0x00)
 	{
 		word16 v16_n = usCriticalNesting;
@@ -1279,12 +1280,13 @@ Eq_n xQueueReceive(cui16 sr, word16 r13, byte * r14, Eq_n r15)
 	{
 		Eq_n v19_n;
 		v19_n.u0 = r11_n.u1->t002C.u0;
-		byte * r15_n = Mem144[r11_n + 6:word16] + v19_n;
-		r11_n.u1->ptr0006 = r15_n;
-		if (r15_n < (r11_n.u1)->ptr0002)
-			r11_n.u1->ptr0006 = r11_n.u1->ptr0000;
+		Eq_n r15_n;
+		r15_n.u1 = (word16) v19_n + ((r11_n.u1)->t0006).u0;
+		r11_n.u1->t0006.u0 = (cu16) r15_n;
+		if (r15_n < ((r11_n.u1)->t0002).u0)
+			r11_n.u1->t0006.u0 = r11_n.u1->t0000.u0;
 		r11_n.u1->w0028 = v18_n + ~0x00;
-		memcpy(sr, v19_n, r11_n.u1->ptr0006, r9_n);
+		memcpy(sr, v19_n, r11_n.u1->t0006.u0, r9_n);
 		++r11_n.u1->w002E;
 		r10_n.u0 = 0x01;
 	}
@@ -1326,10 +1328,10 @@ Eq_n xQueueReceive(cui16 sr, word16 r13, byte * r14, Eq_n r15)
 	return r10_n;
 }
 
-// 4FF6: Register Eq_n xQueueReceiveFromISR(Register cui16 sr, Register (ptr16 word16) r13, Register (ptr16 byte) r14, Register Eq_n r15)
+// 4FF6: Register Eq_n xQueueReceiveFromISR(Register cui16 sr, Register (ptr16 word16) r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      vTxISR
-Eq_n xQueueReceiveFromISR(cui16 sr, word16 * r13, byte * r14, Eq_n r15)
+Eq_n xQueueReceiveFromISR(cui16 sr, word16 * r13, Eq_n r14, Eq_n r15)
 {
 	cup16 v10_n = r15.u1->w0028;
 	Eq_n r15_n;
@@ -1337,12 +1339,13 @@ Eq_n xQueueReceiveFromISR(cui16 sr, word16 * r13, byte * r14, Eq_n r15)
 	{
 		Eq_n v13_n;
 		v13_n.u0 = r15.u1->t002C.u0;
-		byte * r15_n = Mem8[r15 + 6:word16] + v13_n;
-		r15.u1->ptr0006 = r15_n;
-		if (r15_n < (r15.u1)->ptr0002)
-			r15.u1->ptr0006 = r15.u1->ptr0000;
+		Eq_n r15_n;
+		r15_n.u1 = (word16) v13_n + ((r15.u1)->t0006).u0;
+		r15.u1->t0006.u0 = (cu16) r15_n;
+		if (r15_n < ((r15.u1)->t0002).u0)
+			r15.u1->t0006.u0 = r15.u1->t0000.u0;
 		r15.u1->w0028 = v10_n + ~0x00;
-		memcpy(sr, v13_n, r15.u1->ptr0006, r14);
+		memcpy(sr, v13_n, r15.u1->t0006.u0, r14);
 		ci16 v21_n = r15.u1->w002E;
 		if (v21_n != ~0x00)
 			r15.u1->w002E = v21_n + 0x01;
@@ -1509,26 +1512,26 @@ void vPortInitialiseBlocks()
 	xNextFreeByte = 0x00;
 }
 
-// 519A: Register (ptr16 Eq_n) pxPortInitialiseStack(Register word16 r13, Register word16 r14, Register (ptr16 Eq_n) r15)
+// 519A: Register Eq_n pxPortInitialiseStack(Register word16 r13, Register word16 r14, Register Eq_n r15)
 // Called from:
 //      xTaskCreate
-struct Eq_n * pxPortInitialiseStack(word16 r13, word16 r14, struct Eq_n * r15)
+Eq_n pxPortInitialiseStack(word16 r13, word16 r14, Eq_n r15)
 {
-	r15->w0000 = r14;
-	r15->wFFFFFFFE = 0x08;
-	r15->wFFFFFFFC = 0x4444;
-	r15->wFFFFFFFA = 0x5555;
-	r15->wFFFFFFF8 = 0x6666;
-	r15->wFFFFFFF6 = 0x7777;
-	r15->wFFFFFFF4 = 0x8888;
-	r15->wFFFFFFF2 = 0x9999;
-	r15->wFFFFFFF0 = 0xAAAA;
-	r15->wFFFFFFEE = ~0x4444;
-	r15->wFFFFFFEC = 0xCCCC;
-	r15->wFFFFFFEA = ~0x2222;
-	r15->wFFFFFFE8 = ~0x1111;
-	r15->wFFFFFFE6 = r13;
-	r15->wFFFFFFE4 = 0x00;
+	r15.u1->w0000 = r14;
+	r15.u1->wFFFFFFFE = 0x08;
+	r15.u1->wFFFFFFFC = 0x4444;
+	r15.u1->wFFFFFFFA = 0x5555;
+	r15.u1->wFFFFFFF8 = 0x6666;
+	r15.u1->wFFFFFFF6 = 0x7777;
+	r15.u1->wFFFFFFF4 = 0x8888;
+	r15.u1->wFFFFFFF2 = 0x9999;
+	r15.u1->wFFFFFFF0 = 0xAAAA;
+	r15.u1->wFFFFFFEE = ~0x4444;
+	r15.u1->wFFFFFFEC = 0xCCCC;
+	r15.u1->wFFFFFFEA = ~0x2222;
+	r15.u1->wFFFFFFE8 = ~0x1111;
+	r15.u1->wFFFFFFE6 = r13;
+	r15.u1->wFFFFFFE4 = 0x00;
 	return r15 - 0x1C;
 }
 
@@ -2157,17 +2160,17 @@ void strncpy(word16 r13, byte * r14, byte * r15)
 	}
 }
 
-// 5994: Register cui16 memcpy(Register cui16 sr, Register Eq_n r13, Register (ptr16 byte) r14, Register (ptr16 byte) r15)
+// 5994: Register cui16 memcpy(Register cui16 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      xQueueSend
 //      xQueueSendFromISR
 //      xQueueReceive
 //      xQueueReceiveFromISR
-cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
+cui16 memcpy(cui16 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r11_n = r13;
-	byte * r13_n = r15;
-	byte * r12_n = r14;
+	Eq_n r13_n = r15;
+	Eq_n r12_n = r14;
 	if (r13 != 0x00 && r15 != r14)
 	{
 		if (r15 >= r14)
@@ -2184,10 +2187,10 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 				r11_n = r13 - r14_n;
 				do
 				{
-					*r13_n = *r12_n;
+					*r13_n.u1 = *r12_n.u1;
 					r14_n = (word16) r14_n + 0x0000FFFF;
-					++r12_n;
-					++r13_n;
+					r12_n.u1 = (word16) r12_n + 1;
+					r13_n.u1 = (word16) r13_n + 1;
 					C_n = (bool) cond(r14_n);
 				} while (r14_n != 0x00);
 			}
@@ -2196,21 +2199,21 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 			for (r14_n = __rcr<word16,byte>(r11_n, 0x01, C_n); r14_n != 0x00; r14_n += ~0x00)
 			{
 				*r13_n = *r12_n;
-				r12_n += 2;
-				r13_n += 2;
+				r12_n.u1 = (word16) r12_n + 2;
+				r13_n.u1 = (word16) r13_n + 2;
 			}
 			cui16 r14_n;
 			for (r14_n = r11_n & 0x01; r14_n != 0x00; r14_n += ~0x00)
 			{
-				*r13_n = *r12_n;
-				++r12_n;
-				++r13_n;
+				*r13_n.u1 = *r12_n.u1;
+				r12_n.u1 = (word16) r12_n + 1;
+				r13_n.u1 = (word16) r13_n + 1;
 			}
 		}
 		else
 		{
-			byte * r12_n = r14 + r13;
-			byte * r13_n = r15 + r13;
+			Eq_n r12_n = r14 + r13;
+			Eq_n r13_n = r15 + r13;
 			cui16 r15_n = r12_n | r13_n;
 			bool C_n = (bool) cond(r15_n & 0x01);
 			if ((r15_n & 0x01) != 0x00)
@@ -2223,9 +2226,9 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 				r11_n = r13 - r14_n;
 				do
 				{
-					r12_n += 0x0000FFFF;
-					r13_n += 0x0000FFFF;
-					*r13_n = *r12_n;
+					r12_n.u1 = (word16) r12_n + 0x0000FFFF;
+					r13_n.u1 = (word16) r13_n + 0x0000FFFF;
+					r13_n.u1->t0000.u0 = r12_n.u1->t0000.u0;
 					r14_n = (word16) r14_n + 0x0000FFFF;
 					C_n = (bool) cond(r14_n);
 				} while (r14_n != 0x00);
@@ -2236,32 +2239,32 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 			{
 				r12_n -= 0x02;
 				r13_n -= 0x02;
-				*r13_n = *r12_n;
+				r13_n.u1->t0000.u1 = r12_n.u1->t0000.u1;
 			}
 			cui16 r14_n;
 			for (r14_n = r11_n & 0x01; r14_n != 0x00; r14_n += ~0x00)
 			{
-				r12_n += 0x0000FFFF;
-				r13_n += 0x0000FFFF;
-				*r13_n = *r12_n;
+				r12_n.u1 = (word16) r12_n + 0x0000FFFF;
+				r13_n.u1 = (word16) r13_n + 0x0000FFFF;
+				r13_n.u1->t0000.u0 = r12_n.u1->t0000.u0;
 			}
 		}
 	}
 	return sr;
 }
 
-// 5A68: Register cui16 memset(Register cui16 sr, Register Eq_n r13, Register Eq_n r14, Register (ptr16 byte) r15)
+// 5A68: Register cui16 memset(Register cui16 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      prvAllocateTCBAndStack
-cui16 memset(cui16 sr, Eq_n r13, Eq_n r14, byte * r15)
+cui16 memset(cui16 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
-	byte * r14_n = r15;
+	Eq_n r14_n = r15;
 	if (r13 >= 0x06)
 	{
 		while (r13 != 0x00)
 		{
-			*r14_n = (byte) r14;
-			++r14_n;
+			*r14_n.u1 = (byte) r14;
+			r14_n.u1 = (word16) r14_n + 1;
 			r13 = (word16) r13 + 0x0000FFFF;
 		}
 	}
@@ -2278,9 +2281,9 @@ cui16 memset(cui16 sr, Eq_n r13, Eq_n r14, byte * r15)
 			r13 -= r15_n;
 			do
 			{
-				*r14_n = (byte) r14;
+				*r14_n.u1 = (byte) r14;
 				r12_n += ~0x00;
-				++r14_n;
+				r14_n.u1 = (word16) r14_n + 1;
 				C_n = (bool) cond(r12_n);
 			} while (r12_n != 0x00);
 		}
@@ -2288,15 +2291,15 @@ cui16 memset(cui16 sr, Eq_n r13, Eq_n r14, byte * r15)
 		uint16 r12_n = __rcr<word16,byte>(r13, 0x01, C_n);
 		do
 		{
-			*r14_n = (byte) r11_n;
-			r14_n += 2;
+			r14_n->u1 = r11_n;
+			r14_n.u1 = (word16) r14_n + 2;
 			r12_n += ~0x00;
 		} while (r12_n != 0x00);
 		cui16 r12_n;
 		for (r12_n = r13 & 0x01; r12_n != 0x00; r12_n += ~0x00)
 		{
-			*r14_n = (byte) r14;
-			++r14_n;
+			*r14_n.u1 = (byte) r14;
+			r14_n.u1 = (word16) r14_n + 1;
 		}
 	}
 	return sr;
