@@ -39,6 +39,8 @@ namespace Reko.Typing
     /// </remarks>
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
+        private const Domain pointerLike = Domain.Pointer | Domain.Offset;
+
         // Matches the effective address of Mem[p + c] where c is a constant.
         private static readonly ExpressionMatcher fieldAccessPattern = new(
             new BinaryExpression(
@@ -310,10 +312,10 @@ namespace Reko.Typing
             case OperatorType.ISub:
             case OperatorType.USub:
             {
-                var dt = PushMinuendDataType(tvBin.DataType, tvRight.DataType);
-                MeetDataType(eLeft, dt);
-                dt = PushSubtrahendDataType(tvBin.DataType, tvLeft.DataType);
-                MeetDataType(eRight, dt);
+                var dtLeft = PushMinuendDataType(tvBin.DataType, tvRight.DataType);
+                MeetDataType(eLeft, dtLeft);
+                var dtRight = PushSubtrahendDataType(tvBin.DataType, tvLeft.DataType);
+                MeetDataType(eRight, dtRight);
                 break;
             }
             case OperatorType.And:
@@ -508,6 +510,13 @@ namespace Reko.Typing
             {
                 if ((dtSub.Domain & Domain.Integer) != 0)
                     return dtDiff;
+            }
+            if (dtDiff.IsIntegral)
+            {
+                // If we know [[a - b]] is integral, and [[b]] is pointerlike, then
+                // [[a]] has to be pointerlike too.
+                if ((dtSub.Domain & pointerLike) != 0 && (dtSub.Domain & ~pointerLike) == 0)
+                    return PrimitiveType.Create(dtSub.Domain & pointerLike, dtDiff.BitSize);
             }
             return dtDiff;
         }

@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new Mock<EvaluationContext>();
-            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(0x567));
+            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Word32(0x567));
 
             IdConstant ic = new IdConstant(); 
             var e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
