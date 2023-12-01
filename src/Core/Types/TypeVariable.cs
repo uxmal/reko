@@ -60,7 +60,10 @@ namespace Reko.Core.Types
 		public EquivalenceClass Class
         { 
             get { return eqClass!; }
-            set { eqClass = value;  }
+            set {
+                MonitorEqclassChange(value);
+                eqClass = value;
+            }
         }
 
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
@@ -102,6 +105,12 @@ namespace Reko.Core.Types
 
 #if DEBUG
         private void MonitorDatatypeChange(DataType value)
+        {
+            if (value is not null && observedVars.Contains(this.Number))
+                Debugger.Break();
+        }
+
+        private void MonitorEqclassChange(DataType value)
         {
             if (value is not null && observedVars.Contains(this.Number))
                 Debugger.Break();
