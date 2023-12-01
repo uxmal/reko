@@ -218,7 +218,8 @@ namespace Reko.Core.Types
             }
             if (b is PrimitiveType pb)
             {
-                if ((pb.Domain & Domain.Selector | Domain.Pointer) != 0 && pb.Size == ptrA.Size)
+                if ((pb.Domain & (Domain.Selector | Domain.Pointer)) != 0 &&
+                     pb.Size == ptrA.Size)
                     return true;
             }
             return false;
