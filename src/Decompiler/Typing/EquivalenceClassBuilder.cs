@@ -41,6 +41,13 @@ namespace Reko.Typing
 	{
         private static readonly TraceSwitch trace = new(nameof(EquivalenceClassBuilder), "Trace EquivalenceClassBuilder") { Level = TraceLevel.Warning };
 
+        // Add the numbers of TypeVariables and EquivalenceClasses you wish to observe here.
+        // Addding them in Reko.Core makes build times obnoxiously long.
+        static EquivalenceClassBuilder()
+        {
+           // TypeVariable.observedVars.Add(1864);
+        }
+
 		private readonly TypeFactory factory;
 		private readonly TypeStore store;
         private readonly IDecompilerEventListener listener;

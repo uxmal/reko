@@ -22,6 +22,7 @@ using Reko.Core.Code;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Core.Types
 {
@@ -30,7 +31,7 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class TypeVariable : DataType
 	{
-		private DataType? dtOriginal;
+        private DataType? dtOriginal;
         private EquivalenceClass? eqClass;
 
 		public TypeVariable(int n) : base(Domain.Any, "T_" + n)
@@ -71,7 +72,14 @@ namespace Reko.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType { get { return dt!; } set { dt = value; } }
+		public DataType DataType
+        {
+            get { return dt!; }
+            set {
+                MonitorDatatypeChange(value);
+                dt = value;
+            }
+        }
         private DataType? dt;
 
 		public int Number { get; }
@@ -91,5 +99,25 @@ namespace Reko.Core.Types
 			get { return 0; }
 			set { ThrowBadSize(); }
 		}
-	}
+
+#if DEBUG
+        private void MonitorDatatypeChange(DataType value)
+        {
+            if (value is not null && observedVars.Contains(this.Number))
+                Debugger.Break();
+        }
+
+        /// <summary>
+        /// Place the number of the type variable(s) you wish to monitor
+        /// here.
+        /// </summary>
+        public static readonly HashSet<int> observedVars = new()
+        {
+        };
+#else
+        [Conditional("DEBUG")]
+        private void MonitorDatatypeChange(DataType value){}
+#endif
+
+    }
 }

@@ -66,6 +66,7 @@ namespace Reko.Core.Types
             get { return dt!; }
             set
             {
+                MonitorDatatypeChange(value);
                 dt = value;
             }
         }
@@ -156,5 +157,25 @@ namespace Reko.Core.Types
 			}
 			writer.WriteLine(" }}");
 		}
-	}
+
+
+#if DEBUG
+        private void MonitorDatatypeChange(DataType value)
+        {
+            if (value is not null && observedClasses.Contains(this.Representative.Number))
+                Debugger.Break();
+        }
+
+        /// <summary>
+        /// Place the number of the equivalence class(es) you wish to monitor
+        /// here.
+        /// </summary>
+        public static readonly HashSet<int> observedClasses = new()
+        {
+        };
+#else
+        [Conditional("DEBUG")]
+        private void MonitorDatatypeChange(DataType value){}
+#endif
+    }
 }
