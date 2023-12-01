@@ -318,15 +318,6 @@ namespace Reko.Typing
                 MeetDataType(eRight, dtRight);
                 break;
             }
-            case OperatorType.And:
-            case OperatorType.Or:
-            {
-                //$REVIEW: need a push-logical-Data type to push [[a & 3]] = char into its left and right halves.
-                var dt = PrimitiveType.CreateWord(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
-                MeetDataType(eLeft, dt);
-                MeetDataType(eRight, dt);
-                break;
-            }
             case OperatorType.IMul:
             case OperatorType.IMod:
             {
@@ -394,6 +385,11 @@ namespace Reko.Typing
             case OperatorType.Xor:
             case OperatorType.Cand:
             case OperatorType.Cor:
+            // We are seeing low-level machine code playing tricks by and-ing and or-ing
+            // pointer-typed values together to do bit-twiddling. We therefore cannot make 
+            // make the deduction that the operands of `and` and `or` are integral.
+            case OperatorType.And:
+            case OperatorType.Or:
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.

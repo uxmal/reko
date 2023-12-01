@@ -61,7 +61,7 @@ namespace Reko.Core.Types
         { 
             get { return eqClass!; }
             set {
-                MonitorEqclassChange(value);
+                MonitorEqClassChange(value);
                 eqClass = value;
             }
         }
@@ -79,7 +79,7 @@ namespace Reko.Core.Types
         {
             get { return dt!; }
             set {
-                MonitorDatatypeChange(value);
+                MonitorEqClassChange(value);
                 dt = value;
             }
         }
@@ -125,7 +125,7 @@ namespace Reko.Core.Types
         };
 #else
         [Conditional("DEBUG")]
-        private void MonitorDatatypeChange(DataType value){}
+        private void MonitorEqClassChange(DataType value){}
 #endif
 
     }

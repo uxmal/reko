@@ -121,7 +121,7 @@ namespace Reko.Core.Expressions
                 }
                 break;
             case OperatorType.ISub:
-                dt = PullDiffDataType(dtLeft, dtRight, Domain.SignedInt);
+                dt = PullDiffDataType(dtLeft, dtRight, Domain.Integer);
                 break;
             case OperatorType.USub:
                 dt = PullDiffDataType(dtLeft, dtRight, Domain.UnsignedInt);

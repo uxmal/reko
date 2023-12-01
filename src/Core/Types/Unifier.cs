@@ -218,7 +218,7 @@ namespace Reko.Core.Types
             }
             if (b is PrimitiveType pb)
             {
-                if ((pb.Domain & (Domain.Selector | Domain.Pointer)) != 0 &&
+                if ((pb.Domain & (Domain.Selector | Domain.Pointer | Domain.SegPointer)) != 0 &&
                      pb.Size == ptrA.Size)
                     return true;
             }
@@ -809,7 +809,7 @@ namespace Reko.Core.Types
             if (b is PrimitiveType pb)
             {
                 if ((ptrA.Size == 0 || pb.Size == 0 || ptrA.Size == pb.Size) &&
-                    (pb.Domain & Domain.Pointer | Domain.Selector) != 0)
+                    (pb.Domain & (Domain.Pointer | Domain.SegPointer | Domain.Selector)) != 0)
                 {
                     return ptrA.Clone();
                 }
