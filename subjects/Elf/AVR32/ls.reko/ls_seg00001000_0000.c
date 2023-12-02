@@ -14474,16 +14474,16 @@ l0000D48E:
 					switch (r8_n)
 					{
 					case 0x12:
-						r12_n.u2[4].t0000.u4.u2->t0000.u0 = r7_n->tFFFFFCF0.u0;
+						r12_n.u2[4].t0000.u3.u2->t0000.u0 = r7_n->tFFFFFCF0.u0;
 						break;
 					case 0x13:
 						*r12_n.u2[4].t0000 = (struct Eq_n) r7_n->tFFFFFCF0.u1;
 						break;
 					case 0x14:
-						r12_n.u2[4].t0000.u4.u2->t0000.u1 = r7_n->tFFFFFCF0.u2;
+						r12_n.u2[4].t0000.u3.u2->t0000.u1 = r7_n->tFFFFFCF0.u2;
 						break;
 					case 0x15:
-						r12_n.u2[4].t0000.u4.u2->t0000.u1 = r7_n->tFFFFFCF0.u2;
+						r12_n.u2[4].t0000.u3.u2->t0000.u1 = r7_n->tFFFFFCF0.u2;
 						break;
 					case 22:
 						Eq_n r9_n;
@@ -16239,7 +16239,7 @@ l0000EACE:
 			goto l0000EAD6;
 		case 0x04:
 l0000EAD6:
-			r10_n->b0000 = (byte) r12.u2->t0000.u4.u1;
+			r10_n->b0000 = (byte) r12.u2->t0000.u3.u1;
 			&r12.u2->t0000.u0 = r12.u2 + 4;
 			goto l0000EB1C;
 		case 0x05:

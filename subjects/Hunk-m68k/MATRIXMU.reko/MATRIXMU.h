@@ -238,12 +238,14 @@ Eq_691: (union "Eq_691" (int32 u0) (uint32 u1))
 	T_691 (in SEQ(SLICE(__swap(SEQ(SLICE(d5_128, word16, 16), (word16) d5_128 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>) @ 00001440 : uipr32)
 Eq_692: (union "Eq_692" (int32 u0) (uint32 u1))
 	T_692 (in SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_128, word16, 16), (word16) d5_128 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>) @ 00001440 : word32)
-Eq_702: (fn word32 (ptr32, ptr32, ptr32))
+Eq_702: (fn word32 ((ptr32 (arr Eq_729)), ptr32, ptr32))
 	T_702 (in fn00001390 @ 0000148A : ptr32)
 	T_703 (in signature of fn00001390 @ 00001390 : void)
 Eq_714: (struct "Eq_714" 0004 (0 byte b0000))
 	T_714
 	T_718
+Eq_729: (struct "Eq_729" 0010 (0 (arr Eq_548) a0000))
+	T_729
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -2429,10 +2431,10 @@ T_544: (in d0 @ 00001370 : int32)
   Class: Eq_544
   DataType: int32
   OrigDataType: word32
-T_545: (in dwArg04 @ 00001370 : ptr32)
+T_545: (in dwArg04 @ 00001370 : (arr Eq_729))
   Class: Eq_545
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr32 (arr Eq_729))
+  OrigDataType: (ptr32 (struct (0 T_730 t0000)))
 T_546: (in dwArg08 @ 00001370 : ptr32)
   Class: Eq_546
   DataType: ptr32
@@ -2641,7 +2643,7 @@ T_597: (in d4_147 << 4<32> @ 000013E2 : word32)
   Class: Eq_597
   DataType: int32
   OrigDataType: int32
-T_598: (in dwArg04 + (d4_147 << 4<32>) @ 000013E2 : (arr Eq_548))
+T_598: (in dwArg04 + (d4_147 << 4<32>) @ 000013E2 : word32)
   Class: Eq_598
   DataType: (ptr32 (arr Eq_548))
   OrigDataType: (ptr32 (struct (0 (arr T_726) a0000)))
@@ -2660,7 +2662,7 @@ T_601: (in (dwArg04 + (d4_147 << 4<32>))[d2_142 * 4<32>] @ 000013E2 : word32)
 T_602: (in d0_87 @ 000013E2 : Eq_548)
   Class: Eq_548
   DataType: Eq_548
-  OrigDataType: int32
+  OrigDataType: uint32
 T_603: (in 0<32> @ 000013E4 : word32)
   Class: Eq_603
   DataType: word32
@@ -2892,7 +2894,7 @@ T_659: (in SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5
 T_660: (in dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_108, word16, 16), (word16) d5_108 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 0000141C : word32)
   Class: Eq_660
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 (arr T_728) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_731) a0000)))
 T_661: (in 4<32> @ 0000141C : ui32)
   Class: Eq_661
   DataType: ui32
@@ -3024,7 +3026,7 @@ T_692: (in SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5
 T_693: (in dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_128, word16, 16), (word16) d5_128 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 00001440 : word32)
   Class: Eq_693
   DataType: (ptr32 (arr uint32))
-  OrigDataType: (ptr32 (struct (0 (arr T_730) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_733) a0000)))
 T_694: (in 4<32> @ 00001440 : ui32)
   Class: Eq_694
   DataType: ui32
@@ -3075,7 +3077,7 @@ T_705: (in -240<i32> @ 0000148A : int32)
   OrigDataType: int32
 T_706: (in fp + -240<i32> @ 0000148A : word32)
   Class: Eq_545
-  DataType: ptr32
+  DataType: (ptr32 (arr Eq_729))
   OrigDataType: ptr32
 T_707: (in -160<i32> @ 0000148A : int32)
   Class: Eq_707
@@ -3163,20 +3165,32 @@ T_727:
   OrigDataType: (arr T_726)
 T_728:
   Class: Eq_728
-  DataType: word32
-  OrigDataType: (struct 0004 (0 T_663 t0000))
+  DataType: (arr Eq_548)
+  OrigDataType: (struct (0 (arr T_726) a0000))
 T_729:
   Class: Eq_729
-  DataType: (arr word32)
-  OrigDataType: (arr T_728)
+  DataType: Eq_729
+  OrigDataType: (struct 0010 (0 (arr T_726) a0000))
 T_730:
   Class: Eq_730
-  DataType: uint32
-  OrigDataType: (struct 0004 (0 T_696 t0000))
+  DataType: (arr Eq_729)
+  OrigDataType: (arr T_729)
 T_731:
   Class: Eq_731
+  DataType: word32
+  OrigDataType: (struct 0004 (0 T_663 t0000))
+T_732:
+  Class: Eq_732
+  DataType: (arr word32)
+  OrigDataType: (arr T_731)
+T_733:
+  Class: Eq_733
+  DataType: uint32
+  OrigDataType: (struct 0004 (0 T_696 t0000))
+T_734:
+  Class: Eq_734
   DataType: (arr uint32)
-  OrigDataType: (arr T_730)
+  OrigDataType: (arr T_733)
 */
 typedef struct Globals {
 	struct Eq_112 * ptr0000;	// 0
@@ -3375,9 +3389,13 @@ typedef union Eq_692 {
 	uint32 u1;
 } Eq_692;
 
-typedef word32 (Eq_702)(ptr32, ptr32, ptr32);
+typedef word32 (Eq_702)(Eq_729 *[], ptr32, ptr32);
 
 typedef struct Eq_714 {	// size: 4 4
 	byte b0000;	// 0
 } Eq_714;
+
+typedef struct Eq_729 {	// size: 16 10
+	Eq_548 a0000[];	// 0
+} Eq_729;
 

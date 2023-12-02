@@ -20,8 +20,8 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 			do
 			{
 				real64 v24_n = arg1[loc3_n * 0x38 / 0x0118] - arg1[(v19_n * 0x38) / 0x0118];
-				real64 v27_n = (&(arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0000)[1] - (&(((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0000)[1];
-				real64 v27_n = (&(arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0000)[2] - (&(((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0000)[2];
+				real64 v27_n = (arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0008 - (((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0008;
+				real64 v27_n = (arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0010 - (((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0010;
 				real64 v23_n = (arg1 + (loc3_n * 0x38) / 0x0118)->r0030;
 				real64 v24_n = sqrt(v24_n * v24_n + v27_n * v27_n + v27_n * v27_n);
 				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc3_n * 0x38) / 0x0118);

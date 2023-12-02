@@ -3885,8 +3885,7 @@ word32 fn0000A416(Eq_n r3_r2, struct Eq_n * r5_r4, ptr32 & r13Out)
 	word16 r2 = (word16) r3_r2;
 	struct Eq_n * r1_r0_n = r5_r4->ptr0008;
 	struct Eq_n * r13_n = r5_r4->ptr0000;
-	Eq_n ra_n;
-	ra_n.u0 = r1_r0_n->t0000.u0;
+	Eq_n ra_n[] = r1_r0_n->ptr0000;
 	ci16 r2_n = r1_r0_n->w000A;
 	r3_r2.u1->w0FAE = 0x00;
 	r3_r2.u1->w1F60 = 0x023D;
@@ -3925,7 +3924,7 @@ word32 fn0000A416(Eq_n r3_r2, struct Eq_n * r5_r4, ptr32 & r13Out)
 		if (r2_n == r0_n)
 		{
 			wArg2A_n = r6_n;
-			if (ra_n != 0x00)
+			if (ra_n != null)
 				goto l0000A4A4;
 			goto l0000ADDC;
 		}
@@ -3949,7 +3948,7 @@ l0000A484:
 		wArg2A_n = r1_n;
 l0000A49E:
 		ci16 r7_n;
-		if (ra_n != 0x00)
+		if (ra_n != null)
 		{
 l0000A4A4:
 			struct Eq_n * r7_r6_n = (struct Eq_n *) (r3_r2.u1 + ((int32) (r11_n + 0x01) * 0x02) / 9244);
@@ -3979,7 +3978,7 @@ l0000A4A4:
 				r5_r4_n->a0000[0].u2.w0000 = (ci16) 0x01;
 				(&(r3_r2.u1 + (int32) r0_n / 9244)->w0FAE)[2] = (word16) 0x00;
 				r3_r2.u1->dw23F8 += -1;
-				r3_r2.u1->dw2400 -= (word32) *((word32) ((word32) ra_n.u0 + r3_r2_n) + 2);
+				r3_r2.u1->dw2400 -= (word32) (ra_n + r3_r2_n / 4)[0].w0002;
 				r7_r6_n = SEQ(SLICE((char *) r7_r6_n + 2, word16, 16), r6_n + 0x02);
 			}
 			r7_n = wArg2A_n;
@@ -4237,8 +4236,7 @@ l0000A77A:
 		struct Eq_n * r1_r0_n = r5_r4->ptr0008;
 		struct Eq_n * r2_r1_n = r5_r4->ptr0000;
 		ci16 r3_n = r5_r4->w0004;
-		Eq_n r11_r10_n;
-		r11_r10_n.u0 = r1_r0_n->t0000.u0;
+		Eq_n r11_r10_n[] = r1_r0_n->ptr0000;
 		int16 r11_r10_n[] = r1_r0_n->ptr0004;
 		ci16 r11_n = r1_r0_n->w0008;
 		ci16 r7_n = r1_r0_n->w000C;
@@ -4256,7 +4254,7 @@ l0000A77A:
 		if (wArg06_n >= 0x023E)
 		{
 			int16 wLoc16_n;
-			if (r11_r10_n != 0x00)
+			if (r11_r10_n != null)
 			{
 				struct Eq_n * r11_r10_n = (struct Eq_n *) (r3_r2.u1 + ((int32) wLoc26_n * 0x02) / 9244);
 				wLoc16_n = wArg02_n;
@@ -4288,7 +4286,7 @@ l0000A77A:
 						word32 r3_r2_n = (word32) r2_n;
 						word32 r9_r8_n = (word32) r5_r4_n->w0000;
 						r3_r2.u1->dw23F8 = fn0000D358((word16) r3_r2_n, SLICE(r3_r2_n, word16, 16), (word16) r9_r8_n, SLICE(r9_r8_n, word16, 16)) + (r3_r2.u1)->dw23F8;
-						word32 r3_r2_n = (word32) (*((word32) ((word32) r11_r10_n.u0 + (r3_r2_n << 0x02)) + 2) + r7_n);
+						word32 r3_r2_n = (word32) ((r11_r10_n + (r3_r2_n << 0x02) / 4)[0].w0002 + r7_n);
 						r3_r2.u1->dw2400 = fn0000D358((word16) r3_r2_n, SLICE(r3_r2_n, word16, 16), (word16) r9_r8_n, SLICE(r9_r8_n, word16, 16)) + (r3_r2.u1)->dw2400;
 					}
 					wLoc26_n = wLoc26_n + 0x01;
