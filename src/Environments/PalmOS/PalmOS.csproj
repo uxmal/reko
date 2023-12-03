@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.Environments.PalmOS</RootNamespace>
+    <AssemblyName>Reko.Environments.PalmOS</AssemblyName>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
+		<ProjectReference Include="..\..\Core\Core.csproj" />
+	</ItemGroup>
+</Project>

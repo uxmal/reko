@@ -55,7 +55,7 @@ namespace Reko.Environments.MacOS.Classic
         {
             addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var rdr = new Core.Memory.BeImageReader(RawImage);
+            var rdr = new BeImageReader(RawImage);
             var hdr = rdr.ReadStruct<Header>();
             var things = new Entry[hdr.cEntries];
             for (int i = 0; i < things.Length; ++i)

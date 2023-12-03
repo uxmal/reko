@@ -82,6 +82,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Environments\NeoGeo\NeoGeo.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\OpenVMS\OpenVMS.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\OS2\OS2.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\PalmOS\PalmOS.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Pdp10Env\Pdp10Env.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Ps3\Ps3.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\RiscOS\RiscOS.csproj" />

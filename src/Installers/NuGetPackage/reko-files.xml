@@ -91,6 +91,8 @@
       <var id="var.OpenVMS.TargetPath" >$SolutionDir$/Environments/OpenVMS/$TargetDir$/Reko.Environments.OpenVMS.dll</var>
       <var id="var.OS2.ProjectDir" >$SolutionDir$/Environments/OS2/</var>
       <var id="var.OS2.TargetPath" >$SolutionDir$/Environments/OS2/$TargetDir$/Reko.Environments.OS2.dll</var>
+      <var id="var.PalmOS.ProjectDir" >$SolutionDir$/Environments/PalmOS/</var>
+      <var id="var.PalmOS.TargetPath" >$SolutionDir$/Environments/PalmOS/$TargetDir$/Reko.Environments.PalmOS.dll</var>
       <var id="var.Pdp10Env.TargetPath" >$SolutionDir$/Environments/Pdp10Env/$TargetDir$/Reko.Environments.Pdp10Env.dll</var>
       <var id="var.Ps3.TargetPath" >$SolutionDir$/Environments/Ps3/$TargetDir$/Reko.Environments.Ps3.dll</var>
       <var id="var.RT11.ProjectDir" >$SolutionDir$/Environments/RT11/</var>
@@ -222,6 +224,7 @@
       <File Source="$(var.NeoGeo.TargetPath)" nuget_target="f:" />
       <File Source="$(var.OpenVMS.TargetPath)" nuget_target="f:" />
       <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.PalmOS.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Pdp10Env.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
       <File Source="$(var.RiscOS.TargetPath)" nuget_target="f:" />
