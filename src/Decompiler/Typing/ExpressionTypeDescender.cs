@@ -220,7 +220,8 @@ namespace Reko.Typing
             var dtElement = factory.CreateStructureType(null, elementSize);
             if (
                 tvField.DataType is StructureType strField &&
-                strField.Size == 0)
+                // Structures with different sizes are not compatible
+                (strField.Size == 0 || strField.Size == elementSize))
             {
                 foreach (var f in strField.Fields)
                 {
