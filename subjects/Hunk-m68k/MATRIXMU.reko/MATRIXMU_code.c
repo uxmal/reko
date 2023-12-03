@@ -307,10 +307,10 @@ void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 	fn0000131C(fn00001468());
 }
 
-// 00001390: Register int32 fn00001390(Stack ptr32 dwArg04, Stack ptr32 dwArg08, Stack ptr32 dwArg0C)
+// 00001390: Register int32 fn00001390(Stack (arr Eq_n) dwArg04, Stack ptr32 dwArg08, Stack ptr32 dwArg0C)
 // Called from:
 //      fn00001468
-int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
+int32 fn00001390(Eq_n dwArg04[], ptr32 dwArg08, ptr32 dwArg0C)
 {
 	Eq_n d4_n;
 	d4_n.u0 = 0;
@@ -325,8 +325,7 @@ int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 			{
 				uint32 d1_n = __swap(20) *32 (word16) d2_n;
 				union Eq_n * a1_n = dwArg08 + ((word16) d2_n *32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d2_n) * 0x14)), word16, 16), 0x00)) + (d3_n << 0x02);
-				Eq_n d0_n;
-				d0_n.u0 = (dwArg04 + (d4_n << 0x04))[d2_n].u0;
+				Eq_n d0_n = (dwArg04 + (d4_n << 0x04) / 16)->a0000[d2_n];
 				Eq_n d1_n;
 				d1_n.u0 = a1_n->u0;
 				uint32 d5_n = __swap(d0_n) *32 (word16) d1_n;

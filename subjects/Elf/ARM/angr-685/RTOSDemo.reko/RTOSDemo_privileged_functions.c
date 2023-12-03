@@ -1608,7 +1608,7 @@ struct Eq_n * xTaskPriorityDisinherit(struct Eq_n * r0)
 	{
 		uint32 r1_n = r0->dw004C;
 		r2_n = g_ptr12CC;
-		if (*((char *) (r2_n + (r1_n * 0x14) / 0x0080) + 8) == 0x00)
+		if ((r2_n + (r1_n * 0x14) / 0x0080)->a0000[0].dw0008 == 0x00)
 			r2_n->dw007C &= ~(0x01 << r1_n);
 	}
 	else

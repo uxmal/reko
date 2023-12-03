@@ -128,12 +128,80 @@ Eq_528: (fn word32 (int32, (ptr32 Eq_3), real64))
 Eq_556: (fn word32 ())
 	T_556 (in runPostSets @ 000E0784 : ptr32)
 	T_557 (in signature of runPostSets @ 000E076E : void)
-Eq_559: (struct "Eq_559" 0038 (0 real64 r0000))
+Eq_559: (struct "Eq_559" 0038
+		(0 real64 r0000)
+		(8 real64 r0008)
+		(10 real64 r0010)
+		(18 real64 r0018)
+		(20 real64 r0020)
+		(28 real64 r0028)
+		(30 real64 r0030))
 	T_559
 	T_561
-Eq_563: (struct "Eq_563" 0038 (0 real64 r0000))
+	T_564
+	T_567
+	T_570
+	T_573
+	T_576
+	T_579
+	T_582
+	T_585
+	T_588
+Eq_563: (struct "Eq_563" (8 real64 r0008))
 	T_563
-	T_565
+Eq_566: (struct "Eq_566" (8 real64 r0008))
+	T_566
+Eq_569: (struct "Eq_569" (10 real64 r0010))
+	T_569
+Eq_572: (struct "Eq_572" (10 real64 r0010))
+	T_572
+Eq_575: (struct "Eq_575" (30 real64 r0030))
+	T_575
+Eq_578: (struct "Eq_578" (30 real64 r0030))
+	T_578
+Eq_581: (struct "Eq_581" (18 real64 r0018))
+	T_581
+Eq_584: (struct "Eq_584" (20 real64 r0020))
+	T_584
+Eq_587: (struct "Eq_587" (28 real64 r0028))
+	T_587
+Eq_590: (struct "Eq_590" (18 real64 r0018))
+	T_590
+Eq_591: (struct "Eq_591" 0038
+		(0 real64 r0000)
+		(8 real64 r0008)
+		(10 real64 r0010)
+		(18 real64 r0018)
+		(20 real64 r0020)
+		(28 real64 r0028)
+		(30 real64 r0030))
+	T_591
+	T_594
+	T_597
+	T_600
+	T_602
+	T_604
+	T_607
+	T_610
+	T_613
+	T_616
+	T_619
+Eq_593: (struct "Eq_593" (20 real64 r0020))
+	T_593
+Eq_596: (struct "Eq_596" (28 real64 r0028))
+	T_596
+Eq_599: (struct "Eq_599" (30 real64 r0030))
+	T_599
+Eq_606: (struct "Eq_606" (8 real64 r0008))
+	T_606
+Eq_609: (struct "Eq_609" (8 real64 r0008))
+	T_609
+Eq_612: (struct "Eq_612" (10 real64 r0010))
+	T_612
+Eq_615: (struct "Eq_615" (10 real64 r0010))
+	T_615
+Eq_618: (struct "Eq_618" (30 real64 r0030))
+	T_618
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -260,10 +328,10 @@ T_31: (in arg1 + v19_12 * 0x38<32> + 8<u32> @ 000E00A3 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_32: (in Mem24[arg1 + v19_12 * 0x38<32> + 8<u32>:real64] @ 000E00A3 : real64)
-  Class: Eq_32
+  Class: Eq_26
   DataType: real64
   OrigDataType: real64
-T_33: (in (&(arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0000)[1<i32>] - (&(((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0000)[1<i32>] @ 000E00A3 : real64)
+T_33: (in (arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0008 - (((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0008 @ 000E00A3 : real64)
   Class: Eq_33
   DataType: real64
   OrigDataType: real64
@@ -316,10 +384,10 @@ T_45: (in arg1 + v19_12 * 0x38<32> + 0x10<u32> @ 000E00B7 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_46: (in Mem24[arg1 + v19_12 * 0x38<32> + 0x10<u32>:real64] @ 000E00B7 : real64)
-  Class: Eq_46
+  Class: Eq_40
   DataType: real64
   OrigDataType: real64
-T_47: (in (&(arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0000)[2<i32>] - (&(((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0000)[2<i32>] @ 000E00B7 : real64)
+T_47: (in (arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0010 - (((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0010 @ 000E00B7 : real64)
   Class: Eq_47
   DataType: real64
   OrigDataType: real64
@@ -432,11 +500,11 @@ T_74: (in arg1 + v19_12 * 0x38<32> + 0x30<u32> @ 000E00DB : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_75: (in Mem24[arg1 + v19_12 * 0x38<32> + 0x30<u32>:real64] @ 000E00DB : real64)
-  Class: Eq_75
+  Class: Eq_54
   DataType: real64
   OrigDataType: real64
 T_76: (in v29_129 @ 000E00DB : real64)
-  Class: Eq_75
+  Class: Eq_54
   DataType: real64
   OrigDataType: real64
 T_77: (in v24_112 * v24_112 @ 000E00C7 : real64)
@@ -991,10 +1059,10 @@ T_214: (in arg0 @ 000E0209 : int32)
   Class: Eq_214
   DataType: int32
   OrigDataType: int32
-T_215: (in arg1 @ 000E0209 : (arr Eq_563))
+T_215: (in arg1 @ 000E0209 : (arr Eq_591))
   Class: Eq_215
-  DataType: (ptr32 (arr Eq_563))
-  OrigDataType: (ptr32 (struct (0 (arr T_563) a0000)))
+  DataType: (ptr32 (arr Eq_591))
+  OrigDataType: (ptr32 (struct (0 (arr T_591) a0000)))
 T_216: (in 0<32> @ 000E0211 : word32)
   Class: Eq_214
   DataType: int32
@@ -1264,7 +1332,7 @@ T_282: (in arg1 + v10_59 * 0x38<32> + 8<u32> @ 000E02E8 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_283: (in Mem0[arg1 + v10_59 * 0x38<32> + 8<u32>:real64] @ 000E02E8 : real64)
-  Class: Eq_283
+  Class: Eq_277
   DataType: real64
   OrigDataType: real64
 T_284: (in (&(arg1 + loc2_144)->r0000)[1<i32>] - (&(arg1 + v10_59)->r0000)[1<i32>] @ 000E02E8 : real64)
@@ -1320,7 +1388,7 @@ T_296: (in arg1 + v10_59 * 0x38<32> + 0x10<u32> @ 000E02FC : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_297: (in Mem0[arg1 + v10_59 * 0x38<32> + 0x10<u32>:real64] @ 000E02FC : real64)
-  Class: Eq_297
+  Class: Eq_291
   DataType: real64
   OrigDataType: real64
 T_298: (in (&(arg1 + loc2_144)->r0000)[2<i32>] - (&(arg1 + v10_59)->r0000)[2<i32>] @ 000E02FC : real64)
@@ -1352,7 +1420,7 @@ T_304: (in arg1 + v10_59 * 0x38<32> + 0x30<u32> @ 000E0306 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_305: (in Mem0[arg1 + v10_59 * 0x38<32> + 0x30<u32>:real64] @ 000E0306 : real64)
-  Class: Eq_305
+  Class: Eq_249
   DataType: real64
   OrigDataType: real64
 T_306: (in v16_21 * (&(arg1 + v10_59)->r0000)[6<i32>] @ 000E0306 : real64)
@@ -2386,19 +2454,235 @@ T_562:
 T_563:
   Class: Eq_563
   DataType: Eq_563
-  OrigDataType: (struct 0038 (0 T_266 t0000))
+  OrigDataType: (struct (8 T_26 t0008))
 T_564:
-  Class: Eq_564
-  DataType: (arr Eq_563)
-  OrigDataType: (arr T_563)
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (8 T_26 t0008))
 T_565:
-  Class: Eq_563
-  DataType: Eq_563
-  OrigDataType: (struct 0038 (0 T_269 t0000))
+  Class: Eq_565
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_564)
 T_566:
   Class: Eq_566
-  DataType: (arr Eq_563)
-  OrigDataType: (arr T_565)
+  DataType: Eq_566
+  OrigDataType: (struct (8 T_32 t0008))
+T_567:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (8 T_32 t0008))
+T_568:
+  Class: Eq_568
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_567)
+T_569:
+  Class: Eq_569
+  DataType: Eq_569
+  OrigDataType: (struct (10 T_40 t0010))
+T_570:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (10 T_40 t0010))
+T_571:
+  Class: Eq_571
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_570)
+T_572:
+  Class: Eq_572
+  DataType: Eq_572
+  OrigDataType: (struct (10 T_46 t0010))
+T_573:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (10 T_46 t0010))
+T_574:
+  Class: Eq_574
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_573)
+T_575:
+  Class: Eq_575
+  DataType: Eq_575
+  OrigDataType: (struct (30 T_54 t0030))
+T_576:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (30 T_54 t0030))
+T_577:
+  Class: Eq_577
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_576)
+T_578:
+  Class: Eq_578
+  DataType: Eq_578
+  OrigDataType: (struct (30 T_75 t0030))
+T_579:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (30 T_75 t0030))
+T_580:
+  Class: Eq_580
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_579)
+T_581:
+  Class: Eq_581
+  DataType: Eq_581
+  OrigDataType: (struct (18 T_169 t0018))
+T_582:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (18 T_169 t0018))
+T_583:
+  Class: Eq_583
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_582)
+T_584:
+  Class: Eq_584
+  DataType: Eq_584
+  OrigDataType: (struct (20 T_187 t0020))
+T_585:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (20 T_187 t0020))
+T_586:
+  Class: Eq_586
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_585)
+T_587:
+  Class: Eq_587
+  DataType: Eq_587
+  OrigDataType: (struct (28 T_204 t0028))
+T_588:
+  Class: Eq_559
+  DataType: Eq_559
+  OrigDataType: (struct 0038 (28 T_204 t0028))
+T_589:
+  Class: Eq_589
+  DataType: (arr Eq_559)
+  OrigDataType: (arr T_588)
+T_590:
+  Class: Eq_590
+  DataType: Eq_590
+  OrigDataType: (struct (18 T_228 t0018))
+T_591:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (18 T_228 t0018))
+T_592:
+  Class: Eq_592
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_591)
+T_593:
+  Class: Eq_593
+  DataType: Eq_593
+  OrigDataType: (struct (20 T_235 t0020))
+T_594:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (20 T_235 t0020))
+T_595:
+  Class: Eq_595
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_594)
+T_596:
+  Class: Eq_596
+  DataType: Eq_596
+  OrigDataType: (struct (28 T_242 t0028))
+T_597:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (28 T_242 t0028))
+T_598:
+  Class: Eq_598
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_597)
+T_599:
+  Class: Eq_599
+  DataType: Eq_599
+  OrigDataType: (struct (30 T_249 t0030))
+T_600:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (30 T_249 t0030))
+T_601:
+  Class: Eq_601
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_600)
+T_602:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (0 T_266 t0000))
+T_603:
+  Class: Eq_603
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_602)
+T_604:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (0 T_269 t0000))
+T_605:
+  Class: Eq_605
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_604)
+T_606:
+  Class: Eq_606
+  DataType: Eq_606
+  OrigDataType: (struct (8 T_277 t0008))
+T_607:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (8 T_277 t0008))
+T_608:
+  Class: Eq_608
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_607)
+T_609:
+  Class: Eq_609
+  DataType: Eq_609
+  OrigDataType: (struct (8 T_283 t0008))
+T_610:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (8 T_283 t0008))
+T_611:
+  Class: Eq_611
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_610)
+T_612:
+  Class: Eq_612
+  DataType: Eq_612
+  OrigDataType: (struct (10 T_291 t0010))
+T_613:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (10 T_291 t0010))
+T_614:
+  Class: Eq_614
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_613)
+T_615:
+  Class: Eq_615
+  DataType: Eq_615
+  OrigDataType: (struct (10 T_297 t0010))
+T_616:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (10 T_297 t0010))
+T_617:
+  Class: Eq_617
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_616)
+T_618:
+  Class: Eq_618
+  DataType: Eq_618
+  OrigDataType: (struct (30 T_305 t0030))
+T_619:
+  Class: Eq_591
+  DataType: Eq_591
+  OrigDataType: (struct 0038 (30 T_305 t0030))
+T_620:
+  Class: Eq_620
+  DataType: (arr Eq_591)
+  OrigDataType: (arr T_619)
 */
 typedef struct Globals {
 	struct Eq_3 * ptr100000;	// 100000
@@ -2551,9 +2835,93 @@ typedef word32 (Eq_556)();
 
 typedef struct Eq_559 {	// size: 56 38
 	real64 r0000;	// 0
+	real64 r0008;	// 8
+	real64 r0010;	// 10
+	real64 r0018;	// 18
+	real64 r0020;	// 20
+	real64 r0028;	// 28
+	real64 r0030;	// 30
 } Eq_559;
 
-typedef struct Eq_563 {	// size: 56 38
-	real64 r0000;	// 0
+typedef struct Eq_563 {
+	real64 r0008;	// 8
 } Eq_563;
+
+typedef struct Eq_566 {
+	real64 r0008;	// 8
+} Eq_566;
+
+typedef struct Eq_569 {
+	real64 r0010;	// 10
+} Eq_569;
+
+typedef struct Eq_572 {
+	real64 r0010;	// 10
+} Eq_572;
+
+typedef struct Eq_575 {
+	real64 r0030;	// 30
+} Eq_575;
+
+typedef struct Eq_578 {
+	real64 r0030;	// 30
+} Eq_578;
+
+typedef struct Eq_581 {
+	real64 r0018;	// 18
+} Eq_581;
+
+typedef struct Eq_584 {
+	real64 r0020;	// 20
+} Eq_584;
+
+typedef struct Eq_587 {
+	real64 r0028;	// 28
+} Eq_587;
+
+typedef struct Eq_590 {
+	real64 r0018;	// 18
+} Eq_590;
+
+typedef struct Eq_591 {	// size: 56 38
+	real64 r0000;	// 0
+	real64 r0008;	// 8
+	real64 r0010;	// 10
+	real64 r0018;	// 18
+	real64 r0020;	// 20
+	real64 r0028;	// 28
+	real64 r0030;	// 30
+} Eq_591;
+
+typedef struct Eq_593 {
+	real64 r0020;	// 20
+} Eq_593;
+
+typedef struct Eq_596 {
+	real64 r0028;	// 28
+} Eq_596;
+
+typedef struct Eq_599 {
+	real64 r0030;	// 30
+} Eq_599;
+
+typedef struct Eq_606 {
+	real64 r0008;	// 8
+} Eq_606;
+
+typedef struct Eq_609 {
+	real64 r0008;	// 8
+} Eq_609;
+
+typedef struct Eq_612 {
+	real64 r0010;	// 10
+} Eq_612;
+
+typedef struct Eq_615 {
+	real64 r0010;	// 10
+} Eq_615;
+
+typedef struct Eq_618 {
+	real64 r0030;	// 30
+} Eq_618;
 

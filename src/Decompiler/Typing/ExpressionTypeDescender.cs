@@ -56,6 +56,7 @@ namespace Reko.Typing
         protected readonly TypeStore store;
         protected readonly TypeFactory factory;
         protected readonly Unifier unifier;
+        protected readonly ArrayExpressionMatcher aem;
         protected readonly Identifier globals;
         protected readonly IReadOnlyDictionary<Identifier,LinearInductionVariable> ivs;
 
@@ -67,6 +68,7 @@ namespace Reko.Typing
             this.store = store;
             this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
+            this.aem = new ArrayExpressionMatcher(program.Platform.PointerType);
         }
 
         protected virtual TypeVariable TypeVar(Expression exp)
@@ -216,7 +218,20 @@ namespace Reko.Typing
             TypeVariable tvField)
         {
             var dtElement = factory.CreateStructureType(null, elementSize);
-            dtElement.Fields.Add(0, tvField);
+            if (
+                tvField.DataType is StructureType strField &&
+                // Structures with different sizes are not compatible
+                (strField.Size == 0 || strField.Size == elementSize))
+            {
+                foreach (var f in strField.Fields)
+                {
+                    dtElement.Fields.Add(f);
+                }
+            }
+            else
+            {
+                dtElement.Fields.Add(0, tvField);
+            }
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.DataType = dtElement;
             tvElement.OriginalDataType = dtElement;
@@ -263,6 +278,7 @@ namespace Reko.Typing
             {
             case OperatorType.IAdd:
             {
+                PushArrayElement(binExp);
                 var dt = PushAddendDataType(tvBin.DataType, tvRight.DataType);
                 if (dt != null)
                     MeetDataType(eLeft, dt);
@@ -437,6 +453,28 @@ namespace Reko.Typing
                 return PrimitiveType.Create(Domain.SignedInt, dtSum.BitSize);
             }
             return dtSum;
+        }
+
+        private void PushArrayElement(BinaryExpression binExp)
+        {
+            var eLeft = binExp.Left;
+            var tvBin = TypeVar(binExp);
+            if (tvBin.DataType is not Pointer binPtr)
+                return;
+            if (!aem.Match(binExp))
+                return;
+            if (aem.ArrayPointer == eLeft)
+            {
+                if (binPtr.Pointee is not TypeVariable tvField)
+                {
+                    tvField = store.CreateTypeVariable(factory);
+                    tvField.DataType = binPtr.Pointee;
+                    tvField.OriginalDataType = binPtr.Pointee;
+                }
+                ArrayField(
+                    null, eLeft, eLeft.DataType.BitSize, 0,
+                    OffsetOf(aem.ElementSize!), 0, tvField);
+            }
         }
 
         private static DataType PushMinuendDataType(DataType dtDiff, DataType dtSub)

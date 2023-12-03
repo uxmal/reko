@@ -14748,7 +14748,8 @@ l00409E0E:
 	branch r5_30 == 0<32> l00409EEC
 l00409E20:
 	r19_172 = r5_30 - r6
-	r6_35 = fp - 0xF0<32>
+	Mem39[&dwLocF0:word32] = r6
+	r6_35 = &dwLocF0
 	r22_37 = r4 + r19_172
 l00409E2E:
 	r7_174 = Mem42[r6_35:word32] + Mem42[r6_35 + 4<32>:word32] + r6
@@ -14768,9 +14769,9 @@ l00409E80:
 	r30_64 = r16_125 + 0xFFFFFFFF<32>
 	branch Mem59[fp - 0x30<32> + (r30_64 << 2<8>) - 0xC0<32>:word32] <u r19_172 l00409EAE
 l00409EAE:
-	sift(r18_169, r17_60, r16_125, fp - 0xF0<32>, out r4_525, out r7_526, out r8_527, out r11_528, out r12_529)
+	sift(r18_169, r17_60, r16_125, &dwLocF0, out r4_525, out r7_526, out r8_527, out r11_528, out r12_529)
 l00409E92:
-	trinkle(r18_169, r17_60, &tLocF8, r16_125, 0<32>, fp - 0xF0<32>, out r4_530, out r7_531, out r8_532, out r11_533, out r12_534)
+	trinkle(r18_169, r17_60, &tLocF8, r16_125, 0<32>, &dwLocF0, out r4_530, out r7_531, out r8_532, out r11_533, out r12_534)
 l00409EA0:
 	branch r16_125 != 1<32> l00409EB8
 l00409EB8:
@@ -14780,7 +14781,7 @@ l00409EA4:
 	r7_123 = shl(&tLocF8, r16_125)
 	r16_125 = 0<32>
 l00409E62:
-	sift(r18_169, r17_60, r16_125, fp - 0xF0<32>, out r4_513, out r7_514, out r8_515, out r11_516, out r12_517)
+	sift(r18_169, r17_60, r16_125, &dwLocF0, out r4_513, out r7_514, out r8_515, out r11_516, out r12_517)
 	r16_125 = r16_125 + 2<32>
 	r7_123 = fn00409F4C(&tLocF8, 2<32>, out r8_518)
 l00409E72:
@@ -14790,7 +14791,7 @@ l00409E72:
 	r18_169 = r18_169 + r17_166
 	r19_172 = r19_172 - r17_166
 l00409E4A:
-	r2 = trinkle(r18_169, r17_166, &tLocF8, r16_125, 0<32>, fp - 0xF0<32>, out r4, out r7_187, out r8, out r11, out r12)
+	r2 = trinkle(r18_169, r17_166, &tLocF8, r16_125, 0<32>, &dwLocF0, out r4, out r7_187, out r8, out r11, out r12)
 l00409EDE:
 	branch r16_125 != 1<32> l00409EC2
 l00409EC2:
@@ -14802,11 +14803,11 @@ l00409EF0:
 	Mem218[&tLocF8:word32] = r7_210 ^ 7<32>
 	fn00409F4C(&tLocF8, 1<32>, out r8_519)
 	r19_217 = r16_125 + 0xFFFFFFFE<32>
-	trinkle(r18_169 - (r17_213 + Mem218[((fp - 0x30<32>) + (r19_217 << 2<8>)) - 0xC0<32>:word32]), r17_213, &tLocF8, r16_125 + 0xFFFFFFFF<32>, 1<32>, fp - 0xF0<32>, out r4_520, out r7_521, out r8_522, out r11_523, out r12_524)
+	trinkle(r18_169 - (r17_213 + Mem218[((fp - 0x30<32>) + (r19_217 << 2<8>)) - 0xC0<32>:word32]), r17_213, &tLocF8, r16_125 + 0xFFFFFFFF<32>, 1<32>, &dwLocF0, out r4_520, out r7_521, out r8_522, out r11_523, out r12_524)
 	r7_258 = fn00409F48(&tLocF8, 1<32>)
 	r17_260 = Mem218[&tLocF8:word32]
 	Mem265[&tLocF8:word32] = r7_258 | 1<32>
-	r2 = trinkle(r22_203, r17_260, &tLocF8, r19_217, 1<32>, fp - 0xF0<32>, out r4, out r7_187, out r8, out r11, out r12)
+	r2 = trinkle(r22_203, r17_260, &tLocF8, r19_217, 1<32>, &dwLocF0, out r4, out r7_187, out r8, out r11, out r12)
 l00409EE2:
 	branch r7_187 != 1<32> l00409ECA
 l00409EE8:

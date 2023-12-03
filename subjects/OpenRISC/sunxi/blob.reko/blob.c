@@ -8669,14 +8669,14 @@ void fn00018A60(struct Eq_n * r3)
 	fn00018C68(-25);
 }
 
-// 00018AC4: void fn00018AC4(Register ptr32 r3, Register word32 r9)
-void fn00018AC4(ptr32 r3, word32 r9)
+// 00018AC4: void fn00018AC4(Register (arr Eq_n) r3, Register word32 r9)
+void fn00018AC4(Eq_n r3[], word32 r9)
 {
 	fn000188CC(g_ptr1310C, 0x01C20800, -151, -1);
 	fn00018F10(&g_tC768, -1, r9);
 	int32 r3_n;
 	for (r3_n = 0; r3_n <= 1; r3_n += -1)
-		*(r3 + r3_n * 0x0C)->ptr0078 = *(r3 + r3_n * 0x0C)->ptr0078 & ((r3 + r3_n * 0x0C)->dw007C ^ 0xFFFF) | (r3 + r3_n * 0x0C)->dw007C & (r3 + ((r3_n + -1) * 0x02 + (r3_n + -1) << 0x02))->dw0074;
+		*(r3 + r3_n)[0x0A] = *(r3 + r3_n)[0x0A] & (*((word96) (&(r3 + r3_n)[0x0A]) + 4) ^ 0xFFFF) | *((word96) (&(r3 + r3_n)[0x0A]) + 4) & *((word96) (&(r3 + ((r3_n + -1) * 0x02 + (r3_n + -1) << 0x02) / 0x0C)[9]) + 8);
 }
 
 // 00018BDC: void fn00018BDC()

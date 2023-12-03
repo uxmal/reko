@@ -335,7 +335,7 @@ ui32 g_a1AB64[] = // 0001AB64
 	{
 	};
 byte g_b1ACD8 = 0xB0; // 0001ACD8
-word16 g_a1AED8[] = // 0001AED8
+Eq_n g_a1AED8[] = // 0001AED8
 	{
 	};
 Eq_n g_t1AF50 = // 0001AF50

@@ -1394,7 +1394,7 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 		__msr(cpsr, 0x00);
 		uxListRemove((char *) r4_n + 4);
 		uint32 r3_n = r4_n->dw002C;
-		r0 = (struct Eq_n *) ((char *) &r5_n->ptr0000 + 4 + r3_n * 0x14);
+		r0 = (struct Eq_n *) (&r5_n->a0000->u0 + 1 + (r3_n * 0x14) / 0x0080);
 		if (r3_n > r5_n->dw0070)
 			r5_n->dw0070 = r3_n;
 		vListInsertEnd(r0, (char *) r4_n + 4);
@@ -1456,13 +1456,13 @@ l00008F94:
 	r5_n->dw0078 = r3_n;
 	ui32 r3_n = r1_n << 2;
 	uint32 r2_n;
-	if (*((char *) &(r5_n + (r1_n * 0x14) / 0x0080)->ptr0000 + 4) == 0x00)
+	if ((&(r5_n + (r1_n * 0x14) / 0x0080)->a0000[0].u0)[1] == 0x00)
 	{
 		if (r1_n == 0x00)
 			return cpsr;
 		r3_n = r1_n - 0x01 << 2;
 		r2_n = r1_n - 0x01;
-		if (*((char *) &(r5_n + (r3_n + (r1_n - 0x01) << 0x02) / 0x0080)->ptr0000 + 4) == 0x00)
+		if ((&(r5_n + (r3_n + (r1_n - 0x01) << 0x02) / 0x0080)->a0000[0].u0)[1] == 0x00)
 		{
 			if (r1_n == 0x01)
 			{
@@ -1472,7 +1472,7 @@ l00009046:
 			}
 			r3_n = r1_n - 0x02 << 2;
 			r2_n = r1_n - 0x02;
-			if (*((char *) &(r5_n + (r3_n + (r1_n - 0x02) << 0x02) / 0x0080)->ptr0000 + 4) == 0x00)
+			if ((&(r5_n + (r3_n + (r1_n - 0x02) << 0x02) / 0x0080)->a0000[0].u0)[1] == 0x00)
 				goto l00009046;
 		}
 		r5_n->dw0070 = r2_n;
@@ -1487,11 +1487,12 @@ l00009046:
 	struct Eq_n * r2_n = r2_n;
 	if (r2_n == r3_n)
 		r2_n = r2_n->ptr0004;
-	<anonymous> ** r0_n = r2_n->ptr000C;
+	Eq_n r0_n;
+	r0_n.u0 = r2_n->t000C.u0;
 	if (r2_n == r3_n)
 		r1_n->ptr0008 = r2_n;
-	r5_n->ptr0000 = r0_n;
-	(*r0_n)();
+	r5_n->a0000[0] = r0_n;
+	(*r0_n.u0)();
 	word32 cpsr_n;
 	return cpsr_n;
 }
@@ -2437,7 +2438,7 @@ ui32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
 // 00009B3C: void SysCtlPeripheralReset(Register uint32 r0)
 void SysCtlPeripheralReset(uint32 r0)
 {
-	ui32 * r2_n = (g_ptr9B78 + ((r0 >> 28) << 0x02))->ptr0010;
+	ui32 * r2_n = (ui32 *) (g_ptr9B78 + ((r0 >> 28) << 0x02) / 4)[4];
 	*r2_n = r0 & 0x0FFFFFFF | *r2_n;
 	up32 dwLoc0C_n = 0x00;
 	if (false)
@@ -2449,58 +2450,58 @@ void SysCtlPeripheralReset(uint32 r0)
 	*r2_n &= ~r0;
 }
 
-ptr32 g_ptr9B78 = 42324; // 00009B78
+Eq_n (* g_ptr9B78)[] = &g_aA554; // 00009B78
 // 00009B7C: void SysCtlPeripheralEnable(Register uint32 r0)
 // Called from:
 //      PDCInit
 //      OSRAMInit
 void SysCtlPeripheralEnable(uint32 r0)
 {
-	ui32 * r3_n = (g_ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
+	ui32 * r3_n = (ui32 *) (g_ptr9B94 + ((r0 >> 28) << 0x02) / 4)[7];
 	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
-ptr32 g_ptr9B94 = 42324; // 00009B94
+Eq_n (* g_ptr9B94)[] = &g_aA554; // 00009B94
 // 00009B98: void SysCtlPeripheralDisable(Register uint32 r0)
 void SysCtlPeripheralDisable(uint32 r0)
 {
-	ui32 * r2_n = (g_ptr9BB0 + ((r0 >> 28) << 0x02))->ptr001C;
+	ui32 * r2_n = (ui32 *) (g_ptr9BB0 + ((r0 >> 28) << 0x02) / 4)[7];
 	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
-ptr32 g_ptr9BB0 = 42324; // 00009BB0
+Eq_n (* g_ptr9BB0)[] = &g_aA554; // 00009BB0
 // 00009BB4: void SysCtlPeripheralSleepEnable(Register uint32 r0)
 void SysCtlPeripheralSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (g_ptr9BCC + ((r0 >> 28) << 0x02))->ptr0028;
+	ui32 * r3_n = (ui32 *) (g_ptr9BCC + ((r0 >> 28) << 0x02) / 4)[0x0A];
 	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
-ptr32 g_ptr9BCC = 42324; // 00009BCC
+Eq_n (* g_ptr9BCC)[] = &g_aA554; // 00009BCC
 // 00009BD0: void SysCtlPeripheralSleepDisable(Register uint32 r0)
 void SysCtlPeripheralSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (g_ptr9BE8 + ((r0 >> 28) << 0x02))->ptr0028;
+	ui32 * r2_n = (ui32 *) (g_ptr9BE8 + ((r0 >> 28) << 0x02) / 4)[0x0A];
 	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
-ptr32 g_ptr9BE8 = 42324; // 00009BE8
+Eq_n (* g_ptr9BE8)[] = &g_aA554; // 00009BE8
 // 00009BEC: void SysCtlPeripheralDeepSleepEnable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (g_ptr9C04 + ((r0 >> 28) << 0x02))->ptr0034;
+	ui32 * r3_n = (ui32 *) (g_ptr9C04 + ((r0 >> 28) << 0x02) / 4)[0x0D];
 	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
-ptr32 g_ptr9C04 = 42324; // 00009C04
+Eq_n (* g_ptr9C04)[] = &g_aA554; // 00009C04
 // 00009C08: void SysCtlPeripheralDeepSleepDisable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (g_ptr9C20 + ((r0 >> 28) << 0x02))->ptr0034;
+	ui32 * r2_n = (ui32 *) (g_ptr9C20 + ((r0 >> 28) << 0x02) / 4)[0x0D];
 	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
-ptr32 g_ptr9C20 = 42324; // 00009C20
+Eq_n (* g_ptr9C20)[] = &g_aA554; // 00009C20
 // 00009C24: void SysCtlPeripheralClockGating(Register word32 r0)
 void SysCtlPeripheralClockGating(word32 r0)
 {
@@ -2695,7 +2696,7 @@ uint32 SysCtlClockGet()
 			r0_n = 0x00;
 			return r0_n;
 		}
-		r0_n = (g_ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02))->dw0030;
+		r0_n = (uint32) (g_ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02) / 4)[0x0C];
 		break;
 	}
 	if (r3_n << 20 >= 0x00)
@@ -2713,7 +2714,7 @@ uint32 SysCtlClockGet()
 }
 
 ui32 * g_ptr9E54 = &g_dw400FE060; // 00009E54
-ptr32 g_ptr9E58 = 42324; // 00009E58
+Eq_n (* g_ptr9E58)[] = &g_aA554; // 00009E58
 ui32 * g_ptr9E5C = &g_dw400FE064; // 00009E5C
 uint32 g_dw9E60 = 3750000; // 00009E60
 uint32 g_dw9E64 = 15000000; // 00009E64
