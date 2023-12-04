@@ -93,7 +93,7 @@ union Eq_n * fn004002F8(union Eq_n * r2, Eq_n r3, ptr32 r25, ptr32 r26, Eq_n r27
 			Eq_n r30_n[] = (Eq_n (*)[]) (&r2->u1)[5];
 			Eq_n r11_n;
 			&r11_n.u1->b0000 = r30_n[r10_n].t0000.u1;
-			struct Eq_n * r30_n = (struct Eq_n *) &(r30_n + (r10_n << 0x02) / 4)->t0000.u0;
+			struct Eq_n * r30_n = (struct Eq_n *) &(r30_n + r10_n)->t0000.u0;
 			if (r11_n == 0x00)
 			{
 				Eq_n r3_n;
@@ -1175,12 +1175,12 @@ union Eq_n * fn00401CE8(union Eq_n * r2, Eq_n r3, struct Eq_n * r4, struct Eq_n 
 		if ((r3_n & 0x03) != 0x00)
 		{
 			r11_n[r3].dw0000 = r3_n + 0x07 & ~0x07;
-			r8_n = (struct Eq_n *) &(r11_n + (r3 << 0x04) / 16)->dw0000;
+			r8_n = (struct Eq_n *) &(r11_n + r3)->dw0000;
 		}
 		else
 		{
 			r11_n[r3].dw0000 = r3_n;
-			r8_n = (struct Eq_n *) &(r11_n + (r3 << 0x04) / 16)->dw0000;
+			r8_n = (struct Eq_n *) &(r11_n + r3)->dw0000;
 		}
 		r8_n->dw000C = r3_n;
 		r8_n->ptr0008 = r31_n;
@@ -1215,7 +1215,7 @@ union Eq_n * fn00401DD8(union Eq_n * r2, Eq_n r3, struct Eq_n * r4, struct Eq_n 
 	v4->ptr000C = r31;
 	Eq_n (*** r29_n)[] = (Eq_n (***)[]) (&r2->u0)[0x008C];
 	Eq_n r5_n[] = (Eq_n (*)[]) **r29_n;
-	struct Eq_n * r11_n = (struct Eq_n *) &(r5_n + (r3 << 0x04) / 16)->dw0000;
+	struct Eq_n * r11_n = (struct Eq_n *) &(r5_n + r3)->dw0000;
 	word32 r8_n = r11_n->dw0004;
 	struct Eq_n * r9_n = r11_n->ptr0008;
 	int32 r30_n = (char *) &r4->dw0004 + 3 & ~0x07;
@@ -1228,7 +1228,7 @@ union Eq_n * fn00401DD8(union Eq_n * r2, Eq_n r3, struct Eq_n * r4, struct Eq_n 
 		r28 = &(r9_n + (r30_n - r10_n) / 16)->dw0000 + 2 & ~0x07;
 		union Eq_n * dwLoc3C;
 		r2 = dwLoc3C;
-		r11_n = (struct Eq_n *) &(r10_n + (r3 << 0x04) / 16)->dw0000;
+		r11_n = (struct Eq_n *) &(r10_n + r3)->dw0000;
 		if ((word32) **(&dwLoc3C->u0)[0x0098] != 0x00)
 		{
 			r3Out = ~0x00;
@@ -1280,7 +1280,7 @@ union Eq_n * fn00401ED4(union Eq_n * r2, ui32 r3, ui32 r30, word32 r31)
 	}
 	Eq_n r11_n[] = (Eq_n (*)[]) *r11_n;
 	r11_n[r3].dw0000 = 0x00;
-	struct Eq_n * r31_n = (struct Eq_n *) &(r11_n + (r3 << 0x04) / 16)->dw0000;
+	struct Eq_n * r31_n = (struct Eq_n *) &(r11_n + r3)->dw0000;
 	r31_n->dw0004 = 0x00;
 	r31_n->dw0008 = 0x00;
 	return r2;

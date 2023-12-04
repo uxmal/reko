@@ -465,6 +465,25 @@ namespace Reko.UnitTests.Decompiler.Typing
         }
 
         [Test]
+        public void CEB_ArrayOfStructs_Shl()
+        {
+            var array = new ArrayType(new StructureType(8)
+            {
+                Fields =
+                {
+                    new StructureField(0, PrimitiveType.Word32),
+                    new StructureField(4, PrimitiveType.Real32),
+                }
+            }, 0);
+            var a = new Identifier("a", Ptr32(array), null);
+            var i = new Identifier("i", PrimitiveType.Int32, null);
+            CreateTv(a, array, array);
+            var ceb = CreateBuilder(null, a, m.Shl(i, 3));
+            var e = ceb.BuildComplex(PrimitiveType.Word32);
+            Assert.AreEqual("a[i].dw0000", e.ToString());
+        }
+
+        [Test]
         public void CEB_ArrayOfPtrsToStruct()
         {
             var array = new ArrayType(ptrPoint, 0);

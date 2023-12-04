@@ -39,7 +39,7 @@ l0000A63C:
 		}
 		struct Eq_n * r4_n = r1;
 		struct Eq_n * r3_n = r0;
-		struct Eq_n * r5_n = r0 + ((r2 - 0x10 >> 4) + 0x01 << 4) / 16;
+		struct Eq_n * r5_n = r0 + ((r2 - 0x10 >> 4) + 0x01);
 		do
 		{
 			r3_n->a0000[0] = r4_n->a0000[0];

@@ -41291,7 +41291,7 @@ T_9191: (in Mem1384[r11_r10_1053 + (r3_r2_1268 << 2<8>) + 2<32>:word16] @ 0000AA
   Class: Eq_9191
   DataType: word16
   OrigDataType: word16
-T_9192: (in (r11_r10_1053 + (r3_r2_1268 << 2<8>) / 4<i32>)[0<i32>].w0002 + r7_1336 @ 0000AA82 : word16)
+T_9192: (in (r11_r10_1053 + r3_r2_1268)[0<i32>].w0002 + r7_1336 @ 0000AA82 : word16)
   Class: Eq_9192
   DataType: word16
   OrigDataType: word16

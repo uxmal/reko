@@ -4106,7 +4106,7 @@ int32 fn0001878E(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r3Out, ptr32 & 
 								if (sp_n[0x0D] > sp_n[8])
 								{
 									sp_n[0x0D] = (struct Eq_n) (sp_n[0x0D] - ((word32) (sp_n)[4].dwFFFFFFFC + 5));
-									up32 * r3_n = fp_n->aFFFFFFB8 + (r9_n << 2) / 4;
+									up32 * r3_n = fp_n->aFFFFFFB8 + r9_n;
 									r10_n = (struct Eq_n *) ((char *) r10_n + 1);
 									if ((char *) r10_n + 1 < sp_n[11])
 									{
@@ -4177,7 +4177,7 @@ int32 fn0001878E(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r3Out, ptr32 & 
 							} while (r9_n > (word32) ((word32) (sp_n)[9].dwFFFFFFFC + (sp_n[0x0C] * 4 + 4))->dwFFFFFFFC + (r6_n + 4));
 						}
 						fp_n->bFFFFFA6B = (int8) (r9_n - r6_n);
-						if (r8_n >= fp_n->aFFFFFAB4 + (*((word32) (sp_n)[2].dwFFFFFFFC + 4) << 2) / 4)
+						if (r8_n >= fp_n->aFFFFFAB4 + *((word32) (sp_n)[2].dwFFFFFFFC + 4))
 							fp_n->bFFFFFA6A = 99;
 						else
 						{

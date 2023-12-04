@@ -46,6 +46,7 @@ namespace Reko.Typing
     {
         private readonly Program program;
         private readonly ITypeStore store;
+        private readonly ArrayExpressionMatcher aem;
         private Expression? expComplex;         // The expression we wish to convert to high-level code.
         private Expression? index;              // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
         private readonly Expression? basePtr;   // Non-null if x86-style base segment present.
@@ -71,6 +72,7 @@ namespace Reko.Typing
             this.expComplex = complex;
             this.index = index;
             this.offset = offset;
+            this.aem = new(program.Platform.PointerType);
         }
 
         private bool Dereferenced => dtResult is not null;
@@ -477,24 +479,23 @@ namespace Reko.Typing
                 return field.Name;
         }
 
-        private static Expression? ScaleDownIndex(Expression? exp, int elementSize)
+        private Expression? ScaleDownIndex(Expression? exp, int elementSize)
         {
             if (exp == null || elementSize <= 1)
                 return exp;
             if (exp is BinaryExpression bin &&
-                bin.Operator is IMulOperator &&
-                bin.Right is Constant cRight &&
-                cRight.ToInt32() % elementSize == 0)
+                aem.MatchMul(bin) &&
+                aem.ElementSize!.ToInt32() % elementSize == 0)
             {
                 // Expression is of the form (* x c) where c is a multiple of elementSize.
 
-                var scale = cRight.ToInt32() / elementSize;
+                var scale = aem.ElementSize!.ToInt32() / elementSize;
                 if (scale == 1)
-                    return bin.Left;
+                    return aem.Index;
                 return new BinaryExpression(
-                    bin.Operator,
+                    Operator.IMul,
                     bin.DataType,
-                    bin.Left,
+                    aem.Index!,
                     Constant.Int32(scale));
             }
             else

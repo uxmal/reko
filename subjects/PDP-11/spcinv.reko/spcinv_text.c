@@ -467,7 +467,7 @@ byte * g_ptr066A = &g_b1116; // 066A
 //      fn06D6
 bool fn067C(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, byte & r4Out, struct Eq_n & r5Out)
 {
-	struct Eq_n * r1_n = (struct Eq_n *) (r0.u1 + (r3 - 0x01 << 1) /16 2);
+	struct Eq_n * r1_n = (struct Eq_n *) (r0.u1 + (r3 - 0x01));
 	byte v12_n = r1_n->b0E2A;
 	bool Z_n = SLICE(cond(v12_n), bool, 2);
 	struct Eq_n * r5;
@@ -776,7 +776,7 @@ void fn093C(Eq_n r0, struct Eq_n * r1)
 	cui16 r3_n = r3_n - 0x01;
 	if (g_w0F20 >= 0x00)
 		r3_n = r3_n - 0x02;
-	struct Eq_n * r3_n = r0.u1 + (r3_n << 1) /16 2 - 22 + 0x0E40;
+	struct Eq_n * r3_n = r0.u1 + r3_n - 22 + 0x0E40;
 	word16 wLoc04_n = 0x07;
 	word16 v19_n;
 	do
