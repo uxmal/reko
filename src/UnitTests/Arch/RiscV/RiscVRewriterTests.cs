@@ -1048,9 +1048,9 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_rw_csrrc()
         {
             Given_HexString("73B00230");
-            AssertCode(     // csrrc	zero,mstatus,zero
+            AssertCode(     // csrrc	zero,mstatus,t0
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrc<word64>(mstatus, 0<64>)");
+                "1|L--|__csrrc<word64>(mstatus, t0)");
         }
 
         [Test]
@@ -1066,9 +1066,9 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_rw_csrrs()
         {
             Given_HexString("73292000");
-            AssertCode(     // csrrs	s2,frm,sp
+            AssertCode(     // csrrs	s2,frm,zero
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s2 = __csrrs<word64>(frm, sp)");
+                "1|L--|s2 = __csrrs<word64>(frm, 0<64>)");
         }
 
         [Test]
@@ -1084,9 +1084,9 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_rw_csrrw()
         {
             Given_HexString("73900930");
-            AssertCode(     // csrrw	zero,mstatus,zero
+            AssertCode(     // csrrw	zero,mstatus,x19
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrw<word64>(mstatus, 0<64>)");
+                "1|L--|__csrrw<word64>(mstatus, s3)");
         }
 
         [Test]
