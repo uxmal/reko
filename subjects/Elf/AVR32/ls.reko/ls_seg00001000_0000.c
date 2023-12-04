@@ -854,7 +854,7 @@ Eq_n (* fn000030D8)[](Eq_n r4, Eq_n r5, Eq_n r7, ui32 r12, Eq_n lr, ptr32 & r9Ou
 	struct Eq_n * r6_n = 0x30DC - g_dw311E;
 	Eq_n (* r8_n)[] = r6_n->ptrFFFFFFC8;
 	struct Eq_n * r10_n = r8_n[r12].ptr0000;
-	byte * r12_n = (byte *) *((char *) &(r8_n + (r12 << 0x03) / 8)->ptr0000 + 4);
+	byte * r12_n = (byte *) *((char *) &(r8_n + r12)->ptr0000 + 4);
 	ptr32 r9;
 	if (r10_n != null)
 	{

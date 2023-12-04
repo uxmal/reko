@@ -23701,7 +23701,7 @@ T_5072: (in o0_24 + (Mem0[0x27F4C<32>:word32] << 2<32>) @ 00014E48 : word32)
   Class: Eq_5066
   DataType: (ptr32 (arr Eq_194))
   OrigDataType: up32
-T_5073: (in o0_24 >= &(o0_24 + (n_base_source_files << 2<32>) / 4<i32>)->u0 @ 00014E48 : bool)
+T_5073: (in o0_24 >= &(o0_24 + n_base_source_files)->u0 @ 00014E48 : bool)
   Class: Eq_5073
   DataType: bool
   OrigDataType: bool
@@ -32053,7 +32053,7 @@ T_7155: (in Mem1270[(o2_1268 + 1<32> << 2<32>) + i1_156 + -4<i32>:word32] @ 0001
   Class: Eq_7143
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7156: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + ((char *) o2_1268 + 1<i32> << 2<32>) / 4<i32>)[-1<i32>]) @ 00016358 : int32)
+T_7156: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + ((char *) o2_1268 + 1<i32>))[-1<i32>]) @ 00016358 : int32)
   Class: Eq_7156
   DataType: int32
   OrigDataType: int32
@@ -34818,7 +34818,7 @@ T_7844: (in Mem874[(o2_1011 << 2<32>) + i1_156 + -4<i32>:word32] @ 00016818 : wo
   Class: Eq_7833
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7845: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + (o2_1011 << 2<32>) / 4<i32>)[-1<i32>]) @ 00016818 : int32)
+T_7845: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + o2_1011)[-1<i32>]) @ 00016818 : int32)
   Class: Eq_7845
   DataType: int32
   OrigDataType: int32

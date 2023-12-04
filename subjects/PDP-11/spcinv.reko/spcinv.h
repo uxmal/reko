@@ -723,7 +723,7 @@ Eq_1414: (fn void (Eq_66, (ptr16 Eq_1120)))
 	T_1414 (in fn093C @ 0824 : ptr16)
 	T_1415 (in signature of fn093C @ 093C : void)
 Eq_1474: (struct "Eq_1474" 0002 (0 byte b0000))
-	T_1474 (in r0.u1 + (r3_15 << 1<i16>) /16 2<i32> - 0x16<16> + 0xE40<16> @ 0950 : word16)
+	T_1474 (in r0.u1 + r3_15 - 0x16<16> + 0xE40<16> @ 0950 : word16)
 	T_1475 (in r3_22 @ 0950 : (ptr16 Eq_1474))
 	T_1488 (in r3_22 + 2<16> @ 095C : word16)
 Eq_1603: (fn Eq_66 (Eq_66, (ptr16 byte), ptr16))
@@ -6709,7 +6709,7 @@ T_1471: (in 0x16<16> @ 0950 : word16)
   Class: Eq_1471
   DataType: ui16
   OrigDataType: ui16
-T_1472: (in r0.u1 + (r3_15 << 1<i16>) /16 2<i32> - 0x16<16> @ 0950 : word16)
+T_1472: (in r0.u1 + r3_15 - 0x16<16> @ 0950 : word16)
   Class: Eq_1472
   DataType: ui16
   OrigDataType: ui16
@@ -6717,7 +6717,7 @@ T_1473: (in 0xE40<16> @ 0950 : word16)
   Class: Eq_1473
   DataType: word16
   OrigDataType: word16
-T_1474: (in r0.u1 + (r3_15 << 1<i16>) /16 2<i32> - 0x16<16> + 0xE40<16> @ 0950 : word16)
+T_1474: (in r0.u1 + r3_15 - 0x16<16> + 0xE40<16> @ 0950 : word16)
   Class: Eq_1474
   DataType: (ptr16 Eq_1474)
   OrigDataType: ui16

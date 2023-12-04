@@ -2703,7 +2703,7 @@ void do_processing()
 {
 	union Eq_n * l1_n;
 	Eq_n o0_n[] = g_ptr28160;
-	if (o0_n < &(o0_n + (n_base_source_files << 0x02) / 4)->u0)
+	if (o0_n < &(o0_n + n_base_source_files)->u0)
 	{
 		Eq_n o0_n;
 		o0_n.u0 = o0_n[0].u0;
@@ -3753,7 +3753,7 @@ l000161B8:
 										}
 										else if (opterr != 0x00)
 										{
-											struct Eq_n * o3_n = (i1_n + ((char *) o2_n + 1 << 0x02) / 4)[-1];
+											struct Eq_n * o3_n = (i1_n + ((char *) o2_n + 1))[-1];
 											struct Eq_n * o0_n;
 											if ((int32) o3_n->b0001 == 0x2D)
 											{
@@ -3798,7 +3798,7 @@ l00016398:
 										goto l00016398;
 									}
 									if (opterr != 0x00)
-										fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_n[0], (i1_n + ((char *) o2_n + 1 << 0x02) / 4)[-1]);
+										fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_n[0], (i1_n + ((char *) o2_n + 1))[-1]);
 									uint32 o0_n = (uint32) strlen(g_ptr2B2C0);
 									Eq_n o2_n;
 									o2_n.u0 = l3_n->t000C.u0;
@@ -3957,7 +3957,7 @@ l000166CC:
 													if (o2_n >= i6_n->ptr0044)
 													{
 														if (opterr != 0x00)
-															fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_n[0], (i1_n + (o2_n << 0x02) / 4)[-1]);
+															fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_n[0], (i1_n + o2_n)[-1]);
 														g_ptr2B2C0 += (uint32) strlen(g_ptr2B2C0);
 														o0_n = (int32) *i2_n;
 														goto l00016388;

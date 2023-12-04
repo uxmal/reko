@@ -3969,7 +3969,7 @@ l0000A4A4:
 					int32 r3_r2_n = (int32) (wArg2A_n + 0x01);
 					r0_n = wArg2A_n + 0x01;
 					++wArg2A_n;
-					r5_r4_n = r13_n + (r3_r2_n << 0x02) / 4;
+					r5_r4_n = r13_n + r3_r2_n;
 					r3_r2_n = SEQ(SLICE(r3_r2_n << 0x02, word16, 16), (word16) r3_r2_n << 0x02);
 				}
 				++r11_n;
@@ -4000,7 +4000,7 @@ l0000ADDC:
 			else
 			{
 				++r5_n;
-				r7_r6_n = r13_n + ((int32) r5_n << 0x02) / 4;
+				r7_r6_n = r13_n + (int32) r5_n;
 				r0_n = r5_n;
 			}
 			++r11_n;
@@ -4083,7 +4083,7 @@ l0000A504:
 		int32 r1_r0_n = (int32) (r0_n + ~0x00);
 		ci16 wArg06_n = r0_n;
 		struct Eq_n * dwArg0A_n = r3_r2_n;
-		struct Eq_n * dwLoc0E_n = (struct Eq_n *) (r13_n + (r1_r0_n << 0x02) / 4);
+		struct Eq_n * dwLoc0E_n = (struct Eq_n *) (r13_n + r1_r0_n);
 		struct Eq_n * dwLoc1E_n = (struct Eq_n *) (r3_r2.u1 + r1_r0_n / 9244);
 		struct Eq_n * dwArg1A_n = (struct Eq_n *) (r3_r2.u1 + (r1_r0_n * 0x02) / 9244);
 		struct Eq_n * dwArg22_n = (struct Eq_n *) (r3_r2.u1 + (r1_r0_n * 0x02 + -2) / 9244);
@@ -4148,8 +4148,8 @@ l0000A6E6:
 		dwArg22_n[1434] = (struct Eq_n) r2_n;
 		int32 r1_r0_n = (int32) wArg12_n;
 		int32 r3_r2_n = (int32) r2_n;
-		struct Eq_n * r7_r6_n = (struct Eq_n *) (r13_n + (r1_r0_n << 0x02) / 4);
-		struct Eq_n * r5_r4_n = (struct Eq_n *) (r13_n + (r3_r2_n << 0x02) / 4);
+		struct Eq_n * r7_r6_n = (struct Eq_n *) (r13_n + r1_r0_n);
+		struct Eq_n * r5_r4_n = (struct Eq_n *) (r13_n + r3_r2_n);
 		dwLoc0E_n->w0000 = r7_r6_n->w0000 + r5_r4_n->w0000;
 		wLoc02_n = SLICE(dwLoc04_n, word16, 16);
 		ci16 wLoc26_n = wArg06_n + ~0x01;
@@ -4263,8 +4263,8 @@ l0000A77A:
 				{
 					ci16 r0_n = r11_r10_n->w1668;
 					int32 r3_r2_n = (int32) r0_n;
-					struct Eq_n * r5_r4_n = (struct Eq_n *) (r2_r1_n + (r3_r2_n << 0x02) / 4);
-					ci16 r2_n = (r2_r1_n + ((word32) r5_r4_n->w0002 << 0x02) / 4)->t0002.w0000;
+					struct Eq_n * r5_r4_n = (struct Eq_n *) (r2_r1_n + r3_r2_n);
+					ci16 r2_n = (r2_r1_n + (word32) r5_r4_n->w0002)->t0002.w0000;
 					word16 r10_n = (word16) r11_r10_n;
 					ci16 r2_n = r2_n + 0x01;
 					if (r7_n >= r2_n + 0x01)
@@ -4286,7 +4286,7 @@ l0000A77A:
 						word32 r3_r2_n = (word32) r2_n;
 						word32 r9_r8_n = (word32) r5_r4_n->w0000;
 						r3_r2.u1->dw23F8 = fn0000D358((word16) r3_r2_n, SLICE(r3_r2_n, word16, 16), (word16) r9_r8_n, SLICE(r9_r8_n, word16, 16)) + (r3_r2.u1)->dw23F8;
-						word32 r3_r2_n = (word32) ((r11_r10_n + (r3_r2_n << 0x02) / 4)[0].w0002 + r7_n);
+						word32 r3_r2_n = (word32) ((r11_r10_n + r3_r2_n)[0].w0002 + r7_n);
 						r3_r2.u1->dw2400 = fn0000D358((word16) r3_r2_n, SLICE(r3_r2_n, word16, 16), (word16) r9_r8_n, SLICE(r9_r8_n, word16, 16)) + (r3_r2.u1)->dw2400;
 					}
 					wLoc26_n = wLoc26_n + 0x01;
@@ -4302,8 +4302,8 @@ l0000A77A:
 				do
 				{
 					ci16 r5_n = r9_r8_n->w1668;
-					struct Eq_n * r1_r0_n = (struct Eq_n *) (r2_r1_n + ((int32) r5_n << 0x02) / 4);
-					ci16 r4_n = (r2_r1_n + ((word32) r1_r0_n->w0002 << 0x02) / 4)->t0002.w0000;
+					struct Eq_n * r1_r0_n = (struct Eq_n *) (r2_r1_n + (int32) r5_n);
+					ci16 r4_n = (r2_r1_n + (word32) r1_r0_n->w0002)->t0002.w0000;
 					word16 r8_n = (word16) r9_r8_n;
 					ci16 r4_n = r4_n + 0x01;
 					if (r7_n >= r4_n + 0x01)
@@ -4468,7 +4468,7 @@ l0000ACB8:
 						struct Eq_n * r11_r10_n;
 						if (r3_n <= r0_n)
 						{
-							struct Eq_n * r9_r8_n = (struct Eq_n *) (r2_r1_n + ((int32) r0_n << 0x02) / 4);
+							struct Eq_n * r9_r8_n = (struct Eq_n *) (r2_r1_n + (int32) r0_n);
 							word16 r0_n = r9_r8_n->w0002;
 							if (r0_n != wLoc16_n)
 							{
@@ -4493,7 +4493,7 @@ l0000ACB8:
 l0000ACD6:
 		if (wArg2A_n != ~0x00)
 		{
-			Eq_n r5_r4_n = r13_n + ((int32) wArg2A_n + 1 << 0x02) / 4;
+			Eq_n r5_r4_n = r13_n + ((int32) wArg2A_n + 1);
 			struct Eq_n * r7_r6_n;
 			do
 			{
@@ -5730,7 +5730,7 @@ l0000C0B6:
 	else
 		dwArg06_n = r13;
 	Eq_n r4_r3_n;
-	&r4_r3_n.u2->b0000 = r12_n.u2 + (((word32) dwArg06_n - 16 >> 0x04) + 1 << 0x04) / 16;
+	&r4_r3_n.u2->b0000 = r12_n.u2 + (((word32) dwArg06_n - 16 >> 0x04) + 1);
 	do
 	{
 		ui32 r9_r8_n = (word32) dwLoc52_n.u1 + (word32) (r12_n.u2)->b0000;

@@ -4789,7 +4789,7 @@ ui64 fn000000000040AC80(Eq_n rsi, struct Eq_n * rdi)
 	rdi->ptr0030();
 	Eq_n rax_n;
 	if (rax_n < (rdi->t0010).u3)
-		return rdi->ptr0000 + (rax_n << 0x04) /64 16;
+		return rdi->ptr0000 + rax_n;
 	abort();
 }
 
