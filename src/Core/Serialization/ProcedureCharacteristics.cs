@@ -72,7 +72,7 @@ namespace Reko.Core.Serialization
 
         /// <summary>
         /// After the call has returned, increment the instruction pointer
-        /// by this many bytes.
+        /// by this many bytes/cells.
         /// </summary>
         /// <remarks>
         /// This field is used to model VxD calls on 16-bit Windows, where an

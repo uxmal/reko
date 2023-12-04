@@ -40,6 +40,7 @@ using Reko.Core.Memory;
 using Reko.Services;
 using Reko.Core.Loading;
 using Reko.Core.Analysis;
+using Reko.Core.Intrinsics;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -1092,6 +1093,45 @@ l00100004_3:
 testProc_exit:
 ";
             AssertProcedureCode(expected, block.Procedure);
-    }
+        }
+
+        [Test]
+        public void Bwi_Syscall_ReturnAddressAdjustment()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+
+            var platform = new Mock<IPlatform>(MockBehavior.Strict);
+            platform.Setup(p => p.FindService(
+                5,
+                It.IsAny<ProcessorState>(),
+                It.IsAny<SegmentMap>())).Returns(new SystemService
+                {
+                    Name = "Service5",
+                    Signature = FunctionType.Action(),
+                    Characteristics = new ProcedureCharacteristics ()
+                    {
+                        ReturnAddressAdjustment = 8,
+                    },
+                });
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            platform.Setup(p => p.TrashedRegisters).Returns(new HashSet<RegisterStorage>());
+            program.Platform = platform.Object;
+            Given_Trace(0x00100000, m => m.SideEffect(m.Fn(CommonOps.Syscall_1, Constant.Byte(5))));
+            Given_Trace(0x00100008, m => m.Return(0, 0));
+            Given_ExpectedBranchTarget(0x00100008, "l00100008");
+
+            var wi = CreateWorkItem(addrStart);
+            wi.Process();
+
+            var sExpected =
+@"testProc_entry:
+l00100000:
+	Service5()
+	goto 0x00100008<p32>
+l00100008:
+testProc_exit:
+";
+            AssertProcedureCode(sExpected, block.Procedure);
+        }
     }
 }

@@ -892,7 +892,7 @@ namespace Reko.Scanning
         public bool VisitSideEffect(RtlSideEffect side)
         {
             var svc = MatchSyscallToService(side);
-            if (svc != null)
+            if (svc is not null)
             {
                 return EmitSystemServiceCall(svc);
             }
@@ -924,7 +924,7 @@ namespace Reko.Scanning
         {
             var ep = svc.CreateExternalProcedure(arch);
             var fn = new ProcedureConstant(program.Platform.PointerType, ep);
-            if (svc.Signature != null)
+            if (svc.Signature is not null)
             {
                 var site = state.OnBeforeCall(stackReg!, svc.Signature.ReturnAddressOnStack);
                 var ab = arch.CreateFrameApplicationBuilder(frame!, site);

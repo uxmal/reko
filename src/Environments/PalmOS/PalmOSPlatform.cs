@@ -39,7 +39,16 @@ namespace Reko.Environments.PalmOS
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            throw new NotImplementedException();
+            if (vector != 0xF || state is null || segmentMap is null)
+                return null;
+            var addrTrapNo = state.InstructionPointer + 2;
+            if (!segmentMap.TryFindSegment(addrTrapNo, out var segment))
+                return null;
+            var mem = segment.MemoryArea;
+            if (!mem.TryReadBeUInt16(addrTrapNo, out ushort trapNo))
+                return null;
+
+            return Traps.GetTrapSignature(trapNo);
         }
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
