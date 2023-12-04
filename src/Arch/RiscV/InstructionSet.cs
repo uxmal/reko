@@ -443,9 +443,9 @@ namespace Reko.Arch.RiscV
                         (0b0011000_00010, Instr(Mnemonic.mret, InstrClass.Transfer | InstrClass.Return)),
                         (0b0001000_00101, Instr(Mnemonic.wfi, InstrClass.Linear))),
 
-                    Instr(Mnemonic.csrrw, d, Csr20, r2),
-                    Instr(Mnemonic.csrrs, d, Csr20, r2),
-                    Instr(Mnemonic.csrrc, d, Csr20, r2),
+                    Instr(Mnemonic.csrrw, d, Csr20, r1),
+                    Instr(Mnemonic.csrrs, d, Csr20, r1),
+                    Instr(Mnemonic.csrrc, d, Csr20, r1),
                     invalid,
                     Instr(Mnemonic.csrrwi, d, Csr20, Imm(15, 5)),
                     Instr(Mnemonic.csrrsi, d, Csr20, Imm(15, 5)),

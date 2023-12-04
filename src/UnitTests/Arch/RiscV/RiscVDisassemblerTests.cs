@@ -233,9 +233,39 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_csrrw()
+        {
+            AssertCode("csrrw\tt5,mtvec,a1", "739F5530");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrs()
+        {
+            AssertCode("csrrs\tt5,mtvec,a1", "73AF5530");
+        }
+
+        [Test]
         public void RiscV_dasm_csrrc()
         {
-            AssertCode("csrrc\tzero,mstatus,zero", "73B00230");
+            AssertCode("csrrc\tt5,mtvec,a1", "73BF5530");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrwi()
+        {
+            AssertCode("csrrwi\tt5,mtvec,0000000B", "73 df 55 30");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrsi()
+        {
+            AssertCode("csrrsi\tt5,mtvec,0000000B", "73 ef 55 30");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrci()
+        {
+            AssertCode("csrrci\tt5,mtvec,0000000B", "73 ff 55 30");
         }
 
         [Test]
