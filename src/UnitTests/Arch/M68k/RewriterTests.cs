@@ -2015,5 +2015,20 @@ namespace Reko.UnitTests.Arch.M68k
                 "3|L--|Mem0[a0:word16] = v4",
                 "4|L--|CVZNX = cond(v4)");
         }
+
+        [Test]
+        public void M68krw_pea_add_rts()
+        {
+            // This sequence of instructions makes a PC-relative jump
+
+            Given_UInt16s(
+                0x487A, 0x0004,         // pea (pc+4)
+                0x0697, 0x0000, 0x0006, // addi.l #$00000006,(a7)
+                0x4E75);                 // rts
+            AssertCode(
+                "0|T--|00010000(12): 2 instructions",
+                "1|L--|Mem0[a7 - 4<i32>:word32] = 0001000C",
+                "2|T--|goto 0001000C");
+        }
     }
 }

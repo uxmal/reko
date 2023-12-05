@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
@@ -46,7 +47,7 @@ namespace Reko.Arch.M68k
         private readonly IStorageBinder binder;
         private readonly M68kState state;
         private readonly IRewriterHost host;
-        private readonly IEnumerator<M68kInstruction> dasm;
+        private readonly LookaheadEnumerator<M68kInstruction> dasm;
         private readonly List<RtlInstruction> rtlInstructions;
         private readonly RtlEmitter m;
         private readonly OperandRewriter orw;
@@ -60,7 +61,7 @@ namespace Reko.Arch.M68k
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
-            this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
+            this.dasm = new(arch.CreateDisassemblerImpl(rdr).GetEnumerator());
             this.rtlInstructions = new List<RtlInstruction>();
             this.instr = default!;
             this.m = new RtlEmitter(rtlInstructions);
@@ -73,7 +74,6 @@ namespace Reko.Arch.M68k
             {
                 instr = dasm.Current;
                 var addr = instr.Address;
-                var len = instr.Length;
                 iclass = instr.InstructionClass;
                 orw.DataWidth = instr.DataWidth!;
                 switch (instr.Mnemonic)
@@ -323,6 +323,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.unlk: RewriteUnlk(); break;
                 case Mnemonic.unpk: RewriteUnpk(); break;
                 }
+                var len = (int) (dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);
                 rtlInstructions.Clear();
             }

@@ -30,6 +30,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Intrinsics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.M68k
 {
@@ -593,9 +594,45 @@ namespace Reko.Arch.M68k
         public void RewritePea()
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
+            // Recognize the idiom that pushes a pc-relative address, modifies
+            // it on the stack, and transfers control with a `rts` instruction.
+            if (IsPeaAddiRtsSequence(out Address? addrTarget))
+            {
+                this.iclass = InstrClass.Transfer;
+                dasm.MoveNext();
+                dasm.MoveNext();
+                m.Assign(m.Mem32(m.ISubS(sp, 4)), addrTarget);
+                m.Goto(addrTarget);
+                return;
+            }
             m.Assign(sp, m.ISubS(sp, 4));
             var ea = GetEffectiveAddress(instr.Operands[0]);
             m.Assign(m.Mem32(sp), ea);
+        }
+
+        private bool IsPeaAddiRtsSequence([MaybeNullWhen(false)] out Address addrTarget)
+        {
+            addrTarget = default;
+            var pea = instr;
+            if (!dasm.TryPeek(1, out var addi) ||
+                !dasm.TryPeek(2, out var rts))
+                return false;
+            if (addi!.Mnemonic != Mnemonic.addi)
+                return false;
+            if (rts!.Mnemonic != Mnemonic.rts)
+                return false;
+            if (pea.Operands[0] is not MemoryOperand mem ||
+                mem.Base != Registers.pc)
+                return false;
+            if (addi.Operands[1] is not MemoryOperand stk ||
+                stk.Base != Registers.a7 ||
+                stk.Offset is not null && !stk.Offset.IsZero)
+                return false;
+
+            addrTarget = instr.Address + (
+                (mem.Offset?.ToInt32() ?? 0) +    // From the PEA
+                ((ImmediateOperand) addi.Operands[0]).Value.ToInt32());
+            return true;
         }
 
         public void RewriteMove(bool setFlags)
