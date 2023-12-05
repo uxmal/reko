@@ -102,21 +102,25 @@ namespace Reko.Core.Collections
         {
             if (ahead < 0)
                 throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(ahead));
-            int itemsInBuffer = peeked.Count - iCur;
-            Debug.Assert(itemsInBuffer >= 0);
-            if (itemsInBuffer == 0 && ahead == 0)
+            int itemsRemaining = peeked.Count - iCur;
+            Debug.Assert(itemsRemaining >= 0);
+            if (itemsRemaining == 0 && ahead == 0)
             {
                 result = e.Current;
                 return true;
             }
-            if (ahead < itemsInBuffer)
+            int cItemsMissing = ahead + 1 - itemsRemaining;
+            if (cItemsMissing <= 0)
             {
                 result = peeked[iCur + ahead];
                 return true;
             }
-            if (itemsInBuffer == 0)
+            if (itemsRemaining == 0)
+            {
                 peeked.Add(e.Current);
-            for (int i = 0; i < ahead; ++i)
+                --cItemsMissing;
+            }
+            for (int i = 0; i < cItemsMissing; ++i)
             {
                 if (!e.MoveNext())
                 {
@@ -125,7 +129,7 @@ namespace Reko.Core.Collections
                 }
                 peeked.Add(e.Current);
             }
-            result = peeked[ahead];
+            result = peeked[iCur + ahead];
             return true;
         }
 

@@ -35,14 +35,14 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void EmptySequence()
+        public void LAE_EmptySequence()
         {
             var e = new LookaheadEnumerator<char>("".GetEnumerator());
             Assert.IsFalse(e.MoveNext());
         }
 
         [Test]
-        public void GetOne()
+        public void LAE_GetOne()
         {
             var e = new LookaheadEnumerator<char>("a".GetEnumerator());
             Assert.IsTrue(e.MoveNext());
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void HitTheEnd()
+        public void LAE_HitTheEnd()
         {
             var e = new LookaheadEnumerator<char>("a".GetEnumerator());
             Assert.IsTrue(e.MoveNext());
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void Peek0()
+        public void LAE_Peek0()
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void Peek1()
+        public void LAE_Peek1()
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void Peek1MoveNext()
+        public void LAE_Peek1MoveNext()
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void Peek2ShouldReturnFalse()
+        public void LAE_Peek2ShouldReturnFalse()
         {
             var e = new LookaheadEnumerator<string>(new List<string> { "ab", "bc" }.GetEnumerator());
             e.MoveNext();
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void PeekThenEnumerate()
+        public void LAE_PeekThenEnumerate()
         {
             var e = new LookaheadEnumerator<char>("abc".GetEnumerator());
             e.MoveNext();
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void PeekThenMoveToEnd()
+        public void LAE_PeekThenMoveToEnd()
         {
             var e = new LookaheadEnumerator<char>("abc".GetEnumerator());
             e.MoveNext();
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Core.Collections
         }
 
         [Test]
-        public void LAET_Regression1()
+        public void LAE_Regression1()
         {
             var e = new LookaheadEnumerator<char>("abcd".GetEnumerator());
             e.MoveNext();
@@ -135,6 +135,17 @@ namespace Reko.UnitTests.Core.Collections
             Assert.That(PeekSucceeds(e, 2, 'c'));
             Assert.That(PeekSucceeds(e, 3, 'd'));
             Assert.That(PeekSucceeds(e, 3, 'd'));
+        }
+
+        [Test]
+        public void LAE_Regression2()
+        {
+            var e = new LookaheadEnumerator<char>("ppar".GetEnumerator());
+            e.MoveNext();   // on 'p'
+            Assert.That(PeekSucceeds(e, 2, 'a'));
+            e.MoveNext();   // on second 'p'
+            Assert.That(PeekSucceeds(e, 2, 'r'));
+            Assert.That(PeekSucceeds(e, 1, 'a'));
         }
     }
 }
