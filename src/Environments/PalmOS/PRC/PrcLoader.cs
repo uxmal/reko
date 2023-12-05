@@ -61,13 +61,17 @@ namespace Reko.Environments.PalmOS.PRC
             var rsrcHeaders = LoadResourceHeaders(rdr, header.num_records);
             if (rsrcHeaders is null)
                 throw new BadImageFormatException();
-            var segments = LoadResources(rdr, rsrcHeaders, addrLoad);
+            var (segments, ep) = LoadResources(rdr, rsrcHeaders, addrLoad);
             if (segments is null)
                 throw new BadImageFormatException();
 
             var arch = cfgSvc.GetArchitecture("m68k")!;
             var platform = new PalmOSPlatform(Services, arch, "palmOS");
             var program = new Program(segments, arch, platform);
+            if (ep is not null)
+            {
+                program.EntryPoints.Add(ep, ImageSymbol.Procedure(arch, ep));
+            }
             return program;
         }
 
@@ -134,10 +138,11 @@ namespace Reko.Environments.PalmOS.PRC
             return headers;
         }
 
-        private SegmentMap LoadResources(BeImageReader rdr, List<ResourceHeader> rsrcHeaders, Address addrBase)
+        private (SegmentMap, Address?) LoadResources(BeImageReader rdr, List<ResourceHeader> rsrcHeaders, Address addrBase)
         {
             var segments = new List<ImageSegment>();
             var addr = addrBase;
+            Address? addrEntrypoint = null;
             for (int i = 0; i < rsrcHeaders.Count - 1;  ++i)
             {
                 var hdr = rsrcHeaders[i];
@@ -160,13 +165,18 @@ namespace Reko.Environments.PalmOS.PRC
                     else
                     {
                         accessMode = AccessMode.ReadExecute;
+                        if (hdr.id == 1)
+                        {
+                            addrEntrypoint = addr;
+                        }
                     }
                 }
                 var seg = new ImageSegment(name, mem, accessMode);
                 segments.Add(seg);
                 addr += length; //$TODO: align to even paragraph boundary?
             }
-            return new SegmentMap(segments.ToArray());
+            var map = new SegmentMap(segments.ToArray());
+            return (map, addrEntrypoint);
         }
 
         private void LoadCode0Resource()
