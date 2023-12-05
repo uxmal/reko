@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Libraries.MacsBug;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,6 +55,7 @@ namespace Reko.Environments.PalmOS.PRC
             addrLoad ??= PreferredBaseAddress;
             var rdr = new BeImageReader(base.RawImage);
             var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("m68k")!;
 
             var header = LoadHeader(rdr);
             if (header is null)
@@ -61,16 +63,19 @@ namespace Reko.Environments.PalmOS.PRC
             var rsrcHeaders = LoadResourceHeaders(rdr, header.num_records);
             if (rsrcHeaders is null)
                 throw new BadImageFormatException();
-            var (segments, ep) = LoadResources(rdr, rsrcHeaders, addrLoad);
+            var (segments, ep, symbols) = LoadResources(arch, rdr, rsrcHeaders, addrLoad);
             if (segments is null)
                 throw new BadImageFormatException();
 
-            var arch = cfgSvc.GetArchitecture("m68k")!;
             var platform = new PalmOSPlatform(Services, arch, "palmOS");
             var program = new Program(segments, arch, platform);
             if (ep is not null)
             {
                 program.EntryPoints.Add(ep, ImageSymbol.Procedure(arch, ep));
+            }
+            foreach (var sym in symbols)
+            {
+                program.ImageSymbols[sym.Address] = sym;
             }
             return program;
         }
@@ -138,9 +143,14 @@ namespace Reko.Environments.PalmOS.PRC
             return headers;
         }
 
-        private (SegmentMap, Address?) LoadResources(BeImageReader rdr, List<ResourceHeader> rsrcHeaders, Address addrBase)
+        private (SegmentMap, Address?, List<ImageSymbol>) LoadResources(
+            IProcessorArchitecture arch,
+            BeImageReader rdr, 
+            List<ResourceHeader> rsrcHeaders, 
+            Address addrBase)
         {
             var segments = new List<ImageSegment>();
+            var symbols = new List<ImageSymbol>();
             var addr = addrBase;
             Address? addrEntrypoint = null;
             for (int i = 0; i < rsrcHeaders.Count - 1;  ++i)
@@ -169,6 +179,8 @@ namespace Reko.Environments.PalmOS.PRC
                         {
                             addrEntrypoint = addr;
                         }
+                        var symScanner = new SymbolScanner(arch, mem);
+                        symbols.AddRange(symScanner.ScanForSymbols());
                     }
                 }
                 var seg = new ImageSegment(name, mem, accessMode);
@@ -176,7 +188,7 @@ namespace Reko.Environments.PalmOS.PRC
                 addr += length; //$TODO: align to even paragraph boundary?
             }
             var map = new SegmentMap(segments.ToArray());
-            return (map, addrEntrypoint);
+            return (map, addrEntrypoint, symbols);
         }
 
         private void LoadCode0Resource()

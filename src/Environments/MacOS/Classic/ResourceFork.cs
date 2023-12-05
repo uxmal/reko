@@ -18,11 +18,10 @@
  */
 #endregion
 
-using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Types;
+using Reko.Libraries.MacsBug;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,10 +37,10 @@ namespace Reko.Environments.MacOS.Classic
     /// </summary>
     public class ResourceFork
     {
-        private byte[] image;
-        private MacOSClassic platform;
-        private IProcessorArchitecture arch;
-        private ResourceTypeCollection rsrcTypes;
+        private readonly byte[] image;
+        private readonly MacOSClassic platform;
+        private readonly IProcessorArchitecture arch;
+        private readonly ResourceTypeCollection rsrcTypes;
 
         uint rsrcDataOff;
         uint rsrcMapOff;
@@ -101,9 +100,9 @@ namespace Reko.Environments.MacOS.Classic
         public class ResourceTypeCollection : ICollection<ResourceType>
         {
             private byte[] bytes;
-                uint rsrcTypeListOff ;
-                uint rsrcNameListOff;
-                int crsrcTypes;
+            uint rsrcTypeListOff ;
+            uint rsrcNameListOff;
+            int crsrcTypes;
 
             public ResourceTypeCollection(byte [] bytes, uint offset, uint size)
             {
@@ -391,7 +390,7 @@ namespace Reko.Environments.MacOS.Classic
         {
             segment.Access |= AccessMode.Execute;
             codeSegs.Add(rsrc.ResourceID, segment);
-            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
+            var macsBug = new SymbolScanner(arch, memSeg);
             var mbSymbols = macsBug.ScanForSymbols();
             foreach (var symbol in mbSymbols)
             {

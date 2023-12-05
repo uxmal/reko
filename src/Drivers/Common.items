@@ -365,6 +365,7 @@ by the PreBuild.targets file.
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
 
     <Libraries Include="$(SolutionDir)Libraries\Libc\bin\$(StandardOutputDir)\Reko.Libraries.Libc.*" />
+    <Libraries Include="$(SolutionDir)Libraries\MacsBug\bin\$(StandardOutputDir)\Reko.Libraries.MacsBug.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(StandardOutputDir)\Reko.Libraries.Python.*" />
     <Libraries Include="$(SolutionDir)Libraries\Microchip\Utils\bin\$(Configuration)\Reko.Libraries.Microchip.Utils.*" />
 

@@ -610,7 +610,6 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|r0 = Mem0[r30 + r0 * 4<32>:word32]");
         }
 
-
         [Test]
         [Ignore("Conditional assignment")]
         public void HexagonRw_NOT()

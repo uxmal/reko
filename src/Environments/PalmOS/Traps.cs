@@ -1425,7 +1425,6 @@ namespace Reko.Environments.PalmOS
             }
 
             DataType dt;
-            Storage stg;
             if (arg.Length == a + 1)
             {
                 switch (arg[a])

@@ -18,18 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
-using Reko.Core.Lib;
-using System.Text.RegularExpressions;
-using Reko.Core.Memory;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
+using System.Text;
+using System.Text.RegularExpressions;
 
-namespace Reko.Environments.MacOS.Classic
+namespace Reko.Libraries.MacsBug
 {
     /*
     MacsBug accepts and returns addresses as procedure names and offsets.
@@ -77,7 +72,7 @@ namespace Reko.Environments.MacOS.Classic
     of constant data are present. If there are no constants, a length of 0
     must be given.
     */
-    public class MacsBugSymbolScanner
+    public class SymbolScanner
     {
         public const ushort LINK = 0x4E56;
         public const ushort RTS = 0x4E75;
@@ -88,7 +83,7 @@ namespace Reko.Environments.MacOS.Classic
         private readonly EndianImageReader rdr;
         private readonly Regex reValidVariableLengthProcedureName;
 
-        public MacsBugSymbolScanner(IProcessorArchitecture arch, ByteMemoryArea mem)
+        public SymbolScanner(IProcessorArchitecture arch, ByteMemoryArea mem)
         {
             this.arch = arch;
             this.rdr = mem.CreateBeReader(0);

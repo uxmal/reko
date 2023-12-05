@@ -23,12 +23,12 @@ using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Environments.MacOS.Classic;
+using Reko.Libraries.MacsBug;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Reko.UnitTests.Environments.MacOS.Classic
+namespace Reko.UnitTests.Libraries.MacsBug
 {
     class MacsBugSymbolScannerTests
     {
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         private void Given_Link(int amount)
         {
             // Emit a LINK instruction reservice `amount` bytes of space.
-            w.WriteBeUInt16(MacsBugSymbolScanner.LINK);
+            w.WriteBeUInt16(SymbolScanner.LINK);
             w.WriteBeUInt16((ushort)amount);
         }
 
@@ -60,12 +60,12 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
 
         private void Given_Rts()
         {
-            w.WriteBeUInt16(MacsBugSymbolScanner.RTS);
+            w.WriteBeUInt16(SymbolScanner.RTS);
         }
 
         private void Given_Rtd(int n)
         {
-            w.WriteBeUInt16(MacsBugSymbolScanner.RTD);
+            w.WriteBeUInt16(SymbolScanner.RTD);
             w.WriteBeUInt16((ushort)n);
         }
 
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Given_ProgramData(0);
 
             var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
-            var scan = new MacsBugSymbolScanner(arch, mem);
+            var scan = new SymbolScanner(arch, mem);
             var symbols = scan.ScanForSymbols();
 
             Assert.AreEqual(1, symbols.Count);
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Given_Rts();    // no symbol.
 
             var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
-            var scan = new MacsBugSymbolScanner(arch, mem);
+            var scan = new SymbolScanner(arch, mem);
             var symbols = scan.ScanForSymbols();
 
             Assert.AreEqual(2, symbols.Count);

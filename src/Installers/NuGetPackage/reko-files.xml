@@ -138,12 +138,13 @@
       <var id="var.Xex.TargetPath" >$SolutionDir$/ImageLoaders/XexLoader/$TargetDir$/Reko.ImageLoaders.Xex.dll</var>
       <var id="var.Xbe.TargetPath" >$SolutionDir$/ImageLoaders/Xbe/$TargetDir$/Reko.ImageLoaders.Xbe.dll</var>
 
-      <var id="var.LGSymLoader.TargetPath" >$SolutionDir$/Symbols/LGSymLoader/$TargetDir$/Reko.Symbols.LGSymLoader.dll</var>
-      <var id="var.Libc.TargetPath"   >$SolutionDir$/Libraries/Libc/$TargetDir$/Reko.Libraries.Libc.dll</var>
-      <var id="var.Python.TargetPath" >$SolutionDir$/Libraries/Python/$TargetDir$/Reko.Libraries.Python.dll</var>
+      <var id="var.LGSymLoader.TargetPath">$SolutionDir$/Symbols/LGSymLoader/$TargetDir$/Reko.Symbols.LGSymLoader.dll</var>
+      <var id="var.Libc.TargetPath">$SolutionDir$/Libraries/Libc/$TargetDir$/Reko.Libraries.Libc.dll</var>
+      <var id="var.MacsBug.TargetPath">$SolutionDir$/Libraries/MacsBug/$TargetDir$/Reko.Libraries.MacsBug.dll</var>
+      <var id="var.Python.TargetPath">$SolutionDir$/Libraries/Python/$TargetDir$/Reko.Libraries.Python.dll</var>
 
-      <var id="var.Scripts.Python.ProjectDir" >$SolutionDir$/Scripts/Python/</var>
-      <var id="var.Scripts.Python.TargetPath" >$SolutionDir$/Scripts/Python/$TargetDir$/Reko.Scripts.Python.dll</var>
+      <var id="var.Scripts.Python.ProjectDir">$SolutionDir$/Scripts/Python/</var>
+      <var id="var.Scripts.Python.TargetPath">$SolutionDir$/Scripts/Python/$TargetDir$/Reko.Scripts.Python.dll</var>
     </vars>
     
     <Component Id="ProductComponent" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
@@ -333,6 +334,7 @@
         
         <!-- Libraries -->
         <File Source="$(var.Libc.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.MacsBug.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Python.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Microchip.Utils.TargetPath)" nuget_target="f:" />
 
