@@ -3112,7 +3112,7 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 	Eq_n es_bx_n = Mem12[ds:11857:segptr32];
 	uint16 dx_n = Mem31[ds:11857:word16] + ((CONVERT(Mem31[ptrArg02 + 0x00:byte], byte, int16) << 8) + CONVERT(Mem31[ptrArg02 + 1:byte], byte, uint16)) - wArg02_n;
 	uint16 ax_n = ((uint16) es_bx_n.u6->b0004 << 0x08) + (uint16) (*((word32) es_bx_n + 5));
-	word16 ax_n = (word16) (wArg02_n.u1 + dx_n /16 2);
+	word16 ax_n = (word16) (&wArg02_n.u1->b0000 + dx_n);
 	fn0800_B0F3(ptrArg02, SEQ(wArg04_n, ax_n), Mem26[ds:11857:word16] + ax_n - ax_n);
 	Eq_n es_bx_n = Mem72[ds:11857:segptr32];
 	es_bx_n.u6->b0004 = (byte) (ax_n - dx_n >> 0x08);

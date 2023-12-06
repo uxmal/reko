@@ -5010,7 +5010,7 @@ Eq_8039: (struct "Eq_8039" (0 ui32 dw0000) (C ui32 dw000C) (10 ui32 dw0010))
 	T_13800 (in dwLoc18 @ 000105B0 : (ptr32 Eq_8039))
 	T_13802 (in fn0000DF10(fp - 72<i32>, dwLoc18, -32<i32>) @ 000105B0 : word32)
 	T_13815 (in (r4_44 >>u 1<32>) + dwLoc18 @ 000105DC : word32)
-	T_13817 (in fn0000DF10(&g_dw134E4, dwLoc18 + (r4_44 >> 1<32>) / 20<i32>, -548<i32>) @ 000105DC : word32)
+	T_13817 (in fn0000DF10(&g_dw134E4, (char *) &dwLoc18->dw0000 + (r4_44 >> 1<32>), -548<i32>) @ 000105DC : word32)
 	T_13818 (in r2_59 @ 000105DC : (ptr32 Eq_8039))
 Eq_8040: (union "Eq_8040" (int32 u0) (uint32 u1))
 	T_8040 (in r5 @ 0000A64C : Eq_8040)
@@ -36039,7 +36039,7 @@ T_7374: (in out r15 @ 00009CBC : word32)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: ptr32
-T_7375: (in fn0000FEDC(r4.u1 + ((r4_79 - 1<i32>) - r3_35) / 4<i32>, r4_79, r15, out r11_85, out r15) @ 00009CBC : word32)
+T_7375: (in fn0000FEDC((char *) r4.u1 + ((r4_79 - 1<i32>) - r3_35), r4_79, r15, out r11_85, out r15) @ 00009CBC : word32)
   Class: Eq_1065
   DataType: ptr32
   OrigDataType: word32
@@ -36263,7 +36263,7 @@ T_7430: (in out r15 @ 00009CF8 : word32)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: ptr32
-T_7431: (in fn0000FEDC(r4.u1 + ((r4_51 - 1<i32>) - r3_47) / 4<i32>, r4_51, r15, out r11_58, out r15) @ 00009CF8 : word32)
+T_7431: (in fn0000FEDC((char *) r4.u1 + ((r4_51 - 1<i32>) - r3_47), r4_51, r15, out r11_58, out r15) @ 00009CF8 : word32)
   Class: Eq_1065
   DataType: ptr32
   OrigDataType: word32
@@ -62057,7 +62057,7 @@ T_13816: (in -548<i32> @ 000105DC : int32)
   Class: Eq_8040
   DataType: int32
   OrigDataType: int32
-T_13817: (in fn0000DF10(&g_dw134E4, dwLoc18 + (r4_44 >> 1<32>) / 20<i32>, -548<i32>) @ 000105DC : word32)
+T_13817: (in fn0000DF10(&g_dw134E4, (char *) &dwLoc18->dw0000 + (r4_44 >> 1<32>), -548<i32>) @ 000105DC : word32)
   Class: Eq_8039
   DataType: (ptr32 Eq_8039)
   OrigDataType: word32
@@ -78030,11 +78030,11 @@ T_17626: (in Mem42[r3 + ((r3_38 + -1<i32>) * 2<32> + (r3_38 + -1<i32>) << 2<32>)
   Class: Eq_17626
   DataType: ui32
   OrigDataType: ui32
-T_17627: (in *((word96) &(r3 + r3_38)[10<i32>] + 4<i32>) & *((word96) (&(r3 + ((r3_38 + -1<i32>) * 2<32> + (r3_38 + -1<i32>) << 2<32>) / 12<i32>)[9<i32>]) + 8<i32>) @ 00018BAC : word32)
+T_17627: (in *((word96) &(r3 + r3_38)[10<i32>] + 4<i32>) & ((char *) r3 + ((r3_38 + -1<i32>) * 2<32> + (r3_38 + -1<i32>) << 2<32>))[116<i32>] @ 00018BAC : word32)
   Class: Eq_17627
   DataType: ui32
   OrigDataType: ui32
-T_17628: (in *(r3 + r3_38)[10<i32>] & (*((word96) (&(r3 + r3_38)[10<i32>]) + 4<i32>) ^ 0xFFFF<32>) | *((word96) (&(r3 + r3_38)[10<i32>]) + 4<i32>) & *((word96) (&(r3 + ((r3_38 + -1<i32>) * 2<32> + (r3_38 + -1<i32>) << 2<32>) / 12<i32>)[9<i32>]) + 8<i32>) @ 00018BAC : word32)
+T_17628: (in *(r3 + r3_38)[10<i32>] & (*((word96) (&(r3 + r3_38)[10<i32>]) + 4<i32>) ^ 0xFFFF<32>) | *((word96) (&(r3 + r3_38)[10<i32>]) + 4<i32>) & ((char *) r3 + ((r3_38 + -1<i32>) * 2<32> + (r3_38 + -1<i32>) << 2<32>))[116<i32>] @ 00018BAC : word32)
   Class: Eq_17599
   DataType: ui32
   OrigDataType: ui32

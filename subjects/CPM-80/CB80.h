@@ -8199,7 +8199,7 @@ T_1841: (in 0x2F<8> @ 0B90 : byte)
   Class: Eq_1840
   DataType: cu8
   OrigDataType: cu8
-T_1842: (in g_t1692.u1[(uint16) g_b1697 /16 3<i32>] < 0x2F<8> @ 0B90 : bool)
+T_1842: (in (&g_t1692.u1->a0000[0<i32>].u0)[(uint16) g_b1697] < 0x2F<8> @ 0B90 : bool)
   Class: Eq_1842
   DataType: bool
   OrigDataType: bool
@@ -8207,11 +8207,11 @@ T_1843: (in CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte]
   Class: Eq_1843
   DataType: byte
   OrigDataType: byte
-T_1844: (in 0<8> - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3<i32>] < 0x2F<8>) @ 0B90 : byte)
+T_1844: (in 0<8> - (byte) ((&(((g_t1692.u1)->a0000))[0<i32>].u0)[(uint16) g_b1697] < 0x2F<8>) @ 0B90 : byte)
   Class: Eq_1844
   DataType: byte
   OrigDataType: byte
-T_1845: (in 0<8> - (byte) (g_t1696.u0 < 1<8>) & 0<8> - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3<i32>] < 0x2F<8>) @ 0B90 : byte)
+T_1845: (in 0<8> - (byte) (g_t1696.u0 < 1<8>) & 0<8> - (byte) ((&(((g_t1692.u1)->a0000))[0<i32>].u0)[(uint16) g_b1697] < 0x2F<8>) @ 0B90 : byte)
   Class: Eq_1845
   DataType: byte
   OrigDataType: byte

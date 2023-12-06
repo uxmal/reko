@@ -20955,7 +20955,7 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		int32 v42 = 0x01FF;
 		v41 &= v42;
 		v42 = 0x2520;
-		&v41.u5->t0000.u0 = v41.u5 + v42 / 8;
+		&v41.u5->t0000.u0 += v42;
 	}
 	else
 	{
@@ -21965,7 +21965,7 @@ void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	int32 v216 = 0x01FF;
 	v215 &= v216;
 	v216 = 0x0700;
-	&v215.u5->t0000.u0 = v215.u5 + v216 / 8;
+	&v215.u5->t0000.u0 += v216;
 }
 
 // 000FB8CE: void fn000FB8CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -22251,7 +22251,7 @@ void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	int32 v151 = 0x01FF;
 	v150 &= v151;
 	v151 = 0x0700;
-	&v150.u5->t0000.u0 = v150.u5 + v151 / 8;
+	&v150.u5->t0000.u0 += v151;
 }
 
 // 000FC0C8: void fn000FC0C8(Stack Eq_n arg0)
@@ -24586,7 +24586,7 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		int32 v42 = 0x01FF;
 		v41 &= v42;
 		v42 = 0x2520;
-		&v41.u5->t0000.u0 = v41.u5 + v42 / 8;
+		&v41.u5->t0000.u0 += v42;
 	}
 	else
 	{
@@ -24758,7 +24758,7 @@ void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	int32 v216 = 0x01FF;
 	v215 &= v216;
 	v216 = 0x0700;
-	&v215.u5->t0000.u0 = v215.u5 + v216 / 8;
+	&v215.u5->t0000.u0 += v216;
 }
 
 // 000FE09E: void fn000FE09E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
@@ -24806,7 +24806,7 @@ void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	int32 v148 = 0x01FF;
 	v147 &= v148;
 	v148 = 0x0700;
-	&v147.u5->t0000.u0 = v147.u5 + v148 / 8;
+	&v147.u5->t0000.u0 += v148;
 }
 
 // 000FE711: void fn000FE711(Stack Eq_n arg0)

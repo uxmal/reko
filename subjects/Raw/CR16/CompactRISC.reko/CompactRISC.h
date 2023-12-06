@@ -9645,7 +9645,7 @@ T_1376: (in r9_r8_1018 + 0<32> @ 00003340 : word32)
 T_1377: (in Mem207[r9_r8_1018 + 0<32>:word32] @ 00003340 : word32)
   Class: Eq_348
   DataType: Eq_348
-  OrigDataType: (ptr32 Eq_13524)
+  OrigDataType: (ptr32 char)
 T_1378: (in 8<32> @ 00003346 : word32)
   Class: Eq_1378
   DataType: word32
@@ -12402,7 +12402,7 @@ T_2060: (in r13_1071 + 0<32> @ 00003654 : word32)
 T_2061: (in Mem516[r13_1071 + 0<32>:word32] @ 00003654 : word32)
   Class: Eq_348
   DataType: Eq_348
-  OrigDataType: (ptr32 Eq_13524)
+  OrigDataType: (ptr32 char)
 T_2062: (in 8<32> @ 0000365A : word32)
   Class: Eq_2062
   DataType: word32
@@ -12922,7 +12922,7 @@ T_2188: (in r13_1071 + 0<32> @ 00003714 : word32)
 T_2189: (in Mem960[r13_1071 + 0<32>:word32] @ 00003714 : word32)
   Class: Eq_348
   DataType: Eq_348
-  OrigDataType: (ptr32 Eq_13524)
+  OrigDataType: (ptr32 char)
 T_2190: (in 8<32> @ 0000371A : word32)
   Class: Eq_2190
   DataType: word32
@@ -38915,7 +38915,7 @@ T_8597: (in Mem479[r3_r2_456 + r3_r2 + 0xFB2<32>:byte] @ 0000A884 : byte)
   Class: Eq_8592
   DataType: cu8
   OrigDataType: cu8
-T_8598: (in (&(r3_r2.u1 + r7_r6_480 / 9244<i32>)->w0FAE)[2<i32>] > (&(r3_r2.u1 + r3_r2_456 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A884 : bool)
+T_8598: (in ((char *) &r3_r2.u1->a0000->u0 + r7_r6_480)[4018<i32>] > ((char *) (&((r3_r2.u1)->a0000)->u0) + r3_r2_456)[4018<i32>] @ 0000A884 : bool)
   Class: Eq_8598
   DataType: bool
   OrigDataType: bool
@@ -39031,7 +39031,7 @@ T_8626: (in Mem540[CONVERT(r8_455, word16, int32) + r3_r2 + 0xFB2<32>:byte] @ 00
   Class: Eq_8621
   DataType: cu8
   OrigDataType: cu8
-T_8627: (in r1_r0_428->b0FB2 > (&(r3_r2.u1 + (int32) r8_455 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A900 : bool)
+T_8627: (in r1_r0_428->b0FB2 > ((char *) (&((r3_r2.u1)->a0000)->u0) + (int32) r8_455)[4018<i32>] @ 0000A900 : bool)
   Class: Eq_8627
   DataType: bool
   OrigDataType: bool
@@ -39527,7 +39527,7 @@ T_8750: (in Mem778[r3_r2_755 + r3_r2 + 0xFB2<32>:byte] @ 0000A89E : byte)
   Class: Eq_8745
   DataType: cu8
   OrigDataType: cu8
-T_8751: (in (&(r3_r2.u1 + r7_r6_779 / 9244<i32>)->w0FAE)[2<i32>] > (&(r3_r2.u1 + r3_r2_755 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A89E : bool)
+T_8751: (in ((char *) &r3_r2.u1->a0000->u0 + r7_r6_779)[4018<i32>] > ((char *) (&((r3_r2.u1)->a0000)->u0) + r3_r2_755)[4018<i32>] @ 0000A89E : bool)
   Class: Eq_8751
   DataType: bool
   OrigDataType: bool
@@ -39667,7 +39667,7 @@ T_8785: (in CONVERT(Mem332[r3_r2_3334 + ra_45 + 2<32>:word16], word16, word32) @
   Class: Eq_8785
   DataType: word32
   OrigDataType: word32
-T_8786: (in r3_r2.u1->dw2400 - (word32) ((ra_45 + r3_r2_3334 / 4<i32>))[0<i32>].w0002 @ 0000A4F6 : word32)
+T_8786: (in r3_r2.u1->dw2400 - (word32) ((char *) ra_45 + r3_r2_3334)[2<i32>] @ 0000A4F6 : word32)
   Class: Eq_8780
   DataType: word32
   OrigDataType: word32
@@ -39747,7 +39747,7 @@ T_8805: (in Mem839[CONVERT(r8_754, word16, int32) + r3_r2 + 0xFB2<32>:byte] @ 00
   Class: Eq_8800
   DataType: cu8
   OrigDataType: cu8
-T_8806: (in r1_r0_724->b0FB2 > (&(r3_r2.u1 + (int32) r8_754 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A8E8 : bool)
+T_8806: (in r1_r0_724->b0FB2 > ((char *) (&((r3_r2.u1)->a0000)->u0) + (int32) r8_754)[4018<i32>] @ 0000A8E8 : bool)
   Class: Eq_8806
   DataType: bool
   OrigDataType: bool
@@ -40495,7 +40495,7 @@ T_8992: (in Mem2034[r3_r2_2011 + r3_r2 + 0xFB2<32>:byte] @ 0000A8B8 : byte)
   Class: Eq_8987
   DataType: cu8
   OrigDataType: cu8
-T_8993: (in (&(r3_r2.u1 + r7_r6_2035 / 9244<i32>)->w0FAE)[2<i32>] > (&(r3_r2.u1 + r3_r2_2011 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A8B8 : bool)
+T_8993: (in ((char *) &r3_r2.u1->a0000->u0 + r7_r6_2035)[4018<i32>] > ((char *) (&((r3_r2.u1)->a0000)->u0) + r3_r2_2011)[4018<i32>] @ 0000A8B8 : bool)
   Class: Eq_8993
   DataType: bool
   OrigDataType: bool
@@ -40867,7 +40867,7 @@ T_9085: (in Mem2095[CONVERT(r8_2010, word16, int32) + r3_r2 + 0xFB2<32>:byte] @ 
   Class: Eq_9080
   DataType: cu8
   OrigDataType: cu8
-T_9086: (in dwLoc1E_2389[4018<i32>] > (&(r3_r2.u1 + (int32) r8_2010 / 9244<i32>)->w0FAE)[2<i32>] @ 0000A8D2 : bool)
+T_9086: (in dwLoc1E_2389[4018<i32>] > ((char *) (&((r3_r2.u1)->a0000)->u0) + (int32) r8_2010)[4018<i32>] @ 0000A8D2 : bool)
   Class: Eq_9086
   DataType: bool
   OrigDataType: bool
@@ -50660,7 +50660,7 @@ T_11495: (in Mem1520[(CONVERT(Mem1520[r11_r10_2553 + 1<32>:byte], byte, int32) +
 T_11496: (in r5_1545 @ 0000B65A : Eq_1500)
   Class: Eq_1500
   DataType: Eq_1500
-  OrigDataType: cu16
+  OrigDataType: ci16
 T_11497: (in __a_shift<word16,word16> @ 0000B662 : ptr32)
   Class: Eq_6473
   DataType: (ptr32 Eq_6473)

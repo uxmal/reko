@@ -1278,7 +1278,7 @@ Eq_1825: (struct "Eq_1825" 0010 (0 int32 dw0000))
 	T_2184 (in Mem16[r11_27 + 8<i32>:word32] @ 00401E00 : word32)
 	T_2185 (in r9_29 @ 00401E00 : (ptr32 Eq_1825))
 	T_2213 (in r28 @ 00401EA4 : (ptr32 Eq_1825))
-	T_2253 (in &(r9_29 + (r30_30 - r10_31) / 16<i32>)->dw0000 + 2<i32> & 0xFFFFFFF8<32> @ 00401E30 : word32)
+	T_2253 (in (char *) &r9_29->dw0000 + (r30_30 - r10_31) + 8<i32> & 0xFFFFFFF8<32> @ 00401E30 : word32)
 	T_2271 (in Mem55[r11_27 + 8<i32>:word32] @ 00401E78 : word32)
 	T_3740 (in Mem15[v6 + 8<i32>:word32] @ 00402CE8 : word32)
 Eq_1829: (union "Eq_1829" (int32 u0) (ptr32 u1))
@@ -11020,7 +11020,7 @@ T_2252: (in 0xFFFFFFF8<32> @ 00401E30 : word32)
   Class: Eq_2252
   DataType: ui32
   OrigDataType: ui32
-T_2253: (in &(r9_29 + (r30_30 - r10_31) / 16<i32>)->dw0000 + 2<i32> & 0xFFFFFFF8<32> @ 00401E30 : word32)
+T_2253: (in (char *) &r9_29->dw0000 + (r30_30 - r10_31) + 8<i32> & 0xFFFFFFF8<32> @ 00401E30 : word32)
   Class: Eq_1825
   DataType: (ptr32 Eq_1825)
   OrigDataType: ui32

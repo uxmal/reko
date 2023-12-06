@@ -327,7 +327,7 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	}
 	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = *((char *) &g_dwFFFF805D + 2) + (word16) gp0_gp1_n /16 0x00008090;
+		gp1_n = (char *) &((*((char *) &g_dwFFFF805D + 2))->aFFFF8060 + 0x00002A8A)->r0000 + ((word16) gp0_gp1_n + 2);
 	word16 gp0_n = sincos(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp3Out = gp3_n;
 	gp4Out = gp4_n;

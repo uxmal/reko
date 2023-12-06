@@ -737,7 +737,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		f = (byte) af_n;
 		if ((SLICE(af_n, byte, 8) & sp_n->b0003) >> 0x01 >= 0x00)
 			break;
-		sp_n->tFFFFFFFE.u1 = (byte *) (g_t1692.u1 + (uint16) g_b1697 /16 3);
+		sp_n->tFFFFFFFE.u1 = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
 		byte a_n = *sp_n->tFFFFFFFE.u1;
 		Mem429[Mem415[5771:word16] + (CONVERT(Mem415[0x1697:byte], byte, uint16) + 0x01):byte] = a_n;
 		Eq_n C_n = (bool) cond(a_n - 0x2A);
@@ -748,7 +748,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		}
 		fn0B91();
 	}
-	cu8 * hl_n = (cu8 *) (g_t1692.u1 + (uint16) g_b1697 /16 3);
+	cu8 * hl_n = (cu8 *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
 	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(SLICE(0x01 - (uint16) g_t1696.u0, byte, 8), f);
 	byte b_n;
 	if ((0x00 - (byte) (*hl_n < 0x2F) & sp_n->b0003) >> 0x01 < 0x00)
@@ -761,7 +761,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 			return C_n;
 		}
 		sp_n->tFFFFFFFE.u1 = g_t1696.u1;
-		sp_n->ptrFFFFFFFC = (byte *) (g_t1692.u1 + (uint16) g_b1697 /16 3);
+		sp_n->ptrFFFFFFFC = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
 		byte * de_n = (char *) g_t168B.u1 + 9;
 		byte * bc_n = sp_n->ptrFFFFFFFC;
 		byte l_n = sp_n->b0002;
@@ -776,7 +776,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	}
 	else
 	{
-		cu8 * hl_n = (cu8 *) (g_t1692.u1 + (uint16) g_b1697 /16 3);
+		cu8 * hl_n = (cu8 *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
 		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) (g_t1696.u0 < 0x01), f);
 		bcu8 a_n = 0x00 - (byte) (*hl_n < 0x2F) | sp_n->b0003;
 		Eq_n C_n = cond(a_n >> 0x01);
@@ -840,7 +840,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 word16 fn0B74()
 {
 	byte f;
-	return SEQ(0x00 - (byte) (g_t1696.u0 < 0x01) & 0x00 - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3] < 0x2F), f);
+	return SEQ(0x00 - (byte) (g_t1696.u0 < 0x01) & 0x00 - (byte) ((&(((g_t1692.u1)->a0000))[0].u0)[(uint16) g_b1697] < 0x2F), f);
 }
 
 // 0B91: void fn0B91()

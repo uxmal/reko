@@ -455,13 +455,13 @@ l000D0750:
 	Eq_n v164_n;
 	&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 	int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-	struct Eq_n * v164_n = (struct Eq_n *) (arg0.u5 + v164_n / 8);
+	struct Eq_n * v164_n = (struct Eq_n *) (&arg0.u5->t0000.u0 + v164_n);
 	word32 v164_n = v164_n->dw0018;
 	&((char *) &v164_n.u5->t0000 + 4)->u5->t0000.u0 = v164_n;
 	Eq_n v164_n;
 	&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 	int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-	struct Eq_n * v164_n = (struct Eq_n *) (arg0.u5 + v164_n / 8);
+	struct Eq_n * v164_n = (struct Eq_n *) (&arg0.u5->t0000.u0 + v164_n);
 	ui32 v164_n = v164_n->dw0004;
 	bool v166_n = (v164_n & 0xB0) == 0x20;
 	Eq_n v164_n = arg1 + arg2;
@@ -476,11 +476,11 @@ l000D0750:
 	Eq_n v164_n;
 	&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 	int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-	ptr32 v164_n = arg0.u5 + v164_n / 8;
+	ptr32 v164_n = &arg0.u5->t0000.u0 + v164_n;
 	Eq_n v164_n;
 	&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 	int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-	struct Eq_n * v164_n = (struct Eq_n *) (arg0.u5 + v164_n / 8);
+	struct Eq_n * v164_n = (struct Eq_n *) (&arg0.u5->t0000.u0 + v164_n);
 	Eq_n v164_n = fn000D0EAE();
 	Eq_n v164_n;
 	&v164_n.u5->t0000.u0 = v164_n->t004C.u5;
@@ -566,7 +566,7 @@ l000D05FB:
 							Eq_n v164_n;
 							&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 							int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-							struct Eq_n * v164_n = (struct Eq_n *) (arg0.u5 + v164_n / 8);
+							struct Eq_n * v164_n = (struct Eq_n *) (&arg0.u5->t0000.u0 + v164_n);
 							ui32 v164_n = v164_n->dw0010;
 							g_t140048.u5 = (struct Eq_n *) 0x00;
 							invoke_vii(0x0169, v164_n, v164_n | 0x05);
@@ -628,7 +628,7 @@ l000D0783:
 						Eq_n v164_n;
 						&v164_n.u5->t0000.u0 = arg0.u5->t0000.u5;
 						int32 v164_n = (int32) *((char *) v164_n.u5 - 0x0C);
-						ptr32 v164_n = arg0.u5 + v164_n / 8;
+						ptr32 v164_n = &arg0.u5->t0000.u0 + v164_n;
 						g_t140048.u5 = (struct Eq_n *) 0x00;
 						invoke_vi(363, v164_n);
 						Eq_n v164_n;

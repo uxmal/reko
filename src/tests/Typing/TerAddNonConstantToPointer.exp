@@ -19,7 +19,7 @@ proc1_entry:
 l1:
 	p->w0000 = 4<16>
 	p->w0004 = 4<16>
-	p = p + i /16 6<i32>
+	p = (struct Eq_3 *) ((char *) &p->w0000 + i)
 proc1_exit:
 
 // Equivalence classes ////////////

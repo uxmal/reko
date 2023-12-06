@@ -23207,7 +23207,7 @@ T_4017: (in rax_14 + rcx_34 @ 000000000040566A : word64)
   Class: Eq_4017
   DataType: ui64
   OrigDataType: ui64
-T_4018: (in (int64) ~(word32) rcx_34 & &(rax_14 + rcx_34 /64 8<i32>)->dw0000 @ 000000000040566A : word64)
+T_4018: (in (int64) ~(word32) rcx_34 & (char *) (&rax_14->dw0000) + rcx_34 @ 000000000040566A : word64)
   Class: Eq_3982
   DataType: (ptr64 (arr Eq_18004))
   OrigDataType: ui64
@@ -78313,7 +78313,7 @@ T_17751: (in &bLocB8 @ 0000000000411BDC : (ptr64 char))
   Class: Eq_17746
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_17752: (in strcpy(r13_350 + ((0xFFFFFFFFFFFFFFFE<64> - rdx_270) + r14_398) /64 2<i32>, &bLocB8) @ 0000000000411BDC : (ptr64 char))
+T_17752: (in strcpy(&r13_350->b0000 + ((0xFFFFFFFFFFFFFFFE<64> - rdx_270) + r14_398), &bLocB8) @ 0000000000411BDC : (ptr64 char))
   Class: Eq_17752
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)

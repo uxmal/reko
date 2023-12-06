@@ -375,14 +375,14 @@ word64 fn0000000140001718(<anonymous> ** rcx)
 	{
 		int64 rax_n = (int64) g_dw4000003C;
 		rax_56_8_n = SLICE(rax_n, word56, 8);
-		struct Eq_n * rcx_n = (struct Eq_n *) (&g_w40000000 + rax_n /64 2);
+		struct Eq_n * rcx_n = (struct Eq_n *) ((char *) &g_w40000000 + rax_n);
 		if (rcx_n->dw0000 == 0x4550)
 		{
 			rax_56_8_n = 0x02;
 			if (rcx_n->w0018 == 0x020B)
 			{
 				uint64 rax_n = (uint64) rcx_n->w0006;
-				struct Eq_n * rdx_n = (struct Eq_n *) (&rcx_n->w0018 + (uint64) rcx_n->w0014 /64 2);
+				struct Eq_n * rdx_n = (struct Eq_n *) ((char *) &rcx_n->w0018 + (uint64) rcx_n->w0014);
 				uint64 r8_n = rcx - &g_w40000000;
 				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 				struct Eq_n * r9_n = rdx_n + rax_n;
@@ -616,7 +616,7 @@ void fn0000000140001AC0()
 	Eq_n rax_n = GetModuleHandleW(null);
 	if (rax_n == null || rax_n->unused != 23117)
 		return;
-	struct Eq_n * rax_n = (struct Eq_n *) (rax_n + (int64) (&rax_n->unused)[0x0F] /64 4);
+	struct Eq_n * rax_n = (struct Eq_n *) ((char *) &rax_n->unused + (int64) (&rax_n->unused)[0x0F]);
 	if (rax_n->dw0000 != 0x4550 || (rax_n->w0018 != 0x020B || rax_n->dw0084 <= 0x0E))
 		;
 }

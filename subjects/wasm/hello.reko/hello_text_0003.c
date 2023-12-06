@@ -5492,7 +5492,7 @@ void fn00106657(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn00106868(v6);
@@ -5506,7 +5506,7 @@ void fn0010666C(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn00106868(v6);
@@ -5815,7 +5815,7 @@ void fn001068DE(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn00106868(v6);
@@ -5829,7 +5829,7 @@ void fn001068F3(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn00106868(v6);
@@ -15438,7 +15438,7 @@ void fn0010B494(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word3
 	int32 v182 = 0x01FF;
 	v181 &= v182;
 	v182 = 0x0700;
-	&v181.u5->t0000.u0 = v181.u5 + v182 / 8;
+	&v181.u5->t0000.u0 += v182;
 }
 
 // 0010BEC2: void fn0010BEC2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)

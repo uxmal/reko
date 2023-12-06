@@ -12166,7 +12166,7 @@ T_2302: (in 2<32> @ 00000E26 : word32)
   Class: Eq_2301
   DataType: up32
   OrigDataType: up32
-T_2303: (in *((char *) &(r4_21 + ((r4_21->ptr0004)->dw004C * 0x14<32>) / 156<i32>)->ptr0004 + 4<i32>) < 2<32> @ 00000E26 : bool)
+T_2303: (in (r4_21->a0000 + (r4_21->ptr0004)->dw004C)[0<i32>].dw0008 < 2<32> @ 00000E26 : bool)
   Class: Eq_2303
   DataType: bool
   OrigDataType: bool
@@ -15120,7 +15120,7 @@ T_3038: (in 0<32> @ 00001210 : word32)
   Class: Eq_3037
   DataType: word32
   OrigDataType: word32
-T_3039: (in *((char *) &(r4_20 + (r2_54 * 0x14<32>) / 128<i32>)->ptr0004 + 4<i32>) != 0<32> @ 00001210 : bool)
+T_3039: (in (r4_20->a0000 + r2_54)[0<i32>].dw0008 != 0<32> @ 00001210 : bool)
   Class: Eq_3039
   DataType: bool
   OrigDataType: bool
@@ -15356,7 +15356,7 @@ T_3097: (in 0<32> @ 00001286 : word32)
   Class: Eq_3096
   DataType: word32
   OrigDataType: word32
-T_3098: (in (r2_40 + (r1_41 * 0x14<32>) / 128<i32>)->a0000[0<i32>].dw0008 != 0<32> @ 00001286 : bool)
+T_3098: (in (r2_40->a0000 + r1_41)[0<i32>].dw0008 != 0<32> @ 00001286 : bool)
   Class: Eq_3098
   DataType: bool
   OrigDataType: bool
@@ -20371,7 +20371,7 @@ T_4340: (in 0xFFFFFFFC<32> @ 0000801C : word32)
   Class: Eq_4340
   DataType: ui32
   OrigDataType: ui32
-T_4341: (in r0_7 + ~r3_18 / 4<i32> & 0xFFFFFFFC<32> @ 0000801C : word32)
+T_4341: (in (char *) r0_7 + ~r3_18 & 0xFFFFFFFC<32> @ 0000801C : word32)
   Class: Eq_4341
   DataType: ui32
   OrigDataType: ui32
@@ -20379,7 +20379,7 @@ T_4342: (in 4<32> @ 0000801C : word32)
   Class: Eq_4342
   DataType: word32
   OrigDataType: word32
-T_4343: (in (r0_7 + ~r3_18 / 4<i32> & 0xFFFFFFFC<32>) + 4<32> @ 0000801C : word32)
+T_4343: (in ((char *) r0_7 + ~r3_18 & 0xFFFFFFFC<32>) + 4<32> @ 0000801C : word32)
   Class: Eq_4343
   DataType: ui32
   OrigDataType: ui32
@@ -28963,7 +28963,7 @@ T_6482: (in 0<32> @ 00009024 : word32)
   Class: Eq_6481
   DataType: word32
   OrigDataType: word32
-T_6483: (in (&(r5_17 + (r1_194 * 0x14<32>) / 128<i32>)->a0000[0<i32>].u0)[1<i32>] != 0<32> @ 00009024 : bool)
+T_6483: (in *((word160) &(r5_17->a0000 + r1_194)[0<i32>] + 4<i32>) != 0<32> @ 00009024 : bool)
   Class: Eq_6483
   DataType: bool
   OrigDataType: bool
@@ -29579,7 +29579,7 @@ T_6636: (in 0<32> @ 00009034 : word32)
   Class: Eq_6635
   DataType: word32
   OrigDataType: word32
-T_6637: (in (&(r5_17 + (r3_199 + (r1_194 - 1<32>) << 2<u32>) / 128<i32>)->a0000[0<i32>].u0)[1<i32>] != 0<32> @ 00009034 : bool)
+T_6637: (in ((char *) r5_17->a0000 + (r3_199 + (r1_194 - 1<32>) << 2<u32>))[4<i32>] != 0<32> @ 00009034 : bool)
   Class: Eq_6637
   DataType: bool
   OrigDataType: bool
@@ -29671,7 +29671,7 @@ T_6659: (in 0<32> @ 00009044 : word32)
   Class: Eq_6635
   DataType: word32
   OrigDataType: word32
-T_6660: (in (&(r5_17 + (r3_199 + (r1_194 - 2<32>) << 2<u32>) / 128<i32>)->a0000[0<i32>].u0)[1<i32>] != 0<32> @ 00009044 : bool)
+T_6660: (in ((char *) r5_17->a0000 + (r3_199 + (r1_194 - 2<32>) << 2<u32>))[4<i32>] != 0<32> @ 00009044 : bool)
   Class: Eq_6660
   DataType: bool
   OrigDataType: bool

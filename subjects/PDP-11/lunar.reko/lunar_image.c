@@ -858,7 +858,7 @@ l0D9C:
 			}
 			else
 			{
-				g_ptr0082 += (r4_n & 0x3F) /16 2;
+				g_ptr0082 = (word16 *) ((char *) g_ptr0082 + (r4_n & 0x3F));
 				r4_n = r4_n & 0x3F;
 			}
 			*r5 = r4_n | wLoc02_n;
@@ -1027,7 +1027,7 @@ void fn0F04(int16 r0)
 				g_w0F70 = 0x0ADF;
 			else if (g_w00AA <= ~0x02)
 				g_w0F70 = 0x0A9F;
-			word16 * r4_n = r4_n + g_w00AA /16 2 + r3_n /16 2;
+			word16 * r4_n = (word16 *) ((char *) r4_n + g_w00AA + r3_n);
 			sp_n->ptrFFFFFFFE = r4_n;
 			r5_n = fn0D78(r4_n, r5_n);
 			r4_n = sp_n->ptrFFFFFFFE;

@@ -619,7 +619,7 @@ void fn054C(ci16 r0, struct Eq_n * r3)
 {
 	r3->b00A0 = (byte) r0;
 	r3->b00A1 = r3->b00A2;
-	struct Eq_n * r0_n = (struct Eq_n *) (r3 + (r0 >> 3 & ~0x01) /16 0x00A3);
+	struct Eq_n * r0_n = (struct Eq_n *) ((char *) r3 + (r0 >> 3 & ~0x01));
 	ci16 r2_n = r0 & 0x0F;
 	struct Eq_n * wLoc02_n = null;
 	bool C_n = true;
@@ -987,7 +987,7 @@ struct Eq_n g_t07EC = // 07EC
 // 0818: void fn0818(Register (ptr16 word16) r5)
 void fn0818(word16 * r5)
 {
-	fn11A6(r5 + *r5 /16 2 + *r5 /16 2 + 1, r5);
+	fn11A6((char *) r5 + *r5 + *r5 + 2, r5);
 	g_ptr53F0();
 }
 
@@ -1053,7 +1053,7 @@ Eq_n g_t0A15 = // 0A15
 // 0A64: void fn0A64(Register (ptr16 word16) r5)
 void fn0A64(word16 * r5)
 {
-	fn11A6(r5 + *r5 /16 2 + *r5 /16 2 + 1, r5);
+	fn11A6((char *) r5 + *r5 + *r5 + 2, r5);
 	g_ptr5414();
 }
 
@@ -1234,7 +1234,7 @@ l0BC6:
 		struct Eq_n * r0_n;
 		sp_n->ptrFFFFFFFC = r0_n;
 		struct Eq_n * r3_n = g_ptr5424;
-		r3_n->ptr0044 += (int16) r3_n->b0053 /16 166;
+		r3_n->ptr0044 = (struct Eq_n *) ((char *) &r3_n->ptr0044->t0000 + (int16) r3_n->b0053);
 		struct Eq_n * v27_n = sp_n->ptrFFFFFFFC;
 		word16 v28_n = r3_n->w005A - 0x01;
 		r3_n->w005A = v28_n;

@@ -151,13 +151,13 @@ word16 fn1483-0CA0(byte * es_di, struct Eq_n * ss_bp, Eq_n si, struct Eq_n * ds,
 	byte bl_n = bl_n & ds->*bx_n;
 	*es_di = (byte) ax_n - 0xAC;
 	word16 Eq_n::* bx_n = SEQ(bh_n, bl_n);
-	ds->*bx_n = bx_n + ds->*bx_n /16 2;
+	ds->*bx_n = (char *) bx_n + ds->*bx_n;
 	ds->*((word16) di + 21) = ax_n - ~0x4234;
 	fn1483-4FE0();
 	word16 dx_n;
 	ds->wF7E3 -= dx_n;
 	word16 Eq_n::* bx_n;
-	bx_n[((word16) di + 1) /16 2] += bp - 0x01;
+	ds->*((char *) bx_n + ((word16) di + 1)) = (word16 Eq_n::*) ((char *) (ds->*((char *) bx_n + ((word16) di + 1))) + (bp - 0x01));
 	word16 ax_n = __in<word16>(0x8B);
 	diOut = (word16) di + 1;
 	return ax_n;
@@ -220,8 +220,8 @@ Eq_n fn1483-0CFC(struct Eq_n * ds_di, struct Eq_n * ss_bp, byte al, byte ah, Eq_
 	struct Eq_n * ds = SLICE(ds_di, selector, 16);
 	Eq_n di = (word16) ds_di;
 	word16 bx_n = SEQ(bh, bl ^ al);
-	cu8 al_n = (cu8) ds_di[(uipr32) bx_n / 46];
-	ss_bp[(uipr32) si / 0x007D] = (struct Eq_n) ~0x2E00;
+	cu8 al_n = (&ds_di->b0000)[(uipr32) bx_n];
+	*((char *) ss_bp + (uipr32) si) = (struct Eq_n *) ~0x2E00;
 	if (cx == 0x00)
 	{
 		Eq_n di_n;
@@ -403,7 +403,7 @@ Eq_n fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 							byte ch_n;
 							do
 							{
-								di_n += (uint16) (bx_n->*si_n) /16 2;
+								di_n = (word16 Eq_n::*) ((char *) di_n + (uint16) (bx_n->*si_n));
 								psegArg01A4->*di_n = (word16) dx_n.u0 + psegArg01A4->*di_n;
 								--cx_n;
 								++si_n;

@@ -2160,7 +2160,7 @@ void fn0000000000405630(struct Eq_n * rsi, char * rdi)
 		rsi->b0050 |= 0x02;
 	int64 rcx_n = (int64) rsi->dw0030;
 	Eq_n (* rcx_n)[] = rsi->ptr0020;
-	Eq_n (* rdx_n)[] = (int64) ~(word32) rcx_n & &(rax_n + rcx_n /64 8)->dw0000;
+	Eq_n (* rdx_n)[] = (int64) ~(word32) rcx_n & (char *) (&rax_n->dw0000) + rcx_n;
 	int64 rax_n = rsi->qw0008;
 	rsi->ptr0018 = rdx_n;
 	if (rdx_n - rax_n > rcx_n - rax_n)
@@ -7605,7 +7605,7 @@ void fn000000000040E650(word32 edx, int32 esi, struct Eq_n * rdi)
 	struct Eq_n * rax_n = (struct Eq_n *) &g_qw61B320;
 	if (rdi != null)
 		rax_n = rdi;
-	struct Eq_n * rsi_n = (struct Eq_n *) (rax_n + ((uint64) (sil_n >> 0x05) * 0x04) /64 56);
+	struct Eq_n * rsi_n = (struct Eq_n *) (&rax_n->dw0000 + (uint64) (sil_n >> 0x05));
 	uint32 edi_n = rsi_n->dw0008;
 	byte cl_n = (byte) esi & 0x1F;
 	rsi_n->dw0008 = ((edx ^ edi_n >> cl_n) & 0x01) << cl_n ^ edi_n;
@@ -9324,7 +9324,7 @@ void fn0000000000410AC0(char * rcx, char * rdx, char * rsi, FILE * rdi, struct E
 			word64 * r10_n = r8->ptr0008;
 			r8->ptr0008 = r10_n + 1;
 			word64 rax_n = *r10_n;
-			(&tLoc58)[r9_n * 0x08 /64 72] = (struct Eq_n) rax_n;
+			tLoc58.a0000[r9_n] = rax_n;
 			if (rax_n == 0x00)
 				break;
 		}
@@ -9333,7 +9333,7 @@ void fn0000000000410AC0(char * rcx, char * rdx, char * rsi, FILE * rdi, struct E
 			word64 * r10_n = (uint64) eax_n + r8->qw0010;
 			r8->dw0000 = eax_n + 0x08;
 			word64 rax_n = *r10_n;
-			(&tLoc58)[r9_n * 0x08 /64 72] = (struct Eq_n) rax_n;
+			tLoc58.a0000[r9_n] = rax_n;
 			if (rax_n == 0x00)
 				break;
 		}
@@ -10361,7 +10361,7 @@ l0000000000411AC9:
 							fn0000000000411D30(rax_n);
 							if (qwLocD0_n == 0x00)
 								goto l0000000000411C28;
-							r14_n[qwLocD0_n /64 2] = (struct Eq_n) 0x00;
+							(&r14_n->b0000)[qwLocD0_n] = 0x00;
 							goto l0000000000411C2E;
 						}
 						ungetc(edi_n, rax_n);
@@ -10422,7 +10422,7 @@ l0000000000411AC9:
 							goto l0000000000411C2E;
 						}
 						int64 r14_n = qwLocD0_n - r10_n;
-						strcpy(r13_n + ((~0x01 - rdx_n) + r14_n) /64 2, &bLocB8);
+						strcpy(&r13_n->b0000 + ((~0x01 - rdx_n) + r14_n), &bLocB8);
 						strcpy(r13_n - 1 + r14_n, &bLoc78);
 						r14_n = r13_n;
 						rax_n = rax_n->ptr0008;

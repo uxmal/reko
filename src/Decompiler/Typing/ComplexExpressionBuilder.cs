@@ -163,12 +163,14 @@ namespace Reko.Typing
                 return expComplex!;
             int i = (int)(offset / at.ElementType.Size);
             int r = (int)(offset % at.ElementType.Size);
-            index = ScaleDownIndex(index, at.ElementType.Size);
+            if (TryScaleDownIndex(index, at.ElementType.Size, out var idx))
+            {
+                index = null;       // we've consumed the index.
+            }
             dtComplex = at.ElementType;
             dtComplexOrig = at.ElementType;
             this.expComplex!.DataType = at;
-            expComplex = CreateArrayAccess(at.ElementType, at, i, index);
-            index = null;       // we've consumed the index.
+            expComplex = CreateArrayAccess(at.ElementType, at, i, idx);
             offset = r;
             return dtComplex.Accept(this);
         }
@@ -271,10 +273,9 @@ namespace Reko.Typing
                         return CreateUnreferenced(pt, expComplex!);
                     }
                 }
-                else
+                else if (TryScaleDownIndex(index, pt.Size, out var idx))
                 {
-                    index = ScaleDownIndex(index, pt.Size);
-                    return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
+                    return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, idx);
                 }
             }
             return FallbackExpression();
@@ -308,9 +309,10 @@ namespace Reko.Typing
                     --depth;
                     return exp;
                 }
-                else if (index != null && offset == 0)
+                else if (
+                    index != null && offset == 0 &&
+                    TryScaleDownIndex(index, strSize, out var idx))
                 {
-                    var idx = ScaleDownIndex(index, strSize);
                     index = null;
                     var exp = CreateArrayAccess(str, enclosingPtr, 0, idx);
                     --depth;
@@ -480,10 +482,14 @@ namespace Reko.Typing
                 return field.Name;
         }
 
-        private Expression? ScaleDownIndex(Expression? exp, int elementSize)
+        private bool TryScaleDownIndex(
+            Expression? exp, int elementSize, out Expression? index)
         {
             if (exp == null || elementSize <= 1)
-                return exp;
+            {
+                index = exp;
+                return true;
+            }
             if (exp is BinaryExpression bin &&
                 aem.MatchMul(bin) &&
                 aem.ElementSize!.ToInt32() % elementSize == 0)
@@ -492,20 +498,21 @@ namespace Reko.Typing
 
                 var scale = aem.ElementSize!.ToInt32() / elementSize;
                 if (scale == 1)
-                    return aem.Index;
-                return new BinaryExpression(
+                {
+                    index = aem.Index;
+                    return true;
+                }
+                index = new BinaryExpression(
                     Operator.IMul,
                     bin.DataType,
                     aem.Index!,
                     Constant.Int32(scale));
+                return true;
             }
             else
             {
-                return new BinaryExpression(
-                    Operator.SDiv,
-                    exp.DataType,
-                    exp,
-                    Constant.Int32(elementSize));
+                index = null;
+                return false;
             }
         }
     }

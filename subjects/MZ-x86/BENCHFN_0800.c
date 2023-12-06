@@ -1562,7 +1562,7 @@ l0800_nF1:
 						(ss->*sp_n).wFFFFFFF6 = ax_n;
 						__REALCVT(ds);
 						(ss->*sp_n).tFFFFFFF4.u2 = (struct Eq_n *) ss;
-						struct Eq_n Eq_n::* wArg02_n = (struct Eq_n Eq_n::*) (wArg02_n + wLoc06_n /16 6);
+						struct Eq_n Eq_n::* wArg02_n = (struct Eq_n Eq_n::*) ((char *) &wArg02_n->t0000.u0 + wLoc06_n);
 						struct Eq_n Eq_n::* sp_n = sp_n - 0x0A;
 						ptr32 es_di_n = (ptr32) (fp - 0x89);
 l0800_n:

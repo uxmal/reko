@@ -416,7 +416,7 @@ void fn00000001000023B0(ui32 edx, int32 edi)
 					up32 eax_n = (word32) rax_n;
 					if (eax_n <= 0x06)
 					{
-						rax_n = (struct Eq_n *) (g_a2684 + (int64) g_a2684[rax_n] /64 4);
+						rax_n = (struct Eq_n *) ((char *) g_a2684 + (int64) g_a2684[rax_n]);
 						word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 						word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 						switch (eax_n)

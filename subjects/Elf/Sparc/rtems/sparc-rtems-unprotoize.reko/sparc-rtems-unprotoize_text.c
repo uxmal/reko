@@ -10,7 +10,7 @@ void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7, Eq_n tArg
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
-		_environ = &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04) / 4;
+		_environ = (char *) &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
 		exit(main(&tArg44));
 	}
 	else
@@ -684,7 +684,7 @@ Eq_n lookup(Eq_n o0, Eq_n o1, struct Eq_n & l1Out, union Eq_n & i1Out)
 		o3_n += o1_n;
 	}
 	ui32 o3_n = o3_n & 0x01FF;
-	Eq_n i0_n = (Eq_n) (o0.ptr0000 + (o3_n * 0x0C) / 8);
+	Eq_n i0_n = (Eq_n) &(o0.ptr0000->a0000 + o3_n)->ptr0000;
 	char * o0_n = i0_n.ptr0000->ptr0004;
 	Eq_n o0_n;
 	if (o0_n == null)
@@ -693,7 +693,7 @@ Eq_n lookup(Eq_n o0, Eq_n o1, struct Eq_n & l1Out, union Eq_n & i1Out)
 	{
 		if (strcmp(o0_n, o1) == 0x00)
 			goto l00011D34;
-		if (o0.ptr0000[o3_n * 0x0C / 8] != 0x00)
+		if (o0.ptr0000->a0000[o3_n].ptr0000 != 0x00)
 		{
 			i0_n = (Eq_n) i0_n.ptr0000->a0000[0].ptr0000;
 			while (strcmp(i0_n.ptr0000->ptr0004, o1) != 0x00)
@@ -1603,7 +1603,7 @@ Eq_n munge_compile_params(Eq_n o0, ptr32 & i6Out)
 	o3_n = l0_n + 0x02;
 l00012D00:
 	aux_info_file_name_index = o3_n;
-	sp_n->a0060[g2_n / 4] = 0x00017220;
+	*((word32) &sp_n->a0060[0] + g2_n) = (word32[]) 0x00017220;
 	ui32 l0_n = o3_n + 0x01;
 	input_file_name_index = l0_n + 0x03;
 	sp_n->a0060[o3_n] = 0x00;
@@ -2954,7 +2954,7 @@ void _obstack_begin(struct Eq_n * o0, word32 o1, word32 o2, <anonymous> * o3, wo
 		word32 o1_n = &i1_n->dw0004 + 1;
 		i0_n->dw000C = o1_n;
 		i0_n->dw0008 = o1_n;
-		word32 o0_n = i1_n + o0_n / 8;
+		word32 o0_n = (char *) &i1_n->dw0000 + o0_n;
 		i1_n->dw0000 = o0_n;
 		i0_n->dw0010 = o0_n;
 		i1_n->dw0004 = 0x00;
@@ -3007,7 +3007,7 @@ void _obstack_begin_n(struct Eq_n * o0, word32 o1, word32 o2, <anonymous> * o3, 
 		word32 o1_n = &i1_n->dw0004 + 1;
 		i0_n->dw000C = o1_n;
 		i0_n->dw0008 = o1_n;
-		word32 o0_n = i1_n + o0_n / 8;
+		word32 o0_n = (char *) &i1_n->dw0000 + o0_n;
 		i1_n->dw0000 = o0_n;
 		i0_n->dw0010 = o0_n;
 		i1_n->dw0004 = 0x00;
@@ -3057,7 +3057,7 @@ void _obstack_newchunk(struct Eq_n * o0, word32 o1, word32 o3, word32 o4, word32
 		i0_n->ptr0004 = l0_n;
 	struct Eq_n * l1_n;
 	l0_n->ptr0004 = l1_n;
-	ptr32 o1_n = l0_n + i1_n / 8;
+	ptr32 o1_n = (char *) &l0_n->ptr0000 + i1_n;
 	i0_n->ptr0010 = o1_n;
 	l0_n->ptr0000 = o1_n;
 	Eq_n l2_n;
@@ -3074,7 +3074,7 @@ void _obstack_newchunk(struct Eq_n * o0, word32 o1, word32 o3, word32 o4, word32
 		if (o0_n >= 0x01)
 		{
 			g2_n = (struct Eq_n *) ((char *) &l1_n->ptr0004 + 4);
-			word32 * o4_n = (word32 *) (l0_n + (((word32) o0_n - 1 << 0x02) + 0x08) / 8);
+			word32 * o4_n = (word32 *) ((char *) &l0_n->ptr0000 + (((word32) o0_n - 1 << 0x02) + 0x08));
 			while (true)
 			{
 				o2_n = (struct Eq_n *) i0_n->ptr0008[o3_n * 0x04];
@@ -3453,7 +3453,7 @@ l00015D40:
 	{
 		g2_n = optind;
 l00015D44:
-		g_ptr2B2F0 += (g2_n - g_ptr2B300) / 4;
+		g_ptr2B2F0 = (ptr32 *) ((char *) g_ptr2B2F0 + (g2_n - g_ptr2B300));
 		g_ptr2B300 = g2_n;
 		i2Out = i2_n;
 		i4Out = i4_n;
@@ -3502,15 +3502,15 @@ l00015D30:
 		ptr32 * g4_n;
 		if (g3_n > 0x00)
 		{
-			g4_n = i4_n + g3_n / 4;
+			g4_n = (ptr32 *) ((char *) i4_n + g3_n);
 			int32 i3_n = g3_n;
 			int32 i1_n = i4_n << 0x02;
 			int32 g3_n = g1_n << 0x02;
 			while (true)
 			{
-				i2_n = o0[i1_n / 4];
-				o0[i1_n / 4] = o0[g3_n / 4];
-				o0[g3_n / 4] = i2_n;
+				i2_n = (int8 *) *((char *) &o0[0] + i1_n);
+				*((char *) &o0[0] + i1_n) = *((char *) &o0[0] + g3_n);
+				*((char *) &o0[0] + g3_n) = (word32 (*)[]) i2_n;
 				i3_n += ~0x00;
 				g3_n += 0x04;
 				if (i3_n == 0x00)
@@ -3520,7 +3520,7 @@ l00015D30:
 			i1_n = i1_n + 0x04;
 		}
 		else
-			g4_n = i4_n + g3_n / 4;
+			g4_n = (ptr32 *) ((char *) i4_n + g3_n);
 		i4_n = g4_n;
 	}
 	v28_n = i5_n <= g1_n;
