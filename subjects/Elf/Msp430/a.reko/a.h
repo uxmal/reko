@@ -7233,7 +7233,7 @@ T_1500: (in 0<16> @ 00004B2E : word16)
   Class: Eq_1499
   DataType: word16
   OrigDataType: word16
-T_1501: (in (&g_w0222)[uxTopReadyPriority * 0x10<16>] != 0<16> @ 00004B2E : bool)
+T_1501: (in (&g_w0222)[uxTopReadyPriority *16 8<i32>] != 0<16> @ 00004B2E : bool)
   Class: Eq_1501
   DataType: bool
   OrigDataType: bool
@@ -7373,7 +7373,7 @@ T_1535: (in 0<16> @ 00004B44 : word16)
   Class: Eq_1534
   DataType: word16
   OrigDataType: word16
-T_1536: (in (&g_w0222)[uxTopReadyPriority * 0x10<16>] == 0<16> @ 00004B44 : bool)
+T_1536: (in (&g_w0222)[uxTopReadyPriority *16 8<i32>] == 0<16> @ 00004B44 : bool)
   Class: Eq_1536
   DataType: bool
   OrigDataType: bool

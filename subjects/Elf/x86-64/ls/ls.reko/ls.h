@@ -1434,7 +1434,7 @@ Eq_14: (union "Eq_14" (byte u0) (word16 u1) ((arr Eq_14) u2) (size_t u3) (ssize_
 	T_6018 (in rax_800 @ 0000000000406EBB : Eq_14)
 	T_6019 (in 0<64> @ 0000000000406EBB : word64)
 	T_6060 (in 6398928<i64>[CONVERT(edi_879, word32, int64) * 8<64>] @ 0000000000406F31 : word64)
-	T_6061 (in fn0000000000406A80(ecx_820, rax_800, (&g_t61A3D0.u3)[(int64) edi_879 * 8<64>], r13_708, fs) @ 0000000000406F31 : word64)
+	T_6061 (in fn0000000000406A80(ecx_820, rax_800, (&g_t61A3D0.u3)[(int64) edi_879], r13_708, fs) @ 0000000000406F31 : word64)
 	T_6062 (in rax_915 @ 0000000000406F31 : Eq_14)
 	T_6063 (in 0<64> @ 0000000000406F39 : word64)
 	T_6074 (in 0<u64> @ 0000000000407229 : uint64)
@@ -21063,7 +21063,7 @@ T_3481: (in 4271360<i64>[(CONVERT(Mem109[0x000000000061B10C<p64>:byte], byte, ui
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64
-T_3482: (in fn000000000040D690((&g_a412D00->u3)[((uint64) g_b61B10C + ((uint64) g_b61B147 + ((int64) eax_113 + (uint64) (edx_111 + ecx_104) * 2<64>) * 2<64>) * 2<64>) * 8<64>], rbx_11, rsi_137, rdi_133) @ 0000000000404F87 : void)
+T_3482: (in fn000000000040D690((&g_a412D00->u3)[(uint64) g_b61B10C + ((uint64) g_b61B147 + ((int64) eax_113 + (uint64) (edx_111 + ecx_104) * 2<64>) * 2<64>) * 2<64>], rbx_11, rsi_137, rdi_133) @ 0000000000404F87 : void)
   Class: Eq_3482
   DataType: void
   OrigDataType: void
@@ -31427,7 +31427,7 @@ T_6060: (in 6398928<i64>[CONVERT(edi_879, word32, int64) * 8<64>] @ 000000000040
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64
-T_6061: (in fn0000000000406A80(ecx_820, rax_800, (&g_t61A3D0.u3)[(int64) edi_879 * 8<64>], r13_708, fs) @ 0000000000406F31 : word64)
+T_6061: (in fn0000000000406A80(ecx_820, rax_800, (&g_t61A3D0.u3)[(int64) edi_879], r13_708, fs) @ 0000000000406F31 : word64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64

@@ -955,7 +955,7 @@ l01D1:
 						&a_n.u1->t0000.u0 = g_t004E.u1 + fn056C() /8 2;
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = &null->u0 + (byte) (a_n < 0x00);
+						null = &null->u0 + (byte) (a_n < 0x00) /8 2;
 						Eq_n a_n;
 						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
 						f = sp_n->b0001;
@@ -972,7 +972,7 @@ l01D1:
 						&a_n.u1->t0000.u0 = g_t004E.u1 + fn056C() /8 2;
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = &null->u0 + (byte) (a_n < 0x00);
+						null = &null->u0 + (byte) (a_n < 0x00) /8 2;
 						Eq_n a_n;
 						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
 						f = sp_n->b0001;

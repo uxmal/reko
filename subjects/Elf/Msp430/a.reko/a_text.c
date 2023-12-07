@@ -930,7 +930,7 @@ void vTaskSwitchContext()
 {
 	if (uxSchedulerSuspended == 0x00)
 	{
-		while ((&g_w0222)[uxTopReadyPriority * 0x10] == 0x00)
+		while ((&g_w0222)[uxTopReadyPriority *16 8] == 0x00)
 			uxTopReadyPriority += ~0x00;
 		g_a0226[uxTopReadyPriority] = *g_a0226[uxTopReadyPriority].ptr0002;
 		if (g_a0226[uxTopReadyPriority] == g_a0224[uxTopReadyPriority])

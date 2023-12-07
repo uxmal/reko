@@ -1591,7 +1591,7 @@ int32 fn00007338(uint32 r3, Eq_n r4)
 	int32 r11_n;
 	while (r5_n < r4)
 	{
-		union Eq_n * r7_n = (union Eq_n *) (r6_n + r3_n);
+		union Eq_n * r7_n = (union Eq_n *) (r6_n + r3_n / 4);
 		if (r7_n->u0 != (word32) r5_n.u0 - 19088744)
 		{
 			r11_n = -1;
@@ -3466,7 +3466,7 @@ int32 fn00009C2C(Eq_n r3, Eq_n r4, Eq_n r15, uint32 VR, union Eq_n & r15Out, ptr
 		Eq_n r4_n;
 		&r4_n.u2->t0000.u0 = (word32) r4_n->w0008;
 		ui32 r11_n;
-		fn0000FEDC(r4.u1 + ((r4_n - 1) - r3_n), r4_n, r15, out r11_n, out r15);
+		fn0000FEDC(r4.u1 + ((r4_n - 1) - r3_n) / 4, r4_n, r15, out r11_n, out r15);
 		r1_n = (struct Eq_n *) <invalid>;
 		r11_n = r11_n & 0x7F;
 	}
@@ -3479,7 +3479,7 @@ int32 fn00009C2C(Eq_n r3, Eq_n r4, Eq_n r15, uint32 VR, union Eq_n & r15Out, ptr
 		Eq_n r4_n;
 		&r4_n.u2->t0000.u0 = (word32) r4_n->w0010;
 		word32 r11_n;
-		fn0000FEDC(r4.u1 + ((r4_n - 1) - r3_n), r4_n, r15, out r11_n, out r15);
+		fn0000FEDC(r4.u1 + ((r4_n - 1) - r3_n) / 4, r4_n, r15, out r11_n, out r15);
 		r1_n = (struct Eq_n *) <invalid>;
 		r11_n = r11_n + (word32) r4_n->bFFFFFFFB & 0x7F;
 	}

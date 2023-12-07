@@ -94,7 +94,7 @@ l00001556:
 					a3_n += 4;
 					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
-					a2_n = &a2_n->u0 + d0_n;
+					a2_n = &a2_n->u0 + d0_n / 4;
 					if (dwArg02 != 0x00 && a2_n->u0 >= 0x00)
 						a2_n->u0 = (a2_n->u0 + dwArg02)->t0002.u0;
 					else

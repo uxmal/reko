@@ -20371,7 +20371,7 @@ T_4340: (in 0xFFFFFFFC<32> @ 0000801C : word32)
   Class: Eq_4340
   DataType: ui32
   OrigDataType: ui32
-T_4341: (in r0_7 + ~r3_18 & 0xFFFFFFFC<32> @ 0000801C : word32)
+T_4341: (in r0_7 + ~r3_18 / 4<i32> & 0xFFFFFFFC<32> @ 0000801C : word32)
   Class: Eq_4341
   DataType: ui32
   OrigDataType: ui32
@@ -20379,7 +20379,7 @@ T_4342: (in 4<32> @ 0000801C : word32)
   Class: Eq_4342
   DataType: word32
   OrigDataType: word32
-T_4343: (in (r0_7 + ~r3_18 & 0xFFFFFFFC<32>) + 4<32> @ 0000801C : word32)
+T_4343: (in (r0_7 + ~r3_18 / 4<i32> & 0xFFFFFFFC<32>) + 4<32> @ 0000801C : word32)
   Class: Eq_4343
   DataType: ui32
   OrigDataType: ui32

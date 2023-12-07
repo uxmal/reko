@@ -3453,7 +3453,7 @@ l00015D40:
 	{
 		g2_n = optind;
 l00015D44:
-		g_ptr2B2F0 += g2_n - g_ptr2B300;
+		g_ptr2B2F0 += (g2_n - g_ptr2B300) / 4;
 		g_ptr2B300 = g2_n;
 		i2Out = i2_n;
 		i4Out = i4_n;
@@ -3502,7 +3502,7 @@ l00015D30:
 		ptr32 * g4_n;
 		if (g3_n > 0x00)
 		{
-			g4_n = i4_n + g3_n;
+			g4_n = i4_n + g3_n / 4;
 			int32 i3_n = g3_n;
 			int32 i1_n = i4_n << 0x02;
 			int32 g3_n = g1_n << 0x02;
@@ -3520,7 +3520,7 @@ l00015D30:
 			i1_n = i1_n + 0x04;
 		}
 		else
-			g4_n = i4_n + g3_n;
+			g4_n = i4_n + g3_n / 4;
 		i4_n = g4_n;
 	}
 	v28_n = i5_n <= g1_n;

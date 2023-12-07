@@ -2934,7 +2934,7 @@ struct Eq_n * fn0000D5BE(struct Eq_n * r0, struct Eq_n * r4, struct Eq_n * ap, u
 		sp_n->dwFFFFFFFC = r4->dwC5F7;
 		sp_n->ptrFFFFFFF8 = ap->ptr0004;
 		(*((word32) g_ptr1929C + 2))();
-		ap->ptr0004 += r3;
+		ap->ptr0004 += r3 / 4;
 		r4->dwC5F7 += r3;
 		r4->ptrC5FB -= r3;
 		word32 r2_n;

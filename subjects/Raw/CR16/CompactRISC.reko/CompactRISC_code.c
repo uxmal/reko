@@ -4895,11 +4895,11 @@ l0000B256:
 		r1_n = 0x8A;
 	}
 	int32 r11_r10_n = (int32) r6_n;
-	(&r9_r8_n.u1->w006A + (r11_r10_n + 0x01 << 0x02))[1] = ~0x00;
+	(&r9_r8_n.u1->w006A + (r11_r10_n + 0x01) * 2)[1] = ~0x00;
 	ci16 r4_n = ~0x00;
 	if (r6_n <= 0x00)
 	{
-		ptr32 ra_n = &r9_r8_n.u1->w006A + ((r11_r10_n << 0x02) + 0x0A);
+		ptr32 ra_n = &r9_r8_n.u1->w006A + ((r11_r10_n << 0x02) + 0x0A) / 2;
 		ci16 r6_n = 0x00;
 		ci16 * r3_r2_n = SEQ(SLICE(&r9_r8_n.u1->ptr0070, word16, 16), r8_n + 0x70);
 		ci16 * r3_r2_n;
@@ -4980,11 +4980,11 @@ l0000B2E8:
 		r1_n = 0x8A;
 	}
 	int32 r11_r10_n = (int32) r6_n;
-	(&r9_r8_n.u1->w095E + (r11_r10_n + 0x01 << 0x02))[1] = ~0x00;
+	(&r9_r8_n.u1->w095E + (r11_r10_n + 0x01) * 2)[1] = ~0x00;
 	ci16 r4_n = ~0x00;
 	if (r6_n <= 0x00)
 	{
-		ptr32 ra_n = &r9_r8_n.u1->w095E + ((r11_r10_n << 0x02) + 0x0A);
+		ptr32 ra_n = &r9_r8_n.u1->w095E + ((r11_r10_n << 0x02) + 0x0A) / 2;
 		ci16 r6_n = 0x00;
 		ci16 * r3_r2_n = SEQ(SLICE((word32) r9_r8_n + 2404, word16, 16), r8_n + 2404);
 		ci16 * r3_r2_n;

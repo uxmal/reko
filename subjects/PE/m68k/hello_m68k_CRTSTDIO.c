@@ -96,8 +96,8 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 			dwLoc0C_n = d0_n;
 			if (d0_n <= 7)
 			{
-				word16 v41_n = g_a1758[(int32) (int16) d0_n * 2];
-				g_a1758[(int32) v41_n]();
+				word16 v41_n = g_a1758[(int32) (int16) d0_n];
+				g_a1758[(int32) v41_n / 2]();
 				return;
 			}
 			byte v43_n = *dwArg08_n;

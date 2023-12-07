@@ -1201,7 +1201,7 @@ l00000000004036F0:
 									word32 esi_n = 0x00;
 									cu8 al_n = rax_n->b0012 - 0x01;
 									if (al_n <= 0x0D)
-										esi_n = g_a412C00[(uint64) al_n * 0x04];
+										esi_n = g_a412C00[(uint64) al_n];
 									qwLoc03B0_n = (word64) qwLoc03B0_n.u0 + fn0000000000407EA0(r14_n, 0x00, esi_n, &rax_n->b0013, fs);
 									if (g_dw61B150 == 0x01 && (g_dw61B148 == ~0x00 && (g_b61B144 == 0x00 && g_b61B10E == 0x00)))
 									{
@@ -1706,7 +1706,7 @@ uint64 fn0000000000404CD0(word32 edi)
 {
 	uint64 rdi_n = (uint64) edi;
 	uint64 rax_n = 0x00;
-	word64 rdx_n = (&g_qw61A3E0)[rdi_n * 0x10];
+	word64 rdx_n = (&g_qw61A3E0)[rdi_n *64 2];
 	byte * rsi_n = (byte *) *((char *) &g_ptr61A3E8 + rdi_n * 0x10);
 	if (rdx_n == 0x00)
 		return rax_n;
@@ -1857,7 +1857,7 @@ void fn0000000000404E80()
 	up32 edx_n = 0x00;
 	if (ecx_n == 0x04)
 		edx_n = g_dw61B14C;
-	fn000000000040D690((&g_a412D00->u3)[((uint64) g_b61B10C + ((uint64) g_b61B147 + ((int64) eax_n + (uint64) (edx_n + ecx_n) * 0x02) * 0x02) * 0x02) * 0x08], rbx_n, rsi_n, rdi_n);
+	fn000000000040D690((&g_a412D00->u3)[(uint64) g_b61B10C + ((uint64) g_b61B147 + ((int64) eax_n + (uint64) (edx_n + ecx_n) * 0x02) * 0x02) * 0x02], rbx_n, rsi_n, rdi_n);
 }
 
 // 0000000000405090: void fn0000000000405090(Register byte sil, Register Eq_n rdi)
@@ -2728,7 +2728,7 @@ l00000000004065B0:
 		if (*((word32) rdi + 0x00B0) == 0x00)
 		{
 			uint64 rax_n = (uint64) *((word32) rdi + 0x00A0);
-			edx_n = g_a412C60[rax_n * 0x04];
+			edx_n = g_a412C60[rax_n];
 			if (edx_n == 0x05)
 				goto l00000000004065CF;
 			r14b_n = (byte) r14d_n & (int8) (edx_n == 0x07);
@@ -3246,7 +3246,7 @@ l0000000000406FBC:
 								edi_n = ecx_n - r8d_n >> 0x1F;
 						}
 l0000000000406F20:
-						Eq_n rax_n = fn0000000000406A80(ecx_n, rax_n, (&g_t61A3D0.u3)[(int64) edi_n * 0x08], r13_n, fs);
+						Eq_n rax_n = fn0000000000406A80(ecx_n, rax_n, (&g_t61A3D0.u3)[(int64) edi_n], r13_n, fs);
 						if (rax_n != 0x00 || *r13_n.u0 == 0x00)
 						{
 							struct Eq_n * rax_n = rax_n + r13_n;
