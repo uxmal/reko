@@ -720,7 +720,7 @@ l00002FAC:
 				word32 r8_n;
 				if ((byte) lr <= 55 && (byte) lr >= 0x30)
 				{
-					r8_n = lr.u1 + (r10_n << 0x03);
+					r8_n = lr.u1 + r10_n * 2;
 					goto l00003014;
 				}
 				break;
@@ -730,7 +730,7 @@ l00002FAC:
 					word32 r8_n;
 					if ((byte) lr <= 0x39)
 					{
-						r8_n = lr.u1 + (r10_n << 0x04);
+						r8_n = lr.u1 + r10_n * 4;
 l00003014:
 						r8_n = r8_n - 0x30;
 						goto l0000302E;
@@ -739,12 +739,12 @@ l00003014:
 					{
 						if ((byte) lr <= 0x46)
 						{
-							r8_n = lr.u1 + (r10_n << 0x04) - 55;
+							r8_n = lr.u1 + r10_n * 4 - 55;
 							goto l0000302E;
 						}
 						if ((byte) lr <= 0x66 && (byte) lr >= 0x61)
 						{
-							r8_n = lr.u1 + (r10_n << 0x04) - 0x57;
+							r8_n = lr.u1 + r10_n * 4 - 0x57;
 l0000302E:
 							r10_n = (byte) r8_n;
 							++r11_n;
@@ -3412,7 +3412,7 @@ l000050E4:
 				fn00004374(r0, r1, r2, r3, r4_n, r5_n, r5_n, lr_n, out r12_n, out lr);
 				r10_n.u4 = sp_n->dw0014;
 				r4_n = r12_n;
-				r7_n = (&sp_n[2].dw0008->tFFFFFFFC.u6->dw0004)[r10_n * 0x04];
+				r7_n = (&sp_n[2].dw0008->tFFFFFFFC.u6->dw0004)[r10_n];
 			}
 			goto l00004B9E;
 		case 0x04:
@@ -8421,7 +8421,7 @@ void fn000092D8(word32 r0, <anonymous> * r1, word32 r4, word32 r5, word64 * r10,
 	bool V_n = <invalid>;
 	if (!(N_n | V_n))
 	{
-		r5_n |= g_a99B4[r12_n * 0x04];
+		r5_n |= g_a99B4[r12_n];
 		*r3_n = 0x01;
 	}
 	else

@@ -987,7 +987,7 @@ struct Eq_n g_t07EC = // 07EC
 // 0818: void fn0818(Register (ptr16 word16) r5)
 void fn0818(word16 * r5)
 {
-	fn11A6(r5 + *r5 + *r5 + 1, r5);
+	fn11A6(r5 + *r5 /16 2 + *r5 /16 2 + 1, r5);
 	g_ptr53F0();
 }
 
@@ -1053,7 +1053,7 @@ Eq_n g_t0A15 = // 0A15
 // 0A64: void fn0A64(Register (ptr16 word16) r5)
 void fn0A64(word16 * r5)
 {
-	fn11A6(r5 + *r5 + *r5 + 1, r5);
+	fn11A6(r5 + *r5 /16 2 + *r5 /16 2 + 1, r5);
 	g_ptr5414();
 }
 
@@ -2132,7 +2132,7 @@ void fn14A8(int16 r2, uint16 r5)
 			if (v49_n != 0x00)
 				r2_n -= 0x0200;
 			wLoc08_n = r2_n;
-			word16 * r0_n = r2_n + (r5_n << 1);
+			word16 * r0_n = r2_n + r5_n;
 			do
 			{
 				*r2_n = *r0_n;

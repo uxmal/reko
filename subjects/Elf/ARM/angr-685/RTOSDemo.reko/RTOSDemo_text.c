@@ -51,7 +51,7 @@ void ResetISR(word32 cpsr)
 	word32 * r0_n = g_ptr8030;
 	if (r3_n < r0_n)
 	{
-		word32 * r2_n = r3_n + ((r0_n + ~r3_n & ~0x03) + 0x04);
+		word32 * r2_n = r3_n + ((r0_n + ~r3_n / 4 & ~0x03) + 0x04) / 4;
 		do
 		{
 			*r3_n = 0x00;

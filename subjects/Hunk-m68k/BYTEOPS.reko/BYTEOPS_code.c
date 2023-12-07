@@ -1724,7 +1724,7 @@ word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, ptr32 & d1Out)
 		if (d0_n < null)
 		{
 			d3_n = SEQ(v52_n, v50_n - 0x01);
-			d0_n += d1_n;
+			d0_n += d1_n / 4;
 			while (d0_n >= null)
 				;
 		}

@@ -123,7 +123,7 @@ struct Eq_n * fn000025B4(struct Eq_n * a5, struct Eq_n * dwArg04, Eq_n dwArg08)
 	if (d0_n == null)
 		return null;
 	uipr32 d0_n = dwArg04->dw0004;
-	struct Eq_n * d0_n = (struct Eq_n *) (dwArg08.u0 + SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03));
+	struct Eq_n * d0_n = (struct Eq_n *) (dwArg08.u0 + SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) / 4);
 	d0_n->t0004.u2 = (struct Eq_n *) &d0_n->ptr0004;
 	d0_n->ptr0004 = d0_n;
 	d0_n->dw0000 = dwArg04->ptr0000;
@@ -631,8 +631,8 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 		dwArg04.u2->ptr0000 = a3_n;
 		if (d0_n <= 0x00)
 		{
-			word16 v25_n = g_a2C58[(int32) ((int16) d0_n + 3) * 2];
-			g_a2C58[(int32) v25_n]();
+			word16 v25_n = g_a2C58[(int32) ((int16) d0_n + 3)];
+			g_a2C58[(int32) v25_n / 2]();
 			struct Eq_n * a5_n;
 			a5Out = a5_n;
 			ptr32 a6_n;

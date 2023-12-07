@@ -732,7 +732,7 @@ l08B2:
 						cui16 r0_n = (word16) v118_n;
 						r1_n = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v118_n, word16, 16), 0x01, (bool) cond(r0_n << 1)), 0x01, (bool) cond(r0_n << 2));
 						r1_n = r1_n << 1;
-					} while (g_a0DC4[r1_n * 0x02] <= 0x00);
+					} while (g_a0DC4[r1_n] <= 0x00);
 					r0_n.u0 = 0x0DB8;
 					ci16 * r3_n;
 					do

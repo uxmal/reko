@@ -273,6 +273,7 @@ namespace Reko.Typing
                 }
                 else
                 {
+                    index = ScaleDownIndex(index, pt.Size);
                     return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
                 }
             }

@@ -498,7 +498,7 @@ l0964:
 			if (g_w0046 >= ~0x0E && g_w0046 <= 0x0F)
 			{
 				int16 r1_n = g_w0078;
-				r0_n = g_a28F2[r1_n * 0x02] - (&g_w28F0)[r1_n * 0x02];
+				r0_n = g_a28F2[r1_n] - (&g_w28F0)[r1_n];
 				int16 r2_n = r0_n;
 				if (r0_n <= 0x00)
 					r2_n = -r0_n;
@@ -523,7 +523,7 @@ l097C:
 			if (r0_n >= 0x00)
 				wLoc02_n = 0x04;
 			fn0C90(r1_n, (byte) wLoc02_n);
-			ui16 r2_n = g_a28F2[r1_n * 0x02] - (&g_w28F0)[r1_n * 0x02];
+			ui16 r2_n = g_a28F2[r1_n] - (&g_w28F0)[r1_n];
 			ci16 r2_n = r2_n - (r2_n * 0x03 >> 2);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			ci16 r2_n = r2_n + (r2_n >> 1);
@@ -858,7 +858,7 @@ l0D9C:
 			}
 			else
 			{
-				g_ptr0082 += r4_n & 0x3F;
+				g_ptr0082 += (r4_n & 0x3F) /16 2;
 				r4_n = r4_n & 0x3F;
 			}
 			*r5 = r4_n | wLoc02_n;
@@ -1027,7 +1027,7 @@ void fn0F04(int16 r0)
 				g_w0F70 = 0x0ADF;
 			else if (g_w00AA <= ~0x02)
 				g_w0F70 = 0x0A9F;
-			word16 * r4_n = r4_n + g_w00AA + r3_n;
+			word16 * r4_n = r4_n + g_w00AA /16 2 + r3_n /16 2;
 			sp_n->ptrFFFFFFFE = r4_n;
 			r5_n = fn0D78(r4_n, r5_n);
 			r4_n = sp_n->ptrFFFFFFFE;

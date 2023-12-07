@@ -5733,7 +5733,7 @@ T_1227: (in 0<16> @ 0902 : word16)
   Class: Eq_1226
   DataType: ci16
   OrigDataType: ci16
-T_1228: (in g_a0DC4[r1_375 * 2<16>] <= 0<16> @ 0902 : bool)
+T_1228: (in g_a0DC4[r1_375] <= 0<16> @ 0902 : bool)
   Class: Eq_1228
   DataType: bool
   OrigDataType: bool

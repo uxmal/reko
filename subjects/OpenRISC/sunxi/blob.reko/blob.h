@@ -36039,7 +36039,7 @@ T_7374: (in out r15 @ 00009CBC : word32)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: ptr32
-T_7375: (in fn0000FEDC(r4.u1 + ((r4_79 - 1<i32>) - r3_35), r4_79, r15, out r11_85, out r15) @ 00009CBC : word32)
+T_7375: (in fn0000FEDC(r4.u1 + ((r4_79 - 1<i32>) - r3_35) / 4<i32>, r4_79, r15, out r11_85, out r15) @ 00009CBC : word32)
   Class: Eq_1065
   DataType: ptr32
   OrigDataType: word32
@@ -36263,7 +36263,7 @@ T_7430: (in out r15 @ 00009CF8 : word32)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: ptr32
-T_7431: (in fn0000FEDC(r4.u1 + ((r4_51 - 1<i32>) - r3_47), r4_51, r15, out r11_58, out r15) @ 00009CF8 : word32)
+T_7431: (in fn0000FEDC(r4.u1 + ((r4_51 - 1<i32>) - r3_47) / 4<i32>, r4_51, r15, out r11_58, out r15) @ 00009CF8 : word32)
   Class: Eq_1065
   DataType: ptr32
   OrigDataType: word32

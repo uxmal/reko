@@ -294,7 +294,7 @@ void fn000005CE(ui32 d4, ui16 * a4)
 			int32 d4_n = d15_n + 0x01;
 			if ((d15_n & 0xFF) >= d2_n)
 				break;
-			(a4 + d15_n)[6] = (ui16) ((char *) a15_n - 0x10000000 + d15_n)[16];
+			(a4 + d15_n / 2)[6] = (ui16) ((char *) a15_n - 0x10000000 + d15_n)[16];
 			d15_n = d4_n;
 		}
 		Eq_n d15_n;
@@ -372,7 +372,7 @@ void fn00000690(ui32 d4, struct Eq_n * a4)
 				++d4_n;
 				if (d4_n >= (int32) SLICE((int32) a4->w0000, word4, 4))
 					break;
-				(&a15_n->dwF0000000 + d4_n)[4] = (&(a4 + d4_n / 22)->dw0008)[1];
+				(&a15_n->dwF0000000 + d4_n / 4)[4] = (&(a4 + d4_n / 22)->dw0008)[1];
 			}
 			d15_n = 0x06280000;
 		}
@@ -493,7 +493,7 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 						int32 d4_n = d15_n + 0x01;
 						if ((d15_n & 0xFF) >= d2_n)
 							break;
-						(a4 + d15_n)[6] = (ui16) ((char *) a15_n - 0x10000000 + d15_n)[16];
+						(a4 + d15_n / 2)[6] = (ui16) ((char *) a15_n - 0x10000000 + d15_n)[16];
 						d15_n = d4_n;
 					}
 					Eq_n d15_n;

@@ -3584,7 +3584,7 @@ T_666: (in 0x28F0<16>[r1_146 * 2<16>] @ 0950 : word16)
   Class: Eq_666
   DataType: word16
   OrigDataType: word16
-T_667: (in g_a28F2[r1_146 * 2<16>] - (&g_w28F0)[r1_146 * 2<16>] @ 0950 : word16)
+T_667: (in g_a28F2[r1_146] - (&g_w28F0)[r1_146] @ 0950 : word16)
   Class: Eq_343
   DataType: int16
   OrigDataType: word16
@@ -3732,7 +3732,7 @@ T_703: (in 0x28F0<16>[r1_177 * 2<16>] @ 099A : word16)
   Class: Eq_703
   DataType: word16
   OrigDataType: word16
-T_704: (in g_a28F2[r1_177 * 2<16>] - (&g_w28F0)[r1_177 * 2<16>] @ 099A : word16)
+T_704: (in g_a28F2[r1_177] - (&g_w28F0)[r1_177] @ 099A : word16)
   Class: Eq_704
   DataType: ui16
   OrigDataType: word16
