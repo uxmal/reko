@@ -544,5 +544,18 @@ namespace Reko.UnitTests.Decompiler.Typing
             var e = ceb.BuildComplex(PrimitiveType.Int32);
             Assert.AreEqual("a.point->dw0004", e.ToString());
         }
+
+        [Test]
+        public void CEB_PointerToStruct_ArrayField()
+        {
+            StructureType str = Struct(
+                Fld(0, new ArrayType(PrimitiveType.Real64, 4)));
+            var id = new Identifier("id", PrimitiveType.Ptr32, null);
+            var index = new Identifier("index", PrimitiveType.Ptr32, null);
+            CreateTv(id, Ptr32(str), PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, id, m.IMul(index, 8));
+            var e = ceb.BuildComplex(PrimitiveType.Real64);
+            Assert.AreEqual("id->a0000[index]", e.ToString());
+        }
     }
 }
