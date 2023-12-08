@@ -1608,5 +1608,53 @@ main_exit:
             });
             RunStringTest(pb.BuildProgram(), sExp);
         }
+
+        [Test]
+        public void TerMultiDimensionalArray_UserDefined()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r0 = Mem0[a + r1 * 0x20<32> + r2 * 4<32>:word32]
+main_exit:
+
+// After ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r0 = (a + r1)->array[r2]
+main_exit:
+
+";
+            #endregion
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r0 = m.Register("r0");
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var str = new StructureType("str", 32, true)
+                {
+                    Fields = {
+                        {0, new ArrayType(PrimitiveType.Int32, 8), "array"}
+                    }
+                };
+                var a = m.Temp(new Pointer(str, 32), "a");
+                m.Assign(
+                    r0,
+                    m.Mem32(m.IAdd(m.IAdd(a, m.IMul(r1, 32)), m.IMul(r2, 4)))
+                );
+            });
+            RunStringTest(pb.BuildProgram(), sExp);
+        }
     }
 }

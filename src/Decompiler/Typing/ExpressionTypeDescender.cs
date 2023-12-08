@@ -257,6 +257,9 @@ namespace Reko.Typing
         /// </returns>
         public DataType StructField(Expression? eBase, Expression eStructPtr, int offset, DataType dtField, int structPtrBitSize)
         {
+            // Do not unify with user-defined fields
+            if (IsUserDefinedField(eStructPtr, offset))
+                return TypeVar(eStructPtr).DataType;
             var s = factory.CreateStructureType(null, 0);
             var field = new StructureField(offset, dtField);
             s.Fields.Add(field);
@@ -265,6 +268,23 @@ namespace Reko.Typing
                 ? (DataType)factory.CreateMemberPointer(TypeVar(eBase), s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MeetDataType(eStructPtr, pointer);
+        }
+
+        private bool IsUserDefinedField(Expression eStructPtr, int offset)
+        {
+            var tv = TypeVar(eStructPtr);
+            if (tv.DataType is null)
+                return false;
+            var ptr = tv.DataType.ResolveAs<Pointer>();
+            if (ptr is null)
+                return false;
+            var str = ptr.Pointee.ResolveAs<StructureType>();
+            if (str is null)
+                return false;
+            if (!str.UserDefined)
+                return false;
+            var field = str.Fields.AtOffset(offset);
+            return field is not null;
         }
 
         public bool VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)

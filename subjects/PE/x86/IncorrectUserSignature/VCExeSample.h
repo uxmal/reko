@@ -134,7 +134,7 @@ T_7: (in c + 0<32> @ 00401138 : word32)
 T_8: (in Mem19[c + 0<32>:word32] @ 00401138 : word32)
   Class: Eq_8
   DataType: (ptr32 Eq_8)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_9: (in 8<i32> @ 00401138 : int32)
   Class: Eq_9
   DataType: int32

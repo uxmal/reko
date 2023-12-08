@@ -26487,7 +26487,6 @@ struct addrinfo {	// size: 32 20
 } Eq_2566;
 
 typedef struct sockaddr;
-struct addrinfo;
 struct addrinfo {	// size: 32 20
 	int32 ai_flags;	// 0
 	int32 ai_family;	// 4
@@ -26500,7 +26499,6 @@ struct addrinfo {	// size: 32 20
 } Eq_2567;
 
 typedef struct sockaddr;
-struct addrinfo;
 struct addrinfo {	// size: 32 20
 	int32 ai_flags;	// 0
 	int32 ai_family;	// 4
@@ -26518,7 +26516,6 @@ typedef union Eq_2576 {
 } Eq_2576;
 
 typedef struct sockaddr;
-struct addrinfo;
 struct addrinfo {	// size: 32 20
 	int32 ai_flags;	// 0
 	int32 ai_family;	// 4
@@ -26536,7 +26533,6 @@ typedef union Eq_2581 {
 } Eq_2581;
 
 typedef struct sockaddr;
-struct addrinfo;
 struct addrinfo {	// size: 32 20
 	int32 ai_flags;	// 0
 	int32 ai_family;	// 4
@@ -26551,7 +26547,6 @@ struct addrinfo {	// size: 32 20
 typedef socklen_t Eq_2584;
 
 typedef struct sockaddr;
-struct addrinfo;
 struct addrinfo {	// size: 32 20
 	int32 ai_flags;	// 0
 	int32 ai_family;	// 4
