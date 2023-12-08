@@ -409,7 +409,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 		g_t0F0E.u0 = (int16) v28_n;
 		if (v28_n >= 0x00)
 			&r0_n.u1->t0000.u0 = (word32) r0_n + 200;
-		g_w0B58 = r0_n.u1 + g_w0B58 /16 2;
+		g_w0B58 = &r0_n.u1->t0000.u0 + g_w0B58;
 		Eq_n r0_n = fn0AB6(r0_n, r4_n, out r4_n, out r5_n);
 		bool Z_n = fn0AE8(r0_n, r4_n, &g_ptr0624, out r0_n, out r4_n, out r5_n);
 		r0Out = r0_n;

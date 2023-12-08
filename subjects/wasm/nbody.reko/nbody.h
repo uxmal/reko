@@ -275,7 +275,7 @@ T_18: (in arg1[v19_12 * 0x38<32>] @ 000E0090 : real64)
   Class: Eq_15
   DataType: real64
   OrigDataType: real64
-T_19: (in arg1[loc3_19 * 0x38<32> / 280<i32>] - arg1[(v19_12 * 0x38<32>) / 280<i32>] @ 000E0090 : real64)
+T_19: (in arg1->a0000[loc3_19].r0000 - ((arg1->a0000))[v19_12].r0000 @ 000E0090 : real64)
   Class: Eq_19
   DataType: real64
   OrigDataType: real64
@@ -331,7 +331,7 @@ T_32: (in Mem24[arg1 + v19_12 * 0x38<32> + 8<u32>:real64] @ 000E00A3 : real64)
   Class: Eq_26
   DataType: real64
   OrigDataType: real64
-T_33: (in (arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0008 - (((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0008 @ 000E00A3 : real64)
+T_33: (in (&(arg1->a0000 + loc3_19)->r0000)[1<i32>] - (&(arg1->a0000 + v19_12)->r0000)[1<i32>] @ 000E00A3 : real64)
   Class: Eq_33
   DataType: real64
   OrigDataType: real64
@@ -387,7 +387,7 @@ T_46: (in Mem24[arg1 + v19_12 * 0x38<32> + 0x10<u32>:real64] @ 000E00B7 : real64
   Class: Eq_40
   DataType: real64
   OrigDataType: real64
-T_47: (in (arg1 + (loc3_19 * 0x38<32>) / 280<i32>)->a0000[0<i32>].r0010 - (((arg1 + (v19_12 * 0x38<32>) / 280<i32>)->a0000))[0<i32>].r0010 @ 000E00B7 : real64)
+T_47: (in (&(arg1->a0000 + loc3_19)->r0000)[2<i32>] - (&(arg1->a0000 + v19_12)->r0000)[2<i32>] @ 000E00B7 : real64)
   Class: Eq_47
   DataType: real64
   OrigDataType: real64
@@ -879,11 +879,11 @@ T_169: (in Mem234[arg1 + loc4_224 * 0x38<32> + 0x18<u32>:real64] @ 000E01B0 : re
   Class: Eq_169
   DataType: real64
   OrigDataType: real64
-T_170: (in (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0018 * arg2 @ 000E01B0 : real64)
+T_170: (in (&(arg1->a0000 + loc4_224)->r0000)[3<i32>] * arg2 @ 000E01B0 : real64)
   Class: Eq_170
   DataType: real64
   OrigDataType: real64
-T_171: (in *v19_231 + (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0018 * arg2 @ 000E01B0 : real64)
+T_171: (in *v19_231 + (&(arg1->a0000 + loc4_224)->r0000)[3<i32>] * arg2 @ 000E01B0 : real64)
   Class: Eq_163
   DataType: real64
   OrigDataType: real64
@@ -951,11 +951,11 @@ T_187: (in Mem246[arg1 + loc4_224 * 0x38<32> + 0x20<u32>:real64] @ 000E01D4 : re
   Class: Eq_187
   DataType: real64
   OrigDataType: real64
-T_188: (in (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0020 * arg2 @ 000E01D4 : real64)
+T_188: (in (&(arg1->a0000 + loc4_224)->r0000)[4<i32>] * arg2 @ 000E01D4 : real64)
   Class: Eq_188
   DataType: real64
   OrigDataType: real64
-T_189: (in v19_251->r0008 + (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0020 * arg2 @ 000E01D4 : real64)
+T_189: (in v19_251->r0008 + (&(arg1->a0000 + loc4_224)->r0000)[4<i32>] * arg2 @ 000E01D4 : real64)
   Class: Eq_181
   DataType: real64
   OrigDataType: real64
@@ -1019,11 +1019,11 @@ T_204: (in Mem266[arg1 + loc4_224 * 0x38<32> + 0x28<u32>:real64] @ 000E01F8 : re
   Class: Eq_204
   DataType: real64
   OrigDataType: real64
-T_205: (in (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0028 * arg2 @ 000E01F8 : real64)
+T_205: (in (&(arg1->a0000 + loc4_224)->r0000)[5<i32>] * arg2 @ 000E01F8 : real64)
   Class: Eq_205
   DataType: real64
   OrigDataType: real64
-T_206: (in v19_271->r0010 + (arg1 + (loc4_224 * 0x38<32>) / 280<i32>)->r0028 * arg2 @ 000E01F8 : real64)
+T_206: (in v19_271->r0010 + (&(arg1->a0000 + loc4_224)->r0000)[5<i32>] * arg2 @ 000E01F8 : real64)
   Class: Eq_198
   DataType: real64
   OrigDataType: real64

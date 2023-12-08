@@ -329,7 +329,7 @@ void fn00110427(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word3
 	int32 v188 = 0x01FF;
 	v187 &= v188;
 	v188 = 0x0700;
-	&v187.u5->t0000.u0 = v187.u5 + v188 / 8;
+	&v187.u5->t0000.u0 += v188;
 }
 
 // 00110E8A: void fn00110E8A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -2636,7 +2636,7 @@ void fn00111F27(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word3
 	int32 v194 = 0x01FF;
 	v193 &= v194;
 	v194 = 0x0700;
-	&v193.u5->t0000.u0 = v193.u5 + v194 / 8;
+	&v193.u5->t0000.u0 += v194;
 }
 
 // 00112A04: void fn00112A04(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack word32 arg5, Stack Eq_n arg6, Stack word32 arg7, Stack Eq_n arg8, Stack word32 arg9, Stack word32 arg10, Stack Eq_n arg11, Stack Eq_n arg12, Stack Eq_n arg13, Stack Eq_n arg14)
@@ -4915,7 +4915,7 @@ void fn00114190(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word3
 	int32 v198 = 0x01FF;
 	v197 &= v198;
 	v198 = 0x0700;
-	&v197.u5->t0000.u0 = v197.u5 + v198 / 8;
+	&v197.u5->t0000.u0 += v198;
 }
 
 // 00114C7D: void fn00114C7D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack word32 arg5, Stack Eq_n arg6, Stack word32 arg7, Stack Eq_n arg8, Stack word32 arg9, Stack word32 arg10, Stack Eq_n arg11, Stack Eq_n arg12, Stack Eq_n arg13, Stack Eq_n arg14)
@@ -22585,7 +22585,7 @@ Eq_n fn0011D084(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	int32 v23 = 0x01FF;
 	v22 &= v23;
 	v23 = 0x2820;
-	&v22.u5->t0000.u0 = v22.u5 + v23 / 8;
+	&v22.u5->t0000.u0 += v23;
 }
 
 // 0011D119: Stack Eq_n fn0011D119(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -26300,7 +26300,7 @@ Eq_n ___cxa_can_catch(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	int32 v18 = 0x01FF;
 	v17 &= v18;
 	v18 = 0x0F20;
-	&v17.u5->t0000.u0 = v17.u5 + v18 / 8;
+	&v17.u5->t0000.u0 += v18;
 }
 
 // 0011EF3E: Stack Eq_n ___cxa_is_pointer_type(Stack Eq_n arg0)
@@ -26792,7 +26792,7 @@ Eq_n dynCall_iiiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_
 	ui32 v11 = 0x01FF;
 	v10 &= v11;
 	v11 = 0x00;
-	&v10.u5->t0000.u0 = v10.u5 + v11 / 8;
+	&v10.u5->t0000.u0 += v11;
 }
 
 // 0011F215: void dynCall_viiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
@@ -26807,7 +26807,7 @@ void dynCall_viiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n 
 	ui32 v9 = 0x01FF;
 	v8 &= v9;
 	v9 = 0x0200;
-	&v8.u5->t0000.u0 = v8.u5 + v9 / 8;
+	&v8.u5->t0000.u0 += v9;
 }
 
 // 0011F22D: Stack word32 dynCall_iiiiiid(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack real64 arg6)
@@ -26834,7 +26834,7 @@ void dynCall_vi(Eq_n arg0, Eq_n arg1)
 	ui32 v5 = 0x01FF;
 	v4 &= v5;
 	v5 = 0x0500;
-	&v4.u5->t0000.u0 = v4.u5 + v5 / 8;
+	&v4.u5->t0000.u0 += v5;
 }
 
 // 0011F258: void dynCall_vii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -26846,7 +26846,7 @@ void dynCall_vii(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	ui32 v6 = 0x01FF;
 	v5 &= v6;
 	v6 = 0x0700;
-	&v5.u5->t0000.u0 = v5.u5 + v6 / 8;
+	&v5.u5->t0000.u0 += v6;
 }
 
 // 0011F26A: Stack Eq_n dynCall_iiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
@@ -26862,7 +26862,7 @@ Eq_n dynCall_iiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n
 	ui32 v10 = 0x01FF;
 	v9 &= v10;
 	v10 = 0x0900;
-	&v9.u5->t0000.u0 = v9.u5 + v10 / 8;
+	&v9.u5->t0000.u0 += v10;
 }
 
 // 0011F285: Stack Eq_n dynCall_ii(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -26873,7 +26873,7 @@ Eq_n dynCall_ii(Eq_n arg0, Eq_n arg1)
 	ui32 v5 = 0x01FF;
 	v4 &= v5;
 	v5 = 0x0B00;
-	&v4.u5->t0000.u0 = v4.u5 + v5 / 8;
+	&v4.u5->t0000.u0 += v5;
 }
 
 // 0011F296: void fn0011F296(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack ui64 arg3, Stack Eq_n arg4, Stack Eq_n arg5)
@@ -26890,7 +26890,7 @@ void fn0011F296(Eq_n arg0, Eq_n arg1, Eq_n arg2, ui64 arg3, Eq_n arg4, Eq_n arg5
 	ui32 v9 = 0x1F;
 	v8 &= v9;
 	v9 = 0x0D00;
-	&v8.u5->t0000.u0 = v8.u5 + v9 / 8;
+	&v8.u5->t0000.u0 += v9;
 }
 
 // 0011F2AD: Stack Eq_n dynCall_iiiiiiiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
@@ -26911,7 +26911,7 @@ Eq_n dynCall_iiiiiiiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4,
 	ui32 v15 = 0x01FF;
 	v14 &= v15;
 	v15 = 0x0D20;
-	&v14.u5->t0000.u0 = v14.u5 + v15 / 8;
+	&v14.u5->t0000.u0 += v15;
 }
 
 // 0011F2D2: Stack Eq_n dynCall_iiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -26924,7 +26924,7 @@ Eq_n dynCall_iiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	ui32 v7 = 0x01FF;
 	v6 &= v7;
 	v7 = 0x0F20;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 }
 
 // 0011F2E7: void dynCall_viiiiiiiiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9, Stack word32 arg10, Stack word32 arg11, Stack word32 arg12, Stack word32 arg13, Stack word32 arg14, Stack word32 arg15)
@@ -26965,7 +26965,7 @@ void dynCall_viiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n
 	ui32 v10 = 0x01FF;
 	v9 &= v10;
 	v10 = 0x1320;
-	&v9.u5->t0000.u0 = v9.u5 + v10 / 8;
+	&v9.u5->t0000.u0 += v10;
 }
 
 // 0011F32D: Stack real32 dynCall_fiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3)
@@ -26995,7 +26995,7 @@ void dynCall_viiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_
 	ui32 v11 = 0x01FF;
 	v10 &= v11;
 	v11 = 0x1720;
-	&v10.u5->t0000.u0 = v10.u5 + v11 / 8;
+	&v10.u5->t0000.u0 += v11;
 }
 
 // 0011F35E: void dynCall_viiiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9, Stack word32 arg10)
@@ -27043,7 +27043,7 @@ Eq_n dynCall_iiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n 
 	ui32 v9 = 0x01FF;
 	v8 &= v9;
 	v9 = 0x1D20;
-	&v8.u5->t0000.u0 = v8.u5 + v9 / 8;
+	&v8.u5->t0000.u0 += v9;
 }
 
 // 0011F3AC: Stack real64 dynCall_diii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3)
@@ -27083,7 +27083,7 @@ ui64 fn0011F3D1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	ui32 v8 = 0x01FF;
 	v7 &= v8;
 	v8 = 0x2320;
-	&v7.u5->t0000.u0 = v7.u5 + v8 / 8;
+	&v7.u5->t0000.u0 += v8;
 }
 
 // 0011F3E9: Stack Eq_n dynCall_iiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -27097,7 +27097,7 @@ Eq_n dynCall_iiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	ui32 v8 = 0x01FF;
 	v7 &= v8;
 	v8 = 0x2520;
-	&v7.u5->t0000.u0 = v7.u5 + v8 / 8;
+	&v7.u5->t0000.u0 += v8;
 }
 
 // 0011F401: Stack word32 fn0011F401(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack ui64 arg5)
@@ -27114,7 +27114,7 @@ word32 fn0011F401(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, ui64 ar
 	ui32 v9 = 0xFF;
 	v8 &= v9;
 	v9 = 0x2720;
-	&v8.u5->t0000.u0 = v8.u5 + v9 / 8;
+	&v8.u5->t0000.u0 += v9;
 }
 
 // 0011F41B: void dynCall_viii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -27127,7 +27127,7 @@ void dynCall_viii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	ui32 v7 = 0x01FF;
 	v6 &= v7;
 	v7 = 0x2820;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 }
 
 // 0011F430: void dynCall_v(Stack Eq_n arg0)
@@ -27137,7 +27137,7 @@ void dynCall_v(Eq_n arg0)
 	ui32 v4 = 0x01FF;
 	v3 &= v4;
 	v4 = 0x2A20;
-	&v3.u5->t0000.u0 = v3.u5 + v4 / 8;
+	&v3.u5->t0000.u0 += v4;
 }
 
 // 0011F43F: Stack word32 dynCall_iiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8)
@@ -27184,7 +27184,7 @@ void dynCall_viiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	ui32 v8 = 0x01FF;
 	v7 &= v8;
 	v8 = 0x2F20;
-	&v7.u5->t0000.u0 = v7.u5 + v8 / 8;
+	&v7.u5->t0000.u0 += v8;
 }
 
 // 0011F490: Stack Eq_n fn0011F490(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)

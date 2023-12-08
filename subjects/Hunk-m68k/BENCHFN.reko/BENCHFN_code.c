@@ -1618,7 +1618,7 @@ Eq_n fn000026F2(Eq_n d0, Eq_n d1, Eq_n d2, ptr32 & d1Out)
 		if (d0_n < 0x00)
 		{
 			d3_n = SEQ(v52_n, v50_n - 0x01);
-			&d0_n.u2->ptr0000 = d0_n.u2 + d1_n / 4;
+			&d0_n.u2->ptr0000 = (char *) &d0_n.u2->ptr0000 + d1_n;
 			while (d0_n >= 0x00)
 				;
 		}

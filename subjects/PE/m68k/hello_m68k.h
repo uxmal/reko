@@ -11685,7 +11685,7 @@ T_2642: (in 0<32> @ 000028EE : word32)
   Class: Eq_2641
   DataType: word32
   OrigDataType: word32
-T_2643: (in a0.u1[d7_122 / 4<i32>] == 0<32> @ 000028EE : bool)
+T_2643: (in *((char *) &a0.u1->a0000[0<i32>].u1 + d7_122) == 0<32> @ 000028EE : bool)
   Class: Eq_2643
   DataType: bool
   OrigDataType: bool
@@ -11961,7 +11961,7 @@ T_2711: (in 0<32> @ 000028D4 : word32)
   Class: Eq_2641
   DataType: word32
   OrigDataType: word32
-T_2712: (in a5->tFFFFFADC.u1->a0000[0<i32>].u1[d7_122 / 4<i32>] == 0<32> @ 000028D4 : bool)
+T_2712: (in *((char *) &a5->tFFFFFADC.u1->a0000[0<i32>].u1->a0000[0<i32>].u1 + d7_122) == 0<32> @ 000028D4 : bool)
   Class: Eq_2712
   DataType: bool
   OrigDataType: bool

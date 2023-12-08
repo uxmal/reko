@@ -201,7 +201,7 @@ int32 fn032A(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 	}
 	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = *((char *) &g_dwFFFF812B + 2) + (word16) gp0_gp1_n /16 33085;
+		gp1_n = (char *) &(*((char *) &g_dwFFFF812B + 2))->dwFFFF812B + ((word16) gp0_gp1_n + 0x00007ED5);
 	word16 gp0_n = fn02BF(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp14_n);
 	gp2Out = gp2_n;
 	return SEQ(gp0_n, gp1_n);

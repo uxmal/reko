@@ -6920,7 +6920,7 @@ T_916: (in 0<32> @ 00011CE8 : word32)
   Class: Eq_915
   DataType: word32
   OrigDataType: word32
-T_917: (in o0.ptr0000[o3_41 * 0xC<32> / 8<i32>] == 0<32> @ 00011CE8 : bool)
+T_917: (in o0.ptr0000->a0000[o3_41].ptr0000 == 0<32> @ 00011CE8 : bool)
   Class: Eq_917
   DataType: bool
   OrigDataType: bool

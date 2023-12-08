@@ -18940,7 +18940,7 @@ T_3397: (in 3<8> @ 0000A963 : byte)
   Class: Eq_3397
   DataType: byte
   OrigDataType: byte
-T_3398: (in r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u1 & 3<8> @ 0000A963 : byte)
+T_3398: (in (&r10_129[0<i32>].u1)[(int32) (fp->bFFFFFFF2 & 0x7F<8>)] & 3<8> @ 0000A963 : byte)
   Class: Eq_3398
   DataType: byte
   OrigDataType: byte
@@ -18948,7 +18948,7 @@ T_3399: (in 0<8> @ 0000A963 : byte)
   Class: Eq_3398
   DataType: byte
   OrigDataType: byte
-T_3400: (in (r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u1 & 3<8>) != 0<8> @ 0000A963 : bool)
+T_3400: (in ((&r10_129[0<i32>].u1)[(int32) (fp->bFFFFFFF2 & 0x7F<8>)] & 3<8>) != 0<8> @ 0000A963 : bool)
   Class: Eq_3400
   DataType: bool
   OrigDataType: bool
@@ -28429,7 +28429,7 @@ T_5762: (in 0xFF<32> @ 0000CC4E : word32)
   Class: Eq_5761
   DataType: up32
   OrigDataType: up32
-T_5763: (in r2_602 + r0_591 / 1357414402<i32> <= 0xFF<32> @ 0000CC4E : bool)
+T_5763: (in &r2_602->b0000 + r0_591 <= 0xFF<32> @ 0000CC4E : bool)
   Class: Eq_5763
   DataType: bool
   OrigDataType: bool
@@ -54375,7 +54375,7 @@ T_12212: (in 0xA<8> @ 000126EA : byte)
   Class: Eq_12211
   DataType: byte
   OrigDataType: byte
-T_12213: (in sp_108->ptr0000[(r2_324 - 1<32>) / 4<i32>].u0 != 0xA<8> @ 000126EA : bool)
+T_12213: (in (&sp_108->ptr0000[0<i32>].u0)[r2_324 - 1<32>] != 0xA<8> @ 000126EA : bool)
   Class: Eq_12213
   DataType: bool
   OrigDataType: bool

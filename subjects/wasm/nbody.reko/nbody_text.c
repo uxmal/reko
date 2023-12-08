@@ -19,24 +19,24 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 		{
 			do
 			{
-				real64 v24_n = arg1[loc3_n * 0x38 / 0x0118] - arg1[(v19_n * 0x38) / 0x0118];
-				real64 v27_n = (arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0008 - (((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0008;
-				real64 v27_n = (arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0010 - (((arg1 + (v19_n * 0x38) / 0x0118)->a0000))[0].r0010;
-				real64 v23_n = (arg1 + (loc3_n * 0x38) / 0x0118)->r0030;
+				real64 v24_n = arg1->a0000[loc3_n].r0000 - ((arg1->a0000))[v19_n].r0000;
+				real64 v27_n = (&(arg1->a0000 + loc3_n)->r0000)[1] - (&(arg1->a0000 + v19_n)->r0000)[1];
+				real64 v27_n = (&(arg1->a0000 + loc3_n)->r0000)[2] - (&(arg1->a0000 + v19_n)->r0000)[2];
+				real64 v23_n = (&(arg1->a0000 + loc3_n)->r0000)[6];
 				real64 v24_n = sqrt(v24_n * v24_n + v27_n * v27_n + v27_n * v27_n);
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc3_n * 0x38) / 0x0118);
-				real64 v29_n = (arg1 + (v19_n * 0x38) / 0x0118)->r0030;
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
+				real64 v29_n = (&(arg1->a0000 + v19_n)->r0000)[6];
 				real64 v23_n = arg2 / (v24_n * (v24_n * v24_n));
 				v19_n->r0018 -= v24_n * v29_n * v23_n;
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc3_n * 0x38) / 0x0118);
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0020 -= v23_n * (v27_n * v29_n);
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc3_n * 0x38) / 0x0118);
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0028 -= v23_n * (v27_n * v29_n);
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (v19_n * 0x38) / 0x0118);
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
 				v19_n->r0018 += v23_n * (v24_n * v23_n);
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (v19_n * 0x38) / 0x0118);
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
 				v19_n->r0020 += v23_n * (v27_n * v23_n);
-				struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (v19_n * 0x38) / 0x0118);
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
 				v19_n->r0028 += v23_n * (v27_n * v23_n);
 				loc3_n = v19_n + 0x01;
 			} while (v19_n + 0x01 != arg0);
@@ -51,12 +51,12 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 	int32 v19_n;
 	do
 	{
-		real64 * v19_n = (real64 *) (arg1 + (loc4_n * 0x38) / 0x0118);
-		*v19_n += (arg1 + (loc4_n * 0x38) / 0x0118)->r0018 * arg2;
-		struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc4_n * 0x38) / 0x0118);
-		v19_n->r0008 += (arg1 + (loc4_n * 0x38) / 0x0118)->r0020 * arg2;
-		struct Eq_n * v19_n = (struct Eq_n *) (arg1 + (loc4_n * 0x38) / 0x0118);
-		v19_n->r0010 += (arg1 + (loc4_n * 0x38) / 0x0118)->r0028 * arg2;
+		real64 * v19_n = &(arg1->a0000 + loc4_n)->r0000;
+		*v19_n += (&(arg1->a0000 + loc4_n)->r0000)[3] * arg2;
+		struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc4_n)->r0000;
+		v19_n->r0008 += (&(arg1->a0000 + loc4_n)->r0000)[4] * arg2;
+		struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc4_n)->r0000;
+		v19_n->r0010 += (&(arg1->a0000 + loc4_n)->r0000)[5] * arg2;
 		v19_n = loc4_n + 0x01;
 		loc4_n = v19_n;
 	} while (v19_n != arg0);

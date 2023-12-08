@@ -273,7 +273,7 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 {
 	if (dwArg04->w0000 != 23117)
 		return 0x00;
-	struct Eq_n * eax_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
+	struct Eq_n * eax_n = (struct Eq_n *) ((char *) &dwArg04->w0000 + dwArg04->dw003C);
 	if (eax_n->dw0000 != 0x4550)
 		return 0x00;
 	return (uint32) (eax_n->w0018 == 0x010B);
@@ -284,10 +284,10 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 //      fn10001742
 struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 {
-	struct Eq_n * ecx_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
+	struct Eq_n * ecx_n = (struct Eq_n *) ((char *) dwArg04 + dwArg04->dw003C);
 	up32 esi_n = (word32) ecx_n->w0006;
 	up32 edx_n = 0x00;
-	struct Eq_n * eax_n = (struct Eq_n *) (ecx_n + ((word32) ecx_n->w0014 + 24) / 22);
+	struct Eq_n * eax_n = (struct Eq_n *) ((char *) ecx_n + ((word32) ecx_n->w0014 + 24));
 	if (esi_n > 0x00)
 	{
 		do

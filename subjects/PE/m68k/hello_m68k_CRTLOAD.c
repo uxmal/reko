@@ -75,7 +75,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 			} while (d0_n != 0x00);
 		}
 		union Eq_n * a2_n = a2_n - a3_n->dw000C;
-		struct Eq_n * a3_n = (struct Eq_n *) (&a3_n->dw000C + 1 + a3_n->dw0004 / 16 + a3_n->dw000C / 16);
+		struct Eq_n * a3_n = (struct Eq_n *) ((char *) &(&a3_n->dw000C + 1)->dw0000 + a3_n->dw0004 + a3_n->dw000C);
 		__syscall<word16>(0xA02E);
 l00001556:
 		ci8 v18_n = a3_n->b0000;
@@ -94,7 +94,7 @@ l00001556:
 					a3_n += 4;
 					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
-					a2_n = &a2_n->u0 + d0_n / 4;
+					a2_n = (union Eq_n *) ((char *) &a2_n->u0 + d0_n);
 					if (dwArg02 != 0x00 && a2_n->u0 >= 0x00)
 						a2_n->u0 = (a2_n->u0 + dwArg02)->t0002.u0;
 					else

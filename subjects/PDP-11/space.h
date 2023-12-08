@@ -4564,7 +4564,7 @@ T_742: (in r5 + Mem0[r5 + 0<16>:word16] + Mem0[r5 + 0<16>:word16] + 2<16> @ 0820
   Class: Eq_731
   DataType: (ptr16 Eq_731)
   OrigDataType: word16
-T_743: (in fn11A6(r5 + *r5 /16 2<i32> + *r5 /16 2<i32> + 1<i32>, r5) @ 0820 : void)
+T_743: (in fn11A6((char *) r5 + *r5 + *r5 + 2<i32>, r5) @ 0820 : void)
   Class: Eq_743
   DataType: void
   OrigDataType: void
@@ -4624,7 +4624,7 @@ T_757: (in r5 + Mem0[r5 + 0<16>:word16] + Mem0[r5 + 0<16>:word16] + 2<16> @ 0A6C
   Class: Eq_731
   DataType: (ptr16 Eq_731)
   OrigDataType: word16
-T_758: (in fn11A6(r5 + *r5 /16 2<i32> + *r5 /16 2<i32> + 1<i32>, r5) @ 0A6C : void)
+T_758: (in fn11A6((char *) r5 + *r5 + *r5 + 2<i32>, r5) @ 0A6C : void)
   Class: Eq_743
   DataType: void
   OrigDataType: void

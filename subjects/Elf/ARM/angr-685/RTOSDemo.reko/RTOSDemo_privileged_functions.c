@@ -638,9 +638,9 @@ void xQueueGenericReset(struct Eq_n * r0, word32 r1, word32 cpsr)
 	ui32 r2_n = r0->dw003C * r3_n;
 	struct Eq_n * r0_n = r0->ptr0000;
 	r0->dw0038 = 0x00;
-	r0->dw0004 = r0_n + r2_n / 0x0066;
+	r0->dw0004 = (char *) &r0_n->ptr0000 + r2_n;
 	r0->ptr0044 = (struct Eq_n *) &g_tFFFFFFFF;
-	r0->dw000C = r0_n + (r2_n - r3_n) / 0x0066;
+	r0->dw000C = (char *) &r0_n->ptr0000 + (r2_n - r3_n);
 	r0->ptr0008 = r0_n;
 	r0->b0045 = ~0x00;
 	if (r1 != 0x00)
@@ -701,7 +701,7 @@ void xQueueCreateMutex(word32 cpsr)
 //      xTaskCreateRestricted
 void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00, struct Eq_n ** dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C)
 {
-	ui32 r5_n = dwArg08->ptr0050 + (r2 + 0x3FFFFFFF << 0x02) / 0x0066;
+	ui32 r5_n = (char *) &dwArg08->ptr0050->ptr0000 + (r2 + 0x3FFFFFFF << 0x02);
 	byte * r3_n = r1 - 0x01 + 1;
 	byte * r0_n = (char *) &dwArg08->ptr0050 + 4;
 	uint32 r2_n = dwArg00 & 0x7FFFFFFF;
@@ -1235,7 +1235,7 @@ l00000DB2:
 			}
 			r4_n->dw0084 = ~0x00;
 l00000E14:
-			if (*((char *) &(r4_n + ((r4_n->ptr0004)->dw004C * 0x14) / 0x009C)->ptr0004 + 4) >= 0x02)
+			if ((r4_n->a0000 + (r4_n->ptr0004)->dw004C)[0].dw0008 >= 0x02)
 				r6_n = 0x01;
 l00000E28:
 			if (r4_n->dw0090 != 0x00)
@@ -1465,7 +1465,7 @@ void vTaskSwitchContext()
 	else
 	{
 		r2_n->dw0090 = r3_n;
-		struct Eq_n * r0_n = (struct Eq_n *) (r2_n + ((0x1F - (uint32) ((byte) __count_leading_zeros<word32>(r2_n->dw007C))) * 0x14) / 0x0094);
+		struct Eq_n * r0_n = (struct Eq_n *) ((char *) r2_n + (0x1F - (uint32) ((byte) __count_leading_zeros<word32>(r2_n->dw007C))) * 0x14);
 		struct Eq_n * r1_n = r0_n->ptr000C->ptr0004;
 		r0_n->ptr000C = r1_n;
 		struct Eq_n * r1_n = r1_n;
@@ -1574,7 +1574,7 @@ void vTaskPriorityInherit(struct Eq_n * r0)
 		if (uxListRemove(&r0->dw000C + 6) == 0x00)
 		{
 			uint32 r2_n = r0->dw004C;
-			if (*((char *) &(r4_n + (r2_n * 0x14) / 0x0080)->ptr0004 + 4) == 0x00)
+			if ((r4_n->a0000 + r2_n)[0].dw0008 == 0x00)
 				r4_n->dw007C &= ~(0x01 << r2_n);
 		}
 		uint32 r2_n = r4_n->ptr0004->dw004C;
@@ -1608,7 +1608,7 @@ struct Eq_n * xTaskPriorityDisinherit(struct Eq_n * r0)
 	{
 		uint32 r1_n = r0->dw004C;
 		r2_n = g_ptr12CC;
-		if ((r2_n + (r1_n * 0x14) / 0x0080)->a0000[0].dw0008 == 0x00)
+		if ((r2_n->a0000 + r1_n)[0].dw0008 == 0x00)
 			r2_n->dw007C &= ~(0x01 << r1_n);
 	}
 	else

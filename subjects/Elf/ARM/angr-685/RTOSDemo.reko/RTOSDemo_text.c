@@ -51,7 +51,7 @@ void ResetISR(word32 cpsr)
 	word32 * r0_n = g_ptr8030;
 	if (r3_n < r0_n)
 	{
-		word32 * r2_n = r3_n + ((r0_n + ~r3_n / 4 & ~0x03) + 0x04) / 4;
+		word32 * r2_n = (word32 *) ((char *) r3_n + (((char *) r0_n + ~r3_n & ~0x03) + 0x04));
 		do
 		{
 			*r3_n = 0x00;
@@ -1394,7 +1394,7 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 		__msr(cpsr, 0x00);
 		uxListRemove((char *) r4_n + 4);
 		uint32 r3_n = r4_n->dw002C;
-		r0 = (struct Eq_n *) (&r5_n->a0000->u0 + 1 + (r3_n * 0x14) / 0x0080);
+		r0 = (struct Eq_n *) ((&r5_n->a0000->u0 + 1)->a0000 + r3_n);
 		if (r3_n > r5_n->dw0070)
 			r5_n->dw0070 = r3_n;
 		vListInsertEnd(r0, (char *) r4_n + 4);
@@ -1456,13 +1456,13 @@ l00008F94:
 	r5_n->dw0078 = r3_n;
 	ui32 r3_n = r1_n << 2;
 	uint32 r2_n;
-	if ((&(r5_n + (r1_n * 0x14) / 0x0080)->a0000[0].u0)[1] == 0x00)
+	if (*((word160) &(r5_n->a0000 + r1_n)[0] + 4) == 0x00)
 	{
 		if (r1_n == 0x00)
 			return cpsr;
 		r3_n = r1_n - 0x01 << 2;
 		r2_n = r1_n - 0x01;
-		if ((&(r5_n + (r3_n + (r1_n - 0x01) << 0x02) / 0x0080)->a0000[0].u0)[1] == 0x00)
+		if (((char *) r5_n->a0000 + (r3_n + (r1_n - 0x01) << 0x02))[4] == 0x00)
 		{
 			if (r1_n == 0x01)
 			{
@@ -1472,7 +1472,7 @@ l00009046:
 			}
 			r3_n = r1_n - 0x02 << 2;
 			r2_n = r1_n - 0x02;
-			if ((&(r5_n + (r3_n + (r1_n - 0x02) << 0x02) / 0x0080)->a0000[0].u0)[1] == 0x00)
+			if (((char *) r5_n->a0000 + (r3_n + (r1_n - 0x02) << 0x02))[4] == 0x00)
 				goto l00009046;
 		}
 		r5_n->dw0070 = r2_n;
@@ -1480,7 +1480,7 @@ l00009046:
 	else
 		r2_n = r1_n;
 	ui32 r3_n = r3_n + r2_n;
-	struct Eq_n * r1_n = (struct Eq_n *) (r5_n + (r3_n << 2) / 0x0080);
+	struct Eq_n * r1_n = (struct Eq_n *) ((char *) r5_n->a0000 + (r3_n << 2));
 	struct Eq_n * r2_n = r1_n->ptr0008->ptr0004;
 	struct Eq_n * r3_n = (r3_n << 2) + g_dw908C;
 	r1_n->ptr0008 = r2_n;
@@ -2246,7 +2246,7 @@ void OSRAMInit(word32 r0)
 			break;
 		r4_n = (word32) r3_n->b01EC;
 		r0_n = (word32) r3_n->b01ED;
-		r6_n = (word32) (r3_n + r4_n / 494)->b01EC;
+		r6_n = (word32) ((char *) r3_n + r4_n)[492];
 	}
 	OSRAMClear();
 }
@@ -2275,7 +2275,7 @@ void OSRAMDisplayOn()
 			break;
 		r4_n = (word32) r3_n->b01EC;
 		r0_n = (word32) r3_n->b01ED;
-		r6_n = (word32) (r3_n + r4_n / 494)->b01EC;
+		r6_n = (word32) ((char *) r3_n + r4_n)[492];
 	}
 }
 

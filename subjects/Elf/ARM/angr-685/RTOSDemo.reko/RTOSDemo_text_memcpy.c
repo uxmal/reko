@@ -50,8 +50,8 @@ l0000A63C:
 			++r4_n;
 		} while (r5_n != r3_n);
 		ui32 r6_n = r2 - 0x10 & ~0x0F;
-		r5_n = r0 + (r6_n + 0x10) / 16;
-		r1 += (r6_n + 0x10) / 16;
+		r5_n = (struct Eq_n *) ((char *) r0->a0000 + (r6_n + 0x10));
+		r1 = (struct Eq_n *) ((char *) r1->a0000 + (r6_n + 0x10));
 		if ((r2 & 0x0F) > 0x03)
 		{
 			uint32 r6_n = (r2 & 0x0F) - 0x04;
@@ -59,7 +59,7 @@ l0000A63C:
 			uint32 r4_n = (r6_n >> 2) + 0x01;
 			do
 			{
-				r5_n[r3_n / 16] = r1[r3_n / 16];
+				*((char *) &r5_n->a0000[0] + r3_n) = *((char *) &r1->a0000[0] + r3_n);
 				r3_n += 0x04;
 			} while (r3_n != r4_n << 2);
 			struct Eq_n * r3_n = (r6_n & ~0x03) + 0x04;

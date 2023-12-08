@@ -171,8 +171,8 @@ l004012C3:
 //      fn0040153F
 struct Eq_n * fn004013F6(struct Eq_n * dwArg04, uint32 dwArg08, struct Eq_n & edxOut)
 {
-	struct Eq_n * ecx_n = (struct Eq_n *) (dwArg04 + dwArg04->dw003C / 64);
-	struct Eq_n * edx_n = (struct Eq_n *) (&ecx_n->w0014 + 2 + (word32) ecx_n->w0014 / 22);
+	struct Eq_n * ecx_n = (struct Eq_n *) ((char *) dwArg04 + dwArg04->dw003C);
+	struct Eq_n * edx_n = (struct Eq_n *) ((char *) (&ecx_n->w0014 + 2) + (word32) ecx_n->w0014);
 	struct Eq_n * esi_n = edx_n + (word32) ecx_n->w0006;
 	struct Eq_n * eax_n;
 	for (; edx_n != esi_n; ++edx_n)

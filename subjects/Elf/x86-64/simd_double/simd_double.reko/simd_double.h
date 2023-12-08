@@ -1158,7 +1158,7 @@ T_254: (in rax_44[qwLoc28_232 * 8<64>] @ 0000000000000A23 : word64)
   Class: Eq_233
   DataType: real64
   OrigDataType: real64
-T_255: (in printf("%g\n", rax_44[qwLoc28_232 * 8<64> /64 32<i32>].u0) @ 0000000000000A23 : int32)
+T_255: (in printf("%g\n", (&rax_44[0<i32>].u0)[qwLoc28_232]) @ 0000000000000A23 : int32)
   Class: Eq_255
   DataType: int32
   OrigDataType: int32

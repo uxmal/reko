@@ -109,7 +109,7 @@ void main()
 	word128 xmm0;
 	while (qwLoc10_n < 0x0400)
 	{
-		real64 * rcx_n = &(rax_n + (qwLoc10_n * 0x08) /64 32)->u0;
+		real64 * rcx_n = (real64 *) (&rax_n->u0 + qwLoc10_n);
 		ui32 eax_n = (word32) qwLoc10_n;
 		if (qwLoc10_n >= 0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
@@ -126,7 +126,7 @@ void main()
 	while (qwLoc18_n < 0x0400)
 	{
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
-		real64 * rcx_n = &(rax_n + (qwLoc18_n * 0x08) /64 32)->u0;
+		real64 * rcx_n = (real64 *) (&rax_n->u0 + qwLoc18_n);
 		if (qwLoc18_n >= ~0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n.u0 + 1));
 		else
@@ -139,11 +139,11 @@ void main()
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
-		rax_n[qwLoc20_n * 0x08 /64 32].u0 = 0.0;
+		(&rax_n[0].u0)[qwLoc20_n] = 0.0;
 	vec_add(rax_n, rax_n, rax_n, 0x0400);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
-		printf("%g\n", rax_n[qwLoc28_n * 0x08 /64 32].u0);
+		printf("%g\n", (&rax_n[0].u0)[qwLoc28_n]);
 	_mm_free(rax_n);
 	_mm_free(rax_n);
 	_mm_free(rax_n);

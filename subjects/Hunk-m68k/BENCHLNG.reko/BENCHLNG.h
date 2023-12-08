@@ -5256,7 +5256,7 @@ T_812: (in SEQ(d0_71 % (uint16) d1_22, (word16) d2_75) - SEQ(SLICE(d2_75, word16
 T_813: (in d0_108 @ 00001586 : Eq_528)
   Class: Eq_528
   DataType: Eq_528
-  OrigDataType: (ptr32 Eq_5655)
+  OrigDataType: (ptr32 char)
 T_814: (in 0<32> @ 00001588 : word32)
   Class: Eq_528
   DataType: byte

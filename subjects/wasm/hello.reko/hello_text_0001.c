@@ -5797,7 +5797,7 @@ void fn000E59BE(Eq_n arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
 	v6.u5->t0000.u3 = (uint64) v7;
 	v6 = arg0;
 	int32 v8 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v8 / 8;
+	&v6.u5->t0000.u0 += v8;
 	Eq_n loc5 = v6;
 	v6 = loc5;
 	v7.u0 = ~0x00;
@@ -5816,7 +5816,7 @@ void fn000E59DC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v6.u5->t0000.u3 = (uint64) v7;
 	v6 = arg0;
 	int32 v8 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v8 / 8;
+	&v6.u5->t0000.u0 += v8;
 	Eq_n loc4 = v6;
 	v6 = loc4;
 	v7.u0 = ~0x00;
@@ -6118,7 +6118,7 @@ void fn000E5CE1(Eq_n arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
 	v6.u5->t0000.u3 = (uint64) v7;
 	v6 = arg0;
 	int32 v8 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v8 / 8;
+	&v6.u5->t0000.u0 += v8;
 	Eq_n loc5 = v6;
 	v6 = loc5;
 	v7.u0 = ~0x00;
@@ -6137,7 +6137,7 @@ void fn000E5CFF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v6.u5->t0000.u3 = (uint64) v7;
 	v6 = arg0;
 	int32 v8 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v8 / 8;
+	&v6.u5->t0000.u0 += v8;
 	Eq_n loc4 = v6;
 	v6 = loc4;
 	v7.u0 = ~0x00;
@@ -6466,7 +6466,7 @@ void fn000E5FBC(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6482,7 +6482,7 @@ void fn000E5FD1(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6552,7 +6552,7 @@ void fn000E6046(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6568,7 +6568,7 @@ void fn000E605B(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x08;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6638,7 +6638,7 @@ void fn000E60D0(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x04;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6654,7 +6654,7 @@ void fn000E60E5(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x04;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6724,7 +6724,7 @@ void fn000E615A(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x04;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);
@@ -6740,7 +6740,7 @@ void fn000E616F(Eq_n arg0)
 	Eq_n loc3 = v6;
 	v6 = arg0;
 	word32 v7 = 0x04;
-	&v6.u5->t0000.u0 = v6.u5 + v7 / 8;
+	&v6.u5->t0000.u0 += v7;
 	Eq_n loc1 = v6;
 	v6 = loc1;
 	fn000E5823(v6);

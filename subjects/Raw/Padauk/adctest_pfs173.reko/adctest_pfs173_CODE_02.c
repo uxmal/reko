@@ -952,10 +952,10 @@ l01D1:
 						g_t00A9.u1 = g_t004A.u1;
 						g_t00AA.u1 = g_t004B.u1;
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = g_t004E.u1 + fn056C() /8 2;
+						&a_n.u1->t0000.u0 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = &null->u0 + (byte) (a_n < 0x00) /8 2;
+						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
 						Eq_n a_n;
 						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
 						f = sp_n->b0001;
@@ -969,10 +969,10 @@ l01D1:
 						g_t00A9.u1 = g_t0048.u1;
 						g_t00AA.u1 = g_t0049.u1;
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = g_t004E.u1 + fn056C() /8 2;
+						&a_n.u1->t0000.u0 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = &null->u0 + (byte) (a_n < 0x00) /8 2;
+						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
 						Eq_n a_n;
 						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
 						f = sp_n->b0001;
@@ -1288,7 +1288,7 @@ l0371:
 											Eq_n v28_n;
 											&v28_n.u1->t0000.u0 = (char *) null + 1;
 											null = (union Eq_n *) v28_n;
-											g_t0070.u1 = (struct Eq_n *) fn05C0(a_n.u1 + (byte) (v27_n < 0x00) /8 2 + (byte) (v28_n < 0x00) /8 2);
+											g_t0070.u1 = (struct Eq_n *) fn05C0((char *) &a_n.u1->t0000.u0 + (byte) (v27_n < 0x00) + (byte) (v28_n < 0x00));
 											g_t0071.u1 = (struct Eq_n *) null;
 											g_t0023.u1 = g_t006E.u1;
 											g_t0024.u1 = g_t006F.u1;
@@ -1567,7 +1567,7 @@ l0371:
 								Eq_n v45_n;
 								&v45_n.u1->t0000.u0 = (char *) null + 1;
 								null = (union Eq_n *) v45_n;
-								g_t005C.u1 = (struct Eq_n *) fn05C0(a_n.u1 + (byte) (v44_n < 0x00) /8 2 + (byte) (v45_n < 0x00) /8 2);
+								g_t005C.u1 = (struct Eq_n *) fn05C0((char *) &a_n.u1->t0000.u0 + (byte) (v44_n < 0x00) + (byte) (v45_n < 0x00));
 								g_t005D.u1 = (struct Eq_n *) null;
 								g_t0023.u1 = g_t005A.u1;
 								g_t0024.u1 = g_t005B.u1;
