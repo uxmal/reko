@@ -537,7 +537,7 @@ T_68: (in c + 0<32> @ 004010C4 : word32)
 T_69: (in Mem12[c + 0<32>:word32] @ 004010C4 : word32)
   Class: Eq_69
   DataType: (ptr32 Eq_69)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_70: (in 4<i32> @ 004010C4 : int32)
   Class: Eq_70
   DataType: int32
@@ -565,7 +565,7 @@ T_75: (in 00403018 @ 004010E3 : ptr32)
 T_76: (in Mem10[0x00403018<p32>:word32] @ 004010E3 : word32)
   Class: Eq_76
   DataType: Eq_76
-  OrigDataType: (union (cdecl_class_ptr u1))
+  OrigDataType: cdecl_class_ptr
 T_77: (in 0<32> @ 004010E3 : word32)
   Class: Eq_77
   DataType: word32
@@ -577,7 +577,7 @@ T_78: (in Mem10[0x00403018<p32>:word32] + 0<32> @ 004010E3 : word32)
 T_79: (in Mem10[Mem10[0x00403018<p32>:word32] + 0<32>:word32] @ 004010E3 : word32)
   Class: Eq_79
   DataType: (ptr32 Eq_79)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_80: (in 0<32> @ 004010E3 : word32)
   Class: Eq_80
   DataType: word32
@@ -601,7 +601,7 @@ T_84: (in gbl_c->vtbl->method00(gbl_c) @ 004010E3 : void)
 T_85: (in Mem18[0x00403018<p32>:word32] @ 00401113 : word32)
   Class: Eq_76
   DataType: Eq_76
-  OrigDataType: (union (cdecl_class_ptr u1))
+  OrigDataType: cdecl_class_ptr
 T_86: (in 0<32> @ 00401113 : word32)
   Class: Eq_86
   DataType: word32
@@ -613,7 +613,7 @@ T_87: (in Mem18[0x00403018<p32>:word32] + 0<32> @ 00401113 : word32)
 T_88: (in Mem18[Mem18[0x00403018<p32>:word32] + 0<32>:word32] @ 00401113 : word32)
   Class: Eq_88
   DataType: (ptr32 Eq_88)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_89: (in 4<i32> @ 00401113 : int32)
   Class: Eq_89
   DataType: int32
@@ -673,7 +673,7 @@ T_102: (in c + 0<32> @ 00401150 : word32)
 T_103: (in Mem37[c + 0<32>:word32] @ 00401150 : word32)
   Class: Eq_103
   DataType: (ptr32 Eq_103)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_104: (in 4<i32> @ 00401150 : int32)
   Class: Eq_104
   DataType: int32
@@ -697,7 +697,7 @@ T_108: (in c + 0<32> @ 00401150 : word32)
 T_109: (in Mem19[c + 0<32>:word32] @ 00401150 : word32)
   Class: Eq_109
   DataType: (ptr32 Eq_109)
-  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+  OrigDataType: (ptr32 cdecl_class_vtbl)
 T_110: (in 8<i32> @ 00401150 : int32)
   Class: Eq_110
   DataType: int32
@@ -745,7 +745,7 @@ T_120: (in 00403034 @ 004011A5 : ptr32)
 T_121: (in Mem45[0x00403034<p32>:word32] @ 004011A5 : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_122: (in 0<32> @ 004011A5 : word32)
   Class: Eq_122
   DataType: word32
@@ -757,7 +757,7 @@ T_123: (in Mem45[0x00403034<p32>:word32] + 0<32> @ 004011A5 : word32)
 T_124: (in Mem45[Mem45[0x00403034<p32>:word32] + 0<32>:word32] @ 004011A5 : word32)
   Class: Eq_124
   DataType: (ptr32 Eq_124)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_125: (in 4<i32> @ 004011A5 : int32)
   Class: Eq_125
   DataType: int32
@@ -785,7 +785,7 @@ T_130: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0xD<32>, rArg04) @ 00
 T_131: (in Mem22[0x00403034<p32>:word32] @ 00401187 : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_132: (in 0<32> @ 00401187 : word32)
   Class: Eq_132
   DataType: word32
@@ -797,7 +797,7 @@ T_133: (in Mem22[0x00403034<p32>:word32] + 0<32> @ 00401187 : word32)
 T_134: (in Mem22[Mem22[0x00403034<p32>:word32] + 0<32>:word32] @ 00401187 : word32)
   Class: Eq_134
   DataType: (ptr32 Eq_134)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_135: (in 0<32> @ 00401187 : word32)
   Class: Eq_135
   DataType: word32
@@ -825,7 +825,7 @@ T_140: (in rArg04 @ 00401187 : real64)
 T_141: (in Mem15[0x00403034<p32>:word32] @ 004011CE : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_142: (in 0<32> @ 004011CE : word32)
   Class: Eq_142
   DataType: word32
@@ -837,7 +837,7 @@ T_143: (in Mem15[0x00403034<p32>:word32] + 0<32> @ 004011CE : word32)
 T_144: (in Mem15[Mem15[0x00403034<p32>:word32] + 0<32>:word32] @ 004011CE : word32)
   Class: Eq_144
   DataType: (ptr32 Eq_144)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_145: (in 4<i32> @ 004011CE : int32)
   Class: Eq_145
   DataType: int32
@@ -925,7 +925,7 @@ T_165: (in 321.0 <= rArg04 @ 004011F0 : bool)
 T_166: (in Mem52[0x00403034<p32>:word32] @ 0040120B : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_167: (in 0<32> @ 0040120B : word32)
   Class: Eq_167
   DataType: word32
@@ -937,7 +937,7 @@ T_168: (in Mem52[0x00403034<p32>:word32] + 0<32> @ 0040120B : word32)
 T_169: (in Mem52[Mem52[0x00403034<p32>:word32] + 0<32>:word32] @ 0040120B : word32)
   Class: Eq_169
   DataType: (ptr32 Eq_169)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_170: (in 0<32> @ 0040120B : word32)
   Class: Eq_170
   DataType: word32
@@ -973,7 +973,7 @@ T_177: (in dwLoc08_70 @ 00401236 : int32)
 T_178: (in Mem25[0x00403034<p32>:word32] @ 00401276 : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_179: (in 0<32> @ 00401276 : word32)
   Class: Eq_179
   DataType: word32
@@ -985,7 +985,7 @@ T_180: (in Mem25[0x00403034<p32>:word32] + 0<32> @ 00401276 : word32)
 T_181: (in Mem25[Mem25[0x00403034<p32>:word32] + 0<32>:word32] @ 00401276 : word32)
   Class: Eq_181
   DataType: (ptr32 Eq_181)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_182: (in 4<i32> @ 00401276 : int32)
   Class: Eq_182
   DataType: int32
@@ -1021,7 +1021,7 @@ T_189: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_70, (real64) 
 T_190: (in Mem53[0x00403034<p32>:word32] @ 00401290 : word32)
   Class: Eq_121
   DataType: (ptr32 Eq_121)
-  OrigDataType: (ptr32 (union (thiscall_class u1)))
+  OrigDataType: (ptr32 thiscall_class)
 T_191: (in 0<32> @ 00401290 : word32)
   Class: Eq_191
   DataType: word32
@@ -1033,7 +1033,7 @@ T_192: (in Mem53[0x00403034<p32>:word32] + 0<32> @ 00401290 : word32)
 T_193: (in Mem53[Mem53[0x00403034<p32>:word32] + 0<32>:word32] @ 00401290 : word32)
   Class: Eq_193
   DataType: (ptr32 Eq_193)
-  OrigDataType: (ptr32 (union (thiscall_class_vtbl u1)))
+  OrigDataType: (ptr32 thiscall_class_vtbl)
 T_194: (in 0<32> @ 00401290 : word32)
   Class: Eq_194
   DataType: word32
@@ -1329,7 +1329,7 @@ T_266: (in 5<32> @ 00401383 : word32)
 T_267: (in 0040301C @ 00401383 : ptr32)
   Class: Eq_267
   DataType: (ptr32 Eq_267)
-  OrigDataType: (ptr32 (union (nested_structs_type u1)))
+  OrigDataType: (ptr32 nested_structs_type)
 T_268: (in Mem7[0x0040301C<p32>:word32] @ 00401383 : word32)
   Class: Eq_266
   DataType: int32
