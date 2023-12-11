@@ -2,12 +2,6 @@
 // Please copy the contents of this file and report it on GitHub, using the 
 // following URL: https://github.com/uxmal/reko/issues
 
-// Reko: a decoder for the instruction D696 at address 0000268E has not been implemented. (0b0110)
-[Test]
-public void Avr32Dis_D696()
-{
-    AssertCode("@@@", "D696");
-}
 // Reko: a decoder for the instruction D6D4 at address 000026F6 has not been implemented. (0b0100)
 [Test]
 public void Avr32Dis_D6D4()
@@ -134,13 +128,7 @@ public void Avr32Dis_DE04()
 {
     AssertCode("@@@", "DE04");
 }
-// Reko: a decoder for the instruction E1ACD421 at address 0000320E has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_E1ACD421()
-{
-    AssertCode("@@@", "E1ACD421");
-}
-// Reko: a decoder for the instruction FDA06811 at address 0000362A has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FDA06811 at address 0000362A has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FDA06811()
 {
@@ -158,7 +146,7 @@ public void Avr32Dis_FD9F6AD8()
 {
     AssertCode("@@@", "FD9F6AD8");
 }
-// Reko: a decoder for the instruction FBAB6E38 at address 00003960 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FBAB6E38 at address 00003960 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FBAB6E38()
 {
@@ -170,59 +158,17 @@ public void Avr32Dis_EA00D421()
 {
     AssertCode("@@@", "EA00D421");
 }
-// Reko: a decoder for the instruction FFE8CD8F at address 00003B7A has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8CD8F()
-{
-    AssertCode("@@@", "FFE8CD8F");
-}
-// Reko: a decoder for the instruction EBA0D421 at address 00003BA2 has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_EBA0D421()
-{
-    AssertCode("@@@", "EBA0D421");
-}
-// Reko: a decoder for the instruction EBB8D421 at address 00003BCA has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_EBB8D421()
-{
-    AssertCode("@@@", "EBB8D421");
-}
 // Reko: a decoder for the instruction F602D822 at address 00003BFA has not been implemented.
 [Test]
 public void Avr32Dis_F602D822()
 {
     AssertCode("@@@", "F602D822");
 }
-// Reko: a decoder for the instruction EBE0D421 at address 00003C02 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_EBE0D421()
-{
-    AssertCode("@@@", "EBE0D421");
-}
 // Reko: a decoder for the instruction F58FD822 at address 00003D82 has not been implemented. (0b11000)
 [Test]
 public void Avr32Dis_F58FD822()
 {
     AssertCode("@@@", "F58FD822");
-}
-// Reko: a decoder for the instruction EDA0D421 at address 00003DC6 has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_EDA0D421()
-{
-    AssertCode("@@@", "EDA0D421");
-}
-// Reko: a decoder for the instruction EFA4D421 at address 00003FC2 has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_EFA4D421()
-{
-    AssertCode("@@@", "EFA4D421");
-}
-// Reko: a decoder for the instruction F3A8D822 at address 000040D6 has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_F3A8D822()
-{
-    AssertCode("@@@", "F3A8D822");
 }
 // Reko: a decoder for the instruction EFEC1895 at address 000041B8 has not been implemented. (0b11110)
 [Test]
@@ -242,18 +188,6 @@ public void Avr32Dis_EFE85BE9()
 {
     AssertCode("@@@", "EFE85BE9");
 }
-// Reko: a decoder for the instruction EFE8EEFC at address 00004290 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_EFE8EEFC()
-{
-    AssertCode("@@@", "EFE8EEFC");
-}
-// Reko: a decoder for the instruction EFE8E0A0 at address 0000429E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_EFE8E0A0()
-{
-    AssertCode("@@@", "EFE8E0A0");
-}
 // Reko: a decoder for the instruction EFE80A9B at address 000042A8 has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_EFE80A9B()
@@ -272,23 +206,11 @@ public void Avr32Dis_EFE833F8()
 {
     AssertCode("@@@", "EFE833F8");
 }
-// Reko: a decoder for the instruction F1A61388 at address 000042EE has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_F1A61388()
-{
-    AssertCode("@@@", "F1A61388");
-}
 // Reko: a decoder for the instruction EFEC0A9C at address 0000436A has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_EFEC0A9C()
 {
     AssertCode("@@@", "EFEC0A9C");
-}
-// Reko: a decoder for the instruction EFE8D832 at address 00004370 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_EFE8D832()
-{
-    AssertCode("@@@", "EFE8D832");
 }
 // Reko: a decoder for the instruction F38CD431 at address 00004456 has not been implemented. (0b11000)
 [Test]
@@ -301,12 +223,6 @@ public void Avr32Dis_F38CD431()
 public void Avr32Dis_F6086A0A()
 {
     AssertCode("@@@", "F6086A0A");
-}
-// Reko: a decoder for the instruction F9D56CA8 at address 000047E4 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_F9D56CA8()
-{
-    AssertCode("@@@", "F9D56CA8");
 }
 // Reko: a decoder for the instruction F99AEAFB at address 0000482E has not been implemented. (0b11001)
 [Test]
@@ -332,23 +248,11 @@ public void Avr32Dis_FFD8ECFB()
 {
     AssertCode("@@@", "FFD8ECFB");
 }
-// Reko: a decoder for the instruction EDA8BB29 at address 00004CC8 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction EDA8BB29 at address 00004CC8 has not been implemented. (ldcm)
 [Test]
 public void Avr32Dis_EDA8BB29()
 {
     AssertCode("@@@", "EDA8BB29");
-}
-// Reko: a decoder for the instruction FFD8700B at address 00004D7E has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD8700B()
-{
-    AssertCode("@@@", "FFD8700B");
-}
-// Reko: a decoder for the instruction F1DE6C23 at address 00004DDE has not been implemented. (11011)
-[Test]
-public void Avr32Dis_F1DE6C23()
-{
-    AssertCode("@@@", "F1DE6C23");
 }
 // Reko: a decoder for the instruction F587E738 at address 00004DF8 has not been implemented. (0b11000)
 [Test]
@@ -386,18 +290,6 @@ public void Avr32Dis_FFEC580C()
 {
     AssertCode("@@@", "FFEC580C");
 }
-// Reko: a decoder for the instruction FDE4F016 at address 000051FC has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FDE4F016()
-{
-    AssertCode("@@@", "FDE4F016");
-}
-// Reko: a decoder for the instruction FFEDF6F9 at address 0000523E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFEDF6F9()
-{
-    AssertCode("@@@", "FFEDF6F9");
-}
 // Reko: a decoder for the instruction FFED300A at address 000052BC has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFED300A()
@@ -410,7 +302,7 @@ public void Avr32Dis_F38AEB39()
 {
     AssertCode("@@@", "F38AEB39");
 }
-// Reko: a decoder for the instruction FDACF016 at address 000053BA has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FDACF016 at address 000053BA has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FDACF016()
 {
@@ -446,13 +338,7 @@ public void Avr32Dis_FFB4F4CA()
 {
     AssertCode("@@@", "FFB4F4CA");
 }
-// Reko: a decoder for the instruction FDD26D58 at address 00005BE0 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FDD26D58()
-{
-    AssertCode("@@@", "FDD26D58");
-}
-// Reko: a decoder for the instruction FFA0F4CA at address 00005BF8 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FFA0F4CA at address 00005BF8 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FFA0F4CA()
 {
@@ -476,30 +362,6 @@ public void Avr32Dis_FF886A0C()
 {
     AssertCode("@@@", "FF886A0C");
 }
-// Reko: a decoder for the instruction FBE0C1A8 at address 0000607E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FBE0C1A8()
-{
-    AssertCode("@@@", "FBE0C1A8");
-}
-// Reko: a decoder for the instruction E7BB5C5C at address 00006164 has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_E7BB5C5C()
-{
-    AssertCode("@@@", "E7BB5C5C");
-}
-// Reko: a decoder for the instruction E7B65C5C at address 0000616E has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_E7B65C5C()
-{
-    AssertCode("@@@", "E7B65C5C");
-}
-// Reko: a decoder for the instruction E7AC5C5C at address 00006182 has not been implemented. (0b11010)
-[Test]
-public void Avr32Dis_E7AC5C5C()
-{
-    AssertCode("@@@", "E7AC5C5C");
-}
 // Reko: a decoder for the instruction FDE4149B at address 00006288 has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FDE4149B()
@@ -518,19 +380,13 @@ public void Avr32Dis_E7ED2FFD()
 {
     AssertCode("@@@", "E7ED2FFD");
 }
-// Reko: a decoder for the instruction E7D62FFD at address 0000638A has not been implemented. (11011)
-[Test]
-public void Avr32Dis_E7D62FFD()
-{
-    AssertCode("@@@", "E7D62FFD");
-}
 // Reko: a decoder for the instruction FE10FEB0 at address 00006540 has not been implemented. (0b1111)
 [Test]
 public void Avr32Dis_FE10FEB0()
 {
     AssertCode("@@@", "FE10FEB0");
 }
-// Reko: a decoder for the instruction FDACFEB0 at address 0000654C has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FDACFEB0 at address 0000654C has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FDACFEB0()
 {
@@ -542,7 +398,7 @@ public void Avr32Dis_FFD0ECFB()
 {
     AssertCode("@@@", "FFD0ECFB");
 }
-// Reko: a decoder for the instruction FFD4F016 at address 00006746 has not been implemented. (11011)
+// Reko: a decoder for the instruction FFD4F016 at address 00006746 has not been implemented. (11101)
 [Test]
 public void Avr32Dis_FFD4F016()
 {
@@ -566,54 +422,6 @@ public void Avr32Dis_FFEC300B()
 {
     AssertCode("@@@", "FFEC300B");
 }
-// Reko: a decoder for the instruction FFE8EF4E at address 0000737A has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8EF4E()
-{
-    AssertCode("@@@", "FFE8EF4E");
-}
-// Reko: a decoder for the instruction FFE4EF44 at address 0000738E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4EF44()
-{
-    AssertCode("@@@", "FFE4EF44");
-}
-// Reko: a decoder for the instruction FFE0EF4C at address 00007392 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0EF4C()
-{
-    AssertCode("@@@", "FFE0EF4C");
-}
-// Reko: a decoder for the instruction FFE0E80E at address 00007450 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0E80E()
-{
-    AssertCode("@@@", "FFE0E80E");
-}
-// Reko: a decoder for the instruction FFE0F4C8 at address 0000747C has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0F4C8()
-{
-    AssertCode("@@@", "FFE0F4C8");
-}
-// Reko: a decoder for the instruction FFE0E809 at address 000074D6 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0E809()
-{
-    AssertCode("@@@", "FFE0E809");
-}
-// Reko: a decoder for the instruction FFE0FACC at address 00007508 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0FACC()
-{
-    AssertCode("@@@", "FFE0FACC");
-}
-// Reko: a decoder for the instruction FFE09908 at address 00007524 has not been implemented. (0b10 - sthh)
-[Test]
-public void Avr32Dis_FFE09908()
-{
-    AssertCode("@@@", "FFE09908");
-}
 // Reko: a decoder for the instruction EC00ECFB at address 0000753A has not been implemented.
 [Test]
 public void Avr32Dis_EC00ECFB()
@@ -632,18 +440,6 @@ public void Avr32Dis_FFE85802()
 {
     AssertCode("@@@", "FFE85802");
 }
-// Reko: a decoder for the instruction FFE0CC7C at address 000075C4 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0CC7C()
-{
-    AssertCode("@@@", "FFE0CC7C");
-}
-// Reko: a decoder for the instruction FFE0EEF9 at address 000075F8 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0EEF9()
-{
-    AssertCode("@@@", "FFE0EEF9");
-}
 // Reko: a decoder for the instruction FFE01498 at address 000075FC has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFE01498()
@@ -656,17 +452,11 @@ public void Avr32Dis_FFEC1498()
 {
     AssertCode("@@@", "FFEC1498");
 }
-// Reko: a decoder for the instruction FFACEEF8 at address 00007650 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FFACEEF8 at address 00007650 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FFACEEF8()
 {
     AssertCode("@@@", "FFACEEF8");
-}
-// Reko: a decoder for the instruction FFE0EEFC at address 0000767A has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0EEFC()
-{
-    AssertCode("@@@", "FFE0EEFC");
 }
 // Reko: a decoder for the instruction FFE0089B at address 00007682 has not been implemented. (0b11110)
 [Test]
@@ -686,18 +476,6 @@ public void Avr32Dis_FFE8049A()
 {
     AssertCode("@@@", "FFE8049A");
 }
-// Reko: a decoder for the instruction FFE8C0E8 at address 000076EE has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8C0E8()
-{
-    AssertCode("@@@", "FFE8C0E8");
-}
-// Reko: a decoder for the instruction EDEAECFB at address 00007724 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_EDEAECFB()
-{
-    AssertCode("@@@", "EDEAECFB");
-}
 // Reko: a decoder for the instruction FFE42F8D at address 0000774E has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFE42F8D()
@@ -710,59 +488,17 @@ public void Avr32Dis_FFE80A93()
 {
     AssertCode("@@@", "FFE80A93");
 }
-// Reko: a decoder for the instruction FFE8FACB at address 00007B02 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8FACB()
-{
-    AssertCode("@@@", "FFE8FACB");
-}
-// Reko: a decoder for the instruction FBE4F348 at address 00007B06 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FBE4F348()
-{
-    AssertCode("@@@", "FBE4F348");
-}
-// Reko: a decoder for the instruction FBE4B688 at address 00007B5E has not been implemented. (0b10 - sthh)
-[Test]
-public void Avr32Dis_FBE4B688()
-{
-    AssertCode("@@@", "FBE4B688");
-}
-// Reko: a decoder for the instruction FFE0E8C8 at address 00007E66 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0E8C8()
-{
-    AssertCode("@@@", "FFE0E8C8");
-}
 // Reko: a decoder for the instruction FFE03008 at address 00007F02 has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFE03008()
 {
     AssertCode("@@@", "FFE03008");
 }
-// Reko: a decoder for the instruction F5E2ECFB at address 00007F1C has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_F5E2ECFB()
-{
-    AssertCode("@@@", "F5E2ECFB");
-}
 // Reko: a decoder for the instruction F604ECFB at address 00007F3E has not been implemented.
 [Test]
 public void Avr32Dis_F604ECFB()
 {
     AssertCode("@@@", "F604ECFB");
-}
-// Reko: a decoder for the instruction FFE0CCBC at address 00007FAC has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0CCBC()
-{
-    AssertCode("@@@", "FFE0CCBC");
-}
-// Reko: a decoder for the instruction FFE8C0F8 at address 000080D8 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8C0F8()
-{
-    AssertCode("@@@", "FFE8C0F8");
 }
 // Reko: a decoder for the instruction F7D6ECFB at address 00008110 has not been implemented. (111 11011 1110)
 [Test]
@@ -781,30 +517,6 @@ public void Avr32Dis_FDBC2FFD()
 public void Avr32Dis_F7EB063C()
 {
     AssertCode("@@@", "F7EB063C");
-}
-// Reko: a decoder for the instruction FFE8F368 at address 0000855E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8F368()
-{
-    AssertCode("@@@", "FFE8F368");
-}
-// Reko: a decoder for the instruction FFE8F808 at address 00008582 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8F808()
-{
-    AssertCode("@@@", "FFE8F808");
-}
-// Reko: a decoder for the instruction FFECEEF8 at address 0000886A has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECEEF8()
-{
-    AssertCode("@@@", "FFECEEF8");
-}
-// Reko: a decoder for the instruction FFECA36C at address 0000886E has not been implemented. (0b10 - sthh)
-[Test]
-public void Avr32Dis_FFECA36C()
-{
-    AssertCode("@@@", "FFECA36C");
 }
 // Reko: a decoder for the instruction FFEC1895 at address 000088F0 has not been implemented. (0b11110)
 [Test]
@@ -854,13 +566,7 @@ public void Avr32Dis_FFE20898()
 {
     AssertCode("@@@", "FFE20898");
 }
-// Reko: a decoder for the instruction FFD00A9C at address 000097B4 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD00A9C()
-{
-    AssertCode("@@@", "FFD00A9C");
-}
-// Reko: a decoder for the instruction FFD0FAEA at address 00009870 has not been implemented. (11011)
+// Reko: a decoder for the instruction FFD0FAEA at address 00009870 has not been implemented. (11101)
 [Test]
 public void Avr32Dis_FFD0FAEA()
 {
@@ -890,77 +596,11 @@ public void Avr32Dis_FFEC3008()
 {
     AssertCode("@@@", "FFEC3008");
 }
-// Reko: a decoder for the instruction FFD030A8 at address 00009C1E has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD030A8()
-{
-    AssertCode("@@@", "FFD030A8");
-}
-// Reko: a decoder for the instruction FFD80E3C at address 00009EA6 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD80E3C()
-{
-    AssertCode("@@@", "FFD80E3C");
-}
-// Reko: a decoder for the instruction FFA07C1E at address 00009EF8 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FFA07C1E at address 00009EF8 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FFA07C1E()
 {
     AssertCode("@@@", "FFA07C1E");
-}
-// Reko: a decoder for the instruction FFD0089B at address 0000A3F8 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD0089B()
-{
-    AssertCode("@@@", "FFD0089B");
-}
-// Reko: a decoder for the instruction FFD050B8 at address 0000A484 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD050B8()
-{
-    AssertCode("@@@", "FFD050B8");
-}
-// Reko: a decoder for the instruction FFD04078 at address 0000A502 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD04078()
-{
-    AssertCode("@@@", "FFD04078");
-}
-// Reko: a decoder for the instruction FC010E9B at address 0000A6DC has not been implemented. (mulsat + friends)
-[Test]
-public void Avr32Dis_FC010E9B()
-{
-    AssertCode("@@@", "FC010E9B");
-}
-// Reko: a decoder for the instruction FFDC40C3 at address 0000AAF6 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFDC40C3()
-{
-    AssertCode("@@@", "FFDC40C3");
-}
-// Reko: a decoder for the instruction FDDD2FED at address 0000AE26 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FDDD2FED()
-{
-    AssertCode("@@@", "FDDD2FED");
-}
-// Reko: a decoder for the instruction FBB6C058 at address 0000AE54 has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_FBB6C058()
-{
-    AssertCode("@@@", "FBB6C058");
-}
-// Reko: a decoder for the instruction FBB5FB64 at address 0000AE5A has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_FBB5FB64()
-{
-    AssertCode("@@@", "FBB5FB64");
-}
-// Reko: a decoder for the instruction FBB8E06B at address 0000AE6A has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_FBB8E06B()
-{
-    AssertCode("@@@", "FBB8E06B");
 }
 // Reko: a decoder for the instruction FFB8BC88 at address 0000AE72 has not been implemented. (0b11011)
 [Test]
@@ -986,43 +626,19 @@ public void Avr32Dis_FFED5809()
 {
     AssertCode("@@@", "FFED5809");
 }
-// Reko: a decoder for the instruction FFD000FA at address 0000AFA4 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD000FA()
-{
-    AssertCode("@@@", "FFD000FA");
-}
-// Reko: a decoder for the instruction FBECC068 at address 0000B1C2 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FBECC068()
-{
-    AssertCode("@@@", "FBECC068");
-}
-// Reko: a decoder for the instruction FDE9E044 at address 0000B1E8 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FDE9E044()
-{
-    AssertCode("@@@", "FDE9E044");
-}
-// Reko: a decoder for the instruction FDA7E044 at address 0000B2F6 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FDA7E044 at address 0000B2F6 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FDA7E044()
 {
     AssertCode("@@@", "FDA7E044");
 }
-// Reko: a decoder for the instruction FBB8E3C8 at address 0000B30C has not been implemented. (0b11011)
-[Test]
-public void Avr32Dis_FBB8E3C8()
-{
-    AssertCode("@@@", "FBB8E3C8");
-}
-// Reko: a decoder for the instruction FBA84064 at address 0000B31C has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FBA84064 at address 0000B31C has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FBA84064()
 {
     AssertCode("@@@", "FBA84064");
 }
-// Reko: a decoder for the instruction FFD0F3D8 at address 0000B35E has not been implemented. (11011)
+// Reko: a decoder for the instruction FFD0F3D8 at address 0000B35E has not been implemented. (11101)
 [Test]
 public void Avr32Dis_FFD0F3D8()
 {
@@ -1046,7 +662,7 @@ public void Avr32Dis_FF9CF808()
 {
     AssertCode("@@@", "FF9CF808");
 }
-// Reko: a decoder for the instruction F9ABC0F8 at address 0000B614 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction F9ABC0F8 at address 0000B614 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_F9ABC0F8()
 {
@@ -1063,12 +679,6 @@ public void Avr32Dis_FFE05F08()
 public void Avr32Dis_FFE05999()
 {
     AssertCode("@@@", "FFE05999");
-}
-// Reko: a decoder for the instruction FFDC1691 at address 0000BFC4 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFDC1691()
-{
-    AssertCode("@@@", "FFDC1691");
 }
 // Reko: a decoder for the instruction FD8CF208 at address 0000C06E has not been implemented. (0b11000)
 [Test]
@@ -1088,12 +698,6 @@ public void Avr32Dis_F207807F()
 {
     AssertCode("@@@", "F207807F");
 }
-// Reko: a decoder for the instruction F21B003F at address 0000C5A6 has not been implemented. (0b1001)
-[Test]
-public void Avr32Dis_F21B003F()
-{
-    AssertCode("@@@", "F21B003F");
-}
 // Reko: a decoder for the instruction D128 at address 0000CA5E has not been implemented. (0b1000)
 [Test]
 public void Avr32Dis_D128()
@@ -1105,12 +709,6 @@ public void Avr32Dis_D128()
 public void Avr32Dis_FE16ECFB()
 {
     AssertCode("@@@", "FE16ECFB");
-}
-// Reko: a decoder for the instruction FFD4160E at address 0000CDA6 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD4160E()
-{
-    AssertCode("@@@", "FFD4160E");
 }
 // Reko: a decoder for the instruction FFEC7C17 at address 0000CE18 has not been implemented. (0b01)
 [Test]
@@ -1154,59 +752,11 @@ public void Avr32Dis_FF88E1C8()
 {
     AssertCode("@@@", "FF88E1C8");
 }
-// Reko: a decoder for the instruction FFE8F016 at address 0000D264 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8F016()
-{
-    AssertCode("@@@", "FFE8F016");
-}
-// Reko: a decoder for the instruction FFECEEF9 at address 0000D286 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECEEF9()
-{
-    AssertCode("@@@", "FFECEEF9");
-}
 // Reko: a decoder for the instruction FFE8300B at address 0000D302 has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFE8300B()
 {
     AssertCode("@@@", "FFE8300B");
-}
-// Reko: a decoder for the instruction FFDC2D88 at address 0000D308 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFDC2D88()
-{
-    AssertCode("@@@", "FFDC2D88");
-}
-// Reko: a decoder for the instruction FFD81434 at address 0000D322 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFD81434()
-{
-    AssertCode("@@@", "FFD81434");
-}
-// Reko: a decoder for the instruction FFE4EEFA at address 0000D3DA has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4EEFA()
-{
-    AssertCode("@@@", "FFE4EEFA");
-}
-// Reko: a decoder for the instruction FFE4F2F4 at address 0000D54C has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4F2F4()
-{
-    AssertCode("@@@", "FFE4F2F4");
-}
-// Reko: a decoder for the instruction FFE8F2F8 at address 0000D550 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE8F2F8()
-{
-    AssertCode("@@@", "FFE8F2F8");
-}
-// Reko: a decoder for the instruction FFE0EF48 at address 0000D554 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0EF48()
-{
-    AssertCode("@@@", "FFE0EF48");
 }
 // Reko: a decoder for the instruction FFEC5BF8 at address 0000D570 has not been implemented. (0b01)
 [Test]
@@ -1214,7 +764,7 @@ public void Avr32Dis_FFEC5BF8()
 {
     AssertCode("@@@", "FFEC5BF8");
 }
-// Reko: a decoder for the instruction FFA6049A at address 0000DB24 has not been implemented. (0b11010)
+// Reko: a decoder for the instruction FFA6049A at address 0000DB24 has not been implemented. (11010)
 [Test]
 public void Avr32Dis_FFA6049A()
 {
@@ -1225,12 +775,6 @@ public void Avr32Dis_FFA6049A()
 public void Avr32Dis_FF8E0498()
 {
     AssertCode("@@@", "FF8E0498");
-}
-// Reko: a decoder for the instruction FFE4F0F5 at address 0000DE90 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4F0F5()
-{
-    AssertCode("@@@", "FFE4F0F5");
 }
 // Reko: a decoder for the instruction FFE80A3B at address 0000DE94 has not been implemented. (0b11110)
 [Test]
@@ -1244,47 +788,11 @@ public void Avr32Dis_FE0D580A()
 {
     AssertCode("@@@", "FE0D580A");
 }
-// Reko: a decoder for the instruction FFDC2FFA at address 0000E4B6 has not been implemented. (11011)
-[Test]
-public void Avr32Dis_FFDC2FFA()
-{
-    AssertCode("@@@", "FFDC2FFA");
-}
-// Reko: a decoder for the instruction FFE4F009 at address 0000E6DE has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4F009()
-{
-    AssertCode("@@@", "FFE4F009");
-}
-// Reko: a decoder for the instruction FDE4F009 at address 0000E6EE has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FDE4F009()
-{
-    AssertCode("@@@", "FDE4F009");
-}
 // Reko: a decoder for the instruction FC02C2D5 at address 0000E738 has not been implemented.
 [Test]
 public void Avr32Dis_FC02C2D5()
 {
     AssertCode("@@@", "FC02C2D5");
-}
-// Reko: a decoder for the instruction FFE4FC0C at address 0000E764 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4FC0C()
-{
-    AssertCode("@@@", "FFE4FC0C");
-}
-// Reko: a decoder for the instruction FDE4FAE2 at address 0000E76C has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FDE4FAE2()
-{
-    AssertCode("@@@", "FDE4FAE2");
-}
-// Reko: a decoder for the instruction FBE4E401 at address 0000E7A6 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FBE4E401()
-{
-    AssertCode("@@@", "FBE4E401");
 }
 // Reko: a decoder for the instruction FC02C0E5 at address 0000E7C2 has not been implemented.
 [Test]
@@ -1292,47 +800,17 @@ public void Avr32Dis_FC02C0E5()
 {
     AssertCode("@@@", "FC02C0E5");
 }
-// Reko: a decoder for the instruction FDE4F208 at address 0000E7F6 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FDE4F208()
-{
-    AssertCode("@@@", "FDE4F208");
-}
-// Reko: a decoder for the instruction FFE4F208 at address 0000E7FE has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4F208()
-{
-    AssertCode("@@@", "FFE4F208");
-}
 // Reko: a decoder for the instruction FFE8402B at address 0000E856 has not been implemented. (0b01)
 [Test]
 public void Avr32Dis_FFE8402B()
 {
     AssertCode("@@@", "FFE8402B");
 }
-// Reko: a decoder for the instruction FBE4D832 at address 0000E862 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FBE4D832()
-{
-    AssertCode("@@@", "FBE4D832");
-}
-// Reko: a decoder for the instruction FFE4C038 at address 0000EB12 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE4C038()
-{
-    AssertCode("@@@", "FFE4C038");
-}
 // Reko: a decoder for the instruction FFE9580A at address 0000EC0C has not been implemented. (0b01)
 [Test]
 public void Avr32Dis_FFE9580A()
 {
     AssertCode("@@@", "FFE9580A");
-}
-// Reko: a decoder for the instruction FFE0E817 at address 0000FE18 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFE0E817()
-{
-    AssertCode("@@@", "FFE0E817");
 }
 // Reko: a decoder for the instruction D2E8 at address 0000FE38 has not been implemented. (0b1000)
 [Test]
@@ -1352,41 +830,17 @@ public void Avr32Dis_B1E0()
 {
     AssertCode("@@@", "B1E0");
 }
-// Reko: a decoder for the instruction FFECC8A8 at address 00010BDC has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECC8A8()
-{
-    AssertCode("@@@", "FFECC8A8");
-}
-// Reko: a decoder for the instruction FFECC758 at address 00010C06 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECC758()
-{
-    AssertCode("@@@", "FFECC758");
-}
-// Reko: a decoder for the instruction FFECEEEA at address 00010CF0 has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECEEEA()
-{
-    AssertCode("@@@", "FFECEEEA");
-}
 // Reko: a decoder for the instruction FFEC2FBD at address 00010CF4 has not been implemented. (0b11110)
 [Test]
 public void Avr32Dis_FFEC2FBD()
 {
     AssertCode("@@@", "FFEC2FBD");
 }
-// Reko: a decoder for the instruction FFD0FACB at address 00010D0A has not been implemented. (11011)
+// Reko: a decoder for the instruction FFD0FACB at address 00010D0A has not been implemented. (11101)
 [Test]
 public void Avr32Dis_FFD0FACB()
 {
     AssertCode("@@@", "FFD0FACB");
-}
-// Reko: a decoder for the instruction FFECFAE9 at address 00010D0E has not been implemented. (0b11 - sthh)
-[Test]
-public void Avr32Dis_FFECFAE9()
-{
-    AssertCode("@@@", "FFECFAE9");
 }
 // Reko: a decoder for the instruction FC02E60B at address 00010D6A has not been implemented.
 [Test]

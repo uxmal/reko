@@ -8,6 +8,15 @@ Eq_n g_t0001;
 Eq_n g_t0002;
 Eq_n g_t0003;
 Eq_n g_t0004;
-Eq_n g_t0020;
+word32 g_dw0007; // 00000007
+word32 g_dw000B; // 0000000B
+word32 g_dw000C; // 0000000C
+word32 g_dw001B; // 0000001B
+word32 g_dw0020; // 00000020
+Eq_n g_t0028;
+Eq_n g_t0029;
+Eq_n g_t005D;
+Eq_n g_t007C;
+word32 g_dw007F; // 0000007F
 byte g_bFFFFFFFE; // FFFFFFFE
 byte g_bFFFFFFFF; // FFFFFFFF

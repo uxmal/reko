@@ -1195,7 +1195,7 @@ l00002E04:
 l00002E08:
 	ld.w	r8,r11[40]
 	mov	r9,00000001
-	bfexts	r8,r9,+0000001E,+00000001
+	bfins	r8,r9,+0000001E,+00000001
 	st.w	r11[-24],r8
 
 l00002E12:
@@ -13010,7 +13010,7 @@ l0000946A:
 	lddsp	r11,sp[28]
 	mul	r10,r9,r11
 	lddsp	r11,sp[24]
-	mul	r10,r11,r8
+	mac	r10,r11,r8
 	lddsp	r11,sp[44]
 	add	r11,r10,r11
 	stdsp	sp[44],r11
@@ -13052,7 +13052,7 @@ l000094CA:
 	mov	r8,0000000A
 	mulu.d	r2,r10,r8
 	mov	r9,r1
-	mul	r3,r11,r8
+	mac	r3,r11,r8
 	mov	r10,r2
 	mov	r8,r0
 	mov	r11,r3
@@ -13629,7 +13629,7 @@ l00009916:
 	lddsp	r10,sp[40]
 	mov	r11,00000000
 	mul	r8,r3,r10
-	mul	r8,r11,r2
+	mac	r8,r11,r2
 	mulu.d	r2,r2,r10
 	add	r3,r8,r3
 
@@ -20059,7 +20059,7 @@ fn0000C77E proc
 	add	r0,r0
 	add	r0,r0
 	add	r0,r0
-	andnot	r0,r0
+	andn	r0,r0
 	ld.ub	r0,r3++
 	add	r0,r0
 	add	r0,r0
@@ -20176,7 +20176,7 @@ l0000CA9A:
 	mulu.d	r8,r4,r2
 	mov	r12,00000000
 	mul	r10,r5,r2
-	mul	r10,r3,r4
+	mac	r10,r3,r4
 	add	r9,r10,r9
 	st.d	r7[0],r9:r8
 	popm	r0-r3,r4-r7,pc
@@ -24071,12 +24071,12 @@ l0000E6D2:
 	rcall	__avr32_f64_mul
 	lsl	r8,r1,00000003
 	sub	r9,sp,FFFFFFE4
-	st.b	r8[r9],r3:r2
+	st.d	r8[r9],r3:r2
 	mov	r4,r10
 	mov	r5,r11
 	ld.d	r11:r10,sp[12]
 	sub	r9,sp,FFFFFDE4
-	st.b	r8[r9],r11:r10
+	st.d	r8[r9],r11:r10
 	sub	r1,FFFFFFFF
 	ld.d	r9:r8,sp[12]
 	mov	r10,r8
@@ -24125,11 +24125,11 @@ l0000E73C:
 l0000E75E:
 	ld.d	r3:r2,sp[20]
 	sub	r12,sp,FFFFFFE4
-	st.b	lr[r12],r3:r2
+	st.d	lr[r12],r3:r2
 	sub	r12,sp,FFFFFDE4
 	ld.d	r3:r2,sp[0]
 	sub	r1,FFFFFFFF
-	st.b	lr[r12],r3:r2
+	st.d	lr[r12],r3:r2
 	rcall	__avr32_f64_mul
 	ld.d	r9:r8,sp[20]
 	st.d	sp[0],r11:r10
@@ -24280,12 +24280,12 @@ l0000E8B6:
 	rcall	__avr32_f64_mul
 	lsl	r8,r1,00000003
 	sub	r9,sp,FFFFFFE4
-	st.b	r8[r9],r3:r2
+	st.d	r8[r9],r3:r2
 	mov	r4,r10
 	mov	r5,r11
 	ld.d	r11:r10,sp[12]
 	sub	r9,sp,FFFFFDE4
-	st.b	r8[r9],r11:r10
+	st.d	r8[r9],r11:r10
 	sub	r1,FFFFFFFF
 	ld.d	r9:r8,sp[12]
 	mov	r10,r8
@@ -24334,11 +24334,11 @@ l0000E920:
 l0000E942:
 	ld.d	r3:r2,sp[20]
 	sub	r12,sp,FFFFFFE4
-	st.b	lr[r12],r3:r2
+	st.d	lr[r12],r3:r2
 	sub	r12,sp,FFFFFDE4
 	ld.d	r3:r2,sp[0]
 	sub	r1,FFFFFFFF
-	st.b	lr[r12],r3:r2
+	st.d	lr[r12],r3:r2
 	rcall	__avr32_f64_mul
 	ld.d	r9:r8,sp[20]
 	st.d	sp[0],r11:r10
@@ -25847,7 +25847,7 @@ l0000F2E6:
 	lsl	r11,+0000000A
 	or	r11,r11,r10>>22
 	lsl	r10,+0000000A
-	bfexts	r11,r5,+0000001E,+00000002
+	bfins	r11,r5,+0000001E,+00000002
 
 l0000F2F2:
 	bfextu	r6,r9,+00000014,+0000000B
@@ -25856,7 +25856,7 @@ l0000F2F2:
 l0000F2F8:
 	lsl	r8,+00000001
 	rol	r9
-	bfexts	r9,r5,+00000015,+0000000B
+	bfins	r9,r5,+00000015,+0000000B
 
 l0000F300:
 	cp.w	r7,000007FF
@@ -25894,7 +25894,7 @@ l0000F340:
 	brge	0000F47C
 
 l0000F348:
-	bfexts	r11,r12,+00000014,+0000000B
+	bfins	r11,r12,+00000014,+0000000B
 
 l0000F34C:
 	or	r6,r6,r10<<31
@@ -26177,7 +26177,7 @@ l0000F552:
 	lsr	r10,+0000000B
 	or	r10,r10,r11<<21
 	lsr	r11,+0000000B
-	bfexts	r11,r7,+00000014,+0000000B
+	bfins	r11,r7,+00000014,+0000000B
 	or	r11,r12
 	mov	r7,00000000
 	orh	r7,8000
@@ -26371,7 +26371,7 @@ l0000F6B4:
 	breq	0000F726
 
 l0000F6C0:
-	bfexts	r11,r7,+00000014,+0000000B
+	bfins	r11,r7,+00000014,+0000000B
 	or	r11,r12
 	bfextu	r12,r10,+00000000,+00000001
 	or	lr,r12
@@ -27076,7 +27076,7 @@ l0000FA9C:
 	lsr	r3,r12,00000001
 	bfextu	r4,r9,+0000001B,+00000002
 	com	r4
-	bfexts	r3,r4,+0000001C,+00000002
+	bfins	r3,r4,+0000001C,+00000002
 	mulu.d	r4,r3,r9
 	sub	r5,r12,r5<<2
 	mulu.d	r4,r3,r5
@@ -27175,7 +27175,7 @@ l0000FBC4:
 	lsr	r10,r2,00000008
 	or	r10,r10,r3<<24
 	lsr	r11,r3,00000008
-	bfexts	r11,r7,+00000014,+0000000B
+	bfins	r11,r7,+00000014,+0000000B
 	bld	lr,+0000001F
 	bst	r11,+0000001F
 	add	r10,r6
@@ -27428,7 +27428,7 @@ l0000FD9C:
 	lsr	r11,r10,00000001
 	bfextu	r6,r5,+0000001B,+00000002
 	com	r6
-	bfexts	r11,r6,+0000001C,+00000002
+	bfins	r11,r6,+0000001C,+00000002
 	mulu.d	r6,r11,r5
 	sub	r7,r10,r7<<2
 	mulu.d	r6,r11,r7
@@ -27473,7 +27473,7 @@ l0000FE28:
 
 l0000FE32:
 	lsr	r12,r7,00000005
-	bfexts	r12,r9,+00000017,+00000008
+	bfins	r12,r9,+00000017,+00000008
 	ld.d	r7:r6,sp++
 	ld.w	r5,sp++
 	bld	r8,+0000001F
@@ -27603,7 +27603,7 @@ l0000FF2A:
 l0000FF34:
 	or	r9,r9,r8<<24
 	or	r12,r12,r8>>8
-	bfexts	r12,r10,+00000017,+00000008
+	bfins	r12,r10,+00000017,+00000008
 
 l0000FF40:
 	mov	r10,00000000
@@ -27638,7 +27638,7 @@ l0000FF68:
 	retne	lr
 
 l0000FF6E:
-	bfexts	r12,r10,+00000017,+00000008
+	bfins	r12,r10,+00000017,+00000008
 	lsr	r11,r9,00000017
 	cp.w	r11,000000FF
 	retne	r12
@@ -27695,14 +27695,14 @@ l0000FFCC:
 	lsr	r12,r11,r9
 	rsub	r9,r9,00000018
 	lsl	r11,r11,r9
-	bfexts	r11,r12,+00000018,+00000008
+	bfins	r11,r12,+00000018,+00000008
 	add	r8,r12
 	ld.w	r12,sp++
 	brcs	00010036
 
 l0000FFEA:
 	or	r12,r12,r8>>8
-	bfexts	r12,r10,+00000017,+00000008
+	bfins	r12,r10,+00000017,+00000008
 	mov	r10,00000000
 	orh	r10,8000
 	bld	r12,+00000000
@@ -27734,7 +27734,7 @@ l0001001C:
 	retne	lr
 
 l00010022:
-	bfexts	r12,r10,+00000017,+00000008
+	bfins	r12,r10,+00000017,+00000008
 	lsr	r11,r9,00000017
 	cp.w	r11,000000FF
 	retne	r12
@@ -27803,7 +27803,7 @@ l0001008C:
 
 l00010090:
 	lsr	r10,+00000008
-	bfexts	r10,r11,+00000018,+00000008
+	bfins	r10,r11,+00000018,+00000008
 	sub	r9,0000007E
 	brle	0001010A
 
@@ -27813,7 +27813,7 @@ l0001009C:
 
 l000100A2:
 	or	r12,r12,r11>>8
-	bfexts	r12,r9,+00000017,+00000008
+	bfins	r12,r9,+00000017,+00000008
 
 l000100AA:
 	mov	r8,00000000
@@ -27862,7 +27862,7 @@ l000100F2:
 	reteq	lr
 
 l000100F6:
-	bfexts	r12,r10,+00000017,+00000008
+	bfins	r12,r10,+00000017,+00000008
 	lsr	r11,r9,00000017
 	cp.w	r11,000000FF
 	retne	r12
@@ -27940,7 +27940,7 @@ l00010162:
 
 l0001016A:
 	lsr	r12,r12,00000007
-	bfexts	r12,r10,+00000018,+00000008
+	bfins	r12,r10,+00000018,+00000008
 	lsr	r12,+00000001
 	ret	r12
 

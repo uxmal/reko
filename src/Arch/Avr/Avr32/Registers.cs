@@ -47,6 +47,9 @@ namespace Reko.Arch.Avr.Avr32
             sr = factory.Reg32(nameof(sr));
             evba = factory.Reg32(nameof(evba));
             acba = factory.Reg32(nameof(acba));
+
+            factory = new StorageFactory(StorageDomain.SystemRegister);
+
             /*
             0 0 SR Status Register RA RB
             1 4 EVBA Exception Vector Base Address RA RB
@@ -72,9 +75,6 @@ namespace Reko.Arch.Avr.Avr32
             21 84 JECR Java Exception Cause Register OA OB
             22 88 JOSP Java Operand Stack Pointer OA OB
             23 92 JAVA_LV0 Java Local Variable 0 OA OB
-            16
-            32000D–04/2011
-            AVR32
             24 96 JAVA_LV1 Java Local Variable 1 OA OB
             25 100 JAVA_LV2 Java Local Variable 2 OA OB
             26 104 JAVA_LV3 Java Local Variable 3 OA OB
@@ -113,9 +113,7 @@ namespace Reko.Arch.Avr.Avr32
             89 356 MPUPSR1 MPU Privilege Select Register region 1 OA OB
             Table 2-7. System Registers (Continued)
             Reg # Address Name Function Compliance
-            17
-            32000D–04/2011
-            AVR32
+            
             SR- Status Register
             The Status Register is mapped into the system register space. This allows it to be loaded into
             the register file to be modified, or to be stored to memory. The Status Register is described in
@@ -153,6 +151,8 @@ namespace Reko.Arch.Avr.Avr32
             112-191 448-764 Reserved Reserved for future use - -
             192-255 768-1020 IMPL IMPLEMENTATION DEFINED - -
              */
+            CoprocRegisters = factory.RangeOfReg32(16, "cr{0}");
+
             C = new FlagGroupStorage(sr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         }
 
@@ -164,6 +164,8 @@ namespace Reko.Arch.Avr.Avr32
         public static RegisterStorage sr { get; }
         public static RegisterStorage evba { get; }
         public static RegisterStorage acba { get; }
+
+        public static RegisterStorage[] CoprocRegisters { get; }
 
         public static FlagGroupStorage C { get; }
     }

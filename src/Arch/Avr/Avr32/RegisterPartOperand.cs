@@ -21,46 +21,49 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System.Collections.Generic;
+using System;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class RegisterRange : AbstractMachineOperand
+    public class RegisterPartOperand : AbstractMachineOperand
     {
-        public RegisterStorage[] Registers { get; }
-        public int RegisterIndex { get; }
-        public int Count { get; } 
-
-        public RegisterRange(RegisterStorage[] gpRegisters, int iRegStart, int cRegs)
-            : base(PrimitiveType.Word32)    // Don't care.
+        public RegisterPartOperand(RegisterStorage reg, RegisterPart part) : base(PrimitiveType.Word16)
         {
-            this.Registers = gpRegisters;
-            this.RegisterIndex = iRegStart;
-            this.Count = cRegs;
+            this.Register = reg;
+            this.Part = part;
         }
+
+        public RegisterStorage Register { get; }
+        public RegisterPart Part { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteString(Registers[RegisterIndex].Name);
-            if (Count <= 1)
-                return;
-            if (Count <= 2)
-            {
-                renderer.WriteString(",");
-            }
-            else
-            {
-                renderer.WriteString("-");
-            }
-            renderer.WriteString(Registers[RegisterIndex + Count - 1].Name);
-        }
-
-        public IEnumerable<RegisterStorage> Enumerate()
-        {
-            for (int i = 0; i < Count; ++i)
-            {
-                yield return Registers[RegisterIndex + i];
-            }
+            renderer.WriteString(Register.Name);
+            renderer.WriteString(Part.Format());
         }
     }
+
+    public enum RegisterPart
+    {
+        All = 0,
+        Top = 1,
+        Upper = 2,
+        Lower = 3,
+        Bottom = 4,
+    }
+
+    public static class RegisterPartExtensions
+    {
+        public static string Format(this RegisterPart part) =>
+            part switch
+            {
+                RegisterPart.All => "",
+                RegisterPart.Top => ":t",
+                RegisterPart.Upper => ":u",
+                RegisterPart.Lower => ":l",
+                RegisterPart.Bottom => ":b",
+                _ => throw new NotSupportedException()
+            };
+    }
+
 }

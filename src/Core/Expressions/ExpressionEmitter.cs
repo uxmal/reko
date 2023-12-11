@@ -1223,6 +1223,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an integer multiplication where the product differs in size from
+        /// the operands. No assumption about signedness is made.
+        /// </summary>
+        /// <param name="dtProduct">Resulting size of the product.</param>
+        /// <param name="left">Multiplicand.</param>
+        /// <param name="right">Multiplier.</param>
+        /// <returns>An integer multiplication expression</returns>
+        public Expression IMul(PrimitiveType dtProduct, Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.IMul, dtProduct, left, right);
+        }
+
+        /// <summary>
         /// Convenience method to generate an integer multiplication. The second parameter
         /// is converted to an integer constant. No assumption about signedness is made.
         /// </summary>

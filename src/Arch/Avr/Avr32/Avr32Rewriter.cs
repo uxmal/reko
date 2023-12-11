@@ -96,10 +96,11 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.andh: RewriteAndh(); break;
                 case Mnemonic.andl: RewriteAndl(); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
-                case Mnemonic.andnot: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
+                case Mnemonic.andn: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
                 case Mnemonic.asr: RewriteShift(m.Sar); break;
                 case Mnemonic.bfexts: RewriteBfexts(); break;
                 case Mnemonic.bfextu: RewriteBfextu(); break;
+                case Mnemonic.bfins: RewriteBfins(); break;
                 case Mnemonic.bld: RewriteBld(); break;
                 case Mnemonic.br: RewriteBranch(); break;
                 case Mnemonic.bst: RewriteBst(); break;
@@ -109,6 +110,7 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.castu_h: RewriteCast(PrimitiveType.Word16, PrimitiveType.Word32); break;
                 case Mnemonic.cbr: RewriteCbr(); break;
                 case Mnemonic.com: RewriteCom(); break;
+                case Mnemonic.cop: RewriteCop(); break;
                 case Mnemonic.clz: RewriteClz(); break;
                 case Mnemonic.cp_b: RewriteCp_b(); break;
                 case Mnemonic.cp_w: RewriteCp_w(); break;
@@ -125,20 +127,34 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.ld_ub: RewriteLd(PrimitiveType.Byte, PrimitiveType.Word32); break;
                 case Mnemonic.ld_uh: RewriteLd(PrimitiveType.Word16, PrimitiveType.Word32); break;
                 case Mnemonic.ld_w: RewriteLd(PrimitiveType.Word32, PrimitiveType.Word32); break;
+                case Mnemonic.ldc_d: RewriteLdc(PrimitiveType.Word64); break;
+                case Mnemonic.ldc_w: RewriteLdc(PrimitiveType.Word32); break;
+                case Mnemonic.ldc0_d: RewriteLdc0(PrimitiveType.Word64); break;
+                case Mnemonic.ldc0_w: RewriteLdc0(PrimitiveType.Word32); break;
+                case Mnemonic.ldcm_d: RewriteLdcm(PrimitiveType.Word64); break;
+                case Mnemonic.ldcm_w: RewriteLdcm(PrimitiveType.Word32); break;
                 case Mnemonic.lddpc: RewriteLddpc(); break;
                 case Mnemonic.lddsp: RewriteLddsp(); break;
+                case Mnemonic.ldins_b: RewriteLdinsB(); break;
+                case Mnemonic.ldins_h: RewriteLdinsH(); break;
+                case Mnemonic.ldswp_sh: RewriteLoadSwap(PrimitiveType.Word16, PrimitiveType.Int32); break;
+                case Mnemonic.ldswp_uh: RewriteLoadSwap(PrimitiveType.Word16, PrimitiveType.Word32); break;
+                case Mnemonic.ldswp_w: RewriteLoadSwap(PrimitiveType.Word32, null); break;
                 case Mnemonic.ldm: RewriteLdm(); break;
                 case Mnemonic.lsl: RewriteShift(m.Shl); break;
                 case Mnemonic.lsr: RewriteShift(m.Shr); break;
                 case Mnemonic.macs_d: RewriteMac_d(m.SMul); break;
                 case Mnemonic.macu_d: RewriteMac_d(m.UMul); break;
+                case Mnemonic.mac: RewriteMac(); break;
                 case Mnemonic.max: RewriteMax(); break;
                 case Mnemonic.mcall: RewriteCall(); break;
                 case Mnemonic.min: RewriteMin(); break;
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movh: RewriteMovh(); break;
+                case Mnemonic.mtdr: RewriteMtdr(); break;
                 case Mnemonic.mul: RewriteMul(); break;
                 case Mnemonic.muls_d: RewriteMul_d(m.SMul); break;
+                case Mnemonic.mulsatwh_w: RewriteMulsatWhW(); break;
                 case Mnemonic.mulu_d: RewriteMul_d(m.UMul); break;
                 case Mnemonic.mustr: RewriteMustr(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
@@ -147,6 +163,7 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.orh: RewriteOrh(m.Or); break;
                 case Mnemonic.orl: RewriteOrl(m.Or); break;
                 case Mnemonic.popm: RewritePopm(); break;
+                case Mnemonic.pref: RewritePref(); break;
                 case Mnemonic.pushm: RewritePushm(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.rcall: RewriteCall(); break;
@@ -154,6 +171,7 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.rol: RewriteRol(); break;
                 case Mnemonic.ror: RewriteRor(); break;
                 case Mnemonic.rsub: RewriteRsub(); break;
+                case Mnemonic.satadd_w: RewriteSataddW(); break;
                 case Mnemonic.sats: RewriteSat(sat_intrinsic, PrimitiveType.Int32); break;
                 case Mnemonic.satu: RewriteSat(sat_intrinsic, PrimitiveType.UInt32); break;
                 case Mnemonic.satsub_w: RewriteSatsubW(); break;
@@ -166,10 +184,16 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.st_h: RewriteSt(PrimitiveType.Word16); break;
                 case Mnemonic.st_w: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.st_d: RewriteSt(PrimitiveType.Word64); break;
+                case Mnemonic.stc_d: RewriteStc(PrimitiveType.Word64); break;
+                case Mnemonic.stc_w: RewriteStc(PrimitiveType.Word32); break;
+                case Mnemonic.stc0_d: RewriteStc0(PrimitiveType.Word64); break;
+                case Mnemonic.stc0_w: RewriteStc0(PrimitiveType.Word32); break;
                 case Mnemonic.stcond: RewriteStcond(); break;
                 case Mnemonic.stdsp: RewriteStdsp(); break;
+                case Mnemonic.sthh_w: RewriteSthhW(); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subf: RewriteSub(); break;
+                case Mnemonic.sync: RewriteSync(); break;
                 case Mnemonic.tst: RewriteTst(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
@@ -186,6 +210,28 @@ namespace Reko.Arch.Avr.Avr32
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private int BitOffsetOfByte(RegisterPart part)
+        {
+            return part switch
+            {
+                RegisterPart.Bottom => 0,
+                RegisterPart.Lower => 8,
+                RegisterPart.Upper => 16,
+                RegisterPart.Top => 24,
+                _ => throw new ArgumentException()
+            };
+        }
+
+        private int BitOffsetOfHalfword(RegisterPart part)
+        {
+            return part switch
+            {
+                RegisterPart.Bottom => 0,
+                RegisterPart.Top => 16,
+                _ => throw new ArgumentException()
+            };
         }
 
         private void EmitCc(FlagGroupStorage grf, Expression exp)
@@ -423,7 +469,9 @@ namespace Reko.Arch.Avr.Avr32
             }
             var dt = PrimitiveType.Create(Domain.SignedInt, w);
             var slice = m.Slice(RewriteOp(1), dt, b);
-            var dst = RewriteOpDst(0, slice);
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, slice);
+            var dst = RewriteOpDst(0, m.Convert(tmp, dt, PrimitiveType.Create(Domain.SignedInt, 32)));
             EmitCc(NZC, dst);
         }
 
@@ -439,7 +487,28 @@ namespace Reko.Arch.Avr.Avr32
             }
             var dt = PrimitiveType.CreateWord(w);
             var slice = m.Slice(RewriteOp(1), dt, b);
-            var dst = RewriteOpDst(0, slice);
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, slice);
+            var dst = RewriteOpDst(0, m.Convert(tmp, dt, PrimitiveType.Word32));
+            EmitCc(NZC, dst);
+        }
+
+        private void RewriteBfins()
+        {
+            var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            if (w == 0 || b + w > 32)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var dt = PrimitiveType.CreateWord(w);
+            var slice = m.Slice(RewriteOp(1), dt, 0);
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, slice);
+            var dst = RewriteOp(1);
+            m.Assign(dst, m.Dpb(dst, tmp, b));
             EmitCc(NZC, dst);
         }
 
@@ -536,6 +605,16 @@ namespace Reko.Arch.Avr.Avr32
             EmitCc(Z, dst);
         }
 
+        private void RewriteCop()
+        {
+            var op0 = RewriteOp(0);
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var op3 = RewriteOp(3);
+            var op4 = RewriteOp(4);
+            m.SideEffect(m.Fn(cop_intrinsic, op0, op1, op2, op3, op4));
+        }
+
         private void RewriteClz()
         {
             var src = RewriteOp(1);
@@ -599,6 +678,63 @@ namespace Reko.Arch.Avr.Avr32
             RewriteOpDst(0, src);
         }
 
+        private void RewriteLdc(PrimitiveType dt)
+        {
+            var cp = RewriteOp(0);
+            var cr = RewriteOp(1);
+            var mem = RewriteOp(2);
+            DoRewriteLdc(dt, cp, cr, mem);
+        }
+
+        private void RewriteLdc0(PrimitiveType dt)
+        {
+            var cp = Constant.Zero(PrimitiveType.Byte);
+            var cr = RewriteOp(0);
+            var mem = RewriteOp(1);
+            DoRewriteLdc(dt, cp, cr, mem);
+        }
+
+        private void RewriteLdcm(PrimitiveType dt)
+        {
+            var regs = instr.Operands
+                .Skip(2)
+                .Cast<RegisterRange>()
+                .SelectMany(rr => rr.Enumerate());
+            Identifier sp;
+            bool postInc = false;
+            if (instr.Operands[1] is MemoryOperand post)
+            {
+                Debug.Assert(post.PostIncrement);
+                postInc = true;
+                sp = binder.EnsureRegister(post.Base!);
+            }
+            else
+            {
+                sp = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
+            }
+            var cp = RewriteOp(0);
+            int offset = 0;
+            foreach (var reg in regs.Reverse())
+            {
+                DoRewriteLdc(
+                    dt,
+                    cp,
+                    binder.EnsureRegister(reg),
+                    m.Mem(reg.DataType, m.IAddS(sp, offset)));
+                offset += dt.Size;
+            }
+            if (postInc)
+            {
+                m.Assign(sp, m.IAddS(sp, offset));
+            }
+        }
+
+        private void DoRewriteLdc(PrimitiveType dt, Expression cp, Expression cr, Expression mem)
+        {
+            var addr = m.AddrOf(PrimitiveType.Ptr32, mem);
+            m.SideEffect(m.Fn(ldc_intrinsic.MakeInstance(32, dt), cp, cr, addr));
+        }
+
         private void RewriteLddpc()
         {
             var mem = (MemoryOperand) instr.Operands[1];
@@ -611,6 +747,28 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(1);
             RewriteOpDst(0, src);
+        }
+
+        private void RewriteLdinsB()
+        {
+            var src = RewriteOp(1);
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
+            var dstOp = (RegisterPartOperand) instr.Operands[0];
+            var dst = binder.EnsureRegister(dstOp.Register);
+            var bitpos = BitOffsetOfByte(dstOp.Part);
+            m.Assign(dst, m.Dpb(dst, tmp, bitpos));
+        }
+
+        private void RewriteLdinsH()
+        {
+            var src = RewriteOp(1);
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
+            var dstOp = (RegisterPartOperand) instr.Operands[0];
+            var dst = binder.EnsureRegister(dstOp.Register);
+            var bitpos = BitOffsetOfHalfword(dstOp.Part);
+            m.Assign(dst, m.Dpb(dst, tmp, bitpos));
         }
 
         private void RewriteLdm()
@@ -656,6 +814,19 @@ namespace Reko.Arch.Avr.Avr32
             }
         }
 
+        private void RewriteLoadSwap(PrimitiveType dtSrc, PrimitiveType? dtConversion)
+        {
+            var tmp = binder.CreateTemporary(dtSrc);
+            m.Assign(tmp, m.Mem(dtSrc, RewriteOp(1)));
+            if (dtConversion is { })
+            {
+                var src = tmp;
+                tmp = binder.CreateTemporary(dtConversion);
+                m.Assign(tmp, m.Convert(src, src.DataType, dtConversion));
+            }
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(swap_bytes_intrinsic, tmp));
+        }
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
         {
             MaybeSkip();
@@ -695,6 +866,14 @@ namespace Reko.Arch.Avr.Avr32
             m.Assign(dst, m.IAdd(dst, fn(left, right)));
         }
 
+        private void RewriteMac()
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var acc = RewriteOp(0);
+            RewriteOpDst(0, m.IAdd(acc, m.IMul(left, right)));
+        }
+
         private void RewriteMax()
         {
             var left = RewriteOp(1);
@@ -722,6 +901,11 @@ namespace Reko.Arch.Avr.Avr32
         {
             var n = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 16;
             RewriteOpDst(0, m.Word32(n));
+        }
+
+        private void RewriteMtdr()
+        {
+            m.SideEffect(m.Fn(mtdr_intrinsic, RewriteOp(0), RewriteOp(1)));
         }
 
         private void RewriteMul()
@@ -755,6 +939,22 @@ namespace Reko.Arch.Avr.Avr32
             var rDstHi = Registers.GpRegisters[rDst.Number + 1];
             var dst = binder.EnsureSequence(PrimitiveType.Word64, rDstHi, rDst);
             m.Assign(dst, fn(left, right));
+        }
+
+        private void RewriteMulsatWhW()
+        {
+            var left = RewriteOp(0);
+            var rightOp = (RegisterPartOperand) instr.Operands[2];
+            Expression right = m.Slice(
+                binder.EnsureRegister(rightOp.Register),
+                PrimitiveType.Word16,
+                BitOffsetOfHalfword(rightOp.Part));
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(tmp, right);
+            right = m.Convert(tmp, tmp.DataType, PrimitiveType.Word32);
+            var mul = binder.CreateTemporary(PrimitiveType.Word64);
+            m.Assign(mul, m.IMul(PrimitiveType.Word64, left, right));
+            RewriteOpDst(0, m.Fn(satmul_intrinsic.MakeInstance(PrimitiveType.Word32), left, right));
         }
 
         private void RewriteMustr()
@@ -829,6 +1029,13 @@ namespace Reko.Arch.Avr.Avr32
             {
                 m.Return(0, 0);
             }
+        }
+
+        private void RewritePref()
+        {
+            var line = RewriteOp(0);
+            var addr = m.AddrOf(PrimitiveType.Ptr32, line);
+            m.SideEffect(m.Fn(pref_intrinsic.MakeInstance(32, PrimitiveType.Byte), addr));
         }
 
         private void RewritePushm()
@@ -935,6 +1142,16 @@ namespace Reko.Arch.Avr.Avr32
             EmitCc(Q, dst);
         }
 
+        private void RewriteSataddW()
+        {
+            var left = RewriteOp(0);
+            var right = RewriteOp(1);
+            var src = m.Fn(satadd_intrinsic.MakeInstance(PrimitiveType.Int32), left, right);
+            var dst = RewriteOpDst(0, src);
+            EmitCc(VNZC, dst);
+            EmitCc(Q, dst);
+        }
+
         private void RewriteSatsubW()
         {
             var left = RewriteOp(0);
@@ -1012,6 +1229,29 @@ namespace Reko.Arch.Avr.Avr32
             RewriteOpDst(0, src);
         }
 
+        private void RewriteStc(PrimitiveType dt)
+        {
+            var cp = RewriteOp(0);
+            var mem = RewriteOp(1);
+            var cr = RewriteOp(2);
+            DoRewriteStc(dt, cp, mem, cr);
+        }
+
+        private void RewriteStc0(PrimitiveType dt)
+        {
+            var cp = Constant.Zero(PrimitiveType.Byte);
+            var mem = RewriteOp(0);
+            var cr = RewriteOp(1);
+            DoRewriteStc(dt, cp, cr, mem);
+        }
+
+        private void DoRewriteStc(PrimitiveType dt, Expression cp, Expression mem, Expression cr)
+        {
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, m.Fn(stc_intrinsic.MakeInstance(32, dt), cp, cr));
+            m.Assign(mem, tmp);
+        }
+
         private void RewriteStcond()
         {
             var src = RewriteOp(1);
@@ -1056,6 +1296,24 @@ namespace Reko.Arch.Avr.Avr32
             }
         }
 
+        private void RewriteSthhW()
+        {
+            var hiPart = (RegisterPartOperand) instr.Operands[1];
+            var loPart = (RegisterPartOperand) instr.Operands[2];
+            var hi = m.Slice(
+                binder.EnsureRegister(hiPart.Register),
+                PrimitiveType.Word16,
+                this.BitOffsetOfHalfword(hiPart.Part));
+            var lo = m.Slice(
+                binder.EnsureRegister(loPart.Register),
+                PrimitiveType.Word16,
+                this.BitOffsetOfHalfword(loPart.Part));
+            var src = m.Seq(hi, lo);
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
+            RewriteOpDst(0, tmp);
+        }
+
         private void RewriteSub()
         {
             MaybeSkip();
@@ -1093,13 +1351,19 @@ namespace Reko.Arch.Avr.Avr32
             }
             else
             {
-                src = m.ISub(left, right);
+                src = m.IAdd(left, right);
             }
             var dst = RewriteOpDst(0, src);
-            if (instr.Mnemonic == Mnemonic.subf || instr.Condition == Avr32Condition.al)
+            if (instr.Condition == Avr32Condition.al || instr.Mnemonic == Mnemonic.subf)
             {
                 EmitCc(VNZC, dst);
             }
+        }
+
+        private void RewriteSync()
+        {
+            var op = RewriteOp(0);
+            m.SideEffect(m.Fn(sync_intrinsic, op));
         }
 
         private void RewriteTst()
@@ -1139,10 +1403,43 @@ namespace Reko.Arch.Avr.Avr32
         }
 
         private static readonly IntrinsicProcedure clz_intrinsic;
+        private static readonly IntrinsicProcedure cop_intrinsic = new IntrinsicBuilder("__coprocessor_operation", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure ldc_intrinsic = new IntrinsicBuilder("__load_coprocessor", true)
+            .GenericTypes("T")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .PtrParam("T")
+            .Void();
+        private static readonly IntrinsicProcedure mtdr_intrinsic = new IntrinsicBuilder("__write_debug_register", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure pref_intrinsic = new IntrinsicBuilder("__prefetch_cache_line", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Void();
         private static readonly IntrinsicProcedure sat_intrinsic = IntrinsicBuilder.GenericBinary("__sat");
+        private static readonly IntrinsicProcedure satadd_intrinsic = IntrinsicBuilder.GenericBinary("__satadd");
+        private static readonly IntrinsicProcedure satmul_intrinsic = IntrinsicBuilder.GenericBinary("__satmul");
         private static readonly IntrinsicProcedure satsub_intrinsic = IntrinsicBuilder.GenericBinary("__satsub");
         private static readonly IntrinsicProcedure setbit_intrinsic;
         private static readonly IntrinsicProcedure stcond_intrinsic;
-
+        private static readonly IntrinsicProcedure stc_intrinsic = new IntrinsicBuilder("__read_coprocessor_register", true)
+            .GenericTypes("T")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .Returns("T");
+        private static readonly IntrinsicProcedure swap_bytes_intrinsic = new IntrinsicBuilder("__swap_bytes", false)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sync_intrinsic = new IntrinsicBuilder("__sync", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
     }
 }

@@ -37,6 +37,7 @@ namespace Reko.Arch.Avr.Avr32
         public RegisterStorage? Base { get; private set; }
         public int Offset { get; private set; }
         public RegisterStorage? Index { get; private set; }
+        public RegisterPart IndexPart { get; private set; }
         public int Shift { get; private set; }
         public bool PostIncrement { get; private set; }
         public bool PreDecrement { get; private set; }
@@ -71,13 +72,19 @@ namespace Reko.Arch.Avr.Avr32
             return mem;
         }
 
-        public static MachineOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage x, int shift)
+        public static MachineOperand Indexed(
+            PrimitiveType dt, 
+            RegisterStorage baseReg, 
+            RegisterStorage x,
+            int shift,
+            RegisterPart part = RegisterPart.All)
         {
             var mem = new MemoryOperand(dt)
             {
                 Base = baseReg,
                 Index = x,
-                Shift = shift
+                Shift = shift,
+                IndexPart = part,
             };
             return mem;
         }
@@ -101,6 +108,10 @@ namespace Reko.Arch.Avr.Avr32
             if (Index != null)
             {
                 renderer.WriteString(Index.Name);
+                if (IndexPart != RegisterPart.All)
+                {
+                    renderer.WriteString(IndexPart.Format());
+                }
                 if (Shift > 0)
                 {
                     renderer.WriteFormat("<<{0}", Shift);

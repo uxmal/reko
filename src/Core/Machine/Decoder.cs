@@ -48,6 +48,23 @@ namespace Reko.Core.Machine
         {
             DumpMaskedInstruction(64, wInstr, shMask, mnemonic.ToString()!);
         }
+
+        public static Decoder<TDasm, TMnemonic, TInstr>[] BuildSparseDecoderArray(int bits, Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+        {
+            var decoders = new Decoder<TDasm, TMnemonic, TInstr>[1 << bits];
+            foreach (var (code, decoder) in sparseDecoders)
+            {
+                Debug.Assert(0 <= code && code < decoders.Length);
+                Debug.Assert(decoders[code] is null, $"Decoder {code:X} has already a value!");
+                decoders[code] = decoder;
+            }
+            for (int i = 0; i < decoders.Length; ++i)
+            {
+                if (decoders[i] is null)
+                    decoders[i] = defaultDecoder;
+            }
+            return decoders;
+        }
     }
 
     /// <summary>

@@ -1167,7 +1167,7 @@ fn00008FF2: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 l00009F1C: warning: Non-integral switch expression
 fn0000ACB0: error: Removing edge (l0000AD24, l0000B67C) caused loss of some code blocks
@@ -1531,7 +1531,8 @@ finish: error: An error occurred while renaming variables.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 169
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 99
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 42
+   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 61
+   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 40
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -1549,6 +1550,7 @@ l0040D5B8: warning: Non-integral switch expression
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
+004300D0: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
 00412060: warning: Expected sizes of arrays to have been determined by now
@@ -1561,6 +1563,7 @@ l0040D5B8: warning: Non-integral switch expression
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
+004300D0: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
 
@@ -1638,6 +1641,7 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1645,6 +1649,7 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -2519,7 +2524,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
@@ -2527,11 +2532,51 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 553
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+00008394: warning: Expected sizes of arrays to have been determined by now
+00009B26: warning: Expected sizes of arrays to have been determined by now
+0000A558: warning: Expected sizes of arrays to have been determined by now
+0000A676: warning: Expected sizes of arrays to have been determined by now
+0000A9CE: warning: Expected sizes of arrays to have been determined by now
+0000ACDC: warning: Expected sizes of arrays to have been determined by now
+0000AF75: warning: Expected sizes of arrays to have been determined by now
+0000C334: warning: Expected sizes of arrays to have been determined by now
+0000DCA7: warning: Expected sizes of arrays to have been determined by now
+0000F8EC: warning: Expected sizes of arrays to have been determined by now
+00010197: warning: Expected sizes of arrays to have been determined by now
+000101E1: warning: Expected sizes of arrays to have been determined by now
+00010436: warning: Expected sizes of arrays to have been determined by now
+000106EB: warning: Expected sizes of arrays to have been determined by now
+00011C5E: warning: Expected sizes of arrays to have been determined by now
+00012763: warning: Expected sizes of arrays to have been determined by now
+000129AE: warning: Expected sizes of arrays to have been determined by now
+00012F53: warning: Expected sizes of arrays to have been determined by now
+00013E94: warning: Expected sizes of arrays to have been determined by now
+00014910: warning: Expected sizes of arrays to have been determined by now
+00008394: warning: Expected sizes of arrays to have been determined by now
+00009B26: warning: Expected sizes of arrays to have been determined by now
+0000A558: warning: Expected sizes of arrays to have been determined by now
+0000A676: warning: Expected sizes of arrays to have been determined by now
+0000A9CE: warning: Expected sizes of arrays to have been determined by now
+0000ACDC: warning: Expected sizes of arrays to have been determined by now
+0000AF75: warning: Expected sizes of arrays to have been determined by now
+0000C334: warning: Expected sizes of arrays to have been determined by now
+0000DCA7: warning: Expected sizes of arrays to have been determined by now
+0000F8EC: warning: Expected sizes of arrays to have been determined by now
+00010197: warning: Expected sizes of arrays to have been determined by now
+000101E1: warning: Expected sizes of arrays to have been determined by now
+00010436: warning: Expected sizes of arrays to have been determined by now
+000106EB: warning: Expected sizes of arrays to have been determined by now
+00011C5E: warning: Expected sizes of arrays to have been determined by now
+00012763: warning: Expected sizes of arrays to have been determined by now
+000129AE: warning: Expected sizes of arrays to have been determined by now
+00012F53: warning: Expected sizes of arrays to have been determined by now
+00013E94: warning: Expected sizes of arrays to have been determined by now
+00014910: warning: Expected sizes of arrays to have been determined by now
 
 === PE\x86\UserDefinedSignatures\UserDefinedSignatures
 Signature of 'Microsoft Visual C++ 8' detected.
@@ -2584,4 +2629,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 75.61 seconds.
+Decompiled 91 binaries in 98.30 seconds.

@@ -21,13 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Avr
 {
@@ -99,6 +93,9 @@ namespace Reko.UnitTests.Arch.Avr
                 "2|L--|VNZC = cond(r0)");
         }
 
+
+
+
         [Test]
         public void Avr32Rw_and()
         {
@@ -132,11 +129,23 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr32Rw_bfexts()
         {
-            Given_HexString("F7D5D3C2");
+            Given_HexString("F7D5B3C2");
             AssertCode(     // bfexts	r11,r5,+0000001E,+00000002
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r11 = SLICE(r5, int2, 30)",
-                "2|L--|NZC = cond(r11)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(r5, int2, 30)",
+                "2|L--|r11 = CONVERT(v4, int2, int32)",
+                "3|L--|NZC = cond(r11)");
+        }
+
+        [Test]
+        public void Avr32Rw_bfins()
+        {
+            Given_HexString("F7D5D3C2");
+            AssertCode(     // bfins	r11,r5,+0000001E,+00000002
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(r5, word2, 0)",
+                "2|L--|r5 = SEQ(v4, SLICE(r5, word30, 0))",
+                "3|L--|NZC = cond(r5)");
         }
 
         [Test]
@@ -207,6 +216,15 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r12 = ~r12",
                 "2|L--|Z = cond(r12)");
+        }
+
+        [Test]
+        public void Avr32Rw_cop()
+        {
+            Given_HexString("E1ACD421");
+            AssertCode(     // cop	06,cr4,cr2,cr1,19
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__coprocessor_operation(6<8>, cr4, cr2, cr1, 0x19<8>)");
         }
 
         [Test]
@@ -332,6 +350,44 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
+        public void Avr32Rw_ldc_w()
+        {
+            Given_HexString("EFA4D421");
+            AssertCode(     // ldc.w	06,cr4,r4[r1<<2]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__load_coprocessor<word32>(6<8>, cr4, &Mem0[r4 + r1 * 4<32>:word32])");
+        }
+
+        [Test]
+        public void Avr32Rw_ldc0_d()
+        {
+            Given_HexString("F3A8D822");
+            AssertCode(     // ldc0.d	cr8,r8[-2936]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__load_coprocessor<word64>(0<8>, cr8, &Mem0[r8 + -2936<i32>:word32])");
+        }
+
+        [Test]
+        public void Avr32Rw_ldc0_w()
+        {
+            Given_HexString("F1A61388");
+            AssertCode(     // ldc0.w	cr3,r6[1568]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__load_coprocessor<word32>(0<8>, cr3, &Mem0[r6 + 1568<i32>:word32])");
+        }
+
+        [Test]
+        public void Avr32Rw_ldcm_d()
+        {
+            Given_HexString("EDA0D421");
+            AssertCode(     // ldcm.d	06,r0++,cr0,cr10
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|__load_coprocessor<word64>(6<8>, cr10, &Mem0[r0 + 0<i32>:word32])",
+                "2|L--|__load_coprocessor<word64>(6<8>, cr0, &Mem0[r0 + 8<i32>:word32])",
+                "3|L--|r0 = r0 + 16<i32>");
+        }
+
+        [Test]
         public void Avr32Rw_lddpc()
         {
             Given_Instruction("4856");	// lddpc	r6,pc[20]
@@ -350,6 +406,26 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
+        public void Avr32Rw_ldins_b()
+        {
+            Given_HexString("F9D56CA8");
+            AssertCode(     // ldins.b	r5:l,r12[-856]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = Mem0[r12 + -856<i32>:byte]",
+                "2|L--|r5 = SEQ(SLICE(r5, word16, 16), v4, SLICE(r5, byte, 0))");
+        }
+
+        [Test]
+        public void Avr32Rw_ldins_h()
+        {
+            Given_HexString("FFD00A9C");
+            AssertCode(     // ldins.h	r0:b,pc[-1380]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = Mem0[pc + -1380<i32>:word16]",
+                "2|L--|r0 = SEQ(SLICE(r0, word16, 16), v4)");
+        }
+
+        [Test]
         public void Avr32Rw_ldm()
         {
             Given_Instruction("E3CD8040");	// ldm	sp++,r6,pc
@@ -358,6 +434,28 @@ namespace Reko.UnitTests.Arch.Avr
                 "1|L--|r6 = Mem0[sp + 4<i32>:word32]",
                 "2|L--|sp = sp + 8<i32>",
                 "3|R--|return (0,0)");
+        }
+
+        [Test]
+        public void Avr32Rw_ldswp_sh()
+        {
+            Given_HexString("E7D62FFD");
+            AssertCode(     // ldswp.sh	r6,r3[-3]
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = Mem0[Mem0[r3 + -3<i32>:int16]:word16]",
+                "2|L--|v5 = CONVERT(v3, word16, int32)",
+                "3|L--|r6 = __swap_bytes(v5)");
+        }
+
+        [Test]
+        public void Avr32Rw_ldswp_uh()
+        {
+            Given_HexString("FFD030A8");
+            AssertCode(     // ldswp.uh	r0,pc[168]
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = Mem0[Mem0[pc + 168<i32>:uint16]:word16]",
+                "2|L--|v5 = CONVERT(v3, word16, word32)",
+                "3|L--|r0 = __swap_bytes(v5)");
         }
 
         [Test]
@@ -388,6 +486,15 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r12 = r12 >>u 21<i32>",
                 "2|L--|NZC = cond(r12)");
+        }
+
+        [Test]
+        public void Avr32Rw_mac()
+        {
+            Given_Instruction("E4030341");	// mac	r1,r2,r3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r1 + r2 * r3");
         }
 
         [Test]
@@ -455,6 +562,15 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
+        public void Avr32Rw_mtdr()
+        {
+            Given_HexString("E7BB5C5C");
+            AssertCode(     // mtdr	0000005C,r11
+                "0|S--|00100000(4): 1 instructions",
+                "1|L--|__write_debug_register(0x5C<u32>, r11)");
+        }
+
+        [Test]
         public void Avr32Rw_mul3()
         {
             Given_Instruction("F60C024C");	// mul	r12,r11,r12
@@ -470,6 +586,17 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(     // muls.d	r4,r11,r8
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5_r4 = r11 *s r8");
+        }
+
+        [Test]
+        public void Avr32Rw_mulsatwh_w()
+        {
+            Given_HexString("FC010E9B");
+            AssertCode(     // mulsatwh.w	r11,lr,r1:t
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v5 = SLICE(r1, word16, 16)",
+                "2|L--|v6 = r11 *64 CONVERT(v5, word16, word32)",
+                "3|L--|r11 = __satmul<word32>(r11, CONVERT(v5, word16, word32))");
         }
 
         [Test]
@@ -542,6 +669,15 @@ namespace Reko.UnitTests.Arch.Avr
                 "4|L--|r4 = Mem0[sp + 16<i32>:word32]",
                 "5|L--|sp = sp + 0x14<32>",
                 "6|R--|return (0,0)");
+        }
+
+        [Test]
+        public void Avr32Rw_pref()
+        {
+            Given_HexString("F21B003F");
+            AssertCode(     // pref	r9[63]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__prefetch_cache_line<byte>(&Mem0[r9 + 63<i32>:byte])");
         }
 
         [Test]
@@ -668,7 +804,7 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
-        public void Avr32Rw_satsub_w()
+        public void Avr32Rw_satsub_w_imm()
         {
             Given_Instruction("F2D00000");	// satsub.w	r0,r9
             AssertCode(
@@ -756,6 +892,16 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
+        public void Avr32Rw_stc_d()
+        {
+            Given_HexString("EBA0D421");
+            AssertCode(     // stc.d	06,r0[264],cr4
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = __read_coprocessor_register<word64>(6<8>, cr4)",
+                "2|L--|Mem0[r0 + 264<i32>:word64] = v5");
+        }
+
+        [Test]
         public void Avr32Rw_stcond()
         {
             Given_Instruction("F9760000");	// stcond	r12[0],r6
@@ -772,6 +918,16 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[sp + 320<i32>:word32] = r0");
+        }
+
+        [Test]
+        public void Avr32Rw_sthh_w()
+        {
+            Given_HexString("FFE8CD8F");
+            AssertCode(     // sthh.w	pc[-160],pc:b,r8:b
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = SEQ(SLICE(pc, word16, 0), SLICE(r8, word16, 0))",
+                "2|L--|Mem0[pc + -160<i32>:word32] = v5");
         }
 
         [Test]
@@ -823,7 +979,7 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
-        public void Avr32Rw_sum3_imm()
+        public void Avr32Rw_sub3_imm()
         {
             Given_Instruction("FECCD140");
             AssertCode(
@@ -841,6 +997,15 @@ namespace Reko.UnitTests.Arch.Avr
                 "1|T--|if (Test(NE,Z)) branch 00100004",
                 "2|L--|r10 = r10",
                 "3|L--|VNZC = cond(r10)");
+        }
+
+        [Test]
+        public void Avr32Rw_sync()
+        {
+            Given_HexString("EBB8D421");
+            AssertCode(     // sync	21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__sync(0x21<8>)");
         }
 
         [Test]

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.TreeMatching;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -181,6 +182,21 @@ namespace Reko.Core.Machine
         }
 
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
+            int p1, int l1, int p2, int l2, 
+            string tag,
+            Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,
+            params (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+        {
+            int totalBits = l1 + l2;
+            var fields = Bf((p1, l1), (p2, l2));
+            var decoders = Decoder<TDasm, TMnemonic, TInstr>.BuildSparseDecoderArray(
+                totalBits,
+                defaultDecoder,
+                sparseDecoders);
+            return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(fields, tag, decoders);
+        }
+
+        public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             Bitfield[] bitfields,
             string tag,
             params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
@@ -282,18 +298,7 @@ namespace Reko.Core.Machine
             params (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
-            var decoders = new Decoder<TDasm, TMnemonic, TInstr>[1 << bits];
-            foreach (var (code, decoder) in sparseDecoders)
-            {
-                Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] is null, $"Decoder {code:X} has already a value!");
-                decoders[code] = decoder;
-            }
-            for (int i = 0; i < decoders.Length; ++i)
-            {
-                if (decoders[i] is null)
-                    decoders[i] = defaultDecoder;
-            }
+            var decoders = Decoder<TDasm, TMnemonic, TInstr>.BuildSparseDecoderArray(bits, defaultDecoder, sparseDecoders);
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
         }
 
