@@ -1105,6 +1105,35 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,6]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
         }
+        /*
+0FFE9EF4 E8 E7 FF FF bg.lhz? r7,-0x2(r7)
+0FFE9EF8 1D 9C E1 bn.addi r12,r28,-0x1F
+0FFE9EFB 0C A3 02 bn.lwz r5,(r3)
+0FFE9EFE 50 80 2B bn.ori r4,r0,0x2B
+0FFE9F01 0C C1 04 bn.sw 0x4(r1),r6
+0FFE9F04 0C E1 00 bn.sw (r1),r7
+0FFE9F07 84 A8 bt.jalr? r5
+0FFE9F09 0C E1 02 bn.lwz r7,(r1)
+0FFE9F0C 0C C1 06 bn.lwz r6,0x4(r1)
+0FFE9F0F E7 FF FF 23 bg.j 0FFE9EA0
+0FFE9F13 9C E1 bt.addi? r7,0x1
+0FFE9F15 0C A3 02 bn.lwz r5,(r3)
+0FFE9F18 50 80 2D bn.ori r4,r0,0x2D
+0FFE9F1B 0C C1 04 bn.sw 0x4(r1),r6
+0FFE9F1E 0C E1 00 bn.sw (r1),r7
+0FFE9F21 84 A8 bt.jalr? r5
+0FFE9F23 0C C1 06 bn.lwz r6,0x4(r1)
+0FFE9F26 0C E1 02 bn.lwz r7,(r1)
+0FFE9F29 E7 FF FE EF bg.j 0FFE9EA0
+0FFE9F2D 88 6B bt.mov? r3,r11
+0FFE9F2F 0C EB 02 bn.lwz r7,(r11)
+0FFE9F32 50 80 2D bn.ori r4,r0,0x2D
+0FFE9F35 84 E8 bt.jalr? r7
+0FFE9F37 E7 FF FE 99 bg.j 0FFE9E83
+0FFE9F3B 0C E3 02 bn.lwz r7,(r3)
+0FFE9F3E 50 80 2D bn.ori r4,r0,0x2D
+0FFE9F41 84 E8 bt.jalr? r7
+        */ 
     }
 
 
