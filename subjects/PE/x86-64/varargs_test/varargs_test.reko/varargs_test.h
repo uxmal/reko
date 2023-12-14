@@ -2638,7 +2638,7 @@ T_474: (in Mem11[rcx + 248<i64>:word64] @ 0000000140001561 : word64)
 T_475: (in rsi_15 @ 0000000140001561 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ULONGLONG
+  OrigDataType: (union (ULONGLONG u0) (DWORD u1))
 T_476: (in 0<u64> @ 0000000140001568 : uint64)
   Class: Eq_476
   DataType: uint64
@@ -4362,7 +4362,7 @@ T_905: (in Mem21[&tLoc04D8 + 248<i64>:word64] @ 00000001400019BF : word64)
 T_906: (in rbx_30 @ 00000001400019BF : Eq_100)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ULONGLONG
+  OrigDataType: (union (ULONGLONG u1))
 T_907: (in RtlLookupFunctionEntry @ 00000001400019D3 : ptr64)
   Class: Eq_907
   DataType: (ptr64 Eq_907)

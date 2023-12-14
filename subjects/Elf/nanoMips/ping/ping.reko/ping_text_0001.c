@@ -160,11 +160,11 @@ l004102C8:
 			if ((r7_n & 0x07) == 0x00 || (r7_n & 0x0F) == 0x04)
 				goto l004102FC;
 l00410336:
-			r7_n.u11->a0000 = r7_n.u11 + 4;
+			r7_n.u11 += 4;
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{
-				r8_n.u3 = (byte) r8_n.u0 + 1;
+				++r8_n.u11;
 				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x0A, 0x01);
 				if (r8_n == 0xFF)
 					r7_n.u0 = 0x00;

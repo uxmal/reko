@@ -780,7 +780,7 @@ T_159: (in 0<64> @ 00000000000008F3 : word64)
 T_160: (in qwLoc10_211 @ 00000000000008F3 : Eq_159)
   Class: Eq_159
   DataType: Eq_159
-  OrigDataType: word64
+  OrigDataType: (union (int64 u0) (uint64 u1))
 T_161: (in 0x400<64> @ 0000000000000947 : word64)
   Class: Eq_159
   DataType: int64
@@ -828,7 +828,7 @@ T_171: (in 0<64> @ 0000000000000949 : word64)
 T_172: (in qwLoc18_217 @ 0000000000000949 : Eq_171)
   Class: Eq_171
   DataType: Eq_171
-  OrigDataType: word64
+  OrigDataType: (union (int64 u0) (uint64 u1))
 T_173: (in 0x400<64> @ 00000000000009A0 : word64)
   Class: Eq_171
   DataType: int64
@@ -989,7 +989,7 @@ T_212: (in 1<64> @ 0000000000000986 : word64)
   Class: Eq_212
   DataType: word64
   OrigDataType: word64
-T_213: (in (word64) qwLoc18_217.u0 + 1<i32> >> 1<64> @ 0000000000000986 : word64)
+T_213: (in (word64) qwLoc18_217 + 1<i32> >> 1<64> @ 0000000000000986 : word64)
   Class: Eq_213
   DataType: uint64
   OrigDataType: uint64
@@ -1005,7 +1005,7 @@ T_216: (in CONVERT(eax_108 & 1<32>, word32, uint64) @ 0000000000000986 : uint64)
   Class: Eq_216
   DataType: uint64
   OrigDataType: uint64
-T_217: (in (word64) qwLoc18_217.u0 + 1<i32> >> 1<64> | (uint64) (eax_108 & 1<32>) @ 0000000000000986 : word64)
+T_217: (in (word64) qwLoc18_217 + 1<i32> >> 1<64> | (uint64) (eax_108 & 1<32>) @ 0000000000000986 : word64)
   Class: Eq_217
   DataType: ui64
   OrigDataType: ui64
@@ -1269,7 +1269,7 @@ T_281: (in 0<u64> @ 0000000000000AA6 : uint64)
 T_282: (in rbx_46 @ 0000000000000AA6 : Eq_281)
   Class: Eq_281
   DataType: Eq_281
-  OrigDataType: word64
+  OrigDataType: uint64
 T_283: (in 8<64> @ 0000000000000AB9 : word64)
   Class: Eq_283
   DataType: ui64

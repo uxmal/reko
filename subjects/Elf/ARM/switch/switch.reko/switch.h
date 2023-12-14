@@ -678,7 +678,7 @@ T_125: (in Mem20[fp_25 + -24<i32>:word32] @ 000084B0 : word32)
 T_126: (in r0_50 @ 000084B0 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: int32
+  OrigDataType: word32
 T_127: (in frobulate @ 000084B4 : ptr32)
   Class: Eq_113
   DataType: (ptr32 Eq_113)
@@ -838,7 +838,7 @@ T_165: (in 1<32> @ 0000858C : word32)
 T_166: (in r3_137 @ 0000858C : Eq_165)
   Class: Eq_165
   DataType: Eq_165
-  OrigDataType: int32
+  OrigDataType: (union (int32 u0) (uint32 u1))
 T_167: (in 0<32> @ 00008590 : word32)
   Class: Eq_100
   DataType: int32
@@ -846,7 +846,7 @@ T_167: (in 0<32> @ 00008590 : word32)
 T_168: (in r2_106 @ 00008590 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: int32
+  OrigDataType: ui32
 T_169: (in r1_104 @ 00008588 : Eq_100)
   Class: Eq_100
   DataType: Eq_100

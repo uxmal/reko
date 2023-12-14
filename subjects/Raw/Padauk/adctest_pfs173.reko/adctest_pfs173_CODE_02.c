@@ -327,7 +327,7 @@ void fn0068(byte f, byte a)
 	fn00CE();
 	__out(0x02, __in(0x02) + ~0x01);
 	*(byte *) 0x0A = g_b0006;
-	&((union Eq_n *) 11)->u1->t0000.u0 = g_t0007.u1;
+	((union Eq_n *) 11)->u1 = g_t0007.u1;
 	*(byte *) 0x0C = *(byte *) 0x08;
 	*(union Eq_n *) 0x0D = *(union Eq_n *) 0x09;
 	null = (union Eq_n *) (__in(0x02) + ~0x00);
@@ -360,7 +360,7 @@ void fn0068(byte f, byte a)
 		sp_n->b0000 = f_n;
 		byte a_n = __in(0x02);
 		Eq_n v16_n;
-		&v16_n.u1->t0000.u0 = null;
+		v16_n.u1 = null;
 		null = (union Eq_n *) (a_n + ~0x00);
 		null->u1 = (struct Eq_n *) v16_n;
 		sp_n->b0001 = 0x13;
@@ -704,10 +704,10 @@ void fn00CE()
 			g_t00B7.u1 = (struct Eq_n *) (g_t00B7.u1 >> 0x01);
 		ui16 v36_n = *(union Eq_n *) 0x0E << 0x01;
 		Eq_n a_n;
-		&a_n.u1->t0000.u0 = g_t00B7.u1;
+		a_n.u1 = g_t00B7.u1;
 		*(union Eq_n *) 0x0E = (byte) v36_n;
 		Eq_n v9_n;
-		&v9_n.u1->t0000.u0 = SLICE(v36_n, byte, 8);
+		v9_n.u1 = SLICE(v36_n, byte, 8);
 		*(union Eq_n *) 0x0F = v9_n;
 		Eq_n v10_n = __rcl<byte,byte>(g_t0010.u1, 0x01, cond(v9_n));
 		g_t0010.u1 = (struct Eq_n *) v10_n;
@@ -715,7 +715,7 @@ void fn00CE()
 		ui16 v39_n = g_t00B3.u0 << 0x01;
 		g_t00B3.u1 = (struct Eq_n *) (byte) v39_n;
 		Eq_n v13_n;
-		&v13_n.u1->t0000.u0 = SLICE(v39_n, byte, 8);
+		v13_n.u1 = SLICE(v39_n, byte, 8);
 		g_t00B4.u1 = (struct Eq_n *) v13_n;
 		Eq_n v14_n = __rcl<byte,byte>(g_t00B5.u1, 0x01, cond(v13_n));
 		g_t00B5.u1 = (struct Eq_n *) v14_n;
@@ -861,7 +861,7 @@ void fn0195()
 		ui16 v20_n = g_t00B3.u0 << 0x01;
 		g_t00B3.u1 = (struct Eq_n *) (byte) v20_n;
 		Eq_n v11_n;
-		&v11_n.u1->t0000.u0 = SLICE(v20_n, byte, 8);
+		v11_n.u1 = SLICE(v20_n, byte, 8);
 		g_t00B4.u1 = (struct Eq_n *) v11_n;
 		Eq_n v12_n = __rcl<byte,byte>(g_t00B5.u1, 0x01, cond(v11_n));
 		g_t00B5.u1 = (struct Eq_n *) v12_n;
@@ -902,12 +902,12 @@ l01D1:
 		sp_n->t0000.u1 = (struct Eq_n *) fn059D(g_t003D.u1);
 		sp_n->b0001 = f;
 		Eq_n a_n;
-		&a_n.u1->t0000.u0 = g_t003C.u1;
-		g_t0032.u1 = (struct Eq_n *) ((char *) &a_n.u1->t0000 + 1);
+		a_n.u1 = g_t003C.u1;
+		g_t0032.u1 = (struct Eq_n *) ((word16) a_n + 1);
 		g_t0033.u1 = SLICE((char *) &&(g_t003D.u1->*((g_t003D.u1->*a_n.u1).t0000).u0) + 1, byte, 8);
 		f = sp_n->b0001;
 		Eq_n a_n;
-		&a_n.u1->t0000.u0 = sp_n->t0000.u1;
+		a_n.u1 = sp_n->t0000.u1;
 		g_t003E.u1 = (struct Eq_n *) a_n;
 		if (a_n == 0x00)
 			break;
@@ -952,12 +952,12 @@ l01D1:
 						g_t00A9.u1 = g_t004A.u1;
 						g_t00AA.u1 = g_t004B.u1;
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
+						a_n.u1 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
 						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
+						a_n.u1 = sp_n->t0000.u1;
 						f = sp_n->b0001;
 						g_t004A.u1 = (struct Eq_n *) (a_n - 0x30);
 						g_t004B.u1 = SLICE(&&(null->*((null->*a_n.u1).t0000).u0) - 0x30, byte, 8);
@@ -969,12 +969,12 @@ l01D1:
 						g_t00A9.u1 = g_t0048.u1;
 						g_t00AA.u1 = g_t0049.u1;
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
+						a_n.u1 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
 						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
 						Eq_n a_n;
-						&a_n.u1->t0000.u0 = sp_n->t0000.u1;
+						a_n.u1 = sp_n->t0000.u1;
 						f = sp_n->b0001;
 						g_t0048.u1 = (struct Eq_n *) (a_n - 0x30);
 						g_t0049.u1 = SLICE(&&(null->*((null->*a_n.u1).t0000).u0) - 0x30, byte, 8);
@@ -1018,34 +1018,34 @@ l01D1:
 						if (g_b0044 == 0x00)
 						{
 							Eq_n a_n;
-							&a_n.u1->t0000.u0 = g_t0034.u1;
+							a_n.u1 = g_t0034.u1;
 							null = (union Eq_n *) (a_n - 0x02);
 							Eq_n a_n;
-							&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
+							a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
 							g_t0035.u1 = (struct Eq_n *) a_n;
 							Eq_n v16_n;
-							&v16_n.u1->t0000.u0 = null;
+							v16_n.u1 = null;
 							null = (union Eq_n *) a_n;
 							g_t0034.u1 = (struct Eq_n *) v16_n;
 							Eq_n v17_n;
-							&v17_n.u1->t0000.u0 = null;
+							v17_n.u1 = null;
 							null = (union Eq_n *) v16_n;
 							a_n = fn059D(v17_n);
 						}
 						else
 						{
 							Eq_n a_n;
-							&a_n.u1->t0000.u0 = g_t0034.u1;
+							a_n.u1 = g_t0034.u1;
 							null = (union Eq_n *) (a_n - 0x01);
 							Eq_n a_n;
-							&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x01, byte, 8);
+							a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x01, byte, 8);
 							g_t0035.u1 = (struct Eq_n *) a_n;
 							Eq_n v18_n;
-							&v18_n.u1->t0000.u0 = null;
+							v18_n.u1 = null;
 							null = (union Eq_n *) a_n;
 							g_t0034.u1 = (struct Eq_n *) v18_n;
 							Eq_n v19_n;
-							&v19_n.u1->t0000.u0 = null;
+							v19_n.u1 = null;
 							null = (union Eq_n *) v18_n;
 							a_n = fn059D(v19_n);
 						}
@@ -1076,17 +1076,17 @@ l01D1:
 							else if (g_t004E.u1 == 0x50)
 							{
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = g_t0034.u1;
+								a_n.u1 = g_t0034.u1;
 								null = (union Eq_n *) (a_n - 0x02);
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
+								a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
 								g_t0035.u1 = (struct Eq_n *) a_n;
 								Eq_n v66_n;
-								&v66_n.u1->t0000.u0 = null;
+								v66_n.u1 = null;
 								null = (union Eq_n *) a_n;
 								g_t0034.u1 = (struct Eq_n *) v66_n;
 								Eq_n v67_n;
-								&v67_n.u1->t0000.u0 = null;
+								v67_n.u1 = null;
 								null = (union Eq_n *) v66_n;
 								g_t0023.u1 = (struct Eq_n *) fn05C0(v67_n);
 								g_t0024.u1 = (struct Eq_n *) null;
@@ -1102,17 +1102,17 @@ l01D1:
 							else if (g_t004E.u1 == 0x53)
 							{
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = g_t0034.u1;
+								a_n.u1 = g_t0034.u1;
 								null = (union Eq_n *) (a_n - 0x02);
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
+								a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
 								g_t0035.u1 = (struct Eq_n *) a_n;
 								Eq_n v68_n;
-								&v68_n.u1->t0000.u0 = null;
+								v68_n.u1 = null;
 								null = (union Eq_n *) a_n;
 								g_t0034.u1 = (struct Eq_n *) v68_n;
 								Eq_n v69_n;
-								&v69_n.u1->t0000.u0 = null;
+								v69_n.u1 = null;
 								null = (union Eq_n *) v68_n;
 								Eq_n a_n = fn05C0(v69_n);
 								g_t0023.u1 = (struct Eq_n *) a_n;
@@ -1136,7 +1136,7 @@ l01D1:
 									{
 										null = (union Eq_n *) g_t0052.u1;
 										Eq_n a_n;
-										&a_n.u1->t0000.u0 = g_t0051.u1;
+										a_n.u1 = g_t0051.u1;
 										g_t0051.u0 = (uint16) (g_t0051.u0 - 0x01);
 										if ((a_n | null) == 0x00)
 											break;
@@ -1166,11 +1166,11 @@ l01D1:
 									sp_n->b0001 = f;
 									null = (union Eq_n *) g_t0024.u1;
 									Eq_n a_n;
-									&a_n.u1->t0000.u0 = sp_n->t0000.u1;
+									a_n.u1 = sp_n->t0000.u1;
 									f = sp_n->b0001;
 									Eq_n v80_n;
-									&v80_n.u1->t0000.u0 = null;
-									null = (union Eq_n *) ((char *) &a_n.u1->t0000 + 1);
+									v80_n.u1 = null;
+									null = (word16) a_n + 1;
 									g_t0024.u1 = SLICE(SEQ(v80_n, a_n) + 0x01, byte, 8);
 									g_t0023.u1 = (struct Eq_n *) null;
 								}
@@ -1181,7 +1181,7 @@ l01D1:
 									{
 										null = (union Eq_n *) g_t0057.u1;
 										Eq_n a_n;
-										&a_n.u1->t0000.u0 = g_t0056.u1;
+										a_n.u1 = g_t0056.u1;
 										g_t0056.u0 = (uint16) (g_t0056.u0 - 0x01);
 										if ((a_n | null) == 0x00)
 											break;
@@ -1218,21 +1218,21 @@ l0371:
 										if (g_b0045 == 0x00)
 										{
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = g_t0034.u1;
+											a_n.u1 = g_t0034.u1;
 											null = (union Eq_n *) (a_n - 0x02);
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
+											a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x02, byte, 8);
 											g_t0035.u1 = (struct Eq_n *) a_n;
 											Eq_n v22_n;
-											&v22_n.u1->t0000.u0 = null;
+											v22_n.u1 = null;
 											null = (union Eq_n *) a_n;
 											g_t0034.u1 = (struct Eq_n *) v22_n;
 											Eq_n v23_n;
-											&v23_n.u1->t0000.u0 = null;
+											v23_n.u1 = null;
 											null = (union Eq_n *) v22_n;
 											g_t0072.u1 = (struct Eq_n *) fn05C0(v23_n);
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = null;
+											a_n.u1 = null;
 											g_t0073.u1 = (struct Eq_n *) a_n;
 											Eq_n a_n = 0x00 - (byte) (a_n << 0x01 < 0x00);
 											g_t0074.u1 = (struct Eq_n *) a_n;
@@ -1260,33 +1260,33 @@ l0371:
 										else
 										{
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = g_t0034.u1;
+											a_n.u1 = g_t0034.u1;
 											null = (union Eq_n *) (a_n - 0x04);
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x04, byte, 8);
+											a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x04, byte, 8);
 											g_t0035.u1 = (struct Eq_n *) a_n;
 											Eq_n v25_n;
-											&v25_n.u1->t0000.u0 = null;
+											v25_n.u1 = null;
 											null = (union Eq_n *) a_n;
 											g_t0034.u1 = (struct Eq_n *) v25_n;
 											Eq_n v26_n;
-											&v26_n.u1->t0000.u0 = null;
+											v26_n.u1 = null;
 											null = (union Eq_n *) v25_n;
 											g_t006D.u1 = (struct Eq_n *) v26_n;
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = null;
+											a_n.u1 = null;
 											g_t006C.u1 = (struct Eq_n *) a_n;
 											null = (union Eq_n *) a_n;
 											g_t006E.u1 = (struct Eq_n *) fn05C0(g_t006D.u1);
 											g_t006F.u1 = (struct Eq_n *) null;
 											null = (union Eq_n *) g_t006C.u1;
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = g_t006D.u1;
+											a_n.u1 = g_t006D.u1;
 											Eq_n v27_n;
-											&v27_n.u1->t0000.u0 = (char *) null + 1;
+											v27_n.u1 = (char *) null + 1;
 											null = (union Eq_n *) v27_n;
 											Eq_n v28_n;
-											&v28_n.u1->t0000.u0 = (char *) null + 1;
+											v28_n.u1 = (char *) null + 1;
 											null = (union Eq_n *) v28_n;
 											g_t0070.u1 = (struct Eq_n *) fn05C0((char *) &a_n.u1->t0000.u0 + (byte) (v27_n < 0x00) + (byte) (v28_n < 0x00));
 											g_t0071.u1 = (struct Eq_n *) null;
@@ -1299,17 +1299,17 @@ l0371:
 									else
 									{
 										Eq_n a_n;
-										&a_n.u1->t0000.u0 = g_t0034.u1;
+										a_n.u1 = g_t0034.u1;
 										null = (union Eq_n *) (a_n - 0x01);
 										Eq_n a_n;
-										&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x01, byte, 8);
+										a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x01, byte, 8);
 										g_t0035.u1 = (struct Eq_n *) a_n;
 										Eq_n v20_n;
-										&v20_n.u1->t0000.u0 = null;
+										v20_n.u1 = null;
 										null = (union Eq_n *) a_n;
 										g_t0034.u1 = (struct Eq_n *) v20_n;
 										Eq_n v21_n;
-										&v21_n.u1->t0000.u0 = null;
+										v21_n.u1 = null;
 										null = (union Eq_n *) v20_n;
 										g_t0060.u1 = (struct Eq_n *) fn059D(v21_n);
 										g_t0061.u1 = (struct Eq_n *) 0x00;
@@ -1374,7 +1374,7 @@ l0371:
 										{
 											null = (union Eq_n *) g_t0027.u1;
 											Eq_n v29_n;
-											&v29_n.u1->t0000.u0 = null;
+											v29_n.u1 = null;
 											null = (union Eq_n *) g_t008B.u1;
 											null->u1 = (struct Eq_n *) v29_n;
 										}
@@ -1389,7 +1389,7 @@ l0371:
 											null = (union Eq_n *) g_t008B.u1;
 											null = (union Eq_n *) (fn059D(g_t008C.u1) | g_b0090);
 											Eq_n v38_n;
-											&v38_n.u1->t0000.u0 = null;
+											v38_n.u1 = null;
 											null = (union Eq_n *) g_t008B.u1;
 											null->u1 = (struct Eq_n *) v38_n;
 											g_t008B.u0 = (uint16) (g_t008B.u0 - 0x01);
@@ -1526,7 +1526,7 @@ l0371:
 										{
 											null = (union Eq_n *) g_t00A6.u1;
 											Eq_n a_n;
-											&a_n.u1->t0000.u0 = g_t00A5.u1;
+											a_n.u1 = g_t00A5.u1;
 											g_t00A5.u0 = (uint16) (g_t00A5.u0 - 0x01);
 											if ((a_n | null) == 0x00)
 												break;
@@ -1539,33 +1539,33 @@ l0371:
 							else
 							{
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = g_t0034.u1;
+								a_n.u1 = g_t0034.u1;
 								null = (union Eq_n *) (a_n - 0x04);
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x04, byte, 8);
+								a_n.u1 = SLICE(&&(g_t0035.u1->*((g_t0035.u1->*a_n.u1).t0000).u0) - 0x04, byte, 8);
 								g_t0035.u1 = (struct Eq_n *) a_n;
 								Eq_n v42_n;
-								&v42_n.u1->t0000.u0 = null;
+								v42_n.u1 = null;
 								null = (union Eq_n *) a_n;
 								g_t0034.u1 = (struct Eq_n *) v42_n;
 								Eq_n v43_n;
-								&v43_n.u1->t0000.u0 = null;
+								v43_n.u1 = null;
 								null = (union Eq_n *) v42_n;
 								g_t0059.u1 = (struct Eq_n *) v43_n;
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = null;
+								a_n.u1 = null;
 								g_t0058.u1 = (struct Eq_n *) a_n;
 								null = (union Eq_n *) a_n;
 								g_t005A.u1 = (struct Eq_n *) fn05C0(g_t0059.u1);
 								g_t005B.u1 = (struct Eq_n *) null;
 								null = (union Eq_n *) g_t0058.u1;
 								Eq_n a_n;
-								&a_n.u1->t0000.u0 = g_t0059.u1;
+								a_n.u1 = g_t0059.u1;
 								Eq_n v44_n;
-								&v44_n.u1->t0000.u0 = (char *) null + 1;
+								v44_n.u1 = (char *) null + 1;
 								null = (union Eq_n *) v44_n;
 								Eq_n v45_n;
-								&v45_n.u1->t0000.u0 = (char *) null + 1;
+								v45_n.u1 = (char *) null + 1;
 								null = (union Eq_n *) v45_n;
 								g_t005C.u1 = (struct Eq_n *) fn05C0((char *) &a_n.u1->t0000.u0 + (byte) (v44_n < 0x00) + (byte) (v45_n < 0x00));
 								g_t005D.u1 = (struct Eq_n *) null;
@@ -1580,8 +1580,8 @@ l0371:
 									g_t005E.u1 = g_t0023.u1;
 									g_t005F.u1 = g_t0024.u1;
 									Eq_n a_n;
-									&a_n.u1->t0000.u0 = g_t005E.u1;
-									null = (union Eq_n *) ((char *) &a_n.u1->t0000 + 1);
+									a_n.u1 = g_t005E.u1;
+									null = (word16) a_n + 1;
 									g_t0024.u1 = SLICE((char *) &&(g_t005F.u1->*((g_t005F.u1->*a_n.u1).t0000).u0) + 1, byte, 8);
 									g_t0023.u1 = (struct Eq_n *) null;
 									null = (union Eq_n *) g_t005E.u1;
@@ -1623,7 +1623,7 @@ Eq_n fn056C()
 	g_t00B2.u1 = g_t00A9.u1;
 	g_t00AB.u1 = (struct Eq_n *) fn05A9();
 	Eq_n a_n;
-	&a_n.u1->t0000.u0 = null;
+	a_n.u1 = null;
 	g_t00AC.u1 = (struct Eq_n *) a_n;
 	g_t00AD.u1 = (struct Eq_n *) a_n;
 	g_b00B1 = g_b00A7;
@@ -1634,7 +1634,7 @@ Eq_n fn056C()
 	Mem39[0x00AC<p16>:byte] = fn05A9() + Mem30[0x00AE<p16>:byte] + Mem30[0x00AD<p16>:byte];
 	null = (union Eq_n *) g_t00AB.u1;
 	Eq_n v6_n;
-	&v6_n.u1->t0000.u0 = null;
+	v6_n.u1 = null;
 	null = (union Eq_n *) g_t00AC.u1;
 	return v6_n;
 }
@@ -1673,7 +1673,7 @@ Eq_n fn059D(Eq_n a)
 	null = (union Eq_n *) (a - 0x80);
 	byte a_n = __in(0x02);
 	Eq_n v10_n;
-	&v10_n.u1->t0000.u0 = null;
+	v10_n.u1 = null;
 	null = (union Eq_n *) (a_n + ~0x00);
 	null->u1 = (struct Eq_n *) v10_n;
 	return v10_n;
@@ -1709,7 +1709,7 @@ Eq_n fn05C0(Eq_n a)
 	if (__in_bit(0x00, 0x01))
 	{
 		Eq_n a_n;
-		&a_n.u1->t0000.u0 = null->u1;
+		a_n.u1 = null->u1;
 		null = (union Eq_n *) ((char *) null + 1);
 		null = (union Eq_n *) null->u1;
 		return a_n;
@@ -1730,14 +1730,14 @@ Eq_n fn05CF()
 {
 	uint8 a_n = __in(0x02);
 	Eq_n v7_n;
-	&v7_n.u1->t0000.u0 = null;
+	v7_n.u1 = null;
 	null = (union Eq_n *) (a_n + ~0x04);
 	null->u1 = (struct Eq_n *) v7_n;
 	Eq_n v11_n;
-	&v11_n.u1->t0000.u0 = null;
+	v11_n.u1 = null;
 	null = (union Eq_n *) SLICE(a_n + 0xFB, byte, 8);
 	Eq_n v12_n;
-	&v12_n.u1->t0000.u0 = null;
+	v12_n.u1 = null;
 	null = (word16) v11_n + 4;
 	null->u1 = (struct Eq_n *) v12_n;
 	return v12_n;

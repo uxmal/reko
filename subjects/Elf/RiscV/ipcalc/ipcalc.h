@@ -4054,7 +4054,7 @@ T_19: (in Mem5[gp + -1936<i64>:word64] @ 0000000000015188 : word64)
 T_20: (in a5_7 @ 0000000000015188 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_21: (in 0<32> @ 00000000000151D8 : word32)
   Class: Eq_21
   DataType: word32
@@ -7197,7 +7197,7 @@ T_794: (in Mem571[&tLoc0188 + 64<i64>:word64] @ 00000000000157BC : word64)
 T_795: (in a5_1245 @ 00000000000157BC : Eq_560)
   Class: Eq_560
   DataType: Eq_560
-  OrigDataType: int64
+  OrigDataType: word64
 T_796: (in 0<64> @ 00000000000157C0 : word64)
   Class: Eq_560
   DataType: int64
@@ -7577,7 +7577,7 @@ T_889: (in CONVERT(Mem571[&qwLoc01A8 + 4<i64>:int32], int32, int64) @ 0000000000
 T_890: (in a5_1191 @ 000000000001578C : Eq_560)
   Class: Eq_560
   DataType: Eq_560
-  OrigDataType: int64
+  OrigDataType: (union (int64 u0) (up64 u1))
 T_891: (in 0<64> @ 0000000000015790 : word64)
   Class: Eq_560
   DataType: int64
@@ -11941,7 +11941,7 @@ T_1980: (in Mem25[gp + -1936<i64>:word64] @ 00000000000163E0 : word64)
 T_1981: (in a5_27 @ 00000000000163E0 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_1982: (in __sprintf_chk @ 0000000000016414 : ptr64)
   Class: Eq_1982
   DataType: (ptr64 Eq_1982)
@@ -12253,7 +12253,7 @@ T_2058: (in CONVERT(open("/dev/urandom", 0<i32>), int32, uint64) @ 0000000000016
 T_2059: (in a0_19 @ 00000000000164F8 : Eq_2058)
   Class: Eq_2058
   DataType: Eq_2058
-  OrigDataType: uint64
+  OrigDataType: (union (int64 u1) (uint64 u0))
 T_2060: (in 0<64> @ 00000000000164FC : word64)
   Class: Eq_2058
   DataType: int64
@@ -12381,7 +12381,7 @@ T_2090: (in Mem5[gp + -1936<i64>:word64] @ 0000000000016554 : word64)
 T_2091: (in t3_7 @ 0000000000016554 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2092: (in __vasprintf_chk @ 00000000000165A0 : ptr64)
   Class: Eq_2092
   DataType: (ptr64 Eq_2092)
@@ -12453,7 +12453,7 @@ T_2108: (in Mem36[gp_39 + -1936<i64>:word64] @ 00000000000165DC : word64)
 T_2109: (in a5_82 @ 00000000000165DC : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2110: (in t3_7 != a5_82 @ 00000000000165E0 : bool)
   Class: Eq_2110
   DataType: bool
@@ -12741,7 +12741,7 @@ T_2180: (in Mem5[gp + -1936<i64>:word64] @ 0000000000016638 : word64)
 T_2181: (in a5_7 @ 0000000000016638 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2182: (in __errno_location @ 000000000001665C : ptr64)
   Class: Eq_2182
   DataType: (ptr64 Eq_2182)
@@ -12969,7 +12969,7 @@ T_2237: (in Mem5[gp + -1936<i64>:word64] @ 00000000000166FC : word64)
 T_2238: (in a5_7 @ 00000000000166FC : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2239: (in 0<64> @ 0000000000016704 : word64)
   Class: Eq_2239
   DataType: word64
@@ -13533,7 +13533,7 @@ T_2378: (in Mem5[gp + -1936<i64>:word64] @ 0000000000016838 : word64)
 T_2379: (in a5_7 @ 0000000000016838 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2380: (in 0<32> @ 0000000000016840 : word32)
   Class: Eq_2380
   DataType: word32
@@ -13565,7 +13565,7 @@ T_2386: (in Mem23[gp + -1936<i64>:word64] @ 0000000000016868 : word64)
 T_2387: (in a5_26 @ 0000000000016868 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2388: (in CONVERT(dwLoc20_33, word32, int64) @ 000000000001686C : int64)
   Class: Eq_35
   DataType: (ptr64 char)
@@ -13709,7 +13709,7 @@ T_2422: (in Mem5[gp + -1936<i64>:word64] @ 00000000000168EC : word64)
 T_2423: (in a4_7 @ 00000000000168EC : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2424: (in 2<i64> @ 0000000000016904 : int64)
   Class: Eq_2417
   DataType: (ptr64 char)
@@ -14273,7 +14273,7 @@ T_2563: (in Mem5[gp + -1936<i64>:word64] @ 00000000000169E0 : word64)
 T_2564: (in a5_7 @ 00000000000169E0 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2565: (in 0<64> @ 00000000000169E8 : word64)
   Class: Eq_2565
   DataType: word64
@@ -15349,7 +15349,7 @@ T_2830: (in Mem5[gp + -1936<i64>:word64] @ 0000000000016D7C : word64)
 T_2831: (in a5_7 @ 0000000000016D7C : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_2832: (in memset @ 0000000000016DC4 : ptr64)
   Class: Eq_2832
   DataType: (ptr64 Eq_2832)
@@ -18173,7 +18173,7 @@ T_3536: (in Mem5[gp + -1936<i64>:word64] @ 0000000000017314 : word64)
 T_3537: (in a4_7 @ 0000000000017314 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_3538: (in 128<i64> @ 0000000000017328 : int64)
   Class: Eq_35
   DataType: (ptr64 char)
@@ -18941,7 +18941,7 @@ T_3728: (in Mem5[gp + -1936<i64>:word64] @ 00000000000175C4 : word64)
 T_3729: (in a5_7 @ 00000000000175C4 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_3730: (in memset @ 0000000000017610 : ptr64)
   Class: Eq_3730
   DataType: (ptr64 Eq_3730)
@@ -21149,7 +21149,7 @@ T_4280: (in Mem95[0x12B50<64>:word64] @ 0000000000017AD4 : word64)
 T_4281: (in a6 @ 0000000000017AD4 : Eq_147)
   Class: Eq_147
   DataType: Eq_147
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_4282: (in 0x12B58<64> @ 0000000000017AD8 : word64)
   Class: Eq_4282
   DataType: (ptr64 word64)
@@ -22717,7 +22717,7 @@ T_4672: (in Mem5[gp + -1936<i64>:word64] @ 0000000000017F0C : word64)
 T_4673: (in a5_7 @ 0000000000017F0C : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_4674: (in 0<64> @ 0000000000017F3C : word64)
   Class: Eq_4674
   DataType: word64
@@ -23417,7 +23417,7 @@ T_4847: (in Mem5[gp + -1936<i64>:word64] @ 0000000000018120 : word64)
 T_4848: (in a5_7 @ 0000000000018120 : Eq_19)
   Class: Eq_19
   DataType: Eq_19
-  OrigDataType: int64
+  OrigDataType: word64
 T_4849: (in 3<i64> @ 0000000000018128 : int64)
   Class: Eq_4849
   DataType: int64

@@ -293,7 +293,7 @@ l04EE:
 							if (r0_n == r2_n[0x06DC])
 							{
 l0524:
-								&r0_n.u1->t0000.u0 = r2_n[0x06D6];
+								r0_n.u1 = r2_n[0x06D6];
 								word16 r1_n;
 								for (r1_n = 0x08; r1_n != 0x00; --r1_n)
 								{
@@ -343,7 +343,7 @@ l0524:
 											r0_n = fn0AB6(r0_n, r4_n, out r4, out r5_n);
 										}
 									}
-									&r0_n.u1->t0000.u0 = (word32) r0_n + 2;
+									r0_n.u1 = (word32) r0_n + 2;
 								}
 								break;
 							}
@@ -404,11 +404,11 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 		ui16 r0_n = fn0A94();
 		ui16 r3_n = __rcl<word16,byte>(__rcl<word16,byte>(0x00, 0x01, (bool) cond(r0_n << 1)), 0x01, (bool) cond(r0_n << 2));
 		Eq_n r0_n;
-		&r0_n.u1->t0000.u0 = g_a0F2A[r3_n];
+		r0_n.u1 = g_a0F2A[r3_n];
 		Eq_n v28_n = g_t0F0E.u0 >> 1;
 		g_t0F0E.u0 = (int16) v28_n;
 		if (v28_n >= 0x00)
-			&r0_n.u1->t0000.u0 = (word32) r0_n + 200;
+			r0_n.u1 = (word32) r0_n + 200;
 		g_w0B58 = &r0_n.u1->t0000.u0 + g_w0B58;
 		Eq_n r0_n = fn0AB6(r0_n, r4_n, out r4_n, out r5_n);
 		bool Z_n = fn0AE8(r0_n, r4_n, &g_ptr0624, out r0_n, out r4_n, out r5_n);
@@ -534,7 +534,7 @@ byte * fn06D6(byte * r4)
 			if (v13_n == 0x00 && (r2_n[0x0EEC] <= 0x00 || g_w0EF4 == g_w0EF4))
 				goto l07A0;
 			Eq_n r0_n;
-			&r0_n.u1->t0000.u0 = (int16) r2_n[0x0EE9];
+			r0_n.u1 = (int16) r2_n[0x0EE9];
 			Eq_n r0_n;
 			word16 r5_n;
 			if (r2_n[0x0EEC] >= 0x00)
@@ -552,7 +552,7 @@ byte * fn06D6(byte * r4)
 			r2_n[0x0EE9] = (struct Eq_n) ((byte) r2_n[0x0EE9] + 1);
 			struct Eq_n * sp_n = fp - 0x01;
 			Eq_n r0_n;
-			&r0_n.u1->t0000.u0 = (word32) r0_n + 1;
+			r0_n.u1 = (word32) r0_n + 1;
 			if (r0_n != 0x19)
 			{
 				if (r0_n != 0x18)
@@ -613,7 +613,7 @@ Eq_n fn07A6(byte * r4, byte & r4Out)
 		do
 		{
 			struct Eq_n * r2_n = g_ptr0F1A;
-			&r0.u1->t0000.u0 = r2_n->t0DB8.u1;
+			r0.u1 = r2_n->t0DB8.u1;
 			if (r0 != 0x00)
 			{
 				if (g_w0EFC != 0x00)
@@ -636,7 +636,7 @@ Eq_n fn07A6(byte * r4, byte & r4Out)
 						++r1_n;
 					}
 					r2_n->t0DB8.u1 = (struct Eq_n *) ((char *) &r2_n->t0DB8.u1->t0000 + 1);
-					&r0.u1->t0000.u0 = (word32) r0 + 1;
+					r0.u1 = (word32) r0 + 1;
 				}
 				struct Eq_n * r1_n = r2_n->ptr0DAC;
 				cui16 r3_n;
@@ -738,10 +738,10 @@ l08B2:
 					do
 					{
 						r0_n -= 0x02;
-						r3_n = Mem316[r0_n + 0x00:word16] + r1_n;
+						r3_n = (ci16 *) ((char *) r1_n + ((r0_n.u1)->t0000).u1);
 					} while (*r3_n <= 0x00);
 					r2_n[0x0EE6] = (struct Eq_n) (*r3_n + 0x02);
-					r2_n[0x0EE9] = (struct Eq_n) *((byte) r0_n.u0 + 0x0C);
+					r2_n[0x0EE9] = (struct Eq_n) r0_n.u1[6];
 					r2_n[0x0EEC] = (struct Eq_n) 0x80;
 					if (r0_n != 3500)
 					{
@@ -1152,7 +1152,7 @@ word16 fn0C20()
 	{
 		*r1_n = (word16) r2_n;
 		++r1_n;
-		r2_n.u0 = (byte) r2_n.u0 + 2;
+		r2_n.u1 = (word32) r2_n + 2;
 	}
 	struct Eq_n * r1_n = null;
 	word16 r0_n;

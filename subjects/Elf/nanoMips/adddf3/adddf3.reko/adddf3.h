@@ -185,7 +185,7 @@ Eq_2: (union "Eq_2" (int32 u0) (uint32 u1))
 	T_591 (in r6_385 + (r4 << 3<32>) @ 0804D156 : word32)
 	T_592 (in r6_412 @ 0804D156 : Eq_2)
 	T_593 (in r4 << 3<32> @ 0804D162 : word32)
-	T_597 (in (word32) (r6_412 < r4 << 3<32>) + ((word32) r8_12 + r7_396) @ 0804D162 : word32)
+	T_597 (in (word32) (r6_412 < r4 << 3<32>) + ((word32) r8_12.u1 + r7_396) @ 0804D162 : word32)
 	T_599 (in r13_11 + 1<32> @ 0804D240 : word32)
 	T_605 (in 0<32> @ 0804D196 : word32)
 	T_607 (in 0x7FF<32> @ 0804D202 : word32)
@@ -392,7 +392,7 @@ T_34: (in r4 >> 0x1D<32> | r10_5 << 3<32> @ 0804D014 : word32)
 T_35: (in r8_12 @ 0804D014 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: int32
+  OrigDataType: uint32
 T_36: (in 0x1F<32> @ 0804D018 : word32)
   Class: Eq_36
   DataType: word32
@@ -416,7 +416,7 @@ T_40: (in r5 >> 0x1F<32> @ 0804D020 : word32)
 T_41: (in r5_133 @ 0804D020 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: int32
+  OrigDataType: (union (int32 u1) (uint32 u0))
 T_42: (in 3<32> @ 0804D02C : word32)
   Class: Eq_42
   DataType: word32
@@ -428,7 +428,7 @@ T_43: (in r4 << 3<32> @ 0804D02C : word32)
 T_44: (in r12_116 @ 0804D02C : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: int32
+  OrigDataType: uint32
 T_45: (in 0x1D<32> @ 0804D030 : word32)
   Class: Eq_45
   DataType: word32
@@ -548,7 +548,7 @@ T_73: (in r11_22 + 0xFFFFFFFF<32> @ 0804D0B4 : word32)
 T_74: (in r7_371 @ 0804D0B4 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: word32
+  OrigDataType: int32
 T_75: (in 1<32> @ 0804D0B8 : word32)
   Class: Eq_2
   DataType: int32
@@ -640,7 +640,7 @@ T_96: (in r8_12 >> 3<32> @ 0804D088 : word32)
 T_97: (in r8_507 @ 0804D088 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: int32
+  OrigDataType: uint32
 T_98: (in 0x7FF<32> @ 0804D08C : word32)
   Class: Eq_2
   DataType: int32
@@ -764,7 +764,7 @@ T_127: (in r11_22 + 0xFFFFFFFF<32> @ 0804D316 : word32)
 T_128: (in r7_151 @ 0804D316 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: word32
+  OrigDataType: int32
 T_129: (in 1<32> @ 0804D31A : word32)
   Class: Eq_2
   DataType: int32
@@ -2288,7 +2288,7 @@ T_508: (in r12_116 + 4<32> @ 0804D28A : word32)
 T_509: (in r6_472 @ 0804D28A : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: word32
+  OrigDataType: uint32
 T_510: (in r6_472 < r12_116 @ 0804D294 : bool)
   Class: Eq_510
   DataType: bool
@@ -2637,7 +2637,7 @@ T_596: (in r7_396 + r8_12 @ 0804D162 : word32)
   Class: Eq_596
   DataType: uint32
   OrigDataType: uint32
-T_597: (in (word32) (r6_412 < r4 << 3<32>) + ((word32) r8_12 + r7_396) @ 0804D162 : word32)
+T_597: (in (word32) (r6_412 < r4 << 3<32>) + ((word32) r8_12.u1 + r7_396) @ 0804D162 : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32

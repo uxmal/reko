@@ -3207,7 +3207,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 			}
 			else
 				r1_n = r6_n;
-			byte v28_n = (byte) *r3_n.u0;
+			byte v28_n = r3_n.u1->b0000;
 			r7 = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 			r6.u0 = (int32) v28_n;
 			Eq_n r1_n;
@@ -3242,7 +3242,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 				}
 				else
 					r1_n = r6_n;
-				byte v39_n = (byte) *r3_n.u0;
+				byte v39_n = r3_n.u1->b0000;
 				ptr32 r7_n = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 				Eq_n r6_n;
 				r6_n.u0 = (int32) v39_n;
@@ -3285,7 +3285,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 			}
 			--r4_n;
 			++r2_n;
-			r3_n.u0 = (char *) r3_n.u0 + 1;
+			r3_n.u0 = (word32) r3_n + 1;
 		} while (r4_n != 0x00);
 	}
 	struct Eq_n * sp_n = fp - 0x04;

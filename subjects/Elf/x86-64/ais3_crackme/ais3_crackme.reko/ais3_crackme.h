@@ -716,7 +716,7 @@ T_158: (in 0<u64> @ 000000000040066A : uint64)
 T_159: (in rbx_40 @ 000000000040066A : Eq_158)
   Class: Eq_158
   DataType: Eq_158
-  OrigDataType: word64
+  OrigDataType: uint64
 T_160: (in 8<64> @ 0000000000400679 : word64)
   Class: Eq_160
   DataType: ui64

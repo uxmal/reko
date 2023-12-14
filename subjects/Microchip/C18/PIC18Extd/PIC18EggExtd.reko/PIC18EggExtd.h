@@ -766,7 +766,7 @@ T_175: (in PRODL @ 0000EC : cu8)
 T_176: (in FSR0 @ 0000EC : Eq_176)
   Class: Eq_176
   DataType: Eq_176
-  OrigDataType: word32
+  OrigDataType: (union (word16 u2) ((ptr32 byte) u1))
 T_177: (in FSR0H < WREG @ 000128 : bool)
   Class: Eq_177
   DataType: bool

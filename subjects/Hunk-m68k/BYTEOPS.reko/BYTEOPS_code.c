@@ -372,7 +372,7 @@ Eq_n fn00001458(Eq_n d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 					d1_n.u0 = 0;
 					do
 					{
-						if (*((word32) d1_n.u0 + 7600) == *a2_n)
+						if (*((word32) d1_n + 7600) == *a2_n)
 						{
 							Eq_n d1_n = 1 << d1_n;
 							d0 = d1_n;
@@ -790,7 +790,7 @@ l00001BC4:
 								return d0_n;
 							}
 							d2_n = (word32 *) ((char *) d2_n + 1);
-							d6_n = (word32) d6_n + 1;
+							d6_n = (word32) d6_n.u0 + 1;
 						} while (d7_n > d2_n);
 					}
 				}
@@ -810,8 +810,8 @@ l00001BC4:
 							d0_n = d6_n;
 							return d0_n;
 						}
-						d2_n = (word32) d2_n.u0 + 1;
-						d6_n = (word32) d6_n + 1;
+						d2_n = (word32) d2_n + 1;
+						d6_n = (word32) d6_n.u0 + 1;
 					}
 				}
 				if ((dwLoc28_n & 2) == 0x00)
@@ -828,7 +828,7 @@ l00001BC4:
 								return d0_n;
 							}
 							d2_n = (word32 *) ((char *) d2_n + 1);
-							d6_n = (word32) d6_n + 1;
+							d6_n = (word32) d6_n.u0 + 1;
 						} while (d7_n > d2_n);
 					}
 				}
@@ -844,7 +844,7 @@ l00001BC4:
 							return d0_n;
 						}
 						++d2_n;
-						d6_n = (word32) d6_n + 1;
+						d6_n = (word32) d6_n.u0 + 1;
 					} while (d5_n > d2_n);
 				}
 				word32 * d2_n = null;
@@ -859,7 +859,7 @@ l00001BC4:
 							return d0_n;
 						}
 						d2_n = (word32 *) ((char *) d2_n + 1);
-						d6_n = (word32) d6_n + 1;
+						d6_n = (word32) d6_n.u0 + 1;
 					} while (dwLoc0A_n > d2_n);
 				}
 				d0 = dwLoc28_n & 4;
@@ -876,8 +876,8 @@ l00001BC4:
 							d0_n = d6_n;
 							return d0_n;
 						}
-						d2_n = (word32) d2_n.u0 + 1;
-						d6_n = (word32) d6_n + 1;
+						d2_n = (word32) d2_n + 1;
+						d6_n = (word32) d6_n.u0 + 1;
 					}
 				}
 				a4_n = a2_n;

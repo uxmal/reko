@@ -932,7 +932,7 @@ T_201: (in 0<u64> @ 00000000000012B3 : uint64)
 T_202: (in rbx_45 @ 00000000000012B3 : Eq_201)
   Class: Eq_201
   DataType: Eq_201
-  OrigDataType: word64
+  OrigDataType: uint64
 T_203: (in 8<64> @ 00000000000012C1 : word64)
   Class: Eq_203
   DataType: ui64

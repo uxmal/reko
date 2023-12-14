@@ -448,7 +448,7 @@ T_84: (in Mem19[0x00010AF4<p32>:word32] @ 0000075C : word32)
 T_85: (in r2_40 @ 0000075C : Eq_84)
   Class: Eq_84
   DataType: Eq_84
-  OrigDataType: int32
+  OrigDataType: up32
 T_86: (in 0x10AB0<32> @ 00000764 : word32)
   Class: Eq_86
   DataType: (ptr32 int32)
@@ -572,7 +572,7 @@ T_115: (in r2_40 + 1<i32> @ 00000774 : word32)
 T_116: (in r2_47 @ 00000774 : Eq_84)
   Class: Eq_84
   DataType: Eq_84
-  OrigDataType: word32
+  OrigDataType: uint32
 T_117: (in 0x00010AF4<p32> @ 0000077C : ptr32)
   Class: Eq_117
   DataType: (ptr32 Eq_84)

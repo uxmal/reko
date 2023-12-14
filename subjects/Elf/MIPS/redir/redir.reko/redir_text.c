@@ -682,14 +682,14 @@ void main(int32 r4, char * r5[], word32 r16, word32 ra)
 				while ((word32) (dwLoc2C_n < 32) != 0x00)
 				{
 					fp->aFFFFFED0[dwLoc2C_n] = 0x00;
-					dwLoc2C_n = (word32) dwLoc2C_n.u0 + 1;
+					dwLoc2C_n = (word32) dwLoc2C_n.u1 + 1;
 				}
 				Eq_n dwLoc28_n;
 				dwLoc28_n.u0 = 0x00;
 				while ((word32) (dwLoc28_n < 32) != 0x00)
 				{
 					fp->aFFFFFF50[dwLoc28_n] = 0x00;
-					dwLoc28_n = (word32) dwLoc28_n.u0 + 1;
+					dwLoc28_n = (word32) dwLoc28_n.u1 + 1;
 				}
 				struct Eq_n * dwLoc0150_n;
 				for (dwLoc0150_n = r2_n->ptr0008; dwLoc0150_n != null; dwLoc0150_n = dwLoc0150_n->ptr0018)
@@ -2636,7 +2636,7 @@ void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 				{
 					r6->dw0004 = r4_n;
 					r6->dw0008 = r8_n;
-					Eq_n r2_n = (word32) r10_n.u0 + r9_n;
+					Eq_n r2_n = (word32) r10_n.u1 + r9_n;
 					r6->t000C.u0 = (int32) r2_n;
 					r7_n = r2_n;
 				}
@@ -2987,7 +2987,7 @@ void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 		r6->dw0004 = r6_n;
 		r6->dw0008 = r12_n;
 		Eq_n r3_n = r11_n + r9_n;
-		r6->t0010.u0 = (int32) ((word32) r10_n.u0 + r8_n + (word32) (r3_n < r9_n));
+		r6->t0010.u0 = (int32) ((word32) r10_n.u1 + r8_n + (word32) (r3_n < r9_n));
 		r6->t0014.u0 = (int32) r3_n;
 		goto l00408490;
 	}
@@ -3021,7 +3021,7 @@ void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 	r9_n.u0 = r6->t0014.u0;
 	Eq_n r8_n;
 	r8_n.u0 = r6->t0010.u0;
-	up32 r4_n = (word32) r8_n.u0 - 1 + (word32) (r9_n < 0);
+	up32 r4_n = (word32) r8_n - 1 + (word32) (r9_n < 0);
 	if ((word32) (r4_n > 0x0FFFFFFF) == 0x00)
 	{
 		uint32 r2_n;
@@ -3506,7 +3506,7 @@ void __pack_f(struct Eq_n * r4)
 				r4_n = (word32) r4_n + 64;
 		}
 		else
-			r4_n = (word32) r4_n.u0 + 63;
+			r4_n = (word32) r4_n + 63;
 	}
 	else
 	{

@@ -2450,7 +2450,7 @@ T_548: (in 0<i32> @ 000013A0 : int32)
 T_549: (in d4_147 @ 000013A0 : Eq_548)
   Class: Eq_548
   DataType: Eq_548
-  OrigDataType: word32
+  OrigDataType: int32
 T_550: (in 5<i32> @ 0000145E : int32)
   Class: Eq_548
   DataType: int32
@@ -2486,7 +2486,7 @@ T_557: (in 0<i32> @ 000013AC : int32)
 T_558: (in d2_142 @ 000013AC : Eq_548)
   Class: Eq_548
   DataType: Eq_548
-  OrigDataType: word32
+  OrigDataType: int32
 T_559: (in 1<32> @ 00001458 : word32)
   Class: Eq_559
   DataType: word32
@@ -2678,7 +2678,7 @@ T_605: (in Mem86[a1_85 + 0<32>:word32] @ 000013E4 : word32)
 T_606: (in d1_88 @ 000013E4 : Eq_548)
   Class: Eq_548
   DataType: Eq_548
-  OrigDataType: int32
+  OrigDataType: word32
 T_607: (in __swap @ 000013EE : ptr32)
   Class: Eq_607
   DataType: (ptr32 Eq_607)

@@ -3684,7 +3684,7 @@ T_779: (in 0x10000000<p32> @ 10001757 : ptr32)
 T_780: (in dwLoc0C_90 @ 10001757 : Eq_488)
   Class: Eq_488
   DataType: Eq_488
-  OrigDataType: ptr32
+  OrigDataType: (union (ui32 u0) (ptr32 u1))
 T_781: (in fn100016D0 @ 10001760 : ptr32)
   Class: Eq_781
   DataType: (ptr32 Eq_781)

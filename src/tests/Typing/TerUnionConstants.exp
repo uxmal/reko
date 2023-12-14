@@ -38,7 +38,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in bx : Eq_2)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: ci16
+  OrigDataType: (union (ci16 u0) (uint16 u1))
 T_3: (in 2<8> : byte)
   Class: Eq_3
   DataType: byte

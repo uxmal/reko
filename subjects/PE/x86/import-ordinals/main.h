@@ -1416,7 +1416,7 @@ T_220: (in 0xFF<32> @ 004011BC : word32)
 T_221: (in eax_295 @ 004011BC : Eq_89)
   Class: Eq_89
   DataType: Eq_89
-  OrigDataType: int32
+  OrigDataType: word32
 T_222: (in fn004019C6 @ 004012C3 : ptr32)
   Class: Eq_222
   DataType: (ptr32 Eq_222)
@@ -1584,7 +1584,7 @@ T_262: (in 0<32> @ 004011F8 : word32)
 T_263: (in edi_127 @ 004011F8 : Eq_99)
   Class: Eq_99
   DataType: Eq_99
-  OrigDataType: byte
+  OrigDataType: word32
 T_264: (in 0<32> @ 004011FC : word32)
   Class: Eq_264
   DataType: word32
@@ -4012,7 +4012,7 @@ T_869: (in Mem8[ebp + 0<32>:word32] @ 004019D7 : word32)
 T_870: (in ebp_19 @ 004019D7 : Eq_101)
   Class: Eq_101
   DataType: Eq_101
-  OrigDataType: ui32
+  OrigDataType: word32
 T_871: (in 0<32> @ 004019D8 : word32)
   Class: Eq_871
   DataType: word32

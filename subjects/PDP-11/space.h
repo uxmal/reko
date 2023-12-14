@@ -12109,7 +12109,7 @@ T_2616: (in Mem0[r0 + 0x14<16>:word16] @ 172C : word16)
 T_2617: (in r3_16 @ 172C : Eq_2570)
   Class: Eq_2570
   DataType: Eq_2570
-  OrigDataType: int16
+  OrigDataType: (union (int16 u0) (cup16 u1))
 T_2618: (in 0<32> @ 1738 : uipr32)
   Class: Eq_2618
   DataType: uint32

@@ -119,7 +119,7 @@ void main()
 			xmm0 = SEQ(0x00, v27_n + v27_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc10_n = (word64) qwLoc10_n.u0 + 1;
+		qwLoc10_n = (word64) qwLoc10_n + 1;
 	}
 	Eq_n qwLoc18_n;
 	qwLoc18_n.u0 = 0x00;
@@ -128,14 +128,14 @@ void main()
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
 		real64 * rcx_n = (real64 *) (&rax_n->u0 + qwLoc18_n);
 		if (qwLoc18_n >= ~0x00)
-			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n.u0 + 1));
+			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
 		{
-			real64 v22_n = (real64) ((word64) qwLoc18_n.u0 + 1 >> 0x01 | (uint64) (eax_n & 0x01));
+			real64 v22_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm0 = SEQ(0x00, v22_n + v22_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc18_n = (word64) qwLoc18_n.u0 + 1;
+		qwLoc18_n = (word64) qwLoc18_n + 1;
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
