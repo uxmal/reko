@@ -10,22 +10,29 @@
 	         x:DataType="vm:LowLevelDocumentViewModel"
              x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.LowLevelDocumentView">
 	<Grid
-		RowDefinitions="22,*,*"
+		RowDefinitions="22,auto,*,auto,*"
 		ColumnDefinitions="*">
+		<!-- Toolbar -->
 		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
 				<StackPanel.Styles>
 					<Style Selector="TemplatedControl">
 						<Setter	Property="FontSize" Value="10.5" />
 					</Style>
-					<Style Selector="ComboBox">
+					<Style Selector="TemplatedControl">
 						<Setter Property="Padding" Value="1" />
 					</Style>
 				</StackPanel.Styles>
+			<Label VerticalAlignment="Center">Address</Label>
+			<TextBox Name="txtAddress"></TextBox>
 				<Label VerticalAlignment="Center">Architectures</Label>
 				<ComboBox ItemsSource="{Binding ViewModel.Architectures}"
 						 SelectedItem="{Binding ViewModel.SelectedArchitectureOption}"  />
 			</StackPanel>
-		<Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+		
+		<Border Grid.Row="1" Grid.Column="0" Classes="H3Banner">
+			<TextBlock>Memory View</TextBlock>
+		</Border>
+		<Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
 			<ScrollViewer Name="ScrollViewer1"
 						  HorizontalScrollBarVisibility="Disabled"
 						  VerticalScrollBarVisibility="Auto"
@@ -46,8 +53,12 @@
 						</OnPlatform>
 					</TextElement.FontFamily>
 				</ctrl:HexViewControl>
-			</ScrollViewer>		</Border>
-		<Border Grid.Row="2" Grid.Column="0">
+			</ScrollViewer>
+		</Border>
+		<Border Grid.Row="3" Grid.Column="0" Classes="H3Banner">
+			<TextBlock>Disassembly</TextBlock>
+		</Border>
+		<Border Grid.Row="4" Grid.Column="0">
 			<Label Background="#E0FFE0">Disassembly View placeholder</Label>
 		</Border>
 	</Grid>

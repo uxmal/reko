@@ -67,6 +67,12 @@ public class HexViewControl : Control, ILogicalScrollable
     public static readonly StyledProperty<int> BytesWidthProperty =
         AvaloniaProperty.Register<HexViewControl, int>(nameof(BytesWidth), defaultValue: 8);
 
+    public static readonly StyledProperty<IBrush?> CodeBackgroundProperty =
+        AvaloniaProperty.Register<HexViewControl, IBrush?>(nameof(CodeBackground));
+
+    public static readonly StyledProperty<IBrush?> DataBackgroundProperty =
+        AvaloniaProperty.Register<HexViewControl, IBrush?>(nameof(DataBackground));
+
     public static readonly DirectProperty<HexViewControl, IProcessorArchitecture?> ArchitectureProperty =
         AvaloniaProperty.RegisterDirect<HexViewControl, IProcessorArchitecture?>(
             nameof(Architecture),
@@ -186,6 +192,18 @@ public class HexViewControl : Control, ILogicalScrollable
     {
         get => GetValue(BytesWidthProperty);
         set => SetValue(BytesWidthProperty, value);
+    }
+
+    public IBrush? CodeBackground
+    {
+        get => GetValue(CodeBackgroundProperty);
+        set => SetValue(CodeBackgroundProperty, value);
+    }
+
+    public IBrush? DataBackground
+    {
+        get => GetValue(DataBackgroundProperty);
+        set => SetValue(DataBackgroundProperty, value);
     }
 
     public IProcessorArchitecture? Architecture
@@ -902,11 +920,6 @@ public class HexViewControl : Control, ILogicalScrollable
                 Background = ctrl.Background ?? Brushes.Transparent,
                 Foreground = ctrl._foreground
             };
-            var code = new BrushTheme
-            {
-                Background = SolidColorBrush.Parse("#FFC0C0"),
-                Foreground = ctrl._foreground
-            };
             var data = new BrushTheme
             {
                 Background = SolidColorBrush.Parse("#C0C0FF"),
@@ -917,8 +930,8 @@ public class HexViewControl : Control, ILogicalScrollable
                 Background = SolidColorBrush.Parse("#FFE0E0"),
                 Foreground = ctrl._foreground
             };
-            codeTheme = new BrushTheme { Background = (Brush) code.Background, Foreground = ctrl._foreground, StartMarker = Brushes.Red };
-            dataTheme = new BrushTheme { Background = (Brush) data.Background, Foreground = data.Foreground ?? ctrl._foreground, StartMarker = Brushes.Blue };
+            codeTheme = new BrushTheme { Background = ctrl.CodeBackground!, Foreground = ctrl._foreground, StartMarker = Brushes.Red };
+            dataTheme = new BrushTheme { Background = ctrl.DataBackground!, Foreground = ctrl._foreground, StartMarker = Brushes.Blue };
             defaultTheme = new BrushTheme { Background = wind.Background ?? ctrl.Background, Foreground = wind.Foreground ?? ctrl._foreground };
             selectTheme = new BrushTheme { Background = ctrl.SelectionBrush, Foreground = ctrl.SelectionForegroundBrush };
             secondarySelectTheme = new BrushTheme { Background = secondarySelBrush, Foreground = ctrl._foreground };

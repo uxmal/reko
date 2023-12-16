@@ -13,8 +13,26 @@
   </Application.DataTemplates>
 
 	<Application.Resources>
-		<FontFamily x:Key="RobotoMonoFont">avares://HexView/Assets#Roboto Mono</FontFamily>
-		<FontFamily x:Key="ConsolasFont">Consolas</FontFamily>
+
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key='Light'>
+					<SolidColorBrush x:Key='CodeBackgroundBrush'>#FFC0C0</SolidColorBrush>
+					<SolidColorBrush x:Key='CodeForegroundBrush'>White</SolidColorBrush>
+					<SolidColorBrush x:Key='DataBackgroundBrush'>#C0C0FF</SolidColorBrush>
+					<SolidColorBrush x:Key='DataForegroundBrush'>White</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key='Dark'>
+					<SolidColorBrush x:Key='CodeBackgroundBrush'>#801010</SolidColorBrush>
+					<SolidColorBrush x:Key='CodeForegroundBrush'>White</SolidColorBrush>
+					<SolidColorBrush x:Key='DataBackgroundBrush'>#101080</SolidColorBrush>
+					<SolidColorBrush x:Key='DataForegroundBrush'>White</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+			<FontFamily x:Key="RobotoMonoFont">avares://HexView/Assets#Roboto Mono</FontFamily>
+			<FontFamily x:Key="ConsolasFont">Consolas</FontFamily>
+		</ResourceDictionary>
+
 	</Application.Resources>
 
 	<Application.Styles>
@@ -53,14 +71,26 @@
 		  <Setter Property="IsVisible" Value="{Binding IsVisible}" />
 		  <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
 	</Style>
-
+		<Style Selector="ctrl|HexViewControl" x:DataType="ctrl:HexViewControl">
+			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+			<Setter Property="SelectionForegroundBrush" Value="Red" />
+			<Setter Property="CodeBackground" Value="{DynamicResource CodeBackgroundBrush}" />
+			<Setter Property="DataBackground" Value="{DynamicResource DataBackgroundBrush}" />
+		</Style>
 		<Style Selector="ctrl|HexViewControl:focus" x:DataType="ctrl:HexViewControl">
 			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
 			<Setter Property="SelectionForegroundBrush" Value="Red" />
 		</Style>
-		<Style Selector="ctrl|HexViewControl" x:DataType="ctrl:HexViewControl">
-			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
-			<Setter Property="SelectionForegroundBrush" Value="Red" />
+
+		<Style Selector="Border.H3Banner" x:DataType="Border">
+			<Setter Property="Background" Value="#BFCDDB"></Setter>
+			<Setter Property="BorderThickness" Value="0,5,0,5"></Setter>
+			<Setter Property="BorderBrush" Value="Transparent"></Setter>
+		</Style>
+		<Style Selector="Border.H3Banner > TextBlock">
+			<Setter Property="Foreground" Value="Black" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Padding" Value="3,0,3,1" />
 		</Style>
 
   </Application.Styles>
