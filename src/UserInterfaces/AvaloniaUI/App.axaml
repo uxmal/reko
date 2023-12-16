@@ -4,14 +4,20 @@
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:core="using:Dock.Model.Core"
 			 xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
+			 xmlns:ctrl="using:Reko.UserInterfaces.AvaloniaUI.Controls"
              x:Class="Reko.UserInterfaces.AvaloniaUI.App"
 			 
 			 RequestedThemeVariant="Dark">
   <Application.DataTemplates>
     <local:ViewLocator />
   </Application.DataTemplates>
-	
-  <Application.Styles>
+
+	<Application.Resources>
+		<FontFamily x:Key="RobotoMonoFont">avares://HexView/Assets#Roboto Mono</FontFamily>
+		<FontFamily x:Key="ConsolasFont">Consolas</FontFamily>
+	</Application.Resources>
+
+	<Application.Styles>
     <FluentTheme />
 	<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>	  
     <Style Selector="idc|DocumentControl">
@@ -47,6 +53,15 @@
 		  <Setter Property="IsVisible" Value="{Binding IsVisible}" />
 		  <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
 	</Style>
+
+		<Style Selector="ctrl|HexViewControl:focus" x:DataType="ctrl:HexViewControl">
+			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+			<Setter Property="SelectionForegroundBrush" Value="Red" />
+		</Style>
+		<Style Selector="ctrl|HexViewControl" x:DataType="ctrl:HexViewControl">
+			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+			<Setter Property="SelectionForegroundBrush" Value="Red" />
+		</Style>
 
   </Application.Styles>
 </Application>

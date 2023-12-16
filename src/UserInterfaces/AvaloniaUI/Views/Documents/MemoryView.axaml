@@ -21,12 +21,12 @@
 			<TextBlock Text="{Binding #hexViewer.Height}" />
 		</StackPanel>
 		<ScrollViewer>
-			<rc:HexViewer Name="hexViewer"
+			<rc:HexViewControl Name="hexViewer"
 						  Background="#EEFFEE"
 						  MemoryArea="{Binding MemoryArea}"
-						  FontFamily="Lucida Console"
-						  FontSize="11">
-			</rc:HexViewer>
+						  TextElement.FontFamily="Lucida Console"
+						  TextElement.FontSize="11">
+			</rc:HexViewControl>
 		</ScrollViewer>
 	</DockPanel>
 </UserControl>

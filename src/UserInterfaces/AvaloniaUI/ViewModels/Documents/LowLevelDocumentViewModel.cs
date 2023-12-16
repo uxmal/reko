@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
@@ -52,6 +53,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         { 
             get { return ViewModel.SelectedAddress; }
             set { ViewModel.SelectedAddress = value!; }
+        }
+
+        public MemoryArea? MemoryArea
+        {
+            get { return ViewModel.MemoryArea; }
+            set { ViewModel.MemoryArea = value; }
         }
 
         public ListOption? SelectedArchitectureOption

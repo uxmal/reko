@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui.Reactive;
 using System;
@@ -36,6 +38,9 @@ namespace Reko.Gui.ViewModels.Documents
         {
             this.services = services;
             this.Program = program;
+            this.SegmentMap = program.SegmentMap;
+            this.ImageMap = program.ImageMap;
+            this.SelectedArchitecture = program.Architecture;
             this.Architectures = BuildArchitectureViewModel();
         }
 
@@ -44,6 +49,18 @@ namespace Reko.Gui.ViewModels.Documents
 
         public Program Program { get; set; }
         public Address? SelectedAddress { get; set; }
+
+        public ImageMap ImageMap { get; set; }
+
+
+        public MemoryArea? MemoryArea
+        {
+            get => this.memoryArea;
+            set => this.RaiseAndSetIfChanged(ref this.memoryArea, value);
+        }
+        private MemoryArea? memoryArea;
+
+        public SegmentMap SegmentMap { get; set; }
 
         /// <summary>
         /// The CPU architecture chosen by the user.
@@ -99,7 +116,5 @@ namespace Reko.Gui.ViewModels.Documents
             }
             return arch;
         }
-
-
     }
 }

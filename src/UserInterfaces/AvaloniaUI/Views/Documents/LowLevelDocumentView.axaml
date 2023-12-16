@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+		     xmlns:ctrl="using:Reko.UserInterfaces.AvaloniaUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800"
 			 x:CompileBindings="True"
 			 d:DesignHeight="450"
@@ -25,8 +26,27 @@
 						 SelectedItem="{Binding ViewModel.SelectedArchitectureOption}"  />
 			</StackPanel>
 		<Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-			<Label Background="#FFE0E0" VerticalAlignment="Center">Memory View placeholder</Label>
-		</Border>
+			<ScrollViewer Name="ScrollViewer1"
+						  HorizontalScrollBarVisibility="Disabled"
+						  VerticalScrollBarVisibility="Auto"
+						  Grid.Row="2"
+						  Grid.Column="0">
+				<ctrl:HexViewControl Name="hexView"
+						TextElement.FontSize="13"
+						TextElement.Foreground="{DynamicResource TextControlForeground}"
+						DragDrop.AllowDrop="True"
+						Margin="4,0,4,4"
+						Architecture="{Binding ViewModel.SelectedArchitecture}"
+						SegmentMap="{Binding ViewModel.SegmentMap}"
+						ImageMap="{Binding ViewModel.ImageMap}"
+						SelectedAddress="{Binding ViewModel.SelectedAddress}" >
+					<TextElement.FontFamily>
+						<OnPlatform Default="{StaticResource RobotoMonoFont}">
+							<On Options="Windows" Content="{StaticResource ConsolasFont}" />
+						</OnPlatform>
+					</TextElement.FontFamily>
+				</ctrl:HexViewControl>
+			</ScrollViewer>		</Border>
 		<Border Grid.Row="2" Grid.Column="0">
 			<Label Background="#E0FFE0">Disassembly View placeholder</Label>
 		</Border>

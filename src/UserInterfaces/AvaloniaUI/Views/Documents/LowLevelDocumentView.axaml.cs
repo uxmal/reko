@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John Källén.
+ * Copyright (C) 1999-2023 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,17 @@
 
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Reko.Core.Collections;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Types;
+using Reko.Core;
 using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
+using Reko.UserInterfaces.AvaloniaUI.Controls;
+using System;
+using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
@@ -32,12 +41,40 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
             InitializeComponent();
         }
 
-        public LowLevelViewModel ViewModel => ((LowLevelDocumentViewModel) DataContext!).ViewModel;
+        public LowLevelViewModel? ViewModel => ((LowLevelDocumentViewModel?) DataContext)?.ViewModel;
 
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            if (ViewModel is null)
+            {
+                hexView.Architecture = null;
+                hexView.ImageMap = null;
+                hexView.SegmentMap = null;
+                hexView.MemoryArea = null;
+            }
+            else
+            {
+                //HexViewControl1.BytesWidth = 16;
+                ////var bytes = Enumerable.Range(0, 65534).Select(i => (byte)i).ToArray();
+                //var bytes = Enumerable.Range(0, 509).Select(i => (byte) i).ToArray();
+                //var mem = new ByteMemoryArea(Address.Ptr32(0), bytes);
+                //var segmentMap = new SegmentMap(new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
+                //var imageMap = segmentMap.CreateImageMap();
+                //var addr = mem.BaseAddress;
+                //imageMap.AddItemWithSize(addr + 2, new ImageMapBlock(addr + 2) { Size = 0x20 });
+                //imageMap.AddItemWithSize(addr + 0x3D, new ImageMapBlock(addr + 0x3D) { Size = 0x1D });
+                //imageMap.AddItemWithSize(addr + 0x81, new ImageMapItem(addr + 0x81, 4) { DataType = PrimitiveType.Word32 });
+                //HexViewControl1.Architecture = new X86ArchitectureFlat32(new ServiceContainer(), "x86", new());
+                //HexViewControl1.ImageMap = imageMap;
+                //HexViewControl1.SegmentMap = segmentMap;
+                //HexViewControl1.MemoryArea = mem;
+            }
         }
     }
 }
