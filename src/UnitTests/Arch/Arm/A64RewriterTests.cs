@@ -135,10 +135,33 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("00402B4E");
             AssertCode(     // addhn2	v0.16b,v0.8h,v11.8h
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = q0",
-                "2|L--|v4 = q11",
-                "3|L--|q0 = __addhn2<word16[8]>(v3, v4)");
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v5 = __addhn2<word16[8],byte[8]>(q0, q11)",
+                "2|L--|q0 = SEQ(v5, SLICE(q0, word64, 0))");
+        }
+
+        [Test]
+        public void AArch64Rw_addp_scalar()
+        {
+            Given_HexString("21B8F15E");
+            AssertCode(     // addp	d1,v1.2d
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v4 = SLICE(q1, word64, 64)",
+                "2|L--|v5 = SLICE(q1, word64, 0)",
+                "3|L--|d1 = v4 + v5",
+                "4|L--|q1 = SEQ(0<64>, d1)");
+        }
+
+        [Test]
+        public void AArch64Rw_addp_vector()
+        {
+            Given_HexString("21BC210E");
+            AssertCode(     // addp	v1.8b,v1.8b,v1.8b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v3 = d1",
+                "2|L--|v4 = d1",
+                "3|L--|d1 = __addp<byte[8]>(v3, v4)",
+                "4|L--|q1 = SEQ(0<64>, d1)");
         }
 
         [Test]
@@ -159,30 +182,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|x19 = x17 + 0x7FF<64>",
                 "2|L--|NZCV = cond(x19)");
-        }
-
-        [Test]
-        public void AArch64Rw_addp_scalar()
-        {
-            Given_HexString("21B8F15E");
-            AssertCode(     // addp	d1,v1.2d
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = d1",
-                "2|L--|v4 = q1",
-                "3|L--|d1 = __addp<word64[2]>(v4, v3)",
-                "4|L--|q1 = SEQ(0<64>, d1)");
-        }
-
-        [Test]
-        public void AArch64Rw_addp_vector()
-        {
-            Given_HexString("21BC210E");
-            AssertCode(     // addp	v1.8b,v1.8b,v1.8b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = d1",
-                "2|L--|v4 = d1",
-                "3|L--|d1 = __addp<byte[8]>(v3, v4)",
-                "4|L--|q1 = SEQ(0<64>, d1)");
         }
 
         [Test]

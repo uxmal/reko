@@ -275,6 +275,24 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Dpb(dst, tmp, tmp.DataType.BitSize));
         }
 
+        private void RewriteAddp()
+        {
+            if (instr.Operands.Length == 2)
+            {
+                // Scalar
+                var src = this.RewriteOp(1);
+                var hi = binder.CreateTemporary(PrimitiveType.Word64);
+                var lo = binder.CreateTemporary(PrimitiveType.Word64);
+                m.Assign(hi, m.Slice(src, hi.DataType, 64));
+                m.Assign(lo, m.Slice(src, lo.DataType, 0));
+                AssignSimd(0, m.IAdd(hi, lo));
+            }
+            else
+            {
+                RewriteSimdBinary(intrinsic.addp, Domain.None);
+            }
+        }
+
         private void RewriteAddv()
         {
             RewriteSimdUnaryReduce(intrinsic.sum, Domain.Integer);

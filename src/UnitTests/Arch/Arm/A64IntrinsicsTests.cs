@@ -63,5 +63,15 @@ namespace Reko.UnitTests.Arch.Arm
                 C(aw32(4), 0x10203040, 0x80F0FF, 0xEFE2E3));
             Assert.AreEqual("0x112201010100<64>", c.ToString());
         }
+
+        [Test]
+        public void AArch64Intrinsic_addp_vector()
+        {
+            var c = intrinsics.addp.MakeInstance(aw32(4)).ApplyConstants(
+                aw32(4),
+                C(aw32(4), 0x11223344, 0xEEDDCCBC, 0xFACEFACE, 0x05310532),
+                C(aw32(4), 0x7EDCBA98, 0x01234568, 0x12345678, 0xEDCBA988));
+            Assert.AreEqual("0x080000000000000000000000000000000<128>", c.ToString());
+        }
     }
 }

@@ -50,7 +50,30 @@ public class Intrinsics
         .Param("TSrc")
         .Returns("TDst");
 
-    public readonly IntrinsicProcedure addp = IntrinsicBuilder.GenericBinary("__addp");
+    public readonly IntrinsicProcedure addp = IntrinsicBuilder.GenericBinary("__addp", (dt, cs) =>
+    {
+        var at = (ArrayType) dt;
+
+        static BigInteger ProcessVectorRegisterValue(Constant value, int bitsResult, int bitsElement, BigInteger result)
+        {
+            var maskLane = (BigInteger.One << bitsElement) - 1;
+            var src = value.ToBigInteger();
+            for (int bitpos = bitsResult - bitsElement; bitpos >= 0; bitpos -= bitsElement)
+            {
+                var e1 = (src >> bitpos);
+                bitpos -= bitsElement;
+                var e2 = (src >> bitpos);
+
+                result = (result << bitsElement) | (e1 + e2) & maskLane;
+            }
+            return result;
+        }
+        var bitsResult = at.BitSize;
+        var bitsElement = at.ElementType.BitSize;
+        var result = ProcessVectorRegisterValue(cs[1], bitsResult, bitsElement, BigInteger.Zero);
+        result = ProcessVectorRegisterValue(cs[0], bitsResult, bitsElement, result);
+        return Constant.Create(dt, result);
+    });
 
     public readonly IntrinsicProcedure bfm = IntrinsicBuilder.Pure("__bfm")
         .GenericTypes("T")
