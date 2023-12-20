@@ -89,7 +89,7 @@ namespace Reko.Arch.X86.Rewriter
                 m.Conditional(
                     dst.DataType,
                     cmp(op1, op2),
-                    Constant.Create(dst.DataType, -1),
+                    Constant.Create(dst.DataType, (BigInteger.One << dst.DataType.BitSize) - 1),
                     Constant.Zero(dst.DataType)));
         }
 

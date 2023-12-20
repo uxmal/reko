@@ -297,6 +297,7 @@ namespace Reko.Core.Configuration
         public string? Font;
 
         [XmlAttribute("FontSize")]
+        [DefaultValue(0.0)]
         public double FontSize;
 
         [XmlAttribute("ForeColor")]

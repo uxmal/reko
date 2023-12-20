@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -471,6 +472,7 @@ public class Intrinsics
     public readonly IntrinsicProcedure sum = IntrinsicBuilder.Pure("__sum")
             .GenericTypes("TSrc", "TDst")
             .Param("TSrc")
+            .ApplyConstants((dt, cs) => Reduce(dt, cs, BigInteger.Zero, Operator.IAdd))
             .Returns("TDst");
     public readonly IntrinsicProcedure suqadd = IntrinsicBuilder.GenericBinary("__suqadd");
 
@@ -615,5 +617,30 @@ public class Intrinsics
         var highPart = (cs[0].ToUInt64() + cs[1].ToUInt64()) >> bitsResult;
         return Constant.Create(dt, highPart);
     });
+
+    /// <summary>
+    /// Apply the operation horizontally across a SIMD register, reducing
+    /// the vector of elements into a single scalar value.
+    /// </summary>
+    private static Constant? Reduce(DataType dtResult, Constant[] cs, BigInteger seed, IFunctionalUnit operation)
+    {
+        var cSrc = cs[0];
+        var bitsSrc = cSrc.DataType.BitSize;
+        var at = (ArrayType) cSrc.DataType;
+        var dtElement = at.ElementType;
+        var result = Constant.Create(dtResult, seed);
+        var bitsElement = dtElement.BitSize;
+        var mask = Bits.Mask(0, bitsElement);
+        var value = cSrc.ToBigInteger();
+        for (int bitpos = bitsSrc - bitsElement; bitpos >= 0; bitpos -= bitsElement)
+        {
+            var element = (value >> bitpos) & mask;
+            var c = Constant.Create(dtElement, element);
+            result = operation.ApplyConstants(dtResult, result, c);
+            if (result is null)
+                return null;
+        }
+        return result;
+    }
 }
 

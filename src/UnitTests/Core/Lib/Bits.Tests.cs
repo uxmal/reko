@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void Bits_SignExtend_64bits()
         {
-            Assert.AreEqual(0x8000_0000_0000_0000, Bits.SignExtend(0x8000_0000_0000_0000, 0x20));
+            Assert.AreEqual(0x8000_0000_0000_0000, Bits.SignExtend(0x8000_0000_0000_0000, 0x40));
         }
 
         [Test]

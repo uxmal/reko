@@ -73,5 +73,14 @@ namespace Reko.UnitTests.Arch.Arm
                 C(aw32(4), 0x7EDCBA98, 0x01234568, 0x12345678, 0xEDCBA988));
             Assert.AreEqual("0x080000000000000000000000000000000<128>", c.ToString());
         }
+
+        [Test]
+        public void AArch64Intrinsic_addv()
+        {
+            var c = intrinsics.sum.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(
+                PrimitiveType.Word32,
+                C(aw32(4), 0x1, 0x2, 0x3, 0x4));
+            Assert.AreEqual("0xA<32>", c.ToString());
+        }
     }
 }

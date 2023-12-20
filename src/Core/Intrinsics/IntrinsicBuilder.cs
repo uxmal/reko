@@ -45,7 +45,7 @@ namespace Reko.Core.Intrinsics
         private readonly IFunctionalUnit? simdOp;
         private readonly ProcedureCharacteristics characteristics;
         private readonly List<Identifier> parameters;
-        private Func<DataType, Constant[], Constant>? applyConstants;
+        private Func<DataType, Constant[], Constant?>? applyConstants;
         private DataType[]? genericTypes;
         private Dictionary<string, DataType>? genericTypeDictionary;
         private bool isVariadic;
@@ -74,7 +74,7 @@ namespace Reko.Core.Intrinsics
         /// <summary>
         /// Add an evaluator function to the intrinsic.
         /// </summary>
-        public IntrinsicBuilder ApplyConstants(Func<DataType, Constant[], Constant> fn)
+        public IntrinsicBuilder ApplyConstants(Func<DataType, Constant[], Constant?> fn)
         {
             this.applyConstants = fn;
             return this;
