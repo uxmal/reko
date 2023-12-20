@@ -59,7 +59,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBrk()
         {
-            m.SideEffect(m.Fn(brk_intrinsic, RewriteOp(0)));
+            m.SideEffect(m.Fn(intrinsic.brk, RewriteOp(0)));
         }
 
         private void RewriteCb(Func<Expression, Expression> fn)
@@ -70,7 +70,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteEret()
         {
-            m.SideEffect(m.Fn(eret_intrinsic));
+            m.SideEffect(m.Fn(intrinsic.eret));
             m.Return(0, 0);
         }
 

@@ -166,7 +166,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             RewriteMaybeSimdUnary(
                 n => RewriteFcvt(n, domain, FpOps.roundf, FpOps.round),
-                round_intrinsic,
+                intrinsic.round,
                 Domain.Real);
         }
 
@@ -174,7 +174,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             RewriteMaybeSimdUnary(
                 n => RewriteFcvt(n, domain, FpOps.floorf, FpOps.floor),
-                floor_intrinsic,
+                intrinsic.floor,
                 Domain.Real);
         }
 
@@ -182,7 +182,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             RewriteMaybeSimdUnary(
                 n => RewriteFcvt(n, domain, FpOps.roundf, FpOps.round),
-                nearest_intrinsic,
+                intrinsic.nearest,
                 Domain.Real);
         }
 
@@ -190,14 +190,14 @@ namespace Reko.Arch.Arm.AArch64
         {
             RewriteMaybeSimdUnary(
                 n => RewriteFcvt(n, domain, FpOps.ceilf, FpOps.ceil),
-                ceil_intrinsic, Domain.Real);
+                intrinsic.ceil, Domain.Real);
         }
 
         private void RewriteFcvtz(Domain domain)
         {
             RewriteMaybeSimdUnary(
                 n => RewriteFcvt(n, domain, FpOps.truncf, FpOps.trunc),
-                trunc_intrinsic, Domain.Real);
+                intrinsic.trunc, Domain.Real);
         }
 
         private void RewriteIntrinsicFBinary(
@@ -254,12 +254,12 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 else
                 {
-                    RewriteSimdUnaryWithScalar(fmov_intrinsic, Domain.Real);
+                    RewriteSimdUnaryWithScalar(intrinsic.fmov, Domain.Real);
                 }
             }
             else
             {
-                RewriteMaybeSimdUnary(n => n, fmov_intrinsic, Domain.Real);
+                RewriteMaybeSimdUnary(n => n, intrinsic.fmov, Domain.Real);
             }
         }
 

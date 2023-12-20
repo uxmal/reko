@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteMaybeSimdBinary(IntrinsicPair intrinsic, Domain domain = Domain.None)
+        private void RewriteMaybeSimdBinary(Intrinsics.IntrinsicPair intrinsic, Domain domain = Domain.None)
         {
             if (instr.VectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
@@ -201,7 +201,7 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(2);
             var src3 = RewriteOp(3);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(bfm_intrinsic.MakeInstance(src1.DataType), dst, src1, src2, src3));
+            m.Assign(dst, m.Fn(intrinsic.bfm.MakeInstance(src1.DataType), dst, src1, src2, src3));
         }
 
         private void RewriteCcmn()
@@ -415,7 +415,7 @@ namespace Reko.Arch.Arm.AArch64
             dst.DataType = dt;
             var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
             m.Assign(tmp, m.AddrOf(tmp.DataType, src));
-            var value = m.Fn(load_exclusive_intrinsic.MakeInstance(64, dt), tmp);
+            var value = m.Fn(intrinsic.load_exclusive.MakeInstance(64, dt), tmp);
             m.Assign(dst, this.MaybeExtend(value, dt));
         }
 
@@ -523,7 +523,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             if (instr.Operands[1] is VectorRegisterOperand)
             {
-                RewriteSimdBinaryWiden(mull_intrinsic, Domain.Integer);
+                RewriteSimdBinaryWiden(intrinsic.mull, Domain.Integer);
                 return;
             }
             var op1 = RewriteOp(1);
@@ -641,7 +641,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
                 throw new AddressCorrelatedException(instr.Address, "Expected an address as the second operand of prfm.");
-            m.SideEffect(m.Fn(prfm_intrinsic.MakeInstance(64, imm.DataType), imm, ea));
+            m.SideEffect(m.Fn(intrinsic.prfm.MakeInstance(64, imm.DataType), imm, ea));
         }
 
         private void RewriteRbit()
@@ -671,7 +671,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             RewriteMaybeSimdUnary(
                 n => m.Fn(CommonOps.ReverseHalfwords, n),
-                rev16_intrinsic);
+                intrinsic.rev16);
         }
 
         private void RewriteRor()
@@ -685,7 +685,7 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(2, true);
             var src3 = RewriteOp(3, true);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(sbfiz_intrinsic.MakeInstance(src1.DataType), src1, src2, src3));
+            m.Assign(dst, m.Fn(intrinsic.sbfiz.MakeInstance(src1.DataType), src1, src2, src3));
         }
 
         private void RewriteUSbfm(IntrinsicProcedure intrinsic)
@@ -702,7 +702,7 @@ namespace Reko.Arch.Arm.AArch64
             var src1 = RewriteOp(0, false);
             var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
             m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base!))));
-            m.SideEffect(m.Fn(stlr_intrinsic.MakeInstance(64, src1.DataType), ea, src1));
+            m.SideEffect(m.Fn(intrinsic.stlr.MakeInstance(64, src1.DataType), ea, src1));
         }
 
         private void RewriteStr(PrimitiveType? dt)
@@ -744,7 +744,7 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
             var success = RewriteOp(0);
             m.Assign(tmp, m.AddrOf(tmp.DataType, dst));
-            m.Assign(success, m.Fn(stx_intrinsic.MakeInstance(64, dst.DataType), tmp, src));
+            m.Assign(success, m.Fn(intrinsic.stx.MakeInstance(64, dst.DataType), tmp, src));
         }
 
         private void RewriteTest()

@@ -36,7 +36,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
             var label = memBarrier.Option.ToString().ToLower();
-            m.SideEffect(m.Fn(dmb_intrinsic, Constant.String(label, labelType)));
+            m.SideEffect(m.Fn(intrinsic.dmb, Constant.String(label, labelType)));
         }
 
 
@@ -44,34 +44,34 @@ namespace Reko.Arch.Arm.AArch64
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
             var label = memBarrier.Option.ToString().ToLower();
-            m.SideEffect(m.Fn(dsb_intrinsic, Constant.String(label, labelType)));
+            m.SideEffect(m.Fn(intrinsic.dsb, Constant.String(label, labelType)));
         }
 
         private void RewriteIsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
             var label = memBarrier.Option.ToString().ToLower();
-            m.SideEffect(m.Fn(isb_intrinsic, Constant.String(label, labelType)));
+            m.SideEffect(m.Fn(intrinsic.isb, Constant.String(label, labelType)));
         }
 
         private void RewriteMrs()
         {
-            m.Assign(RewriteOp(0), m.Fn(mrs_intrinsic, RewriteOp(1)));
+            m.Assign(RewriteOp(0), m.Fn(intrinsic.mrs, RewriteOp(1)));
         }
 
         private void RewriteMsr()
         {
-            m.SideEffect(m.Fn(msr_intrinsic, RewriteOp(0), RewriteOp(1)));
+            m.SideEffect(m.Fn(intrinsic.msr, RewriteOp(0), RewriteOp(1)));
         }
 
         private void RewriteSmc()
         {
-            m.SideEffect(m.Fn(smc_intrinsic, RewriteOp(0)));
+            m.SideEffect(m.Fn(intrinsic.smc, RewriteOp(0)));
         }
 
         private void RewriteSvc()
         {
-            m.SideEffect(m.Fn(svc_intrinsic, RewriteOp(0)));
+            m.SideEffect(m.Fn(intrinsic.svc, RewriteOp(0)));
         }
     }
 }

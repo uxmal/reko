@@ -253,7 +253,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteAddv()
         {
-            RewriteSimdUnaryReduce(sum_intrinsic, Domain.Integer);
+            RewriteSimdUnaryReduce(intrinsic.sum, Domain.Integer);
         }
 
         private void RewriteBsl()
@@ -439,7 +439,7 @@ namespace Reko.Arch.Arm.AArch64
                 var dtSrc = MakeOperandType(instr.Operands[1], intDomain);
                 var dtDst = MakeOperandType(instr.Operands[0], Domain.Real);
                 var fprec = RewriteOp(instr.Operands[2]);
-                AssignSimd(0, m.Fn(cvtf_fixed_intrinsic.MakeInstance(dtSrc, dtDst), src, fprec));
+                AssignSimd(0, m.Fn(intrinsic.cvtf_fixed.MakeInstance(dtSrc, dtDst), src, fprec));
             }
             else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage) idSrc.Storage))
             {
@@ -448,7 +448,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             else if (instr.Operands[0] is VectorRegisterOperand vrop)
             {
-                RewriteSimdUnary(cvtf_intrinsic, intDomain);
+                RewriteSimdUnary(intrinsic.cvtf, intDomain);
             }
             else
             {
@@ -462,7 +462,7 @@ namespace Reko.Arch.Arm.AArch64
             var op1 = RewriteOp(1);
             var op2 = RewriteOp(2);
             var dst = RewriteOp(0);
-            AssignSimd(0, m.Fn(__sha1c, op1, op2));
+            AssignSimd(0, m.Fn(intrinsic.sha1c, op1, op2));
         }
 
         private void RewriteSqdmull(IntrinsicProcedure intrinsic)
@@ -489,7 +489,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            AssignSimd(0, m.FnVariadic(tbl_intrinsic.MakeInstance(arrayDst), args.ToArray()));
+            AssignSimd(0, m.FnVariadic(intrinsic.tbl.MakeInstance(arrayDst), args.ToArray()));
         }
 
         private void RewriteTbx()
@@ -508,7 +508,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            AssignSimd(0, m.FnVariadic(tbx_intrinsic.MakeInstance(arrayDst), args.ToArray()));
+            AssignSimd(0, m.FnVariadic(intrinsic.tbx.MakeInstance(arrayDst), args.ToArray()));
         }
     }
 }
