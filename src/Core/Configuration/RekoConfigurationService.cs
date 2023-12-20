@@ -283,6 +283,7 @@ namespace Reko.Core.Configuration
                 BackColor = sUiStyle.BackColor,
                 Cursor = sUiStyle.Cursor,
                 FontName = sUiStyle.Font,
+                FontSize = sUiStyle.FontSize <= 0.0 ? sUiStyle.FontSize : null,
                 ForeColor = sUiStyle.ForeColor,
                 TextAlign = sUiStyle.TextAlign,
                 Width = sUiStyle.Width,

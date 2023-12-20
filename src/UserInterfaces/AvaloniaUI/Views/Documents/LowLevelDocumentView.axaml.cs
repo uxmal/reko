@@ -20,17 +20,9 @@
 
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Reko.Core.Collections;
-using Reko.Core.Loading;
-using Reko.Core.Memory;
-using Reko.Core.Types;
-using Reko.Core;
 using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
-using Reko.UserInterfaces.AvaloniaUI.Controls;
 using System;
-using System.ComponentModel.Design;
-using System.Linq;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
@@ -53,10 +45,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
         {
             if (ViewModel is null)
             {
-                hexView.Architecture = null;
-                hexView.ImageMap = null;
-                hexView.SegmentMap = null;
-                hexView.MemoryArea = null;
+                if (hexView is not null)
+                {
+                    hexView.Architecture = null;
+                    hexView.ImageMap = null;
+                    hexView.SegmentMap = null;
+                    hexView.MemoryArea = null;
+                }
             }
             else
             {

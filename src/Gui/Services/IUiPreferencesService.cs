@@ -29,6 +29,7 @@ namespace Reko.Gui.Services
     {
         public string? Name { get; set; }     // Name of this style
         public object? Font { get; set; }
+        public double? FontSize { get; set; }
         public object? Foreground { get; set; }
         public object? Background { get; set; }
         public object? Cursor { get; set; }
@@ -45,6 +46,7 @@ namespace Reko.Gui.Services
             {
                 Name = Name,
                 Font = Font,
+                FontSize = FontSize,
                 Foreground = Foreground,
                 Background = Background,
                 Cursor = Cursor,

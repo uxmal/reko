@@ -162,6 +162,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                     Foreground = GetColor(dStyle.ForeColor),
                     Background = GetColor(dStyle.BackColor),
                     Font = dStyle.FontName,
+                    FontSize = dStyle.FontSize,
                     Width = width,
                     Cursor = GetCursor(dStyle.Cursor),
                     PaddingTop = padTop,
@@ -223,6 +224,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                 Foreground = GetColor((string) settingsSvc.Get(snames.ForeColor, defStyle.ForeColor)),
                 Background = GetColor((string) settingsSvc.Get(snames.BackColor, defStyle.BackColor)),
                 Font = settingsSvc.Get(snames.FontName, defStyle.FontName),
+                FontSize = defStyle.FontSize,
                 Width = string.IsNullOrEmpty(defStyle.Width) ? default(int?) : Convert.ToInt32(defStyle.Width),
                 PaddingLeft = padLeft,
                 PaddingTop = padTop,
@@ -272,6 +274,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             internal string ForeColor;
             internal string BackColor;
             internal string FontName;
+            internal string FontSize;
         }
     }
 }

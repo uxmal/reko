@@ -32,6 +32,8 @@ namespace Reko.Core.Configuration
 
         public string? FontName { get; set; }
 
+        public double? FontSize { get; set; }
+
         public string? ForeColor { get; set; }
 
         public string? BackColor { get; set; }
