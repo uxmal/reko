@@ -104,5 +104,29 @@ namespace Reko.UnitTests.Core.Lib
         {
             Assert.AreEqual("00000000FF0000FF", Bits.RotateR(32, 0xFFFF, 8).ToString("X16"));
         }
+
+        [Test]
+        public void Bits_SignExtend_32bits()
+        {
+            Assert.AreEqual(0x8000_0000, Bits.SignExtend(0x8000_0000, 0x20));
+        }
+
+        [Test]
+        public void Bits_SignExtend_64bits()
+        {
+            Assert.AreEqual(0x8000_0000_0000_0000, Bits.SignExtend(0x8000_0000_0000_0000, 0x20));
+        }
+
+        [Test]
+        public void Bits_ZeroExtend_32bits()
+        {
+            Assert.AreEqual(0x8000_0000, Bits.ZeroExtend(0x8000_0000u, 0x40));
+        }
+
+        [Test]
+        public void Bits_ZeroExtend_64bits()
+        {
+            Assert.AreEqual(0x8000_0000_0000_0000, Bits.ZeroExtend(0x8000_0000_0000_0000, 0x40));
+        }
     }
 }

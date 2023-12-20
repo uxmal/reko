@@ -66,6 +66,12 @@ namespace Reko.Core.Lib
         /// <returns></returns>
         public static ulong SignExtend(ulong w, int b)
         {
+            // This test unfortunately introduces a jump,
+            // but if we don't add it, we get incorrect
+            // results.
+            if (b >= 0x40)  // The size of a C# ulong
+                return w;
+
             ulong r;      // resulting sign-extended number
             ulong m = 1LU << (b - 1); // mask can be pre-computed if b is fixed
             w &= ((1LU << b) - 1);  // (Skip this if bits in x above position b are already zero.)
@@ -75,6 +81,11 @@ namespace Reko.Core.Lib
 
         public static uint SignExtend(uint w, int b)
         {
+            // This test unfortunately introduces a jump,
+            // but if we don't add it, we get incorrect
+            // results.
+            if (b >= 0x20)  // The size of a C# uint
+                return w;
             uint r;      // resulting sign-extended number
             uint m = 1u << (b - 1); // mask can be pre-computed if b is fixed
             w &= ((1u << b) - 1);  // (Skip this if bits in x above position b are already zero.)
@@ -84,6 +95,11 @@ namespace Reko.Core.Lib
 
         public static ulong ZeroExtend(ulong w, int b)
         {
+            // This test unfortunately introduces a jump,
+            // but if we don't add it, we get incorrect
+            // results.
+            if (b >= 0x40)  // The size of a C# ulong
+                return w;
             ulong m = (1Lu << b) - 1;
             return w & m;
         }
