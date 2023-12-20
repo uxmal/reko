@@ -3845,8 +3845,8 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.ssubw2, q1, Vr(0, 5, HSD_), Vr(5, 5, HSD_), q30, Vr(16, 5, BHS_))),
 
                     Mask(30, 1,  "0100",
-                        Instr(Mnemonic.addhn, q30,Vr(0,5,BHS_), Vr(5,5,HSD_),Vr(16,5,HSD_)),
-                        Instr(Mnemonic.addhn2, q30,Vr(0,5,BHS_), Vr(5,5,HSD_),Vr(16,5,HSD_))),
+                        Instr(Mnemonic.addhn, q0, Vr(0,5,BHS_), q1, Vr(5,5,HSD_),Vr(16,5,HSD_)),
+                        Instr(Mnemonic.addhn2, q1, q30,Vr(0,5,BHS_), Vr(5,5,HSD_),Vr(16,5,HSD_))),
                     Mask(30, 1, "  0101",
                         Instr(Mnemonic.sabal, q1, Vr(0, 5, HSD_), q0, Vr(5, 5, BHS_), Vr(16, 5, BHS_)),
                         Instr(Mnemonic.sabal2, q1, Vr(0, 5, HSD_), q0, Vr(5, 5, BHS_), Vr(16, 5, BHS_))),

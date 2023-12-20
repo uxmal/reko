@@ -19,42 +19,55 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Arm.AArch64
+namespace Reko.Arch.Arm.AArch64;
+
+public class Intrinsics
 {
-    public class Intrinsics
-    {
-        public record IntrinsicPair(
-                IntrinsicProcedure Scalar,
-                IntrinsicProcedure Vector);
+    public record IntrinsicPair(
+        IntrinsicProcedure Scalar,
+        IntrinsicProcedure Vector);
 
-        public readonly IntrinsicProcedure addhn = IntrinsicBuilder.GenericBinary("__addhn");
-        public readonly IntrinsicProcedure addhn2 = IntrinsicBuilder.GenericBinary("__addhn2");
-        public readonly IntrinsicProcedure addp = IntrinsicBuilder.GenericBinary("__addp");
+    public readonly IntrinsicProcedure addhn = new IntrinsicBuilder("__addhn", _addhn)
+        .GenericTypes("TSrc", "TDst")
+        .Param("TSrc")
+        .Param("TSrc")
+        .Returns("TDst");
 
-        public readonly IntrinsicProcedure bfm = IntrinsicBuilder.Pure("__bfm")
-            .GenericTypes("T")
-            .Param("T")
-            .Param("T")
-            .Param(PrimitiveType.Int32)
-            .Param(PrimitiveType.Int32)
-            .Returns("T");
-        public readonly IntrinsicProcedure bif = IntrinsicBuilder.GenericBinary("__bif");
-        public readonly IntrinsicProcedure bit = IntrinsicBuilder.GenericBinary("__bit");
-        public readonly IntrinsicProcedure brk =
-            new IntrinsicBuilder("__brk", true, new Core.Serialization.ProcedureCharacteristics
-            {
-                Terminates = true,
-            })
-            .Param(PrimitiveType.UInt16)
-            .Void();
+    public readonly IntrinsicProcedure addhn2 = new IntrinsicBuilder("__addhn2", _addhn)
+        .GenericTypes("TSrc", "TDst")
+        .Param("TSrc")
+        .Param("TSrc")
+        .Returns("TDst");
+
+    public readonly IntrinsicProcedure addp = IntrinsicBuilder.GenericBinary("__addp");
+
+    public readonly IntrinsicProcedure bfm = IntrinsicBuilder.Pure("__bfm")
+        .GenericTypes("T")
+        .Param("T")
+        .Param("T")
+        .Param(PrimitiveType.Int32)
+        .Param(PrimitiveType.Int32)
+        .Returns("T");
+    public readonly IntrinsicProcedure bif = IntrinsicBuilder.GenericBinary("__bif");
+    public readonly IntrinsicProcedure bit = IntrinsicBuilder.GenericBinary("__bit");
+    public readonly IntrinsicProcedure brk =
+        new IntrinsicBuilder("__brk", true, new Core.Serialization.ProcedureCharacteristics
+        {
+            Terminates = true,
+        })
+        .Param(PrimitiveType.UInt16)
+        .Void();
 
     public readonly IntrinsicProcedure ceil = IntrinsicBuilder.GenericUnary("__ceil");
     public readonly IntrinsicProcedure cls = IntrinsicBuilder.GenericUnary("__cls");
@@ -321,7 +334,7 @@ namespace Reko.Arch.Arm.AArch64
     public readonly IntrinsicProcedure smull2 = IntrinsicBuilder.GenericBinary("__smull2");
     public readonly IntrinsicProcedure sqabs = IntrinsicBuilder.GenericUnary("__sqabs");
     public readonly IntrinsicProcedure sqadd = IntrinsicBuilder.GenericBinary("__sqadd");
-    public readonly IntrinsicPair sqdmulh = new (
+    public readonly IntrinsicPair sqdmulh = new(
         IntrinsicBuilder.GenericBinary("__sqdmulh"),
         IntrinsicBuilder.GenericBinary("__sqdmulh_vec"));
     public readonly IntrinsicProcedure sqdmlal = IntrinsicBuilder.GenericTernary("__sqdmlal");
@@ -572,5 +585,12 @@ namespace Reko.Arch.Arm.AArch64
     public readonly IntrinsicProcedure zip1 = IntrinsicBuilder.GenericBinary("__zip1");
     public readonly IntrinsicProcedure zip2 = IntrinsicBuilder.GenericBinary("__zip2");
 
+    private static IntrinsicProcedure _addhn = IntrinsicBuilder.GenericBinary("__add_high_narrow", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var highPart = (cs[0].ToUInt64() + cs[1].ToUInt64()) >> bitsResult;
+        return Constant.Create(dt, highPart);
+    });
 }
-}
+

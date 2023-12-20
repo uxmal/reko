@@ -124,26 +124,12 @@ namespace Reko.Core.Expressions
                 case Domain.Real: return DoubleFromBitpattern(value);
                 default: return new ConstantUInt64(dt, (ulong) value);
                 }
-            case 96:
-            case 128:
-                switch (dt.Domain)
-                {
-                case Domain.SignedInt: return new BigConstant(dt, (long) value);
-                default: return BigConstant.CreateUnsigned(dt, value);
-                }
-            case 136:
-            case 144:
-            case 192:
-            case 224:
-            case 256:
+            default:
                 switch (dt.Domain)
                 {
                 case Domain.SignedInt: return new BigConstant(dt, (long) value);
                 default: return BigConstant.CreateUnsigned(dt, (ulong) value);
                 }
-            default:
-                //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
-                break;
             }
             throw new NotSupportedException($"Constants of type {dt} are not supported.");
         }

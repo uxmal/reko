@@ -145,6 +145,17 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("add\twsp,wsp,w0,sxth #0");
         }
 
+        [Test]
+        public void AArch64Dis_addhn()
+        {
+            AssertCode("addhn\tv17.2s,v17.2d,v12.2d", "31 42 AC 0E");
+        }
+
+        [Test]
+        public void AArch64Dis_addhn2()
+        {
+            AssertCode("addhn2\tv17.4s,v17.2d,v12.2d", "31 42 AC 4E");
+        }
 
         [Test]
         public void AArch64Dis_addp()

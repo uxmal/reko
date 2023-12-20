@@ -90,8 +90,8 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
                     case Mnemonic.adcs: RewriteAdcSbc(m.IAdd, this.NZCV); break;
                     case Mnemonic.add: RewriteMaybeSimdBinary(m.IAdd, Simd.Add); break;
-                    case Mnemonic.addhn: RewriteSimdBinary(intrinsic.addhn, Domain.None); break;
-                    case Mnemonic.addhn2: RewriteSimdBinary(intrinsic.addhn2, Domain.None); break;
+                    case Mnemonic.addhn: RewriteSimdBinaryNarrow(intrinsic.addhn, Domain.None); break;
+                    case Mnemonic.addhn2: RewriteAddhn2(); break;
                     case Mnemonic.addp: RewriteSimdBinary(intrinsic.addp, Domain.None); break;
                     case Mnemonic.adds: RewriteBinary(m.IAdd, this.NZCV); break;
                     case Mnemonic.addv: RewriteAddv(); break;

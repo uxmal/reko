@@ -269,7 +269,7 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
-        public static IntrinsicProcedure SimdBinary(string name, BinaryOperator op)
+        public static IntrinsicProcedure SimdBinary(string name, IFunctionalUnit op)
         {
             return new IntrinsicBuilder(name, op)
                 .GenericTypes("T")

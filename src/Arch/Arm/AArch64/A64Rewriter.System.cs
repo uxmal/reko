@@ -39,7 +39,6 @@ namespace Reko.Arch.Arm.AArch64
             m.SideEffect(m.Fn(intrinsic.dmb, Constant.String(label, labelType)));
         }
 
-
         private void RewriteDsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];

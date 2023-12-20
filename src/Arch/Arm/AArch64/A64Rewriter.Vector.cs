@@ -112,6 +112,16 @@ namespace Reko.Arch.Arm.AArch64
             AssignSimd(0, m.Fn(intrinsic, src1, src2));
         }
 
+        private void RewriteSimdBinaryNarrow(IntrinsicProcedure intrinsic, Domain domain = 0)
+        {
+            var src1 = this.RewriteOp(1);
+            var src2 = this.RewriteOp(2);
+            var arraySrc = MakeArrayType(instr.Operands[1], domain);
+            var arrayDst = MakeArrayType(instr.Operands[0], domain);
+            intrinsic = intrinsic.MakeInstance(arraySrc, arrayDst);
+            AssignSimd(0, m.Fn(intrinsic, src1, src2));
+        }
+
         // E.g.  saddw v10.8h,v11.8h,v31.8b
         private void RewriteSimdBinaryWideNarrow(IntrinsicProcedure intrinsic, Domain domain = 0)
         {
@@ -249,6 +259,20 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(0);
             var dtDst = PrimitiveType.Create(domain, dst.DataType.BitSize);
             AssignSimd(0, m.Convert(src, src.DataType, dtDst));
+        }
+
+        private void RewriteAddhn2()
+        {
+            var src1 = this.RewriteOp(1);
+            var src2 = this.RewriteOp(2);
+            var arraySrc = MakeArrayType(instr.Operands[1], 0);
+            var arrayDst = MakeArrayType(instr.Operands[0], 0);
+            arrayDst.Length = arraySrc.Length;
+            var addhn2 = intrinsic.addhn2.MakeInstance(arraySrc, arrayDst);
+            var tmp = binder.CreateTemporary(arrayDst);
+            m.Assign(tmp, m.Fn(addhn2, src1, src2));
+            var dst = this.RewriteOp(0);
+            m.Assign(dst, m.Dpb(dst, tmp, tmp.DataType.BitSize));
         }
 
         private void RewriteAddv()
