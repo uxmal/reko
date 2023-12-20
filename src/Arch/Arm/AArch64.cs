@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
 #endif
 
         public Arm64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, Registers64.ByName, null)
+            : base(services, archId, options, Registers64.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;

@@ -46,10 +46,9 @@ namespace Reko.Arch.Arm.AArch64
                         var arrayRight = MakeArrayType(instr.Operands[2], domain);
                         tmpRight = binder.CreateTemporary(arrayRight);
                     }
-                    var dst = RewriteOp(instr.Operands[0]);
                     var dtDst = MakeOperandType(instr.Operands[0], domain);
-                    var left = RewriteOp(instr.Operands[1], true);
-                    var right = RewriteOp(instr.Operands[2], true);
+                    var left = RewriteOp(1, true);
+                    var right = RewriteOp(2, true);
                     intrinsic = intrinsic.MakeInstance(arrayLeft);
                     m.Assign(tmpLeft, left);
                     if (tmpRight != null)
@@ -60,17 +59,16 @@ namespace Reko.Arch.Arm.AArch64
                     {
                         tmpRight = right;
                     }
-                    m.Assign(dst, m.Fn(intrinsic, tmpLeft, tmpRight));
+                    var dst = AssignSimd(0, m.Fn(intrinsic, tmpLeft, tmpRight));
                     setFlags?.Invoke(dst);
                 }
                 else
                 {
                     var op2 = RewriteOp(1);
                     var op3 = RewriteOp(2);
-                    var op1 = RewriteOp(0);
                     var arrayLeft = MakeArrayType(instr.Operands[1], domain);
                     intrinsic = intrinsic.MakeInstance(arrayLeft);
-                    m.Assign(op1, m.Fn(intrinsic, op2, op3));
+                    AssignSimd(0, m.Fn(intrinsic, op2, op3));
                 }
             }
             else if (instr.Operands[0] is VectorRegisterOperand)
@@ -79,14 +77,13 @@ namespace Reko.Arch.Arm.AArch64
                 var tmpLeft = binder.CreateTemporary(arrayLeft);
                 var arrayRight = MakeArrayType(instr.Operands[0], domain);
                 var tmpRight = binder.CreateTemporary(arrayRight);
-                var dst = RewriteOp(instr.Operands[0]);
                 var dtDst = MakeOperandType(instr.Operands[0], domain);
                 var left = RewriteOp(instr.Operands[0], true);
                 var right = RewriteOp(instr.Operands[1], true);
                 intrinsic = intrinsic.MakeInstance(arrayLeft);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, m.Fn(intrinsic, tmpRight, tmpLeft));
+                var dst = AssignSimd(0, m.Fn(intrinsic, tmpRight, tmpLeft));
                 setFlags?.Invoke(dst);
             }
             else
@@ -94,14 +91,13 @@ namespace Reko.Arch.Arm.AArch64
                 var arrayLeft = MakeArrayType(instr.Operands[1], domain);
                 var tmpLeft = binder.CreateTemporary(arrayLeft);
                 var tmpRight = binder.CreateTemporary(arrayLeft);
-                var dst = RewriteOp(instr.Operands[0]);
                 var dtDst = MakeOperandType(instr.Operands[0], domain);
-                var left = RewriteOp(instr.Operands[0], true);
-                var right = RewriteOp(instr.Operands[1], true);
+                var left = RewriteOp(0, true);
+                var right = RewriteOp(1, true);
                 intrinsic = intrinsic.MakeInstance(arrayLeft);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, m.Fn(intrinsic, tmpRight, tmpLeft));
+                var dst = AssignSimd(0, m.Fn(intrinsic, tmpRight, tmpLeft));
                 setFlags?.Invoke(dst);
             }
         }
@@ -110,11 +106,10 @@ namespace Reko.Arch.Arm.AArch64
         {
             var src1 = this.RewriteOp(1);
             var src2 = this.RewriteOp(2);
-            var dst = this.RewriteOp(0);
             var arraySrc = MakeArrayType(instr.Operands[1], domain);
             var arrayDst = MakeArrayType(instr.Operands[0], domain);
             intrinsic = intrinsic.MakeInstance(arraySrc, arrayDst);
-            m.Assign(dst, m.Fn(intrinsic, src1, src2));
+            AssignSimd(0, m.Fn(intrinsic, src1, src2));
         }
 
         // E.g.  saddw v10.8h,v11.8h,v31.8b
@@ -122,11 +117,10 @@ namespace Reko.Arch.Arm.AArch64
         {
             var src1 = this.RewriteOp(1);
             var src2 = this.RewriteOp(2);
-            var dst = this.RewriteOp(0);
             var arrayWide = MakeArrayType(instr.Operands[1], domain);
             var arrayNarrow = MakeArrayType(instr.Operands[2], domain);
             intrinsic = intrinsic.MakeInstance(arrayWide, arrayNarrow);
-            m.Assign(dst, m.Fn(intrinsic, src1, src2));
+            AssignSimd(0, m.Fn(intrinsic, src1, src2));
         }
 
         private void RewriteSimdTernary(IntrinsicProcedure intrinsic, Domain domain)
@@ -150,7 +144,7 @@ namespace Reko.Arch.Arm.AArch64
                 var op3 = RewriteOp(2);
                 m.Assign(tmp3, op3);
 
-                m.Assign(op1, m.Fn(intrinsic, tmp1, tmp2, tmp3));
+                AssignSimd(0, m.Fn(intrinsic, tmp1, tmp2, tmp3));
             }
             else
             {
@@ -158,7 +152,7 @@ namespace Reko.Arch.Arm.AArch64
                 var op2 = RewriteOp(1);
                 var op3 = RewriteOp(2);
 
-                m.Assign(op1, m.Fn(intrinsic, op1, op2, op3));
+                AssignSimd(0, m.Fn(intrinsic, op1, op2, op3));
             }
         }
 
@@ -170,7 +164,7 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(1, true);
             var src3 = RewriteOp(2, true);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arraySrc, arrayDst), src1, src2, src3));
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc, arrayDst), src1, src2, src3));
         }
 
         private void RewriteSimdTernaryWithScalar(IntrinsicProcedure intrinsic, Domain domain)
@@ -181,7 +175,7 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(2, true);
             var src3 = RewriteOp(3, true);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arraySrc), src1, src2, src3));
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc), src1, src2, src3));
         }
 
         private void RewriteSimdBinaryWithScalar(IntrinsicProcedure intrinsic, Domain domain, Action<Expression>? setFlags = null)
@@ -190,8 +184,7 @@ namespace Reko.Arch.Arm.AArch64
             var arrayDst = MakeArrayType(instr.Operands[0], domain);
             var left = RewriteOp(1, true);
             var right = RewriteOp(2, true);
-            var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arrayLeft), left, right));
+            var dst = AssignSimd(0, m.Fn(intrinsic.MakeInstance(arrayLeft), left, right));
             setFlags?.Invoke(dst);
         }
 
@@ -200,18 +193,16 @@ namespace Reko.Arch.Arm.AArch64
             var dtSrc = MakeArrayType(instr.Operands[1], domain);
             var tmpSrc = binder.CreateTemporary(dtSrc);
             var src = RewriteOp(1, true);
-            var dst = RewriteOp(0);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, m.Fn(simdGeneric.MakeInstance(dtSrc), tmpSrc));
+            AssignSimd(0, m.Fn(simdGeneric.MakeInstance(dtSrc), tmpSrc));
         }
 
         private void RewriteSimdUnaryChangeSize(IntrinsicProcedure intrinsic, Domain domain = Domain.None)
         {
             var arraySrc = MakeArrayType(instr.Operands[1], domain);
             var arrayDst = MakeArrayType(instr.Operands[0], domain);
-            var src = RewriteOp(instr.Operands[1], true);
-            var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arraySrc, arrayDst), src));
+            var src = RewriteOp(1, true);
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc, arrayDst), src));
         }
 
         /// <summary>
@@ -224,15 +215,14 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(1, true);
             var dst = RewriteOp(0);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arraySrc, dst.DataType), tmpSrc));
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc, dst.DataType), tmpSrc));
         }
 
         private void RewriteSimdUnaryWithScalar(IntrinsicProcedure intrinsic, Domain domain)
         {
             var arrayDst = MakeArrayType(instr.Operands[0], domain);
             var src = RewriteOp(1, true);
-            var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(src.DataType, arrayDst), src));
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(src.DataType, arrayDst), src));
         }
 
         /// <summary>
@@ -258,21 +248,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = m.ARef(arraySrc.ElementType, tmpSrc, Constant.Int32(vop.Index));
             var dst = RewriteOp(0);
             var dtDst = PrimitiveType.Create(domain, dst.DataType.BitSize);
-            m.Assign(dst, m.Convert(src, src.DataType, dtDst));
-        }
-
-        private string GenerateSimdIntrinsicName(string simdFormat, PrimitiveType elementType)
-        {
-            string prefix = "i";
-            if (elementType.Domain == Domain.Real)
-            {
-                prefix = "f";
-            }
-            else if (elementType.Domain == Domain.UnsignedInt)
-            {
-                prefix = "u";
-            }
-            return string.Format(simdFormat, $"{prefix}{elementType.BitSize}");
+            AssignSimd(0, m.Convert(src, src.DataType, dtDst));
         }
 
         private void RewriteAddv()
@@ -289,7 +265,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = this.RewriteOp(0);
             var src1 = this.RewriteOp(1);
             var src2 = this.RewriteOp(2);
-            m.Assign(dst, m.Xor(dst, m.And(m.Xor(dst, src2), src1)));
+            AssignSimd(0, m.Xor(dst, m.And(m.Xor(dst, src2), src1)));
         }
 
         private void RewriteCm(IntrinsicProcedure intrinsic, Domain domain)
@@ -300,13 +276,11 @@ namespace Reko.Arch.Arm.AArch64
                 var arrayLeft = MakeArrayType(instr.Operands[1], domain);
                 var left = RewriteOp(instr.Operands[1], false);
                 var right = Constant.Zero(instr.Operands[1].Width);
-                var dst = RewriteOp(instr.Operands[0]);
-                m.Assign(dst, m.Fn(intrinsic.MakeInstance(arrayLeft), left, right));
+                AssignSimd(0, m.Fn(intrinsic.MakeInstance(arrayLeft), left, right));
             }
             else if (instr.Operands[2] is VectorRegisterOperand)
             {
                 RewriteSimdBinary(intrinsic, Domain.None);
-
             }
             else
             {
@@ -319,17 +293,17 @@ namespace Reko.Arch.Arm.AArch64
         {
             var rHi = (RegisterStorage) instr.Operands[1];
             var rLo = (RegisterStorage) instr.Operands[1];
-            var opDst = RewriteOp(0);
             var lsb = ((ImmediateOperand) instr.Operands[3]).Value;
             if (rHi == rLo) // ROR
             {
                 var op = binder.EnsureRegister(rHi);
-                m.Assign(opDst, m.Fn(CommonOps.Ror, op, lsb));
+                AssignSimd(0, m.Fn(CommonOps.Ror, op, lsb));
             }
             else
             {
+                var opDst = RewriteOp(0);
                 var seq = binder.EnsureSequence(PrimitiveType.Word128, rHi, rLo);
-                m.Assign(opDst, m.Slice(seq, opDst.DataType, lsb.ToInt32()));
+                AssignSimd(0, m.Slice(seq, opDst.DataType, lsb.ToInt32()));
             }
         }
 
@@ -380,7 +354,7 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands[^1] is VectorRegisterOperand vr && vr.Index >= 0)
             {
                 var dtSrc = this.MakeArrayType(instr.Operands[1]);
-                m.Assign(RewriteOp(0), m.Fn(
+                AssignSimd(0, m.Fn(
                     intrinsicByElement.MakeInstance(dtSrc, dtSrc.ElementType),
                     RewriteOp(0),
                     RewriteOp(1),
@@ -389,7 +363,7 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 var dtSrc = this.MakeArrayType(instr.Operands[1]);
-                m.Assign(RewriteOp(0), m.Fn(
+                AssignSimd(0, m.Fn(
                    intrinsic.MakeInstance(dtSrc),
                    RewriteOp(0),
                    RewriteOp(1),
@@ -404,8 +378,7 @@ namespace Reko.Arch.Arm.AArch64
             var s = RewriteOp(3);
             var product = m.IMul(m1, m2);
             product.DataType = s.DataType;
-            var dst = RewriteOp(0);
-            m.Assign(dst, m.ISub(s, product));
+            AssignSimd(0, m.ISub(s, product));
         }
 
         private void RewriteStN(IntrinsicProcedure procedure)
@@ -450,8 +423,7 @@ namespace Reko.Arch.Arm.AArch64
             var vDst = (VectorRegisterOperand) instr.Operands[0];
             var eType = Bitsize(vDst.ElementType);
             var src = ReplicateSimdConstant(vDst, eType, 1);
-            var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, src);
+            AssignSimd(0, src);
         }
 
         private void RewriteIcvtf(string sSign, Domain intDomain)
@@ -467,12 +439,12 @@ namespace Reko.Arch.Arm.AArch64
                 var dtSrc = MakeOperandType(instr.Operands[1], intDomain);
                 var dtDst = MakeOperandType(instr.Operands[0], Domain.Real);
                 var fprec = RewriteOp(instr.Operands[2]);
-                m.Assign(dst, m.Fn(cvtf_fixed_intrinsic.MakeInstance(dtSrc, dtDst), src, fprec));
+                AssignSimd(0, m.Fn(cvtf_fixed_intrinsic.MakeInstance(dtSrc, dtDst), src, fprec));
             }
             else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage) idSrc.Storage))
             {
                 var intType = PrimitiveType.Create(intDomain, srcBitSize);
-                m.Assign(dst, m.Convert(src, intType, realType));
+                AssignSimd(0, m.Convert(src, intType, realType));
             }
             else if (instr.Operands[0] is VectorRegisterOperand vrop)
             {
@@ -481,7 +453,7 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 var intType = PrimitiveType.Create(intDomain, srcBitSize);
-                m.Assign(dst, m.Convert(src, intType, realType));
+                AssignSimd(0, m.Convert(src, intType, realType));
             }
         }
 
@@ -490,7 +462,7 @@ namespace Reko.Arch.Arm.AArch64
             var op1 = RewriteOp(1);
             var op2 = RewriteOp(2);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(__sha1c, op1, op2));
+            AssignSimd(0, m.Fn(__sha1c, op1, op2));
         }
 
         private void RewriteSqdmull(IntrinsicProcedure intrinsic)
@@ -498,7 +470,7 @@ namespace Reko.Arch.Arm.AArch64
             var op1 = RewriteOp(1);
             var op2 = RewriteOp(2);
             var dst = RewriteOp(0);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(op1.DataType, dst.DataType), op1, op2));
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(op1.DataType, dst.DataType), op1, op2));
         }
 
         private void RewriteTbl()
@@ -510,7 +482,6 @@ namespace Reko.Arch.Arm.AArch64
             int n = idxs.Repeat;
             var src = RewriteOp(2);
             m.Assign(tmpSrc, src);
-            var dst = RewriteOp(0);
             var args = new List<Expression>();
             args.Add(Constant.Int32(n));
             foreach (var reg in idxs.GetRegisters())
@@ -518,7 +489,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, m.FnVariadic(tbl_intrinsic.MakeInstance(arrayDst), args.ToArray()));
+            AssignSimd(0, m.FnVariadic(tbl_intrinsic.MakeInstance(arrayDst), args.ToArray()));
         }
 
         private void RewriteTbx()
@@ -530,7 +501,6 @@ namespace Reko.Arch.Arm.AArch64
             int n = idxs.Repeat;
             var src = RewriteOp(2);
             m.Assign(tmpSrc, src);
-            var dst = RewriteOp(0);
             var args = new List<Expression>();
             args.Add(Constant.Int32(n));
             foreach (var reg in idxs.GetRegisters())
@@ -538,7 +508,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, m.FnVariadic(tbx_intrinsic.MakeInstance(arrayDst), args.ToArray()));
+            AssignSimd(0, m.FnVariadic(tbx_intrinsic.MakeInstance(arrayDst), args.ToArray()));
         }
     }
 }

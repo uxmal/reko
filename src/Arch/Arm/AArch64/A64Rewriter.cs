@@ -452,6 +452,21 @@ namespace Reko.Arch.Arm.AArch64
             testGenSvc?.ReportMissingRewriter("AArch64Rw", this.instr, instr.Mnemonic.ToString(), rdr, message);
         }
 
+        private Expression AssignSimd(int iop, Expression exp)
+        {
+            var dst = (Identifier) RewriteOp(iop);
+            var vreg = Registers.ByDomain[dst.Storage.Domain];
+            m.Assign(dst, exp);
+            var highBitsRemaining = vreg.DataType.BitSize - dst.DataType.BitSize;
+            if (highBitsRemaining > 0)
+            {
+                var v = binder.EnsureRegister(vreg);
+                var w = PrimitiveType.CreateWord(highBitsRemaining);
+                m.Assign(v, m.Seq(Constant.Zero(w), dst));
+            }
+            return dst;
+        }
+
         private Constant ReplicateSimdConstant(VectorRegisterOperand v, int cbitsElement, int iConstOp)
         {
             var imm = ((ImmediateOperand) instr.Operands[iConstOp]).Value.ToUInt64();
@@ -497,33 +512,38 @@ namespace Reko.Arch.Arm.AArch64
             case AddressOperand addrOp:
                 return addrOp.Address;
             case VectorRegisterOperand vectorOp:
-                Identifier vreg;
-                if (vectorOp.Width.BitSize == 64)
-                {
-                    vreg = binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
-                }
-                else
-                {
-                    vreg = binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
-                }
-                if (vectorOp.Index >= 0)
-                {
-                    // Treat the entire contents of the register as an array.
-                    //$BUG Indexing is done little-endian on the CPU, but must be
-                    // converted to big-endian to conform with the semantics of of Reko's ArrayAccess.
-                    var eType = PrimitiveType.CreateWord(Bitsize(vectorOp.ElementType));
-                    int index = vectorOp.Index;
-                    return m.ARef(eType, vreg, Constant.Int32(index));
-                }
-                else
-                {
-                    return vreg;
-                }
+                return RewriteVectorRegisterOperand(vectorOp);
             case MemoryOperand mem:
                 var ea = binder.EnsureRegister(mem.Base!);
                 return m.Mem(mem.Width, ea);
             }
             throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
+        }
+
+        private Expression RewriteVectorRegisterOperand(VectorRegisterOperand vectorOp)
+        {
+            Identifier vreg;
+            if (vectorOp.Width.BitSize == 64)
+            {
+                vreg = binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
+            }
+            else
+            {
+                vreg = binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
+            }
+            if (vectorOp.Index >= 0)
+            {
+                // Treat the entire contents of the register as an array.
+                //$BUG Indexing is done little-endian on the CPU, but must be
+                // converted to big-endian to conform with the semantics of of Reko's ArrayAccess.
+                var eType = PrimitiveType.CreateWord(Bitsize(vectorOp.ElementType));
+                int index = vectorOp.Index;
+                return m.ARef(eType, vreg, Constant.Int32(index));
+            }
+            else
+            {
+                return vreg;
+            }
         }
 
         private Expression MaybeZeroRegister(RegisterStorage reg, DataType dt)
@@ -538,6 +558,7 @@ namespace Reko.Arch.Arm.AArch64
                 return binder.EnsureRegister(reg);
             }
         }
+
         private Identifier NZCV()
         {
             return binder.EnsureFlagGroup(Registers.NZCV);

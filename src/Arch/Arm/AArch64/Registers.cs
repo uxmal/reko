@@ -51,6 +51,7 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly Dictionary<uint, RegisterStorage> SystemRegisters;
 
         public static readonly Dictionary<string, RegisterStorage> ByName;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
         public static readonly RegisterStorage[][] SubRegisters;
 
         public static readonly FlagGroupStorage C;
@@ -169,6 +170,17 @@ namespace Reko.Arch.Arm.AArch64
                     fpsr,
                 })
                 .ToDictionary(r => r.Name, StringComparer.OrdinalIgnoreCase);
+
+            ByDomain = GpRegs64
+                .Concat(SimdRegs128)
+                .Concat(new[]
+                {
+                    sp,
+                    pstate,
+                    fpcr,
+                    fpsr
+                })
+                .ToDictionary(r => r.Domain);
 
             SubRegisters = 
                 Enumerable.Range(0, 32)

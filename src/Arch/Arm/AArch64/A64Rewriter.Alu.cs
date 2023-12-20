@@ -38,9 +38,9 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression>? setFlags = null)
         {
-            var opSrc1 = RewriteOp(instr.Operands[1]);
-            var opSrc2 = RewriteOp(instr.Operands[2]);
-            var opDst = RewriteOp(instr.Operands[0]);
+            var opSrc1 = RewriteOp(1);
+            var opSrc2 = RewriteOp(2);
+            var opDst = RewriteOp(0);
 
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
@@ -428,7 +428,7 @@ namespace Reko.Arch.Arm.AArch64
                 var eType = Bitsize(v.ElementType);
                 var c = ReplicateSimdConstant(v, eType, 1);
                 var reg = RewriteOp(0);
-                m.Assign(reg, fn(reg, c));
+                AssignSimd(0, fn(reg, c));
             }
             else
             {

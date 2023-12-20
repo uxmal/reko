@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.MachO
         const uint MH_MAGIC_32_LE = 0xCEFAEDFE; // 0xFEEDFACE;
         const uint MH_MAGIC_64_LE = 0xCFFAEDFE; // 0xFEEDFACF;
 
-        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(MachOLoader), "Trace loading of MachO binaries") { Level = TraceLevel.Verbose };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(MachOLoader), "Trace loading of MachO binaries") { Level = TraceLevel.Warning };
 
         private Parser? parser;
         internal List<MachOSection> sections;
