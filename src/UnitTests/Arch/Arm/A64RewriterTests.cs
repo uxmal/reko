@@ -618,12 +618,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64_movk()
+        public void AArch64Rw_movk()
         {
             Given_HexString("49 86 8A 72 ");
             AssertCode(// movk w9,#0x5432
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|w9 = SEQ(SLICE(w9, word16, 16), 0x5432<16>)");
+        }
+
+        [Test]
+        public void AArch64_movk_msb_set()
+        {
+            Given_HexString("60 CF 99 D2");
+            AssertCode(     // movz x0,#&CE7B
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x0 = 0xCE7B<64>");
         }
 
         [Test]

@@ -504,7 +504,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
-            m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
+            m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToUInt64() << shift.ToInt32()));
         }
 
         private void RewriteMulh(PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)

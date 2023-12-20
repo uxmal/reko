@@ -80,10 +80,8 @@ namespace Reko.Core.Operators
 
         public Constant BuildConstant(DataType t1, DataType t2, BigInteger value)
         {
-            PrimitiveType p1 = t1.ResolveAs<PrimitiveType>()!;
-            PrimitiveType p2 = t2.ResolveAs<PrimitiveType>()!;
-            int bitSize = Math.Max(p1.BitSize, p2.BitSize);
-            var dtResult = PrimitiveType.Create(p1.Domain | p2.Domain, bitSize);
+            int bitSize = Math.Max(t1.BitSize, t2.BitSize);
+            var dtResult = PrimitiveType.CreateWord(bitSize);
             return Constant.Create(dtResult, value);
         }
     }
