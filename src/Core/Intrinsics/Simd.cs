@@ -35,8 +35,8 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure FSub = IntrinsicBuilder.SimdBinary("__simd_fsub", Operator.FSub);
         public static readonly IntrinsicProcedure Max = IntrinsicBuilder.SimdBinary("__simd_max", CommonOps.Max);
         public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericBinary("__simd_min");
-        public static readonly IntrinsicProcedure Mul = IntrinsicBuilder.GenericBinary("__simd_mul");
-        public static readonly IntrinsicProcedure Not = IntrinsicBuilder.GenericUnary("__simd_not");
+        public static readonly IntrinsicProcedure Mul = IntrinsicBuilder.SimdBinary("__simd_mul", Operator.IMul);
+        public static readonly IntrinsicProcedure Not = IntrinsicBuilder.SimdUnary("__simd_not", Operator.Comp);
         public static readonly IntrinsicProcedure Sqrt = IntrinsicBuilder.GenericUnary("__simd_sqrt");
         public static readonly IntrinsicProcedure Sub = IntrinsicBuilder.GenericBinary("__simd_sub");
     }

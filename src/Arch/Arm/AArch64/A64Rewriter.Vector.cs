@@ -225,7 +225,8 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(1, true);
             var dst = RewriteOp(0);
             m.Assign(tmpSrc, src);
-            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc, dst.DataType), tmpSrc));
+            var dtDst = PrimitiveType.Create(domain, dst.DataType.BitSize);
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(arraySrc, dtDst), tmpSrc));
         }
 
         private void RewriteSimdUnaryWithScalar(IntrinsicProcedure intrinsic, Domain domain)
@@ -293,9 +294,12 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteAddv()
+        private void RewriteBi(IntrinsicProcedure intrinsic)
         {
-            RewriteSimdUnaryReduce(intrinsic.sum, Domain.Integer);
+            var op0 = RewriteOp(0);
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            AssignSimd(0, m.Fn(intrinsic.MakeInstance(op0.DataType), op0, op1, op2));
         }
 
         private void RewriteBsl()
@@ -307,7 +311,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = this.RewriteOp(0);
             var src1 = this.RewriteOp(1);
             var src2 = this.RewriteOp(2);
-            AssignSimd(0, m.Xor(dst, m.And(m.Xor(dst, src2), src1)));
+            AssignSimd(0, m.Xor(src2, m.And(m.Xor(src1, src2), dst)));
         }
 
         private void RewriteCm(IntrinsicProcedure intrinsic, Domain domain)
@@ -468,7 +472,7 @@ namespace Reko.Arch.Arm.AArch64
             AssignSimd(0, src);
         }
 
-        private void RewriteIcvtf(string sSign, Domain intDomain)
+        private void RewriteIcvtf(Domain intDomain)
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(0);

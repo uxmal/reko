@@ -94,7 +94,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.addhn2: RewriteAddhn2(); break;
                     case Mnemonic.addp: RewriteAddp(); break;
                     case Mnemonic.adds: RewriteBinary(m.IAdd, this.NZCV); break;
-                    case Mnemonic.addv: RewriteAddv(); break;
+                    case Mnemonic.addv: RewriteSimdUnaryReduce(intrinsic.sum, Domain.Integer); break;
                     case Mnemonic.adr: RewriteUnary(n => n); break;
                     case Mnemonic.asrv: RewriteBinary(m.Sar); break;
                     case Mnemonic.adrp: RewriteAdrp(); break;
@@ -105,8 +105,8 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.bfm: RewriteBfm(); break;
                     case Mnemonic.bic: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
                     case Mnemonic.bics: RewriteBinary((a, b) => m.And(a, m.Comp(b)), NZ00); break;
-                    case Mnemonic.bif: RewriteSimdBinary(intrinsic.bif, Domain.None); break;
-                    case Mnemonic.bit: RewriteSimdBinary(intrinsic.bit, Domain.None); break;
+                    case Mnemonic.bif: RewriteBi(intrinsic.bif); break;
+                    case Mnemonic.bit: RewriteBi(intrinsic.bit); break;
                     case Mnemonic.bl: RewriteBl(); break;
                     case Mnemonic.blr: RewriteBlr(); break;
                     case Mnemonic.br: RewriteBr(); break;
@@ -256,7 +256,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.sbcs: RewriteAdcSbc(m.ISub, NZCV); break;
                     case Mnemonic.sbfiz: RewriteSbfiz(); break;
                     case Mnemonic.sbfm: RewriteUSbfm(intrinsic.sbfm); break;
-                    case Mnemonic.scvtf: RewriteIcvtf("s", Domain.SignedInt); break;
+                    case Mnemonic.scvtf: RewriteIcvtf(Domain.SignedInt); break;
                     case Mnemonic.sdiv: RewriteBinary(m.SDiv); break;
                     case Mnemonic.shadd: RewriteSimdBinary(intrinsic.shadd, Domain.SignedInt); break;
                     case Mnemonic.sha1c: RewriteSha1c(); break;
@@ -273,7 +273,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.smc: RewriteSmc(); break;
                     case Mnemonic.smin: RewriteSimdBinary(intrinsic.smin, Domain.SignedInt); break;
                     case Mnemonic.sminp: RewriteSimdBinary(intrinsic.sminp, Domain.SignedInt); break;
-                    case Mnemonic.sminv: RewriteSimdUnary(intrinsic.sminv, Domain.SignedInt); break;
+                    case Mnemonic.sminv: RewriteSimdUnaryReduce(intrinsic.sminv, Domain.SignedInt); break;
                     case Mnemonic.smlal: RewriteSimdTernaryWiden(intrinsic.smlal, Domain.SignedInt); break;
                     case Mnemonic.smlal2: RewriteSimdTernaryWiden(intrinsic.smlal2, Domain.SignedInt); break;
                     case Mnemonic.smlsl: RewriteSimdTernaryWiden(intrinsic.smlsl, Domain.SignedInt); break;
@@ -341,7 +341,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.stxr: RewriteStx(instr.Operands[1].Width); break;
                     case Mnemonic.stxrb: RewriteStx(PrimitiveType.Byte); break;
                     case Mnemonic.sub: RewriteBinary(m.ISub); break;
-                    case Mnemonic.subhn: RewriteSimdBinary(intrinsic.subhn, Domain.SignedInt); break;
+                    case Mnemonic.subhn: RewriteSimdBinaryNarrow(intrinsic.subhn, Domain.SignedInt); break;
                     case Mnemonic.subhn2: RewriteSimdBinaryWiden(intrinsic.subhn2, Domain.SignedInt); break;
                     case Mnemonic.suqadd: RewriteSimdBinary(intrinsic.suqadd, Domain.SignedInt); break;
                     case Mnemonic.subs: RewriteBinary(m.ISub, NZCV); break;
@@ -371,17 +371,17 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.uaddw: RewriteSimdBinaryWideNarrow(intrinsic.uaddw, Domain.UnsignedInt); break;
                     case Mnemonic.uaddw2: RewriteSimdBinaryWideNarrow(intrinsic.uaddw2, Domain.UnsignedInt); break;
                     case Mnemonic.ubfm: RewriteUSbfm(intrinsic.ubfm); break;
-                    case Mnemonic.ucvtf: RewriteIcvtf("u", Domain.UnsignedInt); break;
+                    case Mnemonic.ucvtf: RewriteIcvtf(Domain.UnsignedInt); break;
                     case Mnemonic.udiv: RewriteBinary(m.UDiv); break;
                     case Mnemonic.uhadd: RewriteSimdBinary(intrinsic.uhadd, Domain.UnsignedInt); break;
                     case Mnemonic.uhsub: RewriteSimdBinary(intrinsic.uhsub, Domain.UnsignedInt); break;
                     case Mnemonic.umaddl: RewriteMaddl(PrimitiveType.UInt64, m.UMul); break;
                     case Mnemonic.umax: RewriteSimdBinary(intrinsic.umax, Domain.UnsignedInt); break;
                     case Mnemonic.umaxp: RewriteSimdBinary(intrinsic.umaxp, Domain.UnsignedInt); break;
-                    case Mnemonic.umaxv: RewriteSimdUnary(intrinsic.umaxv, Domain.UnsignedInt); break;
+                    case Mnemonic.umaxv: RewriteSimdUnaryReduce(intrinsic.umaxv, Domain.UnsignedInt); break;
                     case Mnemonic.umin: RewriteSimdBinary(intrinsic.umin, Domain.UnsignedInt); break;
                     case Mnemonic.uminp: RewriteSimdBinary(intrinsic.uminp, Domain.UnsignedInt); break;
-                    case Mnemonic.uminv: RewriteSimdUnary(intrinsic.uminv, Domain.UnsignedInt); break;
+                    case Mnemonic.uminv: RewriteSimdUnaryReduce(intrinsic.uminv, Domain.UnsignedInt); break;
                     case Mnemonic.umlal: RewriteSimdTernaryWiden(intrinsic.umlal, Domain.UnsignedInt); break;
                     case Mnemonic.umlal2: RewriteSimdTernaryWiden(intrinsic.umlal2, Domain.UnsignedInt); break;
                     case Mnemonic.umlsl: RewriteSimdTernaryWiden(intrinsic.umlsl, Domain.UnsignedInt); break;

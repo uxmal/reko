@@ -21,7 +21,9 @@
 using NUnit.Framework;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Types;
+using Reko.UnitTests.Decompiler.Typing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         private ArrayType aw16(int cElem) => new ArrayType(PrimitiveType.Word16, cElem);
 
+        private ArrayType ai32(int cElem) => new ArrayType(PrimitiveType.Int32, cElem);
         private ArrayType aw32(int cElem) => new ArrayType(PrimitiveType.Word32, cElem);
         private Constant C(ArrayType at, params uint[] values)
         {
@@ -52,6 +55,20 @@ namespace Reko.UnitTests.Arch.Arm
                 value |= values[i];
             }
             return Constant.Create(at, value);
+        }
+        private Constant C(ArrayType at, string hexValue)
+        {
+            var value = BigInteger.Parse(hexValue, System.Globalization.NumberStyles.HexNumber, null);
+            return Constant.Create(at, value);
+        }
+
+        [Test]
+        public void AArch64Intrinsic_abs()
+        {
+            var c = Simd.Abs.MakeInstance(ai32(4)).ApplyConstants(
+                ai32(4),
+                C(ai32(4),  "0ED707E230AFFE01EA0CFEC7A8176C450"));
+            Assert.AreEqual("0x128F81DD0AFFE01E5F3013867E893BB0<128>", c.ToString());
         }
 
         [Test]
@@ -81,6 +98,63 @@ namespace Reko.UnitTests.Arch.Arm
                 PrimitiveType.Word32,
                 C(aw32(4), 0x1, 0x2, 0x3, 0x4));
             Assert.AreEqual("0xA<32>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_smaxv()
+        {
+            var c = intrinsics.smaxv.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(
+                PrimitiveType.Word32,
+                C(aw32(4), 0xFFFF_FFFF, 0x8000_0000, 0x3, 0x4));
+            Assert.AreEqual("4<32>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_smin()
+        {
+            var c = intrinsics.smin.MakeInstance(aw16(4)).ApplyConstants(
+                aw16(4),
+                C(aw16(4), 0x2233, 0xFFFF, 0xFFFD, 0xAA00),
+                C(aw16(4), 0x2236, 0xFFFE, 0x8001, 0x9988));
+            Assert.AreEqual("0x2233FFFE80019988<64>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_sminv()
+        {
+            var c = intrinsics.sminv.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(
+                PrimitiveType.Word32,
+                C(aw32(4), 0xFFFF_FFFF, 0x8000_0000, 0x3, 0x4));
+            Assert.AreEqual("0x80000000<32>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_umin()
+        {
+            var c = intrinsics.umin.MakeInstance(aw16(4)).ApplyConstants(
+                aw16(4),
+                C(aw16(4), 0x2233, 0x4567, 0x6677, 0xAA00),
+                C(aw16(4), 0x2236, 0x4455, 0x6777, 0x9988));
+            Assert.AreEqual("0x2233445566779988<64>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_uminp()
+        {
+            var c = intrinsics.uminp.MakeInstance(aw16(4)).ApplyConstants(
+                aw16(4),
+                C(aw16(4), 0x2233, 0x4567, 0xAA00, 0x6677),
+                C(aw16(4), 0x2236, 0x4455, 0x6777, 0x9988));
+            Assert.AreEqual("0x2236677722336677<64>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_uminv()
+        {
+            var c = intrinsics.uminv.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(
+                PrimitiveType.Word32,
+                C(aw32(4), 0x1, 0xFFFFFFFF, 0x3, 0x4));
+            Assert.AreEqual("1<32>", c.ToString());
         }
     }
 }

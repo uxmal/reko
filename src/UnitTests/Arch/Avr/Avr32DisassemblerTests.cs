@@ -33,7 +33,6 @@ namespace Reko.UnitTests.Arch.Avr
 
         public Avr32DisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new Avr32Architecture(CreateServiceContainer(), "avr32", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }

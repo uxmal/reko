@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // addv b10,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v3 = d0",
-                "2|L--|b10 = __sum<ui8[8],byte>(v3)",
+                "2|L--|b10 = __sum<ui8[8],ui8>(v3)",
                 "3|L--|q10 = SEQ(0<120>, b10)");
         }
 
@@ -321,11 +321,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("C11FEA2E");
             AssertCode(     // bif	v1.8b,v30.8b,v10.8b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = d30",
-                "2|L--|v4 = d10",
-                "3|L--|d1 = __bif<byte[8]>(v3, v4)",
-                "4|L--|q1 = SEQ(0<64>, d1)");
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|d1 = __bif<word64>(d1, d30, d10)",
+                "2|L--|q1 = SEQ(0<64>, d1)");
         }
 
         [Test]
@@ -333,10 +331,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("BF1DA16E");
             AssertCode(     // bit	v31.16b,v13.16b,v1.16b
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = q13",
-                "2|L--|v4 = q1",
-                "3|L--|q31 = __bit<byte[16]>(v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q31 = __bit<word128>(q31, q13, q1)");
         }
 
         [Test]
@@ -372,7 +368,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("831C606E");
             AssertCode(     // bsl	v3.16b,v4.16b,v0.16b
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|q3 = q3 ^ (q3 ^ q0) & q4");
+                "1|L--|q3 = q0 ^ (q4 ^ q0) & q3");
         }
 
         [Test]
@@ -2143,7 +2139,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // addv\ts1,v1.4s
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v3 = q1",
-                "2|L--|s1 = __sum<ui32[4],word32>(v3)",
+                "2|L--|s1 = __sum<ui32[4],ui32>(v3)",
                 "3|L--|q1 = SEQ(0<96>, s1)");
         }
 
@@ -2348,7 +2344,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // smaxv\ts0,v0.4s
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v3 = q0",
-                "2|L--|s0 = __smaxv<int32[4],word32>(v3)",
+                "2|L--|s0 = __smaxv<int32[4],int32>(v3)",
                 "3|L--|q0 = SEQ(0<96>, s0)");
         }
 
@@ -3288,7 +3284,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // sminv	b13,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v3 = d0",
-                "2|L--|b13 = __sminv<int8[8]>(v3)",
+                "2|L--|b13 = __sminv<int8[8],int8>(v3)",
                 "3|L--|q13 = SEQ(0<120>, b13)");
         }
 
@@ -3864,11 +3860,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("2D602C0E");
             AssertCode(     // subhn	v13.8b,v1.8h,v12.8h
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = q1",
-                "2|L--|v4 = q12",
-                "3|L--|d13 = __subhn<int16[8]>(v3, v4)",
-                "4|L--|q13 = SEQ(0<64>, d13)");
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|d13 = __addhn<int16[8],int8[8]>(q1, q12)",
+                "2|L--|q13 = SEQ(0<64>, d13)");
         }
 
         [Test]
@@ -4176,7 +4170,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // umaxv	b10,v13.8b
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v3 = d13",
-                "2|L--|b10 = __umaxv<uint8[8]>(v3)",
+                "2|L--|b10 = __umaxv<uint8[8],uint8>(v3)",
                 "3|L--|q10 = SEQ(0<120>, b10)");
         }
 
@@ -4211,7 +4205,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // uminv	b11,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v3 = d17",
-                "2|L--|b11 = __uminv<uint8[8]>(v3)",
+                "2|L--|b11 = __uminv<uint8[8],uint8>(v3)",
                 "3|L--|q11 = SEQ(0<120>, b11)");
         }
 

@@ -25,11 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64;
 
@@ -51,30 +47,7 @@ public class Intrinsics
         .Param("TSrc")
         .Returns("TDst");
 
-    public readonly IntrinsicProcedure addp = IntrinsicBuilder.GenericBinary("__addp", (dt, cs) =>
-    {
-        var at = (ArrayType) dt;
-
-        static BigInteger ProcessVectorRegisterValue(Constant value, int bitsResult, int bitsElement, BigInteger result)
-        {
-            var maskLane = (BigInteger.One << bitsElement) - 1;
-            var src = value.ToBigInteger();
-            for (int bitpos = bitsResult - bitsElement; bitpos >= 0; bitpos -= bitsElement)
-            {
-                var e1 = (src >> bitpos);
-                bitpos -= bitsElement;
-                var e2 = (src >> bitpos);
-
-                result = (result << bitsElement) | (e1 + e2) & maskLane;
-            }
-            return result;
-        }
-        var bitsResult = at.BitSize;
-        var bitsElement = at.ElementType.BitSize;
-        var result = ProcessVectorRegisterValue(cs[1], bitsResult, bitsElement, BigInteger.Zero);
-        result = ProcessVectorRegisterValue(cs[0], bitsResult, bitsElement, result);
-        return Constant.Create(dt, result);
-    });
+    public readonly IntrinsicProcedure addp = PairwiseReducingIntrinsic("__addp", Operator.IAdd);
 
     public readonly IntrinsicProcedure bfm = IntrinsicBuilder.Pure("__bfm")
         .GenericTypes("T")
@@ -83,8 +56,25 @@ public class Intrinsics
         .Param(PrimitiveType.Int32)
         .Param(PrimitiveType.Int32)
         .Returns("T");
-    public readonly IntrinsicProcedure bif = IntrinsicBuilder.GenericBinary("__bif");
-    public readonly IntrinsicProcedure bit = IntrinsicBuilder.GenericBinary("__bit");
+    public readonly IntrinsicProcedure bif = IntrinsicBuilder.GenericTernary("__bif", (dt, cs) =>
+    {
+        BigInteger operand4 = cs[1].ToBigInteger();
+
+        var operand1 = cs[0].ToBigInteger();
+        var operand3 = ~cs[2].ToBigInteger();
+
+        var result = operand1 ^ ((operand1 ^ operand4) & operand3);
+        return Constant.Create(dt, result);
+    });
+    public readonly IntrinsicProcedure bit = IntrinsicBuilder.GenericTernary("__bit", (dt, V) =>
+    {
+        var operand4 = V[1].ToBigInteger();
+
+        var operand1 = V[0].ToBigInteger();
+        var operand3 = V[2].ToBigInteger();
+        var result = operand1 ^ ((operand1 ^ operand4) & operand3);
+        return Constant.Create(dt, result);
+    });
     public readonly IntrinsicProcedure brk =
         new IntrinsicBuilder("__brk", true, new Core.Serialization.ProcedureCharacteristics
         {
@@ -95,13 +85,13 @@ public class Intrinsics
 
     public readonly IntrinsicProcedure ceil = IntrinsicBuilder.GenericUnary("__ceil");
     public readonly IntrinsicProcedure cls = IntrinsicBuilder.GenericUnary("__cls");
-    public readonly IntrinsicProcedure cmeq = IntrinsicBuilder.GenericBinary("__cmeq");
-    public readonly IntrinsicProcedure cmge = IntrinsicBuilder.GenericBinary("__cmge");
-    public readonly IntrinsicProcedure cmgt = IntrinsicBuilder.GenericBinary("__cmgt");
-    public readonly IntrinsicProcedure cmhi = IntrinsicBuilder.GenericBinary("__cmhi");
-    public readonly IntrinsicProcedure cmhs = IntrinsicBuilder.GenericBinary("__cmhs");
-    public readonly IntrinsicProcedure cmle = IntrinsicBuilder.GenericBinary("__cmle");
-    public readonly IntrinsicProcedure cmlt = IntrinsicBuilder.GenericBinary("__cmlt");
+    public readonly IntrinsicProcedure cmeq = IntrinsicBuilder.SimdBinary("__cmeq", _cmeq);
+    public readonly IntrinsicProcedure cmge = IntrinsicBuilder.SimdBinary("__cmge", _cmge);
+    public readonly IntrinsicProcedure cmgt = IntrinsicBuilder.SimdBinary("__cmgt", _cmgt);
+    public readonly IntrinsicProcedure cmhi = IntrinsicBuilder.SimdBinary("__cmhi", _cmhi);
+    public readonly IntrinsicProcedure cmhs = IntrinsicBuilder.SimdBinary("__cmhs", _cmhs);
+    public readonly IntrinsicProcedure cmle = IntrinsicBuilder.SimdBinary("__cmle", _cmle);
+    public readonly IntrinsicProcedure cmlt = IntrinsicBuilder.SimdBinary("__cmlt", _cmlt);
     public readonly IntrinsicProcedure cmtst = IntrinsicBuilder.GenericBinary("__cmtst");
     public readonly IntrinsicProcedure cnt = IntrinsicBuilder.GenericUnary("__cnt");
     public readonly IntrinsicProcedure cvtf = IntrinsicBuilder.GenericUnary("__cvtf");
@@ -223,7 +213,7 @@ public class Intrinsics
             .Returns("TDst");
 
     public readonly IntrinsicProcedure nearest = IntrinsicBuilder.GenericUnary("__nearest");
-    public readonly IntrinsicProcedure neg = IntrinsicBuilder.GenericUnary("__neg");
+    public readonly IntrinsicProcedure neg = IntrinsicBuilder.SimdUnary("__neg", Operator.Neg);
 
     public readonly IntrinsicProcedure pmul = IntrinsicBuilder.GenericBinary("__pmul");
     public readonly IntrinsicProcedure pmull = IntrinsicBuilder.GenericBinary("__pmull");
@@ -318,19 +308,16 @@ public class Intrinsics
             .Returns("T");
     public readonly IntrinsicProcedure shsub = IntrinsicBuilder.GenericBinary("__shsub");
     public readonly IntrinsicProcedure sli = IntrinsicBuilder.GenericBinary("__sli");
-    public readonly IntrinsicProcedure smax = IntrinsicBuilder.GenericBinary("__smax");
-    public readonly IntrinsicProcedure smaxp = IntrinsicBuilder.GenericBinary("__smaxp");
-    public readonly IntrinsicProcedure smaxv = IntrinsicBuilder.Pure("__smaxv")
-            .GenericTypes("TSrc", "TDst")
-            .Params("TSrc")
-            .Returns("TDst");
+    public readonly IntrinsicProcedure smax = IntrinsicBuilder.SimdBinary("__smax", _smax);
+    public readonly IntrinsicProcedure smaxp = PairwiseReducingIntrinsic("__smaxp", _smax);
+    public readonly IntrinsicProcedure smaxv = ReducingIntrinsic("__smaxv", _smax, MinSignedInt);
     public readonly IntrinsicProcedure smc =
             new IntrinsicBuilder("__secure_monitor_call", true)
             .Param(PrimitiveType.UInt16)
             .Void();
-    public readonly IntrinsicProcedure smin = IntrinsicBuilder.GenericBinary("__smin");
-    public readonly IntrinsicProcedure sminp = IntrinsicBuilder.GenericBinary("__sminp");
-    public readonly IntrinsicProcedure sminv = IntrinsicBuilder.GenericUnary("__sminv");
+    public readonly IntrinsicProcedure smin = IntrinsicBuilder.SimdBinary("__smin", _smin);
+    public readonly IntrinsicProcedure sminp = PairwiseReducingIntrinsic("__sminp", _smin);
+    public readonly IntrinsicProcedure sminv = ReducingIntrinsic("__sminv", _smin, MaxSignedInt);
     public readonly IntrinsicProcedure smlal = IntrinsicBuilder.Pure("__smlal")
             .GenericTypes("TSrc", "TDst")
             .Params("TDst")
@@ -463,17 +450,18 @@ public class Intrinsics
             .PtrParam("T")
             .Param("T")
             .Returns(PrimitiveType.Int32);
-    public readonly IntrinsicProcedure subhn = IntrinsicBuilder.GenericBinary("__subhn");
+    public readonly IntrinsicProcedure subhn = new IntrinsicBuilder("__addhn", _subhn)
+        .GenericTypes("TSrc", "TDst")
+        .Param("TSrc")
+        .Param("TSrc")
+        .Returns("TDst");
+
     public readonly IntrinsicProcedure subhn2 = IntrinsicBuilder.Pure("__subhn2")
             .GenericTypes("TSrc", "TDst")
             .Param("TSrc")
             .Param("TSrc")
             .Returns("TDst");
-    public readonly IntrinsicProcedure sum = IntrinsicBuilder.Pure("__sum")
-            .GenericTypes("TSrc", "TDst")
-            .Param("TSrc")
-            .ApplyConstants((dt, cs) => Reduce(dt, cs, BigInteger.Zero, Operator.IAdd))
-            .Returns("TDst");
+    public readonly IntrinsicProcedure sum = ReducingIntrinsic("__sum", Operator.IAdd, AllZerosSeed);
     public readonly IntrinsicProcedure suqadd = IntrinsicBuilder.GenericBinary("__suqadd");
 
     public readonly IntrinsicProcedure svc = new IntrinsicBuilder("__supervisor_call", true)
@@ -542,12 +530,13 @@ public class Intrinsics
             .Returns("T");
     public readonly IntrinsicProcedure uhadd = IntrinsicBuilder.GenericBinary("__uhadd");
     public readonly IntrinsicProcedure uhsub = IntrinsicBuilder.GenericBinary("__uhsub");
-    public readonly IntrinsicProcedure umax = IntrinsicBuilder.GenericBinary("__umax");
-    public readonly IntrinsicProcedure umaxp = IntrinsicBuilder.GenericBinary("__umaxp");
-    public readonly IntrinsicProcedure umaxv = IntrinsicBuilder.GenericUnary("__umaxv");
-    public readonly IntrinsicProcedure umin = IntrinsicBuilder.GenericBinary("__umin");
-    public readonly IntrinsicProcedure uminp = IntrinsicBuilder.GenericBinary("__uminp");
-    public readonly IntrinsicProcedure uminv = IntrinsicBuilder.GenericUnary("__uminv");
+    public readonly IntrinsicProcedure umax = IntrinsicBuilder.SimdBinary("__umax", _umax);
+    public readonly IntrinsicProcedure umaxp = PairwiseReducingIntrinsic("__umaxp", _umax);
+    public readonly IntrinsicProcedure umaxv = ReducingIntrinsic("__umaxv", _umax, AllZerosSeed);
+    public readonly IntrinsicProcedure umin = IntrinsicBuilder.SimdBinary("__umin", _umin);
+    public readonly IntrinsicProcedure uminp = PairwiseReducingIntrinsic("__uminp", _umin);
+    public readonly IntrinsicProcedure uminv = ReducingIntrinsic("__uminv", _umin, AllOnesSeed);
+
     public readonly IntrinsicProcedure umlal = IntrinsicBuilder.Pure("__umlal")
             .GenericTypes("TSrc", "TDst")
             .Params("TDst")
@@ -618,6 +607,109 @@ public class Intrinsics
         return Constant.Create(dt, highPart);
     });
 
+    private static IntrinsicProcedure _subhn = IntrinsicBuilder.GenericBinary("__sub_high_narrow", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var highPart = (cs[0].ToUInt64() - cs[1].ToUInt64()) >> bitsResult;
+        return Constant.Create(dt, highPart);
+    });
+    private static IntrinsicProcedure _cmeq = IntrinsicBuilder.GenericBinary("__cmeq", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToUInt64() == cs[1].ToUInt64() 
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmge = IntrinsicBuilder.GenericBinary("__cmge", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToInt64() >= cs[1].ToInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmgt = IntrinsicBuilder.GenericBinary("__cmgt", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToInt64() > cs[1].ToInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmhi = IntrinsicBuilder.GenericBinary("__cmhi", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToUInt64() > cs[1].ToUInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmhs = IntrinsicBuilder.GenericBinary("__cmhs", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToUInt64() >= cs[1].ToUInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmle = IntrinsicBuilder.GenericBinary("__cmle", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToInt64() <= cs[1].ToInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+    private static IntrinsicProcedure _cmlt = IntrinsicBuilder.GenericBinary("__cmlt", (dt, cs) =>
+    {
+        var bitsResult = dt.BitSize;
+        var mask = Bits.Mask(0, bitsResult);
+        var result = cs[0].ToInt64() < cs[1].ToInt64()
+            ? ~0ul
+            : 0ul;
+        return Constant.Create(dt, result);
+    });
+
+    private static IntrinsicProcedure _smax = IntrinsicBuilder.GenericBinary("__smax", (dt, cs) =>
+    {
+        var a = cs[0].ToInt64();
+        var b = cs[1].ToInt64();
+        return Constant.Create(dt, Math.Max(a, b));
+    });
+    private static IntrinsicProcedure _smin = IntrinsicBuilder.GenericBinary("__smin", (dt, cs) =>
+    {
+        var a = cs[0].ToInt64();
+        var b = cs[1].ToInt64();
+        return Constant.Create(dt, Math.Min(a, b));
+    });
+    private static IntrinsicProcedure _umax = IntrinsicBuilder.GenericBinary("__umin", (dt, cs) =>
+    {
+        var a = cs[0].ToUInt64();
+        var b = cs[1].ToUInt64();
+        return Constant.Create(dt, Math.Max(a, b));
+    });
+    private static IntrinsicProcedure _umin = IntrinsicBuilder.GenericBinary("__umin", (dt, cs) =>
+    {
+        var a = cs[0].ToUInt64();
+        var b = cs[1].ToUInt64();
+        return Constant.Create(dt, Math.Min(a, b));
+    });
+
+    private static BigInteger AllOnesSeed(DataType dt) => (BigInteger.One << dt.BitSize) - 1;
+
+    private static BigInteger AllZerosSeed(DataType _) => BigInteger.Zero;
+
+    private static BigInteger MaxSignedInt(DataType dt) => (BigInteger.One << (dt.BitSize - 1)) - 1;
+    private static BigInteger MinSignedInt(DataType dt) => (BigInteger.One << (dt.BitSize - 1));
+
     /// <summary>
     /// Apply the operation horizontally across a SIMD register, reducing
     /// the vector of elements into a single scalar value.
@@ -641,6 +733,63 @@ public class Intrinsics
                 return null;
         }
         return result;
+    }
+
+    /// <summary>
+    /// Creates a pairwise reducing intrinsic.
+    /// </summary>
+    /// <param name="intrinsicName"></param>
+    /// <param name="intrinsic"></param>
+    /// <returns></returns>
+    private static IntrinsicProcedure PairwiseReducingIntrinsic(string intrinsicName, IFunctionalUnit intrinsic)
+    {
+        return new IntrinsicBuilder(intrinsicName, false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .ApplyConstants((dt, cs) =>
+            {
+                // Concatenate cs[1]:cs[0] (according to manual), then perform the intrinsic
+                // action on consecutive pairs.
+                var at = (ArrayType) dt;
+                var dtElement = at.ElementType;
+                var src = (cs[1].ToBigInteger() << cs[0].DataType.BitSize) | cs[0].ToBigInteger();
+                var bitsSrc = cs[1].DataType.BitSize + cs[0].DataType.BitSize;
+                var result = BigInteger.Zero;
+
+                var bitsElement = dtElement.BitSize;
+                var maskLane = (BigInteger.One << bitsElement) - 1;
+                var ccs = new Constant[2];
+                for (int bitpos = bitsSrc - bitsElement; bitpos >= 0; bitpos -= bitsElement)
+                {
+                    ccs[0] = Constant.Create(dtElement, (src >> bitpos) & maskLane);
+                    bitpos -= bitsElement;
+                    ccs[1] = Constant.Create(dtElement, (src >> bitpos) & maskLane);
+                    var eValue = intrinsic.ApplyConstants(dtElement, ccs);
+                    if (eValue is null)
+                        return null;
+                    result = (result << bitsElement) | eValue.ToBigInteger() & maskLane;
+                }
+                return Constant.Create(dt, result);
+            })
+            .Returns("T");
+    }
+
+
+    /// <summary>
+    /// Creates a reducing intrinsic.
+    /// </summary>
+    private static IntrinsicProcedure ReducingIntrinsic(string v, IFunctionalUnit operation, Func<DataType, BigInteger> generateSeed)
+    {
+        return IntrinsicBuilder.Pure(v)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .ApplyConstants((dt, cs) => Reduce(
+              dt,
+              cs,
+              generateSeed(dt),
+              operation))
+            .Returns("TDst");
     }
 }
 

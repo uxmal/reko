@@ -250,6 +250,17 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        public static IntrinsicProcedure GenericTernary(string name, Func<DataType, Constant[], Constant?> operation)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .ApplyConstants(operation)
+                .Returns("T");
+        }
+
         public static IntrinsicProcedure GenericBinary(string name)
         {
             return new IntrinsicBuilder(name, false)
