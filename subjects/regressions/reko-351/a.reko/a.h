@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (8000270C (ptr32 code) ptr8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dtor_idx.3228) (FFFFFFFF code tFFFFFFFF))
+Eq_1: (struct "Globals" (8000270C Eq_193 t8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dtor_idx.3228))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_6: (fn word32 ((ptr32 byte)))
 	T_6 (in fn00000000 @ 800000A6 : ptr32)
@@ -50,7 +50,13 @@ Eq_153: (ref int32)
 	T_153 (in tArg14 + 0<32> @ 80000608 : word32)
 Eq_158: (union "Eq_158" ((ptr32 word32) u0) ((ref int32) u1))
 	T_158 (in tArg14 + 0<32> @ 80000608 : word32)
-Eq_202: (struct "Eq_202" (FFFFFFFC (ptr32 code) ptrFFFFFFFC))
+Eq_193: (union "Eq_193" (int32 u0) ((ptr32 code) u1))
+	T_193 (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
+	T_194 (in a0_11 @ 8000062A : Eq_193)
+	T_200 (in -1<i32> @ 8000063A : int32)
+	T_205 (in Mem10[a2_24 + -4<i32>:word32] @ 8000063E : word32)
+	T_208 (in -1<i32> @ 80000644 : int32)
+Eq_202: (struct "Eq_202" (FFFFFFFC Eq_193 tFFFFFFFC))
 	T_202 (in a2_24 @ 8000063E : (ptr32 Eq_202))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -819,15 +825,15 @@ T_191: (in (real64) ((real96) rLoc0C_115 /96 rLoc14_123) < rArg0C @ 8000052C : b
   OrigDataType: bool
 T_192: (in 8000270C @ 8000062A : ptr32)
   Class: Eq_192
-  DataType: (ptr32 (ptr32 code))
+  DataType: (ptr32 Eq_193)
   OrigDataType: (ptr32 (struct (0 T_193 t0000)))
 T_193: (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
   Class: Eq_193
-  DataType: (ptr32 code)
+  DataType: Eq_193
   OrigDataType: word32
-T_194: (in a0_11 @ 8000062A : (ptr32 code))
+T_194: (in a0_11 @ 8000062A : Eq_193)
   Class: Eq_193
-  DataType: (ptr32 code)
+  DataType: Eq_193
   OrigDataType: (ptr32 code)
 T_195: (in fp @ 80000624 : ptr32)
   Class: Eq_195
@@ -845,15 +851,15 @@ T_198: (in a6_18 @ 80000624 : ptr32)
   Class: Eq_197
   DataType: ptr32
   OrigDataType: ptr32
-T_199: (in a2_12 @ 80000630 : (ptr32 (ptr32 code)))
+T_199: (in a2_12 @ 80000630 : (ptr32 Eq_193))
   Class: Eq_192
-  DataType: (ptr32 (ptr32 code))
+  DataType: (ptr32 Eq_193)
   OrigDataType: (ptr32 (struct (0 T_193 t0000)))
 T_200: (in -1<i32> @ 8000063A : int32)
   Class: Eq_193
-  DataType: (ptr32 code)
+  DataType: int32
   OrigDataType: int32
-T_201: (in a0_11 == (<anonymous> *) -1<i32> @ 8000063A : bool)
+T_201: (in a0_11 == -1<i32> @ 8000063A : bool)
   Class: Eq_201
   DataType: bool
   OrigDataType: bool
@@ -871,7 +877,7 @@ T_204: (in a2_24 + -4<i32> @ 8000063E : word32)
   OrigDataType: word32
 T_205: (in Mem10[a2_24 + -4<i32>:word32] @ 8000063E : word32)
   Class: Eq_193
-  DataType: (ptr32 code)
+  DataType: Eq_193
   OrigDataType: word32
 T_206: (in 4<i32> @ 8000063E : int32)
   Class: Eq_206
@@ -879,13 +885,13 @@ T_206: (in 4<i32> @ 8000063E : int32)
   OrigDataType: int32
 T_207: (in a2_24 - 4<i32> @ 8000063E : word32)
   Class: Eq_192
-  DataType: (ptr32 (ptr32 code))
+  DataType: (ptr32 Eq_193)
   OrigDataType: ptr32
 T_208: (in -1<i32> @ 80000644 : int32)
   Class: Eq_193
-  DataType: (ptr32 code)
+  DataType: int32
   OrigDataType: int32
-T_209: (in a0_11 != (<anonymous> *) -1<i32> @ 80000644 : bool)
+T_209: (in a0_11 != -1<i32> @ 80000644 : bool)
   Class: Eq_209
   DataType: bool
   OrigDataType: bool
@@ -903,12 +909,11 @@ T_212:
   OrigDataType: (arr T_211)
 */
 typedef struct Globals {
-	<anonymous> * ptr8000270C;	// 8000270C
+	Eq_193 t8000270C;	// 8000270C
 	<anonymous> * a80002714[];	// 80002714
 	word32 dw8000271C;	// 8000271C
 	byte b80002724;	// 80002724
 	uint32 dtor_idx.3228;	// 80002726
-	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 
 typedef word32 (Eq_6)(byte *);
@@ -954,7 +959,12 @@ typedef union Eq_158 {
 	int32 & u1;
 } Eq_158;
 
+typedef union Eq_193 {
+	int32 u0;
+	<anonymous> * u1;
+} Eq_193;
+
 typedef struct Eq_202 {
-	<anonymous> * ptrFFFFFFFC;	// FFFFFFFC
+	Eq_193 tFFFFFFFC;	// FFFFFFFC
 } Eq_202;
 

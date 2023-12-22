@@ -150,7 +150,7 @@ word16 fn02BF(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp14
 	ci16 gp2_n = gp1;
 	if (gp1 < 0x00)
 		gp2_n = gp1 + 0x07;
-	struct Eq_n * gp2_n = gp2_n & ~0x07;
+	Eq_n gp2_n = gp2_n & ~0x07;
 	if ((uint32) (gp1 - gp2_n) > 0x07)
 	{
 		real48 gp3_gp4_gp5_n = g_rFFFF811F;
@@ -162,7 +162,7 @@ word16 fn02BF(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp14
 	}
 	else
 	{
-		<anonymous> * gp2_n = gp2_n->ptr02DA;
+		<anonymous> * gp2_n = gp2_n.u1->ptr02DA;
 		gp2_n();
 		ptr16 gp1_n;
 		gp1Out = gp1_n;
@@ -201,7 +201,7 @@ int32 fn032A(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 	}
 	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = (char *) &(*((char *) &g_dwFFFF812B + 2))->dwFFFF812B + ((word16) gp0_gp1_n + 0x00007ED5);
+		gp1_n = (ci16) ((char *) &(*((char *) &g_dwFFFF812B + 2))->dwFFFF812B + ((word16) gp0_gp1_n + 0x00007ED5));
 	word16 gp0_n = fn02BF(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp14_n);
 	gp2Out = gp2_n;
 	return SEQ(gp0_n, gp1_n);

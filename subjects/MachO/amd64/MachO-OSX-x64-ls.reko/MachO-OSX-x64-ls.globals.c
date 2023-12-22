@@ -5,15 +5,6 @@
 #include "MachO-OSX-x64-ls.h"
 
 Eq_n g_t0014;
-Eq_n g_t0018;
-word32 g_a2684[];
-<anonymous> g_t30C8; // 00000000000030C8
-void g_t319B(int32 rdi); // 000000000000319B
-<anonymous> g_t36BE; // 00000000000036BE
-<anonymous> g_t37EC; // 00000000000037EC
-<anonymous> g_t3BF3; // 0000000000003BF3
-struct Eq_n g_t5340;
-struct _acl g_t5410;
 byte g_b5771; // 0000000000005771
 <anonymous> * __imp___DefaultRuneLocale; // 0000000000006028
 <anonymous> * __imp____stack_chk_guard; // 0000000000006030

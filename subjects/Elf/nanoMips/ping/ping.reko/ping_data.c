@@ -11,7 +11,7 @@ int32 pmtudisc = -1; // 00430048
 word32 g_dw430050 = 0x00; // 00430050
 Eq_n screen_width = // 00430070
 	{
-		-1
+		0x7FFFFFFF
 	};
 Eq_n datalen = // 00430074
 	{
@@ -24,7 +24,7 @@ Eq_n pipesize = // 00430078
 int32 tmin = 0x7FFFFFFF; // 0043007C
 Eq_n confirm_flag = // 00430080
 	{
-		0
+		0x0800
 	};
 int32 lingertime = 10000; // 00430084
 Eq_n preload = // 00430088
@@ -33,7 +33,7 @@ Eq_n preload = // 00430088
 	};
 Eq_n interval = // 0043008C
 	{
-		-24
+		1000
 	};
 word16 g_w4300A0 = 0x15; // 004300A0
 byte g_b4300A2 = 0x00; // 004300A2
@@ -64,11 +64,11 @@ word32 g_dw430230 = 0x00; // 00430230
 word32 opterr = 0x01; // 00430250
 Eq_n optind = // 00430254
 	{
-		0x01
+		1
 	};
 word32 __stderr_used = 0x00430268; // 00430260
 Eq_n __stdout_used = // 00430300
 	{
-		8
+		0x00430308
 	};
 <anonymous> * vdso_func = cgt_init; // 004303A0

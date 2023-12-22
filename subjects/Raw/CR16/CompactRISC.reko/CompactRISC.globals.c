@@ -5,9 +5,6 @@
 #include "CompactRISC.h"
 
 Eq_n g_aE5AC[];
-cu16 g_aF2B8[];
-word16 g_aF2F4[];
-byte g_aF32E[];
 byte g_bF42E; // 0000F42E
 Eq_n g_tFB26;
 ci16 g_aFB60[];

@@ -129,11 +129,16 @@ Eq_356: (fn bool (word16))
 	T_356 (in fn0020050A @ 00200540 : ptr32)
 	T_357 (in signature of fn0020050A @ 0020050A : void)
 	T_360 (in fn0020050A @ 00200556 : ptr32)
-Eq_377: (struct "Eq_377" 0001 (0 word32 dw0000))
+Eq_377: (union "Eq_377" (uint32 u0) ((ptr32 Eq_500) u1))
 	T_377 (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b * 0x40<16> @ 00200575 : word32)
-	T_378 (in xde_26 @ 00200575 : (ptr32 Eq_377))
+	T_378 (in xde_26 @ 00200575 : Eq_377)
 	T_395 (in xde_57 + 1<32> @ 00200599 : word32)
-Eq_401: (struct "Eq_401" 0001 (0 word32 dw0000))
+Eq_388: (union "Eq_388" (uint32 u0) ((ptr32 word32) u1))
+	T_388 (in xde_26 + 1<32> @ 00200595 : word32)
+	T_389 (in xde_57 @ 00200595 : Eq_388)
+Eq_394: (union "Eq_394" (uint32 u0) ((ptr32 Eq_500) u1))
+	T_394 (in 1<32> @ 00200599 : word32)
+Eq_401: (union "Eq_401" (uint32 u0) ((ptr32 Eq_500) u1))
 	T_401 (in xde_26 + 0<32> @ 0020059B : word32)
 Eq_417: (union "Eq_417" (byte u0) (word32 u1))
 	T_417 (in 0<32> @ 002005C0 : (union (byte u0) (word32 u1)))
@@ -153,6 +158,8 @@ Eq_496: (struct "Eq_496" 0001 (0 Eq_417 t0000))
 	T_496
 Eq_498: (struct "Eq_498" 0001 (0 Eq_431 t0000))
 	T_498
+Eq_500: (struct "Eq_500" 0001 (0 word32 dw0000))
+	T_500
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -1660,12 +1667,12 @@ T_376: (in (uint16) b * 0x40<16> @ 00200575 : word16)
   OrigDataType: uint16
 T_377: (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b * 0x40<16> @ 00200575 : word32)
   Class: Eq_377
-  DataType: (ptr32 Eq_377)
+  DataType: Eq_377
   OrigDataType: uint32
-T_378: (in xde_26 @ 00200575 : (ptr32 Eq_377))
+T_378: (in xde_26 @ 00200575 : Eq_377)
   Class: Eq_377
-  DataType: (ptr32 Eq_377)
-  OrigDataType: (union ((ptr32 (struct 0001 (0 word32 dw0000))) u0) (ptr32 u1))
+  DataType: Eq_377
+  OrigDataType: (union (uint32 u0) ((ptr32 Eq_500) u1))
 T_379: (in 0x13<8> @ 00200577 : byte)
   Class: Eq_379
   DataType: byte
@@ -1704,12 +1711,12 @@ T_387: (in 1<32> @ 00200595 : word32)
   OrigDataType: word32
 T_388: (in xde_26 + 1<32> @ 00200595 : word32)
   Class: Eq_388
-  DataType: (ptr32 word32)
+  DataType: Eq_388
   OrigDataType: uint32
-T_389: (in xde_57 @ 00200595 : (ptr32 word32))
+T_389: (in xde_57 @ 00200595 : Eq_388)
   Class: Eq_388
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_392 t0000)))
+  DataType: Eq_388
+  OrigDataType: (union (uint32 u0) ((ptr32 word32) u1))
 T_390: (in 0<32> @ 00200597 : word32)
   Class: Eq_390
   DataType: word32
@@ -1728,12 +1735,12 @@ T_393: (in v25_58 @ 00200597 : word32)
   OrigDataType: word32
 T_394: (in 1<32> @ 00200599 : word32)
   Class: Eq_394
-  DataType: int32
-  OrigDataType: int32
+  DataType: uint32
+  OrigDataType: (union (uint32 u0) ((ptr32 Eq_500) u1))
 T_395: (in xde_57 + 1<32> @ 00200599 : word32)
   Class: Eq_377
-  DataType: (ptr32 Eq_377)
-  OrigDataType: ptr32
+  DataType: Eq_377
+  OrigDataType: (union (uint32 u0) ((ptr32 Eq_500) u1))
 T_396: (in 1<8> @ 0020059B : byte)
   Class: Eq_396
   DataType: byte
@@ -1756,8 +1763,8 @@ T_400: (in 0<32> @ 0020059B : word32)
   OrigDataType: word32
 T_401: (in xde_26 + 0<32> @ 0020059B : word32)
   Class: Eq_401
-  DataType: (ptr32 Eq_401)
-  OrigDataType: (union ((ptr32 (struct 0001 (0 word32 dw0000))) u0) (ptr32 u1))
+  DataType: Eq_401
+  OrigDataType: (union (uint32 u0) ((ptr32 Eq_500) u1))
 T_402: (in Mem8[xde_26 + 0<32>:word32] @ 0020059B : word32)
   Class: Eq_402
   DataType: word32
@@ -2150,6 +2157,10 @@ T_499:
   Class: Eq_499
   DataType: (arr Eq_498)
   OrigDataType: (arr T_498)
+T_500:
+  Class: Eq_500
+  DataType: Eq_500
+  OrigDataType: 
 */
 typedef struct Globals {
 	Eq_321 t4004;	// 4004
@@ -2259,12 +2270,24 @@ typedef union Eq_321 {
 
 typedef bool (Eq_356)(word16);
 
-typedef struct Eq_377 {	// size: 1 1
-	word32 dw0000;	// 0
+typedef union Eq_377 {
+	uint32 u0;
+	struct Eq_500 * u1;
 } Eq_377;
 
-typedef struct Eq_401 {	// size: 1 1
-	word32 dw0000;	// 0
+typedef union Eq_388 {
+	uint32 u0;
+	word32 * u1;
+} Eq_388;
+
+typedef union Eq_394 {
+	uint32 u0;
+	struct Eq_500 * u1;
+} Eq_394;
+
+typedef union Eq_401 {
+	uint32 u0;
+	struct Eq_500 * u1;
 } Eq_401;
 
 typedef union Eq_417 {
@@ -2295,4 +2318,8 @@ typedef struct Eq_496 {	// size: 1 1
 typedef struct Eq_498 {	// size: 1 1
 	Eq_431 t0000;	// 0
 } Eq_498;
+
+typedef struct Eq_500 {	// size: 1 1
+	word32 dw0000;	// 0
+} Eq_500;
 

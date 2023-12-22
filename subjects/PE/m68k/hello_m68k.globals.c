@@ -6,4 +6,3 @@
 
 Eq_n g_t0000;
 word16 g_w0AF0; // 00000AF0
-<anonymous> g_tFFFFFFFF; // FFFFFFFF

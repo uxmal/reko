@@ -11,7 +11,6 @@ Eq_1: (struct "Globals"
 		(400660 Eq_18 t400660)
 		(400710 Eq_21 t400710)
 		(400780 Eq_22 t400780)
-		(600E10 (arr (ptr64 code)) a600E10)
 		(600FF0 (ptr64 code) __libc_start_main_GOT)
 		(600FF8 (ptr64 code) __gmon_start___GOT)
 		(601018 (ptr64 code) free_GOT)
@@ -42,6 +41,10 @@ Eq_22: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 00000000004004AA : ptr32)
 	T_34 (in signature of __halt : void)
+Eq_38: (union "Eq_38" (uint64 u0) ((ptr64 code) u1))
+	T_38 (in 0<u64> @ 00000000004004D1 : uint64)
+Eq_41: (union "Eq_41" (uint64 u0) ((ptr64 code) u1))
+	T_41 (in 0<u64> @ 0000000000400513 : uint64)
 Eq_46: (fn void ())
 	T_46 (in deregister_tm_clones @ 000000000040052D : ptr64)
 	T_47 (in signature of deregister_tm_clones @ 00000000004004B0 : void)
@@ -68,6 +71,8 @@ Eq_124: (fn void ())
 	T_125 (in signature of _init @ 0000000000400428 : void)
 Eq_127: (union "Eq_127" (int64 u0) (ptr64 u1))
 	T_127 (in 0000000000600E18 @ 0000000000400731 : ptr64)
+Eq_128: (union "Eq_128" (int64 u0) ((ptr64 (arr (ptr64 code))) u1))
+	T_128 (in 0000000000600E10 @ 0000000000400731 : ptr64)
 Eq_135: (union "Eq_135" (int64 u0) (uint64 u1))
 	T_135 (in 0<u64> @ 0000000000400746 : uint64)
 	T_136 (in rbx_46 @ 0000000000400746 : Eq_135)
@@ -224,8 +229,8 @@ T_37: (in true @ 00000000004004C9 : bool)
   OrigDataType: bool
 T_38: (in 0<u64> @ 00000000004004D1 : uint64)
   Class: Eq_38
-  DataType: (ptr64 code)
-  OrigDataType: (ptr64 code)
+  DataType: uint64
+  OrigDataType: (union (uint64 u0) ((ptr64 code) u1))
 T_39: (in true @ 0000000000400501 : bool)
   Class: Eq_39
   DataType: bool
@@ -236,8 +241,8 @@ T_40: (in true @ 000000000040050B : bool)
   OrigDataType: bool
 T_41: (in 0<u64> @ 0000000000400513 : uint64)
   Class: Eq_41
-  DataType: (ptr64 code)
-  OrigDataType: (ptr64 code)
+  DataType: uint64
+  OrigDataType: (union (uint64 u0) ((ptr64 code) u1))
 T_42: (in 0000000000601040 @ 0000000000400527 : ptr64)
   Class: Eq_42
   DataType: (ptr64 byte)
@@ -584,9 +589,9 @@ T_127: (in 0000000000600E18 @ 0000000000400731 : ptr64)
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_128: (in 0000000000600E10 @ 0000000000400731 : ptr64)
   Class: Eq_128
-  DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (union ((ptr64 (arr Eq_144)) u1) ((ptr64 (arr Eq_144)) u0))
-T_129: (in 0x600E18<u64> - g_a600E10 @ 0000000000400731 : word64)
+  DataType: int64
+  OrigDataType: (union (int64 u1) ((ptr64 (arr Eq_144)) u0) ((ptr64 (arr Eq_144)) u2))
+T_129: (in 0x600E18<u64> - 0x600E10<u64> @ 0000000000400731 : word64)
   Class: Eq_129
   DataType: int64
   OrigDataType: int64
@@ -662,7 +667,6 @@ typedef struct Globals {
 	Eq_18 t400660;	// 400660
 	Eq_21 t400710;	// 400710
 	Eq_22 t400780;	// 400780
-	<anonymous> * a600E10[];	// 600E10
 	<anonymous> * __libc_start_main_GOT;	// 600FF0
 	<anonymous> * __gmon_start___GOT;	// 600FF8
 	<anonymous> * free_GOT;	// 601018
@@ -687,6 +691,16 @@ typedef void (Eq_22)();
 
 typedef void (Eq_33)();
 
+typedef union Eq_38 {
+	uint64 u0;
+	<anonymous> * u1;
+} Eq_38;
+
+typedef union Eq_41 {
+	uint64 u0;
+	<anonymous> * u1;
+} Eq_41;
+
 typedef void (Eq_46)();
 
 typedef void (Eq_51)();
@@ -707,6 +721,11 @@ typedef union Eq_127 {
 	int64 u0;
 	ptr64 u1;
 } Eq_127;
+
+typedef union Eq_128 {
+	int64 u0;
+	<anonymous> * (* u1)[];
+} Eq_128;
 
 typedef union Eq_135 {
 	int64 u0;

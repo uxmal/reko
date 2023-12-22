@@ -8,7 +8,7 @@
 void fn00000000(cu8 TABLAT)
 {
 	g_b0001 &= 191;
-	Data21[1].ptr0000 = 330;
+	((byte) Data21 + 1)->u1 = 330;
 	fn00000E(TABLAT, 0x00, 0x00);
 }
 
@@ -19,9 +19,9 @@ byte g_b0001 = ~0x10; // 00000001
 void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
-	g_b00C5 = TABLAT;
+	0xC5 = (16) TABLAT;
 	__tblrd(TBLPTR, 0x01);
-	g_b00C6 = TABLAT;
+	0xC6 = (16) TABLAT;
 	byte TBLPTRL_n = 0x06;
 	byte TBLPTRH_n = 0x00;
 	byte TBLPTRU_n = 0x00;
@@ -29,53 +29,53 @@ void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 	bool v23_n;
 	while (true)
 	{
-		if (!v20_n && g_b00C5 == 0x00)
+		if (!v20_n && 0xC5 == 0x00)
 			return;
 		__tblrd(TBLPTR, 0x01);
-		g_b00C0 = TABLAT;
+		0xC0 = (16) TABLAT;
 		__tblrd(TBLPTR, 0x01);
-		g_b00C1 = TABLAT;
+		0xC1 = (16) TABLAT;
 		__tblrd(TBLPTR, 0x01);
-		g_b00C2 = TABLAT;
-		__tblrd(TBLPTR, 0x01);
-		__tblrd(TBLPTR, 0x01);
+		0xC2 = (16) TABLAT;
 		__tblrd(TBLPTR, 0x01);
 		__tblrd(TBLPTR, 0x01);
 		__tblrd(TBLPTR, 0x01);
 		__tblrd(TBLPTR, 0x01);
-		g_b00C3 = TABLAT;
 		__tblrd(TBLPTR, 0x01);
-		g_b00C4 = TABLAT;
+		__tblrd(TBLPTR, 0x01);
+		0xC3 = (16) TABLAT;
+		__tblrd(TBLPTR, 0x01);
+		0xC4 = (16) TABLAT;
 		__tblrd(TBLPTR, 0x01);
 		__tblrd(TBLPTR, 0x01);
 		g_b00C7 = TBLPTRL_n;
 		g_b00C8 = TBLPTRH_n;
 		g_b00C9 = TBLPTRU_n;
-		g_b00C3 = g_b00C3;
-		v23_n = g_b00C3 != 0x00;
+		0xC3 = 0xC3;
+		v23_n = 0xC3 != 0x00;
 l000080:
 		if (v23_n)
 			break;
-		g_b00C4 = g_b00C4;
-		if (g_b00C4 != 0x00)
+		0xC4 = 0xC4;
+		if (0xC4 != 0x00)
 			break;
 		TBLPTRL_n = g_b00C7;
 		TBLPTRH_n = g_b00C8;
 		TBLPTRU_n = g_b00C9;
-		--g_b00C5;
-		g_b00C6 -= !(bool) cond(g_b00C5);
-		v20_n = g_b00C6 != 0x00;
+		0xC5 = (16) (0xC5 - 0x01);
+		0xC6 = (16) (0xC6 - !((bool) cond(0xC5)));
+		v20_n = 0xC6 != 0x00;
 	}
 	while (true)
 	{
 		__tblrd(TBLPTR, 0x01);
 		*FSR0.u1 = TABLAT;
-		--g_b00C3;
+		0xC3 = (16) (0xC3 - 0x01);
 		++FSR0;
-		v23_n = g_b00C3 != 0x00;
-		if (g_b00C3 < 0x00)
+		v23_n = 0xC3 != 0x00;
+		if (0xC3 < 0x00)
 			break;
-		--g_b00C4;
+		0xC4 = (16) (0xC4 - 0x01);
 	}
 	goto l000080;
 }
@@ -97,9 +97,9 @@ void fn0000D0(byte LATB, byte FSR2L, struct Eq_n * FSR2, struct Eq_n * FSR1)
 	FSR1->b0000 = FSR2L;
 	while (FSR2->b00FE != 0x00)
 	{
-		if ((g_b00CA & 0x01) != 0x00)
+		if ((202 & 0x01) != 0x00)
 		{
-			g_b00CA &= ~0x01;
+			202 = (16) (202 & ~0x01);
 			if ((LATB & 0x01) != 0x00)
 				LATB |= 0x80;
 			else

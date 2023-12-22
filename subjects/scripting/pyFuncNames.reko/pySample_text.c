@@ -4,11 +4,11 @@
 
 #include "pySample.h"
 
-// 10001140: Register (ptr32 Eq_n) unused_wrapper(Stack (ptr32 Eq_n) self, Stack (ptr32 Eq_n) args)
-PyObject * unused_wrapper(PyObject * self, PyObject * args)
+// 10001140: Register Eq_n unused_wrapper(Stack (ptr32 Eq_n) self, Stack (ptr32 Eq_n) args)
+Eq_n unused_wrapper(PyObject * self, PyObject * args)
 {
-	PyObject * eax_n = PyArg_ParseTuple(args, ":unused");
-	if (eax_n == null)
+	Eq_n eax_n = PyArg_ParseTuple(args, ":unused");
+	if (eax_n == 0x00)
 		return eax_n;
 	PyObject * eax_n = &_Py_NoneStruct;
 	++eax_n->ob_refcnt;

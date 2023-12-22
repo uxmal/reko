@@ -19,7 +19,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (&g_b201048 == &g_b201048 || _ITM_deregisterTMCloneTable == null)
+	if (2101320 == 2101320 || _ITM_deregisterTMCloneTable == null)
 		return;
 	_ITM_deregisterTMCloneTable();
 }
@@ -29,7 +29,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	int64 rsi_n = &g_b201048 - &g_b201048;
+	int64 rsi_n = 2101320 - 2101320;
 	if ((rsi_n >> 0x03) + ((rsi_n >> 0x03) >>u 0x3F) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
@@ -38,12 +38,12 @@ void register_tm_clones()
 // 00000000000006E0: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (g_b201048 != 0x00)
+	if (2101320 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
 		__cxa_finalize(g_qw201040);
 	deregister_tm_clones();
-	g_b201048 = 0x01;
+	2101320 = (int64) 0x01;
 }
 
 // 0000000000000720: void frame_dummy()
@@ -52,13 +52,13 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
+// 000000000000072A: Register Eq_n _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
 // Called from:
 //      main
-void * _mm_malloc(uint64 rsi, Eq_n rdi)
+Eq_n _mm_malloc(uint64 rsi, Eq_n rdi)
 {
 	uint64 qwLoc28_n = rsi;
-	void * rax_n;
+	Eq_n rax_n;
 	if (rsi == 0x01)
 		rax_n = malloc(rdi);
 	else
@@ -68,11 +68,11 @@ void * _mm_malloc(uint64 rsi, Eq_n rdi)
 		ptr64 fp;
 		if ((word32) posix_memalign(qwLoc28_n, fp - 16, rdi, qwLoc28_n) == 0x00)
 		{
-			void * qwLoc10;
+			Eq_n qwLoc10;
 			rax_n = qwLoc10;
 		}
 		else
-			rax_n = null;
+			rax_n.u0 = 0x00;
 	}
 	return rax_n;
 }
@@ -109,7 +109,8 @@ void main()
 	word128 xmm0;
 	while (qwLoc10_n < 0x0400)
 	{
-		real64 * rcx_n = (real64 *) (&rax_n->u0 + qwLoc10_n);
+		Eq_n rcx_n;
+		rcx_n.u1 = &rax_n->u0 + qwLoc10_n;
 		ui32 eax_n = (word32) qwLoc10_n;
 		if (qwLoc10_n >= 0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
@@ -118,7 +119,7 @@ void main()
 			real64 v27_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm0 = SEQ(0x00, v27_n + v27_n);
 		}
-		*rcx_n = (real64) xmm0;
+		*rcx_n.u1 = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 1;
 	}
 	Eq_n qwLoc18_n;
@@ -126,7 +127,8 @@ void main()
 	while (qwLoc18_n < 0x0400)
 	{
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
-		real64 * rcx_n = (real64 *) (&rax_n->u0 + qwLoc18_n);
+		Eq_n rcx_n;
+		rcx_n.u1 = &rax_n->u0 + qwLoc18_n;
 		if (qwLoc18_n >= ~0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
@@ -134,7 +136,7 @@ void main()
 			real64 v22_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm0 = SEQ(0x00, v22_n + v22_n);
 		}
-		*rcx_n = (real64) xmm0;
+		*rcx_n.u1 = (real64) xmm0;
 		qwLoc18_n = (word64) qwLoc18_n + 1;
 	}
 	uint64 qwLoc20_n;
@@ -155,14 +157,14 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x00200DF0 - g_a200DE8;
+	int64 rbp_n = 0x00200DF0 - 2100712;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n;
 		rbx_n.u1 = 0x00;
 		do
 		{
-			(*((char *) g_a200DE8 + rbx_n * 0x08))();
+			(*((word64) 2100712 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbp_n >> 0x03 != rbx_n);
 	}

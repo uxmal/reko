@@ -4,46 +4,46 @@
 
 #include "pySample.h"
 
-// 10001000: Register (ptr32 Eq_n) fn10001000(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
+// 10001000: Register Eq_n fn10001000(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	int32 dwLoc08;
 	int32 dwLoc04;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
+	if (eax_n != 0x00)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
 	return eax_n;
 }
 
-// 10001050: Register (ptr32 Eq_n) fn10001050(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
+// 10001050: Register Eq_n fn10001050(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	int32 dwLoc04;
 	int32 dwLoc08;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", &dwLoc08, &dwLoc04);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", &dwLoc08, &dwLoc04);
+	if (eax_n != 0x00)
 		return Py_BuildValue("i", dwLoc08 - dwLoc04);
 	return eax_n;
 }
 
-// 100010A0: Register (ptr32 Eq_n) fn100010A0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
+// 100010A0: Register Eq_n fn100010A0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	int32 dwLoc04;
 	int32 dwLoc08;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
+	if (eax_n != 0x00)
 		return Py_BuildValue("i", (int64) dwLoc08 /32 dwLoc04);
 	return eax_n;
 }
 
-// 100010F0: Register (ptr32 Eq_n) fn100010F0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
+// 100010F0: Register Eq_n fn100010F0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	real32 rLoc04;
 	real32 rLoc08;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
+	if (eax_n != 0x00)
 		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
 	return eax_n;
 }
@@ -175,59 +175,60 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, ptr32 ebx, ptr32 esi, word32 edi)
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
 	Eq_n ebx_n;
 	ebx_n.u0 = ebp_n->t0008.u0;
-	ebp_n->tFFFFFFE4 = 0x01;
+	ebp_n->tFFFFFFE4.u0 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
-	g_t10003008 = (Eq_n) edx;
+	g_t10003008.u0 = (void *) edx;
 	ebp_n->dwFFFFFFFC = 0x01;
 	struct Eq_n * esp_n = fp - 8;
 	Eq_n edi_n = ecx;
 	Eq_n esi_n = edx;
 	if (edx == 0x00 && g_dw10003070 == 0x00)
 	{
-		ebp_n->tFFFFFFE4 = 0x00;
+		ebp_n->tFFFFFFE4.u0 = 0x00;
 		goto l1000147A;
 	}
 	if (edx == 0x01 || edx == 0x02)
 	{
 		if (g_dw100020CC != 0x00)
-			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, edx, ecx);
-		if (ebp_n->tFFFFFFE4 == 0x00)
+			ebp_n->tFFFFFFE4.u0 = (void *) fn00000000(ebx_n, edx, ecx);
+		if (ebp_n->tFFFFFFE4.u0 == 0x00)
 		{
 l1000147A:
 			ebp_n->dwFFFFFFFC = 0x00;
 			ebp_n->dwFFFFFFFC = ~0x01;
 			fn10001493();
-			Eq_n eax_n = ebp_n->tFFFFFFE4;
+			Eq_n eax_n;
+			eax_n.u0 = ebp_n->tFFFFFFE4.u0;
 			fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 			return eax_n;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = ecx;
-		esp_n->tFFFFFFFC = edx;
-		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
-		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
-		ebp_n->tFFFFFFE4 = eax_n;
+		esp_n->tFFFFFFFC.u0 = (void *) edx;
+		esp_n->tFFFFFFF8.u0 = (ui32) ebx_n;
+		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC.u0, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		ebp_n->tFFFFFFE4.u0 = (void *) eax_n;
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
 			goto l1000147A;
 	}
 	struct Eq_n * esp_n = esp_n - 4;
 	esp_n->t0000 = edi_n;
-	esp_n->tFFFFFFFC = esi_n;
-	esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
-	Eq_n eax_n = fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC);
-	ebp_n->tFFFFFFE4 = eax_n;
+	esp_n->tFFFFFFFC.u0 = (void *) esi_n;
+	esp_n->tFFFFFFF8.u0 = (ui32) ebx_n;
+	Eq_n eax_n = fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC.u0);
+	ebp_n->tFFFFFFE4.u0 = (void *) eax_n;
 	esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 	if (esi_n == 0x01 && eax_n == 0x00)
 	{
 		esp_n->t0000 = edi_n;
-		esp_n->tFFFFFFFC = eax_n;
-		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
-		fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC);
+		esp_n->tFFFFFFFC.u0 = (void *) eax_n;
+		esp_n->tFFFFFFF8.u0 = (ui32) ebx_n;
+		fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC.u0);
 		esp_n->t0000 = edi_n;
-		esp_n->tFFFFFFFC = 0x00;
-		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
-		fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		esp_n->tFFFFFFFC.u0 = 0x00;
+		esp_n->tFFFFFFF8.u0 = (ui32) ebx_n;
+		fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC.u0, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (g_dw100020CC != 0x00)
 			fn00000000(ebx_n, 0x00, edi_n);
@@ -236,14 +237,14 @@ l1000147A:
 	{
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = edi_n;
-		esp_n->tFFFFFFFC = esi_n;
-		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
-		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		esp_n->tFFFFFFFC.u0 = (void *) esi_n;
+		esp_n->tFFFFFFF8.u0 = (ui32) ebx_n;
+		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC.u0, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
-			ebp_n->tFFFFFFE4 &= eax_n;
-		if (ebp_n->tFFFFFFE4 != 0x00 && g_dw100020CC != 0x00)
-			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, esi_n, edi_n);
+			ebp_n->tFFFFFFE4.u0 = (void *) (ebp_n->tFFFFFFE4.u0 & eax_n);
+		if (ebp_n->tFFFFFFE4.u0 != 0x00 && g_dw100020CC != 0x00)
+			ebp_n->tFFFFFFE4.u0 = (void *) fn00000000(ebx_n, esi_n, edi_n);
 	}
 	goto l1000147A;
 }
@@ -253,7 +254,7 @@ l1000147A:
 //      fn10001388
 void fn10001493()
 {
-	g_t10003008 = (Eq_n) ~0x00;
+	g_t10003008.u0 = ~0x00;
 }
 
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
@@ -276,7 +277,7 @@ Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14);
 	Eq_n eax_n = _decode_pointer(g_ptr100033B4);
-	ebp_n->tFFFFFFE4 = eax_n;
+	ebp_n->tFFFFFFE4.u0 = (void *) eax_n;
 	Eq_n eax_n;
 	struct Eq_n * esp_n;
 	if (eax_n == ~0x00)
@@ -291,13 +292,13 @@ Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 		void * ecx_n = esp_n->ptr0000;
 		ebp_n->dwFFFFFFFC = 0x00;
 		void * v16_n = g_ptr100033B4;
-		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->ptr0000);
+		ebp_n->tFFFFFFE4.u0 = (void *) _decode_pointer(esp_n->ptr0000);
 		void * v17_n = g_ptr100033B0;
 		ebp_n->ptrFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
 		Eq_n v18_n;
 		v18_n.u0 = ebp_n->t0008.u0;
-		ebp_n->tFFFFFFDC.u0 = (_onexit_t) __dllonexit(esp_n->tFFFFFFF0.u0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
-		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v18_n, ebp_n - 28, ebp_n - 32, v17_n, v16_n);
+		ebp_n->tFFFFFFDC.u0 = (ui32) __dllonexit(esp_n->tFFFFFFF0.u1, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
+		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4.u0, v18_n, ebp_n - 28, ebp_n - 32, v17_n, v16_n);
 		g_ptr100033B0 = encode_pointer(ebp_n->ptrFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();

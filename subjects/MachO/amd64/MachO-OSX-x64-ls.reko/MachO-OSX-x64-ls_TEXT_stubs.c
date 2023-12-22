@@ -581,10 +581,10 @@ void tgoto()
 	tgoto();
 }
 
-// 0000000100004F40: Register Eq_n time(Register (ptr64 Eq_n) rdi)
+// 0000000100004F40: Register Eq_n time(Register Eq_n rdi)
 // Called from:
 //      fn0000000100003AA8
-Eq_n time(time_t * rdi)
+Eq_n time(Eq_n rdi)
 {
 	return time(rdi);
 }

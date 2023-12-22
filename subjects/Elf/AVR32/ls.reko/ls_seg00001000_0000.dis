@@ -19275,11 +19275,11 @@ fn00010CFC_entry:
 l00010CFC:
 	Mem24[&tLoc1C:word64] = r11_r10
 	Mem31[&tLoc24:word64] = r9_r8
-	fn00010D38(&tLoc38, &tLoc1C, pc)
-	lr_46 = fn00010D38(&tLoc4C, &tLoc24, pc)
-	branch Mem31[&tLoc38:word32] >u 1<32> l00010D2A
+	fn00010D38(fp - 0x38<32>, &tLoc1C, pc)
+	lr_46 = fn00010D38(fp - 0x4C<32>, &tLoc24, pc)
+	branch dwLoc38 >u 1<32> l00010D2A
 l00010D2A:
-	r12_62 = CONVERT(Mem31[&tLoc4C:word32] <=u 1<32>, bool, word32)
+	r12_62 = CONVERT(dwLoc4C <=u 1<32>, bool, word32)
 l00010D26:
 	r12_62 = 1<32>
 l00010D30:

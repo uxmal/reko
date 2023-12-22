@@ -19,7 +19,7 @@ void fn00000000004004B0()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 0000000000400560: void fn0000000000400560(Register word32 esi, Register word32 edi)

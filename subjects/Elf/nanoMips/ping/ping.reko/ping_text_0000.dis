@@ -9234,17 +9234,17 @@ l0040687A:
 l0040686A:
 	branch r4 == 0xA<32> l0040689E
 l0040689E:
-	branch memcmp(r5, 0x00412E30<p32>, 0xC<32>, out r7_463, out r8_464, out r9_465) == 0<32> l00406932
+	branch memcmp(r5, 0x00412E30<p32>, 0xC<32>, out r7_462, out r8_463, out r9_464) == 0<32> l00406932
 l00406932:
-	snprintf(&tLoc84, 0x64<32>, 0x00411F6C<p32>)
+	snprintf(fp - 0x84<32>, 0x64<32>, 0x00411F6C<p32>)
 l004068EE:
-	snprintf(&tLoc84, 0x64<32>, 0x00411F54<p32>)
+	snprintf(fp - 0x84<32>, 0x64<32>, 0x00411F54<p32>)
 l00406928:
 	r19_151 = 0<32>
 	r21_152 = 2<32>
 	r16_153 = 0<32>
 l00406964:
-	r7_157 = CONVERT(Mem254[&tLoc84 + r16_153:byte], byte, word32)
+	r7_157 = CONVERT(Mem254[fp - 0x84<32> + r16_153:byte], byte, word32)
 	branch r7_157 == 0<32> l00406984
 l00406984:
 	branch r21_152 < 3<32> l004069AE
@@ -9252,19 +9252,19 @@ l00406988:
 	r7_163 = fp - 0x20<32> + r19_151
 	Mem165[r7_163 - 0x64<32>:int8] = 58<i8>
 	Mem167[r7_163 - 0x63<32>:int8] = 58<i8>
-	memmove(&tLoc84 + (r19_151 + 2<32>), &tLoc84 + (r21_152 + r19_151), r16_153 - r19_151 - r21_152 + 1<32>, out r8_471, out r9_472, out r11_473, out r12_474)
+	memmove(fp - 0x84<32> + (r19_151 + 2<32>), fp - 0x84<32> + (r21_152 + r19_151), r16_153 - r19_151 - r21_152 + 1<32>, out r8_470, out r9_471, out r11_472, out r12_473)
 l004069AE:
-	branch strlen(&tLoc84, out r5_468, out r6_469, out r7_470) >=u r7 l00406896
+	branch strlen(fp - 0x84<32>, out r5_467, out r6_468, out r7_469) >=u r7 l00406896
 l00406896:
-	__errno_location(out r4_467)
+	__errno_location(out r4_466)
 l004069B6:
-	strcpy(r6, &tLoc84, out r6_475, out r7_476, out r8_477)
+	strcpy(r6, fp - 0x84<32>, out r6_474, out r7_475, out r8_476)
 l0040696A:
 	branch r16_153 == 0<32> l00406970
 l0040696C:
 	branch r7_157 != 0x3A<32> l00406962
 l00406970:
-	r4_217 = strspn(&tLoc84 + r16_153, 0x00411F8C<p32>)
+	r4_217 = strspn(fp - 0x84<32> + r16_153, 0x00411F8C<p32>)
 	branch r21_152 >= r4_217 l00406962
 l0040697E:
 	r19_151 = r16_153
@@ -9272,7 +9272,7 @@ l0040697E:
 l00406962:
 	r16_153 = r16_153 + 1<32>
 l0040686E:
-	__errno_location(out r4_466)
+	__errno_location(out r4_465)
 l00406874:
 l004069BC:
 	return
@@ -9486,7 +9486,7 @@ word32 __lookup_ipliteral(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6,
 __lookup_ipliteral_entry:
 l00406B50:
 	r18_20 = r5
-	r2_110 = __inet_aton(r2, r3, r5, fp - 0x78<32>, r12, out r3_376, out r4_37, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
+	r2_110 = __inet_aton(r2, r3, r5, fp - 0x78<32>, r12, out r3_378, out r4_37, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
 	branch r4_37 <= 0<32> l00406B7E
 l00406B7E:
 	r4_47 = strchr(r5, 0x25<32>)
@@ -9495,17 +9495,17 @@ l00406B88:
 	r19_54 = r4_47 - r5
 	branch r19_54 >= 0<32> l00406B9E
 l00406B8E:
-	fn00406C24(fp - 0x60<32>, r5, r19_54, out r3_378, out r6_379, out r8_380, out r9_381, out r11_382, out r12_383)
+	fn00406C24(fp - 0x60<32>, r5, r19_54, out r3_380, out r6_381, out r8_382, out r9_383, out r11_384, out r12_385)
 	Mem76[fp - 0x20<32> + r19_54 - 0x40<32>:int8] = 0<i8>
 	r18_20 = fp - 0x60<32>
 l00406B9E:
-	r2_110 = inet_pton(0xA<32>, r18_20, &tLoc70, out r4_83, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
+	r2_110 = inet_pton(0xA<32>, r18_20, fp - 0x70<32>, out r4_83, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
 	r7_199 = 0<32>
 	branch r4_83 <= 0<32> l00406B7A
 l00406BAC:
 	branch r6 == 2<32> l00406B64
 l00406BB0:
-	r2_110 = fn00406C24(r4 + 8<32>, &tLoc70, 0x10<32>, out r3_113, out r6_384, out r8_117, out r9_118, out r11_105, out r12_106)
+	r2_110 = fn00406C24(r4 + 8<32>, fp - 0x70<32>, 0x10<32>, out r3_113, out r6_386, out r8_117, out r9_118, out r11_105, out r12_106)
 	r6_119 = 0xA<32>
 	branch r4_47 == 0<32> l00406C20
 l00406C20:
@@ -9523,7 +9523,7 @@ l00406C1C:
 	branch r5_127 == 0<32> l00406BFE
 l00406C1E:
 l00406BDA:
-	r7_152 = CONVERT(Mem147[&tLoc70:byte], byte, word32)
+	r7_152 = CONVERT(bLoc70, byte, word32)
 	branch r7_152 != 0xFE<32> l00406C08
 l00406C08:
 	r6_119 = 0xFF<32>
@@ -9541,7 +9541,7 @@ l00406BFE:
 l00406B60:
 	branch r6 != 0xA<32> l00406B6A
 l00406B6A:
-	r2_110 = fn00406C24(r4 + 8<32>, fp - 0x78<32>, 4<32>, out r3_377, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
+	r2_110 = fn00406C24(r4 + 8<32>, fp - 0x78<32>, 4<32>, out r3_379, out r6_119, out r8_117, out r9_118, out r11_105, out r12_106)
 l00406B78:
 	r7_199 = 1<32>
 l00406B64:

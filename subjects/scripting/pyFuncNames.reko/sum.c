@@ -4,13 +4,13 @@
 
 #include "pySample.h"
 
-// 10001000: Register (ptr32 Eq_n) sum_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * sum_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
+// 10001000: Register Eq_n sum_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+Eq_n sum_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	int32 dwLoc08;
 	int32 dwLoc04;
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
-	if (eax_n != null)
+	Eq_n eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
+	if (eax_n != 0x00)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
 	return eax_n;
 }

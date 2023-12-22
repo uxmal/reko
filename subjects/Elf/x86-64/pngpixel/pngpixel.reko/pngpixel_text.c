@@ -21,7 +21,7 @@ void deregister_tm_clones()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 0000000000400D40: void register_tm_clones()
@@ -31,7 +31,7 @@ void register_tm_clones()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 0000000000400D80: void __do_global_dtors_aux()
@@ -47,7 +47,7 @@ void __do_global_dtors_aux()
 // 0000000000400DA0: void frame_dummy()
 void frame_dummy()
 {
-	if (g_qw601E10 != 0x00 && false)
+	if (0x00601E10 != 0x00 && false)
 	{
 		fn0000000000000000();
 		register_tm_clones();
@@ -146,10 +146,10 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 						esi_n = (word32) null[(uint64) eax_n];
 					else
 						esi_n = 0xFF;
-					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 2)[(uint64) eax_n].b0000, esi_n);
+					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) *((word64) 1 + (uint64) eax_n * 0x03), (int32) *((word64) 2 + (uint64) eax_n * 0x03), esi_n);
 				}
 				else
-					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 2)[(uint64) eax_n]);
+					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) *((word64) 1 + (uint64) eax_n * 0x03), (int32) *((word64) 2 + (uint64) eax_n * 0x03));
 			}
 			else
 				printf("INDEXED %u = invalid index\n", eax_n);
@@ -178,14 +178,14 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
-		fwrite(&g_v401A70, 0x01, 0x27, stderr);
+		fwrite(0x00401A70, 0x01, 0x27, stderr);
 		goto l000000000040175D;
 	}
 	char * rax_n = rsi->ptr0008;
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
 	char * rax_n = rsi->ptr0010;
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
-	FILE * rax_n = fopen(rsi->ptr0018, "rb");
+	FILE * rax_n = fopen(rsi->ptr0018, 0x00401990);
 	if (rax_n == null)
 	{
 		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->ptr0018);
@@ -194,7 +194,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00);
 	if (rax_n == 0x00)
 	{
-		fwrite(&g_v401A18, 0x01, 0x2E, stderr);
+		fwrite(0x00401A18, 0x01, 0x2E, stderr);
 		goto l000000000040175D;
 	}
 	word64 rax_n = png_create_info_struct(rax_n);
@@ -263,7 +263,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 				uint32 dwLoc84;
 				for (dwLoc54_n = dwLoc64_n; dwLoc54_n < dwLoc84; dwLoc54_n += dwLoc5C_n)
 				{
-					puts("png_read_row");
+					puts(4200886);
 					png_read_row(rax_n, 4200886, rax_n, 0x00, rax_n);
 					if ((uint64) dwLoc54_n == rax_n)
 					{
@@ -294,7 +294,7 @@ l000000000040175D:
 		}
 		png_error(rax_n, 4200899);
 	}
-	fwrite(&g_v4019E8, 0x01, 44, stderr);
+	fwrite(0x004019E8, 0x01, 44, stderr);
 	goto l00000000004016DE;
 }
 
@@ -304,14 +304,14 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x00601E08 - g_a601E00;
+	int64 rbp_n = 0x00601E08 - 0x00601E00;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n;
 		rbx_n.u1 = 0x00;
 		do
 		{
-			(*((char *) g_a601E00 + rbx_n * 0x08))();
+			(*((word64) 0x00601E00 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}

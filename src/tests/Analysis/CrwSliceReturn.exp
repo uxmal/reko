@@ -36,7 +36,7 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0015(Sequence segptr32 ds_si)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
-//   Sequence ds:si: (ptr32 (struct 0002))
+//   Sequence ds:si: (union (segptr32 u0) ((ptr32 (struct 0002)) u1))
 // LiveOut: ax
 // Trashed: ax Top
 // Preserved: sp

@@ -12,14 +12,17 @@ word32 quiet_flag = 0x00; // 00027F2C
 word32 nochange_flag = 0x00; // 00027F30
 word32 nosave_flag = 0x00; // 00027F34
 word32 keep_flag = 0x00; // 00027F38
-struct stat * (* compile_params)[] = null; // 00027F3C
+Eq_n compile_params = // 00027F3C
+	{
+		0x00
+	};
 word32 indent_string = 0x000170A0; // 00027F40
 word32 input_file_name_index = 0x00; // 00027F44
 ui32 aux_info_file_name_index = 0x00; // 00027F48
 ui32 n_base_source_files = 0x00; // 00027F4C
 Eq_n line_buf.78 = // 00027F50
 	{
-		null
+		0
 	};
 Eq_n line_buf_size.79 = // 00027F54
 	{
@@ -37,8 +40,14 @@ char g_b28038 = '/'; // 00028038
 char g_b28040 = '/'; // 00028040
 char g_b28050 = '/'; // 00028050
 char g_b28058 = '/'; // 00028058
-struct Eq_n * optarg = null; // 00028064
-ptr32 * optind = &g_ptr0001; // 00028068
+Eq_n optarg = // 00028064
+	{
+		0x00
+	};
+Eq_n optind = // 00028068
+	{
+		1
+	};
 word32 __getopt_initialized = 0x00; // 0002806C
 word32 opterr = 0x01; // 00028070
 Eq_n optopt = // 00028074

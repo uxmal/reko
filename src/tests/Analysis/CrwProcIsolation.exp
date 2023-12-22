@@ -41,7 +41,7 @@ fn0C00_0000_exit:
 void fn0C00_000F(Sequence segptr32 ds_di)
 // MayUse:  Sequence ds:di:[0..31]
 // DataTypes: 
-//   Sequence ds:di: (ptr32 (struct 0002))
+//   Sequence ds:di: (union (segptr32 u0) ((ptr32 (struct 0002)) u1))
 // LiveOut:
 // Trashed: Top
 // Preserved: sp

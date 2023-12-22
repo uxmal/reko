@@ -21,7 +21,7 @@ void deregister_tm_clones()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 00000000004004E0: void register_tm_clones()
@@ -31,7 +31,7 @@ void register_tm_clones()
 {
 	if (true || true)
 		return;
-	null();
+	0x00();
 }
 
 // 0000000000400520: void __do_global_dtors_aux()
@@ -108,14 +108,14 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x00600E18 - g_a600E10;
+	int64 rbp_n = 0x00600E18 - 0x00600E10;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n;
 		rbx_n.u1 = 0x00;
 		do
 		{
-			(*((char *) g_a600E10 + rbx_n * 0x08))();
+			(*((word64) 0x00600E10 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbp_n >> 0x03 != rbx_n);
 	}

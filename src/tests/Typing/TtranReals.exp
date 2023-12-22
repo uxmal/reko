@@ -46,7 +46,7 @@ Eq_3: (segment (300 Eq_7 t0300) (320 Eq_8 t0320) (400 real64 r0400) (408 int32 d
 	T_3 (in ds : selector)
 	T_6 (in ds : selector)
 	T_14 (in ds : selector)
-Eq_4: (fn void ((ptr16 Eq_3), (memptr (ptr16 Eq_3) Eq_7), (memptr (ptr16 Eq_3) Eq_8)))
+Eq_4: (union (segptr32 u0) ((ptr32 (fn void ((ptr16 Eq_3), (memptr (ptr16 Eq_3) Eq_7), (memptr (ptr16 Eq_3) Eq_8)))) u1))
 	T_4 (in fn0C00_0010 : segptr32)
 	T_5 (in signature of fn0C00_0010 : void)
 Eq_7: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
@@ -55,7 +55,7 @@ Eq_7: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
 Eq_8: (struct (0 real64 r0000) (20 int16 w0020) (28 real64 r0028))
 	T_8 (in wArg04 : word16)
 	T_10 (in 0x320<16> : word16)
-Eq_12: (fn void ((ptr16 Eq_3)))
+Eq_12: (union (segptr32 u0) ((ptr32 (fn void ((ptr16 Eq_3)))) u1))
 	T_12 (in fn0C00_0037 : segptr32)
 	T_13 (in signature of fn0C00_0037 : void)
 Eq_27: (struct (0 real64 r0000) (8 real64 r0008))
@@ -77,11 +77,11 @@ T_3: (in ds : selector)
   OrigDataType: (ptr16 (segment))
 T_4: (in fn0C00_0010 : segptr32)
   Class: Eq_4
-  DataType: (ptr32 Eq_4)
-  OrigDataType: (ptr32 (fn T_11 (T_3, T_9, T_10)))
+  DataType: Eq_4
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn void ((ptr16 Eq_3), (memptr (ptr16 Eq_3) Eq_7), (memptr (ptr16 Eq_3) Eq_8)))) u1))
 T_5: (in signature of fn0C00_0010 : void)
   Class: Eq_4
-  DataType: (ptr32 Eq_4)
+  DataType: Eq_4
   OrigDataType: 
 T_6: (in ds : selector)
   Class: Eq_3
@@ -109,11 +109,11 @@ T_11: (in fn0C00_0010(ds, 0x300<16>, 0x320<16>) : void)
   OrigDataType: void
 T_12: (in fn0C00_0037 : segptr32)
   Class: Eq_12
-  DataType: (ptr32 Eq_12)
-  OrigDataType: (ptr32 (fn T_15 (T_3)))
+  DataType: Eq_12
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn void ((ptr16 Eq_3)))) u1))
 T_13: (in signature of fn0C00_0037 : void)
   Class: Eq_12
-  DataType: (ptr32 Eq_12)
+  DataType: Eq_12
   OrigDataType: 
 T_14: (in ds : selector)
   Class: Eq_3

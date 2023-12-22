@@ -236,9 +236,9 @@ Eq_379: (union "Eq_379" (int16 u0) (int32 u1))
 	T_379 (in gp6_100 /16 2<16> @ 0000021F : word16)
 Eq_380: (union "Eq_380" (int32 u0) (cui16 u1))
 	T_380 (in (__xbr(gp1_106) >> 8<16>) + gp6_100 /16 2<16> @ 0000021F : word16)
-Eq_407: (struct "Eq_407" (2DA (ptr16 code) ptr02DA))
+Eq_407: (union "Eq_407" (ci16 u0) ((ptr16 Eq_777) u1))
 	T_407 (in gp2_12 & 0xFFF8<16> @ 000002C8 : word16)
-	T_408 (in gp2_18 @ 000002C8 : (ptr16 Eq_407))
+	T_408 (in gp2_18 @ 000002C8 : Eq_407)
 Eq_410: (union "Eq_410" (int32 u0) (uint32 u1))
 	T_410 (in CONVERT(gp1 - gp2_18, word16, uint32) @ 000002D4 : uint32)
 	T_411 (in 7<32> @ 000002D4 : uipr32)
@@ -293,6 +293,8 @@ Eq_758: (fn (ptr16 byte) (word32, (ptr16 Eq_4), word16, ptr16))
 	T_759 (in signature of fn03E0 @ 03E0 : void)
 Eq_776: (union "Eq_776" (byte u0) (word16 u1))
 	T_776
+Eq_777: (struct "Eq_777" (2DA (ptr16 code) ptr02DA))
+	T_777
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -1920,12 +1922,12 @@ T_406: (in 0xFFF8<16> @ 000002C8 : word16)
   OrigDataType: cui16
 T_407: (in gp2_12 & 0xFFF8<16> @ 000002C8 : word16)
   Class: Eq_407
-  DataType: (ptr16 Eq_407)
+  DataType: Eq_407
   OrigDataType: cui16
-T_408: (in gp2_18 @ 000002C8 : (ptr16 Eq_407))
+T_408: (in gp2_18 @ 000002C8 : Eq_407)
   Class: Eq_407
-  DataType: (ptr16 Eq_407)
-  OrigDataType: (ptr16 (struct (2DA T_424 t02DA)))
+  DataType: Eq_407
+  OrigDataType: (union (ci16 u0) ((ptr16 Eq_777) u1))
 T_409: (in gp1 - gp2_18 @ 000002D4 : word16)
   Class: Eq_409
   DataType: ci16
@@ -3398,6 +3400,10 @@ T_776:
   Class: Eq_776
   DataType: Eq_776
   OrigDataType: 
+T_777:
+  Class: Eq_777
+  DataType: Eq_777
+  OrigDataType: 
 */
 typedef struct Eq_4;
 struct Eq_18;
@@ -3545,8 +3551,9 @@ typedef union Eq_380 {
 	cui16 u1;
 } Eq_380;
 
-typedef struct Eq_407 {
-	<anonymous> * ptr02DA;	// 2DA
+typedef union Eq_407 {
+	ci16 u0;
+	struct Eq_777 * u1;
 } Eq_407;
 
 typedef union Eq_410 {
@@ -3610,4 +3617,8 @@ typedef union Eq_776 {
 	byte u0;
 	word16 u1;
 } Eq_776;
+
+typedef struct Eq_777 {
+	<anonymous> * ptr02DA;	// 2DA
+} Eq_777;
 

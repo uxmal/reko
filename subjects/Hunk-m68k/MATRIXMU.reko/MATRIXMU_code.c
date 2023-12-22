@@ -55,7 +55,7 @@ void fn00001000(int32 d0, byte * a0)
 		{
 			d0_n->dw0000 = d0_n + 0x11;
 			d0_n->dw000C = d4_n - 0x01;
-			d0_n->ptr0008 = (char *) &d0_n->ptr0010 + d0_n;
+			d0_n->ptr0008 = (char *) &d0_n->t0010.u0 + d0_n;
 			null = null;
 			ui32 d0_n = d0_n->dw00AC;
 			struct Eq_n * dwLoc0C_n;
@@ -81,19 +81,19 @@ void fn00001000(int32 d0, byte * a0)
 				*(ui32 *) 0x14B0 = d0_n;
 				d0_n->dw009C = d0_n;
 				d0_n->dw00A0 = d0_n;
-				word32 d0_n = ((word32[]) 8)[d0_n];
+				word32 d0_n = *((word32) 8 + d0_n * 0x04);
 				if (d0_n != 0x00)
 					d0_n->dw00A4 = d0_n;
 l000011F8:
 				a0_n = d0_n->dw003A;
 				goto l00001202;
 			}
-			ui32 d0_n = ((ui32[]) 16)[d0_n];
+			ui32 d0_n = *((word32) 16 + d0_n * 0x04);
 			byte * a1_n = d0_n->ptr0008;
-			byte (* a0_n)[] = (d0_n << 0x02) + 1;
-			a0_n[(uint32) null[d0_n].b0000] = 0x00;
-			d0_n->ptr0010 = a0_n;
-			word32 * a6_n = (word32 *) ((char *) &d0_n->ptr0010 + 4);
+			Eq_n a0_n = (d0_n << 0x02) + 1;
+			((word32) a0_n + (uint32) (null)[d0_n].b0000)->u1 = 0x00;
+			d0_n->t0010.u0 = (uint32) a0_n;
+			word32 * a6_n = (word32 *) ((char *) &d0_n->t0010 + 4);
 			int32 d3_n = 1;
 			struct Eq_n * a0_n = (struct Eq_n *) (a0 + d2_n);
 			word16 v30_n;
@@ -176,7 +176,7 @@ l00001148:
 			g_dw14A8 = execPrivate4();
 			ui32 d0_n = execPrivate5();
 			*(ui32 *) 5292 = d0_n;
-			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
+			dwLoc0C_n = (struct Eq_n *) &d0_n->t0010.u0;
 			int32 dwLoc10 = d3_n;
 			if (g_ptr1498->w0014 >= 0x24)
 			{

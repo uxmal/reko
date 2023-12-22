@@ -7802,22 +7802,12 @@ Eq_n g_a0226[] = // 0226
 Eq_n g_t0262 = // 0262
 	{
 		0x00,
-		0x00,
-		0x00,
-		0x00,
 		null,
-		null,
-		0x00,
 	};
 Eq_n g_t0272 = // 0272
 	{
 		0x00,
-		0x00,
-		0x00,
-		0x00,
 		null,
-		null,
-		0x00,
 	};
 struct Eq_n * pxDelayedTaskList = null; // 0282
 struct Eq_n * pxOverflowDelayedTaskList = null; // 0284

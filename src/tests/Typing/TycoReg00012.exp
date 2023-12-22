@@ -99,8 +99,8 @@ T_5: (in ds : selector)
   OrigDataType: (ptr16 (segment))
 T_6: (in fn0C00_0007 : segptr32)
   Class: Eq_6
-  DataType: (ptr32 (fn T_10 (T_3, T_5)))
-  OrigDataType: (ptr32 (fn T_10 (T_3, T_5)))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_10 (T_3, T_5))) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_10 (T_3, T_5))) u1))
 T_7: (in signature of fn0C00_0007 : void)
   Class: Eq_6
   DataType: 
@@ -119,8 +119,8 @@ T_10: (in fn0C00_0007(cx, ds) : void)
   OrigDataType: void
 T_11: (in fn0C00_001D : segptr32)
   Class: Eq_11
-  DataType: (ptr32 (fn T_15 (T_4, T_5)))
-  OrigDataType: (ptr32 (fn T_15 (T_4, T_5)))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_15 (T_4, T_5))) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_15 (T_4, T_5))) u1))
 T_12: (in signature of fn0C00_001D : void)
   Class: Eq_11
   DataType: 
@@ -147,8 +147,8 @@ T_17: (in di_21 : word16)
   OrigDataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
 T_18: (in fn0C00_003D : segptr32)
   Class: Eq_18
-  DataType: (ptr32 (fn T_28 (T_23, T_27, T_9)))
-  OrigDataType: (ptr32 (fn T_28 (T_23, T_27, T_9)))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_28 (T_23, T_27, T_9))) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_28 (T_23, T_27, T_9))) u1))
 T_19: (in signature of fn0C00_003D : void)
   Class: Eq_18
   DataType: 
@@ -263,8 +263,8 @@ T_46: (in Mem11[ds:0x53BA<16>:word16] : word16)
   OrigDataType: word16
 T_47: (in fn0C00_0046 : segptr32)
   Class: Eq_47
-  DataType: (ptr32 (fn T_60 (T_53, T_58, T_59, T_14)))
-  OrigDataType: (ptr32 (fn T_60 (T_53, T_58, T_59, T_14)))
+  DataType: (union (segptr32 u0) ((ptr32 (fn T_60 (T_53, T_58, T_59, T_14))) u1))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (fn T_60 (T_53, T_58, T_59, T_14))) u1))
 T_48: (in signature of fn0C00_0046 : void)
   Class: Eq_47
   DataType: 
@@ -291,12 +291,12 @@ T_53: (in 0x4400<16> : word16)
   OrigDataType: word16
 T_54: (in 0x5388<16> : word16)
   Class: Eq_54
-  DataType: (memptr T_14 (struct (0 (arr T_78) a0000)))
-  OrigDataType: (memptr T_14 (struct (0 (arr T_78) a0000)))
+  DataType: word16
+  OrigDataType: word16
 T_55: (in ds:0x5388<16> : segptr32)
   Class: Eq_55
-  DataType: (ptr32 (struct (0 (arr T_78) a0000)))
-  OrigDataType: (ptr32 (struct (0 (arr T_78) a0000)))
+  DataType: (union (segptr32 u0) ((ptr32 (struct (0 T_79 t0000))) u1) ((ptr32 T_79) u2))
+  OrigDataType: (union (segptr32 u0) ((ptr32 (struct (0 T_79 t0000))) u1) ((ptr32 T_79) u2))
 T_56: (in 2<16> : word16)
   Class: Eq_56
   DataType: ui16

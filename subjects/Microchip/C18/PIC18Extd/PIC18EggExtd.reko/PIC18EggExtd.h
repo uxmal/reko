@@ -46,10 +46,26 @@ Eq_15: (fn void (Eq_11, byte))
 	T_77 (in __tblrd @ 000060 : ptr32)
 	T_80 (in __tblrd @ 000062 : ptr32)
 	T_98 (in __tblrd @ 000086 : ptr32)
+Eq_21: (union "Eq_21" (16 u0) ((ptr16 cu8) u1))
+	T_21 (in 00C5 @ 000020 : 16)
+Eq_26: (union "Eq_26" (16 u0) ((ptr16 cu8) u1))
+	T_26 (in 00C6 @ 000026 : 16)
+Eq_40: (union "Eq_40" (16 u0) ((ptr16 cu8) u1))
+	T_40 (in 00C0 @ 000034 : 16)
+Eq_45: (union "Eq_45" (16 u0) ((ptr16 cu8) u1))
+	T_45 (in 00C1 @ 00003A : 16)
+Eq_50: (union "Eq_50" (16 u0) ((ptr16 cu8) u1))
+	T_50 (in 00C2 @ 000040 : 16)
+Eq_70: (union "Eq_70" (16 u0) ((ptr16 cu8) u1))
+	T_70 (in 00C3 @ 000058 : 16)
+Eq_75: (union "Eq_75" (16 u0) ((ptr16 cu8) u1))
+	T_75 (in 00C4 @ 00005E : 16)
 Eq_132: (union "Eq_132" (bool u0) (byte u1))
-	T_132 (in !(bool) cond(g_b00C5) @ 0000A6 : bool)
+	T_132 (in !(bool) cond(0xC5<u16>) @ 0000A6 : bool)
 Eq_144: (struct "Eq_144" (FFFFFFFE byte bFFFFFFFE))
 	T_144 (in FSR2 @ 0000AA : (ptr16 Eq_144))
+Eq_149: (union "Eq_149" (16 u0) ((ptr16 byte) u1))
+	T_149 (in 00CA @ 0000E0 : 16)
 Eq_176: (union "Eq_176" (word16 u0) ((ptr32 byte) u1))
 	T_176 (in FSR0 @ 0000EC : Eq_176)
 	T_183 (in FSR0 + 1<16> @ 00012C : word16)
@@ -145,8 +161,8 @@ T_20: (in __tblrd(TBLPTR, 1<8>) @ 00001C : void)
   OrigDataType: void
 T_21: (in 00C5 @ 000020 : 16)
   Class: Eq_21
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_2 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_22: (in Data13[0x00C5<p16>:byte] @ 000020 : byte)
   Class: Eq_2
   DataType: cu8
@@ -165,8 +181,8 @@ T_25: (in __tblrd(TBLPTR, 1<8>) @ 000022 : void)
   OrigDataType: void
 T_26: (in 00C6 @ 000026 : 16)
   Class: Eq_26
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_2 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_27: (in Data16[0x00C6<p16>:byte] @ 000026 : byte)
   Class: Eq_2
   DataType: cu8
@@ -221,8 +237,8 @@ T_39: (in __tblrd(TBLPTR, 1<8>) @ 000030 : void)
   OrigDataType: void
 T_40: (in 00C0 @ 000034 : 16)
   Class: Eq_40
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_41 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_41: (in Data29[0x00C0<p16>:byte] @ 000034 : byte)
   Class: Eq_2
   DataType: cu8
@@ -241,8 +257,8 @@ T_44: (in __tblrd(TBLPTR, 1<8>) @ 000036 : void)
   OrigDataType: void
 T_45: (in 00C1 @ 00003A : 16)
   Class: Eq_45
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_46 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_46: (in Data31[0x00C1<p16>:byte] @ 00003A : byte)
   Class: Eq_2
   DataType: cu8
@@ -261,8 +277,8 @@ T_49: (in __tblrd(TBLPTR, 1<8>) @ 00003C : void)
   OrigDataType: void
 T_50: (in 00C2 @ 000040 : 16)
   Class: Eq_50
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_51 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_51: (in Data33[0x00C2<p16>:byte] @ 000040 : byte)
   Class: Eq_2
   DataType: cu8
@@ -341,8 +357,8 @@ T_69: (in __tblrd(TBLPTR, 1<8>) @ 000054 : void)
   OrigDataType: void
 T_70: (in 00C3 @ 000058 : 16)
   Class: Eq_70
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_2 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_71: (in Data39[0x00C3<p16>:byte] @ 000058 : byte)
   Class: Eq_2
   DataType: cu8
@@ -361,8 +377,8 @@ T_74: (in __tblrd(TBLPTR, 1<8>) @ 00005A : void)
   OrigDataType: void
 T_75: (in 00C4 @ 00005E : 16)
   Class: Eq_75
-  DataType: (ptr16 cu8)
-  OrigDataType: (ptr16 (struct (0 T_2 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 cu8) u1))
 T_76: (in Data41[0x00C4<p16>:byte] @ 00005E : byte)
   Class: Eq_2
   DataType: cu8
@@ -431,7 +447,7 @@ T_92: (in 0<8> @ 00007E : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_93: (in g_b00C3 != 0<8> @ 00007E : bool)
+T_93: (in 0xC3<u16> != 0<8> @ 00007E : bool)
   Class: Eq_93
   DataType: bool
   OrigDataType: bool
@@ -447,7 +463,7 @@ T_96: (in 0<8> @ 00002A : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_97: (in g_b00C5 == 0<8> @ 00002A : bool)
+T_97: (in 0xC5<u16> == 0<8> @ 00002A : bool)
   Class: Eq_97
   DataType: bool
   OrigDataType: bool
@@ -483,7 +499,7 @@ T_105: (in 1<8> @ 00008C : byte)
   Class: Eq_105
   DataType: byte
   OrigDataType: byte
-T_106: (in g_b00C3 - 1<8> @ 00008C : byte)
+T_106: (in 0xC3<u16> - 1<8> @ 00008C : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
@@ -507,7 +523,7 @@ T_111: (in 0<8> @ 00008C : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_112: (in g_b00C3 != 0<8> @ 00008C : bool)
+T_112: (in 0xC3<u16> != 0<8> @ 00008C : bool)
   Class: Eq_93
   DataType: bool
   OrigDataType: bool
@@ -519,7 +535,7 @@ T_114: (in 0<8> @ 00008E : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: cu8
-T_115: (in g_b00C3 < 0<8> @ 00008E : bool)
+T_115: (in 0xC3<u16> < 0<8> @ 00008E : bool)
   Class: Eq_115
   DataType: bool
   OrigDataType: bool
@@ -539,7 +555,7 @@ T_119: (in 0<8> @ 000084 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_120: (in g_b00C4 == 0<8> @ 000084 : bool)
+T_120: (in 0xC4<u16> == 0<8> @ 000084 : bool)
   Class: Eq_120
   DataType: bool
   OrigDataType: bool
@@ -563,7 +579,7 @@ T_125: (in 1<8> @ 0000A2 : byte)
   Class: Eq_125
   DataType: byte
   OrigDataType: byte
-T_126: (in g_b00C5 - 1<8> @ 0000A2 : byte)
+T_126: (in 0xC5<u16> - 1<8> @ 0000A2 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
@@ -587,11 +603,11 @@ T_131: (in SLICE(cond(Data67[0x00C5<p16>:byte]), bool, 0) @ 0000A6 : bool)
   Class: Eq_131
   DataType: bool
   OrigDataType: bool
-T_132: (in !(bool) cond(g_b00C5) @ 0000A6 : bool)
+T_132: (in !(bool) cond(0xC5<u16>) @ 0000A6 : bool)
   Class: Eq_132
   DataType: Eq_132
   OrigDataType: (union (bool u0) (byte u1))
-T_133: (in g_b00C6 - !((bool) cond(g_b00C5)) @ 0000A6 : byte)
+T_133: (in 0xC6<u16> - !((bool) cond(0xC5<u16>)) @ 0000A6 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
@@ -607,7 +623,7 @@ T_136: (in 0<8> @ 0000A6 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_137: (in g_b00C6 != 0<8> @ 0000A6 : bool)
+T_137: (in 0xC6<u16> != 0<8> @ 0000A6 : bool)
   Class: Eq_35
   DataType: bool
   OrigDataType: bool
@@ -619,7 +635,7 @@ T_139: (in 1<8> @ 000090 : byte)
   Class: Eq_139
   DataType: byte
   OrigDataType: byte
-T_140: (in g_b00C4 - 1<8> @ 000090 : byte)
+T_140: (in 0xC4<u16> - 1<8> @ 000090 : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
@@ -657,8 +673,8 @@ T_148: (in Data5[FSR1 + 0<16>:byte] @ 0000D0 : byte)
   OrigDataType: byte
 T_149: (in 00CA @ 0000E0 : 16)
   Class: Eq_149
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_150 t0000)))
+  DataType: 16
+  OrigDataType: (union (16 u2) ((ptr16 byte) u1))
 T_150: (in Data12[0x00CA<p16>:byte] @ 0000E0 : byte)
   Class: Eq_150
   DataType: byte
@@ -667,7 +683,7 @@ T_151: (in 1<8> @ 0000E0 : byte)
   Class: Eq_151
   DataType: byte
   OrigDataType: byte
-T_152: (in g_b00CA & 1<8> @ 0000E0 : byte)
+T_152: (in 0xCA<u16> & 1<8> @ 0000E0 : byte)
   Class: Eq_152
   DataType: byte
   OrigDataType: byte
@@ -675,7 +691,7 @@ T_153: (in 0<8> @ 0000E0 : byte)
   Class: Eq_152
   DataType: byte
   OrigDataType: byte
-T_154: (in (g_b00CA & 1<8>) != 0<8> @ 0000E0 : bool)
+T_154: (in (0xCA<u16> & 1<8>) != 0<8> @ 0000E0 : bool)
   Class: Eq_154
   DataType: bool
   OrigDataType: bool
@@ -687,7 +703,7 @@ T_156: (in 0xFE<8> @ 0000E4 : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_157: (in g_b00CA & 0xFE<8> @ 0000E4 : byte)
+T_157: (in 0xCA<u16> & 0xFE<8> @ 0000E4 : byte)
   Class: Eq_150
   DataType: byte
   OrigDataType: byte
@@ -861,6 +877,41 @@ typedef union Eq_11 {
 
 typedef void (Eq_15)(Eq_11, byte);
 
+typedef union Eq_21 {
+	16 u0;
+	cu8 * u1;
+} Eq_21;
+
+typedef union Eq_26 {
+	16 u0;
+	cu8 * u1;
+} Eq_26;
+
+typedef union Eq_40 {
+	16 u0;
+	cu8 * u1;
+} Eq_40;
+
+typedef union Eq_45 {
+	16 u0;
+	cu8 * u1;
+} Eq_45;
+
+typedef union Eq_50 {
+	16 u0;
+	cu8 * u1;
+} Eq_50;
+
+typedef union Eq_70 {
+	16 u0;
+	cu8 * u1;
+} Eq_70;
+
+typedef union Eq_75 {
+	16 u0;
+	cu8 * u1;
+} Eq_75;
+
 typedef union Eq_132 {
 	bool u0;
 	byte u1;
@@ -869,6 +920,11 @@ typedef union Eq_132 {
 typedef struct Eq_144 {
 	byte bFFFFFFFE;	// FFFFFFFE
 } Eq_144;
+
+typedef union Eq_149 {
+	16 u0;
+	byte * u1;
+} Eq_149;
 
 typedef union Eq_176 {
 	word16 u0;

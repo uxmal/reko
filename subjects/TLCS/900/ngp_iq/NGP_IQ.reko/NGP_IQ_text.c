@@ -193,7 +193,7 @@ bool fn00200532(word32 xhl)
 word32 fn00200557(bui8 c, byte b, byte * xhl)
 {
 	word24 xwa_24_8_n = 0x00;
-	struct Eq_n * xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b * 0x40;
+	Eq_n xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b * 0x40;
 	byte b_n;
 	word32 xwa_n;
 	for (b_n = 0x13; b_n != 0x00; --b_n)
@@ -204,11 +204,12 @@ word32 fn00200557(bui8 c, byte b, byte * xhl)
 		if (v18_n == 0x00)
 			return xwa_n;
 		++xhl;
-		word32 * xde_n = (word32 *) (xde_n + 1);
-		word32 v25_n = *xde_n;
-		xde_n = (struct Eq_n *) ((char *) xde_n + 1);
+		Eq_n xde_n;
+		xde_n.u1 = (word32) xde_n + 1;
+		word32 v25_n = *xde_n.u1;
+		xde_n.u1 = (word32) xde_n + 1;
 		xwa_24_8_n = SEQ(xwa_16_16_n, v25_n);
-		xwa_n = SEQ(xwa_16_16_n, v25_n, xde_n->dw0000);
+		xwa_n = SEQ(xwa_16_16_n, v25_n, xde_n.u1->dw0000);
 	}
 	return xwa_n;
 }

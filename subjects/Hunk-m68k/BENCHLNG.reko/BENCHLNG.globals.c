@@ -5,10 +5,7 @@
 #include "BENCHLNG.h"
 
 struct Eq_n * g_ptr0000; // 00000000
-word32 g_dw0001; // 00000001
 struct Eq_n * g_ptr0004; // 00000004
-word32 g_a0008[];
-ui32 g_a0010[];
 word32 g_dw3F60; // 00003F60
 word32 g_dw3F6C; // 00003F6C
 struct Eq_n * g_ptr3F78; // 00003F78

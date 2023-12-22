@@ -40,6 +40,8 @@ Eq_22: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 00000000004004AA : ptr32)
 	T_34 (in signature of __halt : void)
+Eq_38: (union "Eq_38" (uint64 u0) ((ptr64 code) u1))
+	T_38 (in 0<u64> @ 00000000004004D1 : uint64)
 Eq_48: (fn void ())
 	T_48 (in fn0000000000400700 @ 00000000004006F0 : ptr64)
 	T_49 (in signature of fn0000000000400700 @ 0000000000400700 : void)
@@ -197,8 +199,8 @@ T_37: (in true @ 00000000004004C9 : bool)
   OrigDataType: bool
 T_38: (in 0<u64> @ 00000000004004D1 : uint64)
   Class: Eq_38
-  DataType: (ptr64 code)
-  OrigDataType: (ptr64 code)
+  DataType: uint64
+  OrigDataType: (union (uint64 u0) ((ptr64 code) u1))
 T_39: (in esi @ 00000000004004D1 : word32)
   Class: Eq_39
   DataType: word32
@@ -289,6 +291,11 @@ typedef void (Eq_21)();
 typedef void (Eq_22)();
 
 typedef void (Eq_33)();
+
+typedef union Eq_38 {
+	uint64 u0;
+	<anonymous> * u1;
+} Eq_38;
 
 typedef void (Eq_48)();
 

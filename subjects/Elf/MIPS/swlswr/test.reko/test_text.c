@@ -9,12 +9,12 @@ void __start(word32 r2, word32 dwArg00)
 {
 	Eq_n fp;
 	word32 r4_n = main_GOT;
-	struct Eq_n * sp_n = (fp & -8) + -32;
+	Eq_n sp_n = (fp & -8) + -32;
 	word32 r7_n = __libc_csu_init_GOT;
 	word32 r8_n = __libc_csu_fini_GOT;
-	sp_n->dw0010 = r8_n;
-	sp_n->dw0014 = r2;
-	sp_n->ptr0018 = sp_n;
+	sp_n.u1->dw0010 = r8_n;
+	sp_n.u1->dw0014 = r2;
+	sp_n.u1->t0018.u0 = (ui32) sp_n;
 	__libc_start_main_GOT();
 	while (true)
 		;
@@ -64,8 +64,8 @@ void __do_global_dtors_aux()
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
 			dtor_idx.6258.u0 = (int32) r2_n;
-			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
-			(*r2_n)();
+			Eq_n r2_n = (r2_n << 0x02) + 68200;
+			(*r2_n.u1)();
 			r2_n.u0 = dtor_idx.6258.u0;
 		}
 		deregister_tm_clones();
@@ -127,16 +127,17 @@ void __libc_csu_fini()
 // 00000970: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	<anonymous> * r25_n = g_ptr10A60;
-	if (r25_n != (<anonymous> *) -1)
+	Eq_n r25_n;
+	r25_n.u0 = g_t10A60.u0;
+	if (r25_n != -1)
 	{
-		word32 * r16_n = &g_ptr10A60;
+		word32 * r16_n = (word32 *) &g_t10A60;
 		do
 		{
 			r25_n();
 			r16_n += -1;
-			r25_n = *r16_n;
-		} while (r25_n != (<anonymous> *) -1);
+			r25_n.u1 = *r16_n;
+		} while (r25_n != -1);
 	}
 }
 

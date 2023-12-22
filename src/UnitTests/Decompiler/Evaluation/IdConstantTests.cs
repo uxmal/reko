@@ -99,11 +99,12 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ctx = new Mock<EvaluationContext>();
             ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(0x567));
 
-            IdConstant ic = new IdConstant(); 
-            var e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
+            IdConstant ic = new IdConstant();
+            var factory = new TypeFactory();
+            var e = ic.Match(edx, ctx.Object, new Unifier(factory, null), listener);
             Assert.That(e, Is.Not.Null);
-            Assert.AreEqual("00000567", e.ToString());
-            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
+            Assert.AreEqual("0x567<32>", e.ToString());
+            Assert.AreEqual("(union (int32 u0) (INTPTR u1))", e.DataType.ToString());
         }
 
         [Test]

@@ -12,6 +12,8 @@ Eq_3: (segment "seg1000_t")
 	T_3 (in seg1000 @ 1000:0000 : selector)
 Eq_4: (segment "seg1046_t" (60 uint16 theGlobal))
 	T_4 (in seg1046 @ 1046:0000 : selector)
+Eq_6: (union "Eq_6" (segptr32 u0) ((ptr32 word16) u1))
+	T_6 (in 1046:0060 @ 1000:0007 : segptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -35,8 +37,8 @@ T_5: (in 0x1337<16> @ 1000:0007 : word16)
   OrigDataType: word16
 T_6: (in 1046:0060 @ 1000:0007 : segptr32)
   Class: Eq_6
-  DataType: (ptr32 word16)
-  OrigDataType: (ptr32 (struct (0 T_7 t0000)))
+  DataType: Eq_6
+  OrigDataType: (union (segptr32 u0) ((ptr32 word16) u1))
 T_7: (in Mem5[1046:0060:word16] @ 1000:0007 : word16)
   Class: Eq_5
   DataType: word16
@@ -54,4 +56,9 @@ typedef struct seg1000_t {
 typedef struct seg1046_t {
 	uint16 theGlobal;	// 60
 } Eq_4;
+
+typedef union Eq_6 {
+	segptr32 u0;
+	word16 * u1;
+} Eq_6;
 
