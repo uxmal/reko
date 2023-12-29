@@ -70,6 +70,14 @@ namespace Reko.Core.Intrinsics
 
         public override Constant? ApplyConstants(DataType dt, params Constant[] cs)
         {
+            return ApplyConstants(this.Operator, dt, cs);
+        }
+
+        public Constant? ApplyConstants(
+            IFunctionalUnit operation,
+            DataType dt,
+            params Constant[] cs)
+        {
             var dtInput = cs[0].DataType;
             var bitsInput = dtInput.BitSize;
             var dtInputLane = this.InputLaneType(0);    //$REVIEW: do these vary by input #?
@@ -88,7 +96,7 @@ namespace Reko.Core.Intrinsics
                     int sh = iLane * bitsInputLane;
                     laneInputs[i] = Constant.Create(dtInputLane, (cs[i].ToBigInteger() >> sh) & maskInputLane);
                 }
-                var laneResult = this.Operator.ApplyConstants(dtOutputLane, laneInputs);
+                var laneResult = operation.ApplyConstants(dtOutputLane, laneInputs);
                 if (laneResult is null)
                     return null;
                 output <<= dtOutputLane.BitSize;

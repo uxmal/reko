@@ -26,7 +26,7 @@ using System.Linq;
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Models a sequence consisting of multiple expressions.
+	/// Models an ordered sequence consisting of multiple expressions.
 	/// </summary>
     /// <remarks>The elements of the sequence form a whole.
     /// The <see cref="DataType"/> indicates what kind of whole it is.

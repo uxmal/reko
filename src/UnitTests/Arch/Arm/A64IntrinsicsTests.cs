@@ -101,6 +101,25 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Intrinsic_dup()
+        {
+            var c = intrinsics.dup.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(
+                aw32(4),
+                Constant.Word32(0x12345678));
+            Assert.AreEqual("0x12345678123456781234567812345678<128>", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Intrinsic_raddhn()
+        {
+            var c = intrinsics.raddhn.MakeInstance(aw32(4), aw16(4)).ApplyConstants(
+                aw16(4),
+                C(aw32(4), 0x01020304, 0x808080, 0x102030),
+                C(aw32(4), 0x10203040, 0x80F0FF, 0xEFE2E3));
+            Assert.AreEqual("0x112201010100<64>", c.ToString());
+        }
+
+        [Test]
         public void AArch64Intrinsic_smaxv()
         {
             var c = intrinsics.smaxv.MakeInstance(aw32(4), PrimitiveType.Word32).ApplyConstants(

@@ -225,7 +225,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.pmull: RewriteSimdBinary(intrinsic.pmull, Domain.None); break;
                     case Mnemonic.pmull2: RewriteSimdBinary(intrinsic.pmull2, Domain.None); break;
                     case Mnemonic.prfm: RewritePrfm(); break;
-                    case Mnemonic.raddhn: RewriteSimdBinary(intrinsic.raddhn, Domain.None); break;
+                    case Mnemonic.raddhn: RewriteSimdBinaryNarrow(intrinsic.raddhn, Domain.None); break;
                     case Mnemonic.raddhn2: RewriteSimdBinary(intrinsic.raddhn2, Domain.None); break;
                     case Mnemonic.rbit: RewriteRbit(); break;
                     case Mnemonic.ret: RewriteRet(); break;
@@ -235,9 +235,9 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.rev64: RewriteSimdUnary(intrinsic.rev64, Domain.None); break;
                     case Mnemonic.ror: RewriteRor(); break;
                     case Mnemonic.rorv: RewriteRor(); break;
-                    case Mnemonic.rshrn: RewriteSimdBinary(intrinsic.rshrn, Domain.None); break;
+                    case Mnemonic.rshrn: RewriteSimdBinaryNarrow(intrinsic.rshrn, Domain.None); break;
                     case Mnemonic.rshrn2: RewriteSimdBinary(intrinsic.rshrn2, Domain.None); break;
-                    case Mnemonic.rsubhn: RewriteSimdBinaryWiden(intrinsic.rsubhn, Domain.None); break;
+                    case Mnemonic.rsubhn: RewriteSimdBinaryNarrow(intrinsic.rsubhn, Domain.None); break;
                     case Mnemonic.rsubhn2: RewriteSimdBinaryWiden(intrinsic.rsubhn2, Domain.None); break;
                     case Mnemonic.saba: RewriteSimdBinary(intrinsic.saba, Domain.None); break;
                     case Mnemonic.sabal: RewriteSimdBinary(intrinsic.sabal, Domain.None); break;
