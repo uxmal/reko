@@ -35,7 +35,7 @@ jal ra,0x800000e6                                         #  JAL                
 jalr tp,5(s10)                                            #  JALR                 I                  //    imm[11:0] rs1 000 rd 1100111
 #----------------------------------------------------------------------------------------------------
 beq a0,a6,0x800091ac                                      #  BEQ                  B                  //    imm[12|10:5] rs2 rs1 000 imm[4:1|11] 1100011
-bnez a4,0x8000926a                                        #  BNE                  B                  //    imm[12|10:5] rs2 rs1 001 imm[4:1|11] 1100011
+bne s4,s3,0x8000926a                                      #  BNE                  B                  //    imm[12|10:5] rs2 rs1 001 imm[4:1|11] 1100011
 blt s0,t3,0x80002da4                                      #  BLT                  B                  //    imm[12|10:5] rs2 rs1 100 imm[4:1|11] 1100011
 bge s0,a2,0x80002ca8                                      #  BGE                  B                  //    imm[12|10:5] rs2 rs1 101 imm[4:1|11] 1100011
 bltu a4,a0,0x800018f2                                     #  BLTU                 B                  //    imm[12|10:5] rs2 rs1 110 imm[4:1|11] 1100011
@@ -63,11 +63,11 @@ srli s8,s9,0x17                                           #  SRLI               
 srai s8,s11,0x1f                                          #  SRAI                 R                  //    0100000 shamt rs1 101 rd 0010011
 add t6,a7,t5                                              #  ADD                  R                  //    0000000 rs2 rs1 000 rd 0110011
 sub s11,s7,t1                                             #  SUB                  R                  //    0100000 rs2 rs1 000 rd 0110011
-sub s11,s7,t1                                             #  SLL                  R                  //    0000000 rs2 rs1 001 rd 0110011
+sll s11,s7,t1                                             #  SLL                  R                  //    0000000 rs2 rs1 001 rd 0110011
 slt t2,t4,t6                                              #  SLT                  R                  //    0000000 rs2 rs1 010 rd 0110011
 sltu a3,s6,a7                                             #  SLTU                 R                  //    0000000 rs2 rs1 011 rd 0110011
 xor t5,t6,t3                                              #  XOR                  R                  //    0000000 rs2 rs1 100 rd 0110011
-xor t5,t6,t3                                              #  SRL                  R                  //    0000000 rs2 rs1 101 rd 0110011
+srl t5,t6,t3                                              #  SRL                  R                  //    0000000 rs2 rs1 101 rd 0110011
 sra t6,s3,sp                                              #  SRA                  R                  //    0100000 rs2 rs1 101 rd 0110011
 or a1,a2,t5                                               #  OR                   R                  //    0000000 rs2 rs1 110 rd 0110011
 and s5,s7,t4                                              #  AND                  R                  //    0000000 rs2 rs1 111 rd 0110011
@@ -119,7 +119,7 @@ csrrw s2,0x315,t0                                         #  CSRRW              
 csrrs a1,sstatus,a5                                       #  CSRRS                I                  //    csr rs1 010 rd 1110011
 csrrc tp,0x5f0,s0                                         #  CSRRC                I                  //    csr rs1 011 rd 1110011
 #----------------------------------------------------------------------------------------------------
-csrrc tp,0x5f0,zero                                       #  CSRRWI               I                  //    csr uimm 101 rd 1110011
+csrrwi tp,0x5f0,28                                        #  CSRRWI               I                  //    csr uimm 101 rd 1110011
 csrrsi s2,0x6e6,30                                        #  CSRRSI               I                  //    csr uimm 110 rd 1110011
 csrrci s0,0x6a5,26                                        #  CSRRCI               I                  //    csr uimm 111 rd 1110011
 
@@ -132,7 +132,7 @@ mul a0,s5,s7                                              #  MUL                
 mulh t5,a7,s1                                             #  MULH                 R                  //    0000001 rs2 rs1 001 rd 0110011
 mulhsu t3,sp,a6                                           #  MULHSU               R                  //    0000001 rs2 rs1 010 rd 0110011
 mulhu t3,sp,a6                                            #  MULHU                R                  //    0000001 rs2 rs1 011 rd 0110011
-mulhsu t3,sp,a6                                           #  DIV                  R                  //    0000001 rs2 rs1 100 rd 0110011
+div a5,a3,a2                                              #  DIV                  R                  //    0000001 rs2 rs1 100 rd 0110011
 divu t4,t3,t2                                             #  DIVU                 R                  //    0000001 rs2 rs1 101 rd 0110011
 rem a4,a1,a2                                              #  REM                  R                  //    0000001 rs2 rs1 110 rd 0110011
 remu a6,a1,t2                                             #  REMU                 R                  //    0000001 rs2 rs1 111 rd 0110011
@@ -213,7 +213,7 @@ fcvt.wu.s a0,ft0,rtz                                      #  FCVT.WU.S          
 fmv.x.w a0,ft3                                            #  FMV.X.W              R                  //    1110000 00000 rs1 000 rd 1010011
 feq.s a0,ft0,ft1                                          #  FEQ.S                R                  //    1010000 rs2 rs1 010 rd 1010011
 flt.s a1,ft2,ft3                                          #  FLT.S                R                  //    1010000 rs2 rs1 001 rd 1010011
-flt.s a2,ft5,ft4                                          #  FLE.S                R                  //    1010000 rs2 rs1 000 rd 1010011
+fle.s a2,ft5,ft4                                          #  FLE.S                R                  //    1010000 rs2 rs1 000 rd 1010011
 fclass.s a3,fa2                                           #  FCLASS.S             R                  //    1110000 00000 rs1 001 rd 1010011
 fcvt.s.w ft1,a5                                           #  FCVT.S.W             R                  //    1101000 00000 rs1 rm rd 1010011
 fcvt.s.wu fs0,a2                                          #  FCVT.S.WU            R                  //    1101000 00001 rs1 rm rd 1010011
