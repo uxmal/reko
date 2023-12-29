@@ -72,11 +72,11 @@ namespace Reko.Arch.RiscV
                 switch (instr.Mnemonic)
                 {
                 default:
+                    EmitUnitTest();
                     host.Warn(
                         addr, 
                         "Risc-V instruction '{0}' not supported yet.",
                         instr.Mnemonic);
-                    EmitUnitTest();
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
@@ -183,6 +183,9 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fcvt_wu_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.UInt32); break;
                 case Mnemonic.fdiv_d: RewriteFBinOp(PrimitiveType.Real64, m.FDiv); break;
                 case Mnemonic.fdiv_s: RewriteFBinOp(PrimitiveType.Real32, m.FDiv); break;
+                case Mnemonic.fence: RewriteFence(); break;
+                case Mnemonic.fence_i: RewriteFenceI(); break;
+                case Mnemonic.fence_tso: RewriteFenceTso(); break;
                 case Mnemonic.feq_d: RewriteFcmp(PrimitiveType.Real64, m.FEq); break;
                 case Mnemonic.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
                 case Mnemonic.fle_d: RewriteFcmp(PrimitiveType.Real64, m.FLe); break;
@@ -227,6 +230,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.mret: RewriteRet(mret_intrinsic); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
+                case Mnemonic.pause: RewritePause(); break;
                 case Mnemonic.remuw: RewriteBinOp(m.UMod, PrimitiveType.Word32); break;
                 case Mnemonic.remw: RewriteBinOp(m.SMod, PrimitiveType.Word32); break;
                 case Mnemonic.sb: RewriteStore(PrimitiveType.Byte); break;
@@ -374,12 +378,25 @@ namespace Reko.Arch.RiscV
         static readonly IntrinsicProcedure ebreak_intrinsic = new IntrinsicBuilder("__ebreak", true)
             .Void();
 
+        static readonly IntrinsicProcedure fence_intrinsic = new IntrinsicBuilder("__fence", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        static readonly IntrinsicProcedure fence_i_intrinsic = new IntrinsicBuilder("__fence_i", true)
+            .Void();
+        static readonly IntrinsicProcedure fence_tso_intrinsic = new IntrinsicBuilder("__fence_tso", true)
+            .Void();
+
+
         static readonly IntrinsicProcedure lr_intrinsic = new IntrinsicBuilder("__load_reserved", true)
             .GenericTypes("T")
             .PtrParam("T")
             .Returns("T");
 
         static readonly IntrinsicProcedure mret_intrinsic = new IntrinsicBuilder("__mret", true)
+            .Void();
+
+        static readonly IntrinsicProcedure pause_intrinsic = new IntrinsicBuilder("__pause", true)
             .Void();
 
         static readonly IntrinsicProcedure sc_intrinsic = new IntrinsicBuilder("__store_conditional", true)

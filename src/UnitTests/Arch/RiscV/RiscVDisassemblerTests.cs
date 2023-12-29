@@ -233,12 +233,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_csrrw()
-        {
-            AssertCode("csrrw\tt5,mtvec,a1", "739F5530");
-        }
-
-        [Test]
         public void RiscV_dasm_csrrs()
         {
             AssertCode("csrrs\tt5,mtvec,a1", "73AF5530");
@@ -254,6 +248,18 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_csrrwi()
         {
             AssertCode("csrrwi\tt5,mtvec,0000000B", "73 df 55 30");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrw()
+        {
+            AssertCode("csrrw\tt5,mtvec,a1", "739F5530");
+        }
+
+        [Test]
+        public void RiscV_dasm_csrrw_unknown()
+        {
+            AssertCode("csrrw\tzero,00000BFC,a0", "7310C5BF");
         }
 
         [Test]
@@ -286,6 +292,17 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("lbu\ta4,s2,+00000000", 0x00094703u);
         }
 
+        [Test]
+        public void RiscV_dasm_fence_i()
+        {
+            AssertCode("fence.i", "0F10 0000");
+        }
+
+        [Test]
+        public void RiscV_dasm_fence()
+        {
+            AssertCode("fence\tiorw,iorw", "0F00 F00F");
+        }
 
         [Test]
         public void RiscV_dasm_flw()
@@ -382,6 +399,12 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_c_bnez()
         {
             AssertCode("c.bnez\ta4,0010001A", 0x0000EF09);
+        }
+
+        [Test]
+        public void RiscV_dasm_pause()
+        {
+            AssertCode("pause", "0F00 0001");
         }
 
         [Test]
@@ -652,5 +675,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             AssertCode("sllw\ta1,a1,a4", "BB95E500");
         }
+
+  
     }
 }

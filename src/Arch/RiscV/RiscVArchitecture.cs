@@ -49,6 +49,12 @@ namespace Reko.Arch.RiscV
           "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11"
         };
 
+        private static readonly string[] predsuccNames =
+        {
+            "", "w", "r", "rw",     "o", "ow", "or", "orw",
+            "i", "iw", "ir", "irw", "io", "iow", "ior", "iorw"
+        };
+
         private Decoder[]? decoders;
 
 #nullable disable
@@ -67,6 +73,7 @@ namespace Reko.Arch.RiscV
         public RegisterStorage[] FpRegs { get; private set; }
         public RegisterStorage LinkRegister { get; private set; }
         public PrimitiveType NaturalSignedInteger { get; private set; }
+        public RegisterStorage[] PredSuccRegs { get; private set; }
 
 
         /// <summary>
@@ -233,6 +240,9 @@ namespace Reko.Arch.RiscV
 
             DefineCsrs();
 
+            this.PredSuccRegs = predsuccNames.Select((n, i) =>
+                RegisterStorage.Reg8(n, (i + 0x420_0000)))
+                .ToArray();
             var isa = RiscVDisassembler.InstructionSet.Create(Options);
             this.decoders = isa.CreateRootDecoders();
         }

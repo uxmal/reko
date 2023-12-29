@@ -163,9 +163,14 @@ namespace Reko.Arch.RiscV
         private static bool Csr20(uint uInstr, RiscVDisassembler dasm)
         {
             var iCsr = bf20_12.Read(uInstr);
-            if (!dasm.arch.Csrs.TryGetValue(iCsr, out var csr))
-                return false;       //$REVIEW: should raise a warning? This could be model-specific.
-            dasm.state.ops.Add(csr);
+            if (dasm.arch.Csrs.TryGetValue(iCsr, out var csr))
+            {
+                dasm.state.ops.Add(csr);
+            }
+            else
+            {
+                dasm.state.ops.Add(ImmediateOperand.UInt32(iCsr));
+            }
             return true;
         }
 
@@ -197,6 +202,23 @@ namespace Reko.Arch.RiscV
             dasm.state.ops.Add(op);
             return true;
         }
+
+        /// <summary>
+        /// Predecessor or successor field in a <code>fence</code>
+        /// instruction.
+        /// </summary>
+        private static Mutator<RiscVDisassembler> PredSucc(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 4);
+            return (u, d) =>
+            {
+                var ps = field.Read(u);
+                d.state.ops.Add(d.arch.PredSuccRegs[ps]);
+                return true;
+            };
+        }
+        private static readonly Mutator<RiscVDisassembler> ps_20 = PredSucc(20);
+        private static readonly Mutator<RiscVDisassembler> ps_24 = PredSucc(24);
 
         // signed offset used in loads
         private static bool Ls(uint wInstr, RiscVDisassembler dasm)

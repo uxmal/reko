@@ -106,6 +106,23 @@ namespace Reko.Arch.RiscV
             m.SideEffect(m.Fn(CommonOps.Syscall_0));
         }
 
+        private void RewriteFence()
+        {
+            var pred = RewriteOp(0);
+            var succ = RewriteOp(1);
+            m.SideEffect(m.Fn(fence_intrinsic, pred, succ));
+        }
+
+        private void RewriteFenceI()
+        {
+            m.SideEffect(m.Fn(fence_i_intrinsic));
+        }
+
+        private void RewriteFenceTso()
+        {
+            m.SideEffect(m.Fn(fence_tso_intrinsic));
+        }
+
         private void RewriteJal()
         {
             var continuation = (RegisterStorage)instr.Operands[0];
@@ -156,6 +173,11 @@ namespace Reko.Arch.RiscV
                     instr.Address + instr.Length);
                 m.Goto(dst, 0);
             }
+        }
+
+        private void RewritePause()
+        {
+            m.SideEffect(m.Fn(pause_intrinsic));
         }
 
         private void RewriteRet(IntrinsicProcedure intrinsic)

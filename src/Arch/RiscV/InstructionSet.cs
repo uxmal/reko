@@ -184,6 +184,23 @@ namespace Reko.Arch.RiscV
                     invalid,
                 };
 
+                var miscMem = new Decoder[8]
+                {
+                    Select((7,25), u => u == 0b0000_0001_0000_00000_000_00000, "  misc-mem 0",
+                        Instr(Mnemonic.pause),
+                        Select((7, 25), u => u == 0b1000_0011_0011_00000_000_00000, "  misc-mem fence",
+                            Instr(Mnemonic.fence_tso),
+                            Instr(Mnemonic.fence, ps_24, ps_20))),
+                    Instr(Mnemonic.fence_i),
+                    Nyi("misc-mem 2"),
+                    Nyi("misc-mem 3"),
+
+                    Nyi("misc-mem 4"),
+                    Nyi("misc-mem 5"),
+                    Nyi("misc-mem 6"),
+                    Nyi("misc-mem 7")
+                };
+
                 var opimm = new Decoder[]           // 0b00100
                 {
                     Instr(Mnemonic.addi, d,r1,i),
@@ -449,7 +466,7 @@ namespace Reko.Arch.RiscV
                     invalid,
                     Instr(Mnemonic.csrrwi, d, Csr20, Imm(15, 5)),
                     Instr(Mnemonic.csrrsi, d, Csr20, Imm(15, 5)),
-                    Instr(Mnemonic.csrrci, d, Csr20, Imm(15, 5))); ;
+                    Instr(Mnemonic.csrrci, d, Csr20, Imm(15, 5)));
 
                 // These long instructions have not been defined yet.
                 var instr48bit = invalid;
@@ -461,7 +478,7 @@ namespace Reko.Arch.RiscV
                     Mask(12, 3, "loads", loads),
                     Mask(12, 3, "fploads", fploads),
                     Nyi("custom-0"),
-                    Nyi("misc-mem"),
+                    Mask(12, 3, "misc-mem", miscMem),
 
                     Mask(12, 3, "opimm", opimm),
                     Instr(Mnemonic.auipc, d, Iu),

@@ -395,6 +395,24 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_fence_i()
+        {
+            Given_HexString("0F10 0000");
+            AssertCode(     // fence.i
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__fence_i()");
+        }
+
+        [Test]
+        public void RiscV_rw_fence()
+        {
+            Given_HexString("0F00F00F");
+            AssertCode(     // fence	iorw,iorw
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__fence(iorw, iorw)");
+        }
+
+        [Test]
         public void RiscV_rw_fmadd()
         {
             Given_32bitFloat();
@@ -981,6 +999,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_pause()
+        {
+            Given_HexString("0F000001");
+            AssertCode(     // pause
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__pause()");
+        }
+
+        [Test]
         public void RiscV_rw_remuw()
         {
             Given_RiscVInstructions(0x02C8783B);    // remuw\ta6,a6,a2
@@ -1087,6 +1114,15 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // csrrw	zero,mstatus,x19
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|__csrrw<word64>(mstatus, s3)");
+        }
+
+        [Test]
+        public void RiscV_rw_csrw_unknown()
+        {
+            Given_HexString("7310C5BF");
+            AssertCode(     // csrw\t0xbfc,a0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__csrrw<word64>(0xBFC<u32>, a0)");
         }
 
         [Test]
