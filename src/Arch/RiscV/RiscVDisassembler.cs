@@ -528,6 +528,22 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        /// <summary>
+        /// Rounding mode
+        /// </summary>
+        private static Mutator<RiscVDisassembler> rm(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 3);
+            return (u, d) =>
+            {
+                var rm = d.arch.RoundingModes[field.Read(u)];
+                if (rm is null)
+                    return false;
+                d.state.ops.Add(rm);
+                return true;
+            };
+        }
+        private static readonly Mutator<RiscVDisassembler> rm12 = rm(12);
 
         private static Mutator<RiscVDisassembler> ImmSigned(int bitPos, int length)
         {
@@ -685,18 +701,17 @@ namespace Reko.Arch.RiscV
             };
         }
 
-
         // Memory operand format, where offset is scaled by the register size
         private static Mutator<RiscVDisassembler> Mems(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
-            var baseRegMask = new Bitfield(regOffset, 5);
+            var baseRegField = new Bitfield(regOffset, 5);
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
             return (u, d) =>
             {
                 var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
-                var iBase = (int)baseRegMask.Read(u);
+                var iBase = (int)baseRegField.Read(u);
 
                 d.state.ops.Add(new MemoryOperand(
                     dt,

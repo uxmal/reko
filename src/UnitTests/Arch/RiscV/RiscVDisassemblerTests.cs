@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         [SetUp]
@@ -275,6 +276,12 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_sraw()
+        {
+            AssertCode("sraw\ts7,a0,t4", "BB 5B D5 41");
+        }
+
+        [Test]
         public void RiscV_dasm_subw()
         {
             AssertCode("subw\ta3,a3,a5", 0x40F686BBu);
@@ -311,21 +318,39 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_fmv_d_x()
+        {
+            AssertCode("fmv.d.x\tfa4,a4", 0xF2070753u);
+        }
+
+        [Test]
         public void RiscV_dasm_fmv_w_x()
         {
             AssertCode("fmv.w.x\tfa5,zero", 0xF00007D3u);
         }
 
         [Test]
-        public void RiscV_dasm_fmv_d_x()
+        public void RiscV_dasm_fmv_x_d()
         {
-            AssertCode("fmv.d.x\tfa4,a4", 0xE2070753u);
+            AssertCode("fmv.x.d\ta2,ft3", "538601E2");
         }
 
         [Test]
         public void RiscV_dasm_lwu()
         {
             AssertCode("lwu\ta4,s0,+00000004", 0x00446703u);
+        }
+
+        [Test]
+        public void RiscV_dasm_fclass_d()
+        {
+            AssertCode("fclass.d\ta0,fa3", "539506e2"); //  fmv.d.x fa0,a3
+        }
+
+        [Test]
+        public void RiscV_dasm_fclass_s()
+        {
+            AssertCode("fclass.s\ta3,fa2", "d31606e0"); //        fmv.x.w a3,fa2
         }
 
         [Test]
@@ -342,9 +367,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_fmadd()
+        public void RiscV_dasm_fmadd_d()
         {
-            AssertCode("fmadd.s\tfs10,ft7,fs1,fa6", 0x8293FD43);
+            AssertCode("fmadd.d\tfs6,ft10,ft5,fa0,rmm", "434b5f52"); //  fmadd.d fs6,ft10,ft5,fa0
+        }
+
+        [Test]
+        public void RiscV_dasm_fmadd_s()
+        {
+            AssertCode("fmadd.s\tfs10,ft7,fs1,fa6,dyn", 0x8093FD43);
         }
 
         [Test]
@@ -620,22 +651,39 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_fmsub_d()
+        {
+            AssertCode("fmsub.s\tfa1,fa7,fa7,fa2,rup", 0x6118B5C7);
+        }
+
+        [Test]
         public void RiscV_dasm_fmsub_s()
         {
-            AssertCode("fmsub.s\tfa1,fa7,fa7,fa2", 0x6318B5C7);
+            AssertCode("fmsub.s\tfa1,fa7,fa7,fa2,rup", 0x6118B5C7);
+        }
+
+        [Test]
+        public void RiscV_dasm_fnmsub_q()
+        {
+            AssertCode("fnmsub.q\tft0,fs2,fs8,fs0,rne", 0x4789004B);
         }
 
         [Test]
         public void RiscV_dasm_fnmsub_s()
         {
-            AssertCode("fnmsub.s\tft0,fs2,fs8,fs0", 0x4789004B);
+            AssertCode("fnmsub.s\tft0,fs2,fs8,fs0,rne", 0x4189004B);
         }
-
 
         [Test]
         public void RiscV_dasm_fnmadd_s()
         {
-            AssertCode("fnmadd.s\tfs11,ft7,fa1,ft0", 0x04B3FDCF);
+            AssertCode("fnmadd.s\tfs11,ft7,fa1,ft0,dyn", 0x00B3FDCF);
+        }
+
+        [Test]
+        public void RiscV_dasm_fnmadd_h()
+        {
+            AssertCode("fnmadd.h\tfs11,ft7,fa1,ft0,dyn", 0x04B3FDCF);
         }
 
         [Test]
@@ -676,6 +724,38 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("sllw\ta1,a1,a4", "BB95E500");
         }
 
+        [Test]
+        public void RiscV_dasm_regressions1()
+        {
+            
+AssertCode("fence.i",  "0f100000"); //    invalid
+AssertCode("csrrw\ts2,00000315,t0",              "73995231"); //    invalid
+AssertCode("csrrs\ta1,sstatus,a5",               "f3a50710"); //    csrrs a1,sstatus,a5
+AssertCode("csrrc\ttp,000005F0,s0",              "7332045f"); //    invalid
+AssertCode("csrrc\ttp,000005F0,zero",            "7332005f"); //    invalid
+AssertCode("csrrsi\ts2,000006E6,0000001E",             "73696f6e"); //    invalid
+AssertCode("csrrci\ts0,000006A5,0000001A",             "73745d6a"); //    invalid
+AssertCode("mul\ta0,s5,s7",                      "33857a03"); //    add a0,s5,s7
+AssertCode("mulh\tt5,a7,s1",                     "339f9802"); //    sll t5,a7,s1
+AssertCode("mulhsu\tt3,sp,a6",                   "332e0103"); //    slt t3,sp,a6
+AssertCode("mulhu\tt3,sp,a6",                    "333e0103"); //    sltu t3,sp,a6
+AssertCode("mulhsu\tt3,sp,a6",                   "332e0103"); //    slt t3,sp,a6
+AssertCode("divu\tt4,t3,t2",                     "b35e7e02"); //    srl t4,t3,t2
+AssertCode("rem\ta4,a1,a2",                      "33e7c502"); //    or a4,a1,a2
+AssertCode("remu\ta6,a1,t2",                     "33f87502"); //    and a6,a1,t2
+AssertCode("fsw\tfs1,72(a1)",                    "27a49504"); //    fsw fs1,288(a1)
+AssertCode("fmadd.s\tfs10,ft10,ft5,fa0,rmm",     "434d5f50"); //  fmadd.s fs10,ft10,ft5,fa0
+AssertCode("fmsub.s\tft8,ft10,fs11,ft7,rdn",     "472ebf39"); //  fmsub.s ft8,ft10,fs11,ft7
+AssertCode("fnmsub.s\tfs7,fa4,fs3,fs0,rne",      "cb0b3741"); //    fnmsub.s fs7,fa4,fs3,fs0
+AssertCode("fnmadd.s\tfa4,ft4,fs5,fs0,rmm",      "4f475241"); //  fnmadd.s fa4,ft4,fs5,fs0
+AssertCode("fclass.s\ta3,fa2",                "d31606e0"); //        fmv.x.w a3,fa2
+AssertCode("fsd\tfs4,312(sp)",               "273c4113"); //  fsd fs4,2496(a0)
+AssertCode("fmsub.d\tft0,ft0,fs0,fa6,rne",    "47008082"); //  fmsub.s ft0,ft0,fs0,fa6
+AssertCode("fnmsub.d\tfs0,ft4,ft2,fa5,rdn",   "4b24227a"); //  fnmsub.s fs0,ft4,ft2,fa5
+AssertCode("fnmadd.d\tfa2,ft10,ft5,fa0,rmm",  "4f465f52"); //  fnmadd.s fa2,ft10,ft5,fa0
+AssertCode("fcvt.l.d\tra,ft1,rtz",            "d39020c2"); //  fcvt.l.d ra,ft1
+AssertCode("fcvt.lu.d\ta0,fa3,rtz",           "539536c2"); //  fcvt.lu.d a0,fa3
+        }
   
     }
 }

@@ -160,7 +160,8 @@ namespace Reko.Core
         Memory = 4096,          // Refers to a memory space
         FpuStack = 4098,
         Global = 8191,          // Global variable within a memory space
-        SystemRegister = 8192,  // Space for system / control registers
+        SystemRegister = 8192,  // Space for system / control registers (1 million should be enough)
+        PseudoRegister = (1 << 20), // Things that look like registers but are in fact enumerations.
         Stack = (1 << 30),
         Temporary = (1 << 31),
     }
@@ -549,7 +550,7 @@ namespace Reko.Core
             {
                 return
                     StorageDomain.SystemRegister <= this.Domain &&
-                    this.Domain < StorageDomain.Stack;
+                    this.Domain < StorageDomain.PseudoRegister;
             }
         }
 
@@ -580,6 +581,11 @@ namespace Reko.Core
         public static RegisterStorage Sysreg(string name, int number, PrimitiveType size)
         {
             return new RegisterStorage(name, number + (int) StorageDomain.SystemRegister, 0, size);
+        }
+
+        public static RegisterStorage PseudoReg(string name, int number, PrimitiveType size)
+        {
+            return new RegisterStorage(name, number + (int) StorageDomain.PseudoRegister, 0, size);
         }
 
         public override ulong BitSize

@@ -165,9 +165,9 @@ l0000000000015CB0:
 			word64 qwLocC0;
 			if (fn00000000000164D0(&qwLocC0, 4) < 0x00)
 				goto l0000000000015CB0;
-			if (a0_n > (char *) 0x0F && (qwLoc0190 | 4) <= 1)
+			if (a0_n > (char *) 0x0F && qwLoc0190 % 4 <= 1)
 			{
-				if ((qwLoc0190 | 4) != 1)
+				if (qwLoc0190 % 4 != 1)
 				{
 					qwLocC0 = (word64) 0xAC;
 					qwLocC0.b0001 = (byte) (qwLoc0190 >> 0x04) & 0x0F | 0x10;
@@ -1749,6 +1749,8 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 			word64 a5_n = (word64) (a0_n->r0034 == 0.0F);
 			if (a5_n == 0x00)
 			{
+				real64 a4_n = (real64) a0_n->r0034;
+				real64 a3_n = (real64) a0_n->r0030;
 				char ** s4_n;
 				__asprintf_chk(s4_n, 1, "%f,%f", fa3, fa4);
 				word64 a2_n = 76672;
@@ -1857,6 +1859,8 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 			word64 a5_n = (word64) (a0_n->r0034 == 0.0F);
 			if (a5_n == 0x00)
 			{
+				real64 a4_n = (real64) a0_n->r0034;
+				real64 a3_n = (real64) a0_n->r0030;
 				char ** s5_n;
 				__asprintf_chk(s5_n, 1, "%f,%f", fa3, fa4);
 				word64 a2_n = 76672;

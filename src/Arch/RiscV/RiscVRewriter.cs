@@ -158,6 +158,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.csrrsi: RewriteCsr(csrrs_intrinsic); break;
                 case Mnemonic.csrrw: RewriteCsr(csrrw_intrinsic); break;
                 case Mnemonic.csrrwi: RewriteCsr(csrrw_intrinsic); break;
+                case Mnemonic.divu: RewriteBinOp(m.UDiv); break;
                 case Mnemonic.divuw: RewriteBinOp(m.UDiv, PrimitiveType.Word32); break;
                 case Mnemonic.divw: RewriteBinOp(m.SDiv, PrimitiveType.Word32); break;
                 case Mnemonic.ebreak: RewriteEbreak(); break;
@@ -206,6 +207,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fmv_s: RewriteMove(); break;
                 case Mnemonic.fmv_w_x: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
                 case Mnemonic.fmv_x_w: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
+                case Mnemonic.fmv_x_d: RewriteFMove(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.fneg_d: RewriteFneg(PrimitiveType.Real64); break;
                 case Mnemonic.fneg_s: RewriteFneg(PrimitiveType.Real32); break;
                 case Mnemonic.fnmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FSub /* sic! */, true); break;
@@ -231,6 +233,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
                 case Mnemonic.pause: RewritePause(); break;
+                case Mnemonic.rem: RewriteBinOp(m.SMod); break;
                 case Mnemonic.remuw: RewriteBinOp(m.UMod, PrimitiveType.Word32); break;
                 case Mnemonic.remw: RewriteBinOp(m.SMod, PrimitiveType.Word32); break;
                 case Mnemonic.sb: RewriteStore(PrimitiveType.Byte); break;
@@ -248,6 +251,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sltiu: RewriteSlti(true); break;
                 case Mnemonic.sltu: RewriteSlt(true); break;
                 case Mnemonic.sra: RewriteShift(m.Sar); break;
+                case Mnemonic.sraw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.srai: RewriteShift(m.Sar); break;
                 case Mnemonic.sraiw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.srl: RewriteBinOp(m.Shr); break;

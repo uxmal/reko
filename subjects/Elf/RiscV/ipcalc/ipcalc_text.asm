@@ -975,7 +975,7 @@ l0000000000015C64:
 
 l0000000000015C6C:
 	addi	a4,zero,+00000004
-	or	a4,s1,a4
+	rem	a4,s1,a4
 	addi	a3,zero,+00000001
 	bgeu	a3,a4,0000000000015DB8
 
@@ -3839,9 +3839,9 @@ l0000000000017CC8:
 	fcvt.d.s	fa4,fa4
 	lui	a2,00000013
 	fcvt.d.s	fa5,fa5
-	fmv.d.x	fa4,a4
+	fmv.x.d	a4,fa4
 	addi	a2,a2,-00000480
-	fmv.d.x	fa3,a5
+	fmv.x.d	a3,fa5
 	addi	a1,zero,+00000001
 	addi	a0,s4,+00000000
 	jal	ra,__asprintf_chk
@@ -4003,9 +4003,9 @@ l0000000000017EBC:
 	fcvt.d.s	fa4,fa4
 	lui	a2,00000013
 	fcvt.d.s	fa5,fa5
-	fmv.d.x	fa4,a4
+	fmv.x.d	a4,fa4
 	addi	a2,a2,-00000480
-	fmv.d.x	fa3,a5
+	fmv.x.d	a3,fa5
 	addi	a1,zero,+00000001
 	addi	a0,s5,+00000000
 	jal	ra,__asprintf_chk

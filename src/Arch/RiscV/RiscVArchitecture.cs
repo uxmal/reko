@@ -55,6 +55,12 @@ namespace Reko.Arch.RiscV
             "i", "iw", "ir", "irw", "io", "iow", "ior", "iorw"
         };
 
+        private static readonly string?[] roundingModes =
+        {
+            "rne", "rtz", "rdn", "rup", "rmm", null, null, "dyn"
+        };
+
+
         private Decoder[]? decoders;
 
 #nullable disable
@@ -74,7 +80,7 @@ namespace Reko.Arch.RiscV
         public RegisterStorage LinkRegister { get; private set; }
         public PrimitiveType NaturalSignedInteger { get; private set; }
         public RegisterStorage[] PredSuccRegs { get; private set; }
-
+        public RegisterStorage?[] RoundingModes { get; private set; }
 
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
@@ -239,10 +245,8 @@ namespace Reko.Arch.RiscV
             this.StackRegister = regsByDomain[(StorageDomain) 2];       // sp
 
             DefineCsrs();
+            DefinePseudoRegisters();
 
-            this.PredSuccRegs = predsuccNames.Select((n, i) =>
-                RegisterStorage.Reg8(n, (i + 0x420_0000)))
-                .ToArray();
             var isa = RiscVDisassembler.InstructionSet.Create(Options);
             this.decoders = isa.CreateRootDecoders();
         }
@@ -510,6 +514,17 @@ namespace Reko.Arch.RiscV
             Csrs.Add((uint)number, reg);
         }
 
+        private void DefinePseudoRegisters()
+        {
+            var factory = new StorageFactory(StorageDomain.PseudoRegister);
+
+            this.PredSuccRegs = predsuccNames
+                .Select(n => factory.Reg(n, PrimitiveType.Byte))
+                 .ToArray();
+            this.RoundingModes = roundingModes
+                .Select(n => n is null ? null : factory.Reg(n, PrimitiveType.Byte))
+                .ToArray();
+        }
         private RegisterStorage[] CreateFpRegs(int floatAbi)
         {
             PrimitiveType fpType;
