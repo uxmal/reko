@@ -45,6 +45,7 @@ namespace Reko.Arch.RiscV
         {
             8, 9, 10, 11, 12, 13, 14, 15
         };
+        private static readonly Bitfield[] bfBranch = Bf((31,1), (7,1), (25,6), (8, 4));
 
         private readonly RiscVArchitecture arch;
         private readonly Decoder[] decoders;
@@ -286,29 +287,9 @@ namespace Reko.Arch.RiscV
             return n;
         }
 
-        private static ulong sextract64(ulong value, int start, int length)
-        {
-            long n = ((long)(value << (64 - length - start))) >> (64 - length);
-            return (ulong)n;
-        }
-
         private AddressOperand GetBranchTarget(uint wInstr)
-        { 
-            long offset = (long)
-                  ((extract32(wInstr, 8, 4) << 1)
-                | (extract32(wInstr, 25, 6) << 5)
-                | (extract32(wInstr, 7, 1) << 11)
-                | (sextract64(wInstr, 31, 1) << 12));
-            return AddressOperand.Create(addrInstr + offset);
-        }
-
-        private AddressOperand GetJumpTarget(uint wInstr)
         {
-            long offset = (long)
-                  ((extract32(wInstr, 21, 10) << 1)
-                | (extract32(wInstr, 20, 1) << 11)
-                | (extract32(wInstr, 12, 8) << 12)
-                | (sextract64(wInstr, 31, 1) << 20));
+            long offset = Bitfield.ReadSignedFields(bfBranch, wInstr) << 1;
             return AddressOperand.Create(addrInstr + offset);
         }
 
