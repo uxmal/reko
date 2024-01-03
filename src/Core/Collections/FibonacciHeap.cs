@@ -20,7 +20,7 @@
  * John Källén
  * 
  * Portions Copyrighted 2011 by Jason Wolfe.
- * Portions Copyrighted 2017-2023 by John Källén.
+ * Portions Copyrighted 2017-2024 by John Källén.
  * 
  */
 

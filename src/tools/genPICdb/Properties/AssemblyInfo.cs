@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("C. Hostelet")]
 [assembly: AssemblyProduct("GenPICDb")]
-[assembly: AssemblyCopyright("Copyright © 2017-2023 Christian Hostelet")]
+[assembly: AssemblyCopyright("Copyright © 2017-2024 Christian Hostelet")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

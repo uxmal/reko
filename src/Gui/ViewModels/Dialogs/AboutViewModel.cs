@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John Källén.
+ * Copyright (C) 1999-2024 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,7 +142,7 @@ namespace Reko.Gui.ViewModels.Dialogs
         }
         #endregion
 
-        public static string CopyLeft { get; } = "Reko Decompiler Copyright (C) 1999-2023 John Källén.\r\nThis program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Reko project is hosted at GitHub at the following URL:";
+        public static string CopyLeft { get; } = "Reko Decompiler Copyright (C) 1999-2024 John Källén.\r\nThis program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Reko project is hosted at GitHub at the following URL:";
 
     }
 }
