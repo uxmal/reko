@@ -73,6 +73,7 @@ namespace Reko.Core
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.Intrinsics = new Dictionary<string, Dictionary<FunctionType, IntrinsicProcedure>>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
+            this.ExternalProcedures = new();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
             this.Resources = new List<ProgramResource>();
@@ -373,6 +374,8 @@ namespace Reko.Core
         /// The program's intrinsic procedures, indexed by name and by signature.
         /// </summary>
         public Dictionary<string, Dictionary<FunctionType, IntrinsicProcedure>> Intrinsics { get; private set; }
+
+        public Dictionary<string, (string, string?, ExternalProcedure)> ExternalProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -821,6 +824,16 @@ namespace Reko.Core
                 fields.Remove(globalField);
             }
             fields.Add(offset, dt, name);
+        }
+
+        public void EnsureExternalProcedure(
+            string moduleName, string importName, string? callingConvention,
+            ExternalProcedure ep)
+        {
+            if (ExternalProcedures.ContainsKey(importName))
+                return;
+            ExternalProcedures.Add(
+                importName, (moduleName, callingConvention, ep));
         }
     }
 }

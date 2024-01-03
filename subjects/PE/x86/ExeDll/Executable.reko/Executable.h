@@ -6123,3 +6123,6 @@ typedef struct Eq_1232 {
 	Eq_73 t0000;	// 0
 } Eq_1232;
 
+// Declarations for external procedures
+
+int32 __cdecl slow_and_safe_increment(int32 dwArg04); // DynamicLibrary.dll!?slow_and_safe_increment@@YAHH@Z

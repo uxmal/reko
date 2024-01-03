@@ -1342,3 +1342,6 @@ typedef real64 (Eq_181)(char *);
 
 typedef void (Eq_193)(Eq_5 *, int32, word32 *);
 
+// Declarations for external procedures
+
+void * __cdecl operator new(uint32 dwArg04); // MSVCR80.dll!??2@YAPAXI@Z

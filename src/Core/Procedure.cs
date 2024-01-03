@@ -181,19 +181,6 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// If the procedure is a member of a class, write the class name first.
-        /// </summary>
-        /// <returns></returns>
-        public string QualifiedName()
-        {
-            if (EnclosingType == null)
-                return Name;
-            if (EnclosingType is StructType_v1 str)
-                return string.Format("{0}::{1}", str.Name, Name);
-            return Name;
-        }
-
-        /// <summary>
         /// Writes the blocks sorted by address ascending.
         /// </summary>
         /// <param name="emitFrame"></param>
