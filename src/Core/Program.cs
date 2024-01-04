@@ -375,6 +375,12 @@ namespace Reko.Core
         /// </summary>
         public Dictionary<string, Dictionary<FunctionType, IntrinsicProcedure>> Intrinsics { get; private set; }
 
+        /// <summary>
+        /// The program's imported external demangled procedures. Contains
+        /// tuple of dll name, calling convention and ExtrernalProcedure,
+        /// indexed by mangled import name. External declarations from system
+        /// or user-defined metafiles aren't here to avoid dublication.
+        /// </summary>
         public Dictionary<string, (string, string?, ExternalProcedure)> ExternalProcedures { get; private set; }
 
         /// <summary>
