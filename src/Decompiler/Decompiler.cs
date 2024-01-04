@@ -430,10 +430,8 @@ namespace Reko
                 return;
             w.WriteLine("// Declarations for external procedures");
             w.WriteLine();
-            foreach (var epKv in externalProcedures)
+            foreach (var (importName, (dllName, convention, ep)) in externalProcedures)
             {
-                var importName = epKv.Key;
-                var (dllName, convention, ep) = epKv.Value;
                 var qualifiedName = ep.QualifiedName();
                 if (!string.IsNullOrEmpty(convention))
                 {
