@@ -381,7 +381,7 @@ namespace Reko.Core
         /// indexed by mangled import name. External declarations from system
         /// or user-defined metafiles aren't here to avoid dublication.
         /// </summary>
-        public Dictionary<string, (string, string?, ExternalProcedure)> ExternalProcedures { get; private set; }
+        public Dictionary<string, (string?, string?, ExternalProcedure)> ExternalProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -832,8 +832,24 @@ namespace Reko.Core
             fields.Add(offset, dt, name);
         }
 
+        /// <summary>
+        /// Add new imported external procedure if there is not one with same
+        /// import name.
+        /// </summary>
+        /// <param name="moduleName">
+        /// Name of module of external procedure.
+        /// </param>
+        /// <param name="importName">
+        /// Mangled import name of external procedure.
+        /// </param>
+        /// <param name="callingConvention">
+        /// Calling convention of external procedure.
+        /// </param>
+        /// <param name="ep">
+        /// <see cref="ExternalProcedure" /> object
+        /// </param>
         public void EnsureExternalProcedure(
-            string moduleName, string importName, string? callingConvention,
+            string? moduleName, string importName, string? callingConvention,
             ExternalProcedure ep)
         {
             if (ExternalProcedures.ContainsKey(importName))

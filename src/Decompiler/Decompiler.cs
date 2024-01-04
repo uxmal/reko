@@ -441,7 +441,16 @@ namespace Reko
                     qualifiedName,
                     FunctionType.EmitFlags.None,
                     w);
-                w.WriteLine($"; // {dllName}!{importName}");
+                string comment;
+                if (!string.IsNullOrEmpty(dllName))
+                {
+                    comment = $"{dllName}!{importName}";
+                }
+                else
+                {
+                    comment = importName;
+                }
+                w.WriteLine($"; // {comment}");
             }
         }
 
