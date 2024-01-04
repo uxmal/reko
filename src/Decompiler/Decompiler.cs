@@ -309,7 +309,7 @@ namespace Reko
                 }
                 finally
                 {
-                    host.WriteDecls(program, analyzer.WriteTypes);
+                    host.WriteDeclarations(program, analyzer.WriteTypes);
                 }
             }
         }
@@ -394,7 +394,7 @@ namespace Reko
             w.WriteLine();
         }
     
-        public void WriteDecompiledDecls(Program program, string headerFilename, TextWriter w)
+        public void WriteDecompiledDeclarations(Program program, string headerFilename, TextWriter w)
         {
             WriteHeaderComment(headerFilename, program, w);
             w.WriteLine("/*"); program.TypeStore.Write(true, w); w.WriteLine("*/");
@@ -601,7 +601,7 @@ namespace Reko
                 return;
             foreach (var program in Project.Programs)
             {
-                host.WriteDecls(program, (n, w) => WriteDecompiledDecls(program, n, w));
+                host.WriteDeclarations(program, (n, w) => WriteDecompiledDeclarations(program, n, w));
                 host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledObjects(program, n, p, w));
             }
 		}

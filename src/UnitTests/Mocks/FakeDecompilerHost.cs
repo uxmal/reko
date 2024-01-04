@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Mocks
             writer("test.dis", Array.Empty<Procedure>(), intermediate);
         }
 
-        public void WriteDecls(Program program, Action<string, TextWriter> writer)
+        public void WriteDeclarations(Program program, Action<string, TextWriter> writer)
         {
             writer("test.h", typesWriter);
         }
