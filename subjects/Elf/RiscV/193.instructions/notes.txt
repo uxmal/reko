@@ -1,0 +1,7 @@
+
+Compile:
+riscv64-unknown-elf-as '193.instructions.asm' -o '193.instructions.o'
+riscv64-unknown-elf-ld -T 0x80000000.lds '193.instructions.o' -o '193.instructions.elf'
+
+Disassemble:
+reko disassemble '193.instructions.elf'
