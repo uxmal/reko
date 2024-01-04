@@ -309,7 +309,7 @@ namespace Reko
                 }
                 finally
                 {
-                    host.WriteTypes(program, analyzer.WriteTypes);
+                    host.WriteDeclarations(program, analyzer.WriteTypes);
                 }
             }
         }
@@ -394,7 +394,7 @@ namespace Reko
             w.WriteLine();
         }
     
-        public void WriteDecompiledTypes(Program program, string headerFilename, TextWriter w)
+        public void WriteDecompiledDeclarations(Program program, string headerFilename, TextWriter w)
         {
             WriteHeaderComment(headerFilename, program, w);
             w.WriteLine("/*"); program.TypeStore.Write(true, w); w.WriteLine("*/");
@@ -413,6 +413,44 @@ namespace Reko
                     w.WriteLine(";");
                     w.WriteLine();
                 }
+            }
+            WriteExternalProcedures(program, w);
+        }
+
+        public static void WriteExternalProcedures(
+            Program program, TextWriter w)
+        {
+            var externalProcedures = program.ExternalProcedures.OrderBy(
+                p => (
+                    p.Value.Item1,
+                    p.Value.Item3.EnclosingType?.ToString(),
+                    p.Value.Item3.Name)
+            ).ToList();
+            if (externalProcedures.Count == 0)
+                return;
+            w.WriteLine("// Declarations for external procedures");
+            w.WriteLine();
+            foreach (var (importName, (dllName, convention, ep)) in externalProcedures)
+            {
+                var qualifiedName = ep.QualifiedName();
+                if (!string.IsNullOrEmpty(convention))
+                {
+                    qualifiedName = $"{convention} {qualifiedName}";
+                }
+                ep.Signature.Emit(
+                    qualifiedName,
+                    FunctionType.EmitFlags.None,
+                    w);
+                string comment;
+                if (!string.IsNullOrEmpty(dllName))
+                {
+                    comment = $"{dllName}!{importName}";
+                }
+                else
+                {
+                    comment = importName;
+                }
+                w.WriteLine($"; // {comment}");
             }
         }
 
@@ -572,7 +610,7 @@ namespace Reko
                 return;
             foreach (var program in Project.Programs)
             {
-                host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
+                host.WriteDeclarations(program, (n, w) => WriteDecompiledDeclarations(program, n, w));
                 host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledObjects(program, n, p, w));
             }
 		}

@@ -49,7 +49,7 @@ namespace Reko.Services
         TextWriter CreateTextWriter(string filename);
         void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer);
         void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
-        void WriteTypes(Program program, Action<string, TextWriter> writer);
+        void WriteDeclarations(Program program, Action<string, TextWriter> writer);
         void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
     }
@@ -82,7 +82,7 @@ namespace Reko.Services
             writer("", program.Procedures.Values, TextWriter.Null);
         }
 
-        public void WriteTypes(Program program, Action<string,TextWriter> writer)
+        public void WriteDeclarations(Program program, Action<string,TextWriter> writer)
         {
             writer("", TextWriter.Null);
         }
@@ -153,7 +153,7 @@ namespace Reko.Services
             }
         }
 
-        public void WriteTypes(Program program, Action<string, TextWriter> writer)
+        public void WriteDeclarations(Program program, Action<string, TextWriter> writer)
         {
             var incFilename = GenerateDerivedFilename(program, ".h");
             var incPath = Path.Combine(program.IncludeDirectory, incFilename);

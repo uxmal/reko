@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -32,6 +33,7 @@ using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 
 namespace Reko.UnitTests.Decompiler
 {
@@ -94,6 +96,37 @@ namespace Reko.UnitTests.Decompiler
 
             FunctionType ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");
+        }
+
+        [Test]
+        public void Dec_WriteExternalProcedures()
+        {
+            var program = new Program();
+            var sig = new FunctionType(
+                new Identifier("return", PrimitiveType.Int32, null!),
+                new Identifier("this", PrimitiveType.Ptr32, null!),
+                new Identifier("r64", PrimitiveType.Real64, null!))
+            {
+                IsInstanceMetod = true,
+            };
+            var ep = new ExternalProcedure("demangledName", sig)
+            {
+                EnclosingType = new StructType_v1()
+                {
+                    Name = "Cls"
+                }
+            };
+            program.EnsureExternalProcedure(
+                "module.dll", "@@@mangledName&&&", "__customcall", ep);
+
+            var sw = new StringWriter();
+            Decompiler.WriteExternalProcedures(program, sw);
+
+            var expected = @"// Declarations for external procedures
+
+int32 __customcall Cls::demangledName(real64 r64); // module.dll!@@@mangledName&&&
+";
+            Assert.AreEqual(expected, sw.ToString());
         }
     }
 }

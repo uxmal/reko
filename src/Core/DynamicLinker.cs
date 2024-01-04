@@ -99,6 +99,12 @@ namespace Reko.Core
                         ep = epNew;
                     }
                 }
+                else if (sProc.Signature is not null)
+                {
+                    program.EnsureExternalProcedure(
+                        moduleName, importName, sProc.Signature.Convention,
+                        ep);
+                }
                 return ep;
             }
             return null;

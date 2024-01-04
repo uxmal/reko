@@ -706,3 +706,6 @@ typedef struct Eq_73 {	// size: 8 8
 	void * ptr0004;	// 4
 } Eq_73;
 
+// Declarations for external procedures
+
+void _InitTermAndUnexPtrs(); // CC3260.DLL!@_InitTermAndUnexPtrs$qv

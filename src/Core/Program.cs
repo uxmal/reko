@@ -73,6 +73,7 @@ namespace Reko.Core
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.Intrinsics = new Dictionary<string, Dictionary<FunctionType, IntrinsicProcedure>>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
+            this.ExternalProcedures = new();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
             this.Resources = new List<ProgramResource>();
@@ -373,6 +374,14 @@ namespace Reko.Core
         /// The program's intrinsic procedures, indexed by name and by signature.
         /// </summary>
         public Dictionary<string, Dictionary<FunctionType, IntrinsicProcedure>> Intrinsics { get; private set; }
+
+        /// <summary>
+        /// The program's imported external demangled procedures. Contains
+        /// tuple of dll name, calling convention and ExtrernalProcedure,
+        /// indexed by mangled import name. External declarations from system
+        /// or user-defined metafiles aren't here to avoid dublication.
+        /// </summary>
+        public Dictionary<string, (string?, string?, ExternalProcedure)> ExternalProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -821,6 +830,32 @@ namespace Reko.Core
                 fields.Remove(globalField);
             }
             fields.Add(offset, dt, name);
+        }
+
+        /// <summary>
+        /// Add new imported external procedure if there is not one with same
+        /// import name.
+        /// </summary>
+        /// <param name="moduleName">
+        /// Name of module of external procedure.
+        /// </param>
+        /// <param name="importName">
+        /// Mangled import name of external procedure.
+        /// </param>
+        /// <param name="callingConvention">
+        /// Calling convention of external procedure.
+        /// </param>
+        /// <param name="ep">
+        /// <see cref="ExternalProcedure" /> object
+        /// </param>
+        public void EnsureExternalProcedure(
+            string? moduleName, string importName, string? callingConvention,
+            ExternalProcedure ep)
+        {
+            if (ExternalProcedures.ContainsKey(importName))
+                return;
+            ExternalProcedures.Add(
+                importName, (moduleName, callingConvention, ep));
         }
     }
 }
