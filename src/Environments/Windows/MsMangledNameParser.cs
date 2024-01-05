@@ -477,7 +477,7 @@ namespace Reko.Environments.Windows
             case 'E': return "operator ++";
             case 'F': return "operator --";
             case 'G': return "operator -";
-            case 'H': return "operator + ";
+            case 'H': return "operator +";
             case 'I': return "operator &";
             case 'J': return "operator ->*";
             case 'K': return "operator /";
