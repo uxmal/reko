@@ -532,6 +532,17 @@ namespace Reko.UnitTests.Decompiler.Typing
         }
 
         [Test]
+        public void UnifyDoubleWithFieldAt0OffsetOfTypeReferenceToStruct()
+        {
+            var t1 = new TypeReference("STR", new StructureType
+            {
+                Fields = { { 0, PrimitiveType.Real64 } }
+            });
+            var t2 = PrimitiveType.Real64;
+            Assert.AreEqual("STR", un.Unify(t1, t2).ToString());
+        }
+
+        [Test]
         public void Unify_AreUnknownCompatible()
         {
             var t1 = new StructureType("FOO", 3);
