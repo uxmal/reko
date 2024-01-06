@@ -237,6 +237,29 @@ namespace Reko.Core.Types
             return false;
 		}
 
+        /// <summary>
+        /// Returns true if the data type <paramref name="a"/> can be unified
+        /// into data type <paramref name="b"/>.
+        /// </summary>
+        private bool CanBeMergedInto(DataType a, DataType b)
+        {
+            if (AreCompatible(a, b))
+                return true;
+            var strB = b.ResolveAs<StructureType>();
+            if (strB is null)
+                return false;
+            var ptA = a.ResolveAs<PrimitiveType>();
+            if (ptA is null)
+                return false;
+            var firstFieldB = strB.Fields.AtOffset(0);
+            if (firstFieldB is null)
+                return true;
+            var ptB = firstFieldB.DataType.ResolveAs<PrimitiveType>();
+            if (ptB is null)
+                return false;
+            return ptA.Compare(ptB) == 0;
+        }
+
         private int recDepth;
 
         //$TODO: change the signature to disallow nulls.
@@ -331,14 +354,14 @@ namespace Reko.Core.Types
             }
             if (trA != null)
             {
-                if (AreCompatible(trA.Referent, b))
+                if (CanBeMergedInto(b, trA.Referent))
                 {
                     return new TypeReference(trA.Name, UnifyInternal(trA.Referent, b)!);
                 }
             }
             if (trB != null)
             {
-                if (AreCompatible(a, trB.Referent))
+                if (CanBeMergedInto(a, trB.Referent))
                 {
                     return new TypeReference(trB.Name, UnifyInternal(trB.Referent, a)!);
                 }
