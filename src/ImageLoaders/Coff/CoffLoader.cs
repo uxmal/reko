@@ -27,10 +27,15 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Reko.ImageLoaders.Coff
 {
+    // https://github.com/yasm/yasm/blob/master/modules/dbgfmts/codeview/cv8.txt
+    // https://github.com/microsoft/microsoft-pdb/blob/805655a28bd8198004be2ac27e6e0290121a5e89/include/cvinfo.h#L3724
+    // https://learn.microsoft.com/en-us/windows/win32/debug/pe-format
     public class CoffLoader : ProgramImageLoader
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(CoffLoader), "Trace loading of COFF files")
@@ -107,6 +112,8 @@ namespace Reko.ImageLoaders.Coff
             var imgSegments = new List<ImageSegment>();
             foreach (var (n, hdr) in coffSections)
             {
+                if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_LNK_REMOVE))
+                    continue;
                 addr = Align(addr, hdr.Characteristics);
                 var mem = new ByteMemoryArea(addr, new byte[hdr.SizeOfRawData]);
                 if (!hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_UNINITIALIZED_DATA))
@@ -162,14 +169,17 @@ namespace Reko.ImageLoaders.Coff
             var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            IProcessorArchitecture arch;
+            IProcessorArchitecture? arch = null;
             switch (magic)
             {
-            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16")!; break;
-            case 0x8664: arch = cfgSvc.GetArchitecture("x86-protected-64")!; break;
-            default: throw new NotSupportedException($"COFF loader for architecture {magic:X4} not supported yet.");
+            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16"); break;
+            case 0x8664: arch = cfgSvc.GetArchitecture("x86-protected-64"); break;
+            case 0xAA64: arch = cfgSvc.GetArchitecture("arm64"); break;
             }
-            var fileHeader= new FileHeader
+            if (arch is null)
+                throw new NotSupportedException($"COFF loader for architecture {magic:X4} not supported yet.");
+            // https://github.com/LADSoft/OrangeC/issues/252
+            var fileHeader = new FileHeader
             {
                 f_magic = magic,
                 f_nscns = rdr.ReadUInt16(),
@@ -181,6 +191,7 @@ namespace Reko.ImageLoaders.Coff
             };
             // Section header follow immediately after the file header.
             var coffSections = new List<(string,CoffSectionHeader)>();
+            trace.Verbose("## COFF Sections");
             for (int i = 0; i < fileHeader.f_nscns; ++i)
             {
                 var hdr = rdr.ReadStruct<CoffSectionHeader>();
@@ -189,9 +200,25 @@ namespace Reko.ImageLoaders.Coff
                 {
                     name = Encoding.ASCII.GetString(hdr.Name, 8).TrimEnd('\0');
                 }
+                trace.Verbose($"  {i,4} {name,-8} {hdr.PointerToRawData:X8} {hdr.SizeOfRawData:X8} r:{hdr.PointerToRelocations:X8} ({hdr.NumberOfRelocations:X8})");
                 coffSections.Add((name,hdr));
+                if (hdr.NumberOfRelocations != 0 && hdr.PointerToRelocations != 0)
+                {
+                    LoadSectionRelocations(name, hdr);
+                }
             }
             return (arch, fileHeader, coffSections);
+        }
+
+        private void LoadSectionRelocations(string name, in CoffSectionHeader hdr)
+        {
+            trace.Verbose($"## COFF relocations for section {name}");
+            var rdr = new LeImageReader(RawImage, hdr.PointerToRelocations);
+            for (int i = 0; i < hdr.NumberOfRelocations; ++i)
+            {
+                var reloc = rdr.ReadStruct<CoffRelocation>();
+                trace.Verbose($"  {reloc.VirtualAddress:X8} {reloc.SymbolTableIndex,8} {reloc.Type:X4}");
+            }
         }
 
         private List<CoffSymbol> ReadSymbols()
@@ -207,7 +234,7 @@ namespace Reko.ImageLoaders.Coff
             // rdr is now positioned at the start of the string table. 
             long strtabOffset = rdr.Offset;
             // Generate symbol names.
-            trace.Verbose($"{"COFF symbols",-18} {"sec",-3} {"value",-8} {"type",-4}");
+            trace.Verbose($"{"COFF symbols",-18} {"sec",-3} {"value",-8} {"type",-4} {"cls",-4} {"aux",-4}");
             for (int i = 0; i < syms.Count; ++i)
             {
                 var sym = syms[i];
@@ -226,9 +253,26 @@ namespace Reko.ImageLoaders.Coff
                     }
                     name = Encoding.ASCII.GetString(ab.ToArray());
                 }
-                trace.Verbose($"  {name,-16} {sym.e_scnum,3} {sym.e_value:X8} {sym.e_type:X4}");
+                trace.Verbose($"  {name,-16} {sym.e_scnum,3} {sym.e_value:X8} {sym.e_type:X4} {sym.e_sclass:X4} {sym.e_numaux:X2}");
+                if (sym.e_numaux != 0)
+                {
+                    LoadAuxSymbolRecords(syms, i, sym);
+                    i += sym.e_numaux;
+                }
             }
             return syms;
+        }
+
+        private void LoadAuxSymbolRecords(List<CoffSymbol> syms, int i, in CoffSymbol sym)
+        {
+            if (sym.e_sclass == SymbolStorageClass.IMAGE_SYM_CLASS_STATIC) unsafe
+            {
+                var a = syms[i + 1];
+                ref var auxSect = ref Unsafe.As<CoffSymbol, AuxSectionDefinition>(ref a);
+                trace.Verbose($"    {auxSect.Length:X8} {auxSect.NumberOfRelocations} {auxSect.NumberOfLinenumbers,-4} {auxSect.CheckSum:X8} {auxSect.Number,-4} {auxSect.Selection:X2}; ");
+                return;
+            }
+            throw new NotImplementedException();
         }
     }
 }
