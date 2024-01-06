@@ -237,6 +237,10 @@ namespace Reko.Core.Types
             return false;
 		}
 
+        /// <summary>
+        /// Returns true if the data type <paramref name="a"/> can be unified
+        /// into data type <paramref name="b"/>.
+        /// </summary>
         private bool CanBeMergedInto(DataType a, DataType b)
         {
             if (AreCompatible(a, b))
