@@ -57,6 +57,10 @@ namespace Reko.Core.Types
             this.trace = trace;
         }
 
+        /// <summary>
+        /// Returns true if unifying the two data types will not
+        /// result in a union.
+        /// </summary>
 		public bool AreCompatible(DataType a, DataType b)
 		{
 			return AreCompatible(a, b, 0);
