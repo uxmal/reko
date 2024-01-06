@@ -56,5 +56,10 @@ namespace Reko.Core.Configuration
         /// Typical procedure prologs.
         /// </summary>
         public List<MaskedPattern> ProcedurePrologs { get; set; } = new();
+
+        /// <summary>
+        /// Other "nicknames" for this architecture.
+        /// </summary>
+        public HashSet<string> Aliases { get; set; } = new();
     }
 }

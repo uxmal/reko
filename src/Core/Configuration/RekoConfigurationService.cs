@@ -124,15 +124,18 @@ namespace Reko.Core.Configuration
 
         private ArchitectureDefinition LoadArchitecture(Architecture_v1 sArch)
         {
-            return new ArchitectureDefinition
+            var ad = new ArchitectureDefinition
             {
                 Description = sArch.Description,
                 Name = sArch.Name,
                 TypeName = sArch.Type,
                 Options = LoadCollection(sArch.Options, LoadPropertyOption),
                 Models = LoadDictionary(sArch.Models, m => m.Name!, LoadModelDefinition),
-                ProcedurePrologs = LoadMaskedPatterns(sArch.ProcedurePrologs)
+                ProcedurePrologs = LoadMaskedPatterns(sArch.ProcedurePrologs),
+                Aliases = LoadDelimiterSeparatedValues(sArch.Aliases, ',')
+                    .ToHashSet(),
             };
+            return ad;
         }
 
         private PropertyOption LoadPropertyOption(PropertyOption_v1 sOption)
@@ -214,13 +217,9 @@ namespace Reko.Core.Configuration
             return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
-                TrashedRegisters = sTrashedRegs
-                    .Split(',')
-                    .Select(s => s.Trim())
+                TrashedRegisters = LoadDelimiterSeparatedValues(spa.TrashedRegisters, ',')
                     .ToList(),
-                PreservedRegisters = sPreservedRegs
-                    .Split(',')
-                    .Select(s => s.Trim())
+                PreservedRegisters = LoadDelimiterSeparatedValues(spa.PreservedRegisters, ',')
                     .ToList(),
                 TypeLibraries = LoadCollection(spa.TypeLibraries, LoadTypeLibraryReference),
                 ProcedurePrologs = LoadMaskedPatterns(spa.ProcedurePrologs)
@@ -294,6 +293,15 @@ namespace Reko.Core.Configuration
             };
         }
 
+        private IEnumerable<string> LoadDelimiterSeparatedValues(string? serializedVaue, char delimiter)
+        {
+            if (string.IsNullOrEmpty(serializedVaue))
+                return Array.Empty<string>();
+            return serializedVaue
+                .Split(delimiter)
+                .Select(s => s.Trim());
+
+        }
         private static List<TDst> LoadCollection<TSrc, TDst>(TSrc[]? sItems, Func<TSrc, TDst> fn)
         {
             if (sItems is null)
@@ -423,8 +431,7 @@ namespace Reko.Core.Configuration
         {
             if (modelName is null)
                 return GetArchitecture(archLabel, new Dictionary<string, object>());
-            var elem = GetArchitectures()
-                .Where(e => e.Name == archLabel).SingleOrDefault();
+            var elem = FindArchitectureByLabel(archLabel);
             if (elem is null)
                 return null;
             ModelDefinition? model;
@@ -459,8 +466,7 @@ namespace Reko.Core.Configuration
 
         public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options)
         {
-            var elem = GetArchitectures()
-                .Where(e => e.Name == archLabel).SingleOrDefault();
+            var elem = FindArchitectureByLabel(archLabel);
             if (elem is null || elem.TypeName is null)
                 return null;
             options ??= new Dictionary<string, object>();
@@ -480,6 +486,12 @@ namespace Reko.Core.Configuration
             return arch;
         }
 
+        private ArchitectureDefinition? FindArchitectureByLabel(string archLabel)
+        {
+            return GetArchitectures()
+                .Where(e => e.Name == archLabel ||
+                            e.Aliases.Contains(archLabel)).SingleOrDefault();
+        }
 
         public PlatformDefinition GetEnvironment(string envName)
         {

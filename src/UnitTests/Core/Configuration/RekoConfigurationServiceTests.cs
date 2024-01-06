@@ -225,5 +225,39 @@ namespace Reko.UnitTests.Core.Configuration
             var arch = cfgSvc.GetArchitecture("fake", "Unknown Model");
             Assert.AreEqual("WarningDiagnostic -  - Model 'Unknown Model' is not defined for architecture 'fake'.", listener.LastDiagnostic);
         }
+
+        [Test]
+        public void Rcfg_LoadArchitecture_using_alias()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fake",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        Models = new[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "Fake-2000",
+                                Options = new[]
+                                {
+                                    new ListOption_v1 { Text=ProcessorOption.WordSize, Value="32" }
+                                }
+                            }
+                        },
+                        Aliases = "phake,fejk"
+                    }
+                }
+            });
+            pluginSvc.Setup(p => p.GetType(It.IsAny<string>()))
+                .Returns(typeof(FakeArchitecture));
+
+            var arch = cfgSvc.GetArchitecture("fejk");
+            Assert.IsNotNull(arch);
+            Assert.AreEqual("fake", arch.Name);
+        }
+
     }
 }

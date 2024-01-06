@@ -102,6 +102,8 @@ namespace Reko.Core.Configuration
         [XmlArrayItem("Pattern")]
         public BytePattern_v1[]? ProcedurePrologs;
 
+        [XmlElement("Aliases")]
+        public string? Aliases;
     }
 
     [Serializable]
