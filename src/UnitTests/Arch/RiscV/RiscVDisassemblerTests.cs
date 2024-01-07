@@ -39,7 +39,6 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         [SetUp]

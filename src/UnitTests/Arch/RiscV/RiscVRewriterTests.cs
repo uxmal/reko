@@ -102,7 +102,6 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
-            Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.WordSize , "64" },
