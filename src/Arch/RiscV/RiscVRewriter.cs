@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -175,6 +176,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fcvt_lu_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.UInt64); break;
                 case Mnemonic.fcvt_lu_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.UInt64); break;
                 case Mnemonic.fcvt_s_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_s_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real32); break;
@@ -198,6 +200,10 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.flt_q: RewriteFcmp(PrimitiveType.Real128, m.FLt); break;
                 case Mnemonic.flt_s: RewriteFcmp(PrimitiveType.Real32, m.FLt); break;
                 case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd, false); break;
+                case Mnemonic.fmax_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, FpOps.fmax); break;
+                case Mnemonic.fmax_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, FpOps.fmaxf); break;
+                case Mnemonic.fmin_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, FpOps.fmin); break;
+                case Mnemonic.fmin_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, FpOps.fminf); break;
                 case Mnemonic.fmsub_s: RewriteFmadd(PrimitiveType.Real32, m.FSub, false); break;
                 case Mnemonic.fmul_d: RewriteFBinOp(PrimitiveType.Real64, m.FMul); break;
                 case Mnemonic.fmul_q: RewriteFBinOp(PrimitiveType.Real128, m.FMul); break;
@@ -213,7 +219,15 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fnmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FSub /* sic! */, true); break;
                 case Mnemonic.fnmsub_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd /* sic! */, true); break;
                 case Mnemonic.fsd: RewriteStore(PrimitiveType.Real64); break;
+                case Mnemonic.fsgnj_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnj_intrinsic); break;
+                case Mnemonic.fsgnj_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnj_intrinsic); break;
+                case Mnemonic.fsgnjn_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnjn_intrinsic); break;
+                case Mnemonic.fsgnjn_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnjn_intrinsic); break;
+                case Mnemonic.fsgnjx_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnjx_intrinsic); break;
+                case Mnemonic.fsgnjx_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnjx_intrinsic); break;
                 case Mnemonic.fsub_d: RewriteFBinOp(PrimitiveType.Real64, m.FSub); break;
+                case Mnemonic.fsqrt_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, FpOps.sqrt); break;
+                case Mnemonic.fsqrt_s: RewriteFUnaryIntrinsic(PrimitiveType.Real32, FpOps.sqrtf); break;
                 case Mnemonic.fsub_s: RewriteFBinOp(PrimitiveType.Real32, m.FSub); break;
                 case Mnemonic.fsw: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.jal: RewriteJal(); break;
@@ -243,19 +257,19 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sh: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.sll: RewriteBinOp(m.Shl); break;
-                case Mnemonic.slli: RewriteShift(m.Shl); break;
+                case Mnemonic.slli: RewriteShift(Operator.Shl); break;
                 case Mnemonic.slliw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.sllw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.slt: RewriteSlt(false); break;
                 case Mnemonic.slti: RewriteSlti(false); break;
                 case Mnemonic.sltiu: RewriteSlti(true); break;
                 case Mnemonic.sltu: RewriteSlt(true); break;
-                case Mnemonic.sra: RewriteShift(m.Sar); break;
+                case Mnemonic.sra: RewriteShift(Operator.Sar); break;
                 case Mnemonic.sraw: RewriteShiftw(m.Sar); break;
-                case Mnemonic.srai: RewriteShift(m.Sar); break;
+                case Mnemonic.srai: RewriteShift(Operator.Sar); break;
                 case Mnemonic.sraiw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.srl: RewriteBinOp(m.Shr); break;
-                case Mnemonic.srli: RewriteShift(m.Shr); break;
+                case Mnemonic.srli: RewriteShift(Operator.Shr); break;
                 case Mnemonic.srliw: RewriteShiftw(SrlI); break;
                 case Mnemonic.srlw: RewriteShiftw(m.Shr); break;
                 case Mnemonic.sub: RewriteSub(); break;
@@ -390,6 +404,9 @@ namespace Reko.Arch.RiscV
             .Void();
         static readonly IntrinsicProcedure fence_tso_intrinsic = new IntrinsicBuilder("__fence_tso", true)
             .Void();
+        static readonly IntrinsicProcedure fsgnj_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnj");
+        static readonly IntrinsicProcedure fsgnjn_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnjn");
+        static readonly IntrinsicProcedure fsgnjx_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnjx");
 
 
         static readonly IntrinsicProcedure lr_intrinsic = new IntrinsicBuilder("__load_reserved", true)

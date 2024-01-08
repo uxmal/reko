@@ -21,8 +21,10 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Dynamic;
 
 namespace Reko.Arch.RiscV
 {
@@ -222,12 +224,12 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
-        private void RewriteShift(Func<Expression, Expression, Expression> fn)
+        private void RewriteShift(BinaryOperator op)
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
             var dst = RewriteOp(0);
-            m.Assign(dst, fn(left, right));
+            m.Assign(dst, m.Bin(op, left, right));
         }
 
         private void RewriteShiftw(Func<Expression, Expression, Expression> fn)

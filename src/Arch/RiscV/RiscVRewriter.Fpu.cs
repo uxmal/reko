@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -139,6 +140,31 @@ namespace Reko.Arch.RiscV
             var dst = RewriteOp(0);
             m.Assign(dst, MaybeNanBox(fn(src1, src2), dst.DataType));
         }
+
+        private void RewriteFBinaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
+        {
+            var src1 = MaybeSlice(RewriteOp(1), dt);
+            var src2 = MaybeSlice(RewriteOp(2), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, MaybeNanBox(m.Fn(fn, src1, src2), dst.DataType));
+        }
+
+        private void RewriteFGenericBinaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
+        {
+            var src1 = MaybeSlice(RewriteOp(1), dt);
+            var src2 = MaybeSlice(RewriteOp(2), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, MaybeNanBox(m.Fn(fn.MakeInstance(dt), src1, src2), dst.DataType));
+        }
+
+
+        private void RewriteFUnaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
+        {
+            var src = MaybeSlice(RewriteOp(1), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, MaybeNanBox(m.Fn(fn, src), dst.DataType));
+        }
+
 
         // Move bits between integer and FP regs without interpretation.
         private void RewriteFMove(PrimitiveType dtFrom, PrimitiveType dtTo)
