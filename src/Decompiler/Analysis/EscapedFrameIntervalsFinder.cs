@@ -328,11 +328,6 @@ namespace Reko.Analysis
                 return id;
             }
 
-            public List<Statement> GetDefiningStatementClosure(Identifier id)
-            {
-                return new List<Statement>();
-            }
-
             public Expression? GetValue(Identifier id)
             {
                 return id;

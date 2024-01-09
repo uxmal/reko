@@ -210,11 +210,6 @@ namespace Reko.Core
             return null;
         }
 
-        public List<Statement> GetDefiningStatementClosure(Identifier id)
-        {
-            return new List<Statement>();
-        }
-
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
         {
             return Architecture.MakeSegmentedAddress(seg, off);

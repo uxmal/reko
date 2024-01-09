@@ -211,11 +211,6 @@ namespace Reko.Analysis
                 return ssa.Identifiers[id].GetDefiningExpression();
             }
 
-            public List<Statement> GetDefiningStatementClosure(Identifier id)
-            {
-                throw new NotImplementedException();
-            }
-
             public Expression GetValue(Identifier id)
             {
                 return values.TryGetValue(id, out var result)

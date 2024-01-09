@@ -21,12 +21,8 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Evaluation;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using Reko.Core.Collections;
 
 namespace Reko.Analysis
 {
@@ -93,52 +89,6 @@ namespace Reko.Analysis
         public Expression? GetDefiningExpression(Identifier id)
         {
             return ssaIds[id].GetDefiningExpression();
-        }
-
-        public List<Statement> GetDefiningStatementClosure(Identifier id)
-        {
-            var visited = new HashSet<SsaIdentifier>();
-            var wl = new WorkList<SsaIdentifier>();
-            var stms = new List<Statement>();
-            wl.Add(ssaIds[id]);
-            while (wl.TryGetWorkItem(out var sid))
-            {
-                if (visited.Contains(sid))
-                    continue;
-                visited.Add(sid);
-                if (sid.DefStatement == null)
-                    continue;
-                switch (sid.DefStatement.Instruction)
-                {
-                case AliasAssignment alias:
-                    if (alias.Src is Identifier idAlias)
-                    {
-                        wl.Add(ssaIds[idAlias]);
-                    }
-                    else
-                    {
-                        stms.Add(sid.DefStatement);
-                    }
-                    break;
-                case Assignment ass:
-                    if (ass.Src is Identifier idSrc)
-                    {
-                        wl.Add(ssaIds[idSrc]);
-                    }
-                    else
-                    {
-                        stms.Add(sid.DefStatement);
-                    }
-                    break;
-                case PhiAssignment phi:
-                    wl.AddRange(phi.Src.Arguments.Select(a => ssaIds[(Identifier) a.Value]));
-                    break;
-                default:
-                    stms.Add(sid.DefStatement);
-                    break;
-                }
-            }
-            return stms;
         }
 
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
