@@ -102,7 +102,7 @@ namespace Reko.Scanning
 
             if (continueBackwalking)
             {
-                var blockPrev = host.GetSinglePredecessor(block);
+                var blockPrev = host.GetPredecessors(block).SingleOrDefault();
                 if (blockPrev is null)
                     return null;	// seems unguarded to me.
 

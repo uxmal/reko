@@ -4,6 +4,13 @@
 
 #include "blob.h"
 
+// 00000000: void fn00000000(Register int32 r0, Register uint32 VR, Register uint32 SR)
+// Called from:
+//      fn0000E758
+void fn00000000(int32 r0, uint32 VR, uint32 SR)
+{
+}
+
 // 000043D0: Register word32 fn000043D0(Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register Eq_n r15, Register out Eq_n r15Out)
 // Called from:
 //      fn0000490C
@@ -6321,6 +6328,8 @@ void fn0000E740(int32 r3, uint32 VR)
 }
 
 // 0000E750: void fn0000E750()
+// Called from:
+//      fn00000000
 void fn0000E750()
 {
 	while (true)
@@ -6328,6 +6337,8 @@ void fn0000E750()
 }
 
 // 0000E758: void fn0000E758(Register word32 r3, Register word32 r4, Register word32 r5, Register Eq_n r15, Register uint32 VR)
+// Called from:
+//      fn00000000
 void fn0000E758(word32 r3, word32 r4, word32 r5, Eq_n r15, uint32 VR)
 {
 	if (r3 != 0x08)
@@ -6343,7 +6354,8 @@ void fn0000E758(word32 r3, word32 r4, word32 r5, Eq_n r15, uint32 VR)
 	else
 	{
 		<anonymous> ** r3_n = (fn00008AC0() << 0x03) + 0x00013834;
-		(*r3_n)();
+		<anonymous> * r11_n = (<anonymous> *) *r3_n;
+		r11_n();
 	}
 }
 
@@ -6379,6 +6391,8 @@ void fn0000E96C(word32 r3, uint32 VR)
 }
 
 // 0000E98C: void fn0000E98C(Register Eq_n r15, Register uint32 VR)
+// Called from:
+//      fn00000000
 void fn0000E98C(Eq_n r15, uint32 VR)
 {
 	Eq_n r11_n;

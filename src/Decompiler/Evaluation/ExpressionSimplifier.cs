@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -71,11 +71,10 @@ namespace Reko.Evaluation
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
         private readonly Unifier unifier;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 
 
-
-        public ExpressionSimplifier(IReadOnlySegmentMap segmentMap, EvaluationContext ctx, IDecompilerEventListener listener)
+        public ExpressionSimplifier(IReadOnlySegmentMap segmentMap, EvaluationContext ctx, IEventListener listener)
             : this(segmentMap, ctx, new Unifier(), listener)
         {
             // Creating the unifier is slow, so we provide a constructor
@@ -86,7 +85,7 @@ namespace Reko.Evaluation
             IReadOnlySegmentMap segmentMap,
             EvaluationContext ctx,
             Unifier unifier,
-            IDecompilerEventListener listener)
+            IEventListener listener)
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(segmentMap));
             this.ctx = ctx;

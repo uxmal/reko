@@ -1212,6 +1212,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a <see cref="SegmentedPointer"/>.
+        /// </summary>
+        /// <param name="basePtr">Base or segment of the pointer.</param>
+        /// <param name="offset">Offset of the pointer.</param>
+        /// <returns>A segmented pointer expression.</returns>
+        public SegmentedPointer SegPtr(DataType dt, Expression basePtr, Expression offset)
+        {
+            return new SegmentedPointer(dt, basePtr, offset);
+        }
+
+        /// <summary>
         /// Generates an integer multiplication. No assumption about signedness is made.
         /// </summary>
         /// <param name="left">Multiplicand.</param>
@@ -1591,6 +1602,20 @@ namespace Reko.Core.Expressions
         public UnaryExpression Unary(UnaryOperator op, Expression exp)
         {
             return new UnaryExpression(op, exp.DataType, exp);
+        }
+
+        /// <summary>
+        /// Convenience method that generates a <see cref="UnaryExpression"/> using
+        /// the provided <see cref="UnaryOperator"/> and assuming the returned 
+        /// data type is the same as the one of its operand.
+        /// </summary>
+        /// <param name="op">The unary operator of the resulting expression.</param>
+        /// <param name="dt">The data type of the result of the operation.</param>
+        /// <param name="exp">The operand of the expression.</param>
+        /// <returns>A unary expression.</returns>
+        public UnaryExpression Unary(UnaryOperator op, DataType dt, Expression exp)
+        {
+            return new UnaryExpression(op, dt, exp);
         }
 
         /// <summary>

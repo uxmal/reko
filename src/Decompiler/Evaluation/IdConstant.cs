@@ -20,8 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System.Diagnostics;
 
 namespace Reko.Evaluation
@@ -36,7 +36,7 @@ namespace Reko.Evaluation
         {
         }
 
-        public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, IDecompilerEventListener listener)
+        public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener)
         {
             var src = ctx.GetValue(id);
             var cSrc = src as Constant;

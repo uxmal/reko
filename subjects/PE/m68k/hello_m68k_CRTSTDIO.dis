@@ -73,59 +73,132 @@ l00001698:
 fn00001680_exit:
 
 
-void fn000016D0(word32 d6, word32 a5, word32 dwArg08)
+void fn000016D0(word32 a5, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5:[0..31] d6:[8..31] Stack +0008:[0..31]
+// MayUse:  a5:[0..31] Stack +0008:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a2 a3 a4 a5 a6 d0 d2 d3 d4 d5 d6 d7
-// Preserved: a7
+// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
+// Preserved:
 fn000016D0_entry:
 l000016D0:
 	v18_39 = Mem37[dwArg08:byte]
-	dwLoc0C_207 = 0<i32>
-	d6_119 = SEQ(SLICE(d6, word24, 8), v18_39)
-	dwArg08_209 = dwArg08 + 1<32>
+	a6_297 = fp - 4<32>
+	a7_159 = fp - 0x244<32>
+	a3_295 = a5 + -2040<i32>
+	a2_294 = a5 + -2072<i32>
+	d6_123 = SEQ(SLICE(d6, word24, 8), v18_39)
 	branch v18_39 == 0<8> l00001C34
 l000016FA:
+	d3_129 = dwLoc10
+	d4_144 = dwLoc14
+	d5_249 = dwLoc18
 l0000170E:
-	branch false l00001C34
+	branch Mem58[a6_297 + -544<i32>:word32] < 0<32> l00001C34
 l00001716:
-	branch SLICE(d6_119, byte, 0) < 0x20<8> l00001734
+	branch SLICE(d6_123, byte, 0) < 0x20<8> l00001734
 l0000171C:
-	branch SLICE(d6_119, byte, 0) > 0x78<8> l00001734
+	branch SLICE(d6_123, byte, 0) > 0x78<8> l00001734
 l00001734:
 	d0_71 = 0<i32>
 l00001722:
-	d0_71 = CONVERT(Mem58[a5 + -2072<i32> + CONVERT(SLICE(d6_119, byte, 0), byte, int32):byte] & 0xF<8>, byte, int32)
+	d0_71 = CONVERT(Mem58[a2_294 + CONVERT(SLICE(d6_123, byte, 0), byte, int32):byte] & 0xF<8>, byte, int32)
 l00001736:
-	d0_108 = CONVERT(Mem58[a5 + -2040<i32> + ((d0_71 << 3<32>) + dwLoc0C_207):byte] >> 4<8>, byte, int32)
-	dwLoc0C_207 = d0_108
+	d0_108 = CONVERT(Mem58[a3_295 + ((d0_71 << 3<32>) + Mem58[a6_297 + -8<i32>:word32]):byte] >> 4<8>, byte, int32)
+	Mem109[a6_297 + -8<i32>:word32] = d0_108
 	branch d0_108 >u 7<i32> l00001C24
-l00001C24:
-	v43_115 = Mem109[dwArg08_209:byte]
-	d6_119 = SEQ(SLICE(d6_119, word24, 8), v43_115)
-	dwArg08_209 = dwArg08_209 + 1<32>
-	branch v43_115 != 0<8> l0000170E
-l00001C34:
-	return
 l00001750:
-	v41_155 = Mem109[0x00001758<p32> + CONVERT(SLICE(d0_108, int16, 0), int16, int32) * 2<i32>:word16]
-	call 0x00001758<p32> + CONVERT(v41_155, word16, int32) (retsize: 0;)
-		uses: a2:a5 + -2072<i32>,a3:a5 + -2040<i32>,a4:dwLoc1C,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_108, word16, 16), v41_155),d2:d2_194,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Mem:Mem109,Stack +0224:dwLoc20,Stack +0228:dwLoc1C,Stack +022C:dwLoc18,Stack +0230:dwLoc14,Stack +0234:dwLoc10,Stack +024C:dwArg08_221
-		defs: d2:d2_194
+	switch (d0_108) { l00001768 l00001780 l00001798 l000017FC l0000183C l00001844 l00001878 }
+l00001878:
+	d6_123 = CONVERT(SLICE(d6_123, int8, 0), int8, int32)
+	branch d6_123 == 76<i32> l0000188C
+l0000188C:
+	__bset<word16>(d3_129, 0xA<16>, out d3_129)
+l00001880:
+	branch d6_123 == 104<i32> l00001894
+l00001894:
+	__bset<word16>(d3_129, 5<16>, out d3_129)
+l00001886:
+l00001844:
+	branch SLICE(d6_123, byte, 0) != 0x2A<8> l00001860
+l00001860:
+	d6_150 = CONVERT(SLICE(d6_123, int8, 0), int8, int32) + d4_144 * 0xA<32>
+	d6_123 = d6_150 - 48<i32>
+	d4_144 = d6_150 - 48<i32>
+l0000184A:
+	a7_161 = a7_159 - 4<i32>
+	Mem162[a7_161:word32] = a6_297 + 16<i32>
+	d0_165 = fn00001D0C(Mem162[a7_161:word32])
+	a7_159 = a7_161 + 4<i32>
+	d4_144 = d0_165
+	branch d0_165 >= 0<32> l00001C24
+l0000185A:
+	d4_144 = -1<i32>
+l0000183C:
+	d4_144 = 0<i32>
+l000017FC:
+	branch SLICE(d6_123, byte, 0) != 0x2A<8> l00001820
+l00001820:
+	d6_194 = CONVERT(SLICE(d6_123, int8, 0), int8, int32) + Mem109[a6_297 + -20<i32>:word32] * 0xA<32>
+	Mem198[a6_297 + -20<i32>:word32] = d6_194 - 48<i32>
+	d6_123 = d6_194 - 48<i32>
+l00001802:
+	a7_202 = a7_159 - 4<i32>
+	Mem203[a7_202:word32] = a6_297 + 16<i32>
+	d0_206 = fn00001D0C(Mem203[a7_202:word32])
+	Mem212[a6_297 + -20<i32>:word32] = d0_206
+	a7_159 = a7_202 + 4<i32>
+	branch d0_206 >= 0<32> l00001C24
+l00001814:
+	__bset<word16>(d3_129, 2<16>, out d3_129)
+	Mem221[a6_297 + -20<i32>:word32] = -Mem212[a6_297 + -20<i32>:word32]
+l00001798:
+	d6_223 = CONVERT(SLICE(d6_123, int8, 0), int8, int32)
+	d6_123 = d6_223 - 32<i32>
+	branch d6_223 >u 48<i32> || d6_223 <u 32<i32> l00001C24
+l000017A6:
+	v50_232 = SLICE(d6_223 - 32<i32>, word24, 8)
+	v51_234 = Mem109[0x000017B4<p32> + CONVERT(SLICE(SEQ(v50_232, Mem109[0x000017C0<p32> + CONVERT(SLICE(d6_223, int16, 0) - 32<i16>, int16, int32):byte]), int16, 0), int16, int32) * 2<i32>:word16]
+	call 0x000017B4<p32> + CONVERT(v51_234, word16, int32) (retsize: 0;)
+		uses: a1:a1_269,a2:a2_80,a3:a3_99,a4:dwLoc1C,a5:a5_252,a6:a6_57,d0:d0_266,d1:d1_268,d2:d2_267,d3:d3_129,d4:d4_144,d5:d5_249,d6:SEQ(SLICE(v50_232, word16, 8), v51_234),d7:dwLoc20,Mem:Mem109
+		defs: a1:a1_269,d0:d0_266,d1:d1_268,d2:d2_267
+	return
+l00001780:
+	Mem272[a6_297 + -12<i32>:word32] = 0<i32>
+	Mem273[a6_297 + -16<i32>:word32] = 0<i32>
+	Mem274[a6_297 + -20<i32>:word32] = 0<i32>
+	d6_123 = 0<i32>
+	d5_249 = 0<i32>
+	d3_129 = 0<i32>
+	d4_144 = -1<i32>
+l00001768:
+	a7_281 = a7_159 - 4<i32>
+	Mem282[a7_281:word32] = a6_297 + -544<i32>
+	Mem285[a7_281 - 4<i32>:word32] = Mem282[a6_297 + 8<i32>:word32]
+	d6_123 = CONVERT(SLICE(d6_123, int8, 0), int8, int32)
+	Mem288[a7_281 - 8<i32>:word32] = d6_123
+	a7_298 = <invalid>
+	d3_129 = fn00001C40(a5, Mem288[a7_281 + 8<32>:byte], Mem288[a7_281 - 4<i32>:word32], out d4_144, out d5_249, out a2_294, out a3_295, out a5, out a6_297)
+	a7_159 = a7_298 + 12<i32>
+l00001C24:
+	v44_314 = Mem312[Mem312[a6_297 + 12<i32>:word32]:byte]
+	Mem319[a6_297 + 12<i32>:word32] = Mem312[a6_297 + 12<i32>:word32] + 1<32>
+	d6_123 = SEQ(SLICE(d6_123, word24, 8), v44_314)
+	branch v44_314 != 0<8> l0000170E
+l00001C34:
 	return
 fn000016D0_exit:
 
 
-word32 fn00001C40(word32 a5, byte bArg04, word32 dwArg08, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a5Out, ptr32 & a6Out)
+word32 fn00001C40(word32 a5, byte bArg04, word32 dwArg08, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a2Out, ptr32 & a3Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
+//      fn000016D0
 //      fn00001C84
 //      fn00001CC4
 // MayUse:  a5:[0..31] Stack +0004:[0..7] Stack +0008:[0..31]
-// LiveOut: a5 a6 a7 d3 d4 d5
+// LiveOut: a2 a3 a5 a6 a7 d3 d4 d5
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
 // Preserved:
 fn00001C40_entry:
@@ -136,7 +209,7 @@ l00001C40:
 	a6_28 = fp - 4<32>
 	branch v6_9 < 0<32> l00001C60
 l00001C60:
-	d0_22 = fn00001E94(a5, dwArg08, out d3_31, out d4_32, out d5_33, out a5_27, out a6_28)
+	d0_22 = fn00001E94(a5, dwArg08, out d3_31, out d4_32, out d5_33, out a2_25, out a3_26, out a5_27, out a6_28)
 l00001C4E:
 	Mem42[Mem10[dwArg08:word32]:byte] = bArg07_80
 	a0_43 = Mem42[dwArg08:word32]
@@ -150,6 +223,8 @@ l00001C7C:
 	a6_66 = Mem63[a6_28:word32]
 	d4Out = <invalid>
 	d5Out = <invalid>
+	a2Out = <invalid>
+	a3Out = <invalid>
 	a5Out = <invalid>
 	a6Out = a6_66
 	return <invalid>
@@ -158,6 +233,8 @@ l00001C76:
 	a6_73 = Mem68[a6_28:word32]
 	d4Out = <invalid>
 	d5Out = <invalid>
+	a2Out = <invalid>
+	a3Out = <invalid>
 	a5Out = <invalid>
 	a6Out = a6_73
 	return <invalid>
@@ -184,7 +261,7 @@ l00001CA4:
 	Mem40[a7_35 - 4<i32>:word32] = d4_29
 	Mem43[a7_35 - 8<i32>:word32] = d3_28
 	a7_54 = <invalid>
-	d3_28 = fn00001C40(a5, Mem43[a7_35 + 8<32>:byte], Mem43[a7_35 - 4<i32>:word32], out d4_29, out d5_60, out a5, out a6_122)
+	d3_28 = fn00001C40(a5, Mem43[a7_35 + 8<32>:byte], Mem43[a7_35 - 4<i32>:word32], out d4_29, out d5_60, out a2_122, out a3_123, out a5, out a6_124)
 	a7_17 = a7_54 + 12<i32>
 	branch d5_60 > 0<32> l00001CA4
 l00001CBA:
@@ -212,7 +289,7 @@ l00001CE4:
 	Mem44[a7_39 - 4<i32>:word32] = d4_29
 	Mem51[a7_39 - 8<i32>:word32] = CONVERT(Mem44[d3_28:byte], byte, int32)
 	a7_62 = <invalid>
-	d3_28 = fn00001C40(a5, Mem51[a7_39 + 8<32>:byte], Mem51[a7_39 - 4<i32>:word32], out d4_29, out d5_68, out a5, out a6_130)
+	d3_28 = fn00001C40(a5, Mem51[a7_39 + 8<32>:byte], Mem51[a7_39 - 4<i32>:word32], out d4_29, out d5_68, out a2_130, out a3_131, out a5, out a6_132)
 	a7_17 = a7_62 + 12<i32>
 	branch d5_68 > 0<32> l00001CE4
 l00001D02:
@@ -220,17 +297,20 @@ l00001D02:
 fn00001CC4_exit:
 
 
-void fn00001D0C(word32 dwArg04)
+word32 fn00001D0C(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000016D0
 // MayUse:  Stack +0004:[0..31]
-// LiveOut:
+// LiveOut: d0
 // Trashed: CVZN a0 a1 d0
 // Preserved: a6 a7
 fn00001D0C_entry:
 l00001D0C:
-	Mem10[dwArg04:word32] = Mem5[dwArg04:word32] + 4<i32>
-	return
+	a1_8 = Mem5[dwArg04:word32]
+	Mem10[dwArg04:word32] = a1_8 + 4<i32>
+	return Mem10[a1_8:word32]
 fn00001D0C_exit:
 
 
@@ -447,13 +527,13 @@ l00001E70:
 fn00001E04_exit:
 
 
-word32 fn00001E94(word32 a5, word32 dwArg08, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a5Out, ptr32 & a6Out)
+word32 fn00001E94(word32 a5, word32 dwArg08, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a2Out, ptr32 & a3Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00001C40
 // MayUse:  a5:[0..31] Stack +0008:[0..31]
-// LiveOut: a5 a6 d0 d3 d4 d5
+// LiveOut: a2 a3 a5 a6 d0 d3 d4 d5
 // Trashed: CVZNX a0 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
 // Preserved:
 fn00001E94_entry:
@@ -479,6 +559,8 @@ l00001F5C:
 	d3Out = d3
 	d4Out = d4
 	d5Out = d5
+	a2Out = a2
+	a3Out = a3
 	a5Out = a5
 	a6Out = a6
 	return -1<i32>
@@ -560,10 +642,14 @@ l00001FC4:
 	d0_300 = Mem298[a6_121 + 8<i32>:word32] & 0xFF<32>
 	d4_308 = Mem298[a7_307:word32]
 	d5_310 = Mem298[a7_307 + 4<i32>:word32]
+	a2_312 = Mem298[a7_307 + 8<i32>:word32]
+	a3_314 = Mem298[a7_307 + 12<i32>:word32]
 	a6_316 = Mem298[a6_121:word32]
 	d3Out = Mem298[a7_133:word32]
 	d4Out = d4_308
 	d5Out = d5_310
+	a2Out = a2_312
+	a3Out = a3_314
 	a5Out = a5
 	a6Out = a6_316
 	return d0_300
@@ -572,10 +658,14 @@ l00001FB2:
 	a7_326 = a7_133 + 4<i32>
 	d4_327 = Mem298[a7_326:word32]
 	d5_329 = Mem298[a7_326 + 4<i32>:word32]
+	a2_331 = Mem298[a7_326 + 8<i32>:word32]
+	a3_333 = Mem298[a7_326 + 12<i32>:word32]
 	a6_335 = Mem298[a6_121:word32]
 	d3Out = Mem298[a7_133:word32]
 	d4Out = d4_327
 	d5Out = d5_329
+	a2Out = a2_331
+	a3Out = a3_333
 	a5Out = a5
 	a6Out = a6_335
 	return -1<i32>

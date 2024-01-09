@@ -5,6 +5,8 @@
 #include "TLCS-90.h"
 
 // 0000: void fn0000(Register byte a)
+// Called from:
+//      fn1BA4
 void fn0000(byte a)
 {
 	null = (byte *) a;

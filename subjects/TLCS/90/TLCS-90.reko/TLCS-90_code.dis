@@ -1,6 +1,8 @@
 void fn0000(byte a)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1BA4
 // MayUse:  a:[0..7]
 // LiveOut:
 // Trashed: bc sp
@@ -1061,7 +1063,7 @@ l187D_thunk_fn0C35:
 
 
 void fn1BA4()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:

@@ -1,3 +1,102 @@
+void fn00000000(word32 r0, word32 VR, word32 SR)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000E758
+// MayUse:  r0:[0..31] SR:[0..31] VR:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00000000_exit:
+fn00000000_entry:
+l00000000:
+l00000004:
+l00000008:
+l0000000C:
+l00000010:
+l00000014:
+l00000018:
+l0000001C:
+l00000020:
+l00000024:
+l00000028:
+l0000002C:
+l00000030:
+l00000034:
+l00000038:
+l0000003C:
+l00000040:
+l00000044:
+l00000048:
+l0000004C:
+l00000050:
+l00000054:
+l00000058:
+l0000005C:
+l00000060:
+l00000064:
+l00000068:
+l0000006C:
+l00000070:
+l00000074:
+l00000078:
+l0000007C:
+l00000080:
+l00000084:
+l00000088:
+l0000008C:
+l00000090:
+l00000094:
+l00000098:
+l0000009C:
+l000000A0:
+l000000A4:
+l000000A8:
+l000000AC:
+l000000B0:
+l000000B4:
+l000000B8:
+l000000BC:
+l000000C0:
+l000000C4:
+l000000C8:
+l000000CC:
+l000000D0:
+l000000D4:
+l000000D8:
+l000000DC:
+l000000E0:
+l000000E4:
+l000000E8:
+l000000EC:
+l000000F0:
+l000000F4:
+l000000F8:
+l000000FC:
+l0000FAE4:
+	__mtspr(SR, 0x81<32>)
+	__mtspr(0x5000<u32>, r0)
+	__mtspr(SR, __mfspr(SR) & 0xFFFFFFEF<32>)
+	r6_172 = 0<i32>
+l0000FBA0:
+	__mtspr(0x2002<u32>, r6_172)
+	branch r6_172 != -4096<i32> l0000FBAC_ds_t
+l0000FBAC_ds_t:
+	r6_172 = r6_172 + -16<i32>
+l0000FBAC_ds_f:
+l0000FBB0:
+	r5_184 = 0x13158<32>
+l0000FBEC:
+	Mem189[r5_184:word32] = r0
+	branch r5_184 <u 0x13A18<32> l0000FBF8_ds_t
+l0000FBF8_ds_t:
+	r5_184 = r5_184 + -4<i32>
+l0000FBF8_ds_f:
+l0000FBFC:
+	fn0000E98C(0<32>, VR)
+
+
 word32 fn000043D0(word32 r3, word32 r4, word32 r5, word32 r15, ptr32 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -7402,6 +7501,8 @@ fn0000E740_exit:
 void fn0000E750()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -7415,6 +7516,8 @@ l0000E750:
 void fn0000E758(word32 r3, word32 r4, word32 r5, word32 r15, word32 VR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000
 // MayUse:  r15:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] VR:[0..31]
 // LiveOut:
 // Trashed: CV r11 r13 r14 r15 r17 r2 r3 r4 r5 r6 r7 r8 VR
@@ -7438,9 +7541,10 @@ l0000E80C:
 l0000E770_ds_f:
 l0000E774:
 l00008C34:
-	r3_124 = (fn00008AC0() << 3<32>) + 0x13834<32>
-	call Mem113[r3_124:word32] (retsize: 0;)
-		uses: Mem:Mem113,r14:dwLoc38,r15:r15,r2:0x13834<32>,r3:Mem113[r3_124 + 4<i32>:word32],r4:r4,r5:r5,r9:dwLoc34,VR:VR
+	r3_126 = (fn00008AC0() << 3<32>) + 0x13834<32>
+	r11_128 = Mem113[r3_126:word32]
+	call r11_128 (retsize: 0;)
+		uses: Mem:Mem113,r11:r11_128,r14:dwLoc38,r15:r15,r2:0x13834<32>,r3:Mem113[r3_126 + 4<i32>:word32],r4:r4,r5:r5,r9:dwLoc34,VR:VR
 	return
 fn0000E758_exit:
 
@@ -7505,6 +7609,8 @@ fn0000E96C_exit:
 void fn0000E98C(word32 r15, word32 VR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000
 // MayUse:  r15:[0..31] VR:[0..31]
 // LiveOut:
 // Trashed:

@@ -920,7 +920,9 @@ int32 g_dw4029D8 = -0x0C50; // 004029D8
 // 004029DC: void traverse(Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 r11, Register word32 r13, Register word32 r14, Register word32 pr)
 void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13, word32 r14, word32 pr)
 {
-	Eq_n r12_n;
+	word32 * r15_n;
+	struct Eq_n * r15_n;
+	word32 * (* r12_n)[];
 	int32 r12_n = (char *) &g_dw402B7C + g_dw402B7C;
 	word32 r6_n = 0x00;
 	if (**((word32) g_ptr402B80 + r12_n) == 0x00)
@@ -934,11 +936,11 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 		(*((word32) 0x00402A24 + r1_n))();
 		int32 r0_n = g_dw402B94;
 		(*((word32) 4205100 + r0_n))();
-		int32 r9_n = (int32) **((word32) r12_n + g_ptr402B98);
+		int32 r9_n = (*((char *) &r12_n[0] + g_ptr402B98))[0];
 		if (r9_n == 0x00)
 		{
-			int32 r11_n = g_dw402BA0;
-			if (**((word32) r12_n + r11_n) == 0x00)
+			word32 * (* r11_n)[] = g_ptr402BA0;
+			if (Mem35[Mem35[r12_n + r11_n:word32] + 0x00:word32] == 0x00)
 			{
 				ui32 r10_n;
 				if ((r10_n & 0x08) != 0x00)
@@ -947,37 +949,98 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 					r9_n = r10_n & 0x08;
 			}
 			word32 r14_n = g_dw402BA8;
-			word32 r10_n = (word32) r12_n + g_dw402BA4;
-			uint32 r2_n;
-			do
+			word32 * r10_n = (word32 *) ((char *) r12_n + g_dw402BA4);
+			while (true)
 			{
 				int32 r1_n = g_dw402BAC;
 				(*((word32) 0x00402A74 + r1_n))();
 				struct Eq_n * r0_n;
 				if (r0_n == null)
-				{
-					int32 r1_n = g_dw402BB0;
-					(*((word32) 0x00402A80 + r1_n))();
-					int32 r1_n = g_dw402BB4;
-					(*((word32) 0x00402A88 + r1_n))();
-					int32 r1_n = g_dw402BB8;
-					(*((word32) 0x00402A8E + r1_n))();
-					int32 r1_n = g_dw402BBC;
-					word32 * r0_n;
-					word32 r9_n;
-					*r0_n = r9_n;
-					(*((word32) 4205204 + r1_n))();
-					word32 * r0_n;
-					if (*r0_n == 0x00)
-						return;
-					int32 r0_n = g_dw402BC4;
-					(*((word32) 4205220 + r0_n))();
-				}
+					break;
 				struct Eq_n * r13_n = r0_n;
-				r2_n = (uint32) r0_n->w0048;
-			} while (r2_n > 0x07);
-			int32 r2_n = (int32) g_a402AC0[r2_n + ~0x00];
-			(*((word32) 4205246 + r2_n))();
+				uint32 r2_n = (uint32) r0_n->w0048;
+				if (r2_n <= 0x07)
+				{
+					switch (r2_n)
+					{
+					case 0x01:
+						if (r0_n->dw0044 == 0x00 || ((int32) r0_n->b0054 != 0x2E || (*((char *) (&r12_n[0]) + g_dw402BE0))[0] != 0x00))
+						{
+							if ((*((char *) &r12_n[0] + g_dw402BE4))[0] == 0x00)
+							{
+								if (*r10_n != 0x00)
+								{
+									int32 r1_n = g_dw402BEC;
+									(*((word32) 0x00402B30 + r1_n))();
+								}
+								int32 r1_n = r15_n->dw0004;
+								if (r1_n > 0x01)
+								{
+									int32 r1_n = g_dw402BFC;
+									word32 r5_n = r0_n->dw001C;
+									r15_n->dw0000 = 0x01;
+									(*((word32) 0x00402B72 + r1_n))();
+									word32 * r15_n;
+									*r10_n = *r15_n;
+								}
+							}
+							int32 r1_n = g_dw402BF0;
+							(*((word32) 0x00402B38 + r1_n))();
+							word32 * r15_n;
+							word32 r0_n;
+							*r15_n = r0_n;
+							int32 r0_n = g_dw402BF4;
+							(*((word32) 0x00402B42 + r0_n))();
+							if (Mem359[Mem359[r12_n + r11_n:word32] + 0x00:word32] == 0x00)
+							{
+								word32 r3_n = *r15_n;
+								if (r3_n != 0x00)
+								{
+									int32 r1_n = g_dw402BF8;
+									(*((word32) 4205404 + r1_n))();
+								}
+								else
+								{
+									word32 r6_n = 0x04;
+								}
+							}
+						}
+						break;
+					case 0x02:
+						int32 r0_n = g_dw402BC8;
+						(*((word32) 0x00402ADA + r0_n))();
+						break;
+					case 0x03:
+					case 0x05:
+					case 0x06:
+						break;
+					case 0x04:
+					case 0x07:
+						int32 r1_n = g_dw402BD0;
+						(*((word32) 0x00402AE4 + r1_n))();
+						int32 r1_n = g_dw402BD4;
+						(*((word32) 0x00402AF2 + r1_n))();
+						*((char *) &r12_n[0] + g_dw402BDC) = 0x01;
+						break;
+					}
+				}
+			}
+			int32 r1_n = g_dw402BB0;
+			(*((word32) 0x00402A80 + r1_n))();
+			int32 r1_n = g_dw402BB4;
+			(*((word32) 0x00402A88 + r1_n))();
+			int32 r1_n = g_dw402BB8;
+			(*((word32) 0x00402A8E + r1_n))();
+			int32 r1_n = g_dw402BBC;
+			word32 * r0_n;
+			word32 r9_n;
+			*r0_n = r9_n;
+			(*((word32) 4205204 + r1_n))();
+			word32 * r0_n;
+			if (*r0_n == 0x00)
+				return;
+			int32 r0_n = g_dw402BC4;
+			(*((word32) 4205220 + r0_n))();
 		}
 		else
 		{
@@ -992,9 +1055,6 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 	}
 }
 
-word16 g_a402AC0[] = // 00402AC0
-	{
-	};
 word16 g_w402B78 = 0x0100; // 00402B78
 word32 g_dw402B7C = 0x00012664; // 00402B7C
 ptr32 g_ptr402B80 = 388; // 00402B80
@@ -1005,7 +1065,7 @@ int32 g_dw402B90 = -3500; // 00402B90
 int32 g_dw402B94 = -1556; // 00402B94
 ptr32 g_ptr402B98 = 244; // 00402B98
 int32 g_dw402B9C = -3330; // 00402B9C
-int32 g_dw402BA0 = 260; // 00402BA0
+word32 * (* g_ptr402BA0)[] = &g_a0104; // 00402BA0
 word32 g_dw402BA4 = 0x01F0; // 00402BA4
 word32 g_dw402BA8 = ~0x00010C13; // 00402BA8
 int32 g_dw402BAC = -4196; // 00402BAC
@@ -1014,6 +1074,17 @@ int32 g_dw402BB4 = -3404; // 00402BB4
 int32 g_dw402BB8 = -4922; // 00402BB8
 int32 g_dw402BBC = -4928; // 00402BBC
 int32 g_dw402BC4 = -0x00001040; // 00402BC4
+int32 g_dw402BC8 = -0x000011AA; // 00402BC8
+int32 g_dw402BD0 = -0x0E88; // 00402BD0
+int32 g_dw402BD4 = -4546; // 00402BD4
+int32 g_dw402BDC = 488; // 00402BDC
+int32 g_dw402BE0 = 348; // 00402BE0
+int32 g_dw402BE4 = 472; // 00402BE4
+int32 g_dw402BEC = -4552; // 00402BEC
+int32 g_dw402BF0 = -3776; // 00402BF0
+int32 g_dw402BF4 = -0x072A; // 00402BF4
+int32 g_dw402BF8 = -4204; // 00402BF8
+int32 g_dw402BFC = -4618; // 00402BFC
 // 00402C00: void ls_main(Register word32 r4, Register word32 r5, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 r13, Register word32 r14, Register word32 pr)
 void ls_main(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word32 r13, word32 r14, word32 pr)
 {

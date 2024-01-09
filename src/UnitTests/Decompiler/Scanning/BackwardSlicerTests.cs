@@ -606,7 +606,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
             Console.WriteLine(bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), byte, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
@@ -690,7 +690,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), byte, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
@@ -1105,6 +1105,183 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,6]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
         }
+
+        [Test]
+        public void Bwslc_issue_958()
+        {
+            // A RiscV switch statement:
+            //      c.li a5,00000012
+            //      bleu a5,s7,000000002309B2C2
+            //      jal zero,000000002309CE8C
+            //
+            //      lui a4,000230CB
+            //      slli a5,s7,00000002
+            //      addi a4,a4,-00000744
+            //      c.add a5,a4
+            //      c.lw a5,0(a5)
+            //      c.jr a5
+            var a4 = binder.EnsureRegister(RegisterStorage.Reg32("a4", 0x0E));
+            var a5 = binder.EnsureRegister(RegisterStorage.Reg32("a5", 0x0F));
+            var s7 = binder.EnsureRegister(RegisterStorage.Reg32("s7", 0x17));
+
+            var l1000 = Given_Block(0x1000);
+            var l1008 = Given_Block(0x1008);
+            var l100C = Given_Block(0x100C);
+            var l1010 = Given_Block(0x1010);
+            graph.Nodes.Add(l1000);
+            graph.Nodes.Add(l1008);
+            graph.Nodes.Add(l1010);
+            graph.AddEdge(l1000, l1008);
+            graph.AddEdge(l1000, l1010);
+
+            Given_Instrs(l1000,
+                m => m.Assign(a5, 4),
+                m => m.Branch(m.Ule(a5, s7), l100C.Address));
+            Given_Instrs(l1008,
+                m => m.Return(0, 0));
+            Given_Instrs(l1010,
+                m => m.Assign(a4, m.Word32(0x2000)),
+                m => m.Assign(a5, m.Shl(s7, 2)),
+                m => m.Assign(a4, m.IAddS(a4, -0x800)),
+                m => m.Assign(a5, m.IAdd(a5, a4)),
+                m => m.Assign(a5, m.Mem32(a5)),
+                m => m.Goto(a5));
+
+            var bwslc = new BackwardSlicer(host, l1000, processorState);
+            Assert.IsTrue(bwslc.Start(l1010, 4, Target(l1010)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("Mem0[(s7 << 2<8>) + 0x1800<32>:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("s7", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
+        }
+
+        [Test]
+        public void Bwslc_Regression_00001()
+        {
+            // A switch statement from PE/m68k/hello
+
+            //00001736 E788 lsl.l #$03,d0
+            //00001738 D0AE FFF8 add.l -$0008(a6),d0
+            //0000173C 1033 0800 move.b(a3, d0),d0
+            //00001740 E800 asr.b #$04,d0
+            //00001742 49C0 extb.l d0
+            //00001744 2D40 FFF8 move.l d0,-$0008(a6)
+            //00001748 7407 moveq #$07,d2
+            //0000174A B480 cmp.l d0, d2
+            //0000174C 6500 04D6 bcs $00001C24
+
+            //00001750 303B 0206 move.w($08, pc, d0.w * 2),d0
+            //00001754 4EFB 0002 jmp.l($04, pc, d0.w)
+
+            var b1736 = Given_Block(0x1736);
+            var b1C24 = Given_Block(0x1C24);
+            var b1750 = Given_Block(0x1750);
+            graph.Nodes.Add(b1736);
+            graph.Nodes.Add(b1C24);
+            graph.Nodes.Add(b1750);
+            graph.AddEdge(b1736, b1750);
+            graph.AddEdge(b1736, b1C24);
+
+            var d0 = binder.EnsureRegister(RegisterStorage.Reg32("d0", 0));
+            var d2 = binder.EnsureRegister(RegisterStorage.Reg32("d2", 2));
+            var a3 = binder.EnsureRegister(RegisterStorage.Reg32("a3", 11));
+            var a6 = binder.EnsureRegister(RegisterStorage.Reg32("a6", 14));
+            var cr = RegisterStorage.Reg32("cr", 0x42);
+            var CVZNX = binder.EnsureFlagGroup(cr, 0x1F, "CVZNX", PrimitiveType.Byte);
+            var CVZN = binder.EnsureFlagGroup(cr, 0x1E, "CVZN", PrimitiveType.Byte);
+            var ZN = binder.EnsureFlagGroup(cr, 0x6, "ZN", PrimitiveType.Byte);
+            var C = binder.EnsureFlagGroup(cr, 0x10, "C", PrimitiveType.Bool);
+            var V = binder.EnsureFlagGroup(cr, 0x08, "V", PrimitiveType.Bool);
+            var v35 = binder.CreateTemporary("v35", PrimitiveType.Byte);
+            var v36 = binder.CreateTemporary("v36", PrimitiveType.CreateWord(24));
+            var v37 = binder.CreateTemporary("v37", PrimitiveType.Byte);
+            var v38 = binder.CreateTemporary("v38", v36.DataType);
+            var v40 = binder.CreateTemporary("v40", PrimitiveType.Word32);
+            var v41 = binder.CreateTemporary("v41", PrimitiveType.Word16);
+            var v42 = binder.CreateTemporary("v42", PrimitiveType.Word16);
+            Given_Instrs(b1736,
+                m =>
+                {
+                    m.Assign(d0, m.Shl(d0, 3));
+                    m.Assign(CVZNX, m.Cond(d0));
+                },
+                m =>
+                {
+                    m.Assign(d0, m.IAdd(d0, m.Mem32(m.IAdd(a6, m.Int32(-8)))));
+                    m.Assign(CVZNX, m.Cond(d0));
+                },
+                m =>
+                {
+                    m.Assign(v35, m.Mem8(m.IAdd(a3, d0)));
+                    m.Assign(v36, m.Slice(d0, v36.DataType, 8));
+                    m.Assign(d0, m.Seq(v36, v35));
+                    m.Assign(ZN, m.Cond(v35));
+                    m.Assign(C, Constant.False());
+                    m.Assign(V, Constant.False());
+                },
+                m =>
+                {
+                    m.Assign(v37, m.Shr(m.Slice(d0, v37.DataType, 0), 0x04));
+                    m.Assign(v38, m.Slice(d0, v38.DataType, 8));
+                    m.Assign(d0, m.Seq(v38, v37));
+                    m.Assign(CVZNX, m.Cond(v37));
+                },
+                m =>
+                {
+                    m.Assign(d0, m.Convert(m.Slice(d0, PrimitiveType.Int8, 0), PrimitiveType.Int8, PrimitiveType.Int32));
+                    m.Assign(ZN, m.Cond(d0));
+                },
+                m => {
+                    m.Assign(m.Mem32(m.IAdd(a6, m.Int32(-8))), d0);
+                    m.Assign(ZN, m.Cond(d0));
+                    m.Assign(C, Constant.False());
+                    m.Assign(V, Constant.False());
+                },
+                m =>
+                {
+                    m.Assign(d2, 7);
+                    m.Assign(ZN, m.Cond(d2));
+                    m.Assign(C, Constant.False()); ;
+                    m.Assign(V, Constant.False()); ;
+                },
+                m =>
+                {
+
+                    m.Assign(v40, m.ISub(d2, d0));
+                    m.Assign(CVZN, m.Cond(v40));
+                },
+                m => {
+                    m.Branch(m.Test(ConditionCode.ULT, C), b1C24.Address);
+                });
+
+            Given_Instrs(b1750,
+                m =>
+                {
+
+                    m.Assign(v41, m.Mem16(m.IAdd(Address.Ptr32(0x00001758), m.IMul(m.Convert(m.Slice(d0, PrimitiveType.Int16, 0), PrimitiveType.Int16, PrimitiveType.Int32), 2))));
+                    m.Assign(v42, m.Slice(d0, v42.DataType, 16));
+                    m.Assign(d0, m.Seq(v42, v41));
+                    m.Assign(ZN, m.Cond(v41));
+                    m.Assign(C, Constant.False());
+                    m.Assign(V, Constant.False());
+                },
+                m =>
+                {
+                    m.Goto(m.IAdd(Address.Ptr32(0x000017580), m.Convert(m.Slice(d0, PrimitiveType.Int16, 0), PrimitiveType.Int16, PrimitiveType.Int32)));
+                });
+
+            var bwslc = new BackwardSlicer(host, b1750, processorState);
+            Assert.IsTrue(bwslc.Start(b1750, 4, Target(b1750)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("0x00017580<p32> + CONVERT(Mem0[0x00001758<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32) * 2<i32>:word16], word16, int32)", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("1[0,6]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("00001752", bwslc.GuardInstrAddress.ToString());
+
+        }
         /*
 0FFE9EF4 E8 E7 FF FF bg.lhz? r7,-0x2(r7)
 0FFE9EF8 1D 9C E1 bn.addi r12,r28,-0x1F
@@ -1133,70 +1310,70 @@ namespace Reko.UnitTests.Decompiler.Scanning
 0FFE9F3B 0C E3 02 bn.lwz r7,(r3)
 0FFE9F3E 50 80 2D bn.ori r4,r0,0x2D
 0FFE9F41 84 E8 bt.jalr? r7
-        */ 
+        */
     }
 
 
 
-    // Test cases
-    // A one-level jump table from MySQL. JTT represents the jump table.
-    // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5
-    // cmp ebp, 5                   : 0 ≤%ebp≤ 5 
-    // ja 43a4ab 
-    // lea rax,[0x525e8f + rip]             : rax = 0x9602a0, rcx = 0x43a116
-    // lea rcx,[rip -0x302]                 : JTT = 0x43a116 + [0x9602a0 + rdx×8]       : rax, [rsp 
-    // movsx rdx,dword ptr [rsp + 0xF8]     : rdx==[rsp+0xf8]                           : raxl, [rsp + f8], rcx 
-    // add rcx, [rax + rdx*8]               : JTT = rcx + [rax + rdx×8]                 : rax, rdx, rcx
-    // jmp rcx                              : JTT = rcx                                 : ecx
+        // Test cases
+        // A one-level jump table from MySQL. JTT represents the jump table.
+        // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5
+        // cmp ebp, 5                   : 0 ≤%ebp≤ 5 
+        // ja 43a4ab 
+        // lea rax,[0x525e8f + rip]             : rax = 0x9602a0, rcx = 0x43a116
+        // lea rcx,[rip -0x302]                 : JTT = 0x43a116 + [0x9602a0 + rdx×8]       : rax, [rsp 
+        // movsx rdx,dword ptr [rsp + 0xF8]     : rdx==[rsp+0xf8]                           : raxl, [rsp + f8], rcx 
+        // add rcx, [rax + rdx*8]               : JTT = rcx + [rax + rdx×8]                 : rax, rdx, rcx
+        // jmp rcx                              : JTT = rcx                                 : ecx
 
-    // cmp eax,0xa9                         :  0 ≤ eax  ≤ 0xa9                          : eax [0, 0xAA)
-    // ja 0x41677e                          :                                           : ecx, eax, CZ
-    // movzx ecx,byte ptr [0x416bd4 + eax]  : ecx = [0x416bd4 + eax]                    : eax
-    //                                        JTT = [0x416bc0 + [0x416bd4 + eax] × 4]
-    // jmp [0x416bc0 + ecx *4]              : JTT = [0x416bc0+ecx×4]                    : ecx
-
-
-    // A one-level jump table.
-    // The input upper bound to this jump table must be inferred.
-    // In addition, the input is right shifted to get the index into the table
-
-    // movzx eax,byte ptr [edi]     : 0 ≤ eax ≤ 255                                     : rax [0, 255]
-    // shr al,4                     : rax = rax >> 4                                    : al ~ rax
-    //                              : JTT = [0x495e30 + (rax >> 4)×8]                   :
-    // jmpq [0x495e30 + rax * 8]    : JTT = [0x495e30 + rax×8]                          : rax
+        // cmp eax,0xa9                         :  0 ≤ eax  ≤ 0xa9                          : eax [0, 0xAA)
+        // ja 0x41677e                          :                                           : ecx, eax, CZ
+        // movzx ecx,byte ptr [0x416bd4 + eax]  : ecx = [0x416bd4 + eax]                    : eax
+        //                                        JTT = [0x416bc0 + [0x416bd4 + eax] × 4]
+        // jmp [0x416bc0 + ecx *4]              : JTT = [0x416bc0+ecx×4]                    : ecx
 
 
+        // A one-level jump table.
+        // The input upper bound to this jump table must be inferred.
+        // In addition, the input is right shifted to get the index into the table
 
-    // Unoptimized x86 code
-    // cmp dword ptr [ebp + 8], 0xA : 0 <= [ebp + 8] <= 0xA                     : [ebp + 8] [0, 0x0A]
-    // ja default                   :                                           : [ebp + 8], CZ
-    // movzx edx, byte ptr[ebp + 8] : edx = ZEX([(ebp + 8)], 8)                 : [ebp + 8]
-    //                              : JTT = [0x023450 + ZEX([ebp + 8)], 8) * 4] :
-    // jmp [0x00234500<32> + edx * 4]   : JTT = [0x0023450 + edx * 4]               : edx
+        // movzx eax,byte ptr [edi]     : 0 ≤ eax ≤ 255                                     : rax [0, 255]
+        // shr al,4                     : rax = rax >> 4                                    : al ~ rax
+        //                              : JTT = [0x495e30 + (rax >> 4)×8]                   :
+        // jmpq [0x495e30 + rax * 8]    : JTT = [0x495e30 + rax×8]                          : rax
 
-    // M68k relative jump code.
-    //  corresponds to
-    // cmpi.l #$00000028,d1         : 0 <= d1 <= 0x28
-    // bgt $00106C66
-    // add.l d1,d1                  : d1 = d1 * 2
-    //                                JTT = 0x0010000 + SEXT:([0x10006 + d1*2],16)
-    // move.w (06,pc,d1),d1         : JTT = 0x0010000 + SEXT:([0x10006 + d1],16)
-    // jmp.l (pc,d1.w)              : JTT = 0x0010000 + SEXT(d1, 16)
 
-    //  m.Assign(d1, m.IAdd(d1, d1));
-    //  m.Assign(CVZNX, m.Cond(d1));
-    //  m.Assign(v82,m.LoadW(m.IAdd(m.Word32(0x001066A4), d1)));
-    //  m.Assign(d1, m.Dpb(d1, v82, 0));
-    //  m.Assign(CVZN, m.Cond(v82));
-    //  var block = m.CurrentBlock;
-    //  var xfer = new RtlGoto(
-    //      m.IAdd(
-    //          m.Word32(0x001066A2), 
-    //          m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
-    //      InstrClass.Transfer);
 
-    // cmp [ebp-66],1D
-    // mov edx,[ebp-66]
-    // movzx eax,byte ptr [edx + 0x10000]
-    // jmp [eax + 0x12000]
-}
+        // Unoptimized x86 code
+        // cmp dword ptr [ebp + 8], 0xA : 0 <= [ebp + 8] <= 0xA                     : [ebp + 8] [0, 0x0A]
+        // ja default                   :                                           : [ebp + 8], CZ
+        // movzx edx, byte ptr[ebp + 8] : edx = ZEX([(ebp + 8)], 8)                 : [ebp + 8]
+        //                              : JTT = [0x023450 + ZEX([ebp + 8)], 8) * 4] :
+        // jmp [0x00234500<32> + edx * 4]   : JTT = [0x0023450 + edx * 4]               : edx
+
+        // M68k relative jump code.
+        //  corresponds to
+        // cmpi.l #$00000028,d1         : 0 <= d1 <= 0x28
+        // bgt $00106C66
+        // add.l d1,d1                  : d1 = d1 * 2
+        //                                JTT = 0x0010000 + SEXT:([0x10006 + d1*2],16)
+        // move.w (06,pc,d1),d1         : JTT = 0x0010000 + SEXT:([0x10006 + d1],16)
+        // jmp.l (pc,d1.w)              : JTT = 0x0010000 + SEXT(d1, 16)
+
+        //  m.Assign(d1, m.IAdd(d1, d1));
+        //  m.Assign(CVZNX, m.Cond(d1));
+        //  m.Assign(v82,m.LoadW(m.IAdd(m.Word32(0x001066A4), d1)));
+        //  m.Assign(d1, m.Dpb(d1, v82, 0));
+        //  m.Assign(CVZN, m.Cond(v82));
+        //  var block = m.CurrentBlock;
+        //  var xfer = new RtlGoto(
+        //      m.IAdd(
+        //          m.Word32(0x001066A2), 
+        //          m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
+        //      InstrClass.Transfer);
+
+        // cmp [ebp-66],1D
+        // mov edx,[ebp-66]
+        // movzx eax,byte ptr [edx + 0x10000]
+        // jmp [eax + 0x12000]
+    }

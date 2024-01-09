@@ -309,6 +309,7 @@ l00002794:
 ;;     00002546 (in fn00002510)
 ;;     00002AD0 (in fn00002A54)
 ;;     00002B36 (in fn00002B18)
+;;     00002D18 (in fn00002BB4)
 fn000027A0 proc
 	link	a6,#$0000
 	moveq	#$12,d2
@@ -911,7 +912,11 @@ l00002C32:
 l00002C4E:
 	move.w	($0A,pc,d0.w*2),d0
 	jmp.l	($06,pc,d0.w)
-00002C56                   4E 71 00 7C 00 A8 01 00 01 1C       Nq.|......
+00002C56                   4E 71                               Nq        
+l00002C58	dw	0x007C
+l00002C5A	dw	0x00A8
+l00002C5C	dw	0x0100
+00002C5E                                           01 1C               ..
 
 l00002C60:
 	movea.l	-$0004(a6),a0
@@ -958,17 +963,66 @@ l00002C92:
 	move.l	d0,-(a7)
 	move.l	a0,-(a7)
 	bra	$00002DA4
-00002CD4             20 4A D1 EE 00 0C 2B 48 FA D8 48 6E      J....+H..Hn
-00002CE0 FF E8 48 6D FA D4 2F 2E 00 0C 2F 0B 4E BA 01 2A ..Hm../.../.N..*
-00002CF0 4F EF 00 10 2B 4B FA CC 2B 4B FA C8 60 00 00 AE O...+K..+K..`...
-00002D00 48 6E FF FC 20 6D FA D8 53 48 2F 08 4E BA 01 9A Hn.. m..SH/.N...
-00002D10 50 4F 74 01 B4 80 67 04 4E BA FA 86 20 6E FF FC POt...g.N... n..
-00002D20 20 50 22 28 00 04 02 41 FF FC 20 6E FF FC 20 28  P"(...A.. n.. (
-00002D30 00 04 02 40 FF FC 92 80 20 4A D1 EE 00 0C 2B 48 ...@.... J....+H
-00002D40 FA D8 41 ED FA D4 26 88 48 6E FF E8 2F 0B 2F 01 ..A...&.Hn.././.
-00002D50 2F 2E FF FC 60 4E 4E 71 48 6E FF E8 2F 2D FA C8 /...`NNqHn../-..
-00002D60 2F 2E 00 0C 2F 0B 4E BA 00 B0 4F EF 00 10 2B 4B /.../.N...O...+K
-00002D70 FA C8 60 38 20 6E FF FC 20 10 41 ED FA D4 B0 88 ..`8 n.. .A.....
+
+l00002CD4:
+	movea.l	a2,a0
+	adda.l	$000C(a6),a0
+	move.l	a0,-$0528(a5)
+	pea	-$0018(a6)
+	pea	-$052C(a5)
+	move.l	$000C(a6),-(a7)
+	move.l	a3,-(a7)
+	jsr.l	fn00002E18                                           ; $012C(pc)
+	lea	$0010(a7),a7
+	move.l	a3,-$0534(a5)
+	move.l	a3,-$0538(a5)
+	bra	$00002DAC
+
+l00002D00:
+	pea	-$0004(a6)
+	movea.l	-$0528(a5),a0
+	subq.w	#$01,a0
+	move.l	a0,-(a7)
+	jsr.l	fn00002EA8                                           ; $019C(pc)
+	addq.w	#$08,a7
+	moveq	#$01,d2
+	cmp.l	d0,d2
+	beq	$00002D1C
+
+l00002D18:
+	jsr.l	fn000027A0                                           ; -$0578(pc)
+
+l00002D1C:
+	movea.l	-$0004(a6),a0
+	movea.l	(a0),a0
+	move.l	$0004(a0),d1
+	andi.w	#$FFFC,d1
+	movea.l	-$0004(a6),a0
+	move.l	$0004(a0),d0
+	andi.w	#$FFFC,d0
+	sub.l	d0,d1
+	movea.l	a2,a0
+	adda.l	$000C(a6),a0
+	move.l	a0,-$0528(a5)
+	lea	-$052C(a5),a0
+	move.l	a0,(a3)
+	pea	-$0018(a6)
+	move.l	a3,-(a7)
+	move.l	d1,-(a7)
+	move.l	-$0004(a6),-(a7)
+	bra	$00002DA4
+00002D56                   4E 71                               Nq        
+
+l00002D58:
+	pea	-$0018(a6)
+	move.l	-$0538(a5),-(a7)
+	move.l	$000C(a6),-(a7)
+	move.l	a3,-(a7)
+	jsr.l	fn00002E18                                           ; $00B2(pc)
+	lea	$0010(a7),a7
+	move.l	a3,-$0538(a5)
+	bra	$00002DAC
+00002D74             20 6E FF FC 20 10 41 ED FA D4 B0 88      n.. .A.....
 00002D80 66 16 20 6E FF FC 20 28 00 04 02 40 FF FC D0 AE f. n.. (...@....
 00002D90 00 0C 2B 40 FA D8 60 14 48 6E FF E8 2F 00 2F 2E ..+@..`.Hn.././.
 00002DA0 00 0C 2F 0B                                     ../.            
@@ -976,6 +1030,8 @@ l00002C92:
 l00002DA4:
 	jsr.l	fn00002E18                                           ; $0074(pc)
 	lea	$0010(a7),a7
+
+l00002DAC:
 	movea.l	-$0534(a5),a0
 	move.l	$0004(a0),d0
 	andi.w	#$FFFC,d0
@@ -1030,6 +1086,8 @@ l00002E0E:
 ;; fn00002E18: 00002E18
 ;;   Called from:
 ;;     00002CA2 (in fn00002BB4)
+;;     00002CEC (in fn00002BB4)
+;;     00002D66 (in fn00002BB4)
 ;;     00002DA4 (in fn00002BB4)
 fn00002E18 proc
 	link	a6,#$0000
@@ -1096,6 +1154,7 @@ l00002E9A:
 ;; fn00002EA8: 00002EA8
 ;;   Called from:
 ;;     00002C04 (in fn00002BB4)
+;;     00002D0C (in fn00002BB4)
 fn00002EA8 proc
 	link	a6,#$0000
 	lea	-$052C(a5),a0

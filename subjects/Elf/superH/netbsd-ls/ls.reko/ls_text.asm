@@ -1871,18 +1871,125 @@ l00402AB4:
 	braf	r2
 	nop
 00402ABE                                           09 00               ..
-00402AC0 3C 00 10 00 B0 FF 20 00 B0 FF B0 FF 20 00 3E D0 <..... ..... .>.
-00402AD0 D3 65 3E D4 54 75 03 00 CC 34 C8 AF 09 00 3C D1 .e>.Tu...4....<.
-00402AE0 03 01 D8 54 3B D1 D3 65 3B D4 03 66 54 75 03 01 ...T;..e;..fTu..
-00402AF0 CC 34 3A D0 01 E1 BA AF 16 0C 31 52 28 22 09 8D .4:.......1R("..
-00402B00 D3 60 50 70 04 84 2E 88 04 8B 35 D0 CE 02 22 62 .`Pp......5..."b
-00402B10 28 22 AC 89 33 D0 CE 02 22 62 28 22 08 8B A2 62 ("..3..."b("...b
-00402B20 28 22 1D 8D F1 51 30 D4 30 D1 CC 34 03 01 D7 55 ("...Q0.0..4...U
-00402B30 2F D1 93 65 03 01 83 64 03 65 02 2F 2D D0 03 00 /..e...d.e./-...
-00402B40 D3 64 C3 60 BE 02 22 62 28 22 90 8F F2 63 38 23 .d.`.."b("...c8#
-00402B50 8D 8D 04 E6 28 D1 D3 65 03 01 83 64 87 AF 09 00 ....(..e...d....
-00402B60 01 E2 27 31 E4 8F E3 64 24 D1 D7 55 CC 34 03 01 ..'1...d$..U.4..
-00402B70 22 2F F2 62 DC AF 22 2A 00 01 09 00 64 26 01 00 "/.b.."*....d&..
+l00402AC0	dw	0x003C
+l00402AC2	dw	0x0010
+l00402AC4	dw	0xFFB0
+l00402AC6	dw	0x0020
+l00402AC8	dw	0xFFB0
+l00402ACA	dw	0xFFB0
+l00402ACC	dw	0x0020
+
+l00402ACE:
+	mov.l	(00402BC8),r0                                        ; @(F8,pc)
+	mov	r13,r5
+	mov.l	(00402BCC),r4                                        ; @(F8,pc)
+	add	#54,r5
+	bsrf	r0
+	add	r12,r4
+	bra	00402A6E
+	nop
+
+l00402ADE:
+	mov.l	(00402BD0),r1                                        ; @(F0,pc)
+	bsrf	r1
+	mov.l	@(32,r13),r4
+	mov.l	(00402BD4),r1                                        ; @(EC,pc)
+	mov	r13,r5
+	mov.l	(00402BD8),r4                                        ; @(EC,pc)
+	mov	r0,r6
+	add	#54,r5
+	bsrf	r1
+	add	r12,r4
+	mov.l	(00402BDC),r0                                        ; @(E8,pc)
+	mov	#01,r1
+	bra	00402A6E
+	mov.l	r1,@(r0,r12)
+
+l00402AFA:
+	mov.l	@(4,r3),r2
+	tst	r2,r2
+	bt/s	00402B14
+	mov	r13,r0
+
+l00402B02:
+	add	#50,r0
+	mov.b	@(4,r0),r0
+	cmp/eq	#2E,r0
+	bf	00402B14
+
+l00402B0A:
+	mov.l	(00402BE0),r0                                        ; @(D4,pc)
+	mov.l	@(r0,r12),r2
+	mov.l	@r2,r2
+	tst	r2,r2
+	bt	00402A6E
+
+l00402B14:
+	mov.l	(00402BE4),r0                                        ; @(CC,pc)
+	mov.l	@(r0,r12),r2
+	mov.l	@r2,r2
+	tst	r2,r2
+	bf	00402B30
+
+l00402B1E:
+	mov.l	@r10,r2
+	tst	r2,r2
+	bt/s	00402B60
+	mov.l	@(4,r15),r1
+
+l00402B26:
+	mov.l	(00402BE8),r4                                        ; @(C0,pc)
+	mov.l	(00402BEC),r1                                        ; @(C0,pc)
+	add	r12,r4
+	bsrf	r1
+	mov.l	@(28,r13),r5
+
+l00402B30:
+	mov.l	(00402BF0),r1                                        ; @(BC,pc)
+	mov	r9,r5
+	bsrf	r1
+	mov	r8,r4
+	mov	r0,r5
+	mov.l	r0,@r15
+	mov.l	(00402BF4),r0                                        ; @(B4,pc)
+	bsrf	r0
+	mov	r13,r4
+	mov	r12,r0
+	mov.l	@(r0,r11),r2
+	mov.l	@r2,r2
+	tst	r2,r2
+	bf/s	00402A6E
+	mov.l	@r15,r3
+
+l00402B4E:
+	tst	r3,r3
+	bt/s	00402A6E
+	mov	#04,r6
+
+l00402B54:
+	mov.l	(00402BF8),r1                                        ; @(A0,pc)
+	mov	r13,r5
+	bsrf	r1
+	mov	r8,r4
+	bra	00402A6E
+	nop
+
+l00402B60:
+	mov	#01,r2
+	cmp/gt	r2,r1
+	bf/s	00402B30
+	mov	r14,r4
+
+l00402B68:
+	mov.l	(00402BFC),r1                                        ; @(90,pc)
+	mov.l	@(28,r13),r5
+	add	r12,r4
+	bsrf	r1
+	mov.l	r2,@r15
+	mov.l	@r15,r2
+	bra	00402B30
+	mov.l	r2,@r10
+00402B78                         00 01 09 00 64 26 01 00         ....d&..
 00402B80 84 01 00 00 9C D1 FE FF BC F2 FF FF 46 F0 FF FF ............F...
 00402B90 54 F2 FF FF EC F9 FF FF F4 00 00 00 FE F2 FF FF T...............
 00402BA0 04 01 00 00 F0 01 00 00 EC F3 FE FF 9C EF FF FF ................
