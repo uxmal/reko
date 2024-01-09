@@ -24,7 +24,6 @@ using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.Dynamic;
 
 namespace Reko.Arch.RiscV
 {
@@ -109,12 +108,12 @@ namespace Reko.Arch.RiscV
             MaybeSignExtend(dst, m.Fn(intrinsic.MakeInstance(arch.PointerType.BitSize, dt), src1, src2));
         }
 
-        private void RewriteBinOp(Func<Expression,Expression, Expression> op, PrimitiveType? dtDst = null)
+        private void RewriteBinOp(BinaryOperator op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(1);
             var src2 = RewriteOp(2);
             var dst = RewriteOp(0);
-            MaybeSliceSignExtend(dst, op(src1, src2), dtDst);
+            MaybeSliceSignExtend(dst, m.Bin(op, src1, src2), dtDst);
         }
 
         private void RewriteCompressedAdd(PrimitiveType? dtDst = null)
@@ -124,7 +123,15 @@ namespace Reko.Arch.RiscV
             RewriteAdd(dst, dst, src1, dtDst);
         }
 
-        private void RewriteCompressedBinOp(Func<Expression, Expression, Expression> op, PrimitiveType? dtDst = null)
+        private void RewriteCompressedBinOp(BinaryOperator op, PrimitiveType? dtDst = null)
+        {
+            var src1 = RewriteOp(1);
+            var dst = RewriteOp(0);
+            var val = m.Bin(op, dst, src1);
+            MaybeSliceSignExtend(dst, val, dtDst);
+        }
+
+        private void RewriteCompressedBinOp(Func<Expression,Expression,Expression> op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(1);
             var dst = RewriteOp(0);
@@ -232,11 +239,11 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.Bin(op, left, right));
         }
 
-        private void RewriteShiftw(Func<Expression, Expression, Expression> fn)
+        private void RewriteShiftw(Func<Expression,Expression,Expression> op)
         {
             var left = m.Slice(RewriteOp(1), PrimitiveType.Word32);
             var right = RewriteOp(2);
-            var src = m.Convert(fn(left, right), PrimitiveType.Word32, PrimitiveType.Int64);
+            var src = m.Convert(op(left, right), PrimitiveType.Word32, PrimitiveType.Int64);
             var dst = RewriteOp(0);
             m.Assign(dst, src);
         }

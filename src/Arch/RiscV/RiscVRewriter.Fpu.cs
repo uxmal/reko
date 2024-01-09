@@ -20,11 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.RiscV
 {
@@ -74,12 +71,14 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        private void RewriteFcmp(PrimitiveType dt, Func<Expression, Expression,Expression> fn)
+        private void RewriteFcmp(PrimitiveType dt, BinaryOperator fn)
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
             var dst = RewriteOp(0);
-            var result = fn(
+            var result = m.Bin(
+                fn,
+                PrimitiveType.Bool,
                 MaybeSlice(left, dt), 
                 MaybeSlice(right, dt));
             m.Assign(dst, m.Convert(result, result.DataType, dst.DataType));
@@ -119,7 +118,7 @@ namespace Reko.Arch.RiscV
             MaybeDpb(dst, MaybeNanBox(m.Mem(dt, ea), dst.DataType));
         }
 
-        private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub, bool negate)
+        private void RewriteFmadd(PrimitiveType dt, BinaryOperator addsub, bool negate)
         {
             var factor1 = MaybeSlice(RewriteOp(1), dt);
             var factor2 = MaybeSlice(RewriteOp(2), dt);
@@ -130,15 +129,15 @@ namespace Reko.Arch.RiscV
             {
                 product = m.FNeg(product);
             }
-            m.Assign(dst, MaybeNanBox(addsub(product, summand), dst.DataType));
+            m.Assign(dst, MaybeNanBox(m.Bin(addsub, product, summand), dst.DataType));
         }
 
-        private void RewriteFBinOp(PrimitiveType dt, Func<Expression, Expression, Expression> fn)
+        private void RewriteFBinOp(PrimitiveType dt, BinaryOperator fn)
         {
             var src1 = MaybeSlice(RewriteOp(1), dt);
             var src2 = MaybeSlice(RewriteOp(2), dt);
             var dst = RewriteOp(0);
-            m.Assign(dst, MaybeNanBox(fn(src1, src2), dst.DataType));
+            m.Assign(dst, MaybeNanBox(m.Bin(fn, src1, src2), dst.DataType));
         }
 
         private void RewriteFBinaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
