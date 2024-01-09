@@ -1656,5 +1656,53 @@ main_exit:
             });
             RunStringTest(pb.BuildProgram(), sExp);
         }
+
+        [Test]
+        public void TerMultiDimensionalArray_TwoStatements()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r0 = a + r1 * 0x20<32>
+	Mem0[r0 + r2 * 8<32>:word32] = 1<32>
+	Mem0[r0 + (r2 * 8<32> + 4<32>):word32] = 2<32>
+main_exit:
+
+// After ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r0 = a + r1 * 0x20<32>
+	r0[r2].dw0000 = 1<32>
+	r0[r2].dw0004 = 2<32>
+main_exit:
+
+";
+            #endregion
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r0 = m.Register("r0");
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var a = m.Temp(PrimitiveType.Word32, "a");
+                m.Assign(
+                    r0,
+                    m.IAdd(a, m.IMul(r1, 32))
+                );
+                m.MStore(m.IAdd(r0, m.IMul(r2, 8)), m.Word32(1));
+                m.MStore(m.IAdd(r0, m.IAdd(m.IMul(r2, 8), 4)), m.Word32(2));
+            });
+            RunStringTest(pb.BuildProgram(), sExp);
+        }
     }
 }
