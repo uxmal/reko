@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.NativeInterface;
-using System;
 
 namespace Reko.Core.Expressions
 {
@@ -78,9 +77,55 @@ namespace Reko.Core.Expressions
             ConditionCode.IS_NAN
         };
 
+
+        /// <summary>
+        /// Returns the condition code that results upon logical negation.
+        /// </summary>
+        /// <remarks>
+        /// E.g. inverting UGE results in ULT.</remarks>
+        /// <param name="cc">Condition code to invert.</param>
+        /// <returns>The negated condition code.</returns>
         public static ConditionCode Invert(this ConditionCode cc)
         {
             return invertMap[(int)cc];
+        }
+
+        private static readonly ConditionCode[] mirrorMap = new[]
+        {
+            ConditionCode.None,
+            ConditionCode.ULT,
+            ConditionCode.UGE,
+            ConditionCode.UGT,
+            ConditionCode.LT,
+            ConditionCode.LE,
+            ConditionCode.GT,
+            ConditionCode.GE,
+            ConditionCode.ULE,
+            ConditionCode.NO,
+            ConditionCode.NS,
+            ConditionCode.NE,
+            ConditionCode.OV,
+            ConditionCode.SG,
+            ConditionCode.EQ, 
+            ConditionCode.PE, 
+            ConditionCode.PO, 
+
+            ConditionCode.ALWAYS,
+            ConditionCode.NEVER,
+
+            ConditionCode.IS_NAN,
+            ConditionCode.NOT_NAN,
+        };
+
+        /// <summary>
+        /// Returns the condition code that results upon swapping
+        /// the sides of a comparison.
+        /// </summary>
+        /// <param name="cc">The condition code to mirror.</param>
+        /// <returns>The mirrored condition code.</returns>
+        public static ConditionCode Mirror(this ConditionCode cc)
+        {
+            return mirrorMap[(int) cc];
         }
     }
 }

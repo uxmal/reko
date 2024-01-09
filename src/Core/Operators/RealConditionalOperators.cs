@@ -41,7 +41,7 @@ namespace Reko.Core.Operators
         }
 
         public override Operator Invert() => Fne;
-        public override Operator Negate() => Feq;
+        public override BinaryOperator Mirror() => Feq;
 
         public override string ToString() => " == ";
     }
@@ -59,7 +59,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Feq;
 
-        public override Operator Negate() => Fne;
+        public override BinaryOperator Mirror() => Fne;
 
         public override string ToString() => " != ";
     }
@@ -77,7 +77,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Fge;
 
-        public override Operator Negate() => Fgt;
+        public override BinaryOperator Mirror() => Fgt;
 
         public override string ToString() => " < ";
 	}
@@ -95,7 +95,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Fle;
 
-        public override Operator Negate() => Flt;
+        public override BinaryOperator Mirror() => Flt;
 
         public override string ToString() => " > ";
     }
@@ -113,7 +113,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Fgt;
 
-        public override Operator Negate() => Fge;
+        public override BinaryOperator Mirror() => Fge;
 
         public override string ToString() => " <= ";
     }
@@ -131,7 +131,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Flt;
 
-        public override Operator Negate() => Fle;
+        public override BinaryOperator Mirror() => Fle;
 
         public override string ToString() => " >= ";
 

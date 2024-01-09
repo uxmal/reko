@@ -33,11 +33,11 @@ namespace Reko.Core.Operators
         protected ConditionalOperator(OperatorType type) : base(type) { }
 
         /// <summary>
-        /// Negating a conditional operator "flips" it around 0. Eg. 
+        /// Mirroring a conditional operator "flips" it around 0. Eg. 
         /// negating LT generates GT. This is not the
-        /// same as Inverting it, which changes LT to GE
+        /// same as Inverting it, which changes LT to GE.
         /// </summary>
-        public abstract Operator Negate();
+        public abstract BinaryOperator Mirror();
 
         public ConditionalOperator ToUnsigned()
         {
@@ -109,7 +109,7 @@ namespace Reko.Core.Operators
 		}
 
         public override Operator Invert() => Ne;
-        public override Operator Negate() => Eq;
+        public override BinaryOperator Mirror() => Eq;
         public override string ToString() => " == ";
     }
 
@@ -127,7 +127,7 @@ namespace Reko.Core.Operators
 		}
 
         public override Operator Invert() => Eq;
-        public override Operator Negate() => Ne;
+        public override BinaryOperator Mirror() => Ne;
 
         public override string ToString() => " != ";
     }

@@ -39,7 +39,7 @@ namespace Reko.Evaluation
             if (bin.Right is Constant)
                 return null;
             return new BinaryExpression(
-                (BinaryOperator) cond.Negate(),
+                (BinaryOperator) cond.Mirror(),
                 bin.DataType,
                 bin.Right,
                 cLeft);

@@ -44,7 +44,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Uge;
 
-        public override Operator Negate() => Ugt;
+        public override BinaryOperator Mirror() => Ugt;
 
         public override string ToString() => " <u ";
     }
@@ -64,7 +64,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Ule;
 
-        public override Operator Negate() => Ult;
+        public override BinaryOperator Mirror() => Ult;
 
         public override string ToString() => " >u ";
     }
@@ -85,7 +85,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Ugt;
 
-        public override Operator Negate() => Uge;
+        public override BinaryOperator Mirror() => Uge;
 
         public override string ToString() => " <=u ";
     }
@@ -106,7 +106,7 @@ namespace Reko.Core.Operators
 
         public override Operator Invert() => Ult;
 
-        public override Operator Negate() => Ule;
+        public override BinaryOperator Mirror() => Ule;
 
         public override string ToString() => " >=u ";
     }
