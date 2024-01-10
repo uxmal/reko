@@ -137,7 +137,7 @@ namespace Reko.Arch.RiscV
                 } else {
                     renderer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
                 }
-                    return;
+                return;
             case MemoryOperand memop:
                 memop.Render(renderer, options);
                 return;

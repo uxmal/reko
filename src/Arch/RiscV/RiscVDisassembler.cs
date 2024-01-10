@@ -41,11 +41,129 @@ namespace Reko.Arch.RiscV
         private static readonly Bitfield bf_r1 = new Bitfield(15, 5);
         private static readonly Bitfield bf_r2 = new Bitfield(20, 5);
         private static readonly Bitfield bf20_12 = new Bitfield(20, 12);
+        private static readonly Bitfield bf_funct3 = new Bitfield(12, 3);
+
         private static readonly int[] compressedRegs = new int[8]
         {
-            8, 9, 10, 11, 12, 13, 14, 15
+            8, 9, 10, 11, 12, 13, 14, 15,
         };
         private static readonly Bitfield[] bfBranch = Bf((31,1), (7,1), (25,6), (8, 4));
+        private static readonly (uint sign, uint biasedExp, uint mantissa)[] encodedFpImms = new (uint,uint,uint)[32]
+        {
+            (1, 0b01111111, 0b000), // \(-1.0\)
+            (0, 0b00000001, 0b000), // Minimum positive normal
+            (0, 0b01101111, 0b000), // \(1.0 \times 2^{-16}\)
+            (0, 0b01110000, 0b000), // \(1.0 \times 2^{-15}\)
+            (0, 0b01110111, 0b000), // \(1.0 \times 2^{-8}\)
+            (0, 0b01111000, 0b000), // \(1.0 \times 2^{-7}\)
+            (0, 0b01111011, 0b000), // 0.0625 (\(2^{-4}\))
+            (0, 0b01111100, 0b000), // 0.125 (\(2^{-3}\))
+
+            (0, 0b01111101, 0b000), // 0.25
+            (0, 0b01111101, 0b010), // 0.3125
+            (0, 0b01111101, 0b100), // 0.375
+            (0, 0b01111101, 0b110), // 0.4375
+            (0, 0b01111110, 0b000), // 0.5
+            (0, 0b01111110, 0b010), // 0.625
+            (0, 0b01111110, 0b100), // 0.75
+            (0, 0b01111110, 0b110), // 0.875
+
+            (0, 0b01111111, 0b000), // 1.0
+            (0, 0b01111111, 0b010), // 1.25
+            (0, 0b01111111, 0b100), // 1.5
+            (0, 0b01111111, 0b110), // 1.75
+            (0, 0b10000000, 0b000), // 2.0
+            (0, 0b10000000, 0b010), // 2.5
+            (0, 0b10000000, 0b100), // 3
+            (0, 0b10000001, 0b000), // 4
+
+            (0, 0b10000010, 0b000), // 8
+            (0, 0b10000011, 0b000), // 16
+            (0, 0b10000110, 0b000), // 128 (\(2^7\))
+            (0, 0b10000111, 0b000), // 256 (\(2^8\))
+            (0, 0b10001110, 0b000), // \(2^{15}\)
+            (0, 0b10001111, 0b000), // \(2^{16}\)
+            (0, 0b11111111, 0b000), // \(+\infty\)
+            (0, 0b11111111, 0b100), // Canonical NaN
+        };
+
+        private static readonly float[] encodedFpImms_s = new float[32]
+        {
+            -1.0F,
+            float.Epsilon, //$BUG: Minimum positive normal
+            1.0F / 65536.0F,
+            1.0F / 32768.0F,
+            1.0F / 256.0F,
+            1.0F / 128.0F,
+            0.0625F,
+            0.125F,
+
+            0.25F,
+            0.3125F,
+            0.375F,
+            0.4375F,
+            0.5F,
+            0.625F,
+            0.75F,
+            0.875F,
+
+            1.0F,
+            1.25F,
+            1.5F,
+            1.75F,
+            2.0F,
+            2.5F,
+            3.0F,
+            4.0F,
+
+            8.0F,
+            16.0F,
+            128.0F,
+            256.0F,
+            32769.0F,
+            65536.0F,
+            float.PositiveInfinity,
+            float.NaN
+        };
+
+        private static readonly double[] encodedFpImms_d = new double[32]
+        {
+            -1.0,
+            Double.Epsilon, //$BUG: Minimum positive normal
+            1.0 / 65536.0,
+            1.0 / 32768.0,
+            1.0 / 256.0,
+            1.0 / 128.0,
+            0.0625,
+            0.125,
+
+            0.25,
+            0.3125,
+            0.375,
+            0.4375,
+            0.5,
+            0.625,
+            0.75,
+            0.875,
+
+            1.0,
+            1.25,
+            1.5,
+            1.75,
+            2.0,
+            2.5,
+            3.0,
+            4.0,
+
+            8.0,
+            16.0,
+            128.0,
+            256.0,
+            32769.0,
+            65536.0,
+            Double.PositiveInfinity,
+            Double.NaN
+        };
 
         private readonly RiscVArchitecture arch;
         private readonly Decoder[] decoders;
@@ -194,6 +312,24 @@ namespace Reko.Arch.RiscV
             uint u = wInstr >> 12;
             var op = ImmediateOperand.Word32(u);
             dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool fpImm_s(uint wInstr, RiscVDisassembler dasm)
+        {
+            var code = bf_r1.Read(wInstr);
+            var fp = encodedFpImms_s[code];
+            var imm = ImmediateOperand.Create(Constant.Real32(fp));
+            dasm.state.ops.Add(imm);
+            return true;
+        }
+
+        private static bool fpImm_d(uint wInstr, RiscVDisassembler dasm)
+        {
+            var code = bf_r1.Read(wInstr);
+            var fp = encodedFpImms_s[code];
+            var imm = ImmediateOperand.Create(Constant.Real32(fp));
+            dasm.state.ops.Add(imm);
             return true;
         }
 

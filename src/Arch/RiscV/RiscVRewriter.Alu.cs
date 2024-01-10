@@ -218,6 +218,16 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
+        private void RewriteMulh(BinaryOperator mulOperator)
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var tmp = binder.CreateTemporary(arch.DoubleWordWidth);
+            m.Assign(tmp, m.Bin(mulOperator, tmp.DataType, left, right));
+            m.Assign(dst, m.Slice(tmp, dst.DataType, tmp.DataType.BitSize - dst.DataType.BitSize));
+        }
+
         private void RewriteOr()
         {
             var left = RewriteOp(1);

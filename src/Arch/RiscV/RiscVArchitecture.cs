@@ -75,6 +75,7 @@ namespace Reko.Arch.RiscV
 #nullable enable
 
         public Dictionary<uint, RegisterStorage> Csrs { get; }
+        public PrimitiveType DoubleWordWidth { get; private set; }
         public RegisterStorage[] GpRegs { get; private set; }
         public RegisterStorage[] FpRegs { get; private set; }
         public RegisterStorage LinkRegister { get; private set; }
@@ -208,6 +209,7 @@ namespace Reko.Arch.RiscV
                 this.WordWidth = PrimitiveType.Word64;
                 this.FramePointerType = PrimitiveType.Ptr64;
                 this.NaturalSignedInteger = PrimitiveType.Int64;
+                this.DoubleWordWidth = PrimitiveType.Word128;
             }
             else
             {
@@ -215,6 +217,7 @@ namespace Reko.Arch.RiscV
                 this.WordWidth = PrimitiveType.Word32;
                 this.FramePointerType = PrimitiveType.Ptr32;
                 this.NaturalSignedInteger = PrimitiveType.Int32;
+                this.DoubleWordWidth = PrimitiveType.Word64;
             }
 
             this.GpRegs = regnames

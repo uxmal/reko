@@ -22,12 +22,8 @@ using NUnit.Framework;
 using Reko.Arch.RiscV;
 using Reko.Core;
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -39,6 +35,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         [SetUp]
@@ -64,6 +61,15 @@ namespace Reko.UnitTests.Arch.RiscV
             });
         }
 
+        private void Given_ZfaExtension(int floatSize)
+        {
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "FloatAbi", floatSize },
+                { "Zfa", true }
+            });
+        }
+
         public override IProcessorArchitecture Architecture => arch;
 
         public override Address LoadAddress => addrLoad;
@@ -71,12 +77,6 @@ namespace Reko.UnitTests.Arch.RiscV
         private void AssertCode(string sExp, uint uInstr)
         {
             var i = DisassembleWord(uInstr);
-            Assert.AreEqual(sExp, i.ToString());
-        }
-
-        private void AssertBitString(string sExp, string bits)
-        {
-            var i = DisassembleBits(bits);
             Assert.AreEqual(sExp, i.ToString());
         }
 
@@ -95,31 +95,31 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_lui()
         {
-            AssertBitString("lui\tt6,00012345", "00010010001101000101 11111 01101 11");
+            AssertCode("lui\tt6,00012345", 0b00010010001101000101_11111_01101_11);
         }
 
         [Test]
         public void RiscV_dasm_sh()
         {
-            AssertBitString("sh\ts5,sp,+00000182", "0001100 10101 00010 001 00010 01000 11");
+            AssertCode("sh\ts5,sp,+00000182", 0b0001100_10101_00010_001_00010_01000_11);
         }
 
         [Test]
         public void RiscV_dasm_lb()
         {
-            AssertBitString("lb\tgp,sp,-00000790", "100001110000 00010 000 00011 00000 11");
+            AssertCode("lb\tgp,sp,-00000790", 0b100001110000_00010_000_00011_00000_11);
         }
 
         [Test]
         public void RiscV_dasm_addi()
         {
-            AssertBitString("addi\tsp,sp,-000001C0", "1110010000000001000000010 00100 11");
+            AssertCode("addi\tsp,sp,-000001C0", 0b1110010000000001000000010_00100_11);
         }
 
         [Test]
         public void RiscV_dasm_auipc()
         {
-            AssertBitString("auipc\tgp,000FFFFD", "11111111111111111 101 00011 00101 11");
+            AssertCode("auipc\tgp,000FFFFD", 0b11111111111111111_101_00011_00101_11);
         }
 
         [Test]
@@ -311,9 +311,43 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_fli_d()
+        {
+            Given_ZfaExtension(64);
+            AssertCode("fli.d\tfa5,0.3125", 0xF21487D3u);    // fli.s\tfa5,0.3125
+        }
+
+        [Test]
+        public void RiscV_dasm_fli_s()
+        {
+            Given_ZfaExtension(64);
+            AssertCode("fli.s\tfa5,0.4375", 0xF01587D3u);    // fli.s\tfa5,0.3125
+        }
+
+        [Test]
+        [Ignore("Wait until new rendering code comes in.")]
+        public void RiscV_dasm_fli_s_inf()
+        {
+            Given_ZfaExtension(64);
+            AssertCode("fli.s\tfa5,inf", 0xF01F07D3u);    // fli.s\tfa5,0.3125
+        }
+
+        [Test]
         public void RiscV_dasm_flw()
         {
             AssertCode("flw\tfa4,52(s2)", 0x03492707u);
+        }
+
+        [Test]
+        public void RiscV_dasm_fmaxm_d()
+        {
+            AssertCode("fmaxm.d\tft2,ft0,ft4", "5331402A");
+        }
+
+        [Test]
+        public void RiscV_dasm_fminm_s()
+        {
+            AssertCode("fminm.s\tft6,ft0,ft1", "53231028");
         }
 
         [Test]

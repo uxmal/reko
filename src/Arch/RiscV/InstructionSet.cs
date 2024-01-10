@@ -38,6 +38,7 @@ namespace Reko.Arch.RiscV
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float32Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float64Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float128Support;
+            private Func<Decoder, Decoder> zfaSupport;
             private Dictionary<string, object> options;
 
             public static InstructionSet Create(Dictionary<string, object> options)
@@ -82,6 +83,17 @@ namespace Reko.Arch.RiscV
                     float64Support = MakeInvalid;
                     float32Support = MakeInvalid;
                 }
+
+                if (!options.TryGetValue("Zfa", out var oZfa) ||
+                    !bool.TryParse(oZfa.ToString()!, out var isZfa) ||
+                    isZfa)
+                {
+                    zfaSupport = d => d;
+                }
+                else
+                {
+                    zfaSupport = d => invalid;
+                }
             }
 
             private static Decoder MakeInvalid(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
@@ -107,6 +119,11 @@ namespace Reko.Arch.RiscV
             private Decoder FpInstr128(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 return float128Support(mnemonic, mutators);
+            }
+
+            private Decoder Zfa(Decoder decoder)
+            {
+                return zfaSupport(decoder);
             }
 
             private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
@@ -337,13 +354,24 @@ namespace Reko.Arch.RiscV
 
                     ( 0x14, Sparse(12, 3, "fmin/fmax.s", invalid,
                         (0x0, FpInstr32(Mnemonic.fmin_s, Fd,F1, F2)),
-                        (0x1, FpInstr32(Mnemonic.fmax_s, Fd,F1, F2)))),
+                        (0x1, FpInstr32(Mnemonic.fmax_s, Fd,F1, F2)),
+                        (0x2, FpInstr32(Mnemonic.fminm_s, Fd,F1, F2)),
+                        (0x3, FpInstr32(Mnemonic.fmaxm_s, Fd,F1, F2)))),
                     ( 0x15, Sparse(12, 3, "fmin/fmax.d", invalid,
                         (0x0, FpInstr64(Mnemonic.fmin_d, Fd,F1, F2)),
-                        (0x1, FpInstr64(Mnemonic.fmax_d, Fd,F1, F2)))),
+                        (0x1, FpInstr64(Mnemonic.fmax_d, Fd,F1, F2)),
+                        (0x2, FpInstr64(Mnemonic.fminm_d, Fd,F1, F2)),
+                        (0x3, FpInstr64(Mnemonic.fmaxm_d, Fd,F1, F2)))),
+                    ( 0x16, Sparse(12, 3, "fmin/fmax.h", invalid,
+                        (0x0, FpInstr32(Mnemonic.fmin_h, Fd,F1, F2)),
+                        (0x1, FpInstr32(Mnemonic.fmax_h, Fd,F1, F2)),
+                        (0x2, FpInstr32(Mnemonic.fminm_h, Fd,F1, F2)),
+                        (0x3, FpInstr32(Mnemonic.fmaxm_h, Fd,F1, F2)))),
                     ( 0x17, Sparse(12, 3, "fmin/fmax.q", invalid,
                         (0x0, FpInstr128(Mnemonic.fmin_q, Fd,F1, F2)),
-                        (0x1, FpInstr128(Mnemonic.fmax_q, Fd,F1, F2)))),
+                        (0x1, FpInstr128(Mnemonic.fmax_q, Fd,F1, F2)),
+                        (0x2, FpInstr128(Mnemonic.fminm_q, Fd,F1, F2)),
+                        (0x3, FpInstr128(Mnemonic.fmaxm_q, Fd,F1, F2)))),
 
                     ( 0x20, Sparse(20, 5, "fcvt.s", invalid,
                         (0x1, FpInstr64(Mnemonic.fcvt_s_d, Fd,F1) ),
@@ -413,8 +441,16 @@ namespace Reko.Arch.RiscV
                     ( 0x73, Sparse(20, 5, "fclass.q", invalid,
                         ( 0, FpInstr128(Mnemonic.fclass_q, Rd,F1)))),
 
-                    ( 0x78, FpInstr32(Mnemonic.fmv_w_x, Fd,r1) ),
-                    ( 0x79, FpInstr64(Mnemonic.fmv_d_x, Fd,r1) )
+                    ( 0x78, Sparse(20, 5, "fmv.w.x", invalid,
+                        (0, FpInstr32(Mnemonic.fmv_w_x, Fd,r1) ),
+                        (1, Zfa(FpInstr32(Mnemonic.fli_s, Fd, fpImm_s))))),
+                    ( 0x79, Sparse(20, 5, "fmv.d.x", invalid,
+                        (0, FpInstr64(Mnemonic.fmv_d_x, Fd,r1) ),
+                        (1, Zfa(FpInstr64(Mnemonic.fli_d, Fd, fpImm_d))))),
+                    ( 0x7A, Sparse(20, 5, "fli.h", invalid,
+                        (1, Zfa(Nyi("fli.h"))))),
+                    ( 0x7B, Sparse(20, 5, "fli.q", invalid,
+                        (1, Zfa(Nyi("fli.q")))))
                 };
 
                 var branches = new Decoder[]            // 0b11000
