@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_addi()
         {
-            var instr = DisassembleBits("001000 00001 00010 1111111111111000");
+            var instr = DisassembleWord(0b001000_00001_00010_1111111111111000);
             Assert.AreEqual("addi\tr2,r1,-00000008", instr.ToString());
             Assert.AreEqual(Mnemonic.addi, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word32);
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_addiu()
         {
-            var instr = DisassembleBits("001001 00011 00110 1111111111111000");
+            var instr = DisassembleWord(0b001001_00011_00110_1111111111111000);
             Assert.AreEqual("addiu\tr6,r3,-00000008", instr.ToString());
             Assert.AreEqual(Mnemonic.addiu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r6, PrimitiveType.Word32);
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_addu()
         {
-            var instr = DisassembleBits("000000 00011 00110 11110 00000 100001");
+            var instr = DisassembleWord(0b000000_00011_00110_11110_00000_100001);
             Assert.AreEqual("addu\tr30,r3,r6", instr.ToString());
             Assert.AreEqual(Mnemonic.addu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word32);
@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_and()
         {
-            var instr = DisassembleBits("000000 00011 00110 11110 00000 100100");
+            var instr = DisassembleWord(0b000000_00011_00110_11110_00000_100100);
             Assert.AreEqual("and\tr30,r3,r6", instr.ToString());
             Assert.AreEqual(Mnemonic.and, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word32);
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_andi()
         {
-            var instr = DisassembleBits("001100 00011 00110 1111000000100100");
+            var instr = DisassembleWord(0b001100_00011_00110_1111000000100100);
             Assert.AreEqual("andi\tr6,r3,0000F024", instr.ToString());
             Assert.AreEqual(Mnemonic.andi, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r6, PrimitiveType.Word32);
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_beq()
         {
-            var instr = DisassembleBits("000100 00011 00110 0000000000000001");
+            var instr = DisassembleWord(0b000100_00011_00110_0000000000000001);
             Assert.AreEqual("beq\tr3,r6,00100008", instr.ToString());
             Assert.AreEqual(Mnemonic.beq, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_beql()
         {
-            var instr = DisassembleBits("010100 00011 00110 0000000000000001");
+            var instr = DisassembleWord(0b010100_00011_00110_0000000000000001);
             Assert.AreEqual("beql\tr3,r6,00100008", instr.ToString());
             Assert.AreEqual(Mnemonic.beql, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgez()
         {
-            var instr = DisassembleBits("000001 00011 00001 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_00001_1111111111111110);
             Assert.AreEqual("bgez\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgez, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgezal()
         {
-            var instr = DisassembleBits("000001 00011 10001 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_10001_1111111111111110);
             Assert.AreEqual("bgezal\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgezal, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgezall()
         {
-            var instr = DisassembleBits("000001 00011 10011 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_10011_1111111111111110);
             Assert.AreEqual("bgezall\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgezall, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgezl()
         {
-            var instr = DisassembleBits("000001 00011 00011 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_00011_1111111111111110);
             Assert.AreEqual("bgezl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgezl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgtz()
         {
-            var instr = DisassembleBits("000111 00011 00000 1111111111111110");
+            var instr = DisassembleWord(0b000111_00011_00000_1111111111111110);
             Assert.AreEqual("bgtz\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgtz, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -273,7 +273,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bgtzl()
         {
-            var instr = DisassembleBits("010111 00011 00000 1111111111111110");
+            var instr = DisassembleWord(0b010111_00011_00000_1111111111111110);
             Assert.AreEqual("bgtzl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bgtzl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -283,7 +283,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_blez()
         {
-            var instr = DisassembleBits("000110 00011 00000 1111111111111110");
+            var instr = DisassembleWord(0b000110_00011_00000_1111111111111110);
             Assert.AreEqual("blez\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.blez, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_blezl()
         {
-            var instr = DisassembleBits("010110 00011 00000 1111111111111110");
+            var instr = DisassembleWord(0b010110_00011_00000_1111111111111110);
             Assert.AreEqual("blezl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.blezl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bltz()
         {
-            var instr = DisassembleBits("000001 00011 00000 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_00000_1111111111111110);
             Assert.AreEqual("bltz\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bltz, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bltzal()
         {
-            var instr = DisassembleBits("000001 00011 10000 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_10000_1111111111111110);
             Assert.AreEqual("bltzal\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bltzal, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bltzall()
         {
-            var instr = DisassembleBits("000001 00011 10010 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_10010_1111111111111110);
             Assert.AreEqual("bltzall\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bltzall, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bltzl()
         {
-            var instr = DisassembleBits("000001 00011 00010 1111111111111110");
+            var instr = DisassembleWord(0b000001_00011_00010_1111111111111110);
             Assert.AreEqual("bltzl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bltzl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -343,7 +343,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bne()
         {
-            var instr = DisassembleBits("000101 00011 00010 1111111111111110");
+            var instr = DisassembleWord(0b000101_00011_00010_1111111111111110);
             Assert.AreEqual("bne\tr3,r2,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bne, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -354,7 +354,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bnel()
         {
-            var instr = DisassembleBits("010101 00011 00010 1111111111111110");
+            var instr = DisassembleWord(0b010101_00011_00010_1111111111111110);
             Assert.AreEqual("bnel\tr3,r2,000FFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.bnel, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_break()
         {
-            var instr = DisassembleBits("000000 00011000101111111111 001101");
+            var instr = DisassembleWord(0b000000_00011000101111111111_001101);
             Assert.AreEqual("break\t00018BFF", instr.ToString());
             Assert.AreEqual(Mnemonic.@break, instr.Mnemonic);
             VerifyImmediateOperand(instr.Operands[0], Constant.Word32(0x18BFF), PrimitiveType.Word32);
@@ -375,7 +375,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dadd()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00010 11110 00000 101100");
+            var instr = DisassembleWord(0b000000_00011_00010_11110_00000_101100);
             Assert.AreEqual("dadd\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Mnemonic.dadd, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
@@ -387,7 +387,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_daddi()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("011000 00011 00010 1111000000101100");
+            var instr = DisassembleWord(0b011000_00011_00010_1111000000101100);
             Assert.AreEqual("daddi\tr2,r3,-00000FD4", instr.ToString());
             Assert.AreEqual(Mnemonic.daddi, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word64);
@@ -399,7 +399,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_daddiu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("011001 00011 00010 1111000000101100");
+            var instr = DisassembleWord(0b011001_00011_00010_1111000000101100);
             Assert.AreEqual("daddiu\tr2,r3,-00000FD4", instr.ToString());
             Assert.AreEqual(Mnemonic.daddiu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word64);
@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_daddu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00010 11110 00000 101101");
+            var instr = DisassembleWord(0b000000_00011_00010_11110_00000_101101);
             Assert.AreEqual("daddu\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Mnemonic.daddu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
@@ -423,7 +423,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_ddiv()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011110");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011110);
             Assert.AreEqual("ddiv\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.ddiv, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
@@ -434,7 +434,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_ddivu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011111");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011111);
             Assert.AreEqual("ddivu\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.ddivu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
@@ -444,7 +444,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_div()
         {
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011010");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011010);
             Assert.AreEqual("div\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.div, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_divu()
         {
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011011");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011011);
             Assert.AreEqual("divu\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.divu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -465,7 +465,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dmult()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011100");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011100);
             Assert.AreEqual("dmult\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.dmult, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
@@ -476,7 +476,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dmultu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011101");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011101);
             Assert.AreEqual("dmultu\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.dmultu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
@@ -487,7 +487,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsll()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111000");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111000);
             Assert.AreEqual("dsll\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsll, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -499,7 +499,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsl32()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111100");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111100);
             Assert.AreEqual("dsll32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsll32, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -511,7 +511,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsllv()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 010100");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_010100);
             Assert.AreEqual("dsllv\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Mnemonic.dsllv, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -523,7 +523,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsra()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111011");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111011);
             Assert.AreEqual("dsra\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsra, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -535,7 +535,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsra32()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111111");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111111);
             Assert.AreEqual("dsra32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsra32, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -547,7 +547,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsrav()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 010111");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_010111);
             Assert.AreEqual("dsrav\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Mnemonic.dsrav, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -559,7 +559,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsrl()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111010");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111010);
             Assert.AreEqual("dsrl\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsrl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -571,7 +571,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsrl32()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00000 00101 00111 01001 111110");
+            var instr = DisassembleWord(0b000000_00000_00101_00111_01001_111110);
             Assert.AreEqual("dsrl32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Mnemonic.dsrl32, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -583,7 +583,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsrlv()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 010110");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_010110);
             Assert.AreEqual("dsrlv\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Mnemonic.dsrlv, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
@@ -595,7 +595,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsub()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00010 11110 00000 101110");
+            var instr = DisassembleWord(0b000000_00011_00010_11110_00000_101110);
             Assert.AreEqual("dsub\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Mnemonic.dsub, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
@@ -607,7 +607,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_dsubu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("000000 00011 00010 11110 00000 101111");
+            var instr = DisassembleWord(0b000000_00011_00010_11110_00000_101111);
             Assert.AreEqual("dsubu\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Mnemonic.dsubu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
@@ -618,7 +618,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_j()
         {
-            var instr = DisassembleBits("000010 11111111111111111111111111");
+            var instr = DisassembleWord(0b000010_11111111111111111111111111);
             Assert.AreEqual("j\t0FFFFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.j, instr.Mnemonic);
             VerifyAddressOperand(instr.Operands[0], Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
@@ -627,7 +627,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_jal()
         {
-            var instr = DisassembleBits("000011 11111111111111111111111111");
+            var instr = DisassembleWord(0b000011_11111111111111111111111111);
             Assert.AreEqual("jal\t0FFFFFFC", instr.ToString());
             Assert.AreEqual(Mnemonic.jal, instr.Mnemonic);
             VerifyAddressOperand(instr.Operands[0], Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
@@ -636,7 +636,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_jr()
         {
-            var instr = DisassembleBits("000000 01001 000000000000000 001000");
+            var instr = DisassembleWord(0b000000_01001_000000000000000_001000);
             Assert.AreEqual("jr\tr9", instr.ToString());
             Assert.AreEqual(Mnemonic.jr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r9, PrimitiveType.Word32);
@@ -645,7 +645,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_jalr()
         {
-            var instr = DisassembleBits("000000 01001 00000 11111 00000 001001");
+            var instr = DisassembleWord(0b000000_01001_00000_11111_00000_001001);
             Assert.AreEqual("jalr\tra,r9", instr.ToString());
             Assert.AreEqual(Mnemonic.jalr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.ra, PrimitiveType.Word32);
@@ -655,7 +655,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lb()
         {
-            var instr = DisassembleBits("100000 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100000_01001_00011_1111111111001000);
             Assert.AreEqual("lb\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lb, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lbu()
         {
-            var instr = DisassembleBits("100100 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100100_01001_00011_1111111111001000);
             Assert.AreEqual("lbu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lbu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -675,7 +675,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lh()
         {
-            var instr = DisassembleBits("100001 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100001_01001_00011_1111111111001000);
             Assert.AreEqual("lh\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lh, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -685,7 +685,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lhu()
         {
-            var instr = DisassembleBits("100101 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100101_01001_00011_1111111111001000);
             Assert.AreEqual("lhu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lhu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -695,7 +695,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lw()
         {
-            var instr = DisassembleBits("100011 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100011_01001_00011_1111111111001000);
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lw, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -706,7 +706,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_lwu()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("100111 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100111_01001_00011_1111111111001000);
             Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lwu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
@@ -716,7 +716,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lwl()
         {
-            var instr = DisassembleBits("100010 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100010_01001_00011_1111111111001000);
             Assert.AreEqual("lwl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lwl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -726,7 +726,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lwr()
         {
-            var instr = DisassembleBits("100110 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b100110_01001_00011_1111111111001000);
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.lwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -738,16 +738,16 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_Architecture();
 
-            var instr = DisassembleBits("110111 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b110111_01001_00011_1111111111001000);
             Assert.AreEqual("ld\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("011010 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b011010_01001_00011_1111111111001000);
             Assert.AreEqual("ldl\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("011011 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b011011_01001_00011_1111111111001000);
             Assert.AreEqual("ldr\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("100111 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b100111_01001_00011_1111111111001000);
             Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
         }
 
@@ -755,7 +755,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_ll()
         {
             MipsInstruction instr;
-            instr = DisassembleBits("110000 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b110000_01001_00011_1111111111001000);
             Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.ll, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -765,11 +765,11 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_lld()
         {
-            var instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b110100_01001_00011_1111111111001000);
             Assert.AreEqual("illegal", instr.ToString());
 
             Given_Mips64_Architecture();
-            instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b110100_01001_00011_1111111111001000);
             Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
         }
 
@@ -779,7 +779,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips_v6_Architecture();
 
             MipsInstruction instr;
-            instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
+            instr = DisassembleWord(0b011111_01001_00011_111111100_0_110110);
             Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.ll, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -791,14 +791,14 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_v6_Architecture();
 
-            var instr = DisassembleBits("011111 01001 00011 111111100 0 110111");
+            var instr = DisassembleWord(0b011111_01001_00011_111111100_0_110111);
             Assert.AreEqual("lld\tr3,-0004(r9)", instr.ToString());
         }
 
         [Test]
         public void MipsDis_lui()
         {
-            var instr = DisassembleBits("001111 00000 00011 1111111111001000");
+            var instr = DisassembleWord(0b001111_00000_00011_1111111111001000);
             Assert.AreEqual("lui\tr3,-0038", instr.ToString());
             Assert.AreEqual(Mnemonic.lui, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -808,7 +808,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mfhi()
         {
-            var instr = DisassembleBits("000000 00000 00000 01010 00000 010000");
+            var instr = DisassembleWord(0b000000_00000_00000_01010_00000_010000);
             Assert.AreEqual("mfhi\tr10", instr.ToString());
             Assert.AreEqual(Mnemonic.mfhi, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -817,7 +817,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mflo()
         {
-            var instr = DisassembleBits("000000 00000 00000 01010 00000 010010");
+            var instr = DisassembleWord(0b000000_00000_00000_01010_00000_010010);
             Assert.AreEqual("mflo\tr10", instr.ToString());
             Assert.AreEqual(Mnemonic.mflo, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -826,7 +826,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mthi()
         {
-            var instr = DisassembleBits("000000 01010 00000 00000 00000 010001");
+            var instr = DisassembleWord(0b000000_01010_00000_00000_00000_010001);
             Assert.AreEqual("mthi\tr10", instr.ToString());
             Assert.AreEqual(Mnemonic.mthi, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -835,7 +835,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mtlo()
         {
-            var instr = DisassembleBits("000000 01010 00000 00000 00000 010011");
+            var instr = DisassembleWord(0b000000_01010_00000_00000_00000_010011);
             Assert.AreEqual("mtlo\tr10", instr.ToString());
             Assert.AreEqual(Mnemonic.mtlo, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -844,7 +844,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_movnz()
         {
-            var instr = DisassembleBits("000000 00001 00101 01010 00000 001011");
+            var instr = DisassembleWord(0b000000_00001_00101_01010_00000_001011);
             Assert.AreEqual("movn\tr10,r1,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.movn, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -855,7 +855,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_movz()
         {
-            var instr = DisassembleBits("000000 00001 00101 01010 00000 001010");
+            var instr = DisassembleWord(0b000000_00001_00101_01010_00000_001010);
             Assert.AreEqual("movz\tr10,r1,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.movz, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
@@ -866,7 +866,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mult()
         {
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011000");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011000);
             Assert.AreEqual("mult\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.mult, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -876,7 +876,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_multu()
         {
-            var instr = DisassembleBits("000000 00011 00101 00000 00000 011001");
+            var instr = DisassembleWord(0b000000_00011_00101_00000_00000_011001);
             Assert.AreEqual("multu\tr3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.multu, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -886,7 +886,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_or()
         {
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 100101");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_100101);
             Assert.AreEqual("or\tr7,r3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.or, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
@@ -897,7 +897,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_nor()
         {
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 100111");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_100111);
             Assert.AreEqual("nor\tr7,r3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.nor, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
@@ -908,7 +908,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_ori()
         {
-            var instr = DisassembleBits("001101 00011 00101 0011100000100111");
+            var instr = DisassembleWord(0b001101_00011_00101_0011100000100111);
             Assert.AreEqual("ori\tr5,r3,00003827", instr.ToString());
             Assert.AreEqual(Mnemonic.ori, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r5, PrimitiveType.Word32);
@@ -919,7 +919,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_sb()
         {
-            var instr = DisassembleBits("101000 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b101000_01001_00011_1111111111001000);
             Assert.AreEqual("sb\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.sb, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -929,7 +929,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_sh()
         {
-            var instr = DisassembleBits("101001 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b101001_01001_00011_1111111111001000);
             Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.sh, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -939,7 +939,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_sw()
         {
-            var instr = DisassembleBits("101011 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b101011_01001_00011_1111111111001000);
             Assert.AreEqual("sw\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.sw, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -949,7 +949,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_swl()
         {
-            var instr = DisassembleBits("101010 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b101010_01001_00011_1111111111001000);
             Assert.AreEqual("swl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.swl, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -959,7 +959,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_swr()
         {
-            var instr = DisassembleBits("101110 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b101110_01001_00011_1111111111001000);
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Mnemonic.swr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
@@ -970,20 +970,20 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_stores_64bit()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("111111 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b111111_01001_00011_1111111111001000);
             Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("101100 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b101100_01001_00011_1111111111001000);
             Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("101101 01001 00011 1111111111001000");
+            instr = DisassembleWord(0b101101_01001_00011_1111111111001000);
             Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
         }
 
         [Test]
         public void MipsDis_sc()
         {
-            var instr = DisassembleBits("111000 01010 10101 1111111111001000");
+            var instr = DisassembleWord(0b111000_01010_10101_1111111111001000);
             Assert.AreEqual("sc\tr21,-0038(r10)", instr.ToString());
             Assert.AreEqual(Mnemonic.sc, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r21, PrimitiveType.Word32);
@@ -994,7 +994,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_sc_64bit()
         {
             Given_Mips64_Architecture();
-            var instr = DisassembleBits("111100 01001 00011 1111111111001000");
+            var instr = DisassembleWord(0b111100_01001_00011_1111111111001000);
             Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
         }
 
@@ -1003,7 +1003,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_xor()
         {
-            var instr = DisassembleBits("000000 00011 00101 00111 00000 100110");
+            var instr = DisassembleWord(0b000000_00011_00101_00111_00000_100110);
             Assert.AreEqual("xor\tr7,r3,r5", instr.ToString());
             Assert.AreEqual(Mnemonic.xor, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
@@ -1014,7 +1014,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_xori()
         {
-            var instr = DisassembleBits("001110 00011 00101 0011100000100111");
+            var instr = DisassembleWord(0b001110_00011_00101_0011100000100111);
             Assert.AreEqual("xori\tr5,r3,00003827", instr.ToString());
             Assert.AreEqual(Mnemonic.xori, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r5, PrimitiveType.Word32);
@@ -1096,31 +1096,31 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_rdhwr()
         {
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
-            var instr = DisassembleBits("011111 00000 00011 00000 00000 111011");
+            var instr = DisassembleWord(0b011111_00000_00011_00000_00000_111011);
             Assert.AreEqual("rdhwr\tr3,00", instr.ToString()); // CPU number
             Assert.AreEqual(Mnemonic.rdhwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
             VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x0), PrimitiveType.Byte);
 
-            instr = DisassembleBits("011111 00000 00011 00001 00000 111011");
+            instr = DisassembleWord(0b011111_00000_00011_00001_00000_111011);
             Assert.AreEqual("rdhwr\tr3,01", instr.ToString()); // SYNCI step size
             Assert.AreEqual(Mnemonic.rdhwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
             VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x1), PrimitiveType.Byte);
 
-            instr = DisassembleBits("011111 00000 00011 00010 00000 111011");
+            instr = DisassembleWord(0b011111_00000_00011_00010_00000_111011);
             Assert.AreEqual("rdhwr\tr3,02", instr.ToString()); // Cycle counter
             Assert.AreEqual(Mnemonic.rdhwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
             VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x2), PrimitiveType.Byte);
 
-            instr = DisassembleBits("011111 00000 00011 00011 00000 111011");
+            instr = DisassembleWord(0b011111_00000_00011_00011_00000_111011);
             Assert.AreEqual("rdhwr\tr3,03", instr.ToString()); // Cycle counter resolution
             Assert.AreEqual(Mnemonic.rdhwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
             VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x3), PrimitiveType.Byte);
 
-            instr = DisassembleBits("011111 00000 00011 11101 00000 111011");
+            instr = DisassembleWord(0b011111_00000_00011_11101_00000_111011);
             Assert.AreEqual("rdhwr\tr3,1D", instr.ToString()); // OS-specific, thread local pointer on Linux
             Assert.AreEqual(Mnemonic.rdhwr, instr.Mnemonic);
             VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);

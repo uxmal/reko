@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_ands_Xn_imm()
         {
-            var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
+            var instr = DisassembleWord(0b111_100100_0_010101_010101_00100_00111);
             Assert.AreEqual("ands\tx7,x4,#&FFFFF801FFFFF801", instr.ToString());
         }
 
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_add_Wn_imm()
         {
-            var instr = DisassembleBits("000 10001 01 011111111111 10001 10011");
+            var instr = DisassembleWord(0b000_10001_01_011111111111_10001_10011);
             Assert.AreEqual("add\tw19,w17,#&7FF,lsl #&C", instr.ToString());
         }
 
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_b_label()
         {
-            var instr = DisassembleBits("00010111 11111111 11111111 00000000");
+            var instr = DisassembleWord(0b00010111_11111111_11111111_00000000);
             Assert.AreEqual("b\t#&FFC00", instr.ToString());
         }
 
@@ -239,7 +239,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_bl_label()
         {
-            var instr = DisassembleBits("10010111 11111111 11111111 00000000");
+            var instr = DisassembleWord(0b10010111_11111111_11111111_00000000);
             Assert.AreEqual("bl\t#&FFC00", instr.ToString());
         }
 
@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_br_Xn()
         {
-            var instr = DisassembleBits("11010110 00011111 00000011 11000000");
+            var instr = DisassembleWord(0b11010110_00011111_00000011_11000000);
             Assert.AreEqual("br\tx30", instr.ToString());
         }
 
@@ -339,14 +339,14 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_cmp_Wn_imm()
         {
-            var instr = DisassembleBits("011 10001 00 011111111111 10001 11111");
+            var instr = DisassembleWord(0b011_10001_00_011111111111_10001_11111);
             Assert.AreEqual("cmp\tw17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void AArch64Dis_cmp_wsp_imm()
         {
-            var instr = DisassembleBits("011 10001 00 011111111111 11111 11111");
+            var instr = DisassembleWord(0b011_10001_00_011111111111_11111_11111);
             Assert.AreEqual("cmp\twsp,#&7FF", instr.ToString());
         }
 
@@ -1272,7 +1272,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_sub_Xn_imm()
         {
-            var instr = DisassembleBits("110 10001 00 011111111111 10001 10011");
+            var instr = DisassembleWord(0b110_10001_00_011111111111_10001_10011);
             Assert.AreEqual("sub\tx19,x17,#&7FF", instr.ToString());
         }
 
@@ -2371,7 +2371,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_movk_imm()
         {
-            var instr = DisassembleBits("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
+            var instr = DisassembleWord(0b111_10010_100_1010_1010_1010_0100_00111); // 87 54 95 F2);
             Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
 
@@ -3041,7 +3041,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_subs_Wn_imm()
         {
-            var instr = DisassembleBits("011 10001 00 011111111111 10001 10011");
+            var instr = DisassembleWord(0b011_10001_00_011111111111_10001_10011);
             Assert.AreEqual("subs\tw19,w17,#&7FF", instr.ToString());
         }
 

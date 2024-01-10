@@ -59,9 +59,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             return Disassemble(mem);
         }
 
-        private void RunTest(string expected, string bits)
+        private void RunTest(string expected, uint uInstr)
         {
-            var instr = DisassembleBits(bits);
+            var instr = DisassembleWord(uInstr);
             Assert.AreEqual(expected, instr.ToString());
         }
 
@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_addic()
         {
-            var instr = DisassembleBits("001100 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b001100_00010_00001_1111111111111000);
             Assert.AreEqual("addic\tr2,r1,-0008", instr.ToString());
         }
 
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_andi_()
         {
-            var instr = DisassembleBits("011100 00001 00011 1111110001100100");
+            var instr = DisassembleWord(0b011100_00001_00011_1111110001100100);
             Assert.AreEqual("andi.\tr3,r1,FC64", instr.ToString());
         }
 
@@ -230,14 +230,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_cmplwi()
         {
-            var instr = DisassembleBits("001010 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b001010_00010_00001_1111111111111000);
             Assert.AreEqual("cmplwi\tcr0,r1,FFF8", instr.ToString());
         }
 
         [Test]
         public void PPCDis_cmpi()
         {
-            var instr = DisassembleBits("001011 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b001011_00010_00001_1111111111111000);
             Assert.AreEqual("cmpwi\tcr0,r1,-0008", instr.ToString());
         }
 
@@ -696,35 +696,35 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_xori()
         {
-            var instr = DisassembleBits("011010 00001 00011 0101010101010101");
+            var instr = DisassembleWord(0b011010_00001_00011_0101010101010101);
             Assert.AreEqual("xori\tr3,r1,5555", instr.ToString());
         }
 
         [Test]
         public void PPCDis_xoris()
         {
-            var instr = DisassembleBits("011011 00001 00011 0101010101010101");
+            var instr = DisassembleWord(0b011011_00001_00011_0101010101010101);
             Assert.AreEqual("xoris\tr3,r1,5555", instr.ToString());
         }
 
         [Test]
         public void PPCDis_xor_()
         {
-            var instr = DisassembleBits("011111 00010 00001 00011 0100111100 1");
+            var instr = DisassembleWord(0b011111_00010_00001_00011_0100111100_1);
             Assert.AreEqual("xor.\tr1,r2,r3", instr.ToString());
         }
 
         [Test]
         public void PPCDis_lhz()
         {
-            var instr = DisassembleBits("101000 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b101000_00010_00001_1111111111111000);
             Assert.AreEqual("lhz\tr2,-8(r1)", instr.ToString());
         }
 
         [Test]
         public void PPCDis_subfic()
         {
-            var instr = DisassembleBits("001000 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b001000_00010_00001_1111111111111000);
             Assert.AreEqual("subfic\tr2,r1,-0008", instr.ToString());
         }
 
@@ -749,21 +749,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_twi()
         {
-            var instr = DisassembleBits("000011 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b000011_00010_00001_1111111111111000);
             Assert.AreEqual("twi\t02,r1,-0008", instr.ToString());
         }
 
         [Test]
         public void PPCDis_addic_()
         {
-            var instr = DisassembleBits("001101 00010 00001 1111111111111000");
+            var instr = DisassembleWord(0b001101_00010_00001_1111111111111000);
             Assert.AreEqual("addic.\tr2,r1,-0008", instr.ToString());
         }
 
         [Test]
         public void PPCDis_sc()
         {
-            var instr = DisassembleBits("010001 00010 00000 0000000000000010");
+            var instr = DisassembleWord(0b010001_00010_00000_0000000000000010);
             Assert.AreEqual("sc", instr.ToString());
         }
 
@@ -776,14 +776,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_crnor()
         {
-            var instr = DisassembleBits("010011 00001 00010 00011 00001000010");
+            var instr = DisassembleWord(0b010011_00001_00010_00011_00001000010);
             Assert.AreEqual("crnor\t01,02,03", instr.ToString());
         }
 
         [Test]
         public void PPCDis_cror()
         {
-            var instr = DisassembleBits("010011 00001 00010 00011 01110000010");
+            var instr = DisassembleWord(0b010011_00001_00010_00011_01110000010);
             Assert.AreEqual("cror\t01,02,03", instr.ToString());
         }
 
@@ -838,21 +838,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_rfi()
         {
-            var instr = DisassembleBits("010011 00000 00000 00000 0 0000100100");
+            var instr = DisassembleWord(0b010011_00000_00000_00000_0_0000100100);
             Assert.AreEqual("rfid", instr.ToString());
         }
 
         [Test]
         public void PPCDis_andis_()
         {
-            var instr = DisassembleBits("011101 00001 00011 1111110001100100");
+            var instr = DisassembleWord(0b011101_00001_00011_1111110001100100);
             Assert.AreEqual("andis.\tr3,r1,FC64", instr.ToString());
         }
 
         [Test]
         public void PPCDis_cmp()
         {
-            var instr = DisassembleBits("011111 01100 00001 00010 0000000000 0");
+            var instr = DisassembleWord(0b011111_01100_00001_00010_0000000000_0);
             Assert.AreEqual("cmp\tcr3,r1,r2", instr.ToString());
         }
 
@@ -877,28 +877,28 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_tw()
         {
-            var instr = DisassembleBits("011111 01100 00001 00010 0000000100 0");
+            var instr = DisassembleWord(0b011111_01100_00001_00010_0000000100_0);
             Assert.AreEqual("tw\t0C,r1,r2", instr.ToString());
         }
 
         [Test]
         public void PPCDis_lmw()
         {
-            var instr = DisassembleBits("101110 00001 00010 111111111110100 0");
+            var instr = DisassembleWord(0b101110_00001_00010_111111111110100_0);
             Assert.AreEqual("lmw\tr1,-24(r2)", instr.ToString());
         }
 
         [Test]
         public void PPCDis_stmw()
         {
-            var instr = DisassembleBits("101111 00001 00010 111111111110100 0");
+            var instr = DisassembleWord(0b101111_00001_00010_111111111110100_0);
             Assert.AreEqual("stmw\tr1,-24(r2)", instr.ToString());
         }
 
         [Test]
         public void PPCDis_lfs()
         {
-            var instr = DisassembleBits("110000 00001 00010 111111111110100 0");
+            var instr = DisassembleWord(0b110000_00001_00010_111111111110100_0);
             Assert.AreEqual("lfs\tf1,-24(r2)", instr.ToString());
         }
 
@@ -912,16 +912,16 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_fpu_single_precision_instructions()
         {
-            RunTest("fdivs.\tf1,f2,f3", "111011 00001 00010 00011 00000 10010 1");
-            RunTest("fsubs.\tf1,f2,f3", "111011 00001 00010 00011 00000 10100 1");
-            RunTest("fadds.\tf1,f2,f3", "111011 00001 00010 00011 00000 10101 1");
-            RunTest("fsqrts.\tf1,f3", "111011 00001 00010 00011 00000 10110 1");
-            RunTest("fres.\tf1,f3", "111011 00001 00010 00011 00000 11000 1");
-            RunTest("fmuls.\tf1,f2,f4", "111011 00001 00010 00000 00100 11001 1");
-            RunTest("fmsubs.\tf1,f2,f4,f3", "111011 00001 00010 00011 00100 11100 1");
-            RunTest("fmadds.\tf1,f2,f4,f3", "111011 00001 00010 00011 00100 11101 1");
-            RunTest("fnmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11110 1");
-            RunTest("fnmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11111 1");
+            RunTest("fdivs.\tf1,f2,f3", 0b111011_00001_00010_00011_00000_10010_1);
+            RunTest("fsubs.\tf1,f2,f3", 0b111011_00001_00010_00011_00000_10100_1);
+            RunTest("fadds.\tf1,f2,f3", 0b111011_00001_00010_00011_00000_10101_1);
+            RunTest("fsqrts.\tf1,f3", 0b111011_00001_00010_00011_00000_10110_1);
+            RunTest("fres.\tf1,f3", 0b111011_00001_00010_00011_00000_11000_1);
+            RunTest("fmuls.\tf1,f2,f4", 0b111011_00001_00010_00000_00100_11001_1);
+            RunTest("fmsubs.\tf1,f2,f4,f3", 0b111011_00001_00010_00011_00100_11100_1);
+            RunTest("fmadds.\tf1,f2,f4,f3", 0b111011_00001_00010_00011_00100_11101_1);
+            RunTest("fnmsubs.\tf1,f2,f3,f4", 0b111011_00001_00010_00011_00100_11110_1);
+            RunTest("fnmadds.\tf1,f2,f3,f4", 0b111011_00001_00010_00011_00100_11111_1);
         }
 
         [Test]
