@@ -1975,10 +1975,10 @@ void properties_load(char * r4, char * r5, word32 ra)
 			char * r2_n = strchr(r2_n, '#');
 			if (r2_n != null)
 				*r2_n = 0x00;
-			char * r2_n = r2_n + strspn(r2_n, 0x00410000, 0x0040A640);
+			char * r2_n = r2_n + (uint32) strspn(r2_n, " \t");
 			if ((word32) *r2_n != 0x00)
 			{
-				char * r2_n = r2_n + strcspn(r2_n, 0x00410000, 0x0040A644, r2_n);
+				char * r2_n = r2_n + (uint32) strcspn(r2_n, " \t=");
 				char * r2_n = strchr(r2_n, '=');
 				if (r2_n == null)
 				{
@@ -1990,8 +1990,8 @@ void properties_load(char * r4, char * r5, word32 ra)
 				}
 				else
 				{
-					char * r2_n = r2_n + 1 + strspn(r2_n + 1, 0x00410000, 0x0040A640, r2_n + 1);
-					r2_n[strcspn(r2_n, 0x00410000, 0x0040A640, r2_n, r2_n)] = 0x00;
+					union Eq_n * r2_n = (union Eq_n *) (r2_n + 1 + (uint32) strspn(r2_n + 1, " \t"));
+					(&r2_n->u0)[(uint32) strcspn(r2_n, " \t")] = 0x00;
 					*r2_n = 0x00;
 					int32 dwLoc2C_n = 0x00;
 					ui32 dwLoc014C_n = 0x00;

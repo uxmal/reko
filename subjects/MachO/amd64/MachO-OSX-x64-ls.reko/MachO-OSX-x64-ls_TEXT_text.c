@@ -1457,14 +1457,16 @@ l00000001000049B7:
 				goto l0000000100004A24;
 			if (g_t658C.u0 != 0x00)
 			{
-				int32 eax_n = rbp->dwFFFFFF4C;
+				uint64 rax_n = (uint64) rbp->dwFFFFFF4C;
+				int32 eax_n = (word32) rax_n;
+				byte al_n = (byte) rax_n;
 				if (eax_n < 0x00 || eax_n > 0xFF)
 					goto l0000000100004A19;
-				memchr();
-				if (0x100005770 == 0x00)
+				struct Eq_n * rax_n = memchr(0x13, (int32) al_n, &g_v5770);
+				if (rax_n == null)
 					goto l0000000100004A19;
 				putchar(0x5C);
-				putchar((int32) g_b5771);
+				putchar((int32) rax_n->b0001);
 				rbp->dwFFFFFF48 += 0x02;
 				goto l0000000100004AA8;
 			}

@@ -398,12 +398,13 @@ Eq_n mbrtowc(mbstate_t * rcx, Eq_n rdx, Eq_n rsi, wchar_t * rdi)
 	return mbrtowc(rdi, rsi, rdx, rcx);
 }
 
-// 0000000100004EC2: void memchr()
+// 0000000100004EC2: Register (ptr64 void) memchr(Register Eq_n rdx, Register int32 esi, Register (ptr64 void) rdi)
 // Called from:
 //      fn000000010000488B
-void memchr()
+void * memchr(Eq_n rdx, int32 esi, void * rdi)
 {
-	memchr();
+	word64 rsi;
+	return memchr(rdi, (int32) rsi, rdx);
 }
 
 // 0000000100004EC8: Register (ptr64 char) nl_langinfo(Register word32 edi)

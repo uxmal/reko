@@ -737,19 +737,18 @@ l0000000100004EBC:
 mbrtowc_exit:
 
 
-void memchr()
+word64 memchr(word64 rdx, word32 esi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn000000010000488B
-// MayUse: 
-// LiveOut:
-// Trashed:
+// MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
+// LiveOut: rax
+// Trashed: rax
 // Preserved: rsp
 memchr_entry:
 l0000000100004EC2:
-	memchr()
-	return
+	return memchr(rdi, SLICE(rsi, int32, 0), rdx)
 memchr_exit:
 
 

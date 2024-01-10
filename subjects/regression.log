@@ -1243,8 +1243,6 @@ Error: An error occurred while writing assembly language output.
 0000000100004951: warning: Unable to resolve imported reference _DefaultRuneLocale.
 0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
 0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
-0000000100004EC2: warning: Unable to resolve imported reference memchr.
-0000000100004EC2: warning: Unable to resolve imported reference memchr.
 0000000100002B88: warning: Unable to resolve imported reference optind.
 0000000100004F2E: warning: Unable to resolve imported reference tgetent.
 0000000100004F2E: warning: Unable to resolve imported reference tgetent.
@@ -1455,9 +1453,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in d:\dev\uxmal\reko\master\src\Core\Block.cs:line 92
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 591
@@ -1647,6 +1643,7 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1654,6 +1651,7 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1661,6 +1659,7 @@ fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1668,6 +1667,7 @@ fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1675,6 +1675,7 @@ fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1723,10 +1724,6 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 00404B70: warning: Unable to resolve imported reference strsep.
 00404C04: warning: Unable to resolve imported reference strsep.
 00404C98: warning: Unable to resolve imported reference strsep.
-00405810: warning: Unable to resolve imported reference strspn.
-00405874: warning: Unable to resolve imported reference strcspn.
-00405940: warning: Unable to resolve imported reference strspn.
-00405984: warning: Unable to resolve imported reference strcspn.
 00405FE0: warning: Unable to resolve imported reference toupper.
 004064B0: warning: Unable to resolve imported reference toupper.
 00406458: warning: Unable to resolve imported reference tolower.
@@ -2528,7 +2525,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 591
@@ -2536,7 +2533,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 591
@@ -2633,4 +2630,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 91.35 seconds.
+Decompiled 91 binaries in 67.37 seconds.

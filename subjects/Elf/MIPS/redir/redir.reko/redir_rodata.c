@@ -19,6 +19,8 @@ char g_str40A468[] = " \n\r"; // 0040A468
 char g_str40A46C[] = " \t"; // 0040A46C
 char g_str40A5C0[] = "1yY"; // 0040A5C0
 char g_str40A614[] = "r"; // 0040A614
+char g_str40A640[] = " \t"; // 0040A640
+char g_str40A644[] = " \t="; // 0040A644
 char g_str40A73C[] = "-"; // 0040A73C
 char g_str40A740[] = "w"; // 0040A740
 char g_str40A744[] = ".old"; // 0040A744

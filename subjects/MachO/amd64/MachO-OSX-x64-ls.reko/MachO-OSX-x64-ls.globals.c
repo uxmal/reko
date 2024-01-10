@@ -14,7 +14,7 @@ void g_t319B(int32 rdi); // 000000000000319B
 <anonymous> g_t3BF3; // 0000000000003BF3
 struct Eq_n g_t5340;
 struct _acl g_t5410;
-byte g_b5771; // 0000000000005771
+void g_v5770; // 0000000000005770
 <anonymous> * __imp___DefaultRuneLocale; // 0000000000006028
 <anonymous> * __imp____stack_chk_guard; // 0000000000006030
 <anonymous> * __imp____stderrp; // 0000000000006038

@@ -2966,15 +2966,15 @@ l004057C4:
 l004057F4:
 	Mem192[r2_184:byte] = 0<8>
 l00405800:
-	r2_212 = r2_151 + strspn(r2_151, 0x00410000<p32>, 0x0040A640<p32>)
+	r2_212 = r2_151 + CONVERT(strspn(r2_151, 0x0040A640<p32>), size_t, uint32)
 	branch CONVERT(Mem213[r2_212:int8], int8, word32) != 0<32> l00405858
 l00405858:
-	r2_232 = r2_212 + strcspn(r2_212, 0x00410000<p32>, 0x0040A644<p32>, r2_212)
+	r2_232 = r2_212 + CONVERT(strcspn(r2_212, 0x0040A644<p32>), size_t, uint32)
 	r2_242 = strchr(r2_232, '=')
 	branch r2_242 != 0<32> l00405920
 l00405920:
-	r2_266 = r2_242 + 1<i32> + strspn(r2_242 + 1<i32>, 0x00410000<p32>, 0x0040A640<p32>, r2_242 + 1<i32>)
-	Mem287[r2_266 + strcspn(r2_266, 0x00410000<p32>, 0x0040A640<p32>, r2_266, r2_266):byte] = 0<8>
+	r2_266 = r2_242 + 1<i32> + CONVERT(strspn(r2_242 + 1<i32>, 0x0040A640<p32>), size_t, uint32)
+	Mem287[r2_266 + CONVERT(strcspn(r2_266, 0x0040A640<p32>), size_t, uint32):byte] = 0<8>
 	Mem289[r2_232:byte] = 0<8>
 	dwLoc2C_567 = 0<32>
 	dwLoc014C_568 = 0<32>
