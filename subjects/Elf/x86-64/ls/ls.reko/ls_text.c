@@ -4403,8 +4403,8 @@ Eq_n fn000000000040A000(Eq_n rdx, void * rsi, Eq_n rdi[], struct Eq_n * fs, unio
 		rdxOut = rdx_n;
 		rsiOut = (FILE *) 0x0A;
 		rdiOut.u0 = <invalid>;
-		r8Out.u0 = <invalid>;
-		r9Out.u0 = <invalid>;
+		r8Out.u0 = (<unknown>*) <invalid>;
+		r9Out.u0 = (<unknown>*) <invalid>;
 		return <invalid>;
 	}
 	else
@@ -4413,9 +4413,9 @@ Eq_n fn000000000040A000(Eq_n rdx, void * rsi, Eq_n rdi[], struct Eq_n * fs, unio
 		*rax_n = 0x0A;
 		rdxOut = rax_n + 1;
 		rsiOut = rsi_n;
-		rdiOut.u0 = <invalid>;
-		r8Out.u0 = <invalid>;
-		r9Out.u0 = <invalid>;
+		rdiOut.u0 = (<unknown>*) <invalid>;
+		r8Out.u0 = (<unknown>*) <invalid>;
+		r9Out.u0 = (<unknown>*) <invalid>;
 		return <invalid>;
 	}
 }
@@ -6749,7 +6749,7 @@ struct Eq_n * fn000000000040D7B0(up32 esi, struct Eq_n * rdi, struct Eq_n * fs, 
 	else
 	{
 l000000000040D7D7:
-		ecxOut.u0 = <invalid>;
+		ecxOut.u0 = (<unknown>*) <invalid>;
 		return rbx_n;
 	}
 }

@@ -8,7 +8,7 @@
 void fn00000000(cu8 TABLAT)
 {
 	g_b0001 &= 191;
-	Data21[1].ptr0000 = 330;
+	Data21[1].ptr0000 = &g_t014A;
 	fn00000E(TABLAT, 0x00, 0x00);
 }
 
@@ -124,3 +124,4 @@ void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, cu8 PRODL, Eq_n FSR0)
 	}
 }
 
+<unknown> g_t014A = // 0000014A;

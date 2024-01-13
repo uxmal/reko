@@ -116,9 +116,13 @@ Eq_1: (struct "Globals"
 		(403350 ui32 dw403350)
 		(403354 byte b403354)
 		(403358 (union "_SLIST_HEADER" ((struct "struct_86" 0008 (0 SLIST_ENTRY Next) (4 WORD Depth) (6 WORD CpuId)) u1) (ULONGLONG Alignment)) u403358)
+		(403360 <unknown> t403360)
 		(403368 ui32 dw403368)
 		(40336C word32 dw40336C)
-		(403370 ui32 dw403370))
+		(403370 ui32 dw403370)
+		(403378 <unknown> t403378)
+		(403384 <unknown> t403384)
+		(403388 <unknown> t403388))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_3: (fn void (Eq_5))
 	T_3 (in InitializeCriticalSection @ 00401006 : ptr32)
@@ -5693,9 +5697,13 @@ union _SLIST_HEADER {
 	ui32 dw403350;	// 403350
 	byte b403354;	// 403354
 	union _SLIST_HEADER u403358;	// 403358
+	<unknown> t403360;	// 403360
 	ui32 dw403368;	// 403368
 	word32 dw40336C;	// 40336C
 	ui32 dw403370;	// 403370
+	<unknown> t403378;	// 403378
+	<unknown> t403384;	// 403384
+	<unknown> t403388;	// 403388
 } Eq_1;
 
 typedef void (Eq_3)(LPCRITICAL_SECTION);

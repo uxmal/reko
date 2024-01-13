@@ -1178,7 +1178,7 @@ l000123C8:
 	struct Eq_n * i6_n;
 	xmalloc(out i1_n, out i2_n, out i6_n);
 	Eq_n l4_n;
-	if (i1_n != 0x00)
+	if (i1_n != null)
 	{
 		l4_n.u0 = 0x0C;
 		i6_n->tFFFFFFA8.u0 = 0x00;
@@ -1673,7 +1673,7 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 			xstrerror(l2_n);
 			fprintf(&g_t2B640, ": %s\n", l2_n);
 			Eq_n i0_n = pwait(&g_dw17270, out i2_n, out i6_n);
-			l0Out = 0x00017270;
+			l0Out = &g_dw17270;
 			l1Out = (struct stat *) &g_t2B640;
 			l4Out = l4_n;
 			i0Out = i0_n;
@@ -2066,8 +2066,8 @@ uint32 output_bytes(Eq_n o0, Eq_n o1, ptr32 & l1Out, ptr32 & l2Out, union Eq_n &
 	}
 	memcpy(g_dw28210 + 0x01, i0_n, (size_t) i1_n);
 	g_dw28210 = (word32) i1_n + g_dw28210;
-	l1Out = 0x00028000;
-	l2Out = 0x00028000;
+	l1Out = &g_t28000;
+	l2Out = &g_t28000;
 	i0Out = i0_n;
 	i1Out = i1_n;
 	i2Out = i2_n;
@@ -2236,7 +2236,7 @@ l00013BAC:
 				i0_n.u0 = 0x01;
 				goto l00013DFC;
 			}
-			v34_n = i1_n != 0x00;
+			v34_n = i1_n != null;
 		}
 		else
 		{
@@ -2312,7 +2312,7 @@ l00013D80:
 		word32 i0_n;
 		l1_n = output_up_to(l1_n, out l2_n, out i0_n, out i1_n, out i2_n);
 		ui32 o0_n;
-		if (i1_n == 0x00)
+		if (i1_n == null)
 		{
 			word32 i0_n;
 			l1_n = output_string(i2_n->t0024.u0, out l2_n, out i0_n, out i1_n, out i2_n);
@@ -3673,7 +3673,7 @@ l00016114:
 								int32 o0_n = (int32) l2_n->t0000.u1;
 								word32 i0_n = 0x00;
 								word32 o1_n = i6_n->ptr0050->dw0000;
-								ptr32 l7 = ~0x00;
+								ptr32 l7 = (<unknown>*) ~0x00;
 								while (o0_n != 0x00)
 								{
 									int32 g0_n = o0_n - 0x3D;
@@ -3685,7 +3685,7 @@ l00016114:
 								struct Eq_n * l1_n = i6_n->ptr0050;
 								if (o1_n != 0x00)
 								{
-									ptr32 l4_n = 0x00;
+									ptr32 l4_n = null;
 l0001615C:
 									struct Eq_n * o1_n = g_ptr2B2C0;
 									if (strncmp(l1_n->dw0000, o1_n, l2_n - o1_n) != 0x00)
@@ -3873,7 +3873,7 @@ l000164A0:
 											optind = (ptr32 *) ((char *) o0_n + 1);
 											goto l0001663C;
 										}
-										l7 = 0x00;
+										l7 = null;
 										ptr32 * o2_n = optind;
 										if (o2_n != i6_n->ptr0044)
 										{
@@ -3882,7 +3882,7 @@ l000164A0:
 l0001663C:
 											struct Eq_n * l1_n = optarg;
 											g_ptr2B2C0 = l1_n;
-											l7 = 0x00;
+											l7 = null;
 											while (true)
 											{
 												int32 o0_n = (int32) l1_n->t0000.u1;
@@ -3893,7 +3893,7 @@ l0001663C:
 											struct Eq_n * i3_n = i6_n->ptr0050;
 											if (i3_n->dw0000 != 0x00)
 											{
-												ptr32 l2_n = 0x00;
+												ptr32 l2_n = null;
 l00016670:
 												struct Eq_n * o1_n = g_ptr2B2C0;
 												if (strncmp(i3_n->dw0000, o1_n, l1_n - o1_n) != 0x00)
@@ -3993,7 +3993,7 @@ l00016874:
 												fprintf(&g_t2B640, "%s: option `-W %s' doesn't allow an argument\n", i1_n[0], l3_n->dw0000);
 											g_ptr2B2C0 += (uint32) strlen(g_ptr2B2C0);
 l00016978:
-											l6Out = 0x0002B000;
+											l6Out = &g_t2B000;
 											l7Out = l7;
 											i6Out = i6_n;
 											return l0_n;
@@ -4273,7 +4273,7 @@ l00016AEC:
 		else
 			i0_n = l1;
 l00016C24:
-		l0Out = 0x0002B000;
+		l0Out = &g_t2B000;
 		ptr32 fp;
 		i6Out = fp;
 		return i0_n;

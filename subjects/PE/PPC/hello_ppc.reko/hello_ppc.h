@@ -5366,7 +5366,7 @@ T_864: (in 0<32> @ 00401010 : word32)
   Class: Eq_774
   DataType: ptr32
   OrigDataType: word32
-T_865: (in r3_38 != 0<32> @ 00401010 : bool)
+T_865: (in r3_38 != null @ 00401010 : bool)
   Class: Eq_865
   DataType: bool
   OrigDataType: bool
@@ -7398,7 +7398,7 @@ T_1372: (in 0<32> @ 004014B0 : word32)
   Class: Eq_1367
   DataType: ptr32
   OrigDataType: word32
-T_1373: (in r3 == 0<32> @ 004014B0 : bool)
+T_1373: (in r3 == null @ 004014B0 : bool)
   Class: Eq_1373
   DataType: bool
   OrigDataType: bool
@@ -7406,7 +7406,7 @@ T_1374: (in 0<32> @ 004014C8 : word32)
   Class: Eq_1367
   DataType: ptr32
   OrigDataType: word32
-T_1375: (in r3 != 0<32> @ 004014C8 : bool)
+T_1375: (in r3 != null @ 004014C8 : bool)
   Class: Eq_1375
   DataType: bool
   OrigDataType: bool
@@ -15152,7 +15152,7 @@ T_3307: (in 0<32> @ 004029C8 : word32)
   Class: Eq_3286
   DataType: ptr32
   OrigDataType: word32
-T_3308: (in r3_36 == 0<32> @ 004029C8 : bool)
+T_3308: (in r3_36 == null @ 004029C8 : bool)
   Class: Eq_3308
   DataType: bool
   OrigDataType: bool
@@ -15984,7 +15984,7 @@ T_3515: (in 0x220<32> @ 00402AE4 : word32)
   Class: Eq_3514
   DataType: ptr32
   OrigDataType: word32
-T_3516: (in fp != 0x220<32> @ 00402AE4 : bool)
+T_3516: (in fp != (<unknown>*) 0x220<32> @ 00402AE4 : bool)
   Class: Eq_3516
   DataType: bool
   OrigDataType: bool

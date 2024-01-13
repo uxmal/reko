@@ -10,6 +10,7 @@ Eq_1: (struct "Globals"
 		(4 (ptr32 Eq_5) ptr0004)
 		(8 (arr word32) a0008)
 		(10 (arr ui32) a0010)
+		(12BC <unknown> t12BC)
 		(16B0 byte b16B0)
 		(16CC (struct "Eq_552" 0001 (0 uint8 b0000) (1 cu8 b0001)) t16CC)
 		(16D0 byte b16D0)
@@ -17,6 +18,8 @@ Eq_1: (struct "Globals"
 		(16F0 (struct "Eq_552" 0001) t16F0)
 		(16F4 byte b16F4)
 		(206C byte b206C)
+		(2078 <unknown> t2078)
+		(2088 <unknown> t2088)
 		(2B15 (arr byte) a2B15)
 		(4000 Eq_5 t4000)
 		(40F8 (ptr32 Eq_14) ptr40F8)
@@ -2418,7 +2421,7 @@ T_30: (in 0<i32> @ 0000104C : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_31: (in OpenLibrary(0x12BC<u32>, 0<i32>) @ 0000104C : word32)
+T_31: (in OpenLibrary(&g_t12BC, 0<i32>) @ 0000104C : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
@@ -14238,7 +14241,7 @@ T_2985: (in 00000014 @ 000026AA : ptr32)
   Class: Eq_432
   DataType: ptr32
   OrigDataType: ptr32
-T_2986: (in fn0000131C(0x14<u32>) @ 000026AA : word32)
+T_2986: (in fn0000131C((<unknown>*) 0x14<u32>) @ 000026AA : word32)
   Class: Eq_534
   DataType: word32
   OrigDataType: word32
@@ -27670,6 +27673,7 @@ struct Globals {
 	struct Eq_5 * ptr0004;	// 4
 	word32 a0008[];	// 8
 	ui32 a0010[];	// 10
+	<unknown> t12BC;	// 12BC
 	byte b16B0;	// 16B0
 	struct Eq_552 t16CC;	// 16CC
 	byte b16D0;	// 16D0
@@ -27677,6 +27681,8 @@ struct Globals {
 	struct Eq_552 t16F0;	// 16F0
 	byte b16F4;	// 16F4
 	byte b206C;	// 206C
+	<unknown> t2078;	// 2078
+	<unknown> t2088;	// 2088
 	byte a2B15[];	// 2B15
 	Eq_5 t4000;	// 4000
 	struct Eq_14 * ptr40F8;	// 40F8

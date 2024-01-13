@@ -5,6 +5,7 @@
 #include "ping.h"
 
 byte g_b4303C0 = 0x00; // 004303C0
+<unknown> g_t4303C4 = // 004303C4;
 Eq_n g_t431488 = // 00431488
 	{
 		0x00
@@ -35,6 +36,7 @@ Eq_n ni_subject = // 004314D4
 		0
 	};
 ui32 ni_flag = 0x00; // 004314D8
+<unknown> g_t4314DC = // 004314DC;
 word16 g_w4324DE = 0x00; // 004324DE
 Eq_n g_t4324E4 = // 004324E4
 	{
@@ -125,3 +127,4 @@ Eq_n __stdin_used = // 00432F30
 	{
 		0
 	};
+<unknown> g_t432F40 = // 00432F40;

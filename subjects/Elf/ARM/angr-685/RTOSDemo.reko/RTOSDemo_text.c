@@ -179,20 +179,20 @@ word32 prvSetAndCheckRegisters(word32 cpsr, ptr32 & r4Out, ptr32 & r5Out, ptr32 
 	if (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || false))))))))))))
 	{
 		word32 r0_n = vSetErrorLED(cpsr);
-		r4Out = <invalid>;
-		r5Out = <invalid>;
-		r6Out = <invalid>;
-		r7Out = <invalid>;
-		r8Out = <invalid>;
+		r4Out = (<unknown>*) <invalid>;
+		r5Out = (<unknown>*) <invalid>;
+		r6Out = (<unknown>*) <invalid>;
+		r7Out = (<unknown>*) <invalid>;
+		r8Out = (<unknown>*) <invalid>;
 		return r0_n;
 	}
 	else
 	{
-		r4Out = <invalid>;
-		r5Out = <invalid>;
-		r6Out = <invalid>;
-		r7Out = <invalid>;
-		r8Out = <invalid>;
+		r4Out = (<unknown>*) <invalid>;
+		r5Out = (<unknown>*) <invalid>;
+		r6Out = (<unknown>*) <invalid>;
+		r7Out = (<unknown>*) <invalid>;
+		r8Out = (<unknown>*) <invalid>;
 		return 11;
 	}
 }
@@ -1515,7 +1515,7 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 	up32 r0_n = r4_n->dw002C;
 	up32 r3_n = *((char *) *r5_n + 44);
 	bool Z_n = SLICE(cond(r0_n - r3_n), bool, 2);
-	r0Out = 0x01;
+	r0Out = &g_dw0001;
 	return Z_n;
 }
 

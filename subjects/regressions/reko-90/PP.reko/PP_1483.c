@@ -108,14 +108,14 @@ Eq_n fn1483-0C91(Eq_n ds_bx, struct Eq_n * ss_bp, cu8 al, Eq_n cx, Eq_n si, Eq_n
 	{
 		Eq_n ax_n = fn1483-0C55();
 		diOut = di;
-		esOut.u1 = <invalid>;
+		esOut.u1 = (<unknown>*) <invalid>;
 		return ax_n;
 	}
 	else if (*((word32) ds_bx + (uipr32) si) *s16 0x18 == 0x00 && cx != 0x01)
 	{
 		Eq_n ax_n = fn1483-0CA0(SEQ(psegArg00, di), ss_bp, si, ds, out di_n);
 		diOut = di_n;
-		esOut.u1 = <invalid>;
+		esOut.u1 = (<unknown>*) <invalid>;
 		return ax_n;
 	}
 	else
@@ -123,7 +123,7 @@ Eq_n fn1483-0C91(Eq_n ds_bx, struct Eq_n * ss_bp, cu8 al, Eq_n cx, Eq_n si, Eq_n
 		Mem50[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx - 0x01);
 		Eq_n ax_n = fn1483-0CA0(SEQ(psegArg00, di), ss_bp, si, ds, out di_n);
 		diOut = di_n;
-		esOut.u1 = <invalid>;
+		esOut.u1 = (<unknown>*) <invalid>;
 		return ax_n;
 	}
 }
@@ -542,8 +542,8 @@ segptr32 fn1483-1BB8(byte * ds_si, byte al, byte ah, ui16 cx, Eq_n dx, Eq_n bx, 
 	struct Eq_n * es_n;
 	struct Eq_n * ds_n;
 	axOut = fn1483-1BB9(ax_n, cx, dx, bx, bp, si, di, es, ds, out cx_n, out dh_n, out bx_n, out bp_n, out si_n, out di_n, out es_n, out ds_n);
-	cxOut.u1 = <invalid>;
-	dhOut.u1 = <invalid>;
+	cxOut.u1 = (<unknown>*) <invalid>;
+	dhOut.u1 = (<unknown>*) <invalid>;
 	bxOut = bx_n;
 	siOut = si_n;
 	diOut = di_n;
@@ -591,15 +591,15 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 					{
 						__sti();
 						(5251->*bx)();
-						cxOut.u1 = <invalid>;
-						dhOut.u1 = <invalid>;
+						cxOut.u1 = (<unknown>*) <invalid>;
+						dhOut.u1 = (<unknown>*) <invalid>;
 						ptr16 bx_n;
 						bxOut = bx_n;
 						bpOut = bp;
 						siOut = ax;
 						diOut = di;
 						esOut = es_n;
-						dsOut.u1 = <invalid>;
+						dsOut.u1 = (<unknown>*) <invalid>;
 						word16 cx_n = (word16) ecx_n;
 						Eq_n ax_n;
 						return ax_n;
@@ -647,14 +647,14 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 			{
 				byte bh_n = bh_n | ds->*((word16) bx + 3);
 				(ss->*sp_n).tFFFFFFFE.u0 = (struct Eq_n *) es;
-				cxOut.u1 = <invalid>;
-				dhOut.u1 = <invalid>;
+				cxOut.u1 = (<unknown>*) <invalid>;
+				dhOut.u1 = (<unknown>*) <invalid>;
 				bxOut = SEQ(bh_n, bl_n);
 				bpOut = bp - 0x02;
 				siOut.u0 = 29289;
 				diOut = di;
 				esOut = es;
-				dsOut.u1 = <invalid>;
+				dsOut.u1 = (<unknown>*) <invalid>;
 				return ax_n - 34302;
 			}
 			(ss->*sp_n).tFFFFFFFE.u0 = 25445;

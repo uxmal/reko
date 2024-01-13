@@ -28,7 +28,7 @@ void fn000015E8(word32 d3, word32 a2, ptr32 a5, word32 a6, word32 dwArg04)
 	if (a5_n->aFFFFF578[d3_n] == 0x00)
 	{
 		ptr32 * a7_n;
-		*a7_n = 0x0200;
+		*a7_n = (<unknown>*) 0x0200;
 		(*((char *) &a5_n->dwFFFFFAA8 + 0x05CA))();
 		word32 d0_n;
 		a5_n->aFFFFF578[d3_n] = d0_n;
@@ -743,7 +743,7 @@ struct Eq_n * fn00002014(struct Eq_n * a2, struct Eq_n * a5, struct Eq_n * a6, s
 	struct Eq_n * a2_n;
 	ptr32 d0_n;
 	a2_n->ptr0008 = d0_n;
-	if (d0_n != 0x00)
+	if (d0_n != null)
 	{
 		__bset<word16>(a2_n->t000F.u1, 0x03, out a2_n->t000F.u1);
 		a2_n->dw0018 = 0x0200;

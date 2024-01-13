@@ -27,7 +27,7 @@ void fn0000000000001498()
 // 00000000000014B0: void fn00000000000014B0()
 void fn00000000000014B0()
 {
-	if (0x00020008 == 0x00020008)
+	if (&g_t20008 == &g_t20008)
 		return;
 	<anonymous> * x1_n = g_ptr1FFA0;
 	if (x1_n == null)

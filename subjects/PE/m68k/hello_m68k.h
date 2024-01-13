@@ -7582,7 +7582,7 @@ T_1593: (in 0<32> @ 00002030 : word32)
   Class: Eq_1588
   DataType: ptr32
   OrigDataType: word32
-T_1594: (in d0_22 == 0<32> @ 00002030 : bool)
+T_1594: (in d0_22 == null @ 00002030 : bool)
   Class: Eq_1594
   DataType: bool
   OrigDataType: bool

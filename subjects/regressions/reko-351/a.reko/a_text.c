@@ -9,7 +9,7 @@
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (false && 0x00 != 0x00)
+	if (false && null != null)
 		fn00000000(&g_b80002724);
 }
 
@@ -22,7 +22,7 @@ void register_tm_clones()
 	if (true)
 		d0_n = 0x01;
 	int32 d0_n = d0_n >> 0x01;
-	if (d0_n != 0x00 && 0x00 != 0x00)
+	if (d0_n != 0x00 && null != null)
 		fn00000000(&g_b80002724, d0_n);
 }
 
@@ -47,8 +47,8 @@ void __do_global_dtors_aux()
 			} while (d2_n > d0_n);
 		}
 		deregister_tm_clones();
-		if (0x00 != 0x00)
-			fn00000000(0x8000065C);
+		if (null != null)
+			fn00000000(&g_t8000065C);
 		g_b80002724 = 0x01;
 	}
 }
@@ -61,9 +61,9 @@ void call___do_global_dtors_aux()
 // 80000160: void frame_dummy()
 void frame_dummy()
 {
-	if (0x00 != 0x00)
-		fn00000000(0x8000065C, 0x8000272A);
-	if (g_dw8000271C != 0x00 && 0x00 != 0x00)
+	if (null != null)
+		fn00000000(&g_t8000065C, &g_t8000272A);
+	if (g_dw8000271C != 0x00 && null != null)
 	{
 		fn00000000(&g_dw8000271C);
 		register_tm_clones();

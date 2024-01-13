@@ -2294,7 +2294,7 @@ T_413: (in out edi_222 @ 100012CC : ptr32)
   Class: Eq_404
   DataType: ptr32
   OrigDataType: ptr32
-T_414: (in fn10001742(InterlockedCompareExchange, 0x100033AC<p32>, 2<32>, out edi_222) @ 100012CC : word32)
+T_414: (in fn10001742(InterlockedCompareExchange, &g_t100033AC, 2<32>, out edi_222) @ 100012CC : word32)
   Class: Eq_414
   DataType: word32
   OrigDataType: word32
@@ -2302,7 +2302,7 @@ T_415: (in 0<32> @ 100012CC : word32)
   Class: Eq_414
   DataType: word32
   OrigDataType: word32
-T_416: (in fn10001742(InterlockedCompareExchange, 0x100033AC<p32>, 2<32>, out edi_222) == 0<32> @ 100012CC : bool)
+T_416: (in fn10001742(InterlockedCompareExchange, &g_t100033AC, 2<32>, out edi_222) == 0<32> @ 100012CC : bool)
   Class: Eq_416
   DataType: bool
   OrigDataType: bool

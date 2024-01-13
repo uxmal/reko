@@ -7,6 +7,18 @@
 Eq_1: (struct "Globals"
 		(14 Eq_1379 t0014)
 		(18 Eq_36 t0018)
+		(17B4 <unknown> t17B4)
+		(17C6 <unknown> t17C6)
+		(17DB <unknown> t17DB)
+		(1830 <unknown> t1830)
+		(1873 <unknown> t1873)
+		(18C8 <unknown> t18C8)
+		(191D <unknown> t191D)
+		(1972 <unknown> t1972)
+		(19BE <unknown> t19BE)
+		(19F8 <unknown> t19F8)
+		(1A44 <unknown> t1A44)
+		(1A90 <unknown> t1A90)
 		(2684 (arr word32) a2684)
 		(30C8 code t30C8)
 		(319B (fn void (int32)) t319B)
@@ -15,6 +27,7 @@ Eq_1: (struct "Globals"
 		(3BF3 code t3BF3)
 		(5340 (struct "Eq_37" (0 word32 dw0000) (38 word32 dw0038) (56 word16 w0056) (58 word16 w0058) (68 byte b0068)) t5340)
 		(5410 (struct "_acl" 0001 (0 char b0000) (1 byte b0001) (2 byte b0002) (8 Eq_560 t0008) (10 ptr64 ptr0010)) t5410)
+		(5411 <unknown> t5411)
 		(5770 void v5770)
 		(6028 (ptr64 code) __imp___DefaultRuneLocale)
 		(6030 (ptr64 code) __imp____stack_chk_guard)
@@ -818,7 +831,7 @@ Eq_1367: (struct "Eq_1367" 0002 (FFFFFFFF byte bFFFFFFFF))
 	T_1367 (in rax_27 + 1<i64> @ 00000001000032B4 : word64)
 	T_1368 (in qwLoc48_209 @ 00000001000032B4 : (ptr64 Eq_1367))
 	T_1381 (in rax_54 @ 00000001000032F6 : (ptr64 Eq_1367))
-	T_1394 (in qwLoc40_211 * 2<64> + 1<i64> + 0x100005411<u64> @ 00000001000032F1 : word64)
+	T_1394 (in qwLoc40_211 * 2<64> + 1<i64> + 0x0000000100005411<p64> @ 00000001000032F1 : word64)
 	T_1447 (in qwLoc48_209 + 2<64> @ 00000001000033CA : word64)
 Eq_1375: (struct "Eq_1375" 000C (0 (arr word32) a0000))
 	T_1375 (in 00000001000065F8 @ 00000001000032C2 : ptr64)
@@ -7028,7 +7041,7 @@ T_1393: (in qwLoc40_211 * 2<64> + 1<i64> @ 00000001000032F1 : word64)
   Class: Eq_1393
   DataType: ui64
   OrigDataType: ui64
-T_1394: (in qwLoc40_211 * 2<64> + 1<i64> + 0x100005411<u64> @ 00000001000032F1 : word64)
+T_1394: (in qwLoc40_211 * 2<64> + 1<i64> + 0x0000000100005411<p64> @ 00000001000032F1 : word64)
   Class: Eq_1367
   DataType: (ptr64 Eq_1367)
   OrigDataType: ui64
@@ -12194,7 +12207,7 @@ T_2680: (in 0<64> @ 0000000100004413 : word64)
   Class: Eq_2672
   DataType: ptr64
   OrigDataType: word64
-T_2681: (in rax_926 == 0<64> @ 0000000100004413 : bool)
+T_2681: (in rax_926 == null @ 0000000100004413 : bool)
   Class: Eq_2681
   DataType: bool
   OrigDataType: bool
@@ -16496,6 +16509,18 @@ struct Eq_1375;
 struct Globals {
 	Eq_1379 t0014;	// 14
 	Eq_36 t0018;	// 18
+	<unknown> t17B4;	// 17B4
+	<unknown> t17C6;	// 17C6
+	<unknown> t17DB;	// 17DB
+	<unknown> t1830;	// 1830
+	<unknown> t1873;	// 1873
+	<unknown> t18C8;	// 18C8
+	<unknown> t191D;	// 191D
+	<unknown> t1972;	// 1972
+	<unknown> t19BE;	// 19BE
+	<unknown> t19F8;	// 19F8
+	<unknown> t1A44;	// 1A44
+	<unknown> t1A90;	// 1A90
 	word32 a2684[];	// 2684
 	<anonymous> t30C8;	// 30C8
 	void t319B(int32 rdi);	// 319B
@@ -16504,6 +16529,7 @@ struct Globals {
 	<anonymous> t3BF3;	// 3BF3
 	struct Eq_37 t5340;	// 5340
 	struct _acl t5410;	// 5410
+	<unknown> t5411;	// 5411
 	void v5770;	// 5770
 	<anonymous> * __imp___DefaultRuneLocale;	// 6028
 	<anonymous> * __imp____stack_chk_guard;	// 6030

@@ -103,7 +103,7 @@ byte g_b414B = 0x00; // 414B
 //      fn00004000
 void main(cui16 sr, uint16 r8)
 {
-	__set_stackpointer(0x0A00);
+	__set_stackpointer((<unknown>*) 0x0A00);
 	*(word16 *) 288 = 0x5A80;
 	((union Eq_n *) 0x56)->u1 = ~0x1F;
 	((union Eq_n *) 0x57)->u1 = 0x07;
@@ -349,7 +349,7 @@ cui16 xTaskCreate(cui16 sr, ui16 r13, byte * r14, uint16 wArg02, ptr16 & r15Out)
 		if (uxTopReadyPriority >= v28_n)
 			uxTopReadyPriority = v28_n;
 		vListInsertEnd(&r15_n->w0008, v28_n * 0x10 + 0x0222);
-		r10_n = 0x01;
+		r10_n = (<unknown>*) 0x01;
 		if (usCriticalNesting != 0x00)
 		{
 			word16 v44_n = usCriticalNesting;
@@ -359,8 +359,8 @@ cui16 xTaskCreate(cui16 sr, ui16 r13, byte * r14, uint16 wArg02, ptr16 & r15Out)
 		}
 	}
 	else
-		r10_n = ~0x00;
-	if (r10_n == 0x01)
+		r10_n = &g_tFFFFFFFF;
+	if (r10_n == (<unknown>*) 0x01)
 	{
 		if (r5_n != null)
 			*r5_n = (struct Eq_n **) r15_n;
@@ -578,7 +578,7 @@ word16 xTaskResumeAll(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Ou
 	++usCriticalNesting;
 	word16 v10_n = uxSchedulerSuspended;
 	uxSchedulerSuspended = v10_n + ~0x00;
-	ptr16 r8_n = 0x00;
+	ptr16 r8_n = null;
 	word16 r4;
 	ptr16 r5;
 	ptr16 r6;
@@ -1068,7 +1068,7 @@ word16 xQueueCreate(Eq_n r15, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
 	}
 	r6Out = r6;
 	r7Out = r7;
-	r15Out = 0x00;
+	r15Out = null;
 	return r4;
 }
 
@@ -1135,7 +1135,7 @@ cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
 	++usCriticalNesting;
 	ptr16 r10_n;
 	if (r11_n.u1->w0028 < (r11_n.u1)->w002A)
-		r10_n = ~0x02;
+		r10_n = &g_tFFFFFFFD;
 	else
 	{
 		sr = memcpy(sr, r11_n.u1->t002C.u0, r9_n, r11_n.u1->ptr0004);
@@ -1145,7 +1145,7 @@ cui16 xQueueSend(cui16 sr, word16 r13, byte * r14, Eq_n r15, ptr16 & r15Out)
 		if (r15_n < (r11_n.u1)->ptr0002)
 			r11_n.u1->ptr0004 = r11_n.u1->ptr0000;
 		++r11_n.u1->w0030;
-		r10_n = 0x01;
+		r10_n = (<unknown>*) 0x01;
 	}
 	if (usCriticalNesting != 0x00)
 	{
@@ -1475,7 +1475,7 @@ word16 pvPortMalloc(ui16 r15, ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16
 	ptr16 r6_n;
 	ptr16 r5_n;
 	ui16 r11_n = r15;
-	ptr16 r10_n = 0x00;
+	ptr16 r10_n = null;
 	if ((r15 & 0x01) != 0x00)
 		r11_n = r15 - (r15 & 0x01) + 0x02;
 	vTaskSuspendAll();
@@ -1635,7 +1635,7 @@ struct Eq_n * PRINT(word16 r14, struct Eq_n * r15)
 			ci16 r15_n;
 			if (r15_n < 0x00)
 			{
-				r15_n = (struct Eq_n *) &g_tFFFFFFFF;
+				r15_n = &g_tFFFFFFFF;
 				return r15_n;
 			}
 			++total_len;
@@ -2389,7 +2389,7 @@ bool fn00005B4E(uint32 r11_r10, uint16 r8, uint16 r12, uint16 r13, union Eq_n & 
 		}
 	}
 	r13_r12Out.u1 = <invalid>;
-	r15_r14Out.u1 = <invalid>;
+	r15_r14Out.u1 = (<unknown>*) <invalid>;
 	r8Out = r8_n;
 	return C_n;
 }

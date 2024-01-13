@@ -24,7 +24,7 @@ void fn00001000(int32 d0, byte * a0)
 	g_ptr13C8 = fp;
 	g_ptr13CC = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
-	word32 d0_n = OpenLibrary(0x12BC, 0);
+	word32 d0_n = OpenLibrary(&g_t12BC, 0);
 	if (d0_n != 0x00)
 	{
 		g_dw13D0 = d0_n;
@@ -254,6 +254,7 @@ void fn0000127C()
 	FreeMem(v8_n, v8_n->dw0000);
 }
 
+<unknown> g_t12BC = // 000012BC;
 // 000012D0: void fn000012D0(Stack word32 dwArg04)
 // Called from:
 //      fn0000131C

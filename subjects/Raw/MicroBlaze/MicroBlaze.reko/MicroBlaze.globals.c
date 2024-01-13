@@ -86,6 +86,8 @@ Eq_n g_t0083 = // 00000083
 			&g_t4190C600,
 		}
 	};
+<unknown> g_t00CA = // 000000CA;
+<unknown> g_t0100 = // 00000100;
 Eq_n g_t0104 = // 00000104
 	{
 		
@@ -137,6 +139,8 @@ Eq_n g_t0130 = // 00000130
 	{
 		&g_t80000000,
 	};
+<unknown> g_t022C = // 0000022C;
+<unknown> g_t0234 = // 00000234;
 Eq_n g_t0400 = // 00000400
 	{
 		
@@ -194,6 +198,24 @@ Eq_n g_t0400 = // 00000400
 			0x30
 		},
 	};
+<unknown> g_t0588 = // 00000588;
+<unknown> g_t1000 = // 00001000;
+<unknown> g_t1C10 = // 00001C10;
+<unknown> g_t93EC = // 000093EC;
+<unknown> g_tB474 = // 0000B474;
+<unknown> g_tB490 = // 0000B490;
+<unknown> g_tB4AC = // 0000B4AC;
+<unknown> g_tB4C8 = // 0000B4C8;
+<unknown> g_tB4DC = // 0000B4DC;
+<unknown> g_tB728 = // 0000B728;
+<unknown> g_tB7D0 = // 0000B7D0;
+<unknown> g_tB7E8 = // 0000B7E8;
+<unknown> g_tB800 = // 0000B800;
+<unknown> g_tB840 = // 0000B840;
+<unknown> g_tC7B4 = // 0000C7B4;
+<unknown> g_tC8E0 = // 0000C8E0;
+<unknown> g_tFB60 = // 0000FB60;
+<unknown> g_tFB74 = // 0000FB74;
 Eq_n g_tFFDC = // 0000FFDC
 	{
 		
@@ -335,6 +357,7 @@ ui32 g_a1AB64[] = // 0001AB64
 	{
 	};
 byte g_b1ACD8 = 0xB0; // 0001ACD8
+<unknown> g_t1AE48 = // 0001AE48;
 Eq_n g_a1AED8[] = // 0001AED8
 	{
 	};
@@ -352,6 +375,7 @@ Eq_n g_a1B430[] = // 0001B430
 int32 g_a1B4A8[] = // 0001B4A8
 	{
 	};
+<unknown> g_t1B53C = // 0001B53C;
 word32 g_dw1B5B8 = 0xBC030150; // 0001B5B8
 Eq_n g_t1B5C0 = // 0001B5C0
 	{
@@ -361,8 +385,199 @@ word32 g_dw1B5C4 = 0xF8830014; // 0001B5C4
 word32 g_a1C5D0[] = // 0001C5D0
 	{
 	};
+<unknown> g_t1CCFC = // 0001CCFC;
+<unknown> g_t1CD60 = // 0001CD60;
+<unknown> g_t1CF1C = // 0001CF1C;
 word32 g_a1D1D0[] = // 0001D1D0
 	{
 	};
+<unknown> g_t1D3C4 = // 0001D3C4;
+<unknown> g_t1D3DC = // 0001D3DC;
+<unknown> g_t1D400 = // 0001D400;
+<unknown> g_t1DF0C = // 0001DF0C;
+<unknown> g_t1DF58 = // 0001DF58;
+<unknown> g_t1E060 = // 0001E060;
+<unknown> g_t1E088 = // 0001E088;
+<unknown> g_t1E1E4 = // 0001E1E4;
+<unknown> g_t1E3B8 = // 0001E3B8;
+<unknown> g_t1E6E8 = // 0001E6E8;
+<unknown> g_t1E7AC = // 0001E7AC;
+<unknown> g_t1E7EC = // 0001E7EC;
+<unknown> g_t1E90C = // 0001E90C;
+<unknown> g_t1E92C = // 0001E92C;
+<unknown> g_t1E978 = // 0001E978;
+<unknown> g_t1E9FC = // 0001E9FC;
+<unknown> g_t1EF1C = // 0001EF1C;
+<unknown> g_t1EFC8 = // 0001EFC8;
+<unknown> g_t1F004 = // 0001F004;
+<unknown> g_t1F030 = // 0001F030;
+<unknown> g_t1F09C = // 0001F09C;
+<unknown> g_t1F0C4 = // 0001F0C4;
+<unknown> g_t1F154 = // 0001F154;
+<unknown> g_t1F190 = // 0001F190;
+<unknown> g_t1F234 = // 0001F234;
+<unknown> g_t1F3C8 = // 0001F3C8;
+<unknown> g_t1F420 = // 0001F420;
+<unknown> g_t1F480 = // 0001F480;
+<unknown> g_t1F4F4 = // 0001F4F4;
+<unknown> g_t1F690 = // 0001F690;
+<unknown> g_t1F794 = // 0001F794;
+<unknown> g_t1F9B8 = // 0001F9B8;
+<unknown> g_t1FD1C = // 0001FD1C;
+<unknown> g_t1FD60 = // 0001FD60;
+<unknown> g_t1FD98 = // 0001FD98;
+<unknown> g_t1FDC0 = // 0001FDC0;
+<unknown> g_t1FDF0 = // 0001FDF0;
+<unknown> g_t1FE50 = // 0001FE50;
+<unknown> g_t200F8 = // 000200F8;
+<unknown> g_t20114 = // 00020114;
+<unknown> g_t20170 = // 00020170;
+<unknown> g_t2017C = // 0002017C;
+<unknown> g_t20238 = // 00020238;
+<unknown> g_t20244 = // 00020244;
+<unknown> g_t2027C = // 0002027C;
+<unknown> g_t202C8 = // 000202C8;
+<unknown> g_t202D4 = // 000202D4;
+<unknown> g_t20300 = // 00020300;
+<unknown> g_t203AC = // 000203AC;
+<unknown> g_t203C8 = // 000203C8;
+<unknown> g_t203D8 = // 000203D8;
+<unknown> g_t2040C = // 0002040C;
+<unknown> g_t20420 = // 00020420;
+<unknown> g_t2044C = // 0002044C;
+<unknown> g_t20484 = // 00020484;
+<unknown> g_t20490 = // 00020490;
+<unknown> g_t204E0 = // 000204E0;
+<unknown> g_t204EC = // 000204EC;
+<unknown> g_t20510 = // 00020510;
+<unknown> g_t20534 = // 00020534;
+<unknown> g_t20558 = // 00020558;
+<unknown> g_t20564 = // 00020564;
+<unknown> g_t20DD8 = // 00020DD8;
+<unknown> g_t222C0 = // 000222C0;
+<unknown> g_t2232C = // 0002232C;
+<unknown> g_t2240C = // 0002240C;
+<unknown> g_t22514 = // 00022514;
+<unknown> g_t225D4 = // 000225D4;
+<unknown> g_t225F8 = // 000225F8;
+<unknown> g_t22B58 = // 00022B58;
+<unknown> g_t22E88 = // 00022E88;
+<unknown> g_t22EF4 = // 00022EF4;
+<unknown> g_t22F14 = // 00022F14;
+<unknown> g_t2331C = // 0002331C;
+<unknown> g_t23350 = // 00023350;
+<unknown> g_t23428 = // 00023428;
+<unknown> g_t234D4 = // 000234D4;
+<unknown> g_t235EC = // 000235EC;
+<unknown> g_t23620 = // 00023620;
+<unknown> g_t2375C = // 0002375C;
+<unknown> g_t23790 = // 00023790;
+<unknown> g_t2395C = // 0002395C;
+<unknown> g_t23994 = // 00023994;
+<unknown> g_t239D4 = // 000239D4;
+<unknown> g_t23A00 = // 00023A00;
+<unknown> g_t255CC = // 000255CC;
+<unknown> g_t25700 = // 00025700;
+<unknown> g_t25708 = // 00025708;
+<unknown> g_t25848 = // 00025848;
+<unknown> g_t259F4 = // 000259F4;
+<unknown> g_t25BFC = // 00025BFC;
+<unknown> g_t25C84 = // 00025C84;
+<unknown> g_t25CAC = // 00025CAC;
+<unknown> g_t25CB4 = // 00025CB4;
+<unknown> g_t25F84 = // 00025F84;
+<unknown> g_t25FA0 = // 00025FA0;
+<unknown> g_t26214 = // 00026214;
+<unknown> g_t26314 = // 00026314;
+<unknown> g_t2638C = // 0002638C;
+<unknown> g_t2639C = // 0002639C;
+<unknown> g_t26468 = // 00026468;
+<unknown> g_t2649C = // 0002649C;
+<unknown> g_t268E8 = // 000268E8;
+<unknown> g_t2698C = // 0002698C;
+<unknown> g_t269BC = // 000269BC;
+<unknown> g_t269EC = // 000269EC;
+<unknown> g_t26A1C = // 00026A1C;
+<unknown> g_t26A78 = // 00026A78;
+<unknown> g_t26AB0 = // 00026AB0;
+<unknown> g_t26B0C = // 00026B0C;
+<unknown> g_t26B44 = // 00026B44;
+<unknown> g_t26BD4 = // 00026BD4;
+<unknown> g_t26BF8 = // 00026BF8;
+<unknown> g_t26C20 = // 00026C20;
+<unknown> g_t26C4C = // 00026C4C;
+<unknown> g_t26C80 = // 00026C80;
+<unknown> g_t26CB0 = // 00026CB0;
+<unknown> g_t26CFC = // 00026CFC;
+<unknown> g_t26D58 = // 00026D58;
+<unknown> g_t26DE4 = // 00026DE4;
+<unknown> g_t26E5C = // 00026E5C;
+<unknown> g_t26EFC = // 00026EFC;
+<unknown> g_t26FF4 = // 00026FF4;
+<unknown> g_t2704C = // 0002704C;
+<unknown> g_t2709C = // 0002709C;
+<unknown> g_t270F8 = // 000270F8;
+<unknown> g_t27118 = // 00027118;
+<unknown> g_t27138 = // 00027138;
+<unknown> g_t27178 = // 00027178;
+<unknown> g_t271D0 = // 000271D0;
+<unknown> g_t27214 = // 00027214;
+<unknown> g_t2723C = // 0002723C;
+<unknown> g_t272E8 = // 000272E8;
+<unknown> g_t2733C = // 0002733C;
+<unknown> g_t27374 = // 00027374;
+<unknown> g_t27400 = // 00027400;
+<unknown> g_t27498 = // 00027498;
+<unknown> g_t274F0 = // 000274F0;
+<unknown> g_t2753C = // 0002753C;
+<unknown> g_t27574 = // 00027574;
+<unknown> g_t2759C = // 0002759C;
+<unknown> g_t27648 = // 00027648;
+<unknown> g_t276C8 = // 000276C8;
+<unknown> g_t2770C = // 0002770C;
+<unknown> g_t27780 = // 00027780;
+<unknown> g_t277D0 = // 000277D0;
+<unknown> g_t27834 = // 00027834;
+<unknown> g_t27864 = // 00027864;
+<unknown> g_t285D0 = // 000285D0;
+<unknown> g_t286EC = // 000286EC;
+<unknown> g_t28F24 = // 00028F24;
+<unknown> g_t290B8 = // 000290B8;
+<unknown> g_t2922C = // 0002922C;
+<unknown> g_t2929C = // 0002929C;
+<unknown> g_t29374 = // 00029374;
+<unknown> g_t29554 = // 00029554;
+<unknown> g_t295F4 = // 000295F4;
+<unknown> g_t29614 = // 00029614;
+<unknown> g_t29870 = // 00029870;
+<unknown> g_t2991C = // 0002991C;
+<unknown> g_t2997C = // 0002997C;
+<unknown> g_t29B58 = // 00029B58;
+<unknown> g_t2A26C = // 0002A26C;
+<unknown> g_t2A388 = // 0002A388;
+<unknown> g_t2B53C = // 0002B53C;
+<unknown> g_t2B59C = // 0002B59C;
+<unknown> g_t2CA9C = // 0002CA9C;
+<unknown> g_t2CADC = // 0002CADC;
+<unknown> g_t2CBC8 = // 0002CBC8;
+<unknown> g_t2CC24 = // 0002CC24;
+<unknown> g_t2CC78 = // 0002CC78;
+<unknown> g_t2CCAC = // 0002CCAC;
+<unknown> g_t2CCD8 = // 0002CCD8;
+<unknown> g_t2CFE4 = // 0002CFE4;
+<unknown> g_t2D18C = // 0002D18C;
+<unknown> g_t2D2CC = // 0002D2CC;
+<unknown> g_t2D304 = // 0002D304;
+<unknown> g_t2D3B8 = // 0002D3B8;
+<unknown> g_t2D63C = // 0002D63C;
+<unknown> g_t2D714 = // 0002D714;
+<unknown> g_t2D744 = // 0002D744;
+<unknown> g_t2DA58 = // 0002DA58;
+<unknown> g_t2DA90 = // 0002DA90;
+<unknown> g_t2DAC4 = // 0002DAC4;
+<unknown> g_t2DB9C = // 0002DB9C;
+<unknown> g_t2DCD4 = // 0002DCD4;
+<unknown> g_t2E710 = // 0002E710;
+<unknown> g_t2E7AC = // 0002E7AC;
 byte g_bFFFF8E64; // FFFF8E64
 byte g_bFFFFD644; // FFFFD644

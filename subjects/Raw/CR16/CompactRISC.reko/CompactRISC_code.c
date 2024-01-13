@@ -3957,7 +3957,7 @@ l0000A4A4:
 				if (wArg2A_n < 0x01)
 				{
 					r0_n = 0x00;
-					r3_r2_n = 0x00;
+					r3_r2_n = null;
 					r5_r4_n = r13_n;
 				}
 				else
@@ -5880,7 +5880,7 @@ word32 fn0000C0EE(Eq_n r3_r2, Eq_n r5_r4, Eq_n r13, ptr32 & r11_r10Out, struct E
 	word16 r10_n;
 	word16 r1_n;
 	word16 r0_n = fn0000BAE0(r3_r2, r5_r4, r13, out r1_n, out r10_n, out r11_n, out r13_n);
-	r11_r10Out = <invalid>;
+	r11_r10Out = (<unknown>*) <invalid>;
 	r13Out = r13_n;
 	return SEQ(r1_n, r0_n);
 }

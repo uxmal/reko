@@ -9,7 +9,7 @@
 //      fn00401010
 ptr32 fn00401000()
 {
-	return 0x00403378;
+	return &g_t403378;
 }
 
 // 00401010: void fn00401010(Stack word32 dwArg04)
@@ -325,7 +325,7 @@ void fn0040165E()
 //      Win32CrtStartup
 ptr32 fn00401761()
 {
-	return 0x00403384;
+	return &g_t403384;
 }
 
 // 00401767: Register ptr32 fn00401767()
@@ -333,7 +333,7 @@ ptr32 fn00401761()
 //      Win32CrtStartup
 ptr32 fn00401767()
 {
-	return 0x00403380;
+	return &g_t403380;
 }
 
 // 0040176D: void fn0040176D(Stack word32 dwArg04)

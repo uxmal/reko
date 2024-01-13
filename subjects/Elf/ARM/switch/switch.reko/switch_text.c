@@ -18,7 +18,7 @@ void (* g_ptr8368)() = __libc_csu_init; // 00008368
 //      _init
 word32 call_gmon_start()
 {
-	ptr32 r10_n = 0x8380 + g_dw8394;
+	ptr32 r10_n = (char *) &g_t8380 + g_dw8394;
 	<anonymous> * r3_n = *((word32) r10_n + g_dw8398);
 	if (r3_n == null)
 	{
@@ -30,6 +30,7 @@ word32 call_gmon_start()
 	return r10_n;
 }
 
+<unknown> g_t8380 = // 00008380;
 int32 g_dw8394 = 0x000084C8; // 00008394
 int32 g_dw8398 = 20; // 00008398
 // 0000839C: void __do_global_dtors_aux()
@@ -270,7 +271,7 @@ int32 g_dw86AC = 28; // 000086AC
 // 000086B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	ptr32 r10_n = 0x86C8 + g_dw8700;
+	ptr32 r10_n = (char *) &g_t86C8 + g_dw8700;
 	<anonymous> * r1_n[] = *((word32) r10_n + g_dw8704);
 	int32 r3_n = *((word32) r10_n + g_dw8708) - r1_n;
 	int32 r4_n = (r3_n >> 2) - 0x01;
@@ -280,6 +281,7 @@ void __libc_csu_fini()
 		r1_n[r4_n]();
 }
 
+<unknown> g_t86C8 = // 000086C8;
 int32 g_dw8700 = 0x00008180; // 00008700
 int32 g_dw8704 = 32; // 00008704
 int32 g_dw8708 = 36; // 00008708

@@ -47,6 +47,7 @@ Eq_n g_t28240 = // 00028240
 		0x00,
 		null,
 	};
+<unknown> g_t2B000 = // 0002B000;
 struct jmp_buf g_t2B240 = // 0002B240
 	{
 		,
