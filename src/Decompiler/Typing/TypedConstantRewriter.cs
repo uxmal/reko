@@ -477,8 +477,13 @@ namespace Reko.Typing
 			{
 				return Constant.RealFromBitpattern(pt, c!);
 			}
-			else
-			{
+			else if (pt.Domain == Domain.Pointer)
+            {
+                var ptr = new Pointer(new UnknownType(), pt.BitSize);
+                return VisitPointer(ptr);
+            }
+            else
+            {
                 return c!;
 			}
 		}

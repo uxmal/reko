@@ -64,7 +64,7 @@ void __do_global_dtors_aux()
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
 			dtor_idx.6258.u0 = (int32) r2_n;
-			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
+			<anonymous> ** r2_n = (<anonymous> **) ((char *) &g_t10A68 + (r2_n << 0x02));
 			(*r2_n)();
 			r2_n.u0 = dtor_idx.6258.u0;
 		}

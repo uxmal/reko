@@ -1285,7 +1285,7 @@ byte fn1353(byte a, byte * de, union Eq_n & lOut)
 {
 	uint16 hl_n = (uint16) a;
 	fn1356(de, hl_n);
-	lOut.u1 = <invalid>;
+	lOut.u1 = (<unknown>*) <invalid>;
 	byte a_n;
 	return a_n;
 }

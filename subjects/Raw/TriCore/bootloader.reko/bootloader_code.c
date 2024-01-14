@@ -904,7 +904,7 @@ void fn00001EE0()
 void fn00001F20()
 {
 		int32 d15_n = 0x00;
-		ptr32 a12_n = 0xC0001F64;
+		ptr32 a12_n = (<unknown>*) 0xC0001F64;
 		while (true)
 		{
 			<anonymous> * a15_n = *((word32) a12_n + d15_n);

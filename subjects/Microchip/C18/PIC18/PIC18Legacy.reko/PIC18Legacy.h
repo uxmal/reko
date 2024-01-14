@@ -16,7 +16,8 @@ Eq_1: (struct "Globals"
 		(C7 byte b00C7)
 		(C8 byte b00C8)
 		(C9 byte b00C9)
-		(CA byte b00CA))
+		(CA byte b00CA)
+		(14A <unknown> t014A))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_12: (fn void (cu8, Eq_15, Eq_16))
 	T_12 (in fn00000E @ 000146 : ptr32)
@@ -887,6 +888,7 @@ typedef struct Globals {
 	byte b00C8;	// C8
 	byte b00C9;	// C9
 	byte b00CA;	// CA
+	<unknown> t014A;	// 14A
 } Eq_1;
 
 typedef void (Eq_12)(cu8, Eq_15, Eq_16);

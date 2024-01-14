@@ -7,8 +7,8 @@
 // 0100: void fn0100()
 void fn0100()
 {
-	__mov(&g_tFFFF8000, 1218);
-	__mov(&g_tFFFF80E9, 0x05B7);
+	__mov(&g_tFFFF8000, &g_t04C2);
+	__mov(&g_tFFFF80E9, (char *) &g_r05B4 + 3);
 	fn0111();
 	while (true)
 		;
@@ -334,7 +334,7 @@ l00000406:
 		gp11[1] = (struct Eq_n) 0x2020;
 		return gp14;
 	}
-	__mov(gp11, 1555);
+	__mov(gp11, (char *) &g_r0610 + 3);
 	return gp14;
 }
 
@@ -395,6 +395,7 @@ void fn04B9(struct Eq_n * gp0)
 	}
 }
 
+<unknown> g_t04C2 = // 04C2;
 real48 g_r05AB = 0.0; // 05AB
 real48 g_r05AE = 0.590159880790452; // 05AE
 real48 g_r05B1 = 0.4173099999998158; // 05B1

@@ -5,7 +5,8 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
-		(FFFFFFFF (struct "Eq_50" 0001 (0 byte b0000) (FFFE Eq_3298 tFFFE)) tFFFFFFFF)
+		(FFFFFFFD <unknown> tFFFFFFFD)
+		(FFFFFFFF <unknown> tFFFFFFFF)
 		(1 byte b0001)
 		(5 byte b0005)
 		(1B byte b001B)
@@ -1701,7 +1702,7 @@ T_128: (in 0xA00<16> @ 414C : word16)
   Class: Eq_127
   DataType: ptr16
   OrigDataType: ptr16
-T_129: (in __set_stackpointer(0xA00<16>) @ 414C : void)
+T_129: (in __set_stackpointer((<unknown>*) 0xA00<16>) @ 414C : void)
   Class: Eq_129
   DataType: void
   OrigDataType: void
@@ -3675,7 +3676,7 @@ T_614: (in 1<16> @ 00004576 : word16)
   Class: Eq_172
   DataType: ptr16
   OrigDataType: word16
-T_615: (in r10_147 != 1<16> @ 00004576 : bool)
+T_615: (in r10_147 != (<unknown>*) 1<16> @ 00004576 : bool)
   Class: Eq_615
   DataType: bool
   OrigDataType: bool
@@ -16885,9 +16886,9 @@ T_3903:
   DataType: Eq_3903
   OrigDataType: 
 */
-typedef struct Eq_50;
-struct Globals {
-	struct Eq_50 tFFFFFFFF;	// FFFFFFFF
+typedef struct Globals {
+	<unknown> tFFFFFFFD;	// FFFFFFFD
+	<unknown> tFFFFFFFF;	// FFFFFFFF
 	byte b0001;	// 1
 	byte b0005;	// 5
 	byte b001B;	// 1B

@@ -112,7 +112,10 @@ Eq_1: (struct "Globals"
 		(403354 byte b403354)
 		(403368 ui32 dw403368)
 		(40336C word32 dw40336C)
-		(403370 ui32 dw403370))
+		(403370 ui32 dw403370)
+		(403378 <unknown> t403378)
+		(403380 <unknown> t403380)
+		(403384 <unknown> t403384))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn word32 (word32))
 	T_5 (in _acrt_iob_func @ 00401019 : ptr32)
@@ -4879,6 +4882,9 @@ typedef struct Globals {
 	ui32 dw403368;	// 403368
 	word32 dw40336C;	// 40336C
 	ui32 dw403370;	// 403370
+	<unknown> t403378;	// 403378
+	<unknown> t403380;	// 403380
+	<unknown> t403384;	// 403384
 } Eq_1;
 
 typedef word32 (Eq_5)(word32);

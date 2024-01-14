@@ -9,6 +9,7 @@ Eq_1: (struct "Globals"
 		(4 (ptr32 Eq_5) ptr0004)
 		(8 (arr word32) a0008)
 		(10 (arr ui32) a0010)
+		(12BC <unknown> t12BC)
 		(13A4 byte b13A4)
 		(13C8 (ptr32 Eq_14) ptr13C8)
 		(13CC (ptr32 Eq_5) ptr13CC)
@@ -299,7 +300,7 @@ T_30: (in 0<i32> @ 0000104C : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_31: (in OpenLibrary(0x12BC<u32>, 0<i32>) @ 0000104C : word32)
+T_31: (in OpenLibrary(&g_t12BC, 0<i32>) @ 0000104C : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
@@ -2489,6 +2490,7 @@ typedef struct Globals {
 	struct Eq_5 * ptr0004;	// 4
 	word32 a0008[];	// 8
 	ui32 a0010[];	// 10
+	<unknown> t12BC;	// 12BC
 	byte b13A4;	// 13A4
 	struct Eq_14 * ptr13C8;	// 13C8
 	struct Eq_5 * ptr13CC;	// 13CC

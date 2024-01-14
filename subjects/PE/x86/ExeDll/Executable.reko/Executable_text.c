@@ -23,7 +23,7 @@ word32 fn00401000()
 //      fn0040173F
 ptr32 fn00401050()
 {
-	return 0x00403378;
+	return &g_t403378;
 }
 
 // 00401060: void fn00401060(Stack word32 dwArg04)
@@ -416,7 +416,7 @@ void fn00401718()
 //      fn0040173F
 ptr32 fn00401739()
 {
-	return 0x00403360;
+	return &g_t403360;
 }
 
 // 0040173F: void fn0040173F()
@@ -442,7 +442,7 @@ void fn0040175C()
 //      Win32CrtStartup
 ptr32 fn00401768()
 {
-	return 0x00403388;
+	return &g_t403388;
 }
 
 // 0040176E: Register ptr32 fn0040176E()
@@ -450,7 +450,7 @@ ptr32 fn00401768()
 //      Win32CrtStartup
 ptr32 fn0040176E()
 {
-	return 0x00403384;
+	return &g_t403384;
 }
 
 // 00401774: void fn00401774(Stack word32 dwArg04)

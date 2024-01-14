@@ -14,7 +14,8 @@ Eq_1: (struct "Globals"
 		(1FFD0 word64 qw1FFD0)
 		(1FFD8 (ptr64 (ptr64 void)) ptr1FFD8)
 		(1FFE0 (ptr64 Eq_13) ptr1FFE0)
-		(1FFE8 (ptr64 Eq_10) ptr1FFE8))
+		(1FFE8 (ptr64 Eq_10) ptr1FFE8)
+		(20008 <unknown> t20008))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in fn0000000000001498 @ 0000000000000D90 : ptr64)
@@ -198,7 +199,7 @@ T_38: (in 0000000000020008 @ 00000000000014C4 : ptr64)
   Class: Eq_38
   DataType: ptr64
   OrigDataType: ptr64
-T_39: (in 0x20008<u64> == 0x20008<u64> @ 00000000000014C4 : bool)
+T_39: (in &g_t20008 == &g_t20008 @ 00000000000014C4 : bool)
   Class: Eq_39
   DataType: bool
   OrigDataType: bool
@@ -306,6 +307,7 @@ typedef struct Globals {
 	void ** ptr1FFD8;	// 1FFD8
 	void (* ptr1FFE0)();	// 1FFE0
 	int32 (* ptr1FFE8)(int32 x0, char ** x1, char ** x2);	// 1FFE8
+	<unknown> t20008;	// 20008
 } Eq_1;
 
 typedef void (Eq_2)();

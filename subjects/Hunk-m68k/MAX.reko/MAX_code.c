@@ -24,7 +24,7 @@ void fn00001000(int32 d0, byte * a0)
 	g_ptr3D90 = fp;
 	g_ptr3D94 = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
-	word32 d0_n = OpenLibrary(0x12BC, 0);
+	word32 d0_n = OpenLibrary(&g_t12BC, 0);
 	if (d0_n != 0x00)
 	{
 		g_dw3D98 = d0_n;
@@ -255,6 +255,7 @@ struct Eq_n * fn0000127C()
 	return v8_n;
 }
 
+<unknown> g_t12BC = // 000012BC;
 // 000012D0: Register word32 fn000012D0(Stack ptr32 dwArg04)
 // Called from:
 //      fn0000131C
@@ -1835,7 +1836,7 @@ word32 fn00002BBC()
 {
 	word32 a5;
 	if ((SetSignal(0, 0x1000) & 0x1000) != 0x00)
-		a5 = fn0000131C(0x14);
+		a5 = fn0000131C((<unknown>*) 0x14);
 	return a5;
 }
 
@@ -2279,9 +2280,9 @@ l00003450:
 						dwLoc44_n.u0 = 0x10;
 					ptr32 a6_n;
 					if (bLoc44_n != 88)
-						a6_n = 14484;
+						a6_n = &g_t3894;
 					else
-						a6_n = 14500;
+						a6_n = &g_t38A4;
 					Eq_n d3_n;
 					d3_n.u0 = 0x00;
 					int64 d6_d7_n = SEQ(dwLoc38_n, dwLoc34_n);
@@ -2442,6 +2443,8 @@ l000036A0:
 }
 
 byte g_b3888 = 0x25; // 00003888
+<unknown> g_t3894 = // 00003894;
+<unknown> g_t38A4 = // 000038A4;
 // 000038B4: Register uint32 fn000038B4(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
 // Called from:
 //      fn00002F34

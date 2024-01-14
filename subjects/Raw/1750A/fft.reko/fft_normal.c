@@ -567,7 +567,7 @@ l0458:
 		gp11[1] = (struct Eq_n) 0x2020;
 		return gp14;
 	}
-	__mov(gp11, 1410);
+	__mov(gp11, (char *) &g_r057F + 3);
 	return gp14;
 }
 
@@ -663,6 +663,9 @@ void pr_efp_num(word32 gp0_gp1, word16 gp2)
 	puts(cvea(gp0_gp1, &g_tFFFF806E, gp2));
 }
 
+<unknown> g_t050B = // 050B;
+<unknown> g_t0517 = // 0517;
+<unknown> g_t0526 = // 0526;
 Eq_n g_t0579 = // 0579
 	{
 		10.0F

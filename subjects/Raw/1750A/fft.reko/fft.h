@@ -36,6 +36,9 @@ Eq_1: (struct "Globals"
 		(FFFF806E (struct "Eq_748" 0001 (0 word16 w0000) (1 word16 w0001) (2 word16 w0002) (3 word16 w0003)) tFFFF806E)
 		(1 (arr Eq_1250 15) a0001)
 		(2 (arr Eq_1268 15) a0002)
+		(50B <unknown> t050B)
+		(517 <unknown> t0517)
+		(526 <unknown> t0526)
 		(579 Eq_953 t0579)
 		(57C Eq_953 t057C)
 		(57F real48 r057F)
@@ -444,7 +447,7 @@ T_7: (in 0x050B<p16> @ 0106 : ptr16)
   Class: Eq_5
   DataType: ptr16
   OrigDataType: ptr16
-T_8: (in __mov(&g_tFFFF8000, 0x050B<p16>) @ 0106 : void)
+T_8: (in __mov(&g_tFFFF8000, &g_t050B) @ 0106 : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
@@ -460,7 +463,7 @@ T_11: (in 0x0517<p16> @ 010D : ptr16)
   Class: Eq_5
   DataType: ptr16
   OrigDataType: ptr16
-T_12: (in __mov(&g_tFFFF800C, 0x0517<p16>) @ 010D : void)
+T_12: (in __mov(&g_tFFFF800C, &g_t0517) @ 010D : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
@@ -476,7 +479,7 @@ T_15: (in 0x0526<p16> @ 0114 : ptr16)
   Class: Eq_5
   DataType: ptr16
   OrigDataType: ptr16
-T_16: (in __mov(&g_tFFFF801B, 0x0526<p16>) @ 0114 : void)
+T_16: (in __mov(&g_tFFFF801B, &g_t0526) @ 0114 : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
@@ -4674,7 +4677,7 @@ T_1061: (in 0x0582<p16> @ 044D : ptr16)
   Class: Eq_5
   DataType: ptr16
   OrigDataType: ptr16
-T_1062: (in __mov(gp11, 0x0582<p16>) @ 044D : void)
+T_1062: (in __mov(gp11, (char *) &g_r057F + 3<i32>) @ 044D : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
@@ -5609,6 +5612,9 @@ struct Globals {
 	struct Eq_748 tFFFF806E;	// FFFF806E
 	Eq_1250 a0001[15];	// 1
 	Eq_1268 a0002[15];	// 2
+	<unknown> t050B;	// 50B
+	<unknown> t0517;	// 517
+	<unknown> t0526;	// 526
 	Eq_953 t0579;	// 579
 	Eq_953 t057C;	// 57C
 	real48 r057F;	// 57F

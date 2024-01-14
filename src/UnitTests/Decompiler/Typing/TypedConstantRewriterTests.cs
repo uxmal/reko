@@ -425,5 +425,18 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             Assert.AreEqual("12.75F", e.ToString());
         }
+
+        [Test]
+        public void Tcr_PrimitiveTypeWithPtrDomain()
+        {
+            Given_TypedConstantRewriter();
+            var c = Constant.Word32(0x00100080);
+            var tv = store.EnsureExpressionTypeVariable(factory, null, c);
+            tv.DataType = PrimitiveType.Ptr32;
+            tv.OriginalDataType = PrimitiveType.Ptr32;
+
+            var e = RewritePointer(c);
+            Assert.AreEqual("&g_t100080", e.ToString());
+        }
     }
 }

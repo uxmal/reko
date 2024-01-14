@@ -9,6 +9,7 @@ Eq_1: (struct "Globals"
 		(0 code t0000)
 		(A58 word32 _IO_stdin_used)
 		(10A60 (ptr32 code) ptr10A60)
+		(10A68 <unknown> t10A68)
 		(10A98 (ptr32 code) main_GOT)
 		(10A9C (ptr32 code) __libc_csu_init_GOT)
 		(10AA0 (ptr32 code) __libc_csu_fini_GOT)
@@ -1143,6 +1144,7 @@ typedef struct Globals {
 	<anonymous> t0000;	// 0
 	word32 _IO_stdin_used;	// A58
 	<anonymous> * ptr10A60;	// 10A60
+	<unknown> t10A68;	// 10A68
 	<anonymous> * main_GOT;	// 10A98
 	<anonymous> * __libc_csu_init_GOT;	// 10A9C
 	<anonymous> * __libc_csu_fini_GOT;	// 10AA0

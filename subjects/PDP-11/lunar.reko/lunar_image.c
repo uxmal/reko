@@ -661,8 +661,8 @@ void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 	Eq_n stackArg0;
 	stackArg0.u0 = <invalid>;
 	fn13AA(stackArg0);
-	2828 = 0x0B0B;
-	if (2828 != 0x00)
+	&g_t0B0C = &g_t0B0B;
+	if (&g_t0B0C != null)
 	{
 		fn0A94(r3, r4, r5);
 		return;
@@ -699,6 +699,8 @@ l0BD0:
 	fn0C36(~0x17, r3_n);
 }
 
+<unknown> g_t0B0B = // 0B0B;
+<unknown> g_t0B0C = // 0B0C;
 struct Eq_n g_t0BB8 = // 0BB8
 	{
 		&g_w0060,
@@ -1795,12 +1797,12 @@ struct Eq_n * fn15F2(struct Eq_n * r0, struct Eq_n * r1)
 	if (r0 < &g_t2710)
 	{
 		r1->b0001 = 0x20;
-		ptrLoc02_n = 0x00;
+		ptrLoc02_n = null;
 	}
 	else
 	{
 		r1->b0001 = 0x30;
-		ptrLoc02_n = 0x163C;
+		ptrLoc02_n = &g_t163C;
 		for (; r0 >= &g_t2710; r0 -= 10000)
 			++r1->b0001;
 	}
@@ -1821,15 +1823,17 @@ struct Eq_n * fn15F2(struct Eq_n * r0, struct Eq_n * r1)
 	word16 r3_n;
 	byte * r3_n;
 	word16 r3_n;
-	return fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1, r3_n, ptrLoc02_n, out r3_n), r3_n, ptrLoc02_n, out r3_n), (r2_n << 1) + 10260, ptrLoc02_n, out r3_n), r3_n, 0x1630, out r3_n);
+	return fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1, r3_n, ptrLoc02_n, out r3_n), r3_n, ptrLoc02_n, out r3_n), (r2_n << 1) + 10260, ptrLoc02_n, out r3_n), r3_n, &g_t1630, out r3_n);
 }
 
+<unknown> g_t1630 = // 1630;
+<unknown> g_t163C = // 163C;
 // 1658: Register (ptr16 Eq_n) fn1658(Register (ptr16 Eq_n) r1, Register (ptr16 byte) r3, Stack ptr16 wArg02, Register out ptr16 r3Out)
 // Called from:
 //      fn15F2
 struct Eq_n * fn1658(struct Eq_n * r1, byte * r3, ptr16 wArg02, ptr16 & r3Out)
 {
-	if (wArg02 != 0x00 || *r3 != 0x30)
+	if (wArg02 != null || *r3 != 0x30)
 	{
 		r1->b0000 = *r3;
 		return;

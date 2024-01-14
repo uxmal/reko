@@ -69,9 +69,13 @@ Eq_1: (struct "Globals"
 		(21C Eq_368 t021C)
 		(7BA word16 w07BA)
 		(7D0 (struct "Eq_6") t07D0)
+		(B0B <unknown> t0B0B)
+		(B0C <unknown> t0B0C)
 		(BB8 (struct "Eq_6") t0BB8)
 		(C72 word16 w0C72)
 		(F70 word16 w0F70)
+		(1630 <unknown> t1630)
+		(163C <unknown> t163C)
 		(168C (arr (ptr16 Eq_2717)) a168C)
 		(1696 (arr (ptr16 Eq_2722)) a1696)
 		(182A (arr word16) a182A)
@@ -891,7 +895,7 @@ Eq_2742: (struct "Eq_2742" (0 byte b0000) (1 byte b0001))
 	T_2836 (in fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66) @ 1638 : word16)
 	T_2839 (in fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110) @ 1638 : word16)
 	T_2846 (in fn1658(fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1<i16>) + 0x2814<16>, ptrLoc02_100, out r3_83) @ 1638 : word16)
-	T_2850 (in fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1<i16>) + 0x2814<16>, ptrLoc02_100, out r3_83), r3_83, 0x1630<u16>, out r3_111) @ 1638 : word16)
+	T_2850 (in fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1<i16>) + 0x2814<16>, ptrLoc02_100, out r3_83), r3_83, &g_t1630, out r3_111) @ 1638 : word16)
 Eq_2744: (struct "Eq_2744" (12 word16 w0012))
 	T_2744 (in r4_130 + 0x1696<16> @ 15C4 : word16)
 Eq_2823: (fn (ptr16 Eq_2742) ((ptr16 Eq_2742), (ptr16 byte), ptr16, ptr16))
@@ -4936,7 +4940,7 @@ T_1004: (in 0x0000<p16> @ 0B0A : ptr16)
   Class: Eq_1002
   DataType: ptr16
   OrigDataType: ptr16
-T_1005: (in 0xB0C<u16> != 0x0000<p16> @ 0B0A : bool)
+T_1005: (in &g_t0B0C != null @ 0B0A : bool)
   Class: Eq_1005
   DataType: bool
   OrigDataType: bool
@@ -12316,7 +12320,7 @@ T_2849: (in out r3_111 @ 1638 : ptr16)
   Class: Eq_2828
   DataType: ptr16
   OrigDataType: ptr16
-T_2850: (in fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1<i16>) + 0x2814<16>, ptrLoc02_100, out r3_83), r3_83, 0x1630<u16>, out r3_111) @ 1638 : word16)
+T_2850: (in fn1658(fn1658(fn1658(fn1658(&r1->b0001 + 1<i32>, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1<i16>) + 0x2814<16>, ptrLoc02_100, out r3_83), r3_83, &g_t1630, out r3_111) @ 1638 : word16)
   Class: Eq_2742
   DataType: (ptr16 Eq_2742)
   OrigDataType: word16
@@ -12324,7 +12328,7 @@ T_2851: (in 0<16> @ 165C : word16)
   Class: Eq_2790
   DataType: ptr16
   OrigDataType: word16
-T_2852: (in wArg02 != 0<16> @ 165C : bool)
+T_2852: (in wArg02 != null @ 165C : bool)
   Class: Eq_2852
   DataType: bool
   OrigDataType: bool
@@ -12891,9 +12895,13 @@ struct Globals {
 	Eq_368 t021C;	// 21C
 	word16 w07BA;	// 7BA
 	struct Eq_6 t07D0;	// 7D0
+	<unknown> t0B0B;	// B0B
+	<unknown> t0B0C;	// B0C
 	struct Eq_6 t0BB8;	// BB8
 	word16 w0C72;	// C72
 	word16 w0F70;	// F70
+	<unknown> t1630;	// 1630
+	<unknown> t163C;	// 163C
 	struct Eq_2717 * a168C[];	// 168C
 	struct Eq_2722 * a1696[];	// 1696
 	word16 a182A[];	// 182A

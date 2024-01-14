@@ -4,7 +4,15 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (8000270C (ptr32 code) ptr8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dtor_idx.3228) (FFFFFFFF code tFFFFFFFF))
+Eq_1: (struct "Globals"
+		(8000065C <unknown> t8000065C)
+		(8000270C (ptr32 code) ptr8000270C)
+		(80002714 (arr (ptr32 code)) a80002714)
+		(8000271C word32 dw8000271C)
+		(80002724 byte b80002724)
+		(80002726 uint32 dtor_idx.3228)
+		(8000272A <unknown> t8000272A)
+		(FFFFFFFF code tFFFFFFFF))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_6: (fn word32 ((ptr32 byte)))
 	T_6 (in fn00000000 @ 800000A6 : ptr32)
@@ -69,7 +77,7 @@ T_4: (in 0<32> @ 8000009E : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_5: (in 0<u32> == 0<32> @ 8000009E : bool)
+T_5: (in null == null @ 8000009E : bool)
   Class: Eq_5
   DataType: bool
   OrigDataType: bool
@@ -129,7 +137,7 @@ T_19: (in 0<32> @ 800000D2 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_20: (in 0<u32> == 0<32> @ 800000D2 : bool)
+T_20: (in null == null @ 800000D2 : bool)
   Class: Eq_20
   DataType: bool
   OrigDataType: bool
@@ -225,7 +233,7 @@ T_43: (in 0<32> @ 80000138 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_44: (in 0<u32> == 0<32> @ 80000138 : bool)
+T_44: (in null == null @ 80000138 : bool)
   Class: Eq_44
   DataType: bool
   OrigDataType: bool
@@ -285,7 +293,7 @@ T_58: (in 8000065C @ 80000140 : ptr32)
   Class: Eq_58
   DataType: ptr32
   OrigDataType: ptr32
-T_59: (in fn00000000(0x8000065C<u32>) @ 80000140 : word32)
+T_59: (in fn00000000(&g_t8000065C) @ 80000140 : word32)
   Class: Eq_59
   DataType: word32
   OrigDataType: word32
@@ -293,7 +301,7 @@ T_60: (in 0<32> @ 8000016C : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_61: (in 0<u32> == 0<32> @ 8000016C : bool)
+T_61: (in null == null @ 8000016C : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -325,7 +333,7 @@ T_68: (in 8000272A @ 8000017A : ptr32)
   Class: Eq_68
   DataType: ptr32
   OrigDataType: ptr32
-T_69: (in fn00000000(0x8000065C<u32>, 0x8000272A<u32>) @ 8000017A : void)
+T_69: (in fn00000000(&g_t8000065C, &g_t8000272A) @ 8000017A : void)
   Class: Eq_69
   DataType: void
   OrigDataType: void
@@ -333,7 +341,7 @@ T_70: (in 0<32> @ 80000196 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_71: (in 0<u32> == 0<32> @ 80000196 : bool)
+T_71: (in null == null @ 80000196 : bool)
   Class: Eq_71
   DataType: bool
   OrigDataType: bool
@@ -903,11 +911,13 @@ T_212:
   OrigDataType: (arr T_211)
 */
 typedef struct Globals {
+	<unknown> t8000065C;	// 8000065C
 	<anonymous> * ptr8000270C;	// 8000270C
 	<anonymous> * a80002714[];	// 80002714
 	word32 dw8000271C;	// 8000271C
 	byte b80002724;	// 80002724
 	uint32 dtor_idx.3228;	// 80002726
+	<unknown> t8000272A;	// 8000272A
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 

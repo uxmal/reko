@@ -10,8 +10,12 @@ Eq_1: (struct "Globals"
 		(4 (ptr32 Eq_5) ptr0004)
 		(8 (arr word32) a0008)
 		(10 (arr ui32) a0010)
+		(12BC <unknown> t12BC)
 		(142C byte b142C)
 		(1DAC byte b1DAC)
+		(1DB8 <unknown> t1DB8)
+		(1DC8 <unknown> t1DC8)
+		(275D <unknown> t275D)
 		(2B88 (ptr32 Eq_14) ptr2B88)
 		(2B8C (ptr32 Eq_5) ptr2B8C)
 		(2B90 word32 dw2B90)
@@ -419,13 +423,13 @@ Eq_676: (union "Eq_676" (int32 u0) (up32 u1))
 	T_845 (in d1_313 - 0x30<32> @ 000015EA : word32)
 	T_942 (in d1_200 - 0x30<32> @ 00001552 : word32)
 Eq_704: (struct "Eq_704" (0 Eq_603 t0000) (4 Eq_603 t0004))
-	T_704 (in 0x275D<u32> + (SEQ(SLICE(d0, word24, 8), *a2_139) & 0xFF<32>) @ 0000151E : word32)
+	T_704 (in 0x0000275D<p32> + (SEQ(SLICE(d0, word24, 8), Mem146[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 0000151E : word32)
 	T_705 (in a0_1460 @ 0000151E : (ptr32 Eq_704))
 	T_729 (in d0_162 + 4<32> @ 000014EA : word32)
-	T_770 (in 0x275D<u32> + (SEQ(SLICE(d0_162, word24, 8), *a2_139) & 0xFF<32>) @ 000015BA : word32)
+	T_770 (in 0x0000275D<p32> + (SEQ(SLICE(d0_162, word24, 8), Mem259[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 000015BA : word32)
 	T_793 (in d0_338 + 4<32> @ 0000159A : word32)
-	T_843 (in 0x275D<u32> + (SEQ(SLICE(d0_303, word24, 8), *a2_139) & 0xFF<32>) @ 00001602 : word32)
-	T_929 (in 0x275D<u32> + (SEQ(SLICE(d0_190, word24, 8), *a2_139) & 0xFF<32>) @ 0000156A : word32)
+	T_843 (in 0x0000275D<p32> + (SEQ(SLICE(d0_303, word24, 8), Mem288[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 00001602 : word32)
+	T_929 (in 0x0000275D<p32> + (SEQ(SLICE(d0_190, word24, 8), Mem175[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 0000156A : word32)
 	T_1029 (in d0_692 + 4<32> @ 00001ACC : word32)
 	T_1477 (in Mem567[d0_654 + 0<32>:word32] @ 00001B2C : word32)
 	T_1522 (in Mem567[d0_641 + 0<32>:word32] @ 00001B4E : word32)
@@ -1064,7 +1068,7 @@ T_30: (in 0<i32> @ 0000104C : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_31: (in OpenLibrary(0x12BC<u32>, 0<i32>) @ 0000104C : word32)
+T_31: (in OpenLibrary(&g_t12BC, 0<i32>) @ 0000104C : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
@@ -3756,7 +3760,7 @@ T_703: (in SEQ(SLICE(d0, word24, 8), *a2_139) & 0xFF<32> @ 0000151E : word32)
   Class: Eq_703
   DataType: int32
   OrigDataType: int32
-T_704: (in 0x275D<u32> + (SEQ(SLICE(d0, word24, 8), *a2_139) & 0xFF<32>) @ 0000151E : word32)
+T_704: (in 0x0000275D<p32> + (SEQ(SLICE(d0, word24, 8), Mem146[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 0000151E : word32)
   Class: Eq_704
   DataType: (ptr32 Eq_704)
   OrigDataType: ptr32
@@ -4020,7 +4024,7 @@ T_769: (in SEQ(SLICE(d0_162, word24, 8), *a2_139) & 0xFF<32> @ 000015BA : word32
   Class: Eq_769
   DataType: int32
   OrigDataType: int32
-T_770: (in 0x275D<u32> + (SEQ(SLICE(d0_162, word24, 8), *a2_139) & 0xFF<32>) @ 000015BA : word32)
+T_770: (in 0x0000275D<p32> + (SEQ(SLICE(d0_162, word24, 8), Mem259[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 000015BA : word32)
   Class: Eq_704
   DataType: (ptr32 Eq_704)
   OrigDataType: ptr32
@@ -4312,7 +4316,7 @@ T_842: (in SEQ(SLICE(d0_303, word24, 8), *a2_139) & 0xFF<32> @ 00001602 : word32
   Class: Eq_842
   DataType: int32
   OrigDataType: int32
-T_843: (in 0x275D<u32> + (SEQ(SLICE(d0_303, word24, 8), *a2_139) & 0xFF<32>) @ 00001602 : word32)
+T_843: (in 0x0000275D<p32> + (SEQ(SLICE(d0_303, word24, 8), Mem288[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 00001602 : word32)
   Class: Eq_704
   DataType: (ptr32 Eq_704)
   OrigDataType: ptr32
@@ -4656,7 +4660,7 @@ T_928: (in SEQ(SLICE(d0_190, word24, 8), *a2_139) & 0xFF<32> @ 0000156A : word32
   Class: Eq_928
   DataType: int32
   OrigDataType: int32
-T_929: (in 0x275D<u32> + (SEQ(SLICE(d0_190, word24, 8), *a2_139) & 0xFF<32>) @ 0000156A : word32)
+T_929: (in 0x0000275D<p32> + (SEQ(SLICE(d0_190, word24, 8), Mem175[a2_139 + 0<32>:byte]) & 0xFF<32>) @ 0000156A : word32)
   Class: Eq_704
   DataType: (ptr32 Eq_704)
   OrigDataType: ptr32
@@ -10356,7 +10360,7 @@ T_2353: (in 00000014 @ 000023EA : ptr32)
   Class: Eq_437
   DataType: ptr32
   OrigDataType: ptr32
-T_2354: (in fn0000131C(0x14<u32>) @ 000023EA : word32)
+T_2354: (in fn0000131C((<unknown>*) 0x14<u32>) @ 000023EA : word32)
   Class: Eq_540
   DataType: word32
   OrigDataType: word32
@@ -14075,8 +14079,12 @@ typedef struct Globals {
 	struct Eq_5 * ptr0004;	// 4
 	word32 a0008[];	// 8
 	ui32 a0010[];	// 10
+	<unknown> t12BC;	// 12BC
 	byte b142C;	// 142C
 	byte b1DAC;	// 1DAC
+	<unknown> t1DB8;	// 1DB8
+	<unknown> t1DC8;	// 1DC8
+	<unknown> t275D;	// 275D
 	struct Eq_14 * ptr2B88;	// 2B88
 	struct Eq_5 * ptr2B8C;	// 2B8C
 	word32 dw2B90;	// 2B90

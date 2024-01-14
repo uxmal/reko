@@ -8,6 +8,7 @@ Eq_1: (struct "Globals"
 		(FFFFFFFF code tFFFFFFFF)
 		(8364 (ptr32 Eq_22) ptr8364)
 		(8368 (ptr32 Eq_25) ptr8368)
+		(8380 <unknown> t8380)
 		(8394 int32 dw8394)
 		(8398 int32 dw8398)
 		(83F4 (ptr32 byte) ptr83F4)
@@ -16,6 +17,7 @@ Eq_1: (struct "Globals"
 		(8428 word32 dw8428)
 		(86A8 int32 dw86A8)
 		(86AC int32 dw86AC)
+		(86C8 <unknown> t86C8)
 		(8700 int32 dw8700)
 		(8704 int32 dw8704)
 		(8708 int32 dw8708)
@@ -339,7 +341,7 @@ T_41: (in Mem7[0x00008394<p32>:word32] @ 00008378 : word32)
   Class: Eq_41
   DataType: int32
   OrigDataType: int32
-T_42: (in 0x8380<u32> + g_dw8394 @ 00008378 : word32)
+T_42: (in 0x00008380<p32> + Mem7[0x00008394<p32>:word32] @ 00008378 : word32)
   Class: Eq_42
   DataType: ptr32
   OrigDataType: ptr32
@@ -1347,7 +1349,7 @@ T_293: (in Mem11[0x00008700<p32>:word32] @ 000086C0 : word32)
   Class: Eq_293
   DataType: int32
   OrigDataType: int32
-T_294: (in 0x86C8<u32> + g_dw8700 @ 000086C0 : word32)
+T_294: (in 0x000086C8<p32> + Mem11[0x00008700<p32>:word32] @ 000086C0 : word32)
   Class: Eq_294
   DataType: ptr32
   OrigDataType: ptr32
@@ -1536,6 +1538,7 @@ typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 	int32 (* ptr8364)(int32 r0, char ** r1, char ** r2);	// 8364
 	void (* ptr8368)();	// 8368
+	<unknown> t8380;	// 8380
 	int32 dw8394;	// 8394
 	int32 dw8398;	// 8398
 	byte * ptr83F4;	// 83F4
@@ -1544,6 +1547,7 @@ typedef struct Globals {
 	word32 dw8428;	// 8428
 	int32 dw86A8;	// 86A8
 	int32 dw86AC;	// 86AC
+	<unknown> t86C8;	// 86C8
 	int32 dw8700;	// 8700
 	int32 dw8704;	// 8704
 	int32 dw8708;	// 8708

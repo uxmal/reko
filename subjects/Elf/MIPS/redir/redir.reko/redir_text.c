@@ -586,7 +586,7 @@ void handle_stop(word32 r4, word32 ra)
 	word32 r6_n;
 	word32 r7_n;
 	word32 r25_n;
-	print_log(3, 0x00409DD4, out r5_n, out r6_n, out r7_n, out r25_n);
+	print_log(3, &g_t409DD4, out r5_n, out r6_n, out r7_n, out r25_n);
 	*g_ptr100008C0 = 1;
 }
 
@@ -597,7 +597,7 @@ void handle_log_rotate(word32 r4, word32 ra)
 	word32 r6_n;
 	word32 r7_n;
 	word32 r25_n;
-	print_log(3, 0x00409E04, out r5_n, out r6_n, out r7_n, out r25_n);
+	print_log(3, &g_t409E04, out r5_n, out r6_n, out r7_n, out r25_n);
 	log_rotate(ra);
 }
 
@@ -640,7 +640,7 @@ void main(int32 r4, char * r5[], word32 r16, word32 ra)
 	word32 r6_n;
 	word32 r7_n;
 	word32 r25_n;
-	print_log(3, 4234832, out r5_n, out r6_n, out r7_n, out r25_n);
+	print_log(3, &g_t409E50, out r5_n, out r6_n, out r7_n, out r25_n);
 	struct Eq_n * r2_n = clist_new(ra, out r4_n, out r5_n);
 	if (r2_n != null)
 	{
@@ -750,7 +750,7 @@ void main(int32 r4, char * r5[], word32 r16, word32 ra)
 					word32 r6_n;
 					word32 r7_n;
 					word32 r25_n;
-					print_log(0x00, 0x00409EB0, out r5_n, out r6_n, out r7_n, out r25_n);
+					print_log(0x00, &g_t409EB0, out r5_n, out r6_n, out r7_n, out r25_n);
 					exit(-1);
 					struct Eq_n * r5_n;
 					r5_n = r5_n;
@@ -773,7 +773,7 @@ void main(int32 r4, char * r5[], word32 r16, word32 ra)
 								word32 r6_n;
 								word32 r7_n;
 								word32 r25_n;
-								print_log(1, 0x00409ECC, out r5_n, out r6_n, out r7_n, out r25_n);
+								print_log(1, &g_t409ECC, out r5_n, out r6_n, out r7_n, out r25_n);
 								r5_n = client_destroy(r2_n, ra);
 								r28_n = (struct Eq_n *) 0x10008860;
 							}
@@ -883,7 +883,7 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(0x00, 0x00409F00, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(0x00, &g_t409F00, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
 	{
@@ -904,7 +904,7 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(1, 0x00409F28, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(1, &g_t409F28, out r5_n, out r6_n, out r7_n, out r25_n);
 			close(r2_n->t0000.u0);
 			free(r2_n);
 		}
@@ -915,7 +915,7 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(3, 0x00409F60, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(3, &g_t409F60, out r5_n, out r6_n, out r7_n, out r25_n);
 			r2_n->dw07D8 = 0x00;
 			r2_n->dw0FAC = 0x00;
 			r2_n->dw178C = 0x00;
@@ -1010,7 +1010,7 @@ void client_parse_request(struct Eq_n * r4, word32 ra)
 							word32 r6_n;
 							word32 r7_n;
 							word32 r25_n;
-							print_log(4, 0x0040A008, out r5_n, out r6_n, out r7_n, out r25_n);
+							print_log(4, &g_t40A008, out r5_n, out r6_n, out r7_n, out r25_n);
 							struct Eq_n * r2_n = r4->ptr0FB4;
 							dwLoc20_n = r2_n;
 							if (request_parse_line(r2_n, fp + -0x0810, ra) == 0x00)
@@ -1019,7 +1019,7 @@ void client_parse_request(struct Eq_n * r4, word32 ra)
 								word32 r6_n;
 								word32 r7_n;
 								word32 r25_n;
-								print_log(4, 4235324, out r5_n, out r6_n, out r7_n, out r25_n);
+								print_log(4, &g_t40A03C, out r5_n, out r6_n, out r7_n, out r25_n);
 								request_destroy(r2_n);
 								dwLoc20_n = null;
 							}
@@ -1035,7 +1035,7 @@ void client_parse_request(struct Eq_n * r4, word32 ra)
 							word32 r6_n;
 							word32 r7_n;
 							word32 r25_n;
-							print_log(3, 0x0040A074, out r5_n, out r6_n, out r7_n, out r25_n);
+							print_log(3, &g_t40A074, out r5_n, out r6_n, out r7_n, out r25_n);
 							word32 r5_n;
 							word32 r6_n;
 							word32 r7_n;
@@ -1090,7 +1090,7 @@ void client_parse_request(struct Eq_n * r4, word32 ra)
 				word32 r6_n;
 				word32 r7_n;
 				word32 r25_n;
-				print_log(2, 4235444, out r5_n, out r6_n, out r7_n, out r25_n);
+				print_log(2, &g_t40A0B4, out r5_n, out r6_n, out r7_n, out r25_n);
 				r4->dw1794 = 0x00;
 				return;
 			}
@@ -1102,7 +1102,7 @@ void client_parse_request(struct Eq_n * r4, word32 ra)
 					word32 r6_n;
 					word32 r7_n;
 					word32 r25_n;
-					print_log(2, 0x00409FC4, out r5_n, out r6_n, out r7_n, out r25_n);
+					print_log(2, &g_t409FC4, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 				else
 				{
@@ -1143,7 +1143,7 @@ void * add_to_request(struct Eq_n * r4, void * r5, void * r6, Eq_n r7, word32 ra
 	if (r5 == null)
 	{
 		word32 r25_n;
-		print_log(1, 0x0040A0E4, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A0E4, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
 	else if (r6 != null && r7 > 0x00)
@@ -1160,7 +1160,7 @@ void * add_to_request(struct Eq_n * r4, void * r5, void * r6, Eq_n r7, word32 ra
 		else
 		{
 			word32 r25_n;
-			print_log(1, 0x0040A148, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(1, &g_t40A148, out r5_n, out r6_n, out r7_n, out r25_n);
 			r4->dw0FAC = 0x00;
 			r2_n = null;
 		}
@@ -1168,7 +1168,7 @@ void * add_to_request(struct Eq_n * r4, void * r5, void * r6, Eq_n r7, word32 ra
 	else
 	{
 		word32 r25_n;
-		print_log(2, 4235556, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A124, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = r5;
 	}
 	r5Out = r5_n;
@@ -1243,7 +1243,7 @@ struct Eq_n * client_send_request(struct Eq_n * r4, word32 ra, struct Eq_n & r25
 			r4->dw0FAC -= r2_n;
 			word32 r6_n;
 			word32 r7_n;
-			print_log(4, 0x0040A174, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(4, &g_t40A174, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
 	}
 	r25Out = r25_n;
@@ -1392,7 +1392,7 @@ void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(3, 0x0040A1B0, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(3, &g_t40A1B0, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	if ((word32) (*g_ptr1000090C < dwArg04_n - r4->t17D0) != 0x00)
 	{
@@ -1400,7 +1400,7 @@ void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(3, 0x0040A1F4, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(3, &g_t40A1F4, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 }
 
@@ -1419,7 +1419,7 @@ int32 open_destination(struct sockaddr * r4, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 0x0040A224, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A224, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = -1;
 	}
 	else if (connect(r2_n, r4, 16) < 0x00)
@@ -1430,7 +1430,7 @@ int32 open_destination(struct sockaddr * r4, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 0x0040A268, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A268, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = -1;
 	}
 	else
@@ -1452,7 +1452,7 @@ struct Eq_n * clist_new(word32 ra, struct Eq_n & r4Out, struct Eq_n & r5Out)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		r4_n = print_log(0x00, 0x0040A2A0, out r5_n, out r6_n, out r7_n, out r25_n);
+		r4_n = print_log(0x00, &g_t40A2A0, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
 	else
@@ -1483,7 +1483,7 @@ int32 clist_add(struct Eq_n * r4, struct Eq_n * r5, ptr32 & r5Out)
 	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
 		r4->dw0004 = r4->dw0000;
 	int32 r2_n = r4->dw0000;
-	r5Out = <invalid>;
+	r5Out = (<unknown>*) <invalid>;
 	return r2_n;
 }
 
@@ -1570,7 +1570,7 @@ struct Eq_n * request_new(ptr32 r4, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(0x00, 0x0040A308, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(0x00, &g_t40A308, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
 	else
@@ -1583,7 +1583,7 @@ struct Eq_n * request_new(ptr32 r4, word32 ra)
 		r2_n->dw0414 = 0x00;
 		r2_n->dw0558 = -1;
 		r2_n->dw0554 = 0x00;
-		if (r4 != 0x00 && request_parse_line(r2_n, r4, ra) == 0x00)
+		if (r4 != null && request_parse_line(r2_n, r4, ra) == 0x00)
 			r2_n = null;
 		else
 			r2_n = r2_n;
@@ -1623,7 +1623,7 @@ void request_save_line(struct Eq_n * r4, void * r5, word32 r6, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 0x0040A398, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A398, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else if ((word32) (r4->dw0558 < 63) == 0x00)
 	{
@@ -1631,7 +1631,7 @@ void request_save_line(struct Eq_n * r4, void * r5, word32 r6, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 0x0040A344, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A344, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
 	{
@@ -1643,7 +1643,7 @@ void request_save_line(struct Eq_n * r4, void * r5, word32 r6, word32 ra)
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(2, 0x0040A364, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(2, &g_t40A364, out r5_n, out r6_n, out r7_n, out r25_n);
 			r4->dw0558 += -1;
 		}
 		else
@@ -1665,7 +1665,7 @@ void request_make_url(struct Eq_n * r4, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 4236228, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A3C4, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else if (strncasecmp(&r4->b0114, "http://", 7) == 0x00)
 		snprintf(&r4->b0214, (size_t) 0x0100, "%s %s %s\r\n", 0x00);
@@ -1720,7 +1720,7 @@ void * request_add_lines(struct Eq_n * r4, struct Eq_n * r5, void * r6)
 word32 get_method(struct Eq_n * r4, struct Eq_n & r5Out)
 {
 	ptr32 fp;
-	strncpy(r4, strsep(fp + 4, 0x00410000, 0x0040A464, 0x10008860), 0x0100);
+	strncpy(r4, strsep(fp + 4, (<unknown>*) 0x00410000, &g_t40A464, 0x10008860), 0x0100);
 	struct Eq_n * r5_n = (struct Eq_n *) <invalid>;
 	r5Out = r5_n;
 	word32 r5;
@@ -1733,7 +1733,7 @@ word32 get_method(struct Eq_n * r4, struct Eq_n & r5Out)
 word32 get_uri(char * r4)
 {
 	ptr32 fp;
-	strncpy(r4, strsep(fp + 4, 0x00410000, 0x0040A464, 0x10008860), 0x0100);
+	strncpy(r4, strsep(fp + 4, (<unknown>*) 0x00410000, &g_t40A464, 0x10008860), 0x0100);
 	word32 r5;
 	return r5;
 }
@@ -1744,7 +1744,7 @@ word32 get_uri(char * r4)
 void get_version(char * r4)
 {
 	ptr32 fp;
-	strncpy(r4, strsep(fp + 4, 0x00410000, 0x0040A468, 0x10008860), 0x0100);
+	strncpy(r4, strsep(fp + 4, (<unknown>*) 0x00410000, &g_b40A468, 0x10008860), 0x0100);
 }
 
 // 00404CF0: void request_get_host(Register (ptr32 Eq_n) r4, Register (ptr32 char) r5, Register word32 ra)
@@ -1758,7 +1758,7 @@ void request_get_host(struct Eq_n * r4, char * r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 0x0040A4F0, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A4F0, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
 	{
@@ -1782,7 +1782,7 @@ void request_get_host(struct Eq_n * r4, char * r5, word32 ra)
 					word32 r6_n;
 					word32 r7_n;
 					word32 r25_n;
-					print_log(2, 0x0040A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
+					print_log(2, &g_t40A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 			}
 			else
@@ -1791,7 +1791,7 @@ void request_get_host(struct Eq_n * r4, char * r5, word32 ra)
 				word32 r6_n;
 				word32 r7_n;
 				word32 r25_n;
-				print_log(2, 0x0040A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
+				print_log(2, &g_t40A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
 			}
 		}
 		else
@@ -1800,7 +1800,7 @@ void request_get_host(struct Eq_n * r4, char * r5, word32 ra)
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(2, 0x0040A470, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(2, &g_t40A470, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
 	}
 }
@@ -1816,7 +1816,7 @@ void request_get_content_length(struct Eq_n * r4, char * r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 4236600, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A538, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
 	{
@@ -1840,7 +1840,7 @@ void request_get_content_length(struct Eq_n * r4, char * r5, word32 ra)
 					word32 r6_n;
 					word32 r7_n;
 					word32 r25_n;
-					print_log(2, 0x0040A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
+					print_log(2, &g_t40A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 			}
 			else
@@ -1849,7 +1849,7 @@ void request_get_content_length(struct Eq_n * r4, char * r5, word32 ra)
 				word32 r6_n;
 				word32 r7_n;
 				word32 r25_n;
-				print_log(2, 0x0040A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
+				print_log(2, &g_t40A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
 			}
 		}
 		else
@@ -1858,7 +1858,7 @@ void request_get_content_length(struct Eq_n * r4, char * r5, word32 ra)
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(2, 4236644, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(2, &g_t40A564, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
 	}
 }
@@ -1911,7 +1911,7 @@ void properties_parse_int(char * r4, word32 r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(2, 0x0040A590, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(2, &g_t40A590, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 }
 
@@ -1935,7 +1935,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(1, 0x0040A5EC, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(1, &g_t40A5EC, out r5_n, out r6_n, out r7_n, out r25_n);
 			return;
 		}
 		strcpy(r2_n, r4);
@@ -1958,7 +1958,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 4236824, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A618, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
 	{
@@ -1986,7 +1986,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 					word32 r6_n;
 					word32 r7_n;
 					word32 r25_n;
-					print_log(2, 0x0040A648, out r5_n, out r6_n, out r7_n, out r25_n);
+					print_log(2, &g_t40A648, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 				else
 				{
@@ -2027,7 +2027,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 						word32 r6_n;
 						word32 r7_n;
 						word32 r25_n;
-						print_log(1, 0x0040A5C4, out r5_n, out r6_n, out r7_n, out r25_n);
+						print_log(1, &g_t40A5C4, out r5_n, out r6_n, out r7_n, out r25_n);
 					}
 				}
 			}
@@ -2196,7 +2196,7 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
 {
 	ptr32 fp;
-	ptr32 r25_n = 0x00406610;
+	ptr32 r25_n = &g_t406610;
 	if ((word32) (*g_ptr100008F4 < r4) == 0x00)
 	{
 		word32 r2_n = vsnprintf(fp + -0x0418, 0x03FF, r5, fp + 8, fp + 8);
@@ -2227,7 +2227,7 @@ void open_log(char * r4, word32 ra)
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
-			print_log(0x00, 0x0040A704, out r5_n, out r6_n, out r7_n, out r25_n);
+			print_log(0x00, &g_t40A704, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
 	}
 	else
@@ -2253,7 +2253,7 @@ void log_rotate(word32 ra)
 		struct Eq_n * r4_n = (struct Eq_n *) <invalid>;
 		struct Eq_n * r5_n = (struct Eq_n *) <invalid>;
 		struct Eq_n * r4_n = (struct Eq_n *) <invalid>;
-		rename(fp + -272, r4_n, fp + -272, r4_n, *g_ptr100008A0, r5_n, 0x00410000, 0x0040A744, r5_n, fp + -272);
+		rename(fp + -272, r4_n, fp + -272, r4_n, *g_ptr100008A0, r5_n, (<unknown>*) 0x00410000, g_str40A744, r5_n, fp + -272);
 	}
 	open_log("w", ra);
 }
@@ -2304,7 +2304,7 @@ struct Eq_n * server_new(word32 r4, word32 r5, word32 r6, int32 r7, word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(0x00, 0x0040A770, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(0x00, &g_t40A770, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
 	else
@@ -2342,7 +2342,7 @@ int32 server_open(struct Eq_n * r4, word32 ra, ptr32 & r5Out)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 4237212, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A79C, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = 0x00;
 	}
 	else if (bind(r2_n, &r4->dw0004 + 1, 16) < 0x00)
@@ -2352,7 +2352,7 @@ int32 server_open(struct Eq_n * r4, word32 ra, ptr32 & r5Out)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 0x0040A7D4, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A7D4, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = 0x00;
 	}
 	else if (listen(r2_n, r4->dw0004) < 0x00)
@@ -2362,7 +2362,7 @@ int32 server_open(struct Eq_n * r4, word32 ra, ptr32 & r5Out)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(1, 0x0040A7FC, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(1, &g_t40A7FC, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = 0x00;
 	}
 	else
@@ -2396,7 +2396,7 @@ void server_destroy(struct Eq_n * r4, word32 ra)
 	word32 r6_n;
 	word32 r7_n;
 	word32 r25_n;
-	print_log(4, 4237340, out r5_n, out r6_n, out r7_n, out r25_n);
+	print_log(4, &g_t40A81C, out r5_n, out r6_n, out r7_n, out r25_n);
 	server_close(r4);
 	free(r4);
 }
@@ -2414,7 +2414,7 @@ struct Eq_n * slist_new(word32 ra)
 		word32 r6_n;
 		word32 r7_n;
 		word32 r25_n;
-		print_log(0x00, 0x0040A850, out r5_n, out r6_n, out r7_n, out r25_n);
+		print_log(0x00, &g_t40A850, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
 	else
@@ -2479,7 +2479,7 @@ void slist_delete(struct Eq_n * r4, struct Eq_n * r5, word32 ra)
 	word32 r6_n;
 	word32 r7_n;
 	word32 r25_n;
-	print_log(2, 4237436, out r5_n, out r6_n, out r7_n, out r25_n);
+	print_log(2, &g_t40A87C, out r5_n, out r6_n, out r7_n, out r25_n);
 	server_destroy(r5, ra);
 }
 

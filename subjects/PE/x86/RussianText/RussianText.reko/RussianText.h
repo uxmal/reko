@@ -7,6 +7,7 @@
 Eq_1: (struct "Globals"
 		(40208B uint32 dw40208B)
 		(4020A4 char b4020A4)
+		(4020E4 <unknown> t4020E4)
 		(4020F8 word32 dw4020F8)
 		(40503C word32 dw40503C)
 		(405040 word32 dw405040)
@@ -603,6 +604,7 @@ T_120:
 typedef struct Globals {
 	uint32 dw40208B;	// 40208B
 	char b4020A4;	// 4020A4
+	<unknown> t4020E4;	// 4020E4
 	word32 dw4020F8;	// 4020F8
 	word32 dw40503C;	// 40503C
 	word32 dw405040;	// 405040

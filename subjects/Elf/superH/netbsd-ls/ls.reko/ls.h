@@ -6,6 +6,15 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
 		(401D7C int32 dw401D7C)
+		(401DE8 <unknown> t401DE8)
+		(401DEE <unknown> t401DEE)
+		(401E24 <unknown> t401E24)
+		(401E2C <unknown> t401E2C)
+		(401E3E <unknown> t401E3E)
+		(401E50 <unknown> t401E50)
+		(401E56 <unknown> t401E56)
+		(401E64 <unknown> t401E64)
+		(401E6A <unknown> t401E6A)
 		(401E94 word32 dw401E94)
 		(401E98 int32 dw401E98)
 		(401EA0 int32 dw401EA0)
@@ -23,28 +32,50 @@ Eq_1: (struct "Globals"
 		(401EDC int32 dw401EDC)
 		(401EE0 int32 dw401EE0)
 		(401EE4 word32 dw401EE4)
+		(402016 <unknown> t402016)
 		(402020 int32 dw402020)
+		(40203C <unknown> t40203C)
 		(402048 int32 dw402048)
+		(40209A <unknown> t40209A)
 		(4020A8 word32 dw4020A8)
 		(4020AC int32 dw4020AC)
+		(402104 <unknown> t402104)
 		(402114 word32 dw402114)
 		(402118 int32 dw402118)
+		(40216A <unknown> t40216A)
 		(402178 word32 dw402178)
 		(40217C int32 dw40217C)
+		(4021D4 <unknown> t4021D4)
 		(4021E4 word32 dw4021E4)
 		(4021E8 int32 dw4021E8)
+		(40223E <unknown> t40223E)
 		(40224C word32 dw40224C)
 		(402250 int32 dw402250)
+		(4022AC <unknown> t4022AC)
 		(4022BC word32 dw4022BC)
 		(4022C0 int32 dw4022C0)
+		(40230A <unknown> t40230A)
 		(402314 word32 dw402314)
 		(402318 int32 dw402318)
+		(402368 <unknown> t402368)
 		(402374 word32 dw402374)
 		(402378 int32 dw402378)
+		(4023C8 <unknown> t4023C8)
 		(402408 word32 dw402408)
 		(40240C int32 dw40240C)
 		(402410 int32 dw402410)
 		(402414 ptr32 ptr402414)
+		(402512 <unknown> t402512)
+		(402518 <unknown> t402518)
+		(402528 <unknown> t402528)
+		(40252E <unknown> t40252E)
+		(402562 <unknown> t402562)
+		(402568 <unknown> t402568)
+		(402578 <unknown> t402578)
+		(40257E <unknown> t40257E)
+		(4025BC <unknown> t4025BC)
+		(4025DA <unknown> t4025DA)
+		(4025E8 <unknown> t4025E8)
 		(4025FA word16 w4025FA)
 		(4025FC word16 w4025FC)
 		(402600 word32 dw402600)
@@ -68,6 +99,16 @@ Eq_1: (struct "Globals"
 		(402650 int32 dw402650)
 		(402654 int32 dw402654)
 		(402658 (ptr32 (arr word32)) ptr402658)
+		(40276A <unknown> t40276A)
+		(402788 <unknown> t402788)
+		(402790 <unknown> t402790)
+		(4027A2 <unknown> t4027A2)
+		(4027CA <unknown> t4027CA)
+		(4027D2 <unknown> t4027D2)
+		(4027F8 <unknown> t4027F8)
+		(402806 <unknown> t402806)
+		(40282C <unknown> t40282C)
+		(40283C <unknown> t40283C)
 		(402846 word16 w402846)
 		(402848 word16 w402848)
 		(40284C int32 dw40284C)
@@ -88,6 +129,15 @@ Eq_1: (struct "Globals"
 		(40288C int32 dw40288C)
 		(402890 int32 dw402890)
 		(402894 int32 dw402894)
+		(4028A4 <unknown> t4028A4)
+		(4028B2 <unknown> t4028B2)
+		(4028CC <unknown> t4028CC)
+		(4028D2 <unknown> t4028D2)
+		(4028FE <unknown> t4028FE)
+		(402910 <unknown> t402910)
+		(402916 <unknown> t402916)
+		(40294E <unknown> t40294E)
+		(402954 <unknown> t402954)
 		(4029A4 int32 dw4029A4)
 		(4029A8 int32 dw4029A8)
 		(4029AC int32 dw4029AC)
@@ -102,6 +152,25 @@ Eq_1: (struct "Globals"
 		(4029D0 int32 dw4029D0)
 		(4029D4 int32 dw4029D4)
 		(4029D8 int32 dw4029D8)
+		(402A10 <unknown> t402A10)
+		(402A1E <unknown> t402A1E)
+		(402A24 <unknown> t402A24)
+		(402A2C <unknown> t402A2C)
+		(402A3E <unknown> t402A3E)
+		(402A74 <unknown> t402A74)
+		(402A80 <unknown> t402A80)
+		(402A88 <unknown> t402A88)
+		(402A8E <unknown> t402A8E)
+		(402A94 <unknown> t402A94)
+		(402AA4 <unknown> t402AA4)
+		(402ADA <unknown> t402ADA)
+		(402AE4 <unknown> t402AE4)
+		(402AF2 <unknown> t402AF2)
+		(402B30 <unknown> t402B30)
+		(402B38 <unknown> t402B38)
+		(402B42 <unknown> t402B42)
+		(402B5C <unknown> t402B5C)
+		(402B72 <unknown> t402B72)
 		(402B78 word16 w402B78)
 		(402B7C word32 dw402B7C)
 		(402B80 ptr32 ptr402B80)
@@ -132,6 +201,14 @@ Eq_1: (struct "Globals"
 		(402BF4 int32 dw402BF4)
 		(402BF8 int32 dw402BF8)
 		(402BFC int32 dw402BFC)
+		(402C22 <unknown> t402C22)
+		(402C2C <unknown> t402C2C)
+		(402C32 <unknown> t402C32)
+		(402C48 <unknown> t402C48)
+		(402C70 <unknown> t402C70)
+		(402C96 <unknown> t402C96)
+		(402CCA <unknown> t402CCA)
+		(402CD6 <unknown> t402CD6)
 		(402D6C (arr word16) a402D6C)
 		(402E18 int32 dw402E18)
 		(402E1C int32 dw402E1C)
@@ -158,6 +235,12 @@ Eq_1: (struct "Globals"
 		(402E7C int32 dw402E7C)
 		(402E80 int32 dw402E80)
 		(402E84 ptr32 ptr402E84)
+		(403050 <unknown> t403050)
+		(403062 <unknown> t403062)
+		(403068 <unknown> t403068)
+		(4030A2 <unknown> t4030A2)
+		(403124 <unknown> t403124)
+		(4031B0 <unknown> t4031B0)
 		(4031B4 word16 w4031B4)
 		(4031B6 word16 w4031B6)
 		(4031B8 word16 w4031B8)
@@ -194,16 +277,32 @@ Eq_1: (struct "Globals"
 		(40328C int32 dw40328C)
 		(403290 int32 dw403290)
 		(403298 int32 dw403298)
+		(4032BC <unknown> t4032BC)
+		(4032C6 <unknown> t4032C6)
+		(4032D0 <unknown> t4032D0)
 		(4032DC word32 dw4032DC)
 		(4032E0 ptr32 ptr4032E0)
 		(4032E4 int32 dw4032E4)
 		(4032EC int32 dw4032EC)
 		(4032F0 int32 dw4032F0)
+		(403314 <unknown> t403314)
+		(40331E <unknown> t40331E)
+		(403328 <unknown> t403328)
 		(403334 word32 dw403334)
 		(403338 ptr32 ptr403338)
 		(40333C int32 dw40333C)
 		(403344 int32 dw403344)
 		(403348 int32 dw403348)
+		(40337C <unknown> t40337C)
+		(40338A <unknown> t40338A)
+		(403396 <unknown> t403396)
+		(40339C <unknown> t40339C)
+		(4033B0 <unknown> t4033B0)
+		(4033D0 <unknown> t4033D0)
+		(4033DE <unknown> t4033DE)
+		(4033F8 <unknown> t4033F8)
+		(40340C <unknown> t40340C)
+		(40341A <unknown> t40341A)
 		(40341E word16 w40341E)
 		(403422 word16 w403422)
 		(403428 word32 dw403428)
@@ -221,10 +320,17 @@ Eq_1: (struct "Globals"
 		(403468 (ptr32 (arr (ptr32 word32))) ptr403468)
 		(40346C int32 dw40346C)
 		(403470 int32 dw403470)
+		(403496 <unknown> t403496)
+		(4034A6 <unknown> t4034A6)
 		(4034AC word32 dw4034AC)
 		(4034B0 ptr32 ptr4034B0)
 		(4034B4 int32 dw4034B4)
 		(4034BC int32 dw4034BC)
+		(403518 <unknown> t403518)
+		(403526 <unknown> t403526)
+		(403530 <unknown> t403530)
+		(403572 <unknown> t403572)
+		(40357C <unknown> t40357C)
 		(403580 word32 dw403580)
 		(403584 ptr32 ptr403584)
 		(403588 (ptr32 (arr (ptr32 word32))) ptr403588)
@@ -238,9 +344,17 @@ Eq_1: (struct "Globals"
 		(4035B4 (ptr32 (arr (ptr32 int32))) ptr4035B4)
 		(4035B8 int32 dw4035B8)
 		(4035BC int32 dw4035BC)
+		(40360A <unknown> t40360A)
 		(403610 word32 dw403610)
 		(403614 int32 dw403614)
 		(403618 int32 dw403618)
+		(40363E <unknown> t40363E)
+		(403656 <unknown> t403656)
+		(40366E <unknown> t40366E)
+		(403678 <unknown> t403678)
+		(4036CA <unknown> t4036CA)
+		(4036DC <unknown> t4036DC)
+		(4036E4 <unknown> t4036E4)
 		(4036F0 int32 dw4036F0)
 		(4036F4 word32 dw4036F4)
 		(4036F8 int32 dw4036F8)
@@ -253,6 +367,12 @@ Eq_1: (struct "Globals"
 		(403714 int32 dw403714)
 		(403718 int32 dw403718)
 		(40371C int32 dw40371C)
+		(403752 <unknown> t403752)
+		(403768 <unknown> t403768)
+		(403772 <unknown> t403772)
+		(403780 <unknown> t403780)
+		(40378A <unknown> t40378A)
+		(403794 <unknown> t403794)
 		(403798 word16 w403798)
 		(40379A word16 w40379A)
 		(40379C word32 dw40379C)
@@ -266,6 +386,16 @@ Eq_1: (struct "Globals"
 		(4037BC int32 dw4037BC)
 		(4037C0 int32 dw4037C0)
 		(4037C4 int32 dw4037C4)
+		(4037FE <unknown> t4037FE)
+		(403836 <unknown> t403836)
+		(403846 <unknown> t403846)
+		(403850 <unknown> t403850)
+		(40386C <unknown> t40386C)
+		(403896 <unknown> t403896)
+		(4038E2 <unknown> t4038E2)
+		(4038EE <unknown> t4038EE)
+		(403904 <unknown> t403904)
+		(40390E <unknown> t40390E)
 		(403912 word16 w403912)
 		(403914 word32 dw403914)
 		(403918 ptr32 ptr403918)
@@ -292,9 +422,15 @@ Eq_1: (struct "Globals"
 		(403974 (ptr32 (arr (ptr32 word32))) ptr403974)
 		(403978 int32 dw403978)
 		(40397C int32 dw40397C)
+		(4039B6 <unknown> t4039B6)
+		(4039BC <unknown> t4039BC)
 		(4039C0 word32 dw4039C0)
 		(4039C4 int32 dw4039C4)
 		(4039C8 int32 dw4039C8)
+		(4039EC <unknown> t4039EC)
+		(403A04 <unknown> t403A04)
+		(403A52 <unknown> t403A52)
+		(403A9E <unknown> t403A9E)
 		(403AAE word16 w403AAE)
 		(403AB4 int32 dw403AB4)
 		(403AB8 word32 dw403AB8)
@@ -307,6 +443,27 @@ Eq_1: (struct "Globals"
 		(403AD8 word32 dw403AD8)
 		(403ADC int32 dw403ADC)
 		(403AE4 int32 dw403AE4)
+		(403AF2 <unknown> t403AF2)
+		(403B00 <unknown> t403B00)
+		(403B10 <unknown> t403B10)
+		(403B2A <unknown> t403B2A)
+		(403B38 <unknown> t403B38)
+		(403B4E <unknown> t403B4E)
+		(403B8C <unknown> t403B8C)
+		(403BA2 <unknown> t403BA2)
+		(403BC0 <unknown> t403BC0)
+		(403BE6 <unknown> t403BE6)
+		(403BF8 <unknown> t403BF8)
+		(403BFE <unknown> t403BFE)
+		(403C34 <unknown> t403C34)
+		(403C40 <unknown> t403C40)
+		(403C6E <unknown> t403C6E)
+		(403C82 <unknown> t403C82)
+		(403C9E <unknown> t403C9E)
+		(403CBA <unknown> t403CBA)
+		(403CC6 <unknown> t403CC6)
+		(403CDA <unknown> t403CDA)
+		(403CE4 <unknown> t403CE4)
 		(403CE8 word16 w403CE8)
 		(403CEA word16 w403CEA)
 		(403CF0 int32 dw403CF0)
@@ -351,6 +508,14 @@ Eq_1: (struct "Globals"
 		(403D94 (ptr32 (arr (ptr32 word32))) ptr403D94)
 		(403D98 int32 dw403D98)
 		(403D9C int32 dw403D9C)
+		(403E16 <unknown> t403E16)
+		(403E48 <unknown> t403E48)
+		(403E52 <unknown> t403E52)
+		(403E58 <unknown> t403E58)
+		(403E9E <unknown> t403E9E)
+		(403EEA <unknown> t403EEA)
+		(403F10 <unknown> t403F10)
+		(403F20 <unknown> t403F20)
 		(403F28 word32 dw403F28)
 		(403F2C ptr32 ptr403F2C)
 		(403F30 (ptr32 (arr (ptr32 word32))) ptr403F30)
@@ -369,6 +534,12 @@ Eq_1: (struct "Globals"
 		(403F64 int32 dw403F64)
 		(403F68 int32 dw403F68)
 		(403F6C int32 dw403F6C)
+		(403FE2 <unknown> t403FE2)
+		(404014 <unknown> t404014)
+		(404032 <unknown> t404032)
+		(40404C <unknown> t40404C)
+		(404060 <unknown> t404060)
+		(40407A <unknown> t40407A)
 		(404080 word32 dw404080)
 		(404084 ptr32 ptr404084)
 		(404088 (ptr32 (arr (ptr32 word32))) ptr404088)
@@ -383,6 +554,11 @@ Eq_1: (struct "Globals"
 		(4040AC int32 dw4040AC)
 		(4040B0 int32 dw4040B0)
 		(4040B4 int32 dw4040B4)
+		(40412A <unknown> t40412A)
+		(404146 <unknown> t404146)
+		(40415E <unknown> t40415E)
+		(404170 <unknown> t404170)
+		(40417C <unknown> t40417C)
 		(404184 word32 dw404184)
 		(404188 ptr32 ptr404188)
 		(40418C (ptr32 (arr (ptr32 word32))) ptr40418C)
@@ -394,9 +570,19 @@ Eq_1: (struct "Globals"
 		(4041A4 int32 dw4041A4)
 		(4041A8 int32 dw4041A8)
 		(4041AC int32 dw4041AC)
+		(4041CC <unknown> t4041CC)
+		(40420E <unknown> t40420E)
+		(404218 <unknown> t404218)
 		(404228 int32 dw404228)
 		(404230 int32 dw404230)
 		(404234 int32 dw404234)
+		(40425E <unknown> t40425E)
+		(404280 <unknown> t404280)
+		(40428A <unknown> t40428A)
+		(40429A <unknown> t40429A)
+		(4042A4 <unknown> t4042A4)
+		(4042B0 <unknown> t4042B0)
+		(4042B6 <unknown> t4042B6)
 		(4042C4 word32 dw4042C4)
 		(4042C8 ptr32 ptr4042C8)
 		(4042CC int32 dw4042CC)
@@ -406,6 +592,16 @@ Eq_1: (struct "Globals"
 		(4042E8 int32 dw4042E8)
 		(4042EC int32 dw4042EC)
 		(4042F4 int32 dw4042F4)
+		(40431A <unknown> t40431A)
+		(40432E <unknown> t40432E)
+		(40433A <unknown> t40433A)
+		(404366 <unknown> t404366)
+		(404376 <unknown> t404376)
+		(40439C <unknown> t40439C)
+		(4043AA <unknown> t4043AA)
+		(4043C4 <unknown> t4043C4)
+		(4043D2 <unknown> t4043D2)
+		(4043E2 <unknown> t4043E2)
 		(4043F8 int32 dw4043F8)
 		(4043FC int32 dw4043FC)
 		(404400 int32 dw404400)
@@ -417,6 +613,7 @@ Eq_1: (struct "Globals"
 		(404418 int32 dw404418)
 		(40441C int32 dw40441C)
 		(404420 int32 dw404420)
+		(404540 <unknown> t404540)
 		(40454C int32 dw40454C)
 		(4151A0 word32 __progname)
 		(4151A4 word32 __dso_handle)
@@ -11438,7 +11635,7 @@ T_2590: (in 0xFFFFFFFF<32> @ 0040338C : word32)
   Class: Eq_2542
   DataType: ptr32
   OrigDataType: word32
-T_2591: (in r0_80 != 0xFFFFFFFF<32> @ 0040338C : bool)
+T_2591: (in r0_80 != (<unknown>*) 0xFFFFFFFF<32> @ 0040338C : bool)
   Class: Eq_2591
   DataType: bool
   OrigDataType: bool
@@ -18774,7 +18971,7 @@ T_4424: (in 0xFFFFFFFF<32> @ 004041D0 : word32)
   Class: Eq_4423
   DataType: ptr32
   OrigDataType: word32
-T_4425: (in r0_28 != 0xFFFFFFFF<32> @ 004041D0 : bool)
+T_4425: (in r0_28 != (<unknown>*) 0xFFFFFFFF<32> @ 004041D0 : bool)
   Class: Eq_4425
   DataType: bool
   OrigDataType: bool
@@ -18794,11 +18991,11 @@ T_4429: (in 0<32> @ 0040421C : word32)
   Class: Eq_4423
   DataType: ptr32
   OrigDataType: word32
-T_4430: (in r0_28 == 0<32> @ 0040421C : bool)
+T_4430: (in r0_28 == null @ 0040421C : bool)
   Class: Eq_4430
   DataType: bool
   OrigDataType: bool
-T_4431: (in r0_28 == 0<32> @ 004041E8 : bool)
+T_4431: (in r0_28 == null @ 004041E8 : bool)
   Class: Eq_4431
   DataType: bool
   OrigDataType: bool
@@ -18862,7 +19059,7 @@ T_4446: (in 1<32> @ 004041F8 : word32)
   Class: Eq_4423
   DataType: ptr32
   OrigDataType: word32
-T_4447: (in r0_28 == 1<32> @ 004041F8 : bool)
+T_4447: (in r0_28 == (<unknown>*) 1<32> @ 004041F8 : bool)
   Class: Eq_4447
   DataType: bool
   OrigDataType: bool
@@ -21273,6 +21470,15 @@ T_5048:
 */
 typedef struct Globals {
 	int32 dw401D7C;	// 401D7C
+	<unknown> t401DE8;	// 401DE8
+	<unknown> t401DEE;	// 401DEE
+	<unknown> t401E24;	// 401E24
+	<unknown> t401E2C;	// 401E2C
+	<unknown> t401E3E;	// 401E3E
+	<unknown> t401E50;	// 401E50
+	<unknown> t401E56;	// 401E56
+	<unknown> t401E64;	// 401E64
+	<unknown> t401E6A;	// 401E6A
 	word32 dw401E94;	// 401E94
 	int32 dw401E98;	// 401E98
 	int32 dw401EA0;	// 401EA0
@@ -21290,28 +21496,50 @@ typedef struct Globals {
 	int32 dw401EDC;	// 401EDC
 	int32 dw401EE0;	// 401EE0
 	word32 dw401EE4;	// 401EE4
+	<unknown> t402016;	// 402016
 	int32 dw402020;	// 402020
+	<unknown> t40203C;	// 40203C
 	int32 dw402048;	// 402048
+	<unknown> t40209A;	// 40209A
 	word32 dw4020A8;	// 4020A8
 	int32 dw4020AC;	// 4020AC
+	<unknown> t402104;	// 402104
 	word32 dw402114;	// 402114
 	int32 dw402118;	// 402118
+	<unknown> t40216A;	// 40216A
 	word32 dw402178;	// 402178
 	int32 dw40217C;	// 40217C
+	<unknown> t4021D4;	// 4021D4
 	word32 dw4021E4;	// 4021E4
 	int32 dw4021E8;	// 4021E8
+	<unknown> t40223E;	// 40223E
 	word32 dw40224C;	// 40224C
 	int32 dw402250;	// 402250
+	<unknown> t4022AC;	// 4022AC
 	word32 dw4022BC;	// 4022BC
 	int32 dw4022C0;	// 4022C0
+	<unknown> t40230A;	// 40230A
 	word32 dw402314;	// 402314
 	int32 dw402318;	// 402318
+	<unknown> t402368;	// 402368
 	word32 dw402374;	// 402374
 	int32 dw402378;	// 402378
+	<unknown> t4023C8;	// 4023C8
 	word32 dw402408;	// 402408
 	int32 dw40240C;	// 40240C
 	int32 dw402410;	// 402410
 	ptr32 ptr402414;	// 402414
+	<unknown> t402512;	// 402512
+	<unknown> t402518;	// 402518
+	<unknown> t402528;	// 402528
+	<unknown> t40252E;	// 40252E
+	<unknown> t402562;	// 402562
+	<unknown> t402568;	// 402568
+	<unknown> t402578;	// 402578
+	<unknown> t40257E;	// 40257E
+	<unknown> t4025BC;	// 4025BC
+	<unknown> t4025DA;	// 4025DA
+	<unknown> t4025E8;	// 4025E8
 	word16 w4025FA;	// 4025FA
 	word16 w4025FC;	// 4025FC
 	word32 dw402600;	// 402600
@@ -21335,6 +21563,16 @@ typedef struct Globals {
 	int32 dw402650;	// 402650
 	int32 dw402654;	// 402654
 	word32 (* ptr402658)[];	// 402658
+	<unknown> t40276A;	// 40276A
+	<unknown> t402788;	// 402788
+	<unknown> t402790;	// 402790
+	<unknown> t4027A2;	// 4027A2
+	<unknown> t4027CA;	// 4027CA
+	<unknown> t4027D2;	// 4027D2
+	<unknown> t4027F8;	// 4027F8
+	<unknown> t402806;	// 402806
+	<unknown> t40282C;	// 40282C
+	<unknown> t40283C;	// 40283C
 	word16 w402846;	// 402846
 	word16 w402848;	// 402848
 	int32 dw40284C;	// 40284C
@@ -21355,6 +21593,15 @@ typedef struct Globals {
 	int32 dw40288C;	// 40288C
 	int32 dw402890;	// 402890
 	int32 dw402894;	// 402894
+	<unknown> t4028A4;	// 4028A4
+	<unknown> t4028B2;	// 4028B2
+	<unknown> t4028CC;	// 4028CC
+	<unknown> t4028D2;	// 4028D2
+	<unknown> t4028FE;	// 4028FE
+	<unknown> t402910;	// 402910
+	<unknown> t402916;	// 402916
+	<unknown> t40294E;	// 40294E
+	<unknown> t402954;	// 402954
 	int32 dw4029A4;	// 4029A4
 	int32 dw4029A8;	// 4029A8
 	int32 dw4029AC;	// 4029AC
@@ -21369,6 +21616,25 @@ typedef struct Globals {
 	int32 dw4029D0;	// 4029D0
 	int32 dw4029D4;	// 4029D4
 	int32 dw4029D8;	// 4029D8
+	<unknown> t402A10;	// 402A10
+	<unknown> t402A1E;	// 402A1E
+	<unknown> t402A24;	// 402A24
+	<unknown> t402A2C;	// 402A2C
+	<unknown> t402A3E;	// 402A3E
+	<unknown> t402A74;	// 402A74
+	<unknown> t402A80;	// 402A80
+	<unknown> t402A88;	// 402A88
+	<unknown> t402A8E;	// 402A8E
+	<unknown> t402A94;	// 402A94
+	<unknown> t402AA4;	// 402AA4
+	<unknown> t402ADA;	// 402ADA
+	<unknown> t402AE4;	// 402AE4
+	<unknown> t402AF2;	// 402AF2
+	<unknown> t402B30;	// 402B30
+	<unknown> t402B38;	// 402B38
+	<unknown> t402B42;	// 402B42
+	<unknown> t402B5C;	// 402B5C
+	<unknown> t402B72;	// 402B72
 	word16 w402B78;	// 402B78
 	word32 dw402B7C;	// 402B7C
 	ptr32 ptr402B80;	// 402B80
@@ -21399,6 +21665,14 @@ typedef struct Globals {
 	int32 dw402BF4;	// 402BF4
 	int32 dw402BF8;	// 402BF8
 	int32 dw402BFC;	// 402BFC
+	<unknown> t402C22;	// 402C22
+	<unknown> t402C2C;	// 402C2C
+	<unknown> t402C32;	// 402C32
+	<unknown> t402C48;	// 402C48
+	<unknown> t402C70;	// 402C70
+	<unknown> t402C96;	// 402C96
+	<unknown> t402CCA;	// 402CCA
+	<unknown> t402CD6;	// 402CD6
 	word16 a402D6C[];	// 402D6C
 	int32 dw402E18;	// 402E18
 	int32 dw402E1C;	// 402E1C
@@ -21425,6 +21699,12 @@ typedef struct Globals {
 	int32 dw402E7C;	// 402E7C
 	int32 dw402E80;	// 402E80
 	ptr32 ptr402E84;	// 402E84
+	<unknown> t403050;	// 403050
+	<unknown> t403062;	// 403062
+	<unknown> t403068;	// 403068
+	<unknown> t4030A2;	// 4030A2
+	<unknown> t403124;	// 403124
+	<unknown> t4031B0;	// 4031B0
 	word16 w4031B4;	// 4031B4
 	word16 w4031B6;	// 4031B6
 	word16 w4031B8;	// 4031B8
@@ -21461,16 +21741,32 @@ typedef struct Globals {
 	int32 dw40328C;	// 40328C
 	int32 dw403290;	// 403290
 	int32 dw403298;	// 403298
+	<unknown> t4032BC;	// 4032BC
+	<unknown> t4032C6;	// 4032C6
+	<unknown> t4032D0;	// 4032D0
 	word32 dw4032DC;	// 4032DC
 	ptr32 ptr4032E0;	// 4032E0
 	int32 dw4032E4;	// 4032E4
 	int32 dw4032EC;	// 4032EC
 	int32 dw4032F0;	// 4032F0
+	<unknown> t403314;	// 403314
+	<unknown> t40331E;	// 40331E
+	<unknown> t403328;	// 403328
 	word32 dw403334;	// 403334
 	ptr32 ptr403338;	// 403338
 	int32 dw40333C;	// 40333C
 	int32 dw403344;	// 403344
 	int32 dw403348;	// 403348
+	<unknown> t40337C;	// 40337C
+	<unknown> t40338A;	// 40338A
+	<unknown> t403396;	// 403396
+	<unknown> t40339C;	// 40339C
+	<unknown> t4033B0;	// 4033B0
+	<unknown> t4033D0;	// 4033D0
+	<unknown> t4033DE;	// 4033DE
+	<unknown> t4033F8;	// 4033F8
+	<unknown> t40340C;	// 40340C
+	<unknown> t40341A;	// 40341A
 	word16 w40341E;	// 40341E
 	word16 w403422;	// 403422
 	word32 dw403428;	// 403428
@@ -21488,10 +21784,17 @@ typedef struct Globals {
 	word32 * (* ptr403468)[];	// 403468
 	int32 dw40346C;	// 40346C
 	int32 dw403470;	// 403470
+	<unknown> t403496;	// 403496
+	<unknown> t4034A6;	// 4034A6
 	word32 dw4034AC;	// 4034AC
 	ptr32 ptr4034B0;	// 4034B0
 	int32 dw4034B4;	// 4034B4
 	int32 dw4034BC;	// 4034BC
+	<unknown> t403518;	// 403518
+	<unknown> t403526;	// 403526
+	<unknown> t403530;	// 403530
+	<unknown> t403572;	// 403572
+	<unknown> t40357C;	// 40357C
 	word32 dw403580;	// 403580
 	ptr32 ptr403584;	// 403584
 	word32 * (* ptr403588)[];	// 403588
@@ -21505,9 +21808,17 @@ typedef struct Globals {
 	int32 * (* ptr4035B4)[];	// 4035B4
 	int32 dw4035B8;	// 4035B8
 	int32 dw4035BC;	// 4035BC
+	<unknown> t40360A;	// 40360A
 	word32 dw403610;	// 403610
 	int32 dw403614;	// 403614
 	int32 dw403618;	// 403618
+	<unknown> t40363E;	// 40363E
+	<unknown> t403656;	// 403656
+	<unknown> t40366E;	// 40366E
+	<unknown> t403678;	// 403678
+	<unknown> t4036CA;	// 4036CA
+	<unknown> t4036DC;	// 4036DC
+	<unknown> t4036E4;	// 4036E4
 	int32 dw4036F0;	// 4036F0
 	word32 dw4036F4;	// 4036F4
 	int32 dw4036F8;	// 4036F8
@@ -21520,6 +21831,12 @@ typedef struct Globals {
 	int32 dw403714;	// 403714
 	int32 dw403718;	// 403718
 	int32 dw40371C;	// 40371C
+	<unknown> t403752;	// 403752
+	<unknown> t403768;	// 403768
+	<unknown> t403772;	// 403772
+	<unknown> t403780;	// 403780
+	<unknown> t40378A;	// 40378A
+	<unknown> t403794;	// 403794
 	word16 w403798;	// 403798
 	word16 w40379A;	// 40379A
 	word32 dw40379C;	// 40379C
@@ -21533,6 +21850,16 @@ typedef struct Globals {
 	int32 dw4037BC;	// 4037BC
 	int32 dw4037C0;	// 4037C0
 	int32 dw4037C4;	// 4037C4
+	<unknown> t4037FE;	// 4037FE
+	<unknown> t403836;	// 403836
+	<unknown> t403846;	// 403846
+	<unknown> t403850;	// 403850
+	<unknown> t40386C;	// 40386C
+	<unknown> t403896;	// 403896
+	<unknown> t4038E2;	// 4038E2
+	<unknown> t4038EE;	// 4038EE
+	<unknown> t403904;	// 403904
+	<unknown> t40390E;	// 40390E
 	word16 w403912;	// 403912
 	word32 dw403914;	// 403914
 	ptr32 ptr403918;	// 403918
@@ -21559,9 +21886,15 @@ typedef struct Globals {
 	word32 * (* ptr403974)[];	// 403974
 	int32 dw403978;	// 403978
 	int32 dw40397C;	// 40397C
+	<unknown> t4039B6;	// 4039B6
+	<unknown> t4039BC;	// 4039BC
 	word32 dw4039C0;	// 4039C0
 	int32 dw4039C4;	// 4039C4
 	int32 dw4039C8;	// 4039C8
+	<unknown> t4039EC;	// 4039EC
+	<unknown> t403A04;	// 403A04
+	<unknown> t403A52;	// 403A52
+	<unknown> t403A9E;	// 403A9E
 	word16 w403AAE;	// 403AAE
 	int32 dw403AB4;	// 403AB4
 	word32 dw403AB8;	// 403AB8
@@ -21574,6 +21907,27 @@ typedef struct Globals {
 	word32 dw403AD8;	// 403AD8
 	int32 dw403ADC;	// 403ADC
 	int32 dw403AE4;	// 403AE4
+	<unknown> t403AF2;	// 403AF2
+	<unknown> t403B00;	// 403B00
+	<unknown> t403B10;	// 403B10
+	<unknown> t403B2A;	// 403B2A
+	<unknown> t403B38;	// 403B38
+	<unknown> t403B4E;	// 403B4E
+	<unknown> t403B8C;	// 403B8C
+	<unknown> t403BA2;	// 403BA2
+	<unknown> t403BC0;	// 403BC0
+	<unknown> t403BE6;	// 403BE6
+	<unknown> t403BF8;	// 403BF8
+	<unknown> t403BFE;	// 403BFE
+	<unknown> t403C34;	// 403C34
+	<unknown> t403C40;	// 403C40
+	<unknown> t403C6E;	// 403C6E
+	<unknown> t403C82;	// 403C82
+	<unknown> t403C9E;	// 403C9E
+	<unknown> t403CBA;	// 403CBA
+	<unknown> t403CC6;	// 403CC6
+	<unknown> t403CDA;	// 403CDA
+	<unknown> t403CE4;	// 403CE4
 	word16 w403CE8;	// 403CE8
 	word16 w403CEA;	// 403CEA
 	int32 dw403CF0;	// 403CF0
@@ -21618,6 +21972,14 @@ typedef struct Globals {
 	word32 * (* ptr403D94)[];	// 403D94
 	int32 dw403D98;	// 403D98
 	int32 dw403D9C;	// 403D9C
+	<unknown> t403E16;	// 403E16
+	<unknown> t403E48;	// 403E48
+	<unknown> t403E52;	// 403E52
+	<unknown> t403E58;	// 403E58
+	<unknown> t403E9E;	// 403E9E
+	<unknown> t403EEA;	// 403EEA
+	<unknown> t403F10;	// 403F10
+	<unknown> t403F20;	// 403F20
 	word32 dw403F28;	// 403F28
 	ptr32 ptr403F2C;	// 403F2C
 	word32 * (* ptr403F30)[];	// 403F30
@@ -21636,6 +21998,12 @@ typedef struct Globals {
 	int32 dw403F64;	// 403F64
 	int32 dw403F68;	// 403F68
 	int32 dw403F6C;	// 403F6C
+	<unknown> t403FE2;	// 403FE2
+	<unknown> t404014;	// 404014
+	<unknown> t404032;	// 404032
+	<unknown> t40404C;	// 40404C
+	<unknown> t404060;	// 404060
+	<unknown> t40407A;	// 40407A
 	word32 dw404080;	// 404080
 	ptr32 ptr404084;	// 404084
 	word32 * (* ptr404088)[];	// 404088
@@ -21650,6 +22018,11 @@ typedef struct Globals {
 	int32 dw4040AC;	// 4040AC
 	int32 dw4040B0;	// 4040B0
 	int32 dw4040B4;	// 4040B4
+	<unknown> t40412A;	// 40412A
+	<unknown> t404146;	// 404146
+	<unknown> t40415E;	// 40415E
+	<unknown> t404170;	// 404170
+	<unknown> t40417C;	// 40417C
 	word32 dw404184;	// 404184
 	ptr32 ptr404188;	// 404188
 	word32 * (* ptr40418C)[];	// 40418C
@@ -21661,9 +22034,19 @@ typedef struct Globals {
 	int32 dw4041A4;	// 4041A4
 	int32 dw4041A8;	// 4041A8
 	int32 dw4041AC;	// 4041AC
+	<unknown> t4041CC;	// 4041CC
+	<unknown> t40420E;	// 40420E
+	<unknown> t404218;	// 404218
 	int32 dw404228;	// 404228
 	int32 dw404230;	// 404230
 	int32 dw404234;	// 404234
+	<unknown> t40425E;	// 40425E
+	<unknown> t404280;	// 404280
+	<unknown> t40428A;	// 40428A
+	<unknown> t40429A;	// 40429A
+	<unknown> t4042A4;	// 4042A4
+	<unknown> t4042B0;	// 4042B0
+	<unknown> t4042B6;	// 4042B6
 	word32 dw4042C4;	// 4042C4
 	ptr32 ptr4042C8;	// 4042C8
 	int32 dw4042CC;	// 4042CC
@@ -21673,6 +22056,16 @@ typedef struct Globals {
 	int32 dw4042E8;	// 4042E8
 	int32 dw4042EC;	// 4042EC
 	int32 dw4042F4;	// 4042F4
+	<unknown> t40431A;	// 40431A
+	<unknown> t40432E;	// 40432E
+	<unknown> t40433A;	// 40433A
+	<unknown> t404366;	// 404366
+	<unknown> t404376;	// 404376
+	<unknown> t40439C;	// 40439C
+	<unknown> t4043AA;	// 4043AA
+	<unknown> t4043C4;	// 4043C4
+	<unknown> t4043D2;	// 4043D2
+	<unknown> t4043E2;	// 4043E2
 	int32 dw4043F8;	// 4043F8
 	int32 dw4043FC;	// 4043FC
 	int32 dw404400;	// 404400
@@ -21684,6 +22077,7 @@ typedef struct Globals {
 	int32 dw404418;	// 404418
 	int32 dw40441C;	// 40441C
 	int32 dw404420;	// 404420
+	<unknown> t404540;	// 404540
 	int32 dw40454C;	// 40454C
 	word32 __progname;	// 4151A0
 	word32 __dso_handle;	// 4151A4

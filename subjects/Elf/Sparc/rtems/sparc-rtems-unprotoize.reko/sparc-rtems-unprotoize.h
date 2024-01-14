@@ -113,6 +113,7 @@ Eq_1: (struct "Globals"
 		(28220 (ptr32 int8) ptr28220)
 		(28230 (ptr32 Eq_3585) ptr28230)
 		(28240 Eq_798 t28240)
+		(2B000 <unknown> t2B000)
 		(2B240 (struct "jmp_buf" 0004 (0 size_t reg0)) t2B240)
 		(2B270 Eq_200 t2B270)
 		(2B280 ui32 dw2B280)
@@ -10205,7 +10206,7 @@ T_1718: (in 0<32> @ 0001233C : word32)
   Class: Eq_1693
   DataType: ptr32
   OrigDataType: word32
-T_1719: (in i1_121 == 0<32> @ 0001233C : bool)
+T_1719: (in i1_121 == null @ 0001233C : bool)
   Class: Eq_1719
   DataType: bool
   OrigDataType: bool
@@ -19786,7 +19787,7 @@ T_4087: (in 0<32> @ 00013C98 : word32)
   Class: Eq_3888
   DataType: ptr32
   OrigDataType: word32
-T_4088: (in i1_238 != 0<32> @ 00013C98 : bool)
+T_4088: (in i1_238 != null @ 00013C98 : bool)
   Class: Eq_3945
   DataType: bool
   OrigDataType: bool
@@ -19826,7 +19827,7 @@ T_4097: (in 0<32> @ 00013DE0 : word32)
   Class: Eq_3888
   DataType: ptr32
   OrigDataType: word32
-T_4098: (in i1_238 != 0<32> @ 00013DE0 : bool)
+T_4098: (in i1_238 != null @ 00013DE0 : bool)
   Class: Eq_4098
   DataType: bool
   OrigDataType: bool
@@ -37643,6 +37644,7 @@ struct Globals {
 	int8 * ptr28220;	// 28220
 	struct Eq_3585 * ptr28230;	// 28230
 	Eq_798 t28240;	// 28240
+	<unknown> t2B000;	// 2B000
 	struct jmp_buf t2B240;	// 2B240
 	Eq_200 t2B270;	// 2B270
 	ui32 dw2B280;	// 2B280

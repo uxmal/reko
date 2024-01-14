@@ -846,30 +846,30 @@ l0000000100002E3A:
 							if (dwLoc0658_n != 0x00)
 							{
 								if (r15d_n != 0x00)
-									rax_n = 0x100001830;
+									rax_n = &g_t1830;
 								else if (dwLoc064C_n == 0x00)
-									rax_n = 0x1000017C6;
+									rax_n = &g_t17C6;
 								else if (g_dw6558 != 0x00)
-									rax_n = 0x1000018C8;
+									rax_n = &g_t18C8;
 								else if (g_t65A4.u0 != 0x00)
-									rax_n = 0x100001873;
+									rax_n = &g_t1873;
 								else if (g_dw6560 != 0x00)
-									rax_n = 0x1000017DB;
+									rax_n = &g_t17DB;
 								else
-									rax_n = 0x10000191D;
+									rax_n = &g_t191D;
 							}
 							else if (r15d_n != 0x00)
-								rax_n = 0x1000019BE;
+								rax_n = &g_t19BE;
 							else if (dwLoc064C_n == 0x00)
-								rax_n = 0x1000017B4;
+								rax_n = &g_t17B4;
 							else if (g_dw6558 != 0x00)
-								rax_n = 0x100001A44;
+								rax_n = &g_t1A44;
 							else if (g_t65A4.u0 != 0x00)
-								rax_n = 0x1000019F8;
+								rax_n = &g_t19F8;
 							else if (g_dw6560 != 0x00)
-								rax_n = 0x100001972;
+								rax_n = &g_t1972;
 							else
-								rax_n = 0x100001A90;
+								rax_n = &g_t1A90;
 							g_ptr65C8 = rax_n;
 							<anonymous> * rax_n;
 							if (ebx_n != 0x00)
@@ -1013,8 +1013,8 @@ void fn000000010000328E(Eq_n rdi)
 		struct Eq_n * rax_n;
 		if (eax_n <= r15d_n)
 		{
-			r12b_n = r15_n->b5411;
-			rax_n = qwLoc40_n * 0x02 + 1 + 0x100005411;
+			r12b_n = Mem49[r15_n + 0x0000000100005411<p64>:byte];
+			rax_n = (struct Eq_n *) ((char *) &g_t5411 + (qwLoc40_n * 0x02 + 1));
 		}
 		else
 		{
@@ -1172,7 +1172,7 @@ word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 		uint64 rax_n = (uint64) fn00000001000048AF(rdi, out rbx_n, out rbp_n, out r12d_n, out r14_n, out r15_n);
 		rbxOut = rbx_n;
 		rbpOut = rbp_n;
-		r12dOut.u0 = <invalid>;
+		r12dOut.u0 = (<unknown>*) <invalid>;
 		r14Out = r14_n;
 		r15Out = r15_n;
 		return (word32) rax_n;
@@ -1250,7 +1250,7 @@ word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 l0000000100004D9B:
 			rbxOut = rbx;
 			rbpOut = rbp;
-			r12dOut.u0 = <invalid>;
+			r12dOut.u0 = (<unknown>*) <invalid>;
 			r14Out = r14;
 			r15Out = r15;
 			return (word32) rax_n;
@@ -1398,7 +1398,7 @@ word32 fn00000001000048AF(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 	uint64 rax_n = (uint64) fn0000000100004ABB(rdi, fp - 8, out rbx_n, out rbp_n, out r12d_n, out r14_n, out r15_n);
 	rbxOut = rbx_n;
 	rbpOut = rbp_n;
-	r12dOut.u0 = <invalid>;
+	r12dOut.u0 = (<unknown>*) <invalid>;
 	r14Out = r14_n;
 	r15Out = r15_n;
 	return (word32) rax_n;
@@ -1528,7 +1528,7 @@ l0000000100004AA8:
 	rbxOut = qwArg98;
 	ptr64 qwArgC0;
 	rbpOut = qwArgC0;
-	r12dOut.u0 = <invalid>;
+	r12dOut.u0 = (<unknown>*) <invalid>;
 	ptr64 qwArgB0;
 	r14Out = qwArgB0;
 	ptr64 qwArgB8;

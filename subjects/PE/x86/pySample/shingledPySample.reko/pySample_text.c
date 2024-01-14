@@ -117,7 +117,7 @@ l10001384:
 		{
 			esp_n = fp - 16;
 			word32 edi_n;
-			if (fn10001742(InterlockedCompareExchange, 268448684, 0x02, out edi_n) != 0x00)
+			if (fn10001742(InterlockedCompareExchange, &g_t100033AC, 0x02, out edi_n) != 0x00)
 				g_ptr100033B8();
 		}
 		++g_dw10003070;

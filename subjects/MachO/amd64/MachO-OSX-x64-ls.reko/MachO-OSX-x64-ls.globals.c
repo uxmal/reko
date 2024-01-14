@@ -6,6 +6,18 @@
 
 Eq_n g_t0014;
 Eq_n g_t0018;
+<unknown> g_t17B4;
+<unknown> g_t17C6;
+<unknown> g_t17DB;
+<unknown> g_t1830;
+<unknown> g_t1873;
+<unknown> g_t18C8;
+<unknown> g_t191D;
+<unknown> g_t1972;
+<unknown> g_t19BE;
+<unknown> g_t19F8;
+<unknown> g_t1A44;
+<unknown> g_t1A90;
 word32 g_a2684[];
 <anonymous> g_t30C8; // 00000000000030C8
 void g_t319B(int32 rdi); // 000000000000319B
@@ -14,6 +26,7 @@ void g_t319B(int32 rdi); // 000000000000319B
 <anonymous> g_t3BF3; // 0000000000003BF3
 struct Eq_n g_t5340;
 struct _acl g_t5410;
+<unknown> g_t5411;
 void g_v5770; // 0000000000005770
 <anonymous> * __imp___DefaultRuneLocale; // 0000000000006028
 <anonymous> * __imp____stack_chk_guard; // 0000000000006030

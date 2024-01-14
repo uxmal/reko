@@ -1879,7 +1879,7 @@ Eq_40: (union "Eq_40" (byte u0) (word16 u1) ((ptr32 Eq_17983) u2) ((ptr32 Eq_179
 	T_13943 (in r9_186 @ 000106F8 : Eq_40)
 	T_13968 (in fn0000C768(-1<i32>) @ 00010740 : word32)
 	T_13969 (in r2_217 @ 00010740 : Eq_40)
-	T_13977 (in fn0000E4F0((<anonymous> *) 0x48100F2C<32>, 0x134E4<32>, r9_186) @ 0001075C : word32)
+	T_13977 (in fn0000E4F0((<anonymous> *) 0x48100F2C<32>, &g_dw134E4, r9_186) @ 0001075C : word32)
 	T_13978 (in r9_233 @ 0001075C : Eq_40)
 	T_13985 (in r15_245 @ 00010770 : Eq_40)
 	T_14003 (in fn0000E4F0((<anonymous> *) 0x48100FCC<32>, &r1_146->dwFFFFFFF8 + 1<i32>, r9) @ 000106CC : word32)
@@ -2019,7 +2019,7 @@ Eq_40: (union "Eq_40" (byte u0) (word16 u1) ((ptr32 Eq_17983) u2) ((ptr32 Eq_179
 	T_15870 (in Mem2392[r1_1786 + 8<i32>:word32] @ 00011F10 : word32)
 	T_15873 (in Mem2392[r1_1786 + 32<i32>:word32] @ 00011F10 : word32)
 	T_15877 (in r15_2772 @ 00012064 : Eq_40)
-	T_15888 (in fn0000E4F0((<anonymous> *) 0x48100F7C<32>, 0x134E4<32>, r9_1769) @ 00012088 : word32)
+	T_15888 (in fn0000E4F0((<anonymous> *) 0x48100F7C<32>, &g_dw134E4, r9_1769) @ 00012088 : word32)
 	T_15899 (in fn0000C768(-1<i32>) @ 000120C0 : word32)
 	T_15900 (in r2_2845 @ 000120C0 : Eq_40)
 	T_15934 (in fn0000EDF4(-15<i32>, &g_t12443, r15_2772, VR) @ 00012108 : word32)
@@ -62220,7 +62220,7 @@ T_13976: (in 0x134E4<32> @ 0001075C : word32)
   Class: Eq_11822
   DataType: ptr32
   OrigDataType: word32
-T_13977: (in fn0000E4F0((<anonymous> *) 0x48100F2C<32>, 0x134E4<32>, r9_186) @ 0001075C : word32)
+T_13977: (in fn0000E4F0((<anonymous> *) 0x48100F2C<32>, &g_dw134E4, r9_186) @ 0001075C : word32)
   Class: Eq_40
   DataType: Eq_40
   OrigDataType: word32
@@ -69864,7 +69864,7 @@ T_15887: (in 0x134E4<32> @ 00012088 : word32)
   Class: Eq_11822
   DataType: ptr32
   OrigDataType: word32
-T_15888: (in fn0000E4F0((<anonymous> *) 0x48100F7C<32>, 0x134E4<32>, r9_1769) @ 00012088 : word32)
+T_15888: (in fn0000E4F0((<anonymous> *) 0x48100F7C<32>, &g_dw134E4, r9_1769) @ 00012088 : word32)
   Class: Eq_40
   DataType: Eq_40
   OrigDataType: word32

@@ -78,6 +78,6 @@ void fn004011FC(struct Eq_n * dwArg04)
 {
 	g_dw4020F8 = (char *) fn00401158() + 28;
 	dwArg04->dw0000 = 0x82727349;
-	dwArg04->ptr0004 = 0x004020E4;
+	dwArg04->ptr0004 = &g_t4020E4;
 }
 

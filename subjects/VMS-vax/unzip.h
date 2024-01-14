@@ -19,6 +19,9 @@ Eq_1: (struct "Globals"
 		(1C01 byte b1C01)
 		(1E01 byte b1E01)
 		(2001 byte b2001)
+		(7BE9 <unknown> t7BE9)
+		(7D48 <unknown> t7D48)
+		(7ED0 <unknown> t7ED0)
 		(8394 (arr Eq_21762) a8394)
 		(9B26 (arr Eq_21767) a9B26)
 		(A558 (arr Eq_21770) aA558)
@@ -15134,7 +15137,7 @@ T_2460: (in 0x00000000<p32> @ 000098ED : ptr32)
   Class: Eq_2459
   DataType: ptr32
   OrigDataType: ptr32
-T_2461: (in 0xFFFE77D4<u32> != 0x00000000<p32> @ 000098ED : bool)
+T_2461: (in (<unknown>*) 0xFFFE77D4<u32> != null @ 000098ED : bool)
   Class: Eq_2461
   DataType: bool
   OrigDataType: bool
@@ -30778,7 +30781,7 @@ T_6349: (in 0<32> @ 0000CFC5 : word32)
   Class: Eq_3740
   DataType: ptr32
   OrigDataType: word32
-T_6350: (in r2_7 != 0<32> @ 0000CFC5 : bool)
+T_6350: (in r2_7 != null @ 0000CFC5 : bool)
   Class: Eq_6350
   DataType: bool
   OrigDataType: bool
@@ -32642,7 +32645,7 @@ T_6815: (in 0<32> @ 0000D293 : word32)
   Class: Eq_6800
   DataType: ptr32
   OrigDataType: word32
-T_6816: (in v53_506 == 0<32> @ 0000D293 : bool)
+T_6816: (in v53_506 == null @ 0000D293 : bool)
   Class: Eq_6816
   DataType: bool
   OrigDataType: bool
@@ -32858,7 +32861,7 @@ T_6869: (in 0<32> @ 0000D2A8 : word32)
   Class: Eq_6800
   DataType: ptr32
   OrigDataType: word32
-T_6870: (in v56_524 != 0<32> @ 0000D2A8 : bool)
+T_6870: (in v56_524 != null @ 0000D2A8 : bool)
   Class: Eq_6870
   DataType: bool
   OrigDataType: bool
@@ -47316,7 +47319,7 @@ T_10460: (in 0<32> @ 00010652 : word32)
   Class: Eq_10458
   DataType: ptr32
   OrigDataType: word32
-T_10461: (in r0_93 == 0<32> @ 00010652 : bool)
+T_10461: (in r0_93 == null @ 00010652 : bool)
   Class: Eq_10461
   DataType: bool
   OrigDataType: bool
@@ -89005,7 +89008,7 @@ T_20792: (in 00007BE9 @ 00018A34 : ptr32)
   Class: Eq_20792
   DataType: ptr32
   OrigDataType: ptr32
-T_20793: (in (word32) sp_236[11<i32>].dwFFFFFFFC + 5<i32> + 0x7BE9<u32> @ 00018A34 : word32)
+T_20793: (in Mem436[sp_236 + 44<i32>:word32] + 1<32> + 0x00007BE9<p32> @ 00018A34 : word32)
   Class: Eq_20793
   DataType: up32
   OrigDataType: up32
@@ -90517,7 +90520,7 @@ T_21170: (in 0<32> @ 00018CAC : word32)
   Class: Eq_20978
   DataType: ptr32
   OrigDataType: word32
-T_21171: (in r0_809 == 0<32> @ 00018CAC : bool)
+T_21171: (in r0_809 == null @ 00018CAC : bool)
   Class: Eq_21171
   DataType: bool
   OrigDataType: bool
@@ -91061,7 +91064,7 @@ T_21306: (in 0<32> @ 00018D02 : word32)
   Class: Eq_20978
   DataType: ptr32
   OrigDataType: word32
-T_21307: (in r3_1024 == 0<32> @ 00018D02 : bool)
+T_21307: (in r3_1024 == null @ 00018D02 : bool)
   Class: Eq_21307
   DataType: bool
   OrigDataType: bool
@@ -91769,7 +91772,7 @@ T_21483: (in 0<32> @ 00018D7E : word32)
   Class: Eq_20978
   DataType: ptr32
   OrigDataType: word32
-T_21484: (in r9_109 != 0<32> @ 00018D7E : bool)
+T_21484: (in r9_109 != null @ 00018D7E : bool)
   Class: Eq_21484
   DataType: bool
   OrigDataType: bool
@@ -91861,7 +91864,7 @@ T_21506: (in 0<32> @ 00018D66 : word32)
   Class: Eq_20978
   DataType: ptr32
   OrigDataType: word32
-T_21507: (in r9_109 != 0<32> @ 00018D66 : bool)
+T_21507: (in r9_109 != null @ 00018D66 : bool)
   Class: Eq_21507
   DataType: bool
   OrigDataType: bool
@@ -92621,7 +92624,7 @@ T_21696: (in 0<32> @ 00018DF6 : word32)
   Class: Eq_20978
   DataType: ptr32
   OrigDataType: word32
-T_21697: (in r3_102 == 0<32> @ 00018DF6 : bool)
+T_21697: (in r3_102 == null @ 00018DF6 : bool)
   Class: Eq_21697
   DataType: bool
   OrigDataType: bool
@@ -93794,6 +93797,9 @@ struct Globals {
 	byte b1C01;	// 1C01
 	byte b1E01;	// 1E01
 	byte b2001;	// 2001
+	<unknown> t7BE9;	// 7BE9
+	<unknown> t7D48;	// 7D48
+	<unknown> t7ED0;	// 7ED0
 	Eq_21762 a8394[];	// 8394
 	Eq_21767 a9B26[];	// 9B26
 	Eq_21770 aA558[];	// A558

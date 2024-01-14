@@ -58,6 +58,8 @@ Eq_1: (struct "Globals"
 		(400021B8 PVFV t400021B8)
 		(400021D0 PVFV t400021D0)
 		(40002200 (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord)) t40002200)
+		(40002210 <unknown> t40002210)
+		(40002228 <unknown> t40002228)
 		(40002680 word64 qw40002680)
 		(40002690 word64 qw40002690)
 		(40002830 word64 qw40002830)
@@ -128,7 +130,9 @@ Eq_1: (struct "Globals"
 		(400035F0 byte b400035F0)
 		(40003600 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u40003600)
 		(40003610 ui32 dw40003610)
-		(40003614 ui32 dw40003614))
+		(40003614 ui32 dw40003614)
+		(40003620 <unknown> t40003620)
+		(40003628 <unknown> t40003628))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_10: (fn void (ptr64))
 	T_10 (in fn0000000140001140 @ 000000014000104F : ptr64)
@@ -791,7 +795,7 @@ T_13: (in 0000000140002210 @ 000000014000104F : ptr64)
   Class: Eq_12
   DataType: ptr64
   OrigDataType: ptr64
-T_14: (in fn0000000140001140(0x140002210<u64>) @ 000000014000104F : void)
+T_14: (in fn0000000140001140(&g_t40002210) @ 000000014000104F : void)
   Class: Eq_14
   DataType: void
   OrigDataType: void
@@ -811,7 +815,7 @@ T_18: (in 0000000140002228 @ 0000000140001092 : ptr64)
   Class: Eq_17
   DataType: ptr64
   OrigDataType: ptr64
-T_19: (in fn00000001400010D0(0x140002228<u64>) @ 0000000140001092 : void)
+T_19: (in fn00000001400010D0(&g_t40002228) @ 0000000140001092 : void)
   Class: Eq_19
   DataType: void
   OrigDataType: void
@@ -6520,6 +6524,8 @@ union _SLIST_HEADER {
 	PVFV t400021B8;	// 400021B8
 	PVFV t400021D0;	// 400021D0
 	struct _EXCEPTION_POINTERS t40002200;	// 40002200
+	<unknown> t40002210;	// 40002210
+	<unknown> t40002228;	// 40002228
 	word64 qw40002680;	// 40002680
 	word64 qw40002690;	// 40002690
 	word64 qw40002830;	// 40002830
@@ -6591,6 +6597,8 @@ union _SLIST_HEADER {
 	union _SLIST_HEADER u40003600;	// 40003600
 	ui32 dw40003610;	// 40003610
 	ui32 dw40003614;	// 40003614
+	<unknown> t40003620;	// 40003620
+	<unknown> t40003628;	// 40003628
 } Eq_1;
 
 typedef void (Eq_10)(ptr64);

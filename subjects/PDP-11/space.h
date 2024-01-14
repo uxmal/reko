@@ -82,7 +82,7 @@ Eq_1: (struct "Globals"
 		(90A word16 w090A)
 		(9DE Eq_1261 t09DE)
 		(9F7 Eq_24 t09F7)
-		(A00 code t0A00)
+		(A00 <unknown> t0A00)
 		(A15 Eq_1513 t0A15)
 		(AB7 Eq_731 t0AB7)
 		(ABE (ptr16 code) ptr0ABE)
@@ -8807,7 +8807,7 @@ T_1801: (in 0<16> @ 1324 : word16)
   Class: Eq_1727
   DataType: ptr16
   OrigDataType: word16
-T_1802: (in r2 == 0<16> @ 1324 : bool)
+T_1802: (in r2 == null @ 1324 : bool)
   Class: Eq_1802
   DataType: bool
   OrigDataType: bool
@@ -9719,7 +9719,7 @@ T_2029: (in 0<16> @ 1452 : word16)
   Class: Eq_2027
   DataType: ptr16
   OrigDataType: word16
-T_2030: (in r1_70 == 0<16> @ 1452 : bool)
+T_2030: (in r1_70 == null @ 1452 : bool)
   Class: Eq_2030
   DataType: bool
   OrigDataType: bool
@@ -9843,7 +9843,7 @@ T_2060: (in 0<16> @ 145A : word16)
   Class: Eq_2027
   DataType: ptr16
   OrigDataType: word16
-T_2061: (in r1_70 != 0<16> @ 145A : bool)
+T_2061: (in r1_70 != null @ 145A : bool)
   Class: Eq_2061
   DataType: bool
   OrigDataType: bool
@@ -17677,7 +17677,7 @@ T_4000: (in 0<16> @ 4754 : word16)
   Class: Eq_3998
   DataType: ptr16
   OrigDataType: word16
-T_4001: (in r0_7 == 0<16> @ 4754 : bool)
+T_4001: (in r0_7 == null @ 4754 : bool)
   Class: Eq_4001
   DataType: bool
   OrigDataType: bool
@@ -18656,7 +18656,7 @@ struct Globals {
 	word16 w090A;	// 90A
 	Eq_1261 t09DE;	// 9DE
 	Eq_24 t09F7;	// 9F7
-	<anonymous> t0A00;	// A00
+	<unknown> t0A00;	// A00
 	Eq_1513 t0A15;	// A15
 	Eq_731 t0AB7;	// AB7
 	<anonymous> * ptr0ABE;	// ABE
