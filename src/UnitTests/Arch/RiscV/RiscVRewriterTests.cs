@@ -23,7 +23,6 @@ using Reko.Arch.RiscV;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -793,6 +792,24 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fclass_d()
+        {
+            Given_HexString("539506E2");
+            AssertCode(     // fclass.d	a0,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = __fclass<real64,word64>(fa3)");
+        }
+
+        [Test]
+        public void RiscV_rw_fclass_s()
+        {
+            Given_HexString("D31606E0");
+            AssertCode(     // fclass.s	a3,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = __fclass<real32,word64>(SLICE(fa2, real32, 0))");
+        }
+
+        [Test]
         public void RiscV_rw_fcvt_d_lu()
         {
             Given_HexString("53F739D2");
@@ -1243,6 +1260,16 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 2 instructions",
                 "1|L--|v5 = a5 *s128 a4",
                 "2|L--|a5 = SLICE(v5, word64, 64)");
+        }
+
+        [Test]
+        public void RiscV_rw_mulhsu()
+        {
+            Given_HexString("332E0103");
+            AssertCode(     // mulhsu	t3,sp,a6
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = sp *s128 a6",
+                "2|L--|t3 = SLICE(v6, word64, 64)");
         }
 
         [Test]
@@ -1911,9 +1938,11 @@ namespace Reko.UnitTests.Arch.RiscV
         // following URL: https://github.com/uxmal/reko/issues
 
 
+ 
 
 
-  
+
+
 
 
 

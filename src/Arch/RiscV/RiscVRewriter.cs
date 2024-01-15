@@ -168,6 +168,8 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fabs_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, FpOps.fabs); break;
                 case Mnemonic.fadd_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FAdd); break;
                 case Mnemonic.fadd_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FAdd); break;
+                case Mnemonic.fclass_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, fclass_intrinsic.MakeInstance(PrimitiveType.Real64, arch.WordWidth)); break;
+                case Mnemonic.fclass_s: RewriteFUnaryIntrinsic(PrimitiveType.Real32, fclass_intrinsic.MakeInstance(PrimitiveType.Real32, arch.WordWidth)); break;
                 case Mnemonic.fcvt_d_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real64); break;
@@ -263,8 +265,9 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.lw: RewriteLoad(PrimitiveType.Int32, arch.NaturalSignedInteger); break;
                 case Mnemonic.lwu: RewriteLoad(PrimitiveType.UInt32, arch.WordWidth); break;
                 case Mnemonic.mul: RewriteBinOp(Operator.IMul, PrimitiveType.Word64); break;
-                case Mnemonic.mulh: RewriteMulh(Operator.SMul); break;
-                case Mnemonic.mulhu: RewriteMulh(Operator.UMul); break;
+                case Mnemonic.mulh: RewriteMulh(Operator.SMul, arch.DoubleWordSignedInteger); break;
+                case Mnemonic.mulhsu: RewriteMulh(Operator.SMul, arch.DoubleWordWidth); break;
+                case Mnemonic.mulhu: RewriteMulh(Operator.UMul, arch.DoubleWordWidth); break;
                 case Mnemonic.mulw: RewriteBinOp(Operator.IMul, PrimitiveType.Word32); break;
                 case Mnemonic.mret: RewriteRet(mret_intrinsic); break;
                 case Mnemonic.or: RewriteOr(); break;
@@ -428,6 +431,10 @@ namespace Reko.Arch.RiscV
             .Void();
         static readonly IntrinsicProcedure fence_tso_intrinsic = new IntrinsicBuilder("__fence_tso", true)
             .Void();
+        static readonly IntrinsicProcedure fclass_intrinsic = new IntrinsicBuilder("__fclass", false)
+            .GenericTypes("TFloat", "TResult")
+            .Param("TFloat")
+            .Returns("TResult");
         static readonly IntrinsicProcedure fmaxm_intrinsic = IntrinsicBuilder.GenericBinary("__fmaxm");
         static readonly IntrinsicProcedure fminm_intrinsic = IntrinsicBuilder.GenericBinary("__fminm");
         static readonly IntrinsicProcedure fsgnj_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnj");
