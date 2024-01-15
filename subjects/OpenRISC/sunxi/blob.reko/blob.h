@@ -36280,15 +36280,15 @@ T_7493: (in Mem115[r1_108 + 3<i32>:byte] @ 00009D38 : byte)
   Class: Eq_7490
   DataType: byte
   OrigDataType: byte
-T_7494: (in 0x14<32> @ 00009D4C : word32)
+T_7494: (in 20<i32> @ 00009D4C : int32)
   Class: Eq_7494
-  DataType: word32
-  OrigDataType: word32
-T_7495: (in r3_111 + 0x14<32> @ 00009D4C : word32)
+  DataType: int32
+  OrigDataType: int32
+T_7495: (in r3_111 + 20<i32> @ 00009D4C : int32)
   Class: Eq_7495
   DataType: ptr32
   OrigDataType: ptr32
-T_7496: (in Mem115[r3_111 + 0x14<32>:byte] @ 00009D4C : byte)
+T_7496: (in Mem115[r3_111 + 20<i32>:byte] @ 00009D4C : byte)
   Class: Eq_7496
   DataType: byte
   OrigDataType: byte

@@ -20720,19 +20720,19 @@ T_4631: (in sp_30 @ 0800:1B42 : (memptr (ptr16 Eq_4593) Eq_4631))
   Class: Eq_4631
   DataType: (memptr (ptr16 Eq_4593) Eq_4631)
   OrigDataType: (memptr T_4594 (struct (2 T_4635 t0002) (4 T_4640 t0004)))
-T_4632: (in 2<16> @ 0800:1B42 : word16)
+T_4632: (in 2<i16> @ 0800:1B42 : int16)
   Class: Eq_4632
-  DataType: word16
-  OrigDataType: word16
-T_4633: (in sp_30 + 2<16> @ 0800:1B42 : word16)
+  DataType: int16
+  OrigDataType: int16
+T_4633: (in sp_30 + 2<i16> @ 0800:1B42 : int16)
   Class: Eq_4633
   DataType: word16
   OrigDataType: word16
-T_4634: (in ss:sp_30 + 2<16> @ 0800:1B42 : segptr32)
+T_4634: (in ss:sp_30 + 2<i16> @ 0800:1B42 : segptr32)
   Class: Eq_4634
   DataType: segptr32
   OrigDataType: segptr32
-T_4635: (in Mem28[ss:sp_30 + 2<16>:byte] @ 0800:1B42 : byte)
+T_4635: (in Mem28[ss:sp_30 + 2<i16>:byte] @ 0800:1B42 : byte)
   Class: Eq_4635
   DataType: ci8
   OrigDataType: byte

@@ -6480,7 +6480,7 @@ Eq_14534: (struct "tm" (0 word64 qw0000))
 	T_14534 (in tm @ 000000000040FAD6 : (ptr64 (struct "tm")))
 	T_14535 (in &qwLoc0498 @ 000000000040FAD6 : (ptr64 word64))
 Eq_14537: (union "Eq_14537" (int64 u0) (uint64 u1))
-	T_14537 (in SEQ(Mem467[r8 + 0x34<64>:word32], mktime(&qwLoc0498)) @ 000000000040FAD6 : word64)
+	T_14537 (in SEQ(Mem467[r8 + 52<i64>:word32], mktime(&qwLoc0498)) @ 000000000040FAD6 : word64)
 	T_14538 (in rax_474 @ 000000000040FAD6 : Eq_14537)
 	T_14550 (in rcx_480 @ 000000000040FAE2 : Eq_14537)
 	T_15664 (in rdx_497 @ 000000000040FB3B : Eq_14537)
@@ -65392,15 +65392,15 @@ T_14528: (in r11_2824 @ 000000000040FAD1 : uint64)
   Class: Eq_14527
   DataType: uint64
   OrigDataType: uint64
-T_14529: (in 0x34<64> @ 000000000040FAD6 : word64)
+T_14529: (in 52<i64> @ 000000000040FAD6 : int64)
   Class: Eq_14529
-  DataType: word64
-  OrigDataType: word64
-T_14530: (in r8 + 0x34<64> @ 000000000040FAD6 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_14530: (in r8 + 52<i64> @ 000000000040FAD6 : int64)
   Class: Eq_14530
   DataType: ptr64
   OrigDataType: ptr64
-T_14531: (in Mem467[r8 + 0x34<64>:word32] @ 000000000040FAD6 : word32)
+T_14531: (in Mem467[r8 + 52<i64>:word32] @ 000000000040FAD6 : word32)
   Class: Eq_14531
   DataType: word32
   OrigDataType: word32
@@ -65424,7 +65424,7 @@ T_14536: (in mktime(&qwLoc0498) @ 000000000040FAD6 : time_t)
   Class: Eq_6233
   DataType: Eq_6233
   OrigDataType: time_t
-T_14537: (in SEQ(Mem467[r8 + 0x34<64>:word32], mktime(&qwLoc0498)) @ 000000000040FAD6 : word64)
+T_14537: (in SEQ(Mem467[r8 + 52<i64>:word32], mktime(&qwLoc0498)) @ 000000000040FAD6 : word64)
   Class: Eq_14537
   DataType: Eq_14537
   OrigDataType: word64

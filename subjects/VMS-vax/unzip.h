@@ -1431,7 +1431,7 @@ Eq_2890: (struct "Eq_2890" (14 Eq_2893 t0014))
 	T_2987 (in Mem29[r7 + 1511<i32>:word32] @ 00009CE3 : word32)
 Eq_2893: (union "Eq_2893" (ui1 u0) (ui32 u1))
 	T_2893 (in Mem0[Mem0[r7 + 1511<i32>:word32] + 20<i32>:word32] @ 00009CAC : word32)
-	T_2990 (in Mem29[Mem29[r7 + 1511<i32>:word32] + 0x14<32>:ui1] @ 00009CE3 : ui1)
+	T_2990 (in Mem29[Mem29[r7 + 1511<i32>:word32] + 20<i32>:ui1] @ 00009CE3 : ui1)
 Eq_2986: (struct "Eq_2986" (14 Eq_2893 t0014))
 	T_2986 (in r7 + 1511<i32> @ 00009CE3 : word32)
 Eq_3009: (struct "Eq_3009"
@@ -17281,19 +17281,19 @@ T_2987: (in Mem29[r7 + 1511<i32>:word32] @ 00009CE3 : word32)
   Class: Eq_2890
   DataType: (ptr32 Eq_2890)
   OrigDataType: (ptr32 (struct (14 T_2893 t0014)))
-T_2988: (in 0x14<32> @ 00009CE3 : word32)
+T_2988: (in 20<i32> @ 00009CE3 : int32)
   Class: Eq_2988
-  DataType: word32
-  OrigDataType: word32
-T_2989: (in Mem29[r7 + 1511<i32>:word32] + 0x14<32> @ 00009CE3 : word32)
+  DataType: int32
+  OrigDataType: int32
+T_2989: (in Mem29[r7 + 1511<i32>:word32] + 20<i32> @ 00009CE3 : int32)
   Class: Eq_2989
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 ui32)
-T_2990: (in Mem29[Mem29[r7 + 1511<i32>:word32] + 0x14<32>:ui1] @ 00009CE3 : ui1)
+T_2990: (in Mem29[Mem29[r7 + 1511<i32>:word32] + 20<i32>:ui1] @ 00009CE3 : ui1)
   Class: Eq_2893
   DataType: Eq_2893
   OrigDataType: (union (ui1 u0) (ui32 u1))
-T_2991: (in CONVERT(Mem29[Mem29[r7 + 1511<i32>:word32] + 0x14<32>:ui1], ui1, uint32) @ 00009CE3 : uint32)
+T_2991: (in CONVERT(Mem29[Mem29[r7 + 1511<i32>:word32] + 20<i32>:ui1], ui1, uint32) @ 00009CE3 : uint32)
   Class: Eq_2991
   DataType: uint32
   OrigDataType: uint32

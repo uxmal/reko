@@ -2584,7 +2584,7 @@ T_482: (in d15_144 @ 000005A0 : word32)
   Class: Eq_481
   DataType: word32
   OrigDataType: word32
-T_483: (in 4<32> @ 000005B2 : word32)
+T_483: (in 4<i32> @ 000005B2 : int32)
   Class: Eq_483
   DataType: (ptr32 (arr Eq_1855))
   OrigDataType: (ptr32 (struct (0 (arr T_1855) a0000)))
@@ -2604,7 +2604,7 @@ T_487: (in (d15_144 + 0x7800000<32>) * 0x20<32> @ 000005B2 : word32)
   Class: Eq_487
   DataType: ui32
   OrigDataType: ui32
-T_488: (in 4<32>[(d15_144 + 0x7800000<32>) * 0x20<32>] @ 000005B2 : byte)
+T_488: (in 4<i32>[(d15_144 + 0x7800000<32>) * 0x20<32>] @ 000005B2 : byte)
   Class: Eq_488
   DataType: byte
   OrigDataType: byte
