@@ -2866,7 +2866,7 @@ l0800_1B36:
 	call 0x800<16>:Mem28[ss_bp + 4<i16>:word16] (retsize: 2;)
 		uses: Mem:Mem28
 		defs: ax:ax_33,sp:sp_30
-	cl_47 = Mem28[ss:sp_30 + 2<16>:byte] (alias)
+	cl_47 = Mem28[ss:sp_30 + 2<i16>:byte] (alias)
 	dx_40 = Mem28[ss:sp_30 + 4<i16>:word16]
 	sp_16 = sp_30 + 6<i16>
 	al_51 = SLICE(ax_33, byte, 0) (alias)

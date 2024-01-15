@@ -59,7 +59,7 @@ namespace Reko.Evaluation
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
                 //$REVIEW: endianness?
-                offset = op.ApplyConstants(offset.DataType, offset, Constant.Create(ea.DataType, slice.Offset / ctx.MemoryGranularity));
+                offset = op.ApplyConstants(offset.DataType, offset, Constant.Create(offset.DataType, slice.Offset / ctx.MemoryGranularity));
                 Expression newEa = new BinaryExpression(op, offset.DataType, ea, offset);
                 if (segptr is not null)
                 {

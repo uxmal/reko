@@ -1209,7 +1209,7 @@ l00009CC8:
 	branch Mem29[r7 + 8<i32>:word32] == 1<32> l00009CD4
 l00009CD4:
 	r3_117 = 0<32>
-	branch CONVERT(Mem29[Mem29[r7 + 1511<i32>:word32] + 0x14<32>:ui1], ui1, uint32) != 0<32> l00009CE7
+	branch CONVERT(Mem29[Mem29[r7 + 1511<i32>:word32] + 20<i32>:ui1], ui1, uint32) != 0<32> l00009CE7
 l00009CE5:
 	r3_117 = 1<32>
 l00009CE7:

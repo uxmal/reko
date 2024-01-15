@@ -3273,14 +3273,14 @@ l00004F02:
 	branch r12_1481 == 0<32> l00004F80
 l00004F06:
 	r5_1396 = Mem1489[r6_1016 + 8<i32>:word32]
-	fn00002744(Mem1489[sp_1407 + 0x14EC<32>:word32], Mem1489[r5_1396 + 0x1EC<32>:word32], out lr_1504)
+	fn00002744(Mem1489[sp_1407 + 5356<i32>:word32], Mem1489[r5_1396 + 492<i32>:word32], out lr_1504)
 	N_1508 = <invalid>
 	V_1507 = <invalid>
 	branch N_1508 | V_1507 l00004F1E
 l00004F16:
 	r1_1492 = fn0000895C(r0_1010, r12_1481, r2_1057, r3_1394, r4_1028, r5_1396, r6_1016, r7_1017, r5_1396 + 0x1E8<32>, lr_1504)
 l00004F1E:
-	r3_1549 = Mem1489[sp_1407 + 0x14EC<32>:word32] (alias)
+	r3_1549 = Mem1489[sp_1407 + 5356<i32>:word32] (alias)
 	Mem1543[sp_1407:word32] = Mem1489[r5_1396 + 488<i32>:word32] + Mem1489[0x00004F42<p32>:word32]
 	Mem1545[sp_1407 + 4<i32>:word32] = Mem1543[r5_1396 + 492<i32>:word32]
 	fn00002744(r3_1549, Mem1545[sp_1407 + 4<32>:word32], out lr_2591)
@@ -3288,7 +3288,7 @@ l00004F1E:
 	V_1556 = <invalid>
 	branch N_1557 | V_1556 l00004F48
 l00004F48:
-	fn00002744(Mem1545[r5_1396 + 0x1EC<32>:word32], r3_1549, out lr_2592)
+	fn00002744(Mem1545[r5_1396 + 492<i32>:word32], r3_1549, out lr_2592)
 l00004F40:
 l00004F5C:
 	Mem1598[sp_1407 - 4<i32>:word32] = Mem1545[sp_1407 + 5356<i32>:word32]
@@ -8500,7 +8500,7 @@ l000097F0:
 l00009800:
 	r8_910 = CONVERT(SLICE(r8_906, byte, 0), byte, word32)
 l000097C8:
-	r11_r10_1114 = (Mem886[sp_1018 + 0x2C<32>:word32] & 1<32>) + r4_181
+	r11_r10_1114 = (Mem886[sp_1018 + 44<i32>:word32] & 1<32>) + r4_181
 	r8_910 = CONVERT(CONVERT(r11_r10_1114 != 0<32>, bool, word32) + r3_363 > 5<32>, bool, word32)
 l00009802:
 	branch r8_910 == 0<32> l0000985E
@@ -9487,7 +9487,7 @@ l0000A1FC:
 	r10_1032 = Mem316[sp_1072 + 40<i32>:word32]
 	branch r10_1032 == 0<32> l0000A260
 l0000A260:
-	branch Test(EQ,Mem316[sp_1072 + 4<32>:bool]) l0000A564
+	branch Test(EQ,Mem316[sp_1072 + 4<i32>:bool]) l0000A564
 l0000A26A:
 l0000A202:
 	branch r2_1056 != 0<32> l0000A5D4
@@ -9598,7 +9598,7 @@ l0000A26C:
 l0000A272:
 	branch r8_483 != 3<32> l0000A520
 l0000A278:
-	branch Test(NE,Mem316[sp_1072 + 4<32>:bool]) l0000A520
+	branch Test(NE,Mem316[sp_1072 + 4<i32>:bool]) l0000A520
 l0000A282:
 	lr_492 = Mem316[sp_1072 + 28<i32>:word32]
 	branch lr_492 + 2<32> >=u Mem316[sp_1072 + 12<i32>:word32] l0000A520
@@ -14322,9 +14322,9 @@ l0000D9A6:
 l0000D9F6:
 	branch fn0000F278(r5_r4_1703, r7_1003, pc, out pc_1748) l0000DA16
 l0000DA16:
-	branch Test(NE,Mem1693[r7_1003 + 0xFFFFFCF4<32>:bool]) l0000DA2E
+	branch Test(NE,Mem1693[r7_1003 + -780<i32>:bool]) l0000DA2E
 l0000DA2E:
-	branch Test(EQ,Mem1693[r7_1003 + 0xFFFFFCF4<32>:bool]) l0000DA42
+	branch Test(EQ,Mem1693[r7_1003 + -780<i32>:bool]) l0000DA42
 l0000DA42:
 	Mem1762[r7_1003 + -824<i32>:word32] = Mem1693[r7_1003 + -768<i32>:word32]
 	r12_1763 = Mem1762[r7_1003 + -824<i32>:word32]
@@ -14372,7 +14372,7 @@ l0000DB6E:
 	r4_1861 = SLICE(r11_r10_5648, word32, 0)
 	r5_1863 = SLICE(r11_r10_5648, word32, 32)
 l0000DB18:
-	branch Test(NE,Mem1873[r7_1003 + 0xFFFFFCD0<32>:bool]) l0000DB3A
+	branch Test(NE,Mem1873[r7_1003 + -816<i32>:bool]) l0000DB3A
 l0000DB3A:
 	r11_r10_1929 = Mem1873[pc_1748 + -114<i32>:word64]
 	r8_1942 = r0_1860
@@ -14429,7 +14429,7 @@ l0000DBB8:
 	r4_2140 = r9_2085 + 3<i32>
 	r2_2142 = r10_2127
 	r3_2143 = r11_2128
-	branch Test(EQ,Mem2139[r7_2132 + 0xFFFFFCF4<32>:bool]) l0000DC10
+	branch Test(EQ,Mem2139[r7_2132 + -780<i32>:bool]) l0000DC10
 l0000DBFE:
 	branch __avr32_f64_cmp_lt(r10_2127, r11_2128, 0<32>, 0<32>, out r9_2152, out r12_5667, out lr_2126) l0000DC10
 l0000DC0C:
@@ -14503,9 +14503,9 @@ l0000D6CA:
 l0000D70C:
 	branch fn0000F278(r5_r4_2389, r7_1003, pc, out pc_2417) l0000D72C
 l0000D72C:
-	branch Test(NE,Mem1693[r7_1003 + 0xFFFFFCF4<32>:bool]) l0000D744
+	branch Test(NE,Mem1693[r7_1003 + -780<i32>:bool]) l0000D744
 l0000D744:
-	branch Test(EQ,Mem1693[r7_1003 + 0xFFFFFCF4<32>:bool]) l0000D758
+	branch Test(EQ,Mem1693[r7_1003 + -780<i32>:bool]) l0000D758
 l0000D758:
 	r12_2430 = Mem1693[r7_1003 + -768<i32>:word32]
 	Mem2432[r12_2430:byte] = 0x20<8>
@@ -14567,7 +14567,7 @@ l0000D832:
 	r4_2553 = SLICE(r11_r10_5615, word32, 0)
 	r5_2555 = SLICE(r11_r10_5615, word32, 32)
 l0000D7DC:
-	branch Test(NE,Mem2565[r7_1003 + 0xFFFFFCD4<32>:bool]) l0000D7FE
+	branch Test(NE,Mem2565[r7_1003 + -812<i32>:bool]) l0000D7FE
 l0000D7FE:
 	r11_r10_2621 = Mem2565[pc_2417 + 94<i32>:word64]
 	r8_2634 = r0_2552
@@ -14624,7 +14624,7 @@ l0000D8A2:
 	r4_2832 = r9_2777 + 3<i32>
 	r2_2834 = r10_2819
 	r3_2835 = r11_2820
-	branch Test(EQ,Mem2831[r7_2824 + 0xFFFFFCF4<32>:bool]) l0000D8FA
+	branch Test(EQ,Mem2831[r7_2824 + -780<i32>:bool]) l0000D8FA
 l0000D8E8:
 	branch __avr32_f64_cmp_lt(r10_2819, r11_2820, 0<32>, 0<32>, out r9_2844, out r12_5634, out lr_2818) l0000D8FA
 l0000D8F6:
@@ -14728,7 +14728,7 @@ l0000DCFA:
 l0000DD04:
 l0000DCF8:
 l0000DD06:
-	branch Test(NE,Mem3108[r7_1003 + 0xFFFFFCF4<32>:bool]) l0000DD14
+	branch Test(NE,Mem3108[r7_1003 + -780<i32>:bool]) l0000DD14
 l0000DD10:
 	branch r9_3067 != 0<32> l0000DD18
 l0000DD18:
@@ -14864,10 +14864,10 @@ l0000D500:
 	Mem3610[Mem403[r12_1006 + 4<i32>:word32]:word32] = Mem403[r7_1003 + -784<i32>:word32]
 l0000D4D8:
 l0000D4F4:
-	Mem3613[Mem403[r12_1006 + 4<i32>:word32]:word16] = Mem403[r7_1003 + 0xFFFFFCF0<32>:word16]
+	Mem3613[Mem403[r12_1006 + 4<i32>:word32]:word16] = Mem403[r7_1003 + -784<i32>:word16]
 l0000D4D4:
 l0000D4E8:
-	Mem3616[Mem403[r12_1006 + 4<i32>:word32]:byte] = Mem403[r7_1003 + 0xFFFFFCF0<32>:byte]
+	Mem3616[Mem403[r12_1006 + 4<i32>:word32]:byte] = Mem403[r7_1003 + -784<i32>:byte]
 l0000D3FA:
 	branch r12_1006 != 0xFFFFFFFF<32> l0000E330
 l0000E330:

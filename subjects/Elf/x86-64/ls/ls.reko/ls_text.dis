@@ -7696,7 +7696,7 @@ l000000000040FA4F:
 l000000000040FA63:
 	Mem457[&qwLoc0498:word64] = Mem454[r8:word64]
 	r11_2824 = CONVERT(r11d_114, word32, uint64)
-	rax_474 = SEQ(Mem467[r8 + 0x34<64>:word32], mktime(&qwLoc0498)) (alias)
+	rax_474 = SEQ(Mem467[r8 + 52<i64>:word32], mktime(&qwLoc0498)) (alias)
 	r15_2302 = fp - 0x431<64>
 	r11d_556 = SLICE(r11_2824, word32, 0) (alias)
 	r9_109 = CONVERT(r9d_1069, word32, uint64)
