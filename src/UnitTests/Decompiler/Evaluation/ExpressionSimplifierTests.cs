@@ -1314,5 +1314,18 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("!c_3", exp.ToString());
         }
+
+        [Test]
+        public void Exs_SliceMemPtrIdPlusIntConst()
+        {
+            Given_ExpressionSimplifier();
+            var id = Given_Tmp("id", PrimitiveType.Ptr32);
+            Expression exp = m.Slice(
+                m.Mem(PrimitiveType.Word64, m.IAdd(id, m.Word32(1))),
+                PrimitiveType.Word32, 8);
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("Mem0[id_3 + 2<32>:word32]", exp.ToString());
+        }
     }
 }
