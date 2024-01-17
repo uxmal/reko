@@ -20,9 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Operators;
-using System;
 
 namespace Reko.Evaluation
 {

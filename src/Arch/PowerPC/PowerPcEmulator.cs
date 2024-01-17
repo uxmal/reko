@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
@@ -159,7 +160,7 @@ namespace Reko.Arch.PowerPC
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
-            Debug.Print("emu: {0} {1,-15}", dasm.Current.Address, dasm.Current);
+            trace.Verbose("emu: {0} {1,-15}", dasm.Current.Address, dasm.Current);
         }
     }
 }

@@ -19,16 +19,14 @@
 
 #endregion
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.OpenRISC.Aeon
 {
@@ -166,7 +164,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
-            Debug.Print("emu: {0} {1,-15}", dasm.Current.Address, dasm.Current);
+            trace.Verbose("emu: {0} {1,-15}", dasm.Current.Address, dasm.Current);
         }
     }
 }

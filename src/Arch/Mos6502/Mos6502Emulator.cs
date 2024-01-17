@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
@@ -137,7 +138,7 @@ namespace Reko.Arch.Mos6502
             if (trace.Level != TraceLevel.Verbose)
                 return;
             var instr = dasm!.Current;
-            Debug.Print("emu: {0} {1,-15} {2}", instr.Address, instr, DumpRegs(instr));
+            trace.Verbose("emu: {0} {1,-15} {2}", instr.Address, instr, DumpRegs(instr));
         }
 
         private string DumpRegs(Instruction instr)

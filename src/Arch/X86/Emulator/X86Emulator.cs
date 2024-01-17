@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
@@ -174,7 +175,7 @@ namespace Reko.Arch.X86.Emulator
 
         protected virtual void TraceState(X86Instruction current)
         {
-            Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+            trace.Verbose("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

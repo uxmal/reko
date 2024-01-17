@@ -20,11 +20,9 @@
 
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core

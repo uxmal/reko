@@ -210,8 +210,7 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC X instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, xOp);
-                    return dasm.EmitUnknown(wInstr);
+                    return dasm.CreateInvalidInstruction();
                 }
             }
         }
@@ -567,8 +566,7 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC XX3 instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, subOp);
-                    return dasm.EmitUnknown(wInstr);
+                    return dasm.CreateInvalidInstruction();
                 }
             }
         }
@@ -594,8 +592,7 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC VMX instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, key);
-                    return dasm.EmitUnknown(wInstr);
+                    return dasm.CreateInvalidInstruction();
                 }
             }
 

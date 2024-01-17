@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
@@ -31,6 +32,8 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
 {
     public class Pdp11Assembler
     {
+        private static readonly TraceSwitch trace = new TraceSwitch("pdp11asm", "PDP-11 assembler tracing");
+
         private Pdp11Architecture arch;
         private IEmitter emitter;
         private SymbolTable symtab;
@@ -68,7 +71,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
                 value = id2;
             }
             Equates[id] = id2;
-            Debug.Print("{0} = {1}", id, id2);
+            trace.Verbose("{0} = {1}", id, id2);
         }
 
         public void Label(string label)

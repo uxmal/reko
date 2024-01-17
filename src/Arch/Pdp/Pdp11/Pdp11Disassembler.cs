@@ -392,7 +392,6 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             ushort u;
             var reg = this.arch.GetRegister((int)operandBits & 7)!;
-            //Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {
                 switch ((operandBits >> 3) & 7)

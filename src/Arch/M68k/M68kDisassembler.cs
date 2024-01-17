@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -874,7 +875,7 @@ namespace Reko.Arch.M68k
 
         private static bool d68000_1010(uint uInstr, M68kDisassembler dasm)
         {
-            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", uInstr);
+            trace.Verbose("dc.w    ${0:X4}; opcode 1010", uInstr);
             dasm.iclass = InstrClass.Invalid;
             dasm.mnemonic = Mnemonic.illegal;
             dasm.ops.Add(ImmediateOperand.Word16((ushort) uInstr));
@@ -883,7 +884,7 @@ namespace Reko.Arch.M68k
 
         private static bool d68000_1111(uint uInstr, M68kDisassembler dasm)
         {
-            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1111", uInstr);
+            trace.Verbose("dc.w    ${0:X4}; opcode 1111", uInstr);
             return false;
         }
 
