@@ -33,5 +33,30 @@ namespace Reko.Core.Machine
         public const string Endianness = "Endianness";
         public const string WordSize = "WordSize";
         public const string InstructionSet = "ISA";
+
+        /// <summary>
+        /// Parse a numeric option, JavaScript-style. That is, accept strings
+        /// but convert them to ints.
+        ///  //$TODO: support for hexadecimal string representations?
+        /// </summary>
+        public static bool TryParseNumericOption(object? oValue, out int value)
+        {
+            value = 0;
+            if (oValue is null)
+                return false;
+            switch (oValue)
+            {
+            case string s:
+                return int.TryParse(s, out value);
+            case int i:
+                value = i;
+                return true;
+            case long l:
+                value = (int) l;
+                return true;
+            default:
+                return false;
+            }
+        }
     }
 }

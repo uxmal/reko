@@ -233,7 +233,7 @@ namespace Reko.Arch.RiscV
                 .ToArray();
 
             if (Options.TryGetValue("FloatAbi", out object? oFloatAbi) &&
-                oFloatAbi is int floatAbi)
+                ProcessorOption.TryParseNumericOption(oFloatAbi, out int floatAbi))
             {
                 this.FpRegs = CreateFpRegs(floatAbi);
             }
