@@ -228,6 +228,9 @@ namespace Reko.ImageLoaders.Elf
         EM_65816 = 257,          // WDC 65816/65C816
         EM_LOONGARCH = 258,      // LoongArch
         EM_KF32 = 259,           // ChipON KungFu32
+        EM_U16_U8CORE = 260,    // LAPIS nX-U16/U8
+        EM_TACHYUM = 261,       // Tachyum
+        EM_56800EF = 262,       // NXP 56800EF Digital Signal Controller (DSC)
 
         EM_NANOMIPS = 249,       //$REVIEW: a guess?
         EM_MORPHOS_PPC = 8692,   //$REVIEW: a guess?
