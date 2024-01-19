@@ -24,6 +24,8 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -35,7 +37,6 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         [SetUp]
@@ -43,7 +44,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             this.arch = new RiscVArchitecture(
                 new ServiceContainer(),
-                "riscV", 
+                "riscV",
                 new Dictionary<string, object>
                 {
                     { ProcessorOption.WordSize, "64" },
@@ -760,35 +761,160 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_regressions1()
         {
-            
-AssertCode("fence.i",  "0f100000"); //    invalid
-AssertCode("csrrw\ts2,00000315,t0",              "73995231"); //    invalid
-AssertCode("csrrs\ta1,sstatus,a5",               "f3a50710"); //    csrrs a1,sstatus,a5
-AssertCode("csrrc\ttp,000005F0,s0",              "7332045f"); //    invalid
-AssertCode("csrrc\ttp,000005F0,zero",            "7332005f"); //    invalid
-AssertCode("csrrsi\ts2,000006E6,0000001E",             "73696f6e"); //    invalid
-AssertCode("csrrci\ts0,000006A5,0000001A",             "73745d6a"); //    invalid
-AssertCode("mul\ta0,s5,s7",                      "33857a03"); //    add a0,s5,s7
-AssertCode("mulh\tt5,a7,s1",                     "339f9802"); //    sll t5,a7,s1
-AssertCode("mulhsu\tt3,sp,a6",                   "332e0103"); //    slt t3,sp,a6
-AssertCode("mulhu\tt3,sp,a6",                    "333e0103"); //    sltu t3,sp,a6
-AssertCode("mulhsu\tt3,sp,a6",                   "332e0103"); //    slt t3,sp,a6
-AssertCode("divu\tt4,t3,t2",                     "b35e7e02"); //    srl t4,t3,t2
-AssertCode("rem\ta4,a1,a2",                      "33e7c502"); //    or a4,a1,a2
-AssertCode("remu\ta6,a1,t2",                     "33f87502"); //    and a6,a1,t2
-AssertCode("fsw\tfs1,72(a1)",                    "27a49504"); //    fsw fs1,288(a1)
-AssertCode("fmadd.s\tfs10,ft10,ft5,fa0,rmm",     "434d5f50"); //  fmadd.s fs10,ft10,ft5,fa0
-AssertCode("fmsub.s\tft8,ft10,fs11,ft7,rdn",     "472ebf39"); //  fmsub.s ft8,ft10,fs11,ft7
-AssertCode("fnmsub.s\tfs7,fa4,fs3,fs0,rne",      "cb0b3741"); //    fnmsub.s fs7,fa4,fs3,fs0
-AssertCode("fnmadd.s\tfa4,ft4,fs5,fs0,rmm",      "4f475241"); //  fnmadd.s fa4,ft4,fs5,fs0
-AssertCode("fclass.s\ta3,fa2",                "d31606e0"); //        fmv.x.w a3,fa2
-AssertCode("fsd\tfs4,312(sp)",               "273c4113"); //  fsd fs4,2496(a0)
-AssertCode("fmsub.d\tft0,ft0,fs0,fa6,rne",    "47008082"); //  fmsub.s ft0,ft0,fs0,fa6
-AssertCode("fnmsub.d\tfs0,ft4,ft2,fa5,rdn",   "4b24227a"); //  fnmsub.s fs0,ft4,ft2,fa5
-AssertCode("fnmadd.d\tfa2,ft10,ft5,fa0,rmm",  "4f465f52"); //  fnmadd.s fa2,ft10,ft5,fa0
-AssertCode("fcvt.l.d\tra,ft1,rtz",            "d39020c2"); //  fcvt.l.d ra,ft1
-AssertCode("fcvt.lu.d\ta0,fa3,rtz",           "539536c2"); //  fcvt.lu.d a0,fa3
+
+            AssertCode("fence.i", "0f100000"); //    invalid
+            AssertCode("csrrw\ts2,00000315,t0", "73995231"); //    invalid
+            AssertCode("csrrs\ta1,sstatus,a5", "f3a50710"); //    csrrs a1,sstatus,a5
+            AssertCode("csrrc\ttp,000005F0,s0", "7332045f"); //    invalid
+            AssertCode("csrrc\ttp,000005F0,zero", "7332005f"); //    invalid
+            AssertCode("csrrsi\ts2,000006E6,0000001E", "73696f6e"); //    invalid
+            AssertCode("csrrci\ts0,000006A5,0000001A", "73745d6a"); //    invalid
+            AssertCode("mul\ta0,s5,s7", "33857a03"); //    add a0,s5,s7
+            AssertCode("mulh\tt5,a7,s1", "339f9802"); //    sll t5,a7,s1
+            AssertCode("mulhsu\tt3,sp,a6", "332e0103"); //    slt t3,sp,a6
+            AssertCode("mulhu\tt3,sp,a6", "333e0103"); //    sltu t3,sp,a6
+            AssertCode("mulhsu\tt3,sp,a6", "332e0103"); //    slt t3,sp,a6
+            AssertCode("divu\tt4,t3,t2", "b35e7e02"); //    srl t4,t3,t2
+            AssertCode("rem\ta4,a1,a2", "33e7c502"); //    or a4,a1,a2
+            AssertCode("remu\ta6,a1,t2", "33f87502"); //    and a6,a1,t2
+            AssertCode("fsw\tfs1,72(a1)", "27a49504"); //    fsw fs1,288(a1)
+            AssertCode("fmadd.s\tfs10,ft10,ft5,fa0,rmm", "434d5f50"); //  fmadd.s fs10,ft10,ft5,fa0
+            AssertCode("fmsub.s\tft8,ft10,fs11,ft7,rdn", "472ebf39"); //  fmsub.s ft8,ft10,fs11,ft7
+            AssertCode("fnmsub.s\tfs7,fa4,fs3,fs0,rne", "cb0b3741"); //    fnmsub.s fs7,fa4,fs3,fs0
+            AssertCode("fnmadd.s\tfa4,ft4,fs5,fs0,rmm", "4f475241"); //  fnmadd.s fa4,ft4,fs5,fs0
+            AssertCode("fclass.s\ta3,fa2", "d31606e0"); //        fmv.x.w a3,fa2
+            AssertCode("fsd\tfs4,312(sp)", "273c4113"); //  fsd fs4,2496(a0)
+            AssertCode("fmsub.d\tft0,ft0,fs0,fa6,rne", "47008082"); //  fmsub.s ft0,ft0,fs0,fa6
+            AssertCode("fnmsub.d\tfs0,ft4,ft2,fa5,rdn", "4b24227a"); //  fnmsub.s fs0,ft4,ft2,fa5
+            AssertCode("fnmadd.d\tfa2,ft10,ft5,fa0,rmm", "4f465f52"); //  fnmadd.s fa2,ft10,ft5,fa0
+            AssertCode("fcvt.l.d\tra,ft1,rtz", "d39020c2"); //  fcvt.l.d ra,ft1
+            AssertCode("fcvt.lu.d\ta0,fa3,rtz", "539536c2"); //  fcvt.lu.d a0,fa3
         }
-  
+
+        [Test]
+        public void RiscV_dasm_sret()
+        {
+            AssertCode("sret", 0b0001000_00010_00000_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_sfence_vma()
+        {
+            AssertCode("sfence.vma\ts5,0(s11)", 0b0001001_10101_11011_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_sfence_w_inval()
+        {
+            AssertCode("sfence.w.inval", 0b0001100_00000_00000_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_sfence_inval_ir()
+        {
+            AssertCode("sfence.inval.ir", 0b0001100_00001_00000_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hfence_vvma()
+        {
+            AssertCode("hfence.vvma\ts5,0(a7)", 0b0010001_10101_10001_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hfence_gvma()
+        {
+            AssertCode("hfence.gvma\ts5,0(a7)", 0b0110001_10101_10001_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hinval_vvma()
+        {
+            AssertCode("hinval.vvma\ts5,0(a7)", 0b0010011_10101_10001_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hinval_gvma()
+        {
+            AssertCode("hinval.gvma\ts5,0(a7)", 0b0110011_10101_10001_000_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_b()
+        {
+            AssertCode("hlv.b\ts11,0(a7)", 0b0110000_00000_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_bu()
+        {
+            AssertCode("hlv.bu\ts11,0(a7)", 0b0110000_00001_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_h()
+        {
+            AssertCode("hlv.h\ts11,0(a7)", 0b0110010_00000_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_hu()
+        {
+            AssertCode("hlv.hu\ts11,0(a7)", 0b0110010_00001_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlvx_hu()
+        {
+            AssertCode("hlvx.hu\ts11,0(a7)", 0b0110010_00011_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_w()
+        {
+            AssertCode("hlv.w\ts11,0(a7)", 0b0110100_00000_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlvx_wu()
+        {
+            AssertCode("hlvx.wu\ts11,0(a7)", 0b0110100_00011_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hsv_b()
+        {
+            AssertCode("hsv.b\t0(a7),s5", 0b0110001_10101_10001_100_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hsv_h()
+        {
+            AssertCode("hsv.h\t0(a7),s5", 0b0110011_10101_10001_100_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hsv_w()
+        {
+            AssertCode("hsv.w\t0(a7),s5", 0b0110101_10101_10001_100_00000_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_wu()
+        {
+            AssertCode("hlv.wu\ts11,0(a7)", 0b0110100_00001_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hlv_d()
+        {
+            AssertCode("hlv.d\ts11,0(a7)", 0b0110110_00000_10001_100_11011_1110011);
+        }
+
+        [Test]
+        public void RiscV_dasm_hsv_d()
+        {
+            AssertCode("hsv.d\t0(a7),s5", 0b0110111_10101_10001_100_00000_1110011);
+        }
     }
 }

@@ -220,6 +220,9 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        /// <summary>
+        /// Register encoded at bit position 15
+        /// </summary>
         private static bool r1(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetRegister(wInstr, 15);
@@ -227,6 +230,9 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
+        /// <summary>
+        /// Register encoded at bit position 20
+        /// </summary>
         private static bool r2(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetRegister(wInstr, 20);
