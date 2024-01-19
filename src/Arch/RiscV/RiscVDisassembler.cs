@@ -240,7 +240,7 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
-        private static bool d(uint wInstr, RiscVDisassembler dasm)
+        private static bool rd(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetRegister(wInstr, 7);
             dasm.state.ops.Add(op);
@@ -339,12 +339,7 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
-        private static bool Ss(uint wInstr, RiscVDisassembler dasm)
-        {
-            var op = dasm.GetSImmediate(wInstr);
-            dasm.state.ops.Add(op);
-            return true;
-        }
+        private static readonly Mutator<RiscVDisassembler> Ss = MemSignedOffset(PrimitiveType.Word32, 15, (25,7),(7,5));
 
         /// <summary>
         /// Predecessor or successor field in a <code>fence</code>
@@ -364,12 +359,7 @@ namespace Reko.Arch.RiscV
         private static readonly Mutator<RiscVDisassembler> ps_24 = PredSucc(24);
 
         // signed offset used in loads
-        private static bool Ls(uint wInstr, RiscVDisassembler dasm)
-        {
-            var op = dasm.GetImmediate(wInstr, 20, 's');
-            dasm.state.ops.Add(op);
-            return true;
-        }
+        private static readonly Mutator<RiscVDisassembler> Ls = MemSignedOffset(PrimitiveType.Word32, 15, (20,12));
 
         private static bool z(uint wInstr, RiscVDisassembler dasm)
         {
@@ -754,7 +744,7 @@ namespace Reko.Arch.RiscV
             {
                 var sImm = Bitfield.ReadSignedFields(masks, u);
                 d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.WordWidth, sImm)));
+                    Constant.Create(d.arch.NaturalSignedInteger, sImm)));
                 return true;
             };
         }
@@ -765,7 +755,7 @@ namespace Reko.Arch.RiscV
             {
                 var sImm = Bitfield.ReadSignedFields(masks, u);
                 d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.WordWidth, sImm)));
+                    Constant.Create(d.arch.NaturalSignedInteger, sImm)));
                 return true;
             };
         }
@@ -780,7 +770,7 @@ namespace Reko.Arch.RiscV
             {
                 var uImm = Bitfield.ReadSignedFields(masks, u) << sh;
                 d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.WordWidth, uImm)));
+                    Constant.Create(d.arch.NaturalSignedInteger, uImm)));
                 return true;
             };
         }
@@ -824,8 +814,30 @@ namespace Reko.Arch.RiscV
             };
         }
 
+
+        // Memory operand format, where the _signed_ offset is not scaled
+        private static Mutator<RiscVDisassembler> MemSignedOffset(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        {
+            var baseRegMask = new Bitfield(regOffset, 5);
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uOffset = (int) Bitfield.ReadSignedFields(masks, u);
+                var iBase = (int) baseRegMask.Read(u);
+
+                d.state.ops.Add(new MemoryOperand(
+                    dt,
+                    d.arch.GetRegister(iBase)!,
+                    uOffset));
+                return true;
+            };
+        }
+
+
         // Memory operand format, where offset is scaled by the register size
-        private static Mutator<RiscVDisassembler> Mems(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> MemScaledOffset(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
             var baseRegField = new Bitfield(regOffset, 5);
             var masks = fields

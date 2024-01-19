@@ -24,14 +24,14 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, char 
 			if (a4_n < a0)
 			{
 				int64 a1_n = (int64) ((word32) a4_n + 1);
-				gp->dw0890 = (word32) a1_n;
+				gp->dwFFFFF890 = (word32) a1_n;
 				struct Eq_n * s2_n = (struct Eq_n *) ((char *) a1 + (a4_n << 0x03));
 				s1_n = s2_n->ptr0000;
 				s4_n = null;
 				if (a1_n < a0)
 				{
 					s4_n = s2_n->ptr0008;
-					gp->dw0890 = (word32) a4_n + 2;
+					gp->dwFFFFF890 = (word32) a4_n + 2;
 				}
 			}
 			else
@@ -263,7 +263,7 @@ l00000000000153D8:
 				s0_n |= 8;
 			if ((uint64) isatty(1) != 0x00)
 			{
-				gp->dw0810 = 0x01;
+				gp->dwFFFFF810 = 0x01;
 				a4_n.u0 = 1;
 			}
 			if ((s0_n & 8) == 0x00)
@@ -552,7 +552,7 @@ void fn0000000000015F64(struct Eq_n * gp)
 	if ((word64) gp->bFFFFF894 == 0x00)
 	{
 		fn0000000000015EF0();
-		gp->b0894 = 0x01;
+		gp->bFFFFF894 = 0x01;
 	}
 }
 
@@ -1526,7 +1526,7 @@ l0000000000017768:
 					do
 					{
 						s8_n = (union Eq_n *) ((char *) s8_n + 1);
-						(&s8_n->u2)[0x0FFF] = (struct Eq_n) ((byte) ~(word64) s9_n->u0 | s8_n->u0);
+						s8_n->u2.bFFFFFFFF = (byte) ~(word64) s9_n->u0 | s8_n->u0;
 						s9_n = (union Eq_n *) ((char *) s9_n + 1);
 					} while (&bLoc0168 != s8_n);
 					if (inet_ntop(0x0A, &qwLoc0178, &bLoc0168, 0x00FA) != null)
@@ -1592,38 +1592,38 @@ int64 fn0000000000017924(struct Eq_n * gp, char * a5, FILE & a1Out, union Eq_n &
 {
 	int64 s0_n;
 	FILE * a1;
-	if (gp->qwFFFFF820 == 0x00)
+	if (gp->ptrFFFFF820 == null)
 	{
 		s0_n = (int64) gp->dwFFFFF818;
 		if (s0_n == 0x00)
 		{
 			void * a0_n = dlopen("/usr/lib64/libGeoIP.so.1", 1);
-			gp->ptr0820 = a0_n;
+			gp->ptrFFFFF820 = a0_n;
 			Eq_n a6;
 			Eq_n a2;
 			Eq_n a3;
 			Eq_n a4;
 			if (a0_n != null)
 			{
-				gp->ptr0868 = dlsym(a0_n, "_GeoIP_setup_dbfilename");
-				void * a0_n = dlsym(a0_n, "GeoIP_open_type");
-				gp->ptr0860 = a0_n;
-				void * a0_n = dlsym(a0_n, "GeoIP_country_name_by_id");
-				gp->ptr0858 = a0_n;
+				gp->ptrFFFFF868 = dlsym(a0_n, "_GeoIP_setup_dbfilename");
+				<anonymous> * a0_n = dlsym(a0_n, "GeoIP_open_type");
+				gp->ptrFFFFF860 = a0_n;
+				<anonymous> * a0_n = dlsym(a0_n, "GeoIP_country_name_by_id");
+				gp->ptrFFFFF858 = a0_n;
 				void * a0_n = dlsym(a0_n, "GeoIP_delete");
-				gp->ptr0848 = a0_n;
-				void * a0_n = dlsym(a0_n, "GeoIP_record_by_ipnum");
-				gp->ptr0840 = a0_n;
+				gp->ptrFFFFF848 = a0_n;
+				<anonymous> * a0_n = dlsym(a0_n, "GeoIP_record_by_ipnum");
+				gp->ptrFFFFF840 = a0_n;
 				void * a0_n = dlsym(a0_n, "GeoIP_id_by_ipnum");
-				gp->ptr0838 = a0_n;
+				gp->ptrFFFFF838 = a0_n;
 				void * a0_n = dlsym(a0_n, "GeoIP_id_by_ipnum_v6");
-				gp->ptr0830 = a0_n;
-				void * a0_n = dlsym(a0_n, "GeoIP_record_by_ipnum_v6");
-				gp->ptr0828 = a0_n;
-				gp->ptr0850 = dlsym(a0_n, "GeoIP_code_by_id");
+				gp->ptrFFFFF830 = a0_n;
+				<anonymous> * a0_n = dlsym(a0_n, "GeoIP_record_by_ipnum_v6");
+				gp->ptrFFFFF828 = a0_n;
+				gp->ptrFFFFF850 = dlsym(a0_n, "GeoIP_code_by_id");
 				a1 = (FILE *) g_str12B38;
 				if (a0_n != null && (a0_n != null && (a0_n != null && (a0_n != null && (a0_n != null && (a0_n != null && a0_n != null))))))
-					gp->dw0818 = 0x00;
+					gp->dwFFFFF818 = 0x00;
 				else
 				{
 					a6.u1 = g_t12B50.u1;
@@ -1638,14 +1638,14 @@ int64 fn0000000000017924(struct Eq_n * gp, char * a5, FILE & a1Out, union Eq_n &
 					gp->tFFFFFCF8.u0 = (int64) a2;
 					gp->tFFFFFD00.u0 = (int64) a3;
 					gp->dwFFFFFD08 = (word32) a4;
-					gp->dw0818 = ~0x00;
+					gp->dwFFFFF818 = ~0x00;
 					s0_n = -1;
 				}
 			}
 			else
 			{
 				__snprintf_chk(&gp->tFFFFFCE0.u0, (size_t) 0x0100, 1, (size_t) 0x0100, "ipcalc: could not open %s\n", a5);
-				gp->dw0818 = ~0x00;
+				gp->dwFFFFF818 = ~0x00;
 				a3.u0 = 0x0100;
 				a4.u0 = 76376;
 				a2.u0 = 1;
@@ -2005,15 +2005,15 @@ union Eq_n * fn0000000000018118(struct Eq_n * gp, union Eq_n * a0, char * a1)
 				if ((a5_n & 0x0F) <= 9)
 					a6_n = (a5_n & 0x0F) + 48;
 				ptr64 fp;
-				(fp + -16 + (word64) ((word32) a4_n))->b0EF8 = (byte) a6_n;
-				(fp + -16 + (word64) ((word32) a3_n))->b0EF8 = 0x2E;
+				(fp + -16 + (word64) ((word32) a4_n))->bFFFFFEF8 = (byte) a6_n;
+				(fp + -16 + (word64) ((word32) a3_n))->bFFFFFEF8 = 0x2E;
 				int64 a2_n = (int64) ((word32) a4_n + 2);
 				int64 a3_n = (int64) ((word32) a4_n + 3);
 				uint64 a6_n = (a5_n >> 0x04) + 48;
 				if (a5_n >> 0x04 > 9)
 					a6_n = (a5_n >> 0x04) + 87;
-				(fp + -16 + (word64) ((word32) a2_n))->b0EF8 = (byte) a6_n;
-				(fp + -16 + (word64) ((word32) a3_n))->b0EF8 = 0x2E;
+				(fp + -16 + (word64) ((word32) a2_n))->bFFFFFEF8 = (byte) a6_n;
+				(fp + -16 + (word64) ((word32) a3_n))->bFFFFFEF8 = 0x2E;
 				a1_n = (int64) ((word32) a1_n + -1);
 				a4_n = (int64) ((word32) a4_n + 4);
 			} while (a1_n != -1);

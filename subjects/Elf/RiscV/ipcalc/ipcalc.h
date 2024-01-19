@@ -154,9 +154,13 @@ Eq_6: (struct "Eq_6"
 		(FFFFF810 int32 dwFFFFF810)
 		(FFFFF814 int32 dwFFFFF814)
 		(FFFFF818 int32 dwFFFFF818)
-		(FFFFF820 word64 qwFFFFF820)
+		(FFFFF820 (ptr64 void) ptrFFFFF820)
 		(FFFFF828 (ptr64 code) ptrFFFFF828)
+		(FFFFF830 (ptr64 void) ptrFFFFF830)
+		(FFFFF838 (ptr64 void) ptrFFFFF838)
 		(FFFFF840 (ptr64 code) ptrFFFFF840)
+		(FFFFF848 (ptr64 void) ptrFFFFF848)
+		(FFFFF850 (ptr64 void) ptrFFFFF850)
 		(FFFFF858 (ptr64 code) ptrFFFFF858)
 		(FFFFF860 (ptr64 code) ptrFFFFF860)
 		(FFFFF868 (ptr64 code) ptrFFFFF868)
@@ -169,20 +173,7 @@ Eq_6: (struct "Eq_6"
 		(FFFFFCF0 (ptr64 Eq_122) ptrFFFFFCF0)
 		(FFFFFCF8 Eq_144 tFFFFFCF8)
 		(FFFFFD00 Eq_145 tFFFFFD00)
-		(FFFFFD08 word32 dwFFFFFD08)
-		(810 word32 dw0810)
-		(818 word32 dw0818)
-		(820 (ptr64 void) ptr0820)
-		(828 (ptr64 void) ptr0828)
-		(830 (ptr64 void) ptr0830)
-		(838 (ptr64 void) ptr0838)
-		(840 (ptr64 void) ptr0840)
-		(848 (ptr64 void) ptr0848)
-		(850 (ptr64 void) ptr0850)
-		(858 (ptr64 void) ptr0858)
-		(860 (ptr64 void) ptr0860)
-		(868 (ptr64 void) ptr0868)
-		(890 word32 dw0890))
+		(FFFFFD08 word32 dwFFFFFD08))
 	T_6 (in gp @ 0000000000015108 : (ptr64 Eq_6))
 	T_141 (in gp @ 000000000001592C : (ptr64 Eq_6))
 	T_217 (in gp @ 0000000000015468 : (ptr64 Eq_6))
@@ -1220,7 +1211,7 @@ Eq_1340: (fn void ())
 	T_1348 (in 0000000000018378 @ 0000000000015EEC : ptr64)
 Eq_1349: (union "Eq_1349" (ui64 u0) (ptr64 u1))
 	T_1349 (in fp @ 0000000000015EEC : Eq_1349)
-Eq_1359: (struct "Eq_1359" (FFFFF894 byte bFFFFF894) (894 byte b0894))
+Eq_1359: (struct "Eq_1359" (FFFFF894 byte bFFFFF894))
 	T_1359 (in gp @ 0000000000015F60 : (ptr64 Eq_1359))
 Eq_1366: (fn void ())
 	T_1366 (in fn0000000000015EF0 @ 0000000000015F78 : ptr64)
@@ -2011,19 +2002,19 @@ Eq_4151: (fn (ptr64 void) ((ptr64 char), int32))
 Eq_4164: (fn int32 ((ptr64 char), Eq_120, int32, Eq_120, (ptr64 char), (ptr64 char)))
 	T_4164 (in __snprintf_chk @ 0000000000017B34 : ptr64)
 	T_4165 (in signature of __snprintf_chk : void)
-Eq_4188: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
+Eq_4188: (fn (ptr64 code) ((ptr64 void), (ptr64 char)))
 	T_4188 (in dlsym @ 00000000000179EC : ptr64)
 	T_4189 (in signature of dlsym : void)
-Eq_4197: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
+Eq_4197: (fn (ptr64 code) ((ptr64 void), (ptr64 char)))
 	T_4197 (in dlsym @ 00000000000179F8 : ptr64)
 	T_4198 (in signature of dlsym : void)
-Eq_4207: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
+Eq_4207: (fn (ptr64 code) ((ptr64 void), (ptr64 char)))
 	T_4207 (in dlsym @ 0000000000017A10 : ptr64)
 	T_4208 (in signature of dlsym : void)
 Eq_4217: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
 	T_4217 (in dlsym @ 0000000000017A28 : ptr64)
 	T_4218 (in signature of dlsym : void)
-Eq_4227: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
+Eq_4227: (fn (ptr64 code) ((ptr64 void), (ptr64 char)))
 	T_4227 (in dlsym @ 0000000000017A40 : ptr64)
 	T_4228 (in signature of dlsym : void)
 Eq_4237: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
@@ -2032,7 +2023,7 @@ Eq_4237: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
 Eq_4247: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
 	T_4247 (in dlsym @ 0000000000017A70 : ptr64)
 	T_4248 (in signature of dlsym : void)
-Eq_4257: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
+Eq_4257: (fn (ptr64 code) ((ptr64 void), (ptr64 char)))
 	T_4257 (in dlsym @ 0000000000017A88 : ptr64)
 	T_4258 (in signature of dlsym : void)
 Eq_4267: (fn (ptr64 void) ((ptr64 void), (ptr64 char)))
@@ -2156,9 +2147,9 @@ Eq_4932: (fn (ptr64 Eq_3885) ((ptr64 char)))
 Eq_4959: (union "Eq_4959" (int64 u0) (uint64 u1))
 	T_4959 (in a5_49 & 15<i64> @ 00000000000181AC : word64)
 	T_4960 (in 9<i64> @ 00000000000181AC : int64)
-Eq_4972: (struct "Eq_4972" (EF8 byte b0EF8))
+Eq_4972: (struct "Eq_4972" (FFFFFEF8 byte bFFFFFEF8))
 	T_4972 (in fp + -16<i64> + (word64) ((word32) a4_39) @ 00000000000181CC : word64)
-Eq_4980: (struct "Eq_4980" (EF8 byte b0EF8))
+Eq_4980: (struct "Eq_4980" (FFFFFEF8 byte bFFFFFEF8))
 	T_4980 (in fp + -16<i64> + (word64) ((word32) a3_51) @ 00000000000181D8 : word64)
 Eq_4999: (union "Eq_4999" (int64 u0) (uint64 u1))
 	T_4999 (in a5_49 >> 4<u32> @ 00000000000181E8 : word64)
@@ -2166,9 +2157,9 @@ Eq_4999: (union "Eq_4999" (int64 u0) (uint64 u1))
 Eq_5005: (fn void ())
 	T_5005 (in __stack_chk_fail @ 00000000000182B0 : ptr64)
 	T_5006 (in signature of __stack_chk_fail : void)
-Eq_5013: (struct "Eq_5013" (EF8 byte b0EF8))
+Eq_5013: (struct "Eq_5013" (FFFFFEF8 byte bFFFFFEF8))
 	T_5013 (in fp + -16<i64> + (word64) ((word32) a2_74) @ 0000000000018178 : word64)
-Eq_5021: (struct "Eq_5021" (EF8 byte b0EF8))
+Eq_5021: (struct "Eq_5021" (FFFFFEF8 byte bFFFFFEF8))
 	T_5021 (in fp + -16<i64> + (word64) ((word32) a3_75) @ 0000000000018180 : word64)
 Eq_5083: (union "Eq_5083" (int64 u0) (ptr64 u1))
 	T_5083 (in 0000000000019E20 @ 0000000000018304 : ptr64)
@@ -2208,7 +2199,7 @@ Eq_5115: (struct "addrinfo" 0020
 		(18 (ptr64 char) ai_canonname)
 		(1C (ptr64 Eq_5122) ai_next))
 	T_5115
-Eq_5116: (struct "Eq_5116" 0001 (0 byte b0000) (FFF byte b0FFF))
+Eq_5116: (struct "Eq_5116" 0001 (FFFFFFFF byte bFFFFFFFF) (0 byte b0000))
 	T_5116
 Eq_5117: (struct "sockaddr")
 	T_5117
@@ -3998,7 +3989,7 @@ T_5: (in ra @ 0000000000015108 : word64)
 T_6: (in gp @ 0000000000015108 : (ptr64 Eq_6))
   Class: Eq_6
   DataType: (ptr64 Eq_6)
-  OrigDataType: (ptr64 (struct (FFFFF814 T_113 tFFFFF814) (FFFFF870 T_19 tFFFFF870) (FFFFF880 T_122 tFFFFF880) (FFFFF890 T_31 tFFFFF890) (810 T_528 t0810) (890 T_71 t0890)))
+  OrigDataType: (ptr64 (struct (FFFFF810 T_528 tFFFFF810) (FFFFF814 T_113 tFFFFF814) (FFFFF870 T_19 tFFFFF870) (FFFFF880 T_122 tFFFFF880) (FFFFF890 T_31 tFFFFF890)))
 T_7: (in a0 @ 0000000000015108 : int64)
   Class: Eq_7
   DataType: int64
@@ -4256,21 +4247,21 @@ T_70: (in a1_68 @ 0000000000015350 : int64)
   DataType: int64
   OrigDataType: int64
 T_71: (in SLICE(a1_68, word32, 0) @ 000000000001535C : word32)
-  Class: Eq_71
-  DataType: word32
+  Class: Eq_31
+  DataType: int32
   OrigDataType: word32
-T_72: (in 2192<i64> @ 000000000001535C : int64)
+T_72: (in -1904<i64> @ 000000000001535C : int64)
   Class: Eq_72
   DataType: int64
   OrigDataType: int64
-T_73: (in gp + 2192<i64> @ 000000000001535C : word64)
+T_73: (in gp + -1904<i64> @ 000000000001535C : word64)
   Class: Eq_73
-  DataType: ptr64
-  OrigDataType: ptr64
-T_74: (in Mem71[gp + 2192<i64>:word32] @ 000000000001535C : word32)
-  Class: Eq_71
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr64 int32)
+  OrigDataType: (ptr64 int32)
+T_74: (in Mem71[gp + -1904<i64>:word32] @ 000000000001535C : word32)
+  Class: Eq_31
+  DataType: int32
+  OrigDataType: int32
 T_75: (in 3<u32> @ 0000000000015358 : uint32)
   Class: Eq_75
   DataType: uint32
@@ -4332,21 +4323,21 @@ T_89: (in 2<i32> @ 0000000000015374 : int32)
   DataType: int32
   OrigDataType: int32
 T_90: (in (word32) a4_65 + 2<i32> @ 0000000000015374 : word32)
-  Class: Eq_71
-  DataType: word32
+  Class: Eq_31
+  DataType: int32
   OrigDataType: word32
-T_91: (in 2192<i64> @ 0000000000015374 : int64)
+T_91: (in -1904<i64> @ 0000000000015374 : int64)
   Class: Eq_91
   DataType: int64
   OrigDataType: int64
-T_92: (in gp + 2192<i64> @ 0000000000015374 : word64)
+T_92: (in gp + -1904<i64> @ 0000000000015374 : word64)
   Class: Eq_92
-  DataType: (ptr64 word32)
-  OrigDataType: (ptr64 word32)
-T_93: (in Mem76[gp + 2192<i64>:word32] @ 0000000000015374 : word32)
-  Class: Eq_71
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr64 int32)
+  OrigDataType: (ptr64 int32)
+T_93: (in Mem76[gp + -1904<i64>:word32] @ 0000000000015374 : word32)
+  Class: Eq_31
+  DataType: int32
+  OrigDataType: int32
 T_94: (in __printf_chk @ 000000000001559C : ptr64)
   Class: Eq_94
   DataType: (ptr64 Eq_94)
@@ -4542,24 +4533,22 @@ T_141: (in gp @ 000000000001592C : (ptr64 Eq_6))
 		(FFFFF814 T_4126 tFFFFF814)
 		(FFFFF818 T_4119 tFFFFF818)
 		(FFFFF820 T_4114 tFFFFF820)
+		(FFFFF828 T_4266 tFFFFF828)
+		(FFFFF830 T_4256 tFFFFF830)
+		(FFFFF838 T_4246 tFFFFF838)
+		(FFFFF840 T_4236 tFFFFF840)
+		(FFFFF848 T_4226 tFFFFF848)
+		(FFFFF850 T_4275 tFFFFF850)
+		(FFFFF858 T_4216 tFFFFF858)
+		(FFFFF860 T_4206 tFFFFF860)
+		(FFFFF868 T_4196 tFFFFF868)
 		(FFFFF880 T_4142 tFFFFF880)
 		(FFFFFCE0 T_147 tFFFFFCE0)
 		(FFFFFCE8 T_4299 tFFFFFCE8)
 		(FFFFFCF0 T_4302 tFFFFFCF0)
 		(FFFFFCF8 T_4305 tFFFFFCF8)
 		(FFFFFD00 T_4308 tFFFFFD00)
-		(FFFFFD08 T_4312 tFFFFFD08)
-		(818 T_4176 t0818)
-		(820 T_4161 t0820)
-		(828 T_4266 t0828)
-		(830 T_4256 t0830)
-		(838 T_4246 t0838)
-		(840 T_4236 t0840)
-		(848 T_4226 t0848)
-		(850 T_4275 t0850)
-		(858 T_4216 t0858)
-		(860 T_4206 t0860)
-		(868 T_4196 t0868)))
+		(FFFFFD08 T_4312 tFFFFFD08)))
 T_142: (in a5 @ 000000000001592C : (ptr64 char))
   Class: Eq_35
   DataType: (ptr64 char)
@@ -6116,19 +6105,19 @@ T_524: (in (s0_126 & 8<i64>) == 0<64> @ 0000000000015648 : bool)
   OrigDataType: bool
 T_525: (in 1<32> @ 0000000000015640 : word32)
   Class: Eq_525
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_526: (in 2064<i64> @ 0000000000015640 : int64)
+T_526: (in -2032<i64> @ 0000000000015640 : int64)
   Class: Eq_526
   DataType: int64
   OrigDataType: int64
-T_527: (in gp + 2064<i64> @ 0000000000015640 : word64)
+T_527: (in gp + -2032<i64> @ 0000000000015640 : word64)
   Class: Eq_527
   DataType: ptr64
   OrigDataType: ptr64
-T_528: (in Mem563[gp + 2064<i64>:word32] @ 0000000000015640 : word32)
+T_528: (in Mem563[gp + -2032<i64>:word32] @ 0000000000015640 : word32)
   Class: Eq_525
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
 T_529: (in 1<i64> @ 000000000001563C : int64)
   Class: Eq_448
@@ -9453,7 +9442,7 @@ T_1358: (in 0<64> @ 0000000000015F5C : word64)
 T_1359: (in gp @ 0000000000015F60 : (ptr64 Eq_1359))
   Class: Eq_1359
   DataType: (ptr64 Eq_1359)
-  OrigDataType: (ptr64 (struct (FFFFF894 T_1362 tFFFFF894) (894 T_1372 t0894)))
+  OrigDataType: (ptr64 (struct (FFFFF894 T_1362 tFFFFF894)))
 T_1360: (in -1900<i64> @ 0000000000015F74 : int64)
   Class: Eq_1360
   DataType: int64
@@ -9491,19 +9480,19 @@ T_1368: (in fn0000000000015EF0() @ 0000000000015F78 : void)
   DataType: void
   OrigDataType: void
 T_1369: (in 1<8> @ 0000000000015F80 : byte)
-  Class: Eq_1369
+  Class: Eq_1362
   DataType: byte
   OrigDataType: byte
-T_1370: (in 2196<i64> @ 0000000000015F80 : int64)
+T_1370: (in -1900<i64> @ 0000000000015F80 : int64)
   Class: Eq_1370
   DataType: int64
   OrigDataType: int64
-T_1371: (in gp + 2196<i64> @ 0000000000015F80 : word64)
+T_1371: (in gp + -1900<i64> @ 0000000000015F80 : word64)
   Class: Eq_1371
-  DataType: ptr64
-  OrigDataType: ptr64
-T_1372: (in Mem16[gp + 2196<i64>:byte] @ 0000000000015F80 : byte)
-  Class: Eq_1369
+  DataType: (ptr64 byte)
+  OrigDataType: (ptr64 byte)
+T_1372: (in Mem16[gp + -1900<i64>:byte] @ 0000000000015F80 : byte)
+  Class: Eq_1362
   DataType: byte
   OrigDataType: byte
 T_1373: (in ra @ 0000000000015F80 : word64)
@@ -12503,7 +12492,7 @@ T_2121: (in gp_39 + -2032<i64> @ 00000000000165B8 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_2122: (in Mem36[gp_39 + -2032<i64>:int32] @ 00000000000165B8 : int32)
-  Class: Eq_2122
+  Class: Eq_525
   DataType: int32
   OrigDataType: int32
 T_2123: (in CONVERT(Mem36[gp_39 + -2032<i64>:int32], int32, int64) @ 00000000000165B8 : int64)
@@ -12599,7 +12588,7 @@ T_2145: (in gp_39 + -2032<i64> @ 00000000000165CC : word64)
   DataType: (ptr64 int32)
   OrigDataType: (ptr64 int32)
 T_2146: (in Mem36[gp_39 + -2032<i64>:int32] @ 00000000000165CC : int32)
-  Class: Eq_2122
+  Class: Eq_525
   DataType: int32
   OrigDataType: int32
 T_2147: (in CONVERT(Mem36[gp_39 + -2032<i64>:int32], int32, int64) @ 00000000000165CC : int64)
@@ -20062,15 +20051,15 @@ T_4009: (in (byte) ~(word64) s9_104->u0 | s8_102->u0 @ 0000000000017890 : byte)
   Class: Eq_4009
   DataType: byte
   OrigDataType: byte
-T_4010: (in 4095<i64> @ 0000000000017890 : int64)
+T_4010: (in -1<i64> @ 0000000000017890 : int64)
   Class: Eq_4010
   DataType: int64
   OrigDataType: int64
-T_4011: (in s8_102 + 4095<i64> @ 0000000000017890 : word64)
+T_4011: (in s8_102 + -1<i64> @ 0000000000017890 : word64)
   Class: Eq_4011
   DataType: ptr64
   OrigDataType: ptr64
-T_4012: (in Mem170[s8_102 + 4095<i64>:byte] @ 0000000000017890 : byte)
+T_4012: (in Mem170[s8_102 + -1<i64>:byte] @ 0000000000017890 : byte)
   Class: Eq_4009
   DataType: byte
   OrigDataType: byte
@@ -20480,13 +20469,13 @@ T_4113: (in gp + -2016<i64> @ 0000000000017958 : word64)
   OrigDataType: word64
 T_4114: (in Mem5[gp + -2016<i64>:word64] @ 0000000000017958 : word64)
   Class: Eq_4114
-  DataType: word64
+  DataType: (ptr64 void)
   OrigDataType: word64
 T_4115: (in 0<64> @ 0000000000017958 : word64)
   Class: Eq_4114
-  DataType: word64
+  DataType: (ptr64 void)
   OrigDataType: word64
-T_4116: (in gp->qwFFFFF820 == 0<64> @ 0000000000017958 : bool)
+T_4116: (in gp->ptrFFFFF820 == null @ 0000000000017958 : bool)
   Class: Eq_4116
   DataType: bool
   OrigDataType: bool
@@ -20651,27 +20640,27 @@ T_4156: (in 1<i32> @ 00000000000179CC : int32)
   DataType: int32
   OrigDataType: int32
 T_4157: (in dlopen("/usr/lib64/libGeoIP.so.1", 1<i32>) @ 00000000000179CC : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
 T_4158: (in a0_32 @ 00000000000179CC : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_4159: (in 2080<i64> @ 00000000000179D0 : int64)
+T_4159: (in -2016<i64> @ 00000000000179D0 : int64)
   Class: Eq_4159
   DataType: int64
   OrigDataType: int64
-T_4160: (in gp + 2080<i64> @ 00000000000179D0 : word64)
+T_4160: (in gp + -2016<i64> @ 00000000000179D0 : word64)
   Class: Eq_4160
-  DataType: ptr64
-  OrigDataType: ptr64
-T_4161: (in Mem33[gp + 2080<i64>:word64] @ 00000000000179D0 : word64)
-  Class: Eq_4157
+  DataType: (ptr64 word64)
+  OrigDataType: (ptr64 word64)
+T_4161: (in Mem33[gp + -2016<i64>:word64] @ 00000000000179D0 : word64)
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: word64
 T_4162: (in 0<64> @ 00000000000179D8 : word64)
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: word64
 T_4163: (in a0_32 == null @ 00000000000179D8 : bool)
@@ -20727,21 +20716,21 @@ T_4175: (in __snprintf_chk(&gp->tFFFFFCE0.u0, (size_t) 256<i64>, 1<i32>, (size_t
   DataType: int32
   OrigDataType: int32
 T_4176: (in 0xFFFFFFFF<32> @ 0000000000017B38 : word32)
-  Class: Eq_4176
-  DataType: word32
+  Class: Eq_4119
+  DataType: int32
   OrigDataType: word32
-T_4177: (in 2072<i64> @ 0000000000017B38 : int64)
+T_4177: (in -2024<i64> @ 0000000000017B38 : int64)
   Class: Eq_4177
   DataType: int64
   OrigDataType: int64
-T_4178: (in gp + 2072<i64> @ 0000000000017B38 : word64)
+T_4178: (in gp + -2024<i64> @ 0000000000017B38 : word64)
   Class: Eq_4178
-  DataType: ptr64
-  OrigDataType: ptr64
-T_4179: (in Mem44[gp + 2072<i64>:word32] @ 0000000000017B38 : word32)
-  Class: Eq_4176
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr64 int32)
+  OrigDataType: (ptr64 int32)
+T_4179: (in Mem44[gp + -2024<i64>:word32] @ 0000000000017B38 : word32)
+  Class: Eq_4119
+  DataType: int32
+  OrigDataType: int32
 T_4180: (in 256<i64> @ 0000000000017B14 : int64)
   Class: Eq_145
   DataType: int64
@@ -20783,7 +20772,7 @@ T_4189: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4188)
   OrigDataType: 
 T_4190: (in handle @ 00000000000179EC : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4191: (in symbol @ 00000000000179EC : (ptr64 char))
@@ -20796,19 +20785,19 @@ T_4192: (in 0x12A78<64> @ 00000000000179EC : word64)
   OrigDataType: (ptr64 char)
 T_4193: (in dlsym(a0_32, "_GeoIP_setup_dbfilename") @ 00000000000179EC : (ptr64 void))
   Class: Eq_4193
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4194: (in 2152<i64> @ 00000000000179EC : int64)
+T_4194: (in -1944<i64> @ 00000000000179EC : int64)
   Class: Eq_4194
   DataType: int64
   OrigDataType: int64
-T_4195: (in gp + 2152<i64> @ 00000000000179EC : word64)
+T_4195: (in gp + -1944<i64> @ 00000000000179EC : word64)
   Class: Eq_4195
   DataType: ptr64
   OrigDataType: ptr64
-T_4196: (in Mem49[gp + 2152<i64>:word64] @ 00000000000179EC : word64)
+T_4196: (in Mem49[gp + -1944<i64>:word64] @ 00000000000179EC : word64)
   Class: Eq_4193
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4197: (in dlsym @ 00000000000179F8 : ptr64)
   Class: Eq_4197
@@ -20819,7 +20808,7 @@ T_4198: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4197)
   OrigDataType: 
 T_4199: (in handle @ 00000000000179F8 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4200: (in symbol @ 00000000000179F8 : (ptr64 char))
@@ -20832,23 +20821,23 @@ T_4201: (in 0x12A90<64> @ 00000000000179F8 : word64)
   OrigDataType: (ptr64 char)
 T_4202: (in dlsym(a0_32, "GeoIP_open_type") @ 00000000000179F8 : (ptr64 void))
   Class: Eq_4202
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4203: (in a0_52 @ 00000000000179F8 : (ptr64 void))
+T_4203: (in a0_52 @ 00000000000179F8 : (ptr64 code))
   Class: Eq_4202
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4204: (in 2144<i64> @ 0000000000017A0C : int64)
+T_4204: (in -1952<i64> @ 0000000000017A0C : int64)
   Class: Eq_4204
   DataType: int64
   OrigDataType: int64
-T_4205: (in gp + 2144<i64> @ 0000000000017A0C : word64)
+T_4205: (in gp + -1952<i64> @ 0000000000017A0C : word64)
   Class: Eq_4205
   DataType: ptr64
   OrigDataType: ptr64
-T_4206: (in Mem57[gp + 2144<i64>:word64] @ 0000000000017A0C : word64)
+T_4206: (in Mem57[gp + -1952<i64>:word64] @ 0000000000017A0C : word64)
   Class: Eq_4202
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4207: (in dlsym @ 0000000000017A10 : ptr64)
   Class: Eq_4207
@@ -20859,7 +20848,7 @@ T_4208: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4207)
   OrigDataType: 
 T_4209: (in handle @ 0000000000017A10 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4210: (in symbol @ 0000000000017A10 : (ptr64 char))
@@ -20872,23 +20861,23 @@ T_4211: (in 0x12AA0<64> @ 0000000000017A10 : word64)
   OrigDataType: (ptr64 char)
 T_4212: (in dlsym(a0_32, "GeoIP_country_name_by_id") @ 0000000000017A10 : (ptr64 void))
   Class: Eq_4212
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4213: (in a0_58 @ 0000000000017A10 : (ptr64 void))
+T_4213: (in a0_58 @ 0000000000017A10 : (ptr64 code))
   Class: Eq_4212
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4214: (in 2136<i64> @ 0000000000017A24 : int64)
+T_4214: (in -1960<i64> @ 0000000000017A24 : int64)
   Class: Eq_4214
   DataType: int64
   OrigDataType: int64
-T_4215: (in gp + 2136<i64> @ 0000000000017A24 : word64)
+T_4215: (in gp + -1960<i64> @ 0000000000017A24 : word64)
   Class: Eq_4215
   DataType: ptr64
   OrigDataType: ptr64
-T_4216: (in Mem63[gp + 2136<i64>:word64] @ 0000000000017A24 : word64)
+T_4216: (in Mem63[gp + -1960<i64>:word64] @ 0000000000017A24 : word64)
   Class: Eq_4212
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4217: (in dlsym @ 0000000000017A28 : ptr64)
   Class: Eq_4217
@@ -20899,7 +20888,7 @@ T_4218: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4217)
   OrigDataType: 
 T_4219: (in handle @ 0000000000017A28 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4220: (in symbol @ 0000000000017A28 : (ptr64 char))
@@ -20918,15 +20907,15 @@ T_4223: (in a0_64 @ 0000000000017A28 : (ptr64 void))
   Class: Eq_4222
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_4224: (in 2120<i64> @ 0000000000017A3C : int64)
+T_4224: (in -1976<i64> @ 0000000000017A3C : int64)
   Class: Eq_4224
   DataType: int64
   OrigDataType: int64
-T_4225: (in gp + 2120<i64> @ 0000000000017A3C : word64)
+T_4225: (in gp + -1976<i64> @ 0000000000017A3C : word64)
   Class: Eq_4225
   DataType: ptr64
   OrigDataType: ptr64
-T_4226: (in Mem69[gp + 2120<i64>:word64] @ 0000000000017A3C : word64)
+T_4226: (in Mem69[gp + -1976<i64>:word64] @ 0000000000017A3C : word64)
   Class: Eq_4222
   DataType: (ptr64 void)
   OrigDataType: word64
@@ -20939,7 +20928,7 @@ T_4228: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4227)
   OrigDataType: 
 T_4229: (in handle @ 0000000000017A40 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4230: (in symbol @ 0000000000017A40 : (ptr64 char))
@@ -20952,23 +20941,23 @@ T_4231: (in 0x12AD0<64> @ 0000000000017A40 : word64)
   OrigDataType: (ptr64 char)
 T_4232: (in dlsym(a0_32, "GeoIP_record_by_ipnum") @ 0000000000017A40 : (ptr64 void))
   Class: Eq_4232
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4233: (in a0_70 @ 0000000000017A40 : (ptr64 void))
+T_4233: (in a0_70 @ 0000000000017A40 : (ptr64 code))
   Class: Eq_4232
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4234: (in 2112<i64> @ 0000000000017A54 : int64)
+T_4234: (in -1984<i64> @ 0000000000017A54 : int64)
   Class: Eq_4234
   DataType: int64
   OrigDataType: int64
-T_4235: (in gp + 2112<i64> @ 0000000000017A54 : word64)
+T_4235: (in gp + -1984<i64> @ 0000000000017A54 : word64)
   Class: Eq_4235
   DataType: ptr64
   OrigDataType: ptr64
-T_4236: (in Mem75[gp + 2112<i64>:word64] @ 0000000000017A54 : word64)
+T_4236: (in Mem75[gp + -1984<i64>:word64] @ 0000000000017A54 : word64)
   Class: Eq_4232
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4237: (in dlsym @ 0000000000017A58 : ptr64)
   Class: Eq_4237
@@ -20979,7 +20968,7 @@ T_4238: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4237)
   OrigDataType: 
 T_4239: (in handle @ 0000000000017A58 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4240: (in symbol @ 0000000000017A58 : (ptr64 char))
@@ -20998,15 +20987,15 @@ T_4243: (in a0_76 @ 0000000000017A58 : (ptr64 void))
   Class: Eq_4242
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_4244: (in 2104<i64> @ 0000000000017A6C : int64)
+T_4244: (in -1992<i64> @ 0000000000017A6C : int64)
   Class: Eq_4244
   DataType: int64
   OrigDataType: int64
-T_4245: (in gp + 2104<i64> @ 0000000000017A6C : word64)
+T_4245: (in gp + -1992<i64> @ 0000000000017A6C : word64)
   Class: Eq_4245
   DataType: ptr64
   OrigDataType: ptr64
-T_4246: (in Mem81[gp + 2104<i64>:word64] @ 0000000000017A6C : word64)
+T_4246: (in Mem81[gp + -1992<i64>:word64] @ 0000000000017A6C : word64)
   Class: Eq_4242
   DataType: (ptr64 void)
   OrigDataType: word64
@@ -21019,7 +21008,7 @@ T_4248: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4247)
   OrigDataType: 
 T_4249: (in handle @ 0000000000017A70 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4250: (in symbol @ 0000000000017A70 : (ptr64 char))
@@ -21038,15 +21027,15 @@ T_4253: (in a0_82 @ 0000000000017A70 : (ptr64 void))
   Class: Eq_4252
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_4254: (in 2096<i64> @ 0000000000017A84 : int64)
+T_4254: (in -2000<i64> @ 0000000000017A84 : int64)
   Class: Eq_4254
   DataType: int64
   OrigDataType: int64
-T_4255: (in gp + 2096<i64> @ 0000000000017A84 : word64)
+T_4255: (in gp + -2000<i64> @ 0000000000017A84 : word64)
   Class: Eq_4255
   DataType: ptr64
   OrigDataType: ptr64
-T_4256: (in Mem87[gp + 2096<i64>:word64] @ 0000000000017A84 : word64)
+T_4256: (in Mem87[gp + -2000<i64>:word64] @ 0000000000017A84 : word64)
   Class: Eq_4252
   DataType: (ptr64 void)
   OrigDataType: word64
@@ -21059,7 +21048,7 @@ T_4258: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4257)
   OrigDataType: 
 T_4259: (in handle @ 0000000000017A88 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4260: (in symbol @ 0000000000017A88 : (ptr64 char))
@@ -21072,23 +21061,23 @@ T_4261: (in 0x12B18<64> @ 0000000000017A88 : word64)
   OrigDataType: (ptr64 char)
 T_4262: (in dlsym(a0_32, "GeoIP_record_by_ipnum_v6") @ 0000000000017A88 : (ptr64 void))
   Class: Eq_4262
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4263: (in a0_88 @ 0000000000017A88 : (ptr64 void))
+T_4263: (in a0_88 @ 0000000000017A88 : (ptr64 code))
   Class: Eq_4262
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: (ptr64 void)
-T_4264: (in 2088<i64> @ 0000000000017A9C : int64)
+T_4264: (in -2008<i64> @ 0000000000017A9C : int64)
   Class: Eq_4264
   DataType: int64
   OrigDataType: int64
-T_4265: (in gp + 2088<i64> @ 0000000000017A9C : word64)
+T_4265: (in gp + -2008<i64> @ 0000000000017A9C : word64)
   Class: Eq_4265
   DataType: ptr64
   OrigDataType: ptr64
-T_4266: (in Mem93[gp + 2088<i64>:word64] @ 0000000000017A9C : word64)
+T_4266: (in Mem93[gp + -2008<i64>:word64] @ 0000000000017A9C : word64)
   Class: Eq_4262
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4267: (in dlsym @ 0000000000017AA4 : ptr64)
   Class: Eq_4267
@@ -21099,7 +21088,7 @@ T_4268: (in signature of dlsym : void)
   DataType: (ptr64 Eq_4267)
   OrigDataType: 
 T_4269: (in handle @ 0000000000017AA4 : (ptr64 void))
-  Class: Eq_4157
+  Class: Eq_4114
   DataType: (ptr64 void)
   OrigDataType: 
 T_4270: (in symbol @ 0000000000017AA4 : (ptr64 char))
@@ -21114,15 +21103,15 @@ T_4272: (in dlsym(a0_32, "GeoIP_code_by_id") @ 0000000000017AA4 : (ptr64 void))
   Class: Eq_4272
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_4273: (in 2128<i64> @ 0000000000017AA4 : int64)
+T_4273: (in -1968<i64> @ 0000000000017AA4 : int64)
   Class: Eq_4273
   DataType: int64
   OrigDataType: int64
-T_4274: (in gp + 2128<i64> @ 0000000000017AA4 : word64)
+T_4274: (in gp + -1968<i64> @ 0000000000017AA4 : word64)
   Class: Eq_4274
   DataType: ptr64
   OrigDataType: ptr64
-T_4275: (in Mem95[gp + 2128<i64>:word64] @ 0000000000017AA4 : word64)
+T_4275: (in Mem95[gp + -1968<i64>:word64] @ 0000000000017AA4 : word64)
   Class: Eq_4272
   DataType: (ptr64 void)
   OrigDataType: word64
@@ -21132,7 +21121,7 @@ T_4276: (in 0x12B38<64> @ 0000000000017A94 : word64)
   OrigDataType: word64
 T_4277: (in 0<64> @ 0000000000017AA8 : word64)
   Class: Eq_4202
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4278: (in a0_52 == null @ 0000000000017AA8 : bool)
   Class: Eq_4278
@@ -21275,28 +21264,28 @@ T_4312: (in Mem113[gp + -760<i64>:word32] @ 0000000000017B08 : word32)
   DataType: word32
   OrigDataType: word32
 T_4313: (in 0xFFFFFFFF<32> @ 0000000000017B0C : word32)
-  Class: Eq_4176
-  DataType: word32
+  Class: Eq_4119
+  DataType: int32
   OrigDataType: word32
-T_4314: (in 2072<i64> @ 0000000000017B0C : int64)
+T_4314: (in -2024<i64> @ 0000000000017B0C : int64)
   Class: Eq_4314
   DataType: int64
   OrigDataType: int64
-T_4315: (in gp + 2072<i64> @ 0000000000017B0C : word64)
+T_4315: (in gp + -2024<i64> @ 0000000000017B0C : word64)
   Class: Eq_4315
-  DataType: (ptr64 word32)
-  OrigDataType: (ptr64 word32)
-T_4316: (in Mem114[gp + 2072<i64>:word32] @ 0000000000017B0C : word32)
-  Class: Eq_4176
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr64 int32)
+  OrigDataType: (ptr64 int32)
+T_4316: (in Mem114[gp + -2024<i64>:word32] @ 0000000000017B0C : word32)
+  Class: Eq_4119
+  DataType: int32
+  OrigDataType: int32
 T_4317: (in -1<i64> @ 0000000000017AF0 : int64)
   Class: Eq_4111
   DataType: int64
   OrigDataType: int64
 T_4318: (in 0<64> @ 0000000000017AAC : word64)
   Class: Eq_4212
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4319: (in a0_58 == null @ 0000000000017AAC : bool)
   Class: Eq_4319
@@ -21312,7 +21301,7 @@ T_4321: (in a0_64 == null @ 0000000000017AB0 : bool)
   OrigDataType: bool
 T_4322: (in 0<64> @ 0000000000017AB4 : word64)
   Class: Eq_4232
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4323: (in a0_70 == null @ 0000000000017AB4 : bool)
   Class: Eq_4323
@@ -21336,28 +21325,28 @@ T_4327: (in a0_82 == null @ 0000000000017ABC : bool)
   OrigDataType: bool
 T_4328: (in 0<64> @ 0000000000017AC0 : word64)
   Class: Eq_4262
-  DataType: (ptr64 void)
+  DataType: (ptr64 code)
   OrigDataType: word64
 T_4329: (in a0_88 == null @ 0000000000017AC0 : bool)
   Class: Eq_4329
   DataType: bool
   OrigDataType: bool
 T_4330: (in 0<32> @ 0000000000017AC4 : word32)
-  Class: Eq_4176
-  DataType: word32
+  Class: Eq_4119
+  DataType: int32
   OrigDataType: word32
-T_4331: (in 2072<i64> @ 0000000000017AC4 : int64)
+T_4331: (in -2024<i64> @ 0000000000017AC4 : int64)
   Class: Eq_4331
   DataType: int64
   OrigDataType: int64
-T_4332: (in gp + 2072<i64> @ 0000000000017AC4 : word64)
+T_4332: (in gp + -2024<i64> @ 0000000000017AC4 : word64)
   Class: Eq_4332
-  DataType: (ptr64 word32)
-  OrigDataType: (ptr64 word32)
-T_4333: (in Mem115[gp + 2072<i64>:word32] @ 0000000000017AC4 : word32)
-  Class: Eq_4176
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr64 int32)
+  OrigDataType: (ptr64 int32)
+T_4333: (in Mem115[gp + -2024<i64>:word32] @ 0000000000017AC4 : word32)
+  Class: Eq_4119
+  DataType: int32
+  OrigDataType: int32
 T_4334: (in fn0000000000017924 @ 0000000000017B80 : ptr64)
   Class: Eq_139
   DataType: (ptr64 Eq_139)
@@ -21451,11 +21440,11 @@ T_4356: (in gp + -1944<i64> @ 0000000000017BB8 : word64)
   DataType: word64
   OrigDataType: word64
 T_4357: (in Mem21[gp + -1944<i64>:word64] @ 0000000000017BB8 : word64)
-  Class: Eq_4357
+  Class: Eq_4193
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4358: (in a5_46 @ 0000000000017BB8 : (ptr64 code))
-  Class: Eq_4357
+  Class: Eq_4193
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4359: (in gp_63 @ 0000000000017BC4 : (ptr64 Eq_4359))
@@ -21583,11 +21572,11 @@ T_4389: (in gp + -1960<i64> @ 0000000000017BFC : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4390: (in Mem97[gp + -1960<i64>:word64] @ 0000000000017BFC : word64)
-  Class: Eq_4390
+  Class: Eq_4212
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4391: (in a5_121 @ 0000000000017BFC : (ptr64 code))
-  Class: Eq_4390
+  Class: Eq_4212
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4392: (in a0_134 @ 0000000000017C0C : (ptr64 char))
@@ -21675,11 +21664,11 @@ T_4412: (in gp + -1952<i64> @ 0000000000017CF4 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4413: (in Mem228[gp + -1952<i64>:word64] @ 0000000000017CF4 : word64)
-  Class: Eq_4413
+  Class: Eq_4202
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4414: (in a5_267 @ 0000000000017CF4 : (ptr64 code))
-  Class: Eq_4413
+  Class: Eq_4202
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4415: (in 0<64> @ 0000000000017D08 : word64)
@@ -21699,11 +21688,11 @@ T_4418: (in gp + -1984<i64> @ 0000000000017C54 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4419: (in Mem228[gp + -1984<i64>:word64] @ 0000000000017C54 : word64)
-  Class: Eq_4419
+  Class: Eq_4232
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4420: (in a5_294 @ 0000000000017C54 : (ptr64 code))
-  Class: Eq_4419
+  Class: Eq_4232
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4421: (in 1<32> @ 0000000000017C60 : word32)
@@ -22055,11 +22044,11 @@ T_4507: (in gp + -1944<i64> @ 0000000000017D80 : word64)
   DataType: word64
   OrigDataType: word64
 T_4508: (in Mem21[gp + -1944<i64>:word64] @ 0000000000017D80 : word64)
-  Class: Eq_4357
+  Class: Eq_4193
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4509: (in a5_41 @ 0000000000017D80 : (ptr64 code))
-  Class: Eq_4357
+  Class: Eq_4193
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4510: (in gp_57 @ 0000000000017D88 : (ptr64 Eq_4510))
@@ -22279,11 +22268,11 @@ T_4563: (in gp + -1960<i64> @ 0000000000017DD8 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4564: (in Mem96[gp + -1960<i64>:word64] @ 0000000000017DD8 : word64)
-  Class: Eq_4390
+  Class: Eq_4212
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4565: (in a5_121 @ 0000000000017DD8 : (ptr64 code))
-  Class: Eq_4390
+  Class: Eq_4212
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4566: (in a0_134 @ 0000000000017DE8 : (ptr64 char))
@@ -22371,11 +22360,11 @@ T_4586: (in gp + -1952<i64> @ 0000000000017EE8 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4587: (in Mem228[gp + -1952<i64>:word64] @ 0000000000017EE8 : word64)
-  Class: Eq_4413
+  Class: Eq_4202
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4588: (in a5_267 @ 0000000000017EE8 : (ptr64 code))
-  Class: Eq_4413
+  Class: Eq_4202
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4589: (in 0<64> @ 0000000000017EFC : word64)
@@ -22479,11 +22468,11 @@ T_4613: (in gp + -2008<i64> @ 0000000000017E40 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_4614: (in Mem228[gp + -2008<i64>:word64] @ 0000000000017E40 : word64)
-  Class: Eq_4614
+  Class: Eq_4262
   DataType: (ptr64 code)
   OrigDataType: word64
 T_4615: (in a3_299 @ 0000000000017E40 : (ptr64 code))
-  Class: Eq_4614
+  Class: Eq_4262
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
 T_4616: (in 1<32> @ 0000000000017E50 : word32)
@@ -23913,16 +23902,16 @@ T_4971: (in CONVERT(SLICE(a4_39, word32, 0), word32, word64) @ 00000000000181CC 
 T_4972: (in fp + -16<i64> + (word64) ((word32) a4_39) @ 00000000000181CC : word64)
   Class: Eq_4972
   DataType: (ptr64 Eq_4972)
-  OrigDataType: (ptr64 (struct (EF8 T_4975 t0EF8)))
-T_4973: (in 3832<i64> @ 00000000000181CC : int64)
+  OrigDataType: (ptr64 (struct (FFFFFEF8 T_4975 tFFFFFEF8)))
+T_4973: (in -264<i64> @ 00000000000181CC : int64)
   Class: Eq_4973
   DataType: int64
   OrigDataType: int64
-T_4974: (in fp + -16<i64> + CONVERT(SLICE(a4_39, word32, 0), word32, word64) + 3832<i64> @ 00000000000181CC : word64)
+T_4974: (in fp + -16<i64> + CONVERT(SLICE(a4_39, word32, 0), word32, word64) + -264<i64> @ 00000000000181CC : word64)
   Class: Eq_4974
   DataType: ptr64
   OrigDataType: ptr64
-T_4975: (in Mem67[fp + -16<i64> + CONVERT(SLICE(a4_39, word32, 0), word32, word64) + 3832<i64>:byte] @ 00000000000181CC : byte)
+T_4975: (in Mem67[fp + -16<i64> + CONVERT(SLICE(a4_39, word32, 0), word32, word64) + -264<i64>:byte] @ 00000000000181CC : byte)
   Class: Eq_4966
   DataType: byte
   OrigDataType: byte
@@ -23945,16 +23934,16 @@ T_4979: (in CONVERT(SLICE(a3_51, word32, 0), word32, word64) @ 00000000000181D8 
 T_4980: (in fp + -16<i64> + (word64) ((word32) a3_51) @ 00000000000181D8 : word64)
   Class: Eq_4980
   DataType: (ptr64 Eq_4980)
-  OrigDataType: (ptr64 (struct (EF8 T_4983 t0EF8)))
-T_4981: (in 3832<i64> @ 00000000000181D8 : int64)
+  OrigDataType: (ptr64 (struct (FFFFFEF8 T_4983 tFFFFFEF8)))
+T_4981: (in -264<i64> @ 00000000000181D8 : int64)
   Class: Eq_4981
   DataType: int64
   OrigDataType: int64
-T_4982: (in fp + -16<i64> + CONVERT(SLICE(a3_51, word32, 0), word32, word64) + 3832<i64> @ 00000000000181D8 : word64)
+T_4982: (in fp + -16<i64> + CONVERT(SLICE(a3_51, word32, 0), word32, word64) + -264<i64> @ 00000000000181D8 : word64)
   Class: Eq_4982
   DataType: ptr64
   OrigDataType: ptr64
-T_4983: (in Mem73[fp + -16<i64> + CONVERT(SLICE(a3_51, word32, 0), word32, word64) + 3832<i64>:byte] @ 00000000000181D8 : byte)
+T_4983: (in Mem73[fp + -16<i64> + CONVERT(SLICE(a3_51, word32, 0), word32, word64) + -264<i64>:byte] @ 00000000000181D8 : byte)
   Class: Eq_4976
   DataType: byte
   OrigDataType: byte
@@ -24077,16 +24066,16 @@ T_5012: (in CONVERT(SLICE(a2_74, word32, 0), word32, word64) @ 0000000000018178 
 T_5013: (in fp + -16<i64> + (word64) ((word32) a2_74) @ 0000000000018178 : word64)
   Class: Eq_5013
   DataType: (ptr64 Eq_5013)
-  OrigDataType: (ptr64 (struct (EF8 T_5016 t0EF8)))
-T_5014: (in 3832<i64> @ 0000000000018178 : int64)
+  OrigDataType: (ptr64 (struct (FFFFFEF8 T_5016 tFFFFFEF8)))
+T_5014: (in -264<i64> @ 0000000000018178 : int64)
   Class: Eq_5014
   DataType: int64
   OrigDataType: int64
-T_5015: (in fp + -16<i64> + CONVERT(SLICE(a2_74, word32, 0), word32, word64) + 3832<i64> @ 0000000000018178 : word64)
+T_5015: (in fp + -16<i64> + CONVERT(SLICE(a2_74, word32, 0), word32, word64) + -264<i64> @ 0000000000018178 : word64)
   Class: Eq_5015
   DataType: ptr64
   OrigDataType: ptr64
-T_5016: (in Mem89[fp + -16<i64> + CONVERT(SLICE(a2_74, word32, 0), word32, word64) + 3832<i64>:byte] @ 0000000000018178 : byte)
+T_5016: (in Mem89[fp + -16<i64> + CONVERT(SLICE(a2_74, word32, 0), word32, word64) + -264<i64>:byte] @ 0000000000018178 : byte)
   Class: Eq_5008
   DataType: byte
   OrigDataType: byte
@@ -24109,16 +24098,16 @@ T_5020: (in CONVERT(SLICE(a3_75, word32, 0), word32, word64) @ 0000000000018180 
 T_5021: (in fp + -16<i64> + (word64) ((word32) a3_75) @ 0000000000018180 : word64)
   Class: Eq_5021
   DataType: (ptr64 Eq_5021)
-  OrigDataType: (ptr64 (struct (EF8 T_5024 t0EF8)))
-T_5022: (in 3832<i64> @ 0000000000018180 : int64)
+  OrigDataType: (ptr64 (struct (FFFFFEF8 T_5024 tFFFFFEF8)))
+T_5022: (in -264<i64> @ 0000000000018180 : int64)
   Class: Eq_5022
   DataType: int64
   OrigDataType: int64
-T_5023: (in fp + -16<i64> + CONVERT(SLICE(a3_75, word32, 0), word32, word64) + 3832<i64> @ 0000000000018180 : word64)
+T_5023: (in fp + -16<i64> + CONVERT(SLICE(a3_75, word32, 0), word32, word64) + -264<i64> @ 0000000000018180 : word64)
   Class: Eq_5023
   DataType: ptr64
   OrigDataType: ptr64
-T_5024: (in Mem92[fp + -16<i64> + CONVERT(SLICE(a3_75, word32, 0), word32, word64) + 3832<i64>:byte] @ 0000000000018180 : byte)
+T_5024: (in Mem92[fp + -16<i64> + CONVERT(SLICE(a3_75, word32, 0), word32, word64) + -264<i64>:byte] @ 0000000000018180 : byte)
   Class: Eq_5017
   DataType: byte
   OrigDataType: byte
@@ -25818,9 +25807,13 @@ typedef struct Eq_6 {
 	int32 dwFFFFF810;	// FFFFF810
 	int32 dwFFFFF814;	// FFFFF814
 	int32 dwFFFFF818;	// FFFFF818
-	word64 qwFFFFF820;	// FFFFF820
+	void * ptrFFFFF820;	// FFFFF820
 	<anonymous> * ptrFFFFF828;	// FFFFF828
+	void * ptrFFFFF830;	// FFFFF830
+	void * ptrFFFFF838;	// FFFFF838
 	<anonymous> * ptrFFFFF840;	// FFFFF840
+	void * ptrFFFFF848;	// FFFFF848
+	void * ptrFFFFF850;	// FFFFF850
 	<anonymous> * ptrFFFFF858;	// FFFFF858
 	<anonymous> * ptrFFFFF860;	// FFFFF860
 	<anonymous> * ptrFFFFF868;	// FFFFF868
@@ -25834,19 +25827,6 @@ typedef struct Eq_6 {
 	Eq_144 tFFFFFCF8;	// FFFFFCF8
 	Eq_145 tFFFFFD00;	// FFFFFD00
 	word32 dwFFFFFD08;	// FFFFFD08
-	word32 dw0810;	// 810
-	word32 dw0818;	// 818
-	void * ptr0820;	// 820
-	void * ptr0828;	// 828
-	void * ptr0830;	// 830
-	void * ptr0838;	// 838
-	void * ptr0840;	// 840
-	void * ptr0848;	// 848
-	void * ptr0850;	// 850
-	void * ptr0858;	// 858
-	void * ptr0860;	// 860
-	void * ptr0868;	// 868
-	word32 dw0890;	// 890
 } Eq_6;
 
 typedef union Eq_19 {
@@ -26335,7 +26315,6 @@ typedef union Eq_1349 {
 
 typedef struct Eq_1359 {
 	byte bFFFFF894;	// FFFFF894
-	byte b0894;	// 894
 } Eq_1359;
 
 typedef void (Eq_1366)();
@@ -26967,21 +26946,21 @@ typedef void (Eq_4151)(char *, int32);
 
 typedef int32 (Eq_4164)(char *, size_t, int32, size_t, char *, char *);
 
-typedef void (Eq_4188)(void, char *);
+typedef code * (Eq_4188)(void, char *);
 
-typedef void (Eq_4197)(void, char *);
+typedef code * (Eq_4197)(void, char *);
 
-typedef void (Eq_4207)(void, char *);
+typedef code * (Eq_4207)(void, char *);
 
 typedef void (Eq_4217)(void, char *);
 
-typedef void (Eq_4227)(void, char *);
+typedef code * (Eq_4227)(void, char *);
 
 typedef void (Eq_4237)(void, char *);
 
 typedef void (Eq_4247)(void, char *);
 
-typedef void (Eq_4257)(void, char *);
+typedef code * (Eq_4257)(void, char *);
 
 typedef void (Eq_4267)(void, char *);
 
@@ -27127,11 +27106,11 @@ typedef union Eq_4959 {
 } Eq_4959;
 
 typedef struct Eq_4972 {
-	byte b0EF8;	// EF8
+	byte bFFFFFEF8;	// FFFFFEF8
 } Eq_4972;
 
 typedef struct Eq_4980 {
-	byte b0EF8;	// EF8
+	byte bFFFFFEF8;	// FFFFFEF8
 } Eq_4980;
 
 typedef union Eq_4999 {
@@ -27142,11 +27121,11 @@ typedef union Eq_4999 {
 typedef void (Eq_5005)();
 
 typedef struct Eq_5013 {
-	byte b0EF8;	// EF8
+	byte bFFFFFEF8;	// FFFFFEF8
 } Eq_5013;
 
 typedef struct Eq_5021 {
-	byte b0EF8;	// EF8
+	byte bFFFFFEF8;	// FFFFFEF8
 } Eq_5021;
 
 typedef union Eq_5083 {
@@ -27197,8 +27176,8 @@ typedef struct addrinfo {	// size: 32 20
 } Eq_5115;
 
 typedef struct Eq_5116 {	// size: 1 1
+	byte bFFFFFFFF;	// FFFFFFFF
 	byte b0000;	// 0
-	byte b0FFF;	// FFF
 } Eq_5116;
 
 typedef struct sockaddr {

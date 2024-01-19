@@ -333,6 +333,13 @@ namespace Reko.Arch.RiscV
                 return immop.Value;
             case AddressOperand addrop:
                 return addrop.Address;
+            case MemoryOperand mem:
+                var ea = (Expression)binder.EnsureRegister(mem.Base!);
+                if (mem.Offset != 0)
+                {
+                    ea = m.AddSubSignedInt(ea, mem.Offset);
+                }
+                return m.Mem(mem.Width, ea);
             }
             throw new NotImplementedException($"Rewriting RiscV addressing mode {op.GetType().Name} is not implemented yet.");
         }

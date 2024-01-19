@@ -151,14 +151,14 @@ namespace Reko.Arch.RiscV
 
                 var loads = new Decoder[]           // 0b00000
                 {
-                    Instr(Mnemonic.lb, d,r1,Ls),
-                    Instr(Mnemonic.lh, d,r1,Ls),
-                    Instr(Mnemonic.lw, d,r1,Ls),
-                    Instr(Mnemonic.ld, d,r1,Ls),    // 64I
+                    Instr(Mnemonic.lb, rd,Ls),
+                    Instr(Mnemonic.lh, rd,Ls),
+                    Instr(Mnemonic.lw, rd,Ls),
+                    Instr(Mnemonic.ld, rd,Ls),    // 64I
 
-                    Instr(Mnemonic.lbu, d,r1,Ls),
-                    Instr(Mnemonic.lhu, d,r1,Ls),
-                    Instr(Mnemonic.lwu, d,r1,Ls),    // 64I
+                    Instr(Mnemonic.lbu, rd,Ls),
+                    Instr(Mnemonic.lhu, rd,Ls),
+                    Instr(Mnemonic.lwu, rd,Ls),    // 64I
                     Nyi(""),
                 };
 
@@ -177,10 +177,10 @@ namespace Reko.Arch.RiscV
 
                 var stores = new Decoder[]          // 0b01000
                 {
-                    Instr(Mnemonic.sb, r2,r1,Ss),
-                    Instr(Mnemonic.sh, r2,r1,Ss),
-                    Instr(Mnemonic.sw, r2,r1,Ss),
-                    Instr(Mnemonic.sd, r2,r1,Ss),   // I64
+                    Instr(Mnemonic.sb, r2,Ss),
+                    Instr(Mnemonic.sh, r2,Ss),
+                    Instr(Mnemonic.sw, r2,Ss),
+                    Instr(Mnemonic.sd, r2,Ss),   // I64
 
                     invalid,
                     invalid,
@@ -220,19 +220,19 @@ namespace Reko.Arch.RiscV
 
                 var opimm = new Decoder[]           // 0b00100
                 {
-                    Instr(Mnemonic.addi, d,r1,i),
+                    Instr(Mnemonic.addi, rd,r1,i),
                     new ShiftDecoder(
-                        Instr(Mnemonic.slli, d,r1,Z),
+                        Instr(Mnemonic.slli, rd,r1,Z),
                         invalid),
-                    Instr(Mnemonic.slti, d,r1,i),
-                    Instr(Mnemonic.sltiu, d,r1,i),
+                    Instr(Mnemonic.slti, rd,r1,i),
+                    Instr(Mnemonic.sltiu, rd,r1,i),
 
-                    Instr(Mnemonic.xori, d,r1,i),
+                    Instr(Mnemonic.xori, rd,r1,i),
                     new ShiftDecoder(
-                        Instr(Mnemonic.srli, d,r1,Z),
-                        Instr(Mnemonic.srai, d,r1,Z)),
-                    Instr(Mnemonic.ori, d,r1,i),
-                    Instr(Mnemonic.andi, d,r1,i),
+                        Instr(Mnemonic.srli, rd,r1,Z),
+                        Instr(Mnemonic.srai, rd,r1,Z)),
+                    Instr(Mnemonic.ori, rd,r1,i),
+                    Instr(Mnemonic.andi, rd,r1,i),
                 };
 
                 var opimm32 = new Decoder[]         // 0b00110
@@ -244,8 +244,8 @@ namespace Reko.Arch.RiscV
 
                     Nyi(""),
                     new ShiftDecoder(
-                        Instr(Mnemonic.srliw, d,r1,Z),
-                        Instr(Mnemonic.sraiw, d,r1,Z)),
+                        Instr(Mnemonic.srliw, rd,r1,Z),
+                        Instr(Mnemonic.sraiw, rd,r1,Z)),
                     Nyi(""),
                     Nyi(""),
                 };
@@ -284,42 +284,42 @@ namespace Reko.Arch.RiscV
 
                 var op32 = Mask(12, 3, "  op-32",            // 0b01110
                     Sparse(25, 7, "  000", Nyi(""),
-                        (0x00, Instr(Mnemonic.addw, d,r1,r2)),
-                        (0x01, Instr(Mnemonic.mulw, d,r1,r2)),
-                        (0x20, Instr(Mnemonic.subw, d,r1,r2))),
+                        (0x00, Instr(Mnemonic.addw, rd,r1,r2)),
+                        (0x01, Instr(Mnemonic.mulw, rd,r1,r2)),
+                        (0x20, Instr(Mnemonic.subw, rd,r1,r2))),
                     Sparse(25, 7, "  000", Nyi(""),
-                        (0x00, Instr(Mnemonic.sllw, d,r1,r2))),
+                        (0x00, Instr(Mnemonic.sllw, rd,r1,r2))),
                     Nyi(""),
                     Nyi(""),
 
                     Sparse(25, 7, "  100", Nyi(""),
-                        (0x01, Instr(Mnemonic.divw, d,r1,r2))),
+                        (0x01, Instr(Mnemonic.divw, rd,r1,r2))),
                     Sparse(25, 7, "  101", Nyi(""),
-                        (0x00, Instr(Mnemonic.srlw, d,r1,r2)),
-                        (0x01, Instr(Mnemonic.divuw, d,r1,r2)),
-                        (0x20, Instr(Mnemonic.sraw, d,r1,r2))),
+                        (0x00, Instr(Mnemonic.srlw, rd,r1,r2)),
+                        (0x01, Instr(Mnemonic.divuw, rd,r1,r2)),
+                        (0x20, Instr(Mnemonic.sraw, rd,r1,r2))),
                     Sparse(25, 7, "  110", Nyi(""),
-                        (0x01, Instr(Mnemonic.remw, d,r1,r2))),
+                        (0x01, Instr(Mnemonic.remw, rd,r1,r2))),
                     Sparse(25, 7, "  111", Nyi(""),
-                        (0x01, Instr(Mnemonic.remuw, d,r1,r2))));
+                        (0x01, Instr(Mnemonic.remuw, rd,r1,r2))));
 
                 var opfp = new (uint, Decoder)[]     // 0b10100
                 {
-                    ( 0x00, FpInstr32(Mnemonic.fadd_s, Fd,F1,F2) ),
-                    ( 0x01, FpInstr64(Mnemonic.fadd_d, Fd,F1,F2) ),
-                    ( 0x03, FpInstr128(Mnemonic.fadd_q, Fd,F1,F2) ),
+                    ( 0x00, FpInstr32(Mnemonic.fadd_s, Fd,F1,F2, rm12) ),
+                    ( 0x01, FpInstr64(Mnemonic.fadd_d, Fd,F1,F2, rm12) ),
+                    ( 0x03, FpInstr128(Mnemonic.fadd_q, Fd,F1,F2, rm12) ),
 
-                    ( 0x04, FpInstr32(Mnemonic.fsub_s, Fd,F1,F2) ),
-                    ( 0x05, FpInstr64(Mnemonic.fsub_d, Fd,F1,F2) ),
-                    ( 0x07, FpInstr128(Mnemonic.fsub_q, Fd,F1,F2) ),
+                    ( 0x04, FpInstr32(Mnemonic.fsub_s, Fd,F1,F2, rm12) ),
+                    ( 0x05, FpInstr64(Mnemonic.fsub_d, Fd,F1,F2, rm12) ),
+                    ( 0x07, FpInstr128(Mnemonic.fsub_q, Fd,F1,F2, rm12) ),
 
-                    ( 0x08, FpInstr32(Mnemonic.fmul_s, Fd,F1,F2) ),
-                    ( 0x09, FpInstr64(Mnemonic.fmul_d, Fd,F1,F2) ),
-                    ( 0x0B, FpInstr128(Mnemonic.fmul_q, Fd,F1,F2) ),
+                    ( 0x08, FpInstr32(Mnemonic.fmul_s, Fd,F1,F2, rm12) ),
+                    ( 0x09, FpInstr64(Mnemonic.fmul_d, Fd,F1,F2, rm12) ),
+                    ( 0x0B, FpInstr128(Mnemonic.fmul_q, Fd,F1,F2, rm12) ),
 
-                    ( 0x0C, FpInstr32(Mnemonic.fdiv_s, Fd,F1,F2) ),
-                    ( 0x0D, FpInstr64(Mnemonic.fdiv_d, Fd,F1,F2) ),
-                    ( 0x0F, FpInstr128(Mnemonic.fdiv_q, Fd,F1,F2) ),
+                    ( 0x0C, FpInstr32(Mnemonic.fdiv_s, Fd,F1,F2, rm12) ),
+                    ( 0x0D, FpInstr64(Mnemonic.fdiv_d, Fd,F1,F2, rm12) ),
+                    ( 0x0F, FpInstr128(Mnemonic.fdiv_q, Fd,F1,F2, rm12) ),
 
                     ( 0x10, Sparse(12, 3, "fsgn.s", invalid,
                         (0x0, Select(R1EqR2,
@@ -388,17 +388,17 @@ namespace Reko.Arch.RiscV
                     ( 0x2F, Select((20, 5), Ne0, invalid, FpInstr128(Mnemonic.fsqrt_q, Fd,F1)) ),
 
                     ( 0x50, Sparse(12, 3, "fcmp.s", invalid,
-                        ( 0, FpInstr32(Mnemonic.fle_s, d,F1,F2)),
-                        ( 1, FpInstr32(Mnemonic.flt_s, d,F1,F2)),
-                        ( 2, FpInstr32(Mnemonic.feq_s, d,F1,F2)))),
+                        ( 0, FpInstr32(Mnemonic.fle_s, rd,F1,F2)),
+                        ( 1, FpInstr32(Mnemonic.flt_s, rd,F1,F2)),
+                        ( 2, FpInstr32(Mnemonic.feq_s, rd,F1,F2)))),
                     ( 0x51, Sparse(12, 3, "fcmp.d", invalid,
-                        ( 0, FpInstr64(Mnemonic.fle_d, d,F1,F2)),
-                        ( 1, FpInstr64(Mnemonic.flt_d, d,F1,F2)),
-                        ( 2, FpInstr64(Mnemonic.feq_d, d,F1,F2)))),
+                        ( 0, FpInstr64(Mnemonic.fle_d, rd,F1,F2)),
+                        ( 1, FpInstr64(Mnemonic.flt_d, rd,F1,F2)),
+                        ( 2, FpInstr64(Mnemonic.feq_d, rd,F1,F2)))),
                     ( 0x53, Sparse(12, 3, "fcmp.q", invalid,
-                        ( 0, FpInstr128(Mnemonic.fle_q, d,F1,F2)),
-                        ( 1, FpInstr128(Mnemonic.flt_q, d,F1,F2)),
-                        ( 2, FpInstr128(Mnemonic.feq_q, d,F1,F2)))),
+                        ( 0, FpInstr128(Mnemonic.fle_q, rd,F1,F2)),
+                        ( 1, FpInstr128(Mnemonic.flt_q, rd,F1,F2)),
+                        ( 2, FpInstr128(Mnemonic.feq_q, rd,F1,F2)))),
 
                     ( 0x60, Sparse(20, 5, "fcvt.w.s", invalid,
                         ( 0, FpInstr32(Mnemonic.fcvt_w_s, Rd,F1,rm12)),
@@ -471,30 +471,30 @@ namespace Reko.Arch.RiscV
                     Nyi("amo - 001"),
                     Sparse(27, 5, "  AMO",
                         Nyi("amo - 010"),
-                        (0x02, Instr(Mnemonic.lr_w, aq_rl, d, r1)),
-                        (0x03, Instr(Mnemonic.sc_w, aq_rl, d, r1, r2)),
-                        (0x01, Instr(Mnemonic.amoswap_w, aq_rl, d, r1, r2)),
-                        (0x00, Instr(Mnemonic.amoadd_w, aq_rl, d, r1, r2)),
-                        (0x04, Instr(Mnemonic.amoxor_w, aq_rl, d, r1, r2)),
-                        (0x0C, Instr(Mnemonic.amoand_w, aq_rl, d, r1, r2)),
-                        (0x08, Instr(Mnemonic.amoor_w, aq_rl, d, r1, r2)),
-                        (0x10, Instr(Mnemonic.amomin_w, aq_rl, d, r1, r2)),
-                        (0x14, Instr(Mnemonic.amomax_w, aq_rl, d, r1, r2)),
-                        (0x18, Instr(Mnemonic.amominu_w, aq_rl, d, r1, r2)),
-                        (0x1C, Instr(Mnemonic.amomaxu_w, aq_rl, d, r1, r2))),
+                        (0x02, Instr(Mnemonic.lr_w, aq_rl, rd, Mem(PrimitiveType.Word32, 15))),
+                        (0x03, Instr(Mnemonic.sc_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x01, Instr(Mnemonic.amoswap_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x00, Instr(Mnemonic.amoadd_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x04, Instr(Mnemonic.amoxor_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x0C, Instr(Mnemonic.amoand_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x08, Instr(Mnemonic.amoor_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x10, Instr(Mnemonic.amomin_w, aq_rl, rd, r2, Mem(PrimitiveType.Int32, 15))),
+                        (0x14, Instr(Mnemonic.amomax_w, aq_rl, rd, r2, Mem(PrimitiveType.Int32, 15))),
+                        (0x18, Instr(Mnemonic.amominu_w, aq_rl, rd, r2, Mem(PrimitiveType.UInt32, 15))),
+                        (0x1C, Instr(Mnemonic.amomaxu_w, aq_rl, rd, r2, Mem(PrimitiveType.UInt32, 15)))),
                     Sparse(27, 5, "  AMO",
                         Nyi("amo - 011"),
-                        (0x02, Instr(Mnemonic.lr_d, aq_rl, d, r1)),
-                        (0x03, Instr(Mnemonic.sc_d, aq_rl, d, r1, r2)),
-                        (0x01, Instr(Mnemonic.amoswap_d, aq_rl, d, r1, r2)),
-                        (0x00, Instr(Mnemonic.amoadd_d, aq_rl, d, r1, r2)),
-                        (0x04, Instr(Mnemonic.amoxor_d, aq_rl, d, r1, r2)),
-                        (0x0C, Instr(Mnemonic.amoand_d, aq_rl, d, r1, r2)),
-                        (0x08, Instr(Mnemonic.amoor_d, aq_rl, d, r1, r2)),
-                        (0x10, Instr(Mnemonic.amomin_d, aq_rl, d, r1, r2)),
-                        (0x14, Instr(Mnemonic.amomax_d, aq_rl, d, r1, r2)),
-                        (0x18, Instr(Mnemonic.amominu_d, aq_rl, d, r1, r2)),
-                        (0x1C, Instr(Mnemonic.amomaxu_d, aq_rl, d, r1, r2))),
+                        (0x02, Instr(Mnemonic.lr_d, aq_rl, rd, Mem(PrimitiveType.Word64, 15))),
+                        (0x03, Instr(Mnemonic.sc_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x01, Instr(Mnemonic.amoswap_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x00, Instr(Mnemonic.amoadd_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x04, Instr(Mnemonic.amoxor_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x0C, Instr(Mnemonic.amoand_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x08, Instr(Mnemonic.amoor_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x10, Instr(Mnemonic.amomin_d, aq_rl, rd, r2, Mem(PrimitiveType.Int64, 15))),
+                        (0x14, Instr(Mnemonic.amomax_d, aq_rl, rd, r2, Mem(PrimitiveType.Int64, 15))),
+                        (0x18, Instr(Mnemonic.amominu_d, aq_rl, rd, r2, Mem(PrimitiveType.UInt64, 15))),
+                        (0x1C, Instr(Mnemonic.amomaxu_d, aq_rl, rd, r2, Mem(PrimitiveType.UInt64, 15)))),
                     Nyi("amo - 100"),
                     Nyi("amo - 101"),
                     Nyi("amo - 110"),
@@ -523,9 +523,9 @@ namespace Reko.Arch.RiscV
                         (0x18, Sparse(20, 5, "  system 11000", Nyi("system 11000"),
                             (2, Instr(Mnemonic.mret, InstrClass.Privileged | InstrClass.Transfer | InstrClass.Return))))),
 
-                    Instr(Mnemonic.csrrw, d, Csr20, r1),
-                    Instr(Mnemonic.csrrs, d, Csr20, r1),
-                    Instr(Mnemonic.csrrc, d, Csr20, r1),
+                    Instr(Mnemonic.csrrw, rd, Csr20, r1),
+                    Instr(Mnemonic.csrrs, rd, Csr20, r1),
+                    Instr(Mnemonic.csrrc, rd, Csr20, r1),
                     Sparse(25, 7, "  system 100", 
                         Nyi("system 100"),
                         (0x30, Sparse(20, 5, " system 0x30", Nyi("system 0x30"),
@@ -545,9 +545,9 @@ namespace Reko.Arch.RiscV
                         (0x33, Instr(Mnemonic.hsv_h, InstrClass.Privileged | InstrClass.Linear, Mem(PrimitiveType.Word16, 15), R2)),
                         (0x35, Instr(Mnemonic.hsv_w, InstrClass.Privileged | InstrClass.Linear, Mem(PrimitiveType.Word32, 15), R2)),
                         (0x37, Instr(Mnemonic.hsv_d, InstrClass.Privileged | InstrClass.Linear, Mem(PrimitiveType.Word64, 15), R2))),
-                    Instr(Mnemonic.csrrwi, d, Csr20, Imm(15, 5)),
-                    Instr(Mnemonic.csrrsi, d, Csr20, Imm(15, 5)),
-                    Instr(Mnemonic.csrrci, d, Csr20, Imm(15, 5)));
+                    Instr(Mnemonic.csrrwi, rd, Csr20, Imm(15, 5)),
+                    Instr(Mnemonic.csrrsi, rd, Csr20, Imm(15, 5)),
+                    Instr(Mnemonic.csrrci, rd, Csr20, Imm(15, 5)));
 
                 // These long instructions have not been defined yet.
                 var instr48bit = invalid;
@@ -562,7 +562,7 @@ namespace Reko.Arch.RiscV
                     Mask(12, 3, "misc-mem", miscMem),
 
                     Mask(12, 3, "opimm", opimm),
-                    Instr(Mnemonic.auipc, d, Iu),
+                    Instr(Mnemonic.auipc, rd, Iu),
                     Mask(12, 3, "opimm32", opimm32),
                     instr48bit,
 
@@ -572,7 +572,7 @@ namespace Reko.Arch.RiscV
                     amo,
 
                     op,
-                    Instr(Mnemonic.lui, d, Iu),
+                    Instr(Mnemonic.lui, rd, Iu),
                     op32,
                     instr64bit,
 
@@ -604,7 +604,7 @@ namespace Reko.Arch.RiscV
                     instr48bit,
 
                     new MaskDecoder(12, 3, "branches", branches),
-                    Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Return, d, r1, i),
+                    Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Return, rd, r1, i),
                     Nyi("Reserved"),
                     Instr(Mnemonic.jal, InstrClass.Transfer | InstrClass.Call, Rd, J),
 

@@ -103,7 +103,7 @@ namespace Reko.Arch.RiscV
         private void RewriteAtomicMemoryOperation(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var src1 = RewriteOp(1);
-            var src2 = m.AddrOf(arch.PointerType, m.Mem(dt, RewriteOp(2)));
+            var src2 = m.AddrOf(arch.PointerType, RewriteOp(2));
             var dst = RewriteOp(0);
             MaybeSignExtend(dst, m.Fn(intrinsic.MakeInstance(arch.PointerType.BitSize, dt), src1, src2));
         }
@@ -186,7 +186,7 @@ namespace Reko.Arch.RiscV
                 dst,
                 m.Fn(
                     lr_intrinsic.MakeInstance(dtPtr.BitSize, dt),
-                    m.AddrOf(dtPtr, m.Mem(dt, src))));
+                    m.AddrOf(dtPtr, src)));
         }
 
         private void RewriteLxsp(DataType dt)
@@ -324,7 +324,7 @@ namespace Reko.Arch.RiscV
                 m.Fn(
                     sc_intrinsic.MakeInstance(arch.PointerType.BitSize, dt),
                     src1,
-                    m.AddrOf(arch.PointerType, m.Mem(dt, src2))));
+                    m.AddrOf(arch.PointerType, src2)));
         }
 
         private void RewriteStore(DataType dt, Expression baseReg, int offset, Expression src)
