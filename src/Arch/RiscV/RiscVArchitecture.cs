@@ -272,11 +272,15 @@ namespace Reko.Arch.RiscV
             DefineCsr(0x042, "ucause"); // URW User trap cause.
             DefineCsr(0x043, "utval"); // URW User bad address or instruction.
             DefineCsr(0x044, "uip"); // URW User interrupt pending.
-                                     // User Floating - Point CSRs
+
+            // User Floating - Point CSRs
+            // Unprivileged Floating-Point CSRs
             DefineCsr(0x001, "fflags"); // URW Floating - Point Accrued Exceptions.
             DefineCsr(0x002, "frm"); // URW Floating - Point Dynamic Rounding Mode.
             DefineCsr(0x003, "fcsr"); // URW Floating - Point Control and Status Register(frm + fflags).
-                                      // User Counter / Timers
+
+            // User Counter / Timers
+            // Unprivileged Counter/Timers
             DefineCsr(0xC00, "cycle"); // URO Cycle counter for RDCYCLE instruction.
             DefineCsr(0xC01, "time"); // URO Timer for RDTIME instruction.
             DefineCsr(0xC02, "instret"); // URO Instructions - retired counter for RDINSTRET instruction.
@@ -356,6 +360,7 @@ namespace Reko.Arch.RiscV
             DefineCsr(0xC9F, "hpmcounter31h");
 
             // Supervisor level registers
+            // Supervisor Trap Setup
 
             DefineCsr(0x100, "sstatus"); // SRW Supervisor status register.
             DefineCsr(0x102, "sedeleg"); // SRW Supervisor exception delegation register.
@@ -363,38 +368,96 @@ namespace Reko.Arch.RiscV
             DefineCsr(0x104, "sie"); // SRW Supervisor interrupt - enable register.
             DefineCsr(0x105, "stvec"); // SRW Supervisor trap handler base address.
             DefineCsr(0x106, "scounteren"); // SRW Supervisor counter enable.
-                                            // Supervisor Trap Handling
+            DefineCsr(0x121, "stimecmp"); // SRW Wall-clock timer compare value.
+
+            // Supervisor Counter/Timers
+            DefineCsr(0xD00, "scycle"); // SRO Supervisor cycle counter.
+            // DefineCsr(0xD01, "stime"); // SRO Supervisor wall-clock time.
+            DefineCsr(0xD02, "sinstret"); // SRO Supervisor instructions-retired counter.
+            DefineCsr(0xD80, "scycleh"); // SRO Upper 32 bits of scycle, RV32I only.
+            // DefineCsr(0xD81, "stimeh"); // SRO Upper 32 bits of stime, RV32I only.
+            DefineCsr(0xD82, "sinstreth"); // SRO Upper 32 bits of sinstret, RV32I only.
+
+            // Supervisor Timer
+            DefineCsr(0xD01, "stime"); // SRO Supervisor wall-clock time register.
+            DefineCsr(0xD81, "stimeh"); // SRO Upper 32 bits of stime, RV32I only.
+
+            // Supervisor Configuration
+            DefineCsr(0x10A, "senvcfg"); // SRW Supervisor environment configuration register.
+
+            // Supervisor Trap Handling
             DefineCsr(0x140, "sscratch"); // SRW Scratch register for supervisor trap handlers.
             DefineCsr(0x141, "sepc"); // SRW Supervisor exception program counter.
             DefineCsr(0x142, "scause"); // SRW Supervisor trap cause.
             DefineCsr(0x143, "stval"); // SRW Supervisor bad address or instruction.
             DefineCsr(0x144, "sip"); // SRW Supervisor interrupt pending.
-                                     // Supervisor Protection and Translation
+
+            // Supervisor Protection and Translation
+            // DefineCsr(0x180, "sptbr"); // SRW Page-table base register.
             DefineCsr(0x180, "satp"); // SRW Supervisor address translation and protection.
-                                      // Debug / Trace Registers
+            DefineCsr(0x181, "sasid"); // SRW Address-space ID.
+
+            // Supervisor Read/Write Shadow of User Read-Only registers
+            DefineCsr(0x900, "cyclew"); // SRW Cycle counter for RDCYCLE instruction.
+            DefineCsr(0x901, "timew"); // SRW Timer for RDTIME instruction.
+            DefineCsr(0x902, "instretw"); // SRW Instructions-retired counter for RDINSTRET instruction.
+            DefineCsr(0x980, "cyclehw"); // SRW Upper 32 bits of cycle, RV32I only.
+            DefineCsr(0x981, "timehw"); // SRW Upper 32 bits of time, RV32I only.
+            DefineCsr(0x982, "instrethw"); // SRW Upper 32 bits of instret, RV32I only.
+
+            // Hypervisor Trap Setup
+            // DefineCsr(0x200, "hstatus"); // HRW Hypervisor status register.
+            // DefineCsr(0x202, "hedeleg"); // HRW Hypervisor exception delegation register.
+            DefineCsr(0x203, "hideleg"); // HRW Hypervisor interrupt delegation register.
+            // DefineCsr(0x204, "hie"); // HRW Hypervisor interrupt-enable register.
+            // DefineCsr(0x205, "htvec"); // HRW Hypervisor trap handler base address.
+
+            // Hypervisor Trap Setup
+            // DefineCsr(0x200, "hstatus"); // HRW Hypervisor status register.
+            DefineCsr(0x201, "htvec"); // HRW Hypervisor trap handler base address.
+            DefineCsr(0x202, "htdeleg"); // HRW Hypervisor trap delegation register.
+            DefineCsr(0x221, "htimecmp"); // HRW Hypervisor wall-clock timer compare value.
+
+            // Debug / Trace Registers
             DefineCsr(0x5A8, "scontext"); // SRW Supervisor - mode context register.
 
             // Hypervisor level registers
+            // Hypervisor Trap Setup
             DefineCsr(0x600, "hstatus"); // HRW Hypervisor status register.
             DefineCsr(0x602, "hedeleg"); // HRW Hypervisor exception delegation register.
             DefineCsr(0x603, "hideleg"); // HRW Hypervisor interrupt delegation register.
             DefineCsr(0x604, "hie"); // HRW Hypervisor interrupt - enable register.
             DefineCsr(0x606, "hcounteren"); // HRW Hypervisor counter enable.
             DefineCsr(0x607, "hgeie"); // HRW Hypervisor guest external interrupt - enable register.
-                                       // Hypervisor Trap Handling
+
+            // Hypervisor Trap Handling
             DefineCsr(0x643, "htval"); // HRW Hypervisor bad guest physical address.
             DefineCsr(0x644, "hip"); // HRW Hypervisor interrupt pending.
             DefineCsr(0x645, "hvip"); // HRW Hypervisor virtual interrupt pending.
             DefineCsr(0x64A, "htinst"); // HRW Hypervisor trap instruction (transformed).
             DefineCsr(0xE12, "hgeip"); // HRO Hypervisor guest external interrupt pending.
-                                       // Hypervisor Protection and Translation
+
+            // Hypervisor Configuration
+            DefineCsr(0x60A, "henvcfg"); // HRW Hypervisor environment configuration register.
+            DefineCsr(0x61A, "henvcfgh"); // HRM Upper 32 bits of henvcfg, RV32 only.
+
+            // Hypervisor Protection and Translation
             DefineCsr(0x680, "hgatp"); // HRW Hypervisor guest address translation and protection.
-                                       // Debug/Trace Registers
+
+            // Debug/Trace Registers
             DefineCsr(0x6A8, "hcontext"); // HRW Hypervisor-mode context register.
-                                          // Hypervisor Counter/Timer Virtualization Registers
+
+            // Hypervisor Counter/Timer Virtualization Registers
             DefineCsr(0x605, "htimedelta"); // HRW Delta for VS/VU-mode timer.
             DefineCsr(0x615, "htimedeltah"); // HRW Upper 32 bits of htimedelta, RV32 only.
-                                             // Virtual Supervisor Registers
+
+            // Hypervisor Trap Handling
+            // DefineCsr(0x240, "hscratch"); // HRW Scratch register for hypervisor trap handlers.
+            // DefineCsr(0x241, "hepc"); // HRW Hypervisor exception program counter.
+            // DefineCsr(0x242, "hcause"); // HRW Hypervisor trap cause.
+            // DefineCsr(0x243, "hbadaddr"); // HRW Hypervisor bad address.
+
+            // Virtual Supervisor Registers
             DefineCsr(0x200, "vsstatus"); // HRW Virtual supervisor status register.
             DefineCsr(0x204, "vsie"); // HRW Virtual supervisor interrupt-enable register.
             DefineCsr(0x205, "vstvec"); // HRW Virtual supervisor trap handler base address.
@@ -405,30 +468,125 @@ namespace Reko.Arch.RiscV
             DefineCsr(0x244, "vsip"); // HRW Virtual supervisor interrupt pending.
             DefineCsr(0x280, "vsatp"); // HRW Virtual supervisor address translation and protection
 
-            // Machine level registers
+            // Hypervisor Counter/Timers
+            DefineCsr(0xE00, "hcycle"); // HRO Hypervisor cycle counter.
+            DefineCsr(0xE01, "htime"); // HRO Hypervisor wall-clock time.
+            DefineCsr(0xE02, "hinstret"); // HRO Hypervisor instructions-retired counter.
+            DefineCsr(0xE80, "hcycleh"); // HRO Upper 32 bits of hcycle, RV32I only.
+            DefineCsr(0xE81, "htimeh"); // HRO Upper 32 bits of htime, RV32I only.
+            DefineCsr(0xE82, "hinstreth"); // HRO Upper 32 bits of hinstret, RV32I only.
 
+            // Hypervisor Read/Write Shadow of Supervisor Read-Only Registers
+            DefineCsr(0xA01, "stimew"); // HRW Supervisor wall-clock timer.
+            DefineCsr(0xA81, "stimehw"); // HRW Upper 32 bits of supervisor wall-clock timer, RV32I only.
+
+            // Machine Information Registers
+            DefineCsr(0xF00, "mcpuid"); // MRO CPU description.
+            DefineCsr(0xF01, "mimpid"); // MRO Vendor ID and version number.
+            DefineCsr(0xF10, "mhartid"); // MRO Hardware thread ID.
+
+            // Machine level registers
+            // Machine Information Registers
+            // DefineCsr(0xF10, "misa"); // MRO ISA and extensions supported.
             DefineCsr(0xF11, "mvendorid"); // MRO Vendor ID.
             DefineCsr(0xF12, "marchid"); // MRO Architecture ID.
             DefineCsr(0xF13, "mimpid"); // MRO Implementation ID.
             DefineCsr(0xF14, "mhartid"); // MRO Hardware thread ID.
-                                         //Machine Trap Setup
+            DefineCsr(0xF15, "mconfigptr"); // MRO Pointer to configuration data structure.
+
+            // Machine Trap Setup
+            // Machine Information Registers
+            // DefineCsr(0x300, "mstatus"); // MRW Machine status register.
+            // DefineCsr(0x301, "mtvec"); // MRW Machine trap-handler base address.
+            // DefineCsr(0x302, "mtdeleg"); // MRW Machine trap delegation register.
+            // DefineCsr(0x304, "mie"); // MRW Machine interrupt-enable register.
+            DefineCsr(0x321, "mtimecmp"); // MRW Machine wall-clock timer compare value.
+
             DefineCsr(0x300, "mstatus"); // MRW Machine status register.
-            DefineCsr(0x301, "misa");//  MRW misa ISA and extensions.
+            DefineCsr(0x301, "misa");//  MRW ISA and extensions.
             DefineCsr(0x302, "medeleg"); // MRW Machine exception delegation register.
             DefineCsr(0x303, "mideleg"); // MRW Machine interrupt delegation register.
             DefineCsr(0x304, "mie"); // MRW Machine interrupt-enable register.
             DefineCsr(0x305, "mtvec"); // MRW Machine trap-handler base address.
             DefineCsr(0x306, "mcounteren"); // MRW Machine counter enable.
             DefineCsr(0x310, "mstatush"); // MRW Additional machine status register, RV32 only.
-                                          //Machine Trap Handling
+
+            // Machine Timers and Counters
+            // DefineCsr(0x701, "mtime"); // MRW Machine wall-clock time.
+            // DefineCsr(0x741, "mtimeh"); // MRW Upper 32 bits of mtime, RV32I only.
+
+            // Machine Trap Handling
             DefineCsr(0x340, "mscratch"); // MRW Scratch register for machine trap handlers.
             DefineCsr(0x341, "mepc"); // MRW Machine exception program counter.
             DefineCsr(0x342, "mcause"); // MRW Machine trap cause.
             DefineCsr(0x343, "mtval"); // MRW Machine bad address or instruction.
+            //$ TODO: OLD NAME? DefineCsr(0x343, "mbadaddr"); // MRW Machine bad address or instruction.
             DefineCsr(0x344, "mip"); // MRW Machine interrupt pending.
             DefineCsr(0x34A, "mtinst"); // MRW Machine trap instruction (transformed).
             DefineCsr(0x34B, "mtval2"); // MRW Machine bad guest physical address.
-                                        //Machine Memory Protection
+
+            // Machine Protection and Translation
+            DefineCsr(0x380, "mbase"); // MRW Base register.
+            DefineCsr(0x381, "mbound"); // MRW Bound register.
+            DefineCsr(0x382, "mibase"); // MRW Instruction base register.
+            DefineCsr(0x383, "mibound"); // MRW Instruction bound register.
+            DefineCsr(0x384, "mdbase"); // MRW Data base register.
+            DefineCsr(0x385, "mdbound"); // MRW Data bound register.
+
+            // Machine Timers and Counters
+            // DefineCsr(0xF00, "mcycle"); // MRO Machine cycle counter.
+            // DefineCsr(0xF01, "mtime"); // MRO Machine wall-clock time.
+            DefineCsr(0xF02, "minstret"); // MRO Machine instructions-retired counter.
+            DefineCsr(0xF80, "mcycleh"); // MRO Upper 32 bits of mcycle, RV32I only.
+            DefineCsr(0xF81, "mtimeh"); // MRO Upper 32 bits of mtime, RV32I only.
+            DefineCsr(0xF82, "minstreth"); // MRO Upper 32 bits of minstret, RV32I only.
+
+            // Machine Counter Setup
+            // DefineCsr(0x310, "mucounteren"); // MRW User-mode counter enable.
+            DefineCsr(0x311, "mscounteren"); // MRW Supervisor-mode counter enable.
+            DefineCsr(0x312, "mhcounteren"); // MRW Hypervisor-mode counter enable.
+
+            // Table 2.2: Currently allocated RISC-V user-level CSR addresses.
+            // Table 2.3: Currently allocated RISC-V supervisor-level CSR addresses.
+            // Table 2.4: Currently allocated RISC-V hypervisor-level CSR addresses.
+            // Table 2.5: Currently allocated RISC-V machine-level CSR addresses.
+            // Table 2.6: Currently allocated RISC-V machine-level CSR addresses.
+
+            // Machine Counter-Delta Registers
+            DefineCsr(0x700, "mucycle"); // MRW delta cycle counter delta.
+            DefineCsr(0x701, "mutime"); // MRW delta time counter delta.
+            DefineCsr(0x702, "muinstret"); // MRW delta instret counter delta.
+            DefineCsr(0x704, "mscycle"); // MRW delta scycle counter delta.
+            DefineCsr(0x705, "mstime"); // MRW delta stime counter delta.
+            DefineCsr(0x706, "msinstret"); // MRW delta sinstret counter delta.
+            DefineCsr(0x708, "mhcycle"); // MRW delta hcycle counter delta.
+            DefineCsr(0x709, "mhtime"); // MRW delta htime counter delta.
+            DefineCsr(0x70A, "mhinstret"); // MRW delta hinstret counter delta.
+            DefineCsr(0x780, "mucycle"); // MRW deltah Upper 32 bits of cycle counter delta, RV32I only.
+            DefineCsr(0x781, "mutime"); // MRW deltah Upper 32 bits of time counter delta, RV32I only.
+            DefineCsr(0x782, "muinstret"); // MRW deltah Upper 32 bits of instret counter delta, RV32I only.
+            DefineCsr(0x784, "mscycle"); // MRW deltah Upper 32 bits of scycle counter delta, RV32I only.
+            DefineCsr(0x785, "mstime"); // MRW deltah Upper 32 bits of stime counter delta, RV32I only.
+            DefineCsr(0x786, "msinstret"); // MRW deltah Upper 32 bits of sinstret counter delta, RV32I only.
+            DefineCsr(0x788, "mhcycle"); // MRW deltah Upper 32 bits of hcycle counter delta, RV32I only.
+            DefineCsr(0x789, "mhtime"); // MRW deltah Upper 32 bits of htime counter delta, RV32I only.
+            DefineCsr(0x78A, "mhinstret"); // MRW deltah Upper 32 bits of hinstret counter delta, RV32I only.
+
+            // Machine Read-Write Shadow of Hypervisor Read-Only Registers
+            DefineCsr(0xB01, "htimew"); // MRW Hypervisor wall-clock timer.
+            DefineCsr(0xB81, "htimehw"); // MRW Upper 32 bits of hypervisor wall-clock timer, RV32I only.
+
+            // Machine Host-Target Interface (Non-Standard Berkeley Extension)
+            // DefineCsr(0x780, "mtohost"); // MRW Output register to host.
+            // DefineCsr(0x781, "mfromhost"); // MRW Input register from host.
+
+            // Machine Configuration
+            DefineCsr(0x30A, "menvcfg"); // MRW Machine environment configuration register.
+            DefineCsr(0x31A, "menvcfgh"); // MRW Upper 32 bits of menvcfg, RV32 only.
+            DefineCsr(0x747, "mseccfg"); // MRW Machine security configuration register.
+            DefineCsr(0x757, "mseccfgh"); // MRW Upper 32 bits of mseccfg, RV32 only.
+
+            // Machine Memory Protection
             DefineCsr(0x3A0, "pmpcfg0"); // MRW Physical memory protection configuration.
             DefineCsr(0x3A1, "pmpcfg1"); // MRW Physical memory protection configuration, RV32 only.
             DefineCsr(0x3A2, "pmpcfg2"); // MRW Physical memory protection configuration.
@@ -513,6 +671,121 @@ namespace Reko.Arch.RiscV
             DefineCsr(0x3ED, "pmpaddr61");
             DefineCsr(0x3EE, "pmpaddr62");
             DefineCsr(0x3EF, "pmpaddr63"); // MRW Physical memory protection address register.
+
+            // Machine Non-Maskable Interrupt Handling
+            DefineCsr(0x740, "mnscratch"); // MRW Resumable NMI scratch register.
+            DefineCsr(0x741, "mnepc"); // MRW Resumable NMI program counter.
+            DefineCsr(0x742, "mncause"); // MRW Resumable NMI cause.
+            DefineCsr(0x744, "mnstatus"); // MRW Resumable NMI status.
+
+            // Machine Counter/Timers
+            DefineCsr(0xB00, "mcycle"); // MRW Machine cycle counter.
+            DefineCsr(0xB02, "minstret"); // MRW Machine instructions-retired counter.
+            DefineCsr(0xB03, "mhpmcounter3"); // MRW Machine performance-monitoring counter.
+            DefineCsr(0xB04, "mhpmcounter4"); // MRW Machine performance-monitoring counter.
+            DefineCsr(0xB05, "mhpmcounter5");
+            DefineCsr(0xB06, "mhpmcounter6");
+            DefineCsr(0xB07, "mhpmcounter7");
+            DefineCsr(0xB08, "mhpmcounter8");
+            DefineCsr(0xB09, "mhpmcounter9");
+            DefineCsr(0xB0A, "mhpmcounter10");
+            DefineCsr(0xB0B, "mhpmcounter11");
+            DefineCsr(0xB0C, "mhpmcounter12");
+            DefineCsr(0xB0D, "mhpmcounter13");
+            DefineCsr(0xB0E, "mhpmcounter14");
+            DefineCsr(0xB0F, "mhpmcounter15");
+            DefineCsr(0xB10, "mhpmcounter16");
+            DefineCsr(0xB11, "mhpmcounter17");
+            DefineCsr(0xB12, "mhpmcounter18");
+            DefineCsr(0xB13, "mhpmcounter19");
+            DefineCsr(0xB14, "mhpmcounter20");
+            DefineCsr(0xB15, "mhpmcounter21");
+            DefineCsr(0xB16, "mhpmcounter22");
+            DefineCsr(0xB17, "mhpmcounter23");
+            DefineCsr(0xB18, "mhpmcounter24");
+            DefineCsr(0xB19, "mhpmcounter25");
+            DefineCsr(0xB1A, "mhpmcounter26");
+            DefineCsr(0xB1B, "mhpmcounter27");
+            DefineCsr(0xB1C, "mhpmcounter28");
+            DefineCsr(0xB1D, "mhpmcounter29");
+            DefineCsr(0xB1E, "mhpmcounter30");
+            DefineCsr(0xB1F, "mhpmcounter31"); // MRW Machine performance-monitoring counter.
+            DefineCsr(0xB80, "mcycleh"); // MRW Upper 32 bits of mcycle, RV32 only.
+            DefineCsr(0xB82, "minstreth"); // MRW Upper 32 bits of minstret, RV32 only.
+            DefineCsr(0xB83, "mhpmcounter3h"); // MRW Upper 32 bits of mhpmcounter3, RV32 only.
+            DefineCsr(0xB84, "mhpmcounter4h"); // MRW Upper 32 bits of mhpmcounter4, RV32 only.
+            DefineCsr(0xB85, "mhpmcounter5h");
+            DefineCsr(0xB86, "mhpmcounter6h");
+            DefineCsr(0xB87, "mhpmcounter7h");
+            DefineCsr(0xB88, "mhpmcounter8h");
+            DefineCsr(0xB89, "mhpmcounter9h");
+            DefineCsr(0xB8A, "mhpmcounter10h");
+            DefineCsr(0xB8B, "mhpmcounter11h");
+            DefineCsr(0xB8C, "mhpmcounter12h");
+            DefineCsr(0xB8D, "mhpmcounter13h");
+            DefineCsr(0xB8E, "mhpmcounter14h");
+            DefineCsr(0xB8F, "mhpmcounter15h");
+            DefineCsr(0xB90, "mhpmcounter16h");
+            DefineCsr(0xB91, "mhpmcounter17h");
+            DefineCsr(0xB92, "mhpmcounter18h");
+            DefineCsr(0xB93, "mhpmcounter19h");
+            DefineCsr(0xB94, "mhpmcounter20h");
+            DefineCsr(0xB95, "mhpmcounter21h");
+            DefineCsr(0xB96, "mhpmcounter22h");
+            DefineCsr(0xB97, "mhpmcounter23h");
+            DefineCsr(0xB98, "mhpmcounter24h");
+            DefineCsr(0xB99, "mhpmcounter25h");
+            DefineCsr(0xB9A, "mhpmcounter26h");
+            DefineCsr(0xB9B, "mhpmcounter27h");
+            DefineCsr(0xB9C, "mhpmcounter28h");
+            DefineCsr(0xB9D, "mhpmcounter29h");
+            DefineCsr(0xB9E, "mhpmcounter30h");
+            DefineCsr(0xB9F, "mhpmcounter31h"); // MRW Upper 32 bits of mhpmcounter31, RV32 only.
+
+            // Machine Counter Setup
+            DefineCsr(0x320, "mcountinhibit"); // MRW Machine counter-inhibit register.
+            DefineCsr(0x323, "mhpmevent3"); // MRW Machine performance-monitoring event selector.
+            DefineCsr(0x324, "mhpmevent4"); // MRW Machine performance-monitoring event selector.
+            DefineCsr(0x325, "mhpmevent5");
+            DefineCsr(0x326, "mhpmevent6");
+            DefineCsr(0x327, "mhpmevent7");
+            DefineCsr(0x328, "mhpmevent8");
+            DefineCsr(0x329, "mhpmevent9");
+            DefineCsr(0x32A, "mhpmevent10");
+            DefineCsr(0x32B, "mhpmevent11");
+            DefineCsr(0x32C, "mhpmevent12");
+            DefineCsr(0x32D, "mhpmevent13");
+            DefineCsr(0x32E, "mhpmevent14");
+            DefineCsr(0x32F, "mhpmevent15");
+            DefineCsr(0x330, "mhpmevent16");
+            DefineCsr(0x331, "mhpmevent17");
+            DefineCsr(0x332, "mhpmevent18");
+            DefineCsr(0x333, "mhpmevent19");
+            DefineCsr(0x334, "mhpmevent20");
+            DefineCsr(0x335, "mhpmevent21");
+            DefineCsr(0x336, "mhpmevent22");
+            DefineCsr(0x337, "mhpmevent23");
+            DefineCsr(0x338, "mhpmevent24");
+            DefineCsr(0x339, "mhpmevent25");
+            DefineCsr(0x33A, "mhpmevent26");
+            DefineCsr(0x33B, "mhpmevent27");
+            DefineCsr(0x33C, "mhpmevent28");
+            DefineCsr(0x33D, "mhpmevent29");
+            DefineCsr(0x33E, "mhpmevent30");
+            DefineCsr(0x33F, "mhpmevent31"); // MRW Machine performance-monitoring event selector.
+
+            // Debug/Trace Registers (shared with Debug Mode)
+            DefineCsr(0x7A0, "tselect"); // MRW Debug/Trace trigger register select.
+            DefineCsr(0x7A1, "tdata1"); // MRW First Debug/Trace trigger data register.
+            DefineCsr(0x7A2, "tdata2"); // MRW Second Debug/Trace trigger data register.
+            DefineCsr(0x7A3, "tdata3"); // MRW Third Debug/Trace trigger data register.
+            DefineCsr(0x7A8, "mcontext"); // MRW Machine-mode context register.
+
+            // Debug Mode Registers
+            DefineCsr(0x7B0, "dcsr"); // DRW Debug control and status register.
+            DefineCsr(0x7B1, "dpc"); // DRW Debug program counter.
+            DefineCsr(0x7B2, "dscratch0"); // DRW Debug scratch register 0.
+            DefineCsr(0x7B3, "dscratch1"); // DRW Debug scratch register 1.
         }
 
         private void DefineCsr(int number, string name)

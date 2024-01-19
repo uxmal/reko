@@ -30,16 +30,16 @@ _start:
 lui x0,0x80000                                            #  LUI                  U                  //    imm[31:12] rd 0110111
 auipc s3,0xfffb                                           #  AUIPC                U                  //    imm[31:12] rd 0010111
 #----------------------------------------------------------------------------------------------------
-jal ra,0x800000e6                                         #  JAL                  J                  //    imm[20|10:1|11|19:12] rd 1101111
+#jal ra,0x800000e6                                         #  JAL                  J                  //    imm[20|10:1|11|19:12] rd 1101111
 #----------------------------------------------------------------------------------------------------
-jalr tp,5(s10)                                            #  JALR                 I                  //    imm[11:0] rs1 000 rd 1100111
+#jalr tp,5(s10)                                            #  JALR                 I                  //    imm[11:0] rs1 000 rd 1100111
 #----------------------------------------------------------------------------------------------------
-beq a0,a6,0x800091ac                                      #  BEQ                  B                  //    imm[12|10:5] rs2 rs1 000 imm[4:1|11] 1100011
-bne s4,s3,0x8000926a                                      #  BNE                  B                  //    imm[12|10:5] rs2 rs1 001 imm[4:1|11] 1100011
-blt s0,t3,0x80002da4                                      #  BLT                  B                  //    imm[12|10:5] rs2 rs1 100 imm[4:1|11] 1100011
-bge s0,a2,0x80002ca8                                      #  BGE                  B                  //    imm[12|10:5] rs2 rs1 101 imm[4:1|11] 1100011
-bltu a4,a0,0x800018f2                                     #  BLTU                 B                  //    imm[12|10:5] rs2 rs1 110 imm[4:1|11] 1100011
-bgeu a0,t0,0x800012c2                                     #  BGEU                 B                  //    imm[12|10:5] rs2 rs1 111 imm[4:1|11] 1100011
+#beq a0,a6,0x800091ac                                      #  BEQ                  B                  //    imm[12|10:5] rs2 rs1 000 imm[4:1|11] 1100011
+#bne s4,s3,0x8000926a                                      #  BNE                  B                  //    imm[12|10:5] rs2 rs1 001 imm[4:1|11] 1100011
+#blt s0,t3,0x80002da4                                      #  BLT                  B                  //    imm[12|10:5] rs2 rs1 100 imm[4:1|11] 1100011
+#bge s0,a2,0x80002ca8                                      #  BGE                  B                  //    imm[12|10:5] rs2 rs1 101 imm[4:1|11] 1100011
+#bltu a4,a0,0x800018f2                                     #  BLTU                 B                  //    imm[12|10:5] rs2 rs1 110 imm[4:1|11] 1100011
+#bgeu a0,t0,0x800012c2                                     #  BGEU                 B                  //    imm[12|10:5] rs2 rs1 111 imm[4:1|11] 1100011
 #----------------------------------------------------------------------------------------------------
 lb sp,128(s2)                                             #  LB                   I                  //    imm[11:0] rs1 000 rd 0000011
 lh t6,2028(t5)                                            #  LH                   I                  //    imm[11:0] rs1 001 rd 0000011
@@ -78,7 +78,48 @@ fence w,i                                                 #  FENCE              
 ecall                                                     #  ECALL                I                  //    000000000000 00000 000 00000 1110011
 ebreak                                                    #  EBREAK               I                  //    000000000001 00000 000 00000 1110011
 
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+#RV32  3.3 Machine-Mode Privileged Instructions
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+                 
+# Trap-Return Instructions
+#uret                                                      #  URET                 I                  //    0000000 00010 00000 000 00000 1110011
+#sret                                                      #  SRET                 I                  //    0001000 00010 00000 000 00000 1110011
+#hret                                                      #  HRET                 I                  //    0010000 00010 00000 000 00000 1110011
+#mret                                                      #  MRET                 I                  //    0011000 00010 00000 000 00000 1110011
 
+# Interrupt-Management Instructions
+wfi                                                       #  WFI                  I                  //    0001000 00101 00000 000 00000 1110011
+
+# Supervisor Memory-Management Instructions
+sfence.vm                                                 #  SFENCE.VM            I                  //    0001000 00100 rs1 000 00000 1110011
+sfence.vma                                                #  SFENCE.VMA           I                  //    0001001 rs2 rs1 000 00000 1110011
+#sinval.vma                                                #  SINVAL.VMA           I                  //    0001011 rs2 rs1 000 00000 1110011
+#sfence.w.inval                                            #  SFENCE.W.INVAL       I                  //    0001100 00000 00000 000 00000 1110011
+#sfence.inval.ir                                           #  SFENCE.INVAL.IR      I                  //    0001100 00001 00000 000 00000 1110011
+
+# Hypervisor Memory-Management Instructions
+#hfence.vvma                                               #  HFENCE.VVMA          I                  //    0010001 rs2 rs1 000 00000 1110011
+#hfence.gvma                                               #  HFENCE.GVMA          I                  //    0110001 rs2 rs1 000 00000 1110011
+#hinval.vvma                                               #  HINVAL.VVMA          I                  //    0010011 rs2 rs1 000 00000 1110011
+#hinval.gvma                                               #  HINVAL.GVMA          I                  //    0110011 rs2 rs1 000 00000 1110011
+
+# Hypervisor Virtual-Machine Load and Store Instructions
+#hlv.b                                                     #  HLV.B                I                  //    0110000 00000 rs1 100 rd 1110011
+#hlv.bu                                                    #  HLV.BU               I                  //    0110000 00001 rs1 100 rd 1110011
+#hlv.h                                                     #  HLV.H                I                  //    0110010 00000 rs1 100 rd 1110011
+#hlv.hu                                                    #  HLV.HU               I                  //    0110010 00001 rs1 100 rd 1110011
+#hlvx.hu                                                   #  HLVX.HU              I                  //    0110010 00011 rs1 100 rd 1110011
+#hlv.w                                                     #  HLV.W                I                  //    0110100 00000 rs1 100 rd 1110011
+#hlvx.wu                                                   #  HLVX.WU              I                  //    0110100 00011 rs1 100 rd 1110011
+#hsv.b                                                     #  HSV.B                I                  //    0110001 rs2 rs1 100 00000 1110011
+#hsv.h                                                     #  HSV.H                I                  //    0110011 rs2 rs1 100 00000 1110011
+#hsv.w                                                     #  HSV.W                I                  //    0110101 rs2 rs1 100 00000 1110011
+
+# Hypervisor Virtual-Machine Load and Store Instructions, RV64 only
+#hlv.wu                                                    #  HLV.WU               I                  //    0110100 00001 rs1 100 rd 1110011
+#hlv.d                                                     #  HLV.D                I                  //    0110110 00000 rs1 100 rd 1110011
+#hsv.d                                                     #  HSV.D                I                  //    0110111 rs2 rs1 100 00000 1110011
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64I Base Instruction Set (in addition to RV32I)
@@ -171,9 +212,9 @@ amomaxu.w a3,t2,(x1)                                      #  AMOMAXU.W          
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64A Standard Extension (in addition to RV32A)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-lr.d.aqrl a0,0(a0)                                        #  LR.D                 R                  //    00010 aq rl 00000 rs1 011 rd 0101111
+lr.d.aqrl a1,0(a4)                                        #  LR.D                 R                  //    00010 aq rl 00000 rs1 011 rd 0101111
 #----------------------------------------------------------------------------------------------------
-sc.d.aqrl a0,a0,0(a0)                                     #  SC.D                 R                  //    00011 aq rl rs2 rs1 011 rd 0101111
+sc.d.aqrl a2,a3,0(a2)                                     #  SC.D                 R                  //    00011 aq rl rs2 rs1 011 rd 0101111
 amoswap.d a4,a1,(a3)                                      #  AMOSWAP.D            R                  //    00001 aq rl rs2 rs1 011 rd 0101111
 amoadd.d t4,a2,(x3)                                       #  AMOADD.D             R                  //    00000 aq rl rs2 rs1 011 rd 0101111
 amoxor.d a3,a2,(a5)                                       #  AMOXOR.D             R                  //    00100 aq rl rs2 rs1 011 rd 0101111

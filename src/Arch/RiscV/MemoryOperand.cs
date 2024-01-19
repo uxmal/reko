@@ -21,11 +21,6 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.RiscV
 {
@@ -43,7 +38,14 @@ namespace Reko.Arch.RiscV
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteFormat("{0}({1})", Offset, Base);
+            if(Offset == 0)
+            {
+                renderer.WriteFormat("({0})", Base);
+            }
+            else
+            {
+                renderer.WriteFormat("{0}({1})", Offset, Base);
+            }
         }
     }
 }
