@@ -1208,10 +1208,9 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Discovered by RekoSifter tool")]
         public void MipsDis_jalx()
         {
-            AssertCode("jalx\t0x01bdc881", 0x746f7220);
+            AssertCode("jalx\t01BDC880", 0x746f7220);
         }
 
         [Test]

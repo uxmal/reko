@@ -112,7 +112,7 @@ namespace Reko.Arch.Mips
             case "mips16e": return new Mips16eDisassembler(this, imageReader);
             case "nano": return new NanoMipsDisassembler(this, imageReader);
             default:
-                if (rootDecoder == null)
+                if (rootDecoder is null)
                 {
                     var factory = new MipsDisassembler.DecoderFactory(this.instructionSetEncoding);
                     rootDecoder = factory.CreateRootDecoder();

@@ -1119,7 +1119,7 @@ namespace Reko.Arch.Mips
                             special2,
                             invalid),
                         V6Decoder(
-                            invalid,
+                            Instr(CTD, Mnemonic.jalx, J),
                             Nyi("POP6")),
                         V6Decoder(
                             invalid,

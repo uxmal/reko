@@ -19,16 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
