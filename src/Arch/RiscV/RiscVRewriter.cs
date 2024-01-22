@@ -252,6 +252,23 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fsqrt_s: RewriteFUnaryIntrinsic(PrimitiveType.Real32, FpOps.sqrtf); break;
                 case Mnemonic.fsub_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FSub); break;
                 case Mnemonic.fsw: RewriteStore(PrimitiveType.Real32); break;
+                case Mnemonic.hfence_gvma: RewriteFence(hfence_gvma_intrinsic); break;
+                case Mnemonic.hfence_vvma: RewriteFence(hfence_vvma_intrinsic); break;
+                case Mnemonic.hinval_gvma: RewriteFence(hfence_gvma_intrinsic); break;
+                case Mnemonic.hinval_vvma: RewriteFence(hfence_vvma_intrinsic); break;
+                case Mnemonic.hlv_b: RewriteHlv(PrimitiveType.Int8, hlv_intrinsic); break;
+                case Mnemonic.hlv_bu: RewriteHlv(PrimitiveType.Byte, hlv_intrinsic); break;
+                case Mnemonic.hlv_d: RewriteHlv(PrimitiveType.Word64, hlv_intrinsic); break;
+                case Mnemonic.hlv_h: RewriteHlv(PrimitiveType.Int16, hlv_intrinsic); break;
+                case Mnemonic.hlv_hu: RewriteHlv(PrimitiveType.Word16, hlv_intrinsic); break;
+                case Mnemonic.hlv_w: RewriteHlv(PrimitiveType.Int32, hlv_intrinsic); break;
+                case Mnemonic.hlv_wu: RewriteHlv(PrimitiveType.Word32, hlv_intrinsic); break;
+                case Mnemonic.hlvx_hu: RewriteHlv(PrimitiveType.Word16, hlvx_intrinsic); break;
+                case Mnemonic.hlvx_wu: RewriteHlv(PrimitiveType.Word32, hlvx_intrinsic); break;
+                case Mnemonic.hsv_b: RewriteHsv(PrimitiveType.Byte); break;
+                case Mnemonic.hsv_d: RewriteHsv(PrimitiveType.Word64); break;
+                case Mnemonic.hsv_h: RewriteHsv(PrimitiveType.Word16); break;
+                case Mnemonic.hsv_w: RewriteHsv(PrimitiveType.Word32); break;
                 case Mnemonic.jal: RewriteJal(); break;
                 case Mnemonic.jalr: RewriteJalr(); break;
                 case Mnemonic.lb: RewriteLoad(PrimitiveType.SByte, arch.NaturalSignedInteger); break;
@@ -281,7 +298,12 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sc_d: RewriteStoreConditional(PrimitiveType.Word64); break;
                 case Mnemonic.sc_w: RewriteStoreConditional(PrimitiveType.Word32); break;
                 case Mnemonic.sd: RewriteStore(PrimitiveType.Word64); break;
+                case Mnemonic.sfence_inval: RewriteFence(sfence_inval_intrinsic); break;
+                case Mnemonic.sfence_inval_ir: RewriteFence(sfence_inval_ir_intrinsic); break;
+                case Mnemonic.sfence_vma: RewriteFence(sfence_vma_intrinsic); break;
+                case Mnemonic.sfence_w_inval: RewriteFence(sfence_w_inval_intrinsic); break;
                 case Mnemonic.sh: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.sret: RewriteRet(sret_intrinsic); break;
                 case Mnemonic.sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.sll: RewriteBinOp(Operator.Shl); break;
                 case Mnemonic.slli: RewriteShift(Operator.Shl); break;
@@ -448,6 +470,47 @@ namespace Reko.Arch.RiscV
         static readonly IntrinsicProcedure fsgnjn_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnjn");
         static readonly IntrinsicProcedure fsgnjx_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnjx");
 
+        static readonly IntrinsicProcedure hfence_gvma_intrinsic = new IntrinsicBuilder("__hfence_gvma", true)
+                    .GenericTypes("T","U")
+                    .Param("T")
+                    .Param("U")
+                    .Void();
+        static readonly IntrinsicProcedure hfence_vvma_intrinsic    = new IntrinsicBuilder("__hfence_vvma", true)
+                    .GenericTypes("T","U")
+                    .Param("T")
+                    .Param("U")
+                    .Void();
+
+        static readonly IntrinsicProcedure sfence_inval_intrinsic = new IntrinsicBuilder("__sfence_inval", true)
+                    .GenericTypes("T", "U")
+                    .Param("T")
+                    .Param("U")
+                    .Void();
+        static readonly IntrinsicProcedure sfence_inval_ir_intrinsic= new IntrinsicBuilder("__sfence_inval_ir", true)
+                    .Void();
+        static readonly IntrinsicProcedure sfence_vma_intrinsic     = new IntrinsicBuilder("__sfence_vma", true)
+                    .GenericTypes("T", "U")
+                    .Param("T")
+                    .Param("U")
+                    .Void();
+        static readonly IntrinsicProcedure sfence_w_inval_intrinsic = new IntrinsicBuilder("__sfence_w_inval", true)
+                    .Void();
+
+
+        static readonly IntrinsicProcedure hlv_intrinsic = new IntrinsicBuilder("__hypervisor_load_from_VM", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
+        static readonly IntrinsicProcedure hlvx_intrinsic = new IntrinsicBuilder("__hypervisor_load_exe_from_VM", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
+        static readonly IntrinsicProcedure hsv_intrinsic = new IntrinsicBuilder("__hypervisor_store_in_VM", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Void();
+
 
         static readonly IntrinsicProcedure lr_intrinsic = new IntrinsicBuilder("__load_reserved", true)
             .GenericTypes("T")
@@ -465,6 +528,9 @@ namespace Reko.Arch.RiscV
             .Param("T")
             .PtrParam("T")
             .Returns("T");
+        static readonly IntrinsicProcedure sret_intrinsic = new IntrinsicBuilder("__sret", true)
+            .Void();
+
         static readonly IntrinsicProcedure uret_intrinsic = new IntrinsicBuilder("__uret", true)
             .Void();
         static readonly IntrinsicProcedure wait_for_interrupt_intrinsic = new IntrinsicBuilder("__wait_for_interrupt", true)

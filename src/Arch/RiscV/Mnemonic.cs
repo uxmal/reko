@@ -309,5 +309,14 @@ namespace Reko.Arch.RiscV
         hsv_d,
         hlv_wu,
         hlv_d,
+        fround_s,
+        froundnx_s,
+        fround_d,
+        froundnx_d,
+        fcvt_h_s,
+        fround_h,
+        froundnx_h,
+        froundnx_q,
+        fround_q,
     }
 }

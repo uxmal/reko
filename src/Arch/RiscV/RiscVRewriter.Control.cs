@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Arch.RiscV
@@ -123,6 +124,25 @@ namespace Reko.Arch.RiscV
             m.SideEffect(m.Fn(fence_tso_intrinsic));
         }
 
+        private void RewriteHlv(PrimitiveType dt, IntrinsicProcedure intrinsic)
+        {
+            var src = m.AddrOf(arch.PointerType, RewriteOp(1));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(
+                intrinsic.MakeInstance(arch.PointerType.BitSize, dt),
+                src));
+        }
+
+        private void RewriteHsv(PrimitiveType dt)
+        {
+            var dst = RewriteOp(0);
+            var src = RewriteOp(1);
+            m.SideEffect(m.Fn(
+                hsv_intrinsic.MakeInstance(arch.PointerType.BitSize, dt),
+                m.AddrOf(arch.PointerType, dst),
+                src));
+        }
+
         private void RewriteJal()
         {
             var continuation = (RegisterStorage)instr.Operands[0];
@@ -184,6 +204,16 @@ namespace Reko.Arch.RiscV
         {
             m.SideEffect(m.Fn(intrinsic));
             m.Return(0, 0);
+        }
+
+        private void RewriteFence(IntrinsicProcedure intrinsic)
+        {
+            var args = new Expression[instr.Operands.Length];
+            for (int i = 0; i < args.Length; ++i)
+            {
+                args[i] = RewriteOp(i);
+            }
+            m.SideEffect(m.Fn(intrinsic, args));
         }
 
         private void RewriteWfi()

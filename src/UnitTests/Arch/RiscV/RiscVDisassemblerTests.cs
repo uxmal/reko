@@ -1,3 +1,4 @@
+
 #region License
 /* 
  * Copyright (C) 1999-2024 John Källén.
@@ -24,8 +25,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Reflection.PortableExecutable;
-using System.Security.Cryptography;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -425,6 +424,12 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_round_s()
+        {
+            AssertCode("fround.s\ta4,fa4", 0x40470753u);
+        }
+
+        [Test]
         public void RiscV_dasm_c_addiw_negative()
         {
             AssertCode("c.addiw\ts0,-0x1", 0x0000347D);
@@ -811,7 +816,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_sfence_vma()
         {
-            AssertCode("sfence.vma\ts5,(s11)", 0b0001001_10101_11011_000_00000_1110011);
+            AssertCode("sfence.vma\ts11,s5", 0b0001001_10101_11011_000_00000_1110011);
         }
 
         [Test]
@@ -829,25 +834,25 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_hfence_vvma()
         {
-            AssertCode("hfence.vvma\ts5,(a7)", 0b0010001_10101_10001_000_00000_1110011);
+            AssertCode("hfence.vvma\ta7,s5", 0b0010001_10101_10001_000_00000_1110011);
         }
 
         [Test]
         public void RiscV_dasm_hfence_gvma()
         {
-            AssertCode("hfence.gvma\ts5,(a7)", 0b0110001_10101_10001_000_00000_1110011);
+            AssertCode("hfence.gvma\ta7,s5", 0b0110001_10101_10001_000_00000_1110011);
         }
 
         [Test]
         public void RiscV_dasm_hinval_vvma()
         {
-            AssertCode("hinval.vvma\ts5,(a7)", 0b0010011_10101_10001_000_00000_1110011);
+            AssertCode("hinval.vvma\ta7,s5", 0b0010011_10101_10001_000_00000_1110011);
         }
 
         [Test]
         public void RiscV_dasm_hinval_gvma()
         {
-            AssertCode("hinval.gvma\ts5,(a7)", 0b0110011_10101_10001_000_00000_1110011);
+            AssertCode("hinval.gvma\ta7,s5", 0b0110011_10101_10001_000_00000_1110011);
         }
 
         [Test]

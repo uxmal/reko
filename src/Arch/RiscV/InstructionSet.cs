@@ -151,14 +151,14 @@ namespace Reko.Arch.RiscV
 
                 var loads = new Decoder[]           // 0b00000
                 {
-                    Instr(Mnemonic.lb, rd,Ls),
-                    Instr(Mnemonic.lh, rd,Ls),
-                    Instr(Mnemonic.lw, rd,Ls),
-                    Instr(Mnemonic.ld, rd,Ls),    // 64I
+                    Instr(Mnemonic.lb, Rd,Ls),
+                    Instr(Mnemonic.lh, Rd,Ls),
+                    Instr(Mnemonic.lw, Rd,Ls),
+                    Instr(Mnemonic.ld, Rd,Ls),    // 64I
 
-                    Instr(Mnemonic.lbu, rd,Ls),
-                    Instr(Mnemonic.lhu, rd,Ls),
-                    Instr(Mnemonic.lwu, rd,Ls),    // 64I
+                    Instr(Mnemonic.lbu, Rd,Ls),
+                    Instr(Mnemonic.lhu, Rd,Ls),
+                    Instr(Mnemonic.lwu, Rd,Ls),    // 64I
                     Nyi(""),
                 };
 
@@ -375,13 +375,24 @@ namespace Reko.Arch.RiscV
 
                     ( 0x20, Sparse(20, 5, "fcvt.s", invalid,
                         (0x1, FpInstr64(Mnemonic.fcvt_s_d, Fd,F1) ),
-                        (0x3, FpInstr128(Mnemonic.fcvt_s_q, Fd,F1) ))),
+                        (0x3, FpInstr128(Mnemonic.fcvt_s_q, Fd,F1) ),
+                        (0x4, FpInstr32(Mnemonic.fround_s, Rd,F1) ),
+                        (0x5, FpInstr32(Mnemonic.froundnx_s, Rd,F1) ))),
                     ( 0x21, Sparse(20, 5, "fcvt.d", invalid,
                         (0x0, FpInstr64(Mnemonic.fcvt_d_s, Fd,F1) ),
-                        (0x3, FpInstr128(Mnemonic.fcvt_d_q, Fd,F1) ))),
-                    ( 0x23, Sparse(20, 5, "fcvt", invalid,
+                        (0x3, FpInstr128(Mnemonic.fcvt_d_q, Fd,F1) ),
+                        (0x4, FpInstr32(Mnemonic.fround_d, Rd,F1) ),
+                        (0x5, FpInstr32(Mnemonic.froundnx_d, Rd,F1) ))),
+                    ( 0x22, Sparse(20, 5, "fcvt.h", invalid,
+                        (0x0, FpInstr32(Mnemonic.fcvt_h_s, Fd,F1) ),
+                        (0x4, FpInstr32(Mnemonic.fround_h, Rd,F1) ),
+                        (0x5, FpInstr32(Mnemonic.froundnx_h, Rd,F1) ))),
+
+                    ( 0x23, Sparse(20, 5, "fcvt.q", invalid,
                         (0x0, FpInstr128(Mnemonic.fcvt_q_s, Fd,F1) ),
-                        (0x1, FpInstr128(Mnemonic.fcvt_q_d, Fd,F1) ))),
+                        (0x1, FpInstr128(Mnemonic.fcvt_q_d, Fd,F1) ),
+                        (0x4, FpInstr32(Mnemonic.fround_q, Rd,F1) ),
+                        (0x5, FpInstr32(Mnemonic.froundnx_q, Rd,F1) ))),
 
                     ( 0x2C, Select((20, 5), Ne0, invalid, FpInstr32(Mnemonic.fsqrt_s, Fd,F1)) ),
                     ( 0x2D, Select((20, 5), Ne0, invalid, FpInstr64(Mnemonic.fsqrt_d, Fd,F1)) ),
@@ -510,15 +521,15 @@ namespace Reko.Arch.RiscV
                         (0x08, Sparse(20, 5, "  system 0x08", Nyi("system 0x08"),
                             (2, Instr(Mnemonic.sret, InstrClass.Privileged | InstrClass.Transfer | InstrClass.Return)),
                             (5, Instr(Mnemonic.wfi, InstrClass.Privileged | InstrClass.Linear)))),
-                        (0x09, Instr(Mnemonic.sfence_vma, InstrClass.Privileged | InstrClass.Linear, R2, Mem(PrimitiveType.Word32, 15))),
-                        (0x0B, Instr(Mnemonic.sfence_inval, InstrClass.Privileged | InstrClass.Linear, Mem(PrimitiveType.Word32, 15))),
+                        (0x09, Instr(Mnemonic.sfence_vma, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
+                        (0x0B, Instr(Mnemonic.sfence_inval, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
                         (0x0C, Sparse(20, 5, "  system 0x0C", Nyi("system 0x0C"),
                             (0, Instr(Mnemonic.sfence_w_inval, InstrClass.Privileged | InstrClass.Linear)),
                             (1, Instr(Mnemonic.sfence_inval_ir, InstrClass.Privileged | InstrClass.Linear)))),
-                        (0x11, Instr(Mnemonic.hfence_vvma, InstrClass.Privileged | InstrClass.Linear, R2, Mem(PrimitiveType.Word32, 15))),
-                        (0x13, Instr(Mnemonic.hinval_vvma, InstrClass.Privileged | InstrClass.Linear, R2, Mem(PrimitiveType.Word32, 15))),
-                        (0x31, Instr(Mnemonic.hfence_gvma, InstrClass.Privileged | InstrClass.Linear, R2, Mem(PrimitiveType.Word32, 15))),
-                        (0x33, Instr(Mnemonic.hinval_gvma, InstrClass.Privileged | InstrClass.Linear, R2, Mem(PrimitiveType.Word32, 15))),
+                        (0x11, Instr(Mnemonic.hfence_vvma, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
+                        (0x13, Instr(Mnemonic.hinval_vvma, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
+                        (0x31, Instr(Mnemonic.hfence_gvma, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
+                        (0x33, Instr(Mnemonic.hinval_gvma, InstrClass.Privileged | InstrClass.Linear, R1, R2)),
 
                         (0x18, Sparse(20, 5, "  system 11000", Nyi("system 11000"),
                             (2, Instr(Mnemonic.mret, InstrClass.Privileged | InstrClass.Transfer | InstrClass.Return))))),

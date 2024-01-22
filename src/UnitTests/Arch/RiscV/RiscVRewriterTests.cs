@@ -1805,6 +1805,16 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_sret()
+        {
+            Given_UInt32s(0b0001000_00010_00000_000_00000_1110011);
+            AssertCode( // sret
+                "0|R--|0000000000010000(4): 2 instructions",
+                "1|L--|__sret()",
+                "2|R--|return (0,0)");
+        }
+
+        [Test]
         public void RiscV_rw_srl()
         {
             Given_RiscVInstructions(0x00B6D6B3);	// srl	a3,a3,a1
@@ -1929,212 +1939,188 @@ namespace Reko.UnitTests.Arch.RiscV
         // Please copy the contents of this file and report it on GitHub, using the 
         // following URL: https://github.com/uxmal/reko/issues
 
-        [Test]
-        [Ignore("Wait until disassembly has been verified")]
-        public void RiscV_rw_73004010()
-        {
-            Given_HexString("73004010");
-            AssertCode( // @@@
-            "1|@@@");
-        }
+
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
-        public void RiscV_rw_73000012()
-        {
-            Given_HexString("73000012");
-            AssertCode( // @@@
-            "1|@@@");
-        }
-
-        [Test]
-        [Ignore("Wait until disassembly has been verified")]
-        public void RiscV_rw_sret()
-        {
-            Given_UInt32s(0b0001000_00010_00000_000_00000_1110011);
-            AssertCode( // @@@
-            "1|@@@");
-        }
-
-        [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_sfence_vma()
         {
             Given_UInt32s(0b0001001_10101_11011_000_00000_1110011);
-            AssertCode( // @@@
-            "1|@@@");
-
+            AssertCode(
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_vma<word64,word64>(s11, s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_sfence_w_inval()
         {
             Given_UInt32s(0b0001100_00000_00000_000_00000_1110011);
             AssertCode( // sfence.w.inval
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_w_inval()");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_sfence_inval_ir()
         {
             Given_UInt32s(0b0001100_00001_00000_000_00000_1110011);
             AssertCode( // sfence.inval.ir
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_inval_ir()");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hfence_vvma()
         {
             Given_UInt32s(0b0010001_10101_10001_000_00000_1110011);
             AssertCode( // hfence.vvma
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_vvma<word64,word64>(a7, s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hfence_gvma()
         {
             Given_UInt32s(0b0110001_10101_10001_000_00000_1110011);
             AssertCode( // hfence.gvma
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_gvma<word64,word64>(a7, s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hinval_vvma()
         {
             Given_UInt32s(0b0010011_10101_10001_000_00000_1110011);
             AssertCode( // hinval.vvma
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_vvma<word64,word64>(a7, s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hinval_gvma()
         {
             Given_UInt32s(0b0110011_10101_10001_000_00000_1110011);
             AssertCode( // hinval.gvma
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_gvma<word64,word64>(a7, s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_b()
         {
             Given_UInt32s(0b0110000_00000_10001_100_11011_1110011);
-            AssertCode( // hlv.b
-            "1|@@@");
+            AssertCode(     // hlv.b	s11,(a7)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<int8>(&Mem0[a7:int8])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_bu()
         {
             Given_UInt32s(0b0110000_00001_10001_100_11011_1110011);
-            AssertCode( // hlv.bu
-            "1|@@@");
+            AssertCode(     // hlv.bu	s11,(a7)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<byte>(&Mem0[a7:uint8])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_h()
         {
             Given_UInt32s(0b0110010_00000_10001_100_11011_1110011);
             AssertCode( // hlv.h
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<int16>(&Mem0[a7:int16])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_hu()
         {
             Given_UInt32s(0b0110010_00001_10001_100_11011_1110011);
             AssertCode( // hlv.hu
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<word16>(&Mem0[a7:uint16])");
         }
 
-        [Test]
-        [Ignore("Wait until disassembly has been verified")]
-        public void RiscV_rw_hlvx_hu()
-        {
-            Given_UInt32s(0b0110010_00011_10001_100_11011_1110011);
-            AssertCode( // hlvx.hu
-            "1|@@@");
-        }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_w()
         {
             Given_UInt32s(0b0110100_00000_10001_100_11011_1110011);
             AssertCode( // hlv.w
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<int32>(&Mem0[a7:int32])");
+        }
+
+
+        [Test]
+        public void RiscV_rw_hlvx_hu()
+        {
+            Given_UInt32s(0b0110010_00011_10001_100_11011_1110011);
+            AssertCode( // hlvx.hu
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_exe_from_VM<word16>(&Mem0[a7:uint16])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlvx_wu()
         {
             Given_UInt32s(0b0110100_00011_10001_100_11011_1110011);
             AssertCode( // hlvx.wu
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_exe_from_VM<word32>(&Mem0[a7:uint32])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hsv_b()
         {
             Given_UInt32s(0b0110001_10101_10001_100_00000_1110011);
             AssertCode( // hsv.b
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<byte>(&Mem0[a7:byte], s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hsv_h()
         {
             Given_UInt32s(0b0110011_10101_10001_100_00000_1110011);
             AssertCode( // hsv.h
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word16>(&Mem0[a7:word16], s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hsv_w()
         {
             Given_UInt32s(0b0110101_10101_10001_100_00000_1110011);
             AssertCode( // hsv.w
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word32>(&Mem0[a7:word32], s5)");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_wu()
         {
             Given_UInt32s(0b0110100_00001_10001_100_11011_1110011);
             AssertCode( // hlv.wu
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<word32>(&Mem0[a7:uint32])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hlv_d()
         {
             Given_UInt32s(0b0110110_00000_10001_100_11011_1110011);
             AssertCode( // hlv.d
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __hypervisor_load_from_VM<word64>(&Mem0[a7:uint64])");
         }
 
         [Test]
-        [Ignore("Wait until disassembly has been verified")]
         public void RiscV_rw_hsv_d()
         {
             Given_UInt32s(0b0110111_10101_10001_100_00000_1110011);
             AssertCode( // hsv.d
-            "1|@@@");
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word64>(&Mem0[a7:word64], s5)");
         }
     }
 }

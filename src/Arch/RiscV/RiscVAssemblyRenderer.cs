@@ -24,9 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Reko.Arch.RiscV
@@ -369,6 +367,7 @@ namespace Reko.Arch.RiscV
                     renderer.WriteString(s);
             }
         }
+
         protected string FormatSignedValue(long n, bool forceSign = false)
         {
             string sign = "";
@@ -390,34 +389,6 @@ namespace Reko.Arch.RiscV
         protected string FormatUnsignedValue(ulong n, string format = "0x{0:X}")
         {
             return string.Format(format, n);
-        }
-
-        protected string ExplicitOperandPrefix(DataType width)
-        {
-            string s;
-            if (width == PrimitiveType.Byte)
-                s = "byte ptr ";
-            else if (width == PrimitiveType.Word16)
-                s = "word ptr ";
-            else if (width.Size == 4)
-                s = "dword ptr ";
-            else if (width == PrimitiveType.Word64)
-                s = "qword ptr ";
-            else if (width == PrimitiveType.Real32)
-                s = "float ptr ";
-            else if (width == PrimitiveType.Real64)
-                s = "double ptr ";
-            else if (width == PrimitiveType.Real80 || width == PrimitiveType.Bcd80)
-                s = "tword ptr ";
-            else if (width == PrimitiveType.Word128)
-                s = "xmmword ptr ";
-            else if (width == PrimitiveType.Word256)
-                s = "ymmword ptr ";
-            else if (width == PrimitiveType.SegPtr48)
-                s = "fword ptr";
-            else
-                s = "";
-            return s;
         }
     }
 }
