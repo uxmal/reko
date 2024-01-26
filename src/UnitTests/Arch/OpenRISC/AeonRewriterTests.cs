@@ -624,6 +624,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bt_lwst____()
+        {
+            Given_HexString("815D");
+            AssertCode(     // bt.lwst??	r10,0x38(r1)
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r10 = Mem0[r1 + 56<i32>:word32]");
+        }
+
+        [Test]
         public void AeonRw_bn_lwz()
         {
             Given_HexString("0CE302");

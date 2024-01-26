@@ -94,6 +94,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_lhs__,
         bn_lhz,
         bg_lhz__,
+        bt_lwst____,
         bn_lwz,
         bg_lwz,
         bg_mfspr,

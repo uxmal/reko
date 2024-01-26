@@ -504,9 +504,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bt_trap, uimm1_4),                   // source
                 Instr(Mnemonic.bt_nop, uimm1_4));                   // source
 
+            var decoder100000_stack = Mask(0, 1, "  opc=100000",
+                Instr(Mnemonic.bt_swst____, MuStack(1, 4, 2, PrimitiveType.Word32), R5),
+                Instr(Mnemonic.bt_lwst____, Ru5, MuStack(1, 4, 2, PrimitiveType.Word32)));
+
             var decoder100000 = Select((5, 5), u => u == 0,
                 decoder100000_special,
-                Instr(Mnemonic.bt_swst____, MuStack(0, 5, 1, PrimitiveType.Word32), R5));    // guess
+                decoder100000_stack);
 
             var decoder100001_sub0 = Select((5, 5), u => u == 0,
                 Instr(Mnemonic.bt_rfe, InstrClass.Transfer | InstrClass.Return), // source
