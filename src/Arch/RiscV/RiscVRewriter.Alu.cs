@@ -139,6 +139,32 @@ namespace Reko.Arch.RiscV
             MaybeSliceSignExtend(dst, val, dtDst);
         }
 
+        private Expression RewriteEffectiveAddress()
+        {
+            Expression ea;
+            if (instr.Operands[1] is MemoryOperand mem)
+            {
+                var baseReg = binder.EnsureRegister(mem.Base);
+                ea = baseReg;
+                if (mem.Offset != 0)
+                {
+                    ea = m.IAddS(ea, mem.Offset);
+                }
+            }
+            else
+            {
+                var baseReg = RewriteOp(1);
+                var offset = ((ImmediateOperand) instr.Operands[2]).Value;
+                ea = baseReg;
+                if (!offset.IsZero)
+                {
+                    ea = m.IAdd(ea, offset);
+                }
+            }
+
+            return ea;
+        }
+
         private void RewriteLi()
         {
             var src = RewriteOp(1);

@@ -156,6 +156,12 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, MaybeNanBox(m.Fn(fn.MakeInstance(dt), src1, src2), dst.DataType));
         }
 
+        private void RewriteFGenericUnaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
+        {
+            var src1 = MaybeSlice(RewriteOp(1), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, MaybeNanBox(m.Fn(fn.MakeInstance(dt), src1), dst.DataType));
+        }
 
         private void RewriteFUnaryIntrinsic(PrimitiveType dt, IntrinsicProcedure fn)
         {
@@ -163,7 +169,6 @@ namespace Reko.Arch.RiscV
             var dst = RewriteOp(0);
             m.Assign(dst, MaybeNanBox(m.Fn(fn, src), dst.DataType));
         }
-
 
         // Move bits between integer and FP regs without interpretation.
         private void RewriteFMove(PrimitiveType dtFrom, PrimitiveType dtTo)

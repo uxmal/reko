@@ -22,12 +22,13 @@
 .section .init
 .global _start
 .align 2 # align code on 2^n => ( 4 bytes )
+.attribute      5, "rv64gaimdfqh_zicsr_zfh_zihintpause_svinval_zmmul_zfa"
 _start:
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV32I Base Instruction Set
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-lui x0,0x80000                                            #  LUI                  U                  //    imm[31:12] rd 0110111
+lui zero,0x80000                                          #  LUI                  U                  //    imm[31:12] rd 0110111
 auipc s3,0xfffb                                           #  AUIPC                U                  //    imm[31:12] rd 0010111
 #----------------------------------------------------------------------------------------------------
 #jal ra,0x800000e6                                         #  JAL                  J                  //    imm[20|10:1|11|19:12] rd 1101111
@@ -73,15 +74,15 @@ or a1,a2,t5                                               #  OR                 
 and s5,s7,t4                                              #  AND                  R                  //    0000000 rs2 rs1 111 rd 0110011
 #----------------------------------------------------------------------------------------------------
 fence w,i                                                 #  FENCE                I                  //    fm pred succ rs1 000 rd 0001111
-#fence.tso                                                 #  FENCE.TSO            I                  //    1000 0011 0011 00000 000 00000 0001111
-#pause                                                     #  PAUSE                I                  //    0000 0001 0000 00000 000 00000 0001111
+fence.tso                                                 #  FENCE.TSO            I                  //    1000 0011 0011 00000 000 00000 0001111
+pause                                                     #  PAUSE                I                  //    0000 0001 0000 00000 000 00000 0001111
 ecall                                                     #  ECALL                I                  //    000000000000 00000 000 00000 1110011
 ebreak                                                    #  EBREAK               I                  //    000000000001 00000 000 00000 1110011
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV32  3.3 Machine-Mode Privileged Instructions
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-                 
+
 # Trap-Return Instructions
 #uret                                                      #  URET                 I                  //    0000000 00010 00000 000 00000 1110011
 #sret                                                      #  SRET                 I                  //    0001000 00010 00000 000 00000 1110011
@@ -92,34 +93,34 @@ ebreak                                                    #  EBREAK             
 wfi                                                       #  WFI                  I                  //    0001000 00101 00000 000 00000 1110011
 
 # Supervisor Memory-Management Instructions
-sfence.vm                                                 #  SFENCE.VM            I                  //    0001000 00100 rs1 000 00000 1110011
-sfence.vma                                                #  SFENCE.VMA           I                  //    0001001 rs2 rs1 000 00000 1110011
-#sinval.vma                                                #  SINVAL.VMA           I                  //    0001011 rs2 rs1 000 00000 1110011
-#sfence.w.inval                                            #  SFENCE.W.INVAL       I                  //    0001100 00000 00000 000 00000 1110011
-#sfence.inval.ir                                           #  SFENCE.INVAL.IR      I                  //    0001100 00001 00000 000 00000 1110011
+sfence.vm a3                                              #  SFENCE.VM            I                  //    0001000 00100 rs1 000 00000 1110011
+sfence.vma a7,a4                                          #  SFENCE.VMA           R                  //    0001001 rs2 rs1 000 00000 1110011
+sinval.vma a5,a6                                          #  SINVAL.VMA           R                  //    0001011 rs2 rs1 000 00000 1110011
+sfence.w.inval                                            #  SFENCE.W.INVAL       I                  //    0001100 00000 00000 000 00000 1110011
+sfence.inval.ir                                           #  SFENCE.INVAL.IR      I                  //    0001100 00001 00000 000 00000 1110011
 
 # Hypervisor Memory-Management Instructions
-#hfence.vvma                                               #  HFENCE.VVMA          I                  //    0010001 rs2 rs1 000 00000 1110011
-#hfence.gvma                                               #  HFENCE.GVMA          I                  //    0110001 rs2 rs1 000 00000 1110011
-#hinval.vvma                                               #  HINVAL.VVMA          I                  //    0010011 rs2 rs1 000 00000 1110011
-#hinval.gvma                                               #  HINVAL.GVMA          I                  //    0110011 rs2 rs1 000 00000 1110011
+hfence.vvma a1,a3                                         #  HFENCE.VVMA          R                  //    0010001 rs2 rs1 000 00000 1110011
+hfence.gvma a4,a5                                         #  HFENCE.GVMA          R                  //    0110001 rs2 rs1 000 00000 1110011
+hinval.vvma a3,a2                                         #  HINVAL.VVMA          R                  //    0010011 rs2 rs1 000 00000 1110011
+hinval.gvma a7,a1                                         #  HINVAL.GVMA          R                  //    0110011 rs2 rs1 000 00000 1110011
 
 # Hypervisor Virtual-Machine Load and Store Instructions
-#hlv.b                                                     #  HLV.B                I                  //    0110000 00000 rs1 100 rd 1110011
-#hlv.bu                                                    #  HLV.BU               I                  //    0110000 00001 rs1 100 rd 1110011
-#hlv.h                                                     #  HLV.H                I                  //    0110010 00000 rs1 100 rd 1110011
-#hlv.hu                                                    #  HLV.HU               I                  //    0110010 00001 rs1 100 rd 1110011
-#hlvx.hu                                                   #  HLVX.HU              I                  //    0110010 00011 rs1 100 rd 1110011
-#hlv.w                                                     #  HLV.W                I                  //    0110100 00000 rs1 100 rd 1110011
-#hlvx.wu                                                   #  HLVX.WU              I                  //    0110100 00011 rs1 100 rd 1110011
-#hsv.b                                                     #  HSV.B                I                  //    0110001 rs2 rs1 100 00000 1110011
-#hsv.h                                                     #  HSV.H                I                  //    0110011 rs2 rs1 100 00000 1110011
-#hsv.w                                                     #  HSV.W                I                  //    0110101 rs2 rs1 100 00000 1110011
+hlv.b a7,(a5)                                             #  HLV.B                I                  //    0110000 00000 rs1 100 rd 1110011
+hlv.bu a6,(a2)                                            #  HLV.BU               I                  //    0110000 00001 rs1 100 rd 1110011
+hlv.h a4,(a3)                                             #  HLV.H                I                  //    0110010 00000 rs1 100 rd 1110011
+hlv.hu sp,(a4)                                            #  HLV.HU               I                  //    0110010 00001 rs1 100 rd 1110011
+hlvx.hu a7,(sp)                                           #  HLVX.HU              I                  //    0110010 00011 rs1 100 rd 1110011
+hlv.w a6,(s1)                                             #  HLV.W                I                  //    0110100 00000 rs1 100 rd 1110011
+hlvx.wu gp,(t4)                                           #  HLVX.WU              I                  //    0110100 00011 rs1 100 rd 1110011
+hsv.b t3,(a2)                                             #  HSV.B                R                  //    0110001 rs2 rs1 100 00000 1110011
+hsv.h a2,(t6)                                             #  HSV.H                R                  //    0110011 rs2 rs1 100 00000 1110011
+hsv.w t4,(t3)                                             #  HSV.W                R                  //    0110101 rs2 rs1 100 00000 1110011
 
 # Hypervisor Virtual-Machine Load and Store Instructions, RV64 only
-#hlv.wu                                                    #  HLV.WU               I                  //    0110100 00001 rs1 100 rd 1110011
-#hlv.d                                                     #  HLV.D                I                  //    0110110 00000 rs1 100 rd 1110011
-#hsv.d                                                     #  HSV.D                I                  //    0110111 rs2 rs1 100 00000 1110011
+hlv.wu t3,(a7)                                            #  HLV.WU               I                  //    0110100 00001 rs1 100 rd 1110011
+hlv.d a7,(t2)                                             #  HLV.D                I                  //    0110110 00000 rs1 100 rd 1110011
+hsv.d tp,(gp)                                             #  HSV.D                R                  //    0110111 rs2 rs1 100 00000 1110011
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64I Base Instruction Set (in addition to RV32I)
@@ -142,7 +143,7 @@ addw t5,ra,sp                                             #  ADDW               
 subw a0,a5,a4                                             #  SUBW                 R                  //    0100000 rs2 rs1 000 rd 0111011
 sllw t5,ra,sp                                             #  SLLW                 R                  //    0000000 rs2 rs1 001 rd 0111011
 srlw t4,a3,sp                                             #  SRLW                 R                  //    0000000 rs2 rs1 101 rd 0111011
-#sraw t5,ra,sp                                            #  SRAW                 R                  //    0100000 rs2 rs1 101 rd 0111011 //$ TODO warning: Risc-V instruction 'sraw' not supported yet.
+sraw t5,ra,sp                                             #  SRAW                 R                  //    0100000 rs2 rs1 101 rd 0111011
 
 
 
@@ -184,17 +185,17 @@ remu a6,a1,t2                                             #  REMU               
 #RV64M Standard Extension (in addition to RV32M)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 mulw t4,a7,sp                                             #  MULW                 R                  //    0000001 rs2 rs1 000 rd 0111011
-divw t3,a6,x1                                             #  DIVW                 R                  //    0000001 rs2 rs1 100 rd 0111011
-divuw t5,a4,x2                                            #  DIVUW                R                  //    0000001 rs2 rs1 101 rd 0111011
+divw t3,a6,ra                                             #  DIVW                 R                  //    0000001 rs2 rs1 100 rd 0111011
+divuw t5,a4,sp                                            #  DIVUW                R                  //    0000001 rs2 rs1 101 rd 0111011
 remw t2,a2,ra                                             #  REMW                 R                  //    0000001 rs2 rs1 110 rd 0111011
-remuw t1,a4,x3                                            #  REMUW                R                  //    0000001 rs2 rs1 111 rd 0111011
+remuw t1,a4,gp                                            #  REMUW                R                  //    0000001 rs2 rs1 111 rd 0111011
 
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV32A Standard Extension
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-lr.w.aqrl a0,0(a0)                                        #  LR.W                 R                  //    00010 aq rl 00000 rs1 010 rd 0101111
+lr.w.aqrl a0,(a0)                                         #  LR.W                 R                  //    00010 aq rl 00000 rs1 010 rd 0101111
 #----------------------------------------------------------------------------------------------------
 sc.w a4,zero,(a0)                                         #  SC.W                 R                  //    00011 aq rl rs2 rs1 010 rd 0101111
 amoswap.w a4,a1,(a3)                                      #  AMOSWAP.W            R                  //    00001 aq rl rs2 rs1 010 rd 0101111
@@ -205,25 +206,25 @@ amoor.w a2,a3,(a1)                                        #  AMOOR.W            
 amomin.w a5,t1,(a2)                                       #  AMOMIN.W             R                  //    10000 aq rl rs2 rs1 010 rd 0101111
 amomax.w t1,t3,(a5)                                       #  AMOMAX.W             R                  //    10100 aq rl rs2 rs1 010 rd 0101111
 amominu.w a1,t4,(t3)                                      #  AMOMINU.W            R                  //    11000 aq rl rs2 rs1 010 rd 0101111
-amomaxu.w a3,t2,(x1)                                      #  AMOMAXU.W            R                  //    11100 aq rl rs2 rs1 010 rd 0101111
+amomaxu.w a3,t2,(ra)                                      #  AMOMAXU.W            R                  //    11100 aq rl rs2 rs1 010 rd 0101111
 
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64A Standard Extension (in addition to RV32A)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-lr.d.aqrl a1,0(a4)                                        #  LR.D                 R                  //    00010 aq rl 00000 rs1 011 rd 0101111
+lr.d.aqrl a1,(a4)                                         #  LR.D                 R                  //    00010 aq rl 00000 rs1 011 rd 0101111
 #----------------------------------------------------------------------------------------------------
-sc.d.aqrl a2,a3,0(a2)                                     #  SC.D                 R                  //    00011 aq rl rs2 rs1 011 rd 0101111
+sc.d.aqrl a2,a3,(a2)                                      #  SC.D                 R                  //    00011 aq rl rs2 rs1 011 rd 0101111
 amoswap.d a4,a1,(a3)                                      #  AMOSWAP.D            R                  //    00001 aq rl rs2 rs1 011 rd 0101111
-amoadd.d t4,a2,(x3)                                       #  AMOADD.D             R                  //    00000 aq rl rs2 rs1 011 rd 0101111
+amoadd.d t4,a2,(gp)                                       #  AMOADD.D             R                  //    00000 aq rl rs2 rs1 011 rd 0101111
 amoxor.d a3,a2,(a5)                                       #  AMOXOR.D             R                  //    00100 aq rl rs2 rs1 011 rd 0101111
 amoand.d.aqrl t3,s2,(t5)                                  #  AMOAND.D             R                  //    01100 aq rl rs2 rs1 011 rd 0101111
 amoor.d a2,a3,(a1)                                        #  AMOOR.D              R                  //    01000 aq rl rs2 rs1 011 rd 0101111
 amomin.d a5,t1,(a2)                                       #  AMOMIN.D             R                  //    10000 aq rl rs2 rs1 011 rd 0101111
 amomax.d t1,t3,(a5)                                       #  AMOMAX.D             R                  //    10100 aq rl rs2 rs1 011 rd 0101111
 amominu.d a1,t4,(t3)                                      #  AMOMINU.D            R                  //    11000 aq rl rs2 rs1 011 rd 0101111
-amomaxu.d a3,t2,(x1)                                      #  AMOMAXU.D            R                  //    11100 aq rl rs2 rs1 011 rd 0101111
+amomaxu.d a3,t2,(ra)                                      #  AMOMAXU.D            R                  //    11100 aq rl rs2 rs1 011 rd 0101111
 
 
 
@@ -243,32 +244,43 @@ fadd.s fs2,fa6,ft5,rmm                                    #  FADD.S             
 fsub.s ft3,ft0,ft1                                        #  FSUB.S               R                  //    0000100 rs2 rs1 rm rd 1010011
 fmul.s ft3,ft0,ft1                                        #  FMUL.S               R                  //    0001000 rs2 rs1 rm rd 1010011
 fdiv.s fs4,fs6,fs3,rne                                    #  FDIV.S               R                  //    0001100 rs2 rs1 rm rd 1010011
-fsqrt.s ft3,ft0                                           #  FSQRT.S              R                  //    0101100 00000 rs1 rm rd 1010011
+fsqrt.s ft3,ft0                                           #  FSQRT.S              I                  //    0101100 00000 rs1 rm rd 1010011
 fsgnj.s ft0,ft1,ft2                                       #  FSGNJ.S              R                  //    0010000 rs2 rs1 000 rd 1010011
 fsgnjn.s ft3,ft7,ft4                                      #  FSGNJN.S             R                  //    0010000 rs2 rs1 001 rd 1010011
 fsgnjx.s ft8,ft2,ft5                                      #  FSGNJX.S             R                  //    0010000 rs2 rs1 010 rd 1010011
 fmin.s ft6,ft0,ft1                                        #  FMIN.S               R                  //    0010100 rs2 rs1 000 rd 1010011
-fmax.s ft5,ft4,ft2                                        #  FMAX.S               R                  //    0010100 rs2 rs1 001 rd 1010011
-fcvt.w.s a1,fa5,rtz                                       #  FCVT.W.S             R                  //    1100000 00000 rs1 rm rd 1010011
-fcvt.wu.s a0,ft0,rtz                                      #  FCVT.WU.S            R                  //    1100000 00001 rs1 rm rd 1010011
-fmv.x.w a0,ft3                                            #  FMV.X.W              R                  //    1110000 00000 rs1 000 rd 1010011
+fmax.s ft5,ft3,ft2                                        #  FMAX.S               R                  //    0010100 rs2 rs1 001 rd 1010011
+fminm.s ft3,ft0,ft1                                       #  FMINM.S              R                  //    0010100 rs2 rs1 010 rd 1010011
+fmaxm.s ft7,ft1,ft2                                       #  FMAXM.S              R                  //    0010100 rs2 rs1 011 rd 1010011
+fcvt.w.s a1,fa5,rtz                                       #  FCVT.W.S             I                  //    1100000 00000 rs1 rm rd 1010011
+fcvt.wu.s a0,ft0,rtz                                      #  FCVT.WU.S            I                  //    1100000 00001 rs1 rm rd 1010011
+fmv.x.w a0,ft3                                            #  FMV.X.W              I                  //    1110000 00000 rs1 000 rd 1010011
 feq.s a0,ft0,ft1                                          #  FEQ.S                R                  //    1010000 rs2 rs1 010 rd 1010011
 flt.s a1,ft2,ft3                                          #  FLT.S                R                  //    1010000 rs2 rs1 001 rd 1010011
 fle.s a2,ft5,ft4                                          #  FLE.S                R                  //    1010000 rs2 rs1 000 rd 1010011
-fclass.s a3,fa2                                           #  FCLASS.S             R                  //    1110000 00000 rs1 001 rd 1010011
-fcvt.s.w ft1,a5                                           #  FCVT.S.W             R                  //    1101000 00000 rs1 rm rd 1010011
-fcvt.s.wu fs0,a2                                          #  FCVT.S.WU            R                  //    1101000 00001 rs1 rm rd 1010011
-fmv.w.x ft11,a3                                           #  FMV.W.X              R                  //    1111000 00000 rs1 000 rd 1010011
+fclass.s a3,fa2                                           #  FCLASS.S             I                  //    1110000 00000 rs1 001 rd 1010011
+fcvt.s.w ft1,a5,rmm                                       #  FCVT.S.W             I                  //    1101000 00000 rs1 rm rd 1010011
+fcvt.s.wu fs0,a2,rdn                                      #  FCVT.S.WU            I                  //    1101000 00001 rs1 rm rd 1010011
+fmv.w.x ft11,a3                                           #  FMV.W.X              I                  //    1111000 00000 rs1 000 rd 1010011
+fli.s ft3,0x1p-3                                          #  FLI.S                I                  //    1111000 00001 rs1 000 rd 1010011
 
+fround.s ft5,ft3,rtz                                      #  FROUND.S             I                  //    0100000 00100 rs1 rm rd 1010011
+froundnx.s ft5,ft3,rup                                    #  FROUNDNX.S           I                  //    0100000 00101 rs1 rm rd 1010011
+fround.h ft6,ft0,rmm                                      #  FROUND.H             I                  //    0100010 00100 rs1 rm rd 1010011
+froundnx.h ft6,ft0,dyn                                    #  FROUNDNX.H           I                  //    0100010 00101 rs1 rm rd 1010011
+fround.d ft3,ft0,rne                                      #  FROUND.D             I                  //    0100001 00100 rs1 rm rd 1010011
+froundnx.d ft3,ft0,rtz                                    #  FROUNDNX.D           I                  //    0100001 00101 rs1 rm rd 1010011
+fround.q ft7,ft1,rdn                                      #  FROUND.Q             I                  //    0100011 00100 rs1 rm rd 1010011
+froundnx.q ft7,ft1,rmm                                    #  FROUNDNX.Q           I                  //    0100011 00101 rs1 rm rd 1010011
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64F Standard Extension (in addition to RV32F)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-fcvt.l.s a0,ft11,rtz                                      #  FCVT.L.S             R                  //    1100000 00010 rs1 rm rd 1010011
-fcvt.lu.s a0,ft9,rtz                                      #  FCVT.LU.S            R                  //    1100000 00011 rs1 rm rd 1010011
-fcvt.s.l ft7,a7                                           #  FCVT.S.L             R                  //    1101000 00010 rs1 rm rd 1010011
-fcvt.s.lu ft4,a3                                          #  FCVT.S.LU            R                  //    1101000 00011 rs1 rm rd 1010011
+fcvt.l.s a0,ft11,rdn                                      #  FCVT.L.S             I                  //    1100000 00010 rs1 rm rd 1010011
+fcvt.lu.s a0,ft9,rup                                      #  FCVT.LU.S            I                  //    1100000 00011 rs1 rm rd 1010011
+fcvt.s.l ft7,a7,rmm                                       #  FCVT.S.L             I                  //    1101000 00010 rs1 rm rd 1010011
+fcvt.s.lu ft4,a3,rdn                                      #  FCVT.S.LU            I                  //    1101000 00011 rs1 rm rd 1010011
 
 
 
@@ -288,79 +300,135 @@ fadd.d fa7,ft2,ft3,rup                                    #  FADD.D             
 fsub.d ft3,ft0,ft1                                        #  FSUB.D               R                  //    0000101 rs2 rs1 rm rd 1010011
 fmul.d ft5,ft4,fa6,rne                                    #  FMUL.D               R                  //    0001001 rs2 rs1 rm rd 1010011
 fdiv.d fa1,fa5,fa7                                        #  FDIV.D               R                  //    0001101 rs2 rs1 rm rd 1010011
-fsqrt.d fa4,fa2                                           #  FSQRT.D              R                  //    0101101 00000 rs1 rm rd 1010011
+fsqrt.d fa4,fa2                                           #  FSQRT.D              I                  //    0101101 00000 rs1 rm rd 1010011
 fsgnj.d ft4,fa1,fs2                                       #  FSGNJ.D              R                  //    0010001 rs2 rs1 000 rd 1010011
 fsgnjn.d ft3,fs1,fa2                                      #  FSGNJN.D             R                  //    0010001 rs2 rs1 001 rd 1010011
 fsgnjx.d fs0,ft3,fa7                                      #  FSGNJX.D             R                  //    0010001 rs2 rs1 010 rd 1010011
 fmin.d ft3,ft0,ft1                                        #  FMIN.D               R                  //    0010101 rs2 rs1 000 rd 1010011
 fmax.d ft2,ft0,ft4                                        #  FMAX.D               R                  //    0010101 rs2 rs1 001 rd 1010011
-fcvt.s.d fa5,fa2                                          #  FCVT.S.D             R                  //    0100000 00001 rs1 rm rd 1010011
-fcvt.d.s fa3,fa4                                          #  FCVT.D.S             R                  //    0100001 00000 rs1 rm rd 1010011
+fminm.d ft3,ft0,ft1                                       #  FMINM.D              R                  //    0010101 rs2 rs1 010 rd 1010011
+fmaxm.d ft2,ft0,ft4                                       #  FMAXM.D              R                  //    0010101 rs2 rs1 011 rd 1010011
+fcvt.s.d fa5,fa2,rne                                      #  FCVT.S.D             I                  //    0100000 00001 rs1 rm rd 1010011
+fcvt.d.s fa3,fa4                                          #  FCVT.D.S             I                  //    0100001 00000 rs1 rm rd 1010011
 feq.d a3,fa4,fa2                                          #  FEQ.D                R                  //    1010001 rs2 rs1 010 rd 1010011
 flt.d a5,fa5,fa4                                          #  FLT.D                R                  //    1010001 rs2 rs1 001 rd 1010011
 fle.d a0,fa2,ft1                                          #  FLE.D                R                  //    1010001 rs2 rs1 000 rd 1010011
-fclass.d a0,fa3                                           #  FCLASS.D             R                  //    1110001 00000 rs1 001 rd 1010011
-fcvt.w.d a7,ft2,rtz                                       #  FCVT.W.D             R                  //    1100001 00000 rs1 rm rd 1010011
-fcvt.wu.d a5,fs3,rtz                                      #  FCVT.WU.D            R                  //    1100001 00001 rs1 rm rd 1010011
-fcvt.d.w fa5,zero                                         #  FCVT.D.W             R                  //    1101001 00000 rs1 rm rd 1010011
-fcvt.d.wu fa4,a3                                          #  FCVT.D.WU            R                  //    1101001 00001 rs1 rm rd 1010011
+fclass.d a0,fa3                                           #  FCLASS.D             I                  //    1110001 00000 rs1 001 rd 1010011
+fcvt.w.d a7,ft2,rmm                                       #  FCVT.W.D             I                  //    1100001 00000 rs1 rm rd 1010011
+fcvt.wu.d a5,fs3,rup                                      #  FCVT.WU.D            I                  //    1100001 00001 rs1 rm rd 1010011
+fcvt.d.w fa5,zero                                         #  FCVT.D.W             I                  //    1101001 00000 rs1 rm rd 1010011
+fcvt.d.wu fa4,a3                                          #  FCVT.D.WU            I                  //    1101001 00001 rs1 rm rd 1010011
+fli.d ft7,0.25                                            #  FLI.D                I                  //    1111001 00001 rs1 000 rd 1010011
 
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64D Standard Extension (in addition to RV32D)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-fcvt.l.d ra,ft1,rtz                                       #  FCVT.L.D             R                  //    1100001 00010 rs1 rm rd 1010011
-fcvt.lu.d a0,fa3,rtz                                      #  FCVT.LU.D            R                  //    1100001 00011 rs1 rm rd 1010011
-fmv.x.d a2,ft3                                            #  FMV.X.D              R                  //    1110001 00000 rs1 000 rd 1010011
-fcvt.d.l ft1,a3                                           #  FCVT.D.L             R                  //    1101001 00010 rs1 rm rd 1010011
-fcvt.d.lu ft0,a2                                          #  FCVT.D.LU            R                  //    1101001 00011 rs1 rm rd 1010011
-fmv.d.x ft2,a5                                            #  FMV.D.X              R                  //    1111001 00000 rs1 000 rd 1010011
+fcvt.l.d ra,ft1,rdn                                       #  FCVT.L.D             I                  //    1100001 00010 rs1 rm rd 1010011
+fcvt.lu.d a0,fa3,rtz                                      #  FCVT.LU.D            I                  //    1100001 00011 rs1 rm rd 1010011
+fmv.x.d a2,ft3                                            #  FMV.X.D              I                  //    1110001 00000 rs1 000 rd 1010011
+fcvt.d.l ft1,a3,rmm                                       #  FCVT.D.L             I                  //    1101001 00010 rs1 rm rd 1010011
+fcvt.d.lu ft0,a2,rdn                                      #  FCVT.D.LU            I                  //    1101001 00011 rs1 rm rd 1010011
+fmv.d.x ft2,a5                                            #  FMV.D.X              I                  //    1111001 00000 rs1 000 rd 1010011
 
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV32Q Standard Extension
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-## flq fs6,-1168(tp)                                         #  FLQ                  I                  //    imm[11:0] rs1 100 rd 0000111
+flq fs6,-1168(tp)                                         #  FLQ                  I                  //    imm[11:0] rs1 100 rd 0000111
 #----------------------------------------------------------------------------------------------------
-## fsq fs7,1375(s3)                                          #  FSQ                  S                  //    imm[11:5] rs2 rs1 100 imm[4:0] 0100111
+fsq fs7,1375(s3)                                          #  FSQ                  S                  //    imm[11:5] rs2 rs1 100 imm[4:0] 0100111
 #----------------------------------------------------------------------------------------------------
-## fmadd.q fa0,fs6,fs0,fs6,rup                               #  FMADD.Q              R4                 //    rs3 11 rs2 rs1 rm rd 1000011
-## fmsub.q ft7,ft4,fa1,fs9,rne                               #  FMSUB.Q              R4                 //    rs3 11 rs2 rs1 rm rd 1000111
-## fnmsub.q fs0,ft4,fs2,fa5,rdn                              #  FNMSUB.Q             R4                 //    rs3 11 rs2 rs1 rm rd 1001011
-## fnmadd.q ft10,fa4,fa1,fs3,rtz                             #  FNMADD.Q             R4                 //    rs3 11 rs2 rs1 rm rd 1001111
+fmadd.q fa0,fs6,fs0,fs6,rup                               #  FMADD.Q              R4                 //    rs3 11 rs2 rs1 rm rd 1000011
+fmsub.q ft7,ft4,fa1,fs9,rne                               #  FMSUB.Q              R4                 //    rs3 11 rs2 rs1 rm rd 1000111
+fnmsub.q fs0,ft4,fs2,fa5,rdn                              #  FNMSUB.Q             R4                 //    rs3 11 rs2 rs1 rm rd 1001011
+fnmadd.q ft10,fa4,fa1,fs3,rtz                             #  FNMADD.Q             R4                 //    rs3 11 rs2 rs1 rm rd 1001111
 #----------------------------------------------------------------------------------------------------
-## fadd.q ft7,fa3,fs2,rne                                    #  FADD.Q               R                  //    0000011 rs2 rs1 rm rd 1010011
-## fsub.q ft8,fs8,ft10,rtz                                   #  FSUB.Q               R                  //    0000111 rs2 rs1 rm rd 1010011
-## fmul.q ft8,fs0,fa7,rup                                    #  FMUL.Q               R                  //    0001011 rs2 rs1 rm rd 1010011
-## fdiv.q fs10,fs9,fs11,rmm                                  #  FDIV.Q               R                  //    0001111 rs2 rs1 rm rd 1010011
-## fsqrt.q fs10,fs11                                         #  FSQRT.Q              R                  //    0101111 00000 rs1 rm rd 1010011
-## fsgnj.q ft7,fa3,fs2,rne                                   #  FSGNJ.Q              R                  //    0010011 rs2 rs1 000 rd 1010011
-## fsgnjn.q ft8,fs8,ft10,rtz                                 #  FSGNJN.Q             R                  //    0010011 rs2 rs1 001 rd 1010011
-## fsgnjx.q ft8,fs0,fa7,rup                                  #  FSGNJX.Q             R                  //    0010011 rs2 rs1 010 rd 1010011
-## fmin.q fs10,fs9,fs11,rmm                                  #  FMIN.Q               R                  //    0010111 rs2 rs1 000 rd 1010011
-## fmax.q fs0,ft4,fs2,fa5,rdn                                #  FMAX.Q               R                  //    0010111 rs2 rs1 001 rd 1010011
-## fcvt.s.q fs10,fs9                                         #  FCVT.S.Q             R                  //    0100000 00011 rs1 rm rd 1010011
-## fcvt.q.s fs11,fs4                                         #  FCVT.Q.S             R                  //    0100011 00000 rs1 rm rd 1010011
-## fcvt.d.q fs7,fs6                                          #  FCVT.D.Q             R                  //    0100001 00011 rs1 rm rd 1010011
-## fcvt.q.d fs3,fs5                                          #  FCVT.Q.D             R                  //    0100011 00001 rs1 rm rd 1010011
-## feq.q ft7,fa3,fs2,rne                                     #  FEQ.Q                R                  //    1010011 rs2 rs1 010 rd 1010011
-## flt.q ft8,fs8,ft10,rtz                                    #  FLT.Q                R                  //    1010011 rs2 rs1 001 rd 1010011
-## fle.q ft8,fs0,fa7,rup                                     #  FLE.Q                R                  //    1010011 rs2 rs1 000 rd 1010011
-## fclass.q fs13,fs6                                         #  FCLASS.Q             R                  //    1110011 00000 rs1 001 rd 1010011
-## fcvt.w.q a0,a2,rne                                        #  FCVT.W.Q             R                  //    1100011 00000 rs1 rm rd 1010011
-## fcvt.wu.q x4,x6,rtz                                       #  FCVT.WU.Q            R                  //    1100011 00001 rs1 rm rd 1010011
-## fcvt.q.w x6,x4                                            #  FCVT.Q.W             R                  //    1101011 00000 rs1 rm rd 1010011
-## fcvt.q.wu x5,x4                                           #  FCVT.Q.WU            R                  //    1101011 00001 rs1 rm rd 1010011
+fadd.q ft7,fa3,fs2,rne                                    #  FADD.Q               R                  //    0000011 rs2 rs1 rm rd 1010011
+fsub.q ft8,fs8,ft10,rtz                                   #  FSUB.Q               R                  //    0000111 rs2 rs1 rm rd 1010011
+fmul.q ft8,fs0,fa7,rup                                    #  FMUL.Q               R                  //    0001011 rs2 rs1 rm rd 1010011
+fdiv.q fs10,fs9,fs11,rmm                                  #  FDIV.Q               R                  //    0001111 rs2 rs1 rm rd 1010011
+fsqrt.q fs10,fs11                                         #  FSQRT.Q              I                  //    0101111 00000 rs1 rm rd 1010011
+fsgnj.q ft7,ft3,ft2                                       #  FSGNJ.Q              R                  //    0010011 rs2 rs1 000 rd 1010011
+fsgnjn.q fs0,ft1,fa2                                      #  FSGNJN.Q             R                  //    0010011 rs2 rs1 001 rd 1010011
+fsgnjx.q fs2,fa3,ft3                                      #  FSGNJX.Q             R                  //    0010011 rs2 rs1 010 rd 1010011
+fmin.q fa0,ft3,fs7                                        #  FMIN.Q               R                  //    0010111 rs2 rs1 000 rd 1010011
+fmax.q ft0,fs4,fa2                                        #  FMAX.Q               R                  //    0010111 rs2 rs1 001 rd 1010011
+fminm.q fs1,ft3,fa7                                       #  FMINM.Q              R                  //    0010111 rs2 rs1 010 rd 1010011
+fmaxm.q ft3,fa4,ft5                                       #  FMAXM.Q              R                  //    0010111 rs2 rs1 011 rd 1010011
+fcvt.s.q fs10,fs9,rdn                                     #  FCVT.S.Q             I                  //    0100000 00011 rs1 rm rd 1010011
+fcvt.q.s fs11,fs4                                         #  FCVT.Q.S             I                  //    0100011 00000 rs1 rm rd 1010011
+fcvt.d.q fs7,fs6,rup                                      #  FCVT.D.Q             I                  //    0100001 00011 rs1 rm rd 1010011
+fcvt.q.d fs3,fs5                                          #  FCVT.Q.D             I                  //    0100011 00001 rs1 rm rd 1010011
+feq.q t2,fs3,ft2                                          #  FEQ.Q                R                  //    1010011 rs2 rs1 010 rd 1010011
+flt.q s0,ft7,fs10                                         #  FLT.Q                R                  //    1010011 rs2 rs1 001 rd 1010011
+fle.q s2,fa0,ft7                                          #  FLE.Q                R                  //    1010011 rs2 rs1 000 rd 1010011
+fclass.q a3,fa6                                           #  FCLASS.Q             I                  //    1110011 00000 rs1 001 rd 1010011
+fcvt.w.q zero,ft3,rne                                     #  FCVT.W.Q             I                  //    1100011 00000 rs1 rm rd 1010011
+fcvt.wu.q ra,fs4,rtz                                      #  FCVT.WU.Q            I                  //    1100011 00001 rs1 rm rd 1010011
+fcvt.q.w fa7,t1                                           #  FCVT.Q.W             I                  //    1101011 00000 rs1 rm rd 1010011
+fcvt.q.wu ft5,tp                                          #  FCVT.Q.WU            I                  //    1101011 00001 rs1 rm rd 1010011
+fli.q ft5,0.25                                            #  FLI.Q                I                  //    1111011 00001 rs1 000 rd 1010011
 
 
 
 #════════════════════════════════════════════════════════════════════════════════════════════════════
 #RV64Q Standard Extension (in addition to RV32Q)
 #════════════════════════════════════════════════════════════════════════════════════════════════════
-## fcvt.l.q a3,a2,rdn                                        #  FCVT.L.Q              R                  //    1100011 00010 rs1 rm rd 1010011
-## fcvt.lu.q t1,a2,rne                                       #  FCVT.LU.Q             R                  //    1100011 00011 rs1 rm rd 1010011
-## fcvt.q.l x7,t3                                            #  FCVT.Q.L              R                  //    1101011 00010 rs1 rm rd 1010011
-## fcvt.q.lu t3,x2                                           #  FCVT.Q.LU             R                  //    1101011 00011 rs1 rm rd 1010011
+fcvt.l.q gp,fa2,rdn                                       #  FCVT.L.Q             R                  //    1100011 00010 rs1 rm rd 1010011
+fcvt.lu.q ra,ft3,rne                                      #  FCVT.LU.Q            R                  //    1100011 00011 rs1 rm rd 1010011
+fcvt.q.l fs3,t3,rtz                                       #  FCVT.Q.L             R                  //    1101011 00010 rs1 rm rd 1010011
+fcvt.q.lu fa5,sp,rmm                                      #  FCVT.Q.LU            R                  //    1101011 00011 rs1 rm rd 1010011
 
+
+
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+#RV32Zfh Standard Extension
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+flh fa4,12(a7)                                            #  FLH                  I                  //    imm[11:0] rs1 001 rd 0000111
+fsh fa3,21(a5)                                            #  FSH                  S                  //    imm[11:5] rs2 rs1 001 imm[4:0] 0100111
+fmadd.h fa4,fa2,fa1,fa7,rne                               #  FMADD.H              R4                 //    rs3 10 rs2 rs1 rm rd 1000011
+fmsub.h fa3,fa1,fa6,fa2,rdn                               #  FMSUB.H              R4                 //    rs3 10 rs2 rs1 rm rd 1000111
+fnmsub.h fa4,fa3,fa5,fa6,rtz                              #  FNMSUB.H             R4                 //    rs3 10 rs2 rs1 rm rd 1001011
+fnmadd.h fa1,fa7,fa4,fa2,rup                              #  FNMADD.H             R4                 //    rs3 10 rs2 rs1 rm rd 1001111
+fadd.h fa2,fa3,fa6,rmm                                    #  FADD.H               R                  //    0000010 rs2 rs1 rm rd 1010011
+fsub.h fa3,fa4,fa6                                        #  FSUB.H               R                  //    0000110 rs2 rs1 rm rd 1010011
+fmul.h fa2,fa5,fa4,rdn                                    #  FMUL.H               R                  //    0001010 rs2 rs1 rm rd 1010011
+fdiv.h fa4,fa6,fa7,rne                                    #  FDIV.H               R                  //    0001110 rs2 rs1 rm rd 1010011
+fsqrt.h fa3,fa6,rne                                       #  FSQRT.H              I                  //    0101110 00000 rs1 rm rd 1010011
+fsgnj.h fa5,fa2,fa1                                       #  FSGNJ.H              R                  //    0010010 rs2 rs1 000 rd 1010011
+fsgnjn.h fa4,fa5,fa7                                      #  FSGNJN.H             R                  //    0010010 rs2 rs1 001 rd 1010011
+fsgnjx.h fa3,fa4,fa2                                      #  FSGNJX.H             R                  //    0010010 rs2 rs1 010 rd 1010011
+fmin.h fa4,fa3,fa5                                        #  FMIN.H               R                  //    0010110 rs2 rs1 000 rd 1010011
+fmax.h fa1,fa7,fa2                                        #  FMAX.H               R                  //    0010110 rs2 rs1 001 rd 1010011
+fminm.h fa4,fa3,fa5                                       #  FMINM.H              R                  //    0010110 rs2 rs1 010 rd 1010011
+fmaxm.h fa1,fa7,fa2                                       #  FMAXM.H              R                  //    0010110 rs2 rs1 011 rd 1010011
+fcvt.s.h fa2,fa5                                          #  FCVT.S.H             I                  //    0100000 00010 rs1 rm rd 1010011
+fcvt.h.s fa1,fa4                                          #  FCVT.H.S             I                  //    0100010 00000 rs1 rm rd 1010011
+fcvt.d.h fa4,fa7                                          #  FCVT.D.H             I                  //    0100001 00010 rs1 rm rd 1010011
+fcvt.h.d fa3,fa4,rdn                                      #  FCVT.H.D             I                  //    0100010 00001 rs1 rm rd 1010011
+fcvt.q.h fa7,fa6                                          #  FCVT.Q.H             I                  //    0100011 00010 rs1 rm rd 1010011
+fcvt.h.q fa7,fa2,rdn                                      #  FCVT.H.Q             I                  //    0100010 00011 rs1 rm rd 1010011
+feq.h a5,fa1,fa5                                          #  FEQ.H                R                  //    1010010 rs2 rs1 010 rd 1010011
+flt.h a3,fa3,fa6                                          #  FLT.H                R                  //    1010010 rs2 rs1 001 rd 1010011
+fle.h a7,fa2,fa4                                          #  FLE.H                R                  //    1010010 rs2 rs1 000 rd 1010011
+fclass.h a2,fa4                                           #  FCLASS.H             I                  //    1110010 00000 rs1 001 rd 1010011
+fcvt.w.h a7,fa1                                           #  FCVT.W.H             I                  //    1100010 00000 rs1 rm rd 1010011
+fcvt.wu.h a4,fa3                                          #  FCVT.WU.H            I                  //    1100010 00001 rs1 rm rd 1010011
+fmv.x.h a5,fa1                                            #  FMV.X.H              I                  //    1110010 00000 rs1 000 rd 1010011
+fcvt.h.w fa3,a4                                           #  FCVT.H.W             I                  //    1101010 00000 rs1 rm rd 1010011
+fcvt.h.wu fa6,a1                                          #  FCVT.H.WU            I                  //    1101010 00001 rs1 rm rd 1010011
+fmv.h.x fa2,a6                                            #  FMV.H.X              I                  //    1111010 00000 rs1 000 rd 1010011
+fli.h ft11,8.0                                            #  FLI.H                I                  //    1111010 00001 rs1 000 rd 1010011
+
+
+
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+#RV64Zfh Standard Extension (in addition to RV32Zfh)
+#════════════════════════════════════════════════════════════════════════════════════════════════════
+fcvt.l.h a7,fa4,rtz                                       #  FCVT.L.H             I                  //    1100010 00010 rs1 rm rd 1010011
+fcvt.lu.h a1,fa5,rne                                      #  FCVT.LU.H            I                  //    1100010 00011 rs1 rm rd 1010011
+fcvt.h.l fa3,a6,rdn                                       #  FCVT.H.L             I                  //    1101010 00010 rs1 rm rd 1010011
+fcvt.h.lu fa2,a7,rmm                                      #  FCVT.H.LU            I                  //    1101010 00011 rs1 rm rd 1010011
