@@ -63,19 +63,32 @@ namespace Reko.Arch.OpenRISC.Aeon
                 //$REVIEW: floats?
                 if (i < iregs.Length)
                 {
-                    if (dtParam.BitSize <= 32) 
+                    if (dtParam.BitSize <= 32)
                     {
                         ccr.RegParam(iregs[i++]);
                     }
-                    else if (dtParam.BitSize <= 64 && i < iregs.Length - 1)
+                    else if (dtParam.BitSize <= 64)
                     {
-                        ccr.SequenceParam(iregs[i], iregs[i + 1]);
-                        i += 2;
+                        if (i < iregs.Length - 1)
+                        {
+                            ccr.SequenceParam(iregs[i], iregs[i + 1]);
+                            i += 2;
+                        }
+                        else
+                        {
+                            var stgLo = iregs[i++];
+                            var stgHi = ccr.AllocateStackSlot(PrimitiveType.Word32);
+                            ccr.SequenceParam(stgHi, stgLo);
+                        }
                     }
                     else
                     {
                         throw new NotImplementedException("Aeon paramter larger than 64 bits not implemented yet.");
                     }
+                }
+                else
+                {
+                    ccr.StackParam(dtParam);
                 }
             }
         }
