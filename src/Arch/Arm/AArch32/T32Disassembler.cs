@@ -549,6 +549,7 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<T32Disassembler> vifBHW__HS_ = viu(10, 18, I8, I16, I32, INVALID, INVALID, F16, F32, INVALID);
         private static readonly Mutator<T32Disassembler> vsfBHW__HS_ = viu(10, 18, S8, S16, S32, INVALID, INVALID, F16, F32, INVALID);
         private static readonly Mutator<T32Disassembler> vif8_HSD = viu(7, 8, INVALID, U32F16, U32F32, U32F64, INVALID, S32F16, S32F32, S32F64);
+        private static readonly Mutator<T32Disassembler> viuBHW_BHW_ = viu(7, 18, S8, S16, S32, INVALID, I8, I16, I32, INVALID);
 
         /// <summary>
         /// Vector elements are signed or unsigned integers
@@ -3485,8 +3486,8 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.vcnt, nyi("*")),
                     Instr(Mnemonic.vmvn, nyi("*reg")),
 
-                    Instr(Mnemonic.vpadal, nyi("*")),
-                    Instr(Mnemonic.vpadal, nyi("*")),
+                    Instr(Mnemonic.vpadal, viuBHW_BHW_, D22_12, D5_0),
+                    Instr(Mnemonic.vpadal, viuBHW_BHW_, D22_12, D5_0),
                     Instr(Mnemonic.vqabs, nyi("*")),
                     Instr(Mnemonic.vqneg, nyi("*"))),
                 Mask(7, 4,

@@ -598,6 +598,13 @@ namespace Reko.Arch.Arm.AArch32
             RewriteVectorUnaryOp(intrinsic, elemType, elemType, 0, 1);
         }
 
+        private void RewriteVectorUnaryOpWiden(IntrinsicProcedure intrinsic)
+        {
+            var srcElemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var dstElemType = PrimitiveType.Create(srcElemType.Domain, srcElemType.BitSize * 2);
+            RewriteVectorUnaryOp(intrinsic, srcElemType, dstElemType, 0, 1);
+        }
+
         private void RewriteVectorUnaryOp(
             IntrinsicProcedure intrinsic,
             PrimitiveType srcElemType,

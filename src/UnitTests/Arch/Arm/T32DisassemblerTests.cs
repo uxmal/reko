@@ -604,14 +604,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("FFS")]
-        public void ThumbDis_EB1BE4CF()
-        {
-            Given_Instructions(0xEB1B, 0xE4CF);
-            Expect_Code("@@@");
-        }
-
-        [Test]
         public void ThumbDis_orn_lsr()
         {
             Given_Instructions(0xEA63, 0x91D5);
@@ -1403,6 +1395,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vpadd()
         {
             AssertCode("vpadd.i32\td9,d21,d2", "25EF929B");
+        }
+
+        [Test]
+        public void ThumbDis_vpadal()
+        {
+            AssertCode("vpadal.s8\td20,d5", "F0FF0546");
         }
 
         [Test]

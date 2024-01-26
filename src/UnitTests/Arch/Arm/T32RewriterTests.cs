@@ -7538,13 +7538,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vpadal()
         {
             Given_HexString("F0FF0546");	// vpadal.s8 d20, d5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d20 = __vpadal<int8[8],int16[4]>(d5)");
         }
 
         [Test]

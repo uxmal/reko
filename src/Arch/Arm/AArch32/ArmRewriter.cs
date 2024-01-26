@@ -117,7 +117,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vmovn:
                 case Mnemonic.vmsr:
                 case Mnemonic.vorn:
-                case Mnemonic.vpadal:
                 case Mnemonic.vpaddl:
                 case Mnemonic.vqdmlal:
                 case Mnemonic.vqdmlsl:
@@ -471,6 +470,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vnmla: RewriteVectorBinOp(vnmla_intrinsic); break;
                 case Mnemonic.vnmls: RewriteVectorBinOp(vnmls_intrinsic); break;
                 case Mnemonic.vnmul: RewriteVectorBinOp(vnmul_intrinsic); break;
+                case Mnemonic.vpadal: RewriteVectorUnaryOpWiden(vpadal_intrinsic); break;
                 case Mnemonic.vpadd: RewriteVectorBinOp(vpadd_intrinsic); break;
                 case Mnemonic.vpmax: RewriteVectorBinOp(vpmax_intrinsic); break;
                 case Mnemonic.vpmin: RewriteVectorBinOp(vpmin_intrinsic); break;
@@ -1489,6 +1489,10 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure vnmla_intrinsic = IntrinsicBuilder.GenericBinary("__vnmla");
         private static readonly IntrinsicProcedure vnmls_intrinsic = IntrinsicBuilder.GenericBinary("__vnmls");
         private static readonly IntrinsicProcedure vnmul_intrinsic = IntrinsicBuilder.GenericBinary("__vnmul");
+        private static readonly IntrinsicProcedure vpadal_intrinsic = new IntrinsicBuilder("__vpadal", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Returns("TDst");
         private static readonly IntrinsicProcedure vpadd_intrinsic = IntrinsicBuilder.GenericBinary("__vpadd");
         private static readonly IntrinsicProcedure vpmax_intrinsic = IntrinsicBuilder.GenericBinary("__vpmax");
         private static readonly IntrinsicProcedure vpmin_intrinsic = IntrinsicBuilder.GenericBinary("__vpmin");
