@@ -167,69 +167,122 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.ecall: RewriteEcall(); break;
                 case Mnemonic.fabs_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, FpOps.fabs); break;
                 case Mnemonic.fadd_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FAdd); break;
+                case Mnemonic.fadd_h: RewriteFBinOp(PrimitiveType.Real16, Operator.FAdd); break;
+                case Mnemonic.fadd_q: RewriteFBinOp(PrimitiveType.Real128, Operator.FAdd); break;
                 case Mnemonic.fadd_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FAdd); break;
                 case Mnemonic.fclass_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, fclass_intrinsic.MakeInstance(PrimitiveType.Real64, arch.WordWidth)); break;
+                case Mnemonic.fclass_h: RewriteFUnaryIntrinsic(PrimitiveType.Real16, fclass_intrinsic.MakeInstance(PrimitiveType.Real64, arch.WordWidth)); break;
+                case Mnemonic.fclass_q: RewriteFUnaryIntrinsic(PrimitiveType.Real128, fclass_intrinsic.MakeInstance(PrimitiveType.Real64, arch.WordWidth)); break;
                 case Mnemonic.fclass_s: RewriteFUnaryIntrinsic(PrimitiveType.Real32, fclass_intrinsic.MakeInstance(PrimitiveType.Real32, arch.WordWidth)); break;
+                case Mnemonic.fcvt_d_h: RewriteFcvt(PrimitiveType.Int16, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real64); break;
+                case Mnemonic.fcvt_d_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Mnemonic.fcvt_h_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real16); break;
+                case Mnemonic.fcvt_h_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Real16); break;
                 case Mnemonic.fcvt_l_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Mnemonic.fcvt_l_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.Int64); break;
+                case Mnemonic.fcvt_l_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.Int64); break;
                 case Mnemonic.fcvt_l_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int64); break;
                 case Mnemonic.fcvt_lu_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.UInt64); break;
+                case Mnemonic.fcvt_lu_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.UInt64); break;
+                case Mnemonic.fcvt_lu_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.UInt64); break;
                 case Mnemonic.fcvt_lu_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.UInt64); break;
+                case Mnemonic.fcvt_q_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_l: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_lu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_s: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real128); break;
+                case Mnemonic.fcvt_q_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real128); break;
                 case Mnemonic.fcvt_s_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_s_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_s_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_w_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fcvt_w_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.Int32); break;
+                case Mnemonic.fcvt_w_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.Int32); break;
                 case Mnemonic.fcvt_w_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Mnemonic.fcvt_wu_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.UInt32); break;
+                case Mnemonic.fcvt_wu_h: RewriteFcvt(PrimitiveType.Real16, PrimitiveType.UInt32); break;
+                case Mnemonic.fcvt_wu_q: RewriteFcvt(PrimitiveType.Real128, PrimitiveType.UInt32); break;
                 case Mnemonic.fcvt_wu_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.UInt32); break;
                 case Mnemonic.fdiv_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FDiv); break;
+                case Mnemonic.fdiv_h: RewriteFBinOp(PrimitiveType.Real16, Operator.FDiv); break;
+                case Mnemonic.fdiv_q: RewriteFBinOp(PrimitiveType.Real128, Operator.FDiv); break;
                 case Mnemonic.fdiv_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FDiv); break;
-                case Mnemonic.fence: RewriteFence(); break;
+                case Mnemonic.fence: RewriteFence(fence_intrinsic); break;
                 case Mnemonic.fence_i: RewriteFenceI(); break;
                 case Mnemonic.fence_tso: RewriteFenceTso(); break;
                 case Mnemonic.feq_d: RewriteFcmp(PrimitiveType.Real64, Operator.Feq); break;
+                case Mnemonic.feq_h: RewriteFcmp(PrimitiveType.Real16, Operator.Feq); break;
+                case Mnemonic.feq_q: RewriteFcmp(PrimitiveType.Real128, Operator.Feq); break;
                 case Mnemonic.feq_s: RewriteFcmp(PrimitiveType.Real32, Operator.Feq); break;
                 case Mnemonic.fle_d: RewriteFcmp(PrimitiveType.Real64, Operator.Fle); break;
+                case Mnemonic.fle_h: RewriteFcmp(PrimitiveType.Real16, Operator.Fle); break;
+                case Mnemonic.fle_q: RewriteFcmp(PrimitiveType.Real128, Operator.Fle); break;
                 case Mnemonic.fle_s: RewriteFcmp(PrimitiveType.Real32, Operator.Fle); break;
                 case Mnemonic.fld: RewriteFload(PrimitiveType.Real64); break;
+                case Mnemonic.flh: RewriteFload(PrimitiveType.Real16); break;
                 case Mnemonic.fli_d: RewriteMove(); break;
+                case Mnemonic.fli_h: RewriteMove(); break;
+                case Mnemonic.fli_q: RewriteMove(); break;
                 case Mnemonic.fli_s: RewriteMove(); break;
                 case Mnemonic.flq: RewriteFload(PrimitiveType.Real128); break;
-                case Mnemonic.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Mnemonic.flt_d: RewriteFcmp(PrimitiveType.Real64, Operator.Flt); break;
+                case Mnemonic.flt_h: RewriteFcmp(PrimitiveType.Real16, Operator.Flt); break;
                 case Mnemonic.flt_q: RewriteFcmp(PrimitiveType.Real128, Operator.Flt); break;
                 case Mnemonic.flt_s: RewriteFcmp(PrimitiveType.Real32, Operator.Flt); break;
+                case Mnemonic.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Mnemonic.fmadd_d: RewriteFmadd(PrimitiveType.Real64, Operator.FAdd, false); break;
                 case Mnemonic.fmadd_h: RewriteFmadd(PrimitiveType.Real16, Operator.FAdd, false); break;
                 case Mnemonic.fmadd_q: RewriteFmadd(PrimitiveType.Real128, Operator.FAdd, false); break;
                 case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, Operator.FAdd, false); break;
-                case Mnemonic.fmax_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, FpOps.fmax); break;
-                case Mnemonic.fmax_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, FpOps.fmaxf); break;
+                case Mnemonic.fmax_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, fmax_intrinsic.MakeInstance(PrimitiveType.Real64)); break;
+                case Mnemonic.fmax_h: RewriteFBinaryIntrinsic(PrimitiveType.Real16, fmax_intrinsic.MakeInstance(PrimitiveType.Real16)); break;
+                case Mnemonic.fmax_q: RewriteFBinaryIntrinsic(PrimitiveType.Real128, fmax_intrinsic.MakeInstance(PrimitiveType.Real128)); break;
+                case Mnemonic.fmax_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, fmax_intrinsic.MakeInstance(PrimitiveType.Real32)); break;
                 case Mnemonic.fmaxm_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, fmaxm_intrinsic.MakeInstance(PrimitiveType.Real64)); break;
+                case Mnemonic.fmaxm_h: RewriteFBinaryIntrinsic(PrimitiveType.Real16, fmaxm_intrinsic.MakeInstance(PrimitiveType.Real16)); break;
+                case Mnemonic.fmaxm_q: RewriteFBinaryIntrinsic(PrimitiveType.Real128, fmaxm_intrinsic.MakeInstance(PrimitiveType.Real128)); break;
                 case Mnemonic.fmaxm_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, fmaxm_intrinsic.MakeInstance(PrimitiveType.Real32)); break;
-                case Mnemonic.fmin_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, FpOps.fmin); break;
-                case Mnemonic.fmin_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, FpOps.fminf); break;
+                case Mnemonic.fmin_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, fmin_intrinsic.MakeInstance(PrimitiveType.Real64)); break;
+                case Mnemonic.fmin_h: RewriteFBinaryIntrinsic(PrimitiveType.Real16, fmin_intrinsic.MakeInstance(PrimitiveType.Real16)); break;
+                case Mnemonic.fmin_q: RewriteFBinaryIntrinsic(PrimitiveType.Real128, fmin_intrinsic.MakeInstance(PrimitiveType.Real128)); break;
+                case Mnemonic.fmin_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, fmin_intrinsic.MakeInstance(PrimitiveType.Real32)); break;
                 case Mnemonic.fminm_d: RewriteFBinaryIntrinsic(PrimitiveType.Real64, fminm_intrinsic.MakeInstance(PrimitiveType.Real64)); break;
+                case Mnemonic.fminm_h: RewriteFBinaryIntrinsic(PrimitiveType.Real16, fminm_intrinsic.MakeInstance(PrimitiveType.Real16)); break;
+                case Mnemonic.fminm_q: RewriteFBinaryIntrinsic(PrimitiveType.Real128, fminm_intrinsic.MakeInstance(PrimitiveType.Real128)); break;
                 case Mnemonic.fminm_s: RewriteFBinaryIntrinsic(PrimitiveType.Real32, fminm_intrinsic.MakeInstance(PrimitiveType.Real32)); break;
                 case Mnemonic.fmsub_d: RewriteFmadd(PrimitiveType.Real64, Operator.FSub, false); break;
                 case Mnemonic.fmsub_h: RewriteFmadd(PrimitiveType.Real16, Operator.FSub, false); break;
                 case Mnemonic.fmsub_q: RewriteFmadd(PrimitiveType.Real128, Operator.FSub, false); break;
                 case Mnemonic.fmsub_s: RewriteFmadd(PrimitiveType.Real32, Operator.FSub, false); break;
                 case Mnemonic.fmul_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FMul); break;
+                case Mnemonic.fmul_h: RewriteFBinOp(PrimitiveType.Real16, Operator.FMul); break;
                 case Mnemonic.fmul_q: RewriteFBinOp(PrimitiveType.Real128, Operator.FMul); break;
                 case Mnemonic.fmul_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FMul); break;
                 case Mnemonic.fmv_d_x: RewriteFMove(PrimitiveType.Int64, PrimitiveType.Real64); break;
                 case Mnemonic.fmv_d: RewriteMove(); break;
+                case Mnemonic.fmv_h_x: RewriteFMove(PrimitiveType.Int16, PrimitiveType.Real32); break;
+                // case Mnemonic.fmv_q_x: RewriteFMove(PrimitiveType.Int32, PrimitiveType.Real128); break;                   //$TODO: this will be part of RV128
                 case Mnemonic.fmv_s: RewriteMove(); break;
-                case Mnemonic.fmv_w_x: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
-                case Mnemonic.fmv_x_w: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
-                case Mnemonic.fmv_x_d: RewriteFMove(PrimitiveType.Real64, PrimitiveType.Real64); break;
+                case Mnemonic.fmv_w_x: RewriteFMove(PrimitiveType.Int32, PrimitiveType.Real32); break;
+                case Mnemonic.fmv_x_d: RewriteFMove(PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fmv_x_h: RewriteFMove(PrimitiveType.Real16, PrimitiveType.Int32); break;
+                // case Mnemonic.fmv_x_q: RewriteFMove(PrimitiveType.Real128, PrimitiveType.Int32); break;                   //$TODO: this will be part of RV128
+                case Mnemonic.fmv_x_w: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Mnemonic.fneg_d: RewriteFneg(PrimitiveType.Real64); break;
                 case Mnemonic.fneg_s: RewriteFneg(PrimitiveType.Real32); break;
                 case Mnemonic.fnmadd_d: RewriteFmadd(PrimitiveType.Real64, Operator.FSub /* sic! */, true); break;
@@ -240,22 +293,42 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fnmsub_h: RewriteFmadd(PrimitiveType.Real16, Operator.FAdd /* sic! */, true); break;
                 case Mnemonic.fnmsub_q: RewriteFmadd(PrimitiveType.Real128, Operator.FAdd /* sic! */, true); break;
                 case Mnemonic.fnmsub_s: RewriteFmadd(PrimitiveType.Real32, Operator.FAdd /* sic! */, true); break;
+                case Mnemonic.fround_d: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real64, fround_intrinsic); break;
+                case Mnemonic.froundnx_d: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real64, froundnx_intrinsic); break;
+                case Mnemonic.fround_h: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real16, fround_intrinsic); break;
+                case Mnemonic.froundnx_h: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real16, froundnx_intrinsic); break;
+                case Mnemonic.fround_s: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real32, fround_intrinsic); break;
+                case Mnemonic.froundnx_s: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real32, froundnx_intrinsic); break;
+                case Mnemonic.fround_q: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real128, fround_intrinsic); break;
+                case Mnemonic.froundnx_q: RewriteFGenericUnaryIntrinsic(PrimitiveType.Real128, froundnx_intrinsic); break;
                 case Mnemonic.fsd: RewriteStore(PrimitiveType.Real64); break;
+                case Mnemonic.fsh: RewriteStore(PrimitiveType.Real16); break;
                 case Mnemonic.fsgnj_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnj_intrinsic); break;
+                case Mnemonic.fsgnj_h: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real16, fsgnj_intrinsic); break;
+                case Mnemonic.fsgnj_q: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real128, fsgnj_intrinsic); break;
                 case Mnemonic.fsgnj_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnj_intrinsic); break;
                 case Mnemonic.fsgnjn_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnjn_intrinsic); break;
+                case Mnemonic.fsgnjn_h: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real16, fsgnjn_intrinsic); break;
+                case Mnemonic.fsgnjn_q: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real128, fsgnjn_intrinsic); break;
                 case Mnemonic.fsgnjn_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnjn_intrinsic); break;
                 case Mnemonic.fsgnjx_d: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real64, fsgnjx_intrinsic); break;
+                case Mnemonic.fsgnjx_h: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real16, fsgnjx_intrinsic); break;
+                case Mnemonic.fsgnjx_q: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real128, fsgnjx_intrinsic); break;
                 case Mnemonic.fsgnjx_s: RewriteFGenericBinaryIntrinsic(PrimitiveType.Real32, fsgnjx_intrinsic); break;
-                case Mnemonic.fsub_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FSub); break;
+                case Mnemonic.fsq: RewriteStore(PrimitiveType.Real128); break;
                 case Mnemonic.fsqrt_d: RewriteFUnaryIntrinsic(PrimitiveType.Real64, FpOps.sqrt); break;
+                case Mnemonic.fsqrt_h: RewriteFUnaryIntrinsic(PrimitiveType.Real16, FpOps.sqrt); break;
+                case Mnemonic.fsqrt_q: RewriteFUnaryIntrinsic(PrimitiveType.Real128, FpOps.sqrt); break;
                 case Mnemonic.fsqrt_s: RewriteFUnaryIntrinsic(PrimitiveType.Real32, FpOps.sqrtf); break;
+                case Mnemonic.fsub_d: RewriteFBinOp(PrimitiveType.Real64, Operator.FSub); break;
+                case Mnemonic.fsub_h: RewriteFBinOp(PrimitiveType.Real16, Operator.FSub); break;
+                case Mnemonic.fsub_q: RewriteFBinOp(PrimitiveType.Real128, Operator.FSub); break;
                 case Mnemonic.fsub_s: RewriteFBinOp(PrimitiveType.Real32, Operator.FSub); break;
                 case Mnemonic.fsw: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.hfence_gvma: RewriteFence(hfence_gvma_intrinsic); break;
                 case Mnemonic.hfence_vvma: RewriteFence(hfence_vvma_intrinsic); break;
-                case Mnemonic.hinval_gvma: RewriteFence(hfence_gvma_intrinsic); break;
-                case Mnemonic.hinval_vvma: RewriteFence(hfence_vvma_intrinsic); break;
+                case Mnemonic.hinval_gvma: RewriteFence(hinval_gvma_intrinsic); break;
+                case Mnemonic.hinval_vvma: RewriteFence(hinval_vvma_intrinsic); break;
                 case Mnemonic.hlv_b: RewriteHlv(PrimitiveType.Int8, hlv_intrinsic); break;
                 case Mnemonic.hlv_bu: RewriteHlv(PrimitiveType.Byte, hlv_intrinsic); break;
                 case Mnemonic.hlv_d: RewriteHlv(PrimitiveType.Word64, hlv_intrinsic); break;
@@ -300,11 +373,11 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sd: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.sfence_inval: RewriteFence(sfence_inval_intrinsic); break;
                 case Mnemonic.sfence_inval_ir: RewriteFence(sfence_inval_ir_intrinsic); break;
+                case Mnemonic.sfence_vm: RewriteFence(sfence_vm_intrinsic); break;
                 case Mnemonic.sfence_vma: RewriteFence(sfence_vma_intrinsic); break;
                 case Mnemonic.sfence_w_inval: RewriteFence(sfence_w_inval_intrinsic); break;
+                case Mnemonic.sinval_vma: RewriteFence(sinval_vma_intrinsic); break;
                 case Mnemonic.sh: RewriteStore(PrimitiveType.Word16); break;
-                case Mnemonic.sret: RewriteRet(sret_intrinsic); break;
-                case Mnemonic.sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.sll: RewriteBinOp(Operator.Shl); break;
                 case Mnemonic.slli: RewriteShift(Operator.Shl); break;
                 case Mnemonic.slliw: RewriteShiftw(m.Shl); break;
@@ -317,6 +390,8 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sraw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.srai: RewriteShift(Operator.Sar); break;
                 case Mnemonic.sraiw: RewriteShiftw(m.Sar); break;
+                case Mnemonic.sret: RewriteRet(sret_intrinsic); break;
+                case Mnemonic.sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.srl: RewriteBinOp(Operator.Shr); break;
                 case Mnemonic.srli: RewriteShift(Operator.Shr); break;
                 case Mnemonic.srliw: RewriteShiftw(SrlI); break;
@@ -471,32 +546,48 @@ namespace Reko.Arch.RiscV
         static readonly IntrinsicProcedure fsgnjx_intrinsic = IntrinsicBuilder.GenericBinary("__fsgnjx");
 
         static readonly IntrinsicProcedure hfence_gvma_intrinsic = new IntrinsicBuilder("__hfence_gvma", true)
-                    .GenericTypes("T","U")
-                    .Param("T")
-                    .Param("U")
-                    .Void();
-        static readonly IntrinsicProcedure hfence_vvma_intrinsic    = new IntrinsicBuilder("__hfence_vvma", true)
-                    .GenericTypes("T","U")
-                    .Param("T")
-                    .Param("U")
-                    .Void();
-
+            .GenericTypes("T","U")
+            .Param("T")
+            .Param("U")
+            .Void();
+        static readonly IntrinsicProcedure hfence_vvma_intrinsic = new IntrinsicBuilder("__hfence_vvma", true)
+            .GenericTypes("T","U")
+            .Param("T")
+            .Param("U")
+            .Void();
+        static readonly IntrinsicProcedure hinval_gvma_intrinsic = new IntrinsicBuilder("__hinval_gvma", true)
+            .GenericTypes("T","U")
+            .Param("T")
+            .Param("U")
+            .Void();
+        static readonly IntrinsicProcedure hinval_vvma_intrinsic = new IntrinsicBuilder("__hinval_vvma", true)
+            .GenericTypes("T","U")
+            .Param("T")
+            .Param("U")
+            .Void();
         static readonly IntrinsicProcedure sfence_inval_intrinsic = new IntrinsicBuilder("__sfence_inval", true)
-                    .GenericTypes("T", "U")
-                    .Param("T")
-                    .Param("U")
-                    .Void();
-        static readonly IntrinsicProcedure sfence_inval_ir_intrinsic= new IntrinsicBuilder("__sfence_inval_ir", true)
-                    .Void();
-        static readonly IntrinsicProcedure sfence_vma_intrinsic     = new IntrinsicBuilder("__sfence_vma", true)
-                    .GenericTypes("T", "U")
-                    .Param("T")
-                    .Param("U")
-                    .Void();
+            .GenericTypes("T", "U")
+            .Param("T")
+            .Param("U")
+            .Void();
+        static readonly IntrinsicProcedure sfence_inval_ir_intrinsic = new IntrinsicBuilder("__sfence_inval_ir", true)
+            .Void();
+        static readonly IntrinsicProcedure sfence_vm_intrinsic = new IntrinsicBuilder("__sfence_vm", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
+        static readonly IntrinsicProcedure sfence_vma_intrinsic = new IntrinsicBuilder("__sfence_vma", true)
+            .GenericTypes("T", "U")
+            .Param("T")
+            .Param("U")
+            .Void();
         static readonly IntrinsicProcedure sfence_w_inval_intrinsic = new IntrinsicBuilder("__sfence_w_inval", true)
-                    .Void();
-
-
+            .Void();
+        static readonly IntrinsicProcedure sinval_vma_intrinsic = new IntrinsicBuilder("__sinval_vma", true)
+            .GenericTypes("T","U")
+            .Param("T")
+            .Param("U")
+            .Void();
         static readonly IntrinsicProcedure hlv_intrinsic = new IntrinsicBuilder("__hypervisor_load_from_VM", true)
             .GenericTypes("T")
             .PtrParam("T")
@@ -511,6 +602,10 @@ namespace Reko.Arch.RiscV
             .Param("T")
             .Void();
 
+        static readonly IntrinsicProcedure fround_intrinsic = IntrinsicBuilder.GenericUnary("__fround");
+        static readonly IntrinsicProcedure froundnx_intrinsic = IntrinsicBuilder.GenericUnary("__froundnx");
+        static readonly IntrinsicProcedure fmax_intrinsic = IntrinsicBuilder.GenericBinary("__fmax");
+        static readonly IntrinsicProcedure fmin_intrinsic = IntrinsicBuilder.GenericBinary("__fmin");
 
         static readonly IntrinsicProcedure lr_intrinsic = new IntrinsicBuilder("__load_reserved", true)
             .GenericTypes("T")
@@ -530,7 +625,6 @@ namespace Reko.Arch.RiscV
             .Returns("T");
         static readonly IntrinsicProcedure sret_intrinsic = new IntrinsicBuilder("__sret", true)
             .Void();
-
         static readonly IntrinsicProcedure uret_intrinsic = new IntrinsicBuilder("__uret", true)
             .Void();
         static readonly IntrinsicProcedure wait_for_interrupt_intrinsic = new IntrinsicBuilder("__wait_for_interrupt", true)

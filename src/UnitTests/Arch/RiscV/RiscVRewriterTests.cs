@@ -119,6 +119,16 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_amoadd_w()
+        {
+            Given_HexString("AF21AF03");
+            AssertCode(     // amoadd.w.rl	gp,s10,(t5)
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = __amo_add<word32>(s10, &Mem0[t5:word32])",
+                "2|L--|gp = CONVERT(v6, word32, int64)");
+        }
+
+        [Test]
         public void RiscV_rw_amoadd_w_rl()
         {
             //$TODO: RL?
@@ -149,6 +159,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_amomax_d()
+        {
+            Given_HexString("2FB3C7A1");
+            AssertCode(     // amomax.d	t1,t3,(a5)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t1 = __amo_max<int64>(t3, &Mem0[a5:int64])");
+        }
+
+        [Test]
         public void RiscV_rw_amomax_w()
         {
             Given_HexString("AFA097A7");
@@ -166,6 +185,15 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // amomax.d.aq.rl	gp,a5,s9
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|gp = __amo_max<int64>(s9, &Mem0[a5:int64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amomaxu_d()
+        {
+            Given_HexString("AFB670E0");
+            AssertCode(     // amomaxu.d	a3,t2,(ra)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = __amo_max<uint64>(t2, &Mem0[ra:uint64])");
         }
 
         [Test]
@@ -198,6 +226,16 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_amomin_w()
+        {
+            Given_HexString("AF276680");
+            AssertCode(     // amomin.w	a5,t1,(a2)
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = __amo_min<int32>(t1, &Mem0[a2:int32])",
+                "2|L--|a5 = CONVERT(v6, int32, int64)");
+        }
+
+        [Test]
         public void RiscV_rw_amomin_w_aq()
         {
             Given_HexString("2FAF2A84");
@@ -207,6 +245,14 @@ namespace Reko.UnitTests.Arch.RiscV
                 "2|L--|t5 = CONVERT(v6, int32, int64)");
         }
 
+        [Test]
+        public void RiscV_rw_amominu_d()
+        {
+            Given_HexString("AF35DEC1");
+            AssertCode(     // amominu.d	a1,t4,(t3)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a1 = __amo_min<uint64>(t4, &Mem0[t3:uint64])");
+        }
 
         [Test]
         public void RiscV_rw_amominu_d_aq_rl()
@@ -294,407 +340,12 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_jal_zero()
+        public void RiscV_rw_add()
         {
-            Given_RiscVInstructions(0x9F4FF06Fu);
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|goto 000000000000F1F4");
-        }
-
-        [Test]
-        public void RiscV_rw_lb()
-        {
-            Given_RiscVInstructions(0x87010183u);
-            AssertCode(
-               "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = CONVERT(Mem0[sp + -1936<i64>:int8], int8, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_jal_not_zero()
-        {
-            Given_RiscVInstructions(0x9F4FF0EFu);
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|call 000000000000F1F4 (0)");
-        }
-
-        [Test]
-        public void RiscV_rw_jalr_zero()
-        {
-            Given_RiscVInstructions(0x00078067); // jalr zero, a5, 0
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|goto a5");
-        }
-
-        [Test]
-        public void RiscV_rw_jalr_zero_ra()
-        {
-            Given_RiscVInstructions(0x00008067); // jalr zero,ra,0
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|R--|return (0,0)");
-        }
-
-        [Test]
-        public void RiscV_rw_jalr_ra()
-        {
-            Given_RiscVInstructions(0x003780E7);    // jalr ra,a5,0
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|call a5 + 3<i64> (0)");
-        }
-
-        [Test]
-        public void RiscV_rw_sc_d()
-        {
-            Given_HexString("AFBA3C1B");
-            AssertCode(     // sc.d.rl	s5,s9,s3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s5 = __store_conditional<word64>(s3, &Mem0[s9:word64])");
-        }
-
-        [Test]
-        public void RiscV_rw_sc_w()
-        {
-            Given_HexString("AFADE31C");
-            AssertCode(     // sc.w.aq	s11,t2,a4
-                "0|L--|0000000000010000(4): 2 instructions",
-                "1|L--|v6 = __store_conditional<word32>(a4, &Mem0[t2:word32])",
-                "2|L--|s11 = CONVERT(v6, word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_sd()
-        {
-            Given_RiscVInstructions(0x19513423u);    // sd\ts5,sp,392
+            Given_RiscVInstructions(0x00E787B3u);    // add\ta5,a5,a4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|Mem0[sp + 392<i64>:word64] = s5");
-        }
-
-        [Test]
-        public void RiscV_rw_lui()
-        {
-            Given_RiscVInstructions(0x000114B7u);   // lui s1,0x00000011<32>
-            AssertCode(
-                 "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|s1 = 0x11000<64>");
-        }
-
-        [Test]
-        public void RiscV_rw_lh()
-        {
-            Given_RiscVInstructions(0x03131083u);   // lh
-            AssertCode(
-                 "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|ra = CONVERT(Mem0[t1 + 49<i64>:int16], int16, int64)");
-        }
-
-        [Test]
-        public void RiscV_dasm_fence_i()
-        {
-            Given_HexString("0F10 0000");
-            AssertCode(     // fence.i
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__fence_i()");
-        }
-
-        [Test]
-        public void RiscV_rw_fence()
-        {
-            Given_HexString("0F00F00F");
-            AssertCode(     // fence	iorw,iorw
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__fence(iorw, iorw)");
-        }
-
-        [Test]
-        public void RiscV_rw_fmadd_d()
-        {
-            Given_HexString("43F16303");
-            AssertCode(     // fmadd.d	ft2,ft7,fs6,ft0,dyn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft2 = ft7 * fs6 + ft0");
-        }
-
-        [Test]
-        public void RiscV_rw_fmadd_s()
-        {
-            Given_32bitFloat();
-            Given_RiscVInstructions(0x8093FD43);
-            AssertCode(
-                 "0|L--|00010000(4): 1 instructions",
-                 "1|L--|fs10 = ft7 * fs1 + fa6");
-        }
-
-        [Test]
-        public void RiscV_rw_fmadd_h()
-        {
-            Given_HexString("C3250264");
-            AssertCode(     // fmadd.h	fa1,ft4,ft0,fa2,rdn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa1 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(ft4, real16, 0) * SLICE(ft0, real16, 0) + SLICE(fa2, real16, 0))");
-        }
-
-        [Test]
-        public void RiscV_rw_fmadd_q()
-        {
-            Given_HexString("432A8146");
-            AssertCode(     // fmadd.q	fs4,ft2,fs0,fs0,rdn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fs4 = ft2 * fs0 + fs0");
-        }
-
-        [Test]
-        public void RiscV_rw_fmax_d()
-        {
-            Given_HexString("5311402A");
-            AssertCode(     // fmax.d	ft2,ft0,ft4
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft2 = fmax(ft0, ft4)");
-        }
-
-        [Test]
-        public void RiscV_rw_fmax_s()
-        {
-            Given_HexString("D3122228");
-            AssertCode(     // fmax.s	ft5,ft4,ft2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft5 = SEQ(0xFFFFFFFF<32>, fmaxf(SLICE(ft4, real32, 0), SLICE(ft2, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fmaxm_d()
-        {
-            Given_HexString("5331402A");    // fmaxm.d\tft2,ft0,ft4"
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft2 = __fmaxm<real64>(ft0, ft4)");
-        }
-
-        [Test]
-        public void RiscV_rw_fmin_d()
-        {
-            Given_HexString("D301102A");
-            AssertCode(     // fmin.d	ft3,ft0,ft1
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft3 = fmin(ft0, ft1)");
-        }
-
-        [Test]
-        public void RiscV_rw_fminm_s()
-        {
-            Given_HexString("53231028");        // fminm.s\tft6,ft0,ft1
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft6 = SEQ(0xFFFFFFFF<32>, __fminm<real32>(SLICE(ft0, real32, 0), SLICE(ft1, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fmin_s()
-        {
-            Given_HexString("53031028");
-            AssertCode(     // fmin.s	ft6,ft0,ft1
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft6 = SEQ(0xFFFFFFFF<32>, fminf(SLICE(ft0, real32, 0), SLICE(ft1, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fmsub_d()
-        {
-            Given_HexString("47B29C63");
-            AssertCode(     // fmsub.d	ft4,fs9,fs9,fa2,rup
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft4 = fs9 * fs9 - fa2");
-        }
-
-        [Test]
-        public void RiscV_rw_fmsub_h()
-        {
-            Given_HexString("C7003355");
-            AssertCode(     // fmsub.h	ft1,ft6,fs3,fa0,rne
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft1 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(ft6, real16, 0) * SLICE(fs3, real16, 0) - SLICE(fa0, real16, 0))");
-        }
-
-        [Test]
-        public void RiscV_rw_fmsub_q()
-        {
-            Given_128bitFloat();
-            Given_HexString("C706FD56");
-            AssertCode(     // fmsub.q	fa3,fs10,fa5,fa0,rne
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa3 = fs10 * fa5 - fa0");
-        }
-
-        [Test]
-        public void RiscV_rw_fmul_d()
-        {
-            Given_HexString("5377D712");
-            AssertCode(     // fmul.d	fa4,fa4,fa3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = fa4 * fa3");
-        }
-
-        [Test]
-        public void RiscV_rw_fnmadd_d()
-        {
-            Given_HexString("4FFF7D5A");
-            AssertCode(     // fnmadd.d	ft10,fs11,ft7,fa1,dyn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft10 = -(fs11 * ft7) - fa1");
-        }
-
-        [Test]
-        public void RiscV_rw_fnmadd_h()
-        {
-            Given_HexString("4F81A285");
-            AssertCode(     // fnmadd.h	ft2,ft5,fs10,fa6,rne
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft2 = SEQ(0xFFFFFFFFFFFF<48>, -(SLICE(ft5, real16, 0) * SLICE(fs10, real16, 0)) - SLICE(fa6, real16, 0))");
-        }
-
-
-        [Test]
-        public void RiscV_rw_fnmadd_q()
-        {
-            Given_128bitFloat();
-            Given_HexString("4FF39707");
-            AssertCode(     // fnmadd.q	ft6,fa5,fs9,ft0,dyn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft6 = -(fa5 * fs9) - ft0");
-        }
-
-        [Test]
-        public void RiscV_rw_fnmadd_s()
-        {
-            Given_32bitFloat();
-            Given_RiscVInstructions(0x00B3FDCF);    // fnmadd.s\tfs11,ft7,fa1,ft0
-            AssertCode(
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fs11 = -(ft7 * fa1) - ft0");
-        }
-
-        [Test]
-        public void RiscV_rw_fnmsub_d()
-        {
-            Given_HexString("4BA9AA8A");
-            AssertCode(     // fnmsub.d	fs2,fs5,fa0,fa7,rdn
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fs2 = -(fs5 * fa0) + fa7");
-        }
-
-        [Test]
-        public void RiscV_rw_fnmsub_h()
-        {
-            Given_HexString("4B00BE9D");
-            AssertCode(     // fnmsub.h	ft0,ft8,fs11,fs3,rne
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft0 = SEQ(0xFFFFFFFFFFFF<48>, -(SLICE(ft8, real16, 0) * SLICE(fs11, real16, 0)) + SLICE(fs3, real16, 0))");
-        }
-
-
-        [Test]
-        public void RiscV_rw_fnmsub_q()
-        {
-            Given_128bitFloat();
-            Given_HexString("4B008947");
-            AssertCode(     // fnmsub.q	ft0,fs2,fs8,fs0,rne
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft0 = -(fs2 * fs8) + fs0");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnj_d()
-        {
-            Given_HexString("53822523");
-            AssertCode(     // fsgnj.d	ft4,fa1,fs2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft4 = __fsgnj<real64>(fa1, fs2)");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnj_s()
-        {
-            Given_HexString("53802020");
-            AssertCode(     // fsgnj.s	ft0,ft1,ft2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft0 = SEQ(0xFFFFFFFF<32>, __fsgnj<real32>(SLICE(ft1, real32, 0), SLICE(ft2, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnjn_d()
-        {
-            Given_HexString("D391C422");
-            AssertCode(     // fsgnjn.d	ft3,fs1,fa2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft3 = __fsgnjn<real64>(fs1, fa2)");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnjn_s()
-        {
-            Given_HexString("D3914320");
-            AssertCode(     // fsgnjn.s	ft3,ft7,ft4
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft3 = SEQ(0xFFFFFFFF<32>, __fsgnjn<real32>(SLICE(ft7, real32, 0), SLICE(ft4, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnjx_d()
-        {
-            Given_HexString("53A41123");
-            AssertCode(     // fsgnjx.d	fs0,ft3,fa7
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fs0 = __fsgnjx<real64>(ft3, fa7)");
-        }
-
-        [Test]
-        public void RiscV_rw_fsgnjx_s()
-        {
-            Given_HexString("532E5120");
-            AssertCode(     // fsgnjx.s	ft8,ft2,ft5
-                 "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|ft8 = SEQ(0xFFFFFFFF<32>, __fsgnjx<real32>(SLICE(ft2, real32, 0), SLICE(ft5, real32, 0)))");
-        }
-        [Test]
-        public void RiscV_rw_fsqrt_d()
-        {
-            Given_HexString("5377065A");
-            AssertCode(     // fsqrt.d	fa4,fa2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = sqrt(fa2)");
-        }
-
-        [Test]
-        public void RiscV_rw_fsqrt_s()
-        {
-            Given_HexString("D3710058");
-            AssertCode(     // fsqrt.s	ft3,ft0
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft3 = SEQ(0xFFFFFFFF<32>, sqrtf(SLICE(ft0, real32, 0)))");
-        }
-
-        [Test]
-        public void RiscV_rw_fsub_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("5375A708");
-            AssertCode(     // fsub.s	fa0,fa4,fa0
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fa0 = fa4 - fa0");
-        }
-
-        [Test]
-        public void RiscV_rw_jal()
-        {
-            Given_RiscVInstructions(0x9F4FF06F);    // jal\tzero,00000000000FF1F4
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|goto 000000000000F1F4");
+                "1|L--|a5 = a5 + a4");
         }
 
         [Test]
@@ -725,6 +376,60 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_addw()
+        {
+            Given_HexString("3B8F2000");
+            AssertCode(     // addw	t5,ra,sp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t5 = CONVERT(CONVERT(ra, word64, word32) + sp, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_and()
+        {
+            Given_RiscVInstructions(0x00F477B3u);    // and\ta5,s0,a5
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = s0 & a5");
+        }
+
+        [Test]
+        public void RiscV_rw_beqz_backward()
+        {
+            Given_RiscVInstructions(0xD399);    // c.beqz\ta5,00000000000FFF06
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a5 == 0<64>) branch 000000000000FF06");
+        }
+
+        [Test]
+        public void RiscV_rw_beq()
+        {
+            Given_RiscVInstructions(0x00F58063u);    // beq\ta1,a5,0000000000010000
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|if (a1 == a5) branch 0000000000010000");
+        }
+
+        [Test]
+        public void RiscV_rw_beq_2()
+        {
+            Given_RiscVInstructions(0x12E50463u);    // beq\ta0,a4,0000000000100128
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|if (a0 == a4) branch 0000000000010128");
+        }
+
+        [Test]
+        public void RiscV_rw_beqz()
+        {
+            Given_RiscVInstructions(0xC3F1);    // c.beqz\ta5,00000000001000C4
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a5 == 0<64>) branch 00000000000100C4");
+        }
+
+        [Test]
         public void RiscV_rw_c_addiw()
         {
             Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
@@ -740,6 +445,87 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|s0 = CONVERT(SLICE(s0 + -1<i64>, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addi16sp()
+        {
+            Given_RiscVInstructions(0x6169);    // c.addi16sp\t000000D0
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|sp = sp + 208<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_and()
+        {
+            Given_RiscVInstructions(0x8FF5);    // c.and\ta5,a3
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = a5 & a3");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addi4spn()
+        {
+            Given_RiscVInstructions(0x0000101C);    // c.addi4spn\ta5,00000020
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = sp + 32<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addi()
+        {
+            Given_RiscVInstructions(0x00000785);    // c.addi\ta5,00000001
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = a5 + 1<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addw()
+        {
+            Given_RiscVInstructions(0x00009FB5);    // c.addw\ta5,a3
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = CONVERT(SLICE(a5 + a3, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_andi()
+        {
+            Given_RiscVInstructions(0x00008A61);    // c.andi\ta2,00000018
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a2 = a2 & 24<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_beqz()
+        {
+            Given_RiscVInstructions(0x0000C121);    // c.beqz\ta0,0000000000100040
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a0 == 0<64>) branch 0000000000010040");
+        }
+
+        [Test]
+        public void RiscV_rw_c_bnez()
+        {
+            Given_RiscVInstructions(0x0000EF09);    // c.bnez\ta4,000000000010001A
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a4 != 0<64>) branch 000000000001001A");
+        }
+
+        [Test]
+        public void RiscV_rw_c_bnez_backward()
+        {
+            Given_RiscVInstructions(0xFB05);    // c.bnez\ta4,00000000000FFF30
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a4 != 0<64>) branch 000000000000FF30");
         }
 
         [Test]
@@ -771,6 +557,34 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_c_flw_32()
+        {
+            Given_32bitFloat();
+            Given_HexString("C462");
+            AssertCode(     // c.flw	fs1,4(a3)
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|fs1 = Mem0[a3 + 4<i32>:real32]");
+        }
+
+        [Test]
+        public void RiscV_rw_c_fldsp()
+        {
+            Given_RiscVInstructions(0x00003436);    // c.fldsp\tfa3,00000228
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|fa3 = Mem0[sp + 552<i64>:real64]");
+        }
+
+        [Test]
+        public void RiscV_rw_c_fld()
+        {
+            Given_RiscVInstructions(0x00002E64);    // c.fld\tfs1,216(a2)
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|fs1 = Mem0[a2 + 216<i64>:real64]");
+        }
+
+        [Test]
         public void RiscV_rw_c_jal()
         {
             Given_32bitFloat();
@@ -790,504 +604,12 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_fclass_d()
-        {
-            Given_HexString("539506E2");
-            AssertCode(     // fclass.d	a0,fa3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a0 = __fclass<real64,word64>(fa3)");
-        }
-
-        [Test]
-        public void RiscV_rw_fclass_s()
-        {
-            Given_HexString("D31606E0");
-            AssertCode(     // fclass.s	a3,fa2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = __fclass<real32,word64>(SLICE(fa2, real32, 0))");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_d_lu()
-        {
-            Given_HexString("53F739D2");
-            AssertCode(     // fcvt.d.lu	fa4,s3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = CONVERT(s3, uint64, real64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_d_w()
-        {
-            Given_HexString("538706D2");
-            AssertCode(     // fcvt.d.w	fa4,a3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = CONVERT(SLICE(a3, int32, 0), int32, real64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_d_wu()
-        {
-            Given_HexString("538416D2");
-            AssertCode(     // fcvt.d.wu	fs0,a3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fs0 = CONVERT(SLICE(a3, uint32, 0), uint32, real64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_lu_d()
-        {
-            Given_HexString("531534C2");
-            AssertCode(     // fcvt.lu.d	a0,fs0
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a0 = CONVERT(fs0, real64, uint64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_lu_s()
-        {
-            Given_HexString("D39437C0");
-            AssertCode(     // fcvt.lu.s        s1,fa5
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s1 = CONVERT(SLICE(fa5, real32, 0), real32, uint64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_s_d()
-        {
-            Given_HexString("D3261C40");
-            AssertCode(     // fcvt.s.d	fa3,fs8
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa3 = SEQ(0xFFFFFFFF<32>, CONVERT(fs8, real64, real32))");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_s_l()
-        {
-            Given_HexString("D3F328D0");
-            AssertCode(     // fcvt.s.l	ft7,a7
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft7 = SEQ(0xFFFFFFFF<32>, CONVERT(a7, int64, real32))");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_s_lu()
-        {
-            Given_HexString("D3F734D0");
-            AssertCode(     // fcvt.s.lu        fa5,s1
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, CONVERT(s1, uint64, real32))");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_s_w()
-        {
-            Given_32bitFloat();
-            Given_HexString("537404D0");
-            AssertCode(     // fcvt.s.w	s0,fs0
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fs0 = CONVERT(s0, int32, real32)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_s_wu()
-        {
-            Given_HexString("53F719D0");
-            AssertCode(     // fcvt.s.wu	fs4,a3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(s3, uint32, 0), uint32, real32))");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_w_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("D31704C0");
-            AssertCode(     // fcvt.w.s	a5,fs0
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(fs0, real32, int32)");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_wu_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("539517C0");
-            AssertCode(     // fcvt.wu.s	a0,fa5
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|a0 = CONVERT(fa5, real32, uint32)");
-        }
-
-        [Test]
-        public void RiscV_rw_fdiv_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("5374F418");
-            AssertCode(     // fdiv.s	fs0,fs0,fa5
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fs0 = fs0 / fa5");
-        }
-
-        [Test]
-        public void RiscV_rw_feq_d()
-        {
-            Given_HexString("D327D7A2");
-            AssertCode(     // feq.d	a5,fa4,fa3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(fa4 == fa3, bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_c_flw_32()
-        {
-            Given_32bitFloat();
-            Given_HexString("C462");
-            AssertCode(     // c.flw	fs1,4(a3)
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|fs1 = Mem0[a3 + 4<i32>:real32]");
-        }
-
-        [Test]
         public void RiscV_rw_c_ld_64()
         {
             Given_HexString("C462");
             AssertCode(     // c.ld	s1,4(a3)
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|s1 = Mem0[a3 + 128<i64>:word64]");
-        }
-
-        [Test]
-        public void RiscV_rw_x1()
-        {
-            Given_RiscVInstructions(0x12E50463u);    // beq\ta0,a4,0000000000100128
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|if (a0 == a4) branch 0000000000010128");
-        }
-
-        [Test]
-        public void RiscV_rw_jalr()
-        {
-            Given_RiscVInstructions(0x00078067u);    // jalr\tzero,a5,+00000000
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|goto a5");
-        }
-
-        [Test]
-        public void RiscV_rw_or()
-        {
-            Given_RiscVInstructions(0x01846433u);    // or\ts0,s0,s8
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s0 = s0 | s8");
-        }
-
-        [Test]
-        public void RiscV_rw_add()
-        {
-            Given_RiscVInstructions(0x00E787B3u);    // add\ta5,a5,a4
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = a5 + a4");
-        }
-
-        [Test]
-        public void RiscV_rw_and()
-        {
-            Given_RiscVInstructions(0x00F477B3u);    // and\ta5,s0,a5
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = s0 & a5");
-        }
-
-        [Test]
-        public void RiscV_rw_subw()
-        {
-            Given_RiscVInstructions(0x40F686BBu);    // subw\ta3,a3,a5
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = CONVERT(SLICE(a3 - a5, word32, 0), word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_srliw()
-        {
-            Given_RiscVInstructions(0x0017D71Bu);    // srliw\ta4,a5,00000001
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = CONVERT(SLICE(a5, word32, 0) >>u 1<i32>, word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_lbu()
-        {
-            Given_RiscVInstructions(0x00094703u);    // lbu\ta4,s2,+00000000
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = CONVERT(Mem0[s2:byte], byte, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_beq()
-        {
-            Given_RiscVInstructions(0x00F58063u);    // beq\ta1,a5,0000000000010000
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|if (a1 == a5) branch 0000000000010000");
-        }
-
-        [Test]
-        public void RiscV_rw_fcvt_d_s()
-        {
-            Given_RiscVInstructions(0x42070753u);    // fcvt.d.s\tfa4,fa4
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = CONVERT(SLICE(fa4, real32, 0), real32, real64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fdiv_d()
-        {
-            Given_HexString("D377F71A");
-            AssertCode(     // fdiv.d	fa5,fa4,fa5
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = fa4 / fa5");
-        }
-
-        [Test]
-        public void RiscV_rw_feq_s()
-        {
-            // 1010000 011110111001001111 10100 11
-            Given_RiscVInstructions(0xA0F727D3u);    // feq.s\ta5,fa4,fa5
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fle_d()
-        {
-            Given_HexString("D387E7A2");
-            AssertCode(     // fle.d	a5,fa5,fa4
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(fa5 <= fa4, bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fle_s()
-        {
-            Given_HexString("D307F7A0");
-            AssertCode(     // fle.s	a5,fa4,fa5
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) <= SLICE(fa5, real32, 0), bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fli_d()
-        {
-            Given_RiscVInstructions(0xF21007D3u);   // fli.d\tfa5,-1.0
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = -1.0F");
-        }
-
-        [Test]
-        public void RiscV_rw_fli_s()
-        {
-            Given_RiscVInstructions(0xF01587D3u);    // fli.s\tfa5,0.3125
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = 0.4375F");
-        }
-
-        [Test]
-        public void RiscV_rw_flq()
-        {
-            Given_128bitFloat();
-            Given_HexString("0740E391");
-            AssertCode(     // flq	ft0,2334(t1)
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|ft0 = Mem0[t1 + 2334<i64>:real128]");
-        }
-
-        [Test]
-        public void RiscV_rw_flt_d()
-        {
-            Given_HexString("D317C7A2");
-            AssertCode(     // flt.d	a5,fa4,fa2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(fa4 < fa2, bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_flt_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("D397E7A0");
-            AssertCode(     // flt.s	a5,fa5,fa4
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(fa5 < fa4, bool, word32)");
-        }
-
-        [Test]
-        public void RiscV_rw_flw()
-        {
-            Given_RiscVInstructions(0x03492707u);    // flw\tfa4,s2,+00000034
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, Mem0[s2 + 52<i64>:real32])");
-        }
-
-        [Test]
-        public void RiscV_rw_fmv_d_x()
-        {
-            Given_RiscVInstructions(0xF2070753u);    // fmv.d.x\tfa4,a4
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = a4");
-        }
-
-        [Test]
-        public void RiscV_rw_fmv_x_d()
-        {
-            Given_RiscVInstructions(0xE2070753u);    // fmv.d.x\tfa4,a4
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = fa4");
-        }
-
-        [Test]
-        public void RiscV_rw_fmv_s()
-        {
-            Given_HexString("53058420");
-            AssertCode(     // fmv.s	fa0,fs0
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa0 = fs0");
-        }
-
-        [Test]
-        public void RiscV_rw_fmv_w_x()
-        {
-            Given_RiscVInstructions(0xF00007D3u);    // fmv.w.x\tfa5,zero
-            AssertCode(
-                "0|L--|0000000000010000(4): 2 instructions",
-                "1|L--|v4 = SLICE(0<64>, real32, 0)",
-                "2|L--|fa5 = SEQ(0xFFFFFFFF<32>, v4)");
-        }
-
-        [Test]
-        public void RiscV_rw_fmv_x_w()
-        {
-            Given_32bitFloat();
-            Given_HexString("538507E0");
-            AssertCode(     // fmv.x.w	a0,fa5
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|a0 = fa5");
-        }
-
-        [Test]
-        public void RiscV_rw_fneg_d()
-        {
-            Given_HexString("5317E722");
-            AssertCode(     // fneg.d	fa4,fa4,fa4
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = -fa4");
-        }
-
-        [Test]
-        public void RiscV_rw_fneg_s_64bit()
-        {
-            Given_HexString("D397F720");
-            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, -SLICE(fa5, real32, 0))");
-        }
-
-        [Test]
-        public void RiscV_rw_fneg_s()
-        {
-            Given_32bitFloat();
-            Given_HexString("D397F720");
-            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fa5 = -fa5");
-        }
-
-        [Test]
-        public void RiscV_rw_lr_d()
-        {
-            Given_HexString("2FB10114");
-            AssertCode(     // lr.d.aq	sp,gp
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|sp = __load_reserved<word64>(&Mem0[gp:word64])");
-        }
-
-        [Test]
-        public void RiscV_rw_lr_w()
-        {
-            Given_HexString("AFAB1715");
-            AssertCode(     // lr.w.aq	s7,a5
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s7 = __load_reserved<word64>(&Mem0[a5:word32])");
-        }
-
-        [Test]
-        public void RiscV_rw_lwu()
-        {
-            Given_RiscVInstructions(0x00446703u);    // lwu\ta4,s0,+00000004
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = CONVERT(Mem0[s0 + 4<i64>:uint32], uint32, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_mul()
-        {
-            Given_HexString("B387D702");
-            AssertCode(     // mul	a5,a5,a3
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = a5 * a3");
-        }
-
-        [Test]
-        public void RiscV_rw_mulh()
-        {
-            Given_HexString("B397E702");
-            AssertCode(     // mulh	a5,a5,a4
-                "0|L--|0000000000010000(4): 2 instructions",
-                "1|L--|v5 = a5 *s128 a4",
-                "2|L--|a5 = SLICE(v5, word64, 64)");
-        }
-
-        [Test]
-        public void RiscV_rw_mulhsu()
-        {
-            Given_HexString("332E0103");
-            AssertCode(     // mulhsu	t3,sp,a6
-                "0|L--|0000000000010000(4): 2 instructions",
-                "1|L--|v6 = sp *s128 a6",
-                "2|L--|t3 = SLICE(v6, word64, 64)");
-        }
-
-        [Test]
-        public void RiscV_rw_mulhu()
-        {
-            Given_HexString("33B7C502");
-            AssertCode(     // mulhu	a4,a1,a2
-                "0|L--|0000000000010000(4): 2 instructions",
-                "1|L--|v6 = a1 *u128 a2",
-                "2|L--|a4 = SLICE(v6, word64, 64)");
-        }
-
-        [Test]
-        public void RiscV_rw_mret()
-        {
-            Given_HexString("73002030");
-            AssertCode(     // mret
-                "0|R--|0000000000010000(4): 2 instructions",
-                "1|L--|__mret()",
-                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1309,15 +631,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_c_beqz()
-        {
-            Given_RiscVInstructions(0x0000C121);    // c.beqz\ta0,0000000000100040
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|if (a0 == 0<64>) branch 0000000000010040");
-        }
-
-        [Test]
         public void RiscV_rw_c_lui()
         {
             Given_RiscVInstructions(0x00006585);    // c.lui\ta1,00001000
@@ -1336,51 +649,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_c_bnez()
-        {
-            Given_RiscVInstructions(0x0000EF09);    // c.bnez\ta4,000000000010001A
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|if (a4 != 0<64>) branch 000000000001001A");
-        }
-
-        [Test]
-        public void RiscV_rw_pause()
-        {
-            Given_HexString("0F000001");
-            AssertCode(     // pause
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__pause()");
-        }
-
-        [Test]
-        public void RiscV_rw_rem()
-        {
-            Given_HexString("33E7E402");
-            AssertCode(     // rem	a4,s1,a4
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = s1 %s a4");
-        }
-
-        [Test]
-        public void RiscV_rw_remu()
-        {
-            Given_HexString("3377C702");
-            AssertCode(     // remu	a4,a4,a2
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = a4 %u a2");
-        }
-
-        [Test]
-        public void RiscV_rw_remuw()
-        {
-            Given_RiscVInstructions(0x02C8783B);    // remuw\ta6,a6,a2
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a6 = CONVERT(SLICE(a6 %u a2, word32, 0), word32, int64)");
-        }
-
-        [Test]
         public void RiscV_rw_c_li()
         {
             Given_RiscVInstructions(0x00004521);    // c.li\ta0,00000008
@@ -1388,7 +656,6 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|a0 = 8<i64>");
         }
-
 
         [Test]
         public void RiscV_rw_c_li_minus3()
@@ -1433,6 +700,95 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|a3 = CONVERT(Mem0[a5 + 68<i64>:word32], word32, int64)");
+        }
+        [Test]
+        public void RiscV_rw_c_or()
+        {
+            Given_RiscVInstructions(0x8E55);    // c.or\ta2,a3
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a2 = a2 | a3");
+        }
+
+        [Test]
+        public void RiscV_rw_c_j()
+        {
+            Given_RiscVInstructions(0x0000B7D5);    // c.j\t00000000001003FC
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto 000000000000FFE4");
+        }
+
+        [Test]
+        public void RiscV_rw_c_sub()
+        {
+            Given_RiscVInstructions(0x8D89);    // c.sub\ta1,a0
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a1 = a1 - a0");
+        }
+
+        [Test]
+        public void RiscV_rw_c_j_backward()
+        {
+            Given_RiscVInstructions(0x0000BF1D);    // c.j\t000000000000FF36
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto 000000000000FF36");
+        }
+
+        [Test]
+        public void RiscV_rw_c_jr()
+        {
+            Given_RiscVInstructions(0x00008782);    // c.jr\ta5
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto a5");
+        }
+
+        [Test]
+        public void RiscV_rw_c_subw()
+        {
+            Given_RiscVInstructions(0x00009D1D);    // c.subw\ta0,a5
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a0 = CONVERT(SLICE(a0 - a5, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_slli()
+        {
+            Given_RiscVInstructions(0x0000040E);    // c.slli\ts0,03
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = s0 << 3<i32>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_srli()
+        {
+            Given_RiscVInstructions(0x000083A9);    // c.srli\ta5,0000000A
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = a5 >>u 10<i32>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_srai()
+        {
+            Given_RiscVInstructions(0x0000977D);    // c.srai\ta4,0000003F
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a4 = a4 >> 63<i32>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_ldsp()
+        {
+            Given_RiscVInstructions(0x00006BA2);    // c.ldsp\ts7,00000008
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s7 = Mem0[sp + 8<i64>:word64]");
         }
 
         [Test]
@@ -1535,6 +891,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_ebreak()
+        {
+            Given_HexString("73001000");
+            AssertCode(     // ebreak
+                "0|H--|0000000000010000(4): 1 instructions",
+                "1|L--|__ebreak()");
+        }
+
+        [Test]
         public void RiscV_rw_ecall()
         {
             Given_HexString("73000000");
@@ -1544,237 +909,40 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_c_addi16sp()
+        public void RiscV_rw_fadd_d()
         {
-            Given_RiscVInstructions(0x6169);    // c.addi16sp\t000000D0
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|sp = sp + 208<i64>");
-        }
-
-        [Test]
-        public void RiscV_rw_li()
-        {
-            Given_RiscVInstructions(0x00004385);    // c.li\tt2,00000001
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|t2 = 1<i64>");
-        }
-
-        [Test]
-        public void RiscV_rw_beqz()
-        {
-            Given_RiscVInstructions(0xC3F1);    // c.beqz\ta5,00000000001000C4
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|if (a5 == 0<64>) branch 00000000000100C4");
-        }
-
-        [Test]
-        public void RiscV_rw_beqz_backward()
-        {
-            Given_RiscVInstructions(0xD399);    // c.beqz\ta5,00000000000FFF06
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|if (a5 == 0<64>) branch 000000000000FF06");
-        }
-
-        [Test]
-        public void RiscV_rw_c_bnez_backward()
-        {
-            Given_RiscVInstructions(0xFB05);    // c.bnez\ta4,00000000000FFF30
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|if (a4 != 0<64>) branch 000000000000FF30");
-        }
-
-        [Test]
-        public void RiscV_rw_c_fldsp()
-        {
-            Given_RiscVInstructions(0x00003436);    // c.fldsp\tfa3,00000228
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|fa3 = Mem0[sp + 552<i64>:real64]");
-        }
-
-        [Test]
-        public void RiscV_rw_invalid()
-        {
-            Given_RiscVInstructions(0x00000000);    // invalid
-            AssertCode(
-                "0|---|0000000000010000(2): 1 instructions",
-                "1|---|<invalid>");
-        }
-
-        [Test]
-        public void RiscV_rw_jr_ra()
-        {
-            Given_RiscVInstructions(0x8082);    // c.jr\tra
-            AssertCode(
-                "0|R--|0000000000010000(2): 1 instructions",
-                "1|R--|return (0,0)");
-        }
-
-        [Test]
-        public void RiscV_rw_c_or()
-        {
-            Given_RiscVInstructions(0x8E55);    // c.or\ta2,a3
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a2 = a2 | a3");
-        }
-
-        [Test]
-        public void RiscV_rw_c_and()
-        {
-            Given_RiscVInstructions(0x8FF5);    // c.and\ta5,a3
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = a5 & a3");
-        }
-
-        [Test]
-        public void RiscV_rw_c_j()
-        {
-            Given_RiscVInstructions(0x0000B7D5);    // c.j\t00000000001003FC
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|goto 000000000000FFE4");
-        }
-
-        [Test]
-        public void RiscV_rw_c_sub()
-        {
-            Given_RiscVInstructions(0x8D89);    // c.sub\ta1,a0
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a1 = a1 - a0");
-        }
-
-        [Test]
-        public void RiscV_rw_c_j_backward()
-        {
-            Given_RiscVInstructions(0x0000BF1D);    // c.j\t000000000000FF36
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|goto 000000000000FF36");
-        }
-
-        [Test]
-        public void RiscV_rw_c_addi4spn()
-        {
-            Given_RiscVInstructions(0x0000101C);    // c.addi4spn\ta5,00000020
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = sp + 32<i64>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_jr()
-        {
-            Given_RiscVInstructions(0x00008782);    // c.jr\ta5
-            AssertCode(
-                "0|T--|0000000000010000(2): 1 instructions",
-                "1|T--|goto a5");
-        }
-
-        [Test]
-        public void RiscV_rw_c_subw()
-        {
-            Given_RiscVInstructions(0x00009D1D);    // c.subw\ta0,a5
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a0 = CONVERT(SLICE(a0 - a5, word32, 0), word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_c_addi()
-        {
-            Given_RiscVInstructions(0x00000785);    // c.addi\ta5,00000001
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = a5 + 1<i64>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_addw()
-        {
-            Given_RiscVInstructions(0x00009FB5);    // c.addw\ta5,a3
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = CONVERT(SLICE(a5 + a3, word32, 0), word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_c_slli()
-        {
-            Given_RiscVInstructions(0x0000040E);    // c.slli\ts0,03
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = s0 << 3<i32>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_srli()
-        {
-            Given_RiscVInstructions(0x000083A9);    // c.srli\ta5,0000000A
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = a5 >>u 10<i32>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_srai()
-        {
-            Given_RiscVInstructions(0x0000977D);    // c.srai\ta4,0000003F
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a4 = a4 >> 63<i32>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_andi()
-        {
-            Given_RiscVInstructions(0x00008A61);    // c.andi\ta2,00000018
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a2 = a2 & 24<i64>");
-        }
-
-        [Test]
-        public void RiscV_rw_c_ldsp()
-        {
-            Given_RiscVInstructions(0x00006BA2);    // c.ldsp\ts7,00000008
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s7 = Mem0[sp + 8<i64>:word64]");
-        }
-
-        [Test]
-        public void RiscV_rw_c_fld()
-        {
-            Given_RiscVInstructions(0x00002E64);    // c.fld\tfs1,216(a2)
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|fs1 = Mem0[a2 + 216<i64>:real64]");
-        }
-
-        [Test]
-        public void RiscV_rw_jal_ra()
-        {
-            Given_RiscVInstructions(0x02C000EF);    // jal ra,0000B6A4
-            AssertCode(
-                "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|call 000000000001002C (0)");
-        }
-
-        [Test]
-        public void RiscV_rw_sltiu()
-        {
-            Given_RiscVInstructions(0x0014B493);	// sltiu	s1,s1,+00000001
-            AssertCode(
+            Given_HexString("D3383102");
+            AssertCode(     // fadd.d	fa7,ft2,ft3,rup
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s1 = CONVERT(s1 <u 1<i64>, bool, word64)");
+                "1|L--|fa7 = ft2 + ft3");
+        }
+
+        [Test]
+        public void RiscV_rw_fadd_h()
+        {
+            Given_HexString("53C60605");
+            AssertCode(     // fadd.h	fa2,fa3,fa6,rmm
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa2 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(fa3, real16, 0) + SLICE(fa6, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fadd_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3832607");
+            AssertCode(     // fadd.q	ft7,fa3,fs2,rne
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|ft7 = fa3 + fs2");
+        }
+
+        [Test]
+        public void RiscV_rw_fadd_s()
+        {
+            Given_HexString("53495800");
+            AssertCode(     // fadd.s	fs2,fa6,ft5,rmm
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs2 = SEQ(0xFFFFFFFF<32>, SLICE(fa6, real32, 0) + SLICE(ft5, real32, 0))");
         }
 
         [Test]
@@ -1787,6 +955,1312 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fclass_d()
+        {
+            Given_HexString("539506E2");
+            AssertCode(     // fclass.d	a0,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = __fclass<real64,word64>(fa3)");
+        }
+
+        [Test]
+        public void RiscV_rw_fclass_h()
+        {
+            Given_HexString("531607E4");
+            AssertCode(     // fclass.h	a2,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a2 = __fclass<real64,word64>(SLICE(fa4, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fclass_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D31603E6");
+            AssertCode(     // fclass.q	a3,ft6
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|a3 = __fclass<real64,word64>(ft6)");
+        }
+
+        [Test]
+        public void RiscV_rw_fclass_s()
+        {
+            Given_HexString("D31606E0");
+            AssertCode(     // fclass.s	a3,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = __fclass<real32,word64>(SLICE(fa2, real32, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_h()
+        {
+            Given_HexString("53872842");
+            AssertCode(     // fcvt.d.h	fa4,fa7,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(SLICE(fa7, int16, 0), int16, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_l()
+        {
+            Given_HexString("D3F026D2");
+            AssertCode(     // fcvt.d.l	ft1,a3,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft1 = CONVERT(a3, int64, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_lu()
+        {
+            Given_HexString("53F739D2");
+            AssertCode(     // fcvt.d.lu	fa4,s3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(s3, uint64, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D37B3B42");
+            AssertCode(     // fcvt.d.q	fs7,fs6
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|fs7 = SEQ(0xFFFFFFFFFFFFFFFF<64>, CONVERT(fs6, real128, real64))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_s()
+        {
+            Given_RiscVInstructions(0x42070753u);    // fcvt.d.s\tfa4,fa4
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(SLICE(fa4, real32, 0), real32, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_w()
+        {
+            Given_HexString("538706D2");
+            AssertCode(     // fcvt.d.w	fa4,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(SLICE(a3, int32, 0), int32, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_wu()
+        {
+            Given_HexString("538416D2");
+            AssertCode(     // fcvt.d.wu	fs0,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs0 = CONVERT(SLICE(a3, uint32, 0), uint32, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_d()
+        {
+            Given_HexString("D3261744");
+            AssertCode(     // fcvt.h.d	fa3,a4,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(fa4, real64, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_l()
+        {
+            Given_HexString("D32628D4");
+            AssertCode(     // fcvt.h.l	fa3,a6,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(a6, int64, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_lu()
+        {
+            Given_HexString("53C638D4");
+            AssertCode(     // fcvt.h.lu	fa2,a7,rmm
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa2 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(a7, uint64, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3283644");
+            AssertCode(     // fcvt.h.q	fa7,a2,rdn
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|fa7 = SEQ(0x0FFFFFFFFFFFFFFFF<112>, CONVERT(fa2, real128, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_s()
+        {
+            Given_HexString("D3750744");
+            AssertCode(     // fcvt.h.s	fa1,a4,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa1 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(SLICE(fa4, real32, 0), real32, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_w()
+        {
+            Given_HexString("D37607D4");
+            AssertCode(     // fcvt.h.w	fa3,a4,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(SLICE(a4, int32, 0), int32, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_h_wu()
+        {
+            Given_HexString("53F815D4");
+            AssertCode(     // fcvt.h.wu	fa6,a1,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa6 = SEQ(0xFFFFFFFFFFFF<48>, CONVERT(SLICE(a1, uint32, 0), uint32, real16))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_l_d()
+        {
+            Given_HexString("D39020C2");
+            AssertCode(     // fcvt.l.d	ra,ft1,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ra = CONVERT(ft1, real64, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_l_h()
+        {
+            Given_HexString("D31827C4");
+            AssertCode(     // fcvt.l.h	a7,fa4,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = CONVERT(SLICE(fa4, real16, 0), real16, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_l_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D32121C6");
+            AssertCode(     // fcvt.l.q	gp,ft2,rdn
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|gp = CONVERT(ft2, real128, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_l_s()
+        {
+            Given_HexString("53952FC0");
+            AssertCode(     // fcvt.l.s	a0,ft11,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = CONVERT(SLICE(ft11, real32, 0), real32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_lu_d()
+        {
+            Given_HexString("531534C2");
+            AssertCode(     // fcvt.lu.d	a0,fs0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = CONVERT(fs0, real64, uint64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_lu_h()
+        {
+            Given_HexString("D38537C4");
+            AssertCode(     // fcvt.lu.h	a1,fa5,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a1 = CONVERT(SLICE(fa5, real16, 0), real16, uint64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_lu_s()
+        {
+            Given_HexString("D39437C0");
+            AssertCode(     // fcvt.lu.s        s1,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s1 = CONVERT(SLICE(fa5, real32, 0), real32, uint64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_q_d()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3891A46");
+            AssertCode(     // fcvt.q.d	fs3,fs5
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|fs3 = CONVERT(SLICE(fs5, real64, 0), real64, real128)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_q_h()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3082846");
+            AssertCode(     // fcvt.q.h	fa7,fa6,rne
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|fa7 = CONVERT(SLICE(fa6, real16, 0), real16, real128)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_q_s()
+        {
+            Given_128bitFloat();
+            Given_HexString("D30D0A46");
+            AssertCode(     // fcvt.q.s	fs11,fs4
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|fs11 = CONVERT(SLICE(fs4, int32, 0), int32, real128)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_q_w()
+        {
+            Given_128bitFloat();
+            Given_HexString("D30303D6");
+            AssertCode(     // fcvt.q.w	ft7,t1,rne
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|ft7 = CONVERT(SLICE(t1, int32, 0), int32, real128)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_q_wu()
+        {
+            Given_128bitFloat();
+            Given_HexString("D30212D6");
+            AssertCode(     // fcvt.q.wu	ft5,tp,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft5 = CONVERT(SLICE(tp, uint32, 0), uint32, real128)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_d()
+        {
+            Given_HexString("D3261C40");
+            AssertCode(     // fcvt.s.d	fa3,fs8
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFF<32>, CONVERT(fs8, real64, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_h()
+        {
+            Given_HexString("53862740");
+            AssertCode(     // fcvt.s.h	fa2,fa5,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa2 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(fa5, real16, 0), real16, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_l()
+        {
+            Given_HexString("D3F328D0");
+            AssertCode(     // fcvt.s.l	ft7,a7
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft7 = SEQ(0xFFFFFFFF<32>, CONVERT(a7, int64, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_lu()
+        {
+            Given_HexString("D3F734D0");
+            AssertCode(     // fcvt.s.lu        fa5,s1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, CONVERT(s1, uint64, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("53FD3C40");
+            AssertCode(     // fcvt.s.q	fs10,fs9
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|fs10 = SEQ(0x0FFFFFFFFFFFFFFFF<96>, CONVERT(fs9, real128, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_w()
+        {
+            Given_32bitFloat();
+            Given_HexString("537404D0");
+            AssertCode(     // fcvt.s.w	s0,fs0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = CONVERT(s0, int32, real32)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_wu()
+        {
+            Given_HexString("53F719D0");
+            AssertCode(     // fcvt.s.wu	fs4,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(s3, uint32, 0), uint32, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_w_d()
+        {
+            Given_HexString("D31801C2");
+            AssertCode(     // fcvt.w.d	a7,ft2,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = SEQ(0xFFFFFFFF<32>, CONVERT(ft2, real64, int32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_w_h()
+        {
+            Given_HexString("D3F805C4");
+            AssertCode(     // fcvt.w.h	a7,fa1,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(fa1, real16, 0), real16, int32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_w_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("530001C6");
+            AssertCode(     // fcvt.w.q	zero,ft2,rne
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|0<64> = SEQ(0xFFFFFFFF<32>, CONVERT(ft2, real128, int32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_w_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("D31704C0");
+            AssertCode(     // fcvt.w.s	a5,fs0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fs0, real32, int32)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_wu_d()
+        {
+            Given_HexString("D39719C2");
+            AssertCode(     // fcvt.wu.d	a5,fs3,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = SEQ(0xFFFFFFFF<32>, CONVERT(fs3, real64, uint32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_wu_h()
+        {
+            Given_HexString("53F716C4");
+            AssertCode(     // fcvt.wu.h	a4,fa3,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(fa3, real16, 0), real16, uint32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_wu_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D31013C6");
+            AssertCode(     // fcvt.wu.q	ra,ft6,rtz
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|ra = SEQ(0xFFFFFFFF<32>, CONVERT(ft6, real128, uint32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_wu_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("539517C0");
+            AssertCode(     // fcvt.wu.s	a0,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a0 = CONVERT(fa5, real32, uint32)");
+        }
+
+        [Test]
+        public void RiscV_rw_fdiv_d()
+        {
+            Given_HexString("D377F71A");
+            AssertCode(     // fdiv.d	fa5,fa4,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = fa4 / fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_fdiv_h()
+        {
+            Given_HexString("5307181D");
+            AssertCode(     // fdiv.h	fa4,fa6,fa7,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(fa6, real16, 0) / SLICE(fa7, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fdiv_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("5374F418");
+            AssertCode(     // fdiv.s	fs0,fs0,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = fs0 / fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_fdiv_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("53CDBC1F");
+            AssertCode(     // fdiv.q	fs10,fs9,fs11,rmm
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|fs10 = fs9 / fs11");
+        }
+
+        [Test]
+        public void RiscV_rw_fence()
+        {
+            Given_HexString("0F00F00F");
+            AssertCode(     // fence	iorw,iorw
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__fence(iorw, iorw)");
+        }
+
+        [Test]
+        public void RiscV_rw_fence_i()
+        {
+            Given_HexString("0F100000");
+            AssertCode(     // fence.i
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__fence_i()");
+        }
+
+        [Test]
+        public void RiscV_rw_fence_tso()
+        {
+            Given_HexString("0F003083");
+            AssertCode(     // fence.tso
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__fence_tso()");
+        }
+
+        [Test]
+        public void RiscV_rw_feq_d()
+        {
+            Given_HexString("D327D7A2");
+            AssertCode(     // feq.d	a5,fa4,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa4 == fa3, bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_feq_h()
+        {
+            Given_HexString("D3A7F5A4");
+            AssertCode(     // feq.h	a5,fa1,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(SLICE(fa1, real16, 0) == SLICE(fa5, real16, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_feq_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3A321A6");
+            AssertCode(     // feq.q	t2,ft3,ft2
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|t2 = CONVERT(ft3 == ft2, bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_feq_s()
+        {
+            // 1010000 011110111001001111 10100 11
+            Given_RiscVInstructions(0xA0F727D3u);    // feq.s\ta5,fa4,fa5
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fld()
+        {
+            Given_HexString("07B6870F");
+            AssertCode(     // fld	fa2,0xF8(a5)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa2 = Mem0[a5 + 248<i64>:real64]");
+        }
+
+        [Test]
+        public void RiscV_rw_fle_d()
+        {
+            Given_HexString("D387E7A2");
+            AssertCode(     // fle.d	a5,fa5,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa5 <= fa4, bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fle_h()
+        {
+            Given_HexString("D308E6A4");
+            AssertCode(     // fle.h	a7,fa2,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = CONVERT(SLICE(fa2, real16, 0) <= SLICE(fa4, real16, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fle_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("530470A6");
+            AssertCode(     // fle.q	s0,ft0,ft7
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|s0 = CONVERT(ft0 <= ft7, bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fle_s()
+        {
+            Given_HexString("D307F7A0");
+            AssertCode(     // fle.s	a5,fa4,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) <= SLICE(fa5, real32, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_flh()
+        {
+            Given_HexString("0797C800");
+            AssertCode(     // flh	fa4,0xC(a7)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFFFFFF<48>, Mem0[a7 + 12<i64>:real16])");
+        }
+
+        [Test]
+        public void RiscV_rw_fli_d()
+        {
+            Given_RiscVInstructions(0xF21007D3u);   // fli.d\tfa5,-1.0
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = -1.0F");
+        }
+
+        [Test]
+        public void RiscV_rw_fli_h()
+        {
+            Given_HexString("D30F1CF4");
+            AssertCode(     // fli.h	ft11,8.0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft11 = 8.0F");
+        }
+
+        [Test]
+        public void RiscV_rw_fli_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D30214F6");
+            AssertCode(     // fli.q	ft5,0.25
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|ft5 = 0.25F");
+        }
+
+        [Test]
+        public void RiscV_rw_fli_s()
+        {
+            Given_RiscVInstructions(0xF01587D3u);    // fli.s\tfa5,0.3125
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = 0.4375F");
+        }
+
+        [Test]
+        public void RiscV_rw_flq()
+        {
+            Given_128bitFloat();
+            Given_HexString("0740E391");
+            AssertCode(     // flq	ft0,2334(t1)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft0 = Mem0[t1 + 2334<i64>:real128]");
+        }
+
+        [Test]
+        public void RiscV_rw_flt_d()
+        {
+            Given_HexString("D317C7A2");
+            AssertCode(     // flt.d	a5,fa4,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa4 < fa2, bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_flt_h()
+        {
+            Given_HexString("D39606A5");
+            AssertCode(     // flt.h	a3,fa3,fa6
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = CONVERT(SLICE(fa3, real16, 0) < SLICE(fa6, real16, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_flt_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("D397E7A0");
+            AssertCode(     // flt.s	a5,fa5,fa4
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa5 < fa4, bool, word32)");
+        }
+
+        [Test]
+        public void RiscV_rw_flw()
+        {
+            Given_RiscVInstructions(0x03492707u);    // flw\tfa4,s2,+00000034
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, Mem0[s2 + 52<i64>:real32])");
+        }
+
+        [Test]
+        public void RiscV_rw_fmadd_d()
+        {
+            Given_HexString("43F16303");
+            AssertCode(     // fmadd.d	ft2,ft7,fs6,ft0,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft2 = ft7 * fs6 + ft0");
+        }
+
+        [Test]
+        public void RiscV_rw_fmadd_s()
+        {
+            Given_32bitFloat();
+            Given_RiscVInstructions(0x8093FD43);
+            AssertCode(
+                 "0|L--|00010000(4): 1 instructions",
+                 "1|L--|fs10 = ft7 * fs1 + fa6");
+        }
+
+        [Test]
+        public void RiscV_rw_fmadd_h()
+        {
+            Given_HexString("C3250264");
+            AssertCode(     // fmadd.h	fa1,ft4,ft0,fa2,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa1 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(ft4, real16, 0) * SLICE(ft0, real16, 0) + SLICE(fa2, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmadd_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("432A8146");
+            AssertCode(     // fmadd.q	fs4,ft2,fs0,fs0,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs4 = ft2 * fs0 + fs0");
+        }
+
+        [Test]
+        public void RiscV_rw_fmax_d()
+        {
+            Given_HexString("5311402A");
+            AssertCode(     // fmax.d	ft2,ft0,ft4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft2 = __fmax<real64>(ft0, ft4)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmax_h()
+        {
+            Given_HexString("D395C82C");
+            AssertCode(     // fmax.h	fa1,fa7,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa1 = SEQ(0xFFFFFFFFFFFF<48>, __fmax<real16>(SLICE(fa7, real16, 0), SLICE(fa2, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmax_s()
+        {
+            Given_HexString("D3122228");
+            AssertCode(     // fmax.s	ft5,ft4,ft2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft5 = SEQ(0xFFFFFFFF<32>, __fmax<real32>(SLICE(ft4, real32, 0), SLICE(ft2, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmaxm_d()
+        {
+            Given_HexString("5331402A");    // fmaxm.d\tft2,ft0,ft4"
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft2 = __fmaxm<real64>(ft0, ft4)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmaxm_h()
+        {
+            Given_HexString("D3B5C82C");
+            AssertCode(     // fmaxm.h	fa1,fa7,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa1 = SEQ(0xFFFFFFFFFFFF<48>, __fmaxm<real16>(SLICE(fa7, real16, 0), SLICE(fa2, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmaxm_s()
+        {
+            Given_HexString("D3322228");
+            AssertCode(     // fmaxm.s	ft5,ft4,ft2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft5 = SEQ(0xFFFFFFFF<32>, __fmaxm<real32>(SLICE(ft4, real32, 0), SLICE(ft2, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmin_d()
+        {
+            Given_HexString("D301102A");
+            AssertCode(     // fmin.d	ft3,ft0,ft1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = __fmin<real64>(ft0, ft1)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmin_h()
+        {
+            Given_HexString("5387F62C");
+            AssertCode(     // fmin.h	fa4,fa3,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFFFFFF<48>, __fmin<real16>(SLICE(fa3, real16, 0), SLICE(fa5, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmin_s()
+        {
+            Given_HexString("53031028");
+            AssertCode(     // fmin.s	ft6,ft0,ft1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft6 = SEQ(0xFFFFFFFF<32>, __fmin<real32>(SLICE(ft0, real32, 0), SLICE(ft1, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fminm_d()
+        {
+            Given_HexString("D321102A");
+            AssertCode(     // fminm.d	ft3,ft0,ft1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = __fminm<real64>(ft0, ft1)");
+        }
+
+        [Test]
+        public void RiscV_rw_fminm_h()
+        {
+            Given_HexString("53A7F62C");
+            AssertCode(     // fminm.h	fa4,fa3,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFFFFFF<48>, __fminm<real16>(SLICE(fa3, real16, 0), SLICE(fa5, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fminm_s()
+        {
+            Given_HexString("53231028");        // fminm.s\tft6,ft0,ft1
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft6 = SEQ(0xFFFFFFFF<32>, __fminm<real32>(SLICE(ft0, real32, 0), SLICE(ft1, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmsub_d()
+        {
+            Given_HexString("47B29C63");
+            AssertCode(     // fmsub.d	ft4,fs9,fs9,fa2,rup
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft4 = fs9 * fs9 - fa2");
+        }
+
+        [Test]
+        public void RiscV_rw_fmsub_h()
+        {
+            Given_HexString("C7003355");
+            AssertCode(     // fmsub.h	ft1,ft6,fs3,fa0,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft1 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(ft6, real16, 0) * SLICE(fs3, real16, 0) - SLICE(fa0, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmsub_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("C706FD56");
+            AssertCode(     // fmsub.q	fa3,fs10,fa5,fa0,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = fs10 * fa5 - fa0");
+        }
+
+        [Test]
+        public void RiscV_rw_fmul_d()
+        {
+            Given_HexString("5377D712");
+            AssertCode(     // fmul.d	fa4,fa4,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = fa4 * fa3");
+        }
+
+        [Test]
+        public void RiscV_rw_fmul_h()
+        {
+            Given_HexString("53A6E714");
+            AssertCode(     // fmul.h	fa2,fa5,fa4,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa2 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(fa5, real16, 0) * SLICE(fa4, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fmul_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("533e1417");
+            AssertCode(     // fmul.q ft8,fs0,fa7,rup
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft8 = fs0 * fa7");
+        }
+
+        [Test]
+        public void RiscV_rw_fmul_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("53749510");
+            AssertCode(     // fmul.s	fs0,fa0,fs1
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = fa0 * fs1");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_d_x()
+        {
+            Given_RiscVInstructions(0xF2070753u);    // fmv.d.x\tfa4,a4
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = a4");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_h_x()
+        {
+            Given_HexString("530608F4");
+            AssertCode(     // fmv.h.x	fa2,a6
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = SLICE(a6, int16, 0)",
+                "2|L--|fa2 = SEQ(0xFFFFFFFFFFFF<48>, v5)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_x_d()
+        {
+            Given_RiscVInstructions(0xE2070753u);    // fmv.d.x\tfa4,a4
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = fa4");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_x_h()
+        {
+            Given_HexString("D38705E4");
+            AssertCode(     // fmv.x.h	a5,fa1
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = SLICE(fa1, real16, 0)",
+                "2|L--|a5 = SEQ(0xFFFFFFFFFFFF<48>, v5)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_s()
+        {
+            Given_HexString("53058420");
+            AssertCode(     // fmv.s	fa0,fs0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa0 = fs0");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_w_x()
+        {
+            Given_RiscVInstructions(0xF00007D3u);    // fmv.w.x\tfa5,zero
+            AssertCode(
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v4 = SLICE(0<64>, int32, 0)",
+                "2|L--|fa5 = SEQ(0xFFFFFFFF<32>, v4)");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_x_w()
+        {
+            Given_32bitFloat();
+            Given_HexString("538507E0");
+            AssertCode(     // fmv.x.w	a0,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a0 = fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_fmsub_s()
+        {
+            Given_32bitFloat();
+            Given_RiscVInstructions(0x6118B5C7);    // fmsub.s\tfa1,fa7,fa7,fa2
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fa1 = fa7 * fa7 - fa2");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmadd_d()
+        {
+            Given_HexString("4FFF7D5A");
+            AssertCode(     // fnmadd.d	ft10,fs11,ft7,fa1,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft10 = -(fs11 * ft7) - fa1");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmadd_h()
+        {
+            Given_HexString("4F81A285");
+            AssertCode(     // fnmadd.h	ft2,ft5,fs10,fa6,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft2 = SEQ(0xFFFFFFFFFFFF<48>, -(SLICE(ft5, real16, 0) * SLICE(fs10, real16, 0)) - SLICE(fa6, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmadd_q()
+        {
+            Given_128bitFloat();
+            Given_128bitFloat();
+            Given_HexString("4FF39707");
+            AssertCode(     // fnmadd.q	ft6,fa5,fs9,ft0,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft6 = -(fa5 * fs9) - ft0");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmadd_s()
+        {
+            Given_32bitFloat();
+            Given_RiscVInstructions(0x00B3FDCF);    // fnmadd.s\tfs11,ft7,fa1,ft0
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs11 = -(ft7 * fa1) - ft0");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmsub_d()
+        {
+            Given_HexString("4BA9AA8A");
+            AssertCode(     // fnmsub.d	fs2,fs5,fa0,fa7,rdn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs2 = -(fs5 * fa0) + fa7");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmsub_h()
+        {
+            Given_HexString("4B00BE9D");
+            AssertCode(     // fnmsub.h	ft0,ft8,fs11,fs3,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft0 = SEQ(0xFFFFFFFFFFFF<48>, -(SLICE(ft8, real16, 0) * SLICE(fs11, real16, 0)) + SLICE(fs3, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmsub_q()
+        {
+            Given_128bitFloat();
+            Given_128bitFloat();
+            Given_HexString("4B008947");
+            AssertCode(     // fnmsub.q	ft0,fs2,fs8,fs0,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft0 = -(fs2 * fs8) + fs0");
+        }
+
+        [Test]
+        public void RiscV_rw_fneg_d()
+        {
+            Given_HexString("5317E722");
+            AssertCode(     // fneg.d	fa4,fa4,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = -fa4");
+        }
+
+        [Test]
+        public void RiscV_rw_fneg_s_64bit()
+        {
+            Given_HexString("D397F720");
+            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, -SLICE(fa5, real32, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fneg_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("D397F720");
+            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fa5 = -fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_fnmsub_s()
+        {
+            Given_32bitFloat();
+            Given_RiscVInstructions(0x4189004B);    // fnmsub.s\tft0,fs2,fs8,fs0
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|ft0 = -(fs2 * fs8) + fs0");
+        }
+
+        [Test]
+        public void RiscV_rw_fround_d()
+        {
+            Given_HexString("D3014042");
+            AssertCode(     // fround.d	ft3,ft0,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = __fround<real64>(ft0)");
+        }
+
+        [Test]
+        public void RiscV_rw_fround_h()
+        {
+            Given_HexString("53434044");
+            AssertCode(     // fround.h	ft6,ft0,rmm
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft6 = SEQ(0xFFFFFFFFFFFF<48>, __fround<real16>(SLICE(ft0, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fround_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3A34046");
+            AssertCode(     // fround.q	ft7,ft1,rdn
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|ft7 = __fround<real128>(ft1)");
+        }
+
+        [Test]
+        public void RiscV_rw_fround_s()
+        {
+            Given_HexString("D3924140");
+            AssertCode(     // fround.s	ft5,ft3,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft5 = SEQ(0xFFFFFFFF<32>, __fround<real32>(SLICE(ft3, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_froundnx_d()
+        {
+            Given_HexString("D3115042");
+            AssertCode(     // froundnx.d	ft3,ft0,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = __froundnx<real64>(ft0)");
+        }
+
+        [Test]
+        public void RiscV_rw_froundnx_h()
+        {
+            Given_HexString("53735044");
+            AssertCode(     // froundnx.h	ft6,ft0,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft6 = SEQ(0xFFFFFFFFFFFF<48>, __froundnx<real16>(SLICE(ft0, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_froundnx_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("D3C35046");
+            AssertCode(     // froundnx.q	ft7,ft1,rmm
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|ft7 = __froundnx<real128>(ft1)");
+        }
+
+        [Test]
+        public void RiscV_rw_froundnx_s()
+        {
+            Given_HexString("D3B25140");
+            AssertCode(     // froundnx.s	ft5,ft3,rup
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft5 = SEQ(0xFFFFFFFF<32>, __froundnx<real32>(SLICE(ft3, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnj_d()
+        {
+            Given_HexString("53822523");
+            AssertCode(     // fsgnj.d	ft4,fa1,fs2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft4 = __fsgnj<real64>(fa1, fs2)");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnj_h()
+        {
+            Given_HexString("D307B624");
+            AssertCode(     // fsgnj.h	fa5,fa2,fa1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = SEQ(0xFFFFFFFFFFFF<48>, __fsgnj<real16>(SLICE(fa2, real16, 0), SLICE(fa1, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnj_s()
+        {
+            Given_HexString("53802020");
+            AssertCode(     // fsgnj.s	ft0,ft1,ft2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft0 = SEQ(0xFFFFFFFF<32>, __fsgnj<real32>(SLICE(ft1, real32, 0), SLICE(ft2, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjn_d()
+        {
+            Given_HexString("D391C422");
+            AssertCode(     // fsgnjn.d	ft3,fs1,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = __fsgnjn<real64>(fs1, fa2)");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjn_h()
+        {
+            Given_HexString("53971725");
+            AssertCode(     // fsgnjn.h	fa4,fa5,fa7
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFFFFFF<48>, __fsgnjn<real16>(SLICE(fa5, real16, 0), SLICE(fa7, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjn_s()
+        {
+            Given_HexString("D3914320");
+            AssertCode(     // fsgnjn.s	ft3,ft7,ft4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = SEQ(0xFFFFFFFF<32>, __fsgnjn<real32>(SLICE(ft7, real32, 0), SLICE(ft4, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjx_d()
+        {
+            Given_HexString("53A41123");
+            AssertCode(     // fsgnjx.d	fs0,ft3,fa7
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs0 = __fsgnjx<real64>(ft3, fa7)");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjx_h()
+        {
+            Given_HexString("D326C724");
+            AssertCode(     // fsgnjx.h	fa3,fa4,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFFFFFF<48>, __fsgnjx<real16>(SLICE(fa4, real16, 0), SLICE(fa2, real16, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsgnjx_s()
+        {
+            Given_HexString("532E5120");
+            AssertCode(     // fsgnjx.s	ft8,ft2,ft5
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|ft8 = SEQ(0xFFFFFFFF<32>, __fsgnjx<real32>(SLICE(ft2, real32, 0), SLICE(ft5, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsq()
+        {
+            Given_128bitFloat();
+            Given_HexString("A7CF7955");
+            AssertCode(     // fsq	fs7,0x55F(s3)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[s3 + 1375<i64>:real128] = fs7");
+        }
+
+        [Test]
+        public void RiscV_rw_fsqrt_d()
+        {
+            Given_HexString("5377065A");
+            AssertCode(     // fsqrt.d	fa4,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = sqrt(fa2)");
+        }
+
+        [Test]
+        public void RiscV_rw_fsqrt_h()
+        {
+            Given_HexString("D306085C");
+            AssertCode(     // fsqrt.h	fa3,fa6,rne
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = sqrt(SLICE(fa6, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsqrt_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("53FD0D5E");
+            AssertCode(     // fsqrt.q	fs10,fs11
+                    "0|L--|0000000000010000(4): 1 instructions",
+                    "1|L--|fs10 = SEQ(0xFFFFFFFFFFFFFFFF<64>, sqrt(fs11))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsqrt_s()
+        {
+            Given_HexString("D3710058");
+            AssertCode(     // fsqrt.s	ft3,ft0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = SEQ(0xFFFFFFFF<32>, sqrtf(SLICE(ft0, real32, 0)))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsub_d()
+        {
+            Given_HexString("D371100A");
+            AssertCode(     // fsub.d	ft3,ft0,ft1,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft3 = ft0 - ft1");
+        }
+
+        [Test]
+        public void RiscV_rw_fsub_h()
+        {
+            Given_HexString("D376070D");
+            AssertCode(     // fsub.h	fa3,fa4,fa6,dyn
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFFFFFF<48>, SLICE(fa4, real16, 0) - SLICE(fa6, real16, 0))");
+        }
+
+        [Test]
+        public void RiscV_rw_fsub_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("531EEC0F");
+            AssertCode(     // fsub.q	ft8,fs8,ft10,rtz
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft8 = fs8 - ft10");
+        }
+
+        [Test]
+        public void RiscV_rw_fsub_s()
+        {
+            Given_32bitFloat();
+            Given_HexString("5375A708");
+            AssertCode(     // fsub.s	fa0,fa4,fa0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fa0 = fa4 - fa0");
+        }
+
+        [Test]
+        public void RiscV_rw_fsh()
+        {
+            Given_HexString("A79AD700");
+            AssertCode(     // fsh	fa3,0x15(a5)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[a5 + 21<i64>:real16] = SLICE(fa3, real16, 0)");
+        }
+
+        [Test]
         public void RiscV_rw_fsw()
         {
             Given_RiscVInstructions(0x8963A3A7);	// fsw	fs6,8732(a5)
@@ -1796,22 +2270,638 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fsd()
+        {
+            Given_RiscVInstructions(0x639435A7);    // fsd	fs9,12632(s0)
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[s0 + 1579<i64>:real64] = fs9");
+        }
+
+        [Test]
+        public void RiscV_rw_hfence_vvma()
+        {
+            Given_HexString("73000022");
+            AssertCode(     // hfence.vvma	zero,(zero)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_vvma<word64,word64>(0<64>, 0<64>)");
+        }
+
+        [Test]
+        public void RiscV_rw_hfence_gvma()
+        {
+            Given_HexString("73000062");
+            AssertCode(     // hfence.gvma	zero,(zero)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hfence_gvma<word64,word64>(0<64>, 0<64>)");
+        }
+
+        [Test]
+        public void RiscV_rw_hinval_vvma()
+        {
+            Given_HexString("7380C626");
+            AssertCode(     // hinval.vvma	a2,(a3)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hinval_vvma<word64,word64>(a3, a2)");
+        }
+
+        [Test]
+        public void RiscV_rw_hinval_gvma()
+        {
+            Given_HexString("7380B866");
+            AssertCode(     // hinval.gvma a7,a1
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hinval_gvma<word64,word64>(a7, a1)");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_b()
+        {
+            Given_HexString("F3C80760");
+            AssertCode(     // hlv.b	a7,(a5)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = __hypervisor_load_from_VM<int8>(&Mem0[a5:int8])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_bu()
+        {
+            Given_HexString("73481660");
+            AssertCode(     // hlv.bu	a6,(a2)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a6 = __hypervisor_load_from_VM<byte>(&Mem0[a2:uint8])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_d()
+        {
+            Given_HexString("F3C8036C");
+            AssertCode(     // hlv.d	a7,(t2)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = __hypervisor_load_from_VM<word64>(&Mem0[t2:uint64])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_h()
+        {
+            Given_HexString("F3C60664");
+            AssertCode(     // hlv.h	a3,(a3)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = __hypervisor_load_from_VM<int16>(&Mem0[a3:int16])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_hu()
+        {
+            Given_HexString("73411764");
+            AssertCode(     // hlv.hu	sp,(a4)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|sp = __hypervisor_load_from_VM<word16>(&Mem0[a4:uint16])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_w()
+        {
+            Given_HexString("73C80468");
+            AssertCode(     // hlv.w	a6,(s1)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a6 = __hypervisor_load_from_VM<int32>(&Mem0[s1:int32])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlv_wu()
+        {
+            Given_HexString("73CE1868");
+            AssertCode(     // hlv.wu	t3,(a7)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|t3 = __hypervisor_load_from_VM<word32>(&Mem0[a7:uint32])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlvx_hu()
+        {
+            Given_HexString("F3483164");
+            AssertCode(     // hlvx.hu	a7,(sp)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|a7 = __hypervisor_load_exe_from_VM<word16>(&Mem0[sp:uint16])");
+        }
+
+        [Test]
+        public void RiscV_rw_hlvx_wu()
+        {
+            Given_HexString("F3C13E68");
+            AssertCode(     // hlvx.wu	gp,(t4)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|gp = __hypervisor_load_exe_from_VM<word32>(&Mem0[t4:uint32])");
+        }
+
+        [Test]
+        public void RiscV_rw_hsv_b()
+        {
+            Given_HexString("7340C663");
+            AssertCode(     // hsv.b	(a2),t3
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<byte>(&t3, Mem0[a2:byte])");
+        }
+
+        [Test]
+        public void RiscV_rw_hsv_d()
+        {
+            Given_HexString("73C0416E");
+            AssertCode(     // hsv.d	(gp),tp
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word64>(&tp, Mem0[gp:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_hsv_h()
+        {
+            Given_HexString("73C0CF66");
+            AssertCode(     // hsv.h	(t6),a2
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word16>(&a2, Mem0[t6:word16])");
+        }
+
+        [Test]
+        public void RiscV_rw_hsv_w()
+        {
+            Given_HexString("7340DE6B");
+            AssertCode(     // hsv.w	(t3),t4
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__hypervisor_store_in_VM<word32>(&t4, Mem0[t3:word32])");
+        }
+
+        [Test]
+        public void RiscV_rw_invalid()
+        {
+            Given_RiscVInstructions(0x00000000);    // invalid
+            AssertCode(
+                "0|---|0000000000010000(2): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void RiscV_rw_jal_zero()
+        {
+            Given_RiscVInstructions(0x9F4FF06Fu);
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto 000000000000F1F4");
+        }
+
+        [Test]
+        public void RiscV_rw_jal_not_zero()
+        {
+            Given_RiscVInstructions(0x9F4FF0EFu);
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call 000000000000F1F4 (0)");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr_zero()
+        {
+            Given_RiscVInstructions(0x00078067); // jalr zero, a5, 0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto a5");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr_zero_ra()
+        {
+            Given_RiscVInstructions(0x00008067); // jalr zero,ra,0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|R--|return (0,0)");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr_ra()
+        {
+            Given_RiscVInstructions(0x003780E7);    // jalr ra,a5,0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call a5 + 3<i64> (0)");
+        }
+
+        [Test]
+        public void RiscV_rw_jal()
+        {
+            Given_RiscVInstructions(0x9F4FF06F);    // jal\tzero,00000000000FF1F4
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto 000000000000F1F4");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr()
+        {
+            Given_RiscVInstructions(0x00078067u);    // jalr\tzero,a5,+00000000
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto a5");
+        }
+
+        [Test]
+        public void RiscV_rw_jr_ra()
+        {
+            Given_RiscVInstructions(0x8082);    // c.jr\tra
+            AssertCode(
+                "0|R--|0000000000010000(2): 1 instructions",
+                "1|R--|return (0,0)");
+        }
+
+        [Test]
+        public void RiscV_rw_jal_ra()
+        {
+            Given_RiscVInstructions(0x02C000EF);    // jal ra,0000B6A4
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call 000000000001002C (0)");
+        }
+
+        [Test]
+        public void RiscV_rw_lb()
+        {
+            Given_RiscVInstructions(0x87010183u);
+            AssertCode(
+               "0|L--|0000000000010000(4): 1 instructions",
+               "1|L--|gp = CONVERT(Mem0[sp + -1936<i64>:int8], int8, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_ld()
+        {
+            Given_HexString("833F850F");
+            AssertCode(     // ld	t6,0xF8(a0)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t6 = Mem0[a0 + 248<i64>:word64]");
+        }
+
+        [Test]
+        public void RiscV_rw_lui()
+        {
+            Given_RiscVInstructions(0x000114B7u);   // lui s1,0x00000011<32>
+            AssertCode(
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|s1 = 0x11000<64>");
+        }
+
+        [Test]
+        public void RiscV_rw_lh()
+        {
+            Given_RiscVInstructions(0x03131083u);   // lh
+            AssertCode(
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|ra = CONVERT(Mem0[t1 + 49<i64>:int16], int16, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_lhu()
+        {
+            Given_HexString("835D4162");
+            AssertCode(     // lhu	s11,0x624(sp)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = CONVERT(Mem0[sp + 1572<i64>:uint16], uint16, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_lbu()
+        {
+            Given_RiscVInstructions(0x00094703u);    // lbu\ta4,s2,+00000000
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = CONVERT(Mem0[s2:byte], byte, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_lr_d()
+        {
+            Given_HexString("2FB10114");
+            AssertCode(     // lr.d.aq	sp,gp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|sp = __load_reserved<word64>(&Mem0[gp:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_lr_w()
+        {
+            Given_HexString("AFAB1715");
+            AssertCode(     // lr.w.aq	s7,a5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s7 = __load_reserved<word64>(&Mem0[a5:word32])");
+        }
+
+        [Test]
+        public void RiscV_rw_lw()
+        {
+            Given_HexString("03AA897E");
+            AssertCode(     // lw	s4,0x7E8(s3)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s4 = CONVERT(Mem0[s3 + 2024<i64>:int32], int32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_lwu()
+        {
+            Given_RiscVInstructions(0x00446703u);    // lwu\ta4,s0,+00000004
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = CONVERT(Mem0[s0 + 4<i64>:uint32], uint32, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_li()
+        {
+            Given_RiscVInstructions(0x00004385);    // c.li\tt2,00000001
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|t2 = 1<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_mul()
+        {
+            Given_HexString("B387D702");
+            AssertCode(     // mul	a5,a5,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = a5 * a3");
+        }
+
+        [Test]
+        public void RiscV_rw_mulh()
+        {
+            Given_HexString("B397E702");
+            AssertCode(     // mulh	a5,a5,a4
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = a5 *s128 a4",
+                "2|L--|a5 = SLICE(v5, word64, 64)");
+        }
+
+        [Test]
+        public void RiscV_rw_mulhsu()
+        {
+            Given_HexString("332E0103");
+            AssertCode(     // mulhsu	t3,sp,a6
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = sp *s128 a6",
+                "2|L--|t3 = SLICE(v6, word64, 64)");
+        }
+
+        [Test]
+        public void RiscV_rw_mulhu()
+        {
+            Given_HexString("33B7C502");
+            AssertCode(     // mulhu	a4,a1,a2
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = a1 *u128 a2",
+                "2|L--|a4 = SLICE(v6, word64, 64)");
+        }
+
+        [Test]
+        public void RiscV_rw_mulw()
+        {
+            Given_HexString("BB8E2802");
+            AssertCode(     // mulw	t4,a7,sp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t4 = CONVERT(SLICE(a7 * sp, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_mret()
+        {
+            Given_HexString("73002030");
+            AssertCode(     // mret
+                "0|R--|0000000000010000(4): 2 instructions",
+                "1|L--|__mret()",
+                "2|R--|return (0,0)");
+        }
+
+        [Test]
+        public void RiscV_rw_or()
+        {
+            Given_RiscVInstructions(0x01846433u);    // or\ts0,s0,s8
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s0 = s0 | s8");
+        }
+
+        [Test]
+        public void RiscV_rw_ori()
+        {
+            Given_HexString("13670B40");
+            AssertCode(     // ori	a4,s6,0x400
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = s6 | 1024<i64>");
+        }
+
+        [Test]
+        public void RiscV_rw_pause()
+        {
+            Given_HexString("0F000001");
+            AssertCode(     // pause
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|__pause()");
+        }
+
+        [Test]
+        public void RiscV_rw_rem()
+        {
+            Given_HexString("33E7E402");
+            AssertCode(     // rem	a4,s1,a4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = s1 %s a4");
+        }
+
+        [Test]
+        public void RiscV_rw_remu()
+        {
+            Given_HexString("3377C702");
+            AssertCode(     // remu	a4,a4,a2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = a4 %u a2");
+        }
+
+        [Test]
+        public void RiscV_rw_remuw()
+        {
+            Given_RiscVInstructions(0x02C8783B);    // remuw\ta6,a6,a2
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a6 = CONVERT(SLICE(a6 %u a2, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_remw()
+        {
+            Given_RiscVInstructions(0x02D7E6BB);    // remw\ta3,a5,a3
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = CONVERT(SLICE(a5 %s a3, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_sb()
+        {
+            Given_HexString("A30AF7D2");
+            AssertCode(     // sb	a5,-0x2CB(a4)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[a4 + -715<i64>:byte] = SLICE(a5, byte, 0)");
+        }
+
+        [Test]
+        public void RiscV_rw_sc_d()
+        {
+            Given_HexString("AFBA3C1B");
+            AssertCode(     // sc.d.rl	s5,s9,s3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s5 = __store_conditional<word64>(s3, &Mem0[s9:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_sc_w()
+        {
+            Given_HexString("AFADE31C");
+            AssertCode(     // sc.w.aq	s11,t2,a4
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = __store_conditional<word32>(a4, &Mem0[t2:word32])",
+                "2|L--|s11 = CONVERT(v6, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_sd()
+        {
+            Given_RiscVInstructions(0x19513423u);    // sd\ts5,sp,392
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[sp + 392<i64>:word64] = s5");
+        }
+
+        [Test]
+        public void RiscV_rw_sh()
+        {
+            Given_HexString("2396A47E");
+            AssertCode(     // sh	a0,0x7EC(s1)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[s1 + 2028<i64>:word16] = SLICE(a0, word16, 0)");
+        }
+
+        [Test]
+        public void RiscV_rw_sw()
+        {
+            Given_HexString("2320217F");
+            AssertCode(     // sw	s2,0x7E0(sp)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[sp + 2016<i64>:word32] = SLICE(s2, word32, 0)");
+        }
+
+        [Test]
+        public void RiscV_rw_sub()
+        {
+            Given_HexString("B38D6B40");
+            AssertCode(     // sub	s11,s7,t1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = s7 - t1");
+        }
+
+        [Test]
+        public void RiscV_rw_subw()
+        {
+            Given_RiscVInstructions(0x40F686BBu);    // subw\ta3,a3,a5
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = CONVERT(SLICE(a3 - a5, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_srai()
+        {
+            Given_HexString("13DCFD41");
+            AssertCode(     // srai	s8,s11,0x1F
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s8 = s11 >> 0x1F<u32>");
+        }
+
+        [Test]
+        public void RiscV_rw_srli()
+        {
+            Given_HexString("13DC7C01");
+            AssertCode(     // srli	s8,s9,0x17
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s8 = s9 >>u 0x17<u32>");
+        }
+
+        [Test]
+        public void RiscV_rw_srliw()
+        {
+            Given_RiscVInstructions(0x0017D71Bu);    // srliw\ta4,a5,00000001
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = CONVERT(SLICE(a5, word32, 0) >>u 1<i32>, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_sinval_vma()
+        {
+            Given_HexString("73800717");
+            AssertCode(     // sinval.vma	a5,a6
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sinval_vma<word64,word64>(a5, a6)");
+        }
+
+        [Test]
+        public void RiscV_rw_sll()
+        {
+            Given_HexString("B39D6B00");
+            AssertCode(     // sll	s11,s7,t1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = s7 << t1");
+        }
+
+        [Test]
+        public void RiscV_rw_slli()
+        {
+            Given_HexString("13150B01");
+            AssertCode(     // slli	a0,s6,0x10
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = s6 << 0x10<u32>");
+        }
+
+        [Test]
+        public void RiscV_rw_slliw()
+        {
+            Given_HexString("1B9FF001");
+            AssertCode(     // slliw	t5,ra,0x1F
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t5 = CONVERT(SLICE(ra, word32, 0) << 0x1F<64>, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_sllw()
+        {
+            Given_HexString("3B9F2000");
+            AssertCode(     // sllw	t5,ra,sp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t5 = CONVERT(SLICE(ra, word32, 0) << sp, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_sltiu()
+        {
+            Given_RiscVInstructions(0x0014B493);	// sltiu	s1,s1,+00000001
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s1 = CONVERT(s1 <u 1<i64>, bool, word64)");
+        }
+
+        [Test]
         public void RiscV_rw_slti()
         {
             Given_HexString("93A72700");
             AssertCode(     // slti	a5,a5,+00000002
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|a5 = CONVERT(a5 < 2<i64>, bool, word64)");
-        }
-
-        [Test]
-        public void RiscV_rw_sret()
-        {
-            Given_UInt32s(0b0001000_00010_00000_000_00000_1110011);
-            AssertCode( // sret
-                "0|R--|0000000000010000(4): 2 instructions",
-                "1|L--|__sret()",
-                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1830,15 +2920,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // srlw     a2,a3,a5
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|a2 = CONVERT(SLICE(a3, word32, 0) >>u a5, word32, int64)");
-        }
-
-        [Test]
-        public void RiscV_rw_fsd()
-        {
-            Given_RiscVInstructions(0x639435A7);    // fsd	fs9,12632(s0)
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|Mem0[s0 + 1579<i64>:real64] = fs9");
         }
 
         [Test]
@@ -1869,6 +2950,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_sraiw()
+        {
+            Given_HexString("1BD0C041");
+            AssertCode(     // sraiw	zero,ra,0x1C
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|0<64> = CONVERT(SLICE(ra, word32, 0) >> 0x1C<u32>, word32, int64)");
+        }
+
+        [Test]
         public void RiscV_rw_sraw()
         {
             Given_HexString("BB 5B D5 41");
@@ -1878,52 +2968,58 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_fmsub_s()
+        public void RiscV_rw_sfence_vm_zero()
         {
-            Given_32bitFloat();
-            Given_RiscVInstructions(0x6118B5C7);    // fmsub.s\tfa1,fa7,fa7,fa2
-            AssertCode(
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fa1 = fa7 * fa7 - fa2");
+            Given_HexString("73004010");
+            AssertCode( // sfence.vm	zero
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_vm<word64>(0<64>)");
         }
 
         [Test]
-        public void RiscV_rw_fmul_q()
+        public void RiscV_rw_sfence_vm()
         {
-            Given_128bitFloat();
-            Given_HexString("53046316");
-            AssertCode(     // fmul.q	fs0,ft6,ft6
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fs0 = ft6 * ft6");
+            Given_HexString("73804610");
+            AssertCode(     // sfence.vm	a3
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_vm<word64>(a3)");
         }
 
         [Test]
-        public void RiscV_rw_fmul_s()
+        public void RiscV_rw_sfence_vma()
         {
-            Given_32bitFloat();
-            Given_HexString("53749510");
-            AssertCode(     // fmul.s	fs0,fa0,fs1
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|fs0 = fa0 * fs1");
+            Given_HexString("73000012");
+            AssertCode(     // sfence.vma	zero,(zero)
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_vma<word64,word64>(0<64>, 0<64>)");
         }
 
         [Test]
-        public void RiscV_rw_fnmsub_s()
+        public void RiscV_rw_sfence_w_inval()
         {
-            Given_32bitFloat();
-            Given_RiscVInstructions(0x4189004B);    // fnmsub.s\tft0,fs2,fs8,fs0
-            AssertCode(
-                "0|L--|00010000(4): 1 instructions",
-                "1|L--|ft0 = -(fs2 * fs8) + fs0");
+            Given_HexString("73000018");
+            AssertCode(     // sfence.w.inval
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_w_inval()");
         }
 
         [Test]
-        public void RiscV_rw_remw()
+        public void RiscV_rw_sfence_inval_ir()
         {
-            Given_RiscVInstructions(0x02D7E6BB);    // remw\ta3,a5,a3
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = CONVERT(SLICE(a5 %s a3, word32, 0), word32, int64)");
+            Given_HexString("73001018");
+            AssertCode(     // sfence.inval.ir
+                "0|S--|0000000000010000(4): 1 instructions",
+                "1|L--|__sfence_inval_ir()");
+        }
+
+        [Test]
+        public void RiscV_rw_sret()
+        {
+            Given_HexString("73002010");
+            AssertCode(     // sret
+                "0|R--|0000000000010000(4): 2 instructions",
+                "1|L--|__sret()",
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1935,192 +3031,22 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|__wait_for_interrupt()");
         }
 
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-
-
-
         [Test]
-        public void RiscV_rw_sfence_vma()
+        public void RiscV_rw_xor()
         {
-            Given_UInt32s(0b0001001_10101_11011_000_00000_1110011);
-            AssertCode(
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__sfence_vma<word64,word64>(s11, s5)");
+            Given_HexString("33CFCF01");
+            AssertCode(     // xor	t5,t6,t3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t5 = t6 ^ t3");
         }
 
         [Test]
-        public void RiscV_rw_sfence_w_inval()
+        public void RiscV_rw_xori()
         {
-            Given_UInt32s(0b0001100_00000_00000_000_00000_1110011);
-            AssertCode( // sfence.w.inval
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__sfence_w_inval()");
+            Given_HexString("1344D33F");
+            AssertCode(     // xori	s0,t1,0x3FD
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s0 = t1 ^ 1021<i64>");
         }
-
-        [Test]
-        public void RiscV_rw_sfence_inval_ir()
-        {
-            Given_UInt32s(0b0001100_00001_00000_000_00000_1110011);
-            AssertCode( // sfence.inval.ir
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__sfence_inval_ir()");
-        }
-
-        [Test]
-        public void RiscV_rw_hfence_vvma()
-        {
-            Given_UInt32s(0b0010001_10101_10001_000_00000_1110011);
-            AssertCode( // hfence.vvma
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hfence_vvma<word64,word64>(a7, s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hfence_gvma()
-        {
-            Given_UInt32s(0b0110001_10101_10001_000_00000_1110011);
-            AssertCode( // hfence.gvma
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hfence_gvma<word64,word64>(a7, s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hinval_vvma()
-        {
-            Given_UInt32s(0b0010011_10101_10001_000_00000_1110011);
-            AssertCode( // hinval.vvma
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hfence_vvma<word64,word64>(a7, s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hinval_gvma()
-        {
-            Given_UInt32s(0b0110011_10101_10001_000_00000_1110011);
-            AssertCode( // hinval.gvma
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hfence_gvma<word64,word64>(a7, s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_b()
-        {
-            Given_UInt32s(0b0110000_00000_10001_100_11011_1110011);
-            AssertCode(     // hlv.b	s11,(a7)
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<int8>(&Mem0[a7:int8])");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_bu()
-        {
-            Given_UInt32s(0b0110000_00001_10001_100_11011_1110011);
-            AssertCode(     // hlv.bu	s11,(a7)
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<byte>(&Mem0[a7:uint8])");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_h()
-        {
-            Given_UInt32s(0b0110010_00000_10001_100_11011_1110011);
-            AssertCode( // hlv.h
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<int16>(&Mem0[a7:int16])");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_hu()
-        {
-            Given_UInt32s(0b0110010_00001_10001_100_11011_1110011);
-            AssertCode( // hlv.hu
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<word16>(&Mem0[a7:uint16])");
-        }
-
-
-        [Test]
-        public void RiscV_rw_hlv_w()
-        {
-            Given_UInt32s(0b0110100_00000_10001_100_11011_1110011);
-            AssertCode( // hlv.w
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<int32>(&Mem0[a7:int32])");
-        }
-
-
-        [Test]
-        public void RiscV_rw_hlvx_hu()
-        {
-            Given_UInt32s(0b0110010_00011_10001_100_11011_1110011);
-            AssertCode( // hlvx.hu
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_exe_from_VM<word16>(&Mem0[a7:uint16])");
-        }
-
-        [Test]
-        public void RiscV_rw_hlvx_wu()
-        {
-            Given_UInt32s(0b0110100_00011_10001_100_11011_1110011);
-            AssertCode( // hlvx.wu
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_exe_from_VM<word32>(&Mem0[a7:uint32])");
-        }
-
-        [Test]
-        public void RiscV_rw_hsv_b()
-        {
-            Given_UInt32s(0b0110001_10101_10001_100_00000_1110011);
-            AssertCode( // hsv.b
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hypervisor_store_in_VM<byte>(&Mem0[a7:byte], s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hsv_h()
-        {
-            Given_UInt32s(0b0110011_10101_10001_100_00000_1110011);
-            AssertCode( // hsv.h
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hypervisor_store_in_VM<word16>(&Mem0[a7:word16], s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hsv_w()
-        {
-            Given_UInt32s(0b0110101_10101_10001_100_00000_1110011);
-            AssertCode( // hsv.w
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hypervisor_store_in_VM<word32>(&Mem0[a7:word32], s5)");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_wu()
-        {
-            Given_UInt32s(0b0110100_00001_10001_100_11011_1110011);
-            AssertCode( // hlv.wu
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<word32>(&Mem0[a7:uint32])");
-        }
-
-        [Test]
-        public void RiscV_rw_hlv_d()
-        {
-            Given_UInt32s(0b0110110_00000_10001_100_11011_1110011);
-            AssertCode( // hlv.d
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|s11 = __hypervisor_load_from_VM<word64>(&Mem0[a7:uint64])");
-        }
-
-        [Test]
-        public void RiscV_rw_hsv_d()
-        {
-            Given_UInt32s(0b0110111_10101_10001_100_00000_1110011);
-            AssertCode( // hsv.d
-                "0|S--|0000000000010000(4): 1 instructions",
-                "1|L--|__hypervisor_store_in_VM<word64>(&Mem0[a7:word64], s5)");
-        }
-    }
+   }
 }
