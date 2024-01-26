@@ -143,6 +143,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_lhs__: RewriteLoadExt(PrimitiveType.Int16); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadExt(PrimitiveType.UInt16); break;
+                case Mnemonic.bt_lwst____:
                 case Mnemonic.bn_lwz:
                 case Mnemonic.bg_lwz: RewriteLoadExt(PrimitiveType.Word32); break;
                 case Mnemonic.bg_mfspr1__: RewriteMfspr(true); break;

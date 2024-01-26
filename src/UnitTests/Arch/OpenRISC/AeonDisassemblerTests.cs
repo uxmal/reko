@@ -461,6 +461,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_lwst____()
+        {
+            AssertCode("bt.lwst??\tr4,0x14(r1)", "80 8B");
+        }
+
+        [Test]
         public void AeonDis_bn_lwz()
         {
             // confirmed with source
