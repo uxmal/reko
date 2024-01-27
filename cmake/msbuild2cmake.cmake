@@ -42,7 +42,7 @@ function(check_msys output)
 	set(${output} FALSE PARENT_SCOPE)
 endfunction()
 
-function(clean_project name path build_dir)
+function(clean_project build_dir)
 	if(EXISTS ${build_dir})
 		message(STATUS "Removing ${build_dir}")
 		file(REMOVE_RECURSE ${build_dir})
