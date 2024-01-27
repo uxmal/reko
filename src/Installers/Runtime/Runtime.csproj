@@ -23,8 +23,24 @@
     <Message Importance="high" Text="NuspecProperties: $(NuspecProperties)" />
   </Target>
 
-  <Target Name="SetNuspecFiles" BeforeTargets="GenerateNuspec">
+  <ItemGroup>
+    <ExtProperties Include="Configuration=$(Configuration)" />
+    <ExtProperties Include="Platform=$(Platform)" />    
+  </ItemGroup>
+  <PropertyGroup>
+    <ExtProject>$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj</ExtProject>
+    <ExtTarget>update_runtime_nuspec</ExtTarget>
+  </PropertyGroup>
+
+  <Target Name="CmakeClean" AfterTargets="Clean">
+    <ItemGroup>
+      <ExtProperties Include="Action=clean" />
+    </ItemGroup>
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
+  </Target>
+
+  <Target Name="CmakeCompile" BeforeTargets="GenerateNuspec">
     <Message Importance="high" Text="Updating nuspec &quot;$(NuspecFile)&quot;..." />
-    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="update_runtime_nuspec" />
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
   </Target>
 </Project>

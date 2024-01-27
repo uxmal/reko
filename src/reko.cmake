@@ -18,11 +18,17 @@ if("${TARGET}" STREQUAL "git_hash")
 endif()
 
 
-invoke_cmake(
-	BUILD_DIR ${CMAKE_BINARY_DIR}/build/${TARGET}
-	DIRECTORY ${REKO_SRC}/../
-	TARGET ${TARGET}
-	GENERATOR ${REKO_COMPILER}
-	# variables needed by CMakeLists.txt, that must be forwarded
-	EXTRA_ARGUMENTS ${cmake_arguments}	
-)
+set(BUILD_DIR ${CMAKE_BINARY_DIR}/build/${TARGET})
+
+if(ACTION STREQUAL clean)
+	clean_project(${BUILD_DIR})
+else()
+	invoke_cmake(
+		BUILD_DIR ${BUILD_DIR}
+		DIRECTORY ${REKO_SRC}/../
+		TARGET ${TARGET}
+		GENERATOR ${REKO_COMPILER}
+		# variables needed by CMakeLists.txt, that must be forwarded
+		EXTRA_ARGUMENTS ${cmake_arguments}	
+	)
+endif()

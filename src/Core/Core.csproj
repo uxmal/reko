@@ -36,8 +36,25 @@
   </ItemGroup>
 
   <!-- Regenerates CustomAssemblyInfoFile, if the git hash changed -->
-  <Target Name="UpdateGitHash" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);CustomAssemblyInfoFile=$(CustomAssemblyInfoFile)" Targets="git_hash" />
+  <ItemGroup>
+    <ExtProperties Include="Configuration=$(Configuration)" />
+    <ExtProperties Include="Platform=$(Platform)" />   
+    <ExtProperties Include="CustomAssemblyInfoFile=$(CustomAssemblyInfoFile)" /> 
+  </ItemGroup>
+  <PropertyGroup>
+    <ExtProject>$(ProjectDir)..\BuildTargets\BuildTargets.csproj</ExtProject>
+    <ExtTarget>git_hash</ExtTarget>
+  </PropertyGroup>
+
+  <Target Name="CmakeClean" AfterTargets="Clean">
+    <ItemGroup>
+      <ExtProperties Include="Action=clean" />
+    </ItemGroup>
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
+  </Target>
+
+  <Target Name="CmakeCompile" BeforeTargets="CoreCompile">
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
   </Target>
 
 

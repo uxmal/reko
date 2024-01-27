@@ -6,8 +6,6 @@ include(msbuild2cmake)
 set(BUILD_DIR ${CMAKE_BINARY_DIR}/build/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE})
 
 if(ACTION STREQUAL "clean")
-	message(STATUS "Cleaning native libraries")
-	message(STATUS "deleting ${BUILD_DIR}")
 	clean_project(${BUILD_DIR})
 else()
 	message(STATUS "Building native libraries")

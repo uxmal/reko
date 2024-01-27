@@ -168,6 +168,7 @@ message("=> Build Type: ${CMAKE_BUILD_TYPE}")
 message("=> Generator : ${REKO_COMPILER}")
 message("=> Platform  : ${REKO_PLATFORM}")
 message("=> Target    : ${TARGET}")
+message("=> Action    : ${ACTION}")
 message("")
 
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR}/../src)
