@@ -29,9 +29,9 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.MCore
 {
-    using Decoder = Reko.Core.Machine.Decoder<MCoreDisassembler, Mnemonic, MCoreInstruction>;
+    using Decoder = Decoder<MCoreDisassembler, Mnemonic, MCoreInstruction>;
 
-    public class MCoreDisassembler : Reko.Core.Machine.DisassemblerBase<MCoreInstruction, Mnemonic>
+    public class MCoreDisassembler : DisassemblerBase<MCoreInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 

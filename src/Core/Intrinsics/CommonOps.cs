@@ -195,15 +195,24 @@ namespace Reko.Core.Intrinsics
             .Void();
 
         // __syscall overloads
-        // For system calls with no arguments.
+
+        /// <summary>
+        /// System call with no arguments.
+        /// </summary>
         public static readonly IntrinsicProcedure Syscall_0 = new IntrinsicBuilder("__syscall", true)
             .Void();
-        // For system calls with one argument.
+
+        /// <summary>
+        /// System call with one argument.
+        /// </summary>
         public static readonly IntrinsicProcedure Syscall_1 = new IntrinsicBuilder("__syscall", true)
             .GenericTypes("T")
             .Param("T")
             .Void();
-        // For system calls with two arguments.
+
+        /// <summary>
+        /// System call with two arguments.
+        /// </summary>
         public static readonly IntrinsicProcedure Syscall_2 = new IntrinsicBuilder("__syscall", true)
             .GenericTypes("T1","T2")
             .Param("T1")

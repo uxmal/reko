@@ -123,6 +123,7 @@
 <file src="../../Arch/Blackfin/bin/$Configuration$/net6.0/Reko.Arch.Blackfin.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/CompactRisc/bin/$Configuration$/net6.0/Reko.Arch.CompactRisc.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Cray/bin/$Configuration$/net6.0/Reko.Arch.Cray.dll" target="lib\netstandard2.0" />
+<file src="../../Arch/Cray/bin/$Configuration$/net6.0/Reko.Arch.CSky.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/H8/bin/$Configuration$/net6.0/Reko.Arch.H8.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/i8051/bin/$Configuration$/net6.0/Reko.Arch.i8051.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/IA64/bin/$Configuration$/net6.0/Reko.Arch.IA64.dll" target="lib\netstandard2.0" />

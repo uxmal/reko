@@ -754,7 +754,8 @@ namespace Reko.Arch.RiscV
                         rv32: FpInstr64(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
                         rv64: FpInstr64(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
                         rv128: Instr(Mnemonic.c_lqsp, R_nz(7), ImmSh(4, (2, 4),(12, 1),(6,1)))),
-                    Instr(Mnemonic.c_lwsp, R_nz(7), ImmSh(2, (12,1),(2,2),(4,3))),
+                    //Instr(Mnemonic.c_lwsp, R_nz(7), ImmSh(2, (12,1),(2,2),(4,3))),
+                    Instr(Mnemonic.c_lwsp, R_nz(7), ImmSh(2, (2,2),(12,1),(4,3))),
                     Instr(Mnemonic.c_ldsp, R_nz(7), ImmSh(3, (12,1),(2,3),(5,2))),
 
                     new MaskDecoder(12, 1,  "",

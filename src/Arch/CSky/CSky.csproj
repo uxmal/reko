@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AssemblyName>Reko.Arch.CSky</AssemblyName>
+		<RootNamespace>Reko.Arch.CSky</RootNamespace>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\Core.csproj" />
+	</ItemGroup>
+
+</Project>

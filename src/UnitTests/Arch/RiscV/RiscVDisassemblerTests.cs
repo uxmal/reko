@@ -519,6 +519,13 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_c_lwsp_regression()
+        {
+            //$NOTE: @gregoral has an incoming fix for this.
+            AssertCode("c.lwsp\tra,0xD4", 0x40DEu);
+        }
+
+        [Test]
         public void RiscV_dasm_c_mv()
         {
             AssertCode("c.mv\ts0,s3", 0x844E);

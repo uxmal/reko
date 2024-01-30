@@ -23,6 +23,7 @@
         <var id="var.Cil.TargetPath" >$SolutionDir$/Arch/Cil/$TargetDir$/Reko.Arch.Cil.dll</var>
         <var id="var.CompactRisc.TargetPath" >$SolutionDir$/Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >$SolutionDir$/Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
+        <var id="var.CSky.TargetPath" >$SolutionDir$/Arch/CSky/$TargetDir$/Reko.Arch.CSky.dll</var>
         <var id="var.Etrax.TargetPath" >$SolutionDir$/Arch/Etrax/$TargetDir$/Reko.Arch.Etrax.dll</var>
         <var id="var.Fujitsu.TargetPath" >$SolutionDir$/Arch/Fujitsu/$TargetDir$/Reko.Arch.Fujitsu.dll</var>
         <var id="var.H8.TargetPath" >$SolutionDir$/Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>

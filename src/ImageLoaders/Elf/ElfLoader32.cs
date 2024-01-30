@@ -133,6 +133,9 @@ namespace Reko.ImageLoaders.Elf
                 options[ProcessorOption.WordSize] = "32";
                 RiscVElf.SetOptions((RiscVFlags) Header.e_flags, options);
                 break;
+            case ElfMachine.EM_CSKY:
+                arch = "csky";
+                break;
             default:
                return base.CreateArchitecture(endianness);
             }
