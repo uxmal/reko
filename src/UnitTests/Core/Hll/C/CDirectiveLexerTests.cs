@@ -416,5 +416,25 @@ B");
             Assert.AreEqual(CTokenType.RParen, lexer.Read().Type);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
+
+        [Test]
+        public void CDirectiveLexer_reko_macro()
+        {
+            Lex(
+                "#ifdef __REKO_DECOMPILER__\r\n" +
+                "# define result1 good1\r\n" +
+                "#else\r\n" +
+                "# define result1 bad1\r\n" +
+                "#endif\r\n" +
+                "#ifndef __REKO_DECOMPILER__\r\n" +
+                "# define result2 bad2\r\n" +
+                "#else\r\n" +
+                "# define result2 good2\r\n" +
+                "#endif\r\n" +
+                "result1 result2");
+            Assert.AreEqual("good1", lexer.Read().Value);
+            Assert.AreEqual("good2", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
     }
 }
