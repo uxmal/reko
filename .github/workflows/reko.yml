@@ -24,9 +24,9 @@ jobs:
           - os: windows-latest
             build_config: Release
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
     - name: Install dependencies
@@ -65,7 +65,7 @@ jobs:
         BUILD_CONFIG: ${{ matrix.build_config }}
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: reko-${{ matrix.os }}
         if-no-files-found: warn
