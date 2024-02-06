@@ -58,14 +58,14 @@ namespace Reko.Arch.RiscV
         private void RewriteAddi16sp()
         {
             var dst = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
             m.Assign(dst, m.IAddS(dst, imm));
         }
 
         private void RewriteAddi4spn()
         {
             var src = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            var imm = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = RewriteOp(0);
             m.Assign(dst, m.IAddS(src, imm));
         }

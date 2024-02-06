@@ -73,6 +73,7 @@ namespace Reko.Arch.RiscV
         c_fsd,
         c_fsdsp,
         c_fsw,
+        c_fswsp,
         c_j,
         c_jal,
         c_jalr,

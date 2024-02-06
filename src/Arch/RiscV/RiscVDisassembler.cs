@@ -563,6 +563,13 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        // use SP / StackRegister register
+        private static bool Rsp(uint instr, RiscVDisassembler dasm)
+        {
+            dasm.state.ops.Add(dasm.arch.StackRegister);
+            return true;
+        }
+
         /// <summary>
         /// If the LR register is used, mark the instruction as 'return'.
         /// </summary>
@@ -697,6 +704,12 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return Imm(masks);
+        }
+
+        private static Mutator<RiscVDisassembler> Imm(Bitfield[] masks)
+        {
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u);
@@ -712,6 +725,12 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return ImmSh(sh, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> ImmSh(int sh, Bitfield[] masks)
+        {
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u) << sh;
@@ -726,6 +745,12 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return ImmB(masks);
+        }
+
+        private static Mutator<RiscVDisassembler> ImmB(Bitfield[] masks)
+        {
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u);
@@ -740,13 +765,8 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
-            return (u, d) =>
-            {
-                var sImm = Bitfield.ReadSignedFields(masks, u);
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.NaturalSignedInteger, sImm)));
-                return true;
-            };
+
+            return ImmS(masks);
         }
 
         private static Mutator<RiscVDisassembler> ImmS(Bitfield[] masks)
@@ -766,6 +786,12 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return ImmShS(sh, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> ImmShS(int sh, Bitfield[] masks)
+        {
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadSignedFields(masks, u) << sh;
@@ -785,6 +811,12 @@ namespace Reko.Arch.RiscV
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return PcRel(sh, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> PcRel(int sh, Bitfield[] masks)
+        {
             return (u, d) =>
             {
                 var sImm = Bitfield.ReadSignedFields(masks, u) << sh;
@@ -797,10 +829,17 @@ namespace Reko.Arch.RiscV
         // Memory operand format, where offset is not scaled
         private static Mutator<RiscVDisassembler> Mem(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
-            var baseRegMask = new Bitfield(regOffset, 5);
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return Mem(dt, regOffset, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> Mem(PrimitiveType dt, int regOffset, Bitfield[] masks)
+        {
+            var baseRegMask = new Bitfield(regOffset, 5);
+
             return (u, d) =>
             {
                 var uOffset = (int) Bitfield.ReadFields(masks, u);
@@ -818,10 +857,17 @@ namespace Reko.Arch.RiscV
         // Memory operand format, where the _signed_ offset is not scaled
         private static Mutator<RiscVDisassembler> MemSignedOffset(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
-            var baseRegMask = new Bitfield(regOffset, 5);
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return MemSignedOffset(dt, regOffset, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> MemSignedOffset(PrimitiveType dt, int regOffset, Bitfield[] masks)
+        {
+            var baseRegMask = new Bitfield(regOffset, 5);
+
             return (u, d) =>
             {
                 var uOffset = (int) Bitfield.ReadSignedFields(masks, u);
@@ -839,10 +885,17 @@ namespace Reko.Arch.RiscV
         // Memory operand format, where offset is scaled by the register size
         private static Mutator<RiscVDisassembler> MemScaledOffset(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
-            var baseRegField = new Bitfield(regOffset, 5);
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return MemScaledOffset(dt, regOffset, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> MemScaledOffset(PrimitiveType dt, int regOffset, Bitfield[] masks)
+        {
+            var baseRegField = new Bitfield(regOffset, 5);
+
             return (u, d) =>
             {
                 var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
@@ -859,10 +912,16 @@ namespace Reko.Arch.RiscV
         // Memory operand format used for compressed instructions. Offset is unsigned.
         private static Mutator<RiscVDisassembler> Memc(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
-            var baseRegMask = new Bitfield(regOffset, 3);
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
                 .ToArray();
+
+            return Memc(dt, regOffset, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> Memc(PrimitiveType dt, int regOffset, Bitfield[] masks)
+        {
+            var baseRegMask = new Bitfield(regOffset, 3);
             return (u, d) =>
             {
                 var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
@@ -871,6 +930,29 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
+                    uOffset));
+                return true;
+            };
+        }
+
+        private static Mutator<RiscVDisassembler> MemcSpRel(PrimitiveType dt, params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+
+            return MemcSpRel(dt, masks);
+        }
+
+        private static Mutator<RiscVDisassembler> MemcSpRel(PrimitiveType dt, Bitfield[] masks)
+        {
+            return (u, d) =>
+            {
+                var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
+
+                d.state.ops.Add(new MemoryOperand(
+                    dt,
+                    d.arch.StackRegister,
                     uOffset));
                 return true;
             };

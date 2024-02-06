@@ -61,6 +61,24 @@ namespace Reko.UnitTests.Arch.RiscV
             });
         }
 
+        private void Given_64bit()
+        {
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { ProcessorOption.WordSize, "64" },
+                { "FloatAbi", 64 }
+            });
+        }
+
+        private void Given_128bit()
+        {
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { ProcessorOption.WordSize, "128" },
+                { "FloatAbi", 128 }
+            });
+        }
+
         private void Given_ZfaExtension(int floatSize)
         {
             arch.LoadUserOptions(new Dictionary<string, object>
@@ -443,7 +461,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_sdsp()
         {
-            AssertCode("c.sdsp\ts3,0x48", 0xE4CE);
+            AssertCode("c.sdsp\ts3,0x48(sp)", 0xE4CE);
         }
 
         [Test]
@@ -503,7 +521,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_swsp()
         {
-            AssertCode("c.swsp\ta0,0x4", 0xC22A);
+            AssertCode("c.swsp\ta0,0x4(sp)", 0xC22A);
         }
 
         [Test]
@@ -515,14 +533,14 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_lwsp()
         {
-            AssertCode("c.lwsp\ta0,0x4", 0x00004512);
+            AssertCode("c.lwsp\ta0,0x4(sp)", 0x00004512);
         }
 
         [Test]
         public void RiscV_dasm_c_lwsp_regression()
         {
             //$NOTE: @gregoral has an incoming fix for this.
-            AssertCode("c.lwsp\tra,0xD4", 0x40DEu);
+            AssertCode("c.lwsp\tra,0xD4(sp)", 0x40DEu);
         }
 
         [Test]
@@ -546,7 +564,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_addi16sp()
         {
-            AssertCode("c.addi16sp\t0xD0", 0x6169);
+            AssertCode("c.addi16sp\tsp,0xD0", 0x6169);
         }
 
         [Test]
@@ -588,7 +606,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_fldsp()
         {
-            AssertCode("c.fldsp\tfa3,0x228", 0x00003436);
+            AssertCode("c.fldsp\tfs0,0x168(sp)", 0x00003436);
         }
 
         [Test]
@@ -618,7 +636,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_addi4spn()
         {
-            AssertCode("c.addi4spn\ta5,0x20", 0x0000101C);
+            AssertCode("c.addi4spn\ta5,sp,0x20", 0x0000101C);
         }
 
         [Test]
@@ -666,7 +684,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_ldsp()
         {
-            AssertCode("c.ldsp\ts7,0x8", 0x00006BA2);
+            AssertCode("c.ldsp\ts7,0x8(sp)", 0x00006BA2);
         }
 
         [Test]
@@ -722,6 +740,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_fnmsub_q()
         {
+            Given_128bit();
             AssertCode("fnmsub.q\tft0,fs2,fs8,fs0,rne", 0x4789004B);
         }
 
@@ -758,7 +777,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_c_fsdsp()
         {
-            AssertCode("c.fsdsp\tfs9,0x1C8", 0xA7E6);
+            AssertCode("c.fsdsp\tfs9,0x1C8(sp)", 0xA7E6);
         }
 
         [Test]
@@ -790,7 +809,6 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_sfence_vm()
         {
             AssertCode("sfence.vm\ta3", 0b0001000_00100_01101_000_00000_1110011);
-
         }
 
         [Test]
