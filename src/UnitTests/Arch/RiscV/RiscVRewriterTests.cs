@@ -133,8 +133,9 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x0087879Bu);    // addiw\ta5,a5,+00000008
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(CONVERT(a5, word64, word32) + 8<i32>, word32, int64)");
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v4 = SLICE(a5, word32, 0)",
+                "2|L--|a5 = CONVERT(v4 + 8<32>, word32, int64)");
         }
 
         [Test]
@@ -142,8 +143,9 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x00002301);    // c.addiw\tt1,00000000
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|t1 = CONVERT(SLICE(t1, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(2): 2 instructions",
+                "1|L--|v4 = SLICE(t1, word32, 0)",
+                "2|L--|t1 = CONVERT(v4, word32, int64)");
         }
 
         [Test]
@@ -151,8 +153,10 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_HexString("3B8F2000");
             AssertCode(     // addw	t5,ra,sp
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|t5 = CONVERT(CONVERT(ra, word64, word32) + sp, word32, int64)");
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v4 = SLICE(ra, word32, 0)",
+                "2|L--|v6 = SLICE(sp, word32, 0)",
+                "3|L--|t5 = CONVERT(v4 + v6, word32, int64)");
         }
 
         [Test]
@@ -444,8 +448,9 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = CONVERT(SLICE(s0 + 1<i64>, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(2): 2 instructions",
+                "1|L--|v4 = SLICE(s0, word32, 0)",
+                "2|L--|s0 = CONVERT(v4 + 1<32>, word32, int64)");
         }
 
         [Test]
@@ -471,8 +476,9 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = CONVERT(SLICE(s0 + -1<i64>, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(2): 2 instructions",
+                "1|L--|v4 = SLICE(s0, word32, 0)",
+                "2|L--|s0 = CONVERT(v4 + 0xFFFFFFFF<32>, word32, int64)");
         }
 
         [Test]
@@ -480,8 +486,10 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x00009FB5);    // c.addw\ta5,a3
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = CONVERT(SLICE(a5 + a3, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(2): 3 instructions",
+                "1|L--|v4 = SLICE(a5, word32, 0)",
+                "2|L--|v6 = SLICE(a3, word32, 0)",
+                "3|L--|a5 = CONVERT(v4 + v6, word32, int64)");
         }
 
         [Test]
@@ -771,8 +779,10 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x00009D1D);    // c.subw\ta0,a5
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a0 = CONVERT(SLICE(a0 - a5, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(2): 3 instructions",
+                "1|L--|v4 = SLICE(a0, word32, 0)",
+                "2|L--|v6 = SLICE(a5, word32, 0)",
+                "3|L--|a0 = CONVERT(v4 - v6, word32, int64)");
         }
 
         [Test]
@@ -3011,8 +3021,10 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Given_RiscVInstructions(0x40F686BBu);    // subw\ta3,a3,a5
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = CONVERT(SLICE(a3 - a5, word32, 0), word32, int64)");
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v4 = SLICE(a3, word32, 0)",
+                "2|L--|v6 = SLICE(a5, word32, 0)",
+                "3|L--|a3 = CONVERT(v4 - v6, word32, int64)");
         }
 
         [Test]
@@ -3051,3 +3063,4 @@ namespace Reko.UnitTests.Arch.RiscV
         }
    }
 }
+

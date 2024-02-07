@@ -107,13 +107,6 @@ namespace Reko.Arch.RiscV
             m.SideEffect(m.Fn(CommonOps.Syscall_0));
         }
 
-        private void RewriteFence()
-        {
-            var pred = RewriteOp(0);
-            var succ = RewriteOp(1);
-            m.SideEffect(m.Fn(fence_intrinsic, pred, succ));
-        }
-
         private void RewriteFenceI()
         {
             m.SideEffect(m.Fn(fence_i_intrinsic));

@@ -22,22 +22,26 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Collections.Generic;
 
 namespace Reko.Arch.RiscV
 {
     public class RiscVState : ProcessorState
     {
         private readonly RiscVArchitecture arch;
+        private readonly Dictionary<StorageDomain, Constant> values;
 
         public RiscVState(RiscVArchitecture arch)
         {
             this.arch = arch;
+            this.values = new Dictionary<StorageDomain, Constant>();
         }
 
         public RiscVState(RiscVState that) : base(that)
         {
             this.arch = that.arch;
             this.InstructionPointer = that.InstructionPointer;
+            this.values = new(that.values);
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -49,7 +53,9 @@ namespace Reko.Arch.RiscV
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            return InvalidConstant.Create(r.DataType);
+            if (!values.TryGetValue(r.Domain, out var value))
+                return InvalidConstant.Create(r.DataType);
+            return value;
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)
@@ -71,6 +77,7 @@ namespace Reko.Arch.RiscV
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
+            this.values[r.Domain] = v;
         }
     }
 }

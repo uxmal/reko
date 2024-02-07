@@ -70,19 +70,45 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.IAddS(src, imm));
         }
 
-        private void RewriteAddw()
+        /// <summary>
+        /// Rewriters an instruction that operates on 32-bit operands in a 64-bit 
+        /// processor.
+        /// </summary>
+        private void RewriteBinopW(BinaryOperator op, int iopLeft, int iopRight)
         {
-            var src1 = RewriteOp(1);
-            Expression src2;
-            if (instr.Operands[2] is ImmediateOperand imm2)
+            Expression src1;
+            var reg1 = (RegisterStorage) instr.Operands[iopLeft];
+            if (reg1.Number == 0)
             {
-                src2 = Constant.Int32(imm2.Value.ToInt32());
+                src1 = Constant.Word32(0);
             }
             else
             {
-                src2 = RewriteOp(2);
+                src1 = m.Slice(binder.EnsureRegister(reg1), PrimitiveType.Word32);
             }
-            var dst = RewriteOp(0);
+            var tmp1 = binder.CreateTemporary(src1.DataType);
+            m.Assign(tmp1, src1);
+            src1 = tmp1;
+
+            Expression src2;
+            if (instr.Operands[iopRight] is ImmediateOperand imm2)
+            {
+                var c = imm2.Value.ToInt32();
+                if (c < 0)
+                {
+                    op = Operator.ISub;
+                    c = -c;
+                }
+                src2 = Constant.Int32(c);
+            }
+            else
+            {
+                src2 = m.Slice(RewriteOp(iopRight), PrimitiveType.Word32);
+                var tmp2 = binder.CreateTemporary(src2.DataType);
+                m.Assign(tmp2, src2);
+                src2 = tmp2;
+            }
+
 
             Expression src;
             if (src1.IsZero)
@@ -91,13 +117,14 @@ namespace Reko.Arch.RiscV
             }
             else if (src2.IsZero)
             {
-                src = m.Convert(src1, src1.DataType, PrimitiveType.Word32);
+                src = src1;
             }
             else
             {
-                src = m.IAdd(m.Convert(src1, src1.DataType, PrimitiveType.Word32), src2);
+                src = m.Bin(op, src1, src2);
             }
-            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int64));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendS(src, PrimitiveType.Int64));
         }
 
         private void RewriteAtomicMemoryOperation(IntrinsicProcedure intrinsic, PrimitiveType dt)
@@ -116,13 +143,6 @@ namespace Reko.Arch.RiscV
             MaybeSliceSignExtend(dst, m.Bin(op, src1, src2), dtDst);
         }
 
-        private void RewriteCompressedAdd(PrimitiveType? dtDst = null)
-        {
-            var src1 = RewriteOp(1);
-            var dst = RewriteOp(0);
-            RewriteAdd(dst, dst, src1, dtDst);
-        }
-
         private void RewriteCompressedBinOp(BinaryOperator op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(1);
@@ -137,32 +157,6 @@ namespace Reko.Arch.RiscV
             var dst = RewriteOp(0);
             var val = op(dst, src1);
             MaybeSliceSignExtend(dst, val, dtDst);
-        }
-
-        private Expression RewriteEffectiveAddress()
-        {
-            Expression ea;
-            if (instr.Operands[1] is MemoryOperand mem)
-            {
-                var baseReg = binder.EnsureRegister(mem.Base);
-                ea = baseReg;
-                if (mem.Offset != 0)
-                {
-                    ea = m.IAddS(ea, mem.Offset);
-                }
-            }
-            else
-            {
-                var baseReg = RewriteOp(1);
-                var offset = ((ImmediateOperand) instr.Operands[2]).Value;
-                ea = baseReg;
-                if (!offset.IsZero)
-                {
-                    ea = m.IAdd(ea, offset);
-                }
-            }
-
-            return ea;
         }
 
         private void RewriteLi()
@@ -213,21 +207,6 @@ namespace Reko.Arch.RiscV
                 m.Fn(
                     lr_intrinsic.MakeInstance(dtPtr.BitSize, dt),
                     m.AddrOf(dtPtr, src)));
-        }
-
-        private void RewriteLxsp(DataType dt)
-        {
-            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
-            Expression ea = binder.EnsureRegister(arch.StackRegister);
-            if (imm != 0)
-                ea = m.IAddS(ea, imm);
-            Expression src = m.Mem(dt, ea);
-            var dst = RewriteOp(0);
-            if (dt.BitSize < dst.DataType.BitSize)
-            {
-                src = m.Convert(src, src.DataType, arch.NaturalSignedInteger);
-            }
-            m.Assign(dst, src);
         }
 
         private void RewriteLui()
@@ -365,14 +344,6 @@ namespace Reko.Arch.RiscV
                 src = m.Slice(src, dt);
             }
             m.Assign(m.Mem(dt, ea), src);
-        }
-
-        private void RewriteSxsp(DataType dt)
-        {
-            var src = RewriteOp(0);
-            var baseReg = binder.EnsureRegister(arch.StackRegister);
-            var offset = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
-            RewriteStore(dt, baseReg, offset, src);
         }
 
         private void RewriteSub()

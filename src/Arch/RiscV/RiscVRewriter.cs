@@ -84,8 +84,8 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.invalid: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addi: RewriteAdd(); break;
-                case Mnemonic.addiw: RewriteAddw(); break;
-                case Mnemonic.addw: RewriteAddw(); break;
+                case Mnemonic.addiw: RewriteBinopW(Operator.IAdd, 1, 2); break;
+                case Mnemonic.addw: RewriteBinopW(Operator.IAdd, 1, 2); break;
                 case Mnemonic.amoadd_d: RewriteAtomicMemoryOperation(amoadd_intrinsic, PrimitiveType.Word64); break;
                 case Mnemonic.amoadd_w: RewriteAtomicMemoryOperation(amoadd_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.amoand_d: RewriteAtomicMemoryOperation(amoand_intrinsic, PrimitiveType.Word64); break;
@@ -117,8 +117,8 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_addi: RewriteCompressedBinOp(Operator.IAdd); break;
                 case Mnemonic.c_addi16sp: RewriteAddi16sp(); break;
                 case Mnemonic.c_addi4spn: RewriteAddi4spn(); break;
-                case Mnemonic.c_addiw: RewriteCompressedAdd(PrimitiveType.Word32); break;
-                case Mnemonic.c_addw: RewriteCompressedAdd(PrimitiveType.Word32); break;
+                case Mnemonic.c_addiw: RewriteBinopW(Operator.IAdd, 0, 1); break;
+                case Mnemonic.c_addw: RewriteBinopW(Operator.IAdd, 0, 1); break;
                 case Mnemonic.c_and: RewriteCompressedBinOp(Operator.And); break;
                 case Mnemonic.c_andi: RewriteCompressedBinOp(Operator.And); break;
                 case Mnemonic.c_beqz: RewriteCompressedBranch(m.Eq); break;
@@ -151,7 +151,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_sub: RewriteCompressedBinOp(Operator.ISub); break;
                 case Mnemonic.c_sd: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.c_sdsp: RewriteStore(PrimitiveType.Word64); break;
-                case Mnemonic.c_subw: RewriteCompressedBinOp(Operator.ISub, PrimitiveType.Word32); break;
+                case Mnemonic.c_subw: RewriteBinopW(Operator.ISub, 0, 1); break;
                 case Mnemonic.c_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.c_swsp: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.c_xor: RewriteCompressedBinOp(Operator.Xor); break;
@@ -399,7 +399,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.srliw: RewriteShiftw(SrlI); break;
                 case Mnemonic.srlw: RewriteShiftw(m.Shr); break;
                 case Mnemonic.sub: RewriteSub(); break;
-                case Mnemonic.subw: RewriteSubw(); break;
+                case Mnemonic.subw: RewriteBinopW(Operator.ISub, 1, 2); break;
                 case Mnemonic.uret: RewriteRet(uret_intrinsic); break;
                 case Mnemonic.wfi: RewriteWfi(); break;
                 case Mnemonic.xor: RewriteXor(); break;
