@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(4): 2 instructions",
                 "1|L--|v4 = SLICE(a5, word32, 0)",
-                "2|L--|a5 = CONVERT(v4 + 8<32>, word32, int64)");
+                "2|L--|a5 = CONVERT(v4 + 8<i32>, word32, int64)");
         }
 
         [Test]
@@ -450,7 +450,7 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 2 instructions",
                 "1|L--|v4 = SLICE(s0, word32, 0)",
-                "2|L--|s0 = CONVERT(v4 + 1<32>, word32, int64)");
+                "2|L--|s0 = CONVERT(v4 + 1<i32>, word32, int64)");
         }
 
         [Test]
@@ -478,7 +478,7 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 2 instructions",
                 "1|L--|v4 = SLICE(s0, word32, 0)",
-                "2|L--|s0 = CONVERT(v4 + 0xFFFFFFFF<32>, word32, int64)");
+                "2|L--|s0 = CONVERT(v4 - 1<i32>, word32, int64)");
         }
 
         [Test]
