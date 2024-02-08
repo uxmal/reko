@@ -135,11 +135,14 @@ namespace Reko.Environments.MacOS.Classic
         public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
         {
             m.MStore(proc.Frame.FramePointer, proc.Frame.Continuation);
-            var ptrA5World = EnsureA5Pointer();
-            var a5 = proc.Frame.EnsureRegister(Registers.a5);
-            //m.Assign(a5, this.A5World.Address);
-            m.Assign(a5, m.Word32((uint)(this.A5World.Address.Offset + this.A5Offset)));
-            //m.Assign(a5, ptrA5World);
+            if (this.A5World is not null)
+            {
+                var ptrA5World = EnsureA5Pointer();
+                var a5 = proc.Frame.EnsureRegister(Registers.a5);
+                //m.Assign(a5, this.A5World.Address);
+                m.Assign(a5, m.Word32((uint) (this.A5World.Address.Offset + this.A5Offset)));
+                //m.Assign(a5, ptrA5World);
+            }
         }
 
         private Identifier EnsureA5Pointer()
