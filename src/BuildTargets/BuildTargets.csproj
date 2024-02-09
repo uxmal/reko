@@ -9,11 +9,14 @@
     <CMakeFlags Include="-DCMAKE_BUILD_TYPE=$(Configuration)" />
     <CMakeFlags Include="-DREKO_PLATFORM=$(Platform)" />
     <CMakeFlags Include="-DREKO_SRC=$(ProjectDir)../" />
+    <CMakeFlags Include="-DACTION=$(Action)" />
   </ItemGroup>
 
   <PropertyGroup>
     <!-- this is needed to have a consistent and normalized path (or it will not work on Unix) -->
     <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>
+    <RekoDistClean>$([System.IO.Path]::Combine($(ProjectDir), ..\distclean.cmake))</RekoDistClean>
+
     <CMakeVS>$([System.IO.Path]::Combine($(VSAPPIDDIR), CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe))</CMakeVS>
     <CMake>cmake</CMake>
     <!-- build the arguments string by joining <CMakeFlags> items by space -->
@@ -86,14 +89,9 @@
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
   </Target>
 
-  <!-- Deletes any cmake and build process junk in the native directory. -->
-  <Target Name="nativeproxy_clean">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
-  </Target>
-
   <!-- Builds the native code components of Reko -->
-  <Target Name="nativeproxy_build">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
+  <Target Name="nativeproxy">
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=nativeproxy -P $(RekoCMake)" />
   </Target>
 
   <!-- Deploys ZIP files containing all the build outputs (including executables, metadata files, and nupkg)-->
@@ -104,5 +102,10 @@
   <!-- Convenience target that performs all the above steps in the correct order -->
   <Target Name="reko_all"
     DependsOnTargets="build_solution;run_unit_tests;run_regressions;create_runtime_nupkg;create_msi_wix;create_release">
+  </Target>
+
+  <!-- wipes all build and object folders -->
+  <Target Name="distclean">
+    <Exec Command="$(CMake) -P $(RekoDistClean)" />
   </Target>
 </Project>

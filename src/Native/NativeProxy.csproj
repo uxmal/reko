@@ -16,15 +16,29 @@
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
-  <Target Name="CleanCMake" AfterTargets="Clean">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="nativeproxy_clean" />
+  <ItemGroup>
+    <ExtProperties Include="Configuration=$(Configuration)" />
+    <ExtProperties Include="Platform=$(Platform)" />    
+  </ItemGroup>
+  <PropertyGroup>
+    <ExtProject>$(ProjectDir)..\BuildTargets\BuildTargets.csproj</ExtProject>
+  </PropertyGroup>
+
+  <Target Name="CmakeClean" AfterTargets="Clean">
+    <ItemGroup>
+      <ExtProperties Include="Action=clean" />
+    </ItemGroup>
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)"
+      Targets="nativeproxy;run_hdrgen" />
   </Target>
 
+  <!-- hdrgen, before compilation -->
   <Target Name="RunHdrGen" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="run_hdrgen" />
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="run_hdrgen" />
   </Target>
 
-  <Target Name="InvokeCMake" AfterTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="nativeproxy_build" />
+  <!-- nativeproxy -->
+  <Target Name="NativeProxy" AfterTargets="CoreCompile">
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="nativeproxy" />
   </Target>
 </Project>

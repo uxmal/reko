@@ -380,26 +380,11 @@ elseif("${TARGET}" STREQUAL "gen_c2xml_sysv")
 	add_c2xml_target_sysv(gen_c2xml_sysv libc.so)
 	add_c2xml_target_sysv(gen_c2xml_sysv Xlib)
 	add_c2xml_target_sysv(gen_c2xml_sysv opengl)
-elseif("${TARGET}" STREQUAL "nativeproxy_clean")
-	#
-	# Create a new target to clean NativeProxy
-	#
-	add_custom_target(nativeproxy_clean
-		COMMENT "Cleaning NativeProxy..."
-		WORKING_DIRECTORY ${REKO_SRC}/Native
-		COMMAND ${CMAKE_COMMAND}
-			-DREKO_SRC=${REKO_SRC}
-			-DREKO_ROOT=${REKO_SRC}/../
-			-DREKO_PLATFORM=${REKO_PLATFORM}
-			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-			-DACTION=clean
-			-P ${REKO_SRC}/Native/reko.cmake
-	)
-elseif("${TARGET}" STREQUAL "nativeproxy_build")
+elseif("${TARGET}" STREQUAL "nativeproxy")
 	#
 	# Create a new target to build NativeProxy
 	#
-	add_custom_target(nativeproxy_build
+	add_custom_target(nativeproxy
 		COMMENT "Building NativeProxy ..."
 		WORKING_DIRECTORY ${REKO_SRC}/Native
 		COMMAND ${CMAKE_COMMAND}
@@ -409,6 +394,7 @@ elseif("${TARGET}" STREQUAL "nativeproxy_build")
 			-DREKO_ROOT=${REKO_SRC}/../
 			-DREKO_PLATFORM=${REKO_PLATFORM}
 			-DREKO_COMPILER=${REKO_COMPILER}
+			-DACTION=${ACTION}
 			-P ${REKO_SRC}/Native/reko.cmake
 	)
 elseif("${TARGET}" STREQUAL "git_hash")

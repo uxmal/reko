@@ -17,7 +17,23 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 
-  <Target Name="RunC2Xml" AfterTargets="Compile">
-    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_c2xml_sysv" />
+  <ItemGroup>
+    <ExtProperties Include="Configuration=$(Configuration)" />
+    <ExtProperties Include="Platform=$(Platform)" />    
+  </ItemGroup>
+  <PropertyGroup>
+    <ExtProject>$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj</ExtProject>
+    <ExtTarget>gen_c2xml_sysv</ExtTarget>
+  </PropertyGroup>
+
+  <Target Name="CmakeClean" AfterTargets="Clean">
+    <ItemGroup>
+      <ExtProperties Include="Action=clean" />
+    </ItemGroup>
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
+  </Target>
+
+  <Target Name="CmakeCompile" AfterTargets="Compile">
+    <MSBuild Projects="$(ExtProject)" Properties="@(ExtProperties)" Targets="$(ExtTarget)" />
   </Target>
 </Project>
