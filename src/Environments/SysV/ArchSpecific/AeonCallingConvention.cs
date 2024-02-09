@@ -24,9 +24,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
@@ -64,10 +61,20 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        private void SetReturnRegister( DataType dtRet, ICallingConventionEmitter ccr)
+        private void SetReturnRegister(DataType dtRet, ICallingConventionEmitter ccr)
         {
-            var reg = arch.GetRegister((StorageDomain) 3, default)!;
-            ccr.RegReturn(reg);
+            var r3 = arch.GetRegister((StorageDomain) 3, default)!;
+            if (dtRet.BitSize <= 32)
+            {
+                ccr.RegReturn(r3);
+            }
+            else if (dtRet.BitSize <= 64)
+            {
+                var r4 = arch.GetRegister((StorageDomain) 4, default)!;
+                ccr.SequenceReturn(r4, r3);
+            }
+            else
+                throw new NotImplementedException("Return values > 64 bits not implemented yet.");
         }
 
         public bool IsArgument(Storage stg)
