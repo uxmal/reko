@@ -463,6 +463,7 @@ namespace Reko.Core.Serialization
             }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
+            program.User.RenderInstructionsCanonically = sUser.RenderInstructionsCanonically;
             program.User.ExtractResources = sUser.ExtractResources;
             // Backwards compatibility: older versions used single file policy.
             program.User.OutputFilePolicy = sUser.OutputFilePolicy ?? Program.SingleFilePolicy;

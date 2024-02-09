@@ -68,6 +68,7 @@ namespace Reko.Core.Machine
         None = 0,
         ExplicitOperandSize = 1,
         ResolvePcRelativeAddress = 2,
+        RenderInstructionsCanonically = 4,           // Render pseudoinstruction as their 'base' instructions.
     }
 
 

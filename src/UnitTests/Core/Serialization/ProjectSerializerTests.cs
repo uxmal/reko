@@ -308,8 +308,9 @@ namespace Reko.UnitTests.Core.Serialization
                             Heuristics =
                             {
                                 new Heuristic_v3 { Name = "shingle" }
-                            }
-                        }
+                            },
+                            RenderInstructionsCanonically = true,
+                        },
                     },
                     new DecompilerInput_v5
                     {
@@ -344,6 +345,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.IsTrue(inputFile0.User.Heuristics.Contains("aggressive-branch-removal"));
             Assert.IsTrue(inputFile0.User.Heuristics.Contains("shingle"));
+            Assert.IsTrue(inputFile0.User.RenderInstructionsCanonically);
 
             Assert.AreEqual(OsPath.Absolute("tmp","foo","i am positive+.exe"), inputFile1.Location.FilesystemPath);
         }

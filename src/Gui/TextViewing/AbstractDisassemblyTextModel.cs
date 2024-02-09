@@ -74,6 +74,7 @@ namespace Reko.Gui.TextViewing
         public object CurrentPosition => offset;
         public object EndPosition => offsetEnd;
         public int LineCount => GetPositionEstimate(offsetEnd - offsetStart);
+        public bool RenderInstructionsCanonically { get; set; }
         public bool ShowPcRelative { get; set; }
 
         public int ComparePositions(object a, object b)
@@ -94,10 +95,13 @@ namespace Reko.Gui.TextViewing
                         seg.MemoryArea != null &&
                         seg.MemoryArea.IsValidAddress(addr))
                     {
-                        var options = new MachineInstructionRendererOptions(
-                            flags: ShowPcRelative
-                                ? MachineInstructionRendererFlags.None
-                                : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
+                        var flags = MachineInstructionRendererFlags.None;
+                        if (ShowPcRelative)
+                            flags |= MachineInstructionRendererFlags.ResolvePcRelativeAddress;
+                        if (RenderInstructionsCanonically)
+                            flags |= MachineInstructionRendererFlags.RenderInstructionsCanonically;
+
+                        var options = new MachineInstructionRendererOptions(flags: flags);
                         arch = GetArchitectureForAddress(addr);
                         var cellBitSize = seg.MemoryArea.CellBitSize;
                         var rdr = arch.CreateImageReader(seg.MemoryArea, addr);

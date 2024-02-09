@@ -43,6 +43,7 @@
         <assume addr="00012310" reg="eax" value="00001231" />
         <assume addr="00012310" reg="ecx" value="42424711" />
       </registerValues>
+      <renderBaseInstrs>true</renderBaseInstrs>
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>

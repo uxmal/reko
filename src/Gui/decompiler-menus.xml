@@ -124,6 +124,7 @@
   <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeViewMode" priority="1">View _code</cmd>
   <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
   <cmd id="ViewPcRelative" cmdSet="Reko" container="GrpLowLevel">Show _PC relative addresses</cmd>
+  <cmd id="ViewBaseInstructions" cmdSet="Reko" container="GrpLowLevel">Show _base instructions</cmd>
   <cmd id="OpenInNewTab" cmdSet="Reko" container="GrpCodeView" priority="0">Open in new tab</cmd>
   <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
   <cmd id="EditComment" cmdSet="Reko" container="GrpCodeView" priority="2">Edit comment</cmd>

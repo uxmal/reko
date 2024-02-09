@@ -165,6 +165,10 @@ namespace Reko.Core.Serialization
         [XmlArrayItem("assume")]
         public RegisterValue_v2[]? RegisterValues;
 
+        [XmlElement("renderBaseInstrs")]
+        [DefaultValue(false)]
+        public bool RenderInstructionsCanonically;
+
         [XmlElement("segment")]
         public List<Segment_v4> Segments;
 

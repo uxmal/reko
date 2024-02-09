@@ -22,11 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Core.Serialization
 {

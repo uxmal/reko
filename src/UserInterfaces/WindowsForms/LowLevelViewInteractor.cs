@@ -95,7 +95,6 @@ namespace Reko.UserInterfaces.WindowsForms
             if (value is not null && control is not null)
             {
                 PopulateControls();
-
             }
             return;
         }
@@ -320,6 +319,10 @@ namespace Reko.UserInterfaces.WindowsForms
                         status.Status = MenuStatus.Visible | MenuStatus.Enabled |
                             (control.DisassemblyView.ShowPcRelative ? MenuStatus.Checked : 0);
                         return true;
+                    case CmdIds.ViewInstructionsCanonically:
+                        status.Status = MenuStatus.Visible | MenuStatus.Enabled |
+                            (control.DisassemblyView.RenderInstructionsCanonically ? MenuStatus.Checked : 0);
+                        return true;
                     case CmdIds.TextEncodingChoose:
                         return true;
                     }
@@ -359,6 +362,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.TextEncodingChoose: return await ChooseTextEncoding();
                     case CmdIds.ActionCallTerminates: return await EditCallSite();
                     case CmdIds.ViewPcRelative: return ToggleShowPcRelative();
+                    case CmdIds.ViewInstructionsCanonically: return ToggleRenderInstructionsCanonically();
                     }
                 }
             }
@@ -596,6 +600,14 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var show = control.DisassemblyView.ShowPcRelative;
             control.DisassemblyView.ShowPcRelative = !show;
+            control.DisassemblyView.RecomputeLayout();
+            return true;
+        }
+
+        public bool ToggleRenderInstructionsCanonically()
+        {
+            var show = control.DisassemblyView.RenderInstructionsCanonically;
+            control.DisassemblyView.RenderInstructionsCanonically = !show;
             control.DisassemblyView.RecomputeLayout();
             return true;
         }

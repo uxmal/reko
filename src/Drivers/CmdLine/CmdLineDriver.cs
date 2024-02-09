@@ -205,6 +205,10 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowAddressesInDisassembly = true;
                 }
+                if (pArgs.ContainsKey("dasm-base-instrs"))
+                {
+                    decompiler.Project.Programs[0].User.RenderCanonicalInstructions = true;
+                }
                 if (pArgs.ContainsKey("dasm-bytes"))
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
@@ -581,6 +585,10 @@ namespace Reko.CmdLine
                 {
                     parsedArgs["dasm-bytes"] = true;
                 }
+                else if (args[i] == "--dasm-base-instrs")
+                {
+                    parsedArgs["dasm-base-instrs"] = true;
+                }
                 else if (args[i] == "--scan-only")
                 {
                     //$TODO: deprecate this command
@@ -714,6 +722,7 @@ namespace Reko.CmdLine
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
             w.WriteLine(" --dasm-address           Display addresses in disassembled machine code.");
+            w.WriteLine(" --dasm-base-instrs       Don't display pseudo- or aliased instructions.");
             w.WriteLine(" --dasm-bytes             Display individual bytes in disassembled machine code.");
             w.WriteLine(" --data <hex-bytes>       Supply machine code as hex bytes");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");

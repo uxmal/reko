@@ -112,6 +112,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
         private IProcessorArchitecture arch;
 
+        public bool RenderInstructionsCanonically
+        {
+            get { return dasmModel != null && dasmModel.RenderInstructionsCanonically; }
+            set
+            {
+                if (dasmModel is null)
+                    return;
+                dasmModel.RenderInstructionsCanonically = value;
+                Invalidate();
+            }
+        }
+
         public bool ShowPcRelative
         {
             get { return dasmModel != null ? dasmModel.ShowPcRelative : false; }

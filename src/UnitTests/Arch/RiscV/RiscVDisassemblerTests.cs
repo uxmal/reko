@@ -1,4 +1,3 @@
-
 #region License
 /* 
  * Copyright (C) 1999-2024 John Källén.
@@ -138,6 +137,18 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_addi()
         {
             AssertCode("addi\tsp,sp,-0x1C0", 0b1110010000000001000000010_00100_11);
+        }
+
+        [Test]
+        public void RiscV_dasm_addi_li()
+        {
+            AssertCode("li\ta0,-0x1C0", 0b111001000000_00000_000_01010_00100_11);
+        }
+
+        [Test]
+        public void RiscV_dasm_addi_mv()
+        {
+            AssertCode("mv\ta0,s8", 0b000000000000_11000_000_01010_00100_11);
         }
 
         [Test]

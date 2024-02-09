@@ -255,6 +255,33 @@ namespace Reko.Arch.RiscV
 
         public void Render(RiscVInstruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+            if (!options.Flags.HasFlag(MachineInstructionRendererFlags.RenderInstructionsCanonically))
+            {
+                switch (instr.Mnemonic)
+                {
+                case Mnemonic.addi:
+                    if (((RegisterStorage) instr.Operands[1]).Number == 0)
+                    {
+                        renderer.WriteMnemonic("li");
+                        renderer.Tab();
+                        RenderOperands(instr, options, renderer, instr.Operands[0], instr.Operands[2]);
+                        return;
+                    }
+                    if (((ImmediateOperand) instr.Operands[2]).Value.IsZero)
+                    {
+                        renderer.WriteMnemonic("mv");
+                        renderer.Tab();
+                        RenderOperands(instr, options, renderer, instr.Operands[0], instr.Operands[1]);
+                        return;
+                    }
+                    break;
+                }
+            }
+            DoRender(instr, renderer, options);
+        }
+
+        private void DoRender(RiscVInstruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        { 
             RenderMnemonic(instr, renderer);
 
             if (instr.Operands.Length > 0)
@@ -287,15 +314,27 @@ namespace Reko.Arch.RiscV
             renderer.WriteMnemonic(sb.ToString());
         }
 
-        protected virtual void RenderOperands(RiscVInstruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)
+        protected virtual void RenderOperands(
+            RiscVInstruction instr,
+            MachineInstructionRendererOptions options,
+            MachineInstructionRenderer renderer)
+        {
+            RenderOperands(instr, options, renderer, instr.Operands);
+        }
+
+        protected virtual void RenderOperands(
+            RiscVInstruction instr,
+            MachineInstructionRendererOptions options,
+            MachineInstructionRenderer renderer,
+            params MachineOperand[] operands)
         {
             var operandSeparator = "";
-            for (int i = 0; i < instr.Operands.Length; ++i)
+            for (int i = 0; i < operands.Length; ++i)
             {
                 renderer.WriteString(operandSeparator);
                 operandSeparator = options.OperandSeparator ?? ",";
 
-                var operand = instr.Operands[i];
+                var operand = operands[i];
                 RenderOperand(instr, operand, renderer, options);
             }
         }

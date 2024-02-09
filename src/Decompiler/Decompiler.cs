@@ -141,7 +141,8 @@ namespace Reko
                 Dumper dump = new Dumper(program)
                 {
                     ShowAddresses = program.User.ShowAddressesInDisassembly,
-                    ShowCodeBytes = program.User.ShowBytesInDisassembly
+                    ShowCodeBytes = program.User.ShowBytesInDisassembly,
+                    RenderInstructionsCanonically = program.User.RenderInstructionsCanonically,
                 };
                 dump.Dump(segmentItems, wr);
             } 

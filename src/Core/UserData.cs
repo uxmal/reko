@@ -90,6 +90,12 @@ namespace Reko.Core
         public SortedList<Address, List<UserRegisterValue>> RegisterValues { get; set; }
 
         /// <summary>
+        /// If true, render instructions in their base format (no translation
+        /// to pseudo-mnemonics).
+        /// </summary>
+        public bool RenderInstructionsCanonically { get; set; }
+
+        /// <summary>
         /// If set, display addresses in the written disassembly file.
         /// </summary>
         public bool ShowAddressesInDisassembly { get; set; }

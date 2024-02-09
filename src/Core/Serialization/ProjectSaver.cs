@@ -97,6 +97,7 @@ namespace Reko.Core.Serialization
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
                     TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding?.WebName : null,
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
+                    RenderInstructionsCanonically = program.User.RenderInstructionsCanonically,
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
                     Segments = program.User.Segments.Select(SerializeSegment).ToList(),

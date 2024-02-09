@@ -43,6 +43,7 @@ namespace Reko.Core.Output
             this.program = program;
 		}
 
+        public bool RenderInstructionsCanonically { get; set; }
         public bool ShowAddresses { get; set; }
         public bool ShowCodeBytes { get; set; }
 
@@ -205,9 +206,12 @@ namespace Reko.Core.Output
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, addrStart));
             try
             {
+                var flags = MachineInstructionRendererFlags.ResolvePcRelativeAddress;
+                if (this.RenderInstructionsCanonically)
+                    flags |= MachineInstructionRendererFlags.RenderInstructionsCanonically;
                 var writer = new FormatterInstructionWriter(formatter, program.Procedures, true);
                 var options = new MachineInstructionRendererOptions(
-                    flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress,
+                    flags: flags,
                     syntax: "");
                 foreach (var instr in dasm)
                 {
