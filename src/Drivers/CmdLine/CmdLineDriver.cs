@@ -207,7 +207,7 @@ namespace Reko.CmdLine
                 }
                 if (pArgs.ContainsKey("dasm-base-instrs"))
                 {
-                    decompiler.Project.Programs[0].User.RenderCanonicalInstructions = true;
+                    decompiler.Project.Programs[0].User.RenderInstructionsCanonically = true;
                 }
                 if (pArgs.ContainsKey("dasm-bytes"))
                 {
