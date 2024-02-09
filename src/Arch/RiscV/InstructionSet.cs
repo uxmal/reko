@@ -731,8 +731,14 @@ namespace Reko.Arch.RiscV
                         Instr(Mnemonic.c_lui, R(7), ImmShS(12, bf_12_1_2_5))),
 
                     new MaskDecoder(10, 2, "comp1",
-                        Instr(Mnemonic.c_srli, Rc(7), Imm(bf_12_1_2_5)),
-                        Instr(Mnemonic.c_srai, Rc(7), Imm(bf_12_1_2_5)),
+                        Select(bf_12_1_2_5, u => u == 0, "",
+                            Instr(Mnemonic.c_srli64, Rc(7)),
+                            Instr(Mnemonic.c_srli, Rc(7), Imm(bf_12_1_2_5))
+                        ),
+                        Select(bf_12_1_2_5, u => u == 0, "",
+                            Instr(Mnemonic.c_srai64, Rc(7)),
+                            Instr(Mnemonic.c_srai, Rc(7), Imm(bf_12_1_2_5))
+                        ),
                         Instr(Mnemonic.c_andi, Rc(7), ImmS(bf_12_1_2_5)),
                         new MaskDecoder(12, 1, "comp1_1",
                             new MaskDecoder(5, 2, "comp1_1_1",
@@ -757,7 +763,10 @@ namespace Reko.Arch.RiscV
 
                 var compressed10 = new Decoder[8]
                 {
-                    Instr(Mnemonic.c_slli, R_nz(7), ImmB(bf_12_1_2_5)),
+                    Select(bf_12_1_2_5, u => u == 0, "",
+                        Instr(Mnemonic.c_slli64, R_nz(7)),
+                        Instr(Mnemonic.c_slli, R_nz(7), ImmB(bf_12_1_2_5))
+                    ),
                     WordSize(
                         rv32: FpInstr64(Mnemonic.c_fldsp, F(7), MemcSpRel(PrimitiveType.Word64, bf_2_3_12_1_5_2)),
                         rv64: FpInstr64(Mnemonic.c_fldsp, F(7), MemcSpRel(PrimitiveType.Word64, bf_2_3_12_1_5_2)),

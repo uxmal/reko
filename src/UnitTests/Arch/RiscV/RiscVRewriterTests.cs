@@ -748,6 +748,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_c_slli64()
+        {
+            Given_RiscVInstructions(0x00000782);    // c.slli64\ta5
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
         public void RiscV_rw_c_srai()
         {
             Given_RiscVInstructions(0x0000977D);    // c.srai\ta4,0000003F
@@ -757,12 +766,30 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_c_srai64()
+        {
+            Given_RiscVInstructions(0x00008681);    // c.srai64\ta3
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
         public void RiscV_rw_c_srli()
         {
             Given_RiscVInstructions(0x000083A9);    // c.srli\ta5,0000000A
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|a5 = a5 >>u 10<i32>");
+        }
+
+        [Test]
+        public void RiscV_rw_c_srli64()
+        {
+            Given_RiscVInstructions(0x00008201);    // c.srli64\ta2
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|nop");
         }
 
         [Test]
