@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.MzExe
             var segmentMap = new SegmentMap(addrLoad);
             segmentMap.AddSegment(loadseg);
             AddEnvironmentSegments(segmentMap);
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
             var ep = ImageSymbol.Procedure(
                 arch,
                 Address.Ptr32(fileHeader.initialEip),

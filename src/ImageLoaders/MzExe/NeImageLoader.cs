@@ -258,7 +258,7 @@ namespace Reko.ImageLoaders.MzExe
             }
 
             var program = new Program(
-                this.segmentMap,
+                new ProgramMemory(this.segmentMap),
                 arch,
                 platform);
 

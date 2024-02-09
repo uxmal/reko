@@ -465,7 +465,7 @@ namespace Reko.ImageLoaders.Elf
             Dump(addrPreferred);
             this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
             LoadDynamicSegment();
-            var program = new Program(segmentMap, platform.Architecture, platform);
+            var program = new Program(new ProgramMemory(segmentMap), platform.Architecture, platform);
             return program;
         }
 

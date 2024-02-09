@@ -69,10 +69,11 @@ namespace Reko.UnitTests.Core.Output
         {
             var sc = new ServiceContainer();
             var arch = new Mocks.FakeArchitecture(sc);
-            this.program = new Program(
-                new SegmentMap(
+            var segmentMap = new SegmentMap(
                     bmem.BaseAddress,
-                    new ImageSegment("code", bmem, AccessMode.ReadWriteExecute)),
+                    new ImageSegment("code", bmem, AccessMode.ReadWriteExecute));
+            this.program = new Program(
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(sc, arch));
             var globalStruct = new StructureType();

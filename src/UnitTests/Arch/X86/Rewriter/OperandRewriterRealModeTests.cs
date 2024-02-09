@@ -51,11 +51,12 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             var sc = new ServiceContainer();
             arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[4]);
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+
             var program = new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(sc, arch));
             var procAddress = Address.Ptr32(0x10000000);

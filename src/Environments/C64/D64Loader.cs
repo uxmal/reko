@@ -254,10 +254,11 @@ namespace Reko.Environments.C64
                 var seqUri = archive.Location.AppendFragment(this.Name);
                 var mem = new ByteMemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
+                var segmentMap = new SegmentMap(
+                    mem.BaseAddress,
+                    new ImageSegment("c64", mem, AccessMode.ReadWriteExecute));
                 var program = new Program(
-                    new SegmentMap(
-                        mem.BaseAddress,
-                        new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
+                    new ProgramMemory(segmentMap),
                     arch,
                     new DefaultPlatform(services, arch))
                 {

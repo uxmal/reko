@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
             this.arch = new FakeArchitecture();
             var sc = new ServiceContainer();
             this.platform = new DefaultPlatform(sc, arch);
-            this.program = new Program(segmentMap, arch, platform);
+            this.program = new Program(new ProgramMemory(segmentMap), arch, platform);
             this.uiPreferencesSvc = new Mock<IUiPreferencesService>();
         }
 

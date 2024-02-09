@@ -86,7 +86,7 @@ namespace Reko.Environments.Switch
             if (arch is null)
                 throw new InvalidOperationException("Unable to load arm-thumb architecture.");
             var platform = cfg.GetEnvironment("switch").Load(Services, arch);
-            return new Program(segmap, arch, platform);
+            return new Program(new ProgramMemory(segmap), arch, platform);
         }
 
         private ImageSegment MakeSeg(string segname, uint uAddr, byte[] bytes, AccessMode mode)

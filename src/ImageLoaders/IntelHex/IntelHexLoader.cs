@@ -230,7 +230,7 @@ namespace Reko.ImageLoaders.IntelHex
                 segs.AddSegment(seg);
             }
 
-            var program = new Program(segs, arch, platform);
+            var program = new Program(new ProgramMemory(segs), arch, platform);
             if (addrEp != null)
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));

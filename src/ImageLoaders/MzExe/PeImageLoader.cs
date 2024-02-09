@@ -187,7 +187,7 @@ namespace Reko.ImageLoaders.MzExe
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToSegmentMap(addrLoad, SegmentMap);
             }
-            this.program = new Program(SegmentMap, arch, platform, ImageSymbols, new())
+            this.program = new Program(new ProgramMemory(SegmentMap), arch, platform, ImageSymbols, new())
             {
                 Name = this.ImageLocation.GetFilename()
             };

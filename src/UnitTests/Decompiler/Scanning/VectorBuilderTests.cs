@@ -62,9 +62,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 .Returns((int s, EndianImageReader r, ProcessorState st) =>
                      Address.Ptr32(r.ReadLeUInt32()));
             mem = new ByteMemoryArea(Address.Ptr32(0x00010000), bytes);
+            var segmentMap = new SegmentMap(mem.BaseAddress,
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute));
+
             this.program = new Program(
-                new SegmentMap(mem.BaseAddress,
-                    new ImageSegment(".text", mem, AccessMode.ReadExecute)),
+                new ProgramMemory(segmentMap),
                 arch.Object,
                 null);
         }

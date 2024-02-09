@@ -82,7 +82,7 @@ namespace Reko.ImageLoaders.MzExe
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
             var seg = this.segmentMap.AddSegment(loadseg);
-            this.program = new Program(this.segmentMap, this.arch, platform);
+            this.program = new Program(new ProgramMemory(this.segmentMap), this.arch, platform);
             var ep = ImageSymbol.Procedure(
                 this.arch,
                 Address.Ptr32(fileHeader.initial_EIP),

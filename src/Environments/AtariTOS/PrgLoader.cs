@@ -74,7 +74,8 @@ namespace Reko.Environments.AtariTOS
             var map = new SegmentMap(
                 addrLoad,
                 text, data, bss);
-            var program = new Program(map, arch, platform);
+            var memory = new ProgramMemory(map);
+            var program = new Program(memory, arch, platform);
             program.EntryPoints[addrLoad] = ImageSymbol.Location(program.Architecture, addrLoad);
             return program;
         }

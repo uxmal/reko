@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.Srec
                 }
             }
             var segments = CollectFragments(fragments);
-            var program = new Program(segments, arch, platform);
+            var program = new Program(new ProgramMemory(segments), arch, platform);
             if (start != null)
             {
                 program.EntryPoints.Add(start.Address!, start);

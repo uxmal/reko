@@ -136,10 +136,11 @@ namespace Reko.Arch.X86.Assembler
             LoadSegments(stm);
             var mem = new ByteMemoryArea(addrBase, stm.ToArray());
             RelocateSegmentReferences(mem);
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             return new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 null);
         }

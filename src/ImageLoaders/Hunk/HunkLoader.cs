@@ -72,11 +72,12 @@ namespace Reko.ImageLoaders.Hunk
             var platform = cfgSvc.GetEnvironment("amigaOS").Load(Services, arch);
             var imageMap = platform.CreateAbsoluteMemoryMap();
             var mem = new ByteMemoryArea(addrLoad, RelocateBytes(addrLoad));
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment(
+                    "code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 platform);
 

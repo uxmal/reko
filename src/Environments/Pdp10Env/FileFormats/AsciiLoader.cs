@@ -22,6 +22,7 @@ using Reko.Arch.Pdp;
 using Reko.Arch.Pdp.Memory;
 using Reko.Core;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
             var mem = new Word36MemoryArea(addrLoad, words.ToArray());
             var seg = new ImageSegment("core", mem, AccessMode.ReadWriteExecute);
             var map = new SegmentMap(seg);
-            var program = new Program(map, arch, platform);
+            var program = new Program(new ProgramMemory(map), arch, platform);
 
             /// Start address is at address 0o120 (0x50)
             if (arch.TryRead(mem, new Address18(0x50), PdpTypes.Word36, out var start))

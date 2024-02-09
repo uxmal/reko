@@ -90,25 +90,27 @@ namespace Reko.Core
         }
 
         public Program(
-            SegmentMap segmentMap,
+            IMemory memory,
             IProcessorArchitecture arch, 
             IPlatform platform) : this()
         {
-            this.SegmentMap = segmentMap;
-            this.ImageMap = segmentMap.CreateImageMap();
+            this.Memory = memory;
+            this.SegmentMap = Memory.SegmentMap;
+            this.ImageMap = this.SegmentMap.CreateImageMap();
             this.Architecture = arch;
             this.Platform = platform;
         }
 
         public Program(
-            SegmentMap segmentMap,
+            IMemory memory,
             IProcessorArchitecture arch, 
             IPlatform platform,
             SortedList<Address, ImageSymbol> symbols,
             SortedList<Address, ImageSymbol> entryPoints) : this()
         {
-            this.SegmentMap = segmentMap;
-            this.ImageMap = segmentMap.CreateImageMap();
+            this.Memory = memory;
+            this.SegmentMap = Memory.SegmentMap;
+            this.ImageMap = SegmentMap.CreateImageMap();
             this.Architecture = arch;
             this.Platform = platform;
             this.ImageSymbols = symbols;
@@ -152,6 +154,11 @@ namespace Reko.Core
         /// from the user.
         /// </summary>
         public SegmentMap SegmentMap { get; set; }
+
+        /// <summary>
+        /// Abstracts the program's contents loaded into memory.
+        /// </summary>
+        public IMemory Memory { get; set; }
 
         /// <summary>
         /// Metadata obtained from the environment -- not

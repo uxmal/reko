@@ -55,13 +55,15 @@ namespace Reko.ImageLoaders.VmsExe
             var addr = addrLoad ?? PreferredBaseAddress;
             var arch = (VaxArchitecture)Services.RequireService<IConfigurationService>()
                 .GetArchitecture("vax")!;
+            var segmentMap = new SegmentMap(
+                addr,
+                new ImageSegment(
+                    "",
+                    new ByteMemoryArea(addr, RawImage),
+                AccessMode.ReadWriteExecute));
+
             return new Program(
-                new SegmentMap(
-                    addr,
-                    new ImageSegment(
-                        "", 
-                        new ByteMemoryArea(addr, RawImage),
-                        AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform
         }

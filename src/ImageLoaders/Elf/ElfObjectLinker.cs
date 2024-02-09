@@ -109,8 +109,8 @@ namespace Reko.ImageLoaders.Elf
             CollectCommonSymbolsIntoSection();
             CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();
-            var imageMap = CreateSegments(addrBase, segments);
-            var program = new Program(imageMap, platform.Architecture, platform);
+            var segmentMap = CreateSegments(addrBase, segments);
+            var program = new Program(new ProgramMemory(segmentMap), platform.Architecture, platform);
             LoadExternalProcedures(program.InterceptedCalls);
             return program;
         }

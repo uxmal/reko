@@ -74,8 +74,9 @@ namespace Reko.UnitTests.Arch.X86.Analysis
                 new());
             var symbols = new List<ImageSymbol>();
             var mem = new ByteMemoryArea(Address.Ptr32(0x10_0000), BytePattern.FromHexBytes(hexbytes));
+            var segmentMap = new SegmentMap(new ImageSegment("code", mem, AccessMode.ReadExecute));
             var program = new Program(
-                new SegmentMap(new ImageSegment("code", mem, AccessMode.ReadExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(sc, arch));
             program.EntryPoints.Add(mem.BaseAddress, ImageSymbol.Procedure(arch, mem.BaseAddress));

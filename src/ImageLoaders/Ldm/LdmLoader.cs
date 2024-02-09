@@ -449,7 +449,7 @@ namespace Reko.ImageLoaders.Ldm
                 this.load_ldmline[loadfile_type](lline);
             }
             DumpMap();
-            return new Program(MakeSegmentMap(), arch, platform);
+            return new Program(new ProgramMemory(MakeSegmentMap()), arch, platform);
         }
 
         private SegmentMap MakeSegmentMap()

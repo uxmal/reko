@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Output
             var segs = new SegmentMap(Address.Ptr32(0x00100000));
             var sc = new ServiceContainer();
             var platform = new Mocks.FakePlatform(sc, new Mocks.FakeArchitecture(sc));
-            this.program = new Program(segs, platform.Architecture, platform)
+            this.program = new Program(new ProgramMemory(segs), platform.Architecture, platform)
             {
                 Name = "myprogram.exe"
             };

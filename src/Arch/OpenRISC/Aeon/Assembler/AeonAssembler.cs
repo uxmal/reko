@@ -220,10 +220,11 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         public Program GetImage(Address addrBase)
         {
             var mem = new ByteMemoryArea(addrBase, Emitter.GetBytes());
-            var program = new Program(
-                new SegmentMap(
+            var segmentMap = new SegmentMap(
                     mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+            var program = new Program(
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(arch.Services, arch));
             foreach (var sym in symbolsByName.Values)

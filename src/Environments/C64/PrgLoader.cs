@@ -60,7 +60,7 @@ namespace Reko.Environments.C64
             var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
             var arch6502 = cfgSvc.GetArchitecture("m6502")!;
             SegmentMap segMap = CreateSegmentMap(platform, c64Ram, Address.Ptr16(alignedAddress), lines);
-            var program = new Program(segMap, arch, platform);
+            var program = new Program(new ProgramMemory(segMap), arch, platform);
             program.Architectures.Add(arch6502.Name, arch6502);
             var addrBasic = lines.Values[0].Address;
             var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());

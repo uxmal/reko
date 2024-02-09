@@ -449,7 +449,7 @@ namespace Reko.ImageLoaders.HpSom
                 segments.Add(dataSeg);
                 subspaces = new SegmentMap(segments.ToArray());
             }
-            var program = new Program(subspaces, arch, platform);
+            var program = new Program(new ProgramMemory(subspaces), arch, platform);
             var addr = Address.Ptr32(execAux.exec_entry);
             program.EntryPoints.Add(addr, ImageSymbol.Procedure(arch, addr, "_start"));
             foreach (var sym in symbols.Values)

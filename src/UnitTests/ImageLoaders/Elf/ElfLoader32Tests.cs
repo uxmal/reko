@@ -255,7 +255,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private void Given_Program()
         {
-            this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch.Object, this.platform.Object);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x10000));
+            this.program = new Program(new ProgramMemory(segmentMap), this.arch.Object, this.platform.Object);
         }
 
         [Test]

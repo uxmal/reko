@@ -193,7 +193,7 @@ namespace Reko.ImageLoaders.MzExe
         public override Program LoadProgram(Address? addrLoad)
 		{
 			Unpack(RawImage, addrLoad ?? PreferredBaseAddress );
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
             var sym = ImageSymbol.Procedure(
                 program.Architecture,
                 Address.SegPtr((ushort) (lzCs + addrLoad!.Selector!), lzIp),

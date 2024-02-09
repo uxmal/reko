@@ -54,7 +54,7 @@ namespace Reko.Environments.Gameboy
             var mem = new ByteMemoryArea(PreferredBaseAddress, image);
             var imageSegment = new ImageSegment("ROM", mem, AccessMode.ReadExecute);
             var segmentMap = new SegmentMap(imageSegment);
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
             var start = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(0x100), "Rom_init");
             program.EntryPoints[start.Address] = start;
             return program;

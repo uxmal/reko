@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Given_VaScanner(IPlatform platform)
         {
             var segmentMap = CreateSegmentMap(0, 128);
-            this.program = new Program(segmentMap, platform.Architecture, platform);
+            this.program = new Program(new ProgramMemory(segmentMap), platform.Architecture, platform);
             this.vafs = CreateVaScanner(program);
         }
 

@@ -673,10 +673,9 @@ namespace Reko.ImageLoaders.Xex
             var ep = GetEntryPoint(arch);
 
             var program = new Program(
-                segmentMap,
+                new ProgramMemory(segmentMap),
                 arch,
-                platform
-            );
+                platform );
 
             if(ep != null)
             {
@@ -685,7 +684,7 @@ namespace Reko.ImageLoaders.Xex
                 program.ImageSymbols.Add(epAddr, epSym);
             }
 
-            foreach(var imp in peData.Thunks)
+            foreach (var imp in peData.Thunks)
             {
                 program.ImportReferences.Add(imp.Item1, imp.Item2);
             }

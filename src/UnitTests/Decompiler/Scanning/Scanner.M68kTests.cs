@@ -65,11 +65,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var mem = new ByteMemoryArea(addrBase, bytes);
-            program = new Program(
-                new SegmentMap(
+            var segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)),
+                        "code", mem, AccessMode.ReadWriteExecute));
+            program = new Program(
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(null, arch));
             RunTest(addrBase);

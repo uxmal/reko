@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Coff
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("ppc-64-be")!;
             var platform = new DefaultPlatform(Services, arch);
-            return new Program(map, arch, platform);
+            return new Program(new ProgramMemory(map), arch, platform);
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

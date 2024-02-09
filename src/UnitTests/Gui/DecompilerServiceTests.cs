@@ -86,10 +86,10 @@ namespace Reko.UnitTests.Gui
             var fileUri = ImageLocation.FromUri(OsPath.Relative("foo", "bar", "baz.exe"));
             var bytes = new byte[100];
             var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
-            var imageMap = new SegmentMap(
+            var segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch.Object, platform.Object);
+            var program = new Program(new ProgramMemory(segmentMap), arch.Object, platform.Object);
             var project = new Project(ImageLocation.FromUri("foo/bar/baz.project"));
             project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);

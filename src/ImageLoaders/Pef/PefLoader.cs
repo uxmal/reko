@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Pef
             var entryPoints = pefFile.GetEntryPoints(arch).ToSortedList(s => s.Address);
             var symbols = pefFile.GetSymbols(arch).ToArray();
 
-            var program = new Program(segMap, arch, platform)
+            var program = new Program(new ProgramMemory(segMap), arch, platform)
             {
                 EntryPoints = entryPoints
             };

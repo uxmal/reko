@@ -305,7 +305,7 @@ namespace Reko.ImageLoaders.Xbe
             // build program
             ImageSymbol entryPoint = ImageSymbol.Procedure(arch, ctx.EntryPointAddress);
 
-            Program program = new Program(segmentMap, arch, platform)
+            Program program = new Program(new ProgramMemory(segmentMap), arch, platform)
             {
                 EntryPoints = { { ctx.EntryPointAddress, entryPoint } }
             };

@@ -98,7 +98,10 @@ namespace Reko.ImageLoaders.Coff
         {
             var segs = ComputeSegmentLayout(this.coffSections);
             var segmentMap = LinkSegments(segs, this.coffSections);
-            return new Program(segmentMap, arch, new DefaultPlatform(Services, arch));
+            return new Program(
+                new ProgramMemory(segmentMap),
+                arch,
+                new DefaultPlatform(Services, arch));
         }
 
         private SegmentMap LinkSegments(List<ImageSegment> segs, List<(string, CoffSectionHeader)> coffSections)

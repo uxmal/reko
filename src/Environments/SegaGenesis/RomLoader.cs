@@ -50,7 +50,7 @@ namespace Reko.Environments.SegaGenesis
 
             var segmentMap = CreateSegmentMap(mem, platform);
 
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
             Relocate(program, addrLoad!);
             return program;
         }

@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch
             var mem = new ByteMemoryArea(addrBase, bytes);
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
             var segmap = new SegmentMap(mem.BaseAddress, seg);
-            var program = new Program(segmap, arch, new DefaultPlatform(new ServiceContainer(), arch));
+            var program = new Program(new ProgramMemory(segmap), arch, new DefaultPlatform(new ServiceContainer(), arch));
 
             var envEmu = new DefaultPlatformEmulator();
 

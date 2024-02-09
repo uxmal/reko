@@ -41,12 +41,12 @@ namespace Reko.Environments.RT11
         {
             addrLoad ??= PreferredBaseAddress;
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
-
-            var program = new Program(
-                new SegmentMap(addrLoad,
+            var segmentMap = new SegmentMap(addrLoad,
                 new ImageSegment(".text",
                         new ByteMemoryArea(addrLoad, RawImage),
-                        AccessMode.ReadWriteExecute)),
+                        AccessMode.ReadWriteExecute));
+            var program = new Program(
+                new ProgramMemory(segmentMap),
                 arch,
                 new RT11Platform(Services, arch));
             Relocate(program, addrLoad);

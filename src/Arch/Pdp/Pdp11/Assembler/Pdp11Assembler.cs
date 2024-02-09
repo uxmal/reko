@@ -52,10 +52,11 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
         public Program GetImage()
         {
             var bmem = new ByteMemoryArea(BaseAddress, emitter.GetBytes());
-            return new Program(
-                new SegmentMap(
+            var segmentMap = new SegmentMap(
                     bmem.BaseAddress,
-                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
+                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute));
+            return new Program(
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(arch.Services, arch));
         }

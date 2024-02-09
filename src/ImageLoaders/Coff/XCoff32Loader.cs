@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.Coff
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("ppc-be-32")!;
             var platform = new DefaultPlatform(Services, arch);
-            return new Program(map, arch, platform);
+            return new Program(new ProgramMemory(map), arch, platform);
         }
 
         public void Relocate(Program program, Address addrLoad)

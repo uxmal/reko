@@ -81,10 +81,11 @@ namespace Reko.Arch.M68k.Assembler
         public Program GetImage()
         {
             var mem = new ByteMemoryArea(BaseAddress, Emitter.GetBytes());
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             return new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch, 
                 new DefaultPlatform(arch.Services, arch));
         }

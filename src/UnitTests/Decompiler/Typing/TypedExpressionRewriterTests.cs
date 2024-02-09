@@ -272,8 +272,9 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void TerConstants()
         {
             var arch = new FakeArchitecture(new ServiceContainer());
+            var segmentMap = new SegmentMap(Address.Ptr32(0x10000));
             Program program = new Program(
-                new SegmentMap(Address.Ptr32(0x10000)),
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(null, arch));
             SetupPreStages(program);

@@ -60,7 +60,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
                 It.IsAny<long>())).Returns(new Func<MemoryArea, Address, long, EndianImageReader>(
                     (m, a, b) => mem.CreateLeReader(a, b)));
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
-            this.program = new Program(segments, arch.Object, platform.Object);
+            this.program = new Program(new ProgramMemory(segments), arch.Object, platform.Object);
             this.listener = new FakeDecompilerEventListener();
         }
 

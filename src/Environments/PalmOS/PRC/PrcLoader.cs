@@ -68,7 +68,7 @@ namespace Reko.Environments.PalmOS.PRC
                 throw new BadImageFormatException();
 
             var platform = new PalmOSPlatform(Services, arch, "palmOS");
-            var program = new Program(segments, arch, platform);
+            var program = new Program(new ProgramMemory(segments), arch, platform);
             if (ep is not null)
             {
                 program.EntryPoints.Add(ep, ImageSymbol.Procedure(arch, ep));

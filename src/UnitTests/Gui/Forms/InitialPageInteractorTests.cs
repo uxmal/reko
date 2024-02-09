@@ -68,13 +68,13 @@ namespace Reko.UnitTests.Gui.Forms
             abSvc = new Mock<IArchiveBrowserService>();
 
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[1000]);
-            var imageMap = new SegmentMap(
+            var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             var platform = new Mock<IPlatform>();
-            program = new Program(imageMap, arch.Object, platform.Object);
+            program = new Program(new ProgramMemory(segmentMap), arch.Object, platform.Object);
             project = new Project { Programs = { program } };
 
             browserSvc = new Mock<IProjectBrowserService>();

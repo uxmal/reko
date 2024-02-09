@@ -61,19 +61,19 @@ namespace Reko.ImageLoaders.BinHex
             var rsrcFork = new ResourceFork(platform, rsrcBytes);
             var bmem = new ByteMemoryArea(addrLoad, rsrcBytes);
             Program program;
+            SegmentMap segmentMap;
             if (hdr.FileType == "MPST" || hdr.FileType == "APPL")
             {
-                var segmentMap = new SegmentMap(addrLoad);
-                program = new Program(segmentMap, arch, platform);
+                segmentMap = new SegmentMap(addrLoad);
             }
             else
             {
-                program = new Program(
-                    new SegmentMap(bmem.BaseAddress,
-                        new ImageSegment("", bmem, AccessMode.ReadWriteExecute)),
-                    arch,
-                    platform);
+                segmentMap = new SegmentMap(
+                    bmem.BaseAddress,
+                    new ImageSegment("", bmem, AccessMode.ReadWriteExecute));
             }
+            var memory = new ProgramMemory(segmentMap);
+            program = new Program(memory, arch, platform);
             rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program);
             return program;
         }

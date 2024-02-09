@@ -74,7 +74,7 @@ namespace Reko.Environments.MacOS.Classic
                 this.rsrcFork = new ResourceFork(platform, bytes);
                 this.mem = new ByteMemoryArea(addrLoad, bytes);
                 this.segmentMap = new SegmentMap(addrLoad);
-                var program = new Program(this.segmentMap, arch, platform);
+                var program = new Program(new ProgramMemory(this.segmentMap), arch, platform);
                 rsrcFork.Dump();
                 rsrcFork.AddResourcesToImageMap(addrLoad, mem, program);
                 return program;

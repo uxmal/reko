@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Decompiler
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program(
-                new SegmentMap(Address.Ptr32(0x00100000)),
+                new ProgramMemory(new SegmentMap(Address.Ptr32(0x00100000))),
                 arch.Object,
                 new DefaultPlatform(sc, arch.Object));
             program.Location = ImageLocation.FromUri("file:bar/foo.exe");

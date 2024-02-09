@@ -49,8 +49,7 @@ namespace Reko.UnitTests.Core.Output
             this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.platform = new Mock<IPlatform>();
-            this.program = new Program(
-                new SegmentMap(
+            var segmentMap = new SegmentMap(
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
@@ -59,7 +58,10 @@ namespace Reko.UnitTests.Core.Output
                             Enumerable.Range(0, size)
                                 .Select(i => (byte) i)
                                 .ToArray()),
-                        AccessMode.ReadWrite)),
+                        AccessMode.ReadWrite));
+
+            this.program = new Program(
+                new ProgramMemory(segmentMap),
                 arch.Object,
                 platform.Object);
             arch.Setup(a => a.CreateFrame()).Returns(
@@ -95,16 +97,14 @@ namespace Reko.UnitTests.Core.Output
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.platform = new Mock<IPlatform>();
             this.program = new Program(
-                new SegmentMap(
+                new ProgramMemory(new SegmentMap(
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
                         new ByteMemoryArea(
                             Address.Ptr32(0x00010000),
-                            Enumerable.Range(0, size)
-                                .Select(i => (byte)0)
-                                .ToArray()),
-                        AccessMode.ReadWrite)),
+                            new byte[size]),
+                        AccessMode.ReadWrite))),
                 arch.Object,
                 platform.Object);
         }

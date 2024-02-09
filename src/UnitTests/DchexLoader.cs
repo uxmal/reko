@@ -69,10 +69,11 @@ namespace Reko.UnitTests
                 ProcessLine(line);
             }
             var mem = new ByteMemoryArea(addrStart, memStm.ToArray());
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             results = new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                new ProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(Services, arch));
         }
