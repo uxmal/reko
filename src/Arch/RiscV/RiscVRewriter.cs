@@ -146,8 +146,11 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_nop: m.Nop(); break;
                 case Mnemonic.c_or: RewriteCompressedBinOp(Operator.Or); break;
                 case Mnemonic.c_slli: RewriteCompressedBinOp(SllI); break;
+                case Mnemonic.c_slli64: m.Nop(); break;
                 case Mnemonic.c_srai: RewriteCompressedBinOp(SraI); break;
+                case Mnemonic.c_srai64: m.Nop(); break;
                 case Mnemonic.c_srli: RewriteCompressedBinOp(SrlI); break;
+                case Mnemonic.c_srli64: m.Nop(); break;
                 case Mnemonic.c_sub: RewriteCompressedBinOp(Operator.ISub); break;
                 case Mnemonic.c_sd: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.c_sdsp: RewriteStore(PrimitiveType.Word64); break;

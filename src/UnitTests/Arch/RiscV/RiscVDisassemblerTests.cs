@@ -681,9 +681,21 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_c_srli64()
+        {
+            AssertCode("c.srli64\ta2", 0x00008201);
+        }
+
+        [Test]
         public void RiscV_dasm_c_srai()
         {
             AssertCode("c.srai\ta4,0x3F", 0x0000977D);
+        }
+
+        [Test]
+        public void RiscV_dasm_c_srai64()
+        {
+            AssertCode("c.srai64\ta3", 0x00008681);
         }
 
         [Test]
@@ -704,7 +716,11 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("c.slli\ts0,0x3", 0x0000040E);
         }
 
-
+        [Test]
+        public void RiscV_dasm_c_slli64()
+        {
+            AssertCode("c.slli64\ta5", 0x00000782);
+        }
 
         [Test]
         public void RiscV_dasm_sll()
