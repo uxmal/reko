@@ -34,7 +34,6 @@ namespace Reko.Scanning
     {
         IProcessorArchitecture Architecture { get; }
         Program Program { get; }
-        SegmentMap SegmentMap { get; }
 
         int BlockInstructionCount(TBlock rtlBlock);
         Address? MakeAddressFromConstant(Constant c);

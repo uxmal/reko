@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -237,7 +238,7 @@ namespace Reko.Scanning
 
             }
 
-            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 return access;
             }

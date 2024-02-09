@@ -51,13 +51,13 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
             var arch = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch.Setup(a => a.Name).Returns("fakeArch");
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
-                It.IsAny<Address>())).Returns(new Func<MemoryArea, Address, EndianImageReader>(
+                It.IsAny<IMemory>(),
+                It.IsAny<Address>())).Returns(new Func<IMemory, Address, EndianImageReader>(
                     (m, a) => mem.CreateLeReader(a)));
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<IMemory>(),
                 It.IsAny<Address>(),
-                It.IsAny<long>())).Returns(new Func<MemoryArea, Address, long, EndianImageReader>(
+                It.IsAny<long>())).Returns(new Func<IMemory, Address, long, EndianImageReader>(
                     (m, a, b) => mem.CreateLeReader(a, b)));
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program(new ProgramMemory(segments), arch.Object, platform.Object);

@@ -43,7 +43,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         public IProcessorArchitecture Architecture => program.Architecture;
         public Program Program => program;
-        public SegmentMap SegmentMap => program.SegmentMap;
 
         public (Expression, Expression) AsAssignment(RtlInstruction instr)
         {

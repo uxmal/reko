@@ -250,7 +250,7 @@ namespace Reko.Gui.TextViewing
             {
                 Debug.Assert(line.Count == 0);
                 var addr = this.position.Address;
-                var rdr = program.CreateImageReader(program.Architecture, addr, item.EndAddress);
+                var rdr = program.CreateImageReader(program.Architecture, addr, item.Size);
                 mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
                 var memLine = new LineSpan(position, addr, line.ToArray());
                 line.Clear();

@@ -342,25 +342,23 @@ namespace Reko.Typing
             var charType = TypedConstantRewriter.MaybeCharType(ptr.Pointee);
             if (charType is null ||
                 !program.TryInterpretAsAddress(access.EffectiveAddress, false, out var addrPtr) ||
-                !program.SegmentMap.TryFindSegment(addrPtr, out var segment) ||
-                segment.IsWriteable)
+                 program.Memory.IsWriteable(addrPtr))
             {
                 return false;
             }
             var arch = program.Architecture;
-            if (!arch.TryRead(segment.MemoryArea, addrPtr, arch.PointerType, out var pch))
+            if (!arch.TryRead(program.Memory, addrPtr, arch.PointerType, out var pch))
             {
                 return false;
             }
             var addrString = program.Platform.MakeAddressFromConstant(pch, false);
             if (addrString is null ||
-                !program.SegmentMap.TryFindSegment(addrString, out segment) ||
-                segment.IsWriteable)
+                program.Memory.IsWriteable(addrString))
             {
                 return false;
             }
             tcr.PromoteToCString(pch, charType);
-            var rdr = arch.CreateImageReader(segment.MemoryArea, addrString);
+            var rdr = arch.CreateImageReader(program.Memory, addrString);
             value = rdr.ReadCString(charType, program.TextEncoding);
             return true;
         }

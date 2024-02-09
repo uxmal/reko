@@ -30,6 +30,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.Emulation;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.AtariTOS
 {
@@ -59,7 +60,7 @@ namespace Reko.Environments.AtariTOS
             throw new NotImplementedException();
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in metadata.Modules.Values)

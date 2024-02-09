@@ -54,19 +54,22 @@ namespace Reko.UnitTests.Decompiler.Scanning
             m = new ProcedureBuilder();
             W16 = PrimitiveType.Word16;
             W32 = PrimitiveType.Word32;
+            var segmentMap = new SegmentMap(
+                Address.Ptr32(0x2000),
+                new ImageSegment(
+                    "blob",
+                    new ByteMemoryArea(addr, new byte[0x400]),
+                    AccessMode.ReadWriteExecute),
+                new ImageSegment(
+                    "segmentedBlob",
+                    new ByteMemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
+                    AccessMode.ReadWriteExecute));
+
             program = new Program
             {
                 Architecture = m.Architecture,
-                SegmentMap = new SegmentMap(
-                    Address.Ptr32(0x2000),
-                    new ImageSegment(
-                        "blob",
-                        new ByteMemoryArea(addr, new byte[0x400]),
-                        AccessMode.ReadWriteExecute),
-                    new ImageSegment(
-                        "segmentedBlob",
-                        new ByteMemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
-                        AccessMode.ReadWriteExecute))
+                Memory = new ProgramMemory(segmentMap),
+                SegmentMap = segmentMap,
             };
 
             this.valueSets = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
@@ -81,7 +84,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             this.vse = new ValueSetEvaluator(
                 program.Architecture,
-                program.SegmentMap,
+                program.Memory,
                 valueSets);
         }
 

@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -165,7 +166,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             systemServices.TryGetValue(vector, out SystemService? svc);
             return svc;

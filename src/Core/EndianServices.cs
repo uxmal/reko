@@ -45,6 +45,24 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
+        /// <param name="memory">Memory to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        public abstract EndianImageReader CreateImageReader(IMemory memory, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
+        /// endianness of the processor, limited to the specified number of units.
+        /// </summary>
+        /// <param name="memory">Memory to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <param name="cbUnits">Number of memory units after which stop reading.</param>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        public abstract EndianImageReader CreateImageReader(IMemory memory, Address addr, long cbUnits);
+
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
+        /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
@@ -183,6 +201,17 @@ namespace Reko.Core
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is required.
         /// </summary>
+        /// <param name="mem">Memory to read from</param>
+        /// <param name="addr">Address to read from</param>
+        /// <param name="dt">Data type of the data to be read</param>
+        /// <param name="value">The value read from memory, if successful.</param>
+        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
+        public abstract bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value);
+
+        /// <summary>
+        /// Reads a value from memory, respecting the processor's endianness. Use this
+        /// instead of ImageWriter when random access of memory is required.
+        /// </summary>
         /// <param name="mem">Memory area to read from</param>
         /// <param name="addr">Address to read from</param>
         /// <param name="dt">Data type of the data to be read</param>
@@ -242,6 +271,16 @@ namespace Reko.Core
 
         private class LeServices : EndianServices
         {
+            public override EndianImageReader CreateImageReader(IMemory mem, Address addr)
+            {
+                return mem.CreateLeReader(addr);
+            }
+
+            public override EndianImageReader CreateImageReader(IMemory mem, Address addr, long cUnits)
+            {
+                return mem.CreateLeReader(addr, cUnits);
+            }
+
             public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
             {
                 return mem.CreateLeReader(addr);
@@ -325,6 +364,11 @@ namespace Reko.Core
                 return new StackStorage(stg.StackOffset + byteOffset, dt);
             }
 
+            public override bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
+            {
+                return mem.TryReadLe(addr, dt, out value);
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
@@ -338,6 +382,16 @@ namespace Reko.Core
 
         private class BeServices : EndianServices
         {
+            public override EndianImageReader CreateImageReader(IMemory mem, Address addr)
+            {
+                return mem.CreateBeReader(addr);
+            }
+
+            public override EndianImageReader CreateImageReader(IMemory mem, Address addr, long cUnits)
+            {
+                return mem.CreateBeReader(addr, cUnits);
+            }
+
             public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
             {
                 return mem.CreateBeReader(addr);
@@ -418,6 +472,11 @@ namespace Reko.Core
                 var byteOffset = (stg.DataType.BitSize - bitRange.Msb) / granularity;
                 var dt = PrimitiveType.CreateWord(bitRange.Extent);
                 return new StackStorage(stg.StackOffset +  byteOffset, dt);
+            }
+
+            public override bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
+            {
+                return mem.TryReadBe(addr, dt, out value);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)

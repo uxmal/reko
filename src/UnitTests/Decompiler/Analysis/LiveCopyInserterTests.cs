@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -180,11 +181,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		private void Build(Procedure proc, IProcessorArchitecture arch)
 		{
             var platform = new DefaultPlatform(null, arch);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00400000));
             var program = new Program()
             {
                 Architecture = arch,
                 Platform = platform,
-                SegmentMap = new SegmentMap(Address.Ptr32(0x00400000))
+                SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap),
             };
             this.proc = proc;
             var dynamicLinker = new Mock<IDynamicLinker>().Object;

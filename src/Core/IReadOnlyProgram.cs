@@ -43,6 +43,7 @@ namespace Reko.Core
         Identifier Globals { get; }
         StructureType GlobalFields { get; }
         IReadOnlyDictionary<Identifier, LinearInductionVariable> InductionVariables { get; }
+        IMemory Memory { get; }
         bool NeedsSsaTransform { get; }
         IPlatform Platform { get; }
         IReadOnlySegmentMap SegmentMap { get; }

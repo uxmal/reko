@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Xbox
 {
@@ -107,7 +108,7 @@ namespace Reko.Environments.Xbox
             return new PowerPcCallingConvention((PowerPcArchitecture)Architecture);
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

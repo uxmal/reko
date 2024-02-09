@@ -203,10 +203,9 @@ namespace Reko.Scanning
 
         private bool IsExecutable(KeyValuePair<Address,ImageMapItem> de)
         {
-            return 
+            return
                 de.Value.DataType is UnknownType &&
-                this.program.SegmentMap.TryFindSegment(de.Key, out var seg) &&
-                seg.IsExecutable;
+                this.program.Memory.IsExecutable(de.Key);
         }
 
         private (MemoryArea, Address, uint) CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)

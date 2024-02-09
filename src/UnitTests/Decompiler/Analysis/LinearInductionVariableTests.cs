@@ -35,6 +35,7 @@ using System.Linq;
 using System.ComponentModel.Design;
 using Reko.Services;
 using Reko.Core.Analysis;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -359,7 +360,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
             var program = new Program { 
                 Platform = new DefaultPlatform(sc, arch),
-                SegmentMap = segmentMap
+                SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap)
             };
 
             var sst = new SsaTransform(

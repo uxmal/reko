@@ -48,8 +48,6 @@ namespace Reko.Scanning
 
         public Program Program { get; }
 
-        public SegmentMap SegmentMap => Program.SegmentMap;
-
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
             if (instr is RtlAssignment ass)

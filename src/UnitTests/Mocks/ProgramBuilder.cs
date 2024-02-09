@@ -57,11 +57,13 @@ namespace Reko.UnitTests.Mocks
 
         public ProgramBuilder(ByteMemoryArea mem)
         {
+            var segmentMap = new SegmentMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             Program = new Program
             {
-                SegmentMap = new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                Memory = new ProgramMemory(segmentMap),
+                SegmentMap = segmentMap,
                 Architecture = new FakeArchitecture(new ServiceContainer())
             };
         }
@@ -173,6 +175,7 @@ namespace Reko.UnitTests.Mocks
                 ".text", AccessMode.Execute);
                 
             Program.Platform = new DefaultPlatform(new ServiceContainer(), arch);
+            Program.Memory = new ProgramMemory(Program.SegmentMap);
 			return Program;
 		}
 

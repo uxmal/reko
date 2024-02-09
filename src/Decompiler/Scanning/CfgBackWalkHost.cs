@@ -43,7 +43,6 @@ namespace Reko.Scanning
             Dictionary<Address, List<Address>> backEdges)
         {
             this.Program = program;
-            this.SegmentMap = program.SegmentMap;
             this.Architecture = arch;
             this.cfg = cfg;
             this.backEdges = backEdges;
@@ -52,8 +51,6 @@ namespace Reko.Scanning
         public IProcessorArchitecture Architecture { get; }
 
         public Core.Program Program { get; }
-
-        public SegmentMap SegmentMap { get; }
 
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {

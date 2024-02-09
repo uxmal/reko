@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,14 +38,13 @@ namespace Reko.Environments.PalmOS
 
         public override string DefaultCallingConvention => throw new NotImplementedException();
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
-            if (vector != 0xF || state is null || segmentMap is null)
+            if (vector != 0xF || state is null || memory is null)
+                return null;
+            if (memory is not IByteAdressableMemory mem)
                 return null;
             var addrTrapNo = state.InstructionPointer + 2;
-            if (!segmentMap.TryFindSegment(addrTrapNo, out var segment))
-                return null;
-            var mem = segment.MemoryArea;
             if (!mem.TryReadBeUInt16(addrTrapNo, out ushort trapNo))
                 return null;
 

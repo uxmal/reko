@@ -21,14 +21,11 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -41,9 +38,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
             builder(m);
 
             var ssa = m.Ssa;
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
             var program = new Program
             {
-                SegmentMap = new SegmentMap(Address.Ptr32(0x00123400))
+                SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap)
             };
             var svp = new SparseValuePropagation(ssa, program, new FakeDecompilerEventListener());
             svp.Transform();

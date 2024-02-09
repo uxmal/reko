@@ -38,6 +38,7 @@ using System.Collections.Generic;
 using Reko.Core.Services;
 using Moq;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -70,8 +71,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
             public IProcessorArchitecture Architecture => arch;
 
             public Program Program => null!;
-
-            public SegmentMap SegmentMap => throw new NotImplementedException();
 
             public (Expression?, Expression?) AsAssignment(Instruction instr)
             {
@@ -157,7 +156,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             state = arch.CreateProcessorState();
             listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            expSimp = new ExpressionSimplifier(segmentMap, state, listener);
+            expSimp = new ExpressionSimplifier(new ProgramMemory(segmentMap), state, listener);
             host = new BackwalkerHost(arch);
         }
 

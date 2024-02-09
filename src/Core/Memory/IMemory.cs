@@ -18,9 +18,9 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata;
 
 namespace Reko.Core.Memory
 {
@@ -41,6 +41,13 @@ namespace Reko.Core.Memory
         /// written to or executed.
         /// </returns>
         bool IsReadonly(Address addr);
+
+        /// <summary>
+        /// Returns whether the given address exists in the memory.
+        /// </summary>
+        /// <param name="addr">Address to test.</param>
+        /// <returns>True if address is mapped, false if not.</returns>
+        bool IsValidAddress(Address addr);
 
         /// <summary>
         /// Tests if the memory address is writeable.

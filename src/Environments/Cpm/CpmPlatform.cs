@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using System;
@@ -50,7 +51,7 @@ namespace Reko.Environments.Cpm
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

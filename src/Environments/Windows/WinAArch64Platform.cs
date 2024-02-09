@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

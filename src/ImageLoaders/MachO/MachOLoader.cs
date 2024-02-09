@@ -75,7 +75,6 @@ namespace Reko.ImageLoaders.MachO
             this.program = parser.ParseLoadCommands(hdr, specific.Architecture, addrLoad);
 
             CollectSymbolStubs(parser, machoSymbols, imageSymbols);
-            var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var de in imageSymbols)
             {
                 if (program.SegmentMap.IsValidAddress(de.Key))

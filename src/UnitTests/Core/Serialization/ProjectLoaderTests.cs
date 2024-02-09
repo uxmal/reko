@@ -36,6 +36,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -161,7 +162,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             }
 
-            public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+            public override SystemService FindService(int vector, ProcessorState state, IMemory memory)
             {
                 throw new NotImplementedException();
             }

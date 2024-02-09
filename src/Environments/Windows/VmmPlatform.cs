@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -54,14 +55,14 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
-            if (vector == 0x20 && state != null && segmentMap != null)
+            if (vector == 0x20 && state != null && memory != null)
             {
                 // Dynamic VxD call.
                 //$TODO: look up the call to determine what parameters it uses.
                 var addr = state.InstructionPointer + 2;
-                var dwService = state.GetMemoryValue(addr + 2, PrimitiveType.Word32, segmentMap);
+                var dwService = state.GetMemoryValue(addr + 2, PrimitiveType.Word32, memory);
                 return new SystemService
                 {
                     Name = $"SVC${dwService:X8}",

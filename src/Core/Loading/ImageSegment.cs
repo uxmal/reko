@@ -148,6 +148,11 @@ namespace Reko.Core.Loading
         public bool IsExecutable => (Access & AccessMode.Execute) != 0;
 
         /// <summary>
+        /// If true, the image segment cannot be written or executed.
+        /// </summary>
+        public bool IsReadonly => (Access & AccessMode.ReadWriteExecute) == AccessMode.Read;
+
+        /// <summary>
         /// If true, the segment's contents may change over the execution of
         /// program.
         /// </summary>

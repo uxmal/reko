@@ -29,6 +29,8 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Core.Loading;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
+using System.Diagnostics;
 
 namespace Reko.Scanning
 {
@@ -45,16 +47,17 @@ namespace Reko.Scanning
         private const int MaxTransferTableEntries = 2000;
 
         private readonly IProcessorArchitecture arch;
-        private readonly SegmentMap segmentMap;
+        private readonly IMemory memory;
         private readonly Dictionary<Expression, ValueSet> context;
         private readonly ProcessorState? state;
         private readonly ExpressionValueComparer cmp;
         private readonly Dictionary<Address, DataType> memAccesses;
 
-        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState? state = null)
+        public ValueSetEvaluator(IProcessorArchitecture arch, IMemory memory, Dictionary<Expression, ValueSet> context, ProcessorState? state = null)
         {
+            Debug.Assert(memory is not null);
             this.arch = arch;
-            this.segmentMap = segmentMap;
+            this.memory = memory;
             this.context = context;
             this.state = state;
             this.cmp = new ExpressionValueComparer();
@@ -251,9 +254,9 @@ namespace Reko.Scanning
                     throw new NotImplementedException($"Don't know how to read from {eAddr}");
                 addr = arch.MakeAddressFromConstant(cAddr, false);
             }
-            if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg))
+            if (!memory.IsValidAddress(addr))
                 return InvalidConstant.Create(dt);
-            var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
+            var rdr = arch.CreateImageReader(memory, addr);
             memAccesses[addr] = dt;
             if (dt == PrimitiveType.SegPtr32)
             {
@@ -262,11 +265,8 @@ namespace Reko.Scanning
                 {
                     return addrRead;
                 }
-                else
-                {
-                    //$REVIEW we want a warning here. OR the caller.
-                    return InvalidConstant.Create(dt);
-                }
+                //$REVIEW we want a warning here. OR the caller.
+                return InvalidConstant.Create(dt);
             }
             else
             {

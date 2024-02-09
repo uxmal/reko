@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace Reko.Analysis
             this.listener = listener;
             this.cmp = new ExpressionValueComparer();
             this.ctx = new SparseEvaluationContext(ssa);
-            this.eval = new Evaluation.ExpressionSimplifier(program.SegmentMap, ctx, listener);
+            this.eval = new Evaluation.ExpressionSimplifier(program.Memory, ctx, listener);
         }
 
         public void Transform()
@@ -218,7 +219,7 @@ namespace Reko.Analysis
                     : null!;
             }
 
-            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 return InvalidConstant.Create(access.DataType);
             }

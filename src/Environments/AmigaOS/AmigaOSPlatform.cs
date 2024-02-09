@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -127,12 +128,12 @@ namespace Reko.Environments.AmigaOS
             return reg == Registers.a7;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             return null;
         }
 
-        public override SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(RtlInstruction rtl, ProcessorState? state, IMemory? memory)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             var match = a6Pattern.Match(rtl);

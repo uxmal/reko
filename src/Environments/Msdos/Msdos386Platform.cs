@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
@@ -83,7 +84,7 @@ namespace Reko.Environments.Msdos
             return metadata;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             if (this.Metadata != null && this.Metadata.Modules.TryGetValue("", out var module))

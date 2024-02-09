@@ -46,12 +46,14 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
             bmem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
             var arch = new FakeArchitecture(new ServiceContainer());
+            var segmentMap = new SegmentMap(
+                bmem.BaseAddress,
+                new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute));
             this.program = new Program
             {
                 Architecture = arch,
-                SegmentMap = new SegmentMap(
-                    bmem.BaseAddress,  
-                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
+                Memory = new ProgramMemory(segmentMap),
+                SegmentMap = segmentMap,
                 Platform = new DefaultPlatform(null, arch),
             };
             store = program.TypeStore;

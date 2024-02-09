@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             var scanner = new Mock<IScannerServices>();
             scanner.Setup(s => s.Services).Returns(sc);
-            arch.Setup(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
+            arch.Setup(s => s.CreateImageReader(It.IsNotNull<IMemory>(), this.program.ImageMap.BaseAddress))
                 .Returns(this.mem.CreateLeReader(0));
             var state = new FakeProcessorState(arch.Object);
         

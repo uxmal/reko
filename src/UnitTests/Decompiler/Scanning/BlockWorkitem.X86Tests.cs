@@ -133,8 +133,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
             {
-                FunctionType sig;
-                if (signatures.TryGetValue(importName, out sig))
+                if (signatures.TryGetValue(importName, out FunctionType sig))
                     return new ExternalProcedure(importName, sig);
                 else
                     return null;
@@ -222,6 +221,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.program = new Program
             {
                 Architecture = arch,
+                Memory = new ProgramMemory(lr.SegmentMap),
                 SegmentMap = lr.SegmentMap,
                 ImageMap = lr.ImageMap,
                 Platform = platform,

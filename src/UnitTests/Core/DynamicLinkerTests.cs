@@ -323,9 +323,9 @@ VarargsParserClass: FakeParser";
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
-                SegmentMap = new SegmentMap(memGot.BaseAddress, 
+                Memory = new ProgramMemory(new SegmentMap(memGot.BaseAddress, 
                     new ImageSegment(".text", memText, AccessMode.ReadExecute),
-                    new ImageSegment(".got", memGot, AccessMode.Read)),
+                    new ImageSegment(".got", memGot, AccessMode.Read))),
             };
             program.ImportReferences.Add(
                 Address.Ptr32(0x00200000),

@@ -57,14 +57,16 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc = new ServiceContainer();
             fakeArch = new FakeArchitecture(sc);
             arch = fakeArch;
-            program = new Program {
-                Architecture = arch,
-                SegmentMap = new SegmentMap(
+            var segmentMap = new SegmentMap(
                     Address.Ptr32(0x00120000),
                     new ImageSegment(
                         ".text",
                         new ByteMemoryArea(Address.Ptr32(0x00120000), new byte[0x10000]),
-                        AccessMode.ReadExecute))
+                        AccessMode.ReadExecute));
+            program = new Program {
+                Architecture = arch,
+                SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap),
             };
             binder = new StorageBinder();
             graph = new DiGraph<RtlBlock>();

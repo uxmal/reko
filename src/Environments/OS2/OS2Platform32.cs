@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Reko.Environments.OS2
             return parser;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             if (vector == 0x21)
             {

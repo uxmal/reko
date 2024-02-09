@@ -21,6 +21,7 @@
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
@@ -139,7 +140,7 @@ namespace Reko.Core
             return InvalidConstant.Create(reg.DataType);
         }
 
-        public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+        public Expression GetValue(MemoryAccess access, IMemory memory)
         {
             if (access.EffectiveAddress is SegmentedPointer segptr)
             {
@@ -157,11 +158,11 @@ namespace Reko.Core
                 if (constAddr is InvalidConstant)
                     return constAddr;
                 var ea = Architecture.MakeAddressFromConstant(constAddr, false)!;
-                return GetMemoryValue(ea, access.DataType, segmentMap);
+                return GetMemoryValue(ea, access.DataType, memory);
             }
             if (access.EffectiveAddress is Address addr)
             {
-                return GetMemoryValue(addr, access.DataType, segmentMap);
+                return GetMemoryValue(addr, access.DataType, memory);
             }
             if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
@@ -171,7 +172,7 @@ namespace Reko.Core
             return InvalidConstant.Create(access.DataType);
         }
 
-        public Expression GetMemoryValue(Address addr, DataType dt, IReadOnlySegmentMap segmentMap)
+        public Expression GetMemoryValue(Address addr, DataType dt, IMemory memory)
         {
             if (dt is not PrimitiveType pt)
                 return InvalidConstant.Create(dt);
@@ -185,11 +186,10 @@ namespace Reko.Core
                 //$TODO: we can't represent integer constants larger than 64 bits yet.
                 return InvalidConstant.Create(dt);
             }
-            if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg) || seg.IsWriteable)
-                return InvalidConstant.Create(dt);
-            if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant? c))
-                return InvalidConstant.Create(dt);
-            return c;
+            if (!memory.IsWriteable(addr) && Architecture.TryRead(memory, addr, pt, out Constant? c))
+                return c;
+                
+            return InvalidConstant.Create(dt);
         }
 
         //$TODO: needs the data type of the value being fetched.

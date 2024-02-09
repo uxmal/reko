@@ -373,11 +373,10 @@ namespace Reko.Typing
             // https://github.com/uxmal/reko/issues/1100 for details.
             if (pt.BitSize != 32 && pt.BitSize != 64)
                 return false;
-            var rdr = program.CreateImageReader(program.Architecture, addr);
-            return rdr.TryRead(pt, out cReal);
+            return program.Architecture.TryRead(program.Memory, addr, pt, out cReal);
         }
 
-        private bool IsInsideField(int offset, StructureField field)
+        private static bool IsInsideField(int offset, StructureField field)
         {
             if (offset < field.Offset)
                 return false;
@@ -386,7 +385,7 @@ namespace Reko.Typing
             if (offset < field.Offset + field.DataType.Size)
                 return true;
             var str = field.DataType.ResolveAs<StructureType>();
-            if (str != null && offset < field.Offset + str.GetInferredSize())
+            if (str is not null && offset < field.Offset + str.GetInferredSize())
                 return true;
             return false;
         }

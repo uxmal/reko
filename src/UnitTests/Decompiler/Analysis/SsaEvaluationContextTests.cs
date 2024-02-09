@@ -38,15 +38,16 @@ namespace Reko.UnitTests.Decompiler.Analysis
     [Ignore("Overly destructive")]
     public class SsaEvaluationContextTests
     {
-        private readonly SegmentMap segmentMap;
+        private readonly IMemory memory;
 
         public SsaEvaluationContextTests()
         {
-            this.segmentMap = new SegmentMap(
+            var segmentMap = new SegmentMap(
                 new ImageSegment(
                     ".readonly",
                     new ByteMemoryArea(Address.Ptr32(0x0012_3000), new byte[] { 0x78, 0x56, 0x34, 0x12 }),
                     AccessMode.ReadExecute));
+            this.memory = new ProgramMemory(segmentMap);
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             
             var ssaCtx = new SsaEvaluationContext(m.Architecture, m.Ssa.Identifiers, dynLink.Object);
 
-            var result = ssaCtx.GetValue(m.Mem32(m.Word32(0x0012_3000)), segmentMap);
+            var result = ssaCtx.GetValue(m.Mem32(m.Word32(0x0012_3000)), memory);
 
             Assert.AreEqual("0x12345678<32>", result.ToString());
         }
@@ -70,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             var ssaCtx = new SsaEvaluationContext(m.Architecture, m.Ssa.Identifiers, dynLink.Object);
 
-            var result = ssaCtx.GetValue(m.Mem32(Address.Ptr32(0x0012_3000)), segmentMap);
+            var result = ssaCtx.GetValue(m.Mem32(Address.Ptr32(0x0012_3000)), memory);
 
             Assert.AreEqual("0x12345678<32>", result.ToString());
         }

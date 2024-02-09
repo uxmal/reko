@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -217,6 +218,7 @@ namespace Reko.ImageLoaders.TekHex
             var segmentMap = MakeSegmentMap(arch);
             var program = new Program
             {
+                Memory = new ProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = platform,

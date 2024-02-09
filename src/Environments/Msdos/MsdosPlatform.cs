@@ -35,6 +35,7 @@ using System.Reflection;
 using Reko.Core.Loading;
 using Reko.Core.Code;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Msdos
 {
@@ -164,7 +165,7 @@ namespace Reko.Environments.Msdos
             return sf.FindMainAddress();
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
 		{
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)

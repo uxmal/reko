@@ -20,8 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
 
 // Gameboy info: https://gbdev.io/pandocs/
 
@@ -46,7 +46,7 @@ namespace Reko.Environments.Gameboy
             }
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

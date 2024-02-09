@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Switch
 {
@@ -47,7 +48,7 @@ namespace Reko.Environments.Switch
             return null;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             return null;
         }

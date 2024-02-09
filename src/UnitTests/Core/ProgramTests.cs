@@ -55,11 +55,16 @@ namespace Reko.UnitTests.Core
         {
             addrBase = Address.Ptr32(0x00010000);
             var mem = new ByteMemoryArea(addrBase, bytes);
-            program.SegmentMap = new SegmentMap(addrBase);
-            program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
+            var segmentMap = new SegmentMap(addrBase);
+            segmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
+            program.Memory = new ProgramMemory(segmentMap);
+            program.SegmentMap = segmentMap;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             program.Platform = new DefaultPlatform(null, arch.Object);
-            arch.Setup(a => a.CreateImageReader(mem, addrBase)).Returns(new LeImageReader(mem, 0));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<IMemory>(),
+                addrBase))
+                .Returns(new LeImageReader(mem, 0));
         }
 
         private void Given_ImageMapItem(Address address, DataType dataType)

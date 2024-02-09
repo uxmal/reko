@@ -190,6 +190,24 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
+        /// <param name="memory">Memory to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(IMemory memory, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
+        /// endianness of the processor, limited to the specified number of units.
+        /// </summary>
+        /// <param name="memory">Memory to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <param name="cbUnits">Number of memory units after which stop reading.</param>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(IMemory memory, Address addr, long cbUnits);
+
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
+        /// </summary>
         /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
@@ -267,6 +285,17 @@ namespace Reko.Core
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of <see cref="ImageReader"/> when random access of memory is requored.
+        /// </summary>
+        /// <param name="mem">Memory to read from</param>
+        /// <param name="addr">Address to read from</param>
+        /// <param name="dt">Data type of the data to be read</param>
+        /// <param name="value">The value read from memory, if successful.</param>
+        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
+        bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value);
+
+        /// <summary>
+        /// Reads a value from memory, respecting the processor's endianness. Use this
+        /// instead of <see cref="ImageReader"/> when random access of memory is required.
         /// </summary>
         /// <param name="mem">Memory area to read from</param>
         /// <param name="addr">Address to read from</param>
@@ -622,12 +651,15 @@ namespace Reko.Core
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public virtual T? CreateExtension<T>() where T : class => default;
         public Frame CreateFrame() { return new Frame(this, FramePointerType); }
+        public EndianImageReader CreateImageReader(IMemory mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        public EndianImageReader CreateImageReader(IMemory mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
         public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
+        public bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
         public virtual bool TryRead(EndianImageReader rdr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => rdr.TryRead(dt, out value);
         public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);

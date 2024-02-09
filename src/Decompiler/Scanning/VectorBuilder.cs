@@ -52,7 +52,6 @@ namespace Reko.Scanning
         }
 
         public IProcessorArchitecture Architecture => program.Architecture;
-        public SegmentMap SegmentMap => program.SegmentMap;
         public int TableByteSize { get; private set; }
         public Program Program => program;
 

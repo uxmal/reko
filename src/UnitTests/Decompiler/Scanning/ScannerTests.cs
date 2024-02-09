@@ -194,6 +194,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 Architecture = arch,
                 SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap),
                 Platform = platform
             };
             platform.Test_GetCallingConvention = (ccName) => {
@@ -223,10 +224,17 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
             bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            var segmentMap = new SegmentMap(
+                bmem.BaseAddress,
+                new ImageSegment(
+                    "progseg",
+                    bmem,
+                    AccessMode.ReadExecute));
+
             program = new Program
             {
-                SegmentMap = new SegmentMap(bmem.BaseAddress,
-                    new ImageSegment("progseg", bmem, AccessMode.ReadExecute)),
+                Memory = new ProgramMemory(segmentMap),
+                SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
             };
@@ -249,13 +257,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private TestScanner CreateScanner(Program program, uint startAddress, int imageSize)
         {
+            this.bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            var segmentMap = new SegmentMap(
+                bmem.BaseAddress,
+                new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
             this.program = program;
             program.Architecture = arch;
             program.Platform = new FakePlatform(null, arch);
-            this.bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            program.SegmentMap = new SegmentMap(
-                bmem.BaseAddress,
-                new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
+            program.SegmentMap = segmentMap;
+            program.Memory = new ProgramMemory(segmentMap);
             return new TestScanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
         }
 

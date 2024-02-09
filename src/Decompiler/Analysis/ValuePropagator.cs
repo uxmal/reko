@@ -75,7 +75,7 @@ namespace Reko.Analysis
             this.eventListener = services.RequireService<IDecompilerEventListener>();
             this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
-            this.eval = new ExpressionSimplifier(program.SegmentMap, evalCtx, eventListener);
+            this.eval = new ExpressionSimplifier(program.Memory, evalCtx, eventListener);
             var ctx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
             this.va = new Scanning.VarargsFormatScanner(program, arch, ctx, services);
             this.stmCur = default!;

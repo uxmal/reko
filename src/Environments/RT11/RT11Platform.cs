@@ -23,6 +23,7 @@ using Reko.Arch.Pdp.Pdp11;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Reko.Environments.RT11
             return new Rt11CallingConvention(this.arch);
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             var metadata = base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;

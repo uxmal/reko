@@ -23,6 +23,7 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -50,7 +51,7 @@ namespace Reko.Environments.ZX81
             return new HashSet<RegisterStorage> { Registers.a };
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

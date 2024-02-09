@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using System;
 using System.Linq;
 
@@ -73,7 +74,7 @@ namespace Reko.Analysis
             return appl;
         }
 
-        public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+        public Expression GetValue(MemoryAccess access, IMemory memory)
         {
             if (access.EffectiveAddress is Constant c &&
                 // Search imported procedures only in Global Memory

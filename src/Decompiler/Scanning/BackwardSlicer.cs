@@ -23,6 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -74,7 +75,7 @@ namespace Reko.Scanning
             this.worklist = new WorkList<SliceState>();
             this.visited = new HashSet<RtlBlock>();
             this.cmp = new ExpressionValueComparer();
-            this.simp = new ExpressionSimplifier(host.SegmentMap, new EvalCtx(state.Endianness, state.MemoryGranularity), NullDecompilerEventListener.Instance);
+            this.simp = new ExpressionSimplifier(host.Program.Memory, new EvalCtx(state.Endianness, state.MemoryGranularity), NullDecompilerEventListener.Instance);
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Reko.Scanning
                 }
                 ctx.Add(idx, new IntervalValueSet(this.JumpTableIndex!.DataType, interval));
             }
-            var vse = new ValueSetEvaluator(host.Architecture, host.SegmentMap, ctx, this.processorState);
+            var vse = new ValueSetEvaluator(host.Architecture, host.Program.Memory, ctx, this.processorState);
             var (values, accesses) = vse.Evaluate(jumpExpr!);
             var vector = values.Values
                 .Select(ForceToAddress)
@@ -187,7 +188,7 @@ namespace Reko.Scanning
         {
             if (addr is null)
                 return false;
-            return host.SegmentMap.IsExecutableAddress(addr);
+            return host.Program.Memory.IsExecutable(addr);
         }
 
         private Address? ForceToAddress(Expression arg)
@@ -378,7 +379,7 @@ namespace Reko.Scanning
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 return access;
             }
@@ -432,7 +433,7 @@ namespace Reko.Scanning
 
         public RtlInstructionVisitor<RtlInstruction> CreateBlockConstantPropagator()
         {
-            return new BlockConstantPropagator(host.SegmentMap, NullDecompilerEventListener.Instance);
+            return new BlockConstantPropagator(host.Program.SegmentMap, NullDecompilerEventListener.Instance);
         }
     }
 

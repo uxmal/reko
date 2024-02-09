@@ -226,8 +226,8 @@ namespace Reko.Core
         /// <param name="vector"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
-        SystemService? FindService(RtlInstruction call, ProcessorState? state, SegmentMap? segmentMap);
+        SystemService? FindService(int vector, ProcessorState? state, IMemory? memory);
+        SystemService? FindService(RtlInstruction call, ProcessorState? state, IMemory? memory);
         DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
         string FormatProcedureName(Program program, Procedure proc);
@@ -563,14 +563,14 @@ namespace Reko.Core
             return null;
         }
 
-        public abstract SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
+        public abstract SystemService? FindService(int vector, ProcessorState? state, IMemory? memory);
 
         public virtual DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
+        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState? state, IMemory? memory)
         {
             return null;
         }
@@ -809,7 +809,7 @@ namespace Reko.Core
 
         public override IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             return null;
         }

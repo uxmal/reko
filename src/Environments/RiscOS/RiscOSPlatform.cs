@@ -19,12 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Hll.C;
 using Reko.Core.Expressions;
+using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Environments.RiscOS
 {
@@ -37,7 +37,7 @@ namespace Reko.Environments.RiscOS
 
         public override string DefaultCallingConvention => "";
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             switch (vector)
             {

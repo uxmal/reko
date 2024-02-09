@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var segmentMap = new SegmentMap(Address.Ptr32(0));
             var dynamicLinker = new Mock<IDynamicLinker>();
             var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, dynamicLinker.Object);
-            simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
+            simplifier = new ExpressionSimplifier(new ProgramMemory(segmentMap), ssaCtx, listener);
         }
 
         private SsaIdentifierCollection BuildSsaIdentifiers()

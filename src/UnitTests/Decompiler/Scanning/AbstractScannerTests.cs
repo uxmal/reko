@@ -68,9 +68,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.CreateProcessorState())
                 .Returns(new Func<ProcessorState>(() => new FakeProcessorState(arch.Object)));
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<IMemory>(),
                 It.IsNotNull<Address>()))
-                .Returns(new Func<MemoryArea, Address, EndianImageReader>((mm, aa) =>
+                .Returns(new Func<IMemory, Address, EndianImageReader>((mm, aa) =>
                     mm.CreateLeReader(aa)));
             arch.Setup(a => a.MakeAddressFromConstant(
                 It.IsNotNull<Constant>(),
@@ -92,6 +92,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             this.program = new Program
             {
+                Memory = new ProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = arch.Object,
                 Platform = platform.Object,

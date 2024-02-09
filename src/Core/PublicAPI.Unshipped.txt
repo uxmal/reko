@@ -179,7 +179,7 @@ abstract Reko.Core.Output.Formatter.WriteType(string! typeName, Reko.Core.Types.
 abstract Reko.Core.Output.OutputFilePolicy.GetItemPlacements(string! fileExtension) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<Reko.Core.ImageSegment!, System.Collections.Generic.List<Reko.Core.ImageMapItem!>!>!>!
 abstract Reko.Core.Output.OutputFilePolicy.GetObjectPlacements(string! fileExtension, Reko.Core.Services.DecompilerEventListener! listener) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.IDictionary<Reko.Core.Address!, Reko.Core.IAddressable!>!>!
 abstract Reko.Core.Platform.DefaultCallingConvention.get -> string!
-abstract Reko.Core.Platform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.SegmentMap? segmentMap) -> Reko.Core.SystemService?
+abstract Reko.Core.Platform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.IMemory? memory) -> Reko.Core.SystemService?
 abstract Reko.Core.Platform.GetBitSizeFromCBasicType(Reko.Core.Hll.C.CBasicType cb) -> int
 abstract Reko.Core.Platform.LookupProcedureByName(string? moduleName, string! procName) -> Reko.Core.ExternalProcedure?
 abstract Reko.Core.PointerScanner<T>.GetLinearAddress(Reko.Core.Address! address) -> T
@@ -450,7 +450,7 @@ override Reko.Core.Configuration.ListOption_v1.ToString() -> string!
 override Reko.Core.Configuration.PlatformDefinition.ToString() -> string!
 override Reko.Core.Configuration.PropertyOption.ToString() -> string!
 override Reko.Core.DefaultPlatform.DefaultCallingConvention.get -> string!
-override Reko.Core.DefaultPlatform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.SegmentMap? segmentMap) -> Reko.Core.SystemService?
+override Reko.Core.DefaultPlatform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.IMemory? memory) -> Reko.Core.SystemService?
 override Reko.Core.DefaultPlatform.GetBitSizeFromCBasicType(Reko.Core.Hll.C.CBasicType cb) -> int
 override Reko.Core.DefaultPlatform.LookupProcedureByName(string? moduleName, string! procName) -> Reko.Core.ExternalProcedure?
 override Reko.Core.DefaultPlatform.TrashedRegisters.get -> System.Collections.Generic.IReadOnlySet<Reko.Core.RegisterStorage!>!
@@ -5148,7 +5148,7 @@ Reko.Core.IPlatform.Description.set -> void
 Reko.Core.IPlatform.DetermineCallingConvention(Reko.Core.Types.FunctionType! signature) -> string?
 Reko.Core.IPlatform.FindDispatcherProcedureByAddress(Reko.Core.Address! addr) -> Reko.Core.Serialization.DispatchProcedure_v1?
 Reko.Core.IPlatform.FindMainProcedure(Reko.Core.Program! program, Reko.Core.Address! addrStart) -> Reko.Core.ImageSymbol?
-Reko.Core.IPlatform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.SegmentMap? segmentMap) -> Reko.Core.SystemService?
+Reko.Core.IPlatform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.IMemory? memory) -> Reko.Core.SystemService?
 Reko.Core.IPlatform.FindService(Reko.Core.Rtl.RtlInstruction! call, Reko.Core.ProcessorState? state, Reko.Core.SegmentMap? segmentMap) -> Reko.Core.SystemService?
 Reko.Core.IPlatform.FormatProcedureName(Reko.Core.Program! program, Reko.Core.Procedure! proc) -> string!
 Reko.Core.IPlatform.FramePointerType.get -> Reko.Core.Types.PrimitiveType!

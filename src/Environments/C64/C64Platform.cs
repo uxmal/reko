@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.C64
 {
@@ -59,7 +60,7 @@ namespace Reko.Environments.C64
             return reg == Registers.s;
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

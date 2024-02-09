@@ -68,11 +68,12 @@ namespace Reko.Core.Output
         {
             try
             {
-                if (!program.SegmentMap.TryFindSegment(addr, out var segment))
+                if (!program.Memory.IsValidAddress(addr))
                     return;
-                this.rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
+                this.rdr = program.Architecture.CreateImageReader(program.Memory, addr);
                 dataType.Accept(this);
-            } catch (AddressCorrelatedException aex)
+            }
+            catch (AddressCorrelatedException aex)
             {
                 eventListener.Error(eventListener.CreateAddressNavigator(program, aex.Address), aex, "An error occurred while tracing the object at {0}.", addr);
             }
@@ -138,7 +139,7 @@ namespace Reko.Core.Output
                 if (visited.Contains(addr))
                     return 0;
                 // Don't chase unmapped pointers
-                if (!program.SegmentMap.IsValidAddress(addr))
+                if (!program.Memory.IsValidAddress(addr))
                     return 0;
                 // Don't chase decompiled procedures.
                 if (program.Procedures.ContainsKey(addr))

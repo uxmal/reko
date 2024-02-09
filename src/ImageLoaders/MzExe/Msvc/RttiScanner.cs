@@ -88,7 +88,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             foreach (var seg in roSegments)
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1}) for vtables.", seg.Name, seg.Address);
-                var rdr = program.CreateImageReader(seg.Address, seg.EndAddress);
+                var rdr = program.CreateImageReader(seg.Address, seg.ContentSize);
                 while (rttiHelper.TryReadPointer(rdr, out Address? addr))
                 {
                     if (!results.CompleteObjectLocators.TryGetValue(addr, out var col))

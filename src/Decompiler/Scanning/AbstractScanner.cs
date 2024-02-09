@@ -92,7 +92,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <returns>Whether or not the address is executable.</returns>
         public bool IsExecutableAddress(Address addr) =>
-            program.SegmentMap.IsExecutableAddress(addr);
+            program.Memory.IsExecutable(addr);
 
 
         public IBackWalkHost<RtlBlock, RtlInstruction> MakeBackwardSlicerHost(
@@ -272,7 +272,7 @@ namespace Reko.Scanning
         public ExpressionSimplifier CreateEvaluator(ProcessorState state)
         {
             return new ExpressionSimplifier(
-                program.SegmentMap,
+                program.Memory,
                 state,
                 listener);
         }
@@ -547,12 +547,7 @@ namespace Reko.Scanning
 
             public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
             {
-                if (!this.program.SegmentMap.TryFindSegment(addr, out var segment))
-                {
-                    value = null!;
-                    return false;
-                }
-                return arch.TryRead(segment.MemoryArea, addr, dt, out value!);
+                return arch.TryRead(program.Memory, addr, dt, out value!);
             }
 
             public void Error(Address address, string format, params object[] args)

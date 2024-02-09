@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core
         private FakeArchitecture arch;
         private Identifier idSp;
         private ExpressionEmitter m;
-        private SegmentMap map;
+        private IMemory mem;
 
         [SetUp]
         public void Setup()
@@ -57,10 +57,11 @@ namespace Reko.UnitTests.Core
 
         private void Given_32bit_SegmentMap()
         {
-            this.map = new SegmentMap(
+            var segmentMap = new SegmentMap(
                 Address.Ptr32(0x00100000),
                 new ImageSegment(".text", new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
                 new ImageSegment(".data", new ByteMemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
+            this.mem = new ProgramMemory(segmentMap);
         }
 
         [Test]
@@ -81,19 +82,19 @@ namespace Reko.UnitTests.Core
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678<32>", sce.GetValue(m.Mem32(idSp), map).ToString());
+            Assert.AreEqual("0x12345678<32>", sce.GetValue(m.Mem32(idSp), mem).ToString());
         }
 
         [Test]
         public void ProcState_ReadConstantFromReadOnlyMemory()
         {
             Given_32bit_SegmentMap();
-            var text = map.Segments.Values.Single(s => s.Name == ".text").MemoryArea;
+            var text = mem.SegmentMap.Segments.Values.Single(s => s.Name == ".text").MemoryArea;
             text.WriteLeUInt32(0, 0x01234567);
 
             var sce = new TestProcessorState(arch);
             var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
-            var c = sce.GetValue(access, map);
+            var c = sce.GetValue(access, mem);
 
             Assert.AreEqual("0x1234567<32>", c.ToString());
         }

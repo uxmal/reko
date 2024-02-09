@@ -37,7 +37,7 @@ namespace Reko.Evaluation
                 access.MemoryId,
                 offset,
                 access.DataType);
-            var newValue = ctx.GetValue(value, segmentMap);
+            var newValue = ctx.GetValue(value, memory);
             if (newValue != value)
             {
                 ctx.RemoveExpressionUse(value);

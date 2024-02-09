@@ -47,9 +47,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.platform = new Mock<IPlatform>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<ByteMemoryArea>(),
+                It.IsAny<IMemory>(),
                 It.IsAny<Address>()))
-                .Returns((ByteMemoryArea i, Address a) => new LeImageReader(i, a));
+                .Returns((IMemory m, Address a) => m.CreateLeReader(a));
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             scanner.Setup(s => s.Error(
                 It.IsAny<Address>(),
@@ -66,6 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.program = new Program
             {
                 Architecture = arch.Object,
+                Memory = new ProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 ImageMap = imageMap,
                 Platform = platform.Object

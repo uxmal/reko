@@ -21,6 +21,7 @@
 using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Reko.Environments.NeoGeo
 
         public override string DefaultCallingConvention => "";
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.OSX.ArchSpecific;
 using System;
@@ -46,7 +47,7 @@ namespace Reko.Environments.MacOS.OSX
             get { return ""; }
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

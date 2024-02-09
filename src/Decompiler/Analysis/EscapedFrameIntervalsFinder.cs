@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -68,7 +69,7 @@ namespace Reko.Analysis
         {
             this.ctx = new Context(ssa.Procedure.Architecture);
             this.eval = new ExpressionSimplifier(
-                program.SegmentMap, ctx, eventListener);
+                program.Memory, ctx, eventListener);
         }
 
         public IntervalTree<int, DataType> Find()
@@ -333,7 +334,7 @@ namespace Reko.Analysis
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 var ea = access.EffectiveAddress;
                 if (!IsIdentifierOffset(ea, out var @base, out var offset))

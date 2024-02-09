@@ -127,9 +127,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
             program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<ByteMemoryArea>(),
+                It.IsNotNull<IMemory>(),
                 mem.BaseAddress))
-                .Returns(new BeImageReader(mem, 0));
+                .Returns(mem.CreateBeReader(0));
         }
 
         private void Given_ImageHeader(ElfMachine machine)

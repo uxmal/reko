@@ -40,7 +40,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
     /// Tests for PeImageLoader
     /// </summary>
     /// <remarks>
-    /// File map:
+    /// File mem:
     /// +--------------------------------------+
     /// | 0000 - 0FFF | Header |
     /// | 1000 - 1FFF | Text   | .text
@@ -103,14 +103,14 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var state = new Mocks.FakeProcessorState(this.arch_386.Object);
             arch_386.Setup(a => a.CreateProcessorState()).Returns(state);
             arch_386.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(), 
+                It.IsNotNull<IMemory>(), 
                 It.IsNotNull<Address>()))
-                .Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
+                .Returns(new Func<IMemory, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
             arch_386.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<IMemory>(),
                 It.IsNotNull<Address>(),
                 It.IsAny<long>()))
-                .Returns(new Func<MemoryArea, Address, long, EndianImageReader>((m, a, b) => m.CreateLeReader(a, b)));
+                .Returns(new Func<IMemory, Address, long, EndianImageReader>((m, a, b) => m.CreateLeReader(a, b)));
         }
 
         // PE section headers are always 40 bytes.

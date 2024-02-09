@@ -60,7 +60,7 @@ namespace Reko.Scanning
             this.services = services;
             this.ctx = ctx;
             this.eval = new ExpressionSimplifier(
-                program.SegmentMap,
+                program.Memory,
                 ctx,
                 services.RequireService<IDecompilerEventListener>());
         }

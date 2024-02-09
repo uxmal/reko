@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Mocks
             return Test_GetCallingConvention(ccName);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

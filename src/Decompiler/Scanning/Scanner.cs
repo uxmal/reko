@@ -219,12 +219,7 @@ namespace Reko.Scanning
 
         public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
         {
-            if (!this.Program.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = null!;
-                return false;
-            }
-            return arch.TryRead(segment.MemoryArea, addr, dt, out value);
+            return arch.Endianness.TryRead(this.Program.Memory, addr, dt, out value);
         }
 
         /// <summary>

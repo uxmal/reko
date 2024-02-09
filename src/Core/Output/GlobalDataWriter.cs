@@ -103,7 +103,7 @@ namespace Reko.Core.Output
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
-                if (program.SegmentMap.IsValidAddress(addr))
+                if (program.Memory.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
                     if (!oneLineDeclaration && showAddressInComment)
@@ -143,7 +143,7 @@ namespace Reko.Core.Output
             try
             {
                 tw.WriteDeclaration(dataType, name);
-                if (program.SegmentMap.IsValidAddress(address))
+                if (program.Memory.IsValidAddress(address))
                 {
                     formatter.Write(" = ");
                     if (!oneLineDeclaration && showAddressInComment)

@@ -21,6 +21,7 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 
@@ -36,7 +37,7 @@ namespace Reko.Environments.SegaGenesis
 
         public override string DefaultCallingConvention => "";
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             //$TODO: implement some services;
             return null;

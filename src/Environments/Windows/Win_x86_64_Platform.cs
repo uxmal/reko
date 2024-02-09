@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Windows
 {
@@ -133,7 +134,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             if (vector == 3)
                 return int3svc;

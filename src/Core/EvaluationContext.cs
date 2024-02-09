@@ -21,6 +21,7 @@
 #pragma warning disable IDE1006
 
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -62,12 +63,12 @@ namespace Reko.Core
         /// the <paramref name="access"/> expression.
         /// </summary>
         /// <param name="access">Memory access expression.</param>
-        /// <param name="segmentMap">The segment map of the program
+        /// <param name="memory">The memory of the program
         /// being analyzed.</param>
         /// <returns>An expression at the memory address, or an instance
         /// of <see cref="InvalidConstant"/> if the address couldn't be resolved.
         /// </returns>
-        Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap);
+        Expression GetValue(MemoryAccess access, IMemory memory);
         Expression GetValue(Application appl);
         Expression? GetDefiningExpression(Identifier id);
 

@@ -27,6 +27,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
@@ -139,6 +140,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(baseAddress, relativePath, stm);
+                program.Memory = new ProgramMemory(lr.SegmentMap);
                 program.SegmentMap = lr.SegmentMap;
                 program.ImageMap = lr.ImageMap;
                 program.Platform = lr.Platform ?? new MsdosPlatform(sc, lr.Architecture);

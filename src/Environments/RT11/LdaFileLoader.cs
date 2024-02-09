@@ -52,6 +52,7 @@ namespace Reko.Environments.RT11
             {
                 Architecture = arch,
                 Platform = platform,
+                Memory = new ProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
             };
             var addrEntry = Address.Ptr16(uAddrStart);

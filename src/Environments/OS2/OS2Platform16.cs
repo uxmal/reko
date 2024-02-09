@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.OS2
 {
@@ -95,7 +96,7 @@ namespace Reko.Environments.OS2
             };
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             if (vector == 3)
             {

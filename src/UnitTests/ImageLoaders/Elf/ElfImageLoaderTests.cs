@@ -351,9 +351,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             arch.Setup(a => a.Name).Returns("FakeArchLe");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<IMemory>(),
                 It.IsAny<Address>())).
-                Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
+                Returns(new Func<IMemory, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
             arch.Setup(a => a.CreateImageWriter(
                 It.IsAny<MemoryArea>(),
                 It.IsAny<Address>())).

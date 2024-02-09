@@ -28,7 +28,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.Services;
@@ -374,10 +373,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.program = new Program();
             this.program.Platform = base.platform.Object;
             var mem = new ByteMemoryArea(Address.Ptr32(uAddr), new byte[256]);
-            this.program.SegmentMap = new SegmentMap(new ImageSegment(
+            var segmentMap = new SegmentMap(new ImageSegment(
                 ".text",
                 mem,
                 AccessMode.ReadExecute));
+            this.program.SegmentMap = segmentMap;
+            this.program.Memory = new ProgramMemory(segmentMap);
             var arch = new Mock<IProcessorArchitecture>();
             var dynamicLinker = new Mock<IDynamicLinker>();
 
@@ -389,9 +390,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.CreateProcessorState()).Returns(new Func<ProcessorState>(() =>
                 new DefaultProcessorState(arch.Object)));
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
-                It.IsNotNull<Address>())).Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) =>
-                    new LeImageReader((ByteMemoryArea) m, a)));
+                It.IsNotNull<IMemory>(),
+                It.IsNotNull<Address>())).Returns(new Func<IMemory, Address, EndianImageReader>((m, a) =>
+                    m.CreateLeReader(a)));
             arch.Setup(a => a.CreateRewriter(
                 It.IsNotNull<EndianImageReader>(),
                 It.IsNotNull<ProcessorState>(),

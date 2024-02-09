@@ -18,14 +18,11 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Memory
 {
@@ -40,12 +37,14 @@ namespace Reko.Core.Memory
 
         public EndianImageReader CreateBeReader(Address addr)
         {
-            throw new NotImplementedException();
+            var segment = RequireSegment(addr);
+            return segment.MemoryArea.CreateBeReader(addr);
         }
 
         public EndianImageReader CreateBeReader(Address addr, long cUnits)
         {
-            throw new NotImplementedException();
+            var segment = RequireSegment(addr);
+            return segment.MemoryArea.CreateBeReader(addr, cUnits);
         }
 
         public ImageWriter CreateBeWriter(Address addr)
@@ -55,12 +54,14 @@ namespace Reko.Core.Memory
 
         public EndianImageReader CreateLeReader(Address addr)
         {
-            throw new NotImplementedException();
+            var segment = RequireSegment(addr);
+            return segment.MemoryArea.CreateLeReader(addr);
         }
 
         public EndianImageReader CreateLeReader(Address addr, long cUnits)
         {
-            throw new NotImplementedException();
+            var segment = RequireSegment(addr);
+            return segment.MemoryArea.CreateLeReader(addr, cUnits);
         }
 
         public ImageWriter CreateLeWriter(Address addr)
@@ -70,27 +71,53 @@ namespace Reko.Core.Memory
 
         public bool IsExecutable(Address addr)
         {
-            throw new NotImplementedException();
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                return false;
+            return segment.IsExecutable;
         }
 
         public bool IsReadonly(Address addr)
         {
-            throw new NotImplementedException();
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                return false;
+            return segment.IsReadonly;
         }
+
+        public bool IsValidAddress(Address addr) => SegmentMap.IsValidAddress(addr);
 
         public bool IsWriteable(Address addr)
         {
-            throw new NotImplementedException();
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                return false;
+            return segment.IsWriteable;
         }
 
         public bool TryReadBe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                c = null!;
+                return false;
+            }
+            return segment.MemoryArea.TryReadBe(addr, dt, out c);
         }
 
         public bool TryReadLe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                c = null!;
+                return false;
+            }
+            return segment.MemoryArea.TryReadLe(addr, dt, out c);
         }
+
+        private ImageSegment RequireSegment(Address addr)
+        {
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                throw new ArgumentException($"The address {addr} is invalid.");
+            return segment;
+        }
+
     }
 }

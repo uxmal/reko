@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -66,7 +67,7 @@ namespace Reko.Evaluation
         private static readonly UnaryNegEqZeroRule unaryNegEqZero;
         private static readonly ScaledIndexRule scaledIndexRule;
 
-        private readonly IReadOnlySegmentMap segmentMap;
+        private readonly IMemory memory;
         private readonly EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
@@ -74,20 +75,20 @@ namespace Reko.Evaluation
         private readonly IEventListener listener;
 
 
-        public ExpressionSimplifier(IReadOnlySegmentMap segmentMap, EvaluationContext ctx, IEventListener listener)
-            : this(segmentMap, ctx, new Unifier(), listener)
+        public ExpressionSimplifier(IMemory memory, EvaluationContext ctx, IEventListener listener)
+            : this(memory, ctx, new Unifier(), listener)
         {
             // Creating the unifier is slow, so we provide a constructor
             // where the unifier is passed in.
         }
 
         public ExpressionSimplifier(
-            IReadOnlySegmentMap segmentMap,
+            IMemory memory,
             EvaluationContext ctx,
             Unifier unifier,
             IEventListener listener)
         {
-            this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(segmentMap));
+            this.memory = memory ?? throw new ArgumentNullException(nameof(memory));
             this.ctx = ctx;
             this.unifier = unifier;
             this.listener = listener;

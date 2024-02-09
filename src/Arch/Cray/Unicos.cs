@@ -24,6 +24,7 @@ using Reko.Core.Emulation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Cray
 {
@@ -36,7 +37,7 @@ namespace Reko.Arch.Cray
 
         public override string DefaultCallingConvention => "";
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

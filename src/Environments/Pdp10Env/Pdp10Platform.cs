@@ -22,6 +22,7 @@ using Reko.Arch.Pdp.Memory;
 using Reko.Arch.Pdp.Pdp10;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 
@@ -37,7 +38,7 @@ namespace Reko.Environments.Pdp10Env
 
         public override string DefaultCallingConvention => "";
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

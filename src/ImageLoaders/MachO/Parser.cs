@@ -182,7 +182,7 @@ namespace Reko.ImageLoaders.MachO
 
         public Program ParseLoadCommands(mach_header_64 hdr, IProcessorArchitecture arch, Address addrLoad)
         {
-            var imageMap = new SegmentMap(addrLoad);
+            var segmentMap = new SegmentMap(addrLoad);
             Debug.Print("Parsing {0} load commands.", hdr.ncmds);
             string? platformName = null;
             for (uint i = 0; i < hdr.ncmds; ++i)
@@ -200,12 +200,12 @@ namespace Reko.ImageLoaders.MachO
                 switch ((Command) (cmd & ~(uint) LC_REQ_DYLD))
                 {
                 case LC_SEGMENT:
-                    ParseSegmentCommand32(imageMap);
+                    ParseSegmentCommand32(segmentMap);
                     break;
                 case LC_SEGMENT_64:
                     //$REVIEW: are there any other platforms using 64-bit machO? iOS?
                     platformName = "macOsX";
-                    ParseSegmentCommand64(imageMap);
+                    ParseSegmentCommand64(segmentMap);
                     break;
                 case LC_SYMTAB:
                     ParseSymtabCommand(arch);
@@ -229,7 +229,8 @@ namespace Reko.ImageLoaders.MachO
                 rdr.Offset = pos + cmdsize;
             }
             ldr.program!.Architecture = arch;
-            ldr.program.SegmentMap = imageMap;
+            ldr.program.Memory = new ProgramMemory(segmentMap);
+            ldr.program.SegmentMap = segmentMap;
             if (!string.IsNullOrEmpty(platformName))
             {
                 var env = cfgSvc.GetEnvironment(platformName!);

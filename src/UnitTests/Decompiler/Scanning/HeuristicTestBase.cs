@@ -82,14 +82,16 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var bytes = HexStringToBytes(sBytes);
             bmem = new ByteMemoryArea(Address.Ptr32(addr), bytes);
+            var segmentMap = new SegmentMap(
+                bmem.BaseAddress,
+                new ImageSegment("prôg", bmem, AccessMode.ReadExecute));
             program = new Program
             {
-                SegmentMap = new SegmentMap(
-                    bmem.BaseAddress,
-                    new ImageSegment("prôg", bmem, AccessMode.ReadExecute))
+                Memory = new ProgramMemory(segmentMap),
+                SegmentMap = segmentMap,
+                ImageMap = segmentMap.CreateImageMap()
             };
-            program.ImageMap = program.SegmentMap.CreateImageMap();
-            segment = program.SegmentMap.Segments.Values.First();
+            segment = segmentMap.Segments.Values.First();
         }
 
         protected void Given_DataBlob(uint uAddr, DataType dt, string sBytes)

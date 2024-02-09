@@ -26,11 +26,7 @@ using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -78,9 +74,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("Fake");
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<ByteMemoryArea>(),
+                It.IsNotNull<IMemory>(),
                 It.IsNotNull<Address>())).
-                Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a)); 
+                Returns((IMemory m, Address a) => m.CreateLeReader(a)); 
         }
     }
 }

@@ -25,6 +25,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
@@ -41,7 +42,7 @@ namespace Reko.Analysis
         private static readonly TraceSwitch trace = new(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
         private readonly IReadOnlyProgram program;
-        private readonly IReadOnlySegmentMap segmentMap;
+        private readonly IMemory memory;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
         private readonly IReadOnlyCallGraph callGraph;
@@ -67,7 +68,7 @@ namespace Reko.Analysis
         {
             this.program = program;
             this.arch = program.Architecture;
-            this.segmentMap = program.SegmentMap;
+            this.memory = program.Memory;
             this.flow = flow;
             this.sccGroup = sccGroup.ToHashSet();
             this.callGraph = program.CallGraph;
@@ -262,7 +263,7 @@ namespace Reko.Analysis
         private void ProcessBlock(Block block)
         {
             this.ctx = blockCtx![block];
-            this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
+            this.eval = new ExpressionSimplifier(memory, ctx, listener);
             this.block = block;
             this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
@@ -715,7 +716,7 @@ namespace Reko.Analysis
                 return InvalidConstant.Create(appl.DataType);
             }
 
-            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
                 if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))

@@ -33,6 +33,7 @@ using System.IO;
 using Reko.Core.Loading;
 using Reko.Core.Code;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -87,7 +88,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             vector &= 0xFFFF;

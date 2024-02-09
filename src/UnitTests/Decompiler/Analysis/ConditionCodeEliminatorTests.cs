@@ -25,6 +25,7 @@ using Reko.Arch.X86.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
@@ -605,6 +606,7 @@ ProcedureBuilder_exit:
             var program = new Program {
                 Architecture = m.Architecture,
                 SegmentMap = segmentMap,
+                Memory = new ProgramMemory(segmentMap),
                 Platform = new DefaultPlatform(sc, m.Architecture)
             };
             

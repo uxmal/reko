@@ -51,8 +51,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         [SetUp]
         public void Setup()
         {
+            var segmentMap = new SegmentMap(GetLoadAddress());
             this.program = new Program();
-            this.program.SegmentMap = new SegmentMap(GetLoadAddress());
+            this.program.Memory = new ProgramMemory(segmentMap);
+            this.program.SegmentMap = segmentMap;
             this.program.Architecture = GetArchitecture();
             this.symbols = new Dictionary<int, ElfSymbol>();
             var services = new ServiceContainer();

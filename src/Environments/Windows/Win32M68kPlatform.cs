@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -63,7 +64,7 @@ namespace Reko.Environments.Windows
 			return null;
 		}
 
-		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+		public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
 		{
 			//throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 			return null;

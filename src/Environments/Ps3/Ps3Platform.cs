@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics.CodeAnalysis;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Ps3
 {
@@ -53,7 +54,7 @@ namespace Reko.Environments.Ps3
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }

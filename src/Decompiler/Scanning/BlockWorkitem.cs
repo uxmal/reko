@@ -76,7 +76,7 @@ namespace Reko.Scanning
             this.arch = arch;
             this.state = state;
             this.eval = new ExpressionSimplifier(
-                program.SegmentMap,
+                program.Memory,
                 state,
                 scanner.Services.RequireService<IDecompilerEventListener>());
             this.addrStart = addr;
@@ -647,7 +647,7 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, chr);
             }
 
-            var syscall = program.Platform.FindService(call, state, program.SegmentMap);
+            var syscall = program.Platform.FindService(call, state, program.Memory);
             if (syscall != null)
             {
                 return EmitSystemServiceCall(syscall);
@@ -1346,7 +1346,7 @@ namespace Reko.Scanning
 
             if (fn.Arguments[0] is not Constant vector)
                 return null;
-            var svc = program.Platform.FindService((int)vector.ToUInt32(), state, program.SegmentMap);
+            var svc = program.Platform.FindService((int)vector.ToUInt32(), state, program.Memory);
             //$TODO if SVC is null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {

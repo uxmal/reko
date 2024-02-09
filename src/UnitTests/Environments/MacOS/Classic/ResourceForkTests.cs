@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             stm.Write(Encoding.ASCII.GetBytes("Hello world!Hello world!"), 0, 0x10); 
             
             stm.Write(new byte[0x10], 0, 0x10);  // copy of header
-            WriteBeUint32(stm, 0);               // next resource map.
+            WriteBeUint32(stm, 0);               // next resource mem.
             WriteBeUint16(stm, 0);
             WriteBeUint16(stm, 0);
             WriteBeUint16(stm, 0x1C);

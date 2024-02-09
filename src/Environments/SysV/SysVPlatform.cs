@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Environments.SysV.ArchSpecific;
@@ -67,7 +68,7 @@ namespace Reko.Environments.SysV
             return cc;
         }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in metadata.Modules.Values)

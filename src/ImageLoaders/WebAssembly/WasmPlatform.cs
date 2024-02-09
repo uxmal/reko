@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -52,7 +53,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
 
-        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             return null;
         }
