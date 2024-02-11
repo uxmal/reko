@@ -367,7 +367,8 @@ namespace Reko.Scanning
         {
             if (!pool.Remove(addr, out var e))
             {
-                var rdr = program.CreateImageReader(arch, addr);
+                if (!program.TryCreateImageReader(arch, addr, out var rdr))
+                    return Array.Empty<RtlInstructionCluster>().AsEnumerable().GetEnumerator();
                 var rw = arch.CreateRewriter(
                     rdr,
                     arch.CreateProcessorState(),
@@ -597,7 +598,8 @@ namespace Reko.Scanning
         {
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             var arch = program.Architecture;
-            var rdr = program.CreateImageReader(arch, seg.Address);
+            if (!program.TryCreateImageReader(arch, seg.Address, out var rdr))
+                yield break;
             while (rdr.TryRead(program.Platform.PointerType, out Constant? c))
             {
                 var addr = program.Architecture.MakeAddressFromConstant(c, false);

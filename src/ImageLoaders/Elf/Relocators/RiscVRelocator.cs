@@ -48,7 +48,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ? referringSection.Address + rela.Offset
                 : loader.CreateAddress(rela.Offset);
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             switch (rt)
@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ? referringSection.Address + rela.Offset
                 : loader.CreateAddress(rela.Offset);
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             switch (rt)

@@ -50,7 +50,7 @@ namespace Reko.Core
         Encoding TextEncoding { get; }
         IReadOnlyUserData User { get; }
 
-        EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr);
+        bool TryCreateImageReader(IProcessorArchitecture arch, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Determines whether an <see cref="Address"/> refers to read-only memory.

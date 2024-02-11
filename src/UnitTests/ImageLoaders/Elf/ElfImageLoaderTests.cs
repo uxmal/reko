@@ -349,18 +349,25 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             base.Setup();
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArchLe");
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsAny<IMemory>(),
-                It.IsAny<Address>())).
-                Returns(new Func<IMemory, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
+                It.IsAny<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
             arch.Setup(a => a.CreateImageWriter(
                 It.IsAny<MemoryArea>(),
                 It.IsAny<Address>())).
                 Returns(new Func<MemoryArea, Address, ImageWriter>((m, a) => m.CreateLeWriter(a)));
+
             this.arch32be = new Mock<IProcessorArchitecture>();
-            arch.Setup(a => a.Name).Returns("FakeArchBe");
-            this.tlSvc = new Mock<ITypeLibraryLoaderService>(); 
+            arch32be.Setup(a => a.Name).Returns("FakeArchBe");
+            arch32be.Setup(a => a.Endianness).Returns(EndianServices.Big);
+
+            this.tlSvc = new Mock<ITypeLibraryLoaderService>();
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             cfgSvc.Setup(d => d.GetArchitecture(

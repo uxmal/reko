@@ -38,5 +38,24 @@ namespace Reko.ImageLoaders.MzExe.Pe
         }
 
         public abstract void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations);
+
+        protected EndianImageReader CreateImageReader(Program program, Address addr)
+        {
+            //$BUG: this returns null. Need to change the logic to more robustly handle
+            // maformed
+            if (!program.TryCreateImageReader(addr, out var rdr))
+                throw new BadImageFormatException();
+            return rdr;
+        }
+
+        protected EndianImageReader CreateImageReader(Program program, IProcessorArchitecture arch, Address addr)
+        {
+            //$BUG: this returns null. Need to change the logic to more robustly handle
+            // maformed
+            if (!program.TryCreateImageReader(arch, addr, out var rdr))
+                throw new BadImageFormatException();
+            return rdr;
+        }
+
     }
 }

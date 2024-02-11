@@ -192,8 +192,9 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(IMemory memory, Address addr);
+        /// <param>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
+        bool TryCreateImageReader(IMemory memory, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
@@ -202,8 +203,9 @@ namespace Reko.Core
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <param name="cbUnits">Number of memory units after which stop reading.</param>
-        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(IMemory memory, Address addr, long cbUnits);
+        /// <param>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
+        bool TryCreateImageReader(IMemory memory, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
@@ -651,8 +653,8 @@ namespace Reko.Core
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public virtual T? CreateExtension<T>() where T : class => default;
         public Frame CreateFrame() { return new Frame(this, FramePointerType); }
-        public EndianImageReader CreateImageReader(IMemory mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
-        public EndianImageReader CreateImageReader(IMemory mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
+        public bool TryCreateImageReader(IMemory mem, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, out rdr);
+        public bool TryCreateImageReader(IMemory mem, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, cbUnits, out rdr);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);

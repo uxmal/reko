@@ -309,7 +309,8 @@ namespace Reko.Gui
         public override string RenderHit(AddressSearchHit hit)
         {
             var arch = hit.Program.Architecture;
-            var rdr = hit.Program.CreateImageReader(arch, hit.Address);
+            if (!hit.Program.TryCreateImageReader(arch, hit.Address, out var rdr))
+                return "";
             var sb = new StringBuilder();
             int cb = 0;
             while (rdr.IsValid)
@@ -337,7 +338,8 @@ namespace Reko.Gui
         public override string RenderHit(AddressSearchHit hit)
         {
             var arch = hit.Program.Architecture;
-            var rdr = hit.Program.CreateImageReader(arch, hit.Address);
+            if (!hit.Program.TryCreateImageReader(arch, hit.Address, out var rdr))
+                return "";
             var bytes = rdr.ReadBytes(hit.Length);
             return Criteria.Encoding.GetString(bytes.ToArray());
         }

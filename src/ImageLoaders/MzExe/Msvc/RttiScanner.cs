@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 
 namespace Reko.ImageLoaders.MzExe.Msvc
@@ -88,7 +89,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             foreach (var seg in roSegments)
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1}) for vtables.", seg.Name, seg.Address);
-                var rdr = program.CreateImageReader(seg.Address, seg.ContentSize);
+                if (!program.TryCreateImageReader(seg.Address, seg.ContentSize, out var rdr))
+                    continue;
                 while (rttiHelper.TryReadPointer(rdr, out Address? addr))
                 {
                     if (!results.CompleteObjectLocators.TryGetValue(addr, out var col))
@@ -150,7 +152,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             foreach (var seg in roSegments)
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1})", seg.Name, seg.Address);
-                var rdr = program.CreateImageReader(seg.Address);
+                if (!program.TryCreateImageReader(seg.Address, out var rdr))
+                    continue;
                 while (rdr.IsValid)
                 {
                     var offset = rdr.Offset;
@@ -187,7 +190,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
 
             if (results.TypeDescriptors.ContainsKey(col.TypeDescriptorAddress))
                 return;
-            rdr = program.CreateImageReader(col.TypeDescriptorAddress);
+            if (!program.TryCreateImageReader(col.TypeDescriptorAddress, out rdr!))
+                return;
             var typedesc = TypeDescriptor.Read(rdr, rttiHelper);
             if (typedesc is null)
             {
@@ -219,7 +223,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         {
             if (ptr is null)
                 return false;
-            return program.SegmentMap.IsValidAddress(ptr);
+            return program.Memory.IsValidAddress(ptr);
         }
 
         private bool SniffForCompleteObjectLocator(EndianImageReader rdr)
@@ -240,7 +244,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             // Sniff the type descriptor looking for the class name, which
             // always is prefixed with ".?A"
 
-            var rdrTd = program.CreateImageReader(ptrTypeDescriptor);
+            if (!program.TryCreateImageReader(ptrTypeDescriptor, out var rdrTd))
+                return false;
             if (!rttiHelper.TryReadPointer(rdrTd, out var ptrVftable))
                 return false;
             if (!IsValidPointer(ptrVftable))

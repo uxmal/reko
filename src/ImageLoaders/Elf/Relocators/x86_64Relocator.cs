@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 P = 0;
             }
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
             ulong PP = P;
             switch (rt)

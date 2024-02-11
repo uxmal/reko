@@ -57,7 +57,7 @@ public const short 	IMAGE_REL_MIPS_PAIR    	    =  0x0025; // This relocation is
             ushort fixup = rdr.ReadUInt16();
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);
             var arch = program.Architecture;
-            var imgR = program.CreateImageReader(arch, offset);
+            var imgR = CreateImageReader(program, arch, offset);
             var imgW = program.CreateImageWriter(arch, offset);
             uint w = imgR.ReadUInt32();
             int s;

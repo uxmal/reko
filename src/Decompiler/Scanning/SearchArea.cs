@@ -58,7 +58,7 @@ namespace Reko.Scanning
         private SearchArea(Program program, ImageSegment? segment, AddressRange? addressRange)
         {
             if (segment is null) {
-                if (addressRange is null) throw new ArgumentNullException();
+                if (addressRange is null) throw new ArgumentNullException(nameof(segment));
             }
             else
             {

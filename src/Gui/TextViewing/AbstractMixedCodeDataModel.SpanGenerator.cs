@@ -250,15 +250,19 @@ namespace Reko.Gui.TextViewing
             {
                 Debug.Assert(line.Count == 0);
                 var addr = this.position.Address;
-                var rdr = program.CreateImageReader(program.Architecture, addr, item.Size);
-                mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
+                if (program.TryCreateImageReader(program.Architecture, addr, item.Size, out var rdr))
+                {
+                    mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
+                }
                 var memLine = new LineSpan(position, addr, line.ToArray());
                 line.Clear();
-
-                this.position = Pos(rdr.Address);
-                if (rdr.Address >= item.EndAddress)
+                if (rdr is not null)
                 {
-                    DecorateLastLine(memLine);
+                    this.position = Pos(rdr.Address);
+                    if (rdr.Address >= item.EndAddress)
+                    {
+                        DecorateLastLine(memLine);
+                    }
                 }
                 return (position, memLine);
             }

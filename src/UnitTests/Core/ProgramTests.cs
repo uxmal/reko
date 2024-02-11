@@ -47,6 +47,7 @@ namespace Reko.UnitTests.Core
         {
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             program.Architecture = arch.Object;
         }
@@ -61,10 +62,12 @@ namespace Reko.UnitTests.Core
             program.SegmentMap = segmentMap;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             program.Platform = new DefaultPlatform(null, arch.Object);
-            arch.Setup(a => a.CreateImageReader(
+            EndianImageReader rdr = new LeImageReader(mem, 0);
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsAny<IMemory>(),
-                addrBase))
-                .Returns(new LeImageReader(mem, 0));
+                addrBase, 
+                out rdr))
+                .Returns(true);
         }
 
         private void Given_ImageMapItem(Address address, DataType dataType)

@@ -104,7 +104,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var addr = Address.Ptr32(P);
             uint PP = P;
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             var rt = (PpcRt)(rela.Info & 0xFF);
@@ -185,7 +185,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var addr = Address.Ptr64(P);
             ulong PP = P;
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             var rt = (Ppc64Rt) (rela.Info & 0xFF);

@@ -676,7 +676,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.SegmentMap.IsValidAddress(addrTo))
+            if (!program.Memory.IsValidAddress(addrTo))
                 return;
             if (addrTo != this.SelectedAddress)
             {

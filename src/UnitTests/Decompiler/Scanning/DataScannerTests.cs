@@ -73,10 +73,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("Fake");
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsNotNull<IMemory>(),
-                It.IsNotNull<Address>())).
-                Returns((IMemory m, Address a) => m.CreateLeReader(a)); 
+                It.IsNotNull<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                 m.TryCreateLeReader(a,  out r)))
+                .Returns(true);
         }
     }
 }

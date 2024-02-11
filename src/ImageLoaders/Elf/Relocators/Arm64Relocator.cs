@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return (addr, null);
             }
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = program.TryCreateImageReader(arch, addr, out var rdr) ? rdr : null!;
             var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadUInt64();

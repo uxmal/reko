@@ -285,7 +285,7 @@ namespace Reko.Typing
                 var addr = program.Platform.MakeAddressFromConstant(c, false);
                 
                 // An invalid pointer -- often used as sentinels in code.
-                if (addr is null || !program.SegmentMap.IsValidAddress(addr))
+                if (addr is null || !program.Memory.IsValidAddress(addr))
                 {
                     //$TODO: probably should emit a reinterpret_cast here.
                     e = new Cast(ptr, c);
@@ -303,7 +303,8 @@ namespace Reko.Typing
                 if (charType != null && program.IsPtrToReadonlySection(addr))
                 {
                     PromoteToCString(c, charType);
-                    var rdr = program.CreateImageReader(program.Architecture, addr);
+                    if (!program.TryCreateImageReader(program.Architecture, addr, out var rdr))
+                        return e;
                     return rdr.ReadCString(charType, program.TextEncoding);
                 }
                 if (Dereferenced &&

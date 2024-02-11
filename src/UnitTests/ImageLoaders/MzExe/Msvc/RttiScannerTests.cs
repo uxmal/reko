@@ -50,15 +50,22 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
             var platform = new Mock<IPlatform>(MockBehavior.Strict);
             var arch = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch.Setup(a => a.Name).Returns("fakeArch");
-            arch.Setup(a => a.CreateImageReader(
-                It.IsAny<IMemory>(),
-                It.IsAny<Address>())).Returns(new Func<IMemory, Address, EndianImageReader>(
-                    (m, a) => mem.CreateLeReader(a)));
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsAny<IMemory>(),
                 It.IsAny<Address>(),
-                It.IsAny<long>())).Returns(new Func<IMemory, Address, long, EndianImageReader>(
-                    (m, a, b) => mem.CreateLeReader(a, b)));
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
+            arch.Setup(a => a.TryCreateImageReader(
+                It.IsAny<IMemory>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateSizedReaderDelegate((IMemory m, Address a, long b, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, b, out r)))
+                .Returns(true);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program(new ProgramMemory(segments), arch.Object, platform.Object);
             this.listener = new FakeDecompilerEventListener();
@@ -106,7 +113,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
             const uint ptrTypeDesc = 0x1020;
             const uint ptrVFtable = 0x1038;
             const uint ptrClassDesc = 0x1080;
-
 
             Given_Col32(ptrCol, ptrTypeDesc, ptrClassDesc);
             Given_TypeDescriptor(ptrTypeDesc, ptrVFtable, ".?Atest");

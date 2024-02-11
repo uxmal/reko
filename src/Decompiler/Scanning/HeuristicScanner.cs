@@ -127,7 +127,7 @@ namespace Reko.Scanning
             var hsc = new BlockConflictResolver(
                 program,
                 sr2,
-                program.SegmentMap.IsValidAddress,
+                program.Memory.IsValidAddress,
                 host);
             RemoveInvalidBlocks(sr);
             Probe(sr);
@@ -205,7 +205,7 @@ namespace Reko.Scanning
         {
             return
                 de.Value.DataType is UnknownType &&
-                this.program.Memory.IsExecutable(de.Key);
+                this.program.Memory.IsExecutableAddress(de.Key);
         }
 
         private (MemoryArea, Address, uint) CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
@@ -365,7 +365,8 @@ namespace Reko.Scanning
             {
                 var addrEnd = block.GetEndAddress();
                 var sb = new StringBuilder();
-                var rdr = program.CreateImageReader(program.Architecture, block.Address);
+                if (!program.TryCreateImageReader(program.Architecture, block.Address, out var rdr))
+                    continue;
                 sb.AppendFormat("{0} - {1} ", block.Address, addrEnd);
                 while (rdr.Address < addrEnd)
                 {

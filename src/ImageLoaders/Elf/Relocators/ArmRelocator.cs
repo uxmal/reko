@@ -167,7 +167,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         return (addr, null);
                     }
 
-                    var relInstr = program.CreateImageReader(program.Architecture, addr);
+                    if (!program.TryCreateImageReader(program.Architecture, addr, out var relInstr))
+                        return (addr, null);
                     var uInstr = relInstr.ReadUInt32();
                     var offset = uInstr;
                     offset = (offset & 0x00ffffff) << 2;
@@ -214,8 +215,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case Arm32Rt.R_ARM_MOVT_ABS:
                 {
                     //var instr = program.CreateDisassembler(program.Architecture, addr).First();
-
-                    var relInstr = program.CreateImageReader(program.Architecture, addr);
+                    if (!program.TryCreateImageReader(program.Architecture, addr, out var relInstr))
+                    {
+                        return (addr, null);
+                    }
                     var uInstr = relInstr.ReadUInt32();
                     var offset = uInstr;
                     offset = ((offset & 0xf0000) >> 4) | (offset & 0xfff);
@@ -238,7 +241,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
 
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = program.TryCreateImageReader(arch, addr, out var r) ? r : null!;
             var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadLeUInt32();

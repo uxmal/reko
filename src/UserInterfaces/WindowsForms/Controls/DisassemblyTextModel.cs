@@ -49,12 +49,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var line = new List<ITextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-            var rdr = program.CreateImageReader(arch, instr.Address);
-            var bytes = arch.RenderInstructionOpcode(instr, rdr);
-            line.Add(new InstructionTextSpan(instr, bytes, "dasm-bytes"));
-            var dfmt = new DisassemblyFormatter(program, arch, instr, line);
-            instr.Render(dfmt, options);
-            dfmt.NewLine();
+            if (program.TryCreateImageReader(arch, instr.Address, out var rdr))
+            {
+                var bytes = arch.RenderInstructionOpcode(instr, rdr);
+                line.Add(new InstructionTextSpan(instr, bytes, "dasm-bytes"));
+                var dfmt = new DisassemblyFormatter(program, arch, instr, line);
+                instr.Render(dfmt, options);
+                dfmt.NewLine();
+            }
             return new LineSpan(position, addr, line.ToArray());
         }
 

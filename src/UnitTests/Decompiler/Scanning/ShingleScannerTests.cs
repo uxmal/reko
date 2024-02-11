@@ -389,10 +389,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.CodeMemoryGranularity).Returns(8);
             arch.Setup(a => a.CreateProcessorState()).Returns(new Func<ProcessorState>(() =>
                 new DefaultProcessorState(arch.Object)));
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsNotNull<IMemory>(),
-                It.IsNotNull<Address>())).Returns(new Func<IMemory, Address, EndianImageReader>((m, a) =>
-                    m.CreateLeReader(a)));
+                It.IsNotNull<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
             arch.Setup(a => a.CreateRewriter(
                 It.IsNotNull<EndianImageReader>(),
                 It.IsNotNull<ProcessorState>(),

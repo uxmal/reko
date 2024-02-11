@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 		{
 			ushort fixup = rdr.ReadLeUInt16();
 			Address offset = baseOfImage + page + (fixup & 0x0FFFu);
-            var imgR = program.CreateImageReader(program.Architecture, offset);
+            var imgR = CreateImageReader(program, offset);
             var imgW = program.CreateImageWriter(program.Architecture, offset);
             switch (fixup >> 12)
 			{

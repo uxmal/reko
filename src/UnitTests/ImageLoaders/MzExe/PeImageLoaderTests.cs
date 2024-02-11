@@ -96,21 +96,28 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             this.arch_386 = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch_386.Setup(a => a.Name).Returns("x86-protected-32");
+            arch_386.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(arch_386.Object, PrimitiveType.Ptr32));
             arch_386.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             arch_386.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             var map = new SegmentMap(addrLoad);
             var state = new Mocks.FakeProcessorState(this.arch_386.Object);
             arch_386.Setup(a => a.CreateProcessorState()).Returns(state);
-            arch_386.Setup(a => a.CreateImageReader(
-                It.IsNotNull<IMemory>(), 
-                It.IsNotNull<Address>()))
-                .Returns(new Func<IMemory, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
-            arch_386.Setup(a => a.CreateImageReader(
+            arch_386.Setup(a => a.TryCreateImageReader(
+                It.IsNotNull<IMemory>(),
+                It.IsAny<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
+            arch_386.Setup(a => a.TryCreateImageReader(
                 It.IsNotNull<IMemory>(),
                 It.IsNotNull<Address>(),
-                It.IsAny<long>()))
-                .Returns(new Func<IMemory, Address, long, EndianImageReader>((m, a, b) => m.CreateLeReader(a, b)));
+                It.IsAny<long>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateSizedReaderDelegate((IMemory m, Address a, long b, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, b, out r)))
+                .Returns(true);
         }
 
         // PE section headers are always 40 bytes.

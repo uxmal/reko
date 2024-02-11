@@ -254,9 +254,8 @@ namespace Reko.Scanning
                     throw new NotImplementedException($"Don't know how to read from {eAddr}");
                 addr = arch.MakeAddressFromConstant(cAddr, false);
             }
-            if (!memory.IsValidAddress(addr))
+            if (!arch.TryCreateImageReader(memory, addr, out var rdr))
                 return InvalidConstant.Create(dt);
-            var rdr = arch.CreateImageReader(memory, addr);
             memAccesses[addr] = dt;
             if (dt == PrimitiveType.SegPtr32)
             {

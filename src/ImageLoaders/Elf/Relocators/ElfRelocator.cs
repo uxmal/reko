@@ -304,6 +304,24 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
+        public EndianImageReader CreateImageReader(Program program, Address addr)
+        {
+            //$BUG: this returns null. ELF relocators need rework to handle
+            // bad images.
+            return program.TryCreateImageReader(addr, out var rdr)
+                ? rdr
+                : null!;
+        }
+
+        public EndianImageReader CreateImageReader(Program program, IProcessorArchitecture arch, Address addr)
+        {
+            //$BUG: this returns null. ELF relocators need rework to handle
+            // bad images.
+            return program.TryCreateImageReader(arch, addr, out var rdr)
+                ? rdr
+                : null!;
+        }
+
         [Conditional("DEBUG")]
         protected abstract void DumpDynamicSegment(ElfSegment dynSeg);
         

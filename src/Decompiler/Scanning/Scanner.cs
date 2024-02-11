@@ -252,8 +252,10 @@ namespace Reko.Scanning
 
         public IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder)
         {
+            if (!Program.TryCreateImageReader(arch, addrStart, out var rdr))
+                return Array.Empty<RtlInstructionCluster>();
             return arch.CreateRewriter(
-                Program.CreateImageReader(arch, addrStart),
+                rdr,
                 state,
                 binder,
                 this);
@@ -680,7 +682,9 @@ namespace Reko.Scanning
             if (scannedGlobalData.Contains(addr))
                 return;
             scannedGlobalData.Add(addr);
-            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt, name));
+            if (!Program.TryCreateImageReader(addr, out var rdr))
+                return;
+            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, rdr, dt, name));
         }
 
         public Block? FindContainingBlock(Address address)
@@ -724,9 +728,8 @@ namespace Reko.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase? GetTrampoline(IProcessorArchitecture arch, Address addr)
         {
-            if (!Program.SegmentMap.IsValidAddress(addr))
+            if (!Program.TryCreateImageReader(arch, addr, out var rdr))
                 return null;
-            var rdr = Program.CreateImageReader(arch, addr);
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
             var target = Program.Platform.GetTrampolineDestination(addr, rw.SelectMany(c => c.Instructions), this);
             return target;
@@ -779,9 +782,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {
-            if (!segmentMap.IsValidAddress(addrImportThunk))
+            if (!Program.TryCreateImageReader(arch, addrImportThunk, out var rdr))
                 return null;
-            var rdr = Program.CreateImageReader(arch, addrImportThunk);
             //$REVIEW: WHOA! This is 32-bit code!
             if (!rdr.TryReadUInt32(out var uDest))
                 return null;

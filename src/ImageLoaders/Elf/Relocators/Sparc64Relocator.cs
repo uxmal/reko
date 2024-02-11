@@ -146,7 +146,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private (Address?, ElfSymbol?) Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadBeUInt32();
@@ -160,7 +160,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private (Address?, ElfSymbol?) Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadBeUInt64();

@@ -590,7 +590,8 @@ namespace Reko.ImageLoaders.Elf
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
         {
             ElfImageLoader.trace.Verbose("== Constructing GOT entries ==");
-            var rdr = program.CreateImageReader(program.Architecture, gotStart);
+            if (!program.TryCreateImageReader(program.Architecture, gotStart, out var rdr))
+                return;
             while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;

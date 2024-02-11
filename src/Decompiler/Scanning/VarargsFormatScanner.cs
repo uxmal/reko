@@ -190,11 +190,8 @@ namespace Reko.Scanning
 
         private StringConstant? ReadCString(PrimitiveType charType, Address addr)
         {
-            if (!program.SegmentMap.IsValidAddress(addr))
-            {
+            if (!program.TryCreateImageReader(arch, addr, out var rdr))
                 return null;
-            }
-            var rdr = program.CreateImageReader(arch, addr);
             //$BUG: what about wsprintf? Be sure to use an appropriate 
             // Unicode encoding
             var c = rdr.ReadCString(charType, program.TextEncoding);

@@ -87,6 +87,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.Platform = new DefaultPlatform(sc, arch.Object);
             arch.Setup(a => a.StackRegister).Returns((RegisterStorage)sp.Storage);
             arch.Setup(s => s.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(s => s.Endianness).Returns(EndianServices.Little);
             arch.Setup(s => s.CreateFrameApplicationBuilder(
                 It.IsAny<IStorageBinder>(),
                 It.IsAny<CallSite>()))

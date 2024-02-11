@@ -308,8 +308,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             int sh = 0;
             uint mask = 0;
-            var relR = program.CreateImageReader(program.Architecture, addr);
-            if (!relR.TryPeekBeUInt32(0, out uint w))
+            if (!program.TryCreateImageReader(program.Architecture, addr, out var relR) ||
+                !relR.TryPeekBeUInt32(0, out uint w))
                 return (null, null);
             uint A = (rel.Addend.HasValue)
                 ? (uint) rel.Addend.Value
@@ -343,9 +343,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (addrHi is { })
                 {
                     // This LO16 relocation had a HI16 just before.
-                    var relHiR = program.CreateImageReader(program.Architecture, addrHi);
+                    var relHiR = program.TryCreateImageReader(program.Architecture, addrHi, out var r1) ? r1 : null!;
                     var relHiW = program.CreateImageWriter(program.Architecture, addrHi);
-                    var relLoR = program.CreateImageReader(program.Architecture, addr);
+                    var relLoR = program.TryCreateImageReader(program.Architecture, addr, out var r2) ? r2 : null!;
                     var relLoW = program.CreateImageWriter(program.Architecture, addr);
 
                     uint valueHi = relHiR!.ReadUInt32();
@@ -370,7 +370,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     // This LO16 relocation is "orphaned"; reuse the last HI16 if there is one.
                     if (addrHiPrev is null)
                         return (null, null);
-                    var relLoR = program.CreateImageReader(program.Architecture, addr);
+                    var relLoR = base.CreateImageReader(program, addr);
                     var relLoW = program.CreateImageWriter(program.Architecture, addr);
                     uint valueLo = relLoR.ReadUInt32();
                     uint ahl = (valueLo & 0xFFFF) + S;
@@ -568,7 +568,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint S = (uint) (symbol.Value + uAddrSection);
 
             ulong PP = P;
-            var relR = program.CreateImageReader(program.Architecture, addr);
+            var relR = CreateImageReader(program, addr);
             var relW = program.CreateImageWriter(program.Architecture, addr);
             if (!relR.TryPeekBeUInt32(0, out uint w))
                 return (null, null);

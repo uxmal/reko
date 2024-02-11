@@ -68,9 +68,8 @@ namespace Reko.Core.Output
         {
             try
             {
-                if (!program.Memory.IsValidAddress(addr))
+                if (!program.Architecture.TryCreateImageReader(program.Memory, addr, out this.rdr!))
                     return;
-                this.rdr = program.Architecture.CreateImageReader(program.Memory, addr);
                 dataType.Accept(this);
             }
             catch (AddressCorrelatedException aex)

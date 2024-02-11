@@ -188,7 +188,7 @@ namespace Reko.Scanning
         {
             if (addr is null)
                 return false;
-            return host.Program.Memory.IsExecutable(addr);
+            return host.Program.Memory.IsExecutableAddress(addr);
         }
 
         private Address? ForceToAddress(Expression arg)

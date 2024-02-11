@@ -71,8 +71,10 @@ namespace Reko.Scanning
         {
             var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
             var arch = program.Architecture;
+            program.TryCreateImageReader(arch, addr, out var rdr);
+            
             var dasm = arch.CreateRewriter(
-                program.CreateImageReader(arch, addr),
+                rdr!,
                 arch.CreateProcessorState(),    //$TODO: use state from user.
                 binder,
                 host);
@@ -128,7 +130,7 @@ namespace Reko.Scanning
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
-                            if (program.SegmentMap.IsValidAddress(addrOp))
+                            if (program.Memory.IsValidAddress(addrOp))
                             {
                                 if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out int c))
                                     c = 0;
@@ -176,7 +178,7 @@ namespace Reko.Scanning
                     case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))
+                        if (addrOp != null && program.Memory.IsValidAddress(addrOp))
                         {
                             block = Disassemble(addrOp);
                             Debug.Assert(sr.ICFG.Nodes.Contains(block));

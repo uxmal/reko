@@ -46,7 +46,9 @@ namespace Reko.ImageLoaders.MzExe.Pe
             ushort fixup = rdr.ReadLeUInt16();
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);
             var arch = program.Architecture;
-            var imgR = program.CreateImageReader(arch, offset);
+            //$REVIEW: find a general way to deal with TryCreateImageReader failures in 
+            // ELF relocators
+            var imgR = program.TryCreateImageReader(arch, offset, out var r) ? r : null!;
             var imgW = program.CreateImageWriter(arch, offset);
             switch (fixup >> 12)
             {

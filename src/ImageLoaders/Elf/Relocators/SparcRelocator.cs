@@ -128,7 +128,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     rt));
             }
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadBeUInt32();

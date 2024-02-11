@@ -439,8 +439,10 @@ namespace Reko.Scanning
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
         {
             var arch = program.Architecture;
+            if (!program.TryCreateImageReader(arch, addr, out var rdr))
+                return Array.Empty<RtlInstructionCluster>();
             var rw = arch.CreateRewriter(
-                program.CreateImageReader(arch, addr),
+                rdr,
                 arch.CreateProcessorState(),
                 arch.CreateFrame(),
                 host);

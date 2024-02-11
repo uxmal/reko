@@ -84,8 +84,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             var scanner = new Mock<IScannerServices>();
             scanner.Setup(s => s.Services).Returns(sc);
-            arch.Setup(s => s.CreateImageReader(It.IsNotNull<IMemory>(), this.program.ImageMap.BaseAddress))
-                .Returns(this.mem.CreateLeReader(0));
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(s => s.TryCreateImageReader(
+                It.IsNotNull<IMemory>(),
+                It.IsAny<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
             var state = new FakeProcessorState(arch.Object);
         
             var vb = new VectorBuilder(scanner.Object.Services, program, new DirectedGraphImpl<object>());

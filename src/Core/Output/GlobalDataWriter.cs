@@ -103,14 +103,13 @@ namespace Reko.Core.Output
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
-                if (program.Memory.IsValidAddress(addr))
+                if (program.TryCreateImageReader(program.Architecture, addr, out this.rdr!))
                 {
                     formatter.Write(" = ");
                     if (!oneLineDeclaration && showAddressInComment)
                     {
                         formatter.Write("// {0}", addr);
                     }
-                    this.rdr = program.CreateImageReader(program.Architecture, addr);
                     field.DataType.Accept(this);
                 }
             }
@@ -143,14 +142,13 @@ namespace Reko.Core.Output
             try
             {
                 tw.WriteDeclaration(dataType, name);
-                if (program.Memory.IsValidAddress(address))
+                if (program.TryCreateImageReader(program.Architecture, address, out this.rdr!))
                 {
                     formatter.Write(" = ");
                     if (!oneLineDeclaration && showAddressInComment)
                     {
                         formatter.Write("// {0}", address);
                     }
-                    this.rdr = program.CreateImageReader(program.Architecture, address);
                     dataType.Accept(this);
                 }
             }

@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         public bool IsValidAddress(Address addr)
         {
-            return program.SegmentMap.IsValidAddress(addr);
+            return program.Memory.IsValidAddress(addr);
         }
 
         public Address MakeAddressFromConstant(Constant c)

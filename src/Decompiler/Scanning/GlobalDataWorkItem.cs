@@ -44,14 +44,14 @@ namespace Reko.Scanning
             IScannerServices scanner,
             Program program,
             Address addr,
+            EndianImageReader rdr,
             DataType dt,
             string? name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
             this.dt = dt;
-            var arch = program.Architecture;
-            this.rdr = program.CreateImageReader(arch, addr);
+            this.rdr = rdr;
         }
 
         public override void Process()
@@ -115,7 +115,7 @@ namespace Reko.Scanning
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return;
             var addr = Address.FromConstant(c);
-            if (!program.SegmentMap.IsValidAddress(addr))
+            if (!program.Memory.IsValidAddress(addr))
                 return;
 
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee, null);

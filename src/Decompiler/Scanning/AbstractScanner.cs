@@ -92,7 +92,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <returns>Whether or not the address is executable.</returns>
         public bool IsExecutableAddress(Address addr) =>
-            program.Memory.IsExecutable(addr);
+            program.Memory.IsExecutableAddress(addr);
 
 
         public IBackWalkHost<RtlBlock, RtlInstruction> MakeBackwardSlicerHost(
@@ -108,7 +108,8 @@ namespace Reko.Scanning
             IStorageBinder binder)
         {
             var arch = state.Architecture;
-            var rdr = program.CreateImageReader(arch, addr);
+            if (!program.TryCreateImageReader(arch, addr, out var rdr))
+                return Array.Empty<RtlInstructionCluster>();
             var rw = arch.CreateRewriter(rdr, state, binder, host);
             return rw;
         }
@@ -534,9 +535,8 @@ namespace Reko.Scanning
 
             public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
-                if (!program.SegmentMap.IsValidAddress(addrImportThunk))
+                if (!program.TryCreateImageReader(arch, addrImportThunk, out var rdr))
                     return null;
-                var rdr = program.CreateImageReader(arch, addrImportThunk);
                 //$REVIEW: WHOA! This is 32-bit code!
                 if (!rdr.TryReadUInt32(out var uDest))
                     return null;

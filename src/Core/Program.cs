@@ -470,17 +470,21 @@ namespace Reko.Core
         /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
         /// is used.</param>
         /// <param name="addr"><see cref="Address"/> at which to start reading.</param>
-        /// <returns>An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
         /// starting at <paramref name="addr"> and ending at the end of the segment in which
         /// the address is located.
-        /// </returns>
-        public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
+        /// </param>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
+        public bool TryCreateImageReader(
+            IProcessorArchitecture arch,
+            Address addr, 
+            [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            return arch.CreateImageReader(this.Memory, addr);
+            return arch.Endianness.TryCreateImageReader(this.Memory, addr, out rdr);
         }
 
-        public EndianImageReader CreateImageReader(Address addr) =>
-            CreateImageReader(this.Architecture, addr);
+        public bool TryCreateImageReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr) =>
+            TryCreateImageReader(this.Architecture, addr, out rdr);
 
         /// <summary>
         /// Creates an <see cref="EndianByteImageReader"/> of the appropriate
@@ -489,19 +493,21 @@ namespace Reko.Core
         /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
         /// is used.</param>
         /// <param name="addrBegin"><see cref="Address"/> at which to start reading.</param>
-        /// <returns>An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
         /// starting at <paramref name="addrBegin"> and ending at <paramref name="addrEnd" />.
-        /// </returns>
-        public EndianImageReader CreateImageReader(
+        /// </param>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
+        public bool TryCreateImageReader(
             IProcessorArchitecture arch,
             Address addrBegin,
-            long cUnits)
+            long cUnits,
+            [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            return arch.CreateImageReader(this.Memory, addrBegin, cUnits);
+            return arch.Endianness.TryCreateImageReader(this.Memory, addrBegin, cUnits, out rdr);
         }
 
-        public EndianImageReader CreateImageReader(Address addrBegin, long cUnits) =>
-            CreateImageReader(this.Architecture, addrBegin, cUnits);
+        public bool TryCreateImageReader(Address addrBegin, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr) =>
+            TryCreateImageReader(this.Architecture, addrBegin, cUnits, out rdr);
 
         public ImageWriter CreateImageWriter(IProcessorArchitecture arch, Address addr)
         {
@@ -661,14 +667,15 @@ namespace Reko.Core
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = this.CreateImageReader(arch, addr);
+                if (!this.TryCreateImageReader(arch, addr, out var rdr))
+                    return 0;
                 while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
                     ;
-                return (uint)(rdr.Address - addr);
+                return (uint) (rdr.Address - addr);
             }
             else
             {
-                return (uint)(strDt.Size + strDt.Size);
+                return (uint) (strDt.Size + strDt.Size);
             }
         }
 

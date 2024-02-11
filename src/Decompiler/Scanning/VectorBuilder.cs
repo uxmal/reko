@@ -112,9 +112,8 @@ namespace Reko.Scanning
         {
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
-            if (!program.SegmentMap.IsValidAddress(addrTableStart))
+            if (!program.TryCreateImageReader(program.Architecture, addrTableStart, out var rdr))
                 return Array.Empty<int>();      //$DEBUG: look into this case.
-            var rdr = program.CreateImageReader(program.Architecture, addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -149,23 +148,27 @@ namespace Reko.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    var entryAddr = addrTable + (uint)(permutation[i] * cbEntry);
-                    var addr = arch.ReadCodeAddress(0, program.CreateImageReader(arch, entryAddr), state);
-                    if (addr != null)
-                    { 
-                        vector.Add(addr);
+                    var entryAddr = addrTable + (uint) (permutation[i] * cbEntry);
+                    if (program.TryCreateImageReader(arch, entryAddr, out var rdr))
+                    {
+                        var addr = arch.ReadCodeAddress(0, rdr, state);
+                        if (addr is not null)
+                        {
+                            vector.Add(addr);
+                        }
                     }
                 }
             }
             else
             {
-                EndianImageReader rdr = program.CreateImageReader(arch, addrTable);
+                if (!program.TryCreateImageReader(arch, addrTable, out var rdr))
+                    return vector;
                 int cItems = limit / stride;
-                var segmentMap = program.SegmentMap;
+                var memory = program.Memory;
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (entryAddr is null || !segmentMap.IsValidAddress(entryAddr))
+                    if (entryAddr is null || !memory.IsValidAddress(entryAddr))
                     {
                         if (services != null)
                         {
@@ -233,7 +236,7 @@ namespace Reko.Scanning
 
         public bool IsValidAddress(Address addr)
         {
-            return program.SegmentMap.IsValidAddress(addr);
+            return program.Memory.IsValidAddress(addr);
         }
 
         public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)

@@ -358,7 +358,8 @@ namespace Reko.Typing
                 return false;
             }
             tcr.PromoteToCString(pch, charType);
-            var rdr = arch.CreateImageReader(program.Memory, addrString);
+            if (!arch.TryCreateImageReader(program.Memory, addrString, out var rdr))
+                return false;
             value = rdr.ReadCString(charType, program.TextEncoding);
             return true;
         }

@@ -47,8 +47,10 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(IMemory memory, Address addr);
+        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        public abstract bool TryCreateImageReader(IMemory memory, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
@@ -57,8 +59,10 @@ namespace Reko.Core
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <param name="cbUnits">Number of memory units after which stop reading.</param>
-        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(IMemory memory, Address addr, long cbUnits);
+        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        public abstract bool TryCreateImageReader(IMemory memory, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
@@ -271,14 +275,14 @@ namespace Reko.Core
 
         private class LeServices : EndianServices
         {
-            public override EndianImageReader CreateImageReader(IMemory mem, Address addr)
+            public override bool TryCreateImageReader(IMemory mem, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
             {
-                return mem.CreateLeReader(addr);
+                return mem.TryCreateLeReader(addr, out rdr);
             }
 
-            public override EndianImageReader CreateImageReader(IMemory mem, Address addr, long cUnits)
+            public override bool TryCreateImageReader(IMemory mem, Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
             {
-                return mem.CreateLeReader(addr, cUnits);
+                return mem.TryCreateLeReader(addr, cUnits, out rdr);
             }
 
             public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
@@ -382,14 +386,14 @@ namespace Reko.Core
 
         private class BeServices : EndianServices
         {
-            public override EndianImageReader CreateImageReader(IMemory mem, Address addr)
+            public override bool TryCreateImageReader(IMemory mem, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
             {
-                return mem.CreateBeReader(addr);
+                return mem.TryCreateBeReader(addr, out rdr);
             }
 
-            public override EndianImageReader CreateImageReader(IMemory mem, Address addr, long cUnits)
+            public override bool TryCreateImageReader(IMemory mem, Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
             {
-                return mem.CreateBeReader(addr, cUnits);
+                return mem.TryCreateBeReader(addr, cUnits, out rdr);
             }
 
             public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)

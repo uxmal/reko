@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint PP = P;
             uint B = 0;
             var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
+            var relR = CreateImageReader(program, arch, addr);
             var relW = program.CreateImageWriter(arch, addr);
             var rt = (i386Rt)(rela.Info & 0xFF);
             switch (rt)

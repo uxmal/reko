@@ -56,7 +56,7 @@ namespace Reko.Scripts.Python
 
         public byte ReadByte(Address addr)
         {
-            return CreateImageReader(addr).ReadByte();
+            return CreateImageReader(addr)?.ReadByte() ?? 0;
         }
 
         public IEnumerable<byte> ReadBytes(Address startAddr, long length)
@@ -66,7 +66,8 @@ namespace Reko.Scripts.Python
 
         public short ReadInt16(Address addr)
         {
-            return CreateImageReader(addr).ReadInt16();
+            //$REVIEW what should happen if a bad address is provided?
+            return CreateImageReader(addr)?.ReadInt16() ?? 0;
         }
 
         public IEnumerable<short> ReadInts16(Address startAddr, long length)
@@ -76,7 +77,7 @@ namespace Reko.Scripts.Python
 
         public int ReadInt32(Address addr)
         {
-            return CreateImageReader(addr).ReadInt32();
+            return CreateImageReader(addr)?.ReadInt32() ?? 0;
         }
 
         public IEnumerable<int> ReadInts32(Address startAddr, long length)
@@ -86,7 +87,7 @@ namespace Reko.Scripts.Python
 
         public long ReadInt64(Address addr)
         {
-            return CreateImageReader(addr).ReadInt64();
+            return CreateImageReader(addr)?.ReadInt64() ?? 0;
         }
 
         public IEnumerable<long> ReadInts64(Address startAddr, long length)
@@ -97,6 +98,8 @@ namespace Reko.Scripts.Python
         public string ReadCString(Address addr)
         {
             var rdr = CreateImageReader(addr);
+            if (rdr is null)
+                return "";
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }
@@ -197,9 +200,12 @@ namespace Reko.Scripts.Python
             return program.Architecture.TryParseAddress(sAddress, out addr);
         }
 
-        private EndianImageReader CreateImageReader(Address addr)
+        private EndianImageReader? CreateImageReader(Address addr)
         {
-            return program.CreateImageReader(program.Architecture, addr);
+            //$REVIEW: return null or throw?
+            return program.TryCreateImageReader(program.Architecture, addr, out var rdr)
+                ? rdr
+                : null;
         }
 
         private IEnumerable<T> ReadData<T>(
@@ -208,6 +214,8 @@ namespace Reko.Scripts.Python
             long length)
         {
             var rdr = CreateImageReader(startAddr);
+            if (rdr is null)
+                yield break;
             var offStart = rdr.Offset;
             while (rdr.Offset - offStart < length)
             {

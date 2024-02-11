@@ -71,9 +71,9 @@ namespace Reko.Scanning
 
         public void EnqueueUserGlobalData(Address addr, DataType dt, string? name)
         {
-            if (Program.SegmentMap.IsValidAddress(addr))
+            if (Program.TryCreateImageReader(addr, out var rdr))
             {
-                var wi = new GlobalDataWorkItem(this, Program, addr, dt, name);
+                var wi = new GlobalDataWorkItem(this, Program, addr, rdr, dt, name);
                 queue.Enqueue(wi);
             }
         }

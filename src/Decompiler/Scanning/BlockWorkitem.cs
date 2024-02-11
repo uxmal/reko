@@ -284,7 +284,7 @@ namespace Reko.Scanning
                 scanner.TerminateBlock(blockCur, fallthruAddress);
 
             Block blockThen;
-            if (!program.SegmentMap.IsValidAddress((Address) b.Target))
+            if (!program.Memory.IsValidAddress((Address) b.Target))
             {
                 var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
                 blockThen = proc.AddBlock((Address) b.Target, label);
@@ -465,7 +465,7 @@ namespace Reko.Scanning
                     return false;
                 }
 
-                if (!program.SegmentMap.IsValidAddress(addrTarget))
+                if (!program.Memory.IsValidAddress(addrTarget))
                 {
                     var jmpSite = state.OnBeforeCall(stackReg!, 0);
                     GenerateCallToOutsideProcedure(jmpSite, addrTarget);
@@ -473,7 +473,7 @@ namespace Reko.Scanning
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
-                if (program.SegmentMap.IsExecutableAddress(addrTarget))
+                if (program.Memory.IsExecutableAddress(addrTarget))
                 {
                     var trampoline = scanner.GetTrampoline(blockCur!.Procedure.Architecture, addrTarget);
                     if (trampoline != null)
@@ -578,7 +578,7 @@ namespace Reko.Scanning
                     EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
                     return OnAfterCall(platformProc.Signature, chr);
                 }
-                if (!program.SegmentMap.IsValidAddress(addr))
+                if (!program.Memory.IsValidAddress(addr))
                 {
                     return GenerateCallToOutsideProcedure(site, addr);
                 }
@@ -667,9 +667,10 @@ namespace Reko.Scanning
         /// <returns>True if the call was successfully inlined, false if not.</returns>
         private bool InlineCall(Address addCallee)
         {
-            var rdr = program.CreateImageReader(this.arch, addCallee);
+            if (!program.TryCreateImageReader(this.arch, addCallee, out var rdr))
+                return false;
             List<RtlInstruction>? inlinedInstructions = arch.InlineCall(addCallee, ric!.Address + ric.Length, rdr, frame!);
-            if (inlinedInstructions == null)
+            if (inlinedInstructions is null)
                 return false;
             foreach (var instr in inlinedInstructions)
             {
@@ -1141,7 +1142,7 @@ namespace Reko.Scanning
         {
             foreach (Address addr in vector)
             {
-                if (!program.SegmentMap.IsValidAddress(addr))
+                if (!program.Memory.IsValidAddress(addr))
                     continue;
                 var st = state.Clone();
                 var pbase = scanner.ScanProcedure(blockCur!.Procedure.Architecture, addr, null, st);
@@ -1157,7 +1158,7 @@ namespace Reko.Scanning
             var blocks = new List<Block>();
             foreach (Address addr in vector)
             {
-                if (!program.SegmentMap.IsValidAddress(addr))
+                if (!program.Memory.IsValidAddress(addr))
                     break;
                 var st = state.Clone();
                 blocks.Add(BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, st));

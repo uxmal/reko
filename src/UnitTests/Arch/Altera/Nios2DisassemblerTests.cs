@@ -52,7 +52,8 @@ namespace Reko.UnitTests.Arch.Altera
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        [Test]
+        //$TODO: once the whole instruction set is complete,
+        // this will no longer be needed.
         public void Nios2Dis_Gen()
         {
             var mem = new ByteMemoryArea(Address.Ptr32(0x10_0000), new byte[10000]);

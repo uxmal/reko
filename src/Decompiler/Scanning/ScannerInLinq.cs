@@ -86,7 +86,7 @@ namespace Reko.Scanning
             var hsc = new BlockConflictResolver(
                 program,
                 sr2,
-                program.SegmentMap.IsValidAddress,
+                program.Memory.IsValidAddress,
                 host);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);

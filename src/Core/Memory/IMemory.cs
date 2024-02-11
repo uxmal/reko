@@ -64,7 +64,7 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address to test.</param>
         /// <returns>True if the memory address is executable.
         /// </returns>
-        bool IsExecutable(Address addr);
+        bool IsExecutableAddress(Address addr);
 
         /// <summary>
         /// Create a big-endian <see cref="EndianImageReader"/> spanning the
@@ -72,8 +72,10 @@ namespace Reko.Core.Memory
         /// until the end of memory.
         /// </summary>
         /// <param name="addr">Address at which to start reading.</param>
-        /// <returns>A big-endian <see cref="EndianImageReader"/>.</returns>
-        EndianImageReader CreateBeReader(Address addr);
+        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Create a little-endian <see cref="EndianImageReader"/> spanning the
@@ -81,8 +83,10 @@ namespace Reko.Core.Memory
         /// until the end of memory.
         /// </summary>
         /// <param name="addr">Address at which to start reading.</param>
-        /// <returns>A little-endian <see cref="EndianImageReader"/>.</returns>
-        EndianImageReader CreateLeReader(Address addr);
+        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Create a big-endian <see cref="EndianImageReader"/> spanning the
@@ -92,8 +96,10 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start reading.</param>
         /// <param name="cUnits">Number of units to read, after which no more
         /// will be read.</param>
-        /// <returns>A big-endian <see cref="EndianImageReader"/>.</returns>
-        EndianImageReader CreateBeReader(Address addr, long cUnits);
+        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Create a big-endian <see cref="EndianImageReader"/> spanning the
@@ -103,8 +109,10 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start reading.</param>
         /// <param name="cUnits">Number of units to read, after which no more
         /// will be read.</param>
-        /// <returns>A big-endian <see cref="EndianImageReader"/>.</returns>
-        EndianImageReader CreateLeReader(Address addr, long cUnits);
+        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</returns>
+        /// <returns>True if the provided address refers to valid memory,
+        /// otherwise false.</returns>
+        bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
         /// Attempt to read a big-endian value of type <paramref name="dt"/> from the address 

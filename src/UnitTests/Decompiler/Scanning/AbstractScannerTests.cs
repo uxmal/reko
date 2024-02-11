@@ -67,11 +67,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.CreateProcessorState())
                 .Returns(new Func<ProcessorState>(() => new FakeProcessorState(arch.Object)));
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsNotNull<IMemory>(),
-                It.IsNotNull<Address>()))
-                .Returns(new Func<IMemory, Address, EndianImageReader>((mm, aa) =>
-                    mm.CreateLeReader(aa)));
+                It.IsAny<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateLeReader(a, out r)))
+                .Returns(true);
             arch.Setup(a => a.MakeAddressFromConstant(
                 It.IsNotNull<Constant>(),
                 It.IsAny<bool>()))

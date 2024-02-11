@@ -46,10 +46,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.arch = new Mock<IProcessorArchitecture>();
             this.platform = new Mock<IPlatform>();
             arch.Setup(a => a.Name).Returns("FakeArch");
-            arch.Setup(a => a.CreateImageReader(
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsAny<IMemory>(),
-                It.IsAny<Address>()))
-                .Returns((IMemory m, Address a) => m.CreateLeReader(a));
+                It.IsAny<Address>(),
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                m.TryCreateLeReader(a, out r)))
+                .Returns(true);
+
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             scanner.Setup(s => s.Error(
                 It.IsAny<Address>(),
@@ -117,10 +122,18 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Expect_ScannerGlobalData(0x43210038, ft1);
             Expect_ScannerGlobalData(0x43210073, ft2);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, arrayType, null);
+            var gdwi = Given_GlobalDataWorkItem(scanner, program, arrayType);
             gdwi.Process();
 
             scanner.Verify();
+        }
+
+        private GlobalDataWorkItem Given_GlobalDataWorkItem(Mock<IScannerServices> scanner, Program program, DataType arrayType)
+        {
+            var addr = program.ImageMap.BaseAddress;
+            program.TryCreateImageReader(addr, out var rdr);
+            Assert.IsNotNull(rdr);
+            return new GlobalDataWorkItem(scanner.Object, program, addr, rdr, arrayType, null);
         }
 
         private void Expect_ScannerGlobalData(uint addrExp, DataType dtExp)
@@ -155,7 +168,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Expect_ScannerGlobalData(0x43210017, ft);
             Expect_ScannerGlobalData(0x43210000, str);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
+            var gdwi = Given_GlobalDataWorkItem(scanner, program, str);
             gdwi.Process();
 
             scanner.Verify();
@@ -187,7 +200,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Expect_ScannerGlobalData(0x43210008, ft);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
+            var gdwi = Given_GlobalDataWorkItem(scanner, program, str);
             gdwi.Process();
 
             scanner.Verify();
@@ -208,7 +221,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.IsAny<string>()))
                 .Verifiable();
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, ft, null);
+            var gdwi = Given_GlobalDataWorkItem(scanner, program, ft);
             gdwi.Process();
 
             scanner.Verify();

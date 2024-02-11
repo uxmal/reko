@@ -47,7 +47,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             var rt = (Arm64Rt) (fixup >> 12);
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);
             PeImageLoader.trace.Verbose("  {0:X4} {1}", fixup, rt);
-            var imgR = program.CreateImageReader(program.Architecture, offset);
+            var imgR = CreateImageReader(program, program.Architecture, offset);
             var imgW = program.CreateImageWriter(program.Architecture, offset);
             switch (rt)
             {

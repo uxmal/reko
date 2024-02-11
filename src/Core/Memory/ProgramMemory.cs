@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.Core.Memory
 {
@@ -35,16 +36,26 @@ namespace Reko.Core.Memory
 
         public SegmentMap SegmentMap { get; }
 
-        public EndianImageReader CreateBeReader(Address addr)
+        public bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            var segment = RequireSegment(addr);
-            return segment.MemoryArea.CreateBeReader(addr);
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateBeReader(addr);
+            return true;
         }
 
-        public EndianImageReader CreateBeReader(Address addr, long cUnits)
+        public bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            var segment = RequireSegment(addr);
-            return segment.MemoryArea.CreateBeReader(addr, cUnits);
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateBeReader(addr, cUnits);
+            return true;
         }
 
         public ImageWriter CreateBeWriter(Address addr)
@@ -52,16 +63,26 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public EndianImageReader CreateLeReader(Address addr)
+        public bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            var segment = RequireSegment(addr);
-            return segment.MemoryArea.CreateLeReader(addr);
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateLeReader(addr);
+            return true;
         }
 
-        public EndianImageReader CreateLeReader(Address addr, long cUnits)
+        public bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
-            var segment = RequireSegment(addr);
-            return segment.MemoryArea.CreateLeReader(addr, cUnits);
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateLeReader(addr, cUnits);
+            return true;
         }
 
         public ImageWriter CreateLeWriter(Address addr)
@@ -69,7 +90,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool IsExecutable(Address addr)
+        public bool IsExecutableAddress(Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
                 return false;

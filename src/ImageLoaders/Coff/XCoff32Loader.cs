@@ -104,7 +104,8 @@ namespace Reko.ImageLoaders.Coff
             if (entry == 0 || entry == ~0u)
                 return null;
             var arch = program.Architecture;
-            var rdr = program.CreateImageReader(arch, Address.Ptr32(entry));
+            if (!program.TryCreateImageReader(arch, Address.Ptr32(entry), out var rdr))
+                return null;
             // o_entry actually points to a function descriptor (think of it as a closure)
             // consisting of a pointer to the actual code and a pointer to the TOC.
             if (TryReadFunctionDescriptor(rdr, out Address addrEntry, out Constant ptrToc))

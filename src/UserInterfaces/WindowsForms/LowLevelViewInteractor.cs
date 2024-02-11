@@ -237,7 +237,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.SegmentMap.IsValidAddress(addrTo))
+            if (!program.Memory.IsValidAddress(addrTo))
                 return;
             if (control.CurrentAddress != addrTo)
             {
@@ -383,8 +383,8 @@ namespace Reko.UserInterfaces.WindowsForms
             AddressRange addrRange = GetSelectedAddressRange();
             if (addrRange is null)
                 return;
-            var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
-            if (!rdr.TryRead(program.Platform.PointerType, out var addrDst))
+            if (!program.TryCreateImageReader(program.Architecture, addrRange.Begin, out var rdr) ||
+                !rdr.TryRead(program.Platform.PointerType, out var addrDst))
                 return;
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
@@ -673,7 +673,8 @@ namespace Reko.UserInterfaces.WindowsForms
         private string SelectionToHex(AddressRange addr)
         {
             var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(program.Architecture, addr.Begin);
+            if (!program.TryCreateImageReader(program.Architecture, addr.Begin, out var rdr))
+                return "";
             var sep = "";
             while (rdr.Address <= addr.End)
             {

@@ -125,11 +125,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 writer.WriteBeUInt32(ptr);
             }
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
-            program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
-            arch.Setup(a => a.CreateImageReader(
+            program.SegmentMap.AddSegment(mem, ".got", AccessMode.ReadWriteExecute);
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
+            arch.Setup(a => a.TryCreateImageReader(
                 It.IsNotNull<IMemory>(),
-                mem.BaseAddress))
-                .Returns(mem.CreateBeReader(0));
+                mem.BaseAddress,
+                out It.Ref<EndianImageReader>.IsAny))
+                .Callback(new CreateReaderDelegate((IMemory m, Address a, out EndianImageReader r) =>
+                    m.TryCreateBeReader(a, out r)))
+                .Returns(true);
         }
 
         private void Given_ImageHeader(ElfMachine machine)
