@@ -56,7 +56,7 @@ namespace Reko.Scripts.Python
 
         public byte ReadByte(Address addr)
         {
-            return CreateImageReader(addr)?.ReadByte() ?? 0;
+            return CreateImageReader(addr).ReadByte();
         }
 
         public IEnumerable<byte> ReadBytes(Address startAddr, long length)
@@ -67,7 +67,7 @@ namespace Reko.Scripts.Python
         public short ReadInt16(Address addr)
         {
             //$REVIEW what should happen if a bad address is provided?
-            return CreateImageReader(addr)?.ReadInt16() ?? 0;
+            return CreateImageReader(addr).ReadInt16();
         }
 
         public IEnumerable<short> ReadInts16(Address startAddr, long length)
@@ -77,7 +77,7 @@ namespace Reko.Scripts.Python
 
         public int ReadInt32(Address addr)
         {
-            return CreateImageReader(addr)?.ReadInt32() ?? 0;
+            return CreateImageReader(addr).ReadInt32();
         }
 
         public IEnumerable<int> ReadInts32(Address startAddr, long length)
@@ -87,7 +87,7 @@ namespace Reko.Scripts.Python
 
         public long ReadInt64(Address addr)
         {
-            return CreateImageReader(addr)?.ReadInt64() ?? 0;
+            return CreateImageReader(addr).ReadInt64();
         }
 
         public IEnumerable<long> ReadInts64(Address startAddr, long length)
@@ -98,8 +98,6 @@ namespace Reko.Scripts.Python
         public string ReadCString(Address addr)
         {
             var rdr = CreateImageReader(addr);
-            if (rdr is null)
-                return "";
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }
@@ -200,12 +198,11 @@ namespace Reko.Scripts.Python
             return program.Architecture.TryParseAddress(sAddress, out addr);
         }
 
-        private EndianImageReader? CreateImageReader(Address addr)
+        private EndianImageReader CreateImageReader(Address addr)
         {
-            //$REVIEW: return null or throw?
-            return program.TryCreateImageReader(program.Architecture, addr, out var rdr)
-                ? rdr
-                : null;
+            if (!program.TryCreateImageReader(program.Architecture, addr, out var rdr))
+                throw new ArgumentException($"Address {addr} out of range.");
+            return rdr;
         }
 
         private IEnumerable<T> ReadData<T>(
