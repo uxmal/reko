@@ -31,9 +31,11 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     [TestFixture]
     public class SparcCallingConventionTests
     {
-        private PrimitiveType i8 = PrimitiveType.SByte;
-        private PrimitiveType i16 = PrimitiveType.Int16;
-        private PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType i8 = PrimitiveType.SByte;
+        private readonly PrimitiveType i16 = PrimitiveType.Int16;
+        private readonly PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType i64 = PrimitiveType.Int64;
+        private readonly TypeReference off_t = new TypeReference("off_t", PrimitiveType.Int64);
 
         private SparcArchitecture32 arch;
         private SparcCallingConvention cc;
@@ -73,6 +75,22 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             Given_CallingConvention();
             cc.Generate(ccr, 0, null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8 });
             Assert.AreEqual("Stk: 0 void (o0, o1, o2, o3, o4, o5, Stack +0018)", ccr.ToString());
+        }
+
+        [Test]
+        public void SvSparcPs_longlongArgs()
+        {
+            Given_CallingConvention();
+            cc.Generate(ccr, 0, i64, null, new List<DataType> { i32, off_t, i64 });
+            Assert.AreEqual("Stk: 0 Sequence o0:o1 (o0, Sequence o1:o2, Sequence o3:o4)", ccr.ToString());
+        }
+
+        [Test]
+        public void SvSparcPs_longlongArgs_exceeding_max_register_args()
+        {
+            Given_CallingConvention();
+            cc.Generate(ccr, 0, i64, null, new List<DataType> { i32, off_t, i64, off_t });
+            Assert.AreEqual("Stk: 0 Sequence o0:o1 (o0, Sequence o1:o2, Sequence o3:o4, Sequence o5:stack)", ccr.ToString());
         }
     }
 }

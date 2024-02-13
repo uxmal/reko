@@ -31,10 +31,12 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class SparcCallingConvention : CallingConvention
     {
-        private RegisterStorage[] regs;
-        private RegisterStorage iret;
-        private RegisterStorage fret0;
-        private RegisterStorage fret1;
+        private readonly RegisterStorage[] regs;
+        private readonly RegisterStorage iret;
+        private readonly SequenceStorage iret2;
+        private readonly RegisterStorage fret0;
+        private readonly RegisterStorage fret1;
+        private readonly int wordSize;
 
         private IProcessorArchitecture arch;
 
@@ -45,8 +47,13 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.iret = arch.GetRegister("o0")!;
+            this.iret2 = new SequenceStorage(
+                PrimitiveType.CreateWord(this.arch.WordWidth.BitSize * 2),
+                arch.GetRegister("o0")!,
+                arch.GetRegister("o1")!);
             this.fret0 = arch.GetRegister("f0")!;
             this.fret1 = arch.GetRegister("f1")!;
+            this.wordSize = this.arch.WordWidth.Size;
         }
 
         public void Generate(
@@ -56,7 +63,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             DataType? dtThis,
             List<DataType> dtParams)
         {
-            ccr.LowLevelDetails(arch.WordWidth.Size, 0x0018);
+            ccr.LowLevelDetails(wordSize, 0x0018);
             if (dtRet != null)
             {
                 SetReturnRegister(ccr, dtRet);
@@ -66,8 +73,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 var dtArg = dtParams[iArg];
-                var prim = dtArg as PrimitiveType;
-                if (dtArg.Size <= 8)
+                if (dtArg.Size <= wordSize)
                 {
                     if (ir >= regs.Length)
                     {
@@ -77,6 +83,25 @@ namespace Reko.Environments.SysV.ArchSpecific
                     {
                         ccr.RegParam(regs[ir]);
                         ++ir;
+                    }
+                }
+                else if (dtArg.Size <= wordSize * 2)
+                {
+                    if (ir >= regs.Length)
+                    {
+                        ccr.StackParam(dtArg);
+                    }
+                    else if (ir == regs.Length - 1)
+                    {
+                        var hi = regs[ir];
+                        var lo = ccr.AllocateStackSlot(arch.WordWidth);
+                        ccr.SequenceParam(hi, lo);
+                        ++ir;
+                    }
+                    else
+                    {
+                        ccr.SequenceParam(regs[ir], regs[ir+1]);
+                        ir += 2;
                     }
                 }
                 else
@@ -101,17 +126,31 @@ namespace Reko.Environments.SysV.ArchSpecific
                     ccr.SequenceReturn(f1, f0);
                     return;
                 }
-                ccr.RegReturn(iret);
-                return;
+                if (dtArg.Size <= wordSize)
+                {
+                    ccr.RegReturn(iret);
+                    return;
+                }
+                if (dtArg.Size <= wordSize * 2)
+                {
+                    ccr.SequenceReturn(iret2);
+                    return;
+                }
+                throw new NotImplementedException();
             }
             else if (dtArg is Pointer)
             {
                 ccr.RegReturn(iret);
                 return;
             }
-            else if (dtArg.Size <= this.arch.WordWidth.Size)
+            else if (dtArg.Size <= wordSize)
             {
                 ccr.RegReturn(iret);
+                return;
+            }
+            else if (dtArg.Size <= wordSize * 2)
+            {
+                ccr.SequenceReturn(iret2);
                 return;
             }
             throw new NotImplementedException();
