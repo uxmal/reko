@@ -118,7 +118,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                     R_R_UImm(lex, asm, 0, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_andi);
                     break;
                 case "beqi":
-                    R_I_Disp(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3, asm.bg_beqi);
+                    R_UImm_Disp(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3, asm.bg_beqi);
                     break;
                 case "sb":
                     M_R(lex, asm, PrimitiveType.Byte, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_sb);
@@ -143,7 +143,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 switch (mnemonic)
                 {
                 case "bnei":
-                    R_I_Disp(lex, asm, AeonAssembler.RT_AEON_BN_DISP8_2, asm.bn_bnei);
+                    R_SImm_Disp(lex, asm, AeonAssembler.RT_AEON_BN_DISP8_2, asm.bn_bnei);
                     break;
                 case "j":
                     Disp(lex, asm, AeonAssembler.RT_AEON_BN_DISP18, asm.bn_j);
@@ -335,7 +335,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             assemble(disp);
         }
 
-        private void R_I_Disp(
+        private void R_UImm_Disp(
             CDirectiveLexer lex,
             AeonAssembler asm,
             int relocationType,
@@ -348,6 +348,20 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var disp = ParseDisplacement(lex, asm, relocationType);
             assemble(rsrc1, immop, disp);
         }
+
+        private void R_SImm_Disp(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int relocationType,
+            Action<RegisterStorage, ParsedOperand, ParsedOperand> assemble)
+        {
+            var rsrc1 = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = ParseSImmediateOperand(lex);
+            Expect(lex, CTokenType.Comma);
+            var disp = ParseDisplacement(lex, asm, relocationType);
+            assemble(rsrc1, immop, disp);
+        }        
 
         private bool PeekAndDiscard(CDirectiveLexer lex, CTokenType tokenType)
         {

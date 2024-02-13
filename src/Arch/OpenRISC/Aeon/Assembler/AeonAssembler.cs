@@ -140,7 +140,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         {
             var opcode = (0b001000u << 18) | 0b10;
             opcode |= R(reg, 13);
-            opcode |= U(imm, 10, 3);
+            opcode |= S(imm, 10, 3);
             opcode |= S(displacement, 2, 8);
             EmitUInt24(opcode);
         }
