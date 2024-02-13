@@ -28,9 +28,12 @@ Eq_n line_buf_size.79 = // 00027F54
 	{
 		0x00
 	};
-Eq_n g_t28000 = // 00028000
+Eq_n g_t27F58 = // 00027F58
 	{
+		0x00017808,
+		0x00,
 		null,
+		86,
 	};
 char * version_string = &g_str178B0; // 00028028
 <anonymous> * obstack_alloc_failed_handler = print_and_abort; // 0002802C
@@ -40,11 +43,8 @@ char g_b28040 = '/'; // 00028040
 char g_b28050 = '/'; // 00028050
 char g_b28058 = '/'; // 00028058
 struct Eq_n * optarg = null; // 00028064
-ptr32 * optind = &g_ptr0001; // 00028068
+int32 optind = 1; // 00028068
 word32 __getopt_initialized = 0x00; // 0002806C
 word32 opterr = 0x01; // 00028070
-Eq_n optopt = // 00028074
-	{
-		0x3F
-	};
+int32 optopt = 63; // 00028074
 char * install_error_msg = &g_str17AF0; // 00028078

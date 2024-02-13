@@ -23,7 +23,7 @@ Eq_n g_t28160 = // 00028160
 	};
 Eq_n g_t28180 = // 00028180
 	{
-		null
+		0x00
 	};
 Eq_n g_t28190 = // 00028190
 	{
@@ -35,7 +35,10 @@ Eq_n g_t281C0 = // 000281C0
 		null
 	};
 up32 g_dw281D0 = 0x00; // 000281D0
-ui32 g_dw281E0 = 0x00; // 000281E0
+Eq_n g_t281E0 = // 000281E0
+	{
+		null
+	};
 Eq_n g_t281F0 = // 000281F0
 	{
 		0x00
@@ -43,14 +46,13 @@ Eq_n g_t281F0 = // 000281F0
 up32 g_dw28200 = 0x00; // 00028200
 up32 g_dw28210 = 0x00; // 00028210
 int8 * g_ptr28220 = null; // 00028220
-struct Eq_n * g_ptr28230 = null; // 00028230
+int32 g_dw28230 = 0; // 00028230
 Eq_n g_t28240 = // 00028240
 	{
 		0x00,
 		0x00,
 		null,
 	};
-<unknown> g_t2B000 = // 0002B000;
 struct jmp_buf g_t2B240 = // 0002B240
 	{
 		0x00,
@@ -59,7 +61,10 @@ Eq_n g_t2B270 = // 0002B270
 	{
 		0x00
 	};
-ui32 g_dw2B280 = 0x00; // 0002B280
+Eq_n g_t2B280 = // 0002B280
+	{
+		null
+	};
 up32 g_dw2B290 = 0x00; // 0002B290
 Eq_n g_t2B2A0 = // 0002B2A0
 	{
@@ -69,8 +74,8 @@ char * g_ptr2B2B0 = null; // 0002B2B0
 struct Eq_n * g_ptr2B2C0 = null; // 0002B2C0
 word32 g_dw2B2D0 = 0x00; // 0002B2D0
 char * g_ptr2B2E0 = null; // 0002B2E0
-ptr32 * g_ptr2B2F0 = null; // 0002B2F0
-ptr32 * g_ptr2B300 = null; // 0002B300
+int32 g_dw2B2F0 = 0; // 0002B2F0
+int32 g_dw2B300 = 0; // 0002B300
 int32 g_dw2B310 = 0; // 0002B310
 word64 g_qw2B400 = 0x00; // 0002B400
 struct Eq_n * exclude_list = null; // 0002B408

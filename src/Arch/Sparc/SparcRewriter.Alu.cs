@@ -203,9 +203,37 @@ namespace Reko.Arch.Sparc
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            for (int i = 0; i < arch.Registers.OutRegisters.Length; ++i)
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            var tmpSp = binder.CreateTemporary(sp.DataType);
+            m.Assign(tmpSp, sp);
+
+            // Now perform the frame window shift. Place the values of i0..i7
+            // in o0..07
+            for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
             {
                 Copy(arch.Registers.InRegisters[i], arch.Registers.OutRegisters[i]);
+            }
+
+            // Restore registers previously saved on stack.
+            // This doesn't actually happen immediately on Sparc,
+            // but we have to simulate the restoration of the i0-i7
+            // and l0-l7 registers
+            int stackOffset = 0;
+            for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
+            {
+                var reg = binder.EnsureRegister(arch.Registers.InRegisters[i]);
+                m.Assign(
+                    reg,
+                    m.Mem(reg.DataType, m.AddSubSignedInt(tmpSp, stackOffset)));
+                stackOffset += reg.DataType.Size;
+            }
+            for (int i = 0; i < arch.Registers.LocalRegisters.Length; ++i)
+            {
+                var reg = binder.EnsureRegister(arch.Registers.LocalRegisters[i]);
+                m.Assign(
+                    reg,
+                    m.Mem(reg.DataType, m.AddSubSignedInt(tmpSp, stackOffset)));
+                stackOffset += reg.DataType.Size;
             }
 
             if (tmp != null)
@@ -225,6 +253,31 @@ namespace Reko.Arch.Sparc
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
+            // Save registers on stack. This doesn't actually happen
+            // immediately on Sparc, but we have to simulate the 
+            // preservation of the i0-i7 and l0-l7 registers
+            int stackOffset = 0;
+            var sp = instrCur.Operands[2] == arch.StackRegister
+                ? tmp!
+                : binder.EnsureRegister(arch.StackRegister);
+            for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
+            {
+                var reg = binder.EnsureRegister(arch.Registers.InRegisters[i]);
+                m.Assign(
+                    m.Mem(reg.DataType, m.AddSubSignedInt(sp, stackOffset)),
+                    reg);
+                stackOffset += reg.DataType.Size;
+            }
+            for (int i = 0; i < arch.Registers.LocalRegisters.Length; ++i)
+            {
+                var reg = binder.EnsureRegister(arch.Registers.LocalRegisters[i]);
+                m.Assign(
+                    m.Mem(reg.DataType, m.AddSubSignedInt(sp, stackOffset)),
+                    reg);
+                stackOffset += reg.DataType.Size;
+            }
+            // Now perform the frame window shift. The previous values
+            // in i0..i7 have been preserved by the stack stores above.
             for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
             {
                 Copy(arch.Registers.OutRegisters[i], arch.Registers.InRegisters[i]);
@@ -234,7 +287,6 @@ namespace Reko.Arch.Sparc
                 m.Assign(dst, tmp);
             }
         }
-
 
         private void Copy(RegisterStorage src, RegisterStorage dst)
         {

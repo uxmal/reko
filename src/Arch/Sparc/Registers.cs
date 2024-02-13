@@ -39,6 +39,7 @@ namespace Reko.Arch.Sparc
 
         public readonly RegisterStorage[] OutRegisters;
         public readonly RegisterStorage[] InRegisters;
+        public readonly RegisterStorage[] LocalRegisters;
         public readonly RegisterStorage y;
 
         public readonly RegisterStorage psr;
@@ -88,7 +89,7 @@ namespace Reko.Arch.Sparc
             sp = OutRegisters[6];
             o7 = OutRegisters[7];
 
-            var localRegs = stg.RangeOfReg(8, n => $"l{n}", wordSize);
+            LocalRegisters = stg.RangeOfReg(8, n => $"l{n}", wordSize);
             // incoming parameters / return value to caller
             // i6 = frame pointer
             // i7 = return address - 8
@@ -98,7 +99,7 @@ namespace Reko.Arch.Sparc
 
             IntegerRegisters = globRegs
                 .Concat(OutRegisters)
-                .Concat(localRegs)
+                .Concat(LocalRegisters)
                 .Concat(InRegisters)
                 .Concat(new[] { y })
                 .ToArray();

@@ -4,23 +4,34 @@
 
 #include "subject.h"
 
-// 00010958: void _start(Register (ptr32 Eq_n) g1, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack ui32 dwArg40)
-void _start(void (* g1)(), struct Eq_n * o7, ui32 fsr, ui32 dwArg40)
+// 00010958: void _start(Register (ptr32 Eq_n) g1, Register (ptr32 Eq_n) o7, Register word32 l4, Register ui32 l6, Register word32 l7, Register word32 i0, Register word32 i1, Register word32 i2, Register word32 i3, Register word32 i4, Register word32 i5, Register word32 i7, Register ui32 fsr, Stack ui32 dwArg40)
+void _start(void (* g1)(), struct Eq_n * o7, word32 l4, ui32 l6, word32 l7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, word32 i7, ui32 fsr, ui32 dwArg40)
 {
 	ptr32 fp;
 	___Argv = fp + 0x44;
-	environ = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
+	ptr32 l2_n = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
+	environ = l2_n;
+	word32 l5_n = 0x00;
 	if (false)
 	{
 		g_dw20E58 = fsr;
-		g_dw20E58 &= 0x303FFFFF;
+		ui32 l6_n = g_dw20E58;
+		g_dw20E58 = l6_n & 0x303FFFFF;
+		l4 = 134744;
+		l7 = 0x303FFFFF;
+		l6 = l6_n & 0x303FFFFF;
+		l5_n = 0x00;
 		if (false)
+		{
 			__fnonstd_used = 0x01;
+			l5_n = 0x00020E5C;
+			l4 = 0x01;
+		}
 	}
 	if (g1 == null)
 	{
 		atexit(&g_t10CB8);
-		_init(o7);
+		_init(o7, dwArg40, fp + 0x44, l2_n, 0x00020C00, l4, l5_n, l6, l7, i0, i1, i2, i3, i4, i5, 0x00, i7);
 	}
 	else
 		atexit(g1);
@@ -95,13 +106,13 @@ void main(int32 o0)
 	else
 		o1_n = 0x00010B04;
 	word32 i1_n;
-	bool v25_n;
+	bool v34_n;
 	if (o0_n != 0x00)
 	{
 		if (o0_n != 68188 || (o3_n != 68236 || (o2_n != 68284 || o1_n != 68332)))
 		{
 			i1_n = 0x00;
-			v25_n = true;
+			v34_n = true;
 			goto l00010C44;
 		}
 		i1_n = 0x01;
@@ -110,9 +121,9 @@ void main(int32 o0)
 		i1_n = 0x01;
 	else
 		i1_n = 0x00;
-	v25_n = i1_n == 0x00;
+	v34_n = i1_n == 0x00;
 l00010C44:
-	if (!v25_n)
+	if (!v34_n)
 		printf("Pass\n");
 	else
 		printf("Failed!\n");

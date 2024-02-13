@@ -4,18 +4,18 @@
 
 #include "subject.h"
 
-// 00010C80: void _init(Register (ptr32 Eq_n) o7)
+// 00010C80: void _init(Register (ptr32 Eq_n) o7, Register ui32 l0, Register ptr32 l1, Register ptr32 l2, Register word32 l3, Register word32 l4, Register word32 l5, Register ui32 l6, Register word32 l7, Register word32 i0, Register word32 i1, Register word32 i2, Register word32 i3, Register word32 i4, Register word32 i5, Register word32 i6, Register word32 i7)
 // Called from:
 //      _start
-void _init(struct Eq_n * o7)
+void _init(struct Eq_n * o7, ui32 l0, ptr32 l1, ptr32 l2, word32 l3, word32 l4, word32 l5, ui32 l6, word32 l7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, word32 i6, word32 i7)
 {
-	fn00010C90(o7);
+	fn00010C90(o7, i0, i1, i2, i3, i4, i5, i6, i7, l0, l1, l2, l3, l4, l5, l6, l7);
 }
 
-// 00010C90: void fn00010C90(Register (ptr32 Eq_n) o7)
+// 00010C90: void fn00010C90(Register (ptr32 Eq_n) o7, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Stack word32 dwArg14, Stack word32 dwArg18, Stack word32 dwArg1C, Stack ui32 dwArg20, Stack ptr32 dwArg24, Stack ptr32 dwArg28, Stack word32 dwArg2C, Stack word32 dwArg30, Stack word32 dwArg34, Stack ui32 dwArg38, Stack word32 dwArg3C)
 // Called from:
 //      _init
-void fn00010C90(struct Eq_n * o7)
+void fn00010C90(struct Eq_n * o7, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, word32 dwArg14, word32 dwArg18, word32 dwArg1C, ui32 dwArg20, ptr32 dwArg24, ptr32 dwArg28, word32 dwArg2C, word32 dwArg30, word32 dwArg34, ui32 dwArg38, word32 dwArg3C)
 {
 	<anonymous> * l0_n = (<anonymous> *) ((char *) o7 + o7->dw0008)[-8];
 	if (l0_n == null)

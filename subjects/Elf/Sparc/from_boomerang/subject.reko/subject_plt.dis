@@ -1,48 +1,28 @@
-void atexit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-atexit_exit:
+// atexit
+// Return size: 0
+define atexit
 atexit_entry:
+atexit_exit:
 
 
-void exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-exit_exit:
+// exit
+// Return size: 0
+define exit
 exit_entry:
+exit_exit:
 
 
-void _exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_exit_exit:
+// _exit
+// Return size: 0
+define _exit
 _exit_entry:
+_exit_exit:
 
 
-void printf()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-printf_exit:
+// printf
+// Return size: 0
+define printf
 printf_entry:
+printf_exit:
 
 

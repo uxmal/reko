@@ -233,17 +233,33 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             Given_UInt32s(0x9DE3BEE8); // save\t%g1,%o1,%g5
             AssertCode(
-                "0|L--|00100000(4): 10 instructions",
+                "0|L--|00100000(4): 26 instructions",
                 "1|L--|v4 = sp + 0xFFFFFEE8<32>",
-                "2|L--|i0 = o0",
-                "3|L--|i1 = o1",
-                "4|L--|i2 = o2",
-                "5|L--|i3 = o3",
-                "6|L--|i4 = o4",
-                "7|L--|i5 = o5",
-                "8|L--|i6 = sp",
-                "9|L--|i7 = o7",
-                "10|L--|sp = v4");
+                "2|L--|Mem0[v4:word32] = i0",
+                "3|L--|Mem0[v4 + 4<i32>:word32] = i1",
+                "4|L--|Mem0[v4 + 8<i32>:word32] = i2",
+                "5|L--|Mem0[v4 + 12<i32>:word32] = i3",
+                "6|L--|Mem0[v4 + 16<i32>:word32] = i4",
+                "7|L--|Mem0[v4 + 20<i32>:word32] = i5",
+                "8|L--|Mem0[v4 + 24<i32>:word32] = i6",
+                "9|L--|Mem0[v4 + 28<i32>:word32] = i7",
+                "10|L--|Mem0[v4 + 32<i32>:word32] = l0",
+                "11|L--|Mem0[v4 + 36<i32>:word32] = l1",
+                "12|L--|Mem0[v4 + 40<i32>:word32] = l2",
+                "13|L--|Mem0[v4 + 44<i32>:word32] = l3",
+                "14|L--|Mem0[v4 + 48<i32>:word32] = l4",
+                "15|L--|Mem0[v4 + 52<i32>:word32] = l5",
+                "16|L--|Mem0[v4 + 56<i32>:word32] = l6",
+                "17|L--|Mem0[v4 + 60<i32>:word32] = l7",
+                "18|L--|i0 = o0",
+                "19|L--|i1 = o1",
+                "20|L--|i2 = o2",
+                "21|L--|i3 = o3",
+                "22|L--|i4 = o4",
+                "23|L--|i5 = o5",
+                "24|L--|i6 = sp",
+                "25|L--|i7 = o7",
+                "26|L--|sp = v4");
         }
 
         [Test]
@@ -251,15 +267,31 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             Given_HexString("81E10F91");
             AssertCode(
-                "0|L--|00100000(4): 8 instructions",
-                "1|L--|i0 = o0",
-                "2|L--|i1 = o1",
-                "3|L--|i2 = o2",
-                "4|L--|i3 = o3",
-                "5|L--|i4 = o4",
-                "6|L--|i5 = o5",
-                "7|L--|i6 = sp",
-                "8|L--|i7 = o7");
+                "0|L--|00100000(4): 24 instructions",
+                "1|L--|Mem0[sp:word32] = i0",
+                "2|L--|Mem0[sp + 4<i32>:word32] = i1",
+                "3|L--|Mem0[sp + 8<i32>:word32] = i2",
+                "4|L--|Mem0[sp + 12<i32>:word32] = i3",
+                "5|L--|Mem0[sp + 16<i32>:word32] = i4",
+                "6|L--|Mem0[sp + 20<i32>:word32] = i5",
+                "7|L--|Mem0[sp + 24<i32>:word32] = i6",
+                "8|L--|Mem0[sp + 28<i32>:word32] = i7",
+                "9|L--|Mem0[sp + 32<i32>:word32] = l0",
+                "10|L--|Mem0[sp + 36<i32>:word32] = l1",
+                "11|L--|Mem0[sp + 40<i32>:word32] = l2",
+                "12|L--|Mem0[sp + 44<i32>:word32] = l3",
+                "13|L--|Mem0[sp + 48<i32>:word32] = l4",
+                "14|L--|Mem0[sp + 52<i32>:word32] = l5",
+                "15|L--|Mem0[sp + 56<i32>:word32] = l6",
+                "16|L--|Mem0[sp + 60<i32>:word32] = l7",
+                "17|L--|i0 = o0",
+                "18|L--|i1 = o1",
+                "19|L--|i2 = o2",
+                "20|L--|i3 = o3",
+                "21|L--|i4 = o4",
+                "22|L--|i5 = o5",
+                "23|L--|i6 = sp",
+                "24|L--|i7 = o7");
         }
 
         [Test]
@@ -267,15 +299,32 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             Given_UInt32s(0x81E80000); // restore\t%g0,%g0,%g0
             AssertCode(
-                "0|L--|00100000(4): 8 instructions",
-                "1|L--|o0 = i0",
-                "2|L--|o1 = i1",
-                "3|L--|o2 = i2",
-                "4|L--|o3 = i3",
-                "5|L--|o4 = i4",
-                "6|L--|o5 = i5",
-                "7|L--|sp = i6",
-                "8|L--|o7 = i7");
+                "0|L--|00100000(4): 25 instructions",
+                "1|L--|v4 = sp",
+                "2|L--|o0 = i0",
+                "3|L--|o1 = i1",
+                "4|L--|o2 = i2",
+                "5|L--|o3 = i3",
+                "6|L--|o4 = i4",
+                "7|L--|o5 = i5",
+                "8|L--|sp = i6",
+                "9|L--|o7 = i7",
+                "10|L--|i0 = Mem0[v4:word32]",
+                "11|L--|i1 = Mem0[v4 + 4<i32>:word32]",
+                "12|L--|i2 = Mem0[v4 + 8<i32>:word32]",
+                "13|L--|i3 = Mem0[v4 + 12<i32>:word32]",
+                "14|L--|i4 = Mem0[v4 + 16<i32>:word32]",
+                "15|L--|i5 = Mem0[v4 + 20<i32>:word32]",
+                "16|L--|i6 = Mem0[v4 + 24<i32>:word32]",
+                "17|L--|i7 = Mem0[v4 + 28<i32>:word32]",
+                "18|L--|l0 = Mem0[v4 + 32<i32>:word32]",
+                "19|L--|l1 = Mem0[v4 + 36<i32>:word32]",
+                "20|L--|l2 = Mem0[v4 + 40<i32>:word32]",
+                "21|L--|l3 = Mem0[v4 + 44<i32>:word32]",
+                "22|L--|l4 = Mem0[v4 + 48<i32>:word32]",
+                "23|L--|l5 = Mem0[v4 + 52<i32>:word32]",
+                "24|L--|l6 = Mem0[v4 + 56<i32>:word32]",
+                "25|L--|l7 = Mem0[v4 + 60<i32>:word32]");
         }
 
         [Test]
