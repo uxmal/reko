@@ -40,7 +40,7 @@ void fn0000000000400560(word32 esi, word32 edi)
 
 // MayUse:  edi:[0..31] esi:[0..31]
 // LiveOut:
-// Trashed: SCZO rdi rsi Top
+// Trashed: SCZO rax rdi rsi Top
 // Preserved: rbp rsp
 fn0000000000400560_entry:
 l0000000000400560:

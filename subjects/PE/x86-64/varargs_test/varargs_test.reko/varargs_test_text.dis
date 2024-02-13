@@ -395,7 +395,7 @@ void fn0000000140001600(word32 ecx, word32 edx)
 //      Win32CrtStartup
 // MayUse:  ecx:[0..31] edx:[0..31]
 // LiveOut:
-// Trashed: SCZOP r10 r8 r9 rax rcx rdx
+// Trashed: SCZOP r10 r11 r8 r9 rax rcx rdx
 // Preserved: rbx rsp
 fn0000000140001600_entry:
 l0000000140001600:
@@ -986,7 +986,7 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 //      fn0000000140001600
 // MayUse:  edx:[0..31] rbx:[0..31]
 // LiveOut:
-// Trashed: SCZOP r10 r8 r9 rax rcx rdx
+// Trashed: SCZOP r10 r11 r8 r9 rax rcx rdx
 // Preserved: rbp rbx rdi rsp
 fn0000000140001BFC_entry:
 	ebx_173 = SLICE(rbx, word32, 0) (alias)
@@ -1100,7 +1100,7 @@ void fn0000000140001E7C(word64 rdx, word64 r9)
 
 // MayUse:  r9:[0..63] rdx:[0..63]
 // LiveOut:
-// Trashed: SCZOP r10 r8 r9 rax rcx rdx
+// Trashed: SCZOP r10 r11 r8 r9 rax rcx rdx
 // Preserved: rsp
 fn0000000140001E7C_entry:
 l0000000140001E7C:
@@ -1116,7 +1116,7 @@ void fn0000000140001E9C(word64 rcx, word64 rdx, word64 r8, word64 qwArg00)
 //      fn0000000140001E7C
 // MayUse:  r8:[0..63] rcx:[0..63] rdx:[0..63] Stack +0000:[0..63]
 // LiveOut:
-// Trashed: SCZOP r10 r8 r9 rax rcx rdx
+// Trashed: SCZOP r10 r11 r8 r9 rax rcx rdx
 // Preserved: rbx rsp
 fn0000000140001E9C_entry:
 l0000000140001E9C:

@@ -1,85 +1,37 @@
-// _init
-// Return size: 0
-define _init
-_init_entry:
-	sp = fp
-	// succ:  l00010C80
-l00010C80:
-	v4 = sp + 0xFFFFFFA0<32>
-	Mem0[v4:word32] = i0
-	Mem0[v4 + 4<i32>:word32] = i1
-	Mem0[v4 + 8<i32>:word32] = i2
-	Mem0[v4 + 12<i32>:word32] = i3
-	Mem0[v4 + 16<i32>:word32] = i4
-	Mem0[v4 + 20<i32>:word32] = i5
-	Mem0[v4 + 24<i32>:word32] = i6
-	Mem0[v4 + 28<i32>:word32] = i7
-	Mem0[v4 + 32<i32>:word32] = l0
-	Mem0[v4 + 36<i32>:word32] = l1
-	Mem0[v4 + 40<i32>:word32] = l2
-	Mem0[v4 + 44<i32>:word32] = l3
-	Mem0[v4 + 48<i32>:word32] = l4
-	Mem0[v4 + 52<i32>:word32] = l5
-	Mem0[v4 + 56<i32>:word32] = l6
-	Mem0[v4 + 60<i32>:word32] = l7
-	i0 = o0
-	i1 = o1
-	i2 = o2
-	i3 = o3
-	i4 = o4
-	i5 = o5
-	i6 = sp
-	i7 = o7
-	sp = v4
-	call fn00010C90 (retsize: 0;)
+void _init(word32 o7, word32 l0, word32 l1, word32 l2, word32 l3, word32 l4, word32 l5, word32 l6, word32 l7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, word32 i6, word32 i7)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      _start
+// MayUse:  i0:[0..31] i1:[0..31] i2:[0..31] i3:[0..31] i4:[0..31] i5:[0..31] i6:[0..31] i7:[0..31] l0:[0..31] l1:[0..31] l2:[0..31] l3:[0..31] l4:[0..31] l5:[0..31] l6:[0..31] l7:[0..31] o7:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 _init_exit:
+_init_entry:
+l00010C80:
+	fn00010C90(o7, i0, i1, i2, i3, i4, i5, i6, i7, l0, l1, l2, l3, l4, l5, l6, l7)
 
 
-// fn00010C90
-// Return size: 0
-define fn00010C90
+void fn00010C90(word32 o7, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, word32 dwArg14, word32 dwArg18, word32 dwArg1C, word32 dwArg20, word32 dwArg24, word32 dwArg28, word32 dwArg2C, word32 dwArg30, word32 dwArg34, word32 dwArg38, word32 dwArg3C)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      _init
+// MayUse:  o7:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31] Stack +0014:[0..31] Stack +0018:[0..31] Stack +001C:[0..31] Stack +0020:[0..31] Stack +0024:[0..31] Stack +0028:[0..31] Stack +002C:[0..31] Stack +0030:[0..31] Stack +0034:[0..31] Stack +0038:[0..31] Stack +003C:[0..31]
+// LiveOut:
+// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
+// Preserved:
 fn00010C90_entry:
-	sp = fp
-	// succ:  l00010C90
 l00010C90:
-	o0 = Mem0[o7 + 8<i32>:word32]
-	o0 = o7 + o0
-	l0 = Mem0[o0 + -8<i32>:word32]
-	g0 = l0 - 0<32>
-	NZVC = cond(g0)
-	branch Test(EQ,Z) l00010CB0
-	// succ:  l00010CA8 l00010CB0
-l00010CA8:
-	o7 = 0x00010CA8<p32>
-	call l0 + 0<32> (retsize: 0;)
+	l0_7 = Mem0[o7 + Mem0[o7 + 8<i32>:word32] + -8<i32>:word32]
+	branch l0_7 == 0<32> l00010CB0
 l00010CB0:
-	v11 = sp
-	o0 = i0
-	o1 = i1
-	o2 = i2
-	o3 = i3
-	o4 = i4
-	o5 = i5
-	sp = i6
-	o7 = i7
-	i0 = Mem0[v11:word32]
-	i1 = Mem0[v11 + 4<i32>:word32]
-	i2 = Mem0[v11 + 8<i32>:word32]
-	i3 = Mem0[v11 + 12<i32>:word32]
-	i4 = Mem0[v11 + 16<i32>:word32]
-	i5 = Mem0[v11 + 20<i32>:word32]
-	i6 = Mem0[v11 + 24<i32>:word32]
-	i7 = Mem0[v11 + 28<i32>:word32]
-	l0 = Mem0[v11 + 32<i32>:word32]
-	l1 = Mem0[v11 + 36<i32>:word32]
-	l2 = Mem0[v11 + 40<i32>:word32]
-	l3 = Mem0[v11 + 44<i32>:word32]
-	l4 = Mem0[v11 + 48<i32>:word32]
-	l5 = Mem0[v11 + 52<i32>:word32]
-	l6 = Mem0[v11 + 56<i32>:word32]
-	l7 = Mem0[v11 + 60<i32>:word32]
 	return
-	// succ:  fn00010C90_exit
 fn00010C90_exit:
+l00010CA8:
+	call l0_7 (retsize: 0;)
+		uses: Mem:Mem0,o7:0x00010CA8<p32>,Stack +0000:dwArg00,Stack +0004:dwArg04,Stack +0008:dwArg08,Stack +000C:dwArg0C,Stack +0010:dwArg10,Stack +0014:dwArg14,Stack +0018:dwArg18,Stack +001C:dwArg1C,Stack +0020:dwArg20,Stack +0024:dwArg24,Stack +0028:dwArg28,Stack +002C:dwArg2C,Stack +0030:dwArg30,Stack +0034:dwArg34,Stack +0038:dwArg38,Stack +003C:dwArg3C
 
 

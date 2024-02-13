@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 	LiveOut:  
 	BitsUsed:  bp:[0..15] ds:[0..15] si:[0..15]
 	Trashed:   SCZO ax bp bx cx dx si Top
-	Preserved: sp
+	Preserved: ds sp
 // fn0C00_0004
 define fn0C00_0004
 fn0C00_0004_entry:

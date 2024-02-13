@@ -4074,7 +4074,7 @@ word16 fn0000AF06(word32 r3_r2)
 // MayUse:  Sequence r3:r2:[0..31]
 // LiveOut: r1
 // Trashed: CFLNZ r0 r1 r4 r5
-// Preserved: ra sp
+// Preserved: r2 r3 ra sp
 fn0000AF06_entry:
 l0000AF06:
 	Mem18[r3_r2 + 0x15E0<32>:word32] = r3_r2 + 0x6A<32>
@@ -4205,7 +4205,7 @@ word16 fn0000B09C(word32 r3_r2)
 // MayUse:  Sequence r3:r2:[0..31]
 // LiveOut: r1
 // Trashed: CFLNZ r0 r1 r4 r5 r6
-// Preserved: r7 ra sp
+// Preserved: r2 r3 r7 ra sp
 fn0000B09C_entry:
 l0000B09C:
 	r0_14 = Mem10[r3_r2 + 0x2414<32>:word16]
@@ -4250,7 +4250,7 @@ void fn0000B10C(word32 r3_r2)
 // MayUse:  Sequence r3:r2:[0..31]
 // LiveOut:
 // Trashed: CFLNZ r0 r1 r4 r5 r6
-// Preserved: r7 r8 r9 ra sp
+// Preserved: r2 r3 r7 r8 r9 ra sp
 fn0000B10C_entry:
 l0000B10C:
 	r0_20 = Mem16[r3_r2 + 0x2414<32>:word16]
@@ -5464,7 +5464,7 @@ word32 fn0000D4EC(word32 r3_r2, word32 r5_r4)
 // MayUse:  Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
 // LiveOut: r1:r0
 // Trashed: LNZ r0 r1 r4 r5 r6
-// Preserved: ra sp
+// Preserved: r2 r3 ra sp
 fn0000D4EC_entry:
 l0000D4EC:
 	return SEQ(r1_16, fn0000D4F8(r3_r2, r5_r4, 1<16>, out r1_16))
@@ -5479,7 +5479,7 @@ word16 fn0000D4F8(word32 r3_r2, word32 r5_r4, word16 r6, ptr32 & r1Out)
 // MayUse:  r6:[0..15] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
 // LiveOut: r0 r1
 // Trashed: LNZ r0 r1 r4 r5
-// Preserved: CF r8 r9 ra sp
+// Preserved: CF r2 r3 r8 r9 ra sp
 fn0000D4F8_entry:
 	r3 = SLICE(r3_r2, word16, 16)
 	r2 = SLICE(r3_r2, word16, 0)
@@ -5574,7 +5574,7 @@ void fn0000D99C()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 ra sp
 fn0000D99C_entry:
 l0000D99C:
 	return
@@ -5590,7 +5590,7 @@ void fn0000D9B0()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 ra sp
 fn0000D9B0_entry:
 l0000D9B0:
 	return
@@ -5608,7 +5608,7 @@ void fn0000DB24()
 // MayUse: 
 // LiveOut:
 // Trashed: CF r0 r1
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 r4 r5 ra sp
 fn0000DB24_entry:
 l0000DB24:
 	return
@@ -5627,7 +5627,7 @@ void fn0000DB44()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 r5 r6 ra sp
 fn0000DB44_entry:
 l0000DB44:
 	return
@@ -5642,7 +5642,7 @@ void fn0000DB74()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 ra sp
 fn0000DB74_entry:
 l0000DB74:
 	return
@@ -5657,7 +5657,7 @@ void fn0000DBF0()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 r4 r5 ra sp
 fn0000DBF0_entry:
 l0000DBF0:
 	return
@@ -5672,7 +5672,7 @@ void fn0000DC28()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r2 r3 r4 r5 ra sp
 fn0000DC28_entry:
 l0000DC28:
 	return
@@ -5689,7 +5689,7 @@ void fn0000DD90()
 // MayUse: 
 // LiveOut:
 // Trashed: CF
-// Preserved: r13 ra sp
+// Preserved: r13 r3 r4 r5 r6 ra sp
 fn0000DD90_entry:
 l0000DD90:
 	return

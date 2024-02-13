@@ -30,11 +30,11 @@ Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5)
 	}
 }
 
-// 00410170: Register Eq_n __floatsidf(Register Eq_n r4)
+// 00410170: Register Eq_n __floatsidf(Register Eq_n r4, Register out Eq_n r5Out)
 // Called from:
 //      printf_core
 //      __floatscan
-Eq_n __floatsidf(Eq_n r4)
+Eq_n __floatsidf(Eq_n r4, union Eq_n & r5Out)
 {
 	Eq_n r6_n;
 	Eq_n r8_n;
@@ -65,7 +65,7 @@ Eq_n __floatsidf(Eq_n r4)
 		r6_n.u0 = 0x00;
 		r8_n.u0 = 0x00;
 	}
-	__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
+	r5Out = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
 	return r4_n;
 }
 

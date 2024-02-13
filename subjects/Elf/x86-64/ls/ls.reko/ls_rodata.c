@@ -226,29 +226,12 @@ real80 g_r415F90 = // 0000000000415F90
 void g_v415FA0 = ??void??; // 0000000000415FA0
 Eq_n g_t415FD8 = // 0000000000415FD8;
 Eq_n g_t415FE0 = // 0000000000415FE0;
-Eq_n g_t415FE4 = // 0000000000415FE4
-	{
-		'\xE2',
-		0x80,
-		0x99,
-		0x00,
-		161,
-		~0x50,
-		0x00,
-		0x22,
-	};
+char g_str415FE4[] = "\xE2\x80\x99"; // 0000000000415FE4
+char g_str415FE8[] = "\xA1\xAF"; // 0000000000415FE8
 char g_str415FEB[] = "\""; // 0000000000415FEB
-Eq_n g_t415FF5 = // 0000000000415FF5
-	{
-		'`',
-		0x00,
-		115,
-		0x68,
-		101,
-		0x6C,
-		0x6C,
-		0x00,
-	};
+char g_str415FED[] = "\xA1\ae"; // 0000000000415FED
+char g_str415FF1[] = "\xE2\x80\x98"; // 0000000000415FF1
+char g_str415FF5[] = "`"; // 0000000000415FF5
 void g_v416460 = ??void??; // 0000000000416460
 char * g_a416480[] = // 0000000000416480
 	{
@@ -264,10 +247,12 @@ char g_str416BF0[] = "0 <= strtol_base && strtol_base <= 36"; // 0000000000416BF
 char g_str416DC8[] = "xstrtoul"; // 0000000000416DC8
 char g_str416DD1[] = "invalid %s%s argument '%s'"; // 0000000000416DD1
 char g_str416DEA[] = "'"; // 0000000000416DEA
+char g_str416DEC[] = "%s%s argument '%s' too large"; // 0000000000416DEC
 char g_str416E10[] = "invalid suffix in %s%s argument '%s'"; // 0000000000416E10
 char g_str416FE8[] = "xstrtoumax"; // 0000000000416FE8
 Eq_n g_t416FF3 = // 0000000000416FF3
 	{
 		'/'
 	};
+char g_str416FFC[] = "ASCII"; // 0000000000416FFC
 char g_str417002[] = "CHARSETALIASDIR"; // 0000000000417002

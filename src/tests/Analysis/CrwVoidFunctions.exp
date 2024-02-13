@@ -4,7 +4,7 @@ void fn0C00_0000(Sequence segptr32 ds_di)
 //   Sequence ds:di: segptr32
 // LiveOut:
 // Trashed: SCZO ax bx si Top
-// Preserved: sp
+// Preserved: di ds sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Mem
@@ -43,7 +43,7 @@ void fn0C00_0010(Sequence segptr32 ds_di, Register word16 si)
 //   si: (memptr (ptr16 (segment)) (struct 0004))
 // LiveOut:
 // Trashed: ax Top
-// Preserved: sp
+// Preserved: di ds sp
 // fn0C00_0010
 // Return size: 0
 // Mem0:Mem
@@ -78,7 +78,7 @@ void fn0C00_0017(Sequence segptr32 ds_di, Stack word16 wArg02)
 //   Stack +0002: (memptr (ptr16 (segment)) (struct 0004))
 // LiveOut:
 // Trashed: SCZO ax bx Top
-// Preserved: bp sp
+// Preserved: bp di ds sp
 // fn0C00_0017
 // Return size: 0
 // Mem0:Mem

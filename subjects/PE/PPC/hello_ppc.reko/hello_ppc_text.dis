@@ -2034,10 +2034,10 @@ word32 fn00402C4C(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r29Out, 
 // Preserved: lr r1 r31
 fn00402C4C_entry:
 l00402C4C:
-	r2_40 = fn00403618(fn004035CC(r2, r29, r30, r3, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, out r29_41, out r30_43, out r31_68)
-	fn00403F10(r2_40, Mem9[Mem9[r2_40 + 224<i32>:word32]:word32])
-	r29Out = r29_41
-	r30Out = r30_43
+	r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, out r29_42, out r30_44, out r31_68)
+	fn00403F10(r2_41, Mem9[Mem9[r2_41 + 224<i32>:word32]:word32])
+	r29Out = r29_42
+	r30Out = r30_44
 	return dwLoc2C
 fn00402C4C_exit:
 
@@ -2316,7 +2316,7 @@ void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31)
 // Preserved: lr r1
 fn0040326C_entry:
 l0040326C:
-	fn004035A0(fn00403B08(fn00403618(r2, 0xA<32>, r29, r30, r31, out r29_21, out r30_23, out r31_24), 0x16<32>, r29_21, r30_23, r31_24, out r29_40, out r30_34, out r31_35), 3<32>, r29_40, r30_34, r31_35, out r29_62, out r31_63)
+	fn004035A0(fn00403B08(fn00403618(r2, 0xA<32>, r29, r30, r31, out r29_22, out r30_24, out r31_25), 0x16<32>, r29_22, r30_24, r31_25, out r29_40, out r30_34, out r31_35), 3<32>, r29_40, r30_34, r31_35, out r29_62, out r31_63)
 	return
 fn0040326C_exit:
 
@@ -2530,17 +2530,17 @@ word32 fn004035CC(word32 r2, word32 r29, word32 r30, word32 r31, ptr32 & r29Out,
 // Preserved: lr r1
 fn004035CC_entry:
 l004035CC:
-	r2_20 = fn00403618(r2, 0xFC<32>, r29, r30, r31, out r29_21, out r30_23, out r31_24)
-	branch Mem7[Mem7[r2_20 + 232<i32>:word32]:word32] == 0<32> l00403600
+	r2_21 = fn00403618(r2, 0xFC<32>, r29, r30, r31, out r29_22, out r30_24, out r31_25)
+	branch Mem7[Mem7[r2_21 + 232<i32>:word32]:word32] == 0<32> l00403600
 l004035F0:
-	fn00403F10(r2_20, Mem7[Mem7[r2_20 + 232<i32>:word32]:word32])
-	r2_20 = dwLoc24
+	fn00403F10(r2_21, Mem7[Mem7[r2_21 + 232<i32>:word32]:word32])
+	r2_21 = dwLoc24
 l00403600:
-	r2_52 = fn00403618(r2_20, 0xFF<32>, r29_21, r30_23, r31_24, out r29_53, out r30_55, out r31_56)
-	r29Out = r29_53
-	r30Out = r30_55
-	r31Out = r31_56
-	return r2_52
+	r2_53 = fn00403618(r2_21, 0xFF<32>, r29_22, r30_24, r31_25, out r29_54, out r30_56, out r31_57)
+	r29Out = r29_54
+	r30Out = r30_56
+	r31Out = r31_57
+	return r2_53
 fn004035CC_exit:
 
 
@@ -2855,14 +2855,14 @@ l00403B94:
 l00403B28:
 	fn00403B84()
 l00403BAC:
-	r3_37 = fn00403C20(r2, r3)
-	r29_41 = r3_37
-	r31_42 = Mem21[r3_37 + 8<i32>:word32]
+	r3_38 = fn00403C20(r2, r3)
+	r29_41 = r3_38
+	r31_42 = Mem21[r3_38 + 8<i32>:word32]
 	branch r31_42 != 1<32> l00403BDC
 l00403BDC:
 	branch r31_42 != 0<32> l00403BF0
 l00403BE4:
-	r2 = fn004035A0(r2, 3<32>, r3_37, r3, r31_42, out r29_41, out r31_42)
+	r2 = fn004035A0(r2, 3<32>, r3_38, r3, r31_42, out r29_41, out r31_42)
 l00403BF0:
 	Mem64[r29_41 + 8<i32>:word32] = 0<32>
 	fn00403F10(r2, r31_42)

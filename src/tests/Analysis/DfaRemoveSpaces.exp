@@ -11,7 +11,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	fn0C00_0015(SEQ(cs, 0x46<16>))
-	Mem31[ds:0x63<16>:word16] = fn0C00_002F(SEQ(cs, 0x46<16>))
+	Mem32[ds:0x63<16>:word16] = fn0C00_002F(SEQ(cs, 0x46<16>))
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -20,7 +20,7 @@ fn0C00_0000_exit:
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0002:[0..31]
 // LiveOut:
-// Trashed: SCZO di es si Top
+// Trashed: SCZO al di es si Top
 // Preserved: bp ds sp
 // fn0C00_0015
 // Return size: 0

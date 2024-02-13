@@ -4,13 +4,7 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-Eq_n g_a0001[];
-char g_b0002; // 00000002
 char g_b0004; // 00000004
-Eq_n g_t0008;
-struct Eq_n * g_ptr000C; // 0000000C
-word32 g_dw0010; // 00000010
-int32 g_dw0014; // 00000014
 char g_b0022; // 00000022
 Eq_n g_t007B;
 Eq_n g_tFFFFFFFF;

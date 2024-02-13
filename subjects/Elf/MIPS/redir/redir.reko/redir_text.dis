@@ -3634,7 +3634,7 @@ void __fixunsdfsi(real64 f12_f13)
 // MayUse:  Sequence f12:f13:[0..63]
 // LiveOut:
 // Trashed: cc0 f0 f1 f2 r1 r2 r25 r28 r3
-// Preserved: FCSR sp
+// Preserved: f12 f13 FCSR sp
 __fixunsdfsi_entry:
 l00407740:
 	branch f12_f13 < 5.46040909e-315 l004077D4

@@ -4,7 +4,7 @@ void fn0C00_0000(Register selector ds)
 //   ds: (ptr16 (segment 0402))
 // LiveOut:
 // Trashed: SCZO ax si Top
-// Preserved: sp
+// Preserved: ds sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Mem
@@ -164,7 +164,7 @@ Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out ptr16 siOut)
 //   Sequence ds:si: segptr32
 // LiveOut: ax si
 // Trashed: ax si Top
-// Preserved: sp
+// Preserved: ds sp
 // fn0C00_0036
 // Return size: 0
 // Mem0:Mem

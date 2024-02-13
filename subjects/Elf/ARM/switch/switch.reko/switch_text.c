@@ -79,14 +79,15 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register Eq_n frobulate(Register Eq_n r0, Stack Eq_n dwArg00)
+// 00008434: Register Eq_n frobulate(Register Eq_n r0, Stack Eq_n dwArg00, Register out Eq_n fpOut)
 // Called from:
 //      bazulate
 //      switcheroo
-Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
+Eq_n frobulate(Eq_n r0, Eq_n dwArg00, union Eq_n & fpOut)
 {
-	__divsi3(r0 * r0, 1337);
-	return dwArg00;
+	Eq_n r0_n = __divsi3(r0 * r0, 1337);
+	fpOut = dwArg00;
+	return r0_n;
 }
 
 // 00008470: Register word32 bazulate(Register Eq_n r0, Register Eq_n r1)
@@ -94,14 +95,11 @@ Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 //      switcheroo
 word32 bazulate(Eq_n r0, Eq_n r1)
 {
-	struct Eq_n * fp_n = frobulate(r0, r1);
-	Eq_n r0_n = __divsi3(r0 + r1, r0);
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	Eq_n r0_n;
-	r0_n.u0 = fp_n->tFFFFFFE8.u0;
-	struct Eq_n * fp_n = frobulate(r0_n, sp_n->u0);
-	__divsi3(r0_n, r0_n);
-	return fp_n->dw0000;
+	word32 fp_n;
+	word32 * fp_n;
+	__divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_n)), frobulate(Mem20[fp_n + -24:word32], Mem20[sp_n + 0x00:word32], out fp_n));
+	return *fp_n;
 }
 
 // 000084D4: Register word32 switcheroo(Register Eq_n r0)
@@ -117,13 +115,13 @@ word32 switcheroo(Eq_n r0)
 		case 0x00:
 		case 0x01:
 		case 0x02:
-			fp_n = frobulate(r0, r0);
+			frobulate(r0, r0, out fp_n);
 			break;
 		case 0x03:
 		case 0x05:
 			goto l00008540;
 		case 0x04:
-			fp_n = frobulate(r0 - 0x03, r0);
+			frobulate(r0 - 0x03, r0, out fp_n);
 			break;
 		case 0x06:
 			bazulate(r0, r0);

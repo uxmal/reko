@@ -16,18 +16,21 @@ Eq_n g_t28140 = // 00028140
 	{
 		null
 	};
-char * g_ptr28150 = null; // 00028150
+Eq_n g_t28150 = // 00028150
+	{
+		null
+	};
 Eq_n g_t28160 = // 00028160
 	{
-		0x00
+		null
 	};
 Eq_n g_t28180 = // 00028180
 	{
-		0x00
+		null
 	};
 Eq_n g_t28190 = // 00028190
 	{
-		0x00
+		null
 	};
 word32 g_dw281A0 = 0x00; // 000281A0
 Eq_n g_t281C0 = // 000281C0
@@ -41,7 +44,7 @@ Eq_n g_t281E0 = // 000281E0
 	};
 Eq_n g_t281F0 = // 000281F0
 	{
-		0x00
+		null
 	};
 up32 g_dw28200 = 0x00; // 00028200
 up32 g_dw28210 = 0x00; // 00028210
@@ -59,7 +62,7 @@ struct jmp_buf g_t2B240 = // 0002B240
 	};
 Eq_n g_t2B270 = // 0002B270
 	{
-		0x00
+		null
 	};
 Eq_n g_t2B280 = // 0002B280
 	{
@@ -68,10 +71,13 @@ Eq_n g_t2B280 = // 0002B280
 up32 g_dw2B290 = 0x00; // 0002B290
 Eq_n g_t2B2A0 = // 0002B2A0
 	{
-		0x00
+		null
 	};
 char * g_ptr2B2B0 = null; // 0002B2B0
-struct Eq_n * g_ptr2B2C0 = null; // 0002B2C0
+Eq_n g_t2B2C0 = // 0002B2C0
+	{
+		null
+	};
 word32 g_dw2B2D0 = 0x00; // 0002B2D0
 char * g_ptr2B2E0 = null; // 0002B2E0
 int32 g_dw2B2F0 = 0; // 0002B2F0

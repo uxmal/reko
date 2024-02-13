@@ -69,13 +69,5 @@ byte g_b1791F = 88; // 0001791F
 byte g_b17920 = 0x00; // 00017920
 char g_str17928[] = "POSIXLY_CORRECT"; // 00017928
 char g_str17938[] = "--"; // 00017938
-Eq_n g_t17A28 = // 00017A28
-	{
-		
-		{
-			'\0'
-		},
-		0,
-	};
 char g_str17AF0[] = "installation problem, cannot exec `%s'"; // 00017AF0
 char g_str17B78[] = "XXXXXX"; // 00017B78

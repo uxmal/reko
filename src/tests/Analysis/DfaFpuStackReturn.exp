@@ -3,7 +3,7 @@
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: bx FPU -1 Top
-// Preserved: sp
+// Preserved: ds sp
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)

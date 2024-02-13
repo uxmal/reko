@@ -17,7 +17,7 @@ void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx
 // MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000A:[0..15] Stack +01A2:[0..15]
 // LiveOut:
 // Trashed: SCZDOP ax bp bx cx di ds dx es si Top
-// Preserved: sp
+// Preserved: sp ss
 fn1483_0ADC_entry:
 l1483_0ADC:
 	Top_29 = <invalid>
@@ -108,7 +108,7 @@ word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, byte al, word16 cx, word16 si
 // MayUse:  ax:[0..7] cx:[0..15] di:[0..15] Sequence ds:bx:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15]
 // LiveOut: di eax es
 // Trashed: SCZO ax bp bx cx di dx es sp Top
-// Preserved:
+// Preserved: ss
 fn1483_0C91_entry:
 	al_12 = SLICE(ax, byte, 0) (alias)
 	ch = SLICE(cx, byte, 8)
@@ -185,7 +185,7 @@ word16 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 
 // MayUse:  ax:[0..15] bx:[0..15] ds:[0..15] dx:[0..15] fs:[0..15] Sequence es:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000A:[0..15] Stack +0010:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si sp Top
-// Preserved:
+// Preserved: ds ss
 fn1483_0CED_entry:
 	di = SLICE(es_di, word16, 0)
 	bl_17 = SLICE(bx, byte, 0) (alias)
@@ -221,7 +221,7 @@ word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, 
 // MayUse:  ah:[0..7] al:[0..7] bh:[0..7] bl:[0..7] cx:[0..15] dx:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si Top
-// Preserved: sp
+// Preserved: ds sp ss
 fn1483_0CFA_entry:
 	ds = SLICE(ds_di, selector, 16)
 	ch = SLICE(cx, byte, 8)
@@ -243,7 +243,7 @@ word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, 
 // MayUse:  ah:[0..7] al:[0..7] bh:[0..7] bl:[0..7] cx:[0..15] dx:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si Top
-// Preserved: sp
+// Preserved: ds sp ss
 fn1483_0CFC_entry:
 	ds = SLICE(ds_di, selector, 16)
 	di = SLICE(ds_di, word16, 0)
@@ -272,7 +272,7 @@ word16 fn1483_0D06(segptr32 ds_bx, word16 dx, selector fs, word16 wArg00, word16
 // MayUse:  dx:[0..15] fs:[0..15] Sequence ds:bx:[0..31] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di
 // Trashed: SCZO ax bp bx cx di dx si sp Top
-// Preserved:
+// Preserved: ds
 fn1483_0D06_entry:
 	ds = SLICE(ds_bx, selector, 16)
 	bx = SLICE(ds_bx, word16, 0)
@@ -296,7 +296,7 @@ segptr32 fn1483_0D3F(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word1
 // MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000C:[0..15] Stack +01A4:[0..15]
 // LiveOut: es:di Top
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
-// Preserved:
+// Preserved: ss
 fn1483_0D3F_entry:
 	di = SLICE(ds_di, word16, 0)
 	al_17 = SLICE(ax, byte, 0) (alias)

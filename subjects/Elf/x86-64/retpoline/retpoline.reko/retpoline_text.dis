@@ -94,19 +94,18 @@ l0000000000400555_thunk_register_tm_clones:
 frame_dummy_exit:
 
 
-void my1(word32 esi, word32 edi)
+word64 my1(word32 esi, word32 edi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      branches
 // MayUse:  edi:[0..31] esi:[0..31]
-// LiveOut:
-// Trashed: SCZO rdi rsi Top
+// LiveOut: rax
+// Trashed: SCZO rax rdi rsi Top
 // Preserved: rbp rsp
 my1_entry:
 l0000000000400560:
-	calloc(CONVERT(edi, word32, int64), CONVERT(esi, word32, int64))
-	return
+	return calloc(CONVERT(edi, word32, int64), CONVERT(esi, word32, int64))
 my1_exit:
 
 
@@ -142,14 +141,10 @@ l00000000004005DE:
 l00000000004005EE:
 	branch edi << 2<32> >= esi << 2<32> l000000000040064F
 l0000000000400602:
-	rax_77 = CONVERT(esi, word32, uint64)
-	edx_eax_79 = CONVERT(SLICE(rax_77, word32, 0), word32, int64)
-	rax_105 = SEQ(SLICE(rax_77, word32, 32), edx_eax_79 /32 2<32>) (alias)
-	branch CONVERT(edi, word32, int64) /32 2<32> >= edx_eax_79 /32 2<32> l000000000040064F
+	branch CONVERT(edi, word32, int64) /32 2<32> >= CONVERT(esi, word32, int64) /32 2<32> l000000000040064F
 l000000000040064F:
 l000000000040062B:
-	my1(esi, edi)
-	free(rax_105)
+	free(my1(esi, edi))
 l0000000000400656:
 	return
 branches_exit:

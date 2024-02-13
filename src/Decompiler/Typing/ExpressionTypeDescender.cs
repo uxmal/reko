@@ -543,9 +543,10 @@ namespace Reko.Typing
                 seg.IsSegment = true;
                 var ptr = factory.CreatePointer(seg, dt.BitSize);
                 dt = ptr;
-            } 
+            }
             tvExp.DataType = unifier.Unify(tvExp.DataType, dt)!;
-            tvExp.OriginalDataType = unifier.Unify(tvExp.OriginalDataType, dt)!;
+            var u = unifier.Unify(tvExp.OriginalDataType, dt)!;
+            tvExp.OriginalDataType = u;
             return tvExp.DataType;
         }
 

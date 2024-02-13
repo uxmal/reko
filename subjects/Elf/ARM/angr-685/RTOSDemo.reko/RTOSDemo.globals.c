@@ -5,4 +5,3 @@
 #include "RTOSDemo.h"
 
 Eq_n g_t40004000;
-struct Eq_n g_tFFFFFFFF;

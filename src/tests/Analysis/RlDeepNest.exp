@@ -2,7 +2,7 @@
 	LiveOut:  
 	BitsUsed:  ds:[0..15]
 	Trashed:   ax si Top
-	Preserved: sp
+	Preserved: ds sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:
@@ -19,7 +19,7 @@ fn0C00_0000_exit:
 	LiveOut:   ax:[0..15]
 	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   ax Top
-	Preserved: si sp
+	Preserved: ds si sp
 // fn0C00_000B
 define fn0C00_000B
 fn0C00_000B_entry:

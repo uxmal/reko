@@ -4,74 +4,28 @@
 
 #include "RTOSDemo.h"
 
-Eq_n g_t0000 = // 00000000
+Eq_n g_t0001 = // 00000001
 	{
-		&g_t2000022C,
-		0x8009,
-		&g_t8001,
-		0x8005,
-		null,
-		0x00,
-		null,
-		0x1715,
-		null,
-		0x00,
-		0x1689,
-		0x16E5,
-		0x00,
-		null,
+		0x09200002,
+		0x01000080,
+		0x80,
 		0x00,
 		0x00,
-		null,
-		0x00,
-		0x4605B570,
-		0xFA8CF008,
-		0x4045F895,
-		100,
-		0xB2,
+		0xE5000016,
 	};
-word32 g_dw0001 = 0x09200002; // 00000001
-word32 g_dw0005 = 0x01000080; // 00000005
-Eq_n g_t0008 = // 00000008
-	{
-		&g_t8001,
-		0x8005,
-		null,
-		0x00,
-		null,
-		0x00,
-		&g_t1715,
-		0x00,
-		&g_t1689,
-		0x16E5,
-		0x00,
-		0x00,
-		0x00,
-		null,
-		0x00,
-		33033,
-		&g_t4605B570,
-		0x8C,
-		0x4045F895,
-		0x2C00B264,
-		0x6A6BDD16,
-		0xA3,
-		177,
-	};
-word32 g_dw000D = 0x80; // 0000000D
-// 00000058: void prvUnlockQueue(Register (ptr32 Eq_n) r0, Register word32 cpsr)
+// 00000058: void prvUnlockQueue(Register Eq_n r0, Register word32 cpsr)
 // Called from:
 //      xQueueGenericSend
 //      xQueueGenericReceive
-void prvUnlockQueue(struct Eq_n * r0, word32 cpsr)
+void prvUnlockQueue(Eq_n r0, word32 cpsr)
 {
 	vPortEnterCritical(cpsr);
-	int32 r4_n = (int32) r0->b0045;
-	if (r4_n > 0x00 && r0->dw0024 != 0x00)
+	int32 r4_n = (int32) r0.u2->u1.b0045;
+	if (r4_n > 0x00 && *((word32) r0 + 36) != 0x00)
 	{
 		do
 		{
-			if (xTaskRemoveFromEventList(&r0->dw0024) != 0x00)
+			if (xTaskRemoveFromEventList((word32) r0 + 36) != 0x00)
 			{
 				vTaskMissedYield();
 				uint32 r3_n = (uint32) ((byte) r4_n - 0x01);
@@ -86,17 +40,17 @@ void prvUnlockQueue(struct Eq_n * r0, word32 cpsr)
 				if (r3_n == 0x00)
 					break;
 			}
-		} while (r0->dw0024 != 0x00);
+		} while (*((word32) r0 + 36) != 0x00);
 	}
-	r0->b0045 = ~0x00;
+	r0.u2->u1.b0045 = ~0x00;
 	vPortExitCritical(cpsr);
 	vPortEnterCritical(cpsr);
-	int32 r4_n = (int32) r0->b0044;
-	if (r4_n > 0x00 && r0->dw0010 != 0x00)
+	int32 r4_n = (int32) *((word32) r0 + 0x0044);
+	if (r4_n > 0x00 && *((word32) r0 + 16) != 0x00)
 	{
 		do
 		{
-			if (xTaskRemoveFromEventList(&r0->dw0010) != 0x00)
+			if (xTaskRemoveFromEventList((word32) r0 + 16) != 0x00)
 			{
 				vTaskMissedYield();
 				uint32 r3_n = (uint32) ((byte) r4_n - 0x01);
@@ -111,40 +65,42 @@ void prvUnlockQueue(struct Eq_n * r0, word32 cpsr)
 				if (r3_n == 0x00)
 					break;
 			}
-		} while (r0->dw0010 != 0x00);
+		} while (*((word32) r0 + 16) != 0x00);
 	}
-	r0->b0044 = ~0x00;
+	((word32) r0 + 0x0044)->u0 = ~0x00;
 	vPortExitCritical(cpsr);
 }
 
-// 000000EC: FlagGroup bool prvCopyDataToQueue(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 r2, Register out (ptr32 Eq_n) r0Out, Register out ptr32 r7Out)
+// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register out Eq_n r0Out, Register out ptr32 r7Out)
 // Called from:
 //      xQueueGenericSend
 //      xQueueGenericSendFromISR
 //      xQueueCRSend
 //      xQueueCRSendFromISR
-bool prvCopyDataToQueue(struct Eq_n * r0, struct Eq_n * r1, word32 r2, struct Eq_n & r0Out, ptr32 & r7Out)
+bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 & r7Out)
 {
-	struct Eq_n * r4_n = r0;
-	struct Eq_n * r0_n = r0->ptr0040;
-	up32 r5_n = r0->dw0038;
-	up32 r5_n;
+	Eq_n r4_n = r0;
+	Eq_n r0_n;
+	r0_n.u1 = r0.u2->u1.t0040.u1;
+	Eq_n r5_n = *((word32) r0 + 56);
+	Eq_n r5_n;
 	bool Z_n;
 	ptr32 r7;
-	if (r0_n == null)
+	if (r0_n == 0x00)
 	{
-		struct Eq_n * r6_n = r0->ptr0000;
-		if (r6_n != null)
+		Eq_n r6_n;
+		r6_n.u1 = r0.u1->t0000.u1;
+		if (r6_n != 0x00)
 		{
-			r5_n = r5_n + 0x01;
-			Z_n = SLICE(cond(r5_n + 0x01), bool, 2);
+			r5_n.u1 = (word32) r5_n + 1;
+			Z_n = SLICE(cond((word32) r5_n + 1), bool, 2);
 		}
 		else
 		{
-			r0_n = xTaskPriorityDisinherit(r0->ptr0004);
-			r0->ptr0004 = r6_n;
-			r5_n = r5_n + 0x01;
-			Z_n = SLICE(cond(r5_n + 0x01), bool, 2);
+			r0_n = xTaskPriorityDisinherit(r0.u2->u0.dw0004);
+			r0.u2->u0.dw0004 = (word32) r6_n;
+			r5_n.u1 = (word32) r5_n + 1;
+			Z_n = SLICE(cond((word32) r5_n + 1), bool, 2);
 		}
 	}
 	else
@@ -153,9 +109,9 @@ bool prvCopyDataToQueue(struct Eq_n * r0, struct Eq_n * r1, word32 r2, struct Eq
 		{
 			struct Eq_n * r4_n;
 			word32 r5_n;
-			struct Eq_n * r6_n;
+			Eq_n r6_n;
 			ptr32 r7_n;
-			memcpy(r0->ptr0008, r1, r0_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			memcpy(r0.u2->u0.dw0008, r1, r0_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			up32 r2_n = r4_n->dw0004;
 			up32 r3_n = r4_n->dw0008 + r4_n->dw0040;
 			r4_n->dw0008 = r3_n;
@@ -176,65 +132,42 @@ bool prvCopyDataToQueue(struct Eq_n * r0, struct Eq_n * r1, word32 r2, struct Eq
 			}
 		}
 		word32 r6_n;
-		memcpy(r0->ptr000C, r1, r0_n, out r4_n, out r5_n, out r6_n, out r7);
-		struct Eq_n * r3_n = r4_n->ptr000C;
-		struct Eq_n * r1_n = r4_n->ptr0000;
-		r4_n->ptr000C = r3_n;
+		memcpy(r0.u2->u0.dw000C, r1, r0_n, out r4_n, out r5_n, out r6_n, out r7);
+		Eq_n r3_n;
+		r3_n.u1 = r4_n.u2->u0.dw000C;
+		Eq_n r1_n;
+		r1_n.u1 = r4_n.u1->t0000.u1;
+		r4_n.u2->u0.dw000C = (word32) r3_n;
 		if (r3_n < r1_n)
-			r4_n->ptr000C = r4_n->ptr0004;
+			r4_n.u2->u0.dw000C = r4_n.u2->u0.dw0004;
 		Z_n = SLICE(cond(r6_n - 0x02), bool, 2);
 		if (r6_n != 0x02)
 		{
-			r4_n->dw0038 = r5_n + 0x01;
-			r0Out = null;
+			((word32) r4_n + 56)->u1 = (word32) r5_n + 1;
+			r0Out.u0 = 0x00;
 			r7Out = r7;
-			return SLICE(cond(r5_n + 0x01), bool, 2);
+			return SLICE(cond((word32) r5_n + 1), bool, 2);
 		}
 		if (r5_n == 0x00)
-			r5_n = 0x01;
-		r0_n = null;
+			r5_n.u0 = 0x01;
+		r0_n.u0 = 0x00;
 	}
-	r4_n->dw0038 = r5_n;
+	*((word32) r4_n + 56) = r5_n;
 	r0Out = r0_n;
 	r7Out = r7;
 	return Z_n;
 }
 
-Eq_n g_t00FF = // 000000FF
-	{
-		&g_t16BD7063,
-		2118517318,
-		&g_tA68A0B9,
-		~0x5C05A40F,
-		&g_t626C2168,
-		425763650,
-		&g_t7063A560,
-		586828784,
-		&g_t5268E36C,
-		0x2142,
-		0xE3428B44,
-		0x63D20260,
-		0xE2441A68,
-		&g_t72E0260,
-		0x02,
-		1885578528,
-		&g_t303501BD,
-		99,
-		0x01B905BD,
-		0xCE200025,
-		23617767,
-		0xF0,
-		117,
-	};
-// 0000016C: Register word32 prvCopyDataFromQueue(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+// 0000016C: Register word32 prvCopyDataFromQueue(Register Eq_n r0, Register Eq_n r1, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
 // Called from:
 //      xQueuePeekFromISR
 //      xQueueGenericReceive
 //      xQueueReceiveFromISR
-word32 prvCopyDataFromQueue(struct Eq_n * r0, struct Eq_n * r1, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+word32 prvCopyDataFromQueue(Eq_n r0, Eq_n r1, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 {
-	struct Eq_n * r2_n = r0->ptr0040;
-	if (r2_n == null)
+	Eq_n r2_n;
+	r2_n.u1 = r0.u2->u1.t0040.u1;
+	if (r2_n == 0x00)
 	{
 		ptr32 r5;
 		r5Out = r5;
@@ -247,12 +180,14 @@ word32 prvCopyDataFromQueue(struct Eq_n * r0, struct Eq_n * r1, ptr32 & r5Out, p
 	}
 	else
 	{
-		struct Eq_n * r4_n = r0->ptr0004;
-		struct Eq_n * r1_n = Mem12[r0 + 0x0C:word32] + r2_n;
-		r0->ptr000C = r1_n;
+		Eq_n r4_n;
+		r4_n.u1 = r0.u2->u0.dw0004;
+		Eq_n r1_n;
+		r1_n.u1 = &r2_n.u1->t0000.u0 + ((r0.u2)->u0).dw000C;
+		r0.u2->u0.dw000C = (word32) r1_n;
 		if (r1_n >= r4_n)
-			r1_n = r0->ptr0000;
-		r0->ptr000C = r1_n;
+			r1_n.u1 = r0.u1->t0000.u1;
+		r0.u2->u0.dw000C = (word32) r1_n;
 		word32 r4_n;
 		ptr32 r5_n;
 		ptr32 r6_n;
@@ -265,12 +200,12 @@ word32 prvCopyDataFromQueue(struct Eq_n * r0, struct Eq_n * r1, ptr32 & r5Out, p
 	}
 }
 
-// 00000190: void xQueueGenericSend(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 r2, Register word32 r3, Register word32 cpsr)
+// 00000190: void xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register word32 r3, Register word32 cpsr)
 // Called from:
 //      xQueueGiveMutexRecursive
 //      xQueueCreateMutex
 //      MPU_xQueueGenericSend
-void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3, word32 cpsr)
+void xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, word32 r3, word32 cpsr)
 {
 	Eq_n tLoc2C = (Eq_n) r2;
 	word32 r5_n = 0x00;
@@ -278,7 +213,7 @@ void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3,
 	while (true)
 	{
 		vPortEnterCritical(cpsr);
-		if (r0->dw0038 < r0->dw003C || r3 == 0x02)
+		if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 			break;
 		if (tLoc2C == 0x00)
 		{
@@ -291,10 +226,10 @@ void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3,
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
-		if ((word32) r0->b0044 == 0xFF)
-			r0->b0044 = 0x00;
-		if ((word32) r0->b0045 == 0xFF)
-			r0->b0045 = 0x00;
+		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
+			((word32) r0 + 0x0044)->u0 = 0x00;
+		if ((word32) r0.u2->u1.b0045 == 0xFF)
+			r0.u2->u1.b0045 = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
 		{
@@ -303,7 +238,7 @@ void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3,
 			return;
 		}
 		vPortEnterCritical(cpsr);
-		if (r0->dw0038 != r0->dw003C)
+		if (*((word32) r0 + 56) != *((word32) r0 + 60))
 		{
 			vPortExitCritical(cpsr);
 			prvUnlockQueue(r0, cpsr);
@@ -312,7 +247,7 @@ void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3,
 		else
 		{
 			vPortExitCritical(cpsr);
-			vTaskPlaceOnEventList(&r0->dw0010, tLoc2C);
+			vTaskPlaceOnEventList((word32) r0 + 16, tLoc2C);
 			prvUnlockQueue(r0, cpsr);
 			if (xTaskResumeAll(cpsr) == 0x00)
 			{
@@ -326,12 +261,12 @@ void xQueueGenericSend(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3,
 	word32 r0_n;
 	word32 r7_n;
 	prvCopyDataToQueue(r0, r1, r3, out r0_n, out r7_n);
-	if (r0->dw0024 == 0x00)
+	if (*((word32) r0 + 36) == 0x00)
 	{
 		if (r0_n == 0x00)
 			goto l00000266;
 	}
-	else if (xTaskRemoveFromEventList(&r0->dw0024) == 0x00)
+	else if (xTaskRemoveFromEventList((word32) r0 + 36) == 0x00)
 		goto l00000266;
 	*g_ptr02A0 = 0x10000000;
 	__data_sync_barrier("sy");
@@ -341,16 +276,16 @@ l00000266:
 }
 
 word32 * g_ptr02A0 = &g_dwE000ED04; // 000002A0
-// 000002A4: void xQueuePeekFromISR(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 cpsr)
+// 000002A4: void xQueuePeekFromISR(Register Eq_n r0, Register Eq_n r1, Register word32 cpsr)
 // Called from:
 //      MPU_xQueuePeekFromISR
-void xQueuePeekFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 cpsr)
+void xQueuePeekFromISR(Eq_n r0, Eq_n r1, word32 cpsr)
 {
 	Eq_n r5_n = __mrs(cpsr);
 	__msr(cpsr, 191);
 	__instruction_sync_barrier("sy");
 	__data_sync_barrier("sy");
-	if (r0->dw0038 != 0x00)
+	if (*((word32) r0 + 56) != 0x00)
 	{
 		Eq_n r5_n;
 		word32 r6_n;
@@ -362,11 +297,11 @@ void xQueuePeekFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 cpsr)
 		__msr(cpsr, r5_n);
 }
 
-// 000002D8: Register (ptr32 Eq_n) xQueueGenericReceive(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 r2, Register word32 r3, Register word32 cpsr)
+// 000002D8: Register Eq_n xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register word32 r3, Register word32 cpsr)
 // Called from:
 //      xQueueTakeMutexRecursive
 //      MPU_xQueueGenericReceive
-struct Eq_n * xQueueGenericReceive(struct Eq_n * r0, struct Eq_n * r1, word32 r2, word32 r3, word32 cpsr)
+Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, word32 r2, word32 r3, word32 cpsr)
 {
 	word32 r7_n;
 	word32 r6_n;
@@ -377,13 +312,13 @@ struct Eq_n * xQueueGenericReceive(struct Eq_n * r0, struct Eq_n * r1, word32 r2
 	while (true)
 	{
 		vPortEnterCritical(cpsr);
-		if (r0->dw0038 != 0x00)
+		if (*((word32) r0 + 56) != 0x00)
 			break;
 		if (tLoc2C == 0x00)
 		{
 l000003A4:
 			vPortExitCritical(cpsr);
-			return null;
+			return 0x00;
 		}
 		Eq_n tLoc28;
 		if (r5_n == 0x00)
@@ -391,24 +326,24 @@ l000003A4:
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
-		if ((word32) r0->b0044 == 0xFF)
-			r0->b0044 = 0x00;
-		if ((word32) r0->b0045 == 0xFF)
-			r0->b0045 = 0x00;
+		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
+			((word32) r0 + 0x0044)->u0 = 0x00;
+		if ((word32) r0.u2->u1.b0045 == 0xFF)
+			r0.u2->u1.b0045 = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
 		{
 			prvUnlockQueue(r0, cpsr);
 			xTaskResumeAll(cpsr);
 			vPortEnterCritical(cpsr);
-			if (r0->dw0038 == 0x00)
+			if (*((word32) r0 + 56) == 0x00)
 				goto l000003A4;
 			vPortExitCritical(cpsr);
 		}
 		else
 		{
 			vPortEnterCritical(cpsr);
-			if (r0->dw0038 != 0x00)
+			if (*((word32) r0 + 56) != 0x00)
 			{
 				vPortExitCritical(cpsr);
 				prvUnlockQueue(r0, cpsr);
@@ -417,13 +352,13 @@ l000003A4:
 			else
 			{
 				vPortExitCritical(cpsr);
-				if (r0->ptr0000 == null)
+				if (r0.u1->t0000.u1 == 0x00)
 				{
 					vPortEnterCritical(cpsr);
-					vTaskPriorityInherit(r0->ptr0004);
+					vTaskPriorityInherit(r0.u2->u0.dw0004);
 					vPortExitCritical(cpsr);
 				}
-				vTaskPlaceOnEventList(&r0->dw0024, tLoc2C);
+				vTaskPlaceOnEventList((word32) r0 + 36, tLoc2C);
 				prvUnlockQueue(r0, cpsr);
 				if (xTaskResumeAll(cpsr) == 0x00)
 				{
@@ -446,7 +381,7 @@ l000003A4:
 		{
 l000003CC:
 			vPortExitCritical(cpsr);
-			return &g_dw0001;
+			return 0x01;
 		}
 	}
 	else
@@ -489,23 +424,23 @@ void vQueueDelete()
 	vPortFree();
 }
 
-// 00000458: void xQueueGenericSendFromISR(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 r3, Register word32 cpsr)
+// 00000458: void xQueueGenericSendFromISR(Register Eq_n r0, Register Eq_n r1, Register word32 r3, Register word32 cpsr)
 // Called from:
 //      vUART_ISR
-void xQueueGenericSendFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 r3, word32 cpsr)
+void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, word32 r3, word32 cpsr)
 {
 	Eq_n r6_n = __mrs(cpsr);
 	__msr(cpsr, 191);
 	__instruction_sync_barrier("sy");
 	__data_sync_barrier("sy");
-	if (r0->dw0038 < r0->dw003C || r3 == 0x02)
+	if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 	{
-		int32 r4_n = (int32) r0->b0045;
+		int32 r4_n = (int32) r0.u2->u1.b0045;
 		word32 r0_n;
 		word32 * r7_n;
 		if (!prvCopyDataToQueue(r0, r1, r3, out r0_n, out r7_n))
-			r0->b0045 = (int8) r4_n + 1;
-		else if (r0->dw0024 != 0x00 && (xTaskRemoveFromEventList(&r0->dw0024) != 0x00 && r7_n != null))
+			r0.u2->u1.b0045 = (int8) r4_n + 1;
+		else if (*((word32) r0 + 36) != 0x00 && (xTaskRemoveFromEventList((word32) r0 + 36) != 0x00 && r7_n != null))
 		{
 			*r7_n = 0x01;
 			goto l0000047C;
@@ -546,8 +481,8 @@ l000004FA:
 	goto l000004FA;
 }
 
-// 00000524: void xQueueReceiveFromISR(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register (ptr32 word32) r2, Register word32 cpsr)
-void xQueueReceiveFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 * r2, word32 cpsr)
+// 00000524: void xQueueReceiveFromISR(Register Eq_n r0, Register Eq_n r1, Register (ptr32 word32) r2, Register word32 cpsr)
+void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, word32 cpsr)
 {
 	struct Eq_n * r7_n;
 	word32 r5_n;
@@ -555,11 +490,11 @@ void xQueueReceiveFromISR(struct Eq_n * r0, struct Eq_n * r1, word32 * r2, word3
 	__msr(cpsr, 191);
 	__instruction_sync_barrier("sy");
 	__data_sync_barrier("sy");
-	if (r0->dw0038 != 0x00)
+	if (*((word32) r0 + 56) != 0x00)
 	{
 		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, out r5_n, out r6_n, out r7_n);
-		r7_n->dw0038 = r4_n - &g_dw0001;
-		if (r4_n != &g_dw0001)
+		r7_n->dw0038 = r4_n - &g_t0001;
+		if (r4_n != &g_t0001)
 			r7_n->b0044 = (int8) r5_n + 1;
 		else if (r7_n->dw0010 != 0x00 && (xTaskRemoveFromEventList(&r7_n->dw0010) != 0x00 && r2 != null))
 		{
@@ -602,54 +537,57 @@ void xQueueGetMutexHolder(word32 * r0, word32 cpsr)
 		vPortExitCritical(cpsr);
 }
 
-// 000005D4: void xQueueTakeMutexRecursive(Register (ptr32 Eq_n) r0, Register word32 r1, Register word32 cpsr)
+// 000005D4: void xQueueTakeMutexRecursive(Register Eq_n r0, Register word32 r1, Register word32 cpsr)
 // Called from:
 //      MPU_xQueueTakeMutexRecursive
-void xQueueTakeMutexRecursive(struct Eq_n * r0, word32 r1, word32 cpsr)
+void xQueueTakeMutexRecursive(Eq_n r0, word32 r1, word32 cpsr)
 {
-	if (r0->ptr0004 == xTaskGetCurrentTaskHandle())
-		r0->ptr000C = (struct Eq_n *) ((char *) r0->ptr000C->a0000 + 1);
-	else if (xQueueGenericReceive(r0, null, r1, 0x00, cpsr) != 0x00)
-		r0->ptr000C = (struct Eq_n *) ((char *) r0->ptr000C->a0000 + 1);
+	if (r0.u2->u0.dw0004 == xTaskGetCurrentTaskHandle())
+		r0.u2->u0.dw000C = (word32) (r0.u2->u0.dw000C + 0x01);
+	else if (xQueueGenericReceive(r0, 0x00, r1, 0x00, cpsr) != 0x00)
+		r0.u2->u0.dw000C = (word32) (r0.u2->u0.dw000C + 0x01);
 }
 
-// 00000604: void xQueueGiveMutexRecursive(Register (ptr32 Eq_n) r0, Register word32 cpsr)
+// 00000604: void xQueueGiveMutexRecursive(Register Eq_n r0, Register word32 cpsr)
 // Called from:
 //      MPU_xQueueGiveMutexRecursive
-void xQueueGiveMutexRecursive(struct Eq_n * r0, word32 cpsr)
+void xQueueGiveMutexRecursive(Eq_n r0, word32 cpsr)
 {
-	if (r0->ptr0004 != xTaskGetCurrentTaskHandle())
+	if (r0.u2->u0.dw0004 != xTaskGetCurrentTaskHandle())
 		return;
-	struct Eq_n * r3_n = r0->ptr000C;
-	r0->ptr000C = r3_n - 0x01;
-	if (r3_n != &g_dw0001)
+	Eq_n r3_n;
+	r3_n.u1 = r0.u2->u0.dw000C;
+	r0.u2->u0.dw000C = (word32) (r3_n - 0x01);
+	if (r3_n != 0x01)
 		return;
 	xQueueGenericSend(r0, r3_n - 0x01, r3_n - 0x01, r3_n - 0x01, cpsr);
 }
 
-// 00000630: void xQueueGenericReset(Register (ptr32 Eq_n) r0, Register word32 r1, Register word32 cpsr)
+// 00000630: void xQueueGenericReset(Register Eq_n r0, Register word32 r1, Register word32 cpsr)
 // Called from:
 //      xQueueGenericCreate
 //      MPU_xQueueGenericReset
-void xQueueGenericReset(struct Eq_n * r0, word32 r1, word32 cpsr)
+void xQueueGenericReset(Eq_n r0, word32 r1, word32 cpsr)
 {
 	vPortEnterCritical(cpsr);
-	ui32 r3_n = r0->dw0040;
-	ui32 r2_n = r0->dw003C * r3_n;
-	struct Eq_n * r0_n = r0->ptr0000;
-	r0->dw0038 = 0x00;
-	r0->dw0004 = (char *) &r0_n->ptr0000 + r2_n;
-	r0->ptr0044 = (struct Eq_n *) &g_tFFFFFFFF;
-	r0->dw000C = (char *) &r0_n->ptr0000 + (r2_n - r3_n);
-	r0->ptr0008 = r0_n;
-	r0->b0045 = ~0x00;
+	Eq_n r3_n;
+	r3_n.u1 = r0.u2->u1.t0040.u1;
+	ui32 r2_n = *((word32) r0 + 60) * r3_n;
+	Eq_n r0_n;
+	r0_n.u1 = r0.u1->t0000.u1;
+	((word32) r0 + 56)->u0 = 0x00;
+	r0.u2->u0.dw0004 = &r0_n.u1->t0000.u0 + r2_n;
+	((word32) r0 + 0x0044)->u0 = ~0x00;
+	r0.u2->u0.dw000C = &r0_n.u1->t0000.u0 + (r2_n - r3_n);
+	r0.u2->u0.dw0008 = (word32) r0_n;
+	r0.u2->u1.b0045 = ~0x00;
 	if (r1 != 0x00)
 	{
-		vListInitialise(&r0->ptr0010);
-		vListInitialise(&r0->ptr0024);
+		vListInitialise((word32) r0 + 16);
+		vListInitialise((word32) r0 + 36);
 		vPortExitCritical(cpsr);
 	}
-	else if (r0->ptr0010 != null && xTaskRemoveFromEventList(&r0->ptr0010) != 0x00)
+	else if (*((word32) r0 + 16) != 0x00 && xTaskRemoveFromEventList((word32) r0 + 16) != 0x00)
 	{
 		*g_ptr06A8 = 0x10000000;
 		__data_sync_barrier("sy");
@@ -661,23 +599,24 @@ void xQueueGenericReset(struct Eq_n * r0, word32 r1, word32 cpsr)
 }
 
 word32 * g_ptr06A8 = &g_dwE000ED04; // 000006A8
-// 000006AC: void xQueueGenericCreate(Register ui32 r0, Register ui32 r1, Register word32 cpsr)
+// 000006AC: Register Eq_n xQueueGenericCreate(Register Eq_n r0, Register Eq_n r1, Register word32 cpsr)
 // Called from:
 //      xQueueCreateMutex
 //      MPU_xQueueGenericCreate
-void xQueueGenericCreate(ui32 r0, ui32 r1, word32 cpsr)
+Eq_n xQueueGenericCreate(Eq_n r0, Eq_n r1, word32 cpsr)
 {
-	struct Eq_n * r0_n = pvPortMalloc(r0 * r1 + 0x48, cpsr);
-	if (r0_n != null)
+	Eq_n r0_n = pvPortMalloc(r0 * r1 + 0x48, cpsr);
+	if (r0_n != 0x00)
 	{
 		if (r1 != 0x00)
-			r0_n->ptr0000 = &r0_n->b0045 + 3;
+			r0_n.u1->t0000.u1 = (word32) r0_n + 72;
 		else
-			r0_n->ptr0000 = r0_n;
-		r0_n->dw003C = r0;
-		r0_n->dw0040 = r1;
+			r0_n.u1->t0000.u1 = (struct Eq_n *) r0_n;
+		*((word32) r0_n + 60) = r0;
+		r0_n.u2->u1.t0040.u1 = (struct Eq_n *) r1;
 		xQueueGenericReset(r0_n, 0x01, cpsr);
 	}
+	return r0_n;
 }
 
 // 000006DC: void xQueueCreateMutex(Register word32 cpsr)
@@ -685,25 +624,25 @@ void xQueueGenericCreate(ui32 r0, ui32 r1, word32 cpsr)
 //      MPU_xQueueCreateMutex
 void xQueueCreateMutex(word32 cpsr)
 {
-	xQueueGenericCreate(0x01, 0x00, cpsr);
-	if (true)
+	Eq_n r0_n = xQueueGenericCreate(0x01, 0x00, cpsr);
+	if (r0_n != 0x00)
 	{
-		g_dw0005 = 0x00;
-		g_dw0001 = 0x00;
-		g_dw000D = 0x00;
-		xQueueGenericSend(&g_dw0001, null, 0x00, 0x00, cpsr);
+		r0_n.u2->u0.dw0004 = (word32) 0x00;
+		r0_n.u1->t0000.u1 = (struct Eq_n *) 0x00;
+		r0_n.u2->u0.dw000C = (word32) 0x00;
+		xQueueGenericSend(r0_n, 0x00, 0x00, 0x00, cpsr);
 	}
 }
 
-// 00000700: void prvInitialiseNewTask(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Stack int32 dwArg00, Stack (ptr32 (ptr32 Eq_n)) dwArg04, Stack (ptr32 Eq_n) dwArg08, Stack (ptr32 Eq_n) dwArg0C)
+// 00000700: void prvInitialiseNewTask(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Stack int32 dwArg00, Stack (ptr32 Eq_n) dwArg04, Stack Eq_n dwArg08, Stack (ptr32 Eq_n) dwArg0C)
 // Called from:
 //      xTaskCreate
 //      xTaskCreateRestricted
-void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00, struct Eq_n ** dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C)
+void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00, union Eq_n * dwArg04, Eq_n dwArg08, struct Eq_n * dwArg0C)
 {
-	ui32 r5_n = (char *) &dwArg08->ptr0050->ptr0000 + (r2 + 0x3FFFFFFF << 0x02);
+	ui32 r5_n = ((word32) dwArg08 + 80)->u1 + (r2 + 0x3FFFFFFF);
 	byte * r3_n = r1 - 0x01 + 1;
-	byte * r0_n = (char *) &dwArg08->ptr0050 + 4;
+	byte * r0_n = (word32) dwArg08 + 84;
 	uint32 r2_n = dwArg00 & 0x7FFFFFFF;
 	do
 	{
@@ -713,67 +652,67 @@ void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00,
 	} while ((word32) *r3_n != 0x00 && r3_n != r1 + 0x02);
 	if ((dwArg00 & 0x7FFFFFFF) >= 0x01)
 		r2_n = 0x01;
-	dwArg08->dw004C = r2_n;
-	dwArg08->dw0058 = r2_n;
-	dwArg08->b0056 = 0x00;
-	dwArg08->dw005C = 0x00;
-	vListInitialiseItem(&dwArg08->ptr0024);
-	vListInitialiseItem(&dwArg08->dw0038);
-	dwArg08->dw0038 = 0x02 - r2_n;
-	struct Eq_n * r2_n = dwArg08->ptr0050;
-	dwArg08->ptr0030 = dwArg08;
-	dwArg08->ptr0044 = dwArg08;
-	vPortStoreTaskMPUSettings(&dwArg08->dw0004, dwArg0C, r2_n, r2);
-	dwArg08->dw0060 = 0x00;
-	dwArg08->b0064 = 0x00;
-	dwArg08->ptr0000 = pxPortInitialiseStack(r5_n & ~0x07, r0, r3, dwArg00 >> 0x1F);
+	dwArg08.u2->u1.dw004C = r2_n;
+	dwArg08.u2->u1.dw0058 = r2_n;
+	dwArg08.u2->u1.b0056 = 0x00;
+	dwArg08.u2->u1.dw005C = 0x00;
+	vListInitialiseItem((word32) dwArg08 + 36);
+	vListInitialiseItem((word32) dwArg08 + 56);
+	*((word32) dwArg08 + 56) = 0x02 - r2_n;
+	Eq_n r2_n = *((word32) dwArg08 + 80);
+	*((word32) dwArg08 + 48) = dwArg08;
+	*((word32) dwArg08 + 0x0044) = dwArg08;
+	vPortStoreTaskMPUSettings(&dwArg08.u2->u0.dw0004, dwArg0C, r2_n, r2);
+	dwArg08.u2->u1.dw0060 = 0x00;
+	dwArg08.u2->u1.b0064 = 0x00;
+	dwArg08.u1->t0000.u1 = (struct Eq_n *) pxPortInitialiseStack(r5_n & ~0x07, r0, r3, dwArg00 >> 0x1F);
 	if (dwArg04 != null)
-		*dwArg04 = (struct Eq_n **) dwArg08;
+		dwArg04->u1 = (struct Eq_n *) dwArg08;
 }
 
-// 00000798: void prvAddNewTaskToReadyList(Register (ptr32 Eq_n) r0, Register word32 cpsr)
+// 00000798: void prvAddNewTaskToReadyList(Register Eq_n r0, Register word32 cpsr)
 // Called from:
 //      xTaskCreate
 //      xTaskCreateRestricted
-void prvAddNewTaskToReadyList(struct Eq_n * r0, word32 cpsr)
+void prvAddNewTaskToReadyList(Eq_n r0, word32 cpsr)
 {
 	struct Eq_n * r4_n = g_ptr0854;
 	vPortEnterCritical(cpsr);
 	++r4_n->dw0000;
 	uint32 r0_n;
-	if (r4_n->ptr0004 != null)
+	if (r4_n->t0004.u1 != 0x00)
 	{
 		if (r4_n->dw0074 != 0x00)
 		{
 l000007B4:
-			r0_n = r0->dw004C;
+			r0_n = r0.u2->u1.dw004C;
 			goto l000007BA;
 		}
-		r0_n = r0->dw004C;
-		if (r4_n->ptr0004->dw004C <= r0_n)
-			r4_n->ptr0004 = r0;
+		r0_n = r0.u2->u1.dw004C;
+		if (*((char *) &r4_n->t0004.u1->t0000 + 76) <= r0_n)
+			r4_n->t0004.u1 = (struct Eq_n *) r0;
 	}
 	else
 	{
-		r4_n->ptr0004 = r0;
+		r4_n->t0004.u1 = (struct Eq_n *) r0;
 		if (r4_n->dw0000 != 0x01)
 			goto l000007B4;
-		vListInitialise((char *) &r4_n->ptr0004 + 4);
-		vListInitialise((char *) &r4_n->ptr0004 + 24);
-		vListInitialise((char *) &r4_n->ptr0004 + 44);
-		vListInitialise((char *) &r4_n->ptr0004 + 64);
-		vListInitialise((char *) &r4_n->ptr0004 + 84);
-		r4_n->ptr006C = (char *) &r4_n->ptr0004 + 44;
-		r0_n = r0->dw004C;
-		r4_n->ptr0070 = (char *) &r4_n->ptr0004 + 64;
+		vListInitialise((char *) &r4_n->t0004 + 4);
+		vListInitialise((char *) &r4_n->t0004 + 24);
+		vListInitialise((char *) &r4_n->t0004 + 44);
+		vListInitialise((char *) &r4_n->t0004 + 64);
+		vListInitialise((char *) &r4_n->t0004 + 84);
+		r4_n->ptr006C = (char *) &r4_n->t0004 + 44;
+		r0_n = r0.u2->u1.dw004C;
+		r4_n->ptr0070 = (char *) &r4_n->t0004 + 64;
 	}
 l000007BA:
 	word32 r2_n = r4_n->dw0078;
 	r4_n->dw007C = 0x01 << r0_n | r4_n->dw007C;
 	r4_n->dw0078 = r2_n + 0x01;
-	vListInsertEnd((char *) &r4_n->ptr0004 + 4 + r0_n * 0x14, &r0->ptr0024);
+	vListInsertEnd((char *) &r4_n->t0004 + 4 + r0_n * 0x14, (word32) r0 + 36);
 	vPortExitCritical(cpsr);
-	if (r4_n->dw0074 != 0x00 && (r4_n->ptr0004)->dw004C < r0->dw004C)
+	if (r4_n->dw0074 != 0x00 && *((char *) (&((r4_n->t0004).u1)->t0000) + 76) < ((r0.u2)->u1).dw004C)
 	{
 		*g_ptr0858 = 0x10000000;
 		__data_sync_barrier("sy");
@@ -814,21 +753,21 @@ void prvAddCurrentTaskToDelayedList.isra.0(up32 r0)
 }
 
 struct Eq_n * g_ptr08B0 = &g_t200000C4; // 000008B0
-// 000008B4: Register ui32 xTaskCreate(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Register word32 cpsr, Stack int32 dwArg00, Stack (ptr32 (ptr32 Eq_n)) dwArg04)
+// 000008B4: Register ui32 xTaskCreate(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Register word32 cpsr, Stack int32 dwArg00, Stack (ptr32 Eq_n) dwArg04)
 // Called from:
 //      vTaskStartScheduler
 //      MPU_xTaskCreate
-ui32 xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, word32 cpsr, int32 dwArg00, struct Eq_n ** dwArg04)
+ui32 xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, word32 cpsr, int32 dwArg00, union Eq_n * dwArg04)
 {
-	struct Eq_n * r0_n = pvPortMalloc(r2 << 2, cpsr);
-	if (r0_n == null)
+	Eq_n r0_n = pvPortMalloc(r2 << 2, cpsr);
+	if (r0_n == 0x00)
 		return ~0x00;
-	struct Eq_n * r0_n = pvPortMalloc(0x68, cpsr);
+	Eq_n r0_n = pvPortMalloc(0x68, cpsr);
 	ui32 r0_n;
-	if (r0_n != null)
+	if (r0_n != 0x00)
 	{
-		r0_n->ptr0050 = r0_n;
-		r0_n->b0065 = 0x00;
+		*((word32) r0_n + 80) = r0_n;
+		r0_n.u2->u1.b0065 = 0x00;
 		prvInitialiseNewTask(r0, r1, r2, r3, dwArg00, dwArg04, r0_n, null);
 		prvAddNewTaskToReadyList(r0_n, cpsr);
 		r0_n = 0x01;
@@ -841,23 +780,24 @@ ui32 xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, word32 cpsr, int32 dwAr
 	return r0_n;
 }
 
-// 0000091C: void xTaskCreateRestricted(Register (ptr32 Eq_n) r0, Register (ptr32 (ptr32 Eq_n)) r1, Register word32 cpsr)
+// 0000091C: void xTaskCreateRestricted(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register word32 cpsr)
 // Called from:
 //      MPU_xTaskCreateRestricted
-void xTaskCreateRestricted(struct Eq_n * r0, struct Eq_n ** r1, word32 cpsr)
+void xTaskCreateRestricted(struct Eq_n * r0, union Eq_n * r1, word32 cpsr)
 {
-	if (r0->ptr0014 == null)
+	if (r0->t0014.u1 == 0x00)
 		return;
-	struct Eq_n * r0_n = pvPortMalloc(0x68, cpsr);
-	if (r0_n != null)
+	Eq_n r0_n = pvPortMalloc(0x68, cpsr);
+	if (r0_n != 0x00)
 	{
-		struct Eq_n * r1_n = r0->ptr0014;
-		r0_n->b0065 = 0x01;
+		Eq_n r1_n;
+		r1_n.u1 = r0->t0014.u1;
+		r0_n.u2->u1.b0065 = 0x01;
 		word32 r3_n = r0->dw000C;
 		ui32 r2_n = (word32) r0->w0008;
 		int32 lr_n = r0->dw0010;
-		r0_n->ptr0050 = r1_n;
-		prvInitialiseNewTask(r0->dw0000, r0->dw0004, r2_n, r3_n, lr_n, r1, r0_n, (char *) &r0->ptr0014 + 4);
+		*((word32) r0_n + 80) = r1_n;
+		prvInitialiseNewTask(r0->dw0000, r0->dw0004, r2_n, r3_n, lr_n, r1, r0_n, (char *) &r0->t0014 + 4);
 		prvAddNewTaskToReadyList(r0_n, cpsr);
 	}
 }
@@ -870,10 +810,10 @@ void vTaskAllocateMPURegions(word32 r0, struct Eq_n * r1)
 	if (r0 == 0x00)
 	{
 		word32 r0_n = g_ptr098C->dw0004;
-		vPortStoreTaskMPUSettings(r0_n + 0x04, r1, null, 0x00);
+		vPortStoreTaskMPUSettings(r0_n + 0x04, r1, 0x00, 0x00);
 	}
 	else
-		vPortStoreTaskMPUSettings(r0 + 0x04, r1, null, 0x00);
+		vPortStoreTaskMPUSettings(r0 + 0x04, r1, 0x00, 0x00);
 }
 
 struct Eq_n * g_ptr098C = &g_t200000C4; // 0000098C
@@ -926,13 +866,15 @@ void vTaskSuspendAll()
 }
 
 struct Eq_n * g_ptr0A1C = &g_t200000C4; // 00000A1C
-// 00000A20: void xTaskGetTickCount()
+// 00000A20: Register word32 xTaskGetTickCount()
 // Called from:
 //      MPU_xTaskGetTickCount
-void xTaskGetTickCount()
+word32 xTaskGetTickCount()
 {
+	return g_ptr0A28->dw0080;
 }
 
+struct Eq_n * g_ptr0A28 = &g_t200000C4; // 00000A28
 // 00000A2C: void xTaskGetTickCountFromISR()
 void xTaskGetTickCountFromISR()
 {
@@ -1428,7 +1370,7 @@ struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r0)
 		r0_n = (struct Eq_n *) ((char *) &r4_n->ptr0004 + 84);
 	}
 	if (r5_n->dw004C > (r4_n->ptr0004)->dw004C)
-		r0_n = (struct Eq_n *) &g_dw0001;
+		r0_n = (struct Eq_n *) &g_t0001;
 	r4_n->ptr0090 = r0_n;
 	return null;
 }
@@ -1542,7 +1484,7 @@ struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, word32 cpsr)
 		}
 	}
 	vPortExitCritical(cpsr);
-	return &g_dw0001;
+	return &g_t0001;
 }
 
 struct Eq_n * g_ptr11A8 = &g_t200000C4; // 000011A8
@@ -1555,72 +1497,72 @@ void vTaskMissedYield()
 }
 
 struct Eq_n * g_ptr11B8 = &g_t200000C4; // 000011B8
-// 000011BC: void vTaskPriorityInherit(Register (ptr32 Eq_n) r0)
+// 000011BC: void vTaskPriorityInherit(Register Eq_n r0)
 // Called from:
 //      xQueueGenericReceive
-void vTaskPriorityInherit(struct Eq_n * r0)
+void vTaskPriorityInherit(Eq_n r0)
 {
-	if (r0 == null)
+	if (r0 == 0x00)
 		return;
 	struct Eq_n * r4_n = g_ptr1248;
-	uint32 r3_n = r0->dw004C;
+	uint32 r3_n = r0.u2->u1.dw004C;
 	if (r3_n >= (r4_n->ptr0004)->dw004C)
 		return;
-	if (r0->dw0038 >= 0x00)
-		r0->dw0038 = 0x02 - (r4_n->ptr0004)->dw004C;
+	if (*((word32) r0 + 56) >= 0x00)
+		*((word32) r0 + 56) = 0x02 - (r4_n->ptr0004)->dw004C;
 	word32 r5_n = g_dw124C;
-	if (r0->dw0034 == r5_n + r3_n * 0x14)
+	if (*((word32) r0 + 52) == r5_n + r3_n * 0x14)
 	{
-		if (uxListRemove(&r0->dw000C + 6) == 0x00)
+		if (uxListRemove((word32) r0 + 36) == 0x00)
 		{
-			uint32 r2_n = r0->dw004C;
+			uint32 r2_n = r0.u2->u1.dw004C;
 			if ((r4_n->a0000 + r2_n)[0].dw0008 == 0x00)
 				r4_n->dw007C &= ~(0x01 << r2_n);
 		}
 		uint32 r2_n = r4_n->ptr0004->dw004C;
 		ui32 r3_n = 0x01 << r2_n | r4_n->dw007C;
-		r0->dw004C = r2_n;
+		r0.u2->u1.dw004C = r2_n;
 		r4_n->dw007C = r3_n;
 		struct Eq_n * r0_n = r5_n + r2_n * 0x14;
-		vListInsertEnd(r0_n, &r0->dw000C + 6);
+		vListInsertEnd(r0_n, (word32) r0 + 36);
 	}
 	else
-		r0->dw004C = r4_n->ptr0004->dw004C;
+		r0.u2->u1.dw004C = r4_n->ptr0004->dw004C;
 }
 
 struct Eq_n * g_ptr1248 = &g_t200000C4; // 00001248
 word32 g_dw124C = 0x200000CC; // 0000124C
-// 00001250: Register (ptr32 Eq_n) xTaskPriorityDisinherit(Register (ptr32 Eq_n) r0)
+// 00001250: Register Eq_n xTaskPriorityDisinherit(Register Eq_n r0)
 // Called from:
 //      prvCopyDataToQueue
-struct Eq_n * xTaskPriorityDisinherit(struct Eq_n * r0)
+Eq_n xTaskPriorityDisinherit(Eq_n r0)
 {
-	if (r0 == null)
-		return null;
-	uint32 r1_n = r0->dw004C;
-	word32 r3_n = r0->dw005C;
-	uint32 r2_n = r0->dw0058;
-	r0->dw005C = r3_n - 0x01;
+	if (r0 == 0x00)
+		return 0x00;
+	uint32 r1_n = r0.u2->u1.dw004C;
+	word32 r3_n = r0.u2->u1.dw005C;
+	uint32 r2_n = r0.u2->u1.dw0058;
+	r0.u2->u1.dw005C = r3_n - 0x01;
 	if (r1_n == r2_n || r3_n != 0x01)
-		return null;
+		return 0x00;
 	struct Eq_n * r2_n;
-	if (uxListRemove(&r0->dw000C + 6) == 0x00)
+	if (uxListRemove((word32) r0 + 36) == 0x00)
 	{
-		uint32 r1_n = r0->dw004C;
+		uint32 r1_n = r0.u2->u1.dw004C;
 		r2_n = g_ptr12CC;
 		if ((r2_n->a0000 + r1_n)[0].dw0008 == 0x00)
 			r2_n->dw007C &= ~(0x01 << r1_n);
 	}
 	else
 		r2_n = g_ptr12CC;
-	uint32 r3_n = r0->dw0058;
+	uint32 r3_n = r0.u2->u1.dw0058;
 	ui32 lr_n = r2_n->dw007C;
 	word32 r0_n = g_dw12D0;
-	r0->dw004C = r3_n;
-	r0->dw0038 = 0x02 - r3_n;
+	r0.u2->u1.dw004C = r3_n;
+	*((word32) r0 + 56) = 0x02 - r3_n;
 	r2_n->dw007C = 0x01 << r3_n | lr_n;
-	vListInsertEnd(r0_n + r3_n * 0x14, &r0->dw000C + 6);
-	return &g_dw0001;
+	vListInsertEnd(r0_n + r3_n * 0x14, (word32) r0 + 36);
+	return 0x01;
 }
 
 struct Eq_n * g_ptr12CC = &g_t200000C4; // 000012CC
@@ -1868,11 +1810,11 @@ void vPortEndScheduler()
 {
 }
 
-// 00001554: void vPortStoreTaskMPUSettings(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register (ptr32 Eq_n) r2, Register ui32 r3)
+// 00001554: void vPortStoreTaskMPUSettings(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register Eq_n r2, Register ui32 r3)
 // Called from:
 //      prvInitialiseNewTask
 //      vTaskAllocateMPURegions
-void vPortStoreTaskMPUSettings(struct Eq_n * r0, struct Eq_n * r1, struct Eq_n * r2, ui32 r3)
+void vPortStoreTaskMPUSettings(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, ui32 r3)
 {
 	if (r1 == null)
 	{
@@ -2043,32 +1985,6 @@ void xPortPendSVHandler(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, w
 	__msr(cpsr, (char *) r0_n + 36);
 }
 
-Eq_n g_t1689 = // 00001689
-	{
-		&g_t148009F3,
-		4016577099,
-		&g_t208114F3,
-		0x100FF2E9,
-		&g_t8E92D60,
-		0x11F38000,
-		&g_t11F38000,
-		0x08681940,
-		&g_t4F10168,
-		0x1A01,
-		0xA20FF0E8,
-		0xB00FF0E8,
-		0x830FF8E8,
-		&g_t808814F3,
-		0x14,
-		~0x5040FFB8,
-		&g_tAF8000F3,
-		0x80,
-		0x10200000,
-		0x11F3EFB5,
-		~0x400FB07B,
-		0x03,
-		131,
-	};
 struct Eq_n ** g_ptr16E0 = &g_ptr200000C8; // 000016E0
 // 000016E4: void xPortSysTickHandler(Register word32 cpsr)
 void xPortSysTickHandler(word32 cpsr)
@@ -2093,32 +2009,6 @@ void vPortSVCHandler(word32 cpsr)
 	prvSVCHandler(r0_n, cpsr);
 }
 
-Eq_n g_t1715 = // 00001715
-	{
-		&g_tC0F04F0,
-		0x08F3EFBF,
-		&g_t9F3EF80,
-		0x08E60780,
-		&g_t9CE000ED,
-		0x434604B5,
-		&g_t67F7FF34,
-		1085385320,
-		&g_tD351B3F2,
-		49400,
-		0x09428C44,
-		0x0742A2D8,
-		3278379474,
-		&g_t8C45C0F8,
-		0xC0,
-		0x104620FB,
-		&g_tFF2400BD,
-		~0x04,
-		62722118,
-		0x22020CF1,
-		0x1A0207F0,
-		0x60,
-		227,
-	};
 union Eq_n ** g_ptr1724 = &g_ptrE000ED08; // 00001724
 struct Eq_n * g_ptr1728 = &g_tE000ED9C; // 00001728
 // 0000172C: Register ui32 pvPortMalloc(Register ui32 r0, Register word32 cpsr)
@@ -2187,11 +2077,11 @@ void xPortGetFreeHeapSize()
 //      MPU_xEventGroupCreate
 void xEventGroupCreate(word32 cpsr)
 {
-	struct Eq_n * r0_n = pvPortMalloc(0x18, cpsr);
-	if (r0_n != null)
+	Eq_n r0_n = pvPortMalloc(0x18, cpsr);
+	if (r0_n != 0x00)
 	{
-		r0_n->ptr0000 = null;
-		vListInitialise(&r0_n->dw0004);
+		r0_n.u1->t0000.u1 = (struct Eq_n *) 0x00;
+		vListInitialise(&r0_n.u2->u0.dw0004);
 	}
 }
 

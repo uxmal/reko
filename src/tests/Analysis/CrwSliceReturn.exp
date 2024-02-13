@@ -4,7 +4,7 @@ void fn0C00_0000(Register selector ds)
 //   ds: (ptr16 (segment 0303))
 // LiveOut:
 // Trashed: ax si Top
-// Preserved: sp
+// Preserved: ds sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Mem

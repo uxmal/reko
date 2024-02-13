@@ -119,20 +119,21 @@ l0000842C:
 call_frame_dummy_exit:
 
 
-word32 frobulate(word32 r0, word32 dwArg00)
+word32 frobulate(word32 r0, word32 dwArg00, ptr32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      bazulate
 //      switcheroo
 // MayUse:  r0:[0..31] Stack +0000:[0..31]
-// LiveOut: fp sp
-// Trashed: NZCV fp ip lr r1 r2 r3 sp
+// LiveOut: fp r0 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 sp
 // Preserved:
 frobulate_entry:
 l00008434:
-	__divsi3(r0 * r0, 0x539<32>)
-	return dwArg00
+	r0_34 = __divsi3(r0 * r0, 0x539<32>)
+	fpOut = dwArg00
+	return r0_34
 frobulate_exit:
 
 
@@ -143,17 +144,13 @@ word32 bazulate(word32 r0, word32 r1)
 //      switcheroo
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: fp
-// Trashed: NZCV fp ip lr r1 r2 r3 r4 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
 // Preserved:
 bazulate_entry:
 l00008470:
-	fp_25 = frobulate(r0, r1)
-	r0_41 = __divsi3(r0 + r1, r0)
-	sp_31 = <invalid>
-	r0_50 = Mem20[fp_25 - 24<i32>:word32]
-	fp_51 = frobulate(r0_50, Mem20[sp_31:word32])
-	__divsi3(r0_41, r0_50)
-	return Mem20[fp_51:word32]
+	sp_32 = <invalid>
+	__divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(Mem20[fp_25 - 24<i32>:word32], Mem20[sp_32:word32], out fp_52))
+	return Mem20[fp_52:word32]
 bazulate_exit:
 
 
@@ -175,13 +172,13 @@ l000084F0_1:
 l00008534:
 	bazulate(r0, r0)
 l00008520:
-	fp_38 = frobulate(r0 - 3<32>, r0)
+	frobulate(r0 - 3<32>, r0, out fp_39)
 l00008540:
-	fp_38 = bazulate(0<32>, 0<32>)
+	fp_39 = bazulate(0<32>, 0<32>)
 l00008514:
-	fp_38 = frobulate(r0, r0)
+	frobulate(r0, r0, out fp_39)
 l0000854C:
-	return Mem16[fp_38 - -4<i32>:word32]
+	return Mem16[fp_39 - -4<i32>:word32]
 switcheroo_exit:
 
 

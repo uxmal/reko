@@ -20,6 +20,7 @@ Eq_n g_t03FF;
 Eq_n g_t07FE;
 Eq_n g_t0BFE;
 Eq_n g_tF4240;
+byte g_b147AE14; // 0147AE14
 Eq_n g_t4120000;
 Eq_n g_t4120220;
 Eq_n g_t4120224;

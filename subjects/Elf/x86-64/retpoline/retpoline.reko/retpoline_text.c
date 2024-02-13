@@ -49,12 +49,12 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 0000000000400560: void my1(Register int32 esi, Register int32 edi)
+// 0000000000400560: Register (ptr64 void) my1(Register int32 esi, Register int32 edi)
 // Called from:
 //      branches
-void my1(int32 esi, int32 edi)
+void * my1(int32 esi, int32 edi)
 {
-	calloc((int64) edi, (int64) esi);
+	return calloc((int64) edi, (int64) esi);
 }
 
 // 0000000000400590: void my2(Register byte sil, Register (ptr64 byte) rdi)
@@ -68,15 +68,8 @@ void branches(int32 esi, int32 edi)
 {
 	word64 rdi;
 	edi = (word32) rdi;
-	if (edi >= esi || (edi << 0x01 >= esi << 0x01 || (edi *s 0x03 >= esi *s 0x03 || edi << 0x02 >= esi << 0x02)))
-		return;
-	uint64 rax_n = (uint64) esi;
-	int64 edx_eax_n = (int64) (word32) rax_n;
-	void * rax_n = SEQ(SLICE(rax_n, word32, 32), edx_eax_n /32 0x02);
-	if ((int64) edi /32 0x02 >= edx_eax_n /32 0x02)
-		return;
-	my1(esi, edi);
-	free(rax_n);
+	if (edi < esi && (edi << 0x01 < esi << 0x01 && (edi *s 0x03 < esi *s 0x03 && (edi << 0x02 < esi << 0x02 && (int64) edi /32 0x02 < (int64) esi /32 0x02))))
+		free(my1(esi, edi));
 }
 
 // 0000000000400660: void main()

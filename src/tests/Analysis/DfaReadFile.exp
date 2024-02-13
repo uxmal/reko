@@ -2,7 +2,7 @@
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO bx cx ds dx Top
+// Trashed: SCZO ax bx cx ds dx Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -42,7 +42,7 @@ fn0C00_001F_exit:
 // MayUse:  bx:[0..15] cx:[0..15] Sequence ds:dx:[0..31]
 // LiveOut: ax
 // Trashed: C ax Top
-// Preserved: sp
+// Preserved: ds dx sp
 // fn0C00_0023
 // Return size: 0
 word16 fn0C00_0023(word32 ds_dx, word16 cx, word16 bx)

@@ -32,15 +32,15 @@ l00410144:
 __fixunsdfsi_exit:
 
 
-word32 __floatsidf(word32 r4)
+word32 __floatsidf(word32 r4, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
-// LiveOut: r4
-// Trashed: r25 r4 r6 r7 r8 r9
+// LiveOut: r4 r5
+// Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __floatsidf_entry:
 l00410170:
@@ -64,7 +64,7 @@ l00410194:
 	r7_20 = r4_13 >>u 0xB<32> - r9_15
 	r4_21 = r4_13 << r5_17
 l004101A2:
-	__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_20, 0<32>, 1<32>), r6_16, 4<32>, 1<32>), r8_10, 0xF<32>, 1<32>)
+	r5Out = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_20, 0<32>, 1<32>), r6_16, 4<32>, 1<32>), r8_10, 0xF<32>, 1<32>)
 	return r4_21
 __floatsidf_exit:
 

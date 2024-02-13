@@ -2,7 +2,7 @@
 	LiveOut:  
 	BitsUsed:  Sequence ds:di:[0..31]
 	Trashed:   SCZO ax Top
-	Preserved: di sp
+	Preserved: di ds sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:

@@ -459,7 +459,7 @@ Eq_529: (fn cui16 (cui16, ui16, ptr16, ptr16, ptr16, (ptr16 Eq_536)))
 	T_530 (in signature of prvAllocateTCBAndStack @ 4AC2 : void)
 Eq_536: (struct "Eq_536" (2 (ptr16 byte) ptr0002))
 	T_536 (in r15Out @ 000044D8 : (ptr16 Eq_536))
-	T_544 (in out r15_49 @ 000044D8 : ptr16)
+	T_544 (in out r15_44 @ 000044D8 : ptr16)
 	T_1455 (in r15_15 @ 00004ACC : (ptr16 Eq_536))
 	T_1458 (in r11_24 @ 00004AD0 : (ptr16 Eq_536))
 	T_1459 (in 0<16> @ 00004AD4 : word16)
@@ -476,13 +476,13 @@ Eq_543: (struct "Eq_543"
 		(1A word16 w001A)
 		(23 byte b0023)
 		(24 ui16 w0024))
-	T_543 (in r15_49 @ 000044D8 : (ptr16 Eq_543))
+	T_543 (in r15_44 @ 000044D8 : (ptr16 Eq_543))
 	T_547 (in 0<16> @ 000044E0 : word16)
 	T_556 (in r15 @ 000044E8 : (ptr16 Eq_543))
 	T_593 (in Mem93[0x0202<p16>:word16] @ 00004596 : word16)
 	T_608 (in Mem89[0x0202<p16>:word16] @ 00004524 : word16)
 	T_613 (in Mem108[0x0202<p16>:word16] @ 00004526 : word16)
-	T_623 (in Mem167[r5_45 + 0<16>:word16] @ 0000457C : word16)
+	T_623 (in Mem167[r5_46 + 0<16>:word16] @ 0000457C : word16)
 	T_641 (in Mem168[0x0202<p16>:word16] @ 0000458E : word16)
 	T_686 (in r15 @ 00004572 : (ptr16 Eq_543))
 	T_693 (in r11_17 @ 45C4 : (ptr16 Eq_543))
@@ -539,7 +539,7 @@ Eq_562: (struct "Eq_562"
 		(FFFFFFFE word16 wFFFFFFFE)
 		(0 word16 w0000))
 	T_562 (in r15 @ 00004500 : (ptr16 Eq_562))
-	T_573 (in r15_49->w0024 * 2<16> + r15_49->w0002 - 2<16> @ 00004500 : word16)
+	T_573 (in r15_44->w0024 * 2<16> + r15_44->w0002 - 2<16> @ 00004500 : word16)
 	T_2676 (in r15 - 0x1C<16> @ 00005208 : word16)
 Eq_574: (struct "Eq_574"
 		(0 word16 w0000)
@@ -551,8 +551,8 @@ Eq_574: (struct "Eq_574"
 		(14 ptr16 ptr0014)
 		(16 ptr16 ptr0016)
 		(18 word16 w0018))
-	T_574 (in pxPortInitialiseStack(r7_47, r6_46, r15_49->w0024 * 2<16> + r15_49->w0002 - 2<16>) @ 00004500 : word16)
-	T_577 (in Mem83[r15_49 + 0<16>:word16] @ 00004500 : word16)
+	T_574 (in pxPortInitialiseStack(r7_48, r6_47, r15_44->w0024 * 2<16> + r15_44->w0002 - 2<16>) @ 00004500 : word16)
+	T_577 (in Mem83[r15_44 + 0<16>:word16] @ 00004500 : word16)
 	T_2683 (in Mem0[Mem0[0x00000202<p32>:word16] + 0<16>:word16] @ 00005216 : word16)
 	T_2693 (in fp - 28<i32> @ 00005260 : word16)
 	T_2697 (in Mem48[Mem45[0x00000202<p32>:word16] + 0<16>:word16] @ 00005260 : word16)
@@ -573,7 +573,7 @@ Eq_661: (fn void ((ptr16 Eq_663), (ptr16 Eq_664)))
 	T_1264 (in vListInsertEnd @ 00004982 : ptr16)
 Eq_663: (struct "Eq_663" (0 cup16 w0000) (2 (ptr16 Eq_663) ptr0002) (4 (ptr16 Eq_663) ptr0004) (8 (ptr16 Eq_664) ptr0008))
 	T_663 (in r14 @ 00004560 : (ptr16 Eq_663))
-	T_666 (in r15_49 + 8<16> @ 00004560 : word16)
+	T_666 (in r15_44 + 8<16> @ 00004560 : word16)
 	T_698 (in r11_17 + 8<16> @ 45CC : word16)
 	T_699 (in r10_24 @ 45CC : (ptr16 Eq_663))
 	T_702 (in r15 @ 45D0 : (ptr16 Eq_663))
@@ -3349,43 +3349,43 @@ T_536: (in r15Out @ 000044D8 : (ptr16 Eq_536))
   Class: Eq_536
   DataType: (ptr16 Eq_536)
   OrigDataType: ptr16
-T_537: (in r5_45 @ 000044D8 : (ptr16 (ptr16 Eq_543)))
+T_537: (in r5_46 @ 000044D8 : (ptr16 (ptr16 Eq_543)))
   Class: Eq_537
   DataType: (ptr16 (ptr16 Eq_543))
   OrigDataType: (ptr16 (struct (0 T_623 t0000)))
-T_538: (in out r5_45 @ 000044D8 : ptr16)
+T_538: (in out r5_46 @ 000044D8 : ptr16)
   Class: Eq_533
   DataType: ptr16
   OrigDataType: ptr16
-T_539: (in r6_46 @ 000044D8 : word16)
+T_539: (in r6_47 @ 000044D8 : word16)
   Class: Eq_539
   DataType: word16
   OrigDataType: word16
-T_540: (in out r6_46 @ 000044D8 : ptr16)
+T_540: (in out r6_47 @ 000044D8 : ptr16)
   Class: Eq_534
   DataType: ptr16
   OrigDataType: ptr16
-T_541: (in r7_47 @ 000044D8 : word16)
+T_541: (in r7_48 @ 000044D8 : word16)
   Class: Eq_541
   DataType: word16
   OrigDataType: word16
-T_542: (in out r7_47 @ 000044D8 : ptr16)
+T_542: (in out r7_48 @ 000044D8 : ptr16)
   Class: Eq_535
   DataType: ptr16
   OrigDataType: ptr16
-T_543: (in r15_49 @ 000044D8 : (ptr16 Eq_543))
+T_543: (in r15_44 @ 000044D8 : (ptr16 Eq_543))
   Class: Eq_543
   DataType: (ptr16 Eq_543)
   OrigDataType: (ptr16 (struct (0 T_577 t0000) (2 T_570 t0002) (4 T_628 t0004) (6 T_603 t0006) (8 T_636 t0008) (24 T_565 t0024)))
-T_544: (in out r15_49 @ 000044D8 : ptr16)
+T_544: (in out r15_44 @ 000044D8 : ptr16)
   Class: Eq_536
   DataType: (ptr16 Eq_536)
   OrigDataType: ptr16
-T_545: (in prvAllocateTCBAndStack(sr, r13, out r5_45, out r6_46, out r7_47, out r15_49) @ 000044D8 : word16)
+T_545: (in prvAllocateTCBAndStack(sr, r13, out r5_46, out r6_47, out r7_48, out r15_44) @ 000044D8 : word16)
   Class: Eq_2
   DataType: cui16
   OrigDataType: word16
-T_546: (in sr_48 @ 000044D8 : cui16)
+T_546: (in sr_49 @ 000044D8 : cui16)
   Class: Eq_2
   DataType: cui16
   OrigDataType: word16
@@ -3393,7 +3393,7 @@ T_547: (in 0<16> @ 000044E0 : word16)
   Class: Eq_543
   DataType: (ptr16 Eq_543)
   OrigDataType: word16
-T_548: (in r15_49 == null @ 000044E0 : bool)
+T_548: (in r15_44 == null @ 000044E0 : bool)
   Class: Eq_548
   DataType: bool
   OrigDataType: bool
@@ -3429,7 +3429,7 @@ T_556: (in r15 @ 000044E8 : (ptr16 Eq_543))
   Class: Eq_543
   DataType: (ptr16 Eq_543)
   OrigDataType: (ptr16 (struct (6 T_1318 t0006) (E T_1331 t000E) (12 T_1336 t0012) (18 T_1339 t0018) (23 T_1312 t0023) (24 T_1299 t0024)))
-T_557: (in prvInitialiseTCBVariables(wArg02, r14, r13, r15_49) @ 000044E8 : void)
+T_557: (in prvInitialiseTCBVariables(wArg02, r14, r13, r15_44) @ 000044E8 : void)
   Class: Eq_557
   DataType: void
   OrigDataType: void
@@ -3472,11 +3472,11 @@ T_563: (in 36<i16> @ 00004500 : int16)
   Class: Eq_563
   DataType: int16
   OrigDataType: int16
-T_564: (in r15_49 + 36<i16> @ 00004500 : word16)
+T_564: (in r15_44 + 36<i16> @ 00004500 : word16)
   Class: Eq_564
   DataType: word16
   OrigDataType: word16
-T_565: (in Mem23[r15_49 + 36<i16>:word16] @ 00004500 : word16)
+T_565: (in Mem23[r15_44 + 36<i16>:word16] @ 00004500 : word16)
   Class: Eq_169
   DataType: ui16
   OrigDataType: ui16
@@ -3484,7 +3484,7 @@ T_566: (in 2<16> @ 00004500 : word16)
   Class: Eq_566
   DataType: ui16
   OrigDataType: ui16
-T_567: (in r15_49->w0024 * 2<16> @ 00004500 : word16)
+T_567: (in r15_44->w0024 * 2<16> @ 00004500 : word16)
   Class: Eq_567
   DataType: ui16
   OrigDataType: ui16
@@ -3492,15 +3492,15 @@ T_568: (in 2<i16> @ 00004500 : int16)
   Class: Eq_568
   DataType: int16
   OrigDataType: int16
-T_569: (in r15_49 + 2<i16> @ 00004500 : word16)
+T_569: (in r15_44 + 2<i16> @ 00004500 : word16)
   Class: Eq_569
   DataType: word16
   OrigDataType: word16
-T_570: (in Mem23[r15_49 + 2<i16>:word16] @ 00004500 : word16)
+T_570: (in Mem23[r15_44 + 2<i16>:word16] @ 00004500 : word16)
   Class: Eq_570
   DataType: word16
   OrigDataType: word16
-T_571: (in r15_49->w0024 * 2<16> + r15_49->w0002 @ 00004500 : word16)
+T_571: (in r15_44->w0024 * 2<16> + r15_44->w0002 @ 00004500 : word16)
   Class: Eq_571
   DataType: ui16
   OrigDataType: ui16
@@ -3508,11 +3508,11 @@ T_572: (in 2<16> @ 00004500 : word16)
   Class: Eq_572
   DataType: ui16
   OrigDataType: ui16
-T_573: (in r15_49->w0024 * 2<16> + r15_49->w0002 - 2<16> @ 00004500 : word16)
+T_573: (in r15_44->w0024 * 2<16> + r15_44->w0002 - 2<16> @ 00004500 : word16)
   Class: Eq_562
   DataType: (ptr16 Eq_562)
   OrigDataType: ui16
-T_574: (in pxPortInitialiseStack(r7_47, r6_46, r15_49->w0024 * 2<16> + r15_49->w0002 - 2<16>) @ 00004500 : word16)
+T_574: (in pxPortInitialiseStack(r7_48, r6_47, r15_44->w0024 * 2<16> + r15_44->w0002 - 2<16>) @ 00004500 : word16)
   Class: Eq_574
   DataType: (ptr16 Eq_574)
   OrigDataType: word16
@@ -3520,11 +3520,11 @@ T_575: (in 0<16> @ 00004500 : word16)
   Class: Eq_575
   DataType: word16
   OrigDataType: word16
-T_576: (in r15_49 + 0<16> @ 00004500 : word16)
+T_576: (in r15_44 + 0<16> @ 00004500 : word16)
   Class: Eq_576
   DataType: ptr16
   OrigDataType: ptr16
-T_577: (in Mem83[r15_49 + 0<16>:word16] @ 00004500 : word16)
+T_577: (in Mem83[r15_44 + 0<16>:word16] @ 00004500 : word16)
   Class: Eq_574
   DataType: (ptr16 Eq_574)
   OrigDataType: word16
@@ -3624,11 +3624,11 @@ T_601: (in 6<i16> @ 0000452A : int16)
   Class: Eq_601
   DataType: int16
   OrigDataType: int16
-T_602: (in r15_49 + 6<i16> @ 0000452A : word16)
+T_602: (in r15_44 + 6<i16> @ 0000452A : word16)
   Class: Eq_602
   DataType: ptr16
   OrigDataType: ptr16
-T_603: (in Mem110[r15_49 + 6<i16>:word16] @ 0000452A : word16)
+T_603: (in Mem110[r15_44 + 6<i16>:word16] @ 0000452A : word16)
   Class: Eq_171
   DataType: uint16
   OrigDataType: word16
@@ -3684,7 +3684,7 @@ T_616: (in 0<16> @ 0000457A : word16)
   Class: Eq_537
   DataType: (ptr16 (ptr16 Eq_543))
   OrigDataType: word16
-T_617: (in r5_45 == null @ 0000457A : bool)
+T_617: (in r5_46 == null @ 0000457A : bool)
   Class: Eq_617
   DataType: bool
   OrigDataType: bool
@@ -3704,11 +3704,11 @@ T_621: (in 0<16> @ 0000457C : word16)
   Class: Eq_621
   DataType: word16
   OrigDataType: word16
-T_622: (in r5_45 + 0<16> @ 0000457C : word16)
+T_622: (in r5_46 + 0<16> @ 0000457C : word16)
   Class: Eq_622
   DataType: word16
   OrigDataType: word16
-T_623: (in Mem167[r5_45 + 0<16>:word16] @ 0000457C : word16)
+T_623: (in Mem167[r5_46 + 0<16>:word16] @ 0000457C : word16)
   Class: Eq_543
   DataType: (ptr16 Eq_543)
   OrigDataType: word16
@@ -3724,11 +3724,11 @@ T_626: (in 4<i16> @ 00004538 : int16)
   Class: Eq_626
   DataType: int16
   OrigDataType: int16
-T_627: (in r15_49 + 4<i16> @ 00004538 : word16)
+T_627: (in r15_44 + 4<i16> @ 00004538 : word16)
   Class: Eq_627
   DataType: ptr16
   OrigDataType: ptr16
-T_628: (in Mem120[r15_49 + 4<i16>:word16] @ 00004538 : word16)
+T_628: (in Mem120[r15_44 + 4<i16>:word16] @ 00004538 : word16)
   Class: Eq_625
   DataType: word16
   OrigDataType: word16
@@ -3756,11 +3756,11 @@ T_634: (in 8<i16> @ 00004542 : int16)
   Class: Eq_634
   DataType: int16
   OrigDataType: int16
-T_635: (in r15_49 + 8<i16> @ 00004542 : word16)
+T_635: (in r15_44 + 8<i16> @ 00004542 : word16)
   Class: Eq_635
   DataType: ptr16
   OrigDataType: ptr16
-T_636: (in Mem124[r15_49 + 8<i16>:word16] @ 00004542 : word16)
+T_636: (in Mem124[r15_44 + 8<i16>:word16] @ 00004542 : word16)
   Class: Eq_633
   DataType: cup16
   OrigDataType: word16
@@ -3880,7 +3880,7 @@ T_665: (in 8<16> @ 00004560 : word16)
   Class: Eq_665
   DataType: int16
   OrigDataType: int16
-T_666: (in r15_49 + 8<16> @ 00004560 : word16)
+T_666: (in r15_44 + 8<16> @ 00004560 : word16)
   Class: Eq_663
   DataType: (ptr16 Eq_663)
   OrigDataType: (ptr16 word16)
@@ -3900,7 +3900,7 @@ T_670: (in v28_111 * 0x10<16> + 0x222<16> @ 00004560 : word16)
   Class: Eq_664
   DataType: (ptr16 Eq_664)
   OrigDataType: ui16
-T_671: (in vListInsertEnd(&r15_49->w0008, v28_111 * 0x10<16> + 0x222<16>) @ 00004560 : void)
+T_671: (in vListInsertEnd(&r15_44->w0008, v28_111 * 0x10<16> + 0x222<16>) @ 00004560 : void)
   Class: Eq_671
   DataType: void
   OrigDataType: void

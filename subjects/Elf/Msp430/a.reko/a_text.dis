@@ -262,7 +262,7 @@ word16 putchar(word16 sr, word16 r15)
 // MayUse:  r15:[0..15] sr:[0..15]
 // LiveOut: r11
 // Trashed: VNZC r13 r14 r15
-// Preserved: r11 sp
+// Preserved: r11 sp sr
 putchar_entry:
 l000043A2:
 	r11_12 = r15
@@ -391,40 +391,40 @@ word16 xTaskCreate(word16 sr, word16 r13, word16 r14, word16 wArg02, ptr16 & r15
 // Preserved: r10 r11 r5 r6 r7 r8 r9 sp
 xTaskCreate_entry:
 l000044B4:
-	sr_48 = prvAllocateTCBAndStack(sr, r13, out r5_45, out r6_46, out r7_47, out r15_49)
-	branch r15_49 == 0<16> l000045A0
+	sr_49 = prvAllocateTCBAndStack(sr, r13, out r5_46, out r6_47, out r7_48, out r15_44)
+	branch r15_44 == 0<16> l000045A0
 l000045A0:
 	r10_147 = 0xFFFF<16>
 l000044E2:
-	prvInitialiseTCBVariables(wArg02, r14, r13, r15_49)
-	Mem83[r15_49:word16] = pxPortInitialiseStack(r7_47, r6_46, Mem23[r15_49 + 36<i16>:word16] * 2<16> + Mem23[r15_49 + 2<i16>:word16] - 2<16>)
+	prvInitialiseTCBVariables(wArg02, r14, r13, r15_44)
+	Mem83[r15_44:word16] = pxPortInitialiseStack(r7_48, r6_47, Mem23[r15_44 + 36<i16>:word16] * 2<16> + Mem23[r15_44 + 2<i16>:word16] - 2<16>)
 	__disable_interrupts()
 	Mem86[0x0218<p16>:word16] = Mem83[0x0218<p16>:word16] + 1<16>
 	Mem89[0x0206<p16>:word16] = Mem86[0x0206<p16>:word16] + 1<16>
 	branch Mem89[0x0206<p16>:word16] == 1<16> l00004596
 l00004596:
-	Mem93[0x0202<p16>:word16] = r15_49
+	Mem93[0x0202<p16>:word16] = r15_44
 	prvInitialiseTaskLists()
 l00004514:
 	branch Mem89[0x020E<p16>:word16] != 0<16> l0000452A
 l0000451A:
 	branch wArg02 >=u Mem89[Mem89[0x0202<p16>:word16] + 6<i16>:word16] l0000452A
 l00004526:
-	Mem108[0x0202<p16>:word16] = r15_49
+	Mem108[0x0202<p16>:word16] = r15_44
 l0000452A:
-	v28_111 = Mem110[r15_49 + 6<i16>:word16]
+	v28_111 = Mem110[r15_44 + 6<i16>:word16]
 	branch Mem110[0x020A<p16>:word16] <u v28_111 l00004538
 l00004534:
 	Mem116[0x020A<p16>:word16] = v28_111
 l00004538:
-	Mem120[r15_49 + 4<i16>:word16] = Mem117[0x0214<p16>:word16]
+	Mem120[r15_44 + 4<i16>:word16] = Mem117[0x0214<p16>:word16]
 	Mem123[0x0214<p16>:word16] = Mem120[0x0214<p16>:word16] + 1<16>
-	Mem124[r15_49 + 8<i16>:word16] = 0<16>
+	Mem124[r15_44 + 8<i16>:word16] = 0<16>
 	branch Mem124[0x020C<p16>:word16] <u v28_111 l00004550
 l0000454C:
 	Mem129[0x020C<p16>:word16] = v28_111
 l00004550:
-	vListInsertEnd(r15_49 + 8<16>, v28_111 * 0x10<16> + 0x222<16>)
+	vListInsertEnd(r15_44 + 8<16>, v28_111 * 0x10<16> + 0x222<16>)
 	r10_147 = 1<16>
 	branch Mem148[0x0218<p16>:word16] == 0<16> l00004574
 l0000456C:
@@ -436,9 +436,9 @@ l00004572:
 l00004574:
 	branch r10_147 != 1<16> l000045A4
 l00004578:
-	branch r5_45 == 0<16> l00004580
+	branch r5_46 == 0<16> l00004580
 l0000457C:
-	Mem167[r5_45:word16] = r15_49
+	Mem167[r5_46:word16] = r15_44
 l00004580:
 	branch Mem168[0x020E<p16>:word16] == 0<16> l000045A4
 l00004586:
@@ -447,7 +447,7 @@ l00004590:
 	vPortYield(out r5_317, out r6_318, out r7_319, out r8_320, out r9_321, out r10_147, out r11_322)
 l000045A4:
 	r15Out = r10_147
-	return sr_48
+	return sr_49
 xTaskCreate_exit:
 
 
@@ -2741,7 +2741,7 @@ bool fn00005B4E(ui32 r11_r10, word16 r8, word16 r12, word16 r13, ptr16 & r13_r12
 // MayUse:  r12:[0..15] r13:[0..15] r8:[0..15] Sequence r11:r10:[0..31]
 // LiveOut: C r13:r12 r15:r14 r8
 // Trashed: VNZC r12 r13 r14 r15 r8 r9
-// Preserved: sp
+// Preserved: r10 r11 sp
 fn00005B4E_entry:
 	r11 = SLICE(r11_r10, word16, 16)
 	r10 = SLICE(r11_r10, word16, 0)

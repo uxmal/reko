@@ -141,15 +141,16 @@ namespace Reko.Core.Types
                 DataType dt = tv.OriginalDataType;
                 EquivalenceClass c = tv.Class;
                 DataType dtOld = c.DataType;
+                var dtNew = dt;
                 if (dtOld != null)
                 {
-                    dt = u.Unify(dt, dtOld)!;
+                    dtNew = u.Unify(dt, dtOld)!;
                 }
                 else if (dt != null)
                 {
-                    dt = dt.Clone();        // why clone???
+                    dtNew = dt.Clone();        // why clone???
                 }
-                c.DataType = dt!;
+                c.DataType = dtNew;
             }
         }
 

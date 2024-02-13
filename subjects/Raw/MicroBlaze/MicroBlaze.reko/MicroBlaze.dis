@@ -13941,7 +13941,7 @@ void fn0001E7C0(word32 r5, word32 r26, word32 r27, word32 r28)
 // MayUse:  r26:[0..31] r27:[0..31] r28:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: C r0 r18 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r1 r15 r19
+// Preserved: r1 r15 r19 r26 r27 r28
 fn0001E7C0_entry:
 l0001E7C0:
 	r4_9 = Mem7[r5 + 20<i32>:word32]
@@ -14914,7 +14914,7 @@ void fn0001FCE0(word32 r5, word32 r6, word32 r15, word32 r19, word32 r21, word32
 // MayUse:  r15:[0..31] r19:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
 // Trashed: C r0 r10 r18 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26 r27
+// Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30
 fn0001FCE0_entry:
 l0001FCE0:
 	r3_27 = Mem21[Mem21[r5 + 4<i32>:word32]:word32]
@@ -19563,7 +19563,7 @@ void fn0002DB20(word32 r0, word32 r5, word32 r6, word32 r7, word32 r8, word32 r2
 
 // MayUse:  r0:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut:
-// Trashed: C r0 r18 r4 r5 r6 r7
+// Trashed: C r0 r18 r3 r4 r5 r6 r7
 // Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26
 fn0002DB20_entry:
 l0002DB20:
@@ -19631,7 +19631,7 @@ void fn0002DC74(word32 r0, word32 r5, word32 r6, word32 r7, word32 r8, word32 r2
 
 // MayUse:  r0:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut:
-// Trashed: C r0 r18 r4 r5 r6 r7
+// Trashed: C r0 r18 r3 r4 r5 r6 r7
 // Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26
 fn0002DC74_entry:
 l0002DC74:
