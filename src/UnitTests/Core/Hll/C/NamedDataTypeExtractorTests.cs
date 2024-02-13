@@ -409,5 +409,23 @@ namespace Reko.UnitTests.Core.Hll.C
             Assert.AreEqual("ax", seq.Registers[1].Name);
             Assert.IsTrue(isOutParameter);
         }
+
+        [Test]
+        public void NamedDataTypeExtractor_EnumValues()
+        {
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
+            ndte.VisitEnum(new EnumeratorTypeSpec("enumFoo", new()
+            {
+                new Enumerator("VAL_A", new ConstExp(42)),
+                new Enumerator("VAL_B", new CBinaryExpression(
+                    CTokenType.Plus,
+                    new CIdentifier("VAL_A"),
+                    new ConstExp(2)))
+            }));
+            var se = (SerializedEnumType) symbolTable.Types[^1];
+            Assert.AreEqual(2, se.Values.Length);
+            Assert.AreEqual(42, se.Values[0].Value);
+            Assert.AreEqual(44, se.Values[1].Value);
+        }
     }
 }
