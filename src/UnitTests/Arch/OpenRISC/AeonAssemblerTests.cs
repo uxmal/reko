@@ -120,6 +120,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonAsm_bn_bnei_signed()
+        {
+            AssertAsm("bn.bnei\tr13,-1,0x00FFFFE0", "21 BF 82");
+        }
+
+        [Test]
         public void AeonAsm_bn_j()
         {
             AssertAsm("bn.j\t0x000FF17E", "2F F1 7E");

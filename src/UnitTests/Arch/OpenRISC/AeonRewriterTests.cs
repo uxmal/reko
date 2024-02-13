@@ -324,7 +324,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("21 4D B6");
             AssertCode(     // bn.bnei?	r10,0x3,0010006D
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (r10 != 3<32>) branch 0010006D");
+                "1|T--|if (r10 != 3<i32>) branch 0010006D");
         }
 
         [Test]
