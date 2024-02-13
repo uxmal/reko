@@ -1,7 +1,7 @@
-void _start(word32 g1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, word32 fsr, word32 dwArg40)
+void _start(word32 g1, word32 o7, word32 fsr, word32 dwArg40)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  fsr:[0..31] g1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31] Stack +0040:[0..31]
+// MayUse:  fsr:[0..31] g1:[0..31] o7:[0..31] Stack +0040:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -23,7 +23,7 @@ l000109F8:
 l00010A04_ds_t:
 l00010A10:
 	atexit(0x10CB8<32>)
-	_init(0x10CB8<32>, 0x20C00<32>, o2, o3, o4, o5, o7)
+	_init(o7)
 l00010A04_ds_f:
 l00010A08:
 	atexit(g1)

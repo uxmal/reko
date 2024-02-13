@@ -4,8 +4,8 @@
 
 #include "subject.h"
 
-// 00010958: void _start(Register (ptr32 Eq_n) g1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack ui32 dwArg40)
-void _start(void (* g1)(), word32 o2, word32 o3, word32 o4, word32 o5, struct Eq_n * o7, ui32 fsr, ui32 dwArg40)
+// 00010958: void _start(Register (ptr32 Eq_n) g1, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack ui32 dwArg40)
+void _start(void (* g1)(), struct Eq_n * o7, ui32 fsr, ui32 dwArg40)
 {
 	ptr32 fp;
 	___Argv = fp + 0x44;
@@ -20,7 +20,7 @@ void _start(void (* g1)(), word32 o2, word32 o3, word32 o4, word32 o5, struct Eq
 	if (g1 == null)
 	{
 		atexit(&g_t10CB8);
-		_init(0x00010CB8, 0x00020C00, o2, o3, o4, o5, o7);
+		_init(o7);
 	}
 	else
 		atexit(g1);

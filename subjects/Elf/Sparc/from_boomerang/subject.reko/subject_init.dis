@@ -1,9 +1,9 @@
-void _init(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7)
+void _init(word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _start
-// MayUse:  o0:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
+// MayUse:  o7:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -11,15 +11,15 @@ void _init(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, wor
 _init_exit:
 _init_entry:
 l00010C80:
-	fn00010C90(o7, o0, o1, o2, o3, o4, o5, fp, o7)
+	fn00010C90(o7)
 
 
-void fn00010C90(word32 o7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, word32 i6, word32 i7)
+void fn00010C90(word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _init
-// MayUse:  i0:[0..31] i1:[0..31] i2:[0..31] i3:[0..31] i4:[0..31] i5:[0..31] i6:[0..31] i7:[0..31] o7:[0..31]
+// MayUse:  o7:[0..31]
 // LiveOut:
 // Trashed: NZVC g0 l0 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
@@ -32,6 +32,6 @@ l00010CB0:
 fn00010C90_exit:
 l00010CA8:
 	call l0_7 (retsize: 0;)
-		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,Mem:Mem0,o7:0x00010CA8<p32>
+		uses: Mem:Mem0,o7:0x00010CA8<p32>
 
 
