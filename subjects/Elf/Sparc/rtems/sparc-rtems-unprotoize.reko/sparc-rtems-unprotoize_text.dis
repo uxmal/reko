@@ -4769,54 +4769,45 @@ l00016C94:
 	o7_78 = Mem35[&dwLoc18:word32]
 	o1_93 = SLICE(o0_o1_88, word32, 0) + ((dwLoc14 << 0x10<32> ^ o7_78) ^ o0_74)
 	Mem105[0x2B400<32>:word64] = SEQ(SLICE(o0_o1_88, word32, 32) + (((dwLoc14 >>u 0x10<32> | (dwLoc14 >> 0x1F<32>) << 0x10<32>) ^ o7_78 >> 0x1F<32>) ^ o0_74 >> 0x1F<32>) + CONVERT(o1_93 <u 0<32>, bool, word32), o1_93)
-	l3_124 = 0<32>
+	l3_231 = 0<32>
 l00016D0C:
 	l0_l1_108 = Mem107[0x2B400<32>:word64]
-	l0_111 = SLICE(l0_l1_108, word32, 32) (alias)
-	l1_113 = SLICE(l0_l1_108, word32, 0) (alias)
-	__urem64(l0_111, l1_113, 0<32>, 0x3E<32>)
-	Mem141[i1_61:byte] = Mem107[o1_133 + 0x17B38<32>:byte]
-	__udiv64(l0_111, l1_113, 0<32>, 0x3E<32>)
-	__urem64(0<32>, 0x3E<32>)
-	Mem167[i1_61 + 1<i32>:byte] = Mem141[o1_159 + 0x17B38<32>:byte]
-	__udiv64(l0_111, o1_147, 0<32>, 0x3E<32>)
-	__urem64(0<32>, 0x3E<32>)
-	Mem193[i1_61 + 2<i32>:byte] = Mem167[o1_185 + 0x17B38<32>:byte]
-	__udiv64(l0_111, o1_173, 0<32>, 0x3E<32>)
-	__urem64(0<32>, 0x3E<32>)
-	Mem219[i1_61 + 3<i32>:byte] = Mem193[o1_211 + 0x17B38<32>:byte]
-	__udiv64(l0_111, o1_199, 0<32>, 0x3E<32>)
-	__urem64(0<32>, 0x3E<32>)
-	Mem245[i1_61 + 4<i32>:byte] = Mem219[o1_237 + 0x17B38<32>:byte]
-	__udiv64(l0_111, o1_225, 0<32>, 0x3E<32>)
-	__urem64(0<32>, 0x3E<32>)
-	Mem269[i1_61 + 5<i32>:byte] = Mem245[o1_261 + 0x17B38<32>:byte]
-	o0_273 = open(o0, 0x502<32>)
-	branch o0_273 >= 0<32> l00016E2C_ds_t
+	Mem122[i1_61:byte] = Mem107[SLICE(__urem64(l0_l1_108, 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	o0_o1_129 = __udiv64(l0_l1_108, 0x3E<64>)
+	Mem140[i1_61 + 1<i32>:byte] = Mem122[SLICE(__urem64(o0_o1_129, 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	o0_o1_147 = __udiv64(o0_o1_129, 0x3E<64>)
+	Mem158[i1_61 + 2<i32>:byte] = Mem140[SLICE(__urem64(o0_o1_147, 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	o0_o1_165 = __udiv64(o0_o1_147, 0x3E<64>)
+	Mem176[i1_61 + 3<i32>:byte] = Mem158[SLICE(__urem64(o0_o1_165, 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	o0_o1_183 = __udiv64(o0_o1_165, 0x3E<64>)
+	Mem194[i1_61 + 4<i32>:byte] = Mem176[SLICE(__urem64(o0_o1_183, 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	Mem210[i1_61 + 5<i32>:byte] = Mem194[SLICE(__urem64(__udiv64(o0_o1_183, 0x3E<64>), 0x3E<64>), word32, 0) + 0x17B38<32>:byte]
+	o0_215 = open(o0, 0x502<32>)
+	branch o0_215 >= 0<32> l00016E2C_ds_t
 l00016E2C_ds_t:
 l00016C8C:
-	i0_278 = o0_273
+	i0_220 = o0_215
 l00016E2C_ds_f:
-	o2_o3_279 = Mem269[0x2B400<32>:word64]
-	o3_282 = SLICE(o2_o3_279, word32, 0) (alias)
-	o2_286 = SLICE(o2_o3_279, word32, 32) (alias)
+	o2_o3_221 = Mem210[0x2B400<32>:word64]
+	o3_224 = SLICE(o2_o3_221, word32, 0) (alias)
+	o2_228 = SLICE(o2_o3_221, word32, 32) (alias)
 l00016E30:
-	o2_288 = o2_286 + CONVERT(o3_282 <u 0xFFFFE19F<32>, bool, word32)
-	l3_124 = l3_124 + 1<32>
-	branch l3_124 <= 0x44A7<32> l00016E50_ds_t
+	o2_230 = o2_228 + CONVERT(o3_224 <u 0xFFFFE19F<32>, bool, word32)
+	l3_231 = l3_231 + 1<32>
+	branch l3_231 <= 0x44A7<32> l00016E50_ds_t
 l00016E50_ds_t:
-	Mem294[0x2B400<32>:word64] = SEQ(o2_288, o3_282 + 0x1E61<32>)
+	Mem238[0x2B400<32>:word64] = SEQ(o2_230, o3_224 + 0x1E61<32>)
 l00016E50_ds_f:
-	Mem296[0x2B400<32>:word64] = SEQ(o2_288, o3_282 + 0x1E61<32>)
+	Mem240[0x2B400<32>:word64] = SEQ(o2_230, o3_224 + 0x1E61<32>)
 l00016E54:
-	Mem297[o0:byte] = 0<8>
+	Mem241[o0:byte] = 0<8>
 l00016E58:
-	i0_278 = 0xFFFFFFFF<32>
+	i0_220 = 0xFFFFFFFF<32>
 l00016C80_ds_f:
 l00016C84:
-	i0_278 = 0xFFFFFFFF<32>
+	i0_220 = 0xFFFFFFFF<32>
 l00016E5C:
-	return i0_278
+	return i0_220
 mkstemps_exit:
 
 

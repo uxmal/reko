@@ -490,7 +490,6 @@ namespace Reko.Core
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
-
         /// <summary>
         /// Returns true if <paramref name="frameOffset"/> refers to a location that could be
         /// an argument to a called procedure.

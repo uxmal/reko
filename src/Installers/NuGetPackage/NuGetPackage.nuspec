@@ -89,6 +89,7 @@
 <file src="../../Environments/SysV/libc.so.xml" target="contentFiles/any/any/reko" />
 <file src="../../Environments/SysV/Xlib.xml" target="contentFiles/any/any/reko" />
 <file src="../../Environments/SysV/sysvcharacteristics.xml" target="contentFiles/any/any/reko" />
+<file src="../../Environments/SysV/sysv-sparc32-emulation.inc" target="contentFiles/any/any/reko" />
 <file src="../../Environments/Trs80/CoCoMemoryMap.xml" target="contentFiles/any/any/reko" />
 <file src="../../Environments/Trs80/Trs80Rom.xml" target="contentFiles/any/any/reko" />
 <file src="../../Environments/Wii/bin/$Configuration$/net6.0/Reko.Environments.Wii.dll" target="lib\netstandard2.0" />

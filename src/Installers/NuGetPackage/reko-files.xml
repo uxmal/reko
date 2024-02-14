@@ -244,6 +244,7 @@
       <File Source="$(var.SysV.ProjectDir)opengl.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)sysv-sparc32-emulation.inc" nuget_target="c:" />
       <File Source="$(var.Trs80.ProjectDir)CoCoMemoryMap.xml" nuget_target="c:" />
       <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" nuget_target="c:" />
       <File Source="$(var.Trs80.TargetPath)" nuget_target="f:" />

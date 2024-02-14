@@ -107,7 +107,7 @@ namespace Reko.Core.Loading
             AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
-            if (ep != null)
+            if (ep is not null)
             {
                 if (!ep.Signature.ParametersValid)
                 {
