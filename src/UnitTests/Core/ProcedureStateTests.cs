@@ -269,7 +269,6 @@ namespace Reko.UnitTests.Core
 
             public override void OnProcedureEntered()
             {
-                throw new NotImplementedException();
             }
 
             public override void OnProcedureLeft(FunctionType procedureSignature)

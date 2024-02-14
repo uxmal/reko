@@ -174,5 +174,17 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return null;
             }
         }
+
+        public Func<IEnumerable<RtlInstructionCluster>, Constant?>? CreateGlobalPointerFinder(IProcessorArchitecture arch)
+        {
+            switch (arch.Name)
+            {
+            case "risc-v":
+                return GlobalPointerFinder.RiscV;
+            default:
+                return null;
+            }
+        }
+
     }
 }

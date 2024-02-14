@@ -849,6 +849,11 @@ namespace Reko.ImageLoaders.Elf
                 {
                     EnsureEntryPoint(entryPoints, symbols, addrMain);
                 }
+                var addrGlobalPtr = program.Platform.FindGlobalPointerValue(program, addrEntry);
+                if (addrGlobalPtr is not null)
+                {
+                    program.GlobalRegisterValue = addrGlobalPtr;
+                }
             }
             foreach (var ep in entryPoints.Select(relocator.AdjustImageSymbol))
             {

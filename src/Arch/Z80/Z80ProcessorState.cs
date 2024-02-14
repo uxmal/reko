@@ -82,7 +82,6 @@ namespace Reko.Arch.Z80
 
         public override void OnProcedureEntered()
         {
-            return;
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)

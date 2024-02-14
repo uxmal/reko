@@ -58,7 +58,6 @@ namespace Reko.Arch.LatticeMico
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)

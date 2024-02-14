@@ -206,6 +206,17 @@ namespace Reko.Core
         ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
         /// <summary>
+        /// Given an executable entry point, find the initial value of the global
+        /// pointer -- if the architecture supports it.
+        /// </summary>
+        /// <param name="imageMap">Program image in which to search</param>
+        /// <param name="addrStart">The entrypoint according to the image.</param>
+        /// <returns>null if no global pointer initialization code was found, otherwise the 
+        /// an <see cref="Address"/> corresponding to the global pointer of this 
+        /// program.</returns>
+        Constant? FindGlobalPointerValue(Program program, Address addrStart);
+
+        /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
         /// bypassing any runtime startup code.
         /// </summary>
@@ -552,6 +563,12 @@ namespace Reko.Core
         public abstract int GetBitSizeFromCBasicType(CBasicType cb);
 
         public virtual string? GetPrimitiveTypeName(PrimitiveType pt, string language)
+        {
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public virtual Constant? FindGlobalPointerValue(Program program, Address addrStart)
         {
             return null;
         }

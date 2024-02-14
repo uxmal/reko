@@ -83,6 +83,22 @@ namespace Reko.Environments.SysV
             return null;
         }
 
+        public override Constant? FindGlobalPointerValue(Program program, Address addrStart)
+        {
+            var arch = program.Architecture;
+            var finder = archSpecificFactory.CreateGlobalPointerFinder(arch);
+            if (finder is null)
+                return null;
+            if (!program.TryCreateImageReader(addrStart, out var rdr))
+                return null;
+            var rw = program.Architecture.CreateRewriter(
+                rdr,
+                arch.CreateProcessorState(),
+                new StorageBinder(),
+                new NullRewriterHost());
+            return finder(rw);
+        }
+
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             //$REVIEW: it seems this sort of data should be in the reko.config file.

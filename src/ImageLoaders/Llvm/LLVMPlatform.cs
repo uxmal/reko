@@ -139,6 +139,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public Core.Expressions.Constant? FindGlobalPointerValue(Program program, Address addrStart)
+        {
+            return null;
+        }
+
+
         public ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             throw new NotImplementedException();
@@ -181,7 +187,6 @@ namespace Reko.ImageLoaders.LLVM
 
         public void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
         {
-            throw new NotImplementedException();
         }
 
         public bool IsPossibleArgumentRegister(RegisterStorage reg)
