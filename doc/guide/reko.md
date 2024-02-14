@@ -22,11 +22,11 @@ Once the GUI client is running you can [start working with it](gui.md).
 ## Running the command line client
 On Windows, assuming the Reko installation directory is in your PATH variable, you can run the Reko command line client as follows:
 ```
-decompile some_binary_file.exe
+reko decompile some_binary_file.exe
 ```
-On non-Windows machines, assuming the Reko installation directory is in your PATH variable you need to prefix the command line above with `mono`:
+On non-Windows machines, assuming the Reko installation directory is in your PATH variable you need to prefix the command line above with `dotnet`:
 ```
-mono decompile some_binary_file.exe
+dotnet reko.dll decompile some_binary_file.exe
 ```
 The command line client has many options, which may be displayed by running the program with the `--help` switch. Working with the command line client is [detailed here](cli.md).
 
