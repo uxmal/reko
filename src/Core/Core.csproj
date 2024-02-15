@@ -30,20 +30,23 @@
 
   <PropertyGroup>
     <CustomAssemblyInfoFile>$([System.IO.Path]::Combine($(MSBuildProjectDirectory), obj\AssemblyData.Extra.cs))</CustomAssemblyInfoFile>
+    <HashFileName>$(BaseIntermediateOutputPath)githash.txt</HashFileName>
   </PropertyGroup>
   <!-- includes the CustomAssemblyInfo for compilation into your project -->
   <ItemGroup>
     <Compile Include="$(CustomAssemblyInfoFile)" />
   </ItemGroup>
 
-
   <!-- Regenerates CustomAssemblyInfoFile, if the git hash changed -->
   <Target Name="UpdateGitHash" BeforeTargets="CoreCompile">
     <UpdateGitHash
-      HashFileName="$(BaseIntermediateOutputPath)githash.txt"
+      HashFileName="$(HashFileName)"
       TemplateFileName="$(ProjectDir)AssemblyData.Extra.cs.template"
       OutputFileName="$(CustomAssemblyInfoFile)">
     </UpdateGitHash>
   </Target>
-
+  <Target Name="CleanGitHash" AfterTargets="Clean">
+    <Delete Files="$(HashFileName)" />
+    <Delete Files="$(CustomAssemblyInfoFile)" />
+  </Target>
 </Project>
