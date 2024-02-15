@@ -9,6 +9,7 @@ endif()
 project(Reko NONE)
 enable_testing()
 
+# set main framework
 set(REKO_LIB_FRAMEWORK "net6.0")
 set(REKO_EXE_FRAMEWORK "net6.0")
 set(REKO_WINFORMS_EXE_FRAMEWORK "net6.0-windows")
