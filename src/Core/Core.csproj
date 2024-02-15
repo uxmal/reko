@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../Drivers/CommonBuildProperties.items" />
+  <Import Project="$(ProjectDir)../BuildTargets/UpdateGitHash.tasks" />
   <!-- <Import Project="$(ProjectDir)../Drivers/ApiTracking.items " /> -->
   <PropertyGroup>
     <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
@@ -35,10 +36,14 @@
     <Compile Include="$(CustomAssemblyInfoFile)" />
   </ItemGroup>
 
+
   <!-- Regenerates CustomAssemblyInfoFile, if the git hash changed -->
   <Target Name="UpdateGitHash" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);CustomAssemblyInfoFile=$(CustomAssemblyInfoFile)" Targets="git_hash" />
+    <UpdateGitHash
+      HashFileName="$(BaseIntermediateOutputPath)githash.txt"
+      TemplateFileName="$(ProjectDir)AssemblyData.Extra.cs.template"
+      OutputFileName="$(CustomAssemblyInfoFile)">
+    </UpdateGitHash>
   </Target>
-
 
 </Project>

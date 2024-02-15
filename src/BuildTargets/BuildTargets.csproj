@@ -24,10 +24,6 @@
     <CMake>"$(CMakeVS)"</CMake>
   </PropertyGroup>
 
-  <Target Name="git_hash">
-    <Exec Command="$(CMake) $(CMakeArguments) -DGIT_HASH_OUTPUT=$(CustomAssemblyInfoFile) -DTARGET=git_hash -P $(RekoCMake)" />
-  </Target>
-
   <!-- Builds the whole Reko solution (the ~/src/Reko-decompiler.sln) -->
   <Target Name="build_solution">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />

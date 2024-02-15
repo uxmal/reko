@@ -1,0 +1,85 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 
+    This inline task asks for the short hash of the current revision,
+    and compares it to the hash from the previous run. If the hashes 
+    differ, the new hash is injected into an assembly property in a C#
+    file which is built into Reko.Core.dll. All Reko assemblies that 
+    wish to display the current Git hash do so by referring to the
+    "GitHash" assembly metadata property.
+    -->
+  <UsingTask
+    TaskName="UpdateGitHash"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+    <ParameterGroup>
+        <HashFileName Required="true" />
+        <TemplateFileName Required="true" />
+        <OutputFileName Required="true" />
+    </ParameterGroup>
+    <Task>
+ <!--     <Reference Include="System.Xml"/> -->
+      <Using Namespace="System"/>
+      <Using Namespace="System.Diagnostics"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Xml"/>
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+
+Process p = new Process();
+// Redirect the output stream of the child process.
+p.StartInfo.UseShellExecute = false;
+p.StartInfo.RedirectStandardOutput = true;
+
+p.StartInfo.FileName = "git";
+p.StartInfo.Arguments = "rev-parse --short HEAD";
+p.Start();
+// Read the output stream first and then wait.
+string currentHash = p.StandardOutput.ReadToEnd().Trim();
+p.WaitForExit();
+
+string oldHash = "";
+try {
+    oldHash = File.ReadAllText(HashFileName) ?? "";
+} catch (Exception) {
+}
+Log.LogMessage(MessageImportance.Normal, $"Current git hash {currentHash}, previous hash: {oldHash}");
+if (currentHash == oldHash)
+    return true;
+
+string fileContents;
+try {
+    fileContents = File.ReadAllText(TemplateFileName);
+} catch (Exception ex) {
+    Log.LogError($"Unable to read template file {TemplateFileName}. {ex.Message}");
+    return false;
+}
+fileContents = fileContents.Replace("@GIT_HASH@", currentHash);
+Log.LogMessage(MessageImportance.Normal, $"Writing git hash to {OutputFileName}");
+File.WriteAllText(OutputFileName, fileContents);
+Log.LogMessage(MessageImportance.Normal, $"Writing new hash file to {HashFileName}");
+File.WriteAllText(HashFileName, currentHash);
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- This crude task is used for timing indivdual tasks. -->
+  <UsingTask
+    TaskName="Klokk"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+    <ParameterGroup>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+      <Using Namespace="System.Diagnostics"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Xml"/>
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+Log.LogMessage(MessageImportance.High, $"*** Time: {DateTime.UtcNow}");
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
