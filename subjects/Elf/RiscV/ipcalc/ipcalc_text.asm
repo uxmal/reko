@@ -41,7 +41,7 @@ l0000000000015200:
 	addi	a2,s4,-0x658
 	mv	a1,s2
 	mv	a0,s3
-	jal	ra,getopt_long
+	jal	getopt_long
 	li	a4,-0x1
 	mv	a5,a0
 	beq	a0,a4,0x0000000000015348
@@ -115,16 +115,16 @@ l0000000000015394:
 	li	a2,0x2E
 	li	a1,0x1
 	addi	a0,a0,-0x628
-	jal	ra,fwrite
+	jal	fwrite
 	lw	s6,(sp)
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l00000000000153B4:
 	sd	a5,0x8(sp)
 	beq	s9,zero,0x0000000000015924
 
 l00000000000153BC:
-	jal	ra,fn0000000000017924
+	jal	fn0000000000017924
 	ori	s2,s0,0x2
 	ld	a5,0x8(sp)
 	beq	a0,zero,0x0000000000015434
@@ -165,7 +165,7 @@ l00000000000153EC:
 l0000000000015428:
 	li	s4,0x0
 	li	s1,0x0
-	jal	zero,0x0000000000015378
+	j	0x0000000000015378
 
 l0000000000015434:
 	lui	a4,0x10
@@ -191,7 +191,7 @@ l000000000001545C:
 	li	a2,0x1
 	mv	a1,s10
 	addi	a0,sp,0x1C
-	jal	ra,fn00000000000166F4
+	jal	fn00000000000166F4
 	mv	a5,a0
 	blt	a0,zero,0x0000000000015BC8
 
@@ -201,7 +201,7 @@ l0000000000015474:
 	sd	a5,0x8(sp)
 	lw	s1,0x1C(sp)
 	sd	zero,0x20(sp)
-	jal	ra,clock_gettime
+	jal	clock_gettime
 	ld	a5,0x8(sp)
 	blt	a0,zero,0x0000000000015CB0
 
@@ -215,7 +215,7 @@ l0000000000015498:
 	andi	a4,a4,0x1
 	ori	a4,a4,-0x4
 	sb	a4,0x38(sp)
-	jal	ra,fn00000000000164D0
+	jal	fn00000000000164D0
 	ld	a5,0x8(sp)
 	blt	a0,zero,0x0000000000015CB0
 
@@ -225,7 +225,7 @@ l00000000000154BC:
 	mv	a2,s1
 	addi	a1,sp,0x38
 	li	a0,0xA
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	ld	a5,0x8(sp)
 	beq	a0,zero,0x0000000000015CB0
 
@@ -237,7 +237,7 @@ l00000000000154DC:
 	li	a1,0x1
 	addi	a0,sp,0x20
 	sd	a5,0x8(sp)
-	jal	ra,__asprintf_chk
+	jal	__asprintf_chk
 	li	a4,-0x1
 	ld	a5,0x8(sp)
 	beq	a0,a4,0x0000000000015CB0
@@ -254,7 +254,7 @@ l0000000000015518:
 	li	a1,0x3A
 	mv	a0,s1
 	sd	a5,(sp)
-	jal	ra,strchr
+	jal	strchr
 	ld	a5,(sp)
 	beq	a0,zero,0x00000000000155D8
 
@@ -273,11 +273,11 @@ l0000000000015544:
 	mv	a3,s4
 	addi	a2,a2,-0x530
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,0x1
-	jal	ra,fn0000000000015FCC
+	jal	fn0000000000015FCC
 	li	s6,0x1
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l000000000001556C:
 	ld	a3,-0x780(gp)
@@ -285,8 +285,8 @@ l000000000001556C:
 	li	a2,0x25
 	li	a1,0x1
 	addi	a0,a0,-0x5F8
-	jal	ra,fwrite
-	jal	zero,0x00000000000153D8
+	jal	fwrite
+	j	0x00000000000153D8
 
 l0000000000015588:
 	lui	a2,0x12
@@ -294,9 +294,9 @@ l0000000000015588:
 	addi	a2,a2,-0x640
 	addi	a1,a1,-0x638
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 	li	s6,0x0
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l00000000000155A8:
 	lw	a4,0x1C(sp)
@@ -310,7 +310,7 @@ l00000000000155B8:
 	mv	a1,s9
 	li	a0,0x2
 	sd	a5,(sp)
-	jal	ra,fn00000000000169D8
+	jal	fn00000000000169D8
 	mv	s1,a0
 	beq	a0,zero,0x0000000000015964
 
@@ -329,7 +329,7 @@ l00000000000155E4:
 	li	a2,0x0
 	mv	a1,s4
 	addi	a0,sp,0x1C
-	jal	ra,fn00000000000166F4
+	jal	fn00000000000166F4
 	mv	a5,a0
 	blt	a0,zero,0x0000000000015B6C
 
@@ -342,7 +342,7 @@ l0000000000015604:
 	addi	a2,sp,0x38
 	mv	a1,a5
 	mv	a0,s1
-	jal	ra,fn00000000000175BC
+	jal	fn00000000000175BC
 
 l0000000000015618:
 	blt	a0,zero,0x00000000000153D8
@@ -358,7 +358,7 @@ l000000000001562C:
 
 l0000000000015630:
 	li	a0,0x1
-	jal	ra,isatty
+	jal	isatty
 	beq	a0,zero,0x0000000000015644
 
 l000000000001563C:
@@ -395,7 +395,7 @@ l0000000000015674:
 	addi	a2,s3,-0x4E0
 	addi	a1,a1,-0x4D8
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	lw	s2,0xD8(sp)
 
 l0000000000015690:
@@ -405,7 +405,7 @@ l0000000000015690:
 	addi	a2,s3,-0x4E0
 	addi	a1,a1,-0x4C8
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	ld	a3,0x68(sp)
 	lw	a4,0xD8(sp)
 	lui	a2,0x12
@@ -413,7 +413,7 @@ l0000000000015690:
 	addi	a2,a2,-0x4B8
 	addi	a1,a1,-0x4A8
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	ld	a3,0x60(sp)
 	beq	a3,zero,0x00000000000156EC
 
@@ -423,7 +423,7 @@ l00000000000156D4:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x498
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l00000000000156EC:
 	lui	a5,0x10
@@ -433,7 +433,7 @@ l00000000000156EC:
 
 l00000000000156FC:
 	li	a0,0xA
-	jal	ra,putchar
+	jal	putchar
 	ld	a3,0xF0(sp)
 	beq	a3,zero,0x0000000000015728
 
@@ -444,7 +444,7 @@ l000000000001570C:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x478
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l0000000000015728:
 	ld	a3,0xF8(sp)
@@ -457,7 +457,7 @@ l0000000000015730:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x460
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l000000000001574C:
 	ld	a3,0xE0(sp)
@@ -469,7 +469,7 @@ l0000000000015754:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x450
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l000000000001576C:
 	ld	a3,0xE8(sp)
@@ -481,7 +481,7 @@ l0000000000015774:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x440
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l000000000001578C:
 	lw	a5,0x1C(sp)
@@ -499,7 +499,7 @@ l00000000000157A0:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x420
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l00000000000157BC:
 	ld	a5,0x78(sp)
@@ -507,7 +507,7 @@ l00000000000157BC:
 
 l00000000000157C4:
 	li	a0,0xA
-	jal	ra,putchar
+	jal	putchar
 	ld	a3,0x80(sp)
 	beq	a3,zero,0x00000000000157F0
 
@@ -518,7 +518,7 @@ l00000000000157D4:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x410
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l00000000000157F0:
 	ld	a3,0x78(sp)
@@ -531,7 +531,7 @@ l00000000000157F8:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x400
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l0000000000015814:
 	ld	a3,0x88(sp)
@@ -544,7 +544,7 @@ l000000000001581C:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x3F0
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l0000000000015838:
 	ld	a3,0x90(sp)
@@ -557,14 +557,14 @@ l0000000000015840:
 	addi	a2,a2,-0x3A0
 	addi	a1,a1,-0x3E8
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
-	jal	zero,0x00000000000153DC
+	jal	fn000000000001654C
+	j	0x00000000000153DC
 
 l0000000000015860:
 	ld	s3,0x38(sp)
 	ld	a0,0x58(sp)
 	mv	a1,s3
-	jal	ra,strcmp
+	jal	strcmp
 	beq	a0,zero,0x0000000000015664
 
 l0000000000015874:
@@ -579,13 +579,13 @@ l0000000000015880:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x508
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	ld	a3,0x38(sp)
 	lui	a1,0x12
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x4F0
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	beq	s4,zero,0x0000000000015E74
 
 l00000000000158B8:
@@ -604,7 +604,7 @@ l00000000000158D0:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x478
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 
 l00000000000158E8:
 	ld	a3,0xF8(sp)
@@ -616,8 +616,8 @@ l00000000000158F0:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x460
 	addi	a0,a0,-0x468
-	jal	ra,fn000000000001654C
-	jal	zero,0x00000000000157BC
+	jal	fn000000000001654C
+	j	0x00000000000157BC
 
 l000000000001590C:
 	li	a5,0x80
@@ -629,10 +629,10 @@ l0000000000015914:
 
 l000000000001591C:
 	li	s4,0x1
-	jal	zero,0x0000000000015880
+	j	0x0000000000015880
 
 l0000000000015924:
-	jal	ra,fn0000000000017924
+	jal	fn0000000000017924
 	ld	a5,0x8(sp)
 	bne	a0,zero,0x0000000000015458
 
@@ -643,13 +643,13 @@ l0000000000015930:
 	bne	a3,a4,0x0000000000015458
 
 l0000000000015940:
-	jal	zero,0x0000000000015448
+	j	0x0000000000015448
 
 l0000000000015944:
 	mv	a1,s9
 	li	a0,0xA
 	sd	a5,0x8(sp)
-	jal	ra,fn00000000000169D8
+	jal	fn00000000000169D8
 	mv	s1,a0
 	mv	s0,s2
 	ld	a5,0x8(sp)
@@ -665,30 +665,30 @@ l000000000001596C:
 	mv	a3,s9
 	addi	a2,a2,-0x5B0
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	s6,0x1
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l000000000001598C:
 	mv	a1,s9
 	li	a0,0x0
 	sd	a5,(sp)
-	jal	ra,fn00000000000169D8
+	jal	fn00000000000169D8
 	mv	s1,a0
 	beq	a0,zero,0x0000000000015964
 
 l00000000000159A4:
 	mv	s0,s2
 	ld	a5,(sp)
-	jal	zero,0x0000000000015518
+	j	0x0000000000015518
 
 l00000000000159B0:
 	mv	a3,s0
 	addi	a2,sp,0x38
 	mv	a1,a5
 	mv	a0,s1
-	jal	ra,fn0000000000016D74
-	jal	zero,0x0000000000015618
+	jal	fn0000000000016D74
+	j	0x0000000000015618
 
 l00000000000159C8:
 	andi	a5,s0,0x80
@@ -711,7 +711,7 @@ l00000000000159E8:
 	lui	a1,0x12
 	addi	a1,a1,-0x3B8
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l00000000000159FC:
 	andi	a5,s0,0x100
@@ -733,7 +733,7 @@ l0000000000015A1C:
 	lui	a1,0x12
 	addi	a1,a1,-0x388
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015A2C:
 	slli	a5,s0,0x34
@@ -747,7 +747,7 @@ l0000000000015A3C:
 	lui	a1,0x12
 	addi	a1,a1,-0x378
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015A4C:
 	slli	a5,s0,0x32
@@ -760,7 +760,7 @@ l0000000000015A54:
 l0000000000015A5C:
 	li	a1,0x20
 	mv	a0,s2
-	jal	ra,strchr
+	jal	strchr
 	mv	a2,s2
 	beq	a0,zero,0x0000000000015DA4
 
@@ -768,7 +768,7 @@ l0000000000015A70:
 	lui	a1,0x12
 	addi	a1,a1,-0x368
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015A80:
 	slli	a5,s0,0x33
@@ -777,7 +777,7 @@ l0000000000015A80:
 l0000000000015A88:
 	li	a1,0x20
 	addi	a0,sp,0x98
-	jal	ra,strchr
+	jal	strchr
 	addi	a2,sp,0x98
 	beq	a0,zero,0x0000000000015D90
 
@@ -785,7 +785,7 @@ l0000000000015A9C:
 	lui	a1,0x12
 	addi	a1,a1,-0x348
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015AAC:
 	andi	a5,s0,0x1
@@ -799,7 +799,7 @@ l0000000000015ABC:
 	lui	a1,0x12
 	addi	a1,a1,-0x328
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015ACC:
 	andi	a5,s0,0x2
@@ -818,7 +818,7 @@ l0000000000015AE8:
 	lui	a1,0x12
 	addi	a1,a1,-0x308
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015AF8:
 	ld	s0,0x78(sp)
@@ -827,7 +827,7 @@ l0000000000015AF8:
 l0000000000015B00:
 	li	a1,0x20
 	mv	a0,s0
-	jal	ra,strchr
+	jal	strchr
 	mv	a2,s0
 	beq	a0,zero,0x0000000000015E90
 
@@ -835,7 +835,7 @@ l0000000000015B14:
 	lui	a1,0x12
 	addi	a1,a1,-0x2F8
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015B24:
 	ld	s0,0x88(sp)
@@ -844,7 +844,7 @@ l0000000000015B24:
 l0000000000015B2C:
 	li	a1,0x20
 	mv	a0,s0
-	jal	ra,strchr
+	jal	strchr
 	mv	a2,s0
 	beq	a0,zero,0x0000000000015EA4
 
@@ -852,7 +852,7 @@ l0000000000015B40:
 	lui	a1,0x12
 	addi	a1,a1,-0x2D8
 	li	a0,0x1
-	jal	ra,__printf_chk
+	jal	__printf_chk
 
 l0000000000015B50:
 	ld	a2,0x90(sp)
@@ -862,8 +862,8 @@ l0000000000015B58:
 	lui	a1,0x12
 	addi	a1,a1,-0x2B8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x00000000000153DC
+	jal	__printf_chk
+	j	0x00000000000153DC
 
 l0000000000015B6C:
 	lw	a5,-0x7EC(gp)
@@ -885,14 +885,14 @@ l0000000000015B8C:
 	lui	a2,0x12
 	addi	a2,a2,-0x590
 	li	a1,0x1
-	jal	ra,__fprintf_chk
-	jal	zero,0x00000000000153D8
+	jal	__fprintf_chk
+	j	0x00000000000153D8
 
 l0000000000015BA0:
 	li	a1,0x2F
 	mv	a0,s1
 	sd	a5,(sp)
-	jal	ra,strchr
+	jal	strchr
 	ld	a5,(sp)
 	beq	a0,zero,0x00000000000155FC
 
@@ -902,7 +902,7 @@ l0000000000015BB8:
 	beq	s4,zero,0x00000000000155FC
 
 l0000000000015BC4:
-	jal	zero,0x00000000000155E4
+	j	0x00000000000155E4
 
 l0000000000015BC8:
 	lw	a5,-0x7EC(gp)
@@ -917,18 +917,18 @@ l0000000000015BDC:
 	lui	a3,0x12
 	addi	a3,a3,-0x660
 	mv	a4,s10
-	jal	zero,0x0000000000015B8C
+	j	0x0000000000015B8C
 
 l0000000000015BEC:
 	li	a1,0x2F
 	mv	a0,s1
 	sd	a5,(sp)
-	jal	ra,strchr
+	jal	strchr
 	ld	a5,(sp)
 	bne	a0,zero,0x0000000000015BB8
 
 l0000000000015C04:
-	jal	zero,0x0000000000015604
+	j	0x0000000000015604
 
 l0000000000015C08:
 	ld	a5,0x88(sp)
@@ -939,7 +939,7 @@ l0000000000015C10:
 	bne	a5,zero,0x00000000000157C4
 
 l0000000000015C18:
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l0000000000015C1C:
 	ld	a3,0x50(sp)
@@ -954,18 +954,18 @@ l0000000000015C2C:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x488
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	bne	s0,zero,0x00000000000158C8
 
 l0000000000015C44:
-	jal	zero,0x00000000000156FC
+	j	0x00000000000156FC
 
 l0000000000015C48:
 	li	a1,0x4
 	addi	a0,sp,0x100
 	sd	a5,0x8(sp)
 	ld	s1,0x30(sp)
-	jal	ra,fn00000000000164D0
+	jal	fn00000000000164D0
 	ld	a5,0x8(sp)
 	blt	a0,zero,0x0000000000015CB0
 
@@ -992,7 +992,7 @@ l0000000000015C84:
 	li	a0,0x2
 	sd	a5,0x8(sp)
 	sw	a4,0x18(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	ld	a5,0x8(sp)
 	bne	a0,zero,0x00000000000154DC
 
@@ -1006,14 +1006,14 @@ l0000000000015CB8:
 	mv	a3,a5
 	addi	a2,a2,-0x568
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	s6,0x1
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l0000000000015CD8:
 	lui	a3,0x12
 	addi	a3,a3,-0x668
-	jal	zero,0x0000000000015B88
+	j	0x0000000000015B88
 
 l0000000000015CE4:
 	bne	s1,zero,0x0000000000015510
@@ -1028,65 +1028,65 @@ l0000000000015CF0:
 	li	a2,0x1C
 	li	a1,0x1
 	addi	a0,a0,-0x5D0
-	jal	ra,fwrite
+	jal	fwrite
 	li	a0,0x1
-	jal	ra,fn0000000000015FCC
+	jal	fn0000000000015FCC
 	li	s6,0x1
-	jal	zero,0x00000000000153DC
+	j	0x00000000000153DC
 
 l0000000000015D18:
 	ld	a2,0x68(sp)
 	lui	a1,0x12
 	addi	a1,a1,-0x3D8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x00000000000159D0
+	jal	__printf_chk
+	j	0x00000000000159D0
 
 l0000000000015D30:
 	ld	a2,0x58(sp)
 	lui	a1,0x12
 	addi	a1,a1,-0x3A8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015A04
+	jal	__printf_chk
+	j	0x0000000000015A04
 
 l0000000000015D48:
 	lw	a2,0xD8(sp)
 	lui	a1,0x12
 	addi	a1,a1,-0x3C8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x00000000000159D8
+	jal	__printf_chk
+	j	0x00000000000159D8
 
 l0000000000015D60:
 	lui	a1,0x12
 	mv	a2,s1
 	addi	a1,a1,-0x318
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015AD4
+	jal	__printf_chk
+	j	0x0000000000015AD4
 
 l0000000000015D78:
 	ld	a2,0x50(sp)
 	lui	a1,0x12
 	addi	a1,a1,-0x398
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015A0C
+	jal	__printf_chk
+	j	0x0000000000015A0C
 
 l0000000000015D90:
 	lui	a1,0x12
 	addi	a1,a1,-0x338
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015AAC
+	jal	__printf_chk
+	j	0x0000000000015AAC
 
 l0000000000015DA4:
 	lui	a1,0x12
 	addi	a1,a1,-0x358
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015A80
+	jal	__printf_chk
+	j	0x0000000000015A80
 
 l0000000000015DB8:
 	beq	a4,a3,0x0000000000015E00
@@ -1099,7 +1099,7 @@ l0000000000015DBC:
 	andi	a4,a4,0xF
 	ori	a4,a4,0x10
 	sb	a4,0x101(sp)
-	jal	zero,0x0000000000015C84
+	j	0x0000000000015C84
 
 l0000000000015DDC:
 	ld	a3,0x38(sp)
@@ -1109,15 +1109,15 @@ l0000000000015DDC:
 	addi	a2,s2,-0x3A0
 	addi	a1,a1,-0x4F0
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
-	jal	zero,0x00000000000158B8
+	jal	fn000000000001654C
+	j	0x00000000000158B8
 
 l0000000000015E00:
 	li	a4,-0x40
 	sb	a4,0x100(sp)
 	li	a4,-0x58
 	sb	a4,0x101(sp)
-	jal	zero,0x0000000000015C84
+	j	0x0000000000015C84
 
 l0000000000015E14:
 	lui	s2,0x12
@@ -1127,9 +1127,9 @@ l0000000000015E14:
 	mv	a3,s3
 	addi	a1,a1,-0x4F0
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
+	jal	fn000000000001654C
 	lw	s2,0xD8(sp)
-	jal	zero,0x0000000000015668
+	j	0x0000000000015668
 
 l0000000000015E3C:
 	li	a3,0x80
@@ -1140,8 +1140,8 @@ l0000000000015E3C:
 	addi	a2,a2,-0x430
 	addi	a1,a1,-0x420
 	addi	a0,s1,-0x4F8
-	jal	ra,fn000000000001654C
-	jal	zero,0x00000000000157BC
+	jal	fn000000000001654C
+	j	0x00000000000157BC
 
 l0000000000015E64:
 	ld	a3,0x50(sp)
@@ -1149,34 +1149,34 @@ l0000000000015E64:
 	bne	a3,zero,0x0000000000015C2C
 
 l0000000000015E70:
-	jal	zero,0x00000000000158C8
+	j	0x00000000000158C8
 
 l0000000000015E74:
 	lw	s2,0xD8(sp)
-	jal	zero,0x0000000000015668
+	j	0x0000000000015668
 
 l0000000000015E7C:
 	lui	a3,0x12
 	addi	a3,a3,-0x668
 	mv	a4,s10
-	jal	zero,0x0000000000015B8C
+	j	0x0000000000015B8C
 
 l0000000000015E8C:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 l0000000000015E90:
 	lui	a1,0x12
 	addi	a1,a1,-0x2E8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015B24
+	jal	__printf_chk
+	j	0x0000000000015B24
 
 l0000000000015EA4:
 	lui	a1,0x12
 	addi	a1,a1,-0x2C8
 	li	a0,0x1
-	jal	ra,__printf_chk
-	jal	zero,0x0000000000015B50
+	jal	__printf_chk
+	j	0x0000000000015B50
 
 ;; fn0000000000015EB8: 0000000000015EB8
 fn0000000000015EB8 proc
@@ -1193,7 +1193,7 @@ fn0000000000015EB8 proc
 	auipc	a4,0x2
 	addi	a4,a4,0x498
 	mv	a6,sp
-	jal	zero,__libc_start_main
+	j	__libc_start_main
 
 ;; fn0000000000015EF0: 0000000000015EF0
 ;;   Called from:
@@ -1256,7 +1256,7 @@ fn0000000000015F64 proc
 	bne	a5,zero,0x0000000000015F84
 
 l0000000000015F78:
-	jal	ra,fn0000000000015EF0
+	jal	fn0000000000015EF0
 	li	a5,0x1
 	sb	a5,-0x76C(gp)
 
@@ -1274,7 +1274,7 @@ fn0000000000015F94 proc
 	bne	a5,zero,0x0000000000015FA8
 
 l0000000000015FA4:
-	jal	zero,fn0000000000015F24
+	j	fn0000000000015F24
 
 l0000000000015FA8:
 	lui	a5,0x0
@@ -1287,7 +1287,7 @@ l0000000000015FB4:
 	jalr	ra,a5,0x0
 	ld	ra,0x8(sp)
 	addi	sp,sp,0x10
-	jal	zero,fn0000000000015F24
+	j	fn0000000000015F24
 
 ;; fn0000000000015FCC: 0000000000015FCC
 ;;   Called from:
@@ -1305,37 +1305,37 @@ l0000000000015FE0:
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,0x408
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x3E
 	li	a1,0x1
 	addi	a0,a0,0x458
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x41
 	li	a1,0x1
 	addi	a0,a0,0x498
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4C
 	li	a1,0x1
 	addi	a0,a0,0x4E0
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x41
 	li	a1,0x1
 	addi	a0,a0,0x530
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x29
 	li	a1,0x1
 	addi	a0,a0,0x578
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	ld	ra,0x8(sp)
 	ld	s0,(sp)
@@ -1344,200 +1344,200 @@ l0000000000015FE0:
 	li	a1,0x1
 	addi	a0,a0,0x5A8
 	addi	sp,sp,0x10
-	jal	zero,fwrite
+	j	fwrite
 
 l0000000000016090:
 	lui	a0,0x11
 	li	a2,0x1A
 	li	a1,0x1
 	addi	a0,a0,-0x420
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x36
 	li	a1,0x1
 	addi	a0,a0,-0x400
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,-0x3C8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x3E
 	li	a1,0x1
 	addi	a0,a0,-0x378
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4F
 	li	a1,0x1
 	addi	a0,a0,-0x338
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4F
 	li	a1,0x1
 	addi	a0,a0,-0x2E8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x2A
 	li	a1,0x1
 	addi	a0,a0,-0x298
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4C
 	li	a1,0x1
 	addi	a0,a0,-0x268
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,-0x218
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,-0x1C8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a1,-0x780(gp)
 	li	a0,0xA
-	jal	ra,fputc
+	jal	fputc
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x17
 	li	a1,0x1
 	addi	a0,a0,-0x178
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x47
 	li	a1,0x1
 	addi	a0,a0,-0x160
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x39
 	li	a1,0x1
 	addi	a0,a0,-0x118
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x3A
 	li	a1,0x1
 	addi	a0,a0,-0xD8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x39
 	li	a1,0x1
 	addi	a0,a0,-0x98
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,-0x58
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,-0x8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x4D
 	li	a1,0x1
 	addi	a0,a0,0x48
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x2E
 	li	a1,0x1
 	addi	a0,a0,0x98
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x48
 	li	a1,0x1
 	addi	a0,a0,0xC8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x2D
 	li	a1,0x1
 	addi	a0,a0,0x118
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x43
 	li	a1,0x1
 	addi	a0,a0,0x148
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x40
 	li	a1,0x1
 	addi	a0,a0,0x190
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x48
 	li	a1,0x1
 	addi	a0,a0,0x1D8
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x2E
 	li	a1,0x1
 	addi	a0,a0,0x228
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a1,-0x780(gp)
 	li	a0,0xA
-	jal	ra,fputc
+	jal	fputc
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0xF
 	li	a1,0x1
 	addi	a0,a0,0x258
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x57
 	li	a1,0x1
 	addi	a0,a0,0x268
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x3C
 	li	a1,0x1
 	addi	a0,a0,0x2C0
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x44
 	li	a1,0x1
 	addi	a0,a0,0x300
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x3A
 	li	a1,0x1
 	addi	a0,a0,0x348
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	lui	a0,0x11
 	li	a2,0x39
 	li	a1,0x1
 	addi	a0,a0,0x388
-	jal	ra,fwrite
+	jal	fwrite
 	ld	a3,-0x780(gp)
 	ld	ra,0x8(sp)
 	ld	s0,(sp)
@@ -1546,7 +1546,7 @@ l0000000000016090:
 	li	a1,0x1
 	addi	a0,a0,0x3C8
 	addi	sp,sp,0x10
-	jal	zero,fwrite
+	j	fwrite
 
 ;; fn00000000000163B0: 00000000000163B0
 ;;   Called from:
@@ -1578,7 +1578,7 @@ fn00000000000163B0 proc
 	addiw	s0,s0,0x1
 	sd	a5,0x88(sp)
 	addi	s2,s2,0x1
-	jal	ra,__sprintf_chk
+	jal	__sprintf_chk
 	addi	s1,sp,0xA
 	li	s6,0x80
 	li	s5,0x1
@@ -1592,7 +1592,7 @@ l0000000000016430:
 	mv	a2,s6
 	mv	a1,s5
 	mv	a0,s1
-	jal	ra,__sprintf_chk
+	jal	__sprintf_chk
 	andi	a5,s0,0x1
 	addi	a4,s1,0x2
 	beq	a5,zero,0x00000000000164B8
@@ -1612,7 +1612,7 @@ l0000000000016464:
 l000000000001646C:
 	sb	zero,(s1)
 	addi	a0,sp,0x8
-	jal	ra,__strdup
+	jal	__strdup
 	ld	a4,0x88(sp)
 	ld	a5,-0x790(gp)
 	bne	a4,a5,0x00000000000164CC
@@ -1635,14 +1635,14 @@ l0000000000016484:
 l00000000000164B8:
 	mv	s1,a4
 	addi	s2,s2,0x1
-	jal	zero,0x0000000000016464
+	j	0x0000000000016464
 
 l00000000000164C4:
 	mv	s1,a4
-	jal	zero,0x000000000001646C
+	j	0x000000000001646C
 
 l00000000000164CC:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn00000000000164D0: 00000000000164D0
 ;;   Called from:
@@ -1659,7 +1659,7 @@ fn00000000000164D0 proc
 	li	a1,0x0
 	sd	ra,0x18(sp)
 	sd	s1,0x8(sp)
-	jal	ra,open
+	jal	open
 	blt	a0,zero,0x0000000000016544
 
 l0000000000016500:
@@ -1667,10 +1667,10 @@ l0000000000016500:
 	mv	a1,s0
 	srli	a2,a2,0x20
 	mv	s1,a0
-	jal	ra,read
+	jal	read
 	mv	s0,a0
 	mv	a0,s1
-	jal	ra,close
+	jal	close
 	subw	a0,s0,s2
 	sltu	a0,zero,a0
 	subw	a0,zero,a0
@@ -1685,7 +1685,7 @@ l000000000001652C:
 
 l0000000000016544:
 	li	a0,-0x1
-	jal	zero,0x000000000001652C
+	j	0x000000000001652C
 
 ;; fn000000000001654C: 000000000001654C
 ;;   Called from:
@@ -1732,26 +1732,26 @@ fn000000000001654C proc
 	sd	t3,0x18(sp)
 	sd	zero,0x10(sp)
 	sd	t1,0x8(sp)
-	jal	ra,__vasprintf_chk
+	jal	__vasprintf_chk
 	blt	a0,zero,0x00000000000165D8
 
 l00000000000165A8:
 	ld	a1,-0x778(gp)
 	mv	a0,s2
-	jal	ra,fputs
+	jal	fputs
 	lw	a5,-0x7F0(gp)
 	bne	a5,zero,0x000000000001661C
 
 l00000000000165BC:
 	ld	a1,-0x778(gp)
 	ld	a0,0x10(sp)
-	jal	ra,fputs
+	jal	fputs
 	lw	a5,-0x7F0(gp)
 	bne	a5,zero,0x0000000000016600
 
 l00000000000165D0:
 	ld	a0,0x10(sp)
-	jal	ra,free
+	jal	free
 
 l00000000000165D8:
 	ld	a4,0x18(sp)
@@ -1773,17 +1773,17 @@ l0000000000016600:
 	li	a2,0x4
 	li	a1,0x1
 	addi	a0,a0,0x5E0
-	jal	ra,fwrite
-	jal	zero,0x00000000000165D0
+	jal	fwrite
+	j	0x00000000000165D0
 
 l000000000001661C:
 	ld	a1,-0x778(gp)
 	mv	a0,s3
-	jal	ra,fputs
-	jal	zero,0x00000000000165BC
+	jal	fputs
+	j	0x00000000000165BC
 
 l000000000001662C:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn0000000000016630: 0000000000016630
 ;;   Called from:
@@ -1800,13 +1800,13 @@ fn0000000000016630 proc
 	mv	s2,a0
 	mv	s3,a1
 	sd	zero,(sp)
-	jal	ra,__errno_location
+	jal	__errno_location
 	sw	zero,(a0)
 	mv	s1,a0
 	li	a2,0x0
 	mv	a1,sp
 	mv	a0,s2
-	jal	ra,strtol
+	jal	strtol
 	ld	a5,(sp)
 	beq	a5,zero,0x000000000001668C
 
@@ -1852,18 +1852,18 @@ l00000000000166CC:
 
 l00000000000166D8:
 	sw	a4,(s3)
-	jal	zero,0x0000000000016698
+	j	0x0000000000016698
 
 l00000000000166E0:
 	li	a5,-0x22
-	jal	zero,0x0000000000016698
+	j	0x0000000000016698
 
 l00000000000166E8:
 	li	a5,-0x16
-	jal	zero,0x0000000000016698
+	j	0x0000000000016698
 
 l00000000000166F0:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn00000000000166F4: 00000000000166F4
 ;;   Called from:
@@ -1888,19 +1888,19 @@ fn00000000000166F4 proc
 l000000000001672C:
 	li	a1,0x2E
 	mv	a0,s3
-	jal	ra,strchr
+	jal	strchr
 	beq	a0,zero,0x00000000000167C8
 
 l000000000001673C:
 	mv	a2,sp
 	mv	a1,s3
 	li	a0,0x2
-	jal	ra,inet_pton
+	jal	inet_pton
 	beq	a0,zero,0x000000000001678C
 
 l0000000000016750:
 	lw	a0,(sp)
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	beq	a0,zero,0x0000000000016790
 
 l000000000001675C:
@@ -1956,16 +1956,16 @@ l00000000000167B8:
 
 l00000000000167C0:
 	li	a0,-0x1
-	jal	zero,0x00000000000167F4
+	j	0x00000000000167F4
 
 l00000000000167C8:
 	mv	a1,sp
 	mv	a0,s3
-	jal	ra,fn0000000000016630
+	jal	fn0000000000016630
 	beq	a0,zero,0x0000000000016794
 
 l00000000000167D8:
-	jal	zero,0x00000000000167C0
+	j	0x00000000000167C0
 
 l00000000000167DC:
 	mv	a0,a5
@@ -1999,10 +1999,10 @@ l0000000000016820:
 	bne	a0,zero,0x000000000001675C
 
 l0000000000016828:
-	jal	zero,0x0000000000016790
+	j	0x0000000000016790
 
 l000000000001682C:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn0000000000016830: 0000000000016830
 ;;   Called from:
@@ -2024,7 +2024,7 @@ l000000000001684C:
 	subw	a0,a5,a0
 	li	a5,-0x1
 	sllw	a0,a5,a0
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	sw	a0,(sp)
 
 l0000000000016864:
@@ -2040,7 +2040,7 @@ l0000000000016874:
 	jalr	zero,ra,0x0
 
 l0000000000016884:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 0000000000016888                         13 01 01 FF 23 30 81 00         ....#0..
 0000000000016890 13 04 05 00 13 85 05 00 23 34 11 00 EF F0 5F F9 ........#4...._.
 00000000000168A0 83 30 81 00 13 45 F5 FF 33 65 85 00 03 34 01 00 .0...E..3e...4..
@@ -2053,7 +2053,7 @@ fn00000000000168B8 proc
 	mv	s0,a0
 	mv	a0,a1
 	sd	ra,0x8(sp)
-	jal	ra,fn0000000000016830
+	jal	fn0000000000016830
 	ld	ra,0x8(sp)
 	and	a0,s0,a0
 	ld	s0,(sp)
@@ -2102,7 +2102,7 @@ l0000000000016934:
 	sd	zero,0x28(sp)
 	sw	zero,0x30(sp)
 	sh	a7,0x18(sp)
-	jal	ra,memcpy
+	jal	memcpy
 	li	a6,0x0
 	li	a5,0x0
 	li	a4,0x0
@@ -2110,15 +2110,15 @@ l0000000000016934:
 	addi	a2,gp,-0x768
 	li	a1,0x1C
 	addi	a0,sp,0x18
-	jal	ra,getnameinfo
+	jal	getnameinfo
 
 l0000000000016974:
 	bne	a0,zero,0x0000000000016910
 
 l0000000000016978:
 	addi	a0,gp,-0x768
-	jal	ra,__strdup
-	jal	zero,0x0000000000016914
+	jal	__strdup
+	j	0x0000000000016914
 
 l0000000000016984:
 	lbu	t5,(a1)
@@ -2139,11 +2139,11 @@ l0000000000016984:
 	sb	t4,0xD(sp)
 	sb	t3,0xE(sp)
 	sb	t1,0xF(sp)
-	jal	ra,getnameinfo
-	jal	zero,0x0000000000016974
+	jal	getnameinfo
+	j	0x0000000000016974
 
 l00000000000169D4:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn00000000000169D8: 00000000000169D8
 ;;   Called from:
@@ -2172,7 +2172,7 @@ fn00000000000169D8 proc
 	sd	zero,0x20(sp)
 	sd	zero,0x28(sp)
 	sd	zero,0x30(sp)
-	jal	ra,getaddrinfo
+	jal	getaddrinfo
 	bne	a0,zero,0x0000000000016AD8
 
 l0000000000016A34:
@@ -2183,13 +2183,13 @@ l0000000000016A3C:
 	addi	s1,gp,-0x360
 	li	s3,0x2
 	li	s2,0x40
-	jal	zero,0x0000000000016A68
+	j	0x0000000000016A68
 
 l0000000000016A4C:
 	addi	a1,a1,0x8
 	mv	a3,s2
 	mv	a2,s1
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	bne	a0,zero,0x0000000000016A88
 
 l0000000000016A60:
@@ -2205,22 +2205,22 @@ l0000000000016A74:
 	addi	a1,a1,0x4
 	mv	a3,s2
 	mv	a2,s1
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000016A60
 
 l0000000000016A88:
 	ld	a0,(sp)
-	jal	ra,freeaddrinfo
+	jal	freeaddrinfo
 	mv	a0,s1
-	jal	ra,__strdup
-	jal	zero,0x0000000000016AAC
+	jal	__strdup
+	j	0x0000000000016AAC
 
 l0000000000016A9C:
 	ld	s0,(sp)
 
 l0000000000016AA0:
 	mv	a0,s0
-	jal	ra,freeaddrinfo
+	jal	freeaddrinfo
 	li	a0,0x0
 
 l0000000000016AAC:
@@ -2240,10 +2240,10 @@ l0000000000016AB8:
 
 l0000000000016AD8:
 	li	a0,0x0
-	jal	zero,0x0000000000016AAC
+	j	0x0000000000016AAC
 
 l0000000000016AE0:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 0000000000016AE4             93 07 05 00 63 84 07 04 13 F7 17 00     ....c.......
 0000000000016AF0 63 02 07 02 13 05 00 00 9B D7 17 00 13 F7 17 00 c...............
 0000000000016B00 1B 05 15 00 63 88 07 02 E3 18 07 FE 13 05 F0 FF ....c...........
@@ -2276,7 +2276,7 @@ l0000000000016B5C:
 fn0000000000016B68 proc
 	addi	sp,sp,-0x10
 	sd	ra,0x8(sp)
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a5,a0,0x18
 	beq	a5,zero,0x0000000000016BD8
 
@@ -2317,7 +2317,7 @@ l0000000000016BC0:
 l0000000000016BCC:
 	lui	a4,0x11
 	addi	a4,a4,0x748
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016BD8:
 	lui	a4,0x11
@@ -2373,7 +2373,7 @@ l0000000000016C44:
 l0000000000016C4C:
 	lui	a4,0x11
 	addi	a4,a4,0x640
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016C58:
 	andi	a4,a4,0xC0
@@ -2383,12 +2383,12 @@ l0000000000016C58:
 l0000000000016C64:
 	lui	a4,0x11
 	addi	a4,a4,0x618
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016C70:
 	lui	a4,0x11
 	addi	a4,a4,0x630
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016C7C:
 	li	a2,0xCB
@@ -2404,7 +2404,7 @@ l0000000000016C88:
 l0000000000016C90:
 	lui	a4,0x11
 	addi	a4,a4,0x6C0
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016C9C:
 	li	a4,0x64
@@ -2413,7 +2413,7 @@ l0000000000016C9C:
 l0000000000016CA4:
 	lui	a4,0x11
 	addi	a4,a4,0x6A0
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016CB0:
 	li	a4,0x63
@@ -2427,12 +2427,12 @@ l0000000000016CB8:
 l0000000000016CC4:
 	lui	a4,0x11
 	addi	a4,a4,0x650
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016CD0:
 	lui	a4,0x11
 	addi	a4,a4,0x660
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016CDC:
 	bne	a6,zero,0x0000000000016BC0
@@ -2440,7 +2440,7 @@ l0000000000016CDC:
 l0000000000016CE0:
 	lui	a4,0x11
 	addi	a4,a4,0x680
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016CEC:
 	li	a4,0xC1
@@ -2449,17 +2449,17 @@ l0000000000016CEC:
 l0000000000016CF4:
 	lui	a4,0x11
 	addi	a4,a4,0x708
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016D00:
 	lui	a4,0x11
 	addi	a4,a4,0x6E0
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016D0C:
 	lui	a4,0x11
 	addi	a4,a4,0x710
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016D18:
 	li	a2,0xFF
@@ -2482,7 +2482,7 @@ l0000000000016D38:
 l0000000000016D40:
 	lui	a4,0x11
 	addi	a4,a4,0x720
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 l0000000000016D4C:
 	li	a3,0xC6
@@ -2498,7 +2498,7 @@ l0000000000016D54:
 l0000000000016D68:
 	lui	a4,0x11
 	addi	a4,a4,0x738
-	jal	zero,0x0000000000016BE0
+	j	0x0000000000016BE0
 
 ;; fn0000000000016D74: 0000000000016D74
 ;;   Called from:
@@ -2524,11 +2524,11 @@ fn0000000000016D74 proc
 	sd	s4,0x190(sp)
 	mv	s8,a3
 	sd	a5,0x168(sp)
-	jal	ra,memset
+	jal	memset
 	addi	a2,sp,0x8
 	mv	a1,s1
 	li	a0,0x2
-	jal	ra,inet_pton
+	jal	inet_pton
 	bge	zero,a0,0x0000000000016E60
 
 l0000000000016DDC:
@@ -2542,7 +2542,7 @@ l0000000000016DE0:
 
 l0000000000016DF0:
 	mv	a1,s2
-	jal	ra,strchr
+	jal	strchr
 	sd	a0,0x30(sp)
 	beq	a0,zero,0x0000000000017194
 
@@ -2592,9 +2592,9 @@ l0000000000016E68:
 	mv	a3,s1
 	addi	a2,a2,0x788
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,-0x1
-	jal	zero,0x0000000000016E24
+	j	0x0000000000016E24
 
 l0000000000016E88:
 	slli	a5,s8,0x2D
@@ -2604,7 +2604,7 @@ l0000000000016E88:
 l0000000000016E94:
 	lw	a0,0x8(sp)
 	li	s5,0x8
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a5,a0,0x18
 	bge	a0,zero,0x0000000000016EBC
 
@@ -2622,15 +2622,15 @@ l0000000000016EBC:
 	addi	a2,sp,0x38
 	addi	a1,sp,0x8
 	li	a0,0x2
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017074
 
 l0000000000016ED4:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s6)
 	mv	a0,s5
-	jal	ra,fn0000000000016830
+	jal	fn0000000000016830
 	sw	a0,0x10(sp)
 	li	a3,0x10
 	addi	a2,sp,0x38
@@ -2644,17 +2644,17 @@ l0000000000016ED4:
 	sw	zero,0x60(sp)
 	sh	zero,0x64(sp)
 	sb	zero,0x66(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017300
 
 l0000000000016F24:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,0x30(s6)
 	lw	s0,0x8(sp)
 	sw	s5,0xA0(s6)
 	mv	a0,s5
-	jal	ra,fn0000000000016830
+	jal	fn0000000000016830
 	xori	a5,a0,-0x1
 	or	a5,a5,s0
 	li	a3,0x10
@@ -2670,23 +2670,23 @@ l0000000000016F24:
 	sw	zero,0x60(sp)
 	sh	zero,0x64(sp)
 	sb	zero,0x66(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x00000000000172F4
 
 l0000000000016F84:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,0x28(s6)
 	lw	s0,0x8(sp)
 	mv	a0,s5
-	jal	ra,fn0000000000016830
+	jal	fn0000000000016830
 	lw	a3,0x20(sp)
 	and	s0,a0,s0
 	mv	a2,s0
 	mv	a1,s5
 	mv	a0,s0
 	sw	s0,0x18(sp)
-	jal	ra,fn0000000000017F04
+	jal	fn0000000000017F04
 	sd	a0,0x18(s6)
 	li	a3,0x10
 	addi	a2,sp,0x38
@@ -2700,20 +2700,20 @@ l0000000000016F84:
 	sw	zero,0x60(sp)
 	sh	zero,0x64(sp)
 	sb	zero,0x66(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x00000000000172DC
 
 l0000000000016FF4:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	lw	s0,0x18(sp)
 	sd	a0,0x20(s6)
 	mv	s3,a0
 	mv	a0,s0
-	jal	ra,fn0000000000016B68
+	jal	fn0000000000016B68
 	sd	a0,0xB8(s6)
 	mv	a0,s0
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a5,a0,0x18
 	bge	a0,zero,0x0000000000017098
 
@@ -2735,7 +2735,7 @@ l000000000001703C:
 l0000000000017048:
 	lui	a5,0x11
 	addi	a5,a5,0x770
-	jal	zero,0x00000000000170A0
+	j	0x00000000000170A0
 
 l0000000000017054:
 	ld	a0,-0x780(gp)
@@ -2743,9 +2743,9 @@ l0000000000017054:
 	mv	a3,s5
 	addi	a2,a2,0x7D8
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,-0x1
-	jal	zero,0x0000000000016E24
+	j	0x0000000000016E24
 
 l0000000000017074:
 	lw	a5,-0x7EC(gp)
@@ -2757,8 +2757,8 @@ l000000000001707C:
 	li	a2,0x2B
 	li	a1,0x1
 	addi	a0,a0,0x7F8
-	jal	ra,fwrite
-	jal	zero,0x0000000000016E20
+	jal	fwrite
+	j	0x0000000000016E20
 
 l0000000000017098:
 	lui	a5,0x11
@@ -2782,31 +2782,31 @@ l00000000000170B8:
 	addi	a1,sp,0x28
 	li	a0,0x2
 	sw	s0,0x28(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x00000000000172E8
 
 l00000000000170DC:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	lw	a5,0x10(sp)
 	sd	a0,0xA8(s6)
 	lw	a0,0x18(sp)
 	xori	a5,a5,-0x1
 	or	a0,a5,a0
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	addiw	a0,a0,-0x1
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	sw	a0,0x30(sp)
 	li	a3,0x2F
 	addi	a2,sp,0x38
 	addi	a1,sp,0x30
 	li	a0,0x2
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017074
 
 l0000000000017120:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	li	a2,0x1
 	subw	a5,s2,s5
 	sllw	a5,a2,a5
@@ -2817,8 +2817,8 @@ l0000000000017120:
 	addi	a4,a4,-0x7D8
 	mv	a1,a3
 	addi	a0,s6,0x60
-	jal	ra,__snprintf_chk
-	jal	zero,0x000000000001717C
+	jal	__snprintf_chk
+	j	0x000000000001717C
 
 l0000000000017158:
 	lui	a5,0x11
@@ -2843,7 +2843,7 @@ l0000000000017184:
 
 l000000000001718C:
 	li	a0,0x0
-	jal	zero,0x0000000000016E24
+	j	0x0000000000016E24
 
 l0000000000017194:
 	lui	s4,0x11
@@ -2855,7 +2855,7 @@ l00000000000171A0:
 	addi	a2,s4,0x7A8
 	mv	a1,s3
 	addi	a0,sp,0x30
-	jal	ra,__asprintf_chk
+	jal	__asprintf_chk
 	beq	a0,s2,0x00000000000172BC
 
 l00000000000171B8:
@@ -2864,12 +2864,12 @@ l00000000000171B8:
 	bne	s0,zero,0x00000000000171A0
 
 l00000000000171C4:
-	jal	zero,0x0000000000016E10
+	j	0x0000000000016E10
 
 l00000000000171C8:
 	addi	a1,sp,0x8
 	li	a0,0x2
-	jal	ra,fn00000000000168E4
+	jal	fn00000000000168E4
 	sd	a0,0x38(s6)
 	bne	a0,zero,0x000000000001718C
 
@@ -2884,23 +2884,23 @@ l00000000000171E4:
 	li	a2,0xFA
 	li	a1,0x1
 	addi	a0,sp,0x68
-	jal	ra,__sprintf_chk
+	jal	__sprintf_chk
 	addi	a0,sp,0x68
-	jal	ra,herror
+	jal	herror
 	li	a0,-0x1
-	jal	zero,0x0000000000016E24
+	j	0x0000000000016E24
 
 l0000000000017210:
 	li	a3,0x10
 	addi	a2,sp,0x38
 	addi	a1,sp,0x28
 	li	a0,0x2
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x00000000000172E8
 
 l0000000000017228:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	lw	a5,0x10(sp)
 	lw	a4,0x18(sp)
 	sd	a0,0xA8(s6)
@@ -2911,22 +2911,22 @@ l0000000000017228:
 	addi	a1,sp,0x30
 	li	a0,0x2
 	sw	a5,0x30(sp)
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017074
 
 l0000000000017260:
 	addi	a0,sp,0x38
-	jal	ra,__strdup
+	jal	__strdup
 	lui	a5,0x12
 	sd	a0,0xB0(s6)
 	addi	a4,s6,0x60
 	addi	a5,a5,0x660
-	jal	zero,0x000000000001716C
+	j	0x000000000001716C
 
 l000000000001727C:
 	lui	a5,0x11
 	addi	a5,a5,0x760
-	jal	zero,0x00000000000170A0
+	j	0x00000000000170A0
 
 l0000000000017288:
 	lw	a0,0x8(sp)
@@ -2934,18 +2934,18 @@ l0000000000017288:
 	addi	a3,s6,0x50
 	addi	a2,s6,0x48
 	addi	a1,s6,0x40
-	jal	ra,fn0000000000017B40
-	jal	zero,0x0000000000017184
+	jal	fn0000000000017B40
+	j	0x0000000000017184
 
 l00000000000172A4:
 	lui	a5,0x11
 	addi	a5,a5,0x768
-	jal	zero,0x00000000000170A0
+	j	0x00000000000170A0
 
 l00000000000172B0:
 	lui	a5,0x11
 	addi	a5,a5,0x778
-	jal	zero,0x00000000000170A0
+	j	0x00000000000170A0
 
 l00000000000172BC:
 	ld	a0,-0x780(gp)
@@ -2955,31 +2955,31 @@ l00000000000172C4:
 	lui	a2,0x11
 	addi	a2,a2,0x7B0
 	li	a1,0x1
-	jal	ra,__fprintf_chk
-	jal	ra,abort
+	jal	__fprintf_chk
+	jal	abort
 
 l00000000000172D8:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 l00000000000172DC:
 	ld	a0,-0x780(gp)
 	li	a3,0x29B
-	jal	zero,0x00000000000172C4
+	j	0x00000000000172C4
 
 l00000000000172E8:
 	ld	a0,-0x780(gp)
 	li	a3,0x2AC
-	jal	zero,0x00000000000172C4
+	j	0x00000000000172C4
 
 l00000000000172F4:
 	ld	a0,-0x780(gp)
 	li	a3,0x28F
-	jal	zero,0x00000000000172C4
+	j	0x00000000000172C4
 
 l0000000000017300:
 	ld	a0,-0x780(gp)
 	li	a3,0x284
-	jal	zero,0x00000000000172C4
+	j	0x00000000000172C4
 
 ;; fn000000000001730C: 000000000001730C
 ;;   Called from:
@@ -3023,16 +3023,16 @@ l000000000001736C:
 	addi	a2,sp,0x18
 	addi	a1,sp,0x8
 	li	a0,0xA
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x00000000000173BC
 
 l0000000000017384:
 	li	a2,0x10
 	addi	a1,sp,0x8
 	mv	a0,s1
-	jal	ra,memcpy
+	jal	memcpy
 	addi	a0,sp,0x18
-	jal	ra,__strdup
+	jal	__strdup
 
 l000000000001739C:
 	ld	a4,0x98(sp)
@@ -3048,15 +3048,15 @@ l00000000000173A8:
 
 l00000000000173BC:
 	li	a0,0x0
-	jal	zero,0x000000000001739C
+	j	0x000000000001739C
 
 l00000000000173C4:
 	sllw	a6,a1,a4
 	sb	a6,(a5)
-	jal	zero,0x000000000001735C
+	j	0x000000000001735C
 
 l00000000000173D0:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn00000000000173D4: 00000000000173D4
 ;;   Called from:
@@ -3125,21 +3125,21 @@ l000000000001747C:
 	li	a2,0xC
 	addi	a1,s1,0x430
 	mv	a0,s0
-	jal	ra,memcmp
+	jal	memcmp
 	beq	a0,zero,0x000000000001755C
 
 l0000000000017490:
 	li	a2,0xC
 	addi	a1,s1,0x440
 	mv	a0,s0
-	jal	ra,memcmp
+	jal	memcmp
 	beq	a0,zero,0x0000000000017514
 
 l00000000000174A4:
 	li	a2,0xC
 	addi	a1,s1,0x450
 	mv	a0,s0
-	jal	ra,memcmp
+	jal	memcmp
 	bne	a0,zero,0x0000000000017408
 
 l00000000000174B8:
@@ -3158,20 +3158,20 @@ l00000000000174DC:
 	addi	s1,s1,0x480
 	li	a2,0x10
 	addi	a1,s1,0x400
-	jal	ra,memcmp
+	jal	memcmp
 	beq	a0,zero,0x0000000000017538
 
 l00000000000174F4:
 	li	a2,0x10
 	addi	a1,s1,0x418
 	mv	a0,s0
-	jal	ra,memcmp
+	jal	memcmp
 	bne	a0,zero,0x000000000001747C
 
 l0000000000017508:
 	lui	a0,0x12
 	addi	a0,a0,-0x790
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 l0000000000017514:
 	ld	ra,0x28(sp)
@@ -3209,27 +3209,27 @@ l000000000001755C:
 l0000000000017580:
 	lui	a0,0x12
 	addi	a0,a0,-0x728
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 l000000000001758C:
 	lui	a0,0x12
 	addi	a0,a0,-0x718
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 l0000000000017598:
 	lui	a0,0x12
 	addi	a0,a0,-0x700
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 l00000000000175A4:
 	lui	a0,0x11
 	addi	a0,a0,0x748
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 l00000000000175B0:
 	lui	a0,0x12
 	addi	a0,a0,-0x6E8
-	jal	zero,0x0000000000017458
+	j	0x0000000000017458
 
 ;; fn00000000000175BC: 00000000000175BC
 ;;   Called from:
@@ -3256,28 +3256,28 @@ fn00000000000175BC proc
 	sd	s9,0x148(sp)
 	mv	s6,a3
 	sd	a5,0x138(sp)
-	jal	ra,memset
+	jal	memset
 	addi	a2,sp,0x8
 	mv	a1,s4
 	li	a0,0xA
-	jal	ra,inet_pton
+	jal	inet_pton
 	bge	zero,a0,0x00000000000177B4
 
 l0000000000017628:
 	addi	a0,sp,0x8
-	jal	ra,fn00000000000163B0
+	jal	fn00000000000163B0
 	addi	s3,sp,0x38
 	sd	a0,0x8(s0)
 	li	a3,0xFA
 	mv	a2,s3
 	addi	a1,sp,0x8
 	li	a0,0xA
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017768
 
 l0000000000017650:
 	mv	a0,s3
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s0)
 	li	s5,0x80
 	blt	s5,s2,0x00000000000177DC
@@ -3293,7 +3293,7 @@ l000000000001766C:
 	sw	s5,0xA0(s0)
 	mv	a1,s7
 	mv	a0,s5
-	jal	ra,fn000000000001730C
+	jal	fn000000000001730C
 	sd	a0,0x30(s0)
 	beq	a0,zero,0x00000000000178F8
 
@@ -3319,23 +3319,23 @@ l00000000000176BC:
 	mv	a2,s3
 	addi	a1,sp,0x28
 	li	a0,0xA
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017768
 
 l00000000000176D4:
 	mv	a0,s3
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,0x20(s0)
 	addi	a0,sp,0x28
-	jal	ra,fn00000000000163B0
+	jal	fn00000000000163B0
 	sd	a0,0x10(s0)
 	mv	a1,s2
 	addi	a0,sp,0x28
-	jal	ra,fn00000000000173D4
+	jal	fn00000000000173D4
 	sd	a0,0xB8(s0)
 	mv	a1,s5
 	addi	a0,sp,0x28
-	jal	ra,fn0000000000018118
+	jal	fn0000000000018118
 	sd	a0,0x18(s0)
 	li	a5,0x80
 	bne	s2,a5,0x0000000000017870
@@ -3359,7 +3359,7 @@ l0000000000017740:
 	lui	a2,0x12
 	addi	a2,a2,-0x670
 	li	a1,0x40
-	jal	ra,snprintf
+	jal	snprintf
 	slli	a5,s6,0x31
 	blt	a5,zero,0x00000000000178DC
 
@@ -3369,7 +3369,7 @@ l0000000000017758:
 
 l0000000000017760:
 	li	a0,0x0
-	jal	zero,0x0000000000017774
+	j	0x0000000000017774
 
 l0000000000017768:
 	lw	a5,-0x7EC(gp)
@@ -3408,9 +3408,9 @@ l00000000000177BC:
 	mv	a3,s4
 	addi	a2,a2,-0x6E0
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,-0x1
-	jal	zero,0x0000000000017774
+	j	0x0000000000017774
 
 l00000000000177DC:
 	lw	a5,-0x7EC(gp)
@@ -3422,9 +3422,9 @@ l00000000000177E4:
 	mv	a3,s2
 	addi	a2,a2,-0x6C0
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,-0x1
-	jal	zero,0x0000000000017774
+	j	0x0000000000017774
 
 l0000000000017804:
 	ld	a3,-0x780(gp)
@@ -3432,14 +3432,14 @@ l0000000000017804:
 	li	a2,0x2B
 	li	a1,0x1
 	addi	a0,a0,0x7F8
-	jal	ra,fwrite
+	jal	fwrite
 	li	a0,-0x1
-	jal	zero,0x0000000000017774
+	j	0x0000000000017774
 
 l0000000000017824:
 	addi	a1,sp,0x8
 	li	a0,0xA
-	jal	ra,fn00000000000168E4
+	jal	fn00000000000168E4
 	sd	a0,0x38(s0)
 	bne	a0,zero,0x0000000000017760
 
@@ -3454,18 +3454,18 @@ l0000000000017840:
 	li	a2,0xFA
 	li	a1,0x1
 	mv	a0,s3
-	jal	ra,__sprintf_chk
+	jal	__sprintf_chk
 	mv	a0,s3
-	jal	ra,herror
-	jal	zero,0x0000000000017770
+	jal	herror
+	j	0x0000000000017770
 
 l0000000000017868:
 	mv	s2,s5
-	jal	zero,0x000000000001766C
+	j	0x000000000001766C
 
 l0000000000017870:
 	mv	a0,s3
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,0xA8(s0)
 
 l000000000001787C:
@@ -3483,12 +3483,12 @@ l000000000001789C:
 	mv	a2,s3
 	addi	a1,sp,0x28
 	li	a0,0xA
-	jal	ra,inet_ntop
+	jal	inet_ntop
 	beq	a0,zero,0x0000000000017768
 
 l00000000000178B4:
 	mv	a0,s3
-	jal	ra,__strdup
+	jal	__strdup
 	li	a5,0x80
 	sd	a0,0xB0(s0)
 	subw	s2,a5,s2
@@ -3498,7 +3498,7 @@ l00000000000178B4:
 l00000000000178D0:
 	lui	a3,0x11
 	addi	a3,a3,0x1D0
-	jal	zero,0x0000000000017740
+	j	0x0000000000017740
 
 l00000000000178DC:
 	addi	a4,s0,0x58
@@ -3506,8 +3506,8 @@ l00000000000178DC:
 	addi	a2,s0,0x48
 	addi	a1,s0,0x40
 	addi	a0,sp,0x8
-	jal	ra,fn0000000000017D10
-	jal	zero,0x0000000000017758
+	jal	fn0000000000017D10
+	j	0x0000000000017758
 
 l00000000000178F8:
 	lw	a5,-0x7EC(gp)
@@ -3519,12 +3519,12 @@ l0000000000017900:
 	mv	a3,s2
 	addi	a2,a2,-0x6A0
 	li	a1,0x1
-	jal	ra,__fprintf_chk
+	jal	__fprintf_chk
 	li	a0,-0x1
-	jal	zero,0x0000000000017774
+	j	0x0000000000017774
 
 l0000000000017920:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn0000000000017924: 0000000000017924
 ;;   Called from:
@@ -3578,8 +3578,8 @@ l0000000000017970:
 l00000000000179A8:
 	ld	a1,-0x780(gp)
 	addi	a0,gp,-0x320
-	jal	ra,fputs
-	jal	zero,0x000000000001796C
+	jal	fputs
+	j	0x000000000001796C
 
 l00000000000179B8:
 	lw	s0,-0x7E8(gp)
@@ -3589,7 +3589,7 @@ l00000000000179C0:
 	lui	s4,0x13
 	li	a1,0x1
 	addi	a0,s4,-0x5C8
-	jal	ra,dlopen
+	jal	dlopen
 	sd	a0,-0x7E0(gp)
 	mv	s3,a0
 	beq	a0,zero,0x0000000000017B14
@@ -3597,54 +3597,54 @@ l00000000000179C0:
 l00000000000179DC:
 	lui	a1,0x13
 	addi	a1,a1,-0x588
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	sd	a0,-0x798(gp)
 	addi	a1,a1,-0x570
 	mv	a0,s3
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s2,a0
 	addi	a1,a1,-0x560
 	mv	a0,s3
 	sd	s2,-0x7A0(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s4,a0
 	addi	a1,a1,-0x540
 	mv	a0,s3
 	sd	s4,-0x7A8(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s5,a0
 	addi	a1,a1,-0x530
 	mv	a0,s3
 	sd	s5,-0x7B8(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s6,a0
 	addi	a1,a1,-0x518
 	mv	a0,s3
 	sd	s6,-0x7C0(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s7,a0
 	addi	a1,a1,-0x500
 	mv	a0,s3
 	sd	s7,-0x7C8(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s8,a0
 	addi	a1,a1,-0x4E8
 	mv	a0,s3
 	sd	s8,-0x7D0(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	lui	a1,0x13
 	mv	s9,a0
 	addi	a1,a1,-0x4C8
 	mv	a0,s3
 	sd	s9,-0x7D8(gp)
-	jal	ra,dlsym
+	jal	dlsym
 	sd	a0,-0x7B0(gp)
 	beq	s2,zero,0x0000000000017ACC
 
@@ -3668,7 +3668,7 @@ l0000000000017AC0:
 
 l0000000000017AC4:
 	sw	zero,-0x7E8(gp)
-	jal	zero,0x0000000000017970
+	j	0x0000000000017970
 
 l0000000000017ACC:
 	lui	a4,0x13
@@ -3688,7 +3688,7 @@ l0000000000017ACC:
 	sd	a3,0x20(a5)
 	sw	a4,0x28(a5)
 	sw	s0,-0x7E8(gp)
-	jal	zero,0x0000000000017970
+	j	0x0000000000017970
 
 l0000000000017B14:
 	li	a3,0x100
@@ -3699,9 +3699,9 @@ l0000000000017B14:
 	mv	a1,a3
 	addi	a0,gp,-0x320
 	li	s0,-0x1
-	jal	ra,__snprintf_chk
+	jal	__snprintf_chk
 	sw	s0,-0x7E8(gp)
-	jal	zero,0x0000000000017970
+	j	0x0000000000017970
 
 ;; fn0000000000017B40: 0000000000017B40
 ;;   Called from:
@@ -3722,7 +3722,7 @@ fn0000000000017B40 proc
 	mv	s2,a2
 	mv	s1,a3
 	mv	s4,a4
-	jal	ra,fn0000000000017924
+	jal	fn0000000000017924
 	beq	a0,zero,0x0000000000017BB0
 
 l0000000000017B84:
@@ -3740,7 +3740,7 @@ l0000000000017B84:
 
 l0000000000017BB0:
 	mv	a0,s0
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	ld	a5,-0x798(gp)
 	mv	s7,a0
 	jalr	ra,a5,0x0
@@ -3769,7 +3769,7 @@ l0000000000017BFC:
 	beq	a0,zero,0x0000000000017C18
 
 l0000000000017C10:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s3)
 
 l0000000000017C18:
@@ -3779,7 +3779,7 @@ l0000000000017C18:
 	beq	a0,zero,0x0000000000017C30
 
 l0000000000017C28:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s2)
 
 l0000000000017C30:
@@ -3810,7 +3810,7 @@ l0000000000017C74:
 	beq	a0,zero,0x0000000000017C84
 
 l0000000000017C7C:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s1)
 
 l0000000000017C84:
@@ -3844,8 +3844,8 @@ l0000000000017CC8:
 	fmv.x.d	a3,fa5
 	li	a1,0x1
 	mv	a0,s4
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017C94
+	jal	__asprintf_chk
+	j	0x0000000000017C94
 
 l0000000000017CF4:
 	ld	a5,-0x7A0(gp)
@@ -3856,7 +3856,7 @@ l0000000000017CF4:
 	bne	a0,zero,0x0000000000017C54
 
 l0000000000017D0C:
-	jal	zero,0x0000000000017B84
+	j	0x0000000000017B84
 
 ;; fn0000000000017D10: 0000000000017D10
 ;;   Called from:
@@ -3877,7 +3877,7 @@ fn0000000000017D10 proc
 	mv	s3,a2
 	mv	s2,a3
 	mv	s5,a4
-	jal	ra,fn0000000000017924
+	jal	fn0000000000017924
 	beq	a0,zero,0x0000000000017D80
 
 l0000000000017D54:
@@ -3927,7 +3927,7 @@ l0000000000017DD8:
 	beq	a0,zero,0x0000000000017DF4
 
 l0000000000017DEC:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s4)
 
 l0000000000017DF4:
@@ -3937,7 +3937,7 @@ l0000000000017DF4:
 	beq	a0,zero,0x0000000000017E0C
 
 l0000000000017E04:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s3)
 
 l0000000000017E0C:
@@ -3974,7 +3974,7 @@ l0000000000017E68:
 	beq	a0,zero,0x0000000000017E78
 
 l0000000000017E70:
-	jal	ra,__strdup
+	jal	__strdup
 	sd	a0,(s2)
 
 l0000000000017E78:
@@ -4008,8 +4008,8 @@ l0000000000017EBC:
 	fmv.x.d	a3,fa5
 	li	a1,0x1
 	mv	a0,s5
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017E88
+	jal	__asprintf_chk
+	j	0x0000000000017E88
 
 l0000000000017EE8:
 	ld	a5,-0x7A0(gp)
@@ -4020,7 +4020,7 @@ l0000000000017EE8:
 	bne	a0,zero,0x0000000000017E30
 
 l0000000000017F00:
-	jal	zero,0x0000000000017D54
+	j	0x0000000000017D54
 
 ;; fn0000000000017F04: 0000000000017F04
 ;;   Called from:
@@ -4041,7 +4041,7 @@ fn0000000000017F04 proc
 	mv	s4,a3
 	sd	a5,0x8(sp)
 	sd	zero,(sp)
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a1,a0,0x10
 	srliw	t1,a0,0x8
 	li	t3,0x20
@@ -4093,10 +4093,10 @@ l0000000000017F94:
 
 l0000000000017FBC:
 	mv	a0,s5
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	mv	s0,a0
 	mv	a0,s4
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	lui	a2,0x13
 	andi	a4,a0,0xFF
 	mv	a7,s6
@@ -4106,7 +4106,7 @@ l0000000000017FBC:
 	addi	a2,a2,-0x410
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
+	jal	__asprintf_chk
 
 l0000000000017FF8:
 	li	a5,-0x1
@@ -4114,14 +4114,14 @@ l0000000000017FF8:
 
 l0000000000018000:
 	ld	a0,(sp)
-	jal	zero,0x0000000000017F88
+	j	0x0000000000017F88
 
 l0000000000018008:
 	mv	a0,s5
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	mv	s0,a0
 	mv	a0,s4
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a4,a0,0x10
 	srliw	a3,s0,0x10
 	lui	a2,0x13
@@ -4131,8 +4131,8 @@ l0000000000018008:
 	addi	a2,a2,-0x3D0
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l0000000000018048:
 	lui	a2,0x13
@@ -4143,8 +4143,8 @@ l0000000000018048:
 	addi	a2,a2,-0x478
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l0000000000018070:
 	lui	a2,0x13
@@ -4154,15 +4154,15 @@ l0000000000018070:
 	addi	a2,a2,-0x458
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l0000000000018094:
 	mv	a0,s5
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	mv	s0,a0
 	mv	a0,s4
-	jal	ra,fn00000000000182B4
+	jal	fn00000000000182B4
 	srliw	a4,a0,0x8
 	srliw	a3,s0,0x8
 	lui	a2,0x13
@@ -4173,8 +4173,8 @@ l0000000000018094:
 	addi	a2,a2,-0x3F0
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l00000000000180D8:
 	lui	a2,0x13
@@ -4183,8 +4183,8 @@ l00000000000180D8:
 	addi	a2,a2,-0x440
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l00000000000180F8:
 	lui	a2,0x13
@@ -4192,11 +4192,11 @@ l00000000000180F8:
 	addi	a2,a2,-0x428
 	li	a1,0x1
 	mv	a0,sp
-	jal	ra,__asprintf_chk
-	jal	zero,0x0000000000017FF8
+	jal	__asprintf_chk
+	j	0x0000000000017FF8
 
 l0000000000018114:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn0000000000018118: 0000000000018118
 ;;   Called from:
@@ -4225,7 +4225,7 @@ l0000000000018148:
 	li	t1,0x9
 	li	a7,0x2E
 	li	t3,-0x1
-	jal	zero,0x0000000000018190
+	j	0x0000000000018190
 
 l0000000000018160:
 	slli	a2,a2,0x20
@@ -4272,7 +4272,7 @@ l00000000000181B4:
 
 l00000000000181EC:
 	addi	a6,a5,0x57
-	jal	zero,0x0000000000018160
+	j	0x0000000000018160
 
 l00000000000181F4:
 	slliw	t5,t5,0x2
@@ -4297,7 +4297,7 @@ l00000000000181FC:
 	addi	a0,sp,0x8
 	sh	a4,0x2(t4)
 	sh	a5,0x8(t4)
-	jal	ra,__strdup
+	jal	__strdup
 
 l0000000000018248:
 	ld	a4,0x108(sp)
@@ -4331,14 +4331,14 @@ l0000000000018294:
 	sb	a4,0x8(sp)
 	sb	a5,0x9(sp)
 	li	t4,0x2
-	jal	zero,0x0000000000018144
+	j	0x0000000000018144
 
 l00000000000182A8:
 	li	a0,0x0
-	jal	zero,0x0000000000018248
+	j	0x0000000000018248
 
 l00000000000182B0:
-	jal	ra,__stack_chk_fail
+	jal	__stack_chk_fail
 
 ;; fn00000000000182B4: 00000000000182B4
 ;;   Called from:

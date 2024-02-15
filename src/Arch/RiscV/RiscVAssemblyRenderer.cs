@@ -33,6 +33,9 @@ namespace Reko.Arch.RiscV
     {
         private static readonly Dictionary<Mnemonic, string> mnemonicNames;
         private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
+        private static readonly int[] ops_0_1 = new[] { 0, 1 };
+        private static readonly int[] ops_0_2 = new[] { 0, 2 };
+        private static readonly int[] ops_1 = new[] { 1 };
 
         public static RiscVAssemblyRenderer Renderer { get; } = new RiscVAssemblyRenderer();
 
@@ -257,37 +260,31 @@ namespace Reko.Arch.RiscV
         {
             if (!options.Flags.HasFlag(MachineInstructionRendererFlags.RenderInstructionsCanonically))
             {
+                RegisterStorage reg;
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.addi:
                     if (((RegisterStorage) instr.Operands[1]).Number == 0)
                     {
-                        renderer.WriteMnemonic("li");
-                        renderer.Tab();
-                        RenderOperands(instr, options, renderer, instr.Operands[0], instr.Operands[2]);
+                        RenderSyntheticInstruction("li", instr, renderer, options, ops_0_2);
                         return;
                     }
                     if (((ImmediateOperand) instr.Operands[2]).Value.IsZero)
                     {
-                        renderer.WriteMnemonic("mv");
-                        renderer.Tab();
-                        RenderOperands(instr, options, renderer, instr.Operands[0], instr.Operands[1]);
+                        RenderSyntheticInstruction("mv", instr, renderer, options, ops_0_1);
                         return;
                     }
                     break;
                 case Mnemonic.jal:
-                    if (((RegisterStorage) instr.Operands[0]).Number == 0)
+                    reg = (RegisterStorage) instr.Operands[0];
+                    if (reg.Number == 0)
                     {
-                        renderer.WriteMnemonic("j");
-                        renderer.Tab();
-                        RenderOperands(instr, options, renderer, instr.Operands[1]);
+                        RenderSyntheticInstruction("j", instr, renderer, options, ops_1);
                         return;
                     }
-                    if (((RegisterStorage) instr.Operands[0]).Number == 1)
+                    if (reg.Number == 1)
                     {
-                        renderer.WriteMnemonic("jal");
-                        renderer.Tab();
-                        RenderOperands(instr, options, renderer, instr.Operands[1]);
+                        RenderSyntheticInstruction("jal", instr, renderer, options, ops_1);
                         return;
                     }
                     break;
@@ -304,6 +301,46 @@ namespace Reko.Arch.RiscV
             {
                 renderer.Tab();
                 RenderOperands(instr, options, renderer);
+            }
+        }
+
+        /// <summary>
+        /// Renders a synthetic version of an instruction. A synthetic 
+        /// instruction is a variant of a "base" instruction which has
+        /// simplified or otherwise changed syntax. Often, the number of
+        /// operands or the order of operands is changed.
+        /// </summary>
+        /// <param name="mnemonic">Mnemonic to use for the synthetic
+        /// instruction</param>
+        /// <param name="instr">Instruction to render.</param>
+        /// <param name="renderer"><see cref="MachineInstructionRenderer"/>
+        /// used to output the formatted instruction.</param>
+        /// <param name="options">An instance of <see cref="MachineInstructionRendererOptions"/>
+        /// used to control the formatting of the instruction.</param>
+        /// <param name="operandProjection">
+        /// An array of integers, each of which is an index into the 
+        /// <see cref="MachineInstruction.Operands"/> array of the "base"
+        /// instruction. These may number fewer than the operands 
+        /// in the "base" instruction.
+        /// </param>
+        private void RenderSyntheticInstruction(
+            string mnemonic, 
+            RiscVInstruction instr,
+            MachineInstructionRenderer renderer,
+            MachineInstructionRendererOptions options,
+            int [] operandProjection)
+        {
+            renderer.WriteMnemonic(mnemonic);
+            if (operandProjection.Length == 0)
+                return;
+            renderer.Tab();
+            var operandSeparator = "";
+            for (int i = 0; i < operandProjection.Length; ++i)
+            {
+                renderer.WriteString(operandSeparator);
+                operandSeparator = options.OperandSeparator ?? ",";
+                var operand = instr.Operands[operandProjection[i]];
+                RenderOperand(instr, operand, renderer, options);
             }
         }
 
