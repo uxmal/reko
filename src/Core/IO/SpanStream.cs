@@ -271,8 +271,12 @@ namespace Reko.Core.IO
 
 		public unsafe void Write<T>(T value) where T : unmanaged {
 			var start = Memory.Span.Slice(pos, sizeof(T));
+#if NET6_0
             MemoryMarshal.Write(start, ref value);
-			pos += sizeof(T);
+#else
+            MemoryMarshal.Write(start, in value);
+#endif
+            pos += sizeof(T);
 		}
 
 		public unsafe void WriteAt<T>(long offset, T value) where T : unmanaged {

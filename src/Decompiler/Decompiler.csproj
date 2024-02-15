@@ -5,7 +5,7 @@
   <Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>
   -->
 	<PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <AssemblyName>Reko.Decompiler</AssemblyName>
     <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
