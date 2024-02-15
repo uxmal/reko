@@ -275,6 +275,22 @@ namespace Reko.Arch.RiscV
                         return;
                     }
                     break;
+                case Mnemonic.jal:
+                    if (((RegisterStorage) instr.Operands[0]).Number == 0)
+                    {
+                        renderer.WriteMnemonic("j");
+                        renderer.Tab();
+                        RenderOperands(instr, options, renderer, instr.Operands[1]);
+                        return;
+                    }
+                    if (((RegisterStorage) instr.Operands[0]).Number == 1)
+                    {
+                        renderer.WriteMnemonic("jal");
+                        renderer.Tab();
+                        RenderOperands(instr, options, renderer, instr.Operands[1]);
+                        return;
+                    }
+                    break;
                 }
             }
             DoRender(instr, renderer, options);

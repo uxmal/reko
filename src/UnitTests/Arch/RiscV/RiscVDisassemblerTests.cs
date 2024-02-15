@@ -158,9 +158,21 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_jal_ra()
+        {
+            AssertCode("jal\t0x000FF1F4", 0x9F4FF0EF);
+        }
+
+        [Test]
+        public void RiscV_dasm_jal_zero()
+        {
+            AssertCode("j\t0x000FF1F4", 0x9F4FF06F);
+        }
+
+        [Test]
         public void RiscV_dasm_jal()
         {
-            AssertCode("jal\tzero,0x000FF1F4", 0x9F4FF06F);
+            AssertCode("jal\ttp,0x000FF1F4", 0x9F4FF26F);
         }
 
         [Test]
