@@ -2,9 +2,9 @@ name: Reko
 
 on:
   push:
-    branches: [ master, net6.0, msbuildify ]
+    branches: [ master, net8.0, msbuildify ]
   pull_request:
-    branches: [ master, net6.0 ]
+    branches: [ master, net8.0 ]
 
 env:
   MSBUILDDISABLENODEREUSE: 1
