@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog.Z80;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Memory;

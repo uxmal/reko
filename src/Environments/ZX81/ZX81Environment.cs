@@ -20,7 +20,7 @@
 
 // https://cdn.hackaday.io/files/289631239152992/ZX81_dual_2018-02-09.htm
 
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog.Z80;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Memory;

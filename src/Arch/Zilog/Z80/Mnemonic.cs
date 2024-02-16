@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     public enum Mnemonic
     {

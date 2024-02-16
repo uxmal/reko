@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Analysis;
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using X86Registers = Reko.Arch.X86.Registers;
-using Z80Registers = Reko.Arch.Z80.Registers;
+using Z80Registers = Reko.Arch.Zilog.Z80.Registers;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void Given_Z80_Arch()
         {
-            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
+            this.arch = new Z80Architecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
         }
 
         /// <summary>

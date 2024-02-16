@@ -19,32 +19,31 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog;
+using Reko.Arch.Zilog.Z80;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Services;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.Z80
+namespace Reko.UnitTests.Arch.Zilog.Z80
 {
     [TestFixture]
-    public class DisassemblerTests : DisassemblerTestBase<Z80Instruction>
+    public class Z80DisassemblerTests : DisassemblerTestBase<Z80Instruction>
     {
-        private Z80ProcessorArchitecture arch;
+        private Z80Architecture arch;
 
-        public DisassemblerTests()
+        public Z80DisassemblerTests()
         {
-            this.arch = new Z80ProcessorArchitecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
-            this.LoadAddress = Address.Ptr16(0x100);
+            arch = new Z80Architecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
+            LoadAddress = Address.Ptr16(0x100);
         }
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress { get; }
 
-        private MachineInstruction RunTest(params byte [] bytes)
+        private MachineInstruction RunTest(params byte[] bytes)
         {
             var image = new ByteMemoryArea(LoadAddress, bytes);
             var rdr = new LeImageReader(image, 0);
@@ -268,60 +267,60 @@ namespace Reko.UnitTests.Arch.Z80
             Assert.AreEqual("jp\t(hl)", instr.ToString());
         }
 
-         [Test]
-         public void Z80dis_jr()
-         {
-             var instr = RunTest(0x18, 0xFE);
-             Assert.AreEqual("jr\t0100", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_jr()
+        {
+            var instr = RunTest(0x18, 0xFE);
+            Assert.AreEqual("jr\t0100", instr.ToString());
+        }
 
-         [Test]
-         public void Z80dis_rst_18()
-         {
-             var instr = RunTest(0xDF);
-             Assert.AreEqual("rst\t18", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_rst_18()
+        {
+            var instr = RunTest(0xDF);
+            Assert.AreEqual("rst\t18", instr.ToString());
+        }
 
-         [Test]
-         public void Z80dis_out_c_b()
-         {
-             var instr = RunTest(0xED, 0x41);
-             Assert.AreEqual("out\t(c),b", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_out_c_b()
+        {
+            var instr = RunTest(0xED, 0x41);
+            Assert.AreEqual("out\t(c),b", instr.ToString());
+        }
 
-         [Test]
-         public void Z80dis_inc_hl_ind()
-         {
-             var instr = RunTest(0x34);
-             Assert.AreEqual("inc\t(hl)", instr.ToString());
-         }
-         [Test]
-         public void Z80dis_dec_ix_ind()
-         {
-             var instr = RunTest(0xDD, 0x35);
-             Assert.AreEqual("dec\t(ix)", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_inc_hl_ind()
+        {
+            var instr = RunTest(0x34);
+            Assert.AreEqual("inc\t(hl)", instr.ToString());
+        }
+        [Test]
+        public void Z80dis_dec_ix_ind()
+        {
+            var instr = RunTest(0xDD, 0x35);
+            Assert.AreEqual("dec\t(ix)", instr.ToString());
+        }
 
-         [Test]
-         public void Z80dis_set_7_m()
-         {
-             var instr = RunTest(0xCB, 0xFE);
-             Assert.AreEqual("set\t07,(hl)", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_set_7_m()
+        {
+            var instr = RunTest(0xCB, 0xFE);
+            Assert.AreEqual("set\t07,(hl)", instr.ToString());
+        }
 
-         [Test]
-         public void Z80dis_ex_stacktop_hl()
-         {
-             var instr = RunTest(0xE3);
-             Assert.AreEqual("ex\t(sp),hl", instr.ToString());
-         }
+        [Test]
+        public void Z80dis_ex_stacktop_hl()
+        {
+            var instr = RunTest(0xE3);
+            Assert.AreEqual("ex\t(sp),hl", instr.ToString());
+        }
 
-         [Test]
-         public void Z80_Bit7_offset()
-         {
-             var instr = RunTest(0xFD, 0xCB, 0x3B, 0x7E);
-             Assert.AreEqual("bit\t07,(iy+3B)", instr.ToString());
-         }
+        [Test]
+        public void Z80_Bit7_offset()
+        {
+            var instr = RunTest(0xFD, 0xCB, 0x3B, 0x7E);
+            Assert.AreEqual("bit\t07,(iy+3B)", instr.ToString());
+        }
 
 
     }

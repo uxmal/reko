@@ -358,7 +358,7 @@ namespace Reko.Arch.RiscV
             }
 
             if (instr.Acquire || instr.Release)
-                sb.Append(".");
+                sb.Append('.');
             if (instr.Acquire)
                 sb.Append("aq");
             if (instr.Release)
@@ -460,7 +460,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        protected string FormatSignedValue(long n, bool forceSign = false)
+        protected static string FormatSignedValue(long n, bool forceSign = false)
         {
             string sign = "";
             if (n < 0)
@@ -478,7 +478,7 @@ namespace Reko.Arch.RiscV
             return sb.ToString();
         }
 
-        protected string FormatUnsignedValue(ulong n, string format = "0x{0:X}")
+        protected static string FormatUnsignedValue(ulong n, string format = "0x{0:X}")
         {
             return string.Format(format, n);
         }

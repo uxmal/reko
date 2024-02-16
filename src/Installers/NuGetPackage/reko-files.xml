@@ -64,7 +64,7 @@
         <var id="var.X86.TargetPath" >$SolutionDir$/Arch/X86/$TargetDir$/Reko.Arch.X86.dll</var>
         <var id="var.XCore.TargetPath" >$SolutionDir$/Arch/XCore/$TargetDir$/Reko.Arch.XCore.dll</var>
         <var id="var.Xtensa.TargetPath" >$SolutionDir$/Arch/Xtensa/$TargetDir$/Reko.Arch.Xtensa.dll</var>
-        <var id="var.Z80.TargetPath" >$SolutionDir$/Arch/Z80/$TargetDir$/Reko.Arch.Z80.dll</var>
+        <var id="var.Z80.TargetPath" >$SolutionDir$/Arch/Zilog/$TargetDir$/Reko.Arch.Zilog.dll</var>
         <var id="var.zSeries.TargetPath" >$SolutionDir$/Arch/zSeries/$TargetDir$/Reko.Arch.zSeries.dll</var>
         <var id="var.i8051.TargetPath" >$SolutionDir$/Arch/i8051/$TargetDir$/Reko.Arch.i8051.dll</var>
 

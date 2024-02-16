@@ -18,32 +18,24 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core.Types;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
-    public class Z80Instruction : MachineInstruction
+    public class ConditionOperand : AbstractMachineOperand
     {
-        public Mnemonic Mnemonic { get; set; }
-        public override int MnemonicAsInteger => (int)Mnemonic;
-        public override string MnemonicAsString => Mnemonic.ToString();
+        public CondCode Code;
+
+        public ConditionOperand(CondCode code)
+            : base(PrimitiveType.Byte)
+        {
+            this.Code = code;
+        }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Mnemonic == Mnemonic.ex_af)
-            {
-                renderer.WriteMnemonic("ex");
-                renderer.Tab();
-                renderer.WriteString("af,af'");
-                return;
-            }
-            renderer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(renderer, options);
+            renderer.WriteString(Code.ToString());
         }
     }
 }

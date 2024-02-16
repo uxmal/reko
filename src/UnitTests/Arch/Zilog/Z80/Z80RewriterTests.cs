@@ -19,18 +19,18 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
 
-namespace Reko.UnitTests.Arch.Z80
+namespace Reko.UnitTests.Arch.Zilog.Z80
 {
     [TestFixture]
-    public class RewriterTests : RewriterTestBase
+    public class Z80RewriterTests : RewriterTestBase
     {
-        private readonly Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
+        private readonly Z80Architecture arch = new Z80Architecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
         private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public override IProcessorArchitecture Architecture => arch;
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Arch.Z80
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Z = cond(a - Mem0[hl:byte])",
                 "2|L--|hl = hl - 1<i16>",
-                "3|L--|bc = bc - 1<16>", 
+                "3|L--|bc = bc - 1<16>",
                 "4|T--|if (bc == 0<16>) branch 0102",
                 "5|T--|if (Test(NE,Z)) branch 0100");
         }

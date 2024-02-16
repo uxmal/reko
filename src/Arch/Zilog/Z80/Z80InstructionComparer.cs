@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     public class Z80InstructionComparer : InstructionComparer
     {

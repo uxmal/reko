@@ -11,7 +11,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\Z80\Z80.csproj" />
+    <ProjectReference Include="..\..\Arch\Zilog\Zilog.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     using Decoder = Decoder<Z80Disassembler, Mnemonic, Z80Instruction>;
     using Mutator = Mutator<Z80Disassembler>;
@@ -41,13 +41,13 @@ namespace Reko.Arch.Z80
     {
 #pragma warning disable IDE1006 // Naming Styles
 
-        private readonly Z80ProcessorArchitecture arch;
+        private readonly Z80Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
         private RegisterStorage? IndexRegister;
 
-        public Z80Disassembler(Z80ProcessorArchitecture arch, EndianImageReader rdr)
+        public Z80Disassembler(Z80Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

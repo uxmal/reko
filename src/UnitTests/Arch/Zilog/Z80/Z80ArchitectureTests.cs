@@ -19,23 +19,23 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Z80;
-using Reko.Core;
+using Reko.Arch.Zilog;
+using Reko.Arch.Zilog.Z80;
 using Reko.Core.Lib;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Reko.UnitTests.Arch.Z80
+namespace Reko.UnitTests.Arch.Zilog.Z80
 {
     [TestFixture]
     public class Z80ArchitectureTests
     {
-        private Z80ProcessorArchitecture arch;
+        private Z80Architecture arch;
 
         [SetUp]
         public void Setup()
         {
-            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
+            arch = new Z80Architecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
         }
 
         [Test]

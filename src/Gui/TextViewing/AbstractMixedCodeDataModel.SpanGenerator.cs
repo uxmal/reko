@@ -25,11 +25,9 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Gui.Services;
-using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Text;
 
 namespace Reko.Gui.TextViewing

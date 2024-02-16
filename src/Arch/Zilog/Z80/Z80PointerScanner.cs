@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     public class Z80PointerScanner : PointerScanner<ushort>
     {

@@ -369,7 +369,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Z80\Z80.csproj">
+    <ProjectReference Include="..\Arch\Zilog\Zilog.csproj">
       <Name>Z80</Name>
       <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
       <Private>True</Private>

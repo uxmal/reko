@@ -27,17 +27,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     public class Z80ProcessorState : ProcessorState
     {
         const int RegisterFileItems = 32;
 
-        private Z80ProcessorArchitecture arch;
+        private Z80Architecture arch;
         private ushort[] registerFile;
         private bool[] isValid;
 
-        public Z80ProcessorState(Z80ProcessorArchitecture arch)
+        public Z80ProcessorState(Z80Architecture arch)
         {
             this.arch = arch;
             this.registerFile = new ushort[RegisterFileItems];

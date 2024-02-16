@@ -20,14 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
+#nullable enable
 
 namespace Reko.UnitTests.Mocks
 {
@@ -40,13 +38,13 @@ namespace Reko.UnitTests.Mocks
             this.StructureMemberAlignment = 4;
         }
 
-        public Func<RegisterStorage, bool> Test_IsImplicitArgumentRegister;
+        public Func<RegisterStorage, bool>? Test_IsImplicitArgumentRegister;
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return Test_IsImplicitArgumentRegister(reg);
+            return Test_IsImplicitArgumentRegister!(reg);
         }
 
-        public Func<HashSet<RegisterStorage>> Test_CreateTrashedRegisters;
+        public Func<HashSet<RegisterStorage>>? Test_CreateTrashedRegisters;
         public override HashSet<RegisterStorage> TrashedRegisters
         {
             get
@@ -57,13 +55,13 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public Func<string, CallingConvention> Test_GetCallingConvention = (s) => null;
-        public override CallingConvention GetCallingConvention(string ccName)
+        public Func<string?, CallingConvention?>? Test_GetCallingConvention = (s) => null;
+        public override CallingConvention? GetCallingConvention(string? ccName)
         {
-            return Test_GetCallingConvention(ccName);
+            return Test_GetCallingConvention!(ccName);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, IMemory? memory)
+        public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             throw new NotImplementedException();
         }
@@ -92,7 +90,7 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             return null;
         }

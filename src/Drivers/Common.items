@@ -65,7 +65,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\X86\X86.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\XCore\XCore.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Xtensa\Xtensa.csproj" />
-    <ProjectReference Include="$(SolutionDir)Arch\Z80\Z80.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Zilog\Zilog.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\zSeries\zSeries.csproj" />
     <ProjectReference Include="$(SolutionDir)Core\Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Decompiler\Decompiler.csproj" />
@@ -176,7 +176,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(StandardOutputDir)\Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\XCore\bin\$(StandardOutputDir)\Reko.Arch.XCore.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(StandardOutputDir)\Reko.Arch.Xtensa.*" />
-    <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(StandardOutputDir)\Reko.Arch.Z80.*" />
+    <Architectures Include="$(SolutionDir)Arch\Zilog\bin\$(StandardOutputDir)\Reko.Arch.Zilog.*" />
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(StandardOutputDir)\Reko.Arch.zSeries.*" />
 
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />

@@ -33,11 +33,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Z80
+namespace Reko.Arch.Zilog.Z80
 {
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private readonly Z80ProcessorArchitecture arch;
+        private readonly Z80Architecture arch;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Z80Instruction> dasm;
@@ -46,7 +46,7 @@ namespace Reko.Arch.Z80
         private InstrClass iclass;
         private Z80Instruction instr;
 
-        public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public Z80Rewriter(Z80Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.binder = binder;

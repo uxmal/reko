@@ -18,7 +18,8 @@
  */
 #endregion
 
-using Reko.Arch.Z80;
+using Reko.Arch.Zilog;
+using Reko.Arch.Zilog.Z80;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -31,7 +32,7 @@ namespace Reko.UnitTests.Fragments
 {
     public class RorChainFragment : ProcedureBuilder
     {
-        public RorChainFragment() : base(new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>())) { }
+        public RorChainFragment() : base(new Z80Architecture(new ServiceContainer(), "z80", new Dictionary<string, object>())) { }
 
         protected override void BuildBody()
         {
