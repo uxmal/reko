@@ -469,6 +469,9 @@ namespace Reko.Tools.regressionTests
 
         private void ExecuteJobs(List<Job> jobs)
         {
+            ThreadPool.GetAvailableThreads(out var numWorkers, out var numCompletionPorts);
+            Console.Error.WriteLine($"Number of workers: {numWorkers} -> {Environment.ProcessorCount}, {numCompletionPorts}");
+            ThreadPool.SetMaxThreads(Environment.ProcessorCount, numCompletionPorts);
             var orderedJobs = OrderJobsByWeight(jobs);
             this.jobsRemaining = new CountdownEvent(jobs.Count);
             foreach (var job in orderedJobs)
