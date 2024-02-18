@@ -1,5 +1,10 @@
 FROM debian:12
 
+# basic debian installation with:
+# - gcc and capstone (for ArmNative)
+# - cmake for building
+# - 7zip for packaging
+# - multiple dotnet SDKs
 RUN apt-get update \
     && apt-get install -y \
         locales ca-certificates curl git \

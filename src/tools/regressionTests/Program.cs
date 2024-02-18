@@ -68,6 +68,14 @@ namespace Reko.Tools.regressionTests
                 dirs.Add(subjects_dir);
             }
 
+            /**
+             * .NET appears to be using up to 2^15 workers by default, which translates into too many concurrent reko processes
+             * (and a potential crash of the CI runner).
+             * change the limit to use the number of available processors instead.
+             */
+            ThreadPool.GetAvailableThreads(out _, out var numCompletionPorts);
+            ThreadPool.SetMaxThreads(Environment.ProcessorCount, numCompletionPorts);
+
             var watch = new Stopwatch();
             watch.Start();
             var jobs = CollectJobs(dirs);
@@ -469,9 +477,6 @@ namespace Reko.Tools.regressionTests
 
         private void ExecuteJobs(List<Job> jobs)
         {
-            ThreadPool.GetAvailableThreads(out var numWorkers, out var numCompletionPorts);
-            Console.Error.WriteLine($"Number of workers: {numWorkers} -> {Environment.ProcessorCount}, {numCompletionPorts}");
-            ThreadPool.SetMaxThreads(Environment.ProcessorCount, numCompletionPorts);
             var orderedJobs = OrderJobsByWeight(jobs);
             this.jobsRemaining = new CountdownEvent(jobs.Count);
             foreach (var job in orderedJobs)

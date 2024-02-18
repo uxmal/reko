@@ -1,5 +1,10 @@
 FROM debian:12
 
+# basic debian installation with:
+# - gcc and capstone (for ArmNative)
+# - cmake for building
+# - 7zip for packaging
+# - multiple dotnet SDKs
 RUN apt-get update \
     && apt-get install -y \
         locales ca-certificates curl git \
@@ -13,6 +18,6 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && dotnet nuget locals all --clear
-    # reserved for cache eviction: 2
+    # reserved for cache eviction: 1
 
 ENV LANG en_US.utf8
