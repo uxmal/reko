@@ -75,7 +75,6 @@
 #                 [SOURCES additional_file_dependencies... ])
 # 
 # For all the above functions, `RELEASE|DEBUG` overrides `CONFIG`, `X86|X64|ANYCPU` overrides PLATFORM.
-# For Unix systems, the target framework defaults to `net6.0`, unless `NETCOREAPP` is specified.
 # For Windows, the project is built as-is, allowing multi-targeting.
 #
 #
@@ -172,7 +171,7 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
         # options (flags)
         "RELEASE;DEBUG;X86;X64;ANYCPU;NETCOREAPP;NO_RESTORE;NO_CLEAN" 
         # oneValueArgs
-        "CONFIG;PLATFORM;VERSION;OUTPUT_PATH;TARGET_NAME"
+        "CONFIG;PLATFORM;FRAMEWORK;VERSION;OUTPUT_PATH;TARGET_NAME"
         # multiValueArgs
         "PACKAGE;DEPENDS;ARGUMENTS;PACK_ARGUMENTS;OUTPUT;SOURCES;CUSTOM_BUILDPROPS"
         # the input arguments
@@ -256,6 +255,7 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     SET(DOTNET_CONFIG   ${_DN_CONFIG}   PARENT_SCOPE)
     SET(DOTNET_PLATFORM ${_DN_PLATFORM} PARENT_SCOPE)
     SET(DOTNET_DEPENDS  ${_DN_DEPENDS}  PARENT_SCOPE)
+    set(DOTNET_FRAMEWORK ${_DN_FRAMEWORK} PARENT_SCOPE)
     SET(DOTNET_PROJNAME ${_DN_projname_noext} PARENT_SCOPE)
     set(DOTNET_TARGETNAME ${_DN_TARGET_NAME} PARENT_SCOPE)
     SET(DOTNET_PROJPATH ${_DN_abs_proj} PARENT_SCOPE)
@@ -270,13 +270,9 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
         SET(_DN_PLATFORM_PROP "/p:Platform=${_DN_PLATFORM}")
     ENDIF()
 
-    IF(_DN_NETCOREAPP)
-        SET(_DN_BUILD_OPTIONS -f net6.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net6.0)
-    ELSEIF(UNIX)
-        # Unix builds default to net6.0
-        SET(_DN_BUILD_OPTIONS -f net6.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net6.0)
+    if(_DN_FRAMEWORK)
+        SET(_DN_BUILD_OPTIONS -f ${_DN_FRAMEWORK})
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=${_DN_FRAMEWORK})
     ENDIF()
 
     SET(_DN_IMPORT_PROP ${CMAKE_CURRENT_BINARY_DIR}/${_DN_projname}.imports.props)
@@ -452,7 +448,7 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
         DEPENDS ${DOTNET_deps}
         ${dotnet_run_cmds}
         # XXX tfm
-        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net6.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
+        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/${DOTNET_FRAMEWORK}/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
         #COMMAND ${CMAKE_COMMAND} -E echo ${aio_run_command}
         #COMMAND ${aio_run_command}
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/${DOTNET_TARGETNAME}.runtimestamp
@@ -466,10 +462,8 @@ ENDFUNCTION()
 FUNCTION(TEST_DOTNET DOTNET_PROJECT)
     DOTNET_GET_DEPS(${DOTNET_PROJECT} "${ARGN}")
     MESSAGE("-- Adding dotnet test project ${DOTNET_PROJECT}")
-    IF(WIN32)
-        SET(test_framework_args "")
-    ELSE()
-        SET(test_framework_args -f net6.0)
+    IF(DOTNET_FRAMEWORK)
+        SET(test_framework_args -f ${DOTNET_FRAMEWORK})
     ENDIF()
 
     ADD_TEST(NAME              ${DOTNET_PROJNAME}
