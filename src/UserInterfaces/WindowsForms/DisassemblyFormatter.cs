@@ -32,6 +32,7 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class DisassemblyFormatter : MachineInstructionRenderer 
     {
+        private readonly TextSpanFactory factory;
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
         private readonly MachineInstruction instr;
@@ -42,11 +43,13 @@ namespace Reko.UserInterfaces.WindowsForms
         private Address addrInstr;
 
         public DisassemblyFormatter(
+            TextSpanFactory factory,
             Program program, 
             IProcessorArchitecture arch, 
             MachineInstruction instr, 
             List<ITextSpan> line)
         {
+            this.factory = factory;
             this.program = program;
             this.arch = arch;
             this.instr = instr;
@@ -78,21 +81,21 @@ namespace Reko.UserInterfaces.WindowsForms
         public void WriteMnemonic(string sMnemonic)
         {
             TerminateSpan();
-            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", this.mnemonicStyle));
+            line.Add(factory.CreateInstructionTextSpan(instr, sMnemonic + " ", this.mnemonicStyle));
             TerminateSpan();
         }
 
         public void WriteAddress(string formattedAddress, Address addr)
         {
             TerminateSpan();
-            TextSpan span;
+            ITextSpan span;
             if (program.Procedures.TryGetValue(addr, out Procedure proc))
             {
-                span = new DisassemblyTextModel.ProcedureTextSpan(proc, addr);
+                span = factory.CreateProcedureTextSpan(proc, addr);
             }
             else
             {
-                span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
+                span = factory.CreateAddressTextSpan(addr, formattedAddress);
             }
             line.Add(span);
         }

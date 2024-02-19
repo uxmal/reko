@@ -140,8 +140,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public Address GetAnchorAddress()
         {
             var pt = GetAnchorMiddlePoint();
-            var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
-            if (memoryTextSpan == null || memoryTextSpan.Address == null)
+            var memoryTextSpan = GetTagFromPoint(pt) as WindowsFormsTextSpanFactory.MemoryTextSpan;
+            if (memoryTextSpan is null || memoryTextSpan.Address is null)
                 return MixedCodeDataModel.PositionAddress(anchorPos.Line);
             return memoryTextSpan.Address;
         }

@@ -82,6 +82,7 @@ namespace Reko.Gui.TextViewing
             return ((long)a).CompareTo((long)b);
         }
 
+
         public LineSpan[] GetLineSpans(int count)
         {
             var lines = new List<LineSpan>();

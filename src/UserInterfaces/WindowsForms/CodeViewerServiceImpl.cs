@@ -27,6 +27,7 @@ using System.Linq;
 using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.Core.Loading;
+using Reko.Gui.TextViewing;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -35,24 +36,27 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class CodeViewerServiceImpl : ViewService, ICodeViewerService
     {
-        public CodeViewerServiceImpl(IServiceProvider sp) : base (sp)
+        private TextSpanFactory factory;
+
+        public CodeViewerServiceImpl(IServiceProvider sp, TextSpanFactory factory) : base (sp)
         {
+            this.factory = factory;
         }
 
         public void DisplayProcedure(Program program, Procedure proc, bool mixedMode)
         {
-            if (proc == null)
+            if (proc is null)
                 return;
             if (mixedMode)
             {
-                var pane = new CombinedCodeViewInteractor();
+                var pane = new CombinedCodeViewInteractor(factory);
                 var windowType = typeof(CombinedCodeViewInteractor).Name;
                 var frame = ShowWindow(windowType, proc.Name, proc, pane);
                 ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
             }
             else
             {
-                var pane = new CodeViewInteractor();
+                var pane = new CodeViewInteractor(factory);
                 var windowType = typeof(CombinedCodeViewInteractor).Name;
                 var frame = ShowWindow(windowType, proc.Name, proc, pane);
                 ((CodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
@@ -63,7 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (proc is null)
                 return;
-            var pane = new CombinedCodeViewInteractor();
+            var pane = new CombinedCodeViewInteractor(factory);
             var windowType = typeof(CombinedCodeViewInteractor).Name;
             var frame = ShowWindow(windowType, proc.Name, proc, pane);
             ((CombinedCodeViewInteractor) frame.Pane).ViewGraph(proc);
@@ -72,7 +76,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void DisplayStatement(Program program, Statement stm)
         {
-            var pane = new CombinedCodeViewInteractor();
+            var pane = new CombinedCodeViewInteractor(factory);
             var windowType = typeof(CombinedCodeViewInteractor).Name;
             var proc = stm.Block.Procedure;
             var frame = ShowWindow(windowType, proc.Name, proc, pane);
@@ -81,7 +85,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void DisplayGlobals(Program program, ImageSegment segment)
         {
-            var pane = new CombinedCodeViewInteractor();
+            var pane = new CombinedCodeViewInteractor(factory);
             var windowType = typeof(CombinedCodeViewInteractor).Name;
             var label = string.Format(Resources.SegmentGlobalsFmt, segment.Name);
             var frame = ShowWindow(windowType, label, segment, pane);

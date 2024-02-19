@@ -32,14 +32,16 @@ namespace Reko.Gui.TextViewing
     public abstract class AbstractProcedureCodeModel : ITextViewModel
     {
         private readonly Procedure proc;
+        protected readonly TextSpanFactory factory;
         private int position;
         private LineSpan[]? lines;      // The procedure, rendered into line spans
         private readonly int numLines;
         private readonly ISelectedAddressService selSvc;
 
-        public AbstractProcedureCodeModel(Procedure proc, ISelectedAddressService selSvc)
+        public AbstractProcedureCodeModel(Procedure proc, TextSpanFactory factory, ISelectedAddressService selSvc)
         {
             this.proc = proc;
+            this.factory = factory;
             this.numLines = CountLines();
             this.selSvc = selSvc;
         }
@@ -81,17 +83,13 @@ namespace Reko.Gui.TextViewing
                     }
                 }
                 else
-                    line = new LineSpan(p + i, null, new ITextSpan[] { CreateEmptyTextSpan() });
+                    line = new LineSpan(p + i, null, new ITextSpan[] { factory.CreateEmptyTextSpan() });
                 Debug.Assert((int) line.Position == p + i);
                 spans[i] = line;
             }
             position = p + c;
             return spans;
         }
-
-        protected abstract ITextSpan CreateEmptyTextSpan();
-
-        protected abstract AbstractTextSpanFormatter CreateTextSpanFormatter();
 
         public (int, int) GetPositionAsFraction()
         {
@@ -118,7 +116,7 @@ namespace Reko.Gui.TextViewing
         {
             if (lines != null)
                 return lines;
-            var tsf = CreateTextSpanFormatter();
+            var tsf = factory.CreateTextSpanFormatter();
             WriteCode(tsf);
             this.lines = tsf.GetLines();
             return this.lines;

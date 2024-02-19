@@ -21,32 +21,19 @@
 using Reko.Core;
 using Reko.Gui.Services;
 using Reko.Gui.TextViewing;
+using System;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     /// <summary>
     /// Provides a text model that use to show code of a procedure.
     /// </summary>
+    [Obsolete("subclass no longer needed")]
     public class ProcedureCodeModel : AbstractProcedureCodeModel
     {
-        public ProcedureCodeModel(Procedure proc, ISelectedAddressService selSvc)
-                : base(proc, selSvc)
+        public ProcedureCodeModel(Procedure proc, TextSpanFactory factory, ISelectedAddressService selSvc)
+                : base(proc, factory, selSvc)
         {
-        }
-
-        protected override ITextSpan CreateEmptyTextSpan()
-        {
-            return new EmptyTextSpan();
-        }
-
-        protected override AbstractTextSpanFormatter CreateTextSpanFormatter()
-        {
-            return new TextSpanFormatter();
-        }
-
-        private class EmptyTextSpan : TextSpan
-        {
-            public override string GetText() => "";
         }
     }
 }

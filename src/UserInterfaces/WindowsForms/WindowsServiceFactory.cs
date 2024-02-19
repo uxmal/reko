@@ -25,6 +25,7 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels;
 using Reko.Loading;
 using Reko.Services;
@@ -45,11 +46,13 @@ namespace Reko.UserInterfaces.WindowsForms
     {
         private readonly IServiceProvider services;
         private readonly MainForm mainForm;
+        private readonly TextSpanFactory textSpanFactory;
 
         public WindowsServiceFactory(IServiceProvider services, MainForm mainForm)
         {
             this.services = services;
             this.mainForm = mainForm;
+            this.textSpanFactory = new WindowsFormsTextSpanFactory();
         }
 
         public ISettingsService CreateSettingsService()
@@ -64,7 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ICodeViewerService CreateCodeViewerService()
         {
-            return new CodeViewerServiceImpl(services);
+            return new CodeViewerServiceImpl(services, textSpanFactory);
         }
 
         public ITextFileEditorService CreateTextFileEditorService()

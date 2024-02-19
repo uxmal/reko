@@ -228,20 +228,4 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
     }
 
-    public class AddressSpan : TextSpan
-    {
-        private string formattedAddress;
-
-        public AddressSpan(string formattedAddress, Address addr, string style)
-        {
-            this.formattedAddress = formattedAddress;
-            this.Tag = addr;
-            base.Style = style;
-        }
-
-        public override string GetText()
-        {
-            return formattedAddress;
-        }
-    }
 }

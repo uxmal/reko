@@ -23,24 +23,27 @@ using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui.TextViewing;
 using System.Collections.Generic;
-using System.Configuration;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     public class DisassemblyTextModel : AbstractDisassemblyTextModel
     {
+        private readonly WindowsFormsTextSpanFactory factory;
+
         public DisassemblyTextModel(Program program, IProcessorArchitecture arch, ImageSegment segment)
             : base(program, arch, segment)
         {
+            this.factory = new WindowsFormsTextSpanFactory();
         }
 
         protected override LineSpan RenderAssemblerLine(object position, Program program, IProcessorArchitecture arch, MachineInstruction instr, MachineInstructionRendererOptions options)
         {
-            return RenderAsmLine(position, program, arch, instr, options);
+            return RenderAsmLine(position, factory, program, arch, instr, options);
         }
 
         public static LineSpan RenderAsmLine(
             object position,
+            TextSpanFactory factory,
             Program program,
             IProcessorArchitecture arch,
             MachineInstruction instr,
@@ -48,88 +51,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var line = new List<ITextSpan>();
             var addr = instr.Address;
-            line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
+            line.Add(factory.CreateAddressSpan(addr.ToString() + " ", addr, "link"));
             if (program.TryCreateImageReader(arch, instr.Address, out var rdr))
             {
                 var bytes = arch.RenderInstructionOpcode(instr, rdr);
-                line.Add(new InstructionTextSpan(instr, bytes, "dasm-bytes"));
-                var dfmt = new DisassemblyFormatter(program, arch, instr, line);
+                line.Add(factory.CreateInstructionTextSpan(instr, bytes, "dasm-bytes"));
+                var dfmt = new DisassemblyFormatter(factory, program, arch, instr, line);
                 instr.Render(dfmt, options);
                 dfmt.NewLine();
             }
             return new LineSpan(position, addr, line.ToArray());
         }
-
-
-        public class InstructionTextSpan : TextSpan
-        {
-            private string text;
-
-            public InstructionTextSpan(MachineInstruction instr, string text, string style)
-            {
-                this.Tag = instr;
-                this.text = text;
-                this.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-        }
-
-        public class AddressTextSpan : TextSpan
-        {
-            private readonly string txtAddress;
-
-            public AddressTextSpan(Address address, string addrAsText)
-            {
-                this.Tag = address;
-                this.txtAddress = addrAsText;
-                this.Style = "dasm-addrText";
-            }
-
-            public override string GetText()
-            {
-                return txtAddress;
-            }
-        }
-
-        public class ProcedureTextSpan : TextSpan
-        {
-            private ProcedureBase proc;
-
-            public ProcedureTextSpan(ProcedureBase proc, Address addr)
-            {
-                this.proc = proc;
-                this.Tag = addr;
-                this.Style = "dasm-addrText";
-            }
-
-            public override string GetText()
-            {
-                return proc.Name;
-            }
-        }
-
-        /// <summary>
-        /// An inert text span is not clickable nor has a context menu.
-        /// </summary>
-        public class InertTextSpan : TextSpan
-        {
-            private readonly string text;
-
-            public InertTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-        }
-
     }
 }

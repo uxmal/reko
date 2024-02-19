@@ -42,6 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class CodeViewInteractor : IWindowPane, ICommandTarget
     {
+        private readonly TextSpanFactory factory;
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
@@ -56,8 +57,9 @@ namespace Reko.UserInterfaces.WindowsForms
         //private ImageSegment segment;
         private bool showProcedures;
 
-        public CodeViewInteractor()
+        public CodeViewInteractor(TextSpanFactory factory)
         {
+            this.factory = factory;
         }
 
         public IWindowFrame Frame { get; set; }
@@ -105,7 +107,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
             foreach (var proc in program.Procedures.Values)
             {
-                var model = new ProcedureCodeModel(proc, services.RequireService<ISelectedAddressService>());
+                var model = new ProcedureCodeModel(proc, factory, services.RequireService<ISelectedAddressService>());
                 //$TODO: make spacing between globals / procedures user adjustable
                 model.NumEmptyLinesAfter = 2;
                 nestedTextModel.Nodes.Add(model);

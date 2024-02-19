@@ -34,6 +34,13 @@ namespace Reko.Gui.TextViewing
 {
     public abstract partial class AbstractMixedCodeDataModel
     {
+        protected readonly TextSpanFactory factory;
+
+        protected AbstractMixedCodeDataModel(TextSpanFactory factory)
+        {
+            this.factory = factory;
+        }
+
         private bool TryReadComment(out LineSpan line)
         {
             if (comments.TryGetValue(curPos.Address, out var commentLines) &&

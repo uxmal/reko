@@ -29,17 +29,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     public class MixedCodeDataModel : AbstractMixedCodeDataModel
     {
+        private readonly WindowsFormsTextSpanFactory factory;
+
         public MixedCodeDataModel(
             Program program,
             ImageMap imageMap,
             ISelectedAddressService selSvc)
             : base(program,imageMap , selSvc)
         {
+            this.factory = new WindowsFormsTextSpanFactory();
         }
 
         public MixedCodeDataModel(MixedCodeDataModel that)
             : base(that)
         {
+            this.factory = new WindowsFormsTextSpanFactory();
         }
 
         public override AbstractMixedCodeDataModel Clone()
@@ -49,81 +53,22 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override LineSpan RenderAssemblerLine(object position, Program program, IProcessorArchitecture arch, MachineInstruction instr, MachineInstructionRendererOptions options)
         {
-            return DisassemblyTextModel.RenderAsmLine(position, program, arch, instr, options);
+            return DisassemblyTextModel.RenderAsmLine(position, factory, program, arch, instr, options);
         }
 
         protected override ITextSpan CreateAddressSpan(string formattedAddress, Address addr, string style)
         {
-            return new AddressSpan(formattedAddress, addr, style);
+            return factory.CreateAddressSpan(formattedAddress, addr, style);
         }
 
         protected override ITextSpan CreateMemoryTextSpan(string text, string style)
         {
-            return new MemoryTextSpan(text, style);
+            return factory.CreateMemoryTextSpan(text, style);
         }
 
         protected override ITextSpan CreateMemoryTextSpan(Address addr, string text, string style)
         {
-            return new MemoryTextSpan(addr, text, style);
-        }
-
-
-        /// <summary>
-        /// An segment of memory
-        /// </summary>
-        public class MemoryTextSpan : TextSpan
-        {
-            private readonly string text;
-
-            public Address Address { get; private set; }
-
-            public MemoryTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public MemoryTextSpan(Address address, string text, string style) : this(text, style)
-            {
-                this.Tag = this;
-                this.Address = address;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
-        }
-
-        /// <summary>
-        /// An inert text span is not clickable nor has a context menu.
-        /// </summary>
-        public class InertTextSpan : TextSpan
-        {
-            private readonly string text;
-
-            public InertTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
+            return factory.CreateMemoryTextSpan(addr, text, style);
         }
     }
 }
