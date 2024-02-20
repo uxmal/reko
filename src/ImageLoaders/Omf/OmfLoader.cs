@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.Omf
                     }
                     break;
                 case RecordType.MODEND:
-                    // Modend's seem to be followed by padding to a 16-byte boundary.
+                    // Modend'Name seem to be followed by padding to a 16-byte boundary.
                     while ((rdr.Offset & 0xF) != 0 && rdr.TryReadByte(out _))
                         ;
                     break;

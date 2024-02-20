@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.Zilog.Z8000
         {
             arch = new Z8000Architecture(CreateServiceContainer(), "z8000", new(), new(), new());
             LoadAddress = Address.Ptr16(0x100);
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;
