@@ -21,6 +21,7 @@
 using Reko.Core.Services;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
@@ -36,9 +37,10 @@ namespace Reko.WindowsDecompiler
         {
             var services = new ServiceContainer();
             var mainForm = new MainForm();
-            services.AddService<IServiceFactory>(new WindowsServiceFactory(services, mainForm));
+            var factory = new WindowsFormsTextSpanFactory();
+            services.AddService<IServiceFactory>(new WindowsServiceFactory(services, mainForm, factory));
             services.AddService<IDialogFactory>(new WindowsFormsDialogFactory(services));
-            services.AddService<IWindowPaneFactory>(new WindowsFormsPaneFactory(services));
+            services.AddService<IWindowPaneFactory>(new WindowsFormsPaneFactory(services, factory));
             services.AddService<IRegistryService>(new WindowsFormsRegistryService());
             services.AddService<ISettingsService>(new WindowsFormsSettingsService(services));
             services.AddService<IFileSystemService>(new FileSystemService());

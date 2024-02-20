@@ -67,6 +67,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new ProcedureTextSpan(proc, addr);
         }
 
+        public override ITextSpan CreateTextSpan(string text, string style)
+        {
+            return new InertTextSpan(text, style);
+        }
+
         public override AbstractTextSpanFormatter CreateTextSpanFormatter()
         {
             return new TextSpanFormatter();

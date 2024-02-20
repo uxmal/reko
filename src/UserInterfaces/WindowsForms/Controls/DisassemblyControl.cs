@@ -19,20 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Gui;
+using Reko.Core.Loading;
+using Reko.Gui.TextViewing;
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Reko.Gui.Components;
-using Reko.Gui.TextViewing;
-using Reko.Core.Loading;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -41,10 +33,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     public class DisassemblyControl : TextView
     {
+        private readonly TextSpanFactory factory;
         private DisassemblyTextModel dasmModel;
 
         public DisassemblyControl()
         {
+            this.factory = new WindowsFormsTextSpanFactory();
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
@@ -153,7 +147,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 else
                 {
                     var addr = topAddress;
-                    this.dasmModel = new DisassemblyTextModel(program, this.Architecture, segment);
+                    this.dasmModel = new DisassemblyTextModel(factory, program, this.Architecture, segment);
                     Model = dasmModel;
                     dasmModel.MoveToAddress(addr);
                 }

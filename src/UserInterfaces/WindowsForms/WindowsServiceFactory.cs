@@ -48,11 +48,11 @@ namespace Reko.UserInterfaces.WindowsForms
         private readonly MainForm mainForm;
         private readonly TextSpanFactory textSpanFactory;
 
-        public WindowsServiceFactory(IServiceProvider services, MainForm mainForm)
+        public WindowsServiceFactory(IServiceProvider services, MainForm mainForm, TextSpanFactory factory)
         {
             this.services = services;
             this.mainForm = mainForm;
-            this.textSpanFactory = new WindowsFormsTextSpanFactory();
+            this.textSpanFactory = factory;
         }
 
         public ISettingsService CreateSettingsService()

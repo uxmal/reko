@@ -20,12 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Gui.TextViewing;
-using Reko.UserInterfaces.WindowsForms.Controls;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui.TextViewing
 {
     /// <summary>
     /// Used to render TextSpans for use in the disassembly viewer.
@@ -115,12 +114,8 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (sb.Length == 0)
                 return;
-            var span = new DasmTextSpan
-            {
-                Text = sb.ToString(),
-                Tag = null,
-                Style = Gui.Services.UiStyles.Disassembler,
-            };
+
+            var span = factory.CreateTextSpan(sb.ToString(), Gui.Services.UiStyles.Disassembler);
             line.Add(span);
             sb = new StringBuilder();
         }
@@ -160,16 +155,6 @@ namespace Reko.UserInterfaces.WindowsForms
                 sb.AppendFormat("; {0}", string.Join(", ", annotations));
             }
             TerminateSpan();
-        }
-
-        public class DasmTextSpan : TextSpan
-        {
-            public override string GetText()
-            {
-                return Text;
-            }
-
-            public string Text { get; set; }
         }
     }
 }

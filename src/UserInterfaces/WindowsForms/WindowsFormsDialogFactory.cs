@@ -25,8 +25,10 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
@@ -159,6 +161,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return new UserPreferencesDialog
             {
                 Services = services,
+                TextSpanFactory = new WindowsFormsTextSpanFactory(),
             };
         }
 

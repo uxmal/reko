@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2024 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Gui.Forms;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         }
 
         public IServiceProvider Services { get; set; }
+        public TextSpanFactory TextSpanFactory { get; set; }
+
 
         public TreeView WindowTree     { get { return treeView1; } }
         public Button WindowFontButton { get { return btnWindowFont; } }

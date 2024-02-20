@@ -31,6 +31,7 @@ using Reko.Gui;
 using Reko.Gui.Components;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Documents;
 using Reko.Gui.Visualizers;
@@ -59,6 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private readonly IServiceProvider services;
         private readonly IEventBus eventBus;
+        private readonly TextSpanFactory factory;
         private readonly LowLevelViewModel viewModel;
         private LowLevelView control;
         private TypeMarker typeMarker;
@@ -66,13 +68,14 @@ namespace Reko.UserInterfaces.WindowsForms
         private bool ignoreAddressChange;
         private NavigationInteractor<Address> navInteractor;
 
-        public LowLevelViewInteractor(IServiceProvider services, Program program)
+        public LowLevelViewInteractor(IServiceProvider services, Program program, TextSpanFactory factory)
         {
             this.services = services;
             this.eventBus = this.services.RequireService<IEventBus>();
             eventBus.ProcedureFound += EventBus_ProcedureFound;
             this.viewModel = new LowLevelViewModel(services, program);
             this.Program = program;
+            this.factory = factory;
         }
 
         public LowLevelView Control => control;
@@ -217,7 +220,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             PopulateArchitectures();
             control.DisassemblyView.Program = program;
-            control.DisassemblyView.Model = new DisassemblyTextModel(program, null, seg);
+            control.DisassemblyView.Model = new DisassemblyTextModel(factory, program, null, seg);
             control.ImageMapView.ImageMap = program.ImageMap;
             control.ImageMapView.SegmentMap = program.SegmentMap;
             control.ImageMapView.Granularity = program.SegmentMap.GetExtent();
@@ -696,7 +699,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
             {
-                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, viewModel.SelectedArchitecture, seg);
+                this.Control.DisassemblyView.Model = new DisassemblyTextModel(factory, program, viewModel.SelectedArchitecture, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }

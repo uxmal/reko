@@ -40,8 +40,9 @@ namespace Reko.Gui.TextViewing
     /// number of lines the disassembly would have had (overestimating is safe)
     /// and then render accordingly.
     /// </remarks>
-    public abstract class AbstractDisassemblyTextModel : ITextViewModel
+    public class DisassemblyTextModel : ITextViewModel
     {
+        private readonly TextSpanFactory factory;
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
         private readonly MemoryArea mem;
@@ -50,8 +51,9 @@ namespace Reko.Gui.TextViewing
         private readonly long offsetEnd;
         private long offset;
 
-        public AbstractDisassemblyTextModel(Program program, IProcessorArchitecture arch, ImageSegment segment)
+        public DisassemblyTextModel(TextSpanFactory factory, Program program, IProcessorArchitecture arch, ImageSegment segment)
         {
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
             this.program = program ?? throw new ArgumentNullException(nameof(program));
             if (segment is null)
                 throw new ArgumentNullException(nameof(segment));
@@ -77,6 +79,28 @@ namespace Reko.Gui.TextViewing
         public bool RenderInstructionsCanonically { get; set; }
         public bool ShowPcRelative { get; set; }
 
+
+        public static LineSpan RenderAsmLine(
+            object position,
+            TextSpanFactory factory,
+            Program program,
+            IProcessorArchitecture arch,
+            MachineInstruction instr,
+            MachineInstructionRendererOptions options)
+        {
+            var line = new List<ITextSpan>();
+            var addr = instr.Address;
+            line.Add(factory.CreateAddressSpan(addr.ToString() + " ", addr, "link"));
+            if (program.TryCreateImageReader(arch, instr.Address, out var rdr))
+            {
+                var bytes = arch.RenderInstructionOpcode(instr, rdr);
+                line.Add(factory.CreateInstructionTextSpan(instr, bytes, "dasm-bytes"));
+                var dfmt = new DisassemblyFormatter(factory, program, arch, instr, line);
+                instr.Render(dfmt, options);
+                dfmt.NewLine();
+            }
+            return new LineSpan(position, addr, line.ToArray());
+        }
         public int ComparePositions(object a, object b)
         {
             return ((long)a).CompareTo((long)b);
@@ -143,12 +167,15 @@ namespace Reko.Gui.TextViewing
             return arch ?? program.Architecture;
         }
 
-        protected abstract LineSpan RenderAssemblerLine(
+        private LineSpan RenderAssemblerLine(
             object position,
             Program program,
             IProcessorArchitecture arch,
             MachineInstruction instr,
-            MachineInstructionRendererOptions options);
+            MachineInstructionRendererOptions options)
+        {
+            return RenderAsmLine(position, factory, program, arch, instr, options);
+        }
 
         private Address Align(IProcessorArchitecture arch, Address addr, int bitGranularity)
         {

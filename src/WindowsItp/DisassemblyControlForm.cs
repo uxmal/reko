@@ -1,6 +1,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace Reko.WindowsItp
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
             var segmentMap = new SegmentMap(mem.BaseAddress, seg);
             disassemblyControl1.Model = new DisassemblyTextModel(
+                new WindowsFormsTextSpanFactory(),
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32("x86-protected-32");

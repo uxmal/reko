@@ -29,7 +29,7 @@ namespace Reko.Gui.TextViewing
     /// <summary>
     /// Provides a text model that use to show code of procedure.
     /// </summary>
-    public abstract class AbstractProcedureCodeModel : ITextViewModel
+    public class ProcedureCodeModel : ITextViewModel
     {
         private readonly Procedure proc;
         protected readonly TextSpanFactory factory;
@@ -38,7 +38,7 @@ namespace Reko.Gui.TextViewing
         private readonly int numLines;
         private readonly ISelectedAddressService selSvc;
 
-        public AbstractProcedureCodeModel(Procedure proc, TextSpanFactory factory, ISelectedAddressService selSvc)
+        public ProcedureCodeModel(Procedure proc, TextSpanFactory factory, ISelectedAddressService selSvc)
         {
             this.proc = proc;
             this.factory = factory;

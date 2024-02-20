@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.WindowsForms.Forms;
@@ -34,11 +35,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     public class WindowsFormsPaneFactory : IWindowPaneFactory
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
+        private readonly TextSpanFactory factory;
 
-        public WindowsFormsPaneFactory(IServiceProvider services)
+        public WindowsFormsPaneFactory(IServiceProvider services, TextSpanFactory factory)
         {
             this.services = services;
+            this.factory = factory;
         }
 
         public IWindowPane CreateBaseAddressFinderPane(Program program)
@@ -57,7 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public ILowLevelViewInteractor CreateLowLevelViewPane(Program program)
         {
-            return new LowLevelViewInteractor(services, program);
+            return new LowLevelViewInteractor(services, program, factory);
         }
 
         public IWindowPane CreateSegmentListPane(Program program)
