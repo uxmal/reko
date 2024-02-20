@@ -43,9 +43,15 @@ namespace Reko.UserInterfaces.WindowsForms
         private readonly Graphics g;
         private readonly Font defaultFont;
         private readonly IUiPreferencesService uiPreferences;
+        private readonly TextSpanFactory factory;
         private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
-        public CfgGraphGenerator(Graph graph, IUiPreferencesService uiPreferences, Graphics g, Font defaultFont)
+        public CfgGraphGenerator(
+            Graph graph, 
+            IUiPreferencesService uiPreferences,
+            TextSpanFactory factory,
+            Graphics g,
+            Font defaultFont)
         {
             this.uiPreferences = uiPreferences;
             this.graph = graph;
@@ -54,10 +60,10 @@ namespace Reko.UserInterfaces.WindowsForms
             this.visited = new HashSet<Block>();
         }
 
-        public static Graph Generate(IUiPreferencesService uiPreferences, Procedure proc, Graphics g, Font defaultFont)
+        public static Graph Generate(IUiPreferencesService uiPreferences, TextSpanFactory factory, Procedure proc, Graphics g, Font defaultFont)
         {
             Graph graph = new Graph();
-            var cfgGen = new CfgGraphGenerator(graph, uiPreferences, g, defaultFont);
+            var cfgGen = new CfgGraphGenerator(graph, uiPreferences, factory, g, defaultFont);
             cfgGen.Traverse(proc.EntryBlock.Succ[0]);
             graph.Attr.LayerDirection = LayerDirection.TB;
             return graph;
@@ -126,7 +132,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private ITextViewModel GenerateTextModel(Block b)
         {
-            var tsf = new TextSpanFormatter();
+            var tsf = new TextSpanFormatter(factory);
             var fmt = new AbsynCodeFormatter(tsf);
             var procf = new ProcedureFormatter(b.Procedure, fmt);
             fmt.InnerFormatter.UseTabs = false;

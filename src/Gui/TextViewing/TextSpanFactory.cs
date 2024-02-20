@@ -33,9 +33,6 @@ namespace Reko.Gui.TextViewing
         public abstract ITextSpan CreateMemoryTextSpan(string text, string style);
         public abstract ITextSpan CreateMemoryTextSpan(Address addr, string text, string style);
         public abstract ITextSpan CreateProcedureTextSpan(ProcedureBase proc, Address addr);
-        public abstract ITextSpan CreateTextSpan(string text, string style);
-
-        public abstract AbstractTextSpanFormatter CreateTextSpanFormatter();
-
+        public abstract ITextSpan CreateTextSpan(string text, string? style);
     }
 }

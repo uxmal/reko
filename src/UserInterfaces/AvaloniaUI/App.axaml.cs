@@ -21,15 +21,12 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.Styling;
-using Avalonia.Styling;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
-using System;
 using System.ComponentModel.Design;
 
 namespace Reko.UserInterfaces.AvaloniaUI
@@ -88,9 +85,10 @@ namespace Reko.UserInterfaces.AvaloniaUI
 
         private static void MakeServices(IServiceContainer services, DockFactory dockFactory, MainWindow mainForm)
         {
+            var factory = new AvaloniaTextSpanFactory();
             services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, mainForm, dockFactory));
             services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
-            services.AddService<IWindowPaneFactory>(new AvaloniaWindowPaneFactory(services));
+            services.AddService<IWindowPaneFactory>(new AvaloniaWindowPaneFactory(services, factory));
             var fsSvc = new FileSystemService();
             services.AddService<IFileSystemService>(fsSvc);
             services.AddService<ISettingsService>(new FileSystemSettingsService(fsSvc));

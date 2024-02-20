@@ -32,15 +32,17 @@ namespace Reko.Gui.TextViewing
     /// An implementation of <see cref="Formatter"/> formatter that renders
     /// text into a <see cref="ITextViewModel"/> that can be used with a TextView.
     /// </summary>
-    public abstract class AbstractTextSpanFormatter : Formatter
+    public sealed class TextSpanFormatter : Formatter
     {
+        private readonly TextSpanFactory factory;
         private readonly List<(object?, List<ITextSpan>)> textLines;
         private List<ITextSpan>? currentLine;
         private object? currentLineTag;
         private StringBuilder? currentSpan;
         
-        public AbstractTextSpanFormatter()
+        public TextSpanFormatter(TextSpanFactory factory)
         {
+            this.factory = factory;
             this.textLines = new List<(object?, List<ITextSpan>)>();
             this.currentLineTag = null;
         }
@@ -149,7 +151,7 @@ namespace Reko.Gui.TextViewing
             if (currentLine is null)
                 return;
             var text = currentSpan is null ? "" : currentSpan.ToString();
-            var span = CreateFixedTextSpan(text);
+            var span = factory.CreateTextSpan(text, null);
             this.currentLine.Add(span);
             this.currentSpan = null;
         }
@@ -158,7 +160,7 @@ namespace Reko.Gui.TextViewing
         {
             Debug.Assert(currentLine is not null);
             var text = currentSpan is null ? "" : currentSpan.ToString();
-            var span = CreateFixedTextSpan(text);
+            var span = factory.CreateTextSpan(text, null);
             span.Style = style;
             span.Tag = tag;
             this.currentLine.Add(span);
@@ -178,8 +180,6 @@ namespace Reko.Gui.TextViewing
             }
             return currentSpan;
         }
-
-        protected abstract ITextSpan CreateFixedTextSpan(string text);
 
         private class TextSpanModel : ITextViewModel
         {

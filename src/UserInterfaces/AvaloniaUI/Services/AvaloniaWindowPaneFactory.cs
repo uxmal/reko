@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
@@ -35,10 +36,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     public class AvaloniaWindowPaneFactory : IWindowPaneFactory
     {
         private readonly IServiceProvider services;
+        private readonly TextSpanFactory factory;
 
-        public AvaloniaWindowPaneFactory(IServiceProvider services)
+        public AvaloniaWindowPaneFactory(IServiceProvider services, TextSpanFactory factory)
         {
             this.services = services;
+            this.factory = factory;
         }
 
         public IWindowPane CreateBaseAddressFinderPane(Program program)
@@ -65,7 +68,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ILowLevelViewInteractor CreateLowLevelViewPane(Program program)
         {
-            var llvm = new LowLevelViewModel(services, program);
+            var llvm = new LowLevelViewModel(services, program, factory);
             return new LowLevelDocumentViewModel(llvm);
         }
     }

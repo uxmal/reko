@@ -47,6 +47,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             ProgramChanged += DisassemblyControl_StateChange;
         }
 
+        //$TODO All of these properties belong to the DisassemblyTextModel
+
         [Browsable(false)]
         public Program Program { get { return program; } set { program = value; ProgramChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler ProgramChanged;

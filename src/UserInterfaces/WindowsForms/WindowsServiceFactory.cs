@@ -94,7 +94,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ImageSegmentService CreateImageSegmentService()
         {
-            return new ImageSegmentServiceImpl(services, (s, p) => new ImageSegmentPane(s, p));
+            return new ImageSegmentServiceImpl(services, (s, p) => new ImageSegmentPane(s, p, textSpanFactory));
         }
 
         public ILowLevelViewService CreateMemoryViewService()

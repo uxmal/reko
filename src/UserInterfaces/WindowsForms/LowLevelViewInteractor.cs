@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.services = services;
             this.eventBus = this.services.RequireService<IEventBus>();
             eventBus.ProcedureFound += EventBus_ProcedureFound;
-            this.viewModel = new LowLevelViewModel(services, program);
+            this.viewModel = new LowLevelViewModel(services, program, factory);
             this.Program = program;
             this.factory = factory;
         }

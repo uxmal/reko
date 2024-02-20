@@ -72,11 +72,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new InertTextSpan(text, style);
         }
 
-        public override AbstractTextSpanFormatter CreateTextSpanFormatter()
-        {
-            return new TextSpanFormatter();
-        }
-
         public class InstructionTextSpan : TextSpan
         {
             private string text;

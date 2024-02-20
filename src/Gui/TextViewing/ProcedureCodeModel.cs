@@ -116,7 +116,7 @@ namespace Reko.Gui.TextViewing
         {
             if (lines != null)
                 return lines;
-            var tsf = factory.CreateTextSpanFormatter();
+            var tsf = new TextSpanFormatter(factory);
             WriteCode(tsf);
             this.lines = tsf.GetLines();
             return this.lines;

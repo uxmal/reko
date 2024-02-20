@@ -187,7 +187,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         var dt = item.DataType;
                         var name = item.Name ?? "<unnamed>";
 
-                        var tsf = new TextSpanFormatter();
+                        var tsf = new TextSpanFormatter(factory);
                         var fmt = new AbsynCodeFormatter(tsf);
                         fmt.InnerFormatter.UseTabs = false;
                         var gdw = new GlobalDataWriter(program, tsf, false, false, services);
@@ -582,7 +582,7 @@ namespace Reko.UserInterfaces.WindowsForms
             using (var g = combinedCodeView.CreateGraphics())
             {
                 var uiPreferences = services.RequireService<IUiPreferencesService>();
-                gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, proc, g, combinedCodeView.Font);
+                gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, factory, proc, g, combinedCodeView.Font);
             }
             combinedCodeView.Visible = false;
             gViewer.Visible = true;

@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
@@ -36,15 +37,17 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class ImageSegmentPane : IWindowPane, ICommandTarget
     {
-        private ImageSegment segment;
+        private readonly ImageSegment segment;
+        private readonly TextSpanFactory factory;
+        private Program program;
         private ImageSegmentView segmentView;
         private IServiceProvider services;
-        private Program program;
 
-        public ImageSegmentPane(ImageSegment segment, Program program)
+        public ImageSegmentPane(ImageSegment segment, Program program, TextSpanFactory factory)
         {
             this.segment = segment;
             this.program = program;
+            this.factory = factory;
         }
 
         public IWindowFrame Frame { get; set; }
@@ -86,7 +89,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     segment.Designer == null)
                     return;
                 this.program = program;
-                var tsf = new TextSpanFormatter();
+                var tsf = new TextSpanFormatter(factory);
                 segment.Designer.Render(
                     segment,
                     program,

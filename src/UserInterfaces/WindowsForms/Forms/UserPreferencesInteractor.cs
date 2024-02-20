@@ -388,7 +388,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             ase.EmitAssign(a_id, Constant.Int32(10));
             ase.EmitAssign(sum_id, Constant.Int32(0));
 
-            var tsf = new TextSpanFormatter();
+            var tsf = new TextSpanFormatter(dlg.TextSpanFactory);
             var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             foreach (var stm in code)

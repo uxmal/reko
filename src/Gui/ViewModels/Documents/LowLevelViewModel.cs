@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui.Reactive;
+using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,13 @@ namespace Reko.Gui.ViewModels.Documents
     public class LowLevelViewModel : ChangeNotifyingObject
     {
         private readonly IServiceProvider services;
+        private readonly TextSpanFactory factory;
 
-        public LowLevelViewModel(IServiceProvider services, Program program)
+        public LowLevelViewModel(IServiceProvider services, Program program, TextSpanFactory factory)
         {
             this.services = services;
             this.Program = program;
+            this.factory = factory;
             this.SegmentMap = program.SegmentMap;
             this.ImageMap = program.ImageMap;
             this.SelectedArchitecture = program.Architecture;
@@ -61,6 +64,13 @@ namespace Reko.Gui.ViewModels.Documents
         private MemoryArea? memoryArea;
 
         public SegmentMap SegmentMap { get; set; }
+
+        public DisassemblyTextModel? DisassemblyTextModel
+        {
+            get => this.disassemblyTextModel;
+            set => this.RaiseAndSetIfChanged(ref this.disassemblyTextModel, value);
+        }
+        private DisassemblyTextModel? disassemblyTextModel;
 
         /// <summary>
         /// The CPU architecture chosen by the user.
