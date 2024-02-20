@@ -95,15 +95,5 @@ namespace Reko.UnitTests.ImageLoaders.Omf
 
             Assert.AreEqual("ALPHABETAALPHABETAALPHABETAALPHABETA", Encoding.ASCII.GetString(record.Data));
         }
-
-        [Test]
-        public void Omfp_REadFile()
-        {
-            var bytes = System.IO.File.ReadAllBytes("d:\\dev\\uxmal\\reko\\users\\mrkite\\stmik\\STMIK.300");
-            var rdr = new LeImageReader(bytes);
-            var parser = new OmfParser(rdr);
-            while (parser.TryReadRecord(out var record))
-                ;
-        }
     }
 }
