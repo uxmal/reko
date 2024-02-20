@@ -12,10 +12,10 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
+    <PackageReference Include="Avalonia" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.9" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)Gui\Gui.csproj" />

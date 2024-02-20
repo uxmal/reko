@@ -35,9 +35,7 @@
 		<Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
 			<ScrollViewer Name="ScrollViewer1"
 						  HorizontalScrollBarVisibility="Disabled"
-						  VerticalScrollBarVisibility="Auto"
-						  Grid.Row="2"
-						  Grid.Column="0">
+						  VerticalScrollBarVisibility="Auto">
 				<ctrl:HexViewControl Name="hexView"
 						TextElement.FontSize="13"
 						TextElement.Foreground="{DynamicResource TextControlForeground}"
@@ -59,7 +57,11 @@
 			<TextBlock>Disassembly</TextBlock>
 		</Border>
 		<Border Grid.Row="4" Grid.Column="0">
-			<Label Background="#E0FFE0">Disassembly View placeholder</Label>
+			<ScrollViewer Name="ScrollViewer2"
+						  HorizontalScrollBarVisibility="Disabled"
+						  VerticalScrollBarVisibility="Auto">
+				<ctrl:DisassemblyViewControl Name="dasmView" />
+			</ScrollViewer>	
 		</Border>
 	</Grid>
 </UserControl>
