@@ -65,9 +65,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             if (syncCtx is null)
                 throw new InvalidOperationException("Not running on UI thread.");
 
-            var document1 = new MemoryViewModel {Id = "Document1", Title = "Memory View"};
-            var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
-            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
+            //$TODO: the two lines below are for debugging slow rendering only.
+            // Remove when TextView port is completed.
+            //var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
+            //var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             
             this.ProjectBrowserTool =  new ProjectBrowserViewModel(services) { Id = "Tool1", Title = "Project browser"};
             this.ProcedureListTool = new ProcedureListToolViewModel {Id = "Tool2", Title = "Procedures"};
@@ -147,8 +148,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var documentDock = new CustomDocumentDock
             {
                 IsCollapsable = false,
-                ActiveDockable = document1,
-                VisibleDockables = CreateList<IDockable>(document1, document2, document3),
+                VisibleDockables = CreateList<IDockable>(),
                 CanCreateDocument = true
             };
 
