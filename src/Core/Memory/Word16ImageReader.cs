@@ -162,6 +162,11 @@ namespace Reko.Core.Memory
             return bytes.ToArray();
         }
 
+        public byte[] ReadToEnd()
+        {
+            return ReadBytes((int)(endOffset - Offset));
+        }
+
         public byte[] ReadBytes(uint addressUnits) => ReadBytes((int) addressUnits);
 
         public short ReadLeInt16()

@@ -458,11 +458,15 @@ namespace Reko.Core.Memory
 
         public byte[] ReadToEnd()
         {
-            var ab = new byte[this.offEnd - Offset];
-            Array.Copy(Bytes, (int) Offset, ab, 0, ab.Length);
-            off += ab.Length;
-            return ab;
+            long avail = this.offEnd - off;
+            if (avail <= 0)
+                return Array.Empty<byte>();
+            byte[] dst = new byte[avail];
+            Array.Copy(bytes, (int) off, dst, 0, avail);
+            Offset = offEnd;
+            return dst;
         }
+
         public int Read(byte[] buffer, int offset, int count)
         {
             int bytesRead = (int) Math.Min(buffer.Length - offset, count);

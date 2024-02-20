@@ -74,6 +74,7 @@ namespace Reko.Core.Memory
         byte ReadByte();
         byte[] ReadBytes(int addressUnits);
         byte[] ReadBytes(uint addressUnits);
+        byte[] ReadToEnd();
 
         short ReadLeInt16();
         int ReadLeInt32();

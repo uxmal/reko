@@ -151,6 +151,11 @@ namespace Reko.Arch.Pdp.Memory
             throw new NotImplementedException();
         }
 
+        public byte[] ReadToEnd()
+        {
+            return ReadBytes((int) (endOffset - Offset));
+        }
+
         public short ReadLeInt16()
         {
             throw new NotImplementedException();
