@@ -23,6 +23,8 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using Reko.Core.Services;
+using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Docks;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
@@ -30,6 +32,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Threading;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
@@ -79,7 +82,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
             var toolOutput = new OutputViewModel { Id = "Tool6", Title = "Output" };
 
-            var toolVisualizer = new VisualizerViewModel { Id = "Tool6", Title = "Visualizer", CanClose = true, CanPin = false};
+            var selAddrSvc = services.RequireService<ISelectedAddressService>();
+            var selSvc = services.RequireService<ISelectionService>();
+            var toolVisualizer = new VisualizerViewModel(selAddrSvc, selSvc)
+            {
+                Id = "Tool6",
+                Title = "Visualizer",
+                CanClose = true,
+                CanPin = false
+            };
             
             var toolProperties = new PropertiesViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
 

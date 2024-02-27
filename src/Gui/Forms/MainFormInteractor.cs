@@ -174,11 +174,7 @@ namespace Reko.Gui.Forms
 
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
-            var selSvc = svcFactory.CreateSelectionService();
-            sc.AddService<ISelectionService>(selSvc);
-
-            var selAddrSvc = svcFactory.CreateSelectedAddressService();
-            sc.AddService<ISelectedAddressService>(selAddrSvc);
+            var selAddrSvc = sc.RequireService<ISelectedAddressService>();
 
             var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);

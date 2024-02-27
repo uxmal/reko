@@ -44,7 +44,8 @@
 						Architecture="{Binding ViewModel.SelectedArchitecture}"
 						SegmentMap="{Binding ViewModel.SegmentMap}"
 						ImageMap="{Binding ViewModel.ImageMap}"
-						SelectedAddress="{Binding ViewModel.SelectedAddress}" >
+						SelectedAddress="{Binding ViewModel.SelectedAddress, Mode=TwoWay}"
+						AnchorAddress="{Binding ViewModel.AnchorAddress, Mode=TwoWay}">
 					<TextElement.FontFamily>
 						<OnPlatform Default="{StaticResource RobotoMonoFont}">
 							<On Options="Windows" Content="{StaticResource ConsolasFont}" />

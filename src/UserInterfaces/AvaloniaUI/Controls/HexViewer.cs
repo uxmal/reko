@@ -73,6 +73,13 @@ public class HexViewControl : Control, ILogicalScrollable
     public static readonly StyledProperty<IBrush?> DataBackgroundProperty =
         AvaloniaProperty.Register<HexViewControl, IBrush?>(nameof(DataBackground));
 
+    public static readonly DirectProperty<HexViewControl, Address?> AnchorAddressProperty =
+        AvaloniaProperty.RegisterDirect<HexViewControl, Address?>(
+            nameof(AnchorAddress),
+            o => o.AnchorAddress,
+            (o, v) => o.AnchorAddress = v);
+
+
     public static readonly DirectProperty<HexViewControl, IProcessorArchitecture?> ArchitectureProperty =
         AvaloniaProperty.RegisterDirect<HexViewControl, IProcessorArchitecture?>(
             nameof(Architecture),
@@ -131,6 +138,7 @@ public class HexViewControl : Control, ILogicalScrollable
     {
         FocusableProperty.OverrideDefaultValue<HexViewControl>(true);
         AffectsRender<HexViewControl>(SelectedAddressProperty);
+        AffectsRender<HexViewControl>(AnchorAddressProperty);
         AffectsRender<HexViewControl>(TopAddressProperty);
         AffectsRender<HexViewControl>(ArchitectureProperty);
         AffectsRender<HexViewControl>(ImageMapProperty);
@@ -152,7 +160,6 @@ public class HexViewControl : Control, ILogicalScrollable
     private Size _pageScrollSize = new(10, 10);
 
     private uint wordSize;
-    private Address? addrAnchor;
     private Address? addrMin;
     private ulong memSize;
 
@@ -244,9 +251,27 @@ public class HexViewControl : Control, ILogicalScrollable
                 return;
             this.isTextSideSelected = value;
             InvalidateVisual();
-            OnSelectionChanged();
         }
     }
+
+    public Address? AnchorAddress
+    {
+        get => this.addrAnchor;
+        set
+        {
+            if (this.addrAnchor == value)
+                return;
+            this.addrAnchor = value;
+            var seg = GetSegmentFromAddress(value);
+            if (seg is not null)
+            {
+                ChangeMemoryArea(seg);
+            }
+            InvalidateVisual();
+        }
+    }
+    private Address? addrAnchor;
+
 
     [Browsable(false)]
     public Encoding Encoding
@@ -303,14 +328,12 @@ public class HexViewControl : Control, ILogicalScrollable
         {
             if (!this.SetAndRaise(SelectedAddressProperty, ref addrSelected, value))
                 return;
-            addrAnchor = value;
             var seg = GetSegmentFromAddress(value);
             if (seg is not null)
             {
                 ChangeMemoryArea(seg);
             }
             InvalidateVisual();
-            OnSelectionChanged();
         }
     }
     private Address? addrSelected;
@@ -595,9 +618,7 @@ public class HexViewControl : Control, ILogicalScrollable
         {
             addrAnchor = addr;
         }
-        this.addrSelected = addr;
-        InvalidateVisual();
-        OnSelectionChanged();
+        this.SelectedAddress = addr;
     }
 
 
@@ -713,7 +734,7 @@ public class HexViewControl : Control, ILogicalScrollable
         if (ShouldChangeSelection(mouseButton, addrClicked, textSide))
         {
             if (!isDragging || addrClicked is not null)
-                this.addrSelected = addrClicked;
+                this.SelectedAddress = addrClicked;
             if ((keyModifiers & KeyModifiers.Shift) != KeyModifiers.Shift &&
                 !isDragging)
             {
@@ -722,11 +743,10 @@ public class HexViewControl : Control, ILogicalScrollable
             this.IsTextSideSelected = textSide;
             trace.Inform("AffectSelection: {0}-{1}", addrAnchor!, SelectedAddress!);
             InvalidateVisual();
-            OnSelectionChanged();
         }
     }
 
-    private bool ShouldChangeSelection(MouseButton mouseButton, Address addrClicked, bool textSide)
+    private bool ShouldChangeSelection(MouseButton mouseButton, Address? addrClicked, bool textSide)
     {
         if (mouseButton == MouseButton.Left)
             return true;
@@ -779,12 +799,6 @@ public class HexViewControl : Control, ILogicalScrollable
         Debug.WriteLine($"Rendered hex view control in {sw.ElapsedMilliseconds} msec");
     }
 
-    protected virtual void OnSelectionChanged()
-    {
-        var ar = GetAddressRange();
-        SelectionChanged?.Invoke(this, EventArgs.Empty);
-    }
-
     private void ChangeMemoryArea(ImageSegment seg)
     {
         mem = seg.MemoryArea;
@@ -800,12 +814,6 @@ public class HexViewControl : Control, ILogicalScrollable
             InvalidateScrollable();
             Invalidate();
         }
-    }
-
-    private Address RoundToNearestRow(Address addr)
-    {
-        ulong rows = addr.ToLinear() / cbRow;
-        return segmentMap.MapLinearAddressToAddress(rows * cbRow);
     }
 
 

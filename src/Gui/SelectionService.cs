@@ -27,7 +27,8 @@ namespace Reko.Gui
 {
     /// <summary>
     /// This tracks, application-wide, the currently selected "thing".
-    /// Controls that support tracking a selection shou
+    /// Controls that support tracking a selection should register
+    /// events from this service.
     /// </summary>
     public class SelectionService : ISelectionService
     {

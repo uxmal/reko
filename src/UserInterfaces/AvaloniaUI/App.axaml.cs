@@ -23,6 +23,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
@@ -89,10 +90,13 @@ namespace Reko.UserInterfaces.AvaloniaUI
             services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, mainForm, dockFactory));
             services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
             services.AddService<IWindowPaneFactory>(new AvaloniaWindowPaneFactory(services, factory));
+            services.AddService<ISelectionService>(new SelectionService());
+            services.AddService<ISelectedAddressService>(new SelectedAddressService());
             var fsSvc = new FileSystemService();
             services.AddService<IFileSystemService>(fsSvc);
             services.AddService<ISettingsService>(new FileSystemSettingsService(fsSvc));
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
+
         }
 
         /*

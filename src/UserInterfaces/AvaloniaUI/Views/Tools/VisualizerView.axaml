@@ -4,22 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:v="using:Reko.UserInterfaces.AvaloniaUI.Views"
+             xmlns:c="using:Reko.UserInterfaces.AvaloniaUI.Controls"
              x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.VisualizerView">
   <Border BorderBrush="Black">
-    <StackPanel>
-      <TextBlock Text="{Binding SelectedVisualizer}" />
-      <v:VisualizerControl
-          Visualizer="{Binding SelectedVisualizer.Value}">
-      </v:VisualizerControl>
+    <Grid RowDefinitions="Auto,*,Auto">
+      <TextBlock 
+		  Grid.Row="0"
+		  Text="{Binding SelectedVisualizer}" />
+		<c:VisualizerControl
+			Grid.Row="1"
+			Visualizer="{Binding SelectedVisualizer.Value}"
+			MemoryArea="{Binding MemoryArea}">
+			<!--Address="{Binding Address}"-->
+		</c:VisualizerControl>
       <ComboBox
-        ItemsSource="{Binding Visualizers}"
-        SelectedItem="{Binding SelectedVisualizer}">
+		  Grid.Row="2"
+          ItemsSource="{Binding Visualizers}"
+          SelectedItem="{Binding SelectedVisualizer}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding Text}" Tag="{Binding Value}" />
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-    </StackPanel>
+    </Grid>
   </Border>
 </UserControl>

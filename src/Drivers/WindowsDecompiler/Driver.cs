@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -43,6 +44,8 @@ namespace Reko.WindowsDecompiler
             services.AddService<IWindowPaneFactory>(new WindowsFormsPaneFactory(services, factory));
             services.AddService<IRegistryService>(new WindowsFormsRegistryService());
             services.AddService<ISettingsService>(new WindowsFormsSettingsService(services));
+            services.AddService<ISelectionService>(new SelectionService());
+            services.AddService<ISelectedAddressService>(new SelectedAddressService());
             services.AddService<IFileSystemService>(new FileSystemService());
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             mainForm.Attach(services);

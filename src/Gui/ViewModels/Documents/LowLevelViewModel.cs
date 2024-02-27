@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui.Reactive;
+using Reko.Gui.Services;
 using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
@@ -34,24 +35,56 @@ namespace Reko.Gui.ViewModels.Documents
     public class LowLevelViewModel : ChangeNotifyingObject
     {
         private readonly IServiceProvider services;
+        private readonly ISelectedAddressService selAddrSvc;
         private readonly TextSpanFactory factory;
+        private bool raisingSelectionChanged;   // Avoids stack overflow
 
         public LowLevelViewModel(IServiceProvider services, Program program, TextSpanFactory factory)
         {
             this.services = services;
+            this.selAddrSvc = services.RequireService<ISelectedAddressService>();
+            this.selAddrSvc.SelectedAddressChanged += SelAddrSvc_SelectedAddressChanged;
             this.Program = program;
             this.factory = factory;
             this.SegmentMap = program.SegmentMap;
             this.ImageMap = program.ImageMap;
             this.SelectedArchitecture = program.Architecture;
             this.Architectures = BuildArchitectureViewModel();
+            UpdateSelection();
         }
 
+   
 
         public ListOption[] Architectures { get; set; }
 
-        public Program Program { get; set; }
-        public Address? SelectedAddress { get; set; }
+        public Program? Program { get; set; }
+
+        public Address? SelectedAddress
+        {
+            get => addrSelected;
+            set
+            {
+                if (this.addrSelected == value)
+                    return;
+                this.RaiseAndSetIfChanged(ref this.addrSelected, value);
+                RaiseSelectionChanged();
+            }
+        }
+        private Address? addrSelected;
+
+        public Address? AnchorAddress
+        {
+            get => addrAnchor;
+            set
+            {
+                if (this.addrAnchor == value)
+                    return;
+                this.RaiseAndSetIfChanged(ref this.addrAnchor, value);
+                RaiseSelectionChanged();
+            }
+        }
+
+        private Address? addrAnchor;
 
         public ImageMap ImageMap { get; set; }
 
@@ -59,7 +92,14 @@ namespace Reko.Gui.ViewModels.Documents
         public MemoryArea? MemoryArea
         {
             get => this.memoryArea;
-            set => this.RaiseAndSetIfChanged(ref this.memoryArea, value);
+            set
+            {
+                if (this.memoryArea == value)
+                    return;
+                this.RaiseAndSetIfChanged(ref this.memoryArea, value);
+                this.SelectedAddress = value?.BaseAddress;
+                this.AnchorAddress = value?.BaseAddress;
+            }
         }
         private MemoryArea? memoryArea;
 
@@ -125,6 +165,38 @@ namespace Reko.Gui.ViewModels.Documents
                 arch = services.GetService<IConfigurationService>()?.GetArchitecture(archName);
             }
             return arch;
+        }
+
+        private void RaiseSelectionChanged()
+        {
+            if (raisingSelectionChanged || this.Program is null || this.AnchorAddress is null || this.SelectedAddress is null)
+                return;
+            this.raisingSelectionChanged = true;
+            var par = ProgramAddressRange.HalfOpenRange(this.Program, AnchorAddress, SelectedAddress);
+            this.selAddrSvc.SelectedAddressRange = par;
+            this.raisingSelectionChanged = false;
+        }
+
+
+        private void UpdateSelection()
+        {
+            var addrRange = selAddrSvc.SelectedAddressRange;
+            if (addrRange is null)
+                return;
+
+            // Changes to other programs don't affect us.
+            if (addrRange.Program != this.Program)
+                return;
+            if (!this.Program.SegmentMap.TryFindSegment(addrRange.Address, out var segment))
+                return;
+            this.MemoryArea = segment.MemoryArea;
+            this.AnchorAddress = addrRange.Address;
+            this.SelectedAddress = addrRange.Address + addrRange.Length;
+        }
+
+        private void SelAddrSvc_SelectedAddressChanged(object? sender, EventArgs e)
+        {
+            UpdateSelection();
         }
     }
 }

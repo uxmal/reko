@@ -52,8 +52,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         public Address? SelectedAddress
         { 
             get { return ViewModel.SelectedAddress; }
-            set { ViewModel.SelectedAddress = value!; }
+            set {
+                ViewModel.AnchorAddress = value!; 
+                ViewModel.SelectedAddress = value!;
+            }
         }
+
 
         public MemoryArea? MemoryArea
         {
