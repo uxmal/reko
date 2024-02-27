@@ -61,7 +61,14 @@
 			<ScrollViewer Name="ScrollViewer2"
 						  HorizontalScrollBarVisibility="Disabled"
 						  VerticalScrollBarVisibility="Auto">
-				<ctrl:DisassemblyViewControl Name="dasmView" />
+				<ctrl:DisassemblyViewControl
+					Name="dasmView"
+					Program="{Binding ViewModel.Program}"
+					Architecture="{Binding ViewModel.SelectedArchitecture}"
+					SelectedAddress="{Binding ViewModel.SelectedAddress, Mode=TwoWay}"
+					Model="{Binding ViewModel.DisassemblyTextModel}"
+					Services="{Binding ViewModel.Services}"
+											 />
 			</ScrollViewer>	
 		</Border>
 	</Grid>

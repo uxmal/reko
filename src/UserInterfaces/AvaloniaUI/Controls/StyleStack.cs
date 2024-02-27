@@ -93,13 +93,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public Cursor GetCursor(Control ctrl)
         {
-            Cursor cu;
             for (int i = stack.Count - 1; i>=0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                cu = (Cursor?)styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
-                if (cu != null)
-                    return cu;
+                var cu = styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
+                if (cu is StandardCursorType stdCursor)
+                    return new Cursor(stdCursor);
             }
             return Cursor.Default;
         }
@@ -110,8 +109,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             {
                 var styles = GetStyles(stack[i]);
                 var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
-                if (fg != null)
-                    return (IBrush)fg;
+                if (fg is IBrush fgBrush)
+                {
+                    return fgBrush;
+                }
+                else if (fg is Color color)
+                {
+                    return new SolidColorBrush(color);
+                }
             }
             return fgColor;
         }
@@ -122,8 +127,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             {
                 var styles = GetStyles(stack[i]);
                 var back = styles.Select(s => s.Background).LastOrDefault(b => b != null);
-                if (back != null)
-                    return (IBrush) back;
+                if (back is IBrush bgBrush)
+                {
+                    return bgBrush;
+                }
+                else if (back is Color color)
+                {
+                    return new SolidColorBrush(color);
+                }
             }
             return CacheBrush(ref bg, bgColor);
         }
@@ -146,7 +157,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             {
                 var styles = GetStyles(stack[i]);
                 var oFont = styles.Select(s => s.FontSize).LastOrDefault(f => f != null);
-                if (oFont is double fontSize)
+                if (oFont is double fontSize && fontSize > 0)
                     return fontSize;
             }
             return defaultFontSize;

@@ -721,7 +721,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     Address.Min(e.End, e.Anchor),
                     Address.Max(e.End, e.Anchor));
             }
-
+            //$TODO: this code already is in LowLeveViewModel.cs
             this.Control.DisassemblyView.SelectedObject = e.End;
             this.Control.DisassemblyView.TopAddress = e.End;
             this.SelectionChanged?.Invoke(this, e);

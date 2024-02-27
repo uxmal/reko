@@ -34,14 +34,13 @@ namespace Reko.Gui.ViewModels.Documents
 {
     public class LowLevelViewModel : ChangeNotifyingObject
     {
-        private readonly IServiceProvider services;
         private readonly ISelectedAddressService selAddrSvc;
         private readonly TextSpanFactory factory;
         private bool raisingSelectionChanged;   // Avoids stack overflow
 
         public LowLevelViewModel(IServiceProvider services, Program program, TextSpanFactory factory)
         {
-            this.services = services;
+            this.Services = services;
             this.selAddrSvc = services.RequireService<ISelectedAddressService>();
             this.selAddrSvc.SelectedAddressChanged += SelAddrSvc_SelectedAddressChanged;
             this.Program = program;
@@ -50,10 +49,9 @@ namespace Reko.Gui.ViewModels.Documents
             this.ImageMap = program.ImageMap;
             this.SelectedArchitecture = program.Architecture;
             this.Architectures = BuildArchitectureViewModel();
+            this.disassemblyTextModel = new EmptyEditorModel();
             UpdateSelection();
         }
-
-   
 
         public ListOption[] Architectures { get; set; }
 
@@ -83,11 +81,11 @@ namespace Reko.Gui.ViewModels.Documents
                 RaiseSelectionChanged();
             }
         }
-
         private Address? addrAnchor;
 
         public ImageMap ImageMap { get; set; }
 
+        public IServiceProvider Services { get; }
 
         public MemoryArea? MemoryArea
         {
@@ -105,12 +103,12 @@ namespace Reko.Gui.ViewModels.Documents
 
         public SegmentMap SegmentMap { get; set; }
 
-        public DisassemblyTextModel? DisassemblyTextModel
+        public ITextViewModel DisassemblyTextModel
         {
             get => this.disassemblyTextModel;
             set => this.RaiseAndSetIfChanged(ref this.disassemblyTextModel, value);
         }
-        private DisassemblyTextModel? disassemblyTextModel;
+        private ITextViewModel disassemblyTextModel;
 
         /// <summary>
         /// The CPU architecture chosen by the user.
@@ -135,7 +133,7 @@ namespace Reko.Gui.ViewModels.Documents
             {
                 if (archSelected == value)
                     return;
-                this.archSelected = value;
+                this.RaiseAndSetIfChanged(ref this.archSelected, value);
             }
         }
         private IProcessorArchitecture? archSelected;
@@ -144,7 +142,7 @@ namespace Reko.Gui.ViewModels.Documents
         {
             var result = new List<ListOption>();
             result.Add(new ListOption("(Default)", null));
-            var cfgSvc = services?.GetService<IConfigurationService>();
+            var cfgSvc = Services.GetService<IConfigurationService>();
             if (cfgSvc is not null)
             {
                 foreach (var arch in cfgSvc.GetArchitectures().OrderBy(a => a.Description))
@@ -162,7 +160,7 @@ namespace Reko.Gui.ViewModels.Documents
             var archName = this.SelectedArchitectureOption?.Value as string;
             if (archName is not null)
             {
-                arch = services.GetService<IConfigurationService>()?.GetArchitecture(archName);
+                arch = Services.GetService<IConfigurationService>()?.GetArchitecture(archName);
             }
             return arch;
         }
@@ -192,6 +190,7 @@ namespace Reko.Gui.ViewModels.Documents
             this.MemoryArea = segment.MemoryArea;
             this.AnchorAddress = addrRange.Address;
             this.SelectedAddress = addrRange.Address + addrRange.Length;
+            this.DisassemblyTextModel = new DisassemblyTextModel(factory, Program, this.SelectedArchitecture ?? Program.Architecture, segment);
         }
 
         private void SelAddrSvc_SelectedAddressChanged(object? sender, EventArgs e)

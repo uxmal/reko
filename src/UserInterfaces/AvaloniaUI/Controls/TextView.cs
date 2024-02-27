@@ -54,7 +54,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             TextBox.SelectionBrushProperty.AddOwner<HexViewControl>();
         public static readonly StyledProperty<IBrush?> SelectionForegroundBrushProperty =
             TextBox.SelectionForegroundBrushProperty.AddOwner<HexViewControl>();
-
+        public static readonly DirectProperty<TextView, IServiceProvider?> ServicesProperty =
+            AvaloniaProperty.RegisterDirect<TextView, IServiceProvider?>(
+                nameof(Services),
+                o => o.Services,
+                (o, v) => o.Services = v);
+        public static readonly DirectProperty<TextView, ITextViewModel?> ModelProperty =
+            AvaloniaProperty.RegisterDirect<TextView, ITextViewModel?>(
+                nameof(Services),
+                o => o.Model,
+                (o, v) => o.Model = v);
 
 
         // ModelChanged is fired whenever the Model property is set.
@@ -99,7 +108,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public TextView()
         {
-
             this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
         }
@@ -110,8 +118,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             remove => this.scrollInvalidated -= value;
         }
 
-        public IServiceProvider Services { get { return services; } set { services = value; OnServicesChanged(); } }
-        private IServiceProvider services;
+        public IServiceProvider? Services { get { return services; } set { services = value; OnServicesChanged(); } }
+        private IServiceProvider? services;
         protected virtual void OnServicesChanged()
         {
             ChangeLayout();
@@ -480,8 +488,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         /// </summary>
         /// <param name="pt">Location specified in client coordinates.</param>
         /// <returns>The span containing the given point.</returns>
-        protected LayoutSpan GetSpan(Point pt)
+        protected LayoutSpan? GetSpan(Point pt)
         {
+            if (this.layout is null)
+                return null;
             foreach (var line in this.layout.LayoutLines)
             {
                 if (line.Extent.Contains(pt))
@@ -495,8 +505,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         /// </summary>
         /// <param name="pt">Location specified in client coordinates.</param>
         /// <returns>The span containing the given point.</returns>
-        protected LayoutLine GetLine(Point pt)
+        protected LayoutLine? GetLine(Point pt)
         {
+            if (this.layout is null)
+                return null;
             foreach (var line in this.layout.LayoutLines)
             {
                 if (line.Extent.Contains(pt))
@@ -522,7 +534,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         {
             get { return model; } 
             set { 
-                this.model = value;
+                this.model = value ?? new EmptyEditorModel();
+                if (value == null)
+                    _ = this; //$DEBUG
                 OnModelChanged(EventArgs.Empty);
             }
         }
@@ -653,7 +667,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         public void RecomputeLayout()
         {
             InvalidateVisual();
-            if (services is null)
+            if (Services is null)
                 return;
             ComputeLayout();
         }

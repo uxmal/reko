@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Avalonia;
 using Avalonia.Input;
 using Reko.Core;
 using Reko.Core.Loading;
@@ -32,25 +33,54 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
     public class DisassemblyViewControl : TextView
     {
+        //$TODO Many of these properties belong to the DisassemblyTextModel
+
+        public static readonly DirectProperty<DisassemblyViewControl, Address?> SelectedAddressProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, Address?>(
+                nameof(SelectedAddress),
+                o => o.SelectedAddress,
+                (o, v) => o.SelectedAddress = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, Program?> ProgramProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, Program?>(
+                nameof(SelectedAddress),
+                o => o.Program,
+                (o, v) => o.Program = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IProcessorArchitecture?> ArchitectureProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IProcessorArchitecture?>(
+                nameof(Architecture),
+                o => o.Architecture,
+                (o, v) => o.Architecture = v);
 
         public DisassemblyTextModel? ViewModel { get => (DisassemblyTextModel?) this.DataContext; }
 
-        //$TODO All of these properties belong to the DisassemblyTextModel
 
-        public Program? Program { get { return program; } set { program = value; ProgramChanged?.Invoke(this, EventArgs.Empty); } }
+        public Program? Program {
+            get { return program; }
+            set {
+                if (this.program == value)
+                    return;
+                this.SetAndRaise(ProgramProperty, ref program, value);
+                ProgramChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
         public event EventHandler? ProgramChanged;
         private Program? program;
 
-        public Address? StartAddress
+        public Address? SelectedAddress
         {
-            get { return startAddress; }
+            get { return selectedAddress; }
             set
             {
-                startAddress = value; StartAddressChanged?.Invoke(this, EventArgs.Empty);
+                if (this.selectedAddress == value)
+                    return;
+                this.SetAndRaise(SelectedAddressProperty, ref this.selectedAddress, value);
+                StartAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler? StartAddressChanged;
-        private Address? startAddress;
+        private Address? selectedAddress;
 
         public Address? TopAddress
         {

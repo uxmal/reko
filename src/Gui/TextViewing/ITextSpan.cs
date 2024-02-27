@@ -23,7 +23,7 @@ namespace Reko.Gui.TextViewing
     public interface ITextSpan
     {
         string GetText();
-        string Style { get; set; }
+        string? Style { get; set; }
         object? Tag { get; set; }
         public int ContextMenuID { get; set; }
     }
