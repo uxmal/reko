@@ -65,13 +65,14 @@ namespace Reko.UnitTests.Gui.Forms
             fsSvc = new Mock<IFileSystemService>();
             svcFactory = new Mock<IServiceFactory>();
             var settingsSvc = new Mock<ISettingsService>();
+            var selAddrSvc = new Mock<ISelectedAddressService>();
 
             sc.AddService<IDialogFactory>(df.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
             sc.AddService<IDecompilerShellUiService>(uiSvc.Object);
             sc.AddService<IServiceFactory>(svcFactory.Object);
             sc.AddService<ISettingsService>(settingsSvc.Object);
-
+            sc.AddService<ISelectedAddressService>(selAddrSvc.Object);
     
             var config = new Mock<IConfigurationService>();
             var eventBus = new Mock<IEventBus>();
@@ -81,7 +82,6 @@ namespace Reko.UnitTests.Gui.Forms
             var diagnosticsSvc = new Mock<IDiagnosticsService>();
             decompilerSvc = new Mock<IDecompilerService>();
             var selSvc = new Mock<ISelectionService>();
-            var selAddrSvc = new Mock<ISelectedAddressService>();
             var codeViewSvc = new Mock<ICodeViewerService>();
             var textEditorSvc = new Mock<ITextFileEditorService>();
             var segmentViewSvc = new Mock<ImageSegmentService>();
