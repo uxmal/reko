@@ -17,16 +17,39 @@
 		<ResourceDictionary>
 			<ResourceDictionary.ThemeDictionaries>
 				<ResourceDictionary x:Key='Light'>
+					<!-- Colors used by hex viewer -->
 					<SolidColorBrush x:Key='CodeBackgroundBrush'>#FFC0C0</SolidColorBrush>
 					<SolidColorBrush x:Key='CodeForegroundBrush'>White</SolidColorBrush>
 					<SolidColorBrush x:Key='DataBackgroundBrush'>#C0C0FF</SolidColorBrush>
 					<SolidColorBrush x:Key='DataForegroundBrush'>White</SolidColorBrush>
+
+					<!-- Colors used by disassembly window -->
+					<SolidColorBrush x:Key='AddressBrush'>#4080C0</SolidColorBrush>
+					<SolidColorBrush x:Key='CommentBrush'>#568a56</SolidColorBrush>
+					<SolidColorBrush x:Key='InstrBrush'>#BFBF60</SolidColorBrush>
+					<SolidColorBrush x:Key='JumpBrush'>#D8D894</SolidColorBrush>
+					<SolidColorBrush x:Key='CallBrush'>#CFC410</SolidColorBrush>
+					<SolidColorBrush x:Key='InvalidCodeBrush'>#AF2020</SolidColorBrush>
+					<SolidColorBrush x:Key='PaddingCodeBrush'>#808031</SolidColorBrush>
+					<SolidColorBrush x:Key='ImmediateBrush'>#5689BF</SolidColorBrush>
 				</ResourceDictionary>
+
 				<ResourceDictionary x:Key='Dark'>
+					<!-- Colors used by hex viewer -->
 					<SolidColorBrush x:Key='CodeBackgroundBrush'>#801010</SolidColorBrush>
 					<SolidColorBrush x:Key='CodeForegroundBrush'>White</SolidColorBrush>
 					<SolidColorBrush x:Key='DataBackgroundBrush'>#101080</SolidColorBrush>
 					<SolidColorBrush x:Key='DataForegroundBrush'>White</SolidColorBrush>
+
+					<!-- Colors used by disassembly window -->
+					<SolidColorBrush x:Key='AddressBrush'>#4080C0</SolidColorBrush>
+					<SolidColorBrush x:Key='CommentBrush'>#568a56</SolidColorBrush>
+					<SolidColorBrush x:Key='InstrBrush'>#BFBF60</SolidColorBrush>
+					<SolidColorBrush x:Key='JumpBrush'>#D8D894</SolidColorBrush>
+					<SolidColorBrush x:Key='CallBrush'>#CFC410</SolidColorBrush>
+					<SolidColorBrush x:Key='InvalidCodeBrush'>#AF2020</SolidColorBrush>
+					<SolidColorBrush x:Key='PaddingCodeBrush'>#808031</SolidColorBrush>
+					<SolidColorBrush x:Key='ImmediateBrush'>#5689BF</SolidColorBrush>
 				</ResourceDictionary>
 			</ResourceDictionary.ThemeDictionaries>
 			<FontFamily x:Key="RobotoMonoFont">avares://HexView/Assets#Roboto Mono</FontFamily>
