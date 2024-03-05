@@ -584,6 +584,7 @@ namespace Reko.Arch.X86
         rcr,
         rdmsr,
         rdpkru,
+        rdpid,
         rdpmc,
         rdrand,
         rdseed,

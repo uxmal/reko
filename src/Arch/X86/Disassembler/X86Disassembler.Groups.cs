@@ -195,7 +195,7 @@ namespace Reko.Arch.X86
                 Grp9[5] = s_invalid;
                 Grp9[6] = MemReg(
                         new PrefixedDecoder(
-                            Instr(Mnemonic.vmptrld, InstrClass.Linear|InstrClass.Privileged, Mq),
+                            dec:   Instr(Mnemonic.vmptrld, InstrClass.Linear|InstrClass.Privileged, Mq),
                             dec66: Instr(Mnemonic.vmclear, InstrClass.Linear|InstrClass.Privileged, Mq),
                             decF3: Instr(Mnemonic.vmxon, InstrClass.Linear|InstrClass.Privileged, Mq)),
                         Instr(Mnemonic.rdrand, RBv));
@@ -203,7 +203,13 @@ namespace Reko.Arch.X86
                         new PrefixedDecoder(
                             dec:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq),
                             decF3:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq)),
-                        Instr(Mnemonic.rdseed, RBv));
+                        new PrefixedDecoder(
+                            dec:   Instr(Mnemonic.rdseed, RBv),
+                            dec66: Instr(Mnemonic.rdseed, RBw),     //$REVIEW Really unclear if this is correct.
+                            decF2: Instr(Mnemonic.rdseed, RBv),
+                            decF3: Amd64Instr(
+                                Instr(Mnemonic.rdpid, Rd),
+                                Instr(Mnemonic.rdpid, Rq))));
 
                 // 0F B9
                 Grp10[0] = Instr(Mnemonic.ud1, InstrClass.Invalid);

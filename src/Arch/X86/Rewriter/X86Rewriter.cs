@@ -622,6 +622,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.ror: RewriteRotation(CommonOps.Ror, RotateMaskRight()); break;
                 case Mnemonic.rorx: RewriteRorx(); break;
                 case Mnemonic.rdmsr: RewriteRdmsr(); break;
+                case Mnemonic.rdpid: RewriteRdpid(); break;
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;
                 case Mnemonic.rdrand: RewriteRdrand(); break;
                 case Mnemonic.rdtsc: RewriteRdtsc(); break;
@@ -1625,6 +1626,9 @@ namespace Reko.Arch.X86.Rewriter
 
         private static readonly IntrinsicProcedure rdmsr_intrinsic;
         private static readonly IntrinsicProcedure rcpp_intrinsic = GenericUnaryIntrinsic("__rcpp");
+        private static readonly IntrinsicProcedure rdpid_intrinsic = new IntrinsicBuilder("__rdpid", true)
+            .GenericTypes("T")
+            .Returns("T");
         private static readonly IntrinsicProcedure rdpmc_intrinsic;
         private static readonly IntrinsicProcedure rdrand_intrinsic;
         private static readonly IntrinsicProcedure rdtsc_intrinsic;

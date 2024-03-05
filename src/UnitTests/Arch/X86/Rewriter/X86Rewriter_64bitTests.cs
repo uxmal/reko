@@ -1354,6 +1354,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_rdpid()
+        {
+            Given_Bytes(0xF3, 0x0F, 0xC7, 0xF9);
+            AssertCode(     // rdpid\tecx",
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|rcx = __rdpid<word64>()");
+        }
+
+        [Test]
         public void X86Rw_rorx()
         {
             Given_HexString("C443FBF0D602");

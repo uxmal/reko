@@ -880,6 +880,12 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         }
 
         [Test]
+        public void X86Dis_rdpid()
+        {
+            AssertCode32("rdpid\tecx", 0xF3, 0x0F, 0xC7, 0xF9);
+        }
+
+        [Test]
         public void X86Dis_rdtsc()
         {
             AssertCode32("rdtsc", 0x0F, 0x31);

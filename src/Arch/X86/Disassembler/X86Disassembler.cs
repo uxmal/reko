@@ -1165,6 +1165,7 @@ namespace Reko.Arch.X86
             };
         }
         private static readonly Mutator<X86Disassembler> RBv = RB(OperandType.v);
+        private static readonly Mutator<X86Disassembler> RBw = RB(OperandType.w);
 
         /// <summary>
         /// XMM operand specified by the modRm field of the modRM byte.

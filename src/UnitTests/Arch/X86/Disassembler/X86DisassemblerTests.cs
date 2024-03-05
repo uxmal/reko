@@ -431,6 +431,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_rdpid()
+        {
+            AssertCode64("rdpid\trcx", 0xF3, 0x0F, 0xC7, 0xF9);
+        }
+
+        [Test]
         public void X86Dis_64_rexW()
         {
             AssertCode64("lea\trdx,[rsp+20h]", 0x48, 0x8D, 0x54, 0x24, 0x20);
@@ -1025,7 +1031,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_rdseed()
         {
-            AssertCode64("rdseed\tr11w", "66 41 0F C7 FB ");
+            AssertCode64("rdseed\tr11w", "66 41 0F C7 FB");
             AssertCode64("rdseed\tr11d", "41 0F C7 FB");
             AssertCode64("rdseed\tr11", "49 0F C7 FB");
         }

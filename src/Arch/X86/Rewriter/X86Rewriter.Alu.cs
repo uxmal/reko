@@ -232,6 +232,12 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(edx_eax, m.Fn(rdmsr_intrinsic, ecx));
         }
 
+        private void RewriteRdpid()
+        {
+            var dst = SrcOp(0);
+            m.Assign(dst, m.Fn(rdpid_intrinsic.MakeInstance(dst.DataType)));
+        }
+
         private void RewriteRdpmc()
         {
             Identifier edx_eax = binder.EnsureSequence(

@@ -837,7 +837,7 @@ namespace Reko.Arch.X86
                 d[0xC6] = new PrefixedDecoder(
                     VexInstr(Mnemonic.shufps, Mnemonic.vshufps, Vps,Hps,WBx_d,Ib),
                     VexInstr(Mnemonic.shufpd, Mnemonic.vshufpd, Vpd,Hpd,WBx_q,Ib));
-				d[0xC7] = new GroupDecoder(Grp9);
+				d[0xC7] = Instr386(new GroupDecoder(Grp9));
 
 				d[0xC8] = Instr(Mnemonic.bswap, rv);
 				d[0xC9] = Instr(Mnemonic.bswap, rv);

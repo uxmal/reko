@@ -1475,6 +1475,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_rdpid()
+        {
+            Run32bitTest("F30FC7F9");
+            AssertCode(     // rdpid\tecx",
+                "0|L--|10000000(4): 1 instructions",
+                "1|L--|ecx = __rdpid<word32>()");
+        }
+
+        [Test]
         public void X86rw_rdpmc()
         {
             Run32bitTest("0F33");    // rdpmc
