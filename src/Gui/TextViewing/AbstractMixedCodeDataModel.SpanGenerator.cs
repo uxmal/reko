@@ -255,7 +255,8 @@ namespace Reko.Gui.TextViewing
             {
                 Debug.Assert(line.Count == 0);
                 var addr = this.position.Address;
-                if (program.TryCreateImageReader(program.Architecture, addr, item.Size, out var rdr))
+                var cellsEaten = addr - item.Address;
+                if (program.TryCreateImageReader(program.Architecture, addr, item.Size-cellsEaten, out var rdr))
                 {
                     mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
                 }
