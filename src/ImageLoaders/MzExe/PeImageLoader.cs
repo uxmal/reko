@@ -60,6 +60,9 @@ namespace Reko.ImageLoaders.MzExe
 		private short optionalHeaderSize;
         private ushort fileFlags;
 		private int sections;
+        private uint offsetCoffSymbols;
+        private uint cCoffSymbols;
+
         private uint rvaSectionTable;
 		private ByteMemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
@@ -298,8 +301,8 @@ namespace Reko.ImageLoaders.MzExe
 
 			sections = rdr.ReadLeInt16();
 			rdr.ReadLeUInt32();		// timestamp.
-			rdr.ReadLeUInt32();		// COFF symbol table.
-			rdr.ReadLeUInt32();		// #of symbols.
+			offsetCoffSymbols = rdr.ReadLeUInt32();		// COFF symbol table.
+            cCoffSymbols = rdr.ReadLeUInt32();		// #of symbols.
 			optionalHeaderSize = rdr.ReadLeInt16();
 			this.fileFlags = rdr.ReadLeUInt16();
 			rvaSectionTable = (uint) ((int)rdr.Offset + optionalHeaderSize);
@@ -781,10 +784,10 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
         }
 
-		private static Section ReadSection(EndianImageReader rdr)
+		private Section ReadSection(EndianImageReader rdr)
 		{
 			var sec = new Section();
-			sec.Name = ReadSectionName(rdr);
+			sec.Name = ReadSectionName(rdr, offsetCoffSymbols + cCoffSymbols * 18u);
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
 

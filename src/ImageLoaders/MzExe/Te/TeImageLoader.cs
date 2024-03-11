@@ -198,7 +198,7 @@ namespace Reko.ImageLoaders.MzExe.Te
             for (int iSection = 0; iSection < nSections; ++iSection)
             {
                 var sec = new Section();
-                sec.name = ReadSectionName(rdr);
+                sec.name = this.ReadSectionName(rdr, 0);
                 if (!rdr.TryReadLeUInt32(out sec.virtual_size) ||
                     !rdr.TryReadLeUInt32(out sec.virtual_address) ||
                     !rdr.TryReadLeUInt32(out sec.size_of_raw_data) ||

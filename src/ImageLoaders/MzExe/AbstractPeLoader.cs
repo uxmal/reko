@@ -77,6 +77,7 @@ namespace Reko.ImageLoaders.MzExe
             : base(services, imageLocation, imgRaw)
         {
             importReferences = new Dictionary<Address, ImportReference>();
+
         }
 
         protected abstract SizeSpecificLoader Create32BitLoader(AbstractPeLoader outer);
@@ -185,7 +186,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        protected static string? ReadSectionName(EndianImageReader rdr)
+        protected string? ReadSectionName(EndianImageReader rdr, uint rvaStrings)
         {
             byte[] bytes = rdr.ReadBytes(8);
             Encoding asc = Encoding.ASCII;
@@ -203,7 +204,21 @@ namespace Reko.ImageLoaders.MzExe
             {
                 return null;
             }
-            return new String(chars, 0, i);
+
+            if (bytes[0] == '/')
+            {
+                var sOffsetStringTable = asc.GetString(bytes, 1, i - 1);
+                if (!uint.TryParse(sOffsetStringTable, out uint offsetStringTable))
+                {
+                    return null;
+                }
+                var s = ReadUtf8String(new ByteMemoryArea(this.PreferredBaseAddress, RawImage), rvaStrings + offsetStringTable, 0);
+                return s;
+            }
+            else
+            {
+                return asc.GetString(bytes, 0, i);
+            }
         }
 
         public string? ReadUtf8String(ByteMemoryArea imgLoaded, uint rva, int maxLength)
