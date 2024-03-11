@@ -43,12 +43,13 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
 	public class PeImageLoader : AbstractPeLoader
 	{
-        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Warning };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Verbose};
 
         private const short ImageFileRelocationsStripped = 0x0001;
         private const short ImageFileExecutable = 0x0002;
         private const short ImageFileDll = 0x2000;
         public const uint DID_RvaBased = 1;
+        private const uint CoffSymbolSize = 18;
 
         private IProcessorArchitecture arch;
         private IPlatform platform;
@@ -62,6 +63,7 @@ namespace Reko.ImageLoaders.MzExe
 		private int sections;
         private uint offsetCoffSymbols;
         private uint cCoffSymbols;
+        private uint offsetCoffStrings;
 
         private uint rvaSectionTable;
 		private ByteMemoryArea imgLoaded;
@@ -139,6 +141,94 @@ namespace Reko.ImageLoaders.MzExe
 			}
 		}
 
+        private List<ImageSymbol> LoadCoffSymbols(Address addrLoad)
+        {
+            var result = new List<ImageSymbol>();
+            var rdr = new LeImageReader(RawImage, this.offsetCoffSymbols, this.offsetCoffStrings);
+            while (TryLoadCoffSymbol(rdr, addrLoad, out var symbol))
+            {
+                if (symbol is not null)
+                    result.Add(symbol);
+            }
+            return result;
+        }
+
+        private bool TryLoadCoffSymbol(LeImageReader rdr, Address addrLoad, out ImageSymbol? symbol)
+        {
+            symbol = null;
+            if (!rdr.TryReadLeUInt32(out uint uName))
+                return false;
+            string? name;
+            if (uName == 0)
+            {
+                // If first 4 bytes of name are 0, it is a long name.
+                if (!rdr.TryReadLeUInt32(out uName))
+                    return false;
+                name = ReadUtf8String(new ByteMemoryArea(PreferredBaseAddress, RawImage), offsetCoffStrings + uName, 256);
+            }
+            else
+            {
+                rdr.Offset -= 4;
+                var bytes = rdr.ReadBytes(8);
+                name = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
+            }
+            if (!rdr.TryReadLeUInt32(out uint value))
+                return false;
+            if (!rdr.TryReadLeInt16(out short sectionNumber))
+                return false;
+            if (!rdr.TryReadLeUInt16(out ushort type))
+                return false;
+            if (!rdr.TryReadByte(out byte storageClass))
+                return false;
+            if (!rdr.TryReadByte(out byte cAuxSymbols))
+                return false;
+
+            if (cAuxSymbols != 0)
+                rdr.Offset += cAuxSymbols * CoffSymbolSize;
+
+            string sectionName;
+            Section? section;
+            switch (sectionNumber)
+            {
+            default:
+                section = sectionList[sectionNumber];
+                sectionName = section.Name ?? "(null)";
+                break;
+            case 0:
+                section = null;
+                sectionName = "";
+                break;
+            case -1:
+                section = null;
+                sectionName = "(abs)";
+                break;
+            case -2:
+                section = null;
+                sectionName = "(debug)";
+                break;
+            }
+            trace.Verbose("Name: {0,-52} Value: {1:X8} Section:{2,-10} ({3,4}) Type: {4:X4} Class: {5:X2} Aux: {6:X2}",
+                name ?? "(null)", value, sectionName, sectionNumber, type, storageClass, cAuxSymbols);
+
+            // Ignore section names.
+            if (storageClass == IMAGE_SYM_CLASS_STATIC ||
+                storageClass == IMAGE_SYM_CLASS_FILE)
+                return true;
+            if (sectionNumber <= 0)
+                return true;
+
+            if (section is not null)
+            {
+                var addr = addrLoad + section.VirtualAddress + value;
+                symbol = ImageSymbol.Create(SymbolType.Unknown, this.arch, addr, name);
+            }
+            else
+            {
+                symbol = null;
+            }
+            return true;
+        }
+
         private ImageSymbol LoadEntryPoint(Address addrLoad, EndianImageReader rdrAddrs, EndianImageReader? rdrNames)
         {
             uint rvaAddr = rdrAddrs.ReadLeUInt32();
@@ -189,6 +279,14 @@ namespace Reko.ImageLoaders.MzExe
                 sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToSegmentMap(addrLoad, SegmentMap);
+            }
+            if (offsetCoffSymbols > 0 && cCoffSymbols > 0)
+            {
+                var syms = LoadCoffSymbols(addrLoad);
+                foreach (var sym in syms)
+                {
+                    ImageSymbols[sym.Address] = sym;
+                }
             }
             this.program = new Program(new ProgramMemory(SegmentMap), arch, platform, ImageSymbols, new())
             {
@@ -303,6 +401,7 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();		// timestamp.
 			offsetCoffSymbols = rdr.ReadLeUInt32();		// COFF symbol table.
             cCoffSymbols = rdr.ReadLeUInt32();		// #of symbols.
+            offsetCoffStrings = offsetCoffSymbols + cCoffSymbols * CoffSymbolSize;  // COFF string table starts after symbol table.
 			optionalHeaderSize = rdr.ReadLeInt16();
 			this.fileFlags = rdr.ReadLeUInt16();
 			rvaSectionTable = (uint) ((int)rdr.Offset + optionalHeaderSize);

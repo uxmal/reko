@@ -70,6 +70,37 @@ namespace Reko.ImageLoaders.MzExe
         protected const uint SectionFlagsExecutable = 0x20000020;
 
 
+        /// <summary>
+        /// COFF Symbol storage classes
+        /// </summary>
+        public const int IMAGE_SYM_CLASS_END_OF_FUNCTION = 0xFF;    // A special symbol that represents the end of function, for debugging purposes.
+        public const int IMAGE_SYM_CLASS_NULL = 0;                  // No assigned storage class.
+        public const int IMAGE_SYM_CLASS_AUTOMATIC = 1;             // The automatic(stack) variable.The Value field specifies the stack frame offset.
+        public const int IMAGE_SYM_CLASS_EXTERNAL = 2;              // A value that Microsoft tools use for external symbols. The Value field indicates the size if the section number is IMAGE_SYM_UNDEFINED (0). If the section number is not zero, then the Value field specifies the offset within the section.
+        public const int IMAGE_SYM_CLASS_STATIC = 3;                // The offset of the symbol within the section.If the Value field is zero, then the symbol represents a section name.
+        public const int IMAGE_SYM_CLASS_REGISTER = 4;      // A register variable.The Value field specifies the register number.
+        public const int IMAGE_SYM_CLASS_EXTERNAL_DEF = 5; // A symbol that is defined externally.
+        public const int IMAGE_SYM_CLASS_LABEL = 6;                 // A code label that is defined within the module. The Value field specifies the offset of the symbol within the section.
+        public const int IMAGE_SYM_CLASS_UNDEFINED_LABEL = 7; // A reference to a code label that is not defined.
+        public const int IMAGE_SYM_CLASS_MEMBER_OF_STRUCT = 8; // The structure member.The Value field specifies the n th member.
+        public const int IMAGE_SYM_CLASS_ARGUMENT = 9; // A formal argument (parameter) of a function. The Value field specifies the n th argument.
+        public const int IMAGE_SYM_CLASS_STRUCT_TAG = 10; // The structure tag-name entry.
+        public const int IMAGE_SYM_CLASS_MEMBER_OF_UNION = 11; // A union member.The Value field specifies the n th member.
+        public const int IMAGE_SYM_CLASS_UNION_TAG = 12;            // The Union tag-name entry.
+        public const int IMAGE_SYM_CLASS_TYPE_DEFINITION = 13;      // A Typedef entry.
+        public const int IMAGE_SYM_CLASS_UNDEFINED_STATIC = 14;     // A static data declaration.
+        public const int IMAGE_SYM_CLASS_ENUM_TAG = 15;             // An enumerated type tagname entry.
+        public const int IMAGE_SYM_CLASS_MEMBER_OF_ENUM = 16;       // A member of an enumeration.The Value field specifies the n th member.
+        public const int IMAGE_SYM_CLASS_REGISTER_PARAM = 17;       // A register parameter.
+        public const int IMAGE_SYM_CLASS_BIT_FIELD = 18;            // A bit-field reference. The Value field specifies the n th bit in the bit field.
+        public const int IMAGE_SYM_CLASS_BLOCK = 100;       // A.bb (beginning of block) or.eb(end of block) record. The Value field is the relocatable address of the code location.
+        public const int IMAGE_SYM_CLASS_FUNCTION = 101;    // A value that Microsoft tools use for symbol records that define the extent of a function: begin function(.bf ), end function( .ef ), and lines in function( .lf ). For.lf records, the Value field gives the number of source lines in the function.For.ef records, the Value field gives the size of the function code.
+        public const int IMAGE_SYM_CLASS_END_OF_STRUCT = 102;       // An end-of-structure entry.
+        public const int IMAGE_SYM_CLASS_FILE = 103;                // A value that Microsoft tools, as well as traditional COFF format, use for the source-file symbol record.The symbol is followed by auxiliary records that name the file.
+        public const int IMAGE_SYM_CLASS_SECTION = 104;             // A definition of a section (Microsoft tools use STATIC storage class instead).
+        public const int IMAGE_SYM_CLASS_WEAK_EXTERNAL = 105;       // A weak external.For more information, see Auxiliary Format 3: Weak Externals.
+        public const int IMAGE_SYM_CLASS_CLR_TOKEN = 107;           // A CLR token symbol. The name is an ASCII string that consists of the hexadecimal value of the token. For more information, see CLR Token Definition (Object Only).
+
         protected Dictionary<Address, ImportReference> importReferences;
 
 
@@ -341,8 +372,5 @@ namespace Reko.ImageLoaders.MzExe
                 return (impRef, 64);
             }
         }
-
-
-
     }
 }
