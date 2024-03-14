@@ -34,6 +34,8 @@ using C2 = Microsoft.Msagl.Drawing.Color;
 using Reko.Gui.Services;
 using Reko.Gui.TextViewing;
 
+#nullable enable
+
 namespace Reko.UserInterfaces.WindowsForms
 {
     public class CfgGraphGenerator
@@ -55,6 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             this.uiPreferences = uiPreferences;
             this.graph = graph;
+            this.factory = factory;
             this.g = g;
             this.defaultFont = defaultFont;
             this.visited = new HashSet<Block>();

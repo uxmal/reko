@@ -32,15 +32,8 @@ using System.Text;
 
 namespace Reko.Gui.TextViewing
 {
-    public abstract partial class AbstractMixedCodeDataModel
+    public partial class MixedCodeDataModel
     {
-        protected readonly TextSpanFactory factory;
-
-        protected AbstractMixedCodeDataModel(TextSpanFactory factory)
-        {
-            this.factory = factory;
-        }
-
         private bool TryReadComment(out LineSpan line)
         {
             if (comments.TryGetValue(curPos.Address, out var commentLines) &&
@@ -49,7 +42,7 @@ namespace Reko.Gui.TextViewing
                 line = new LineSpan(
                     curPos,
                     curPos.Address,
-                    CreateMemoryTextSpan(
+                    factory.CreateMemoryTextSpan(
                         $"; {commentLines[curPos.Offset]}",
                         UiStyles.CodeComment));
                 curPos = Pos(curPos.Address, curPos.Offset + 1);
@@ -171,7 +164,7 @@ namespace Reko.Gui.TextViewing
 
         private class AsmSpanifyer : SpanGenerator
         {
-            private readonly AbstractMixedCodeDataModel model;
+            private readonly MixedCodeDataModel model;
             private readonly Program program;
             private readonly IProcessorArchitecture arch;
             private readonly MachineInstruction[] instrs;
@@ -180,7 +173,7 @@ namespace Reko.Gui.TextViewing
             private readonly Address? addrSelected;
 
             public AsmSpanifyer(
-                AbstractMixedCodeDataModel model,
+                MixedCodeDataModel model,
                 Program program,
                 IProcessorArchitecture arch,
                 MachineInstruction[] instrs,
@@ -206,12 +199,14 @@ namespace Reko.Gui.TextViewing
                 var options = new MachineInstructionRendererOptions(
                     flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress);
 
-                var asmLine = model.RenderAssemblerLine(
+                var asmLine = DisassemblyTextModel.RenderAsmLine(
                     position,
+                    model.factory,
                     program,
                     arch,
                     instr,
                     options);
+
                 if (instr.Address == addrSelected)
                     asmLine.Style = "mirrored";
                 if (offset == instrs.Length)
@@ -223,11 +218,9 @@ namespace Reko.Gui.TextViewing
             }
         }
 
-        protected abstract LineSpan RenderAssemblerLine(object position, Program program, IProcessorArchitecture arch, MachineInstruction instr, MachineInstructionRendererOptions options);
-
         private class MemSpanifyer : SpanGenerator, IMemoryFormatterOutput
         {
-            private readonly AbstractMixedCodeDataModel model;
+            private readonly MixedCodeDataModel model;
             private readonly Program program;
             private readonly MemoryArea mem;
             private readonly ImageMapItem item;
@@ -236,7 +229,7 @@ namespace Reko.Gui.TextViewing
             private ModelPosition position;
 
             public MemSpanifyer(
-                AbstractMixedCodeDataModel model,
+                MixedCodeDataModel model,
                 Program program,
                 MemoryArea mem,
                 ImageMapItem item,
@@ -281,19 +274,19 @@ namespace Reko.Gui.TextViewing
 
             public void RenderAddress(Address addr)
             {
-                line.Add(model.CreateAddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
+                line.Add(model.factory.CreateAddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
             }
 
             public void RenderUnit(Address addr, string sUnit)
             {
-                line.Add(model.CreateMemoryTextSpan(" ", UiStyles.MemoryWindow));
-                line.Add(model.CreateMemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
+                line.Add(model.factory.CreateMemoryTextSpan(" ", UiStyles.MemoryWindow));
+                line.Add(model.factory.CreateMemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
             }
 
             public void RenderFillerSpan(int nChunks, int nCellsPerChunk)
             {
                 var nCells = (1 + nCellsPerChunk) * nChunks;
-                line.Add(model.CreateMemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
+                line.Add(model.factory.CreateMemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
             }
 
             public void RenderUnitAsText(Address addr, string sUnit)
@@ -308,7 +301,7 @@ namespace Reko.Gui.TextViewing
 
             public void EndLine(Constant[] bytes)
             {
-                line.Add(model.CreateMemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
+                line.Add(model.factory.CreateMemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
             }
         }
 

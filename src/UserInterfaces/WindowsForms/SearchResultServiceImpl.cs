@@ -32,13 +32,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+#nullable enable
+
 namespace Reko.UserInterfaces.WindowsForms
 {
     public class SearchResultServiceImpl : ISearchResultService, IWindowPane, ICommandTarget
     {
         private ListView listView;
         private IServiceProvider services;
-        private ISearchResult result;
+        private ISearchResult? result;
 
         public SearchResultServiceImpl(IServiceProvider services, ListView listView)
         {
@@ -57,7 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms
             SetSearchResults(new EmptyResult());
         }
 
-        public IWindowFrame Frame { get; set; }
+        public IWindowFrame? Frame { get; set; }
 
         public object CreateControl()
         {
@@ -109,8 +111,10 @@ namespace Reko.UserInterfaces.WindowsForms
             }
         }
 
-        private ListViewItem GetItem(int i)
+        private ListViewItem? GetItem(int i)
         {
+            if (result is null)
+                return null;
             if (0 <= i && i < result.Count)
             {
                 var sri = result.GetItem(i);
@@ -127,27 +131,29 @@ namespace Reko.UserInterfaces.WindowsForms
                 return null;
         }
 
-        void listView_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        void listView_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
             e.Item = GetItem(e.ItemIndex);
         }
 
-        void listView_CacheVirtualItems(object sender, CacheVirtualItemsEventArgs e)
+        void listView_CacheVirtualItems(object? sender, CacheVirtualItemsEventArgs e)
         {
             ListViewItem[] cache = new ListViewItem[e.EndIndex - e.StartIndex + 1];
             for (int i = e.StartIndex; i <= e.EndIndex; ++i)
             {
-                cache[i - e.StartIndex] = GetItem(i);
+                cache[i - e.StartIndex] = GetItem(i)!;
             }
         }
 
         public void DoubleClickItem(int i)
         {
-            result.NavigateTo(i);
+            result?.NavigateTo(i);
         }
 
         public void Advance(int distance)
         {
+            if (this.result is null)
+                return;
             int itemCount = this.result.Count;
             if (itemCount < 2)
                 return;
@@ -167,7 +173,7 @@ namespace Reko.UserInterfaces.WindowsForms
             result.NavigateTo(i);
         }
 
-        void listView_DoubleClick(object sender, EventArgs e)
+        void listView_DoubleClick(object? sender, EventArgs e)
         {
             if (listView.FocusedItem == null)
                 return;
@@ -232,11 +238,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public int SortedColumn { get { return -1; } }
 
-            public ISearchResultView View { get; set; }
+            public ISearchResultView? View { get; set; }
 
             public void CreateColumns()
             {
-                View.AddColumn("",40);
+                View?.AddColumn("",40);
             }
 
             public SearchResultItem GetItem(int i)
@@ -298,7 +304,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return false;
         }
 
-        private void ListView_GotFocus(object sender, EventArgs e)
+        private void ListView_GotFocus(object? sender, EventArgs e)
         {
             services.RequireService<ICommandRouterService>().ActiveCommandTarget = this;
         }

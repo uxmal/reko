@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2024 Pavel Tomin.
  *
@@ -19,13 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms

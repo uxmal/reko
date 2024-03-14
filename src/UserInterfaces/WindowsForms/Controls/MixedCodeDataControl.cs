@@ -74,7 +74,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (program is not null && Services is not null)
                 {
                     var selSvc = Services.RequireService<ISelectedAddressService>();
-                    Model = new MixedCodeDataModel(program, program.ImageMap.Clone(), selSvc);
+                    Model = new MixedCodeDataModel(
+                        program, 
+                        program.ImageMap.Clone(),
+                        new WindowsFormsTextSpanFactory(),
+                        selSvc);
                     var currentPos = Model.CurrentPosition;
                     addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
@@ -118,7 +122,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var currentPos = Model.CurrentPosition;
             var selSvc = Services.RequireService<ISelectedAddressService>();
-            var model = new MixedCodeDataModel(program, program.ImageMap.Clone(), selSvc);
+            var model = new MixedCodeDataModel(program, program.ImageMap.Clone(), new WindowsFormsTextSpanFactory(),  selSvc);
             model.MoveToLine(currentPos, 0);
             currentPos = Model.CurrentPosition;
             this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);

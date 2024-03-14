@@ -40,7 +40,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public event EventHandler<Gui.Controls.TreeViewEventArgs> AfterExpand;
         public event EventHandler<Gui.Controls.TreeViewEventArgs> BeforeExpand;
         public event Gui.Controls.MouseEventHandler MouseWheel;
-        public event EventHandler DragLeave;
 
         private readonly TreeView treeView;
 

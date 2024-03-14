@@ -24,14 +24,12 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 
+#nullable enable
+
 namespace Reko.UserInterfaces.WindowsForms
 {
     internal class ToolStripComboBoxWrapper : IComboBox
     {
-        public event EventHandler TextChanged;
-        public event EventHandler GotFocus;
-        public event EventHandler LostFocus;
-
         private ToolStripComboBox ddl;
 
         public ToolStripComboBoxWrapper(ToolStripComboBox ddl)
@@ -39,7 +37,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.ddl = ddl;
         }
 
-        public object DataSource { get; set; }
+        public object? DataSource { get; set; }
 
         public IList Items => ddl.Items;
 
@@ -90,5 +88,24 @@ namespace Reko.UserInterfaces.WindowsForms
             add { ddl.SelectedIndexChanged += value; }
             remove { ddl.SelectedIndexChanged -= value; }
         }
+
+        public event EventHandler? TextChanged
+        {
+            add { ddl.TextChanged += value; }
+            remove { ddl.TextChanged -= value; }
+        }
+
+        public event EventHandler? GotFocus
+        {
+            add { ddl.GotFocus += value; }
+            remove { ddl.GotFocus -= value; }
+        }
+
+        public event EventHandler? LostFocus
+        {
+            add { ddl.LostFocus += value; }
+            remove { ddl.LostFocus -= value; }
+        }
+
     }
 }

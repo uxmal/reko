@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Machine;
 using Reko.Gui.Services;
-using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +33,7 @@ namespace Reko.Gui.TextViewing
     /// <summary>
     /// Provides a text model that mixes code and data.
     /// </summary>
-    public abstract partial class AbstractMixedCodeDataModel : ITextViewModel
+    public partial class MixedCodeDataModel : ITextViewModel
     {
         const int BytesPerLine = 16;
 
@@ -45,14 +44,17 @@ namespace Reko.Gui.TextViewing
         private readonly ModelPosition endPos;
         private readonly Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
         private readonly IDictionary<Address, string[]> comments;
+        protected readonly TextSpanFactory factory;
 
-        public AbstractMixedCodeDataModel(
+        public MixedCodeDataModel(
             Program program,
-            ImageMap imageMap, 
+            ImageMap imageMap,
+            TextSpanFactory factory,
             ISelectedAddressService selSvc)
         {
             this.program = program;
             this.imageMap = imageMap;
+            this.factory = factory;
             this.selSvc = selSvc;
 
             var firstSeg = program.SegmentMap.Segments.Values.FirstOrDefault();
@@ -78,10 +80,12 @@ namespace Reko.Gui.TextViewing
                 a => Lines(a.Text));
         }
 
-        public AbstractMixedCodeDataModel(AbstractMixedCodeDataModel that)
+
+        public MixedCodeDataModel(MixedCodeDataModel that)
         {
             this.program = that.program;
             this.imageMap = that.imageMap;
+            this.factory = that.factory;
             this.curPos = that.curPos;
             this.StartPosition = that.StartPosition;
             this.endPos = that.endPos;
@@ -97,11 +101,7 @@ namespace Reko.Gui.TextViewing
 
         public int LineCount { get; private set; }
 
-        public abstract AbstractMixedCodeDataModel Clone();
-
-        protected abstract ITextSpan CreateAddressSpan(string formattedAddress, Address addr, string style);
-        protected abstract ITextSpan CreateMemoryTextSpan(string text, string style);
-        protected abstract ITextSpan CreateMemoryTextSpan(Address addr, string text, string style);
+        public MixedCodeDataModel Clone() => new MixedCodeDataModel(this);
 
         private int CountLines()
         {

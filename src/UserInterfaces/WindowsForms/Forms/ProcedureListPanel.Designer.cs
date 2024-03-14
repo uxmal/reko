@@ -144,6 +144,5 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.ToolStripMenuItem allProceduresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rootProceduresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem leafProceduresToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
     }
 }

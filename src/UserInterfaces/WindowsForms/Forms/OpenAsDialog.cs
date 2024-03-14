@@ -58,7 +58,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public IServiceProvider Services { get; set; }
 
-        public LoadDetails? Value { get; set; }
+        public LoadDetails Value { get; set; }
         
         public ITextBox FileName { get; private set; }
 

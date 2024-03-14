@@ -47,6 +47,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Reko.UserInterfaces.WindowsForms
 {
     using SelectionChangedEventArgs = Reko.Gui.Services.SelectionChangedEventArgs;
@@ -786,10 +787,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void VisualizerList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var item = (ListOption) this.control.VisualizerList.SelectedItem;
-            if (item == null)
+            if (this.control is null)
                 return;
-            this.Control.VisualizerControl.Visualizer = (Visualizer)item.Value;
+            var item = (ListOption) this.control.VisualizerList.SelectedItem;
+            if (item is null)
+                return;
+            this.control.VisualizerControl.Visualizer = (Visualizer)item.Value;
         }
 
         private void EventBus_ProcedureFound(object sender, (Program, Address) e)

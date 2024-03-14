@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2024 John Källén.
  *
@@ -26,6 +26,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+#nullable enable
+
 namespace Reko.UserInterfaces.WindowsForms
 {
     public class PropertyGridWrapper : ControlWrapper, IPropertyGrid
@@ -37,7 +39,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.grid = grid;
         }
 
-        public object SelectedObject
+        public object? SelectedObject
         {
             get { return grid.SelectedObject; }
             set { grid.SelectedObject = value; }

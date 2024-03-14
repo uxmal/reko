@@ -22,10 +22,9 @@ using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Gui.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
+#nullable enable
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -38,8 +37,8 @@ namespace Reko.UserInterfaces.WindowsForms
             this.program = program;
         }
 
-        public GViewer Control { get; private set; }
-        public IWindowFrame Frame { get; set; }
+        public GViewer? Control { get; private set; }
+        public IWindowFrame? Frame { get; set; }
 
         public void Close()
         {

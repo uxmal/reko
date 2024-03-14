@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable disable //$TODO This class needs to be converted to a ViewModel
+
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
