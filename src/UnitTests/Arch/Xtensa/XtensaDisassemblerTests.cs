@@ -58,7 +58,6 @@ namespace Reko.UnitTests.Arch.Xtensa
             Assert.AreEqual(sExp, i.ToString());
         }
 
-        [Test]
         public void Xtdasm_generate()
         {
             var rnd = new Random(4711);

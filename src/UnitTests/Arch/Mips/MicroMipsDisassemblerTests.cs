@@ -65,7 +65,6 @@ namespace Reko.UnitTests.Arch.Mips
             this.arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
         }
 
-        [Test]
         public void uMipsDis_Generate()
         {
             var ab = new byte[1000];

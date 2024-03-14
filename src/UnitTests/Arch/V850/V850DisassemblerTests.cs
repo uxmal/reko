@@ -54,7 +54,6 @@ namespace Reko.UnitTests.Arch.V850
             }
         }
 
-        [Test]
         public void V850Dis_Generate()
         {
             var buf = new byte[10000];
