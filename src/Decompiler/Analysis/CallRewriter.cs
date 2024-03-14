@@ -63,7 +63,6 @@ namespace Reko.Analysis
                     return;
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
-                flow.Dump(proc.Architecture);
 				crw.EnsureSignature(sst.SsaState, flow);
 			}
 

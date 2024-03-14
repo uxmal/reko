@@ -76,5 +76,13 @@ namespace Reko.Typing
             visitedTypes.Add(str);
             return base.VisitStructure(str);
         }
-	}
+
+        public override DataType VisitUnion(UnionType ut)
+        {
+            if (visitedTypes.Contains(ut))
+                return ut;
+            visitedTypes.Add(ut);
+            return base.VisitUnion(ut);
+        }
+    }
 }

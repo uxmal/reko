@@ -76,6 +76,8 @@ namespace Reko.Analysis
         {
             if (eventListener.IsCanceled())
                 return Array.Empty<SsaTransform>();
+            var sw = new Stopwatch();
+            sw.Start();
             Debug.Print("== SCC: {0} ===", string.Join(",", sccProcs));
             flow.CreateFlowsFor(sccProcs);
 
@@ -134,6 +136,8 @@ namespace Reko.Analysis
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
                 dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa.Procedure);
             }
+            sw.Stop();
+            Debug.Print("   SCC: {0} {1}ms ===", string.Join(",", sccProcs), sw.ElapsedMilliseconds);
             eventListener.Progress.Advance(ssts.Length);
             return ssts;
         }
