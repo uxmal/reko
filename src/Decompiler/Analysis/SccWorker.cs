@@ -152,7 +152,7 @@ namespace Reko.Analysis
             if (!program.NeedsSsaTransform)
             {
                 // Some formats, like LLVM, already have phi functions.
-                var sst = new SsaTransform(program, proc, sccProcs!, this.dynamicLinker, this.flow);
+                var sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
                 return sst;
             }
 
@@ -167,7 +167,7 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
-                var sst = new SsaTransform(program, proc, sccProcs!, this.dynamicLinker, this.flow);
+                var sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
 

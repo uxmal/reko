@@ -40,7 +40,10 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
 	{
-        public static readonly TraceSwitch traceVex = new TraceSwitch(nameof(traceVex), "Trace decoding of VEX and EVEX bytes");
+        public static readonly TraceSwitch traceVex = new TraceSwitch(nameof(traceVex), "Trace decoding of VEX and EVEX bytes")
+        {
+            Level = TraceLevel.Warning
+        };
 
 #pragma warning disable IDE1006
         private class X86LegacyCodeRegisterExtension

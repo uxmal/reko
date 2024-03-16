@@ -1236,7 +1236,12 @@ namespace Reko.Arch.X86.Rewriter
                 .Param("TSrc")
                 .Param("TSrc")
                 .Returns("TDst");
-            pshuf_intrinsic = GenericTernaryIntrinsic("__pshuf");
+            pshuf_intrinsic = IntrinsicBuilder.Pure("__pshuf")
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param(PrimitiveType.UInt8)
+                .Returns("T");
             psll_intrinsic = new IntrinsicBuilder("__psll", false)
                 .GenericTypes("T")
                 .Param("T")
