@@ -190,35 +190,32 @@ namespace Reko.ImageLoaders.Xex
 
         private static byte[] AesDecryptECB(byte[] data, byte[] key)
         {
-            Rijndael aes = new RijndaelManaged()
-            {
-                BlockSize = 128,
-                KeySize = 128,
-                Mode = CipherMode.ECB,
-                Key = key,
-                Padding = PaddingMode.None
-            };
+            var aes = Aes.Create();
+            aes.BlockSize = 128;
+            aes.KeySize = 128;
+            aes.Mode = CipherMode.ECB;
+            aes.Key = key;
+            aes.Padding = PaddingMode.None;
             return aes.CreateDecryptor().TransformFinalBlock(data, 0, data.Length);
         }
 
         private void ReadImageUncompressed()
         {
-            int exe_length = mem.Length - (int)header.header_size;
+            int exe_length = mem.Length - (int) header.header_size;
             int uncompressed_size = exe_length;
 
             this.peMem = new Memory<byte>(new byte[exe_length]);
             var out_ptr = peMem;
 
             var ivec = new byte[16];
-            var aes = new RijndaelManaged()
-            {
-                BlockSize = 128,
-                KeySize = 128,
-                Mode = CipherMode.CBC,
-                IV = ivec,
-                Key = session_key,
-                Padding = PaddingMode.None
-            }.CreateDecryptor();
+            var aesAlgo = Aes.Create();
+            aesAlgo.BlockSize = 128;
+            aesAlgo.KeySize = 128;
+            aesAlgo.Mode = CipherMode.CBC;
+            aesAlgo.IV = ivec;
+            aesAlgo.Key = session_key;
+            aesAlgo.Padding = PaddingMode.None;
+            var aes = aesAlgo.CreateDecryptor();
 
             var p = (int)header.header_size;
 
@@ -263,15 +260,14 @@ namespace Reko.ImageLoaders.Xex
             var p = (int)header.header_size;
 
             var ivec = new byte[16];
-            var aes = new RijndaelManaged()
-            {
-                BlockSize = 128,
-                KeySize = 128,
-                Mode = CipherMode.CBC,
-                IV = ivec,
-                Key = session_key,
-                Padding = PaddingMode.None
-            }.CreateDecryptor();
+            var aesAlgo = Aes.Create();
+            aesAlgo.BlockSize = 128;
+            aesAlgo.KeySize = 128;
+            aesAlgo.Mode = CipherMode.CBC;
+            aesAlgo.IV = ivec;
+            aesAlgo.Key = session_key;
+            aesAlgo.Padding = PaddingMode.None;
+            var aes = aesAlgo.CreateDecryptor();
 
             this.peMem = new Memory<byte>(new byte[(int)total_size]);
             var out_ptr = peMem;
@@ -481,15 +477,14 @@ namespace Reko.ImageLoaders.Xex
             var compress_buffer = new Memory<byte>(new byte[exe_length]);
 
             var ivec = new byte[16];
-            var aes = new RijndaelManaged()
-            {
-                BlockSize = 128,
-                KeySize = 128,
-                Mode = CipherMode.CBC,
-                IV = ivec,
-                Key = session_key,
-                Padding = PaddingMode.None
-            }.CreateDecryptor();
+            var aesAlgo = Aes.Create();
+            aesAlgo.BlockSize = 128;
+            aesAlgo.KeySize = 128;
+            aesAlgo.Mode = CipherMode.CBC;
+            aesAlgo.IV = ivec;
+            aesAlgo.Key = session_key;
+            aesAlgo.Padding = PaddingMode.None;
+            var aes = aesAlgo.CreateDecryptor();
 
             var input_buffer = mem.Slice((int)header.header_size);
 
