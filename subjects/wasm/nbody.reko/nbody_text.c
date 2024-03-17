@@ -17,29 +17,35 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 		int32 v19_n = loc3_n + 0x01;
 		if (v19_n < arg0)
 		{
+			real64 v23_n = arg1->a0000[loc3_n].r0000;
+			real64 v23_n = (&(arg1->a0000 + loc3_n)->r0000)[1];
+			real64 v23_n = (&(arg1->a0000 + loc3_n)->r0000)[2];
+			struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
+			struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
+			struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
+			real64 v23_n = (&(arg1->a0000 + loc3_n)->r0000)[6];
+			int32 loc3_n = v19_n;
+			int32 v19_n;
 			do
 			{
-				real64 v24_n = arg1->a0000[loc3_n].r0000 - ((arg1->a0000))[v19_n].r0000;
-				real64 v27_n = (&(arg1->a0000 + loc3_n)->r0000)[1] - (&(arg1->a0000 + v19_n)->r0000)[1];
-				real64 v27_n = (&(arg1->a0000 + loc3_n)->r0000)[2] - (&(arg1->a0000 + v19_n)->r0000)[2];
-				real64 v23_n = (&(arg1->a0000 + loc3_n)->r0000)[6];
+				real64 v24_n = v23_n - ((arg1->a0000))[loc3_n].r0000;
+				real64 v27_n = v23_n - (&(arg1->a0000 + loc3_n)->r0000)[1];
+				real64 v27_n = v23_n - (&(arg1->a0000 + loc3_n)->r0000)[2];
 				real64 v24_n = sqrt(v24_n * v24_n + v27_n * v27_n + v27_n * v27_n);
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
-				real64 v29_n = (&(arg1->a0000 + v19_n)->r0000)[6];
+				real64 v29_n = (&(arg1->a0000 + loc3_n)->r0000)[6];
 				real64 v23_n = arg2 / (v24_n * (v24_n * v24_n));
 				v19_n->r0018 -= v24_n * v29_n * v23_n;
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0020 -= v23_n * (v27_n * v29_n);
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0028 -= v23_n * (v27_n * v29_n);
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0018 += v23_n * (v24_n * v23_n);
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0020 += v23_n * (v27_n * v23_n);
-				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + v19_n)->r0000;
+				struct Eq_n * v19_n = (struct Eq_n *) &(arg1->a0000 + loc3_n)->r0000;
 				v19_n->r0028 += v23_n * (v27_n * v23_n);
-				loc3_n = v19_n + 0x01;
-			} while (v19_n + 0x01 != arg0);
+				v19_n = loc3_n + 0x01;
+				loc3_n = v19_n;
+			} while (v19_n != arg0);
 		}
 		if (v19_n == arg0)
 			break;
@@ -79,14 +85,20 @@ real64 _energy(int32 arg0, Eq_n arg1[])
 		loc4_n += v16_n * 0.5 * ((v17_n * v17_n + v19_n * v19_n) + v19_n * v19_n);
 		if (v10_n < arg0)
 		{
+			real64 v13_n = arg1[loc2_n].r0000;
+			real64 v13_n = (&(arg1 + loc2_n)->r0000)[1];
+			real64 v13_n = (&(arg1 + loc2_n)->r0000)[2];
+			int32 loc2_n = v10_n;
+			int32 v10_n;
 			do
 			{
-				real64 v17_n = arg1[loc2_n].r0000 - (arg1)[v10_n].r0000;
-				real64 v19_n = (&(arg1 + loc2_n)->r0000)[1] - (&(arg1 + v10_n)->r0000)[1];
-				real64 v19_n = (&(arg1 + loc2_n)->r0000)[2] - (&(arg1 + v10_n)->r0000)[2];
-				loc4_n -= v16_n * (&(arg1 + v10_n)->r0000)[6] / sqrt((v17_n * v17_n + v19_n * v19_n) + v19_n * v19_n);
-				loc2_n = v10_n + 0x01;
-			} while (v10_n + 0x01 != arg0);
+				real64 v17_n = v13_n - (arg1)[loc2_n].r0000;
+				real64 v19_n = v13_n - (&(arg1 + loc2_n)->r0000)[1];
+				real64 v19_n = v13_n - (&(arg1 + loc2_n)->r0000)[2];
+				v10_n = loc2_n + 0x01;
+				loc4_n -= v16_n * (&(arg1 + loc2_n)->r0000)[6] / sqrt((v17_n * v17_n + v19_n * v19_n) + v19_n * v19_n);
+				loc2_n = v10_n;
+			} while (v10_n != arg0);
 		}
 		if (v10_n == arg0)
 			break;
@@ -98,18 +110,25 @@ real64 _energy(int32 arg0, Eq_n arg1[])
 // 000E0329: void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1)
 void _offset_momentum(int32 arg0, struct Eq_n * arg1)
 {
-	real64 loc5_n;
-	real64 loc4_n;
 	real64 loc3_n;
+	real64 loc4_n;
+	real64 loc5_n;
 	if (arg0 > 0x00)
 	{
+		loc3_n = 0.0;
+		loc4_n = 0.0;
+		loc5_n = 0.0;
+		int32 loc2_n = 0x00;
+		int32 v8_n;
 		do
 		{
-			real64 v16_n = arg1->r0030;
-			loc5_n = arg1->r0018 * v16_n + 0.0;
-			loc4_n = v16_n * arg1->r0020 + 0.0;
-			loc3_n = v16_n * arg1->r0028 + 0.0;
-		} while (arg0 != 0x01);
+			real64 v16_n = (arg1->a0000 + loc2_n)[0].r0030;
+			v8_n = loc2_n + 0x01;
+			loc5_n += (arg1->a0000 + loc2_n)[0].r0018 * v16_n;
+			loc4_n += v16_n * ((arg1->a0000 + loc2_n))[0].r0020;
+			loc3_n += v16_n * ((arg1->a0000 + loc2_n))[0].r0028;
+			loc2_n = v8_n;
+		} while (v8_n != arg0);
 	}
 	else
 	{
@@ -125,47 +144,65 @@ void _offset_momentum(int32 arg0, struct Eq_n * arg1)
 // 000E0405: Stack real64 _start()
 real64 _start()
 {
-	do
+	real64 v13_n = g_ptr100000->r0030;
+	real64 v15_n = g_ptr100000->r0068;
+	real64 v15_n = g_ptr100000->r00A0;
+	real64 v15_n = g_ptr100000->r00D8;
+	real64 v15_n = g_ptr100000->r0110;
+	real64 v13_n = v13_n * g_ptr100000->r0020 + 0.0 + v15_n * g_ptr100000->r0058 + v15_n * g_ptr100000->r0090 + v15_n * g_ptr100000->r00C8 + v15_n * g_ptr100000->r0100;
+	real64 v13_n = v13_n * g_ptr100000->r0028 + 0.0 + v15_n * g_ptr100000->r0060 + v15_n * g_ptr100000->r0098 + v15_n * g_ptr100000->r00D0 + v15_n * g_ptr100000->r0108;
+	g_ptr100000->r0018 = -(g_ptr100000->r0018 * v13_n + 0.0 + g_ptr100000->r0050 * v15_n + g_ptr100000->r0088 * v15_n + g_ptr100000->r00C0 * v15_n + g_ptr100000->r00F8 * v15_n) / 39.47841760435743;
+	g_ptr100000->r0020 = -v13_n / 39.47841760435743;
+	g_ptr100000->r0028 = -v13_n / 39.47841760435743;
+	int32 loc0_n = 0x00;
+	while (true)
 	{
-		real64 v13_n = g_ptr100000->r0030;
-		real64 v15_n = g_ptr100000->r0068;
-		real64 v15_n = g_ptr100000->r00A0;
-		real64 v15_n = g_ptr100000->r00D8;
-		real64 v15_n = g_ptr100000->r0110;
-		real64 v13_n = v13_n * g_ptr100000->r0020 + 0.0 + v15_n * g_ptr100000->r0058 + v15_n * g_ptr100000->r0090 + v15_n * g_ptr100000->r00C8 + v15_n * g_ptr100000->r0100;
-		real64 v13_n = v13_n * g_ptr100000->r0028 + 0.0 + v15_n * g_ptr100000->r0060 + v15_n * g_ptr100000->r0098 + v15_n * g_ptr100000->r00D0 + v15_n * g_ptr100000->r0108;
-		g_ptr100000->r0018 = -(g_ptr100000->r0018 * v13_n + 0.0 + g_ptr100000->r0050 * v15_n + g_ptr100000->r0088 * v15_n + g_ptr100000->r00C0 * v15_n + g_ptr100000->r00F8 * v15_n) / 39.47841760435743;
-		g_ptr100000->r0020 = -v13_n / 39.47841760435743;
-		g_ptr100000->r0028 = -v13_n / 39.47841760435743;
-		if (true)
+		int32 v12_n = loc0_n + 0x01;
+		if (v12_n < 0x05)
 		{
-			while (true)
-				;
+			int32 loc0_n = v12_n;
+			int32 v12_n;
+			do
+			{
+				v12_n = loc0_n + 0x01;
+				loc0_n = v12_n;
+			} while (v12_n != 0x05);
 		}
-	} while (true);
+		if (v12_n == 0x05)
+			break;
+		loc0_n = v12_n;
+	}
 	return <invalid>;
 }
 
 // 000E061E: Stack real64 _run(Stack int32 arg0)
 real64 _run(int32 arg0)
 {
-	int32 arg0_n;
-	if (arg0 < 0x01)
-		arg0_n = 0x00;
-	else
+	if (arg0 >= 0x01)
 	{
-		do
+		int32 loc1_n = 0x01;
+		while (true)
+		{
 			_advance(0x05, g_ptr100000, 0.01);
-		while (arg0 != 0x01);
-		arg0_n = 0x00;
+			int32 v10_n = loc1_n + 0x01;
+			if (loc1_n == arg0)
+				break;
+			loc1_n = v10_n;
+		}
 	}
+	int32 arg0_n = 0x00;
 	while (true)
 	{
 		int32 v10_n = arg0_n + 0x01;
 		if (v10_n < 0x05)
 		{
-			while (v10_n != 0x04)
-				;
+			int32 arg0_n = v10_n;
+			int32 v10_n;
+			do
+			{
+				v10_n = arg0_n + 0x01;
+				arg0_n = v10_n;
+			} while (v10_n != 0x05);
 		}
 		if (v10_n == 0x05)
 			break;

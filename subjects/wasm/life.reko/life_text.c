@@ -13,28 +13,43 @@ word32 count_neighbors(word32 arg0, word32 arg1, word32 arg2)
 // 000C0060: void update_gen(Stack ui32 arg0)
 void update_gen(ui32 arg0)
 {
-	ui32 arg0_n = arg0;
+	Eq_n loc1_n = arg0 * 10000 + 0x10;
+	byte (* loc2_n)[] = (0x01 - arg0) * 10000 + 0x10;
+	word32 arg0_n = ~0x00;
+	word32 v17_n;
 	do
 	{
+		v17_n = arg0_n + 0x01;
+		ui32 v16_n = v17_n == 100 ? 0x00 : v17_n;
+		int32 v16_n = arg0_n + 0x00;
+		int32 loc12_n = 0x00;
+		int32 v18_n;
 		do
 		{
-			byte * v16_n = (0x01 - arg0_n) * 10000 + 0x10;
 			word32 loc13_n = 0x00;
-			arg0_n = 0x00;
-			Eq_n v16_n = (word80000) ((Eq_n[]) ~0x52)[arg0_n] + (((Eq_n[]) ~0x54))[arg0_n].b0000 + (word32) ((Eq_n[]) 115)[arg0_n] + (word32) ((Eq_n[]) 117)[arg0_n];
+			ui32 v16_n = arg0 * 10000 + 0x10;
+			v18_n = loc12_n + 0x01;
+			byte v16_n[] = v16_n + (v16_n % 100) * 100;
+			int32 v17_n = loc12_n == 99 ? 0x00 : v18_n;
+			int32 v18_n = loc12_n + ~0x00;
+			byte v17_n[] = v16_n + v16_n * 100;
+			loc12_n = v18_n;
+			Eq_n v16_n = v16_n[v17_n] + v16_n[v18_n % 100] + (word32) v17_n[v18_n % 100] + (word32) v17_n[v17_n];
 			switch (v16_n)
 			{
 			case 0x03:
 				loc13_n = 0x01;
 				break;
 			case 0x02:
-				loc13_n = (word32) ((Eq_n[]) 0x10)[arg0_n];
+				loc13_n = (word32) *((word32) loc1_n + loc12_n);
 				break;
 			}
-			*v16_n = (byte) loc13_n;
-		} while (true);
-		arg0_n = 0x01;
-	} while (true);
+			loc2_n[loc12_n] = (byte) loc13_n;
+		} while (v18_n != 100);
+		loc1_n = (word32) loc1_n + 100;
+		loc2_n = (byte (*)[]) (loc2_n + 100);
+		arg0_n = v17_n;
+	} while (v17_n == 100 == 0x00);
 }
 
 // 000C0153: Stack word32 main()

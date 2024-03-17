@@ -89,6 +89,14 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 case int i:
                     result.Add((byte) i);
                     break;
+                case double d:
+                    var dBits = BitConverter.DoubleToUInt64Bits(d);
+                    // add the bits little-endian
+                    for (int i = 0; i < 8; ++i, dBits >>= 8)
+                    {
+                        result.Add((byte) dBits);
+                    }
+                    break;
                 default:
                     throw new NotImplementedException();
                 }
@@ -524,10 +532,12 @@ void fn00000()
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
+	// succ:  l00000002
+l00000002:
 	v3 = 0x10<32>
 	puts(v3)
-	goto l00000000
-	// succ:  l00000000
+	goto l00000002
+	// succ:  l00000002
 fn00000_exit:
 ";
             Given_FuncType(Array.Empty<int>(), 0);
@@ -562,14 +572,16 @@ l00000000:
 	branch v4 l00000017
 	// succ:  l00000007 l00000017
 l00000007:
+	// succ:  l00000009
+l00000009:
 	v3 = 0x10<32>
 	puts(v3)
 	v3 = param0
 	v5 = 0xFFFFFFFF<32>
 	v3 = v3 + v5
 	param0 = v3
-	branch v3 l00000007
-	// succ:  l00000016 l00000007
+	branch v3 l00000009
+	// succ:  l00000016 l00000009
 l00000016:
 	// succ:  l00000017
 l00000017:
@@ -616,14 +628,16 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
+	// succ:  l00000002
+l00000002:
 	v3 = 0x10<32>
 	puts(v3)
 	v3 = param0
 	v4 = 0xFFFFFFFF<32>
 	v3 = v3 + v4
 	param0 = v3
-	branch v3 l00000000
-	// succ:  l0000000F l00000000
+	branch v3 l00000002
+	// succ:  l0000000F l00000002
 l0000000F:
 	return
 	// succ:  fn00000_exit
@@ -1021,5 +1035,77 @@ fn00000_exit:
                     end
                 )));
         }
+
+        [Test]
+        public void Waspb_loop_regression()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v9 = 0.0
+	loc3 = v9
+	v9 = 0.0
+	loc3 = v9
+	v9 = 0.0
+	loc4 = v9
+	v9 = 0.0
+	loc5 = v9
+	v10 = 0<32>
+	loc2 = v10
+	// succ:  l00000032
+l00000032:
+	v11 = loc2
+	v12 = 1<32>
+	v10 = v11 + v12
+	loc2 = v10
+	v12 = param0
+	v13 = v10 != v12
+	branch v13 l00000032
+	// succ:  l0000003E l00000032
+l0000003E:
+	v10 = 1<32>
+	return v10
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 127);
+            RunTest(sExp, FnDef(
+                0,
+                new LocalVariable[] {
+                    new LocalVariable(PrimitiveType.Int32),
+                    new LocalVariable(PrimitiveType.Int32),
+                    new LocalVariable(PrimitiveType.Int32),
+                    new LocalVariable(PrimitiveType.Real64),
+                    new LocalVariable(PrimitiveType.Real64),
+                    new LocalVariable(PrimitiveType.Real64),
+                },
+                ByteCode(
+                    f64_const, 0.0,
+                    set_local, 0x03,
+                    f64_const, 0.0 ,
+                    set_local, 0x3 ,
+                    f64_const, 0.0  ,
+                    set_local, 0x4 ,
+                    f64_const, 0.0 ,
+                    set_local, 0x5 ,
+                    i32_const, 0x0 ,
+                    set_local, 0x2 ,
+                    loop, 0x40,
+                        get_local, 0x2,
+                        i32_const, 0x1,
+                        i32_add,
+                        tee_local, 0x2,
+                        get_local, 0x0,
+                        i32_ne,
+                        br_if, 0x0,
+                    end,
+                    i32_const, 1,
+                    end)));
+        }
+
     }
 }

@@ -19,26 +19,41 @@ void update_gen(word32 arg0)
 // Trashed:
 // Preserved:
 update_gen_entry:
-	arg0_1 = arg0
 l000C0060:
-	v16_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
-	loc13_105 = 0<32>
+	loc1_131 = arg0 * 0x2710<32> + 0x10<32>
+	loc2_135 = (1<32> - arg0) * 0x2710<32> + 0x10<32>
+	arg0_139 = 0xFFFFFFFF<32>
+l000C0083:
+	v17_24 = arg0_139 + 1<32>
+	v16_30 = v17_24 == 0x64<32> ? 0<32> : v17_24
+	v16_34 = arg0_139 + 0<32>
+	loc12_39 = 0<32>
+l000C00A8:
+	loc13_102 = 0<32>
 l000C00AC:
-	arg0_1 = 0<32>
-	v16_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
-	branch v16_91 == 3<32> l000C011F
+	v16_45 = arg0 * 0x2710<32> + 0x10<32>
+	v18_58 = loc12_39 + 1<32>
+	v16_51 = v16_45 + (v16_34 %s 0x64<32>) * 0x64<32>
+	v17_63 = loc12_39 == 0x63<32> ? 0<32> : v18_58
+	v18_72 = loc12_39 + 0xFFFFFFFF<32>
+	v17_85 = v16_45 + v16_30 * 0x64<32>
+	loc12_39 = v18_58
+	v16_97 = Mem66[v16_51 + v17_63:byte] + Mem66[v16_51 + v18_72 %s 0x64<32>:byte] + CONVERT(Mem66[v17_85 + v18_72 %s 0x64<32>:byte], byte, word32) + CONVERT(Mem66[v17_85 + v17_63:byte], byte, word32)
+	branch v16_97 == 3<32> l000C011F
 l000C011F:
-	loc13_105 = 1<32>
+	loc13_102 = 1<32>
 l000C010C:
-	branch v16_91 != 2<32> l000C0124
+	branch v16_97 != 2<32> l000C0124
 l000C0113:
-	loc13_105 = CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x10<32>:byte], byte, word32)
+	loc13_102 = CONVERT(Mem66[loc1_131 + loc12_39:byte], byte, word32)
 l000C0124:
-	Mem114[v16_15:byte] = SLICE(loc13_105, byte, 0)
-	branch true l000C0060
+	Mem122[loc2_135 + loc12_39:byte] = SLICE(loc13_102, byte, 0)
+	branch v18_58 != 0x64<32> l000C00A8
 l000C0137:
-	arg0_1 = 1<32>
-	branch true l000C0060
+	loc1_131 = loc1_131 + 0x64<32>
+	loc2_135 = loc2_135 + 0x64<32>
+	arg0_139 = v17_24
+	branch v17_24 == 0x64<32> == 0<32> l000C0083
 l000C0151:
 	return
 update_gen_exit:

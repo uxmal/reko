@@ -395,6 +395,10 @@ namespace Reko.ImageLoaders.WebAssembly
                 //$TODO: if loop has args
                 Console.WriteLine("WASM loop instruction with operands not handled yet.");
             }
+            var followBlock = MakeFollowBlock();
+            Debug.Assert(this.block is not null);
+            proc.ControlGraph.AddEdge(this.block, followBlock);
+            this.block = followBlock;
             PushControl(Mnemonic.loop, Array.Empty<Identifier>(), null, false);
         }
 
@@ -690,9 +694,17 @@ namespace Reko.ImageLoaders.WebAssembly
             proc.ControlGraph.AddEdge(block, proc.ExitBlock);
         }
 
-        private int OpAsInt(int v)
+        /// <summary>
+        /// Interpret the <paramref name="iOp"/>'th operand as a 
+        /// signed integer.
+        /// </summary>
+        /// <param name="iOp">Index of the current instruction's 
+        /// operands.</param>
+        /// <returns>The operand value as a signed integer.
+        /// </returns>
+        private int OpAsInt(int iOp)
         {
-            return ((ImmediateOperand) instr.Operands[v]).Value.ToInt32();
+            return ((ImmediateOperand) instr.Operands[iOp]).Value.ToInt32();
         }
 
         private void Assign(Identifier id, Expression value)
