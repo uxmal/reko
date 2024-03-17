@@ -94,6 +94,8 @@
 		  <Setter Property="IsVisible" Value="{Binding IsVisible}" />
 		  <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
 	</Style>
+		
+		<!-- Styles for Hex view control -->
 		<Style Selector="ctrl|HexViewControl" x:DataType="ctrl:HexViewControl">
 			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
 			<Setter Property="SelectionForegroundBrush" Value="Red" />
@@ -105,6 +107,7 @@
 			<Setter Property="SelectionForegroundBrush" Value="Red" />
 		</Style>
 
+		<!-- Styles for the H3 banner used in various split views -->
 		<Style Selector="Border.H3Banner" x:DataType="Border">
 			<Setter Property="Background" Value="#BFCDDB"></Setter>
 			<Setter Property="BorderThickness" Value="0,5,0,5"></Setter>

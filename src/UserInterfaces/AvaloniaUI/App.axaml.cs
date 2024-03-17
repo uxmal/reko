@@ -36,8 +36,6 @@ namespace Reko.UserInterfaces.AvaloniaUI
     {
         public override void Initialize()
         {
-            //Styles.Insert(0, App.FluentLight);
-
             AvaloniaXamlLoader.Load(this);
         }
 

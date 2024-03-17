@@ -21,37 +21,6 @@
 		Background="Transparent">
 	<Menu Name="mainMenu" ItemsSource="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
 	</Menu>
-	<!--
-	  <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
-      <MenuItem Header="_File">
-        <MenuItem Header="_Open" Command="{Binding FileOpen}" />
-        <MenuItem Header="_New Layout" Command="{Binding NewLayout}" />
-      </MenuItem>
-      <MenuItem Header="_Window" DataContext="{Binding Layout}">
-        <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}" />
-        <Separator />
-        <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}" />
-      </MenuItem>
-      <MenuItem Header="_Options">
-        <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
-          <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}"
-                      BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
-          </MenuItem.Icon>
-        </MenuItem>
-        <Separator />
-        <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
-          <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}"
-                      BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
-          </MenuItem.Icon>
-        </MenuItem>
-      </MenuItem>
-    </Menu> -->
     <Panel x:Name="ToolBar" DataContext="{Binding Layout}" Grid.Row="0" Grid.Column="1">
       <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,200,Auto,Auto"
             HorizontalAlignment="Right"
@@ -88,12 +57,6 @@
               <TextBlock Text="{Binding}" />
             </DataTemplate> 
           </ComboBox.ItemTemplate>
-          <!--<collections:ArrayList>
-            <x:String>Fluent Light</x:String>
-            <x:String>Fluent Dark</x:String>
-            <x:String>Default Light</x:String>
-            <x:String>Default Dark</x:String>
-          </collections:ArrayList>-->
         </ComboBox>
       </Grid>
     </Panel>
