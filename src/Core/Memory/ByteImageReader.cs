@@ -467,6 +467,17 @@ namespace Reko.Core.Memory
             return dst;
         }
 
+        public byte[] Read(int count)
+        {
+            long bytesRead = (int) Math.Min(count, offEnd - this.off);
+            if (bytesRead <= 0)
+                return Array.Empty<byte>();
+            byte[] dst = new byte[bytesRead];
+            Array.Copy(this.bytes, (int) off, dst, 0, bytesRead);
+            this.Offset += bytesRead;
+            return dst;
+        }
+
         public int Read(byte[] buffer, int offset, int count)
         {
             int bytesRead = (int) Math.Min(buffer.Length - offset, count);
