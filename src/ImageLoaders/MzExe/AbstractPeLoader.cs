@@ -101,6 +101,30 @@ namespace Reko.ImageLoaders.MzExe
         public const int IMAGE_SYM_CLASS_WEAK_EXTERNAL = 105;       // A weak external.For more information, see Auxiliary Format 3: Weak Externals.
         public const int IMAGE_SYM_CLASS_CLR_TOKEN = 107;           // A CLR token symbol. The name is an ASCII string that consists of the hexadecimal value of the token. For more information, see CLR Token Definition (Object Only).
 
+
+        public const int IMAGE_DEBUG_TYPE_UNKNOWN = 0;     // An unknown value that is ignored by all tools.
+        public const int IMAGE_DEBUG_TYPE_COFF = 1;     // The COFF debug information (line numbers, symbol table, and string table). This type of debug information is also pointed to by fields in the file headers.
+        public const int IMAGE_DEBUG_TYPE_CODEVIEW = 2;     // The Visual C++ debug information.
+        public const int IMAGE_DEBUG_TYPE_FPO = 3;     // The frame pointer omission (FPO) information. This information tells the debugger how to interpret nonstandard stack frames, which use the EBP register for a purpose other than as a frame pointer.
+        public const int IMAGE_DEBUG_TYPE_MISC = 4;     // The location of DBG file.
+        public const int IMAGE_DEBUG_TYPE_EXCEPTION =       5;     // A copy of.pdata section.
+        public const int IMAGE_DEBUG_TYPE_FIXUP = 6;     // Reserved.
+        public const int IMAGE_DEBUG_TYPE_OMAP_TO_SRC =     7;     // The mapping from an RVA in image to an RVA in source image.
+        public const int IMAGE_DEBUG_TYPE_OMAP_FROM_SRC =   8;     // The mapping from an RVA in source image to an RVA in image.
+        public const int IMAGE_DEBUG_TYPE_BORLAND =         9;     // Reserved for Borland.
+        public const int IMAGE_DEBUG_TYPE_RESERVED10 = 10;     // Reserved.
+        public const int IMAGE_DEBUG_TYPE_CLSID = 11;     // Reserved.
+        public const int IMAGE_DEBUG_TYPE_VC_FEATURE =      12;
+        public const int IMAGE_DEBUG_TYPE_POGO =            13;
+        public const int IMAGE_DEBUG_TYPE_ILTCG =           14;
+        public const int IMAGE_DEBUG_TYPE_MPX =             15;
+        public const int IMAGE_DEBUG_TYPE_REPRO = 16;     // PE determinism or reproducibility.
+        public const int IMAGE_DEBUG_TYPE_17 = 17;     // Debugging information is embedded in the PE file at location specified by PointerToRawData.
+        public const int IMAGE_DEBUG_TYPE_19 = 19;     // Stores crypto hash for the content of the symbol file used to build the PE/COFF file.
+        public const int IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS = 20;   //	Extended DLL characteristics bits.
+
+
+
         protected Dictionary<Address, ImportReference> importReferences;
 
 

@@ -28,6 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.MzExe.Msvc;
+using Reko.ImageLoaders.MzExe.Pdb;
 using Reko.ImageLoaders.MzExe.Pe;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,8 @@ namespace Reko.ImageLoaders.MzExe
         private uint sizeExceptionTable;
         private uint rvaBaseRelocationTable;
         private uint sizeBaseRelocationTable;
+        private uint rvaDebug;
+        private uint cbDebug;
 
         private uint rvaResources;
         private Relocator relocator;
@@ -301,8 +304,53 @@ namespace Reko.ImageLoaders.MzExe
                 program.Resources.AddRange(items);
             }
             Relocate(program, addrLoad);
+            LoadDebugInformation();
             CollectRttiInformation();
             return program;
+        }
+
+        private void LoadDebugInformation()
+        {
+            if (rvaDebug == 0)
+                return;
+            var rdr = imgLoaded.CreateLeReader(rvaDebug, rvaDebug + cbDebug);
+            while (rdr.IsValid)
+            {
+                if (!rdr.TryReadUInt32(out var characteristics))
+                    break;
+                if (characteristics != 0)   // Should be 0 according to PE spec.
+                    break;
+                if (!rdr.TryReadUInt32(out var timestamp))
+                    break;
+                if (!rdr.TryReadUInt32(out var major_minor_version))
+                    break;
+                if (!rdr.TryReadUInt32(out var debugInfoType))
+                    break;
+                if (!rdr.TryReadUInt32(out var sizeOfData))
+                    break;
+                if (!rdr.TryReadUInt32(out var uAddrRawData))
+                    break;
+                if (!rdr.TryReadUInt32(out var rvaRawData))
+                    break;
+
+                switch (debugInfoType)
+                {
+                case IMAGE_DEBUG_TYPE_CODEVIEW:
+                    var rdrCodeview = new LeImageReader(RawImage, rvaRawData, rvaRawData + sizeOfData);
+                    var pdbref = PdbFileReference.Load(rdrCodeview);
+                    if (pdbref is null)
+                        listener.Warn("Unable to read debug information.");
+                    else
+                    {
+                        var pdbResolver = new PdbFileResolver(Services.RequireService<IFileSystemService>(), listener);
+                        var symsrc = pdbResolver.Load(pdbref);
+                    }
+                    break;
+                default:
+                    listener.Info($"PE Debug type {debugInfoType} not supported yet.");
+                    break;
+                }
+            }
         }
 
         private void CollectRttiInformation()
@@ -445,33 +493,40 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();			// loader flags
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
+            // Export directory
             if (dictionaryCount == 0) return;
             this.rvaExportTable = rdr.ReadLeUInt32();
             this.sizeExportTable = rdr.ReadLeUInt32();
 
+            // Import directory
             if (--dictionaryCount == 0) return;
             this.rvaImportTable = rdr.ReadLeUInt32();
 			uint importTableSize = rdr.ReadLeUInt32();
 
+            // Resource directory
             if (--dictionaryCount == 0) return;
             this.rvaResources = rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
 
+            // Exception table
             if (--dictionaryCount == 0) return;
 			this.rvaExceptionTable = rdr.ReadLeUInt32();            // exception address
             this.sizeExceptionTable = rdr.ReadLeUInt32();			// exception size
 
+            // Certificate table
             if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
 			rdr.ReadLeUInt32();			// certificate size
 
+            // Base relocation table (.reloc)
             if (--dictionaryCount == 0) return;
             this.rvaBaseRelocationTable = rdr.ReadLeUInt32();
             this.sizeBaseRelocationTable = rdr.ReadLeUInt32();
 
+            // Debug data dictionary
             if (--dictionaryCount == 0) return;
-            uint rvaDebug = rdr.ReadLeUInt32();
-            uint cbDebug = rdr.ReadLeUInt32();
+            this.rvaDebug = rdr.ReadLeUInt32();
+            this.cbDebug = rdr.ReadLeUInt32();
 
             if (--dictionaryCount == 0) return;
             uint rvaArchitecture = rdr.ReadLeUInt32();
