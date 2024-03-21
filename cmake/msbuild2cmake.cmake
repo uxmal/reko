@@ -98,6 +98,9 @@ function(invoke_cmake)
 	# append -G <generator> if specified or previously set
 	if(proj_GENERATOR)
 		list(APPEND CMAKE_ARGS "-G" "${proj_GENERATOR}")
+		if(WIN32 AND REKO_PLATFORM STREQUAL "x86")
+			list(APPEND CMAKE_ARGS "-A" "Win32")
+		endif()
 	endif()
 
 	# This flag skips CMake compiler sanity checks ("Checking if C compiler works"),
