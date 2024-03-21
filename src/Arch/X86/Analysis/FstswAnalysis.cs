@@ -151,24 +151,40 @@ namespace Reko.Arch.X86.Analysis
                         continue;
                     switch (ass.Src)
                     {
-                    case BinaryExpression bin when
-                            bin.Left == sid.Identifier &&
-                            bin.Right is Constant andMask:
-                        switch (bin.Operator.Type)
+                    case BinaryExpression bin:
+                        if (bin.Left == sid.Identifier &&
+                            bin.Right is Constant andMask)
                         {
-                        case OperatorType.And:
-                            mask = andMask.ToInt32() >> (8 - shift);
-                            wl.Add((ssa.Identifiers[ass.Dst], shift, mask));
-                            break;
-                        case OperatorType.Xor:
-                            // If no AND instruction has been seen before the XOR,
-                            // give up.
-                            if (mask == 0)
+                            switch (bin.Operator.Type)
+                            {
+                            case OperatorType.And:
+                                mask = andMask.ToInt32() >> (8 - shift);
+                                wl.Add((ssa.Identifiers[ass.Dst], shift, mask));
                                 break;
-                            mask = andMask.ToInt32() >> (8 - shift);
-                            var stmBranch = FindUsingBranch(ass.Dst, true); //$REVIEW could there be many?
-                            changed |= ReplaceBranch(sid, sidFpuf, mask, stmBranch, EvaluateFstswXorInstructions);
-                            break;
+                            case OperatorType.Xor:
+                                // If no AND instruction has been seen before the XOR,
+                                // give up.
+                                if (mask == 0)
+                                    break;
+                                mask = andMask.ToInt32() >> (8 - shift);
+                                var stmBranch = FindUsingBranch(ass.Dst, true); //$REVIEW could there be many?
+                                changed |= ReplaceBranch(sid, sidFpuf, mask, stmBranch, EvaluateFstswXorInstructions);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (bin.Operator.Type == OperatorType.Or)
+                            {
+                                if (sid.Identifier.Storage is FlagGroupStorage)
+                                {
+                                    if (ass.Dst.Storage is FlagGroupStorage)
+                                    {
+                                        sid = ssa.Identifiers[ass.Dst];
+                                        wl.Add((sid, shift, mask));
+                                    }
+                                }
+                            }
                         }
                         break;
                     case Slice slice when slice.Expression == sid.Identifier:
@@ -202,15 +218,29 @@ namespace Reko.Arch.X86.Analysis
                             }
                         }
                         break;
-                    case Identifier idSrc when
-                        ass.Dst.Storage is FlagGroupStorage:
-                        // This is a rewritten SAHF instruction
-                        ReplaceWithFpufCopy(use, ass.Dst, sidFpuf);
-                        changed = true;
+                    case Identifier idSrc:
+                        if (ass.Dst.Storage is FlagGroupStorage)
+                        {
+                            // This is a rewritten SAHF instruction
+                            ReplaceWithFpufCopy(use, ass.Dst, sidFpuf);
+                            changed = true;
+                        }
+                        else if (ass.Dst.Storage is RegisterStorage &&
+                            idSrc.Storage is FlagGroupStorage)
+                        {
+                            // This is a rewritten LAHF instruction
+                            sid = ssa.Identifiers[ass.Dst];
+                            wl.Add((sid, shift, mask));
+                        }
                         break;
                     case MkSequence _:
                         // An aliasing use of ax or ah; eax = SEQ(<stuff>, ax) can be ignored.
                         continue;
+                    case Conversion conv:
+                        if (conv.DataType.Domain == Core.Types.Domain.SignedInt)
+                            goto default;
+                        wl.Add((ssa.Identifiers[ass.Dst], shift, mask));
+                        break;
                     default:
                         throw new NotImplementedException($"Fstsw of {ass} not implemented yet.");
                     }

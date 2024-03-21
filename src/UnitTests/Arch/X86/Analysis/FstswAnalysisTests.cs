@@ -536,5 +536,32 @@ l00100000:
                     m.Ret();
                 });
         }
+
+        [Test]
+        public void Fstsw_regression_1()
+        {
+            RunTest(
+@"
+l00100000:
+	ax_4 = __fstsw(FPUF)
+	eax_5 = CONVERT(ax_4, word16, word32)
+	eax_6 = eax_5 >>u 0xB<32>
+	SCZO_7 = cond(eax_6)
+	eax_8 = eax_6 & 7<32>
+	SZ_9 = cond(eax_8)
+	O_10 = false
+	C_11 = false
+	return
+",
+            m =>
+            {
+                m.Label("foo");
+                m.Fstsw(m.ax);
+                m.Movzx(m.eax, m.ax);
+                m.Shr(m.eax, 0x0B);
+                m.And(m.eax, 7);
+                m.Ret();
+            });
+        }
     }
 }

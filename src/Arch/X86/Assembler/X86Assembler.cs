@@ -1228,6 +1228,16 @@ namespace Reko.Arch.X86.Assembler
             ProcessFpuCommon(0xD8, 0xD8, 0, false, false, op);
         }
 
+        public void Fcomi(ParsedOperand op1, ParsedOperand op2)
+        {
+            if (op1.Operand is not FpuOperand st0 || st0.StNumber != 0)
+                throw new NotSupportedException("Operand must be st.");
+            if (op2.Operand is not FpuOperand st)
+                throw new NotSupportedException("Operand must be st(x).");
+            EmitOpcode(0xDB, null);
+            emitter.EmitByte(0xF0 | st.StNumber);
+        }
+
         public void Fcomp(ParsedOperand op)
         {
             if (op.Operand is MemoryOperand mem)
@@ -2026,6 +2036,18 @@ namespace Reko.Arch.X86.Assembler
             ProcessStringInstruction((byte)StringInstructionBaseOps.Move, PrimitiveType.Word32);
         }
 
+        public void Movzx(ParsedOperand dst, ParsedOperand src)
+        {
+            if (dst.Operand is not RegisterStorage regOpDst)
+            {
+                Error("Destination must be a regsiter");
+                return;
+            }
+            EmitOpcode(0x0F, null);
+            emitter.EmitByte(0xB6 | IsWordWidth(src.Operand.Width));
+            EmitModRM(RegisterEncoding(regOpDst), src);
+        }
+
         public void Scasb()
         {
             ProcessStringInstruction((byte)StringInstructionBaseOps.Scan, PrimitiveType.Byte);
@@ -2227,6 +2249,8 @@ namespace Reko.Arch.X86.Assembler
         {
             get { return new ParsedOperand(Registers.es); }
         }
+
+        public ParsedOperand st => new ParsedOperand(new FpuOperand(0));
 
         public ParsedOperand Const(int n)
         {

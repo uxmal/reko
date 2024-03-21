@@ -53,6 +53,14 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         }
 
         [Test]
+        public void X86Asm_fcomi()
+        {
+            m.Fcomi(m.st, m.St(1));
+
+            AssertEqualBytes("DBF1", GetBytes(m));
+        }
+
+        [Test]
         public void X86Asm_MovRegReg()
         {
             m.Mov(Reg(Registers.ax), Reg(Registers.bx));
@@ -101,6 +109,14 @@ namespace Reko.UnitTests.Arch.X86.Assembler
             AssertEqualBytes("E6FFE7FC", GetBytes(m));
         }
 
+
+        [Test]
+        public void X86Asm_movzx_word32_word16()
+        {
+            m.Movzx(m.eax, m.bx);
+
+            AssertEqualBytes("0FB7C3", GetBytes(m));
+        }
 
         [Test]
         public void X86Asm_out_dx()
