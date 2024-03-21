@@ -1705,5 +1705,16 @@ typedef struct _SRAM_TZPC_NSGroup
             Assert.AreEqual("(decl Typedef Int ((init-decl (func pfn ((Int ))))))",
                 decl.ToString());
         }
+
+        [Test(Description = "Handle free floating annotations.")]
+        public void CParser_FreeFloatingAnnotation()
+        {
+            MsvcLex(@"[[this::is_a(free,""floating"", attribute)]]");
+
+            var decl = parser.Parse()[0];
+            Assert.AreEqual(
+                @"(decl (attr this::is_a (Id freeComma StringLiteral floatingComma Id attribute)))",
+                decl.ToString());
+        }
     }
 }

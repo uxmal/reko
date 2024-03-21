@@ -59,17 +59,30 @@ namespace Reko.Core.Loading
             var declarations = parser.Parse();
             foreach (var decl in declarations)
             {
-                symbolTable.AddDeclaration(decl);
+                if (IsAttributeOnlyDecl(decl))
+                    symbolTable.AddAnnotationsFromAttributes(decl.attribute_list);
+                else 
+                    symbolTable.AddDeclaration(decl);
             }
             var slib = new SerializedLibrary
             {
                 Types = symbolTable.Types.ToArray(),
                 Procedures = symbolTable.Procedures.ToList(),
-                Globals = symbolTable.Variables.Select(ConvertToGlobalVariable).ToList()
+                Globals = symbolTable.Variables.Select(ConvertToGlobalVariable).ToList(),
+                Annotations = symbolTable.Annotations,
             };
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             var tlib = tldser.Load(slib);
             return tlib;
+        }
+
+        private static bool IsAttributeOnlyDecl(Decl decl)
+        {
+            return 
+                (decl.decl_specs is null ||
+                 decl.decl_specs.Count == 0) &&
+                (decl.init_declarator_list is null ||
+                 decl.init_declarator_list.Count == 0);
         }
 
         private static GlobalVariable_v1 ConvertToGlobalVariable(GlobalDataItem_v2 item)

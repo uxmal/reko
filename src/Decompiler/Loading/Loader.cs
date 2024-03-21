@@ -87,8 +87,9 @@ namespace Reko.Loading
         }
 
         /// <summary>
-        /// Loads (or assembles) a Reko decompiler project. If a binary file is
-        /// specified instead, we create a simple project for the file.
+        /// Loads (or assembles) a Reko decompiler project, returning a 
+        /// <see cref="Project"/> instance. If a binary file is
+        /// specified instead, creates acreate a simple project for the file.
         /// </summary>
         /// <param name="imageLocation">The location of the image to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom

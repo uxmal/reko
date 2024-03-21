@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Core.Loading
@@ -144,6 +145,28 @@ int caller(fn thing_to_call);
 
             var caller = typelib.Signatures["caller"];
             Assert.AreEqual("(fn int32 ((ptr32 (fn int32 (int32)))))", typelib.Signatures["caller"].ToString());
+        }
+
+        [Test]
+        public void Chl_reko_annotation()
+        {
+            Given_Platform();
+            var addr = Address.Ptr32(0x023423ED);
+            platform.Setup(p => p.TryParseAddress("023423ED", out addr)).Returns(true);
+
+            var file = Given_File(@"
+[[reko::annotation(""023423ED"", ""The following code formats my hard drive on Fridays"")]]
+");
+            var sc = new ServiceContainer();
+            var chl = new CHeaderLoader(sc, ImageLocation.FromUri("file:foo.inc"), file);
+            var typelib = chl.Load(platform.Object, new TypeLibrary());
+
+            Assert.AreEqual(1, typelib.Annotations.Count);
+            var a = typelib.Annotations.Values.First();
+            Assert.AreEqual(0x023423ED, a.Address.ToLinear());
+            Assert.AreEqual(
+                "The following code formats my hard drive on Fridays", 
+                a.Text);
         }
     }
 }

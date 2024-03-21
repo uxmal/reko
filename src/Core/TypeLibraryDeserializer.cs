@@ -62,6 +62,7 @@ namespace Reko.Core
             LoadTypes(sLib);
             LoadProcedures(sLib);
             LoadGlobals(sLib);
+            LoadAnnotations(sLib);
             return library;
         }
 
@@ -124,6 +125,20 @@ namespace Reko.Core
                 else if (o is SerializedService svc)
                 {
                     LoadService(svc);
+                }
+            }
+        }
+
+        private void LoadAnnotations(SerializedLibrary serializedLibrary)
+        {
+            if (serializedLibrary.Annotations is null)
+                return;
+            foreach (var a in serializedLibrary.Annotations)
+            {
+                if (this.platform.TryParseAddress(a.Address, out var addr))
+                {
+                    var annotation = new Annotation(addr, a.Text ?? "");
+                    library.Annotations[addr] = annotation;
                 }
             }
         }

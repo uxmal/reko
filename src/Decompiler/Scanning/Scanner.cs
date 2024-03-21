@@ -106,7 +106,8 @@ namespace Reko.Scanning
             this.importReferences = program.ImportReferences;
             // The procedures in program.Procedures don't need to be revisited.
             this.visitedProcs = new HashSet<Procedure>(program.Procedures.Values);
-            this.cinj = new CommentInjector(program.User.Annotations);
+            var annotations = program.User.Annotations.Concat(metadata.Annotations.Values);
+            this.cinj = new CommentInjector(annotations);
             this.sr = new ScanResults
             {
                 KnownProcedures = CollectKnownProcedures(program),

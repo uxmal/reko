@@ -382,7 +382,11 @@ IGNORE tab + cr + lf
             var attrs = ParseAttributeSpecifierSeq();
             var decl_spec_list = Parse_DeclSpecifierList();
             if (decl_spec_list is null)
-                return null;
+            {
+                if (attrs is null || attrs.Count == 0)
+                    return null;
+                return new Decl(attrs, new(), new());
+            }
             var inits = new List<InitDeclarator>();
             if (PeekThenDiscard(CTokenType.Semicolon))
                 return grammar.Decl(attrs, decl_spec_list, inits);

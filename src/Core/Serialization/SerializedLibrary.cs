@@ -53,6 +53,9 @@ namespace Reko.Core.Serialization
         [XmlElement("global", typeof(GlobalVariable_v1))]
         public List<GlobalVariable_v1> Globals;
 
+        [XmlElement("annotation", typeof(Annotation_v3))]
+        public List<Annotation_v3> Annotations;
+
         //$REVIEW: smell of singleton.
         private static XmlSerializer? serializer;
 
@@ -60,6 +63,7 @@ namespace Reko.Core.Serialization
         {
             this.Procedures = new List<ProcedureBase_v1>();
             this.Globals = new List<GlobalVariable_v1>();
+            this.Annotations = new List<Annotation_v3>();
         }
 
         public static SerializedLibrary LoadFromStream(Stream stm)

@@ -71,6 +71,7 @@ namespace Reko.Core
             this.Procedures = new Dictionary<Address, (string, FunctionType)>();
             this.GlobalsByAddress = new Dictionary<Address, UserGlobal>();
             this.Modules = new Dictionary<string, ModuleDescriptor>();
+            this.Annotations = new Dictionary<Address, Annotation>();
         }
 
         public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
@@ -80,6 +81,7 @@ namespace Reko.Core
         public IDictionary<string, ProcedureCharacteristics> Characteristics { get; private set; }
         public IDictionary<string, DataType> ImportedGlobals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
+        public IDictionary<Address, Annotation> Annotations { get; private set; }
 
         private static StringComparer Comparer(bool caseSensitive) =>
             caseSensitive
@@ -96,6 +98,9 @@ namespace Reko.Core
                 ImportedGlobals = new Dictionary<string, DataType>(this.ImportedGlobals),
                 Procedures = new Dictionary<Address, (string, FunctionType)>(this.Procedures),
                 Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase),
+                Annotations = this.Annotations.Values.ToDictionary(
+                    k => k.Address, 
+                    v => new Annotation(v.Address, v.Text)),
                 isCaseInsensitive = this.isCaseInsensitive
             };
             return clone;

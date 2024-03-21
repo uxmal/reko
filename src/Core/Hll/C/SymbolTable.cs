@@ -64,6 +64,7 @@ namespace Reko.Core.Hll.C
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
             this.Variables = new List<GlobalDataItem_v2>();
+            this.Annotations = new List<Annotation_v3>();
             this.PrimitiveTypes = primitiveTypes;
             this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(platform, this.NamedTypes);
@@ -78,6 +79,7 @@ namespace Reko.Core.Hll.C
         public Dictionary<string, PrimitiveType_v1> PrimitiveTypes { get; private set; }
         public List<ProcedureBase_v1> Procedures { get; private set; }
         public List<GlobalDataItem_v2> Variables { get; private set; }
+        public List<Annotation_v3> Annotations { get; private set; }
 
         public TypeSizer Sizer { get; private set; }
 
@@ -88,12 +90,13 @@ namespace Reko.Core.Hll.C
         /// <param name="decl"></param>
         public List<SerializedType> AddDeclaration(Decl decl)
         {
+            AddAnnotationsFromAttributes(decl.attribute_list);
+
             var types = new List<SerializedType>();
-            if (decl is FunctionDecl fndec)
+            if (decl is FunctionDecl)
             {
                 return types;
             }
-
             IEnumerable<DeclSpec> declspecs = decl.decl_specs;
             var isTypedef = false;
             if (decl.decl_specs[0] is StorageClassSpec scspec &&
@@ -144,6 +147,35 @@ namespace Reko.Core.Hll.C
                 }
             }
             return types;
+        }
+
+        public void AddAnnotationsFromAttributes(List<CAttribute>? attributes)
+        {
+            if (attributes is null)
+                return;
+            var attrAnnotations = attributes
+                .Where(a =>
+                    a.Name.Components.Length == 2 &&
+                    a.Name.Components[0] == "reko" &&
+                    a.Name.Components[1] == "annotation")
+                .Select(a =>
+                {
+                    if (a.Tokens is null ||
+                        a.Tokens.Count != 3 ||
+                        a.Tokens[0].Type != CTokenType.StringLiteral ||
+                        a.Tokens[1].Type != CTokenType.Comma ||
+                        a.Tokens[2].Type != CTokenType.StringLiteral)
+                        throw new FormatException(
+                            "[[reko::annotation]] attribute is malformed. " +
+                            "Expected an address and an annotation text separated by commas.");
+
+                    return new Annotation_v3
+                    {
+                        Address = (string) a.Tokens[0].Value!,
+                        Text = (string) a.Tokens[2].Value!
+                    };
+                });
+            this.Annotations.AddRange(attrAnnotations);
         }
 
         private string? GetCallingConventionFromAttributes(List<CAttribute>? attributes)

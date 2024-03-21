@@ -428,5 +428,26 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("foo", name);
             Assert.AreEqual("(fn void ())", sig.ToString());
         }
+
+        [Test]
+        public void Tlldr_annotation()
+        {
+            Given_ArchitectureStub();
+            var addr = Address.SegPtr(0x1234, 0x4567);
+            platform.Setup(p => p.TryParseAddress("0123:4567", out addr)).Returns(true);
+            var slib = new SerializedLibrary
+            {
+                Annotations = {
+                    new Annotation_v3 {Address = "0123:4567", Text= "Annotation" }
+                }
+            };
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, false, new TypeLibrary());
+            var lib = tlLdr.Load(slib);
+
+            var a = lib.Annotations[addr];
+            Assert.AreEqual(addr, a.Address);
+            Assert.AreEqual("Annotation", a.Text);
+
+        }
     }
-}
+    }
