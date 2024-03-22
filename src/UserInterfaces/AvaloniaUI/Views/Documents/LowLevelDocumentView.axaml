@@ -68,7 +68,13 @@
 					SelectedAddress="{Binding ViewModel.SelectedAddress, Mode=TwoWay}"
 					Model="{Binding ViewModel.DisassemblyTextModel}"
 					Services="{Binding ViewModel.Services}"
-											 />
+					TextElement.FontSize="13">
+					<TextElement.FontFamily>
+						<OnPlatform Default="{StaticResource RobotoMonoFont}">
+							<On Options="Windows" Content="{StaticResource ConsolasFont}" />
+						</OnPlatform>
+					</TextElement.FontFamily>
+				</ctrl:DisassemblyViewControl>
 			</ScrollViewer>	
 		</Border>
 	</Grid>

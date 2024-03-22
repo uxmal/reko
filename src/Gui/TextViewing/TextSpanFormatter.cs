@@ -42,6 +42,7 @@ namespace Reko.Gui.TextViewing
         
         public TextSpanFormatter(TextSpanFactory factory)
         {
+            Debug.Assert(factory is not null);
             this.factory = factory;
             this.textLines = new List<(object?, List<ITextSpan>)>();
             this.currentLineTag = null;

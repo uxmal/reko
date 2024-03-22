@@ -20,6 +20,7 @@
 
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.Media;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui.TextViewing;
@@ -33,6 +34,54 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
     public class DisassemblyViewControl : TextView
     {
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> AddressBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(AddressBrush),
+                o => o.AddressBrush,
+                (o, v) => o.AddressBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> CommentBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(CommentBrush),
+                o => o.CommentBrush,
+                (o, v) => o.CommentBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> InstructionBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(InstructionBrush),
+                o => o.InstructionBrush,
+                (o, v) => o.InstructionBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> JumpBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(JumpBrush),
+                o => o.JumpBrush,
+                (o, v) => o.JumpBrush= v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> CallBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(CallBrush),
+                o => o.CallBrush,
+                (o, v) => o.CallBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> InvalidCodeBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(InvalidCodeBrush),
+                o => o.InvalidCodeBrush,
+                (o, v) => o.InvalidCodeBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> PaddingCodeBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(PaddingCodeBrush),
+                o => o.PaddingCodeBrush,
+                (o, v) => o.PaddingCodeBrush = v);
+
+        public static readonly DirectProperty<DisassemblyViewControl, IBrush?> ImmediateCodeBrushProperty =
+            AvaloniaProperty.RegisterDirect<DisassemblyViewControl, IBrush?>(
+                nameof(ImmediateCodeBrush),
+                o => o.ImmediateCodeBrush,
+                (o, v) => o.ImmediateCodeBrush = v);
+
         //$TODO Many of these properties belong to the DisassemblyTextModel
 
         public static readonly DirectProperty<DisassemblyViewControl, Address?> SelectedAddressProperty =
@@ -54,6 +103,66 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 (o, v) => o.Architecture = v);
 
         public DisassemblyTextModel? ViewModel { get => (DisassemblyTextModel?) this.DataContext; }
+
+        #region Colors to use when rendering disassembly.
+        public IBrush? AddressBrush
+        {
+            get => addressBrush;
+            set => SetAndRaise(AddressBrushProperty, ref addressBrush, value);
+        }
+        private IBrush? addressBrush;
+
+        public IBrush? CommentBrush
+        {
+            get => commentBrush;
+            set => SetAndRaise(CommentBrushProperty, ref commentBrush, value);
+        }
+        private IBrush? commentBrush;
+
+        public IBrush? InstructionBrush
+        {
+            get => instructionBrush;
+            set => SetAndRaise(InstructionBrushProperty, ref instructionBrush, value);
+        }
+        private IBrush? instructionBrush;
+
+        public IBrush? JumpBrush
+        {
+            get => jumpBrush;
+            set => SetAndRaise(JumpBrushProperty, ref jumpBrush, value);
+        }
+        private IBrush? jumpBrush;
+
+        public IBrush? CallBrush
+        {
+            get => callBrush;
+            set => SetAndRaise(CallBrushProperty, ref callBrush, value);
+        }
+        private IBrush? callBrush;
+
+        public IBrush? InvalidCodeBrush
+        {
+            get => invalidCodeBrush;
+            set => SetAndRaise(InvalidCodeBrushProperty, ref invalidCodeBrush, value);
+        }
+        private IBrush? invalidCodeBrush;
+
+        public IBrush? PaddingCodeBrush
+        {
+            get => paddingCodeBrush;
+            set => SetAndRaise(PaddingCodeBrushProperty, ref paddingCodeBrush, value);
+        }
+        private IBrush? paddingCodeBrush;
+
+
+        public IBrush? ImmediateCodeBrush
+        {
+            get => immediateCodeBrush;
+            set => SetAndRaise(ImmediateCodeBrushProperty, ref immediateCodeBrush, value);
+        }
+        private IBrush? immediateCodeBrush;
+
+        #endregion
 
 
         public Program? Program {

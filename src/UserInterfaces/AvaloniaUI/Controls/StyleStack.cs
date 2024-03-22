@@ -34,8 +34,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
     public class StyleStack 
     {
-        private IUiPreferencesService uiPrefSvc;
-        private List<string[]> stack;
+        private readonly IUiPreferencesService uiPrefSvc;
+        private readonly List<string[]> stack;
+        private readonly Dictionary<string, AvaloniaProperty> classToBrushMap;
         private IBrush? fg;
         private IBrush? bg;
         private Typeface? font;
@@ -43,11 +44,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private IBrush ctrlForeColor;
         private IBrush ctrlBackColor;
 
-        public StyleStack(IUiPreferencesService uiPrefSvc,  IBrush ctrlForeColor, IBrush ctrlBackColor)
+        public StyleStack(IUiPreferencesService uiPrefSvc, Dictionary<string, AvaloniaProperty> brushes)
         {
             if (uiPrefSvc is null) throw new ArgumentNullException(nameof(uiPrefSvc));
             this.uiPrefSvc = uiPrefSvc;
             this.stack = new List<string[]>();
+            this.classToBrushMap = brushes;
         }
 
 

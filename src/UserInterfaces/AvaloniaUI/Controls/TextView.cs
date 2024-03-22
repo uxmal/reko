@@ -193,8 +193,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         {
             if (styleStack is null)
                 styleStack = new StyleStack(Services.RequireService<IUiPreferencesService>(),
-                    this.foreground,
-                    this.Background);
+                    new System.Collections.Generic.Dictionary<string, AvaloniaProperty>());
+                    //this.foreground,
+                    //this.Background);
             return styleStack;
         }
 

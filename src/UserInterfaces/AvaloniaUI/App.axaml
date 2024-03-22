@@ -107,6 +107,16 @@
 			<Setter Property="SelectionForegroundBrush" Value="Red" />
 		</Style>
 
+		<!-- Default styles for the Disassembly control -->
+		<Style Selector="ctrl|DisassemblyViewControl" x:DataType="ctrl:DisassemblyViewControl">
+			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+			<Setter Property="SelectionForegroundBrush" Value="#C0C0C0" />
+		</Style>
+		<Style Selector="ctrl|DisassemblyViewControl:focus" x:DataType="ctrl:DisassemblyViewControl">
+			<Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+			<Setter Property="SelectionForegroundBrush" Value="#C0C0C0" />
+		</Style>
+
 		<!-- Styles for the H3 banner used in various split views -->
 		<Style Selector="Border.H3Banner" x:DataType="Border">
 			<Setter Property="Background" Value="#BFCDDB"></Setter>
