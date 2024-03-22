@@ -11,6 +11,7 @@
     <icon>images\reko.png</icon>
     <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <readme>docs\README.md</readme>
     <description>Runtime components for the Reko decompiler toolchain.</description>
     <releaseNotes>Reko has a new GUI driver, based on Avalonia.</releaseNotes>
     <copyright>Copyright (C) 1999-2024 John Källén</copyright>

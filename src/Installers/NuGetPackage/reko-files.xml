@@ -390,6 +390,9 @@
         <!-- Content -->
         <File Source="$(var.SolutionDir)..\web\images\reko.png" nuget_target="i:" />
         
+        <!-- Readme -->
+        <File Source="$(var.SolutionDir)Installers\NuGetPackage\README.md" nuget_target="d:" />
+
     </Component>
 
     <Component Id="Comp_macos" Directory="macosFolder" Guid="{47F3E2E0-A65C-4D9C-AF43-CB90713AE305}">

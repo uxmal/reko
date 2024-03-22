@@ -375,6 +375,7 @@ namespace Reko.Tools.specGen
                 target = target.Replace("f:", "lib\\" + netVersion);
                 target = target.Replace("c:", "contentFiles/any/any/reko");
                 target = target.Replace("i:", "images\\");
+                target = target.Replace("d:", "docs\\");
                 var line = $"<file src=\"{source}\" target=\"{target}\" />";
                 return line;
             }
