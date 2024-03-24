@@ -133,6 +133,7 @@ namespace Reko.ImageLoaders.Elf
                 options[ProcessorOption.WordSize] = "32";
                 RiscVElf.SetOptions((RiscVFlags) Header.e_flags, options);
                 break;
+            case ElfMachine.EM_RCE: // According to the C-Sky ABI manual, they hijacked this value.
             case ElfMachine.EM_CSKY:
                 arch = "csky";
                 break;

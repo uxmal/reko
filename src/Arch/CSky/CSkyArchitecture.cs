@@ -38,8 +38,9 @@ namespace Reko.Arch.CSky
         /// <param name="services"></param>
         /// <param name="options"></param>
         /// <remarks>Implemented by the CK810 device.</remarks>
-        public CSkyArchitecture(IServiceProvider services, Dictionary<string, object> options)
-            : base(services, "csky", options, Registers.ByName, Registers.ByDomain)
+        public CSkyArchitecture(IServiceProvider services, string name, Dictionary<string, object> options)
+            : base(services, name,
+                  options, Registers.ByName, Registers.ByDomain)
         {
             this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;
@@ -122,7 +123,7 @@ namespace Reko.Arch.CSky
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

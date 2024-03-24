@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.Elf
         EM_V800 = 36,           // NEC V800 
         EM_FR20 = 37,           // Fujitsu FR20 
         EM_RH32 = 38,           // TRW RH-32 
-        EM_RCE = 39,            // Motorola RCE 
+        EM_RCE = 39,            // Motorola RCE, hijacked by C-Sky
         EM_ARM = 40,            // Advanced RISC Machines ARM 
         EM_ALPHA_STD = 41,      // Digital Alpha
         EM_SH = 42,             // Hitachi SH 
