@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.ImageLoaders.Archives.Ar;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,14 @@ namespace Reko.ImageLoaders.Archives
     {
         private const string HeaderSignature = "!<arch>\n";
         private Dictionary<string, uint> symbols;
+        private readonly IEventListener listener;
+        private byte[]? longFilenames;
 
         public ArLoader(IServiceProvider services, ImageLocation location, byte[] imgRaw)
             : base(services, location, imgRaw)
         {
             symbols = new Dictionary<string, uint>();
+            this.listener = services.GetService<IEventListener>() ?? NullEventListener.Instance;
         }
 
         public override ILoadedImage Load(Address? addrLoad)
@@ -78,7 +82,23 @@ namespace Reko.ImageLoaders.Archives
             string name = fileHeader.Name;
             if (name.StartsWith("// "))
             {
-                throw new NotImplementedException("Extended file names not implemented yet.");
+                if (longFilenames is not null)
+                    throw new BadImageFormatException("Long file names 'file' appears more than once.");
+                longFilenames = rdr.ReadBytes(dataSize);
+                AlignReader(rdr);
+                return;
+            }
+            else if (name.StartsWith('/') && name.Length > 1 && char.IsDigit(name[0]))
+            {
+                if (longFilenames is null)
+                    throw new BadImageFormatException("Cannot read long file names.");
+                if (!int.TryParse(name.AsSpan(1), out var nameOffset))
+                    throw new BadImageFormatException("Non-numeric long file name reference.");
+                int iStart = nameOffset;
+                int i;
+                for (i = nameOffset; i < longFilenames.Length && longFilenames[i] != '\n'; ++i)
+                    ;
+                name = Encoding.ASCII.GetString(longFilenames, iStart, i - iStart);
             }
             else if (name.StartsWith("/ ") || name.StartsWith("__.SYMDEF"))
             {
@@ -108,7 +128,14 @@ namespace Reko.ImageLoaders.Archives
                 name = name.TrimEnd(charsToTrim);
             }
 
-            archive.AddFile(name, (a, p, name) => new ArFile(a, p, name, rdr, rdr.Offset, dataSize));
+            try
+            {
+                archive.AddFile(name, (a, p, name) => new ArFile(a, p, name, rdr, rdr.Offset, dataSize));
+            }
+            catch (DuplicateFilenameException ex)
+            {
+                listener.Warn(ex.Message);
+            }
             rdr.Offset += dataSize;
             AlignReader(rdr);
         }

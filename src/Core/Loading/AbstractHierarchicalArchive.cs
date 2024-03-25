@@ -97,8 +97,13 @@ namespace Reko.Core.Loading
             var filename = pathSegments[^1];
             var file = fileCreator(this, parentDir, filename);
             if (!curDir.TryAdd(filename, file))
-                throw new InvalidOperationException($"The path {path} already exists.");
+                ReportDuplicatedFilename(filename);
             return file;
+        }
+
+        protected virtual void ReportDuplicatedFilename(string filename)
+        {
+            throw new DuplicateFilenameException($"Duplicated file name '{filename}.");
         }
 
         public virtual string GetRootPath(ArchiveDirectoryEntry? entry)
