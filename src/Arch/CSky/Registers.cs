@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.CSky
@@ -38,6 +39,7 @@ namespace Reko.Arch.CSky
         public static Dictionary<StorageDomain, RegisterStorage> ControlRegisters { get; }
 
         public static Dictionary<int, RegisterStorage> CodesToControlRegisters { get; }
+        public static RegisterStorage Psr { get; }
         public static RegisterStorage Vbr { get; }
 
         public static FlagGroupStorage C { get; }
@@ -76,11 +78,11 @@ namespace Reko.Arch.CSky
             };
             ControlRegisters = crFactory.DomainsToRegisters;
 
-            var psr = CodesToControlRegisters[0];
+            Psr = CodesToControlRegisters[0];
             Vbr = CodesToControlRegisters[1];
             //$TODO: manual is unclear on the positions of the bits in the psr
-            C = new FlagGroupStorage(psr, 1, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(psr, 2, "V", PrimitiveType.Bool);
+            C = new FlagGroupStorage(Psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(Psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
 
         }
 
@@ -91,5 +93,12 @@ namespace Reko.Arch.CSky
                 return reg;
             return new RegisterStorage($"cr{ireg}", (int) domain, 0, PrimitiveType.Word32);
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        CF = 1,
+        VF = 2,
     }
 }

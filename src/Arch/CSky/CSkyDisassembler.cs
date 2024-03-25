@@ -93,12 +93,15 @@ namespace Reko.Arch.CSky
         }
 
         private static readonly Bitfield bf0_2 = new Bitfield(0, 2);
+        private static readonly Bitfield bf0_4 = new Bitfield(0, 4);
         private static readonly Bitfield bf0_5 = new Bitfield(0, 5);
         private static readonly Bitfield bf0_12 = new Bitfield(0, 12);
+        private static readonly Bitfield bf0_16 = new Bitfield(0, 16);
         private static readonly Bitfield bf2_3 = new Bitfield(2, 3);
         private static readonly Bitfield bf2_4 = new Bitfield(2, 4);
         private static readonly Bitfield bf5_3 = new Bitfield(5, 3);
         private static readonly Bitfield bf6_4 = new Bitfield(6, 4);
+        private static readonly Bitfield bf8_2 = new Bitfield(8, 2);
         private static readonly Bitfield bf8_3 = new Bitfield(8, 3);
         private static readonly Bitfield bf16_5 = new Bitfield(16, 5);
         private static readonly Bitfield bf16_10 = new Bitfield(16, 10);
@@ -244,7 +247,7 @@ namespace Reko.Arch.CSky
             };
         }
         private static readonly Mutator<CSkyDisassembler> pcdisp10 = pcdisp(10, 1);
-        private static readonly Mutator<CSkyDisassembler> pcdisp16 = pcdisp(16, 1);
+        private static readonly Mutator<CSkyDisassembler> pcdisp16_1 = pcdisp(16, 1);
         private static readonly Mutator<CSkyDisassembler> pcdisp18_0 = pcdisp(18, 0);
         private static readonly Mutator<CSkyDisassembler> pcdisp18_1 = pcdisp(18, 1);
         private static readonly Mutator<CSkyDisassembler> pcdisp18_2 = pcdisp(18, 2);
@@ -305,6 +308,59 @@ namespace Reko.Arch.CSky
             };
         }
 
+        /// <summary>
+        /// PC-relative offset, aligned to 4-byte boundary.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        private static Mutator<CSkyDisassembler> Mpc(PrimitiveType dt, params Bitfield[] bfs)
+        {
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadFields(bfs, u) << 2;
+                var uAddr = (d.addr.Offset + offset) & ~3ul;
+                var mem = MemoryOperand.Direct(dt, uAddr);
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+        private static readonly Mutator<CSkyDisassembler> Mpc_offs5_2 = Mpc(PrimitiveType.Word32, bf8_2, bf0_5);
+        private static readonly Mutator<CSkyDisassembler> Mpc_offs16 = Mpc(PrimitiveType.Word32, bf0_16);
+
+
+        private static readonly uint[] decodePushPopArgs = new uint[]
+        {
+            0x0000,
+            0x0010,
+            0x0030,
+            0x0070,
+
+            0x00F0,
+            0x01F0,
+            0x03F0,
+            0x07F0,
+
+            0x0FF0,
+            ~0u,
+            ~0u,
+            ~0u,
+
+            ~0u,
+            ~0u,
+            ~0u,
+            ~0u,
+        };
+
+        private static bool PushPopArgs(uint uInstr, CSkyDisassembler dasm)
+        {
+            var encodedList = bf0_4.Read(uInstr);
+            var list = decodePushPopArgs[encodedList];
+            if (list == ~0u)
+                return false;
+            list |= (uInstr & 0x10) << 11;
+            dasm.ops.Add(new RegisterListOperand(list));
+            return true; 
+        }
 
         /// <summary>
         /// Memory access with base and index register.
@@ -352,7 +408,7 @@ namespace Reko.Arch.CSky
 
         static CSkyDisassembler()
         {
-            var nyi = Instr(Mnemonic.nyi, InstrClass.Invalid);
+            var nyi = new NyiDecoder<CSkyDisassembler, Mnemonic, CSkyInstruction>("nyi");
 
             var bitop_16 = Mask(5, 3, "  bitop",
                 Instr(Mnemonic.cmphsi, r8_3, uimm5p1),
@@ -375,7 +431,9 @@ namespace Reko.Arch.CSky
                     nyi));
 
             var decoder00 = Mask(10, 4, "  16-bit 00",
-                Instr(Mnemonic.bkpt, InstrClass.Linear|InstrClass.Zero),
+                Select((0, 10), u => u == 0, "  0000",
+                    Instr(Mnemonic.bkpt, InstrClass.Linear|InstrClass.Zero),
+                    Instr(Mnemonic.lrw, r5_3, Mpc_offs5_2)),
                 Instr(Mnemonic.br, InstrClass.Transfer, pcdisp10),
                 Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, pcdisp10),
                 Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, pcdisp10),
@@ -392,13 +450,14 @@ namespace Reko.Arch.CSky
                             (0, Instr(Mnemonic.nir, InstrClass.Privileged | InstrClass.Transfer | InstrClass.Return))),
                         Instr(Mnemonic.ipush),
                         Instr(Mnemonic.ipop)),
-                    nyi,
+
+                    Instr(Mnemonic.pop, PushPopArgs),
                     Mask(0, 2, "  0..2",
                         Instr(Mnemonic.bpop_h, r2_3),
                         nyi,
                         Instr(Mnemonic.bpop_w, r2_3),
                         nyi),
-                    nyi,
+                    Instr(Mnemonic.push, PushPopArgs),
                     Mask(0, 2, "  0..2",
                         Instr(Mnemonic.bpush_h, r2_3),
                         nyi,
@@ -408,11 +467,11 @@ namespace Reko.Arch.CSky
                 Instr(Mnemonic.addi, r8_3, regsp, uimm8_sh2),
 
                 Instr(Mnemonic.addi, r5_3, uimm8p1),
-                nyi,
+                Instr(Mnemonic.addi, r5_3, uimm8p1),
                 Instr(Mnemonic.subi, r5_3, uimm8p1),
-                nyi,
+                Instr(Mnemonic.subi, r5_3, uimm8p1),
 
-                nyi,
+                Instr(Mnemonic.movi, r8_3, uimm8),
                 Instr(Mnemonic.movi, r8_3, uimm8),
                 bitop_16,
                 bitop_16);
@@ -492,6 +551,8 @@ namespace Reko.Arch.CSky
                 Instr(Mnemonic.st_w, r5_3, Msp(PrimitiveType.Word32, bf8_0)));
 
             var decoder11_1001 = Sparse(12, 4, "  1001", nyi,
+                (0x0, Instr(Mnemonic.addi, R21, R16, uimm12)),
+                (0x1, Instr(Mnemonic.subi, R21, R16, uimm12)),
                 (0x2, Instr(Mnemonic.andi, R21, R16, uimm12)),
                 (0x3, Instr(Mnemonic.andni, R21, R16, uimm12)),
                 (0x4, Instr(Mnemonic.xori, R21, R16, uimm12)));
@@ -601,8 +662,7 @@ namespace Reko.Arch.CSky
                         (0x02, Instr(Mnemonic.bgenr, R0, R16)))),
                     (0x15, Instr(Mnemonic.zext, R21, R16, uimm21_5, uimm5_5)),
                     (0x16, Instr(Mnemonic.sext, R21, R16, uimm21_5, uimm5_5)),
-                    (0x17, Sparse(5, 5, "  010111", nyi,
-                        (0x04, Instr(Mnemonic.ins, R21, R16, uimm5_5p1, uimm5)))),
+                    (0x17, Instr(Mnemonic.ins, R21, R16, uimm5_5p1, uimm5)),
                     (0x18, Sparse(5, 5, "  011000", nyi,
                         (0x04, Instr(Mnemonic.revb, R0, R16)),
                         (0x08, Instr(Mnemonic.revh, R0, R16)),
@@ -752,25 +812,26 @@ namespace Reko.Arch.CSky
                 Instr(Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call, pcdisp26),
                 decoder11_1001,
                 Sparse(21, 5, "  1010", nyi,
-                    (0x00, Instr(Mnemonic.br, InstrClass.Transfer, pcdisp16)),
-                    (0x02, Instr(Mnemonic.bf, InstrClass.Transfer|InstrClass.Conditional, pcdisp16)),
-                    (0x03, Instr(Mnemonic.bt, InstrClass.Transfer|InstrClass.Conditional, pcdisp16)),
+                    (0x00, Instr(Mnemonic.br, InstrClass.Transfer, pcdisp16_1)),
+                    (0x02, Instr(Mnemonic.bf, InstrClass.Transfer|InstrClass.Conditional, pcdisp16_1)),
+                    (0x03, Instr(Mnemonic.bt, InstrClass.Transfer|InstrClass.Conditional, pcdisp16_1)),
                     (0x06, If(u => (u & 0xFFFFu) == 0,
                         Instr(Mnemonic.jmp, InstrClass.Transfer, R16))),
                     (0x07, If(u => (u & 0xFFFFu) == 0,
                         Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, R16))),
-                    (0x08, Instr(Mnemonic.bez, InstrClass.Transfer|InstrClass.Conditional, R16, pcdisp16)),
-                    (0x09, Instr(Mnemonic.bnez, InstrClass.Transfer|InstrClass.Conditional, R16, pcdisp16)),
-                    (0x0A, Instr(Mnemonic.bhz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16)),
-                    (0x0B, Instr(Mnemonic.blsz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16)),
-                    (0x0C, Instr(Mnemonic.blz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16)),
-                    (0x0D, Instr(Mnemonic.bhsz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16)),
+                    (0x08, Instr(Mnemonic.bez, InstrClass.Transfer|InstrClass.Conditional, R16, pcdisp16_1)),
+                    (0x09, Instr(Mnemonic.bnez, InstrClass.Transfer|InstrClass.Conditional, R16, pcdisp16_1)),
+                    (0x0A, Instr(Mnemonic.bhz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16_1)),
+                    (0x0B, Instr(Mnemonic.blsz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16_1)),
+                    (0x0C, Instr(Mnemonic.blz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16_1)),
+                    (0x0D, Instr(Mnemonic.bhsz, InstrClass.Transfer | InstrClass.Conditional, R16, pcdisp16_1)),
                     (0x0F, If(u => (u & 0xFFFC) == 0,
                         Instr(Mnemonic.jmpix, InstrClass.Transfer, R16, jmpix2))),
                     (0x10, Instr(Mnemonic.movi, R16, uimm16)),
                     (0x11, Instr(Mnemonic.movih, R16, uimm16)),
-                    (0x16, Instr(Mnemonic.jmpi, InstrClass.Transfer, pcdisp16)),
-                    (0x17, Instr(Mnemonic.jsri, InstrClass.Transfer | InstrClass.Call, pcdisp16)),
+                    (0x14, Instr(Mnemonic.lrw, R16, Mpc_offs16)),
+                    (0x16, Instr(Mnemonic.jmpi, InstrClass.Transfer, pcdisp16_1)),
+                    (0x17, Instr(Mnemonic.jsri, InstrClass.Transfer | InstrClass.Call, pcdisp16_1)),
                     (0x18, Instr(Mnemonic.cmphsi, R16, uimm16p1)),
                     (0x19, Instr(Mnemonic.cmplti, R16, uimm16p1)),
                     (0x1A, Instr(Mnemonic.cmpnei, R16, uimm16p1))),

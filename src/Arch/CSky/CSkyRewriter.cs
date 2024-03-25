@@ -31,6 +31,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.AccessControl;
 
 namespace Reko.Arch.CSky
@@ -195,6 +196,8 @@ namespace Reko.Arch.CSky
                 case Mnemonic.ori: RewriteBinary(Operator.Or); break;
                 case Mnemonic.pldr: RewritePrefetch(pldr_intrinsic); break;
                 case Mnemonic.pldrw: RewritePrefetch(pldrw_intrinsic); break;
+                case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.revb: RewriteReverse(CommonOps.ReverseBytes); break;
                 case Mnemonic.revh: RewriteReverse(CommonOps.ReverseHalfwords); break;
                 case Mnemonic.rfi: RewriteRfi(); break;
@@ -612,6 +615,11 @@ namespace Reko.Arch.CSky
         private void RewriteJmp()
         {
             var src = Operand(0);
+            if (src is Identifier id &&
+                id.Storage == Registers.GpRegs[15])
+            {
+                m.Return(0, 0);
+            }
             m.Goto(src);
         }
 
@@ -839,6 +847,34 @@ namespace Reko.Arch.CSky
         {
             var src = Operand(0);
             m.SideEffect(m.Fn(proc, m.AddrOf(PrimitiveType.Ptr32, src)));
+        }
+
+        private void RewritePop()
+        {
+            var regs = (RegisterListOperand) instr.Operands[0];
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            var r15popped = false;
+            foreach (var reg in regs.RegisterList)
+            {
+                var id = binder.EnsureRegister(reg);
+                m.Assign(id, m.Mem(reg.Width, sp));
+                m.Assign(sp, m.IAddS(sp, id.DataType.Size));
+                r15popped |= reg.Number == 15;
+            }
+            if (r15popped)
+                m.Return(0, 0);
+        }
+
+        private void RewritePush()
+        {
+            var regs = (RegisterListOperand) instr.Operands[0];
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            foreach (var reg in regs.RegisterList.Reverse())
+            {
+                var id = binder.EnsureRegister(reg);
+                m.Assign(sp, m.ISubS(sp, id.DataType.Size));
+                m.Assign(m.Mem(reg.Width, sp), id);
+            }
         }
 
         private void RewriteReverse(IntrinsicProcedure proc)

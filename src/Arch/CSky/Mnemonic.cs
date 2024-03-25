@@ -155,6 +155,8 @@ namespace Reko.Arch.CSky
         ori,
         pldr,
         pldrw,
+        pop,
+        push,
         revb,
         revh,
         rfi,

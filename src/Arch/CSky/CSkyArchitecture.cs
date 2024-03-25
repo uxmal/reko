@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -27,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Reko.Arch.CSky
 {
@@ -83,7 +85,10 @@ namespace Reko.Arch.CSky
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.Psr, grf, GrfToString(flagRegister, "", grf), dt);
+            return fl;
+
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)
@@ -106,14 +111,27 @@ namespace Reko.Arch.CSky
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.VF) != 0) yield return Registers.C;
+            if ((grf & (uint) FlagM.CF) != 0) yield return Registers.V;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+            if ((grf & Registers.C.FlagGroupBits) != 0) sb.Append(Registers.C.Name);
+            if ((grf & Registers.V.FlagGroupBits) != 0) sb.Append(Registers.V.Name);
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~1u;
+            return Address.Ptr32(uAddr);
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

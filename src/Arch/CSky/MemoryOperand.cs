@@ -45,6 +45,12 @@ namespace Reko.Arch.CSky
             return new MemoryOperand(dt, baseAddress, null, displacement, 0);
         }
 
+
+        public static MachineOperand Direct(PrimitiveType dt, ulong uAddr)
+        {
+            return new MemoryOperand(dt, null, null, (int)uAddr, 0);
+        }
+
         public static MemoryOperand Indexed(PrimitiveType dt, RegisterStorage baseRegister, RegisterStorage indexRegister, int shift)
         {
             return new MemoryOperand(dt, baseRegister, indexRegister, 0, shift);

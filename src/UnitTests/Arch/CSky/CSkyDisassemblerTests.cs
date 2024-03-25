@@ -31,7 +31,8 @@ namespace Reko.UnitTests.Arch.CSky
 
         public CSkyDisassemblerTests()
         {
-            this.arch = new CSkyArchitecture(CreateServiceContainer(), new());
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            this.arch = new CSkyArchitecture(CreateServiceContainer(), "csky", new());
             this.addr = Address.Ptr32(0x10_0000);
         }
 
@@ -671,9 +672,21 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
-        public void CSkyDis_lrw()
+        public void CSkyDis_lrw_16()
+        {
+            AssertCode("lrw\tr3,[0010014C]", "7302");
+        }
+
+        [Test]
+        public void CSkyDis_lrw_32()
         {
             AssertCode("lrw\tr1,[0010034C]", "2C11");
+        }
+
+        [Test]
+        public void CSkyDis_lrw_pcrel()
+        {
+            AssertCode("lrw\tr8,[00100300]", "88EAC000");
         }
 
         [Test]
@@ -790,6 +803,8 @@ namespace Reko.UnitTests.Arch.CSky
         public void CSkyDis_movi_16()
         {
             AssertCode("movi\tr7,0xFF", "FF37");
+            AssertCode("movi\tr3,0x1", "0133");
+            AssertCode("movi\tr0,0x38", "3830");
         }
 
         [Test]
@@ -1007,6 +1022,18 @@ namespace Reko.UnitTests.Arch.CSky
         public void CSkyDis_pldw()
         {
             AssertCode("pldrw\t(r19,8196)", "13DC 0168");
+        }
+
+        [Test]
+        public void CSkyDis_pop_16()
+        {
+            AssertCode("pop\tr4-r6,r15", "9314");
+        }
+
+        [Test]
+        public void CSkyDis_push_16()
+        {
+            AssertCode("push\tr4-r6,r15", "D314");
         }
 
         [Test]
@@ -1237,6 +1264,7 @@ namespace Reko.UnitTests.Arch.CSky
             AssertCode("subi\tr0,0x1", "002A");
             AssertCode("subi\tr0,0x2", "012A");
             AssertCode("subi\tr7,0x100", "FF2A");
+            AssertCode("subi\tr0,0x2", "012E");
         }
 
         [Test]
@@ -1248,6 +1276,12 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyDis_subi_32()
+        {
+            AssertCode("subi\tr21,r21,0x800", "B5E60018");
+        }
+
+        [Test]
         public void CSkyDis_subi_sp()
         {
             AssertCode("subi\tr14,r14,0x0", "2014");
@@ -1255,6 +1289,8 @@ namespace Reko.UnitTests.Arch.CSky
             AssertCode("subi\tr14,r14,0x84", "2115");
             AssertCode("subi\tr14,r14,0x1FC", "3F17");
         }
+
+
 
         [Test]
         public void CSkyDis_subu_16_a()

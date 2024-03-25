@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.CSky
 
         public CSkyRewriterTests()
         {
-            this.arch = new CSkyArchitecture(CreateServiceContainer(), new());
+            this.arch = new CSkyArchitecture(CreateServiceContainer(), "csky", new());
             this.addr = Address.Ptr32(0x10_0000);
         }
 
@@ -1026,6 +1026,15 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyRw_lrw_32()
+        {
+            Given_HexString("88EAC000");
+            AssertCode(        // lrw
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = Mem0[0x00100300<p32>:word32]");
+        }
+
+        [Test]
         public void CSkyRw_lsl_16()
         {
             Given_HexString("D072");
@@ -1535,6 +1544,39 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyRw_pop_16()
+        {
+            Given_HexString("9314");
+            AssertCode(     // pop\tr4-r6,r15", 
+                "0|L--|00100000(2): 9 instructions",
+                "1|L--|r4 = Mem0[r14:word32]",
+                "2|L--|r14 = r14 + 4<i32>",
+                "3|L--|r5 = Mem0[r14:word32]",
+                "4|L--|r14 = r14 + 4<i32>",
+                "5|L--|r6 = Mem0[r14:word32]",
+                "6|L--|r14 = r14 + 4<i32>",
+                "7|L--|r15 = Mem0[r14:word32]",
+                "8|L--|r14 = r14 + 4<i32>",
+                "9|R--|return (0,0)");
+        }
+
+        [Test]
+        public void CSkyRw_push_16()
+        {
+            Given_HexString("D314");
+            AssertCode(     // push\tr4-r6,r15",
+                "0|L--|00100000(2): 8 instructions",
+                "1|L--|r14 = r14 - 4<i32>",
+                "2|L--|Mem0[r14:word32] = r15",
+                "3|L--|r14 = r14 - 4<i32>",
+                "4|L--|Mem0[r14:word32] = r6",
+                "5|L--|r14 = r14 - 4<i32>",
+                "6|L--|Mem0[r14:word32] = r5",
+                "7|L--|r14 = r14 - 4<i32>",
+                "8|L--|Mem0[r14:word32] = r4");
+        }
+
+        [Test]
         public void CSkyRw_revb_16()
         {
             Given_HexString("067B");
@@ -1941,6 +1983,15 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyRw_subi_32()
+        {
+            Given_HexString("B5E60018");
+            AssertCode(     // nyi
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = r21 - 0x800<32>");
+        }
+
+        [Test]
         public void CSkyRw_subi_sp()
         {
             Given_HexString("2014");
@@ -2257,6 +2308,5 @@ namespace Reko.UnitTests.Arch.CSky
                 "1|L--|v5 = SLICE(r4, word16, 0)",
                 "2|L--|r12 = CONVERT(v5, word16, word32)");
         }
-
     }
 }
