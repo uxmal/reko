@@ -221,12 +221,27 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = (int) bf.Read(u);
-                d.ops.Add(ImmediateOperand.Int32(value + 1));
+                d.ops.Add(ImmediateOperand.Int32(value));
                 return true;
             };
         }
         private static readonly Mutator<CSkyDisassembler> shamt0 = shamt(0, 5);
         private static readonly Mutator<CSkyDisassembler> shamt21 = shamt(21, 5);
+
+
+        private static Mutator<CSkyDisassembler> oimm(int bitposition, int length)
+        {
+            var bf = new Bitfield(bitposition, length);
+            return (u, d) =>
+            {
+                var value = (int) bf.Read(u) + 1;
+                d.ops.Add(ImmediateOperand.Int32(value));
+                return true;
+            };
+        }
+        private static readonly Mutator<CSkyDisassembler> oimm0 = oimm(0, 5);
+        private static readonly Mutator<CSkyDisassembler> oimm21 = oimm(21, 5);
+
 
         private static bool bitpos(uint uInstr, CSkyDisassembler dasm)
         {
@@ -653,12 +668,12 @@ namespace Reko.Arch.CSky
                         (0x04, Instr(Mnemonic.asri, R0, R16, shamt21)),
                         (0x08, Instr(Mnemonic.rotli, R0, R16, shamt21)))),
                     (0x13, Sparse(5, 5, "  010011", nyi,
-                        (0x01, Instr(Mnemonic.lslc, R0, R16, shamt21)),
-                        (0x02, Instr(Mnemonic.lsrc, R0, R16, shamt21)),
-                        (0x04, Instr(Mnemonic.asrc, R0, R16, shamt21)),
-                        (0x08, Instr(Mnemonic.xsr, R0, R16, shamt21)))),
+                        (0x01, Instr(Mnemonic.lslc, R0, R16, oimm21)),
+                        (0x02, Instr(Mnemonic.lsrc, R0, R16, oimm21)),
+                        (0x04, Instr(Mnemonic.asrc, R0, R16, oimm21)),
+                        (0x08, Instr(Mnemonic.xsr, R0, R16, oimm21)))),
                     (0x14, Sparse(5, 5, "  010100", nyi,
-                        (0x01, Instr(Mnemonic.bmaski, R0, shamt21)),
+                        (0x01, Instr(Mnemonic.bmaski, R0, oimm21)),
                         (0x02, Instr(Mnemonic.bgenr, R0, R16)))),
                     (0x15, Instr(Mnemonic.zext, R21, R16, uimm21_5, uimm5_5)),
                     (0x16, Instr(Mnemonic.sext, R21, R16, uimm21_5, uimm5_5)),

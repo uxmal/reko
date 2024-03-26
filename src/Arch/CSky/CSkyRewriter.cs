@@ -435,7 +435,6 @@ namespace Reko.Arch.CSky
             m.Assign(dst, m.Fn(proc, left, right));
         }
 
-
         private void RewriteBitop(IntrinsicProcedure op)
         {
             MaybeConditionalExecution();

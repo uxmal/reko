@@ -169,13 +169,13 @@ namespace Reko.UnitTests.Arch.CSky
         [Test]
         public void CSkyDis_asri_16()
         {
-            AssertCode("asri\tr3,r4,0x20", "7F54");
+            AssertCode("asri\tr3,r4,0x1F", "7F54");
         }
 
         [Test]
         public void CSkyDis_asri_32()
         {
-            AssertCode("asri\tr17,r1,0x1C", "61C7 9148");
+            AssertCode("asri\tr17,r1,0x1B", "61C7 9148");
         }
 
         [Test]
@@ -710,13 +710,17 @@ namespace Reko.UnitTests.Arch.CSky
         [Test]
         public void CSkyDis_lsli_16()
         {
-            AssertCode("lsli\tr7,r6,0x20", "FF46");
+            AssertCode("lsli\tr7,r6,0x1F", "FF46");
         }
 
         [Test]
         public void CSkyDis_lsli_32()
         {
-            AssertCode("lsli\tr23,r19,0x12", "33C6 3748");
+            AssertCode("lsli\tr23,r19,0x11", "33C6 3748");
+            AssertCode("lsli\tr7,r9,0x1F", " E9C7 2748");
+//2000259C C7E9 4827 lsli r7, r9,0x20
+//200025A0 C428 4846 lsri r6, r8,0x2
+
         }
 
         [Test]
@@ -740,13 +744,13 @@ namespace Reko.UnitTests.Arch.CSky
         [Test]
         public void CSkyDis_lsri_16()
         {
-            AssertCode("lsri\tr7,r6,0x20", "FF4E");
+            AssertCode("lsri\tr7,r6,0x1F", "FF4E");
         }
 
         [Test]
         public void CSkyDis_lsri_32()
         {
-            AssertCode("lsri\tr23,r19,0x12", "33C6 5748");
+            AssertCode("lsri\tr23,r19,0x11", "33C6 5748");
         }
 
         [Test]
@@ -1081,7 +1085,7 @@ namespace Reko.UnitTests.Arch.CSky
         [Test]
         public void CSkyDis_rotli()
         {
-            AssertCode("rotli\tr23,r19,0x12", "33C6 1749");
+            AssertCode("rotli\tr23,r19,0x11", "33C6 1749");
         }
 
         [Test]

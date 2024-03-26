@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("7F54");
             AssertCode(     // asri\tr3,r4,0x20
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r3 = r4 >> 32<i32>");
+                "1|L--|r3 = r4 >> 31<i32>");
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("61C7 9148");
             AssertCode(      // asr\tr17,r1,0x1C
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r17 = r1 >> 28<i32>");
+                "1|L--|r17 = r1 >> 27<i32>");
         }
 
         [Test]
@@ -1068,7 +1068,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("FF46");
             AssertCode(     // lsli\tr7,r6,0x20
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = r6 << 32<i32>");
+                "1|L--|r7 = r6 << 31<i32>");
         }
 
         [Test]
@@ -1077,7 +1077,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("33C6 3748");
             AssertCode(     // lsli\tr23,r19,0x12
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r23 = r19 << 18<i32>");
+                "1|L--|r23 = r19 << 17<i32>");
         }
 
         [Test]
@@ -1114,7 +1114,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("FF4E");
             AssertCode(     // lsri\tr7,r6,0x20
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = r6 >>u 32<i32>");
+                "1|L--|r7 = r6 >>u 31<i32>");
         }
 
         [Test]
@@ -1123,7 +1123,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("33C6 5748");
             AssertCode(     // lsri\tr23,r19,0x12
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r23 = r19 >>u 18<i32>");
+                "1|L--|r23 = r19 >>u 17<i32>");
         }
 
         [Test]
@@ -1646,7 +1646,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("33C6 1749");
             AssertCode(     // rotli\tr23,r19,0x12
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r23 = __rol<word32,int32>(r19, 18<i32>)");
+                "1|L--|r23 = __rol<word32,int32>(r19, 17<i32>)");
         }
 
         [Test]
