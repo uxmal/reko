@@ -157,10 +157,10 @@ namespace Reko.Arch.RiscV
             return "";
         }
 
-        private bool Is64Bit()
+        public static bool Is64Bit(Dictionary<string, object> options)
         {
             return
-                !Options.TryGetValue("WordSize", out var oWordSize) ||
+                !options.TryGetValue(ProcessorOption.WordSize, out var oWordSize) ||
                 int.TryParse(oWordSize.ToString(), out var wordSize) &&
                 wordSize == 64;
         }
@@ -204,7 +204,7 @@ namespace Reko.Arch.RiscV
 
         private void SetOptionDependentProperties()
         {
-            if (Is64Bit())
+            if (Is64Bit(this.Options))
             {
                 this.PointerType = PrimitiveType.Ptr64;
                 this.WordWidth = PrimitiveType.Word64;

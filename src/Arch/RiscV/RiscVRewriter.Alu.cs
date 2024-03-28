@@ -2,7 +2,7 @@
 /* 
  * Copyright (C) 1999-2024 John Källén.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software; you can redistribute it  /or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.RiscV
 {
@@ -68,6 +69,18 @@ namespace Reko.Arch.RiscV
             var imm = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = RewriteOp(0);
             m.Assign(dst, m.IAddS(src, imm));
+        }
+
+        private void RewriteAddUw()
+        {
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tmp1, m.Slice(src2, tmp1.DataType));
+            var tmp2 = binder.CreateTemporary(src2.DataType);
+            m.Assign(tmp2, m.ExtendZ(tmp1, tmp2.DataType));
+            m.Assign(dst, m.IAdd(src1, tmp2));
         }
 
         /// <summary>
@@ -135,12 +148,28 @@ namespace Reko.Arch.RiscV
             MaybeSignExtend(dst, m.Fn(intrinsic.MakeInstance(arch.PointerType.BitSize, dt), src1, src2));
         }
 
+        private void RewriteBinaryIntrinsic(IntrinsicProcedure intrinsic)
+        {
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(intrinsic, src1, src2));
+        }
+
         private void RewriteBinOp(BinaryOperator op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(1);
             var src2 = RewriteOp(2);
             var dst = RewriteOp(0);
             MaybeSliceSignExtend(dst, m.Bin(op, src1, src2), dtDst);
+        }
+
+        private void RewriteBinNotOp(BinaryOperator op, PrimitiveType? dtDst = null)
+        {
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            MaybeSliceSignExtend(dst, m.Bin(op, src1, m.Comp(src2)), dtDst);
         }
 
         private void RewriteCompressedBinOp(BinaryOperator op, PrimitiveType? dtDst = null)
@@ -158,6 +187,24 @@ namespace Reko.Arch.RiscV
             var val = op(dst, src1);
             MaybeSliceSignExtend(dst, val, dtDst);
         }
+
+        private void RewriteGenericBinaryIntrinsic(IntrinsicProcedure fn)
+        {
+            var dt = arch.WordWidth;
+            var src1 = MaybeSlice(RewriteOp(1), dt);
+            var src2 = MaybeSlice(RewriteOp(2), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(fn.MakeInstance(dt), src1, src2));
+        }
+
+        private void RewriteGenericUnaryIntrinsic(IntrinsicProcedure fn)
+        {
+            var dt = arch.WordWidth;
+            var src = MaybeSlice(RewriteOp(1), dt);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(fn.MakeInstance(dt), src));
+        }
+
 
         private void RewriteLi()
         {
@@ -246,12 +293,85 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
+        private void RewritePackw()
+        {
+            var slice1 = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(slice1, m.Slice(RewriteOp(1), slice1.DataType)); ;
+            var slice2 = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(slice2, m.Slice(RewriteOp(1), slice2.DataType));
+            var result = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(result, m.Fn(
+                pack_intrinsic.MakeInstance(slice1.DataType),
+                slice1, 
+                slice2));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendS(result, dst.DataType));
+        }
+
+        private void RewriteRotate(IntrinsicProcedure rotation)
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var src = m.Fn(rotation, left, right);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteRotateW(IntrinsicProcedure rotation)
+        {
+            var slice = binder.CreateTemporary(PrimitiveType.Word32);
+            var right = RewriteOp(2);
+            m.Assign(slice, m.Slice(RewriteOp(1), PrimitiveType.Word32));
+            var rot = binder.CreateTemporary(slice.DataType);
+            m.Assign(rot, m.Fn(rotation, slice, right));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendZ(rot, dst.DataType));
+        }
+
+        private void RewriteSext(PrimitiveType dtFrom)
+        {
+            var slice = binder.CreateTemporary(dtFrom);
+            m.Assign(slice, m.Slice(RewriteOp(1), dtFrom));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendS(slice, dst.DataType));
+        }
+
+        private void RewriteShadd(int shift)
+        {
+            var rs1 = RewriteOp(1);
+            var rs2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.IAdd(rs2, m.IMul(rs1, 1<<shift)));
+        }
+
+        private void RewriteShaddUw(int shift)
+        {
+            var rs1 = RewriteOp(1);
+            var rs2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var slice = binder.CreateTemporary(PrimitiveType.Word32);
+            var index = binder.CreateTemporary(rs2.DataType);
+            m.Assign(slice, m.Slice(rs1, slice.DataType));
+            m.Assign(index, m.ExtendZ(slice, index.DataType));
+            m.Assign(dst, m.IAdd(rs2, m.IMul(index, 1<<shift)));
+        }
+
         private void RewriteShift(BinaryOperator op)
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
             var dst = RewriteOp(0);
             m.Assign(dst, m.Bin(op, left, right));
+        }
+
+        private void RewriteShiftUw(BinaryOperator op)
+        {
+            var left = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(left, m.Slice(RewriteOp(1), PrimitiveType.Word32));
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var src = m.Bin(op, m.ExtendZ(left, dst.DataType), right);
+            m.Assign(dst, src);
         }
 
         private void RewriteShiftw(Func<Expression,Expression,Expression> op)
@@ -367,6 +487,19 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.Convert(m.Slice(src, PrimitiveType.Word32), PrimitiveType.Word32, PrimitiveType.Int64));
         }
 
+        private void RewriteXnor()
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var src = left;
+            if (!right.IsZero)
+            {
+                src = m.Xor(src, right);
+            }
+            m.Assign(dst, m.Comp(src));
+        }
+
         private void RewriteXor()
         {
             var left = RewriteOp(1);
@@ -378,6 +511,14 @@ namespace Reko.Arch.RiscV
                 src = m.Xor(src, right);
             }
             m.Assign(dst, src);
+        }
+
+        private void RewriteZext(PrimitiveType dtFrom)
+        {
+            var slice = binder.CreateTemporary(dtFrom);
+            m.Assign(slice, m.Slice(RewriteOp(1), dtFrom));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendZ(slice, dst.DataType));
         }
     }
 }

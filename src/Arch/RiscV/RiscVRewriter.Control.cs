@@ -37,14 +37,42 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, addr);
         }
 
+        private void RewriteBext()
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Bool);
+            m.Assign(tmp, m.Fn(CommonOps.Bit, left, right));
+            m.Assign(dst, m.ExtendZ(tmp, dst.DataType));
+        }
+
+        private void RewriteBitop(IntrinsicProcedure op)
+        {
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(op, left, right));
+        }
+
         private void RewriteBranch(Func<Expression, Expression, Expression> fn)
         {
             var opLeft = RewriteOp(0);
             var opRight = RewriteOp(1);
             m.Branch(
                 fn(opLeft, opRight),
-                ((AddressOperand)instr.Operands[2]).Address,
+                ((AddressOperand) instr.Operands[2]).Address,
                 InstrClass.ConditionalTransfer);
+        }
+
+        private void RewriteClzw(IntrinsicProcedure op)
+        {
+            var slice = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(slice, m.Slice(RewriteOp(1), slice.DataType));
+            var ext = binder.CreateTemporary(instr.Operands[0].Width);
+            m.Assign(ext, m.Fn(CommonOps.CountLeadingZeros, slice));
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ExtendZ(ext, dst.DataType));
         }
 
         private void RewriteCompressedBranch(Func<Expression, Expression, Expression> fn)

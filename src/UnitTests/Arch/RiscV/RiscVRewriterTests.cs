@@ -3088,6 +3088,556 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|s0 = t1 ^ 1021<i64>");
         }
-   }
-}
 
+
+
+        [Test]
+        public void RiscVRw_add_uw()
+        {
+            Given_HexString("BB894309");
+            AssertCode(    // add.uw\ts3,t2,s4;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v6 = SLICE(s4, word32, 0)",
+                "2|L--|v7 = CONVERT(v6, word32, word64)",
+                "3|L--|s3 = t2 + v7");
+        }
+
+        [Test]
+        public void RiscVRw_andn()
+        {
+            Given_RiscVInstructions(0b0100000_11011_10001_111_01110_0110011);
+            AssertCode(    // andn\ta4,a7,s11;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = a7 & ~s11");
+        }
+
+        [Test]
+        public void RiscVRw_bclr()
+        {
+            Given_RiscVInstructions(0b0100100_11011_10001_001_01110_0110011);
+            AssertCode(    // bclr\ta4,a7,s11;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a4 = __clear_bit<word64,word64>(a7, s11)");
+        }
+
+        [Test]
+        public void RiscVRw_bclri32()
+        {
+            Given_RiscVInstructions(0b0100100_10110_10001_001_11011_0010011);
+            AssertCode(    // bclri\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __clear_bit<word64,uint32>(a7, 0x16<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_bclri64()
+        {
+            Given_RiscVInstructions(0b010010_110110_10001_001_11011_0010011);
+            AssertCode(    // bclri\ts11,a7,0x36;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __clear_bit<word64,uint32>(a7, 0x36<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_bext()
+        {
+            Given_RiscVInstructions(0b0100100_10010_10001_101_11011_0110011);
+            AssertCode(    // bext\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v6 = __bit<word64,word64>(a7, s2)",
+                "2|L--|s11 = CONVERT(v6, bool, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_bexti32()
+        {
+            Given_RiscVInstructions(0b0100100_10110_10001_101_11011_0010011);
+            AssertCode(    // bexti\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __bit<word64,uint32>(a7, 0x16<u32>)",
+                "2|L--|s11 = CONVERT(v5, bool, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_bexti64()
+        {
+            Given_RiscVInstructions(0b010010_110110_10001_101_11011_0010011);
+            AssertCode(    // bexti\ts11,a7,0x36;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __bit<word64,uint32>(a7, 0x36<u32>)",
+                "2|L--|s11 = CONVERT(v5, bool, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_binv()
+        {
+            Given_RiscVInstructions(0b0110100_10010_10001_001_11011_0110011);
+            AssertCode(    // binv\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __invert_bit<word64,word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_binvi32()
+        {
+            Given_RiscVInstructions(0b0110100_10110_10001_001_11011_0010011);
+            AssertCode(    // binvi\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __invert_bit<word64,uint32>(a7, 0x16<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_binvi64()
+        {
+            Given_RiscVInstructions(0b011010_110110_10001_001_11011_0010011);
+            AssertCode(    // binvi\ts11,a7,0x36;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __invert_bit<word64,uint32>(a7, 0x36<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_bset()
+        {
+            Given_RiscVInstructions(0b0010100_10010_10001_001_11011_0110011);
+            AssertCode(    // bset\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __set_bit<word64,word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_bseti32()
+        {
+            Given_RiscVInstructions(0b0010100_10110_10001_001_11011_0010011);
+            AssertCode(    // bseti\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __set_bit<word64,uint32>(a7, 0x16<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_bseti64()
+        {
+            Given_RiscVInstructions(0b001010_110110_10001_001_11011_0010011);
+            AssertCode(    // bseti\ts11,a7,0x36;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __set_bit<word64,uint32>(a7, 0x36<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_clmul()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_001_11011_0110011);
+            AssertCode(    // clmul\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __clmul<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_clmulh()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_011_11011_0110011);
+            AssertCode(    // clmulh\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __clmulh<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_clmulr()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_010_11011_0110011);
+            AssertCode(    // clmulr\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __clmulr<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_clz()
+        {
+            Given_RiscVInstructions(0b011000000000_10001_001_11011_0010011);
+            AssertCode(    // clz\ts11,a7;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __count_leading_zeros<word64>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_clzw()
+        {
+            Given_RiscVInstructions(0b011000000000_10001_001_11011_0011011);
+            AssertCode(    // clzw\ts11,a7;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v5 = __count_leading_zeros<word32>(v3)",
+                "3|L--|s11 = CONVERT(v5, word64, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_cpop()
+        {
+            Given_RiscVInstructions(0b011000000010_10001_001_11011_0010011);
+            AssertCode(    // cpop\ts11,a7;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __population_count<word64>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_cpopw()
+        {
+            Given_RiscVInstructions(0b011000000010_10001_001_11011_0011011);
+            AssertCode(    // cpopw\ts11,a7;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v5 = __count_leading_zeros<word32>(v3)",
+                "3|L--|s11 = CONVERT(v5, word64, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_ctz()
+        {
+            Given_RiscVInstructions(0b011000000001_10001_001_11011_0010011);
+            AssertCode(    // ctz\ts11,a7;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __count_trailing_zeros<word64>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_ctzw()
+        {
+            Given_RiscVInstructions(0b011000000001_10001_001_11011_0011011);
+            AssertCode(    // ctzw\ts11,a7;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v5 = __count_leading_zeros<word32>(v3)",
+                "3|L--|s11 = CONVERT(v5, word64, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_max()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_110_11011_0110011);
+            AssertCode(    // max\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = max<int64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_maxu()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_111_11011_0110011);
+            AssertCode(    // maxu\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = max<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_min()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_100_11011_0110011);
+            AssertCode(    // min\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = min<int64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_minu()
+        {
+            Given_RiscVInstructions(0b0000101_10010_10001_101_11011_0110011);
+            AssertCode(    // minu\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = min<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_orc_b()
+        {
+            Given_RiscVInstructions(0b001010000111_10001_101_11011_0010011);
+            AssertCode(    // orc.b\ts11,a7;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __bitwise_or_combine<word64>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_orn()
+        {
+            Given_RiscVInstructions(0b0100000_10010_10001_110_11011_0110011);
+            AssertCode(    // orn\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = a7 | ~s2");
+        }
+
+        [Test]
+        public void RiscVRw_pack()
+        {
+            Given_RiscVInstructions(0b0000100_10010_10001_100_11011_0110011);
+            AssertCode(    // pack\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __pack<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_packh()
+        {
+            Given_RiscVInstructions(0b0000100_10010_10001_111_11011_0110011);
+            AssertCode(    // packh\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __packh<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_packw()
+        {
+            Given_RiscVInstructions(0b0000100_10010_10001_100_11011_0111011);
+            AssertCode(    // packw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 4 instructions",
+                "1|L--|v3 = SLICE(a7, word16, 0)",
+                "2|L--|v5 = SLICE(a7, word16, 0)",
+                "3|L--|v6 = __pack<word16>(v3, v5)",
+                "4|L--|s11 = CONVERT(v6, word32, int64)");
+        }
+
+        [Test]
+        public void RiscVRw_rev8_32()
+        {
+            Given_32bit();
+            Given_RiscVInstructions(0b011010011000_10001_101_11011_0010011);
+            AssertCode(     // rev8\ts11,a7);
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|s11 = __rev8<word32>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_rev8_64()
+        {
+            Given_RiscVInstructions(0b011010111000_10001_101_11011_0010011);
+            //Given_64bit();
+            AssertCode(     // rev8\ts11,a7
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __rev8<word64>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_rol()
+        {
+            Given_RiscVInstructions(0b0110000_10010_10001_001_11011_0110011);
+            AssertCode(    // rol\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __rol<word64,word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_rolw()
+        {
+            Given_RiscVInstructions(0b0110000_10010_10001_001_11011_0111011);
+            AssertCode(    // rolw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v6 = __rol<word32,word64>(v3, s2)",
+                "3|L--|s11 = CONVERT(v6, word32, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_ror()
+        {
+            Given_RiscVInstructions(0b0110000_10010_10001_101_11011_0110011);
+            AssertCode(    // ror\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __ror<word64,word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_rori_32()
+        {
+            Given_RiscVInstructions(0b0110000_10110_10001_101_11011_0010011);
+            AssertCode(    // rori\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __ror<word64,uint32>(a7, 0x16<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_rori_64()
+        {
+            Given_RiscVInstructions(0b011000_110110_10001_101_11011_0010011);
+            AssertCode(    // rori\ts11,a7,0x36;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __ror<word64,uint32>(a7, 0x36<u32>)");
+        }
+
+        [Test]
+        public void RiscVRw_roriw()
+        {
+            Given_RiscVInstructions(0b0110000_10110_10001_101_11011_0011011);
+            AssertCode(    // roriw\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v5 = __ror<word32,uint32>(v3, 0x16<u32>)",
+                "3|L--|s11 = CONVERT(v5, word32, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_rorw()
+        {
+            Given_RiscVInstructions(0b0110000_10010_10001_101_11011_0111011);
+            AssertCode(    // rorw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|v6 = __ror<word32,word64>(v3, s2)",
+                "3|L--|s11 = CONVERT(v6, word32, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_sext_b()
+        {
+            Given_RiscVInstructions(0b011000000100_10001_001_11011_0010011);
+            AssertCode(    // sext.b\ts11,a7;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v3 = SLICE(a7, byte, 0)",
+                "2|L--|s11 = CONVERT(v3, byte, int64)");
+        }
+
+        [Test]
+        public void RiscVRw_sext_h()
+        {
+            Given_RiscVInstructions(0b011000000101_10001_001_11011_0010011);
+            AssertCode(    // sext.h\ts11,a7;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v3 = SLICE(a7, word16, 0)",
+                "2|L--|s11 = CONVERT(v3, word16, int64)");
+        }
+
+        [Test]
+        public void RiscVRw_sh1add()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_010_11011_0110011);
+            AssertCode(    // sh1add\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = s2 + a7 * 2<64>");
+        }
+
+        [Test]
+        public void RiscVRw_sh1add_uw()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_010_11011_0111011);
+            AssertCode(    // sh1add.uw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v6 = SLICE(a7, word32, 0)",
+                "2|L--|v7 = CONVERT(v6, word32, word64)",
+                "3|L--|s11 = s2 + v7 * 2<64>");
+        }
+
+        [Test]
+        public void RiscVRw_sh2add()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_100_11011_0110011);
+            AssertCode(    // sh2add\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = s2 + a7 * 4<64>");
+        }
+
+        [Test]
+        public void RiscVRw_sh2add_uw()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_100_11011_0111011);
+            AssertCode(    // sh2add.uw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v6 = SLICE(a7, word32, 0)",
+                "2|L--|v7 = CONVERT(v6, word32, word64)",
+                "3|L--|s11 = s2 + v7 * 4<64>");
+        }
+
+        [Test]
+        public void RiscVRw_sh3add()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_110_11011_0110011);
+            AssertCode(    // sh3add\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = s2 + a7 * 8<64>");
+        }
+
+        [Test]
+        public void RiscVRw_sh3add_uw()
+        {
+            Given_RiscVInstructions(0b0010000_10010_10001_110_11011_0111011);
+            AssertCode(    // sh3add.uw\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 3 instructions",
+                "1|L--|v6 = SLICE(a7, word32, 0)",
+                "2|L--|v7 = CONVERT(v6, word32, word64)",
+                "3|L--|s11 = s2 + v7 * 8<64>");
+        }
+
+        [Test]
+        public void RiscVRw_slli_uw()
+        {
+            Given_RiscVInstructions(0b000010_110110_10001_001_11011_0011011);
+            AssertCode(    // slli.uw\ts11,a7,0x16;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v3 = SLICE(a7, word32, 0)",
+                "2|L--|s11 = CONVERT(v3, word32, word64) << 0x16<64>");
+        }
+
+        [Test]
+        public void RiscVRw_unzip32()
+        {
+            Given_32bit();
+            Given_RiscVInstructions(0b000010011111_10001_101_11011_0010011);
+            AssertCode(     // unzip\ts11,a7);
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|s11 = __unzip<word32>(a7)");
+        }
+
+        [Test]
+        public void RiscVRw_xnor()
+        {
+            Given_RiscVInstructions(0b0100000_10010_10001_100_11011_0110011);
+            AssertCode(    // xnor\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = ~(a7 ^ s2)");
+        }
+
+        [Test]
+        public void RiscVRw_xperm_b()
+        {
+            Given_RiscVInstructions(0b0010100_10010_10001_100_11011_0110011);
+            AssertCode(    // xperm.b\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __xperm_b<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_xperm_n()
+        {
+            Given_RiscVInstructions(0b0010100_10010_10001_010_11011_0110011);
+            AssertCode(    // xperm.n\ts11,a7,s2;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __xperm_n<word64>(a7, s2)");
+        }
+
+        [Test]
+        public void RiscVRw_zext_h_32()
+        {
+            Given_32bit();
+            Given_RiscVInstructions(0b000010000000_10001_100_11011_0110011);
+            AssertCode(     // zext.h\ts11,a7
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v3 = SLICE(a7, word16, 0)",
+                "2|L--|s11 = CONVERT(v3, word16, word32)");
+        }
+
+        [Test]
+        public void RiscVRw_zext_h_64()
+        {
+            Given_RiscVInstructions(0b000010000000_10001_100_11011_0111011);
+            AssertCode(    // zext.h\ts11,a7;
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v3 = SLICE(a7, word16, 0)",
+                "2|L--|s11 = CONVERT(v3, word16, word64)");
+        }
+
+        [Test]
+        public void RiscVRw_zip()
+        {
+            Given_RiscVInstructions(0b000010011110_10001_001_11011_0010011);
+            AssertCode(    // zip\ts11,a7;
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s11 = __zip<word64>(a7)");
+        }
+
+    }
+}

@@ -361,6 +361,9 @@ namespace Reko.Arch.RiscV
         // signed offset used in loads
         private static readonly Mutator<RiscVDisassembler> Ls = MemSignedOffset(PrimitiveType.Word32, 15, (20,12));
 
+        /// <summary>
+        /// 5-bit shift amount
+        /// </summary>
         private static bool z(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetShiftAmount(wInstr, 5);
@@ -368,6 +371,9 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
+        /// <summary>
+        /// 6-bit shift amount (only on 64-bit RiscV)
+        /// </summary>
         private static bool Z(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetShiftAmount(wInstr, 6);

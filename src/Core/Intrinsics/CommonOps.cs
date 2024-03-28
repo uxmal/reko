@@ -68,6 +68,10 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
             .Returns("TData");
+        public static readonly IntrinsicProcedure PopCount = new IntrinsicBuilder("__population_count", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
         public static readonly IntrinsicProcedure ReinterpretCast = new IntrinsicBuilder("reinterpret_cast", false)
             .GenericTypes("T")
             .Param(new UnknownType())

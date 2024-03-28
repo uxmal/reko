@@ -35,10 +35,17 @@ namespace Reko.Arch.RiscV
         {
             private static readonly Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
+            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> instr32Support;
+            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> instr64Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float16Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float32Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float64Support;
             private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float128Support;
+            private Func<Decoder, Decoder> zbaSupport;
+            private Func<Decoder, Decoder> zbbSupport;
+            private Func<Decoder, Decoder> zbcSupport;
+            private Func<Decoder, Decoder> zbkbSupport;
+            private Func<Decoder, Decoder> zbsSupport;
             private Func<Decoder, Decoder> zfaSupport;
             private Dictionary<string, object> options;
 
@@ -51,6 +58,14 @@ namespace Reko.Arch.RiscV
             private InstructionSet(Dictionary<string, object> options)
             {
                 this.options = options;
+
+                instr32Support = !RiscVArchitecture.Is64Bit(options)
+                  ? Instr
+                  : (a, B) => invalid;
+                instr64Support = RiscVArchitecture.Is64Bit(options)
+                    ? Instr
+                    : (a, B) => invalid;
+
                 if (options.TryGetValue("FloatAbi", out var oFloatAbi) &&
                     int.TryParse(oFloatAbi.ToString(), out int floatAbi))
                 {
@@ -95,17 +110,31 @@ namespace Reko.Arch.RiscV
                     float32Support = MakeInvalid;
                     float16Support = MakeInvalid;
                 }
+                zbaSupport = GetSupportedDecoder(options, "Zba");
+                zbbSupport = GetSupportedDecoder(options, "Zbb");
+                zbcSupport = GetSupportedDecoder(options, "Zbc");
+                zbkbSupport = GetSupportedDecoder(options, "Zbkb");
+                zbsSupport = GetSupportedDecoder(options, "Zbs");
+                zfaSupport = GetSupportedDecoder(options, "Zfa");
+            }
 
-                if (!options.TryGetValue("Zfa", out var oZfa) ||
-                    !bool.TryParse(oZfa.ToString()!, out var isZfa) ||
-                    isZfa)
-                {
-                    zfaSupport = d => d;
-                }
-                else
-                {
-                    zfaSupport = d => invalid;
-                }
+            private static Decoder Identity(Decoder d) => d;
+            private static Decoder Invalid(Decoder _) => invalid;
+
+            private static Func<Decoder, Decoder> GetSupportedDecoder(
+                Dictionary<string, object> options,
+                string extensionName)
+            {
+                return GetSupportedDecoder(
+                    !options.TryGetValue(extensionName, out var oExt) ||
+                    !bool.TryParse(oExt.ToString()!, out var ext) ||
+                    ext);
+            }
+
+            private static Func<Decoder, Decoder> GetSupportedDecoder(
+                bool supported)
+            {
+                return supported ? Identity : Invalid;
             }
 
             private static Decoder MakeInvalid(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
@@ -116,6 +145,16 @@ namespace Reko.Arch.RiscV
             private static Decoder Instr(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(InstrClass.Linear, mnemonic, mutators);
+            }
+
+            private Decoder Instr32(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            {
+                return instr32Support(mnemonic, mutators);
+            }
+
+            private Decoder Instr64(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            {
+                return instr64Support(mnemonic, mutators);
             }
 
             private Decoder FpInstr16(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
@@ -138,10 +177,18 @@ namespace Reko.Arch.RiscV
                 return float128Support(mnemonic, mutators);
             }
 
-            private Decoder Zfa(Decoder decoder)
-            {
-                return zfaSupport(decoder);
-            }
+            private Decoder Zfa(Decoder decoder) => zfaSupport(decoder);
+
+            private Decoder Zba(Decoder decoder) => zbaSupport(decoder);
+
+            private Decoder Zbb(Decoder decoder) => zbbSupport(decoder);
+
+            private Decoder Zbc(Decoder decoder) => zbcSupport(decoder);
+
+            private Decoder Zbkb(Decoder decoder) => zbkbSupport(decoder);
+
+            private Decoder Zbs(Decoder decoder) => zbsSupport(decoder);
+
 
             private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
             {
@@ -238,16 +285,44 @@ namespace Reko.Arch.RiscV
                 var opimm = new Decoder[]           // 0b00100
                 {
                     Instr(Mnemonic.addi, rd,r1,i),
-                    new ShiftDecoder(
-                        Instr(Mnemonic.slli, rd,r1,Z),
-                        invalid),
+                    Sparse(25, 7, "  slli", invalid,
+                        (0b0000000, Instr(Mnemonic.slli, rd,r1,z)),
+                        (0b0000001, Instr64(Mnemonic.slli, rd,r1,Z)),
+                        (0b0000100, Sparse(20, 5, "  04", Nyi(""),
+                            (0b11110, Zbkb(Instr(Mnemonic.zip, rd, r1))))),
+                        (0b0010100, Zbs(Instr(Mnemonic.bseti, rd,r1,z))),
+                        (0b0010101, Zbs(Instr64(Mnemonic.bseti, rd,r1,Z))),
+                        (0b0100100, Zbs(Instr(Mnemonic.bclri, rd,r1,z))),
+                        (0b0100101, Zbs(Instr64(Mnemonic.bclri, rd,r1,Z))),
+                        (0b0110000, Sparse(20, 5, "  clz", Nyi(""),
+                            (0b00000, Zbb(Instr(Mnemonic.clz, rd,r1))),
+                            (0b00001, Zbb(Instr(Mnemonic.ctz, rd,r1))),
+                            (0b00010, Zbb(Instr(Mnemonic.cpop, rd,r1))),
+                            (0b00100, Zbb(Instr(Mnemonic.sext_b, rd,r1))),
+                            (0b00101, Zbb(Instr(Mnemonic.sext_h, rd,r1))))),
+                        (0b0110100, Zbs(Instr(Mnemonic.binvi, rd,r1,z))),
+                        (0b0110101, Zbs(Instr64(Mnemonic.binvi, rd,r1,Z)))),
                     Instr(Mnemonic.slti, rd,r1,i),
                     Instr(Mnemonic.sltiu, rd,r1,i),
 
                     Instr(Mnemonic.xori, rd,r1,i),
-                    new ShiftDecoder(
-                        Instr(Mnemonic.srli, rd,r1,Z),
-                        Instr(Mnemonic.srai, rd,r1,Z)),
+                    Sparse(25, 7, "  srli", invalid,
+                        (0b0000000, Instr(Mnemonic.srli, rd,r1,z)),
+                        (0b0000001, Instr64(Mnemonic.srli, rd,r1,Z)),
+                        (0b0000100, Sparse(20, 5, "  unzip", Nyi(""),
+                            (0b11111, Zbkb(Instr32(Mnemonic.unzip, rd,r1))))),
+                        (0b0010100, Sparse(20, 5, "  orc.b", Nyi(""),
+                            (0b00111, Zbb(Instr(Mnemonic.orc_b, rd,r1))))),
+                        (0b0100000, Instr(Mnemonic.srai, rd,r1,z)),
+                        (0b0100001, Instr64(Mnemonic.srai, rd,r1,Z)),
+                        (0b0100100, Zbs(Instr(Mnemonic.bexti, rd,r1,z))),
+                        (0b0100101, Zbs(Instr64(Mnemonic.bexti, rd,r1,Z))),
+                        (0b0110000, Zbb(Instr(Mnemonic.rori, rd,r1,z))),
+                        (0b0110001, Zbb(Instr64(Mnemonic.rori, rd,r1,Z))),
+                        (0b0110100, Sparse(20, 5, "  rev8", Nyi(""),
+                            (0b11000, Zbb(Instr32(Mnemonic.rev8, rd,r1))))),
+                        (0b0110101, Sparse(20, 5, "  rev8_64", Nyi(""),
+                            (0b11000, Zbb(Instr64(Mnemonic.rev8, rd,r1)))))),
                     Instr(Mnemonic.ori, rd,r1,i),
                     Instr(Mnemonic.andi, rd,r1,i),
                 };
@@ -255,14 +330,21 @@ namespace Reko.Arch.RiscV
                 var opimm32 = new Decoder[]         // 0b00110
                 {
                     Instr(Mnemonic.addiw, Rd,R1,I20s),
-                    Instr(Mnemonic.slliw, Rd,R1,Imm(20, 5)),
+                    Sparse(25, 7, "  slliw", Nyi(""),
+                        (0b0000000, Instr(Mnemonic.slliw, Rd,R1,Imm(20, 5))),
+                        (0b0000101, Instr(Mnemonic.slli_uw, Rd,R1,Imm(20, 5))),
+                        (0b0110000, Sparse(20, 6, "  clzw", Nyi(""),
+                            (0b00000, Zbb(Instr(Mnemonic.clzw, Rd,R1))),
+                            (0b00001, Zbb(Instr(Mnemonic.ctzw, Rd,R1))),
+                            (0b00010, Zbb(Instr(Mnemonic.cpopw, Rd,R1)))))),
                     Nyi(""),
                     Nyi(""),
 
                     Nyi(""),
-                    new ShiftDecoder(
-                        Instr(Mnemonic.srliw, rd,r1,Z),
-                        Instr(Mnemonic.sraiw, rd,r1,Z)),
+                    Sparse(25, 7, "srliw", Nyi(""),
+                        (0b0000000, Instr(Mnemonic.srliw, rd,r1,Z)),
+                        (0b0100000, Instr(Mnemonic.sraiw, rd,r1,Z)),
+                        (0b0110000, Instr(Mnemonic.roriw, rd,r1,Z))),
                     Nyi(""),
                     Nyi(""),
                 };
@@ -288,37 +370,116 @@ namespace Reko.Arch.RiscV
                         Instr(Mnemonic.divu, Rd, R1, R2),
                         Instr(Mnemonic.rem, Rd, R1, R2),
                         Instr(Mnemonic.remu, Rd, R1, R2))),
+                     (0b0000100, Mask(12, 3, "  0x04",
+                        Nyi("op - 04 - 0b000"),
+                        Nyi("op - 04 - 0b001"),
+                        Nyi("op - 04 - 0b010"),
+                        Nyi("op - 04 - 0b011"),
+
+                        Select((20, 5), Eq0, "  pack",
+                            Zbb(Instr32(Mnemonic.zext_h, Rd, R1)),
+                            Zbkb(Instr(Mnemonic.pack, Rd, R1, R2))),
+                        Nyi("op - 04 - 0b101"),
+                        Nyi("op - 04 - 0b110"),
+                        Zbkb(Instr(Mnemonic.packh, Rd, R1, R2)))),
+                     (0b0000101, Mask(12, 3, "  0x05",
+                        Nyi("op - 05 - 0b000"),
+                        Zbc(Instr(Mnemonic.clmul, Rd, R1, R2)),
+                        Zbc(Instr(Mnemonic.clmulr, Rd, R1, R2)),
+                        Zbc(Instr(Mnemonic.clmulh, Rd, R1, R2)),
+
+                        Zbb(Instr(Mnemonic.min, Rd, R1, R2)),
+                        Zbb(Instr(Mnemonic.minu, Rd, R1, R2)),
+                        Zbb(Instr(Mnemonic.max, Rd, R1, R2)),
+                        Zbb(Instr(Mnemonic.maxu, Rd, R1, R2)))),
+                    (0b0010000, Mask(12, 3, "  0x10",
+                        Nyi("op - 10 - 0b000"),
+                        Nyi("op - 10 - 0b001"),
+                        Zba(Instr(Mnemonic.sh1add, Rd, R1, R2)),
+                        Nyi("op - 10 - 0b011"),
+
+                        Zba(Instr(Mnemonic.sh2add, Rd, R1, R2)),
+                        Nyi("op - 10 - 0b101"),
+                        Zba(Instr(Mnemonic.sh3add, Rd, R1, R2)),
+                        Nyi("op - 10 - 0b111"))),
+                    (0b0010100, Mask(12, 3, "  0x14",
+                        Nyi("op - 14 - 0b000"),
+                        Zbs(Instr(Mnemonic.bset, Rd, R1, R2)),
+                        Zbkb(Instr(Mnemonic.xperm_n, Rd,R1,R2)),
+                        Nyi("op - 14 - 0b011"),
+
+                        Zbkb(Instr(Mnemonic.xperm_b, Rd,R1,R2)),
+                        Nyi("op - 14 - 0b101"),
+                        Nyi("op - 14 - 0b110"),
+                        Nyi("op - 14 - 0b111"))),
                     (0b0100000, Mask(12, 3, "  0x20",
                         Instr(Mnemonic.sub, Rd, R1, R2),
                         Nyi("op - 20 - 0b001"),
                         Nyi("op - 20 - 0b010"),
                         Nyi("op - 20 - 0b011"), 
 
-                        Nyi("op - 20 - 0b100"),
+                        Zbb(Instr(Mnemonic.xnor, Rd, R1, R2)),
                         Instr(Mnemonic.sra, Rd, R1, R2),
-                        Nyi("op - 20 - 0b110"),
-                        Nyi("op - 20 - 0b111"))));
+                        Zbb(Instr(Mnemonic.orn, Rd, R1, R2)),
+                        Zbb(Instr(Mnemonic.andn, Rd, R1, R2)))),
+                    (0b0100100, Mask(12, 3, "  0x24",
+                        Nyi("op - 24 - 0b000"),
+                        Zbs(Instr(Mnemonic.bclr, Rd, R1, R2)),
+                        Nyi("op - 24 - 0b010"),
+                        Nyi("op - 24 - 0b011"),
+                        
+                        Nyi("op - 24 - 0b100"),
+                        Zbs(Instr(Mnemonic.bext, Rd, R1, R2)),
+                        Nyi("op - 24 - 0b110"),
+                        Nyi("op - 24 - 0b111"))),
+                    (0b110000, Mask(12, 3, "  0x30",
+                        Nyi("op - 30 - 0b000"),
+                        Zbb(Instr(Mnemonic.rol, Rd, R1, R2)),
+                        Nyi("op - 30 - 0b010"),
+                        Nyi("op - 30 - 0b011"),
 
-                var op32 = Mask(12, 3, "  op-32",            // 0b01110
-                    Sparse(25, 7, "  000", Nyi(""),
-                        (0x00, Instr(Mnemonic.addw, rd,r1,r2)),
-                        (0x01, Instr(Mnemonic.mulw, rd,r1,r2)),
-                        (0x20, Instr(Mnemonic.subw, rd,r1,r2))),
-                    Sparse(25, 7, "  000", Nyi(""),
-                        (0x00, Instr(Mnemonic.sllw, rd,r1,r2))),
-                    Nyi(""),
-                    Nyi(""),
+                        Nyi("op - 30 - 0b100"),
+                        Zbb(Instr(Mnemonic.ror, Rd, R1, R2)),
+                        Nyi("op - 30 - 0b110"),
+                        Nyi("op - 30 - 0b111"))),
 
-                    Sparse(25, 7, "  100", Nyi(""),
-                        (0x01, Instr(Mnemonic.divw, rd,r1,r2))),
-                    Sparse(25, 7, "  101", Nyi(""),
-                        (0x00, Instr(Mnemonic.srlw, rd,r1,r2)),
-                        (0x01, Instr(Mnemonic.divuw, rd,r1,r2)),
-                        (0x20, Instr(Mnemonic.sraw, rd,r1,r2))),
-                    Sparse(25, 7, "  110", Nyi(""),
-                        (0x01, Instr(Mnemonic.remw, rd,r1,r2))),
-                    Sparse(25, 7, "  111", Nyi(""),
-                        (0x01, Instr(Mnemonic.remuw, rd,r1,r2))));
+                    (0b110100, Mask(12, 3, "  0x34",
+                        Nyi("op - 34 - 0b000"),
+                        Zbs(Instr(Mnemonic.binv, Rd, R1, R2)),
+                        Nyi("op - 34 - 0b010"),
+                        Nyi("op - 34 - 0b011"),
+
+                        Nyi("op - 34 - 0b100"),
+                        Nyi("op - 34 - 0b101"),
+                        Nyi("op - 34 - 0b110"),
+                        Nyi("op - 34 - 0b111"))));
+
+                var op32 = Sparse(25, 7, "  op-32", Nyi(""),         // 0b01110
+                    (0b0000000, Sparse(12, 3, "  00", Nyi(""),
+                         (0, Instr(Mnemonic.addw, rd, r1, r2)),
+                         (1, Instr(Mnemonic.sllw, rd, r1, r2)),
+                         (5, Instr(Mnemonic.srlw, rd, r1, r2)))),
+                    (0b0000001, Sparse(12, 3, "  01", Nyi(""),
+                         (0, Instr(Mnemonic.mulw, rd, r1, r2)),
+                         (4, Instr(Mnemonic.divw, rd, r1, r2)),
+                         (5, Instr(Mnemonic.divuw, rd, r1, r2)),
+                         (6, Instr(Mnemonic.remw, rd, r1, r2)),
+                         (7, Instr(Mnemonic.remuw, rd, r1, r2)))),
+                    (0b0000100, Sparse(12, 3, "  04", Nyi(""),
+                         (0, Zba(Instr64(Mnemonic.add_uw, rd, r1, r2))),
+                         (4, Select((20, 5), Eq0, "  pack",
+                            Zbb(Instr64(Mnemonic.zext_h, Rd, R1)),
+                            Zbkb(Instr(Mnemonic.packw, Rd, R1, R2)))))),
+                    (0b0010000, Sparse(12, 3, "  0x10", Nyi(""),
+                         (0b010, Zba(Instr(Mnemonic.sh1add_uw, Rd,R1,R2))), 
+                         (0b100, Zba(Instr(Mnemonic.sh2add_uw, Rd, R1,R2))), 
+                         (0b110, Zba(Instr(Mnemonic.sh3add_uw, Rd, R1,R2))))), 
+                    (0b0100000, Sparse(12, 3, "  04", Nyi(""),
+                         (0, Instr(Mnemonic.subw, rd, r1, r2)),
+                         (5, Instr(Mnemonic.sraw, rd, r1, r2)))),
+                    (0b0110000, Sparse(12, 3, "  04", Nyi(""),
+                         (1, Zbb(Instr(Mnemonic.rolw, rd, r1, r2))),
+                         (5, Zbb(Instr(Mnemonic.rorw, rd, r1, r2))))));
 
                 var opfp = new (uint, Decoder)[]     // 0b10100
                 {

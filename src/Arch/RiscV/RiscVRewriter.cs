@@ -83,6 +83,7 @@ namespace Reko.Arch.RiscV
                     break;
                 case Mnemonic.invalid: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAdd(); break;
+                case Mnemonic.add_uw: RewriteAddUw(); break;
                 case Mnemonic.addi: RewriteAdd(); break;
                 case Mnemonic.addiw: RewriteBinopW(Operator.IAdd, 1, 2); break;
                 case Mnemonic.addw: RewriteBinopW(Operator.IAdd, 1, 2); break;
@@ -106,7 +107,16 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.amoxor_w: RewriteAtomicMemoryOperation(amoxor_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.and: RewriteBinOp(Operator.And); break;
                 case Mnemonic.andi: RewriteBinOp(Operator.And); break;
+                case Mnemonic.andn: RewriteBinNotOp(Operator.And); break;
                 case Mnemonic.auipc: RewriteAuipc(); break;
+                case Mnemonic.bclr: RewriteBitop(CommonOps.ClearBit); break;
+                case Mnemonic.bclri: RewriteBitop(CommonOps.ClearBit); break;
+                case Mnemonic.bext: RewriteBext(); break;
+                case Mnemonic.bexti: RewriteBext(); break;
+                case Mnemonic.binv: RewriteBitop(CommonOps.InvertBit); break;
+                case Mnemonic.binvi: RewriteBitop(CommonOps.InvertBit); break;
+                case Mnemonic.bset: RewriteBitop(CommonOps.SetBit); break;
+                case Mnemonic.bseti: RewriteBitop(CommonOps.SetBit); break;
                 case Mnemonic.beq: RewriteBranch(m.Eq); break;
                 case Mnemonic.bge: RewriteBranch(m.Ge); break;
                 case Mnemonic.bgeu: RewriteBranch(m.Uge); break;
@@ -158,12 +168,21 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.c_swsp: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.c_xor: RewriteCompressedBinOp(Operator.Xor); break;
+                case Mnemonic.clmul: RewriteGenericBinaryIntrinsic(clmul_intrinsic); break;
+                case Mnemonic.clmulh: RewriteGenericBinaryIntrinsic(clmulh_intrinsic); break;
+                case Mnemonic.clmulr: RewriteGenericBinaryIntrinsic(clmulr_intrinsic); break;
+                case Mnemonic.clz: RewriteGenericUnaryIntrinsic(CommonOps.CountLeadingZeros); break;
+                case Mnemonic.clzw: RewriteClzw(CommonOps.CountLeadingZeros); break;
+                case Mnemonic.cpop: RewriteGenericUnaryIntrinsic(CommonOps.PopCount); break;
+                case Mnemonic.cpopw: RewriteClzw(CommonOps.PopCount); break;
                 case Mnemonic.csrrc: RewriteCsr(csrrc_intrinsic); break;
                 case Mnemonic.csrrci: RewriteCsr(csrrc_intrinsic); break;
                 case Mnemonic.csrrs: RewriteCsr(csrrs_intrinsic); break;
                 case Mnemonic.csrrsi: RewriteCsr(csrrs_intrinsic); break;
                 case Mnemonic.csrrw: RewriteCsr(csrrw_intrinsic); break;
                 case Mnemonic.csrrwi: RewriteCsr(csrrw_intrinsic); break;
+                case Mnemonic.ctz: RewriteGenericUnaryIntrinsic(CommonOps.CountTrailingZeros); break;
+                case Mnemonic.ctzw: RewriteClzw(CommonOps.CountTrailingZeros); break;
                 case Mnemonic.div: RewriteBinOp(Operator.SDiv); break;
                 case Mnemonic.divu: RewriteBinOp(Operator.UDiv); break;
                 case Mnemonic.divuw: RewriteBinOp(Operator.UDiv, PrimitiveType.Word32); break;
@@ -359,6 +378,10 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.lui: RewriteLui(); break;
                 case Mnemonic.lw: RewriteLoad(PrimitiveType.Int32, arch.NaturalSignedInteger); break;
                 case Mnemonic.lwu: RewriteLoad(PrimitiveType.UInt32, arch.WordWidth); break;
+                case Mnemonic.max: RewriteBinaryIntrinsic(CommonOps.Max.MakeInstance(arch.NaturalSignedInteger)); break;
+                case Mnemonic.maxu: RewriteBinaryIntrinsic(CommonOps.Max.MakeInstance(arch.WordWidth)); break;
+                case Mnemonic.min: RewriteBinaryIntrinsic(CommonOps.Min.MakeInstance(arch.NaturalSignedInteger)); break;
+                case Mnemonic.minu: RewriteBinaryIntrinsic(CommonOps.Min.MakeInstance(arch.WordWidth)); break;
                 case Mnemonic.mul: RewriteBinOp(Operator.IMul, PrimitiveType.Word64); break;
                 case Mnemonic.mulh: RewriteMulh(Operator.SMul, arch.DoubleWordSignedInteger); break;
                 case Mnemonic.mulhsu: RewriteMulh(Operator.SMul, arch.DoubleWordWidth); break;
@@ -367,15 +390,29 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.mret: RewriteRet(mret_intrinsic); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
+                case Mnemonic.orc_b: RewriteGenericUnaryIntrinsic(orc_b_intrinsic); break;
+                case Mnemonic.orn: RewriteBinNotOp(Operator.Or); break;
+                case Mnemonic.pack: RewriteGenericBinaryIntrinsic(pack_intrinsic); break;
+                case Mnemonic.packh: RewriteGenericBinaryIntrinsic(packh_intrinsic); break;
+                case Mnemonic.packw: RewritePackw(); break;
                 case Mnemonic.pause: RewritePause(); break;
                 case Mnemonic.rem: RewriteBinOp(Operator.SMod); break;
                 case Mnemonic.remu: RewriteBinOp(Operator.UMod, PrimitiveType.Word64); break;
                 case Mnemonic.remuw: RewriteBinOp(Operator.UMod, PrimitiveType.Word32); break;
                 case Mnemonic.remw: RewriteBinOp(Operator.SMod, PrimitiveType.Word32); break;
+                case Mnemonic.rev8: RewriteGenericUnaryIntrinsic(rev8_intrinsic); break;
+                case Mnemonic.rol: RewriteRotate(CommonOps.Rol); break;
+                case Mnemonic.rolw: RewriteRotateW(CommonOps.Rol); break;
+                case Mnemonic.ror: RewriteRotate(CommonOps.Ror); break;
+                case Mnemonic.rori: RewriteRotate(CommonOps.Ror); break;
+                case Mnemonic.roriw: RewriteRotateW(CommonOps.Ror); break;
+                case Mnemonic.rorw: RewriteRotateW(CommonOps.Ror); break;
                 case Mnemonic.sb: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.sc_d: RewriteStoreConditional(PrimitiveType.Word64); break;
                 case Mnemonic.sc_w: RewriteStoreConditional(PrimitiveType.Word32); break;
                 case Mnemonic.sd: RewriteStore(PrimitiveType.Word64); break;
+                case Mnemonic.sext_b: RewriteSext(PrimitiveType.Byte); break;
+                case Mnemonic.sext_h: RewriteSext(PrimitiveType.Word16); break;
                 case Mnemonic.sfence_inval: RewriteFence(sfence_inval_intrinsic); break;
                 case Mnemonic.sfence_inval_ir: RewriteFence(sfence_inval_ir_intrinsic); break;
                 case Mnemonic.sfence_vm: RewriteFence(sfence_vm_intrinsic); break;
@@ -383,8 +420,15 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.sfence_w_inval: RewriteFence(sfence_w_inval_intrinsic); break;
                 case Mnemonic.sinval_vma: RewriteFence(sinval_vma_intrinsic); break;
                 case Mnemonic.sh: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.sh1add: RewriteShadd(1); break;
+                case Mnemonic.sh2add: RewriteShadd(2); break;
+                case Mnemonic.sh3add: RewriteShadd(3); break;
+                case Mnemonic.sh1add_uw: RewriteShaddUw(1); break;
+                case Mnemonic.sh2add_uw: RewriteShaddUw(2); break;
+                case Mnemonic.sh3add_uw: RewriteShaddUw(3); break;
                 case Mnemonic.sll: RewriteBinOp(Operator.Shl); break;
                 case Mnemonic.slli: RewriteShift(Operator.Shl); break;
+                case Mnemonic.slli_uw: RewriteShiftUw(Operator.Shl); break;
                 case Mnemonic.slliw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.sllw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.slt: RewriteSlt(false); break;
@@ -403,10 +447,16 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.srlw: RewriteShiftw(m.Shr); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subw: RewriteBinopW(Operator.ISub, 1, 2); break;
+                case Mnemonic.unzip: RewriteGenericUnaryIntrinsic(unzip_intrinsic); break;
                 case Mnemonic.uret: RewriteRet(uret_intrinsic); break;
                 case Mnemonic.wfi: RewriteWfi(); break;
+                case Mnemonic.xnor: RewriteXnor(); break;
                 case Mnemonic.xor: RewriteXor(); break;
                 case Mnemonic.xori: RewriteXor(); break;
+                case Mnemonic.xperm_b: RewriteGenericBinaryIntrinsic(xperm_b_intrinsic); break;
+                case Mnemonic.xperm_n: RewriteGenericBinaryIntrinsic(xperm_n_intrinsic); break;
+                case Mnemonic.zext_h: RewriteZext(PrimitiveType.Word16); break;
+                case Mnemonic.zip: RewriteGenericUnaryIntrinsic(zip_intrinsic); break;
                 }
                 yield return m.MakeCluster(addr, len, iclass);
                 rtlInstructions.Clear();
@@ -526,6 +576,10 @@ namespace Reko.Arch.RiscV
         static readonly IntrinsicProcedure amoswap_intrinsic = AmoIntrinsic("__amo_swap");
         static readonly IntrinsicProcedure amoxor_intrinsic = AmoIntrinsic("__amo_xor");
 
+        static readonly IntrinsicProcedure clmul_intrinsic = IntrinsicBuilder.GenericBinary("__clmul");
+        static readonly IntrinsicProcedure clmulh_intrinsic = IntrinsicBuilder.GenericBinary("__clmulh");
+        static readonly IntrinsicProcedure clmulr_intrinsic = IntrinsicBuilder.GenericBinary("__clmulr");
+
         static readonly IntrinsicProcedure csrrc_intrinsic = IntrinsicBuilder.GenericBinary("__csrrc");
         static readonly IntrinsicProcedure csrrs_intrinsic = IntrinsicBuilder.GenericBinary("__csrrs");
         static readonly IntrinsicProcedure csrrw_intrinsic = IntrinsicBuilder.GenericBinary("__csrrw");
@@ -620,8 +674,17 @@ namespace Reko.Arch.RiscV
         static readonly IntrinsicProcedure mret_intrinsic = new IntrinsicBuilder("__mret", true)
             .Void();
 
+        static readonly IntrinsicProcedure orc_b_intrinsic = new IntrinsicBuilder("__bitwise_or_combine", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+
+        static readonly IntrinsicProcedure pack_intrinsic = IntrinsicBuilder.GenericBinary("__pack");
+        static readonly IntrinsicProcedure packh_intrinsic = IntrinsicBuilder.GenericBinary("__packh");
         static readonly IntrinsicProcedure pause_intrinsic = new IntrinsicBuilder("__pause", true)
             .Void();
+
+        static readonly IntrinsicProcedure rev8_intrinsic = IntrinsicBuilder.GenericUnary("__rev8");
 
         static readonly IntrinsicProcedure sc_intrinsic = new IntrinsicBuilder("__store_conditional", true)
             .GenericTypes("T")
@@ -630,9 +693,16 @@ namespace Reko.Arch.RiscV
             .Returns("T");
         static readonly IntrinsicProcedure sret_intrinsic = new IntrinsicBuilder("__sret", true)
             .Void();
+
+        static readonly IntrinsicProcedure unzip_intrinsic = IntrinsicBuilder.GenericUnary("__unzip");
         static readonly IntrinsicProcedure uret_intrinsic = new IntrinsicBuilder("__uret", true)
             .Void();
+
         static readonly IntrinsicProcedure wait_for_interrupt_intrinsic = new IntrinsicBuilder("__wait_for_interrupt", true)
             .Void();
+
+        static readonly IntrinsicProcedure xperm_b_intrinsic = IntrinsicBuilder.GenericBinary("__xperm_b");
+        static readonly IntrinsicProcedure xperm_n_intrinsic = IntrinsicBuilder.GenericBinary("__xperm_n");
+        static readonly IntrinsicProcedure zip_intrinsic = IntrinsicBuilder.GenericUnary("__zip");
     }
 }

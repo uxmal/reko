@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -35,6 +36,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
+           // Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         [SetUp]
@@ -969,7 +971,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             AssertCode("hlv.d\ts11,(a7)", 0b0110110_00000_10001_100_11011_1110011);
         }
- 
+
         [Test]
         public void RiscV_dasm_regressions1()
         {
@@ -1001,5 +1003,352 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("fcvt.l.d\tra,ft1,rtz", "d39020c2"); //  fcvt.l.d ra,ft1
             AssertCode("fcvt.lu.d\ta0,fa3,rtz", "539536c2"); //  fcvt.lu.d a0,fa3
         }
-   }
+
+        [Test]
+        public void RiscVDis_add_uw()
+        {
+            AssertCode("add.uw\ts3,t2,s4", "BB894309");
+        }
+
+        [Test]
+        public void RiscVDis_andn()
+        {
+            AssertCode("andn\ta4,a7,s11", 0b0100000_11011_10001_111_01110_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_bclr()
+        {
+            AssertCode("bclr\ta4,a7,s11", 0b0100100_11011_10001_001_01110_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_bclri32()
+        {
+            AssertCode("bclri\ts11,a7,0x16", 0b0100100_10110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_bclri64()
+        {
+            AssertCode("bclri\ts11,a7,0x36", 0b010010_110110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_bext()
+        {
+            AssertCode("bext\ts11,a7,s2", 0b0100100_10010_10001_101_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_bexti32()
+        {
+            AssertCode("bexti\ts11,a7,0x16", 0b0100100_10110_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_bexti64()
+        {
+            AssertCode("bexti\ts11,a7,0x36", 0b010010_110110_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_binv()
+        {
+            AssertCode("binv\ts11,a7,s2", 0b0110100_10010_10001_001_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_binvi32()
+        {
+            AssertCode("binvi\ts11,a7,0x16", 0b0110100_10110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_binvi64()
+        {
+            AssertCode("binvi\ts11,a7,0x36", 0b011010_110110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_bset()
+        {
+            AssertCode("bset\ts11,a7,s2", 0b0010100_10010_10001_001_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_bseti32()
+        {
+            AssertCode("bseti\ts11,a7,0x16", 0b0010100_10110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_bseti64()
+        {
+            AssertCode("bseti\ts11,a7,0x36", 0b001010_110110_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_clmul()
+        {
+            AssertCode("clmul\ts11,a7,s2", 0b0000101_10010_10001_001_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_clmulh()
+        {
+            AssertCode("clmulh\ts11,a7,s2", 0b0000101_10010_10001_011_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_clmulr()
+        {
+            AssertCode("clmulr\ts11,a7,s2", 0b0000101_10010_10001_010_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_clz()
+        {
+            AssertCode("clz\ts11,a7", 0b011000000000_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_clzw()
+        {
+            AssertCode("clzw\ts11,a7", 0b011000000000_10001_001_11011_0011011);
+        }
+
+        [Test]
+        public void RiscVDis_cpop()
+        {
+            AssertCode("cpop\ts11,a7", 0b011000000010_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_cpopw()
+        {
+            AssertCode("cpopw\ts11,a7", 0b011000000010_10001_001_11011_0011011);
+        }
+
+        [Test]
+        public void RiscVDis_ctz()
+        {
+            AssertCode("ctz\ts11,a7", 0b011000000001_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_ctzw()
+        {
+            AssertCode("ctzw\ts11,a7", 0b011000000001_10001_001_11011_0011011);
+        }
+
+        [Test]
+        public void RiscVDis_max()
+        {
+            AssertCode("max\ts11,a7,s2", 0b0000101_10010_10001_110_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_maxu()
+        {
+            AssertCode("maxu\ts11,a7,s2", 0b0000101_10010_10001_111_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_min()
+        {
+            AssertCode("min\ts11,a7,s2", 0b0000101_10010_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_minu()
+        {
+            AssertCode("minu\ts11,a7,s2", 0b0000101_10010_10001_101_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_orc_b()
+        {
+            AssertCode("orc.b\ts11,a7", 0b001010000111_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_orn()
+        {
+            AssertCode("orn\ts11,a7,s2", 0b0100000_10010_10001_110_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_pack()
+        {
+            AssertCode("pack\ts11,a7,s2", 0b0000100_10010_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_packh()
+        {
+            AssertCode("packh\ts11,a7,s2", 0b0000100_10010_10001_111_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_packw()
+        {
+            AssertCode("packw\ts11,a7,s2", 0b0000100_10010_10001_100_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_rev8_32()
+        {
+            Given_32bit();
+            AssertCode("rev8\ts11,a7", 0b011010011000_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_rev8_64()
+        {
+            Given_64bit();
+            AssertCode("rev8\ts11,a7", 0b011010111000_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_rol()
+        {
+            AssertCode("rol\ts11,a7,s2", 0b0110000_10010_10001_001_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_rolw()
+        {
+            AssertCode("rolw\ts11,a7,s2", 0b0110000_10010_10001_001_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_ror()
+        {
+            AssertCode("ror\ts11,a7,s2", 0b0110000_10010_10001_101_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_rori_32()
+        {
+            AssertCode("rori\ts11,a7,0x16", 0b0110000_10110_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_rori_64()
+        {
+            AssertCode("rori\ts11,a7,0x36", 0b011000_110110_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_roriw()
+        {
+            AssertCode("roriw\ts11,a7,0x16", 0b0110000_10110_10001_101_11011_0011011);
+        }
+
+        [Test]
+        public void RiscVDis_rorw()
+        {
+            AssertCode("rorw\ts11,a7,s2", 0b0110000_10010_10001_101_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_sext_b()
+        {
+            AssertCode("sext.b\ts11,a7", 0b011000000100_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_sext_h()
+        {
+            AssertCode("sext.h\ts11,a7", 0b011000000101_10001_001_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_sh1add()
+        {
+            AssertCode("sh1add\ts11,a7,s2", 0b0010000_10010_10001_010_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_sh1add_uw()
+        {
+            AssertCode("sh1add.uw\ts11,a7,s2", 0b0010000_10010_10001_010_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_sh2add()
+        {
+            AssertCode("sh2add\ts11,a7,s2", 0b0010000_10010_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_sh2add_uw()
+        {
+            AssertCode("sh2add.uw\ts11,a7,s2", 0b0010000_10010_10001_100_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_sh3add()
+        {
+            AssertCode("sh3add\ts11,a7,s2", 0b0010000_10010_10001_110_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_sh3add_uw()
+        {
+            AssertCode("sh3add.uw\ts11,a7,s2", 0b0010000_10010_10001_110_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_slli_uw()
+        {
+            AssertCode("slli.uw\ts11,a7,0x16", 0b000010_110110_10001_001_11011_0011011);
+        }
+
+        [Test]
+        public void RiscVDis_unzip()
+        {
+            Given_32bit();
+            AssertCode("unzip\ts11,a7", 0b000010011111_10001_101_11011_0010011);
+        }
+
+        [Test]
+        public void RiscVDis_xnor()
+        {
+            AssertCode("xnor\ts11,a7,s2", 0b0100000_10010_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_xperm_b()
+        {
+            AssertCode("xperm.b\ts11,a7,s2", 0b0010100_10010_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_xperm_n()
+        {
+            AssertCode("xperm.n\ts11,a7,s2", 0b0010100_10010_10001_010_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_zext_h_32()
+        {
+            Given_32bit();
+            AssertCode("zext.h\ts11,a7", 0b000010000000_10001_100_11011_0110011);
+        }
+
+        [Test]
+        public void RiscVDis_zext_h_64()
+        {
+            AssertCode("zext.h\ts11,a7", 0b000010000000_10001_100_11011_0111011);
+        }
+
+        [Test]
+        public void RiscVDis_zip()
+        {
+            AssertCode("zip\ts11,a7", 0b000010011110_10001_001_11011_0010011);
+        }
+
+    }
 }
