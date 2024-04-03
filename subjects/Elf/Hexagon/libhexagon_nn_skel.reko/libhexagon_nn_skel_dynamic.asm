@@ -1,0 +1,23 @@
+;;; Segment .dynamic (0002B000)
+; DT_NEEDED            libc.so
+; DT_NEEDED            libdspCV_skel.so
+; DT_NEEDED            libgcc.so
+; DT_SONAME            libhexagon_nn_skel.so
+; 00000010             00000000
+; DT_INIT              00009440
+; DT_FINI              00024E20
+; DT_HASH              000056A0
+; DT_SYMTAB            00001000
+; DT_SYMENT                  16
+; DT_STRTAB            00003FE0
+; DT_STRSZ             000016BE
+; DT_PLTGOT            0002B110
+; 70000001             00000003
+; DT_RELACOUNT              831
+; DT_PLTREL            00000007
+; DT_JMPREL            000091D0
+; DT_PLTRELSZ               600
+; DT_RELA              00006AC4
+; DT_RELASZ                9996
+; DT_RELAENT                 12
+; DT_DEBUG             00000000
