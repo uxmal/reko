@@ -30,14 +30,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class CSkyRelocator : ElfRelocator32
     {
+        private RelocState state;
+
         public CSkyRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols)
             : base(loader, imageSymbols)
         {
+            this.state = new RelocState();
         }
 
 
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
+            this.state.S = (uint)symbol.Value;
             return (null, null);
         }
 
@@ -46,24 +50,29 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return ((CSkyRt) type).ToString();
         }
 
+        private class RelocState
+        {
+            public uint S { get; set; }
+
+        }
         public enum CSkyRt
         {
             R_CKCORE_NONE = 0,                       // none none ALL
 
             R_CKCORE_ADDR32 = 1,                   // word32 S+A ALL
 
-            R_CKCORE_PCREL_IMM8BY4 = 2,            // dis8 ((S+A-P)>>2)&&0xff V1.0
-            R_CKCORE_PCREL_IMM11BY2 = 3,           // disp11 ((S+A-P)>>1)&0x7ff V1.0
+            R_CKCORE_PCREL_IMM8BY4 = 2,            // dis8          ((S+A-P)>>2)&&0xff V1.0
+            R_CKCORE_PCREL_IMM11BY2 = 3,           // disp11        ((S+A-P)>>1)&0x7ff V1.0
             R_CKCORE_PCREL_IMM4BY2 = 4,            // none unsupported, deleted None
-            R_CKCORE_PCREL32 = 5,                  // word32 S+A-P ??
-            R_CKCORE_PCREL_JSR_IMM11BY2 = 6,       // disp11 ((S+A-P)>>1)&0x7ff V1.0
+            R_CKCORE_PCREL32 = 5,                  // word32         S+A-P ??
+            R_CKCORE_PCREL_JSR_IMM11BY2 = 6,       // disp11        ((S+A-P)>>1)&0x7ff V1.0
             R_CKCORE_GNU_VTINHERIT = 7,                       // - ?? ??
             R_CKCORE_GNU_VTENTRY = 8,                       // - ?? ??
-            R_CKCORE_RELATIVE = 9,                       // word32 B + A ALL
-            R_CKCORE_COPY = 10,                    // none none ALL
-            R_CKCORE_GLOB_DAT = 11,                // word32 S ALL
-            R_CKCORE_JUMP_SLOT = 12,               // word32 S ALL
-            R_CKCORE_GOTOFF = 13,                  // word32 S + A - GOT V1.0
+            R_CKCORE_RELATIVE = 9,                 // word32        B + A               ALL
+            R_CKCORE_COPY = 10,                    // none          none                ALL
+            R_CKCORE_GLOB_DAT = 11,                // word32        S                   ALL
+            R_CKCORE_JUMP_SLOT = 12,               // word32        S                   ALL
+            R_CKCORE_GOTOFF = 13,                  // word32        S + A - GOT         V1.0
             R_CKCORE_GOTPC = 14,                   // word32 GOT+A-P V1.0
             R_CKCORE_GOT32 = 15,                   // word32 G V1.0
             R_CKCORE_PLT32 = 16,                   // word32 G V1.0

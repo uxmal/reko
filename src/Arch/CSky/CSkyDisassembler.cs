@@ -250,6 +250,9 @@ namespace Reko.Arch.CSky
             return true;
         }
 
+        /// <summary>
+        /// Displacement from PC+instruction length.
+        /// </summary>
         private static Mutator<CSkyDisassembler> pcdisp(int length, int shift)
         {
             var bf = new Bitfield(0, length);

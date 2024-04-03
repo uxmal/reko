@@ -5050,5 +5050,3 @@ namespace Reko.Arch.Qualcomm
         }
     }
 }
-
- 
