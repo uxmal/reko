@@ -5,7 +5,7 @@ fn000094F0_entry:
 	r29 = fp
 	// succ:  l000094F0
 l000094F0:
-	r14 = badva + 0x30<32>
+	r14 = PC + 0x21C30<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -20,41 +20,12 @@ fn00009500_entry:
 	r29 = fp
 	// succ:  l00009500
 l00009500:
-	r14 = badva + 0x24<32>
+	r14 = PC + 0x21C24<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009500_exit
 fn00009500_exit:
-
-
-// fn00009504
-// Return size: 0
-define fn00009504
-fn00009504_entry:
-	r29 = fp
-	// succ:  l00009504
-l00009504:
-	r14 = badva + 0x24<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009504_exit
-fn00009504_exit:
-
-
-// fn00009508
-// Return size: 0
-define fn00009508
-fn00009508_entry:
-	r29 = fp
-	// succ:  l00009508
-l00009508:
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009508_exit
-fn00009508_exit:
 
 
 // fn00009510
@@ -64,7 +35,7 @@ fn00009510_entry:
 	r29 = fp
 	// succ:  l00009510
 l00009510:
-	r14 = badva + 0x18<32>
+	r14 = PC + 0x21C18<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -79,7 +50,7 @@ fn00009514_entry:
 	r29 = fp
 	// succ:  l00009514
 l00009514:
-	r14 = badva + 0x18<32>
+	r14 = PC + 0x18<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -94,7 +65,7 @@ fn00009530_entry:
 	r29 = fp
 	// succ:  l00009530
 l00009530:
-	r14 = badva + 0<32>
+	r14 = PC + 0x21C00<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -109,7 +80,7 @@ fn00009540_entry:
 	r29 = fp
 	// succ:  l00009540
 l00009540:
-	r14 = badva + 0x34<32>
+	r14 = PC + 0x21BF4<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -124,27 +95,12 @@ fn00009550_entry:
 	r29 = fp
 	// succ:  l00009550
 l00009550:
-	r14 = badva + 0x28<32>
+	r14 = PC + 0x21BE8<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009550_exit
 fn00009550_exit:
-
-
-// fn00009554
-// Return size: 0
-define fn00009554
-fn00009554_entry:
-	r29 = fp
-	// succ:  l00009554
-l00009554:
-	r14 = badva + 0x28<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009554_exit
-fn00009554_exit:
 
 
 // fn00009560
@@ -154,27 +110,12 @@ fn00009560_entry:
 	r29 = fp
 	// succ:  l00009560
 l00009560:
-	r14 = badva + 0x1C<32>
+	r14 = PC + 0x21BDC<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009560_exit
 fn00009560_exit:
-
-
-// fn00009564
-// Return size: 0
-define fn00009564
-fn00009564_entry:
-	r29 = fp
-	// succ:  l00009564
-l00009564:
-	r14 = badva + 0x1C<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009564_exit
-fn00009564_exit:
 
 
 // fn00009570
@@ -184,7 +125,7 @@ fn00009570_entry:
 	r29 = fp
 	// succ:  l00009570
 l00009570:
-	r14 = badva + 0x10<32>
+	r14 = PC + 0x21BD0<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -199,7 +140,7 @@ fn00009580_entry:
 	r29 = fp
 	// succ:  l00009580
 l00009580:
-	r14 = badva + 4<32>
+	r14 = PC + 0x21BC4<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -214,7 +155,7 @@ fn00009590_entry:
 	r29 = fp
 	// succ:  l00009590
 l00009590:
-	r14 = badva + 0x38<32>
+	r14 = PC + 0x21BB8<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -229,7 +170,7 @@ fn000095B0_entry:
 	r29 = fp
 	// succ:  l000095B0
 l000095B0:
-	r14 = badva + 0x20<32>
+	r14 = PC + 0x21BA0<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -244,7 +185,7 @@ fn000095C0_entry:
 	r29 = fp
 	// succ:  l000095C0
 l000095C0:
-	r14 = badva + 0x14<32>
+	r14 = PC + 0x21B94<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -259,7 +200,7 @@ fn000095D0_entry:
 	r29 = fp
 	// succ:  l000095D0
 l000095D0:
-	r14 = badva + 8<32>
+	r14 = PC + 0x21B88<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -267,19 +208,19 @@ l000095D0:
 fn000095D0_exit:
 
 
-// fn000095E4
+// fn000095E0
 // Return size: 0
-define fn000095E4
-fn000095E4_entry:
+define fn000095E0
+fn000095E0_entry:
 	r29 = fp
-	// succ:  l000095E4
-l000095E4:
-	r14 = badva + 0x3C<32>
+	// succ:  l000095E0
+l000095E0:
+	r14 = PC + 0x21B7C<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
-	// succ:  fn000095E4_exit
-fn000095E4_exit:
+	// succ:  fn000095E0_exit
+fn000095E0_exit:
 
 
 // fn000095F0
@@ -289,27 +230,12 @@ fn000095F0_entry:
 	r29 = fp
 	// succ:  l000095F0
 l000095F0:
-	r14 = badva + 0x30<32>
+	r14 = PC + 0x21B70<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn000095F0_exit
 fn000095F0_exit:
-
-
-// fn000095F4
-// Return size: 0
-define fn000095F4
-fn000095F4_entry:
-	r29 = fp
-	// succ:  l000095F4
-l000095F4:
-	r14 = badva + 0x30<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn000095F4_exit
-fn000095F4_exit:
 
 
 // fn00009600
@@ -319,27 +245,12 @@ fn00009600_entry:
 	r29 = fp
 	// succ:  l00009600
 l00009600:
-	r14 = badva + 0x24<32>
+	r14 = PC + 0x21B64<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009600_exit
 fn00009600_exit:
-
-
-// fn00009604
-// Return size: 0
-define fn00009604
-fn00009604_entry:
-	r29 = fp
-	// succ:  l00009604
-l00009604:
-	r14 = badva + 0x24<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009604_exit
-fn00009604_exit:
 
 
 // fn00009610
@@ -349,27 +260,12 @@ fn00009610_entry:
 	r29 = fp
 	// succ:  l00009610
 l00009610:
-	r14 = badva + 0x18<32>
+	r14 = PC + 0x21B58<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009610_exit
 fn00009610_exit:
-
-
-// fn00009614
-// Return size: 0
-define fn00009614
-fn00009614_entry:
-	r29 = fp
-	// succ:  l00009614
-l00009614:
-	r14 = badva + 0x18<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009614_exit
-fn00009614_exit:
 
 
 // fn00009620
@@ -379,31 +275,12 @@ fn00009620_entry:
 	r29 = fp
 	// succ:  l00009620
 l00009620:
-	r14 = badva + 0xC<32>
-	// succ:  l00009628_in_fn00009620
-l00009628_in_fn00009620:
+	r14 = PC + 0x21B4C<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009620_exit
 fn00009620_exit:
-
-
-// fn00009624
-// Return size: 0
-define fn00009624
-fn00009624_entry:
-	r29 = fp
-	// succ:  l00009624
-l00009624:
-	r14 = badva + 0xC<32>
-	// succ:  l00009628
-l00009628:
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009624_exit
-fn00009624_exit:
 
 
 // fn00009630
@@ -413,7 +290,7 @@ fn00009630_entry:
 	r29 = fp
 	// succ:  l00009630
 l00009630:
-	r14 = badva + 0<32>
+	r14 = PC + 0x21B40<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -421,19 +298,19 @@ l00009630:
 fn00009630_exit:
 
 
-// fn00009644
+// fn00009640
 // Return size: 0
-define fn00009644
-fn00009644_entry:
+define fn00009640
+fn00009640_entry:
 	r29 = fp
-	// succ:  l00009644
-l00009644:
-	r14 = badva + 0x34<32>
+	// succ:  l00009640
+l00009640:
+	r14 = PC + 0x21B34<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
-	// succ:  fn00009644_exit
-fn00009644_exit:
+	// succ:  fn00009640_exit
+fn00009640_exit:
 
 
 // fn00009650
@@ -443,26 +320,12 @@ fn00009650_entry:
 	r29 = fp
 	// succ:  l00009650
 l00009650:
-	r14 = badva + 0x28<32>
+	r14 = PC + 0x21B28<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009650_exit
 fn00009650_exit:
-
-
-// fn00009658
-// Return size: 0
-define fn00009658
-fn00009658_entry:
-	r29 = fp
-	// succ:  l00009658
-l00009658:
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009658_exit
-fn00009658_exit:
 
 
 // fn00009660
@@ -472,7 +335,7 @@ fn00009660_entry:
 	r29 = fp
 	// succ:  l00009660
 l00009660:
-	r14 = badva + 0x1C<32>
+	r14 = PC + 0x21B1C<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -487,7 +350,7 @@ fn00009670_entry:
 	r29 = fp
 	// succ:  l00009670
 l00009670:
-	r14 = badva + 0x10<32>
+	r14 = PC + 0x21B10<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -502,7 +365,7 @@ fn00009680_entry:
 	r29 = fp
 	// succ:  l00009680
 l00009680:
-	r14 = badva + 4<32>
+	r14 = PC + 0x21B04<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -517,7 +380,7 @@ fn00009690_entry:
 	r29 = fp
 	// succ:  l00009690
 l00009690:
-	r14 = badva + 0x38<32>
+	r14 = PC + 0x21AF8<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -532,7 +395,7 @@ fn000096A0_entry:
 	r29 = fp
 	// succ:  l000096A0
 l000096A0:
-	r14 = badva + 0x2C<32>
+	r14 = PC + 0x21AEC<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -547,7 +410,7 @@ fn000096B0_entry:
 	r29 = fp
 	// succ:  l000096B0
 l000096B0:
-	r14 = badva + 0x20<32>
+	r14 = PC + 0x21AE0<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -562,7 +425,7 @@ fn000096D0_entry:
 	r29 = fp
 	// succ:  l000096D0
 l000096D0:
-	r14 = badva + 8<32>
+	r14 = PC + 0x21AC8<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -577,7 +440,7 @@ fn000096F0_entry:
 	r29 = fp
 	// succ:  l000096F0
 l000096F0:
-	r14 = badva + 0x30<32>
+	r14 = PC + 0x21AB0<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -592,7 +455,7 @@ fn00009710_entry:
 	r29 = fp
 	// succ:  l00009710
 l00009710:
-	r14 = badva + 0x18<32>
+	r14 = PC + 0x21A98<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -607,7 +470,7 @@ fn00009740_entry:
 	r29 = fp
 	// succ:  l00009740
 l00009740:
-	r14 = badva + 0x34<32>
+	r14 = PC + 0x21A74<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -622,27 +485,12 @@ fn00009750_entry:
 	r29 = fp
 	// succ:  l00009750
 l00009750:
-	r14 = badva + 0x28<32>
+	r14 = PC + 0x21A68<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009750_exit
 fn00009750_exit:
-
-
-// fn00009754
-// Return size: 0
-define fn00009754
-fn00009754_entry:
-	r29 = fp
-	// succ:  l00009754
-l00009754:
-	r14 = badva + 0x28<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009754_exit
-fn00009754_exit:
 
 
 // fn00009760
@@ -652,27 +500,12 @@ fn00009760_entry:
 	r29 = fp
 	// succ:  l00009760
 l00009760:
-	r14 = badva + 0x1C<32>
+	r14 = PC + 0x21A5C<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn00009760_exit
 fn00009760_exit:
-
-
-// fn00009764
-// Return size: 0
-define fn00009764
-fn00009764_entry:
-	r29 = fp
-	// succ:  l00009764
-l00009764:
-	r14 = badva + 0x1C<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009764_exit
-fn00009764_exit:
 
 
 // fn00009770
@@ -682,9 +515,7 @@ fn00009770_entry:
 	r29 = fp
 	// succ:  l00009770
 l00009770:
-	r14 = badva + 0x10<32>
-	// succ:  l00009778_in_fn00009770
-l00009778_in_fn00009770:
+	r14 = PC + 0x21A50<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -692,36 +523,19 @@ l00009778_in_fn00009770:
 fn00009770_exit:
 
 
-// fn00009774
+// fn00009780
 // Return size: 0
-define fn00009774
-fn00009774_entry:
+define fn00009780
+fn00009780_entry:
 	r29 = fp
-	// succ:  l00009774
-l00009774:
-	r14 = badva + 0x10<32>
-	// succ:  l00009778
-l00009778:
+	// succ:  l00009780
+l00009780:
+	r14 = PC + 0x21A44<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
-	// succ:  fn00009774_exit
-fn00009774_exit:
-
-
-// fn00009784
-// Return size: 0
-define fn00009784
-fn00009784_entry:
-	r29 = fp
-	// succ:  l00009784
-l00009784:
-	r14 = badva + 4<32>
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn00009784_exit
-fn00009784_exit:
+	// succ:  fn00009780_exit
+fn00009780_exit:
 
 
 // fn00009790
@@ -731,7 +545,7 @@ fn00009790_entry:
 	r29 = fp
 	// succ:  l00009790
 l00009790:
-	r14 = badva + 0x38<32>
+	r14 = PC + 0x21A38<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -746,7 +560,7 @@ fn000097A0_entry:
 	r29 = fp
 	// succ:  l000097A0
 l000097A0:
-	r14 = badva + 0x2C<32>
+	r14 = PC + 0x21A2C<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -761,7 +575,7 @@ fn000097B0_entry:
 	r29 = fp
 	// succ:  l000097B0
 l000097B0:
-	r14 = badva + 0x20<32>
+	r14 = PC + 0x21A20<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -776,7 +590,7 @@ fn000097C0_entry:
 	r29 = fp
 	// succ:  l000097C0
 l000097C0:
-	r14 = badva + 0x14<32>
+	r14 = PC + 0x21A14<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -784,19 +598,19 @@ l000097C0:
 fn000097C0_exit:
 
 
-// fn000097D4
+// fn000097D0
 // Return size: 0
-define fn000097D4
-fn000097D4_entry:
+define fn000097D0
+fn000097D0_entry:
 	r29 = fp
-	// succ:  l000097D4
-l000097D4:
-	r14 = badva + 8<32>
+	// succ:  l000097D0
+l000097D0:
+	r14 = PC + 0x21A08<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
-	// succ:  fn000097D4_exit
-fn000097D4_exit:
+	// succ:  fn000097D0_exit
+fn000097D0_exit:
 
 
 // fn000097E0
@@ -806,7 +620,7 @@ fn000097E0_entry:
 	r29 = fp
 	// succ:  l000097E0
 l000097E0:
-	r14 = badva + 0x3C<32>
+	r14 = PC + 0x219FC<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
@@ -821,31 +635,12 @@ fn000097F0_entry:
 	r29 = fp
 	// succ:  l000097F0
 l000097F0:
-	r14 = badva + 0x30<32>
-	// succ:  l000097F8_in_fn000097F0
-l000097F8_in_fn000097F0:
+	r14 = PC + 0x219F0<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return
 	// succ:  fn000097F0_exit
 fn000097F0_exit:
-
-
-// fn000097F4
-// Return size: 0
-define fn000097F4
-fn000097F4_entry:
-	r29 = fp
-	// succ:  l000097F4
-l000097F4:
-	r14 = badva + 0x30<32>
-	// succ:  l000097F8
-l000097F8:
-	r28 = Mem0[r14:word32]
-	call r28 (retsize: 0;)
-	return
-	// succ:  fn000097F4_exit
-fn000097F4_exit:
 
 
 // fn00009800
@@ -855,7 +650,7 @@ fn00009800_entry:
 	r29 = fp
 	// succ:  l00009800
 l00009800:
-	r14 = badva + 0x24<32>
+	r14 = PC + 0x219E4<32>
 	r28 = Mem0[r14:word32]
 	call r28 (retsize: 0;)
 	return

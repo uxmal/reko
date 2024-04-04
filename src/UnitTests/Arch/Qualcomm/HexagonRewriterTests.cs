@@ -42,6 +42,16 @@ namespace Reko.UnitTests.Arch.Qualcomm
         public override IProcessorArchitecture Architecture => arch;
 
         [Test]
+        public void HexagonRw_abs()
+        {
+            Given_HexString("044504F3CCC08E80");
+            AssertCode(     // { r13:r12 = abs(r15:r14); r4 = add(r4,r5) }
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|r13_r12 = abs<int32>(r15_r14)",
+                "2|L--|r4 = r4 + r5");
+        }
+
+        [Test]
         public void HexagonRw_add()
         {
             Given_HexString("1DF8FDBF");
@@ -160,6 +170,18 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_dfcmp__gt()
+        {
+            Given_HexString("2042E0D2DE68FF5C4174007E18D89D42");
+            AssertCode(     // { if (p0.new) memw(r29+12) = r24; if (p0.new) r1 = 000000A2; if (!p0.new) jump:nt 00012F08; p0 = dfcmp.gt(r1:r0,r3:r2) }
+                "0|T--|00100000(16): 4 instructions",
+                "1|L--|Mem0[r29 + 12<i32>:word32] = r24",
+                "2|L--|r1 = 0xA2<32>",
+                "3|T--|if (p0) branch 000FFFBC",
+                "4|L--|p0 = r1_r0 > r3_r2");
+        }
+
+        [Test]
         public void HexagonRw_extractu_imm_imm()
         {
             Given_HexString("81C2408D");
@@ -206,6 +228,16 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_l2fetch()
+        {
+            Given_HexString("004200000A40007800D092A6");
+            AssertCode(     // { l2fetch(r18,r17:r16); r10 = 00008000 }
+                "0|L--|00100000(12): 2 instructions",
+                "1|L--|__l2fetch<word32,word64>(r18, r17_r16)",
+                "2|L--|r10 = 0x8000<32>");
+        }
+
+        [Test]
         public void HexagonRw_l2kill()
         {
             Given_HexString("00C020A8");
@@ -224,6 +256,82 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_sfadd()
+        {
+            Given_HexString("12D812EB");
+            AssertCode(     // { r18 = sfadd(r18,r24) }
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r18 = r18 + r24");
+        }
+
+        [Test]
+        public void HexagonRw_sfcmp__ge()
+        {
+            Given_HexString("0042F3C76AC8205C");
+            AssertCode(     // { if (!p0.new) jump:nt 0001EDE0; p0 = sfcmp.ge(r19,r2) }
+                "0|T--|00100000(8): 2 instructions",
+                "1|T--|if (p0) branch 001000D4",
+                "2|L--|p0 = <invalid>");
+        }
+
+        [Test]
+        public void HexagonRw_sfcmp__gt()
+        {
+            Given_HexString("8056E2C7 1448205C 2167007E A3C09347");
+            AssertCode(     // { if (!p0.new) r3 = memw(r19+20); if (p0.new) r1 = 00000039; if (!p0.new) jump:nt 00021708; p0 = sfcmp.gt(r2,r22) }
+                "0|T--|00100000(16): 4 instructions",
+                "1|L--|r3 = Mem0[r19 + 20<i32>:word32]",
+                "2|L--|r1 = 0x39<32>",
+                "3|T--|if (p0) branch 00100028",
+                "4|L--|p0 = r2 > r22");
+        }
+
+        [Test]
+        public void HexagonRw_sfmax()
+        {
+            Given_HexString("03438EEB585819C41140777017C09891");
+            AssertCode(     // { r23 = memw(r24); r17 = r23; r24 = addasl(r24,r25,00000002); r3 = sfmax(r14,r3) }
+                "0|L--|00100000(16): 4 instructions",
+                "1|L--|r23 = Mem0[r24:word32]",
+                "2|L--|r17 = r23",
+                "3|L--|r24 = r24 + (r25 << 2<32>)",
+                "4|L--|r3 = fmaxf(r14, r3)");
+        }
+
+        [Test]
+        public void HexagonRw_sfmin()
+        {
+            Given_HexString("274386EBC15F0078A211A3F1");
+            AssertCode(     // { memw(r18+8) = 00000001; memw(r18+12) = 00000001; r1 = 000000FE; r7 = sfmin(r6,r3) }
+                "0|L--|00100000(12): 4 instructions",
+                "1|L--|Mem0[r18 + 8<i32>:word32] = 1<32>",
+                "2|L--|Mem0[r18 + 12<i32>:word32] = 1<32>",
+                "3|L--|r1 = 0xFE<32>",
+                "4|L--|r7 = fminf(r6, r3)");
+        }
+
+        [Test]
+        public void HexagonRw_sfmpy()
+        {
+            Given_HexString("025356EB18C06070");
+            AssertCode(     // { r24 = r0; r2 = sfmpy(r22,r19) }
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|r24 = r0",
+                "2|L--|r2 = r22 * r19");
+        }
+
+        [Test]
+        public void HexagonRw_sfsub()
+        {
+            Given_HexString("21DA04EB");
+            AssertCode(     // { r1 = sfsub(r4,r26) }
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r4 - r26");
+        }
+
+
+
+        [Test]
         public void HexagonRw_store_rr()
         {
             Given_HexString("101CF4EB");
@@ -232,7 +340,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|v3 = r29 - 8<i32>",
                 "2|L--|Mem0[v3:word32] = r30",
                 "3|L--|Mem0[v3 + 4<i32>:word32] = r31",
-                "4|L--|r30 = v3", 
+                "4|L--|r30 = v3",
                 "5|L--|r29 = v3 - 8<i32>",
                 "6|L--|Mem0[r29 + 496<i32>:word64] = r17_r16");
         }
@@ -257,6 +365,30 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_memd_postincM()
+        {
+            Given_HexString("2E40C09114E0C09D");
+            AssertCode(     // { r21:r20 = memd(r0++m0); r15:r14 = memd(r0+8) }
+                "0|L--|00100000(8): 3 instructions",
+                "1|L--|r0 = r0 + m0",
+                "2|L--|r21_r20 = Mem0[r0:word64]",
+                "3|L--|r15_r14 = Mem0[r0 + 8<i32>:word64]");
+        }
+
+        [Test]
+        public void HexagonRw_memd_postinc_mreg()
+        {
+            Given_HexString("2E40CB9114C0CB9D");
+            AssertCode(     // { r21:r20 = memd(r11++m0); r15:r14 = memd(r11+8) }
+                "0|L--|00100000(8): 3 instructions",
+                "1|L--|r11 = r11 + m0",
+                "2|L--|r21_r20 = Mem0[r11:word64]",
+                "3|L--|r15_r14 = Mem0[r11 + 8<i32>:word64]");
+        }
+
+
+
+        [Test]
         public void HexagonRw_memw_locked()
         {
             Given_HexString("01C00092");
@@ -266,7 +398,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-         public void HexagonRw_oreq()
+        public void HexagonRw_oreq()
         {
             Given_HexString("C0C1418E");
             AssertCode(     // { r0 |= asl(r1,00000001) }
@@ -345,6 +477,61 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_convert_df2w()
+        {
+            Given_HexString("2240E088E0CF9475");
+            AssertCode(     // { p0 = cmp.gtu(r20,0000007F); r2 = convert_df2w(r1:r0):chop }
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|p0 = r20 >u 0x7F<32>",
+                "2|L--|r2 = truncf(CONVERT(r1_r0, real64, int32))");
+        }
+
+        [Test]
+        public void HexagonRw_convert_df2w_chop()
+        {
+            Given_HexString("2240E088E0CF9475");
+            AssertCode(     // { p0 = cmp.gtu(r20,0000007F); r2 = convert_df2w(r1:r0):chop }
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|p0 = r20 >u 0x7F<32>",
+                "2|L--|r2 = truncf(CONVERT(r1_r0, real64, int32))");
+        }
+
+        [Test]
+        public void HexagonRw_convert_uw2sf()
+        {
+            Given_HexString("034353EB3B40808BE148007802C07170");
+            AssertCode(     // { r2 = r17; r1 = 00000047; r27 = convert_uw2sf(r0):chop; r3 = sfmpy(r19,r3) }
+                "0|L--|00100000(16): 4 instructions",
+                "1|L--|r2 = r17",
+                "2|L--|r1 = 0x47<32>",
+                "3|L--|r27 = truncf(CONVERT(r0, uint32, real32))",
+                "4|L--|r3 = r19 * r3");
+        }
+
+        [Test]
+        public void HexagonRw_convert_uw2sf_chop()
+        {
+            Given_HexString("034353EB3B40808BE148007802C07170");
+            AssertCode(     // { r2 = r17; r1 = 00000047; r27 = convert_uw2sf(r0):chop; r3 = sfmpy(r19,r3) }
+                "0|L--|00100000(16): 4 instructions",
+                "1|L--|r2 = r17",
+                "2|L--|r1 = 0x47<32>",
+                "3|L--|r27 = truncf(CONVERT(r0, uint32, real32))",
+                "4|L--|r3 = r19 * r3");
+        }
+
+        [Test]
+        public void HexagonRw_convert_w2sf()
+        {
+            Given_HexString("065802ED0240428B0BC59DA1");
+            AssertCode(     // { memw(r29+44) = r5; r2 = convert_w2sf(r2); r6 = mpyi(r2,r24) }
+                "0|L--|00100000(12): 3 instructions",
+                "1|L--|Mem0[r29 + 44<i32>:word32] = r5",
+                "2|L--|r2 = CONVERT(r2, int32, real32)",
+                "3|L--|r6 = r2 * r24");
+        }
+
+        [Test]
         public void HexagonRw_extract()
         {
             Given_HexString("E3C1E38D");
@@ -374,13 +561,13 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-        public void HexagonRw_abs()
+        public void HexagonRw_convert_sf2uwf()
         {
-            Given_HexString("044504F3CCC08E80");
-            AssertCode(     // { r13:r12 = abs(r15:r14); r4 = add(r4,r5) }
-                "0|L--|00100000(8): 2 instructions",
-                "1|L--|r13_r12 = abs<int32>(r15_r14)",
-                "2|L--|r4 = r4 + r5");
+            Given_HexString("3A40638B82C1005A");
+            AssertCode(     // { call 0002162C; r26 = convert_sf2uwf(r3) }
+                "0|T--|00100000(8): 2 instructions",
+                "1|T--|call 00100304 (0)",
+                "2|L--|r26 = CONVERT(r3, real32, uint32)");
         }
 
         [Test]
@@ -429,7 +616,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { nop; jump	0000A604; r3 = togglebit(r3,0000001E) }
                 "0|T--|00100000(12): 3 instructions",
                 "1|L--|nop",
-                "2|T--|goto 000FFF60",
+                "2|T--|goto 000FFF5C",
                 "3|L--|r3 = __invert_bit<word32,word32>(r3, 0x1E<32>)");
         }
 
@@ -538,16 +725,15 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-        [Ignore("Conditional")]
         public void HexagonRw_cmpb__gtu()
         {
             Given_HexString("E04146DDCE48005C2860887406EC8670");
             AssertCode(     // { if (!p0.new) r6 = zxtb(r6); if (!p0.new) r8 = add(r8,00000001); if (p0.new) jump:nt	00008EF0; p0 = cmpb.gtu(r6,0F) }
                 "0|T--|00100000(16): 4 instructions",
-                "1|L--|@@@",
-                "2|L--|@@@",
-                "3|L--|@@@",
-                "4|L--|@@@");
+                "1|L--|r6 = CONVERT(SLICE(r6, byte, 0), byte, uint32)",
+                "2|L--|r8 = r8 + 1<32>",
+                "3|T--|if (p0) branch 0010019C",
+                "4|L--|p0 = SLICE(r6, byte, 0) >u SLICE(0xF<8>, byte, 0)");
         }
 
         [Test]
@@ -556,7 +742,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("4040E4D21AD8005C");
             AssertCode(     // { if (p0.new) jump:t	00008C64; p0 = dfcmp.ge(r5:r4,r1:r0) }
                 "0|T--|00100000(8): 2 instructions",
-                "1|T--|if (p0) branch 00100038",
+                "1|T--|if (p0) branch 00100034",
                 "2|L--|p0 = r5_r4 >= r1_r0");
         }
 
@@ -568,7 +754,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|r22 = 0x10<32>",
                 "2|L--|r22 = 0xA<32>",
-                "3|T--|if (p2) branch 00100020",
+                "3|T--|if (p2) branch 0010001C",
                 "4|L--|p0 = __fastcorner9(p1, p0)");
         }
 
@@ -583,6 +769,15 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_mpy_l_l()
+        {
+            Given_HexString("064608EC");
+            AssertCode(
+                "0|---|00100000(4): 1 instructions",
+                "1|L--|r6 = SLICE(SLICE(r8, word16, 0) *64 SLICE(r6, word16, 0), word16, 32)");
+        }
+
+        [Test]
         public void HexagonRw_sxth()
         {
             Given_HexString("034123F1 01C0E270");
@@ -590,6 +785,15 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r1 = CONVERT(SLICE(r2, int16, 0), int16, int32)",
                 "2|L--|r3 = r3 | r1");
+        }
+
+        [Test]
+        public void HexagonRw_sxtw()
+        {
+            Given_HexString("00C05684");
+            AssertCode(     // { r1:r0 = sxtw(r22) }
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1_r0 = CONVERT(SLICE(r22, int32, 0), int32, int64)");
         }
 
         [Test]
@@ -628,7 +832,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|r5_r4 = Mem0[r0 + r2:word64]",
                 "2|L--|r2 = r2 + 8<32>",
-                "3|T--|if (p0) branch 00100004",
+                "3|T--|if (p0) branch 00100000",
                 "4|L--|p0 = __any8(vcmp__eq<byte[8]>(r5_r4, r7_r6))");
         }
 
@@ -734,6 +938,18 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_vaslw()
+        {
+            Given_HexString("404258804440CE1002C0007C");
+            AssertCode(     // { r3:r2 = combine(00000000,00000000); if (!p0.new) jump:nt 00020400; p0 = cmp.gt(r14,00000000); r1:r0 = vaslw(r25:r24,00000002) }
+                "0|L--|00100000(12): 4 instructions",
+                "1|L--|r3_r2 = 0<64>",
+                "2|L--|if (p0) branch 00100088",
+                "3|L--|p0 = r14 > 0<32>",
+                "4|L--|r1_r0 = __simd_shl<word64,word32>(r25_r24, 2<32>)");
+        }
+
+        [Test]
         public void HexagonRw_vavgh()
         {
             Given_HexString("004004854C410E8004C41CF7");
@@ -761,6 +977,18 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r3_r2 = __vmux<byte[8]>(p0, r3_r2, r7_r6)",
                 "2|L--|r1_r0 = __vmux<byte[8]>(p0, r1_r0, r9_r8)");
+        }
+
+        [Test]
+        public void HexagonRw_vraddub()
+        {
+            Given_HexString("20544EEA1C481CF3A6429D9100C01C94");
+            AssertCode(     // { dcfetch(r28,00000000); r6 = memw(r29+84); r28 = add(r28,r8); r1:r0 += vraddub(r15:r14,r21:r20) }
+                "0|L--|00100000(16): 4 instructions",
+                "1|L--|__dcfetch(r28, 0<32>)",
+                "2|L--|r6 = Mem0[r29 + 84<i32>:word32]",
+                "3|L--|r28 = r28 + r8",
+                "4|L--|r1_r0 = r1_r0 + __vraddub<word64,word64>(r15_r14, r21_r20)");
         }
 
         [Test]

@@ -1028,66 +1028,7 @@ Warning: Type transformer has looped 51 times, quitting prematurely.
 
 === i8051\reko-825\ledwith8051
 
-*** Elf\Hexagon\libhexagon_nn_skel
-000216DC: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00021360: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00020C5C: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00020D60: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00020374: error: Hexagon rewriter for vaslw not implemented yet. (Parameter 'vaslw')
-00020380: error: Hexagon rewriter for vaslw not implemented yet. (Parameter 'vaslw')
-0001ED08: error: Hexagon rewriter for sfcmp__ge not implemented yet. (Parameter 'sfcmp__ge')
-0001ED18: error: Hexagon rewriter for sfcmp__ge not implemented yet. (Parameter 'sfcmp__ge')
-0001EE18: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001EADC: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001EAF4: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001EB00: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-0001E698: error: Hexagon rewriter for sfcmp__ge not implemented yet. (Parameter 'sfcmp__ge')
-0001E6A8: error: Hexagon rewriter for sfcmp__ge not implemented yet. (Parameter 'sfcmp__ge')
-0001E7A8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001E46C: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001E480: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001E48C: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-0001CE98: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001BA10: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001BA28: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001B688: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0001B6A0: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00019850: error: Hexagon rewriter for vaslw not implemented yet. (Parameter 'vaslw')
-000190D0: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00019170: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-0001917C: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00019188: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-000189E8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-000185A8: error: Hexagon rewriter for convert_df2w not implemented yet. (Parameter 'convert_df2w')
-000185C8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00018628: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-000181E8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00018234: error: Hexagon rewriter for convert_df2w not implemented yet. (Parameter 'convert_df2w')
-00018264: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-000182AC: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-000179A8: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-000179D8: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00017884: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-000178B4: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-000178B8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00017618: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00017640: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00017680: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-00016A6C: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00016A7C: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00016BAC: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00016AB0: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00016B08: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00012F48: error: Hexagon rewriter for dfcmp__gt not implemented yet. (Parameter 'dfcmp__gt')
-00012C60: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-00012C8C: error: Hexagon rewriter for dfcmp__gt not implemented yet. (Parameter 'dfcmp__gt')
-000128C8: error: Hexagon rewriter for sfcmp__gt not implemented yet. (Parameter 'sfcmp__gt')
-0001241C: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0000F094: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0000F0A8: error: Hexagon rewriter for sfmpy not implemented yet. (Parameter 'sfmpy')
-0000DA68: error: Hexagon rewriter for vaslw not implemented yet. (Parameter 'vaslw')
-0000BE88: error: Hexagon rewriter for sxtw not implemented yet. (Parameter 'sxtw')
-0000BE8C: error: Hexagon rewriter for sxtw not implemented yet. (Parameter 'sxtw')
+=== Elf\Hexagon\libhexagon_nn_skel
 
 === wasm\life
 
@@ -1665,7 +1606,6 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1673,7 +1613,6 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1681,7 +1620,6 @@ fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1689,7 +1627,6 @@ fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -1697,7 +1634,6 @@ fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 128
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 90
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 118
    at Reko.Analysis.LiveCopyInserter.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 105
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
@@ -2640,4 +2576,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 92 binaries in 66.36 seconds.
+Decompiled 92 binaries in 86.34 seconds.

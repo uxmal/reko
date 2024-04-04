@@ -37,6 +37,10 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericBinary("__simd_min");
         public static readonly IntrinsicProcedure Mul = IntrinsicBuilder.SimdBinary("__simd_mul", Operator.IMul);
         public static readonly IntrinsicProcedure Not = IntrinsicBuilder.SimdUnary("__simd_not", Operator.Comp);
+        public static readonly IntrinsicProcedure Shl = new IntrinsicBuilder("__simd_shl", Operator.Shl)
+            .GenericTypes("TValue", "TShift")
+            .Params("TValue", "TShift")
+            .Returns("TValue");
         public static readonly IntrinsicProcedure Sqrt = IntrinsicBuilder.GenericUnary("__simd_sqrt");
         public static readonly IntrinsicProcedure Sub = IntrinsicBuilder.GenericBinary("__simd_sub");
     }

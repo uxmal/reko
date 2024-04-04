@@ -91,7 +91,16 @@ namespace Reko.Arch.Qualcomm
                 break;
             default:
                 RenderMnemonic(renderer, options);
-                RenderOperands(renderer, options);
+                if (Operands.Length == 0)
+                    break;
+                var sep = " ";
+                var nextSep = options.OperandSeparator ?? ",";
+                for (int i = 0; i < Operands.Length; ++i)
+                {
+                    renderer.WriteString(sep);
+                    sep = nextSep;
+                    RenderOperand(Operands[i], renderer, options);
+                }
                 break;
             }
         }

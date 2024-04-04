@@ -47,6 +47,7 @@ namespace Reko.Arch.Qualcomm
         private readonly List<RtlAssignment> deferredWrites;
         private readonly List<RtlTransfer> deferredTransfers;
         private readonly RtlEmitter m;
+        private HexagonPacket packet = default!;
         private InstrClass iclass;
 
         public HexagonRewriter(HexagonArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -71,7 +72,7 @@ namespace Reko.Arch.Qualcomm
                 instrs.Clear();
                 registersRead.Clear();
                 deferredWrites.Clear();
-                var packet = dasm.Current;
+                this.packet = dasm.Current;
                 try
                 {
                     ProcessPacket(packet);
@@ -177,12 +178,21 @@ namespace Reko.Arch.Qualcomm
                 //$TODO: what about carry-out? it's in p.
                 return exp;
             }
+            if (dec.Chop)
+            {
+                var trunc = (exp!.DataType.BitSize == 64)
+                    ? FpOps.trunc
+                    : FpOps.truncf;
+                exp = m.Fn(trunc, exp);
+                return exp;
+            }
             if (dec.Width.BitSize < (int) dec.Operand.Width.BitSize)
             {
                 exp = m.Slice(exp!, dec.Width, dec.BitOffset);
                 return exp;
             }
-            throw new NotImplementedException(dec.ToString());
+            EmitUnitTest(packet, dec.ToString());
+            return InvalidConstant.Create(PrimitiveType.Byte);
         }
 
         private void OperandDst(MachineOperand op, Action<Expression, Expression> write, Expression src)
@@ -265,11 +275,16 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.cmph__gtu: return RewriteCmp(PrimitiveType.Word16, m.Ugt, ops[0], ops[1]);
             case Mnemonic.dfcmp__eq: return m.FEq(ops[0], ops[1]);
             case Mnemonic.dfcmp__ge: return m.FGe(ops[0], ops[1]);
+            case Mnemonic.dfcmp__gt: return m.FGt(ops[0], ops[1]);
             case Mnemonic.dfcmp__uo: return m.Fn(FpOps.IsUnordered_f32, ops);
             case Mnemonic.combine: return RewriteCombine(ops[0], ops[1]);
             case Mnemonic.convert_d2df: return m.Convert(ops[0], PrimitiveType.Int64, PrimitiveType.Real64);
             case Mnemonic.convert_df2sf: return m.Convert(ops[0], PrimitiveType.Real64, PrimitiveType.Real32);
+            case Mnemonic.convert_df2w: return m.Convert(ops[0], PrimitiveType.Real64, PrimitiveType.Int32);
             case Mnemonic.convert_sf2df: return m.Convert(ops[0], PrimitiveType.Real32, PrimitiveType.Real64);
+            case Mnemonic.convert_sf2uw: return m.Convert(ops[0], PrimitiveType.Real32, PrimitiveType.UInt32);
+            case Mnemonic.convert_uw2sf: return m.Convert(ops[0], PrimitiveType.UInt32, PrimitiveType.Real32);
+            case Mnemonic.convert_w2sf: return m.Convert(ops[0], PrimitiveType.Int32, PrimitiveType.Real32);
             case Mnemonic.crswap: return m.Fn(crswap_intrinsic, ops);
             case Mnemonic.ct0: return m.Fn(CommonOps.CountTrailingZeros, ops);
             case Mnemonic.ct1: return m.Fn(CommonOps.CountTrailingOnes, ops);
@@ -283,7 +298,8 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.extract: return RewriteExtract(Domain.SignedInt, ops[0], app.Operands);
             case Mnemonic.extractu: return RewriteExtract(Domain.UnsignedInt, ops[0], app.Operands);
             case Mnemonic.fastcorner9: return m.Fn(fastcorner9_intrinsic, ops); 
-            case Mnemonic.insert: return m.FnVariadic(insert_intrinsic, ops); 
+            case Mnemonic.insert: return m.FnVariadic(insert_intrinsic, ops);
+            case Mnemonic.l2fetch: return RewriteL2Fetch(ops); 
             case Mnemonic.loop0: RewriteLoop(0, ops); return null;
             case Mnemonic.loop1: RewriteLoop(1, ops); return null;
             case Mnemonic.lsl: return m.Shl(ops[0], ops[1]);
@@ -302,17 +318,26 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.not: return m.Not(ops[0]);
             case Mnemonic.or: return m.Or(ops[0], ops[1]);
             case Mnemonic.setbit: return m.Fn(CommonOps.SetBit, ops);
+            case Mnemonic.sfadd: return m.FAdd(ops[0], ops[1]);
+            case Mnemonic.sfcmp__gt: return m.FGt(ops[0], ops[1]);
+            case Mnemonic.sfmax: return m.Fn(FpOps.fmaxf, ops);
+            case Mnemonic.sfmin: return m.Fn(FpOps.fminf, ops);
+            case Mnemonic.sfmpy: return m.FMul(ops[0], ops[1]);
+            case Mnemonic.sfsub: return m.FSub(ops[0], ops[1]);
             case Mnemonic.start: return m.Fn(start_intrinsic, ops);
             case Mnemonic.stop:  return m.Fn(stop_intrinsic, ops);
             case Mnemonic.sub: return m.ISub(ops[0], ops[1]);
             case Mnemonic.sxtb: return RewriteExt(ops[0], PrimitiveType.SByte, PrimitiveType.Int32);
             case Mnemonic.sxth: return RewriteExt(ops[0], PrimitiveType.Int16, PrimitiveType.Int32);
+            case Mnemonic.sxtw: return RewriteExt(ops[0], PrimitiveType.Int32, PrimitiveType.Int64);
             case Mnemonic.tlbp: return m.Fn(tlbp_intrinsic, ops);
             case Mnemonic.tlbw: return m.Fn(tlbw_intrinsic, ops);
             case Mnemonic.togglebit: return m.Fn(CommonOps.InvertBit, ops);
             case Mnemonic.trap0: return m.Fn(trap0_intrinsic, ops);
             case Mnemonic.trap1: return m.Fn(trap1_intrinsic, ops);
             case Mnemonic.tstbit: return m.Fn(CommonOps.Bit, ops);
+            case Mnemonic.vaslw: return RewriteSimdShift(Simd.Shl, ops);
+            case Mnemonic.vraddub: return m.Fn(vraddub_intrinsic, ops);
             case Mnemonic.xor: return m.Xor(ops[0], ops[1]);
             case Mnemonic.zxtb: return RewriteExt(ops[0], PrimitiveType.Byte, PrimitiveType.UInt32);
             case Mnemonic.zxth: return RewriteExt(ops[0], PrimitiveType.UInt16, PrimitiveType.UInt32);
@@ -328,7 +353,18 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.vsplatb: return RewriteVectorIntrinsic(vsplatb_intrinsic, PrimitiveType.Byte, ops);
             case Mnemonic.vsubh: return RewriteVectorIntrinsic(Simd.Sub, PrimitiveType.Int16, ops);
             }
-            throw new ArgumentException($"Hexagon rewriter for {app.Mnemonic} not implemented yet.", app.Mnemonic.ToString());
+            EmitUnitTest(packet, app.Mnemonic.ToString());
+            return InvalidConstant.Create(PrimitiveType.Byte);
+        }
+
+        private Expression RewriteL2Fetch(Expression[] ops)
+        {
+            return m.Fn(l2fetch_intrinsic, ops);
+        }
+
+        private Expression? RewriteSimdShift(IntrinsicProcedure shiftLeft, Expression[] ops)
+        {
+            return m.Fn(shiftLeft, ops);
         }
 
         private void RewriteMemLockedDst(ApplicationOperand app, PrimitiveType dt, Expression src)
@@ -376,6 +412,8 @@ namespace Reko.Arch.Qualcomm
                 var reg = binder.EnsureRegister(mem.Base!);
                 if (mem.AutoIncrement is int incr)
                     m.Assign(reg, m.AddSubSignedInt(reg, incr));
+                else if (mem.AutoIncrement is RegisterStorage regIncr)
+                    m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(regIncr)));
                 else
                     m.Assign(reg, m.IAdd(reg, (Expression) mem.AutoIncrement));
             }
@@ -647,6 +685,11 @@ namespace Reko.Arch.Qualcomm
             .Param(PrimitiveType.Int32)
             .Returns(PrimitiveType.Word32);
 
+        private static readonly IntrinsicProcedure l2fetch_intrinsic = IntrinsicBuilder.SideEffect("__l2fetch")
+            .GenericTypes("T", "U")
+            .Param("T")
+            .Param("U")
+            .Void();
         private static readonly IntrinsicProcedure l2kill_intrinsic = IntrinsicBuilder.SideEffect("__l2kill")
             .Void();
         private static readonly IntrinsicProcedure loop_intrinsic = IntrinsicBuilder.SideEffect("__loop")
@@ -698,6 +741,11 @@ namespace Reko.Arch.Qualcomm
             .Param("T")
             .Param("T")
             .Returns("T");
+        private static readonly IntrinsicProcedure vraddub_intrinsic = IntrinsicBuilder.Pure("__vraddub")
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Returns("TDst");
         private static readonly IntrinsicProcedure vsplatb_intrinsic = IntrinsicBuilder.Pure("__vsplatb")
             .GenericTypes("T")
             .Param(PrimitiveType.Byte)

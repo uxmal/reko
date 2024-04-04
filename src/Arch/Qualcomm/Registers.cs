@@ -31,6 +31,8 @@ namespace Reko.Arch.Qualcomm
     {
         public static RegisterStorage[] GpRegs { get; }
 
+        public static RegisterStorage[] ModifierRegisters { get; }
+
         public static RegisterStorage[] PredicateRegisters { get; }
         
         public static RegisterStorage[] ControlRegisters { get; }
@@ -63,6 +65,7 @@ namespace Reko.Arch.Qualcomm
             sp = GpRegs[29];
             fp = GpRegs[30];
             lr = GpRegs[31];
+            ModifierRegisters = factory.RangeOfReg32(2, "m{0}");
             PredicateRegisters = factory.RangeOfReg(4, n => $"p{n}", PrimitiveType.Byte);
 
             var sysfactory = new StorageFactory(StorageDomain.SystemRegister);
@@ -71,7 +74,7 @@ namespace Reko.Arch.Qualcomm
             SystemRegisters = GenerateSystemRegisters(sysfactory);
             sgp0 = SystemRegisters[0];
             sgp1 = SystemRegisters[1];
-            pc = SystemRegisters[9];
+            pc = ControlRegisters[9];
             gp = Rename(ControlRegisters, 11, "gp");
 
             ByName = GpRegs

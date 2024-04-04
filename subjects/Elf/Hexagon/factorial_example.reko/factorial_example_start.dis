@@ -743,13 +743,13 @@ l00000970:
 	r31 = SEQ(0<16>, SLICE(r31, word16, 0))
 	r0 = Mem0[r0:word32]
 	r30 = 0<32>
-	goto l00000A54_thunk_event_handle_nmi
-	// succ:  l00000A54_thunk_event_handle_nmi
+	goto l00000A54_thunk_thread_start
+	// succ:  l00000A54_thunk_thread_start
 l00000970:
 	goto l00000964_thunk_event_handle_reset
 	// succ:  l00000964_thunk_event_handle_reset
-l00000A54_thunk_event_handle_nmi:
-	call event_handle_nmi (retsize: 0;)
+l00000A54_thunk_thread_start:
+	call thread_start (retsize: 0;)
 	return
 	// succ:  event_handle_reset_exit
 event_handle_reset_exit:
@@ -839,17 +839,15 @@ l00000AC0:
 	r7 = elr
 	p1 = __bit<word32,word32>(r8, 0<32>)
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
-	branch p1 l00000B00
-	// succ:  l00000AF8 l00000B00
+	branch p1 l00000AFC
+	// succ:  l00000AF8 l00000AFC
 l00000AF8:
 	r7 = r7 >>u 0xC<32>
 	r7 = r7 + 1<32>
+	// succ:  l00000AFC
+l00000AFC:
 	r1 = 6<32>
 	r0 = SEQ(SLICE(r0, word16, 16), 0x6E10<16>)
-	goto l00000B04
-	// succ:  l00000B04
-l00000B00:
-	r1 = 6<32>
 	// succ:  l00000B04
 l00000B04:
 	r6 = __memw_locked(r0)
@@ -1033,8 +1031,8 @@ l00000CB0:
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
 	r3 = SEQ(SLICE(r3, word16, 16), 0xF0<16>)
 	r3 = Mem0[r3:word32]
-	branch p3 l00000E00
-	// succ:  l00000CE8 l00000E00
+	branch p3 l00000DFC
+	// succ:  l00000CE8 l00000DFC
 l00000CE8:
 	p3 = r3 == 1<32>
 	Mem0[r29 + 16<i32>:word64] = r7_r6
@@ -1059,20 +1057,14 @@ l00000D08:
 	r9 = r5
 	r8 = htid
 	p0 = r7 == 0<32>
-	branch p3 l00000E14
-	// succ:  l00000D40 l00000E14
+	branch p3 l00000E10
+	// succ:  l00000D40 l00000E10
 l00000D40:
 	r6 = SEQ(8<16>, SLICE(r6, word16, 0))
 	r7 = Mem0[r3:word32]
 	r5 = 1<32>
-	branch p0 l00000D44
-	goto l00000D4C
-	// succ:  l00000D4C l00000D44
-l00000D44:
-	r7 = Mem0[r3:word32]
-	r5 = 1<32>
-	branch p0 l00000D44
-	// succ:  l00000D4C l00000D44
+	branch p0 l00000D40
+	// succ:  l00000D4C l00000D40
 l00000D4C:
 	p0 = r7 == 0<32>
 	r7 = __memw_locked(r3)
@@ -1128,8 +1120,8 @@ l00000DB8:
 	// succ:  event_handle_trap0_exit
 l00000DD0:
 	r4 = Mem0[r29 + 32<i32>:word32]
-	goto l00000D44
-	// succ:  l00000D44
+	goto l00000D40
+	// succ:  l00000D40
 l00000DDC:
 	r1 = pcyclehi
 	r0 = pcyclelo
@@ -1147,22 +1139,23 @@ l00000DFC:
 	r3_r2 = Mem0[r29 + 8<i32>:word64]
 	r29 = r29 + 0x28<32>
 	P3:0 = r5
-	goto l00000E08
-	// succ:  l00000E08
-l00000E00:
-	r5_r4 = Mem0[r29:word64]
-	r3_r2 = Mem0[r29 + 8<i32>:word64]
-	r29 = r29 + 0x28<32>
-	// succ:  l00000E08
-l00000E08:
 	__crswap(r29, sgp0)
 	__rte()
 	return
 	// succ:  event_handle_trap0_exit
-l00000E14:
+l00000E10:
 	r6 = SEQ(SLICE(r6, word16, 16), 0x98<16>)
-	goto l00000D44
-	// succ:  l00000D44
+	branch p2 l00000E20
+	// succ:  l00000E18 l00000E20
+l00000E18:
+	goto l00000D40
+	// succ:  l00000D40
+l00000E20:
+	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
+	r1 = SEQ(SLICE(r1, word16, 16), 0x3FF0<16>)
+	r1 = Mem0[r1:word32]
+	goto l00000D40
+	// succ:  l00000D40
 event_handle_trap0_exit:
 
 

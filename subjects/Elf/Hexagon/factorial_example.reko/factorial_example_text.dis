@@ -335,12 +335,12 @@ l00005310:
 	r1 = r29 + 0x18<32>
 	call _Lockfilelock (retsize: 0;)
 	r3 = Mem0[r29 + 4<i32>:word64]
-	r1 = 0x18<32>
+	r1 = 0xE498<32>
 	r2 = r16
 	r0 = 0x5360<32>
 	call _Printf (retsize: 0;)
 	r16 = r0
-	r0 = 0x18<32>
+	r0 = 0xE498<32>
 	call _Unlockfilelock (retsize: 0;)
 	v13 = r30
 	r31 = Mem0[v13 + 4<i32>:word32]
@@ -393,8 +393,8 @@ l00005390:
 	branch r2 == 0<32> l00005490
 	// succ:  l0000539C l00005490
 l0000539C:
-	branch p0 l000053C0
-	// succ:  l000053A4 l000053C0
+	branch p0 l000053BC
+	// succ:  l000053A4 l000053BC
 l000053A4:
 	p0 = r2 >u -1<i32>
 	r5_r4 = r7_r7
@@ -404,46 +404,42 @@ l000053A4:
 	r3 = r3 + 1<i32>
 	return
 	// succ:  memset_exit
-l000053C0:
+l000053BC:
 	p1 = r2 == 1<32>
+	branch p0 l000053D0
+	// succ:  l000053C4 l000053D0
+l000053C4:
+	p0 = __bit<word32,word32>(r0, 0<32>)
 	Mem0[r0:byte] = r1
 	r6 = r0
-	branch p1 l00005494
-	// succ:  l000053D0 l00005494
+	branch p1 l00005490
+	// succ:  l000053D0 l00005490
 l000053D0:
 	r2 = r2 + 0xFFFFFFFF<32>
-	branch p0 l000053E8
-	// succ:  l000053D8 l000053E8
+	branch p0 l000053E4
+	// succ:  l000053D8 l000053E4
 l000053D8:
 	p0 = __bit<word32,word32>(r6, 1<32>)
 	Mem0[r6:word16] = r7
 	r6 = r6 + 2<i32>
-	branch p0 l00005494
-	// succ:  l000053E4 l00005494
+	branch p0 l00005490
+	// succ:  l000053E4 l00005490
 l000053E4:
 	p0 = r2 == 4<32>
 	r2 = r2 + 0xFFFFFFFE<32>
-	branch p0 l000053FC
-	goto l000053EC
-	// succ:  l000053EC l000053FC
-l000053E8:
-	branch p0 l000053FC
-	// succ:  l000053EC l000053FC
+	branch p0 l000053F8
+	// succ:  l000053EC l000053F8
 l000053EC:
 	p0 = __bit<word32,word32>(r6, 2<32>)
 	Mem0[r6:word32] = r7
 	r6 = r6 + 4<i32>
-	branch p0 l00005494
-	// succ:  l000053F8 l00005494
+	branch p0 l00005490
+	// succ:  l000053F8 l00005490
 l000053F8:
 	p0 = r2 == 8<32>
 	r2 = r2 + 0xFFFFFFFC<32>
-	branch p0 l00005454
-	goto l00005400
-	// succ:  l00005400 l00005454
-l000053FC:
-	branch p0 l00005454
-	// succ:  l00005400 l00005454
+	branch p0 l00005450
+	// succ:  l00005400 l00005450
 l00005400:
 	p0 = r2 >u 0x7F<32>
 	r3 = r6 & 0x1F<32>
@@ -483,11 +479,7 @@ l00005438:
 l00005450:
 	r8 = r2 >>u 3<32>
 	branch p0 l00005468
-	goto l00005458
 	// succ:  l00005458 l00005468
-l00005454:
-	r8 = r2 >>u 3<32>
-	// succ:  l00005458
 l00005458:
 	p0 = r2 >u -1<i32>
 	__loop(0<i32>, 0x00005460<p32>, r8)
@@ -496,27 +488,25 @@ l00005458:
 	r2 = r2 + 0xFFFFFFF8<32>
 	// succ:  l00005468
 l00005468:
-	branch p0 l0000547C
-	// succ:  l00005470 l0000547C
+	branch p0 l00005478
+	// succ:  l00005470 l00005478
 l00005470:
 	p0 = __bit<word32,word32>(r2, 2<32>)
 	Mem0[r6:word32] = r7
 	r6 = r6 + 4<i32>
 	r2 = r2 + 0xFFFFFFFC<32>
-	branch p0 l0000548C
-	goto l00005480
-	// succ:  l00005480 l0000548C
-l0000547C:
-	branch p0 l0000548C
-	// succ:  l00005480 l0000548C
+	// succ:  l00005478
+l00005478:
+	branch p0 l00005488
+	// succ:  l00005480 l00005488
 l00005480:
 	p0 = __bit<word32,word32>(r2, 1<32>)
 	Mem0[r6:word16] = r7
 	r6 = r6 + 2<i32>
 	r2 = r2 + 0xFFFFFFFE<32>
+	// succ:  l00005488
+l00005488:
 	p0 = r2 == 1<32>
-	// succ:  l0000548C
-l0000548C:
 	Mem0[r6:byte] = r1
 	// succ:  l00005490
 l00005490:
@@ -752,8 +742,8 @@ l00005690:
 	branch p0 l000056D0
 	// succ:  l000056A4 l000056D0
 l000056A4:
-	branch r0 == 0<32> l000056D4
-	// succ:  l000056B0 l000056D4
+	branch r0 == 0<32> l000056D0
+	// succ:  l000056B0 l000056D0
 l000056B0:
 	r0 = Mem0[r16:word32]
 	r1_r0 = 0x1800000001<64>
@@ -772,8 +762,6 @@ l000056BC:
 l000056D0:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l000056D4
-l000056D4:
 	v21 = r30
 	r31 = Mem0[v21 + 4<i32>:word32]
 	r30 = Mem0[v21:word32]
@@ -810,8 +798,8 @@ l000056E0:
 	branch p0 l00005720
 	// succ:  l000056F4 l00005720
 l000056F4:
-	branch r0 == 0<32> l00005724
-	// succ:  l00005700 l00005724
+	branch r0 == 0<32> l00005720
+	// succ:  l00005700 l00005720
 l00005700:
 	r0 = Mem0[r16:word32]
 	r1_r0 = 0x1800000001<64>
@@ -830,8 +818,6 @@ l0000570C:
 l00005720:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00005724
-l00005724:
 	v20 = r30
 	r31 = Mem0[v20 + 4<i32>:word32]
 	r30 = Mem0[v20:word32]
@@ -918,14 +904,14 @@ l000057B8:
 	r3 = r29 + 0x58<32>
 	Mem0[r22:word32] = 0<32>
 	call _Mbtowc (retsize: 0;)
-	branch r18 > 0<32> l000057E0
-	// succ:  l000057D8 l000057E0
+	branch r18 > 0<32> l000057DC
+	// succ:  l000057D8 l000057DC
 l000057D8:
 	r18 = r0
 	r18 = !(r0 == 0<32>)
+	// succ:  l000057DC
+l000057DC:
 	r0 = Mem0[r29 + 80<i32>:word32]
-	// succ:  l000057E0
-l000057E0:
 	r1 = 0<32>
 	r1 = 0xFFFFFFFF<32>
 	p0 = r0 == 0x25<32>
@@ -956,8 +942,8 @@ l00005830:
 	r20 = Mem0[r18:byte]
 	call _Getpctype (retsize: 0;)
 	r0 = Mem0[r13 + r20 * 2<32>:byte]
-	branch r0 == 0<32> l00005860
-	// succ:  l00005848 l00005860
+	branch r0 == 0<32> l0000585C
+	// succ:  l00005848 l0000585C
 l00005848:
 	r0 = r0 & 0x20<32>
 	r18 = r18 + 1<i32>
@@ -969,8 +955,6 @@ l00005848:
 	// succ:  l0000585C l00005830
 l0000585C:
 	r0 = Mem0[r18:byte]
-	// succ:  l00005860
-l00005860:
 	p0 = r0 == 0x24<32>
 	branch p0 l0000587C
 	// succ:  l00005868 l0000587C
@@ -1016,7 +1000,7 @@ l000058BC:
 	Mem0[r21 + 30<i32>:byte] = r0
 	r0 = r1 | r0
 	r1 = Mem0[r18:byte]
-	r0 = 8<32>
+	r0 = 0xD088<32>
 	branch p0 l000058B4
 	// succ:  l000058E4 l000058B4
 l000058E4:
@@ -1050,26 +1034,30 @@ l00005928:
 	call _Getpctype (retsize: 0;)
 	goto l0000593C
 	// succ:  l0000593C
+l00005934:
+	r17 = Mem0[r18 + 1<i32>:byte]
+	r18 = r18
+	call _Getpctype (retsize: 0;)
+	goto l0000593C
+	// succ:  l0000593C
 l00005938:
 	r17 = Mem0[r18 + 1<i32>:byte]
 	r18 = r18
 	// succ:  l0000593C
 l0000593C:
 	r0 = Mem0[r13 + r17 * 2<32>:byte]
-	branch r0 == 0<32> l00005968
-	// succ:  l0000594C l00005968
+	branch r0 == 0<32> l00005964
+	// succ:  l0000594C l00005964
 l0000594C:
 	r0 = r0 & 0x20<32>
 	branch r0 == r16 l00005938
 	// succ:  l00005954 l00005938
 l00005954:
 	r1 = Mem0[r18:byte]
-	goto l00005938
-	// succ:  l00005938
+	goto l00005934
+	// succ:  l00005934
 l00005964:
 	r0 = Mem0[r18:byte]
-	// succ:  l00005968
-l00005968:
 	Mem0[r21 + 48<i32>:word32] = 0xFFFFFFFF<32>
 	p0 = r0 == 0x2E<32>
 	branch p0 l0000599C
@@ -1098,28 +1086,34 @@ l000059A0:
 	r18 = r18 + 1<32>
 	goto l000059C0
 	// succ:  l000059C0
+l000059B4:
+	r17 = Mem0[r18 + 1<i32>:byte]
+	r18 = r18
+	call _Getpctype (retsize: 0;)
+	goto l000059BC
+	// succ:  l000059BC
 l000059B8:
 	r17 = Mem0[r18 + 1<i32>:byte]
 	r18 = r18
+	// succ:  l000059BC
+l000059BC:
 	r0 = Mem0[r13 + r17 * 2<32>:byte]
 	// succ:  l000059C0
 l000059C0:
-	branch r0 == 0<32> l000059E8
-	// succ:  l000059CC l000059E8
+	branch r0 == 0<32> l000059E4
+	// succ:  l000059CC l000059E4
 l000059CC:
 	r0 = r0 & 0x20<32>
 	branch r0 == r16 l000059B8
 	// succ:  l000059D4 l000059B8
 l000059D4:
 	r1 = Mem0[r18:byte]
-	goto l000059B8
-	// succ:  l000059B8
+	goto l000059B4
+	// succ:  l000059B4
 l000059E4:
 	r1 = Mem0[r18:byte]
-	r0 = 0x30<32>
+	r0 = 0xD0B0<32>
 	call strchr (retsize: 0;)
-	// succ:  l000059E8
-l000059E8:
 	Mem0[r21 - 2<i32>:byte] = 0<8>
 	r17 = r18 + 0<32>
 	branch p0 l00005A00
@@ -1142,8 +1136,8 @@ l00005A20:
 	Mem0[r21 - 2<i32>:byte] = 0x71<8>
 	// succ:  l00005A50
 l00005A50:
-	branch r0 > 0<32> l00005A84
-	// succ:  l00005A5C l00005A84
+	branch r0 > 0<32> l00005A80
+	// succ:  l00005A5C l00005A80
 l00005A5C:
 	r0 = Mem0[r21 + 44<i32>:word32]
 	r0 = r29 + 4<32>
@@ -1155,10 +1149,11 @@ l00005A5C:
 	r1 = r29 + 4<32>
 	goto l00005A8C
 	// succ:  l00005A8C
-l00005A84:
+l00005A80:
 	r2 = Mem0[r17:byte]
 	r3 = r29 + 8<32>
 	r0 = r29 + 0x60<32>
+	r1 = r29 + 0x54<32>
 	// succ:  l00005A8C
 l00005A8C:
 	call _Putfld (retsize: 0;)
@@ -1216,7 +1211,12 @@ l00005AE0:
 	r0 = Mem0[r16 + 20<i32>:word32]
 	p0 = r2 == 0x25<32>
 	branch p0 l00005C48
-	// succ:  l00005AEC l00005C48
+	goto l00005AEC
+	// succ:  l00005AEC l00005AE0_thunk_fn00005B1C
+l00005AE0_thunk_fn00005B1C:
+	call fn00005B1C (retsize: 0;)
+	return
+	// succ:  _Putfld_exit
 l00005AEC:
 	r0 = r3 + r0
 	r1 = r0 + 1<32>
@@ -1231,7 +1231,7 @@ l00005B00:
 	branch p0 l00005B60
 	// succ:  l00005B08 l00005B60
 l00005B08:
-	branch r0 >u 0xD<32> l00005C4C
+	branch r0 >u 0xD<32> l00005C48
 	goto l00005B14
 	// succ:  l00005B14 l00005B08_thunk_fn00005B1C
 l00005B08_thunk_fn00005B1C:
@@ -1240,7 +1240,7 @@ l00005B08_thunk_fn00005B1C:
 	// succ:  _Putfld_exit
 l00005B14:
 	r0 = r2 + 0xFFFFFFBF<32>
-	branch r0 == 1<32> l00005C4C
+	branch r0 == 1<32> l00005C48
 l00005B60:
 	p0 = r2 >u 0x57<32>
 	r0 = r2 + 0xFFFFFFA8<32>
@@ -1250,7 +1250,12 @@ l00005B6C:
 	p0 = r2 == 0x53<32>
 	r2 = r16 + 0x2C<32>
 	branch p0 l00005C48
-	// succ:  l00005B78 l00005C48
+	goto l00005B78
+	// succ:  l00005B78 l00005B6C_thunk_fn00005B1C
+l00005B6C_thunk_fn00005B1C:
+	call fn00005B1C (retsize: 0;)
+	return
+	// succ:  _Putfld_exit
 l00005B78:
 	Mem0[r16 - 2<i32>:byte] = 0x6C<8>
 	r3 = Mem0[r16 + 44<i32>:word32]
@@ -1260,19 +1265,16 @@ l00005B78:
 l00005B8C:
 	p0 = r0 >u 0x20<32>
 	branch p0 l00005C48
-	// succ:  l00005B94 l00005C48
+	goto l00005B94
+	// succ:  l00005B94 l00005B8C_thunk_fn00005B1C
+l00005B8C_thunk_fn00005B1C:
+	call fn00005B1C (retsize: 0;)
+	return
+	// succ:  _Putfld_exit
 l00005B94:
 	r4 = Mem0[gp + 120<i32>:word32]
 	r0 = Mem0[r14 + r0 * 4<32>:word32]
 	call r0 (retsize: 0;)
-	return
-	// succ:  _Putfld_exit
-l00005C48:
-	r0 = Mem0[r16 + 20<i32>:word32]
-	p0 = r2 == 0<32>
-	// succ:  l00005C48_thunk_fn00005B1C
-l00005C48_thunk_fn00005B1C:
-	call fn00005B1C (retsize: 0;)
 	return
 	// succ:  _Putfld_exit
 l00005EC4:
@@ -1296,23 +1298,21 @@ fn00005B1C_entry:
 	r29 = fp
 	// succ:  l00005B1C
 l00005B1C:
-	branch __bit<word32,int32>(r0, -1<i32>) l00005B1C_thunk_fn00005C7C
+	branch __bit<word32,int32>(r0, -1<i32>) l00005C78
 	goto l00005B1C_thunk_fn00005B28
-	// succ:  l00005B1C_thunk_fn00005B28 l00005B1C_thunk_fn00005C7C
+	// succ:  l00005B1C_thunk_fn00005B28 l00005C78
 l00005B1C:
-	// succ:  l00005B20 l00005C4C
+	// succ:  l00005B20 l00005C48
 l00005B1C_thunk_fn00005B28:
 	call fn00005B28 (retsize: 0;)
-	return
-	// succ:  fn00005B1C_exit
-l00005B1C_thunk_fn00005C7C:
-	call fn00005C7C (retsize: 0;)
 	return
 	// succ:  fn00005B1C_exit
 l00005B20:
 	r0 = r0 & 0x71<32>
 	branch __bit<word32,int32>(r0, -1<i32>) l00005C7C
-l00005C4C:
+l00005C48:
+	r0 = Mem0[r16 + 20<i32>:word32]
+	p0 = r2 == 0<32>
 	r0 = r3 + r0
 	r1 = r0 + 1<32>
 	Mem0[r0:byte] = 0x25<8>
@@ -1323,7 +1323,15 @@ l00005C60:
 	r0 = r3 + r0
 	r1 = r0 + 1<32>
 	Mem0[r0:byte] = r2
+	goto l00005CFC
 	// succ:  l00005CFC
+l00005C78:
+	r0 = Mem0[r16 + 6<i32>:int16]
+	// succ:  l00005C78_thunk_fn00005C7C
+l00005C78_thunk_fn00005C7C:
+	call fn00005C7C (retsize: 0;)
+	return
+	// succ:  fn00005B1C_exit
 l00005CFC:
 	r1 = 0<32>
 	// succ:  l00005CFC_thunk_fn00005B24
@@ -1342,13 +1350,13 @@ fn00005B24_entry:
 	// succ:  l00005B24
 l00005B24:
 	r0 = Mem0[r1:word32]
-	// succ:  l00005B24_thunk_fn00005B28 l00005B24_thunk_fn00005C7C
+	// succ:  l00005B24_thunk_fn00005B28 l00005B24_thunk_fn00005B54
 l00005B24_thunk_fn00005B28:
 	call fn00005B28 (retsize: 0;)
 	return
 	// succ:  fn00005B24_exit
-l00005B24_thunk_fn00005C7C:
-	call fn00005C7C (retsize: 0;)
+l00005B24_thunk_fn00005B54:
+	call fn00005B54 (retsize: 0;)
 	return
 	// succ:  fn00005B24_exit
 fn00005B24_exit:
@@ -1424,18 +1432,32 @@ fn00005B54_entry:
 	// succ:  l00005B54_thunk_fn00005B24
 l00005B54:
 	r1_r0 = r5_r4
-	goto l00005C80
-	// succ:  l00005C80
+	goto l00005B58_thunk_fn00005C7C
+	// succ:  l00005B58_thunk_fn00005C7C
 l00005B54_thunk_fn00005B24:
 	call fn00005B24 (retsize: 0;)
 	return
 	// succ:  fn00005B54_exit
-l00005C80:
-	branch __bit<word32,int32>(r0, -1<i32>) l00005CB4
-	// succ:  l00005C88 l00005CB4
+l00005B58_thunk_fn00005C7C:
+	call fn00005C7C (retsize: 0;)
+	return
+	// succ:  fn00005B54_exit
+fn00005B54_exit:
+
+
+// fn00005C7C
+// Return size: 0
+define fn00005C7C
+fn00005C7C_entry:
+	r29 = fp
+	// succ:  l00005C7C
+l00005C7C:
+	branch __bit<word32,int32>(r0, -1<i32>) l00005CB0
+	// succ:  l00005C88 l00005CB0
 l00005C88:
-	branch r0 == 0<32> l00005CD4
-	// succ:  l00005C98 l00005CD4
+	r0 = CONVERT(SLICE(r0, int16, 0), int16, int32)
+	branch r0 == 0<32> l00005CCC
+	// succ:  l00005C98 l00005CCC
 l00005C98:
 	r0 = r1 & 2<32>
 	p0 = __bit<word32,word32>(r1, 0<32>)
@@ -1444,26 +1466,20 @@ l00005C98:
 	r1 = r3 + r1
 	r4 = r1 + 1<32>
 	Mem0[r1:byte] = 0x2B<8>
+	// succ:  l00005CB0
+l00005CB0:
 	r1 = Mem0[r16 + 20<i32>:word32]
 	r0 = r16 + 0x14<32>
-	goto l00005CB8
-	// succ:  l00005CB8
-l00005CB4:
-	r1 = Mem0[r16 + 20<i32>:word32]
-	// succ:  l00005CB8
-l00005CB8:
 	Mem0[r16 + 5<i32>:byte] = r4
 	r1 = r3 + r1
 	r4 = r1 + 1<32>
 	Mem0[r1:byte] = 0x2D<8>
+	// succ:  l00005CCC
+l00005CCC:
 	r1 = Mem0[r16 + 20<i32>:word32]
 	r0 = r16 + 0x14<32>
 	branch p0 l00005CE8
-	goto l00005CD8
 	// succ:  l00005CD8 l00005CE8
-l00005CD4:
-	r1 = Mem0[r16 + 20<i32>:word32]
-	// succ:  l00005CD8
 l00005CD8:
 	Mem0[r16 + 5<i32>:byte] = r4
 	r1 = r3 + r1
@@ -1477,30 +1493,10 @@ l00005CE8:
 	call _Ldtob (retsize: 0;)
 	// succ:  l00005D00
 l00005D00:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
-	return
-	// succ:  fn00005B54_exit
-fn00005B54_exit:
-
-
-// fn00005C7C
-// Return size: 0
-define fn00005C7C
-fn00005C7C_entry:
-	r29 = fp
-	// succ:  l00005C7C
-l00005C7C:
-	branch __bit<word32,int32>(r0, -1<i32>) l00005CB4
-	// succ:  l00005C7C_thunk_fn00005B54 l00005C7C_thunk_fn00005B54
-l00005C7C_thunk_fn00005B54:
-	call fn00005B54 (retsize: 0;)
-	return
-	// succ:  fn00005C7C_exit
-l00005C7C_thunk_fn00005B54:
-	call fn00005B54 (retsize: 0;)
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  fn00005C7C_exit
 fn00005C7C_exit:
@@ -1536,8 +1532,8 @@ l00006200:
 	r0 = r19
 	r21 = 0xFFFFFFFF<32>
 	call malloc (retsize: 0;)
-	branch r16 == 0<32> l00006314
-	// succ:  l00006250 l00006314
+	branch r16 == 0<32> l00006310
+	// succ:  l00006250 l00006310
 l00006250:
 	r16 = r0
 	r0 = 0x7FFFFFFF<32>
@@ -1548,8 +1544,8 @@ l00006250:
 	r0 = r29 + 8<32>
 	r2 = r29 + 0<32>
 	call _Wctomb (retsize: 0;)
-	branch __bit<word32,int32>(r20, -1<i32>) l00006304
-	// succ:  l0000627C l00006304
+	branch __bit<word32,int32>(r20, -1<i32>) l00006300
+	// succ:  l0000627C l00006300
 l0000627C:
 	r20 = r0
 	branch r0 == 0<32> l0000628C
@@ -1573,13 +1569,17 @@ l0000628C:
 	r0 = Mem0[r17 + 20<i32>:word32]
 	Mem0[r17 + 5<i32>:byte] = r0
 	r0 = r0 + r20
-	branch r0 == 0<32> l000062E4
-	// succ:  l000062D8 l000062E4
+	branch r0 == 0<32> l000062E0
+	// succ:  l000062D8 l000062E0
 l000062D8:
 	r0 = Mem0[r18:word32]
 	r21 = r19
 	branch p0 l00006300
+	goto l000062E4
 	// succ:  l000062E4 l00006300
+l000062E0:
+	r21 = r19
+	// succ:  l000062E4
 l000062E4:
 	p0 = r11 == 0<32>
 	r1_r0 = r16_r17
@@ -1591,22 +1591,22 @@ l000062E4:
 	p0 = r21 == 0<32>
 	// succ:  l00006300
 l00006300:
-	branch r0 == r16 l00006314
+	branch r0 == r16 l00006310
 	goto l0000630C
-	// succ:  l0000630C l00006314
+	// succ:  l0000630C l00006310
 l00006304:
 	branch r0 == r16 l00006314
 	// succ:  l0000630C l00006314
 l0000630C:
-	r0 = r29 + 0x10<32>
 	r0 = r16
-	// succ:  l00006310_thunk_fn000063D0
+	// succ:  l00006310
+l00006310:
 l00006310_thunk_fn000063D0:
 	call fn000063D0 (retsize: 0;)
 	return
 	// succ:  _Putstr_exit
 l00006314:
-	// succ:  l00006314_thunk_fn000063D4
+	// succ:  l00006310_thunk_fn000063D0 l00006314_thunk_fn000063D4
 l00006314_thunk_fn000063D4:
 	call fn000063D4 (retsize: 0;)
 	return
@@ -1772,8 +1772,8 @@ l000063FC:
 	r0 = Mem0[r16 + 52<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r17
-	branch r2 > 0<32> l00006440
-	// succ:  l0000641C l00006440
+	branch r2 > 0<32> l0000643C
+	// succ:  l0000641C l0000643C
 l0000641C:
 	r2 = Mem0[r16 + 28<i32>:word32]
 	r1 = Mem0[r16 + 16<i32>:word32]
@@ -1789,9 +1789,17 @@ l00006430:
 	r0 = Mem0[r16 + 20<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r1
+	goto l00006440
 	// succ:  l00006440
+l0000643C:
+	r19 = Mem0[r16 + 32<i32>:word32]
+	r21 = 0x20<32>
+	goto l00006448
+	// succ:  l00006448
 l00006440:
 	r19 = Mem0[r16 + 32<i32>:word32]
+	// succ:  l00006448
+l00006448:
 	r17 = min<uint32>(r19, r21)
 	r3 = Mem0[r16 + 8<i32>:word32]
 	r0 = Mem0[r16 + 12<i32>:word32]
@@ -1807,8 +1815,8 @@ l0000646C:
 	r0 = Mem0[r16 + 52<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r17
-	branch r2 > 0<32> l000064B4
-	// succ:  l0000648C l000064B4
+	branch r2 > 0<32> l000064B0
+	// succ:  l0000648C l000064B0
 l0000648C:
 	r2 = Mem0[r16 + 36<i32>:word32]
 	r3 = Mem0[r16 + 28<i32>:word32]
@@ -1826,9 +1834,17 @@ l000064A4:
 	r0 = Mem0[r16 + 20<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r1
+	goto l000064B4
 	// succ:  l000064B4
+l000064B0:
+	r19 = Mem0[r16 + 40<i32>:word32]
+	r21 = 0x20<32>
+	goto l000064C0
+	// succ:  l000064C0
 l000064B4:
 	r19 = Mem0[r16 + 40<i32>:word32]
+	// succ:  l000064C0
+l000064C0:
 	r17 = min<uint32>(r19, r21)
 	r3 = Mem0[r16 + 8<i32>:word32]
 	r0 = Mem0[r16 + 12<i32>:word32]
@@ -1846,8 +1862,8 @@ l000064E4:
 	r0 = r0 + r17
 	r0 = Mem0[r16 + 60<i32>:byte]
 	p0 = r20 > 0<32>
-	branch r0 == 0<32> l0000654C
-	// succ:  l0000650C l0000654C
+	branch r0 == 0<32> l00006548
+	// succ:  l0000650C l00006548
 l0000650C:
 	r0 = r0 & 4<32>
 	r19 = 0x20<32>
@@ -1869,7 +1885,11 @@ l00006534:
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r17
 	branch r20 > 1<32> l00006514
+	goto l0000654C
 	// succ:  l0000654C l00006514
+l00006548:
+	r18 = 0<32>
+	// succ:  l0000654C
 l0000654C:
 	// succ:  l0000654C_thunk_fn0000661C
 l0000654C_thunk_fn0000661C:
@@ -1894,7 +1914,7 @@ l00006560:
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	Mem0[r29:word64] = r19_r18
-	r16 = 0x14<32>
+	r16 = 0x10014<32>
 	r18 = 0x10018<32>
 	// succ:  l00006578
 l00006578:
@@ -1918,17 +1938,13 @@ l00006594:
 	Mem0[r16:word32] = r17
 	// succ:  l000065B0
 l000065B0:
-	branch r0 > 2<32> l000065B4
-	goto l000065BC
-	// succ:  l000065BC l000065B4
-l000065B4:
-	branch r0 > 2<32> l000065B4
-	// succ:  l000065BC l000065B4
+	branch r0 > 2<32> l000065B0
+	// succ:  l000065BC l000065B0
 l000065BC:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r18:word32]
-	branch r16 == 0<32> l00006600
-	// succ:  l000065D0 l00006600
+	branch r16 == 0<32> l000065F8
+	// succ:  l000065D0 l000065F8
 l000065D0:
 	r16 = r0
 	r1_r0 = 0x100000001<64>
@@ -1955,8 +1971,6 @@ l000065F8:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	// succ:  l00006600
-l00006600:
 	v17 = r30
 	r31 = Mem0[v17 + 4<i32>:word32]
 	r30 = Mem0[v17:word32]
@@ -2042,22 +2056,18 @@ l0000663C:
 	Mem0[r16:word32] = r18
 	// succ:  l00006654
 l00006654:
-	branch r0 > 2<32> l00006658
-	goto l00006660
-	// succ:  l00006660 l00006658
-l00006658:
-	branch r0 > 2<32> l00006658
-	// succ:  l00006660 l00006658
+	branch r0 > 2<32> l00006654
+	// succ:  l00006660 l00006654
 l00006660:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l000066AC
-	// succ:  l00006674 l000066AC
+	branch r16 == 0<32> l000066A4
+	// succ:  l00006674 l000066A4
 l00006674:
 	r16 = r0
 	r1_r0 = 0x4000000001<64>
-	branch r16 == 0<32> l000066A8
-	// succ:  l00006680 l000066A8
+	branch r16 == 0<32> l000066A4
+	// succ:  l00006680 l000066A4
 l00006680:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -2079,13 +2089,6 @@ l000066A4:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l000066AC
-	// succ:  l000066AC
-l000066A8:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l000066AC
-l000066AC:
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]
@@ -2153,14 +2156,14 @@ l000066C0:
 	Mem0[r29 + 4<i32>:word32] = r4
 	Mem0[r3:word32] = 0<32>
 	r22 = r18 + 0xFFFFFFFF<32>
+	// succ:  l000066E0
+l000066E0:
 	r17 = Mem0[r22 + 1<i32>:byte]
 	call _Getpctype (retsize: 0;)
-	// succ:  l000066E4
-l000066E4:
 	r0 = Mem0[r13 + r17 * 2<32>:word16]
 	r22 = r22 + 1<32>
-	branch r0 == 1<32> l000066E4
-	// succ:  l000066FC l000066E4
+	branch r0 == 1<32> l000066E0
+	// succ:  l000066FC l000066E0
 l000066FC:
 	r0 = r0 & 0x144<32>
 	r1 = r1 + 1<i32>
@@ -2220,8 +2223,8 @@ l00006748:
 l00006758:
 	r0 = __set_bit<word32,word32>(r0, 0xA<32>)
 	r22 = r22 + 2<32>
-	goto l0000678C
-	// succ:  l0000678C
+	goto l00006788
+	// succ:  l00006788
 l00006768:
 	r0 = Mem0[r22:byte]
 	r19 = 0xA<32>
@@ -2240,8 +2243,6 @@ l00006788:
 	r25 = r22
 	goto l00006794
 	// succ:  l00006794
-l0000678C:
-	r25 = r22
 l00006790:
 	r25 = r25 + 1<32>
 	// succ:  l00006794
@@ -2256,87 +2257,7 @@ l000067A0:
 	r1 = Mem0[r29 + r17 * 2<32>:int16]
 	r27_r26 = 0xD1D000000000<64>
 	call memchr (retsize: 0;)
-	branch r20 == 0<32> l00006818
-	// succ:  l000067D4 l00006818
-l000067D4:
-	r20 = r0
-	r24 = r25
-	r17 = Mem0[r24 + 1<i32>:byte]
-	r2 = r19
-	r3 = r20 - r27
-	r1 = Mem0[r29 + r17 * 2<32>:int16]
-	r23 = r3 & 0xFF<32>
-	r17 = r26
-	r24 = r24 + 1<32>
-	r26 = r23 + r26 * r19
-	call memchr (retsize: 0;)
-	branch r20 == 1<32> l000067D4
-	// succ:  l0000680C l000067D4
-l0000680C:
-	r20 = r0
-	r24 = r25
-	r23 = r26
-	p0 = r22 == r24
-	r0 = r24 - r25
-	branch p0 l00006880
-	goto l00006820
-	// succ:  l00006820 l00006880
-l00006818:
-	p0 = r22 == r24
-	r0 = r24 - r25
-	// succ:  l00006820
-l00006820:
-	r1 = Mem0[0x0000D1F8<p32> + r19:byte]
-	branch __bit<word32,int32>(r0, -1<i32>) l0000686C
-	// succ:  l00006834 l0000686C
-l00006834:
-	r0 = r0 - r1
-	r1 = r19 + 0<32>
-	branch r0 >u r26 l0000684C
-	// succ:  l00006844 l0000684C
-l00006844:
-	r0 = r26 - r23
-	branch p0 l00006868
-	// succ:  l00006848 l00006868
-l00006848:
-	p0 = r0 == -1<i32>
-	call _Geterrno (retsize: 0;)
-	// succ:  l0000684C
-l0000684C:
-	Mem0[r0:word32] = 0x22<32>
-	r0 = Mem0[r29 + 4<i32>:word32]
-	r21 = 0x2B<32>
-	r26 = 0xFFFFFFFF<32>
-	r0 = Mem0[r29 + 8<i32>:word32]
-	p0 = r0
-	Mem0[r0:word32] = 1<32>
-	// succ:  l00006868
-l00006868:
-	p1 = r16 == 0<32>
-	r0 = 0<32> - r26
-	p0 = r21 == 0x2D<32>
-	goto l00006874
-	// succ:  l00006874
-l0000686C:
-	p1 = r16 == 0<32>
-	r0 = 0<32> - r26
-	// succ:  l00006874
-l00006874:
-	r0 = r26 + 0<32>
-	goto l00006890
-	// succ:  l00006890
-l00006880:
-	r0 = 0<32>
-	branch p0 l00006890
-	// succ:  l00006888 l00006890
-l00006888:
-	p0 = r8 == 0<32>
-	Mem0[r16:word32] = r18
-	// succ:  l00006888_thunk___restore_r16_through_r27_and_deallocframe
-l00006888_thunk___restore_r16_through_r27_and_deallocframe:
-	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
-	return
-	// succ:  _Stoulx_exit
+	branch r20 == 0<32> l0000680C
 l00006890:
 	// succ:  l00006890_thunk___restore_r16_through_r27_and_deallocframe
 l00006890_thunk___restore_r16_through_r27_and_deallocframe:
@@ -2351,7 +2272,87 @@ _Stoulx_exit:
 define _Stoul
 _Stoul_entry:
 	r29 = fp
+	goto l00006894
 	// succ:  l00006894
+l000067D0:
+	r17 = Mem0[r24 + 1<i32>:byte]
+	call _Getptolower (retsize: 0;)
+	// succ:  l000067D4 l0000680C l000067D8
+l000067D4:
+	r20 = r0
+	r24 = r25
+	r17 = Mem0[r24 + 1<i32>:byte]
+	// succ:  l000067D8
+l000067D8:
+	r2 = r19
+	r3 = r20 - r27
+	r1 = Mem0[r29 + r17 * 2<32>:int16]
+	r23 = r3 & 0xFF<32>
+	r17 = r26
+	r24 = r24 + 1<32>
+	r26 = r23 + r26 * r19
+	call memchr (retsize: 0;)
+	branch r20 == 1<32> l000067D0
+	// succ:  l0000680C l000067D0
+l0000680C:
+	r20 = r0
+	r24 = r25
+	r23 = r26
+	p0 = r22 == r24
+	r0 = r24 - r25
+	branch p0 l00006880
+	// succ:  l00006820 l00006880
+l00006820:
+	r1 = Mem0[0x0000D1F8<p32> + r19:byte]
+	branch __bit<word32,int32>(r0, -1<i32>) l00006868
+	// succ:  l00006834 l00006868
+l00006834:
+	r0 = r0 - r1
+	r1 = r19 + 0<32>
+	branch r0 >u r26 l00006848
+	// succ:  l00006844 l00006848
+l00006844:
+	r0 = r26 - r23
+	branch p0 l00006868
+	// succ:  l00006848 l00006868
+l00006848:
+	p0 = r0 == -1<i32>
+	call _Geterrno (retsize: 0;)
+	Mem0[r0:word32] = 0x22<32>
+	r0 = Mem0[r29 + 4<i32>:word32]
+	r21 = 0x2B<32>
+	r26 = 0xFFFFFFFF<32>
+	r0 = Mem0[r29 + 8<i32>:word32]
+	p0 = r0
+	Mem0[r0:word32] = 1<32>
+	// succ:  l00006868
+l00006868:
+	p1 = r16 == 0<32>
+	r0 = 0<32> - r26
+	p0 = r21 == 0x2D<32>
+	r0 = r26 + 0<32>
+	// succ:  l00006874_thunk__Stoulx
+l00006874_thunk__Stoulx:
+	call _Stoulx (retsize: 0;)
+	return
+	// succ:  _Stoul_exit
+l00006880:
+	r0 = 0<32>
+	branch p0 l00006890
+	goto l00006888
+	// succ:  l00006888 l00006880_thunk__Stoulx
+l00006880_thunk__Stoulx:
+	call _Stoulx (retsize: 0;)
+	return
+	// succ:  _Stoul_exit
+l00006888:
+	p0 = r8 == 0<32>
+	Mem0[r16:word32] = r18
+	// succ:  l00006888_thunk___restore_r16_through_r27_and_deallocframe
+l00006888_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Stoul_exit
 l00006894:
 	// succ:  l00006894_thunk__Stoulx
 l00006894_thunk__Stoulx:
@@ -2470,7 +2471,7 @@ l00006958:
 	r29 = v4 - 24<i32>
 	call __save_r16_through_r21 (retsize: 0;)
 	r1 = 1<32>
-	r20 = 0x2C<32>
+	r20 = 0x1002C<32>
 	r16 = r0
 	r19 = 0x10024<32>
 	r18 = 0xE8E0<32>
@@ -2490,7 +2491,7 @@ l00006990:
 l00006994:
 	p0 = r0 == 0<32>
 	r21 = 0x14<32>
-	r17 = 0x20<32>
+	r17 = 0xE8E0<32>
 	// succ:  l000069A0
 l000069A0:
 	r0 = r17
@@ -2520,12 +2521,8 @@ l000069D0:
 	r0 = 1<32>
 	// succ:  l000069E4
 l000069E4:
-	branch r0 > 2<32> l000069E8
-	goto l000069F0
-	// succ:  l000069F0 l000069E8
-l000069E8:
-	branch r0 > 2<32> l000069E8
-	// succ:  l000069F0 l000069E8
+	branch r0 > 2<32> l000069E4
+	// succ:  l000069F0 l000069E4
 l000069F0:
 	r0 = Mem0[r20:word32]
 	r1 = Mem0[r19:byte]
@@ -2563,7 +2560,7 @@ l00006A18:
 	p0 = r1
 	r1 = p0 ? 0x14<32> : 0<32>
 	r1 = 0xE8E0<32>
-	call fn0000AF34 (retsize: 0;)
+	call __sys_Mtxunlock (retsize: 0;)
 	r0 = r1 + (r0 << 2<32>)
 	// succ:  l00006A40
 l00006A40:
@@ -2590,7 +2587,7 @@ l00006A44:
 	r29 = v4 - 24<i32>
 	call __save_r16_through_r21 (retsize: 0;)
 	r1 = 1<32>
-	r20 = 0x2C<32>
+	r20 = 0x1002C<32>
 	r16 = r0
 	r19 = 0x10028<32>
 	r18 = 0xE930<32>
@@ -2610,7 +2607,7 @@ l00006A7C:
 l00006A80:
 	p0 = r0 == 0<32>
 	r21 = 0x14<32>
-	r17 = 0x20<32>
+	r17 = 0xE8E0<32>
 	// succ:  l00006A90
 l00006A90:
 	r0 = r17
@@ -2640,25 +2637,18 @@ l00006AC4:
 	r0 = 1<32>
 	// succ:  l00006AD4
 l00006AD4:
-	branch r0 > 2<32> l00006AD8
-	goto l00006AE0
-	// succ:  l00006AE0 l00006AD8
-l00006AD8:
-	branch r0 > 2<32> l00006AD8
-	// succ:  l00006AE0 l00006AD8
+	branch r0 > 2<32> l00006AD4
+	// succ:  l00006AE0 l00006AD4
 l00006AE0:
 	r0 = Mem0[r20:word32]
 	p0 = r0
-	branch r16 > r0 l00006AE4_thunk__Unlocksyslock
-	goto l00006AF0
-	// succ:  l00006AF0 l00006AE4_thunk__Unlocksyslock
-l00006AE4_thunk__Unlocksyslock:
-	call _Unlocksyslock (retsize: 0;)
-	return
-	// succ:  _Locksyslock_exit
+	branch r16 > r0 l00006AF4
+	// succ:  l00006AF0 l00006AF4
 l00006AF0:
 	r0 = p0 ? 4<32> : 0<32>
 	call fn0000AEF4 (retsize: 0;)
+	// succ:  l00006AF4
+l00006AF4:
 	// succ:  l00006AF4_thunk___restore_r16_through_r21_and_deallocframe
 l00006AF4_thunk___restore_r16_through_r21_and_deallocframe:
 	call __restore_r16_through_r21_and_deallocframe (retsize: 0;)
@@ -2683,7 +2673,7 @@ l00006AF8:
 	p0 = r1
 	r1 = p0 ? 4<32> : 0<32>
 	r1 = 0xE930<32>
-	call fn0000AF34 (retsize: 0;)
+	call __sys_Mtxunlock (retsize: 0;)
 	r0 = r1 + (r0 << 2<32>)
 	v11 = r30
 	r31 = Mem0[v11 + 4<i32>:word32]
@@ -2733,22 +2723,18 @@ l00006B68:
 	Mem0[r16:word32] = r18
 	// succ:  l00006B80
 l00006B80:
-	branch r0 > 2<32> l00006B84
-	goto l00006B8C
-	// succ:  l00006B8C l00006B84
-l00006B84:
-	branch r0 > 2<32> l00006B84
-	// succ:  l00006B8C l00006B84
+	branch r0 > 2<32> l00006B80
+	// succ:  l00006B8C l00006B80
 l00006B8C:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l00006BD4
-	// succ:  l00006BA0 l00006BD4
+	branch r16 == 0<32> l00006BCC
+	// succ:  l00006BA0 l00006BCC
 l00006BA0:
 	r16 = r0
 	r1_r0 = 0x400000001<64>
-	branch r16 == 0<32> l00006BD0
-	// succ:  l00006BAC l00006BD0
+	branch r16 == 0<32> l00006BCC
+	// succ:  l00006BAC l00006BCC
 l00006BAC:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -2771,13 +2757,8 @@ l00006BCC:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l00006BD4
-	// succ:  l00006BD4
+	// succ:  l00006BD0
 l00006BD0:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00006BD4
-l00006BD4:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
@@ -2860,12 +2841,12 @@ l00006C34:
 	r21 = 0<32>
 	r19 = 0<32>
 	r0 = CONVERT(SLICE(r0, byte, 0), byte, uint32)
-	branch p0 l00006D14
-	// succ:  l00006C4C l00006D14
+	branch p0 l00006D10
+	// succ:  l00006C4C l00006D10
 l00006C4C:
 	p0 = SLICE(r0, byte, 0) >u SLICE(0xF<8>, byte, 0)
-	branch r22 == 0<32> l00006D14
-	// succ:  l00006C58 l00006D14
+	branch r22 == 0<32> l00006D10
+	// succ:  l00006C58 l00006D10
 l00006C58:
 	r22 = Mem0[r6 + r0 * 4<32>:word32]
 	r21 = r21 + 1<32>
@@ -2904,27 +2885,19 @@ l00006CC0:
 	r3 = r1 + 0<32>
 	r3 = r17 + 0<32>
 	Mem0[r2:byte] = r3
-	branch p0 l00006CF0
-	// succ:  l00006CE0 l00006CF0
+	branch p0 l00006CEC
+	// succ:  l00006CE0 l00006CEC
 l00006CE0:
 	p0 = SLICE(r3, byte, 0) == SLICE(0<8>, byte, 0)
 	r1 = r1 & 0x4000<32>
+	// succ:  l00006CEC
+l00006CEC:
 	Mem0[r18 + 6<i32>:word16] = r0
 	goto l00006D3C
 	// succ:  l00006D3C
-l00006CF0:
-	Mem0[r18 + 6<i32>:word16] = r0
-	goto l00006D40
-	// succ:  l00006D40
 l00006D10:
 	r19 = 0xFFFFFFFF<32>
 	call _Geterrno (retsize: 0;)
-	goto l00006D18
-	// succ:  l00006D18
-l00006D14:
-	r19 = 0xFFFFFFFF<32>
-	// succ:  l00006D18
-l00006D18:
 	Mem0[r0:word32] = 0x58<32>
 	goto l00006DB8
 	// succ:  l00006DB8
@@ -2934,25 +2907,17 @@ l00006D24:
 	r0 = Mem0[r3:word32]
 	r0 = Mem0[r0:word16]
 	r19 = r0 & 0xF00<32>
-	goto l00006D58
-	// succ:  l00006D58
 l00006D3C:
-	goto l00006D5C
-	// succ:  l00006D5C
-l00006D40:
-	Mem0[r18 + 4<i32>:word32] = 0<32>
-	Mem0[r18:word32] = 0<32>
-	r19 = 0<32>
-	goto l00006E28
-	// succ:  l00006E28
+	// succ:  l00006D58 l00006D5C
 l00006D58:
 	// succ:  l00006D5C
 l00006D5C:
-	// succ:  l00006DAC
-l00006DAC:
+	// succ:  l00006DA8
+l00006DA8:
 	Mem0[r16:byte] = r1
 	r4 = -1<i32>
 	r1 = 0xFFFFFFFA<32>
+	r3 = 0<32> - r0
 	r2 = r16 + 1<32>
 	r1 = r1 + r0 * 6<32>
 	r3 = max<int32>(r3, r4)
@@ -2972,13 +2937,6 @@ l00006DE4_thunk_fn00006E54:
 	call fn00006E54 (retsize: 0;)
 	return
 	// succ:  _Wctombx_exit
-l00006E28:
-	v25 = r30
-	r31 = Mem0[v25 + 4<i32>:word32]
-	r30 = Mem0[v25:word32]
-	r29 = v25 + 8<i32>
-	goto l00006C10
-	// succ:  l00006C10
 _Wctombx_exit:
 
 
@@ -3013,8 +2971,12 @@ l00006E1C:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r1_r0 = r18_r16
 	r3_r2 = r19_r17
-	// succ:  l00006E1C_thunk__Wctombx
-l00006E1C_thunk__Wctombx:
+	v23 = r30
+	r31 = Mem0[v23 + 4<i32>:word32]
+	r30 = Mem0[v23:word32]
+	r29 = v23 + 8<i32>
+	// succ:  l00006E28_thunk__Wctombx
+l00006E28_thunk__Wctombx:
 	call _Wctombx (retsize: 0;)
 	return
 	// succ:  _Wctomb_exit
@@ -3061,7 +3023,7 @@ l00006E40:
 	r17 = r1 * r0
 	r0 = r17
 	call malloc (retsize: 0;)
-	branch r16 == 0<32> l00006E64
+	branch r16 == 0<32> l00006E60
 calloc_exit:
 
 
@@ -3072,46 +3034,68 @@ fn00006E54_entry:
 	r29 = fp
 	// succ:  l00006E54
 l00006E54:
-	branch r16 == 0<32> l00006E64_in_fn00006E54
-	goto l00006E5C_in_fn00006E54
-	// succ:  l00006E5C_in_fn00006E54 l00006E64_in_fn00006E54
+	branch r16 == 0<32> l00006E54_thunk_fn00006E64
+	goto l00006E54_thunk_fn00006E5C
+	// succ:  l00006E54_thunk_fn00006E5C l00006E54_thunk_fn00006E64
 l00006E54:
-	// succ:  l00006E5C l00006E64
+	call fn00006E5C (retsize: 0;)
+	return
+	// succ:  l00006E54_thunk_fn00006E5C l00006E54_thunk_fn00006E5C fn00006E54_exit
+l00006E54_thunk_fn00006E5C:
+	call fn00006E5C (retsize: 0;)
+	return
+	// succ:  fn00006E54_exit
+l00006E54_thunk_fn00006E5C:
+	call fn00006E5C (retsize: 0;)
+	return
+	// succ:  fn00006E54_exit
+l00006E54_thunk_fn00006E5C:
+	call fn00006E5C (retsize: 0;)
+	return
+	// succ:  fn00006E54_exit
+l00006E54_thunk_fn00006E64:
+	call fn00006E64 (retsize: 0;)
+	return
+	// succ:  fn00006E54_exit
+fn00006E54_exit:
+
+
+// fn00006E5C
+// Return size: 0
+define fn00006E5C
+fn00006E5C_entry:
+	r29 = fp
+	// succ:  l00006E5C
 l00006E5C:
 	r16 = r0
 	r1_r0 = 0<64>
 	r2 = r17
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	// succ:  l00006E60
+l00006E60:
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
-	// succ:  fn00006E54_exit
-l00006E5C_in_fn00006E54:
-	r16 = r0
-	r1_r0 = 0<64>
-	r2 = r17
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
-	return
-	// succ:  fn00006E54_exit
+fn00006E5C_exit:
+
+
+// fn00006E64
+// Return size: 0
+define fn00006E64
+fn00006E64_entry:
+	r29 = fp
+	// succ:  l00006E64
 l00006E64:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v4 = r30
+	r31 = Mem0[v4 + 4<i32>:word32]
+	r30 = Mem0[v4:word32]
+	r29 = v4 + 8<i32>
 	return
-	// succ:  fn00006E54_exit
-l00006E64_in_fn00006E54:
-	v5 = r30
-	r31 = Mem0[v5 + 4<i32>:word32]
-	r30 = Mem0[v5:word32]
-	r29 = v5 + 8<i32>
-	return
-	// succ:  fn00006E54_exit
-fn00006E54_exit:
+	// succ:  fn00006E64_exit
+l00006E64:
+	// succ:  fn00006E64_exit
+fn00006E64_exit:
 
 
 // _Tls_get__Errno
@@ -3153,22 +3137,18 @@ l00006EA8:
 	Mem0[r16:word32] = r18
 	// succ:  l00006EC0
 l00006EC0:
-	branch r0 > 2<32> l00006EC4
-	goto l00006ECC
-	// succ:  l00006ECC l00006EC4
-l00006EC4:
-	branch r0 > 2<32> l00006EC4
-	// succ:  l00006ECC l00006EC4
+	branch r0 > 2<32> l00006EC0
+	// succ:  l00006ECC l00006EC0
 l00006ECC:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l00006F0C
-	// succ:  l00006EE0 l00006F0C
+	branch r16 == 0<32> l00006F04
+	// succ:  l00006EE0 l00006F04
 l00006EE0:
 	r16 = r0
 	r1_r0 = 0x400000001<64>
-	branch r16 == 0<32> l00006F08
-	// succ:  l00006EEC l00006F08
+	branch r16 == 0<32> l00006F04
+	// succ:  l00006EEC l00006F04
 l00006EEC:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -3186,13 +3166,6 @@ l00006F04:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l00006F0C
-	// succ:  l00006F0C
-l00006F08:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00006F0C
-l00006F0C:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
@@ -3276,27 +3249,25 @@ l00006F70:
 	r16 = r0
 	r2 = Mem0[gp + 4<i32>:word32]
 	r1 = Mem0[gp + 12<i32>:word32]
+	// succ:  l00006F84
+l00006F84:
 	r0 = Mem0[gp + 8<i32>:word32]
 	r2 = r1 + 1<32>
-	// succ:  l00006F88
-l00006F88:
 	Mem0[gp + 64<i32>:word32] = r2
 	r0 = Mem0[r6 + r1 * 4<32>:word32]
 	call r0 (retsize: 0;)
 	r1 = Mem0[gp + 12<i32>:word32]
-	branch r0 >u r1 l00006F88
-	// succ:  l00006FA8 l00006F88
+	branch r0 >u r1 l00006F84
+	// succ:  l00006FA8 l00006F84
 l00006FA8:
 	r0 = Mem0[gp + 4<i32>:word32]
 	r1 = Mem0[gp + 8<i32>:word32]
 	r0 = r0 + 0xFFFFFFFF<32>
 	Mem0[gp:word32] = r0
 	r1 = Mem0[r22 + r0 * 4<32>:word32]
-	// succ:  l00006FB4
-l00006FB4:
 	call r1 (retsize: 0;)
-	branch r0 == 1<32> l00006FB4
-	// succ:  l00006FD0 l00006FB4
+	branch r0 == 1<32> l00006FA8
+	// succ:  l00006FD0 l00006FA8
 l00006FD0:
 	r0 = Mem0[gp + 64<i32>:word32]
 	r17 = 0xE940<32>
@@ -3329,79 +3300,39 @@ l00006FF0:
 	r30 = v4
 	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
-	// succ:  l00006FF0_thunk_fn00006FF4
-l00006FF0_thunk_fn00006FF4:
-	call fn00006FF4 (retsize: 0;)
-	return
-	// succ:  free_exit
-free_exit:
-
-
-// fn00006FF4
-// Return size: 0
-define fn00006FF4
-fn00006FF4_entry:
-	r29 = fp
-	// succ:  l00006FF4
-l00006FF4:
-	branch r16 == 0<32> l00006FF4_thunk_fn000070A0
-	goto l00006FF4_thunk_fn00007000
-	// succ:  l00006FF4_thunk_fn00007000 l00006FF4_thunk_fn000070A0
-l00006FF4:
-	branch r16 == 0<32> l000070A0
-	goto l00006FF4_thunk_fn00007000
-	// succ:  l00006FF4_thunk_fn00007000 l00006FF4_thunk_fn000070A0
-l00006FF4_thunk_fn00007000:
-	call fn00007000 (retsize: 0;)
-	return
-	// succ:  fn00006FF4_exit
-l00006FF4_thunk_fn00007000:
-	call fn00007000 (retsize: 0;)
-	return
-	// succ:  fn00006FF4_exit
-l00006FF4_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00006FF4_exit
-l00006FF4_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00006FF4_exit
-fn00006FF4_exit:
-
-
-// fn00007000
-// Return size: 0
-define fn00007000
-fn00007000_entry:
-	r29 = fp
-	// succ:  l00007000
+	branch r16 == 0<32> l0000709C
+	// succ:  l00007000 l0000709C
 l00007000:
 	r16 = r0
 	r1 = 8<32>
-	branch r0 == 0<32> l000070A0
-	// succ:  l00007014 l00007014_thunk_fn000070A0
+	branch r0 == 0<32> l0000709C
+	// succ:  l00007014 l0000709C
 l00007014:
 	r0 = r0 & 7<32>
 	r0 = 1<32>
 	r1 = Mem0[gp + 72<i32>:word32]
 	r0 = r16 + 0xFFFFFFF8<32>
 	branch p0 l00007060
-	goto l00007028
 	// succ:  l00007028 l00007060
-l00007014_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00007000_exit
 l00007028:
 	p0 = r1 >u r0
 	Mem0[gp:word32] = r0
 	Mem0[r16 - 4<i32>:word32] = r1
-	// succ:  l0000702C_thunk_fn000070A0
-l0000702C_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00007000_exit
+	branch r2 == 0<32> l00007094
+	// succ:  l0000703C l00007094
+l0000703C:
+	r2 = Mem0[r0 + 4<i32>:word32]
+	r3 = r0 + r1
+	r2 = 0<32>
+	Mem0[gp + 64<i32>:word32] = r2
+	r2 = Mem0[r0 + 4<i32>:word32]
+	r2 = Mem0[r2 + 4<i32>:word32]
+	r3 = Mem0[r2:word32]
+	Mem0[r0 + 4<i32>:word32] = r2
+	r1 = r1 + r3
+	Mem0[r0:word32] = r1
+	goto l00007094
+	// succ:  l00007094
 l00007060:
 	r2 = r1
 	r1 = Mem0[r2 + 4<i32>:word32]
@@ -3414,13 +3345,8 @@ l0000706C:
 l00007070:
 	p1 = r0 >u r1
 	r3 = Mem0[r2:word32]
-	branch r4 >u r0 l00007098
-	goto l00007080
-	// succ:  l00007080 l00007078_thunk_fn000070A0
-l00007078_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00007000_exit
+	branch r4 >u r0 l00007094
+	// succ:  l00007080 l00007094
 l00007080:
 	r4 = r2 + r3
 	branch p0 l000070B8
@@ -3429,39 +3355,8 @@ l00007084:
 	r3 = Mem0[r16 - 8<i32>:word32]
 	r4 = r16
 	r4 = r4 + (r3 + 0xFFFFFFF8<32>)
-	// succ:  l0000708C_thunk_fn000070A0
-l0000708C_thunk_fn000070A0:
-	call fn000070A0 (retsize: 0;)
-	return
-	// succ:  fn00007000_exit
-l000070B8:
-	Mem0[r2 + 4<i32>:word32] = r0
-	Mem0[r16 - 4<i32>:word32] = r1
-fn00007000_exit:
-
-
-// fn000070A0
-// Return size: 0
-define fn000070A0
-fn000070A0_entry:
-	r29 = fp
-	goto l000070A0
-	// succ:  l000070A0
-l00007030:
-	branch r2 == 0<32> l00007098
-	// succ:  l0000703C l00007098
-l0000703C:
-	r2 = Mem0[r0 + 4<i32>:word32]
-	r3 = r0 + r1
-	r2 = 0<32>
-	Mem0[gp + 64<i32>:word32] = r2
-	r2 = Mem0[r0 + 4<i32>:word32]
-	r2 = Mem0[r2 + 4<i32>:word32]
-	r3 = Mem0[r2:word32]
-	Mem0[r0 + 4<i32>:word32] = r2
-	r1 = r1 + r3
-	Mem0[r0:word32] = r1
-	// succ:  l00007094
+	goto l00007098
+	// succ:  l00007098
 l00007094:
 	r0 = 1<32>
 	call _Unlocksyslock (retsize: 0;)
@@ -3471,19 +3366,16 @@ l00007098:
 	r0 = 1<32>
 	// succ:  l0000709C
 l0000709C:
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
-	// succ:  fn000070A0_exit
-l000070A0:
-	r1 = Mem0[r16 - 8<i32>:word32]
-	r0 = r2
-	r1 = r1 + r3
-	goto l00007030
-	// succ:  l00007030
-fn000070A0_exit:
+	// succ:  free_exit
+l000070B8:
+	Mem0[r2 + 4<i32>:word32] = r0
+	Mem0[r16 - 4<i32>:word32] = r1
+free_exit:
 
 
 // fwrite
@@ -3527,36 +3419,30 @@ l00007100:
 	r2 = r18
 	r3 = r18
 	p0 = p0 | !p0
-	branch r0 == 0<32> l00007154
-	// succ:  l00007120 l00007154
+	branch r0 == 0<32> l00007148
+	// succ:  l00007120 l00007148
 l00007120:
 	r0 = r0 & 4<32>
 	p1 = p0 | p0
 	p0 = p0 | !p0
-	call fn00007354 (retsize: 0;)
+	call memchr (retsize: 0;)
 	r3 = p0
 	r1 = Mem0[r29 + 8<i32>:word64]
 	r3 = r18
 	p0 = r0 == 0<32>
-	branch p0 l0000714C
-	// succ:  l0000713C l0000714C
+	branch p0 l00007148
+	// succ:  l0000713C l00007148
 l0000713C:
 	p1 = r1
 	r3 = r0 + (0x41<32> - r19)
 	p0 = p0 & p0
 	p1 = p0 | p0
+	// succ:  l00007148
+l00007148:
 	r2 = Mem0[r17 + 24<i32>:word32]
 	r0 = Mem0[r17 + 16<i32>:word32]
 	r1 = r19
 	r5 = p1
-	goto l00007154
-	// succ:  l00007154
-l0000714C:
-	r2 = Mem0[r17 + 24<i32>:word32]
-	r0 = Mem0[r17 + 16<i32>:word32]
-	r1 = r19
-	// succ:  l00007154
-l00007154:
 	Mem0[r29 + 8<i32>:word32] = r5
 	r4 = r2 - r0
 	p0 = r3 >u r4
@@ -3575,8 +3461,8 @@ l00007154:
 l00007194:
 	r24 = Mem0[r17 + 8<i32>:word32]
 	r0 = r17 + 0<32>
-	branch p0 l000071B8
-	// succ:  l000071A4 l000071B8
+	branch p0 l000071B4
+	// succ:  l000071A4 l000071B4
 l000071A4:
 	p0 = r0
 	call fflush (retsize: 0;)
@@ -3605,8 +3491,8 @@ l000071C4:
 l000071C8:
 	r0 = Mem0[r17 + 1<i32>:byte]
 	p0 = r22 == 0<32>
-	branch r0 == 0<32> l000071F4
-	// succ:  l000071D8 l000071F4
+	branch r0 == 0<32> l000071F0
+	// succ:  l000071D8 l000071F0
 l000071D8:
 	r0 = r0 & 8<32>
 	r20 = Mem0[r17 + 8<i32>:word32]
@@ -3616,16 +3502,11 @@ l000071D8:
 	p0 = r0 == 0<32>
 	r22 = r19 - r20
 	r22 = 0<32>
+	// succ:  l000071F0
+l000071F0:
 	r17 = r21 - r18
 	r0 = r17
 	call _Unlockfilelock (retsize: 0;)
-	goto l000071FC
-	// succ:  l000071FC
-l000071F4:
-	r17 = r21 - r18
-	r0 = r17
-	// succ:  l000071FC
-l000071FC:
 	r1 = r16
 	r0 = r17 - r22
 	call __qdsp_udivsi3 (retsize: 0;)
@@ -3647,9 +3528,9 @@ dkw_malloc_init_entry:
 	// succ:  l00007210
 l00007210:
 	r1 = r1 + (0x41<32> - r0)
-	// succ:  l00007214_thunk_fn00006FF4
-l00007214_thunk_fn00006FF4:
-	call fn00006FF4 (retsize: 0;)
+	// succ:  l00007214_thunk_free
+l00007214_thunk_free:
+	call free (retsize: 0;)
 	return
 	// succ:  dkw_malloc_init_exit
 dkw_malloc_init_exit:
@@ -3670,89 +3551,18 @@ l00007220:
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r0 = 1<32>
 	r16 = r0
-	// succ:  l00007220_thunk_fn0000722C
-l00007220_thunk_fn0000722C:
-	call fn0000722C (retsize: 0;)
-	return
-	// succ:  malloc_exit
-malloc_exit:
-
-
-// fn00007224
-// Return size: 0
-define fn00007224
-fn00007224_entry:
-	r29 = fp
-	// succ:  l00007224
-l00007224:
-	v4 = r29 - 8<i32>
-	Mem0[v4:word32] = r30
-	Mem0[v4 + 4<i32>:word32] = r31
-	r30 = v4
-	r29 = v4 - 8<i32>
-	Mem0[r29 + 496<i32>:word64] = r17_r16
-	r0 = 1<32>
-	// succ:  l00007224_thunk_fn0000722C
-l00007224_thunk_fn0000722C:
-	call fn0000722C (retsize: 0;)
-	return
-	// succ:  fn00007224_exit
-fn00007224_exit:
-
-
-// fn0000722C
-// Return size: 0
-define fn0000722C
-fn0000722C_entry:
-	r29 = fp
-	// succ:  l0000722C
-l0000722C:
-	r1 = r16 + 0xF<32>
-	r17 = r1 & 0xFFFFFFF8<32>
-	call _Locksyslock (retsize: 0;)
-	r0 = 8<32>
-	branch p0 l00007238_thunk_fn000072F8
-	goto l00007238_thunk_fn00007240
-	// succ:  l00007238_thunk_fn00007240 l00007238_thunk_fn000072F8
-l0000722C:
 	r1 = r16 + 0xF<32>
 	r17 = r1 & 0xFFFFFFF8<32>
 	call _Locksyslock (retsize: 0;)
 	r0 = 8<32>
 	branch p0 l000072F8
-	goto l00007238_thunk_fn00007240
-	// succ:  l00007238_thunk_fn00007240 l00007238_thunk_fn000072F8
-l00007238_thunk_fn00007240:
-	call fn00007240 (retsize: 0;)
-	return
-	// succ:  fn0000722C_exit
-l00007238_thunk_fn00007240:
-	call fn00007240 (retsize: 0;)
-	return
-	// succ:  fn0000722C_exit
-l00007238_thunk_fn000072F8:
-	call fn000072F8 (retsize: 0;)
-	return
-	// succ:  fn0000722C_exit
-l00007238_thunk_fn000072F8:
-	call fn000072F8 (retsize: 0;)
-	return
-	// succ:  fn0000722C_exit
-fn0000722C_exit:
-
-
-// fn00007240
-// Return size: 0
-define fn00007240
-fn00007240_entry:
-	r29 = fp
-	// succ:  l00007240
+	// succ:  l00007240 l000072F8
 l00007240:
 	p0 = r9 >u r8
-	// succ:  l00007254
-l00007254:
+	// succ:  l00007250
+l00007250:
 	r4 = Mem0[gp + 68<i32>:word32]
-	r2 = 8<32>
+	r2 = 0x10048<32>
 	r5 = r4
 	branch p0 l00007280
 	// succ:  l00007264 l00007280
@@ -3774,27 +3584,25 @@ l00007280:
 	// succ:  l000072E0
 l000072E0:
 	branch p0 l000072F8
-	goto l000072E4
-	// succ:  l000072E4 l000072E0_thunk_fn000072F8
-l000072E0_thunk_fn000072F8:
-	call fn000072F8 (retsize: 0;)
-	return
-	// succ:  fn00007240_exit
+	// succ:  l000072E4 l000072F8
 l000072E4:
 	p0 = r0 == 0<32>
-	branch r17 >u r2 l00007304
-	// succ:  l000072F0 l00007304
+	branch r17 >u r2 l00007300
+	// succ:  l000072F0 l00007300
 l000072F0:
 	r2 = r3 + 0xFFFFFFF8<32>
 	Mem0[r0:byte] = r2
 	r2 = Mem0[r1 + 4<i32>:word32]
+	goto l000072FC
 	// succ:  l000072FC
+l000072F8:
+	r0 = 1<32>
 l000072FC:
 	r0 = 1<32>
-	goto l00007340
-	// succ:  l00007340
-l00007304:
+	// succ:  l00007340 l00007300
+l00007300:
 	Mem0[r0:byte] = r2
+	r2 = r1 + r17
 	r2 = Mem0[r0:word32]
 	r3 = Mem0[r1:word32]
 	Mem0[r2:byte] = r0
@@ -3815,24 +3623,13 @@ l00007334:
 	// succ:  l00007340
 l00007340:
 	call _Unlocksyslock (retsize: 0;)
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v20 = r30
+	r31 = Mem0[v20 + 4<i32>:word32]
+	r30 = Mem0[v20:word32]
+	r29 = v20 + 8<i32>
 	return
-	// succ:  fn00007240_exit
-fn00007240_exit:
-
-
-// fn000072F8
-// Return size: 0
-define fn000072F8
-fn000072F8_entry:
-	r29 = fp
-	// succ:  l000072F8
-l000072F8:
-	r0 = 1<32>
-fn000072F8_exit:
+	// succ:  malloc_exit
+malloc_exit:
 
 
 // memchr
@@ -3845,19 +3642,19 @@ l00007350:
 	r3 = r0
 	r0 = 0<32>
 	branch p0 l00007374
-	// succ:  l00007350_thunk_fn00007358 l00007374
-l00007350_thunk_fn00007358:
-	call fn00007358 (retsize: 0;)
-	return
-	// succ:  memchr_exit
-l00007368:
-	branch r2 == 1<32> l00007368
-	// succ:  l0000736C l0000737C l00007378 l00007368
+	// succ:  l00007358 l00007374
+l00007358:
+	p0 = r2 == 0<32>
+	r1 = r1 & 0xFF<32>
+	branch r4 == r1 l00007378
+l00007364:
+	branch r4 == r1 l0000737C
+	// succ:  l0000736C l00007378 l0000737C
 l0000736C:
 	r4 = Mem0[r3:byte]
-	branch r2 == 1<32> l00007368
+	branch r2 == 1<32> l00007364
 	goto l00007378
-	// succ:  l00007378 l00007368
+	// succ:  l00007378 l00007364
 l00007374:
 	return
 	// succ:  memchr_exit
@@ -3872,36 +3669,6 @@ l0000737C_thunk_puts:
 	return
 	// succ:  memchr_exit
 memchr_exit:
-
-
-// fn00007354
-// Return size: 0
-define fn00007354
-fn00007354_entry:
-	r29 = fp
-	// succ:  l00007354
-l00007354:
-	r3 = r0
-	r0 = 0<32>
-	// succ:  l00007354_thunk_fn00007358
-l00007354_thunk_fn00007358:
-	call fn00007358 (retsize: 0;)
-	return
-	// succ:  fn00007354_exit
-fn00007354_exit:
-
-
-// fn00007358
-// Return size: 0
-define fn00007358
-fn00007358_entry:
-	r29 = fp
-	// succ:  l00007358
-l00007358:
-	p0 = r2 == 0<32>
-	r1 = r1 & 0xFF<32>
-	branch r4 == r1 l0000737C
-fn00007358_exit:
 
 
 // puts
@@ -3921,8 +3688,8 @@ l00007380:
 	r0 = 0xE498<32>
 	call _Lockfilelock (retsize: 0;)
 	call fputs (retsize: 0;)
-	branch p0 l000073C0
-	// succ:  l000073A8 l000073C0
+	branch p0 l000073BC
+	// succ:  l000073A8 l000073BC
 l000073A8:
 	p0 = __bit<word32,word32>(r0, 0<32>)
 	p1 = p1 | !p1
@@ -3930,14 +3697,10 @@ l000073A8:
 	call fputc (retsize: 0;)
 	p0 = r0 > 0xFFFFFFFF<32>
 	p1 = !p0
+	// succ:  l000073BC
+l000073BC:
 	r0 = 0xE498<32>
 	r1 = p1
-	goto l000073CC
-	// succ:  l000073CC
-l000073C0:
-	r0 = 0xE498<32>
-	// succ:  l000073CC
-l000073CC:
 	call _Unlockfilelock (retsize: 0;)
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r1 = Mem0[r29:word64]
@@ -3980,26 +3743,6 @@ l000073E0:
 memcpy_exit:
 
 
-// fn000073E4
-// Return size: 0
-define fn000073E4
-fn000073E4_entry:
-	r29 = fp
-	// succ:  l000073E4
-l000073E4:
-	p1 = r1 == r0
-	p0 = r2 >u 0x17<32>
-	r14 = r1 | r0
-	r14 = r14 | r2
-	p3 = r2 >u 0x5F<32>
-	r9 = r2 >>u 3<32>
-	p1 = p2 | p1
-	__dcfetch(r1, 0<32>)
-	return
-	// succ:  fn000073E4_exit
-fn000073E4_exit:
-
-
 // strlen
 // Return size: 0
 define strlen
@@ -4009,8 +3752,8 @@ strlen_entry:
 l000076E0:
 	r4 = Mem0[r0:byte]
 	r2 = 0<32>
-	branch p1 l00007734
-	// succ:  l000076EC l00007734
+	branch p1 l00007730
+	// succ:  l000076EC l00007730
 l000076EC:
 	p1 = __bitsclr(r0, 7<32>)
 	branch p0 l00007728
@@ -4020,16 +3763,12 @@ l000076F0:
 	r5_r4 = Mem0[r0 + r2:word64]
 	r2 = r2 + 8<32>
 	r7_r6 = 0<64>
+	// succ:  l00007700
+l00007700:
 	r5_r4 = Mem0[r0 + r2:word64]
 	r2 = r2 + 8<32>
-	branch p0 l00007704
-	goto l00007710
-	// succ:  l00007710 l00007704
-l00007704:
-	r5_r4 = Mem0[r0 + r2:word64]
-	r2 = r2 + 8<32>
-	branch p0 l00007704
-	// succ:  l00007710 l00007704
+	branch p0 l00007700
+	// succ:  l00007710 l00007700
 l00007710:
 	p0 = __any8(vcmp__eq<byte[8]>(r5_r4, r7_r6))
 	p0 = vcmp__eq<byte[8]>(r5_r4, r7_r6)
@@ -4041,25 +3780,23 @@ l00007710:
 l00007728:
 	return
 	// succ:  strlen_exit
-l00007734:
-	branch p1 l0000775C
-	// succ:  l00007738 l0000775C
+l00007730:
+	branch p1 l00007758
+	// succ:  l00007738 l00007758
 l00007738:
 	p1 = r4 == 0<32>
+	r1 = r0 + r2
 	r4 = Mem0[r1 + 1<i32>:byte]
 	r2 = r2 + 1<32>
-	branch p0 l00007734
-	// succ:  l00007748 l00007734
+	branch p0 l00007730
+	// succ:  l00007748 l00007730
 l00007748:
 	p0 = __bitsclr(r1, 7<32>)
 	r4 = Mem0[r12 + r2:word64]
 	r2 = r2 + 8<32>
-	goto l00007704
-	// succ:  l00007704
-l0000775C:
-	// succ:  l0000775C_thunk_raise
-l0000775C_thunk_raise:
-	call raise (retsize: 0;)
+	goto l00007700
+	// succ:  l00007700
+l00007758:
 	return
 	// succ:  strlen_exit
 strlen_exit:
@@ -4088,8 +3825,8 @@ l00007760:
 	// succ:  l00007780 l000077E4
 l00007780:
 	p0 = r9 == 0<32>
-	branch r0 >u 0x1A<32> l00007810
-	// succ:  l00007790 l00007810
+	branch r0 >u 0x1A<32> l00007808
+	// succ:  l00007790 l00007808
 l00007790:
 	r1 = Mem0[gp + 124<i32>:word32]
 	r0 = r16 + 0xFFFFFFFE<32>
@@ -4139,8 +3876,9 @@ l000077FC:
 	r29 = v22 + 8<i32>
 	return
 	// succ:  raise_exit
-l00007810:
+l00007808:
 	r0 = Mem0[r30 + r0 * 4<32>:word32]
+	r17 = 0xD45C<32>
 	call r0 (retsize: 0;)
 	return
 	// succ:  raise_exit
@@ -4266,22 +4004,18 @@ l00007928:
 	Mem0[r16:word32] = r18
 	// succ:  l00007940
 l00007940:
-	branch r0 > 2<32> l00007944
-	goto l0000794C
-	// succ:  l0000794C l00007944
-l00007944:
-	branch r0 > 2<32> l00007944
-	// succ:  l0000794C l00007944
+	branch r0 > 2<32> l00007940
+	// succ:  l0000794C l00007940
 l0000794C:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l00007994
-	// succ:  l00007960 l00007994
+	branch r16 == 0<32> l0000798C
+	// succ:  l00007960 l0000798C
 l00007960:
 	r16 = r0
 	r1_r0 = 0x400000001<64>
-	branch r16 == 0<32> l00007990
-	// succ:  l0000796C l00007990
+	branch r16 == 0<32> l0000798C
+	// succ:  l0000796C l0000798C
 l0000796C:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -4304,13 +4038,8 @@ l0000798C:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l00007994
-	// succ:  l00007994
+	// succ:  l00007990
 l00007990:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00007994
-l00007994:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
@@ -4378,20 +4107,18 @@ l000079C0:
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r1 = Mem0[r16 + 16<i32>:word32]
-	branch r0 >u r1 l000079DC
-	// succ:  l000079D8 l000079DC
+	branch r0 >u r1 l000079D8
+	// succ:  l000079D8 l000079D8
 l000079D8:
 	r0 = Mem0[r16 + 24<i32>:word32]
 	r0 = Mem0[r16:word16]
-	// succ:  l000079DC
-l000079DC:
-	branch r2 == 4<32> l00007A58
-	// succ:  l000079EC l00007A58
+	branch r2 == 4<32> l00007A50
+	// succ:  l000079EC l00007A50
 l000079EC:
 	r2 = r0 & 0x9002<32>
 	r3 = r0 & r2
-	branch r2 >u r1 l00007A14
-	// succ:  l00007A00 l00007A14
+	branch r2 >u r1 l00007A10
+	// succ:  l00007A00 l00007A10
 l00007A00:
 	r2 = Mem0[r16 + 12<i32>:word32]
 	r0 = r16
@@ -4401,16 +4128,14 @@ l00007A00:
 l00007A0C:
 	p0 = r0 == 0<32>
 	r0 = Mem0[r16:int16]
-	branch r0 == 0<32> l00007A8C
-	goto l00007A20
-	// succ:  l00007A20 l00007A8C
-l00007A14:
-	branch r0 == 0<32> l00007A8C
-	// succ:  l00007A20 l00007A8C
+	// succ:  l00007A10
+l00007A10:
+	branch r0 == 0<32> l00007A84
+	// succ:  l00007A20 l00007A84
 l00007A20:
 	r0 = r0 & 0x800<32>
-	branch r0 == r17 l00007A88
-	// succ:  l00007A2C l00007A88
+	branch r0 == r17 l00007A84
+	// succ:  l00007A2C l00007A84
 l00007A2C:
 	r0 = r16 + 0x4C<32>
 	r0 = 0x200<32>
@@ -4429,30 +4154,26 @@ l00007A38:
 	Mem0[r16 + 12<i32>:word32] = r2
 	goto l00007A80
 	// succ:  l00007A80
-l00007A58:
-	r1 = 2<32> & r1 << 2<32>
+l00007A50:
+	r1 = r0
+	r1 = 0x4002<32> & r1 << 2<32>
 	r1 = 0xFFFFFFFF<32>
 	r2 = __invert_bit<word32,word32>(r1, 0x1C<32>)
 	r0 = r2 | r0
 	Mem0[r16:byte] = r0
-	goto l00007AA0
-	// succ:  l00007AA0
 l00007A74:
 	Mem0[r16 + 16<i32>:word32] = r17
 	Mem0[r16 + 8<i32>:word32] = r17
 	r0 = r17 + 1<32>
+	goto l00007A9C
+	// succ:  l00007A9C
 l00007A80:
 	call _Closreg (retsize: 0;)
+	// succ:  l00007A84
+l00007A84:
 	r2 = Mem0[r16:int16]
 	r0 = Mem0[r16 + 8<i32>:word32]
 	r1 = 0<32>
-	goto l00007A8C
-	// succ:  l00007A8C
-l00007A88:
-	r2 = Mem0[r16:int16]
-	r0 = Mem0[r16 + 8<i32>:word32]
-	// succ:  l00007A8C
-l00007A8C:
 	Mem0[r16 + 20<i32>:word32] = r0
 	r3 = Mem0[r16 + 12<i32>:word32]
 	r2 = r2 | 0x6000<32>
@@ -4460,13 +4181,6 @@ l00007A8C:
 	Mem0[r16 + 24<i32>:word32] = r3
 	// succ:  l00007A9C
 l00007A9C:
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
-	return
-	// succ:  _Fwprep_exit
-l00007AA0:
 	v15 = r30
 	r31 = Mem0[v15 + 4<i32>:word32]
 	r30 = Mem0[v15:word32]
@@ -4529,8 +4243,8 @@ l00007AD0:
 	Mem0[r29 + 152<i32>:word64] = r1_r0
 	p0 = r18 == 0x61<32>
 	Mem0[r29:byte] = r0
-	branch p0 l00007B1C
-	// succ:  l00007B00 l00007B1C
+	branch p0 l00007B18
+	// succ:  l00007B00 l00007B18
 l00007B00:
 	r0 = p0
 	branch __bit<word32,int32>(r0, -1<i32>) l00007B18
@@ -4543,24 +4257,17 @@ l00007B18:
 	r1 = r16
 	r0 = r29 + 0x96<32>
 	call _LDunscale (retsize: 0;)
-	goto l00007B24
-	// succ:  l00007B24
-l00007B1C:
-	r1 = r16
-	r0 = r29 + 0x96<32>
-	// succ:  l00007B24
-l00007B24:
 	r1 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
 	r2 = __set_bit<word32,word32>(r26, 4<32>)
 	r0 = Mem0[r16 + 16<i32>:word32]
-	r1 = 0x22<32>
+	r1 = 0xD6E2<32>
 	p0 = r2 == 0x65<32>
 	r2 = r26 + 0xFFFFFF9A<32>
 	branch p0 l00007B8C
 	// succ:  l00007B44 l00007B8C
 l00007B44:
 	r3 = 2<32>
-	r4 = 0x26<32>
+	r4 = 0xD6E6<32>
 	// succ:  l00007B80
 l00007B80:
 	r2 = r2 & 0xFF<32>
@@ -4613,10 +4320,10 @@ l00008110:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 72<i32>
-	r2 = 0x18<32>
+	r2 = 0xD718<32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r16 = r0
-	r3 = 0x30<32>
+	r3 = 0xD730<32>
 	p0 = r1 == 0x58<32>
 	p1 = r1 == 0x6F<32>
 	r17 = r3 + 0<32>
@@ -4634,8 +4341,8 @@ l00008140:
 	p0 = !(r1 == 0x78<32>)
 	r22 = 0x10<32>
 	r22 = 0xA<32>
-	branch p2 l00008170
-	// succ:  l00008160 l00008170
+	branch p2 l0000816C
+	// succ:  l00008160 l0000816C
 l00008160:
 	p0 = __fastcorner9(p1, p0)
 	p0 = r1 == 0x69<32>
@@ -4645,41 +4352,44 @@ l00008160:
 l0000816C:
 	r0 = 0x3F<32>
 	r21_r20 = r3_r2
-	goto l00008174
-	// succ:  l00008174
-l00008170:
-	r0 = 0x3F<32>
-	// succ:  l00008174
-l00008174:
 	r21_r20 = r21_r20 + (r21_r20 >> 0x3F<32>)
-	goto l00008184
-	// succ:  l00008184
+	// succ:  l00008180
 l00008180:
 	r1_r0 = 0<64>
-	// succ:  l00008184
-l00008184:
-	branch p0 l00008198
-	// succ:  l0000818C l00008198
+	branch p0 l00008194
+	// succ:  l0000818C l00008194
 l0000818C:
 	p0 = r21_r20 == r1_r0
-	branch r0 == 1<32> l000082D8
-	// succ:  l00008198 l000082D8
+	branch r0 == 1<32> l000082D4
+	goto l00008198
+	// succ:  l00008198 l000082D4
+l00008194:
+	r19_r18 = 3<64>
+	r23 = 0x17<32>
+	r24 = r29 + 0<32>
+	r1_r0 = r21_r20
+	goto l000081A0
+	// succ:  l000081A0
 l00008198:
 	r0 = Mem0[r16 + 48<i32>:word32]
 	r19_r18 = 3<64>
 	r23 = 0x17<32>
 	r24 = r29 + 0<32>
+	// succ:  l000081A0
+l000081A0:
 	r3_r2 = r19_r18
 	call __qdsp_umoddi3 (retsize: 0;)
 	Mem0[r24 + 23<i32>:byte] = r0
 	r0 = Mem0[r20 + r0:byte]
+	// succ:  l000081B0
+l000081B0:
 	r3_r2 = r19_r18
 	r1_r0 = r21_r20
 	call fn0000A4E4 (retsize: 0;)
 	r21_r20 = r1_r0
 	Mem0[r16:word64] = r21_r20
-	branch p0 l00008234
-	// succ:  l000081D0 l00008234
+	branch p0 l00008230
+	// succ:  l000081D0 l00008230
 l000081D0:
 	p0 = r25_r24 > r21_r20
 	r23 = r29 + 0<32>
@@ -4709,17 +4419,15 @@ l00008220:
 	// succ:  l0000822C l000081E0
 l0000822C:
 	r23 = r2 + 1<32>
+	// succ:  l00008230
+l00008230:
 	r0 = Mem0[r16 - 4<i32>:byte]
 	branch p0 l00008268
-	goto l00008238
 	// succ:  l00008238 l00008268
-l00008234:
-	r0 = Mem0[r16 - 4<i32>:byte]
-	// succ:  l00008238
 l00008238:
 	p0 = r14 == 0x10<32>
-	branch r0 == 0<32> l00008270
-	// succ:  l00008248 l00008270
+	branch r0 == 0<32> l00008268
+	// succ:  l00008248 l00008268
 l00008248:
 	r0 = r0 & 8<32>
 	p0 = r23 >u 0x17<32>
@@ -4738,14 +4446,12 @@ l00008268:
 	r0 = Mem0[r16 + 16<i32>:word32]
 	r1 = r29 + 0<32>
 	r2 = 0x18<32> - r23
-	// succ:  l00008270
-l00008270:
 	Mem0[r16 + 28<i32>:word32] = r2
 	r1 = r1 + r23
 	call memcpy (retsize: 0;)
 	r1 = Mem0[r16 + 48<i32>:word32]
-	branch r1 >u r0 l000082AC
-	// succ:  l0000828C l000082AC
+	branch r1 >u r0 l000082A4
+	// succ:  l0000828C l000082A4
 l0000828C:
 	r0 = Mem0[r16 + 28<i32>:word32]
 	p0 = r1 > 0xFFFFFFFF<32>
@@ -4758,6 +4464,10 @@ l0000829C_thunk___restore_r16_through_r27_and_deallocframe:
 	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
 	return
 	// succ:  _Litob_exit
+l000082A4:
+	r1 = Mem0[r16 + 60<i32>:word16]
+	branch p0 l000082D0
+	// succ:  l000082AC l000082D0
 l000082AC:
 	r1 = r1 & 0x14<32>
 	r2 = Mem0[r16 + 20<i32>:word32]
@@ -4768,17 +4478,16 @@ l000082AC:
 	r0 = r0 - r3
 	Mem0[r16 + 24<i32>:word32] = r0
 	p0 = r0 > 0<32>
+	// succ:  l000082D0
+l000082D0:
 	// succ:  l000082D0_thunk___restore_r16_through_r27_and_deallocframe
 l000082D0_thunk___restore_r16_through_r27_and_deallocframe:
 	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
 	return
 	// succ:  _Litob_exit
-l000082D8:
-	// succ:  l000082DC_thunk__LXp_getw
-l000082DC_thunk__LXp_getw:
-	call _LXp_getw (retsize: 0;)
-	return
-	// succ:  _Litob_exit
+l000082D4:
+	goto l000081B0
+	// succ:  l000081B0
 _Litob_exit:
 
 
@@ -4810,8 +4519,8 @@ l000082F4:
 l000082FC:
 	r3_r2 = Mem0[gp + 192<i32>:word64]
 	r17_r16 = Mem0[r0:word64]
-	branch p0 l0000834C
-	// succ:  l0000830C l0000834C
+	branch p0 l00008348
+	// succ:  l0000830C l00008348
 l0000830C:
 	p0 = r17_r16 == r3_r2
 	r5_r4 = Mem0[r0 + 8<i32>:word64]
@@ -4819,8 +4528,8 @@ l0000830C:
 	// succ:  l00008314 l0000832C
 l00008314:
 	p0 = r1 > 2<32>
-	branch p0 l0000834C
-	// succ:  l0000831C l0000834C
+	branch p0 l00008348
+	// succ:  l0000831C l00008348
 l0000831C:
 	p0 = r5_r4 == r3_r2
 	r1_r0 = r17_r16
@@ -4848,13 +4557,7 @@ l00008348:
 	r30 = Mem0[v12:word32]
 	r29 = v12 + 8<i32>
 	return
-l0000834C:
-	v20 = r30
-	r31 = Mem0[v20 + 4<i32>:word32]
-	r30 = Mem0[v20:word32]
-	r29 = v20 + 8<i32>
-	return
-	// succ:  _LXp_getw_exit _LXp_getw_exit
+	// succ:  _LXp_getw_exit
 _LXp_getw_exit:
 
 
@@ -4875,116 +4578,7 @@ l00008350:
 	r19_r18 = r3_r2
 	Mem0[r29 + 8<i32>:word64] = r19_r18
 	branch p0 l00008448
-	// succ:  l00008360_thunk_fn00008368 l00008360_thunk_fn00008448
-l00008360_thunk_fn00008368:
-	call fn00008368 (retsize: 0;)
-	return
-	// succ:  _LXp_setw_exit
-l00008360_thunk_fn00008448:
-	call fn00008448 (retsize: 0;)
-	return
-	// succ:  _LXp_setw_exit
-l00008574:
-	branch r17 >u r0 l00008590
-	// succ:  l0000857C l00008590
-l0000857C:
-	r0 = r6
-	r5_r4 = Mem0[r1:word64]
-	r1 = r1 + 8<32>
-	branch p0 l00008574
-	// succ:  l0000858C l00008574
-l0000858C:
-	p0 = r5_r4 == r25_r24
-	r0 = r0 + 1<32>
-	goto l000085A4
-	// succ:  l000085A4
-l00008590:
-	r0 = r0 + 1<32>
-	// succ:  l000085A4
-l000085A4:
-	r1 = r0 - r16
-	r0 = r21 + (r0 << 3<32>)
-	__loop(0<i32>, 0x000085B0<p32>, r1)
-	r5_r4 = Mem0[r0:word64]
-	Mem0[r0 + 8<i32>:word64] = r5_r4
-	r0 = r0 + 0xFFFFFFF8<32>
-	// succ:  l000085BC_thunk_fn00008368
-l000085BC_thunk_fn00008368:
-	call fn00008368 (retsize: 0;)
-	return
-	// succ:  _LXp_setw_exit
-l00008604:
-	branch r17 >u r0 l00008628
-	// succ:  l00008610 l00008628
-l00008610:
-	r0 = r0 + 1<32>
-	r2 = r1 + 8<32>
-	Mem0[r1 - 8<i32>:word64] = r5_r4
-	r1 = r2
-	branch p0 l00008604
-	// succ:  l00008620 l00008604
-l00008620:
-	p0 = r5_r4 == r25_r24
-	r0 = Mem0[r29:word32]
-	Mem0[r0:word64] = r23_r22
-	// succ:  l00008628
-l00008628:
-	r3_r2 = Mem0[r18:word64]
-	branch p0 l00008784
-	goto l00008634
-	// succ:  l00008634 l0000862C_thunk_fn00008468
-l0000862C_thunk_fn00008468:
-	call fn00008468 (retsize: 0;)
-	return
-	// succ:  _LXp_setw_exit
-l00008634:
-	p0 = r3_r2 == r25_r24
-	Mem0[r29 + 40<i32>:word64] = r3_r2
-	r1 = r29 + 0x28<32>
-	r0 = r29 + 0x1E<32>
-	call _LDunscale (retsize: 0;)
-	// succ:  l0000863C_thunk_fn00008468
-l0000863C_thunk_fn00008468:
-	call fn00008468 (retsize: 0;)
-	return
-	// succ:  _LXp_setw_exit
-_LXp_setw_exit:
-
-
-// fn00008354
-// Return size: 0
-define fn00008354
-fn00008354_entry:
-	r29 = fp
-	// succ:  l00008354
-l00008354:
-	v4 = r29 - 8<i32>
-	Mem0[v4:word32] = r30
-	Mem0[v4 + 4<i32>:word32] = r31
-	r30 = v4
-	r29 = v4 - 48<i32>
-	r17_r16 = r1_r0
-	r19_r18 = r3_r2
-	Mem0[r29 + 8<i32>:word64] = r19_r18
-	branch p0 l00008360_thunk_fn00008448
-	// succ:  l00008360_thunk_fn00008368 l00008360_thunk_fn00008448
-l00008360_thunk_fn00008368:
-	call fn00008368 (retsize: 0;)
-	return
-	// succ:  fn00008354_exit
-l00008360_thunk_fn00008448:
-	call fn00008448 (retsize: 0;)
-	return
-	// succ:  fn00008354_exit
-fn00008354_exit:
-
-
-// fn00008368
-// Return size: 0
-define fn00008368
-fn00008368_entry:
-	r29 = fp
-	// succ:  l00008368
+	// succ:  l00008368 l00008448
 l00008368:
 	p0 = r9 > 0<32>
 	r1 = r29 + 8<32>
@@ -5029,8 +4623,8 @@ l000083E0:
 	r23_r22 = Mem0[gp + 192<i32>:word64]
 	r20 = r16 + 8<32>
 	r0 = r29 + 6<32>
-	branch p1 l00008440
-	// succ:  l000083F4 l00008440
+	branch p1 l0000843C
+	// succ:  l000083F4 l0000843C
 l000083F4:
 	p1 = r19_r18 == r23_r22
 	r1 = r20
@@ -5046,15 +4640,11 @@ l000083F4:
 	branch p0 l00008448
 l00008420:
 	Mem0[r16 + 16<i32>:word64] = r1_r0
-	// succ:  l00008424 l00008420_thunk_fn00008448
-l00008420_thunk_fn00008448:
-	call fn00008448 (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
+	// succ:  l00008424 l00008448
 l00008424:
 	p0 = r9 > 6<32>
-	branch p0 l0000844C
-	// succ:  l0000842C l0000844C
+	branch p0 l00008448
+	// succ:  l0000842C l00008448
 l0000842C:
 	p0 = r1_r0 == r23_r22
 	r1_r0 = 0<64>
@@ -5063,25 +4653,20 @@ l0000842C:
 l00008438_thunk_fn00008468:
 	call fn00008468 (retsize: 0;)
 	return
-	// succ:  fn00008368_exit
+	// succ:  _LXp_setw_exit
 l0000843C:
 	branch p0 l00008448
-	goto l00008440
-	// succ:  l00008440 l0000843C_thunk_fn00008448
-l0000843C_thunk_fn00008448:
-	call fn00008448 (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
+	// succ:  l00008440 l00008448
 l00008440:
 	r1_r0 = 0<64>
 	Mem0[r16 + 16<i32>:word64] = r1_r0
-	// succ:  l00008444_thunk_fn00008448
-l00008444_thunk_fn00008448:
-	call fn00008448 (retsize: 0;)
+	// succ:  l00008448
+l00008448:
+	// succ:  l00008448_thunk_fn00008468
+l00008448_thunk_fn00008468:
+	call fn00008468 (retsize: 0;)
 	return
-	// succ:  fn00008368_exit
-l0000844C:
-	// succ:  l00008528 l0000852C
+	// succ:  _LXp_setw_exit
 l0000845C:
 	Mem0[r29 + 8<i32>:word32] = r0
 	r17 = r1
@@ -5089,194 +4674,8 @@ l0000845C:
 l0000845C_thunk_fn00008460:
 	call fn00008460 (retsize: 0;)
 	return
-	// succ:  fn00008368_exit
-l00008510:
-	r1 = Mem0[r29 + 4<i32>:word64]
-	r0 = Mem0[r29 + 8<i32>:word64]
-	r26 = r16 + 1<32>
-	r27 = r1 + (r16 << 3<32>)
-	r18 = r0 + (r16 << 3<32>)
-	r3_r2 = Mem0[r18:word64]
-	goto l00008530
-	// succ:  l00008530
-l00008528:
-	Mem0[r18:word64] = r3_r2
-	Mem0[r29 + 40<i32>:word64] = r23_r22
-	// succ:  l0000852C
-l0000852C:
-	call fn00008468 (retsize: 0;)
-	return
-	// succ:  l00008530 fn00008368_exit
-l00008530:
-	Mem0[r29 + 16<i32>:word64] = r3_r2
-	r1 = r29 + 0x10<32>
-	r0 = r29 + 0xE<32>
-	call _LDunscale (retsize: 0;)
-	branch p0 l00008780
-	goto l00008540
-	// succ:  l00008540 l0000853C_thunk_fn00008780
-l0000853C_thunk_fn00008780:
-	call fn00008780 (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
-l00008540:
-	p0 = r16 > 0<32>
-	branch r0 == 0<32> l00008768
-	// succ:  l0000854C l00008768
-l0000854C:
-	r0 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
-	r4 = Mem0[r29 + 14<i32>:int16]
-	r5 = r4 - r0
-	p0 = r5 > 0xFFFFFFE6<32>
-	r1 = r27 + 0<32>
-	r6 = r26 + 0<32>
-	branch p0 l000085C0
-	// succ:  l00008564 l000085C0
-l00008564:
-	r3_r2 = Mem0[r29 + 40<i32>:word64]
-	branch p0 l000085C4
-	// succ:  l00008570 l000085C4
-l00008570:
-	p0 = r3_r2 == r25_r24
-	branch r17 >u r0 l00008590
-l000085C0:
-	r1_r0 = Mem0[r29 + 40<i32>:word64]
-	branch p0 l000085D8
-	goto l000085C8
-	// succ:  l000085C8 l000085D8
-l000085C4:
-	r1_r0 = Mem0[r29 + 40<i32>:word64]
-	branch p0 l000085DC
-	goto l000085D0
-	// succ:  l000085D0 l000085DC
-l000085C8:
-	p0 = r5 > 0x12<32>
-	branch p0 l000085DC
-	// succ:  l000085D0 l000085DC
-l000085D0:
-	p0 = r1_r0 == r25_r24
-	r16 = r16 + 1<32>
-	goto l00008748
-	// succ:  l00008748
-l000085D8:
-	r3_r2 = Mem0[r18:word64]
-	call __hexagon_adddf3 (retsize: 0;)
-	goto l000085E0
-	// succ:  l000085E0
-l000085DC:
-	r3_r2 = Mem0[r18:word64]
-	// succ:  l000085E0
-l000085E0:
-	r3_r2 = r1_r0
-	Mem0[r18:word64] = r3_r2
-	branch p0 l00008638
-	// succ:  l000085F0 l00008638
-l000085F0:
-	p0 = r3_r2 == r25_r24
-	r1 = Mem0[r29 + 4<i32>:word64]
-	r0 = r16
-	r1 = r1 + (r16 << 3<32>)
-	branch r17 >u r0 l00008628
-l00008638:
-	Mem0[r29 + 40<i32>:word64] = r3_r2
-	r1 = r29 + 0x28<32>
-	r0 = r29 + 0x1E<32>
-	// succ:  l00008640
-l00008640:
-	r0 = r19 + 0xFFFFFFE6<32>
-	r1 = Mem0[r29 + 30<i32>:int16]
-	r0 = r29 + 0x28<32>
-	call fn00009B54 (retsize: 0;)
-	r1 = SLICE(r1, word16, 0) - SLICE(r0, word16, 0)
-	r1 = Mem0[r29 + 30<i32>:int16]
-	r0 = r29 + 0x28<32>
-	call _LDscale (retsize: 0;)
-	r3_r2 = Mem0[r29 + 40<i32>:word64]
-	r1_r0 = Mem0[r18:word64]
-	call __hexagon_fast2_subdf3 (retsize: 0;)
-	Mem0[r18:word64] = r1_r0
-	branch p0 l000086B0
-	// succ:  l0000867C l000086B0
-l0000867C:
-	p0 = r1_r0 == r25_r24
-	r0 = Mem0[r29 + 4<i32>:word64]
-	r1 = r16
-	r0 = r0 + (r16 << 3<32>)
-	r1 = r1 + 1<32>
-	r2 = r0 + 8<32>
-	// succ:  l00008688
-l00008688:
-	r5_r4 = Mem0[r0:word64]
-	Mem0[r0 - 8<i32>:word64] = r5_r4
-	r0 = r2
-	branch p0 l00008688
-	// succ:  l000086A4 l00008688
-l000086A4:
-	p0 = r5_r4 == r25_r24
-	r0 = Mem0[r29:word32]
-	Mem0[r0:word64] = r23_r22
-	r16 = 0<32>
-	r19 = 0x800<32>
-	r26 = r16 + 0xFFFFFFFF<32>
-	goto l000086B8
-	// succ:  l000086B8
-l000086B0:
-	r16 = 0<32>
-	r19 = 0x800<32>
-	// succ:  l000086B8
-l000086B8:
-	p0 = r26 == 0<32>
-	r0 = r29 + 0xE<32>
-	r1 = r29 + 0x20<32>
-	branch p0 l00008748
-	// succ:  l000086C8 l00008748
-l000086C8:
-	r3_r2 = Mem0[r18 - 16<i32>:word64]
-	r16 = r26
-	Mem0[r29 + 32<i32>:word64] = r3_r2
-	call _LDunscale (retsize: 0;)
-	r19 = Mem0[r29 + 14<i32>:int16]
-	// succ:  l00008748
-l00008748:
-	branch p0 l00008510
-	// succ:  l0000874C l00008510
-l0000874C:
-	p0 = r9 > -1<i32>
-	// succ:  l00008750_thunk_fn00008780
-l00008750_thunk_fn00008780:
-	call fn00008780 (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
-l00008768:
-	Mem0[r18:word64] = r3_r2
-	branch p0 l00008780
-	goto l00008770
-	// succ:  l00008770 l00008768_thunk_fn00008780
-l00008768_thunk_fn00008780:
-	call fn00008780 (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
-l00008770:
-	p0 = r9 > -1<i32>
-	r1 = Mem0[r29 + 8<i32>:word32]
-	Mem0[r30 + r0 * 8<32>:word64] = r23_r22
-	r0 = Mem0[r29 + 8<i32>:word32]
-	// succ:  l00008774_thunk___restore_r16_through_r27_and_deallocframe
-l00008774_thunk___restore_r16_through_r27_and_deallocframe:
-	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
-	return
-	// succ:  fn00008368_exit
-fn00008368_exit:
-
-
-// fn00008448
-// Return size: 0
-define fn00008448
-fn00008448_entry:
-	r29 = fp
-	// succ:  l00008448
-l00008448:
-fn00008448_exit:
+	// succ:  _LXp_setw_exit
+_LXp_setw_exit:
 
 
 // _LXp_addh
@@ -5292,61 +4691,15 @@ l00008450:
 	r30 = v4
 	r29 = v4 - 96<i32>
 	call __save_r16_through_r27 (retsize: 0;)
-	// succ:  l00008450_thunk_fn00008458
-l00008450_thunk_fn00008458:
-	call fn00008458 (retsize: 0;)
+	Mem0[r29 + 8<i32>:word32] = r0
+	r17 = r1
+	r19_r18 = r3_r2
+	// succ:  l00008458_thunk_fn00008460
+l00008458_thunk_fn00008460:
+	call fn00008460 (retsize: 0;)
 	return
 	// succ:  _LXp_addh_exit
 _LXp_addh_exit:
-
-
-// fn00008454
-// Return size: 0
-define fn00008454
-fn00008454_entry:
-	r29 = fp
-	// succ:  l00008454
-l00008454:
-	v4 = r29 - 8<i32>
-	Mem0[v4:word32] = r30
-	Mem0[v4 + 4<i32>:word32] = r31
-	r30 = v4
-	r29 = v4 - 96<i32>
-	// succ:  l00008454_thunk_fn00008458
-l00008454_thunk_fn00008458:
-	call fn00008458 (retsize: 0;)
-	return
-	// succ:  fn00008454_exit
-fn00008454_exit:
-
-
-// fn00008458
-// Return size: 0
-define fn00008458
-fn00008458_entry:
-	r29 = fp
-	// succ:  l00008458
-l00008458:
-	Mem0[r29 + 8<i32>:word32] = r0
-	r17 = r1
-	r19_r18 = r3_r2
-	goto l00008458_thunk_fn00008460
-	// succ:  l00008458_thunk_fn00008460
-l00008458:
-	Mem0[r29 + 8<i32>:word32] = r0
-	r17 = r1
-	r19_r18 = r3_r2
-	goto l00008458_thunk_fn00008460
-	// succ:  l00008458_thunk_fn00008460
-l00008458_thunk_fn00008460:
-	call fn00008460 (retsize: 0;)
-	return
-	// succ:  fn00008458_exit
-l00008458_thunk_fn00008460:
-	call fn00008460 (retsize: 0;)
-	return
-	// succ:  fn00008458_exit
-fn00008458_exit:
 
 
 // fn00008460
@@ -5404,8 +4757,8 @@ l00008470:
 l00008478:
 	p0 = r0 > 0<32>
 	r0 = Mem0[r29 + 8<i32>:word32]
-	branch p0 l00008758
-	// succ:  l00008484 l00008758
+	branch p0 l00008754
+	// succ:  l00008484 l00008754
 l00008484:
 	p0 = SLICE(r0, word16, 0) == SLICE(2<16>, word16, 0)
 	call _LDtest (retsize: 0;)
@@ -5413,8 +4766,13 @@ l00008484:
 	// succ:  l0000848C l00008750
 l0000848C:
 	p0 = r16 > 0<32>
-	branch p0 l00008784
-	// succ:  l00008494 l00008784
+	branch p0 l00008780
+	goto l00008494
+	// succ:  l00008494 l00008490_thunk_fn00008780
+l00008490_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008468_exit
 l00008494:
 	p0 = SLICE(r0, word16, 0) == SLICE(2<16>, word16, 0)
 	r0 = Mem0[r29 + 8<i32>:word64]
@@ -5423,12 +4781,17 @@ l00008494:
 	r1 = r1 | 6<32>
 	r1 = Mem0[r1:int16]
 	r0 = r0 ^ r1
-	branch __bit<word32,int32>(r0, -1<i32>) l00008784
-	// succ:  l000084B4 l00008784
+	branch __bit<word32,int32>(r0, -1<i32>) l00008780
+	goto l000084B4
+	// succ:  l000084B4 l000084B0_thunk_fn00008780
+l000084B0_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008468_exit
 l000084B4:
 	r0 = CONVERT(SLICE(r0, int16, 0), int16, int32)
 	r0 = 1<32>
-	r16 = 0x30<32>
+	r16 = 0xE630<32>
 	r2 = Mem0[r29 + 8<i32>:word32]
 	r1_r0 = Mem0[r16:word64]
 	p0 = r17 > 1<32>
@@ -5479,16 +4842,196 @@ l000084EC:
 	r23_r22 = 0<64>
 	Mem0[r29:word32] = r0
 	Mem0[r29 + 4<i32>:word32] = r1
-	// succ:  l00008514_thunk_fn00008368
-l00008514_thunk_fn00008368:
-	call fn00008368 (retsize: 0;)
+	// succ:  l00008510
+l00008510:
+	r1 = Mem0[r29 + 4<i32>:word64]
+	r0 = Mem0[r29 + 8<i32>:word64]
+	r26 = r16 + 1<32>
+	r27 = r1 + (r16 << 3<32>)
+	r18 = r0 + (r16 << 3<32>)
+	r3_r2 = Mem0[r18:word64]
+	goto l00008530
+	// succ:  l00008530
+l00008528:
+	Mem0[r18:word64] = r3_r2
+	Mem0[r29 + 40<i32>:word64] = r23_r22
+	// succ:  l00008530
+l00008530:
+	Mem0[r29 + 16<i32>:word64] = r3_r2
+	r1 = r29 + 0x10<32>
+	r0 = r29 + 0xE<32>
+	call _LDunscale (retsize: 0;)
+	branch p0 l00008780
+	goto l00008540
+	// succ:  l00008540 l0000853C_thunk_fn00008780
+l0000853C_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
 	return
 	// succ:  fn00008468_exit
+l00008540:
+	p0 = r16 > 0<32>
+	branch r0 == 0<32> l00008764
+	// succ:  l0000854C l00008764
+l0000854C:
+	r0 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
+	r4 = Mem0[r29 + 14<i32>:int16]
+	r5 = r4 - r0
+	p0 = r5 > 0xFFFFFFE6<32>
+	r1 = r27 + 0<32>
+	r6 = r26 + 0<32>
+	branch p0 l000085C0
+	// succ:  l00008564 l000085C0
+l00008564:
+	r3_r2 = Mem0[r29 + 40<i32>:word64]
+	branch p0 l000085C0
+	// succ:  l00008570 l000085C0
+l00008570:
+	p0 = r3_r2 == r25_r24
+	branch r17 >u r0 l0000858C
+	// succ:  l0000857C l0000858C
+l0000857C:
+	r0 = r6
+	r5_r4 = Mem0[r1:word64]
+	r1 = r1 + 8<32>
+	branch p0 l00008570
+	// succ:  l0000858C l00008570
+l0000858C:
+	p0 = r5_r4 == r25_r24
+	r0 = r0 + 1<32>
+	// succ:  l000085A0
+l000085A0:
+	branch p0 l00008528
+	// succ:  l000085A4 l00008528
+l000085A4:
+	p0 = r0 > -1<i32>
+	r1 = r0 - r16
+	r0 = r21 + (r0 << 3<32>)
+	__loop(0<i32>, 0x000085B0<p32>, r1)
+	r5_r4 = Mem0[r0:word64]
+	Mem0[r0 + 8<i32>:word64] = r5_r4
+	r0 = r0 + 0xFFFFFFF8<32>
+	goto l00008528
+	// succ:  l00008528
+l000085C0:
+	r1_r0 = Mem0[r29 + 40<i32>:word64]
+	branch p0 l000085D8
+	// succ:  l000085C8 l000085D8
+l000085C8:
+	p0 = r5 > 0x12<32>
+	branch p0 l000085D8
+	// succ:  l000085D0 l000085D8
+l000085D0:
+	p0 = r1_r0 == r25_r24
+	r16 = r16 + 1<32>
+	goto l00008748
+	// succ:  l00008748
+l000085D8:
+	r3_r2 = Mem0[r18:word64]
+	call __hexagon_adddf3 (retsize: 0;)
+	r3_r2 = r1_r0
+	Mem0[r18:word64] = r3_r2
+	branch p0 l00008634
+	// succ:  l000085F0 l00008634
+l000085F0:
+	p0 = r3_r2 == r25_r24
+	r1 = Mem0[r29 + 4<i32>:word64]
+	r0 = r16
+	r1 = r1 + (r16 << 3<32>)
+	// succ:  l00008600
+l00008600:
+	branch r17 >u r0 l00008620
+	// succ:  l00008610 l00008620
+l00008610:
+	r0 = r0 + 1<32>
+	r2 = r1 + 8<32>
+	Mem0[r1 - 8<i32>:word64] = r5_r4
+	r1 = r2
+	branch p0 l00008600
+	// succ:  l00008620 l00008600
+l00008620:
+	p0 = r5_r4 == r25_r24
+	r0 = Mem0[r29:word32]
+	Mem0[r0:word64] = r23_r22
+	r3_r2 = Mem0[r18:word64]
+	branch p0 l00008780
+	// succ:  l00008634 l0000863C_thunk_fn00008780
+l00008634:
+	p0 = r3_r2 == r25_r24
+	Mem0[r29 + 40<i32>:word64] = r3_r2
+	r1 = r29 + 0x28<32>
+	r0 = r29 + 0x1E<32>
+	call _LDunscale (retsize: 0;)
+	r0 = r19 + 0xFFFFFFE6<32>
+	r1 = Mem0[r29 + 30<i32>:int16]
+	r0 = r29 + 0x28<32>
+	call _LDint (retsize: 0;)
+	r1 = SLICE(r1, word16, 0) - SLICE(r0, word16, 0)
+	r1 = Mem0[r29 + 30<i32>:int16]
+	r0 = r29 + 0x28<32>
+	call _LDscale (retsize: 0;)
+	r3_r2 = Mem0[r29 + 40<i32>:word64]
+	r1_r0 = Mem0[r18:word64]
+	call __hexagon_fast2_subdf3 (retsize: 0;)
+	Mem0[r18:word64] = r1_r0
+	branch p0 l000086AC
+	goto l0000867C
+	// succ:  l0000867C l000086AC
+l0000863C_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008468_exit
+l0000867C:
+	p0 = r1_r0 == r25_r24
+	r0 = Mem0[r29 + 4<i32>:word64]
+	r1 = r16
+	r0 = r0 + (r16 << 3<32>)
+	// succ:  l00008684
+l00008684:
+	r1 = r1 + 1<32>
+	r2 = r0 + 8<32>
+	r5_r4 = Mem0[r0:word64]
+	Mem0[r0 - 8<i32>:word64] = r5_r4
+	r0 = r2
+	branch p0 l00008684
+	// succ:  l000086A4 l00008684
+l000086A4:
+	p0 = r5_r4 == r25_r24
+	r0 = Mem0[r29:word32]
+	Mem0[r0:word64] = r23_r22
+	// succ:  l000086AC
+l000086AC:
+	r16 = 0<32>
+	r19 = 0x800<32>
+	r26 = r16 + 0xFFFFFFFF<32>
+	p0 = r26 == 0<32>
+	r0 = r29 + 0xE<32>
+	r1 = r29 + 0x20<32>
+	branch p0 l00008748
+	// succ:  l000086C8 l00008748
+l000086C8:
+	r3_r2 = Mem0[r18 - 16<i32>:word64]
+	r16 = r26
+	Mem0[r29 + 32<i32>:word64] = r3_r2
+	call _LDunscale (retsize: 0;)
+	r19 = Mem0[r29 + 14<i32>:int16]
+	// succ:  l00008748
+l00008748:
+	branch p0 l00008510
+	// succ:  l0000874C l00008510
+l0000874C:
+	p0 = r9 > -1<i32>
+	goto l00008750_thunk_fn00008780
+	// succ:  l00008750_thunk_fn00008780
 l00008750:
 	r19_r18 = Mem0[r29 + 40<i32>:word64]
+	goto l00008754
+	// succ:  l00008754
+l00008750_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008468_exit
+l00008754:
 	r0 = Mem0[r29 + 8<i32>:word32]
-	// succ:  l00008758
-l00008758:
 	Mem0[r0:word64] = r19_r18
 	r0 = Mem0[r29 + 8<i32>:word32]
 	// succ:  l00008758_thunk___restore_r16_through_r27_and_deallocframe
@@ -5496,11 +5039,25 @@ l00008758_thunk___restore_r16_through_r27_and_deallocframe:
 	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
 	return
 	// succ:  fn00008468_exit
-l00008784:
+l00008764:
+	r3_r2 = Mem0[r29 + 40<i32>:word64]
+	r0 = r16
+	Mem0[r18:word64] = r3_r2
+	branch p0 l00008780
+	goto l00008770
+	// succ:  l00008770 l00008768_thunk_fn00008780
+l00008768_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008468_exit
+l00008770:
+	p0 = r9 > -1<i32>
+	r1 = Mem0[r29 + 8<i32>:word32]
+	Mem0[r30 + r0 * 8<32>:word64] = r23_r22
 	r0 = Mem0[r29 + 8<i32>:word32]
-	// succ:  l00008784_thunk__LXp_mulh
-l00008784_thunk__LXp_mulh:
-	call _LXp_mulh (retsize: 0;)
+	// succ:  l00008774_thunk___restore_r16_through_r27_and_deallocframe
+l00008774_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
 	return
 	// succ:  fn00008468_exit
 fn00008468_exit:
@@ -5548,8 +5105,8 @@ l000087A0:
 	r3_r2 = r1_r0
 	Mem0[r29 + 16<i32>:word64] = r3_r2
 	call _LDtest (retsize: 0;)
-	branch __bit<word32,int32>(r20, -1<i32>) l00008808
-	// succ:  l000087CC l00008808
+	branch __bit<word32,int32>(r20, -1<i32>) l000087FC
+	// succ:  l000087CC l000087FC
 l000087CC:
 	r20 = r0
 	r1 = r29 + 0x10<32>
@@ -5578,35 +5135,32 @@ l000087EC:
 	Mem0[r16 + 8<i32>:word64] = r1_r0
 	goto l00008870
 	// succ:  l00008870
-l00008808:
+l000087FC:
+	r27_r26 = Mem0[gp + 192<i32>:word64]
+	r25_r24 = 0x100000000<64>
+	r0 = r1 + 8<32>
 	Mem0[r16:word64] = r23_r22
 	Mem0[r29:word32] = r0
+	// succ:  l00008810
+l00008810:
 	p0 = r25 > 3<32>
 	r0 = r25 + r24
 	r1 = r29 + 0x10<32>
 	branch p0 l00008868
-	goto l00008820
 	// succ:  l00008820 l00008868
-l00008818:
-	p0 = r25 > 3<32>
-	r0 = r25 + r24
-	r20 = r16 + (r0 << 3<32>)
-	r21 = r1 + (r25 << 3<32>)
-	goto l00008828
-	// succ:  l00008828
 l00008820:
 	r20 = r16 + (r0 << 3<32>)
 	r21 = r1 + (r25 << 3<32>)
 	// succ:  l00008828
 l00008828:
-	branch r17 >u r0 l00008864
-	// succ:  l00008834 l00008864
+	branch r17 >u r0 l00008860
+	// succ:  l00008834 l00008860
 l00008834:
 	r0 = r24 + r25
 	r3_r2 = r19_r18
 	r25 = r25 + 1<32>
-	branch p0 l00008864
-	// succ:  l00008844 l00008864
+	branch p0 l00008860
+	// succ:  l00008844 l00008860
 l00008844:
 	p0 = r1_r0 == r27_r26
 	call __hexagon_fast_muldf3 (retsize: 0;)
@@ -5620,16 +5174,17 @@ l00008844:
 l0000885C:
 	goto l00008868
 	// succ:  l00008868
-l00008864:
+l00008860:
 	Mem0[r21:word64] = r23_r22
+	r25 = 8<32>
 	// succ:  l00008868
 l00008868:
 	r3_r2 = Mem0[r29 + 16<i32>:word64]
 	r0 = r29 + 6<32>
 	r1 = r29 + 8<32>
-	branch p0 l000088F0
+	branch p0 l000088EC
 	goto l0000887C
-	// succ:  l0000887C l000088F0
+	// succ:  l0000887C l000088EC
 l00008870:
 	r0 = r29 + 6<32>
 	r1 = r29 + 8<32>
@@ -5655,26 +5210,22 @@ l0000887C:
 	call _LXp_addh (retsize: 0;)
 	r1 = Mem0[r29:word64]
 	r0 = 0<32>
-	branch r25 >u r0 l000088E8
-l000088C4:
-	branch r25 >u r0 l000088E8
-	// succ:  l000088D0 l000088E8
+	// succ:  l000088C0
+l000088C0:
+	branch r25 >u r0 l000088E0
+	// succ:  l000088D0 l000088E0
 l000088D0:
 	r0 = r0 + 1<32>
 	r2 = r1 + 8<32>
 	Mem0[r1 - 8<i32>:word64] = r5_r4
 	r1 = r2
-	branch p0 l000088C4
-	// succ:  l000088E0 l000088C4
+	branch p0 l000088C0
+	// succ:  l000088E0 l000088C0
 l000088E0:
 	p0 = r5_r4 == r27_r26
-	branch r17 >u r24 l00008818
+	branch r17 >u r24 l00008810
 	goto l000088F0
-	// succ:  l000088F0 l00008818
-l000088E8:
-	branch r17 >u r24 l00008818
-	goto l000088F0
-	// succ:  l000088F0 l00008818
+	// succ:  l000088F0 l00008810
 l000088EC:
 l000088F0:
 	r24 = r24 + 1<32>
@@ -5685,7 +5236,7 @@ l0000897C:
 	r20 = r20 + 1<32>
 	// succ:  l00008980
 l00008980:
-	call fn00008454 (retsize: 0;)
+	call _LXp_addh (retsize: 0;)
 	r3 = __invert_bit<word32,word32>(r3, 0x1E<32>)
 	r19 = r19 + 8<32>
 	branch p0 l00008970
@@ -5750,19 +5301,19 @@ l00008910:
 l00008928:
 	p0 = r8 > 0<32>
 	r23_r22 = Mem0[gp + 192<i32>:word64]
+	// succ:  l0000892C
+l0000892C:
 	r3_r2 = Mem0[r19:word64]
-	// succ:  l00008930
-l00008930:
 	r1_r0 = r18_r17
 	r19 = r19 + 8<32>
-	branch p0 l00008950
-	// succ:  l00008940 l00008950
+	branch p0 l0000894C
+	// succ:  l00008940 l0000894C
 l00008940:
 	p0 = r3_r2 == r23_r22
 	call _LXp_addh (retsize: 0;)
-	branch r16 >u r20 l00008930
+	branch r16 >u r20 l0000892C
 	goto l00008950
-	// succ:  l00008950 l00008930
+	// succ:  l00008950 l0000892C
 l0000894C:
 	// succ:  l0000894C_thunk_fn00008A1C
 l0000894C_thunk_fn00008A1C:
@@ -5823,31 +5374,22 @@ l00008970:
 	r3_r2 = Mem0[r19:word64]
 	r1_r0 = r18_r17
 	r20 = r20 + 1<32>
-	branch p0 l00008998
-	// succ:  l00008984 l00008998
-l00008984:
-	p0 = r3_r2 == r23_r22
-	call fn00008454 (retsize: 0;)
-	r3 = __invert_bit<word32,word32>(r3, 0x1E<32>)
-	r19 = r19 + 8<32>
-	branch p0 l00008970
-	goto l0000899C_thunk_fn00008994
-	// succ:  l0000899C_thunk_fn00008994 l00008970
-l00008998:
-	// succ:  l00008A44 l00008998_thunk_fn00008A48
-l00008998_thunk_fn00008A48:
-	call fn00008A48 (retsize: 0;)
-	return
-	// succ:  fn00008970_exit
-l0000899C_thunk_fn00008994:
+	branch p0 l00008994
+	goto l00008984
+	// succ:  l00008984 l00008974_thunk_fn00008994
+l00008974_thunk_fn00008994:
 	call fn00008994 (retsize: 0;)
 	return
 	// succ:  fn00008970_exit
-l00008A44:
-	r2 = r21
-	// succ:  l00008A44_thunk_fn00008A48
-l00008A44_thunk_fn00008A48:
-	call fn00008A48 (retsize: 0;)
+l00008984:
+	p0 = r3_r2 == r23_r22
+	call _LXp_addh (retsize: 0;)
+	r3 = __invert_bit<word32,word32>(r3, 0x1E<32>)
+	r19 = r19 + 8<32>
+	branch p0 l00008970
+	// succ:  l0000899C_thunk_fn00008994 l00008970
+l0000899C_thunk_fn00008994:
+	call fn00008994 (retsize: 0;)
 	return
 	// succ:  fn00008970_exit
 fn00008970_exit:
@@ -5861,6 +5403,14 @@ fn00008994_entry:
 	// succ:  l00008994
 l00008994:
 	p0 = r8 > -1<i32>
+	// succ:  l00008A44
+l00008A44:
+	r2 = r21
+	// succ:  l00008A44_thunk_fn00008A48
+l00008A44_thunk_fn00008A48:
+	call fn00008A48 (retsize: 0;)
+	return
+	// succ:  fn00008994_exit
 fn00008994_exit:
 
 
@@ -5880,17 +5430,17 @@ l000089A0:
 	r17_r16 = r1_r0
 	r21_r20 = Mem0[gp + 192<i32>:word64]
 	r22 = r16
+	// succ:  l000089C0
+l000089C0:
 	r19 = r19 + 1<32>
 	r2 = r18
 	r23 = r22 + 8<32>
-	// succ:  l000089C4
-l000089C4:
 	r1_r0 = Mem0[r22:word64]
 	call ldexpl (retsize: 0;)
 	Mem0[r22:word64] = r1_r0
 	r22 = r23
-	branch p0 l000089C4
-	// succ:  l000089E8 l000089C4
+	branch p0 l000089C0
+	// succ:  l000089E8 l000089C0
 l000089E8:
 	p0 = r1_r0 == r21_r20
 	// succ:  l000089E8_thunk_fn00008A48
@@ -5937,16 +5487,13 @@ l00008A0C:
 	p0 = r11 == 0<32>
 	r25_r24 = Mem0[gp + 192<i32>:word64]
 	r3_r2 = Mem0[r18:word64]
-	branch p0 l00008A30
-	// succ:  l00008A18_thunk_fn00008A1C l00008A30
+	branch p0 l00008A2C
+	// succ:  l00008A18_thunk_fn00008A1C l00008A18_thunk_fn00008A2C
 l00008A18_thunk_fn00008A1C:
 	call fn00008A1C (retsize: 0;)
 	return
 	// succ:  _LXp_mulx_exit
-l00008A30:
-	r1_r0 = r17_r16
-	// succ:  l00008A30_thunk_fn00008A2C
-l00008A30_thunk_fn00008A2C:
+l00008A18_thunk_fn00008A2C:
 	call fn00008A2C (retsize: 0;)
 	return
 	// succ:  _LXp_mulx_exit
@@ -5978,14 +5525,14 @@ fn00008A20_entry:
 	// succ:  l00008A20
 l00008A20:
 	r1_r0 = r16_r20
-	branch p0 l00008A20_thunk_fn00008A40
+	branch p0 l00008A20_thunk_fn00008A3C
 	goto l00008A20_thunk_fn00008A2C
-	// succ:  l00008A20_thunk_fn00008A2C l00008A20_thunk_fn00008A40
+	// succ:  l00008A20_thunk_fn00008A2C l00008A20_thunk_fn00008A3C
 l00008A20:
 	r1_r0 = r16_r20
-	branch p0 l00008A40
+	branch p0 l00008A3C
 	goto l00008A20_thunk_fn00008A2C
-	// succ:  l00008A20_thunk_fn00008A2C l00008A20_thunk_fn00008A40
+	// succ:  l00008A20_thunk_fn00008A2C l00008A20_thunk_fn00008A3C
 l00008A20_thunk_fn00008A2C:
 	call fn00008A2C (retsize: 0;)
 	return
@@ -5994,12 +5541,12 @@ l00008A20_thunk_fn00008A2C:
 	call fn00008A2C (retsize: 0;)
 	return
 	// succ:  fn00008A20_exit
-l00008A20_thunk_fn00008A40:
-	call fn00008A40 (retsize: 0;)
+l00008A20_thunk_fn00008A3C:
+	call fn00008A3C (retsize: 0;)
 	return
 	// succ:  fn00008A20_exit
-l00008A20_thunk_fn00008A40:
-	call fn00008A40 (retsize: 0;)
+l00008A20_thunk_fn00008A3C:
+	call fn00008A3C (retsize: 0;)
 	return
 	// succ:  fn00008A20_exit
 fn00008A20_exit:
@@ -6015,8 +5562,6 @@ l00008A2C:
 	p0 = r1_r0 == r25_r24
 	r1_r0 = r17_r16
 	call _LXp_mulh (retsize: 0;)
-	// succ:  l00008A34
-l00008A34:
 	// succ:  l00008A34_thunk_fn00008AA4
 l00008A34_thunk_fn00008AA4:
 	call fn00008AA4 (retsize: 0;)
@@ -6025,21 +5570,22 @@ l00008A34_thunk_fn00008AA4:
 fn00008A2C_exit:
 
 
-// fn00008A40
+// fn00008A3C
 // Return size: 0
-define fn00008A40
-fn00008A40_entry:
+define fn00008A3C
+fn00008A3C_entry:
 	r29 = fp
-	// succ:  l00008A40
-l00008A40:
+	// succ:  l00008A3C
+l00008A3C:
+	r21 = r17 << 3<32>
 	r2 = r21
 	call memcpy (retsize: 0;)
 	// succ:  l00008A40_thunk_fn00008A48
 l00008A40_thunk_fn00008A48:
 	call fn00008A48 (retsize: 0;)
 	return
-	// succ:  fn00008A40_exit
-fn00008A40_exit:
+	// succ:  fn00008A3C_exit
+fn00008A3C_exit:
 
 
 // fn00008A48
@@ -6053,13 +5599,42 @@ l00008A48:
 	r1_r0 = r17_r16
 	call _LXp_mulh (retsize: 0;)
 	r23 = 1<32>
+	branch p0 l00008A54_thunk_fn00008AB8
+	goto l00008A54_thunk_fn00008A5C
+	// succ:  l00008A54_thunk_fn00008A5C l00008A54_thunk_fn00008AB8
+l00008A48:
+	r3_r2 = Mem0[r18:word64]
+	r1_r0 = r17_r16
+	call _LXp_mulh (retsize: 0;)
+	r23 = 1<32>
 	branch p0 l00008AB8
-	goto l00008A5C
-	// succ:  l00008A5C l00008A54_thunk_fn00008AB8
+	goto l00008A54_thunk_fn00008A5C
+	// succ:  l00008A54_thunk_fn00008A5C l00008A54_thunk_fn00008A5C
+l00008A54_thunk_fn00008A5C:
+	call fn00008A5C (retsize: 0;)
+	return
+	// succ:  fn00008A48_exit
+l00008A54_thunk_fn00008A5C:
+	call fn00008A5C (retsize: 0;)
+	return
+	// succ:  fn00008A48_exit
+l00008A54_thunk_fn00008A5C:
+	call fn00008A5C (retsize: 0;)
+	return
+	// succ:  fn00008A48_exit
 l00008A54_thunk_fn00008AB8:
 	call fn00008AB8 (retsize: 0;)
 	return
 	// succ:  fn00008A48_exit
+fn00008A48_exit:
+
+
+// fn00008A5C
+// Return size: 0
+define fn00008A5C
+fn00008A5C_entry:
+	r29 = fp
+	// succ:  l00008A5C
 l00008A5C:
 	p0 = r11 > 2<32>
 	r22 = r20 + (r17 << 3<32>)
@@ -6067,8 +5642,13 @@ l00008A5C:
 	r1_r0 = Mem0[r26:word64]
 	r1_r0 = r20_r22
 	r2 = r21 + 0<32>
-	branch p0 l00008ABC
-	// succ:  l00008A78 l00008ABC
+	branch p0 l00008AB8
+	goto l00008A78
+	// succ:  l00008A78 l00008A70_thunk_fn00008AB8
+l00008A70_thunk_fn00008AB8:
+	call fn00008AB8 (retsize: 0;)
+	return
+	// succ:  fn00008A5C_exit
 l00008A78:
 	p0 = r1_r0 == r25_r24
 	call memcpy (retsize: 0;)
@@ -6076,29 +5656,16 @@ l00008A78:
 	call _LXp_mulh (retsize: 0;)
 	r3_r2 = Mem0[r26:word64]
 	branch p0 l00008AB0
-	// succ:  l00008A90 l00008AB0
-l00008A90:
-	p0 = r9 > 0<32>
-	r3_r2 = Mem0[r27:word64]
-	// succ:  l00008A94_thunk_fn00008AA4
-l00008A94_thunk_fn00008AA4:
+	// succ:  l00008A9C_thunk_fn00008AA4 l00008A9C_thunk_fn00008AA4
+l00008A9C_thunk_fn00008AA4:
 	call fn00008AA4 (retsize: 0;)
 	return
-	// succ:  fn00008A48_exit
-l00008AB0:
-	r23 = r23 + 1<32>
-	// succ:  l00008AB0_thunk_fn00008AB8
-l00008AB0_thunk_fn00008AB8:
-	call fn00008AB8 (retsize: 0;)
+	// succ:  fn00008A5C_exit
+l00008A9C_thunk_fn00008AA4:
+	call fn00008AA4 (retsize: 0;)
 	return
-	// succ:  fn00008A48_exit
-l00008ABC:
-	// succ:  l00008ABC_thunk_fn00008B1C
-l00008ABC_thunk_fn00008B1C:
-	call fn00008B1C (retsize: 0;)
-	return
-	// succ:  fn00008A48_exit
-fn00008A48_exit:
+	// succ:  fn00008A5C_exit
+fn00008A5C_exit:
 
 
 // fn00008AA4
@@ -6106,21 +5673,30 @@ fn00008A48_exit:
 define fn00008AA4
 fn00008AA4_entry:
 	r29 = fp
-	goto l00008AA4_thunk_fn00008A48
-	// succ:  l00008AA4_thunk_fn00008A48
-l00008A94:
+	goto l00008AA4_thunk_fn00008A5C
+	// succ:  l00008AA4_thunk_fn00008A5C
+l00008A90:
+	p0 = r9 > 0<32>
+	r3_r2 = Mem0[r27:word64]
 	r1_r0 = r17_r16
 	r27 = r27 + 8<32>
-	branch p0 l00008AB4
-	// succ:  l00008AA4 l00008AB4
+	branch p0 l00008AB0
+	// succ:  l00008AA4 l00008AB0
 l00008AA4:
 	p0 = r3_r2 == r25_r24
 	call _LXp_addh (retsize: 0;)
-	branch r17 >u r26 l00008A94
+	branch r17 >u r26 l00008A90
 	goto l00008AB4
-	// succ:  l00008AB4 l00008A94
-l00008AA4_thunk_fn00008A48:
-	call fn00008A48 (retsize: 0;)
+	// succ:  l00008AB4 l00008A90
+l00008AA4_thunk_fn00008A5C:
+	call fn00008A5C (retsize: 0;)
+	return
+	// succ:  fn00008AA4_exit
+l00008AB0:
+	r23 = r23 + 1<32>
+	// succ:  l00008AB0_thunk_fn00008AB8
+l00008AB0_thunk_fn00008AB8:
+	call fn00008AB8 (retsize: 0;)
 	return
 	// succ:  fn00008AA4_exit
 l00008AB4:
@@ -6138,9 +5714,15 @@ fn00008AA4_exit:
 define fn00008AB8
 fn00008AB8_entry:
 	r29 = fp
-	// succ:  l00008AB8
+	goto l00008AB8_thunk_fn00008A5C
+	// succ:  l00008AB8_thunk_fn00008A5C
 l00008AB8:
+	goto l00008B18
 	// succ:  l00008B18
+l00008AB8_thunk_fn00008A5C:
+	call fn00008A5C (retsize: 0;)
+	return
+	// succ:  fn00008AB8_exit
 l00008B18:
 	r2 = r20
 	// succ:  l00008B18_thunk_fn00008B1C
@@ -6181,11 +5763,11 @@ l00008AD8:
 	// succ:  l00008AE0 l00008B00
 l00008AE0:
 	p0 = __bit<word32,word32>(r0, 0<32>)
-	branch p0 l00008AE0_thunk_fn00008BD4
+	branch p0 l00008AE0_thunk_fn00008BD0
 	goto l00008AE8
-	// succ:  l00008AE8 l00008AE0_thunk_fn00008BD4
-l00008AE0_thunk_fn00008BD4:
-	call fn00008BD4 (retsize: 0;)
+	// succ:  l00008AE8 l00008AE0_thunk_fn00008BD0
+l00008AE0_thunk_fn00008BD0:
+	call fn00008BD0 (retsize: 0;)
 	return
 	// succ:  _LXp_invx_exit
 l00008AE8:
@@ -6226,8 +5808,43 @@ l00008B1C:
 	call _LXp_mulh (retsize: 0;)
 	r1_r0 = r27_r26
 	r3_r2 = r27_r26
+	branch p0 l00008B28_thunk_fn00008BE8
+	goto l00008B28_thunk_fn00008B34
+	// succ:  l00008B28_thunk_fn00008B34 l00008B28_thunk_fn00008BE8
+l00008B1C:
+	r3_r2 = r25_r24
+	r1_r0 = r17_r19
+	call _LXp_mulh (retsize: 0;)
+	r1_r0 = r27_r26
+	r3_r2 = r27_r26
 	branch p0 l00008BE8
-	// succ:  l00008B34 l00008BE8
+	goto l00008B28_thunk_fn00008B34
+	// succ:  l00008B28_thunk_fn00008B34 l00008B28_thunk_fn00008BE8
+l00008B28_thunk_fn00008B34:
+	call fn00008B34 (retsize: 0;)
+	return
+	// succ:  fn00008B1C_exit
+l00008B28_thunk_fn00008B34:
+	call fn00008B34 (retsize: 0;)
+	return
+	// succ:  fn00008B1C_exit
+l00008B28_thunk_fn00008BE8:
+	call fn00008BE8 (retsize: 0;)
+	return
+	// succ:  fn00008B1C_exit
+l00008B28_thunk_fn00008BE8:
+	call fn00008BE8 (retsize: 0;)
+	return
+	// succ:  fn00008B1C_exit
+fn00008B1C_exit:
+
+
+// fn00008B34
+// Return size: 0
+define fn00008B34
+fn00008B34_entry:
+	r29 = fp
+	// succ:  l00008B34
 l00008B34:
 	p0 = r9 > 2<32>
 	r25_r24 = Mem0[gp + 216<i32>:word64]
@@ -6240,13 +5857,103 @@ l00008B34:
 	r24 = 1<32>
 	r1_r0 = r17_r16
 	r3_r2 = r1_r0
-	call fn00008354 (retsize: 0;)
+	call _LXp_setw (retsize: 0;)
 	r21 = r22 + (r17 << 4<32>)
 	// succ:  l00008B68_thunk_fn00008B64
 l00008B68_thunk_fn00008B64:
 	call fn00008B64 (retsize: 0;)
 	return
-	// succ:  fn00008B1C_exit
+	// succ:  fn00008B34_exit
+fn00008B34_exit:
+
+
+// fn00008B64
+// Return size: 0
+define fn00008B64
+fn00008B64_entry:
+	r29 = fp
+	goto l00008B64_thunk_fn00008B34
+	// succ:  l00008B64_thunk_fn00008B34
+l00008B64:
+	r2 = r20
+	r1_r0 = r16_r22
+	call memcpy (retsize: 0;)
+	r1_r0 = r17_r22
+	r4 = r21
+	r3_r2 = r17_r19
+	call _LXp_mulx (retsize: 0;)
+	r3_r2 = Mem0[gp + 216<i32>:word64]
+	r1_r0 = r17_r22
+	call _LXp_addh (retsize: 0;)
+	r4 = r21
+	r1_r0 = r17_r22
+	r3_r2 = r17_r16
+	call _LXp_mulx (retsize: 0;)
+	r18 = r22
+	r25 = 0<32>
+	r3_r2 = Mem0[r18:word64]
+	r1_r0 = r17_r16
+	r18 = r18 + 8<32>
+	branch p0 l00008BC4
+	goto l00008BB8
+	// succ:  l00008BB8 l00008BC4
+l00008B64_thunk_fn00008B34:
+	call fn00008B34 (retsize: 0;)
+	return
+	// succ:  fn00008B64_exit
+l00008BB8:
+	p0 = r3_r2 == r27_r26
+	call _LXp_addh (retsize: 0;)
+	r25 = r25 + 1<32>
+	// succ:  l00008BC4
+l00008BC4:
+	branch r17 >u r24 l00008B64
+	// succ:  l00008BC4_thunk_fn00008BD0 l00008B64
+l00008BC4_thunk_fn00008BD0:
+	call fn00008BD0 (retsize: 0;)
+	return
+	// succ:  fn00008B64_exit
+fn00008B64_exit:
+
+
+// fn00008BD0
+// Return size: 0
+define fn00008BD0
+fn00008BD0_entry:
+	r29 = fp
+	goto l00008BD0_thunk_fn00008B34
+	// succ:  l00008BD0_thunk_fn00008B34
+l00008BD0:
+	r24 = r24 << 1<32>
+	branch r0 == 2<32> l00008BFC
+	goto l00008BDC
+	// succ:  l00008BDC l00008BDC_thunk_fn00008BE8
+l00008BD0_thunk_fn00008B34:
+	call fn00008B34 (retsize: 0;)
+	return
+	// succ:  fn00008BD0_exit
+l00008BDC:
+	r0 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
+	Mem0[r16:word64] = r1_r0
+	goto l00008BDC_thunk_fn00008CAC
+	// succ:  l00008BDC_thunk_fn00008CAC
+l00008BDC_thunk_fn00008BE8:
+	call fn00008BE8 (retsize: 0;)
+	return
+	// succ:  fn00008BD0_exit
+l00008BDC_thunk_fn00008CAC:
+	call fn00008CAC (retsize: 0;)
+	return
+	// succ:  fn00008BD0_exit
+fn00008BD0_exit:
+
+
+// fn00008BE8
+// Return size: 0
+define fn00008BE8
+fn00008BE8_entry:
+	r29 = fp
+	// succ:  l00008BE8
 l00008BE8:
 	r1_r0 = Mem0[gp + 216<i32>:word64]
 	call __hexagon_divdf3 (retsize: 0;)
@@ -6257,194 +5964,8 @@ l00008BE8:
 l00008BF0_thunk_fn00008BFC:
 	call fn00008BFC (retsize: 0;)
 	return
-	// succ:  fn00008B1C_exit
-fn00008B1C_exit:
-
-
-// fn00008B64
-// Return size: 0
-define fn00008B64
-fn00008B64_entry:
-	r29 = fp
-	// succ:  l00008B64
-l00008B64:
-	r2 = r20
-	r1_r0 = r16_r22
-	call memcpy (retsize: 0;)
-	goto l00008B64_thunk_fn00008B70
-	// succ:  l00008B64_thunk_fn00008B70
-l00008B64:
-	r2 = r20
-	r1_r0 = r16_r22
-	call memcpy (retsize: 0;)
-	goto l00008B64_thunk_fn00008BC8
-	// succ:  l00008B64_thunk_fn00008BC8
-l00008B64_thunk_fn00008B70:
-	call fn00008B70 (retsize: 0;)
-	return
-	// succ:  fn00008B64_exit
-l00008B64_thunk_fn00008BC8:
-	call fn00008BC8 (retsize: 0;)
-	return
-	// succ:  fn00008B64_exit
-fn00008B64_exit:
-
-
-// fn00008B70
-// Return size: 0
-define fn00008B70
-fn00008B70_entry:
-	r29 = fp
-	goto l00008B70
-	// succ:  l00008B70
-l00008B68:
-	goto l00008B70
-	// succ:  l00008B70
-l00008B70:
-	r1_r0 = r17_r22
-	r4 = r21
-	r3_r2 = r17_r19
-	call _LXp_mulx (retsize: 0;)
-	r3_r2 = Mem0[gp + 216<i32>:word64]
-	r1_r0 = r17_r22
-	call _LXp_addh (retsize: 0;)
-	r4 = r21
-	r1_r0 = r17_r22
-	r3_r2 = r17_r16
-	call _LXp_mulx (retsize: 0;)
-	r18 = r22
-	r25 = 0<32>
-	r3_r2 = Mem0[r18:word64]
-	r1_r0 = r17_r16
-	r18 = r18 + 8<32>
-	branch p0 l00008BA8_thunk_fn00008BC8
-	goto l00008BA8_thunk_fn00008BB8
-	// succ:  l00008BA8_thunk_fn00008BB8 l00008BA8_thunk_fn00008BC8
-l00008B70:
-	r1_r0 = r17_r22
-	r4 = r21
-	r3_r2 = r17_r19
-	call _LXp_mulx (retsize: 0;)
-	r3_r2 = Mem0[gp + 216<i32>:word64]
-	r1_r0 = r17_r22
-	call _LXp_addh (retsize: 0;)
-	r4 = r21
-	r1_r0 = r17_r22
-	r3_r2 = r17_r16
-	call _LXp_mulx (retsize: 0;)
-	r18 = r22
-	r25 = 0<32>
-	r3_r2 = Mem0[r18:word64]
-	r1_r0 = r17_r16
-	r18 = r18 + 8<32>
-	branch p0 l00008BC8
-	goto l00008BB8
-	// succ:  l00008BB8 l00008BA8_thunk_fn00008BC8
-l00008BA8_thunk_fn00008BB8:
-	call fn00008BB8 (retsize: 0;)
-	return
-	// succ:  fn00008B70_exit
-l00008BA8_thunk_fn00008BC8:
-	call fn00008BC8 (retsize: 0;)
-	return
-	// succ:  fn00008B70_exit
-l00008BA8_thunk_fn00008BC8:
-	call fn00008BC8 (retsize: 0;)
-	return
-	// succ:  fn00008B70_exit
-l00008BB8:
-	p0 = r3_r2 == r27_r26
-	call _LXp_addh (retsize: 0;)
-	r25 = r25 + 1<32>
-	branch r17 >u r24 l00008B68
-	// succ:  l00008BD0 l00008B68
-l00008BD0:
-	r24 = r24 << 1<32>
-	branch r0 == 2<32> l00008C00
-fn00008B70_exit:
-
-
-// fn00008BB8
-// Return size: 0
-define fn00008BB8
-fn00008BB8_entry:
-	r29 = fp
-	// succ:  l00008BB8_thunk_fn00008BC8
-l00008BB8_thunk_fn00008BC8:
-	call fn00008BC8 (retsize: 0;)
-	return
-	// succ:  fn00008BB8_exit
-fn00008BB8_exit:
-
-
-// fn00008BC8
-// Return size: 0
-define fn00008BC8
-fn00008BC8_entry:
-	r29 = fp
-	// succ:  l00008BC8
-l00008BC8:
-	branch r17 >u r24 l00008B68
-	// succ:  l00008BC8_thunk_fn00008BB8 l00008BC8_thunk_fn00008BB8
-l00008BC8_thunk_fn00008BB8:
-	call fn00008BB8 (retsize: 0;)
-	return
-	// succ:  fn00008BC8_exit
-l00008BC8_thunk_fn00008BB8:
-	call fn00008BB8 (retsize: 0;)
-	return
-	// succ:  fn00008BC8_exit
-fn00008BC8_exit:
-
-
-// fn00008BD4
-// Return size: 0
-define fn00008BD4
-fn00008BD4_entry:
-	r29 = fp
-	// succ:  l00008BD4
-l00008BD4:
-	branch r0 == 2<32> l00008BD4_thunk_fn00008C00
-	goto l00008BD4_thunk_fn00008BDC
-	// succ:  l00008BD4_thunk_fn00008BDC l00008BD4_thunk_fn00008C00
-l00008BD4:
-	call fn00008C00 (retsize: 0;)
-	return
-	// succ:  l00008BD4_thunk_fn00008BDC l00008BD4_thunk_fn00008C00 fn00008BD4_exit
-l00008BD4_thunk_fn00008BDC:
-	call fn00008BDC (retsize: 0;)
-	return
-	// succ:  fn00008BD4_exit
-l00008BD4_thunk_fn00008BDC:
-	call fn00008BDC (retsize: 0;)
-	return
-	// succ:  fn00008BD4_exit
-l00008BD4_thunk_fn00008C00:
-	call fn00008C00 (retsize: 0;)
-	return
-	// succ:  fn00008BD4_exit
-l00008BD4_thunk_fn00008C00:
-	call fn00008C00 (retsize: 0;)
-	return
-	// succ:  fn00008BD4_exit
-fn00008BD4_exit:
-
-
-// fn00008BDC
-// Return size: 0
-define fn00008BDC
-fn00008BDC_entry:
-	r29 = fp
-	// succ:  l00008BDC
-l00008BDC:
-	r0 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
-	Mem0[r16:word64] = r1_r0
-	// succ:  l00008BDC_thunk_fn00008CAC
-l00008BDC_thunk_fn00008CAC:
-	call fn00008CAC (retsize: 0;)
-	return
-	// succ:  fn00008BDC_exit
-fn00008BDC_exit:
+	// succ:  fn00008BE8_exit
+fn00008BE8_exit:
 
 
 // fn00008BFC
@@ -6452,15 +5973,13 @@ fn00008BDC_exit:
 define fn00008BFC
 fn00008BFC_entry:
 	r29 = fp
-	// succ:  l00008BFC
+	goto l00008BFC_thunk_fn00008BE8
+	// succ:  l00008BFC_thunk_fn00008BE8
 l00008BFC:
 	goto l00008BFC_thunk_fn00008C4C
 	// succ:  l00008BFC_thunk_fn00008C4C
-l00008BFC:
-	goto l00008BFC_thunk_fn00008C4C
-	// succ:  l00008BFC_thunk_fn00008C4C
-l00008BFC_thunk_fn00008C4C:
-	call fn00008C4C (retsize: 0;)
+l00008BFC_thunk_fn00008BE8:
+	call fn00008BE8 (retsize: 0;)
 	return
 	// succ:  fn00008BFC_exit
 l00008BFC_thunk_fn00008C4C:
@@ -6468,21 +5987,6 @@ l00008BFC_thunk_fn00008C4C:
 	return
 	// succ:  fn00008BFC_exit
 fn00008BFC_exit:
-
-
-// fn00008C00
-// Return size: 0
-define fn00008C00
-fn00008C00_entry:
-	r29 = fp
-	// succ:  l00008C00
-l00008C00:
-	// succ:  l00008C00_thunk_fn00008C50
-l00008C00_thunk_fn00008C50:
-	call fn00008C50 (retsize: 0;)
-	return
-	// succ:  fn00008C00_exit
-fn00008C00_exit:
 
 
 // _LXp_sqrtx
@@ -6517,14 +6021,19 @@ l00008C1C:
 l00008C28:
 	p0 = __bit<word32,word32>(r0, 0<32>)
 	r1_r0 = Mem0[gp + 192<i32>:word64]
-	branch p0 l00008C64
-	// succ:  l00008C34 l00008C64
+	branch p0 l00008C60
+	// succ:  l00008C34 l00008C60
 l00008C34:
 	p0 = r5_r4 >= r1_r0
 	r1_r0 = Mem0[gp + 192<i32>:word64]
 	r0 = 1<32>
-	branch p0 l00008D24
-	// succ:  l00008C44 l00008D24
+	branch p0 l00008D20
+	goto l00008C44
+	// succ:  l00008C44 l00008C40_thunk_fn00008D20
+l00008C40_thunk_fn00008D20:
+	call fn00008D20 (retsize: 0;)
+	return
+	// succ:  _LXp_sqrtx_exit
 l00008C44:
 	p0 = r5_r4 >= r1_r0
 	call _Feraise (retsize: 0;)
@@ -6534,25 +6043,21 @@ l00008C54_thunk_fn00008C4C:
 	call fn00008C4C (retsize: 0;)
 	return
 	// succ:  _LXp_sqrtx_exit
-l00008C64:
+l00008C60:
 	r1_r0 = r5_r4
-	branch p0 l00008C7C
-	// succ:  l00008C6C l00008C7C
+	branch p0 l00008C78
+	// succ:  l00008C6C l00008C78
 l00008C6C:
 	p0 = r9 > 2<32>
+	r19 = r18 + (r17 << 3<32>)
 	r3_r2 = Mem0[r16 + 8<i32>:word64]
 	call __hexagon_adddf3 (retsize: 0;)
 	r5_r4 = r1_r0
+	// succ:  l00008C78
+l00008C78:
 	r21_r20 = Mem0[gp + 216<i32>:word64]
 	r1_r0 = r5_r4
 	call sqrtl (retsize: 0;)
-	goto l00008C84
-	// succ:  l00008C84
-l00008C7C:
-	r21_r20 = Mem0[gp + 216<i32>:word64]
-	r1_r0 = r5_r4
-	// succ:  l00008C84
-l00008C84:
 	r1_r0 = r21_r20
 	r3_r2 = r1_r0
 	call __hexagon_divdf3 (retsize: 0;)
@@ -6588,12 +6093,6 @@ l00008D10_thunk_fn00008D20:
 	call fn00008D20 (retsize: 0;)
 	return
 	// succ:  _LXp_sqrtx_exit
-l00008D24:
-	// succ:  l00008D24_thunk_fn00008DE4
-l00008D24_thunk_fn00008DE4:
-	call fn00008DE4 (retsize: 0;)
-	return
-	// succ:  _LXp_sqrtx_exit
 _LXp_sqrtx_exit:
 
 
@@ -6605,15 +6104,16 @@ fn00008C4C_entry:
 	// succ:  l00008C4C
 l00008C4C:
 	r0 = 0x30<32>
-	goto l00008C4C_thunk_fn00008C50
-	// succ:  l00008C4C_thunk_fn00008C50
-l00008C4C:
 	r1_r0 = Mem0[r0:word64]
 	Mem0[r16:word64] = r1_r0
 	goto l00008C54_thunk_fn00008D44
 	// succ:  l00008C54_thunk_fn00008D44
-l00008C4C_thunk_fn00008C50:
-	call fn00008C50 (retsize: 0;)
+l00008C4C:
+	r1_r0 = Mem0[r0:word64]
+	Mem0[r16:word64] = r1_r0
+	// succ:  l00008C54_thunk_fn00008D44
+l00008C54_thunk_fn00008D44:
+	call fn00008D44 (retsize: 0;)
 	return
 	// succ:  fn00008C4C_exit
 l00008C54_thunk_fn00008D44:
@@ -6621,23 +6121,6 @@ l00008C54_thunk_fn00008D44:
 	return
 	// succ:  fn00008C4C_exit
 fn00008C4C_exit:
-
-
-// fn00008C50
-// Return size: 0
-define fn00008C50
-fn00008C50_entry:
-	r29 = fp
-	// succ:  l00008C50
-l00008C50:
-	r1_r0 = Mem0[r0:word64]
-	Mem0[r16:word64] = r1_r0
-	// succ:  l00008C54_thunk_fn00008D44
-l00008C54_thunk_fn00008D44:
-	call fn00008D44 (retsize: 0;)
-	return
-	// succ:  fn00008C50_exit
-fn00008C50_exit:
 
 
 // fn00008CAC
@@ -6649,40 +6132,40 @@ fn00008CAC_entry:
 l00008CAC:
 	r25_r24 = Mem0[gp + 240<i32>:word64]
 	r23_r22 = Mem0[gp + 232<i32>:word64]
-	r2 = r21
-	r1_r0 = r19_r18
-	call memcpy (retsize: 0;)
-	goto l00008CB4_thunk_fn00008CB8
-	// succ:  l00008CB4_thunk_fn00008CB8
+	goto l00008CAC_thunk_fn00008CB4
+	// succ:  l00008CAC_thunk_fn00008CB4
 l00008CAC:
 	r2 = r21
 	r1_r0 = r19_r18
 	call memcpy (retsize: 0;)
 	r3_r2 = r23_r22
 	r1_r0 = r17_r18
-l00008CB4_thunk_fn00008CB8:
-	call fn00008CB8 (retsize: 0;)
+l00008CAC_thunk_fn00008CB4:
+	call fn00008CB4 (retsize: 0;)
 	return
 	// succ:  fn00008CAC_exit
 fn00008CAC_exit:
 
 
-// fn00008CB8
+// fn00008CB4
 // Return size: 0
-define fn00008CB8
-fn00008CB8_entry:
+define fn00008CB4
+fn00008CB4_entry:
 	r29 = fp
-	// succ:  l00008CB8
-l00008CB8:
+	// succ:  l00008CB4
+l00008CB4:
+	r2 = r21
+	r1_r0 = r19_r18
+	call memcpy (retsize: 0;)
 	r3_r2 = r23_r22
 	r1_r0 = r17_r18
 	call _LXp_mulh (retsize: 0;)
-	// succ:  l00008CB8_thunk_fn00008CCC
-l00008CB8_thunk_fn00008CCC:
+	// succ:  l00008CC0_thunk_fn00008CCC
+l00008CC0_thunk_fn00008CCC:
 	call fn00008CCC (retsize: 0;)
 	return
-	// succ:  fn00008CB8_exit
-fn00008CB8_exit:
+	// succ:  fn00008CB4_exit
+fn00008CB4_exit:
 
 
 // fn00008CCC
@@ -6707,9 +6190,9 @@ l00008CCC:
 	r3_r2 = r17_r18
 	r1_r0 = r17_r19
 	call _LXp_mulx (retsize: 0;)
-	branch r17 >u r26 l00008D08_thunk_fn00008CB8
+	branch r17 >u r26 l00008D08_thunk_fn00008CB4
 	goto l00008D08_thunk_fn00008D14
-	// succ:  l00008D08_thunk_fn00008D14 l00008D08_thunk_fn00008CB8
+	// succ:  l00008D08_thunk_fn00008D14 l00008D08_thunk_fn00008CB4
 l00008CCC:
 	r3_r2 = r17_r16
 	r1_r0 = r17_r18
@@ -6726,15 +6209,15 @@ l00008CCC:
 	r3_r2 = r17_r18
 	r1_r0 = r17_r19
 	call _LXp_mulx (retsize: 0;)
-	branch r17 >u r26 l00008CB8
+	branch r17 >u r26 l00008CB4
 	goto l00008D08_thunk_fn00008D14
-	// succ:  l00008D08_thunk_fn00008D14 l00008D08_thunk_fn00008CB8
-l00008D08_thunk_fn00008CB8:
-	call fn00008CB8 (retsize: 0;)
+	// succ:  l00008D08_thunk_fn00008D14 l00008D08_thunk_fn00008CB4
+l00008D08_thunk_fn00008CB4:
+	call fn00008CB4 (retsize: 0;)
 	return
 	// succ:  fn00008CCC_exit
-l00008D08_thunk_fn00008CB8:
-	call fn00008CB8 (retsize: 0;)
+l00008D08_thunk_fn00008CB4:
+	call fn00008CB4 (retsize: 0;)
 	return
 	// succ:  fn00008CCC_exit
 l00008D08_thunk_fn00008D14:
@@ -6753,8 +6236,8 @@ fn00008CCC_exit:
 define fn00008D14
 fn00008D14_entry:
 	r29 = fp
-	goto l00008D14_thunk_fn00008CB8
-	// succ:  l00008D14_thunk_fn00008CB8
+	goto l00008D14_thunk_fn00008CB4
+	// succ:  l00008D14_thunk_fn00008CB4
 l00008D14:
 	r26 = r26 << 1<32>
 	r3_r2 = r17_r19
@@ -6762,8 +6245,8 @@ l00008D14:
 	r1_r0 = r17_r16
 	goto l00008D14_thunk_fn00008D20
 	// succ:  l00008D14_thunk_fn00008D20
-l00008D14_thunk_fn00008CB8:
-	call fn00008CB8 (retsize: 0;)
+l00008D14_thunk_fn00008CB4:
+	call fn00008CB4 (retsize: 0;)
 	return
 	// succ:  fn00008D14_exit
 l00008D14_thunk_fn00008D20:
@@ -6861,19 +6344,19 @@ l00008D50:
 	p0 = r2 == 1<32>
 	r6 = CONVERT(SLICE(r6, byte, 0), byte, uint32)
 	r8 = r8 + 1<32>
-	branch p0 l00008EF0
-	// succ:  l00008D60 l00008EF0
+	branch p0 l00008EEC
+	// succ:  l00008D60 l00008EEC
 l00008D60:
 	p0 = SLICE(r6, byte, 0) >u SLICE(0xF<8>, byte, 0)
-	branch r6 == 1<32> l00008EF8
-	// succ:  l00008D74 l00008EF8
+	branch r6 == 1<32> l00008EEC
+	// succ:  l00008D74 l00008EEC
 l00008D74:
 	r6 = Mem0[r6 + r6 * 4<32>:word32]
 	p0 = r8 > 0xFEF<32>
 	r12 = Mem0[r7:byte]
 	r13 = r5 + 0<32>
-	branch r6 == 1<32> l00008EF0
-	// succ:  l00008D88 l00008EF0
+	branch r6 == 1<32> l00008EEC
+	// succ:  l00008D88 l00008EEC
 l00008D88:
 	r6 = Mem0[r4 + r12 * 2<32>:word16]
 	r14 = r6 & 0xFF<32>
@@ -6886,8 +6369,8 @@ l00008D88:
 	r14 = r6 & 0x1000<32>
 	p0 = r14 == 0<32>
 	r9 = r5 << 8<32>
-	branch p1 l00008DE0
-	// succ:  l00008DC0 l00008DC4_thunk_fn00008DE0
+	branch p1 l00008DDC
+	// succ:  l00008DC0 l00008DDC
 l00008DC0:
 	r9 = r9 | r5 >>u 0x18<32>
 	r13 = 0xFFFFFFFF<32>
@@ -6897,17 +6380,14 @@ l00008DC0:
 	r8 = 0<32>
 	r13 = 0<32>
 	r2 = r13 + r2
+	// succ:  l00008DDC
+l00008DDC:
 	r5 = r9 + 0<32>
 	r12 = r6 & 0x2000<32>
 	r6 = CONVERT(SLICE(r6, ui12, 4), ui12, uint32)
-	goto l00008DE4_thunk_fn00008DEC
-	// succ:  l00008DE4_thunk_fn00008DEC
-l00008DC4_thunk_fn00008DE0:
+	// succ:  l00008DDC_thunk_fn00008DE0
+l00008DDC_thunk_fn00008DE0:
 	call fn00008DE0 (retsize: 0;)
-	return
-	// succ:  fn00008D4C_exit
-l00008DE4_thunk_fn00008DEC:
-	call fn00008DEC (retsize: 0;)
 	return
 	// succ:  fn00008D4C_exit
 l00008EDC:
@@ -6922,11 +6402,10 @@ l00008EDC:
 	r29 = v25 + 8<i32>
 	return
 	// succ:  fn00008D4C_exit
-l00008EF0:
+l00008EEC:
+	call _Geterrno (retsize: 0;)
 	Mem0[r0:word32] = 0x58<32>
 	r2 = 0xFFFFFFFF<32>
-	// succ:  l00008EF8
-l00008EF8:
 	v24 = r30
 	r31 = Mem0[v24 + 4<i32>:word32]
 	r30 = Mem0[v24:word32]
@@ -6941,61 +6420,45 @@ fn00008D4C_exit:
 define fn00008DE0
 fn00008DE0_entry:
 	r29 = fp
-	goto l00008DE0_thunk_fn00008D4C
-	// succ:  l00008DE0_thunk_fn00008D4C
+	// succ:  l00008DE0
 l00008DE0:
 	r5 = r9 + 0<32>
 	r12 = r6 & 0x2000<32>
-l00008DE0_thunk_fn00008D4C:
-	call fn00008D4C (retsize: 0;)
-	return
-	// succ:  fn00008DE0_exit
-fn00008DE0_exit:
-
-
-// fn00008DE4
-// Return size: 0
-define fn00008DE4
-fn00008DE4_entry:
-	r29 = fp
-	// succ:  l00008DE4
-l00008DE4:
-	r5 = r9 + 0<32>
-	r12 = r6 & 0<32>
-	goto l00008DE4_thunk_fn00008DEC
-	// succ:  l00008DE4_thunk_fn00008DEC
-l00008DE4:
-	call fn00008DEC (retsize: 0;)
-	return
-	// succ:  l00008DE4_thunk_fn00008DEC fn00008DE4_exit
-l00008DE4_thunk_fn00008DEC:
-	call fn00008DEC (retsize: 0;)
-	return
-	// succ:  fn00008DE4_exit
-l00008DE4_thunk_fn00008DEC:
-	call fn00008DEC (retsize: 0;)
-	return
-	// succ:  fn00008DE4_exit
-fn00008DE4_exit:
-
-
-// fn00008DEC
-// Return size: 0
-define fn00008DEC
-fn00008DEC_entry:
-	r29 = fp
-	// succ:  l00008DEC
-l00008DEC:
+	p0 = r12 == 0<32>
+	r2 = r7 - r1
+	branch p0 l00008DEC_thunk_fn00008D4C
+	goto l00008DF8_in_fn00008DE0
+	// succ:  l00008DF8_in_fn00008DE0 l00008DEC_thunk_fn00008D4C
+l00008DE0:
 	p0 = r12 == 0<32>
 	r2 = r7 - r1
 	branch p0 l00008D4C
 	goto l00008DF8
-	// succ:  l00008DF8 l00008DEC_thunk_fn00008D4C
+	// succ:  l00008DF8 l00008DE0_thunk_fn00008D4C
+l00008DE0_thunk_fn00008D4C:
+	call fn00008D4C (retsize: 0;)
+	return
+	// succ:  fn00008DE0_exit
 l00008DEC_thunk_fn00008D4C:
 	call fn00008D4C (retsize: 0;)
 	return
-	// succ:  fn00008DEC_exit
+	// succ:  fn00008DE0_exit
 l00008DF8:
+	Mem0[r3:word32] = r5
+	p0 = r0 == 0<32>
+	p1 = r7 == r1
+	r0 = r2 + 0<32>
+	r0 = 0xFFFFFFFD<32>
+	p0 = r5 == 0<32>
+	Mem0[r3 + 8<i32>:word16] = r6
+	r0 = -1<i32>
+	v18 = r30
+	r31 = Mem0[v18 + 4<i32>:word32]
+	r30 = Mem0[v18:word32]
+	r29 = v18 + 8<i32>
+	return
+	// succ:  fn00008DE0_exit
+l00008DF8_in_fn00008DE0:
 	Mem0[r3:word32] = r5
 	p0 = r0 == 0<32>
 	p1 = r7 == r1
@@ -7009,8 +6472,8 @@ l00008DF8:
 	r30 = Mem0[v15:word32]
 	r29 = v15 + 8<i32>
 	return
-	// succ:  fn00008DEC_exit
-fn00008DEC_exit:
+	// succ:  fn00008DE0_exit
+fn00008DE0_exit:
 
 
 // _Mbtowc
@@ -7086,22 +6549,18 @@ l00008FA8:
 	Mem0[r16:word32] = r18
 	// succ:  l00008FC0
 l00008FC0:
-	branch r0 > 2<32> l00008FC4
-	goto l00008FCC
-	// succ:  l00008FCC l00008FC4
-l00008FC4:
-	branch r0 > 2<32> l00008FC4
-	// succ:  l00008FCC l00008FC4
+	branch r0 > 2<32> l00008FC0
+	// succ:  l00008FCC l00008FC0
 l00008FCC:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l00009018
-	// succ:  l00008FE0 l00009018
+	branch r16 == 0<32> l00009010
+	// succ:  l00008FE0 l00009010
 l00008FE0:
 	r16 = r0
 	r1_r0 = 0x4000000001<64>
-	branch r16 == 0<32> l00009014
-	// succ:  l00008FEC l00009014
+	branch r16 == 0<32> l00009010
+	// succ:  l00008FEC l00009010
 l00008FEC:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -7123,13 +6582,6 @@ l00009010:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l00009018
-	// succ:  l00009018
-l00009014:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00009018
-l00009018:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
@@ -7170,17 +6622,17 @@ l00009020:
 	r17 = Mem0[gp + 4<i32>:word32]
 	r0 = r17
 	r0 = r0 + (r0 >>u 1<32>)
-	call fn00007224 (retsize: 0;)
+	call malloc (retsize: 0;)
 	r0 = r0 << 2<32>
-	branch r16 == 0<32> l000090BC
-	// succ:  l00009048 l000090BC
+	branch r16 == 0<32> l000090B4
+	// succ:  l00009048 l000090B4
 l00009048:
 	r16 = r0
 	r1 = 0<32>
 	r1 = Mem0[gp + 8<i32>:word32]
 	r2 = Mem0[gp + 64<i32>:word32]
 	r0 = r16
-	call fn000073E4 (retsize: 0;)
+	call memcpy (retsize: 0;)
 	r2 = r2 << 2<32>
 	r3 = Mem0[gp + 4<i32>:word32]
 	r0 = Mem0[gp + 12<i32>:word32]
@@ -7189,7 +6641,7 @@ l00009048:
 	r2 = r0 + r17
 	r0 = r16 + (r2 << 2<32>)
 	r1 = r1 + (r0 << 2<32>)
-	call fn000073E4 (retsize: 0;)
+	call memcpy (retsize: 0;)
 	r2 = r3 << 2<32>
 	r0 = Mem0[gp + 8<i32>:word32]
 	r1 = 0xE940<32>
@@ -7202,16 +6654,12 @@ l00009048:
 	r3 = r0 + r17
 	Mem0[gp:word32] = r0
 	Mem0[gp + 96<i32>:word32] = r3
+	// succ:  l000090B4
+l000090B4:
 	v15 = r30
 	r31 = Mem0[v15 + 4<i32>:word32]
 	r30 = Mem0[v15:word32]
 	r29 = v15 + 8<i32>
-	return
-	// succ:  _Atrealloc_exit
-l000090BC:
-	// succ:  l000090BC_thunk__Closreg
-l000090BC_thunk__Closreg:
-	call _Closreg (retsize: 0;)
 	return
 	// succ:  _Atrealloc_exit
 _Atrealloc_exit:
@@ -7257,16 +6705,9 @@ l000090EC:
 	Mem0[r16:word32] = r17
 	// succ:  l00009108
 l00009108:
-	branch r0 > 2<32> l0000910C
-	// succ:  l00009108_thunk_closeall l0000910C
+	branch r0 > 2<32> l00009108
+	// succ:  l00009108_thunk_closeall l00009108
 l00009108_thunk_closeall:
-	call closeall (retsize: 0;)
-	return
-	// succ:  _Closreg_exit
-l0000910C:
-	branch r0 > 2<32> l0000910C
-	// succ:  l0000910C_thunk_closeall l0000910C
-l0000910C_thunk_closeall:
 	call closeall (retsize: 0;)
 	return
 	// succ:  _Closreg_exit
@@ -7307,8 +6748,8 @@ l00009140:
 	r16 = r0
 	Mem0[r29:word64] = r19_r18
 	r0 = Mem0[r16:byte]
-	branch r0 == 0<32> l000091D4
-	// succ:  l00009158 l000091D4
+	branch r0 == 0<32> l000091D0
+	// succ:  l00009158 l000091D0
 l00009158:
 	r0 = r0 & 3<32>
 	branch __bit<word32,int32>(r0, -1<i32>) l000091D4
@@ -7319,21 +6760,16 @@ l00009160:
 	r0 = 2<32>
 	call _Locksyslock (retsize: 0;)
 	r0 = Mem0[r16:byte]
-	branch r0 == 0<32> l00009184
-	// succ:  l0000917C l00009184
+	branch r0 == 0<32> l00009180
+	// succ:  l0000917C l00009180
 l0000917C:
 	r0 = r0 & 0x40<32>
 	r0 = Mem0[r16 + 8<i32>:word32]
+	// succ:  l00009180
+l00009180:
 	Mem0[r16 + 8<i32>:word32] = 0<32>
 	r0 = Mem0[r16 + 4<i32>:word32]
 	call close (retsize: 0;)
-	goto l00009188
-	// succ:  l00009188
-l00009184:
-	Mem0[r16 + 8<i32>:word32] = 0<32>
-	r0 = Mem0[r16 + 4<i32>:word32]
-	// succ:  l00009188
-l00009188:
 	r1 = Mem0[r16 + 64<i32>:word32]
 	r17 = 0xFFFFFFFF<32>
 	p0 = r0 == 0<32>
@@ -7352,8 +6788,15 @@ l00009188:
 	call _Unlocksyslock (retsize: 0;)
 	goto l000091F4
 	// succ:  l000091F4
+l000091D0:
+	r0 = 2<32>
+	call _Locksyslock (retsize: 0;)
+	goto l000091D8
+	// succ:  l000091D8
 l000091D4:
 	r0 = 2<32>
+	// succ:  l000091D8
+l000091D8:
 	r0 = r16
 	call _Fofree (retsize: 0;)
 	r0 = 2<32>
@@ -7425,18 +6868,18 @@ l0000926C:
 	r0 = 2<32>
 	call _Locksyslock (retsize: 0;)
 	r18 = 0x14<32>
-	branch r0 == 0<32> l00009298
-	// succ:  l0000928C l00009298
+	// succ:  l00009280
+l00009280:
+	branch r0 == 0<32> l00009294
+	// succ:  l0000928C l00009294
 l0000928C:
 	r0 = Mem0[r16:word32]
 	r17 = 0xFFFFFFFF<32>
 	p0 = r0 > 0xFFFFFFFF<32>
-	branch r18 == 1<32> l0000928C
-	goto l000092A8
-	// succ:  l000092A8 l0000928C
-l00009298:
-	branch r18 == 1<32> l0000928C
-	// succ:  l000092A8 l0000928C
+	// succ:  l00009294
+l00009294:
+	branch r18 == 1<32> l00009280
+	// succ:  l000092A8 l00009280
 l000092A8:
 	r18 = r18 + 0xFFFFFFFF<32>
 	r16 = r16 + 4<32>
@@ -7504,8 +6947,8 @@ l0000930C:
 	Mem0[r0:byte] = r16
 	r0 = Mem0[r17:word16]
 	r1 = r0 & 0x800<32>
-	branch r0 == 0<32> l00009358
-	// succ:  l0000933C l00009358
+	branch r0 == 0<32> l00009350
+	// succ:  l0000933C l00009350
 l0000933C:
 	r0 = r0 & 0x400<32>
 	r0 = r17
@@ -7523,8 +6966,6 @@ l00009350:
 	// succ:  l00009354
 l00009354:
 	call _Unlockfilelock (retsize: 0;)
-	// succ:  l00009358
-l00009358:
 	v15 = r30
 	r31 = Mem0[v15 + 4<i32>:word32]
 	r30 = Mem0[v15:word32]
@@ -7557,8 +6998,8 @@ l00009374:
 	r17 = r17 + r18
 	// succ:  l00009378
 l00009378:
-	branch r0 == 0<32> l00009434
-	// succ:  l00009384 l00009434
+	branch r0 == 0<32> l00009430
+	// succ:  l00009384 l00009430
 l00009384:
 	r0 = Mem0[r17:byte]
 	r1 = Mem0[r16 + 24<i32>:word32]
@@ -7569,8 +7010,8 @@ l00009384:
 l00009398:
 	p0 = __bit<word32,word32>(r0, 0<32>)
 	r0 = Mem0[r16 + 1<i32>:byte]
-	branch r0 == 0<32> l000093B4
-	// succ:  l000093A8 l000093B4
+	branch r0 == 0<32> l000093B0
+	// succ:  l000093A8 l000093B0
 l000093A8:
 	r0 = r0 & 4<32>
 	branch p0 l000093CC
@@ -7579,42 +7020,40 @@ l000093B0:
 	p0 = r0 == 0<32>
 	r0 = r17
 	call strlen (retsize: 0;)
-	goto l000093B8
-	// succ:  l000093B8
-l000093B4:
-	r0 = r17
-	// succ:  l000093B8
-l000093B8:
 	r3 = r0
 	p0 = p0 | !p0
-	goto l000093E0
-	// succ:  l000093E0
+	goto l000093DC
+	// succ:  l000093DC
 l000093CC:
 	r3 = r0 + (0x41<32> - r17)
 	p0 = p0 & p0
 	Mem0[r29 + 2<i32>:byte] = r0
 	r0 = p0
+	goto l000093E0
 	// succ:  l000093E0
-l000093E0:
+l000093DC:
 	r2 = Mem0[r16 + 24<i32>:word32]
 	r0 = Mem0[r16 + 16<i32>:word32]
+	r1 = r17
+	// succ:  l000093E0
+l000093E0:
 	r4 = r2 - r0
 	p0 = r3 >u r4
 	r18 = min<uint32>(r3, r4)
 	r2 = r18
-	call fn000073E4 (retsize: 0;)
+	call memcpy (retsize: 0;)
 	r3 = p0
 	r1 = Mem0[r29 + 4<i32>:word64]
 	r0 = Mem0[r16 + 16<i32>:word32]
 	Mem0[r16 + 4<i32>:byte] = r0
 	r0 = r0 + r18
-	branch p0 l00009378
-	// succ:  l00009418 l00009378
+	branch p0 l00009374
+	// succ:  l00009418 l00009374
 l00009418:
 	p0 = r1
 	r0 = r16 + 0<32>
-	branch p0 l00009378
-	// succ:  l00009424 l00009378
+	branch p0 l00009374
+	// succ:  l00009424 l00009374
 l00009424:
 	p0 = r0
 	call fflush (retsize: 0;)
@@ -7624,9 +7063,10 @@ l0000942C:
 	p0 = r16 == 1<32>
 	goto l00009448
 	// succ:  l00009448
-l00009434:
-	branch r0 == 0<32> l00009454
-	// succ:  l00009440 l00009454
+l00009430:
+	r0 = Mem0[r16 + 1<i32>:byte]
+	branch r0 == 0<32> l00009450
+	// succ:  l00009440 l00009450
 l00009440:
 	r0 = r0 & 8<32>
 	r0 = r16
@@ -7646,10 +7086,10 @@ l00009454:
 	r19_r18 = Mem0[r29 + 16<i32>:word64]
 	r17_r16 = Mem0[r29 + 24<i32>:word64]
 	r0 = r16
-	v17 = r30
-	r31 = Mem0[v17 + 4<i32>:word32]
-	r30 = Mem0[v17:word32]
-	r29 = v17 + 8<i32>
+	v20 = r30
+	r31 = Mem0[v20 + 4<i32>:word32]
+	r30 = Mem0[v20:word32]
+	r29 = v20 + 8<i32>
 	return
 	// succ:  fputs_exit
 fputs_exit:
@@ -7684,6 +7124,9 @@ l0000948C:
 	r0 = r29 + 0<32>
 	call _LDscale (retsize: 0;)
 	r0 = 4<32>
+	// succ:  l000094A8
+l000094A8:
+	call _Feraise (retsize: 0;)
 	// succ:  l000094AC
 l000094AC:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
@@ -7808,8 +7251,8 @@ l00009540:
 	p0 = r0 == 4<32>
 	r0 = r29 + 8<32>
 	r0 = r0 | 6<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l0000955C
-	// succ:  l00009554 l0000955C
+	branch __bit<word32,int32>(r0, -1<i32>) l00009558
+	// succ:  l00009554 l00009558
 l00009554:
 	r0 = Mem0[r0:int16]
 	r0 = 1<32>
@@ -7817,12 +7260,6 @@ l00009554:
 l00009558:
 	r1_r0 = r17_r16
 	call fn0000ADC0 (retsize: 0;)
-	goto l00009560
-	// succ:  l00009560
-l0000955C:
-	r1_r0 = r17_r16
-	// succ:  l00009560
-l00009560:
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]
@@ -7967,21 +7404,17 @@ l00009698:
 	return
 	// succ:  _Feraise_exit
 l000096A8:
-	branch r0 == 0<32> l000096BC
-	// succ:  l000096B4 l000096BC
+	branch r0 == 0<32> l000096B8
+	// succ:  l000096B4 l000096B8
 l000096B4:
 	r0 = r16 & 0xC<32>
 	Mem0[r0:word32] = 0x22<32>
+	// succ:  l000096B8
+l000096B8:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
 	r29 = v16 + 8<i32>
-	return
-	// succ:  _Feraise_exit
-l000096BC:
-	// succ:  l000096BC_thunk__Fofind
-l000096BC_thunk__Fofind:
-	call _Fofind (retsize: 0;)
 	return
 	// succ:  _Feraise_exit
 _Feraise_exit:
@@ -8005,8 +7438,8 @@ l000096C0:
 	// succ:  l000096D0 l000096F4
 l000096D0:
 	p0 = r8 >u -1<i32>
-	branch r0 == 0<32> l00009700
-	// succ:  l000096DC l00009700
+	branch r0 == 0<32> l000096FC
+	// succ:  l000096DC l000096FC
 l000096DC:
 	r0 = Mem0[r17:word32]
 	r1 = Mem0[r0:word16]
@@ -8021,8 +7454,9 @@ l000096F4:
 	r29 = v14 + 8<i32>
 	return
 	// succ:  _Fofind_exit
-l00009700:
+l000096FC:
 	r0 = 0x50<32>
+	call malloc (retsize: 0;)
 	branch p0 l0000971C
 	// succ:  l00009708 l0000971C
 l00009708:
@@ -8063,7 +7497,7 @@ l00009720:
 	r1 = Mem0[r0:byte]
 	r1 = r1 & 0x80<32>
 	r1 = -1<i32>
-	r2 = 0x34<32>
+	r2 = 0xE534<32>
 	// succ:  l00009740
 l00009740:
 	r1 = r1 + 1<32>
@@ -8115,17 +7549,17 @@ l00009780:
 l000097C0:
 	p2 = r20 == 0x47<32>
 	p0 = r20 == 0x67<32>
-	branch p3 l00009800
-	// succ:  l000097D0 l00009800
+	branch p3 l000097FC
+	// succ:  l000097D0 l000097FC
 l000097D0:
 	p3 = p0 | p2
 	p3 = r19 > 0xFFFFFFFB<32>
 	branch p3 l000097FC
 	// succ:  l000097D8 l000097FC
 l000097D8:
-	branch r19 > r0 l00009800
+	branch r19 > r0 l000097FC
 	goto l000097E4
-	// succ:  l000097E4 l00009800
+	// succ:  l000097E4 l000097FC
 l000097E0:
 	r0 = Mem0[r16 - 4<i32>:byte]
 	r20 = r19 + 1<32>
@@ -8136,12 +7570,12 @@ l000097E4:
 	r0 = Mem0[r16 + 48<i32>:word32]
 	r0 = Mem0[r16 - 4<i32>:byte]
 	r20 = r19 + 1<32>
-	branch r0 == 0<32> l00009848
+	branch r0 == 0<32> l00009844
 	goto l000097F8
-	// succ:  l000097F8 l00009848
+	// succ:  l000097F8 l00009844
 l000097EC:
-	branch r0 == 0<32> l00009848
-	// succ:  l000097F8 l00009848
+	branch r0 == 0<32> l00009844
+	// succ:  l000097F8 l00009844
 l000097F8:
 	r0 = r0 & 8<32>
 	r0 = Mem0[r16 + 48<i32>:word32]
@@ -8149,18 +7583,15 @@ l000097F8:
 l000097FC:
 	r22 = 0x70<32>
 	branch p2 l00009810
-	goto l00009804
 	// succ:  l00009804 l00009810
-l00009800:
-	r22 = 0x70<32>
-	// succ:  l00009804
 l00009804:
 	p1 = r20 == 0x61<32>
-	branch p0 l000099CC
-	// succ:  l00009810 l000099CC l000099D4
+	branch p0 l000099C8
+	// succ:  l00009810 l000099C8 l000099D4
 l00009810:
 	branch p1 l000099D4
-l00009848:
+l00009844:
+	r0 = Mem0[r16 + 48<i32>:word32]
 	Mem0[r16 + 48<i32>:word32] = r18
 	r0 = r18 + 0<32>
 	p0 = r0 > r18
@@ -8193,9 +7624,9 @@ l00009880:
 	branch p0 l000098AC
 	// succ:  l000098A4 l000098AC
 l000098A4:
-	branch r2 == 0<32> l000098C8
+	branch r2 == 0<32> l000098C4
 	goto l000098B0
-	// succ:  l000098B0 l000098C8
+	// succ:  l000098B0 l000098C4
 l000098AC:
 	r0 = Mem0[r16 + 16<i32>:word32]
 	// succ:  l000098B0
@@ -8206,11 +7637,11 @@ l000098B0:
 	r0 = Mem0[r16 + 16<i32>:word32]
 	r1 = Mem0[r16 + 4<i32>:word32]
 	r1 = r1 + 1<32>
+	// succ:  l000098C4
+l000098C4:
 	Mem0[r16 + 40<i32>:word32] = r0
 	goto l00009B18
 	// succ:  l00009B18
-l000098C8:
-	Mem0[r16 + 40<i32>:word32] = r0
 l00009958:
 	r2 = r19
 	r1 = r17
@@ -8249,14 +7680,10 @@ l00009980:
 	r1 = r1 - r17
 	r0 = r0 + r17
 	Mem0[r16 + 32<i32>:word32] = r1
+	// succ:  l000099C8
+l000099C8:
 	r22 = r20
 	p0 = r20 == 0x41<32>
-	goto l000099D0
-	// succ:  l000099D0
-l000099CC:
-	r22 = r20
-	// succ:  l000099D0
-l000099D0:
 	r22 = 0x50<32>
 	// succ:  l000099D4
 l000099D4:
@@ -8267,19 +7694,24 @@ l000099D4:
 	r0 = r1 + r0
 	r3 = r0 + 1<32>
 	Mem0[r0:byte] = r2
-	branch r0 > 0<32> l00009A04
-	// succ:  l000099F8 l00009A04
+	branch r0 > 0<32> l00009A00
+	// succ:  l000099F8 l00009A00
 l000099F8:
 	r0 = Mem0[r16 + 48<i32>:word32]
-	branch r0 == 0<32> l00009A60
-	// succ:  l00009A04 l00009A60
+	branch r0 == 0<32> l00009A5C
+	goto l00009A04
+	// succ:  l00009A04 l00009A5C
+l00009A00:
+	r2 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	// succ:  l00009A04
 l00009A04:
 	r0 = r0 & 8<32>
 	r0 = r2 + r0
 	r1 = r0 + 1<32>
 	Mem0[r0:byte] = r21
-	branch r2 > 0<32> l00009A60
-	// succ:  l00009A20 l00009A60
+	branch r2 > 0<32> l00009A5C
+	// succ:  l00009A20 l00009A5C
 l00009A20:
 	r2 = Mem0[r16 + 48<i32>:word32]
 	r5 = Mem0[r16 + 16<i32>:word32]
@@ -8298,9 +7730,9 @@ l00009A20:
 	r0 = r0 - r17
 	r20 = r1 + r17
 	Mem0[r16 + 32<i32>:word32] = r0
+	// succ:  l00009A5C
+l00009A5C:
 	r20 = Mem0[r16 + 28<i32>:word32]
-	// succ:  l00009A60
-l00009A60:
 	r17 = Mem0[r16 + 16<i32>:word32]
 	r21 = r20
 	p0 = r19 > 0xFFFFFFFF<32>
@@ -8342,8 +7774,8 @@ l00009AB4:
 	// succ:  l00009AC4 l00009AD4
 l00009AC4:
 	Mem0[r21:byte] = 0x30<8>
-	goto l00009AD8
-	// succ:  l00009AD8
+	goto l00009AD4
+	// succ:  l00009AD4
 l00009AD0:
 	goto l00009ADC
 	// succ:  l00009ADC
@@ -8351,6 +7783,7 @@ l00009AD4:
 	branch p0 l00009B04
 	// succ:  l00009AD8 l00009B04
 l00009AD8:
+	p0 = r10 == 0<32>
 	branch p0 l00009B0C
 	// succ:  l00009ADC l00009B0C
 l00009ADC:
@@ -8381,8 +7814,8 @@ l00009B10:
 	// succ:  l00009B18
 l00009B18:
 	r0 = Mem0[r16 + 60<i32>:word16]
-	branch r0 == 0<32> l00009B48
-	// succ:  l00009B28 l00009B48
+	branch r0 == 0<32> l00009B44
+	// succ:  l00009B28 l00009B44
 l00009B28:
 	r0 = r0 & 0x14<32>
 	r0 = Mem0[r16 + 8<i32>:word32]
@@ -8394,7 +7827,14 @@ l00009B28:
 	Mem0[r16 + 24<i32>:word32] = r0
 	r0 = r4 - r0
 	p0 = r4 > r0
+	goto l00009B48
 	// succ:  l00009B48
+l00009B44:
+	// succ:  l00009B44_thunk___restore_r16_through_r23_and_deallocframe
+l00009B44_thunk___restore_r16_through_r23_and_deallocframe:
+	call __restore_r16_through_r23_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Genld_exit
 l00009B48:
 	// succ:  l00009B4C_thunk__LDint
 l00009B4C_thunk__LDint:
@@ -8424,27 +7864,6 @@ l00009B50:
 	return
 	// succ:  _LDint_exit
 _LDint_exit:
-
-
-// fn00009B54
-// Return size: 0
-define fn00009B54
-fn00009B54_entry:
-	r29 = fp
-	// succ:  l00009B54
-l00009B54:
-	v4 = r29 - 8<i32>
-	Mem0[v4:word32] = r30
-	Mem0[v4 + 4<i32>:word32] = r31
-	r30 = v4
-	r29 = v4 - 0<i32>
-	v7 = r30
-	r31 = Mem0[v7 + 4<i32>:word32]
-	r30 = Mem0[v7:word32]
-	r29 = v7 + 8<i32>
-	return
-	// succ:  fn00009B54_exit
-fn00009B54_exit:
 
 
 // _LDscale
@@ -8529,23 +7948,20 @@ l00009BA0:
 	r30 = v4
 	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
-	branch r16 == 0<32> l00009BA4_thunk__Force_raise
-	goto l00009BB4
-	// succ:  l00009BB4 l00009BA4_thunk__Force_raise
-l00009BA4_thunk__Force_raise:
-	call _Force_raise (retsize: 0;)
-	return
-	// succ:  feraiseexcept_exit
+	branch r16 == 0<32> l00009BD8
+	// succ:  l00009BB4 l00009BD8
 l00009BB4:
 	r16 = r0 & 0x1F<32>
 	r0 = r29 + 4<32>
 	r1 = Mem0[r29 + 4<i32>:word64]
 	r0 = r29 + 4<32>
-	call fn00009C30 (retsize: 0;)
+	call fesetenv (retsize: 0;)
 	r1 = r1 | r16 << 1<32>
 	r0 = Mem0[r29 + 4<i32>:word32]
 	r16 = r16 & r0 >>u 0x19<32>
 	r0 = r16
+	// succ:  l00009BD8
+l00009BD8:
 	v11 = r30
 	r31 = Mem0[v11 + 4<i32>:word32]
 	r30 = Mem0[v11:word32]
@@ -8572,23 +7988,18 @@ l00009BE0:
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	r18 = 0xD798<32>
 	r0 = Mem0[r18 - 8<i32>:word32]
-	branch r0 == 0<32> l00009C18
-	// succ:  l00009C08 l00009C18
+	branch r0 == 0<32> l00009C14
+	// succ:  l00009C08 l00009C14
 l00009C08:
 	r0 = r0 & r16
 	r3_r2 = Mem0[r18 + 8<i32>:word64]
 	r1_r0 = Mem0[r18:word64]
 	r3_r2 = r1_r0
+	// succ:  l00009C14
+l00009C14:
 	r17 = r17 + 0xFFFFFFFF<32>
 	r18 = r18 + 0x18<32>
 	r1_r0 = r3_r2
-	goto l00009C24
-	// succ:  l00009C24
-l00009C18:
-	r17 = r17 + 0xFFFFFFFF<32>
-	r18 = r18 + 0x18<32>
-	// succ:  l00009C24
-l00009C24:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	v19 = r30
@@ -8612,19 +8023,6 @@ l00009C2C:
 	return
 	// succ:  fesetenv_exit
 fesetenv_exit:
-
-
-// fn00009C30
-// Return size: 0
-define fn00009C30
-fn00009C30_entry:
-	r29 = fp
-	// succ:  l00009C30
-l00009C30:
-	USR = r1
-	return
-	// succ:  fn00009C30_exit
-fn00009C30_exit:
 
 
 // _Tls_get__Locale
@@ -8666,22 +8064,18 @@ l00009C78:
 	Mem0[r16:word32] = r18
 	// succ:  l00009C90
 l00009C90:
-	branch r0 > 2<32> l00009C94
-	goto l00009C9C
-	// succ:  l00009C9C l00009C94
-l00009C94:
-	branch r0 > 2<32> l00009C94
-	// succ:  l00009C9C l00009C94
+	branch r0 > 2<32> l00009C90
+	// succ:  l00009C9C l00009C90
 l00009C9C:
 	r0 = Mem0[r16:word32]
 	r0 = Mem0[r17:word32]
-	branch r16 == 0<32> l00009CE8
-	// succ:  l00009CB0 l00009CE8
+	branch r16 == 0<32> l00009CE0
+	// succ:  l00009CB0 l00009CE0
 l00009CB0:
 	r16 = r0
 	r1_r0 = 0x5000000001<64>
-	branch r16 == 0<32> l00009CE4
-	// succ:  l00009CBC l00009CE4
+	branch r16 == 0<32> l00009CE0
+	// succ:  l00009CBC l00009CE0
 l00009CBC:
 	r16 = r0
 	r0 = Mem0[r17:word32]
@@ -8703,13 +8097,6 @@ l00009CE0:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r16
-	goto l00009CE8
-	// succ:  l00009CE8
-l00009CE4:
-	r19_r18 = Mem0[r29:word64]
-	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	// succ:  l00009CE8
-l00009CE8:
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
@@ -8743,8 +8130,8 @@ _Dint_entry:
 l00009CF0:
 	r2 = Mem0[r0 + 6<i32>:word16]
 	r3 = 0x7FF<32>
-	branch r4 == r3 l00009D38
-	// succ:  l00009D08 l00009D38
+	branch r4 == r3 l00009D30
+	// succ:  l00009D08 l00009D30
 l00009D08:
 	r3 = 2<32>
 	r4 = CONVERT(SLICE(r2, ui3, 11), ui3, uint32)
@@ -8756,20 +8143,16 @@ l00009D08:
 	p0 = r0 == 0<32>
 	return
 	// succ:  _Dint_exit
-l00009D38:
+l00009D30:
+	r3 = r2 & 0x7FFF<32>
 	r3 = Mem0[r0 + 4<i32>:word16]
 	r3 = Mem0[r0 + 2<i32>:word16]
 	r5 = Mem0[r0:word16]
 	r3 = 0<32>
 	r3 = 0<32>
 	r5 = 0x433<32> - r4
-	branch r4 > 0<32> l00009D64_thunk__Dnorm
-	goto l00009D74
-	// succ:  l00009D74 l00009D64_thunk__Dnorm
-l00009D64_thunk__Dnorm:
-	call _Dnorm (retsize: 0;)
-	return
-	// succ:  _Dint_exit
+	branch r4 > 0<32> l00009E18
+	// succ:  l00009D74 l00009E18
 l00009D74:
 	r1 = r5 - r1
 	r4 = SLICE(r5, word16, 0) - SLICE(r1, word16, 0)
@@ -8795,8 +8178,8 @@ l00009DA4:
 	r1 = Mem0[r12 + r3 * 2<32>:word16]
 	r1 = r1 & r5
 	r4 = r1
-	branch p0 l00009E00
-	// succ:  l00009DE0 l00009E00
+	branch p0 l00009DFC
+	// succ:  l00009DE0 l00009DFC
 l00009DE0:
 	r4 = r4 ^ r4 & r5
 	branch p0 l00009E08
@@ -8809,14 +8192,10 @@ l00009DE4:
 	Mem0[r0 + 2<i32>:word16] = 0xFF80<16>
 	r2 = Mem0[r0 + 2<i32>:int16]
 	r1 = r2 | r1
+	// succ:  l00009DFC
+l00009DFC:
 	Mem0[r0:word16] = 0<16>
 	r2 = Mem0[r0:int16]
-	goto l00009E04
-	// succ:  l00009E04
-l00009E00:
-	Mem0[r0:word16] = 0<16>
-	// succ:  l00009E04
-l00009E04:
 	r1 = r2 | r1
 	// succ:  l00009E08
 l00009E08:
@@ -8824,6 +8203,8 @@ l00009E08:
 	r3 = 0<32>
 	r3 = 0xFFFFFFFF<32>
 	p0 = !(r0 == 0<32>)
+	// succ:  l00009E18
+l00009E18:
 	return
 	// succ:  _Dint_exit
 _Dint_exit:
@@ -8844,17 +8225,17 @@ l00009E20:
 	// succ:  l00009E38 l00009E58
 l00009E38:
 	p0 = r3 == 0<32>
-	branch r2 == 0<32> l00009E60
-	// succ:  l00009E48 l00009E60
+	branch r2 == 0<32> l00009E58
+	// succ:  l00009E48 l00009E58
 l00009E48:
 	r2 = Mem0[r0 + 4<i32>:word16]
 	r3 = 0<32>
 	branch r2 == 0<32> l00009E5C
 	// succ:  l00009E50 l00009E5C
 l00009E50:
-	branch r4 == 1<32> l00009F64
+	branch r4 == 1<32> l00009F60
 	goto l00009E5C
-	// succ:  l00009E5C l00009F64
+	// succ:  l00009E5C l00009F60
 l00009E58:
 	goto l00009E78
 	// succ:  l00009E78
@@ -8865,13 +8246,6 @@ l00009E60:
 	r5 = Mem0[r0 + 2<i32>:int16]
 	r3 = Mem0[r0 + 4<i32>:int16]
 	r2 = r2 + 0xFFFFFFF0<32>
-	goto l00009E68
-	// succ:  l00009E68
-l00009E64:
-	r5 = Mem0[r0 + 2<i32>:int16]
-	r3 = Mem0[r0 + 4<i32>:int16]
-	// succ:  l00009E68
-l00009E68:
 	Mem0[r0:word16] = 0<16>
 	r4 = Mem0[r0:int16]
 	Mem0[r0:word16] = r5
@@ -8879,13 +8253,13 @@ l00009E68:
 	Mem0[r0 + 2<i32>:word16] = r4
 	// succ:  l00009E78
 l00009E78:
-	branch p0 l00009E64
-	// succ:  l00009E80 l00009E64
+	branch p0 l00009E60
+	// succ:  l00009E80 l00009E60
 l00009E80:
 	p0 = SLICE(r3, word16, 0) == SLICE(0<16>, word16, 0)
 	r4 = r3 + 0<32>
-	branch p0 l00009EF8
-	// succ:  l00009E8C l00009EF8
+	branch p0 l00009EF4
+	// succ:  l00009E8C l00009EF4
 l00009E8C:
 	p0 = SLICE(r3, word16, 0) >u SLICE(0xF<16>, word16, 0)
 	r8 = Mem0[r0 + 2<i32>:int16]
@@ -8893,12 +8267,12 @@ l00009E8C:
 	r7 = 0x10<32>
 	r6 = Mem0[gp + 132<i32>:word32]
 	r9 = Mem0[r0 + 4<i32>:int16]
+	// succ:  l00009EA0
+l00009EA0:
 	r2 = r2 + 0xFFFFFFFF<32>
 	r12 = r8 & r6
 	r4 = r9 & r6
 	r13 = r5 & r6
-	// succ:  l00009EA4
-l00009EA4:
 	r12 = r12 >>u 0xF<32>
 	r4 = r4 >>u 0xF<32>
 	r4 = r4 | r3 << 1<32>
@@ -8909,8 +8283,8 @@ l00009EA4:
 	r12 = r12 | r9 << 1<32>
 	p0 = r7 >u r14
 	r9_r8 = r12_r13
-	branch p0 l00009EA4
-	// succ:  l00009EE0 l00009EA4
+	branch p0 l00009EA0
+	// succ:  l00009EE0 l00009EA0
 l00009EE0:
 	r5 = r5 << 1<32>
 	Mem0[r0 + 6<i32>:word16] = r4
@@ -8920,19 +8294,17 @@ l00009EE0:
 	// succ:  l00009EF4
 l00009EF4:
 	r3 = CONVERT(SLICE(r4, uint16, 0), uint16, uint32)
-	// succ:  l00009EF8
-l00009EF8:
 	r5 = 0x20<32>
 	r13 = Mem0[r0 + 2<i32>:int16]
 	r3 = Mem0[r0:int16]
 	r5 = Mem0[gp + 136<i32>:word32]
 	r12 = Mem0[r0 + 4<i32>:int16]
+	// succ:  l00009F10
+l00009F10:
 	r2 = r2 + 1<32>
 	r8 = r13 & r5
 	r9 = r12 & r5
 	r7 = r4 << 0xF<32>
-	// succ:  l00009F14
-l00009F14:
 	r13 = CONVERT(SLICE(r4, uint16, 0), uint16, uint32)
 	r12 = r3 & r5
 	r3 = r13 << 0xF<32>
@@ -8942,8 +8314,8 @@ l00009F14:
 	r3 = r3 | r12 >>u 1<32>
 	p0 = SLICE(r4, word16, 0) >u SLICE(0x3F<16>, word16, 0)
 	r13_r12 = r6_r7
-	branch p0 l00009F14
-	// succ:  l00009F4C l00009F14
+	branch p0 l00009F10
+	// succ:  l00009F4C l00009F10
 l00009F4C:
 	r4 = r13 >>u 1<32>
 	Mem0[r0:word16] = r6
@@ -8955,7 +8327,8 @@ l00009F4C:
 	r3 = r3 | r1
 	goto l00009F68
 	// succ:  l00009F68
-l00009F64:
+l00009F60:
+	r1 = CONVERT(SLICE(r2, int16, 0), int16, int32)
 	// succ:  l00009F68
 l00009F68:
 	return
@@ -8978,8 +8351,8 @@ l00009F70:
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	r2 = Mem0[r16 + 6<i32>:int16]
-	branch r0 == 0<32> l00009F9C
-	// succ:  l00009F88 l00009F9C
+	branch r0 == 0<32> l00009F98
+	// succ:  l00009F88 l00009F98
 l00009F88:
 	r0 = CONVERT(SLICE(r2, ui3, 11), ui3, uint32)
 	r0 = r16
@@ -8990,11 +8363,12 @@ l00009F94:
 	p0 = r16 > 0<32>
 	goto l00009FD4
 	// succ:  l00009FD4
-l00009F9C:
+l00009F98:
+	r1 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
 	r3 = 0x7FF<32>
 	r1 = 2<32>
-	branch r0 == 0<32> l0000A1DC
-	// succ:  l00009FB4 l0000A1DC
+	branch r0 == 0<32> l0000A1D8
+	// succ:  l00009FB4 l0000A1D8
 l00009FB4:
 	r0 = r2 & 0xF<32>
 	branch r0 == 0<32> l0000A1DC
@@ -9014,9 +8388,9 @@ l00009FD4:
 	// succ:  l00009FDC l00009FE8
 l00009FDC:
 	p0 = r9 > 0<32>
-	branch r17 > r0 l0000A054
+	branch r17 > r0 l0000A04C
 	goto l00009FEC
-	// succ:  l00009FEC l0000A054
+	// succ:  l00009FEC l0000A04C
 l00009FE8:
 	r0 = Mem0[r16 + 6<i32>:word16]
 	r1 = 0<32> - r2
@@ -9048,18 +8422,16 @@ l0000A040:
 	Mem0[r16 + 2<i32>:word16] = 0xFF80<16>
 	goto l0000A1D8
 	// succ:  l0000A1D8
-l0000A054:
+l0000A04C:
+	r0 = 0xE690<32>
 	r1_r0 = Mem0[r0:word64]
-	branch __bit<word32,int32>(r2, -1<i32>) l0000A068
-	// succ:  l0000A064 l0000A068
+	branch __bit<word32,int32>(r2, -1<i32>) l0000A064
+	// succ:  l0000A064 l0000A064
 l0000A064:
 	r2 = Mem0[r16 + 6<i32>:int16]
 	Mem0[r16:word64] = r1_r0
 	goto l0000A1D8
 	// succ:  l0000A1D8
-l0000A068:
-	Mem0[r16:word64] = r1_r0
-	// succ:  l0000A06C
 l0000A06C:
 	r2 = CONVERT(SLICE(r2, int16, 0), int16, int32)
 	r3 = 0<32>
@@ -9073,7 +8445,7 @@ l0000A084:
 	r12 = Mem0[r16 + 4<i32>:int16]
 	r4 = 0<32>
 	r5 = Mem0[r16:int16]
-	r6 = 0<32>
+	r6 = 0xFFF10000<32>
 	// succ:  l0000A0A0
 l0000A0A0:
 	r9 = r1
@@ -9101,8 +8473,8 @@ l0000A0D4:
 l0000A0F0:
 	r5 = 0<32> - r2
 	r8 = CONVERT(SLICE(r1, uint16, 0), uint16, uint32)
-	branch p0 l0000A148
-	// succ:  l0000A100 l0000A148
+	branch p0 l0000A144
+	// succ:  l0000A100 l0000A144
 l0000A100:
 	p0 = SLICE(r5, word16, 0) == SLICE(0<16>, word16, 0)
 	r3 = Mem0[r16 + 2<i32>:word16]
@@ -9124,16 +8496,11 @@ l0000A100:
 	Mem0[r16 + 4<i32>:word16] = r8
 	r9 = r9 | r5 >>u r2
 	Mem0[r16:word16] = r9
+	// succ:  l0000A144
+l0000A144:
 	r2 = CONVERT(SLICE(r4, uint16, 0), uint16, uint32)
-	r3 = 1<32>
+	r3 = 0x8001<32>
 	r1 = r1 | r0
-	goto l0000A150
-	// succ:  l0000A150
-l0000A148:
-	r2 = CONVERT(SLICE(r4, uint16, 0), uint16, uint32)
-	r3 = 1<32>
-	// succ:  l0000A150
-l0000A150:
 	Mem0[r16 + 6<i32>:word16] = r1
 	r2 = Mem0[r16:int16]
 	branch p0 l0000A170
@@ -9170,8 +8537,8 @@ l0000A190:
 l0000A19C:
 	p0 = r3 == 0<32>
 	r1 = CONVERT(SLICE(r1, uint16, 0), uint16, uint32)
-	branch r0 == 0<32> l0000A1D4
-	// succ:  l0000A1B0 l0000A1D4
+	branch r0 == 0<32> l0000A1D0
+	// succ:  l0000A1B0 l0000A1D0
 l0000A1B0:
 	r0 = Mem0[r16 + 4<i32>:word16]
 	branch r0 == 0<32> l0000A1D4
@@ -9184,7 +8551,12 @@ l0000A1B8:
 l0000A1C8:
 	Mem0[r16 + 3<i32>:byte] = r0
 	r0 = r1 + 1<32>
+	goto l0000A1D4
 	// succ:  l0000A1D4
+l0000A1D0:
+	r1 = 0xFFFF<32>
+	goto l0000A1D8
+	// succ:  l0000A1D8
 l0000A1D4:
 	r1 = 0x3F<32>
 	// succ:  l0000A1D8
@@ -9196,10 +8568,10 @@ l0000A1D8:
 	return
 	// succ:  _Dscale_exit
 l0000A1DC:
-	v27 = r30
-	r31 = Mem0[v27 + 4<i32>:word32]
-	r30 = Mem0[v27:word32]
-	r29 = v27 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  _Dscale_exit
 _Dscale_exit:
@@ -9216,13 +8588,8 @@ l0000A1E0:
 	r1 = 0x7FF0<32>
 	r3 = r2 & r1
 	r1 = 2<32>
-	branch r2 == 0<32> l0000A1F4_thunk_fegetenv
-	goto l0000A200
-	// succ:  l0000A200 l0000A1F4_thunk_fegetenv
-l0000A1F4_thunk_fegetenv:
-	call fegetenv (retsize: 0;)
-	return
-	// succ:  _Dtest_exit
+	branch r2 == 0<32> l0000A25C
+	// succ:  l0000A200 l0000A25C
 l0000A200:
 	r2 = r2 & 0xF<32>
 	branch r2 == 0<32> l0000A200_thunk_fegetenv
@@ -9244,6 +8611,9 @@ l0000A210:
 	r1 = 1<32>
 	r1 = 2<32>
 	p0 = !(r0 == 0<32>)
+	return
+	// succ:  _Dtest_exit
+l0000A25C:
 	return
 	// succ:  _Dtest_exit
 _Dtest_exit:
@@ -9883,32 +9253,6 @@ l0000A600:
 	r13_r12 = 0x2000000000000000<64>
 	r5 = CONVERT(SLICE(r3, ui19, 11), ui19, uint32)
 	r4 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
-	// succ:  l0000A600_thunk_fn0000A610
-l0000A600_thunk_fn0000A610:
-	call fn0000A610 (retsize: 0;)
-	return
-	// succ:  __hexagon_adddf3_exit
-__hexagon_adddf3_exit:
-
-
-// fn0000A610
-// Return size: 0
-define fn0000A610
-fn0000A610_entry:
-	r29 = fp
-	// succ:  l0000A610
-l0000A610:
-	p2 = r5 >u r4
-	r9_r8 = r13_r12
-	p3 = __dfclass(r3_r2, 2<32>)
-	p3 = __dfclass(r1_r0, 2<32>)
-	r5_r4 = r4_r5
-	r3_r2 = r1_r0
-	r1_r0 = r3_r2
-	branch p3 l0000A620_thunk_fn0000A764
-	goto l0000A620_thunk_fn0000A630
-	// succ:  l0000A620_thunk_fn0000A630 l0000A620_thunk_fn0000A764
-l0000A610:
 	p2 = r5 >u r4
 	r9_r8 = r13_r12
 	p3 = __dfclass(r3_r2, 2<32>)
@@ -9917,79 +9261,18 @@ l0000A610:
 	r3_r2 = r1_r0
 	r1_r0 = r3_r2
 	branch p3 l0000A764
-	goto l0000A620_thunk_fn0000A630
-	// succ:  l0000A620_thunk_fn0000A630 l0000A620_thunk_fn0000A764
-l0000A620_thunk_fn0000A630:
-	call fn0000A630 (retsize: 0;)
-	return
-	// succ:  fn0000A610_exit
-l0000A620_thunk_fn0000A630:
-	call fn0000A630 (retsize: 0;)
-	return
-	// succ:  fn0000A610_exit
-l0000A620_thunk_fn0000A764:
-	call fn0000A764 (retsize: 0;)
-	return
-	// succ:  fn0000A610_exit
-l0000A620_thunk_fn0000A764:
-	call fn0000A764 (retsize: 0;)
-	return
-	// succ:  fn0000A610_exit
-fn0000A610_exit:
-
-
-// fn0000A630
-// Return size: 0
-define fn0000A630
-fn0000A630_entry:
-	r29 = fp
-	// succ:  l0000A630
+	// succ:  l0000A630 l0000A764
 l0000A630:
 	r7_r6 = 0x3E00000001<64>
 	r15 = r4 - r5
 	r9_r8 = __insert(r2, 0x34<32>, 0xC<32>)
 	r13_r12 = __insert(r0, 0x34<32>, 0xC<32>)
+	// succ:  l0000A640
+l0000A640:
 	r14 = 0<32>
 	p2 = r1 > 0xFFFFFFFF<32>
 	r11_r10 = -r13_r12
 	r15 = min<int32>(r7, r15)
-	// succ:  l0000A640_thunk_fn0000A764
-l0000A640_thunk_fn0000A764:
-	call fn0000A764 (retsize: 0;)
-	return
-	// succ:  fn0000A630_exit
-fn0000A630_exit:
-
-
-// __hexagon_fast2_subdf3
-// Return size: 0
-define __hexagon_fast2_subdf3
-__hexagon_fast2_subdf3_entry:
-	r29 = fp
-	goto l0000A6A4
-	// succ:  l0000A6A4
-l0000A604:
-	r13_r12 = 0x2000000000000000<64>
-	r5 = CONVERT(SLICE(r3, ui19, 11), ui19, uint32)
-	// succ:  l0000A604_thunk_fn0000A610
-l0000A604_thunk_fn0000A610:
-	call fn0000A610 (retsize: 0;)
-	return
-	// succ:  __hexagon_fast2_subdf3_exit
-l0000A6A4:
-	goto l0000A604
-	// succ:  l0000A604
-__hexagon_fast2_subdf3_exit:
-
-
-// fn0000A764
-// Return size: 0
-define fn0000A764
-fn0000A764_entry:
-	r29 = fp
-	goto l0000A764
-	// succ:  l0000A764
-l0000A644:
 	r15_r14 = 0<64>
 	r13_r12 = r11_r10
 	r9_r8 = r9_r8 >> r15
@@ -10002,46 +9285,50 @@ l0000A644:
 	r11_r10 = r13_r12 - r9_r8
 	r13_r12 = r9_r8 + r13_r12
 	r13_r12 = r11_r10
-	branch p0 l0000A6D4
-	// succ:  l0000A68C l0000A6D4
+	branch p0 l0000A6D0
+	// succ:  l0000A68C l0000A6D0
 l0000A68C:
 	p0 = r4 >u r7
 	p0 = !(r4 >u r6)
 	p0 = r12 == 0<32>
 	p0 = r13 == 0<32>
-	branch p0 l0000A6B4
-	// succ:  l0000A69C l0000A6B4
+	branch p0 l0000A6B0
+	// succ:  l0000A69C l0000A6B0
 l0000A69C:
 	r1_r0 = CONVERT(r13_r12, int64, real64)
 	return
-	// succ:  fn0000A764_exit
-l0000A6B4:
+	// succ:  __hexagon_adddf3_exit
+l0000A6B0:
 	r1_r0 = 0<64>
 	r3 = 1<32>
+	r28 = USR
 	r3 = r3 << 0x1F<32>
 	r28 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
 	r1 = r1 ^ r3
 	return
-	// succ:  fn0000A764_exit
-l0000A6D4:
+	// succ:  __hexagon_adddf3_exit
+l0000A6D0:
 	p0 = r12 == 0<32>
 	p0 = r13 == 0<32>
-	branch p0 l0000A6B4
-	// succ:  l0000A6E0 l0000A6B4
+	branch p0 l0000A6B0
+	// succ:  l0000A6E0 l0000A6B0
 l0000A6E0:
+	r1_r0 = CONVERT(r13_r12, int64, real64)
 	r1 = r1 + (r5 << 0x14<32>)
 	r28 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r3_r2 = 0x10000000000000<64>
 	r5 = r5 + r28
-	branch p0 l0000A728
-	// succ:  l0000A700 l0000A728
+	branch p0 l0000A720
+	// succ:  l0000A700 l0000A720
 l0000A700:
 	p0 = r5 > 0x7FE<32>
 	r28 = 1<32> - r5
 	return
-	// succ:  fn0000A764_exit
-l0000A728:
+	// succ:  __hexagon_adddf3_exit
+l0000A720:
 	r13_r12 = 0x7FEFFFFFFFFFFFFF<64>
+	r1_r0 = r13_r12
+	r28 = USR
 	r9_r8 = 0x7FF0000000000000<64>
 	r28 = r28 | 0x28<32>
 	r5 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
@@ -10053,7 +9340,7 @@ l0000A728:
 	p0 = !(r28 == 1<32>)
 	r1_r0 = __insert(r12, 0x3F<32>, 7<32>)
 	return
-	// succ:  fn0000A764_exit
+	// succ:  __hexagon_adddf3_exit
 l0000A764:
 	r9_r8 = CONVERT(SLICE(r3_r2, ui7, 63), ui7, uint64)
 	r13_r12 = CONVERT(SLICE(r1_r0, ui7, 63), ui7, uint64)
@@ -10062,22 +9349,22 @@ l0000A764:
 	p3 = r13_r12 >u r9_r8
 	r9_r8 = r13_r12
 	r13_r12 = r9_r8
-	branch p0 l0000A81C
-	// succ:  l0000A788 l0000A81C
+	branch p0 l0000A818
+	// succ:  l0000A788 l0000A818
 l0000A788:
 	p0 = __dfclass(r1_r0, 0xF<32>)
-	branch p1 l0000A860
-	// succ:  l0000A790 l0000A860
+	branch p1 l0000A85C
+	// succ:  l0000A790 l0000A85C
 l0000A790:
 	p1 = __dfclass(r1_r0, 8<32>)
 	r13_r12 = 0<64>
-	branch p2 l0000A834
-	// succ:  l0000A79C l0000A834
+	branch p2 l0000A830
+	// succ:  l0000A79C l0000A830
 l0000A79C:
 	p2 = __dfclass(r3_r2, 1<32>)
 	r13_r12 = 0x2000000000000000<64>
-	branch p0 l0000A7CC
-	// succ:  l0000A7AC l0000A7CC
+	branch p0 l0000A7C8
+	// succ:  l0000A7AC l0000A7C8
 l0000A7AC:
 	p0 = __dfclass(r1_r0, 4<32>)
 	r5 = 1<32>
@@ -10085,10 +9372,11 @@ l0000A7AC:
 	r4 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r7_r6 = 0x3E00000001<64>
 	r15 = r4 - r5
-	goto l0000A644
-	// succ:  l0000A644
-l0000A7CC:
+	goto l0000A640
+	// succ:  l0000A640
+l0000A7C8:
 	r9_r8 = CONVERT(SLICE(r3_r2, ui7, 63), ui7, uint64)
+	r13_r12 = CONVERT(SLICE(r1_r0, ui7, 63), ui7, uint64)
 	p1 = r3 > 0xFFFFFFFF<32>
 	p0 = r1 > 0xFFFFFFFF<32>
 	r9_r8 = -r9_r8
@@ -10103,29 +9391,45 @@ l0000A7CC:
 	r1_r0 = r13_r12
 	r1_r0 = r9_r8
 	r1 = r1 | r3
-	branch p0 l0000A83C
-	// succ:  l0000A814 l0000A83C
+	branch p0 l0000A838
+	// succ:  l0000A814 l0000A838
 l0000A814:
 	p0 = r1_r0 == r3_r2
 	return
-	// succ:  fn0000A764_exit
-l0000A81C:
+	// succ:  __hexagon_adddf3_exit
+l0000A818:
 	r3_r2 = r1_r0
 	p0 = __dfclass(r3_r2, 0xF<32>)
+	r28 = CONVERT(r1_r0, real64, real32)
 	r1_r0 = 0xFFFFFFFFFFFFFFFF<64>
 	return
-	// succ:  fn0000A764_exit
-l0000A834:
+	// succ:  __hexagon_adddf3_exit
+l0000A830:
 	return
-	// succ:  fn0000A764_exit
-l0000A83C:
+	// succ:  __hexagon_adddf3_exit
+l0000A838:
 	return
-	// succ:  fn0000A764_exit
-l0000A860:
+	// succ:  __hexagon_adddf3_exit
+l0000A85C:
 	p0 = !(r1 == r3)
 	return
-	// succ:  fn0000A764_exit
-fn0000A764_exit:
+	// succ:  __hexagon_adddf3_exit
+__hexagon_adddf3_exit:
+
+
+// __hexagon_fast2_subdf3
+// Return size: 0
+define __hexagon_fast2_subdf3
+__hexagon_fast2_subdf3_entry:
+	r29 = fp
+	// succ:  l0000A6A4
+l0000A6A4:
+	// succ:  l0000A6A4_thunk___hexagon_adddf3
+l0000A6A4_thunk___hexagon_adddf3:
+	call __hexagon_adddf3 (retsize: 0;)
+	return
+	// succ:  __hexagon_fast2_subdf3_exit
+__hexagon_fast2_subdf3_exit:
 
 
 // __hexagon_divdf3
@@ -10180,8 +9484,8 @@ l0000A914:
 	r1 = r1 + (r4 << 0x14<32>)
 	r13_r12 = abs<int32>(r15_r14)
 	r4 = r4 + r5
-	branch p0 l0000A9DC
-	// succ:  l0000A938 l0000A9DC
+	branch p0 l0000A9D4
+	// succ:  l0000A938 l0000A9D4
 l0000A938:
 	p0 = r4 > 0x7FE<32>
 	r28 = 0x3F<32>
@@ -10220,9 +9524,10 @@ l0000A99C:
 	p0 = r0 == 0<32>
 	return
 	// succ:  __hexagon_divdf3_exit
-l0000A9DC:
+l0000A9D4:
 	r1_r0 = r15_r14
-	r15_r14 = 0x3FFFFFFFFF<64>
+	r15_r14 = 0x7FEFFFFFFFFFFFFF<64>
+	r28 = USR
 	r28 = r28 | 0x28<32>
 	r7 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
 	r13_r12 = 0x7FF0000000000000<64>
@@ -10242,8 +9547,8 @@ l0000AA18:
 	p1 = __dfclass(r1_r0, 8<32>)
 	p2 = __dfclass(r3_r2, 1<32>)
 	p2 = __dfclass(r1_r0, 1<32>)
-	branch p1 l0000AB14
-	// succ:  l0000AA38 l0000AB14 l0000AAF0
+	branch p1 l0000AB10
+	// succ:  l0000AA38 l0000AB10 l0000AAF0
 l0000AA38:
 	branch p0 l0000AAF0
 l0000AAF0:
@@ -10255,8 +9560,8 @@ l0000AAF0:
 	r15 = CONVERT(r1_r0, real64, real32)
 	return
 	// succ:  __hexagon_divdf3_exit
-l0000AB14:
-	r28 = 1<32>
+l0000AB10:
+	r28 = 0x7F800001<32>
 	return
 	// succ:  __hexagon_divdf3_exit
 __hexagon_divdf3_exit:
@@ -10284,8 +9589,8 @@ l0000AB20:
 	r7_r6 = r7_r6 + (r15_r14 >>u 0x20<32>)
 	p1 = r6 == 0<32>
 	p1 = r14 == 0<32>
-	branch p0 l0000ACC8
-	// succ:  l0000AB70 l0000ACC8
+	branch p0 l0000ACC4
+	// succ:  l0000AB70 l0000ACC4
 l0000AB70:
 	r11_r10 = r11_r10 + (r7_r6 >>u 0x20<32>)
 	r10 = r10 | r8
@@ -10296,8 +9601,8 @@ l0000AB70:
 	r15_r14 = -r11_r10
 	p0 = !(r6 > r5)
 	p2 = r28 > 0xFFFFFFFF<32>
-	branch p0 l0000ABE4
-	// succ:  l0000AB98 l0000ABE4
+	branch p0 l0000ABE0
+	// succ:  l0000AB98 l0000ABE0
 l0000AB98:
 	p0 = r6 > -1<i32>
 	r11_r10 = r15_r14
@@ -10310,16 +9615,17 @@ l0000ABB0:
 	p0 = r0 == 0<32>
 	return
 	// succ:  __hexagon_fast_muldf3_exit
-l0000ABE4:
+l0000ABE0:
 	r7 = r6 + 0xFFFFFBC6<32>
 	r13_r12 = abs<int32>(r11_r10)
+	r1_r0 = CONVERT(r11_r10, int64, real64)
 	r4 = 0x7FEFFFFF<32>
 	r7 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r1 = r1 + (r7 << 0x14<32>)
 	r5 = 0<32>
 	r7 = r7 + (r6 + 0xFFFFFBC6<32>)
-	branch p0 l0000AC88
-	// succ:  l0000AC14 l0000AC88
+	branch p0 l0000AC80
+	// succ:  l0000AC14 l0000AC80
 l0000AC14:
 	p0 = r7 > 0x7FE<32>
 	r28 = 0x3F<32>
@@ -10350,9 +9656,10 @@ l0000AC20:
 	r1_r0 = CONVERT(r11_r10, int64, real64)
 	return
 	// succ:  __hexagon_fast_muldf3_exit
-l0000AC88:
+l0000AC80:
 	r1_r0 = r11_r10
-	r13_r12 = 0x3FFFFFFFFF<64>
+	r13_r12 = 0x7FEFFFFFFFFFFFFF<64>
+	r28 = USR
 	r5_r4 = 0x7FF0000000000000<64>
 	r28 = r28 | 0x28<32>
 	r14 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
@@ -10365,15 +9672,16 @@ l0000AC88:
 	p0 = !(r28 == 1<32>)
 	return
 	// succ:  __hexagon_fast_muldf3_exit
-l0000ACC8:
+l0000ACC4:
 	r5_r4 = CONVERT(SLICE(r3_r2, ui7, 63), ui7, uint64)
+	r13_r12 = CONVERT(SLICE(r1_r0, ui7, 63), ui7, uint64)
 	r3_r2 = r1_r0
 	r1_r0 = r3_r2
 	p3 = r13_r12 >u r5_r4
 	r5_r4 = r13_r12
 	r13_r12 = r5_r4
-	branch p0 l0000AD78
-	// succ:  l0000ACE8 l0000AD78
+	branch p0 l0000AD74
+	// succ:  l0000ACE8 l0000AD74
 l0000ACE8:
 	p0 = __dfclass(r1_r0, 0xF<32>)
 	p1 = __dfclass(r3_r2, 0xE<32>)
@@ -10385,8 +9693,8 @@ l0000ACE8:
 	// succ:  l0000AD00 l0000AD98
 l0000AD00:
 	r28 = 0x7C000000<32>
-	branch p2 l0000AD94
-	// succ:  l0000AD10 l0000AD94 l0000AD5C
+	branch p2 l0000AD90
+	// succ:  l0000AD10 l0000AD90 l0000AD5C
 l0000AD10:
 	branch p0 l0000AD5C
 l0000AD5C:
@@ -10396,14 +9704,16 @@ l0000AD5C:
 	USR = r28
 	return
 	// succ:  __hexagon_fast_muldf3_exit
-l0000AD78:
+l0000AD74:
 	r3_r2 = r1_r0
 	r28 = CONVERT(r1_r0, real64, real32)
+	p0 = __dfclass(r3_r2, 0xF<32>)
 	r1_r0 = 0xFFFFFFFFFFFFFFFF<64>
 	return
 	// succ:  __hexagon_fast_muldf3_exit
-l0000AD94:
+l0000AD90:
 	r3_r2 = r1_r0
+	r1_r0 = r3_r2
 	// succ:  l0000AD98
 l0000AD98:
 	r3 = CONVERT(SLICE(r3, ui25, 1), ui25, int32)
@@ -10420,16 +9730,21 @@ fn0000ADC0_entry:
 	// succ:  l0000ADC0
 l0000ADC0:
 	r15_r14 = 0x1000000000000000<64>
-	branch p3 l0000AE50
-	// succ:  l0000ADD0 l0000AE50
+	branch p3 l0000AE4C
+	// succ:  l0000ADD0 l0000AE4C
 l0000ADD0:
 	p3 = __dfclass(r1_r0, 2<32>)
 	r7_r6 = r15_r14
 	r4 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r15_r14 = __insert(r0, 0x34<32>, 0xC<32>)
-	// succ:  l0000ADE0
-l0000ADE0:
+	// succ:  l0000ADDC
+l0000ADDC:
 	r28 = 0x3FF<32>
+	branch p1 l0000AE94
+	// succ:  l0000ADE8 l0000AE94
+l0000ADE8:
+	p1 = r1 > -1<i32>
+	__loop(0<i32>, 0x0000AE04<p32>, 0x18<32>)
 	r4 = vavgh<word16[2]>(r28, r4)
 	r13_r12 = r15_r14 << 1<32>
 	p0 = __bit<word32,word32>(r4, 0<32>)
@@ -10455,30 +9770,34 @@ l0000ADE0:
 	r1_r0 = CONVERT(r7_r6, int64, real64)
 	return
 	// succ:  fn0000ADC0_exit
-l0000AE50:
-	branch p0 l0000AE88
-	// succ:  l0000AE54 l0000AE88
+l0000AE4C:
+	branch p0 l0000AE84
+	// succ:  l0000AE54 l0000AE84
 l0000AE54:
-	branch p0 l0000AE94
-	// succ:  l0000AE5C l0000AE94
+	p0 = __dfclass(r1_r0, 0x10<32>)
+	branch p0 l0000AE90
+	// succ:  l0000AE5C l0000AE90
 l0000AE5C:
 	p0 = __dfclass(r1_r0, 1<32>)
 	branch p0 l0000AE94
 	// succ:  l0000AE60 l0000AE94
 l0000AE60:
 	p0 = __bit<word32,word32>(r1, 0<32>)
-	branch p0 l0000AE94
-	// succ:  l0000AE68 l0000AE94
+	branch p0 l0000AE90
+	// succ:  l0000AE68 l0000AE90
 l0000AE68:
 	p0 = __dfclass(r1_r0, 8<32>)
 	r7_r6 = 0x1000000000000000<64>
 	r4 = __count_leading_bits<word32>(r0) + 0xFFFFFFEA<32>
 	r5 = r4 + 8<32>
 	r4 = 1<32> - r4
-	goto l0000ADE0
-	// succ:  l0000ADE0
-l0000AE88:
+	goto l0000ADDC
+	// succ:  l0000ADDC
+l0000AE84:
 	r1_r0 = 0xFFFFFFFFFFFFFFFF<64>
+	return
+	// succ:  fn0000ADC0_exit
+l0000AE90:
 	return
 	// succ:  fn0000ADC0_exit
 l0000AE94:
@@ -10638,29 +9957,14 @@ __sys_Mtxunlock_entry:
 	// succ:  l0000AF30
 l0000AF30:
 	r1 = __memw_locked(r0)
-	// succ:  l0000AF30_thunk_fn0000AF34
-l0000AF30_thunk_fn0000AF34:
-	call fn0000AF34 (retsize: 0;)
-	return
-	// succ:  __sys_Mtxunlock_exit
-__sys_Mtxunlock_exit:
-
-
-// fn0000AF34
-// Return size: 0
-define fn0000AF34
-fn0000AF34_entry:
-	r29 = fp
-	// succ:  l0000AF34
-l0000AF34:
 	r3 = 1<32>
 	r5 = CONVERT(SLICE(r1, ui19, 3), ui19, uint32)
 	r4 = htid
 	r3 = __simd_sub<int16[2]>(r1, r3)
 	p1 = r5 == r4
 	return
-	// succ:  fn0000AF34_exit
-fn0000AF34_exit:
+	// succ:  __sys_Mtxunlock_exit
+__sys_Mtxunlock_exit:
 
 
 // __sys_Mtxinit
@@ -10858,12 +10162,18 @@ l0000B0A0:
 	r0 = 0x1006C<32>
 	call lockMutex (retsize: 0;)
 	r1 = 0xE018<32>
+	branch r16 == 0<32> l0000B0E0
+	// succ:  l0000B0CC l0000B0E0
+l0000B0CC:
+	r16 = Mem0[r0 + 65640<i32>:word32]
 	r2 = Mem0[r1:word32]
 	r3 = 0<32>
 	r16 = r3 + 0<32>
 	r16 = r2 + 0<32>
 	p0 = !(r2 == 0<32>)
 	Mem0[r0:word32] = r16
+	// succ:  l0000B0E0
+l0000B0E0:
 	branch p0 l0000B118
 	// succ:  l0000B0E4 l0000B118
 l0000B0E4:
@@ -10872,18 +10182,12 @@ l0000B0E4:
 	r3 = r17
 	r3 = r3 + (r16 + 7<32>)
 	r1 = r3 & 0xFFFFFFF8<32>
-	branch r2 == 0<32> l0000B10C
-	// succ:  l0000B104 l0000B10C
+	branch r2 == 0<32> l0000B104
+	// succ:  l0000B104 l0000B104
 l0000B104:
 	r2 = Mem0[gp + 112<i32>:word32]
 	Mem0[r16:word32] = r17
 	Mem0[r0:word32] = r1
-	goto l0000B118
-	// succ:  l0000B118
-l0000B10C:
-	r16 = 0xFFFFFFFF<32>
-	call _Geterrno (retsize: 0;)
-	Mem0[r0:word32] = 0xC<32>
 	// succ:  l0000B118
 l0000B118:
 	r0 = 0x1006C<32>
@@ -10951,7 +10255,7 @@ l0000B15C:
 	r1 = 0xEC18<32>
 	r0 = 0xFE104FFF<32>
 	r17 = 0xB<32>
-	r2 = 0x2C<32>
+	r2 = 0xEB2C<32>
 	// succ:  l0000B180
 l0000B180:
 	r3 = r0 + 0x1EFB001<32>
@@ -11008,13 +10312,8 @@ l0000B1D0:
 	branch p0 l0000B21C
 	// succ:  l0000B1E8 l0000B21C
 l0000B1E8:
-	branch r0 == 0<32> l0000B1E8_thunk_sys_Tlsset
-	goto l0000B1F8
-	// succ:  l0000B1F8 l0000B1E8_thunk_sys_Tlsset
-l0000B1E8_thunk_sys_Tlsset:
-	call sys_Tlsset (retsize: 0;)
-	return
-	// succ:  sys_Tlsfree_exit
+	branch r0 == 0<32> l0000B21C
+	// succ:  l0000B1F8 l0000B21C
 l0000B1F8:
 	r0 = Mem0[0x0000EB30<p32> + r17:word32]
 	r16 = 0xEB30<32>
@@ -11023,7 +10322,7 @@ l0000B1F8:
 	r16 = 0<32>
 	r0 = r16 + (r17 << 2<32>)
 	Mem0[r0:word32] = 0<32>
-	r0 = 0x30<32>
+	r0 = 0x10070<32>
 	call __sys_Mtxunlock (retsize: 0;)
 	// succ:  l0000B21C
 l0000B21C:
@@ -11052,7 +10351,7 @@ l0000B238:
 	r3 = Mem0[0x0000EB30<p32> + r2:word32]
 	r3 = htid
 	r0 = 0<32>
-	r4 = 0x30<32>
+	r4 = 0xEC30<32>
 	r2 = r4 + 0x18<32> * r2
 	Mem0[r14 + r3 * 4<32>:word32] = r1
 	// succ:  l0000B258
@@ -11075,8 +10374,8 @@ l0000B260:
 	branch p0 l0000B294
 	// succ:  l0000B274 l0000B294
 l0000B274:
-	branch r2 == 0<32> l0000B29C
-	// succ:  l0000B284 l0000B29C
+	branch r2 == 0<32> l0000B294
+	// succ:  l0000B284 l0000B294
 l0000B284:
 	r2 = Mem0[0x0000EB30<p32> + r1:word32]
 	r2 = 0xEC30<32>
@@ -11084,12 +10383,6 @@ l0000B284:
 	r0 = Mem0[r30 + r0 * 4<32>:word32]
 	// succ:  l0000B294
 l0000B294:
-	return
-	// succ:  sys_Tlsget_exit
-l0000B29C:
-	// succ:  l0000B29C_thunk___sys_write
-l0000B29C_thunk___sys_write:
-	call __sys_write (retsize: 0;)
 	return
 	// succ:  sys_Tlsget_exit
 sys_Tlsget_exit:
@@ -11186,8 +10479,8 @@ l0000B330:
 	p0 = r0 == 4<32>
 	r0 = r29 + 8<32>
 	r0 = r0 | 6<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l0000B34C
-	// succ:  l0000B344 l0000B34C
+	branch __bit<word32,int32>(r0, -1<i32>) l0000B348
+	// succ:  l0000B344 l0000B348
 l0000B344:
 	r0 = Mem0[r0:int16]
 	r0 = 1<32>
@@ -11195,12 +10488,6 @@ l0000B344:
 l0000B348:
 	r1_r0 = r17_r16
 	call fn0000ADC0 (retsize: 0;)
-	goto l0000B350
-	// succ:  l0000B350
-l0000B34C:
-	r1_r0 = r17_r16
-	// succ:  l0000B350
-l0000B350:
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]

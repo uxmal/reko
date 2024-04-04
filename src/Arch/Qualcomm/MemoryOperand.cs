@@ -36,7 +36,15 @@ namespace Reko.Arch.Qualcomm
         public RegisterStorage? Index { get; set; }
         public int Shift { get; set; }
 
+        /// <summary>
+        /// AutoIncrement can either be a constant or a register.
+        /// </summary>
         public object? AutoIncrement { get; set; }
+
+        /// <summary>
+        /// True if this is an absolute-set operation.
+        /// </summary>
+        public bool IsAbsoluteSet { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {
@@ -57,6 +65,11 @@ namespace Reko.Arch.Qualcomm
             if (Base != null)
             {
                 writer.WriteString(Base.Name);
+                if (this.IsAbsoluteSet)
+                {
+                    writer.WriteFormat("={0:X8})", (uint) this.Offset);
+                    return;
+                }
                 if (AutoIncrement != null)
                 {
                     writer.WriteString("++");

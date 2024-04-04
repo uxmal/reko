@@ -242,5 +242,14 @@ namespace Reko.Arch.Qualcomm
         all8,
         brev,
         tlbr,
+        convert_w2sf,
+        convert_uw2sf,
+        convert_sf2uw,
+        sfadd,
+        sfsub,
+        l2fetch,
+        sfmax,
+        sfmin,
+        vraddub,
     }
 }
