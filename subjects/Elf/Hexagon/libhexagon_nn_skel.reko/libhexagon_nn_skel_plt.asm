@@ -7,7 +7,7 @@
 ;;   Called from:
 ;;     0000947C (in _init)
 fn000094F0 proc
-	{ r14 = add(PC,00021C30) }
+	{ r14 = add(PC,0x21C30) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -30,7 +30,7 @@ fn000094F0 proc
 ;;     0000CC28 (in nn_os_workers_spawn)
 ;;     00019384 (in supernode_check_ref)
 fn00009500 proc
-	{ r14 = add(PC,00021C24) }
+	{ r14 = add(PC,0x21C24) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -50,14 +50,14 @@ fn00009500 proc
 ;;     0001394C (in const_dtor)
 ;;     000194AC (in supernode_dtor)
 fn00009510 proc
-	{ r14 = add(PC,00021C18) }
+	{ r14 = add(PC,0x21C18) }
 
 ;; fn00009514: 00009514
 ;;   Called from:
 ;;     0000BA2C (in const_depth_extend_8)
 ;;     0000BB08 (in const_width_extend_8)
 fn00009514 proc
-	{ r14 = add(PC,00000018) }
+	{ r14 = add(PC,0x18) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 00009520 70 48 00 00 0E C6 49 6A 1C C0 8E 91 00 C0 9C 52 pH....Ij.......R
@@ -69,7 +69,7 @@ fn00009514 proc
 ;;     0000CD4C (in nn_os_get_perfcount)
 ;;     0001A150 (in supernode_execute_hvx_slice)
 fn00009530 proc
-	{ r14 = add(PC,00021C00) }
+	{ r14 = add(PC,0x21C00) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -77,7 +77,7 @@ fn00009530 proc
 ;;   Called from:
 ;;     0000AD98 (in hexagon_nn_init)
 fn00009540 proc
-	{ r14 = add(PC,00021BF4) }
+	{ r14 = add(PC,0x21BF4) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -90,7 +90,7 @@ fn00009540 proc
 ;;     000193F8 (in supernode_check_ref)
 ;;     0001D3F8 (in variable_ctor)
 fn00009550 proc
-	{ r14 = add(PC,00021BE8) }
+	{ r14 = add(PC,0x21BE8) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -143,7 +143,7 @@ fn00009550 proc
 ;;     000214C8 (in fn00021298)
 ;;     00021508 (in fn00021298)
 fn00009560 proc
-	{ r14 = add(PC,00021BDC) }
+	{ r14 = add(PC,0x21BDC) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -152,7 +152,7 @@ fn00009560 proc
 ;;     0000AE68 (in hexagon_nn_getlog)
 ;;     0000B2C0 (in hexagon_nn_op_id_to_name)
 fn00009570 proc
-	{ r14 = add(PC,00021BD0) }
+	{ r14 = add(PC,0x21BD0) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -160,7 +160,7 @@ fn00009570 proc
 ;;   Called from:
 ;;     0000AEA8 (in hexagon_nn_snpprint)
 fn00009580 proc
-	{ r14 = add(PC,00021BC4) }
+	{ r14 = add(PC,0x21BC4) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -168,7 +168,7 @@ fn00009580 proc
 ;;   Called from:
 ;;     0000B26C (in hexagon_nn_op_name_to_id)
 fn00009590 proc
-	{ r14 = add(PC,00021BB8) }
+	{ r14 = add(PC,0x21BB8) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 000095A0 6E 48 00 00 0E D6 49 6A 1C C0 8E 91 00 C0 9C 52 nH....Ij.......R
@@ -177,7 +177,7 @@ fn00009590 proc
 ;;   Called from:
 ;;     0000B2FC (in hexagon_nn_disable_dcvs)
 fn000095B0 proc
-	{ r14 = add(PC,00021BA0) }
+	{ r14 = add(PC,0x21BA0) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -185,7 +185,7 @@ fn000095B0 proc
 ;;   Called from:
 ;;     0000B34C (in hexagon_nn_config)
 fn000095C0 proc
-	{ r14 = add(PC,00021B94) }
+	{ r14 = add(PC,0x21B94) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -199,7 +199,7 @@ fn000095C0 proc
 ;;     0000B954 (in do_snpprint)
 ;;     0000B98C (in do_snpprint)
 fn000095D0 proc
-	{ r14 = add(PC,00021B88) }
+	{ r14 = add(PC,0x21B88) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -207,7 +207,7 @@ fn000095D0 proc
 ;;   Called from:
 ;;     0000B3B0 (in logv)
 fn000095E0 proc
-	{ r14 = add(PC,00021B7C) }
+	{ r14 = add(PC,0x21B7C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -232,7 +232,7 @@ fn000095E0 proc
 ;;     0002079C (in execute_qinstancenorm_ref)
 ;;     00020BE8 (in execute_finstancenorm)
 fn000095F0 proc
-	{ r14 = add(PC,00021B70) }
+	{ r14 = add(PC,0x21B70) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -268,7 +268,7 @@ fn000095F0 proc
 ;;     000212D0 (in fn00021298)
 ;;     00021748 (in prelu_execute)
 fn00009600 proc
-	{ r14 = add(PC,00021B64) }
+	{ r14 = add(PC,0x21B64) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -367,7 +367,7 @@ fn00009600 proc
 ;;     00020C70 (in execute_finstancenorm)
 ;;     000212E4 (in fn00021298)
 fn00009610 proc
-	{ r14 = add(PC,00021B58) }
+	{ r14 = add(PC,0x21B58) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -405,7 +405,7 @@ fn00009610 proc
 ;;     00020A44 (in execute_qinstancenorm_ref)
 ;;     000212F8 (in fn00021298)
 fn00009620 proc
-	{ r14 = add(PC,00021B4C) }
+	{ r14 = add(PC,0x21B4C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -413,7 +413,7 @@ fn00009620 proc
 ;;   Called from:
 ;;     0000BEA0 (in try_pad_bad_supernodes)
 fn00009630 proc
-	{ r14 = add(PC,00021B40) }
+	{ r14 = add(PC,0x21B40) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -421,7 +421,7 @@ fn00009630 proc
 ;;   Called from:
 ;;     0000C924 (in do_perfinfo_reset)
 fn00009640 proc
-	{ r14 = add(PC,00021B34) }
+	{ r14 = add(PC,0x21B34) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -432,7 +432,7 @@ fn00009640 proc
 ;;     0000CDC8 (in nn_os_vector_workers_acquire)
 ;;     0000CE5C (in nn_os_vector_workers_release)
 fn00009650 proc
-	{ r14 = add(PC,00021B28) }
+	{ r14 = add(PC,0x21B28) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -442,7 +442,7 @@ fn00009650 proc
 ;;     0000CE80 (in nn_os_vector_workers_release)
 ;;     0000CE88 (in worker_release)
 fn00009660 proc
-	{ r14 = add(PC,00021B1C) }
+	{ r14 = add(PC,0x21B1C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -451,7 +451,7 @@ fn00009660 proc
 ;;     0000CB9C (in nn_os_workers_spawn)
 ;;     0000CBBC (in nn_os_workers_spawn)
 fn00009670 proc
-	{ r14 = add(PC,00021B10) }
+	{ r14 = add(PC,0x21B10) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -459,7 +459,7 @@ fn00009670 proc
 ;;   Called from:
 ;;     0000CC24 (in nn_os_workers_spawn)
 fn00009680 proc
-	{ r14 = add(PC,00021B04) }
+	{ r14 = add(PC,0x21B04) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -467,7 +467,7 @@ fn00009680 proc
 ;;   Called from:
 ;;     0000CC58 (in nn_os_workers_spawn)
 fn00009690 proc
-	{ r14 = add(PC,00021AF8) }
+	{ r14 = add(PC,0x21AF8) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -483,7 +483,7 @@ fn00009690 proc
 ;;     00019120 (in supernode_execute_hvx)
 ;;     00019128 (in supernode_execute_hvx)
 fn000096A0 proc
-	{ r14 = add(PC,00021AEC) }
+	{ r14 = add(PC,0x21AEC) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -492,12 +492,12 @@ fn000096A0 proc
 ;;     0000CCA8 (in qurt_worker)
 ;;     0000CCC4 (in qurt_worker)
 fn000096B0 proc
-	{ r14 = add(PC,00021AE0) }
+	{ r14 = add(PC,0x21AE0) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
 l000096C0:
-	{ r14 = add(PC,00021AD4) }
+	{ r14 = add(PC,0x21AD4) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -505,12 +505,12 @@ l000096C0:
 ;;   Called from:
 ;;     0000CCE8 (in nn_os_hvx_power_on)
 fn000096D0 proc
-	{ r14 = add(PC,00021AC8) }
+	{ r14 = add(PC,0x21AC8) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
 l000096E0:
-	{ r14 = add(PC,00021ABC) }
+	{ r14 = add(PC,0x21ABC) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -518,12 +518,12 @@ l000096E0:
 ;;   Called from:
 ;;     0000CD54 (in nn_os_get_perfcount)
 fn000096F0 proc
-	{ r14 = add(PC,00021AB0) }
+	{ r14 = add(PC,0x21AB0) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
 l00009700:
-	{ r14 = add(PC,00021AA4) }
+	{ r14 = add(PC,0x21AA4) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -532,17 +532,17 @@ l00009700:
 ;;     0000CD60 (in nn_os_get_perfcount)
 ;;     0000CD64 (in nn_os_get_perfcount)
 fn00009710 proc
-	{ r14 = add(PC,00021A98) }
+	{ r14 = add(PC,0x21A98) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
 l00009720:
-	{ r14 = add(PC,00021A8C) }
+	{ r14 = add(PC,0x21A8C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
 l00009730:
-	{ r14 = add(PC,00021A80) }
+	{ r14 = add(PC,0x21A80) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -557,7 +557,7 @@ l00009730:
 ;;     00018BDC (in supernode_execute_hvx)
 ;;     00018C04 (in supernode_execute_hvx)
 fn00009740 proc
-	{ r14 = add(PC,00021A74) }
+	{ r14 = add(PC,0x21A74) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -580,7 +580,7 @@ fn00009740 proc
 ;;     0001A23C (in supernode_execute_hvx_slice)
 ;;     0001DEB8 (in split_impl)
 fn00009750 proc
-	{ r14 = add(PC,00021A68) }
+	{ r14 = add(PC,0x21A68) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -630,7 +630,7 @@ fn00009750 proc
 ;;     0001D634 (in reshape_execute)
 ;;     0001DECC (in split_impl)
 fn00009760 proc
-	{ r14 = add(PC,00021A5C) }
+	{ r14 = add(PC,0x21A5C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -642,7 +642,7 @@ fn00009760 proc
 ;;     0000F040 (in deconv_f_execute_ref)
 ;;     0001DF74 (in split_impl)
 fn00009770 proc
-	{ r14 = add(PC,00021A50) }
+	{ r14 = add(PC,0x21A50) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -654,7 +654,7 @@ fn00009770 proc
 ;;     0001C454 (in softmax_execute)
 ;;     0001CED4 (in lrn_f_execute)
 fn00009780 proc
-	{ r14 = add(PC,00021A44) }
+	{ r14 = add(PC,0x21A44) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -664,7 +664,7 @@ fn00009780 proc
 ;;     0000F308 (in logsoftmax_execute)
 ;;     0001CEC8 (in lrn_f_execute)
 fn00009790 proc
-	{ r14 = add(PC,00021A38) }
+	{ r14 = add(PC,0x21A38) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -672,7 +672,7 @@ fn00009790 proc
 ;;   Called from:
 ;;     00012644 (in check_execute)
 fn000097A0 proc
-	{ r14 = add(PC,00021A2C) }
+	{ r14 = add(PC,0x21A2C) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -686,7 +686,7 @@ fn000097A0 proc
 ;;     0001C300 (in reluX_execute)
 ;;     00021758 (in prelu_execute)
 fn000097B0 proc
-	{ r14 = add(PC,00021A20) }
+	{ r14 = add(PC,0x21A20) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -696,7 +696,7 @@ fn000097B0 proc
 ;;     0001E6DC (in qtanh_execute_hvx)
 ;;     0001ED4C (in qsigmoid_execute_hvx)
 fn000097C0 proc
-	{ r14 = add(PC,00021A14) }
+	{ r14 = add(PC,0x21A14) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -706,7 +706,7 @@ fn000097C0 proc
 ;;     0001822C (in autorequantize_execute)
 ;;     000185A0 (in requantize_execute)
 fn000097D0 proc
-	{ r14 = add(PC,00021A08) }
+	{ r14 = add(PC,0x21A08) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -714,7 +714,7 @@ fn000097D0 proc
 ;;   Called from:
 ;;     00018C88 (in supernode_execute_hvx)
 fn000097E0 proc
-	{ r14 = add(PC,000219FC) }
+	{ r14 = add(PC,0x219FC) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -725,7 +725,7 @@ fn000097E0 proc
 ;;     0001E46C (in qtanh_execute_ref)
 ;;     0001EAE0 (in fn0001EAD0)
 fn000097F0 proc
-	{ r14 = add(PC,000219F0) }
+	{ r14 = add(PC,0x219F0) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }
 
@@ -734,6 +734,6 @@ fn000097F0 proc
 ;;     00020904 (in execute_qinstancenorm_ref)
 ;;     00020C6C (in execute_finstancenorm)
 fn00009800 proc
-	{ r14 = add(PC,000219E4) }
+	{ r14 = add(PC,0x219E4) }
 	{ r28 = memw(r14) }
 	{ jumpr r28 }

@@ -44,7 +44,7 @@ namespace Reko.Arch.Qualcomm
         private readonly EndianImageReader rdr;
         private readonly List<HexagonInstruction> instrs;
         private List<MachineOperand> ops;
-        private Address addrInstr;
+        private Address addrPacket;
         private MachineOperand? conditionPredicate;
         private bool conditionPredicateInverted;
         private bool conditionPredicateNew;
@@ -57,14 +57,14 @@ namespace Reko.Arch.Qualcomm
             this.rdr = rdr;
             this.instrs = new List<HexagonInstruction>();
             this.ops = new List<MachineOperand>();
-            this.addrInstr = null!;
+            this.addrPacket = null!;
         }
 
         public override HexagonPacket? DisassembleInstruction()
         {
             // All references to PC are relative to the start of the 
             // packet.
-            this.addrInstr = rdr.Address;
+            this.addrPacket = rdr.Address;
             instrs.Clear();
             for (; ; )
             {
@@ -73,7 +73,7 @@ namespace Reko.Arch.Qualcomm
                     if (instrs.Count > 0)
                     {
                         // Packet should have been properly terminated.
-                        return MakeInvalidPacket(this.addrInstr);
+                        return MakeInvalidPacket(this.addrPacket);
                     }
                     else
                     {
@@ -83,12 +83,12 @@ namespace Reko.Arch.Qualcomm
                 var instr = DisassembleInstruction(uInstr);
                 if (instr.InstructionClass == InstrClass.Invalid)
                 {
-                    return MakeInvalidPacket(this.addrInstr);
+                    return MakeInvalidPacket(this.addrPacket);
                 }
                 instrs.Add(instr);
                 if (ShouldTerminatePacket(instr))
                 {
-                    return MakePacket(this.addrInstr);
+                    return MakePacket(this.addrPacket);
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace Reko.Arch.Qualcomm
 
         public override HexagonPacket CreateInvalidInstruction()
         {
-            return MakeInvalidPacket(this.addrInstr);   //$BUG: should be addrPacket.
+            return MakeInvalidPacket(this.addrPacket);   //$BUG: should be addrPacket.
         }
 
         private HexagonInstruction CreateInvalidInstruction(Address addr)
@@ -173,7 +173,7 @@ namespace Reko.Arch.Qualcomm
         public override HexagonPacket NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("Hexagon_dasm", this.addrInstr, this.rdr, message);
+            testGenSvc?.ReportMissingDecoder("Hexagon_dasm", this.addrPacket, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -488,12 +488,12 @@ namespace Reko.Arch.Qualcomm
                 {
                     return false;
                 }
-                var addrInstr = d.addrInstr;
+                var addrInstr = d.addrPacket;
                 var ops = d.ops;
                 d.ops = new List<MachineOperand>();
                 var instrProducer = d.DisassembleInstruction(uInstr);
                 d.ops = ops;
-                d.addrInstr = addrInstr;
+                d.addrPacket = addrInstr;
                 if (instrProducer.Mnemonic == Mnemonic.ASSIGN &&
                     instrProducer.Operands[0] is RegisterStorage reg)
                 {
@@ -620,7 +620,7 @@ namespace Reko.Arch.Qualcomm
 
 
         /// <summary>
-        /// Base+offset memory access
+        /// Base+signed offset memory access
         /// </summary>
         private static Mutator<HexagonDisassembler> M(PrimitiveType width, int baseRegPos, Bitfield[] offsetFields)
         {
@@ -679,7 +679,7 @@ namespace Reko.Arch.Qualcomm
         }
 
         /// <summary>
-        /// memory access in duplex sub-instruction
+        /// Memory access with unsigned offset in duplex sub-instruction
         /// </summary>
         private static Mutator<HexagonDisassembler> m(PrimitiveType width, int offsetPos, int offsetLen)
         {
@@ -756,6 +756,25 @@ namespace Reko.Arch.Qualcomm
                 {
                     Base = baseReg,
                     Offset = (int) offset,
+                };
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
+        /// <summary>
+        /// Memory access with signed offset from a specific register.
+        /// </summary>
+        private static Mutator<HexagonDisassembler> ms(PrimitiveType width, RegisterStorage baseReg, int offsetPos, int offsetLen)
+        {
+            var offField = new Bitfield(offsetPos, offsetLen);
+            return (u, d) =>
+            {
+                var offset = offField.ReadSigned(u) * width.Size;
+                var mem = new MemoryOperand(width)
+                {
+                    Base = baseReg,
+                    Offset = offset,
                 };
                 d.ops.Add(mem);
                 return true;
@@ -854,7 +873,7 @@ namespace Reko.Arch.Qualcomm
             return (u, d) =>
             {
                 var offset = Bitfield.ReadSignedFields(bfOffset, u) << shift;
-                var addrDst = d.addrInstr + offset;
+                var addrDst = d.addrPacket + offset;
                 d.ops.Add(AddressOperand.Create(addrDst));
                 return true;
             };
@@ -1158,9 +1177,9 @@ namespace Reko.Arch.Qualcomm
                 foreach (var m in mutators)
                 {
                     if (!m(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction(dasm.addrInstr);
+                        return dasm.CreateInvalidInstruction(dasm.addrPacket);
                 }
-                var instr = new HexagonInstruction(dasm.addrInstr, this.mnemonic, dasm.ops.ToArray())
+                var instr = new HexagonInstruction(dasm.addrPacket, this.mnemonic, dasm.ops.ToArray())
                 {
                     InstructionClass = this.iclass,
                     ParseType = (ParseType) ((uInstr >> 14) & 3),
@@ -1280,7 +1299,7 @@ namespace Reko.Arch.Qualcomm
                 var u = field.Read(uInstr);
                 if (predicate(u))
                     return decoderTrue.Decode(uInstr, dasm);
-                return dasm.CreateInvalidInstruction(dasm.addrInstr);
+                return dasm.CreateInvalidInstruction(dasm.addrPacket);
             }
         }
 
@@ -1320,7 +1339,7 @@ namespace Reko.Arch.Qualcomm
             {
                 if (dasm.extendedConstant.HasValue ||
                     !dasm.rdr.TryReadLeUInt32(out uint uNextInstr))
-                    return dasm.CreateInvalidInstruction(dasm.addrInstr);
+                    return dasm.CreateInvalidInstruction(dasm.addrPacket);
                 dasm.extendedConstant = Bitfield.ReadFields(bfConstant, uInstr);
                 return iclassDecoder.Decode(uNextInstr, dasm);
             }
@@ -1338,7 +1357,7 @@ namespace Reko.Arch.Qualcomm
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
                 dasm.NotYetImplemented(message);
-                return new HexagonInstruction(dasm.addrInstr, Mnemonic.Invalid, Array.Empty<MachineOperand>())
+                return new HexagonInstruction(dasm.addrPacket, Mnemonic.Invalid, Array.Empty<MachineOperand>())
                 {
                     InstructionClass = InstrClass.Invalid,
                     Length = 4,
@@ -1506,7 +1525,7 @@ namespace Reko.Arch.Qualcomm
                 Assign(m(PrimitiveType.Word16, 11, 3), r0),
                 Mask(9, 2, "  0b01",
                     Assign(m(PrimitiveType.Word32, Registers.sp, 4, 5), r0),
-                    Assign(m(PrimitiveType.Word64, Registers.sp, 3, 6), rr0),
+                    Assign(ms(PrimitiveType.Word64, Registers.sp, 3, 6), rr0),
                     invalid,
                     invalid),
                 Mask(9, 2, "  0b10",
@@ -1866,7 +1885,7 @@ namespace Reko.Arch.Qualcomm
                 Seq(
                     Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
                     IfJump(PcRelExt_20L2_1L7, Conditional_p0(23, 13, -1))),
-                Nyi("10"),
+                invalid,
                 Seq(
                     Assign(P0, Apply(Mnemonic.tstbit, R16_4, Imm_0)),
                     IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22))));

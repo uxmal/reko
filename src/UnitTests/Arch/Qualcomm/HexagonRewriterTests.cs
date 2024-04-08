@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "3|L--|Mem0[v3 + 4<i32>:word32] = r31",
                 "4|L--|r30 = v3",
                 "5|L--|r29 = v3 - 8<i32>",
-                "6|L--|Mem0[r29 + 496<i32>:word64] = r17_r16");
+                "6|L--|Mem0[r29 - 16<i32>:word64] = r17_r16");
         }
 
         [Test]

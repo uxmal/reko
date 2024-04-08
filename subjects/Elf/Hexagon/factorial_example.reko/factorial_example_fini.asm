@@ -2,15 +2,15 @@
 
 ;; _fini: 0000B360
 _fini proc
-	{ allocframe(+00000008) }
+	{ allocframe(#0x8) }
 	{ memw(r29) = r27 }
-	{ r27.h = 0000 }
-	{ r27.l = 8033 }
+	{ r27.h = 0x0 }
+	{ r27.l = 0x8033 }
 
 l0000B370:
-	{ r27 = add(r27,00000004) }
+	{ r27 = add(r27,0x4) }
 	{ r0 = memw(r27) }
-	{ if (p0.new) jump:nt 0000B384; p0 = cmp.eq(r0,00000000) }
+	{ if (p0.new) jump:nt 0000B384; p0 = cmp.eq(r0,0x0) }
 
 l0000B37C:
 	{ callr r0 }

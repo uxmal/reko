@@ -4,27 +4,27 @@
 ;;   Called from:
 ;;     00003DBC (in hexagon_start_main)
 _init proc
-	{ allocframe(+00000008) }
+	{ allocframe(#0x8) }
 	{ memw(r29) = r27 }
-	{ r0.h = 0000 }
-	{ r0.l = 6283 }
+	{ r0.h = 0x0 }
+	{ r0.l = 0x6283 }
 	{ r1 = memw(r0) }
-	{ if (p0.new) jump:nt 00003DEC; p0 = cmp.eq(r1,00000000) }
+	{ if (p0.new) jump:nt 00003DEC; p0 = cmp.eq(r1,0x0) }
 
 l00003DD8:
-	{ r1 = 00000000; r3 = 00000000; r2 = 00000000 }
-	{ r28.h = 0000 }
-	{ r28.l = 5B81 }
+	{ r1 = 0x0; r3 = 0x0; r2 = 0x0 }
+	{ r28.h = 0x0 }
+	{ r28.l = 0x5B81 }
 	{ callr r28 }
 
 l00003DEC:
-	{ r27.h = 0000 }
-	{ r27.l = 8023 }
+	{ r27.h = 0x0 }
+	{ r27.l = 0x8023 }
 
 l00003DF4:
-	{ r27 = add(r27,FFFFFFFC) }
+	{ r27 = add(r27,0xFFFFFFFC) }
 	{ r0 = memw(r27) }
-	{ if (p0.new) jump:nt 00003E08; p0 = cmp.eq(r0,00000000) }
+	{ if (p0.new) jump:nt 00003E08; p0 = cmp.eq(r0,0x0) }
 
 l00003E00:
 	{ callr r0 }

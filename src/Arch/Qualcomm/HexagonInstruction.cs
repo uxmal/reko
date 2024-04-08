@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
@@ -54,7 +55,7 @@ namespace Reko.Arch.Qualcomm
                 renderer.WriteString(" (");
                 if (ConditionInverted)
                     renderer.WriteChar('!');
-                ConditionPredicate.Render(renderer, options);
+                RenderOperand(ConditionPredicate, renderer, options);
                 if (ConditionPredicateNew)
                     renderer.WriteString(".new");
                 renderer.WriteString(") ");
@@ -131,6 +132,77 @@ namespace Reko.Arch.Qualcomm
                     sb.Append("nt");
             }
             renderer.WriteMnemonic(sb.ToString());
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            switch (operand)
+            {
+            case ImmediateOperand imm:
+                var sb = new StringBuilder();
+                uint u;
+                sb.Append('#');
+                if (imm.Width.Domain == Domain.SignedInt)
+                {
+                    var s = imm.Value.ToInt32();
+                    if (s < 0)
+                    {
+                        sb.Append('-');
+                        s = -s;
+                    }
+                    u = (uint) s;
+                }
+                else
+                {
+                    u = imm.Value.ToUInt32();
+                }
+                sb.AppendFormat("0x{0:X}", u);
+                renderer.WriteString(sb.ToString());
+                return;
+            case ApplicationOperand apply:
+                RenderApplyOperand(apply, renderer, options);
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
+        }
+        
+        private void RenderApplyOperand(ApplicationOperand apply, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            switch (apply.Mnemonic)
+            {
+            case Mnemonic.EQ:
+                RenderOperand(apply.Operands[0], renderer, options);
+                renderer.WriteString("=");
+                RenderOperand(apply.Operands[1], renderer, options);
+                break;
+            case Mnemonic.LE:
+                RenderOperand(apply.Operands[0], renderer, options);
+                renderer.WriteString("<=");
+                RenderOperand(apply.Operands[1], renderer, options);
+                break;
+            case Mnemonic.GE:
+                RenderOperand(apply.Operands[0], renderer, options);
+                renderer.WriteString(">=");
+                RenderOperand(apply.Operands[1], renderer, options);
+                break;
+            case Mnemonic.NE:
+                RenderOperand(apply.Operands[0], renderer, options);
+                renderer.WriteString("!=");
+                RenderOperand(apply.Operands[1], renderer, options);
+                break;
+
+            default:
+                renderer.WriteMnemonic(apply.Mnemonic.ToString().Replace("__", "."));
+                var sep = "(";
+                foreach (var op in apply.Operands)
+                {
+                    renderer.WriteString(sep);
+                    RenderOperand(op, renderer, options);
+                    sep = ",";
+                }
+                renderer.WriteString(")");
+                break;
+            }
         }
     }
 
