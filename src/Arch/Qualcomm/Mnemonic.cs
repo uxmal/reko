@@ -251,5 +251,10 @@ namespace Reko.Arch.Qualcomm
         sfmax,
         sfmin,
         vraddub,
+        memuh,
+        l2tagw,
+        l2tagr,
+        dctagw,
+        dctagr,
     }
 }

@@ -536,8 +536,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             get { return model; } 
             set { 
                 this.model = value ?? new EmptyEditorModel();
-                if (value == null)
-                    _ = this; //$DEBUG
                 OnModelChanged(EventArgs.Empty);
             }
         }

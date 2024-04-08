@@ -61,6 +61,15 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void HexagonRw_add_pc_imm()
+        {
+            Given_HexString("0EC2496A");
+            AssertCode(     // { r14 = add(PC,00000004) }
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r14 = 00100004");
+        }
+
+        [Test]
         public void HexagonRw_allocframe()
         {
             Given_HexString("01C09DA0");
@@ -271,7 +280,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (!p0.new) jump:nt 0001EDE0; p0 = sfcmp.ge(r19,r2) }
                 "0|T--|00100000(8): 2 instructions",
                 "1|T--|if (p0) branch 001000D4",
-                "2|L--|p0 = <invalid>");
+                "2|L--|p0 = r19 >= r2");
         }
 
         [Test]
@@ -940,11 +949,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void HexagonRw_vaslw()
         {
-            Given_HexString("404258804440CE1002C0007C");
+            Given_HexString("40425880 4440CE10 02C0007C");
             AssertCode(     // { r3:r2 = combine(00000000,00000000); if (!p0.new) jump:nt 00020400; p0 = cmp.gt(r14,00000000); r1:r0 = vaslw(r25:r24,00000002) }
-                "0|L--|00100000(12): 4 instructions",
+                "0|T--|00100000(12): 4 instructions",
                 "1|L--|r3_r2 = 0<64>",
-                "2|L--|if (p0) branch 00100088",
+                "2|T--|if (p0) branch 00100088",
                 "3|L--|p0 = r14 > 0<32>",
                 "4|L--|r1_r0 = __simd_shl<word64,word32>(r25_r24, 2<32>)");
         }

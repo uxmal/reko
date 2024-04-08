@@ -366,16 +366,17 @@ l00005360:
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r0_r2
 	r4 = r1
-	call fwrite (retsize: 0;)
 	r3 = r17
+	r1_r0 = SEQ(1<32>, r4)
+	call fwrite (retsize: 0;)
 	r17_r16 = Mem0[r29:word64]
 	r0 = -1<i32>
 	r0 = r17 + 0<32>
 	p0 = r0 == r16
-	v17 = r30
-	r31 = Mem0[v17 + 4<i32>:word32]
-	r30 = Mem0[v17:word32]
-	r29 = v17 + 8<i32>
+	v18 = r30
+	r31 = Mem0[v18 + 4<i32>:word32]
+	r30 = Mem0[v18:word32]
+	r29 = v18 + 8<i32>
 	return
 	// succ:  prout_exit
 prout_exit:
@@ -396,7 +397,7 @@ l0000539C:
 	branch p0 l000053BC
 	// succ:  l000053A4 l000053BC
 l000053A4:
-	p0 = r2 >u -1<i32>
+	p0 = r2 >u 8<32>
 	r5_r4 = r7_r7
 	r3 = r0
 	__loop(0<i32>, 0x000053B0<p32>, r2)
@@ -425,7 +426,7 @@ l000053D8:
 	branch p0 l00005490
 	// succ:  l000053E4 l00005490
 l000053E4:
-	p0 = r2 == 4<32>
+	p0 = r2 == 2<32>
 	r2 = r2 + 0xFFFFFFFE<32>
 	branch p0 l000053F8
 	// succ:  l000053EC l000053F8
@@ -436,7 +437,7 @@ l000053EC:
 	branch p0 l00005490
 	// succ:  l000053F8 l00005490
 l000053F8:
-	p0 = r2 == 8<32>
+	p0 = r2 == 4<32>
 	r2 = r2 + 0xFFFFFFFC<32>
 	branch p0 l00005450
 	// succ:  l00005400 l00005450
@@ -481,7 +482,7 @@ l00005450:
 	branch p0 l00005468
 	// succ:  l00005458 l00005468
 l00005458:
-	p0 = r2 >u -1<i32>
+	p0 = r2 >u 7<32>
 	__loop(0<i32>, 0x00005460<p32>, r8)
 	Mem0[r6:word64] = r5_r4
 	r6 = r6 + 8<i32>
@@ -596,7 +597,7 @@ l0000552C:
 	branch p0 l0000554C
 	// succ:  l00005530 l0000554C
 l00005530:
-	p0 = r7 == 0x12<32>
+	p0 = r7 == 9<32>
 	goto l000055BC
 	// succ:  l000055BC
 l0000554C:
@@ -659,6 +660,7 @@ l000055E0:
 	// succ:  l000055E4
 l000055E4:
 	r2 = 0xE440<32>
+	r1_r0 = SEQ(0xE700<32>, r17)
 	call main (retsize: 0;)
 	call exit (retsize: 0;)
 	// succ:  l000055FC
@@ -888,6 +890,7 @@ l00005770:
 	r19_r18 = r1_r0
 	Mem0[r29 + 88<i32>:word64] = r5_r4
 	r21 = r29 + 0x60<32>
+	r17_r16 = SEQ(r2, 0x7FFFFFFF<32>)
 	r24 = 0x3E8<32>
 	r23 = 0x3E7<32>
 	r22 = r29 + 0x50<32>
@@ -896,6 +899,10 @@ l00005770:
 	Mem0[r21 + 8<i32>:word32] = r18
 	r25 = 0xD088<32>
 	Mem0[r21 + 52<i32>:word32] = 0xFFFFFF80<32>
+	goto l000057B8
+	// succ:  l000057B8
+l000057B4:
+	r17 = r17 + 1<32>
 	// succ:  l000057B8
 l000057B8:
 	r1 = r17
@@ -926,7 +933,7 @@ l000057DC:
 	branch p0 l00005ABC
 	// succ:  l00005810 l00005ABC
 l00005810:
-	p0 = r16 == 0<32>
+	p0 = r0 == 0<32>
 	r0 = Mem0[r21 + 52<i32>:word32]
 	Mem0[r21 + 13<i32>:byte] = r0
 	r0 = r0 + r19
@@ -1004,7 +1011,7 @@ l000058BC:
 	branch p0 l000058B4
 	// succ:  l000058E4 l000058B4
 l000058E4:
-	p0 = r16 == 1<32>
+	p0 = r0 == 0<32>
 	r0 = Mem0[r18:byte]
 	Mem0[r21 + 56<i32>:word32] = 0<32>
 	p0 = r0 == 0x2A<32>
@@ -1019,7 +1026,7 @@ l000058F4:
 	branch p0 l00005920
 	// succ:  l00005910 l00005920
 l00005910:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r0 = 0<32> - r0
 	r1 = __set_bit<word32,word32>(r1, 4<32>)
 	Mem0[r21 + 56<i32>:word32] = r0
@@ -1164,6 +1171,10 @@ l00005A94:
 	r0 = r29 + 0x60<32>
 	r1 = r29 + 8<32>
 	call _Puttxt (retsize: 0;)
+	branch p0 l000057B4
+	// succ:  l00005AA0 l000057B4
+l00005AA0:
+	p0 = r0 > -1<i32>
 	goto l00005AB8
 	// succ:  l00005AB8
 l00005AA4:
@@ -1171,7 +1182,7 @@ l00005AA4:
 	branch p0 l000057B8
 	// succ:  l00005AAC l000057B8
 l00005AAC:
-	p0 = r0 == 1<32>
+	p0 = r0 == 0<32>
 	r20 = Mem0[r0 + 52<i32>:word32]
 	// succ:  l00005AB0_thunk_fn00005B40
 l00005AB0_thunk_fn00005B40:
@@ -1231,7 +1242,7 @@ l00005B00:
 	branch p0 l00005B60
 	// succ:  l00005B08 l00005B60
 l00005B08:
-	branch r0 >u 0xD<32> l00005C48
+	branch r0 >u 6<32> l00005C48
 	goto l00005B14
 	// succ:  l00005B14 l00005B08_thunk_fn00005B1C
 l00005B08_thunk_fn00005B1C:
@@ -1240,7 +1251,7 @@ l00005B08_thunk_fn00005B1C:
 	// succ:  _Putfld_exit
 l00005B14:
 	r0 = r2 + 0xFFFFFFBF<32>
-	branch r0 == 1<32> l00005C48
+	branch r0 == 0<32> l00005C48
 l00005B60:
 	p0 = r2 >u 0x57<32>
 	r0 = r2 + 0xFFFFFFA8<32>
@@ -1260,6 +1271,10 @@ l00005B78:
 	Mem0[r16 - 2<i32>:byte] = 0x6C<8>
 	r3 = Mem0[r16 + 44<i32>:word32]
 	r0 = 0<32>
+	branch p0 l00005EA8
+	// succ:  l00005B88 l00005EA8
+l00005B88:
+	p0 = r3 > -1<i32>
 	goto l00005EC4
 	// succ:  l00005EC4
 l00005B8C:
@@ -1277,14 +1292,37 @@ l00005B94:
 	call r0 (retsize: 0;)
 	return
 	// succ:  _Putfld_exit
+l00005EA8:
+	r0 = Mem0[r1:word32]
+	r3 = r0 + 4<32>
+	r0 = Mem0[r0:word32]
+	r3 = Mem0[r2:word32]
+	Mem0[r2:byte] = r4
+	r4 = r3 + 0xFFFFFFFF<32>
+	branch p0 l00005EA8
+	goto l00005EC8
+	// succ:  l00005EC8 l00005EA8
 l00005EC4:
 	r1_r0 = r0_r16
 	call _Putstr (retsize: 0;)
 	p0 = r0 > 0xFFFFFFFF<32>
 	r1 = 0xFFFFFFFF<32>
 	r1 = 0<32>
+	goto l00005ED4_thunk_fn00005B24
 	// succ:  l00005ED4_thunk_fn00005B24
+l00005EC8:
+	p0 = r3 > 0<32>
+	call _Putstr (retsize: 0;)
+	p0 = r0 > 0xFFFFFFFF<32>
+	r1 = 0xFFFFFFFF<32>
+	r1 = 0<32>
+	goto l00005EE4_thunk_fn00005B24
+	// succ:  l00005EE4_thunk_fn00005B24
 l00005ED4_thunk_fn00005B24:
+	call fn00005B24 (retsize: 0;)
+	return
+	// succ:  _Putfld_exit
+l00005EE4_thunk_fn00005B24:
 	call fn00005B24 (retsize: 0;)
 	return
 	// succ:  _Putfld_exit
@@ -1298,7 +1336,7 @@ fn00005B1C_entry:
 	r29 = fp
 	// succ:  l00005B1C
 l00005B1C:
-	branch __bit<word32,int32>(r0, -1<i32>) l00005C78
+	branch r0 > -1<i32> l00005C78
 	goto l00005B1C_thunk_fn00005B28
 	// succ:  l00005B1C_thunk_fn00005B28 l00005C78
 l00005B1C:
@@ -1309,7 +1347,7 @@ l00005B1C_thunk_fn00005B28:
 	// succ:  fn00005B1C_exit
 l00005B20:
 	r0 = r0 & 0x71<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l00005C7C
+	branch r0 > -1<i32> l00005C7C
 l00005C48:
 	r0 = Mem0[r16 + 20<i32>:word32]
 	p0 = r2 == 0<32>
@@ -1452,7 +1490,7 @@ fn00005C7C_entry:
 	r29 = fp
 	// succ:  l00005C7C
 l00005C7C:
-	branch __bit<word32,int32>(r0, -1<i32>) l00005CB0
+	branch r0 > -1<i32> l00005CB0
 	// succ:  l00005C88 l00005CB0
 l00005C88:
 	r0 = CONVERT(SLICE(r0, int16, 0), int16, int32)
@@ -1544,14 +1582,14 @@ l00006250:
 	r0 = r29 + 8<32>
 	r2 = r29 + 0<32>
 	call _Wctomb (retsize: 0;)
-	branch __bit<word32,int32>(r20, -1<i32>) l00006300
+	branch r20 > -1<i32> l00006300
 	// succ:  l0000627C l00006300
 l0000627C:
 	r20 = r0
 	branch r0 == 0<32> l0000628C
 	// succ:  l00006284 l0000628C
 l00006284:
-	branch __bit<word32,int32>(r20, -1<i32>) l00006304
+	branch r20 > -1<i32> l00006304
 	// succ:  l0000628C l00006304
 l0000628C:
 	r0 = Mem0[r17 + 20<i32>:word32]
@@ -1667,11 +1705,11 @@ l00006380_thunk_fn000063D8:
 	return
 	// succ:  _Puttxt_exit
 l0000638C:
-	p0 = r0 == 1<32>
+	p0 = r0 == 0<32>
 	r0 = Mem0[r16 + 52<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r19
-	branch r22 > 1<32> l0000636C
+	branch r22 > 0<32> l0000636C
 	// succ:  l000063A4 l0000636C
 l000063A4:
 	branch p0 l000063CC
@@ -1692,7 +1730,7 @@ l000063BC_thunk_fn000063D8:
 	return
 	// succ:  _Puttxt_exit
 l000063C0:
-	p0 = r0 == 1<32>
+	p0 = r0 == 0<32>
 	r1 = Mem0[r16 + 20<i32>:word32]
 	r0 = Mem0[r16 + 20<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
@@ -1768,7 +1806,7 @@ l000063D8:
 	branch p0 l0000654C
 	// succ:  l000063FC l0000654C
 l000063FC:
-	p0 = r0 == 1<32>
+	p0 = r0 == 0<32>
 	r0 = Mem0[r16 + 52<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r17
@@ -1784,7 +1822,7 @@ l0000641C:
 	branch p0 l0000654C
 	// succ:  l00006430 l0000654C
 l00006430:
-	p0 = r0 == 1<32>
+	p0 = r0 == 0<32>
 	r1 = Mem0[r16 + 28<i32>:word32]
 	r0 = Mem0[r16 + 20<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
@@ -1884,7 +1922,7 @@ l00006534:
 	r0 = Mem0[r16 + 52<i32>:word32]
 	Mem0[r16 + 13<i32>:byte] = r0
 	r0 = r0 + r17
-	branch r20 > 1<32> l00006514
+	branch r20 > 0<32> l00006514
 	goto l0000654C
 	// succ:  l0000654C l00006514
 l00006548:
@@ -1938,7 +1976,7 @@ l00006594:
 	Mem0[r16:word32] = r17
 	// succ:  l000065B0
 l000065B0:
-	branch r0 > 2<32> l000065B0
+	branch r0 > 1<32> l000065B0
 	// succ:  l000065BC l000065B0
 l000065BC:
 	r0 = Mem0[r16:word32]
@@ -1948,6 +1986,7 @@ l000065BC:
 l000065D0:
 	r16 = r0
 	r1_r0 = 0x100000001<64>
+	r17_r16 = SEQ(r0, 0<32>)
 	branch p0 l000065F8
 	// succ:  l000065D8 l000065F8
 l000065D8:
@@ -2056,7 +2095,7 @@ l0000663C:
 	Mem0[r16:word32] = r18
 	// succ:  l00006654
 l00006654:
-	branch r0 > 2<32> l00006654
+	branch r0 > 1<32> l00006654
 	// succ:  l00006660 l00006654
 l00006660:
 	r0 = Mem0[r16:word32]
@@ -2082,8 +2121,9 @@ l00006688:
 	goto l000066A4
 	// succ:  l000066A4
 l00006694:
-	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	r2 = 0x40<32>
+	r1_r0 = SEQ(0xD18C<32>, r16)
+	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	// succ:  l000066A4
 l000066A4:
 	r19_r18 = Mem0[r29:word64]
@@ -2162,7 +2202,7 @@ l000066E0:
 	call _Getpctype (retsize: 0;)
 	r0 = Mem0[r13 + r17 * 2<32>:word16]
 	r22 = r22 + 1<32>
-	branch r0 == 1<32> l000066E0
+	branch r0 == 0<32> l000066E0
 	// succ:  l000066FC l000066E0
 l000066FC:
 	r0 = r0 & 0x144<32>
@@ -2185,11 +2225,11 @@ l00006720:
 	branch p0 l00006730
 	// succ:  l00006724 l00006730
 l00006724:
-	p0 = __bit<word32,word32>(r11, 0<32>)
+	p0 = r11 > -1<i32>
 	branch p0 l00006730
 	// succ:  l00006728 l00006730
 l00006728:
-	p0 = r11 == 2<32>
+	p0 = r11 == 1<32>
 	p0 = r19 > 0x24<32>
 	branch p0 l00006740
 	// succ:  l00006730 l00006740
@@ -2198,7 +2238,7 @@ l00006730:
 	branch p0 l00006890
 	// succ:  l00006738 l00006890
 l00006738:
-	p0 = r8 == 1<32>
+	p0 = r8 == 0<32>
 	Mem0[r16:word32] = r18
 	// succ:  l00006738_thunk___restore_r16_through_r27_and_deallocframe
 l00006738_thunk___restore_r16_through_r27_and_deallocframe:
@@ -2213,7 +2253,7 @@ l00006744:
 	branch p0 l00006788
 	// succ:  l00006748 l00006788
 l00006748:
-	p0 = r11 == 0<32>
+	p0 = r11 == 0x10<32>
 	r0 = Mem0[r22:byte]
 	r19 = 0x10<32>
 	r0 = Mem0[r22 + 1<i32>:int8]
@@ -2254,6 +2294,7 @@ l00006794:
 l000067A0:
 	call _Getptolower (retsize: 0;)
 	r2 = r19
+	r1_r0 = SEQ(r0, 0xD1D0<32>)
 	r1 = Mem0[r29 + r17 * 2<32>:int16]
 	r27_r26 = 0xD1D000000000<64>
 	call memchr (retsize: 0;)
@@ -2286,13 +2327,14 @@ l000067D4:
 l000067D8:
 	r2 = r19
 	r3 = r20 - r27
+	r1_r0 = SEQ(r0, 0xD1D0<32>)
 	r1 = Mem0[r29 + r17 * 2<32>:int16]
 	r23 = r3 & 0xFF<32>
 	r17 = r26
 	r24 = r24 + 1<32>
 	r26 = r23 + r26 * r19
 	call memchr (retsize: 0;)
-	branch r20 == 1<32> l000067D0
+	branch r20 == 0<32> l000067D0
 	// succ:  l0000680C l000067D0
 l0000680C:
 	r20 = r0
@@ -2304,7 +2346,7 @@ l0000680C:
 	// succ:  l00006820 l00006880
 l00006820:
 	r1 = Mem0[0x0000D1F8<p32> + r19:byte]
-	branch __bit<word32,int32>(r0, -1<i32>) l00006868
+	branch r0 > -1<i32> l00006868
 	// succ:  l00006834 l00006868
 l00006834:
 	r0 = r0 - r1
@@ -2316,7 +2358,7 @@ l00006844:
 	branch p0 l00006868
 	// succ:  l00006848 l00006868
 l00006848:
-	p0 = r0 == -1<i32>
+	p0 = r0 == r9
 	call _Geterrno (retsize: 0;)
 	Mem0[r0:word32] = 0x22<32>
 	r0 = Mem0[r29 + 4<i32>:word32]
@@ -2387,7 +2429,7 @@ l000068C0:
 	branch p0 l000068C0
 	// succ:  l000068D0 l000068C0
 l000068D0:
-	p0 = r25 == 1<32>
+	p0 = r9 == 0<32>
 	r17_r16 = 0xE90400000030<64>
 	r0 = 0<32>
 	Mem0[gp + 4<i32>:byte] = r0
@@ -2400,7 +2442,7 @@ l000068E4:
 	branch p0 l000068E4
 	// succ:  l000068F4 l000068E4
 l000068F4:
-	p0 = r25 == 1<32>
+	p0 = r9 == 0<32>
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]
@@ -2433,7 +2475,7 @@ l00006910:
 	branch p0 l00006910
 	// succ:  l00006920 l00006910
 l00006920:
-	p0 = r25 == 1<32>
+	p0 = r9 == 0<32>
 	r17_r16 = 0xE90400000030<64>
 	r0 = 1<32>
 	Mem0[gp + 4<i32>:byte] = r0
@@ -2446,7 +2488,7 @@ l00006934:
 	branch p0 l00006934
 	// succ:  l00006944 l00006934
 l00006944:
-	p0 = r25 == 1<32>
+	p0 = r9 == 0<32>
 	r17_r16 = Mem0[r29:word64]
 	r0 = 1<32>
 	// succ:  l00006944_thunk__Lockfilelock
@@ -2501,7 +2543,7 @@ l000069A0:
 	branch p0 l000069A0
 	// succ:  l000069B0 l000069A0
 l000069B0:
-	p0 = r29 == 1<32>
+	p0 = r13 == 0<32>
 	r21 = 4<32>
 	r0 = 1<32>
 	r17 = 0xE930<32>
@@ -2515,13 +2557,13 @@ l000069C0:
 	branch p0 l000069C0
 	// succ:  l000069D0 l000069C0
 l000069D0:
-	p0 = r29 == 1<32>
+	p0 = r13 == 0<32>
 	Mem0[gp + 132<i32>:byte] = r1
 	r1 = 2<32>
 	r0 = 1<32>
 	// succ:  l000069E4
 l000069E4:
-	branch r0 > 2<32> l000069E4
+	branch r0 > 1<32> l000069E4
 	// succ:  l000069F0 l000069E4
 l000069F0:
 	r0 = Mem0[r20:word32]
@@ -2617,7 +2659,7 @@ l00006A90:
 	branch p0 l00006A90
 	// succ:  l00006AA0 l00006A90
 l00006AA0:
-	p0 = r29 == 1<32>
+	p0 = r13 == 0<32>
 	r21 = 4<32>
 	r0 = 1<32>
 	r17 = 0xE930<32>
@@ -2631,18 +2673,18 @@ l00006AB4:
 	branch p0 l00006AB4
 	// succ:  l00006AC4 l00006AB4
 l00006AC4:
-	p0 = r29 == 1<32>
+	p0 = r13 == 0<32>
 	Mem0[r19:byte] = r0
 	r1 = 2<32>
 	r0 = 1<32>
 	// succ:  l00006AD4
 l00006AD4:
-	branch r0 > 2<32> l00006AD4
+	branch r0 > 1<32> l00006AD4
 	// succ:  l00006AE0 l00006AD4
 l00006AE0:
 	r0 = Mem0[r20:word32]
 	p0 = r0
-	branch r16 > r0 l00006AF4
+	branch r0 > r16 l00006AF4
 	// succ:  l00006AF0 l00006AF4
 l00006AF0:
 	r0 = p0 ? 4<32> : 0<32>
@@ -2723,7 +2765,7 @@ l00006B68:
 	Mem0[r16:word32] = r18
 	// succ:  l00006B80
 l00006B80:
-	branch r0 > 2<32> l00006B80
+	branch r0 > 1<32> l00006B80
 	// succ:  l00006B8C l00006B80
 l00006B8C:
 	r0 = Mem0[r16:word32]
@@ -2853,7 +2895,7 @@ l00006C58:
 	branch p0 l00006D10
 	// succ:  l00006C60 l00006D10
 l00006C60:
-	p0 = r0 > -1<i32>
+	p0 = r0 > r11
 	p0 = r21 > 0xFEF<32>
 	r0 = CONVERT(SLICE(r17, byte, 0), byte, uint32)
 	branch p0 l00006D10
@@ -2910,6 +2952,7 @@ l00006D24:
 l00006D3C:
 	// succ:  l00006D58 l00006D5C
 l00006D58:
+	r1_r0 = SEQ(r17, 1<32>)
 	// succ:  l00006D5C
 l00006D5C:
 	// succ:  l00006DA8
@@ -3137,7 +3180,7 @@ l00006EA8:
 	Mem0[r16:word32] = r18
 	// succ:  l00006EC0
 l00006EC0:
-	branch r0 > 2<32> l00006EC0
+	branch r0 > 1<32> l00006EC0
 	// succ:  l00006ECC l00006EC0
 l00006ECC:
 	r0 = Mem0[r16:word32]
@@ -3266,7 +3309,7 @@ l00006FA8:
 	Mem0[gp:word32] = r0
 	r1 = Mem0[r22 + r0 * 4<32>:word32]
 	call r1 (retsize: 0;)
-	branch r0 == 1<32> l00006FA8
+	branch r0 == 0<32> l00006FA8
 	// succ:  l00006FD0 l00006FA8
 l00006FD0:
 	r0 = Mem0[gp + 64<i32>:word32]
@@ -3274,9 +3317,14 @@ l00006FD0:
 	branch r0 == r17 l00006FDC
 	// succ:  l00006FD8 l00006FDC
 l00006FD8:
-	// succ:  l00006FDC
+	Mem0[gp + 544<i32>:word32] = r17
+	r1_r0 = SEQ(0x50<32>, r16)
+	goto l00006FE0
+	// succ:  l00006FE0
 l00006FDC:
 	Mem0[gp + 544<i32>:word32] = r17
+	// succ:  l00006FE0
+l00006FE0:
 	Mem0[gp + 32<i32>:word32] = r1
 	call _Exit (retsize: 0;)
 	// succ:  l00006FEC_thunk_free
@@ -3312,10 +3360,6 @@ l00007014:
 	r0 = 1<32>
 	r1 = Mem0[gp + 72<i32>:word32]
 	r0 = r16 + 0xFFFFFFF8<32>
-	branch p0 l00007060
-	// succ:  l00007028 l00007060
-l00007028:
-	p0 = r1 >u r0
 	Mem0[gp:word32] = r0
 	Mem0[r16 - 4<i32>:word32] = r1
 	branch r2 == 0<32> l00007094
@@ -3331,50 +3375,18 @@ l0000703C:
 	Mem0[r0 + 4<i32>:word32] = r2
 	r1 = r1 + r3
 	Mem0[r0:word32] = r1
-	goto l00007094
 	// succ:  l00007094
-l00007060:
-	r2 = r1
-	r1 = Mem0[r2 + 4<i32>:word32]
-	branch p0 l00007070
-	// succ:  l0000706C l00007070
-l0000706C:
-	p0 = r1 == 0<32>
-	branch p1 l00007060
-	// succ:  l00007070 l00007060
-l00007070:
-	p1 = r0 >u r1
-	r3 = Mem0[r2:word32]
-	branch r4 >u r0 l00007094
-	// succ:  l00007080 l00007094
-l00007080:
-	r4 = r2 + r3
-	branch p0 l000070B8
-	// succ:  l00007084 l000070B8
-l00007084:
-	r3 = Mem0[r16 - 8<i32>:word32]
-	r4 = r16
-	r4 = r4 + (r3 + 0xFFFFFFF8<32>)
-	goto l00007098
-	// succ:  l00007098
 l00007094:
 	r0 = 1<32>
 	call _Unlocksyslock (retsize: 0;)
-	goto l0000709C
-	// succ:  l0000709C
-l00007098:
-	r0 = 1<32>
 	// succ:  l0000709C
 l0000709C:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  free_exit
-l000070B8:
-	Mem0[r2 + 4<i32>:word32] = r0
-	Mem0[r16 - 4<i32>:word32] = r1
 free_exit:
 
 
@@ -3399,7 +3411,7 @@ l000070C0:
 	branch p0 l00007208
 	// succ:  l000070E0 l00007208
 l000070E0:
-	p0 = r8 == 1<32>
+	p0 = r8 == 0<32>
 	r23 = r21
 	r0 = r17
 	call _Lockfilelock (retsize: 0;)
@@ -3414,7 +3426,7 @@ l000070E8:
 	branch p0 l000071C8
 	// succ:  l00007100 l000071C8
 l00007100:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r0 = Mem0[r17 + 1<i32>:byte]
 	r2 = r18
 	r3 = r18
@@ -3555,10 +3567,6 @@ l00007220:
 	r17 = r1 & 0xFFFFFFF8<32>
 	call _Locksyslock (retsize: 0;)
 	r0 = 8<32>
-	branch p0 l000072F8
-	// succ:  l00007240 l000072F8
-l00007240:
-	p0 = r9 >u r8
 	// succ:  l00007250
 l00007250:
 	r4 = Mem0[gp + 68<i32>:word32]
@@ -3597,9 +3605,11 @@ l000072F0:
 	// succ:  l000072FC
 l000072F8:
 	r0 = 1<32>
+	goto l00007340
+	// succ:  l00007340
 l000072FC:
 	r0 = 1<32>
-	// succ:  l00007340 l00007300
+	// succ:  l00007300
 l00007300:
 	Mem0[r0:byte] = r2
 	r2 = r1 + r17
@@ -3623,10 +3633,10 @@ l00007334:
 	// succ:  l00007340
 l00007340:
 	call _Unlocksyslock (retsize: 0;)
-	v20 = r30
-	r31 = Mem0[v20 + 4<i32>:word32]
-	r30 = Mem0[v20:word32]
-	r29 = v20 + 8<i32>
+	v18 = r30
+	r31 = Mem0[v18 + 4<i32>:word32]
+	r30 = Mem0[v18:word32]
+	r29 = v18 + 8<i32>
 	return
 	// succ:  malloc_exit
 malloc_exit:
@@ -3652,7 +3662,7 @@ l00007364:
 	// succ:  l0000736C l00007378 l0000737C
 l0000736C:
 	r4 = Mem0[r3:byte]
-	branch r2 == 1<32> l00007364
+	branch r2 == 0<32> l00007364
 	goto l00007378
 	// succ:  l00007378 l00007364
 l00007374:
@@ -3687,11 +3697,12 @@ l00007380:
 	r16 = r0
 	r0 = 0xE498<32>
 	call _Lockfilelock (retsize: 0;)
+	r1_r0 = SEQ(0xE498<32>, r16)
 	call fputs (retsize: 0;)
 	branch p0 l000073BC
 	// succ:  l000073A8 l000073BC
 l000073A8:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	p1 = p1 | !p1
 	r1_r0 = 0xE4980000000A<64>
 	call fputc (retsize: 0;)
@@ -3719,12 +3730,7 @@ puts_exit:
 define memcpy
 memcpy_entry:
 	r29 = fp
-	goto l000073E0
 	// succ:  l000073E0
-l000070B8_thunk_fwrite:
-	call fwrite (retsize: 0;)
-	return
-	// succ:  memcpy_exit
 l000073E0:
 	p1 = r1 == r0
 	p0 = r2 >u 0x17<32>
@@ -3737,9 +3743,6 @@ l000073E0:
 	__dcfetch(r1, 0<32>)
 	return
 	// succ:  memcpy_exit
-l000073E0:
-	goto l000070B8_thunk_fwrite
-	// succ:  l000070B8_thunk_fwrite
 memcpy_exit:
 
 
@@ -3825,7 +3828,7 @@ l00007760:
 	// succ:  l00007780 l000077E4
 l00007780:
 	p0 = r9 == 0<32>
-	branch r0 >u 0x1A<32> l00007808
+	branch r0 >u 0xD<32> l00007808
 	// succ:  l00007790 l00007808
 l00007790:
 	r1 = Mem0[gp + 124<i32>:word32]
@@ -3859,7 +3862,7 @@ l000077E4:
 	branch p0 l000077FC
 	// succ:  l000077EC l000077FC
 l000077EC:
-	p0 = r9 == 2<32>
+	p0 = r9 == 1<32>
 	r1_r0 = 0<64>
 	r18 = 0<32>
 	call signal (retsize: 0;)
@@ -3883,6 +3886,7 @@ l00007808:
 	return
 	// succ:  raise_exit
 l00007850:
+	r1_r0 = SEQ(0xE4E8<32>, r17)
 	call fputs (retsize: 0;)
 	r1 = 0xE4E8<32>
 	r0 = 0xD4CC<32>
@@ -3958,7 +3962,7 @@ l000078D4:
 	branch p0 l000078D4
 	// succ:  l000078E4 l000078D4
 l000078E4:
-	p0 = r17 == 1<32>
+	p0 = r1 == 0<32>
 	r0 = r1
 	return
 	// succ:  strchr_exit
@@ -4004,7 +4008,7 @@ l00007928:
 	Mem0[r16:word32] = r18
 	// succ:  l00007940
 l00007940:
-	branch r0 > 2<32> l00007940
+	branch r0 > 1<32> l00007940
 	// succ:  l0000794C l00007940
 l0000794C:
 	r0 = Mem0[r16:word32]
@@ -4112,7 +4116,7 @@ l000079C0:
 l000079D8:
 	r0 = Mem0[r16 + 24<i32>:word32]
 	r0 = Mem0[r16:word16]
-	branch r2 == 4<32> l00007A50
+	branch r2 == 2<32> l00007A50
 	// succ:  l000079EC l00007A50
 l000079EC:
 	r2 = r0 & 0x9002<32>
@@ -4247,7 +4251,7 @@ l00007AD0:
 	// succ:  l00007B00 l00007B18
 l00007B00:
 	r0 = p0
-	branch __bit<word32,int32>(r0, -1<i32>) l00007B18
+	branch r0 > -1<i32> l00007B18
 	// succ:  l00007B08 l00007B18
 l00007B08:
 	Mem0[r16 + 48<i32>:word32] = 1<32>
@@ -4360,7 +4364,7 @@ l00008180:
 	// succ:  l0000818C l00008194
 l0000818C:
 	p0 = r21_r20 == r1_r0
-	branch r0 == 1<32> l000082D4
+	branch r0 == 0<32> l000082D4
 	goto l00008198
 	// succ:  l00008198 l000082D4
 l00008194:
@@ -4425,7 +4429,7 @@ l00008230:
 	branch p0 l00008268
 	// succ:  l00008238 l00008268
 l00008238:
-	p0 = r14 == 0x10<32>
+	p0 = r14 == 8<32>
 	branch r0 == 0<32> l00008268
 	// succ:  l00008248 l00008268
 l00008248:
@@ -4486,6 +4490,7 @@ l000082D0_thunk___restore_r16_through_r27_and_deallocframe:
 	return
 	// succ:  _Litob_exit
 l000082D4:
+	r19_r18 = SEQ(0<32>, r22)
 	goto l000081B0
 	// succ:  l000081B0
 _Litob_exit:
@@ -4512,7 +4517,7 @@ l000082F0:
 	branch p0 l000082FC
 	// succ:  l000082F4 l000082FC
 l000082F4:
-	p0 = r1 == 2<32>
+	p0 = r1 == 1<32>
 	r17_r16 = Mem0[r0:word64]
 	goto l00008348
 	// succ:  l00008348
@@ -4527,7 +4532,7 @@ l0000830C:
 	branch p0 l0000832C
 	// succ:  l00008314 l0000832C
 l00008314:
-	p0 = r1 > 2<32>
+	p0 = r1 > 1<32>
 	branch p0 l00008348
 	// succ:  l0000831C l00008348
 l0000831C:
@@ -4537,7 +4542,7 @@ l0000831C:
 	branch p0 l0000832C
 	// succ:  l00008328 l0000832C
 l00008328:
-	p0 = r1 == 4<32>
+	p0 = r1 == 2<32>
 	goto l00008340
 	// succ:  l00008340
 l0000832C:
@@ -4586,7 +4591,7 @@ l00008368:
 	branch p0 l000083A0
 	// succ:  l00008374 l000083A0
 l00008374:
-	p0 = r9 == 2<32>
+	p0 = r9 == 1<32>
 	call _LDunscale (retsize: 0;)
 	r1 = CONVERT(SLICE(r0, uint16, 0), uint16, uint32)
 	p0 = r0 > 0<32>
@@ -4629,6 +4634,7 @@ l000083F4:
 	p1 = r19_r18 == r23_r22
 	r1 = r20
 	call _LDunscale (retsize: 0;)
+	r1_r0 = SEQ(0x1A<32>, r20)
 	call _LDint (retsize: 0;)
 	r1 = Mem0[r29 + 6<i32>:int16]
 	r0 = r20
@@ -4642,7 +4648,7 @@ l00008420:
 	Mem0[r16 + 16<i32>:word64] = r1_r0
 	// succ:  l00008424 l00008448
 l00008424:
-	p0 = r9 > 6<32>
+	p0 = r9 > 3<32>
 	branch p0 l00008448
 	// succ:  l0000842C l00008448
 l0000842C:
@@ -4746,7 +4752,7 @@ fn00008468_entry:
 	r29 = fp
 	// succ:  l00008468
 l00008468:
-	p0 = r25 == 1<32>
+	p0 = r9 == 0<32>
 	r0 = r29 + 0x1E<32>
 	r1 = r29 + 0x20<32>
 	call _LDunscale (retsize: 0;)
@@ -4765,7 +4771,7 @@ l00008484:
 	branch p0 l00008750
 	// succ:  l0000848C l00008750
 l0000848C:
-	p0 = r16 > 0<32>
+	p0 = r0 > 0<32>
 	branch p0 l00008780
 	goto l00008494
 	// succ:  l00008494 l00008490_thunk_fn00008780
@@ -4781,7 +4787,7 @@ l00008494:
 	r1 = r1 | 6<32>
 	r1 = Mem0[r1:int16]
 	r0 = r0 ^ r1
-	branch __bit<word32,int32>(r0, -1<i32>) l00008780
+	branch r0 > -1<i32> l00008780
 	goto l000084B4
 	// succ:  l000084B4 l000084B0_thunk_fn00008780
 l000084B0_thunk_fn00008780:
@@ -4821,7 +4827,7 @@ l000084E0_thunk_fn00008780:
 	return
 	// succ:  fn00008468_exit
 l000084E4:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r16 = 0<32>
 	branch p0 l00008780
 	goto l000084EC
@@ -4831,7 +4837,7 @@ l000084E8_thunk_fn00008780:
 	return
 	// succ:  fn00008468_exit
 l000084EC:
-	p0 = r25 > 0<32>
+	p0 = r9 > 0<32>
 	r25_r24 = Mem0[gp + 192<i32>:word64]
 	r0 = Mem0[r29 + 8<i32>:word32]
 	r19 = 0x800<32>
@@ -4869,7 +4875,7 @@ l0000853C_thunk_fn00008780:
 	return
 	// succ:  fn00008468_exit
 l00008540:
-	p0 = r16 > 0<32>
+	p0 = r0 > 0<32>
 	branch r0 == 0<32> l00008764
 	// succ:  l0000854C l00008764
 l0000854C:
@@ -4903,7 +4909,7 @@ l000085A0:
 	branch p0 l00008528
 	// succ:  l000085A4 l00008528
 l000085A4:
-	p0 = r0 > -1<i32>
+	p0 = r0 > r8
 	r1 = r0 - r16
 	r0 = r21 + (r0 << 3<32>)
 	__loop(0<i32>, 0x000085B0<p32>, r1)
@@ -4917,7 +4923,7 @@ l000085C0:
 	branch p0 l000085D8
 	// succ:  l000085C8 l000085D8
 l000085C8:
-	p0 = r5 > 0x12<32>
+	p0 = r5 > 0x19<32>
 	branch p0 l000085D8
 	// succ:  l000085D0 l000085D8
 l000085D0:
@@ -5019,7 +5025,7 @@ l00008748:
 	branch p0 l00008510
 	// succ:  l0000874C l00008510
 l0000874C:
-	p0 = r9 > -1<i32>
+	p0 = r9 > r8
 	goto l00008750_thunk_fn00008780
 	// succ:  l00008750_thunk_fn00008780
 l00008750:
@@ -5051,7 +5057,7 @@ l00008768_thunk_fn00008780:
 	return
 	// succ:  fn00008468_exit
 l00008770:
-	p0 = r9 > -1<i32>
+	p0 = r9 > r0
 	r1 = Mem0[r29 + 8<i32>:word32]
 	Mem0[r30 + r0 * 8<32>:word64] = r23_r22
 	r0 = Mem0[r29 + 8<i32>:word32]
@@ -5098,20 +5104,20 @@ l00008788:
 	branch p0 l000088EC
 	// succ:  l000087A0 l000088EC
 l000087A0:
-	p0 = r9 > 1<32>
+	p0 = r9 > 0<32>
 	r1_r0 = Mem0[r16:word64]
 	call __hexagon_fast_muldf3 (retsize: 0;)
 	r0 = r29 + 0x10<32>
 	r3_r2 = r1_r0
 	Mem0[r29 + 16<i32>:word64] = r3_r2
 	call _LDtest (retsize: 0;)
-	branch __bit<word32,int32>(r20, -1<i32>) l000087FC
+	branch r20 > -1<i32> l000087FC
 	// succ:  l000087CC l000087FC
 l000087CC:
 	r20 = r0
 	r1 = r29 + 0x10<32>
 	r23_r22 = 0<64>
-	branch r0 == 4<32> l000087DC
+	branch r0 == 2<32> l000087DC
 	// succ:  l000087D4 l000087DC
 l000087D4:
 	r0 = 1<32>
@@ -5130,7 +5136,7 @@ l000087E8:
 	branch p0 l000088EC
 	// succ:  l000087EC l000088EC
 l000087EC:
-	p0 = r9 > 3<32>
+	p0 = r9 > 1<32>
 	r1_r0 = 0<64>
 	Mem0[r16 + 8<i32>:word64] = r1_r0
 	goto l00008870
@@ -5402,7 +5408,7 @@ fn00008994_entry:
 	r29 = fp
 	// succ:  l00008994
 l00008994:
-	p0 = r8 > -1<i32>
+	p0 = r8 > r12
 	// succ:  l00008A44
 l00008A44:
 	r2 = r21
@@ -5427,8 +5433,9 @@ l000089A0:
 	r30 = v4
 	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
-	r17_r16 = r1_r0
 	r21_r20 = Mem0[gp + 192<i32>:word64]
+	r19_r18 = SEQ(0xFFFFFFFF<32>, r2)
+	r17_r16 = r1_r0
 	r22 = r16
 	// succ:  l000089C0
 l000089C0:
@@ -5636,7 +5643,7 @@ fn00008A5C_entry:
 	r29 = fp
 	// succ:  l00008A5C
 l00008A5C:
-	p0 = r11 > 2<32>
+	p0 = r11 > 1<32>
 	r22 = r20 + (r17 << 3<32>)
 	r26 = r18 + (r23 << 3<32>)
 	r1_r0 = Mem0[r26:word64]
@@ -5652,9 +5659,10 @@ l00008A70_thunk_fn00008AB8:
 l00008A78:
 	p0 = r1_r0 == r25_r24
 	call memcpy (retsize: 0;)
+	r3_r2 = Mem0[r26:word64]
+	r27_r26 = SEQ(r22, 0<32>)
 	r1_r0 = r17_r22
 	call _LXp_mulh (retsize: 0;)
-	r3_r2 = Mem0[r26:word64]
 	branch p0 l00008AB0
 	// succ:  l00008A9C_thunk_fn00008AA4 l00008A9C_thunk_fn00008AA4
 l00008A9C_thunk_fn00008AA4:
@@ -5757,12 +5765,12 @@ l00008AD0_thunk_fn00008BFC:
 	return
 	// succ:  _LXp_invx_exit
 l00008AD8:
-	p0 = r9 == 1<32>
+	p0 = r9 == 0<32>
 	call _LDtest (retsize: 0;)
 	branch p0 l00008B00
 	// succ:  l00008AE0 l00008B00
 l00008AE0:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	branch p0 l00008AE0_thunk_fn00008BD0
 	goto l00008AE8
 	// succ:  l00008AE8 l00008AE0_thunk_fn00008BD0
@@ -5846,7 +5854,7 @@ fn00008B34_entry:
 	r29 = fp
 	// succ:  l00008B34
 l00008B34:
-	p0 = r9 > 2<32>
+	p0 = r9 > 1<32>
 	r25_r24 = Mem0[gp + 216<i32>:word64]
 	r3_r2 = Mem0[r16 + 8<i32>:word64]
 	call __hexagon_adddf3 (retsize: 0;)
@@ -5925,7 +5933,7 @@ fn00008BD0_entry:
 	// succ:  l00008BD0_thunk_fn00008B34
 l00008BD0:
 	r24 = r24 << 1<32>
-	branch r0 == 2<32> l00008BFC
+	branch r0 == 1<32> l00008BFC
 	goto l00008BDC
 	// succ:  l00008BDC l00008BDC_thunk_fn00008BE8
 l00008BD0_thunk_fn00008B34:
@@ -6013,13 +6021,13 @@ l00008C14_thunk_fn00008D20:
 	return
 	// succ:  _LXp_sqrtx_exit
 l00008C1C:
-	p0 = r9 == 1<32>
+	p0 = r9 == 0<32>
 	call _LDtest (retsize: 0;)
 	r5_r4 = Mem0[r16:word64]
 	branch p0 l00008C34
 	// succ:  l00008C28 l00008C34
 l00008C28:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r1_r0 = Mem0[gp + 192<i32>:word64]
 	branch p0 l00008C60
 	// succ:  l00008C34 l00008C60
@@ -6048,7 +6056,7 @@ l00008C60:
 	branch p0 l00008C78
 	// succ:  l00008C6C l00008C78
 l00008C6C:
-	p0 = r9 > 2<32>
+	p0 = r9 > 1<32>
 	r19 = r18 + (r17 << 3<32>)
 	r3_r2 = Mem0[r16 + 8<i32>:word64]
 	call __hexagon_adddf3 (retsize: 0;)
@@ -6069,7 +6077,7 @@ l00008C78:
 	branch p0 l00008D10
 	// succ:  l00008CA8 l00008D10
 l00008CA8:
-	p0 = r9 > 4<32>
+	p0 = r9 > 2<32>
 	r25_r24 = Mem0[gp + 240<i32>:word64]
 	r23_r22 = Mem0[gp + 232<i32>:word64]
 	r21 = r17 << 3<32>
@@ -6341,21 +6349,21 @@ l00008D4C:
 	branch p0 l00008EDC
 	// succ:  l00008D50 l00008EDC
 l00008D50:
-	p0 = r2 == 1<32>
+	p0 = r2 == 0<32>
 	r6 = CONVERT(SLICE(r6, byte, 0), byte, uint32)
 	r8 = r8 + 1<32>
 	branch p0 l00008EEC
 	// succ:  l00008D60 l00008EEC
 l00008D60:
 	p0 = SLICE(r6, byte, 0) >u SLICE(0xF<8>, byte, 0)
-	branch r6 == 1<32> l00008EEC
+	branch r6 == 0<32> l00008EEC
 	// succ:  l00008D74 l00008EEC
 l00008D74:
 	r6 = Mem0[r6 + r6 * 4<32>:word32]
 	p0 = r8 > 0xFEF<32>
 	r12 = Mem0[r7:byte]
 	r13 = r5 + 0<32>
-	branch r6 == 1<32> l00008EEC
+	branch r6 == 0<32> l00008EEC
 	// succ:  l00008D88 l00008EEC
 l00008D88:
 	r6 = Mem0[r4 + r12 * 2<32>:word16]
@@ -6549,7 +6557,7 @@ l00008FA8:
 	Mem0[r16:word32] = r18
 	// succ:  l00008FC0
 l00008FC0:
-	branch r0 > 2<32> l00008FC0
+	branch r0 > 1<32> l00008FC0
 	// succ:  l00008FCC l00008FC0
 l00008FCC:
 	r0 = Mem0[r16:word32]
@@ -6575,8 +6583,9 @@ l00008FF4:
 	goto l00009010
 	// succ:  l00009010
 l00009000:
-	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	r2 = 0x40<32>
+	r1_r0 = SEQ(0xD748<32>, r16)
+	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	// succ:  l00009010
 l00009010:
 	r19_r18 = Mem0[r29:word64]
@@ -6705,7 +6714,7 @@ l000090EC:
 	Mem0[r16:word32] = r17
 	// succ:  l00009108
 l00009108:
-	branch r0 > 2<32> l00009108
+	branch r0 > 1<32> l00009108
 	// succ:  l00009108_thunk_closeall l00009108
 l00009108_thunk_closeall:
 	call closeall (retsize: 0;)
@@ -6752,7 +6761,7 @@ l00009140:
 	// succ:  l00009158 l000091D0
 l00009158:
 	r0 = r0 & 3<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l000091D4
+	branch r0 > -1<i32> l000091D4
 	// succ:  l00009160 l000091D4
 l00009160:
 	r0 = r16
@@ -6878,7 +6887,7 @@ l0000928C:
 	p0 = r0 > 0xFFFFFFFF<32>
 	// succ:  l00009294
 l00009294:
-	branch r18 == 1<32> l00009280
+	branch r18 == 0<32> l00009280
 	// succ:  l000092A8 l00009280
 l000092A8:
 	r18 = r18 + 0xFFFFFFFF<32>
@@ -6941,7 +6950,7 @@ l000092E0:
 	branch p0 l00009348
 	// succ:  l0000930C l00009348
 l0000930C:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r1 = r0 + 1<32>
 	p0 = SLICE(r16, byte, 0) == SLICE(0xA<8>, byte, 0)
 	Mem0[r0:byte] = r16
@@ -7008,12 +7017,13 @@ l00009384:
 	branch p0 l00009448
 	// succ:  l00009398 l00009448
 l00009398:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r0 = Mem0[r16 + 1<i32>:byte]
 	branch r0 == 0<32> l000093B0
 	// succ:  l000093A8 l000093B0
 l000093A8:
 	r0 = r0 & 4<32>
+	r1_r0 = SEQ(0xA<32>, r17)
 	branch p0 l000093CC
 	// succ:  l000093B0 l000093CC
 l000093B0:
@@ -7060,7 +7070,7 @@ l00009424:
 	branch p0 l00009374
 	// succ:  l0000942C l00009374
 l0000942C:
-	p0 = r16 == 1<32>
+	p0 = r0 == 0<32>
 	goto l00009448
 	// succ:  l00009448
 l00009430:
@@ -7086,10 +7096,10 @@ l00009454:
 	r19_r18 = Mem0[r29 + 16<i32>:word64]
 	r17_r16 = Mem0[r29 + 24<i32>:word64]
 	r0 = r16
-	v20 = r30
-	r31 = Mem0[v20 + 4<i32>:word32]
-	r30 = Mem0[v20:word32]
-	r29 = v20 + 8<i32>
+	v21 = r30
+	r31 = Mem0[v21 + 4<i32>:word32]
+	r30 = Mem0[v21:word32]
+	r29 = v21 + 8<i32>
 	return
 	// succ:  fputs_exit
 fputs_exit:
@@ -7119,7 +7129,7 @@ l00009484:
 	branch p0 l000094AC
 	// succ:  l0000948C l000094AC
 l0000948C:
-	p0 = __bit<word32,word32>(r0, 0<32>)
+	p0 = r0 > -1<i32>
 	r1 = r16
 	r0 = r29 + 0<32>
 	call _LDscale (retsize: 0;)
@@ -7244,14 +7254,14 @@ l00009538:
 	branch p0 l00009540
 	// succ:  l0000953C l00009540
 l0000953C:
-	p0 = r0 == 2<32>
+	p0 = r0 == 1<32>
 	branch p0 l00009558
 	// succ:  l00009540 l00009558
 l00009540:
-	p0 = r0 == 4<32>
+	p0 = r0 == 2<32>
 	r0 = r29 + 8<32>
 	r0 = r0 | 6<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l00009558
+	branch r0 > -1<i32> l00009558
 	// succ:  l00009554 l00009558
 l00009554:
 	r0 = Mem0[r0:int16]
@@ -7437,7 +7447,7 @@ l000096C0:
 	branch p0 l000096F4
 	// succ:  l000096D0 l000096F4
 l000096D0:
-	p0 = r8 >u -1<i32>
+	p0 = r8 >u 0x13<32>
 	branch r0 == 0<32> l000096FC
 	// succ:  l000096DC l000096FC
 l000096DC:
@@ -7507,7 +7517,7 @@ l00009740:
 	branch p0 l00009740
 	// succ:  l00009754 l00009740
 l00009754:
-	p0 = r4 == -1<i32>
+	p0 = r4 == r0
 	Mem0[r3:word32] = 0<32>
 	call free (retsize: 0;)
 	v13 = r30
@@ -7557,7 +7567,7 @@ l000097D0:
 	branch p3 l000097FC
 	// succ:  l000097D8 l000097FC
 l000097D8:
-	branch r19 > r0 l000097FC
+	branch r0 > r19 l000097FC
 	goto l000097E4
 	// succ:  l000097E4 l000097FC
 l000097E0:
@@ -7757,8 +7767,9 @@ l00009A88:
 	// succ:  l00009A94 l00009AB4
 l00009A94:
 	p0 = r11 > 0<32>
-	call div (retsize: 0;)
 	r18 = r18 + 1<32>
+	r1_r0 = SEQ(0xA<32>, r19)
+	call div (retsize: 0;)
 	Mem0[r23:byte] = r1
 	r23 = r23
 	r19 = CONVERT(SLICE(r0, int16, 0), int16, int32)
@@ -7766,7 +7777,7 @@ l00009A94:
 	branch p0 l00009AD0
 	// succ:  l00009AB4 l00009AD0
 l00009AB4:
-	p0 = r10 > 2<32>
+	p0 = r10 > 1<32>
 	r0 = __set_bit<word32,word32>(r22, 0xA<32>)
 	p0 = r0 == 0x65<32>
 	r17 = r21 + 0<32>
@@ -7814,7 +7825,7 @@ l00009B10:
 	// succ:  l00009B18
 l00009B18:
 	r0 = Mem0[r16 + 60<i32>:word16]
-	branch r0 == 0<32> l00009B44
+	branch r0 == 0x10<32> l00009B44
 	// succ:  l00009B28 l00009B44
 l00009B28:
 	r0 = r0 & 0x14<32>
@@ -7986,6 +7997,7 @@ l00009BE0:
 	r3_r2 = Mem0[gp + 192<i32>:word64]
 	Mem0[r29:word64] = r19_r18
 	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r17_r16 = SEQ(5<32>, r0)
 	r18 = 0xD798<32>
 	r0 = Mem0[r18 - 8<i32>:word32]
 	branch r0 == 0<32> l00009C14
@@ -8064,7 +8076,7 @@ l00009C78:
 	Mem0[r16:word32] = r18
 	// succ:  l00009C90
 l00009C90:
-	branch r0 > 2<32> l00009C90
+	branch r0 > 1<32> l00009C90
 	// succ:  l00009C9C l00009C90
 l00009C9C:
 	r0 = Mem0[r16:word32]
@@ -8090,8 +8102,9 @@ l00009CC4:
 	goto l00009CE0
 	// succ:  l00009CE0
 l00009CD0:
-	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	r2 = 0x50<32>
+	r1_r0 = SEQ(0xD808<32>, r16)
+	call __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes (retsize: 0;)
 	// succ:  l00009CE0
 l00009CE0:
 	r19_r18 = Mem0[r29:word64]
@@ -8185,7 +8198,7 @@ l00009DE0:
 	branch p0 l00009E08
 	// succ:  l00009DE4 l00009E08
 l00009DE4:
-	p0 = r2 == 6<32>
+	p0 = r2 == 3<32>
 	Mem0[r0 + 4<i32>:word16] = 0<16>
 	r2 = Mem0[r0 + 4<i32>:int16]
 	r1 = r2 | r1
@@ -8233,7 +8246,7 @@ l00009E48:
 	branch r2 == 0<32> l00009E5C
 	// succ:  l00009E50 l00009E5C
 l00009E50:
-	branch r4 == 1<32> l00009F60
+	branch r4 == 0<32> l00009F60
 	goto l00009E5C
 	// succ:  l00009E5C l00009F60
 l00009E58:
@@ -8360,7 +8373,7 @@ l00009F88:
 	branch p0 l0000A1D8
 	// succ:  l00009F94 l0000A1D8
 l00009F94:
-	p0 = r16 > 0<32>
+	p0 = r0 > 0<32>
 	goto l00009FD4
 	// succ:  l00009FD4
 l00009F98:
@@ -8388,7 +8401,7 @@ l00009FD4:
 	// succ:  l00009FDC l00009FE8
 l00009FDC:
 	p0 = r9 > 0<32>
-	branch r17 > r0 l0000A04C
+	branch r0 > r17 l0000A04C
 	goto l00009FEC
 	// succ:  l00009FEC l0000A04C
 l00009FE8:
@@ -8425,7 +8438,7 @@ l0000A040:
 l0000A04C:
 	r0 = 0xE690<32>
 	r1_r0 = Mem0[r0:word64]
-	branch __bit<word32,int32>(r2, -1<i32>) l0000A064
+	branch r2 > -1<i32> l0000A064
 	// succ:  l0000A064 l0000A064
 l0000A064:
 	r2 = Mem0[r16 + 6<i32>:int16]
@@ -8503,10 +8516,6 @@ l0000A144:
 	r1 = r1 | r0
 	Mem0[r16 + 6<i32>:word16] = r1
 	r2 = Mem0[r16:int16]
-	branch p0 l0000A170
-	// succ:  l0000A15C l0000A170
-l0000A15C:
-	p0 = r3 >u r2
 	r3 = 0x8000<32>
 	r2 = Mem0[r16:int16]
 	branch p0 l0000A19C
@@ -9057,7 +9066,7 @@ l0000A380:
 	r0 = r0 + 8<i32>
 	r5_r4 = Mem0[r1 + 8<i32>:word64]
 	r3 = r3 + (r2 >>u 3<32>)
-	branch p0 l0000A390_thunk_memcpy
+	branch p0 l000073E0
 	goto l0000A3A0
 	// succ:  l0000A3A0 l0000A390_thunk_memcpy
 l0000A390_thunk_memcpy:
@@ -9284,12 +9293,8 @@ l0000A640:
 	r7_r6 = 0x7F60000003D<64>
 	r11_r10 = r13_r12 - r9_r8
 	r13_r12 = r9_r8 + r13_r12
-	r13_r12 = r11_r10
-	branch p0 l0000A6D0
-	// succ:  l0000A68C l0000A6D0
-l0000A68C:
-	p0 = r4 >u r7
 	p0 = !(r4 >u r6)
+	r13_r12 = r11_r10
 	p0 = r12 == 0<32>
 	p0 = r13 == 0<32>
 	branch p0 l0000A6B0
@@ -9305,40 +9310,6 @@ l0000A6B0:
 	r3 = r3 << 0x1F<32>
 	r28 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
 	r1 = r1 ^ r3
-	return
-	// succ:  __hexagon_adddf3_exit
-l0000A6D0:
-	p0 = r12 == 0<32>
-	p0 = r13 == 0<32>
-	branch p0 l0000A6B0
-	// succ:  l0000A6E0 l0000A6B0
-l0000A6E0:
-	r1_r0 = CONVERT(r13_r12, int64, real64)
-	r1 = r1 + (r5 << 0x14<32>)
-	r28 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
-	r3_r2 = 0x10000000000000<64>
-	r5 = r5 + r28
-	branch p0 l0000A720
-	// succ:  l0000A700 l0000A720
-l0000A700:
-	p0 = r5 > 0x7FE<32>
-	r28 = 1<32> - r5
-	return
-	// succ:  __hexagon_adddf3_exit
-l0000A720:
-	r13_r12 = 0x7FEFFFFFFFFFFFFF<64>
-	r1_r0 = r13_r12
-	r28 = USR
-	r9_r8 = 0x7FF0000000000000<64>
-	r28 = r28 | 0x28<32>
-	r5 = CONVERT(SLICE(r28, ui18, 2), ui18, uint32)
-	r28 = r5
-	r5 = r5 ^ r1 >>u 0x1F<32>
-	USR = r28
-	r13_r12 = r9_r8
-	p0 = !(r5 == 2<32>)
-	p0 = !(r28 == 1<32>)
-	r1_r0 = __insert(r12, 0x3F<32>, 7<32>)
 	return
 	// succ:  __hexagon_adddf3_exit
 l0000A764:
@@ -9604,7 +9575,7 @@ l0000AB70:
 	branch p0 l0000ABE0
 	// succ:  l0000AB98 l0000ABE0
 l0000AB98:
-	p0 = r6 > -1<i32>
+	p0 = r6 > r4
 	r11_r10 = r15_r14
 	r6 = r6 + 0xFFFFFBC6<32>
 	r1_r0 = CONVERT(r11_r10, int64, real64)
@@ -9633,7 +9604,7 @@ l0000AC14:
 	branch p0 l0000ABB0
 	// succ:  l0000AC20 l0000ABB0
 l0000AC20:
-	p0 = r23 > 1<32>
+	p0 = r7 > 0<32>
 	r5 = 5<32> - r5
 	r4 = 0<32>
 	r11_r10 = r13_r12
@@ -9782,7 +9753,7 @@ l0000AE5C:
 	branch p0 l0000AE94
 	// succ:  l0000AE60 l0000AE94
 l0000AE60:
-	p0 = __bit<word32,word32>(r1, 0<32>)
+	p0 = r1 > -1<i32>
 	branch p0 l0000AE90
 	// succ:  l0000AE68 l0000AE90
 l0000AE68:
@@ -10246,6 +10217,7 @@ l0000B150:
 	r30 = v4
 	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = SEQ(0xC<32>, r0)
 	branch p0 l0000B1C4
 	// succ:  l0000B15C l0000B1C4
 l0000B15C:
@@ -10270,7 +10242,7 @@ l0000B190:
 	branch p0 l0000B180
 	// succ:  l0000B1A0 l0000B180
 l0000B1A0:
-	p0 = r19 == 1<32>
+	p0 = r3 == 0<32>
 	Mem0[r2:word32] = 1<32>
 	r3 = 0<32>
 	__loop(0<i32>, 0x0000B1A8<p32>, 6<32>)
@@ -10284,10 +10256,10 @@ l0000B1B4:
 	call __sys_Mtxunlock (retsize: 0;)
 	// succ:  l0000B1C4
 l0000B1C4:
-	v17 = r30
-	r31 = Mem0[v17 + 4<i32>:word32]
-	r30 = Mem0[v17:word32]
-	r29 = v17 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  sys_Tlsalloc_exit
 sys_Tlsalloc_exit:
@@ -10472,14 +10444,14 @@ l0000B328:
 	branch p0 l0000B330
 	// succ:  l0000B32C l0000B330
 l0000B32C:
-	p0 = r0 == 2<32>
+	p0 = r0 == 1<32>
 	branch p0 l0000B348
 	// succ:  l0000B330 l0000B348
 l0000B330:
-	p0 = r0 == 4<32>
+	p0 = r0 == 2<32>
 	r0 = r29 + 8<32>
 	r0 = r0 | 6<32>
-	branch __bit<word32,int32>(r0, -1<i32>) l0000B348
+	branch r0 > -1<i32> l0000B348
 	// succ:  l0000B344 l0000B348
 l0000B344:
 	r0 = Mem0[r0:int16]

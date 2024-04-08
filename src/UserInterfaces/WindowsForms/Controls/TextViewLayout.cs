@@ -257,8 +257,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     MeasureLineHeight(line);
                 }
-                if (cyLine == 0)
-                    _ = this; //$DEBUG
                 rcLine.Offset(0, cyLine);
             }
 

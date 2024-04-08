@@ -236,8 +236,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         /// <param name="selected"></param>
         private void DrawText(string text, bool selected)
         {
-            if (selected)
-                _ = this; //$DEBUG
             graphics.FillRectangle(
                 selected ? bgSelected : bg,
                 rcTotal);

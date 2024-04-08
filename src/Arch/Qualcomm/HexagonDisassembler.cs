@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Arch.Qualcomm
 {
@@ -191,12 +192,15 @@ namespace Reko.Arch.Qualcomm
         private static readonly Bitfield[] bf_3L1_0L2 = Bf((3,1),(0,2));
         private static readonly Bitfield[] bf_5L6 = Bf((5, 6));
         private static readonly Bitfield[] bf_7L6 = Bf((7,6));
+        private static readonly Bitfield[] bf_8L3 = Bf((8, 3));
+        private static readonly Bitfield[] bf_20L3 = Bf((20, 3));
         private static readonly Bitfield[] bf_8L4_5L2 = Bf((8,4),(5,2));
         private static readonly Bitfield[] bf_13L1_0L5 = Bf((13, 1), (0, 5));
         private static readonly Bitfield[] bf_13L1_3L5 = Bf((13, 1), (3, 5));
         private static readonly Bitfield[] bf_13L1_6L1 = Bf((13, 1), (6, 1));
         private static readonly Bitfield[] bf_13L1_7L1 = Bf((13, 1), (7, 1));
         private static readonly Bitfield[] bf_21L3 = Bf((21, 3));
+        private static readonly Bitfield[] bf_24L3 = Bf((24, 3));
         #endregion
 
         #region Mutators
@@ -233,8 +237,11 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
+        private static readonly Mutator<HexagonDisassembler> R0_4 = R_4(8);
+        private static readonly Mutator<HexagonDisassembler> R4_4 = R_4(8);
         private static readonly Mutator<HexagonDisassembler> R8_4 = R_4(8);
         private static readonly Mutator<HexagonDisassembler> R16_4 = R_4(16);
+        private static readonly Mutator<HexagonDisassembler> R20_4 = R_4(20);
 
 
         /// <summary>
@@ -320,9 +327,9 @@ namespace Reko.Arch.Qualcomm
         /// <summary>
         /// Predicate registers.
         /// </summary>
-        private static Mutator<HexagonDisassembler> Predicate(int bitpos)
+        private static Mutator<HexagonDisassembler> Predicate(int bitpos, int bitwidth)
         {
-            var field = new Bitfield(bitpos, 2);
+            var field = new Bitfield(bitpos, bitwidth);
             return (u, d) =>
             {
                 var predEnc = field.Read(u);
@@ -331,13 +338,15 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
-        private static readonly Mutator<HexagonDisassembler> P_0 = Predicate(0);
-        private static readonly Mutator<HexagonDisassembler> P_5 = Predicate(5);
-        private static readonly Mutator<HexagonDisassembler> P_6 = Predicate(6);
-        private static readonly Mutator<HexagonDisassembler> P_8 = Predicate(8);
-        private static readonly Mutator<HexagonDisassembler> P_16 = Predicate(16);
-        private static readonly Mutator<HexagonDisassembler> P_23 = Predicate(23);
-        private static readonly Mutator<HexagonDisassembler> P_29 = Predicate(29);
+        private static readonly Mutator<HexagonDisassembler> P_0L2 = Predicate(0, 2);
+        private static readonly Mutator<HexagonDisassembler> P_5L2 = Predicate(5, 2);
+        private static readonly Mutator<HexagonDisassembler> P_6L2 = Predicate(6, 2);
+        private static readonly Mutator<HexagonDisassembler> P_8L2 = Predicate(8, 2);
+        private static readonly Mutator<HexagonDisassembler> P_12L1 = Predicate(12, 1);
+        private static readonly Mutator<HexagonDisassembler> P_16L2 = Predicate(16, 2);
+        private static readonly Mutator<HexagonDisassembler> P_21L2 = Predicate(21, 2);
+        private static readonly Mutator<HexagonDisassembler> P_23L2 = Predicate(23, 2);
+        private static readonly Mutator<HexagonDisassembler> P_29L2 = Predicate(29, 2);
 
 
         /// <summary>
@@ -539,6 +548,7 @@ namespace Reko.Arch.Qualcomm
         private static readonly Mutator<HexagonDisassembler> uw_8L6 = uimm(PrimitiveType.Word32, Bf((8, 6)));
         private static readonly Mutator<HexagonDisassembler> uw_16L5_5L2_0L2 = uimm(PrimitiveType.Word32, Bf((16,5), (5,2), (0,2)));
         private static readonly Mutator<HexagonDisassembler> uw_16L5_13L1 = uimm(PrimitiveType.Word32, Bf((16,5), (13,1)));
+        private static readonly Mutator<HexagonDisassembler> uw_20L6 = uimm(PrimitiveType.Word32, Bf((20,6)));
         private static readonly Mutator<HexagonDisassembler> uw_21L2_5L3 = uimm(PrimitiveType.Word32, Bf((21,2), (8,3)));
         private static readonly Mutator<HexagonDisassembler> uw_21L3_5L3 = uimm(PrimitiveType.Word32, Bf((21,3), (8,3)));
         private static readonly Mutator<HexagonDisassembler> uw_21L3_13L1_4L3_2L1 = uimm(PrimitiveType.Word32, Bf((21, 3), (13, 1), (4, 3), (2, 1)));
@@ -603,9 +613,10 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
-        private static readonly Mutator<HexagonDisassembler> Zw = Literal(Constant.Zero(PrimitiveType.Word32));
-        private static readonly Mutator<HexagonDisassembler> One = Literal(Constant.Int32(1));
-        private static readonly Mutator<HexagonDisassembler> Minus1 = Literal(Constant.Int32(-1));
+        private static readonly Mutator<HexagonDisassembler> Imm_0 = Literal(Constant.Zero(PrimitiveType.Word32));
+        private static readonly Mutator<HexagonDisassembler> Imm_1 = Literal(Constant.Int32(1));
+        private static readonly Mutator<HexagonDisassembler> Imm_Minus1 = Literal(Constant.Int32(-1));
+        private static readonly Mutator<HexagonDisassembler> Imm_0xFF = Literal(Constant.Word32(0xFF));
 
 
         /// <summary>
@@ -710,6 +721,27 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
+
+        /// <summary>
+        /// Memory access with unsigned offset, where the base is using 4-bit encoding.
+        /// </summary>
+        private static Mutator<HexagonDisassembler> m4(PrimitiveType width, int baseReg, Bitfield[] offField)
+        {
+            var baseField = new Bitfield(baseReg, 4);
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadFields(offField, u) * width.Size;
+                var ireg = baseField.Read(u);
+                var mem = new MemoryOperand(width)
+                {
+                    Base = subInstrRegs[ireg],
+                    Offset = (int) offset,
+                };
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
 
         /// <summary>
         /// Memory access with unsigned offset from a specific register.
@@ -866,7 +898,12 @@ namespace Reko.Arch.Qualcomm
             }
             if (success)
             {
-                var op = new ApplicationOperand(dt ?? d.ops[0].Width, mnemonic, d.ops.ToArray());
+                var dtReturn = dt is not null
+                    ? dt
+                    : d.ops.Count > 0
+                        ? d.ops[0].Width
+                        : VoidType.Instance;
+                var op = new ApplicationOperand(dtReturn, mnemonic, d.ops.ToArray());
                 opsOld.Add(op);
             }
             d.ops = opsOld;
@@ -893,9 +930,9 @@ namespace Reko.Arch.Qualcomm
             };
         }
 
-        private static Mutator<HexagonDisassembler> Conditional(int bitposPrediate, int bitposNew, int bitposHint, int bitposInvert)
+        private static Mutator<HexagonDisassembler> Conditional(int bitposPredicate, int bitposNew, int bitposHint, int bitposInvert)
         {
-            var bfPredicate = new Bitfield(bitposPrediate, 2);
+            var bfPredicate = new Bitfield(bitposPredicate, 2);
             return (u, d) =>
             {
                 d.conditionPredicate = Registers.PredicateRegisters[bfPredicate.Read(u)];
@@ -907,6 +944,27 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
+
+        /// <summary>
+        /// Conditional, but only 1 bit used for the predicate register,
+        /// resulting in p0 and p1.
+        /// </summary>
+        private static Mutator<HexagonDisassembler> Conditional_1(int bitposPredicate, int bitposNew, int bitposHint, int bitposInvert)
+        {
+            var bfPredicate = new Bitfield(bitposPredicate, 1);
+            return (u, d) =>
+            {
+                d.conditionPredicate = Registers.PredicateRegisters[bfPredicate.Read(u)];
+                d.conditionPredicateNew = bitposNew >= 0 && Bits.IsBitSet(u, bitposNew);
+                d.directionHint = bitposHint >= 0
+                    ? Bits.IsBitSet(u, bitposHint) ? DirectionHint.Taken : DirectionHint.NotTaken
+                    : DirectionHint.None;
+                d.conditionPredicateInverted = bitposInvert >= 0 && Bits.IsBitSet(u, bitposInvert);
+                return true;
+            };
+        }
+
+
         private static Mutator<HexagonDisassembler> Conditional_p0(int bitposNew, int bitposHint, int bitposInvert)
         {
             return (u, d) =>
@@ -1243,7 +1301,7 @@ namespace Reko.Arch.Qualcomm
                     dasm.instrs.Add(instr);
                     dasm.Clear();
                 }
-                return subdecoders[subdecoders.Length - 1].Decode(uInstr, dasm);
+                return subdecoders[^1].Decode(uInstr, dasm);
             }
         }
 
@@ -1504,12 +1562,12 @@ namespace Reko.Arch.Qualcomm
                             Mask(2, 1, "  0b11",
                                 Instr(Mnemonic.dealloc_return, InstrClass.Transfer|InstrClass.Return),
                                 Instr(Mnemonic.dealloc_return, InstrClass.ConditionalTransfer | InstrClass.Return,
-                                    Conditional_p0(1, -1, 0))),
+                Conditional_p0(1, -1, 0))),
                             invalid,
                             Mask(2, 1, "  0b11",
                                 Instr(Mnemonic.jumpr, InstrClass.Transfer | InstrClass.Return, Reg(Registers.lr)),
                                 Instr(Mnemonic.jumpr, InstrClass.ConditionalTransfer | InstrClass.Return, Reg(Registers.lr),
-                                    Conditional_p0(1, -1, 0)))))));
+                Conditional_p0(1, -1, 0)))))));
 
             /*
             A
@@ -1524,9 +1582,9 @@ namespace Reko.Arch.Qualcomm
             */
             var A_04 = Mask(10, 2, "  A 04",
                 Assign(r0, r4),
-                Assign(r0, Apply(Mnemonic.add, r4, One)),
-                Assign(r0, Apply(Mnemonic.and, r4, One)),
-                Assign(r0, Apply(Mnemonic.add, r4, Minus1)));
+                Assign(r0, Apply(Mnemonic.add, r4, Imm_1)),
+                Assign(r0, Apply(Mnemonic.and, r4, Imm_1)),
+                Assign(r0, Apply(Mnemonic.add, r4, Imm_Minus1)));
             /*
             -,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,1,0,0, 1,0,1, 0,0,s,s,s,s,d,d,d,d,Rd = sxth(Rs)
             -,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,1,0,0, 1,0,1, 0,1,s,s,s,s,d,d,d,d,Rd = sxtb(Rs)
@@ -1555,13 +1613,13 @@ namespace Reko.Arch.Qualcomm
                 Mask(8, 1, "  0b0",
                     Instr(Mnemonic.ASSIGN, r0, Apply(Mnemonic.add, r0, r4)),
                     Instr(Mnemonic.ASSIGN, P0, Apply(Mnemonic.cmp__eq, r4, uw_0_2))),
-                Assign(r0, Minus1));
+                Assign(r0, Imm_Minus1));
 
             var A_07 = Mask(8, 1, "  0b111",
                 Assign(rr0, Apply(Mnemonic.combine, uw_3_2, uw_5L2)),
                 Mask(3, 1, "  1",
-                    Assign(rr0, Apply(Mnemonic.combine, Zw, uw_5L2)),
-                    Assign(rr0, Apply(Mnemonic.combine, Zw, uw_5L2))));
+                    Assign(rr0, Apply(Mnemonic.combine, Imm_0, uw_5L2)),
+                    Assign(rr0, Apply(Mnemonic.combine, Imm_0, uw_5L2))));
 
             var A = Mask(10, 3, "  A",
                 Assign(r0, Apply(Mnemonic.add, r0, sw_4L7)),
@@ -1627,17 +1685,17 @@ namespace Reko.Arch.Qualcomm
             */
             var decoder_11 = Mask(23, 1, "  0x11",
                 Seq(
-                    Assign(P0, Apply(Mnemonic.cmp__gtu, R16_4, Minus1)),
+                    Assign(P0, Apply(Mnemonic.cmp__gtu, R16_4, Imm_Minus1)),
                     Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(14, 22))),
                 Mask(7, 2, "  0b10",
                     Seq(
-                        Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Minus1)),
+                        Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
                         Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(14, 22))),
                     Seq(
-                        Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Minus1)),
+                        Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
                         Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(14, 22))),
                     Seq(
-                        Assign(P0, Apply(Mnemonic.tstbit, R16_4, Zw)),
+                        Assign(P0, Apply(Mnemonic.tstbit, R16_4, Imm_0)),
                         Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(14, 22))),
                     invalid));
 
@@ -1687,7 +1745,7 @@ namespace Reko.Arch.Qualcomm
                 Mask(8, 2, "  0b11",
                     Nyi("0b00"),
                     Seq(
-                        Assign(Reg(p1), Apply(Mnemonic.cmp__gt, R16_4, Minus1)),
+                        Assign(Reg(p1), Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
                         IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(15, 22))),
                     Nyi("0b10"),
                     Nyi("0b11")));
@@ -1713,16 +1771,16 @@ namespace Reko.Arch.Qualcomm
             */
             var decoder_14 = BitFields(Bf((23, 1), (12, 1)), "  0x14...",
                 Seq(
-                    Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Minus1)),
+                    Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
                     Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(13, 22))),
                 Seq(
-                    Assign(P1, Apply(Mnemonic.cmp__eq, R16_4, Minus1)),
+                    Assign(P1, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
                     Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))),
                 Seq(
-                    Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, Minus1)),
+                    Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
                     Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p0_new(13, 22))),
                 Seq(
-                    Assign(P1, Apply(Mnemonic.cmp__gt, R16_4, Minus1)),
+                    Assign(P1, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
                     Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))));
             /*
             0,0,0,1, 0,1,0,1, 0,0,j,j,s,s,s,s,P,P,0,0,t,t,t,t,j,j,j,j,j,j,j,-,"p0=cmp.gtu(Rs,Rt); if(p0.new) jump:nt #r9:2"
@@ -1745,23 +1803,265 @@ namespace Reko.Arch.Qualcomm
             0,0,0,1, 0,1,1,0, -,-,j,j,d,d,d,d,P,P,I,I,I,I,I,I,j,j,j,j,j,j,j,-,"Rd=#U6 ; jump #r9:2"
             0,0,0,1, 0,1,1,1, -,-,j,j,s,s,s,s,P,P,-,-,d,d,d,d,j,j,j,j,j,j,j,-,"Rd=Rs ; jump #r9:2"
             */
-            var decoder_1 = Mask(24, 4, "  J 2,3",
-                decoder_10,
-                decoder_11,
-                decoder_12,
-                decoder_13,
-                decoder_14,
-                decoder_15,
-                Seq(Assign(R16_4, uw_8L6), Instr(Mnemonic.jump, PcRelExt_20L2_1L7)),
-                Seq(Assign(R8_4,  R16_4),  Instr(Mnemonic.jump, PcRelExt_20L2_1L7)),
+
+            /*
+                0001 - 00000 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.eq(Rs,#U5); if (p0.new) jump:nt #r9:2
+                0001 - 00000 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.eq(Rs,#U5); if (p0.new) jump:t #r9:2
+            */
+            var decoder1_00 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0(28, 13, 22)));
+            /*
+                0001 - 00001 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.eq(Rs,#U5); if (!p0.new) jump:nt #r9:2
+                0001 - 00001 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.eq(Rs,#U5); if (!p0.new) jump:t #r9:2
+            */
+            var decoder1_01 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22)));
+            /*
+
+                0001 - 00010 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.gt(Rs,#U5); if (p0.new) jump:nt #r9:2
+                0001 - 00010 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.gt(Rs,#U5); if (p0.new) jump:t #r9:2
+            */
+            var decoder1_02 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22)));
+            /*
+
+                0001 - 00011 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.gt(Rs,#U5); if (!p0.new) jump:nt #r9:2
+                0001 - 00011 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.gt(Rs,#U5); if (!p0.new) jump:t #r9:2
+            */
+            var decoder1_03 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22)));
+            /*
+
+                0001 - 00100 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.gtu(Rs,#U5); if (p0.new) jump:nt #r9:2
+                0001 - 00100 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.gtu(Rs,#U5); if (p0.new) jump:t #r9:2
+            */
+            var decoder1_04 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__gtu, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22)));
+
+            /*
+            0001 - 00101 i i ssssPP 0 IIIIIiiiiiii- p0=cmp.gtu(Rs,#U5); if (!p0.new) jump:nt #r9:2
+            0001 - 00101 i i ssssPP 1 IIIIIiiiiiii- p0=cmp.gtu(Rs,#U5); if (!p0.new) jump:t #r9:2
+            */
+            var decoder1_05 = Seq(
+                Assign(P0, Apply(Mnemonic.cmp__gtu, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22)));
+
+            /*
+            0001 - 00110 i i ssssPP 0 --- 0 0 iiiiiii- p0=cmp.eq(Rs,#-1); if (p0.new) jump:nt #r9:2
+            0001 - 00110 i i ssssPP 0 --- 0 1 iiiiiii- p0=cmp.gt(Rs,#-1); if (p0.new) jump:nt #r9:2
+            0001 - 00110 i i ssssPP 0 --- 1 1 iiiiiii- p0=tstbit(Rs,#0); if (p0.new) jump:nt #r9:2
+            0001 - 00110 i i ssssPP 1 --- 0 0 iiiiiii- p0=cmp.eq(Rs,#-1); if (p0.new) jump:t #r9:2
+            0001 - 00110 i i ssssPP 1 --- 0 1 iiiiiii- p0=cmp.gt(Rs,#-1); if (p0.new) jump:t #r9:2
+            0001 - 00110 i i ssssPP 1 --- 1 1 iiiiiii- p0=tstbit(Rs,#0); if (p0.new) jump:t #r9:2
+            */
+            var decoder1_06 = Mask(8, 2, "  06",
+                Seq(
+                    Assign(P0,Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0(23, 13, -1))),
+                Seq(
+                    Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0(23, 13, -1))),
+                Nyi("10"),
+                Seq(
+                    Assign(P0, Apply(Mnemonic.tstbit, R16_4, Imm_0)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22))));
+            /*
+                0001 - 00111 i i ssssPP 1 --- 0 0 iiiiiii- p0=cmp.eq(Rs,#-1); if (!p0.new) jump:t #r9:2
+                0001 - 00111 i i ssssPP 1 --- 0 1 iiiiiii- p0=cmp.gt(Rs,#-1); if (!p0.new) jump:t #r9:2
+                0001 - 00111 i i ssssPP 1 --- 1 1 iiiiiii- p0=tstbit(Rs,#0); if (!p0.new) jump:t #r9:2
+            */
+            var decoder1_07 = Mask(8, 2, "  06",
+                Seq(
+                    Assign(P0, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0(23, 13, -1))),
+                Seq(
+                    Assign(P0, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0(23, 13, -1))),
+                Nyi("10"),
+                Seq(
+                    Assign(P0, Apply(Mnemonic.tstbit, R16_4, Imm_0)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p0_new(13, 22))));
+            /*
+
+                0001 - 01000 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.eq(Rs,#U5); if (p1.new) jump:nt #r9:2
+                0001 - 01000 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.eq(Rs,#U5); if (p1.new) jump:t #r9:2
+            */
+            var decoder1_08 = Seq(
+                Assign(P1, Apply(Mnemonic.cmp__eq, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, -1)));
+            /*
+                0001 - 01001 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.eq(Rs,#U5); if (!p1.new) jump:nt #r9:2
+                0001 - 01001 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.eq(Rs,#U5); if (!p1.new) jump:t #r9:2
+            */
+            var decoder1_09 = Seq(
+                Assign(P1, Apply(Mnemonic.cmp__eq, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22)));
+            /*
+                0001 - 01010 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.gt(Rs,#U5); if (p1.new) jump:nt #r9:2
+                0001 - 01010 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.gt(Rs,#U5); if (p1.new) jump:t #r9:2
+            */
+            /*
+
+                0001 - 01011 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.gt(Rs,#U5); if (!p1.new) jump:nt #r9:2
+                0001 - 01011 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.gt(Rs,#U5); if (!p1.new) jump:t #r9:2
+            */
+            /*
+
+                0001 - 01100 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.gtu(Rs,#U5); if (p1.new) jump:nt #r9:2
+                0001 - 01100 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.gtu(Rs,#U5); if (p1.new) jump:t #r9:2
+            */
+            var decoder1_0C = Seq(
+                Assign(P1, Apply(Mnemonic.cmp__gtu, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, -1)));
+            /*
+
+                0001 - 01101 i i ssssPP 0 IIIIIiiiiiii- p1=cmp.gtu(Rs,#U5); if (!p1.new) jump:nt #r9:2
+                0001 - 01101 i i ssssPP 1 IIIIIiiiiiii- p1=cmp.gtu(Rs,#U5); if (!p1.new) jump:t #r9:2
+            */
+            var decoder1_0D = Seq(
+                Assign(P1, Apply(Mnemonic.cmp__gtu, R16_4, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22)));
+            /*
+
+                0001 - 01110 i i ssssPP 0 --- 0 0 iiiiiii- p1=cmp.eq(Rs,#-1); if (p1.new) jump:nt #r9:2
+                0001 - 01110 i i ssssPP 0 --- 0 1 iiiiiii- p1=cmp.gt(Rs,#-1); if (p1.new) jump:nt #r9:2
+                0001 - 01110 i i ssssPP 0 --- 1 1 iiiiiii- p1=tstbit(Rs,#0); if (p1.new) jump:nt #r9:2
+                0001 - 01110 i i ssssPP 1 --- 0 0 iiiiiii- p1=cmp.eq(Rs,#-1); if (p1.new) jump:t #r9:2
+                0001 - 01110 i i ssssPP 1 --- 0 1 iiiiiii- p1=cmp.gt(Rs,#-1); if (p1.new) jump:t #r9:2
+                0001 - 01110 i i ssssPP 1 --- 1 1 iiiiiii- p1=tstbit(Rs,#0); if (p1.new) jump:t #r9:2
+            */
+            var decoder1_0E = Mask(8, 2, "  0E",
+                Seq(
+                    Assign(P1, Apply(Mnemonic.cmp__eq, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))),
+                Seq(
+                    Assign(P1, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))),
+                Nyi("10"),
+                Seq(
+                    Assign(P1, Apply(Mnemonic.tstbit, R16_4, Imm_0)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))));
+            /*
+
+                0001 - 01111 i i ssssPP 0 --- 0 0 iiiiiii- p1=cmp.eq(Rs,#-1); if (!p1.new) jump:nt #r9:2
+                0001 - 01111 i i ssssPP 0 --- 0 1 iiiiiii- p1=cmp.gt(Rs,#-1); if (!p1.new) jump:nt #r9:2
+                0001 - 01111 i i ssssPP 0 --- 1 1 iiiiiii- p1=tstbit(Rs,#0); if (!p1.new) jump:nt #r9:2
+                0001 - 01111 i i ssssPP 1 --- 0 0 iiiiiii- p1=cmp.eq(Rs,#-1); if (!p1.new) jump:t #r9:2
+                0001 - 01111 i i ssssPP 1 --- 0 1 iiiiiii- p1=cmp.gt(Rs,#-1); if (!p1.new) jump:t #r9:2
+                0001 - 01111 i i ssssPP 1 --- 1 1 iiiiiii- p1=tstbit(Rs,#0); if (!p1.new) jump:t #r9:2
+            */
+            var decoder1_0F = Mask(8, 2, "  0F",
+                Nyi("00"),
+                Seq(
+                    Assign(P1, Apply(Mnemonic.cmp__gt, R16_4, Imm_Minus1)),
+                    IfJump(PcRelExt_20L2_1L7, Conditional_p1_new(13, 22))),
+                Nyi("10"),
+                Nyi("11"));
+            /*
+
+
+                0001 - 10000 i i ssssPP 0 0 ttttiiiiiii- p0=cmp.eq(Rs,Rt); if (p0.new) jump:nt #r9:2
+                0001 - 10000 i i ssssPP 0 1 ttttiiiiiii- p1=cmp.eq(Rs,Rt); if (p1.new) jump:nt #r9:2
+                0001 - 10000 i i ssssPP 1 0 ttttiiiiiii- p0=cmp.eq(Rs,Rt); if (p0.new) jump:t #r9:2
+                0001 - 10000 i i ssssPP 1 1 tttt iiiiiii- p1=cmp.eq(Rs,Rt); if (p1.new) jump:t #r9:2
+            */
+            var decoder1_10 = Seq(
+                Assign(P_12L1, Apply(Mnemonic.cmp__eq, R16_4, R8_4)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_1(12, 28, 13, -1)));
+            /*
+
+                0001 - 10001 i i ssssPP 0 0 ttttiiiiiii- p0=cmp.eq(Rs,Rt); if (!p0.new) jump:nt #r9:2
+                0001 - 10001 i i ssssPP 0 1 ttttiiiiiii- p1=cmp.eq(Rs,Rt); if (!p1.new) jump:nt #r9:2
+                0001 - 10001 i i ssssPP 1 0 ttttiiiiiii- p0=cmp.eq(Rs,Rt); if (!p0.new) jump:t #r9:2
+                0001 - 10001 i i ssssPP 1 1 ttttiiiiiii- p1=cmp.eq(Rs,Rt); if (!p1.new) jump:t #r9:2
+            */
+            var decoder1_11 = Seq(
+                Assign(P_12L1, Apply(Mnemonic.cmp__eq, R16_4, R8_4)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_1(12, 28, 13, 22)));
+
+            /*
+
+                0001 - 10010 i i ssssPP 0 0 ttttiiiiiii- p0=cmp.gt(Rs,Rt); if (p0.new) jump:nt #r9:2
+                0001 - 10010 i i ssssPP 0 1 ttttiiiiiii- p1=cmp.gt(Rs,Rt); if (p1.new) jump:nt #r9:2
+                0001 - 10010 i i ssssPP 1 0 ttttiiiiiii- p0=cmp.gt(Rs,Rt); if (p0.new) jump:t #r9:2
+                0001 - 10010 i i ssssPP 1 1 ttttiiiiiii- p1=cmp.gt(Rs,Rt); if (p1.new) jump:t #r9:2
+            */
+            var decoder1_12 = Seq(
+                Assign(P_12L1, Apply(Mnemonic.cmp__gt, R16_4, R8_4)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_1(12, 23, 13, -1)));
+
+            /*
+
+                0001 - 10011 i i ssssPP 0 0 ttttiiiiiii- p0=cmp.gt(Rs,Rt); if (!p0.new) jump:nt #r9:2
+                0001 - 10011 i i ssssPP 0 1 ttttiiiiiii- p1=cmp.gt(Rs,Rt); if (!p1.new) jump:nt #r9:2
+                0001 - 10011 i i ssssPP 1 0 ttttiiiiiii- p0=cmp.gt(Rs,Rt); if (!p0.new) jump:t #r9:2
+                0001 - 10011 i i ssssPP 1 1 ttttiiiiiii- p1=cmp.gt(Rs,Rt); if (!p1.new) jump:t #r9:2
+            */
+            var decoder1_13 = Seq(
+                Assign(P_12L1, Apply(Mnemonic.cmp__gt, R16_4, R8_4)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_1(12, 23, 13, -1)));
+            /*
+
+                0001 - 10100 i i ssssPP 0 0 ttttiiiiiii- p0=cmp.gtu(Rs,Rt); if (p0.new) jump:nt #r9:2
+                0001 - 10100 i i ssssPP 0 1 ttttiiiiiii- p1=cmp.gtu(Rs,Rt); if (p1.new) jump:nt #r9:2
+                0001 - 10100 i i ssssPP 1 0 ttttiiiiiii- p0=cmp.gtu(Rs,Rt); if (p0.new) jump:t #r9:2
+            */
+            var decoder1_14 = Seq(
+                Assign(P_12L1, Apply(Mnemonic.cmp__gtu, R16_4, R8_4)),
+                IfJump(PcRelExt_20L2_1L7, Conditional_1(12, 23, 13, -1)));
+            /*
+                0001 - 110 - - i i ddddPP I I I I I I i i i i i i i - Rd=#U6 ; jump #r9:2
+                0001 - 111 - - i i ssssPP - - dddd iiiiiii- Rd=Rs ; jump #r9:2
+            */
+            var decoder1_18 = Seq(Assign(R8_4, uw_8L6), Instr(Mnemonic.jump, PcRelExt_20L2_1L7));
+            var decoder1_1C = Seq(Assign(R8_4, R16_4), Instr(Mnemonic.jump, PcRelExt_20L2_1L7));
+
+
+            var decoder_1 = Mask(22, 5, "  J 2,3",
+                decoder1_00,
+                decoder1_01,
+                decoder1_02,
+                decoder1_03,
+
+                decoder1_04,
+                decoder1_05,
+                decoder1_06,
+                decoder1_07,
+
+                decoder1_08,
+                decoder1_09,
+                Nyi("0A"),
+                Nyi("0B"),
+
+                decoder1_0C,
+                decoder1_0D,
+                decoder1_0E,
+                decoder1_0F,
+
+                decoder1_10,
+                decoder1_11,
+                decoder1_12,
+                decoder1_13,
+
+                decoder1_14,
                 invalid,
                 invalid,
                 invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid);
+
+                decoder1_18,
+                decoder1_18,
+                decoder1_18,
+                decoder1_18,
+
+                decoder1_1C,
+                decoder1_1C,
+                decoder1_1C,
+                decoder1_1C);
 
             /*
             0,0,1,0, 0,0,0,0, 0,0,j,j,-,s,s,s,P,P,0,t,t,t,t,t,j,j,j,j,j,j,j,-,"if (cmp.eq(Ns.new,Rt))jump:nt #r9:2"
@@ -1833,7 +2133,7 @@ namespace Reko.Arch.Qualcomm
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7,
                     ConditionalApply(22, 13, Mnemonic.cmp__gtu, New16, uw_7L5)),
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7,
-                    ConditionalApply(22, 13, Mnemonic.tstbit, New16, Zw)));
+                    ConditionalApply(22, 13, Mnemonic.tstbit, New16, Imm_0)));
 
             /*
             0,0,1,0, 0,1,1,0, 0,0,j,j,-,s,s,s,P,P,0,-,-,-,-,-,j,j,j,j,j,j,j,-,"if (cmp.eq(Ns.new,#-1))jump:nt #r9:2"
@@ -1847,27 +2147,255 @@ namespace Reko.Arch.Qualcomm
              */
             var decoder_26 = Mask(23, 1, "  0x25...",
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7,
-                    ConditionalApply(22, 13, Mnemonic.cmp__eq, New16, Minus1)),
+                    ConditionalApply(22, 13, Mnemonic.cmp__eq, New16, Imm_Minus1)),
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_20L2_1L7,
-                    ConditionalApply(22, 13, Mnemonic.tstbit, New16, Minus1)));
+                    ConditionalApply(22, 13, Mnemonic.tstbit, New16, Imm_Minus1)));
 
-            var decoder_2 = Mask(24, 4, "  J 2, 3",
-                decoder_20,
-                decoder_21,
-                decoder_22,
+            /*
+0010 0 0000 0 i i - sssPP 0 tttttii iiiii- if (cmp.eq(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0000 0 i i - sssPP 1 tttttii iiiii- if (cmp.eq(Ns.new,Rt)) jump:t #r9:2
+0010 0 0000 1 i i - sssPP 0 tttttii iiiii- if (!cmp.eq(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0000 1 i i - sssPP 1 tttttii iiiii- if (!cmp.eq(Ns.new,Rt)) jump:t #r9:2
+0010 0 0001 0 i i - sssPP 0 tttttii iiiii- if (cmp.gt(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0001 0 i i - sssPP 1 tttttii iiiii- if (cmp.gt(Ns.new,Rt)) jump:t #r9:2
+0010 0 0001 1 i i - sssPP 0 tttttii iiiii- if (!cmp.gt(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0001 1 i i - sssPP 1 tttttii iiiii- if (!cmp.gt(Ns.new,Rt)) jump:t #r9:2
+0010 0 0010 0 i i - sssPP 0 tttttii iiiii- if (cmp.gtu(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0010 0 i i - sssPP 1 tttttii iiiii- if (cmp.gtu(Ns.new,Rt)) jump:t #r9:2
+0010 0 0010 1 i i - sssPP 0 tttttii iiiii- if (!cmp.gtu(Ns.new,Rt)) jump:nt #r9:2
+0010 0 0010 1 i i - sssPP 1 tttttii iiiii- if (!cmp.gtu(Ns.new,Rt)) jump:t #r9:2
+0010 0 0011 0 i i - sssPP 0 tttttii iiiii- if (cmp.gt(Rt,Ns.new)) jump:nt #r9:2
+0010 0 0011 0 i i - sssPP 1 tttttii iiiii- if (cmp.gt(Rt,Ns.new)) jump:t #r9:2
+0010 0 0011 1 i i - sssPP 0 tttttii iiiii- if (!cmp.gt(Rt,Ns.new)) jump:nt #r9:2
+0010 0 0011 1 i i - sssPP 1 tttttii iiiii- if (!cmp.gt(Rt,Ns.new)) jump:t #r9:2
+0010 0 0100 0 i i - sssPP 0 tttttii iiiii- if (cmp.gtu(Rt,Ns.new)) jump:nt #r9:2
+0010 0 0100 0 i i - sssPP 1 tttttii iiiii- if (cmp.gtu(Rt,Ns.new)) jump:t #r9:2
+0010 0 0100 1 i i - sssPP 0 tttttii iiiii- if (!cmp.gtu(Rt,Ns.new)) jump:nt #r9:2
+0010 0 0100 1 i i - sssPP 1 tttttii iiiii- if (!cmp.gtu(Rt,Ns.new)) jump:t #r9:2
+
+0010 0 1000 0 i i - sssPP 0 IIIIIiiiiiii- if (cmp.eq(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1000 0 i i - sssPP 1 IIIIIiiiiiii- if (cmp.eq(Ns.new,#U5)) jump:t #r9:2
+0010 0 1000 1 i i - sssPP 0 IIIIIiiiiiii- if (!cmp.eq(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1000 1 i i - sssPP 1 IIIIIiiiiiii- if (!cmp.eq(Ns.new,#U5)) jump:t #r9:2
+0010 0 1001 0 i i - sssPP 0 IIIIIiiiiiii- if (cmp.gt(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1001 0 i i - sssPP 1 IIIIIiiiiiii- if (cmp.gt(Ns.new,#U5)) jump:t #r9:2
+0010 0 1001 1 i i - sssPP 0 IIIIIiiiiiii- if (!cmp.gt(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1001 1 i i - sssPP 1 IIIIIiiiiiii- if (!cmp.gt(Ns.new,#U5)) jump:t #r9:2
+0010 0 1010 0 i i - sssPP 0 IIIIIiiiiiii- if (cmp.gtu(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1010 0 i i - sssPP 1 IIIIIiiiiiii- if (cmp.gtu(Ns.new,#U5)) jump:t #r9:2
+0010 0 1010 1 i i - sssPP 0 IIIIIiiiiiii- if (!cmp.gtu(Ns.new,#U5)) jump:nt #r9:2
+0010 0 1010 1 i i - sssPP 1 IIIIIiiiiiii- if (!cmp.gtu(Ns.new,#U5)) jump:t #r9:2
+0010 0 1011 0 i i - sssPP 0 -----ii iiiii- if (tstbit(Ns.new,#0)) jump:nt #r9:2
+0010 0 1011 0 i i - sssPP 1 -----ii iiiii- if (tstbit(Ns.new,#0)) jump:t #r9:2
+0010 0 1011 1 i i - sssPP 0 -----ii iiiii- if (!tstbit(Ns.new,#0)) jump:nt #r9:2
+0010 0 1011 1 i i - sssPP 1 -----ii iiiii- if (!tstbit(Ns.new,#0)) jump:t #r9:2
+0010 0 1100 0 i i - sssPP 0 -----ii iiiii- if (cmp.eq(Ns.new,#-1)) jump:nt #r9:2
+0010 0 1100 0 i i - sssPP 1 -----ii iiiii- if (cmp.eq(Ns.new,#-1)) jump:t #r9:2
+0010 0 1100 1 i i - sssPP 0 -----ii iiiii- if (!cmp.eq(Ns.new,#-1)) jump:nt #r9:2
+0010 0 1100 1 i i - sssPP 1 -----ii iiiii- if (!cmp.eq(Ns.new,#-1)) jump:t #r9:2
+0010 0 1101 0 i i - sssPP 0 -----ii iiiii- if (cmp.gt(Ns.new,#-1)) jump:nt #r9:2
+0010 0 1101 0 i i - sssPP 1 -----ii iiiii- if (cmp.gt(Ns.new,#-1)) jump:t #r9:2
+0010 0 1101 1 i i - sssPP 0 -----ii iiiii- if (!cmp.gt(Ns.new,#-1)) jump:nt #r9:2
+0010 0 1101 1 i i - sssPP 1 -----ii iiiii- if (!cmp.gt(Ns.new,#-1)) jump:t #r9:2
+
+
+0 0 1 0  0  0 0 0 0  0 i i - s s s P P 0 t t t t t i i i i i i i - if (cmp.eq(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 0 0  0 i i - s s s P P 1 t t t t t i i i i i i i - if (cmp.eq(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 0 0  1 i i - s s s P P 0 t t t t t i i i i i i i - if (!cmp.eq(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 0 0  1 i i - s s s P P 1 t t t t t i i i i i i i - if (!cmp.eq(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 0 1  0 i i - s s s P P 0 t t t t t i i i i i i i - if (cmp.gt(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 0 1  0 i i - s s s P P 1 t t t t t i i i i i i i - if (cmp.gt(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 0 1  1 i i - s s s P P 0 t t t t t i i i i i i i - if (!cmp.gt(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 0 1  1 i i - s s s P P 1 t t t t t i i i i i i i - if (!cmp.gt(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 1 0  0 i i - s s s P P 0 t t t t t i i i i i i i - if (cmp.gtu(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 1 0  0 i i - s s s P P 1 t t t t t i i i i i i i - if (cmp.gtu(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 1 0  1 i i - s s s P P 0 t t t t t i i i i i i i - if (!cmp.gtu(Ns.new,Rt)) jump:nt #r9:2
+0 0 1 0  0  0 0 1 0  1 i i - s s s P P 1 t t t t t i i i i i i i - if (!cmp.gtu(Ns.new,Rt)) jump:t #r9:2
+0 0 1 0  0  0 0 1 1  0 i i - s s s P P 0 t t t t t i i i i i i i - if (cmp.gt(Rt,Ns.new)) jump:nt #r9:2
+0 0 1 0  0  0 0 1 1  0 i i - s s s P P 1 t t t t t i i i i i i i - if (cmp.gt(Rt,Ns.new)) jump:t #r9:2
+0 0 1 0  0  0 0 1 1  1 i i - s s s P P 0 t t t t t i i i i i i i - if (!cmp.gt(Rt,Ns.new)) jump:nt #r9:2
+0 0 1 0  0  0 0 1 1  1 i i - s s s P P 1 t t t t t i i i i i i i - if (!cmp.gt(Rt,Ns.new)) jump:t #r9:2
+0 0 1 0  0  0 1 0 0  0 i i - s s s P P 0 t t t t t i i i i i i i - if (cmp.gtu(Rt,Ns.new)) jump:nt #r9:2
+0 0 1 0  0  0 1 0 0  0 i i - s s s P P 1 t t t t t i i i i i i i - if (cmp.gtu(Rt,Ns.new)) jump:t #r9:2
+0 0 1 0  0  0 1 0 0  1 i i - s s s P P 0 t t t t t i i i i i i i - if (!cmp.gtu(Rt,Ns.new)) jump:nt #r9:2
+0 0 1 0  0  0 1 0 0  1 i i - s s s P P 1 t t t t t i i i i i i i - if (!cmp.gtu(Rt,Ns.new)) jump:t #r9:2
+
+0 0 1 0  0  1 0 0 0  0 i i - s s s P P 0 I I I I I i i i i i i i - if (cmp.eq(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 0 0  0 i i - s s s P P 1 I I I I I i i i i i i i - if (cmp.eq(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 0 0  1 i i - s s s P P 0 I I I I I i i i i i i i - if (!cmp.eq(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 0 0  1 i i - s s s P P 1 I I I I I i i i i i i i - if (!cmp.eq(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 0 1  0 i i - s s s P P 0 I I I I I i i i i i i i - if (cmp.gt(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 0 1  0 i i - s s s P P 1 I I I I I i i i i i i i - if (cmp.gt(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 0 1  1 i i - s s s P P 0 I I I I I i i i i i i i - if (!cmp.gt(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 0 1  1 i i - s s s P P 1 I I I I I i i i i i i i - if (!cmp.gt(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 1 0  0 i i - s s s P P 0 I I I I I i i i i i i i - if (cmp.gtu(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 1 0  0 i i - s s s P P 1 I I I I I i i i i i i i - if (cmp.gtu(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 1 0  1 i i - s s s P P 0 I I I I I i i i i i i i - if (!cmp.gtu(Ns.new,#U5)) jump:nt #r9:2
+0 0 1 0  0  1 0 1 0  1 i i - s s s P P 1 I I I I I i i i i i i i - if (!cmp.gtu(Ns.new,#U5)) jump:t #r9:2
+0 0 1 0  0  1 0 1 1  0 i i - s s s P P 0 - - - - - i i i i i i i - if (tstbit(Ns.new,#0)) jump:nt #r9:2
+0 0 1 0  0  1 0 1 1  0 i i - s s s P P 1 - - - - - i i i i i i i - if (tstbit(Ns.new,#0)) jump:t#r9:2
+0 0 1 0  0  1 0 1 1  1 i i - s s s P P 0 - - - - - i i i i i i i - if (!tstbit(Ns.new,#0)) jump:nt #r9:2
+0 0 1 0  0  1 0 1 1  1 i i - s s s P P 1 - - - - - i i i i i i i - if (!tstbit(Ns.new,#0)) jump:t#r9:2
+0 0 1 0  0  1 1 0 0  0 i i - s s s P P 0 - - - - - i i i i i i i - if (cmp.eq(Ns.new,#-1)) jump:nt #r9:2
+0 0 1 0  0  1 1 0 0  0 i i - s s s P P 1 - - - - - i i i i i i i - if (cmp.eq(Ns.new,#-1)) jump:t #r9:2
+0 0 1 0  0  1 1 0 0  1 i i - s s s P P 0 - - - - - i i i i i i i - if (!cmp.eq(Ns.new,#-1)) jump:nt #r9:2
+0 0 1 0  0  1 1 0 0  1 i i - s s s P P 1 - - - - - i i i i i i i - if (!cmp.eq(Ns.new,#-1)) jump:t #r9:2
+0 0 1 0  0  1 1 0 1  0 i i - s s s P P 0 - - - - - i i i i i i i - if (cmp.gt(Ns.new,#-1)) jump:nt #r9:2
+0 0 1 0  0  1 1 0 1  0 i i - s s s P P 1 - - - - - i i i i i i i - if (cmp.gt(Ns.new,#-1)) jump:t #r9:2
+0 0 1 0  0  1 1 0 1  1 i i - s s s P P 0 - - - - - i i i i i i i - if (!cmp.gt(Ns.new,#-1)) jump:nt #r9:2
+0 0 1 0  0  1 1 0 1  1 i i - s s s P P 1 - - - - - i i i i i i i - if (!cmp.gt(Ns.new,#-1)) jump:t #r9:2
+
+            */
+
+            var decoder_2_0 = Mask(23, 4, "  J 2, 3",
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__eq, New16, R8)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gt, New16, R8)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gtu, New16, R8)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gtu, R8, New16)),
+
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gtu, R8, New16)),
+                Nyi("05"),
+                Nyi("06"),
+                Nyi("07"),
+
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__eq, New16, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gt, New16, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gtu, New16, uw_8L5)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.tstbit, New16, Imm_0)),
+
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__eq, New16, Imm_Minus1)),
+                IfJump(PcRelExt_20L2_1L7, ConditionalApply(22, 13, Mnemonic.cmp__gt, New16, Imm_Minus1)),
+                Nyi("0E"),
+                Nyi("0F"));
+
+            /*
+
+0010 1 IIIuuuueeeeEE 001 iiissssdddd  "Re16 = memuh ( Ru16 + #U3:1 ) ; Rd16 = memuh ( Rs16 + #u3:1 )"
+
+0010 1 IIIuuuueeeeEE 010 iiissssdddd  "Re16 = memuh ( Ru16 + #U3:1 ) ; Rd16 = memb ( Rs16 + #u3:0 )"
+            */
+            var decoder_2_1_2 = Seq(
+                Assign(R16_4, m4(PrimitiveType.Word16, 20, bf_20L3)),
+                Assign(R0_4, m4(PrimitiveType.Byte, 4, bf_8L3)));
+            /*
+0010 1 IIIsssseeeeEE 011 10iiiiidddd  "Re16 = memuh ( Rs16 + #U3:1 ) ; Rd16 = memw ( Sp + #u5:2 )"
+0010 1 IIIsssseeeeEE 011 110iiiiiddd  "Re16 = memuh ( Rs16 + #U3:1 ) ; Rdd8 = memd ( Sp + #u5:3 )"
+0010 1 iiissssddddEE 011 11100---0--  "Rd16 = memuh ( Rs16 + #u3:1 ) ; deallocframe"
+0010 1 iiissssddddEE 011 11101---0--  "Rd16 = memuh ( Rs16 + #u3:1 ) ; dealloc_return"
+0010 1 iiissssddddEE 011 11101---101  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( ! p0 ) dealloc_return"
+0010 1 iiissssddddEE 011 11101---111  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( ! p0 .new ) dealloc_return:nt"
+0010 1 iiissssddddEE 011 11101---100  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( p0 ) dealloc_return"
+0010 1 iiissssddddEE 011 11101---110  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( p0 .new ) dealloc_return:nt"
+0010 1 iiissssddddEE 011 11111---101  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( ! p0 ) jumpr Lr"
+0010 1 iiissssddddEE 011 11111---111  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( ! p0 .new ) jumpr:nt Lr"
+0010 1 iiissssddddEE 011 11111---100  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( p0 ) jumpr Lr"
+0010 1 iiissssddddEE 011 11111---110  "Rd16 = memuh ( Rs16 + #u3:1 ) ; if ( p0 .new ) jumpr:nt Lr"
+0010 1 iiissssddddEE 011 11111---0--  "Rd16 = memuh ( Rs16 + #u3:1 ) ; jumpr Lr"
+            */
+            var decoder_2_1_3 = Mask(9, 2, "  3",
                 invalid,
-                decoder_24,
-                decoder_25,
-                decoder_26,
                 invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid);
+                Nyi("10"),
+                Mask(8, 1, "  0b11",
+                    Nyi("  0"),
+                    Mask(6, 2, "  1",
+                        If(2, 1, Eq0, Seq(
+                            Assign(R16_4, m4(PrimitiveType.Word16, 20, bf_24L3)),
+                            SideEffect(Apply(Mnemonic.deallocframe)))),
+                        Nyi("01"),
+                        Nyi("10"),
+                        Nyi("11"))));
+            /*
+0010 1 0IIIIIIeeeeEE 101 0iiiiiidddd  "Re16 = #U6 ; Rd16 = #u6"
+0010 1 0IIIIIIeeeeEE 101 1iiiiiidddd  "Re16 = #U6 ; Rd16 = add ( Sp , #u6:2 )"
+0010 1 1IIIIIIeeeeEE 101 1iiiiiidddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = add ( Sp , #u6:2 )"
+
+0010 1 0iiiiiieeeeEE 110 000ssssdddd  "Re16 = #u6 ; Rd16 = Rs16"
+0010 1 0IIIIIIeeeeEE 110 001ssssdddd  "Re16 = #U6 ; Rd16 = add ( Rs16 , #1 )"
+0010 1 0IIIIIIeeeeEE 110 010ssssdddd  "Re16 = #U6 ; Rd16 = and ( Rs16 , #1 )"
+0010 1 0IIIIIIeeeeEE 110 011ssssdddd  "Re16 = #U6 ; Rd16 = add ( Rs16 , #-1 )"
+0010 1 0iiiiiieeeeEE 110 100ssssdddd  "Re16 = #u6 ; Rd16 = sxth ( Rs16 )"
+0010 1 0iiiiiieeeeEE 110 101ssssdddd  "Re16 = #u6 ; Rd16 = sxtb ( Rs16 )"
+0010 1 0iiiiiieeeeEE 110 110ssssdddd  "Re16 = #u6 ; Rd16 = zxth ( Rs16 )"
+0010 1 0IIIIIIeeeeEE 110 111ssssdddd  "Re16 = #U6 ; Rd16 = and ( Rs16 , #255 )"
+
+0010 1 1iiiiiieeeeEE 110 000ssssdddd  "Re16 = add ( Sp , #u6:2 ) ; Rd16 = Rs16"
+0010 1 1IIIIIIeeeeEE 110 001ssssdddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = add ( Rs16 , #1 )"
+0010 1 1IIIIIIeeeeEE 110 010ssssdddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = and ( Rs16 , #1 )"
+0010 1 1IIIIIIeeeeEE 110 011ssssdddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = add ( Rs16 , #-1 )"
+0010 1 1iiiiiieeeeEE 110 100ssssdddd  "Re16 = add ( Sp , #u6:2 ) ; Rd16 = sxth ( Rs16 )"
+0010 1 1iiiiiieeeeEE 110 101ssssdddd  "Re16 = add ( Sp , #u6:2 ) ; Rd16 = sxtb ( Rs16 )"
+0010 1 1iiiiiieeeeEE 110 110ssssdddd  "Re16 = add ( Sp , #u6:2 ) ; Rd16 = zxth ( Rs16 )"
+0010 1 1IIIIIIeeeeEE 110 111ssssdddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = and ( Rs16 , #255 )"
+*/
+            var decoder_2_1_6 = Mask(26, 1, "  6",
+                Mask(8, 3, "  0",
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, R4_4)),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.add, R4_4, Imm_1))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.and, R4_4, Imm_1))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.add, R4_4, Imm_Minus1))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.sxth, R4_4))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.sxtb, R4_4))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.zxth, R4_4))),
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.add, R4_4, Imm_0xFF)))),
+                Nyi("1"));
+            /*
+0010 1 0iiiiiiddddEE 111 000ssssxxxx  "Rd16 = #u6 ; Rx16 = add ( Rs16 , Rx16 )"
+0010 1 0iiiiiiddddEE 111 000ssssxxxx  "Rd16 = #u6 ; Rx16 = add ( Rx16 , Rs16 )"
+0010 1 0IIIIIIddddEE 111 001ssss--ii  "Rd16 = #U6 ; p0 = cmp.eq ( Rs16 , #u2 )"
+0010 1 0IIIIIIeeeeEE 111 01--0--dddd  "Re16 = #U6 ; Rd16 = #-1"
+0010 1 0IIIIIIeeeeEE 111 01--111dddd  "Re16 = #U6 ; if ( ! p0 ) Rd16 = #0"
+0010 1 0IIIIIIeeeeEE 111 01--101dddd  "Re16 = #U6 ; if ( ! p0 .new ) Rd16 = #0"
+0010 1 0IIIIIIeeeeEE 111 01--110dddd  "Re16 = #U6 ; if ( p0 ) Rd16 = #0"
+0010 1 0IIIIIIeeeeEE 111 01--100dddd  "Re16 = #U6 ; if ( p0 .new ) Rd16 = #0"
+0010 1 0IIIIIIeeeeEE 111 1-0-ii00ddd  "Re16 = #U6 ; Rdd8 = combine ( #0 , #u2 )"
+0010 1 0IIIIIIeeeeEE 111 1-1ssss0ddd  "Re16 = #U6 ; Rdd8 = combine ( #0 , Rs16 )"
+0010 1 0IIIIIIeeeeEE 111 1-0-ii01ddd  "Re16 = #U6 ; Rdd8 = combine ( #1 , #u2 )"
+0010 1 0IIIIIIeeeeEE 111 1-0-ii10ddd  "Re16 = #U6 ; Rdd8 = combine ( #2 , #u2 )"
+0010 1 0IIIIIIeeeeEE 111 1-0-ii11ddd  "Re16 = #U6 ; Rdd8 = combine ( #3 , #u2 )"
+0010 1 0IIIIIIeeeeEE 111 1-1ssss1ddd  "Re16 = #U6 ; Rdd8 = combine ( Rs16 , #0 )"
+
+0010 1 1iiiiiiddddEE 111 000ssssxxxx  "Rd16 = add ( Sp , #u6:2 ) ; Rx16 = add ( Rs16 , Rx16 )"
+0010 1 1iiiiiiddddEE 111 000ssssxxxx  "Rd16 = add ( Sp , #u6:2 ) ; Rx16 = add ( Rx16 , Rs16 )"
+0010 1 1IIIIIIddddEE 111 001ssss--ii  "Rd16 = add ( Sp , #U6:2 ) ; p0 = cmp.eq ( Rs16 , #u2 )"
+0010 1 1IIIIIIeeeeEE 111 01--0--dddd  "Re16 = add ( Sp , #U6:2 ) ; Rd16 = #-1"
+0010 1 1IIIIIIeeeeEE 111 01--111dddd  "Re16 = add ( Sp , #U6:2 ) ; if ( ! p0 ) Rd16 = #0"
+0010 1 1IIIIIIeeeeEE 111 01--101dddd  "Re16 = add ( Sp , #U6:2 ) ; if ( ! p0 .new ) Rd16 = #0"
+0010 1 1IIIIIIeeeeEE 111 01--110dddd  "Re16 = add ( Sp , #U6:2 ) ; if ( p0 ) Rd16 = #0"
+0010 1 1IIIIIIeeeeEE 111 01--100dddd  "Re16 = add ( Sp , #U6:2 ) ; if ( p0 .new ) Rd16 = #0"
+0010 1 1IIIIIIeeeeEE 111 1-0-ii00ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( #0 , #u2 )"
+0010 1 1IIIIIIeeeeEE 111 1-0-ii01ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( #1 , #u2 )"
+0010 1 1IIIIIIeeeeEE 111 1-0-ii10ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( #2 , #u2 )"
+0010 1 1IIIIIIeeeeEE 111 1-0-ii11ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( #3 , #u2 )"
+0010 1 1IIIIIIeeeeEE 111 1-1ssss0ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( #0 , Rs16 )"
+0010 1 1IIIIIIeeeeEE 111 1-1ssss1ddd  "Re16 = add ( Sp , #U6:2 ) ; Rdd8 = combine ( Rs16 , #0 )"
+
+            */
+            var decoder_2_1_7 = Mask(26, 1, "  6",
+                Mask(8, 3, "  0",
+                //Rd16 = #u6 ; Rx16 = add ( Rs16 , Rx16 )"
+                    Seq(Assign(R16_4, uw_20L6), Assign(R0_4, Apply(Mnemonic.add, R4_4, R0_4))),
+                    Nyi("001"),
+                    Nyi("010"),
+                    Nyi("011"),
+                    Nyi("100"),
+                    Nyi("101"),
+                    Nyi("110"),
+                    Seq(Assign(R16_4, uw_20L6), Assign(rr0, Apply(Mnemonic.combine, R4_4, Imm_0)))),
+                Nyi("1"));
+
+            var decoder_2_1 = Mask(13, 3, "  1",
+                Nyi("000"),
+                Nyi("001"),
+                decoder_2_1_2,
+                decoder_2_1_3,
+                Nyi("100"),
+                Nyi("101"),
+                decoder_2_1_6,
+                decoder_2_1_7);
+
+            var decoder_2 = Mask(27, 1, "  2...", decoder_2_0, decoder_2_1);
+
             /*
             0,1,0,0, 0,0,0,0, 0,0,0,s,s,s,s,s,P,P,j,t,t,t,t,t,j,j,j,j,j,0,v,v,"if (Pv)memb(Rs+#u6:0)=Rt"
             0,1,0,0, 0,0,0,0, 0,1,0,s,s,s,s,s,P,P,j,t,t,t,t,t,j,j,j,j,j,0,v,v,"if (Pv)memh(Rs+#u6:1)=Rt"
@@ -1965,7 +2493,7 @@ namespace Reko.Arch.Qualcomm
                 Assign(M(PrimitiveType.Word16, 16, bf_13L1_3L5), R8, Conditional(0, 24, -1, 26)),
                 Assign(M(PrimitiveType.Word16, 16, bf_13L1_3L5), R8_H, Conditional(0, 24, -1, 26)),
                 Assign(M(PrimitiveType.Word32, 16, bf_13L1_3L5), R8_H, Conditional(0, 24, -1, 26)),
-                Mask(11, 2, "  0b101",
+                Mask(11, 2, "  0b100",
                     Assign(M(PrimitiveType.Byte, 16, bf_13L1_3L5), New8, Conditional(0, 24, -1, 26)),
                     Assign(M(PrimitiveType.Word16, 16, bf_13L1_3L5), New8, Conditional(0, 24, -1, 26)),
                     Assign(M(PrimitiveType.Word32, 16, bf_13L1_3L5), New8, Conditional(0, 24, -1, 26)),
@@ -2483,19 +3011,19 @@ namespace Reko.Arch.Qualcomm
                     Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.loop0, PcRelExt_8L5_3L2, R16)),
                     Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.loop1, PcRelExt_8L5_3L2, R16))),
                 invalid,
-                Assign(P_29, Mnemonic.sp1loop0, PcRelExt_8L5_3L2, R16),
+                Assign(P_29L2, Mnemonic.sp1loop0, PcRelExt_8L5_3L2, R16),
                 Mask(21, 1, "  0b011",
-                    Assign(P_29, Mnemonic.sp2loop0, PcRelExt_8L5_3L2, R16),
-                    Assign(P_29, Mnemonic.sp3loop0, PcRelExt_8L5_3L2, R16)),
+                    Assign(P_29L2, Mnemonic.sp2loop0, PcRelExt_8L5_3L2, R16),
+                    Assign(P_29L2, Mnemonic.sp3loop0, PcRelExt_8L5_3L2, R16)),
 
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_1L13_2,
-                    ConditionalApply(21, 12, Mnemonic.NE, R16, Zw)),
+                    ConditionalApply(21, 12, Mnemonic.NE, R16, Imm_0)),
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_1L13_2,
-                    ConditionalApply(21, 12, Mnemonic.GE, R16, Zw)),
+                    ConditionalApply(21, 12, Mnemonic.GE, R16, Imm_0)),
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_1L13_2,
-                    ConditionalApply(21, 12, Mnemonic.EQ, R16, Zw)),
+                    ConditionalApply(21, 12, Mnemonic.EQ, R16, Imm_0)),
                 Instr(Mnemonic.jump, InstrClass.ConditionalTransfer, PcRelExt_1L13_2,
-                    ConditionalApply(21, 12, Mnemonic.LE, R16, Zw)));
+                    ConditionalApply(21, 12, Mnemonic.LE, R16, Imm_0)));
             /*
             0,1,1,0, 0,0,1, 0,0,0,0,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Gd=Rs"
             0,1,1,0, 0,0,1, 0,0,0,1,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Cd=Rs"
@@ -2544,7 +3072,7 @@ namespace Reko.Arch.Qualcomm
                     (2, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.nmi, R16)))),
                 
                 Sparse(5, 3, "  0x6 2 4", invalid,
-                    (0, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.setimask, P_8, R16))),
+                    (0, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.setimask, P_8L2, R16))),
                     (3, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.siad, R16)))),
                 invalid,
                 invalid,
@@ -2584,9 +3112,9 @@ namespace Reko.Arch.Qualcomm
                 (1, Assign(GG16, RR0)),
                 (8, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2))),
                 (9, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.loop1, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2))),
-                (0xD, Assign(P_29, Mnemonic.sp1loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)),
-                (0xE, Assign(P_29, Mnemonic.sp2loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)),
-                (0xF, Assign(P_29, Mnemonic.sp3loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)));
+                (0xD, Assign(P_29L2, Mnemonic.sp1loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)),
+                (0xE, Assign(P_29L2, Mnemonic.sp2loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)),
+                (0xF, Assign(P_29L2, Mnemonic.sp3loop0, PcRelExt_8L5_3L2, uw_16L5_5L2_0L2)));
             /*
             0,1,1,0, 1,0,1, 0,0,0,0, s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=Cs"
             0,1,1,0, 1,0,1, 0,0,0,1, s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=Gs"
@@ -2624,29 +3152,29 @@ namespace Reko.Arch.Qualcomm
                 invalid,
                 
                 Mask(20, 1, "  0b1001",
-                    Assign(P_0, Apply(Mnemonic.fastcorner9, P_16, P_8)),
-                    Assign(P_0, Apply(Mnemonic.and, P_16, Apply(Mnemonic.and, P_8, P_6)))),
+                    Assign(P_0L2, Apply(Mnemonic.fastcorner9, P_16L2, P_8L2)),
+                    Assign(P_0L2, Apply(Mnemonic.and, P_16L2, Apply(Mnemonic.and, P_8L2, P_6L2)))),
                 Mask(20, 1, "  0b1001",
-                    Assign(P_0, Apply(Mnemonic.or, P_8, P_16)),
-                    Assign(P_0, Apply(Mnemonic.and, P_16, Apply(Mnemonic.or, P_16, P_6)))),
+                    Assign(P_0L2, Apply(Mnemonic.or, P_8L2, P_16L2)),
+                    Assign(P_0L2, Apply(Mnemonic.and, P_16L2, Apply(Mnemonic.or, P_16L2, P_6L2)))),
                 Mask(20, 1, "  0b1010",
-                    Assign(P_0, Apply(Mnemonic.xor, P_16, P_8)),
-                    Assign(P_0, Apply(Mnemonic.or, P_16, Apply(Mnemonic.and, P_8, P_6)))),
+                    Assign(P_0L2, Apply(Mnemonic.xor, P_16L2, P_8L2)),
+                    Assign(P_0L2, Apply(Mnemonic.or, P_16L2, Apply(Mnemonic.and, P_8L2, P_6L2)))),
                 Mask(20, 1, "  0b1011",
-                    Assign(P_0, Apply(Mnemonic.and, P_16,  InvertIfSet(20, P_8))),
-                    Assign(P_0, Apply(Mnemonic.or, P_16, Apply(Mnemonic.or, P_8, P_6)))),
+                    Assign(P_0L2, Apply(Mnemonic.and, P_16L2,  InvertIfSet(20, P_8L2))),
+                    Assign(P_0L2, Apply(Mnemonic.or, P_16L2, Apply(Mnemonic.or, P_8L2, P_6L2)))),
                 Mask(20, 1, "  0b1100",
-                    Assign(P_0, Mnemonic.any8, P_16),
-                    Assign(P_0, Mnemonic.and, P_16, Apply(Mnemonic.and, P_8, InvertIfSet(20, P_6)))),
+                    Assign(P_0L2, Mnemonic.any8, P_16L2),
+                    Assign(P_0L2, Mnemonic.and, P_16L2, Apply(Mnemonic.and, P_8L2, InvertIfSet(20, P_6L2)))),
                 Mask(20, 1, "  0b1101",
-                    Assign(P_0, Mnemonic.all8, P_16),
-                    Assign(P_0, Mnemonic.and, P_16, Apply(Mnemonic.or, P_8, InvertIfSet(20, P_6)))),
+                    Assign(P_0L2, Mnemonic.all8, P_16L2),
+                    Assign(P_0L2, Mnemonic.and, P_16L2, Apply(Mnemonic.or, P_8L2, InvertIfSet(20, P_6L2)))),
                 Mask(20, 1, "  0b1110",
-                    Assign(P_0, Apply(Mnemonic.not, P_16)),
-                    Assign(P_0, Apply(Mnemonic.or, P_16, Apply(Mnemonic.and, P_8, InvertIfSet(20, P_6))))),
+                    Assign(P_0L2, Apply(Mnemonic.not, P_16L2)),
+                    Assign(P_0L2, Apply(Mnemonic.or, P_16L2, Apply(Mnemonic.and, P_8L2, InvertIfSet(20, P_6L2))))),
                 Mask(20, 1, "  0b1111",
-                    Assign(P_0, Mnemonic.or, P_8, InvertIfSet(21, P_16)),
-                    Assign(P_0, Mnemonic.or, P_16, Apply(Mnemonic.or, P_8, InvertIfSet(20, P_6)))));
+                    Assign(P_0L2, Mnemonic.or, P_8L2, InvertIfSet(21, P_16L2)),
+                    Assign(P_0L2, Mnemonic.or, P_16L2, Apply(Mnemonic.or, P_8L2, InvertIfSet(20, P_6L2)))));
 
             /*
             0,1,1,0, 1,1,0, 0,0,0, 0,s,s,s,s,s,P,P,0,t,t,t,t,t,-,-,-,-,-,-,-,-,"tlbw(Rss,Rt)"
@@ -2780,12 +3308,15 @@ namespace Reko.Arch.Qualcomm
             0,1,1,1, 0,0,1,1 ,-,1,0,s,s,s,s,s,P,P,1,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=cmp.eq(Rs,#s8)"
             0,1,1,1, 0,0,1,1 ,-,1,1,s,s,s,s,s,P,P,1,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=!cmp.eq(Rs,#s8)"
             */
-            //$BUG
-            var decoder_73 = Mask(21, 2, "  73",
-                invalid,
-                invalid,
-                Assign(R0, Apply(Mnemonic.cmp__eq, R16, sw_5L8)),
-                Assign(R0, InvertIfSet(21, Apply(Mnemonic.cmp__eq, R16, sw_5L8))));
+            var decoder_73 = Mask(13, 1, "  73",
+                Mask(23, 1, "  0",
+                    Assign(R0, Apply(Mnemonic.mux, P_21L2, R16, sw_5L8)),
+                    Assign(R0, Apply(Mnemonic.mux, P_21L2, sw_5L8, R16))),
+                Mask(21, 2, "  1",
+                    Assign(RR0, Apply(Mnemonic.combine, R16, sw_5L8)),
+                    Assign(RR0, Apply(Mnemonic.combine, sw_5L8, R16)),
+                    Assign(R0, Apply(Mnemonic.cmp__eq, R16, sw_5L8)),
+                    Assign(R0, InvertIfSet(21, Apply(Mnemonic.cmp__eq, R16, sw_5L8)))));
             /*
             0,1,1,1, 0,1,0,0 ,0,u,u,s,s,s,s,s,P,P,0,j,j,j,j,j,j,j,j,d,d,d,d,d,"if (Pu) Rd=add(Rs,#s8)"
             0,1,1,1, 0,1,0,0 ,0,u,u,s,s,s,s,s,P,P,1,j,j,j,j,j,j,j,j,d,d,d,d,d,"if (Pu.new) Rd=add(Rs,#s8)"
@@ -2802,9 +3333,9 @@ namespace Reko.Arch.Qualcomm
             0,1,1,1, 0,1,0,1 ,1,0, 0,s,s,s,s,s,P,P,j,j,j,j,j,j,j,j,j,1,0,0,d,d,"Pd=!cmp.gtu(Rs,#u9)"
             */
             var decoder_75 = Mask(22, 2, "  0b0101",
-                Instr(Mnemonic.ASSIGN, P_0, InvertIfSet(4, Apply(Mnemonic.cmp__eq, R16, sw5_10))),
-                Instr(Mnemonic.ASSIGN, P_0, InvertIfSet(4, Apply(Mnemonic.cmp__gt, R16, sw5_10))),
-                Instr(Mnemonic.ASSIGN, P_0, InvertIfSet(4, Apply(Mnemonic.cmp__gtu, R16, uw_5L9))),
+                Instr(Mnemonic.ASSIGN, P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__eq, R16, sw5_10))),
+                Instr(Mnemonic.ASSIGN, P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__gt, R16, sw5_10))),
+                Instr(Mnemonic.ASSIGN, P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__gtu, R16, uw_5L9))),
                 invalid);
 
             /*
@@ -2825,7 +3356,7 @@ namespace Reko.Arch.Qualcomm
             /*
             0,1,1,1, 1,0,1,u ,u,I,I,I,I,I,I,I,P,P,I,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=mux(Pu,#s8,#S8)"
             */
-            var decoder7_mux = Assign(R0, Apply(Mnemonic.mux, P_23, sw_5L8, sw16_13));
+            var decoder7_mux = Assign(R0, Apply(Mnemonic.mux, P_23L2, sw_5L8, sw16_13));
 
             /*
             0,1,1,1, 1,1,0,0 ,0,I,I,I,I,I,I,I,P,P,I,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rdd=combine(#s8,#S8)"
@@ -2854,14 +3385,14 @@ namespace Reko.Arch.Qualcomm
                 decoder_74,
                 decoder_75,
                 decoder_76,
-                Nyi("0b0111"),
+                invalid,
 
                 decoder_78,
-                Nyi("0b1001"),
+                invalid,
                 decoder7_mux,
                 decoder7_mux,
                 decoder_7C,
-                Nyi("0b1101"),
+                invalid,
                 decoder_7E,
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding));
 
@@ -3061,14 +3592,14 @@ namespace Reko.Arch.Qualcomm
             1,0,0,0, 0,1,0,1, 1,1,1,s,s,s,s,s,P,P,0,j,j,j,j,j,-,-,-,-,-,-,d,d,"Pd=sfclass(Rs,#u5)"
             */
             var decoder_85 = Mask(21, 3, "  85",
-                Assign(P_0, Apply(Mnemonic.tstbit, R16, uw_8L5)),
-                Assign(P_0, InvertIfSet(21, Apply(Mnemonic.tstbit, R16, uw_8L5))),
-                Assign(P_0, R16),
+                Assign(P_0L2, Apply(Mnemonic.tstbit, R16, uw_8L5)),
+                Assign(P_0L2, InvertIfSet(21, Apply(Mnemonic.tstbit, R16, uw_8L5))),
+                Assign(P_0L2, R16),
                 invalid,
-                Assign(P_0, Apply(Mnemonic.bitsclr, R16, uw_8L6)),
-                Assign(P_0, InvertIfSet(21, Apply(Mnemonic.bitsclr, R16, uw_8L6))),
+                Assign(P_0L2, Apply(Mnemonic.bitsclr, R16, uw_8L6)),
+                Assign(P_0L2, InvertIfSet(21, Apply(Mnemonic.bitsclr, R16, uw_8L6))),
                 invalid,
-                Assign(P_0, Apply(Mnemonic.sfclass, R16, uw_8L5)));
+                Assign(P_0L2, Apply(Mnemonic.sfclass, R16, uw_8L5)));
 
             /*
             1,0,0,0, 0,1,1,0, -,-,-,-,-,-,-,-,P,P,-,-,-,-,t,t,-,-,-,d,d,d,d,d,"Rdd=mask(Pt)"
@@ -3162,8 +3693,8 @@ namespace Reko.Arch.Qualcomm
             1,0,0,0, 1,0,0,1, -,1,-,-,-,-,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=Ps"
             */
             var decoder_89 = Mask(22, 1, "  0x89...",
-                Assign(R0, Apply(Mnemonic.vitpack, P_16, P_8)),
-                Assign(R0, P_16));
+                Assign(R0, Apply(Mnemonic.vitpack, P_16L2, P_8L2)),
+                Assign(R0, P_16L2));
             /*
             1,0,0,0, 1,0,1,0, I,I,I,s,s,s,s,s,P,P,j,j,j,j,j,j,I,I,I,d,d,d,d,d,"Rdd=extract(Rss,#u6,#U6)"
             1,0,0,0, 1,0,1,1, 0,0,1,s,s,s,s,s,P,P,-,-,-,-,-,-,0,0,0,d,d,d,d,d,"Rd=convert_uw2sf(Rs)"
@@ -3669,7 +4200,7 @@ namespace Reko.Arch.Qualcomm
                 Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.dccleaninva, R16)),
                 invalid,
                 Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.allocframe, uimmSh(PrimitiveType.Int32, Bf((0,11)), 3))),
-                Instr(Mnemonic.ASSIGN, Apply(Mnemonic.memw_locked, R16, P_0), R8),
+                Instr(Mnemonic.ASSIGN, Apply(Mnemonic.memw_locked, R16, P_0L2), R8),
                 Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.dczeroa, R16)),
                 Nyi("0b111"));
             /*
@@ -3692,7 +4223,18 @@ namespace Reko.Arch.Qualcomm
             1,0,1,0, 0,1,0,0, 0,0,1,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=dctagr(Rs)"
             1,0,1,0, 0,1,0,0, 0,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t,-,-,-,-,-,-,-,-,"l2tagw(Rs,Rt)"
             1,0,1,0, 0,1,0,0, 0,1,1,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=l2tagr(Rs)"
-            *//*
+            */
+            var decoder_A4 = Mask(21, 3, "  0xA4...",
+                Nyi("000"),
+                Nyi("001"),
+                SideEffect(Apply(Mnemonic.l2tagw, R16, R8)),
+                Nyi("011"),
+                Nyi("100"),
+                Nyi("101"),
+                Nyi("110"),
+                Nyi("111"));
+
+            /*
             1,0,1,0, 0,1,1,0, 0,0,0,s,s,s,s,s,P,P,-,t,t,t,t,t,-,-,-,-,-,-,-,-,"l2fetch(Rs,Rt)"
             1,0,1,0, 0,1,1,0, 0,0,1,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"l2cleanidx(Rs)"
             1,0,1,0, 0,1,1,0, 0,1,0,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"l2invidx(Rs)"
@@ -3957,7 +4499,7 @@ namespace Reko.Arch.Qualcomm
                 decoder_A2,
                 decoder0A_st,
 
-                Nyi("0b0100"),
+                decoder_A4,
                 decoder0A_st,
                 decoder_A6,
                 decoder0A_st,
@@ -4031,12 +4573,12 @@ namespace Reko.Arch.Qualcomm
             1,1,0,0, 0,0,1,0, 1,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,-,x,x,d,d,d,d,d,"Rdd=sub(Rss,Rtt,Px):carry"
             */
             var decoder_C2 = Mask(23, 1, "  0xC2...",
-                Assign(RR0, Apply(Mnemonic.valignb, RR8, RR16, P_5)),
+                Assign(RR0, Apply(Mnemonic.valignb, RR8, RR16, P_5L2)),
                 Mask(21, 2, "  1",
                     Nyi("vspliceb"),
                     invalid,
-                    Assign(RR0, Carry(Apply(Mnemonic.add, RR16, RR8, P_5))),
-                    Assign(RR0, Carry(Apply(Mnemonic.sub, RR16, RR8, P_5)))));
+                    Assign(RR0, Carry(Apply(Mnemonic.add, RR16, RR8, P_5L2))),
+                    Assign(RR0, Carry(Apply(Mnemonic.sub, RR16, RR8, P_5L2)))));
             /*
             1,1,0,0, 0,0,1,1, 0,0,-,s,s,s,s,s,P,P,-,t,t,t,t,t,0,0,-,d,d,d,d,d,"Rdd=vasrw(Rss,Rt)"
             1,1,0,0, 0,0,1,1, 0,0,-,s,s,s,s,s,P,P,-,t,t,t,t,t,0,1,-,d,d,d,d,d,"Rdd=vlsrw(Rss,Rt)"
@@ -4117,26 +4659,26 @@ namespace Reko.Arch.Qualcomm
             1,1,0,0, 0,1,1,1, 1,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,1,0,0,-,-,-,d,d,"Pd=sfcmp.gt(Rs,Rt)"
             */
             var decoder_C7 = Mask(22, 2, "  0xC7...",
-                Assign(P_0, InvertIfSet(21, Apply(Mnemonic.tstbit, R16, R8))),
-                Assign(P_0, InvertIfSet(21, Apply(Mnemonic.bitsset, R16, R8))),
-                Assign(P_0, InvertIfSet(21, Apply(Mnemonic.bitsclr, R16, R8))),
+                Assign(P_0L2, InvertIfSet(21, Apply(Mnemonic.tstbit, R16, R8))),
+                Assign(P_0L2, InvertIfSet(21, Apply(Mnemonic.bitsset, R16, R8))),
+                Assign(P_0L2, InvertIfSet(21, Apply(Mnemonic.bitsclr, R16, R8))),
                 BitFields(Bf((21,1),(5,3)), "  0b11",
                     invalid,
                     invalid,
-                    Assign(P_0, Mnemonic.cmpb__gt, R16, R8),
-                    Assign(P_0, Mnemonic.cmph__eq, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmpb__gt, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmph__eq, R16, R8),
 
-                    Assign(P_0, Mnemonic.cmph__gt, R16, R8),
-                    Assign(P_0, Mnemonic.cmph__gtu, R16, R8),
-                    Assign(P_0, Mnemonic.cmpb__eq, R16, R8),
-                    Assign(P_0, Mnemonic.cmpb__gtu, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmph__gt, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmph__gtu, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmpb__eq, R16, R8),
+                    Assign(P_0L2, Mnemonic.cmpb__gtu, R16, R8),
 
-                    Assign(P_0, Mnemonic.sfcmp__ge, R16, R8),
-                    Assign(P_0, Mnemonic.sfcmp__uo, R16, R8),
+                    Assign(P_0L2, Mnemonic.sfcmp__ge, R16, R8),
+                    Assign(P_0L2, Mnemonic.sfcmp__uo, R16, R8),
                     invalid,
-                    Assign(P_0, Mnemonic.sfcmp__eq, R16, R8),
+                    Assign(P_0L2, Mnemonic.sfcmp__eq, R16, R8),
 
-                    Assign(P_0, Mnemonic.sfcmp__gt, R16, R8),
+                    Assign(P_0L2, Mnemonic.sfcmp__gt, R16, R8),
                     invalid,
                     invalid,
                     invalid));
@@ -4298,7 +4840,7 @@ namespace Reko.Arch.Qualcomm
             1,1,0,1, 0,0,0,1, -,-,-,s,s,s,s,s,P,P,-,t,t,t,t,t,-,u,u,d,d,d,d,d,"Rdd=vmux(Pu,Rss,Rtt)"
             */
             var decoder_D0 = Assign(RR0, Mnemonic.parity, RR16, RR8);
-            var decoder_D1 = Assign(RR0, Mnemonic.vmux, P_5, RR16, RR8);
+            var decoder_D1 = Assign(RR0, Mnemonic.vmux, P_5L2, RR16, RR8);
             /*
             1,1,0,1, 0,0,1,0, 0,-,-,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,0,-,-,-,d,d,"Pd=vcmpw.eq(Rss,Rtt)"
             1,1,0,1, 0,0,1,0, 0,-,-,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,1,-,-,-,d,d,"Pd=vcmpw.gt(Rss,Rtt)"
@@ -4327,40 +4869,40 @@ namespace Reko.Arch.Qualcomm
             var decoder_D2 = Mask(23, 1, "  0xD2...",
                 Mask(13, 1, "  0",
                     Mask(5, 3, "  0",
-                        Assign(P_0, Mnemonic.vcmpw__eq, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmpw__gt, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmpw__gtu, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmph__eq, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmph__gt, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmph__gtu, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmpb__eq, RR16, RR8),
-                        Assign(P_0, Mnemonic.vcmpb__gtu, RR16, RR8)),
+                        Assign(P_0L2, Mnemonic.vcmpw__eq, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmpw__gt, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmpw__gtu, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmph__eq, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmph__gt, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmph__gtu, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmpb__eq, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.vcmpb__gtu, RR16, RR8)),
                     Mask(5, 3, "  1",
-                        Assign(P_0, Mnemonic.any8, Apply(Mnemonic.vcmpb__eq, RR16, RR8)),
+                        Assign(P_0L2, Mnemonic.any8, Apply(Mnemonic.vcmpb__eq, RR16, RR8)),
                         invalid,
-                        Assign(P_0, Mnemonic.vcmpb__gt, RR16, RR8),
-                        Assign(P_0, Mnemonic.tlbmatch, RR16, R8),
+                        Assign(P_0L2, Mnemonic.vcmpb__gt, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.tlbmatch, RR16, R8),
                         Nyi("boundscheck:lo"),
                         Nyi("boundscheck:hi"),
                         invalid,
                         invalid)),
                 Mask(21, 2, "  1",
                     Mask(5, 3, "  00",
-                        Assign(P_0, Mnemonic.cmp__eq, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.cmp__eq, RR16, RR8),
                         invalid,
-                        Assign(P_0, Mnemonic.cmp__gt, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.cmp__gt, RR16, RR8),
                         invalid,
-                        Assign(P_0, Mnemonic.cmp__gtu, RR16, RR8),
+                        Assign(P_0L2, Mnemonic.cmp__gtu, RR16, RR8),
                         invalid,
                         invalid,
                         invalid),
                     invalid,
                     invalid,
                     Mask(5, 3, "  11",
-                        Assign(P_0, Apply(Mnemonic.dfcmp__eq, RR16, RR8)),
-                        Assign(P_0, Apply(Mnemonic.dfcmp__gt, RR16, RR8)),
-                        Assign(P_0, Apply(Mnemonic.dfcmp__ge, RR16, RR8)),
-                        Assign(P_0, Apply(Mnemonic.dfcmp__uo, RR16, RR8)),
+                        Assign(P_0L2, Apply(Mnemonic.dfcmp__eq, RR16, RR8)),
+                        Assign(P_0L2, Apply(Mnemonic.dfcmp__gt, RR16, RR8)),
+                        Assign(P_0L2, Apply(Mnemonic.dfcmp__ge, RR16, RR8)),
+                        Assign(P_0L2, Apply(Mnemonic.dfcmp__uo, RR16, RR8)),
                         invalid,
                         invalid,
                         invalid,
@@ -4590,7 +5132,7 @@ namespace Reko.Arch.Qualcomm
                 Nyi("0b001"),
                 Nyi("0b010"),
                 Nyi("0b011"),
-                Assign(P_0, Apply(Mnemonic.dfclass, RR16, uw_5L5)),
+                Assign(P_0L2, Apply(Mnemonic.dfclass, RR16, uw_5L5)),
                 invalid,
                 invalid,
                 invalid);
@@ -4603,16 +5145,16 @@ namespace Reko.Arch.Qualcomm
             1,1,0,1, 1,1,0,1, -,1,0,s,s,s,s,s,P,P,-,0,j,j,j,j,j,j,j,0,1,-,d,d,"Pd=cmph.gtu(Rs,#u7)"
             */
             var decoder_DD = BitFields(Bf((21, 2), (3, 2)), "  0xDD...",
-                Assign(P_0, Apply(Mnemonic.cmpb__eq, R16, ub_5L8)),
-                Assign(P_0, Apply(Mnemonic.cmph__eq, R16, sh_5L8)),
+                Assign(P_0L2, Apply(Mnemonic.cmpb__eq, R16, ub_5L8)),
+                Assign(P_0L2, Apply(Mnemonic.cmph__eq, R16, sh_5L8)),
                 invalid,
                 invalid,
-                Assign(P_0, Apply(Mnemonic.cmpb__gt, R16, sb_5L8)),
-                Assign(P_0, Apply(Mnemonic.cmph__gt, R16, sh_5L8)),
+                Assign(P_0L2, Apply(Mnemonic.cmpb__gt, R16, sb_5L8)),
+                Assign(P_0L2, Apply(Mnemonic.cmph__gt, R16, sh_5L8)),
                 invalid,
                 invalid,
-                Assign(P_0, Apply(Mnemonic.cmpb__gtu, R16, ub_5L7)),
-                Assign(P_0, Apply(Mnemonic.cmph__gtu, R16, uh_5L7)),
+                Assign(P_0L2, Apply(Mnemonic.cmpb__gtu, R16, ub_5L7)),
+                Assign(P_0L2, Apply(Mnemonic.cmph__gtu, R16, uh_5L7)),
                 invalid,
                 invalid,
                 invalid,
@@ -4755,20 +5297,20 @@ namespace Reko.Arch.Qualcomm
             1,1,1,0, 0,1,1,1, 0,0,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,0, x,x,x,x,x,"Rxx-=mpy(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 0,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,0, x,x,x,x,x,"Rxx+=mpyu(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 0,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,0, x,x,x,x,x,"Rxx-=mpyu(Rs,Rt)"
-                                                                      
+                                                  
             1,1,1,0, 0,1,1,1, 0,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,1, x,x,x,x,x,"Rxx+=cmpyi(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 0,0,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,1, x,x,x,x,x,"Rxx+=vmpyh(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 1,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,1, x,x,x,x,x,"Rxx+=vmpybu(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 1,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,0,1, x,x,x,x,x,"Rxx+=vmpybsu(Rs,Rt)"
-                                                                      
+                                                  
             1,1,1,0, 0,1,1,1, 0,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 0,1,0, x,x,x,x,x,"Rxx+=cmpyr(Rs,Rt)"
-                                                                      
+                                                  
             1,1,1,0, 0,1,1,1, N,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,0,1, x,x,x,x,x,"Rxx+=vmpyh(Rs,Rt)[:<<N]:sat"
             1,1,1,0, 0,1,1,1, N,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,0,1, x,x,x,x,x,"Rxx+=vmpyhsu(Rs,Rt)[:<<N]:sat"
-                                                                      
+                                                  
             1,1,1,0, 0,1,1,1, N,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,0, x,x,x,x,x,"Rxx+=cmpy(Rs,Rt)[:<<N]:sat"
             1,1,1,0, 0,1,1,1, N,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,0, x,x,x,x,x,"Rxx+=cmpy(Rs,Rt*)[:<<N]:sat"
-                                                                      
+                                                  
             1,1,1,0, 0,1,1,1, 0,0,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,1, x,x,x,x,x,"Rxx^=pmpyw(Rs,Rt)"
             1,1,1,0, 0,1,1,1, 1,0,1,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,1, x,x,x,x,x,"Rxx^=vpmpyh(Rs,Rt)"
             1,1,1,0, 0,1,1,1, N,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,1, x,x,x,x,x,"Rxx-=cmpy(Rs,Rt)[:<<N]:sat"
@@ -5093,10 +5635,10 @@ namespace Reko.Arch.Qualcomm
             1,1,1,1, 0,0,1,0, -,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,-,-,-,1,0,0,d,d,"Pd=!cmp.gtu(Rs,Rt)"
             */
             var decoder_F2 = Mask(21, 2, "  F2",
-                Assign(P_0, InvertIfSet(4, Apply(Mnemonic.cmp__eq, R16, R8))),
+                Assign(P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__eq, R16, R8))),
                 invalid,
-                Assign(P_0, InvertIfSet(4, Apply(Mnemonic.cmp__gt, R16, R8))),
-                Assign(P_0, InvertIfSet(4, Apply(Mnemonic.cmp__gtu, R16, R8))));
+                Assign(P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__gt, R16, R8))),
+                Assign(P_0L2, InvertIfSet(4, Apply(Mnemonic.cmp__gtu, R16, R8))));
 
             /*
             1,1,1,1, 0,0,1,1, 0,0,0, s,s,s,s,s,P,P,-,t,t,t,t,t,-,-,-,d,d,d,d,d,"Rd=add(Rs,Rt)"
@@ -5123,7 +5665,7 @@ namespace Reko.Arch.Qualcomm
             /*
             1,1,1,1, 0,1,0,0, -,-,-,s,s,s,s,s,P,P,-,t,t,t,t,t,-,u,u,d,d,d,d,d,"Rd=mux(Pu,Rs,Rt)"
             */
-            var decoder_F4 = Assign(R0, Mnemonic.mux, P_5, R16, R8);
+            var decoder_F4 = Assign(R0, Mnemonic.mux, P_5L2, R16, R8);
 
             /*
             1,1,1,1, 0,1,0,1, 0,-,-,s,s,s,s,s,P,P,-,t,t,t,t,t,-,-,-,d,d,d,d,d,"Rdd=combine(Rs,Rt)"

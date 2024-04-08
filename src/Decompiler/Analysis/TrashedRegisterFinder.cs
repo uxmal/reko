@@ -557,11 +557,6 @@ namespace Reko.Analysis
                         else if (idV.Storage == id.Storage)
                         {
                             var sidV = ssas[block!.Procedure].Identifiers[idV];
-                            if (block!.Procedure.Name == "__IOERROR" &&
-                                ( id.Name.Contains("si") ||
-                                id.Name.Contains("bp")))
-                                _ = this; //$DEBUG
-
                             if (sidV.DefStatement?.Instruction is DefInstruction)
                             {
                                 ctx.ProcFlow.Preserved.Add(stg);

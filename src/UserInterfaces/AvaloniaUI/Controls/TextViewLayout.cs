@@ -265,8 +265,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 {
                     MeasureLineHeight(line);
                 }
-                if (cyLine == 0)
-                    _ = this; //$DEBUG
                 rcLine = rcLine.Translate(new(0, cyLine));
             }
 

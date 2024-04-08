@@ -230,8 +230,6 @@ namespace Reko.Analysis
         public override Instruction TransformStore(Store store)
         {
             store.Src = store.Src.Accept(this);
-            if (store.Dst.ToString() == "FakeST[Top - 1<8>:real64]")
-                _ = this; //$DEBUG
             store.Dst = TransformDst(store.Dst);
             return store;
         }

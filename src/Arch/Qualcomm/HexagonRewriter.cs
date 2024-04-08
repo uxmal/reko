@@ -248,7 +248,7 @@ namespace Reko.Arch.Qualcomm
             switch (app.Mnemonic)
             {
             case Mnemonic.abs: return m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Int32), ops);
-            case Mnemonic.add: return m.IAdd(ops[0], ops[1]);
+            case Mnemonic.add: return RewriteAdd(ops[0], ops[1]);
             case Mnemonic.addasl: return RewriteAddAsl(ops[0], ops[1], ops[2]);
             case Mnemonic.allocframe: RewriteAllocFrame(app.Operands[0]); return null;
             case Mnemonic.and: return m.And(ops[0], ops[1]);
@@ -319,6 +319,7 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.or: return m.Or(ops[0], ops[1]);
             case Mnemonic.setbit: return m.Fn(CommonOps.SetBit, ops);
             case Mnemonic.sfadd: return m.FAdd(ops[0], ops[1]);
+            case Mnemonic.sfcmp__ge: return m.FGe(ops[0], ops[1]);
             case Mnemonic.sfcmp__gt: return m.FGt(ops[0], ops[1]);
             case Mnemonic.sfmax: return m.Fn(FpOps.fmaxf, ops);
             case Mnemonic.sfmin: return m.Fn(FpOps.fminf, ops);
@@ -427,7 +428,16 @@ namespace Reko.Arch.Qualcomm
             return pred!;
         }
 
-
+        private Expression RewriteAdd(Expression a, Expression b)
+        {
+            if (a is Identifier id &&
+                id.Storage == Registers.pc &&
+                b is Constant c)
+            {
+                return packet.Address + c.ToUInt32();
+            }
+            return m.IAdd(a, b);
+        }
         private Expression RewriteAddAsl(Expression a, Expression b, Expression c)
         {
             return m.IAdd(a, m.Shl(b, c));

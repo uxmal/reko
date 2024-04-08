@@ -3,6 +3,18 @@ methodStringsArrays		; 00024E80
 	db	0x5E, 0x00, 0x5D, 0x00, 0x4D, 0x00, 0x4A, 0x00, 0x47, 0x00, 0x1F, 0x00, 0x32, 0x00, 0x5A, 0x00
 	db	0x12, 0x00, 0x58, 0x00, 0x56, 0x00, 0x2A, 0x00, 0x44, 0x00, 0x3A, 0x00, 0x54, 0x00, 0x41, 0x00
 	db	0x3E, 0x00, 0x5C, 0x00, 0x52, 0x00, 0x50, 0x00, 0x00, 0x00
+
+l00024E8C:
+	{ r2 = memw(r3); r18 = memw(r5) }
+	{ r2 = memw(r1); r16 = memw(r5) }
+	{ r6 = memw(r5); r18 = memw(r2) }
+	{ r4 = memw(r4); r18 = memw(r3) }
+	{ r4 = memw(r5); r1 = memw(r4) }
+
+l00024EA0:
+	{ r22 = memw(r3); r20 = memw(r5) }
+	{ r2 = memw(r5); r0 = memw(r5) }
+	{ r0 = memw(r0); r0 = memw(r0) }
 00024EAA                               00 00 00 00 00 00           ......
 methodStrings		; 00024EB0
 	db	0xC5, 0x00, 0x9B, 0x00, 0x0C, 0x02, 0xD7, 0x01, 0xF7, 0x01, 0x2D, 0x02, 0x27, 0x02, 0x33, 0x02
@@ -17,6 +29,34 @@ methodStrings		; 00024EB0
 	db	0x9B, 0x00, 0x41, 0x02, 0xA6, 0x01, 0x9B, 0x00, 0x41, 0x02, 0x54, 0x00, 0x9B, 0x00, 0x3C, 0x00
 	db	0x67, 0x01, 0x41, 0x02, 0x00, 0x00, 0x3D, 0x02, 0xAF, 0x01, 0x3D, 0x02, 0x2E, 0x00, 0x3C, 0x00
 	db	0x79, 0x01, 0x9B, 0x00, 0xCF, 0x01, 0x9B, 0x00, 0x9E, 0x00, 0x38, 0x02, 0x1A, 0x02
+
+l00024F08:
+	{ r0 = memw(r7+4); r23 = memw(r22+4) }
+	{ r23 = memw(r23); r4 = memw(r23) }
+	{ r17 = memw(r22); r7 = memw(r19+4) }
+	{ r2 = memw(r4); r19 = memw(r17) }
+	{ r23 = memw(r22+4); r7 = memw(r21+4) }
+	{ r7 = memw(r23+4); r21 = memw(r2+8) }
+	{ r7 = memw(r2+8); r3 = memw(r3+8) }
+	{ r16 = memw(r1); r19 = memw(r17) }
+	{ r5 = memw(r3+4); r19 = memw(r2+4) }
+	{ r2 = memw(r16); r23 = memw(r22+4) }
+	{ r19 = memw(r16); r0 = memw(r17) }
+	{ r19 = memw(r16); r23 = memw(r22+4) }
+	{ r3 = memw(r7); r19 = memw(r17) }
+	{ r1 = memw(r2+8); r3 = memw(r1+8) }
+	{ r19 = memw(r17); r1 = memw(r4+8) }
+	{ r6 = memw(r18+4); r19 = memw(r17) }
+	{ r1 = memw(r4+8); r4 = memw(r5) }
+	{ r19 = memw(r17); r20 = memw(r3) }
+	{ r7 = memw(r6+4); r1 = memw(r4+8) }
+	{ r0 = memw(r0); r21 = memw(r3+8) }
+	{ r23 = memw(r18+4); r21 = memw(r3+8) }
+	{ r22 = memw(r2); r20 = memw(r3) }
+	{ r17 = memw(r7+4); r19 = memw(r17) }
+	{ r23 = memw(r20+4); r19 = memw(r17) }
+	{ r22 = memw(r17); r16 = memw(r3+8) }
+	{ r18 = memw(r1+8); r0 = memw(r0) }
 00024F6E                                           00 00               ..
 strings		; 00024F70
 	db	0x47, 0x65, 0x74, 0x48, 0x65, 0x78, 0x61, 0x67, 0x6F, 0x6E, 0x42, 0x69, 0x6E, 0x61, 0x72, 0x79
@@ -56,30 +96,152 @@ strings		; 00024F70
 	db	0x00, 0x65, 0x76, 0x65, 0x6E, 0x74, 0x00, 0x64, 0x65, 0x70, 0x74, 0x68, 0x00, 0x77, 0x69, 0x64
 	db	0x74, 0x68, 0x00, 0x64, 0x61, 0x74, 0x61, 0x00, 0x69, 0x6E, 0x69, 0x74, 0x00, 0x76, 0x65, 0x72
 	db	0x00, 0x62, 0x75, 0x66, 0x00
+
+l00024FDC:
+	{  }
+	{  }
+	{ memw(r6) = r23; r23 = r6; r6 = iassignr(r14); r5.h = C17D; if (p3.new) r5 = add(r5,FFFFFF9B) }
+	{  }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ memw(r6) = r4; r4 = 00000016 }
+	{  }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ if (!r20>=00000000) jump:nt 000212EC }
+
+l00025030:
+	{ if (p3.new) r31 = add(r21,0000007A) }
+	{  }
+	{  }
+	{ r0 = r16; if (p3.new) r31 = add(r21,0000007A); r3 = !cmp.eq(r5,00000043); if (p3.new) r0 = add(r1,00000010) }
+	{  }
+	{ r5.h = D1B9; p0 = cmp.gt(r15,FFFFFF18) }
+	{  }
+	{ p0 = !cmp.gt(r3,FFFFFF2B); crswap(r0,sgp0) }
+	{ memw(r7) = r3; r16 = add(r16,FFFFFFD6) }
+	{ r15 = r20; r3 = !cmp.eq(r5,00000043); if (p3.new) r0 = add(r1,00000010); if (p3.new) r31 = add(r21,0000007A); if (p3.new) r9 = add(r8,0000003B) }
+	{ g5:g4 = r1:r0 }
+	{  }
+	{  }
+	{  }
+	{ ciad(r0) }
+	{ stop(r9); if (p3.new) r31 = add(r21,0000007A) }
+	{  }
+	{  }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ if (p3.new) r18 = add(r14,0000004B) }
+	{ if (!r5>=00000000) jump:t fn000238E4; if (p3.new) r31 = add(r21,0000007A) }
+
+l000250F0:
+	{ memw(r6) = r22; r4 = add(r4,00000016) }
+	{  }
+	{ ciad(r0) }
+	{ if (p3.new) r23 = add(r4,06EA57CB) }
+	{ memw(r6) = r5; r3 = add(r29,0000009C); r31 = mux(p0,FFFFFF9A,FFFFFFD3); r0 = 00004368 }
+	{  }
+	{ r14 = and(r0,000001A3) }
+	{  }
+	{  }
+	{ ciad(r0) }
+	{ g18 = r0; if (!r16>=00000000) jump:nt 00021C18; if (p1.new) r20 = aslh(r0); p0 = !cmp.gt(r3,FFFFFF2B); crswap(r0,sgp0) }
+
+l0002514C:
+	{  }
+	{ if (p3) r20 = aslh(r0); p1 = !cmp.gt(r16,FFFFFFA3) }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ memw(r7) = r4; r5 = add(r29,0000009C) }
+	{  }
+	{  }
+	{ pmuevtcfg = r0; p1 = cmp.gt(r16,064A57F3) }
+	{ memw(r6) = r7; r3 = add(r29,000000D8) }
+	{  }
+	{  }
+	{ ciad(r0) }
+	{ r0 = 00004B40; r0 = iassignr(r21); r5.h = D801; if (p3.new) r9 = add(r9,061D1873); ciad(r0); stop(r9) }
 000251B5                68 65 78 61 67 6F 6E 2F 73 72 63      hexagon/src
 000251C0 2F 61 6C 6C 6F 63 61 74 65 2E 63 00 61 64 64 20 /allocate.c.add 
-000251D0 66 72 65 65 6E 6F 64 65 73 00 61 6C 6C 6F 63 2F freenodes.alloc/
-000251E0 66 72 65 65 00 62 61 64 20 61 6C 6C 6F 63 20 63 free.bad alloc c
-000251F0 68 65 63 6B 00 73 74 6F 72 61 67 65 20 61 6C 6C heck.storage all
-00025200 6F 63 00 72 65 61 6C 20 61 6C 6C 6F 63 2F 66 72 oc.real alloc/fr
-00025210 65 65 00 63 68 65 63 6B 00 62 75 6C 6B 20 61 6C ee.check.bulk al
-00025220 72 65 61 64 79 20 61 6C 6C 6F 63 61 74 65 64 21 ready allocated!
-00025230 3F 00 62 75 6C 6B 20 6D 61 6C 6C 6F 63 20 66 61 ?.bulk malloc fa
-00025240 69 6C 00 41 6C 6C 6F 63 61 74 65 64 20 25 64 20 il.Allocated %d 
-00025250 62 79 74 65 73 20 40 20 25 70 2E 20 20 48 6F 70 bytes @ %p.  Hop
-00025260 65 20 74 68 61 74 27 73 20 65 6E 6F 75 67 68 21 e that's enough!
-00025270 00 74 6F 6F 20 63 68 75 6E 6B 79 00 77 72 6F 6E .too chunky.wron
-00025280 67 20 73 69 7A 65 3A 20 25 78 20 76 73 20 25 78 g size: %x vs %x
-00025290 00 57 61 74 65 72 6D 61 72 6B 20 73 61 79 73 3A .Watermark says:
-000252A0 20 77 65 20 75 73 65 64 20 25 64 20 62 79 74 65  we used %d byte
-000252B0 73 00 66 72 65 65 6C 69 73 74 20 6E 6F 64 65 20 s.freelist node 
-000252C0 40 20 25 70 3A 20 62 61 73 65 3D 25 6C 78 20 73 @ %p: base=%lx s
-000252D0 69 7A 65 3D 25 78 00 66 72 65 65 20 66 61 69 6C ize=%x.free fail
-000252E0 65 64 3F 21 00 70 72 65 66 72 65 65 20 25 64 20 ed?!.prefree %d 
-000252F0 40 20 25 70 00 61 6C 6C 6F 63 20 66 61 69 6C 65 @ %p.alloc faile
-00025300 64 00 61 6C 6C 6F 63 20 25 64 20 62 79 74 65 73 d.alloc %d bytes
-00025310 20 40 20 25 70 00 5B 5B 50 72 65 2D 41 6C 6C 6F  @ %p.[[Pre-Allo
-00025320 63 61 74 69 6F 6E 5D 5D 3A 20 57 61 74 65 72 6D cation]]: Waterm
+000251D0 66 72 65 65 6E 6F 64 65                         freenode        
+
+l000251D8:
+	{ memw(r7) = r3; r1 = add(r29,00000018) }
+	{  }
+	{  }
+	{ r1:r0 = tlbr(r12); stop(r1) }
+	{ r1:r0 = vid:ipend; p0 = and(p3,p1) }
+	{ r1:r0 = tlbr(r12) }
+	{  }
+	{ r6 = r6 }
+	{  }
+	{ memuh(r6+8) = r19; r1 = add(r29,00000018); r1:r0 = tlbr(r21); p0 = and(p3,p1) }
+	{  }
+	{ memuh(r7+8) = r17; r1 = add(r29,00000018) }
+	{ r1 = add(r29,00000018); if (!r3>=00000000) jump:nt im2col7732_asm }
+
+l00025234:
+	{  }
+	{  }
+	{ memuh(r6+8) = r3; r6 = add(r6,00000016) }
+	{ if (p1) r9 = memb(r0-29) }
+	{  }
+	{ r0 = add(r0,FFFFFFD2); r4 = add(r4,00000006) }
+	{  }
+	{ r3 = add(r3,00000007); r0 = add(r0,00000004) }
+	{ memuh(r6+8) = r5; r4 = 00000007; if (cmp.eq(r0.new,r16)) jump:t 00024EA0; r4 = add(r4,00000006) }
+
+l00025264:
+	{  }
+	{  }
+	{  }
+	{  }
+	{ p0 = cmp.gt(r8,FFFFFF19) }
+	{ memuh(r6+8) = r7; r3 = 00000017 }
+	{ r3 = 00000017 }
+	{ memuh(r7+8) = r3; r5 = add(r5,r2) }
+	{ r1 = memuh(r23+r25<<#2); r19:r18 = combine(0000005B,r0); if (!r13>=00000000) jump:t 00023758; if (p3) r0 = add(r1,FFFFFFB8) }
+
+l000252A4:
+	{  }
+	{ r0 = add(r0,FFFFFFD2); r4 = add(r4,00000006) }
+	{  }
+	{ memw(r7) = r3; r6 = r6 }
+	{  }
+	{  }
+	{  }
+	{ memuh(r4+8) = r0; r5 = r2 }
+	{ memuh(r3+8) = r18; r2 = add(r2,00000016) }
+	{  }
+	{ r13:r12 = combine(FFFFFFC3,r0) }
+	{ r5 = getimask(r0) }
+	{ r7:r6 = tlbr(r9) }
+	{  }
+	{  }
+	{ r0 = add(r0,FFFFFFD2); r4 = add(r4,00000006) }
+	{ memuh(r4+8) = r0; r5 = r2 }
+	{ r1:r0 = tlbr(r12) }
+	{  }
+	{ memw(r6) = r4; r1 = add(r29,00000018) }
+	{  }
+	{ r25 = !cmp.eq(r5,FFFFFFA3); reserved8197 = r0 }
+	{ r0 = memw(r7); r19 = -00000001 }
+	{  }
+	{  }
+	{  }
+	{ memuh(r3+8) = r18; r7 = add(r7,00000015); if (p2) call 00034A00 }
+
+l00025328:
+	{ memuh(r3+8) = r18; r7 = add(r7,00000015) }
+0002532C                                     74 65 72 6D             term
 00025330 61 72 6B 20 6E 6F 77 20 30 78 25 78 00 70 72 65 ark now 0x%x.pre
 00025340 66 72 65 65 20 6D 61 6C 6C 6F 63 20 66 61 69 6C free malloc fail
 00025350 00 63 61 6E 27 74 20 61 70 70 65 6E 64 00 66 72 .can't append.fr

@@ -140,8 +140,8 @@ fn00009550 proc
 ;;     0001ECF0 (in qsigmoid_execute_hvx)
 ;;     0001EF74 (in qsigmoid_execute_hvx)
 ;;     0002028C (in transpose_execute)
-;;     000214C8 (in prelu_execute)
-;;     00021508 (in prelu_execute)
+;;     000214C8 (in fn00021298)
+;;     00021508 (in fn00021298)
 fn00009560 proc
 	{ r14 = add(PC,00021BDC) }
 	{ r28 = memw(r14) }
@@ -265,7 +265,7 @@ fn000095F0 proc
 ;;     0001EE34 (in qsigmoid_execute_hvx)
 ;;     000209C0 (in execute_qinstancenorm_ref)
 ;;     00020A1C (in execute_qinstancenorm_ref)
-;;     000212D0 (in prelu_execute)
+;;     000212D0 (in fn00021298)
 ;;     00021748 (in prelu_execute)
 fn00009600 proc
 	{ r14 = add(PC,00021B64) }
@@ -352,7 +352,8 @@ fn00009600 proc
 ;;     0001E6C8 (in qtanh_execute_hvx)
 ;;     0001E778 (in qtanh_execute_hvx)
 ;;     0001E7D0 (in qtanh_execute_hvx)
-;;     0001EA44 (in qsigmoid_execute_ref)
+;;     0001EA44 (in fn0001EA34)
+;;     0001EA44 (in fn0001EA34)
 ;;     0001ED28 (in qsigmoid_execute_hvx)
 ;;     0001ED38 (in qsigmoid_execute_hvx)
 ;;     0001EDE8 (in qsigmoid_execute_hvx)
@@ -364,7 +365,7 @@ fn00009600 proc
 ;;     00020C2C (in execute_finstancenorm)
 ;;     00020C4C (in execute_finstancenorm)
 ;;     00020C70 (in execute_finstancenorm)
-;;     000212E4 (in prelu_execute)
+;;     000212E4 (in fn00021298)
 fn00009610 proc
 	{ r14 = add(PC,00021B58) }
 	{ r28 = memw(r14) }
@@ -402,7 +403,7 @@ fn00009610 proc
 ;;     0001E7F4 (in qtanh_execute_hvx)
 ;;     0001EE64 (in qsigmoid_execute_hvx)
 ;;     00020A44 (in execute_qinstancenorm_ref)
-;;     000212F8 (in prelu_execute)
+;;     000212F8 (in fn00021298)
 fn00009620 proc
 	{ r14 = add(PC,00021B4C) }
 	{ r28 = memw(r14) }
@@ -722,7 +723,7 @@ fn000097E0 proc
 ;;     0001E0AC (in tanh_execute)
 ;;     0001E250 (in sigmoid_execute)
 ;;     0001E46C (in qtanh_execute_ref)
-;;     0001EAE0 (in qsigmoid_execute_ref)
+;;     0001EAE0 (in fn0001EAD0)
 fn000097F0 proc
 	{ r14 = add(PC,000219F0) }
 	{ r28 = memw(r14) }

@@ -119,8 +119,6 @@ namespace Reko.Scanning
                     Debug.Print("BWI: Applying patch at address {0}", ric.Address);
                     ric = patch.Code;
                 }
-                if (ric.Address.ToLinear() == 0x00016BB8)
-                    _ = this; //$DEBUG
                 if (!ProcessRtlCluster(ric))
                     break;
                 var addrInstrEnd = ric.Address + ric.Length;

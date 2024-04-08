@@ -1091,7 +1091,7 @@ l00000D60:
 	branch p0 l00000DA0
 	// succ:  l00000D90 l00000DA0
 l00000D90:
-	p0 = r6 == 2<32>
+	p0 = r6 == 1<32>
 	r6 = Mem0[r4 + 12<i32>:word32]
 	__dccleaninva(r4)
 	r1_r0 = Mem0[r4:word64]
@@ -1377,7 +1377,7 @@ l00003C78:
 	branch p0 l00003CBC
 	// succ:  l00003CAC l00003CBC
 l00003CAC:
-	p0 = r1 >u -1<i32>
+	p0 = r1 >u 1<32>
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x8083<16>)
 	r0 = Mem0[r0:word32]
@@ -1403,7 +1403,7 @@ l00003CE8_thunk_hexagon_start_main:
 	return
 	// succ:  hexagon_pre_main_exit
 l00003CEC:
-	p0 = r0 > 2<32>
+	p0 = r0 > 1<32>
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x9C03<16>)
 	r2 = SEQ(0<16>, SLICE(r2, word16, 0))

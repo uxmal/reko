@@ -901,7 +901,7 @@ l00000D60:
 	{ r6.h = 0000 }
 	{ r6.l = 00F0 }
 	{ r6 = memw(r6) }
-	{ r5 = 00000000; r6 = 00000000; if (p0.new) jump:nt 00000DA0; p0 = cmp.eq(r6,00000002) }
+	{ r5 = 00000000; r6 = 00000000; if (p0.new) jump:nt 00000DA0; p0 = cmp.eq(r6,00000001) }
 
 l00000D90:
 	{ r6 = memw(r4+12) }
@@ -922,7 +922,7 @@ l00000DB8:
 	{ rte }
 
 l00000DD0:
-	{ r4 = memw(r29+32); jump 00000D40; r7 = 00000001; r0 = 000000C1 }
+	{ r4 = memw(r29+32); jump 00000D40; r1 = 00000001; r0 = 000000C1 }
 
 l00000DDC:
 	{ r1 = pcyclehi }
@@ -1626,7 +1626,7 @@ l00003C78:
 	{ r7 = memw(r1) }
 	{ r1.h = 0000 }
 	{ r1.l = 0000 }
-	{ if (p0.new) jump:t 00003CBC; p0 = cmp.gtu(r1,-00000001) }
+	{ if (p0.new) jump:t 00003CBC; p0 = cmp.gtu(r1,00000001) }
 
 l00003CAC:
 	{ r0.h = 0000 }
@@ -1646,7 +1646,7 @@ l00003CBC:
 	{ callr r28 }
 	{ r0.h = 0000 }
 	{ r0.l = 0000 }
-	{ if (p0.new) jump:nt hexagon_start_main; p0 = cmp.gt(r0,00000002) }
+	{ if (p0.new) jump:nt hexagon_start_main; p0 = cmp.gt(r0,00000001) }
 
 l00003CEC:
 	{ r0.h = 0000 }
