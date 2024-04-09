@@ -256,5 +256,6 @@ namespace Reko.Arch.Qualcomm
         l2tagr,
         dctagw,
         dctagr,
+        immext,
     }
 }

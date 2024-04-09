@@ -299,6 +299,7 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.extractu: return RewriteExtract(Domain.UnsignedInt, ops[0], app.Operands);
             case Mnemonic.fastcorner9: return m.Fn(fastcorner9_intrinsic, ops); 
             case Mnemonic.insert: return m.FnVariadic(insert_intrinsic, ops);
+            case Mnemonic.immext: return null;
             case Mnemonic.l2fetch: return RewriteL2Fetch(ops); 
             case Mnemonic.loop0: RewriteLoop(0, ops); return null;
             case Mnemonic.loop1: RewriteLoop(1, ops); return null;

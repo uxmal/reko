@@ -181,10 +181,20 @@ namespace Reko.Arch.Qualcomm
         {
             if (this.extendedConstant.HasValue)
             {
-                uValue = (this.extendedConstant.Value << 6) | (uValue & 0x3F);
+                uValue = this.extendedConstant.Value | (uValue & 0x3F);
                 this.extendedConstant = null;
             }
             return uValue;
+        }
+
+        private int ExtendConstant(int sValue)
+        {
+            if (this.extendedConstant.HasValue)
+            {
+                sValue = (int)this.extendedConstant.Value | (sValue & 0x3F);
+                this.extendedConstant = null;
+            }
+            return sValue;
         }
 
         #region Bit fields
@@ -627,7 +637,9 @@ namespace Reko.Arch.Qualcomm
             var baseRegField = new Bitfield(baseRegPos, 5);
             return (u, d) =>
             {
-                var offset = Bitfield.ReadSignedFields(offsetFields, u) * width.Size;
+                var offset = Bitfield.ReadSignedFields(offsetFields, u);
+                offset = offset * width.Size;
+                offset = d.ExtendConstant(offset);
                 var baseReg = Registers.GpRegs[baseRegField.Read(u)];
                 var mem = new MemoryOperand(width)
                 {
@@ -846,7 +858,8 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                var offset = Core.Lib.Bitfield.ReadFields(offsetFields, u) << shift;
+                var offset = Bitfield.ReadFields(offsetFields, u) << shift;
+                offset = d.ExtendConstant(offset);
                 var mem = new MemoryOperand(width)
                 {
                     Base = reg,
@@ -1337,10 +1350,21 @@ namespace Reko.Arch.Qualcomm
 
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
+                var addr = dasm.rdr.Address;
                 if (dasm.extendedConstant.HasValue ||
                     !dasm.rdr.TryReadLeUInt32(out uint uNextInstr))
                     return dasm.CreateInvalidInstruction(dasm.addrPacket);
-                dasm.extendedConstant = Bitfield.ReadFields(bfConstant, uInstr);
+                dasm.extendedConstant = Bitfield.ReadFields(bfConstant, uInstr) << 6;
+                dasm.instrs.Add(new HexagonInstruction(
+                    addr,
+                    Mnemonic.SIDEEFFECT,
+                    new ApplicationOperand(
+                        PrimitiveType.Word32,
+                        Mnemonic.immext,
+                        ImmediateOperand.Word32(dasm.extendedConstant.Value)))
+                {
+                    InstructionClass = InstrClass.Linear
+                });
                 return iclassDecoder.Decode(uNextInstr, dasm);
             }
         }

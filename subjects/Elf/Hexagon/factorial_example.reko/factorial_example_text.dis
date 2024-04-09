@@ -287,7 +287,7 @@ l000052C0:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 16<i32>
-	r3 = Mem0[gp + 224<i32>:word32]
+	r3 = Mem0[gp + 58400<i32>:word32]
 	r2 = 0<32>
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	branch p0 l00005300
@@ -2418,7 +2418,7 @@ l000068A0:
 	r29 = v4 - 8<i32>
 	Mem0[r29 - 16<i32>:word64] = r17_r16
 	r0 = 0<32>
-	Mem0[gp + 4<i32>:byte] = r0
+	Mem0[gp + 65540<i32>:byte] = r0
 	r17_r16 = 0xE8D400000020<64>
 	// succ:  l000068C0
 l000068C0:
@@ -2432,7 +2432,7 @@ l000068D0:
 	p0 = r9 == 0<32>
 	r17_r16 = 0xE90400000030<64>
 	r0 = 0<32>
-	Mem0[gp + 4<i32>:byte] = r0
+	Mem0[gp + 65540<i32>:byte] = r0
 	// succ:  l000068E4
 l000068E4:
 	r0 = r16
@@ -2478,7 +2478,7 @@ l00006920:
 	p0 = r9 == 0<32>
 	r17_r16 = 0xE90400000030<64>
 	r0 = 1<32>
-	Mem0[gp + 4<i32>:byte] = r0
+	Mem0[gp + 65540<i32>:byte] = r0
 	// succ:  l00006934
 l00006934:
 	r0 = r16
@@ -2489,8 +2489,6 @@ l00006934:
 	// succ:  l00006944 l00006934
 l00006944:
 	p0 = r9 == 0<32>
-	r17_r16 = Mem0[r29:word64]
-	r0 = 1<32>
 	// succ:  l00006944_thunk__Lockfilelock
 l00006944_thunk__Lockfilelock:
 	call _Lockfilelock (retsize: 0;)
@@ -2558,7 +2556,7 @@ l000069C0:
 	// succ:  l000069D0 l000069C0
 l000069D0:
 	p0 = r13 == 0<32>
-	Mem0[gp + 132<i32>:byte] = r1
+	Mem0[gp + 65540<i32>:byte] = r1
 	r1 = 2<32>
 	r0 = 1<32>
 	// succ:  l000069E4
@@ -2598,7 +2596,7 @@ l00006A10:
 l00006A18:
 	p0 = r0 == 0<32>
 	r0 = Mem0[r0 + 2<i32>:byte]
-	r1 = Mem0[gp + 36<i32>:int8]
+	r1 = Mem0[gp + 65572<i32>:int8]
 	p0 = r1
 	r1 = p0 ? 0x14<32> : 0<32>
 	r1 = 0xE8E0<32>
@@ -2663,7 +2661,7 @@ l00006AA0:
 	r21 = 4<32>
 	r0 = 1<32>
 	r17 = 0xE930<32>
-	Mem0[gp + 4<i32>:byte] = r0
+	Mem0[gp + 65540<i32>:byte] = r0
 	// succ:  l00006AB4
 l00006AB4:
 	r0 = r17
@@ -2711,7 +2709,7 @@ l00006AF8:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 0<i32>
-	r1 = Mem0[gp + 40<i32>:int8]
+	r1 = Mem0[gp + 65576<i32>:int8]
 	p0 = r1
 	r1 = p0 ? 4<32> : 0<32>
 	r1 = 0xE930<32>
@@ -7454,7 +7452,7 @@ l000096DC:
 	r0 = Mem0[r17:word32]
 	r1 = Mem0[r0:word16]
 	r16 = r16 + 1<32>
-	Mem0[r0:word16] = 0xFF7F<16>
+	Mem0[r0 + 65344<i32>:word16] = 0x3F<16>
 	goto l0000971C
 	// succ:  l0000971C
 l000096F4:
@@ -7473,7 +7471,7 @@ l00009708:
 	p0 = r0 == 0<32>
 	Mem0[r0 + 2<i32>:byte] = r16
 	Mem0[r17:word32] = r0
-	Mem0[r0:word16] = 0x80<16>
+	Mem0[r0 + 128<i32>:word16] = 0<16>
 	r17_r16 = Mem0[r29:word64]
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
@@ -8418,8 +8416,6 @@ l00009FEC:
 l00009FF8:
 	r2 = r2 + r17
 	r0 = r0 & 0x800F<32>
-	r1 = 0xFFFF<32>
-	r0 = r0 | r2 << 4<32>
 	r0 = r0 & 0x8000<32>
 	r1 = r0 & 0xF<32>
 	Mem0[r16 + 4<i32>:word16] = 0<16>
@@ -9790,7 +9786,7 @@ l0000AEB0:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 8<i32>
-	r1 = Mem0[gp + 224<i32>:word32]
+	r1 = Mem0[gp + 58400<i32>:word32]
 	r3 = r0
 	Mem0[r29 + 4<i32>:word32] = r3
 	r4 = r29 + 4<32>
@@ -10013,7 +10009,7 @@ l0000AFC0:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 16<i32>
-	r1 = Mem0[gp + 224<i32>:word32]
+	r1 = Mem0[gp + 58400<i32>:word32]
 	Mem0[r29 + 4<i32>:word32] = r0
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	branch p0 l0000B004
@@ -10065,7 +10061,7 @@ l0000B020:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 16<i32>
-	r1 = Mem0[gp + 224<i32>:word32]
+	r1 = Mem0[gp + 58400<i32>:word32]
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	r16 = r0
 	branch p0 l0000B084
@@ -10156,7 +10152,7 @@ l0000B0E4:
 	branch r2 == 0<32> l0000B104
 	// succ:  l0000B104 l0000B104
 l0000B104:
-	r2 = Mem0[gp + 112<i32>:word32]
+	r2 = Mem0[gp + 57392<i32>:word32]
 	Mem0[r16:word32] = r17
 	Mem0[r0:word32] = r1
 	// succ:  l0000B118
@@ -10372,7 +10368,7 @@ l0000B2A0:
 	Mem0[v4 + 4<i32>:word32] = r31
 	r30 = v4
 	r29 = v4 - 24<i32>
-	r4 = Mem0[gp + 224<i32>:word32]
+	r4 = Mem0[gp + 58400<i32>:word32]
 	r3 = r0
 	Mem0[r29 + 16<i32>:word64] = r17_r16
 	r0 = r1

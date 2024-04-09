@@ -20,11 +20,11 @@ l00009840:
 	r18 = 0x14<32>
 	r3 = CONVERT(SLICE(r17, ui29, 5), ui29, uint32)
 	Mem0[r29 + 72<i32>:word64] = r27_r26
-	r20 = Mem0[r2 - 336<i32>:word32]
-	r21 = Mem0[r2 - 352<i32>:word32]
-	r19 = Mem0[r2 - 320<i32>:word32]
+	r20 = Mem0[r2 - 80<i32>:word32]
+	r21 = Mem0[r2 - 96<i32>:word32]
+	r19 = Mem0[r2 - 128<i32>:word32]
 	p0 = r3 >u 0x14<32>
-	r2 = Mem0[r2 - 304<i32>:word32]
+	r2 = Mem0[r2 - 112<i32>:word32]
 	branch p0 l0000A644
 	// succ:  l00009890 l0000A644
 l00009890:
@@ -102,7 +102,7 @@ l0000A71C:
 	r19 = r0
 	r2 = 0x0002B110<p32>
 	r1_r0 = SEQ(0<32>, r16)
-	r6 = Mem0[r2 - 208<i32>:word32]
+	r6 = Mem0[r2 - 16<i32>:word32]
 	r3_r2 = 0xD<64>
 	r6 = Mem0[r6 + 52<i32>:word32]
 	Mem0[r29 + 4<i32>:word32] = 0xFFFFFF80<32>
@@ -837,7 +837,7 @@ l0000ADAC:
 	call fn00009550 (retsize: 0;)
 	Mem0[r17 + 1<i32>:byte] = r18
 	r18 = r0
-	Mem0[r17 + 8<i32>:word32] = 0x2000000<32>
+	Mem0[r17 + 33554440<i32>:word32] = 0<32>
 	r0 = r17
 	call fn00009510 (retsize: 0;)
 	// succ:  l0000AE1C
@@ -1560,7 +1560,7 @@ l0000B250:
 	Mem0[r29:word64] = r19_r18
 	r18 = 0<32>
 	r17_r16 = r0_r1
-	r19 = Mem0[r2 - 192<i32>:word32]
+	r19 = Mem0[r2 - 64<i32>:word32]
 	r1 = Mem0[r19:word32]
 	r0 = r17
 	call fn00009590 (retsize: 0;)
@@ -1611,7 +1611,7 @@ l0000B298:
 	// succ:  l0000B2AC l0000B2DC
 l0000B2AC:
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 192<i32>:word32]
+	r2 = Mem0[r2 - 64<i32>:word32]
 	r19 = Mem0[r14 + r0 * 4<32>:word32]
 	r0 = r19
 	call fn00009570 (retsize: 0;)
@@ -1652,7 +1652,7 @@ l0000B2E8:
 	Mem0[r29:byte] = r7
 	r2 = r29 + 0<32>
 	r1 = r29 + 0<32>
-	Mem0[r2 + 8<i32>:word16] = 0x100<16>
+	Mem0[r2 + 264<i32>:word16] = 0<16>
 	call fn000095B0 (retsize: 0;)
 	v11 = r30
 	r31 = Mem0[v11 + 4<i32>:word32]
@@ -1684,7 +1684,7 @@ l0000B318:
 	r0 = 0<32>
 	r2 = r29 + 0<32>
 	r7 = 5<32>
-	Mem0[r2 + 8<i32>:word16] = 0x100<16>
+	Mem0[r2 + 264<i32>:word16] = 0<16>
 	r1 = r29 + 0<32>
 	r2 = r0
 	// succ:  l0000B33C
@@ -1811,7 +1811,7 @@ l0000B400:
 l0000B420:
 	p0 = r0 == 0<32>
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 208<i32>:word32]
+	r2 = Mem0[r2 - 16<i32>:word32]
 	Mem0[r0 + 32<i32>:byte] = r16
 	r2 = Mem0[r7 + r17 * 4<32>:word32]
 	Mem0[r0 + 24<i32>:word32] = r17
@@ -1863,7 +1863,7 @@ l0000B47C:
 	r2 = 0x0000B494<p32>
 	Mem0[r17 + 28<i32>:word32] = r22
 	p0 = r19 == 0<32>
-	r2 = Mem0[r2 - 208<i32>:word32]
+	r2 = Mem0[r2 - 16<i32>:word32]
 	r2 = Mem0[r15 + r21 * 4<32>:word32]
 	Mem0[r17 + 24<i32>:word32] = r21
 	Mem0[r17:word32] = r2
@@ -2115,7 +2115,7 @@ l0000B6E0:
 	r29 = v4 - 16<i32>
 	Mem0[r29 - 16<i32>:word64] = r17_r16
 	r6 = 0x0002B110<p32>
-	r6 = Mem0[r6 - 208<i32>:word32]
+	r6 = Mem0[r6 - 16<i32>:word32]
 	r17_r16 = r1_r0
 	r6 = Mem0[r14 + r2 * 4<32>:word32]
 	r7 = Mem0[r29 + 28<i32>:word32]
@@ -2326,7 +2326,7 @@ l0000B874:
 	r5 = Mem0[r20 + 28<i32>:word32]
 	r4 = Mem0[r20 + 24<i32>:word32]
 	r3 = 0x0002B110<p32>
-	r3 = Mem0[r3 - 192<i32>:word32]
+	r3 = Mem0[r3 - 64<i32>:word32]
 	r6 = 0x0002B688<p32>
 	r9 = Mem0[r20 + 20<i32>:word32]
 	r2 = 0x00025568<p32>
@@ -4712,10 +4712,10 @@ l0000CD80:
 	r18 = 0x0002B110<p32>
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	r16 = r0
-	r17 = Mem0[r18 - 176<i32>:word32]
+	r17 = Mem0[r18 - 48<i32>:word32]
 	r0 = r17
 	call qurt_sem_init_val.1.1_i16_0 (retsize: 0;)
-	r18 = Mem0[r18 - 160<i32>:word32]
+	r18 = Mem0[r18 - 32<i32>:word32]
 	r0 = r18
 	call qurt_sem_init_val.1.1_i16_0 (retsize: 0;)
 	r19 = 0x0002B6A0<p32>
@@ -4756,10 +4756,10 @@ l0000CDE8:
 	call dspCV_hvx_lock.1.0_i8_2.1_i32_0 (retsize: 0;)
 	Mem0[r16:word32] = 0<32>
 	r17 = 0x0002B110<p32>
-	r0 = Mem0[r17 - 176<i32>:word32]
+	r0 = Mem0[r17 - 48<i32>:word32]
 	call qurt_sem_add.1.1_i32_1 (retsize: 0;)
 	r17_r16 = Mem0[r29:word64]
-	r0 = Mem0[r17 - 160<i32>:word32]
+	r0 = Mem0[r17 - 32<i32>:word32]
 	v13 = r30
 	r31 = Mem0[v13 + 4<i32>:word32]
 	r30 = Mem0[v13:word32]
@@ -4788,10 +4788,10 @@ l0000CE20:
 	r18 = 0x0002B110<p32>
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	r16 = r0
-	r17 = Mem0[r18 - 176<i32>:word32]
+	r17 = Mem0[r18 - 48<i32>:word32]
 	r0 = r17
 	call qurt_sem_init_val.1.1_i16_0 (retsize: 0;)
-	r18 = Mem0[r18 - 160<i32>:word32]
+	r18 = Mem0[r18 - 32<i32>:word32]
 	r0 = r18
 	call qurt_sem_init_val.1.1_i16_0 (retsize: 0;)
 	r0 = Mem0[r16 + 68<i32>:word32]
@@ -4832,10 +4832,10 @@ l0000CE88:
 	Mem0[r29 - 16<i32>:word64] = r17_r16
 	call fn00009660 (retsize: 0;)
 	r16 = 0x0002B110<p32>
-	r0 = Mem0[r16 - 176<i32>:word32]
+	r0 = Mem0[r16 - 48<i32>:word32]
 	call qurt_sem_add.1.1_i32_1 (retsize: 0;)
 	r17_r16 = Mem0[r29:word64]
-	r0 = Mem0[r16 - 160<i32>:word32]
+	r0 = Mem0[r16 - 32<i32>:word32]
 	v11 = r30
 	r31 = Mem0[v11 + 4<i32>:word32]
 	r30 = Mem0[v11:word32]
@@ -20098,7 +20098,7 @@ min_execute_entry:
 l00016040:
 	r3 = 0x7F800000<32>
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 144<i32>:word32]
+	r2 = Mem0[r2 - 16<i32>:word32]
 	// succ:  l00016050_thunk_nn_reduction_float
 l00016050_thunk_nn_reduction_float:
 	call nn_reduction_float (retsize: 0;)
@@ -20210,7 +20210,7 @@ max_execute_entry:
 l00016140:
 	r3 = 0xFF800000<32>
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 128<i32>:word32]
+	r2 = Mem0[r2 - 64<i32>:word32]
 	// succ:  l00016150_thunk_nn_reduction_float
 l00016150_thunk_nn_reduction_float:
 	call nn_reduction_float (retsize: 0;)
@@ -20227,7 +20227,7 @@ minimum_execute_entry:
 	// succ:  l00016160
 l00016160:
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 144<i32>:word32]
+	r2 = Mem0[r2 - 16<i32>:word32]
 	// succ:  l00016168_thunk_broadcast_elementwise_execute_f
 l00016168_thunk_broadcast_elementwise_execute_f:
 	call broadcast_elementwise_execute_f (retsize: 0;)
@@ -20244,7 +20244,7 @@ maximum_execute_entry:
 	// succ:  l00016174
 l00016174:
 	r2 = 0x0002B110<p32>
-	r2 = Mem0[r2 - 128<i32>:word32]
+	r2 = Mem0[r2 - 64<i32>:word32]
 	// succ:  l0001617C_thunk_broadcast_elementwise_execute_f
 l0001617C_thunk_broadcast_elementwise_execute_f:
 	call broadcast_elementwise_execute_f (retsize: 0;)
@@ -25569,7 +25569,7 @@ l000193B0:
 	r25 = CONVERT(SLICE(r26, byte, 0), byte, uint32)
 	r21 = r3 & 0xFFFFFFE0<32>
 	r23 = r2 * r22
-	Mem0[r20 + 4<i32>:word32] = 0x3F000000<32>
+	Mem0[r20 + 1056964612<i32>:word32] = 0<32>
 	r25 = 0<32>
 	r22 = r4 & 0xFFFFFFF0<32>
 	branch p2 l000193F8

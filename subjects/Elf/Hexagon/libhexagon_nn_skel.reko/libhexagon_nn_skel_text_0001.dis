@@ -627,10 +627,10 @@ l0001A49C:
 	Mem0[r29 + 31<i32>:byte] = r0
 	r0 = p2
 	r7 = 0x0002B110<p32>
-	r3 = Mem0[r7 - 96<i32>:word32]
+	r3 = Mem0[r7 - 32<i32>:word32]
 	r4 = Mem0[r7 - 112<i32>:word32]
 	r24 = Mem0[r7 - 64<i32>:word32]
-	r6 = Mem0[r7 - 80<i32>:word32]
+	r6 = Mem0[r7 - 16<i32>:word32]
 	r0 = Mem0[r29 + 120<i32>:word32]
 	r6 = r2 + r21
 	r7 = r17 - r2
@@ -829,8 +829,6 @@ l0001A74C:
 	r2 = Mem0[r29 + 84<i32>:word64]
 	r22 = Mem0[r29 + 116<i32>:word32]
 	r2 = max<int32>(r2, r17)
-	r18 = r18 + 1<32>
-	r17 = r2
 	Mem0[r16 + 8<i32>:word32] = r17
 	r5_r4 = Mem0[r29 + 48<i32>:word64]
 	r1 = 1<32>
@@ -7509,7 +7507,7 @@ l0001E4A8:
 	Mem0[r21:word32] = 1<32>
 	Mem0[r21 + 8<i32>:word32] = 1<32>
 	r1 = 0x56<32>
-	Mem0[r2:word32] = 0xBF800000<32>
+	Mem0[r2 - 1082130432<i32>:word32] = 0<32>
 	Mem0[r21 + 4<i32>:word32] = 0xFFFFFF81<32>
 	// succ:  l0001E4BC
 l0001E4BC:
@@ -7519,7 +7517,7 @@ l0001E4BC:
 	r3 = Mem0[r20 + 16<i32>:word32]
 	Mem0[r20 + 4<i32>:word32] = 1<32>
 	Mem0[r20:word32] = 1<32>
-	Mem0[r3:word32] = 0x3F800000<32>
+	Mem0[r3 + 1065353216<i32>:word32] = 0<32>
 	Mem0[r20 + 12<i32>:word32] = 0xFFFFFF81<32>
 	// succ:  l0001E4D8
 l0001E4D8:
@@ -7628,7 +7626,7 @@ l0001E4A4_thunk_fn0001E49C:
 	return
 	// succ:  qtanh_execute_hvx_exit
 l0001E4B4:
-	Mem0[r2:word32] = 0xBF800000<32>
+	Mem0[r2 - 1082130432<i32>:word32] = 0<32>
 	// succ:  l0001E4B4_thunk_fn0001E49C
 l0001E4B4_thunk_fn0001E49C:
 	call fn0001E49C (retsize: 0;)
@@ -7938,13 +7936,13 @@ l0001E900:
 	Mem0[r25 + 4<i32>:word32] = 0xFFFFFF81<32>
 	Mem0[r25:word32] = 1<32>
 	Mem0[r25 + 24<i32>:word32] = 4<32>
-	Mem0[r2:word32] = 0xBF800000<32>
+	Mem0[r2 - 1082130432<i32>:word32] = 0<32>
 	r2 = r17
 	Mem0[r5 + 8<i32>:word32] = 1<32>
 	r3 = Mem0[r5 + 16<i32>:word32]
 	Mem0[r5 + 4<i32>:word32] = 1<32>
 	Mem0[r5:word32] = 1<32>
-	Mem0[r3:word32] = 0x3F800000<32>
+	Mem0[r3 + 1065353216<i32>:word32] = 0<32>
 	Mem0[r5 + 12<i32>:word32] = 0xFFFFFF81<32>
 	Mem0[r29:word32] = r16
 	Mem0[r5 + 24<i32>:word32] = 4<32>
@@ -8262,7 +8260,7 @@ l0001EB24:
 	r3 = Mem0[r20 + 16<i32>:word32]
 	Mem0[r20 + 4<i32>:word32] = 1<32>
 	Mem0[r20:word32] = 1<32>
-	Mem0[r3:word32] = 0x3F800000<32>
+	Mem0[r3 + 1065353216<i32>:word32] = 0<32>
 	Mem0[r20 + 12<i32>:word32] = 0xFFFFFF81<32>
 	Mem0[r29:word32] = r16
 	Mem0[r20 + 24<i32>:word32] = 4<32>
@@ -8692,7 +8690,7 @@ l0001EF74:
 	r3 = Mem0[r5 + 16<i32>:word32]
 	Mem0[r5 + 4<i32>:word32] = 1<32>
 	Mem0[r5:word32] = 1<32>
-	Mem0[r3:word32] = 0x3F800000<32>
+	Mem0[r3 + 1065353216<i32>:word32] = 0<32>
 	Mem0[r5 + 12<i32>:word32] = 0xFFFFFF81<32>
 	Mem0[r29:word32] = r16
 	Mem0[r5 + 24<i32>:word32] = 4<32>
@@ -12792,7 +12790,7 @@ l000213A4:
 	r2 = 0x8000<32> + r20 * r26
 	r2 = r17
 	r27 = r27 - (r2 >>u 0x10<32>)
-	Mem0[r29 + 12<i32>:word32] = 0x10000<32>
+	Mem0[r29 + 65548<i32>:word32] = 0xFFFFFF80<32>
 	call logmsg_function (retsize: 0;)
 	branch r19 >u r2 l0002141C
 	// succ:  l00021410 l0002141C
@@ -19867,8 +19865,6 @@ l00025030:
 	r31 = r21 + 0x7A<32>
 	r3 = !(r5 == 0x43<32>)
 	r0 = r1 + 0x10<32>
-	r5 = SEQ(0xD1B9<16>, SLICE(r5, word16, 0))
-	p0 = r15 > 0xFFFFFF18<32>
 	p0 = !(r3 > 0xFFFFFF2B<32>)
 	__crswap(r0, sgp0)
 	Mem0[r7:word32] = r3
@@ -19882,7 +19878,6 @@ l00025030:
 	__ciad(r0)
 	__stop(r9)
 	r31 = r21 + 0x7A<32>
-	r18 = r14 + 0x4B<32>
 	branch <invalid> l000238E4
 	goto l000250F0
 	// succ:  l000250F0 l000250E4_thunk_fn000238E4
@@ -19966,7 +19961,6 @@ l00025234:
 	// succ:  l00025264 l00024EA0
 l00025264:
 	r4 = r4 + 6<32>
-	p0 = r8 > 0xFFFFFF19<32>
 	Mem0[r6 + 8<i32>:word16] = r7
 	r3 = 0x17<32>
 	r3 = 0x17<32>
