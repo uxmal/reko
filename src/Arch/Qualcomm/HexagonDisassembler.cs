@@ -105,15 +105,11 @@ namespace Reko.Arch.Qualcomm
 
         private HexagonPacket MakePacket(Address addr)
         {
-            // "In memory, instructions in a packet must appear in strictly decreasing slot order.
-            // Additionally, if an instruction can go in a higher-numbered slot, and that slot is empty,
-            // then it must be moved into the higher-numbered slot."
-
             var instrs = new HexagonInstruction[this.instrs.Count];
             var iclass = InstrClass.Linear;
             for (int i = 0; i < instrs.Length; ++i)
             {
-                var instr = this.instrs[instrs.Length - i - 1];
+                var instr = this.instrs[i];
                 instrs[i] = instr;
                 if (instr.InstructionClass != InstrClass.Linear)
                 {

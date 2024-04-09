@@ -15,12 +15,12 @@ _fini proc
 l00024E44:
 	{ r27 = add(r27,#0x4) }
 	{ r0 = memw(r27) }
-	{ nop; if (p0.new) jump:nt 00024E5C; p0 = cmp.eq(r0,#0x0) }
+	{ p0 = cmp.eq(r0,#0x0); if (p0.new) jump:nt 00024E5C; nop }
 
 l00024E54:
 	{ callr r0 }
 	{ jump 00024E44 }
 
 l00024E5C:
-	{ deallocframe; r27 = memw(r29) }
+	{ r27 = memw(r29); deallocframe }
 	{ jumpr r31 }

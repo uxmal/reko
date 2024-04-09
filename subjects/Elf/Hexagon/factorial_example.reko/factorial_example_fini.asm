@@ -10,12 +10,12 @@ _fini proc
 l0000B370:
 	{ r27 = add(r27,#0x4) }
 	{ r0 = memw(r27) }
-	{ if (p0.new) jump:nt 0000B384; p0 = cmp.eq(r0,#0x0) }
+	{ p0 = cmp.eq(r0,#0x0); if (p0.new) jump:nt 0000B384 }
 
 l0000B37C:
 	{ callr r0 }
 	{ jump 0000B370 }
 
 l0000B384:
-	{ deallocframe; r27 = memw(r29) }
+	{ r27 = memw(r29); deallocframe }
 	{ jumpr r31 }

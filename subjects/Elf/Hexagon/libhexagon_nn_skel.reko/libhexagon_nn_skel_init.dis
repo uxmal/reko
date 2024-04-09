@@ -20,13 +20,13 @@ l00009440:
 	r0 = SEQ(SLICE(r0, word16, 16), 0xF1C3<16>)
 	r0 = r24 + r0
 	r1 = Mem0[r0:word32]
+	p0 = r1 == 0<32>
 	branch p0 l00009480
 	// succ:  l00009474 l00009480
 l00009474:
-	p0 = r1 == 0<32>
-	r1 = 0<32>
-	r3 = 0<32>
 	r2 = 0<32>
+	r3 = 0<32>
+	r1 = 0<32>
 	call fn000094F0 (retsize: 0;)
 	// succ:  l00009480
 l00009480:
@@ -37,20 +37,20 @@ l00009480:
 l0000948C:
 	r27 = r27 + 0xFFFFFFFC<32>
 	r0 = Mem0[r27:word32]
+	p0 = r0 == 0<32>
 	branch p0 l000094A4
 	// succ:  l0000949C l000094A4
 l0000949C:
-	p0 = r0 == 0<32>
 	call r0 (retsize: 0;)
 	goto l0000948C
 	// succ:  l0000948C
 l000094A4:
 	r24 = Mem0[r29 + 4<i32>:word32]
+	r27 = Mem0[r29:word32]
 	v16 = r30
 	r31 = Mem0[v16 + 4<i32>:word32]
 	r30 = Mem0[v16:word32]
 	r29 = v16 + 8<i32>
-	r27 = Mem0[r29:word32]
 	return
 	// succ:  _init_exit
 _init_exit:

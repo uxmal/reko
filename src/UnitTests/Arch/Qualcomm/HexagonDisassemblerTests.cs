@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_asm_add_pc_imm_prefix()
         {
-            AssertCode("{ r28 = add(PC,#0x21C50); immext(#0x21C40) }", "71480000 1CC8496A");
+            AssertCode("{ immext(#0x21C40); r28 = add(PC,#0x21C50) }", "71480000 1CC8496A");
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_add_uimm_mpy()
         {
-            AssertCode("{ r8 = add(#0x4000,mpyi(r8,r0)); immext(#0x4000) }", "00410000084008D7");
+            AssertCode("{ immext(#0x4000); r8 = add(#0x4000,mpyi(r8,r0)) }", "00410000084008D7");
         }
 
         [Test]
@@ -296,13 +296,13 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_test_jump()
         {
-            AssertCode("{ if (p0.new) jump:nt 00100018; p0 = cmp.eq(r1,#0x0) }", "0CC00110");
+            AssertCode("{ p0 = cmp.eq(r1,#0x0); if (p0.new) jump:nt 00100018 }", "0CC00110");
         }
 
         [Test]
         public void Hexagon_dasm_negated_test_jump()
         {
-            AssertCode("{ if (!p0.new) jump:t 000FFFF4; p0 = cmp.eq(r13,#0x0) }", "FAE07D10");
+            AssertCode("{ p0 = cmp.eq(r13,#0x0); if (!p0.new) jump:t 000FFFF4 }", "FAE07D10");
         }
 
         [Test]
@@ -344,37 +344,37 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_duplex_add_sp()
         {
-            AssertCode("{ memw(r29) = r0; r16 = add(r29,#0x0) }", "0028086C");
+            AssertCode("{ r16 = add(r29,#0x0); memw(r29) = r0 }", "0028086C");
         }
 
         [Test]
         public void Hexagon_dasm_duplex_dealloc_return()
         {
-            AssertCode("{ dealloc_return; r0 = memw(r0) }", "403F0000");
+            AssertCode("{ r0 = memw(r0); dealloc_return }", "403F0000");
         }
 
         [Test]
         public void Hexagon_dasm_duplex_ld_memd()
         {
-            AssertCode("{ r1:r0 = memd(r29); r3:r2 = memd(r29+8) }", "001E093E");
+            AssertCode("{ r3:r2 = memd(r29+8); r1:r0 = memd(r29) }", "001E093E");
         }
 
         [Test]
         public void Hexagon_dasm_ld_and_0xFF()
         {
-            AssertCode("{ r7 = add(r7,#0xFF); r3 = #0x0; r0 = add(r0,r15); r22 = r4; p1 = and(p1,p1) }", "0141616B16406470004F00F316C70328");
+            AssertCode("{ p1 = and(p1,p1); r22 = r4; r0 = add(r0,r15); r3 = #0x0; r7 = add(r7,#0xFF) }", "0141616B16406470004F00F316C70328");
         }
 
         [Test]
         public void Hexagon_dasm_duplex_combine()
         {
-            AssertCode("{ r23:r22 = combine(#0x0,#0x1); r23:r22 = combine(#0x2,#0x1) }", "A73EB73E");
+            AssertCode("{ r23:r22 = combine(#0x2,#0x1); r23:r22 = combine(#0x0,#0x1) }", "A73EB73E");
         }
 
         [Test]
         public void Hexagon_dasm_duplex_cmp_eq_allocframe()
         {
-            AssertCode("{ allocframe(#0x0); p0 = cmp.eq(r1,#0x0) }", "003C1079");
+            AssertCode("{ p0 = cmp.eq(r1,#0x0); allocframe(#0x0) }", "003C1079");
         }
 
         [Test]
@@ -398,25 +398,25 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_if_cmp_eq_new_imm()
         {
-            AssertCode("{ if (cmp.eq(r0.new,#0x2)) jump:t 00100024; r0 = memb(r0+32); r11 = r9; p0 = cmp.eq(r18,#0x0) }", "004012750B4069700044009112E20224");
+            AssertCode("{ p0 = cmp.eq(r18,#0x0); r11 = r9; r0 = memb(r0+32); if (cmp.eq(r0.new,#0x2)) jump:t 00100024 }", "004012750B4069700044009112E20224");
         }
 
         [Test]
         public void Hexagon_dasm_if_cmp_eq_new_reg()
         {
-            AssertCode("{ if (!cmp.eq(r2.new,r4)) jump:t 00100034; r2 = memw(r18+24); r25 = #0x0; p0 = cmp.eq(r21,#0x0) }", "0040157519400078C24092911AE44220");
+            AssertCode("{ p0 = cmp.eq(r21,#0x0); r25 = #0x0; r2 = memw(r18+24); if (!cmp.eq(r2.new,r4)) jump:t 00100034 }", "0040157519400078C24092911AE44220");
         }
 
         [Test]
         public void Hexagon_dasm_if_cmp_gt_new_imm()
         {
-            AssertCode("{ if (cmp.gt(r2.new,#0x1)) jump:t 00100054; r2 = memw(r22) }", "024096912AE18224");
+            AssertCode("{ r2 = memw(r22); if (cmp.gt(r2.new,#0x1)) jump:t 00100054 }", "024096912AE18224");
         }
 
         [Test]
         public void Hexagon_dasm_if_cmp_gtu_reg_regnew()
         {
-            AssertCode("{ if (cmp.gtu(r3,r4.new)) jump:t 00100048; r4 = memw(r2+16); r0 = #0x0 }", "004000788440829124E30222");
+            AssertCode("{ r0 = #0x0; r4 = memw(r2+16); if (cmp.gtu(r3,r4.new)) jump:t 00100048 }", "004000788440829124E30222");
         }
 
         [Test]
@@ -434,7 +434,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_jumpr_31_conditional()
         {
-            AssertCode("{ if (p0.new) jumpr r31; p0 = cmp.eq(r2,#0x0) }", "C63F2059");
+            AssertCode("{ p0 = cmp.eq(r2,#0x0); if (p0.new) jumpr r31 }", "C63F2059");
         }
 
         [Test]
@@ -446,7 +446,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_jump_conditional_application()
         {
-            AssertCode("{ if (cmp.gtu(r4.new,r0)) jump:t 00100020; r4 = add(r2,r3) }", "044302F3 10E00221");
+            AssertCode("{ r4 = add(r2,r3); if (cmp.gtu(r4.new,r0)) jump:t 00100020 }", "044302F3 10E00221");
         }
 
         [Test]
@@ -483,7 +483,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_ld_memw_absset()
         {
-            AssertCode("{ r16 = memw(r0=00010068); immext(#0x10040) }", "01440000105A809B");
+            AssertCode("{ immext(#0x10040); r16 = memw(r0=00010068) }", "01440000105A809B");
         }
 
         [Test]
@@ -543,7 +543,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_new_value()
         {
-            AssertCode("{ memb(r4) = r3.new; r3 = or(r1,r7); r6 = or(r1,r7) }", "064721F1 034721F1   00D2A4A1545412C4");
+            AssertCode("{ r6 = or(r1,r7); r3 = or(r1,r7); memb(r4) = r3.new }", "064721F1 034721F1   00D2A4A1545412C4");
         }
 
         [Test]
@@ -561,14 +561,14 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_regression1()
         {
-            AssertCode("{ allocframe(#0x8); memd(r29-16) = r17:r16 }", "10 1c f4 eb");
+            AssertCode("{ memd(r29-16) = r17:r16; allocframe(#0x8) }", "10 1c f4 eb");
         }
 
         [Test]
         public void Hexagon_dasm_regression2()
         {
           //  AssertCode("@@@", "15 75 82 97");
-            AssertCode("{ r20 = memw(r2-80); immext(#0xFFFFFF80); r21 = memw(r2-96); immext(#0xFFFFFF80) }", "fe 7f ff 0f 15 75 82 97 fe 7f ff 0f 94 f5 82 97");
+            AssertCode("{ immext(#0xFFFFFF80); r21 = memw(r2-96); immext(#0xFFFFFF80); r20 = memw(r2-80) }", "fe 7f ff 0f 15 75 82 97 fe 7f ff 0f 94 f5 82 97");
         }
 
         [Test]
@@ -622,7 +622,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_st_indexed()
         {
-            AssertCode("{ memw(r17<<#2+0000E700) = r3; immext(#0xE700) }", "9C43000080E391AD");
+            AssertCode("{ immext(#0xE700); memw(r17<<#2+0000E700) = r3 }", "9C43000080E391AD");
         }
 
         [Test]
@@ -653,25 +653,25 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_seq()
         {
-            AssertCode("{ if (!p1.new) jump:nt 001000B8; p1 = cmp.gt(r1,#-0x1); loop0(00100028,#0x18) }", "D04201695C41C113");
+            AssertCode("{ loop0(00100028,#0x18); p1 = cmp.gt(r1,#-0x1); if (!p1.new) jump:nt 001000B8 }", "D04201695C41C113");
         }
 
         [Test]
         public void Hexagon_dasm_seq_cmpeq_p0_set_if()
         {
-            AssertCode("{ if (p0.new) jump:nt 000FFC40; p0 = cmp.eq(r3,#-0x1) }", "20C0A319");
+            AssertCode("{ p0 = cmp.eq(r3,#-0x1); if (p0.new) jump:nt 000FFC40 }", "20C0A319");
         }
 
         [Test]
         public void Hexagon_dasm_seq_cmpeq_p1()
         {
-            AssertCode("{ if (p1.new) jump:nt 000FFC00; p1 = cmp.eq(r0,#0xE) }", "01CE201A");
+            AssertCode("{ p1 = cmp.eq(r0,#0xE); if (p1.new) jump:nt 000FFC00 }", "01CE201A");
         }
 
         [Test]
         public void Hexagon_dasm_seq_cmpeq_gtu_p1()
         {
-            AssertCode("{ if (p1.new) jump:t 000FFE5C; p1 = cmp.gtu(r7,#0x12) }", "2E72371B");
+            AssertCode("{ p1 = cmp.gtu(r7,#0x12); if (p1.new) jump:t 000FFE5C }", "2E72371B");
         }
 
         [Test]
@@ -737,7 +737,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_longnew()
         {
-            AssertCode("{ memb(gp+65540) = r2.new; immext(#0x10000); r2 = or(r3,and(r2,#0xF)) }", "E34142DA0044000028C4A048");
+            AssertCode("{ r2 = or(r3,and(r2,#0xF)); immext(#0x10000); memb(gp+65540) = r2.new }", "E34142DA0044000028C4A048");
         }
 
         [Test]
@@ -749,7 +749,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         [Test]
         public void Hexagon_dasm_long_offset()
         {
-            AssertCode("{ r2 = memb(r2+00001B44); immext(#0x1B40) }", "6D40000002D1029D");
+            AssertCode("{ immext(#0x1B40); r2 = memb(r2+00001B44) }", "6D40000002D1029D");
         }
 
         [Test]

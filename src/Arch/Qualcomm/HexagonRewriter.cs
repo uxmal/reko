@@ -137,7 +137,10 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.syncht: m.SideEffect(m.Fn(syncht_intrinsic)); break;
                 }
-                m.Instructions.Last().Class = this.iclass;
+                if (m.Instructions.Count > 0)
+                {
+                    m.Instructions.Last().Class = this.iclass;
+                }
             }
         }
 
@@ -625,7 +628,7 @@ namespace Reko.Arch.Qualcomm
         {
             var app = (ApplicationOperand) op;
             var e = RewriteApplication(app);
-            if (e != null)
+            if (e is not null)
             {
                 m.SideEffect(e);
             }

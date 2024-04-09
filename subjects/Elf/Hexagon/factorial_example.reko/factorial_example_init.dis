@@ -14,13 +14,13 @@ l00003DC0:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x6283<16>)
 	r1 = Mem0[r0:word32]
+	p0 = r1 == 0<32>
 	branch p0 l00003DEC
 	// succ:  l00003DD8 l00003DEC
 l00003DD8:
-	p0 = r1 == 0<32>
-	r1 = 0<32>
-	r3 = 0<32>
 	r2 = 0<32>
+	r3 = 0<32>
+	r1 = 0<32>
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0x5B81<16>)
 	call r28 (retsize: 0;)
@@ -32,19 +32,19 @@ l00003DEC:
 l00003DF4:
 	r27 = r27 + 0xFFFFFFFC<32>
 	r0 = Mem0[r27:word32]
+	p0 = r0 == 0<32>
 	branch p0 l00003E08
 	// succ:  l00003E00 l00003E08
 l00003E00:
-	p0 = r0 == 0<32>
 	call r0 (retsize: 0;)
 	goto l00003DF4
 	// succ:  l00003DF4
 l00003E08:
+	r27 = Mem0[r29:word32]
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]
 	r29 = v14 + 8<i32>
-	r27 = Mem0[r29:word32]
 	return
 	// succ:  _init_exit
 _init_exit:

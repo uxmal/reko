@@ -17,19 +17,19 @@ l0000B360:
 l0000B370:
 	r27 = r27 + 4<32>
 	r0 = Mem0[r27:word32]
+	p0 = r0 == 0<32>
 	branch p0 l0000B384
 	// succ:  l0000B37C l0000B384
 l0000B37C:
-	p0 = r0 == 0<32>
 	call r0 (retsize: 0;)
 	goto l0000B370
 	// succ:  l0000B370
 l0000B384:
+	r27 = Mem0[r29:word32]
 	v10 = r30
 	r31 = Mem0[v10 + 4<i32>:word32]
 	r30 = Mem0[v10:word32]
 	r29 = v10 + 8<i32>
-	r27 = Mem0[r29:word32]
 	return
 	// succ:  _fini_exit
 _fini_exit:

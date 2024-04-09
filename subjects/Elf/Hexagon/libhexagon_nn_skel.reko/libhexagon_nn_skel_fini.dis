@@ -22,19 +22,19 @@ l00024E20:
 l00024E44:
 	r27 = r27 + 4<32>
 	r0 = Mem0[r27:word32]
+	p0 = r0 == 0<32>
 	branch p0 l00024E5C
 	// succ:  l00024E54 l00024E5C
 l00024E54:
-	p0 = r0 == 0<32>
 	call r0 (retsize: 0;)
 	goto l00024E44
 	// succ:  l00024E44
 l00024E5C:
+	r27 = Mem0[r29:word32]
 	v13 = r30
 	r31 = Mem0[v13 + 4<i32>:word32]
 	r30 = Mem0[v13:word32]
 	r29 = v13 + 8<i32>
-	r27 = Mem0[r29:word32]
 	return
 	// succ:  _fini_exit
 _fini_exit:
