@@ -762,9 +762,9 @@ l00005B14:
 ;;   Called from:
 ;;     00005ABC (in _Printf)
 ;;     00005AE0 (in _Putfld)
-;;     00005B04 (in _Putfld)
-;;     00005B10 (in _Putfld)
-;;     00005B78 (in _Putfld)
+;;     00005AF8 (in _Putfld)
+;;     00005B08 (in _Putfld)
+;;     00005B6C (in _Putfld)
 ;;     00005B8C (in _Putfld)
 fn00005B1C proc
 	{ r0 = memw(r16+44); if (!cmp.gt(r0.new,#-0x1)) jump:nt 00005C78 }
@@ -779,7 +779,7 @@ l00005B20:
 ;;     00005B54 (in fn00005B54)
 ;;     00005CFC (in fn00005B1C)
 ;;     00005ED4 (in _Putfld)
-;;     00005EE4 (in _Putfld)
+;;     00005ED4 (in _Putfld)
 fn00005B24 proc
 	{ r0 = memw(r1) }
 
@@ -857,7 +857,7 @@ l00005C78:
 
 ;; fn00005C7C: 00005C7C
 ;;   Called from:
-;;     00005B60 (in fn00005B54)
+;;     00005B58 (in fn00005B54)
 ;;     00005C78 (in fn00005B1C)
 fn00005C7C proc
 	{ r0 = sxth(r0); if (!cmp.gt(r0.new,#-0x1)) jump:nt 00005CB0 }
@@ -1100,7 +1100,7 @@ l000063CC:
 ;; fn000063D0: 000063D0
 ;;   Called from:
 ;;     00006310 (in _Putstr)
-;;     000063CC (in _Puttxt)
+;;     000063C4 (in _Puttxt)
 fn000063D0 proc
 	{ r19 = memw(r16+24) }
 
@@ -3173,7 +3173,7 @@ l00008770:
 ;;     000084E0 (in fn00008468)
 ;;     000084E4 (in fn00008468)
 ;;     0000853C (in fn00008468)
-;;     0000863C (in fn00008468)
+;;     0000862C (in fn00008468)
 ;;     0000874C (in fn00008468)
 ;;     00008768 (in fn00008468)
 fn00008780 proc
@@ -3339,7 +3339,7 @@ l00008984:
 ;;     00008964 (in _LXp_subx)
 ;;     00008974 (in fn00008970)
 ;;     00008988 (in _LXp_mulh)
-;;     0000899C (in fn00008970)
+;;     0000898C (in fn00008970)
 fn00008994 proc
 	{ immext(#0x1980); r0 = r9; jump 00008A44; nop }
 
@@ -3448,8 +3448,8 @@ l00008A90:
 ;; fn00008AA4: 00008AA4
 ;;   Called from:
 ;;     00008A34 (in fn00008A2C)
-;;     00008A9C (in fn00008A5C)
-;;     00008A9C (in fn00008A5C)
+;;     00008A8C (in fn00008A5C)
+;;     00008A8C (in fn00008A5C)
 fn00008AA4 proc
 	{ call _LXp_addh }
 	{ r26 = add(r26,#0x1); if (cmp.gtu(r17,r26.new)) jump:t 00008A90 }
@@ -3465,7 +3465,7 @@ l00008AB4:
 ;;     00008A04 (in _LXp_mulx)
 ;;     00008A08 (in _LXp_mulx)
 ;;     00008A54 (in fn00008A48)
-;;     00008A70 (in fn00008A5C)
+;;     00008A68 (in fn00008A5C)
 ;;     00008AB0 (in fn00008AA4)
 ;;     00008AB4 (in fn00008AA4)
 fn00008AB8 proc
@@ -3519,7 +3519,7 @@ fn00008B34 proc
 ;; fn00008B64: 00008B64
 ;;   Called from:
 ;;     00008AF4 (in _LXp_invx)
-;;     00008B68 (in fn00008B34)
+;;     00008B5C (in fn00008B34)
 fn00008B64 proc
 	{ call memcpy; r1:r0 = combine(r16,r22); r2 = r20 }
 	{ call _LXp_mulx; r3:r2 = combine(r17,r19); r4 = r21; r1:r0 = combine(r17,r22) }
@@ -3588,7 +3588,7 @@ l00008C44:
 ;; fn00008C4C: 00008C4C
 ;;   Called from:
 ;;     00008BFC (in fn00008BFC)
-;;     00008C54 (in _LXp_sqrtx)
+;;     00008C48 (in _LXp_sqrtx)
 fn00008C4C proc
 	{ r0 = #0x30 }
 	{ r1:r0 = memd(r0) }
@@ -3613,7 +3613,7 @@ l00008CA8:
 ;; fn00008CAC: 00008CAC
 ;;   Called from:
 ;;     00008BDC (in fn00008BD0)
-;;     00008CB0 (in _LXp_sqrtx)
+;;     00008CA8 (in _LXp_sqrtx)
 fn00008CAC proc
 	{ r23:r22 = memd(gp+232); r25:r24 = memd(gp+240) }
 

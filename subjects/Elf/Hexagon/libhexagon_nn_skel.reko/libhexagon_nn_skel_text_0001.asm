@@ -4098,7 +4098,7 @@ l0001E498:
 ;;     0001E4B4 (in qtanh_execute_hvx)
 ;;     0001E85C (in qtanh_execute_hvx)
 ;;     0001E864 (in qtanh_execute_hvx)
-;;     0001E898 (in qtanh_execute_hvx)
+;;     0001E88C (in qtanh_execute_hvx)
 fn0001E49C proc
 	{ immext(#0xB480); r4 = add(PC,#0xB4B5); r2 = memw(r21+16); memw(r21+12) = #0x1 }
 
@@ -4456,7 +4456,7 @@ l0001EB0C:
 ;;     0001EB14 (in qsigmoid_execute_hvx)
 ;;     0001EB18 (in qsigmoid_execute_hvx)
 ;;     0001EB48 (in qsigmoid_execute_hvx)
-;;     0001EEE4 (in qsigmoid_execute_hvx)
+;;     0001EEDC (in qsigmoid_execute_hvx)
 fn0001EB10 proc
 	{ immext(#0xB040); r4 = add(PC,#0xB047); r2 = memw(r21+16); memw(r21+12) = #0x1 }
 
@@ -7122,7 +7122,7 @@ fn00021A0C proc
 ;;     000218D8 (in sum_f_execute)
 ;;     00021978 (in sum_f_execute)
 ;;     000219FC (in fn000219E8)
-;;     00021A1C (in fn00021A0C)
+;;     00021A0C (in fn00021A0C)
 fn00021A1C proc
 	{ r0 = mpyi(r13,r9); p0 = cmp.gt(r12,#0x0); r11 = memw(r14+20) }
 	{ r0 = mpyi(r0,r8) }
@@ -7721,7 +7721,7 @@ l000225D8:
 ;;     000227C4 (in fn00022ED8)
 ;;     000227C8 (in fn000227C8)
 ;;     000227FC (in fn000227BC)
-;;     00022818 (in fn000227BC)
+;;     00022810 (in fn000227BC)
 ;;     00022960 (in vmemcpy_asm)
 ;;     000229C8 (in fn000227BC)
 fn000225E8 proc
@@ -8236,7 +8236,7 @@ l00022C5C:
 ;; fn00022C60: 00022C60
 ;;   Called from:
 ;;     00022C5C (in memconvert_hvx)
-;;     00022CDC (in fn0002303C)
+;;     00022CD0 (in fn0002303C)
 fn00022C60 proc
 	{ r10 = #0x30; r0 = r0 }
 	{ nop }
@@ -8433,7 +8433,7 @@ l00022E08:
 ;;     00022C4C (in fn00022C3C)
 ;;     0002317C (in fn00023178)
 ;;     00023180 (in fn00023180)
-;;     000231D8 (in fn000231CC)
+;;     000231CC (in fn000231CC)
 fn00022E0C proc
 	{ memd(r29) = r17:r16 }
 
@@ -8448,7 +8448,7 @@ fn00022E0C proc
 ;;     00022E08 (in fn00022C3C)
 ;;     00022E0C (in fn00022E0C)
 ;;     00022E38 (in fn00022E38)
-;;     00022F58 (in fn00022F2C)
+;;     00022F4C (in fn00022F2C)
 ;;     00022FF8 (in fn00022FF8)
 ;;     00023180 (in fn00023180)
 fn00022E10 proc
@@ -8499,7 +8499,7 @@ fn00022E88 proc
 
 ;; fn00022E90: 00022E90
 ;;   Called from:
-;;     00022CDC (in fn0002303C)
+;;     00022CD0 (in fn0002303C)
 ;;     00022E84 (in fn00022E88)
 ;;     00022E88 (in fn00022E88)
 fn00022E90 proc
@@ -8541,11 +8541,11 @@ l00022ECC:
 
 ;; fn00022ED8: 00022ED8
 ;;   Called from:
-;;     00022948 (in fn00022C88)
+;;     00022938 (in fn00022C88)
 ;;     00022AB0 (in fn00022C88)
 ;;     00022D18 (in fn00022D18)
 ;;     00022D18 (in fn00022D18)
-;;     00022EDC (in fn00022750)
+;;     00022ED4 (in fn00022750)
 fn00022ED8 proc
 	{ r15 = mpyi(r1,r3) }
 	{ r14 += mpyi(r15,r6); r1 = combine(r1.l,r1.l) }
@@ -8640,7 +8640,7 @@ l00022F94:
 ;;     00022DD8 (in fn00022FA0)
 ;;     00022F90 (in fn00022F80)
 ;;     00022F94 (in gvconv2dbbb_asm)
-;;     00023158 (in gvconv2dbbb_asm)
+;;     0002314C (in gvconv2dbbb_asm)
 ;;     000231C4 (in gvconv2dbbb_asm)
 ;;     000231C4 (in gvconv2dbbb_asm)
 fn00022F98 proc
@@ -8714,7 +8714,7 @@ fn00022FEC proc
 ;; fn00022FF8: 00022FF8
 ;;   Called from:
 ;;     000224DC (in fn000224D8)
-;;     00022DE8 (in fn00022DE0)
+;;     00022DE0 (in fn00022DE0)
 ;;     00022FDC (in fn00022FBC)
 ;;     00022FF0 (in fn00022FEC)
 ;;     00022FF0 (in fn00022FEC)
@@ -8849,13 +8849,13 @@ fn0002318C proc
 ;; fn000231A4: 000231A4
 ;;   Called from:
 ;;     00022E9C (in fn00022E9C)
-;;     000231AC (in fn0002318C)
+;;     0002319C (in fn0002318C)
 fn000231A4 proc
 	{ r18 = add(r1,#0x0); r6 = mux(p2,r14,r8) }
 
 ;; fn000231AC: 000231AC
 ;;   Called from:
-;;     00022EAC (in fn00022EA4)
+;;     00022EA4 (in fn00022EA4)
 ;;     000231A4 (in fn000231A4)
 fn000231AC proc
 	{ loop1(000231C0,#0x7); r21 = #0x0; r15 = add(r15,#0xFFFFFFFA); r16 = add(r15,#0x29A) }
@@ -8920,7 +8920,7 @@ l000232D0:
 
 ;; fn00023334: 00023334
 ;;   Called from:
-;;     000234FC (in gvmaccb_asm)
+;;     000234F4 (in gvmaccb_asm)
 ;;     000236F0 (in vmemset_asm)
 fn00023334 proc
 	{ r2 = #0x39; r8 = add(r8,r8) }
@@ -9475,7 +9475,7 @@ fn00023E7C proc
 ;; fn00023E98: 00023E98
 ;;   Called from:
 ;;     00023DD8 (in gvmsumb_asm)
-;;     00023EA0 (in fn00023E7C)
+;;     00023E90 (in fn00023E7C)
 fn00023E98 proc
 	{ r13 = sub(r6,r3); memw(r29+60) = r5 }
 	{ r6 = add(r6,#0xFFFFFFFF); p3 = cmp.gt(r8,#0x60); r16 = memw(r29+104); memw(r29+64) = r28 }
@@ -9489,11 +9489,11 @@ fn00023E98 proc
 ;;     00023ED4 (in fn00023E98)
 ;;     00023ED4 (in fn00023E98)
 ;;     00023FA8 (in fn00023FCC)
+;;     0002409C (in gvconv2dbbb_asm)
 ;;     000240A4 (in fn000241C4)
-;;     000240AC (in gvconv2dbbb_asm)
 ;;     00024178 (in fn00024178)
 ;;     00024178 (in fn00024178)
-;;     00024470 (in gvconv2dbbb_asm)
+;;     00024468 (in gvconv2dbbb_asm)
 ;;     00024478 (in gvconv2dbbb_asm)
 ;;     000244AC (in fn000241C4)
 fn00023EE0 proc
@@ -9659,10 +9659,10 @@ gvconv2dbbw_asm proc
 ;;   Called from:
 ;;     00024088 (in gvconv2dbbb_asm)
 ;;     00024090 (in gvconv2dbbb_asm)
-;;     000240AC (in gvconv2dbbb_asm)
+;;     0002409C (in gvconv2dbbb_asm)
 ;;     000241C0 (in gvconv2dbbw_asm)
 ;;     000242D4 (in fn00023FD0)
-;;     000242EC (in fn00023FD0)
+;;     000242E0 (in fn00023FD0)
 ;;     00024340 (in gvconv2dbbb_asm)
 ;;     00024564 (in gvconv2dbbb_asm)
 ;;     000245C0 (in gvconv2dbbb_asm)
@@ -9689,7 +9689,7 @@ l00024224:
 
 ;; fn00024264: 00024264
 ;;   Called from:
-;;     00024270 (in fn000241C4)
+;;     00024260 (in fn000241C4)
 ;;     00024500 (in gvconvsum2dbbb_asm)
 fn00024264 proc
 	{ r11 = memw(r29+48) }

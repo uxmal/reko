@@ -29,7 +29,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
 
 namespace Reko.Arch.Qualcomm
@@ -44,11 +43,13 @@ namespace Reko.Arch.Qualcomm
         private readonly IEnumerator<HexagonPacket> dasm;
         private readonly List<RtlInstruction> instrs;
         private readonly HashSet<RegisterStorage> registersRead;
-        private readonly List<RtlAssignment> deferredWrites;
-        private readonly List<RtlTransfer> deferredTransfers;
+        private readonly List<(RegisterStorage,Expression)> deferredWrites;
+        private readonly List<RtlInstruction> deferredTransfers;
+        private readonly List<(RegisterStorage, Identifier)> tmpCopies;
         private readonly RtlEmitter m;
         private HexagonPacket packet = default!;
         private InstrClass iclass;
+        private int microLabel;
 
         public HexagonRewriter(HexagonArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -61,8 +62,9 @@ namespace Reko.Arch.Qualcomm
             this.instrs = new List<RtlInstruction>();
             this.m = new RtlEmitter(instrs);
             this.registersRead = new HashSet<RegisterStorage>();
-            this.deferredWrites = new List<RtlAssignment>();
-            this.deferredTransfers = new List<RtlTransfer>();
+            this.deferredWrites = new List<(RegisterStorage, Expression)>();
+            this.deferredTransfers = new List<RtlInstruction>();
+            this.tmpCopies = new List<(RegisterStorage, Identifier)>();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -72,10 +74,14 @@ namespace Reko.Arch.Qualcomm
                 instrs.Clear();
                 registersRead.Clear();
                 deferredWrites.Clear();
+                deferredTransfers.Clear();
+                tmpCopies.Clear();
+                microLabel = 0;
                 this.packet = dasm.Current;
                 try
                 {
-                    ProcessPacket(packet);
+                    ProcessPacketInstructions(packet);
+                    ResolveDeferredInstructions(packet);
                 }
                 catch (ArgumentException ex)
                 {
@@ -91,10 +97,8 @@ namespace Reko.Arch.Qualcomm
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private void EmitUnitTest(HexagonPacket packet, string? mnemonic)
         {
@@ -102,7 +106,7 @@ namespace Reko.Arch.Qualcomm
             testGenSvc?.ReportMissingRewriter("HexagonRw", packet, mnemonic ?? "Unknown", rdr, "");
         }
 
-        private void ProcessPacket(HexagonPacket packet)
+        private void ProcessPacketInstructions(HexagonPacket packet)
         {
             foreach (var instr in packet.Instructions)
             {
@@ -115,7 +119,7 @@ namespace Reko.Arch.Qualcomm
                         instr.Address,
                         string.Format("Hexagon instruction '{0}' is not supported yet.", instr));
                     break;
-                case Mnemonic.ASSIGN: RewriteAssign(instr.Operands[0], instr.Operands[1]); break;
+                case Mnemonic.ASSIGN: RewriteAssign(instr); break;
                 case Mnemonic.ADDEQ: RewriteAugmentedAssign(instr.Operands[0], m.IAdd, instr.Operands[1]); break;
                 case Mnemonic.ANDEQ: RewriteAugmentedAssign(instr.Operands[0], m.And, instr.Operands[1]); break;
                 case Mnemonic.OREQ: RewriteAugmentedAssign(instr.Operands[0], m.Or, instr.Operands[1]); break;
@@ -137,10 +141,6 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.syncht: m.SideEffect(m.Fn(syncht_intrinsic)); break;
                 }
-                if (m.Instructions.Count > 0)
-                {
-                    m.Instructions.Last().Class = this.iclass;
-                }
             }
         }
 
@@ -149,15 +149,119 @@ namespace Reko.Arch.Qualcomm
         {
             switch (op)
             {
-            case RegisterStorage rop: return binder.EnsureRegister(rop);
+            case RegisterStorage reg: return UseReg(reg);
             case ImmediateOperand imm: return imm.Value;
             case AddressOperand addr: return addr.Address;
             case ApplicationOperand app: return RewriteApplication(app);
             case MemoryOperand mem: var src = RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
-            case RegisterPairOperand pair: return binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister);
+            case RegisterPairOperand pair: return UsePair(pair);
             case DecoratorOperand dec: return RewriteDecorator(dec);
             }
             throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} not implemented yet.");
+        }
+
+        private Identifier UsePair(RegisterPairOperand pair)
+        {
+            this.registersRead.Add(pair.HighRegister);
+            this.registersRead.Add(pair.LowRegister);
+            var id = binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister);
+            return id;
+        }
+
+        private Identifier UseReg(RegisterStorage reg)
+        {
+            this.registersRead.Add(reg);
+            var id = binder.EnsureRegister(reg);
+            return id;
+        }
+
+        private void AssignReg(RegisterStorage dst, Expression src)
+        {
+            deferredWrites.Add((dst, src));
+        }
+
+        private void Assign(Expression? dst, Expression src)
+        {
+            if (dst is null)
+                m.SideEffect(src);
+            else 
+                m.Assign(dst, src);
+        }
+
+        private void Branch(Expression cond, Address target)
+        {
+            deferredTransfers.Add(new RtlBranch(cond, target, InstrClass.ConditionalTransfer));
+        }
+
+        private void Call(Expression target)
+        {
+            deferredTransfers.Add(new RtlCall(target, 0, InstrClass.Transfer | InstrClass.Call));
+        }
+
+        private void Goto(Expression target)
+        {
+            deferredTransfers.Add(new RtlGoto(target, InstrClass.Transfer));
+        }
+
+        private void Return()
+        {
+            deferredTransfers.Add(new RtlReturn(0, 0, InstrClass.Transfer | InstrClass.Return));
+        }
+
+        /// <summary>
+        /// Rearrange the writes to registers and control flow statements as necessary.
+        /// </summary>
+        /// <remarks>
+        /// The VLIW nature of the Hexagon instruction packets must be decomposed correctly
+        /// to form linear basic blocks. According to the documentation, all instructions
+        /// in a packet execute simultaneously, but when the instructions are linearized,
+        /// false dependencies arise. This method introduces temporary variables to avoid
+        /// dependenicies in packets like:
+        /// <code>
+        /// { r2 = add(r1, #1); r1 = and(r2, #0xFF) }
+        /// </code>
+        /// The value of r2 is computed based on the value of r1 on entry, _not_ the value
+        /// computed by the `and` operation.
+        /// </remarks>
+        private void ResolveDeferredInstructions(HexagonPacket packet)
+        {
+            foreach (var (d, s) in this.deferredWrites)
+            {
+                // Writing to a register that isn't read in this packet is
+                // safe.
+                if (!this.registersRead.Contains(d))
+                {
+                    m.Assign(binder.EnsureRegister(d), s);
+                }
+                else
+                {
+                    // We need to defer updating a register value until
+                    // after all reads have completed. Copy the result
+                    // into a temporary register, if needed, then
+                    // place a record in tmpCopies
+                    if (s is not Identifier id || id.Storage is not TemporaryStorage)
+                    {
+                        id = binder.CreateTemporary(d.DataType);
+                        m.Assign(id, s);
+                    }
+                    tmpCopies.Add((d, id));
+                }
+            }
+
+            // After all reads have been computed, emit copies back
+            // to the written registers.
+            foreach (var (d, tmp) in tmpCopies)
+            {
+                if (this.registersRead.Contains(d))
+                {
+                    m.Assign(binder.EnsureRegister(d), tmp);
+                }
+            }
+
+            foreach (var instr in deferredTransfers)
+            {
+                m.Emit(instr);
+            }
         }
 
         private Expression RewriteDecorator(DecoratorOperand dec)
@@ -176,7 +280,7 @@ namespace Reko.Arch.Qualcomm
             if (dec.Carry)
             {
                 var app = (ApplicationOperand) dec.Operand;
-                var p = binder.EnsureRegister((RegisterStorage)app.Operands[2]);
+                var p = UseReg((RegisterStorage)app.Operands[2]);
                 exp = m.IAdd(exp!, p);
                 //$TODO: what about carry-out? it's in p.
                 return exp;
@@ -238,7 +342,7 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.memw_locked:
                     RewriteMemLockedDst(app, PrimitiveType.Word32, src); return;
                 }
-                m.Assign(RewriteApplication(app)!, src);
+                Assign(RewriteApplication(app)!, src);
                 return;
             }
             throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} {op} not implemented yet.");
@@ -382,10 +486,10 @@ namespace Reko.Arch.Qualcomm
             Expression ea;
             if (mem.Base != null)
             {
-                ea = binder.EnsureRegister(mem.Base);
+                ea = UseReg(mem.Base);
                 if (mem.Index != null)
                 {
-                    Expression index = binder.EnsureRegister(mem.Index);
+                    Expression index = UseReg(mem.Index);
                     if (mem.Shift > 0)
                     {
                         index = m.IMul(index, 1 << mem.Shift);
@@ -402,7 +506,7 @@ namespace Reko.Arch.Qualcomm
                 ea = Address.Ptr32((uint) mem.Offset);
                 if (mem.Index != null)
                 {
-                    var idx = binder.EnsureRegister(mem.Index);
+                    var idx = UseReg(mem.Index);
                     ea = m.IAdd(ea, idx);
                 }
             }
@@ -412,15 +516,16 @@ namespace Reko.Arch.Qualcomm
 
         private void MaybeEmitIncrement(MemoryOperand mem)
         {
-            if (mem.AutoIncrement != null)
+            if (mem.AutoIncrement is not null)
             {
-                var reg = binder.EnsureRegister(mem.Base!);
+                var reg = mem.Base!;
+                var id = UseReg(reg);
                 if (mem.AutoIncrement is int incr)
-                    m.Assign(reg, m.AddSubSignedInt(reg, incr));
+                    AssignReg(reg, m.AddSubSignedInt(id, incr));
                 else if (mem.AutoIncrement is RegisterStorage regIncr)
-                    m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(regIncr)));
+                    AssignReg(reg, m.IAdd(id, UseReg(regIncr)));
                 else
-                    m.Assign(reg, m.IAdd(reg, (Expression) mem.AutoIncrement));
+                    AssignReg(reg, m.IAdd(id, (Expression) mem.AutoIncrement));
             }
         }
 
@@ -442,6 +547,7 @@ namespace Reko.Arch.Qualcomm
             }
             return m.IAdd(a, b);
         }
+
         private Expression RewriteAddAsl(Expression a, Expression b, Expression c)
         {
             return m.IAdd(a, m.Shl(b, c));
@@ -450,24 +556,47 @@ namespace Reko.Arch.Qualcomm
         private void RewriteAllocFrame(MachineOperand opImm)
         {
             var ea = binder.CreateTemporary(PrimitiveType.Ptr32);
-            m.Assign(ea, m.ISubS(binder.EnsureRegister(Registers.sp), 8));
-            m.Assign(m.Mem32(ea), binder.EnsureRegister(Registers.fp));
-            m.Assign(m.Mem32(m.IAddS(ea, 4)), binder.EnsureRegister(Registers.lr));
-            m.Assign(binder.EnsureRegister(Registers.fp), ea);
-            m.Assign(binder.EnsureRegister(Registers.sp), m.ISubS(ea, ((ImmediateOperand) opImm).Value.ToInt32()));
+            Assign(ea, m.ISubS(UseReg(Registers.sp), 8));
+            Assign(m.Mem32(ea), UseReg(Registers.fp));
+            Assign(m.Mem32(m.IAddS(ea, 4)), UseReg(Registers.lr));
+            AssignReg(Registers.fp, ea);
+            AssignReg(Registers.sp, m.ISubS(ea, ((ImmediateOperand) opImm).Value.ToInt32()));
         }
 
-        private void RewriteAssign(MachineOperand opDst, MachineOperand opSrc)
+        private void RewriteAssign(HexagonInstruction instr)
         {
+            MachineOperand opSrc = instr.Operands[1];
+            MachineOperand opDst = instr.Operands[0];
+            //string? label = null;
+            //$TODO predicated code can contain code with side effects!
+            // E.g. if (p1) r2 = memb(r1++m0)
+            //if (instr.ConditionPredicate is not null)
+            //{
+            //    //var pred = RewritePredicateExpression(instr.ConditionPredicate, instr.ConditionInverted);
+            //    //pred = pred.Invert();
+            //    //label = GenerateLabel();
+            //    //m.MicroBranch(pred, label);
+            //}
+
             var src = OperandSrc(opSrc)!;
-            OperandDst(opDst, (l, r) => { m.Assign(l, r); }, src);
-            //$TODO: conditions.
+            OperandDst(opDst, (l, r) => { Assign(l, r); }, src);
+
+            //if (label is not null)
+            //{
+            //    m.MicroLabel(label);
+            //}
+        }
+
+        private string GenerateLabel()
+        {
+            ++microLabel;
+            return NamingPolicy.Instance.BlockName(packet.Address, microLabel);
         }
 
         private void RewriteAugmentedAssign(MachineOperand opDst, Func<Expression, Expression,Expression> fn, MachineOperand opSrc)
         {
             var src = OperandSrc(opSrc)!;
-            OperandDst(opDst, (l, r) => { m.Assign(l, fn(l, r)); }, src);
+            OperandDst(opDst, (l, r) => { Assign(l, fn(l, r)); }, src);
         }
 
 
@@ -478,7 +607,7 @@ namespace Reko.Arch.Qualcomm
                 var pred = RewritePredicateExpression(instr.ConditionPredicate, !instr.ConditionInverted);
                 m.BranchInMiddleOfInstruction(pred, instr.Address + 4, InstrClass.ConditionalTransfer);
             }
-            m.Call(OperandSrc(instr.Operands[0])!, 0);
+            Call(OperandSrc(instr.Operands[0])!);
         }
 
         private Expression RewriteCmp(DataType dt, Func<Expression,Expression,Expression> cmp, Expression a, Expression b)
@@ -506,20 +635,20 @@ namespace Reko.Arch.Qualcomm
         private void RewriteDeallocFrame()
         {
             var ea = binder.CreateTemporary(PrimitiveType.Ptr32);
-            m.Assign(ea, binder.EnsureRegister(Registers.fp));
-            m.Assign(binder.EnsureRegister(Registers.lr), m.Mem32(m.IAddS(ea, 4)));
-            m.Assign(binder.EnsureRegister(Registers.fp), m.Mem32(ea));
-            m.Assign(binder.EnsureRegister(Registers.sp), m.IAddS(ea, 8));
+            Assign(ea, binder.EnsureRegister(Registers.fp));
+            AssignReg(Registers.lr, m.Mem32(m.IAddS(ea, 4)));
+            AssignReg(Registers.fp, m.Mem32(ea));
+            AssignReg(Registers.sp, m.IAddS(ea, 8));
         }
 
         private void RewriteDeallocReturn()
         {
             var ea = binder.CreateTemporary(PrimitiveType.Ptr32);
-            m.Assign(ea, binder.EnsureRegister(Registers.fp));
-            m.Assign(binder.EnsureRegister(Registers.lr), m.Mem32(m.IAddS(ea, 4)));
-            m.Assign(binder.EnsureRegister(Registers.fp), m.Mem32(ea));
-            m.Assign(binder.EnsureRegister(Registers.sp), m.IAddS(ea, 8));
-            m.Return(0, 0);
+            Assign(ea, binder.EnsureRegister(Registers.fp));
+            AssignReg(Registers.lr, m.Mem32(m.IAddS(ea, 4)));
+            AssignReg(Registers.fp, m.Mem32(ea));
+            AssignReg(Registers.sp, m.IAddS(ea, 8));
+            Return();
         }
 
         private Expression RewriteExt(Expression e, PrimitiveType dtSlice, PrimitiveType dtResult)
@@ -556,11 +685,11 @@ namespace Reko.Arch.Qualcomm
                 //if (instr.ConditionPredicateNew)
                 //    throw new NotImplementedException(".NEW");
                 var cond = OperandSrc(instr.ConditionPredicate)!;
-                m.Branch(cond, aop.Address);
+                Branch(cond, aop.Address);
             }
             else
             {
-                m.Goto(aop.Address);
+                Goto(aop.Address);
             }
         }
 
@@ -570,12 +699,12 @@ namespace Reko.Arch.Qualcomm
             if (rop == Registers.lr)
             {
                 this.iclass = InstrClass.Transfer | InstrClass.Return;
-                m.Return(0, 0);
+                Return();
             }
             else
             {
                 var dst = binder.EnsureRegister(rop);
-                m.Goto(dst);
+                Goto(dst);
             }
         }
 
@@ -621,7 +750,7 @@ namespace Reko.Arch.Qualcomm
         private void RewriteRte()
         {
             m.SideEffect(m.Fn(rte_intrinsic));
-            m.Return(0, 0);
+            Return();;
         }
 
         private void RewriteSideEffect(InstrClass iclass, MachineOperand op)

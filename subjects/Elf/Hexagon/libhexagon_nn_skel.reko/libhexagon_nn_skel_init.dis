@@ -8,8 +8,9 @@ l00009440:
 	v4 = r29 - 8<i32>
 	Mem0[v4:word32] = r30
 	Mem0[v4 + 4<i32>:word32] = r31
+	v7 = v4 - 8<i32>
 	r30 = v4
-	r29 = v4 - 8<i32>
+	r29 = v7
 	Mem0[r29:word32] = r27
 	Mem0[r29 + 4<i32>:word32] = r24
 	r24 = PC
@@ -47,10 +48,11 @@ l0000949C:
 l000094A4:
 	r24 = Mem0[r29 + 4<i32>:word32]
 	r27 = Mem0[r29:word32]
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	v18 = v17 + 8<i32>
+	r29 = v18
 	return
 	// succ:  _init_exit
 _init_exit:

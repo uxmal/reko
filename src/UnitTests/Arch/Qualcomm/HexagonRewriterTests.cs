@@ -74,12 +74,13 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             Given_HexString("01C09DA0");
             AssertCode(     // { allocframe(+00000008) }
-                "0|L--|00100000(4): 5 instructions",
+                "0|L--|00100000(4): 6 instructions",
                 "1|L--|v3 = r29 - 8<i32>",
                 "2|L--|Mem0[v3:word32] = r30",
                 "3|L--|Mem0[v3 + 4<i32>:word32] = r31",
-                "4|L--|r30 = v3",
-                "5|L--|r29 = v3 - 8<i32>");
+                "4|L--|v7 = v3 - 8<i32>",
+                "5|L--|r30 = v3",
+                "6|L--|r29 = v7");
         }
 
         [Test]
@@ -138,8 +139,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("327DFF5B20C00078");
             AssertCode(     // { r0 = 00000001; call	00006AF8 }
                 "0|T--|00100000(8): 2 instructions",
-                "1|T--|call 000FFA64 (0)",
-                "2|L--|r0 = 1<32>");
+                "1|L--|r0 = 1<32>",
+                "2|T--|call 000FFA64 (0)");
         }
 
         [Test]
@@ -270,9 +271,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (p0.new) memw(r29+12) = r24; if (p0.new) r1 = 000000A2; if (!p0.new) jump:nt 00012F08; p0 = dfcmp.gt(r1:r0,r3:r2) }
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|p0 = r1_r0 > r3_r2",
-                "2|T--|if (p0) branch 000FFFBC",
-                "3|L--|r1 = 0xA2<32>",
-                "4|L--|Mem0[r29 + 12<i32>:word32] = r24");
+                "2|L--|r1 = 0xA2<32>",
+                "3|L--|Mem0[r29 + 12<i32>:word32] = r24",
+                "4|T--|if (p0) branch 000FFFBC");
         }
 
         [Test]
@@ -303,13 +304,13 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-        [Ignore("Sequencing NYI")]
         public void HexagonRw_jump_conditional_new()
         {
             Given_HexString("1040607054C00224C0FF9097");
             AssertCode(     // { if (cmp.eq(r16.new,00000000)) jump:nt	000070A0; r16 = r0 }
-                "0|L--|00100000(12): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(12): 2 instructions",
+                "1|L--|r16 = r0",
+                "2|T--|if (r16 == 0<32>) branch 001000A8");
         }
 
         [Test]
@@ -375,9 +376,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (!p0.new) r3 = memw(r19+20); if (p0.new) r1 = 00000039; if (!p0.new) jump:nt 00021708; p0 = sfcmp.gt(r2,r22) }
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|p0 = r2 > r22",
-                "2|T--|if (p0) branch 00100028",
-                "3|L--|r1 = 0x39<32>",
-                "4|L--|r3 = Mem0[r19 + 20<i32>:word32]");
+                "2|L--|r1 = 0x39<32>",
+                "3|L--|r3 = Mem0[r19 + 20<i32>:word32]",
+                "4|T--|if (p0) branch 00100028");
         }
 
         [Test]
@@ -423,20 +424,19 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|r1 = r4 - r26");
         }
 
-
-
         [Test]
         public void HexagonRw_store_rr()
         {
             Given_HexString("101CF4EB");
-            AssertCode(     // { allocframe(00000008); memd(r29+496) = r17:r16 }
-                "0|L--|00100000(4): 6 instructions",
+            AssertCode(     // { allocframe(00000008); memd(r29-16) = r17:r16 }
+                "0|L--|00100000(4): 7 instructions",
                 "1|L--|Mem0[r29 - 16<i32>:word64] = r17_r16",
                 "2|L--|v5 = r29 - 8<i32>",
                 "3|L--|Mem0[v5:word32] = r30",
                 "4|L--|Mem0[v5 + 4<i32>:word32] = r31",
-                "5|L--|r30 = v5",
-                "6|L--|r29 = v5 - 8<i32>");
+                "5|L--|v8 = v5 - 8<i32>",
+                "6|L--|r30 = v5",
+                "7|L--|r29 = v8");
         }
 
         [Test]
@@ -463,10 +463,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             Given_HexString("2E40C09114E0C09D");
             AssertCode(     // { r21:r20 = memd(r0++m0); r15:r14 = memd(r0+8) }
-                "0|L--|00100000(8): 3 instructions",
+                "0|L--|00100000(8): 4 instructions",
                 "1|L--|r15_r14 = Mem0[r0 + 8<i32>:word64]",
-                "2|L--|r0 = r0 + m0",
-                "3|L--|r21_r20 = Mem0[r0:word64]");
+                "2|L--|r21_r20 = Mem0[r0:word64]",
+                "3|L--|v7 = r0 + m0",
+                "4|L--|r0 = v7");
         }
 
         [Test]
@@ -474,10 +475,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             Given_HexString("2E40CB9114C0CB9D");
             AssertCode(     // { r21:r20 = memd(r11++m0); r15:r14 = memd(r11+8) }
-                "0|L--|00100000(8): 3 instructions",
+                "0|L--|00100000(8): 4 instructions",
                 "1|L--|r15_r14 = Mem0[r11 + 8<i32>:word64]",
-                "2|L--|r11 = r11 + m0",
-                "3|L--|r21_r20 = Mem0[r11:word64]");
+                "2|L--|r21_r20 = Mem0[r11:word64]",
+                "3|L--|v7 = r11 + m0",
+                "4|L--|r11 = v7");
         }
 
         [Test]
@@ -516,13 +518,14 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|__rte()",
                 "2|R--|return (0,0)");
         }
+
         [Test]
         public void HexagonRw_stop()
         {
             Given_HexString("00C06064");
             AssertCode(     // { stop(r0) }
                 "0|H--|00100000(4): 1 instructions",
-                "1|H--|__stop(r0)");
+                "1|L--|__stop(r0)");
         }
 
         [Test]
@@ -530,11 +533,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             Given_HexString("08C0C0AB");
             AssertCode(     // { memd(r0++#8) = r1:r0 }
-                "0|L--|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 3 instructions",
                 "1|L--|Mem0[r0:word64] = r1_r0",
-                "2|L--|r0 = r0 + 8<i32>");
+                "2|L--|v5 = r0 + 8<i32>",
+                "3|L--|r0 = v5");
         }
-
 
         [Test]
         public void HexagonRw_extract()
@@ -543,6 +546,19 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { r3 = extract(r3,00000001,00000019) }
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = CONVERT(SLICE(r3, ui25, 1), ui25, int32)");
+        }
+
+        [Test]
+        public void HexagonRw_dealloc_return()
+        {
+            Given_HexString("1e c0 1e 96");
+            AssertCode(     // { dealloc_return }
+                "0|R--|00100000(4): 5 instructions",
+                "1|L--|v3 = r30",
+                "2|L--|r31 = Mem0[v3 + 4<i32>:word32]",
+                "3|L--|r30 = Mem0[v3:word32]",
+                "4|L--|r29 = v3 + 8<i32>",
+                "5|R--|return (0,0)");
         }
 
         [Test]
@@ -575,11 +591,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "2|T--|call 00100304 (0)");
         }
 
-        [Test]
+         [Test]
         [Ignore("Conditional assignment")]
         public void HexagonRw_bitsclr()
         {
-            Given_HexString("AE408C8001478C85A7E627F9");
+            Given_HexString("AE408C8001478C85A 7E627F9");
             AssertCode(     // { if (!p1.new) r7 = or(r7,r6); p1 = bitsclr(r12,00000007); r15:r14 = neg(r13:r12) }
                 "0|L--|00100000(12): 3 instructions",
                 "1|L--|@@@",
@@ -621,8 +637,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { nop; jump	0000A604; r3 = togglebit(r3,0000001E) }
                 "0|L--|00100000(12): 3 instructions",
                 "1|L--|r3 = __invert_bit<word32,word32>(r3, 0x1E<32>)",
-                "2|T--|goto 000FFF5C",
-                "3|L--|nop");
+                "2|L--|nop",
+                "3|T--|goto 000FFF5C");
         }
 
         [Test]
@@ -645,6 +661,18 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        [Ignore("Conditional assignments")]
+        public void HexagonRw_ld_postinc_predicated()
+        {
+            Given_HexString("20E48A9B");
+            AssertCode(     // { if (p2) r0 = memw(r10++#4) }
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r0 = Mem0[r10:word32]",
+                "2|L--|v5 = r10 + 4<i32>",
+                "3|L--|r10 = v5");
+        }
+
+        [Test]
         public void HexagonRw_lsl()
         {
             Given_HexString("CC4A84C3CE4A8EC32BC00AB0");
@@ -662,8 +690,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { dcfetch	r1,00000000; if (p1) jumpr:nt	r31; p2 = bitsclr(r14,00000007) }
                 "0|T--|00100000(12): 3 instructions",
                 "1|L--|p2 = __bitsclr(r14, 7<32>)",
-                "2|R--|return (0,0)",
-                "3|L--|__dcfetch(r1, 0<32>)");
+                "2|L--|__dcfetch(r1, 0<32>)",
+                "3|R--|return (0,0)");
         }
 
         [Test]
@@ -735,9 +763,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (!p0.new) r6 = zxtb(r6); if (!p0.new) r8 = add(r8,00000001); if (p0.new) jump:nt	00008EF0; p0 = cmpb.gtu(r6,0F) }
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|p0 = SLICE(r6, byte, 0) >u SLICE(0xF<8>, byte, 0)",
-                "2|T--|if (p0) branch 0010019C",
-                "3|L--|r8 = r8 + 1<32>",
-                "4|L--|r6 = CONVERT(SLICE(r6, byte, 0), byte, uint32)");
+                "2|L--|r8 = r8 + 1<32>",
+                "3|L--|r6 = CONVERT(SLICE(r6, byte, 0), byte, uint32)",
+                "4|T--|if (p0) branch 0010019C");
         }
 
         [Test]
@@ -767,9 +795,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (!p0.new) r22 = 00000010; if (p0.new) r22 = 0000000A; if (p2) jump:nt	00008170; p0 = fastcorner9(p1,p0) }
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|p0 = __fastcorner9(p1, p0)",
-                "2|T--|if (p2) branch 0010001C",
-                "3|L--|r22 = 0xA<32>",
-                "4|L--|r22 = 0x10<32>");
+                "2|L--|r22 = 0xA<32>",
+                "3|L--|r22 = 0x10<32>",
+                "4|T--|if (p2) branch 0010001C");
         }
 
         [Test]
@@ -845,9 +873,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { if (!p0.new) r5:r4 = memd(r0+r2); if (!p0.new) r2 = add(r2,00000008); if (!p0.new) jump:t	00007704; p0 = any8(vcmpb.eq(r5:r4,r7:r6)) }
                 "0|T--|00100000(16): 4 instructions",
                 "1|L--|p0 = __any8(vcmp__eq<byte[8]>(r5_r4, r7_r6))",
-                "2|T--|if (p0) branch 00100000",
-                "3|L--|r2 = r2 + 8<32>",
-                "4|L--|r5_r4 = Mem0[r0 + r2:word64]");
+                "2|L--|r2 = r2 + 8<32>",
+                "3|L--|r5_r4 = Mem0[r0 + r2:word64]",
+                "4|T--|if (p0) branch 00100000");
         }
 
         [Test]
@@ -881,15 +909,13 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-        [Ignore("Sequencer")]
-        public void HexagonRw_maxu()
+        public void HexagonRw_max()
         {
-            //$BUG: sequence this so jump is last instr.
             Given_HexString("9151C0D508C00058");
             AssertCode(     // { jump	00007254; r17 = maxu(r0,r17) }
                 "0|T--|00100000(8): 2 instructions",
-                "1|L--|r17 = maxu(r0, r17)",
-                "2|L--|goto 00007254");
+                "1|L--|r17 = max<uint32>(r0, r17)",
+                "2|T--|goto 00100010");
         }
 
         [Test]
@@ -916,8 +942,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("3240016123C5028C");
             AssertCode(     // { r3 = lsr(r2,00000005); if (NE(r1,00000000)) jump:nt	00005494 }
                 "0|T--|00100000(8): 2 instructions",
-                "1|T--|if (r1 != 0<32>) branch 00100064",
-                "2|L--|r3 = r2 >>u 5<32>");
+                "1|L--|r3 = r2 >>u 5<32>",
+                "2|T--|if (r1 != 0<32>) branch 00100064");
         }
 
         [Test]
@@ -948,8 +974,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "0|T--|00100000(12): 4 instructions",
                 "1|L--|r1_r0 = __simd_shl<word64,word32>(r25_r24, 2<32>)",
                 "2|L--|p0 = r14 > 0<32>",
-                "3|T--|if (p0) branch 00100088",
-                "4|L--|r3_r2 = 0<64>");
+                "3|L--|r3_r2 = 0<64>",
+                "4|T--|if (p0) branch 00100088");
         }
 
         [Test]

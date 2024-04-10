@@ -66,6 +66,18 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Generates the name for a basic block starting at address <paramref name="addr"/>
+        /// with a numeric suffix <paramref name="suffix"/>.
+        /// </summary>
+        /// <returns>The name as a string.</returns>
+        /// 
+        public virtual string BlockName(Address addr, int suffix)
+        {
+            if (addr is null) throw new ArgumentNullException(nameof(addr));
+            return addr.GenerateName("l", suffix.ToString());
+        }
+
+        /// <summary>
         /// Generates the name for a basic block based on its <see cref="RtlLocation"/>.
         /// </summary>
         /// <param name="loc">Location of the basic block.</param>
