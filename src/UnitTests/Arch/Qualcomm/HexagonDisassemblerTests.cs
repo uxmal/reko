@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             this.arch = new HexagonArchitecture(CreateServiceContainer(), "hexagon", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr32(0x00100000);
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

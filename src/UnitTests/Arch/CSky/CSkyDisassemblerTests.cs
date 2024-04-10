@@ -31,7 +31,6 @@ namespace Reko.UnitTests.Arch.CSky
 
         public CSkyDisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new CSkyArchitecture(CreateServiceContainer(), "csky", new());
             this.addr = Address.Ptr32(0x10_0000);
         }
