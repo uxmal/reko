@@ -668,6 +668,14 @@ namespace Reko.Environments.SysV.ArchSpecific
             var instr = instrs.FirstOrDefault();
             if (instr == null)
                 return null;
+            // Eat leading nops; these are caused by endbr64 instructions.
+            if (instr is RtlNop)
+            {
+                instrs = instrs.Skip(1);
+                instr = instrs.FirstOrDefault();
+                if (instr is null)
+                    return null;
+            }
             // Match x86-64 pattern.
             // jmp [destination]
             Address? addrTarget = null;
