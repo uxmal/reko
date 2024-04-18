@@ -109,7 +109,7 @@ namespace Reko.Evaluation
                         return (exp, true);
                     }
                 }
-                conversion = new Conversion(exp, exp.DataType, conversion.DataType);
+                conversion = new Conversion(exp, conversion.SourceDataType, conversion.DataType);
             }
             exp = convertConvertRule.Match(conversion);
             if (exp is not null)

@@ -463,13 +463,16 @@ Eq_2219: (union "Eq_2219" (word32 u0) ((ptr16 code) u1))
 	T_4788 (in SEQ(SLICE(er0_921, word16, 16), 0x1FF2<16>) @ 00009770 : word32)
 	T_4851 (in SEQ(SLICE(er0_366, word16, 16), 0x1FF2<16>) @ 000095B4 : word32)
 	T_4979 (in SEQ(SLICE(er0_22, word16, 16), r6_18) @ 00009BCC : word32)
-Eq_2284: (fn byte ())
+Eq_2284: (fn uint8 ())
 	T_2284 (in fn00009B66 @ 00008A02 : ptr16)
 	T_2285 (in signature of fn00009B66 @ 00009B66 : void)
-Eq_2289: (fn bool (byte, byte))
+Eq_2289: (fn Eq_2295 (byte, byte))
 	T_2289 (in __btst<byte,byte> @ 00008A08 : ptr32)
 	T_2290 (in signature of __btst : void)
 	T_3952 (in __btst<byte,byte> @ 000094B4 : ptr32)
+Eq_2295: (union "Eq_2295" (1 u0) (bool u1))
+	T_2295 (in __btst<byte,byte>((byte) r0_257, 0<8>) @ 00008A08 : bool)
+	T_3955 (in __btst<byte,byte>(SLICE(r0_60, byte, 8), 7<8>) @ 000094B4 : bool)
 Eq_2334: (struct "Eq_2334" (0 word16 w0000) (2 word16 w0002))
 	T_2334 (in sp_14 + 2<i32> @ 00008ADC : word32)
 	T_2335 (in sp_473 @ 00008ADC : (ptr32 Eq_2334))
@@ -644,6 +647,8 @@ Eq_4946: (union "Eq_4946" (ptr32 u0) (word16 u1))
 	T_4946 (in r1Out @ 00009B82 : Eq_4946)
 	T_4949 (in out r1_12 @ 00009B82 : ptr32)
 	T_5356 (in r6_25 @ 00009E32 : Eq_4946)
+Eq_4957: (union "Eq_4957" (1 u0) (bool u1))
+	T_4957 (in SLICE(cond(SLICE(r1_12 + 1<16>, byte, 8)), bool, 0) @ 00009B82 : bool)
 Eq_4983: (struct "Eq_4983" (FFFF9F1E word16 wFFFF9F1E))
 	T_4983 (in SEQ(er0_16_16, r0 * 2<16>) @ 00009BF2 : word32)
 Eq_4988: (struct "Eq_4988" (FFFF9F1E word16 wFFFF9F1E))
@@ -9874,9 +9879,9 @@ T_2285: (in signature of fn00009B66 @ 00009B66 : void)
   OrigDataType: 
 T_2286: (in fn00009B66() @ 00008A02 : byte)
   Class: Eq_2286
-  DataType: byte
-  OrigDataType: byte
-T_2287: (in CONVERT(fn00009B66(), byte, uint16) @ 00008A02 : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_2287: (in CONVERT(fn00009B66(), uint8, uint16) @ 00008A02 : uint16)
   Class: Eq_2287
   DataType: uint16
   OrigDataType: uint16
@@ -9910,7 +9915,7 @@ T_2294: (in 0<8> @ 00008A08 : byte)
   OrigDataType: byte
 T_2295: (in __btst<byte,byte>((byte) r0_257, 0<8>) @ 00008A08 : bool)
   Class: Eq_2295
-  DataType: bool
+  DataType: Eq_2295
   OrigDataType: bool
 T_2296: (in 28<i32> @ 00008A00 : int32)
   Class: Eq_2296
@@ -13450,9 +13455,9 @@ T_3179: (in 1<8> @ 00009044 : byte)
   OrigDataType: byte
 T_3180: (in __bset<byte,byte>(r2l_210 << 1<i32>, (bool) cond(r2l_210 << 1<i32>), 0<8>) & 1<8> @ 00009044 : byte)
   Class: Eq_3180
-  DataType: byte
-  OrigDataType: byte
-T_3181: (in CONVERT(__bset<byte,byte>(r2l_210 << 1<i32>, (bool) cond(r2l_210 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 00009044 : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_3181: (in CONVERT(__bset<byte,byte>(r2l_210 << 1<i32>, (bool) cond(r2l_210 << 1<i32>), 0<8>) & 1<8>, uint8, uint16) @ 00009044 : uint16)
   Class: Eq_3181
   DataType: uint16
   OrigDataType: uint16
@@ -13930,9 +13935,9 @@ T_3299: (in 1<8> @ 000090FE : byte)
   OrigDataType: byte
 T_3300: (in __bset<byte,byte>(r2l_392 << 1<i32>, (bool) cond(r2l_392 << 1<i32>), 0<8>) & 1<8> @ 000090FE : byte)
   Class: Eq_3300
-  DataType: byte
-  OrigDataType: byte
-T_3301: (in CONVERT(__bset<byte,byte>(r2l_392 << 1<i32>, (bool) cond(r2l_392 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 000090FE : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_3301: (in CONVERT(__bset<byte,byte>(r2l_392 << 1<i32>, (bool) cond(r2l_392 << 1<i32>), 0<8>) & 1<8>, uint8, uint16) @ 000090FE : uint16)
   Class: Eq_3301
   DataType: uint16
   OrigDataType: uint16
@@ -16557,9 +16562,9 @@ T_3954: (in 7<8> @ 000094B4 : byte)
   OrigDataType: byte
 T_3955: (in __btst<byte,byte>(SLICE(r0_60, byte, 8), 7<8>) @ 000094B4 : bool)
   Class: Eq_2295
-  DataType: bool
-  OrigDataType: bool
-T_3956: (in CONVERT(__btst<byte,byte>(SLICE(r0_60, byte, 8), 7<8>), bool, uint16) @ 000094B4 : uint16)
+  DataType: Eq_2295
+  OrigDataType: (union (1 u2) (bool u1))
+T_3956: (in CONVERT(__btst<byte,byte>(SLICE(r0_60, byte, 8), 7<8>), 1, uint16) @ 000094B4 : uint16)
   Class: Eq_3956
   DataType: uint16
   OrigDataType: uint16
@@ -17317,9 +17322,9 @@ T_4144: (in SLICE(er5_234, word16, 16) @ 00009534 : word16)
   OrigDataType: word16
 T_4145: (in SLICE(er0_231, byte, 0) @ 0000953E : byte)
   Class: Eq_4145
-  DataType: byte
-  OrigDataType: byte
-T_4146: (in CONVERT(SLICE(er0_231, byte, 0), byte, uint16) @ 0000953E : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_4146: (in CONVERT(SLICE(er0_231, byte, 0), uint8, uint16) @ 0000953E : uint16)
   Class: Eq_1322
   DataType: uint16
   OrigDataType: uint16
@@ -20565,9 +20570,9 @@ T_4956: (in cond(SLICE(r1_12 + 1<16>, byte, 8)) @ 00009B82 : byte)
   OrigDataType: byte
 T_4957: (in SLICE(cond(SLICE(r1_12 + 1<16>, byte, 8)), bool, 0) @ 00009B82 : bool)
   Class: Eq_4957
-  DataType: bool
-  OrigDataType: bool
-T_4958: (in CONVERT(SLICE(cond(SLICE(r1_12 + 1<16>, byte, 8)), bool, 0), bool, uint16) @ 00009B82 : uint16)
+  DataType: Eq_4957
+  OrigDataType: (union (1 u1) (bool u0))
+T_4958: (in CONVERT(SLICE(cond(SLICE(r1_12 + 1<16>, byte, 8)), bool, 0), 1, uint16) @ 00009B82 : uint16)
   Class: Eq_4958
   DataType: uint16
   OrigDataType: uint16
@@ -22322,9 +22327,14 @@ typedef union Eq_2219 {
 	<anonymous> * u1;
 } Eq_2219;
 
-typedef byte (Eq_2284)();
+typedef uint8 (Eq_2284)();
 
-typedef bool (Eq_2289)(byte, byte);
+typedef Eq_2295 (Eq_2289)(byte, byte);
+
+typedef union Eq_2295 {
+	1 u0;
+	bool u1;
+} Eq_2295;
 
 typedef struct Eq_2334 {
 	word16 w0000;	// 0
@@ -22429,6 +22439,11 @@ typedef union Eq_4946 {
 	ptr32 u0;
 	word16 u1;
 } Eq_4946;
+
+typedef union Eq_4957 {
+	1 u0;
+	bool u1;
+} Eq_4957;
 
 typedef struct Eq_4983 {
 	word16 wFFFF9F1E;	// FFFF9F1E

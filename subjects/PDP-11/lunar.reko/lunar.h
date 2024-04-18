@@ -2599,8 +2599,8 @@ T_418: (in 0056 @ 04CC : ptr16)
 T_419: (in Mem49[0x0056<p16>:word16] @ 04CC : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
-T_420: (in CONVERT(Mem49[0x0056<p16>:word16], word16, uint32) @ 04CC : uint32)
+  OrigDataType: uint16
+T_420: (in CONVERT(Mem49[0x0056<p16>:word16], uint16, uint32) @ 04CC : uint32)
   Class: Eq_420
   DataType: uint32
   OrigDataType: uint32
@@ -2675,7 +2675,7 @@ T_437: (in Mem93[0x005C<p16>:word16] @ 04D8 : word16)
 T_438: (in Mem96[0x0056<p16>:word16] @ 04DC : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
+  OrigDataType: uint16
 T_439: (in Mem96[0x0052<p16>:word16] @ 04E0 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
@@ -2839,8 +2839,8 @@ T_478: (in 005A @ 0524 : ptr16)
 T_479: (in Mem143[0x005A<p16>:word16] @ 0524 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
-T_480: (in CONVERT(Mem143[0x005A<p16>:word16], word16, uint32) @ 0524 : uint32)
+  OrigDataType: uint16
+T_480: (in CONVERT(Mem143[0x005A<p16>:word16], uint16, uint32) @ 0524 : uint32)
   Class: Eq_480
   DataType: uint32
   OrigDataType: uint32
@@ -2915,7 +2915,7 @@ T_497: (in Mem187[0x005E<p16>:word16] @ 0530 : word16)
 T_498: (in Mem190[0x005A<p16>:word16] @ 0534 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
+  OrigDataType: uint16
 T_499: (in -r3_168 @ 052E : word16)
   Class: Eq_487
   DataType: word16
@@ -2995,8 +2995,8 @@ T_517: (in 0048 @ 055E : ptr16)
 T_518: (in Mem5[0x0048<p16>:word16] @ 055E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
-T_519: (in CONVERT(Mem5[0x0048<p16>:word16], word16, uint32) @ 055E : uint32)
+  OrigDataType: uint16
+T_519: (in CONVERT(Mem5[0x0048<p16>:word16], uint16, uint32) @ 055E : uint32)
   Class: Eq_519
   DataType: uint32
   OrigDataType: uint32
@@ -3067,7 +3067,7 @@ T_535: (in Mem47[0x0046<p16>:word16] @ 056A : word16)
 T_536: (in Mem50[0x0048<p16>:word16] @ 056E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
-  OrigDataType: word16
+  OrigDataType: uint16
 T_537: (in fn0444 @ 0572 : ptr16)
   Class: Eq_537
   DataType: (ptr16 Eq_537)
@@ -8180,7 +8180,7 @@ T_1814: (in (r2_24 & 0x8000<16>) != 0<16> @ 1164 : bool)
   Class: Eq_1814
   DataType: bool
   OrigDataType: bool
-T_1815: (in CONVERT(r1, word16, uint32) @ 11AA : uint32)
+T_1815: (in CONVERT(r1, uint16, uint32) @ 11AA : uint32)
   Class: Eq_1815
   DataType: uint32
   OrigDataType: uint32
@@ -8244,7 +8244,7 @@ T_1830: (in (r2_37 & 0x8000<16>) != 0<16> @ 1168 : bool)
   Class: Eq_1830
   DataType: bool
   OrigDataType: bool
-T_1831: (in CONVERT(r1, word16, uint32) @ 11B4 : uint32)
+T_1831: (in CONVERT(r1, uint16, uint32) @ 11B4 : uint32)
   Class: Eq_1831
   DataType: uint32
   OrigDataType: uint32
@@ -8308,7 +8308,7 @@ T_1846: (in (r2_59 & 0x8000<16>) != 0<16> @ 116C : bool)
   Class: Eq_1846
   DataType: bool
   OrigDataType: bool
-T_1847: (in CONVERT(r1, word16, uint32) @ 11BE : uint32)
+T_1847: (in CONVERT(r1, uint16, uint32) @ 11BE : uint32)
   Class: Eq_1847
   DataType: uint32
   OrigDataType: uint32
@@ -8372,7 +8372,7 @@ T_1862: (in (r2_81 & 0x8000<16>) != 0<16> @ 1170 : bool)
   Class: Eq_1862
   DataType: bool
   OrigDataType: bool
-T_1863: (in CONVERT(r1, word16, uint32) @ 11C8 : uint32)
+T_1863: (in CONVERT(r1, uint16, uint32) @ 11C8 : uint32)
   Class: Eq_1863
   DataType: uint32
   OrigDataType: uint32
@@ -8436,7 +8436,7 @@ T_1878: (in (r2_103 & 0x8000<16>) != 0<16> @ 1174 : bool)
   Class: Eq_1878
   DataType: bool
   OrigDataType: bool
-T_1879: (in CONVERT(r1, word16, uint32) @ 11D2 : uint32)
+T_1879: (in CONVERT(r1, uint16, uint32) @ 11D2 : uint32)
   Class: Eq_1879
   DataType: uint32
   OrigDataType: uint32
@@ -8500,7 +8500,7 @@ T_1894: (in (r2_125 & 0x8000<16>) != 0<16> @ 1178 : bool)
   Class: Eq_1894
   DataType: bool
   OrigDataType: bool
-T_1895: (in CONVERT(r1, word16, uint32) @ 11DC : uint32)
+T_1895: (in CONVERT(r1, uint16, uint32) @ 11DC : uint32)
   Class: Eq_1895
   DataType: uint32
   OrigDataType: uint32
@@ -8564,7 +8564,7 @@ T_1910: (in (r2_147 & 0x8000<16>) != 0<16> @ 117C : bool)
   Class: Eq_1910
   DataType: bool
   OrigDataType: bool
-T_1911: (in CONVERT(r1, word16, uint32) @ 11E6 : uint32)
+T_1911: (in CONVERT(r1, uint16, uint32) @ 11E6 : uint32)
   Class: Eq_1911
   DataType: uint32
   OrigDataType: uint32
@@ -8628,7 +8628,7 @@ T_1926: (in (r2_169 & 0x8000<16>) != 0<16> @ 1180 : bool)
   Class: Eq_1926
   DataType: bool
   OrigDataType: bool
-T_1927: (in CONVERT(r1, word16, uint32) @ 11F0 : uint32)
+T_1927: (in CONVERT(r1, uint16, uint32) @ 11F0 : uint32)
   Class: Eq_1927
   DataType: uint32
   OrigDataType: uint32
@@ -8692,7 +8692,7 @@ T_1942: (in (r2_191 & 0x8000<16>) != 0<16> @ 1184 : bool)
   Class: Eq_1942
   DataType: bool
   OrigDataType: bool
-T_1943: (in CONVERT(r1, word16, uint32) @ 11FA : uint32)
+T_1943: (in CONVERT(r1, uint16, uint32) @ 11FA : uint32)
   Class: Eq_1943
   DataType: uint32
   OrigDataType: uint32
@@ -8756,7 +8756,7 @@ T_1958: (in (r2_213 & 0x8000<16>) != 0<16> @ 1188 : bool)
   Class: Eq_1958
   DataType: bool
   OrigDataType: bool
-T_1959: (in CONVERT(r1, word16, uint32) @ 1204 : uint32)
+T_1959: (in CONVERT(r1, uint16, uint32) @ 1204 : uint32)
   Class: Eq_1959
   DataType: uint32
   OrigDataType: uint32
@@ -8820,7 +8820,7 @@ T_1974: (in (r2_235 & 0x8000<16>) != 0<16> @ 118C : bool)
   Class: Eq_1974
   DataType: bool
   OrigDataType: bool
-T_1975: (in CONVERT(r1, word16, uint32) @ 120E : uint32)
+T_1975: (in CONVERT(r1, uint16, uint32) @ 120E : uint32)
   Class: Eq_1975
   DataType: uint32
   OrigDataType: uint32
@@ -8884,7 +8884,7 @@ T_1990: (in (r2_257 & 0x8000<16>) != 0<16> @ 1190 : bool)
   Class: Eq_1990
   DataType: bool
   OrigDataType: bool
-T_1991: (in CONVERT(r1, word16, uint32) @ 1218 : uint32)
+T_1991: (in CONVERT(r1, uint16, uint32) @ 1218 : uint32)
   Class: Eq_1991
   DataType: uint32
   OrigDataType: uint32
@@ -8948,7 +8948,7 @@ T_2006: (in (r2_279 & 0x8000<16>) != 0<16> @ 1194 : bool)
   Class: Eq_2006
   DataType: bool
   OrigDataType: bool
-T_2007: (in CONVERT(r1, word16, uint32) @ 1222 : uint32)
+T_2007: (in CONVERT(r1, uint16, uint32) @ 1222 : uint32)
   Class: Eq_2007
   DataType: uint32
   OrigDataType: uint32
@@ -8996,7 +8996,7 @@ T_2018: (in (r2_301 & 0x8000<16>) != 0<16> @ 1198 : bool)
   Class: Eq_2018
   DataType: bool
   OrigDataType: bool
-T_2019: (in CONVERT(r1, word16, uint32) @ 122C : uint32)
+T_2019: (in CONVERT(r1, uint16, uint32) @ 122C : uint32)
   Class: Eq_2019
   DataType: uint32
   OrigDataType: uint32
@@ -9016,7 +9016,7 @@ T_2023: (in v91_429 @ 1236 : ui32)
   Class: Eq_2023
   DataType: ui32
   OrigDataType: ui32
-T_2024: (in CONVERT(r1, word16, uint32) @ 1236 : uint32)
+T_2024: (in CONVERT(r1, uint16, uint32) @ 1236 : uint32)
   Class: Eq_2024
   DataType: uint32
   OrigDataType: uint32
@@ -9024,15 +9024,15 @@ T_2025: (in v91_429 + (uint32) r1 @ 1236 : ui32)
   Class: Eq_2025
   DataType: uint32
   OrigDataType: uint32
-T_2026: (in SLICE(v91_429 + CONVERT(r1, word16, uint32), word16, 16) @ 1236 : word16)
+T_2026: (in SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16) @ 1236 : word16)
   Class: Eq_2026
   DataType: word16
   OrigDataType: word16
-T_2027: (in cond(SLICE(v91_429 + CONVERT(r1, word16, uint32), word16, 16)) @ 1236 : byte)
+T_2027: (in cond(SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16)) @ 1236 : byte)
   Class: Eq_2027
   DataType: byte
   OrigDataType: byte
-T_2028: (in SLICE(cond(SLICE(v91_429 + CONVERT(r1, word16, uint32), word16, 16)), bool, 0) @ 1236 : bool)
+T_2028: (in SLICE(cond(SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16)), bool, 0) @ 1236 : bool)
   Class: Eq_799
   DataType: bool
   OrigDataType: bool

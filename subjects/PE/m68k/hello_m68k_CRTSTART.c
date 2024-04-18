@@ -39,7 +39,7 @@ void fn00002264(byte * dwArg04)
 {
 	if (dwArg04 != null)
 	{
-		byte v13_n = *dwArg04;
+		uint8 v13_n = *dwArg04;
 		if (v13_n != 0x00)
 		{
 			byte * a2_n = dwArg04;

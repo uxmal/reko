@@ -258,12 +258,13 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             Given_Bytes(0x66, 0xB1);	// bit.b	@sp,r6
             AssertCode(
-                "0|L--|0100(2): 5 instructions",
+                "0|L--|0100(2): 6 instructions",
                 "1|L--|v5 = Mem0[sp:byte]",
-                "2|L--|v6 = r6 & v5",
-                "3|L--|NZ = cond(v6)",
-                "4|L--|C = Test(NE,v6)",
-                "5|L--|V = false");
+                "2|L--|v6 = CONVERT(v5, byte, word16)",
+                "3|L--|v7 = r6 & v6",
+                "4|L--|NZ = cond(v7)",
+                "5|L--|C = Test(NE,v7)",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -403,6 +404,17 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|r14 = r14 + 1<16>",
                 "2|L--|VNZC = cond(r14)");
+        }
+
+        [Test]
+        public void Msp430rw_regression1()
+        {
+            Given_HexString("5F 4C 04 00");
+            AssertCode(         // mov.b 0004(r12),r15
+                "0|L--|0100(4): 3 instructions",
+                "1|L--|v4 = Mem0[r12 + 4<i16>:byte]",
+                "2|L--|v6 = CONVERT(v4, byte, word16)",
+                "3|L--|r15 = v6");
         }
     }
 }

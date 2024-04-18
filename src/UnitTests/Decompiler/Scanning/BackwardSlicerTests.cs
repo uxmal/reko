@@ -608,7 +608,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
             Console.WriteLine(bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), byte, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), uint8, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], int16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
@@ -692,7 +692,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), byte, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), uint8, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], int16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
@@ -818,7 +818,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("CONVERT(v3 * 4<16>, word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(v3 * 4<16>, int16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
         }
@@ -1278,7 +1278,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.IsTrue(bwslc.Start(b1750, 4, Target(b1750)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("0x00017580<p32> + CONVERT(Mem0[0x00001758<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32) * 2<i32>:word16], word16, int32)", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("0x00017580<p32> + CONVERT(Mem0[0x00001758<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32) * 2<i32>:word16], int16, int32)", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,6]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("00001752", bwslc.GuardInstrAddress.ToString());

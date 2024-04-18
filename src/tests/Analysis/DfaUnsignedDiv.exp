@@ -10,7 +10,7 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	Mem10[0x123404<32>:word32] = CONVERT(Mem0[0x123400<32>:word32], word32, uint64) /u 0x2A<32>
+	Mem10[0x123404<32>:word32] = CONVERT(Mem0[0x123400<32>:word32], uint32, uint64) /u 0x2A<32>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

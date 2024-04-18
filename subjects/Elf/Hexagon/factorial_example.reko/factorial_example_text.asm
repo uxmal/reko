@@ -5278,7 +5278,7 @@ __hexagon_adddf3 proc
 	{ if (!p3) jump:nt 0000A764; if (p2) r1:r0 = combine(r3,r2); if (p2) r3:r2 = combine(r1,r0); if (p2) r5:r4 = combine(r4,r5) }
 
 l0000A630:
-	{ r13:r12 = insert(r0,#0x34,#0xC); r9:r8 = insert(r2,#0x34,#0xC); r15 = sub(r4,r5); r7:r6 = combine(#0x3E,#0x1) }
+	{ r13:r12 = insert(r1:r0,#0x34,#0xC); r9:r8 = insert(r3:r2,#0x34,#0xC); r15 = sub(r4,r5); r7:r6 = combine(#0x3E,#0x1) }
 
 l0000A640:
 	{ r15 = min(r7,r15); r11:r10 = neg(r13:r12); p2 = cmp.gt(r1,#0xFFFFFFFF); r14 = #0x0 }
@@ -5332,7 +5332,7 @@ l0000A79C:
 
 l0000A7AC:
 	{ r4 = extractu(r1,#0xB,#0x13); r9:r8 = asl(r9:r8,#0x9); r5 = #0x1 }
-	{ r13:r12 = insert(r0,#0x34,#0xC); jump 0000A640; r15 = sub(r4,r5); r7:r6 = combine(#0x3E,#0x1) }
+	{ r13:r12 = insert(r1:r0,#0x34,#0xC); jump 0000A640; r15 = sub(r4,r5); r7:r6 = combine(#0x3E,#0x1) }
 
 l0000A7C8:
 	{ r13:r12 = extractu(r1:r0,#0x3F,#0x7); r9:r8 = extractu(r3:r2,#0x3F,#0x7) }
@@ -5370,11 +5370,11 @@ l0000A85C:
 ;;     00008C84 (in _LXp_sqrtx)
 __hexagon_divdf3 proc
 	{ p3 = dfclass(r1:r0,#0x2); p3 = dfclass(r3:r2,#0x2); immext(#0x40000000); r15:r14 = combine(#0x40000000,#0x0) }
-	{ if (!p3) jump:nt 0000AA18; r15:r14 = insert(r0,#0x34,#0xC); r13:r12 = combine(r15,r14); r7:r6 = combine(#0x0,#0x0) }
+	{ if (!p3) jump:nt 0000AA18; r15:r14 = insert(r1:r0,#0x34,#0xC); r13:r12 = combine(r15,r14); r7:r6 = combine(#0x0,#0x0) }
 
 l0000A8A0:
 	{ r4 = extractu(r1,#0xB,#0x13); r5 = extractu(r3,#0xB,#0x13); r11:r10 = combine(#0x0,#0x1) }
-	{ loop0(0000A8BC,#0x18); r13:r12 = insert(r2,#0x34,#0xC); r9:r8 = combine(r15,r14); r4 = sub(r4,r5) }
+	{ loop0(0000A8BC,#0x18); r13:r12 = insert(r3:r2,#0x34,#0xC); r9:r8 = combine(r15,r14); r4 = sub(r4,r5) }
 	{ r15:r14 = sub(r9:r8,r13:r12) }
 	{ p0 = cmp.gt(r15,#0xFFFFFFFF); if (!p0) r9:r8 = combine(r15,r14) }
 	{ r7:r6 = add(r7:r6,r7:r6,p0):carry; r9:r8 = asl(r9:r8,#0x1) }
@@ -5419,7 +5419,7 @@ l0000A9D4:
 	{ immext(#0x7FF00000); r13:r12 = combine(#0x7FF00000,#0x0); r7 = extractu(r28,#0x2,#0x12); r28 = or(r28,#0x28) }
 	{ USR = r28; XOREQ r7,lsr(r1,#0x1F); r6 = r7 }
 	{ p0 = !cmp.eq(r6,00000001); p0 = dfcmp.eq(r15:r14,r15:r14); p0 = !cmp.eq(r7,00000002); if (!p0) r15:r14 = combine(r13,r12) }
-	{ r1:r0 = insert(r14,#0x3F,#0x7); jumpr r31 }
+	{ r1:r0 = insert(r15:r14,#0x3F,#0x7); jumpr r31 }
 
 l0000AA18:
 	{ p0 = dfclass(r1:r0,#0xF); p0 = dfclass(r3:r2,#0xF) }
@@ -5433,19 +5433,19 @@ l0000AA38:
 	{ p1 = dfclass(r1:r0,#0x7); p1 = dfclass(r3:r2,#0xE) }
 	{ if (!p0) jump:nt 0000AAB0; if (!p1) jump:nt 0000AAC0 }
 	{ p0 = dfclass(r1:r0,#0x2); p1 = dfclass(r3:r2,#0x2); r15:r14 = combine(#0x0,#0x0); r13:r12 = combine(#0x0,#0x0) }
-	{ r15:r14 = insert(r0,#0x34,#0xC); r13:r12 = insert(r2,#0x34,#0xC); immext(#0x40000000); r28 = #0x40000000 }
+	{ r15:r14 = insert(r1:r0,#0x34,#0xC); r13:r12 = insert(r3:r2,#0x34,#0xC); immext(#0x40000000); r28 = #0x40000000 }
 	{ r4 = extractu(r1,#0xB,#0x13); r5 = extractu(r3,#0xB,#0x13); if (p0) r15 = or(r15,r28); if (p1) r13 = or(r13,r28) }
 	{ r7 = add(clb(r14),#0xFFFFFFFE); r6 = add(clb(r12),#0xFFFFFFFE); r11:r10 = combine(#0x0,#0x1) }
 	{ r15:r14 = asl(r15:r14,r7); r13:r12 = asl(r13:r12,r6); if (!p0) r4 = sub(r10,r7); if (!p1) r5 = sub(r10,r6) }
 	{ jump 0000A90C; r7:r6 = combine(#0x0,#0x0); r9:r8 = combine(r15,r14); r4 = sub(r4,r5) }
 	{ r1:r0 = xor(r1:r0,r3:r2); r3:r2 = combine(#0x0,#0x0) }
-	{ r1:r0 = insert(r2,#0x3F,#0x7); jumpr r31 }
+	{ r1:r0 = insert(r3:r2,#0x3F,#0x7); jumpr r31 }
 	{ p2 = dfclass(r3:r2,#0x1); p2 = dfclass(r1:r0,#0x7) }
 	{ r28 = USR; if (!p2) jump:nt 0000AADC; r1 = xor(r1,r3) }
 	{ r28 = or(r28,#0x4) }
 	{ USR = r28 }
 	{ immext(#0x7FF00000); r3:r2 = combine(#0x7FF00000,#0x0); p0 = dfcmp.uo(r3:r2,r3:r2) }
-	{ r1:r0 = insert(r2,#0x3F,#0x7); jumpr r31 }
+	{ r1:r0 = insert(r3:r2,#0x3F,#0x7); jumpr r31 }
 
 l0000AAF0:
 	{ p0 = dfclass(r1:r0,#0x10); p1 = dfclass(r3:r2,#0x10); if (!p0.new) r1:r0 = combine(r3,r2); if (!p1.new) r3:r2 = combine(r1,r0) }
@@ -5462,8 +5462,8 @@ l0000AB10:
 ;;     00008844 (in _LXp_mulh)
 __hexagon_fast_muldf3 proc
 	{ p0 = dfclass(r1:r0,#0x2); p0 = dfclass(r3:r2,#0x2); immext(#0x40000000); r13:r12 = combine(#0x40000000,#0x0) }
-	{ r13:r12 = insert(r0,#0x34,#0xC); r5:r4 = asl(r3:r2,#0xA); r28 = #0xFFFFFC00; r9:r8 = combine(#0x0,#0x1) }
-	{ r7:r6 = mpyu(r4,r13); r5:r4 = insert(r8,#0x2,#0x3A) }
+	{ r13:r12 = insert(r1:r0,#0x34,#0xC); r5:r4 = asl(r3:r2,#0xA); r28 = #0xFFFFFC00; r9:r8 = combine(#0x0,#0x1) }
+	{ r7:r6 = mpyu(r4,r13); r5:r4 = insert(r9:r8,#0x2,#0x3A) }
 	{ r15:r14 = mpyu(r12,r4) }
 	{ r7:r6 += lsr(r15:r14,#0x20); r11:r10 = mpyu(r13,r5); immext(#0x7C0); r5:r4 = combine(#0x7FC,#0x0) }
 	{ r11:r10 += lsr(r7:r6,#0x20); if (!p0) jump:nt 0000ACC4; p1 = cmp.eq(r14,#0x0); p1 = cmp.eq(r6,#0x0) }
@@ -5507,7 +5507,7 @@ l0000AC80:
 	{ r14 = extractu(r28,#0x2,#0x12); r28 = or(r28,#0x28); immext(#0x7FF00000); r5:r4 = combine(#0x7FF00000,#0x0) }
 	{ USR = r28; XOREQ r14,lsr(r1,#0x1F); r28 = r14 }
 	{ p0 = !cmp.eq(r28,00000001); p0 = dfcmp.eq(r1:r0,r1:r0); p0 = !cmp.eq(r14,00000002); if (!p0) r13:r12 = combine(r5,r4) }
-	{ r1:r0 = insert(r12,#0x3F,#0x7); jumpr r31 }
+	{ r1:r0 = insert(r13:r12,#0x3F,#0x7); jumpr r31 }
 
 l0000ACC4:
 	{ r13:r12 = extractu(r1:r0,#0x3F,#0x7); r5:r4 = extractu(r3:r2,#0x3F,#0x7) }
@@ -5527,10 +5527,10 @@ l0000AD10:
 	{ r28 = cl0(r5:r4) }
 	{ r28 = add(r28,#0xFFFFFFF5) }
 	{ r5:r4 = asl(r5:r4,r28) }
-	{ r3:r2 = insert(r4,#0x3F,#0x7); r1 -= asl(r28,#0x14) }
+	{ r3:r2 = insert(r5:r4,#0x3F,#0x7); r1 -= asl(r28,#0x14) }
 	{ jump __hexagon_fast_muldf3 }
 	{ r28 = USR; r1:r0 = xor(r1:r0,r3:r2) }
-	{ r1:r0 = insert(r8,#0x3F,#0x7); r5 = extractu(r28,#0x2,#0x12); r28 = or(r28,#0x30) }
+	{ r1:r0 = insert(r9:r8,#0x3F,#0x7); r5 = extractu(r28,#0x2,#0x12); r28 = or(r28,#0x30) }
 	{ USR = r28; XOREQ r5,lsr(r1,#0x1F); p0 = cmp.gt(r5,#0x1); if (!p0.new) r0 = #0x0 }
 	{ if (!p0.new) r0 = #0x0; p0 = cmp.eq(r5,#0x3); jumpr r31 }
 
@@ -5561,7 +5561,7 @@ fn0000ADC0 proc
 	{ p3 = dfclass(r1:r0,#0x2); if (!p3.new) jump:nt 0000AE4C; immext(#0x10000000); r15:r14 = combine(#0x10000000,#0x0) }
 
 l0000ADD0:
-	{ r15:r14 = insert(r0,#0x34,#0xC); r4 = extractu(r1,#0xB,#0x13); r7:r6 = combine(r15,r14) }
+	{ r15:r14 = insert(r1:r0,#0x34,#0xC); r4 = extractu(r1,#0xB,#0x13); r7:r6 = combine(r15,r14) }
 
 l0000ADDC:
 	{ loop0(0000AE04,#0x18); p1 = cmp.gt(r1,#-0x1); if (!p1.new) jump:nt 0000AE94; r28 = #0x3FF }

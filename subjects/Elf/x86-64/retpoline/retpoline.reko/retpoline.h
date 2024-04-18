@@ -426,7 +426,7 @@ T_88: (in edi << 2<32> >= esi << 2<32> @ 00000000004005FC : bool)
   Class: Eq_88
   DataType: bool
   OrigDataType: bool
-T_89: (in CONVERT(edi, word32, int64) @ 0000000000400625 : int64)
+T_89: (in CONVERT(edi, int32, int64) @ 0000000000400625 : int64)
   Class: Eq_89
   DataType: int64
   OrigDataType: int64
@@ -438,7 +438,7 @@ T_91: (in (int64) edi /32 2<32> @ 0000000000400625 : int32)
   Class: Eq_91
   DataType: int32
   OrigDataType: int32
-T_92: (in CONVERT(esi, word32, int64) @ 0000000000400625 : int64)
+T_92: (in CONVERT(esi, int32, int64) @ 0000000000400625 : int64)
   Class: Eq_92
   DataType: int64
   OrigDataType: int64

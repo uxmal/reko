@@ -3484,7 +3484,7 @@ l00402B3A:
 		int32 r4_n;
 		word32 r7_n;
 		r3 = poll(r20_n, out r4_n, out r7_n);
-		if (r4_n <= 0x00 || true)
+		if (r4_n <= 0x00 || ((word32) 0x00 & 0x09) == 0x00)
 			continue;
 l00402BD8:
 l00402B3C:

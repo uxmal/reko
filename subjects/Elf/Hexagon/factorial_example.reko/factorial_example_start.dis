@@ -252,7 +252,7 @@ l00000124:
 	p0 = !p0
 	r1 = p0
 	r0 = syscfg
-	r0 = __insert(1<32>, 1<32>)
+	r0 = __insert<word32>(1<32>, 1<32>)
 	syscfg = r0
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FC0<16>)
@@ -261,7 +261,7 @@ l00000124:
 	p0 = !p0
 	r1 = p0
 	r0 = syscfg
-	r0 = __insert(1<32>, 9<32>)
+	r0 = __insert<word32>(1<32>, 9<32>)
 	syscfg = r0
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FD0<16>)
@@ -270,7 +270,7 @@ l00000124:
 	p0 = !p0
 	r1 = p0
 	r0 = syscfg
-	r0 = __insert(1<32>, 9<32>)
+	r0 = __insert<word32>(1<32>, 9<32>)
 	syscfg = r0
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FE0<16>)
@@ -279,7 +279,7 @@ l00000124:
 	p0 = !p0
 	r1 = p0
 	r0 = ssr
-	r0 = __insert(1<32>, 0x19<32>)
+	r0 = __insert<word32>(1<32>, 0x19<32>)
 	ssr = r0
 	r0 = rev
 	r0 = r0 & 0xFF<32>
@@ -295,10 +295,10 @@ l000004E8:
 l000004F8:
 	r0 = ccr
 	r3 = 0<32>
-	r0 = __insert(4<32>, 0x14<32>)
+	r0 = __insert<word32>(4<32>, 0x14<32>)
 	ccr = r0
 	r0 = syscfg
-	r0 = __insert(3<32>, 0x13<32>)
+	r0 = __insert<word32>(3<32>, 0x13<32>)
 	__isync()
 	r1 = rev
 	r1 = r1 & 0xFF<32>
@@ -319,7 +319,7 @@ l00000538:
 	r3 = SEQ(SLICE(r3, word16, 16), 0x3F00<16>)
 	r3 = Mem0[r3:word32]
 	r3 = min<int32>(r3, r2)
-	r0 = __insert(3<32>, 0x13<32>)
+	r0 = __insert<word32>(3<32>, 0x13<32>)
 	syscfg = r0
 	__isync()
 	// succ:  l00000570
@@ -331,8 +331,8 @@ l00000570:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3F30<16>)
 	r0 = Mem0[r0:word32]
 	r2 = syscfg
-	r2 = __insert(1<32>, 1<32>)
-	r2 = __insert(1<32>, 1<32>)
+	r2 = __insert<word32>(1<32>, 1<32>)
+	r2 = __insert<word32>(1<32>, 1<32>)
 	r0 = rev
 	r0 = r0 & 0xFF<32>
 	p0 = r0 == 2<32>
@@ -351,7 +351,7 @@ l000005B8:
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
 	r1 = SEQ(SLICE(r1, word16, 16), 0x3F50<16>)
 	r1 = Mem0[r1:word32]
-	r2 = __insert(1<32>, 0x11<32>)
+	r2 = __insert<word32>(1<32>, 0x11<32>)
 	// succ:  l000005C8
 l000005C8:
 	syscfg = r2
@@ -364,7 +364,7 @@ l000005C8:
 	r1 = SEQ(SLICE(r1, word16, 16), 0x3F40<16>)
 	r1 = Mem0[r1:word32]
 	r0 = r0 | r1 << 1<32>
-	r2 = __insert(2<32>, 0x12<32>)
+	r2 = __insert<word32>(2<32>, 0x12<32>)
 	r2 = __set_bit<word32,word32>(r2, 8<32>)
 	ccr = r2
 	r0 = r0 & 0<32>
@@ -415,7 +415,7 @@ l0000065C:
 	r0 = syscfg
 	r0 = __set_bit<word32,word32>(r0, 0<32>)
 	r1 = p3
-	r0 = __insert(1<32>, 1<32>)
+	r0 = __insert<word32>(1<32>, 1<32>)
 	syscfg = r0
 	__isync()
 	// succ:  l000006A8
@@ -761,7 +761,7 @@ l00000970:
 	p0 = !(r2 == 0<32>)
 	r1 = p0
 	r2 = ssr
-	r2 = __insert(1<32>, 0x19<32>)
+	r2 = __insert<word32>(1<32>, 0x19<32>)
 	ssr = r2
 	r2 = SEQ(4<16>, SLICE(r2, word16, 0))
 	USR = r2
@@ -1267,7 +1267,7 @@ l00000E3C:
 	Mem0[r29 + 112<i32>:word64] = r1_r0
 	r0 = ssr
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
-	r7 = __insert(8<32>, 0x10<32>)
+	r7 = __insert<word32>(8<32>, 0x10<32>)
 	r2 = r0
 	Mem0[r29 + 120<i32>:word64] = r3_r2
 	r0 = r0 & 0x1F<32>
@@ -1279,7 +1279,7 @@ l00000E3C:
 	r31 = r28
 	r1 = Mem0[r1:word32]
 	Mem0[r29 + 144<i32>:word64] = r9_r8
-	r2 = __insert(3<32>, 0x13<32>)
+	r2 = __insert<word32>(3<32>, 0x13<32>)
 	p0 = r1 == 0<32>
 	Mem0[r29 + 152<i32>:word64] = r31_r30
 	branch p0 l00000F24
@@ -1294,7 +1294,7 @@ l00000EEC:
 	r1 = 6<32>
 	r7_r6 = Mem0[r29 + 136<i32>:word64]
 	r7 = r7 >> 0x10<32>
-	r0 = __insert(3<32>, 0x13<32>)
+	r0 = __insert<word32>(3<32>, 0x13<32>)
 	r26 = SEQ(SLICE(r26, word16, 16), 4<16>)
 	r7 = r7 & 0x1F<32>
 	r26 = r26 & r26 << r7

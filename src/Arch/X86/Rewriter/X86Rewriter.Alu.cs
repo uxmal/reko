@@ -952,13 +952,14 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewritePushf()
         {
+            var flags = binder.EnsureFlagGroup(
+                Registers.eflags,
+                (uint) (FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
+                "SCZDOP",
+                PrimitiveType.Byte);
             RewritePush(
                 dasm.Current.dataWidth,
-                binder.EnsureFlagGroup(
-                    Registers.eflags,
-                    (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
-                    "SCZDOP", 
-                    PrimitiveType.Byte));
+                flags);
         }
 
         private void RewriteNeg()

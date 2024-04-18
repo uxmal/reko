@@ -396,7 +396,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void DfaUnsignedDiv()
         {
             var m = new ProcedureBuilder();

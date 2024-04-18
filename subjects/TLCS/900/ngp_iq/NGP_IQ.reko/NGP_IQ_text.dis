@@ -190,7 +190,7 @@ fn0020050A_entry:
 	h_13 = SLICE(xhl, byte, 8) (alias)
 	l_22 = SLICE(xhl, byte, 0) (alias)
 l0020050A:
-	return SLICE(cond(CONVERT(CONVERT(h_13, byte, uint16) *u 2<16> + 0x9800<16> + CONVERT(l_22, byte, uint16) *u 0x40<16>, word16, uint32) + 1<32>), bool, 4)
+	return SLICE(cond(CONVERT(CONVERT(h_13, uint8, uint16) *u 2<16> + 0x9800<16> + CONVERT(l_22, uint8, uint16) *u 0x40<16>, uint16, uint32) + 1<32>), bool, 4)
 fn0020050A_exit:
 
 
@@ -225,7 +225,7 @@ word32 fn00200557(byte c, byte b, word32 xhl)
 fn00200557_entry:
 l00200557:
 	xwa_24_8_106 = 0<24> (alias)
-	xde_26 = CONVERT(c * 2<8>, byte, uint32) + 0x9800<32> + CONVERT(b, byte, uint16) *u 0x40<16>
+	xde_26 = CONVERT(c * 2<8>, uint8, uint32) + 0x9800<32> + CONVERT(b, uint8, uint16) *u 0x40<16>
 	b_29 = 0x13<8>
 l00200579:
 	v18_32 = Mem8[xhl:byte]

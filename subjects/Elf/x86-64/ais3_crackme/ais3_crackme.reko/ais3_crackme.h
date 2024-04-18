@@ -359,12 +359,12 @@ T_69: (in rdi @ 0000000000400518 : (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_167) a0000)))
 T_70: (in 0<32> @ 0000000000400528 : word32)
   Class: Eq_70
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_71: (in dwLoc0C_131 @ 0000000000400528 : word32)
+T_71: (in dwLoc0C_131 @ 0000000000400528 : int32)
   Class: Eq_70
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_72: (in CONVERT(dwLoc0C_131, word32, int64) @ 00000000004005B3 : int64)
   Class: Eq_72
   DataType: int64
@@ -409,7 +409,7 @@ T_82: (in al_43 @ 0000000000400546 : ui8)
   Class: Eq_81
   DataType: ui8
   OrigDataType: ui8
-T_83: (in CONVERT(dwLoc0C_131, word32, int64) @ 0000000000400594 : int64)
+T_83: (in CONVERT(dwLoc0C_131, int32, int64) @ 0000000000400594 : int64)
   Class: Eq_83
   DataType: int64
   OrigDataType: int64
@@ -417,11 +417,11 @@ T_84: (in 6295584<i64> @ 0000000000400594 : int64)
   Class: Eq_84
   DataType: (ptr64 (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_171) a0000)))
-T_85: (in CONVERT(dwLoc0C_131, word32, int64) + 6295584<i64> @ 0000000000400594 : word64)
+T_85: (in CONVERT(dwLoc0C_131, int32, int64) + 6295584<i64> @ 0000000000400594 : word64)
   Class: Eq_85
   DataType: int64
   OrigDataType: int64
-T_86: (in Mem104[CONVERT(dwLoc0C_131, word32, int64) + 6295584<i64>:byte] @ 0000000000400594 : byte)
+T_86: (in Mem104[CONVERT(dwLoc0C_131, int32, int64) + 6295584<i64>:byte] @ 0000000000400594 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
@@ -507,7 +507,7 @@ T_106: (in g_a601020[(int64) dwLoc0C_131] == ((byte) ((word32) al_43 >> 8<8> - (
   OrigDataType: bool
 T_107: (in 0x17<32> @ 00000000004005C0 : word32)
   Class: Eq_70
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
 T_108: (in dwLoc0C_131 == 0x17<32> @ 00000000004005C0 : bool)
   Class: Eq_108
@@ -527,8 +527,8 @@ T_111: (in 1<32> @ 000000000040059D : word32)
   OrigDataType: word32
 T_112: (in dwLoc0C_131 + 1<32> @ 000000000040059D : word32)
   Class: Eq_70
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_113: (in 0<u64> @ 0000000000400596 : uint64)
   Class: Eq_109
   DataType: uint64

@@ -690,11 +690,11 @@ namespace Reko.Environments.Gameboy
         private readonly static IntrinsicProcedure reset_bit_intrinsic = new IntrinsicBuilder("__reset_bit", false)
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Byte)
-            .Returns(PrimitiveType.Bool);
+            .Returns(PrimitiveType.Byte);
         private readonly static IntrinsicProcedure set_bit_intrinsic = new IntrinsicBuilder("__set_bit", false)
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Byte)
-            .Returns(PrimitiveType.Bool);
+            .Returns(PrimitiveType.Byte);
         private readonly static IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true, new ProcedureCharacteristics
             {
                 Terminates = true

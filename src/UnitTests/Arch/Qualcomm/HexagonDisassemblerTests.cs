@@ -425,6 +425,12 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void Hexagon_dasm_insert_rr()
+        {
+            AssertCode("{ r5:r4 = insert(r9:r8,#0x2,#0x3A) }", "C4C2E883");
+        }
+
+        [Test]
         public void Hexagon_dasm_jump()
         {
             AssertCode("{ jump 00100098 }", "4CC00058");

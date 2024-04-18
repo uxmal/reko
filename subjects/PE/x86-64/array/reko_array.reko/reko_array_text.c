@@ -23,11 +23,13 @@ void reko_array_n()
 // 00000002121D105E: void reko_array_local()
 void reko_array_local()
 {
-	up32 dwLoc0C_n;
-	for (dwLoc0C_n = 0x00; dwLoc0C_n <= 0x1F; ++dwLoc0C_n)
+	Eq_n dwLoc0C_n;
+	dwLoc0C_n.u0 = 0x00;
+	while (dwLoc0C_n <= 0x1F)
 	{
 		ptr64 fp;
 		(fp - 56)[(int64) dwLoc0C_n] = (byte) dwLoc0C_n;
+		dwLoc0C_n = (word32) dwLoc0C_n + 1;
 	}
 }
 

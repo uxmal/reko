@@ -123,17 +123,17 @@ T_28: (in 0xF0<16> @ 0000C05C : word16)
   OrigDataType: cui16
 T_29: (in (word16) d3_73 & 0xFF<16> & 0xF0<16> @ 0000C05C : word16)
   Class: Eq_29
-  DataType: cui16
+  DataType: uint16
   OrigDataType: cui16
-T_30: (in v28_77 @ 0000C05C : cui16)
+T_30: (in v28_77 @ 0000C05C : uint16)
   Class: Eq_29
-  DataType: cui16
-  OrigDataType: cui16
-T_31: (in CONVERT(v28_77, word16, uint32) @ 0000C060 : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_31: (in CONVERT(v28_77, uint16, uint32) @ 0000C060 : uint32)
   Class: Eq_31
   DataType: uint32
   OrigDataType: uint32
-T_32: (in SLICE(CONVERT(v28_77, word16, uint32), word24, 8) @ 0000C060 : word24)
+T_32: (in SLICE(CONVERT(v28_77, uint16, uint32), word24, 8) @ 0000C060 : word24)
   Class: Eq_32
   DataType: word24
   OrigDataType: word24
@@ -149,7 +149,7 @@ T_35: (in (byte) v28_77 >> 2<8> @ 0000C060 : byte)
   Class: Eq_35
   DataType: uint8
   OrigDataType: uint8
-T_36: (in SEQ(SLICE(CONVERT(v28_77, word16, uint32), word24, 8), SLICE(v28_77, byte, 0) >>u 2<8>) @ 0000C060 : uip32)
+T_36: (in SEQ(SLICE(CONVERT(v28_77, uint16, uint32), word24, 8), SLICE(v28_77, byte, 0) >>u 2<8>) @ 0000C060 : uip32)
   Class: Eq_36
   DataType: uip32
   OrigDataType: uip32

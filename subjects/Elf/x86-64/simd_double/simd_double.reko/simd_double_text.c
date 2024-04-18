@@ -85,10 +85,10 @@ void _mm_free(Eq_n (* rdi)[])
 	free(rdi);
 }
 
-// 00000000000007A8: void vec_add(Register (arr Eq_n) rcx, Register (arr Eq_n) rdx, Register (arr Eq_n) rsi, Register word64 rdi)
+// 00000000000007A8: void vec_add(Register (arr Eq_n) rcx, Register (arr Eq_n) rdx, Register (arr Eq_n) rsi, Register uint64 rdi)
 // Called from:
 //      main
-void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], word64 rdi)
+void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], uint64 rdi)
 {
 	char ** fp;
 	__align_stack<word64>(fp);

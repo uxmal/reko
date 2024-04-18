@@ -721,6 +721,14 @@ namespace Reko.Analysis
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
                 if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))
                 {
+                    if (value.DataType is StructureType str)
+                    {
+                        var ptrStr = new Pointer(str, access.EffectiveAddress.DataType.BitSize);
+                        value = new MemoryAccess(
+                            access.MemoryId,
+                            new UnaryExpression(Operator.AddrOf, ptrStr, value),
+                            access.DataType);
+                    }
                     return value;
                 }
                 return InvalidConstant.Create(access.DataType);

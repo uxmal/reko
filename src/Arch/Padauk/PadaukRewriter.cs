@@ -130,7 +130,7 @@ namespace Reko.Arch.Padauk
                 if (mem.Indirect)
                 {
                     ea = binder.CreateTemporary(PrimitiveType.Ptr16);
-                    m.Assign(ea, m.Mem8(Address.Ptr16((ushort) mem.Offset)));
+                    m.Assign(ea, m.Mem16(Address.Ptr16((ushort) mem.Offset)));
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace Reko.Arch.Padauk
                 if (mem.Indirect)
                 {
                     var tmp = binder.CreateTemporary(PrimitiveType.Ptr16);
-                    m.Assign(tmp, m.Mem8(Address.Ptr16((ushort) mem.Offset)));
+                    m.Assign(tmp, m.Mem16(Address.Ptr16((ushort) mem.Offset)));
                     return m.Mem8(tmp);
                 }
                 else

@@ -94,15 +94,16 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Given_UInt16s(0x4884, 0x48C4, 0x49C4);
             AssertCode(
-                "0|L--|00010000(2): 2 instructions",
-                "1|L--|d4 = CONVERT(SLICE(d4, int8, 0), int8, int16)",
-                "2|L--|ZN = cond(d4)",
-                "3|L--|00010002(2): 2 instructions",
-                "4|L--|d4 = CONVERT(SLICE(d4, int16, 0), int16, int32)",
-                "5|L--|ZN = cond(d4)",
-                "6|L--|00010004(2): 2 instructions",
-                "7|L--|d4 = CONVERT(SLICE(d4, int8, 0), int8, int32)",
-                "8|L--|ZN = cond(d4)");
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v4 = CONVERT(SLICE(d4, int8, 0), int8, int16)",
+                "2|L--|d4 = SEQ(SLICE(d4, word16, 16), v4)",
+                "3|L--|ZN = cond(v4)",
+                "4|L--|00010002(2): 2 instructions",
+                "5|L--|d4 = CONVERT(SLICE(d4, int16, 0), int16, int32)",
+                "6|L--|ZN = cond(d4)",
+                "7|L--|00010004(2): 2 instructions",
+                "8|L--|d4 = CONVERT(SLICE(d4, int8, 0), int8, int32)",
+                "9|L--|ZN = cond(d4)");
         }
 
         [Test]

@@ -176,7 +176,7 @@ namespace Reko.Arch.M68k
             if (fpuRomConstants.TryGetValue(n, out double d))
             {
                 src = Constant.Real64(d);
-                src.DataType = PrimitiveType.Real80;
+                src.DataType = PrimitiveType.Real96;
             }
             else
             {

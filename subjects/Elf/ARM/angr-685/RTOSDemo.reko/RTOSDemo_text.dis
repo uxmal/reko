@@ -931,7 +931,7 @@ void prvFlashCoRoutine(word32 r0, word32 cpsr)
 // Preserved: cpsr r4 r5 r6 sp
 prvFlashCoRoutine_entry:
 l00008670:
-	r3_14 = CONVERT(Mem12[r0 + 52<i32>:word16], word16, word32)
+	r3_14 = CONVERT(Mem12[r0 + 52<i32>:word16], uint16, word32)
 	branch r3_14 == 0x1C2<32> l000086B6
 l000086B6:
 	r5_110 = Mem12[0x000086E0<p32>:word32]
@@ -976,7 +976,7 @@ void prvFixedDelayCoRoutine(word32 r0, word32 r1, word32 cpsr)
 // Preserved: r4 sp
 prvFixedDelayCoRoutine_entry:
 l000086E8:
-	r3_10 = CONVERT(Mem8[r0 + 52<i32>:word16], word16, word32)
+	r3_10 = CONVERT(Mem8[r0 + 52<i32>:word16], uint16, word32)
 	branch r3_10 == 0x182<32> l00008750
 l00008750:
 	v24_115 = xQueueCRSend(Mem15[Mem15[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, cpsr, out r0_23)

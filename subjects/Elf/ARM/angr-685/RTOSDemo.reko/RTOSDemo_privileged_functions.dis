@@ -11,7 +11,7 @@ void prvUnlockQueue(word32 r0, word32 cpsr)
 prvUnlockQueue_entry:
 l00000058:
 	vPortEnterCritical(cpsr)
-	r4_154 = CONVERT(Mem12[r0 + 69<i32>:byte], byte, int32)
+	r4_154 = CONVERT(Mem12[r0 + 69<i32>:byte], int8, int32)
 	branch r4_154 <= 0<32> l00000098
 l0000006A:
 	branch Mem12[r0 + 36<i32>:word32] == 0<32> l00000098
@@ -33,7 +33,7 @@ l00000098:
 	Mem68[r0 + 69<i32>:byte] = 0xFF<8>
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
-	r4_105 = CONVERT(Mem68[r0 + 68<i32>:byte], byte, int32)
+	r4_105 = CONVERT(Mem68[r0 + 68<i32>:byte], int8, int32)
 	branch r4_105 <= 0<32> l000000DE
 l000000B0:
 	branch Mem68[r0 + 16<i32>:word32] == 0<32> l000000DE
@@ -457,7 +457,7 @@ l00000458:
 l00000476:
 	branch r3 == 2<32> l00000482
 l00000482:
-	r4_34 = CONVERT(Mem16[r0 + 69<i32>:byte], byte, int32)
+	r4_34 = CONVERT(Mem16[r0 + 69<i32>:byte], int8, int32)
 	branch prvCopyDataToQueue(r0, r1, r3, out r0_171, out r7_45) l000004A6
 l000004A6:
 	branch Mem16[r0 + 36<i32>:word32] == 0<32> l0000049E
@@ -498,7 +498,7 @@ l00000500:
 	__msr(cpsr, r4_14)
 	return
 l000004E2:
-	r3_31 = CONVERT(Mem12[r0 + 69<i32>:byte], byte, int32)
+	r3_31 = CONVERT(Mem12[r0 + 69<i32>:byte], int8, int32)
 	Mem32[r0 + 56<i32>:word32] = r2_17 + 1<32>
 	branch r2_17 == 0xFFFFFFFF<32> l00000508
 l00000508:
@@ -965,7 +965,7 @@ l00000932:
 	r1_37 = Mem18[r0 + 20<i32>:word32]
 	Mem39[r0_26 + 101<i32>:byte] = 1<8>
 	r3_40 = Mem39[r0 + 12<i32>:word32]
-	r2_41 = CONVERT(Mem39[r0 + 8<i32>:word16], word16, word32)
+	r2_41 = CONVERT(Mem39[r0 + 8<i32>:word16], uint16, word32)
 	lr_42 = Mem39[r0 + 16<i32>:word32]
 	Mem43[r0_26 + 80<i32>:word32] = r1_37
 	prvInitialiseNewTask(Mem46[r0:word32], Mem43[r0 + 4<i32>:word32], r2_41, r3_40, lr_42, r1, r0_26, r0 + 24<i32>)

@@ -47,7 +47,7 @@ l00000002121D105E:
 l00000002121D1081:
 	branch dwLoc0C_39 <=u 0x1F<32> l00000002121D106F
 l00000002121D106F:
-	Mem27[fp - 56<i64> + CONVERT(dwLoc0C_39, word32, int64):byte] = SLICE(dwLoc0C_39, byte, 0)
+	Mem27[fp - 56<i64> + CONVERT(dwLoc0C_39, int32, int64):byte] = SLICE(dwLoc0C_39, byte, 0)
 	dwLoc0C_39 = dwLoc0C_39 + 1<32>
 l00000002121D1089:
 	return

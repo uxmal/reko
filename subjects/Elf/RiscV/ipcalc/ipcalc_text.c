@@ -886,7 +886,7 @@ char * fn0000000000016830(struct Eq_n * gp, char * a0)
 {
 	Eq_n a5_n;
 	a5_n.u0 = gp->tFFFFF870.u0;
-	word32 dwLoc20_n = 0x00;
+	int32 dwLoc20_n = 0x00;
 	if (a0 != null)
 	{
 		word64 a3_n;

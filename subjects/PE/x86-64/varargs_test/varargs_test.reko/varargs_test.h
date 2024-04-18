@@ -345,7 +345,7 @@ Eq_350: (fn word64 ())
 	T_350 (in _p___argc @ 00000001400013BF : ptr64)
 Eq_353: (fn word64 ())
 	T_353 (in get_initial_narrow_environment @ 00000001400013C7 : ptr64)
-Eq_356: (fn word32 ())
+Eq_356: (fn uint32 ())
 	T_356 (in fn0000000140001000 @ 00000001400013D4 : ptr64)
 	T_357 (in signature of fn0000000140001000 @ 0000000140001000 : void)
 Eq_361: (fn void ())
@@ -2173,9 +2173,9 @@ T_357: (in signature of fn0000000140001000 @ 0000000140001000 : void)
   OrigDataType: 
 T_358: (in fn0000000140001000() @ 00000001400013D4 : word32)
   Class: Eq_358
-  DataType: word32
-  OrigDataType: word32
-T_359: (in CONVERT(fn0000000140001000(), word32, uint64) @ 00000001400013D4 : uint64)
+  DataType: uint32
+  OrigDataType: uint32
+T_359: (in CONVERT(fn0000000140001000(), uint32, uint64) @ 00000001400013D4 : uint64)
   Class: Eq_359
   DataType: uint64
   OrigDataType: uint64
@@ -3934,8 +3934,8 @@ T_797: (in signature of GetCurrentThreadId : void)
 T_798: (in GetCurrentThreadId() @ 00000001400018BE : DWORD)
   Class: Eq_386
   DataType: Eq_386
-  OrigDataType: DWORD
-T_799: (in CONVERT(GetCurrentThreadId(), DWORD, uint64) @ 00000001400018BE : uint64)
+  OrigDataType: (union (DWORD u1))
+T_799: (in CONVERT(GetCurrentThreadId(), word32, uint64) @ 00000001400018BE : uint64)
   Class: Eq_799
   DataType: uint64
   OrigDataType: uint64
@@ -3954,8 +3954,8 @@ T_802: (in signature of GetCurrentProcessId : void)
 T_803: (in GetCurrentProcessId() @ 00000001400018BE : DWORD)
   Class: Eq_386
   DataType: Eq_386
-  OrigDataType: DWORD
-T_804: (in CONVERT(GetCurrentProcessId(), DWORD, uint64) @ 00000001400018BE : uint64)
+  OrigDataType: (union (DWORD u1))
+T_804: (in CONVERT(GetCurrentProcessId(), word32, uint64) @ 00000001400018BE : uint64)
   Class: Eq_804
   DataType: uint64
   OrigDataType: uint64
@@ -6728,7 +6728,7 @@ typedef word64 (Eq_350)();
 
 typedef word64 (Eq_353)();
 
-typedef word32 (Eq_356)();
+typedef uint32 (Eq_356)();
 
 typedef void (Eq_361)();
 

@@ -12,7 +12,7 @@ byte g_bF42E; // 0000F42E
 Eq_n g_tFB26;
 ci16 g_aFB60[];
 ci16 g_aFB9C[];
-uint32 g_dwFC60; // 0000FC60
+Eq_n g_tFC60;
 word32 g_dwFC68; // 0000FC68
-uint32 g_dwFC6C; // 0000FC6C
+Eq_n g_tFC6C;
 word32 g_aFC78[];

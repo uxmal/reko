@@ -9,7 +9,7 @@ l1:
 	edx_2 = 0xAAA55AA<32>
 	Mem3[0x1000000<32>:word32] = 0xAAA55AA<32>
 	edx_4 = 0<32>
-	edx_6 = CONVERT(dl, byte, uint32)
+	edx_6 = CONVERT(dl, uint8, uint32)
 	return edx_6
 	// succ:  DpbFragment_exit
 DpbFragment_exit:

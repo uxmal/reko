@@ -354,7 +354,7 @@ namespace Reko.Arch.Qualcomm
             var dt = app.Width;
             switch (app.Mnemonic)
             {
-            case Mnemonic.abs: return m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Int32), ops);
+            case Mnemonic.abs: return m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Create(Domain.SignedInt, dt.BitSize)), ops);
             case Mnemonic.add: return RewriteAdd(ops[0], ops[1]);
             case Mnemonic.addasl: return RewriteAddAsl(ops[0], ops[1], ops[2]);
             case Mnemonic.allocframe: RewriteAllocFrame(app.Operands[0]); return null;
@@ -405,7 +405,7 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.extract: return RewriteExtract(Domain.SignedInt, ops[0], app.Operands);
             case Mnemonic.extractu: return RewriteExtract(Domain.UnsignedInt, ops[0], app.Operands);
             case Mnemonic.fastcorner9: return m.Fn(fastcorner9_intrinsic, ops); 
-            case Mnemonic.insert: return m.FnVariadic(insert_intrinsic, ops);
+            case Mnemonic.insert: return m.FnVariadic(insert_intrinsic.MakeInstance(ops[0].DataType), ops);
             case Mnemonic.immext: return null;
             case Mnemonic.l2fetch: return RewriteL2Fetch(ops); 
             case Mnemonic.loop0: RewriteLoop(0, ops); return null;
@@ -823,10 +823,11 @@ namespace Reko.Arch.Qualcomm
         private static readonly IntrinsicProcedure isync_intrinsic = IntrinsicBuilder.SideEffect("__isync")
             .Void();
         private static readonly IntrinsicProcedure insert_intrinsic = IntrinsicBuilder.Pure("__insert")
-            .Param(PrimitiveType.Word32)
+            .GenericTypes("T")
+            .Param("T")
             .Param(PrimitiveType.Int32)
             .Param(PrimitiveType.Int32)
-            .Returns(PrimitiveType.Word32);
+            .Returns("T");
 
         private static readonly IntrinsicProcedure l2fetch_intrinsic = IntrinsicBuilder.SideEffect("__l2fetch")
             .GenericTypes("T", "U")

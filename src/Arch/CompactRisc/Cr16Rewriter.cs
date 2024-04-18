@@ -150,8 +150,8 @@ namespace Reko.Arch.CompactRisc
                 case Mnemonic.movzw: RewriteMovzx(PrimitiveType.Word16); break;
                 case Mnemonic.mulb: RewriteMul(PrimitiveType.Byte); break;
                 case Mnemonic.mulw: RewriteMul(PrimitiveType.Word16); break;
-                case Mnemonic.mulsb: RewriteMuls(PrimitiveType.Byte); break;
-                case Mnemonic.mulsw: RewriteMuls(PrimitiveType.Word16); break;
+                case Mnemonic.mulsb: RewriteMuls(PrimitiveType.Int8, PrimitiveType.Int16); break;
+                case Mnemonic.mulsw: RewriteMuls(PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.muluw: RewriteMulu(PrimitiveType.Word16); break;
                 case Mnemonic.orb: RewriteOr(PrimitiveType.Byte); break;
                 case Mnemonic.ord: RewriteOr(PrimitiveType.Word32); break;
@@ -556,11 +556,11 @@ namespace Reko.Arch.CompactRisc
             Assign(Operand(1), m.SMul(left, right));
         }
 
-        private void RewriteMuls(PrimitiveType dt)
+        private void RewriteMuls(PrimitiveType dt, PrimitiveType dtResult)
         {
             var left = SliceRp(instr.Operands[1], dt);
             var right = MaybeSlice(0, dt);
-            Assign(Operand(1), m.SMul(PrimitiveType.Int32, left, right));
+            Assign(Operand(1), m.SMul(dtResult, left, right));
         }
 
         private Expression SliceRp(MachineOperand op, PrimitiveType dt)

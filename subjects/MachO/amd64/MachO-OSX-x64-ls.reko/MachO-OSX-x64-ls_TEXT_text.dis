@@ -1130,7 +1130,7 @@ l000000010000357F:
 	branch Mem5[0x000000010000658C<p64>:word32] != 0<32> l000000010000359D
 l000000010000359D:
 l000000010000359E_thunk_fn00000001000048AF:
-	rax_23 = CONVERT(fn00000001000048AF(rdi, out rbx_25, out rbp_24, out r12d_340, out r14_21, out r15_22), word32, uint64)
+	rax_23 = CONVERT(fn00000001000048AF(rdi, out rbx_25, out rbp_24, out r12d_340, out r14_21, out r15_22), uint32, uint64)
 	rbxOut = rbx_25
 	rbpOut = rbp_24
 	r12dOut = <invalid>
@@ -1199,7 +1199,7 @@ l0000000100004D9B:
 	return SLICE(rax_206, word32, 0)
 l0000000100003597:
 l0000000100003598_thunk_fn0000000100004715:
-	rax_229 = CONVERT(fn0000000100004715(rdi), word32, uint64)
+	rax_229 = CONVERT(fn0000000100004715(rdi), uint32, uint64)
 	rbxOut = rbx
 	rbpOut = rbp
 	r12dOut = <invalid>
@@ -1799,7 +1799,7 @@ word32 fn00000001000048AF(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r1
 fn00000001000048AF_entry:
 l00000001000048AF:
 l00000001000048FD_thunk_fn0000000100004ABB:
-	rax_60 = CONVERT(fn0000000100004ABB(rdi, fp - 8<i64>, out rbx_62, out rbp_61, out r12d_94, out r14_58, out r15_59), word32, uint64)
+	rax_60 = CONVERT(fn0000000100004ABB(rdi, fp - 8<i64>, out rbx_62, out rbp_61, out r12d_94, out r14_58, out r15_59), uint32, uint64)
 	rbxOut = rbx_62
 	rbpOut = rbp_61
 	r12dOut = <invalid>

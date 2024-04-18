@@ -401,7 +401,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 		word16 r5_n;
 		byte * r4_n;
 		fn0A7C(fn0AB6(r0, r4, out r4_n, out r5_n), r4_n, out r4_n);
-		ui16 r0_n = fn0A94();
+		uint16 r0_n = fn0A94();
 		ui16 r3_n = __rcl<word16,byte>(__rcl<word16,byte>(0x00, 0x01, (bool) cond(r0_n << 1)), 0x01, (bool) cond(r0_n << 2));
 		Eq_n r0_n;
 		r0_n.u1 = g_a0F2A[r3_n];
@@ -720,7 +720,7 @@ l08B2:
 						r0_n = fn0A94() & g_t0F0E.u0;
 						if (r0_n != 0x00)
 							goto l093A;
-						ui16 r0_n = fn0A94();
+						uint16 r0_n = fn0A94();
 						r1_n = g_ptr0F08;
 						if (r1_n >= null && r1_n->w0DC4 > 0x00)
 						{
@@ -828,7 +828,7 @@ Eq_n fn0998(Eq_n r0, byte * r4, byte & r4Out)
 		g_w0F20 = 100;
 		g_w0F12 = 0x01;
 		g_w0A6A = 4404;
-		ui16 r0_n = fn0A94();
+		uint16 r0_n = fn0A94();
 		r2_n = (union Eq_n *) ((char *) &t0000.w0000 + 1);
 		word16 r1_n = 0x00;
 		r0 = r0_n << 1;

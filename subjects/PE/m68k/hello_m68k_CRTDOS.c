@@ -4,8 +4,8 @@
 
 #include "hello_m68k.h"
 
-// 00003340: void fn00003340(Register (ptr32 Eq_n) a5, Stack word16 wArg06)
-void fn00003340(struct Eq_n * a5, word16 wArg06)
+// 00003340: void fn00003340(Register (ptr32 Eq_n) a5, Stack int16 wArg06)
+void fn00003340(struct Eq_n * a5, int16 wArg06)
 {
 	a5->dwFFFFF940 = (int32) wArg06;
 	int32 d2_n = 0;

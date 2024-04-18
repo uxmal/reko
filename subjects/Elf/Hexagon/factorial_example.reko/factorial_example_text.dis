@@ -9400,8 +9400,8 @@ __qdsp_divdi3_entry:
 l0000A3E0:
 	p2 = __bit<word32,word32>(r1, 0x1F<32>)
 	p3 = __bit<word32,word32>(r3, 0x1F<32>)
-	r1_r0 = abs<int32>(r1_r0)
-	r3_r2 = abs<int32>(r3_r2)
+	r1_r0 = abs<int64>(r1_r0)
+	r3_r2 = abs<int64>(r3_r2)
 	r6 = __count_leading_zeros<word64>(r1_r0)
 	r7 = __count_leading_zeros<word64>(r3_r2)
 	r5_r4 = r3_r2
@@ -9580,8 +9580,8 @@ l0000A600:
 	branch p3 l0000A764
 	// succ:  l0000A630 l0000A764
 l0000A630:
-	r13_r12 = __insert(r0, 0x34<32>, 0xC<32>)
-	r9_r8 = __insert(r2, 0x34<32>, 0xC<32>)
+	r13_r12 = __insert<word64>(r1_r0, 0x34<32>, 0xC<32>)
+	r9_r8 = __insert<word64>(r3_r2, 0x34<32>, 0xC<32>)
 	r15 = r4 - r5
 	r7_r6 = 0x3E00000001<64>
 	// succ:  l0000A640
@@ -9651,7 +9651,7 @@ l0000A7AC:
 	r4 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r9_r8 = r9_r8 << 9<32>
 	r5 = 1<32>
-	r13_r12 = __insert(r0, 0x34<32>, 0xC<32>)
+	r13_r12 = __insert<word64>(r1_r0, 0x34<32>, 0xC<32>)
 	r15 = r4 - r5
 	r7_r6 = 0x3E00000001<64>
 	goto l0000A640
@@ -9729,7 +9729,7 @@ l0000A880:
 	p3 = __dfclass(r1_r0, 2<32>)
 	p3 = __dfclass(r3_r2, 2<32>)
 	r15_r14 = 0x4000000000000000<64>
-	r15_r14 = __insert(r0, 0x34<32>, 0xC<32>)
+	r15_r14 = __insert<word64>(r1_r0, 0x34<32>, 0xC<32>)
 	r13_r12 = r15_r14
 	r7_r6 = 0<64>
 	branch p3 l0000AA18
@@ -9739,7 +9739,7 @@ l0000A8A0:
 	r5 = CONVERT(SLICE(r3, ui19, 11), ui19, uint32)
 	r11_r10 = 1<64>
 	__loop(0<i32>, 0x0000A8BC<p32>, 0x18<32>)
-	r13_r12 = __insert(r2, 0x34<32>, 0xC<32>)
+	r13_r12 = __insert<word64>(r3_r2, 0x34<32>, 0xC<32>)
 	r9_r8 = r15_r14
 	r4 = r4 - r5
 	r15_r14 = r9_r8 - r13_r12
@@ -9771,7 +9771,7 @@ l0000A914:
 	r1 = r1 + (r4 << 0x14<32>)
 	r5 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r4 = r4 + r5
-	r13_r12 = abs<int32>(r15_r14)
+	r13_r12 = abs<int64>(r15_r14)
 	p0 = r4 > 0x7FE<32>
 	branch p0 l0000A9D4
 	// succ:  l0000A938 l0000A9D4
@@ -9808,7 +9808,7 @@ l0000A940:
 	// succ:  __hexagon_divdf3_exit
 l0000A99C:
 	r28 = 0x7FEFFFFF<32>
-	r15_r14 = abs<int32>(r15_r14)
+	r15_r14 = abs<int64>(r15_r14)
 	p0 = __bitsclr(r1, r28)
 	p0 = r0 == 0<32>
 	r28 = 0x7FFF<32>
@@ -9828,7 +9828,7 @@ l0000A9D4:
 	p0 = r15_r14 == r15_r14
 	p0 = !(r7 == 2<32>)
 	r15_r14 = r13_r12
-	r1_r0 = __insert(r14, 0x3F<32>, 7<32>)
+	r1_r0 = __insert<word64>(r15_r14, 0x3F<32>, 7<32>)
 	return
 	// succ:  __hexagon_divdf3_exit
 l0000AA18:
@@ -9870,12 +9870,12 @@ l0000AB20:
 	p0 = __dfclass(r1_r0, 2<32>)
 	p0 = __dfclass(r3_r2, 2<32>)
 	r13_r12 = 0x4000000000000000<64>
-	r13_r12 = __insert(r0, 0x34<32>, 0xC<32>)
+	r13_r12 = __insert<word64>(r1_r0, 0x34<32>, 0xC<32>)
 	r5_r4 = r3_r2 << 0xA<32>
 	r28 = 0xFFFFFC00<32>
 	r9_r8 = 1<64>
 	r7_r6 = r4 *u64 r13
-	r5_r4 = __insert(r8, 2<32>, 0x3A<32>)
+	r5_r4 = __insert<word64>(r9_r8, 2<32>, 0x3A<32>)
 	r15_r14 = r12 *u64 r4
 	r7_r6 = r7_r6 + (r15_r14 >>u 0x20<32>)
 	r11_r10 = r13 *u64 r5
@@ -9912,7 +9912,7 @@ l0000ABB0:
 	// succ:  __hexagon_fast_muldf3_exit
 l0000ABE0:
 	r1_r0 = CONVERT(r11_r10, int64, real64)
-	r13_r12 = abs<int32>(r11_r10)
+	r13_r12 = abs<int64>(r11_r10)
 	r7 = r6 + 0xFFFFFBC6<32>
 	r1 = r1 + (r7 << 0x14<32>)
 	r7 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
@@ -9937,7 +9937,7 @@ l0000AC20:
 	r28 = USR
 	r15_r14 = r11_r10 << r4 & (1<u64> << r5) - 1<64>
 	r11_r10 = r11_r10 >> r5
-	r1 = __insert(0xB<32>, 0x13<32>)
+	r1 = __insert<word32>(0xB<32>, 0x13<32>)
 	r4 = 0x30<32>
 	p0 = r9_r8 >u r15_r14
 	r11 = __set_bit<word32,word32>(r11, 0xE<32>)
@@ -9949,7 +9949,7 @@ l0000AC20:
 	r11_r10 = r15_r14
 	r1_r0 = CONVERT(r11_r10, int64, real64)
 	p0 = r1_r0 == r1_r0
-	r1 = __insert(0xA<32>, 0x12<32>)
+	r1 = __insert<word32>(0xA<32>, 0x12<32>)
 	return
 	// succ:  __hexagon_fast_muldf3_exit
 l0000AC80:
@@ -9966,7 +9966,7 @@ l0000AC80:
 	p0 = r1_r0 == r1_r0
 	p0 = !(r14 == 2<32>)
 	r13_r12 = r5_r4
-	r1_r0 = __insert(r12, 0x3F<32>, 7<32>)
+	r1_r0 = __insert<word64>(r13_r12, 0x3F<32>, 7<32>)
 	return
 	// succ:  __hexagon_fast_muldf3_exit
 l0000ACC4:
@@ -10034,7 +10034,7 @@ l0000ADC0:
 	branch p3 l0000AE4C
 	// succ:  l0000ADD0 l0000AE4C
 l0000ADD0:
-	r15_r14 = __insert(r0, 0x34<32>, 0xC<32>)
+	r15_r14 = __insert<word64>(r1_r0, 0x34<32>, 0xC<32>)
 	r4 = CONVERT(SLICE(r1, ui19, 11), ui19, uint32)
 	r7_r6 = r15_r14
 	// succ:  l0000ADDC

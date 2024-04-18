@@ -102,9 +102,9 @@ l0000171C:
 l00001734:
 	d0_71 = 0<i32>
 l00001722:
-	d0_71 = CONVERT(Mem58[a2_294 + CONVERT(SLICE(d6_123, byte, 0), byte, int32):byte] & 0xF<8>, byte, int32)
+	d0_71 = CONVERT(Mem58[a2_294 + CONVERT(SLICE(d6_123, byte, 0), int8, int32):byte] & 0xF<8>, int8, int32)
 l00001736:
-	d0_108 = CONVERT(Mem58[a3_295 + ((d0_71 << 3<32>) + Mem58[a6_297 + -8<i32>:word32]):byte] >> 4<8>, byte, int32)
+	d0_108 = CONVERT(Mem58[a3_295 + ((d0_71 << 3<32>) + Mem58[a6_297 + -8<i32>:word32]):byte] >> 4<8>, int8, int32)
 	Mem109[a6_297 + -8<i32>:word32] = d0_108
 	branch d0_108 >u 7<i32> l00001C24
 l00001750:
@@ -159,7 +159,7 @@ l00001798:
 l000017A6:
 	v50_232 = SLICE(d6_223 - 32<i32>, word24, 8)
 	v51_234 = Mem109[0x000017B4<p32> + CONVERT(SLICE(SEQ(v50_232, Mem109[0x000017C0<p32> + CONVERT(SLICE(d6_223, int16, 0) - 32<i16>, int16, int32):byte]), int16, 0), int16, int32) * 2<i32>:word16]
-	call 0x000017B4<p32> + CONVERT(v51_234, word16, int32) (retsize: 0;)
+	call 0x000017B4<p32> + CONVERT(v51_234, int16, int32) (retsize: 0;)
 		uses: a1:a1_269,a2:a2_80,a3:a3_99,a4:dwLoc1C,a5:a5_252,a6:a6_57,d0:d0_266,d1:d1_268,d2:d2_267,d3:d3_129,d4:d4_144,d5:d5_249,d6:SEQ(SLICE(v50_232, word16, 8), v51_234),d7:dwLoc20,Mem:Mem109
 		defs: a1:a1_269,d0:d0_266,d1:d1_268,d2:d2_267
 	return
@@ -213,7 +213,7 @@ l00001C60:
 l00001C4E:
 	Mem42[Mem10[dwArg08:word32]:byte] = bArg07_80
 	a0_43 = Mem42[dwArg08:word32]
-	d0_22 = CONVERT(CONVERT(Mem42[a0_43:byte], byte, int16), int16, int32)
+	d0_22 = CONVERT(CONVERT(Mem42[a0_43:byte], uint8, int16), int16, int32)
 	Mem50[dwArg08:word32] = a0_43 + 1<i32>
 l00001C6C:
 	a0_60 = Mem59[a6_28 + 16<i32>:word32]
@@ -287,7 +287,7 @@ l00001CE4:
 	a7_39 = a7_17 - 4<i32>
 	Mem41[a7_39:word32] = dwArg10
 	Mem44[a7_39 - 4<i32>:word32] = d4_29
-	Mem51[a7_39 - 8<i32>:word32] = CONVERT(Mem44[d3_28:byte], byte, int32)
+	Mem51[a7_39 - 8<i32>:word32] = CONVERT(Mem44[d3_28:byte], int8, int32)
 	a7_62 = <invalid>
 	d3_28 = fn00001C40(a5, Mem51[a7_39 + 8<i32>:byte], Mem51[a7_39 - 4<i32>:word32], out d4_29, out d5_68, out a2_130, out a3_131, out a5, out a6_132)
 	a7_17 = a7_62 + 12<i32>
@@ -358,7 +358,7 @@ l00001D60:
 	a2Out = a2_78
 	a5Out = a5_63
 	a6Out = a6_80
-	return CONVERT(d0_61 != 0<32> ? 0xFF<8> : 0<8>, byte, int32)
+	return CONVERT(d0_61 != 0<32> ? 0xFF<8> : 0<8>, int8, int32)
 l00001D50:
 	a2_87 = Mem18[a7_30 + 4<i32>:word32]
 	a6_89 = Mem18[a6_29:word32]

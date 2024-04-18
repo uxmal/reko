@@ -17767,7 +17767,7 @@ Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 	uint32 r10_n = (word32) r11_r10_n;
 	if (r9_n > 0x00)
 	{
-		word32 r8_n = 0x03FF;
+		uint32 r8_n = 0x03FF;
 		if (Test(EQ,SLICE(r10_n, bool, 11)))
 			r8_n = 0x0400;
 		uint64 r11_r10_n = r11_r10_n + (uint64) r8_n;
@@ -18370,7 +18370,7 @@ l0000FA94:
 				Eq_n r8_n;
 				uint32 r2_n;
 				Eq_n r9_n;
-				word32 r12_n;
+				uint32 r12_n;
 				Eq_n C_n;
 				if (r7_n > 0x00)
 				{
@@ -18429,7 +18429,7 @@ l0000FA94:
 					C_n = (bool) cond((word32) r8_r5_n - r1_n - (bool) cond((word32) r5_r4_n - r0_n));
 				}
 				Eq_n C_n = (bool) cond(r8_n - r10_n - C_n);
-				word32 r6_n = (word32) (r9_n - r11_n < C_n);
+				uint32 r6_n = (word32) (r9_n - r11_n < C_n);
 				if (r9_n - r11_n == C_n)
 					r6_n = r12_n;
 				uint64 r11_r10_n = SEQ(__setbit(r3_n >> 0x08, 31, SLICE(lr_n, bool, 31)), r2_n >> 0x08 | r3_n << 0x18) + (uint64) r6_n;

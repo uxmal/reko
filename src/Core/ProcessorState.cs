@@ -167,7 +167,10 @@ namespace Reko.Core
             if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
                 if (stackState.TryGetValue(stackOffset, out var value))
-                    return value;
+                {
+                    if (value.DataType.BitSize == access.DataType.BitSize)
+                        return value;
+                }
             }
             return InvalidConstant.Create(access.DataType);
         }

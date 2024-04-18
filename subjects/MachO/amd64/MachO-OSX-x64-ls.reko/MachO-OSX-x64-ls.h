@@ -901,10 +901,10 @@ Eq_1623: (union "Eq_1623" (ptr64 u0) (word32 u1))
 	T_2563 (in out r12d_1995 @ 000000010000424D : ptr64)
 	T_3009 (in r12dOut @ 00000001000048FD : Eq_1623)
 	T_3020 (in out r12d_94 @ 00000001000048FD : ptr64)
-Eq_1635: (fn word32 (Eq_53))
+Eq_1635: (fn uint32 (Eq_53))
 	T_1635 (in fn0000000100004715 @ 0000000100003598 : ptr64)
 	T_1636 (in signature of fn0000000100004715 @ 0000000100004715 : void)
-Eq_1647: (fn word32 (Eq_53, ptr64, ptr64, Eq_1623, ptr64, ptr64))
+Eq_1647: (fn uint32 (Eq_53, ptr64, ptr64, Eq_1623, ptr64, ptr64))
 	T_1647 (in fn00000001000048AF @ 000000010000359E : ptr64)
 	T_1648 (in signature of fn00000001000048AF @ 00000001000048AF : void)
 Eq_1670: mbstate_t
@@ -1186,7 +1186,7 @@ Eq_2948: (union "Eq_2948" (int64 u0) (up64 u1))
 	T_2950 (in 0x7F<64> @ 00000001000047F2 : word64)
 Eq_2959: (struct "Eq_2959" (3C (arr uint32) a003C))
 	T_2959 (in _DefaultRuneLocale @ 0000000100004803 : ptr64)
-Eq_3003: (fn word32 (Eq_53, (ptr64 Eq_3006), ptr64, ptr64, Eq_1623, ptr64, ptr64))
+Eq_3003: (fn uint32 (Eq_53, (ptr64 Eq_3006), ptr64, ptr64, Eq_1623, ptr64, ptr64))
 	T_3003 (in fn0000000100004ABB @ 00000001000048FD : ptr64)
 	T_3004 (in signature of fn0000000100004ABB @ 0000000100004ABB : void)
 Eq_3006: (struct "Eq_3006"
@@ -8019,9 +8019,9 @@ T_1637: (in rdi @ 0000000100003598 : Eq_53)
   OrigDataType: word64
 T_1638: (in fn0000000100004715(rdi) @ 0000000100003598 : word32)
   Class: Eq_1638
-  DataType: word32
-  OrigDataType: word32
-T_1639: (in CONVERT(fn0000000100004715(rdi), word32, uint64) @ 0000000100003598 : uint64)
+  DataType: uint32
+  OrigDataType: uint32
+T_1639: (in CONVERT(fn0000000100004715(rdi), uint32, uint64) @ 0000000100003598 : uint64)
   Class: Eq_1639
   DataType: uint64
   OrigDataType: uint64
@@ -8127,9 +8127,9 @@ T_1664: (in out r15_22 @ 000000010000359E : ptr64)
   OrigDataType: ptr64
 T_1665: (in fn00000001000048AF(rdi, out rbx_25, out rbp_24, out r12d_340, out r14_21, out r15_22) @ 000000010000359E : word32)
   Class: Eq_1665
-  DataType: word32
-  OrigDataType: word32
-T_1666: (in CONVERT(fn00000001000048AF(rdi, out rbx_25, out rbp_24, out r12d_340, out r14_21, out r15_22), word32, uint64) @ 000000010000359E : uint64)
+  DataType: uint32
+  OrigDataType: uint32
+T_1666: (in CONVERT(fn00000001000048AF(rdi, out rbx_25, out rbp_24, out r12d_340, out r14_21, out r15_22), uint32, uint64) @ 000000010000359E : uint64)
   Class: Eq_1666
   DataType: uint64
   OrigDataType: uint64
@@ -13596,9 +13596,9 @@ T_3024: (in out r15_59 @ 00000001000048FD : ptr64)
   OrigDataType: ptr64
 T_3025: (in fn0000000100004ABB(rdi, fp - 8<i64>, out rbx_62, out rbp_61, out r12d_94, out r14_58, out r15_59) @ 00000001000048FD : word32)
   Class: Eq_3025
-  DataType: word32
-  OrigDataType: word32
-T_3026: (in CONVERT(fn0000000100004ABB(rdi, fp - 8<i64>, out rbx_62, out rbp_61, out r12d_94, out r14_58, out r15_59), word32, uint64) @ 00000001000048FD : uint64)
+  DataType: uint32
+  OrigDataType: uint32
+T_3026: (in CONVERT(fn0000000100004ABB(rdi, fp - 8<i64>, out rbx_62, out rbp_61, out r12d_94, out r14_58, out r15_59), uint32, uint64) @ 00000001000048FD : uint64)
   Class: Eq_3026
   DataType: uint64
   OrigDataType: uint64
@@ -16893,9 +16893,9 @@ typedef union Eq_1623 {
 	word32 u1;
 } Eq_1623;
 
-typedef word32 (Eq_1635)(Eq_53);
+typedef uint32 (Eq_1635)(Eq_53);
 
-typedef word32 (Eq_1647)(Eq_53, ptr64, ptr64, Eq_1623, ptr64, ptr64);
+typedef uint32 (Eq_1647)(Eq_53, ptr64, ptr64, Eq_1623, ptr64, ptr64);
 
 typedef mbstate_t Eq_1670;
 
@@ -17076,7 +17076,7 @@ typedef struct Eq_2959 {
 	uint32 a003C[];	// 3C
 } Eq_2959;
 
-typedef word32 (Eq_3003)(Eq_53, Eq_3006 *, ptr64, ptr64, Eq_1623, ptr64, ptr64);
+typedef uint32 (Eq_3003)(Eq_53, Eq_3006 *, ptr64, ptr64, Eq_1623, ptr64, ptr64);
 
 typedef struct Eq_3006 {
 	ui32 dwFFFFFF44;	// FFFFFF44

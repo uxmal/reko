@@ -253,7 +253,7 @@ l00000001400013B7:
 	_p___argv()
 	_p___argc()
 	get_initial_narrow_environment()
-	rax_211 = CONVERT(fn0000000140001000(), word32, uint64)
+	rax_211 = CONVERT(fn0000000140001000(), uint32, uint64)
 	fn0000000140001AC0()
 	ebx_248 = SLICE(rax_211, word32, 0) (alias)
 	branch SLICE(rax_211, byte, 0) != 0<8> l00000001400013EB
@@ -626,7 +626,7 @@ l000000014000186C:
 	branch rax_14 != 0x2B992DDFA232<64> l0000000140001903
 l0000000140001894:
 	GetSystemTimeAsFileTime(&tArg10)
-	v16_30 = Mem11[&tArg10:word64] ^ CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
+	v16_30 = Mem11[&tArg10:word64] ^ CONVERT(GetCurrentThreadId(), word32, uint64) ^ CONVERT(GetCurrentProcessId(), word32, uint64)
 	QueryPerformanceCounter(&tArg18)
 	rax_40 = CONVERT(Mem31[&tArg18:word32], word32, uint64) << 0x20<64> ^ Mem31[&tArg18:word64] ^ v16_30 ^ fp + 8<i64>
 	rax_14 = rax_40 & 0xFFFFFFFFFFFF<64>

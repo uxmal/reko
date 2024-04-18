@@ -170,8 +170,8 @@ void fn002004F2(byte w)
 bool fn0020050A(word16 hl)
 {
 	word32 xhl;
-	byte h_n = SLICE(xhl, byte, 8);
-	byte l_n = (byte) xhl;
+	uint8 h_n = SLICE(xhl, byte, 8);
+	uint8 l_n = (byte) xhl;
 	return SLICE(cond((uint32) ((uint16) h_n * 0x02 + 0x9800 + (uint16) l_n * 0x40) + 0x01), bool, 4);
 }
 
@@ -187,10 +187,10 @@ bool fn00200532(word32 xhl)
 	return fn0020050A((word16) SEQ(xhl_16_16_n, h_n + 0x01, l_n));
 }
 
-// 00200557: Register word32 fn00200557(Register bui8 c, Register byte b, Register (ptr32 byte) xhl)
+// 00200557: Register word32 fn00200557(Register bui8 c, Register uint8 b, Register (ptr32 byte) xhl)
 // Called from:
 //      fn00200089
-word32 fn00200557(bui8 c, byte b, byte * xhl)
+word32 fn00200557(bui8 c, uint8 b, byte * xhl)
 {
 	word24 xwa_24_8_n = 0x00;
 	struct Eq_n * xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b * 0x40;

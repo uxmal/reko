@@ -320,7 +320,7 @@ l0720:
 	r4_157 = (r4_77 & 0x7F80<16>) - 0x80<16>
 	C_163 = SLICE(cond(r4_157), bool, 0) (alias)
 l0724:
-	r2_r3_254 = SEQ(__swab(SEQ(SLICE(r2_158, byte, 8), 0<8>)) + r4_157, __swab(SEQ(SLICE(__rcl<word16,byte>(r3_166, 1<8>, C_163), byte, 8), 0<8>) | r2_158)) + CONVERT(__rcl<word16,byte>(r1_104, 1<8>, (r3_166 & 0x80<16>) != 0<16>), word16, uint32)
+	r2_r3_254 = SEQ(__swab(SEQ(SLICE(r2_158, byte, 8), 0<8>)) + r4_157, __swab(SEQ(SLICE(__rcl<word16,byte>(r3_166, 1<8>, C_163), byte, 8), 0<8>) | r2_158)) + CONVERT(__rcl<word16,byte>(r1_104, 1<8>, (r3_166 & 0x80<16>) != 0<16>), uint16, uint32)
 	r3_199 = SLICE(r2_r3_254, word16, 0) (alias)
 	r2_202 = SLICE(r2_r3_254, word16, 16) (alias)
 l06F0:
@@ -587,7 +587,7 @@ l0AE6:
 	r3_6 = Mem5[0x5424<p16>:word16]
 	branch bArg00 == 1<8> l0B02
 l0AF8:
-	wLoc04_85 = CONVERT(bArg00, byte, uint16) (alias)
+	wLoc04_85 = CONVERT(bArg00, uint8, uint16) (alias)
 	branch bArg00 == 8<8> l0B02
 l0AFE:
 	wLoc04_85 = wLoc04_85 + 3<16>
@@ -658,7 +658,7 @@ l0B60:
 	r3_111 = Mem5[0x5424<p16>:word16]
 	branch bArg00 == 1<8> l0B7C
 l0B72:
-	wLoc04_134 = CONVERT(bArg00, byte, uint16) (alias)
+	wLoc04_134 = CONVERT(bArg00, uint8, uint16) (alias)
 	branch bArg00 == 8<8> l0B7C
 l0B78:
 	wLoc04_134 = wLoc04_134 + 3<16>
@@ -1665,7 +1665,7 @@ fn172C_entry:
 l172C:
 	r3_16 = Mem0[r0 + 0x14<16>:word16]
 	r4_r1_79 = 0<32> (alias)
-	r5_r2_94 = CONVERT(r2, word16, uint32) (alias)
+	r5_r2_94 = CONVERT(r2, uint16, uint32) (alias)
 l1738:
 	r4_24 = SLICE(r4_r1_79, word16, 16) (alias)
 	r1_20 = SLICE(r4_r1_79, word16, 0) (alias)

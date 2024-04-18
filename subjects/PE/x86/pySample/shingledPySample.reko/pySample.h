@@ -992,9 +992,9 @@ T_87: (in &dwLoc08 + 0<32> @ 100010E2 : word32)
   OrigDataType: ptr32
 T_88: (in Mem16[&dwLoc08 + 0<32>:word32] @ 100010E2 : word32)
   Class: Eq_88
-  DataType: word32
-  OrigDataType: word32
-T_89: (in CONVERT(Mem16[&dwLoc08 + 0<32>:word32], word32, int64) @ 100010E2 : int64)
+  DataType: int32
+  OrigDataType: int32
+T_89: (in CONVERT(Mem16[&dwLoc08 + 0<32>:word32], int32, int64) @ 100010E2 : int64)
   Class: Eq_89
   DataType: int64
   OrigDataType: int64

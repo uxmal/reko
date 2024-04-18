@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0007");
             AssertCode(     // idxm	[[0x0]],a
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|v4 = Mem0[null:byte]",
+                "1|L--|v4 = Mem0[null:word16]",
                 "2|L--|Mem0[v4:byte] = a");
         }
 

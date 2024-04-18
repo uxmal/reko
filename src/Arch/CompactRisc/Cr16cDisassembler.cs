@@ -704,9 +704,9 @@ namespace Reko.Arch.CompactRisc
                 Nyi("Fmt2 3 ZZ ope 6  loadb (rrp) disp20 4 src (rrp) 4 dest reg 20 src disp 4"),
                 Instr(Mnemonic.loadb, abs24_b, R4),
                 Nyi("Fmt2 3 ZZ ope 8  loadd (reg) disp20 4 src (reg) 4 dest rp 20 src disp 4"),
-                Instr(Mnemonic.loadd, rp_disp20_d, R4),
+                Instr(Mnemonic.loadd, rp_disp20_d, rp4),
                 Nyi("Fmt2 3 ZZ ope 10  loadd (rrp) disp20 4 src (rrp) 4 dest rp 20 src disp 4"),
-                Instr(Mnemonic.loadd, abs24_d, R4),
+                Instr(Mnemonic.loadd, abs24_d, rp4),
                 Nyi("Fmt2 3 ZZ ope 12  loadw (reg) disp20 4 src (reg) 4 dest reg 20 src disp 4"),
                 Instr(Mnemonic.loadw, rp_disp20_w, R4),
                 Nyi("Fmt2 3 ZZ ope 14  loadw (rrp) disp20 4 src (rrp) 4 dest reg 20 src disp 4"),
@@ -1033,15 +1033,15 @@ namespace Reko.Arch.CompactRisc
                     Nyi("Fmt17 2 ZZ  loadb(prp) disp14 4 src(prp) 4 dest reg 14 src disp"),
                     Nyi("Fmt17 2 ZZ  loadd(prp) disp14 4 src(prp) 4 dest rp 14 src disp"),
                     Nyi("Fmt17 2 ZZ  loadw(prp) disp14 4 src(prp) 4 dest reg 14 src disp")),
-                Instr(Mnemonic.loadd, abs20_d, R4),
+                Instr(Mnemonic.loadd, abs20_d, rp4),
 
                 Instr(Mnemonic.loadb, abs20_b, R4),
                 Instr(Mnemonic.loadw, abs20_w, R4),
                 Instr(Mnemonic.loadb, abs20_rel_b, R4),
                 Instr(Mnemonic.loadb, abs20_rel_b, R4),
 
-                Instr(Mnemonic.loadd, abs20_rel_d, R4),
-                Instr(Mnemonic.loadd, abs20_rel_d, R4),
+                Instr(Mnemonic.loadd, abs20_rel_d, rp4),
+                Instr(Mnemonic.loadd, abs20_rel_d, rp4),
                 Instr(Mnemonic.loadw, abs20_rel_w, R4),
                 Instr(Mnemonic.loadw, abs20_rel_w, R4));
 

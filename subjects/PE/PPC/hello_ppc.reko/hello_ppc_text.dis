@@ -197,7 +197,7 @@ l004004B4:
 	Mem55[v4 + 64<i32>:word32] = r29
 	Mem58[v4 + 68<i32>:word32] = r30
 	Mem61[v4 + 72<i32>:word32] = r31
-	r31_193 = CONVERT(Mem68[r4:byte], byte, int32)
+	r31_193 = CONVERT(Mem68[r4:byte], int8, int32)
 	r23_189 = r4 + 1<32>
 	dwLoc0284_300 = 0<32>
 	branch r31_193 == 0<32> l00400DEC
@@ -214,9 +214,9 @@ l0040051C:
 l00400544:
 	r10_103 = 0<32>
 l00400524:
-	r10_103 = CONVERT(Mem88[r14_83 + 0xFFFFFFE4<32> + r31_193:byte], byte, int32) & 0xF<32>
+	r10_103 = CONVERT(Mem88[r14_83 + 0xFFFFFFE4<32> + r31_193:byte], int8, int32) & 0xF<32>
 l00400548:
-	r4_118 = CONVERT(SLICE(CONVERT(Mem88[r14_83 + 4<32> + ((r10_103 << 3<8>) + dwLoc0284_300):byte], byte, int32) >> 4<32>, int8, 0), int8, int32)
+	r4_118 = CONVERT(SLICE(CONVERT(Mem88[r14_83 + 4<32> + ((r10_103 << 3<8>) + dwLoc0284_300):byte], int8, int32) >> 4<32>, int8, 0), int8, int32)
 	dwLoc0284_300 = r4_118
 	branch r4_118 >= 8<32> l00400DDC
 l00400578:
@@ -226,12 +226,12 @@ l004005B0:
 l004005C8:
 	r2 = fn00400E04(r2, r31_193, r3, fp + 0xFFFFFD78<32>, r25, r26_166, r27, r28, r29, r30, out r25, out r26_166, out r27, out r28, out r29, out r30)
 	r23_189 = r23_189 + 1<32>
-	r31_193 = CONVERT(Mem140[r23_189:byte], byte, int32)
+	r31_193 = CONVERT(Mem140[r23_189:byte], int8, int32)
 l004005EC:
 	r2 = fn00400E04(r2, r31_193, r3, fp + 0xFFFFFD78<32>, r25, r26_166, r27, r28, r29, r30, out r25, out r26_166, out r27, out r28, out r29, out r30)
 l00400DDC:
 	r23_189 = r23_189 + 1<32>
-	r31_193 = CONVERT(Mem232[r23_189:byte], byte, int32)
+	r31_193 = CONVERT(Mem232[r23_189:byte], int8, int32)
 	branch r31_193 != 0<32> l00400508
 l00400DEC:
 	r3Out = 0<32>
@@ -377,7 +377,7 @@ l00400F00:
 	r31_31 = r4 + 0xFFFFFFFF<32>
 	branch r4 <= 0<32> l00400F60
 l00400F30:
-	r2 = fn00400E04(r2, CONVERT(Mem30[r30_25:byte], byte, int32), r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1<32>, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
+	r2 = fn00400E04(r2, CONVERT(Mem30[r30_25:byte], int8, int32), r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1<32>, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
 	r31_31 = r31_132 + 0xFFFFFFFF<32>
 	r31_132 = r31_31
 	branch r31_132 > 0<32> l00400F30
@@ -793,7 +793,7 @@ fn00401474_entry:
 l00401474:
 	branch Mem0[Mem0[r2 + 116<i32>:word32]:word32] > r3 l00401490
 l00401490:
-	return CONVERT(Mem0[Mem0[r2 + 120<i32>:word32] + r3:byte], byte, int32) & 0x40<32>
+	return CONVERT(Mem0[Mem0[r2 + 120<i32>:word32] + r3:byte], int8, int32) & 0x40<32>
 l00401488:
 	return 0<32>
 fn00401474_exit:
@@ -961,7 +961,7 @@ l00401694:
 	Mem202[r4 + 4<i32>:word32] = r5_196 + 0xFFFFFFFF<32>
 	branch r29_187 <= 0<32> l004016D4
 l004016D4:
-	branch (CONVERT(Mem202[Mem202[r2 + 120<i32>:word32] + r30_148:byte], byte, int32) & 0x20<32>) == 0<32> l004016FC
+	branch (CONVERT(Mem202[Mem202[r2 + 120<i32>:word32] + r30_148:byte], int8, int32) & 0x20<32>) == 0<32> l004016FC
 l004016E8:
 	r2 = fn004026B8(r2, r30_148, 2<32>, r26, r27_144, r28_145, r29_187, r30_148, r31, out r26, out r27_144, out r28_145, out r29_187, out r31_189)
 l004016B8:
@@ -1463,7 +1463,7 @@ l004020BC:
 	Mem17[v6 + 8<i32>:word32] = r31
 	branch r3 >= r4_8 l00402220
 l004020E4:
-	r11_28 = CONVERT(Mem25[Mem25[r2 + 120<i32>:word32] + r3:byte], byte, int32)
+	r11_28 = CONVERT(Mem25[Mem25[r2 + 120<i32>:word32] + r3:byte], int8, int32)
 	branch (r11_28 & 1<32>) == 0<32> l00402220
 l00402220:
 	r5_34 = Mem25[r2 + 164<i32>:word32]
@@ -1550,7 +1550,7 @@ l00402248:
 	Mem24[v12 + 8<i32>:word32] = r31
 	branch r3 >= r6_8 l00402374
 l00402270:
-	r11_120 = CONVERT(Mem24[Mem24[r2 + 120<i32>:word32] + r3:byte], byte, int32)
+	r11_120 = CONVERT(Mem24[Mem24[r2 + 120<i32>:word32] + r3:byte], int8, int32)
 	branch (r11_120 & 1<32>) == 0<32> l00402374
 l00402284:
 	branch (r11_120 & 0x10<32>) != 0<32> l00402374
@@ -1758,7 +1758,7 @@ l004026B8:
 	Mem22[v4 + 20<i32>:word32] = r31
 	branch Mem22[Mem22[r2 + 116<i32>:word32]:word32] <= r3 l00402964
 l004026E4:
-	r11_38 = CONVERT(Mem35[Mem35[r2 + 120<i32>:word32] + r3:byte], byte, int32)
+	r11_38 = CONVERT(Mem35[Mem35[r2 + 120<i32>:word32] + r3:byte], int8, int32)
 	branch (r11_38 & 1<32>) == 0<32> l00402964
 l004026F8:
 	branch (r11_38 & 0x40<32>) != 0<32> l00402964
@@ -1955,7 +1955,7 @@ l00402AD0:
 	fn00403FB4(dwLoc0244)
 	branch fp != 0x220<32> l00402AF4
 l00402AF4:
-	r11 = CONVERT(Mem33[0xBFF<32>:byte], byte, int32) & 0xFF<32>
+	r11 = CONVERT(Mem33[0xBFF<32>:byte], int8, int32) & 0xFF<32>
 l00402AE8:
 	r11 = Mem33[0x120<32>:word32] & 0xFF<32>
 l00402B04:
@@ -2335,7 +2335,7 @@ fn004032AC_entry:
 l004032AC:
 	branch r3 == 0<32> l004032F8
 l004032B4:
-	branch CONVERT(Mem0[r3:byte], byte, int32) == 0<32> l004032F8
+	branch CONVERT(Mem0[r3:byte], int8, int32) == 0<32> l004032F8
 l004032C0:
 	r11_11 = r3 + 1<i32>
 	r10_10 = CONVERT(Mem0[r3:byte], byte, word32)
@@ -2638,7 +2638,7 @@ word32 fn00403744(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Preserved: lr r1
 fn00403744_entry:
 l00403744:
-	r4_8 = CONVERT(Mem0[r3:byte], byte, int32)
+	r4_8 = CONVERT(Mem0[r3:byte], int8, int32)
 	Mem15[v9:word32] = r29
 	Mem18[v9 + 4<i32>:word32] = r30
 	Mem21[v9 + 8<i32>:word32] = r31
@@ -2734,7 +2734,7 @@ l00403898:
 l004038C4:
 	r28_30 = Mem29[r2 + 120<i32>:word32]
 	r28_32 = r3 + r28_30
-	r11_33 = CONVERT(Mem29[r28_30 + r3:byte], byte, int32)
+	r11_33 = CONVERT(Mem29[r28_30 + r3:byte], int8, int32)
 	branch (r11_33 & 1<32>) == 0<32> l004039E4
 l004039E4:
 	r5_39 = Mem29[r2 + 164<i32>:word32]

@@ -47,8 +47,9 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             Given_Bytes(0x3C, 0x40, 0xA0, 0xEE);	// mov.w	#EEA0,r12
             AssertCode(
-                "0|L--|0100(4): 1 instructions",
-                "1|L--|r12 = 0xEEA0<16>");
+                "0|L--|0100(4): 2 instructions",
+                "1|L--|v4 = CONVERT(0xEEA0<16>, word16, word20)",
+                "2|L--|r12 = v4");
         }
 
         [Test]
@@ -165,10 +166,10 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x1A, 0x15);	// pushm.w	#02,r10
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|sp = sp - 2<i32>",
-                "2|L--|Mem0[sp:word16] = r10",
-                "3|L--|sp = sp - 2<i32>",
-                "4|L--|Mem0[sp:word16] = r9");
+                "1|L--|sp = sp - 4<i32>",
+                "2|L--|Mem0[sp:word20] = r10",
+                "3|L--|sp = sp - 4<i32>",
+                "4|L--|Mem0[sp:word20] = r9");
         }
 
         [Test]
@@ -199,15 +200,17 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
-        public void Msp430XRw_popm()
+        public void Msp430XRw_popm_w()
         {
             Given_Bytes(0x19, 0x17);	// popm.w	#02,r9
             AssertCode(
-                "0|L--|0100(2): 4 instructions",
-                "1|L--|r8 = Mem0[sp:word16]",
-                "2|L--|sp = sp + 2<i32>",
-                "3|L--|r9 = Mem0[sp:word16]",
-                "4|L--|sp = sp + 2<i32>");
+                "0|L--|0100(2): 6 instructions",
+                "1|L--|v5 = CONVERT(Mem0[sp:word16], word16, word20)",
+                "2|L--|r8 = v5",
+                "3|L--|sp = sp + 4<i32>",
+                "4|L--|v7 = CONVERT(Mem0[sp:word16], word16, word20)",
+                "5|L--|r9 = v7",
+                "6|L--|sp = sp + 4<i32>");
         }
 
         [Test]
@@ -293,12 +296,13 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             Given_Bytes(0x66, 0xB1);	// bit.b	@sp,r6
             AssertCode(
-                "0|L--|0100(2): 5 instructions",
+                "0|L--|0100(2): 6 instructions",
                 "1|L--|v5 = Mem0[sp:byte]",
-                "2|L--|v6 = r6 & v5",
-                "3|L--|NZ = cond(v6)",
-                "4|L--|C = Test(NE,v6)",
-                "5|L--|V = false");
+                "2|L--|v6 = CONVERT(v5, byte, word20)",
+                "3|L--|v7 = r6 & v6",
+                "4|L--|NZ = cond(v7)",
+                "5|L--|C = Test(NE,v7)",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -364,9 +368,10 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             Given_Bytes(0x8F, 0x10);	// swpb	r15
             AssertCode(
-                "0|L--|0100(2): 2 instructions",
+                "0|L--|0100(2): 3 instructions",
                 "1|L--|v4 = SLICE(r15, word16, 0)",
-                "2|L--|r15 = __swpb(v4)");
+                "2|L--|v5 = CONVERT(__swpb(v4), word16, word20)",
+                "3|L--|r15 = v5");
         }
 
         [Test]

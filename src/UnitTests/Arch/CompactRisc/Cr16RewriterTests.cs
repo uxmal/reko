@@ -480,6 +480,15 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Rw_loadd()
+        {
+            Given_HexString("01870A04");
+            AssertCode(     // loadw	(0x01040A),r0
+                "0|L--|00003000(4): 1 instructions",
+                "1|L--|r1_r0 = Mem0[0x0001040A<p32>:word32]");
+        }
+
+        [Test]
         public void Cr16Rw_loadw()
         {
             Given_HexString("01890A04");
@@ -628,9 +637,9 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("000B");
             AssertCode(     // mulsb	r0,r0
                 "0|L--|00003000(2): 3 instructions",
-                "1|L--|v4 = SLICE(SLICE(r0, word16, 0), byte, 0)",
-                "2|L--|v5 = SLICE(r0, byte, 0)",
-                "3|L--|r0 = v4 *s32 v5");
+                "1|L--|v4 = SLICE(SLICE(r0, word16, 0), int8, 0)",
+                "2|L--|v5 = SLICE(r0, int8, 0)",
+                "3|L--|r0 = v4 *s16 v5");
         }
 
         [Test]

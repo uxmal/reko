@@ -617,7 +617,7 @@ T_82: (in (esi >> 6<32>) *s r8d *s ecx @ 0000000000400E1B : int32)
   Class: Eq_82
   DataType: int32
   OrigDataType: int32
-T_83: (in CONVERT((esi >>u 6<32>) *s r8d *s ecx, int32, uint64) @ 0000000000400E1B : uint64)
+T_83: (in CONVERT((esi >>u 6<32>) *s r8d *s ecx, word32, uint64) @ 0000000000400E1B : uint64)
   Class: Eq_83
   DataType: uint64
   OrigDataType: uint64

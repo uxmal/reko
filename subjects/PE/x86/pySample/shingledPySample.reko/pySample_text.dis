@@ -46,7 +46,7 @@ l100010A0:
 	eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l100010C8
 l100010C8:
-	return Py_BuildValue(0x1000214C<32>, CONVERT(Mem16[&dwLoc08:word32], word32, int64) /32 Mem16[&dwLoc04:word32])
+	return Py_BuildValue(0x1000214C<32>, CONVERT(Mem16[&dwLoc08:word32], int32, int64) /32 Mem16[&dwLoc04:word32])
 l100010C4:
 	return eax_17
 fn100010A0_exit:

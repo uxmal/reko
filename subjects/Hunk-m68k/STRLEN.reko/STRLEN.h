@@ -168,7 +168,7 @@ Eq_527: (fn word32 ())
 Eq_545: (fn word32 ((ptr32 byte)))
 	T_545 (in fn000013AC @ 000013A0 : ptr32)
 	T_546 (in signature of fn000013AC @ 000013AC : void)
-Eq_565: (struct "Eq_565" 0004 (0 byte b0000))
+Eq_565: (struct "Eq_565" 0004 (0 uint8 b0000))
 	T_565
 	T_569
 // Type Variables ////////////
@@ -798,17 +798,17 @@ T_154: (in d0_266 * 4<32> @ 000010CE : word32)
   OrigDataType: ui32
 T_155: (in 0<32>[d0_266 * 4<32>] @ 000010CE : byte)
   Class: Eq_155
-  DataType: byte
-  OrigDataType: byte
-T_156: (in CONVERT(0<32>[d0_266 * 4<32>], byte, uint32) @ 000010CE : uint32)
+  DataType: uint8
+  OrigDataType: uint8
+T_156: (in CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32) @ 000010CE : uint32)
   Class: Eq_156
   DataType: uint32
   OrigDataType: uint32
-T_157: (in a0_274 + CONVERT(0<32>[d0_266 * 4<32>], byte, uint32) @ 000010CE : word32)
+T_157: (in a0_274 + CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32) @ 000010CE : word32)
   Class: Eq_157
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 (struct (0 T_158 t0000)))
-T_158: (in Mem277[a0_274 + CONVERT(0<32>[d0_266 * 4<32>], byte, uint32):byte] @ 000010CE : byte)
+T_158: (in Mem277[a0_274 + CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32):byte] @ 000010CE : byte)
   Class: Eq_151
   DataType: byte
   OrigDataType: byte
@@ -2613,6 +2613,6 @@ typedef word32 (Eq_527)();
 typedef word32 (Eq_545)(byte *);
 
 typedef struct Eq_565 {	// size: 4 4
-	byte b0000;	// 0
+	uint8 b0000;	// 0
 } Eq_565;
 

@@ -55,12 +55,12 @@ ah_1: orig: ah
     def:  ah_1 = 0<8>
 al_4: orig: al
     def:  al_4 = Mem0[si:byte]
-    uses: ax_7 = CONVERT(al_4, byte, uint16) (alias)
+    uses: ax_7 = CONVERT(al_4, uint8, uint16) (alias)
 dx_5: orig: dx
     def:  dx_5 = PHI((dx, l1), (dx_8, m1))
     uses: dx_8 = dx_5 + ax_7
 ax_7: orig: ax
-    def:  ax_7 = CONVERT(al_4, byte, uint16) (alias)
+    def:  ax_7 = CONVERT(al_4, uint8, uint16) (alias)
     uses: dx_8 = dx_5 + ax_7
 dx_8: orig: dx
     def:  dx_8 = dx_5 + ax_7
@@ -93,7 +93,7 @@ m0:
 	// succ:  m1 m3done
 m1:
 	al_4 = Mem0[si:byte]
-	ax_7 = CONVERT(al_4, byte, uint16) (alias)
+	ax_7 = CONVERT(al_4, uint8, uint16) (alias)
 	dx_8 = dx_5 + ax_7
 	goto m0
 	// succ:  m0

@@ -63,7 +63,7 @@
 fn03B0 proc
 	movd	$E2C2,(r1,r0)
 	push	$2,r0
-	loadd	(0x40002C),r0
+	loadd	(0x40002C),(r1,r0)
 	push	$2,r0
 	bal	ra,fn0000D578
 	movw	$1,r2
@@ -5595,7 +5595,7 @@ l00005D22:
 	br	00004E62
 
 l00005D2C:
-	loadd	(0x00FC6C),r0
+	loadd	(0x00FC6C),(r1,r0)
 	stord	(r1,r0),0x18(r12)
 	movw	$FFFB,r0
 	br	00004D0E
@@ -5618,7 +5618,7 @@ l00005D52:
 	br	00005358
 
 l00005D58:
-	loadd	(0x00FC60),r0
+	loadd	(0x00FC60),(r1,r0)
 	stord	(r1,r0),0x18(r12)
 	movw	$FFFE,r0
 	br	00004D0E
@@ -6377,7 +6377,7 @@ l000064EC:
 l000064F2:
 	movw	$29A,r0
 	storw	r0,4(r9,r8)
-	loadd	(0x00FC68),r0
+	loadd	(0x00FC68),(r1,r0)
 	stord	(r1,r0),0x18(r11,r10)
 	movd	(r11,r10),(r3,r2)
 	bal	ra,fn00006134

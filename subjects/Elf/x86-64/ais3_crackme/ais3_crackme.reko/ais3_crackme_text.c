@@ -70,7 +70,7 @@ void frame_dummy()
 //      main
 word32 verify(byte rdi[])
 {
-	word32 dwLoc0C_n = 0x00;
+	int32 dwLoc0C_n = 0x00;
 	uint64 rax_n;
 	while (rdi[(int64) dwLoc0C_n] != 0x00)
 	{

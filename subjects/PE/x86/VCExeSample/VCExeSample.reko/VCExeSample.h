@@ -1010,7 +1010,7 @@ T_187: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_70, (real64) 
   Class: Eq_187
   DataType: real64
   OrigDataType: real64
-T_188: (in CONVERT(dwLoc08_70, word32, real64) @ 00401276 : real64)
+T_188: (in CONVERT(dwLoc08_70, int32, real64) @ 00401276 : real64)
   Class: Eq_187
   DataType: real64
   OrigDataType: real64

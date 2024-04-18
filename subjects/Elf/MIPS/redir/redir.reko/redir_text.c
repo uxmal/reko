@@ -2048,7 +2048,7 @@ char * properties_parse_command_line[](int32 r4, char * r5[], word32 r16, word32
 	{
 		if ((word32) *r5[dwLoc28_n] == 45)
 		{
-			byte bLoc1C_n = r5[dwLoc28_n][1];
+			int8 bLoc1C_n = (int8) r5[dwLoc28_n][1];
 			word32 dwLoc18_n;
 			if ((word32) bLoc1C_n != 0x00 && (word32) (r5)[dwLoc28_n][2] != 0x00)
 				dwLoc18_n = r5[dwLoc28_n] + 2;

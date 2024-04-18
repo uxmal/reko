@@ -140,7 +140,7 @@ l0C00_01B7:
 	Mem181[ds_123:0x5404<16>:word16] = 0<16>
 	dx_183 = Mem181[ds_123:0x541A<16>:word16]
 	Mem189[ds_123:0x541A<16>:word16] = ax_131
-	bx_ax_262 = SEQ(v33_180, ax_131) - CONVERT(dx_183, word16, uint32)
+	bx_ax_262 = SEQ(v33_180, ax_131) - CONVERT(dx_183, uint16, uint32)
 	Mem202[ds_123:0x5408<16>:word16] = SLICE(SLICE(bx_ax_262, word16, 8) *u32 0x3865<16>, word16, 16)
 	branch Mem202[ds_123:Mem202[ds_123:0x5A02<16>:word16] + 0x94<16>:word16] != 0<16> l0C00_01FA
 	// succ:  l0C00_01EC l0C00_01FA
@@ -302,7 +302,7 @@ void fn0C00_0000(selector ds)
 			Mem181[ds_123:0x5404<16>:word16] = 0<16>;
 			word16 dx_183 = Mem181[ds_123:0x541A<16>:word16];
 			Mem189[ds_123:0x541A<16>:word16] = ax_131;
-			ui32 bx_ax_262 = SEQ(v33_180, ax_131) - CONVERT(dx_183, word16, uint32);
+			ui32 bx_ax_262 = SEQ(v33_180, ax_131) - CONVERT(dx_183, uint16, uint32);
 			Mem202[ds_123:0x5408<16>:word16] = SLICE(SLICE(bx_ax_262, word16, 8) *u32 0x3865<16>, word16, 16);
 			if (Mem202[ds_123:Mem202[ds_123:0x5A02<16>:word16] + 0x94<16>:word16] != 0<16> || Mem202[ds_123:Mem202[ds_123:0x5BD8<16>:word16] + 0x94<16>:word16] != 0<16>)
 				Mem216[ds_123:0x5408<16>:word16] = 0<16>;

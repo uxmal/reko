@@ -176,25 +176,37 @@ namespace Reko.Arch.M68k
         {
             PrimitiveType dtSrc;
             PrimitiveType dtDst;
+            Identifier result;
+            var dReg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             if (instr.DataWidth!.Size == 4)
             {
                 dtSrc = PrimitiveType.Int16;
                 dtDst = PrimitiveType.Int32;
+                m.Assign(
+                    dReg,
+                    m.Convert(
+                        m.Slice(dReg, dtSrc),
+                        dtSrc, dtDst));
+                result = dReg;
             }
             else
             {
                 dtSrc = PrimitiveType.SByte;
                 dtDst = PrimitiveType.Int16;
+                result = binder.CreateTemporary(dtDst);
+                m.Assign(result, m.Convert(
+                        m.Slice(dReg, dtSrc),
+                        dtSrc, dtDst));
+                m.Assign(
+                    dReg,
+                    m.Dpb(
+                        dReg,
+                        result,
+                        0));
             }
-            var dReg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
-            m.Assign(
-                dReg,
-                m.Convert(
-                    m.Slice(dReg, dtSrc),
-                    dtSrc, dtDst));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.ZN),
-                m.Cond(dReg));
+                m.Cond(result));
         }
 
         public void RewriteExtb()

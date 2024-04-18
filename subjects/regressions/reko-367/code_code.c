@@ -18,7 +18,7 @@ void fn80000000()
 real96 fn80000132(real96 rArg04, real96 rArg10)
 {
 	real96 fp0_n = *(real96 *) 0x800004FC;
-	word32 dwLoc14_n = 0x00;
+	int32 dwLoc14_n = 0x00;
 	while (true)
 	{
 		real96 rLoc10_n = SEQ((word32) fp0_n, SLICE(fp0_n, word32, 32), SLICE(fp0_n, word32, 64));

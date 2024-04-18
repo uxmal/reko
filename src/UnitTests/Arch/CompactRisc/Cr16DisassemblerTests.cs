@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_loadd_abs20()
         {
-            AssertCode("loadd\t(0x012345),r6", "61874523");
+            AssertCode("loadd\t(0x012345),(r7,r6)", "61874523");
         }
 
         [Test]

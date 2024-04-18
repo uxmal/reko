@@ -745,13 +745,13 @@ Eq_595: (struct "Eq_595" (58 up32 dw0058) (5C int32 dw005C))
 Eq_599: (struct "Eq_599" (58 up32 dw0058) (5C int32 dw005C))
 	T_599 (in Mem10[r4 + 0x50<32>:word32] @ 00402336 : word32)
 	T_600 (in r1_22 @ 00402336 : (ptr32 Eq_599))
-Eq_642: (struct "Eq_642" (44 word32 dw0044) (48 word16 w0048))
+Eq_642: (struct "Eq_642" (44 word32 dw0044) (48 uint16 w0048))
 	T_642 (in Mem10[r4 + 0<32>:word32] @ 00402386 : word32)
 	T_643 (in r4_13 @ 00402386 : (ptr32 Eq_642))
 Eq_646: (union "Eq_646" (int32 u0) (ptr32 u1))
 	T_646 (in Mem5[0x00402408<p32>:word32] + 0x00402408<p32> @ 00402384 : word32)
 	T_647 (in r12_11 @ 00402384 : Eq_646)
-Eq_657: (struct "Eq_657" (48 word16 w0048))
+Eq_657: (struct "Eq_657" (48 uint16 w0048))
 	T_657 (in Mem10[r5 + 0<32>:word32] @ 00402396 : word32)
 	T_658 (in r5_21 @ 00402396 : (ptr32 Eq_657))
 Eq_707: (struct "Eq_707"
@@ -760,7 +760,7 @@ Eq_707: (struct "Eq_707"
 		(10 word32 dw0010)
 		(14 (ptr32 Eq_708) ptr0014)
 		(2C up32 dw002C)
-		(48 word16 w0048)
+		(48 uint16 w0048)
 		(50 (ptr32 Eq_708) ptr0050)
 		(54 byte b0054))
 	T_707 (in r5 @ 004023F0 : (ptr32 Eq_707))
@@ -873,7 +873,7 @@ Eq_1541: (struct "Eq_1541" (24 word32 dw0024))
 	T_1541 (in r15_1231 @ 004027CE : (ptr32 Eq_1541))
 Eq_1586: (struct "Eq_1586" (4 word32 dw0004))
 	T_1586 (in r9_1347 @ 004028AA : (ptr32 Eq_1586))
-Eq_1727: (struct "Eq_1727" (1C word32 dw001C) (44 word32 dw0044) (48 word16 w0048) (54 byte b0054))
+Eq_1727: (struct "Eq_1727" (1C word32 dw001C) (44 word32 dw0044) (48 uint16 w0048) (54 byte b0054))
 	T_1727 (in r0_158 @ 00402AAC : (ptr32 Eq_1727))
 	T_1766 (in r13_110 @ 00402A78 : (ptr32 Eq_1727))
 	T_1777 (in 0<32> @ 00402A76 : word32)
@@ -881,7 +881,7 @@ Eq_1865: (struct "Eq_1865" (0 word32 dw0000) (4 int32 dw0004))
 	T_1865 (in r15_156 @ 00402B24 : (ptr32 Eq_1865))
 Eq_1942: (union "Eq_1942" (int32 u0) (ptr32 u1))
 	T_1942 (in r12_110 @ 00402D52 : Eq_1942)
-Eq_1965: (struct "Eq_1965" (2 word16 w0002))
+Eq_1965: (struct "Eq_1965" (2 uint16 w0002))
 	T_1965 (in r8_105 @ 00402C50 : (ptr32 Eq_1965))
 Eq_1991: (struct "Eq_1991" (4 word32 dw0004))
 	T_1991 (in r15_169 @ 00402C86 : (ptr32 Eq_1991))
@@ -3820,9 +3820,9 @@ T_649: (in r4_13 + 0x48<32> @ 0040238E : word32)
   OrigDataType: word32
 T_650: (in Mem10[r4_13 + 0x48<32>:word16] @ 0040238E : word16)
   Class: Eq_650
-  DataType: word16
-  OrigDataType: word16
-T_651: (in CONVERT(Mem10[r4_13 + 0x48<32>:word16], word16, uint32) @ 0040238E : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_651: (in CONVERT(Mem10[r4_13 + 0x48<32>:word16], uint16, uint32) @ 0040238E : uint32)
   Class: Eq_651
   DataType: uint32
   OrigDataType: uint32
@@ -3864,9 +3864,9 @@ T_660: (in r5_21 + 0x48<32> @ 0040239E : word32)
   OrigDataType: word32
 T_661: (in Mem10[r5_21 + 0x48<32>:word16] @ 0040239E : word16)
   Class: Eq_661
-  DataType: word16
-  OrigDataType: word16
-T_662: (in CONVERT(Mem10[r5_21 + 0x48<32>:word16], word16, uint32) @ 0040239E : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_662: (in CONVERT(Mem10[r5_21 + 0x48<32>:word16], uint16, uint32) @ 0040239E : uint32)
   Class: Eq_651
   DataType: uint32
   OrigDataType: uint32
@@ -4268,9 +4268,9 @@ T_751: (in r8_1031 + 0x48<32> @ 004025C6 : word32)
   OrigDataType: word32
 T_752: (in Mem102[r8_1031 + 0x48<32>:word16] @ 004025C6 : word16)
   Class: Eq_752
-  DataType: word16
-  OrigDataType: word16
-T_753: (in CONVERT(Mem102[r8_1031 + 0x48<32>:word16], word16, uint32) @ 004025C6 : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_753: (in CONVERT(Mem102[r8_1031 + 0x48<32>:word16], uint16, uint32) @ 004025C6 : uint32)
   Class: Eq_753
   DataType: uint32
   OrigDataType: uint32
@@ -8193,9 +8193,9 @@ T_1729: (in r0_158 + 0x48<32> @ 00402AAC : word32)
   OrigDataType: word32
 T_1730: (in Mem142[r0_158 + 0x48<32>:word16] @ 00402AAC : word16)
   Class: Eq_1730
-  DataType: word16
-  OrigDataType: word16
-T_1731: (in CONVERT(Mem142[r0_158 + 0x48<32>:word16], word16, uint32) @ 00402AAC : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_1731: (in CONVERT(Mem142[r0_158 + 0x48<32>:word16], uint16, uint32) @ 00402AAC : uint32)
   Class: Eq_1731
   DataType: uint32
   OrigDataType: uint32
@@ -9145,9 +9145,9 @@ T_1967: (in r8_105 + 2<i32> @ 00402C50 : word32)
   OrigDataType: word32
 T_1968: (in Mem28[r8_105 + 2<i32>:word16] @ 00402C50 : word16)
   Class: Eq_1968
-  DataType: word16
-  OrigDataType: word16
-T_1969: (in CONVERT(Mem28[r8_105 + 2<i32>:word16], word16, uint32) @ 00402C50 : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_1969: (in CONVERT(Mem28[r8_105 + 2<i32>:word16], uint16, uint32) @ 00402C50 : uint32)
   Class: Eq_1969
   DataType: uint32
   OrigDataType: uint32
@@ -22291,7 +22291,7 @@ typedef struct Eq_599 {
 
 typedef struct Eq_642 {
 	word32 dw0044;	// 44
-	word16 w0048;	// 48
+	uint16 w0048;	// 48
 } Eq_642;
 
 typedef union Eq_646 {
@@ -22300,7 +22300,7 @@ typedef union Eq_646 {
 } Eq_646;
 
 typedef struct Eq_657 {
-	word16 w0048;	// 48
+	uint16 w0048;	// 48
 } Eq_657;
 
 typedef struct Eq_707 {
@@ -22309,7 +22309,7 @@ typedef struct Eq_707 {
 	word32 dw0010;	// 10
 	struct Eq_708 * ptr0014;	// 14
 	up32 dw002C;	// 2C
-	word16 w0048;	// 48
+	uint16 w0048;	// 48
 	struct Eq_708 * ptr0050;	// 50
 	byte b0054;	// 54
 } Eq_707;
@@ -22428,7 +22428,7 @@ typedef struct Eq_1586 {
 typedef struct Eq_1727 {
 	word32 dw001C;	// 1C
 	word32 dw0044;	// 44
-	word16 w0048;	// 48
+	uint16 w0048;	// 48
 	byte b0054;	// 54
 } Eq_1727;
 
@@ -22443,7 +22443,7 @@ typedef union Eq_1942 {
 } Eq_1942;
 
 typedef struct Eq_1965 {
-	word16 w0002;	// 2
+	uint16 w0002;	// 2
 } Eq_1965;
 
 typedef struct Eq_1991 {

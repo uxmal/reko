@@ -49,7 +49,7 @@ l00002272:
 	branch v13_17 == 0<8> l0000228C
 l00002276:
 	a2_25 = dwArg04
-	d0_29 = CONVERT(v13_17, byte, uint32)
+	d0_29 = CONVERT(v13_17, uint8, uint32)
 	a1_33 = dwArg04 + 1<i32>
 	branch d0_29 == 0<32> l0000228A
 l00002284:

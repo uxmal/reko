@@ -49,7 +49,7 @@ l0341:
 l034A:
 	a_94 = c_75 + Mem62[ix + -34<i16>:byte]
 l034B_thunk_fn034E:
-	hl_121 = CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), byte, uint16) (alias)
+	hl_121 = CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), uint8, uint16) (alias)
 	ixOut = ix_103
 	return SLICE(hl_121, byte, 0)
 fn02F4_exit:
@@ -1151,7 +1151,7 @@ l22A6:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
 	Mem8[ix + -3<i16>:byte] = 0<8>
 	v16_21 = Mem8[wArg10 + (wArg05 + 1<i16>):byte]
-	hl_33 = CONVERT(v16_21, byte, uint16) * 8<16> + CONVERT(v16_21, byte, uint16) + bc
+	hl_33 = CONVERT(v16_21, uint8, uint16) * 8<16> + CONVERT(v16_21, uint8, uint16) + bc
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()
@@ -1171,7 +1171,7 @@ l3E2D:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
 	Mem8[ix + -3<i16>:byte] = 0<8>
 	v16_21 = Mem8[wArg10 + (wArg05 + 1<i16>):byte]
-	hl_33 = CONVERT(v16_21, byte, uint16) * 8<16> + CONVERT(v16_21, byte, uint16) + bc
+	hl_33 = CONVERT(v16_21, uint8, uint16) * 8<16> + CONVERT(v16_21, uint8, uint16) + bc
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()

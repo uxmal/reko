@@ -1161,8 +1161,8 @@ void fn0AE2(<anonymous> ** r4, struct Eq_n * wArg00, struct Eq_n * wArg02, <anon
 //      fn0AE2
 void fn0AE6(<anonymous> ** r4, word16 wArg00, struct Eq_n * wArg02, struct Eq_n * wArg04, <anonymous> * wArg06)
 {
-	cu8 bArg00 = (byte) wArg00;
-	cu8 bArg01 = SLICE(wArg00, byte, 8);
+	uint8 bArg00 = (byte) wArg00;
+	uint8 bArg01 = SLICE(wArg00, byte, 8);
 	struct Eq_n * r3_n = g_ptr5424;
 	uint16 wLoc04_n;
 	if (bArg00 != 0x01)
@@ -1206,8 +1206,8 @@ void fn0B44(struct Eq_n * r0, struct Eq_n * wArg00, struct Eq_n * wArg02, word16
 //      fn0B44
 void fn0B60(struct Eq_n * r0, word16 wArg00, struct Eq_n * wArg02, struct Eq_n * wArg04, word16 * ptrArg06)
 {
-	cu8 bArg00 = (byte) wArg00;
-	cu8 bArg01 = SLICE(wArg00, byte, 8);
+	uint8 bArg00 = (byte) wArg00;
+	uint8 bArg01 = SLICE(wArg00, byte, 8);
 	struct Eq_n * r3_n = g_ptr5424;
 	uint16 wLoc04_n;
 	if (bArg00 != 0x01)
@@ -2370,10 +2370,10 @@ void fn171E(struct Eq_n * r0, struct Eq_n * r3)
 	fn172C(r0, r2_n - 0x01);
 }
 
-// 172C: void fn172C(Register (ptr16 Eq_n) r0, Register word16 r2)
+// 172C: void fn172C(Register (ptr16 Eq_n) r0, Register uint16 r2)
 // Called from:
 //      fn171E
-void fn172C(struct Eq_n * r0, word16 r2)
+void fn172C(struct Eq_n * r0, uint16 r2)
 {
 	Eq_n r3_n;
 	r3_n.u0 = r0->t0014.u0;

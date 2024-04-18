@@ -242,7 +242,7 @@ Eq_692: (union "Eq_692" (int32 u0) (uint32 u1))
 Eq_702: (fn word32 ((ptr32 (arr Eq_729)), ptr32, ptr32))
 	T_702 (in fn00001390 @ 0000148A : ptr32)
 	T_703 (in signature of fn00001390 @ 00001390 : void)
-Eq_714: (struct "Eq_714" 0004 (0 byte b0000))
+Eq_714: (struct "Eq_714" 0004 (0 uint8 b0000))
 	T_714
 	T_718
 Eq_729: (struct "Eq_729" 0010 (0 (arr Eq_548) a0000))
@@ -874,17 +874,17 @@ T_154: (in d0_266 * 4<32> @ 000010CE : word32)
   OrigDataType: ui32
 T_155: (in 0<32>[d0_266 * 4<32>] @ 000010CE : byte)
   Class: Eq_155
-  DataType: byte
-  OrigDataType: byte
-T_156: (in CONVERT(0<32>[d0_266 * 4<32>], byte, uint32) @ 000010CE : uint32)
+  DataType: uint8
+  OrigDataType: uint8
+T_156: (in CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32) @ 000010CE : uint32)
   Class: Eq_156
   DataType: uint32
   OrigDataType: uint32
-T_157: (in a0_274 + CONVERT(0<32>[d0_266 * 4<32>], byte, uint32) @ 000010CE : word32)
+T_157: (in a0_274 + CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32) @ 000010CE : word32)
   Class: Eq_157
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 (struct (0 T_158 t0000)))
-T_158: (in Mem277[a0_274 + CONVERT(0<32>[d0_266 * 4<32>], byte, uint32):byte] @ 000010CE : byte)
+T_158: (in Mem277[a0_274 + CONVERT(0<32>[d0_266 * 4<32>], uint8, uint32):byte] @ 000010CE : byte)
   Class: Eq_151
   DataType: byte
   OrigDataType: byte
@@ -3394,7 +3394,7 @@ typedef union Eq_692 {
 typedef word32 (Eq_702)(Eq_729 *[], ptr32, ptr32);
 
 typedef struct Eq_714 {	// size: 4 4
-	byte b0000;	// 0
+	uint8 b0000;	// 0
 } Eq_714;
 
 typedef struct Eq_729 {	// size: 16 10

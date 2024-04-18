@@ -426,7 +426,7 @@ l1483_0EDB:
 	ah_249 = 0<8>
 	cx_326 = SEQ(0x2A<8>, cl_509) (alias)
 l1483_0EE4:
-	di_236 = di_236 + CONVERT(Mem314[bx_204:si_304:byte], byte, uint16)
+	di_236 = di_236 + CONVERT(Mem314[bx_204:si_304:byte], uint8, uint16)
 	Mem324[psegArg01A4:di_236:word16] = Mem314[psegArg01A4:di_236:word16] + dx_493
 	cx_326 = cx_326 - 1<16>
 	si_304 = si_304 + 1<i16>

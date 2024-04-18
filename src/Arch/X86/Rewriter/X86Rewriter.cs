@@ -1290,12 +1290,12 @@ namespace Reko.Arch.X86.Rewriter
                 .Returns("T");
             sidt_intrinsic = new IntrinsicBuilder("__sidt", true)
                 .GenericTypes("T")
-                .Void();
+                .Returns("T");
             significand_intrinsic = UnaryIntrinsic("__significand", PrimitiveType.Real64);
             sin_intrinsic = UnaryIntrinsic("sin", PrimitiveType.Real64);      //$REVIEW math.h
             sldt_intrinsic = new IntrinsicBuilder("__sldt", true)
                 .GenericTypes("T")
-                .Void();
+                .Returns("T");
             smsw_intrinsic = new IntrinsicBuilder("__smsw", true)
                 .GenericTypes("T")
                 .Returns("T");

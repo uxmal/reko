@@ -284,6 +284,7 @@ namespace Reko.Arch.Msp430
                 }
                 else
                 {
+                    src = MaybeExtend(src, dst.DataType);
                     m.Assign(dst, src);
                 }
                 return dst;
@@ -310,7 +311,7 @@ namespace Reko.Arch.Msp430
                 {
                     ea = Address.Ptr16((ushort) mop.Offset);
                 }
-                m.Assign(m.Mem(mop.Width, ea), src);
+                m.Assign(m.Mem(mop.Width, ea), MaybeSlice(src, mop.Width));
                 return src;
             case AddressOperand aop:
                 var mem = m.Mem(op.Width, aop.Address);
@@ -320,12 +321,42 @@ namespace Reko.Arch.Msp430
             throw new NotImplementedException($"Unknown operand type {op.GetType().Name} ({op})");
         }
 
+
+
         private void EmitCc(Expression exp, FlagGroupStorage? grf)
         {
             if (grf != null)
             {
                 Assign(grf, m.Cond(exp));
             }
+        }
+
+
+        private Expression MaybeExtend(Expression exp, DataType dt)
+        {
+            if (dt.BitSize > exp.DataType.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.ExtendZ(exp, dt));
+                return tmp;
+            }
+            return exp;
+        }
+
+        private Expression MaybeSlice(Expression exp, DataType dt)
+        {
+            if (dt.BitSize < exp.DataType.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(exp, dt));
+                exp = tmp;
+            }
+            return exp;
+        }
+
+        private Constant WordAligned(DataType width)
+        {
+            return m.Int32(((width.Size + 1) / 2) * 2);
         }
 
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
@@ -356,9 +387,12 @@ namespace Reko.Arch.Msp430
 
         private void RewriteBit()
         {
-            var left = RewriteOp(instr.Operands[1]);
-            var right = RewriteOp(instr.Operands[0]);
-            var tmp = binder.CreateTemporary(instr.Operands[0].Width);
+            var op0 = instr.Operands[0];
+            var op1 = instr.Operands[1];
+            var dtResult = (op0.Width.BitSize < op1.Width.BitSize ? op1 : op0).Width;
+            var left = MaybeExtend(RewriteOp(op1), dtResult);
+            var right = MaybeExtend(RewriteOp(op0), dtResult);
+            var tmp = binder.CreateTemporary(dtResult);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)(FlagM.NF | FlagM.ZF)));
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.CF));
             var v = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.VF));
@@ -459,8 +493,9 @@ namespace Reko.Arch.Msp430
             var sp = binder.EnsureRegister(arch.Registers.sp);
             while (c > 0)
             {
-                m.Assign(binder.EnsureRegister(arch.Registers.GpRegisters[iReg]), m.Mem16(sp));
-                m.Assign(sp, m.IAdd(sp, m.Int32(2)));
+                var reg = arch.Registers.GpRegisters[iReg];
+                m.Assign(binder.EnsureRegister(reg), MaybeExtend(m.Mem16(sp), reg.DataType));
+                m.Assign(sp, m.IAdd(sp, WordAligned(reg.Width)));
                 ++iReg;
                 --c;
             }
@@ -470,7 +505,7 @@ namespace Reko.Arch.Msp430
         {
             var src = RewriteOp(instr.Operands[0]);
             var sp = binder.EnsureRegister(arch.Registers.sp);
-            m.Assign(sp, m.ISub(sp, m.Int32(2)));
+            m.Assign(sp, m.ISub(sp, WordAligned(src.DataType)));
             m.Assign(m.Mem16(sp), src);
         }
 
@@ -486,8 +521,9 @@ namespace Reko.Arch.Msp430
             }
             while (c > 0)
             {
-                m.Assign(sp, m.ISub(sp, m.Int32(2)));
-                m.Assign(m.Mem16(sp), binder.EnsureRegister(arch.Registers.GpRegisters[iReg]));
+                var reg = arch.Registers.GpRegisters[iReg];
+                m.Assign(sp, m.ISub(sp, WordAligned(reg.Width)));
+                m.Assign(m.Mem(reg.DataType, sp), binder.EnsureRegister(reg));
                 --iReg;
                 --c;
             }

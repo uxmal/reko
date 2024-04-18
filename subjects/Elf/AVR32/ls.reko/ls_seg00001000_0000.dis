@@ -13331,7 +13331,7 @@ l0000CD28:
 		uses: lr:lr,Mem:Mem29,r0:r0,r1:r1,r12:r12,r2:r2,r3:r12,r4:r4,r5:r5,r6:r6_31,r7:r7,Stack +0000:lr,Stack +0004:r7,Stack +0008:r6,Stack +000C:r5,Stack +0010:r4,Stack +0014:r3,Stack +0018:r2,Stack +001C:r1,Stack +0020:r0
 		defs: lr:lr_44,r0:r0_36,r1:r1_37,r12:r12_45,r2:r2_38,r3:r3_39,r4:r4_40,r6:r6_42
 	call Mem29[r6_42 + 296<i32>:word32] (retsize: 0;)
-		uses: lr:lr_44,Mem:Mem29,r0:r0_36,r1:r1_37,r12:r3_39,r2:r2_38,r3:r3_39,r4:r4_40,r5:CONVERT(Mem29[r3_39:uint16], uint16, word32) & 8<32>,r6:r6_42,r7:r12_45
+		uses: lr:lr_44,Mem:Mem29,r0:r0_36,r1:r1_37,r12:r3_39,r2:r2_38,r3:r3_39,r4:r4_40,r5:CONVERT(Mem29[r3_39:uint16], word16, word32) & 8<32>,r6:r6_42,r7:r12_45
 		defs: lr:lr_62,r0:r0_54,r1:r1_55,r12:r12_63,r2:r2_56,r4:r4_58,r5:r5_59,r6:r6_60,r7:r7_61,VNZC:VNZC_65
 	r3_67 = CONVERT(SLICE(VNZC_65, bool, 1), bool, word32)
 	branch r5_59 != 0<32> l0000CD5C
@@ -15148,7 +15148,7 @@ l0000E28E:
 	r9_1067 = Mem4030[r11_1016 + r12_1006 * 0xC<32> + 4<i32>:word32]
 l0000E080:
 l0000E0DE:
-	r9_1067 = CONVERT(Mem4030[r11_1016 + r12_1006 * 0xC<32> + 4<i32>:uint16], uint16, word32)
+	r9_1067 = CONVERT(Mem4030[r11_1016 + r12_1006 * 0xC<32> + 4<i32>:uint16], word16, word32)
 l0000E07C:
 l0000E0D2:
 	r9_1067 = CONVERT(Mem4030[r11_1016 + r12_1006 * 0xC<32> + 4<i32>:int16], int16, int32)
@@ -16627,7 +16627,7 @@ l0000F452:
 l0000F456:
 	r6_277 = r6_277 | r7_232 | r10_284 << 1<8>
 	r7_232 = r9_114 | r10_284 >>u r12_260
-	r11_r10_500 = CONVERT(r11_270 >>u r12_260, word32, uint64) (alias)
+	r11_r10_500 = CONVERT(r11_270 >>u r12_260, uint32, uint64) (alias)
 l0000F428:
 	r8_297 = 0x20<32> - r12_260
 	r6_277 = r6_277 | r7_232
@@ -16816,7 +16816,7 @@ l0000F572:
 	r7Out = r7
 	r8Out = r8_148
 	r9Out = r9_299
-	r11_r10_328 = SEQ(r11_287, r10_275) + CONVERT(r9_299, word32, uint64)
+	r11_r10_328 = SEQ(r11_287, r10_275) + CONVERT(r9_299, uint32, uint64)
 	r10Out = SLICE(r11_r10_328, word32, 0)
 	r11Out = SLICE(r11_r10_328, word32, 32)
 	lrOut = lr
@@ -16930,7 +16930,7 @@ l0000F712:
 l0000F714:
 	lr_131 = r9_302 << r5_125 | CONVERT(r8_62 != 0<32>, bool, word32)
 l0000F71E:
-	r9_r8_319 = CONVERT(r9_302 >>u r6_128, word32, uint64) (alias)
+	r9_r8_319 = CONVERT(r9_302 >>u r6_128, uint32, uint64) (alias)
 l0000F6A2:
 	lr_131 = r8_62 << r5_125
 	r9_r8_319 = SEQ(r9_302 >>u r6_122, r8_62 >>u r6_122 | r9_302 << r5_125) (alias)
@@ -16961,7 +16961,7 @@ l0000F6C0:
 	r8Out = r8_158
 	r9Out = r9_164
 	lrOut = lr_213
-	r11_r10_241 = SEQ(r11_166 | r11 & 0x80000000<32>, r10_159) + CONVERT(lr_213, word32, uint64)
+	r11_r10_241 = SEQ(r11_166 | r11 & 0x80000000<32>, r10_159) + CONVERT(lr_213, uint32, uint64)
 	return r11_r10_241
 __avr32_f64_add_exit:
 
@@ -17167,7 +17167,7 @@ l0000F8A4:
 l0000F8AC_1:
 	r8_38 = 0x400<32>
 l0000F8B0:
-	r11_r10_161 = r11_r10_221 + CONVERT(r8_38, word32, uint64)
+	r11_r10_161 = r11_r10_221 + CONVERT(r8_38, uint32, uint64)
 	r10_46 = SLICE(r11_r10_161, word32, 0) (alias)
 	r11_51 = SLICE(r11_r10_161, word32, 32) (alias)
 	branch r11_51 >=u 0<32> l0000F8B8
@@ -17765,22 +17765,22 @@ l0000FA9C:
 	r5_255 = SLICE(((SLICE(r9_114 *u 0x40000000<32>, word32, 32) << 2<8>) + 0x80000000<32>) *u 0x40000000<32>, word32, 32) (alias)
 	r5_261 = SLICE((r5_255 << 2<32>) *u ((SLICE((r5_255 << 2<32>) *u r9_114, word32, 32) << 2<8>) + 0x80000000<32>), word32, 32) (alias)
 	r5_267 = SLICE((r5_261 << 2<32>) *u ((SLICE((r5_261 << 2<32>) *u r9_114, word32, 32) << 2<8>) + 0x80000000<32>), word32, 32) (alias)
-	r5_r4_571 = (r5_267 << 2<32>) *u r9_114 + CONVERT(SLICE((r5_267 << 2<32>) *u r8 + r2 *u r9_114, word32, 32), word32, uint64)
+	r5_r4_571 = (r5_267 << 2<32>) *u r9_114 + CONVERT(SLICE((r5_267 << 2<32>) *u r8 + r2 *u r9_114, word32, 32), uint32, uint64)
 	r4_284 = SLICE(r5_r4_571, word32, 0) (alias)
 	r4_292 = -(r4_284 << 2<i32>)
 	r5_295 = 0x80000000<32> - (SLICE(r5_r4_571, word32, 32) << 2<i32> | r4_284 << 0x1E<8>) - CONVERT(r4_292 <u 0<32>, bool, word32)
-	r5_r4_573 = (r5_267 << 2<32>) *u r5_295 + CONVERT(SLICE((r5_267 << 2<32>) *u r4_292 + r2 *u r5_295, word32, 32), word32, uint64)
+	r5_r4_573 = (r5_267 << 2<32>) *u r5_295 + CONVERT(SLICE((r5_267 << 2<32>) *u r4_292 + r2 *u r5_295, word32, 32), uint32, uint64)
 	r4_303 = SLICE(r5_r4_573, word32, 0) (alias)
 	r3_309 = SLICE(r5_r4_573, word32, 32) << 2<32> | r4_303 << 0x1E<8>
-	r5_r4_575 = r3_309 *u r9_114 + CONVERT(SLICE(r3_309 *u r8 + (r4_303 << 2<32>) *u r9_114, word32, 32), word32, uint64)
+	r5_r4_575 = r3_309 *u r9_114 + CONVERT(SLICE(r3_309 *u r8 + (r4_303 << 2<32>) *u r9_114, word32, 32), uint32, uint64)
 	r4_318 = SLICE(r5_r4_575, word32, 0) (alias)
 	r4_326 = -(r4_318 << 2<i32>)
 	r5_329 = 0x80000000<32> - (SLICE(r5_r4_575, word32, 32) << 2<i32> | r4_318 << 0x1E<8>) - CONVERT(r4_326 <u 0<32>, bool, word32)
-	r5_r4_577 = r3_309 *u r5_329 + CONVERT(SLICE(r3_309 *u r4_326 + (r4_303 << 2<32>) *u r5_329, word32, 32), word32, uint64)
+	r5_r4_577 = r3_309 *u r5_329 + CONVERT(SLICE(r3_309 *u r4_326 + (r4_303 << 2<32>) *u r5_329, word32, 32), uint32, uint64)
 	r4_337 = SLICE(r5_r4_577, word32, 0) (alias)
 	r3_343 = SLICE(r5_r4_577, word32, 32) << 2<32> | r4_337 << 0x1E<8>
 	r1_r0_356 = r3_343 *u r10_29 + (r4_337 << 2<32>) *u r11_32
-	r3_r2_579 = r3_343 *u r11_32 + CONVERT(SLICE(r1_r0_356, word32, 32), word32, uint64)
+	r3_r2_579 = r3_343 *u r11_32 + CONVERT(SLICE(r1_r0_356, word32, 32), uint32, uint64)
 	r7_241 = r7_34 + r6_116
 	r3_364 = SLICE(r3_r2_579, word32, 32) (alias)
 	r7_242 = r7_241 + 0x3FF<32>
@@ -17855,7 +17855,7 @@ l0000FBB6:
 l0000FBC0_1:
 	r6_519 = r12_469
 l0000FBC4:
-	r11_r10_584 = SEQ(__setbit(r3_364 >>u 8<32>, 31<i32>, SLICE(lr_24, bool, 31)), r2_439 >>u 8<32> | r3_364 << 0x18<8>) + CONVERT(r6_519, word32, uint64)
+	r11_r10_584 = SEQ(__setbit(r3_364 >>u 8<32>, 31<i32>, SLICE(lr_24, bool, 31)), r2_439 >>u 8<32> | r3_364 << 0x18<8>) + CONVERT(r6_519, uint32, uint64)
 	r8Out = r8_462
 	r9Out = r9_466
 	return r11_r10_584

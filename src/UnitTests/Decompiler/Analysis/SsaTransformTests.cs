@@ -2142,12 +2142,12 @@ proc1_exit:
 bl_2: orig: bl
     def:  bl_2 = Mem0[0x1234<16>:byte]
     uses: branch bl_2 > 3<i32> m2
-          bx_4 = CONVERT(bl_2, byte, uint16) (alias)
+          bx_4 = CONVERT(bl_2, uint8, uint16) (alias)
           bx_8 = SEQ(bh, bl_2) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0<8>
 bx_4: orig: bx
-    def:  bx_4 = CONVERT(bl_2, byte, uint16) (alias)
+    def:  bx_4 = CONVERT(bl_2, uint8, uint16) (alias)
     uses: Mem5[0x1236<16>:word16] = bx_4
           bx_6 = PHI((bx_8, m0), (bx_4, m1))
 Mem5: orig: Mem0
@@ -2175,7 +2175,7 @@ m0:
 	// succ:  m1 m2
 m1:
 	bh_3 = 0<8>
-	bx_4 = CONVERT(bl_2, byte, uint16) (alias)
+	bx_4 = CONVERT(bl_2, uint8, uint16) (alias)
 	Mem5[0x1236<16>:word16] = bx_4
 	// succ:  m2
 m2:

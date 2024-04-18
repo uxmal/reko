@@ -259,14 +259,14 @@ void rcos()
 {
 }
 
-// 0311: Register word16 sincos(Register ci16 gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp4Out, Register out ptr16 gp14Out)
+// 0311: Register word16 sincos(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp4Out, Register out ptr16 gp14Out)
 // Called from:
 //      sin
 //      cos
-word16 sincos(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
+word16 sincos(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
 {
-	ci16 gp2_n = gp1;
-	if (gp1 < 0x00)
+	struct Eq_n * gp2_n = gp1;
+	if (gp1 < null)
 		gp2_n = gp1 + 0x07;
 	struct Eq_n * gp2_n = gp2_n & ~0x07;
 	if ((uint32) (gp1 - gp2_n) > 0x07)
@@ -282,7 +282,7 @@ word16 sincos(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3O
 	}
 	else
 	{
-		<anonymous> * gp2_n = gp2_n->ptr032C;
+		<anonymous> * gp2_n = (<anonymous> *) gp2_n->ptr032C;
 		gp2_n();
 		ptr16 gp1_n;
 		gp1Out = gp1_n;
@@ -325,9 +325,9 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8057) + 3));
 		gp0_gp1_n += g_dwFFFF805D;
 	}
-	ci16 gp1_n = (word16) gp0_gp1_n;
+	struct Eq_n * gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = (char *) &((*((char *) &g_dwFFFF805D + 2))->aFFFF8060 + 0x00002A8A)->r0000 + ((word16) gp0_gp1_n + 2);
+		gp1_n = (struct Eq_n *) ((char *) &((*((char *) &g_dwFFFF805D + 2))->aFFFF8060 + 0x00002A8A)->r0000 + ((word16) gp0_gp1_n + 2));
 	word16 gp0_n = sincos(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp3Out = gp3_n;
 	gp4Out = gp4_n;

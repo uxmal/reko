@@ -173,7 +173,7 @@ Eq_97: (union "Eq_97" (cu8 u0) (ui16 u1))
 Eq_107: (union "Eq_107" (ui16 u0) (byte u1))
 	T_107 (in Mem62[ix + -34<i16>:byte] @ 034B : byte)
 	T_1541 (in Mem356[ix + -34<i16>:ui16] @ 0A73 : ui16)
-Eq_110: (fn byte (Eq_26, uint8, Eq_97, byte, (ptr16 Eq_10), Eq_117))
+Eq_110: (fn uint8 (Eq_26, uint8, Eq_97, byte, (ptr16 Eq_10), Eq_117))
 	T_110 (in fn034E @ 034B : ptr32)
 	T_111 (in signature of fn034E @ 034E : void)
 Eq_117: (union "Eq_117" (ptr32 u0) (word16 u1))
@@ -1191,9 +1191,9 @@ T_119: (in out ix_103 @ 034B : ptr32)
   OrigDataType: (union (ptr32 u1) (word16 u0))
 T_120: (in fn034E(a_94, b_79, l_97, h_98, ix, out ix_103) @ 034B : byte)
   Class: Eq_120
-  DataType: byte
-  OrigDataType: byte
-T_121: (in CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), byte, uint16) @ 034B : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_121: (in CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), uint8, uint16) @ 034B : uint16)
   Class: Eq_121
   DataType: uint16
   OrigDataType: uint16
@@ -12204,17 +12204,17 @@ T_2830: (in wArg05 + 1<i16> @ 22BB : word16)
   OrigDataType: int16
 T_2831: (in wArg10 + (wArg05 + 1<i16>) @ 22BB : word16)
   Class: Eq_2831
-  DataType: (ptr16 byte)
+  DataType: (ptr16 uint8)
   OrigDataType: (ptr16 (struct (0 T_2832 t0000)))
 T_2832: (in Mem8[wArg10 + (wArg05 + 1<i16>):byte] @ 22BB : byte)
   Class: Eq_2832
-  DataType: byte
+  DataType: uint8
   OrigDataType: byte
-T_2833: (in v16_21 @ 22BB : byte)
+T_2833: (in v16_21 @ 22BB : uint8)
   Class: Eq_2832
-  DataType: byte
-  OrigDataType: byte
-T_2834: (in CONVERT(v16_21, byte, uint16) @ 22CB : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_2834: (in CONVERT(v16_21, uint8, uint16) @ 22CB : uint16)
   Class: Eq_2834
   DataType: uint16
   OrigDataType: uint16
@@ -12226,7 +12226,7 @@ T_2836: (in (uint16) v16_21 * 8<16> @ 22CB : word16)
   Class: Eq_2836
   DataType: ui16
   OrigDataType: ui16
-T_2837: (in CONVERT(v16_21, byte, uint16) @ 22CB : uint16)
+T_2837: (in CONVERT(v16_21, uint8, uint16) @ 22CB : uint16)
   Class: Eq_2837
   DataType: uint16
   OrigDataType: uint16
@@ -12368,17 +12368,17 @@ T_2871: (in wArg05 + 1<i16> @ 3E42 : word16)
   OrigDataType: int16
 T_2872: (in wArg10 + (wArg05 + 1<i16>) @ 3E42 : word16)
   Class: Eq_2872
-  DataType: (ptr16 byte)
+  DataType: (ptr16 uint8)
   OrigDataType: (ptr16 (struct (0 T_2873 t0000)))
 T_2873: (in Mem8[wArg10 + (wArg05 + 1<i16>):byte] @ 3E42 : byte)
   Class: Eq_2873
-  DataType: byte
+  DataType: uint8
   OrigDataType: byte
-T_2874: (in v16_21 @ 3E42 : byte)
+T_2874: (in v16_21 @ 3E42 : uint8)
   Class: Eq_2873
-  DataType: byte
-  OrigDataType: byte
-T_2875: (in CONVERT(v16_21, byte, uint16) @ 3E52 : uint16)
+  DataType: uint8
+  OrigDataType: uint8
+T_2875: (in CONVERT(v16_21, uint8, uint16) @ 3E52 : uint16)
   Class: Eq_2875
   DataType: uint16
   OrigDataType: uint16
@@ -12390,7 +12390,7 @@ T_2877: (in (uint16) v16_21 * 8<16> @ 3E52 : word16)
   Class: Eq_2877
   DataType: ui16
   OrigDataType: ui16
-T_2878: (in CONVERT(v16_21, byte, uint16) @ 3E52 : uint16)
+T_2878: (in CONVERT(v16_21, uint8, uint16) @ 3E52 : uint16)
   Class: Eq_2878
   DataType: uint16
   OrigDataType: uint16
@@ -12551,7 +12551,7 @@ typedef union Eq_107 {
 	byte u1;
 } Eq_107;
 
-typedef byte (Eq_110)(Eq_26, uint8, Eq_97, byte, Eq_10 *, Eq_117);
+typedef uint8 (Eq_110)(Eq_26, uint8, Eq_97, byte, Eq_10 *, Eq_117);
 
 typedef union Eq_117 {
 	ptr32 u0;

@@ -1184,7 +1184,7 @@ void fn0000A8D6(word32 r0, word32 r6, word32 r7, struct Eq_n * r9, struct Eq_n *
 		{
 			sp_n->dwFFFFFFFC = (int32) fp->bFFFFFFF2;
 			(*((word32) g_ptr19298 + 2))();
-			word32 r0_n;
+			int32 r0_n;
 			fp->bFFFFFFF2 = (int8) r0_n;
 			r9->b015C = (byte) r0_n;
 		}
@@ -3192,7 +3192,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 		ptr32 r9_n = g_ptr19298;
 		do
 		{
-			byte v16_n = *r2_n;
+			int8 v16_n = *r2_n;
 			int32 r6_n = (int32) v16_n;
 			int32 r1_n;
 			if ((r8_n[r6_n & 0x7F] & 0x01) != 0x00)
@@ -3210,7 +3210,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 			}
 			else
 				r1_n = r6_n;
-			byte v28_n = r3_n.u1->b0000;
+			int8 v28_n = r3_n.u1->b0000;
 			r7 = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 			r6.u0 = (int32) v28_n;
 			Eq_n r1_n;
@@ -3233,7 +3233,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 				r1_n = r6;
 			if ((byte) r7 != (int8) r1_n)
 			{
-				byte v34_n = *r2_n;
+				int8 v34_n = *r2_n;
 				int32 r6_n = (int32) v34_n;
 				int32 r1_n;
 				if ((r8_n[r6_n & 0x7F] & 0x01) != 0x00)
@@ -3245,7 +3245,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 				}
 				else
 					r1_n = r6_n;
-				byte v39_n = r3_n.u1->b0000;
+				int8 v39_n = r3_n.u1->b0000;
 				ptr32 r7_n = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 				Eq_n r6_n;
 				r6_n.u0 = (int32) v39_n;

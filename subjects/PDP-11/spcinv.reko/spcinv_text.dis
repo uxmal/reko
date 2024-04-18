@@ -685,7 +685,7 @@ l08EA:
 	r0_341 = r0_341 << 1<i16>
 	branch r0_341 << 1<i16> <u 0<16> l0904
 l08EE:
-	v118_447 = CONVERT(r0_341, word16, uint32) << 1<8>
+	v118_447 = CONVERT(r0_341, uint16, uint32) << 1<8>
 	r0_361 = SLICE(v118_447, word16, 0)
 	r1_375 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v118_447, word16, 16), 1<8>, SLICE(cond(r0_361 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_361 << 2<i16>), bool, 0))
 	r1_346 = r1_375 << 1<i16>

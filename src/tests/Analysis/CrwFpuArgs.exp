@@ -39,7 +39,7 @@ l0C00_0000:
 	Mem17[ds:0x30C<16>:real32] = 0.0F
 	ax_19 = Mem17[ds:0x308<16>:word16]
 	rRet0_23 = fn0C00_0031(ds, ax_19)
-	Mem26[ds:0x30C<16>:real32] = CONVERT(rRet0_23, word64, real32)
+	Mem26[ds:0x30C<16>:real32] = CONVERT(rRet0_23, real64, real32)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

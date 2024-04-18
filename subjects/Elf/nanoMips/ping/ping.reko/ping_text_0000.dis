@@ -3415,7 +3415,7 @@ l00402CAE:
 	r3 = poll(r20_103, out r4_243, out r7_661)
 	branch r4_243 <= 0<32> l00402AAC
 l00402CCA:
-	branch true l00402AAC
+	branch (CONVERT(0<16>, uint16, word32) & 9<32>) == 0<32> l00402AAC
 l00402CD4:
 l00402BD4:
 	sched_yield()

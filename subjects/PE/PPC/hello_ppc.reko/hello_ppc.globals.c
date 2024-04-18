@@ -13,7 +13,7 @@ Eq_n g_t0068;
 ui32 g_dw0120; // 00000120
 word32 g_dw0910; // 00000910
 word32 g_dw092C; // 0000092C
-byte g_b0BFF; // 00000BFF
+int8 g_b0BFF; // 00000BFF
 Eq_n g_t1000;
 Eq_n g_t1008;
 word32 g_dw1FF8; // 00001FF8

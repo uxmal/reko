@@ -78,7 +78,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 		struct Eq_n * a3_n = (struct Eq_n *) ((char *) &(&a3_n->dw000C + 1)->dw0000 + a3_n->dw0004 + a3_n->dw000C);
 		__syscall<word16>(0xA02E);
 l00001556:
-		ci8 v18_n = a3_n->b0000;
+		Eq_n v18_n = a3_n->b0000;
 		++a3_n;
 		uint32 d0_n = (uint32) v18_n;
 		ui32 d0_n;
@@ -86,7 +86,7 @@ l00001556:
 		{
 			if (v18_n >= 0x00)
 			{
-				byte v22_n = a3_n->b0000;
+				uint8 v22_n = a3_n->b0000;
 				uint32 d0_n = (uint32) v22_n;
 				if (v22_n != 0x00)
 				{

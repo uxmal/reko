@@ -3583,7 +3583,7 @@ namespace Reko.Arch.Qualcomm
             /*
             1,0,0,0, 0,0,1,1, I,I,I,s,s,s,s,s,P,P,j,j,j,j,j,j,I,I,I,x,x,x,x,x,"Rxx=insert(Rss,#u6,#U6)"
                */
-            var decoder_83 = Assign(RR0, Apply(Mnemonic.insert, R16, uw_8L6, uw_21L3_5L3));
+            var decoder_83 = Assign(RR0, Apply(Mnemonic.insert, RR16, uw_8L6, uw_21L3_5L3));
             /*
             1,0,0,0, 0,1,0,0, 0,0,-,s,s,s,s,s,P,P,-,-,-,-,-,-,0,0,-,d,d,d,d,d,"Rdd=vsxtbh(Rs)"
             1,0,0,0, 0,1,0,0, 0,0,-,s,s,s,s,s,P,P,-,-,-,-,-,-,0,1,-,d,d,d,d,d,"Rdd=vzxtbh(Rs)"

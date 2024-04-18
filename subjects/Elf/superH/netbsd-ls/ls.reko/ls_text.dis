@@ -619,11 +619,11 @@ mastercmp_entry:
 l0040237C:
 	r4_13 = Mem10[r4:word32]
 	r12_11 = Mem5[0x00402408<p32>:word32] + 0x00402408<p32>
-	r7_17 = CONVERT(Mem10[r4_13 + 0x48<32>:word16], word16, uint32)
+	r7_17 = CONVERT(Mem10[r4_13 + 0x48<32>:word16], uint16, uint32)
 	branch r7_17 == 7<32> l00402400
 l00402396:
 	r5_21 = Mem10[r5:word32]
-	r1_25 = CONVERT(Mem10[r5_21 + 0x48<32>:word16], word16, uint32)
+	r1_25 = CONVERT(Mem10[r5_21 + 0x48<32>:word16], uint16, uint32)
 	branch r1_25 == 7<32> l00402400
 l00402400:
 l004023A6:
@@ -888,7 +888,7 @@ l0040298C:
 display_exit:
 l004024A6:
 l004025C2:
-	r2_697 = CONVERT(Mem102[r8_1031 + 0x48<32>:word16], word16, uint32)
+	r2_697 = CONVERT(Mem102[r8_1031 + 0x48<32>:word16], uint16, uint32)
 	branch r2_697 == 7<32> l004025CE_ds_t
 l004025CE_ds_t:
 l004025CE_ds_f:
@@ -1218,7 +1218,7 @@ l00402A6E:
 l00402A78_ds_t:
 	r13_110 = r0_158
 l00402AA4:
-	r2_180 = CONVERT(Mem142[r0_158 + 0x48<32>:word16], word16, uint32)
+	r2_180 = CONVERT(Mem142[r0_158 + 0x48<32>:word16], uint16, uint32)
 	branch r2_180 >u 7<32> l00402A6E
 l00402AB4:
 	switch (r2_180 + 0xFFFFFFFF<32>) { l00402AFA l00402ACE l00402A6E l00402ADE l00402A6E l00402A6E l00402ADE }
@@ -1362,7 +1362,7 @@ l00402C3A:
 l00402C4C_ds_t:
 l00402C4C_ds_f:
 l00402C4E:
-	r2_126 = CONVERT(Mem28[r8_105 + 2<i32>:word16], word16, uint32)
+	r2_126 = CONVERT(Mem28[r8_105 + 2<i32>:word16], uint16, uint32)
 	branch r2_126 == 0<32> l00402C56_ds_t
 l00402C56_ds_t:
 l00402C56_ds_f:
