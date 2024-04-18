@@ -156,7 +156,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             return new[]
             {
-                new StartPattern
+                new StartPattern    // Found in position dependent executables.
                 {
                      SearchPattern =
                         "31 ED" +                   // 00: xor ebp, ebp
@@ -171,14 +171,42 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         "48 C7 C7 ?? ?? ?? ??" +    // 1D: mov rdi,offset main
                         "E8 ?? ?? ?? ??",           // 24: call __libc_start_main
                      MainAddressOffset = 0x20
+                },
+                new StartPattern // Found in PIC executables
+                {
+                    SearchPattern =
+                        "31 ED" +                  // 00: xor ebp,ebp
+                        "49 89 D1" +               // 02: mov r9,rdx
+                        "5E" +                     // 05: pop rsi
+                        "48 89 E2" +               // 06: mov rdx,rsp
+                        "48 83 E4 F0" +            // 09: and rsp,0F0h
+                        "50" +                     // 0D: push rax
+                        "54" +                     // 0E: push rsp
+                        "45 31 C0" +               // 0F: xor r8d,r8d
+                        "31 C9" +                  // 12: xor ecx,ecx
+                        "48 8D 3D ?? ?? ?? ??" +   // 14: lea rdi,[main]; [rip+????????]
+                        "FF 15 ?? ?? ?? ??" +      // 1B: call [__libc_start_main@got] ; [rip+????????]
+                        "F4",                      // 21: hlt
+                    MainPcRelativeOffset = 0x17,
                 }
             };
         }
 
         protected override Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
-            var uAddr = mem.ReadLeUInt32((uint)(offset + sPattern.MainAddressOffset));
-            return Address.Ptr64(uAddr);
+            if (sPattern.MainAddressOffset > 0)
+            {
+                var uAddr = mem.ReadLeUInt32((uint) (offset + sPattern.MainAddressOffset));
+                return Address.Ptr64(uAddr);
+            }
+            else
+            {
+                Debug.Assert(sPattern.MainPcRelativeOffset > 0);
+                var pcOffset = offset + sPattern.MainPcRelativeOffset;
+                var uPcRelative = mem.ReadLeInt32((uint)pcOffset);
+                var addr = mem.BaseAddress + (pcOffset + 4 + uPcRelative);
+                return addr;
+            }
         }
     }
 

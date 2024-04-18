@@ -647,5 +647,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
     {
         public string? SearchPattern;
         public int MainAddressOffset;
+        public int MainPcRelativeOffset;
     }
 }

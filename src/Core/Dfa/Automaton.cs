@@ -109,7 +109,7 @@ namespace Reko.Core.Dfa
                 }
                 iState = dst;
             }
-            if (isMatching)
+            if (isMatching && lastAcceptPos != -1)
                 yield return lastMatchPos;
         }
     }
