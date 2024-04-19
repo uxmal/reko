@@ -22,11 +22,8 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Machine;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -41,13 +38,15 @@ namespace Reko.Analysis
     public class CallRewriter
 	{
 		private readonly ProgramDataFlow mpprocflow;
-        private readonly IDecompilerEventListener listener;
         private readonly IPlatform platform;
+        private readonly CallingConventionMatcher ccm;
+        private readonly IDecompilerEventListener listener;
 
         public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IDecompilerEventListener listener) 
 		{
             this.platform = platform;
 			this.mpprocflow = mpprocflow;
+            this.ccm = new CallingConventionMatcher(platform);
             this.listener = listener;
         }
 
@@ -100,20 +99,23 @@ namespace Reko.Analysis
         /// <returns>A valid function signature.</returns>
         public FunctionType MakeSignature(SsaState ssa, ProcedureFlow flow)
         {
-            var sb = new SignatureBuilder(ssa.Procedure.Frame, ssa.Procedure.Architecture);
+            var arch = ssa.Procedure.Architecture;
+            var sb = new SignatureBuilder(ssa.Procedure.Frame, arch);
             ProcessInputStorages(ssa, flow, sb);
             ProcessOutputStorages(ssa, flow, sb);
-            var cc = GuessCallingConvention(sb, ssa.Procedure.Architecture);
+
+            var sig = sb.BuildSignature();
+            var cc = ccm.DetermineCallingConvention(sig, arch);
             if (cc is not null)
             {
-                sb.SortParameters(cc);
+                sig = sb.BuildSignature(cc);
             }
-            var sig = sb.BuildSignature();
+
             if (ssa.Procedure.Signature.StackDelta != 0)
             {
                 sig.StackDelta = ssa.Procedure.Signature.StackDelta;
             }
-            var fpuStackDelta = flow.GetFpuStackDelta(ssa.Procedure.Architecture);
+            var fpuStackDelta = flow.GetFpuStackDelta(arch);
             if (fpuStackDelta != 0)
             {
                 sig.FpuStackDelta = -fpuStackDelta;
@@ -456,6 +458,8 @@ namespace Reko.Analysis
                 .ToArray();
             foreach (var (stm, ci) in calls)
             {
+                if (ci.Callee.ToString() == "set_var")
+                    _ = this; //$DEBUG
                 if (!RewriteCall(ssaCaller, stm, ci))
                     ++unConverted;
             }

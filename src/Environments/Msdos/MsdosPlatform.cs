@@ -122,10 +122,10 @@ namespace Reko.Environments.Msdos
                     false,
                     true);
             }
-            throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
+            throw new ArgumentOutOfRangeException($"Unknown calling convention '{ccName}'.");
         }
 
-        public override string? DetermineCallingConvention(FunctionType signature)
+        public override ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
             if (!signature.HasVoidReturn)
             {
@@ -147,9 +147,9 @@ namespace Reko.Environments.Msdos
             if (signature.FpuStackDelta != 0 || signature.FpuStackArgumentMax >= 0)
                 return null;
             if (signature.StackDelta == 0)
-                return "__cdecl";
+                return GetCallingConvention("__cdecl");
             else
-                return "__pascal";
+                return GetCallingConvention("__pascal");
         }
 
         public override TypeLibrary EnsureTypeLibraries(string envName)

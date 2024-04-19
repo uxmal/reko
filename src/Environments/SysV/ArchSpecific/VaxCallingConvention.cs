@@ -32,7 +32,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private IProcessorArchitecture arch;
         private RegisterStorage regRet;
 
-        public VaxCallingConvention(IProcessorArchitecture arch)
+        public VaxCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.regRet = arch.GetRegister("r0")!;

@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm.AArch32
     {
         private RegisterStorage[] argRegs;
 
-        public Arm32CallingConvention()
+        public Arm32CallingConvention() : base("")
         {
             this.argRegs = new[] { Registers.r0, Registers.r1, Registers.r2, Registers.r3 };
         }

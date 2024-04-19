@@ -13,8 +13,8 @@ namespace Reko.Environments.Windows
 	{
 		private IProcessorArchitecture arch;
 
-		public M68kCallingConvention(IProcessorArchitecture arch)
-		{
+		public M68kCallingConvention(IProcessorArchitecture arch) : base("")
+        {
 			this.arch = arch;
 		}
 

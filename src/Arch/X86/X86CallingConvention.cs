@@ -46,6 +46,7 @@ namespace Reko.Arch.X86
             int pointerSize, 
             bool callerCleanup,
             bool reverseArguments)
+             : base("__cdecl")
         {
             this.stackAlignment = stackAlignment;
             this.pointerSize = pointerSize;

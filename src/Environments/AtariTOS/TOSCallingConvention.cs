@@ -35,7 +35,7 @@ namespace Reko.Environments.AtariTOS
     {
         private IProcessorArchitecture arch;
 
-        public TOSCallingConvention(IProcessorArchitecture arch)
+        public TOSCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

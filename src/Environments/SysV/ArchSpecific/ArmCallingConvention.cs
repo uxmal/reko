@@ -34,7 +34,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private RegisterStorage[] argRegs;
         private IProcessorArchitecture arch;
 
-        public Arm32CallingConvention(IProcessorArchitecture arch)
+        public Arm32CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.argRegs = new[] { "r0", "r1", "r2", "r3" }

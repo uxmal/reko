@@ -290,11 +290,11 @@ T_54: (in rax @ 0000000000400555 : (ptr64 void))
   Class: Eq_54
   DataType: (ptr64 void)
   OrigDataType: word64
-T_55: (in esi @ 0000000000400555 : int32)
+T_55: (in edi @ 0000000000400555 : int32)
   Class: Eq_55
   DataType: int32
   OrigDataType: word32
-T_56: (in edi @ 0000000000400555 : int32)
+T_56: (in esi @ 0000000000400555 : int32)
   Class: Eq_55
   DataType: int32
   OrigDataType: word32
@@ -326,14 +326,14 @@ T_63: (in calloc((int64) edi, (int64) esi) @ 0000000000400588 : (ptr64 void))
   Class: Eq_54
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_64: (in sil @ 0000000000400588 : byte)
+T_64: (in rdi @ 0000000000400588 : (ptr64 byte))
   Class: Eq_64
-  DataType: byte
-  OrigDataType: byte
-T_65: (in rdi @ 0000000000400588 : (ptr64 byte))
-  Class: Eq_65
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_68 t0000)))
+T_65: (in sil @ 0000000000400588 : byte)
+  Class: Eq_65
+  DataType: byte
+  OrigDataType: byte
 T_66: (in 0<64> @ 00000000004005AA : word64)
   Class: Eq_66
   DataType: word64
@@ -343,14 +343,14 @@ T_67: (in rdi + 0<64> @ 00000000004005AA : word64)
   DataType: word64
   OrigDataType: word64
 T_68: (in Mem17[rdi + 0<64>:byte] @ 00000000004005AA : byte)
-  Class: Eq_64
+  Class: Eq_65
   DataType: byte
   OrigDataType: byte
-T_69: (in esi @ 00000000004005AF : int32)
+T_69: (in edi @ 00000000004005AF : int32)
   Class: Eq_55
   DataType: int32
   OrigDataType: int32
-T_70: (in edi @ 00000000004005AF : int32)
+T_70: (in esi @ 00000000004005AF : int32)
   Class: Eq_55
   DataType: int32
   OrigDataType: int32
@@ -474,11 +474,11 @@ T_100: (in signature of my1 @ 0000000000400560 : void)
   Class: Eq_99
   DataType: (ptr64 Eq_99)
   OrigDataType: 
-T_101: (in my1(esi, edi) @ 000000000040063E : word64)
+T_101: (in my1(edi, esi) @ 000000000040063E : word64)
   Class: Eq_98
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_102: (in free(my1(esi, edi)) @ 000000000040063E : void)
+T_102: (in free(my1(edi, esi)) @ 000000000040063E : void)
   Class: Eq_102
   DataType: void
   OrigDataType: void
@@ -518,24 +518,24 @@ T_111: (in __pause() @ 00000000004006F5 : void)
   Class: Eq_111
   DataType: void
   OrigDataType: void
-T_112: (in rdx @ 0000000000400704 : word64)
+T_112: (in edi @ 0000000000400704 : word32)
   Class: Eq_112
-  DataType: word64
-  OrigDataType: word64
+  DataType: word32
+  OrigDataType: word32
 T_113: (in rsi @ 0000000000400704 : word64)
   Class: Eq_113
   DataType: word64
   OrigDataType: word64
-T_114: (in edi @ 0000000000400704 : word32)
+T_114: (in rdx @ 0000000000400704 : word64)
   Class: Eq_114
-  DataType: word32
-  OrigDataType: word32
+  DataType: word64
+  OrigDataType: word64
 T_115: (in rdi @ 0000000000400710 : word64)
   Class: Eq_115
   DataType: word64
   OrigDataType: word64
 T_116: (in SLICE(rdi, word32, 0) @ 0000000000400710 : word32)
-  Class: Eq_114
+  Class: Eq_112
   DataType: word32
   OrigDataType: word32
 T_117: (in _init @ 000000000040073C : ptr64)

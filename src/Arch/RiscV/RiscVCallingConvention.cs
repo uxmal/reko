@@ -83,7 +83,7 @@ namespace Reko.Arch.RiscV
         private readonly RegisterStorage[] fregs;
         private int floatAbi;
 
-        public RiscVCallingConvention(IProcessorArchitecture arch)
+        public RiscVCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7" }

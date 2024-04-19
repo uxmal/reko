@@ -206,7 +206,7 @@ Alignment "holes" can occur between arguments passed on the stack, but "back-fil
         private readonly Msp430Architecture arch;
         private readonly RegisterStorage[] regs;
 
-        public Msp430CallingConvention(Msp430Architecture arch)
+        public Msp430CallingConvention(Msp430Architecture arch) : base("")
         {
             this.arch = arch;
             this.regs = new[] { "r12", "r13", "r14", "r15" }

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Analysis
@@ -34,7 +35,7 @@ namespace Reko.Analysis
     /// </summary>
     public class SignatureBuilder
 	{
-		private readonly List<Identifier> args;
+		private readonly List<Identifier> parameters;
 		private readonly IStorageBinder binder;
 		private readonly IProcessorArchitecture arch;
         private Identifier? ret = null;
@@ -43,7 +44,7 @@ namespace Reko.Analysis
 		{
 			this.binder = binder;
 			this.arch = arch;
-			args = new List<Identifier>();
+			parameters = new List<Identifier>();
 		}
 
 		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
@@ -79,15 +80,15 @@ namespace Reko.Analysis
                 //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
                 // future versions of reko will opt to model multiple values return from functions
                 // explicitly instead of using destructive updates of this kind.
-                var arg = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.BitSize));
-                args.Add(arg);
-                return arg;
+                var parameter = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.BitSize));
+                parameters.Add(parameter);
+                return parameter;
             }
         }
 
         public void AddInParam(Identifier arg)
         {
-            args.Add(arg);
+            parameters.Add(arg);
         }
 
         public void SortParameters(ICallingConvention cc)
@@ -100,7 +101,16 @@ namespace Reko.Analysis
 
 		public FunctionType BuildSignature()
 		{
-			return FunctionType.Create(ret, args.ToArray());
+			return FunctionType.Create(ret, parameters.ToArray());
 		}
+
+        public FunctionType BuildSignature(ICallingConvention? cconv)
+        {
+            var rawArgs = this.parameters.ToArray();
+            var cmp = cconv?.InArgumentComparer;
+            if (cmp is not null)
+                Array.Sort(rawArgs, cmp);
+            return FunctionType.Create(ret, rawArgs);
+        }
     }
 }

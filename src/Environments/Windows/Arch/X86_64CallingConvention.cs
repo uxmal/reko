@@ -52,6 +52,8 @@ namespace Reko.Environments.Windows
             Registers.xmm3,
         };
 
+        public X86_64CallingConvention() : base("") { }
+
         public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,

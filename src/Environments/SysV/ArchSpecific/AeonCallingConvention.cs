@@ -33,7 +33,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
 
-        public AeonCallingConvention(IProcessorArchitecture arch)
+        public AeonCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = Enumerable.Range(3, 6).Select(i => arch.GetRegister((StorageDomain) i, default)!).ToArray();

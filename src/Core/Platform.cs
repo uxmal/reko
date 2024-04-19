@@ -32,8 +32,10 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -49,6 +51,7 @@ namespace Reko.Core
     {
         string Name { get; }
         IProcessorArchitecture Architecture { get; }
+        IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
         string DefaultCallingConvention { get; }
         Encoding DefaultTextEncoding { get; set; }
         string Description { get; set; }
@@ -136,9 +139,13 @@ namespace Reko.Core
         /// the empty string "". 
         /// </remarks>
         /// <param name="signature"></param>
+        /// <param name="arch">Optional architecture that can be used to override
+        /// the default architecture for situations when a <see cref="Program"/>
+        /// has more than one architecture instantiated.
+        /// </param>
         /// <returns>The name of the calling convention, or null
         /// if no calling convention could be determined.</returns>
-        string? DetermineCallingConvention(FunctionType signature);
+        ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch);
 
         /// <summary>
         /// Given a C basic type, returns the number of bits that type is
@@ -371,8 +378,11 @@ namespace Reko.Core
             this.Description = GetType().Name;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
             this.ProcedurePrologs = LoadProcedurePrologs();
-            this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
-            this.PreservedRegisters = new HashSet<RegisterStorage>(LoadPreservedRegisters());
+            var cfgSvc = services?.GetService<IConfigurationService>();
+            var platformDef = cfgSvc?.GetEnvironment(this.PlatformIdentifier);
+            this.CallingConventions = CreateEmptyCallingConventionsDictionary(platformDef);
+            this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters(platformDef));
+            this.PreservedRegisters = new HashSet<RegisterStorage>(LoadPreservedRegisters(platformDef));
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -403,6 +413,11 @@ namespace Reko.Core
         /// ZX-81) don't use ASCII.
         /// </remarks>
         public virtual Encoding DefaultTextEncoding { get; set; }
+
+        /// <summary>
+        /// Thae names of calling conventions, organized by processor architecture.
+        /// </summary>
+        public IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
 
         public abstract string DefaultCallingConvention { get; }
 
@@ -494,7 +509,7 @@ namespace Reko.Core
             return parser;
         }
 
-        public virtual string? DetermineCallingConvention(FunctionType signature)
+        public virtual ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
             return null;
         }
@@ -543,6 +558,29 @@ namespace Reko.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates the skeleton of the per-platform calling conventions. The individual lists
+        /// will be filled in on-demand.
+        /// </summary>
+        private static Dictionary<string, IReadOnlyCollection<string>> CreateEmptyCallingConventionsDictionary(
+            PlatformDefinition? platformDef)
+        {
+            var result = new Dictionary<string, IReadOnlyCollection<string>>();
+            if (platformDef is null || platformDef.Architectures is null)
+                return result;
+            foreach (var arch in platformDef.Architectures)
+            {
+                var ccsByName = new List<string>();
+                foreach (var ccName in arch.CallingConventions)
+                {
+                    ccsByName.Add(ccName);
+                }
+                Debug.Assert(arch.Name is not null);
+                result.Add(arch.Name, ccsByName);
+            }
+            return result;
         }
 
         /// <summary>
@@ -631,10 +669,9 @@ namespace Reko.Core
             return false;
         }
 
-        protected RegisterStorage[] LoadTrashedRegisters()
+        protected RegisterStorage[] LoadTrashedRegisters(PlatformDefinition? platformDef)
         {
-            var cfgSvc = Services?.GetService<IConfigurationService>();
-            var pa = cfgSvc?.GetEnvironment(this.PlatformIdentifier)?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
+            var pa = platformDef?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
             if (pa is null)
                 return Array.Empty<RegisterStorage>();
             return pa.TrashedRegisters
@@ -643,10 +680,9 @@ namespace Reko.Core
                 .ToArray()!;
         }
 
-        protected RegisterStorage[] LoadPreservedRegisters()
+        protected RegisterStorage[] LoadPreservedRegisters(PlatformDefinition? platformDef)
         {
-            var cfgSvc = Services?.GetService<IConfigurationService>();
-            var pa = cfgSvc?.GetEnvironment(this.PlatformIdentifier)?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
+            var pa = platformDef?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
             if (pa is null)
                 return Array.Empty<RegisterStorage>();
             return pa.PreservedRegisters

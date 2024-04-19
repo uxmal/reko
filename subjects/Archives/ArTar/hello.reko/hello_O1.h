@@ -861,24 +861,24 @@ T_184: (in printf("    Library: %g\n", (real64) rLoc10_62) @ 000000000000126A : 
   Class: Eq_184
   DataType: int32
   OrigDataType: int32
-T_185: (in rdx @ 0000000000001274 : word64)
+T_185: (in edi @ 0000000000001274 : word32)
   Class: Eq_185
-  DataType: word64
-  OrigDataType: word64
+  DataType: word32
+  OrigDataType: word32
 T_186: (in rsi @ 0000000000001274 : word64)
   Class: Eq_186
   DataType: word64
   OrigDataType: word64
-T_187: (in edi @ 0000000000001274 : word32)
+T_187: (in rdx @ 0000000000001274 : word64)
   Class: Eq_187
-  DataType: word32
-  OrigDataType: word32
+  DataType: word64
+  OrigDataType: word64
 T_188: (in rdi @ 0000000000001280 : word64)
   Class: Eq_188
   DataType: word64
   OrigDataType: word64
 T_189: (in SLICE(rdi, word32, 0) @ 0000000000001280 : word32)
-  Class: Eq_187
+  Class: Eq_185
   DataType: word32
   OrigDataType: word32
 T_190: (in _init @ 00000000000012A8 : ptr64)

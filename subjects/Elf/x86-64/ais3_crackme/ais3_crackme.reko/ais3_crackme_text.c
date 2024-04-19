@@ -60,7 +60,7 @@ void frame_dummy()
 		register_tm_clones();
 	else
 	{
-		fn0000000000000000(0x00600E08);
+		fn0000000000000000(0x00600E08, 0x00600E08);
 		register_tm_clones();
 	}
 }
@@ -86,8 +86,8 @@ word32 verify(byte rdi[])
 	return (word32) rax_n;
 }
 
-// 00000000004005C5: void main(Register (ptr64 Eq_n) rsi, Register word32 edi)
-void main(struct Eq_n * rsi, word32 edi)
+// 00000000004005C5: void main(Register word32 edi, Register (ptr64 Eq_n) rsi)
+void main(word32 edi, struct Eq_n * rsi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
@@ -97,8 +97,8 @@ void main(struct Eq_n * rsi, word32 edi)
 		puts("I'm sorry, that's the wrong secret key!");
 }
 
-// 0000000000400620: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000400620: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

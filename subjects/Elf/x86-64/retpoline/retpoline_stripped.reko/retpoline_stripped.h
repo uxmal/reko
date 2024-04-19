@@ -199,11 +199,11 @@ T_38: (in 0<u64> @ 00000000004004D1 : uint64)
   Class: Eq_38
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
-T_39: (in esi @ 00000000004004D1 : word32)
+T_39: (in edi @ 00000000004004D1 : word32)
   Class: Eq_39
   DataType: word32
   OrigDataType: word32
-T_40: (in edi @ 00000000004004D1 : word32)
+T_40: (in esi @ 00000000004004D1 : word32)
   Class: Eq_40
   DataType: word32
   OrigDataType: word32

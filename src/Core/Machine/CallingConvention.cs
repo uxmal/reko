@@ -33,6 +33,11 @@ namespace Reko.Core.Machine
     /// </summary>
     public interface ICallingConvention
     {
+        /// <summary>
+        /// The name of the calling convention.
+        /// </summary>
+        string Name { get; }
+
         void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,

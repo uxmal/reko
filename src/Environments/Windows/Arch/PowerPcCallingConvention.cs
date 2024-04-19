@@ -34,7 +34,7 @@ namespace Reko.Environments.Windows
     {
         private IProcessorArchitecture arch;
 
-        public PowerPcCallingConvention(IProcessorArchitecture arch)
+        public PowerPcCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

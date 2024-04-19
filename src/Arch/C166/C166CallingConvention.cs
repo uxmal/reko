@@ -30,6 +30,8 @@ namespace Reko.Arch.C166
     // https://www.keil.com/support/man/docs/c166/c166_ap_funcparam.htm
     public class C166CallingConvention : AbstractCallingConvention
     {
+        public C166CallingConvention() : base("") { }
+
         public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,

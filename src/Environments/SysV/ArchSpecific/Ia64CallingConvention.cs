@@ -29,7 +29,7 @@ namespace Reko.Environments.SysV.ArchSpecific
     {
         private IProcessorArchitecture arch;
 
-        public Ia64CallingConvention(IProcessorArchitecture arch)
+        public Ia64CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

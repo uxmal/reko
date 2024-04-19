@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Mocks
         private Storage[] argRegisters;
         private Storage[] returnRegisters;
 
-        public FakeCallingConvention(Storage[] argRegisters, Storage[] returnRegisters)
+        public FakeCallingConvention(Storage[] argRegisters, Storage[] returnRegisters) : base("")
         {
             this.argRegisters = argRegisters;
             this.returnRegisters = returnRegisters;

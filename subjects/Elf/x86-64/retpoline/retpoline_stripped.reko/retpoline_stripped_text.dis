@@ -35,7 +35,7 @@ l00000000004004CB:
 fn00000000004004B0_exit:
 
 
-void fn0000000000400560(word32 esi, word32 edi)
+void fn0000000000400560(word32 edi, word32 esi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  edi:[0..31] esi:[0..31]

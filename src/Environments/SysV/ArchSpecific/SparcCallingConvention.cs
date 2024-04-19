@@ -40,7 +40,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         private IProcessorArchitecture arch;
 
-        public SparcCallingConvention(IProcessorArchitecture arch)
+        public SparcCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.regs = new[] { "o0", "o1", "o2", "o3", "o4", "o5" }

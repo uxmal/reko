@@ -65,7 +65,7 @@ namespace Reko.Environments.Windows
         private RegisterStorage iretHi;
         private RegisterStorage fret;
 
-        public MipsCallingConvention(IProcessorArchitecture arch)
+        public MipsCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "r4", "r5", "r6", "r7" }

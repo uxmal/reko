@@ -33,7 +33,7 @@ namespace Reko.Environments.SysV.ArchSpecific
     {
         private readonly IProcessorArchitecture arch;
 
-        public BlackfinCallingConvention(IProcessorArchitecture arch)
+        public BlackfinCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

@@ -33,7 +33,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private RegisterStorage retHi;
         private RegisterStorage[] iregs;
 
-        public Nios2CallingConvention(IProcessorArchitecture arch)
+        public Nios2CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.retLo = arch.GetRegister("r2")!;

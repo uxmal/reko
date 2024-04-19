@@ -283,7 +283,7 @@ complex) in f1:f4.
         private readonly RegisterStorage[] fregs;
         private readonly RegisterStorage[] iregs;
 
-        public PowerPc64CallingConvention(IProcessorArchitecture arch)
+        public PowerPc64CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }

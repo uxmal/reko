@@ -32,7 +32,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
 
-        public CSkyCallingConvention(IProcessorArchitecture arch)
+        public CSkyCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new string[] { "r0", "r1", "r2", "r3" }

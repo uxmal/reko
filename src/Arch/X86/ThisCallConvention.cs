@@ -38,6 +38,7 @@ namespace Reko.Arch.X86
         private readonly int stackAlignment;
 
         public ThisCallConvention(RegisterStorage ecxThis, int stackAlignment)
+            : base("__thiscall")
         {
             this.ecxThis = ecxThis;
             this.stackAlignment = stackAlignment;

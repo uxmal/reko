@@ -107,8 +107,8 @@ namespace Reko.UnitTests.Environments.Msdos
             var sig = sb.BuildSignature();
             sig.ReturnAddressOnStack = 4;
             sig.StackDelta = 0;
-            var cc = platform.DetermineCallingConvention(sig);
-            Assert.AreEqual("__cdecl", cc);
+            var cc = platform.DetermineCallingConvention(sig, null);
+            Assert.AreEqual("__cdecl", cc.Name);
         }
 
         [Test]
@@ -124,8 +124,8 @@ namespace Reko.UnitTests.Environments.Msdos
             var sig = sb.BuildSignature();
             sig.ReturnAddressOnStack = 4;
             sig.StackDelta = 0;
-            var cc = platform.DetermineCallingConvention(sig);
-            Assert.AreEqual("__cdecl", cc);
+            var cc = platform.DetermineCallingConvention(sig, null);
+            Assert.AreEqual("__cdecl", cc.Name);
         }
     }
 }

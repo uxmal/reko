@@ -89,8 +89,8 @@ void main(struct Eq_n * rsi)
 	printf("    Library: %g\n", (real64) rLoc10_n);
 }
 
-// 0000000000001280: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000001280: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

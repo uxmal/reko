@@ -97,7 +97,7 @@ l0000000000000725_thunk_register_tm_clones:
 frame_dummy_exit:
 
 
-word64 _mm_malloc(word64 rsi, word64 rdi)
+word64 _mm_malloc(word64 rdi, word64 rsi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -145,7 +145,7 @@ l000000000000078D:
 _mm_free_exit:
 
 
-void vec_add(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
+void vec_add(word64 rdi, word64 rsi, word64 rdx, word64 rcx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -178,9 +178,9 @@ void main()
 // Preserved: rbp rsp
 main_entry:
 l0000000000000898:
-	rax_16 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	rax_30 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	rax_44 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	rax_16 = _mm_malloc(0x2000<64>, 0x20<u64>)
+	rax_30 = _mm_malloc(0x2000<64>, 0x20<u64>)
+	rax_44 = _mm_malloc(0x2000<64>, 0x20<u64>)
 	qwLoc10_211 = 0<64>
 l000000000000093F:
 	branch qwLoc10_211 <u 0x400<64> l00000000000008FD
@@ -220,7 +220,7 @@ l00000000000009AC:
 	Mem140[rax_44 + qwLoc20_223 * 8<64>:real64] = 0.0
 	qwLoc20_223 = qwLoc20_223 + 1<64>
 l00000000000009D6:
-	vec_add(rax_30, rax_16, rax_44, 0x400<64>)
+	vec_add(0x400<64>, rax_44, rax_16, rax_30)
 	qwLoc28_232 = 0<64>
 l0000000000000A2D:
 	branch qwLoc28_232 <u 0x400<64> l00000000000009F8
@@ -235,7 +235,7 @@ l0000000000000A37:
 main_exit:
 
 
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]

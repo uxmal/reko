@@ -72,7 +72,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         private IProcessorArchitecture arch;
 
-        public XtensaCallingConvention(IProcessorArchitecture arch)
+        public XtensaCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

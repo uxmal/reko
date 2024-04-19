@@ -40,7 +40,7 @@ namespace Reko.Environments.MacOS.Classic
     {
         private M68kArchitecture arch;
 
-        public PascalCallingConvention(M68kArchitecture arch)
+        public PascalCallingConvention(M68kArchitecture arch) : base("pascal")
         {
             this.arch = arch;
         }

@@ -102,7 +102,7 @@ l0000000000400DAB_thunk_register_tm_clones:
 frame_dummy_exit:
 
 
-word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d)
+word32 component(word64 rdi, word32 esi, word32 edx, word32 ecx, word32 r8d)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -149,18 +149,18 @@ void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
 print_pixel_entry:
 l0000000000400EE9:
 	rax_27 = Mem25[fs:0x28<32>:word64]
-	eax_50 = CONVERT(SLICE(png_get_bit_depth(rdi, rsi, rsi, rdx, rsi, rdi, rax_27), byte, 0), byte, word32) (alias)
-	png_get_color_type(rdi, rsi, rsi, eax_50)
+	eax_50 = CONVERT(SLICE(png_get_bit_depth(rdi, rsi, rsi, ecx, rdx, rsi, rdi, rax_27), byte, 0), byte, word32) (alias)
+	png_get_color_type(SLICE(rcx_42, word32, 0), rdi, rsi, rsi, eax_50)
 	eax_68 = CONVERT(SLICE(rax_61, byte, 0), byte, word32) (alias)
 	branch eax_68 >u 6<32> l00000000004012C9
 l0000000000400F4C:
 	switch (eax_68) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
 l000000000040122A:
-	printf("RGBA %u %u %u %u\n", component(eax_50, 0<32>, ecx, rdx, 4<32>), component(eax_50, 1<32>, ecx, rdx, 4<32>), component(eax_50, 2<32>, ecx, rdx, 4<32>), component(eax_50, 3<32>, ecx, rdx, 4<32>))
+	printf("RGBA %u %u %u %u\n", component(rdx, ecx, 0<32>, eax_50, 4<32>), component(rdx, ecx, 1<32>, eax_50, 4<32>), component(rdx, ecx, 2<32>, eax_50, 4<32>), component(rdx, ecx, 3<32>, eax_50, 4<32>))
 l00000000004011D2:
-	printf("GRAY+ALPHA %u %u\n", component(eax_50, 0<32>, ecx, rdx, 2<32>), component(eax_50, 1<32>, ecx, rdx, 2<32>))
+	printf("GRAY+ALPHA %u %u\n", component(rdx, ecx, 0<32>, eax_50, 2<32>), component(rdx, ecx, 1<32>, eax_50, 2<32>))
 l0000000000400F8D:
-	eax_276 = component(eax_50, 0<32>, ecx, rdx, 1<32>) (alias)
+	eax_276 = component(rdx, ecx, 0<32>, eax_50, 1<32>) (alias)
 	png_get_PLTE(fp - 80<i64>, rdi, fp - 64<i64>, rsi, 0<32>, eax_276, 0<64>)
 	branch (SLICE(rax_289, word32, 0) & 8<32>) == 0<32> l0000000000401137
 l0000000000400FE1:
@@ -170,7 +170,7 @@ l0000000000400FEC:
 l0000000000401137:
 	printf("INDEXED %u = invalid index\n", eax_276)
 l0000000000400FF9:
-	branch (SLICE(png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>), word32, 0) & 0x10<32>) == 0<32> l00000000004010D1
+	branch (SLICE(png_get_tRNS(0<u64>, 0<32>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>), word32, 0) & 0x10<32>) == 0<32> l00000000004010D1
 l0000000000401031:
 	branch true l00000000004010D1
 l000000000040103C:
@@ -187,11 +187,11 @@ l0000000000401068:
 	printf("INDEXED %u = %d %d %d %d\n", eax_276, CONVERT(Mem327[CONVERT(eax_276, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem327[CONVERT(eax_276, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem327[CONVERT(eax_276, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32), esi_474)
 l0000000000401150:
 l0000000000401155:
-	printf("RGB %u %u %u\n", component(eax_50, 0<32>, ecx, rdx, 3<32>), component(eax_50, 1<32>, ecx, rdx, 3<32>), component(eax_50, 2<32>, ecx, rdx, 3<32>))
+	printf("RGB %u %u %u\n", component(rdx, ecx, 0<32>, eax_50, 3<32>), component(rdx, ecx, 1<32>, eax_50, 3<32>), component(rdx, ecx, 2<32>, eax_50, 3<32>))
 l00000000004012C9:
-	png_error(rdi, 0x401938<u64>)
+	png_error(0x401938<32>, rdi, 0x401938<u64>)
 l0000000000400F58:
-	printf("GRAY %u\n", component(eax_50, 0<32>, ecx, rdx, 1<32>))
+	printf("GRAY %u\n", component(rdx, ecx, 0<32>, eax_50, 1<32>))
 l00000000004012DA:
 	branch (rax_27 ^ Mem635[fs:0x28<32>:word64]) == 0<64> l00000000004012EE
 l00000000004012EE:
@@ -224,7 +224,7 @@ l0000000000401337:
 l0000000000401716:
 	fprintf(Mem54[0x0000000000602100<p64>:word64], "pngpixel: %s: could not open file\n", Mem54[rsi + 0x18<64>:word64])
 l000000000040139D:
-	rax_78 = png_create_read_struct(0<u64>, 0x401993<u64>, 0<u64>, 0<u64>)
+	rax_78 = png_create_read_struct(0<32>, 0x401993<32>, 0<32>, 0<32>, 0<u64>, 0x401993<u64>, 0<u64>, 0<u64>)
 	branch rax_78 == 0<64> l00000000004016F6
 l00000000004016F6:
 	fwrite(0x401A18<u64>, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64])
@@ -238,7 +238,7 @@ l00000000004013E4:
 	rax_157 = png_malloc(rax_78, rax_145, rax_145)
 	branch SLICE(png_get_IHDR(fp - 128<i64>, fp - 124<i64>, fp - 132<i64>, fp - 112<i64>, fp - 116<i64>, fp - 120<i64>, rax_78, fp - 136<i64>, rax_103, fp - 120<i64>, fp - 116<i64>, fp - 112<i64>, rax_157, rax_157), word32, 0) == 0<32> l00000000004016AF
 l00000000004016AF:
-	png_error(rax_78, 0x4019C3<u64>)
+	png_error(0x4019C3<32>, rax_78, 0x4019C3<u64>)
 l00000000004016C0:
 	fwrite(0x4019E8<u64>, 1<u64>, 0x2C<u64>, Mem210[0x0000000000602100<p64>:word64])
 l000000000040147A:
@@ -251,7 +251,7 @@ l0000000000401491:
 	dwLoc6C = 7<32>
 l0000000000401486:
 l000000000040149A:
-	png_error(rax_78, 0x40199A<u64>)
+	png_error(0x40199A<32>, rax_78, 0x40199A<u64>)
 l00000000004014AB:
 	png_start_read_image(rax_78)
 	dwLoc68_735 = 0<32>
@@ -297,7 +297,7 @@ l0000000000401664:
 	branch dwLoc54_753 <u dwLoc84 l00000000004015F0
 l00000000004015F0:
 	puts(0x4019B6<u64>)
-	png_read_row(rax_157, 0x4019B6<u64>, rax_78, 0<u64>, rax_157)
+	png_read_row(0x4019B6<32>, 0<32>, rax_157, 0x4019B6<u64>, rax_78, 0<u64>, rax_157)
 	branch CONVERT(dwLoc54_753, word32, uint64) != rax_44 l000000000040165E
 l000000000040161B:
 	dwLoc50_761 = dwLoc60_739
@@ -320,7 +320,7 @@ l000000000040167F:
 	png_free(rax_78, rax_157, rax_157, 0<64>)
 	png_destroy_info_struct(rax_78, fp - 56<i64>, fp - 56<i64>)
 l00000000004016DE:
-	png_destroy_read_struct(fp - 64<i64>, 0<u64>, 0<u64>)
+	png_destroy_read_struct(0<32>, 0<32>, fp - 64<i64>, 0<u64>, 0<u64>)
 l000000000040175D:
 	branch (rax_14 ^ Mem692[fs:0x28<32>:word64]) == 0<64> l0000000000401777
 l0000000000401777:
@@ -330,7 +330,7 @@ l0000000000401772:
 	__stack_chk_fail()
 
 
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]

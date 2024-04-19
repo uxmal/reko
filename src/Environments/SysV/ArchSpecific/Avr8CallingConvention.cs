@@ -88,7 +88,7 @@ char - just clr r25). Arguments to functions with variable argument lists
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] argRegs;
 
-        public Avr8CallingConvention(IProcessorArchitecture arch)
+        public Avr8CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.argRegs = (from reg in arch.GetRegisters()

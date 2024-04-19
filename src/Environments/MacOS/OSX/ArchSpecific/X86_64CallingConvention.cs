@@ -41,7 +41,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
         private RegisterStorage rax;
         private RegisterStorage rdx;
 
-        public X86_64CallingConvention(IProcessorArchitecture arch)
+        public X86_64CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "rdi", "rsi", "rdx", "rcx", "r8", "r9" }
@@ -168,8 +168,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             {
                 return iregs.Contains(reg) || fregs.Contains(reg);
             }
-            //$TODO: handle stack args.
-            return false;
+            return stg is StackStorage;
         }
 
         public override bool IsOutArgument(Storage stg)

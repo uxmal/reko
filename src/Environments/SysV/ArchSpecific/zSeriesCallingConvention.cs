@@ -35,7 +35,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage[] iregs;
         private readonly RegisterStorage[] fregs;
 
-        public zSeriesCallingConvention(IProcessorArchitecture arch)
+        public zSeriesCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "r2", "r3", "r4", "r5", "r6" }

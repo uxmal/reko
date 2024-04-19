@@ -39,7 +39,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage[] fRegs;
         private RegisterStorage iRet;
 
-        public AlphaCallingConvention(IProcessorArchitecture arch)
+        public AlphaCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.iRegs = new[] { "r16", "r17", "r18", "r19", "r20", "r21" }
                 .Select(r => arch.GetRegister(r)!)

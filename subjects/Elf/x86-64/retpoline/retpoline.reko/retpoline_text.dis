@@ -94,7 +94,7 @@ l0000000000400555_thunk_register_tm_clones:
 frame_dummy_exit:
 
 
-word64 my1(word32 esi, word32 edi)
+word64 my1(word32 edi, word32 esi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -109,7 +109,7 @@ l0000000000400560:
 my1_exit:
 
 
-void my2(byte sil, word64 rdi)
+void my2(word64 rdi, byte sil)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63] sil:[0..7]
@@ -123,7 +123,7 @@ l0000000000400590:
 my2_exit:
 
 
-void branches(word32 esi, word32 edi)
+void branches(word32 edi, word32 esi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  esi:[0..31] rdi:[0..31]
@@ -144,7 +144,7 @@ l0000000000400602:
 	branch CONVERT(edi, int32, int64) /32 2<32> >= CONVERT(esi, int32, int64) /32 2<32> l000000000040064F
 l000000000040064F:
 l000000000040062B:
-	free(my1(esi, edi))
+	free(my1(edi, esi))
 l0000000000400656:
 	return
 branches_exit:
@@ -197,7 +197,7 @@ l0000000000400700:
 fn0000000000400700_exit:
 
 
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]

@@ -49,27 +49,27 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 0000000000400560: Register (ptr64 void) my1(Register int32 esi, Register int32 edi)
+// 0000000000400560: Register (ptr64 void) my1(Register int32 edi, Register int32 esi)
 // Called from:
 //      branches
-void * my1(int32 esi, int32 edi)
+void * my1(int32 edi, int32 esi)
 {
 	return calloc((int64) edi, (int64) esi);
 }
 
-// 0000000000400590: void my2(Register byte sil, Register (ptr64 byte) rdi)
-void my2(byte sil, byte * rdi)
+// 0000000000400590: void my2(Register (ptr64 byte) rdi, Register byte sil)
+void my2(byte * rdi, byte sil)
 {
 	*rdi = sil;
 }
 
-// 00000000004005B0: void branches(Register int32 esi, Register int32 edi)
-void branches(int32 esi, int32 edi)
+// 00000000004005B0: void branches(Register int32 edi, Register int32 esi)
+void branches(int32 edi, int32 esi)
 {
 	word64 rdi;
 	edi = (word32) rdi;
 	if (edi < esi && (edi << 0x01 < esi << 0x01 && (edi *s 0x03 < esi *s 0x03 && (edi << 0x02 < esi << 0x02 && (int64) edi /32 0x02 < (int64) esi /32 0x02))))
-		free(my1(esi, edi));
+		free(my1(edi, esi));
 }
 
 // 0000000000400660: void main()
@@ -95,8 +95,8 @@ void fn0000000000400700()
 {
 }
 
-// 0000000000400710: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000400710: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

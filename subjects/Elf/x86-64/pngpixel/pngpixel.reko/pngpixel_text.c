@@ -56,10 +56,10 @@ void frame_dummy()
 		register_tm_clones();
 }
 
-// 0000000000400DC6: Register word32 component(Register Eq_n ecx, Register word32 edx, Register uint32 esi, Register word64 rdi, Register int32 r8d)
+// 0000000000400DC6: Register word32 component(Register word64 rdi, Register uint32 esi, Register word32 edx, Register Eq_n ecx, Register int32 r8d)
 // Called from:
 //      print_pixel
-word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
+word32 component(word64 rdi, uint32 esi, word32 edx, Eq_n ecx, int32 r8d)
 {
 	word64 rcx;
 	ecx = (word32) rcx;
@@ -116,30 +116,31 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 {
 	word64 rax_n;
 	word64 rax_n = fs->qw0028;
-	Eq_n eax_n = (word32) (byte) png_get_bit_depth(rdi, rsi, rsi, rdx, rsi, rdi, rax_n);
-	png_get_color_type(rdi, rsi, rsi, eax_n);
+	Eq_n eax_n = (word32) (byte) png_get_bit_depth(rdi, rsi, rsi, ecx, rdx, rsi, rdi, rax_n);
+	word64 rcx_n;
+	png_get_color_type((word32) rcx_n, rdi, rsi, rsi, eax_n);
 	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n <= 0x06)
 	{
 		switch (eax_n)
 		{
 		case 0x00:
-			printf("GRAY %u\n", component(eax_n, 0x00, ecx, rdx, 0x01));
+			printf("GRAY %u\n", component(rdx, ecx, 0x00, eax_n, 0x01));
 			break;
 		case 0x01:
 		case 0x05:
 			goto l00000000004012C9;
 		case 0x02:
-			printf("RGB %u %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x03), component(eax_n, 0x01, ecx, rdx, 0x03), component(eax_n, 0x02, ecx, rdx, 0x03));
+			printf("RGB %u %u %u\n", component(rdx, ecx, 0x00, eax_n, 0x03), component(rdx, ecx, 0x01, eax_n, 0x03), component(rdx, ecx, 0x02, eax_n, 0x03));
 			break;
 		case 0x03:
-			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
+			uint32 eax_n = component(rdx, ecx, 0x00, eax_n, 0x01);
 			ptr64 fp;
 			png_get_PLTE(fp - 80, rdi, fp - 64, rsi, 0x00, eax_n, 0x00);
 			word64 rax_n;
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
 			{
-				if (((word32) png_get_tRNS(0x00, fp - 76, rdi, fp - 56, rsi, 0x00, 0x00) & 0x10) != 0x00 && (false && false))
+				if (((word32) png_get_tRNS(0x00, 0x00, fp - 76, rdi, fp - 56, rsi, 0x00, 0x00) & 0x10) != 0x00 && (false && false))
 				{
 					int32 esi_n;
 					if (eax_n < 0x00)
@@ -155,17 +156,17 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 				printf("INDEXED %u = invalid index\n", eax_n);
 			break;
 		case 0x04:
-			printf("GRAY+ALPHA %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x02), component(eax_n, 0x01, ecx, rdx, 0x02));
+			printf("GRAY+ALPHA %u %u\n", component(rdx, ecx, 0x00, eax_n, 0x02), component(rdx, ecx, 0x01, eax_n, 0x02));
 			break;
 		case 0x06:
-			printf("RGBA %u %u %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x04), component(eax_n, 0x01, ecx, rdx, 0x04), component(eax_n, 0x02, ecx, rdx, 0x04), component(eax_n, 0x03, ecx, rdx, 0x04));
+			printf("RGBA %u %u %u %u\n", component(rdx, ecx, 0x00, eax_n, 0x04), component(rdx, ecx, 0x01, eax_n, 0x04), component(rdx, ecx, 0x02, eax_n, 0x04), component(rdx, ecx, 0x03, eax_n, 0x04));
 			break;
 		}
 	}
 	else
 	{
 l00000000004012C9:
-		png_error(rdi, 4200760);
+		png_error(4200760, rdi, 4200760);
 	}
 	if ((rax_n ^ fs->qw0028) == 0x00)
 		return;
@@ -191,7 +192,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->ptr0018);
 		goto l000000000040175D;
 	}
-	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00);
+	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00, 0x00, 0x00401993, 0x00, 0x00);
 	if (rax_n == 0x00)
 	{
 		fwrite(&g_v401A18, 0x01, 0x2E, stderr);
@@ -212,7 +213,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 			if (dwLoc78 != 0x00)
 			{
 				if (dwLoc78 != 0x01)
-					png_error(rax_n, 0x0040199A);
+					png_error(0x0040199A, rax_n, 0x0040199A);
 				else
 					dwLoc6C = 0x07;
 			}
@@ -264,7 +265,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 				for (dwLoc54_n = dwLoc64_n; dwLoc54_n < dwLoc84; dwLoc54_n += dwLoc5C_n)
 				{
 					puts("png_read_row");
-					png_read_row(rax_n, 4200886, rax_n, 0x00, rax_n);
+					png_read_row(4200886, 0x00, rax_n, 4200886, rax_n, 0x00, rax_n);
 					if ((uint64) dwLoc54_n == rax_n)
 					{
 						uint32 dwLoc50_n;
@@ -286,20 +287,20 @@ l000000000040167F:
 			png_free(rax_n, rax_n, rax_n, 0x00);
 			png_destroy_info_struct(rax_n, fp - 56, fp - 56);
 l00000000004016DE:
-			png_destroy_read_struct(fp - 64, 0x00, 0x00);
+			png_destroy_read_struct(0x00, 0x00, fp - 64, 0x00, 0x00);
 l000000000040175D:
 			if ((rax_n ^ fs->qw0028) == 0x00)
 				return;
 			__stack_chk_fail();
 		}
-		png_error(rax_n, 4200899);
+		png_error(4200899, rax_n, 4200899);
 	}
 	fwrite(&g_v4019E8, 0x01, 44, stderr);
 	goto l00000000004016DE;
 }
 
-// 0000000000401780: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000401780: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

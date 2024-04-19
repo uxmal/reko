@@ -52,10 +52,10 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register Eq_n rdi, Register uint64 rsi)
 // Called from:
 //      main
-void * _mm_malloc(uint64 rsi, Eq_n rdi)
+void * _mm_malloc(Eq_n rdi, uint64 rsi)
 {
 	uint64 qwLoc28_n = rsi;
 	void * rax_n;
@@ -85,10 +85,10 @@ void _mm_free(Eq_n (* rdi)[])
 	free(rdi);
 }
 
-// 00000000000007A8: void vec_add(Register (arr Eq_n) rcx, Register (arr Eq_n) rdx, Register (arr Eq_n) rsi, Register uint64 rdi)
+// 00000000000007A8: void vec_add(Register uint64 rdi, Register (arr Eq_n) rsi, Register (arr Eq_n) rdx, Register (arr Eq_n) rcx)
 // Called from:
 //      main
-void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], uint64 rdi)
+void vec_add(uint64 rdi, Eq_n rsi[], Eq_n rdx[], Eq_n rcx[])
 {
 	char ** fp;
 	__align_stack<word64>(fp);
@@ -101,9 +101,9 @@ void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], uint64 rdi)
 // 0000000000000898: void main()
 void main()
 {
-	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
-	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
-	Eq_n (* rax_n)[] = _mm_malloc(0x20, 0x2000);
+	Eq_n (* rax_n)[] = _mm_malloc(0x2000, 0x20);
+	Eq_n (* rax_n)[] = _mm_malloc(0x2000, 0x20);
+	Eq_n (* rax_n)[] = _mm_malloc(0x2000, 0x20);
 	Eq_n qwLoc10_n;
 	qwLoc10_n.u0 = 0x00;
 	word128 xmm0;
@@ -140,7 +140,7 @@ void main()
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
 		(&rax_n[0].u0)[qwLoc20_n] = 0.0;
-	vec_add(rax_n, rax_n, rax_n, 0x0400);
+	vec_add(0x0400, rax_n, rax_n, rax_n);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
 		printf("%g\n", (&rax_n[0].u0)[qwLoc28_n]);
@@ -149,8 +149,8 @@ void main()
 	_mm_free(rax_n);
 }
 
-// 0000000000000A70: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000000A70: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

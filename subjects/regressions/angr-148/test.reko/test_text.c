@@ -51,7 +51,7 @@ void frame_dummy()
 		register_tm_clones();
 	else
 	{
-		fn0000000000000000(0x00600E20);
+		fn0000000000000000(0x00600E20, 0x00600E20);
 		register_tm_clones();
 	}
 }
@@ -70,8 +70,8 @@ void main()
 	f();
 }
 
-// 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// 0000000000400550: void __libc_csu_init(Register word32 edi, Register word64 rsi, Register word64 rdx)
+void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 {
 	word64 rdi;
 	edi = (word32) rdi;

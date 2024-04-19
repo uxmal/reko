@@ -36,7 +36,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage[] fregs;
         private readonly RegisterStorage[] iregs;
 
-        public PowerPcCallingConvention(IProcessorArchitecture arch)
+        public PowerPcCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }

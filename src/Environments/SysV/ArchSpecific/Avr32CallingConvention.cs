@@ -57,7 +57,7 @@ Interrupt handlers are similar, but the CPU will push R8 to R12 and LR onto the 
 
 What the different instructions do is explained in the Atmel AVR 32-bit Architecture Manual. The following instructions should have some insightful information: ACALL, ICALL, MCALL, RCALL, RET{cond4}, LDM, STM, POPM, PUSHM. If you want to write your own functions in assembly code, you should probably read up on all the arithmetic, multiplication, logic, bit, shift and data transfer instructio*/
 
-        public Avr32CallingConvention(IProcessorArchitecture arch)
+        public Avr32CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

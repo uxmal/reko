@@ -34,7 +34,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage eax;
         private readonly RegisterStorage edx;
 
-        public i386KernelCallingConvention(IProcessorArchitecture arch)
+        public i386KernelCallingConvention(IProcessorArchitecture arch) : base("__kernel    ")
         {
             this.iregs = new[] { "ebx", "ecx", "edx", "esi", "edi", "ebp" }
                 .Select(r => arch.GetRegister(r)!)

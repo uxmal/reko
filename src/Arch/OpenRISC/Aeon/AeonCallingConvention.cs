@@ -36,7 +36,7 @@ namespace Reko.Arch.OpenRISC.Aeon
     {
         private readonly RegisterStorage[] iregs;
 
-        public AeonCallingConvention(AeonArchitecture arch)
+        public AeonCallingConvention(AeonArchitecture arch) : base("")
         {
             this.iregs = Registers.GpRegisters[3..9];
         }

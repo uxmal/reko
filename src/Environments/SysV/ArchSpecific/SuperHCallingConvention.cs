@@ -40,7 +40,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage fret;
         private readonly RegisterStorage dret;
 
-        public SuperHCallingConvention(IProcessorArchitecture arch)
+        public SuperHCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.iregs = NamesToRegs("r4", "r5", "r6", "r7");

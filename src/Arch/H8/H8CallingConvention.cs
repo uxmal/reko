@@ -35,7 +35,7 @@ namespace Reko.Arch.H8
 
         // http://www.bound-t.com/app_notes/an-h8-300.pdf
 
-        public H8CallingConvention(PrimitiveType wordSize)
+        public H8CallingConvention(PrimitiveType wordSize) : base("")
         {
             RegisterStorage[] regs;
             if (wordSize.BitSize == 16)

@@ -32,7 +32,7 @@ namespace Reko.Environments.RT11
     {
         private IProcessorArchitecture arch;
 
-        public Rt11CallingConvention(IProcessorArchitecture arch)
+        public Rt11CallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

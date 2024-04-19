@@ -30,17 +30,26 @@ namespace Reko.Core.Machine
 {
     public abstract class AbstractCallingConvention : ICallingConvention
     {
-        protected AbstractCallingConvention()
+        protected AbstractCallingConvention(string name)
         {
+            this.Name = name;
             this.InArgumentComparer = null;
             this.OutArgumentComparer = null;
         }
-        public virtual IComparer<Identifier>? InArgumentComparer { get; }
 
-        public virtual IComparer<Identifier>? OutArgumentComparer { get; }
+        public string Name { get; }
+
+        public virtual IComparer<Identifier>? InArgumentComparer { get; protected set; }
+
+        public virtual IComparer<Identifier>? OutArgumentComparer { get; protected set; }
 
         public abstract void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
         public abstract bool IsArgument(Storage stg);
         public abstract bool IsOutArgument(Storage stg);
+
+        public override string ToString()
+        {
+            return Name.Length != 0 ? Name : "(default calling convention)";
+        }
     }
 }

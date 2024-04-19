@@ -31,7 +31,7 @@ namespace Reko.Environments.SysV.ArchSpecific
     {
         private IProcessorArchitecture arch;
 
-        public HexagonCallingConvention(IProcessorArchitecture arch)
+        public HexagonCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
         }

@@ -954,9 +954,7 @@ namespace Reko.Analysis
         {
             if (defaultCc is null)
                 return IsTrashedGuess(stg);
-            if (stg is not RegisterStorage reg)
-                return false;
-            return this.defaultCc.IsOutArgument(reg);
+            return stg is RegisterStorage reg && this.defaultCc.IsOutArgument(reg);
         }
 
         private ProcedureBase? GetCalleeProcedure(CallInstruction ci)

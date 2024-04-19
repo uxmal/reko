@@ -34,7 +34,7 @@ namespace Reko.Arch.M68k
     {
         private readonly M68kArchitecture arch;
 
-        public M68kCallingConvention(M68kArchitecture arch)
+        public M68kCallingConvention(M68kArchitecture arch) : base("")
         {
             this.arch = arch;
         }

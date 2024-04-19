@@ -22,8 +22,8 @@ void fn00000000004004B0()
 	null();
 }
 
-// 0000000000400560: void fn0000000000400560(Register word32 esi, Register word32 edi)
-void fn0000000000400560(word32 esi, word32 edi)
+// 0000000000400560: void fn0000000000400560(Register word32 edi, Register word32 esi)
+void fn0000000000400560(word32 edi, word32 esi)
 {
 	calloc((int64) edi, (int64) esi);
 }

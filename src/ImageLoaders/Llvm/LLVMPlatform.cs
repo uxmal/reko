@@ -45,6 +45,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             this.services = services;
             this.Name = "LLVM";
+            this.CallingConventions = new Dictionary<string, IReadOnlyCollection<string>>();
             this.StructureMemberAlignment = 4;  //$BUG: is arch-specific.
             this.TrashedRegisters = new HashSet<RegisterStorage>();
             this.PreservedRegisters = new HashSet<RegisterStorage>();
@@ -52,6 +53,8 @@ namespace Reko.ImageLoaders.LLVM
 #nullable enable
 
         public IProcessorArchitecture Architecture { get; set; }
+
+        public IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
 
         public string DefaultCallingConvention { get; set; }
 
@@ -129,7 +132,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public string? DetermineCallingConvention(FunctionType signature)
+        public ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
             return null;
         }

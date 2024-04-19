@@ -49,6 +49,8 @@ namespace Reko.UnitTests.Core.Loading
 
         private class TestCallingConvention : AbstractCallingConvention
         {
+            public TestCallingConvention() : base("") { }
+
             public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
             {
                 ccr.LowLevelDetails(4, 4);

@@ -36,7 +36,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly RegisterStorage d0;
         private readonly RegisterStorage fp0;
 
-        public M68kCallingConvention(IProcessorArchitecture arch)
+        public M68kCallingConvention(IProcessorArchitecture arch) : base("")
         {
             this.arch = arch;
             this.d0 = arch.GetRegister("d0")!;

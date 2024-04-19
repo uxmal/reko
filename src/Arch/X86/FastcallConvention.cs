@@ -43,6 +43,7 @@ namespace Reko.Arch.X86
             RegisterStorage arg1,
             RegisterStorage arg2,
             int stackAlignment)
+            : base("__fascall")
         {
             this.iArgs = new[] { arg1, arg2 };
             this.stackAlignment = stackAlignment;
