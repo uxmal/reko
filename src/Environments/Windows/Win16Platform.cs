@@ -96,7 +96,7 @@ SP	top of stack
             };
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == null)
                 ccName = "";

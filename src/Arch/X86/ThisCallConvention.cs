@@ -32,7 +32,7 @@ namespace Reko.Arch.X86
     /// <summary>
     /// Implements the Win32 __thiscall calling convention.
     /// </summary>
-    public class ThisCallConvention : CallingConvention
+    public class ThisCallConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage ecxThis;
         private readonly int stackAlignment;
@@ -48,7 +48,7 @@ namespace Reko.Arch.X86
         /// corresponding to an enclosing C++ class. If dtThis is null, then
         /// the first of the dtParams will be treated as a `this`.
         /// </summary>
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -75,7 +75,7 @@ namespace Reko.Arch.X86
             ccr.CalleeCleanup();
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -85,7 +85,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

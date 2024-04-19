@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
-    public class Msp430CallingConvention : CallingConvention
+    public class Msp430CallingConvention : AbstractCallingConvention
     {
         /*
 Arguments with a type that fits in a single CPU register are passed in a single CPU register.
@@ -214,7 +214,7 @@ Alignment "holes" can occur between arguments passed on the stack, but "back-fil
                     .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 0);
             int iReg = 0;
@@ -292,12 +292,12 @@ Alignment "holes" can occur between arguments passed on the stack, but "back-fil
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

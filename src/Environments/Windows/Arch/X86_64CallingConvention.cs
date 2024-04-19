@@ -27,13 +27,14 @@ using Reko.Core.Types;
 using Reko.Arch.X86;
 using System.Diagnostics;
 using Reko.Core.Machine;
+using Reko.Core.Expressions;
 
 namespace Reko.Environments.Windows
 {
     /// <summary>
     /// Windows calling convention for x86-64.
     /// </summary>
-    public class X86_64CallingConvention : CallingConvention
+    public class X86_64CallingConvention : AbstractCallingConvention
     {
         private static readonly RegisterStorage[] iRegs =
         {
@@ -51,7 +52,7 @@ namespace Reko.Environments.Windows
             Registers.xmm3,
         };
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -107,7 +108,7 @@ namespace Reko.Environments.Windows
             ccr.CallerCleanup(8);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -117,7 +118,7 @@ namespace Reko.Environments.Windows
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

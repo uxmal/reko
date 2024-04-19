@@ -76,7 +76,7 @@ namespace Reko.Arch.RiscV
     registers fs0–fs11 are preserved across calls and must be saved by the
     callee if used. 
      */
-    public class RiscVCallingConvention : CallingConvention
+    public class RiscVCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -99,7 +99,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -175,7 +175,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -185,7 +185,7 @@ namespace Reko.Arch.RiscV
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iregs[0] == stg || iregs[1] == stg &&
                    fregs[0] == stg || fregs[1] == stg;

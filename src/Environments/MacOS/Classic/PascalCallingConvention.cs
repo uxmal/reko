@@ -36,7 +36,7 @@ namespace Reko.Environments.MacOS.Classic
     /// the return value before pushing any parameters. The caller then passes
     /// parameters from left to right.
     /// </remarks>
-    public class PascalCallingConvention : CallingConvention
+    public class PascalCallingConvention : AbstractCallingConvention
     {
         private M68kArchitecture arch;
 
@@ -45,7 +45,7 @@ namespace Reko.Environments.MacOS.Classic
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -65,12 +65,12 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is StackStorage;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return false;
         }

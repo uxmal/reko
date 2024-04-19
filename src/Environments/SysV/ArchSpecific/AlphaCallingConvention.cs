@@ -33,7 +33,7 @@ namespace Reko.Environments.SysV.ArchSpecific
     // There is no guarantee that this is correct for POSIX. 
     //$TODO: find a description of the correct POSIX calling convention and
     // implement it.
-    public class AlphaCallingConvention : CallingConvention
+    public class AlphaCallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] iRegs;
         private readonly RegisterStorage[] fRegs;
@@ -51,7 +51,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -78,7 +78,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -88,7 +88,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iRet == stg;
         }

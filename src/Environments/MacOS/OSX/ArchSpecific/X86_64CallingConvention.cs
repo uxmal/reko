@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Environments.MacOS.OSX.ArchSpecific
 {
-    public class X86_64CallingConvention : CallingConvention
+    public class X86_64CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage[] iregs;
@@ -57,7 +57,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             this.rdx = arch.GetRegister("rdx")!;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -162,7 +162,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             throw new NotImplementedException();
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -172,7 +172,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class Avr32CallingConvention : CallingConvention
+    public class Avr32CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -62,7 +62,7 @@ What the different instructions do is explained in the Atmel AVR 32-bit Architec
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -80,12 +80,12 @@ What the different instructions do is explained in the Atmel AVR 32-bit Architec
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

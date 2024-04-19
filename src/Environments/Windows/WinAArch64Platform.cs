@@ -84,7 +84,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new AArch64CallingConvention(this.Architecture);
         }

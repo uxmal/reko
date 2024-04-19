@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private bool addUseInstructions;
         private Mock<IDynamicLinker> dynamicLinker;
         private SsaTransform sst;
-        private CallingConvention fakeCc;
+        private ICallingConvention fakeCc;
         private HashSet<RegisterStorage> trashedRegs;
 
         private Identifier r1;

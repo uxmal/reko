@@ -91,7 +91,7 @@ namespace Reko.Arch.OpenRISC
             return new AeonRewriter(this, rdr, state, binder, host);
         }
 
-        public override CallingConvention? GetCallingConvention(string? name)
+        public override ICallingConvention? GetCallingConvention(string? name)
         {
             return new AeonCallingConvention(this);
         }

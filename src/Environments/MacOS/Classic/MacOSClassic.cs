@@ -76,7 +76,7 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             switch (ccName)
             {

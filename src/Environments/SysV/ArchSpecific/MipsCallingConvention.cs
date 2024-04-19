@@ -34,7 +34,7 @@ namespace Reko.Environments.SysV.ArchSpecific
     // Based on algorithm described in
     // http://www.cygwin.com/ml/binutils/2003-06/msg00436.html
 
-    public class MipsCallingConvention : CallingConvention
+    public class MipsCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage[] iregs;
@@ -55,7 +55,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fret = arch.GetRegister("f1")!;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -150,7 +150,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -160,7 +160,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iret == stg || fret == stg;
         }

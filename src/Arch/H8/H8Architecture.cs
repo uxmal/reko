@@ -80,7 +80,7 @@ namespace Reko.Arch.H8
             return new H8Rewriter(this, rdr, state, binder, host);
         }
 
-        public override CallingConvention? GetCallingConvention(string? name)
+        public override ICallingConvention? GetCallingConvention(string? name)
         {
             return cc;
         }

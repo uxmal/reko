@@ -31,7 +31,7 @@ namespace Reko.Environments.AtariTOS
 {
     // The TOSCall calling convention takes all arguments on stack, ignoring 
     // the first one since it is the system call selector.
-    public class TOSCallingConvention : CallingConvention
+    public class TOSCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -40,7 +40,7 @@ namespace Reko.Environments.AtariTOS
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -68,12 +68,12 @@ namespace Reko.Environments.AtariTOS
             ccr.CallerCleanup(4);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is StackStorage;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return Registers.d0 == stg;
         }

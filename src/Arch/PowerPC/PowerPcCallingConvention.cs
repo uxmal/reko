@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
-    public class PowerPcCallingConvention : CallingConvention
+    public class PowerPcCallingConvention : AbstractCallingConvention
     {
         private readonly PowerPcArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -47,7 +47,7 @@ namespace Reko.Arch.PowerPC
                 .ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -121,7 +121,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -131,7 +131,7 @@ namespace Reko.Arch.PowerPC
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iregs[0] == stg || fregs[0] == stg;
         }

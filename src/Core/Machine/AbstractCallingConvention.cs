@@ -18,36 +18,29 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Machine;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.C166
+namespace Reko.Core.Machine
 {
-    // https://www.keil.com/support/man/docs/c166/c166_ap_funcparam.htm
-    public class C166CallingConvention : AbstractCallingConvention
+    public abstract class AbstractCallingConvention : ICallingConvention
     {
-        public override void Generate(
-            ICallingConventionEmitter ccr,
-            int retAddressOnStack,
-            DataType? dtRet,
-            DataType? dtThis,
-            List<DataType> dtParams)
+        protected AbstractCallingConvention()
         {
-            throw new NotImplementedException();
+            this.InArgumentComparer = null;
+            this.OutArgumentComparer = null;
         }
+        public virtual IComparer<Identifier>? InArgumentComparer { get; }
 
-        public override bool IsArgument(Storage stg)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual IComparer<Identifier>? OutArgumentComparer { get; }
 
-        public override bool IsOutArgument(Storage stg)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
+        public abstract bool IsArgument(Storage stg);
+        public abstract bool IsOutArgument(Storage stg);
     }
 }

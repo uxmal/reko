@@ -126,7 +126,7 @@ namespace Reko.Environments.OS2
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             switch (ccName ?? "")
             {

@@ -83,7 +83,7 @@ to 16 bits by the called function (unsigned char is more efficient than signed
 char - just clr r25). Arguments to functions with variable argument lists
 (printf etc.) are all passed on stack, and char is extended to int. 
 */
-    public class Avr8CallingConvention : CallingConvention
+    public class Avr8CallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] argRegs;
@@ -97,7 +97,7 @@ char - just clr r25). Arguments to functions with variable argument lists
                      select reg).ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -215,7 +215,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -225,7 +225,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

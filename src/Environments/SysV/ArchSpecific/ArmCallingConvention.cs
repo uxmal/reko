@@ -29,7 +29,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class Arm32CallingConvention : CallingConvention
+    public class Arm32CallingConvention : AbstractCallingConvention
     {
         private RegisterStorage[] argRegs;
         private IProcessorArchitecture arch;
@@ -41,7 +41,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -105,7 +105,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -115,7 +115,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

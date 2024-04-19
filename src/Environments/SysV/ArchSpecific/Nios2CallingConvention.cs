@@ -26,7 +26,7 @@ using System.Linq;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class Nios2CallingConvention : CallingConvention
+    public class Nios2CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage retLo;
@@ -43,7 +43,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -96,12 +96,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             //Refer to Stack Frame for a Function with Variable Arguments
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }

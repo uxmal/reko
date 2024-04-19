@@ -159,7 +159,7 @@ namespace Reko.Core
         /// <returns>A <see cref="CallingConvention"/> instance if one with a
         /// matching name was found.
         /// </returns>
-        CallingConvention? GetCallingConvention(string? ccName);
+        ICallingConvention? GetCallingConvention(string? ccName);
 
         /// <summary>
         /// Given a primitive type <paramref name="t"/> returns the
@@ -459,7 +459,7 @@ namespace Reko.Core
         /// <param name="ccName">Name of the calling convention. Specifying a null
         /// or empty string returns the default calling convention for the platform.
         /// </param>
-        public virtual CallingConvention? GetCallingConvention(string? ccName)
+        public virtual ICallingConvention? GetCallingConvention(string? ccName)
         {
             // The default platform has no idea, so let the architecture decide.
             // Some architectures define a standard calling procedure.

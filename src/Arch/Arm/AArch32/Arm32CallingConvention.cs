@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm.AArch32
     /// <remarks>
     /// http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf
     /// </remarks>
-    public class Arm32CallingConvention : CallingConvention
+    public class Arm32CallingConvention : AbstractCallingConvention
     {
         private RegisterStorage[] argRegs;
 
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch32
             this.argRegs = new[] { Registers.r0, Registers.r1, Registers.r2, Registers.r3 };
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -117,7 +117,7 @@ namespace Reko.Arch.Arm.AArch32
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -127,7 +127,7 @@ namespace Reko.Arch.Arm.AArch32
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

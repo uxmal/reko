@@ -81,6 +81,8 @@ namespace Reko.UnitTests.Core.Configuration
                             new PlatformArchitecture_v1
                             {
                                 Name="testCPU",
+                                CallingConventions = "cc1,cc2",
+                                DefaultCallingConvention = "cc2",
                                 TypeLibraries = new[]
                                 {
                                     new TypeLibraryReference_v1
@@ -113,8 +115,13 @@ namespace Reko.UnitTests.Core.Configuration
 
             var archs = env.Architectures;
             Assert.AreEqual(1, archs.Count);
-            Assert.AreEqual("lp32.xml", archs[0].TypeLibraries[0].Name);
-            Assert.AreEqual(0xEC, archs[0].ProcedurePrologs[0].Bytes[2]);
+            var arch0 = archs[0];
+            Assert.AreEqual(2, arch0.CallingConventions.Count);
+            Assert.AreEqual("cc1", arch0.CallingConventions[0]);
+            Assert.AreEqual("cc2", arch0.CallingConventions[1]);
+            Assert.AreEqual("cc2", arch0.DefaultCallingConvention);
+            Assert.AreEqual("lp32.xml", arch0.TypeLibraries[0].Name);
+            Assert.AreEqual(0xEC, arch0.ProcedurePrologs[0].Bytes[2]);
         }
 
         [Test]

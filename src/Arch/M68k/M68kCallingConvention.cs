@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.M68k
 {
-    public class M68kCallingConvention : CallingConvention
+    public class M68kCallingConvention : AbstractCallingConvention
     {
         private readonly M68kArchitecture arch;
 
@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -60,13 +60,13 @@ namespace Reko.Arch.M68k
             ccr.CallerCleanup(4);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             // Arguments are passed on stack.
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return Registers.d0 == stg;
         }

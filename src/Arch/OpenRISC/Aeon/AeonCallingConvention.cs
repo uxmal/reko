@@ -32,7 +32,7 @@ namespace Reko.Arch.OpenRISC.Aeon
     /// <summary>
     /// Calling convention for <see cref="AeonArchitecture"/>.
     /// </summary>
-    public class AeonCallingConvention : CallingConvention
+    public class AeonCallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] iregs;
 
@@ -41,7 +41,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             this.iregs = Registers.GpRegisters[3..9];
         }
 
-        public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 24); //$REVIEW: verify this.
             if (dtRet is not null)
@@ -93,12 +93,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

@@ -60,7 +60,7 @@ namespace Reko.Environments.Xbox
             return null;
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             //$TODO: investigate whether the calling
             // convention on Xbox deviates from the convention

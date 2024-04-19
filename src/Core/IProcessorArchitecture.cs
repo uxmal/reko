@@ -370,7 +370,7 @@ namespace Reko.Core
         /// null if no calling convention with the name <paramref name="ccName"/> 
         /// is known.
         /// </returns>
-        CallingConvention? GetCallingConvention(string? ccName);
+        ICallingConvention? GetCallingConvention(string? ccName);
 
         /// <summary>
         /// Returns a list of all the available mnemonics as strings.
@@ -673,7 +673,7 @@ namespace Reko.Core
             throw new NotImplementedException("Emulation has not been implemented for this processor architecture yet.");
         }
 
-        public virtual CallingConvention? GetCallingConvention(string? name)
+        public virtual ICallingConvention? GetCallingConvention(string? name)
         {
             // By default, there is no calling convention defined for architectures. Some
             // manufacturers however, define calling conventions.

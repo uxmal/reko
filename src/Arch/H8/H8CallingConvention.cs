@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.H8
 {
-    public class H8CallingConvention : CallingConvention
+    public class H8CallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] argRegs;
 
@@ -93,7 +93,7 @@ To return, the subprogram pops its local variables from the stack, restores the 
 registers from the stack, and executes RTS.
 There may be more than one such return point in a subprogram         * 
          */
-        public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 2);
             int iParam = 0;
@@ -120,13 +120,13 @@ There may be more than one such return point in a subprogram         *
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is RegisterStorage reg &&
                 0 <= reg.Number && reg.Number <= 3;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return stg is RegisterStorage reg && reg.Number == 0;
         }

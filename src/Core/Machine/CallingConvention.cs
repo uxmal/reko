@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Text;
@@ -30,7 +31,7 @@ namespace Reko.Core.Machine
     /// into Storages (stack accesses, FPU stack accesses, registers or 
     /// register pairs. 
     /// </summary>
-    public interface CallingConvention
+    public interface ICallingConvention
     {
         void Generate(
             ICallingConventionEmitter ccr,
@@ -49,6 +50,16 @@ namespace Reko.Core.Machine
         /// </summary>
         /// <param name="stg"></param>
         bool IsOutArgument(Storage stg);
+
+        /// <summary>
+        /// Used to order input arguments according to the calling convention's ABI.
+        /// </summary>
+        IComparer<Identifier>? InArgumentComparer { get; }
+
+        /// <summary>
+        /// Used to order output arguments according to the calling convention's ABI.
+        /// </summary>
+        IComparer<Identifier>? OutArgumentComparer { get; }
     }
 
     public interface ICallingConventionEmitter

@@ -30,7 +30,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class SuperHCallingConvention : CallingConvention
+    public class SuperHCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -60,7 +60,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         // https://en.wikipedia.org/wiki/Calling_convention#SuperH
         // https://www.renesas.com/en-eu/doc/products/tool/001/rej10b0152_sh.pdf
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -145,7 +145,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -155,7 +155,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iret == stg || fret == stg || dret == stg;
         }

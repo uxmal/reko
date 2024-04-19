@@ -68,7 +68,7 @@ namespace Reko.Analysis
         private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
         private readonly HashSet<SsaIdentifier> sidsToRemove;
         private readonly IReadOnlySet<RegisterStorage>? trashedRegisters;
-        private readonly CallingConvention? defaultCc;
+        private readonly ICallingConvention? defaultCc;
         private readonly Func<Storage, bool> isTrashed;
         private Block? block;
         private Statement stmCur;

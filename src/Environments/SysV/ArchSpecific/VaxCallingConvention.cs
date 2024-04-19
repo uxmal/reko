@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class VaxCallingConvention : CallingConvention
+    public class VaxCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage regRet;
@@ -38,7 +38,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.regRet = arch.GetRegister("r0")!;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -56,12 +56,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return false;
         }

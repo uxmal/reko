@@ -53,7 +53,7 @@ namespace Reko.Environments.AtariTOS
             get { return ""; }
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == "TOSCall")
                 return new TOSCallingConvention(this.Architecture);

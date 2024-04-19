@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -276,7 +277,7 @@ byte complex) in f1:f2 and floating point complex values of size 32 (16 byte
 complex) in f1:f4.
 
  */
-    public class PowerPc64CallingConvention : CallingConvention
+    public class PowerPc64CallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] fregs;
@@ -293,7 +294,7 @@ complex) in f1:f4.
                 .ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -346,12 +347,12 @@ complex) in f1:f4.
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

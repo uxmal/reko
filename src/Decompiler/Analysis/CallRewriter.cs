@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
@@ -102,6 +103,11 @@ namespace Reko.Analysis
             var sb = new SignatureBuilder(ssa.Procedure.Frame, ssa.Procedure.Architecture);
             ProcessInputStorages(ssa, flow, sb);
             ProcessOutputStorages(ssa, flow, sb);
+            var cc = GuessCallingConvention(sb, ssa.Procedure.Architecture);
+            if (cc is not null)
+            {
+                sb.SortParameters(cc);
+            }
             var sig = sb.BuildSignature();
             if (ssa.Procedure.Signature.StackDelta != 0)
             {
@@ -113,6 +119,12 @@ namespace Reko.Analysis
                 sig.FpuStackDelta = -fpuStackDelta;
             }
             return sig;
+        }
+
+        private ICallingConvention? GuessCallingConvention(SignatureBuilder sb, IProcessorArchitecture architecture)
+        {
+            //$TODO: #1338
+            return null;
         }
 
         void ProcessInputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)

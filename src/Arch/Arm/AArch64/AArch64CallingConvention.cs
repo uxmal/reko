@@ -29,7 +29,7 @@ namespace Reko.Arch.Arm.AArch64
 {
     // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=msvc-170
     // Seems identical to the official ARM 64 ABI.
-    public class AArch64CallingConvention : CallingConvention
+    public class AArch64CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage[] argRegs;
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch64
                 .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -173,7 +173,7 @@ namespace Reko.Arch.Arm.AArch64
             return result;
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -183,7 +183,7 @@ namespace Reko.Arch.Arm.AArch64
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

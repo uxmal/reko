@@ -98,7 +98,7 @@ namespace Reko.Environments.Windows
 
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new MipsCallingConvention(this.Architecture);
         }

@@ -56,7 +56,7 @@ namespace Reko.Environments.Windows
     /// contain anything relevant the same as padding space in memory.
     /// </remarks>
     // https://msdn.microsoft.com/en-us/library/aa448706.aspx
-    public class MipsCallingConvention : CallingConvention
+    public class MipsCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage[] iregs;
@@ -79,7 +79,7 @@ namespace Reko.Environments.Windows
             this.fret = arch.GetRegister("f0")!;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -166,7 +166,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -176,7 +176,7 @@ namespace Reko.Environments.Windows
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

@@ -30,7 +30,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class M68kCallingConvention : CallingConvention
+    public class M68kCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage d0;
@@ -43,7 +43,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fp0 = arch.GetRegister("fp0")!;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -69,12 +69,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.CallerCleanup(arch.PointerType.Size);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is StackStorage;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return this.d0 == stg;
         }

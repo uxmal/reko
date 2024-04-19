@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class Ia64CallingConvention : CallingConvention
+    public class Ia64CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -34,7 +34,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -52,12 +52,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }

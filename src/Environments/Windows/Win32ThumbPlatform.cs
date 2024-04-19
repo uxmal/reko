@@ -154,7 +154,7 @@ namespace Reko.Environments.Windows
                 .Select(r => Architecture.GetRegister(r)!).ToHashSet();
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new Arm32CallingConvention();
         }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
@@ -87,6 +88,14 @@ namespace Reko.Analysis
         public void AddInParam(Identifier arg)
         {
             args.Add(arg);
+        }
+
+        public void SortParameters(ICallingConvention cc)
+        {
+            if (cc.InArgumentComparer is not null)
+            {
+                args.Sort(cc.InArgumentComparer);
+            }
         }
 
 		public FunctionType BuildSignature()

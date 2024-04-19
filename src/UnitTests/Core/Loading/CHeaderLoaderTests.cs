@@ -47,9 +47,9 @@ namespace Reko.UnitTests.Core.Loading
             this.testCc = new TestCallingConvention();
         }
 
-        private class TestCallingConvention : CallingConvention
+        private class TestCallingConvention : AbstractCallingConvention
         {
-            public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+            public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
             {
                 ccr.LowLevelDetails(4, 4);
                 int i = 0;
@@ -64,12 +64,12 @@ namespace Reko.UnitTests.Core.Loading
                 }
             }
 
-            public bool IsArgument(Storage stg)
+            public override bool IsArgument(Storage stg)
             {
                 throw new NotImplementedException();
             }
 
-            public bool IsOutArgument(Storage stg)
+            public override bool IsOutArgument(Storage stg)
             {
                 throw new NotImplementedException();
             }

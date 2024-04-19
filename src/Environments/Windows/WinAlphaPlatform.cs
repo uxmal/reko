@@ -79,7 +79,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             if (this.cc is null)
             {

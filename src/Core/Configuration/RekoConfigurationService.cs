@@ -217,6 +217,9 @@ namespace Reko.Core.Configuration
             return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
+                CallingConventions = LoadDelimiterSeparatedValues(spa.CallingConventions, ',')
+                    .ToList(),
+                DefaultCallingConvention = spa.DefaultCallingConvention,
                 TrashedRegisters = LoadDelimiterSeparatedValues(spa.TrashedRegisters, ',')
                     .ToList(),
                 PreservedRegisters = LoadDelimiterSeparatedValues(spa.PreservedRegisters, ',')

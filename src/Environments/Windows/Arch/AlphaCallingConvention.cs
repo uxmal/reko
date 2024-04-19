@@ -44,7 +44,7 @@ r29         gp          global pointer      Special     Not used by 32-bit code.
 r30         sp          stack pointer       Yes
 r31         zero        reads as zero       N/A         Writes are ignored.
     */
-    public class AlphaCallingConvention : CallingConvention
+    public class AlphaCallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] iRegs;
         private readonly RegisterStorage[] fRegs;
@@ -62,7 +62,7 @@ r31         zero        reads as zero       N/A         Writes are ignored.
 
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -89,7 +89,7 @@ r31         zero        reads as zero       N/A         Writes are ignored.
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -99,7 +99,7 @@ r31         zero        reads as zero       N/A         Writes are ignored.
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

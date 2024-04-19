@@ -28,7 +28,7 @@ using System.Linq;
 namespace Reko.Environments.SysV.ArchSpecific
 {
     // https://openrisc.io/or1k.html
-    public class AeonCallingConvention : CallingConvention
+    public class AeonCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -39,7 +39,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.iregs = Enumerable.Range(3, 6).Select(i => arch.GetRegister((StorageDomain) i, default)!).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 24);
             if (dtRet != null)
@@ -77,12 +77,12 @@ namespace Reko.Environments.SysV.ArchSpecific
                 throw new NotImplementedException("Return values > 64 bits not implemented yet.");
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

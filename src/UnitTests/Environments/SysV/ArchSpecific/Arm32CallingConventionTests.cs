@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private readonly VoidType v = VoidType.Instance;
 
         private Arm32Architecture arch;
-        private CallingConvention cc;
+        private ICallingConvention cc;
         private ICallingConventionEmitter ccr;
 
         [SetUp]

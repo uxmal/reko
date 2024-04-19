@@ -45,6 +45,6 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
 
         public abstract Expression? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
-        public abstract CallingConvention? GetCallingConvention(string? ccName);
+        public abstract ICallingConvention? GetCallingConvention(string? ccName);
     }
 }

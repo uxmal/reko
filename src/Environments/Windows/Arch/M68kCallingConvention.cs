@@ -9,7 +9,7 @@ using Reko.Core.Types;
 
 namespace Reko.Environments.Windows
 {
-    public class M68kCallingConvention : CallingConvention
+    public class M68kCallingConvention : AbstractCallingConvention
 	{
 		private IProcessorArchitecture arch;
 
@@ -18,7 +18,7 @@ namespace Reko.Environments.Windows
 			this.arch = arch;
 		}
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -27,12 +27,12 @@ namespace Reko.Environments.Windows
         {
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is StackStorage;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

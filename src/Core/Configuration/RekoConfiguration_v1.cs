@@ -360,6 +360,12 @@ namespace Reko.Core.Configuration
         [XmlAttribute("name")]
         public string? Name;
 
+        [XmlElement("cconvs")]
+        public string? CallingConventions;
+
+        [XmlElement("defaultCconv")]
+        public string? DefaultCallingConvention;
+
         [XmlElement("TrashedRegisters")]
         public string? TrashedRegisters;
 

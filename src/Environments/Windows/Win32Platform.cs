@@ -149,7 +149,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             ccName = ccName?.TrimStart('_') ?? string.Empty; // Default to cdecl (same as empty string)
 

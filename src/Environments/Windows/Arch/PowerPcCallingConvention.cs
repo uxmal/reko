@@ -26,10 +26,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Types;
 using Reko.Core.Machine;
+using Reko.Core.Expressions;
 
 namespace Reko.Environments.Windows
 {
-    public class PowerPcCallingConvention : CallingConvention
+    public class PowerPcCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -38,7 +39,7 @@ namespace Reko.Environments.Windows
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -49,7 +50,7 @@ namespace Reko.Environments.Windows
             // convention on PowerPC Win32. May have to reverse engineer it.
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -60,7 +61,7 @@ namespace Reko.Environments.Windows
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             //$TODO
             return false;

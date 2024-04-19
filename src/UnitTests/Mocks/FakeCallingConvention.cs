@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Mocks
 {
-    public class FakeCallingConvention : CallingConvention
+    public class FakeCallingConvention : AbstractCallingConvention
     {
         private Storage[] argRegisters;
         private Storage[] returnRegisters;
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Mocks
             this.returnRegisters = returnRegisters;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -52,12 +52,12 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return argRegisters.Contains(stg);
         }
         
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return returnRegisters.Contains(stg);
         }

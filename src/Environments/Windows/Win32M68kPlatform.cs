@@ -52,7 +52,7 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-		public override CallingConvention GetCallingConvention(string? ccName)
+		public override ICallingConvention GetCallingConvention(string? ccName)
 		{
 			return new M68kCallingConvention(this.Architecture);
 		}

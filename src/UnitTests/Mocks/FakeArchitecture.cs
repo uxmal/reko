@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Mocks
             return MemoryAccess.Create(sp, offset, dataType);
         }
 
-        public override CallingConvention GetCallingConvention(string name)
+        public override ICallingConvention GetCallingConvention(string name)
         {
             return null;
         }

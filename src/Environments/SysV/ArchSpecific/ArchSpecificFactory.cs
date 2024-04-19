@@ -33,9 +33,9 @@ namespace Reko.Environments.SysV.ArchSpecific
     {
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-        private CallingConvention ccX86;
-        private CallingConvention ccRiscV;
-        private CallingConvention cci386KernelAbi;
+        private ICallingConvention ccX86;
+        private ICallingConvention ccRiscV;
+        private ICallingConvention cci386KernelAbi;
 
         public ArchSpecificFactory(IServiceProvider services, IProcessorArchitecture arch)
         {
@@ -86,7 +86,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         } 
  
-        public CallingConvention? CreateCallingConvention(IProcessorArchitecture arch, string? name)
+        public ICallingConvention? CreateCallingConvention(IProcessorArchitecture arch, string? name)
         {
             switch (arch.Name)
             {
@@ -120,7 +120,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                         return null;
                     var svc = services.RequireService<IPluginLoaderService>();
                     var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
-                    this.ccX86 = (CallingConvention)Activator.CreateInstance(
+                    this.ccX86 = (ICallingConvention)Activator.CreateInstance(
                         t,
                         4,      // stackAlignment,
                         4,      // pointerSize,
@@ -149,7 +149,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 if (this.ccRiscV == null)
                 {
                     var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true)!;
-                    this.ccRiscV = (CallingConvention) Activator.CreateInstance(t, arch)!;
+                    this.ccRiscV = (ICallingConvention) Activator.CreateInstance(t, arch)!;
                 }
                 return this.ccRiscV;
             case "superH":

@@ -18,36 +18,34 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Types;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.C166
+namespace Reko.Core.Machine
 {
-    // https://www.keil.com/support/man/docs/c166/c166_ap_funcparam.htm
-    public class C166CallingConvention : AbstractCallingConvention
+    public class StorageCollator : IComparer<Identifier>
     {
-        public override void Generate(
-            ICallingConventionEmitter ccr,
-            int retAddressOnStack,
-            DataType? dtRet,
-            DataType? dtThis,
-            List<DataType> dtParams)
+        private readonly IReadOnlyDictionary<StorageDomain, int> collationOrder;
+
+        public StorageCollator(StorageDomain[] collationOrder)
         {
-            throw new NotImplementedException();
+            this.collationOrder = collationOrder.Select((x, i) => (x, i))
+                .ToDictionary(p => p.x, p => p.i);
         }
 
-        public override bool IsArgument(Storage stg)
+        public int Compare(Identifier? x, Identifier? y)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsOutArgument(Storage stg)
-        {
-            throw new NotImplementedException();
+            if (x is null)
+                return -1;
+            if (y is null)
+                return 1;
+            int cx = collationOrder.TryGetValue(x.Storage.Domain, out int c) ? c : int.MaxValue;
+            int cy = collationOrder.TryGetValue(y.Storage.Domain, out c) ? c : int.MaxValue;
+            return cx - cy;
         }
     }
 }

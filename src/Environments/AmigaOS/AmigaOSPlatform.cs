@@ -118,7 +118,7 @@ namespace Reko.Environments.AmigaOS
             return segmentMap;
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }

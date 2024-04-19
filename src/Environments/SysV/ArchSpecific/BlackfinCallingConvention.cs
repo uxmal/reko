@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class BlackfinCallingConvention : CallingConvention
+    public class BlackfinCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
 
@@ -38,7 +38,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -59,12 +59,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

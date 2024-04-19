@@ -39,7 +39,7 @@ namespace Reko.Environments.SysV
     public class SysVPlatform : Platform
     {
         private readonly ArchSpecificFactory archSpecificFactory;
-        private readonly CallingConvention? defaultCc;
+        private readonly ICallingConvention? defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
@@ -60,7 +60,7 @@ namespace Reko.Environments.SysV
             return parser;
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             var cc = archSpecificFactory.CreateCallingConvention(this.Architecture, ccName);
             if (cc is null)

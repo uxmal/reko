@@ -29,7 +29,7 @@ using Reko.Core.Types;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class zSeriesCallingConvention : CallingConvention
+    public class zSeriesCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -46,7 +46,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -103,7 +103,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -113,7 +113,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

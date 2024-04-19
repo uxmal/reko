@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
     /// The __cdecl calling convention on X86 passes all parameters on the 
     /// and returns any results in eax or edx:eax
     /// </summary>
-    public class X86CallingConvention : CallingConvention
+    public class X86CallingConvention : AbstractCallingConvention
     {
         private readonly int stackAlignment;
         private readonly int pointerSize;
@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
             this.reverseArguments = reverseArguments;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack, 
             DataType? dtRet, 
@@ -138,13 +138,13 @@ namespace Reko.Arch.X86
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is StackStorage;
         }
 
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

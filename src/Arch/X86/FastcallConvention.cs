@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -33,7 +34,7 @@ namespace Reko.Arch.X86
     /// Microsoft-defined convention where the first two (small) parameters
     /// are passed in ECX, EDX respectively.
     /// </summary>
-    public class FastcallConvention : CallingConvention
+    public class FastcallConvention : AbstractCallingConvention
     {
         private RegisterStorage[] iArgs;
         private int stackAlignment;
@@ -47,7 +48,7 @@ namespace Reko.Arch.X86
             this.stackAlignment = stackAlignment;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retSizeOnStack,
             DataType? dtRet,
@@ -78,7 +79,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -90,7 +91,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

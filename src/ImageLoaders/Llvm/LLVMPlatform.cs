@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public CallingConvention GetCallingConvention(string? ccName)
+        public ICallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
@@ -129,9 +129,9 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public string DetermineCallingConvention(FunctionType signature)
+        public string? DetermineCallingConvention(FunctionType signature)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)

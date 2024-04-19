@@ -29,7 +29,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class SparcCallingConvention : CallingConvention
+    public class SparcCallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] regs;
         private readonly RegisterStorage iret;
@@ -56,7 +56,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.wordSize = this.arch.WordWidth.Size;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -156,7 +156,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             throw new NotImplementedException();
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -166,7 +166,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return iret == stg || fret0 == stg || fret1 == stg;
         }

@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace Reko.Environments.RT11
 {
-    public class Rt11CallingConvention : CallingConvention
+    public class Rt11CallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -37,7 +37,7 @@ namespace Reko.Environments.RT11
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -66,7 +66,7 @@ namespace Reko.Environments.RT11
             ccr.RegReturn(arch.GetRegister("r0")!);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -77,7 +77,7 @@ namespace Reko.Environments.RT11
             return false;
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
                 return reg.Number == 0;

@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class HexagonCallingConvention : CallingConvention
+    public class HexagonCallingConvention : AbstractCallingConvention
     {
         private IProcessorArchitecture arch;
 
@@ -36,7 +36,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -55,12 +55,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new NotImplementedException();
         }

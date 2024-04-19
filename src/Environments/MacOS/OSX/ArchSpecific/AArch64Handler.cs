@@ -37,7 +37,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             this.arch = arch;
         }
 
-        public override CallingConvention? GetCallingConvention(string? ccName)
+        public override ICallingConvention? GetCallingConvention(string? ccName)
         {
             return arch.GetCallingConvention(ccName);
         }

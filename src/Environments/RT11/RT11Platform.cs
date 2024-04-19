@@ -49,7 +49,7 @@ namespace Reko.Environments.RT11
 
         public override string DefaultCallingConvention => "";
 
-        public override CallingConvention GetCallingConvention(string? ccName)
+        public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new Rt11CallingConvention(this.arch);
         }

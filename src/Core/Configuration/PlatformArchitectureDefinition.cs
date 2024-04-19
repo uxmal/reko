@@ -37,6 +37,7 @@ namespace Reko.Core.Configuration
             this.PreservedRegisters = new List<string>();
             this.TypeLibraries = new List<TypeLibraryDefinition>();
             this.ProcedurePrologs = new List<MaskedPattern>();
+            this.CallingConventions = new List<string>();
         }
 
         public string? Name { get; set; }
@@ -44,5 +45,7 @@ namespace Reko.Core.Configuration
         public List<string> PreservedRegisters { get; set; }
         public List<TypeLibraryDefinition> TypeLibraries { get; set; }
         public List<MaskedPattern> ProcedurePrologs { get; set; }
+        public List<string> CallingConventions { get; set; }
+        public string? DefaultCallingConvention { get; set; }
     }
 }

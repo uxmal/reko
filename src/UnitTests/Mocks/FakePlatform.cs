@@ -55,8 +55,8 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public Func<string?, CallingConvention?>? Test_GetCallingConvention = (s) => null;
-        public override CallingConvention? GetCallingConvention(string? ccName)
+        public Func<string?, ICallingConvention?>? Test_GetCallingConvention = (s) => null;
+        public override ICallingConvention? GetCallingConvention(string? ccName)
         {
             return Test_GetCallingConvention!(ccName);
         }

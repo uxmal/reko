@@ -66,7 +66,7 @@ using Reko.Core.Types;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class XtensaCallingConvention : CallingConvention
+    public class XtensaCallingConvention : AbstractCallingConvention
     {
         private static readonly BitRange r32 = new BitRange(0, 31);
 
@@ -77,7 +77,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -102,7 +102,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {
@@ -114,7 +114,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         }
 
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             if (stg is RegisterStorage reg)
             {

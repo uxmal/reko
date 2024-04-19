@@ -28,7 +28,7 @@ using System.Linq;
 namespace Reko.Environments.SysV.ArchSpecific
 {
     // ebx   ecx   edx   esi   edi   ebp  
-    public class i386KernelCallingConvention : CallingConvention
+    public class i386KernelCallingConvention : AbstractCallingConvention
     {
         private readonly RegisterStorage[] iregs;
         private readonly RegisterStorage eax;
@@ -43,7 +43,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.edx = iregs[2];
         }
 
-        public void Generate(
+        public override void Generate(
             ICallingConventionEmitter ccr,
             int retAddressOnStack,
             DataType? dtRet,
@@ -82,13 +82,13 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.CallerCleanup(4);
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             return stg is RegisterStorage reg &&
                 iregs.Contains(reg);
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             return false;
         }

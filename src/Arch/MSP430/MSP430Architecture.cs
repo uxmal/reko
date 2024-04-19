@@ -82,7 +82,7 @@ namespace Reko.Arch.Msp430
             return new Msp430Rewriter(this, decoders, rdr, state, binder, host);
         }
 
-        public override CallingConvention? GetCallingConvention(string? name)
+        public override ICallingConvention? GetCallingConvention(string? name)
         {
             return new Msp430CallingConvention(this);
         }

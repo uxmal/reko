@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ using System.Linq;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class CSkyCallingConvention : CallingConvention
+    public class CSkyCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;
         private readonly RegisterStorage[] iregs;
@@ -123,7 +124,7 @@ the address need not be recalculated. In turn, the called routine can use the ad
 the temporary buffer using memcpy, which returns the destination address (e.g., r0 has the desired value),
 or passes it to in-line code which uses r0 as a base register.
 */
-        public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 16);
             int iReg = 0;
@@ -145,12 +146,12 @@ or passes it to in-line code which uses r0 as a base register.
             }
         }
 
-        public bool IsArgument(Storage stg)
+        public override bool IsArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool IsOutArgument(Storage stg)
+        public override bool IsOutArgument(Storage stg)
         {
             throw new System.NotImplementedException();
         }
