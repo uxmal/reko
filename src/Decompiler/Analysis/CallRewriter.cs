@@ -123,12 +123,6 @@ namespace Reko.Analysis
             return sig;
         }
 
-        private ICallingConvention? GuessCallingConvention(SignatureBuilder sb, IProcessorArchitecture architecture)
-        {
-            //$TODO: #1338
-            return null;
-        }
-
         void ProcessInputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
         {
             var frame = ssa.Procedure.Frame;
