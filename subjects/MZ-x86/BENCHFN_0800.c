@@ -342,10 +342,10 @@ l0800_nA3:
 	goto l0800_nE7;
 }
 
-// 0800:03BF: FlagGroup byte fn0800-03BF(Sequence (ptr32 Eq_n) ds_si, Sequence (ptr32 byte) es_di, Register word16 ax, Register Eq_n cx, Register out ptr16 axOut, Register out Eq_n cxOut, Register out ptr16 siOut)
+// 0800:03BF: FlagGroup word32 fn0800-03BF(Sequence (ptr32 Eq_n) ds_si, Sequence (ptr32 byte) es_di, Register word16 ax, Register Eq_n cx, Register out ptr16 axOut, Register out Eq_n cxOut, Register out ptr16 siOut)
 // Called from:
 //      __setargv
-byte fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & axOut, union Eq_n & cxOut, ptr16 & siOut)
+word32 fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & axOut, union Eq_n & cxOut, ptr16 & siOut)
 {
 	ptr16 si = (word16) ds_si;
 	byte al_n = (byte) ax;

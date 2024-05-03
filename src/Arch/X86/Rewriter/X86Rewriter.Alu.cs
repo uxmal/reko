@@ -950,16 +950,16 @@ namespace Reko.Arch.X86.Rewriter
             }
         }
 
-        private void RewritePushf()
+        private void RewritePushf(DataType dt)
         {
             var flags = binder.EnsureFlagGroup(
                 Registers.eflags,
                 (uint) (FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                 "SCZDOP",
-                PrimitiveType.Byte);
+                Registers.eflags.DataType);
             RewritePush(
-                dasm.Current.dataWidth,
-                flags);
+                dt,
+                MaybeSlice(dt, flags));
         }
 
         private void RewriteNeg()
@@ -1064,12 +1064,20 @@ namespace Reko.Arch.X86.Rewriter
         private void RewritePopf(DataType width)
         {
             var sp = StackPointer();
-            m.Assign(binder.EnsureFlagGroup(
+            var src = orw.StackAccess(sp, width);
+            var grf = binder.EnsureFlagGroup(
                     Registers.eflags,
-                    (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
+                    (uint) (FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP",
-                    PrimitiveType.Byte),
-                    orw.StackAccess(sp, width));
+                    Registers.eflags.DataType);
+            if (grf.DataType.BitSize > src.DataType.BitSize)
+            {
+                m.Assign(grf, m.Dpb(grf, src, 0));
+            }
+            else
+            {
+                m.Assign(grf, src);
+            }
             m.Assign(sp, m.IAddS(sp, width.Size));
         }
 

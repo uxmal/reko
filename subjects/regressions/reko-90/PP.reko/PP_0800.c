@@ -11842,12 +11842,12 @@ word32 fn0800-8F18(Eq_n ax, uint16 cx, uint16 dx, Eq_n bx, union Eq_n & chOut)
 	return SEQ(SLICE(dx_ax_n, word16, 16) + ax_n, (word16) dx_ax_n);
 }
 
-// 0800:8F2F: FlagGroup byte fn0800-8F2F(Register Eq_n ax, Register (ptr16 Eq_n) cx, Register Eq_n dx, Register Eq_n bx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
+// 0800:8F2F: FlagGroup word32 fn0800-8F2F(Register Eq_n ax, Register (ptr16 Eq_n) cx, Register Eq_n dx, Register Eq_n bx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
 // Called from:
 //      fn0800_A1D6
 //      fn0800_A215
 //      fn0800_B0A1
-byte fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
+word32 fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
 {
 	byte bl = (byte) bx;
 	ptr16 dx_n = (ptr16) (dx.u5 + (ax >> 0x04));
@@ -13967,11 +13967,11 @@ struct Eq_n * fn0800-9E3E(Eq_n ds)
 	else
 	{
 		__cli();
-		Eq_n es_n = Mem20[ax_n:0x06:selector];
-		Mem23[ax_n:0x06:word16] = ds;
-		Mem24[ds:0x04:word16] = ax_n;
-		Mem28[es_n:0x04:word16] = ds;
-		Mem29[ds:0x06:word16] = es_n;
+		Eq_n es_n = Mem21[ax_n:0x06:selector];
+		Mem24[ax_n:0x06:word16] = ds;
+		Mem25[ds:0x04:word16] = ax_n;
+		Mem29[es_n:0x04:word16] = ds;
+		Mem30[ds:0x06:word16] = es_n;
 		struct Eq_n * ss;
 		return ss;
 	}
@@ -14935,19 +14935,21 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 //      fn0800-363D
 Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
-	Eq_n SCZDOP;
+	word32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg06);
-	Eq_n SCZDOP_n = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP;
+	Eq_n cx_n = (word16) msdos_find_first_file(wArg0A, ptrArg02) | (word16) SCZDOP;
 	msdos_set_DTA(es_bx_n);
 	Eq_n ax_n = SEQ(0x4E, al);
 	ptr16 dx_n = (word16) es_bx_n;
+	selector ss;
+	struct Eq_n Eq_n::* fp;
 	Eq_n ax_n;
-	if (!SLICE(SCZDOP_n, bool, 1))
+	if (Test(UGE,(ss->*fp).f0006))
 		ax_n.u0 = 0x00;
 	else
 		ax_n = fn0800-8D2B(ds, ax_n);
-	cxOut = SCZDOP_n;
+	cxOut = cx_n;
 	dxOut = dx_n;
 	return ax_n;
 }
@@ -14957,19 +14959,21 @@ Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A,
 //      fn0800-3479
 Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
 {
-	Eq_n SCZDOP;
+	word32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg02);
-	Eq_n SCZDOP_n = msdos_find_next_file() | SCZDOP;
+	Eq_n cx_n = (word16) msdos_find_next_file() | (word16) SCZDOP;
 	msdos_set_DTA(es_bx_n);
 	Eq_n ax_n = SEQ(0x4F, al);
 	ptr16 dx_n = (word16) es_bx_n;
+	selector ss;
+	struct Eq_n Eq_n::* fp;
 	Eq_n ax_n;
-	if (!SLICE(SCZDOP_n, bool, 1))
+	if (Test(UGE,(ss->*fp).f0006))
 		ax_n.u0 = 0x00;
 	else
 		ax_n = fn0800-8D2B(ds, ax_n);
-	cxOut = SCZDOP_n;
+	cxOut = cx_n;
 	dxOut = dx_n;
 	return ax_n;
 }

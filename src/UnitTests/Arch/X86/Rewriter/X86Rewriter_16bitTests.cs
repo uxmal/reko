@@ -665,12 +665,13 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 m.Popf();
             });
             AssertCode(
-                "0|L--|0C00:0000(1): 2 instructions",
-                "1|L--|sp = sp - 2<i16>",
-                "2|L--|Mem0[ss:sp:word16] = SCZDOP",
-                "3|L--|0C00:0001(1): 2 instructions",
-                "4|L--|SCZDOP = Mem0[ss:sp:word16]",
-                "5|L--|sp = sp + 2<i16>");
+                "0|L--|0C00:0000(1): 3 instructions",
+                "1|L--|v5 = SLICE(SCZDOP, word16, 0)",
+                "2|L--|sp = sp - 2<i16>",
+                "3|L--|Mem0[ss:sp:word16] = v5",
+                "4|L--|0C00:0001(1): 2 instructions",
+                "5|L--|SCZDOP = SEQ(SLICE(SCZDOP, word16, 16), Mem0[ss:sp:word16])",
+                "6|L--|sp = sp + 2<i16>");
         }
 
         [Test]

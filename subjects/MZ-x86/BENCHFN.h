@@ -492,7 +492,7 @@ Eq_534: (union "Eq_534" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5161) u
 	T_534 (in di_67 - 4<16> @ 0800:03FD : word16)
 	T_535 (in bp_141 @ 0800:03FD : Eq_534)
 	T_590 (in bp_141 + 2<16> @ 0800:040C : word16)
-Eq_537: (fn byte ((ptr32 Eq_539), (ptr32 byte), word16, Eq_509, ptr16, Eq_509, ptr16))
+Eq_537: (fn word32 ((ptr32 Eq_539), (ptr32 byte), word16, Eq_509, ptr16, Eq_509, ptr16))
 	T_537 (in fn0800_03BF @ 0800:03AA : segptr32)
 	T_538 (in signature of fn0800_03BF @ 0800:03BF : void)
 	T_564 (in fn0800_03BF @ 0800:03A3 : segptr32)
@@ -4306,10 +4306,10 @@ T_552: (in out si_102 @ 0800:03AA : mp16)
   Class: Eq_545
   DataType: ptr16
   OrigDataType: ptr16
-T_553: (in fn0800_03BF(si_102, (word16) di_89 + 1<i32>, ax_118, cx_104, out ax_118, out cx_104, out si_102) @ 0800:03AA : byte)
+T_553: (in fn0800_03BF(si_102, (word16) di_89 + 1<i32>, ax_118, cx_104, out ax_118, out cx_104, out si_102) @ 0800:03AA : word32)
   Class: Eq_553
-  DataType: byte
-  OrigDataType: byte
+  DataType: word32
+  OrigDataType: word32
 T_554: (in <invalid> @ 0800:03AA : bool)
   Class: Eq_520
   DataType: bool
@@ -4378,10 +4378,10 @@ T_570: (in out si_102 @ 0800:03A3 : mp16)
   Class: Eq_545
   DataType: ptr16
   OrigDataType: ptr16
-T_571: (in fn0800_03BF(si_102, (word16) di_89 + 1<i32>, ax_106, cx_104, out ax_118, out cx_104, out si_102) @ 0800:03A3 : byte)
+T_571: (in fn0800_03BF(si_102, (word16) di_89 + 1<i32>, ax_106, cx_104, out ax_118, out cx_104, out si_102) @ 0800:03A3 : word32)
   Class: Eq_553
-  DataType: byte
-  OrigDataType: byte
+  DataType: word32
+  OrigDataType: word32
 T_572: (in C_122 @ 0800:03A3 : bool)
   Class: Eq_520
   DataType: bool
@@ -4542,10 +4542,10 @@ T_611: (in _abort() @ 0800:03E7 : void)
   Class: Eq_611
   DataType: void
   OrigDataType: void
-T_612: (in CZ @ 0800:03E7 : byte)
+T_612: (in CZ @ 0800:03E7 : word32)
   Class: Eq_612
-  DataType: byte
-  OrigDataType: byte
+  DataType: word32
+  OrigDataType: word32
 T_613: (in SLICE(ds_si, word16, 0) @ 0800:03BF : word16)
   Class: Eq_545
   DataType: ptr16
@@ -4610,10 +4610,10 @@ T_628: (in al_12 != 0<8> @ 0800:03C7 : bool)
   Class: Eq_628
   DataType: bool
   OrigDataType: bool
-T_629: (in <invalid> @ 0800:03E6 : byte)
+T_629: (in <invalid> @ 0800:03E6 : word32)
   Class: Eq_612
-  DataType: byte
-  OrigDataType: byte
+  DataType: word32
+  OrigDataType: word32
 T_630: (in 0<32> @ 0800:03D1 : word32)
   Class: Eq_630
   DataType: word32
@@ -23415,7 +23415,7 @@ typedef union Eq_534 {
 	struct Eq_5150 Eq_480::* u3;
 } Eq_534;
 
-typedef byte (Eq_537)(Eq_539 *, byte *, word16, Eq_509, ptr16, Eq_509, ptr16);
+typedef word32 (Eq_537)(Eq_539 *, byte *, word16, Eq_509, ptr16, Eq_509, ptr16);
 
 typedef struct Eq_539 {
 	byte b0000;	// 0

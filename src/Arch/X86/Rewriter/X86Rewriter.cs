@@ -611,7 +611,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vpunpcklwd: RewritePunpck(true, punpcklwd_intrinsic); break;
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.pusha: RewritePusha(); break;
-                case Mnemonic.pushf: RewritePushf(); break;
+                case Mnemonic.pushf: RewritePushf(instrCur.dataWidth); break;
                 case Mnemonic.pushw: RewritePush(PrimitiveType.Word16, SrcOp(0)); break;
                 case Mnemonic.pxor: RewritePxor(false); break;
                 case Mnemonic.vpxor: RewritePxor(true); break;

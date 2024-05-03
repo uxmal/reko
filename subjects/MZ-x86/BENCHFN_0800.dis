@@ -418,7 +418,7 @@ l0800_03BB:
 	ax_106 = SEQ(ah_234, 0<8>) (alias)
 
 
-byte fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, ptr16 & axOut, ptr16 & cxOut, ptr16 & siOut)
+word32 fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, ptr16 & axOut, ptr16 & cxOut, ptr16 & siOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

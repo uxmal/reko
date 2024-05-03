@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Arch.X86
 		{
 			var sz = arch.GetFlagGroup("ZS");
 			Assert.AreEqual("SZ", sz.Name);
-			Assert.AreEqual(PrimitiveType.Byte, sz.DataType);
+			Assert.AreEqual(PrimitiveType.Word32, sz.DataType);
 		}
 
         [Test]

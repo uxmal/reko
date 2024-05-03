@@ -835,7 +835,7 @@ namespace Reko.Arch.X86
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)
         {
-            var dt = Bits.IsSingleBitSet((uint) grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var dt = Bits.IsSingleBitSet((uint) grf) ? PrimitiveType.Bool : freg.DataType;
             return new FlagGroupStorage(freg, (uint)grf, name, dt);
         }
 

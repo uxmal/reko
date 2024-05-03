@@ -4532,7 +4532,7 @@ word16 fn0800_33CD(selector ds, segptr32 ptrArg02, word16 wArg06, word32 dwArg08
 //      fn0800_32CD
 //      fn0800_335C
 //      fn0800_3678
-// MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
@@ -4601,7 +4601,7 @@ word16 fn0800_3479(selector ds, segptr32 ptrArg02, word16 wArg06, ptr16 & cxOut,
 //      fn0800_2DE2
 //      fn0800_32CD
 //      fn0800_33CD
-// MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
@@ -11675,7 +11675,7 @@ l0800_8F28:
 fn0800_8F18_exit:
 
 
-byte fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
+word32 fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -13624,11 +13624,11 @@ l0800_9E67:
 	return bx
 l0800_9E46:
 	__cli()
-	es_22 = Mem20[ax_5:6<16>:selector]
-	Mem23[ax_5:6<16>:word16] = ds
-	Mem24[ds:4<16>:word16] = ax_5
-	Mem28[es_22:4<16>:word16] = ds
-	Mem29[ds:6<16>:word16] = es_22
+	es_23 = Mem21[ax_5:6<16>:selector]
+	Mem24[ax_5:6<16>:word16] = ds
+	Mem25[ds:4<16>:word16] = ax_5
+	Mem29[es_23:4<16>:word16] = ds
+	Mem30[ds:6<16>:word16] = es_23
 	return ss
 fn0800_9E3E_exit:
 
@@ -14672,7 +14672,7 @@ word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, w
 // Called from:
 //      fn0800_33CD
 //      fn0800_363D
-// MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
+// MayUse:  al:[0..7] ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
@@ -14680,19 +14680,19 @@ fn0800_A817_entry:
 l0800_A817:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg06)
-	SCZDOP_30 = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP (alias)
+	cx_33 = CONVERT(msdos_find_first_file(wArg0A, ptrArg02), bool, word16) | SLICE(SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
-	ax_36 = SEQ(0x4E<8>, al) (alias)
-	dx_40 = SLICE(es_bx_12, word16, 0)
-	branch SLICE(SCZDOP_30, bool, 1) l0800_A844
+	ax_37 = SEQ(0x4E<8>, al) (alias)
+	dx_41 = SLICE(es_bx_12, word16, 0)
+	branch Test(ULT,Mem47[ss:fp + 6<i16>:bool]) l0800_A844
 l0800_A844:
-	ax_54 = fn0800_8D2B(ds, ax_36)
+	ax_55 = fn0800_8D2B(ds, ax_37)
 l0800_A840:
-	ax_54 = 0<16>
+	ax_55 = 0<16>
 l0800_A848:
-	cxOut = SCZDOP_30
-	dxOut = dx_40
-	return ax_54
+	cxOut = cx_33
+	dxOut = dx_41
+	return ax_55
 fn0800_A817_exit:
 
 
@@ -14701,7 +14701,7 @@ word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16
 
 // Called from:
 //      fn0800_3479
-// MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31]
+// MayUse:  al:[0..7] ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
@@ -14709,19 +14709,19 @@ fn0800_A84A_entry:
 l0800_A84A:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg02)
-	SCZDOP_26 = msdos_find_next_file() | SCZDOP (alias)
+	cx_29 = CONVERT(msdos_find_next_file(), bool, word16) | SLICE(SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
-	ax_32 = SEQ(0x4F<8>, al) (alias)
-	dx_36 = SLICE(es_bx_12, word16, 0)
-	branch SLICE(SCZDOP_26, bool, 1) l0800_A871
+	ax_33 = SEQ(0x4F<8>, al) (alias)
+	dx_37 = SLICE(es_bx_12, word16, 0)
+	branch Test(ULT,Mem43[ss:fp + 6<i16>:bool]) l0800_A871
 l0800_A871:
-	ax_50 = fn0800_8D2B(ds, ax_32)
+	ax_51 = fn0800_8D2B(ds, ax_33)
 l0800_A86D:
-	ax_50 = 0<16>
+	ax_51 = 0<16>
 l0800_A875:
-	cxOut = SCZDOP_26
-	dxOut = dx_36
-	return ax_50
+	cxOut = cx_29
+	dxOut = dx_37
+	return ax_51
 fn0800_A84A_exit:
 
 

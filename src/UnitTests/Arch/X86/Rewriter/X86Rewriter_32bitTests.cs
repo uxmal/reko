@@ -1876,7 +1876,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("669D");
             AssertCode(     // popfw
                 "0|L--|10000000(2): 2 instructions",
-                "1|L--|SCZDOP = Mem0[esp:word16]",
+                "1|L--|SCZDOP = SEQ(SLICE(SCZDOP, word16, 16), Mem0[esp:word16])",
                 "2|L--|esp = esp + 2<i32>");
         }
 
