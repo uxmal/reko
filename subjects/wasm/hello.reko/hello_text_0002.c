@@ -13,7 +13,7 @@ Eq_n fn000F07BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v20.u5 = g_t140030.u5;
 	Eq_n v21;
 	v21.u0 = 0x10;
-	v20 += v21;
+	v20.u5 = v20 + v21;
 	g_t140030.u5 = (struct Eq_n *) v20;
 	v20.u5 = g_t140030.u5;
 	v21.u5 = g_t140034.u5;
@@ -141,7 +141,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v184.u5 = g_t140030.u5;
 	Eq_n v185;
 	v185.u0 = 0xE0;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	g_t140030.u5 = (struct Eq_n *) v184;
 	v184.u5 = g_t140030.u5;
 	v185.u5 = g_t140034.u5;
@@ -153,31 +153,31 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v184 = loc186;
 	v185.u0 = 0xC6;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc138 = v184;
 	v184 = loc186;
 	v185.u0 = 0xC4;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc149 = v184;
 	v184 = loc186;
 	v185.u0 = 0xB8;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc160 = v184;
 	v184 = loc186;
 	v185.u0 = 0xAC;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc171 = v184;
 	v184 = loc186;
 	v185.u0 = 0xA8;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc20 = v184;
 	v184 = loc186;
 	v185.u0 = 0x08;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc31 = v184;
 	v184 = loc186;
 	v185.u0 = 0x04;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc42 = v184;
 	v184 = loc186;
 	Eq_n loc53 = v184;
@@ -195,7 +195,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v184.u5->t0000.u3 = (uint64) v189;
 	v184 = loc171;
 	v185.u0 = 0x08;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	v185.u0 = 0x00;
 	v184.u5->t0000.u5 = (struct Eq_n *) v185;
 	v184.u0 = 0x00;
@@ -213,21 +213,21 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v185 = loc6;
 		v187.u0 = 0x02;
 		v185 <<= v187;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc75 = v184;
 		v184 = loc75;
 		v185.u0 = 0x00;
 		v184.u5->t0000.u5 = (struct Eq_n *) v185;
 		v184 = loc6;
 		v185.u0 = 0x01;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc86 = v184;
 		v184 = loc86;
 		loc6 = v184;
 	}
 	v184 = loc171;
 	v185.u0 = 11;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc95 = v184;
 	v184 = loc95;
 	Eq_n v190;
@@ -248,7 +248,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v184 = loc171;
 		v185.u0 = 0x08;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc98 = v184;
 		v184 = loc98;
 		v184.u5 = v184.u5->t0000.u5;
@@ -259,7 +259,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc100 = v184;
 		v184 = loc100;
 		v185.u0 = ~0x00;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc183 = v184;
 		v184 = loc183;
 		loc101 = v184;
@@ -332,11 +332,11 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v184.u5->t0000.u5 = (struct Eq_n *) v185;
 	v184 = loc171;
 	v185.u0 = 0x04;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc108 = v184;
 	v184 = loc171;
 	v185.u0 = 0x08;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc109 = v184;
 	v184 = arg1;
 	v184.u5 = v184.u5->t0000.u5;
@@ -368,14 +368,14 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v184 = loc15;
 			v185.u0 = 0x0C;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc111 = v184;
 			v184 = loc111;
 			v184.u5 = v184.u5->t0000.u5;
 			Eq_n loc112 = v184;
 			v184 = loc15;
 			v185.u0 = 0x10;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc113 = v184;
 			v184 = loc113;
 			v184.u5 = v184.u5->t0000.u5;
@@ -392,7 +392,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc116 = v184;
 				v184 = loc116;
 				v185.u0 = 0x24;
-				v184 += v185;
+				v184.u5 = v184 + v185;
 				Eq_n loc117 = v184;
 				v184 = loc117;
 				v184.u5 = v184.u5->t0000.u5;
@@ -464,14 +464,14 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v184 = loc124;
 			v185.u0 = 0x0C;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc126 = v184;
 			v184 = loc126;
 			v184.u5 = v184.u5->t0000.u5;
 			Eq_n loc127 = v184;
 			v184 = loc124;
 			v185.u0 = 0x10;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc128 = v184;
 			v184 = loc128;
 			v184.u5 = v184.u5->t0000.u5;
@@ -505,7 +505,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc131 = v184;
 				v184 = loc131;
 				v185.u0 = 0x24;
-				v184 += v185;
+				v184.u5 = v184 + v185;
 				Eq_n loc132 = v184;
 				v184 = loc132;
 				v184.u5 = v184.u5->t0000.u5;
@@ -614,7 +614,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc144 = v184;
 		v184 = loc8;
 		v185 = loc144;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc145 = v184;
 		v184 = loc139;
 		v185 = loc145;
@@ -675,7 +675,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc154 = v184;
 				v184 = loc154;
 				v185.u0 = ~0x00;
-				v184 += v185;
+				v184.u5 = v184 + v185;
 				Eq_n loc184 = v184;
 				v184 = loc184;
 				loc155 = v184;
@@ -731,7 +731,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc162 = v184;
 			v184 = loc162;
 			v185 = loc144;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc163 = v184;
 			v184 = loc20;
 			v185 = loc163;
@@ -746,14 +746,14 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v184 = loc14;
 		v185.u0 = 0x0C;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc173 = v184;
 		v184 = loc173;
 		v184.u5 = v184.u5->t0000.u5;
 		Eq_n loc174 = v184;
 		v184 = loc14;
 		v185.u0 = 0x10;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc175 = v184;
 		v184 = loc175;
 		v184.u5 = v184.u5->t0000.u5;
@@ -771,7 +771,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc178 = v184;
 			v184 = loc178;
 			v185.u0 = 0x24;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc179 = v184;
 			v184 = loc179;
 			v184.u5 = v184.u5->t0000.u5;
@@ -858,7 +858,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v184 = loc29;
 			v185.u0 = 0x01;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc38 = v184;
 			v184 = loc173;
 			v185 = loc38;
@@ -874,7 +874,7 @@ Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc33 = v184;
 		v184 = loc33;
 		v185.u0 = 0x28;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc34 = v184;
 		v184 = loc34;
 		v184.u5 = v184.u5->t0000.u5;
@@ -965,7 +965,7 @@ l000F114F:
 	}
 	v184 = loc160;
 	v185.u0 = 11;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc39 = v184;
 	v184 = loc39;
 	Eq_n v203;
@@ -982,7 +982,7 @@ l000F114F:
 	Eq_n loc41 = v186;
 	v184 = loc160;
 	v185.u0 = 0x04;
-	v184 += v185;
+	v184.u5 = v184 + v185;
 	Eq_n loc43 = v184;
 	v184 = loc43;
 	v184.u5 = v184.u5->t0000.u5;
@@ -1028,7 +1028,7 @@ l000F114F:
 			Eq_n loc54 = v184;
 			v184 = loc48;
 			v185.u0 = 0x04;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc55 = v184;
 			v184 = loc42;
 			v185 = loc55;
@@ -1101,14 +1101,14 @@ l000F112F:
 		{
 			v184 = loc14;
 			v185.u0 = 0x0C;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc62 = v184;
 			v184 = loc62;
 			v184.u5 = v184.u5->t0000.u5;
 			Eq_n loc63 = v184;
 			v184 = loc14;
 			v185.u0 = 0x10;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc65 = v184;
 			v184 = loc65;
 			v184.u5 = v184.u5->t0000.u5;
@@ -1125,7 +1125,7 @@ l000F112F:
 				Eq_n loc68 = v184;
 				v184 = loc68;
 				v185.u0 = 0x24;
-				v184 += v185;
+				v184.u5 = v184 + v185;
 				Eq_n loc69 = v184;
 				v184 = loc69;
 				v184.u5 = v184.u5->t0000.u5;
@@ -1189,14 +1189,14 @@ l000F112F:
 		}
 		v184 = loc16;
 		v185.u0 = 0x0C;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc79 = v184;
 		v184 = loc79;
 		v184.u5 = v184.u5->t0000.u5;
 		Eq_n loc80 = v184;
 		v184 = loc16;
 		v185.u0 = 0x10;
-		v184 += v185;
+		v184.u5 = v184 + v185;
 		Eq_n loc81 = v184;
 		v184 = loc81;
 		v184.u5 = v184.u5->t0000.u5;
@@ -1213,7 +1213,7 @@ l000F112F:
 			Eq_n loc84 = v184;
 			v184 = loc84;
 			v185.u0 = 0x24;
-			v184 += v185;
+			v184.u5 = v184 + v185;
 			Eq_n loc85 = v184;
 			v184 = loc85;
 			v184.u5 = v184.u5->t0000.u5;
@@ -1309,7 +1309,7 @@ Eq_n fn000F1165(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v22.u5 = g_t140030.u5;
 	Eq_n v23;
 	v23.u0 = 0x10;
-	v22 += v23;
+	v22.u5 = v22 + v23;
 	g_t140030.u5 = (struct Eq_n *) v22;
 	v22.u5 = g_t140030.u5;
 	v23.u5 = g_t140034.u5;
@@ -1466,7 +1466,7 @@ Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v230.u5 = g_t140030.u5;
 	Eq_n v231;
 	v231.u0 = 0x70;
-	v230 += v231;
+	v230.u5 = v230 + v231;
 	g_t140030.u5 = (struct Eq_n *) v230;
 	v230.u5 = g_t140030.u5;
 	v231.u5 = g_t140034.u5;
@@ -1589,7 +1589,7 @@ l000F1D4A:
 			break;
 		v230 = loc11;
 		v231.u0 = 11;
-		v230 += v231;
+		v230.u5 = v230 + v231;
 		Eq_n loc149 = v230;
 		v230 = loc149;
 		Eq_n v233;
@@ -1610,7 +1610,7 @@ l000F1D4A:
 		{
 			v230 = loc11;
 			v231.u0 = 0x04;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc152 = v230;
 			v230 = loc152;
 			v230.u5 = v230.u5->t0000.u5;
@@ -1642,11 +1642,11 @@ l000F1D4A:
 			v230.u5->t0000.u0 = (bool) v234;
 			v230 = loc14;
 			v231.u0 = ~0x00;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc157 = v230;
 			v230 = loc13;
 			v231.u0 = 0x01;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc158 = v230;
 			v230 = loc158;
 			loc22 = v230;
@@ -1666,11 +1666,11 @@ l000F1D4A:
 		}
 		v230 = loc11;
 		v231.u0 = 0x0C;
-		v230 += v231;
+		v230.u5 = v230 + v231;
 		Eq_n loc159 = v230;
 		v230 = loc12;
 		v231.u0 = 0x01;
-		v230 += v231;
+		v230.u5 = v230 + v231;
 		Eq_n loc160 = v230;
 		v230 = loc159;
 		loc11 = v230;
@@ -1706,14 +1706,14 @@ l000F1425:
 	{
 		v230 = loc161;
 		v231.u0 = 0x0C;
-		v230 += v231;
+		v230.u5 = v230 + v231;
 		Eq_n loc163 = v230;
 		v230 = loc163;
 		v230.u5 = v230.u5->t0000.u5;
 		Eq_n loc164 = v230;
 		v230 = loc161;
 		v231.u0 = 0x10;
-		v230 += v231;
+		v230.u5 = v230 + v231;
 		Eq_n loc165 = v230;
 		v230 = loc165;
 		v230.u5 = v230.u5->t0000.u5;
@@ -1730,7 +1730,7 @@ l000F1425:
 			Eq_n loc168 = v230;
 			v230 = loc168;
 			v231.u0 = 0x24;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc169 = v230;
 			v230 = loc169;
 			v230.u5 = v230.u5->t0000.u5;
@@ -1800,14 +1800,14 @@ l000F14F6:
 			{
 				v230 = loc177;
 				v231.u0 = 0x0C;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc179 = v230;
 				v230 = loc179;
 				v230.u5 = v230.u5->t0000.u5;
 				Eq_n loc180 = v230;
 				v230 = loc177;
 				v231.u0 = 0x10;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc181 = v230;
 				v230 = loc181;
 				v230.u5 = v230.u5->t0000.u5;
@@ -1824,7 +1824,7 @@ l000F14F6:
 					Eq_n loc184 = v230;
 					v230 = loc184;
 					v231.u0 = 0x24;
-					v230 += v231;
+					v230.u5 = v230 + v231;
 					Eq_n loc185 = v230;
 					v230 = loc185;
 					v230.u5 = v230.u5->t0000.u5;
@@ -1904,14 +1904,14 @@ l000F14F6:
 			}
 			v230 = loc194;
 			v231.u0 = 0x0C;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc227 = v230;
 			v230 = loc227;
 			v230.u5 = v230.u5->t0000.u5;
 			Eq_n loc228 = v230;
 			v230 = loc194;
 			v231.u0 = 0x10;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc229 = v230;
 			v230 = loc229;
 			v230.u5 = v230.u5->t0000.u5;
@@ -1929,7 +1929,7 @@ l000F14F6:
 				Eq_n loc45 = v230;
 				v230 = loc45;
 				v231.u0 = 0x24;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc46 = v230;
 				v230 = loc46;
 				v230.u5 = v230.u5->t0000.u5;
@@ -1991,7 +1991,7 @@ l000F14F6:
 				Eq_n loc55 = v230;
 				v230 = loc55;
 				v231.u0 = 0x0C;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc56 = v230;
 				v230 = loc56;
 				v230.u5 = v230.u5->t0000.u5;
@@ -2023,7 +2023,7 @@ l000F14F6:
 			}
 			v230 = loc10;
 			v231.u0 = 0x01;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc63 = v230;
 			v230 = arg2;
 			Eq_n loc19 = v230;
@@ -2065,7 +2065,7 @@ l000F14F6:
 				{
 					v230 = loc19;
 					v231.u0 = 11;
-					v230 += v231;
+					v230.u5 = v230 + v231;
 					Eq_n loc68 = v230;
 					v230 = loc68;
 					Eq_n v239;
@@ -2097,7 +2097,7 @@ l000F14F6:
 					}
 					v230 = loc73;
 					v231 = loc10;
-					v230 += v231;
+					v230.u5 = v230 + v231;
 					Eq_n loc72 = v230;
 					v230 = loc72;
 					Eq_n v240;
@@ -2118,7 +2118,7 @@ l000F14F6:
 						Eq_n loc75 = v230;
 						v230 = loc75;
 						v231.u0 = 0x0C;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc77 = v230;
 						v230 = loc77;
 						v230.u5 = v230.u5->t0000.u5;
@@ -2170,7 +2170,7 @@ l000F14F6:
 						v230.u5->t0000.u0 = (bool) v241;
 						v230 = loc30;
 						v231.u0 = ~0x00;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc95 = v230;
 						v230 = loc20;
 						loc24 = v230;
@@ -2199,7 +2199,7 @@ l000F14F6:
 					{
 						v230 = loc19;
 						v231.u0 = 0x04;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc88 = v230;
 						v230 = loc88;
 						v230.u5 = v230.u5->t0000.u5;
@@ -2225,11 +2225,11 @@ l000F14F6:
 					{
 						v230 = loc30;
 						v231.u0 = ~0x00;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc93 = v230;
 						v230 = loc29;
 						v231.u0 = 0x01;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc94 = v230;
 						v230 = loc21;
 						v231.u0 = 0x02;
@@ -2264,11 +2264,11 @@ l000F14F6:
 l000F185F:
 				v230 = loc19;
 				v231.u0 = 0x0C;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc96 = v230;
 				v230 = loc21;
 				v231.u0 = 0x01;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc97 = v230;
 				v230 = loc96;
 				loc19 = v230;
@@ -2298,14 +2298,14 @@ l000F185F:
 			Eq_n loc99 = v230;
 			v230 = loc99;
 			v231.u0 = 0x0C;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc100 = v230;
 			v230 = loc100;
 			v230.u5 = v230.u5->t0000.u5;
 			Eq_n loc101 = v230;
 			v230 = loc99;
 			v231.u0 = 0x10;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc102 = v230;
 			v230 = loc102;
 			v230.u5 = v230.u5->t0000.u5;
@@ -2322,7 +2322,7 @@ l000F185F:
 				Eq_n loc105 = v230;
 				v230 = loc105;
 				v231.u0 = 0x28;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc106 = v230;
 				v230 = loc106;
 				v230.u5 = v230.u5->t0000.u5;
@@ -2461,14 +2461,14 @@ l000F1D1E:
 					{
 						v230 = loc194;
 						v231.u0 = 0x0C;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc196 = v230;
 						v230 = loc196;
 						v230.u5 = v230.u5->t0000.u5;
 						Eq_n loc197 = v230;
 						v230 = loc194;
 						v231.u0 = 0x10;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc199 = v230;
 						v230 = loc199;
 						v230.u5 = v230.u5->t0000.u5;
@@ -2485,7 +2485,7 @@ l000F1D1E:
 							Eq_n loc202 = v230;
 							v230 = loc202;
 							v231.u0 = 0x24;
-							v230 += v231;
+							v230.u5 = v230 + v231;
 							Eq_n loc203 = v230;
 							v230 = loc203;
 							v230.u5 = v230.u5->t0000.u5;
@@ -2565,14 +2565,14 @@ l000F1C9C:
 									}
 									v230 = loc37;
 									v231.u0 = 0x0C;
-									v230 += v231;
+									v230.u5 = v230 + v231;
 									Eq_n loc212 = v230;
 									v230 = loc212;
 									v230.u5 = v230.u5->t0000.u5;
 									Eq_n loc213 = v230;
 									v230 = loc37;
 									v231.u0 = 0x10;
-									v230 += v231;
+									v230.u5 = v230 + v231;
 									Eq_n loc214 = v230;
 									v230 = loc214;
 									v230.u5 = v230.u5->t0000.u5;
@@ -2589,7 +2589,7 @@ l000F1C9C:
 										Eq_n loc217 = v230;
 										v230 = loc217;
 										v231.u0 = 0x24;
-										v230 += v231;
+										v230.u5 = v230 + v231;
 										Eq_n loc218 = v230;
 										v230 = loc218;
 										v230.u5 = v230.u5->t0000.u5;
@@ -2713,11 +2713,11 @@ l000F1BAC:
 										}
 										v230 = loc16;
 										v231.u0 = 0x0C;
-										v230 += v231;
+										v230.u5 = v230 + v231;
 										Eq_n loc139 = v230;
 										v230 = loc28;
 										v231.u0 = 0x01;
-										v230 += v231;
+										v230.u5 = v230 + v231;
 										Eq_n loc140 = v230;
 										v230 = loc139;
 										loc16 = v230;
@@ -2780,7 +2780,7 @@ l000F1C50:
 			{
 				v230 = loc101;
 				v231.u0 = 0x01;
-				v230 += v231;
+				v230.u5 = v230 + v231;
 				Eq_n loc111 = v230;
 				v230 = loc100;
 				v231 = loc111;
@@ -2788,7 +2788,7 @@ l000F1C50:
 			}
 			v230 = loc29;
 			v231 = loc30;
-			v230 += v231;
+			v230.u5 = v230 + v231;
 			Eq_n loc112 = v230;
 			v230 = loc112;
 			v231.u0 = 0x01;
@@ -2831,7 +2831,7 @@ l000F1C50:
 					{
 						v230 = loc7;
 						v231.u0 = 11;
-						v230 += v231;
+						v230.u5 = v230 + v231;
 						Eq_n loc119 = v230;
 						v230 = loc119;
 						Eq_n v245;
@@ -2852,7 +2852,7 @@ l000F1C50:
 						{
 							v230 = loc7;
 							v231.u0 = 0x04;
-							v230 += v231;
+							v230.u5 = v230 + v231;
 							Eq_n loc123 = v230;
 							v230 = loc123;
 							v230.u5 = v230.u5->t0000.u5;
@@ -2883,7 +2883,7 @@ l000F1C50:
 						{
 							v230 = loc33;
 							v231.u0 = ~0x00;
-							v230 += v231;
+							v230.u5 = v230 + v231;
 							Eq_n loc128 = v230;
 							v230 = loc25;
 							v231.u0 = 0x00;
@@ -2900,11 +2900,11 @@ l000F1C50:
 					}
 					v230 = loc7;
 					v231.u0 = 0x0C;
-					v230 += v231;
+					v230.u5 = v230 + v231;
 					Eq_n loc129 = v230;
 					v230 = loc25;
 					v231.u0 = 0x01;
-					v230 += v231;
+					v230.u5 = v230 + v231;
 					Eq_n loc130 = v230;
 					v230 = loc129;
 					loc7 = v230;
@@ -2964,7 +2964,7 @@ Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v73.u5 = g_t140030.u5;
 	Eq_n v74;
 	v74.u0 = 0x40;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	g_t140030.u5 = (struct Eq_n *) v73;
 	v73.u5 = g_t140030.u5;
 	v74.u5 = g_t140034.u5;
@@ -2976,45 +2976,45 @@ Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v73 = loc75;
 	v74.u0 = 0x3C;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc10 = v73;
 	v73 = loc75;
 	v74.u0 = 0x38;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc9 = v73;
 	v73 = loc75;
 	v74.u0 = 0x34;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc8 = v73;
 	v73 = loc75;
 	v74.u0 = 0x30;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc65 = v73;
 	v73 = loc75;
 	v74.u0 = 44;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc71 = v73;
 	v73 = loc75;
 	v74.u0 = 0x28;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc72 = v73;
 	v73 = loc75;
 	v74.u0 = 0x24;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc73 = v73;
 	v73 = loc75;
 	v74.u0 = 0x20;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc15 = v73;
 	v73 = loc75;
 	v74.u0 = 0x08;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc16 = v73;
 	v73 = loc75;
 	Eq_n loc17 = v73;
 	v73 = arg3;
 	v74.u0 = 0x04;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc18 = v73;
 	v73 = loc18;
 	v73.u5 = v73.u5->t0000.u5;
@@ -3037,7 +3037,7 @@ Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc22 = v73;
 	v73 = loc22;
 	v74.u0 = 0x10;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc23 = v73;
 	v73 = loc23;
 	v73.u5 = v73.u5->t0000.u5;
@@ -3073,7 +3073,7 @@ Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v81.u0 = 0x01FF;
 	v80 &= v81;
 	v81.u0 = 0x0900;
-	v80 += v81;
+	v80.u5 = v80 + v81;
 }
 
 // 000F20CE: Stack Eq_n fn000F20CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
@@ -3085,7 +3085,7 @@ Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3097,15 +3097,15 @@ Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3152,7 +3152,7 @@ Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3164,15 +3164,15 @@ Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3219,7 +3219,7 @@ Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3231,15 +3231,15 @@ Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3286,7 +3286,7 @@ Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3298,15 +3298,15 @@ Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3353,7 +3353,7 @@ Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3365,15 +3365,15 @@ Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3420,7 +3420,7 @@ Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3432,15 +3432,15 @@ Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3487,7 +3487,7 @@ Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3499,15 +3499,15 @@ Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3554,7 +3554,7 @@ Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3566,15 +3566,15 @@ Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3621,7 +3621,7 @@ Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -3633,15 +3633,15 @@ Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -3688,7 +3688,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v207.u5 = g_t140030.u5;
 	Eq_n v208;
 	v208.u0 = 0x0140;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	g_t140030.u5 = (struct Eq_n *) v207;
 	v207.u5 = g_t140030.u5;
 	v208.u5 = g_t140034.u5;
@@ -3702,35 +3702,35 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc207 = v207;
 	v207 = loc209;
 	v208.u0 = 0xD0;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc159 = v207;
 	v207 = loc209;
 	v208.u0 = 0xC4;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc170 = v207;
 	v207 = loc209;
 	v208.u0 = 0xC0;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc181 = v207;
 	v207 = loc209;
 	v208.u0 = 0xB4;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc192 = v207;
 	v207 = loc209;
 	v208.u0 = 0xB0;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc29 = v207;
 	v207 = loc209;
 	v208.u0 = 0x10;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc40 = v207;
 	v207 = loc209;
 	v208.u0 = 0x08;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc51 = v207;
 	v207 = loc209;
 	v208.u0 = 0x04;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	Eq_n loc62 = v207;
 	v207 = loc170;
 	Eq_n v210;
@@ -3738,7 +3738,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v207.u5->t0000.u3 = (uint64) v210;
 	v207 = loc170;
 	v208.u0 = 0x08;
-	v207 += v208;
+	v207.u5 = v207 + v208;
 	v208.u0 = 0x00;
 	v207.u5->t0000.u5 = (struct Eq_n *) v208;
 	v207.u0 = 0x00;
@@ -3757,14 +3757,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v208 = loc7;
 		v211.u0 = 0x02;
 		v208 <<= v211;
-		v207 += v208;
+		v207.u5 = v207 + v208;
 		Eq_n loc73 = v207;
 		v207 = loc73;
 		v208.u0 = 0x00;
 		v207.u5->t0000.u5 = (struct Eq_n *) v208;
 		v207 = loc7;
 		v208.u0 = 0x01;
-		v207 += v208;
+		v207.u5 = v207 + v208;
 		Eq_n loc84 = v207;
 		v207 = loc84;
 		loc7 = v207;
@@ -3830,7 +3830,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc121 = v207;
 		v207 = loc121;
 		v208.u0 = 0x30;
-		v207 += v208;
+		v207.u5 = v207 + v208;
 		Eq_n loc122 = v207;
 		v207 = loc122;
 		v207.u5 = v207.u5->t0000.u5;
@@ -3863,7 +3863,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v207.u5->t0000.u3 = (uint64) v210;
 			v207 = loc192;
 			v208.u0 = 0x08;
-			v207 += v208;
+			v207.u5 = v207 + v208;
 			v208.u0 = 0x00;
 			v207.u5->t0000.u5 = (struct Eq_n *) v208;
 			v207.u0 = 0x00;
@@ -3881,21 +3881,21 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				v208 = loc12;
 				v211.u0 = 0x02;
 				v208 <<= v211;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc126 = v207;
 				v207 = loc126;
 				v208.u0 = 0x00;
 				v207.u5->t0000.u5 = (struct Eq_n *) v208;
 				v207 = loc12;
 				v208.u0 = 0x01;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc127 = v207;
 				v207 = loc127;
 				loc12 = v207;
 			}
 			v207 = loc192;
 			v208.u0 = 11;
-			v207 += v208;
+			v207.u5 = v207 + v208;
 			Eq_n loc128 = v207;
 			v207 = loc128;
 			Eq_n v214;
@@ -3916,7 +3916,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			{
 				v207 = loc192;
 				v208.u0 = 0x08;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc131 = v207;
 				v207 = loc131;
 				v207.u5 = v207.u5->t0000.u5;
@@ -3927,7 +3927,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc133 = v207;
 				v207 = loc133;
 				v208.u0 = ~0x00;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc205 = v207;
 				v207 = loc205;
 				loc134 = v207;
@@ -4000,11 +4000,11 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v207.u5->t0000.u5 = (struct Eq_n *) v208;
 			v207 = loc192;
 			v208.u0 = 0x04;
-			v207 += v208;
+			v207.u5 = v207 + v208;
 			Eq_n loc141 = v207;
 			v207 = loc192;
 			v208.u0 = 0x08;
-			v207 += v208;
+			v207.u5 = v207 + v208;
 			Eq_n loc142 = v207;
 			v207 = arg1;
 			v207.u5 = v207.u5->t0000.u5;
@@ -4037,14 +4037,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				{
 					v207 = loc24;
 					v208.u0 = 0x0C;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc144 = v207;
 					v207 = loc144;
 					v207.u5 = v207.u5->t0000.u5;
 					Eq_n loc145 = v207;
 					v207 = loc24;
 					v208.u0 = 0x10;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc146 = v207;
 					v207 = loc146;
 					v207.u5 = v207.u5->t0000.u5;
@@ -4062,7 +4062,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						Eq_n loc149 = v207;
 						v207 = loc149;
 						v208.u0 = 0x24;
-						v207 += v208;
+						v207.u5 = v207 + v208;
 						Eq_n loc150 = v207;
 						v207 = loc150;
 						v207.u5 = v207.u5->t0000.u5;
@@ -4139,14 +4139,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				{
 					v207 = loc157;
 					v208.u0 = 0x0C;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc160 = v207;
 					v207 = loc160;
 					v207.u5 = v207.u5->t0000.u5;
 					Eq_n loc161 = v207;
 					v207 = loc157;
 					v208.u0 = 0x10;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc162 = v207;
 					v207 = loc162;
 					v207.u5 = v207.u5->t0000.u5;
@@ -4164,7 +4164,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						Eq_n loc165 = v207;
 						v207 = loc165;
 						v208.u0 = 0x24;
-						v207 += v208;
+						v207.u5 = v207 + v208;
 						Eq_n loc166 = v207;
 						v207 = loc166;
 						v207.u5 = v207.u5->t0000.u5;
@@ -4283,7 +4283,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc179 = v207;
 				v207 = loc14;
 				v208 = loc179;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc180 = v207;
 				v207 = loc174;
 				v208 = loc180;
@@ -4344,7 +4344,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 						Eq_n loc189 = v207;
 						v207 = loc189;
 						v208.u0 = ~0x00;
-						v207 += v208;
+						v207.u5 = v207 + v208;
 						Eq_n loc206 = v207;
 						v207 = loc206;
 						loc190 = v207;
@@ -4400,7 +4400,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					Eq_n loc197 = v207;
 					v207 = loc197;
 					v208 = loc179;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc198 = v207;
 					v207 = loc29;
 					v208 = loc198;
@@ -4415,14 +4415,14 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				}
 				v207 = loc23;
 				v208.u0 = 0x0C;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc38 = v207;
 				v207 = loc38;
 				v207.u5 = v207.u5->t0000.u5;
 				Eq_n loc39 = v207;
 				v207 = loc23;
 				v208.u0 = 0x10;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc41 = v207;
 				v207 = loc41;
 				v207.u5 = v207.u5->t0000.u5;
@@ -4440,7 +4440,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					Eq_n loc44 = v207;
 					v207 = loc44;
 					v208.u0 = 0x24;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc45 = v207;
 					v207 = loc45;
 					v207.u5 = v207.u5->t0000.u5;
@@ -4513,7 +4513,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				{
 					v207 = loc54;
 					v208.u0 = 0x04;
-					v207 += v208;
+					v207.u5 = v207 + v208;
 					Eq_n loc63 = v207;
 					v207 = loc38;
 					v208 = loc63;
@@ -4529,7 +4529,7 @@ Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc57 = v207;
 				v207 = loc57;
 				v208.u0 = 0x28;
-				v207 += v208;
+				v207.u5 = v207 + v208;
 				Eq_n loc58 = v207;
 				v207 = loc58;
 				v207.u5 = v207.u5->t0000.u5;
@@ -4735,14 +4735,14 @@ l000F2EFD:
 						{
 							v207 = loc23;
 							v208.u0 = 0x0C;
-							v207 += v208;
+							v207.u5 = v207 + v208;
 							Eq_n loc82 = v207;
 							v207 = loc82;
 							v207.u5 = v207.u5->t0000.u5;
 							Eq_n loc83 = v207;
 							v207 = loc23;
 							v208.u0 = 0x10;
-							v207 += v208;
+							v207.u5 = v207 + v208;
 							Eq_n loc85 = v207;
 							v207 = loc85;
 							v207.u5 = v207.u5->t0000.u5;
@@ -4760,7 +4760,7 @@ l000F2EFD:
 								Eq_n loc88 = v207;
 								v207 = loc88;
 								v208.u0 = 0x24;
-								v207 += v208;
+								v207.u5 = v207 + v208;
 								Eq_n loc89 = v207;
 								v207 = loc89;
 								v207.u5 = v207.u5->t0000.u5;
@@ -4825,14 +4825,14 @@ l000F2EFD:
 						}
 						v207 = loc25;
 						v208.u0 = 0x0C;
-						v207 += v208;
+						v207.u5 = v207 + v208;
 						Eq_n loc98 = v207;
 						v207 = loc98;
 						v207.u5 = v207.u5->t0000.u5;
 						Eq_n loc99 = v207;
 						v207 = loc25;
 						v208.u0 = 0x10;
-						v207 += v208;
+						v207.u5 = v207 + v208;
 						Eq_n loc100 = v207;
 						v207 = loc100;
 						v207.u5 = v207.u5->t0000.u5;
@@ -4850,7 +4850,7 @@ l000F2EFD:
 							Eq_n loc103 = v207;
 							v207 = loc103;
 							v208.u0 = 0x24;
-							v207 += v208;
+							v207.u5 = v207 + v208;
 							Eq_n loc104 = v207;
 							v207 = loc104;
 							v207.u5 = v207.u5->t0000.u5;
@@ -5019,7 +5019,7 @@ Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v63 = arg9;
 		v64.u0 = 0x60;
-		v63 += v64;
+		v63.u5 = v63 + v64;
 		Eq_n loc17 = v63;
 		v63 = loc17;
 		v63.u5 = v63.u5->t0000.u5;
@@ -5034,7 +5034,7 @@ Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v63 = arg9;
 			v64.u0 = 100;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc20 = v63;
 			v63 = loc20;
 			v63.u5 = v63.u5->t0000.u5;
@@ -5060,7 +5060,7 @@ Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc23 = v63;
 		v63 = arg2;
 		v64.u0 = 0x01;
-		v63 += v64;
+		v63.u5 = v63 + v64;
 		Eq_n loc24 = v63;
 		v63 = arg3;
 		v64 = loc24;
@@ -5088,7 +5088,7 @@ l000F2FDB:
 	{
 		v63 = arg6;
 		v64.u0 = 11;
-		v63 += v64;
+		v63.u5 = v63 + v64;
 		Eq_n loc25 = v63;
 		v63 = loc25;
 		Eq_n v67;
@@ -5105,7 +5105,7 @@ l000F2FDB:
 		Eq_n loc27 = v65;
 		v63 = arg6;
 		v64.u0 = 0x04;
-		v63 += v64;
+		v63.u5 = v63 + v64;
 		Eq_n loc28 = v63;
 		v63 = loc28;
 		v63.u5 = v63.u5->t0000.u5;
@@ -5164,7 +5164,7 @@ l000F2FDB:
 				Eq_n loc39 = v63;
 				v63 = loc34;
 				v64.u0 = 0x04;
-				v63 += v64;
+				v63.u5 = v63 + v64;
 				Eq_n loc40 = v63;
 				v63 = arg8;
 				v64 = loc40;
@@ -5184,7 +5184,7 @@ l000F321E:
 		}
 		v63 = arg9;
 		v64.u0 = 0x68;
-		v63 += v64;
+		v63.u5 = v63 + v64;
 		Eq_n loc41 = v63;
 		v63.u0 = 0x00;
 		Eq_n loc11 = v63;
@@ -5195,7 +5195,7 @@ l000F321E:
 			v64 = loc11;
 			word32 v68 = 0x02;
 			v64 <<= v68;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc12 = v63;
 			v63 = loc11;
 			v64.u0 = 0x1A;
@@ -5213,7 +5213,7 @@ l000F321E:
 			Eq_n loc44 = v65;
 			v63 = loc11;
 			v64.u0 = 0x01;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc10 = v63;
 			v63 = loc44;
 			if (v63)
@@ -5301,7 +5301,7 @@ l000F30E2:
 					{
 						v63 = loc15;
 						v64.u0 = ~0x00;
-						v63 += v64;
+						v63.u5 = v63 + v64;
 						Eq_n loc56 = v63;
 						v63 = loc56;
 						Eq_n v69;
@@ -5330,7 +5330,7 @@ l000F30E2:
 							v63.u5->t0000.u5 = (struct Eq_n *) v64;
 							v63.u0 = 14251;
 							v64 = loc48;
-							v63 += v64;
+							v63.u5 = v63 + v64;
 							Eq_n loc59 = v63;
 							v63 = loc59;
 							Eq_n v70;
@@ -5339,7 +5339,7 @@ l000F30E2:
 							Eq_n loc60 = v63;
 							v63 = loc15;
 							v64.u0 = 0x01;
-							v63 += v64;
+							v63.u5 = v63 + v64;
 							Eq_n loc61 = v63;
 							v63 = arg3;
 							v64 = loc61;
@@ -5377,7 +5377,7 @@ l000F30E2:
 l000F31DD:
 			v63.u0 = 14251;
 			v64 = loc48;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc62 = v63;
 			v63 = loc62;
 			Eq_n v72;
@@ -5386,7 +5386,7 @@ l000F31DD:
 			Eq_n loc63 = v63;
 			v63 = loc15;
 			v64.u0 = 0x01;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc64 = v63;
 			v63 = arg3;
 			v64 = loc64;
@@ -5400,7 +5400,7 @@ l000F31DD:
 			Eq_n loc65 = v63;
 			v63 = loc65;
 			v64.u0 = 0x01;
-			v63 += v64;
+			v63.u5 = v63 + v64;
 			Eq_n loc66 = v63;
 			v63 = arg4;
 			v64 = loc66;
@@ -5423,7 +5423,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5 = g_t140030.u5;
 	Eq_n v196;
 	v196.u0 = 0x0160;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	g_t140030.u5 = (struct Eq_n *) v195;
 	v195.u5 = g_t140030.u5;
 	v196.u5 = g_t140034.u5;
@@ -5435,45 +5435,45 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v195 = loc196;
 	v196.u0 = 0xD0;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc147 = v195;
 	v195 = loc196;
 	v196.u0 = 200;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc158 = v195;
 	v195 = loc196;
 	v196.u0 = 0xC4;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc169 = v195;
 	v195 = loc196;
 	v196.u0 = 0xB8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc180 = v195;
 	v195 = loc196;
 	v196.u0 = 0xAC;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc24 = v195;
 	v195 = loc196;
 	v196.u0 = 0xA8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc35 = v195;
 	v195 = loc196;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc46 = v195;
 	v195 = loc196;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc57 = v195;
 	v195 = loc196;
 	Eq_n loc67 = v195;
 	v195 = loc196;
 	v196.u0 = 0x0151;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc78 = v195;
 	v195 = loc196;
 	v196.u0 = 336;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc89 = v195;
 	v195 = loc180;
 	v196 = arg3;
@@ -5487,7 +5487,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u3 = (uint64) v201;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	v196.u0 = 0x00;
 	v195.u5->t0000.u5 = (struct Eq_n *) v196;
 	v195.u0 = 0x00;
@@ -5505,21 +5505,21 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v196 = loc6;
 		v198.u0 = 0x02;
 		v196 <<= v198;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc100 = v195;
 		v195 = loc100;
 		v196.u0 = 0x00;
 		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc6;
 		v196.u0 = 0x01;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc105 = v195;
 		v195 = loc105;
 		loc6 = v195;
 	}
 	v195 = loc24;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc106 = v195;
 	v195 = loc106;
 	Eq_n v202;
@@ -5540,7 +5540,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = loc24;
 		v196.u0 = 0x08;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc109 = v195;
 		v195 = loc109;
 		v195.u5 = v195.u5->t0000.u5;
@@ -5551,7 +5551,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc111 = v195;
 		v195 = loc111;
 		v196.u0 = ~0x00;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc193 = v195;
 		v195 = loc193;
 		loc112 = v195;
@@ -5632,11 +5632,11 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u0 = (bool) v205;
 	v195 = loc24;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc119 = v195;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc120 = v195;
 	v195 = arg1;
 	v195.u5 = v195.u5->t0000.u5;
@@ -5670,14 +5670,14 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc19;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc122 = v195;
 			v195 = loc122;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc123 = v195;
 			v195 = loc19;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc124 = v195;
 			v195 = loc124;
 			v195.u5 = v195.u5->t0000.u5;
@@ -5695,7 +5695,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc127 = v195;
 				v195 = loc127;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc128 = v195;
 				v195 = loc128;
 				v195.u5 = v195.u5->t0000.u5;
@@ -5772,14 +5772,14 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc135;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc137 = v195;
 			v195 = loc137;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc138 = v195;
 			v195 = loc135;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc139 = v195;
 			v195 = loc139;
 			v195.u5 = v195.u5->t0000.u5;
@@ -5797,7 +5797,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc142 = v195;
 				v195 = loc142;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc143 = v195;
 				v195 = loc143;
 				v195.u5 = v195.u5->t0000.u5;
@@ -5916,7 +5916,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc156 = v195;
 		v195 = loc12;
 		v196 = loc156;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc157 = v195;
 		v195 = loc151;
 		v196 = loc157;
@@ -5977,7 +5977,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc166 = v195;
 				v195 = loc166;
 				v196.u0 = ~0x00;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc194 = v195;
 				v195 = loc194;
 				loc167 = v195;
@@ -6033,7 +6033,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc174 = v195;
 			v195 = loc174;
 			v196 = loc156;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
@@ -6048,14 +6048,14 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v195 = loc18;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc185 = v195;
 		v195 = loc185;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc187 = v195;
 		v195 = loc187;
 		v195.u5 = v195.u5->t0000.u5;
@@ -6073,7 +6073,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc25 = v195;
 			v195 = loc25;
 			v195.u5 = v195.u5->t0000.u5;
@@ -6153,7 +6153,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc36;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc44 = v195;
 			v195 = loc185;
 			v196 = loc44;
@@ -6169,7 +6169,7 @@ Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc39 = v195;
 		v195 = loc39;
 		v196.u0 = 0x28;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc40 = v195;
 		v195 = loc40;
 		v195.u5 = v195.u5->t0000.u5;
@@ -6260,7 +6260,7 @@ l000F3B43:
 	}
 	v195 = loc180;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc45 = v195;
 	v195 = loc45;
 	Eq_n v216;
@@ -6277,7 +6277,7 @@ l000F3B43:
 	Eq_n loc48 = v197;
 	v195 = loc180;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc49 = v195;
 	v195 = loc49;
 	v195.u5 = v195.u5->t0000.u5;
@@ -6340,7 +6340,7 @@ l000F3B43:
 			Eq_n loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
@@ -6412,14 +6412,14 @@ l000F3B23:
 		{
 			v195 = loc18;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc70 = v195;
 			v195 = loc70;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc71 = v195;
 			v195 = loc18;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc72 = v195;
 			v195 = loc72;
 			v195.u5 = v195.u5->t0000.u5;
@@ -6437,7 +6437,7 @@ l000F3B23:
 				Eq_n loc75 = v195;
 				v195 = loc75;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc76 = v195;
 				v195 = loc76;
 				v195.u5 = v195.u5->t0000.u5;
@@ -6502,14 +6502,14 @@ l000F3B23:
 		}
 		v195 = loc20;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc85 = v195;
 		v195 = loc85;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc86 = v195;
 		v195 = loc20;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc87 = v195;
 		v195 = loc87;
 		v195.u5 = v195.u5->t0000.u5;
@@ -6527,7 +6527,7 @@ l000F3B23:
 			Eq_n loc91 = v195;
 			v195 = loc91;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc92 = v195;
 			v195 = loc92;
 			v195.u5 = v195.u5->t0000.u5;
@@ -6638,7 +6638,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v41.u5 = g_t140030.u5;
 	Eq_n v42;
 	v42.u0 = 0x10;
-	v41 += v42;
+	v41.u5 = v41 + v42;
 	g_t140030.u5 = (struct Eq_n *) v41;
 	v41.u5 = g_t140030.u5;
 	v42.u5 = g_t140034.u5;
@@ -6688,7 +6688,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		Eq_n loc7 = v41;
 		v41 = loc7;
 		v42.u0 = 0x30;
-		v41 += v42;
+		v41.u5 = v41 + v42;
 		Eq_n loc8 = v41;
 		v41 = loc8;
 		v41.u5 = v41.u5->t0000.u5;
@@ -6745,7 +6745,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				Eq_n loc15 = v41;
 				v41 = loc15;
 				v42.u0 = 0x0C;
-				v41 += v42;
+				v41.u5 = v41 + v42;
 				Eq_n loc16 = v41;
 				v41 = loc16;
 				v41.u5 = v41.u5->t0000.u5;
@@ -6776,7 +6776,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 					Eq_n loc21 = v41;
 					v41 = loc21;
 					v42.u0 = 0x10;
-					v41 += v42;
+					v41.u5 = v41 + v42;
 					Eq_n loc22 = v41;
 					v41 = loc22;
 					v41.u5 = v41.u5->t0000.u5;
@@ -6807,7 +6807,7 @@ void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 						Eq_n loc27 = v41;
 						v41 = loc27;
 						v42.u0 = 0x14;
-						v41 += v42;
+						v41.u5 = v41 + v42;
 						Eq_n loc28 = v41;
 						v41 = loc28;
 						v41.u5 = v41.u5->t0000.u5;
@@ -6917,7 +6917,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc21 = v99;
 			v99 = loc21;
 			v100.u0 = 0x01;
-			v99 += v100;
+			v99.u5 = v99 + v100;
 			Eq_n loc22 = v99;
 			v99 = arg4;
 			v100 = loc22;
@@ -6928,7 +6928,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			v99.u5->t0000.u0 = (bool) v104;
 			v99 = arg7;
 			v100.u0 = 11;
-			v99 += v100;
+			v99.u5 = v99 + v100;
 			Eq_n loc23 = v99;
 			v99 = loc23;
 			Eq_n v105;
@@ -6945,7 +6945,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc25 = v101;
 			v99 = arg7;
 			v100.u0 = 0x04;
-			v99 += v100;
+			v99.u5 = v99 + v100;
 			Eq_n loc26 = v99;
 			v99 = loc26;
 			v99.u5 = v99.u5->t0000.u5;
@@ -6995,7 +6995,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					Eq_n loc36 = v99;
 					v99 = loc31;
 					v100.u0 = 0x04;
-					v99 += v100;
+					v99.u5 = v99 + v100;
 					Eq_n loc37 = v99;
 					v99 = arg9;
 					v100 = loc37;
@@ -7024,7 +7024,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v99 = arg7;
 		v100.u0 = 11;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc39 = v99;
 		v99 = loc39;
 		Eq_n v106;
@@ -7041,7 +7041,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc41 = v101;
 		v99 = arg7;
 		v100.u0 = 0x04;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc42 = v99;
 		v99 = loc42;
 		v99.u5 = v99.u5->t0000.u5;
@@ -7114,7 +7114,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 					Eq_n loc54 = v99;
 					v99 = loc49;
 					v100.u0 = 0x04;
-					v99 += v100;
+					v99.u5 = v99 + v100;
 					Eq_n loc55 = v99;
 					v99 = arg9;
 					v100 = loc55;
@@ -7134,7 +7134,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v99 = arg11;
 	v100.u0 = 0x80;
-	v99 += v100;
+	v99.u5 = v99 + v100;
 	Eq_n loc56 = v99;
 	v99.u0 = 0x00;
 	Eq_n loc13 = v99;
@@ -7145,7 +7145,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v100 = loc13;
 		word32 v108 = 0x02;
 		v100 <<= v108;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc14 = v99;
 		v99 = loc13;
 		v100.u0 = 0x20;
@@ -7163,7 +7163,7 @@ Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc59 = v101;
 		v99 = loc13;
 		v100.u0 = 0x01;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc12 = v99;
 		v99 = loc59;
 		if (v99)
@@ -7205,7 +7205,7 @@ l000F412A:
 	}
 	v99.u0 = 14251;
 	v100 = loc63;
-	v99 += v100;
+	v99.u5 = v99 + v100;
 	Eq_n loc65 = v99;
 	v99 = loc65;
 	Eq_n v109;
@@ -7234,7 +7234,7 @@ l000F3FE1:
 		Eq_n loc102 = v99;
 		v99 = loc102;
 		v100.u0 = 0x01;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc103 = v99;
 		v99 = arg4;
 		v100 = loc103;
@@ -7260,7 +7260,7 @@ l000F3FE1:
 			Eq_n loc105 = v99;
 			v99 = loc105;
 			v100.u0 = 0x01;
-			v99 += v100;
+			v99.u5 = v99 + v100;
 			Eq_n loc17 = v99;
 			v99 = arg10;
 			v100 = loc17;
@@ -7283,7 +7283,7 @@ l000F3FE1:
 	{
 		v99 = loc67;
 		v100.u0 = ~0x00;
-		v99 += v100;
+		v99.u5 = v99 + v100;
 		Eq_n loc69 = v99;
 		v99 = loc69;
 		Eq_n v110;
@@ -7326,7 +7326,7 @@ l000F3FE1:
 	}
 	v99 = loc67;
 	v100.u0 = 0x01;
-	v99 += v100;
+	v99.u5 = v99 + v100;
 	Eq_n loc77 = v99;
 	v99 = arg4;
 	v100 = loc77;
@@ -7353,7 +7353,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5 = g_t140030.u5;
 	Eq_n v196;
 	v196.u0 = 0x0160;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	g_t140030.u5 = (struct Eq_n *) v195;
 	v195.u5 = g_t140030.u5;
 	v196.u5 = g_t140034.u5;
@@ -7365,45 +7365,45 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v195 = loc196;
 	v196.u0 = 0xD0;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc147 = v195;
 	v195 = loc196;
 	v196.u0 = 200;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc158 = v195;
 	v195 = loc196;
 	v196.u0 = 0xC4;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc169 = v195;
 	v195 = loc196;
 	v196.u0 = 0xB8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc180 = v195;
 	v195 = loc196;
 	v196.u0 = 0xAC;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc24 = v195;
 	v195 = loc196;
 	v196.u0 = 0xA8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc35 = v195;
 	v195 = loc196;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc46 = v195;
 	v195 = loc196;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc57 = v195;
 	v195 = loc196;
 	Eq_n loc67 = v195;
 	v195 = loc196;
 	v196.u0 = 0x0151;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc78 = v195;
 	v195 = loc196;
 	v196.u0 = 336;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc89 = v195;
 	v195 = loc180;
 	v196 = arg3;
@@ -7417,7 +7417,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u3 = (uint64) v201;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	v196.u0 = 0x00;
 	v195.u5->t0000.u5 = (struct Eq_n *) v196;
 	v195.u0 = 0x00;
@@ -7435,21 +7435,21 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v196 = loc6;
 		v198.u0 = 0x02;
 		v196 <<= v198;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc100 = v195;
 		v195 = loc100;
 		v196.u0 = 0x00;
 		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc6;
 		v196.u0 = 0x01;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc105 = v195;
 		v195 = loc105;
 		loc6 = v195;
 	}
 	v195 = loc24;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc106 = v195;
 	v195 = loc106;
 	Eq_n v202;
@@ -7470,7 +7470,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = loc24;
 		v196.u0 = 0x08;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc109 = v195;
 		v195 = loc109;
 		v195.u5 = v195.u5->t0000.u5;
@@ -7481,7 +7481,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc111 = v195;
 		v195 = loc111;
 		v196.u0 = ~0x00;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc193 = v195;
 		v195 = loc193;
 		loc112 = v195;
@@ -7562,11 +7562,11 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u0 = (bool) v205;
 	v195 = loc24;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc119 = v195;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc120 = v195;
 	v195 = arg1;
 	v195.u5 = v195.u5->t0000.u5;
@@ -7600,14 +7600,14 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc19;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc122 = v195;
 			v195 = loc122;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc123 = v195;
 			v195 = loc19;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc124 = v195;
 			v195 = loc124;
 			v195.u5 = v195.u5->t0000.u5;
@@ -7625,7 +7625,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc127 = v195;
 				v195 = loc127;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc128 = v195;
 				v195 = loc128;
 				v195.u5 = v195.u5->t0000.u5;
@@ -7702,14 +7702,14 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc135;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc137 = v195;
 			v195 = loc137;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc138 = v195;
 			v195 = loc135;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc139 = v195;
 			v195 = loc139;
 			v195.u5 = v195.u5->t0000.u5;
@@ -7727,7 +7727,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc142 = v195;
 				v195 = loc142;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc143 = v195;
 				v195 = loc143;
 				v195.u5 = v195.u5->t0000.u5;
@@ -7846,7 +7846,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc156 = v195;
 		v195 = loc12;
 		v196 = loc156;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc157 = v195;
 		v195 = loc151;
 		v196 = loc157;
@@ -7907,7 +7907,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc166 = v195;
 				v195 = loc166;
 				v196.u0 = ~0x00;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc194 = v195;
 				v195 = loc194;
 				loc167 = v195;
@@ -7963,7 +7963,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc174 = v195;
 			v195 = loc174;
 			v196 = loc156;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
@@ -7978,14 +7978,14 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v195 = loc18;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc185 = v195;
 		v195 = loc185;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc187 = v195;
 		v195 = loc187;
 		v195.u5 = v195.u5->t0000.u5;
@@ -8003,7 +8003,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc25 = v195;
 			v195 = loc25;
 			v195.u5 = v195.u5->t0000.u5;
@@ -8083,7 +8083,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc36;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc44 = v195;
 			v195 = loc185;
 			v196 = loc44;
@@ -8099,7 +8099,7 @@ Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc39 = v195;
 		v195 = loc39;
 		v196.u0 = 0x28;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc40 = v195;
 		v195 = loc40;
 		v195.u5 = v195.u5->t0000.u5;
@@ -8190,7 +8190,7 @@ l000F4A50:
 	}
 	v195 = loc180;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc45 = v195;
 	v195 = loc45;
 	Eq_n v216;
@@ -8207,7 +8207,7 @@ l000F4A50:
 	Eq_n loc48 = v197;
 	v195 = loc180;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc49 = v195;
 	v195 = loc49;
 	v195.u5 = v195.u5->t0000.u5;
@@ -8270,7 +8270,7 @@ l000F4A50:
 			Eq_n loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
@@ -8342,14 +8342,14 @@ l000F4A30:
 		{
 			v195 = loc18;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc70 = v195;
 			v195 = loc70;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc71 = v195;
 			v195 = loc18;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc72 = v195;
 			v195 = loc72;
 			v195.u5 = v195.u5->t0000.u5;
@@ -8367,7 +8367,7 @@ l000F4A30:
 				Eq_n loc75 = v195;
 				v195 = loc75;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc76 = v195;
 				v195 = loc76;
 				v195.u5 = v195.u5->t0000.u5;
@@ -8432,14 +8432,14 @@ l000F4A30:
 		}
 		v195 = loc20;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc85 = v195;
 		v195 = loc85;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc86 = v195;
 		v195 = loc20;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc87 = v195;
 		v195 = loc87;
 		v195.u5 = v195.u5->t0000.u5;
@@ -8457,7 +8457,7 @@ l000F4A30:
 			Eq_n loc91 = v195;
 			v195 = loc91;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc92 = v195;
 			v195 = loc92;
 			v195.u5 = v195.u5->t0000.u5;
@@ -8566,7 +8566,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5 = g_t140030.u5;
 	Eq_n v196;
 	v196.u0 = 0x0160;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	g_t140030.u5 = (struct Eq_n *) v195;
 	v195.u5 = g_t140030.u5;
 	v196.u5 = g_t140034.u5;
@@ -8578,45 +8578,45 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v195 = loc196;
 	v196.u0 = 0xD0;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc147 = v195;
 	v195 = loc196;
 	v196.u0 = 200;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc158 = v195;
 	v195 = loc196;
 	v196.u0 = 0xC4;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc169 = v195;
 	v195 = loc196;
 	v196.u0 = 0xB8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc180 = v195;
 	v195 = loc196;
 	v196.u0 = 0xAC;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc24 = v195;
 	v195 = loc196;
 	v196.u0 = 0xA8;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc35 = v195;
 	v195 = loc196;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc46 = v195;
 	v195 = loc196;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc57 = v195;
 	v195 = loc196;
 	Eq_n loc67 = v195;
 	v195 = loc196;
 	v196.u0 = 0x0151;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc78 = v195;
 	v195 = loc196;
 	v196.u0 = 336;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc89 = v195;
 	v195 = loc180;
 	v196 = arg3;
@@ -8630,7 +8630,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u3 = (uint64) v201;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	v196.u0 = 0x00;
 	v195.u5->t0000.u5 = (struct Eq_n *) v196;
 	v195.u0 = 0x00;
@@ -8648,21 +8648,21 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v196 = loc6;
 		v198.u0 = 0x02;
 		v196 <<= v198;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc100 = v195;
 		v195 = loc100;
 		v196.u0 = 0x00;
 		v195.u5->t0000.u5 = (struct Eq_n *) v196;
 		v195 = loc6;
 		v196.u0 = 0x01;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc105 = v195;
 		v195 = loc105;
 		loc6 = v195;
 	}
 	v195 = loc24;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc106 = v195;
 	v195 = loc106;
 	Eq_n v202;
@@ -8683,7 +8683,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v195 = loc24;
 		v196.u0 = 0x08;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc109 = v195;
 		v195 = loc109;
 		v195.u5 = v195.u5->t0000.u5;
@@ -8694,7 +8694,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc111 = v195;
 		v195 = loc111;
 		v196.u0 = ~0x00;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc193 = v195;
 		v195 = loc193;
 		loc112 = v195;
@@ -8775,11 +8775,11 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v195.u5->t0000.u0 = (bool) v205;
 	v195 = loc24;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc119 = v195;
 	v195 = loc24;
 	v196.u0 = 0x08;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc120 = v195;
 	v195 = arg1;
 	v195.u5 = v195.u5->t0000.u5;
@@ -8813,14 +8813,14 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc19;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc122 = v195;
 			v195 = loc122;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc123 = v195;
 			v195 = loc19;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc124 = v195;
 			v195 = loc124;
 			v195.u5 = v195.u5->t0000.u5;
@@ -8838,7 +8838,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc127 = v195;
 				v195 = loc127;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc128 = v195;
 				v195 = loc128;
 				v195.u5 = v195.u5->t0000.u5;
@@ -8915,14 +8915,14 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc135;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc137 = v195;
 			v195 = loc137;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc138 = v195;
 			v195 = loc135;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc139 = v195;
 			v195 = loc139;
 			v195.u5 = v195.u5->t0000.u5;
@@ -8940,7 +8940,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc142 = v195;
 				v195 = loc142;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc143 = v195;
 				v195 = loc143;
 				v195.u5 = v195.u5->t0000.u5;
@@ -9059,7 +9059,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc156 = v195;
 		v195 = loc12;
 		v196 = loc156;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc157 = v195;
 		v195 = loc151;
 		v196 = loc157;
@@ -9120,7 +9120,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc166 = v195;
 				v195 = loc166;
 				v196.u0 = ~0x00;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc194 = v195;
 				v195 = loc194;
 				loc167 = v195;
@@ -9176,7 +9176,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc174 = v195;
 			v195 = loc174;
 			v196 = loc156;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc175 = v195;
 			v195 = loc35;
 			v196 = loc175;
@@ -9191,14 +9191,14 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v195 = loc18;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc185 = v195;
 		v195 = loc185;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc186 = v195;
 		v195 = loc18;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc187 = v195;
 		v195 = loc187;
 		v195.u5 = v195.u5->t0000.u5;
@@ -9216,7 +9216,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc190 = v195;
 			v195 = loc190;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc25 = v195;
 			v195 = loc25;
 			v195.u5 = v195.u5->t0000.u5;
@@ -9296,7 +9296,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v195 = loc36;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc44 = v195;
 			v195 = loc185;
 			v196 = loc44;
@@ -9312,7 +9312,7 @@ Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc39 = v195;
 		v195 = loc39;
 		v196.u0 = 0x28;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc40 = v195;
 		v195 = loc40;
 		v195.u5 = v195.u5->t0000.u5;
@@ -9403,7 +9403,7 @@ l000F5385:
 	}
 	v195 = loc180;
 	v196.u0 = 11;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc45 = v195;
 	v195 = loc45;
 	Eq_n v216;
@@ -9420,7 +9420,7 @@ l000F5385:
 	Eq_n loc48 = v197;
 	v195 = loc180;
 	v196.u0 = 0x04;
-	v195 += v196;
+	v195.u5 = v195 + v196;
 	Eq_n loc49 = v195;
 	v195 = loc49;
 	v195.u5 = v195.u5->t0000.u5;
@@ -9483,7 +9483,7 @@ l000F5385:
 			Eq_n loc62 = v195;
 			v195 = loc56;
 			v196.u0 = 0x04;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc63 = v195;
 			v195 = loc57;
 			v196 = loc63;
@@ -9557,14 +9557,14 @@ l000F5365:
 		{
 			v195 = loc18;
 			v196.u0 = 0x0C;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc70 = v195;
 			v195 = loc70;
 			v195.u5 = v195.u5->t0000.u5;
 			Eq_n loc71 = v195;
 			v195 = loc18;
 			v196.u0 = 0x10;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc72 = v195;
 			v195 = loc72;
 			v195.u5 = v195.u5->t0000.u5;
@@ -9582,7 +9582,7 @@ l000F5365:
 				Eq_n loc75 = v195;
 				v195 = loc75;
 				v196.u0 = 0x24;
-				v195 += v196;
+				v195.u5 = v195 + v196;
 				Eq_n loc76 = v195;
 				v195 = loc76;
 				v195.u5 = v195.u5->t0000.u5;
@@ -9647,14 +9647,14 @@ l000F5365:
 		}
 		v195 = loc20;
 		v196.u0 = 0x0C;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc85 = v195;
 		v195 = loc85;
 		v195.u5 = v195.u5->t0000.u5;
 		Eq_n loc86 = v195;
 		v195 = loc20;
 		v196.u0 = 0x10;
-		v195 += v196;
+		v195.u5 = v195 + v196;
 		Eq_n loc87 = v195;
 		v195 = loc87;
 		v195.u5 = v195.u5->t0000.u5;
@@ -9672,7 +9672,7 @@ l000F5365:
 			Eq_n loc91 = v195;
 			v195 = loc91;
 			v196.u0 = 0x24;
-			v195 += v196;
+			v195.u5 = v195 + v196;
 			Eq_n loc92 = v195;
 			v195 = loc92;
 			v195.u5 = v195.u5->t0000.u5;
@@ -9781,7 +9781,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -9793,31 +9793,31 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc190;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc142 = v189;
 	v189 = loc190;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc153 = v189;
 	v189 = loc190;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc164 = v189;
 	v189 = loc190;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc175 = v189;
 	v189 = loc190;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc190;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc190;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc190;
 	Eq_n loc57 = v189;
@@ -9835,7 +9835,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc175;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -9853,21 +9853,21 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc78 = v189;
 		v189 = loc78;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc89 = v189;
 		v189 = loc89;
 		loc6 = v189;
 	}
 	v189 = loc175;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc99 = v189;
 	v189 = loc99;
 	Eq_n v195;
@@ -9888,7 +9888,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc175;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc102 = v189;
 		v189 = loc102;
 		v189.u5 = v189.u5->t0000.u5;
@@ -9899,7 +9899,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc104 = v189;
 		v189 = loc104;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc187 = v189;
 		v189 = loc187;
 		loc105 = v189;
@@ -9972,11 +9972,11 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc175;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc112 = v189;
 	v189 = loc175;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -10011,14 +10011,14 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc115 = v189;
 			v189 = loc115;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc116 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc117 = v189;
 			v189 = loc117;
 			v189.u5 = v189.u5->t0000.u5;
@@ -10036,7 +10036,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc120 = v189;
 				v189 = loc120;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v189.u5 = v189.u5->t0000.u5;
@@ -10113,14 +10113,14 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc128;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc130 = v189;
 			v189 = loc130;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc131 = v189;
 			v189 = loc128;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc132 = v189;
 			v189 = loc132;
 			v189.u5 = v189.u5->t0000.u5;
@@ -10138,7 +10138,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc135 = v189;
 				v189 = loc135;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v189.u5 = v189.u5->t0000.u5;
@@ -10257,7 +10257,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc149 = v189;
 		v189 = loc12;
 		v190 = loc149;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc150 = v189;
 		v189 = loc144;
 		v190 = loc150;
@@ -10318,7 +10318,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc159 = v189;
 				v189 = loc159;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc188 = v189;
 				v189 = loc188;
 				loc160 = v189;
@@ -10374,7 +10374,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc167 = v189;
 			v189 = loc167;
 			v190 = loc149;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc168 = v189;
 			v189 = loc24;
 			v190 = loc168;
@@ -10389,14 +10389,14 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc178 = v189;
 		v189 = loc178;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc179 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc180 = v189;
 		v189 = loc180;
 		v189.u5 = v189.u5->t0000.u5;
@@ -10414,7 +10414,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc183 = v189;
 			v189 = loc183;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v189.u5 = v189.u5->t0000.u5;
@@ -10489,7 +10489,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc178;
 			v190 = loc41;
@@ -10505,7 +10505,7 @@ Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -10596,7 +10596,7 @@ l000F5C72:
 	}
 	v189 = loc164;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -10613,7 +10613,7 @@ l000F5C72:
 	Eq_n loc44 = v191;
 	v189 = loc164;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -10659,7 +10659,7 @@ l000F5C72:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -10732,14 +10732,14 @@ l000F5C52:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc64 = v189;
 			v189 = loc64;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc65 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc66 = v189;
 			v189 = loc66;
 			v189.u5 = v189.u5->t0000.u5;
@@ -10757,7 +10757,7 @@ l000F5C52:
 				Eq_n loc70 = v189;
 				v189 = loc70;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v189.u5 = v189.u5->t0000.u5;
@@ -10822,14 +10822,14 @@ l000F5C52:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc80 = v189;
 		v189 = loc80;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc81 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc82 = v189;
 		v189 = loc82;
 		v189.u5 = v189.u5->t0000.u5;
@@ -10847,7 +10847,7 @@ l000F5C52:
 			Eq_n loc85 = v189;
 			v189 = loc85;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v189.u5 = v189.u5->t0000.u5;
@@ -10961,7 +10961,7 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v35.u5 = g_t140030.u5;
 	Eq_n v36;
 	v36.u0 = 0x10;
-	v35 += v36;
+	v35.u5 = v35 + v36;
 	g_t140030.u5 = (struct Eq_n *) v35;
 	v35.u5 = g_t140030.u5;
 	v36.u5 = g_t140034.u5;
@@ -11011,7 +11011,7 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		Eq_n loc33 = v35;
 		v35 = loc33;
 		v36.u0 = 0x30;
-		v35 += v36;
+		v35.u5 = v35 + v36;
 		Eq_n loc6 = v35;
 		v35 = loc6;
 		v35.u5 = v35.u5->t0000.u5;
@@ -11068,7 +11068,7 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 				Eq_n loc13 = v35;
 				v35 = loc13;
 				v36.u0 = 0x10;
-				v35 += v36;
+				v35.u5 = v35 + v36;
 				Eq_n loc14 = v35;
 				v35 = loc14;
 				v35.u5 = v35.u5->t0000.u5;
@@ -11099,7 +11099,7 @@ void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 					Eq_n loc19 = v35;
 					v35 = loc19;
 					v36.u0 = 0x14;
-					v35 += v36;
+					v35.u5 = v35 + v36;
 					Eq_n loc20 = v35;
 					v35 = loc20;
 					v35.u5 = v35.u5->t0000.u5;
@@ -11171,7 +11171,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -11183,31 +11183,31 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc191;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc143 = v189;
 	v189 = loc191;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc154 = v189;
 	v189 = loc191;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc165 = v189;
 	v189 = loc191;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc176 = v189;
 	v189 = loc191;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc191;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc191;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc191;
 	Eq_n loc57 = v189;
@@ -11225,7 +11225,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -11243,21 +11243,21 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc79 = v189;
 		v189 = loc79;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc90 = v189;
 		v189 = loc90;
 		loc6 = v189;
 	}
 	v189 = loc176;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc100 = v189;
 	v189 = loc100;
 	Eq_n v195;
@@ -11278,7 +11278,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc176;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc103 = v189;
 		v189 = loc103;
 		v189.u5 = v189.u5->t0000.u5;
@@ -11289,7 +11289,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc105 = v189;
 		v189 = loc105;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc188 = v189;
 		v189 = loc188;
 		loc106 = v189;
@@ -11362,11 +11362,11 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc176;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc114 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -11401,14 +11401,14 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc116 = v189;
 			v189 = loc116;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc117 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc118 = v189;
 			v189 = loc118;
 			v189.u5 = v189.u5->t0000.u5;
@@ -11426,7 +11426,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc122 = v189;
 				v189 = loc122;
 				v189.u5 = v189.u5->t0000.u5;
@@ -11503,14 +11503,14 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc129;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc131 = v189;
 			v189 = loc131;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc132 = v189;
 			v189 = loc129;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc133 = v189;
 			v189 = loc133;
 			v189.u5 = v189.u5->t0000.u5;
@@ -11528,7 +11528,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc137 = v189;
 				v189 = loc137;
 				v189.u5 = v189.u5->t0000.u5;
@@ -11647,7 +11647,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc150 = v189;
 		v189 = loc12;
 		v190 = loc150;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc151 = v189;
 		v189 = loc145;
 		v190 = loc151;
@@ -11708,7 +11708,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc160 = v189;
 				v189 = loc160;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc189 = v189;
 				v189 = loc189;
 				loc161 = v189;
@@ -11764,7 +11764,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc168 = v189;
 			v189 = loc168;
 			v190 = loc150;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
@@ -11779,14 +11779,14 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc179 = v189;
 		v189 = loc179;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc181 = v189;
 		v189 = loc181;
 		v189.u5 = v189.u5->t0000.u5;
@@ -11804,7 +11804,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc185 = v189;
 			v189 = loc185;
 			v189.u5 = v189.u5->t0000.u5;
@@ -11879,7 +11879,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc179;
 			v190 = loc41;
@@ -11895,7 +11895,7 @@ Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -11986,7 +11986,7 @@ l000F66D3:
 	}
 	v189 = loc165;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -12003,7 +12003,7 @@ l000F66D3:
 	Eq_n loc44 = v191;
 	v189 = loc165;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -12049,7 +12049,7 @@ l000F66D3:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -12122,14 +12122,14 @@ l000F66B3:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc65 = v189;
 			v189 = loc65;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc66 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc67 = v189;
 			v189 = loc67;
 			v189.u5 = v189.u5->t0000.u5;
@@ -12147,7 +12147,7 @@ l000F66B3:
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc72 = v189;
 				v189 = loc72;
 				v189.u5 = v189.u5->t0000.u5;
@@ -12212,14 +12212,14 @@ l000F66B3:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc81 = v189;
 		v189 = loc81;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc82 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc83 = v189;
 		v189 = loc83;
 		v189.u5 = v189.u5->t0000.u5;
@@ -12237,7 +12237,7 @@ l000F66B3:
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc87 = v189;
 			v189 = loc87;
 			v189.u5 = v189.u5->t0000.u5;
@@ -12346,7 +12346,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -12358,31 +12358,31 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc191;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc143 = v189;
 	v189 = loc191;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc154 = v189;
 	v189 = loc191;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc165 = v189;
 	v189 = loc191;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc176 = v189;
 	v189 = loc191;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc191;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc191;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc191;
 	Eq_n loc57 = v189;
@@ -12400,7 +12400,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -12418,21 +12418,21 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc79 = v189;
 		v189 = loc79;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc90 = v189;
 		v189 = loc90;
 		loc6 = v189;
 	}
 	v189 = loc176;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc100 = v189;
 	v189 = loc100;
 	Eq_n v195;
@@ -12453,7 +12453,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc176;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc103 = v189;
 		v189 = loc103;
 		v189.u5 = v189.u5->t0000.u5;
@@ -12464,7 +12464,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc105 = v189;
 		v189 = loc105;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc188 = v189;
 		v189 = loc188;
 		loc106 = v189;
@@ -12537,11 +12537,11 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc176;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc114 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -12576,14 +12576,14 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc116 = v189;
 			v189 = loc116;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc117 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc118 = v189;
 			v189 = loc118;
 			v189.u5 = v189.u5->t0000.u5;
@@ -12601,7 +12601,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc122 = v189;
 				v189 = loc122;
 				v189.u5 = v189.u5->t0000.u5;
@@ -12678,14 +12678,14 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc129;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc131 = v189;
 			v189 = loc131;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc132 = v189;
 			v189 = loc129;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc133 = v189;
 			v189 = loc133;
 			v189.u5 = v189.u5->t0000.u5;
@@ -12703,7 +12703,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc137 = v189;
 				v189 = loc137;
 				v189.u5 = v189.u5->t0000.u5;
@@ -12822,7 +12822,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc150 = v189;
 		v189 = loc12;
 		v190 = loc150;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc151 = v189;
 		v189 = loc145;
 		v190 = loc151;
@@ -12883,7 +12883,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc160 = v189;
 				v189 = loc160;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc189 = v189;
 				v189 = loc189;
 				loc161 = v189;
@@ -12939,7 +12939,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc168 = v189;
 			v189 = loc168;
 			v190 = loc150;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
@@ -12954,14 +12954,14 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc179 = v189;
 		v189 = loc179;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc181 = v189;
 		v189 = loc181;
 		v189.u5 = v189.u5->t0000.u5;
@@ -12979,7 +12979,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc185 = v189;
 			v189 = loc185;
 			v189.u5 = v189.u5->t0000.u5;
@@ -13054,7 +13054,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc179;
 			v190 = loc41;
@@ -13070,7 +13070,7 @@ Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -13161,7 +13161,7 @@ l000F6FC0:
 	}
 	v189 = loc165;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -13178,7 +13178,7 @@ l000F6FC0:
 	Eq_n loc44 = v191;
 	v189 = loc165;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -13224,7 +13224,7 @@ l000F6FC0:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -13297,14 +13297,14 @@ l000F6FA0:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc65 = v189;
 			v189 = loc65;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc66 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc67 = v189;
 			v189 = loc67;
 			v189.u5 = v189.u5->t0000.u5;
@@ -13322,7 +13322,7 @@ l000F6FA0:
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc72 = v189;
 				v189 = loc72;
 				v189.u5 = v189.u5->t0000.u5;
@@ -13387,14 +13387,14 @@ l000F6FA0:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc81 = v189;
 		v189 = loc81;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc82 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc83 = v189;
 		v189 = loc83;
 		v189.u5 = v189.u5->t0000.u5;
@@ -13412,7 +13412,7 @@ l000F6FA0:
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc87 = v189;
 			v189 = loc87;
 			v189.u5 = v189.u5->t0000.u5;
@@ -13521,7 +13521,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -13533,31 +13533,31 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc191;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc143 = v189;
 	v189 = loc191;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc154 = v189;
 	v189 = loc191;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc165 = v189;
 	v189 = loc191;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc176 = v189;
 	v189 = loc191;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc191;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc191;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc191;
 	Eq_n loc57 = v189;
@@ -13575,7 +13575,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -13593,21 +13593,21 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc79 = v189;
 		v189 = loc79;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc90 = v189;
 		v189 = loc90;
 		loc6 = v189;
 	}
 	v189 = loc176;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc100 = v189;
 	v189 = loc100;
 	Eq_n v195;
@@ -13628,7 +13628,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc176;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc103 = v189;
 		v189 = loc103;
 		v189.u5 = v189.u5->t0000.u5;
@@ -13639,7 +13639,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc105 = v189;
 		v189 = loc105;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc188 = v189;
 		v189 = loc188;
 		loc106 = v189;
@@ -13712,11 +13712,11 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc176;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc114 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -13751,14 +13751,14 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc116 = v189;
 			v189 = loc116;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc117 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc118 = v189;
 			v189 = loc118;
 			v189.u5 = v189.u5->t0000.u5;
@@ -13776,7 +13776,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc122 = v189;
 				v189 = loc122;
 				v189.u5 = v189.u5->t0000.u5;
@@ -13853,14 +13853,14 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc129;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc131 = v189;
 			v189 = loc131;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc132 = v189;
 			v189 = loc129;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc133 = v189;
 			v189 = loc133;
 			v189.u5 = v189.u5->t0000.u5;
@@ -13878,7 +13878,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc137 = v189;
 				v189 = loc137;
 				v189.u5 = v189.u5->t0000.u5;
@@ -13997,7 +13997,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc150 = v189;
 		v189 = loc12;
 		v190 = loc150;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc151 = v189;
 		v189 = loc145;
 		v190 = loc151;
@@ -14058,7 +14058,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc160 = v189;
 				v189 = loc160;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc189 = v189;
 				v189 = loc189;
 				loc161 = v189;
@@ -14114,7 +14114,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc168 = v189;
 			v189 = loc168;
 			v190 = loc150;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
@@ -14129,14 +14129,14 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc179 = v189;
 		v189 = loc179;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc181 = v189;
 		v189 = loc181;
 		v189.u5 = v189.u5->t0000.u5;
@@ -14154,7 +14154,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc185 = v189;
 			v189 = loc185;
 			v189.u5 = v189.u5->t0000.u5;
@@ -14229,7 +14229,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc179;
 			v190 = loc41;
@@ -14245,7 +14245,7 @@ Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -14336,7 +14336,7 @@ l000F78AD:
 	}
 	v189 = loc165;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -14353,7 +14353,7 @@ l000F78AD:
 	Eq_n loc44 = v191;
 	v189 = loc165;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -14399,7 +14399,7 @@ l000F78AD:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -14473,14 +14473,14 @@ l000F788D:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc65 = v189;
 			v189 = loc65;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc66 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc67 = v189;
 			v189 = loc67;
 			v189.u5 = v189.u5->t0000.u5;
@@ -14498,7 +14498,7 @@ l000F788D:
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc72 = v189;
 				v189 = loc72;
 				v189.u5 = v189.u5->t0000.u5;
@@ -14563,14 +14563,14 @@ l000F788D:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc81 = v189;
 		v189 = loc81;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc82 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc83 = v189;
 		v189 = loc83;
 		v189.u5 = v189.u5->t0000.u5;
@@ -14588,7 +14588,7 @@ l000F788D:
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc87 = v189;
 			v189 = loc87;
 			v189.u5 = v189.u5->t0000.u5;
@@ -14697,7 +14697,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -14709,31 +14709,31 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc190;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc142 = v189;
 	v189 = loc190;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc153 = v189;
 	v189 = loc190;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc164 = v189;
 	v189 = loc190;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc175 = v189;
 	v189 = loc190;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc190;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc190;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc190;
 	Eq_n loc57 = v189;
@@ -14751,7 +14751,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc175;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -14769,21 +14769,21 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc78 = v189;
 		v189 = loc78;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc89 = v189;
 		v189 = loc89;
 		loc6 = v189;
 	}
 	v189 = loc175;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc99 = v189;
 	v189 = loc99;
 	Eq_n v195;
@@ -14804,7 +14804,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc175;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc102 = v189;
 		v189 = loc102;
 		v189.u5 = v189.u5->t0000.u5;
@@ -14815,7 +14815,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc104 = v189;
 		v189 = loc104;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc187 = v189;
 		v189 = loc187;
 		loc105 = v189;
@@ -14888,11 +14888,11 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc175;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc112 = v189;
 	v189 = loc175;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -14927,14 +14927,14 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc115 = v189;
 			v189 = loc115;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc116 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc117 = v189;
 			v189 = loc117;
 			v189.u5 = v189.u5->t0000.u5;
@@ -14952,7 +14952,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc120 = v189;
 				v189 = loc120;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v189.u5 = v189.u5->t0000.u5;
@@ -15029,14 +15029,14 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc128;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc130 = v189;
 			v189 = loc130;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc131 = v189;
 			v189 = loc128;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc132 = v189;
 			v189 = loc132;
 			v189.u5 = v189.u5->t0000.u5;
@@ -15054,7 +15054,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc135 = v189;
 				v189 = loc135;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v189.u5 = v189.u5->t0000.u5;
@@ -15173,7 +15173,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc149 = v189;
 		v189 = loc12;
 		v190 = loc149;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc150 = v189;
 		v189 = loc144;
 		v190 = loc150;
@@ -15234,7 +15234,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc159 = v189;
 				v189 = loc159;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc188 = v189;
 				v189 = loc188;
 				loc160 = v189;
@@ -15290,7 +15290,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc167 = v189;
 			v189 = loc167;
 			v190 = loc149;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc168 = v189;
 			v189 = loc24;
 			v190 = loc168;
@@ -15305,14 +15305,14 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc178 = v189;
 		v189 = loc178;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc179 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc180 = v189;
 		v189 = loc180;
 		v189.u5 = v189.u5->t0000.u5;
@@ -15330,7 +15330,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc183 = v189;
 			v189 = loc183;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v189.u5 = v189.u5->t0000.u5;
@@ -15405,7 +15405,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc178;
 			v190 = loc41;
@@ -15421,7 +15421,7 @@ Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -15512,7 +15512,7 @@ l000F819B:
 	}
 	v189 = loc164;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -15529,7 +15529,7 @@ l000F819B:
 	Eq_n loc44 = v191;
 	v189 = loc164;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -15575,7 +15575,7 @@ l000F819B:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -15648,14 +15648,14 @@ l000F817B:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc64 = v189;
 			v189 = loc64;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc65 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc66 = v189;
 			v189 = loc66;
 			v189.u5 = v189.u5->t0000.u5;
@@ -15673,7 +15673,7 @@ l000F817B:
 				Eq_n loc70 = v189;
 				v189 = loc70;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v189.u5 = v189.u5->t0000.u5;
@@ -15738,14 +15738,14 @@ l000F817B:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc80 = v189;
 		v189 = loc80;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc81 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc82 = v189;
 		v189 = loc82;
 		v189.u5 = v189.u5->t0000.u5;
@@ -15763,7 +15763,7 @@ l000F817B:
 			Eq_n loc85 = v189;
 			v189 = loc85;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v189.u5 = v189.u5->t0000.u5;
@@ -15872,7 +15872,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5 = g_t140030.u5;
 	Eq_n v190;
 	v190.u0 = 0x0130;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	g_t140030.u5 = (struct Eq_n *) v189;
 	v189.u5 = g_t140030.u5;
 	v190.u5 = g_t140034.u5;
@@ -15884,31 +15884,31 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v189 = loc191;
 	v190.u0 = 200;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc143 = v189;
 	v189 = loc191;
 	v190.u0 = 0xC4;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc154 = v189;
 	v189 = loc191;
 	v190.u0 = 0xB8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc165 = v189;
 	v189 = loc191;
 	v190.u0 = 0xAC;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc176 = v189;
 	v189 = loc191;
 	v190.u0 = 0xA8;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc24 = v189;
 	v189 = loc191;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc35 = v189;
 	v189 = loc191;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc46 = v189;
 	v189 = loc191;
 	Eq_n loc57 = v189;
@@ -15926,7 +15926,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u3 = (uint64) v194;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	v190.u0 = 0x00;
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189.u0 = 0x00;
@@ -15944,21 +15944,21 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v190 = loc6;
 		v192.u0 = 0x02;
 		v190 <<= v192;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc79 = v189;
 		v189 = loc79;
 		v190.u0 = 0x00;
 		v189.u5->t0000.u5 = (struct Eq_n *) v190;
 		v189 = loc6;
 		v190.u0 = 0x01;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc90 = v189;
 		v189 = loc90;
 		loc6 = v189;
 	}
 	v189 = loc176;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc100 = v189;
 	v189 = loc100;
 	Eq_n v195;
@@ -15979,7 +15979,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	{
 		v189 = loc176;
 		v190.u0 = 0x08;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc103 = v189;
 		v189 = loc103;
 		v189.u5 = v189.u5->t0000.u5;
@@ -15990,7 +15990,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc105 = v189;
 		v189 = loc105;
 		v190.u0 = ~0x00;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc188 = v189;
 		v189 = loc188;
 		loc106 = v189;
@@ -16063,11 +16063,11 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v189.u5->t0000.u5 = (struct Eq_n *) v190;
 	v189 = loc176;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc113 = v189;
 	v189 = loc176;
 	v190.u0 = 0x08;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc114 = v189;
 	v189 = arg1;
 	v189.u5 = v189.u5->t0000.u5;
@@ -16102,14 +16102,14 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc19;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc116 = v189;
 			v189 = loc116;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc117 = v189;
 			v189 = loc19;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc118 = v189;
 			v189 = loc118;
 			v189.u5 = v189.u5->t0000.u5;
@@ -16127,7 +16127,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc121 = v189;
 				v189 = loc121;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc122 = v189;
 				v189 = loc122;
 				v189.u5 = v189.u5->t0000.u5;
@@ -16204,14 +16204,14 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc129;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc131 = v189;
 			v189 = loc131;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc132 = v189;
 			v189 = loc129;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc133 = v189;
 			v189 = loc133;
 			v189.u5 = v189.u5->t0000.u5;
@@ -16229,7 +16229,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc136 = v189;
 				v189 = loc136;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc137 = v189;
 				v189 = loc137;
 				v189.u5 = v189.u5->t0000.u5;
@@ -16348,7 +16348,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc150 = v189;
 		v189 = loc12;
 		v190 = loc150;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc151 = v189;
 		v189 = loc145;
 		v190 = loc151;
@@ -16409,7 +16409,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				Eq_n loc160 = v189;
 				v189 = loc160;
 				v190.u0 = ~0x00;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc189 = v189;
 				v189 = loc189;
 				loc161 = v189;
@@ -16465,7 +16465,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc168 = v189;
 			v189 = loc168;
 			v190 = loc150;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc169 = v189;
 			v189 = loc24;
 			v190 = loc169;
@@ -16480,14 +16480,14 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		}
 		v189 = loc18;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc179 = v189;
 		v189 = loc179;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc180 = v189;
 		v189 = loc18;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc181 = v189;
 		v189 = loc181;
 		v189.u5 = v189.u5->t0000.u5;
@@ -16505,7 +16505,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 			Eq_n loc184 = v189;
 			v189 = loc184;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc185 = v189;
 			v189 = loc185;
 			v189.u5 = v189.u5->t0000.u5;
@@ -16580,7 +16580,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		{
 			v189 = loc32;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc41 = v189;
 			v189 = loc179;
 			v190 = loc41;
@@ -16596,7 +16596,7 @@ Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc36 = v189;
 		v189 = loc36;
 		v190.u0 = 0x28;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc37 = v189;
 		v189 = loc37;
 		v189.u5 = v189.u5->t0000.u5;
@@ -16687,7 +16687,7 @@ l000F8A88:
 	}
 	v189 = loc165;
 	v190.u0 = 11;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc42 = v189;
 	v189 = loc42;
 	Eq_n v206;
@@ -16704,7 +16704,7 @@ l000F8A88:
 	Eq_n loc44 = v191;
 	v189 = loc165;
 	v190.u0 = 0x04;
-	v189 += v190;
+	v189.u5 = v189 + v190;
 	Eq_n loc45 = v189;
 	v189 = loc45;
 	v189.u5 = v189.u5->t0000.u5;
@@ -16750,7 +16750,7 @@ l000F8A88:
 			Eq_n loc56 = v189;
 			v189 = loc51;
 			v190.u0 = 0x04;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc58 = v189;
 			v189 = loc46;
 			v190 = loc58;
@@ -16823,14 +16823,14 @@ l000F8A68:
 		{
 			v189 = loc18;
 			v190.u0 = 0x0C;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc65 = v189;
 			v189 = loc65;
 			v189.u5 = v189.u5->t0000.u5;
 			Eq_n loc66 = v189;
 			v189 = loc18;
 			v190.u0 = 0x10;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc67 = v189;
 			v189 = loc67;
 			v189.u5 = v189.u5->t0000.u5;
@@ -16848,7 +16848,7 @@ l000F8A68:
 				Eq_n loc71 = v189;
 				v189 = loc71;
 				v190.u0 = 0x24;
-				v189 += v190;
+				v189.u5 = v189 + v190;
 				Eq_n loc72 = v189;
 				v189 = loc72;
 				v189.u5 = v189.u5->t0000.u5;
@@ -16913,14 +16913,14 @@ l000F8A68:
 		}
 		v189 = loc20;
 		v190.u0 = 0x0C;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc81 = v189;
 		v189 = loc81;
 		v189.u5 = v189.u5->t0000.u5;
 		Eq_n loc82 = v189;
 		v189 = loc20;
 		v190.u0 = 0x10;
-		v189 += v190;
+		v189.u5 = v189 + v190;
 		Eq_n loc83 = v189;
 		v189 = loc83;
 		v189.u5 = v189.u5->t0000.u5;
@@ -16938,7 +16938,7 @@ l000F8A68:
 			Eq_n loc86 = v189;
 			v189 = loc86;
 			v190.u0 = 0x24;
-			v189 += v190;
+			v189.u5 = v189 + v190;
 			Eq_n loc87 = v189;
 			v189 = loc87;
 			v189.u5 = v189.u5->t0000.u5;
@@ -17045,7 +17045,7 @@ Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v240.u5 = g_t140030.u5;
 	Eq_n v241;
 	v241.u0 = 0x70;
-	v240 += v241;
+	v240.u5 = v240 + v241;
 	g_t140030.u5 = (struct Eq_n *) v240;
 	v240.u5 = g_t140030.u5;
 	v241.u5 = g_t140034.u5;
@@ -17168,11 +17168,11 @@ l000F95BA:
 			break;
 		v240 = loc18;
 		v241.u0 = 0x08;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc157 = v240;
 		v240 = loc157;
 		v241.u0 = 0x03;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc158 = v240;
 		v240 = loc158;
 		Eq_n v243;
@@ -17193,7 +17193,7 @@ l000F95BA:
 		{
 			v240 = loc18;
 			v241.u0 = 0x04;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc161 = v240;
 			v240 = loc161;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17225,11 +17225,11 @@ l000F95BA:
 			v240.u5->t0000.u0 = (bool) v244;
 			v240 = loc21;
 			v241.u0 = ~0x00;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc166 = v240;
 			v240 = loc20;
 			v241.u0 = 0x01;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc167 = v240;
 			v240 = loc167;
 			loc26 = v240;
@@ -17249,11 +17249,11 @@ l000F95BA:
 		}
 		v240 = loc18;
 		v241.u0 = 0x0C;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc168 = v240;
 		v240 = loc19;
 		v241.u0 = 0x01;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc169 = v240;
 		v240 = loc168;
 		loc18 = v240;
@@ -17292,14 +17292,14 @@ l000F95BA:
 		{
 			v240 = loc170;
 			v241.u0 = 0x0C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc172 = v240;
 			v240 = loc172;
 			v240.u5 = v240.u5->t0000.u5;
 			Eq_n loc173 = v240;
 			v240 = loc170;
 			v241.u0 = 0x10;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc174 = v240;
 			v240 = loc174;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17317,7 +17317,7 @@ l000F95BA:
 				Eq_n loc177 = v240;
 				v240 = loc177;
 				v241.u0 = 0x24;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc178 = v240;
 				v240 = loc178;
 				v240.u5 = v240.u5->t0000.u5;
@@ -17400,14 +17400,14 @@ l000F95BA:
 		{
 			v240 = loc185;
 			v241.u0 = 0x0C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc187 = v240;
 			v240 = loc187;
 			v240.u5 = v240.u5->t0000.u5;
 			Eq_n loc188 = v240;
 			v240 = loc185;
 			v241.u0 = 0x10;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc189 = v240;
 			v240 = loc189;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17425,7 +17425,7 @@ l000F95BA:
 				Eq_n loc192 = v240;
 				v240 = loc192;
 				v241.u0 = 0x24;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc193 = v240;
 				v240 = loc193;
 				v240.u5 = v240.u5->t0000.u5;
@@ -17506,14 +17506,14 @@ l000F95BA:
 			break;
 		v240 = loc204;
 		v241.u0 = 0x0C;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc238 = v240;
 		v240 = loc238;
 		v240.u5 = v240.u5->t0000.u5;
 		Eq_n loc48 = v240;
 		v240 = loc204;
 		v241.u0 = 0x10;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc49 = v240;
 		v240 = loc49;
 		v240.u5 = v240.u5->t0000.u5;
@@ -17531,7 +17531,7 @@ l000F95BA:
 			Eq_n loc52 = v240;
 			v240 = loc52;
 			v241.u0 = 0x24;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc53 = v240;
 			v240 = loc53;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17583,7 +17583,7 @@ l000F95BA:
 			Eq_n loc60 = v240;
 			v240 = loc60;
 			v241.u0 = 0x1C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc61 = v240;
 			v240 = loc61;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17615,7 +17615,7 @@ l000F95BA:
 		}
 		v240 = loc17;
 		v241.u0 = 0x01;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc68 = v240;
 		v240 = arg2;
 		Eq_n loc14 = v240;
@@ -17657,11 +17657,11 @@ l000F95BA:
 			{
 				v240 = loc14;
 				v241.u0 = 0x08;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc73 = v240;
 				v240 = loc73;
 				v241.u0 = 0x03;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc74 = v240;
 				v240 = loc74;
 				Eq_n v248;
@@ -17695,7 +17695,7 @@ l000F95BA:
 				v241 = loc17;
 				v246.u0 = 0x02;
 				v241 <<= v246;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc78 = v240;
 				v240 = loc78;
 				v240.u5 = v240.u5->t0000.u5;
@@ -17714,7 +17714,7 @@ l000F95BA:
 					Eq_n loc82 = v240;
 					v240 = loc82;
 					v241.u0 = 0x1C;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc83 = v240;
 					v240 = loc83;
 					v240.u5 = v240.u5->t0000.u5;
@@ -17758,7 +17758,7 @@ l000F95BA:
 					v240.u5->t0000.u0 = (bool) v249;
 					v240 = loc34;
 					v241.u0 = ~0x00;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc101 = v240;
 					v240 = loc15;
 					loc28 = v240;
@@ -17787,7 +17787,7 @@ l000F95BA:
 				{
 					v240 = loc14;
 					v241.u0 = 0x04;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc94 = v240;
 					v240 = loc94;
 					v240.u5 = v240.u5->t0000.u5;
@@ -17813,11 +17813,11 @@ l000F95BA:
 				{
 					v240 = loc34;
 					v241.u0 = ~0x00;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc99 = v240;
 					v240 = loc33;
 					v241.u0 = 0x01;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc100 = v240;
 					v240 = loc25;
 					v241.u0 = 0x02;
@@ -17852,11 +17852,11 @@ l000F95BA:
 l000F908E:
 			v240 = loc14;
 			v241.u0 = 0x0C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc103 = v240;
 			v240 = loc25;
 			v241.u0 = 0x01;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc104 = v240;
 			v240 = loc103;
 			loc14 = v240;
@@ -17878,14 +17878,14 @@ l000F908E:
 			Eq_n loc105 = v240;
 			v240 = loc105;
 			v241.u0 = 0x0C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc106 = v240;
 			v240 = loc106;
 			v240.u5 = v240.u5->t0000.u5;
 			Eq_n loc107 = v240;
 			v240 = loc105;
 			v241.u0 = 0x10;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc108 = v240;
 			v240 = loc108;
 			v240.u5 = v240.u5->t0000.u5;
@@ -17902,7 +17902,7 @@ l000F908E:
 				Eq_n loc111 = v240;
 				v240 = loc111;
 				v241.u0 = 0x28;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc112 = v240;
 				v240 = loc112;
 				v240.u5 = v240.u5->t0000.u5;
@@ -17932,7 +17932,7 @@ l000F908E:
 			{
 				v240 = loc107;
 				v241.u0 = 0x04;
-				v240 += v241;
+				v240.u5 = v240 + v241;
 				Eq_n loc117 = v240;
 				v240 = loc106;
 				v241 = loc117;
@@ -17940,7 +17940,7 @@ l000F908E:
 			}
 			v240 = loc33;
 			v241 = loc34;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc118 = v240;
 			v240 = loc118;
 			v241.u0 = 0x01;
@@ -17983,11 +17983,11 @@ l000F908E:
 					{
 						v240 = loc7;
 						v241.u0 = 0x08;
-						v240 += v241;
+						v240.u5 = v240 + v241;
 						Eq_n loc126 = v240;
 						v240 = loc126;
 						v241.u0 = 0x03;
-						v240 += v241;
+						v240.u5 = v240 + v241;
 						Eq_n loc127 = v240;
 						v240 = loc127;
 						Eq_n v253;
@@ -18008,7 +18008,7 @@ l000F908E:
 						{
 							v240 = loc7;
 							v241.u0 = 0x04;
-							v240 += v241;
+							v240.u5 = v240 + v241;
 							Eq_n loc130 = v240;
 							v240 = loc130;
 							v240.u5 = v240.u5->t0000.u5;
@@ -18039,7 +18039,7 @@ l000F908E:
 						{
 							v240 = loc37;
 							v241.u0 = ~0x00;
-							v240 += v241;
+							v240.u5 = v240 + v241;
 							Eq_n loc136 = v240;
 							v240 = loc29;
 							v241.u0 = 0x00;
@@ -18056,11 +18056,11 @@ l000F908E:
 					}
 					v240 = loc7;
 					v241.u0 = 0x0C;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc137 = v240;
 					v240 = loc29;
 					v241.u0 = 0x01;
-					v240 += v241;
+					v240.u5 = v240 + v241;
 					Eq_n loc138 = v240;
 					v240 = loc137;
 					loc7 = v240;
@@ -18212,14 +18212,14 @@ l000F958E:
 	{
 		v240 = loc204;
 		v241.u0 = 0x0C;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc207 = v240;
 		v240 = loc207;
 		v240.u5 = v240.u5->t0000.u5;
 		Eq_n loc208 = v240;
 		v240 = loc204;
 		v241.u0 = 0x10;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc209 = v240;
 		v240 = loc209;
 		v240.u5 = v240.u5->t0000.u5;
@@ -18237,7 +18237,7 @@ l000F958E:
 			Eq_n loc212 = v240;
 			v240 = loc212;
 			v241.u0 = 0x24;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc213 = v240;
 			v240 = loc213;
 			v240.u5 = v240.u5->t0000.u5;
@@ -18332,14 +18332,14 @@ l000F950C:
 		}
 		v240 = loc41;
 		v241.u0 = 0x0C;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc222 = v240;
 		v240 = loc222;
 		v240.u5 = v240.u5->t0000.u5;
 		Eq_n loc223 = v240;
 		v240 = loc41;
 		v241.u0 = 0x10;
-		v240 += v241;
+		v240.u5 = v240 + v241;
 		Eq_n loc224 = v240;
 		v240 = loc224;
 		v240.u5 = v240.u5->t0000.u5;
@@ -18357,7 +18357,7 @@ l000F950C:
 			Eq_n loc227 = v240;
 			v240 = loc227;
 			v241.u0 = 0x24;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc229 = v240;
 			v240 = loc229;
 			v240.u5 = v240.u5->t0000.u5;
@@ -18493,11 +18493,11 @@ l000F941C:
 			}
 			v240 = loc23;
 			v241.u0 = 0x0C;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc147 = v240;
 			v240 = loc32;
 			v241.u0 = 0x01;
-			v240 += v241;
+			v240.u5 = v240 + v241;
 			Eq_n loc148 = v240;
 			v240 = loc147;
 			loc23 = v240;
@@ -18572,7 +18572,7 @@ Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v72.u5 = g_t140030.u5;
 	Eq_n v73;
 	v73.u0 = 0x20;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	g_t140030.u5 = (struct Eq_n *) v72;
 	v72.u5 = g_t140030.u5;
 	v73.u5 = g_t140034.u5;
@@ -18584,21 +18584,21 @@ Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v72 = loc73;
 	v73.u0 = 0x14;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	Eq_n loc7 = v72;
 	v72 = loc73;
 	v73.u0 = 0x10;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	Eq_n loc54 = v72;
 	v72 = loc73;
 	v73.u0 = 0x0C;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	Eq_n loc65 = v72;
 	v72 = loc73;
 	Eq_n loc69 = v72;
 	v72 = arg2;
 	v73.u0 = 0x04;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	Eq_n loc70 = v72;
 	v72 = loc70;
 	v72.u5 = v72.u5->t0000.u5;
@@ -18618,7 +18618,7 @@ Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc16 = v72;
 	v72 = loc16;
 	v73.u0 = 0x18;
-	v72 += v73;
+	v72.u5 = v72 + v73;
 	Eq_n loc17 = v72;
 	v72 = loc17;
 	v72.u5 = v72.u5->t0000.u5;
@@ -18647,7 +18647,7 @@ Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v79.u0 = 0x01FF;
 	v78 &= v79;
 	v79.u0 = 0x1D20;
-	v78 += v79;
+	v78.u5 = v78 + v79;
 }
 
 // 000F98EA: Stack Eq_n fn000F98EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -18659,7 +18659,7 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x50;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -18671,37 +18671,37 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	v33.u0 = 0x3C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0x2F;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x0C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	v33.u0 = 14505;
@@ -18709,11 +18709,11 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u5 = (struct Eq_n *) v33;
 	v32 = loc26;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	v33.u0 = 14505;
 	Eq_n v35;
 	v35.u0 = 0x04;
-	v33 += v35;
+	v33.u5 = v33 + v35;
 	Eq_n v36;
 	v36.u2 = v33.u5->t0000.u2;
 	v33.u5 = (word32) v36;
@@ -18721,11 +18721,11 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u2 = (int16) v37;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -18749,7 +18749,7 @@ Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -18845,7 +18845,7 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x70;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -18857,37 +18857,37 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x20;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0x4F;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x24;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x1C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	Eq_n v35;
@@ -18895,11 +18895,11 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u3 = (uint64) v35;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -18924,7 +18924,7 @@ Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -19020,7 +19020,7 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x50;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -19032,37 +19032,37 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	v33.u0 = 0x3C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0x30;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x0C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	v33.u0 = 14505;
@@ -19070,11 +19070,11 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u5 = (struct Eq_n *) v33;
 	v32 = loc26;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	v33.u0 = 14505;
 	Eq_n v35;
 	v35.u0 = 0x04;
-	v33 += v35;
+	v33.u5 = v33 + v35;
 	Eq_n v36;
 	v36.u2 = v33.u5->t0000.u2;
 	v33.u5 = (word32) v36;
@@ -19082,11 +19082,11 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u2 = (int16) v37;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -19110,7 +19110,7 @@ Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -19206,7 +19206,7 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x70;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -19218,37 +19218,37 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x20;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0x4F;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x24;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x1C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	Eq_n v35;
@@ -19256,11 +19256,11 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u3 = (uint64) v35;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -19285,7 +19285,7 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -19381,7 +19381,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5 = g_t140030.u5;
 	Eq_n v111;
 	v111.u0 = 0xB0;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	g_t140030.u5 = (struct Eq_n *) v110;
 	v110.u5 = g_t140030.u5;
 	v111.u5 = g_t140034.u5;
@@ -19393,53 +19393,53 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v110 = loc111;
 	v111.u0 = 0x4C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc17 = v110;
 	v110 = loc111;
 	v111.u0 = 0x30;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc107 = v110;
 	v110 = loc111;
 	v111.u0 = 0x20;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc106 = v110;
 	v110 = loc111;
 	v111.u0 = 0x18;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc105 = v110;
 	v110 = loc111;
 	v111.u0 = 0x08;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc104 = v110;
 	v110 = loc111;
 	Eq_n loc65 = v110;
 	v110 = loc111;
 	v111.u0 = 0x8A;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc76 = v110;
 	v110 = loc111;
 	v111.u0 = 0x48;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc87 = v110;
 	v110 = loc111;
 	v111.u0 = 0x50;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc98 = v110;
 	v110 = loc111;
 	v111.u0 = 0x44;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc103 = v110;
 	v110 = loc111;
 	v111.u0 = 0x40;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc25 = v110;
 	v110 = loc111;
 	v111.u0 = 0x3C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc26 = v110;
 	v110 = loc111;
 	v111.u0 = 0x38;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc27 = v110;
 	v110 = loc65;
 	Eq_n v113;
@@ -19447,11 +19447,11 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5->t0000.u3 = (uint64) v113;
 	v110 = loc65;
 	v111.u0 = 0x01;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc28 = v110;
 	v110 = arg2;
 	v111.u0 = 0x04;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc29 = v110;
 	v110 = loc29;
 	v110.u5 = v110.u5->t0000.u5;
@@ -19475,7 +19475,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v110 = arg2;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc33 = v110;
 		v110 = loc33;
 		v110.u5 = v110.u5->t0000.u5;
@@ -19485,7 +19485,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v110.u5->t0000.u5 = (struct Eq_n *) v111;
 		v110 = loc104;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc108 = v110;
 		v110 = loc108;
 		v115 = arg4;
@@ -19551,7 +19551,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			{
 				v110 = arg2;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc41 = v110;
 				v110 = loc41;
 				v110.u5 = v110.u5->t0000.u5;
@@ -19563,7 +19563,7 @@ Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110.u5->t0000.u5 = (struct Eq_n *) v111;
 				v110 = loc106;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc109 = v110;
 				v110 = loc109;
 				v115 = arg4;
@@ -19741,7 +19741,7 @@ l000FA317:
 	}
 	v110 = loc22;
 	v111 = loc12;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc60 = v110;
 	v110 = loc22;
 	v111 = loc60;
@@ -20072,7 +20072,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5 = g_t140030.u5;
 	Eq_n v111;
 	v111.u0 = 0xB0;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	g_t140030.u5 = (struct Eq_n *) v110;
 	v110.u5 = g_t140030.u5;
 	v111.u5 = g_t140034.u5;
@@ -20084,53 +20084,53 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v110 = loc111;
 	v111.u0 = 0x4C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc17 = v110;
 	v110 = loc111;
 	v111.u0 = 0x30;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc107 = v110;
 	v110 = loc111;
 	v111.u0 = 0x20;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc106 = v110;
 	v110 = loc111;
 	v111.u0 = 0x18;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc105 = v110;
 	v110 = loc111;
 	v111.u0 = 0x08;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc104 = v110;
 	v110 = loc111;
 	Eq_n loc65 = v110;
 	v110 = loc111;
 	v111.u0 = 0x8A;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc76 = v110;
 	v110 = loc111;
 	v111.u0 = 0x48;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc87 = v110;
 	v110 = loc111;
 	v111.u0 = 0x50;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc98 = v110;
 	v110 = loc111;
 	v111.u0 = 0x44;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc103 = v110;
 	v110 = loc111;
 	v111.u0 = 0x40;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc25 = v110;
 	v110 = loc111;
 	v111.u0 = 0x3C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc26 = v110;
 	v110 = loc111;
 	v111.u0 = 0x38;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc27 = v110;
 	v110 = loc65;
 	Eq_n v113;
@@ -20138,11 +20138,11 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5->t0000.u3 = (uint64) v113;
 	v110 = loc65;
 	v111.u0 = 0x01;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc28 = v110;
 	v110 = arg2;
 	v111.u0 = 0x04;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc29 = v110;
 	v110 = loc29;
 	v110.u5 = v110.u5->t0000.u5;
@@ -20166,7 +20166,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v110 = arg2;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc33 = v110;
 		v110 = loc33;
 		v110.u5 = v110.u5->t0000.u5;
@@ -20176,7 +20176,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v110.u5->t0000.u5 = (struct Eq_n *) v111;
 		v110 = loc104;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc108 = v110;
 		v110 = loc108;
 		v115 = arg4;
@@ -20242,7 +20242,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			{
 				v110 = arg2;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc41 = v110;
 				v110 = loc41;
 				v110.u5 = v110.u5->t0000.u5;
@@ -20254,7 +20254,7 @@ Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110.u5->t0000.u5 = (struct Eq_n *) v111;
 				v110 = loc106;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc109 = v110;
 				v110 = loc109;
 				v115 = arg4;
@@ -20432,7 +20432,7 @@ l000FA7E1:
 	}
 	v110 = loc22;
 	v111 = loc12;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc60 = v110;
 	v110 = loc22;
 	v111 = loc60;
@@ -20763,7 +20763,7 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v34.u5 = g_t140030.u5;
 	Eq_n v35;
 	v35.u0 = 0x60;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	g_t140030.u5 = (struct Eq_n *) v34;
 	v34.u5 = g_t140030.u5;
 	v35.u5 = g_t140034.u5;
@@ -20775,29 +20775,29 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v34 = loc35;
 	v35.u0 = 0x0C;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc6 = v34;
 	v34 = loc35;
 	Eq_n loc33 = v34;
 	v34 = loc35;
 	v35.u0 = 0x4C;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc28 = v34;
 	v34 = loc35;
 	v35.u0 = 0x38;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc29 = v34;
 	v34 = loc35;
 	v35.u0 = 0x10;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc30 = v34;
 	v34 = loc35;
 	v35.u0 = 0x08;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc31 = v34;
 	v34 = loc35;
 	v35.u0 = 0x04;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc32 = v34;
 	v34 = loc28;
 	v35.u0 = 14494;
@@ -20805,11 +20805,11 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v34.u5->t0000.u5 = (struct Eq_n *) v35;
 	v34 = loc28;
 	v35.u0 = 0x04;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	v35.u0 = 14494;
 	Eq_n v37;
 	v37.u0 = 0x04;
-	v35 += v37;
+	v35.u5 = v35 + v37;
 	Eq_n v38;
 	v38.u2 = v35.u5->t0000.u2;
 	v35.u5 = (word32) v38;
@@ -20829,7 +20829,7 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc8 = v34;
 	v34 = loc29;
 	v35 = loc8;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc9 = v34;
 	v34 = loc29;
 	v35 = loc9;
@@ -20867,7 +20867,7 @@ Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		Eq_n loc15 = v34;
 		v34 = loc15;
 		v35.u0 = 0x20;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc16 = v34;
 		v34 = loc16;
 		v34.u5 = v34.u5->t0000.u5;
@@ -20919,7 +20919,7 @@ Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v13.u5 = g_t140030.u5;
 	Eq_n v14;
 	v14.u0 = 0x10;
-	v13 += v14;
+	v13.u5 = v13 + v14;
 	g_t140030.u5 = (struct Eq_n *) v13;
 	v13.u5 = g_t140030.u5;
 	v14.u5 = g_t140034.u5;
@@ -21006,7 +21006,7 @@ Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	v21 = arg2;
 	Eq_n v22;
 	v22.u0 = 0x04;
-	v21 += v22;
+	v21.u5 = v21 + v22;
 	Eq_n loc10 = v21;
 	v21 = loc10;
 	v21.u5 = v21.u5->t0000.u5;
@@ -21080,7 +21080,7 @@ Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 			{
 				v21 = arg0;
 				v22.u0 = 0x01;
-				v21 += v22;
+				v21.u5 = v21 + v22;
 				Eq_n loc7 = v21;
 				v21 = loc7;
 				Eq_n v25;
@@ -21102,7 +21102,7 @@ Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 l000FAAD5:
 					v21 = arg0;
 					v22.u0 = 0x02;
-					v21 += v22;
+					v21.u5 = v21 + v22;
 					Eq_n loc9 = v21;
 					v21 = loc9;
 					loc3 = v21;
@@ -21152,7 +21152,7 @@ l000FAAD5:
 		}
 		v21 = arg0;
 		v22.u0 = 0x01;
-		v21 += v22;
+		v21.u5 = v21 + v22;
 		Eq_n loc14 = v21;
 		v21 = loc14;
 		loc3 = v21;
@@ -21225,7 +21225,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	{
 		v34 = arg0;
 		v35.u0 = 0x01;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc25 = v34;
 		v34 = arg0;
 		v35.u0 = 0x2B;
@@ -21253,7 +21253,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	{
 		v34 = loc3;
 		v35.u0 = 0x01;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc28 = v34;
 		v34 = loc3;
 		v35.u0 = 0x23;
@@ -21288,7 +21288,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	{
 		v34 = loc6;
 		v35.u0 = 0x01;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc11 = v34;
 		v34 = loc6;
 		v35.u0 = 0x2E;
@@ -21296,7 +21296,7 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 		v34.u5->t0000.u0 = (bool) v39;
 		v34 = loc6;
 		v35.u0 = 0x02;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc12 = v34;
 		v34 = loc11;
 		v35.u0 = 0x2A;
@@ -21331,11 +21331,11 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 			break;
 		v34 = loc4;
 		v35.u0 = 0x01;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc15 = v34;
 		v34 = loc7;
 		v35.u0 = 0x01;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc16 = v34;
 		v34 = loc7;
 		v35 = loc13;
@@ -21724,7 +21724,7 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	v22.u5 = g_t140030.u5;
 	Eq_n v23;
 	v23.u0 = 0x10;
-	v22 += v23;
+	v22.u5 = v22 + v23;
 	g_t140030.u5 = (struct Eq_n *) v22;
 	v22.u5 = g_t140030.u5;
 	v23.u5 = g_t140034.u5;
@@ -21854,7 +21854,7 @@ void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v212.u5 = g_t140030.u5;
 	Eq_n v213;
 	v213.u0 = 0x10;
-	v212 += v213;
+	v212.u5 = v212 + v213;
 	g_t140030.u5 = (struct Eq_n *) v212;
 	v212.u5 = g_t140030.u5;
 	v213.u5 = g_t140034.u5;
@@ -21879,7 +21879,7 @@ void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc27 = v212;
 	v212 = loc27;
 	v213.u0 = 0x14;
-	v212 += v213;
+	v212.u5 = v212 + v213;
 	Eq_n loc38 = v212;
 	v212 = loc38;
 	v212.u5 = v212.u5->t0000.u5;
@@ -21928,7 +21928,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	{
 		v23 = arg0;
 		v24.u0 = 0x01;
-		v23 += v24;
+		v23.u5 = v23 + v24;
 		Eq_n loc16 = v23;
 		v23 = arg0;
 		v24.u0 = 0x2B;
@@ -21959,7 +21959,7 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 	{
 		v23 = loc4;
 		v24.u0 = 0x01;
-		v23 += v24;
+		v23.u5 = v23 + v24;
 		Eq_n loc19 = v23;
 		v23 = loc4;
 		v24.u0 = 0x23;
@@ -21990,11 +21990,11 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 			break;
 		v23 = loc5;
 		v24.u0 = 0x01;
-		v23 += v24;
+		v23.u5 = v23 + v24;
 		Eq_n loc9 = v23;
 		v23 = loc6;
 		v24.u0 = 0x01;
-		v23 += v24;
+		v23.u5 = v23 + v24;
 		Eq_n loc10 = v23;
 		v23 = loc6;
 		v24 = loc7;
@@ -22140,7 +22140,7 @@ void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v147.u5 = g_t140030.u5;
 	Eq_n v148;
 	v148.u0 = 0x10;
-	v147 += v148;
+	v147.u5 = v147 + v148;
 	g_t140030.u5 = (struct Eq_n *) v147;
 	v147.u5 = g_t140030.u5;
 	v148.u5 = g_t140034.u5;
@@ -22165,7 +22165,7 @@ void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc23 = v147;
 	v147 = loc23;
 	v148.u0 = 0x14;
-	v147 += v148;
+	v147.u5 = v147 + v148;
 	Eq_n loc34 = v147;
 	v147 = loc34;
 	v147.u5 = v147.u5->t0000.u5;
@@ -22206,7 +22206,7 @@ Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v73.u5 = g_t140030.u5;
 	Eq_n v74;
 	v74.u0 = 0x20;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	g_t140030.u5 = (struct Eq_n *) v73;
 	v73.u5 = g_t140030.u5;
 	v74.u5 = g_t140034.u5;
@@ -22218,21 +22218,21 @@ Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v73 = loc74;
 	v74.u0 = 0x14;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc8 = v73;
 	v73 = loc74;
 	v74.u0 = 0x10;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc55 = v73;
 	v73 = loc74;
 	v74.u0 = 0x0C;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc66 = v73;
 	v73 = loc74;
 	Eq_n loc70 = v73;
 	v73 = arg2;
 	v74.u0 = 0x04;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc71 = v73;
 	v73 = loc71;
 	v73.u5 = v73.u5->t0000.u5;
@@ -22252,7 +22252,7 @@ Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc17 = v73;
 	v73 = loc17;
 	v74.u0 = 0x18;
-	v73 += v74;
+	v73.u5 = v73 + v74;
 	Eq_n loc18 = v73;
 	v73 = loc18;
 	v73.u5 = v73.u5->t0000.u5;
@@ -22281,7 +22281,7 @@ Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v80.u0 = 0x01FF;
 	v79 &= v80;
 	v80.u0 = 0x1D20;
-	v79 += v80;
+	v79.u5 = v79 + v80;
 }
 
 // 000FC3DF: Stack Eq_n fn000FC3DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -22293,7 +22293,7 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x90;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -22305,37 +22305,37 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x70;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	v33.u0 = 0x82;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 116;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x0C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	v33.u0 = 14505;
@@ -22343,11 +22343,11 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u5 = (struct Eq_n *) v33;
 	v32 = loc26;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	v33.u0 = 14505;
 	Eq_n v35;
 	v35.u0 = 0x04;
-	v33 += v35;
+	v33.u5 = v33 + v35;
 	Eq_n v36;
 	v36.u2 = v33.u5->t0000.u2;
 	v33.u5 = (word32) v36;
@@ -22355,11 +22355,11 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u2 = (int16) v37;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -22383,7 +22383,7 @@ Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -22479,7 +22479,7 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0xF0;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -22491,37 +22491,37 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0xCC;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0xD0;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x20;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x1C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	Eq_n v35;
@@ -22529,11 +22529,11 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u3 = (uint64) v35;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -22558,7 +22558,7 @@ Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -22654,7 +22654,7 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0x80;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -22666,37 +22666,37 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0x68;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	v33.u0 = 0x78;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0x6C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x0C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	v33.u0 = 14505;
@@ -22704,11 +22704,11 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u5 = (struct Eq_n *) v33;
 	v32 = loc26;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	v33.u0 = 14505;
 	Eq_n v35;
 	v35.u0 = 0x04;
-	v33 += v35;
+	v33.u5 = v33 + v35;
 	Eq_n v36;
 	v36.u2 = v33.u5->t0000.u2;
 	v33.u5 = (word32) v36;
@@ -22716,11 +22716,11 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u2 = (int16) v37;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -22744,7 +22744,7 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -22840,7 +22840,7 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5 = g_t140030.u5;
 	Eq_n v33;
 	v33.u0 = 0xF0;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	g_t140030.u5 = (struct Eq_n *) v32;
 	v32.u5 = g_t140030.u5;
 	v33.u5 = g_t140034.u5;
@@ -22852,37 +22852,37 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v32 = loc33;
 	v33.u0 = 0xCC;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc5 = v32;
 	v32 = loc33;
 	v33.u0 = 0x08;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc31 = v32;
 	v32 = loc33;
 	Eq_n loc26 = v32;
 	v32 = loc33;
 	v33.u0 = 0xD0;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc27 = v32;
 	v32 = loc33;
 	v33.u0 = 0x20;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc28 = v32;
 	v32 = loc33;
 	v33.u0 = 0x1C;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc29 = v32;
 	v32 = loc33;
 	v33.u0 = 0x18;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc30 = v32;
 	v32 = loc33;
 	v33.u0 = 0x14;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc6 = v32;
 	v32 = loc33;
 	v33.u0 = 0x10;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc7 = v32;
 	v32 = loc26;
 	Eq_n v35;
@@ -22890,11 +22890,11 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v32.u5->t0000.u3 = (uint64) v35;
 	v32 = loc26;
 	v33.u0 = 0x01;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc8 = v32;
 	v32 = arg2;
 	v33.u0 = 0x04;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc9 = v32;
 	v32 = loc9;
 	v32.u5 = v32.u5->t0000.u5;
@@ -22919,7 +22919,7 @@ Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc12 = v32;
 	v32 = loc27;
 	v33 = loc12;
-	v32 += v33;
+	v32.u5 = v32 + v33;
 	Eq_n loc13 = v32;
 	v32 = loc27;
 	v33 = loc13;
@@ -23015,7 +23015,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5 = g_t140030.u5;
 	Eq_n v111;
 	v111.u0 = 0x0160;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	g_t140030.u5 = (struct Eq_n *) v110;
 	v110.u5 = g_t140030.u5;
 	v111.u5 = g_t140034.u5;
@@ -23027,53 +23027,53 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v110 = loc111;
 	v111.u0 = 0x0130;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc17 = v110;
 	v110 = loc111;
 	v111.u0 = 0x30;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc107 = v110;
 	v110 = loc111;
 	v111.u0 = 0x20;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc106 = v110;
 	v110 = loc111;
 	v111.u0 = 0x18;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc105 = v110;
 	v110 = loc111;
 	v111.u0 = 0x08;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc104 = v110;
 	v110 = loc111;
 	Eq_n loc65 = v110;
 	v110 = loc111;
 	v111.u0 = 0x0134;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc76 = v110;
 	v110 = loc111;
 	v111.u0 = 300;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc87 = v110;
 	v110 = loc111;
 	v111.u0 = 0x48;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc98 = v110;
 	v110 = loc111;
 	v111.u0 = 0x44;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc103 = v110;
 	v110 = loc111;
 	v111.u0 = 0x40;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc25 = v110;
 	v110 = loc111;
 	v111.u0 = 0x3C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc26 = v110;
 	v110 = loc111;
 	v111.u0 = 0x38;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc27 = v110;
 	v110 = loc65;
 	Eq_n v113;
@@ -23081,11 +23081,11 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5->t0000.u3 = (uint64) v113;
 	v110 = loc65;
 	v111.u0 = 0x01;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc28 = v110;
 	v110 = arg2;
 	v111.u0 = 0x04;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc29 = v110;
 	v110 = loc29;
 	v110.u5 = v110.u5->t0000.u5;
@@ -23109,7 +23109,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v110 = arg2;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc33 = v110;
 		v110 = loc33;
 		v110.u5 = v110.u5->t0000.u5;
@@ -23119,7 +23119,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v110.u5->t0000.u5 = (struct Eq_n *) v111;
 		v110 = loc104;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc108 = v110;
 		v110 = loc108;
 		v115 = arg4;
@@ -23185,7 +23185,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			{
 				v110 = arg2;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc41 = v110;
 				v110 = loc41;
 				v110.u5 = v110.u5->t0000.u5;
@@ -23197,7 +23197,7 @@ Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110.u5->t0000.u5 = (struct Eq_n *) v111;
 				v110 = loc106;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc109 = v110;
 				v110 = loc109;
 				v115 = arg4;
@@ -23375,7 +23375,7 @@ l000FCE18:
 	}
 	v110 = loc22;
 	v111 = loc12;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc60 = v110;
 	v110 = loc22;
 	v111 = loc60;
@@ -23706,7 +23706,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5 = g_t140030.u5;
 	Eq_n v111;
 	v111.u0 = 0x0160;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	g_t140030.u5 = (struct Eq_n *) v110;
 	v110.u5 = g_t140030.u5;
 	v111.u5 = g_t140034.u5;
@@ -23718,53 +23718,53 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v110 = loc111;
 	v111.u0 = 0x0130;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc17 = v110;
 	v110 = loc111;
 	v111.u0 = 0x30;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc107 = v110;
 	v110 = loc111;
 	v111.u0 = 0x20;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc106 = v110;
 	v110 = loc111;
 	v111.u0 = 0x18;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc105 = v110;
 	v110 = loc111;
 	v111.u0 = 0x08;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc104 = v110;
 	v110 = loc111;
 	Eq_n loc65 = v110;
 	v110 = loc111;
 	v111.u0 = 0x0134;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc76 = v110;
 	v110 = loc111;
 	v111.u0 = 300;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc87 = v110;
 	v110 = loc111;
 	v111.u0 = 0x48;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc98 = v110;
 	v110 = loc111;
 	v111.u0 = 0x44;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc103 = v110;
 	v110 = loc111;
 	v111.u0 = 0x40;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc25 = v110;
 	v110 = loc111;
 	v111.u0 = 0x3C;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc26 = v110;
 	v110 = loc111;
 	v111.u0 = 0x38;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc27 = v110;
 	v110 = loc65;
 	Eq_n v113;
@@ -23772,11 +23772,11 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v110.u5->t0000.u3 = (uint64) v113;
 	v110 = loc65;
 	v111.u0 = 0x01;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc28 = v110;
 	v110 = arg2;
 	v111.u0 = 0x04;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc29 = v110;
 	v110 = loc29;
 	v110.u5 = v110.u5->t0000.u5;
@@ -23800,7 +23800,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	{
 		v110 = arg2;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc33 = v110;
 		v110 = loc33;
 		v110.u5 = v110.u5->t0000.u5;
@@ -23810,7 +23810,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		v110.u5->t0000.u5 = (struct Eq_n *) v111;
 		v110 = loc104;
 		v111.u0 = 0x08;
-		v110 += v111;
+		v110.u5 = v110 + v111;
 		Eq_n loc108 = v110;
 		v110 = loc108;
 		v115 = arg4;
@@ -23876,7 +23876,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 			{
 				v110 = arg2;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc41 = v110;
 				v110 = loc41;
 				v110.u5 = v110.u5->t0000.u5;
@@ -23888,7 +23888,7 @@ Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				v110.u5->t0000.u5 = (struct Eq_n *) v111;
 				v110 = loc106;
 				v111.u0 = 0x08;
-				v110 += v111;
+				v110.u5 = v110 + v111;
 				Eq_n loc109 = v110;
 				v110 = loc109;
 				v115 = arg4;
@@ -24066,7 +24066,7 @@ l000FD2E2:
 	}
 	v110 = loc22;
 	v111 = loc12;
-	v110 += v111;
+	v110.u5 = v110 + v111;
 	Eq_n loc60 = v110;
 	v110 = loc22;
 	v111 = loc60;
@@ -24397,7 +24397,7 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v34.u5 = g_t140030.u5;
 	Eq_n v35;
 	v35.u0 = 0xC0;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	g_t140030.u5 = (struct Eq_n *) v34;
 	v34.u5 = g_t140030.u5;
 	v35.u5 = g_t140034.u5;
@@ -24409,29 +24409,29 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	}
 	v34 = loc35;
 	v35.u0 = 0xA0;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc6 = v34;
 	v34 = loc35;
 	Eq_n loc33 = v34;
 	v34 = loc35;
 	v35.u0 = 0xB8;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc28 = v34;
 	v34 = loc35;
 	v35.u0 = 0xA4;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc29 = v34;
 	v34 = loc35;
 	v35.u0 = 0x0C;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc30 = v34;
 	v34 = loc35;
 	v35.u0 = 0x08;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc31 = v34;
 	v34 = loc35;
 	v35.u0 = 0x04;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc32 = v34;
 	v34 = loc28;
 	v35.u0 = 14494;
@@ -24439,11 +24439,11 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v34.u5->t0000.u5 = (struct Eq_n *) v35;
 	v34 = loc28;
 	v35.u0 = 0x04;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	v35.u0 = 14494;
 	Eq_n v37;
 	v37.u0 = 0x04;
-	v35 += v37;
+	v35.u5 = v35 + v37;
 	Eq_n v38;
 	v38.u2 = v35.u5->t0000.u2;
 	v35.u5 = (word32) v38;
@@ -24463,7 +24463,7 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	Eq_n loc8 = v34;
 	v34 = loc29;
 	v35 = loc8;
-	v34 += v35;
+	v34.u5 = v34 + v35;
 	Eq_n loc9 = v34;
 	v34 = loc29;
 	v35 = loc9;
@@ -24501,7 +24501,7 @@ Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		Eq_n loc15 = v34;
 		v34 = loc15;
 		v35.u0 = 0x30;
-		v34 += v35;
+		v34.u5 = v34 + v35;
 		Eq_n loc16 = v34;
 		v34 = loc16;
 		v34.u5 = v34.u5->t0000.u5;
@@ -24543,7 +24543,7 @@ Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v51.u5 = g_t140030.u5;
 	Eq_n v52;
 	v52.u0 = 0x10;
-	v51 += v52;
+	v51.u5 = v51 + v52;
 	g_t140030.u5 = (struct Eq_n *) v51;
 	v51.u5 = g_t140030.u5;
 	v52.u5 = g_t140034.u5;
@@ -24579,7 +24579,7 @@ Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc10 = v51;
 		v51 = arg4;
 		v52.u0 = 0x0C;
-		v51 += v52;
+		v51.u5 = v51 + v52;
 		Eq_n loc11 = v51;
 		v51 = loc11;
 		v51.u5 = v51.u5->t0000.u5;
@@ -24619,7 +24619,7 @@ Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		Eq_n loc19 = v51;
 		v51 = loc19;
 		v52.u0 = 0x30;
-		v51 += v52;
+		v51.u5 = v51 + v52;
 		Eq_n loc20 = v51;
 		v51 = loc20;
 		v51.u5 = v51.u5->t0000.u5;
@@ -24632,7 +24632,7 @@ Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v56.u0 = 0x01FF;
 		v55 &= v56;
 		v56.u0 = 0x0F20;
-		v55 += v56;
+		v55.u5 = v55 + v56;
 	}
 	else
 	{
@@ -24650,7 +24650,7 @@ void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v212.u5 = g_t140030.u5;
 	Eq_n v213;
 	v213.u0 = 0x10;
-	v212 += v213;
+	v212.u5 = v212 + v213;
 	g_t140030.u5 = (struct Eq_n *) v212;
 	v212.u5 = g_t140030.u5;
 	v213.u5 = g_t140034.u5;
@@ -24675,7 +24675,7 @@ void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc27 = v212;
 	v212 = loc27;
 	v213.u0 = 0x14;
-	v212 += v213;
+	v212.u5 = v212 + v213;
 	Eq_n loc38 = v212;
 	v212 = loc38;
 	v212.u5 = v212.u5->t0000.u5;
@@ -24698,7 +24698,7 @@ void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v144.u5 = g_t140030.u5;
 	Eq_n v145;
 	v145.u0 = 0x10;
-	v144 += v145;
+	v144.u5 = v144 + v145;
 	g_t140030.u5 = (struct Eq_n *) v144;
 	v144.u5 = g_t140030.u5;
 	v145.u5 = g_t140034.u5;
@@ -24723,7 +24723,7 @@ void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	Eq_n loc22 = v144;
 	v144 = loc22;
 	v145.u0 = 0x14;
-	v144 += v145;
+	v144.u5 = v144 + v145;
 	Eq_n loc33 = v144;
 	v144 = loc33;
 	v144.u5 = v144.u5->t0000.u5;
@@ -24774,7 +24774,7 @@ Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v12.u5 = g_t140030.u5;
 	Eq_n v13;
 	v13.u0 = 0x10;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	g_t140030.u5 = (struct Eq_n *) v12;
 	v12.u5 = g_t140030.u5;
 	v13.u5 = g_t140034.u5;
@@ -24786,15 +24786,15 @@ Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v12 = loc14;
 	v13.u0 = 0x0C;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc7 = v12;
 	v12 = loc14;
 	v13.u0 = 0x08;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc6 = v12;
 	v12 = loc14;
 	v13.u0 = 0x04;
-	v12 += v13;
+	v12.u5 = v12 + v13;
 	Eq_n loc9 = v12;
 	v12 = loc14;
 	Eq_n loc10 = v12;
@@ -24845,7 +24845,7 @@ Eq_n fn000FE7B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v27.u5 = g_t140030.u5;
 	Eq_n v28;
 	v28.u0 = 0x10;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	g_t140030.u5 = (struct Eq_n *) v27;
 	v27.u5 = g_t140030.u5;
 	v28.u5 = g_t140034.u5;
@@ -24857,28 +24857,28 @@ Eq_n fn000FE7B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v27 = loc29;
 	v28.u0 = 0x0C;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	Eq_n loc7 = v27;
 	v27 = loc29;
 	v28.u0 = 0x08;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	Eq_n loc6 = v27;
 	v27 = loc29;
 	v28.u0 = 0x04;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	Eq_n loc24 = v27;
 	v27 = loc29;
 	Eq_n loc25 = v27;
 	v27 = arg0;
 	v28.u0 = 0x08;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	Eq_n loc26 = v27;
 	v27 = loc26;
 	v27.u5 = v27.u5->t0000.u5;
 	Eq_n loc27 = v27;
 	v27 = loc27;
 	v28.u0 = 0x14;
-	v27 += v28;
+	v27.u5 = v27 + v28;
 	Eq_n loc8 = v27;
 	v27 = loc8;
 	v27.u5 = v27.u5->t0000.u5;
@@ -24900,7 +24900,7 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v17.u5 = g_t140030.u5;
 	Eq_n v18;
 	v18.u0 = 0x10;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	g_t140030.u5 = (struct Eq_n *) v17;
 	v17.u5 = g_t140030.u5;
 	v18.u5 = g_t140034.u5;
@@ -24912,11 +24912,11 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v17 = loc19;
 	v18.u0 = 0x08;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc6 = v17;
 	v17 = loc19;
 	v18.u0 = 0x04;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc14 = v17;
 	v17 = loc19;
 	Eq_n loc15 = v17;
@@ -24949,7 +24949,7 @@ Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 = fn0011B43F(v17);
 		v17 = arg5;
 		v18.u0 = 0x18;
-		v17 += v18;
+		v17.u5 = v17 + v18;
 		Eq_n loc10 = v17;
 		v17 = arg2;
 		v17.u5 = v17.u5->t0000.u5;
@@ -25000,7 +25000,7 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v17.u5 = g_t140030.u5;
 	Eq_n v18;
 	v18.u0 = 0x10;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	g_t140030.u5 = (struct Eq_n *) v17;
 	v17.u5 = g_t140030.u5;
 	v18.u5 = g_t140034.u5;
@@ -25012,11 +25012,11 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v17 = loc19;
 	v18.u0 = 0x08;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc6 = v17;
 	v17 = loc19;
 	v18.u0 = 0x04;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc14 = v17;
 	v17 = loc19;
 	Eq_n loc15 = v17;
@@ -25049,7 +25049,7 @@ Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 = fn0011B43F(v17);
 		v17 = arg5;
 		v18.u0 = 0x10;
-		v17 += v18;
+		v17.u5 = v17 + v18;
 		Eq_n loc10 = v17;
 		v17 = arg2;
 		v17.u5 = v17.u5->t0000.u5;
@@ -25100,7 +25100,7 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v17.u5 = g_t140030.u5;
 	Eq_n v18;
 	v18.u0 = 0x10;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	g_t140030.u5 = (struct Eq_n *) v17;
 	v17.u5 = g_t140030.u5;
 	v18.u5 = g_t140034.u5;
@@ -25112,11 +25112,11 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v17 = loc19;
 	v18.u0 = 0x08;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc6 = v17;
 	v17 = loc19;
 	v18.u0 = 0x04;
-	v17 += v18;
+	v17.u5 = v17 + v18;
 	Eq_n loc14 = v17;
 	v17 = loc19;
 	Eq_n loc15 = v17;
@@ -25149,7 +25149,7 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 		v17 = fn0011B43F(v17);
 		v17 = arg5;
 		v18.u0 = 0x14;
-		v17 += v18;
+		v17.u5 = v17 + v18;
 		Eq_n loc10 = v17;
 		v17 = arg2;
 		v17.u5 = v17.u5->t0000.u5;
@@ -25200,7 +25200,7 @@ Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	v163.u5 = g_t140030.u5;
 	Eq_n v164;
 	v164.u0 = 0x0100;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	g_t140030.u5 = (struct Eq_n *) v163;
 	v163.u5 = g_t140030.u5;
 	v164.u5 = g_t140034.u5;
@@ -25212,251 +25212,251 @@ Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 	}
 	v163 = loc167;
 	v164.u0 = 0xF8;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc32 = v163;
 	v163 = loc167;
 	v164.u0 = 244;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc30 = v163;
 	v163 = loc167;
 	v164.u0 = 0xF0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc29 = v163;
 	v163 = loc167;
 	v164.u0 = 0xEC;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc28 = v163;
 	v163 = loc167;
 	v164.u0 = 232;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc27 = v163;
 	v163 = loc167;
 	v164.u0 = 228;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc26 = v163;
 	v163 = loc167;
 	v164.u0 = 0xE0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc25 = v163;
 	v163 = loc167;
 	v164.u0 = 220;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc24 = v163;
 	v163 = loc167;
 	v164.u0 = 0xD8;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc23 = v163;
 	v163 = loc167;
 	v164.u0 = 212;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc22 = v163;
 	v163 = loc167;
 	v164.u0 = 0xD0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc21 = v163;
 	v163 = loc167;
 	v164.u0 = 0xCC;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc19 = v163;
 	v163 = loc167;
 	v164.u0 = 200;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc18 = v163;
 	v163 = loc167;
 	v164.u0 = 0xC4;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc17 = v163;
 	v163 = loc167;
 	v164.u0 = 0xC0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc16 = v163;
 	v163 = loc167;
 	v164.u0 = 188;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc15 = v163;
 	v163 = loc167;
 	v164.u0 = 0xB8;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc14 = v163;
 	v163 = loc167;
 	v164.u0 = 0xB4;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc13 = v163;
 	v163 = loc167;
 	v164.u0 = 0xB0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc12 = v163;
 	v163 = loc167;
 	v164.u0 = 0xAC;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc11 = v163;
 	v163 = loc167;
 	v164.u0 = 0xA8;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc10 = v163;
 	v163 = loc167;
 	v164.u0 = 0xA4;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc38 = v163;
 	v163 = loc167;
 	v164.u0 = 0xA0;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc37 = v163;
 	v163 = loc167;
 	v164.u0 = 0x9C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc36 = v163;
 	v163 = loc167;
 	v164.u0 = 0x98;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc35 = v163;
 	v163 = loc167;
 	v164.u0 = 0x94;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc34 = v163;
 	v163 = loc167;
 	v164.u0 = 0x90;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc33 = v163;
 	v163 = loc167;
 	v164.u0 = 0x8C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc31 = v163;
 	v163 = loc167;
 	v164.u0 = 0x88;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc20 = v163;
 	v163 = loc167;
 	v164.u0 = 0x84;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc9 = v163;
 	v163 = loc167;
 	v164.u0 = 0x80;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc8 = v163;
 	v163 = loc167;
 	v164.u0 = 0x7C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc144 = v163;
 	v163 = loc167;
 	v164.u0 = 0x78;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc155 = v163;
 	v163 = loc167;
 	v164.u0 = 116;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc41 = v163;
 	v163 = loc167;
 	v164.u0 = 0x70;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc52 = v163;
 	v163 = loc167;
 	v164.u0 = 0x6C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc63 = v163;
 	v163 = loc167;
 	v164.u0 = 0x68;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc74 = v163;
 	v163 = loc167;
 	v164.u0 = 100;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc78 = v163;
 	v163 = loc167;
 	v164.u0 = 0x60;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc79 = v163;
 	v163 = loc167;
 	v164.u0 = 0x5C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc80 = v163;
 	v163 = loc167;
 	v164.u0 = 88;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc81 = v163;
 	v163 = loc167;
 	v164.u0 = 0x54;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc82 = v163;
 	v163 = loc167;
 	v164.u0 = 0x50;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc83 = v163;
 	v163 = loc167;
 	v164.u0 = 0x4C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc84 = v163;
 	v163 = loc167;
 	v164.u0 = 0x48;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc85 = v163;
 	v163 = loc167;
 	v164.u0 = 0x44;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc86 = v163;
 	v163 = loc167;
 	v164.u0 = 0x40;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc87 = v163;
 	v163 = loc167;
 	v164.u0 = 0x3C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc88 = v163;
 	v163 = loc167;
 	v164.u0 = 0x38;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc89 = v163;
 	v163 = loc167;
 	v164.u0 = 0x34;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc90 = v163;
 	v163 = loc167;
 	v164.u0 = 0x30;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc91 = v163;
 	v163 = loc167;
 	v164.u0 = 44;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc92 = v163;
 	v163 = loc167;
 	v164.u0 = 0x28;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc93 = v163;
 	v163 = loc167;
 	v164.u0 = 0x24;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc94 = v163;
 	v163 = loc167;
 	v164.u0 = 0x20;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc95 = v163;
 	v163 = loc167;
 	v164.u0 = 0x1C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc96 = v163;
 	v163 = loc167;
 	v164.u0 = 0x18;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc97 = v163;
 	v163 = loc167;
 	v164.u0 = 0x14;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc98 = v163;
 	v163 = loc167;
 	v164.u0 = 0x10;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc99 = v163;
 	v163 = loc167;
 	v164.u0 = 0x0C;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc100 = v163;
 	v163 = loc167;
 	v164.u0 = 0x08;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc101 = v163;
 	v163 = loc167;
 	v164.u0 = 0x04;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc102 = v163;
 	v163 = loc167;
 	Eq_n loc103 = v163;
@@ -25527,7 +25527,7 @@ l000FEE5D:
 l000FEE5F:
 		v163 = arg5;
 		v164.u0 = 0x10;
-		v163 += v164;
+		v163.u5 = v163 + v164;
 		Eq_n loc113 = v163;
 		v163 = arg2;
 		v163.u5 = v163.u5->t0000.u5;
@@ -25551,14 +25551,14 @@ l000FEE5F:
 	case 0x05:
 		v163 = arg0;
 		v164.u0 = 0x08;
-		v163 += v164;
+		v163.u5 = v163 + v164;
 		Eq_n loc115 = v163;
 		v163 = loc115;
 		v163.u5 = v163.u5->t0000.u5;
 		Eq_n loc116 = v163;
 		v163 = loc116;
 		v164.u0 = 0x0C;
-		v163 += v164;
+		v163.u5 = v163 + v164;
 		Eq_n loc117 = v163;
 		v163 = loc117;
 		v163.u5 = v163.u5->t0000.u5;
@@ -25568,11 +25568,11 @@ l000FEE5F:
 		v166.u0 = 0x01FF;
 		v164 &= v166;
 		v166.u0 = 0x0B00;
-		v164 += v166;
+		v164.u5 = v164 + v166;
 	}
 	v163 = arg5;
 	v164.u0 = 0x18;
-	v163 += v164;
+	v163.u5 = v163 + v164;
 	Eq_n loc111 = v163;
 	v163 = arg2;
 	v163.u5 = v163.u5->t0000.u5;
@@ -25667,7 +25667,7 @@ Eq_n fn000FF5D5(Eq_n arg0)
 						v51.u5->t0000.u3 = (uint64) v56;
 						v51 = loc45;
 						v53.u0 = 0x08;
-						v51 += v53;
+						v51.u5 = v51 + v53;
 						v53.u0 = 0x00;
 						v51.u5->t0000.u5 = (struct Eq_n *) v53;
 						v51.u0 = 0x00;
@@ -25685,21 +25685,21 @@ Eq_n fn000FF5D5(Eq_n arg0)
 							v53 = loc1;
 							v57 = 0x02;
 							v53 <<= v57;
-							v51 += v53;
+							v51.u5 = v51 + v53;
 							Eq_n loc3 = v51;
 							v51 = loc3;
 							v53.u0 = 0x00;
 							v51.u5->t0000.u5 = (struct Eq_n *) v53;
 							v51 = loc1;
 							v53.u0 = 0x01;
-							v51 += v53;
+							v51.u5 = v51 + v53;
 							Eq_n loc4 = v51;
 							v51 = loc4;
 							loc1 = v51;
 						}
 						v51 = loc45;
 						v53.u0 = 0x0C;
-						v51 += v53;
+						v51.u5 = v51 + v53;
 						Eq_n loc5 = v51;
 						v51 = loc5;
 						v53.u0 = 20440;
@@ -26085,7 +26085,7 @@ l000FFDB5:
 				v71.u5->t0000.u3 = (uint64) v76;
 				v71 = loc65;
 				v73.u0 = 0x08;
-				v71 += v73;
+				v71.u5 = v71 + v73;
 				v73.u0 = 0x00;
 				v71.u5->t0000.u5 = (struct Eq_n *) v73;
 				v71.u0 = 0x00;
@@ -26103,21 +26103,21 @@ l000FFDB5:
 					v73 = loc1;
 					v77 = 0x02;
 					v73 <<= v77;
-					v71 += v73;
+					v71.u5 = v71 + v73;
 					Eq_n loc3 = v71;
 					v71 = loc3;
 					v73.u0 = 0x00;
 					v71.u5->t0000.u5 = (struct Eq_n *) v73;
 					v71 = loc1;
 					v73.u0 = 0x01;
-					v71 += v73;
+					v71.u5 = v71 + v73;
 					Eq_n loc4 = v71;
 					v71 = loc4;
 					loc1 = v71;
 				}
 				v71 = loc65;
 				v73.u0 = 0x0C;
-				v71 += v73;
+				v71.u5 = v71 + v73;
 				Eq_n loc5 = v71;
 				v71 = loc5;
 				v73.u0 = 20268;
@@ -26669,7 +26669,7 @@ Eq_n fn000FFDC5(Eq_n arg0)
 						v27.u5->t0000.u3 = (uint64) v32;
 						v27 = loc21;
 						v29.u0 = 0x08;
-						v27 += v29;
+						v27.u5 = v27 + v29;
 						v29.u0 = 0x00;
 						v27.u5->t0000.u5 = (struct Eq_n *) v29;
 						v27.u0 = 0x00;
@@ -26687,21 +26687,21 @@ Eq_n fn000FFDC5(Eq_n arg0)
 							v29 = loc1;
 							v33 = 0x02;
 							v29 <<= v33;
-							v27 += v29;
+							v27.u5 = v27 + v29;
 							Eq_n loc3 = v27;
 							v27 = loc3;
 							v29.u0 = 0x00;
 							v27.u5->t0000.u5 = (struct Eq_n *) v29;
 							v27 = loc1;
 							v29.u0 = 0x01;
-							v27 += v29;
+							v27.u5 = v27 + v29;
 							Eq_n loc4 = v27;
 							v27 = loc4;
 							loc1 = v27;
 						}
 						v27 = loc21;
 						v29.u0 = 0x0C;
-						v27 += v29;
+						v27.u5 = v27 + v29;
 						Eq_n loc5 = v27;
 						v27 = loc5;
 						v29.u0 = 0x4E08;
@@ -26817,7 +26817,7 @@ Eq_n fn000FFF20(Eq_n arg0)
 			v13.u5->t0000.u3 = (uint64) v17;
 			v13.u0 = 0x4CDC;
 			v15.u0 = 0x08;
-			v13 += v15;
+			v13.u5 = v13 + v15;
 			v15.u0 = 0x00;
 			v13.u5->t0000.u5 = (struct Eq_n *) v15;
 			v13.u0 = 0x00;
@@ -26897,7 +26897,7 @@ Eq_n fn000FFFB8(Eq_n arg0)
 			v13.u5->t0000.u3 = (uint64) v17;
 			v13.u0 = 0x4CD0;
 			v15.u0 = 0x08;
-			v13 += v15;
+			v13.u5 = v13 + v15;
 			v15.u0 = 0x00;
 			v13.u5->t0000.u5 = (struct Eq_n *) v15;
 			v13.u0 = 0x00;

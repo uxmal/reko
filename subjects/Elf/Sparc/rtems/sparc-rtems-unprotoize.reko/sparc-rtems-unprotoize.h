@@ -26,8 +26,8 @@ Eq_1: (struct "Globals"
 		(17148 (str char) str17148)
 		(17170 (str char) str17170)
 		(17190 (str char) str17190)
-		(171C8 char b171C8)
-		(171D0 char b171D0)
+		(171C8 (str char) str171C8)
+		(171D0 (str char) str171D0)
 		(171D8 (str char) str171D8)
 		(17218 (str char) str17218)
 		(17250 (str char) str17250)
@@ -965,7 +965,7 @@ Eq_163: (union "Eq_163" (ptr32 u0) (size_t u1) (ssize_t u2))
 	T_1588 (in 0xC<32> @ 00012330 : word32)
 	T_1813 (in 0x2C<32> @ 00012520 : word32)
 	T_2127 (in i0_370 - (i0_280 + 3<32>) @ 000127B4 : word32)
-	T_2430 (in i0_641 - (i0_561 + 5<32>) @ 000129E8 : word32)
+	T_2430 (in i0_641 - (i0_561 + (char *) 5<32>) @ 000129E8 : word32)
 	T_2546 (in i0_683 - &i0_641->b0002 @ 00012A78 : word32)
 	T_2562 (in strlen(o0) @ 00012B7C : size_t)
 	T_2660 (in l0_175 + 6<32> << 2<32> @ 00012D84 : word32)
@@ -1094,13 +1094,13 @@ Eq_213: (struct "Eq_213"
 	T_818 (in o0 @ 00011D18 : (ptr32 Eq_213))
 	T_823 (in Mem35[o0 + 12<i32>:word32] @ 00011D40 : word32)
 	T_1909 (in l2_163 @ 000125D4 : (ptr32 Eq_213))
-	T_2128 (in dupnstr(i0_280 + 4<32>, i0_370 - (i0_280 + 3<32>)) @ 000127B4 : word32)
+	T_2128 (in dupnstr(i0_280 + (char *) 4<32>, i0_370 - (i0_280 + 3<32>)) @ 000127B4 : word32)
 	T_2131 (in Mem394[l2_163 + 12<i32>:word32] @ 000127B4 : word32)
 	T_2266 (in 0<32> @ 00012928 : word32)
 	T_2269 (in Mem548[l2_163 + 36<i32>:word32] @ 00012928 : word32)
 	T_2294 (in o0 @ 000128EC : (ptr32 char))
 	T_2298 (in Mem516[l2_163 + 12<i32>:word32] @ 000128EC : word32)
-	T_2431 (in dupnstr(i0_561 + 5<32>, i0_641 - (i0_561 + 5<32>)) @ 000129E8 : word32)
+	T_2431 (in dupnstr(i0_561 + (char *) 5<32>, i0_641 - (i0_561 + (char *) 5<32>)) @ 000129E8 : word32)
 	T_2434 (in Mem651[l2_163 + 36<i32>:word32] @ 000129E8 : word32)
 	T_2496 (in Mem718[l2_163 + 36<i32>:word32] @ 00012AA0 : word32)
 	T_2547 (in dupnstr(&i0_641->b0002, i0_683 - &i0_641->b0002) @ 00012A78 : word32)
@@ -4976,7 +4976,7 @@ T_482: (in 0x2F<32> @ 00011A28 : word32)
   Class: Eq_481
   DataType: int32
   OrigDataType: word32
-T_483: (in CONVERT(Mem35[o0 + strlen(l1_62->ptr0000):int8], int8, int32) == 0x2F<32> @ 00011A28 : bool)
+T_483: (in (int32) *(o0 + strlen(l1_62->ptr0000)) == 0x2F<32> @ 00011A28 : bool)
   Class: Eq_483
   DataType: bool
   OrigDataType: bool
@@ -5268,7 +5268,7 @@ T_555: (in 0x2F<32> @ 00011AD8 : word32)
   Class: Eq_554
   DataType: int32
   OrigDataType: word32
-T_556: (in CONVERT(Mem35[o0 + strlen(l1_53->ptr0000):int8], int8, int32) != 0x2F<32> @ 00011AD8 : bool)
+T_556: (in (int32) *(o0 + strlen(l1_53->ptr0000)) != 0x2F<32> @ 00011AD8 : bool)
   Class: Eq_556
   DataType: bool
   OrigDataType: bool
@@ -5640,7 +5640,7 @@ T_648: (in 0x2F<32> @ 00011BA0 : word32)
   Class: Eq_647
   DataType: int32
   OrigDataType: word32
-T_649: (in CONVERT(Mem35[o0_53 - strlen(l0_56->ptr0000) + o0 + -1<i32>:int8], int8, int32) != 0x2F<32> @ 00011BA0 : bool)
+T_649: (in (int32) *((word32) (o0_53 - strlen(l0_56->ptr0000) + o0) - 1<i32>) != 0x2F<32> @ 00011BA0 : bool)
   Class: Eq_649
   DataType: bool
   OrigDataType: bool
@@ -6656,7 +6656,7 @@ T_900: (in CONVERT(Mem86[i0_149 + o0_90:int8], int8, int32) @ 00011DF8 : int32)
   Class: Eq_412
   DataType: int32
   OrigDataType: int32
-T_901: (in is_id_char(CONVERT(Mem86[i0_149 + o0_90:int8], int8, int32)) @ 00011DF8 : word32)
+T_901: (in is_id_char((int32) *(i0_149 + o0_90)) @ 00011DF8 : word32)
   Class: Eq_901
   DataType: word32
   OrigDataType: word32
@@ -6664,7 +6664,7 @@ T_902: (in 0<32> @ 00011DF8 : word32)
   Class: Eq_901
   DataType: word32
   OrigDataType: word32
-T_903: (in is_id_char(CONVERT(Mem86[i0_149 + o0_90:int8], int8, int32)) != 0<32> @ 00011DF8 : bool)
+T_903: (in is_id_char((int32) *(i0_149 + o0_90)) != 0<32> @ 00011DF8 : bool)
   Class: Eq_903
   DataType: bool
   OrigDataType: bool
@@ -10588,7 +10588,7 @@ T_1863: (in o0 + 3<32> @ 00012594 : word32)
   Class: Eq_1863
   DataType: Eq_1863
   OrigDataType: (union ((ptr32 int8) u1) ((ptr32 Eq_7701) u0) ((ptr32 char) u2))
-T_1864: (in i0_101 - (o0 + 3<32>) @ 00012594 : word32)
+T_1864: (in i0_101 - (o0 + (char *) 3<32>) @ 00012594 : word32)
   Class: Eq_1864
   DataType: int32
   OrigDataType: int32
@@ -10664,7 +10664,7 @@ T_1882: (in o0 + 3<32> @ 000125AC : word32)
   Class: Eq_1878
   DataType: Eq_1878
   OrigDataType: (union ((ptr32 int8) u1) ((ptr32 Eq_7701) u0) ((ptr32 char) u2))
-T_1883: (in strncpy(sp_117->a0060, o0 + 3<32>, l1_112) @ 000125AC : int32)
+T_1883: (in strncpy(sp_117->a0060, o0 + (char *) 3<32>, l1_112) @ 000125AC : int32)
   Class: Eq_1883
   DataType: int32
   OrigDataType: int32
@@ -11501,7 +11501,7 @@ T_2089: (in 6<32> @ 00012754 : word32)
   Class: Eq_2085
   DataType: int32
   OrigDataType: int32
-T_2090: (in strncmp(i0_280 + 4<32>, 0x171C8<32>, 6<32>) @ 00012754 : int32)
+T_2090: (in strncmp(i0_280 + 4<32>, "static", 6<32>) @ 00012754 : int32)
   Class: Eq_2090
   DataType: int32
   OrigDataType: int32
@@ -11509,7 +11509,7 @@ T_2091: (in 0<32> @ 00012754 : word32)
   Class: Eq_2090
   DataType: int32
   OrigDataType: word32
-T_2092: (in strncmp(i0_280 + 4<32>, 0x171C8<32>, 6<32>) == 0<32> @ 00012754 : bool)
+T_2092: (in strncmp(i0_280 + 4<32>, "static", 6<32>) == 0<32> @ 00012754 : bool)
   Class: Eq_2092
   DataType: bool
   OrigDataType: bool
@@ -11569,7 +11569,7 @@ T_2106: (in 6<32> @ 00012770 : word32)
   Class: Eq_2103
   DataType: int32
   OrigDataType: int32
-T_2107: (in strncmp(i0_280 + 4<32>, 0x171D0<32>, 6<32>) @ 00012770 : int32)
+T_2107: (in strncmp(i0_280 + (char *) 4<32>, "extern", 6<32>) @ 00012770 : int32)
   Class: Eq_2107
   DataType: int32
   OrigDataType: int32
@@ -11577,7 +11577,7 @@ T_2108: (in 0<32> @ 00012770 : word32)
   Class: Eq_2107
   DataType: int32
   OrigDataType: word32
-T_2109: (in strncmp(i0_280 + 4<32>, 0x171D0<32>, 6<32>) != 0<32> @ 00012770 : bool)
+T_2109: (in strncmp(i0_280 + (char *) 4<32>, "extern", 6<32>) != 0<32> @ 00012770 : bool)
   Class: Eq_2109
   DataType: bool
   OrigDataType: bool
@@ -11643,7 +11643,7 @@ T_2124: (in i0_280 + 4<32> @ 000127B4 : word32)
   OrigDataType: (union ((ptr32 Eq_7700) u0) ((ptr32 char) u1))
 T_2125: (in 3<32> @ 000127B4 : word32)
   Class: Eq_2125
-  DataType: Eq_2125
+  DataType: (ptr32 char)
   OrigDataType: (union ((ptr32 Eq_7700) u0) ((ptr32 char) u1))
 T_2126: (in i0_280 + 3<32> @ 000127B4 : word32)
   Class: Eq_2126
@@ -11653,7 +11653,7 @@ T_2127: (in i0_370 - (i0_280 + 3<32>) @ 000127B4 : word32)
   Class: Eq_163
   DataType: Eq_163
   OrigDataType: (union ((ptr32 Eq_7700) u0) ((ptr32 char) u1))
-T_2128: (in dupnstr(i0_280 + 4<32>, i0_370 - (i0_280 + 3<32>)) @ 000127B4 : word32)
+T_2128: (in dupnstr(i0_280 + (char *) 4<32>, i0_370 - (i0_280 + 3<32>)) @ 000127B4 : word32)
   Class: Eq_213
   DataType: (ptr32 Eq_213)
   OrigDataType: word32
@@ -11749,7 +11749,7 @@ T_2151: (in i0_280 + 4<32> @ 000127BC : word32)
   Class: Eq_1655
   DataType: Eq_1655
   OrigDataType: (union ((ptr32 Eq_7700) u0) ((ptr32 char) u1))
-T_2152: (in i0_389 == i0_280 + 4<32> @ 000127BC : bool)
+T_2152: (in i0_389 == i0_280 + (char *) 4<32> @ 000127BC : bool)
   Class: Eq_2152
   DataType: bool
   OrigDataType: bool
@@ -12805,7 +12805,7 @@ T_2415: (in 0x29<32> @ 000129C0 : word32)
   Class: Eq_2414
   DataType: int32
   OrigDataType: word32
-T_2416: (in CONVERT(Mem554[i0_561 + 5<32>:int8], int8, int32) == 0x29<32> @ 000129C0 : bool)
+T_2416: (in (int32) *(i0_561 + 5<32>) == 0x29<32> @ 000129C0 : bool)
   Class: Eq_2416
   DataType: bool
   OrigDataType: bool
@@ -12861,11 +12861,11 @@ T_2429: (in i0_561 + 5<32> @ 000129E8 : word32)
   Class: Eq_2429
   DataType: Eq_2429
   OrigDataType: (union ((ptr32 Eq_7700) u0) ((ptr32 char) u1))
-T_2430: (in i0_641 - (i0_561 + 5<32>) @ 000129E8 : word32)
+T_2430: (in i0_641 - (i0_561 + (char *) 5<32>) @ 000129E8 : word32)
   Class: Eq_163
   DataType: Eq_163
   OrigDataType: word32
-T_2431: (in dupnstr(i0_561 + 5<32>, i0_641 - (i0_561 + 5<32>)) @ 000129E8 : word32)
+T_2431: (in dupnstr(i0_561 + (char *) 5<32>, i0_641 - (i0_561 + (char *) 5<32>)) @ 000129E8 : word32)
   Class: Eq_213
   DataType: (ptr32 Eq_213)
   OrigDataType: word32
@@ -20393,7 +20393,7 @@ T_4290: (in o0_230 + 1<32> @ 00014774 : word32)
   Class: Eq_4286
   DataType: Eq_4286
   OrigDataType: (union ((ptr32 int8) u1) ((ptr32 char) u0))
-T_4291: (in strncpy(sp_271->a0060, o0_230 + 1<32>, l0_260) @ 00014774 : int32)
+T_4291: (in strncpy(sp_271->a0060, o0_230 + (char *) 1<32>, l0_260) @ 00014774 : int32)
   Class: Eq_4291
   DataType: int32
   OrigDataType: int32
@@ -20621,7 +20621,7 @@ T_4347: (in o0_230 + 1<32> @ 00014820 : word32)
   Class: Eq_144
   DataType: Eq_144
   OrigDataType: (union ((ptr32 int8) u1) ((ptr32 char) u0))
-T_4348: (in identify_lineno(o0_230 + 1<32>) @ 00014820 : word32)
+T_4348: (in identify_lineno(o0_230 + (char *) 1<32>) @ 00014820 : word32)
   Class: Eq_3277
   DataType: word32
   OrigDataType: word32
@@ -25320,7 +25320,7 @@ T_5514: (in 0x2F<32> @ 000159E8 : word32)
   Class: Eq_5513
   DataType: int32
   OrigDataType: word32
-T_5515: (in CONVERT(Mem35[o0_121 + o0_125 + -1<i32>:int8], int8, int32) == 0x2F<32> @ 000159E8 : bool)
+T_5515: (in (int32) *((word32) (o0_121 + o0_125) - 1<i32>) == 0x2F<32> @ 000159E8 : bool)
   Class: Eq_5515
   DataType: bool
   OrigDataType: bool
@@ -34146,8 +34146,8 @@ struct Globals {
 	char str17148[];	// 17148
 	char str17170[];	// 17170
 	char str17190[];	// 17190
-	char b171C8;	// 171C8
-	char b171D0;	// 171D0
+	char str171C8[];	// 171C8
+	char str171D0[];	// 171D0
 	char str171D8[];	// 171D8
 	char str17218[];	// 17218
 	char str17250[];	// 17250

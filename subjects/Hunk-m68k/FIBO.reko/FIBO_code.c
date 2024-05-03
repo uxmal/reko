@@ -712,10 +712,10 @@ l0000198E:
 							bLoc44_n = (byte) d1_n;
 							if (dwLoc38_n != 0x00)
 							{
-								Mem1069[fp + -6 + d7_n:byte] = 0x30;
-								word32 * d7_n = d7_n + 0x01;
-								Mem1074[fp + -6 + d7_n:byte] = SLICE(d1_n, byte, 0);
-								d7_n = d7_n + 0x01;
+								*(fp->aFFFFFFFA + d7_n) = (word32) 0x30;
+								word32 * d7_n = d7_n + (word32 *) 0x01;
+								*(fp->aFFFFFFFA + d7_n) = (word32) (byte) d1_n;
+								d7_n = d7_n + (word32 *) 0x01;
 								bLoc44_n = (byte) d1_n;
 							}
 						}
@@ -827,7 +827,8 @@ l00001C20:
 					dwLoc44_n = dwLoc0A_n;
 				else
 					dwLoc44_n = d5_n;
-				Eq_n d0_n = dwLoc44_n + d7_n;
+				Eq_n d0_n;
+				d0_n.u2 = dwLoc44_n + d7_n;
 				Eq_n dwLoc44_n;
 				if (d0_n >= dwLoc30_n)
 					dwLoc44_n.u0 = 0x00;
@@ -840,7 +841,7 @@ l00001C20:
 					{
 						do
 						{
-							if (fn00001E34(CONVERT(CONVERT(Mem1599[fp + -6 + d2_n:byte], int8, int16), int16, int32), a5_n, out a0_n, out a5_n) == ~0x00)
+							if (fn00001E34((int32) (int16) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 								return;
 							d2_n = (word32 *) ((char *) d2_n + 1);
 							d6_n = (word32) d6_n.u0 + 1;
@@ -872,7 +873,7 @@ l00001C20:
 						do
 						{
 							word32 a0_n;
-							if (fn00001E34(CONVERT(CONVERT(Mem1730[fp + -6 + d2_n:byte], int8, int16), int16, int32), a5_n, out a0_n, out a5_n) == ~0x00)
+							if (fn00001E34((int32) (int16) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 								return;
 							d2_n = (word32 *) ((char *) d2_n + 1);
 							d6_n = (word32) d6_n.u0 + 1;
@@ -887,7 +888,7 @@ l00001C20:
 						word32 a0_n;
 						if (fn00001E34(0x30, a5_n, out a0_n, out a5_n) == ~0x00)
 							return;
-						++d2_n;
+						d2_n.u2 = d2_n + (word32 *) 0x01;
 						d6_n = (word32) d6_n.u0 + 1;
 					} while (d5_n > d2_n);
 				}
@@ -896,7 +897,7 @@ l00001C20:
 				while (d2_n < dwLoc0A_n)
 				{
 					word32 a0_n;
-					if (fn00001E34(CONVERT(CONVERT(Mem1826[a3_n + d2_n:byte], int8, int16), int16, int32), a5_n, out a0_n, out a5_n) == ~0x00)
+					if (fn00001E34((int32) (int16) *(a3_n + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 						return;
 					d2_n.u2 = (word32) d2_n + 1;
 					d6_n = (word32) d6_n.u0 + 1;
@@ -1210,7 +1211,7 @@ struct Eq_n * fn00002220(struct Eq_n * dwArg04, Eq_n dwArg08, struct Eq_n & a0Ou
 					struct Eq_n * a2_n = (struct Eq_n *) d0_n[5];
 					a2_n->dw0004 = dwArg04->dw0010;
 					d0_n[8] = (struct Eq_n) a2_n->dw0004;
-					Mem111[d0_n + 28:word32] = Mem108[d0_n + 32:word32] + Mem108[d0_n + 20:word32];
+					d0_n[7] = (struct Eq_n) (d0_n[8] + d0_n[5]);
 					AddHead(dwArg04, d0_n + 1);
 					a0_n = (struct Eq_n *) (d0_n + 1);
 					a3_n = Allocate(d0_n + 1, dwArg08);

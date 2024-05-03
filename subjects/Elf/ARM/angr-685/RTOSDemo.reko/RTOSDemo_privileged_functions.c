@@ -2028,7 +2028,7 @@ ui32 pvPortMalloc(ui32 r0, word32 cpsr)
 	struct Eq_n * r3_n = g_ptr177C;
 	word32 r4_n = r4_n + 0x08;
 	if (r3_n->dw0000 == 0x00)
-		Mem30[r3_n + 0x00:word32] = r3_n + 0x0C & ~0x07;
+		r3_n->dw0000 = r3_n + ((char *) (&g_t0001.dw0004) + 7) & ~0x07;
 	up32 r2_n = r3_n->dw05C0;
 	up32 r4_n = r4_n + r2_n;
 	if (r4_n > 0x05B3 || r2_n >= r4_n)

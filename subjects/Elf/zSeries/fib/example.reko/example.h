@@ -426,7 +426,7 @@ T_82: (in 1<i32> @ 00000000000006A6 : int32)
   Class: Eq_82
   DataType: int32
   OrigDataType: int32
-T_83: (in (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >>u 63<i32>) >> 1<i32> @ 00000000000006A6 : word64)
+T_83: (in (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >> 63<i32>) >> 1<i32> @ 00000000000006A6 : word64)
   Class: Eq_83
   DataType: int64
   OrigDataType: int64
@@ -434,7 +434,7 @@ T_84: (in 0<64> @ 00000000000006A6 : word64)
   Class: Eq_83
   DataType: int64
   OrigDataType: word64
-T_85: (in (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >>u 63<i32>) >> 1<i32> != 0<64> @ 00000000000006A6 : bool)
+T_85: (in (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >> 63<i32>) >> 1<i32> != 0<64> @ 00000000000006A6 : bool)
   Class: Eq_85
   DataType: bool
   OrigDataType: bool

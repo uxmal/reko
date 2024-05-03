@@ -70,7 +70,7 @@ l000080:
 		__tblrd(TBLPTR, 0x01);
 		*FSR0.u1 = TABLAT;
 		--g_b00C3;
-		++FSR0;
+		FSR0.u0 = FSR0 + &g_b0001;
 		v24_n = g_b00C3 != 0x00;
 		if (g_b00C3 < 0x00)
 			break;

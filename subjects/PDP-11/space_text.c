@@ -1622,7 +1622,7 @@ void fn0F48(struct Eq_n * r5)
 		ui32 r0_r1_n;
 		if (r1_n != 0x00)
 		{
-			r0_r1_n = SEQ(__rcl<word16,byte>(r0_n, 0x01, (bool) cond(r1_n << 1)) + Mem0[v14_n + 0x00:word16], r1_n << 1) + SEQ(Mem0[v16_n + 0x00:word16], Mem0[v16_n + 0x00:word16]);
+			r0_r1_n = SEQ(__rcl<word16,byte>(r0_n, 0x01, (bool) cond(r1_n << 1)) + *v14_n, r1_n << 1) + SEQ(*v16_n, *v16_n);
 			uint16 r1_n = (word16) r0_r1_n;
 			ci16 r0_n = SLICE(r0_r1_n, word16, 16);
 			if (r0_n <= 0x00)
@@ -1957,7 +1957,7 @@ int16 fn1370(int16 r0, struct Eq_n * r3, struct Eq_n * r4, byte & r2Out, struct 
 	struct Eq_n * r4_n;
 	struct Eq_n * r3_n;
 	byte * r2_n;
-	byte * r2_n = Mem0[r4 + 0x0E:word16] + Mem0[r4 + 0x02:word16];
+	byte * r2_n = r4[7] + r4[1];
 	*r2_n = (byte) r0;
 	r4[7] = (struct Eq_n) ((word16) r4[7].t0000 + 1);
 	cui16 v16_n = r4[7] & 0x01FF;

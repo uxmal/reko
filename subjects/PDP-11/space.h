@@ -7479,7 +7479,7 @@ T_1469: (in SEQ(Mem0[v16_16 + 0<16>:word16], Mem0[v16_16 + 0<16>:word16]) @ 0F62
   Class: Eq_1469
   DataType: ui32
   OrigDataType: ui32
-T_1470: (in SEQ(__rcl<word16,byte>(r0_19, 1<8>, (bool) cond(r1_20 << 1<i16>)) + Mem0[v14_13 + 0<16>:word16], r1_20 << 1<i16>) + SEQ(Mem0[v16_16 + 0<16>:word16], Mem0[v16_16 + 0<16>:word16]) @ 0F62 : ui32)
+T_1470: (in SEQ(__rcl<word16,byte>(r0_19, 1<8>, (bool) cond(r1_20 << 1<i16>)) + *v14_13, r1_20 << 1<i16>) + SEQ(*v16_16, *v16_16) @ 0F62 : ui32)
   Class: Eq_1448
   DataType: ui32
   OrigDataType: ui32

@@ -228,11 +228,21 @@ namespace Reko.Typing
                 if (DataTypeOf(left).IsComplex)
                 {
                     if (DataTypeOf(right).IsComplex)
-                        throw new TypeInferenceException(
+                    {
+                        // This used to throw an awful lot of exceptions if 
+                        // type inference failed. A common occurrence is 
+                        // when all type variables have been placed into one
+                        // massive union. We now give up instead and return 
+                        // an un-rewritten expression.
+                        this.eventListener.Error(
                             "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
                             Environment.NewLine, binExp,
                             DataTypeOf(left),
                             DataTypeOf(right));
+
+                        left = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
+                        right = null;
+                    }
                     return RewriteComplexExpression(left, right, 0, dereferencedType);
                 }
                 else if (DataTypeOf(right).IsComplex)

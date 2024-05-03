@@ -25,7 +25,7 @@ void fn000117AA(struct Eq_n * r2)
 		struct Eq_n * r4_n;
 		if (r2_n->ptrC5FB == r2_n->ptrC61B)
 		{
-			Mem61[r2_n + 0xC5F7:word32] = Mem55[r2_n + 50715:word32] + Mem55[r2_n + 50675:word32] - 22;
+			r2_n->ptrC5F7 = r2_n->ptrC61B + r2_n->ptrC5F3 - 22;
 			while (r2_n->ptrC5F7 >= r2_n->ptrC5F3)
 			{
 				byte * r3_n = r2_n->ptrC5F7;
@@ -2210,7 +2210,7 @@ l000145DC:
 													Eq_n r0_n;
 													r0_n.u1 = (uint32) (word16) r11_n;
 													byte (* r7_n)[];
-													Mem5430[sp_n + -4:uint32] = CONVERT(Mem5424[r7_n + r0_n:byte], byte, uint32);
+													sp_n->dwFFFFFFFC = (uint32) *(r7_n + r0_n);
 													sp_n->dwFFFFFFF8 = &r6_n->b0004 + 4754;
 													sp_n->ptrFFFFFFF4 = (char *) r5_n + 1515;
 													(*((word32) r9_n + 2))();
@@ -3412,7 +3412,7 @@ void fn000173CA(struct Eq_n * r0, word32 r1, struct Eq_n * r3, struct Eq_n * r4,
 		{
 			struct Eq_n * sp_n = sp_n - 0x04;
 			sp_n->dw0000 = 0x04;
-			Mem31[sp_n + -4:word32] = r3 + 0x0098;
+			sp_n->ptrFFFFFFFC = r3 + (struct Eq_n *) 0x0098;
 			word32 r0_n = fn0000D5BE(r0, r4, ap, fp, out r2_n, out r3_n, out r4_n, out r5_n, out ap_n, out fp_n);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			if (r0_n == 0x00)
@@ -3533,7 +3533,7 @@ void fn000173CA(struct Eq_n * r0, word32 r1, struct Eq_n * r3, struct Eq_n * r4,
 							struct Eq_n * sp_n = sp_n - 0x04;
 							sp_n->dw0000 = r3->dw0010;
 							sp_n->dwFFFFFFFC = *r2_n;
-							Mem303[sp_n + -8:word32] = r3 + 0xC701;
+							sp_n->ptrFFFFFFF8 = r3 + &g_tC701;
 							(*((word32) r5_n + 2))();
 							struct Eq_n * r4_n;
 							word32 r1_n;
@@ -3564,7 +3564,7 @@ void fn000173CA(struct Eq_n * r0, word32 r1, struct Eq_n * r3, struct Eq_n * r4,
 					r0 -= (struct Eq_n *) 0x01;
 					struct Eq_n * r4_n = r4_n;
 					r1 = r1_n;
-					if (Mem360[r3 + 0xC701 + (r0 - 0x01):byte] != 0x2F)
+					if (*((word32) (r0 - (struct Eq_n *) 0x01) + (r3 + &g_tC701)) != 0x2F)
 					{
 						r0 = (struct Eq_n *) r3->ptr05E7;
 						r4 = r4_n;
@@ -3572,7 +3572,7 @@ void fn000173CA(struct Eq_n * r0, word32 r1, struct Eq_n * r3, struct Eq_n * r4,
 						if (r0[3] != 0x00)
 							goto l0001759B;
 						sp_n->ptrFFFFFFFC = (<unknown>*) 0x2F;
-						Mem415[sp_n + -8:word32] = r3 + 0xC701;
+						sp_n->ptrFFFFFFF8 = r3 + &g_tC701;
 						(*((word32) g_ptr19260 + 2))();
 						struct Eq_n * r4_n;
 						r4 = r4_n;
@@ -4122,7 +4122,7 @@ int32 fn0001878E(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r3Out, ptr32 & 
 										} while (r10_n < sp_n[11]);
 									}
 								}
-								if (r6_n + r10_n >u Mem417[sp_n + 28:word32] && r6_n < sp_n[7])
+								if (r6_n + r10_n > sp_n[7] && r6_n < sp_n[7])
 									r10_n = sp_n[7] - r6_n;
 								sp_n[11] = (struct Eq_n) __ashift<word32,word32>(0x01, r10_n);
 								*((word32) sp_n[9].dwFFFFFFFC + (sp_n[0x0C] * 4 + 4)) = (struct Eq_n) r10_n;

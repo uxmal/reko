@@ -32,7 +32,7 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
 					r10_n.u0 = 0x01;
-					r8_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
+					r8_n = r8_n + r9_n + (word32) (r6_n < r4 << 0x03);
 					r12_n = r6_n;
 					goto l0804D0CC;
 				}
@@ -201,7 +201,7 @@ l0804D060:
 				goto l0804D064;
 			}
 			uint32 r6_n = (r4 << 0x03) + (r6 << 0x03);
-			uint32 r2_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
+			uint32 r2_n = r8_n + r9_n + (word32) (r6_n < r4 << 0x03);
 			r12_n = r2_n << 0x1F | r6_n >> 0x01;
 			r8_n = r2_n >> 0x01;
 l0804D27A:
@@ -223,7 +223,7 @@ l0804D27A:
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
 					r12_n = r6_n;
-					r8_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
+					r8_n = r8_n + r9_n + (word32) (r6_n < r4 << 0x03);
 					if (!__bit<word32,word32>(r8_n, 0x17))
 					{
 						r8_n = __ins<word32,word32>(r8_n, 0x00, 0x07, 0x01);

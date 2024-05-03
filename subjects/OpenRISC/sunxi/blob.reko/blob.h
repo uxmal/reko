@@ -4311,7 +4311,7 @@ Eq_6369: (struct "Eq_6369" 0001 (13378 byte b13378))
 	T_6397 (in r3 @ 00008DBC : (ptr32 Eq_6369))
 	T_6415 (in 0<i32> @ 00008E04 : int32)
 	T_6416 (in r4_18 @ 00008E04 : (ptr32 Eq_6369))
-	T_6428 (in r4_18 + -1<i32> & 0xFF<32> @ 00008E24 : word32)
+	T_6428 (in r4_18 + (struct Eq_6425 *) -1<i32> & 0xFF<32> @ 00008E24 : word32)
 	T_6719 (in 0<i32> @ 00009134 : int32)
 	T_6721 (in Mem190[0x13374<32>:word32] @ 00009134 : word32)
 	T_6729 (in r11 @ 00009164 : (ptr32 Eq_6369))
@@ -32009,7 +32009,7 @@ T_6427: (in 0xFF<32> @ 00008E24 : word32)
   Class: Eq_6427
   DataType: ui32
   OrigDataType: ui32
-T_6428: (in r4_18 + -1<i32> & 0xFF<32> @ 00008E24 : word32)
+T_6428: (in r4_18 + (struct Eq_6425 *) -1<i32> & 0xFF<32> @ 00008E24 : word32)
   Class: Eq_6369
   DataType: (ptr32 Eq_6369)
   OrigDataType: ui32

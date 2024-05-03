@@ -499,7 +499,7 @@ void display(struct Eq_n * r5, struct Eq_n * r9, word32 r11, word32 r13, word32 
 	if (r5 == null)
 		return;
 	struct Eq_n * r14_n = r5;
-	if (**((char *) r12_n + g_ptr402604) != 0x00 || Mem45[Mem45[Mem45[0x00402608<p32>:word32] + r12_n:word32] + 0x00:word32] == 0x00)
+	if (**((char *) r12_n + g_ptr402604) != 0x00 || *(*(g_ptr402608 + r12_n)) == 0x00)
 		;
 	int32 r10_n = 0x00;
 	struct Eq_n * r8_n;
@@ -723,7 +723,7 @@ l004028D6:
 			word32 (* r0_n)[] = g_ptr402658;
 			r8_n->dw000C = 0x01;
 			r8_n->dw0010 = 0x00;
-			Mem1537[r0_n + r12_n:word32] = 0x01;
+			*(r0_n + r12_n) = 0x01;
 		}
 l004025F6:
 	}
@@ -741,7 +741,7 @@ l004025F6:
 		word32 * (* r0_n)[] = g_ptr402614;
 		word32 r2_n = r15_n->dw0008;
 		r9_n->dw000C = r15_n->dw0010;
-		word32 * r1_n = Mem119[r0_n + r12_n:word32];
+		word32 * r1_n = *(r0_n + r12_n);
 		r9_n->dw0004 = r2_n;
 		word32 r2_n = r15_n->dw0014;
 		word32 r1_n = *r1_n;
@@ -751,7 +751,7 @@ l004025F6:
 			r9_n->dw0010 = r2_n;
 			up32 r3_n = r15_n->dw0034;
 			word32 * (* r0_n)[] = g_ptr4029B8;
-			word32 r1_n = Mem132[Mem132[r0_n + r12_n:word32] + 0x00:word32];
+			word32 r1_n = **(r0_n + r12_n);
 			int32 r2_n = g_dw4029BC;
 			(*((char *) &g_t4028FE + r2_n))();
 			word32 * r15_n;
@@ -766,7 +766,7 @@ l004025F6:
 			struct Eq_n * r9_n;
 			word32 r0_n;
 			r9_n->dw001C = r0_n;
-			word32 r1_n = Mem223[Mem223[r12_n + r1_n:word32] + 0x00:word32];
+			word32 r1_n = **(r12_n + r1_n);
 			if (r1_n != 0x00)
 			{
 				int32 r8_n;
@@ -802,7 +802,7 @@ l004025F6:
 		(*((char *) &g_t40252E + r5_n))();
 		word32 r0_n;
 		r9_n->dw002C = r0_n;
-		int32 * r1_n = Mem362[Mem362[0x00402614<p32>:word32] + r12_n:word32];
+		int32 * r1_n = *(g_ptr402614 + r12_n);
 		r10_n = *r1_n;
 		if (r10_n == 0x00)
 		{
@@ -817,7 +817,7 @@ l004025F6:
 			word32 *** r1_n = g_ptr4029CC;
 			int32 r0_n;
 			r9_n->dw0030 = r0_n;
-			word32 r1_n = Mem422[Mem422[r12_n + r1_n:word32] + 0x00:word32];
+			word32 r1_n = **(r12_n + r1_n);
 			if (r1_n != 0x00)
 				r9_n->dw0030 = r0_n + SLICE((r0_n + ~0x00) *s g_dw4029D0, word32, 32) + (word32) (r10_n > r0_n + ~0x00);
 		}
@@ -866,7 +866,7 @@ l004025F6:
 	else
 		r9_n->dw0018 = r3_n;
 	<anonymous> ****** (* r0_n)[] = g_ptr402644;
-	<anonymous> ** r1_n = Mem575[r0_n + r12_n:word32];
+	<anonymous> ** r1_n = *(r0_n + r12_n);
 	(*r1_n)();
 	int32 r12_n;
 	*((word32) g_ptr402648 + r12_n) = 0x01;
@@ -990,7 +990,7 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 		if (r9_n == 0x00)
 		{
 			word32 * (* r11_n)[] = g_ptr402BA0;
-			if (Mem35[Mem35[r12_n + r11_n:word32] + 0x00:word32] == 0x00)
+			if (**(r12_n + r11_n) == 0x00)
 			{
 				ui32 r10_n;
 				if ((r10_n & 0x08) != 0x00)
@@ -1041,7 +1041,7 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 							*r15_n = r0_n;
 							int32 r0_n = g_dw402BF4;
 							(*((char *) &g_t402B42 + r0_n))();
-							if (Mem359[Mem359[r12_n + r11_n:word32] + 0x00:word32] == 0x00)
+							if (**(r12_n + r11_n) == 0x00)
 							{
 								word32 r3_n = *r15_n;
 								if (r3_n != 0x00)
@@ -1181,8 +1181,8 @@ void ls_main(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11,
 				*((word32) r12_n + g_dw402E30) = r2_n;
 		}
 		word32 * (* r0_n)[] = g_ptr402E38;
-		Mem139[Mem133[Mem133[0x00402E34<p32>:word32] + r12_n:word32] + 0x00:word32] = 0x01;
-		Mem141[Mem139[r0_n + r12_n:word32] + 0x00:word32] = 0x01;
+		**(g_ptr402E34 + r12_n) = 0x01;
+		**(r0_n + r12_n) = 0x01;
 	}
 	int32 r1_n = g_dw402E3C;
 	(*((char *) &g_t402C70 + r1_n))();
@@ -1217,13 +1217,13 @@ void ls_main(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11,
 	word32 r10_n = (*((char *) &r12_n[0] + g_ptr402E4C))[0];
 	word32 r9_n;
 	word32 r9_n;
-	if (Mem201[Mem201[Mem201[0x00402E38<p32>:word32] + r12_n:word32] + 0x00:word32] == 0x00)
+	if (**(g_ptr402E38 + r12_n) == 0x00)
 	{
 		r9_n = r9_n - r10_n;
-		if (Mem201[Mem201[Mem201[0x00402E50<p32>:word32] + r12_n:word32] + 0x00:word32] == 0x00 && Mem201[Mem201[Mem201[0x00402E54<p32>:word32] + r12_n:word32] + 0x00:word32] == 0x00)
+		if (**(g_ptr402E50 + r12_n) == 0x00 && *(*(g_ptr402E54 + r12_n)) == 0x00)
 		{
 l00402CDE:
-			word32 * r1_n = Mem397[Mem397[0x00402E64<p32>:word32] + r12_n:word32];
+			word32 * r1_n = *(g_ptr402E64 + r12_n);
 			if (*r1_n == ~0x00)
 				*r1_n = 0x00;
 			int32 r14_n = g_dw402E6C;
@@ -2391,20 +2391,20 @@ void printcol(struct Eq_n * r4, word32 r8, word32 r9, word32 r14, word32 pr)
 	}
 	else
 		r5_n = r4->dw0018;
-	if (Mem28[Mem28[Mem28[0x00403F30<p32>:word32] + r12_n:word32] + 0x00:word32] != 0x00)
+	if (**(g_ptr403F30 + r12_n) != 0x00)
 	{
 		word32 r1_n;
-		if (Mem28[Mem28[Mem28[0x00403F34<p32>:word32] + r12_n:word32] + 0x00:word32] != 0x00)
+		if (**(g_ptr403F34 + r12_n) != 0x00)
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
 		r5_n = r5_n + r1_n + true;
 	}
-	if (Mem28[Mem28[Mem28[0x00403F38<p32>:word32] + r12_n:word32] + 0x00:word32] != 0x00 || Mem28[Mem28[Mem28[0x00403F3C<p32>:word32] + r12_n:word32] + 0x00:word32] != 0x00)
+	if (**(g_ptr403F38 + r12_n) != 0x00 || *(*(g_ptr403F3C + r12_n)) != 0x00)
 		++r5_n;
 	word32 * (* r11_n)[] = g_ptr403F40;
 	ui32 r10_n = r5_n + 0x01;
-	if (r10_n * 0x02 <= Mem28[Mem28[r12_n + r11_n:word32] + 0x00:word32])
+	if (r10_n * 0x02 <= *(*(r12_n + r11_n)))
 	{
 		int32 * r8_n = (int32 *) ((char *) r12_n + g_dw403F48);
 		int32 r5_n = r4->dw0014;
@@ -2446,7 +2446,7 @@ l00403EC0:
 				++r9_n;
 			}
 		}
-		word32 * r1_n = Mem153[r12_n + r11_n:word32];
+		word32 * r1_n = *(r12_n + r11_n);
 		int32 r0_n = g_dw403F5C;
 		word32 r6_n = *r1_n;
 		<anonymous> ** r8_n = (<anonymous> **) *((char *) &r12_n[0] + r0_n);

@@ -30,7 +30,7 @@ void deregister_tm_clones()
 void register_tm_clones()
 {
 	Eq_n rsi_n = &g_b4048 - &g_b4048;
-	if ((rsi_n >>u 0x3F) + (rsi_n >> 0x03) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
+	if ((rsi_n >> 0x3F) + (rsi_n >> 0x03) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
 }

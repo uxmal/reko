@@ -345,7 +345,7 @@ T_51: (in 1<64> @ 00000000000006B6 : word64)
   Class: Eq_51
   DataType: word64
   OrigDataType: word64
-T_52: (in (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >>u 0x3F<64>) >> 1<64> @ 00000000000006B6 : word64)
+T_52: (in (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >> 0x3F<64>) >> 1<64> @ 00000000000006B6 : word64)
   Class: Eq_52
   DataType: int64
   OrigDataType: int64
@@ -353,7 +353,7 @@ T_53: (in 0<64> @ 00000000000006B6 : word64)
   Class: Eq_52
   DataType: int64
   OrigDataType: word64
-T_54: (in (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >>u 0x3F<64>) >> 1<64> == 0<64> @ 00000000000006B6 : bool)
+T_54: (in (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >> 0x3F<64>) >> 1<64> == 0<64> @ 00000000000006B6 : bool)
   Class: Eq_54
   DataType: bool
   OrigDataType: bool

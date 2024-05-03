@@ -690,7 +690,7 @@ Eq_1753: (union "Eq_1753" (int16 u0) (uint16 u1))
 Eq_1762: (union "Eq_1762" (int16 u0) (uint16 u1))
 	T_1762 (in 1<16> @ 0B2D : word16)
 Eq_1763: (union "Eq_1763" (int16 u0) (uint16 u1))
-	T_1763 (in CONVERT(Mem320[0x1697<16>:byte], uint8, uint16) + 1<16> @ 0B2D : word16)
+	T_1763 (in (uint16) g_b1697 + 1<16> @ 0B2D : word16)
 Eq_1788: (union "Eq_1788" (int16 u0) (uint16 u1))
 	T_1788 (in 9<16> @ 0B55 : word16)
 Eq_1789: (union "Eq_1789" (int16 u0) (uint16 u1))
@@ -7855,7 +7855,7 @@ T_1755: (in Mem320[Mem320[0x168B<16>:word16] + (CONVERT(Mem320[0x1697<16>:byte],
   Class: Eq_42
   DataType: Eq_42
   OrigDataType: byte
-T_1756: (in fn03E6(Mem320[Mem320[0x168B<16>:word16] + (CONVERT(Mem320[0x1697<16>:byte], uint8, uint16) + 1<16>):byte]) @ 0B2D : byte)
+T_1756: (in fn03E6(*(g_t168B.u1 + ((uint16) g_b1697 + 1<16>))) @ 0B2D : byte)
   Class: Eq_1756
   DataType: byte
   OrigDataType: byte
@@ -7881,9 +7881,9 @@ T_1761: (in CONVERT(Mem320[0x1697<16>:byte], uint8, uint16) @ 0B2D : uint16)
   OrigDataType: uint16
 T_1762: (in 1<16> @ 0B2D : word16)
   Class: Eq_1762
-  DataType: Eq_1762
+  DataType: int16
   OrigDataType: (union (int16 u1) (uint16 u0))
-T_1763: (in CONVERT(Mem320[0x1697<16>:byte], uint8, uint16) + 1<16> @ 0B2D : word16)
+T_1763: (in (uint16) g_b1697 + 1<16> @ 0B2D : word16)
   Class: Eq_1763
   DataType: Eq_1763
   OrigDataType: (union (int16 u1) (uint16 u0))
@@ -7999,7 +7999,7 @@ T_1791: (in Mem364[Mem364[0x168B<16>:word16] + (CONVERT(Mem364[0x1697<16>:byte],
   Class: Eq_42
   DataType: Eq_42
   OrigDataType: byte
-T_1792: (in fn03E6(Mem364[Mem364[0x168B<16>:word16] + (CONVERT(Mem364[0x1697<16>:byte], uint8, uint16) + 9<16>):byte]) @ 0B55 : byte)
+T_1792: (in fn03E6(*(g_t168B.u1 + ((uint16) g_b1697 + 9<16>))) @ 0B55 : byte)
   Class: Eq_1756
   DataType: byte
   OrigDataType: byte

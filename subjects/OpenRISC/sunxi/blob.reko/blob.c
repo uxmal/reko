@@ -2867,7 +2867,7 @@ word32 fn00008DD8(struct Eq_n * r3, union Eq_n & r11Out, union Eq_n & r15Out)
 	while (r4_n < r3)
 	{
 		r4_n[fp - 309] = r4_n[78712];
-		r4_n = r4_n + -1 & 0xFF;
+		r4_n = r4_n + (struct Eq_n *) -1 & 0xFF;
 	}
 	Eq_n r4_n;
 	r4_n.u0 = 0;
@@ -6054,7 +6054,7 @@ word32 fn0000DF10(Eq_n r3[], struct Eq_n * r4, Eq_n r5)
 		for (r5_n = r5 & 0x03; r5_n != 0x00; --r5_n)
 		{
 			byte * r11_n = (word32) r6_n + r4_n;
-			Mem73[r7_n + r6_n:byte] = Mem70[r11_n + 0x00:byte];
+			*(r7_n + r6_n) = (word32) *r11_n;
 			r6_n = (word32) r6_n - 1;
 		}
 	}
@@ -6268,7 +6268,8 @@ word32 fn0000E5CC(Eq_n r15, uint32 VR, ptr32 & r9Out, union Eq_n & r11Out, union
 	Eq_n r15_n = fn0000EDF4(-0x0F, &g_t12C90, fn0000EDF4(-0x0F, &g_t12C82, r15, VR), VR);
 	Eq_n r14_n;
 	r14_n.u0 = 0;
-	Eq_n r3_n = Mem40[78088:word32] + Mem40[0x00013104:word32];
+	Eq_n r3_n;
+	r3_n.u1 = g_ptr13108 + g_t13104.u1;
 	while (r2_n < r3_n)
 	{
 		r2_n.u1 = (word32) r2_n - 4;
@@ -8588,7 +8589,7 @@ void fn000187E8(Eq_n r3[], ui32 r4, uint32 r5)
 		for (r5_n = r5 & 0x03; r5_n != 0x00; --r5_n)
 		{
 			byte * r11_n = (word32) r6_n + r4_n;
-			Mem73[r7_n + r6_n:byte] = Mem70[r11_n + 0x00:byte];
+			*(r7_n + r6_n) = (word32) *r11_n;
 			r6_n = (word32) r6_n - 1;
 		}
 	}

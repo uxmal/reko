@@ -153,7 +153,7 @@ word16 fn02BF(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr
 {
 	struct Eq_n * gp2_n = gp1;
 	if (gp1 < null)
-		gp2_n = gp1 + 0x07;
+		gp2_n = gp1 + &g_t0007;
 	struct Eq_n * gp2_n = gp2_n & ~0x07;
 	if ((uint32) (gp1 - gp2_n) > 0x07)
 	{

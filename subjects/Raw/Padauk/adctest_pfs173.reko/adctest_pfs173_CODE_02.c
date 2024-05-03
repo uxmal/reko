@@ -1631,7 +1631,7 @@ Eq_n fn056C()
 	g_t00AE.u1 = (struct Eq_n *) fn05A9();
 	g_b00B1 = g_b00A8;
 	g_t00B2.u1 = g_t00A9.u1;
-	Mem39[0x00AC<p16>:byte] = fn05A9() + Mem30[0x00AE<p16>:byte] + Mem30[0x00AD<p16>:byte];
+	g_t00AC.u1 = (struct Eq_n *) ((char *) &g_t00AD.u1->t0000.u0 + (fn05A9() + g_t00AE.u1));
 	null = (union Eq_n *) g_t00AB.u1;
 	Eq_n v6_n;
 	v6_n.u1 = null;

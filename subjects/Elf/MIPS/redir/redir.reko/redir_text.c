@@ -1927,7 +1927,7 @@ void properties_load(char * r4, char * r5, word32 ra)
 	ptr32 fp;
 	if (r5 == null)
 	{
-		char * r2_n = malloc(strlen(r4) + SLICE(11, size_t, 0));
+		char * r2_n = malloc(strlen(r4) + (size_t) 11);
 		dwArg04_n = r2_n;
 		if (r2_n == null)
 		{

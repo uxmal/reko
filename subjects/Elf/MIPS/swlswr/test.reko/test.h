@@ -370,7 +370,7 @@ T_65: (in 1<8> @ 000006D4 : byte)
   Class: Eq_65
   DataType: byte
   OrigDataType: byte
-T_66: (in (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> @ 000006D4 : word32)
+T_66: (in (r5_12 >> 0x1F<8>) + r5_12 >> 1<8> @ 000006D4 : word32)
   Class: Eq_66
   DataType: int32
   OrigDataType: int32
@@ -378,7 +378,7 @@ T_67: (in 0<32> @ 000006D4 : word32)
   Class: Eq_66
   DataType: int32
   OrigDataType: word32
-T_68: (in (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> @ 000006D4 : bool)
+T_68: (in (r5_12 >> 0x1F<8>) + r5_12 >> 1<8> == 0<32> @ 000006D4 : bool)
   Class: Eq_68
   DataType: bool
   OrigDataType: bool

@@ -39,7 +39,7 @@ void deregister_tm_clones()
 void register_tm_clones()
 {
 	Eq_n r5_n = g_t10AA4.u0 - 68228 >> 0x02;
-	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
+	if ((r5_n >> 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_n = g_ptr10AD4;
 	if (r25_n == null)

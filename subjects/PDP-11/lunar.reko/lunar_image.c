@@ -623,7 +623,7 @@ void fn0A94(int16 r3, struct Eq_n * r4, word16 * r5)
 		do
 		{
 			struct Eq_n * r2_n = r2_n + g_w0070 + 0x01 & 0x3F;
-			r2_n = r2_n + Mem29[0x0052<p16>:word16];
+			r2_n = r2_n + g_ptr0052;
 			r4 = ~r4 & 0x2000 | 0x4000;
 			cui16 r0_n = __swab((int16) r2_n->b2766 & 0x3F) >> 0x01 | r4 | (int16) (r2_n & 0x3F)->b2766 & 0x3F;
 			*r5 = r0_n;

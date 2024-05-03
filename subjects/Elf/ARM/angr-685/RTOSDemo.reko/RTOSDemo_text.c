@@ -436,7 +436,8 @@ bool xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n
 		r2_n.u1 = r0->t0040.u1;
 		Eq_n r3_n;
 		r3_n.u1 = r0->t0004.u1;
-		Eq_n r1_n = Mem12[r0 + 0x0C:word32] + r2_n;
+		Eq_n r1_n;
+		r1_n.u1 = r0->t000C.u1 + r2_n;
 		Eq_n r3_n;
 		r3_n.u0 = r0->t0038.u0;
 		r0->t000C.u1 = (struct Eq_n *) r1_n;
@@ -499,7 +500,8 @@ void xQueueCRReceiveFromISR(struct Eq_n * r0, Eq_n r1)
 	lr_n.u1 = r0->t0040.u1;
 	Eq_n r4_n;
 	r4_n.u1 = r0->t0004.u1;
-	Eq_n r3_n = Mem16[r0 + 0x0C:word32] + lr_n;
+	Eq_n r3_n;
+	r3_n.u1 = r0->t000C.u1 + lr_n;
 	word32 r7_n = r0->dw0038;
 	r0->t000C.u1 = (struct Eq_n *) r3_n;
 	Eq_n r3_n = r3_n;

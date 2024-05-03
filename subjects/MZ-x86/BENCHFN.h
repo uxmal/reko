@@ -1791,7 +1791,7 @@ Eq_4243: (union "Eq_4243" (int16 u0) (uint16 u1))
 Eq_4262: (union "Eq_4262" (int16 u0) (uint16 u1))
 	T_4262 (in ax_158 >> 3<8> @ 0800:1A32 : word16)
 Eq_4269: (union "Eq_4269" (int16 u0) (uint16 u1))
-	T_4269 (in ax_158 >>u 3<8> @ 0800:1A32 : word16)
+	T_4269 (in ax_158 >> 3<8> @ 0800:1A32 : word16)
 Eq_4275: (struct "Eq_4275" 0001 (0 int8 b0000) (1 byte b0001))
 	T_4275 (in si_1017 + 0<16> @ 0800:1A44 : word16)
 Eq_4280: (struct "Eq_4280" 0001 (0 Eq_5195 t0000) (1 byte b0001))
@@ -19263,7 +19263,7 @@ T_4265: (in Mem169[ss:fp - 34<i16> + (ax_158 >>u 3<8>):byte] @ 0800:1A32 : byte)
   Class: Eq_4265
   DataType: byte
   OrigDataType: byte
-T_4266: (in Mem169[ss:fp - 34<i16> + (ax_158 >>u 3<8>):byte] | ch_1039 @ 0800:1A32 : byte)
+T_4266: (in ss->*((fp - 34<i16>) + (ax_158 >> 3<8>)) | ch_1039 @ 0800:1A32 : byte)
   Class: Eq_4266
   DataType: byte
   OrigDataType: byte
@@ -19275,7 +19275,7 @@ T_4268: (in fp - 34<i16> @ 0800:1A32 : word16)
   Class: Eq_4268
   DataType: (memptr (ptr16 Eq_3857) byte)
   OrigDataType: (memptr T_3857 (struct (0 (arr T_5134) a0000)))
-T_4269: (in ax_158 >>u 3<8> @ 0800:1A32 : word16)
+T_4269: (in ax_158 >> 3<8> @ 0800:1A32 : word16)
   Class: Eq_4269
   DataType: Eq_4269
   OrigDataType: (union (int16 u1) (uint16 u0))
@@ -19491,7 +19491,7 @@ T_4322: (in Mem406[ss:fp - 34<i16> + di_1031:byte] @ 0800:1A57 : byte)
   Class: Eq_4266
   DataType: byte
   OrigDataType: byte
-T_4323: (in Mem406[ss:fp - 34<i16> + di_1031:byte] | ch_1039 @ 0800:1A57 : byte)
+T_4323: (in ss->*((fp - 34<i16>) + di_1031) | ch_1039 @ 0800:1A57 : byte)
   Class: Eq_4266
   DataType: byte
   OrigDataType: byte
@@ -19827,15 +19827,15 @@ T_4406: (in 7<8> @ 0800:1A9D : byte)
   Class: Eq_4406
   DataType: byte
   OrigDataType: byte
-T_4407: (in SLICE(ax_230, byte, 0) & 7<8> @ 0800:1A9D : byte)
+T_4407: (in (byte) ax_230 & 7<8> @ 0800:1A9D : byte)
   Class: Eq_4407
   DataType: byte
   OrigDataType: byte
-T_4408: (in 1<8> << (SLICE(ax_230, byte, 0) & 7<8>) @ 0800:1A9D : byte)
+T_4408: (in 1<8> << ((byte) ax_230 & 7<8>) @ 0800:1A9D : byte)
   Class: Eq_4408
   DataType: ui8
   OrigDataType: ui8
-T_4409: (in Mem226[ss:fp - 34<i16> + (ax_230 >>u 3<8>):byte] & 1<8> << (SLICE(ax_230, byte, 0) & 7<8>) @ 0800:1A9D : byte)
+T_4409: (in ss->*((fp - 34<i16>) + (ax_230 >> 3<8>)) & 1<8> << ((byte) ax_230 & 7<8>) @ 0800:1A9D : byte)
   Class: Eq_4409
   DataType: byte
   OrigDataType: byte
@@ -19843,7 +19843,7 @@ T_4410: (in 0<8> @ 0800:1A9D : byte)
   Class: Eq_4409
   DataType: byte
   OrigDataType: byte
-T_4411: (in (Mem226[ss:fp - 34<i16> + (ax_230 >>u 3<8>):byte] & 1<8> << (SLICE(ax_230, byte, 0) & 7<8>)) == 0<8> @ 0800:1A9D : bool)
+T_4411: (in (ss->*((fp - 34<i16>) + (ax_230 >> 3<8>)) & 1<8> << ((byte) ax_230 & 7<8>)) == 0<8> @ 0800:1A9D : bool)
   Class: Eq_4411
   DataType: bool
   OrigDataType: bool

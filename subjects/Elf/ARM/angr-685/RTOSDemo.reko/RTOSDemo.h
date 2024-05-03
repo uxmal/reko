@@ -19013,7 +19013,7 @@ T_3977: (in 0xFFFFFFF8<32> @ 00001778 : word32)
   Class: Eq_3977
   DataType: ui32
   OrigDataType: ui32
-T_3978: (in r3_26 + 0xC<32> & 0xFFFFFFF8<32> @ 00001778 : word32)
+T_3978: (in r3_26 + ((char *) (&g_t0001.dw0004) + 7<i32>) & 0xFFFFFFF8<32> @ 00001778 : word32)
   Class: Eq_3970
   DataType: ui32
   OrigDataType: ui32

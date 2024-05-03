@@ -1274,7 +1274,7 @@ Eq_n xQueueReceive(cui16 sr, word16 r13, byte * r14, Eq_n r15)
 	{
 		Eq_n v19_n;
 		v19_n.u0 = r11_n.u1->t002C.u0;
-		byte * r15_n = Mem144[r11_n + 6:word16] + v19_n;
+		byte * r15_n = r11_n.u1->ptr0006 + v19_n;
 		r11_n.u1->ptr0006 = r15_n;
 		if (r15_n < (r11_n.u1)->ptr0002)
 			r11_n.u1->ptr0006 = r11_n.u1->ptr0000;
@@ -1332,7 +1332,7 @@ Eq_n xQueueReceiveFromISR(cui16 sr, word16 * r13, byte * r14, Eq_n r15)
 	{
 		Eq_n v13_n;
 		v13_n.u0 = r15.u1->t002C.u0;
-		byte * r15_n = Mem8[r15 + 6:word16] + v13_n;
+		byte * r15_n = r15.u1->ptr0006 + v13_n;
 		r15.u1->ptr0006 = r15_n;
 		if (r15_n < (r15.u1)->ptr0002)
 			r15.u1->ptr0006 = r15.u1->ptr0000;
@@ -1868,7 +1868,7 @@ l57A2:
 					{
 						byte * r15_n = wLoc20_n - (byte *) 0x01;
 						do
-							++r15_n;
+							r15_n += (byte *) 0x01;
 						while (*r15_n != 0x00);
 						r9_n = (word16) ((byte) r15_n - bLoc20_n);
 						goto l54F8;

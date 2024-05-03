@@ -35,7 +35,7 @@ void deregister_tm_clones()
 void register_tm_clones()
 {
 	byte * r3_n = &g_b2068 - &g_b2068;
-	if ((r3_n >> 3) + ((r3_n >> 3) >>u 63) >> 1 == 0x00)
+	if ((r3_n >> 3) + ((r3_n >> 3) >> 63) >> 1 == 0x00)
 		return;
 	<anonymous> * r1_n = g_ptr2050;
 	if (r1_n == null)

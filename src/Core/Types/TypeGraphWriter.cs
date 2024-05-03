@@ -35,6 +35,7 @@ namespace Reko.Core.Types
         // Structs with more than this number of fields are considered 'large'
         // for the purpose of rendering.
         private const int SmallCompositeType = 6;
+        private const int NestingLimit = 90;
 
         private HashSet<DataType>? visited;
         private Formatter writer;
@@ -49,7 +50,7 @@ namespace Reko.Core.Types
         public Formatter VisitArray(ArrayType at)
         {
             writer.Write("(arr ");
-            if (this.nesting < 90)
+            if (this.nesting < NestingLimit)
             {
                 ++this.nesting;
                 at.ElementType.Accept(this);
@@ -172,7 +173,16 @@ namespace Reko.Core.Types
         {
 			writer.Write($"(ptr{ptr.BitSize} ");
             WriteQualifier(ptr.Qualifier);
-            WriteReference(ptr.Pointee);
+            if (this.nesting < NestingLimit)
+            {
+                ++nesting;
+                WriteReference(ptr.Pointee);
+                --nesting;
+            }
+            else
+            {
+                writer.Write("...");
+            }
 			writer.Write(")");
             return writer;
 		}

@@ -1410,7 +1410,7 @@ word32 fn00009478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 		{
 			*er2_n = 0x06;
 			++er3_n;
-			er2_n += 0x02;
+			er2_n += (word16 *) 0x02;
 			er3_16_n = SLICE(er3_n, word16, 16);
 		} while ((word16) er3_n <= 0x04);
 		r6.u0 = ~0x00;
@@ -1673,7 +1673,7 @@ void fn00009AF8(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16
 		do
 		{
 			*er2_n = 0x00;
-			++er2_n;
+			er2_n += (byte *) 0x01;
 			er2_16_n = SLICE(er2_n, word16, 16);
 		} while ((word16) er2_n != 40760);
 	}

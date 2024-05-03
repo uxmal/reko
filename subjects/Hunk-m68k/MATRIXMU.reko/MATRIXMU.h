@@ -2892,7 +2892,7 @@ T_659: (in SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5
   Class: Eq_659
   DataType: Eq_659
   OrigDataType: (union (int32 u1) (uint32 u0))
-T_660: (in dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_108, word16, 16), (word16) d5_108 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 0000141C : word32)
+T_660: (in dwArg0C + ((word16) d4_147 *32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_108, word16, 16), (word16) d5_108 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 0000141C : (arr word32))
   Class: Eq_660
   DataType: (ptr32 (arr word32))
   OrigDataType: (ptr32 (struct (0 (arr T_731) a0000)))
@@ -2908,7 +2908,7 @@ T_663: (in (dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(
   Class: Eq_663
   DataType: word32
   OrigDataType: word32
-T_664: (in d0_102 + (dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_108, word16, 16), (word16) d5_108 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)))[d3_144 * 4<32>] @ 0000141C : word32)
+T_664: (in d0_102 + (dwArg0C + ((word16) d4_147 *32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_108, word16, 16), (word16) d5_108 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)))[d3_144] @ 0000141C : word32)
   Class: Eq_664
   DataType: uint32
   OrigDataType: uint32
@@ -3024,7 +3024,7 @@ T_692: (in SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5
   Class: Eq_692
   DataType: Eq_692
   OrigDataType: (union (int32 u1) (uint32 u0))
-T_693: (in dwArg0C + (SLICE(d4_147, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_128, word16, 16), (word16) d5_128 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 00001440 : word32)
+T_693: (in dwArg0C + ((word16) d4_147 *32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_128, word16, 16), (word16) d5_128 + (word16) __swap(d4_147) * 0x14<16>)), word16, 16), 0<16>)) @ 00001440 : (arr uint32))
   Class: Eq_693
   DataType: (ptr32 (arr uint32))
   OrigDataType: (ptr32 (struct (0 (arr T_733) a0000)))

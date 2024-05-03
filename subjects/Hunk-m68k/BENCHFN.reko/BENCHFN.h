@@ -7577,7 +7577,7 @@ T_1232: (in out a5_1598 @ 00001C74 : ptr32)
   Class: Eq_673
   DataType: ptr32
   OrigDataType: ptr32
-T_1233: (in fn00001E10(CONVERT(CONVERT(Mem1599[fp + -6<i32> + d2_1590:byte], int8, int16), int16, int32), a5_1598, out a0_1465, out a5_1598) @ 00001C74 : word32)
+T_1233: (in fn00001E10((int32) (int16) *(fp->aFFFFFFFA + d2_1590), a5_1598, out a0_1465, out a5_1598) @ 00001C74 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
@@ -7585,7 +7585,7 @@ T_1234: (in 0xFFFFFFFF<32> @ 00001C74 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
-T_1235: (in fn00001E10(CONVERT(CONVERT(Mem1599[fp + -6<i32> + d2_1590:byte], int8, int16), int16, int32), a5_1598, out a0_1465, out a5_1598) != 0xFFFFFFFF<32> @ 00001C74 : bool)
+T_1235: (in fn00001E10((int32) (int16) *(fp->aFFFFFFFA + d2_1590), a5_1598, out a0_1465, out a5_1598) != 0xFFFFFFFF<32> @ 00001C74 : bool)
   Class: Eq_1235
   DataType: bool
   OrigDataType: bool
@@ -8053,7 +8053,7 @@ T_1351: (in out a5_1598 @ 00001D02 : ptr32)
   Class: Eq_673
   DataType: ptr32
   OrigDataType: ptr32
-T_1352: (in fn00001E10(CONVERT(CONVERT(Mem1730[fp + -6<i32> + d2_1718:byte], int8, int16), int16, int32), a5_1598, out a0_3311, out a5_1598) @ 00001D02 : word32)
+T_1352: (in fn00001E10((int32) (int16) *(fp->aFFFFFFFA + d2_1718), a5_1598, out a0_3311, out a5_1598) @ 00001D02 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
@@ -8061,7 +8061,7 @@ T_1353: (in 0xFFFFFFFF<32> @ 00001D02 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
-T_1354: (in fn00001E10(CONVERT(CONVERT(Mem1730[fp + -6<i32> + d2_1718:byte], int8, int16), int16, int32), a5_1598, out a0_3311, out a5_1598) != 0xFFFFFFFF<32> @ 00001D02 : bool)
+T_1354: (in fn00001E10((int32) (int16) *(fp->aFFFFFFFA + d2_1718), a5_1598, out a0_3311, out a5_1598) != 0xFFFFFFFF<32> @ 00001D02 : bool)
   Class: Eq_1354
   DataType: bool
   OrigDataType: bool
@@ -8225,7 +8225,7 @@ T_1394: (in out a5_1598 @ 00001D68 : ptr32)
   Class: Eq_673
   DataType: ptr32
   OrigDataType: ptr32
-T_1395: (in fn00001E10(CONVERT(CONVERT(Mem1826[a3_1289 + d2_1815:byte], int8, int16), int16, int32), a5_1598, out a0_3313, out a5_1598) @ 00001D68 : word32)
+T_1395: (in fn00001E10((int32) (int16) *(a3_1289 + d2_1815), a5_1598, out a0_3313, out a5_1598) @ 00001D68 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
@@ -8233,7 +8233,7 @@ T_1396: (in 0xFFFFFFFF<32> @ 00001D68 : word32)
   Class: Eq_612
   DataType: ui32
   OrigDataType: word32
-T_1397: (in fn00001E10(CONVERT(CONVERT(Mem1826[a3_1289 + d2_1815:byte], int8, int16), int16, int32), a5_1598, out a0_3313, out a5_1598) != 0xFFFFFFFF<32> @ 00001D68 : bool)
+T_1397: (in fn00001E10((int32) (int16) *(a3_1289 + d2_1815), a5_1598, out a0_3313, out a5_1598) != 0xFFFFFFFF<32> @ 00001D68 : bool)
   Class: Eq_1397
   DataType: bool
   OrigDataType: bool

@@ -77,8 +77,8 @@ Eq_100: (union "Eq_100" (int32 u0) (uint32 u1) (ptr32 u2))
 	T_128 (in Mem20[fp_25 + -24<i32>:word32] @ 000084C4 : word32)
 	T_131 (in Mem20[sp_32 + 0<32>:word32] @ 000084C4 : word32)
 	T_133 (in out fp_52 @ 000084C4 : ptr32)
-	T_134 (in frobulate(Mem20[fp_25 + -24<i32>:word32], Mem20[sp_32 + 0<32>:word32], out fp_52) @ 000084C4 : word32)
-	T_135 (in __divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(Mem20[fp_25 + -24<i32>:word32], Mem20[sp_32 + 0<32>:word32], out fp_52)) @ 000084C4 : word32)
+	T_134 (in frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52) @ 000084C4 : word32)
+	T_135 (in __divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52)) @ 000084C4 : word32)
 	T_140 (in r0 @ 000084D0 : Eq_100)
 	T_141 (in 6<32> @ 000084F0 : word32)
 	T_145 (in out fp_39 @ 00008518 : ptr32)
@@ -130,7 +130,7 @@ Eq_119: (fn Eq_100 (Eq_100, Eq_100, Eq_100))
 	T_143 (in frobulate @ 00008518 : ptr32)
 	T_152 (in frobulate @ 0000852C : ptr32)
 Eq_121: (struct "Eq_121" (FFFFFFE8 Eq_100 tFFFFFFE8))
-	T_121 (in fp_25 @ 000084C4 : word32)
+	T_121 (in fp_25 @ 000084C4 : (ptr32 Eq_121))
 Eq_144: (struct "Eq_144" (4 word32 dw0004))
 	T_144 (in fp_39 @ 00008518 : (ptr32 Eq_144))
 	T_151 (in bazulate(0<32>, 0<32>) @ 00008548 : word32)
@@ -660,7 +660,7 @@ T_120: (in signature of frobulate @ 00008434 : void)
   Class: Eq_119
   DataType: (ptr32 Eq_119)
   OrigDataType: 
-T_121: (in fp_25 @ 000084C4 : word32)
+T_121: (in fp_25 @ 000084C4 : (ptr32 Eq_121))
   Class: Eq_121
   DataType: (ptr32 Eq_121)
   OrigDataType: (ptr32 (struct (FFFFFFE8 T_128 tFFFFFFE8)))
@@ -712,11 +712,11 @@ T_133: (in out fp_52 @ 000084C4 : ptr32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: ptr32
-T_134: (in frobulate(Mem20[fp_25 + -24<i32>:word32], Mem20[sp_32 + 0<32>:word32], out fp_52) @ 000084C4 : word32)
+T_134: (in frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52) @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32
-T_135: (in __divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(Mem20[fp_25 + -24<i32>:word32], Mem20[sp_32 + 0<32>:word32], out fp_52)) @ 000084C4 : word32)
+T_135: (in __divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52)) @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32

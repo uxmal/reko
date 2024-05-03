@@ -370,7 +370,7 @@ int8 fn0040188B()
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
 		return 0x00;
-	struct Eq_n * eax_n = Mem5[eax_n + 60:word32] + eax_n;
+	struct Eq_n * eax_n = eax_n[0x0F] + eax_n;
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
 		return 0x00;
 	return (int8) (eax_n->dw00E8 != 0x00);

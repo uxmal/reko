@@ -2356,7 +2356,7 @@ struct Eq_n * fn0000C6FA(struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * r8, s
 		sp_n->ptrFFFFFFFC = ap_n->ptr0004;
 		sp_n->ptrFFFFFFF8 = r6_n->ptr10CDC;
 		(*((word32) g_ptr192BC + 2))();
-		Mem328[r6_n + 68828:word32] = Mem302[r6_n + 68828:word32] + r3_n;
+		r6_n->ptr10CDC += r3_n;
 		r6_n->ptr10CDC->b0000 = 0x2E;
 		r6_n->ptr10CDC = &r6_n->ptr10CDC->b0000 + 1;
 	}
@@ -3373,7 +3373,7 @@ void fn0000E3DA(struct Eq_n * r0, word32 r1, struct Eq_n * r2, struct Eq_n * r4,
 				{
 					--sp_n->w0046;
 					struct Eq_n * ap_n = sp_n[18] * 0x15;
-					Mem163[r2 + 1511:word32] = r2 + 0x00A7 + ap_n;
+					r2->dw05E7 = (char *) &r2->dw0094 + 19 + ap_n;
 					struct Eq_n * sp_n = sp_n - 0x04;
 					sp_n->dw0000 = 0x04;
 					sp_n->ptrFFFFFFFC = r2 + 38;

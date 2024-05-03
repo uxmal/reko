@@ -23,7 +23,7 @@ l0000A630:
 			r3_n.u0 = 0x00;
 			do
 			{
-				Mem102[r5_n + r3_n:byte] = Mem98[r1 + r3_n:byte];
+				*(r5_n + r3_n) = *(r1 + r3_n);
 				r3_n.u1 = (word32) r3_n + 1;
 			} while (r3_n != r2);
 l0000A63C:
@@ -66,8 +66,8 @@ l0000A63C:
 			} while (r3_n != r4_n << 2);
 			Eq_n r3_n = (r6_n & ~0x03) + 0x04;
 			r2 &= 0x03;
-			r1 += r3_n;
-			r5_n += r3_n;
+			r1.u1 = r1 + r3_n;
+			r5_n.u1 = r5_n + r3_n;
 		}
 		else
 			r2 &= 0x0F;

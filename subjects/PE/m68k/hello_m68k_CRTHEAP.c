@@ -642,7 +642,7 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, Eq_n dwArg08, struct Eq_n & a5O
 			switch ((word32) d0_n.u1)
 			{
 			case ~0x02:
-				Mem356[a5 + -0x0528:word32] = dwArg04 + dwArg08;
+				a5->ptrFFFFFAD8 = dwArg04 + dwArg08;
 				fn00002E18(a3_n, dwArg08, (char *) &a5->tFFFFFAD0 + 4, &tLoc1C);
 				a5->tFFFFFACC.u1 = (struct Eq_n *) a3_n;
 				a5->tFFFFFAC8.u1 = (struct Eq_n *) a3_n;

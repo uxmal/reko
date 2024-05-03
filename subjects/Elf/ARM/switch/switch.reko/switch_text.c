@@ -96,9 +96,9 @@ Eq_n frobulate(Eq_n r0, Eq_n dwArg00, union Eq_n & fpOut)
 word32 bazulate(Eq_n r0, Eq_n r1)
 {
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	word32 fp_n;
+	struct Eq_n * fp_n;
 	word32 * fp_n;
-	__divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_n)), frobulate(Mem20[fp_n + -24:word32], Mem20[sp_n + 0x00:word32], out fp_n));
+	__divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_n)), frobulate(fp_n->tFFFFFFE8.u0, sp_n->u0, out fp_n));
 	return *fp_n;
 }
 

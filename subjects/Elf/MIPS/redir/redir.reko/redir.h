@@ -19734,7 +19734,7 @@ T_4319: (in strlen(r4) + SLICE(11<i32>, size_t, 0) @ 00405594 : size_t)
   Class: Eq_1205
   DataType: Eq_1205
   OrigDataType: (union (size_t u1))
-T_4320: (in malloc(strlen(r4) + SLICE(11<i32>, size_t, 0)) @ 00405594 : (ptr32 void))
+T_4320: (in malloc(strlen(r4) + (size_t) 11<i32>) @ 00405594 : (ptr32 void))
   Class: Eq_977
   DataType: (ptr32 char)
   OrigDataType: (ptr32 void)

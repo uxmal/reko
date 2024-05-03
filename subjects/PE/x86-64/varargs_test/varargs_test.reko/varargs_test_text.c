@@ -386,7 +386,7 @@ word64 fn0000000140001718(<anonymous> ** rcx)
 				uint64 r8_n = rcx - &g_w40000000;
 				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 				struct Eq_n * r9_n = rdx_n + rax_n;
-				for (; rdx_n != r9_n; rdx_n += 0x28)
+				for (; rdx_n != r9_n; rdx_n += (struct Eq_n *) 0x28)
 				{
 					uint64 rcx_n = (uint64) rdx_n->dw000C;
 					word32 ecx_n = (word32) rcx_n;
