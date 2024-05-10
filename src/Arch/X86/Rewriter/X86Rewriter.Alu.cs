@@ -1198,7 +1198,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(dst, m.Convert(
                 CreateTestCondition(cc, instrCur.Mnemonic),
                 PrimitiveType.Bool,
-                PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize)));
+                PrimitiveType.CreateWord(dst.DataType.BitSize)));
         }
 
         private void RewriteSetFlag(FlagGroupStorage flags, Constant value)

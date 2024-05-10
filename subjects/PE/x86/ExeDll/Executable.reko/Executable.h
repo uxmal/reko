@@ -4384,9 +4384,9 @@ T_933: (in Mem113[0x00403368<p32>:word32] @ 00401883 : word32)
   Class: Eq_858
   DataType: ui32
   OrigDataType: word32
-T_934: (in al @ 00401883 : int8)
+T_934: (in al @ 00401883 : byte)
   Class: Eq_934
-  DataType: int8
+  DataType: byte
   OrigDataType: byte
 T_935: (in GetModuleHandleW @ 00401891 : ptr32)
   Class: Eq_935
@@ -4442,7 +4442,7 @@ T_947: (in eax_6->unused != 0x5A4D<16> @ 004018A8 : bool)
   OrigDataType: bool
 T_948: (in 0<8> @ 0040189F : byte)
   Class: Eq_934
-  DataType: int8
+  DataType: byte
   OrigDataType: byte
 T_949: (in 60<i32> @ 004018AD : int32)
   Class: Eq_949
@@ -4544,10 +4544,10 @@ T_973: (in eax_18->dw00E8 != 0<32> @ 004018D2 : bool)
   Class: Eq_973
   DataType: bool
   OrigDataType: bool
-T_974: (in CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, int8) @ 004018D2 : int8)
+T_974: (in CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, byte) @ 004018D2 : byte)
   Class: Eq_934
-  DataType: int8
-  OrigDataType: int8
+  DataType: byte
+  OrigDataType: byte
 T_975: (in SetUnhandledExceptionFilter @ 004018D8 : ptr32)
   Class: Eq_975
   DataType: (ptr32 Eq_975)

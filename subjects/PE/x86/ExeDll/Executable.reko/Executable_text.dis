@@ -686,7 +686,7 @@ l004018B7:
 l004018C2:
 	branch Mem5[eax_18 + 116<i32>:word32] <=u 0xE<32> l0040189D
 l004018C8:
-	return CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, int8)
+	return CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, byte)
 l0040189D:
 	return 0<8>
 fn0040188F_exit:

@@ -345,7 +345,7 @@ byte fn000000014000164C(up32 ecx)
 			else
 			{
 				word64 rax_n = initialize_onexit_table(&g_ow400035D8);
-				rax_n = SEQ(SLICE(rax_n, word56, 8), (int8) ((word32) rax_n == 0x00));
+				rax_n = SEQ(SLICE(rax_n, word56, 8), (byte) ((word32) rax_n == 0x00));
 			}
 		}
 		else
@@ -584,7 +584,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		tLoc0588.ptr0008 = &tLoc04D8;
 		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
 		Eq_n eax_n = UnhandledExceptionFilter(&tLoc0588);
-		int8 bl_n = (int8) (eax_n == 0x01);
+		byte bl_n = (byte) (eax_n == 0x01);
 		struct _EXCEPTION_POINTERS * rcx_n = &tLoc0588;
 		uint64 rax_n = SEQ(rax_32_32_n, eax_n);
 		if (eax_n == 0x00)

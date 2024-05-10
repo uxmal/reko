@@ -60,7 +60,7 @@ l800001D4:
 	return fp0_11
 fn8000018E_exit:
 l800001B8:
-	fp0_11 = rLoc10_68 *96 CONVERT(CONVERT(dwLoc14_56, int32, real96), real96, real80)
+	fp0_11 = rLoc10_68 *96 CONVERT(dwLoc14_56, int32, real80)
 	dwLoc14_56 = dwLoc14_56 + 1<32>
 
 
@@ -86,7 +86,7 @@ l8000028A:
 	return fp1_87
 fn800001F2_exit:
 l80000224:
-	fp0_85 = fn80000132(rArg04, CONVERT(dwLoc20_102, int32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_102, int32, real96)), real96, real80) * rLoc1C_101
+	fp0_85 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_102, int32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_102, int32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_101
 	fp1_87 = rLoc10_119 + CONVERT(fp0_85, real96, real80)
 	rLoc1C_101 = fp0_85
 	dwLoc20_102 = dwLoc20_102 + 2<32>
@@ -114,7 +114,7 @@ l80000348:
 	return fp0_14
 fn800002AE_exit:
 l800002E2:
-	fp0_85 = fn80000132(rArg04, CONVERT(dwLoc20_101, int32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_101, int32, real96)), real96, real80) * rLoc1C_100
+	fp0_85 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_101, int32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_101, int32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_100
 	fp0_14 = rLoc10_118 + CONVERT(fp0_85, real96, real80)
 	rLoc1C_100 = fp0_85
 	dwLoc20_101 = dwLoc20_101 + 2<32>

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System;
 
 namespace Reko.Evaluation
 {
@@ -37,35 +38,52 @@ namespace Reko.Evaluation
             var origExp = innerC.Expression;
             var innerConv = innerC;
 
-            var ptC = c.DataType as PrimitiveType;
+            var ptOuter = c.DataType as PrimitiveType;
             var ptInner = innerC.DataType as PrimitiveType;
             var ptExp = origExp.DataType as PrimitiveType;
-            if (ptC == null || ptInner == null || ptExp == null)
+            if (ptOuter is null || ptInner is null || ptExp is null)
                 return null;
 
             // If the cast is identical, we don't have to do it twice.
-            if (ptC == ptInner)
+            if (ptOuter == ptInner)
             {
-                origExp = innerC;
+                return innerC;
             }
-            else
+            if (ptOuter.Domain == Domain.Real)
             {
-                // Only match widening / narrowing. 
-                if (!ptC.IsWord && !ptInner.IsWord &&
-                    (ptC.Domain != ptInner.Domain || ptC.Domain != ptExp.Domain) &&
-                     ptExp.Domain != Domain.Boolean)
+                if (ptInner.Domain != Domain.Real)
+                {
+                    if (innerConv.SourceDataType.BitSize <  ptInner.BitSize)
+                    {
+                        return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
+                    }
                     return null;
+                }
+                if (ptInner.BitSize > ptOuter.BitSize)
+                {
+                    if (ptExp.BitSize == ptOuter.BitSize)
+                        return origExp;
+                    return new Conversion(origExp, innerC.SourceDataType, ptOuter);
+                }
+
+                if (ptExp.BitSize == ptOuter.BitSize)
+                {
+                    if (ptInner.BitSize == ptOuter.BitSize)
+                        return origExp;
+                    return null;
+                }
+                return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
             }
-            
+
             // ptExp <= ptInner <= ptC
-            if (ptExp.BitSize <= ptInner.BitSize && ptInner.BitSize <= ptC.BitSize)
+            if (ptExp.BitSize <= ptInner.BitSize && ptInner.BitSize <= ptOuter.BitSize)
             {
-                if (ptExp.BitSize == ptC.BitSize)
+                if (ptExp.BitSize == ptOuter.BitSize)
                     return origExp;
                 else
-                    return new Conversion(origExp, innerConv.SourceDataType, ptC);
+                    return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
             }
-            return origExp;
+            return null;
         }
     }
 }

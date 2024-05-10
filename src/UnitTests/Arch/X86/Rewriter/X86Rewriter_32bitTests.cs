@@ -476,7 +476,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("0f90c1");
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
-                "1|L--|cl = CONVERT(Test(OV,O), bool, int8)");
+                "1|L--|cl = CONVERT(Test(OV,O), bool, byte)");
         }
 
         [Test]
@@ -503,7 +503,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("0F92C1");
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
-                "1|L--|cl = CONVERT(Test(ULT,C), bool, int8)");
+                "1|L--|cl = CONVERT(Test(ULT,C), bool, byte)");
         }
 
         [Test]

@@ -103,7 +103,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var rcF = previewSpan.ContentExtent;
             var rc = mixedCodeDataControl.ClientRectangle;
             var ptScreen = mixedCodeDataControl.PointToScreen(
-                new System.Drawing.Point(100, (int)rcF.Bottom));
+                new Point(100, (int)rcF.Bottom));
 
             var nested = new MixedCodeDataControl
             {

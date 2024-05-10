@@ -481,10 +481,10 @@ void fn00401774(word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188F: Register int8 fn0040188F()
+// 0040188F: Register byte fn0040188F()
 // Called from:
 //      Win32CrtStartup
-int8 fn0040188F()
+byte fn0040188F()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
@@ -492,7 +492,7 @@ int8 fn0040188F()
 	struct Eq_n * eax_n = eax_n[0x0F] + eax_n;
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
 		return 0x00;
-	return (int8) (eax_n->dw00E8 != 0x00);
+	return (byte) (eax_n->dw00E8 != 0x00);
 }
 
 // 004018D3: void fn004018D3()

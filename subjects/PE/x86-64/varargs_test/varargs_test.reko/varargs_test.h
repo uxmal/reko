@@ -3283,11 +3283,11 @@ T_635: (in (word32) rax_105 == 0<32> @ 0000000140001693 : bool)
   Class: Eq_635
   DataType: bool
   OrigDataType: bool
-T_636: (in CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, int8) @ 0000000140001693 : int8)
+T_636: (in CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, byte) @ 0000000140001693 : byte)
   Class: Eq_636
-  DataType: int8
-  OrigDataType: int8
-T_637: (in SEQ(SLICE(rax_105, word56, 8), CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, int8)) @ 0000000140001693 : word64)
+  DataType: byte
+  OrigDataType: byte
+T_637: (in SEQ(SLICE(rax_105, word56, 8), CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, byte)) @ 0000000140001693 : word64)
   Class: Eq_615
   DataType: word64
   OrigDataType: word64
@@ -4663,14 +4663,14 @@ T_980: (in eax_82 == 1<32> @ 0000000140001A7F : bool)
   Class: Eq_980
   DataType: bool
   OrigDataType: bool
-T_981: (in CONVERT(eax_82 == 1<32>, bool, int8) @ 0000000140001A7F : int8)
+T_981: (in CONVERT(eax_82 == 1<32>, bool, byte) @ 0000000140001A7F : byte)
   Class: Eq_981
-  DataType: int8
-  OrigDataType: int8
-T_982: (in bl_88 @ 0000000140001A7F : int8)
+  DataType: byte
+  OrigDataType: byte
+T_982: (in bl_88 @ 0000000140001A7F : byte)
   Class: Eq_981
-  DataType: int8
-  OrigDataType: int8
+  DataType: byte
+  OrigDataType: byte
 T_983: (in &tLoc0588 @ 0000000140001A8F : (ptr64 (struct "_EXCEPTION_POINTERS")))
   Class: Eq_134
   DataType: (ptr64 Eq_134)
@@ -4777,7 +4777,7 @@ T_1008: (in 0<32> @ 0000000140001AA0 : word32)
   OrigDataType: word32
 T_1009: (in 0<8> @ 0000000140001AA0 : byte)
   Class: Eq_981
-  DataType: int8
+  DataType: byte
   OrigDataType: byte
 T_1010: (in bl_88 != 0<8> @ 0000000140001AA0 : bool)
   Class: Eq_1010

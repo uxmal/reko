@@ -457,7 +457,7 @@ l0000000140001671:
 	branch SLICE(rax_93, word32, 0) == 0<32> l0000000140001685
 l0000000140001685:
 	rax_105 = initialize_onexit_table(0x00000001400035D8<p64>)
-	rax_162 = SEQ(SLICE(rax_105, word56, 8), CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, int8)) (alias)
+	rax_162 = SEQ(SLICE(rax_105, word56, 8), CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, byte)) (alias)
 l0000000140001681:
 	rax_162 = SEQ(rax_56_8_163, 0<8>) (alias)
 l00000001400016FF:
@@ -803,7 +803,7 @@ l0000000140001A1A:
 	Mem89[&tLoc0588 + 8<i64>:word64] = &tLoc04D8
 	rax_32_32_146 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32) (alias)
 	eax_94 = UnhandledExceptionFilter(&tLoc0588)
-	bl_88 = CONVERT(eax_82 == 1<32>, bool, int8)
+	bl_88 = CONVERT(eax_82 == 1<32>, bool, byte)
 	rcx_93 = &tLoc0588
 	rax_102 = SEQ(rax_32_32_146, eax_94) (alias)
 	branch eax_94 != 0<32> l0000000140001AA8

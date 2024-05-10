@@ -7824,7 +7824,7 @@ l0800_5CCE:
 l0800_5C4D:
 	branch Mem32[ds:0x2E45<16>:word16] != 0<16> l0800_5CA2
 l0800_5C54:
-	dx_ax_167 = fn0800_8C69(CONVERT(Mem74[Mem74[ds_63:0x2E6D<16>:segptr32] + 1<i16>:byte], uint8, uint16), 0x18<8>, 0<16>) + SEQ(CONVERT(Mem74[Mem74[ds_63:0x2E6D<16>:segptr32]:byte], uint8, uint16), 0<16>) + CONVERT(CONVERT(SLICE(fn0800_5B15(ds_47, out si_155, out di_129, out ds_63), byte, 0), uint8, uint16) << 8<8>, uint16, uint32) + CONVERT(CONVERT(SLICE(fn0800_5B15(ds, out si_206, out di_207, out ds_47), byte, 0), uint8, uint16), uint16, uint32)
+	dx_ax_167 = fn0800_8C69(CONVERT(Mem74[Mem74[ds_63:0x2E6D<16>:segptr32] + 1<i16>:byte], uint8, uint16), 0x18<8>, 0<16>) + SEQ(CONVERT(Mem74[Mem74[ds_63:0x2E6D<16>:segptr32]:byte], uint8, uint16), 0<16>) + CONVERT(CONVERT(SLICE(fn0800_5B15(ds_47, out si_155, out di_129, out ds_63), byte, 0), uint8, uint16) << 8<8>, uint16, uint32) + CONVERT(SLICE(fn0800_5B15(ds, out si_206, out di_207, out ds_47), byte, 0), uint8, uint32)
 	Mem117[ds_63:0x29FD<16>:word16] = SLICE(dx_ax_167, word16, 16)
 	Mem118[ds_63:0x29FB<16>:word16] = SLICE(dx_ax_167, word16, 0)
 	Mem119[ds_63:0x2E45<16>:word16] = 0x10<16>
@@ -17085,8 +17085,8 @@ l0800_C127:
 l0800_C128:
 	dx_ax_221 = CONVERT(si_180, int16, int32)
 	v32_v31_328 = dwLoc06_349 + fn0800_8F18(0xE10<16>, SLICE(dx_ax_221, word16, 16), 0<16>, SLICE(dx_ax_221, word16, 0), out ch_460)
-	dx_ax_260 = CONVERT(CONVERT(Mem253[ptrArg06:byte], uint8, uint16), int16, int32)
-	bx_cx_331 = fn0800_8F18(0x3C<16>, SLICE(dx_ax_260, word16, 16), 0<16>, SLICE(dx_ax_260, word16, 0), out ch_461) + CONVERT(CONVERT(Mem266[ptrArg06 + 3<i16>:byte], uint8, uint16), int16, int32)
+	dx_ax_260 = CONVERT(Mem253[ptrArg06:byte], uint8, int32)
+	bx_cx_331 = fn0800_8F18(0x3C<16>, SLICE(dx_ax_260, word16, 16), 0<16>, SLICE(dx_ax_260, word16, 0), out ch_461) + CONVERT(Mem266[ptrArg06 + 3<i16>:byte], uint8, int32)
 	cxOut = SLICE(bx_cx_331, word16, 0)
 	v36_v35_333 = v32_v31_328 + bx_cx_331
 	dxOut = SLICE(v36_v35_333, word16, 16)
@@ -17225,9 +17225,9 @@ l0800_C326:
 	dwArg02_781 = dwArg02_788 (alias)
 l0800_C34D:
 	bArg02_626 = SLICE(dwArg02_783, byte, 0) (alias)
-	branch CONVERT(CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3<i16>:byte], int8, int16) + 0x26B4<16>:byte], int8, int16), int16, int32) <u dwArg02_783 l0800_C330
+	branch CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3<i16>:byte], int8, int16) + 0x26B4<16>:byte], int8, int32) <u dwArg02_783 l0800_C330
 l0800_C330:
-	v61_v60_570 = dwArg02_783 - CONVERT(CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3<i16>:byte], int8, int16) + 0x26B4<16>:byte], int8, int16), int16, int32)
+	v61_v60_570 = dwArg02_783 - CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3<i16>:byte], int8, int16) + 0x26B4<16>:byte], int8, int32)
 	Mem533[ptrArg06 + 3<i16>:byte] = Mem529[ptrArg06 + 3<i16>:byte] + 1<8>
 	dwArg02_782 = v61_v60_570 (alias)
 l0800_C369:

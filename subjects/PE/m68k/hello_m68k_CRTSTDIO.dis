@@ -213,7 +213,7 @@ l00001C60:
 l00001C4E:
 	Mem42[Mem10[dwArg08:word32]:byte] = bArg07_80
 	a0_43 = Mem42[dwArg08:word32]
-	d0_22 = CONVERT(CONVERT(Mem42[a0_43:byte], uint8, int16), int16, int32)
+	d0_22 = CONVERT(Mem42[a0_43:byte], uint8, int32)
 	Mem50[dwArg08:word32] = a0_43 + 1<i32>
 l00001C6C:
 	a0_60 = Mem59[a6_28 + 16<i32>:word32]

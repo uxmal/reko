@@ -1332,7 +1332,7 @@ l0000216E:
 						Eq_n d1_n;
 						d1 = d1_n;
 					}
-					d0.u2 = (int32) (int16) a4_n->t0000.u0;
+					d0.u2 = (int32) a4_n->t0000.u0;
 					d5_n = dwLoc4C_n;
 					d3_n.u0 = 0x01;
 					d4_n.u2 = (word32) d4_n + 1;
@@ -1961,7 +1961,7 @@ Eq_n fn00002F34(Eq_n d0, struct Eq_n * dwArg04, int8 * dwArg08, Eq_n dwArg0C)
 							uint32 d0_n = (word16) d2_n *32 0x0A + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d2_n) * 0x0A)), word16, 16), 0x00);
 							++a2_n;
 							a0_n = (struct Eq_n *) (g_a2BED + (SEQ(SLICE(d0_n, word24, 8), (a2_n->t0000).u0) & 0xFF));
-							int32 d1_n = (int32) (int16) a2_n->t0000.u0;
+							int32 d1_n = (int32) a2_n->t0000.u0;
 							d0_n = (uint32) a0_n->t0000.u0;
 							d1_n = d1_n - 0x30;
 							d2_n = d1_n - 0x30 + d0_n;
@@ -1993,7 +1993,7 @@ Eq_n fn00002F34(Eq_n d0, struct Eq_n * dwArg04, int8 * dwArg08, Eq_n dwArg0C)
 							uint32 d1_n = __swap(0x0A) *32 (word16) d5_n;
 							uint32 d0_n = (word16) d5_n *32 0x0A + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d5_n) * 0x0A)), word16, 16), 0x00);
 							++a2_n;
-							int32 d1_n = (int32) (int16) a2_n->t0000.u0;
+							int32 d1_n = (int32) a2_n->t0000.u0;
 							a0_n = (struct Eq_n *) (g_a2BED + (SEQ(SLICE(d0_n, word24, 8), (a2_n->t0000).u0) & 0xFF));
 							d1_n = d1_n - 0x30;
 							d5_n = d1_n - 0x30 + d0_n;
@@ -2003,7 +2003,7 @@ Eq_n fn00002F34(Eq_n d0, struct Eq_n * dwArg04, int8 * dwArg08, Eq_n dwArg0C)
 				if (a2_n->t0000.u0 == 0x68 || ((a2_n->t0000).u0 == 0x6C || ((a2_n->t0000).u0 == 0x4C || ((a2_n->t0000).u0 == 0x6A || ((a2_n->t0000).u0 == 122 || (a2_n->t0000).u0 == 116)))))
 				{
 					++a2_n;
-					d4_n = (int32) (int16) a2_n->t0000.u0;
+					d4_n = (int32) a2_n->t0000.u0;
 				}
 				if (d4_n == 0x68 && (a2_n->t0000).u0 == 0x68)
 				{
@@ -2184,7 +2184,7 @@ l000031B2:
 						uint8 bLoc31_n = SLICE(d1_n, byte, 24);
 						uint64 qwLoc38_n = SEQ(dwLoc38_n, d1_n);
 						if (d4_n == 0x02)
-							qwLoc38_n = (uint64) (uint32) bLoc31_n;
+							qwLoc38_n = (uint64) bLoc31_n;
 						dwLoc38_n = (word32) qwLoc38_n;
 						dwLoc34_n = SLICE(qwLoc38_n, word32, 32);
 						bLoc44_n = (byte) d1_n;
@@ -2250,7 +2250,7 @@ l0000340E:
 							if (d4_n == 0x02)
 							{
 								Eq_n d1_n;
-								d1_n.u0 = (int32) (int16) bLoc39_n;
+								d1_n.u0 = (int32) bLoc39_n;
 								d1_n = SEQ(SLICE(d0_n, word24, 8), bLoc39_n);
 								qwLoc40_n = SEQ(d1_n >> 31, d1_n);
 							}
@@ -2333,7 +2333,7 @@ l000036A0:
 					{
 						do
 						{
-							if (fn000038B4((int32) (int16) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
+							if (fn000038B4((int32) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 							{
 								d0_n = d6_n;
 								return d0_n;
@@ -2371,7 +2371,7 @@ l000036A0:
 						do
 						{
 							word32 a0_n;
-							if (fn000038B4((int32) (int16) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
+							if (fn000038B4((int32) *(fp->aFFFFFFFA + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 							{
 								d0_n = d6_n;
 								return d0_n;
@@ -2401,7 +2401,7 @@ l000036A0:
 				while (d2_n < dwLoc0A_n)
 				{
 					word32 a0_n;
-					if (fn000038B4((int32) (int16) *(a3_n + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
+					if (fn000038B4((int32) *(a3_n + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 					{
 						d0_n = d6_n;
 						return d0_n;
@@ -2433,7 +2433,7 @@ l000036A0:
 			{
 				++a4_n;
 				word32 a0_n;
-				d0 = fn000038B4((int32) (int16) *a4_n, a5_n, out a0_n, out a5_n);
+				d0 = fn000038B4((int32) *a4_n, a5_n, out a0_n, out a5_n);
 				if (d0 == ~0x00)
 				{
 					d0_n = d6_n;

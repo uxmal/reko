@@ -8100,7 +8100,7 @@ cui16 fn0800-5C39(Eq_n ds, Eq_n wArg02, ptr16 & siOut, ptr16 & diOut, union Eq_n
 			break;
 		if (Mem32[ds:11845:word16] == 0x00)
 		{
-			uint32 dx_ax_n = fn0800-8C69(CONVERT(Mem74[Mem74[ds_n:11885:segptr32] + 1:byte], uint8, uint16), 0x18, 0x00) + SEQ(CONVERT(Mem74[Mem74[ds_n:11885:segptr32] + 0x00:byte], uint8, uint16), 0x00) + CONVERT(CONVERT(SLICE(fn0800-5B15(ds_n, out si_n, out di_n, out ds_n), byte, 0), uint8, uint16) << 0x08, uint16, uint32) + CONVERT(CONVERT(SLICE(fn0800-5B15(ds, out si_n, out di_n, out ds_n), byte, 0), uint8, uint16), uint16, uint32);
+			uint32 dx_ax_n = fn0800-8C69(CONVERT(Mem74[Mem74[ds_n:11885:segptr32] + 1:byte], uint8, uint16), 0x18, 0x00) + SEQ(CONVERT(Mem74[Mem74[ds_n:11885:segptr32] + 0x00:byte], uint8, uint16), 0x00) + CONVERT(CONVERT(SLICE(fn0800-5B15(ds_n, out si_n, out di_n, out ds_n), byte, 0), uint8, uint16) << 0x08, uint16, uint32) + CONVERT(SLICE(fn0800-5B15(ds, out si_n, out di_n, out ds_n), byte, 0), uint8, uint32);
 			Mem117[ds_n:0x29FD:word16] = SLICE(dx_ax_n, word16, 16);
 			Mem118[ds_n:10747:word16] = SLICE(dx_ax_n, word16, 0);
 			Mem119[ds_n:11845:word16] = 0x10;
@@ -17118,8 +17118,8 @@ word16 fn0800_C04F(Eq_n ds, struct Eq_n * ptrArg02, struct Eq_n * ptrArg06, ptr1
 		si_n = ax_n - 0x01;
 	int32 dx_ax_n = (int32) si_n;
 	ui32 v32_v31_n = dwLoc06_n + fn0800-8F18(0x0E10, SLICE(dx_ax_n, word16, 16), 0x00, (word16) dx_ax_n, out ch_n);
-	int32 dx_ax_n = (int32) (uint16) ptrArg06->b0000;
-	ui32 bx_cx_n = fn0800-8F18(0x3C, SLICE(dx_ax_n, word16, 16), 0x00, (word16) dx_ax_n, out ch_n) + (int32) ((uint16) ptrArg06->b0003);
+	int32 dx_ax_n = (int32) ptrArg06->b0000;
+	ui32 bx_cx_n = fn0800-8F18(0x3C, SLICE(dx_ax_n, word16, 16), 0x00, (word16) dx_ax_n, out ch_n) + (int32) ptrArg06->b0003;
 	cxOut = (word16) bx_cx_n;
 	ui32 v36_v35_n = v32_v31_n + bx_cx_n;
 	dxOut = SLICE(v36_v35_n, word16, 16);
@@ -17285,9 +17285,9 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	{
 		Eq_n dwArg02_n;
 		bArg02_n = (byte) dwArg02_n;
-		if (CONVERT(CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3:byte], int8, int16) + 9908:byte], int8, int16), int16, int32) >=u dwArg02_n)
+		if (CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3:byte], int8, int16) + 9908:byte], int8, int32) >=u dwArg02_n)
 			break;
-		uint32 v61_v60_n = dwArg02_n - CONVERT(CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3:byte], int8, int16) + 9908:byte], int8, int16), int16, int32);
+		uint32 v61_v60_n = dwArg02_n - CONVERT(Mem491[ds:CONVERT(Mem491[ptrArg06 + 3:byte], int8, int16) + 9908:byte], int8, int32);
 		++ptrArg06->b0003;
 		uint32 dwArg02_n = v61_v60_n;
 	}

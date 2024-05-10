@@ -3668,9 +3668,9 @@ T_783: (in Mem113[0x00403368<p32>:word32] @ 0040187C : word32)
   Class: Eq_708
   DataType: ui32
   OrigDataType: word32
-T_784: (in al @ 0040187C : int8)
+T_784: (in al @ 0040187C : byte)
   Class: Eq_784
-  DataType: int8
+  DataType: byte
   OrigDataType: byte
 T_785: (in GetModuleHandleW @ 0040188D : ptr32)
   Class: Eq_785
@@ -3726,7 +3726,7 @@ T_797: (in eax_6->unused != 0x5A4D<16> @ 004018A4 : bool)
   OrigDataType: bool
 T_798: (in 0<8> @ 0040189B : byte)
   Class: Eq_784
-  DataType: int8
+  DataType: byte
   OrigDataType: byte
 T_799: (in 60<i32> @ 004018A9 : int32)
   Class: Eq_799
@@ -3828,10 +3828,10 @@ T_823: (in eax_18->dw00E8 != 0<32> @ 004018CE : bool)
   Class: Eq_823
   DataType: bool
   OrigDataType: bool
-T_824: (in CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, int8) @ 004018CE : int8)
+T_824: (in CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, byte) @ 004018CE : byte)
   Class: Eq_784
-  DataType: int8
-  OrigDataType: int8
+  DataType: byte
+  OrigDataType: byte
 T_825: (in 004020D4 @ 00401972 : ptr32)
   Class: Eq_825
   DataType: (ptr32 (ptr32 code))

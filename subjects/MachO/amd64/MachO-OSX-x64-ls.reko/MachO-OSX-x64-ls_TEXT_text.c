@@ -1043,7 +1043,7 @@ void fn000000010000328E(Eq_n rdi)
 			else
 			{
 				__tolower();
-				if (SEQ(eax_24_8_n, (int8) (r12b_n == 0x78)) == 0x00)
+				if (SEQ(eax_24_8_n, (byte) (r12b_n == 0x78)) == 0x00)
 					fprintf("error: invalid character '%c' in LSCOLORS env var\n", *__stderrp);
 				(r14_n - 8)[r13_n] = ~0x00;
 			}
@@ -1466,7 +1466,7 @@ l00000001000049B7:
 				if (rax_n == null)
 					goto l0000000100004A19;
 				putchar(0x5C);
-				putchar((int32) rax_n->b0001);
+				putchar((word32) rax_n->b0001);
 				rbp->dwFFFFFF48 += 0x02;
 				goto l0000000100004AA8;
 			}

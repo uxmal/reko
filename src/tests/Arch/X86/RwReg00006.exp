@@ -220,7 +220,7 @@ l10000146:
 l1000014C:
 	ecx = Mem0[esi + 4<i32>:word32]
 	SCZO = cond(Mem0[ecx + 0xE0<32>:word32] - ebp)
-	bl = CONVERT(Test(NE,Z), bool, int8)
+	bl = CONVERT(Test(NE,Z), bool, byte)
 	// succ:  l10000158
 l10000158:
 	esp = esp - 4<i32>

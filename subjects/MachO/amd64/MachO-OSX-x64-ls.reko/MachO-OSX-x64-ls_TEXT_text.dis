@@ -970,7 +970,7 @@ l000000010000336A:
 	branch r12b_154 >u 0x48<8> l0000000100003388
 l0000000100003388:
 	__tolower()
-	branch SEQ(eax_24_8_195, CONVERT(r12b_154 == 0x78<8>, bool, int8)) != 0<32> l00000001000033B7
+	branch SEQ(eax_24_8_195, CONVERT(r12b_154 == 0x78<8>, bool, byte)) != 0<32> l00000001000033B7
 l000000010000339B:
 	fprintf(0x0000000100005477<p64>, Mem101[__stderrp:word64])
 l00000001000033B7:
@@ -1620,7 +1620,7 @@ l000000010000466B:
 	putchar(0xA<32>)
 l0000000100004675:
 	Mem1192 = PHI((Mem900, l00000001000043A7), (Mem900, l00000001000043C5), (Mem900, l00000001000043E3), (Mem900, l0000000100004401), (Mem1042, l000000010000466B))
-	al_1196 = CONVERT(Mem1192[rbp_860 - 3160<i64>:word64] != 0<64>, bool, int8)
+	al_1196 = CONVERT(Mem1192[rbp_860 - 3160<i64>:word64] != 0<64>, bool, byte)
 	Mem1198[rbp_860 - 3208<i64>:word32] = Mem1192[rbp_860 - 3208<i64>:word32] + 1<32>
 l00000001000046AD:
 	Mem1201 = PHI((Mem861, l000000010000435C), (Mem900, l0000000100004686))
@@ -1887,7 +1887,7 @@ l0000000100004A9C:
 	eax_219 = Mem131[rbp - 188<i64>:word32] (alias)
 l00000001000049F6:
 	putchar(0x5C<32>)
-	putchar(CONVERT(Mem19[rax_90 + 1<i64>:byte], byte, int32))
+	putchar(CONVERT(Mem19[rax_90 + 1<i64>:byte], byte, word32))
 	Mem195[rbp - 184<i64>:word32] = Mem19[rbp - 184<i64>:word32] + 2<32>
 l000000010000498A:
 	branch r14d_109 <= 0<32> l00000001000049AD

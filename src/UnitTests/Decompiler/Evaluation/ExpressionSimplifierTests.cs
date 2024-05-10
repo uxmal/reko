@@ -32,7 +32,6 @@ using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Numerics;
-using static Reko.UnitTests.Decompiler.Analysis.SegmentedAccessClassifierTests;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {
