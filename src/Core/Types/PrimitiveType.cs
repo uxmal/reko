@@ -339,56 +339,56 @@ namespace Reko.Core.Types
             Word512 = CreateWord(512);
         }
 
-        public static PrimitiveType Bool { get; private set; }
+        public static PrimitiveType Bool { get; }
 
-		public static PrimitiveType Byte { get; private set; }
+		public static PrimitiveType Byte { get; }
         // 8-bit character
-        public static PrimitiveType Char { get; private set; }
-		public static PrimitiveType SByte { get; private set; }
-		public static PrimitiveType Int8 { get; private set; }
-		public static PrimitiveType UInt8 { get; private set; }
+        public static PrimitiveType Char { get; }
+		public static PrimitiveType SByte { get; }
+		public static PrimitiveType Int8 { get; }
+		public static PrimitiveType UInt8 { get; }
 
-		public static PrimitiveType Word16 { get; private set; }
-		public static PrimitiveType Int16 { get; private set; }
-		public static PrimitiveType UInt16 { get; private set; }
-        public static PrimitiveType Ptr16 { get; private set; }
-        public static PrimitiveType Offset16 { get; private set; }
-        public static PrimitiveType Real16 { get; private set; }
+		public static PrimitiveType Word16 { get; }
+		public static PrimitiveType Int16 { get; }
+		public static PrimitiveType UInt16 { get; }
+        public static PrimitiveType Ptr16 { get; }
+        public static PrimitiveType Offset16 { get; }
+        public static PrimitiveType Real16 { get; }
 
-		public static PrimitiveType SegmentSelector  {get; private set; }
+		public static PrimitiveType SegmentSelector  {get; }
 
-		public static PrimitiveType Word32 { get; private set; }
-		public static PrimitiveType Int32 { get; private set; }
-		public static PrimitiveType UInt32 { get; private set; }
-		public static PrimitiveType Ptr32 { get; private set; }
-		public static PrimitiveType Real32 { get; private set; }
-        public static PrimitiveType SegPtr32 { get; private set; }
+		public static PrimitiveType Word32 { get; }
+		public static PrimitiveType Int32 { get; }
+		public static PrimitiveType UInt32 { get; }
+		public static PrimitiveType Ptr32 { get; }
+		public static PrimitiveType Real32 { get; }
+        public static PrimitiveType SegPtr32 { get; }
 
-        public static PrimitiveType SegPtr48 { get; private set; }
-
-
-        public static PrimitiveType Word64 { get; private set; }
-		public static PrimitiveType Int64 { get; private set; }
-		public static PrimitiveType UInt64 { get; private set; }
-		public static PrimitiveType Ptr64 { get; private set; }
-        public static PrimitiveType Real64 { get; private set; }
-
-        public static PrimitiveType Word80 { get; private set; }
-		public static PrimitiveType Real80 { get; private set; }
-        public static PrimitiveType Bcd80 { get; private set; }
+        public static PrimitiveType SegPtr48 { get; }
 
 
-        public static PrimitiveType Real96 { get; private set; }
+        public static PrimitiveType Word64 { get; }
+		public static PrimitiveType Int64 { get; }
+		public static PrimitiveType UInt64 { get; }
+		public static PrimitiveType Ptr64 { get; }
+        public static PrimitiveType Real64 { get; }
 
-        public static PrimitiveType Word128 { get; private set; }
-        public static PrimitiveType Int128 { get; private set; }
-        public static PrimitiveType UInt128 { get; private set; }
-        public static PrimitiveType Real128 { get; private set; }
+        public static PrimitiveType Word80 { get; }
+		public static PrimitiveType Real80 { get; }
+        public static PrimitiveType Bcd80 { get; }
 
-        public static PrimitiveType Word256 { get; private set; }
 
-        public static PrimitiveType Word512 { get; private set; }
+        public static PrimitiveType Real96 { get; }
 
-        public static PrimitiveType WChar { get; private set; }
+        public static PrimitiveType Word128 { get; }
+        public static PrimitiveType Int128 { get; }
+        public static PrimitiveType UInt128 { get; }
+        public static PrimitiveType Real128 { get; }
+
+        public static PrimitiveType Word256 { get; }
+
+        public static PrimitiveType Word512 { get; }
+
+        public static PrimitiveType WChar { get; }
     }
 }
