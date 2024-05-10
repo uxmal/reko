@@ -229,6 +229,10 @@ namespace Reko.Typing
                 {
                     if (DataTypeOf(right).IsComplex)
                     {
+                        // TODO: this spews a lot of output. To make it less annoying
+                        // we display the errors only in debug builds, until we've 
+                        // corrected the sources of the errors.
+#if DEBUG
                         // This used to throw an awful lot of exceptions if 
                         // type inference failed. A common occurrence is 
                         // when all type variables have been placed into one
@@ -239,7 +243,7 @@ namespace Reko.Typing
                             Environment.NewLine, binExp,
                             DataTypeOf(left),
                             DataTypeOf(right));
-
+#endif
                         left = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
                         right = null;
                     }
