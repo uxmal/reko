@@ -94,6 +94,11 @@ namespace Reko.Arch.Arm.AArch32
             return instr;
         }
 
+        public override AArch32Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return state.MakeInstruction();
+        }
+
         private bool IsLastItInstruction()
         {
             return (itState & 0x1F) == 0x10;

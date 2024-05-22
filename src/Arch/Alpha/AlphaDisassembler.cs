@@ -66,6 +66,11 @@ namespace Reko.Arch.Alpha
             return Registers.FpuRegisters[n & 0x1F];
         }
 
+        public override AlphaInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            throw new NotSupportedException();
+        }
+
         public override AlphaInstruction CreateInvalidInstruction()
         {
             return new AlphaInstruction {

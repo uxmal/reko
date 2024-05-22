@@ -87,6 +87,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         }
 
 
+        public override PICInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            throw new NotImplementedException();
+        }
         public override PICInstruction CreateInvalidInstruction()
         {
             return new PICInstructionNoOpnd(Mnemonic.invalid)

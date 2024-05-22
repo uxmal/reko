@@ -41,22 +41,50 @@ namespace Reko.Core.Machine
         where TInstr : MachineInstruction
         where TMnemonic : struct
     {
-        public virtual IEnumerator<TInstr> GetEnumerator()
+        public Enumerator GetEnumerator()
         {
-            for (; ; )
-            {
-                TInstr? instr = DisassembleInstruction();
-                if (instr is null)
-                    break;
-                if (instr.Length < 0)
-                    break;
-                yield return instr;
-            }
+            return new Enumerator(this);
         }
+
+        IEnumerator<TInstr> IEnumerable<TInstr>.GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public struct Enumerator : IEnumerator<TInstr>
+        {
+            private DisassemblerBase<TInstr, TMnemonic> dasm;
+            private TInstr current;
+
+            public Enumerator(DisassemblerBase<TInstr, TMnemonic> disassemblerBase)
+            {
+                this.dasm = disassemblerBase;
+                this.current = default!;
+            }
+
+            public TInstr Current => this.current;
+
+            object IEnumerator.Current => this.current;
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext()
+            {
+                var instr = dasm.DisassembleInstruction();
+                if (instr is null || instr.Length < 0)
+                    return false;
+                this.current = instr;
+                return true;
+            }
+
+            public void Reset()
+            {
+                throw new NotSupportedException();
+            }
         }
 
         /// <summary>
@@ -89,10 +117,7 @@ namespace Reko.Core.Machine
         /// <param name="iclass">The <see cref="InstrClass"/> of the instruction.</param>
         /// <param name="mnemonic">The mnemonic of this instruction.</param>
         /// <returns></returns>
-        public virtual TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic)
-        {
-            return default!;
-        }
+        public abstract TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic);
 
         /// <summary>
         /// This method creates an invalid instruction. The instruction must 

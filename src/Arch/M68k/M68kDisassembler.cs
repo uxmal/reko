@@ -93,6 +93,19 @@ namespace Reko.Arch.M68k
             return instr;
         }
 
+        public override M68kInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new M68kInstruction
+            {
+                InstructionClass = this.iclass,
+                Mnemonic = this.mnemonic,
+                DataWidth = this.dataWidth,
+                Operands = ops.ToArray(),
+            };
+            return instr;
+        }
+
+
         /* ======================================================================== */
         /* ========================= LICENSING & COPYRIGHT ======================== */
         /* ======================================================================== */
@@ -271,14 +284,7 @@ namespace Reko.Arch.M68k
                     if (!m(uInstr, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
-                var instr = new M68kInstruction
-                {
-                    InstructionClass = dasm.iclass,
-                    Mnemonic = dasm.mnemonic,
-                    DataWidth = dasm.dataWidth,
-                    Operands = dasm.ops.ToArray(),
-                };
-                return instr;
+                return dasm.MakeInstruction(this.iclass, this.mnemonic);
             }
         }
 

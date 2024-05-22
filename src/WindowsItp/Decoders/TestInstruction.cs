@@ -18,5 +18,9 @@ namespace Reko.WindowsItp.Decoders
         public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+        }
     }
 }

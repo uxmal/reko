@@ -93,6 +93,11 @@ namespace Reko.Arch.Qualcomm
             }
         }
 
+        public override HexagonPacket MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            throw new NotImplementedException();
+        }
+
         private static bool ShouldTerminatePacket(HexagonInstruction instr)
         {
             var parseType = instr.ParseType;

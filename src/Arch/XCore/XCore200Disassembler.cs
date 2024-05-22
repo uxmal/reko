@@ -32,6 +32,7 @@ using Reko.Core.Services;
 namespace Reko.Arch.XCore
 {
     using Decoder = Decoder<XCore200Disassembler, Mnemonic, XCoreInstruction>;
+    using InstrDecoder = InstrDecoder<XCore200Disassembler, Mnemonic, XCoreInstruction>;
 
     public class XCore200Disassembler : DisassemblerBase<XCoreInstruction, Mnemonic>
     {
@@ -70,6 +71,17 @@ namespace Reko.Arch.XCore
                 Mnemonic = Mnemonic.Invalid,
                 Operands = Array.Empty<MachineOperand>()
             };
+        }
+
+        public override XCoreInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new XCoreInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = ops.ToArray()
+            };
+            return instr;
         }
 
         public override XCoreInstruction NotYetImplemented(string message)
@@ -477,36 +489,6 @@ namespace Reko.Arch.XCore
                     return dasm.CreateInvalidInstruction();
                 wInstr = (wInstr << 16) | u2;
                 return subDecoder.Decode(wInstr, dasm);
-            }
-        }
-
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<XCore200Disassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<XCore200Disassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override XCoreInstruction Decode(uint wInstr, XCore200Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new XCoreInstruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
             }
         }
 

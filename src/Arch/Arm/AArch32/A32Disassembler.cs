@@ -71,6 +71,11 @@ namespace Reko.Arch.Arm.AArch32
             return instr;
         }
 
+        public override AArch32Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return state.MakeInstruction();
+        }
+
         public class DasmState
         {
             public InstrClass iclass;

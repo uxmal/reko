@@ -854,6 +854,5 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "3|L--|O = false",
                 "4|L--|C = false");
         }
-
     }
 }

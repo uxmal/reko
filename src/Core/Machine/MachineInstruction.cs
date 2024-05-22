@@ -27,19 +27,17 @@ namespace Reko.Core.Machine
     /// </summary>
     public abstract class MachineInstruction
     {
-        private Address? addr;      //$REFACTOR: in C# 9, there will be 'init' properties.
-
         public MachineInstruction()
         {
             this.Operands = Array.Empty<MachineOperand>();
+            this.Address = default!;
         }
 
         //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
-        //$REFACTOR: in C# 9, there will be 'init' properties, then we won't need a nullable backing field.
         /// <summary>
         /// The address at which the instruction begins.
         /// </summary>
-        public Address Address { get { return addr!; } set { addr = value; } }
+        public Address Address { get; set; }
 
         /// <summary>
         /// The length of the entire instruction measured in storage units.
@@ -86,9 +84,7 @@ namespace Reko.Core.Machine
             renderer.EndInstruction();
         }
 
-        protected virtual void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-        }
+        protected abstract void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
 
         /// <summary>
         /// Each different supported mnemonic should have a different numerical value, exposed here.

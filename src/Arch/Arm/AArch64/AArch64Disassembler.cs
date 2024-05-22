@@ -68,6 +68,11 @@ namespace Reko.Arch.Arm.AArch64
             return instr;
         }
 
+        public sealed override AArch64Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return state.MakeInstruction();
+        }
+
         private class DasmState
         {
             public Mnemonic mnemonic;

@@ -83,7 +83,7 @@ namespace Reko.Arch.Arm.AArch32
                         break;
                     }
                 }
-                var instr = dasm.state.MakeInstruction();
+                var instr = dasm.MakeInstruction(iclass, mnemonic);
                 return instr;
             }
         }

@@ -24,11 +24,9 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using Reko.Core.Operators;
 using Reko.Core.Types;
-using System.Collections.Generic;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Avr.Avr32
 {

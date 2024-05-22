@@ -62,6 +62,17 @@ namespace Reko.Arch.M6800.M6809
             return instr;
         }
 
+        public override M6809Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new M6809Instruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = ops.ToArray()
+            };
+            return instr;
+        }
+
         public override M6809Instruction CreateInvalidInstruction()
         {
             return new M6809Instruction
@@ -375,13 +386,7 @@ namespace Reko.Arch.M6800.M6809
                 var iclass = dasm.iclass != InstrClass.None
                     ? dasm.iclass
                     : this.iclass;
-                var instr = new M6809Instruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
+                return dasm.MakeInstruction(iclass, this.mnemonic);
             }
         }
 

@@ -37,7 +37,8 @@ namespace Reko.Arch.IA64
     using WideDecoder = WideDecoder<IA64Disassembler, Mnemonic, IA64Instruction>;
     using WideMutator = WideMutator<IA64Disassembler>;
 
-    public class IA64Disassembler : DisassemblerBase<IA64Instruction, Mnemonic>
+    public class IA64Disassembler : DisassemblerBase<IA64Instruction, Mnemonic>,
+        IEnumerable<IA64Instruction>
     {
         private const ulong slot0Mask = (1ul << 41) - 1u;
         private const ulong slot1MaskLo = (1ul << 18) - 1u;
@@ -67,7 +68,7 @@ namespace Reko.Arch.IA64
             this.addr = null!;
         }
 
-        public override IEnumerator<IA64Instruction> GetEnumerator()
+        public new IEnumerator<IA64Instruction> GetEnumerator()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt64(out ulong uBundleLo) ||

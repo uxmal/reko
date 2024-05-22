@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 
 namespace Reko.ImageLoaders.MzExe.Msvc

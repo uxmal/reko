@@ -61,8 +61,7 @@ namespace Reko.Arch.Arm.AArch64
                         break;
                     }
                 }
-                var instr = dasm.state.MakeInstruction();
-                return instr;
+                return dasm.MakeInstruction(this.iclass, this.mnemonic);
             }
         }
     }

@@ -49,6 +49,11 @@ namespace Reko.UnitTests.Mocks
             return instr;
         }
 
+        public override MachineInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MachineInstruction CreateInvalidInstruction()
         {
             throw new NotImplementedException();

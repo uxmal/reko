@@ -899,6 +899,11 @@ namespace Reko.Arch.Cil
             return instr;
         }
 
+        public override CilInstruction MakeInstruction(InstrClass iclass, OpCode mnemonic)
+        {
+            throw new NotImplementedException();
+        }
+
         public override CilInstruction CreateInvalidInstruction()
         {
             return new CilInstruction
