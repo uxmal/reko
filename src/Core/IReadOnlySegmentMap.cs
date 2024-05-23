@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Reko.Core.Loading;
 
@@ -29,6 +30,8 @@ namespace Reko.Core
     /// </summary>
     public interface IReadOnlySegmentMap
     {
+        IReadOnlyDictionary<ushort, ImageSegment> Selectors { get; }
+
         bool IsValidAddress(Address addr);
         bool TryFindSegment(Address addr, [MaybeNullWhen(false)] out ImageSegment seg);
     }

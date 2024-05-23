@@ -448,9 +448,7 @@ namespace Reko.Core
             this.ResourcesDirectory = ResourcesDirectory ?? Path.Combine(outputDir, "resources");
         }
 
-        /// <summary>
-        /// Policy to use when giving names to things.
-        /// </summary>
+        /// <inheritdoc/>
         public NamingPolicy NamingPolicy { get; set; }
 
         /// <summary>

@@ -44,6 +44,11 @@ namespace Reko.Core
         StructureType GlobalFields { get; }
         IReadOnlyDictionary<Identifier, LinearInductionVariable> InductionVariables { get; }
         IMemory Memory { get; }
+
+        /// <summary>
+        /// Policy to use when giving names to things.
+        /// </summary>
+        NamingPolicy NamingPolicy { get; }
         bool NeedsSsaTransform { get; }
         IPlatform Platform { get; }
         IReadOnlySegmentMap SegmentMap { get; }

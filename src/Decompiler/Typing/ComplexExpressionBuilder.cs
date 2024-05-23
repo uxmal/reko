@@ -44,7 +44,7 @@ namespace Reko.Typing
     /// </remarks>
     public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
     {
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly ITypeStore store;
         private readonly ArrayExpressionMatcher aem;
         private Expression? expComplex;         // The expression we wish to convert to high-level code.
@@ -59,7 +59,7 @@ namespace Reko.Typing
         private int depth;
 
         public ComplexExpressionBuilder(
-            Program program,
+            IReadOnlyProgram program,
             ITypeStore store,
             Expression? basePtr,
             Expression complex,

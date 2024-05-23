@@ -31,7 +31,7 @@ namespace Reko.Analysis
     /// <summary>
     /// An SSA identifier is actually a node in the SSA graph. The edges of 
     /// the SSA graphs are the uses and definition of a particular SSA
-    /// identifier
+    /// identifier.
     /// </summary>
 	public class SsaIdentifier
 	{
@@ -45,12 +45,12 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
-        /// Statement that defines the identifier
+        /// Statement that defines the identifier.
         /// </summary>
         public Statement DefStatement { get; set; }
 
         /// <summary>
-        /// The Identifier itself
+        /// An <see cref="Identifier"/> that represents this SSA node.
         /// </summary>
         public Identifier Identifier { get; }
 
@@ -67,7 +67,7 @@ namespace Reko.Analysis
         public LinearInductionVariable? InductionVariable { get; set; }
 
         /// <summary>
-        /// The original expression that was rewritten to this identifier.
+        /// The original identifier that was rewritten to this identifier.
         /// </summary>
         public Identifier OriginalIdentifier { get; }
 

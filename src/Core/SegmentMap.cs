@@ -72,6 +72,8 @@ namespace Reko.Core
 
         public Dictionary<ushort, ImageSegment> Selectors { get; }
 
+        IReadOnlyDictionary<ushort, ImageSegment> IReadOnlySegmentMap.Selectors => this.Selectors;
+
         /// <summary>
         /// Creates an <see cref="EndianImageReader"/> that starts reading at the <see cref="Address"/>
         /// <paramref name="address"/>. The endianness of the image reader is controlled by the

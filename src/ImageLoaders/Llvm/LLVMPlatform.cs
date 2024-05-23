@@ -163,11 +163,6 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public string FormatProcedureName(Program program, Procedure proc)
-        {
-            throw new NotImplementedException();
-        }
-
         public int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();

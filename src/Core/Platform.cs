@@ -248,8 +248,6 @@ namespace Reko.Core
         SystemService? FindService(RtlInstruction call, ProcessorState? state, IMemory? memory);
         DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
-        string FormatProcedureName(Program program, Procedure proc);
-
         /// <summary>
         /// Injects any platform specific instructions to the beginning 
         /// of a procedure.
@@ -581,21 +579,6 @@ namespace Reko.Core
                 result.Add(arch.Name, ccsByName);
             }
             return result;
-        }
-
-        /// <summary>
-        /// Formats a program/module and a procedure name together.
-        /// </summary>
-        /// <remarks>
-        /// This is done in the Windows way {module}!{procname}. Other platforms
-        /// may have other conventions. Please override this in the other platforms
-        /// to give the correct output.</remarks>
-        /// <param name="program"></param>
-        /// <param name="proc"></param>
-        /// <returns></returns>
-        public virtual string FormatProcedureName(Program program, Procedure proc)
-        {
-            return string.Format("{0}!{1}", program.Name, proc.Name);
         }
 
         public abstract int GetBitSizeFromCBasicType(CBasicType cb);
