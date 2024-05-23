@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     public class InstructionUseCollector : InstructionUseVisitorBase
     {

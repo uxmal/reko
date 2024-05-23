@@ -20,6 +20,7 @@
 
 using Reko.Concurrent;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Graphs;
 using Reko.Core.Hll.C;
 using Reko.Core.Output;

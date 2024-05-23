@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Services;

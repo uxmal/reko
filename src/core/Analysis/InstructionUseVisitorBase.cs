@@ -18,11 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     public abstract class InstructionUseVisitorBase : InstructionVisitorBase
     {

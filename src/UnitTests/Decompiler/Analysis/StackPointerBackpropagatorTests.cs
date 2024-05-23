@@ -21,16 +21,13 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {

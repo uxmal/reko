@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2024 Pavel Tomin.
+ * Copyright (C) 1999-2024 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +23,22 @@ using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using System;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
-    public class ExpressionUseRemover : ExpressionVisitorBase
+    public class InstructionUseAdder : InstructionUseVisitorBase
     {
         private readonly Statement user;
         private readonly SsaIdentifierCollection ssaIds;
 
-        public ExpressionUseRemover(Statement user, SsaIdentifierCollection ssaIds)
+        public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user));
             this.ssaIds = ssaIds;
         }
 
-        public override void VisitIdentifier(Identifier id)
+        protected override void UseIdentifier(Identifier id)
         {
-            ssaIds[id].Uses.Remove(user);
+            ssaIds[id].Uses.Add(user);
         }
     }
 }

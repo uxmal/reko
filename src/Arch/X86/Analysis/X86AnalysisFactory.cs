@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Analysis;
+using Reko.Core.Analysis;
 using System;
 
 namespace Reko.Arch.X86.Analysis

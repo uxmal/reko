@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
@@ -29,7 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     /// <summary>
     /// This class maintains the SSA transformation of a given procedure. Specifically

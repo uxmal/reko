@@ -18,20 +18,16 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Analysis;
-using Reko.Core.Code;
-using Reko.Core.Types;
-using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using System;
-using System.IO;
-using System.Collections.Generic;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
-using System.Linq;
 using Reko.Core.Services;
-using NUnit.Framework.Constraints;
 using Reko.Services;
+using Reko.UnitTests.Mocks;
+using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {

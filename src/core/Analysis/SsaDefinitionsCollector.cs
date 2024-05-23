@@ -24,7 +24,7 @@ using Reko.Core.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     public class SsaDefinitionsCollector : InstructionVisitorBase
     {
