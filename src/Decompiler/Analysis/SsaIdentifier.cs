@@ -47,19 +47,19 @@ namespace Reko.Analysis
         /// <summary>
         /// Statement that defines the identifier
         /// </summary>
-        public Statement DefStatement { get; set; }        //$TODO: want this to be not-nullable
+        public Statement DefStatement { get; set; }
 
         /// <summary>
         /// The Identifier itself
         /// </summary>
-        public Identifier Identifier { get; private set; }
+        public Identifier Identifier { get; }
 
 		public bool IsOriginal
 		{
 			get { return Identifier == OriginalIdentifier; }
 		}
 
-        public bool IsSideEffect { get; private set; }
+        public bool IsSideEffect { get; }
 
         /// <summary>
         /// If not null, the induction variable associated with this identifier.
@@ -69,7 +69,7 @@ namespace Reko.Analysis
         /// <summary>
         /// The original expression that was rewritten to this identifier.
         /// </summary>
-        public Identifier OriginalIdentifier { get; private set; }
+        public Identifier OriginalIdentifier { get; }
 
 		public override string ToString()
 		{

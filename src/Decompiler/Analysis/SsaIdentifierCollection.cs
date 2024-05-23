@@ -27,20 +27,37 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// A collection of <see cref="SsaIdentifier"/>s. New 
+    /// identifiers are added using the <see cref="Add(Identifier, Statement?, bool)"/>
+    /// method.
+    /// </summary>
 	public class SsaIdentifierCollection : ICollection<SsaIdentifier>
 	{
         private readonly Dictionary<Identifier, SsaIdentifier> sids = new();
         private int serialNumber = 0;
 
+        /// <summary>
+        /// Creates a new <see cref="SsaIdentifier"/> and adds it to the collection.
+        /// Fresh identifiers are created by appending a unique serial number to
+        /// the original identifier name.
+        /// </summary>
+        /// <param name="idOld">The original identifier.</param>
+        /// <param name="stmDef"><see cref="Statement"/> where the identifier is 
+        /// defined.</param>
+        /// <param name="isSideEffect">True if this identifier is the result of
+        /// a side effect.</param>
+        /// <returns>A freshly created <see cref="SsaIdentifier>"/></returns>
 		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, bool isSideEffect)
 		{
 			int i = ++serialNumber;
 			Identifier idNew;
 			if (stmDef != null)
 			{
-				idNew = idOld.Storage is MemoryStorage
-					? new Identifier(ReplaceNumericSuffix(idOld.Name, i), idOld.DataType, idOld.Storage)
-					: new Identifier(FormatSsaName(idOld, i), idOld.DataType, StorageOf(idOld));
+                string name = idOld.Storage is MemoryStorage
+					? ReplaceNumericSuffix(idOld.Name, i)
+					: FormatSsaName(idOld, i);
+				idNew = new Identifier(name, idOld.DataType, idOld.Storage);
 			}
 			else
 			{
@@ -51,7 +68,11 @@ namespace Reko.Analysis
 			return sid;
 		}
 
-
+        /// <summary>
+        /// Find the <see cref="SsaIdentifier"/> corresponding to the given identifier.
+        /// </summary>
+        /// <param name="id">Identifier to look up.</param>
+        /// <returns>The corresponding <see cref="SsaIdentifier"/>.</returns>
 		public SsaIdentifier this[Identifier id]
 		{
 			get { return sids[id]; }
@@ -105,7 +126,7 @@ namespace Reko.Analysis
 
 		private static string FormatSsaName(Identifier id, int v)
 		{
-            return string.Format("{0}_{1}", id.Name, v);
+            return $"{id.Name}_{v}";
 		}
 
         private static string ReplaceNumericSuffix(string str, int newSuffix)
@@ -121,15 +142,6 @@ namespace Reko.Analysis
                 }
             }
             return "" + newSuffix;
-        }
-
-        private static Storage StorageOf(Expression e)
-        {
-            if (e is Identifier id)
-                return id.Storage;
-            var bin = (BinaryExpression) e;
-            int offset = ((Constant)bin.Right).ToInt32();
-            return new StackStorage(offset, e.DataType);
         }
 
         // The following methods are part of ICollection. Either no code in the
