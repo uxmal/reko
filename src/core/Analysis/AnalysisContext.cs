@@ -18,16 +18,11 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Services;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     public class AnalysisContext
     {
@@ -35,14 +30,14 @@ namespace Reko.Analysis
         public IReadOnlySet<Procedure> SccProcedures { get; }
         public IDynamicLinker DynamicLinker { get; }
         public IServiceProvider Services { get; }
-        public IDecompilerEventListener EventListener { get; }
+        public IEventListener EventListener { get; }
 
         public AnalysisContext(
             IReadOnlyProgram program,
             IReadOnlySet<Procedure> sccprocs,
             IDynamicLinker dynamicLinker,
             IServiceProvider services,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.Program = program;
             this.SccProcedures = sccprocs;

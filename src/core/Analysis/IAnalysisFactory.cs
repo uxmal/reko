@@ -18,10 +18,7 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Analysis;
-
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     /// <summary>
     /// Classes implementing this interface are responsible for creating objects
