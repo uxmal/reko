@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Analysis;
-using Reko.UnitTests.Mocks;
-using Reko.UnitTests.TestCode;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Linq;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Analysis;
+using Reko.Core.Expressions;
+using Reko.Core.Memory;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.TestCode;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class SsaLivenessTests : AnalysisTestBase
 	{
 		private Procedure proc;

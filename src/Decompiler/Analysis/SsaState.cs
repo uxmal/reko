@@ -19,15 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Collections;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {

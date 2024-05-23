@@ -18,22 +18,20 @@
  */
 #endregion
 
-using Reko.Analysis;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.UnitTests.Mocks;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.ComponentModel.Design;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Memory;
+using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class LiveCopyInserterTests : AnalysisTestBase
 	{
 		private Procedure proc;

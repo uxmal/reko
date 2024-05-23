@@ -18,18 +18,17 @@
  */
 #endregion
 
-using Reko.Analysis;
-using Reko.Evaluation;
-using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Expressions; 
-using Reko.UnitTests.Mocks;
-using System;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Analysis;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {
-	[TestFixture]
+    [TestFixture]
 	public class Shl_mul_e_RuleTest
 	{
 		private Identifier id;

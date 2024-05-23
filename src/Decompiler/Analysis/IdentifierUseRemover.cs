@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using System;
 

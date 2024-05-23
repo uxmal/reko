@@ -18,15 +18,13 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     /// <summary>
     /// An SSA identifier is actually a node in the SSA graph. The edges of 

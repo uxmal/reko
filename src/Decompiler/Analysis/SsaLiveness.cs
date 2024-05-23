@@ -25,6 +25,7 @@ using Reko.Core.Output;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Reko.Core.Analysis;
 
 namespace Reko.Analysis
 {

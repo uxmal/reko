@@ -19,20 +19,20 @@
 #endregion
 
 using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
-using Reko.Evaluation;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {
-	[TestFixture]
+    [TestFixture]
 	public class IdConstantTests
 	{
 		private ProcedureBuilder m;

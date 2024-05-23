@@ -22,14 +22,14 @@ using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Expressions;
+using Reko.Core.Analysis;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase
 	{
         protected override void RunTest(Program program, TextWriter writer)

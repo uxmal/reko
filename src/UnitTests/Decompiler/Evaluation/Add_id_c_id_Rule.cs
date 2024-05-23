@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Analysis;
+using Reko.Core.Analysis;
 using Reko.Evaluation;
 using Reko.Core;
 using Reko.Core.Code;

@@ -1,18 +1,13 @@
 using Moq;
 using NUnit.Framework;
-using Reko.Core.Intrinsics;
-using Reko.Core.Types;
-using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.UnitTests.Mocks;
 using Reko.Analysis;
-using Reko.Core.Memory;
-using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {

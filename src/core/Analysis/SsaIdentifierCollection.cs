@@ -25,7 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Reko.Analysis
+namespace Reko.Core.Analysis
 {
     /// <summary>
     /// A collection of <see cref="SsaIdentifier"/>s. New 

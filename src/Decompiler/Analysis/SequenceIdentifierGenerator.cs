@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.Core;
 using System.Diagnostics;
 using Reko.Core.Operators;
+using Reko.Core.Analysis;
 
 namespace Reko.Analysis
 {
