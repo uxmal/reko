@@ -273,7 +273,9 @@ namespace Reko.Analysis
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
                     var web = new WebBuilder(Program, ssa, Program.InductionVariables, eventListener);
                     web.Transform();
-                    ssa.ConvertBack(false);
+
+                    var unssa = new UnSsaTransform(false);
+                    unssa.Transform(ssa);
 
                     DumpWatchedProcedure("dfa", "After data ProgramFlow analysis", ssa.Procedure);
                 }

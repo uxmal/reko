@@ -50,36 +50,6 @@ namespace Reko.Analysis
         public Procedure Procedure { get; }
 
         /// <summary>
-        /// Given a procedure in SSA form, converts it back to "normal" form.
-        /// </summary>
-        /// <param name="renameVariables"></param>
-        public void ConvertBack(bool renameVariables)
-		{
-			var unssa = new UnSSA(this);
-			foreach (Block block in Procedure.ControlGraph.Blocks)
-			{
-				for (int st = 0; st < block.Statements.Count; ++st)
-				{
-					Instruction instr = block.Statements[st].Instruction;
-					if (instr is PhiAssignment || instr is DefInstruction)
-					{
-						block.Statements.RemoveAt(st);
-						--st;
-					}
-					else if (renameVariables)
-					{
-						instr.Accept(unssa);
-					}
-				}
-			}
-
-			// Remove any instructions in the return block, used only 
-			// for computation of reaching definitions.
-
-			Procedure.ExitBlock.Statements.Clear();
-		}
-
-        /// <summary>
         /// Returns the index of the last <see cref="DefInstruction"/> in the 
         /// <paramref name="stmts"/> statement list, or -1 if there was none.
         /// </summary>
@@ -475,22 +445,5 @@ namespace Reko.Analysis
             return dict;
         }
 
-		/// <summary>
-		/// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
-		/// </summary>
-		private class UnSSA : InstructionTransformer
-		{
-			private readonly SsaState ssa;
-
-			public UnSSA(SsaState ssa)
-			{
-				this.ssa = ssa;
-			}
-
-			public override Expression VisitIdentifier(Identifier id)
-			{
-				return ssa.Identifiers[id].OriginalIdentifier;
-			}
-		}
 	}
 }

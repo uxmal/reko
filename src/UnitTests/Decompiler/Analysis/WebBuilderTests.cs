@@ -95,9 +95,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
 				WebBuilder web = new WebBuilder(program, ssa, new Dictionary<Identifier,LinearInductionVariable>(), eventListener);
 				web.Transform();
 
-				ssa.ConvertBack(false);
-			}
-		}
+                var unssa = new UnSsaTransform(false);
+                unssa.Transform(ssa);
+            }
+        }
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
