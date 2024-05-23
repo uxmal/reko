@@ -66,11 +66,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
                 SsaState ssa = sst.SsaState;
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
-                cce.Transform();
+                var context = new AnalysisContext(program, proc, dynamicLinker, sc, listener);
+                var cce = new ConditionCodeEliminator(context);
+                cce.Transform(ssa);
                 DeadCode.Eliminate(ssa);
 
-                ValuePropagator vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
+                var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
                 vp.Transform();
                 DeadCode.Eliminate(ssa);
                 Coalescer co = new Coalescer(ssa);

@@ -65,7 +65,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 Platform = new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer()))
             };
-            cce = new ConditionCodeEliminator(program, ssaState, new FakeDecompilerEventListener());
+            var context = CreateAnalysisContext(program, ssaState.Procedure);
+            cce = new ConditionCodeEliminator(context);
         }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -111,8 +112,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 Platform = platform,
             };
-            var cce = new ConditionCodeEliminator(program, ssapb.Ssa, new FakeDecompilerEventListener());
-            cce.Transform();
+            var context = CreateAnalysisContext(program, ssapb.Procedure);
+            var cce = new ConditionCodeEliminator(context);
+            cce.Transform(ssapb.Ssa);
             var writer = new StringWriter();
             ssapb.Ssa.Procedure.WriteBody(true, writer);
             var sActual = writer.ToString();
@@ -122,6 +124,16 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 Assert.AreEqual(sExpected, sActual);
             }
             ssapb.Ssa.Validate(s => { ssapb.Ssa.Dump(true); Assert.Fail(s); });
+        }
+
+        private static AnalysisContext CreateAnalysisContext(Program program, Procedure proc)
+        {
+            return new AnalysisContext(
+                program,
+                proc,
+                null,
+                null,
+                new FakeDecompilerEventListener());
         }
 
         protected override void RunTest(Program program, TextWriter writer)
@@ -142,16 +154,23 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
 
-                var larw = new LongAddRewriter(ssa, listener);
-                larw.Transform();
+                var context = new AnalysisContext(
+                    program,
+                    proc,
+                    dynamicLinker,
+                    sc,
+                    listener);
+
+                var larw = new LongAddRewriter(context);
+                larw.Transform(ssa);
 
                 // This is x86-specific, but harmless when run on
                 // non-x86 programs.
                 var fstsw = new FstswAnalysis(program, listener);
                 (ssa, _) = fstsw.Transform(ssa);
 
-                var cce = new ConditionCodeEliminator(program, ssa, listener);
-                cce.Transform();
+                var cce = new ConditionCodeEliminator(context);
+                cce.Transform(ssa);
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
@@ -386,7 +405,7 @@ done:
             ssaIds[y].Uses.Add(stmBr);
 
             Given_ConditionCodeEliminator();
-			cce.Transform();
+			cce.Transform(ssaState);
 			Assert.AreEqual("branch r == 0<32> foo", stmBr.Instruction.ToString());
 		}
 
@@ -405,7 +424,7 @@ done:
 			ssaIds[Z].Uses.Add(stmF);
 
             Given_ConditionCodeEliminator();
-			cce.Transform();
+			cce.Transform(ssaState);
 			Assert.AreEqual("f = r != 0<32>", stmF.Instruction.ToString());
 		}
 
@@ -415,7 +434,8 @@ done:
         {
             Given_ConditionCodeEliminator();
             var bin = m.ISub(new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
-            var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            var worker = cce.CreateWorker(ssaState);
+            var b = (BinaryExpression) worker.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
             Assert.AreEqual("a < b", b.ToString());
             Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
         }
@@ -427,7 +447,8 @@ done:
 		{
             Given_ConditionCodeEliminator();
 			var bin = m.FSub(new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
-			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            var worker = cce.CreateWorker(ssaState);
+			var b = (BinaryExpression) worker.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
 		}
@@ -441,7 +462,8 @@ done:
             var bin = m.IAdd(
                 new Identifier("a", w16, null),
                 new Identifier("b", w16, null));
-            var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            var worker = cce.CreateWorker(ssaState);
+            var b = (BinaryExpression)worker.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
             Assert.AreEqual("a + b < 0<16>", b.ToString());
             Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
         }
@@ -621,7 +643,8 @@ ProcedureBuilder_exit:
             var vp = new ValuePropagator(program, ssaState, null, sc);
             vp.Transform();
             Given_ConditionCodeEliminator();
-            cce.Transform();
+
+            cce.Transform(ssaState);
 
             Assert.AreEqual("branch r1 <=u 0<32> yay", block.Statements[^1].Instruction.ToString());
         }

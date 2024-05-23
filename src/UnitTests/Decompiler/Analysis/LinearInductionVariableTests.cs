@@ -372,9 +372,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 			this.ssa = sst.SsaState;
-            
-            var cce = new ConditionCodeEliminator(program, ssa, listener);
-			cce.Transform();
+
+            var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker, sc, listener);
+            var cce = new ConditionCodeEliminator(ctx);
+			cce.Transform(ssa);
 
 			DeadCode.Eliminate(ssa);
 

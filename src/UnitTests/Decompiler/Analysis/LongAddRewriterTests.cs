@@ -89,24 +89,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 .First();
         }
 
-        public bool CreateLongInstruction(Statement loInstr, Statement hiInstr)
-        {
-            var loAss = rw.MatchAddSub(loInstr);
-            var hiAss = rw.MatchAdcSbc(hiInstr);
-            if (loAss == null || hiAss == null)
-                return false;
-            if (loAss.Op != hiAss.Op)
-                return false;
-
-            rw.CreateLongBinaryInstruction(loAss, hiAss);
-            return true;
-        }
-
         protected override void RunTest(Program program, TextWriter writer)
         {
             var eventListener = new FakeDecompilerEventListener();
             foreach (var proc in program.Procedures.Values)
             {
+                var context = CreateAnalysisContext(proc);
+
                 var sst = new SsaTransform(
                     program,
                     proc,
@@ -125,8 +114,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
-                var larw = new LongAddRewriter(sst.SsaState, eventListener);
-                larw.Transform();
+                var larw = new LongAddRewriter(context);
+                larw.Transform(sst.SsaState);
 
                 proc.Write(false, writer);
                 writer.WriteLine();
@@ -138,7 +127,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             builder(m);
             var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
-                program, 
+                program,
                 m.Procedure,
                 new HashSet<Procedure>(),
                 dynamicLinker.Object,
@@ -149,8 +138,20 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter(sst.SsaState, new FakeDecompilerEventListener());
+            var proc = m.Procedure;
+            var context = CreateAnalysisContext(proc);
+            rw = new LongAddRewriter(context);
             this.ssa = sst.SsaState;
+        }
+
+        private AnalysisContext CreateAnalysisContext(Procedure proc)
+        {
+            return new AnalysisContext(
+                program,
+                proc,
+                null,
+                sc,
+                new FakeDecompilerEventListener());
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -170,10 +171,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter(sst.SsaState, new FakeDecompilerEventListener());
+            var context = CreateAnalysisContext(m.Procedure);
+            rw = new LongAddRewriter(context);
             this.ssa = sst.SsaState;
 
-            rw.Transform();
+            rw.Transform(ssa);
+
             var sb = new StringWriter();
             block.Write(sb);
             var sActual = sb.ToString();
@@ -196,7 +199,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Return();
             });
             var ax_3 = GetId("ax_3");
-            var cm = rw.FindConditionOf(block.Statements, 0, ax_3);
+            var worker = rw.CreateWorker(ssa);
+            var cm = worker.FindConditionOf(block.Statements, 0, ax_3);
 
             Assert.AreEqual("SCZ_4", cm.FlagGroup.ToString());
             Assert.AreEqual("SCZ_4 = cond(ax_3)", cm.Statement.ToString());
@@ -213,10 +217,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
                 m.Return();
             });
-            m.Procedure.Dump(true);
-            var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
+            var worker = rw.CreateWorker(ssa);
+            var cm = worker.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
-            var asc = rw.FindUsingAddSub(block, cm.FlagGroup, new LongAddRewriter.Candidate(Operator.IAdd, ax, cx));
+            var asc = worker.FindUsingAddSub(block, cm.FlagGroup, new LongAddRewriter.Candidate(Operator.IAdd, ax, cx));
             Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
         }
 
@@ -273,7 +277,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 block = m.Block;
                 m.Return();
             });
-            var regPair = rw.MatchAdcSbc(block.Statements[0]);
+            var worker = rw.CreateWorker(ssa);
+            var regPair = worker.MatchAdcSbc(block.Statements[0]);
             Assert.AreSame(ax, regPair.Left);
             Assert.AreSame(cx, regPair.Right);
         }
@@ -287,7 +292,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 block = m.Block;
                 m.Return();
             });
-            var regPair = rw.MatchAddSub(block.Statements[0]);
+            var regPair = rw.CreateWorker(ssa).MatchAddSub(block.Statements[0]);
             Assert.AreSame(ax, regPair.Left);
             Assert.AreSame(cx, regPair.Right);
         }
@@ -333,7 +338,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Return();
             });
 
-            rw.Transform();
+            rw.Transform(ssa);
 
             var sExp = @"l1:
 	SCZ_2 = cond(cx - 0x30<16>)

@@ -124,8 +124,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(program, ssa, listener);
-                cce.Transform();
+                var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker.Object, sc, listener);
+                var cce = new ConditionCodeEliminator(ctx);
+                cce.Transform(ssa);
 				ssa.Write(writer);
 				proc.Write(false, writer);
 				writer.WriteLine();

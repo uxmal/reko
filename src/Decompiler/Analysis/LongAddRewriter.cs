@@ -25,6 +25,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -32,103 +33,77 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Locates instances of add aLo, bLow followed later adc aHi, bHi and
+/// merges them into (add a, b).
+/// </summary>
+/// <remarks>
+/// Limitations: only does this on pairs within the same basic block,
+/// as dominator analysis and SSA analysis haven't been done this early. 
+/// //$TODO: consider doing this _after_ SSA, so that we reap the benefit
+/// of performing this across basic block boundaries. The challenge is
+/// to introduce new variables xx_yy that interfere with existing xx 
+/// and yy references.
+/// This code must be run immediately after SSA translation. In particular
+/// it must happen before value propagation since VP changes 
+/// <code>
+/// adc r1,0,C
+/// </code>
+/// to
+/// <code>
+/// add r1,C
+/// </code>
+/// </remarks>
+public class LongAddRewriter : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Locates instances of add aLo, bLow followed later adc aHi, bHi and
-    /// merges them into (add a, b).
-    /// </summary>
-    /// <remarks>
-    /// Limitations: only does this on pairs within the same basic block,
-    /// as dominator analysis and SSA analysis haven't been done this early. 
-    /// //$TODO: consider doing this _after_ SSA, so that we reap the benefit
-    /// of performing this across basic block boundaries. The challenge is
-    /// to introduce new variables xx_yy that interfere with existing xx 
-    /// and yy references.
-    /// This code must be run immediately after SSA translation. In particular
-    /// it must happen before value propagation since VP changes 
-    /// <code>
-    /// adc r1,0,C
-    /// </code>
-    /// to
-    /// <code>
-    /// add r1,C
-    /// </code>
-    /// </remarks>
-    public class LongAddRewriter
+    private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Verbose };
+    private static readonly InstructionMatcher adcPattern;
+    private static readonly InstructionMatcher addPattern;
+    private static readonly ExpressionMatcher memOffset;
+    private static readonly ExpressionMatcher segMemOffset;
+    private static readonly InstructionMatcher condm;
+
+    private readonly AnalysisContext context;
+
+    public LongAddRewriter(AnalysisContext context)
     {
-        private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Verbose };
+        this.context = context;
+    }
 
-        private static readonly InstructionMatcher adcPattern;
-        private static readonly InstructionMatcher addPattern;
-        private static readonly ExpressionMatcher memOffset;
-        private static readonly ExpressionMatcher segMemOffset;
-        private static readonly InstructionMatcher condm;
+    public string Id => "larw";
 
+    public string Description => "Rewrites ADD/ADC and SUB/SUBC sequences to long adds/subs";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var w = CreateWorker(ssa);
+        w.Transform();
+        return (ssa, w.Changed);
+    }
+
+    public Worker CreateWorker(SsaState ssa)
+    {
+        return new Worker(ssa, context);
+    }
+
+    public class Worker
+    {
         private readonly SsaState ssa;
         private readonly IProcessorArchitecture arch;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private Expression? dst;
 
-        public LongAddRewriter(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, AnalysisContext context)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;
-            this.listener = listener;
+            this.listener = context.EventListener;
         }
 
-        static LongAddRewriter()
-        {
-            condm = new InstructionMatcher(
-                new Assignment(
-                    ExpressionMatcher.AnyId("grf"),
-                    new ConditionOf(
-                        ExpressionMatcher.AnyExpression("exp"))));
 
-            addPattern = new InstructionMatcher(
-                new Assignment(
-                    ExpressionMatcher.AnyId("dst"),
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyBinaryOperator("op"),
-                        VoidType.Instance,
-                        ExpressionMatcher.AnyExpression("left"),
-                        ExpressionMatcher.AnyExpression("right"))));
-
-            adcPattern = new InstructionMatcher(
-                new Assignment(
-                    ExpressionMatcher.AnyId("dst"),
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyBinaryOperator("op1"),
-                        VoidType.Instance,
-                        new BinaryExpression(
-                            ExpressionMatcher.AnyBinaryOperator("op2"),
-                            VoidType.Instance,
-                            ExpressionMatcher.AnyExpression("left"),
-                            ExpressionMatcher.AnyExpression("right")),
-                        ExpressionMatcher.AnyExpression("cf"))));
-
-            memOffset = ExpressionMatcher.Build(m =>
-                new MemoryAccess(
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyBinaryOperator("op"),
-                        VoidType.Instance,
-                        ExpressionMatcher.AnyExpression("base"),
-                        ExpressionMatcher.AnyConstant("Offset")),
-                    ExpressionMatcher.AnyDataType("dt")));
-
-            segMemOffset = new ExpressionMatcher(
-                new MemoryAccess(
-                    MemoryStorage.GlobalMemory,
-                    new SegmentedPointer(
-                        ExpressionMatcher.AnyDataType(null),
-                        ExpressionMatcher.AnyId(),
-                        new BinaryExpression(
-                            ExpressionMatcher.AnyBinaryOperator("op"),
-                            VoidType.Instance,
-                            ExpressionMatcher.AnyExpression("base"),
-                            ExpressionMatcher.AnyConstant("Offset"))),
-                    ExpressionMatcher.AnyDataType("dt")));
-        }
+        public bool Changed { get; private set; }
 
         public void CreateLongBinaryInstruction(Candidate loCandidate, Candidate hiCandidate)
         {
@@ -240,11 +215,11 @@ namespace Reko.Analysis
                 sidWideSrc.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
                     CreateMkSeq(wideSrc, hiCandidate.Left, loCandidate.Left));
             }
-             
+
             var sidWideDst = AddSsaId((Identifier) CreateWideExpression(ssa, loCandidate.Dst, hiCandidate.Dst, totalSize));
 
             var wideDst = sidWideDst.Identifier;
-            sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address, 
+            sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
                 Assign(wideDst, new UnaryExpression(Operator.Neg, wideSrc.DataType, wideSrc)));
 
             var sidLo = GetSsaIdentifierOf(loCandidate.Dst);
@@ -284,7 +259,8 @@ namespace Reko.Analysis
 
         private Expression ReplaceDstWithSsaIdentifier(Expression dst, Statement stmLong)
         {
-            if (stmLong.Instruction is Assignment ass) {
+            if (stmLong.Instruction is Assignment ass)
+            {
                 var sid = ssa.Identifiers.Add(ass.Dst, stmLong, false);
                 ass.Dst = sid.Identifier;
                 return ass.Dst;
@@ -356,6 +332,7 @@ namespace Reko.Analysis
                         continue;
                     trace.Verbose("Larw: {0}: found add/sub pair {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
                     CreateLongBinaryInstruction(loInstr, hiInstr);
+                    Changed = true;
                 }
                 loInstr = MatchNegation(block.Statements[i]);
                 if (loInstr is not null)
@@ -369,6 +346,7 @@ namespace Reko.Analysis
                         continue;
                     trace.Verbose("Larw: {0}: found neg/sbc {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
                     CreateLongUnaryInstruction(loInstr, hiInstr);
+                    Changed = true;
                 }
             }
         }
@@ -469,7 +447,7 @@ namespace Reko.Analysis
                     var m = condm.Match(use.Instruction);
                     if (!m.Success)
                         continue;
-                    var grf = (Identifier)m.CapturedExpression("grf")!;
+                    var grf = (Identifier) m.CapturedExpression("grf")!;
                     //var condExp = m.CapturedExpression("exp");
                     if (grf.Storage is FlagGroupStorage) // && exp == condExp)
                     {
@@ -482,7 +460,7 @@ namespace Reko.Analysis
                 var m = condm.Match(stms[i].Instruction);
                 if (!m.Success)
                     continue;
-                var grf = (Identifier)m.CapturedExpression("grf")!;
+                var grf = (Identifier) m.CapturedExpression("grf")!;
                 var condExp = m.CapturedExpression("exp");
                 if (grf.Storage is FlagGroupStorage && exp == condExp)
                 {
@@ -525,10 +503,10 @@ namespace Reko.Analysis
         {
             if (instruction is Assignment ass &&
                 ass.Dst.Storage is FlagGroupStorage &&
-                ass.Src is BinaryExpression cmp && 
+                ass.Src is BinaryExpression cmp &&
                 cmp.Operator == Operator.Ne &&
                 cmp.Right.IsZero)
-            { 
+            {
                 return ass.Dst;
             }
             return null;
@@ -548,7 +526,7 @@ namespace Reko.Analysis
                 }
                 return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
-            if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi && 
+            if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi &&
                 MemoryOperandsAdjacent(ssa.Procedure.Architecture, memDstLo, memDstHi))
             {
                 return CreateMemoryAccess(memDstLo, totalSize);
@@ -599,12 +577,12 @@ namespace Reko.Analysis
             var match = memOffset.Match(access);
             if (match.Success)
             {
-                return (Constant)match.CapturedExpression("Offset")!;
+                return (Constant) match.CapturedExpression("Offset")!;
             }
             match = segMemOffset.Match(access);
             if (match.Success)
             {
-                return (Constant)match.CapturedExpression("Offset")!;
+                return (Constant) match.CapturedExpression("Offset")!;
             }
             if (access.EffectiveAddress is Constant c)
                 return c;
@@ -734,23 +712,75 @@ namespace Reko.Analysis
             }
             return null;
         }
-
-        public class Candidate
+    }
+    public class Candidate
+    {
+        public Candidate(BinaryOperator op, Expression left, Expression? right)
         {
-            public Candidate(BinaryOperator op, Expression left, Expression? right)
-            {
-                this.Op = op;
-                this.Left = left;
-                this.Right = right;
-            }
-
-            public int StatementIndex;
-            public Statement? Statement;
-            public Expression? Dst;
-            public readonly BinaryOperator Op;
-            public readonly Expression Left;
-            public readonly Expression? Right;
+            this.Op = op;
+            this.Left = left;
+            this.Right = right;
         }
+
+        public int StatementIndex;
+        public Statement? Statement;
+        public Expression? Dst;
+        public readonly BinaryOperator Op;
+        public readonly Expression Left;
+        public readonly Expression? Right;
+    }
+
+    static LongAddRewriter()
+    {
+        condm = new InstructionMatcher(
+            new Assignment(
+                ExpressionMatcher.AnyId("grf"),
+                new ConditionOf(
+                    ExpressionMatcher.AnyExpression("exp"))));
+
+        addPattern = new InstructionMatcher(
+            new Assignment(
+                ExpressionMatcher.AnyId("dst"),
+                new BinaryExpression(
+                    ExpressionMatcher.AnyBinaryOperator("op"),
+                    VoidType.Instance,
+                    ExpressionMatcher.AnyExpression("left"),
+                    ExpressionMatcher.AnyExpression("right"))));
+
+        adcPattern = new InstructionMatcher(
+            new Assignment(
+                ExpressionMatcher.AnyId("dst"),
+                new BinaryExpression(
+                    ExpressionMatcher.AnyBinaryOperator("op1"),
+                    VoidType.Instance,
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyBinaryOperator("op2"),
+                        VoidType.Instance,
+                        ExpressionMatcher.AnyExpression("left"),
+                        ExpressionMatcher.AnyExpression("right")),
+                    ExpressionMatcher.AnyExpression("cf"))));
+
+        memOffset = ExpressionMatcher.Build(m =>
+            new MemoryAccess(
+                new BinaryExpression(
+                    ExpressionMatcher.AnyBinaryOperator("op"),
+                    VoidType.Instance,
+                    ExpressionMatcher.AnyExpression("base"),
+                    ExpressionMatcher.AnyConstant("Offset")),
+                ExpressionMatcher.AnyDataType("dt")));
+
+        segMemOffset = new ExpressionMatcher(
+            new MemoryAccess(
+                MemoryStorage.GlobalMemory,
+                new SegmentedPointer(
+                    ExpressionMatcher.AnyDataType(null),
+                    ExpressionMatcher.AnyId(),
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyBinaryOperator("op"),
+                        VoidType.Instance,
+                        ExpressionMatcher.AnyExpression("base"),
+                        ExpressionMatcher.AnyConstant("Offset"))),
+                ExpressionMatcher.AnyDataType("dt")));
     }
 
 

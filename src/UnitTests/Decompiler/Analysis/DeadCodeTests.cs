@@ -106,8 +106,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
-				cce.Transform();
+                var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker.Object, sc, listener);
+				var cce = new ConditionCodeEliminator(ctx);
+				cce.Transform(ssa);
 
 				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);

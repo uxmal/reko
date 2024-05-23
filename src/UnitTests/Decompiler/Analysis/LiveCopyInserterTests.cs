@@ -201,8 +201,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			this.ssaIds = ssa.Identifiers;
 
             var listener = new FakeDecompilerEventListener();
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
-			cce.Transform();
+            var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker, sc, listener);
+            var cce = new ConditionCodeEliminator(ctx);
+			cce.Transform(ssa);
 			DeadCode.Eliminate(ssa);
 
             ValuePropagator vp = new ValuePropagator(

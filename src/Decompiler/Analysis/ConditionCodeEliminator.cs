@@ -26,6 +26,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -33,53 +34,80 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Removes any uses and definitions of condition codes.
+/// </summary>
+/// <remarks>
+/// Removal of condition codes becomes exciting in situations like the following (x86 code):
+///		add ax,bx
+///		mov [si],ax
+///		jnz foo
+///	or
+///	    cmp ax,0
+///	    jl less
+///	    jg greater
+///	<para>
+///	For best performance, preprocess the intermediate code with the ValuePropagator transformer.
+///	</para>
+/// </remarks>
+public class ConditionCodeEliminator : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Removes any uses and definitions of condition codes.
-    /// </summary>
-    /// <remarks>
-    /// Removal of condition codes becomes exciting in situations like the following (x86 code):
-    ///		add ax,bx
-    ///		mov [si],ax
-    ///		jnz foo
-    ///	or
-    ///	    cmp ax,0
-    ///	    jl less
-    ///	    jg greater
-    ///	<para>
-    ///	For best performance, preprocess the intermediate code with the ValuePropagator transformer.
-    ///	</para>
-    /// </remarks>
-    public class ConditionCodeEliminator : InstructionTransformer
-	{
-        private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator")
-        {
-            Level = TraceLevel.Warning,
-        };
-        
+    private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator")
+    {
+        Level = TraceLevel.Warning,
+    };
+
+    private readonly AnalysisContext context;
+
+    public ConditionCodeEliminator(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "cce";
+
+    public string Description => "Elimination of condition codes";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var w = CreateWorker(ssa);
+        w.Transform();
+        return (ssa, w.Changed);
+    }
+
+    public Worker CreateWorker(SsaState ssa)
+    {
+        return new Worker(context.Program, ssa, context.EventListener);
+    }
+
+    public class Worker : InstructionTransformer
+    {
         private readonly SsaState ssa;
         private readonly SsaMutator mutator;
-		private readonly SsaIdentifierCollection ssaIds;
+        private readonly SsaIdentifierCollection ssaIds;
         private readonly IReadOnlyProgram program;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly ExpressionEmitter m;
         private readonly HashSet<Identifier> aliases;
         private readonly Dictionary<(Identifier, ConditionCode), SsaIdentifier> generatedIds;
-		private SsaIdentifier? sidGrf;
+        private SsaIdentifier? sidGrf;
         private Statement? useStm;
 
-        public ConditionCodeEliminator(IReadOnlyProgram program, SsaState ssa, IDecompilerEventListener listener)
-		{
+        public Worker(IReadOnlyProgram program, SsaState ssa, IEventListener listener)
+        {
             this.ssa = ssa;
             this.mutator = new SsaMutator(ssa);
-			this.ssaIds = ssa.Identifiers;
+            this.ssaIds = ssa.Identifiers;
             this.program = program;
             this.listener = listener;
             this.m = new ExpressionEmitter();
             this.aliases = new HashSet<Identifier>();
             this.generatedIds = new Dictionary<(Identifier, ConditionCode), SsaIdentifier>();
-		}
+        }
+
+        public bool Changed { get; private set; }
 
         public void Transform()
         {
@@ -172,7 +200,7 @@ namespace Reko.Analysis
                 {
                     // Bypass copies (C_4 = C_3) and slices
                     // (C_4 = SLICE(SZC_3, bool, 0)
-                    var ass = (Assignment)use.Instruction;
+                    var ass = (Assignment) use.Instruction;
                     var sidAlias = ssaIds[ass.Dst];
                     aliases.Add(sidAlias.Identifier);
                     ClosureOfUsingStatements(sidAlias, uses, aliases);
@@ -182,7 +210,7 @@ namespace Reko.Analysis
                     // Bypass PHI nodes.
                     var sidPhi = ssaIds[phiAss.Dst];
                     aliases.Add(sidPhi.Identifier);
-                    ClosureOfUsingStatements(sidPhi, uses,aliases);
+                    ClosureOfUsingStatements(sidPhi, uses, aliases);
                 }
             }
             return uses;
@@ -196,7 +224,7 @@ namespace Reko.Analysis
             if (stg is FlagGroupStorage)
                 return true;
             return (sid.GetDefiningExpression() is ConditionOf);
-		}
+        }
 
         /// <summary>
         /// Returns true if the instruction in the statement is an assignment of the form
@@ -223,10 +251,10 @@ namespace Reko.Analysis
             };
         }
 
-		private BinaryExpression CmpExpressionToZero(Expression e)
-		{
+        private BinaryExpression CmpExpressionToZero(Expression e)
+        {
             return m.ISub(e, 0);
-		}
+        }
 
         public Expression UseGrfConditionally(
             SsaIdentifier sid,
@@ -235,14 +263,14 @@ namespace Reko.Analysis
             bool forceIdentifier)
         {
             var defs = ClosureOfReachingDefinitions(sid);
-			var gf = new GrfDefinitionFinder(ssaIds);
-			gf.FindDefiningExpression(sid);
-			
-			Expression? e = gf.DefiningExpression;
-			if (e is null)
-			{
-				return sid.Identifier;
-			}
+            var gf = new GrfDefinitionFinder(ssaIds);
+            gf.FindDefiningExpression(sid);
+
+            Expression? e = gf.DefiningExpression;
+            if (e is null)
+            {
+                return sid.Identifier;
+            }
 
             while (e is not null)
             {
@@ -276,6 +304,7 @@ namespace Reko.Analysis
                     {
                         e = InsertNewAssignment(e, cc, sid);
                     }
+                    this.Changed = true;
                     return e;
                 case ConditionOf cof:
                     if (cof.Expression is not BinaryExpression condBinDef)
@@ -285,27 +314,32 @@ namespace Reko.Analysis
                     {
                         newCond = InsertNewAssignment(newCond, cc, sid);
                     }
+                    this.Changed = true;
                     return newCond;
                 case Application _:
+                    this.Changed = true;
                     return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
                 case MemoryAccess _:
+                    this.Changed = true;
                     return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
                 case PhiFunction phi:
+                    this.Changed = true;
                     return InsertNewPhi(sid, cc, phi);
                 case Identifier _:
+                    this.Changed = true;
                     return UseDirectly(sid, cc, testedFlags, forceIdentifier, gf.IsNegated);
                 default:
                     throw new NotImplementedException("NYI: e: " + e.ToString());
                 }
             }
             return sid.Identifier;
-		}
+        }
 
         private Expression UseDirectly(
-            SsaIdentifier sid, 
+            SsaIdentifier sid,
             ConditionCode cc,
             FlagGroupStorage? testedFlags,
-            bool forceIdentifier, 
+            bool forceIdentifier,
             bool isNegated)
         {
             Expression e = sid.Identifier;
@@ -315,7 +349,7 @@ namespace Reko.Analysis
             }
             if (isNegated)
             {
-                    e = m.Not(e);
+                e = m.Not(e);
             }
             if (forceIdentifier)
             {
@@ -376,7 +410,7 @@ namespace Reko.Analysis
             return sidNew.Identifier;
         }
 
-		public override Instruction TransformAssignment(Assignment a)
+        public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
             switch (a.Src)
@@ -403,9 +437,9 @@ namespace Reko.Analysis
                         return a;
                     if (cof.Expression is not Identifier id)
                         return a;
-                    if (ssaIds[id].GetDefiningExpression() is BinaryExpression bin && 
+                    if (ssaIds[id].GetDefiningExpression() is BinaryExpression bin &&
                         bin.Operator.Type == OperatorType.Shr &&
-                        bin.Right is Constant shift && 
+                        bin.Right is Constant shift &&
                         shift.ToInt32() == 1)
                     {
                         ssa.RemoveUses(useStm);
@@ -435,7 +469,7 @@ namespace Reko.Analysis
             if (u != sidGrf.Identifier && !this.aliases.Contains(u))
                 return a;
 
-            var oldSid = ssaIds[(Identifier)u];
+            var oldSid = ssaIds[(Identifier) u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
             if (c != null)
             {
@@ -470,7 +504,7 @@ namespace Reko.Analysis
             // 4.  flags_3 = cond(b_2)
 
             var sidOrigHi = ssaIds[assRolc.Dst];
-            var sidCarryUsedInRolc = ssaIds[(Identifier)rolc.Arguments[2]];
+            var sidCarryUsedInRolc = ssaIds[(Identifier) rolc.Arguments[2]];
             var defStatements = ClosureOfReachingDefinitions(sidCarryUsedInRolc);
             if (defStatements.Count != 1)
                 return assRolc;
@@ -537,7 +571,7 @@ namespace Reko.Analysis
 
             // Go 'backwards' through aliasing slices until instruction
             // defining the carry flag is found.
-            var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
+            var sidCarry = ssaIds[(Identifier) rorc.Arguments[2]];
             var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
             while (sidCarry.GetDefiningExpression() is Slice slice)
             {
@@ -574,7 +608,7 @@ namespace Reko.Analysis
                 domain = Domain.UnsignedInt;
             else if (shift.Operator.Type == OperatorType.Sar)
                 domain = Domain.SignedInt;
-            else 
+            else
                 return a;
 
             var expShrSrc = shift.Left;
@@ -600,14 +634,14 @@ namespace Reko.Analysis
         }
 
         public override Expression VisitTestCondition(TestCondition tc)
-		{
+        {
             var id = (Identifier) tc.Expression;
             SsaIdentifier sid = ssaIds[id];
-			sid.Uses.Remove(useStm!);
-			Expression c = UseGrfConditionally(sid, tc.ConditionCode, id.Storage as FlagGroupStorage, false);
-			Use(c, useStm!);
-			return c;
-		}
+            sid.Uses.Remove(useStm!);
+            Expression c = UseGrfConditionally(sid, tc.ConditionCode, id.Storage as FlagGroupStorage, false);
+            Use(c, useStm!);
+            return c;
+        }
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
 		{
@@ -727,10 +761,10 @@ namespace Reko.Analysis
             return e;
 		}
 
-		private void Use(Expression expr, Statement stm)
-		{
-			var eua = new InstructionUseAdder(stm, ssaIds);
-			expr.Accept(eua);
-		}
-	}
+        private void Use(Expression expr, Statement stm)
+        {
+            var eua = new InstructionUseAdder(stm, ssaIds);
+            expr.Accept(eua);
+        }
+    }
 }

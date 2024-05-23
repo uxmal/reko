@@ -24,6 +24,10 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// A collection of objects that classes that implement 
+    /// <see cref="IAnalysis{T}"/> typically need.
+    /// </summary>
     public class AnalysisContext
     {
         public IReadOnlyProgram Program { get; }
@@ -31,6 +35,21 @@ namespace Reko.Core.Analysis
         public IDynamicLinker DynamicLinker { get; }
         public IServiceProvider Services { get; }
         public IEventListener EventListener { get; }
+
+        public AnalysisContext(
+            IReadOnlyProgram program,
+            Procedure proc,
+            IDynamicLinker dynamicLinker,
+            IServiceProvider services,
+            IEventListener eventListener)
+            : this(
+                  program,
+                  new HashSet<Procedure> { proc },
+                  dynamicLinker,
+                  services,
+                  eventListener)
+        {
+        }
 
         public AnalysisContext(
             IReadOnlyProgram program,

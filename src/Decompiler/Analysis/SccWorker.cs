@@ -179,8 +179,8 @@ namespace Reko.Analysis
                 fuser.Transform();
 
                 // Fuse additions and subtractions that are linked by the carry flag.
-                var larw = new LongAddRewriter(ssa, eventListener);
-                larw.Transform();
+                var larw = new LongAddRewriter(context);
+                larw.Transform(ssa);
                 dfa.DumpWatchedProcedure("larw", "After long add rewriter", ssa);
 
                 // After value propagation expressions like (x86) 
@@ -193,14 +193,14 @@ namespace Reko.Analysis
                 dfa.DumpWatchedProcedure("vp", "After first VP", ssa);
 
                 // Value propagation may uncover more opportunities.
-                larw = new LongAddRewriter(ssa, eventListener);
-                larw.Transform();
+                larw = new LongAddRewriter(context);
+                larw.Transform(ssa);
                 dfa.DumpWatchedProcedure("larw2", "After second long add rewriter", ssa);
 
                 // Eliminate condition codes by discovering uses of ccodes
                 // and replacing them with higher-level constructs.
-                var cce = new ConditionCodeEliminator(program, ssa, eventListener);
-                cce.Transform();
+                var cce = new ConditionCodeEliminator(context);
+                cce.Transform(ssa);
                 vp.Transform();
                 dfa.DumpWatchedProcedure("cce", "After CCE", ssa);
 
