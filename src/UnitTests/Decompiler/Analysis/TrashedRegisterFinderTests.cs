@@ -122,6 +122,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var procSet = scc.ToHashSet();
             var sstSet = new HashSet<SsaTransform>();
+            var context = new AnalysisContext(
+                program, procSet, dynamicLinker.Object, services,
+                new FakeDecompilerEventListener());
+
             foreach (var proc in scc)
             {
                 var sst = new SsaTransform(
@@ -132,12 +136,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     dataFlow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
-                var vp = new ValuePropagator(
-                    program, 
-                    sst.SsaState,
-                    dynamicLinker.Object,
-                    services);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(sst.SsaState);
                 sstSet.Add(sst);
             }
 

@@ -103,12 +103,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     null, 
                     new ProgramDataFlow());
                 sst.Transform();
-                var vp = new ValuePropagator(
-                    program,
-                    sst.SsaState,
-                    null, 
-                    sc);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(sst.SsaState);
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
                 sst.AddUsesToExitBlock();

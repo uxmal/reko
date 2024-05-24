@@ -60,6 +60,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var decompilerEventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(decompilerEventListener);
             sc.AddService<IDecompilerEventListener>(decompilerEventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, TextWriter w)
@@ -173,6 +174,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
+            if (sc.GetService<IPluginLoaderService>() is null)
+            {
+                sc.AddService<IPluginLoaderService>(new PluginLoaderService());
+            }
             Program program;
             IAssembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
@@ -247,6 +252,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var loader = new Loader(sc);
             var location = ImageLocation.FromUri(FileUnitTester.MapTestPath(configFile));
             var project = string.IsNullOrEmpty(configFile)
@@ -278,6 +284,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var loader = new Loader(sc);
             var project = new Project
             {

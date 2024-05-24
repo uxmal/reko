@@ -89,8 +89,9 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program, ssa, dynamicLinker, services);
-                    vp.Transform();
+                    var context = new AnalysisContext(program, ssa.Procedure, dynamicLinker, services, eventListener);
+                    var vp = new ValuePropagator(context);
+                    vp.Transform(ssa);
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                     //DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
                     change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);

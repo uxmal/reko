@@ -144,8 +144,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker, sc, listener);
             var cce = new ConditionCodeEliminator(ctx);
 			cce.Transform(ssa);
-            ValuePropagator vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
-			vp.Transform();
+            ValuePropagator vp = new ValuePropagator(ctx);
+			vp.Transform(ssa);
 			DeadCode.Eliminate(ssa);
 			Coalescer coa = new Coalescer(ssa);
 			coa.Transform();

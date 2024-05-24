@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -85,15 +86,17 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             bld(m);
             var proc = m.Procedure;
             var program = new Program { Architecture = m.Architecture };
+            var context = new AnalysisContext(
+                program, proc, null, null, new FakeDecompilerEventListener());
             var ssa = new SsaTransform(
-                program,
+                context.Program,
                 proc,
                 null,
                 null,
                 null).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(program, ssa, null, null);
-            vp.Transform();
+            var vp = new ValuePropagator(context);
+            vp.Transform(ssa);
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();
             var sw = new StringWriter();

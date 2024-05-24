@@ -56,6 +56,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         private void AssertProgram(string sExp, Program program)

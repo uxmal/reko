@@ -71,6 +71,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         private class NestedProgram

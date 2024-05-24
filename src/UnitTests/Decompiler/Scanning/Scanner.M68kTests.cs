@@ -53,6 +53,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IEventListener>(listener.Object);
             sc.AddService<IDecompilerEventListener>(listener.Object);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         private void BuildTest32(Action<M68kAssembler> asmProg)

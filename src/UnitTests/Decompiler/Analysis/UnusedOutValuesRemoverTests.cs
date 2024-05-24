@@ -59,6 +59,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
             services.AddService<IDecompilerEventListener>(eventListener);
+            services.AddService<IPluginLoaderService>(new PluginLoaderService());
             this.regA = RegisterStorage.Reg32("regA", 0x1234);
             this.regB = RegisterStorage.Reg32("regB", 0x5678);
             this.lowA = RegisterStorage.Reg8("lowA", 0x1234);

@@ -109,28 +109,28 @@ namespace Reko.UnitTests.Decompiler.Analysis
             progBuilder.Program.SegmentMap = segmentMap;
             progBuilder.Program.Memory = new ProgramMemory(segmentMap);
             var sc = new ServiceContainer();
-            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            sc.AddService<IDecompilerEventListener>(listener);
+
+            var context = new AnalysisContext(
+                progBuilder.Program, proc, dynamicLinker.Object, sc, listener);
             var sst = new SsaTransform(
-                progBuilder.Program,
+                context.Program,
                 proc,
-                new HashSet<Procedure>(),
-                dynamicLinker.Object,
+                context.SccProcedures,
+                context.DynamicLinker,
                 new ProgramDataFlow());
             sst.Transform();
 
-            var vp = new ValuePropagator(
-                progBuilder.Program,
-                sst.SsaState,
-                dynamicLinker.Object,
-                sc);
-            vp.Transform();
+            var vp = new ValuePropagator(context);
+            vp.Transform(sst.SsaState);
 
             sst.RenameFrameAccesses = true;
             sst.Transform();
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            vp.Transform();
+            vp.Transform(sst.SsaState);
 
             return RunTest(sExp, progBuilder.Program, sst.SsaState);
         }

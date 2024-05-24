@@ -89,6 +89,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
             var listener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(listener);
             sc.AddService<IDecompilerEventListener>(listener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var dynlinker = new Mock<IDynamicLinker>().Object;
             var scanner = new Scanner(program, new TypeLibrary(), dynlinker, sc);
             scanner.ScanImage();

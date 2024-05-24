@@ -67,6 +67,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var entryPoints = new List<ImageSymbol>();
             var asm = new X86Assembler(arch, addrBase, entryPoints);
             asmProg(asm);

@@ -34,21 +34,42 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Performs propagation by replacing occurences of expressions with 
+/// simpler expressions if these are beneficial. Constants are folded,
+/// and so on.
+/// </summary>
+/// <remarks>
+/// This is a useful transform that doesn't cause too many problems for
+/// later transforms. Calling it will flush out lots of dead expressions
+/// that can be removed with DeadCode.Eliminate()
+/// </remarks>
+public class ValuePropagator : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Performs propagation by replacing occurences of expressions with 
-    /// simpler expressions if these are beneficial. Constants are folded,
-    /// and so on.
-    /// </summary>
-    /// <remarks>
-    /// This is a useful transform that doesn't cause too many problems for
-    /// later transforms. Calling it will flush out lots of dead expressions
-    /// that can be removed with DeadCode.Eliminate()
-    /// </remarks>
-    public class ValuePropagator : InstructionVisitor<(Instruction, bool)>
+    private static readonly TraceSwitch trace = new(nameof(ValuePropagator), "Traces value propagation");
+
+    private readonly AnalysisContext context;
+
+    public ValuePropagator(AnalysisContext context)
     {
-        private static readonly TraceSwitch trace = new(nameof(ValuePropagator), "Traces value propagation");
+        this.context = context;
+    }
+
+    public string Id => "vp";
+
+    public string Description => "Propagates values from definitions to uses";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(context, ssa);
+        worker.Transform();
+        return (ssa, worker.Changed);
+    }
+
+    public class Worker : InstructionVisitor<(Instruction, bool)>
+    {
 
         private readonly IReadOnlyProgram program;
         private readonly IProcessorArchitecture arch;
@@ -58,32 +79,33 @@ namespace Reko.Analysis
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
-        private readonly IDecompilerEventListener eventListener;
-        private readonly Scanning.VarargsFormatScanner va;
+        private readonly IEventListener eventListener;
+        private readonly VarargsFormatScanner va;
         private Statement stmCur;      //$REFACTOR: try to make this a context paramter.
 
-        public ValuePropagator(
-            IReadOnlyProgram program,
-            SsaState ssa,
-            IDynamicLinker dynamicLinker,
-            IServiceProvider services)
+        public Worker(
+            AnalysisContext context,
+            SsaState ssa)
         {
-            this.program = program;
+            this.program = context.Program;
             this.ssa = ssa;
             this.callGraph = program.CallGraph;
             this.arch = ssa.Procedure.Architecture;
-            this.dynamicLinker = dynamicLinker;
-            this.eventListener = services.RequireService<IDecompilerEventListener>();
+            this.dynamicLinker = context.DynamicLinker;
+            this.eventListener = context.EventListener;
             this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
             this.eval = new ExpressionSimplifier(program.Memory, evalCtx, eventListener);
             var ctx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
-            this.va = new Scanning.VarargsFormatScanner(program, arch, ctx, services);
+            this.va = new VarargsFormatScanner(program, arch, ctx, context.Services, context.EventListener);
             this.stmCur = default!;
         }
 
+        public bool Changed { get; private set; }
+
         public void Transform()
         {
+            this.Changed = false;
             const int MaxIterations = 10_000;
 
             bool changed;
@@ -108,6 +130,7 @@ namespace Reko.Analysis
                     this.stmCur = stm;
                     var c = Transform(stm);
                     changed |= c;
+                    this.Changed |= c;
                 }
             } while (changed);
         }

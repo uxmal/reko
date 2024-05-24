@@ -27,7 +27,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
@@ -37,7 +36,6 @@ using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -73,6 +71,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             sc.AddService<IEventListener>(eventListener.Object);
             sc.AddService<IDecompilerEventListener>(eventListener.Object);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         private void BuildTest32(Action<X86Assembler> m)

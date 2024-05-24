@@ -105,7 +105,9 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
-            this.vaScanner = new VarargsFormatScanner(program, arch, state, scanner.Services);
+            var pluginSvc = scanner.Services.RequireService<IPluginLoaderService>();
+            var listener = scanner.Services.RequireService<IEventListener>();
+            this.vaScanner = new VarargsFormatScanner(program, arch, state, scanner.Services, listener);
             rtlStream = scanner.GetTrace(arch, addrStart, state, frame)
                 .GetEnumerator();
 

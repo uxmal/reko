@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             sc.AddService<IEventListener>(decompilerEventListener);
             sc.AddService<IDecompilerEventListener>(decompilerEventListener);
             sc.AddService<IFileSystemService>(new FileSystemService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
@@ -93,6 +94,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var asm = new X86TextAssembler(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()));
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
@@ -108,6 +110,8 @@ namespace Reko.UnitTests.Decompiler.Structure
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
+
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             program = asm.AssembleFragment(addrBase, asmFragment);

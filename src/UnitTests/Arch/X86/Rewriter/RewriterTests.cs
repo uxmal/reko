@@ -93,6 +93,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             sc.AddService(cfgSvc.Object);
             sc.AddService(tlSvc.Object);
 

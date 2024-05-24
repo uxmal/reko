@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             this.state = program.Architecture.CreateProcessorState();
             this.frame = program.Architecture.CreateFrame();
-            return new VarargsFormatScanner(program, program.Architecture, state, sc);
+            return new VarargsFormatScanner(program, program.Architecture, state, sc, listener);
         }
 
         private void WriteString32(Program program, uint uiAddr, string str)

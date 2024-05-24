@@ -157,6 +157,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<IEventListener>(el);
             sc.AddService<IDecompilerEventListener>(el);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))

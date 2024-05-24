@@ -52,6 +52,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow flow;  //$MUTABLE
         private readonly IReadOnlySet<Procedure> sccProcs;
         private readonly IDecompilerEventListener eventListener;
+        private readonly AnalysisContext context;
 
         public SccWorker(
             DataFlowAnalysis dfa,
@@ -67,6 +68,7 @@ namespace Reko.Analysis
             this.flow = dfa.ProgramDataFlow;
             this.sccProcs = sccProcs.ToHashSet();
             this.eventListener = services.RequireService<IDecompilerEventListener>();
+            this.context = new AnalysisContext(program, this.sccProcs, dynamicLinker, services, eventListener);
         }
 
         /// <summary>
@@ -99,8 +101,8 @@ namespace Reko.Analysis
             {
                 if (eventListener.IsCanceled())
                     return ssts;
-                var vp = new ValuePropagator(program, sst.SsaState, this.dynamicLinker, services);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(sst.SsaState);
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
                 dfa.DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState.Procedure);
@@ -158,7 +160,6 @@ namespace Reko.Analysis
             }
 
             var analysisFactory = proc.Architecture.CreateExtension<IAnalysisFactory>();
-            var context = new AnalysisContext(program, sccProcs, dynamicLinker, services, eventListener);
 
             try
             {
@@ -188,8 +189,8 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program, ssa, this.dynamicLinker, services);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(ssa);
                 dfa.DumpWatchedProcedure("vp", "After first VP", ssa);
 
                 // Value propagation may uncover more opportunities.
@@ -201,7 +202,7 @@ namespace Reko.Analysis
                 // and replacing them with higher-level constructs.
                 var cce = new ConditionCodeEliminator(context);
                 cce.Transform(ssa);
-                vp.Transform();
+                vp.Transform(ssa);
                 dfa.DumpWatchedProcedure("cce", "After CCE", ssa);
 
                 var lcf = new LongComparisonFuser(ssa, eventListener);
@@ -229,7 +230,7 @@ namespace Reko.Analysis
                 var icrw = new IndirectCallRewriter(program, ssa, eventListener);
                 while (!eventListener.IsCanceled() && icrw.Rewrite())
                 {
-                    vp.Transform();
+                    vp.Transform(ssa);
                     sst.RenameFrameAccesses = true;
                     sst.Transform();
                 }
@@ -250,7 +251,7 @@ namespace Reko.Analysis
 
                 // Propagate newly created stack-relative identifiers and transform
                 // any new frame-relative memory accesses to identifiers.
-                vp.Transform();
+                vp.Transform(ssa);
                 sst.Transform();
                 dfa.DumpWatchedProcedure("vp2", "After VP2", ssa);
 

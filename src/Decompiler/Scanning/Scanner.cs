@@ -507,7 +507,7 @@ namespace Reko.Scanning
             {
                 // Attempt to perform varargs substitution. If it fails,
                 // let the Analysis stage handle it.
-                var vaScanner = new VarargsFormatScanner(Program, procCaller.Architecture, state, Services);
+                var vaScanner = new VarargsFormatScanner(Program, procCaller.Architecture, state, Services, eventListener);
                 if (vaScanner!.TryScan(addrCall, callee, sig, chr, ab, out var varargs))
                 {
                     return vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab);

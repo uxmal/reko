@@ -93,6 +93,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemService());
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService()); 
         }
 
         private FunctionType CreateSignature(string ret, params string[] args)

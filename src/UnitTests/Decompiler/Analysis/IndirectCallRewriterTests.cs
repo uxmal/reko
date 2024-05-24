@@ -30,6 +30,8 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using Reko.Core.Analysis;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -276,6 +278,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var programFlow = new ProgramDataFlow();
             var addr = program.Procedures.Keys[0];
             var proc = program.Procedures.Values[0];
+            var context = new AnalysisContext(
+                program, proc, dynamicLinker, sc, eventListener);
             var sst = new SsaTransform(
                 program, 
                 proc,
@@ -283,8 +287,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 dynamicLinker,
                 programFlow);
             var ssa = sst.Transform();
-            var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
-            vp.Transform();
+            var vp = new ValuePropagator(context);
+            vp.Transform(ssa);
             sst.RenameFrameAccesses = true;
             sst.Transform();
             var icrw = new IndirectCallRewriter(program, ssa, eventListener);

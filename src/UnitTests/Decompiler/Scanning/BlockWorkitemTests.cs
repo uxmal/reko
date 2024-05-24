@@ -94,6 +94,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 .Returns((IStorageBinder frame, CallSite site) =>
                     new FrameApplicationBuilder(arch.Object, frame, site));
             scanner.Setup(s => s.Services).Returns(sc);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             sc.AddService<IEventListener>(listener.Object);
             sc.AddService<IDecompilerEventListener>(listener.Object);
         }

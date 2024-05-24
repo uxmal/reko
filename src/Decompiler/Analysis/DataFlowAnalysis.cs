@@ -248,8 +248,8 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(Program, ssa, dynamicLinker, services);
-                    vp.Transform();
+                    var vp = new ValuePropagator(context);
+                    vp.Transform(ssa);
 
                     DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);
 

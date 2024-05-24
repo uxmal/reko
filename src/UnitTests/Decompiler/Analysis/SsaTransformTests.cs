@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -37,6 +38,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 
@@ -225,11 +227,15 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
+                var procSet = new HashSet<Procedure> { proc };
+                var context = new AnalysisContext(
+                    program, procSet, dynamicLinker.Object, sc, listener);
+
                 // Perform initial transformation.
                 var sst = new SsaTransform(
                     this.pb.Program,
                     proc,
-                    new HashSet<Procedure>(),
+                    procSet,
                     dynamicLinker.Object,
                     programFlow);
                 sst.Transform();
@@ -242,12 +248,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 //   esp_2 = fp - 4
                 //   mov [fp - 8],eax
 
-                var vp = new ValuePropagator(
-                    this.pb.Program,
-                    sst.SsaState,
-                    dynamicLinker.Object,
-                    sc);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(sst.SsaState);
 
                 sst.RenameFrameAccesses = true;
                 sst.Transform();

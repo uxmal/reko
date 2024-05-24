@@ -173,8 +173,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 cce.Transform(ssa);
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
-                var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
-                vp.Transform();
+                var vp = new ValuePropagator(context);
+                vp.Transform(ssa);
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 sst.RenameFrameAccesses = true;
@@ -632,17 +632,19 @@ ProcedureBuilder_exit:
                 Memory = new ProgramMemory(segmentMap),
                 Platform = new DefaultPlatform(sc, m.Architecture)
             };
+
+            var context = CreateAnalysisContext(program, m.Procedure);
             
             var ssa = new SsaTransform(
                 program,
                 m.Procedure,
                 new HashSet<Procedure> { m.Procedure }, 
-                null, 
+                context.DynamicLinker, 
                 new ProgramDataFlow());
             this.ssaState = ssa.Transform();
-            var vp = new ValuePropagator(program, ssaState, null, sc);
-            vp.Transform();
-            Given_ConditionCodeEliminator();
+            var vp = new ValuePropagator(context);
+            vp.Transform(ssaState);
+            cce = new ConditionCodeEliminator(context);
 
             cce.Transform(ssaState);
 

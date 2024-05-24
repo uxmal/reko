@@ -77,6 +77,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             };
             sc = new ServiceContainer();
             sc.AddService<IDecompilerEventListener>(listener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         private ExternalProcedure CreateExternalProcedure(
@@ -114,32 +115,37 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 dynamicLinker.Object,
                 sc);
 			foreach (Procedure proc in ProceduresInSccOrder(program))
-			{
-				writer.WriteLine("= {0} ========================", proc.Name);
+            {
+                writer.WriteLine("= {0} ========================", proc.Name);
                 SsaTransform sst = new SsaTransform(
-                    program, 
-                    proc, 
+                    program,
+                    proc,
                     new HashSet<Procedure>(),
-                    dynamicLinker.Object, 
+                    dynamicLinker.Object,
                     dfa.ProgramDataFlow);
                 sst.Transform();
-				SsaState ssa = sst.SsaState;
-                var ctx = new AnalysisContext(program, ssa.Procedure, dynamicLinker.Object, sc, listener);
+                SsaState ssa = sst.SsaState;
+                var ctx = CreateContext(program, proc);
                 var cce = new ConditionCodeEliminator(ctx);
                 cce.Transform(ssa);
-				ssa.Write(writer);
-				proc.Write(false, writer);
-				writer.WriteLine();
+                ssa.Write(writer);
+                proc.Write(false, writer);
+                writer.WriteLine();
 
-				var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
-				vp.Transform();
+                var vp = new ValuePropagator(ctx);
+                vp.Transform(ssa);
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
 
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
-		}
+                ssa.Write(writer);
+                proc.Write(false, writer);
+            }
+        }
+
+        private AnalysisContext CreateContext(Program program, Procedure proc)
+        {
+            return new AnalysisContext(program, proc, dynamicLinker.Object, sc, listener);
+        }
 
         private List<Procedure> ProceduresInSccOrder(Program program)
         {
@@ -155,6 +161,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private SsaState RunTest(ProcedureBuilder m)
         {
             var proc = m.Procedure;
+            var context = new AnalysisContext(
+                program,
+                proc,
+                dynamicLinker.Object,
+                sc,
+                listener);
+
             var sst = new SsaTransform(
                 program,
                 proc,
@@ -164,8 +177,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var ssa = sst.SsaState;
             sst.Transform();
 
-            var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
-            vp.Transform();
+            var vp = new ValuePropagator(context);
+            vp.Transform(ssa);
             return ssa;
         }
 
@@ -190,8 +203,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(program, m.Ssa, dynamicLinker.Object, sc);
-            vp.Transform();
+            var context = CreateContext(program, m.Ssa.Procedure);
+            var vp = new ValuePropagator(context);
+            vp.Transform(m.Ssa);
             m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
 
@@ -276,12 +290,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.Transform();
             SsaState ssa = sst.SsaState;
 
-			ValuePropagator vp = new ValuePropagator(
-                program, 
-                ssa,
-                dynamicLinker.Object,
-                sc);
-			vp.Transform();
+            var context = CreateContext(program, proc);
+            ValuePropagator vp = new ValuePropagator(context);
+			vp.Transform(ssa);
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
 			{
@@ -629,8 +640,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.Transform();
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
-			vp.Transform();
+            var context = CreateContext(program, proc);
+            var vp = new ValuePropagator(context);
+			vp.Transform(ssa);
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
 			{
@@ -1127,8 +1139,9 @@ SsaProcedureBuilder_exit:
             m.Return();
 
             // Initially we don't know what r2_2 is pointing to.
-            var vp = new ValuePropagator(program, m.Ssa, dynamicLinker.Object, sc);
-            vp.Transform();
+            var context = CreateContext(program, m.Ssa.Procedure);
+            var vp = new ValuePropagator(context);
+            vp.Transform(m.Ssa);
 
             // Later, Reko discovers information about the pointer in 0x400000<32>!
 
@@ -1145,7 +1158,7 @@ SsaProcedureBuilder_exit:
 
             // Run Value propagation again with the newly gathered information.
 
-            vp.Transform();
+            vp.Transform(m.Ssa);
 
             m.Ssa.Validate(s => Assert.Fail(s));
             AssertStringsEqual(sExp, m.Ssa);

@@ -60,6 +60,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var sc = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IDecompilerEventListener>(eventListener);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             // Uncommenting the below line is useful for debugging, but slows down the unit tests
 //            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);

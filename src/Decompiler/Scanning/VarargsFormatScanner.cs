@@ -47,22 +47,25 @@ namespace Reko.Scanning
         private readonly EvaluationContext ctx;
         private readonly ExpressionSimplifier eval;
         private readonly IServiceProvider services;
+        private readonly IEventListener listener;
         private StringConstant? formatString;
 
         public VarargsFormatScanner(
             IReadOnlyProgram program,
             IProcessorArchitecture arch,
             EvaluationContext ctx,
-            IServiceProvider services)
+            IServiceProvider services,
+            IEventListener listener)
         {
             this.program = program;
             this.arch = arch;
             this.services = services;
+            this.listener = listener;
             this.ctx = ctx;
             this.eval = new ExpressionSimplifier(
                 program.Memory,
                 ctx,
-                services.RequireService<IDecompilerEventListener>());
+                listener);
         }
 
         public Instruction BuildInstruction(
@@ -180,7 +183,6 @@ namespace Reko.Scanning
 
         private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
         {
-            var listener = services.RequireService<IDecompilerEventListener>();
             listener.Warn(
                 //$TODO: get address of call instruction
                 listener.CreateAddressNavigator(this.program, addrInstr),
@@ -211,8 +213,8 @@ namespace Reko.Scanning
             Address addrInstr,
             ProcedureCharacteristics chr)
         {
-            var svc = services.RequireService<IPluginLoaderService>();
-            var type = svc.GetType(varargsParserTypename);
+            var pluginServce = services.RequireService<IPluginLoaderService>();
+            var type = pluginServce.GetType(varargsParserTypename);
             if (type is null)
                 throw new TypeLoadException($"Unable to load {chr.VarargsParserClass} varargs parser.");
             var varargsParser = (IVarargsFormatParser)Activator.CreateInstance(

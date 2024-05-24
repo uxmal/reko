@@ -379,8 +379,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
 			DeadCode.Eliminate(ssa);
 
-			var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
-			vp.Transform();
+			var vp = new ValuePropagator(ctx);
+			vp.Transform(ssa);
 
 			DeadCode.Eliminate(ssa);
 		}
