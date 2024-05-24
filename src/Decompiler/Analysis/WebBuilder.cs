@@ -30,33 +30,58 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Builds webs out of the unions of phi functions. Each
+/// web will correspond to a local variable in the finished 
+/// decompilation. 
+/// </summary>
+/// <remarks>
+/// After this pass, the code is no longer in SSA
+/// form, so all analyses should be done prior to applying this stage.
+/// </remarks>
+public class WebBuilder
 {
-    /// <summary>
-    /// Builds webs out of the unions of phi functions. Each
-    /// web will correspond to a local variable in the finished 
-    /// decompilation. 
-    /// </summary>
-    /// <remarks>
-    /// After this pass, the code is no longer in SSA
-    /// form, so all analyses should be done prior to applying this stage.
-    /// </remarks>
-    public class WebBuilder
+    private readonly AnalysisContext context;
+    private readonly Dictionary<Identifier, LinearInductionVariable> ivs;
+
+    public WebBuilder(
+        AnalysisContext context,
+        Dictionary<Identifier, LinearInductionVariable> ivs)
+    {
+        this.context = context;
+        this.ivs = ivs;
+    }
+
+    public string Id => "webb";
+
+    public string Description => "Joins connected SSA 'net', forming webs";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var program = context.Program;
+        var worker = new Worker(program, ssa, ivs, context.EventListener);
+        worker.Transform();
+        return (ssa, true);
+    }
+
+    public class Worker
 	{
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
 		private readonly SsaState ssa;
 		private readonly SsaIdentifierCollection ssaIds;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 		private readonly BlockDominatorGraph doms;
 		private readonly Dictionary<Identifier,LinearInductionVariable> ivs;
 		private readonly Dictionary<Identifier, Web> webOf;
 		private readonly List<Web> webs;
 
-        public WebBuilder(
-            Program program, 
+        public Worker(
+            IReadOnlyProgram program, 
             SsaState ssa, 
             Dictionary<Identifier,LinearInductionVariable> ivs, 
-            IDecompilerEventListener listener)
+            IEventListener listener)
         {
             this.program = program;
             this.ssa = ssa;
@@ -206,9 +231,9 @@ namespace Reko.Analysis
 
 		private class WebReplacer : InstructionTransformer
 		{
-			private readonly WebBuilder bld;
+			private readonly Worker bld;
 
-			public WebReplacer(WebBuilder bld)
+			public WebReplacer(Worker bld)
 			{
 				this.bld = bld;
 			}

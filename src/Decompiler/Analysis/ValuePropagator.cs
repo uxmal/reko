@@ -64,13 +64,12 @@ public class ValuePropagator : IAnalysis<SsaState>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(context, ssa);
-        worker.Transform();
-        return (ssa, worker.Changed);
+        var changed = worker.Transform();
+        return (ssa, changed);
     }
 
-    public class Worker : InstructionVisitor<(Instruction, bool)>
+    private class Worker : InstructionVisitor<(Instruction, bool)>
     {
-
         private readonly IReadOnlyProgram program;
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
@@ -82,6 +81,7 @@ public class ValuePropagator : IAnalysis<SsaState>
         private readonly IEventListener eventListener;
         private readonly VarargsFormatScanner va;
         private Statement stmCur;      //$REFACTOR: try to make this a context paramter.
+        private bool changed;
 
         public Worker(
             AnalysisContext context,
@@ -101,11 +101,9 @@ public class ValuePropagator : IAnalysis<SsaState>
             this.stmCur = default!;
         }
 
-        public bool Changed { get; private set; }
-
-        public void Transform()
+        public bool Transform()
         {
-            this.Changed = false;
+            this.changed = false;
             const int MaxIterations = 10_000;
 
             bool changed;
@@ -121,18 +119,19 @@ public class ValuePropagator : IAnalysis<SsaState>
                     eventListener.Warn(
                         eventListener.CreateProcedureNavigator(program, ssa.Procedure),
                         "Stopping value propagation after iterating {0} times.", iterations);
-                    return;
+                    return this.changed;
                 }
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
                     if (eventListener.IsCanceled())
-                        return;
+                        return this.changed;
                     this.stmCur = stm;
                     var c = Transform(stm);
                     changed |= c;
-                    this.Changed |= c;
+                    this.changed |= c;
                 }
             } while (changed);
+            return this.changed;
         }
 
         public bool Transform(Statement stm)

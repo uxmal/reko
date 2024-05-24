@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -51,8 +52,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void RunFpuStackReturnGuesser()
         {
-            var fpuGuesser = new FpuStackReturnGuesser(m.Ssa, new FakeDecompilerEventListener());
-            fpuGuesser.Transform();
+            var context = new AnalysisContext(
+                new Program(), m.Procedure, null, null, new FakeDecompilerEventListener());
+            var fpuGuesser = new FpuStackReturnGuesser(context);
+            fpuGuesser.Transform(m.Ssa);
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 
@@ -61,8 +64,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
-        [Test(Description = @"
-Assume FPU stack delta is 0 if there is not FPU stack uses after call")]
+        [Test(Description = "Assume FPU stack delta is 0 if there is not FPU stack uses after call")]
         [Category(Categories.UnitTests)]
         public void FPUG_NoFpuUses()
         {

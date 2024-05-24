@@ -44,8 +44,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         public void RunCoalescer()
         {
-            var co = new Coalescer(m.Ssa);
-            co.Transform();
+            var context = new AnalysisContext(
+                new Program(), m.Procedure, null, null, new FakeDecompilerEventListener());
+            var co = new Coalescer(context);
+            co.Transform(m.Ssa);
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 
@@ -74,8 +76,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var vp = new ValuePropagator(context);
                 vp.Transform(ssa);
                 DeadCode.Eliminate(ssa);
-                Coalescer co = new Coalescer(ssa);
-                co.Transform();
+                Coalescer co = new Coalescer(context);
+                co.Transform(ssa);
 
                 ssa.Write(fut);
                 proc.Write(false, fut);

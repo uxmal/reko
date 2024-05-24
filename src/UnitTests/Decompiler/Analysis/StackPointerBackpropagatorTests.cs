@@ -37,11 +37,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private Program program;
         private RegisterStorage sp;
         private Identifier fp;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            var sc = new ServiceContainer();
+            sc = new ServiceContainer();
             var arch = new FakeArchitecture(sc);
             var platform = new FakePlatform(sc, arch);
             this.program = new Program
@@ -65,8 +66,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void RunTest(SsaState ssa)
         {
-            var spbp = new StackPointerBackpropagator(ssa, new FakeDecompilerEventListener());
-            spbp.BackpropagateStackPointer();
+            var context = new AnalysisContext(
+                new Program(), ssa.Procedure, null, sc, new FakeDecompilerEventListener());
+            var spbp = new StackPointerBackpropagator(context);
+            spbp.Transform(ssa);
             ssa.Validate(s => Assert.Fail(s));
         }
 

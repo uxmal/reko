@@ -31,27 +31,62 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Rewrites expressions like <code>fp +/-offset</code> if offset is
+/// inside of one of the specified intervals. In particular it rewrites
+/// <code>fp - offset</code> to <code>&amp;tLoc_offset1 + offset2</code>
+/// where <code>offset1 - offset2 = offset</code>
+/// </summary>
+public class ComplexStackVariableTransformer : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Rewrites expressions like <code>fp +/-offset</code> if offset is
-    /// inside of one of the specified intervals. In particular it rewrites
-    /// <code>fp - offset</code> to <code>&amp;tLoc_offset1 + offset2</code>
-    /// where <code>offset1 - offset2 = offset</code>
-    /// </summary>
-    public class ComplexStackVariableTransformer : InstructionTransformer
+    private readonly AnalysisContext context;
+    private readonly ProgramDataFlow programFlow;
+
+    public ComplexStackVariableTransformer(AnalysisContext context, ProgramDataFlow programFlow)
+    {
+        this.context = context;
+        this.programFlow = programFlow;
+    }
+
+    public string Id => "csvt";
+
+    public string Description => "Converts escaped accesses to memory";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var efif = new EscapedFrameIntervalsFinder(
+            context.Program, programFlow, ssa, context.EventListener);
+        var escapedFrameIntervals = efif.Find();
+        return Transform(ssa, escapedFrameIntervals);
+    }
+
+    public (SsaState, bool) Transform(SsaState ssa, IntervalTree<int, DataType> frameIntervals)
+    { 
+        bool changed = false;
+        if (frameIntervals.Count > 0)
+        {
+            var csvt = new Worker( ssa, frameIntervals, context.EventListener);
+            csvt.Transform();
+            changed = true;
+        }
+        return (ssa, changed);
+    }
+
+    public class Worker : InstructionTransformer
     {
         private readonly SsaState ssa;
         private readonly IntervalTree<int, DataType> escapedFrameIntervals;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly Dictionary<int, SsaIdentifier> frameIds;
         private Statement stmCur;
         private readonly ExpressionEmitter m;
 
-        public ComplexStackVariableTransformer(
+        public Worker(
             SsaState ssa,
             IntervalTree<int, DataType> escapedFrameIntervals,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.ssa = ssa;
             this.escapedFrameIntervals = escapedFrameIntervals;

@@ -23,33 +23,54 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Replaces long comparison sequences with single statements.
+/// </summary>
+/// <remarks>
+/// This class recognizes patterns like:
+///     if (c1 < 0) branch Label1
+///     if (c2 != 0) branch Label2
+///     if (c2 < n) branch Label1
+///    label2:
+/// And replaces them with:
+///     if (c1:c2 <= 0:n) branch Label1
+///    label2:
+/// </remarks>
+public class LongComparisonFuser : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Replaces long comparison sequences with single statements.
-    /// </summary>
-    /// <remarks>
-    /// This class recognizes patterns like:
-    ///     if (c1 < 0) branch Label1
-    ///     if (c2 != 0) branch Label2
-    ///     if (c2 < n) branch Label1
-    ///    label2:
-    /// And replaces them with:
-    ///     if (c1:c2 <= 0:n) branch Label1
-    ///    label2:
-    /// </remarks>
-    public class LongComparisonFuser
+    private readonly AnalysisContext context;
+
+    public LongComparisonFuser(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "lcf";
+
+    public string Description => "Fuses partial comparisons into long comparisons";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(ssa, context.EventListener);
+        worker.Transform();
+        return (ssa, true); //$TODO: actually compute the dirtiness.
+    }
+
+    private class Worker
     {
         private readonly SsaState ssa;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly ExpressionEmitter m;
 
-        public LongComparisonFuser(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
             this.listener = listener;

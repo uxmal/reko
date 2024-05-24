@@ -21,12 +21,11 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
 using System;
-using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -34,8 +33,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
     {
         private void RunTest(string sExpected, SsaProcedureBuilder pb)
         {
-            var urb = new UnreachableBlockRemover(pb.Ssa, new FakeDecompilerEventListener());
-            urb.Transform();
+            var context = new AnalysisContext(
+                new Program(), pb.Procedure, null, null, new FakeDecompilerEventListener());
+            var urb = new UnreachableBlockRemover(context);
+            urb.Transform(pb.Ssa);
+
             var sw = new StringWriter();
             pb.Ssa.Procedure.Write(false, sw);
             var sActual = sw.ToString();

@@ -66,7 +66,8 @@ namespace Reko.Analysis
         /// <param name="call">The CallInstruction.</param>
         /// <param name="register">The register whose post-call value is incremented.</param>
         /// <param name="delta">The amount by which to increment the register.</param>
-        public void AdjustRegisterAfterCall(
+        /// <returns>True if changes were made.</returns>
+        public bool AdjustRegisterAfterCall(
             Statement stm,
             CallInstruction call,
             RegisterStorage register,
@@ -76,17 +77,15 @@ namespace Reko.Analysis
             var defRegBinding = call.Definitions.Where(
                 u => u.Storage == register)
                 .FirstOrDefault();
-            if (defRegBinding is null)
-                return;
-            if (defRegBinding.Expression is not Identifier defRegId)
-                return;
+            if (defRegBinding?.Expression is not Identifier defRegId)
+                return false;
             var usedRegExp = call.Uses
                 .Where(u => u.Storage == register)
                 .Select(u => u.Expression)
                 .FirstOrDefault();
 
             if (usedRegExp is null)
-                return;
+                return false;
             var src = m.AddSubSignedInt(usedRegExp, delta);
             // Generate a statement that adjusts the register according to
             // the specified delta.
@@ -96,6 +95,7 @@ namespace Reko.Analysis
             defSid.DefStatement = adjustRegStm;
             call.Definitions.Remove(defRegBinding);
             ssa.AddUses(adjustRegStm);
+            return true;
         }
 
         /// <summary>

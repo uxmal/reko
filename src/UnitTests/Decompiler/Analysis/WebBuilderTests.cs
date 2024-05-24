@@ -81,19 +81,20 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			var ssts = dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
+                var context = new AnalysisContext(program, proc, null, sc, eventListener);
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
 				var ssa = sst.SsaState;
 
-				Coalescer coa = new Coalescer(ssa);
-				coa.Transform();
+				Coalescer coa = new Coalescer(context);
+				coa.Transform(ssa);
 
 				DeadCode.Eliminate(ssa);
 
 				LiveCopyInserter lci = new LiveCopyInserter(ssa);
 				lci.Transform();
 
-				WebBuilder web = new WebBuilder(program, ssa, new Dictionary<Identifier,LinearInductionVariable>(), eventListener);
-				web.Transform();
+                WebBuilder web = new WebBuilder(context, new Dictionary<Identifier, LinearInductionVariable>());
+				web.Transform(ssa);
 
                 var unssa = new UnSsaTransform(false);
                 unssa.Transform(ssa);

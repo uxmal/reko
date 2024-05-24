@@ -30,43 +30,67 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// The purpose of this class is to resolve projections to make for cleaner
+/// code. We have widening projections and narrowing projections to take care of.
+/// Widening projections come in two kinds:
+/// * Sequences where we use adjacent pieces of the same register:
+///     de = SEQ(h, l)
+/// * Sequences where we use two separate registers as a whole register.
+///     es_bx = SEQ(dx, ax)
+/// * Sequences where we use adjacent parts of the stack:
+///     dwLoc0010 = SEQ(wLoc0012, wLoc0010)
+/// * Sequences where we use adjacent parts of memory
+///     es_bx = SEQ(Mem11[0x0234:word16],Mem11[0x0232:word16])
+/// We convert SEQ(reg1,reg2) to either the widened register (i.e. hl)
+/// the combined register dx_ax, or a widenened memory access, then "push" the widened
+/// register to all the statements that use both halves.
+/// 
+/// Narrowing projections are casts or slices:
+///     al = (byte) rax
+///     bh = SLICE(rbx, 8, 8)
+/// </summary>
+public class ProjectionPropagator : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// The purpose of this class is to resolve projections to make for cleaner
-    /// code. We have widening projections and narrowing projections to take care of.
-    /// Widening projections come in two kinds:
-    /// * Sequences where we use adjacent pieces of the same register:
-    ///     de = SEQ(h, l)
-    /// * Sequences where we use two separate registers as a whole register.
-    ///     es_bx = SEQ(dx, ax)
-    /// * Sequences where we use adjacent parts of the stack:
-    ///     dwLoc0010 = SEQ(wLoc0012, wLoc0010)
-    /// * Sequences where we use adjacent parts of memory
-    ///     es_bx = SEQ(Mem11[0x0234:word16],Mem11[0x0232:word16])
-    /// We convert SEQ(reg1,reg2) to either the widened register (i.e. hl)
-    /// the combined register dx_ax, or a widenened memory access, then "push" the widened
-    /// register to all the statements that use both halves.
-    /// 
-    /// Narrowing projections are casts or slices:
-    ///     al = (byte) rax
-    ///     bh = SLICE(rbx, 8, 8)
-    /// </summary>
-    public class ProjectionPropagator : InstructionTransformer
-    {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProjectionPropagator), "Traces projection propagator") { Level = TraceLevel.Verbose };
+    private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProjectionPropagator), "Traces projection propagator") { Level = TraceLevel.Verbose };
 
+    private readonly AnalysisContext context;
+
+    public ProjectionPropagator(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "prpr";
+
+    public string Description => "Propagates slices and sequences, trying to build larger values";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var sac = new SegmentedAccessClassifier(ssa);
+        sac.Classify();
+        var worker = new Worker(ssa, sac);
+        bool changed = worker.Transform();
+        return (ssa, changed);
+    }
+
+    private class Worker : InstructionTransformer
+    {
         private readonly SegmentedAccessClassifier sac;
         private readonly SsaState ssa;
+        public bool changed;
 
-        public ProjectionPropagator(SsaState ssa, SegmentedAccessClassifier sac)
+        public Worker(SsaState ssa, SegmentedAccessClassifier sac)
         {
             this.ssa = ssa;
             this.sac = sac;
         }
 
-        public void Transform()
+        public bool Transform()
         {
             var wl = WorkList.Create(ssa.Procedure.Statements);
             while (wl.TryGetWorkItem(out var stm))
@@ -75,7 +99,9 @@ namespace Reko.Analysis
                 var instr = stm.Instruction.Accept(prjf);
                 stm.Instruction = instr;
                 wl.AddRange(prjf.NewStatements);
+                changed |= prjf.Changed;
             }
+            return changed;
         }
 
         private class ProjectionFilter : InstructionTransformer
@@ -95,6 +121,7 @@ namespace Reko.Analysis
                 this.cmp = new ExpressionValueComparer();
             }
 
+            public bool Changed { get; private set; }
             public HashSet<Statement> NewStatements{ get; }
             public Statement Statement { get; private set; }
 
@@ -250,6 +277,7 @@ namespace Reko.Analysis
                         {
                             trace.Verbose("Prpr: Fusing slices in {0}", ssa.Procedure.Name);
                             trace.Verbose("{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
+                            Changed = true;
                             return RewriteSeqOfSlices(dtWide, sids, slices!);
                         }
                     }
@@ -263,6 +291,7 @@ namespace Reko.Analysis
                     if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
                     {
                         // All the identifiers are generated by def statements.
+                        Changed = true;
                         return RewriteSeqOfDefs(sids, idWide);
                     }
 
@@ -270,12 +299,14 @@ namespace Reko.Analysis
                     if (phis.All(a => a != null))
                     {
                         // We have a sequence of phi functions
+                        Changed = true;
                         return RewriteSeqOfPhi(sids, phis!, idWide);
                     }
                     if (sids[0].DefStatement.Instruction is CallInstruction call &&
                         sids.All(s => s.DefStatement == sids[0].DefStatement))
                     {
                         // All of the identifiers in the sequence were defined by the same call.
+                        Changed = true;
                         return RewriteSeqDefinedByCall(sids, call, idWide);
                     }
                 }

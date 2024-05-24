@@ -147,8 +147,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             ValuePropagator vp = new ValuePropagator(ctx);
 			vp.Transform(ssa);
 			DeadCode.Eliminate(ssa);
-			Coalescer coa = new Coalescer(ssa);
-			coa.Transform();
+			Coalescer coa = new Coalescer(ctx);
+			coa.Transform(ssa);
 			DeadCode.Eliminate(ssa);
 
 			sla = new SsaLivenessAnalysis(ssa);

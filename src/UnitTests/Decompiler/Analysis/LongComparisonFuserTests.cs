@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -36,8 +37,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var m = new SsaProcedureBuilder();
             builder(m);
-            var lcf = new LongComparisonFuser(m.Ssa, new FakeDecompilerEventListener());
-            lcf.Transform();
+            var context = new AnalysisContext(
+                new Program(), m.Ssa.Procedure, null, null, new FakeDecompilerEventListener());
+            var lcf = new LongComparisonFuser(context);
+            lcf.Transform(m.Ssa);
             var sw = new StringWriter();
             sw.WriteLine();
             m.Ssa.Procedure.WriteBody(true, sw);

@@ -28,35 +28,59 @@ using Reko.Services;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Try to guess FPU stack delta of call instructions.
+/// </summary>
+/// <remarks>
+/// FPU stack delta of hell nodes is unknown. But we can guess it based on
+/// FPU stack variable uses after call.
+/// </remarks>
+/// <example>
+/// If we have
+/// <code>
+///     call eax_1()
+///         defs: Top_3
+///     // Extract return from FPU stack
+///     edx_4 = ST_2[Top_3]
+///     Top_5 = Top_3 + 1
+/// </code>
+/// then we can assume that FPU stack delta is -1. Of course,
+/// `ST_2[Top_3]` could be defined before indirect call, but it's unlikely
+/// </example>
+public class FpuStackReturnGuesser : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Try to guess FPU stack delta of call instructions.
-    /// </summary>
-    /// <remarks>
-    /// FPU stack delta of hell nodes is unknown. But we can guess it based on
-    /// FPU stack variable uses after call.
-    /// </remarks>
-    /// <example>
-    /// If we have
-    /// <code>
-    ///     call eax_1()
-    ///         defs: Top_3
-    ///     // Extract return from FPU stack
-    ///     edx_4 = ST_2[Top_3]
-    ///     Top_5 = Top_3 + 1
-    /// </code>
-    /// then we can assume that FPU stack delta is -1. Of course,
-    /// `ST_2[Top_3]` could be defined before indirect call, but it's unlikely
-    /// </example>
-    public class FpuStackReturnGuesser
+    private readonly AnalysisContext context;
+
+    public FpuStackReturnGuesser(AnalysisContext context)
     {
+        this.context = context;
+    }
+
+    public string Id => "fpug";
+
+    public string Description => "Guesses the effect on the FPU stack around a call";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var fpuStack = ssa.Procedure.Architecture.FpuStackRegister;
+        if (fpuStack is null)
+            return (ssa, false);
+        var worker = new Worker(ssa, context.EventListener);
+        var changed = worker.Transform(fpuStack);
+        return (ssa, changed);
+    }
+
+    private class Worker
+    { 
         private readonly SsaState ssa;
         private readonly SsaMutator ssam;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
+        private bool changed;
 
-        public FpuStackReturnGuesser(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
             this.ssam = new SsaMutator(ssa);
@@ -64,11 +88,8 @@ namespace Reko.Analysis
             this.listener = listener;
         }
 
-        public void Transform()
+        public bool Transform(RegisterStorage fpuStack)
         {
-            var fpuStack = ssa.Procedure.Architecture.FpuStackRegister;
-            if (fpuStack == null)
-                return;
             var fpuStackIds = ssa.Identifiers
                 .Where(
                     sid => sid.DefStatement != null &&
@@ -77,7 +98,7 @@ namespace Reko.Analysis
             foreach (var sid in fpuStackIds)
             {
                 if (listener.IsCanceled())
-                    return;
+                    return this.changed;
                 if (sid.DefStatement.Instruction is not CallInstruction ci)
                     continue;
                 var callStm = sid.DefStatement;
@@ -85,11 +106,13 @@ namespace Reko.Analysis
                 // that FPU stack was preserved. Assume that offset is -1
                 // otherwise.
                 int delta = WasUsed(sid) ? -1 : 0;
-                ssam.AdjustRegisterAfterCall(callStm, ci, fpuStack, delta);
+                bool changed = ssam.AdjustRegisterAfterCall(callStm, ci, fpuStack, delta);
                 var fpuDefs = CreateFpuStackTemporaryBindings(delta);
+                changed |= fpuDefs.Count > 0;
                 AddFpuToCallDefs(fpuDefs, callStm, ci);
                 InsertFpuStackAccessAssignments(fpuDefs, callStm, ci);
             }
+            return changed;
         }
 
         private static bool WasUsed(SsaIdentifier sid)

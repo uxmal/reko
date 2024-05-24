@@ -35,7 +35,7 @@ namespace Reko.Core.Analysis
         /// <summary>
         /// Perform an analysis and possible transformation on the provided <paramref name="subject"/>.
         /// </summary>
-        /// <param name="subject">The object to analyzer and transform.</param>
+        /// <param name="subject">The object to analyze and possibly transform.</param>
         /// <returns>A pair consisting of a possibly mutated subject and a boolean flag indicating
         /// whether mutation in fact happened.
         /// </returns>

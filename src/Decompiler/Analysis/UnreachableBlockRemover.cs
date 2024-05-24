@@ -23,36 +23,57 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Services;
 using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Eliminates blocks that are unreachable; typically blocks guarded by 
+/// 'if's that evaluate to false or non-false.
+/// </summary>
+public class UnreachableBlockRemover : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Eliminates blocks that are unreachable; typically blocks guarded by 
-    /// 'if's that evaluate to false or non-false.
-    /// </summary>
-    public class UnreachableBlockRemover
+    private readonly AnalysisContext context;
+
+    public UnreachableBlockRemover(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "urb";
+
+    public string Description => "Removes unreachable basic blocks";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(ssa, context.EventListener);
+        var changed= worker.Transform();
+        return (ssa, changed);
+    }
+
+    private class Worker
     {
         private readonly SsaState ssa;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly BlockGraph cfg;
 
-        public UnreachableBlockRemover(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
             this.listener = listener;
             this.cfg = ssa.Procedure.ControlGraph;
         }
 
-        public void Transform()
+        public bool Transform()
         {
             // Find all blocks which end in branches whose conditional expression is constant.
             var constBranchBlocks = ssa.Procedure.ControlGraph.Blocks.Where(HasConstantBranch).ToHashSet();
             if (constBranchBlocks.Count == 0)
-                return;
+                return false;
 
             // Determine which blocks are unreachable based on the constant branches.
 
@@ -62,18 +83,17 @@ namespace Reko.Analysis
 
             var reachedBlocks = TraverseCfg(ssa.Procedure.EntryBlock, unreachableBlocks, new HashSet<Block>());
             if (listener.IsCanceled())
-                return;
+                return false;
 
             // Compute the dead blocks.
             var deadBlocks = ssa.Procedure.ControlGraph.Blocks.Except(reachedBlocks).ToHashSet();
 
             RemoveConstBranches(constBranchBlocks);
             if (listener.IsCanceled())
-                return;
+                return true;
 
             RemoveDeadBlocks(deadBlocks);
-            if (listener.IsCanceled())
-                return;
+            return true;
         }
 
         private bool HasConstantBranch(Block block)

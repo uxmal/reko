@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Code;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Services;
@@ -81,7 +82,7 @@ namespace Reko.Analysis
                 return Array.Empty<SsaTransform>();
             var sw = new Stopwatch();
             sw.Start();
-            Debug.Print("== SCC: {0} ===", string.Join(",", sccProcs));
+            trace.Inform("== SCC: {0} ===", string.Join(",", sccProcs));
             flow.CreateFlowsFor(sccProcs);
 
             // Convert all procedures in the SCC to SSA form and perform
@@ -94,7 +95,6 @@ namespace Reko.Analysis
             // At this point, the computation of ProcedureFlow is possible.
             var trf = new TrashedRegisterFinder(program, flow, ssts, this.eventListener);
             trf.Compute();
-            if (eventListener.IsCanceled()) return ssts;
 
             // New stack based variables may be available now.
             foreach (var sst in ssts)
@@ -114,15 +114,13 @@ namespace Reko.Analysis
                     return ssts;
                 var ssa = sst.SsaState;
                 RemoveImplicitRegistersFromHellNodes(ssa);
-                var sac = new SegmentedAccessClassifier(ssa);
-                sac.Classify();
-                var prj = new ProjectionPropagator(ssa, sac);
-                prj.Transform();
+                var prj = new ProjectionPropagator(context);
+                prj.Transform(ssa);
                 dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa.Procedure);
 
                 // Stores of sliced long variables can be fused.
-                var stfu = new StoreFuser(ssa, eventListener);
-                stfu.Transform();
+                var stfu = new StoreFuser(context);
+                stfu.Transform(ssa);
                 dfa.DumpWatchedProcedure("stfu", "After store fusion", ssa.Procedure);
             }
 
@@ -176,8 +174,8 @@ namespace Reko.Analysis
                 ssa = dfa.RunAnalyses(analysisFactory, context, AnalysisStage.AfterRegisterSsa, ssa);
 
                 // Merge unaligned memory accesses.
-                var fuser = new UnalignedMemoryAccessFuser(ssa);
-                fuser.Transform();
+                var fuser = new UnalignedMemoryAccessFuser(context);
+                fuser.Transform(ssa);
 
                 // Fuse additions and subtractions that are linked by the carry flag.
                 var larw = new LongAddRewriter(context);
@@ -205,19 +203,12 @@ namespace Reko.Analysis
                 vp.Transform(ssa);
                 dfa.DumpWatchedProcedure("cce", "After CCE", ssa);
 
-                var lcf = new LongComparisonFuser(ssa, eventListener);
-                lcf.Transform();
+                var lcf = new LongComparisonFuser(context);
+                lcf.Transform(ssa);
                 dfa.DumpWatchedProcedure("lcf", "After long comparison fuser", ssa);
 
-                var efif = new EscapedFrameIntervalsFinder(
-                    program, flow, ssa, eventListener);
-                var escapedFrameIntervals = efif.Find();
-                if (escapedFrameIntervals.Count > 0)
-                {
-                    var csvt = new ComplexStackVariableTransformer(
-                        ssa, escapedFrameIntervals, eventListener);
-                    csvt.Transform();
-                }
+                var csvt = new ComplexStackVariableTransformer(context, flow);
+                csvt.Transform(ssa);
 
                 // Now compute SSA for the stack-based variables as well. That is:
                 // mem[fp - 30] becomes wLoc30, while 
@@ -235,8 +226,8 @@ namespace Reko.Analysis
                     sst.Transform();
                 }
 
-                var fpuGuesser = new FpuStackReturnGuesser(ssa, eventListener);
-                fpuGuesser.Transform();
+                var fpuGuesser = new FpuStackReturnGuesser(context);
+                fpuGuesser.Transform(ssa);
                 dfa.DumpWatchedProcedure("fpug", "After FPU stack guesser", ssa);
 
                 // By placing use statements in the exit block, we will collect
@@ -245,8 +236,8 @@ namespace Reko.Analysis
                 sst.RemoveDeadSsaIdentifiers();
 
                 // Backpropagate stack pointer from procedure return.
-                var spBackpropagator = new StackPointerBackpropagator(ssa, eventListener);
-                spBackpropagator.BackpropagateStackPointer();
+                var spBackpropagator = new StackPointerBackpropagator(context);
+                spBackpropagator.Transform(ssa);
                 dfa.DumpWatchedProcedure("spbp", "After SP BP", ssa);
 
                 // Propagate newly created stack-relative identifiers and transform
@@ -256,8 +247,8 @@ namespace Reko.Analysis
                 dfa.DumpWatchedProcedure("vp2", "After VP2", ssa);
 
                 // Guess arguments to functions whose signatures we don't know.
-                var argGuesser = new ArgumentGuesser(program.Platform, ssa, eventListener);
-                argGuesser.Transform();
+                var argGuesser = new ArgumentGuesser(context);
+                argGuesser.Transform(ssa);
                 dfa.DumpWatchedProcedure("argg", "After argument guessing", ssa);
 
                 return sst;

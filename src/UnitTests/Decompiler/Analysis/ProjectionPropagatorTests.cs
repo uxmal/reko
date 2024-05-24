@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.Zilog;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -43,10 +44,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var m = new SsaProcedureBuilder(arch);
             builder(m);
-            var sac = new SegmentedAccessClassifier(m.Ssa);
-            sac.Classify();
-            var prpr = new ProjectionPropagator(m.Ssa, sac);
-            prpr.Transform();
+            var context = new AnalysisContext(
+                new Program(), m.Procedure, null, null, new FakeDecompilerEventListener());
+            var prpr = new ProjectionPropagator(context);
+            prpr.Transform(m.Ssa);
             var sw = new StringWriter();
             m.Ssa.Procedure.WriteBody(false, sw);
             sw.Flush();

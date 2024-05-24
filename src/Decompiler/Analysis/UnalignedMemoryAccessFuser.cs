@@ -27,8 +27,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+public class UnalignedMemoryAccessFuser : IAnalysis<SsaState>
 {
+    private readonly AnalysisContext context;
+
+    public UnalignedMemoryAccessFuser(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "uma";
+
+    public string Description => "Fuses unaligned memory accesses";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(ssa);
+        var changed = worker.Transform();
+        return (ssa, changed);
+    }
+
     /// <summary>
     /// Fuses pairs of unaligned loads or stores.
     /// </summary>
@@ -38,16 +58,17 @@ namespace Reko.Analysis
     /// of the LWR/LWL and SWL/SWR instructions. Value propagation
     /// can wipe these out.
     /// </remarks>
-    public class UnalignedMemoryAccessFuser : InstructionVisitorBase
+    private class Worker : InstructionVisitorBase
     {
         private readonly SsaState ssa;
+        private bool changed;
 
-        public UnalignedMemoryAccessFuser(SsaState ssa)
+        public Worker(SsaState ssa)
         {
             this.ssa = ssa;
         }
 
-        public void Transform()
+        public bool Transform()
         {
             foreach (var stm in ssa.Procedure.Statements.ToList())
             {
@@ -64,6 +85,7 @@ namespace Reko.Analysis
 
             // Fuse the pairs.
             FuseUnalignedPairs(pairs);
+            return changed;
         }
 
         public override void VisitAssignment(Assignment a)
@@ -92,23 +114,23 @@ namespace Reko.Analysis
         public void FuseUnalignedLoads(Assignment assR)
         {
             var appR = MatchIntrinsicApplication(assR.Src, unalignedLoadsLe);
-            if (appR == null)
+            if (appR is null)
                 return;
 
             var regR = assR.Dst;
             var stmR = ssa.Identifiers[regR].DefStatement;
 
-            var memR = appR.Item2.Arguments[1];
+            var memR = appR.Value.Item2.Arguments[1];
             var offR = GetOffsetOf(memR);
 
-            var appL = appR.Item2.Arguments[0] as Application;
+            var appL = appR.Value.Item2.Arguments[0] as Application;
             Statement? stmL = null;
             Assignment? assL = null;
-            if (appL == null)
+            if (appL is null)
             {
-                var regL = (Identifier)appR.Item2.Arguments[0];
+                var regL = (Identifier)appR.Value.Item2.Arguments[0];
                 stmL = ssa.Identifiers[regL].DefStatement;
-                if (stmL == null)
+                if (stmL is null)
                     return;
                 assL = stmL.Instruction as Assignment;
                 if (assL == null)
@@ -117,7 +139,7 @@ namespace Reko.Analysis
                 appL = assL.Src as Application;
             }
             var pairL = MatchIntrinsicApplication(appL, unalignedLoadsBe);
-            if (pairL == null)
+            if (pairL is null)
                 return;
 
             var memL = appL!.Arguments[1];
@@ -150,6 +172,7 @@ namespace Reko.Analysis
                 stmL.Block.Statements.Remove(stmL);
             }
             ssa.AddUses(stmR!);
+            this.changed = true;
         }
 
         private void FuseUnalignedPairs(List<(UnalignedAccess, UnalignedAccess)> pairs)
@@ -157,6 +180,7 @@ namespace Reko.Analysis
             foreach (var pair in pairs)
             {
                 FuseStorePair(pair);
+                changed = true;
             }
         }
 
@@ -248,10 +272,10 @@ namespace Reko.Analysis
                     src = ass.Src;
                 }
                 var tup = MatchIntrinsicApplication(src, unalignedIntrinsics);
-                if (tup == null)
+                if (tup is null)
                     continue;
-                var appName = tup.Item1;
-                var app = tup.Item2;
+                var appName = tup.Value.Item1;
+                var app = tup.Value.Item2;
                 var reg = GetRegisterOf(app.Arguments[0]);
                 var offset = GetOffsetOf(app.Arguments[0]);
                 var mem = GetModifiedMemory(stm.Instruction);
@@ -325,14 +349,14 @@ namespace Reko.Analysis
             }
         }
 
-        private static Tuple<string, Application>? MatchIntrinsicApplication(Expression? e, string [] names)
+        private static (string, Application)? MatchIntrinsicApplication(Expression? e, string [] names)
         {
             if (e is Application app &&
                 app.Procedure is ProcedureConstant pc &&
                 pc.Procedure is IntrinsicProcedure intrinsic &&
                 names.Contains(intrinsic.Name))
             {
-                return Tuple.Create(intrinsic.Name, app);
+                return (intrinsic.Name, app);
             }
             else
             {

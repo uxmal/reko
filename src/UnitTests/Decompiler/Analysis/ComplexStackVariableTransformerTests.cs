@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -55,9 +56,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void RunComplexStackVariableTransformer()
         {
             var eventListener = new FakeDecompilerEventListener();
-            var csvt = new ComplexStackVariableTransformer(
-                m.Ssa, intervals, eventListener);
-            csvt.Transform();
+            var context = new AnalysisContext(program, m.Procedure, null, null, eventListener);
+            var programFlow = new ProgramDataFlow();
+            var csvt = new ComplexStackVariableTransformer(context, programFlow);
+            csvt.Transform(m.Ssa, intervals);
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 
@@ -97,6 +99,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             m.MStore(m.ISub(fp, 16), m.ISub(fp, 8));
             m.SideEffect(m.Fn("func2", m.Mem(Ptr32(real32), m.ISub(fp, 16))));
             m.Assign(ebp_5, m.Mem32(m.ISub(fp, 4)));
+
             Given_FrameIntervals((-12, str));
 
             RunComplexStackVariableTransformer();

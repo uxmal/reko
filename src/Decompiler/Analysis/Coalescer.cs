@@ -25,29 +25,47 @@ using Reko.Core.Expressions;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Builds expression trees out of identifier assignment statements and 
+/// moves assignment statements (def's) as close to their 
+/// uses in this block as possible. 
+/// </summary>
+/// <remarks>
+/// This transformation is quite destabilizing and ineffective if long 
+/// chains of expressions are still in their 3-address format. Before
+/// coalescing, call <see cref="ValuePropagator"/> to perform constant
+/// propagation and other transformations that make the expression trees
+/// smaller.
+/// </remarks>
+public class Coalescer : IAnalysis<SsaState>
 {
-	/// <summary>
-	/// Builds expression trees out of identifier assignment statements and 
-	/// moves assignment statements (def's) as close to their 
-	/// uses in this block as possible. 
-	/// </summary>
-    /// <remarks>
-    /// This transformation is quite destabilizing and ineffective if long 
-    /// chains of expressions are still in their 3-address format. Before
-    /// coalescing, call <see cref="ValuePropagator"/> to perform constant
-    /// propagation and other transformations that make the expression trees
-    /// smaller.
-    /// </remarks>
-	public class Coalescer : InstructionTransformer
+    private static readonly TraceSwitch trace = new(nameof(Coalescer), "Traces the progress of identifier coalescing");
+
+    public Coalescer(AnalysisContext context)
+    {
+    }
+
+    public string Id => "coa";
+
+    public string Description => "Builds expression trees by joining using expressions with definitions";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(ssa);
+        bool changed = worker.Transform();
+        return (ssa, changed);
+    }
+    private class Worker: InstructionTransformer
 	{
 		private readonly SsaState ssa;
 		private readonly SideEffectFinder sef;
         private readonly Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
+        private bool changed;
+        private bool coalesced;
 
-		private static readonly TraceSwitch trace = new(nameof(Coalescer), "Traces the progress of identifier coalescing");
-
-		public Coalescer(SsaState ssa)
+        public Worker(SsaState ssa)
 		{
 			this.ssa = ssa;
 			this.sef = new SideEffectFinder();
@@ -58,8 +76,6 @@ namespace Reko.Analysis
                     SetDefStatement(sid.DefStatement, sid);
             }
 		}
-
-        public bool Coalesced { get; set; }
 
         private void SetDefStatement(Statement stm, SsaIdentifier sid)
         {
@@ -189,7 +205,7 @@ namespace Reko.Analysis
 		{
 			do
 			{
-				Coalesced = false;
+				coalesced = false;
 
 				var visited = new HashSet<Identifier>();
 				for (int i = 0; i < block.Statements.Count; ++i)
@@ -205,15 +221,18 @@ namespace Reko.Analysis
 						}
 					}
 				}
-			} while (Coalesced);
+                changed |= coalesced;
+			} while (coalesced);
 		}
 
-		public void Transform()
+		public bool Transform()
 		{
+            this.changed = false;
 			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
 				Process(b);
 			}
+            return changed;
 		}
 
 		/// <summary>
@@ -233,7 +252,7 @@ namespace Reko.Analysis
 				{
 					if (CanCoalesce(sidDef, stmDef, stm))
 					{
-						Coalesced = true;
+						coalesced = true;
 						return CoalesceStatements(sidDef, defExpr, stmDef, stm);
 					}
 					else

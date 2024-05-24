@@ -24,34 +24,56 @@ using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Analysis
-{
-    /// <summary>
-    /// Guesses the arguments to otherwise opaque calls by walking backwards
-    /// from the call site and detect assignments which likely are intended
-    /// to be the arguments of the call. This is a best effort transformation
-    /// and may introduce errors, so use with caution.
-    /// </summary>
-    public class ArgumentGuesser
-    {
-        private static readonly TraceSwitch trace = new(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
-        {
-            Level = TraceLevel.Info,
-        };
+namespace Reko.Analysis;
 
+/// <summary>
+/// Guesses the arguments to otherwise opaque calls by walking backwards
+/// from the call site and detect assignments which likely are intended
+/// to be the arguments of the call. This is a best effort transformation
+/// and may introduce errors, so use with caution.
+/// </summary>
+
+public class ArgumentGuesser : IAnalysis<SsaState>
+{
+    private static readonly TraceSwitch trace = new(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
+    {
+        Level = TraceLevel.Info,
+    };
+
+    private readonly AnalysisContext context;
+
+    public ArgumentGuesser(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "argg";
+
+    public string Description => "Guess arguments to unknown called procedures";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var platform = context.Program.Platform;
+        var worker = new Worker(platform, ssa, context.EventListener);
+        var changed = worker.Transform();
+        return (ssa, changed);
+    }
+
+    private class Worker
+    {
         private readonly IPlatform platform;
         private readonly SsaState ssa;
         private readonly Storage stackPointer;
         private readonly Storage framePointer;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
-        public ArgumentGuesser(IPlatform platform, SsaState ssa, IDecompilerEventListener eventListener)
+        public Worker(IPlatform platform, SsaState ssa, IEventListener eventListener)
         {
             this.platform = platform;
             this.ssa = ssa;
@@ -60,15 +82,15 @@ namespace Reko.Analysis
             this.framePointer = ssa.Procedure.Frame.FramePointer.Storage;
         }
 
-        public void Transform()
+        public bool Transform()
         {
+            bool changed = false;
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
                 for (int i = 0; i < block.Statements.Count; ++i)
                 {
-
                     if (eventListener.IsCanceled())
-                        return;
+                        return changed;
                     var stm = block.Statements[i]; 
                     if (stm.Instruction is CallInstruction call && 
                         call.Callee is ProcedureConstant pc &&
@@ -82,10 +104,12 @@ namespace Reko.Analysis
                         {
                             ReplaceCallWithApplication(stm, call, pc, gargs, gret);
                             trace.Verbose("  rewritten as: {0}", stm);
+                            changed = true;
                         }
                     }
                 }
             }
+            return changed;
         }
 
         private GuessedArguments? GuessArguments(Statement stmCall, CallInstruction call, Block block, int i)

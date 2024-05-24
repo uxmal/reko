@@ -46,7 +46,7 @@ namespace Reko.Analysis
         private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;
         private readonly SsaState ssa;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private Context ctx;
         private ExpressionSimplifier eval;
         private IntervalTree<int, DataType> intervals;
@@ -55,7 +55,7 @@ namespace Reko.Analysis
             IReadOnlyProgram program,
             ProgramDataFlow flow,
             SsaState ssa,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.program = program;
             this.flow = flow;

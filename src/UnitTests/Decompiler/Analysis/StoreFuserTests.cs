@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Hll.Pascal;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -48,9 +49,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var m = new SsaProcedureBuilder(arch);
             builder(m);
-
-            var stfu = new StoreFuser(m.Ssa, new FakeDecompilerEventListener());
-            stfu.Transform();
+            var context = new AnalysisContext(
+                new Program(), m.Procedure, null, null, new FakeDecompilerEventListener());
+            var stfu = new StoreFuser(context);
+            stfu.Transform(m.Ssa);
 
             var sw = new StringWriter();
             m.Ssa.Procedure.WriteBody(false, sw);

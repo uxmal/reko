@@ -232,8 +232,8 @@ namespace Reko.Analysis
                         // This ends up being very aggressive and doesn't replicate the original
                         // binary code. See discussion on https://github.com/uxmal/reko/issues/932
                         DumpWatchedProcedure("urb", "Before unreachable block removal", ssa.Procedure);
-                        var urb = new UnreachableBlockRemover(ssa, eventListener);
-                        urb.Transform();
+                        var urb = new UnreachableBlockRemover(context);
+                        urb.Transform(ssa);
                     }
 
                     DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
@@ -244,8 +244,8 @@ namespace Reko.Analysis
 
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
-                    var coa = new Coalescer(ssa);
-                    coa.Transform();
+                    var coa = new Coalescer(context);
+                    coa.Transform(ssa);
                     DeadCode.Eliminate(ssa);
 
                     var vp = new ValuePropagator(context);
@@ -272,8 +272,8 @@ namespace Reko.Analysis
                     DumpWatchedProcedure("sr", "After strength reduction", ssa.Procedure);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
-                    var web = new WebBuilder(Program, ssa, Program.InductionVariables, eventListener);
-                    web.Transform();
+                    var web = new WebBuilder(context, Program.InductionVariables);
+                    web.Transform(ssa);
 
                     var unssa = new UnSsaTransform(false);
                     unssa.Transform(ssa);

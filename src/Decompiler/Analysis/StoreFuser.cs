@@ -32,37 +32,59 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Fuses stores.
+/// </summary>
+/// <remarks>
+/// This optimistic analysis locates identifiers that are being sliced 
+/// and then stored:
+///     id_1 = ....
+///     Store(addr, SLICE(id_1)
+///     Store(addr+2, SLICE(id_1)
+/// or 
+///     id_1 = ....
+///     id_2 = SLICE(id_1)
+///     id_3 = SLICE(id_1)
+///     Store(addr, id_2)
+///     Store(addr+2, id_3)
+/// <para>
+/// This transform is a little dangerous because there could be statements between the Stores
+/// that mutate memory. To reduce the risk of this happening, we assume that both stores are in 
+/// the same basic block.
+/// </para>
+/// </remarks>
+public class StoreFuser : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Fuses stores.
-    /// </summary>
-    /// <remarks>
-    /// This optimistic analysis locates identifiers that are being sliced 
-    /// and then stored:
-    ///     id_1 = ....
-    ///     Store(addr, SLICE(id_1)
-    ///     Store(addr+2, SLICE(id_1)
-    /// or 
-    ///     id_1 = ....
-    ///     id_2 = SLICE(id_1)
-    ///     id_3 = SLICE(id_1)
-    ///     Store(addr, id_2)
-    ///     Store(addr+2, id_3)
-    /// <para>
-    /// This transform is a little dangerous because there could be statements between the Stores
-    /// that mutate memory. To reduce the risk of this happening, we assume that both stores are in 
-    /// the same basic block.
-    /// </para>
-    /// </remarks>
-    public class StoreFuser
+    private static readonly TraceSwitch trace = new TraceSwitch(nameof(StoreFuser), "Store fuser") { Level = TraceLevel.Verbose };
+
+    private readonly AnalysisContext context;
+
+    public StoreFuser(AnalysisContext context)
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(StoreFuser), "Store fuser") { Level = TraceLevel.Verbose };
+        this.context = context;
+    }
+
+    public string Id => "stfu";
+
+    public string Description => "Fuses stores to adjacent memory locations";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var worker = new Worker(ssa, context.EventListener);
+        var changed = worker.Transform();
+        return (ssa, changed);
+    }
+
+    private class Worker
+    {
 
         private readonly SsaState ssa;
         private readonly IProcessorArchitecture arch;
         private readonly ExpressionEmitter m;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
+        private bool changed;
 
         private record Candidate(
             BitRange Slice, 
@@ -72,7 +94,7 @@ namespace Reko.Analysis
             Expression? EffectiveAddress, 
             long Displacement);
 
-        public StoreFuser(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;
@@ -80,10 +102,11 @@ namespace Reko.Analysis
             this.listener = listener;
         }
 
-        public void Transform()
+        public bool Transform()
         {
             var candidates = FindStoresOfSlicedIdentifiers();
-             ReplaceStores(candidates);
+            ReplaceStores(candidates);
+            return changed;
         }
 
         private void ReplaceStores(Dictionary<(SsaIdentifier, Block, Expression?), List<Candidate>> candidates)
@@ -124,6 +147,7 @@ namespace Reko.Analysis
                         sid.Identifier);
                     ssa.AddUses(store.Statement);
                 }
+                changed = true;
             }
         }
 

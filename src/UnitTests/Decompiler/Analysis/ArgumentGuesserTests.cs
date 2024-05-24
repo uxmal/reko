@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -73,8 +74,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var m = new SsaProcedureBuilder(arch);
             builder(m);
-            var argGuesser = new ArgumentGuesser(platform.Object, m.Ssa, new FakeDecompilerEventListener());
-            argGuesser.Transform();
+            var program = new Program { Platform = platform.Object };
+            var context = new AnalysisContext(program, m.Procedure, null, null, new FakeDecompilerEventListener());
+            var argGuesser = new ArgumentGuesser(context);
+            argGuesser.Transform(m.Ssa);
             ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, sExpected);
             m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }

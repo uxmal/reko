@@ -58,6 +58,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
+            var context = new AnalysisContext(program, proc, dynamicLinker, sc, listener);
             var sst = new SsaTransform(
                 program,
                 proc,
@@ -65,8 +66,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 dynamicLinker,
                 new ProgramDataFlow());
             var ssa = sst.Transform();
-            var ufuser = new UnalignedMemoryAccessFuser(ssa);
-            ufuser.Transform();
+            var ufuser = new UnalignedMemoryAccessFuser(context);
+            ufuser.Transform(ssa);
             return ssa;
         }
 

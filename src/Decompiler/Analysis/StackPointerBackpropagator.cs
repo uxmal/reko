@@ -23,43 +23,64 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Backpropagate stack pointer from procedure return.
+/// Assumes that stack pointer at the end of procedure has the same
+/// value as at the start
+/// </summary>
+/// <example>
+/// If we have
+/// <code>
+///     call eax; We do not know calling convention of this indirect call
+///             ; So we do not know value of stack pointer after it
+/// cleanup:
+///     pop esi
+///     pop ebp
+///     ret
+/// </code>
+/// then we could assume than stack pointer at "cleanup" label is
+/// "fp - 8"
+/// </example>
+// $REVIEW: It is highly unlikely that there is a procedure that
+// leaves the stack pointer at different values depending on what
+// path you took through it. Should we encounter such procedures in
+// a binary we might consider turning this analysis off with a user
+// switch.
+public class StackPointerBackpropagator : IAnalysis<SsaState>
 {
-    /// <summary>
-    /// Backpropagate stack pointer from procedure return.
-    /// Assumes that stack pointer at the end of procedure has the same
-    /// value as at the start
-    /// </summary>
-    /// <example>
-    /// If we have
-    /// <code>
-    ///     call eax; We do not know calling convention of this indirect call
-    ///             ; So we do not know value of stack pointer after it
-    /// cleanup:
-    ///     pop esi
-    ///     pop ebp
-    ///     ret
-    /// </code>
-    /// then we could assume than stack pointer at "cleanup" label is
-    /// "fp - 8"
-    /// </example>
-    // $REVIEW: It is highly unlikely that there is a procedure that
-    // leaves the stack pointer at different values depending on what
-    // path you took through it. Should we encounter such procedures in
-    // a binary we might consider turning this analysis off with a user
-    // switch.
-    public class StackPointerBackpropagator
+    private readonly AnalysisContext context;
+
+    public StackPointerBackpropagator(AnalysisContext context)
+    {
+        this.context = context;
+    }
+
+    public string Id => "spbp";
+
+    public string Description => "Propagates the stack pointer backwards from the exit block";
+
+    public (SsaState, bool) Transform(SsaState ssa)
+    {
+        var w = new Worker(ssa, context.EventListener);
+        w.BackpropagateStackPointer();
+        return (ssa, true); //$TODO: compute whether change occured. 
+    }
+
+    private class Worker
     {
         private readonly SsaState ssa;
         private readonly ExpressionEmitter m;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 
-        public StackPointerBackpropagator(SsaState ssa, IDecompilerEventListener listener)
+        public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
             this.m = new ExpressionEmitter();
