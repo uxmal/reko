@@ -398,6 +398,16 @@ namespace Reko.Core
 			return null;
 		}
 
+        public Identifier? FindTemporary(TemporaryStorage tmp)
+        {
+            foreach (var id in identifiers)
+            {
+                if (id.Storage is TemporaryStorage t && t == tmp)
+                    return id;
+            }
+            return null;
+        }
+
 		public Identifier? FindStackArgument(int offset, int size)
 		{
 			foreach (Identifier id in identifiers)
