@@ -40,12 +40,16 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        [Ignore("Get this working soon")]
         public void Wpm_Wildcard()
         {
             var dcp = new WildPatternMatcher();
             var x = dcp.FindDcp("abracadabraaska", "a**a");
-            Assert.AreEqual(new[] { 0, 3 }, x.ToArray());
+            Assert.AreEqual(new[] { 0, 7,11 }, x.ToArray());
+            
+            // test with a pattern that has a wildcard at the end
+            x = dcp.FindDcp("abracadabraaska", "a**a*");
+            // the 'aska' at the end of the string should not be matched - it is not followed by any character.
+            Assert.AreEqual(new[] { 0, 7 }, x.ToArray());
         }
     }
 }
