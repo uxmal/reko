@@ -70,10 +70,12 @@ namespace Reko.Core.Lib
             }
             return occ_P;
         }
-
+        /// <summary>
+        /// Checks that a match at the position <paramref name="pos" /> and
+        /// length <paramref name="len" /> fits in the text
+        /// </summary>
         private bool IsValidPos(int pos,int len,int nextPatternWildcards,int textLength)
         {
-            // checks that match at the position is within the text
             return pos >= 0 && pos + len + nextPatternWildcards < textLength;
         }
 
