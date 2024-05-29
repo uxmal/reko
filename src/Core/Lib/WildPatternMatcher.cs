@@ -59,7 +59,7 @@ namespace Reko.Core.Lib
                 foreach (var pos in occ_Pi)
                 {
                     int adjustedPos = pos - Val[i];
-                    if (!isValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
+                    if (!IsValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
                         continue;
                     ++permitted[adjustedPos];
                     if (permitted[adjustedPos] == patternLength)
@@ -71,7 +71,7 @@ namespace Reko.Core.Lib
             return occ_P;
         }
 
-        private bool isValidPos(int pos,int len,int nextPatternWildcards,int textLength)
+        private bool IsValidPos(int pos,int len,int nextPatternWildcards,int textLength)
         {
             // checks that match at the position is within the text
             return pos >= 0 && pos + len + nextPatternWildcards < textLength;
@@ -96,7 +96,7 @@ namespace Reko.Core.Lib
                 foreach (var pos in occ_Pi)
                 {
                     int adjustedPos = pos - Val[i];
-                    if (!isValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
+                    if (!IsValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
                         continue;
                     if (permitted.TryGetValue(adjustedPos, out int c))
                     {
