@@ -103,6 +103,13 @@ namespace Reko.UnitTests.Arch.Mos6502
         }
 
         [Test]
+        public void Diss6502_cpx()
+        {
+            var instr = RunTest(0xE0, 0x21);
+            Assert.AreEqual("cpx\t#$21", instr.ToString());
+        }
+
+        [Test]
         public void Dis6502_sta_zpx()
         {
             var instr = RunTest(0x095, 0x04);

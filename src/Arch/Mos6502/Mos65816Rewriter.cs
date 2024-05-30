@@ -19,9 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,10 +71,12 @@ namespace Reko.Arch.Mos6502
                     EmitUnitTest();
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.adc: RewriteAdc(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
+
 
         private void EmitUnitTest()
         {
@@ -81,7 +86,34 @@ namespace Reko.Arch.Mos6502
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return GetEnumerator();
         }
+
+        private Expression RewriteOperand(MachineOperand o)
+        {
+            var op = (Operand) o;
+            switch (op.Mode)
+            {
+            default:
+                throw new NotImplementedException($"Addressing mode {op.Mode} not supported yet.");
+            }
+        }
+
+
+        private void RewriteAdc()
+        {
+            var mem = RewriteOperand(instr.Operands[0]);
+            var a = binder.EnsureRegister(Registers.a);
+            var c = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(
+                a,
+                m.IAdd(
+                    m.IAdd(a, mem),
+                    c));
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instr.Mnemonic), "NVZC", PrimitiveType.Byte),
+                m.Cond(a));
+        }
+
     }
 }

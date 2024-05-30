@@ -97,7 +97,11 @@ namespace Reko.Arch.Mos6502
         {
             if (!dasm.rdr.TryReadByte(out byte imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.Immediate,
+                Offset = Constant.Byte(imm),
+            });
             return true;
         }
 
@@ -309,6 +313,7 @@ namespace Reko.Arch.Mos6502
             {
                 Mode = AddressMode.AbsoluteLongX,
                 Offset = Constant.Create(Mos65816Architecture.Word24, abs),
+                Register = Registers.x
             });
             return true;
         }
@@ -337,6 +342,7 @@ namespace Reko.Arch.Mos6502
             {
                 Mode = AddressMode.AbsoluteIndexedIndirect,
                 Offset = Constant.Word16(imm),
+                Register = Registers.x,
             });
             return true;
         }
@@ -526,7 +532,7 @@ namespace Reko.Arch.Mos6502
     Instr(Mnemonic.lsr, dpx),
     Instr(Mnemonic.eor, idly),
     Instr(Mnemonic.cli),
-    Instr(Mnemonic.eof, aby),
+    Instr(Mnemonic.eor, aby),
     Instr(Mnemonic.phy),
     Instr(Mnemonic.tcd),
     Instr(Mnemonic.jmp, InstrClass.Transfer, abl),

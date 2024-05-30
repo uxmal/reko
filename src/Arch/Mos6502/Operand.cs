@@ -42,7 +42,7 @@ namespace Reko.Arch.Mos6502
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            int o = Offset != null ? Offset.ToUInt16() : 0;
+            int o = Offset != null ? (int)Offset.ToUInt32() : 0;
             string fmt;
             switch (Mode)
             {
@@ -58,6 +58,20 @@ namespace Reko.Arch.Mos6502
             case AddressMode.Indirect: fmt = "(${0:X4})"; break;
             case AddressMode.IndexedIndirect: fmt = "(${0:X2},{1})"; break;
             case AddressMode.IndirectIndexed: fmt = "(${0:X2}),{1}"; break;
+
+            case AddressMode.AbsoluteLong: fmt = "${0:X6}"; break;
+            case AddressMode.AbsoluteLongX: fmt = "${0:X6},{1}"; break;
+            case AddressMode.AbsoluteIndexedIndirect: fmt = "(${0:X4},{1})"; break;
+            case AddressMode.DirectPage: fmt = "${0:X2}"; break;
+            case AddressMode.DirectPageX:
+            case AddressMode.DirectPageY: fmt = "${0:X2},{1}"; break;
+            case AddressMode.DirectPageIndexedIndirectX: fmt = "(${0:X2},x)"; break;
+            case AddressMode.DirectPageIndirect: fmt = "(${0:X2})"; break;
+            case AddressMode.DirectPageIndirectIndexedY: fmt = "(${0:X2}),y"; break;
+            case AddressMode.DirectPageIndirectLong: fmt = "[${0:X2}]"; break;
+            case AddressMode.DirectPageIndirectLongIndexedY: fmt = "[${0:X6}],y"; break;
+            case AddressMode.StackRelative: fmt = "${0:X2},s"; break;
+            case AddressMode.StackRelativeIndirectIndexedY: fmt = "(${0:X2},s),y"; break;
             default: throw new NotSupportedException($"Mode {Mode} not supported.");
             }
             renderer.WriteString(string.Format(fmt, o, Register));

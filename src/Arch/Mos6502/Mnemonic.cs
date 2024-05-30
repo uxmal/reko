@@ -93,7 +93,6 @@ namespace Reko.Arch.Mos6502
         // 65816 opcodes
         bra,
         brl,
-        eof,
         mvn,
         mvp,
         phb,
