@@ -293,11 +293,11 @@ namespace Reko.Scanning
         {
             Procedure procDest;
             Block? block = FindExactBlock(addrDest);
-            if (block == null)
+            if (block is null)
             {
                 // Target wasn't a block before. Make sure it exists.
                 block = FindContainingBlock(addrDest);
-                if (block != null)
+                if (block is not null)
                 {
                     block = SplitBlock(block, addrDest);
                 }

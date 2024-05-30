@@ -271,7 +271,8 @@ namespace Reko.Evaluation
                     }
                     else
                     {
-                        if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                        if (cRight.ToInt64() != long.MinValue &&
+                            Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
                         {
                             c = Operator.ISub.ApplyConstants(binExp.DataType, cRight, cLeftRight);
                         }
