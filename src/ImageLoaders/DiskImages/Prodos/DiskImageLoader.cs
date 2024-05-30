@@ -45,15 +45,19 @@ namespace Reko.ImageLoaders.DiskImages.Prodos
 
         internal DiskImage Load(ImageLocation location)
         {
+            // Read the code in the boot loader.
             var rdr = SeekToBlock(2);        // Skip the boot loader
 
             // We're now positioned at the volume directory.
             var dir = LoadVolumeDirectory(rdr, offset);
             if (dir is null)
                 throw new BadImageFormatException("Cannot load image as a Prodos volume.");
+
             var entries = new List<ArchiveDirectoryEntry>();
             var disk = new DiskImage(location, entries);
-            
+            var bootloader = CreateBootLoaderEntry(disk);
+            entries.Add(bootloader);
+
             ArchivedFolder? parent = null;
             for (int i = 0; i < dir.Value.EntryCount; ++i)
             {
@@ -112,6 +116,13 @@ namespace Reko.ImageLoaders.DiskImages.Prodos
                 cbLeft -= bytesToCopy;
             }
             return new DiskImage.FileEntry(disk, parent, e, e.GetName(), mem.ToArray());
+        }
+
+        private ArchivedFile CreateBootLoaderEntry(DiskImage disk)
+        {
+            var bootloader = new byte[512 * 2];
+            Array.Copy(this.bytes, offset, bootloader, 0, bootloader.Length);
+            return new DiskImage.FileEntry(disk, null, new(), "(boot loader)", bootloader);
         }
 
         private void ReadBlock(int iBlock, byte[] blockBuffer)
