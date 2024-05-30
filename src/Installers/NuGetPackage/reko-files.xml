@@ -117,6 +117,7 @@
       <var id="var.Ar.TargetPath" >$SolutionDir$/ImageLoaders/Archives/$TargetDir$/Reko.ImageLoaders.Archives.dll</var>
       <var id="var.BinHex.TargetPath" >$SolutionDir$/ImageLoaders/BinHex/$TargetDir$/Reko.ImageLoaders.BinHex.dll</var>
       <var id="var.Coff.TargetPath" >$SolutionDir$/ImageLoaders/Coff/$TargetDir$/Reko.ImageLoaders.Coff.dll</var>
+      <var id="var.DiskImages.TargetPath" >$SolutionDir$/ImageLoaders/Dol/$TargetDir$/Reko.ImageLoaders.DiskImages.dll</var>
       <var id="var.Dol.TargetPath" >$SolutionDir$/ImageLoaders/Dol/$TargetDir$/Reko.ImageLoaders.Dol.dll</var>
       <var id="var.Elf.TargetPath" >$SolutionDir$/ImageLoaders/Elf/$TargetDir$/Reko.ImageLoaders.Elf.dll</var>
       <var id="var.HpSom.TargetPath" >$SolutionDir$/ImageLoaders/HpSom/$TargetDir$/Reko.ImageLoaders.HpSom.dll</var>
@@ -176,6 +177,7 @@
       <File Source="$(var.Ar.TargetPath)" nuget_target="f:" />
       <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Coff.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Diskmages.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Dol.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Elf.TargetPath)" nuget_target="f:" />
       <File Source="$(var.HpSom.TargetPath)" nuget_target="f:" />

@@ -74,6 +74,10 @@ namespace Reko.Loading
                 new ProgramMemory(segmentMap),
                 arch,
                 platform);
+            foreach (var ep in this.EntryPoints)
+            {
+                program.EntryPoints[ep.Address] = ep;
+            }
             return program;
         }
 

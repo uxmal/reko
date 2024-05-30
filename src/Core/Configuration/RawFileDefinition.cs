@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -35,6 +36,7 @@ namespace Reko.Core.Configuration
     //  </RawFile>
     //</RawFiles>
 
+    [DebuggerDisplay("{Name}")]
     public class RawFileDefinition
     {
         public RawFileDefinition()

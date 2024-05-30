@@ -100,6 +100,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Archives\Archives.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\BinHex\BinHex.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Coff\Coff.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\DiskImages\DiskImages.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Dol\Dol.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Elf\Elf.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\HpSom\HpSom.csproj" />
@@ -315,6 +316,7 @@ by the PreBuild.targets file.
 
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Archives\bin\$(StandardOutputDir)\Reko.ImageLoaders.Archives.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\DiskImages\bin\$(StandardOutputDir)\Reko.ImageLoaders.DiskImages.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(StandardOutputDir)\Reko.ImageLoaders.Dol.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\HpSom\bin\$(StandardOutputDir)\Reko.ImageLoaders.HpSom.*" />

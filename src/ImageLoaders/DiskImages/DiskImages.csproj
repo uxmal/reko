@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <RootNamespace>Reko.ImageLoaders.DiskImages</RootNamespace>
+	  <AssemblyName>Reko.ImageLoaders.DiskImages</AssemblyName>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="../../Core/Core.csproj" />
+	</ItemGroup>
+
+</Project>
