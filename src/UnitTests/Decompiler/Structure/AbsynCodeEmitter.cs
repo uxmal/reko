@@ -51,6 +51,12 @@ namespace Reko.UnitTests.Decompiler.Structure
             return cass;
         }
 
+        public void Break()
+        {
+            var b = new AbsynBreak();
+            stmts.Add(b);
+        }
+
         public void Declare(Identifier id, Expression initializer=null)
         {
             var decl = new AbsynDeclaration(id, initializer);

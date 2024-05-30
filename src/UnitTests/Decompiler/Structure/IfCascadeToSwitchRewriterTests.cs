@@ -279,5 +279,56 @@ test()
                 });
             });
         }
+
+        [Test]
+        public void Ifsw_InsideLoop()
+        {
+            var sExp = @"
+test()
+{
+    while (true)
+    {
+        switch (a)
+        {
+        case 0x01:
+            return 0x01;
+        case 0x02:
+            return 0x02;
+        case 0x03:
+            return 0x03;
+        default:
+            return 0x00;
+        }
+    }
+}
+";
+            RunTest(sExp, m =>
+            {
+                var a = Identifier.Create(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
+                m.While(Constant.True(), w =>
+                {
+                    w.If(m.Ne(a, 1), t =>
+                    {
+                        t.If(t.Ne(a, 2), t =>
+                        {
+                            t.If(t.Ne(a, 3), t =>
+                            {
+                                t.Return(t.Word32(0));
+                            }, e =>
+                            {
+                                e.Return(e.Word32(3));
+                            });
+                        }, e =>
+                        {
+                            e.Return(e.Word32(2));
+                        });
+                    }, e =>
+                    {
+                        e.Return(e.Word32(1));
+                    });
+                });
+
+            });
+        }
     }
 }
