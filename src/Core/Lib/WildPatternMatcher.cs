@@ -45,64 +45,83 @@ namespace Reko.Core.Lib
         public IEnumerable<int> FindDcp(string T, string P)
         {
             var sa = new SuffixArray<char>(T.ToCharArray());
+            int textLength = T.Length;
             int[] permitted = new int[T.Length];
-            (string[], int[]) pat = SplitPattern(P);
-            var l = pat.Item1.Length;
-            var Val = new int[l];
-            Val[0] = 0;
-            for (int i = 1; i < l; ++i)
-            {
-                Val[i] = Val[i - 1] + pat.Item1[i - 1].Length + pat.Item2[i - 1];
-            }
+            (string[] patternParts, int[] dontCares) = SplitPattern(P);
+            var patternLength = patternParts.Length;
+            var Val = CalculateOffsets(patternParts, dontCares);
             var occ_P = new SortedSet<int>();
-            for (int i = 0; i < l; ++i)
+            for (int i = 0; i < patternLength; ++i)
             {
-                var Pi = pat.Item1[i];
+                var Pi = patternParts[i];
+                var nextPatternWildcards = i<dontCares.Length ? dontCares[i] : 0;
                 var occ_Pi = new SortedSet<int>(sa.FindOccurences(Pi.ToCharArray()));
-                foreach (var r in occ_Pi)
+                foreach (var pos in occ_Pi)
                 {
-                    ++permitted[r - Val[i]];
-                    if (permitted[r - Val[i]] == l)
+                    int adjustedPos = pos - Val[i];
+                    if (!IsValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
+                        continue;
+                    ++permitted[adjustedPos];
+                    if (permitted[adjustedPos] == patternLength)
                     {
-                        occ_P.Add(r - Val[i]);
+                        occ_P.Add(adjustedPos);
+                    }
+                }
+            }
+            return occ_P;
+        }
+        /// <summary>
+        /// Checks that a match at the position <paramref name="pos" /> and
+        /// length <paramref name="len" /> fits in the text
+        /// </summary>
+        private bool IsValidPos(int pos,int len,int nextPatternWildcards,int textLength)
+        {
+            return pos >= 0 && pos + len + nextPatternWildcards < textLength;
+        }
+
+        public IEnumerable<int> FindIdcp(string T, string P)
+        {
+            var sa = new SuffixArray<char>(T.ToCharArray());
+            int textLength = T.Length;
+            (string[] patternParts, int[] dontCares) = SplitPattern(P);
+            var patternLength = patternParts.Length;
+            var Val = CalculateOffsets(patternParts, dontCares);
+            var occ_P = new SortedSet<int>();
+            var P_1 = patternParts[0];
+            var occ_P1 = sa.FindOccurences(P_1.ToCharArray());
+            var permitted = occ_P1.ToDictionary(i => i, v => 1);
+            for (int i =0; i < patternLength; ++i)
+            {
+                var Pi = patternParts[i];
+                var nextPatternWildcards = i<dontCares.Length ? dontCares[i] : 0;
+                var occ_Pi = sa.FindOccurences(Pi.ToCharArray());
+                foreach (var pos in occ_Pi)
+                {
+                    int adjustedPos = pos - Val[i];
+                    if (!IsValidPos(adjustedPos,Val[i], nextPatternWildcards, textLength))
+                        continue;
+                    if (permitted.TryGetValue(adjustedPos, out int c))
+                    {
+                        ++c;
+                        permitted[adjustedPos] = c;
+                        if (c == patternLength)
+                            occ_P.Add(adjustedPos);
                     }
                 }
             }
             return occ_P;
         }
 
-        public IEnumerable<int> FindIdcp(string T, string P)
+        private int[] CalculateOffsets(string[] patternParts, int[] wildcards)
         {
-            var sa = new SuffixArray<char>(T.ToCharArray());
-            (string[], int[]) pat = SplitPattern(P);
-            var l = pat.Item1.Length;
-            var Val = new int[l];
-            Val[0] = 0;
-            for (int i = 1; i < l; ++i)
+            int length = patternParts.Length;
+            var offsets = new int[length];      
+            offsets[0] = 0;
+            for (int i = 1; i < length; ++i)
             {
-                Val[i] = Val[i - 1] + pat.Item1[i - 1].Length + pat.Item2[i - 1];
+                offsets[i] = offsets[i - 1] + patternParts[i - 1].Length + wildcards[i - 1];
             }
-            var occ_P = new SortedSet<int>();
-            var P_1 = pat.Item1[0];
-            var occ_P1 = sa.FindOccurences(P_1.ToCharArray());
-            var permitted = occ_P1.ToDictionary(i => i, v => 1);
-            for (int i =0; i < l; ++i)
-            {
-                var Pi = pat.Item1[i];
-                var occ_Pi = sa.FindOccurences(Pi.ToCharArray());
-                foreach (var r in occ_Pi)
-                {
-                    int r_val = r - Val[i];
-                    if (permitted.TryGetValue(r_val, out int c))
-                    {
-                        ++c;
-                        permitted[r_val] = c;
-                        if (c == l)
-                            occ_P.Add(r_val);
-                    }
-                }
-            }
-            return occ_P;
+            return offsets;
         }
 
         private (string[], int[]) SplitPattern(string P)
@@ -124,6 +143,7 @@ namespace Reko.Core.Lib
                         Ps.Add(Pi.ToString());
                         Pi = new StringBuilder();
                         Ks.Add(1);
+                        inWildcards = true;
                     }
                 }
                 else
@@ -135,7 +155,10 @@ namespace Reko.Core.Lib
                     Pi.Append(ch);
                 }
             }
-            Ps.Add(Pi.ToString());
+            if (Pi.Length > 0) // pattern can be followed by a wildcard, and the Pi will be empty then
+            {
+                Ps.Add(Pi.ToString());
+            }
             return (Ps.ToArray(), Ks.ToArray());
         }
     }
