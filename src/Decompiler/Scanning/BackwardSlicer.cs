@@ -606,9 +606,10 @@ namespace Reko.Scanning
             if (sr.Stop)
             {
                 this.GuardInstrAddress = addr;
+                var jtFormat = slicer.Simplify(this.JumpTableFormat!);
                 BackwardSlicer.trace.Verbose("  Was asked to stop, stopping.");
                 BackwardSlicer.trace.Verbose("  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
-                BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
+                BackwardSlicer.trace.Verbose("  expr:  {0}", jtFormat);
                 BackwardSlicer.trace.Verbose("  addr:  {0} (of range check instr)", this.GuardInstrAddress);
                 return false;
             }
@@ -736,6 +737,29 @@ namespace Reko.Scanning
             {
                 // Ignore writes to memory.
                 return null;
+            }
+            // Check if we're assigning the condition variable with the index variable.
+            if (Live.TryGetValue(id, out var dstCtx) &&
+                Live.TryGetValue(ass.Src, out var srcCtx))
+            {
+                if (dstCtx.Type == ContextType.Condition && srcCtx.Type == ContextType.Jumptable)
+                {
+                    this.JumpTableIndex = ass.Src;
+                    return new SlicerResult
+                    {
+                        LiveExprs = Live,
+                        Stop = true,
+                    };
+                }
+                if (dstCtx.Type == ContextType.Jumptable && srcCtx.Type == ContextType.Condition)
+                {
+                    this.JumpTableIndex = id;
+                    return new SlicerResult
+                    {
+                        LiveExprs = Live,
+                        Stop = true,
+                    };
+                }
             }
             this.assignLhs = ass.Dst;
             // var killedRegs = Live.Where(de => de.Key is Identifier i && id.Storage.Covers(i.Storage)).ToList();
@@ -952,10 +976,12 @@ namespace Reko.Scanning
             this.JumpTableIndexToUse = eIndex;
             this.JumpTableIndexInterval = interval;
             BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", liveKey, JumpTableIndexInterval);
+            bool stop = Live.ContainsKey(liveKey);
             return new SlicerResult
             {
                 SrcExpr = binExp,
-                Stop = true
+                LiveExprs = new() { { liveKey, BackwardSlicerContext.Cond(RangeOf(liveKey)) } },
+                Stop = stop
             };
         }
 
@@ -1109,7 +1135,7 @@ namespace Reko.Scanning
         public SlicerResult VisitMkSequence(MkSequence seq, BackwardSlicerContext ctx)
         {
             var srExprs = seq.Expressions
-                .Select(e => e.Accept(this, ctx))
+                .Select(e => e.Accept(this, ctx)!)
                 .ToArray();
             var srLast = srExprs[^1]!;
             if (RangeOf(srLast.SrcExpr!) == ctx.BitRange)
@@ -1123,13 +1149,27 @@ namespace Reko.Scanning
             }
             else 
             {
+                var liveExprs = FuseLiveExpr(srExprs);
                 return new SlicerResult
                 {
-                    LiveExprs = srExprs[1]!.LiveExprs,
+                    LiveExprs = liveExprs,
                     SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s!.SrcExpr).ToArray()!),
                     Stop = srExprs.Any(s => s!.Stop)
                 };
             }
+        }
+
+        private Dictionary<Expression, BackwardSlicerContext> FuseLiveExpr(SlicerResult[] srExprs)
+        {
+            var result = new Dictionary<Expression, BackwardSlicerContext>();
+            foreach (var sr in srExprs)
+            {
+                foreach (var (k, v) in sr.LiveExprs)
+                {
+                    result[k] = v;
+                }
+            }
+            return result;
         }
 
         public SlicerResult? VisitNop(RtlNop rtlNop)
