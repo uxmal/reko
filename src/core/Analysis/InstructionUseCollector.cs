@@ -24,6 +24,10 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// This class visits a <see cref="Statement"/> and all of its contained 
+    /// <see cref="Expression"/>s, counting the occurrences of each <see cref="Identifier"/>.
+    /// </summary>
     public class InstructionUseCollector : InstructionUseVisitorBase
     {
         private readonly IDictionary<Identifier, int> idMap;

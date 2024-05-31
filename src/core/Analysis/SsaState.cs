@@ -43,6 +43,9 @@ namespace Reko.Core.Analysis
 			this.Identifiers = new SsaIdentifierCollection();
 		}
 
+        /// <summary>
+        /// A list of all the currently defined <see cref="SsaIdentifier"/>s.
+        /// </summary> 
         public SsaIdentifierCollection Identifiers { get; }
 
         public Procedure Procedure { get; }

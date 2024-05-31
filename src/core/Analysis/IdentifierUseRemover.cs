@@ -25,11 +25,15 @@ using System;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// Removes all uses of the identifier ID.
+    /// </summary>
     internal class IdentifierUseRemover : InstructionUseVisitorBase
     {
         private readonly Statement stm;
         private readonly SsaIdentifierCollection identifiers;
 
+        //$REVIEW: this class is very similar to ExpressionUseRemover.
         public IdentifierUseRemover(Statement stm, SsaIdentifierCollection identifiers)
         {
             this.stm = stm;

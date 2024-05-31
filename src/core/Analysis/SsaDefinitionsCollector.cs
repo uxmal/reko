@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
@@ -26,6 +25,10 @@ using System.Linq;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// This class collects all definied <see cref="Identifier"/>s in a 
+    /// <see cref="Statement"/>.
+    /// </summary>
     public class SsaDefinitionsCollector : InstructionVisitorBase
     {
         private readonly List<Identifier> definitions;

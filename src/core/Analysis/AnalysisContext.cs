@@ -25,8 +25,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Analysis
 {
     /// <summary>
-    /// A collection of objects that classes that implement 
-    /// <see cref="IAnalysis{T}"/> typically need.
+    /// A collection of objects that classes that implement <see cref="IAnalysis{T}"/> typically need.
     /// </summary>
     public class AnalysisContext
     {

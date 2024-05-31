@@ -52,6 +52,12 @@ namespace Reko.Core.Analysis
         /// </summary>
         public Identifier Identifier { get; }
 
+        /// <summary>
+        /// True if this SSA identifier was not defined inside the procedure. This 
+        /// is typical input parameters to a procedure, but also registers whose
+        /// value is copied to the stack on entry and restore on exit from the 
+        /// procedure.
+        /// </summary>
 		public bool IsOriginal
 		{
 			get { return Identifier == OriginalIdentifier; }

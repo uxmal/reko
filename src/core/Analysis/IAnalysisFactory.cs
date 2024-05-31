@@ -24,6 +24,11 @@ namespace Reko.Core.Analysis
     /// Classes implementing this interface are responsible for creating objects
     /// implementing the <see cref="IAnalysis{T}"/> interface.
     /// </summary>
+    /// <remarks>
+    /// This class is intended to be used to export custom, non-core analyses from
+    /// architectures, file loaders, platforms, etc. Such analyses may use knowledge
+    /// known only to that particular architecture.
+    /// </remarks>
     public interface IAnalysisFactory : IExtension
     {
         /// <summary>

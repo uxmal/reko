@@ -23,6 +23,10 @@ using Reko.Core.Expressions;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// Base implementation class used for analyses interested in the usage of 
+    /// <see cref="Identifier"/>s.
+    /// </summary>
     public abstract class InstructionUseVisitorBase : InstructionVisitorBase
     {
         #region InstructionVisitor Members

@@ -18,13 +18,15 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using System;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// This class visits an expression, and for each encountered <see cref="Identifier"/>, adds 
+    /// a use to the corresponding <see cref="SsaIdentifier"/>.
+    /// </summary>
     public class InstructionUseAdder : InstructionUseVisitorBase
     {
         private readonly Statement user;

@@ -25,6 +25,11 @@ using System;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// This class visits an <see cref="Expression"/> tree, and when
+    /// encountering <see cref="Identifier"/>, removes their use from
+    /// the SSA state.
+    /// </summary>
     public class ExpressionUseRemover : ExpressionVisitorBase
     {
         private readonly Statement user;
@@ -36,6 +41,12 @@ namespace Reko.Core.Analysis
             this.ssaIds = ssaIds;
         }
 
+        /// <summary>
+        /// Removes a single use of the identifier <paramref name="id"/> from the
+        /// SSA state.
+        /// </summary>
+        /// <param name="id">Identifier for the SSA id, one of whose references
+        /// is to be removed.</param>
         public override void VisitIdentifier(Identifier id)
         {
             ssaIds[id].Uses.Remove(user);

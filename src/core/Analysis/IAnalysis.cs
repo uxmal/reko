@@ -20,6 +20,10 @@
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// Interface implemented by class involved in code analysis.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IAnalysis<T> where T : class
     {
         /// <summary>

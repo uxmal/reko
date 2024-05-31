@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using System;
 using System.Collections;
@@ -78,6 +77,15 @@ namespace Reko.Core.Analysis
 			get { return sids[id]; }
 		}
 
+        /// <summary>
+        /// Associates a given <see cref="Identifier"/> with an <see cref="SsaIdentifier"/>
+        /// provided by the caller.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sid"></param>
+        /// <remarks>
+        /// You are recommended to use the other overload of the <see cref="Add(Identifier, Statement?, bool)"/> 
+        /// method whenever possible.</remarks>
         public void Add(Identifier id, SsaIdentifier sid)
         {
             ++serialNumber;
@@ -85,8 +93,6 @@ namespace Reko.Core.Analysis
         }
 
         public int Count => sids.Count;
-
-        public bool IsReadOnly => false;
 
         public void Clear()
         {
@@ -146,6 +152,9 @@ namespace Reko.Core.Analysis
 
         // The following methods are part of ICollection. Either no code in the
         // decompiler needs needs them, or they are unsafe.
+
+        bool ICollection<SsaIdentifier>.IsReadOnly => false;
+
         void ICollection<SsaIdentifier>.Add(SsaIdentifier item)
         {
             throw new NotSupportedException("Use other overloads of Add instead of this method.");
