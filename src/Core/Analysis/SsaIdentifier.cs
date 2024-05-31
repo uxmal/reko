@@ -63,6 +63,10 @@ namespace Reko.Core.Analysis
 			get { return Identifier == OriginalIdentifier; }
 		}
 
+        /// <summary>
+        /// True if this identifier was defined as part of a call to a intrinsic 
+        /// procedure with a side effect.
+        /// </summary>
         public bool IsSideEffect { get; }
 
         /// <summary>
