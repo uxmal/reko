@@ -1011,8 +1011,24 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 while (rdr.Offset < rvaTableEnd)
                 {
                     var addr = addrLoad + rdr.ReadLeUInt32();
-                    rdr.Seek(8);
-                    AddFunctionSymbol(addr, symbols);
+                    var addrEnd = addrLoad + rdr.ReadLeUInt32();
+                    var addrUnwind = addrLoad + rdr.ReadLeUInt32();
+
+                    var rdrUnwind = this.imgLoaded.CreateLeReader(addrUnwind);
+                    var flags = rdrUnwind.ReadByte();
+                    var cbProlog = rdrUnwind.ReadByte();
+                    var cUnwindCodes = rdrUnwind.ReadByte();
+                    var frameReg = rdrUnwind.ReadByte();
+
+                    const int UNW_FLAG_CHAININFO = 0x20;
+                    if ((flags & 0xF0) != UNW_FLAG_CHAININFO)
+                    {
+                        // Only visit handlers that don't have the UNW_FLAG_CHAININFO
+                        // flag set. If the flag _is_ set, then addr is pointing into
+                        // the middle of a procedure. Such addresses shouldn't be used 
+                        // as function symbol addresses.
+                        AddFunctionSymbol(addr, symbols);
+                    }
                 }
                 break;
             case MACHINE_R4000:

@@ -341,7 +341,7 @@ namespace Reko.Analysis
         {
             
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-#if !FIND_BUGS
+#if FIND_BUGS
 // This is currently disabled because of hard-to-fix problems with the UnalignedMemoryAccessFuser
             ssa.Validate(s =>
             {
