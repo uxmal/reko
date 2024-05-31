@@ -177,7 +177,7 @@
       <File Source="$(var.Ar.TargetPath)" nuget_target="f:" />
       <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Coff.TargetPath)" nuget_target="f:" />
-      <File Source="$(var.Diskmages.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.DiskImages.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Dol.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Elf.TargetPath)" nuget_target="f:" />
       <File Source="$(var.HpSom.TargetPath)" nuget_target="f:" />
