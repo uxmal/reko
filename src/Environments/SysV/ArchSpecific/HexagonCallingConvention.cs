@@ -23,7 +23,6 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {

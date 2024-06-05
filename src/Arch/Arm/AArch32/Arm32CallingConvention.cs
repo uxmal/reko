@@ -24,8 +24,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
@@ -37,7 +35,7 @@ namespace Reko.Arch.Arm.AArch32
     /// </remarks>
     public class Arm32CallingConvention : AbstractCallingConvention
     {
-        private RegisterStorage[] argRegs;
+        private readonly RegisterStorage[] argRegs;
 
         public Arm32CallingConvention() : base("")
         {

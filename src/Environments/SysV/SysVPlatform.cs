@@ -26,6 +26,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,11 @@ namespace Reko.Environments.SysV
             var lexer = new CLexer(rdr, CLexer.GccKeywords);
             var parser = new CParser(state, lexer);
             return parser;
+        }
+
+        public override ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
+        {
+            return base.DetermineCallingConvention(signature, arch);
         }
 
         public override ICallingConvention GetCallingConvention(string? ccName)

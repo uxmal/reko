@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -31,9 +32,9 @@ namespace Reko.Arch.Arm.AArch64
     // Seems identical to the official ARM 64 ABI.
     public class AArch64CallingConvention : AbstractCallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage[] argRegs;
-        private RegisterStorage[] floatRegs;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage[] argRegs;
+        private readonly RegisterStorage[] floatRegs;
 
         public AArch64CallingConvention(IProcessorArchitecture arch) : base("")
         {

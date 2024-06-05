@@ -91,6 +91,14 @@ namespace Reko.Analysis
             parameters.Add(arg);
         }
 
+        public void SortParameters(ICallingConvention cc)
+        {
+            if (cc.InArgumentComparer is not null)
+            {
+                parameters.Sort(cc.InArgumentComparer);
+            }
+        }
+
 		public FunctionType BuildSignature()
 		{
 			return FunctionType.Create(ret, parameters.ToArray());

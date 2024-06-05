@@ -23,6 +23,8 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System.Collections.Generic;
@@ -124,7 +126,7 @@ namespace Reko.Analysis
             return sig;
         }
 
-        void ProcessInputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
+        private void ProcessInputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
         {
             var frame = ssa.Procedure.Frame;
             var mayUseSeqs = flow.BitsUsed.Keys.OfType<SequenceStorage>().ToHashSet();
@@ -170,7 +172,7 @@ namespace Reko.Analysis
             }
         }
 
-        void ProcessOutputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
+        private void ProcessOutputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
         {
             var frame = ssa.Procedure.Frame;
             var arch = ssa.Procedure.Architecture;

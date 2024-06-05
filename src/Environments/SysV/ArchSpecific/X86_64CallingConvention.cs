@@ -64,6 +64,8 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.eax = arch.GetRegister("eax")!;
             this.rax = arch.GetRegister("rax")!;
             this.rdx = arch.GetRegister("rdx")!;
+            this.InArgumentComparer = new StorageCollator(iregs.Select(r => r.Domain).ToArray());
+            this.OutArgumentComparer = new StorageCollator(new[] { rax.Domain, rdx.Domain });
         }
 
         public override void Generate(

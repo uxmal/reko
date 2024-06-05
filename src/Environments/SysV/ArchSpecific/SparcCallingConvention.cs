@@ -18,14 +18,12 @@
  */
 #endregion
 
-using System;
 using Reko.Core;
-using Reko.Core.Serialization;
+using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Core.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
