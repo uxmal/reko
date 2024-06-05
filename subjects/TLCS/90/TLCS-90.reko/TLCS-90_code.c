@@ -111,7 +111,7 @@ byte fn039D(byte a, byte h, struct Eq_n * ix, union Eq_n & ixOut)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n stackArg36;
-	stackArg36.u0 = <invalid>;
+	stackArg36.u0 = (byte *) <invalid>;
 	byte h_n = fn03B2(SEQ(h, l, b, c), a, de, ix, stackArg36, out ix_n);
 	ixOut = ix_n;
 	return h_n;
@@ -195,9 +195,9 @@ byte fn03B2(uint32 h_l_b_c, byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg24, unio
 		word16 bc_n;
 		for (bc_n = 0x04; bc_n != 0x00; --bc_n)
 		{
-			*de_n.u1 = *hl_n.u1;
+			*de_n.u0 = *hl_n.u1;
 			hl_n.u1 = (word32) hl_n + 1;
-			de_n.u1 = (word32) de_n + 1;
+			de_n.u0 = (word32) de_n + 1;
 		}
 		ixOut.u1 = ix->t0000.u1;
 		return SLICE(hl_n, byte, 8);
@@ -891,27 +891,40 @@ void fn152A(byte b, struct Eq_n * hl)
 	hl->b0001 = b;
 }
 
-// 164F: void fn164F(Register Eq_n a, Register word16 bc, Register byte h, Register (ptr16 Eq_n) ix, Stack (ptr16 ui16) wArg0E, Stack byte bArg11, Stack (ptr16 ui16) wArg15, Stack (ptr16 Eq_n) wArg17, Stack (ptr16 ui16) wArg1B, Stack (ptr16 Eq_n) wArg21, Stack (ptr16 ui16) wArg25)
-void fn164F(Eq_n a, word16 bc, byte h, struct Eq_n * ix, ui16 * wArg0E, byte bArg11, ui16 * wArg15, struct Eq_n * wArg17, ui16 * wArg1B, struct Eq_n * wArg21, ui16 * wArg25)
+// 164F: void fn164F(Register Eq_n a, Register word16 bc, Register byte h, Register (ptr16 Eq_n) ix, Stack (ptr16 ui16) wArg1B)
+void fn164F(Eq_n a, word16 bc, byte h, struct Eq_n * ix, ui16 * wArg1B)
 {
 	ix->tFFFFFFEC.u0 = (cu8) a;
 	bool C;
 	ix->bFFFFFFED = ix->bFFFFFFF9 - h - (byte) C;
 	ui16 a_a_n = bc - *wArg1B;
 	ui16 a_a_n = ix->tFFFFFFF8.u1 - (ix->tFFFFFFFC).u1;
+	Eq_n sp_n;
+	sp_n.u0 = (byte *) <invalid>;
 	struct Eq_n * ix_n;
 	if (fn02F4(SLICE(a_a_n, byte, 8), (byte) a_a_n, SLICE(a_a_n, byte, 8), SLICE(a_a_n, byte, 8), ix, out ix_n) != 0x00)
 	{
-		uint8 v32_n = wArg17->b0000;
-		ui8 v33_n = wArg17->b0001;
-		ix_n->tFFFFFFEC.u1 = (ui16) (SEQ(v33_n, v32_n) - *wArg15);
-		uint8 v40_n = wArg21->b0000;
-		ui8 v41_n = wArg21->b0001;
-		ix_n->tFFFFFFEA.u1 = (ui16) (SEQ(v41_n, v40_n) - *wArg0E);
-		ui16 a_a_n = SEQ(v33_n, v32_n) - *wArg1B;
-		word16 wArg11;
+		struct Eq_n * v31_n = sp_n.u1->ptr001F;
+		ui16 * v34_n = sp_n.u1->ptr001D;
+		uint8 v32_n = v31_n->b0000;
+		ui8 v33_n = v31_n->b0001;
+		ix_n->tFFFFFFEC.u1 = (ui16) (SEQ(v33_n, v32_n) - *v34_n);
+		struct Eq_n * v39_n = sp_n.u1->ptr0029;
+		ui16 * v42_n = sp_n.u1->ptr0016;
+		uint8 v40_n = v39_n->b0000;
+		ui8 v41_n = v39_n->b0001;
+		ix_n->tFFFFFFEA.u1 = (ui16) (SEQ(v41_n, v40_n) - *v42_n);
+		ui16 * v45_n = sp_n.u1->ptr0023;
+		ui16 * v48_n = sp_n.u1->ptr002D;
+		ui16 a_a_n = SEQ(v33_n, v32_n) - *v45_n;
+		ui16 a_a_n = SEQ(v41_n, v40_n) - *v48_n;
+		sp_n.u1->w0006 = sp_n.u1->w001B;
+		word16 v52_n = sp_n.u1->w0019;
+		sp_n.u1->w0004 = v52_n;
+		sp_n.u1->w0002 = a_a_n;
+		sp_n.u1->w0000 = a_a_n;
 		word16 ix_n;
-		if (fn02F4(SLICE(SEQ(v41_n, v40_n) - *wArg25, byte, 8), (byte) a_a_n, SLICE(a_a_n, byte, 8), SLICE(wArg11, byte, 8), ix_n, out ix_n) != 0x00)
+		if (fn02F4(SLICE(a_a_n, byte, 8), (byte) a_a_n, SLICE(a_a_n, byte, 8), SLICE(v52_n, byte, 8), ix_n, out ix_n) != 0x00)
 			fn0C35();
 		else
 			fn0C35();

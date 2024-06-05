@@ -2310,7 +2310,7 @@ l5510:
 	r8 = v81_584 & 0x30<16>
 	branch (v81_584 & 0x30<16>) != 0<16> l5542
 l551C:
-	r13_598 = bLoc1D_1064 - SLICE(r11_580, byte, 0)
+	r13_598 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
 	branch r13_598 < 1<16> l5542
 l552C:
 	branch __write_pad(r13_598, 0x20<16>) >= 0<16> l553E
@@ -2331,7 +2331,7 @@ l556A:
 l5576:
 	branch (v81_584 & 0x30<16>) == 0x20<16> l55C4
 l55C4:
-	r13_693 = bLoc1D_1064 - SLICE(r11_580, byte, 0)
+	r13_693 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
 	branch r13_693 < 1<16> l557C
 l55D4:
 	branch __write_pad(r13_693, 0x30<16>) >= 0<16> l557C
@@ -2344,7 +2344,7 @@ l559C:
 	dwLoc1C_2132 = dwLoc1C_2124 (alias)
 	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x10<16>) == 0<16> l53A6
 l55A4:
-	r13_760 = bLoc1D_1064 - SLICE(r11_580, byte, 0)
+	r13_760 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
 	dwLoc1C_2132 = dwLoc1C_2124 (alias)
 	branch r13_760 < 1<16> l53A6
 l55B4:

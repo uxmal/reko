@@ -1328,5 +1328,25 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("Mem0[id_3 + 2<32>:word32]", exp.ToString());
         }
+
+        [Test]
+        public void Exs_DistributedConversion()
+        {
+            Given_ExpressionSimplifier();
+            var rax_6 = Given_Tmp("id", PrimitiveType.Ptr64);
+            Expression exp =
+                m.IAdd(
+                    m.Convert(
+                        m.Mem16(m.IAddS(rax_6, 14)),
+                        PrimitiveType.Word16,
+                        PrimitiveType.Word32),
+                    m.Convert(
+                        m.Mem16(m.IAddS(rax_6, 12)),
+                        PrimitiveType.Word16,
+                        PrimitiveType.Word32));
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("CONVERT(Mem0[id_3 + 14<i64>:word16] + Mem0[id_3 + 12<i64>:word16], word16, word32)", exp.ToString());
+        }
     }
 }

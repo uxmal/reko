@@ -1745,7 +1745,7 @@ l53E8:
 			if (r7_n == 0x2A)
 			{
 				Eq_n v45_n;
-				v45_n.u2 = *r5_n;
+				v45_n.u1 = *r5_n;
 				++r5_n;
 				bLoc1D_n = v45_n;
 				if (v45_n >= 0x00)
@@ -2023,7 +2023,7 @@ l54FC:
 				r8 = v81_n & 0x30;
 				if ((v81_n & 0x30) == 0x00)
 				{
-					Eq_n r13_n = bLoc1D_n - (byte) r11_n;
+					Eq_n r13_n = (word16) (bLoc1D_n - (byte) r11_n);
 					if (r13_n >= 0x01)
 					{
 						if (__write_pad(r13_n, 0x20) < 0x00)
@@ -2050,7 +2050,7 @@ l54FC:
 l5576:
 				if ((v81_n & 0x30) == 0x20)
 				{
-					Eq_n r13_n = bLoc1D_n - (byte) r11_n;
+					Eq_n r13_n = (word16) (bLoc1D_n - (byte) r11_n);
 					if (r13_n >= 0x01 && __write_pad(r13_n, 0x30) < 0x00)
 						return;
 				}
@@ -2059,7 +2059,7 @@ l5576:
 				dwLoc1C_n = dwLoc1C_n;
 				if (((word16) bLoc1E_n & 0x10) == 0x00)
 					goto l53A6;
-				Eq_n r13_n = bLoc1D_n - (byte) r11_n;
+				Eq_n r13_n = (word16) (bLoc1D_n - (byte) r11_n);
 				dwLoc1C_n = dwLoc1C_n;
 				if (r13_n < 0x01)
 					goto l53A6;

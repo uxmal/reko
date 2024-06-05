@@ -915,6 +915,29 @@ Constants: cl:0x00
             RunTest();
         }
 
+        [Test]
+        public void TrfSliceNeeded()
+        {
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            Given_Architecture(arch);
 
+            Expect(
+                "TrfSliceNeeded",
+                "Preserved: ",
+                "Trashed: rax",
+                "");
+
+            builder.Add(nameof(TrfSliceNeeded), m =>
+            {
+                var rax = m.Frame.EnsureRegister(arch.GetRegister("rax"));
+                var eax = m.Frame.EnsureRegister(arch.GetRegister("eax"));
+                var fp = m.Frame.FramePointer;
+                m.MStore(m.IAddS(fp, 30), rax);
+                m.Assign(eax, m.Mem32(m.IAddS(fp, 30)));
+                m.Assign(rax, m.Convert(eax, PrimitiveType.Word32, PrimitiveType.UInt64));
+                m.Return();
+            });
+            RunTest();
+        }
     }
 }

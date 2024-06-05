@@ -34,7 +34,7 @@ void update_gen(ui32 arg0)
 			int32 v18_n = loc12_n + ~0x00;
 			byte v17_n[] = v16_n + v16_n * 100;
 			loc12_n = v18_n;
-			Eq_n v16_n = v16_n[v17_n] + v16_n[v18_n % 100] + (word32) v17_n[v18_n % 100] + (word32) v17_n[v17_n];
+			word32 v16_n = (word32) (v16_n[v17_n] + v16_n[v18_n % 100] + v17_n[v18_n % 100] + v17_n[v17_n]);
 			switch (v16_n)
 			{
 			case 0x03:

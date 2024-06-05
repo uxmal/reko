@@ -918,7 +918,7 @@ l00011DAC:
 	l0_128 = Mem86[0x16F14<32>:word32]
 l00011DB0:
 	o0_90 = strlen(l0_128)
-	branch CONVERT(Mem86[i0_149:int8] - Mem86[l0_128:int8], int8, int8) != 0<32> l00011DCC_ds_t
+	branch CONVERT(Mem86[i0_149:int8] - Mem86[l0_128:int8], int8, int32) != 0<32> l00011DCC_ds_t
 l00011DCC_ds_t:
 	l4_100 = l4_100 + 8<32>
 l00011DD0:

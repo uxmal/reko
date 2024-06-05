@@ -741,8 +741,20 @@ namespace Reko.Analysis
                     return StackState!.Get(stack.StackOffset);
                 if (!IdState.TryGetValue(id, out (Expression, BitRange) value))
                     return null;
+                else if (value.Item1 is { })
+                    return MaybeSlice(value.Item1, id.DataType);
                 else
-                    return value.Item1;
+                    return null;
+            }
+
+            private static Expression MaybeSlice(Expression exp, DataType dt)
+            {
+                var wantedBitsize = dt.BitSize;
+                if (exp.DataType.BitSize > wantedBitsize)
+                {
+                    exp = new Slice(dt, exp, 0);
+                }
+                return exp;
             }
 
             public BitRange GetBitRange(Identifier id)

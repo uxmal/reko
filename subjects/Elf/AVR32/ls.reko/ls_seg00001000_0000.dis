@@ -4074,7 +4074,7 @@ l00006930:
 	r1_185 = r1_185 + 1<32>
 	branch r3_346 != 0<32> l00006940
 l00006938:
-	r3_346 = Mem438[r7_342:byte] + Mem438[r5_344:byte]
+	r3_346 = CONVERT(Mem438[r7_342:byte] + Mem438[r5_344:byte], byte, word32)
 l00006940:
 	r7_342 = r7_342 + 1<32>
 	r5_344 = r5_344 + 1<32>
@@ -8483,7 +8483,7 @@ l000097F0:
 l00009800:
 	r8_910 = CONVERT(SLICE(r8_906, byte, 0), byte, word32)
 l000097C8:
-	r11_r10_1114 = (Mem886[sp_1018 + 44<i32>:word32] & 1<32>) + r4_181
+	r11_r10_1114 = CONVERT((Mem886[sp_1018 + 44<i32>:word32] & 1<32>) + r4_181, uint32, uint64)
 	r8_910 = CONVERT(CONVERT(r11_r10_1114 != 0<32>, bool, word32) + r3_363 > 5<32>, bool, word32)
 l00009802:
 	branch r8_910 == 0<32> l0000985E

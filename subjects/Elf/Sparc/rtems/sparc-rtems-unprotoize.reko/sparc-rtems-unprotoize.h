@@ -1469,9 +1469,6 @@ Eq_1033: (union "Eq_1033"
 		(Eq_1001 u5)
 		(Eq_1029 u6))
 	T_1033 (in i0_149->t0000.u0 - *l0_128 @ 00011DC8 : int8)
-Eq_1034: (union "Eq_1034" (int8 u0) (word32 u1))
-	T_1034 (in CONVERT(Mem86[i0_149 + 0<32>:int8] - Mem86[l0_128 + 0<32>:int8], int8, int8) @ 00011DC8 : int8)
-	T_1035 (in 0<32> @ 00011DC8 : word32)
 Eq_1043: (struct "Eq_1043" (68 word32 dw0068))
 	T_1043 (in l2Out @ 00011E70 : (ptr32 Eq_1043))
 	T_1227 (in Mem427[sp_68 + 40<i32>:word32] @ 00012144 : word32)
@@ -7258,15 +7255,15 @@ T_1033: (in i0_149->t0000.u0 - *l0_128 @ 00011DC8 : int8)
 		(T_997 u4)
 		(T_1001 u5)
 		(T_1029 u6))
-T_1034: (in CONVERT(Mem86[i0_149 + 0<32>:int8] - Mem86[l0_128 + 0<32>:int8], int8, int8) @ 00011DC8 : int8)
+T_1034: (in CONVERT(Mem86[i0_149 + 0<32>:int8] - Mem86[l0_128 + 0<32>:int8], int8, int32) @ 00011DC8 : int32)
   Class: Eq_1034
-  DataType: Eq_1034
-  OrigDataType: int8
+  DataType: int32
+  OrigDataType: int32
 T_1035: (in 0<32> @ 00011DC8 : word32)
   Class: Eq_1034
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_1036: (in (int8) (i0_149->t0000.u0 - *l0_128) != 0<32> @ 00011DC8 : bool)
+T_1036: (in (int32) (i0_149->t0000.u0 - *l0_128) != 0<32> @ 00011DC8 : bool)
   Class: Eq_1036
   DataType: bool
   OrigDataType: bool
@@ -34635,11 +34632,6 @@ typedef union Eq_1033 {
 	Eq_1001 u5;
 	Eq_1029 u6;
 } Eq_1033;
-
-typedef union Eq_1034 {
-	int8 u0;
-	word32 u1;
-} Eq_1034;
 
 typedef struct Eq_1043 {
 	word32 dw0068;	// 68

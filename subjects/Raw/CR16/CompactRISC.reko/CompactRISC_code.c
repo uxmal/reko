@@ -584,7 +584,7 @@ l0000313C:
 		}
 		else
 			r2_n.u0 = 0x00;
-		Eq_n r11_r10_n = r13_n.u1->t0060.u0 + (r3_n + r11_n);
+		Eq_n r11_r10_n = r13_n.u1->t0060.u0 + (word32) (r3_n + r11_n);
 		r9_r8_n.u1->t0004.u1 = (cu16) r2_n;
 		word32 r12_n = (word32) r7_n;
 		struct Eq_n * sp_n = sp_n - 4;
@@ -626,7 +626,7 @@ l0000314C:
 				cui16 r3_r2_n[] = r13_n.u1->ptr0078;
 				r13_n.u1->ptr0070[(word32) (r13_n.u1->w0058 & r8_n)] = r3_r2_n[0];
 				r3_r2_n[0] = r8_n;
-				r1_n = (word32) r1_n + 0x0000FFFF;
+				r1_n.u1 = (word32) r1_n + 0x0000FFFF;
 				r13_n.u1->t240C.u0 = (cu16) r1_n;
 				++r8_n;
 				if (r11_n + r1_n <= 0x02)
@@ -805,7 +805,7 @@ l00003664:
 		}
 		Eq_n r8_n = r3_r2.u1->t00AC.u0 - ((r3_r2.u1)->t0098).u1;
 		Eq_n r7_n = r7_n - (r0_n + 0x2A >> 0x03);
-		if (r8_n + r10_n <= 0xFFFE)
+		if ((word32) (r8_n + r10_n) <= 0xFFFE)
 		{
 			Eq_n r0_n = r8_n + r10_n;
 			if (r7_n > r0_n)
@@ -941,7 +941,7 @@ l00003586:
 		struct Eq_n * sp_n = sp_n - 2;
 		sp_n->tFFFFFFFE.u0 = (up32) r11_r10_n;
 		fn0000DB24();
-		r8_n = (word32) r7_n + ((r3_r2.u1)->t00AC).u0;
+		r8_n.u1 = (word32) r7_n + ((r3_r2.u1)->t00AC).u0;
 		r3_r2.u1->t00AC.u0 = (cu16) r8_n;
 		r0_n.u0 = r3_r2.u1->t0050.u0;
 		sp_n = (struct Eq_n *) ((char *) &sp_n->tFFFFFFFE + 4);
@@ -1050,7 +1050,7 @@ l000036EA:
 			r13_n->u1 = (char *) &r13_n->u1->a0000->u0 + r3_r2_n;
 			r13_n.u1->t0008.u2 = &r13_n.u1->t0008.u2->b0000 + r3_r2_n;
 l0000371C:
-			r8_n = (word32) r7_n + ((r3_r2.u1)->t00AC).u0;
+			r8_n.u1 = (word32) r7_n + ((r3_r2.u1)->t00AC).u0;
 			r3_r2.u1->t00AC.u0 = (cu16) r8_n;
 l00003726:
 			r5_r4_n.u0 = r3_r2.u1->t0098.u0;
@@ -1690,7 +1690,7 @@ l000059F0:
 										r1_n = (int16) (r13_n.u1->w23E8 + ~0x00 == (r13_n.u1)->w23EC);
 										r13_n.u1->t00B4.u0 = (cu16) ((word32) r11_n + 0x0000FFFF);
 										r13_n.u1->t00AC.u0 = (cu16) (r13_n.u1->t00AC.u0 + 0x01);
-										r11_n = (word32) r11_n + 0x0000FFFF;
+										r11_n.u1 = (word32) r11_n + 0x0000FFFF;
 									} while (r1_n == 0x00);
 									Eq_n r5_r4_n;
 									r5_r4_n.u0 = r13_n.u1->t0098.u0;
@@ -2068,7 +2068,7 @@ l00004EBE:
 								r13_n.u1->t00B4.u0 = (cu16) ((word32) r7_n + 0x0000FFFF);
 								r13_n.u1->t00AC.u0 = (cu16) (r13_n.u1->t00AC.u0 + 0x01);
 								r12_n = r3_r2;
-								r7_n = (word32) r7_n + 0x0000FFFF;
+								r7_n.u1 = (word32) r7_n + 0x0000FFFF;
 								if (r2_n == r1_n + ~0x00)
 								{
 									Eq_n r5_r4_n;

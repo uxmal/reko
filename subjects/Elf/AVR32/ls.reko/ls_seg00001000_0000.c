@@ -4156,8 +4156,8 @@ void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 	struct Eq_n * r6_n = &g_t681A - g_dw692C;
 	r6_n->ptr0018();
 	struct Eq_n * sp_n;
-	Eq_n r12_n;
-	sp_n->t0008.u1 = (word32) r12_n;
+	word32 r12_n;
+	sp_n->dw0008 = r12_n;
 	byte VNZC_n;
 	if (!SLICE(VNZC_n, bool, 1))
 		return;
@@ -4173,7 +4173,7 @@ void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 		++r4_n;
 		if ((byte) r9_n != (byte) r8_n)
 		{
-			sp_n->t0008.u1 = (word32) (r9_n + r8_n);
+			sp_n->dw0008 = r9_n + r8_n;
 			return;
 		}
 	}
@@ -4209,7 +4209,7 @@ void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 	r0_n.u0 = 0x00;
 	Eq_n r1_n;
 	r1_n.u0 = 0x00;
-	Eq_n r3_n;
+	word32 r3_n;
 	do
 	{
 		if (r0_n >= (sp_n->t0000).u0 && r1_n >= (sp_n->t0004).u0)
@@ -4243,9 +4243,9 @@ l000068C2:
 				++r7_n;
 				if (r5_n != r12_n)
 				{
-					Eq_n r12_n = r5_n + r12_n;
+					word32 r12_n = r5_n + r12_n;
 					if (r12_n != 0x00)
-						sp_n->t0008.u1 = (word32) r12_n;
+						sp_n->dw0008 = r12_n;
 					return;
 				}
 				r0_n = (word32) r0_n + 1;
@@ -4273,28 +4273,28 @@ l000068EE:
 		}
 		byte * r7_n = r2_n + r0_n;
 		byte * r5_n = r4_n + r1_n;
-		r3_n.u1 = 0x00;
+		r3_n = 0x00;
 		while ((word32) (byte) fn0000BCDC((word32) *r7_n) != 0x00 && (word32) ((byte) fn0000BCDC((word32) (*r5_n))) != 0x00)
 		{
 			r0_n = (word32) r0_n + 1;
 			r1_n = (word32) r1_n + 1;
 			if (r3_n == 0x00)
-				r3_n = *r7_n + *r5_n;
+				r3_n = (word32) (*r7_n + *r5_n);
 			++r7_n;
 			++r5_n;
 		}
 		if ((word32) (byte) fn0000BCDC((word32) *r7_n) != 0x00)
 		{
-			r3_n.u1 = 0x01;
+			r3_n = 0x01;
 			break;
 		}
 		if ((word32) (byte) fn0000BCDC((word32) *(r4_n + r1_n)) != 0x00)
 		{
-			r3_n.u1 = ~0x00;
+			r3_n = ~0x00;
 			break;
 		}
 	} while (r3_n == 0x00);
-	sp_n->t0008.u1 = (word32) r3_n;
+	sp_n->dw0008 = r3_n;
 }
 
 <unknown> g_t681A = // 0000681A;
@@ -8781,7 +8781,8 @@ l000097C2:
 						word32 r8_n;
 						if (sp_n->dw0024 == 0x01)
 						{
-							Eq_n r11_r10_n = (word32) r4_n + ((sp_n->t002C).u1 & 0x01);
+							Eq_n r11_r10_n;
+							r11_r10_n.u0 = (uint64) ((word32) r4_n + ((sp_n->t002C).u1 & 0x01));
 							r8_n = (word32) ((word32) (r11_r10_n != 0x00) + r3_n > 0x05);
 						}
 						else

@@ -680,7 +680,7 @@ l00011DA0:
 		while (true)
 		{
 			Eq_n o0_n = strlen(l0_n);
-			if ((int8) (i0_n->t0000.u0 - *l0_n) == 0x00)
+			if ((int32) (i0_n->t0000.u0 - *l0_n) == 0x00)
 			{
 				if (strncmp(i0_n, l0_n, o0_n) == 0x00)
 				{
