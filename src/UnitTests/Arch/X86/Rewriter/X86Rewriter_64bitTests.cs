@@ -1233,6 +1233,16 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|xmm0 = __punpcklqdq<word128>(xmm0, xmm0)");
         }
+
+        [Test]
+        public void X86Rw_vpunpckhdq()
+        {
+            Given_HexString("C5396A700F");
+            AssertCode(     // vpunpckhdq       xmm14,xmm8,[rax+0Fh]
+                "0|L--|0000000140000000(5): 1 instructions",
+                "1|L--|xmm14 = __punpckhdq<word128>(xmm8, Mem0[rax + 15<i64>:word128])");
+        }
+
         [Test]
         public void X86Rw_push_64()
         {
@@ -1322,12 +1332,22 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
-        public void X86rw_vxorpd_mem_256()
+        public void X86rw_64_vxorpd_mem_256()
         {
             Given_HexString("C5FD5709");   // vxorpd\tymm1,ymm0,[rcx]
             AssertCode(
              "0|L--|0000000140000000(4): 1 instructions",
              "1|L--|ymm1 = __xorp<word64[4]>(ymm0, Mem0[rcx:(arr word64 4)])");
+        }
+
+        [Test]
+        public void X86Rw_64_vrcpps()
+        {
+            Given_HexString("C5E8532D0100488B");
+            AssertCode(     // vrcpps   xmm5,[rip-74B7FFFFh]
+                "0|L--|0000000140000000(8): 2 instructions",
+                "1|L--|v4 = Mem0[0x00000000CB480009<p64>:word128]",
+                "2|L--|xmm5 = __rcpp<real32[4]>(v4)");
         }
 
         [Test]
@@ -1618,6 +1638,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "15|L--|ymm14 = CONVERT(xmm14, word128, word256)",
                 "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
         }
+
+
+
+
 
     }
 }

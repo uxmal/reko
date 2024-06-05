@@ -600,6 +600,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vpsubw: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word16); break;
                 case Mnemonic.punpckhbw: RewritePunpck(false, punpckhbw_intrinsic); break;
                 case Mnemonic.punpckhdq: RewritePunpck(false, punpckhdq_intrinsic); break;
+                case Mnemonic.vpunpckhdq: RewritePunpck(true, punpckhdq_intrinsic); break;
                 case Mnemonic.punpckhwd: RewritePunpck(false, punpckhwd_intrinsic); break;
                 case Mnemonic.vpunpckhwd: RewritePunpck(true, punpckhwd_intrinsic); break;
                 case Mnemonic.punpcklbw: RewritePunpck(false, punpcklbw_intrinsic); break;
@@ -617,6 +618,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vpxor: RewritePxor(true); break;
                 case Mnemonic.rcl: RewriteRotationWithCarry(CommonOps.RolC, RotateMaskLeft()); break;
                 case Mnemonic.rcpps: RewritePackedUnaryop(rcpp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vrcpps: RewritePackedUnaryop(rcpp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.rcr: RewriteRotationWithCarry(CommonOps.RorC, RotateMaskRight()); break;
                 case Mnemonic.rol: RewriteRotation(CommonOps.Rol, RotateMaskLeft()); break;
                 case Mnemonic.ror: RewriteRotation(CommonOps.Ror, RotateMaskRight()); break;
