@@ -23,16 +23,12 @@ using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
-using Reko.Evaluation;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Reko.Scanning
 {
-
     /// <summary>
     /// Forward analysis that propagates constants,
     /// but only within a single linear block.
@@ -110,11 +106,6 @@ namespace Reko.Scanning
         public RtlInstruction VisitMicroGoto(RtlMicroGoto uGoto)
         {
             return uGoto;
-        }
-
-        public RtlInstruction VisitMicroLabel(RtlMicroLabel uLabel)
-        {
-            return uLabel;
         }
 
         public RtlInstruction VisitNop(RtlNop rtlNop)

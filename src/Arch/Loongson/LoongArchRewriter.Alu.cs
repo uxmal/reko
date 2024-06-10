@@ -120,9 +120,8 @@ namespace Reko.Arch.Loongson
         {
             var ea = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
             var limit = binder.EnsureRegister((RegisterStorage) instr.Operands[2]);
-            m.MicroBranch(fn(ea, limit), "skip");
+            m.MicroBranch(fn(ea, limit), this.rtls.Count + 2);
             m.SideEffect(m.Fn(raise_exception, m.Word32(0xA)));
-            m.MicroLabel("skip");
             Assign(instr.Operands[0], m.Mem(dt, ea));
         }
 
@@ -347,9 +346,8 @@ namespace Reko.Arch.Loongson
             var src = RewriteStoreSource(dt);
             var ea = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
             var limit = binder.EnsureRegister((RegisterStorage) instr.Operands[2]);
-            m.MicroBranch(fn(ea, limit), "skip");
+            m.MicroBranch(fn(ea, limit), this.rtls.Count + 2);
             m.SideEffect(m.Fn(raise_exception, m.Word32(0xA)));
-            m.MicroLabel("skip");
             m.Assign(m.Mem(dt, ea), src);
         }
 

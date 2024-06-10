@@ -264,37 +264,27 @@ namespace Reko.Core.Rtl
         }
 
         /// <summary>
-        /// Generates an unconditional <see cref="RtlMicroGoto"/> to a <see cref="RtlMicroLabel" />.
+        /// Generates an unconditional <see cref="RtlMicroGoto"/> to another instruction inside
+        /// the current <see cref="RtlInstructionCluster"/>.
         /// </summary>
-        /// <param name="microLabel">The RtlMicroLabel to go to.</param>
-        /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter MicroGoto(string microLabel)
+        /// <param name="index">The index of the target <see cref="RtlInstruction"/>
+        /// <returns>A reference to this <see cref="RtlEmitter"/>.</returns>
+        public RtlEmitter MicroGoto(int index)
         {
-            Instructions.Add(new RtlMicroGoto(null, microLabel));
+            Instructions.Add(new RtlMicroGoto(null, index));
             return this;
         }
 
         /// <summary>
-        /// Generates a conditional <see cref="RtlMicroGoto"/> to a <see cref="RtlMicroLabel" />.
+        /// Generates a conditional <see cref="RtlMicroGoto"/> to another instruction inside
+        /// the current <see cref="RtlInstructionCluster"/>.
         /// </summary>
-        /// <param name="cond">Condition which, when true, causes a transfer to the targetted microlabel</param>
-        /// <param name="microLabel">That RtlMicroLabel to go to.</param>
-        /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter MicroBranch(Expression cond, string microLabel)
+        /// <param name="cond">Condition which, when true, causes a transfer to the targetted instruction</param>
+        /// <param name="index">The index of the target <see cref="RtlInstruction"/>.
+        /// <returns>A reference to this <see cref="RtlEmitter"/>.</returns>
+        public RtlEmitter MicroBranch(Expression cond, int index)
         {
-            Instructions.Add(new RtlMicroGoto(cond, microLabel));
-            return this;
-        }
-
-        /// <summary>
-        /// Generates a microlabel, only reachable via a corresponding 
-        /// <see cref="RtlMicroGoto"/> or <see cref="RtlMicroBranch"/> instruction.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter MicroLabel(string name)
-        {
-            Instructions.Add(new RtlMicroLabel(name));
+            Instructions.Add(new RtlMicroGoto(cond, index));
             return this;
         }
 

@@ -34,24 +34,22 @@ namespace Reko.Core.Rtl
     /// control flow in RTL code. 
     /// </summary>
     /// <remarks>
-    /// Micro-gotos are restricted to labels within the same <see cref="RtlInstructionCluster"/>.
+    /// Micro-gotos are restricted to offsets within the same <see cref="RtlInstructionCluster"/>.
     /// If you want to jump outside of the cluster, you may only jump to the start of a rewritten
     /// instruction using the <see cref="RtlGoto"/> instruction.
     /// </remarks>
     public class RtlMicroGoto : RtlInstruction
     {
-        public RtlMicroGoto(object microTarget)
+        public RtlMicroGoto(int indexTarget)
         {
-            Debug.Assert(microTarget is string || microTarget is RtlLocation);
-            this.Target = microTarget;
+            this.Target = indexTarget;
             this.Class = InstrClass.Transfer;
         }
 
-        public RtlMicroGoto(Expression? condition, object microTarget)
+        public RtlMicroGoto(Expression? condition, int indexTarget)
         {
-            Debug.Assert(microTarget is string || microTarget is RtlLocation);
             this.Condition = condition;
-            this.Target = microTarget;
+            this.Target = indexTarget;
             this.Class = InstrClass.ConditionalTransfer;
         }
 
@@ -62,14 +60,12 @@ namespace Reko.Core.Rtl
         public Expression? Condition { get; }
 
         /// <summary>
-        /// Name of the microLabelName to jump to. The micro label must be inside
+        /// Name of the microLabelName to jump to. 
+        /// The target must be an index into the <see cref="RtlInstruction"/>s of the 
+        /// current <see cref="RtlInstructionCluster"/>.
         /// the current RtlInstructionCluster.
         /// </summary>
-        /// <remarks>
-        /// The target can either be a symbolic string or an RtlLocation. Symbolic 
-        /// strings are translated to RtlLocations during scanning.
-        /// </remarks>
-        public object Target { get; }
+        public int Target { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

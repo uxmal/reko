@@ -1330,11 +1330,6 @@ namespace Reko.Scanning
         {
             throw new NotImplementedException();
         }
-
-        public SlicerResult VisitMicroLabel(RtlMicroLabel uLabel)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class SlicerResult

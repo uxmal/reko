@@ -318,11 +318,6 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public Instruction VisitMicroLabel(RtlMicroLabel uLabel, Context ctx)
-        {
-            throw new NotImplementedException();
-        }
-
         public Instruction VisitNop(RtlNop rtlNop, Context ctx)
         {
             return null!;

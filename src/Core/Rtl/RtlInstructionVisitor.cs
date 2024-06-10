@@ -33,7 +33,6 @@ namespace Reko.Core.Rtl
         T VisitIf(RtlIf rtlIf);
         T VisitInvalid(RtlInvalid invalid);
         T VisitMicroGoto(RtlMicroGoto uGoto);
-        T VisitMicroLabel(RtlMicroLabel uLabel);
         T VisitNop(RtlNop rtlNop);
         T VisitReturn(RtlReturn ret);
         T VisitSideEffect(RtlSideEffect side);
@@ -49,7 +48,6 @@ namespace Reko.Core.Rtl
         T VisitIf(RtlIf rtlIf, C ctx);
         T VisitInvalid(RtlInvalid invalid, C ctx);
         T VisitMicroGoto(RtlMicroGoto uGoto, C ctx);
-        T VisitMicroLabel(RtlMicroLabel uLabel, C ctx);
         T VisitNop(RtlNop rtlNop, C ctx);
         T VisitReturn(RtlReturn ret, C ctx);
         T VisitSideEffect(RtlSideEffect side, C ctx);

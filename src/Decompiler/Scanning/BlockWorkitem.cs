@@ -865,11 +865,6 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public bool VisitMicroLabel(RtlMicroLabel uLabel)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VisitReturn(RtlReturn ret)
         {
             if ((ret.Class & InstrClass.Delay) != 0)

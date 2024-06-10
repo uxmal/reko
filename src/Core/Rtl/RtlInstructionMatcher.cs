@@ -90,12 +90,6 @@ namespace Reko.Core.Rtl
             return mgo.Target == mgPat.Target;
         }
 
-        public bool VisitMicroLabel(RtlMicroLabel mlabel, ExpressionMatch m)
-        {
-            return (pattern is RtlMicroLabel mpattern &&
-                mlabel.Name == mpattern.Name);
-        }
-
         public bool VisitIf(RtlIf rtlIf, ExpressionMatch m)
         {
             if (pattern is not RtlIf pIf)
