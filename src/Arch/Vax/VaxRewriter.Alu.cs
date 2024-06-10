@@ -139,7 +139,7 @@ namespace Reko.Arch.Vax
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;
@@ -423,6 +423,29 @@ namespace Reko.Arch.Vax
             }
             m.Assign(m.Mem(width, sp), op0);
             NZ00(op0);
+        }
+
+        private void RewritePushr()
+        {
+            var sp = binder.EnsureRegister(Registers.sp);
+            var mask = RewriteSrcOp(0, PrimitiveType.Word32);
+            if (mask is Constant cMask && !cMask.IsZero)
+            {
+                var uMask = cMask.ToUInt32();
+                int i = 14;
+                for (uint mm = 1u << 14; i >= 0; mm >>= 1, --i)
+                {
+                    if ((uMask & mm) != 0)
+                    {
+                        m.Assign(sp, m.ISubS(sp, 4));
+                        m.Assign(m.Mem32(sp), binder.EnsureRegister(
+                            arch.GetRegister(i)!));
+                    }
+                }
+                return;
+            }
+            EmitUnitTest();
+            m.Invalid();
         }
 
         private void RewritePusha()

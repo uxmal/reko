@@ -18,20 +18,17 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using System.Diagnostics;
-using System.Linq;
-using Reko.Core.Machine;
-using Reko.Core.Operators;
-using Reko.Core.Services;
-using Reko.Core.Memory;
-using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.Vax
 {
@@ -320,7 +317,6 @@ namespace Reko.Arch.Vax
                 case Mnemonic.popr:  goto default;
                 case Mnemonic.prober: RewriteProber(); break;
                 case Mnemonic.probew: goto default;
-                case Mnemonic.pushr:  goto default;
 
                 case Mnemonic.pushab: RewritePusha(); break;
                 case Mnemonic.pushal: RewritePusha(); break;
@@ -328,6 +324,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.pushaw: RewritePusha(); break;
                 case Mnemonic.pushaq: RewritePusha(); break;
                 case Mnemonic.pushl: RewritePush(PrimitiveType.Word32); break;
+                case Mnemonic.pushr: RewritePushr(); break;
 
                 case Mnemonic.rei: RewriteRei(); break;
                 case Mnemonic.ret: RewriteRet(); break;

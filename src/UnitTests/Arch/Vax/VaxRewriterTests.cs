@@ -21,13 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Vax;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Vax
 {
@@ -1665,12 +1659,13 @@ namespace Reko.UnitTests.Arch.Vax
         {
             Given_HexString("9F EF A7 39 02 00 ");
             AssertCode(
-                "0|L--|00010000(6): 5 instructions",
+                "0|L--|00010000(6): 6 instructions",
                 "1|L--|sp = sp - 4<32>",
-                "2|L--|Mem0[sp:word32] = 000339AD",
-                "3|L--|ZN = cond(0x000339AD<p32>)",
-                "4|L--|C = false",
-                "5|L--|V = false");
+                "2|L--|v4 = 000339AD",
+                "3|L--|Mem0[sp:word32] = v4",
+                "4|L--|ZN = cond(v4)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -1728,6 +1723,18 @@ namespace Reko.UnitTests.Arch.Vax
                 "4|L--|ZN = cond(v5)",
                 "5|L--|C = false",
                 "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_pushr()
+        {
+            Given_HexString("BB03");
+            AssertCode(     // pushr	#0003
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|sp = sp - 4<i32>",
+                "2|L--|Mem0[sp:word32] = r1",
+                "3|L--|sp = sp - 4<i32>",
+                "4|L--|Mem0[sp:word32] = r0");
         }
 
         [Test]

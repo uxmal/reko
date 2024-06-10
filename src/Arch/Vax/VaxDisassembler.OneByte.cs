@@ -18,10 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core;
 using Reko.Core.Machine;
 
@@ -232,8 +228,8 @@ namespace Reko.Arch.Vax
  /* B7 */ Instr(Mnemonic.decw,  ww), 
  /* B8 */ Instr(Mnemonic.bispsw, rw), 
  /* B9 */ Instr(Mnemonic.bicpsw, rw), 
- /* BA */ Instr(Mnemonic.popr,  -1), 
- /* BB */ Instr(Mnemonic.pushr,  -1), 
+ /* BA */ Instr(Mnemonic.popr,  rw), 
+ /* BB */ Instr(Mnemonic.pushr, rw), 
  /* BC */ Instr(Mnemonic.chmk,  rw), 
  /* BD */ Instr(Mnemonic.chme,  rw), 
  /* BE */ Instr(Mnemonic.chms,  rw), 

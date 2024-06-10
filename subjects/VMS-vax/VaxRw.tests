@@ -257,9 +257,9 @@
         [Test]
         public void VaxRw_popr()
         {
-            Given_HexString("BA");
-            AssertCode(     // popr
-                "0|L--|0000721C(1): 1 instructions",
+            Given_HexString("BA53");
+            AssertCode(     // popr	r3
+                "0|L--|0000721C(2): 1 instructions",
                 "1|L--|@@@");
         }
 
@@ -293,9 +293,9 @@
         [Test]
         public void VaxRw_pushr()
         {
-            Given_HexString("BB");
-            AssertCode(     // pushr
-                "0|L--|00007CF7(1): 1 instructions",
+            Given_HexString("BBA6A6");
+            AssertCode(     // pushr	-5A(r6)
+                "0|L--|00007CF7(3): 1 instructions",
                 "1|L--|@@@");
         }
 

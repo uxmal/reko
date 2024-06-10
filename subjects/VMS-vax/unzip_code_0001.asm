@@ -10523,6 +10523,12 @@ l00018F5E:
 
 ;; fn00018F66: 00018F66
 ;;   Called from:
+;;     00009135 (in fn00008EC2)
+;;     0000915E (in fn00008EC2)
+;;     00009216 (in fn00008EC2)
+;;     00009243 (in fn00008EC2)
+;;     0000950C (in fn00008EC2)
+;;     00009617 (in fn00008EC2)
 ;;     0000975A (in fn00009746)
 ;;     000098CC (in fn000098B6)
 fn00018F66 proc
@@ -10546,6 +10552,9 @@ fn00018F66 proc
 
 ;; fn00018FA9: 00018FA9
 ;;   Called from:
+;;     0000917B (in fn00008EC2)
+;;     00009260 (in fn00008EC2)
+;;     00009523 (in fn00008EC2)
 ;;     00009797 (in fn00009746)
 ;;     00009899 (in fn00009746)
 fn00018FA9 proc
@@ -10587,6 +10596,8 @@ fn00018FA9 proc
 	Invalid
 
 ;; fn0001902B: 0001902B
+;;   Called from:
+;;     00008F9A (in fn00008EC2)
 fn0001902B proc
 	movab	@00019320,r6
 	movab	-00BC(sp),sp

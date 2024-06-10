@@ -71,6 +71,12 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        public void VaxDis_movl_reg_longwordDisplacementDeferred()
+        {
+            AssertCode("movl\tr9,001037E5", "D0 59 EF DE 37 00 00");
+        }
+
+        [Test]
         public void VaxDis_movw_IndexedDisplacementDeferred()
         {
             AssertCode("movw\t00120454[r0],r0", "b0 40 ef 4d 04 02 00 50");
@@ -80,6 +86,12 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxDis_pushl_imm()
         {
             AssertCode("pushl\t#00000000", 0xDD, 0x00);
+        }
+
+        [Test]
+        public void VaxRw_pushr()
+        {
+            AssertCode("pushr\t#0003", "BB03");
         }
 
         [Test]

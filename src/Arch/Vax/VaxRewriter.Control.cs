@@ -234,14 +234,20 @@ namespace Reko.Arch.Vax
         private void RewriteCallg()
         {
             var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
-            if (callDst is Address addr)
+            if (callDst is MemoryAccess mem)
             {
-                callDst = addr += 2;
-            }
-            else if (callDst is MemoryAccess mem)
-            {
-                callDst = mem.EffectiveAddress;
-                callDst = m.IAddS(callDst, 2);
+                if (mem.EffectiveAddress is Address addr)
+                {
+                    callDst = addr + 2;
+                }
+                else if (mem.EffectiveAddress is Constant cAddr)
+                {
+                    callDst = Address.Ptr32(cAddr.ToUInt32() + 2);
+                }
+                else
+                {
+                    callDst = m.IAddS(mem.EffectiveAddress, 2);
+                }
             }
             else
             {
@@ -255,16 +261,22 @@ namespace Reko.Arch.Vax
         private void RewriteCalls()
         {
             var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
-            if (callDst is Address addr)
+            if (callDst is MemoryAccess mem)
             {
-                callDst = addr += 2;
+                if (mem.EffectiveAddress is Address addr)
+                {
+                    callDst = addr + 2;
+                }
+                else if (mem.EffectiveAddress is Constant cAddr)
+                {
+                    callDst = Address.Ptr32(cAddr.ToUInt32() + 2);
+                }
+                else
+                {
+                    callDst = m.IAddS(mem.EffectiveAddress, 2);
+                }
             }
-            else if (callDst is MemoryAccess mem)
-            {
-                callDst = mem.EffectiveAddress;
-                callDst = m.IAddS(callDst, 2);
-            }
-            else 
+            else
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();

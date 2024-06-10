@@ -26,8 +26,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Vax
 {
@@ -202,22 +200,14 @@ namespace Reko.Arch.Vax
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
         {
             bool deferred = ((bSpecifier >> 4) & 0x1) != 0;
-
             if (reg.Number == 15)
             {
-                    var addr = Address.Ptr32((uint) ((int) rdr.Address.ToLinear() + c.ToInt32()));
-                if (!deferred)
+                var addr = Address.Ptr32((uint) ((int) rdr.Address.ToLinear() + c.ToInt32()));
+                return new MemoryOperand(width)
                 {
-                    return AddressOperand.Create(addr);
-                }
-                else
-                {
-                    return new MemoryOperand(width)
-                    {
-                        Offset = addr.ToConstant(),
-                        Deferred = true
-                    };
-                }
+                    Offset = addr.ToConstant(),
+                    Deferred = deferred
+                };
             }
             return new MemoryOperand(width)
             {
