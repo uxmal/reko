@@ -30,32 +30,12 @@ namespace Reko.Arch.M68k
 {
 #pragma warning disable IDE1006
 
-    public interface M68kOperand
-    {
-        T Accept<T>(M68kOperandVisitor<T> visitor);
-    }
-
-    public interface M68kOperandVisitor<T>
-    {
-        T Visit(MemoryOperand mem);
-        T Visit(PredecrementMemoryOperand pre);
-        T Visit(M68kAddressOperand addressOperand);
-        T Visit(PostIncrementMemoryOperand post);
-        T Visit(RegisterSetOperand registerSet);
-        T Visit(IndexedOperand indexedOperand);
-        T Visit(IndirectIndexedOperand indirectIndexedOperand);
-        T Visit(DoubleRegisterOperand doubleRegisterOperand);
-        T Visit(BitfieldOperand bitfield);
-    }
-
-    public abstract class M68kOperandImpl : AbstractMachineOperand, M68kOperand
+    public abstract class M68kOperandImpl : AbstractMachineOperand
     {
         public M68kOperandImpl(PrimitiveType dataWidth)
             : base(dataWidth)
         {
         }
-
-        public abstract T Accept<T>(M68kOperandVisitor<T> visitor);
     }
 
     public class DoubleRegisterOperand : M68kOperandImpl
@@ -68,11 +48,6 @@ namespace Reko.Arch.M68k
 
         public RegisterStorage Register1 { get; private set; }
         public RegisterStorage Register2 { get; private set; }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -98,11 +73,6 @@ namespace Reko.Arch.M68k
         {
             this.Base = baseReg;
             this.Offset = offset;
-        }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         public static MemoryOperand Indirect(PrimitiveType width, RegisterStorage baseReg)
@@ -147,11 +117,6 @@ namespace Reko.Arch.M68k
             this.Register = areg;
         }
 
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteString("-(");
@@ -168,11 +133,6 @@ namespace Reko.Arch.M68k
             : base(dataWidth)
         {
             this.Register = areg;
-        }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -199,11 +159,6 @@ namespace Reko.Arch.M68k
             this.XRegister = x;
             this.XWidth = width;
             this.Scale = (byte)scale;
-        }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

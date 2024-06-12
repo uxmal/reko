@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.M68k
 {
-    public class BitfieldOperand : AbstractMachineOperand, M68kOperand
+    public class BitfieldOperand : AbstractMachineOperand
     {
         public MachineOperand BitOffset;
         public MachineOperand BitWidth;
@@ -37,11 +37,6 @@ namespace Reko.Arch.M68k
         {
             this.BitWidth = bitwidth;
             this.BitOffset = offset;
-        }
-
-        public T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

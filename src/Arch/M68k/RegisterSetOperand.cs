@@ -35,12 +35,7 @@ namespace Reko.Arch.M68k
             this.BitSet = bitset;
         }
 
-        public uint BitSet { get; set; }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public uint BitSet { get; }
 
         public static MachineOperand CreateReversed(ushort vv, PrimitiveType width)
         {

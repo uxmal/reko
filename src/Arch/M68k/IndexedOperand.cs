@@ -32,7 +32,7 @@ namespace Reko.Arch.M68k
     /// <summary>
     /// The Godzilla of address operands, supporting Indirect pre- and post-indexed operation.
     /// </summary>
-    public class IndexedOperand : AbstractMachineOperand, M68kOperand
+    public class IndexedOperand : AbstractMachineOperand
     {
         public Constant? BaseDisplacement;
         public Constant? OuterDisplacement;
@@ -63,11 +63,6 @@ namespace Reko.Arch.M68k
             this.IndexScale = index_scale;
             this.preindex = preindex;
             this.postindex = postindex;
-        }
-
-        public T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
