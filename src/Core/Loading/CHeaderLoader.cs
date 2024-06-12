@@ -60,7 +60,7 @@ namespace Reko.Core.Loading
             foreach (var decl in declarations)
             {
                 if (IsAttributeOnlyDecl(decl))
-                    symbolTable.AddAnnotationsFromAttributes(decl.attribute_list);
+                    symbolTable.ProcessDeclarationAttributes(decl.attribute_list);
                 else 
                     symbolTable.AddDeclaration(decl);
             }
@@ -70,6 +70,7 @@ namespace Reko.Core.Loading
                 Procedures = symbolTable.Procedures.ToList(),
                 Globals = symbolTable.Variables.Select(ConvertToGlobalVariable).ToList(),
                 Annotations = symbolTable.Annotations,
+                Segments = symbolTable.Segments,
             };
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             var tlib = tldser.Load(slib);

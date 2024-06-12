@@ -21,6 +21,7 @@
 using Reko.Core.Collections;
 using Reko.Core.Loading;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,7 @@ namespace Reko.Core
             LoadProcedures(sLib);
             LoadGlobals(sLib);
             LoadAnnotations(sLib);
+            LoadSegments(sLib);
             return library;
         }
 
@@ -139,6 +141,20 @@ namespace Reko.Core
                 {
                     var annotation = new Annotation(addr, a.Text ?? "");
                     library.Annotations[addr] = annotation;
+                }
+            }
+        }
+
+        private void LoadSegments(SerializedLibrary sLib)
+        {
+            if (sLib.Segments is null)
+                return;
+            foreach (var s in sLib.Segments)
+            {
+                var seg = MemoryMap_v1.LoadSegment(s, platform, NullEventListener.Instance);
+                if (seg is not null)
+                {
+                    library.Segments.Add(seg.Address, seg);
                 }
             }
         }

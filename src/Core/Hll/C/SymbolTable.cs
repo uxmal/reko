@@ -21,8 +21,8 @@
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Hll.C
 {
@@ -65,6 +65,7 @@ namespace Reko.Core.Hll.C
             this.Procedures = new List<ProcedureBase_v1>();
             this.Variables = new List<GlobalDataItem_v2>();
             this.Annotations = new List<Annotation_v3>();
+            this.Segments = new List<MemorySegment_v1>();
             this.PrimitiveTypes = primitiveTypes;
             this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(platform, this.NamedTypes);
@@ -80,6 +81,7 @@ namespace Reko.Core.Hll.C
         public List<ProcedureBase_v1> Procedures { get; private set; }
         public List<GlobalDataItem_v2> Variables { get; private set; }
         public List<Annotation_v3> Annotations { get; private set; }
+        public List<MemorySegment_v1> Segments { get; private set; }
 
         public TypeSizer Sizer { get; private set; }
 
@@ -90,7 +92,7 @@ namespace Reko.Core.Hll.C
         /// <param name="decl"></param>
         public List<SerializedType> AddDeclaration(Decl decl)
         {
-            AddAnnotationsFromAttributes(decl.attribute_list);
+            ProcessDeclarationAttributes(decl.attribute_list);
 
             var types = new List<SerializedType>();
             if (decl is FunctionDecl)
@@ -149,33 +151,90 @@ namespace Reko.Core.Hll.C
             return types;
         }
 
-        public void AddAnnotationsFromAttributes(List<CAttribute>? attributes)
+        /// <summary>
+        /// Process the any reko-specific attributes before a declaration.
+        /// </summary>
+        /// <param name="attributes">The attributes to process.</param>
+        /// <exception cref="FormatException"></exception>
+        public void ProcessDeclarationAttributes(List<CAttribute>? attributes)
         {
             if (attributes is null)
                 return;
-            var attrAnnotations = attributes
-                .Where(a =>
-                    a.Name.Components.Length == 2 &&
-                    a.Name.Components[0] == "reko" &&
-                    a.Name.Components[1] == "annotation")
-                .Select(a =>
+            foreach (var a in attributes)
+            {
+                if (a.Name.Components.Length != 2 ||
+                    a.Name.Components[0] != "reko")
+                    continue;
+
+                var tokenStream = new TokenStream(a.Tokens);
+                switch (a.Name.Components[1])
                 {
-                    if (a.Tokens is null ||
-                        a.Tokens.Count != 3 ||
-                        a.Tokens[0].Type != CTokenType.StringLiteral ||
-                        a.Tokens[1].Type != CTokenType.Comma ||
-                        a.Tokens[2].Type != CTokenType.StringLiteral)
+                case "annotation":
+                    var ann = ProcessAnnotationAttribute(tokenStream);
+                    if (ann is null)
                         throw new FormatException(
                             "[[reko::annotation]] attribute is malformed. " +
                             "Expected an address and an annotation text separated by commas.");
+                    this.Annotations.Add(ann);
+                    break;
+                case "segment":
+                    var seg = ProcessSegmentAttribute(tokenStream);
+                    if (seg is null)
+                        throw new FormatException(
+                            "[[reko::segment]] attribute is malformed. " +
+                            "Expected an address, a segment name, a segment size, and access mode.");
+                    this.Segments.Add(seg);
+                    break;
+                }
+            }
+        }
 
-                    return new Annotation_v3
-                    {
-                        Address = (string) a.Tokens[0].Value!,
-                        Text = (string) a.Tokens[2].Value!
-                    };
-                });
-            this.Annotations.AddRange(attrAnnotations);
+        private MemorySegment_v1? ProcessSegmentAttribute(TokenStream tokenStream)
+        {
+            if (!tokenStream.ExpectStringLiteral(out var sAddress))
+                return null;
+            if (!tokenStream.Expect(CTokenType.Comma))
+                return null;
+            if (!tokenStream.ExpectStringLiteral(out var name))
+                return null;
+            if (!tokenStream.Expect(CTokenType.Comma))
+                return null;
+            if (!tokenStream.ExpectNumericLiteral(out var size))
+                return null;
+            if (!tokenStream.Expect(CTokenType.Comma))
+                return null;
+            if (!tokenStream.ExpectStringLiteral(out var attrs))
+                return null;
+            string? description = null;
+            if (tokenStream.PeekAndDiscard(CTokenType.Comma))
+            {
+                if (!tokenStream.ExpectStringLiteral(out description))
+                    return null;
+            }
+            return new MemorySegment_v1
+            {
+                Address = sAddress,
+                Name = name,
+                Size = $"0x{size:X}",
+                Attributes = attrs,
+                Description = description
+            };
+        }
+
+        private Annotation_v3? ProcessAnnotationAttribute(TokenStream tokenStream)
+        {
+            if (!tokenStream.ExpectStringLiteral(out var sAddress))
+                return null;
+            if (!tokenStream.Expect(CTokenType.Comma))
+                return null;
+            if (!tokenStream.ExpectStringLiteral(out var text))
+                return null;
+            var annotation = new Annotation_v3
+            {
+                Address = sAddress,
+                Text = text,
+            };
+            return annotation;
         }
 
         private string? GetCallingConventionFromAttributes(List<CAttribute>? attributes)
@@ -280,6 +339,68 @@ namespace Reko.Core.Hll.C
                 return null;
             var cp = new CharacteristicsParser(attrCharacteristics);
             return cp.Parse();
+        }
+
+        private class TokenStream
+        {
+            private readonly CToken[] tokens;
+            private int iNext;
+
+            public TokenStream(List<CToken>? tokens)
+            {
+                this.tokens = tokens?.ToArray() ?? Array.Empty<CToken>();
+                this.iNext = 0;
+            }
+
+            public TokenStream(CToken[]? tokens)
+            {
+                this.tokens = tokens ?? Array.Empty<CToken>();
+                this.iNext = 0;
+            }
+
+            internal bool ExpectStringLiteral([MaybeNullWhen(false)] out string sValue)
+            {
+                if (iNext < tokens.Length && tokens[iNext].Type == CTokenType.StringLiteral)
+                {
+                    sValue = (string) tokens[iNext].Value!;
+                    ++iNext;
+                    return true;
+                }
+                sValue = null;
+                return false;
+            }
+
+            public bool Expect(CTokenType type)
+            {
+                if (iNext < tokens.Length && tokens[iNext].Type == type)
+                {
+                    ++iNext;
+                    return true;
+                }
+                return false;
+            }
+
+            public bool ExpectNumericLiteral(out long size)
+            {
+                if (iNext < tokens.Length && tokens[iNext].Type == CTokenType.NumericLiteral)
+                {
+                    size = Convert.ToInt64(tokens[iNext].Value);
+                    ++iNext;
+                    return true;
+                }
+                size = 0;
+                return false;
+            }
+
+            public bool PeekAndDiscard(CTokenType type)
+            {
+                if (iNext < tokens.Length && tokens[iNext].Type == type)
+                {
+                    ++iNext;
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }

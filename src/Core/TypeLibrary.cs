@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Loading;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -72,6 +73,7 @@ namespace Reko.Core
             this.GlobalsByAddress = new Dictionary<Address, UserGlobal>();
             this.Modules = new Dictionary<string, ModuleDescriptor>();
             this.Annotations = new Dictionary<Address, Annotation>();
+            this.Segments = new SortedList<Address, ImageSegment>();
         }
 
         public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
@@ -82,6 +84,7 @@ namespace Reko.Core
         public IDictionary<string, DataType> ImportedGlobals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
         public IDictionary<Address, Annotation> Annotations { get; private set; }
+        public SortedList<Address, ImageSegment> Segments { get; }
 
         private static StringComparer Comparer(bool caseSensitive) =>
             caseSensitive

@@ -76,7 +76,12 @@ namespace Reko.Core.Serialization
                     segment.Name!);
                 return null;
             }
-            if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
+            string? sSize = segment.Size;
+            if (sSize is not null && sSize.StartsWith("0x"))
+            {
+                sSize = sSize.Substring(2);
+            }
+            if (!uint.TryParse(sSize, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
             {
                 listener.Warn(
                     "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",

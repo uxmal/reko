@@ -170,5 +170,27 @@ int caller(fn thing_to_call);
                 "The following code formats my hard drive on Fridays", 
                 a.Text);
         }
+
+        [Test]
+        public void Chl_reko_segment()
+        {
+            Given_Platform();
+            var addr = Address.Ptr32(0x02342000);
+            platform.Setup(p => p.TryParseAddress("02342000", out addr)).Returns(true);
+
+            var file = Given_File(@"
+[[reko::segment(""02342000"", "".text"", 0x0400, ""rx"")]]
+");
+            var sc = new ServiceContainer();
+            var chl = new CHeaderLoader(sc, ImageLocation.FromUri("file:foo.inc"), file);
+            var typelib = chl.Load(platform.Object, new TypeLibrary());
+
+            Assert.AreEqual(1, typelib.Segments.Count);
+            var s = typelib.Segments.Values.First();
+            Assert.AreEqual(0x02342000, s.Address.ToLinear());
+            Assert.AreEqual(".text", s.Name);
+            Assert.AreEqual(0x400, s.Size);
+            Assert.AreEqual(AccessMode.ReadExecute, s.Access);
+        }
     }
 }

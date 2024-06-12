@@ -56,6 +56,9 @@ namespace Reko.Core.Serialization
         [XmlElement("annotation", typeof(Annotation_v3))]
         public List<Annotation_v3> Annotations;
 
+        [XmlElement("segment", typeof(MemorySegment_v1))]
+        public List<MemorySegment_v1> Segments;
+
         //$REVIEW: smell of singleton.
         private static XmlSerializer? serializer;
 
@@ -64,6 +67,7 @@ namespace Reko.Core.Serialization
             this.Procedures = new List<ProcedureBase_v1>();
             this.Globals = new List<GlobalVariable_v1>();
             this.Annotations = new List<Annotation_v3>();
+            this.Segments = new List<MemorySegment_v1>();
         }
 
         public static SerializedLibrary LoadFromStream(Stream stm)
