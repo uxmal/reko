@@ -55,6 +55,7 @@ namespace Reko.Environments.C64
             this.InstructionBitSize = 8;
             this.StackRegister = stackRegister;
             this.FramePointerType = PrimitiveType.Ptr16;
+            this.WordWidth = PrimitiveType.Word16;
             program = new SortedList<ushort, C64BasicInstruction>();
             mpAddrToInstr = new BTreeDictionary<Address, C64BasicInstruction>();
         }

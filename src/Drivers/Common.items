@@ -183,7 +183,7 @@ by the PreBuild.targets file.
 
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\C64\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\C64\*.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Dreamcast\vmu.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\bios_kbd.inc" />

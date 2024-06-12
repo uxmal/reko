@@ -209,7 +209,7 @@
       <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" nuget_target="c:" />
       <File Source="$(var.BbcMicro.TargetPath)" nuget_target="f:" />
       <File Source="$(var.C64.TargetPath)" nuget_target="f:" />
-      <File Source="$(var.C64.ProjectDir)C64.xml" nuget_target="c:" />
+      <File Source="$(var.C64.ProjectDir)C64.inc" nuget_target="c:" />
       <File Source="$(var.Cpm.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" nuget_target="c:" />
       <File Source="$(var.Dreamcast.TargetPath)" nuget_target="f:" />

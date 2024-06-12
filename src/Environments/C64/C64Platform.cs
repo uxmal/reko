@@ -27,6 +27,8 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using System.Net.Http.Headers;
+using System.Linq;
 
 namespace Reko.Environments.C64
 {
@@ -53,6 +55,13 @@ namespace Reko.Environments.C64
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
             return new C64Emulator(segmentMap, importReferences);
+        }
+
+        public override SegmentMap? CreateAbsoluteMemoryMap()
+        {
+            EnsureTypeLibraries("c64");
+            var segmentMap = new SegmentMap(Metadata!.Segments.Values.ToArray());
+            return segmentMap;
         }
 
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
