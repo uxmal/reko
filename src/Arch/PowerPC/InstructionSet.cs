@@ -20,6 +20,7 @@
 
 // "Power ISA(tm) Version 3.0 - November 30, 2015 - IBM
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Diagnostics;
@@ -183,13 +184,17 @@ namespace Reko.Arch.PowerPC
         protected static Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
         {
             return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(
-                32 - (ppcBitPosition + bits), bits, "", decoders);
+                new Bitfield(32 - (ppcBitPosition + bits), bits),
+                "",
+                decoders);
         }
 
         protected static Decoder Mask(int ppcBitPosition, int bits, string diagnostic, params Decoder[] decoders)
         {
             return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(
-                32 - (ppcBitPosition + bits), bits, diagnostic, decoders);
+                new Bitfield(32 - (ppcBitPosition + bits), bits),
+                diagnostic,
+                decoders);
         }
 
         protected Decoder Sparse(int ppcBitPosition, int bits, params (uint, Decoder)[] sparseDecoders)
@@ -217,7 +222,7 @@ namespace Reko.Arch.PowerPC
                     decoders[i] = defaultDecoder;
             }
             var leBitPosition = 32 - (ppcBitPosition + bits);
-            return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(leBitPosition, bits, tag, decoders);
+            return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(new Bitfield(leBitPosition, bits), tag, decoders);
         }
 
         protected Decoder Select(int ppcBitPosition, int bits, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)

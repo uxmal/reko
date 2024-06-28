@@ -1086,7 +1086,7 @@ rulong hwnd;
         private bool DoFILL(Expression[] args)
         {
             byte val = 0;
-            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], ref val))
+            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], out val))
             {
                 byte[] membuf = new byte[PAGE_SIZE];
                 int cb = Math.Min((int)len, membuf.Length);

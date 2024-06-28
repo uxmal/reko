@@ -41,21 +41,15 @@ namespace Reko.Core.Machine
         where TInstr : MachineInstruction
         where TMnemonic : struct
     {
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+        public Enumerator GetEnumerator() => new Enumerator(this);
 
         IEnumerator<TInstr> IEnumerable<TInstr>.GetEnumerator() => GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public struct Enumerator : IEnumerator<TInstr>
         {
-            private DisassemblerBase<TInstr, TMnemonic> dasm;
+            private readonly DisassemblerBase<TInstr, TMnemonic> dasm;
             private TInstr current;
 
             public Enumerator(DisassemblerBase<TInstr, TMnemonic> disassemblerBase)
@@ -64,11 +58,11 @@ namespace Reko.Core.Machine
                 this.current = default!;
             }
 
-            public TInstr Current => this.current;
+            public readonly TInstr Current => this.current;
 
-            object IEnumerator.Current => this.current;
+            readonly object IEnumerator.Current => this.current;
 
-            public void Dispose()
+            public readonly void Dispose()
             {
             }
 
@@ -81,7 +75,7 @@ namespace Reko.Core.Machine
                 return true;
             }
 
-            public void Reset()
+            public readonly void Reset()
             {
                 throw new NotSupportedException();
             }
@@ -178,7 +172,7 @@ namespace Reko.Core.Machine
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int bitPos, int bitLength, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
-            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPos, bitLength, "", decoders);
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), "", decoders);
         }
 
         /// <summary>
@@ -198,7 +192,7 @@ namespace Reko.Core.Machine
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int bitPos, int bitLength, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
-            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPos, bitLength, tag, decoders);
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), tag, decoders);
         }
 
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int p1, int l1, int p2, int l2, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
@@ -324,7 +318,7 @@ namespace Reko.Core.Machine
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
             var decoders = Decoder<TDasm, TMnemonic, TInstr>.BuildSparseDecoderArray(bits, defaultDecoder, sparseDecoders);
-            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPosition, bits), tag, decoders);
         }
 
         /// <summary>

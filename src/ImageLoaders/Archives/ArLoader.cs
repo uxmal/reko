@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Archives
     public class ArLoader : ImageLoader
     {
         private const string HeaderSignature = "!<arch>\n";
-        private Dictionary<string, uint> symbols;
+        private readonly Dictionary<string, uint> symbols;
         private readonly IEventListener listener;
         private byte[]? longFilenames;
 

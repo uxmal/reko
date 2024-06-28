@@ -175,7 +175,7 @@ namespace Reko.ImageLoaders.Coff
             IProcessorArchitecture? arch = null;
             switch (magic)
             {
-            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16"); break;
+            case 0x014C: arch = cfgSvc.GetArchitecture("x86-protected-32"); break;
             case 0x8664: arch = cfgSvc.GetArchitecture("x86-protected-64"); break;
             case 0xAA64: arch = cfgSvc.GetArchitecture("arm64"); break;
             }

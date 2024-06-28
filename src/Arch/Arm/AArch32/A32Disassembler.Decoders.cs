@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Diagnostics;
@@ -91,7 +92,7 @@ namespace Reko.Arch.Arm.AArch32
         private class CondMaskDecoder : MaskDecoder<A32Disassembler, Mnemonic, AArch32Instruction>
         {
             public CondMaskDecoder(int bitPos, int bitLength, string tag, params Decoder[] decoders)
-                : base(bitPos, bitLength, tag, decoders)
+                : base(new Bitfield(bitPos, bitLength), tag, decoders)
             { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)

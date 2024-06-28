@@ -830,7 +830,7 @@ namespace Reko.Arch.RiscV
                     Nyi("custom-2"),
                     instr48bit,
 
-                    new MaskDecoder(12, 3, "branches", branches),
+                    Mask(12, 3, "branches", branches),
                     Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Return, rd, r1, i),
                     Nyi("Reserved"),
                     Instr(Mnemonic.jal, InstrClass.Transfer | InstrClass.Call, Rd, J),
@@ -891,7 +891,7 @@ namespace Reko.Arch.RiscV
                         Instr(Mnemonic.c_addi16sp, Rsp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
                         Instr(Mnemonic.c_lui, R(7), ImmShS(12, bf_12_1_2_5))),
 
-                    new MaskDecoder(10, 2, "comp1",
+                    Mask(10, 2, "comp1",
                         Select(bf_12_1_2_5, u => u == 0, "",
                             Instr(Mnemonic.c_srli64, Rc(7)),
                             Instr(Mnemonic.c_srli, Rc(7), Imm(bf_12_1_2_5))
@@ -901,13 +901,13 @@ namespace Reko.Arch.RiscV
                             Instr(Mnemonic.c_srai, Rc(7), Imm(bf_12_1_2_5))
                         ),
                         Instr(Mnemonic.c_andi, Rc(7), ImmS(bf_12_1_2_5)),
-                        new MaskDecoder(12, 1, "comp1_1",
-                            new MaskDecoder(5, 2, "comp1_1_1",
+                        Mask(12, 1, "comp1_1",
+                            Mask(5, 2, "comp1_1_1",
                                 Instr(Mnemonic.c_sub, Rc(7), Rc(2)),
                                 Instr(Mnemonic.c_xor, Rc(7), Rc(2)),
                                 Instr(Mnemonic.c_or, Rc(7), Rc(2)),
                                 Instr(Mnemonic.c_and, Rc(7), Rc(2))),
-                            new MaskDecoder(5, 2, "comp1_1_2",
+                            Mask(5, 2, "comp1_1_2",
                                 WordSize(
                                     rv64: Instr(Mnemonic.c_subw, Rc(7),Rc(2)),
                                     rv128: Instr(Mnemonic.c_subw, Rc(7),Rc(2))),
@@ -939,7 +939,7 @@ namespace Reko.Arch.RiscV
                         rv64: Instr(Mnemonic.c_ldsp, R_nz(7), MemcSpRel(PrimitiveType.Word64, bf_2_3_12_1_5_2)),
                         rv128: Instr(Mnemonic.c_ldsp, R_nz(7), MemcSpRel(PrimitiveType.Word64, bf_2_3_12_1_5_2))
                     ),
-                    new MaskDecoder(12, 1,  "",
+                    Mask(12, 1,  "",
                         Select((2, 5), u => u == 0, "",
                             Instr(Mnemonic.c_jr, InstrClass.Transfer, R(7), useLr(7)),
                             Instr(Mnemonic.c_mv, R(7), R(2))),
@@ -962,13 +962,12 @@ namespace Reko.Arch.RiscV
 
                 return new Decoder[4]
                 {
-                    new MaskDecoder(13, 3, "compressed00", compressed00),
-                    new MaskDecoder(13, 3, "compressed01", compressed01),
-                    new MaskDecoder(13, 3, "compressed10", compressed10),
+                    Mask(13, 3, "compressed00", compressed00),
+                    Mask(13, 3, "compressed01", compressed01),
+                    Mask(13, 3, "compressed10", compressed10),
                     new W32Decoder(w32decoders)
                 };
             }
-
         }
     }
 }

@@ -23,7 +23,6 @@ using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.Core.Memory
 {
@@ -139,6 +138,5 @@ namespace Reko.Core.Memory
                 throw new ArgumentException($"The address {addr} is invalid.");
             return segment;
         }
-
     }
 }

@@ -524,7 +524,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // Commands
-        bool GetByte(Expression op, ref byte value)
+        bool GetByte(Expression op, out byte value)
         {
             if (GetRulong(op, out ulong temp) && temp <= Byte.MaxValue)
             {

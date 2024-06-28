@@ -18,7 +18,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.emu = emu;
         }
 
-        public Address InstructionPointer { get { return this.emu.InstructionPointer; } }
+        public Address InstructionPointer => this.emu.InstructionPointer;
 
         public class fCustomHandlerCallback
         {

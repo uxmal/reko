@@ -21,12 +21,8 @@
 using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
-using System.IO;
-using System.Globalization;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Xml.Schema;
 using System.Numerics;
 
 namespace Reko.Core.Expressions

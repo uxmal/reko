@@ -36,10 +36,10 @@ namespace Reko.Core.Machine
         private readonly Decoder<TDasm, TMnemonic, TInstr>[] decoders;
         private readonly string tag;
 
-        public MaskDecoder(int bitPos, int bitSize, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        public MaskDecoder(in Bitfield bitfield, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
-            this.bitfield = new Bitfield(bitPos, bitSize);
-            Debug.Assert(decoders.Length == (1 << bitSize), $"Inconsistent number of decoders {decoders.Length} (bitPos {bitPos} bitSize{bitSize:X})");
+            this.bitfield = bitfield;
+            Debug.Assert(decoders.Length == (1 << bitfield.Length), $"Inconsistent number of decoders {decoders.Length} (bitPos {bitfield.Position} bitSize{bitfield.Length:X})");
             this.decoders = decoders;
             this.tag = tag;
         }

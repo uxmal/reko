@@ -81,7 +81,7 @@ namespace Reko.Arch.Msp430
                 ExtDecoder extDecoder = new ExtDecoder(extDecoders);
 
 
-                Decoder rotations = new MaskDecoder(8, 2, "  rotations",
+                Decoder rotations = Mask(8, 2, "  rotations",
                    InstrX(Mnemonics.rrcm, a, N, r2),
                    InstrX(Mnemonics.rram, a, N, r2),
                    InstrX(Mnemonics.rlam, a, N, r2),
@@ -101,7 +101,7 @@ namespace Reko.Arch.Msp430
 
                 return new Decoder[16]
                 {
-                new MaskDecoder(4, 4, "  op0",
+                Mask(4, 4, "  op0",
                     InstrX(Mnemonics.mova, p,At,r2),
                     InstrX(Mnemonics.mova, p,Post,r2),
                     InstrX(Mnemonics.mova, p,Amp,r2),
@@ -122,7 +122,7 @@ namespace Reko.Arch.Msp430
                     InstrX(Mnemonics.adda, p,r,r2),
                     InstrX(Mnemonics.suba, p,r,r2)
                 ),
-                new MaskDecoder(6, 6, "  op1",
+                Mask(6, 6, "  op1",
                     Instr(Mnemonics.rrc, w, d),
                     Instr(Mnemonics.rrc, w, d),
                     Instr(Mnemonics.swpb, w16, d),

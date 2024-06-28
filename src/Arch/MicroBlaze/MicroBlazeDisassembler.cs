@@ -248,7 +248,7 @@ namespace Reko.Arch.MicroBlaze
         protected static MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> MaskBe(int beBitPos, int bitLength, string tag, params Decoder[] decoders)
         {
             var pos = 32 - (beBitPos + bitLength);
-            return new MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(pos, bitLength, tag, decoders);
+            return new MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(new Bitfield(pos, bitLength), tag, decoders);
         }
 
         protected static MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> SparseBe(int beBitPos, int bitLength, string tag, Decoder defaultDecoder, params (uint,Decoder)[] decoders)

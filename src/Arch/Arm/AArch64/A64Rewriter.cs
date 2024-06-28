@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm.AArch64
     // https://developer.arm.com/technologies/neon/intrinsics?_ga=2.34513633.1180694635.1535627528-1335591578.1525783726
     public partial class A64Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static Intrinsics intrinsic = new();
+        private static readonly Intrinsics intrinsic = new();
 
         private readonly Arm64Architecture arch;
         private readonly EndianImageReader rdr;
