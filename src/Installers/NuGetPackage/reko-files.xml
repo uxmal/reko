@@ -55,6 +55,7 @@
         <var id="var.Sanyo.TargetPath" >$SolutionDir$/Arch/Sparc/$TargetDir$/Reko.Arch.Sanyo.dll</var>
         <var id="var.Sparc.TargetPath" >$SolutionDir$/Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>
         <var id="var.SuperH.TargetPath" >$SolutionDir$/Arch/SuperH/$TargetDir$/Reko.Arch.SuperH.dll</var>
+        <var id="var.Telink.TargetPath" >$SolutionDir$/Arch/Telink/$TargetDir$/Reko.Arch.Telink.dll</var>
         <var id="var.Tlcs.TargetPath" >$SolutionDir$/Arch/Tlcs/$TargetDir$/Reko.Arch.Tlcs.dll</var>
         <var id="var.Tms7000.TargetPath" >$SolutionDir$/Arch/Tms7000/$TargetDir$/Reko.Arch.Tms7000.dll</var>
         <var id="var.Vax.TargetPath" >$SolutionDir$/Arch/Vax/$TargetDir$/Reko.Arch.Vax.dll</var>
@@ -322,6 +323,7 @@
         <File Source="$(var.Rl78.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sparc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SuperH.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Telink.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Tlcs.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Tms7000.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Vax.TargetPath)" nuget_target="f:" />

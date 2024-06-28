@@ -308,6 +308,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AEON:
                 arch = "aeon";
                 break;
+            case ElfMachine.EM_TC32:
+                arch = "tc32";
+                break;
             default:
                 throw new NotImplementedException($"ELF machine type {Machine} is not implemented yet.");
             }

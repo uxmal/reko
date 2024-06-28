@@ -56,6 +56,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\Sanyo\Sanyo.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Sparc\Sparc.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\SuperH\SuperH.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Telink\Telink.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Tlcs\Tlcs.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Tms7000\Tms7000.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Tms320C28\Tms320C28.csproj" />
@@ -169,6 +170,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Sanyo\bin\$(StandardOutputDir)\Reko.Arch.Sanyo.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(StandardOutputDir)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(StandardOutputDir)\Reko.Arch.SuperH.*" />
+    <Architectures Include="$(SolutionDir)Arch\Telink\bin\$(StandardOutputDir)\Reko.Arch.Telink.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(StandardOutputDir)\Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(StandardOutputDir)\Reko.Arch.Tms7000.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms320C28\bin\$(StandardOutputDir)\Reko.Arch.Tms320C28.*" />
