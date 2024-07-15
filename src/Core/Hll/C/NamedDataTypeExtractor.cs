@@ -286,7 +286,7 @@ namespace Reko.Core.Hll.C
                             attr.Tokens[iTok + 2].Value is null ||
                             attr.Tokens[iTok + 2].Type != CTokenType.StringLiteral)
                             throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
-                        kind = new Register_v1 { Name = (string) attr.Tokens[2].Value! };
+                        kind = new Register_v1 { Name = (string) attr.Tokens[iTok + 2].Value! };
                         iTok += 3;
                     }
                     else if (attr.Tokens[iTok].Type == CTokenType.Id)
