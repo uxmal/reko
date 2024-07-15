@@ -384,14 +384,18 @@ namespace Reko.Arch.Mips
             m.Assign(dst, src);
         }
 
-        private void RewriteMac_int(MipsInstruction instr, Func<Expression,Expression,Expression> fn)
+        private void RewriteMac_int(
+            MipsInstruction instr,
+            DataType dtProduct,
+            BinaryOperator mul,
+            BinaryOperator acc)
         {
             var op1 = RewriteOperand0(instr.Operands[0]);
             var op2 = RewriteOperand0(instr.Operands[1]);
             var hi_lo = binder.EnsureSequence(PrimitiveType.Word64, arch.hi, arch.lo);
-            var product = m.IMul(op1, op2);
+            var product = m.Bin(mul, dtProduct, op1, op2);
             product.DataType = hi_lo.DataType;
-            m.Assign(hi_lo, fn(hi_lo, product));
+            m.Assign(hi_lo, m.Bin(acc, hi_lo, product));
         }
 
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)

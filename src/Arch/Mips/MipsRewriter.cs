@@ -198,7 +198,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.lwl: RewriteLwl(instr); break;
                 case Mnemonic.lwr: RewriteLwr(instr); break;
                 case Mnemonic.lwu: RewriteLoad(instr, PrimitiveType.UInt32); break;
-                case Mnemonic.madd: RewriteMac_int(instr, m.IAdd); break;
+                case Mnemonic.madd: RewriteMac_int(instr, PrimitiveType.Int64, Operator.SMul, Operator.IAdd); break;
+                case Mnemonic.maddu: RewriteMac_int(instr, PrimitiveType.UInt64, Operator.UMul, Operator.IAdd); break;
                 case Mnemonic.madd_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FAdd); break;
                 case Mnemonic.madd_ps: RewriteMac_vec(instr, PrimitiveType.Real32, m.FAdd); break;
                 case Mnemonic.mfc0: RewriteMfc0(instr); break;
@@ -214,7 +215,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.movz: RewriteMovCc(instr, m.Eq0); break;
                 case Mnemonic.mov_d: RewriteCopy(instr); break;
                 case Mnemonic.mov_s: RewriteCopy(instr); break;
-                case Mnemonic.msub: RewriteMac_int(instr, m.ISub); break;
+                case Mnemonic.msub: RewriteMac_int(instr, PrimitiveType.Int64, Operator.SMul, Operator.ISub); break;
+                case Mnemonic.msubu: RewriteMac_int(instr, PrimitiveType.UInt64, Operator.UMul, Operator.ISub); break;
                 case Mnemonic.msub_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FSub); break;
                 case Mnemonic.mtc1: RewriteMtc1(instr); break;
                 case Mnemonic.mul: RewriteMul(instr, m.SMul, PrimitiveType.Int32); break;
@@ -240,6 +242,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.sdc1: RewriteStore(instr); break;
                 case Mnemonic.sdc2: RewriteSdc2(instr); break;
                 case Mnemonic.sdl: RewriteSdl(instr); break;
+                case Mnemonic.sdxc1: RewriteStore(instr); break;
                 case Mnemonic.sdr: RewriteSdr(instr); break;
                 case Mnemonic.seb: RewriteSignExtend(instr, PrimitiveType.Byte); break;
                 case Mnemonic.seh: RewriteSignExtend(instr, PrimitiveType.Word16); break;

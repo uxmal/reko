@@ -1277,7 +1277,16 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x71A60000,   // madd	r13,r6
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = hi_lo + r13 *64 r6");
+                "1|L--|hi_lo = hi_lo + r13 *s64 r6");
+        }
+
+        [Test]
+        public void MipsRw_maddu()
+        {
+            Given_HexString("70000001");
+            AssertCode(     // maddu    r0,r0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = hi_lo + 0<32> *u64 0<32>");
         }
 
         [Test]
@@ -1285,7 +1294,16 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x71670004,   // msub	r11,r7
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = hi_lo - r11 *64 r7");
+                "1|L--|hi_lo = hi_lo - r11 *s64 r7");
+        }
+
+        [Test]
+        public void MipsRw_msubu()
+        {
+            Given_HexString("70000005");
+            AssertCode(     // msubu    r0,r0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = hi_lo - 0<32> *u64 0<32>");
         }
 
         [Test]
@@ -1327,6 +1345,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0xFBB8BB46,   // sdc2	r24,-44BA(sp)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[sp - 0x44BA<32>:word64] = __read_cpr2<word64>(0x18<8>)");
+        }
+
+        [Test]
+        public void MipsRw_sdxc1()
+        {
+            Given_HexString("4E414D49");
+            AssertCode(     // sdxc1    f9,r1(r18)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r18 + r1:word64] = f9");
         }
 
         [Test]
