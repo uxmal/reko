@@ -519,7 +519,7 @@ namespace Reko.Core
         /// <param name="envName"></param>
         public virtual TypeLibrary EnsureTypeLibraries(string envName)
         {
-            if (Metadata != null)
+            if (Metadata is not null)
                 return Metadata;
             PlatformDefinition? envCfg = LoadPlatformDefinition(envName);
             if (envCfg is null)

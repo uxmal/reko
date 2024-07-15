@@ -189,6 +189,7 @@ namespace Reko.ImageLoaders.Elf
             // Support for 32-bit pointers.
             case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
+            case ElfMachine.EM_TC32: return new TC32Relocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }

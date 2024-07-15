@@ -1,4 +1,5 @@
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.Telink
 {
@@ -11,7 +12,23 @@ namespace Reko.Arch.Telink
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            throw new System.NotImplementedException();
+            RenderMnemonic(renderer, options);
+            RenderOperands(renderer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.WriteMnemonic(MnemonicAsString);
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            if (operand is ImmediateOperand imm)
+            {
+                renderer.WriteFormat("#{0}", imm.Value.ToUInt64());
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
         }
     }
 }

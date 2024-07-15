@@ -446,7 +446,9 @@ namespace Reko.ImageLoaders.Elf
                 envName = "openVMS";
                 break;
             default:
-                throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
+                var eventListener = Services.GetService<IEventListener>();
+                eventListener?.Warn("Unsupported ELF ABI 0x{0:X2}.", osAbi);
+                return new DefaultPlatform(Services, arch);
             }
             var env = cfgSvc.GetEnvironment(envName);
             this.platform = env.Load(Services, arch);

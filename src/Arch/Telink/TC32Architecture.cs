@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -31,6 +32,22 @@ namespace Reko.Arch.Telink
 {
     public class TC32Architecture : ProcessorArchitecture
     {
+        public TC32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
+        {
+            this.CarryFlag = null!; //$TODO
+            this.CodeMemoryGranularity = 8;
+            this.DefaultBase = 16;
+            this.Endianness = EndianServices.Little;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.InstructionBitSize = 16;
+            this.MemoryGranularity = 8;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = null; //$TODO
+            this.WordWidth = PrimitiveType.Word32;
+        }
+
+
         public TC32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options, Dictionary<string, RegisterStorage>? regsByName, Dictionary<StorageDomain, RegisterStorage>? regsByDomain) : base(services, archId, options, regsByName, regsByDomain)
         {
         }
@@ -52,7 +69,7 @@ namespace Reko.Arch.Telink
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
