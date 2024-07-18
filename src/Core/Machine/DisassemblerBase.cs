@@ -343,7 +343,7 @@ namespace Reko.Core.Machine
                 if (decoders[i] == null)
                     decoders[i] = defaultDecoder;
             }
-            return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
+            return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPosition, bits), tag, decoders);
         }
 
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm>(

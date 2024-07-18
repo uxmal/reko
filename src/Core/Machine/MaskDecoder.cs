@@ -77,14 +77,6 @@ namespace Reko.Core.Machine
         private readonly WideDecoder<TDasm, TMnemonic, TInstr>[] decoders;
         private readonly string tag;
 
-        public WideMaskDecoder(int bitPos, int bitSize, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
-        {
-            this.bitfield = new Bitfield(bitPos, bitSize);
-            Debug.Assert(decoders.Length == (1 << bitSize), $"Inconsistent number of decoders {decoders.Length} (bitPos {bitPos} bitSize{bitSize:X})");
-            this.decoders = decoders;
-            this.tag = tag;
-        }
-
         public WideMaskDecoder(Bitfield bitfield, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             this.bitfield = bitfield;

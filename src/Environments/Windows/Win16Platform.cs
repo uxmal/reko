@@ -119,10 +119,6 @@ SP	top of stack
 
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
-            var ax = state?.GetRegister(RegisterStorage.Reg16("ax", 0));
-            if (vector == 0x31 && ax is not null && ax.IsValid && ax.ToInt32() == 0x400)
-                _ = this; //$DEBUG
-
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in metadata.Modules.Values)
             {

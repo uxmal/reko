@@ -455,8 +455,6 @@ namespace Reko.Analysis
                 .ToArray();
             foreach (var (stm, ci) in calls)
             {
-                if (ci.Callee.ToString() == "set_var")
-                    _ = this; //$DEBUG
                 if (!RewriteCall(ssaCaller, stm, ci))
                     ++unConverted;
             }

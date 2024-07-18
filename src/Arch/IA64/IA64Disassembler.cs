@@ -251,7 +251,7 @@ namespace Reko.Arch.IA64
 
         protected static WideMaskDecoder<IA64Disassembler, Mnemonic, IA64Instruction> WideMask(int bitPos, int bitLength, string tag, params WideDecoder[] decoders)
         {
-            return new WideMaskDecoder<IA64Disassembler, Mnemonic, IA64Instruction>(bitPos, bitLength, tag, decoders);
+            return new WideMaskDecoder<IA64Disassembler, Mnemonic, IA64Instruction>(new Bitfield(bitPos, bitLength), tag, decoders);
         }
 
 
