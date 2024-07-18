@@ -18,8 +18,12 @@
  */
 #endregion
 
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,11 +35,14 @@ namespace Reko.Core.IRFormat
     {
         private readonly IRFormatLexer lex;
         private Program program;
+        private Token? token;
+        private IRProcedureBuilder? m;
 
         public IRFormatParser(TextReader rdr)
         {
             this.lex = new IRFormatLexer(rdr);
             this.program = new Program();
+            this.m = null;
         }
 
         public Program Parse()
@@ -44,7 +51,7 @@ namespace Reko.Core.IRFormat
 
             //ParseTarget();
 
-            while (!lex.Peek(IRTokenType.EOF))
+            while (!PeekToken(IRTokenType.EOF))
             {
                 ParseProgramItem();
             }
@@ -53,7 +60,7 @@ namespace Reko.Core.IRFormat
 
         public void ParseProgramItem()
         {
-            switch (lex.Get().Type)
+            switch (ReadToken().Type)
             {
             case IRTokenType.Define:
                 ParseProcedureDefinition();
@@ -77,10 +84,60 @@ namespace Reko.Core.IRFormat
             //}
         }
 
-        private Token Expect(IRTokenType type)
+
+        public Instruction ParseStatement()
         {
-            throw new NotImplementedException();
+            if (m is null)
+                throw new InvalidOperationException();
+            return ParseStatement(m);
         }
+
+        public Instruction ParseStatement(IRProcedureBuilder m)
+        { 
+            var token = ReadToken();
+            switch (token.Type)
+            {
+            case IRTokenType.ID:
+                var tokenNext = PeekToken();
+                switch (tokenNext.Type)
+                {
+                case IRTokenType.ASSIGN:
+                    DiscardToken();
+                    Expression e = ParseExpression();
+                    var id = EnsureId(token);
+                    return m.Assign(id, e);
+                }
+                throw Unexpected(tokenNext);
+            }
+            throw new NotImplementedException($"Token: {token.Type}");
+        }
+
+        private static Identifier EnsureId(Token token)
+        {
+            Debug.Assert(token.Type == IRTokenType.ID);
+            Debug.Assert(token.Value is not null);
+            var id = Identifier.CreateTemporary((string) token.Value, new UnknownType());
+            return id;
+        }
+
+        private Expression ParseExpression()
+        {
+            return ParseAtom();
+        }
+
+        private Expression ParseAtom()
+        {
+            var token = ReadToken();
+            switch (token.Type)
+            {
+            case IRTokenType.CONST:
+                Debug.Assert(token.Value is not null);
+                var c = (Constant) token.Value;
+                return c;
+            }
+            throw Unexpected(token);
+        }
+
 
         // target x86-Win32
 
@@ -94,5 +151,53 @@ namespace Reko.Core.IRFormat
         // label
         // backpatch labels.
 
+        private Token Expect(IRTokenType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Token PeekToken()
+        {
+            if (!this.token.HasValue)
+            {
+                this.token = lex.Read();
+            }
+            return this.token.Value;
+        }
+
+        private bool PeekToken(IRTokenType type)
+        {
+            if (!this.token.HasValue)
+            {
+                this.token = lex.Read();
+            }
+            return this.token.Value.Type == type;
+        }
+
+        private Token ReadToken()
+        {
+            if (this.token.HasValue)
+            {
+                var t = this.token.Value;
+                this.token = null;
+                return t;
+            }
+            return lex.Read();
+        }
+
+
+        private void DiscardToken()
+        {
+            if (this.token.HasValue)
+            {
+                this.token = null;
+            }
+        }
+
+
+        private Exception Unexpected(in Token token)
+        {
+            throw new NotImplementedException($"Token: {token.Type}");
+        }
     }
 }

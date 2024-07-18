@@ -24,28 +24,41 @@ using Reko.Core.Expressions;
 
 namespace Reko.Core.IRFormat
 {
-    public class IRProcedureBuilder : CodeEmitter
+    public class IRProcedureBuilder : ExpressionEmitter
     {
-        private object arch;
+        private IProcessorArchitecture arch;
+        private IRBlock? block;
+        private Address addrCur;
         private string name;
 
-        public IRProcedureBuilder(string name, object arch)
+        public IRProcedureBuilder(string name, IProcessorArchitecture arch, Address address)
         {
             this.name = name;
             this.arch = arch;
+            this.addrCur = address;
         }
 
-        public override Frame Frame
+        public uint InstructionSize { get; set; }
+
+        public Instruction Assign(Identifier id, Expression e)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            var ass = new Assignment(id, e);
+            this.Emit(ass);
+            return ass;
         }
 
-        public override Statement Emit(Instruction instr)
+        private IRBlock EnsureBlock(string? name)
         {
-            throw new NotImplementedException();
+            name ??= NamingPolicy.Instance.BlockName(addrCur);
+            if (this.block is null)
+                this.block = new IRBlock(addrCur, name);
+            return this.block;
+        }
+
+        private void Emit(Instruction instr)
+        {
+            EnsureBlock(null).AddStatement(addrCur, instr);
+            addrCur += InstructionSize;
         }
     }
 }

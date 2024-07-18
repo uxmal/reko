@@ -31,22 +31,44 @@ namespace Reko.Core.IRFormat
         None,
 
         EOF,
+        ERROR,
         Define,
         ID,
+        CONST,
+        SMUL,
+        MUL,
+        UMUL,
+        FMUL,
+        PLUS,
+        MINUS,
+        UDIV,
+        SDIV,
+        ASSIGN,
     }
 
     public struct Token
     {
-        public IRTokenType Type;
-        public object? Value;
+        public IRTokenType Type { get; }
+        public object? Value { get; }
 
-        public Token(IRTokenType type)
+        public Token(IRTokenType type, object? value = null)
         {
             this.Type = type;
-            this.Value = null;
+            this.Value = value;
         }
 
         public static readonly Token None = new Token(IRTokenType.None);
 
+        public static Token Error(string errorMessage)
+        {
+            return new Token(IRTokenType.ERROR, errorMessage);
+        }
+
+        public override string ToString()
+        {
+            if (Value is null)
+                return Type.ToString();
+            return $"{Type}: {Value}";
+        }
     }
 }
