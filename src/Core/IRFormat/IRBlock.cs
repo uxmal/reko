@@ -4,15 +4,17 @@ using System.Collections.Generic;
 
 namespace Reko.Core.IRFormat
 {
-    internal class IRBlock
+    public class IRBlock
     {
         private Address addrCur;
-        private string name;
+        private string id;
+        private string? name;
         private readonly List<(Address, Instruction)> stmts;
 
-        public IRBlock(Address addrCur, string name)
+        public IRBlock(Address addrCur, string id, string? name)
         {
             this.addrCur = addrCur;
+            this.id = id;
             this.name = name;
             this.stmts = new List<(Address, Instruction)>(); 
         }

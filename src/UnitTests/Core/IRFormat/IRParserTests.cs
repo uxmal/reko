@@ -34,11 +34,19 @@ namespace Reko.UnitTests.Core.IRFormat
     [TestFixture]
     public class IRParserTests
     {
+        private IRProcedureBuilder m;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var arch = new FakeArchitecture();
+            this.m = new IRProcedureBuilder("test", arch, Address.Ptr32(0x1000));
+
+        }
+
         private void TestStatement(string sExpected, string source)
         {
             var parser = new IRFormatParser(new StringReader(source));
-            var arch = new FakeArchitecture();
-            var m = new IRProcedureBuilder("test", arch, Address.Ptr32(0x1000));
             var stm = parser.ParseStatement(m);
             Assert.AreEqual(sExpected, stm.ToString());
         }
@@ -47,6 +55,33 @@ namespace Reko.UnitTests.Core.IRFormat
         public void Irfp_Assignment()
         {
             TestStatement("rax = 42<i64>", "rax = 42<i64>");
+        }
+
+
+        [Test]
+        public void Irfp_Assignment_sum()
+        {
+            TestStatement("rax = rax + 0x2A<64>", "rax = rax + 42<64>");
+        }
+
+        [Test]
+        public void Irfp_Store()
+        {
+            TestStatement("Mem0[eax + ebx * 2<i32>:word32] = ecx", "Mem0[eax + ebx * 2<i32>:word32] = ecx | 1<32>");
+        }
+
+        [Test]
+        public void Irfp_Shl()
+        {
+            TestStatement("eax = eax << 2<i32>", "eax = eax << 2<i32>");
+        }
+
+        [Test]
+        public void Irfp_label()
+        {
+            TestStatement("eax = eax << 2<i32>", "label: eax = eax << 2<i32>");
+            var block = m.BlocksByName["label"];
+            Assert.AreEqual(1, block.Statements.Count);
         }
     }
 }

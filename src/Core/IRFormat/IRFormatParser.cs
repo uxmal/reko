@@ -20,14 +20,12 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Reko.Core.IRFormat
 {
@@ -93,7 +91,8 @@ namespace Reko.Core.IRFormat
         }
 
         public Instruction ParseStatement(IRProcedureBuilder m)
-        { 
+        {
+            this.m = m;
             var token = ReadToken();
             switch (token.Type)
             {
@@ -101,11 +100,24 @@ namespace Reko.Core.IRFormat
                 var tokenNext = PeekToken();
                 switch (tokenNext.Type)
                 {
-                case IRTokenType.ASSIGN:
+                case IRTokenType.LogicalNot:
                     DiscardToken();
                     Expression e = ParseExpression();
                     var id = EnsureId(token);
                     return m.Assign(id, e);
+                case IRTokenType.LBRACKET:
+                    DiscardToken();
+                    Expression ea = ParseExpression();
+                    Expect(IRTokenType.COLON);
+                    DataType dt = ParseType();
+                    Expect(IRTokenType.RBRACKET);
+                    Expect(IRTokenType.LogicalNot);
+                    e = ParseExpression();
+                    return m.Store(EnsureId(token), dt, ea, e);
+                case IRTokenType.COLON:
+                    DiscardToken();
+                    m.Label(token.ValueAs<string>()!);
+                    return ParseStatement();
                 }
                 throw Unexpected(tokenNext);
             }
@@ -122,6 +134,220 @@ namespace Reko.Core.IRFormat
 
         private Expression ParseExpression()
         {
+            return ParseLogicalOr();
+        }
+
+        private Expression ParseLogicalOr()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseLogicalAnd();
+            for (; ;)
+            {
+                var token = PeekToken();
+                if (token.Type != IRTokenType.LogicalOr)
+                    return e;
+                DiscardToken();
+                var e2 = ParseLogicalAnd();
+                e = m.Cor(e, e2);
+            }
+        }
+
+        private Expression ParseLogicalAnd()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseBitwiseOr();
+            for (; ; )
+            {
+                var token = PeekToken();
+                if (token.Type != IRTokenType.LogicalOr)
+                    return e;
+                DiscardToken();
+                var e2 = ParseBitwiseOr();
+                e = m.Cand(e, e2);
+            }
+        }
+
+        private Expression ParseBitwiseOr()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseBitwiseXor();
+            for (; ; )
+            {
+                var token = PeekToken();
+                if (token.Type != IRTokenType.LogicalOr)
+                    return e;
+                DiscardToken();
+                var e2 = ParseBitwiseXor();
+                e = m.Or(e, e2);
+            }
+        }
+
+        private Expression ParseBitwiseXor()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseBitwiseAnd();
+            for (; ; )
+            {
+                var token = PeekToken();
+                if (token.Type != IRTokenType.LogicalOr)
+                    return e;
+                DiscardToken();
+                var e2 = ParseBitwiseAnd();
+                e = m.Xor(e, e2);
+            }
+        }
+
+        private Expression ParseBitwiseAnd()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseEquality();
+            for (; ; )
+            {
+                var token = PeekToken();
+                if (token.Type != IRTokenType.LogicalOr)
+                    return e;
+                DiscardToken();
+                var e2 = ParseEquality();
+                e = m.Or(e, e2);
+            }
+        }
+
+
+        private Expression ParseEquality()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseInequality();
+            for (; ; )
+            {
+                var token = PeekToken();
+                var opr = token.Type switch
+                {
+                    IRTokenType.EQ => Operator.Eq,
+                    IRTokenType.NE => Operator.Ne,
+                    _ => null
+                };
+                if (opr is null)
+                    return e;
+                DiscardToken();
+                var e2 = ParseInequality();
+                e = m.Bin(opr, e, e2);
+            }
+        }
+
+        private Expression ParseInequality()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseShift();
+            for (; ; )
+            {
+                var token = PeekToken();
+                var opr = token.Type switch
+                {
+                    IRTokenType.LT => Operator.Lt,
+                    IRTokenType.LE => Operator.Le,
+                    IRTokenType.GE => Operator.Ge,
+                    IRTokenType.GT => Operator.Gt,
+                    IRTokenType.ULT => Operator.Ult,
+                    IRTokenType.ULE => Operator.Ule,
+                    IRTokenType.UGE => Operator.Uge,
+                    IRTokenType.UGT => Operator.Ugt,
+                    _ => null
+                };
+                if (opr is null)
+                    return e;
+                DiscardToken();
+                var e2 = ParseShift();
+                e = m.Bin(opr, e, e2);
+            }
+        }
+        private Expression ParseShift()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseSum();
+            for (; ; )
+            {
+                var token = PeekToken();
+                BinaryOperator? op = token.Type switch
+                {
+                    IRTokenType.SHL => Operator.Shl,
+                    IRTokenType.Goto => Operator.Shr,
+                    IRTokenType.SAR => Operator.Sar,
+                    _ => null,
+                };
+                if (op is null)
+                    return e;
+                DiscardToken();
+                var sh = ParseSum();
+                e = m.Bin(op, e, sh);
+            }
+        }
+
+        private Expression ParseSum()
+        {
+            Debug.Assert(m is not null);
+            var e = ParseTerm();
+            for (; ; )
+            {
+                if (PeekAndDiscard(IRTokenType.PLUS))
+                {
+                    var e2 = ParseTerm();
+                    e = m.IAdd(e, e2);
+                }
+                else if (PeekAndDiscard(IRTokenType.MINUS))
+                {
+                    var e2 = ParseTerm();
+                    e = m.ISub(e, e2);
+                }
+                else
+                    break;
+            }
+            return e;
+        }
+
+        private Expression ParseTerm()
+        {
+            Debug.Assert(m is not null);
+            var factor = ParsePrefixUnary();
+            for (; ;)
+            {
+                PrimitiveType? dt;
+                Expression f2;
+                var token = PeekToken();
+                switch (token.Type)
+                {
+                default: return factor;
+                case IRTokenType.MUL:
+                    DiscardToken();
+                    dt = token.ValueAs<PrimitiveType>();
+                    f2 = ParsePrefixUnary();
+                    if (dt is not null)
+                    {
+                        factor = m.IMul(dt, factor, f2);
+                    }
+                    else
+                    {
+                        factor = m.IMul(factor, f2);
+                    }
+                    break;
+                }
+            }
+        }
+
+        private Expression ParsePrefixUnary()
+        {
+            Debug.Assert(m is not null);
+            var token = PeekToken();
+            switch (token.Type)
+            {
+            case IRTokenType.MINUS:
+                DiscardToken();
+                var e = ParseAtom();
+                return m.Unary(Operator.Neg, e);
+            case IRTokenType.LogicalNot:
+                DiscardToken();
+                e = ParseAtom();
+                return m.Unary(Operator.Not, e);
+            }
             return ParseAtom();
         }
 
@@ -130,12 +356,38 @@ namespace Reko.Core.IRFormat
             var token = ReadToken();
             switch (token.Type)
             {
+            case IRTokenType.ID:
+                var id = EnsureId(token);
+                return id;
             case IRTokenType.CONST:
                 Debug.Assert(token.Value is not null);
                 var c = (Constant) token.Value;
                 return c;
             }
             throw Unexpected(token);
+        }
+
+        private DataType ParseType()
+        {
+            var id = Expect(IRTokenType.ID).ValueAs<string>()!;
+            if (id.StartsWith("word"))
+                return PrimitiveType.CreateWord(NumericSuffix(id));
+                    throw new NotImplementedException($"Unimplemented type {id}");
+        }
+
+        private int NumericSuffix(string s)
+        {
+            int n = 0;
+            int scale = 1;
+            for (int i = s.Length-1; i >= 0; --i, scale *= 10)
+            {
+                char c = s[i];
+                int digit = c - '0';
+                if ((uint) digit >= 10)
+                    break;
+                n = n + digit * scale;
+            }
+            return n;
         }
 
 
@@ -153,7 +405,12 @@ namespace Reko.Core.IRFormat
 
         private Token Expect(IRTokenType type)
         {
-            throw new NotImplementedException();
+            var token = ReadToken();
+            if (token.Type != type)
+            {
+                throw new ParserException($"Expected {type} but found {token}.");
+            }
+            return token;
         }
 
         private Token PeekToken()
@@ -172,6 +429,16 @@ namespace Reko.Core.IRFormat
                 this.token = lex.Read();
             }
             return this.token.Value.Type == type;
+        }
+
+        private bool PeekAndDiscard(IRTokenType type)
+        {
+            if (!PeekToken(type))
+            {
+                return false;
+            }
+            DiscardToken();
+            return true;
         }
 
         private Token ReadToken()

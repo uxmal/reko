@@ -43,7 +43,31 @@ namespace Reko.Core.IRFormat
         MINUS,
         UDIV,
         SDIV,
-        ASSIGN,
+        LogicalNot,
+        LBRACKET,
+        RBRACKET,
+        LPAREN,
+        RPAREN,
+        COLON,
+        LE,
+        LT,
+        GT,
+        GE,
+        ULE,
+        ULT,
+        UGT,
+        UGE,
+        SHL,
+        SAR,
+        Goto,
+        If,
+        XOR,
+        LogicalAnd,
+        BinaryAnd,
+        LogicalOr,
+        BinaryOr,
+        NE,
+        EQ,
     }
 
     public struct Token
@@ -69,6 +93,11 @@ namespace Reko.Core.IRFormat
             if (Value is null)
                 return Type.ToString();
             return $"{Type}: {Value}";
+        }
+
+        public T? ValueAs<T>() where T : class
+        {
+            return this.Value as T;
         }
     }
 }

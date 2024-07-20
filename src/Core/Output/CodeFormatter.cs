@@ -221,8 +221,9 @@ namespace Reko.Core.Output
                 // Multiplication and division are peculiar on many processors because the product/
                 // quotient may be different size from either of the operands. It's unclear what
                 // the C/C++ standards say about this.
-                if (resultSize != binExp.Left.DataType.BitSize ||
-                    resultSize != binExp.Right.DataType.BitSize)
+                if (resultSize != 0 && 
+                    (resultSize != binExp.Left.DataType.BitSize ||
+                     resultSize != binExp.Right.DataType.BitSize))
                 {
                     InnerFormatter.Write(sOperator.TrimEnd());
                     InnerFormatter.Write($"{resultSize} ");

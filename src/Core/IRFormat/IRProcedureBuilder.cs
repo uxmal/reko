@@ -19,8 +19,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.Core.IRFormat
 {
@@ -36,9 +38,11 @@ namespace Reko.Core.IRFormat
             this.name = name;
             this.arch = arch;
             this.addrCur = address;
+            this.BlocksByName = new Dictionary<string, IRBlock>();
         }
 
         public uint InstructionSize { get; set; }
+        public Dictionary<string, IRBlock> BlocksByName { get; }
 
         public Instruction Assign(Identifier id, Expression e)
         {
@@ -47,11 +51,28 @@ namespace Reko.Core.IRFormat
             return ass;
         }
 
+        public void Label(string name)
+        {
+            var oldBlock = this.block;
+            this.block = null;
+            var newBlock = EnsureBlock(name);
+            BlocksByName.Add(name, newBlock);
+            if (oldBlock is not null)
+            {
+                AddEdge(oldBlock, this.block);
+            }
+        }
+
+        private void AddEdge(IRBlock oldBlock, IRBlock? block)
+        {
+            //$TODO
+        }
+
         private IRBlock EnsureBlock(string? name)
         {
-            name ??= NamingPolicy.Instance.BlockName(addrCur);
+            var id = NamingPolicy.Instance.BlockName(addrCur);
             if (this.block is null)
-                this.block = new IRBlock(addrCur, name);
+                this.block = new IRBlock(addrCur, id, name);
             return this.block;
         }
 
@@ -59,6 +80,14 @@ namespace Reko.Core.IRFormat
         {
             EnsureBlock(null).AddStatement(addrCur, instr);
             addrCur += InstructionSize;
+        }
+
+        public Instruction Store(Identifier memid, DataType dt, Expression ea, Expression src)
+        {
+            var mem = Mem(memid, dt, ea);
+            var store = new Store(mem, src);
+            Emit(store);
+            return store;
         }
     }
 }

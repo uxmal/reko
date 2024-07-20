@@ -123,7 +123,108 @@ namespace Reko.UnitTests.Core.IRFormat
 
             var token = lexer.Read();
 
-            Assert.AreEqual(IRTokenType.ASSIGN, token.Type);
+            Assert.AreEqual(IRTokenType.LogicalNot, token.Type);
+        }
+
+        [Test]
+        public void Irfl_lt()
+        {
+            var lexer = new IRFormatLexer(new StringReader("<"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.LT, token.Type);
+        }
+
+        [Test]
+        public void Irfl_le()
+        {
+            var lexer = new IRFormatLexer(new StringReader("<="));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.LE, token.Type);
+        }
+
+        [Test]
+        public void Irfl_shl()
+        {
+            var lexer = new IRFormatLexer(new StringReader("<<"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.SHL, token.Type);
+        }
+
+        [Test]
+        public void Irfl_gt()
+        {
+            var lexer = new IRFormatLexer(new StringReader(">"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.GT, token.Type);
+        }
+
+        [Test]
+        public void Irfl_ge()
+        {
+            var lexer = new IRFormatLexer(new StringReader(">="));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.GE, token.Type);
+        }
+
+        [Test]
+        public void Irfl_sar()
+        {
+            var lexer = new IRFormatLexer(new StringReader(">>"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.SAR, token.Type);
+        }
+
+        [Test]
+        public void Irfl_shr()
+        {
+            var lexer = new IRFormatLexer(new StringReader(">>u"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.Goto, token.Type);
+        }
+
+        [Test]
+        public void Irfl_goto()
+        {
+            var lexer = new IRFormatLexer(new StringReader("goto"));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.Goto, token.Type);
+        }
+
+        [Test]
+        public void Irfl_equals()
+        {
+            var lexer = new IRFormatLexer(new StringReader("=="));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.EQ, token.Type);
+        }
+
+
+        [Test]
+        public void Irfl_notequals()
+        {
+            var lexer = new IRFormatLexer(new StringReader("!="));
+
+            var token = lexer.Read();
+
+            Assert.AreEqual(IRTokenType.NE, token.Type);
         }
     }
 }

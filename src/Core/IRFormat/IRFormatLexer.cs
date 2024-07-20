@@ -20,7 +20,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -29,8 +29,13 @@ namespace Reko.Core.IRFormat
 {
     public class IRFormatLexer
     {
+        private static readonly IReadOnlyDictionary<string, IRTokenType> keywords = new Dictionary<string, IRTokenType>()
+        {
+            { "if", IRTokenType.If },
+            { "goto", IRTokenType.Goto },
+        };
+
         private readonly TextReader rdr;
-        private Token tok;
         private int lineNumber;
 
         public IRFormatLexer(TextReader rdr)
@@ -51,16 +56,22 @@ namespace Reko.Core.IRFormat
             Asterisk,
             Slash,
             LineComment,
+            Lt,
+            Gt,
+            Shr,
+            Amp,
+            Pipe,
+            Caret,
+            Equal,
+            Bang,
         }
 
         public Token Read()
         {
             var st = State.Initial;
             var sb = new StringBuilder();
-            int sigilBitsize = 0;
             long constantValue = 0;
             DataType? dtSigil = null;
-            var sigilDomain = Domain.None;
 
             for (;;)
             {
@@ -110,10 +121,33 @@ namespace Reko.Core.IRFormat
                         st = Advance(State.Slash);
                         break;
                     case '=':
+                        st = Advance(State.Equal);
+                        break;
+                    case '!':
+                        st = Advance(State.Bang);
+                        break;
+                    case '[':
                         Advance(State.Initial);
-                        return new Token(IRTokenType.ASSIGN);
+                        return new Token(IRTokenType.LBRACKET);
+                    case ']':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.RBRACKET);
+                    case '(':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.LPAREN);
+                    case ')':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.RPAREN);
+                    case ':':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.COLON);
+                    case '<': st = Advance(State.Lt); break;
+                    case '>': st = Advance(State.Gt); break;
+                    case '&': st = Advance(State.Amp); break;
+                    case '|': st = Advance(State.Pipe); break;
+                    case '^': st = Advance(State.Initial); return new Token(IRTokenType.XOR);
                     default:
-                        if (Char.IsLetter(ch) || ch == '_')
+                        if (char.IsLetter(ch) || ch == '_')
                         {
                             sb.Append(ch);
                             st = Advance(State.ID);
@@ -151,6 +185,7 @@ namespace Reko.Core.IRFormat
                 case State.NumberSigilEnd:
                     if (c == '>')
                     {
+                        Advance(State.Initial);
                         Debug.Assert(dtSigil is not null);
                         return GenerateConstantToken(dtSigil, constantValue);
                     }
@@ -159,7 +194,7 @@ namespace Reko.Core.IRFormat
                     if (c == -1 ||
                         !char.IsLetterOrDigit(ch) && ch != '_')
                     {
-                        return new Token(IRTokenType.ID, sb.ToString());
+                        return MaybeKeyword(sb.ToString());
                     }
                     sb.Append(ch);
                     Advance(State.ID);
@@ -208,11 +243,78 @@ namespace Reko.Core.IRFormat
                         break;
                     }
                     break;
+                case State.Equal:
+                    switch (c)
+                    {
+                    default: return new Token(IRTokenType.LogicalNot);
+                    case '=':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.EQ);
+                    }
+                case State.Bang:
+                    switch (c)
+                    {
+                    default: return new Token(IRTokenType.LogicalNot);
+                    case '=':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.NE);
+                    }
+                case State.Lt:
+                    switch (c)
+                    {
+                    default: return new Token(IRTokenType.LT);
+                    case '<':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.SHL);
+                    case '=':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.LE);
+                    }
+                case State.Gt:
+                    switch (c)
+                    {
+                    default: return new Token(IRTokenType.GT);
+                    case '>':
+                        st = Advance(State.Shr);
+                        break;
+                    case '=':
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.GE);
+                    }
+                    break;
+                case State.Shr:
+                    if (c == 'u')
+                    {
+                        Advance(State.Initial);
+                        return new Token(IRTokenType.Goto);
+                    }
+                    return new Token(IRTokenType.SAR);
+                case State.Amp:
+                    if (c == '&')
+                    {
+                        st = Advance(State.Initial);
+                        return new Token(IRTokenType.LogicalAnd);
+                    }
+                    return new Token(IRTokenType.BinaryAnd);
+                case State.Pipe:
+                    if (c == '|')
+                    {
+                        st = Advance(State.Initial);
+                        return new Token(IRTokenType.LogicalOr);
+                    }
+                    return new Token(IRTokenType.BinaryOr);
                 default:
                     Debug.Fail(st.ToString());
                     return Token.Error("Not implemented.");
                 }
             }
+        }
+
+        private Token MaybeKeyword(string id)
+        {
+            if (keywords.TryGetValue(id, out var type))
+                return new Token(type);
+            return new Token(IRTokenType.ID, id);
         }
 
         private DataType? ReadSigil()
@@ -259,6 +361,8 @@ namespace Reko.Core.IRFormat
                     switch (c)
                     {
                     default:
+                        if (bitsize == 0)
+                            return null;
                         var dt = (sigilDomain == Domain.None)
                             ? PrimitiveType.CreateWord(bitsize)
                             : PrimitiveType.Create(sigilDomain, bitsize);
