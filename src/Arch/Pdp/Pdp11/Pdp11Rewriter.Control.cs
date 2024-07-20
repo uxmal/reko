@@ -175,7 +175,7 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             this.iclass = InstrClass.ConditionalTransfer;
             var reg = RewriteSrc(instr.Operands[0]);
-            if (reg == null)
+            if (reg is null)
             {
                 m.Invalid();
             }

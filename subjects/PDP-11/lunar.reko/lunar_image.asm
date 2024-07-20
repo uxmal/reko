@@ -59,7 +59,6 @@ l0122:
 ;; fn0128: 0128
 ;;   Called from:
 ;;     0122 (in fn13AA)
-;;     0BB8 (in fn0B06)
 fn0128 proc
 	wait
 	mov	@#006C,r0
@@ -1071,12 +1070,6 @@ l0A82:
 	asr	r3
 	asr	r3
 	asr	r3
-
-;; fn0A94: 0A94
-;;   Called from:
-;;     0A92 (in fn0A0A)
-;;     0B0A (in fn0B06)
-fn0A94 proc
 	asr	r3
 	beq	0B00
 
@@ -1123,16 +1116,7 @@ l0AEC:
 	mov	#F700,(r5)+
 	clr	@r5
 	mov	r2,@#00B0
-
-;; fn0AF6: 0AF6
-;;   Called from:
-;;     0AF2 (in fn0A94)
-;;     0B66 (in fn0B06)
-;;     0B70 (in fn0B06)
-fn0AF6 proc
 	tst	(sp)+
-
-l0AF8:
 	mov	#35CA,@#34D2
 	rts	pc
 
@@ -1145,24 +1129,14 @@ l0B00:
 ;;     0960 (in fn0856)
 fn0B06 proc
 	jsr	pc,fn13AA
-	sob	pc,fn0A94
-
-l0B0C:
+	illegal
 	mov	@#34B4,@#267A
-
-l0B12:
 	mov	@#34B6,@#267C
 	mov	#2678,@#34D2
-
-l0B1E:
 	bit	#007F,@#0070
 	bne	0B1E
-
-l0B26:
 	tst	@#07BA
 	beq	0BD0
-
-l0B2C:
 	mov	@#2610,r3
 	sub	@#34B4,r3
 	mov	@#2612,r2
@@ -1170,51 +1144,35 @@ l0B2C:
 	add	#0003,r2
 	mov	r2,-(sp)
 	beq	0B48
-
-l0B44:
-	jsr	pc,fn0C36
-
-l0B48:
+	jsr	pc,@#0C36
 	mov	@#2610,r3
 	sub	@#267A,r3
 	add	#0019,r3
 	mov	r3,-(sp)
 	clr	r2
-	jsr	pc,fn0C36
+	jsr	pc,@#0C36
 	mov	#24A2,@#34CA
 	jsr	pc,fn13AA
-	sob	pc,0AF8
-
-l0B68:
+	illegal
 	clr	@#34CA
 	jsr	pc,fn13AA
-	sob	pc,fn0AF6
-
-l0B72:
+	illegal
 	neg	@sp
 	mov	@sp,r3
 	clr	r2
-	jsr	pc,fn0C36
+	jsr	pc,@#0C36
 	mov	(sp)+,r3
 	mov	(sp)+,r2
 	neg	r2
 	beq	0B88
-
-l0B84:
-	jsr	pc,fn0C36
-
-l0B88:
+	jsr	pc,@#0C36
 	jsr	pc,fn13AA
-	sob	pc,0B12
-
-l0B8E:
+	illegal
 	add	#0004,@#005E
 	add	#07D0,@#0068
 	clr	@#0058
 	clr	@#006C
 	mov	#3FFE,sp
-
-l0BA6:
 	clr	@#34CA
 	clr	@#0046
 	clr	@#0054
@@ -1222,14 +1180,10 @@ l0BA6:
 	jsr	pc,fn0128
 	tst	@#009E
 	bne	0BA6
-
-l0BC2:
 	clr	@#34BA
 	clr	@#34C2
 	jsr	pc,fn13AA
 	bpt
-
-l0BD0:
 	mov	#0001,-(sp)
 	mov	@#0078,-(sp)
 	jsr	pc,fn0C90
@@ -1238,100 +1192,54 @@ l0BD0:
 	mov	@#0070,r5
 	ror	r5
 	bcc	0BEE
-
-l0BEC:
 	neg	r3
-
-l0BEE:
 	mov	r3,-(sp)
-	jsr	pc,fn0C36
+	jsr	pc,@#0C36
 	mov	(sp)+,r3
 	clr	r2
-	jsr	pc,fn0C36
+	jsr	pc,@#0C36
 	mov	@#267A,@#26AC
 	mov	@#267C,@#26AE
 	add	#0014,@#26AC
 	mov	#26A8,@#34C2
 	mov	@#0078,r0
-	jsr	pc,fn0C72
-	jsr	pc,fn0C72
+	jsr	pc,@#0C72
+	jsr	pc,@#0C72
 	mov	#0002,-(sp)
 	mov	r0,-(sp)
 	jsr	pc,fn0C90
 	mov	#24D6,@#34CA
 	jsr	pc,fn13AA
 	illegal
-
-;; fn0C36: 0C36
-;;   Called from:
-;;     0B44 (in fn0B06)
-;;     0B58 (in fn0B06)
-;;     0B78 (in fn0B06)
-;;     0B84 (in fn0B06)
-;;     0BF0 (in fn0B06)
-;;     0BF8 (in fn0B06)
-fn0C36 proc
 	mov	#0A80,r5
 	tst	r3
 	bpl	0C44
-
-l0C3E:
 	mov	#0AC0,r5
 	neg	r3
-
-l0C44:
-	mov	r5,fn0C72
+	mov	r5,@#0C72
 	clr	r5
 	tst	r2
 	beq	0C58
-
-l0C4E:
 	inc	r5
 	mov	r2,r3
 	bpl	0C58
-
-l0C54:
 	neg	r3
 	neg	r5
-
-l0C58:
 	mov	@#267A,r0
-
-l0C5C:
-	jsr	pc,fn0C72
+	jsr	pc,@#0C72
 	mov	r0,@#267A
 	add	r5,@#267C
-	jsr	pc,fn0C76
+	jsr	pc,@#0C76
 	dec	r3
 	bgt	0C5C
-
-l0C70:
 	rts	pc
-
-;; fn0C72: 0C72
-;;   Called from:
-;;     0C18 (in fn0B06)
-;;     0C1C (in fn0B06)
-;;     0C5C (in fn0C36)
-fn0C72 proc
 	halt
-0C74             87 00                                   ..          
-
-;; fn0C76: 0C76
-;;   Called from:
-;;     0C68 (in fn0C36)
-fn0C76 proc
+	rts	pc
 	bit	#0007,@#0070
-	beq	fn0C76
-
-l0C7E:
+	beq	0C76
 	jsr	pc,fn1578
-
-l0C82:
 	bit	#0007,@#0070
 	bne	0C82
-
-l0C8A:
 	jsr	pc,fn1578
 	rts	pc
 
@@ -1340,8 +1248,6 @@ l0C8A:
 ;;     080E (in fn0856)
 ;;     0830 (in fn0856)
 ;;     0990 (in fn0856)
-;;     0BD8 (in fn0B06)
-;;     0C26 (in fn0B06)
 ;;     0E22 (in fn0E06)
 fn0C90 proc
 	mov	r4,-(sp)
@@ -2370,11 +2276,6 @@ l1388:
 ;;   Called from:
 ;;     0A04 (in fn0856)
 ;;     0B06 (in fn0B06)
-;;     0B62 (in fn0B06)
-;;     0B6C (in fn0B06)
-;;     0B88 (in fn0B06)
-;;     0BCA (in fn0B06)
-;;     0C30 (in fn0B06)
 ;;     0E92 (in fn0E32)
 ;;     3554 (in fn34E0)
 fn13AA proc
@@ -2437,8 +2338,6 @@ l13DA:
 ;;   Called from:
 ;;     0640 (in fn053A)
 ;;     0856 (in fn0856)
-;;     0C7E (in fn0C76)
-;;     0C8A (in fn0C76)
 ;;     13C8 (in fn13AA)
 fn1578 proc
 	mov	r0,-(sp)

@@ -57,6 +57,8 @@ namespace Reko.Arch.Pdp.Pdp11
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
+            if (addr.ToLinear() == 0x0b0a)
+                _ = this; //$DEBUG
             ops.Clear();
             dataWidth = PrimitiveType.Word16;
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
@@ -348,6 +350,16 @@ namespace Reko.Arch.Pdp.Pdp11
                 illegal,
                 Instr(Mnemonic.sob, r, I));
 
+            var extra2 = Mask(9, 3, "  extra",
+               Instr(Mnemonic.mul, E, r),
+               Instr(Mnemonic.div, E, r),
+               Instr(Mnemonic.ash, E, r),
+               Instr(Mnemonic.ashc, E, r),
+               Instr(Mnemonic.xor, E, r),
+               fpu2Decoders,
+               illegal,
+               illegal);
+
             decoders = new Decoder[] {
                 nondouble,
                 Instr(Mnemonic.mov, w,e,E),
@@ -365,7 +377,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 Instr(Mnemonic.bicb, b,e,E),
                 Instr(Mnemonic.bisb, b,e,E),
                 Instr(Mnemonic.sub, w,e,E),
-                extra,
+                extra2,
             };
         }
 
@@ -392,9 +404,10 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             ushort u;
             var reg = this.arch.GetRegister((int)operandBits & 7)!;
+            var mode = (operandBits >> 3) & 7;
             if (reg == Registers.pc)
             {
-                switch ((operandBits >> 3) & 7)
+                switch (mode)
                 {
                 case 0:
                     if (fpuReg)
@@ -430,7 +443,7 @@ namespace Reko.Arch.Pdp.Pdp11
             }
             else
             {
-                switch ((operandBits >> 3) & 7)
+                switch (mode)
                 {
                 case 0: return reg;                                 //   Reg           Direct addressing of the register
                 case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);      //   Reg Def       Contents of Reg is the address

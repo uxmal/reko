@@ -233,5 +233,11 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
             Given_ResolvePcRelativeAddress();
             RunTest("clr\t@#0214", 0x0A37, 0x0010);
         }
+
+        [Test]
+        public void Pdp11dis_invalid()
+        {
+            RunTest("illegal", 0xFFFC);
+        }
     }
 }
