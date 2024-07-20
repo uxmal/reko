@@ -95,6 +95,7 @@ namespace Reko.Core.Output
                 { OperatorType.AddrOf, "AddrOf" },
                 { OperatorType.Comp, "Comp" },
                 { OperatorType.Neg, "Neg" },
+                { OperatorType.FNeg, "FNeg" },
                 { OperatorType.Not, "Not" }
 
             };
@@ -106,8 +107,6 @@ namespace Reko.Core.Output
             var sw = new StringWriter();
             sw.WriteLine("// {0} //////////", proc.Name);
             var mg = new MockGenerator(sw, "m.");
-            mg.WriteMethod(proc);
-            Debug.Print(sw.ToString());
         }
 
         public static void DumpClass(Procedure proc)
@@ -300,10 +299,11 @@ namespace Reko.Core.Output
             writer.WriteLine(");");
         }
 
-        void InstructionVisitor.VisitGotoInstruction(GotoInstruction def)
+        void InstructionVisitor.VisitGotoInstruction(GotoInstruction g)
         {
             writer.Write("Jump");
-            throw new NotImplementedException();
+            g.Target.Accept(this);
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
@@ -346,10 +346,10 @@ namespace Reko.Core.Output
                 Method("MStore");
                 access.EffectiveAddress.Accept(this);
             }
-            else if (store.Dst is Identifier id)
+            else if (store.Dst is Identifier || store.Dst is ArrayAccess)
             {
                 Method("Store");
-                id.Accept(this);
+                store.Dst.Accept(this);
             }
             else
                 throw new NotSupportedException(store.ToString());
@@ -403,7 +403,7 @@ namespace Reko.Core.Output
                 writer.Write("Address.Ptr64(0x{0:X})", addr64.ToLinear());
                 return;
             }
-            throw new NotSupportedException();
+            writer.Write("Address.Ptr{0}(0x{0:X})", addr.DataType.BitSize, addr.ToLinear());
         }
 
         void IExpressionVisitor.VisitApplication(Application appl)
@@ -420,7 +420,11 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            Method("ARef");
+            acc.Array.Accept(this);
+            writer.Write(", ");
+            acc.Index.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
@@ -456,7 +460,13 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitConditionalExpression(ConditionalExpression cond)
         {
-            throw new NotImplementedException();
+            Method("Conditional");
+            cond.Condition.Accept(this);
+            writer.Write(", ");
+            cond.ThenExp.Accept(this);
+            writer.Write(", ");
+            cond.FalseExp.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
@@ -468,6 +478,28 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitConstant(Constant c)
         {
+            if (!c.IsValid)
+            {
+                writer.Write("InvalidConstant.Create");
+
+                c.DataType.Accept(this);
+                writer.Write(")");
+                return;
+            }
+            if (c.DataType.IsReal)
+            {
+                if (c.DataType.BitSize == 32)
+                {
+                    Method("Real32");
+                    writer.Write("{0}F)", c.ToReal64());
+                }
+                else if (c.DataType.BitSize == 64)
+                {
+                    Method("Real64");
+                    writer.Write("{0})", c.ToReal64());
+                }
+                return;
+            }
             if (c.DataType == PrimitiveType.Word32)
             {
                 Method("Word32");
@@ -497,7 +529,14 @@ namespace Reko.Core.Output
                 c.DataType.Accept(this);
                 writer.Write(", ");
             }
-            writer.Write("0x{0:X})", c.ToUInt64());
+            try
+            {
+                writer.Write("0x{0:X})", c.ToUInt64());
+            }
+             catch (Exception ex)
+            {
+                throw new ApplicationException($"Failed to render: {c} ({c.DataType}).", ex);
+            }
         }
 
         void IExpressionVisitor.VisitDereference(Dereference deref)
@@ -582,7 +621,11 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitSegmentedAddress(SegmentedPointer address)
         {
-            throw new NotImplementedException();
+            Method("SegPtr");
+            address.BasePointer.Accept(this);
+            writer.Write(", ");
+            address.Offset.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitSlice(Slice slice)
@@ -596,7 +639,11 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitStringConstant(StringConstant str)
         {
-            throw new NotImplementedException();
+            writer.Write("new StringConstant(");
+            str.DataType.Accept(this);
+            writer.Write(", ");
+            QuoteString(str.Literal);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
@@ -732,12 +779,25 @@ namespace Reko.Core.Output
 
         public int VisitReference(ReferenceTo ptr)
         {
-            throw new NotImplementedException();
+            writer.Write("new ReferenceTo(");
+            ptr.Referent.Accept(this);
+            writer.Write(", {0})", ptr.BitSize);
+            return 0;
         }
 
         public int VisitString(StringType str)
         {
-            throw new NotImplementedException();
+            writer.Write("new StringType(");
+            str.ElementType.Accept(this);
+            writer.Write(", ");
+            if (str.LengthPrefixType is null)
+                writer.Write("null");
+            else
+                str.LengthPrefixType.Accept(this);
+            writer.Write(", ");
+            writer.Write(str.PrefixOffset.ToString());
+            writer.Write(")");
+            return 0;
         }
 
         public int VisitStructure(StructureType str)
@@ -767,7 +827,11 @@ namespace Reko.Core.Output
 
         public int VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            writer.Write("new UnknownType(");
+            if (ut.Size != 0)
+                writer.Write(ut.Size.ToString());
+            writer.Write(")");
+            return 0;
         }
 
         public int VisitVoidType(VoidType vt)

@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -153,9 +154,9 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.movh: RewriteMovh(); break;
                 case Mnemonic.mtdr: RewriteMtdr(); break;
                 case Mnemonic.mul: RewriteMul(); break;
-                case Mnemonic.muls_d: RewriteMul_d(m.SMul); break;
+                case Mnemonic.muls_d: RewriteMul_d(Operator.SMul); break;
                 case Mnemonic.mulsatwh_w: RewriteMulsatWhW(); break;
-                case Mnemonic.mulu_d: RewriteMul_d(m.UMul); break;
+                case Mnemonic.mulu_d: RewriteMul_d(Operator.UMul); break;
                 case Mnemonic.mustr: RewriteMustr(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
@@ -925,7 +926,7 @@ namespace Reko.Arch.Avr.Avr32
             RewriteOpDst(0, m.IMul(left, right));
         }
 
-        private void RewriteMul_d(Func<Expression,Expression, Expression> fn)
+        private void RewriteMul_d(BinaryOperator fn)
         {
             var rDst = (RegisterStorage) instr.Operands[0];
             if ((rDst.Number & 1) == 1)
@@ -938,7 +939,7 @@ namespace Reko.Arch.Avr.Avr32
             var right = RewriteOp(2);
             var rDstHi = Registers.GpRegisters[rDst.Number + 1];
             var dst = binder.EnsureSequence(PrimitiveType.Word64, rDstHi, rDst);
-            m.Assign(dst, fn(left, right));
+            m.Assign(dst, m.Bin(fn, left, right));
         }
 
         private void RewriteMulsatWhW()

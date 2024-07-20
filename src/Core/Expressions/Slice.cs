@@ -74,6 +74,7 @@ namespace Reko.Core.Expressions
 			return new Slice(DataType, Expression, Offset);
 		}
 
+        /// <inheritdoc/>
         public override Expression Invert()
         {
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);

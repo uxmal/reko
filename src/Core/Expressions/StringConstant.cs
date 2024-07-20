@@ -38,6 +38,8 @@ namespace Reko.Core.Expressions
             this.str = str;
         }
 
+        public string Literal => str;
+
         public int Length => str.Length;
 
         public override void Accept(IExpressionVisitor visitor)
