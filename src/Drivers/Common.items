@@ -315,7 +315,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
 
-    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
+    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\scripts\*.osc" />
 
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\AOut\bin\$(StandardOutputDir)\Reko.ImageLoaders.AOut.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Archives\bin\$(StandardOutputDir)\Reko.ImageLoaders.Archives.*" />
