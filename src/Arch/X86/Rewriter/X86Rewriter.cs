@@ -601,6 +601,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.punpckhbw: RewritePunpck(false, punpckhbw_intrinsic); break;
                 case Mnemonic.punpckhdq: RewritePunpck(false, punpckhdq_intrinsic); break;
                 case Mnemonic.vpunpckhdq: RewritePunpck(true, punpckhdq_intrinsic); break;
+                case Mnemonic.punpckhqdq: RewritePunpck(true, punpckhqdq_intrinsic); break;
                 case Mnemonic.punpckhwd: RewritePunpck(false, punpckhwd_intrinsic); break;
                 case Mnemonic.vpunpckhwd: RewritePunpck(true, punpckhwd_intrinsic); break;
                 case Mnemonic.punpcklbw: RewritePunpck(false, punpcklbw_intrinsic); break;
@@ -1624,6 +1625,7 @@ namespace Reko.Arch.X86.Rewriter
         private static readonly IntrinsicProcedure psubus_intrinsic = GenericBinaryIntrinsic("__psubus");
         private static readonly IntrinsicProcedure punpckhbw_intrinsic = GenericBinaryIntrinsic("__punpckhbw");
         private static readonly IntrinsicProcedure punpckhdq_intrinsic = GenericBinaryIntrinsic("__punpckhdq");
+        private static readonly IntrinsicProcedure punpckhqdq_intrinsic = GenericBinaryIntrinsic("__punpckhqdq");
         private static readonly IntrinsicProcedure punpckhwd_intrinsic = GenericBinaryIntrinsic("__punpckhwd");
         private static readonly IntrinsicProcedure punpcklbw_intrinsic = GenericBinaryIntrinsic("__punpcklbw");
         private static readonly IntrinsicProcedure punpckldq_intrinsic = GenericBinaryIntrinsic("__punpckldq");

@@ -15,7 +15,7 @@ pulMainStack		; 20000160
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 cNextChar		; 2000022C
 	db	0x00
-2000022D                                        00 00 00              ...
+l2000022D	db	0 dup 3
 pucAlignedHeap.5129		; 20000230
 	dd	0x00000000
 ucHeap		; 20000234
@@ -115,7 +115,7 @@ xNextFreeByte		; 200007F0
 	dd	0x00000000
 ucOutputValue		; 200007F4
 	db	0x00
-200007F5                00 00 00                              ...        
+l200007F5	db	0 dup 3
 xFlashQueue		; 200007F8
 	dd	0x00000000
 pxCurrentCoRoutine		; 200007FC

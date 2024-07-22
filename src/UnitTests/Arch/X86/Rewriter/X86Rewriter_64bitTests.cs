@@ -1235,6 +1235,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_punpckhqdq()
+        {
+            Given_HexString("660F6DC1");
+            AssertCode(     // punpckhqdq	xmm0,xmm1
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = __punpckhqdq<word128>(xmm0, xmm1)");
+        }
+
+        [Test]
         public void X86Rw_vpunpckhdq()
         {
             Given_HexString("C5396A700F");
