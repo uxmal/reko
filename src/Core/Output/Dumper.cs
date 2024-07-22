@@ -116,16 +116,29 @@ namespace Reko.Core.Output
                 var segLast = segment.Address + segment.Size;
                 var size = segLast - i.Address;
                 size = Math.Min(i.Size, size);
+
                 if (i.DataType == null || (i.DataType is UnknownType && i.DataType.Size == 0) ||
                     i.DataType is CodeType)
                 {
-                    DumpData(program.SegmentMap, program.Architecture, i.Address, size, formatter);
+                    if (segment.IsBss)
+                        DumpBssData(program.Architecture, i.Address, size, formatter);
+                    else
+                        DumpData(program.SegmentMap, program.Architecture, i.Address, size, formatter);
                 }
                 else
                 {
                     DumpTypedData(program.SegmentMap, program.Architecture, i, formatter);
                 }
             }
+        }
+
+        private void DumpBssData(IProcessorArchitecture architecture, Address address, long size, Formatter formatter)
+        {
+            WriteLabel(address, formatter);
+            formatter.WriteKeyword("db");
+            formatter.Write("\t");
+            formatter.Write("0 dup {0}", size);
+            formatter.WriteLine();
         }
 
         private void DumpProcedureHeaderComment(Procedure proc, Formatter formatter)

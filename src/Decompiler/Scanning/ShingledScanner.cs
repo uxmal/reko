@@ -568,7 +568,7 @@ namespace Reko.Scanning
         {
             var targetMap = program.SegmentMap.Segments.ToDictionary(
                 s => s.Value, 
-                s => new int[s.Value.ContentSize]);
+                s => new int[s.Value.Size]);
             foreach (var seg in program.SegmentMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))

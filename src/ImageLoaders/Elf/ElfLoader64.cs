@@ -353,7 +353,8 @@ namespace Reko.ImageLoaders.Elf
                             section.Address,
                             mem, mode)
                         {
-                            Size = (uint) section.Size
+                            Size = (uint) section.Size,
+                            IsBss = section.Type ==  SectionHeaderType.SHT_NOBITS, 
                         });
                         seg.Designer = CreateRenderer64(section);
                     }

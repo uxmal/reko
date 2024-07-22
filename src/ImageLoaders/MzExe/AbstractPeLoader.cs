@@ -69,6 +69,8 @@ namespace Reko.ImageLoaders.MzExe
         protected const uint SectionFlagsWriteable = 0x80000000;
         protected const uint SectionFlagsExecutable = 0x20000020;
 
+        protected const uint IMAGE_SCN_CNT_UNINITIALIZED_DATA = 0x00000080;
+
 
         /// <summary>
         /// COFF Symbol storage classes

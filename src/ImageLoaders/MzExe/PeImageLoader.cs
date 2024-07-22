@@ -368,12 +368,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
-		{
-			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress,
-                s.SizeRawData);
-		}
-
+ 
         public IEnumerable<Section> ReadSections(LeImageReader rdr, int sections)
         {
             for (int i = 0; i < sections; ++i)
@@ -679,6 +674,9 @@ namespace Reko.ImageLoaders.MzExe
             foreach (Section s in sectionList)
             {
                 AccessMode acc = AccessFromCharacteristics(s.Flags);
+                bool isBss = 
+                    (s.Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0 &&
+                    s.Name == ".bss";
                 var seg = segmentMap.AddSegment(new ImageSegment(
                     s.Name!,
                     addrLoad + s.VirtualAddress,
@@ -687,6 +685,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     Size = s.VirtualSize,
                     IsHidden = s.IsHidden,
+                    IsBss = isBss,
                 });
                 seg.IsDiscardable = s.IsDiscardable;
             }

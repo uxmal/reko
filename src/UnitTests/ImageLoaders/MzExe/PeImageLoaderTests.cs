@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -76,6 +77,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer = new LeImageWriter(fileImage);
             var cfgSvc = new Mock<IConfigurationService>();
             var dcSvc = new Mock<IEventListener>();
+            var progress = new Mock<IProgressIndicator>();
+            dcSvc.Setup(d => d.Progress).Returns(progress.Object);
             Given_i386_Architecture();
             this.win32 = new Mock<Win32Platform>(sc, arch_386.Object) { CallBase = true };
             // Avoid complications with the FindMainProcedure call.

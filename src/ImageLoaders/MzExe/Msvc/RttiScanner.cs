@@ -62,6 +62,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
 
         public RttiScannerResults Scan()
         {
+            listener.Progress.ShowStatus("Searching for C++ RTTI objects");
             var results = new RttiScannerResults();
             ScanCompleteObjectLocators(results);
             ScanVFTables(results);
@@ -87,7 +88,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         {
             foreach (var seg in roSegments)
             {
-                trace.Inform("MSVC RTTI: Scanning segment {0} ({1}) for vtables.", seg.Name, seg.Address);
+                trace.Inform("MSVC RTTI: Scanning segment {0} ({1} {2}) for vtables.", seg.Name, seg.Address, seg.ContentSize);
                 if (!program.TryCreateImageReader(seg.Address, seg.ContentSize, out var rdr))
                     continue;
                 while (rttiHelper.TryReadPointer(rdr, out Address? addr))
@@ -151,7 +152,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             foreach (var seg in roSegments)
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1})", seg.Name, seg.Address);
-                if (!program.TryCreateImageReader(seg.Address, out var rdr))
+                if (!program.TryCreateImageReader(seg.Address, seg.Size, out var rdr))
                     continue;
                 while (rdr.IsValid)
                 {

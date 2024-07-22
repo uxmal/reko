@@ -386,7 +386,8 @@ namespace Reko.ImageLoaders.Elf
                             section.Address,
                             mem, mode)
                         {
-                            Size = (uint) section.Size
+                            Size = (uint) section.Size,
+                            IsBss = section.Type == SectionHeaderType.SHT_NOBITS,
                         });
                         seg.Designer = CreateRenderer(section, Machine);
                     }
@@ -409,7 +410,6 @@ namespace Reko.ImageLoaders.Elf
                         elfSegment != null
                             ? elfSegment.GetAccessMode()
                             : AccessMode.ReadExecute) 
-                    
                     {
                         Size = (uint) segment.Value.Length,
                     };

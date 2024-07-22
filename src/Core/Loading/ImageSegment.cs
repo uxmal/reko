@@ -138,6 +138,12 @@ namespace Reko.Core.Loading
         public bool IsDiscardable { get; set; }
 
         /// <summary>
+        /// If set to true, this segments has no backing storage, and is initially
+        /// filled with zeros.
+        /// </summary>
+        public bool IsBss { get; set; }
+
+        /// <summary>
         /// If set to true, this segment should not be emitted as source code.
         /// </summary>
         public bool IsHidden { get; set; }
