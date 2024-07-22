@@ -333,7 +333,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeInt64(byte[] image, long off, out long value)
         {
-            if (off + 8 <= image.Length)
+            return TryReadBeInt64(image, off, image.Length, out value);
+        }
+
+        public static bool TryReadBeInt64(byte[] image, long off, long offEnd, out long value)
+        {
+            if (off + 8 <= offEnd)
             {
                 var span = image.AsSpan((int) off, 8);
                 value = BinaryPrimitives.ReadInt64BigEndian(span);
@@ -348,7 +353,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeUInt64(byte[] image, long off, out ulong value)
         {
-            if (off + 8 <= image.Length)
+            return TryReadBeUInt64(image, off, image.Length, out value);
+        }
+
+        public static bool TryReadBeUInt64(byte[] image, long off, long offEnd, out ulong value)
+        {
+            if (off + 8 <= offEnd)
             {
                 var span = image.AsSpan((int) off, 8);
                 value = BinaryPrimitives.ReadUInt64BigEndian(span);
@@ -369,7 +379,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadLeInt64(byte[] image, long off, out long value)
         {
-            if (off + 8 <= image.Length)
+            return TryReadLeInt64(image, off, image.Length, out value);
+        }
+
+        public static bool TryReadLeInt64(byte[] image, long off, long offEnd, out long value)
+        {
+            if (off + 8 <= offEnd)
             {
                 var span = image.AsSpan((int) off, 8);
                 value = BinaryPrimitives.ReadInt64LittleEndian(span);
@@ -384,7 +399,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadLeUInt64(byte[] image, long off, out ulong value)
         {
-            if (off + 8 <= image.Length)
+            return TryReadLeUInt64(image, off, image.Length, out value);
+        }
+
+        public static bool TryReadLeUInt64(byte[] image, long off, long offEnd, out ulong value)
+        {
+            if (off + 8 <= offEnd)
             {
                 var span = image.AsSpan((int) off, 8);
                 value = BinaryPrimitives.ReadUInt64LittleEndian(span);
@@ -424,7 +444,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeInt32(byte[] abImage, long off, out int value)
         {
-            if (off <= abImage.Length - 4)
+            return TryReadBeInt32(abImage, off, abImage.Length, out value);
+        }
+
+        public static bool TryReadBeInt32(byte[] abImage, long off, long offEnd, out int value)
+        {
+            if (off <= offEnd - 4)
             {
                 var span = abImage.AsSpan((int) off, 4);
                 value = BinaryPrimitives.ReadInt32BigEndian(span);
@@ -437,9 +462,15 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static bool TryReadLeInt32(byte [] abImage, uint off, out int value)
+
+        public static bool TryReadLeInt32(byte[] abImage, long off, out int value)
         {
-            if (off <= abImage.Length - 4)
+            return TryReadLeInt32(abImage, off, abImage.Length, out value);
+        }
+
+        public static bool TryReadLeInt32(byte [] abImage, long off, long offEnd, out int value)
+        {
+            if (off <= offEnd - 4)
             {
                 var span = abImage.AsSpan((int) off, 4);
                 value = BinaryPrimitives.ReadInt32LittleEndian(span);
@@ -454,7 +485,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadLeUInt32(byte[] abImage, long off, out uint value)
         {
-            if (off <= abImage.Length - 4)
+            return TryReadLeUInt32(abImage, off, abImage.Length, out value);
+        }
+
+        public static bool TryReadLeUInt32(byte[] abImage, long off, long offEnd, out uint value)
+        {
+            if (off <= offEnd - 4)
             {
                 var span = abImage.AsSpan((int) off, 4);
                 value = BinaryPrimitives.ReadUInt32LittleEndian(span);
@@ -469,7 +505,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeUInt32(byte[] abImage, long off, out uint value)
         {
-            if ((long)off <= abImage.Length - 4)
+            return TryReadBeUInt32(abImage, off, abImage.Length, out value);
+        }
+
+        public static bool TryReadBeUInt32(byte[] abImage, long off, long offEnd, out uint value)
+        {
+            if (off <= offEnd - 4)
             {
                 var span = abImage.AsSpan((int) off, 4);
                 value = BinaryPrimitives.ReadUInt32BigEndian(span);
@@ -491,7 +532,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeInt16(byte[] img, long offset, out short value)
         {
-            if (offset <= img.Length - 2)
+            return TryReadBeInt16(img, offset, img.Length, out value);
+        }
+
+        public static bool TryReadBeInt16(byte[] img, long offset, long offEnd, out short value)
+        {
+            if (offset <= offEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadInt16BigEndian(span);
@@ -506,7 +552,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadBeUInt16(byte[] img, long offset, out ushort value)
         {
-            if (offset <= img.Length - 2)
+            return TryReadBeUInt16(img, offset, img.Length, out value);
+        }
+
+        public static bool TryReadBeUInt16(byte[] img, long offset, long offEnd, out ushort value)
+        {
+            if (offset <= offEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadUInt16BigEndian(span);
@@ -519,9 +570,14 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static bool TryReadLeInt16(byte[] img, long offset, out short value)
+        public static bool TryReadLeInt16(byte[] abImage, long offset, out short s)
         {
-            if (offset <= img.Length - 2)
+            return TryReadLeInt16(abImage, offset, abImage.Length, out s);
+        }
+
+        public static bool TryReadLeInt16(byte[] img, long offset, long offEnd, out short value)
+        {
+            if (offset <= offEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadInt16LittleEndian(span);
@@ -548,7 +604,12 @@ namespace Reko.Core.Memory
 
         public static bool TryReadLeUInt16(byte[] abImage, long offset, out ushort us)
         {
-            if (offset + 1 >= abImage.Length)
+            return TryReadLeUInt16(abImage, offset, abImage.Length, out us);
+        }
+
+        public static bool TryReadLeUInt16(byte[] abImage, long offset,long offEnd, out ushort us)
+        {
+            if (offset + 1 >= offEnd)
             {
                 us = 0;
                 return false;

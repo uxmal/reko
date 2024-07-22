@@ -276,7 +276,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeUInt16(out ushort us)
         {
-            if (!ByteMemoryArea.TryReadLeUInt16(bytes, (uint) off, out us))
+            if (!ByteMemoryArea.TryReadLeUInt16(bytes, (uint) off, offEnd, out us))
                 return false;
             off += 2;
             return true;
@@ -284,7 +284,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeUInt16(out ushort us)
         {
-            if (!ByteMemoryArea.TryReadBeUInt16(bytes, (uint) off, out us))
+            if (!ByteMemoryArea.TryReadBeUInt16(bytes, (uint) off, offEnd, out us))
                 return false;
             off += 2;
             return true;
@@ -292,7 +292,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeInt16(out short s)
         {
-            if (!ByteMemoryArea.TryReadBeInt16(bytes, (uint) off, out s))
+            if (!ByteMemoryArea.TryReadBeInt16(bytes, (uint) off, offEnd, out s))
                 return false;
             off += 2;
             return true;
@@ -338,7 +338,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeInt16(out short i16)
         {
-            if (!ByteMemoryArea.TryReadLeInt16(this.bytes, (uint) off, out i16))
+            if (!ByteMemoryArea.TryReadLeInt16(this.bytes, off, offEnd, out i16))
                 return false;
             off += 2;
             return true;
@@ -346,7 +346,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeInt32(out int i32)
         {
-            if (!ByteMemoryArea.TryReadLeInt32(this.bytes, (uint) off, out i32))
+            if (!ByteMemoryArea.TryReadLeInt32(this.bytes, off, offEnd, out i32))
                 return false;
             off += 4;
             return true;
@@ -354,7 +354,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeInt32(out int i32)
         {
-            if (!ByteMemoryArea.TryReadBeInt32(this.bytes, (uint) off, out i32))
+            if (!ByteMemoryArea.TryReadBeInt32(this.bytes, off, offEnd, out i32))
                 return false;
             off += 4;
             return true;
@@ -362,7 +362,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeUInt32(out uint ui32)
         {
-            if (!ByteMemoryArea.TryReadLeUInt32(this.bytes, (uint) off, out ui32))
+            if (!ByteMemoryArea.TryReadLeUInt32(this.bytes, off, offEnd, out ui32))
                 return false;
             off += 4;
             return true;
@@ -370,7 +370,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeUInt32(out uint ui32)
         {
-            if (!ByteMemoryArea.TryReadBeUInt32(this.bytes, (uint) off, out ui32))
+            if (!ByteMemoryArea.TryReadBeUInt32(this.bytes, off, offEnd, out ui32))
                 return false;
             off += 4;
             return true;
@@ -378,7 +378,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeInt64(out long value)
         {
-            if (!ByteMemoryArea.TryReadLeInt64(this.bytes, off, out value))
+            if (!ByteMemoryArea.TryReadLeInt64(this.bytes, off, offEnd, out value))
                 return false;
             off += 8;
             return true;
@@ -386,7 +386,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeUInt64(out ulong value)
         {
-            if (!ByteMemoryArea.TryReadLeUInt64(this.bytes, off, out value))
+            if (!ByteMemoryArea.TryReadLeUInt64(this.bytes, off, offEnd, out value))
                 return false;
             off += 8;
             return true;
@@ -394,7 +394,7 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeInt64(out long value)
         {
-            if (!ByteMemoryArea.TryReadBeInt64(this.bytes, off, out value))
+            if (!ByteMemoryArea.TryReadBeInt64(this.bytes, off, offEnd, out value))
                 return false;
             off += 8;
             return true;
