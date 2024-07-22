@@ -358,7 +358,8 @@ namespace Reko.Typing
             case OperatorType.FSub:
             case OperatorType.FMul:
             case OperatorType.FDiv:
-            {
+            case OperatorType.FMod:
+                {
                 var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Real, eRight.DataType.BitSize);

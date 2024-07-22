@@ -152,6 +152,7 @@ namespace Reko.Scanning
                 OutArgument o => o,
                 ProcedureConstant pc => pc,
                 Application app => m.Fn(VisitExpression(app.Procedure), VisitExpressions(app.Arguments)),
+                ArrayAccess aref => m.ARef(aref.DataType, VisitExpression(aref.Array), VisitExpression(aref.Index)),
                 _ => Fail(e)
             };
         }

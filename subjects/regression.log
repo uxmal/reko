@@ -134,7 +134,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 00000004: warning: Expected sizes of arrays to have been determined by now
 000000FF: error: Failed to write global variable g_t00FF.
     Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 612
+       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 673
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 255
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 207
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
@@ -150,7 +150,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 00000004: warning: Expected sizes of arrays to have been determined by now
 000000FF: error: Failed to write global variable g_t00FF.
     Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 612
+       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 673
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 255
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 207
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
@@ -1171,7 +1171,6 @@ fn0000ACB0: warning: Structure analysis stopped making progress, quitting. Pleas
 2EC0: warning: PDP-11 instruction spl is not supported yet.
 2EC2: warning: PDP-11 instruction spl is not supported yet.
 2ECC: warning: PDP-11 instruction spl is not supported yet.
-fn0B06: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 013E: warning: Expected sizes of arrays to have been determined by now
 168C: warning: Expected sizes of arrays to have been determined by now
 1696: warning: Expected sizes of arrays to have been determined by now
@@ -1180,6 +1179,7 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 28F2: warning: Expected sizes of arrays to have been determined by now
 28F8: warning: Expected sizes of arrays to have been determined by now
 31DC: warning: Expected sizes of arrays to have been determined by now
+35D2: warning: Expected sizes of arrays to have been determined by now
 013E: warning: Expected sizes of arrays to have been determined by now
 168C: warning: Expected sizes of arrays to have been determined by now
 1696: warning: Expected sizes of arrays to have been determined by now
@@ -1188,6 +1188,7 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 28F2: warning: Expected sizes of arrays to have been determined by now
 28F8: warning: Expected sizes of arrays to have been determined by now
 31DC: warning: Expected sizes of arrays to have been determined by now
+35D2: warning: Expected sizes of arrays to have been determined by now
 
 *** regressions\reko-121\m68k_jump
 Error: An error occurred while writing assembly language output.
@@ -1198,9 +1199,9 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 78
    at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 406
    at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 658
-   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 184
-   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 171
-   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 122
+   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 197
+   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 184
+   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 126
    at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 70
    at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 147
 
@@ -1419,9 +1420,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 92
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 592
@@ -2678,4 +2677,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 33,86 seconds.
+Decompiled 93 binaries in 38,26 seconds.

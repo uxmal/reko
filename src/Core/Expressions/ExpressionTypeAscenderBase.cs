@@ -169,6 +169,7 @@ namespace Reko.Core.Expressions
             case OperatorType.FSub:
             case OperatorType.FMul:
             case OperatorType.FDiv:
+            case OperatorType.FMod:
                 dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
                 break;
             case OperatorType.Shr:

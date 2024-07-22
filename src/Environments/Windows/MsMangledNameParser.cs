@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Windows
 {

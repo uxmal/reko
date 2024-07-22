@@ -34,6 +34,7 @@ size_t fread(void *buffer, size_t size, size_t count, FILE *stream);
 int fclose(FILE * fp);
 int _fcloseall();
 int _mkdir(const char *dirname);
+FILE * __iob_func();
 
 [[reko::returns(fpu)]] double _CIpow([[reko::arg(fpu)]]double, [[reko::arg(fpu)]] double); 
 [[reko::returns(fpu)]] double _CIacos([[reko::arg(fpu)]]double);
