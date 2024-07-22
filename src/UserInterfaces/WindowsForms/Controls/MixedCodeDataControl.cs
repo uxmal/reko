@@ -34,9 +34,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
   
         public MixedCodeDataControl()
         {
-            this.ProgramChanged += delegate { OnProgramChanged(); };
+            this.ProgramChanged += delegate { OnPropertyChanged(); };
 
-            OnProgramChanged();
+            OnPropertyChanged();
 
             this.Disposed += MixedCodeDataControl_Disposed;
        }
@@ -67,7 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Address addrTop;
 
  
-        private void OnProgramChanged()
+        private void OnPropertyChanged()
         {
             try
             {
@@ -90,6 +90,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
             Model = new EmptyEditorModel();
             addrTop = null;
+        }
+
+        protected override void OnServicesChanged()
+        {
+            OnPropertyChanged();
+            base.OnServicesChanged();
         }
 
         private void OnTopAddressChanged()
