@@ -313,9 +313,19 @@ namespace Reko.Arch.i8051
 
         private void RewriteMov()
         {
-            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var src = OpSrc(instr.Operands[1], arch.DataMemory);
-            m.Assign(dst, src);
+            if (instr.Operands[0] is BitOperand bit)
+            {
+                var r = binder.EnsureRegister(bit.Register);
+                m.Assign(r, m.Fn(
+                    CommonOps.WriteBit.MakeInstance(r.DataType, PrimitiveType.Byte),
+                    r, m.Byte((byte)bit.Bit), src));
+            }
+            else
+            {
+                var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+                m.Assign(dst, src);
+            }
         }
 
         private void RewriteMovc()
@@ -449,54 +459,7 @@ namespace Reko.Arch.i8051
             case AddressOperand addr:
                 return addr.Address;
             case MemoryOperand mem:
-                Expression ea;
-                if (mem.DirectAddress != null)
-                {
-                    if (mem.Index != null)
-                    {
-                        ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
-                    }
-                    else if (mem.DirectAddress is Constant c)
-                    {
-                        var alias = AliasedSpecialFunctionRegister(c.ToUInt16());
-                        if (alias != null)
-                            return alias;
-                        ea = c;
-                    }
-                    else
-                    {
-                        ea = mem.DirectAddress;
-                    }
-                }
-                else if (mem.Register != null)
-                {
-                    if (mem.Index != null)
-                    {
-                        var idx = binder.EnsureRegister(mem.Index);
-                        if (mem.Register == Registers.PC)
-                        {
-                            ea = m.IAdd(
-                                instr.Address + instr.Length, idx);
-                        }
-                        else
-                        {
-                            ea = binder.EnsureIdentifier(mem.Register);
-                            ea = m.IAdd(ea, idx);
-                        }
-                    }
-                    else
-                    {
-                        ea = binder.EnsureIdentifier(mem.Register);
-                    }
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
-                if (ea.DataType.BitSize < 16)
-                {
-                    ea = m.Convert(ea, PrimitiveType.Byte, PrimitiveType.Word16);
-                }
+                var ea = EffectiveAddress(mem);
                 if (dataMemory != null)
                 {
                     return m.SegMem(mem.Width, binder.EnsureRegister(dataMemory), ea);
@@ -522,6 +485,59 @@ namespace Reko.Arch.i8051
             default:
                 throw new NotImplementedException($"Not implemented {op.GetType().Name}.");
             }
+        }
+
+        private Expression EffectiveAddress(MemoryOperand mem)
+        {
+            Expression ea;
+            if (mem.DirectAddress != null)
+            {
+                if (mem.Index != null)
+                {
+                    ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
+                }
+                else if (mem.DirectAddress is Constant c)
+                {
+                    var alias = AliasedSpecialFunctionRegister(c.ToUInt16());
+                    if (alias != null)
+                        return alias;
+                    ea = c;
+                }
+                else
+                {
+                    ea = mem.DirectAddress;
+                }
+            }
+            else if (mem.Register != null)
+            {
+                if (mem.Index != null)
+                {
+                    var idx = binder.EnsureRegister(mem.Index);
+                    if (mem.Register == Registers.PC)
+                    {
+                        ea = m.IAdd(
+                            instr.Address + instr.Length, idx);
+                    }
+                    else
+                    {
+                        ea = binder.EnsureIdentifier(mem.Register);
+                        ea = m.IAdd(ea, idx);
+                    }
+                }
+                else
+                {
+                    ea = binder.EnsureIdentifier(mem.Register);
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            if (ea.DataType.BitSize < 16)
+            {
+                ea = m.Convert(ea, PrimitiveType.Byte, PrimitiveType.Word16);
+            }
+            return ea;
         }
 
         /// <summary>

@@ -21,14 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.i8051;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.i8051
 {
@@ -209,6 +202,17 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
                 "1|L--|R7 = A");
+        }
+
+        [Test]
+        public void I8051_rw_mov_bit_dst()
+        {
+            Given_HexString("92 42");
+            AssertCode(
+                "0|L--|0000(2): 1 instructions",
+                "1|L--|SFR40 = __write_bit<byte,byte>(SFR40, 2<8>, C)"
+    );
+
         }
 
         [Test]
