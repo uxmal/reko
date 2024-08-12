@@ -1135,8 +1135,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 *** Elf\AVR32\ls
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -2677,4 +2677,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 49,82 seconds.
+Decompiled 93 binaries in 37.89 seconds.

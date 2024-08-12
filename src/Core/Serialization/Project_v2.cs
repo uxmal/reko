@@ -29,7 +29,7 @@ namespace Reko.Core.Serialization
 {
     public class Script_v2
     {
-        [XmlAttribute]
+        [XmlAttribute("enabled")]
         public bool Enabled;
 
         [XmlAttribute]

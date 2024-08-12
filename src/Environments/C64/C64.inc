@@ -1,4 +1,4 @@
-﻿[[reko::segment("0000", "zero_page", 0x0100, "rwx", "Zero page")]]
+﻿[[reko::segment("0000", "low_memory", 0x0400, "rwx", "Low memory")]]
 
 // 6510 CPU's data direction I/O port register; 0 = input, 1 = output
 
@@ -23,8 +23,8 @@
 // Bit 7 - Undefined
 
 // Yes, some C64 programs put executable code in the stack page...
-[[reko::segment("0100", "stack_page", 0x0100, "rwx", "Stack page")]]
-[[reko::segment("0200", "os_data",    0x0200, "rw")]]
+// [[reko::segment("0100", "stack_page", 0x0100, "rwx", "Stack page")]]
+// [[reko::segment("0200", "os_data",    0x0200, "rw")]]
 [[reko::segment("0400", "screen",     0x0400, "rw")]]
 
 [[reko::segment("A000", "basic_ROM",  0x2000, "rx")]]
