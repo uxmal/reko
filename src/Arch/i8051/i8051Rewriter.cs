@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Arch.i8051
 {
@@ -459,7 +460,10 @@ namespace Reko.Arch.i8051
             case AddressOperand addr:
                 return addr.Address;
             case MemoryOperand mem:
-                var ea = EffectiveAddress(mem);
+                var (ea, alias) = EffectiveAddress(mem);
+                if (alias is not null)
+                    return alias;
+                Debug.Assert(ea is not null);
                 if (dataMemory != null)
                 {
                     return m.SegMem(mem.Width, binder.EnsureRegister(dataMemory), ea);
@@ -487,7 +491,7 @@ namespace Reko.Arch.i8051
             }
         }
 
-        private Expression EffectiveAddress(MemoryOperand mem)
+        private (Expression?, Expression?) EffectiveAddress(MemoryOperand mem)
         {
             Expression ea;
             if (mem.DirectAddress != null)
@@ -500,7 +504,7 @@ namespace Reko.Arch.i8051
                 {
                     var alias = AliasedSpecialFunctionRegister(c.ToUInt16());
                     if (alias != null)
-                        return alias;
+                        return (null, alias);
                     ea = c;
                 }
                 else
@@ -537,7 +541,7 @@ namespace Reko.Arch.i8051
             {
                 ea = m.Convert(ea, PrimitiveType.Byte, PrimitiveType.Word16);
             }
-            return ea;
+            return (ea, null);
         }
 
         /// <summary>
