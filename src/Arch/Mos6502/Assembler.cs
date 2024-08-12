@@ -18,17 +18,15 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.IO;
-using System.Text;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.Arch.Mos6502
 {
@@ -38,7 +36,6 @@ namespace Reko.Arch.Mos6502
     {
         private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
 
-        private readonly IServiceProvider services;
         private readonly Mos6502Architecture arch;
         private readonly Address addrBase;
         private readonly IEmitter m;
@@ -47,12 +44,24 @@ namespace Reko.Arch.Mos6502
 
         public Assembler(IServiceProvider services, Mos6502Architecture arch, Address addrBase, List<ImageSymbol> symbols)
         {
-            this.services = services;
             this.arch = arch;
             this.addrBase = addrBase;
             this.symbols = symbols;
             this.m = new Emitter();
             this.symtab = new SymbolTable();
+        }
+
+        public Assembler(Program program, Address addrStart)
+        {
+            this.addrBase = addrStart;
+            this.symbols = new();
+            this.symtab = new SymbolTable();
+            this.arch = (Mos6502Architecture) program.Architecture;
+            if (!program.SegmentMap.TryFindSegment(addrStart, out var segmentToMutate))
+                throw new InvalidOperationException($"Address {addrStart} is not a valid location in the program.");
+            var offset = addrStart - segmentToMutate.MemoryArea.BaseAddress;
+            this.m = new Emitter(segmentToMutate.MemoryArea);
+            m.Position = (int) offset;
         }
 
         public Program GetImage()
@@ -177,9 +186,19 @@ namespace Reko.Arch.Mos6502
             m.EmitByte(0x18);
         }
 
+        public void Cld()
+        {
+            m.EmitByte(0xD8);
+        }
+
         public void Cmp(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.cmp, op.Operand);
+        }
+
+        public void Cpx(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.cpx, op.Operand);
         }
 
         public void Cpy(ParsedOperand op)
@@ -195,6 +214,11 @@ namespace Reko.Arch.Mos6502
         public void Dey()
         {
             m.EmitByte(0x88);
+        }
+
+        public void Eor(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.eor, op.Operand);
         }
 
         public void Inc(ParsedOperand op)
@@ -248,6 +272,34 @@ namespace Reko.Arch.Mos6502
             EmitOpcodeOperand(Mnemonic.ldy, op.Operand);
         }
 
+        public void Lsr()
+        {
+            m.EmitByte(0x4A);
+        }
+
+        public void Lsr(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.lsr, op.Operand);
+        }
+
+        public void Org(ushort uAddr)
+        {
+            var newOffset = uAddr - (int) addrBase.Offset;
+            if (newOffset < m.Position)
+                throw new InvalidOperationException("org directive has a lower address than the current address.");
+            m.EmitBytes(0, newOffset - m.Position);
+        }
+
+        public void Ora(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.ora, op.Operand);
+        }
+
+        public void Pha()
+        {
+            m.EmitByte(0x48);
+        }
+
         public void Rol(RegisterStorage reg)
         {
             if (reg != Registers.a)
@@ -260,6 +312,16 @@ namespace Reko.Arch.Mos6502
             EmitOpcodeOperand(Mnemonic.rol, op.Operand);
         }
 
+        public void Ror()
+        {
+            m.EmitByte(0x6A);
+        }
+
+        public void Rti()
+        {
+            m.EmitByte(0x40);
+        }
+
         public void Rts()
         {
             m.EmitByte(0x60);
@@ -268,6 +330,16 @@ namespace Reko.Arch.Mos6502
         public void Sbc(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.sbc, op.Operand);
+        }
+
+        public void Sec()
+        {
+            m.EmitByte(0x38);
+        }
+
+        public void Sed()
+        {
+            m.EmitByte(0xF8);
         }
 
         public void Sei()
@@ -400,7 +472,6 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-
         public class ParsedOperand
         {
             public Operand Operand;
@@ -470,6 +541,17 @@ namespace Reko.Arch.Mos6502
                     Zp = 0xC4,
                     Abs = 0xCC,
                 }},
+                { Mnemonic.eor, new InstrOpcodes
+                {
+                    Imm = 0x49,
+                    Abs = 0x4D,
+                    AbsX = 0x5D,
+                    AbsY = 0x59,
+                    Zp = 0x45,
+                    ZpX = 0x55,
+                    IndX = 0x41,
+                    IndY = 0x51,
+                }},
                 { Mnemonic.inc, new InstrOpcodes{
                     Zp = 0xE6,
                     ZpX = 0xF6,
@@ -499,6 +581,22 @@ namespace Reko.Arch.Mos6502
                     ZpX = 0xB4,
                     Abs = 0xAC,
                     AbsX = 0xBC,
+                } },
+                { Mnemonic.lsr, new InstrOpcodes {
+                    Abs = 0x4E,
+                    AbsX = 0x5E,
+                    Zp = 0x46,
+                    ZpX = 0x56,
+                } },
+                { Mnemonic.ora, new InstrOpcodes {
+                    Imm = 0x09,
+                    Abs = 0x0D,
+                    AbsX = 0x1D,
+                    AbsY = 0x19,
+                    Zp = 0x05,
+                    ZpX = 0x15,
+                    IndX = 0x01,
+                    IndY = 0x11,
                 } },
                 { Mnemonic.rol, new InstrOpcodes
                 {
