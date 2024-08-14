@@ -579,9 +579,10 @@ namespace Reko.Loading
 
         public void RunScriptOnProgramImage(Program program, Script_v2? script)
         {
-            if (script == null || !script.Enabled || script.Script == null)
+            if (script is null || !script.Enabled || script.Script is null)
                 return;
-            var eventListener = Services.RequireService<IDecompilerEventListener>();
+            var eventListener = Services.RequireService<IEventListener>();
+            eventListener.Progress?.ShowStatus("Running post-load script.");
             IScriptInterpreter interpreter;
             try
             {
@@ -606,6 +607,8 @@ namespace Reko.Loading
             {
                 eventListener.Error(ex, "An error occurred while running the script.");
             }
+
+
         }
 
         private IProcessorArchitecture? GetArchForDebuggerScript(Program program, Script_v2 script)
