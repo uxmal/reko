@@ -18,15 +18,15 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Arch.Mos6502
 {
@@ -41,7 +41,7 @@ namespace Reko.Arch.Mos6502
         public const byte Vmask = 0x40;
         public const byte Nmask = 0x80;
 
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator") { Level = TraceLevel.Verbose };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator") { Level = TraceLevel.Error };
 
         private static readonly RegisterStorage[] dumpRegs = new[]
         {
@@ -61,7 +61,7 @@ namespace Reko.Arch.Mos6502
             this.map = segmentMap;
             this.envEmulator = envEmulator;
             this.regs = new ushort[12];
-            this.regs[Registers.s.Number] = 0xFF;
+            this.regs[Registers.s.Number] = 0xFD;
         }
 
         public override MachineInstruction CurrentInstruction => dasm!.Current;
@@ -95,6 +95,7 @@ namespace Reko.Arch.Mos6502
                 ulong linPc = pc.ToLinear();
                 if (!TestForBreakpoint(linPc))
                     return;
+
                 Execute(instr);
             }
         }
@@ -268,12 +269,12 @@ namespace Reko.Arch.Mos6502
             var a = (byte) regs[Registers.a.Number];
             var p = (byte) regs[Registers.p.Number];
             var v = (byte) Read(op);
-            var s = (byte) (a + v + (p&Cmask));
-            regs[Registers.a.Number] = s;
-            p = NZ(s, p);
+            var s = (a + v + (p&Cmask));
+            regs[Registers.a.Number] = (byte)s;
+            p = NZ((byte)s, p);
             p &= unchecked((byte) ~(Cmask|Vmask));
-            p |= (byte) (s < a ? Cmask : 0);
-            p |= (byte) (((a ^ s) & (a ^ s) & 0x80) != 0 ? Vmask : 0);
+            p |= (byte) (s > 0xFF ? Cmask : 0);
+            p |= (byte) (((a ^ s) & (v ^ s) & 0x80) != 0 ? Vmask : 0);
             regs[Registers.p.Number] = p;
         }
 
@@ -288,7 +289,7 @@ namespace Reko.Arch.Mos6502
             p = NZ(s, p);
             p &= unchecked((byte) ~(Cmask | Vmask));
             p |= (byte) (ss > 0xFF ? Cmask : 0);
-            p |= (byte) (((a ^ s) & (a ^ s) & 0x80) != 0 ? Vmask : 0);
+            p |= (byte) (((a ^ s) & (v ^ s) & 0x80) != 0 ? Vmask : 0);
             regs[Registers.p.Number] = p;
         }
 
@@ -310,7 +311,7 @@ namespace Reko.Arch.Mos6502
             var p = (byte) regs[Registers.p.Number];
             p = NZ(r, p);
             p &= unchecked((byte)~Cmask);
-            p |= (byte)(r > a ? Cmask : 0);
+            p |= (byte)(a >= b ? Cmask : 0);
             regs[Registers.p.Number] = p;
         }
 
@@ -330,10 +331,16 @@ namespace Reko.Arch.Mos6502
 
         private void Jsr(MachineOperand op)
         {
+            var uDest = ((Operand) op).Offset!.ToUInt16();
             var pcNext = this.InstructionPointer.ToUInt16() + 2;
+
+            if (envEmulator.InterceptCall(this, uDest))
+            {
+                return;
+            }
             Push((byte) (pcNext >> 8));
             Push((byte) pcNext);
-            InstructionPointer = Address.Ptr16(((Operand) op).Offset!.ToUInt16());
+            InstructionPointer = Address.Ptr16(uDest);
         }
 
         private void Lsr(MachineOperand op)

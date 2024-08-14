@@ -109,6 +109,13 @@ namespace Reko.UnitTests.Arch.Mos6502
             return (p & Registers.N.FlagGroupBits) != 0;
         }
 
+
+        private bool OverflowFlag()
+        {
+            var p = emu.ReadRegister(Registers.p);
+            return (p & Registers.V.FlagGroupBits) != 0;
+        }
+
         private bool ZeroFlag()
         {
             var p = emu.ReadRegister(Registers.p);
@@ -147,11 +154,17 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0xC0, emu.ReadRegister(Registers.p));
         }
 
+
         [TestCase(254, 1, false, false)]
         [TestCase(254, 1, true, true)]
         [TestCase(253, 1, true, false)]
         [TestCase(255, 1, false, true)]
         [TestCase(255, 1, true, true)]
+        [TestCase(4, 0xFF, true, true)]
+//emu: 019F adc	$FE a 04 x 00 y 00 s FC p 05 [00FE] = FF
+//prc: 019F ?                  a 04 x 00 y 00 s FC p 05
+//emu: 01A1 sta	$C3 a 04 x 00 y 00 s FC p 04 [00C3] = 83
+//prc: 01A1? a 04 x 00 y 00 s FC p 05
         public void Emu6502_adc_C(
             byte accumlatorIntialValue,
             byte amountToAdd,
@@ -171,6 +184,29 @@ namespace Reko.UnitTests.Arch.Mos6502
 
             Assert.AreEqual(expectedValue, CarryFlag());
         }
+
+
+        [TestCase(1, 90, false, false)]
+        public void Emu6502_adc_V(
+            byte accumlatorIntialValue,
+            byte amountToAdd,
+            bool setCarryFlag,
+            bool expectedValue)
+        {
+            Given_Code(m =>
+            {
+                if (setCarryFlag)
+                    m.Sec();
+                else
+                    m.Clc();
+                m.Lda(m.i8(accumlatorIntialValue));
+                m.Adc(m.i8(amountToAdd));
+            });
+            emu.Start();
+
+            Assert.AreEqual((bool)expectedValue, OverflowFlag());
+        }
+
 
         [Test]
         public void Emu6502_asl_acc()
@@ -277,7 +313,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
             emu.Start();
 
-            Assert.AreEqual(NC, emu.ReadRegister(Registers.p));
+            Assert.AreEqual(N, emu.ReadRegister(Registers.p));
         }
 
         [TestCase(0xFE, 0xFF, true)]
@@ -309,7 +345,20 @@ namespace Reko.UnitTests.Arch.Mos6502
 
             emu.Start();
 
-            Assert.AreEqual(C, emu.ReadRegister(Registers.p));
+            Assert.AreEqual(0, emu.ReadRegister(Registers.p));
+        }
+
+        [TestCase(0x22, 0x30, true)]
+        public void Emu6502_cpy_C_flag(byte yValue, byte memoryValue, bool expectedResult)
+        {
+            Given_Code(m =>
+            {
+                m.Ldy(m.i8(yValue));
+                m.Cpy(m.i8(memoryValue));
+            });
+            emu.Start();
+
+            Assert.AreEqual(expectedResult, NegativeFlag());
         }
 
         [TestCase(0xFE, 0xFF, true)]
