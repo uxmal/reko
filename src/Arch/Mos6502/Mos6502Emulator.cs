@@ -23,6 +23,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
