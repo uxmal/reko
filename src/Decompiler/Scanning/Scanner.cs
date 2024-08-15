@@ -1096,7 +1096,7 @@ namespace Reko.Scanning
             foreach (var de in metadata.Procedures)
             {
                 var proc = EnsureProcedure(Program.Architecture, de.Key, de.Value.Name, de.Value.Signature);
-                if (proc != null)
+                if (proc is not null)
                 {
                     sr.KnownProcedures.Add(proc.EntryAddress);
                     if (metadata.Characteristics.TryGetValue(proc.Name, out var chr))

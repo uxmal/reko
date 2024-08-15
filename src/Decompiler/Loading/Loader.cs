@@ -607,8 +607,6 @@ namespace Reko.Loading
             {
                 eventListener.Error(ex, "An error occurred while running the script.");
             }
-
-
         }
 
         private IProcessorArchitecture? GetArchForDebuggerScript(Program program, Script_v2 script)

@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using System.Net.Http.Headers;
 using System.Linq;
 
 namespace Reko.Environments.C64
@@ -90,6 +89,15 @@ namespace Reko.Environments.C64
             case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
+        }
+
+        public override ExternalProcedure? LookupProcedureByAddress(Address addr)
+        {
+            if (Metadata is null)
+                return null;
+            if (!Metadata.Procedures.TryGetValue(addr, out var procedure))
+                return null;
+            return new ExternalProcedure(procedure.Name, procedure.Signature);
         }
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)

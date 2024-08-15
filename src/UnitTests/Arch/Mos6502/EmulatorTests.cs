@@ -361,19 +361,6 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(expectedResult, NegativeFlag());
         }
 
-        [TestCase(0x22, 0x30, true)]
-        public void Emu6502_cpy_C_flag(byte yValue, byte memoryValue, bool expectedResult)
-        {
-            Given_Code(m =>
-            {
-                m.Ldy(m.i8(yValue));
-                m.Cpy(m.i8(memoryValue));
-            });
-            emu.Start();
-
-            Assert.AreEqual(expectedResult, NegativeFlag());
-        }
-
         [TestCase(0xFE, 0xFF, true)]
         [TestCase(0x81, 0x1, true)]
         [TestCase(0x81, 0x2, false)]

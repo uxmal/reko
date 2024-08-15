@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.ImageLoaders.OdbgScript
@@ -36,13 +37,15 @@ namespace Reko.ImageLoaders.OdbgScript
         public const int Cancel = 0;
         public const int OK = 1;
 
-        private readonly OdbgScriptLoader loader;
+        private readonly IServiceProvider services;
+        private readonly OdbgScriptLoader? loader;
         private readonly Program program;
         private ImageSegment heap;
         private ulong heapAlloc;
 
-		public OdbgScriptHost(OdbgScriptLoader loader, Program program)
+		public OdbgScriptHost(IServiceProvider services, OdbgScriptLoader? loader, Program program)
         {
+            this.services = services;
             this.loader = loader;
             this.program = program;
 			this.SegmentMap = program.SegmentMap;
@@ -50,6 +53,11 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         public SegmentMap SegmentMap { get; set; }
+
+        /// <summary>
+        /// Original entry point to the executable, before it was packed.
+        /// </summary>
+        public ImageSymbol? OriginalEntryPoint { get; set; }
 
         public virtual Address AllocateMemory(ulong size)
         {
@@ -88,12 +96,28 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void AddSegmentReference(Address addr, ushort seg)
         {
-            loader.AddSegmentReference(addr, seg);
+            loader?.AddSegmentReference(addr, seg);
+        }
+
+        public virtual void AddEntryPoint(IProcessorArchitecture arch, Address addr)
+        {
+            var ep = ImageSymbol.Procedure(arch, addr);
+            this.program.EntryPoints.Add(addr, ep);
+        }
+
+        public virtual void ClearEntryPoints()
+        {
+            this.program.EntryPoints.Clear();
+        }
+
+        public virtual void SetArchitecture(IProcessorArchitecture arch)
+        {
+            this.program.Architecture = arch;
         }
 
         public virtual bool DialogMSG(string msg, out int input)
         {
-            loader.Services.RequireService<IEventListener>().Info(msg);
+            services.RequireService<IEventListener>().Info(msg);
             input = 0;
             return true;
         }
@@ -131,12 +155,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void MsgError(string message)
         {
-            loader.Services.RequireService<IEventListener>().Error(message);
+            services.RequireService<IEventListener>().Error(message);
         }
 
-        public virtual bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo)
+        public virtual bool TE_GetMemoryInfo(Address addr, [MaybeNullWhen(false)] out MEMORY_BASIC_INFORMATION MemInfo)
         {
-            SegmentMap map = loader.ImageMap;
+            SegmentMap map = program.SegmentMap;
             if (map.TryFindSegment(addr, out ImageSegment? segment))
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION
@@ -147,11 +171,9 @@ namespace Reko.ImageLoaders.OdbgScript
                 };
                 return true;
             }
-            else
-            {
-                MemInfo = null!;
-                return false;
-            }
+            MemInfo = null;
+            return false;
+
         }
 
         public virtual bool TryReadBytes(Address addr, int memlen, byte[] membuf)
@@ -233,8 +255,8 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (!SegmentMap.TryFindSegment(addr, out ImageSegment? segment))
                 throw new AccessViolationException();
-            var rdr = loader.Architecture.CreateImageReader(segment.MemoryArea, addr);
-            var dasm = (X86Disassembler)loader.Architecture.CreateDisassembler(rdr);
+            var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
+            var dasm = (X86Disassembler)program.Architecture.CreateDisassembler(rdr);
             return dasm.DisassembleInstruction();
         }
 
@@ -281,11 +303,6 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual int LengthDisassembleBackEx(Address addr)
         {
             throw new NotImplementedException();
-        }
-
-        public virtual void SetOriginalEntryPoint(Address ep)
-        {
-            loader.OriginalEntryPoint = ep;
         }
     }
 }

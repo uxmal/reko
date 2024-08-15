@@ -53,7 +53,6 @@ namespace Reko.ImageLoaders.OdbgScript
             this.debugger = null!;
             this.scriptInterpreter = null!;
             this.ImageMap = null!;
-            this.OriginalEntryPoint = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -64,11 +63,6 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public SegmentMap ImageMap { get; set; }
         public IProcessorArchitecture Architecture { get; set; }
-
-        /// <summary>
-        /// Original entry point to the executable, before it was packed.
-        /// </summary>
-        public Address OriginalEntryPoint { get; set; }
 
         public override Program LoadProgram(Address? addrLoad)
         {
@@ -86,7 +80,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(program.Architecture, emu);
             this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
-            this.scriptInterpreter.Host = new OdbgScriptHost(this, program);
+            this.scriptInterpreter.Host = new OdbgScriptHost(Services, this, program);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = ep.Address;
             emu.BeforeStart += emu_BeforeStart;
@@ -101,11 +95,11 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
-            if (OriginalEntryPoint != null)
+            var symEntry = this.scriptInterpreter.Host.OriginalEntryPoint;
+            if (symEntry is not null)
             {
-                var sym = ImageSymbol.Procedure(program.Architecture, OriginalEntryPoint, state: Architecture.CreateProcessorState());
-                program.ImageSymbols[sym.Address] = sym;
-                program.EntryPoints[sym.Address] = sym;
+                program.ImageSymbols[symEntry.Address] = symEntry;
+                program.EntryPoints[symEntry.Address] = symEntry;
             }
             return program;
         }

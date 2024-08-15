@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
@@ -30,6 +31,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -72,15 +74,15 @@ namespace Reko.ImageLoaders.OdbgScript
         private const int STRING_READSIZE = 256;
 
         private readonly IServiceProvider services;
-        private readonly IProcessorArchitecture arch;
+        private IProcessorArchitecture arch;
         private IProcessorEmulator? emu;
         private readonly List<int> calls = new List<int>();         // Call/Ret stack in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
         private readonly Dictionary<Address, int> bpjumps = new Dictionary<Address, int>();  // Breakpoint Auto Jumps 
-        public  bool debuggee_running;
-        public  bool script_running;
-        public  bool run_till_return;
-        public  bool return_to_usercode;
+        public bool debuggee_running;
+        public bool script_running;
+        public bool run_till_return;
+        public bool return_to_usercode;
         private int script_pos, script_pos_next;
         private readonly UnknownType unk = new UnknownType();
 
@@ -107,7 +109,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             this.emu = arch.CreateEmulator(program.SegmentMap, envEmu);
-            this.Host = new OdbgScriptHost(null!, program);
+            this.Host = new OdbgScriptHost(services, null, program);
             this.Debugger = new Debugger(arch, emu);
             emu.BeforeStart += delegate
             {
@@ -314,6 +316,10 @@ namespace Reko.ImageLoaders.OdbgScript
             commands["reko.addseg"] = RekoAddSegmentReference;
             commands["reko.db"] = RekoDumpBytes;
             commands["reko.dasm"] = RekoDisassemble;
+            commands["reko.setarch"] = RekoArch;
+            commands["reko.clreps"] = RekoClearEntryPoints;
+            commands["reko.addep"] = RekoAddEntryPoint;
+
 
             #endregion
 #if LATER
@@ -432,8 +438,8 @@ namespace Reko.ImageLoaders.OdbgScript
 
         void SoftwareCallback() { OnBreakpoint(BreakpointType.PP_INT3BREAK); }
         void HardwareCallback() { OnBreakpoint(BreakpointType.PP_HWBREAK); }
-        void MemoryCallback()   { OnBreakpoint(BreakpointType.PP_MEMBREAK); }
-        void EXECJMPCallback()  { DoSTI(); }
+        void MemoryCallback() { OnBreakpoint(BreakpointType.PP_MEMBREAK); }
+        void EXECJMPCallback() { DoSTI(); }
 
         public struct callback_t
         {
@@ -502,7 +508,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
 
         // Commands that can be executed
-        Dictionary<string, Func<Expression[], bool>> commands = new(StringComparer.InvariantCultureIgnoreCase );
+        Dictionary<string, Func<Expression[], bool>> commands = new(StringComparer.InvariantCultureIgnoreCase);
 
         private int EOB_row, EOE_row;
         private bool bInternalBP;
@@ -531,7 +537,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 value = (byte) temp;
                 return true;
             }
-            else 
+            else
             {
                 value = 0;
                 return false;
@@ -568,73 +574,6 @@ namespace Reko.ImageLoaders.OdbgScript
         //cache for GMIMP
         List<t_export> tImportsCache = new List<t_export>();
         //ulong importsCacheAddr;
-
-#if _WIN64
-
-    register_t [] registers = 
-    {
-	new register_t("rax",  eContextData.UE_RAX, 8, 0), new register_t("rbx",  eContextData.UE_RBX, 8, 0), new register_t("rcx",  eContextData.UE_RCX, 8, 0),
-	new register_t("rdx",  eContextData.UE_RDX, 8, 0), new register_t("rsi",  eContextData.UE_RSI, 8, 0), new register_t("rdi",  eContextData.UE_RDI, 8, 0),
-	new register_t("rbp",  eContextData.UE_RBP, 8, 0), new register_t("rsp",  eContextData.UE_RSP, 8, 0), new register_t("rip",  eContextData.UE_RIP, 8, 0),
-
-	new register_t("r8",   eContextData.UE_R8,  8, 0), new register_t("r9",   eContextData.UE_R9,  8, 0), new register_t("r10",  eContextData.UE_R10, 8, 0),
-	new register_t("r11",  eContextData.UE_R11, 8, 0), new register_t("r12",  eContextData.UE_R12, 8, 0), new register_t("r13",  eContextData.UE_R13, 8, 0),
-	new register_t("r14",  eContextData.UE_R14, 8, 0), new register_t("r15",  eContextData.UE_R15, 8, 0),
-
-	new register_t("dr0",  eContextData.UE_DR0, 8, 0), new register_t("dr1",  eContextData.UE_DR1, 8, 0), new register_t("dr2",  eContextData.UE_DR2, 8, 0),
-	new register_t("dr3",  eContextData.UE_DR3, 8, 0), new register_t("dr6",  eContextData.UE_DR6, 8, 0), new register_t("dr7",  eContextData.UE_DR7, 8, 0),
-
-	new register_t("eax",  eContextData.UE_RAX, 4, 0), new register_t("ebx",  eContextData.UE_RBX, 4, 0), new register_t("ecx",  eContextData.UE_RCX, 4, 0),
-	new register_t("edx",  eContextData.UE_RDX, 4, 0), new register_t("esi",  eContextData.UE_RSI, 4, 0), new register_t("edi",  eContextData.UE_RDI, 4, 0),
-	new register_t("ebp",  eContextData.UE_RBP, 4, 0), new register_t("esp",  eContextData.UE_RSP, 4, 0),
-
-	new register_t("r8d",  eContextData.UE_R8,  4, 0), new register_t("r9d",  eContextData.UE_R9,  4, 0), new register_t("r10d", eContextData.UE_R10, 4, 0),
-	new register_t("r11d", eContextData.UE_R11, 4, 0), new register_t("r12d", eContextData.UE_R12, 4, 0), new register_t("r13d", eContextData.UE_R13, 4, 0),
-	new register_t("r14d", eContextData.UE_R14, 4, 0), new register_t("r15d", eContextData.UE_R15, 4, 0),
-
-	new register_t("ax",   eContextData.UE_RAX, 2, 0), new register_t("bx",   eContextData.UE_RBX, 2, 0), new register_t("cx",   eContextData.UE_RCX, 2, 0),
-	new register_t("dx",   eContextData.UE_RDX, 2, 0), new register_t("si",   eContextData.UE_RSI, 2, 0), new register_t("di",   eContextData.UE_RDI, 2, 0),
-	new register_t("bp",   eContextData.UE_RBP, 2, 0), new register_t("sp",   eContextData.UE_RSP, 2, 0),
-
-	new register_t("r8w",  eContextData.UE_R8,  2, 0), new register_t("r9w",  eContextData.UE_R9,  2, 0), new register_t("r10w", eContextData.UE_R10, 2, 0),
-	new register_t("r11w", eContextData.UE_R11, 2, 0), new register_t("r12w", eContextData.UE_R12, 2, 0), new register_t("r13w", eContextData.UE_R13, 2, 0),
-	new register_t("r14w", eContextData.UE_R14, 2, 0), new register_t("r15w", eContextData.UE_R15, 2, 0),
-
-	new register_t("ah",   eContextData.UE_RAX, 1, 1), new register_t("bh",   eContextData.UE_RBX, 1, 1), new register_t("ch",   eContextData.UE_RCX, 1, 1),
-	new register_t("dh",   eContextData.UE_RDX, 1, 1),
-
-	new register_t("al",   eContextData.UE_RAX, 1, 0), new register_t("bl",   eContextData.UE_RBX, 1, 0), new register_t("cl",   eContextData.UE_RCX, 1, 0),
-	new register_t("dl",   eContextData.UE_RDX, 1, 0), new register_t("sil",  eContextData.UE_RSI, 1, 0), new register_t("dil",  eContextData.UE_RDI, 1, 0),
-	new register_t("bpl",  eContextData.UE_RBP, 1, 0), new register_t("spl",  eContextData.UE_RSP, 1, 0),
-
-	new register_t("r8b",  eContextData.UE_R8,  1, 0), new register_t("r9b",  eContextData.UE_R9,  1, 0), new register_t("r10b", eContextData.UE_R10, 1, 0),
-	new register_t("r11b", eContextData.UE_R11, 1, 0), new register_t("r12b", eContextData.UE_R12, 1, 0), new register_t("r13b", eContextData.UE_R13, 1, 0),
-	new register_t("r14b", eContextData.UE_R14, 1, 0), new register_t("r15b", eContextData.UE_R15, 1, 0),
-};
-
-#else
-
-        readonly Dictionary<string, register_t> registers = new register_t[]
-        {
-            new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
-            new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
-            new register_t("ebp", eContextData.UE_EBP, 4, 0), new register_t("esp", eContextData.UE_ESP, 4, 0), new register_t("eip", eContextData.UE_EIP, 4, 0),
-
-            new register_t("dr0", eContextData.UE_DR0, 4, 0), new register_t("dr1", eContextData.UE_DR1, 4, 0), new register_t("dr2", eContextData.UE_DR2, 4, 0),
-            new register_t("dr3", eContextData.UE_DR3, 4, 0), new register_t("dr6", eContextData.UE_DR6, 4, 0), new register_t("dr7", eContextData.UE_DR7, 4, 0),
-
-            new register_t("ax", eContextData.UE_EAX, 2, 0), new register_t("bx", eContextData. UE_EBX, 2, 0), new register_t("cx", eContextData. UE_ECX, 2, 0),
-            new register_t("dx", eContextData.UE_EDX, 2, 0), new register_t("si", eContextData. UE_ESI, 2, 0), new register_t("di", eContextData. UE_EDI, 2, 0),
-            new register_t("bp", eContextData.UE_EBP, 2, 0), new register_t("sp", eContextData. UE_ESP, 2, 0),
-
-            new register_t("ah", eContextData.UE_EAX, 1, 1), new register_t("bh", eContextData. UE_EBX, 1, 1), new register_t("ch", eContextData. UE_ECX, 1, 1),
-            new register_t("dh", eContextData.UE_EDX, 1, 1),
-
-            new register_t("al", eContextData .UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
-            new register_t("dl", eContextData. UE_EDX, 1, 0)
-        }.ToDictionary(reg => reg.name, StringComparer.InvariantCultureIgnoreCase);
-
-#endif
 
         readonly static string[] fpu_registers = { "st(0)", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)" };
 
@@ -750,7 +689,7 @@ namespace Reko.ImageLoaders.OdbgScript
             variables["$OS_VERSION"] = Var.Create(Helper.rul2decstr(OS_VERSION_HI) + '.' + Helper.rul2decstr(OS_VERSION_LO));
             variables["$TE_VERSION"] = Var.Create(Helper.rul2decstr(TE_VERSION_HI) + '.' + Helper.rul2decstr(TE_VERSION_LO));
             variables["$TS_VERSION"] = Var.Create(Helper.rul2decstr(TS_VERSION_HI) + '.' + Helper.rul2decstr(TS_VERSION_LO));
-            variables["$VERSION"] = variables["$OS_VERSION"];                   
+            variables["$VERSION"] = variables["$OS_VERSION"];
             variables["$WIN_VERSION"] = Var.Create(Environment.OSVersion.VersionString);
 
 #if _WIN64
@@ -797,7 +736,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null!, program);
+            var host = new OdbgScriptHost(services, null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
             {
@@ -807,7 +746,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null!, program);
+            var host = new OdbgScriptHost(services, null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
             {
@@ -861,8 +800,8 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 // Find command and execute it
                 Func<Expression[], bool>? cmd = line.CommandPtr;
-                if (cmd == null && 
-                    line.Command != null &&
+                if (cmd is null &&
+                    line.Command is not null &&
                     commands.TryGetValue(line.Command, out var it))
                 {
                     line.CommandPtr = cmd = it;
@@ -906,13 +845,13 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             bool restore_registers = false;
             Address ip = Debugger.InstructionPointer;
-            for (int i = 0; i < tMemBlocks.Count; )
+            for (int i = 0; i < tMemBlocks.Count;)
             {
                 if (tMemBlocks[i].free_at_ip == ip)
                 {
                     Host.FreeMemory(tMemBlocks[i].address!, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
-                        variables["$RESULT"] = Var.Create((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
+                        variables["$RESULT"] = Var.Create((rulong) Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
                         restore_registers = true;
                     tMemBlocks.RemoveAt(i);
@@ -938,7 +877,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                break_reason = (rulong)reason;
+                break_reason = (rulong) reason;
 
                 if (EOB_row > -1)
                 {
@@ -1193,13 +1132,13 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (op is StringConstant str)
             {
                 value = str.ToString();
-                if (size!=0 && size < value.Length)
+                if (size != 0 && size < value.Length)
                     value = value.Remove(size);
                 return true;
             }
             else if (Helper.TryGetHexLiteral(op, out value))
             {
-                if (size!= 0 && (size * 2) < (value.Length - 2))
+                if (size != 0 && (size * 2) < (value.Length - 2))
                     value = value.Substring(0, (size * 2) + 1) + '#';
                 return true;
             }
@@ -1225,7 +1164,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
-                        if (segment.MemoryArea is ByteMemoryArea bmem && 
+                        if (segment.MemoryArea is ByteMemoryArea bmem &&
                             bmem.TryReadBytes(ea, buffer.Length, buffer))
                         {
                             buffer[buffer.Length - 1] = 0;
@@ -1284,6 +1223,18 @@ namespace Reko.ImageLoaders.OdbgScript
                 return false;
             value = arch.MakeAddressFromConstant(Constant.UInt64(uAddr), false);
             return true;
+        }
+
+        private bool GetArchitecture(Expression? eArch, [MaybeNullWhen(false)] out IProcessorArchitecture arch)
+        {
+            if (eArch is not StringConstant sArch)
+            {
+                arch = this.arch;
+                return true;
+            }
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            arch = cfgSvc.GetArchitecture(sArch.Literal);
+            return arch is not null;
         }
 
         bool GetRulong(Expression op, out rulong value)
@@ -1563,17 +1514,17 @@ namespace Reko.ImageLoaders.OdbgScript
             return constants.TryGetValue(name, out value);
         }
 
-        bool IsRegister(string s)
+        private bool IsRegister(string s)
         {
-            return arch.GetRegister(s) != null;
+            return arch.GetRegister(s) is not null;
         }
 
-        bool IsFloatRegister(string s)
+        private bool IsFloatRegister(string s)
         {
             return fpu_registers.Any<string>(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
-        bool IsFlag(string s)
+        private bool IsFlag(string s)
         {
             return e_flags.Any(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }

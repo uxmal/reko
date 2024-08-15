@@ -49,6 +49,11 @@ namespace Reko.Environments.C64
 
         public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
         {
+            switch (calledAddress)
+            {
+            case 0xE544: // clear screen
+                return true;
+            }
             return false;
         }
 

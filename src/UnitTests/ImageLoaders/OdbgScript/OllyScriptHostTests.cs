@@ -37,17 +37,19 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
     {
         private Program program;
         private OdbgScriptHost host;
+        private IServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             this.program = null;
             this.host = null;
+            this.sc = new ServiceContainer();
         }
 
         private void Given_X86Program()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var addrBase = Address.Ptr32(0x00100000);
             var segmentMap = new SegmentMap(addrBase);
             segmentMap.AddSegment(new ByteMemoryArea(addrBase, new byte[0xFF]), ".text", AccessMode.ReadWrite);
@@ -56,7 +58,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Host()
         {
-            this.host = new OdbgScriptHost(null, program);
+            this.host = new OdbgScriptHost(sc, null, program);
         }
 
         [Test]

@@ -19,9 +19,11 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
@@ -29,6 +31,12 @@ namespace Reko.ImageLoaders.OdbgScript
     public interface IOdbgScriptHost
     {
         SegmentMap SegmentMap { get; }
+
+        /// <summary>
+        /// Entrypoint as discovered by the script being run.
+        /// </summary>
+        ImageSymbol? OriginalEntryPoint { get; set; }
+
 
         Address AllocateMemory(ulong size);
         int Assemble(string asm, Address addr);
@@ -45,7 +53,7 @@ namespace Reko.ImageLoaders.OdbgScript
         List<string> getlines_file(string p);
         ulong TE_GetMainThreadId();
         ulong TE_GetMainThreadHandle();
-        bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo);
+        bool TE_GetMemoryInfo(Address addr, [MaybeNullWhen(false)] out MEMORY_BASIC_INFORMATION MemInfo);
         bool TE_GetModules(List<MODULEENTRY32> Modules);
         object TE_GetProcessHandle();
         ulong TE_GetProcessId();
@@ -57,7 +65,6 @@ namespace Reko.ImageLoaders.OdbgScript
         uint LengthDisassembleEx(Address addr);
         void TE_Log(string message);
         void MsgError(string message);
-        void SetOriginalEntryPoint(Address ep);
         bool TryReadBytes(Address addr, int memlen, byte[] membuf);
         bool WriteMemory(Address addr, int length, byte[] membuf);
         bool WriteMemory(Address addr, ulong qw);
@@ -65,6 +72,11 @@ namespace Reko.ImageLoaders.OdbgScript
         bool WriteMemory(Address addr, ushort w);
         bool WriteMemory(Address addr, byte b);
         bool WriteMemory(Address target, double value);
+
+        // Reko program state
         void AddSegmentReference(Address addr, ushort seg);
+        void ClearEntryPoints();
+        void AddEntryPoint(IProcessorArchitecture arch, Address addr);
+        void SetArchitecture(IProcessorArchitecture arch);
     }
 }

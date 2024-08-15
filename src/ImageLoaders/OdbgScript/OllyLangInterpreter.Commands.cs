@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
@@ -889,16 +890,20 @@ rulong hwnd;
 
         private bool DoDPE(Expression[] args)
         {
-            if (args.Length == 2 &&
+            IProcessorArchitecture? arch = null;
+            if (args.Length >= 2 &&
                 GetString(args[0], out string filename) &&
-                GetAddress(args[1], out Address ep))
+                GetAddress(args[1], out Address ep) &&
+                (args.Length == 2 || GetArchitecture(args[2], out arch)))
             {
                 // We're cheating here and not actually dumping to disk. We don't need to 
                 // because the image is unpacked in memory, and we are now ready to start
                 // partying on it. All we have to do now is tell the caller how the value
                 // of the original entry point, which is conveniently passed in the other
                 // argument.
-                Host.SetOriginalEntryPoint(ep);
+                arch ??= this.arch;
+                var sym = ImageSymbol.Procedure(arch, ep, state: arch.CreateProcessorState());
+                Host.OriginalEntryPoint = sym;
                 return true;
             }
             return false;
@@ -1158,7 +1163,7 @@ rulong hwnd;
 
             // search in current mem block
             //$REVIEW: extremely inefficient O(n*m) algorithm, do we care?
-            if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
+            if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION? MemInfo))
             {
                 int memlen = (int) ((MemInfo.BaseAddress! - addr) + (long) MemInfo.RegionSize);
                 if (maxsize != 0 && (int)maxsize < memlen)
@@ -1526,7 +1531,7 @@ rulong hwnd;
                     variables["$RESULT"] = Var.Create(0);
 
                     // search in current mem block
-                    if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
+                    if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION? MemInfo))
                     {
                         rulong memlen = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
                         if (maxsize != 0 && maxsize < memlen)
@@ -1576,7 +1581,7 @@ rulong hwnd;
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
-                while (Host.TE_GetMemoryInfo(addr!, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
+                while (Host.TE_GetMemoryInfo(addr!, out MEMORY_BASIC_INFORMATION? MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
                     if (!DoFIND(addr, args[0]))
                         return false;
@@ -1817,7 +1822,7 @@ rulong addr;
             {
                 variables["$RESULT"] = Var.Create(0);
 
-                if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
+                if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION? MemInfo))
                 {
                     var val = cmd.Name.ToUpperInvariant();
 
@@ -2516,7 +2521,7 @@ string str = "";
 
                 variables["$RESULT"] = variables["$RESULT_1"] = Var.Create(0);
 
-                if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
+                if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION? MemInfo))
                 {
                     rulong memsize = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
 
@@ -3528,7 +3533,7 @@ string param;
                     return false;
                 if (args.Length == 3)
                 {
-                    if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
+                    if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION? MemInfo))
                         return true;
 
                     len = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
@@ -4242,6 +4247,42 @@ string filename, data;
             }
 
             Host.TE_Log(sw.ToString());
+            return true;
+        }
+
+        private bool RekoArch(Expression[] args)
+        {
+            if (args.Length != 1)
+                return false;
+            if (!GetString(args[0], out string sArch))
+                return false;
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture(sArch);
+            if (arch is null)
+            {
+                Host.MsgError($"Unknown architecture '{sArch}'.");
+                return false;
+            }
+            this.Host.SetArchitecture(arch);
+            this.arch = arch;
+            return true;
+        }
+
+        private bool RekoClearEntryPoints(Expression[] args)
+        {
+            if (args.Length != 0)
+                return false;
+            this.Host.ClearEntryPoints();
+            return true;
+        }
+
+        private bool RekoAddEntryPoint(Expression[] args)
+        {
+            if (args.Length != 1)
+                return false;
+            if (!GetAddress(args[0], out var addr))
+                return false;
+            this.Host.AddEntryPoint(arch, addr);
             return true;
         }
     }

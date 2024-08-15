@@ -48,7 +48,45 @@
 [[reko::address("BC2B")]] void SIGN();   // Sign of FAC into A
 
 [[reko::segment("D000", "Vic_II", 0x0400, "rw")]]
-[[reko::address("D020")]] unsigned char VICII_Border_Color;
+[[reko::address("D000")]] unsigned char VICII_m0x;		// Low 8 bits of sprite X position
+[[reko::address("D001")]] unsigned char VICII_m0y;		// Sprite Y position
+[[reko::address("D002")]] unsigned char VICII_m1x;
+[[reko::address("D003")]] unsigned char VICII_m1y;
+[[reko::address("D004")]] unsigned char VICII_m2x;
+[[reko::address("D005")]] unsigned char VICII_m2y;
+[[reko::address("D006")]] unsigned char VICII_m3x;
+[[reko::address("D007")]] unsigned char VICII_m3y;
+[[reko::address("D008")]] unsigned char VICII_m4x;
+[[reko::address("D009")]] unsigned char VICII_m4y;
+[[reko::address("D00A")]] unsigned char VICII_m5x;
+[[reko::address("D00B")]] unsigned char VICII_m5y;
+[[reko::address("D00C")]] unsigned char VICII_m6x;
+[[reko::address("D00D")]] unsigned char VICII_m6y;
+[[reko::address("D00E")]] unsigned char VICII_m7x;
+[[reko::address("D00F")]] unsigned char VICII_m7y;
+[[reko::address("D010")]] unsigned char VICII_m_x8;
+[[reko::address("D011")]] unsigned char VICII_cr1;		// Control register
+[[reko::address("D012")]] unsigned char VICII_raster;		// Control register
+[[reko::address("D013")]] unsigned char VICII_lpx;		// Light pen X
+[[reko::address("D014")]] unsigned char VICII_lpy;		// Light pen Y
 
+[[reko::address("D020")]] unsigned char VICII_Border_Color;
+[[reko::address("D021")]] unsigned char VICII_B0C;		// Background color 0
+[[reko::address("D022")]] unsigned char VICII_B1C;		// Background color 1
+[[reko::address("D023")]] unsigned char VICII_B2C;		// Background color 2
+[[reko::address("D024")]] unsigned char VICII_B3C;		// Background color 3
+[[reko::address("D025")]] unsigned char VICII_mm0;		// Sprite multicolor 0
+[[reko::address("D026")]] unsigned char VICII_mm1;		// Sprite multicolor 1
+[[reko::address("D027")]] unsigned char VICII_m0c;		// Sprite 0 color
+[[reko::address("D028")]] unsigned char VICII_m1c;		// Sprite 1 color
+[[reko::address("D029")]] unsigned char VICII_m2c;		// Sprite 2 color
+[[reko::address("D02A")]] unsigned char VICII_m3c;		// Sprite 3 color
+[[reko::address("D02B")]] unsigned char VICII_m4c;		// Sprite 4 color
+[[reko::address("D02C")]] unsigned char VICII_m5c;		// Sprite 5 color
+[[reko::address("D02D")]] unsigned char VICII_m6c;		// Sprite 6 color
+[[reko::address("D02E")]] unsigned char VICII_m7c;		// Sprite 7 color
+
+// References: https://skoolkid.github.io/sk6502/c64rom/index.html
 [[reko::segment("E000", "kernal_ROM",  0x2000, "rx")]]
+[[reko::address("E544")]] void kernal_clear_screen();	// Clear screen
 [[reko::address("FFE7")]] void CLALL(); // Clear file table
