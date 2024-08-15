@@ -8,7 +8,7 @@ void fn00003340(word32 a5, word16 wArg06)
 fn00003340_entry:
 l00003340:
 	Mem19[a5 + -1728<i32>:word32] = CONVERT(wArg06, int16, int32)
-	d2_20 = 0<i32>
+	d2_20 = 0<32>
 	d0_22 = a5 + -1284<i32>
 l0000335C:
 	branch wArg06 == Mem19[d0_22:word16] l00003374
@@ -20,7 +20,7 @@ l00003362:
 	d2_20 = d2_20 + 1<32>
 	branch d0_22 <u a5 + -1100<i32> l0000335C
 l0000336A:
-	Mem56[a5 + -1732<i32>:word32] = 22<i32>
+	Mem56[a5 + -1732<i32>:word32] = 0x16<32>
 	return
 fn00003340_exit:
 

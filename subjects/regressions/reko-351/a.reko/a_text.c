@@ -90,7 +90,7 @@ void sine_taylor(real64 rArg04)
 void factorial(int32 dwArg04)
 {
 	int32 dwLoc08_n;
-	for (dwLoc08_n = 2; dwLoc08_n <= dwArg04; ++dwLoc08_n)
+	for (dwLoc08_n = 0x02; dwLoc08_n <= dwArg04; ++dwLoc08_n)
 		;
 }
 
@@ -108,13 +108,13 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
 	int32 dwLoc08_n;
-	for (dwLoc08_n = 3; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
+	for (dwLoc08_n = 0x03; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
 	{
 		pow_int(rArg04, dwLoc08_n);
 		factorial(dwLoc08_n);
 	}
 	int32 dwLoc08_n;
-	for (dwLoc08_n = 5; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
+	for (dwLoc08_n = 0x05; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
 	{
 		pow_int(rArg04, dwLoc08_n);
 		factorial(dwLoc08_n);
@@ -155,7 +155,7 @@ void __do_global_ctors_aux()
 	<anonymous> * a0_n = g_ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
 	<anonymous> ** a2_n = &g_ptr8000270C;
-	while (a0_n != (<anonymous> *) -1)
+	while (a0_n != (<anonymous> *) ~0x00)
 	{
 		a0_n();
 		struct Eq_n * a2_n;

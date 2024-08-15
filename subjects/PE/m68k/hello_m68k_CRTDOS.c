@@ -8,18 +8,18 @@
 void fn00003340(struct Eq_n * a5, int16 wArg06)
 {
 	a5->dwFFFFF940 = (int32) wArg06;
-	int32 d2_n = 0;
+	ui32 d2_n = 0x00;
 	struct Eq_n * d0_n = (struct Eq_n *) (&a5->dwFFFFF940 + 111);
 	do
 	{
 		if (wArg06 == d0_n->w0000)
 		{
-			a5->tFFFFF93C.u0 = (int32) (uint32) a5->aFFFFFAFE[d2_n].w0000;
+			a5->dwFFFFF93C = (uint32) a5->aFFFFFAFE[d2_n].w0000;
 			return;
 		}
 		++d0_n;
 		++d2_n;
 	} while (d0_n < &(a5->aFFFFFAFE + 45)->w0000 + 1);
-	a5->tFFFFF93C.u0 = 22;
+	a5->dwFFFFF93C = 22;
 }
 

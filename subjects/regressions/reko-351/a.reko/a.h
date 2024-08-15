@@ -385,10 +385,10 @@ T_81: (in dwArg04 @ 8000033A : int32)
   Class: Eq_81
   DataType: int32
   OrigDataType: int32
-T_82: (in 2<i32> @ 80000348 : int32)
+T_82: (in 2<32> @ 80000348 : word32)
   Class: Eq_81
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: word32
 T_83: (in dwLoc08_36 @ 80000348 : int32)
   Class: Eq_81
   DataType: int32
@@ -400,7 +400,7 @@ T_84: (in 1<32> @ 80000364 : word32)
 T_85: (in dwLoc08_36 + 1<32> @ 80000364 : word32)
   Class: Eq_81
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: word32
 T_86: (in dwLoc08_36 > dwArg04 @ 80000354 : bool)
   Class: Eq_86
   DataType: bool
@@ -441,18 +441,18 @@ T_95: (in dwArg0C @ 8000038E : int32)
   Class: Eq_95
   DataType: int32
   OrigDataType: int32
-T_96: (in 3<i32> @ 800003D2 : int32)
+T_96: (in 3<32> @ 800003D2 : word32)
   Class: Eq_95
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: word32
 T_97: (in dwLoc08_121 @ 800003D2 : int32)
   Class: Eq_95
   DataType: int32
   OrigDataType: int32
-T_98: (in 5<i32> @ 8000042A : int32)
+T_98: (in 5<32> @ 8000042A : word32)
   Class: Eq_95
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: word32
 T_99: (in dwLoc08_124 @ 8000042A : int32)
   Class: Eq_95
   DataType: int32
@@ -873,11 +873,11 @@ T_203: (in a2_12 @ 80000630 : (ptr32 (ptr32 code)))
   Class: Eq_196
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_197 t0000)))
-T_204: (in -1<i32> @ 8000063A : int32)
+T_204: (in 0xFFFFFFFF<32> @ 8000063A : word32)
   Class: Eq_197
   DataType: (ptr32 code)
-  OrigDataType: int32
-T_205: (in a0_11 == (<anonymous> *) -1<i32> @ 8000063A : bool)
+  OrigDataType: word32
+T_205: (in a0_11 == (<anonymous> *) 0xFFFFFFFF<32> @ 8000063A : bool)
   Class: Eq_205
   DataType: bool
   OrigDataType: bool
@@ -905,11 +905,11 @@ T_211: (in a2_24 - 4<i32> @ 8000063E : word32)
   Class: Eq_196
   DataType: (ptr32 (ptr32 code))
   OrigDataType: ptr32
-T_212: (in -1<i32> @ 80000644 : int32)
+T_212: (in 0xFFFFFFFF<32> @ 80000644 : word32)
   Class: Eq_197
   DataType: (ptr32 code)
-  OrigDataType: int32
-T_213: (in a0_11 != (<anonymous> *) -1<i32> @ 80000644 : bool)
+  OrigDataType: word32
+T_213: (in a0_11 != (<anonymous> *) 0xFFFFFFFF<32> @ 80000644 : bool)
   Class: Eq_213
   DataType: bool
   OrigDataType: bool

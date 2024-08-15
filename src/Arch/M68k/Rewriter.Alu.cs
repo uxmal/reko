@@ -253,7 +253,7 @@ namespace Reko.Arch.M68k
             if (instr.Operands[1] is RegisterStorage regDst && 
                 Registers.IsAddressRegister(regDst))
             {
-                opSrc = Constant.Int32(opSrc.ToInt32());
+                opSrc = Constant.Word32(opSrc.ToInt32());
                 var opDst = binder.EnsureRegister(regDst);
                 m.Assign(opDst, opGen(opSrc, opDst));
             }
@@ -686,9 +686,9 @@ namespace Reko.Arch.M68k
 
         public void RewriteMoveq()
         {
-            var opSrc = (sbyte) ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var opSrc = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
-            m.Assign(opDst, Constant.Int32(opSrc));
+            m.Assign(opDst, Constant.Word32(opSrc));
             LogicalConditions(opDst);
         }
 

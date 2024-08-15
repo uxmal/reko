@@ -4,11 +4,11 @@
 
 #include "STRLEN.h"
 
-// 00001000: void fn00001000(Register int32 d0, Register (ptr32 byte) a0)
-void fn00001000(int32 d0, byte * a0)
+// 00001000: void fn00001000(Register uipr32 d0, Register (ptr32 byte) a0)
+void fn00001000(uipr32 d0, byte * a0)
 {
 	struct Eq_n * a6_n = *(struct Eq_n **) 0x04;
-	int32 d2_n = d0;
+	uipr32 d2_n = d0;
 	byte * a2_n = a0;
 	if (a6_n->w0014 < 0x24)
 	{
@@ -24,20 +24,20 @@ void fn00001000(int32 d0, byte * a0)
 	g_ptr13C8 = fp;
 	g_ptr13CC = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
-	word32 d0_n = OpenLibrary(&g_t12BC, 0);
+	word32 d0_n = OpenLibrary(&g_t12BC, 0x00);
 	if (d0_n != 0x00)
 	{
 		g_dw13D0 = d0_n;
-		int32 d4_n;
+		ui32 d4_n;
 		if (d0_n->dw00AC == 0x00)
 		{
-			d4_n = 2;
-			d2_n = 8;
+			d4_n = 0x02;
+			d2_n = 0x08;
 		}
 		else
 		{
 			byte * a0_n = a0;
-			d4_n = 3;
+			d4_n = 0x03;
 			byte * a0_n;
 			do
 			{
@@ -49,7 +49,7 @@ void fn00001000(int32 d0, byte * a0)
 		}
 		int32 d0_n = d4_n << 0x02;
 		ui32 d0_n = d0_n + d2_n;
-		int32 d1_n = 0x00010001;
+		uip32 d1_n = 0x00010001;
 		struct Eq_n * d0_n = AllocMem(d0_n + 0x11, 0x00010001);
 		if (d0_n != null)
 		{
@@ -94,7 +94,7 @@ l000011F8:
 			a0_n[(uint32) null[d0_n].b0000] = 0x00;
 			d0_n->ptr0010 = a0_n;
 			word32 * a6_n = (word32 *) ((char *) &d0_n->ptr0010 + 4);
-			int32 d3_n = 1;
+			ui32 d3_n = 0x01;
 			struct Eq_n * a0_n = (struct Eq_n *) (a0 + d2_n);
 			word16 v30_n;
 			do
@@ -163,7 +163,7 @@ l00001116:
 							if ((v55_n & 223) == 0x4E)
 								d1_n = 0x0A;
 							else if ((v55_n & 223) == 0x45)
-								d1_n = 27;
+								d1_n = 0x1B;
 						}
 						*a1_n = (byte) d1_n;
 						++a1_n;
@@ -177,7 +177,7 @@ l00001148:
 			ui32 d0_n = execPrivate5();
 			*(ui32 *) 5088 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
-			int32 dwLoc10 = d3_n;
+			ui32 dwLoc10 = d3_n;
 			if (g_ptr13CC->w0014 >= 0x24)
 			{
 				ui32 v65_n = d0_n->dw00E0;
@@ -262,14 +262,14 @@ void fn000012D0(word32 dwArg04)
 {
 	if (true)
 	{
-		int32 d2_n = 1;
+		ui32 d2_n = 0x01;
 		if (*(word32 *) 0x1408 != 0x00)
 		{
 			do
 				++d2_n;
 			while (((<anonymous> *[]) 0x1404)[d2_n] != null);
 		}
-		int32 d2_n;
+		ui32 d2_n;
 		for (d2_n = d2_n - 0x01; d2_n != 0x00; --d2_n)
 			((<anonymous> *[]) 0x1404)[d2_n]();
 	}
@@ -281,20 +281,20 @@ void fn000012D0(word32 dwArg04)
 //      fn00001354
 void fn0000131C(word32 dwArg04)
 {
-	if (*(int32 *) 5112 == 0x00)
+	if (*(word32 *) 5112 == 0x00)
 	{
 		struct Eq_n * a3_n;
-		*(int32 *) 5112 = 1;
+		*(word32 *) 5112 = 0x01;
 		for (a3_n = *(struct Eq_n **) 0x140C; a3_n != null; a3_n = a3_n->ptr0000)
 			a3_n->ptr0004();
 		fn000012D0(dwArg04);
 	}
 }
 
-// 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr32 Eq_n) dwArg08)
+// 00001354: void fn00001354(Stack ui32 dwArg04, Stack (ptr32 Eq_n) dwArg08)
 // Called from:
 //      fn00001000
-void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
+void fn00001354(ui32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 0x1400;
 	if (true && *((<anonymous> **) 0x1400) != 0x00)
@@ -317,13 +317,13 @@ word32 fn00001390()
 }
 
 byte g_b13A4 = 116; // 000013A4
-// 000013AC: Register int32 fn000013AC(Stack (ptr32 byte) dwArg04)
+// 000013AC: Register word32 fn000013AC(Stack (ptr32 byte) dwArg04)
 // Called from:
 //      fn00001390
-int32 fn000013AC(byte * dwArg04)
+word32 fn000013AC(byte * dwArg04)
 {
 	byte * a1_n = dwArg04;
-	int32 d0_n = 0;
+	word32 d0_n = 0x00;
 	while (true)
 	{
 		++a1_n;

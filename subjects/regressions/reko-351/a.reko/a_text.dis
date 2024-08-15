@@ -162,7 +162,7 @@ void factorial(int32 dwArg04)
 // Preserved:
 _ZL9factoriali_entry:
 l8000033C:
-	dwLoc08_36 = 2<i32>
+	dwLoc08_36 = 2<32>
 l8000034C:
 	branch dwLoc08_36 > dwArg04 l8000036A
 l8000036A:
@@ -202,11 +202,11 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _Z11sine_taylordi_entry:
 l800003BC:
-	dwLoc08_121 = 3<i32>
+	dwLoc08_121 = 3<32>
 l800003D6:
 	branch dwLoc08_121 > dwArg0C l80000428
 l80000428:
-	dwLoc08_124 = 5<i32>
+	dwLoc08_124 = 5<32>
 l8000042E:
 	branch dwLoc08_124 > dwArg0C l80000480
 l80000480:
@@ -277,14 +277,14 @@ l80000624:
 	a0_11 = Mem10[0x8000270C<p32>:word32]
 	a6_18 = fp - 4<32>
 	a2_12 = 0x8000270C<p32>
-	branch a0_11 == -1<i32> l80000646
+	branch a0_11 == 0xFFFFFFFF<32> l80000646
 l8000063C:
 	call a0_11 (retsize: 4;)
 		uses: a2:a2_19,a6:a6_18,Mem:Mem10
 		defs: a2:a2_24,a6:a6_23
 	a0_11 = Mem10[a2_24 - 4<i32>:word32]
 	a2_12 = a2_24 - 4<i32>
-	branch a0_11 != -1<i32> l8000063C
+	branch a0_11 != 0xFFFFFFFF<32> l8000063C
 l80000646:
 	return
 __do_global_ctors_aux_exit:

@@ -18,20 +18,14 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Arch.M68k.Assembler;
 using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Machine;
-using NUnit.Framework;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch.M68k
 {
@@ -112,7 +106,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x594F);    // subq.w #$4,a7
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|a7 = a7 - 4<i32>");
+                "1|L--|a7 = a7 - 4<32>");
         }
 
         [Test]
@@ -830,7 +824,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x5549);
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|a1 = a1 - 2<i32>");
+                "1|L--|a1 = a1 - 2<32>");
         }
 
         [Test]
@@ -839,7 +833,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x72FF);
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|d1 = -1<i32>",
+                "1|L--|d1 = 0xFFFFFFFF<32>",
                 "2|L--|ZN = cond(d1)",
                 "3|L--|C = false",
                 "4|L--|V = false");
