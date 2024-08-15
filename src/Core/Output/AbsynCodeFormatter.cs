@@ -100,6 +100,7 @@ namespace Reko.Core.Output
             else
             {
                 var sb = new StringBuilder();
+#if USE_TILDA_IF_SMALLER                
                 if ((p & msb) != 0 && 
                     Bits.BitCount(m & p) > Bits.BitCount(m & ~p))
                 {
@@ -107,6 +108,7 @@ namespace Reko.Core.Output
                     p = m & ~p;
                     hexRep = p.ToString("X", CultureInfo.InvariantCulture);
                 }
+#endif                
                 sb.Append("0x");
                 int length = hexRep.Length;
                 int pad;
