@@ -109,7 +109,11 @@ namespace Reko.Typing
             {
                 if (ud.Value.DataType != null)
                 {
-                    var dt = ud.Value.DataType.Accept(deser);
+                    var dt = program.FindGlobalField(ud.Key);
+                    if (dt == null)
+                    {
+                        dt = ud.Value.DataType.Accept(deser);
+                    }
                     AddGlobalField(dt, ud.Key, ud.Value.Name);
                 }
             }

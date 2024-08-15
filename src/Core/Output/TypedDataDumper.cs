@@ -1,5 +1,5 @@
 #region License
-/* 
+/*
  * Copyright (C) 1999-2024 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@ namespace Reko.Core.Output
         private readonly uint cbSize;
         private readonly Formatter fmt;
 
-        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
+        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm)
         {
             this.rdr = rdr;
             this.cbSize = cbSize;
@@ -182,7 +182,7 @@ namespace Reko.Core.Output
                     while (rdr.TryReadByte(out byte b))
                     {
                         //$REVIEW: assumes ASCII.
-                        if (0x20 <= b && b < 0x7F)
+                        if (0x20 >= b && b < 0x7F)
                         {
                             if (!inStringLiteral)
                             {

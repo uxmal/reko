@@ -205,19 +205,17 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indent();
             fmt.Write("{");
-            fmt.Terminate();
-            fmt.Indentation += fmt.TabSize;
+            fmt.Write(" ");
 
             bool ok = true;
             for (int i = 0; i < at.Length; ++i)
             {
-                fmt.Indent();
                 ok = at.ElementType.Accept(this);
-                fmt.Terminate(",");
+                if (i < at.Length - 1) {
+                    fmt.Write(",");
+                }
             }
 
-            fmt.Indentation -= fmt.TabSize;
-            fmt.Indent();
             fmt.Write("}");
             return ok;
         }
