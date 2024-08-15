@@ -932,6 +932,24 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(expectedValue, emu.ReadRegister(Registers.a));
         }
 
+        [TestCase(0x5F, 0x02, true, true)]
+        public void Emu6502_sbc_C_flag(byte accumlatorIntialValue, byte amountToSubtract, bool carryFlagSet, bool expectedCarry)
+        {
+            Given_Code(m =>
+            {
+                if (carryFlagSet)
+                    m.Sec();
+                else
+                    m.Clc();
+                m.Lda(m.i8(accumlatorIntialValue));
+                m.Sbc(m.i8(amountToSubtract));
+            });
+            emu.Start();
+
+            Assert.AreEqual(expectedCarry, CarryFlag());
+        }
+
+
         [Test]
         public void Emu6502_sei()
         {

@@ -284,12 +284,12 @@ namespace Reko.Arch.Mos6502
             var a = (byte) regs[Registers.a.Number];
             var v = (byte) Read(op);
             var p = (byte) regs[Registers.p.Number];
-            var ss = (a + ~v + (p&Cmask));
+            var ss = (a - v - (~p&Cmask));
             var s = (byte) ss;
             regs[Registers.a.Number] = s;
             p = NZ(s, p);
             p &= unchecked((byte) ~(Cmask | Vmask));
-            p |= (byte) (ss > 0xFF ? Cmask : 0);
+            p |= (byte) (ss >= 0 ? Cmask : 0);
             p |= (byte) (((a ^ s) & (v ^ s) & 0x80) != 0 ? Vmask : 0);
             regs[Registers.p.Number] = p;
         }
