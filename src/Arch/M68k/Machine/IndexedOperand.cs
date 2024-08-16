@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     /// <summary>
     /// The Godzilla of address operands, supporting Indirect pre- and post-indexed operation.
@@ -55,12 +55,12 @@ namespace Reko.Arch.M68k
             bool postindex)
             : base(width)
         {
-            this.BaseDisplacement = baseReg;
-            this.OuterDisplacement = outer;
-            this.Base = base_reg;
-            this.Index = index_reg;
+            BaseDisplacement = baseReg;
+            OuterDisplacement = outer;
+            Base = base_reg;
+            Index = index_reg;
             this.index_reg_width = index_reg_width;
-            this.IndexScale = index_scale;
+            IndexScale = index_scale;
             this.preindex = preindex;
             this.postindex = postindex;
         }
@@ -85,7 +85,7 @@ namespace Reko.Arch.M68k
             //postindex = (extension & 7) > 4;
 
             renderer.WriteString("(");
-            var sep = (preindex || postindex) ? "[" : "";
+            var sep = preindex || postindex ? "[" : "";
             if (BaseDisplacement != null)
             {
                 renderer.WriteString(sep);

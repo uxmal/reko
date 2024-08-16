@@ -18,16 +18,15 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Arch.M68k;
+using Reko.Arch.M68k.Machine;
+using Reko.Arch.M68k.Rewriter;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Arch.M68k;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.M68k

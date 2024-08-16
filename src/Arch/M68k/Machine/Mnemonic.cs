@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     public enum Mnemonic : short
     {
@@ -177,7 +177,7 @@ namespace Reko.Arch.M68k
         fbolt,
         fbole,
         fbogl,
-        fbor,    
+        fbor,
         fbun,
         fbueq,
         fbugt,
@@ -185,7 +185,7 @@ namespace Reko.Arch.M68k
         fbult,
         fbule,
         fbne,
-        fbt,    
+        fbt,
         fbsf,
         fbseq,
         fbgt,
@@ -193,7 +193,7 @@ namespace Reko.Arch.M68k
         fblt,
         fble,
         fbgl,
-        fbgle,      
+        fbgle,
         fbngle,
         fbngl,
         fbnle,
@@ -201,7 +201,7 @@ namespace Reko.Arch.M68k
         fbnge,
         fbngt,
         fbsne,
-        fbst,  
+        fbst,
 
         jmp,
         jsr,
@@ -209,7 +209,7 @@ namespace Reko.Arch.M68k
         link,
         lsl,
         lsr,
-        
+
         move,
         move16,
         movea,
@@ -220,16 +220,16 @@ namespace Reko.Arch.M68k
         moves,
         muls,
         mulu,
-        
+
         nbcd,
         neg,
         negx,
         nop,
         not,
-        
+
         or,
         ori,
-        
+
         pack,
 
         pbas,

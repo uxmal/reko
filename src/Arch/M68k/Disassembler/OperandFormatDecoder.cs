@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -27,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Disassembler
 {
     /// <summary>
     /// Decodes M86k operands using a simple format language.
@@ -43,7 +44,7 @@ namespace Reko.Arch.M68k
 
         private static PrimitiveType SizeField(ushort opcode, int bitOffset)
         {
-            switch ((opcode >> bitOffset) & 3)
+            switch (opcode >> bitOffset & 3)
             {
             case 0: return PrimitiveType.Byte;
             case 1: return PrimitiveType.Word16;
@@ -52,16 +53,16 @@ namespace Reko.Arch.M68k
             }
         }
 
-		public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
-		{
+        public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+        {
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);
-            byte addressMode = (byte) ((opcode >> 3) & 7);
+            byte addressMode = (byte) (opcode >> 3 & 7);
             return TryParseOperandInner(opcode, addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-		private bool TryParseOperandInner(ushort uInstr, byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
-		{
+        private bool TryParseOperandInner(ushort uInstr, byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+        {
             Constant? offset;
             switch (addressMode)
             {
@@ -168,25 +169,25 @@ namespace Reko.Arch.M68k
                         if (EXT_INDEX_REGISTER_PRESENT(extension))
                         {
                             index_reg = EXT_INDEX_AR(extension)
-                                ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
-                                : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                                ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                                : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension));
                             index_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16;
-                            index_scale = (EXT_INDEX_SCALE(extension) != 0)
+                            index_scale = EXT_INDEX_SCALE(extension) != 0
                                 ? 1 << EXT_INDEX_SCALE(extension)
                                 : 0;
                         }
-                       op = new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_width, index_scale, 
-                           (extension & 7) > 0 && (extension & 7) < 4,
-                           (extension & 7) > 4);
+                        op = new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_width, index_scale,
+                            (extension & 7) > 0 && (extension & 7) < 4,
+                            (extension & 7) > 4);
                         return true;
                     }
                     op = new IndirectIndexedOperand(
                         dataWidth,
-                        EXT_8BIT_DISPLACEMENT(extension), 
+                        EXT_8BIT_DISPLACEMENT(extension),
                         Registers.pc,
-                        EXT_INDEX_AR(extension) 
-                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension)) 
-                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                        EXT_INDEX_AR(extension)
+                            ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                            : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
                         EXT_INDEX_LONG(extension)
                             ? PrimitiveType.Word32
                             : PrimitiveType.Int16,
@@ -208,7 +209,7 @@ namespace Reko.Arch.M68k
                     op = default!;
                     return false;
                 }
-            default: 
+            default:
                 throw new NotImplementedException(string.Format("Address mode {0:X1} not implemented.", addressMode));
             }
         }
@@ -259,8 +260,8 @@ namespace Reko.Arch.M68k
                 if (EXT_INDEX_REGISTER_PRESENT(extension))
                 {
                     index_reg = EXT_INDEX_AR(extension)
-                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
-                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension));
                     index_reg_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16;
                     if (EXT_INDEX_SCALE(extension) != 0)
                         index_scale = 1 << EXT_INDEX_SCALE(extension);
@@ -276,8 +277,8 @@ namespace Reko.Arch.M68k
                     EXT_8BIT_DISPLACEMENT(extension),
                     Registers.AddressRegister(uInstr & 7),
                     EXT_INDEX_AR(extension)
-                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
-                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
                     EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
                     1 << EXT_INDEX_SCALE(extension));
             }
@@ -285,33 +286,33 @@ namespace Reko.Arch.M68k
         }
 
         // Extension word formats
-        private static sbyte EXT_8BIT_DISPLACEMENT(uint A) { return (sbyte) ((A) & 0xff); }
+        private static sbyte EXT_8BIT_DISPLACEMENT(uint A) { return (sbyte) (A & 0xff); }
         internal static bool EXT_FULL(uint A) { return M68kDisassembler.BIT_8(A); }
-        internal static bool EXT_EFFECTIVE_ZERO(uint A) { return (((A) & 0xe4) == 0xc4 || ((A) & 0xe2) == 0xc0); }
-        private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !(M68kDisassembler.BIT_7(A)); }
-        private static bool EXT_INDEX_REGISTER_PRESENT(uint A) { return !(M68kDisassembler.BIT_6(A)); }
-        private static uint EXT_INDEX_REGISTER(uint A) { return (((A) >> 12) & 7); }
-        private static bool EXT_INDEX_PRE_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && (A & 3) != 0); }
-        private static bool EXT_INDEX_PRE(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) < 4 && ((A) & 7) != 0); }
-        private static bool EXT_INDEX_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) > 4); }
-        internal static int EXT_INDEX_SCALE(uint A) { return (int) (((A) >> 9) & 3); }
+        internal static bool EXT_EFFECTIVE_ZERO(uint A) { return (A & 0xe4) == 0xc4 || (A & 0xe2) == 0xc0; }
+        private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !M68kDisassembler.BIT_7(A); }
+        private static bool EXT_INDEX_REGISTER_PRESENT(uint A) { return !M68kDisassembler.BIT_6(A); }
+        private static uint EXT_INDEX_REGISTER(uint A) { return A >> 12 & 7; }
+        private static bool EXT_INDEX_PRE_POST(uint A) { return EXT_INDEX_REGISTER_PRESENT(A) && (A & 3) != 0; }
+        private static bool EXT_INDEX_PRE(uint A) { return EXT_INDEX_REGISTER_PRESENT(A) && (A & 7) < 4 && (A & 7) != 0; }
+        private static bool EXT_INDEX_POST(uint A) { return EXT_INDEX_REGISTER_PRESENT(A) && (A & 7) > 4; }
+        internal static int EXT_INDEX_SCALE(uint A) { return (int) (A >> 9 & 3); }
         private static bool EXT_INDEX_LONG(uint A) { return M68kDisassembler.BIT_B(A); }
         private static bool EXT_INDEX_AR(uint A) { return M68kDisassembler.BIT_F(A); }
-        private static bool EXT_BASE_DISPLACEMENT_PRESENT(uint A) { return (((A) & 0x30) > 0x10); }
-        private static bool EXT_BASE_DISPLACEMENT_WORD(uint A) { return (((A) & 0x30) == 0x20); }
-        private static bool EXT_BASE_DISPLACEMENT_LONG(uint A) { return (((A) & 0x30) == 0x30); }
-        private static bool EXT_OUTER_DISPLACEMENT_PRESENT(uint A) { return (((A) & 3) > 1 && ((A) & 0x47) < 0x44); }
-        private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
-        private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
+        private static bool EXT_BASE_DISPLACEMENT_PRESENT(uint A) { return (A & 0x30) > 0x10; }
+        private static bool EXT_BASE_DISPLACEMENT_WORD(uint A) { return (A & 0x30) == 0x20; }
+        private static bool EXT_BASE_DISPLACEMENT_LONG(uint A) { return (A & 0x30) == 0x30; }
+        private static bool EXT_OUTER_DISPLACEMENT_PRESENT(uint A) { return (A & 3) > 1 && (A & 0x47) < 0x44; }
+        private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (A & 3) == 2 && (A & 0x47) < 0x44; }
+        private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (A & 3) == 3 && (A & 0x47) < 0x44; }
 
         private static RegisterStorage AddressRegister(ushort opcode, int bitOffset)
         {
-            return Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
+            return Registers.GetRegister(8 + (opcode >> bitOffset & 0x7));
         }
 
         private static RegisterStorage DataRegisterOperand(ushort opcode, int bitOffset)
         {
-            return Registers.GetRegister((opcode >> bitOffset) & 0x7);
+            return Registers.GetRegister(opcode >> bitOffset & 0x7);
         }
     }
 }

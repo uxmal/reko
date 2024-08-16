@@ -18,19 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
-using Reko.Arch.M68k;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Hll.C;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Core.Emulation;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Environments.AtariTOS
 {

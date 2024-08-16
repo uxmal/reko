@@ -25,14 +25,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     public class RegisterSetOperand : M68kOperandImpl
     {
         public RegisterSetOperand(uint bitset, PrimitiveType dt)
             : base(dt)
         {
-            this.BitSet = bitset;
+            BitSet = bitset;
         }
 
         public uint BitSet { get; }
@@ -41,13 +41,13 @@ namespace Reko.Arch.M68k
         {
             int v;
             // Swap odd and even bits
-            v = ((vv >> 1) & 0x5555) | ((vv & 0x5555) << 1);
+            v = vv >> 1 & 0x5555 | (vv & 0x5555) << 1;
             // swap consecutive pairs
-            v = ((v >> 2) & 0x3333) | ((v & 0x3333) << 2);
+            v = v >> 2 & 0x3333 | (v & 0x3333) << 2;
             // swap nibbles
-            v = ((v >> 4) & 0x0F0F) | ((v & 0x0F0F) << 4);
+            v = v >> 4 & 0x0F0F | (v & 0x0F0F) << 4;
             // swap bytes
-            v = ((v >> 8) & 0x00FF) | ((v & 0x00FF) << 8);
+            v = v >> 8 & 0x00FF | (v & 0x00FF) << 8;
             return new RegisterSetOperand((ushort) v, width);
         }
 
@@ -72,7 +72,7 @@ namespace Reko.Arch.M68k
         public void WriteRegisterSet(uint data, MachineInstructionRenderer renderer)
         {
             string sep = "";
-            int maxReg = this.Width.IsReal ? 8 : 16;
+            int maxReg = Width.IsReal ? 8 : 16;
             int bitPos = maxReg - 1;
             for (int i = 0; i < maxReg; i++, --bitPos)
             {
@@ -95,11 +95,11 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
+        private static bool bit(uint data, int pos) { return (data & 1 << pos) != 0; }
 
         private RegisterStorage GetRegister(int n)
         {
-            if (this.Width.IsReal)
+            if (Width.IsReal)
                 return Registers.GetRegister(n + Registers.fp0.Number);
             else
                 return Registers.GetRegister(n);

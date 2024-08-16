@@ -19,7 +19,7 @@
 #endregion
 
 // https://github.com/migueletto/PumpkinOS/blob/master/src/libpumpkin/emulation/trapnames.c
-using Reko.Arch.M68k;
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;

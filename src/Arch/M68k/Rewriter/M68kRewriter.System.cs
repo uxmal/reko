@@ -18,19 +18,14 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Rewriter
 {
-    public partial class Rewriter
+    public partial class M68kRewriter
     {
         private static readonly StringType labelType = StringType.NullTerminated(PrimitiveType.Byte);
 

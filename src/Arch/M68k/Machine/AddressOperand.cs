@@ -22,9 +22,9 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
-    public class M68kAddressOperand : Core.Machine.AddressOperand
+    public class M68kAddressOperand : AddressOperand
     {
         public M68kAddressOperand(Address addr) : base(addr, PrimitiveType.Ptr32)
         {
@@ -32,7 +32,7 @@ namespace Reko.Arch.M68k
 
         public M68kAddressOperand(uint addr)
             : this(Address.Ptr32(addr))
-        { 
+        {
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

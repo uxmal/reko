@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
@@ -30,13 +31,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Rewriter
 {
     /// <summary>
     /// Rewrites <seealso cref="M68kInstruction"/>s to <see cref="RtlInstructionCluster"/>s.
     /// </summary>
     /// http://www.easy68k.com/paulrsm/doc/trick68k.htm
-    public partial class Rewriter : IEnumerable<RtlInstructionCluster>
+    public partial class M68kRewriter : IEnumerable<RtlInstructionCluster>
     {
         private static readonly Dictionary<int, double> fpuRomConstants;
 
@@ -53,7 +54,7 @@ namespace Reko.Arch.M68k
         private M68kInstruction instr;
         private InstrClass iclass;
 
-        public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
+        public M68kRewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
             this.state = m68kState;
@@ -352,7 +353,7 @@ VS Overflow Set 1001 V
             m.Invalid();
         }
 
-        static Rewriter()
+        static M68kRewriter()
         {
             fpuRomConstants = new Dictionary<int, double>
             {

@@ -27,7 +27,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     public static class Registers
     {
@@ -152,24 +152,24 @@ namespace Reko.Arch.M68k
             ZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF), "ZN", PrimitiveType.Byte);
             Max = 29;
 
-            regs = new RegisterStorage[] { 
-                d0, 
-                d1, 
-                d2, 
-                d3, 
-                d4, 
-                d5, 
-                d6, 
-                d7, 
+            regs = new RegisterStorage[] {
+                d0,
+                d1,
+                d2,
+                d3,
+                d4,
+                d5,
+                d6,
+                d7,
 
-                a0, 
-                a1, 
-                a2, 
-                a3, 
-                a4, 
-                a5, 
-                a6, 
-                a7, 
+                a0,
+                a1,
+                a2,
+                a3,
+                a4,
+                a5,
+                a6,
+                a7,
 
                 fp0,
                 fp1,

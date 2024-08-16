@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -25,9 +26,9 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Rewriter
 {
-    public partial class Rewriter
+    public partial class M68kRewriter
     {
         private Expression IsNan(Expression arg)
         {

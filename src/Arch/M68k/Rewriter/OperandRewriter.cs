@@ -18,17 +18,15 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Rewriter
 {
     /// <summary>
     /// Rewrites M68k operands into sequences of RTL expressions and possibly instructions.
@@ -47,13 +45,13 @@ namespace Reko.Arch.M68k
 
         public OperandRewriter(RtlEmitter emitter, IStorageBinder binder, PrimitiveType dataWidth)
         {
-            this.m = emitter;
+            m = emitter;
             this.binder = binder;
-            this.DataWidth = dataWidth;
+            DataWidth = dataWidth;
         }
 
         public PrimitiveType DataWidth { get; set; }     // the data width of the current instruction being rewritten.
-        
+
         /// <summary>
         /// Rewrite operands being used as sources.
         /// </summary>
@@ -87,7 +85,7 @@ namespace Reko.Arch.M68k
             case M68kAddressOperand addr:
                 if (addressAsAddress)
                     return addr.Address;
-                else 
+                else
                     return m.Mem(DataWidth, addr.Address);
             case PredecrementMemoryOperand pre:
                 ea = binder.EnsureRegister(pre.Register);
@@ -110,7 +108,7 @@ namespace Reko.Arch.M68k
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Mem(DataWidth, m.IAdd(ea, ix));
-            case IndexedOperand indop:  
+            case IndexedOperand indop:
                 ea = Combine(indop.BaseDisplacement, indop.Base, addrInstr);
                 if (indop.postindex)
                 {
@@ -189,7 +187,7 @@ namespace Reko.Arch.M68k
 
         public Expression? RewriteDst(MachineOperand operand, Address addrInstr, Expression src, Func<Expression, Expression, Expression> opGen)
         {
-            return RewriteDst(operand, addrInstr, this.DataWidth, src, opGen);
+            return RewriteDst(operand, addrInstr, DataWidth, src, opGen);
         }
 
         public Expression? RewriteDst(
@@ -320,7 +318,7 @@ namespace Reko.Arch.M68k
         }
 
         public Expression RewriteUnary(
-            MachineOperand operand, 
+            MachineOperand operand,
             Address addrInstr,
             PrimitiveType dataWidth,
             Func<Expression, Expression> opGen)
@@ -411,7 +409,7 @@ namespace Reko.Arch.M68k
             }
             throw new AddressCorrelatedException(
                 addrInstr,
-                "Unimplemented RewriteUnary for operand {0} of type {1}.", 
+                "Unimplemented RewriteUnary for operand {0} of type {1}.",
                 operand.ToString()!,
                 operand.GetType().Name);
         }

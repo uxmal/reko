@@ -23,7 +23,6 @@ using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Arch.M68k;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,6 +31,7 @@ using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
 using Reko.Core.Loading;
+using Reko.Arch.M68k.Machine;
 
 namespace Reko.Arch.M68k.Assembler
 {

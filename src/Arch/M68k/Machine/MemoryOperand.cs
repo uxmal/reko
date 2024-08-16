@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Disassembler;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -26,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
 #pragma warning disable IDE1006
 
@@ -42,8 +43,8 @@ namespace Reko.Arch.M68k
     {
         public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(PrimitiveType.Word64)
         {
-            this.Register1 = reg1;
-            this.Register2 = reg2;
+            Register1 = reg1;
+            Register2 = reg2;
         }
 
         public RegisterStorage Register1 { get; private set; }
@@ -65,14 +66,14 @@ namespace Reko.Arch.M68k
         public MemoryOperand(PrimitiveType width, RegisterStorage baseReg)
             : base(width)
         {
-            this.Base = baseReg;
+            Base = baseReg;
         }
 
         public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, Constant offset)
             : base(width)
         {
-            this.Base = baseReg;
-            this.Offset = offset;
+            Base = baseReg;
+            Offset = offset;
         }
 
         public static MemoryOperand Indirect(PrimitiveType width, RegisterStorage baseReg)
@@ -114,7 +115,7 @@ namespace Reko.Arch.M68k
         public PredecrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
             : base(dataWidth)
         {
-            this.Register = areg;
+            Register = areg;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -132,7 +133,7 @@ namespace Reko.Arch.M68k
         public PostIncrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
             : base(dataWidth)
         {
-            this.Register = areg;
+            Register = areg;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -154,11 +155,11 @@ namespace Reko.Arch.M68k
         public IndirectIndexedOperand(PrimitiveType dataWidth, sbyte imm8, RegisterStorage a, RegisterStorage x, PrimitiveType width, int scale)
             : base(dataWidth)
         {
-            this.Imm8 = imm8;
-            this.ARegister = a;
-            this.XRegister = x;
-            this.XWidth = width;
-            this.Scale = (byte)scale;
+            Imm8 = imm8;
+            ARegister = a;
+            XRegister = x;
+            XWidth = width;
+            Scale = (byte) scale;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

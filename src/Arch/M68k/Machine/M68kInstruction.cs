@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Disassembler;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -26,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     public class M68kInstruction : MachineInstruction
     {
@@ -47,7 +48,7 @@ namespace Reko.Arch.M68k
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
-                var svc = options.Platform.FindService((int)imm.Value.ToUInt32(), null, null);
+                var svc = options.Platform.FindService((int) imm.Value.ToUInt32(), null, null);
                 if (svc != null)
                 {
                     renderer.WriteString(svc.Name!);

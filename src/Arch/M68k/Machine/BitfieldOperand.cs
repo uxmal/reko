@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.M68k
+namespace Reko.Arch.M68k.Machine
 {
     public class BitfieldOperand : AbstractMachineOperand
     {
@@ -35,8 +35,8 @@ namespace Reko.Arch.M68k
 
         public BitfieldOperand(PrimitiveType width, MachineOperand offset, MachineOperand bitwidth) : base(width)
         {
-            this.BitWidth = bitwidth;
-            this.BitOffset = offset;
+            BitWidth = bitwidth;
+            BitOffset = offset;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Machine;
 

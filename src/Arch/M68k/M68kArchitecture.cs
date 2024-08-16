@@ -18,6 +18,9 @@
  */
 #endregion
 
+using Reko.Arch.M68k.Disassembler;
+using Reko.Arch.M68k.Machine;
+using Reko.Arch.M68k.Rewriter;
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
@@ -161,7 +164,7 @@ namespace Reko.Arch.M68k
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Rewriter(this, rdr, (M68kState)state, binder, host);
+            return new M68kRewriter(this, rdr, (M68kState)state, binder, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

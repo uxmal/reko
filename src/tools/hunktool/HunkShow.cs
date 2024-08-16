@@ -1,4 +1,4 @@
-using Reko.Arch.M68k;
+using Reko.Arch.M68k.Disassembler;
 using Reko.Core.Collections;
 using Reko.Core.Memory;
 using Reko.ImageLoaders.Hunk;

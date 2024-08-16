@@ -18,17 +18,17 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Arch.M68k.Assembler;
+using Reko.Arch.M68k.Disassembler;
 using Reko.Core;
-using NUnit.Framework;
+using Reko.Core.Loading;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Design;
-using Reko.Core.Services;
-using Reko.Core.Loading;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.M68k.Assembler
 {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Arch.M68k;
+using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Expressions;
