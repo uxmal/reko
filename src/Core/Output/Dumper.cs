@@ -272,6 +272,10 @@ namespace Reko.Core.Output
         {
             if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea == null)
                 return;
+            if (item.Name != null) {
+                w.Write("\t\t;;; {0}", item.Name);
+                w.WriteLine();
+            }
             WriteLabel(item.Address, w);
 
             var rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
