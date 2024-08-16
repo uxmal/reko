@@ -1,7 +1,7 @@
 @echo off
 mkdir bin
 for /r %%i in (.) do if exist %%i\bin\nul call :sub %%i
-robocopy bin \code\LaserType\LaserImage\reko-new /s /r:0 /w:0
+robocopy bin \code\LaserType\LaserImage\reko-private /s /r:0 /w:0
 exit /b /0
 
 :sub
