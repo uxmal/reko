@@ -1,6 +1,6 @@
 @echo off
 for /r %%i in (.) do if exist %%i\bin\nul call :sub %%i
-del /q /s CMakeCache.txt
+del /q /s CMakeCache.txt 2>nul
 exit /b /0
 
 :sub
