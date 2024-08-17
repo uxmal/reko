@@ -1,5 +1,5 @@
 #region License
-/* 
+/*
  * Copyright (C) 1999-2024 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@ namespace Reko.Core.Output
         private readonly uint cbSize;
         private readonly Formatter fmt;
 
-        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
+        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm)
         {
             this.rdr = rdr;
             this.cbSize = cbSize;
@@ -41,11 +41,99 @@ namespace Reko.Core.Output
         public void VisitArray(ArrayType at)
         {
             var addrEnd = rdr.Address + cbSize;
-            for (int i = 0; at.IsUnbounded || i < at.Length; ++i)
+
+            if (at.ElementType.Domain < Domain.Composite) 
             {
-                if (!rdr.IsValid || addrEnd <= rdr.Address)
-                    return;
-                at.ElementType.Accept(this);
+                int offset = 0;
+                bool clean = true;
+                for (int i = 0; at.IsUnbounded || i < at.Length; ++i)
+                {
+                    if (!rdr.IsValid || addrEnd <= rdr.Address) 
+                    {
+                        return;
+                    }
+                    if (offset % 16 == 0) 
+                    {
+                        if (!clean) 
+                        {
+                            fmt.WriteLine();
+                            fmt.Write("        ");
+                            clean = true;
+                        }
+                        switch (at.ElementType.Size)
+                        {
+                        default:
+                        case 1:
+                            fmt.WriteKeyword("db");
+                            fmt.Write("\t");
+                            break;
+                        case 2:
+                            fmt.WriteKeyword("dw");
+                            fmt.Write("\t");
+                            break;
+                        case 4:
+                            fmt.WriteKeyword("dd");
+                            fmt.Write("\t");
+                            break;
+                        case 8:
+                            fmt.WriteKeyword("dq");
+                            fmt.Write("\t");
+                            break;
+                        }
+                    }
+                    if (!clean) 
+                    {
+                        fmt.Write(",");
+                    }
+                    switch (at.ElementType.Size)
+                    {
+                    default:
+                    case 1:
+                        byte b = rdr.ReadByte();
+                        if (at.ElementType.Domain == Domain.Character && 0x20 <= b && b < 0x7F) 
+                        {
+                            fmt.Write(string.Format("'{0}'", (char)b));
+                        }
+                        else
+                        {
+                            fmt.Write(string.Format("0x{0:X2}", b));
+                        }
+                        offset += 1;
+                        break;
+                    case 2:
+                        fmt.Write(string.Format("0x{0:X4}", rdr.ReadUInt16()));
+                        offset += 2;
+                        break;
+                    case 4:
+                        fmt.Write(string.Format("0x{0:X8}", rdr.ReadUInt32()));
+                        offset += 4;
+                        break;
+                    case 8:
+                        fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt64()));
+                        offset += 8;
+                        break;
+                    }
+                    clean = false;
+                }
+                if (!clean) {
+                    fmt.WriteLine();
+                    clean = true;
+                }
+            }
+            else {
+                bool clean = true;
+                for (int i = 0; at.IsUnbounded || i < at.Length; ++i)
+                {
+                    if (!rdr.IsValid || addrEnd <= rdr.Address)
+                        return;
+                    
+                    if (!clean) {
+                        fmt.Write("        ");
+                        clean = true;
+                    }
+                    at.ElementType.Accept(this);
+                    clean = false;
+                }
             }
         }
 
@@ -179,6 +267,8 @@ namespace Reko.Core.Output
                     fmt.Write("\t");
                     bool inStringLiteral = false;
                     string sep = "";
+                    int size = str.Length;
+                    int i = 0;
                     while (rdr.TryReadByte(out byte b))
                     {
                         //$REVIEW: assumes ASCII.
@@ -198,6 +288,7 @@ namespace Reko.Core.Output
                             if (inStringLiteral)
                             {
                                 fmt.Write('\'');
+                                inStringLiteral = false;
                             }
                             fmt.Write(sep);
                             sep = ",";
@@ -205,6 +296,12 @@ namespace Reko.Core.Output
                             if (b == 0)
                                 break;
                         }
+                        i++;
+                        Debug.Assert(i < size);
+                    }
+                    if (inStringLiteral)
+                    {
+                        fmt.Write('\'');
                     }
                     fmt.WriteLine();
                     return;

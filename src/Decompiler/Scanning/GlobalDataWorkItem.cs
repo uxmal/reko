@@ -141,6 +141,7 @@ namespace Reko.Scanning
                     }
 
                     var len = rdr.Offset - offsetStart;
+                    str.Length = (int)len;
                     program.ImageMap.AddItemWithSize(
                         addr, new ImageMapItem(addr, (uint) len)
                         {

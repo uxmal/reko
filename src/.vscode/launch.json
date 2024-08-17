@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/bin/Debug/net8.0/astred.dll", "cwd": "${workspaceFolder}",
+            "args": [],
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "debug Astred easy", "stopAtEntry": false,
+            "type": "coreclr", "request": "launch", "console": "integratedTerminal", "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/net8.0/astred.dll", "cwd": "${workspaceFolder}",
+            "args": [ "-full", "tests/easycpp/easy.cpp", "-treedump", "tests/easycpp/easy.cpp",],
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
+            "name": "reko li.dcproject", "stopAtEntry": false,
+            "type": "coreclr", "request": "launch", "console": "integratedTerminal",
+            "program": "${workspaceFolder}\\..\\..\\LaserType\\LaserImage\\reko-private\\reko.dll", 
+            "cwd": "${workspaceFolder}\\..\\..\\LaserType\\LaserImage",
+            "args": [ "--env", "ms-dos", "--dasm-bytes", "--dasm-address", "li.dcproject" ],
+        },
+    ]
+}

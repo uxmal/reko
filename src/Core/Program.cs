@@ -669,6 +669,7 @@ namespace Reko.Core
                     return 0;
                 while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
                     ;
+                strDt.Length = (int) (rdr.Address - addr);
                 return (uint) (rdr.Address - addr);
             }
             else
@@ -838,6 +839,29 @@ namespace Reko.Core
                 fields.Remove(globalField);
             }
             fields.Add(offset, dt, name);
+        }
+
+        public DataType? FindGlobalField(Address address)
+        {
+            int offset;
+            StructureFieldCollection fields;
+            if (address.Selector.HasValue &&
+                SegmentMap.TryFindSegment(address, out var seg))
+            {
+                offset = (int) address.Offset;
+                fields = seg.Fields.Fields;
+            }
+            else
+            {
+                offset = (int) address.ToLinear();
+                fields = GlobalFields.Fields;
+            }
+            var globalField = fields.AtOffset(offset);
+            if (globalField != null)
+            {
+                return globalField.DataType;
+            }
+            return null;
         }
 
         /// <summary>
