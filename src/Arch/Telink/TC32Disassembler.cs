@@ -195,8 +195,6 @@ namespace Reko.Arch.Telink
 
         static TC32Disassembler()
         {
-            Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
-
             var nyi = new NyiDecoder<TC32Disassembler, Mnemonic, TC32Instruction>("nyi");
 
             var decode11_5 = Sparse(11, 5, "TC32", nyi,

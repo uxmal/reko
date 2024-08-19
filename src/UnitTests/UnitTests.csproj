@@ -14,6 +14,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\Angstrem\Angstrem.csproj" />
     <ProjectReference Include="..\Gui\Gui.csproj" />
   </ItemGroup>
   <ItemGroup>

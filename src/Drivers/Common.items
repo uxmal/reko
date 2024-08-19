@@ -19,6 +19,7 @@ by the PreBuild.targets file.
 
     <ProjectReference Include="$(SolutionDir)Arch\Alpha\Alpha.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Altera\Altera.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Angstrem\Angstrem.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Arc\Arc.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Arm\Arm.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Avr\Avr.csproj" />
