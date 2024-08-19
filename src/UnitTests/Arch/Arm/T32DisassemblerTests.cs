@@ -1595,7 +1595,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("New decoder needed?")]
         public void ThumbDis_vstmia()
         {
             AssertCode("@@@", "8AECCA1B");

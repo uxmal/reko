@@ -40,6 +40,7 @@ namespace Reko.Arch.zSeries
         private static readonly PrimitiveType ShortHexFloat = PrimitiveType.Real32;
         private static readonly PrimitiveType LongHexFloat = PrimitiveType.Real64;
         private static readonly PrimitiveType ExtendedHexFloat = PrimitiveType.Real128;
+        private static readonly PrimitiveType Word31 = PrimitiveType.CreateWord(31);
 
         private readonly zSeriesArchitecture arch;
         private readonly zSeriesIntrinsics intrinsics;
@@ -244,6 +245,9 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.llgcr: RewriteLr(PrimitiveType.Byte, PrimitiveType.Word64); break;
                 case Mnemonic.llgfr: RewriteLr(PrimitiveType.Word32, PrimitiveType.Word64); break;
                 case Mnemonic.llgfrl: RewriteLl(PrimitiveType.Word32); break;
+                case Mnemonic.llgtr: RewriteLlgt(); break;
+                case Mnemonic.llhr: RewriteLlhr(); break;
+                case Mnemonic.llhrl: RewriteLlhr(); break;
                 case Mnemonic.llill: RewriteLli(PrimitiveType.Word16, 0); break;
                 case Mnemonic.lmg: RewriteLmg(); break;
                 case Mnemonic.lndr: RewriteFNegR(LongHexFloat); break;

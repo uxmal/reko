@@ -7200,13 +7200,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vqrdmulh()
         {
             Given_HexString("1DFF099B");	// vqrdmulh.s16 d9, d13, d9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d9 = __vqrdmulh<int16[4]>(d13, d9)");
         }
 
         [Test]

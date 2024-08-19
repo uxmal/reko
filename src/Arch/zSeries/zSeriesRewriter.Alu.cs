@@ -384,6 +384,22 @@ namespace Reko.Arch.zSeries
             m.Assign(Reg(0), m.Convert(src, src.DataType, arch.WordWidth));
         }
 
+        private void RewriteLlgt()
+        {
+            var tmp = binder.CreateTemporary(Word31);
+            m.Assign(tmp, m.Slice(Reg(1), tmp.DataType));
+            m.Assign(Reg(0), m.ExtendZ(tmp, PrimitiveType.Word64));
+        }
+
+        private void RewriteLlhr()
+        {
+            var slice = Op(1, PrimitiveType.Word16);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tmp, m.ExtendZ(slice, tmp.DataType));
+            var dst = Reg(0);
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
         private void RewriteLli(PrimitiveType dt, int bitOffset)
         {
             var imm = Imm(1, dt);

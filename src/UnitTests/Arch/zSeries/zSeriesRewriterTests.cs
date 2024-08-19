@@ -21,15 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.zSeries;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.zSeries
 {
@@ -1421,34 +1413,34 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_llgtr()
         {
             Given_HexString("B91700AA");
             AssertCode(     // llgtr	r10,r10
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r10, word31, 0)",
+                "2|L--|r10 = CONVERT(v3, word31, word64)");
         }
 
-
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_llhr()
         {
             Given_HexString("B9950022");
             AssertCode(     // llhr	r2,r2
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(r2, word16, 0)",
+                "2|L--|v5 = CONVERT(v4, word16, word32)",
+                "3|L--|r2 = SEQ(SLICE(r2, word32, 32), v5)");
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_llhrl()
         {
             Given_HexString("C402E340B130");
             AssertCode(     // llhrl	r0,FFFFFFFFC6817B40
-                "0|L--|00100000(6): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(6): 2 instructions",
+                "1|L--|v3 = CONVERT(0xC6916260<p32>, ptr32, word32)",
+                "2|L--|r0 = SEQ(SLICE(r0, word32, 32), v3)");
         }
 
         [Test]

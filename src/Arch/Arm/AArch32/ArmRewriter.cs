@@ -479,6 +479,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vqabs: RewriteVectorBinOp(vqabs_intrinsic); break;
                 case Mnemonic.vqadd: RewriteVectorBinOp(vqadd_intrinsic); break;
                 case Mnemonic.vqdmulh: RewriteVectorBinOp(vqdmulh_intrinsic); break;
+                case Mnemonic.vqrdmulh: RewriteVectorBinOp(vqrdmulh_intrinsic); break;
                 case Mnemonic.vqrshl: RewriteVectorBinOp(vqrshl_intrinsic); break;
                 case Mnemonic.vqrshrn: RewriteVectorBinOpNarrow(vqrshrn_intrinsic); break;
                 case Mnemonic.vqsub: RewriteVectorBinOp(vqsub_intrinsic); break;
@@ -1500,6 +1501,7 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure vqabs_intrinsic = IntrinsicBuilder.GenericUnary("__vqabs");
         private static readonly IntrinsicProcedure vqadd_intrinsic = IntrinsicBuilder.GenericBinary("__vqadd");
         private static readonly IntrinsicProcedure vqdmulh_intrinsic = IntrinsicBuilder.GenericBinary("__vqdmulh");
+        private static readonly IntrinsicProcedure vqrdmulh_intrinsic = IntrinsicBuilder.GenericBinary("__vqrdmulh");
         private static readonly IntrinsicProcedure vqshl_intrinsic = new IntrinsicBuilder("__vqshl", false)
             .GenericTypes("TArray")
             .Param("TArray")
