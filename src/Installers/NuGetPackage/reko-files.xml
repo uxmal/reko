@@ -15,7 +15,7 @@
 
         <var id="var.Alpha.TargetPath"  >$SolutionDir$/Arch/Alpha/$TargetDir$/Reko.Arch.Alpha.dll</var>
         <var id="var.Altera.TargetPath"  >$SolutionDir$/Arch/Altera/$TargetDir$/Reko.Arch.Altera.dll</var>
-        <var id="var.Angstrem.TargetPath"  >$SolutionDir$/Arch/Altera/$TargetDir$/Reko.Arch.Angstrem.dll</var>
+        <var id="var.Angstrem.TargetPath"  >$SolutionDir$/Arch/Angstrem/$TargetDir$/Reko.Arch.Angstrem.dll</var>
         <var id="var.Arc.TargetPath" >$SolutionDir$/Arch/Arc/$TargetDir$/Reko.Arch.Arc.dll</var>
         <var id="var.Arm.TargetPath" >$SolutionDir$/Arch/Arm/$TargetDir$/Reko.Arch.Arm.dll</var>
         <var id="var.Avr.TargetPath" >$SolutionDir$/Arch/Avr/$TargetDir$/Reko.Arch.Avr.dll</var>
