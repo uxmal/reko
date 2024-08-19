@@ -113,7 +113,6 @@ namespace Reko.UnitTests.Core.Collections
         {
             var trie = new ByteTrie<string>();
             trie.Add(B("0404"), B("C4F4"), "masked");
-            trie.Dump();
 
             var m = trie.Match(B("0404"));
             Assert.IsTrue(m.Success);
