@@ -30,9 +30,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.AccessControl;
 
 namespace Reko.Arch.CSky
 {
@@ -741,7 +739,6 @@ namespace Reko.Arch.CSky
             var right = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(left, m.Slice(l, PrimitiveType.Word16));
             m.Assign(right, m.Slice(r, PrimitiveType.Word16));
-            var word48 = PrimitiveType.CreateWord(48);
             if (acc is null)
             {
                 m.Assign(dst, m.Slice(m.Bin(mul, word48, left, right), PrimitiveType.Word32, 16));
@@ -1192,5 +1189,8 @@ namespace Reko.Arch.CSky
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Int32)
             .Returns(PrimitiveType.Word32);
+        private static readonly PrimitiveType word48 = PrimitiveType.CreateWord(48);
+
+
     }
 }

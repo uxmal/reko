@@ -507,19 +507,10 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToUInt64() << shift.ToInt32()));
         }
 
-        private void RewriteMulh(PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)
-        {
-            var op1 = RewriteOp(instr.Operands[1]);
-            var op2 = RewriteOp(instr.Operands[2]);
-            var dst = RewriteOp(instr.Operands[0]);
-
-            m.Assign(dst, m.Slice(mul(op1, op2), dtTo, 64));
-        }
-
         private void RewriteMull(
             PrimitiveType dtFrom,
             PrimitiveType dtTo, 
-            Func<Expression, Expression, Expression> mul)
+            BinaryOperator mul)
         {
             if (instr.Operands[1] is VectorRegisterOperand)
             {
@@ -530,18 +521,17 @@ namespace Reko.Arch.Arm.AArch64
             var op2 = RewriteOp(2);
             var dst = RewriteOp(0);
 
-            var product = mul(op1, op2);
+            var product = m.Bin(mul, op1, op2);
             m.Assign(dst, m.Convert(product, dtFrom, dtTo));
         }
 
-        private void RewriteMulh(PrimitiveType dtNarrow, PrimitiveType dtWide, Func<Expression, Expression, Expression> mul)
+        private void RewriteMulh(PrimitiveType dtNarrow, PrimitiveType dtWide, BinaryOperator mul)
         {
             var op1 = RewriteOp(1);
             var op2 = RewriteOp(2);
             var dst = RewriteOp(0);
 
-            var product = mul(op1, op2);
-            product.DataType = dtWide;
+            var product = m.Bin(mul, dtWide, op1, op2);
             m.Assign(dst, m.Slice(product, dtNarrow, dtWide.BitSize - dtNarrow.BitSize));
         }
 

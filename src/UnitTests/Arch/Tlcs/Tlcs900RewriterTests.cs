@@ -20,16 +20,8 @@
 
 using NUnit.Framework;
 using Reko.Arch.Tlcs;
-using Reko.Arch.Tlcs.Tlcs900;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
@@ -309,7 +301,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("D9084000");	// mul	bc,0040
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|xbc = bc *u 0x40<16>");
+                "1|L--|xbc = bc *u32 0x40<16>");
         }
 
         [Test]
@@ -566,7 +558,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("DE4A"); // muls
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|xde = de *s iz");
+                "1|L--|xde = de *s32 iz");
         }
 
         [Test]

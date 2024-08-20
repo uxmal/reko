@@ -171,8 +171,6 @@ namespace Reko.Arch.Angstrem
 
         static KR1878Disassembler()
         {
-            Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
-
             var ldr = Instr(Mnemonic.ldr, SPR0, I3L8);
             var mfpr = Instr(Mnemonic.mfpr, R0, SPR5);
             var mtpr = Instr(Mnemonic.mtpr, SPR5, R0);

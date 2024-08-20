@@ -2352,13 +2352,13 @@ proc1_exit:
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: r2_r1_2 = r1 *s 1431655765<i32>
-          r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
+    uses: r2_r1_2 = r1 *s64 1431655765<i32>
+          r2_3 = SLICE(r1 *s64 1431655765<i32>, word32, 32) (alias)
 r2_r1_2: orig: r2_r1
-    def:  r2_r1_2 = r1 *s 1431655765<i32>
+    def:  r2_r1_2 = r1 *s64 1431655765<i32>
     uses: r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
 r2_3: orig: r2
-    def:  r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
+    def:  r2_3 = SLICE(r1 *s64 1431655765<i32>, word32, 32) (alias)
     uses: Mem4[0x00040000<p32>:word32] = r2_3
           use r2_3
 Mem4: orig: Mem0
@@ -2373,8 +2373,8 @@ proc1_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_r1_2 = r1 *s 1431655765<i32>
-	r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
+	r2_r1_2 = r1 *s64 1431655765<i32>
+	r2_3 = SLICE(r1 *s64 1431655765<i32>, word32, 32) (alias)
 	r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
 	Mem4[0x00040000<p32>:word32] = r2_3
 	return
@@ -2393,7 +2393,7 @@ proc1_exit:
                 var r2 = m.Reg32("r2", 2);
                 var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
-                m.Assign(r2_r1, m.SMul(r1, c));
+                m.Assign(r2_r1, m.SMul(PrimitiveType.Word64, r1, c));
                 m.MStore(m.Ptr32(0x0040000), r2);
                 m.Return();
             });

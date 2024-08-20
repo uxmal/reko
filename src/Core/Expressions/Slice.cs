@@ -31,11 +31,11 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class Slice : Expression
 	{
-        public Slice(DataType dt, Expression i, int bitOffset) : base(dt)
+        public Slice(DataType dt, Expression expression, int bitOffset) : base(dt)
         {
             if (bitOffset < 0)
                 throw new ArgumentOutOfRangeException(nameof(bitOffset), "Offset must be non-negative.");
-            Expression = i;
+            Expression = expression;
             Offset = bitOffset;
         }
 

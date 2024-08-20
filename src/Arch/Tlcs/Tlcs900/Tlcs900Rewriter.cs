@@ -23,15 +23,13 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Mnemonic = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 
 namespace Reko.Arch.Tlcs.Tlcs900
@@ -110,8 +108,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.ldf: RewriteLdf(); break;
                 case Mnemonic.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
                 case Mnemonic.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
-                case Mnemonic.mul: RewriteMul(m.UMul); break;
-                case Mnemonic.muls: RewriteMul(m.SMul); break;
+                case Mnemonic.mul: RewriteMul(Operator.UMul); break;
+                case Mnemonic.muls: RewriteMul(Operator.SMul); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.or: RewriteBinOp(m.Or, "**0*00"); break;
                 case Mnemonic.pop: RewritePop(); break;

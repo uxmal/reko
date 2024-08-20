@@ -447,19 +447,19 @@ namespace Reko.Arch.Mips
             m.Assign(dstLo, srcLo);
         }
 
-        private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
+        private void RewriteMul(MipsInstruction instr, BinaryOperator mul, PrimitiveType dt)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var op2 = RewriteOperand(instr.Operands[1]);
             if (instr.Operands.Length == 3)
             {
                 var op3 = RewriteOperand(instr.Operands[2]);
-                m.Assign(op1, ctor(op2, op3));
+                m.Assign(op1, m.Bin(mul, dt, op2, op3));
             }
             else
             {
                 var hilo = binder.EnsureSequence(dt, arch.hi, arch.lo);
-                m.Assign(hilo, ctor(op1, op2));
+                m.Assign(hilo, m.Bin(mul, dt, op1, op2));
             }
         }
 
@@ -467,8 +467,9 @@ namespace Reko.Arch.Mips
         {
             var op1 = RewriteOperand0(instr.Operands[0]);
             var op2 = RewriteOperand0(instr.Operands[1]);
-            var hi_lo = binder.EnsureSequence(PrimitiveType.Word64, arch.hi, arch.lo);
-            m.Assign(hi_lo, m.ISub(hi_lo, m.IMul(op1, op2)));
+            var dtProduct = PrimitiveType.Word64;
+            var hi_lo = binder.EnsureSequence(dtProduct, arch.hi, arch.lo);
+            m.Assign(hi_lo, m.ISub(hi_lo, m.IMul(dtProduct, op1, op2)));
         }
 
 

@@ -193,7 +193,7 @@ bool fn00200532(word32 xhl)
 word32 fn00200557(bui8 c, uint8 b, byte * xhl)
 {
 	word24 xwa_24_8_n = 0x00;
-	struct Eq_n * xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b * 0x40;
+	struct Eq_n * xde_n = (uint32) (c * 0x02) + 0x9800 + (uint16) b *32 0x40;
 	byte b_n;
 	word32 xwa_n;
 	for (b_n = 0x13; b_n != 0x00; --b_n)

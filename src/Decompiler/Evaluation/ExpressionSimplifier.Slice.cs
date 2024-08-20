@@ -31,6 +31,9 @@ namespace Reko.Evaluation
         {
             bool changed;
             var e = slice.Expression;
+            // Is the slice the same size as the expression?
+            if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
+                return (e, true);
             if (e is BinaryExpression bin)
             {
                 if (CanBeSliced(slice, bin))
@@ -59,9 +62,6 @@ namespace Reko.Evaluation
             }
             (e, changed) = e.Accept(this);
 
-            // Is the slice the same size as the expression?
-            if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
-                return (e, true);
             slice = new Slice(slice.DataType, e, slice.Offset);
             e = sliceConst.Match(slice);
             if (e is not null)

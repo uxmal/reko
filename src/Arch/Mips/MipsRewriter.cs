@@ -156,8 +156,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.dmfc1: RewriteMfc1(instr); break;
                 case Mnemonic.dmtc0: RewriteMtc0(instr); break;
                 case Mnemonic.dmtc1: RewriteMtc1(instr); break;
-                case Mnemonic.dmult: RewriteMul(instr, m.SMul, PrimitiveType.Int128); break;
-                case Mnemonic.dmultu: RewriteMul(instr, m.UMul, PrimitiveType.UInt128); break;
+                case Mnemonic.dmult: RewriteMul(instr, Operator.SMul, PrimitiveType.Int128); break;
+                case Mnemonic.dmultu: RewriteMul(instr, Operator.UMul, PrimitiveType.UInt128); break;
                 case Mnemonic.dsll: RewriteSll(instr); break;
                 case Mnemonic.dsll32: RewriteDshift32(instr, m.Shl); break;
                 case Mnemonic.dsllv: RewriteSrl(instr); break;
@@ -219,10 +219,10 @@ namespace Reko.Arch.Mips
                 case Mnemonic.msubu: RewriteMac_int(instr, PrimitiveType.UInt64, Operator.UMul, Operator.ISub); break;
                 case Mnemonic.msub_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FSub); break;
                 case Mnemonic.mtc1: RewriteMtc1(instr); break;
-                case Mnemonic.mul: RewriteMul(instr, m.SMul, PrimitiveType.Int32); break;
-                case Mnemonic.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
-                case Mnemonic.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
-                case Mnemonic.mul_s: RewriteMul(instr, m.FMul, PrimitiveType.Real32); break;
+                case Mnemonic.mul: RewriteMul(instr, Operator.SMul, PrimitiveType.Int32); break;
+                case Mnemonic.mult: RewriteMul(instr, Operator.SMul, PrimitiveType.Int64); break;
+                case Mnemonic.multu: RewriteMul(instr, Operator.UMul, PrimitiveType.UInt64); break;
+                case Mnemonic.mul_s: RewriteMul(instr, Operator.FMul, PrimitiveType.Real32); break;
                 case Mnemonic.mul_d: RewriteMulD(instr); break;
                 case Mnemonic.nmadd_d: RewriteNmac_real(instr, PrimitiveType.Real64, m.FAdd); break;
                 case Mnemonic.nmadd_s: RewriteNmac_real(instr, PrimitiveType.Real32, m.FAdd); break;

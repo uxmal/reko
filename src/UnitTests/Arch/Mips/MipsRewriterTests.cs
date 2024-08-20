@@ -380,7 +380,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x02F00018, // mult s7,s0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = r23 *s r16");
+                "1|L--|hi_lo = r23 *s64 r16");
         }
 
         [Test]
@@ -560,11 +560,11 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x00c2001d, // dmultu a2,v0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = r6 *u r2");
+                "1|L--|hi_lo = r6 *u128 r2");
 
             AssertCode(0x0082001c, // dmult a0,v0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = r4 *s r2");
+                "1|L--|hi_lo = r4 *s128 r2");
         }
 
         [Test]

@@ -130,7 +130,7 @@ Eq_356: (fn bool (word16))
 	T_357 (in signature of fn0020050A @ 0020050A : void)
 	T_360 (in fn0020050A @ 00200556 : ptr32)
 Eq_377: (struct "Eq_377" 0001 (0 word32 dw0000))
-	T_377 (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b * 0x40<16> @ 00200575 : word32)
+	T_377 (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b *32 0x40<16> @ 00200575 : word32)
 	T_378 (in xde_26 @ 00200575 : (ptr32 Eq_377))
 	T_395 (in xde_57 + 1<32> @ 00200599 : word32)
 Eq_401: (struct "Eq_401" 0001 (0 word32 dw0000))
@@ -1654,11 +1654,11 @@ T_375: (in 0x40<16> @ 00200575 : word16)
   Class: Eq_375
   DataType: uint16
   OrigDataType: uint16
-T_376: (in (uint16) b * 0x40<16> @ 00200575 : word16)
+T_376: (in (uint16) b *32 0x40<16> @ 00200575 : word32)
   Class: Eq_376
-  DataType: uint16
-  OrigDataType: uint16
-T_377: (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b * 0x40<16> @ 00200575 : word32)
+  DataType: uint32
+  OrigDataType: uint32
+T_377: (in (uint32) (c * 2<8>) + 0x9800<32> + (uint16) b *32 0x40<16> @ 00200575 : word32)
   Class: Eq_377
   DataType: (ptr32 Eq_377)
   OrigDataType: uint32

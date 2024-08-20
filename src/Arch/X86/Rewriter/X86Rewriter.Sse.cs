@@ -334,8 +334,8 @@ namespace Reko.Arch.X86.Rewriter
         private void RewritePextr(PrimitiveType dt)
         {
             var src1 = SrcOp(1);
-            var src2 = ((ImmediateOperand) instrCur.Operands[2]).Value.ToInt32() * 8;
-            EmitCopy(0, m.Slice(src1, dt, src2));
+            var byteno = ((ImmediateOperand) instrCur.Operands[2]).Value.ToInt32() % src1.DataType.Size;
+            EmitCopy(0, m.Slice(src1, dt, byteno * 8));
         }
 
         private void RewritePinsr(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType dtElem)

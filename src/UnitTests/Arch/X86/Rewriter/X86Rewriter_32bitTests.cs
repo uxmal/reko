@@ -1416,7 +1416,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("0FC54242");    // pextrw\teax,mm2,42
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
-                "1|L--|eax = SLICE(mm2, word16, 528)");
+                "1|L--|eax = SLICE(mm2, word16, 16)");
         }
 
         [Test]

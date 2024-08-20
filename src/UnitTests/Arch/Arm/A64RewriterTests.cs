@@ -1624,7 +1624,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x9BC57C00);
             AssertCode(     // umulh\tx0,w0,w5
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x0 = SLICE(w0 *u w5, uint64, 64)");
+                "1|L--|x0 = SLICE(w0 *u128 w5, uint64, 64)");
         }
 
         [Test]

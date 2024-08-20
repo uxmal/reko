@@ -851,7 +851,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(A, R7);
                 m.Assign(A, m.IAdd(A, R7));
                 m.Assign(DPTR, m.Word16(0x008E));
-                m.Goto(m.IAdd(DPTR, m.Slice(A, PrimitiveType.UInt16)));
+                m.Goto(m.IAdd(DPTR, m.ExtendZ(A, PrimitiveType.UInt16)));
             });
             graph.Nodes.Add(b0082);
             graph.Nodes.Add(b0088);
@@ -861,7 +861,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.IsTrue(bwslc.Start(b0088, 3, Target(b0088)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("SLICE(R7 * 2<8>, uint16, 0) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(R7 * 2<8>, byte, word16) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("R7", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }

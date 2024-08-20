@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
@@ -166,13 +167,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
             EmitCc(InvalidConstant.Create(PrimitiveType.Word16), flags);
         }
 
-        private void RewriteMul(Func<Expression,Expression,Expression> fn)
+        private void RewriteMul(BinaryOperator fn)
         {
             var op1 = (RegisterStorage)instr.Operands[0];
             var op2 = RewriteSrc(instr.Operands[1]);
             var dst = binder.EnsureRegister(Registers.regs[op1.Number]);
-            m.Assign(dst, fn(binder.EnsureRegister(op1), op2));
+            m.Assign(dst, m.Bin(fn, dst.DataType, binder.EnsureRegister(op1), op2));
         }
+
         private void RewritePop()
         {
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);

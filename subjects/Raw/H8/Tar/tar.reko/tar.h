@@ -637,7 +637,7 @@ Eq_4940: (union "Eq_4940" (ui16 u0) (byte u1))
 	T_4940 (in r1 ^ 0xDB7B<16> @ 00009B60 : word16)
 	T_4942 (in Mem14[0x9E92<p16>:word16] @ 00009B60 : word16)
 	T_4943 (in r0l @ 00009B64 : Eq_4940)
-	T_4961 (in r1_12 + 1<16> @ 00009B86 : word16)
+	T_4961 (in r1_12 + 1<16> @ 00009B86 : ui16)
 	T_4962 (in Mem36[0x9E92<p16>:word16] @ 00009B86 : word16)
 	T_4963 (in Mem36[0x9E92<p16>:byte] @ 00009B8E : byte)
 Eq_4944: (fn word16 (Eq_4946, Eq_1896))
@@ -2671,7 +2671,7 @@ T_491: (in 0xC<16> @ 000082BA : ui16)
   Class: Eq_491
   DataType: ui16
   OrigDataType: ui16
-T_492: (in sp_7->w0008 + 0xC<16> @ 000082BA : word16)
+T_492: (in sp_7->w0008 + 0xC<16> @ 000082BA : ui16)
   Class: Eq_490
   DataType: ui16
   OrigDataType: word16
@@ -2703,7 +2703,7 @@ T_499: (in 0xC<16> @ 000082C6 : ui16)
   Class: Eq_499
   DataType: ui16
   OrigDataType: ui16
-T_500: (in sp_7->w0004 + 0xC<16> @ 000082C6 : word16)
+T_500: (in sp_7->w0004 + 0xC<16> @ 000082C6 : ui16)
   Class: Eq_498
   DataType: word16
   OrigDataType: word16
@@ -3075,7 +3075,7 @@ T_592: (in 0xC<16> @ 00008218 : ui16)
   Class: Eq_592
   DataType: ui16
   OrigDataType: ui16
-T_593: (in sp_7->w0006 + 0xC<16> @ 00008218 : word16)
+T_593: (in sp_7->w0006 + 0xC<16> @ 00008218 : ui16)
   Class: Eq_581
   DataType: ui16
   OrigDataType: word16
@@ -6631,7 +6631,7 @@ T_1479: (in 0xC<16> @ 000086B8 : ui16)
   Class: Eq_1479
   DataType: ui16
   OrigDataType: ui16
-T_1480: (in sp_7->w0000 + 0xC<16> @ 000086B8 : word16)
+T_1480: (in sp_7->w0000 + 0xC<16> @ 000086B8 : ui16)
   Class: Eq_1359
   DataType: int16
   OrigDataType: word16
@@ -9417,7 +9417,7 @@ T_2170: (in 0xC<16> @ 00008AC2 : ui16)
   Class: Eq_2170
   DataType: ui16
   OrigDataType: ui16
-T_2171: (in sp_14->w000C + 0xC<16> @ 00008AC2 : word16)
+T_2171: (in sp_14->w000C + 0xC<16> @ 00008AC2 : ui16)
   Class: Eq_1984
   DataType: word16
   OrigDataType: word16
@@ -10437,7 +10437,7 @@ T_2425: (in 0xC<16> @ 00008932 : ui16)
   Class: Eq_2425
   DataType: ui16
   OrigDataType: ui16
-T_2426: (in r5_142 + 0xC<16> @ 00008932 : word16)
+T_2426: (in r5_142 + 0xC<16> @ 00008932 : ui16)
   Class: Eq_2418
   DataType: ui16
   OrigDataType: word16
@@ -15069,7 +15069,7 @@ T_3583: (in 0x28<16> @ 000092EC : ui16)
   Class: Eq_3583
   DataType: ui16
   OrigDataType: ui16
-T_3584: (in r2_887 + 0x28<16> @ 000092EC : word16)
+T_3584: (in r2_887 + 0x28<16> @ 000092EC : ui16)
   Class: Eq_3331
   DataType: ci16
   OrigDataType: word16
@@ -15085,7 +15085,7 @@ T_3587: (in 0xFFFB<16> @ 000092F8 : ui16)
   Class: Eq_3587
   DataType: ui16
   OrigDataType: ui16
-T_3588: (in g_wFFFF9E3C + 0xFFFB<16> @ 000092F8 : word16)
+T_3588: (in g_wFFFF9E3C + 0xFFFB<16> @ 000092F8 : ui16)
   Class: Eq_3331
   DataType: ci16
   OrigDataType: word16
@@ -15133,7 +15133,7 @@ T_3599: (in 0x3001<16> @ 0000934C : word16)
   Class: Eq_2220
   DataType: word16
   OrigDataType: word16
-T_3600: (in r2_887 + 0x28<16> @ 0000934C : word16)
+T_3600: (in r2_887 + 0x28<16> @ 0000934C : ui16)
   Class: Eq_2221
   DataType: int16
   OrigDataType: word16
@@ -20584,7 +20584,7 @@ T_4960: (in Mem34[0x9E90<p16>:word16] @ 00009B82 : word16)
   Class: Eq_4936
   DataType: ui16
   OrigDataType: word16
-T_4961: (in r1_12 + 1<16> @ 00009B86 : word16)
+T_4961: (in r1_12 + 1<16> @ 00009B86 : ui16)
   Class: Eq_4940
   DataType: Eq_4940
   OrigDataType: word16

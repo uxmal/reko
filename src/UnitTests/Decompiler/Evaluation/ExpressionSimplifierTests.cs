@@ -947,11 +947,11 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var exp = m.Slice(m.Slice(
-                m.Slice(m.Fn("test"), PrimitiveType.Word64, 0),
+                m.Slice(foo64, PrimitiveType.Word64, 0),
                     PrimitiveType.Word32, 0),
                     PrimitiveType.Byte, 0);
             var (result, changed) = exp.Accept(simplifier);
-            Assert.AreEqual("SLICE(test(), byte, 0)", result.ToString());
+            Assert.AreEqual("SLICE(foo64_2, byte, 0)", result.ToString());
             Assert.IsTrue(changed);
         }
 

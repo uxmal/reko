@@ -3297,7 +3297,7 @@ l0040697C:
 	r5_30 = <invalid>
 	r4_29 = <invalid>
 	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x0040A74C<p32>, gmtime(&dwLoc28, r4_29, &dwLoc28, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
-	hi_69 = SLICE(dwLoc24 *s 0x10624DD3<32>, word32, 32) (alias)
+	hi_69 = SLICE(dwLoc24 *s64 0x10624DD3<32>, word32, 32) (alias)
 	fprintf(r4, "%s:%s.%03d:%s\n", Mem75[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (hi_69 >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
@@ -3875,7 +3875,7 @@ l00407C60_ds_t:
 l00407C80:
 	branch (dwLoc38 ^ 2<32>) != 0<32> l00407CA8
 l00407CA8:
-	hi_lo_57 = dwLoc3C *u dwLoc2C
+	hi_lo_57 = dwLoc3C *u64 dwLoc2C
 	hi_67 = SLICE(hi_lo_57, word32, 32) (alias)
 	lo_69 = SLICE(hi_lo_57, word32, 0) (alias)
 	r6_109 = hi_67 >> 0<8>
@@ -4397,14 +4397,14 @@ l004087A4_ds_t:
 l004087C4:
 	branch (dwLoc70 ^ 2<32>) != 0<32> l004087EC
 l004087EC:
-	hi_lo_116 = (dwLoc60 >>u 0<8>) *u dwLoc74
-	hi_lo_122 = dwLoc5C *u (dwLoc78 >>u 0<8>)
+	hi_lo_116 = (dwLoc60 >>u 0<8>) *u64 dwLoc74
+	hi_lo_122 = dwLoc5C *u64 (dwLoc78 >>u 0<8>)
 	lo_119 = SLICE(hi_lo_116, word32, 0) (alias)
 	lo_125 = SLICE(hi_lo_122, word32, 0) (alias)
 	r21_136 = lo_119 + lo_125
 	r24_131 = SLICE(hi_lo_116, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>
-	hi_lo_147 = dwLoc5C *u dwLoc74
-	hi_lo_153 = (dwLoc60 >>u 0<8>) *u (dwLoc78 >>u 0<8>)
+	hi_lo_147 = dwLoc5C *u64 dwLoc74
+	hi_lo_153 = (dwLoc60 >>u 0<8>) *u64 (dwLoc78 >>u 0<8>)
 	lo_160 = (dwLoc78 >>u 0<8>) *s 0<32> (alias)
 	r20_140 = r24_131 + ((SLICE(hi_lo_122, word32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>) + CONVERT(r21_136 <u lo_125, bool, word32)
 	dwLoc30_660 = 0<32>
