@@ -585,7 +585,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_HexString("F6080444");
             AssertCode(     // muls.d	r4,r11,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5_r4 = r11 *s r8");
+                "1|L--|r5_r4 = r11 *s64 r8");
         }
 
         [Test]
@@ -605,7 +605,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_HexString("F6080644");
             AssertCode(     // mulu.d	r4,r11,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5_r4 = r11 *u r8");
+                "1|L--|r5_r4 = r11 *u64 r8");
         }
 
         [Test]

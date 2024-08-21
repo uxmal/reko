@@ -32,10 +32,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public class x86_64Relocator : ElfRelocator64
     {
         private Dictionary<Address, ImportReference>? importReferences;
+        private Dictionary<ElfSymbol, Address> plt;
 
-        public x86_64Relocator(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public x86_64Relocator(
+            ElfLoader64 loader,
+            SortedList<Address, ImageSymbol> imageSymbols,
+            Dictionary<ElfSymbol, Address> plt) : base(loader, imageSymbols)
         {
             this.loader = loader;
+            this.plt = plt;
         }
 
         /// <remarks>
@@ -83,6 +88,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
+            if (rela.Offset == 0x540)
+                _ = this; //$DEBUG
             var rt = (x86_64Rt)(rela.Info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null, null);
@@ -103,6 +110,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (sym.SectionIndex != 0)
             {
                 var symSection = loader.Sections[(int) sym.SectionIndex];
+                if (symSection.Address is null)
+                    return (null, null);
                 S = (ulong) sym.Value + symSection.Address!.ToLinear();
             }
             long A = 0;
@@ -130,6 +139,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case x86_64Rt.R_X86_64_COPY:
                 break;
+            case x86_64Rt.R_X86_64_PC32:
+                relW.WriteUInt32(
+                       (uint)(S + (ulong) rela.Addend!.Value - P));
+                return (addr, null);
+            case x86_64Rt.R_X86_64_PLT32:
+                if (!plt.TryGetValue(sym, out var L))
+                {
+                    Debug.Print("ELF external symbol {0} not present in PLT", sym);
+                    return (null, null);
+                }
+                relW.WriteUInt32(
+                       (uint) (L.Offset + (ulong) rela.Addend!.Value - P));
+                return (addr, null);
+
             default:
                 Debug.Print("x86_64 ELF relocation type {0} not implemented yet.",
                     rt);
@@ -138,7 +161,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 //    "x86_64 ELF relocation type {0} not implemented yet.",
                 //    rt));
             }
-            if (relR != null)
+            if (relR is not null)
             {
                 var w = relR.ReadUInt64();
                 w += ((ulong)(S + (ulong)A + P) >> sh) & mask;

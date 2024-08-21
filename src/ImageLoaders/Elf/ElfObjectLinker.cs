@@ -39,6 +39,10 @@ namespace Reko.ImageLoaders.Elf
         protected readonly IProcessorArchitecture arch;
         private readonly ElfLoader loader;
         protected byte[] rawImage;
+
+        /// <summary>
+        /// Section used to simulate the presence of external functions.
+        /// </summary>
         protected readonly ElfSection rekoExtfn;
         protected readonly List<ElfSymbol> unresolvedSymbols;
 
@@ -58,16 +62,24 @@ namespace Reko.ImageLoaders.Elf
                 Alignment = 0x10,
             };
             this.unresolvedSymbols = new List<ElfSymbol>();
+            this.PltEntries = new Dictionary<ElfSymbol, Address>();
         }
+
+        public Dictionary<ElfSymbol, Address> PltEntries { get; }
 
         public abstract Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage);
 
         protected Address? ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
         {
-            return sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
+            var address = sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
                 .OrderBy(s => s.Address)
                 .Select(s => s.Address)
-                .First();
+                .FirstOrDefault();
+            if (address is null)
+                return loader.CreateAddress(0x1000);
+            if (address.Offset == 0)
+                address += 0x1000;
+            return address;
         }
 
         /// <summary>
@@ -88,6 +100,7 @@ namespace Reko.ImageLoaders.Elf
                 //$TODO: try guessing the signature based on the symbol name.
                 var sig = new FunctionType();
                 interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, sig));
+                PltEntries[sym] = addr;
             }
         }
     }
@@ -105,7 +118,9 @@ namespace Reko.ImageLoaders.Elf
 
         public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
-            var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections)!;
+            var addrBase = addrLoad is not null && addrLoad.Offset != 0
+                ? addrLoad
+                : ComputeBaseAddressFromSections(loader.Sections)!;
             CollectCommonSymbolsIntoSection();
             CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();

@@ -1577,7 +1577,7 @@ IGNORE tab + cr + lf
         //Expr       = AssignExpr {','  AssignExpr}.
         public CExpression Parse_Expr()
         {
-            return this.expr_bp(0);
+            //return this.expr_bp(0);
 
             var left = Parse_AssignExpr();
             while (PeekThenDiscard(CTokenType.Comma))

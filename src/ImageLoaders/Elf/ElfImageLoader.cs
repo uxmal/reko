@@ -25,6 +25,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Reko.ImageLoaders.Elf
@@ -81,9 +82,11 @@ namespace Reko.ImageLoaders.Elf
             innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             Program program;
+            Dictionary<ElfSymbol, Address> plt;
             if (cHeaders > 0)
             {
                 program = innerLoader.LoadImage(platform, RawImage);
+                plt = new Dictionary<ElfSymbol, Address>();
             }
             else
             {
@@ -97,8 +100,9 @@ namespace Reko.ImageLoaders.Elf
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
                 program = linker.LinkObject(platform, addrLoad, RawImage);
+                plt = linker.PltEntries;
             }
-            innerLoader!.Relocate(program, addrLoad!);
+            innerLoader!.Relocate(program, addrLoad!, plt);
             return program;
         }
 

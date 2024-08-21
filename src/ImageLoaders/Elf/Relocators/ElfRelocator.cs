@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public abstract class ElfRelocator
     {
-        private readonly SortedList<Address, ImageSymbol> imageSymbols;
+        protected readonly SortedList<Address, ImageSymbol> imageSymbols;
 
         public ElfRelocator(SortedList<Address, ImageSymbol> syms)
         {
@@ -188,7 +188,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
                     relTable = new RelaTable(this, rela.UValue, relasz.UValue);
                 }
-                else if (rel != null)
+                else if (rel is { })
                 {
                     if (relsz is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
@@ -421,12 +421,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public abstract class ElfRelocator32 : ElfRelocator
     {
         protected ElfLoader32 loader;
-        protected SortedList<Address, ImageSymbol> imageSymbols;
 
         public ElfRelocator32(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(imageSymbols)
         {
             this.loader = loader;
-            this.imageSymbols = imageSymbols;
         }
 
         public override ElfLoader Loader => loader;
@@ -534,12 +532,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public abstract class ElfRelocator64 : ElfRelocator
     {
         protected ElfLoader64 loader;
-        protected SortedList<Address, ImageSymbol> imageSymbols;
 
-        public ElfRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(imageSymbols)
+        public ElfRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) 
+            : base(imageSymbols)
         {
             this.loader = loader;
-            this.imageSymbols = imageSymbols;
         }
 
         public override ElfLoader Loader => loader;
@@ -565,6 +562,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
+                if (relSection.RelocatedSection?.Address is null)
+                    continue;
                 var symbols = loader.Symbols[relSection.LinkedSection!.FileOffset];
                 var referringSection = relSection.RelocatedSection;
                 var rdr = loader.CreateReader(relSection.FileOffset);

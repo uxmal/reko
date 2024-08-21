@@ -160,7 +160,10 @@ namespace Reko.ImageLoaders.Elf
             return new ElfObjectLinker32(this, Architecture, rawImage);
         }
 
-        public override ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> imageSymbols)
+        public override ElfRelocator CreateRelocator(
+            ElfMachine machine, 
+            SortedList<Address, ImageSymbol> imageSymbols,
+            Dictionary<ElfSymbol, Address> plt)
         {
             switch (machine)
             {
@@ -191,7 +194,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
             case ElfMachine.EM_TC32: return new TC32Relocator(this, imageSymbols);
             }
-            return base.CreateRelocator(machine, imageSymbols);
+            return base.CreateRelocator(machine, imageSymbols, plt);
         }
 
         public ImageSegmentRenderer? CreateRenderer(ElfSection shdr, ElfMachine machine)

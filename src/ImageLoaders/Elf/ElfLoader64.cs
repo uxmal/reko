@@ -139,12 +139,15 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> symbols)
+        public override ElfRelocator CreateRelocator(
+            ElfMachine machine, 
+            SortedList<Address, ImageSymbol> symbols,
+            Dictionary<ElfSymbol, Address> plt)
         {
             switch (machine)
             {
             case ElfMachine.EM_AARCH64: return new Arm64Relocator(this, symbols);
-            case ElfMachine.EM_X86_64: return new x86_64Relocator(this, symbols);
+            case ElfMachine.EM_X86_64: return new x86_64Relocator(this, symbols, plt);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this, symbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator64(this, symbols);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this, symbols);
@@ -154,7 +157,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_SPARCV9: return new Sparc64Relocator(this, symbols);
             case ElfMachine.EM_IA_64: return new Ia64Relocator(this, symbols);
             }
-            return base.CreateRelocator(machine, symbols);
+            return base.CreateRelocator(machine, symbols, plt);
         }
 
         public override void Dump(Address addrLoad, TextWriter writer)

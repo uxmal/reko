@@ -456,7 +456,10 @@ namespace Reko.ImageLoaders.Elf
             return platform;
         }
 
-        public virtual ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> symbols)
+        public virtual ElfRelocator CreateRelocator(
+            ElfMachine machine,
+            SortedList<Address, ImageSymbol> symbols,
+            Dictionary<ElfSymbol, Address> plt)
         {
             throw new NotSupportedException($"Relocator for architecture {machine} not implemented yet.");
         }
@@ -836,10 +839,10 @@ namespace Reko.ImageLoaders.Elf
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
-        public void Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad, Dictionary<ElfSymbol, Address> plt)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
-            var relocator = CreateRelocator(this.Machine, symbols);
+            var relocator = CreateRelocator(this.Machine, symbols, plt);
             relocator.Relocate(program);
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
