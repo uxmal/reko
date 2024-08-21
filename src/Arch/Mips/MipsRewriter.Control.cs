@@ -76,7 +76,7 @@ namespace Reko.Arch.Mips
                 RewriteBal(instr, 1);
                 return;
             }
-            RewriteBranch0(instr, m.Ge, false);
+            RewriteBranch0(instr, Operator.Ge, false);
         }
 
         private void RewriteBb(MipsInstruction instr, Func<Expression, Expression> condOp)
@@ -92,15 +92,15 @@ namespace Reko.Arch.Mips
             m.Branch(test, addr, instr.InstructionClass);
         }
 
-        private void RewriteBranch(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
+        private void RewriteBranch(MipsInstruction instr, BinaryOperator condOp, bool link)
         {
             if (!link)
             {
                 var reg1 = RewriteOperand0(instr.Operands[0]);
                 var reg2 = RewriteOperand0(instr.Operands[1]);
                 var addr = (Address)RewriteOperand0(instr.Operands[2]);
-                var cond = condOp(reg1, reg2);
-                if (condOp == m.Eq &&
+                var cond = m.Bin(condOp, PrimitiveType.Bool, reg1, reg2);
+                if (condOp.Type == OperatorType.Eq &&
                     (RegisterStorage)instr.Operands[0] ==
                     (RegisterStorage)instr.Operands[1])
                 {
@@ -117,7 +117,7 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
+        private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp, bool link)
         {
             if (link)
             {
@@ -130,17 +130,17 @@ namespace Reko.Arch.Mips
             if (reg is Constant)
             {
                 // r0 has been replaced with '0'.
-                if (condOp == m.Lt)
+                if (condOp.Type == OperatorType.Lt)
                 {
                     iclass = InstrClass.Linear;
                     return; // Branch will never be taken
                 }
             }
-            var cond = condOp(reg, Constant.Zero(reg.DataType));
+            var cond = m.Bin(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
             m.Branch(cond, addr, instr.InstructionClass);
         }
 
-        private void RewriteBranchImm(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
+        private void RewriteBranchImm(MipsInstruction instr, BinaryOperator condOp, bool link)
         {
             if (link)
             {
@@ -151,17 +151,17 @@ namespace Reko.Arch.Mips
             var reg = RewriteOperand0(instr.Operands[0]);
             var imm = RewriteOperand(instr.Operands[1]);
             var addr = (Address) RewriteOperand0(instr.Operands[2]);
-            var cond = condOp(reg, imm);
+            var cond = m.Bin(condOp, PrimitiveType.Bool, reg, imm);
             m.Branch(cond, addr, instr.InstructionClass);
         }
 
-        private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
+        private void RewriteBranchLikely(MipsInstruction instr, BinaryOperator cmp)
         {
             var reg1 = RewriteOperand0(instr.Operands[0]);
             var reg2 = RewriteOperand0(instr.Operands[1]);
             var addr = (Address)RewriteOperand0(instr.Operands[2]);
-            var cond = condOp(reg1, reg2);
-            if (condOp == m.Eq &&
+            var cond = m.Bin(cmp, PrimitiveType.Bool, reg1, reg2);
+            if (cmp.Type == OperatorType.Eq &&
                 ((RegisterStorage)instr.Operands[0] ==
                  (RegisterStorage)instr.Operands[1]))
             {

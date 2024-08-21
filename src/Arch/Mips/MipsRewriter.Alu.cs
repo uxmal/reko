@@ -23,12 +23,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Mips
 {
@@ -136,31 +132,31 @@ namespace Reko.Arch.Mips
 
         private void RewriteDiv(
             MipsInstruction instr, 
-            Func<Expression, Expression, Expression> div,
-            Func<Expression, Expression, Expression> mod)
+            BinaryOperator div,
+            BinaryOperator mod)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var op2 = RewriteOperand(instr.Operands[1]);
             if (instr.Operands.Length > 3)
             {
                 var op3 = RewriteOperand(instr.Operands[2]);
-                m.Assign(op1, div(op2, op3));
+                m.Assign(op1, m.Bin(div, op2, op3));
             }
             else
             {
                 var hi = binder.EnsureRegister(arch.hi);
                 var lo = binder.EnsureRegister(arch.lo);
-                m.Assign(lo, div(op1, op2));
-                m.Assign(hi, mod(op1, op2));
+                m.Assign(lo, m.Bin(div, op1, op2));
+                m.Assign(hi, m.Bin(mod, op1, op2));
             }
         }
 
-        private void RewriteDshift32(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteDshift32(MipsInstruction instr, BinaryOperator shift)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
             var sh = m.IAdd(RewriteOperand(instr.Operands[2]), 32);
-            m.Assign(dst, ctor(src, sh));
+            m.Assign(dst, m.Bin(shift, src, sh));
         }
 
         private void RewriteExt(MipsInstruction instr)
@@ -410,12 +406,12 @@ namespace Reko.Arch.Mips
             m.Assign(binder.EnsureRegister(reg), opSrc);
         }
 
-        private void RewriteMod(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteMod(MipsInstruction instr, BinaryOperator ctor)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var op1 = RewriteOperand(instr.Operands[1]);
             var op2 = RewriteOperand(instr.Operands[2]);
-            m.Assign(dst, ctor(op1, op2));
+            m.Assign(dst, m.Bin(ctor, op1, op2));
         }
 
         private void RewriteMovCc(MipsInstruction instr, Func<Expression, Expression> cmp0)
@@ -488,11 +484,11 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, m.Comp(opSrc));
         }
 
-        private void RewriteMuh(MipsInstruction instr, PrimitiveType dtProduct, Func<Expression,Expression,Expression> fn)
+        private void RewriteMuh(MipsInstruction instr, PrimitiveType dtProduct, BinaryOperator fn)
         {
             var src1 = RewriteOperand(instr.Operands[1]);
             var src2 = RewriteOperand(instr.Operands[2]);
-            var product = fn(src1, src2);
+            var product = m.Bin(fn, src1, src2);
             product.DataType = dtProduct;
             var dst = RewriteOperand(instr.Operands[0]);
             m.Assign(dst, m.Slice(product, dst.DataType, product.DataType.BitSize - dst.DataType.BitSize));

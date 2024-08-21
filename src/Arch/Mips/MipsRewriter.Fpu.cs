@@ -22,13 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Mips
 {
@@ -45,23 +40,23 @@ namespace Reko.Arch.Mips
             return seq;
         }
 
-        private void RewriteFpuBinopS(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteFpuBinopS(MipsInstruction instr, BinaryOperator op)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src1 = RewriteOperand(instr.Operands[1]);
             var src2 = RewriteOperand(instr.Operands[2]);
-            m.Assign(dst, ctor(src1, src2));
+            m.Assign(dst, m.Bin(op, src1, src2));
         }
 
-        private void RewriteFpuBinopD(MipsInstruction instr, Func<Expression,Expression,Expression> ctor)
+        private void RewriteFpuBinopD(MipsInstruction instr, BinaryOperator op)
         {
             var dst = GetFpuRegPair(instr.Operands[0]);
             var src1 = GetFpuRegPair(instr.Operands[1]);
             var src2 = GetFpuRegPair(instr.Operands[2]);
-            m.Assign(dst, ctor(src1, src2));
+            m.Assign(dst, m.Bin(op, src1, src2));
         }
 
-        private void RewriteMac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        private void RewriteMac_real(MipsInstruction instr, PrimitiveType dt, BinaryOperator accumFn)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var acc = RewriteOperand(instr.Operands[1]);
@@ -69,12 +64,12 @@ namespace Reko.Arch.Mips
             var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = dt;
-            var sum = ctor(acc, product);
+            var sum = m.Bin(accumFn, acc, product);
             sum.DataType = dt;
             m.Assign(dst, sum);
         }
 
-        private void RewriteMac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        private void RewriteMac_vec(MipsInstruction instr, PrimitiveType dt, BinaryOperator accFn)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var acc = RewriteOperand(instr.Operands[1]);
@@ -82,12 +77,12 @@ namespace Reko.Arch.Mips
             var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
-            var sum = ctor(acc, product);
+            var sum = m.Bin(accFn, acc, product);
             sum.DataType = product.DataType;
             m.Assign(dst, sum);
         }
 
-        private void RewriteNmac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        private void RewriteNmac_real(MipsInstruction instr, PrimitiveType dt, BinaryOperator accFn)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var acc = RewriteOperand(instr.Operands[1]);
@@ -95,12 +90,12 @@ namespace Reko.Arch.Mips
             var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = dt;
-            var sum = ctor(acc, product);
+            var sum = m.Bin(accFn, acc, product);
             sum.DataType = dt;
             m.Assign(dst, m.FNeg(sum));
         }
 
-        private void RewriteNmac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        private void RewriteNmac_vec(MipsInstruction instr, PrimitiveType dt, BinaryOperator accFn)
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var acc = RewriteOperand(instr.Operands[1]);
@@ -108,7 +103,7 @@ namespace Reko.Arch.Mips
             var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
-            var sum = ctor(acc, product);
+            var sum = m.Bin(accFn, acc, product);
             sum.DataType = product.DataType;
             m.Assign(dst, m.FNeg(sum));
         }

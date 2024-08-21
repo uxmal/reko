@@ -22,9 +22,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Mips
 {
