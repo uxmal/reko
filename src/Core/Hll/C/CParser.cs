@@ -1414,9 +1414,171 @@ IGNORE tab + cr + lf
 
         //---------- Expressions ----------
 
+        /// <summary>
+        /// Parse C expression.
+        /// </summary>
+        /// <param name="min_bp"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This implementation uses the Pratt precedence-based parser algorithm.
+        /// It is friendlier on the stack space.</remarks>
+        public CExpression expr_bp(int min_bp)
+        {
+            var token = lexer.Read();
+            CExpression lhs;
+            switch (token.Type)
+            {
+            case CTokenType.Id:
+                lhs = new CIdentifier((string)token.Value);
+                break;
+            case CTokenType.NumericLiteral:
+            case CTokenType.StringLiteral:
+            case CTokenType.WideStringLiteral:
+            case CTokenType.RealLiteral:
+            case CTokenType.CharLiteral:
+            case CTokenType.WideCharLiteral:
+                lhs = grammar.Const(lexer.Read().Value);
+                break;
+            case CTokenType.LParen:
+                if (IsType0())
+                {
+                    //$TODO: cast
+                }
+                lhs = expr_bp(0);
+                ExpectToken(CTokenType.RParen);
+                break;
+            default:
+                var r_bp = prefixBindingPower(token.Type);
+                if (r_bp is null)
+                    throw Unexpected(token);
+                var rhs = expr_bp(r_bp.Value);
+                lhs = new CUnaryExpression(token.Type, rhs);
+                break;
+            }
+            for (; ; )
+            {
+                token = lexer.Peek(0);
+                if (token.Type == CTokenType.EOF)
+                    return lhs;
+                var l_bp = postfixBindingPower(token.Type);
+                if (l_bp is not null)
+                {
+                    if (l_bp.Value < min_bp)
+                        return lhs;
+                    lexer.Read();
+                    if (token.Type == CTokenType.LBracket)
+                    {
+                        var rhs = expr_bp(0);
+                        ExpectToken(CTokenType.RBracket);
+                        lhs = new CArrayAccess(lhs, rhs);
+                    }
+                    else
+                    {
+                        lhs = new CUnaryExpression(token.Type, lhs);
+                    }
+                    continue;
+                }
+                (l_bp, int? r_bp) = infixBindingPower(token.Type);
+                if (l_bp is not null)
+                {
+                    if (l_bp < min_bp)
+                    {
+                        return lhs;
+                    }
+                    lexer.Read();
+                    if (token.Type == CTokenType.Question)
+                    {
+                        var mhs = expr_bp(0);
+                        ExpectToken(CTokenType.Colon);
+                        var rhs = expr_bp(r_bp.Value);
+                        lhs = new ConditionalExpression(lhs, mhs, rhs);
+                    }
+                    else
+                    {
+                        var rhs = expr_bp(r_bp.Value);
+                        lhs = new CBinaryExpression(token.Type, lhs, rhs);
+                        continue;
+                    }
+                    return lhs;
+                }
+            }
+        }
+
+        private static int? prefixBindingPower(CTokenType tokenType)
+        {
+            return bindingPowers.TryGetValue(tokenType, out var bp)
+                ? bp.Item1
+                : null;
+        }
+        private static (int?, int?) infixBindingPower(CTokenType tokenType)
+        {
+            return bindingPowers.TryGetValue(tokenType, out var bp)
+                ? (bp.Item2, bp.Item3)
+                : (null, null);
+        }
+        private static int? postfixBindingPower(CTokenType tokenType)
+        {
+            return bindingPowers.TryGetValue(tokenType, out var bp)
+                ? bp.Item3
+                : null;
+        }
+
+
+
+        private static readonly Dictionary<CTokenType, (int?, int?, int?)> bindingPowers = new()
+        {
+            {  CTokenType.Comma, (null, 1, 2)},
+
+            { CTokenType.Assign, (null, 3, 4) },
+            { CTokenType.MulAssign, (null, 3, 4) },
+            { CTokenType.DivAssign, (null, 3, 4) },
+            { CTokenType.ModAssign, (null, 3, 4) },
+            { CTokenType.PlusAssign, (null, 3, 4) },
+            { CTokenType.MinusAssign, (null, 3, 4) },
+            { CTokenType.ShlAssign, (null, 3, 4) },
+            { CTokenType.ShrAssign, (null, 3, 4) },
+            { CTokenType.AndAssign, (null, 3, 4) },
+            { CTokenType.OrAssign, (null, 3, 4) },
+            { CTokenType.XorAssign, (null, 3, 4) },
+
+            { CTokenType.Question, (null, 6, 5) },
+
+            { CTokenType.LogicalOr, (null, 7, 8) },
+
+            { CTokenType.LogicalAnd, (null, 9, 10) },
+
+            { CTokenType.Pipe, (null, 11, 12) },
+
+            { CTokenType.Xor, (null, 13, 14) },
+
+            { CTokenType.Ampersand, (null, 15, 16) },
+
+            { CTokenType.Eq, (null, 17, 18) },
+            { CTokenType.Ne, (null, 17, 18) },
+
+            { CTokenType.Ge, (null, 19, 20) },
+            { CTokenType.Gt, (null, 19, 20) },
+            { CTokenType.Le, (null, 19, 20) },
+            { CTokenType.Lt, (null, 19, 20) },
+
+            { CTokenType.Shl, (null, 21, 22) },
+            { CTokenType.Shr, (null, 21, 22) },
+
+            { CTokenType.Plus, (null, 23, 24) },
+            { CTokenType.Minus, (null, 23, 24) },
+
+            { CTokenType.Star, (null, 25, 26) },
+            { CTokenType.Slash, (null, 25, 26) },
+            { CTokenType.Percent, (null, 25, 26) },
+
+
+        };
+
         //Expr       = AssignExpr {','  AssignExpr}.
         public CExpression Parse_Expr()
         {
+            return this.expr_bp(0);
+
             var left = Parse_AssignExpr();
             while (PeekThenDiscard(CTokenType.Comma))
             {
