@@ -939,7 +939,7 @@ namespace Reko.Arch.Avr.Avr32
             var right = RewriteOp(2);
             var rDstHi = Registers.GpRegisters[rDst.Number + 1];
             var dst = binder.EnsureSequence(PrimitiveType.Word64, rDstHi, rDst);
-            m.Assign(dst, m.Bin(fn, left, right));
+            m.Assign(dst, m.Bin(fn, dst.DataType, left, right));
         }
 
         private void RewriteMulsatWhW()

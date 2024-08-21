@@ -8650,7 +8650,7 @@ Eq_n fn000093B8(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r9, s
 		{
 			uint64 r11_r10_n = fn000107C0((word32) qwArg04_n, SLICE(qwArg04_n, word32, 32), dwArg10, dwArg0C_n, out r8_n, out r9_n, out lr_n);
 			Eq_n r10_n = (word32) r11_r10_n;
-			Eq_n r11_r10_n = r10_n * dwArg1C_n;
+			uint64 r11_r10_n = r10_n *64 dwArg1C_n;
 			Eq_n r11_n;
 			r11_n.u3 = SLICE(r11_r10_n, word32, 32);
 			Eq_n dwArg30_n = (word32) r11_r10_n;
@@ -8677,7 +8677,7 @@ Eq_n fn000093B8(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r9, s
 			Eq_n r10_n = (word32) r11_r10_n;
 			ui64 r11_r10_n = fn00010A4C(qwArg18, r10_n, r11_n);
 			uint32 r10_n = (word32) r11_r10_n;
-			Eq_n r3_n = SLICE(r10_n * 0x0A, word32, 32) + SLICE(r11_r10_n, word32, 32) * 0x0A;
+			Eq_n r3_n = SLICE(r10_n *64 0x0A, word32, 32) + SLICE(r11_r10_n, word32, 32) * 0x0A;
 			ui64 r11_r10_n = fn00010A4C(SEQ(r3_n, r10_n * 0x0A), r10_n, r11_n);
 			ui32 r10_n = (word32) r11_r10_n * 0x02;
 			Eq_n r1_n = r11_n;
@@ -9271,7 +9271,7 @@ word32 fn0000988A(struct Eq_n * r1, struct Eq_n * r6, struct Eq_n * r12, Eq_n dw
 				dwLoc68 = (word32) dwLoc68.u0 + 1;
 				if (dwLoc68 == 0x07)
 					break;
-				Eq_n r3_r2_n = r2_n * dwLoc74;
+				uint64 r3_r2_n = r2_n *64 dwLoc74;
 				r2_n = (word32) r3_r2_n;
 				r3_n = r3_n * dwLoc74 + r2_n * 0x00 + SLICE(r3_r2_n, word32, 32);
 			}
@@ -13523,7 +13523,7 @@ ui64 * fn0000CA68(Eq_n r11, ui64 * r12, union Eq_n & lrOut)
 	Eq_n r3_n = SLICE(r3_r2_n, word32, 32);
 	if (SLICE(r11_r10_n, word32, 32) - r3_n >= (bool) cond((word32) r11_r10_n - r2_n))
 	{
-		Eq_n r9_r8_n = r11 * r2_n;
+		uint64 r9_r8_n = r11 *64 r2_n;
 		*r12 = SEQ((r11 >> 0x1F) * r2_n + r3_n * r11 + SLICE(r9_r8_n, word32, 32), (word32) r9_r8_n);
 		lrOut.u0 = <invalid>;
 		return null;
@@ -17256,9 +17256,9 @@ ui64 __avr32_f64_mul(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11)
 		}
 		else
 		{
-			Eq_n r7_r6_n = r10_n * r8_n;
-			Eq_n r11_r10_n = r11_n * r9_n;
-			Eq_n r10_r7_n = SEQ((word32) r11_r10_n, SLICE(r7_r6_n, word32, 32)) + (r11_n * r8_n + r10_n * r9_n);
+			uint64 r7_r6_n = r10_n *64 r8_n;
+			uint64 r11_r10_n = r11_n *64 r9_n;
+			uint64 r10_r7_n = SEQ((word32) r11_r10_n, SLICE(r7_r6_n, word32, 32)) + (r11_n *64 r8_n + r10_n * r9_n);
 			Eq_n r10_n = SLICE(r10_r7_n, word32, 32);
 			word32 r12_n = r7_n + r6_n;
 			Eq_n r11_n = SLICE(r11_r10_n, word32, 32) + (word32) (r10_n < 0x00);
@@ -18347,25 +18347,25 @@ uint64 __avr32_f64_div(Eq_n r2, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n
 l0000FA94:
 			if (r6_n < 0x07FF)
 			{
-				ui32 r5_n = SLICE(((SLICE(r9_n * 0x40000000, word32, 32) << 0x02) + 0x80000000) * 0x40000000, word32, 32);
-				ui32 r5_n = SLICE((r5_n << 0x02) * ((SLICE((r5_n << 0x02) * r9_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
-				ui32 r5_n = SLICE((r5_n << 0x02) * ((SLICE((r5_n << 0x02) * r9_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
-				Eq_n r5_r4_n = (r5_n << 0x02) * r9_n + (uint64) SLICE((r5_n << 0x02) * r8 + r2 * r9_n, word32, 32);
+				ui32 r5_n = SLICE(((SLICE(r9_n *64 0x40000000, word32, 32) << 0x02) + 0x80000000) *64 0x40000000, word32, 32);
+				ui32 r5_n = SLICE((r5_n << 0x02) *64 ((SLICE((r5_n << 0x02) *64 r9_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
+				ui32 r5_n = SLICE((r5_n << 0x02) *64 ((SLICE((r5_n << 0x02) *64 r9_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
+				uint64 r5_r4_n = (r5_n << 0x02) *64 r9_n + (uint64) SLICE((r5_n << 0x02) *64 r8 + r2 * r9_n, word32, 32);
 				ui32 r4_n = (word32) r5_r4_n;
 				uint32 r4_n = -(r4_n << 2);
 				uint32 r5_n = 0x80000000 - (SLICE(r5_r4_n, word32, 32) << 2 | r4_n << 0x1E) - (word32) (r4_n < 0x00);
-				Eq_n r5_r4_n = (r5_n << 0x02) * r5_n + (uint64) SLICE((r5_n << 0x02) * r4_n + r2 * r5_n, word32, 32);
+				uint64 r5_r4_n = (r5_n << 0x02) *64 r5_n + (uint64) SLICE((r5_n << 0x02) *64 r4_n + r2 * r5_n, word32, 32);
 				ui32 r4_n = (word32) r5_r4_n;
 				uint32 r3_n = SLICE(r5_r4_n, word32, 32) << 0x02 | r4_n << 0x1E;
-				Eq_n r5_r4_n = r3_n * r9_n + (uint64) SLICE(r3_n * r8 + (r4_n << 0x02) * r9_n, word32, 32);
+				uint64 r5_r4_n = r3_n *64 r9_n + (uint64) SLICE(r3_n *64 r8 + (r4_n << 0x02) * r9_n, word32, 32);
 				ui32 r4_n = (word32) r5_r4_n;
 				uint32 r4_n = -(r4_n << 2);
 				uint32 r5_n = 0x80000000 - (SLICE(r5_r4_n, word32, 32) << 2 | r4_n << 0x1E) - (word32) (r4_n < 0x00);
-				Eq_n r5_r4_n = r3_n * r5_n + (uint64) SLICE(r3_n * r4_n + (r4_n << 0x02) * r5_n, word32, 32);
+				uint64 r5_r4_n = r3_n *64 r5_n + (uint64) SLICE(r3_n *64 r4_n + (r4_n << 0x02) * r5_n, word32, 32);
 				ui32 r4_n = (word32) r5_r4_n;
 				uint32 r3_n = SLICE(r5_r4_n, word32, 32) << 0x02 | r4_n << 0x1E;
-				Eq_n r1_r0_n = r3_n * r10_n + (r4_n << 0x02) * r11_n;
-				Eq_n r3_r2_n = r3_n * r11_n + (uint64) SLICE(r1_r0_n, word32, 32);
+				uint64 r1_r0_n = r3_n *64 r10_n + (r4_n << 0x02) * r11_n;
+				uint64 r3_r2_n = r3_n *64 r11_n + (uint64) SLICE(r1_r0_n, word32, 32);
 				int32 r7_n = r7_n + r6_n;
 				Eq_n r3_n = SLICE(r3_r2_n, word32, 32);
 				int32 r7_n = r7_n + 0x03FF;
@@ -18395,9 +18395,9 @@ l0000FA94:
 				if (r7_n > 0x00)
 				{
 					ui32 r2_n = r2_n & ~0xFF;
-					Eq_n r5_r4_n = (r2_n | 0x80) * r8;
-					Eq_n r9_r8_n = r3_n * r9_n;
-					Eq_n r8_r5_n = SEQ((word32) r9_r8_n, SLICE(r5_r4_n, word32, 32)) + (r3_n * r8 + (r2_n | 0x80) * r9_n);
+					uint64 r5_r4_n = (r2_n | 0x80) *64 r8;
+					uint64 r9_r8_n = r3_n *64 r9_n;
+					uint64 r8_r5_n = SEQ((word32) r9_r8_n, SLICE(r5_r4_n, word32, 32)) + (r3_n *64 r8 + (r2_n | 0x80) * r9_n);
 					r8_n.u3 = SLICE(r8_r5_n, word32, 32);
 					r2_n = r2_n | 0x80;
 					r9_n = SLICE(r9_r8_n, word32, 32) + (word32) (r8_n < 0x00);
@@ -18439,9 +18439,9 @@ l0000FA94:
 						r11_n.u0 = 0x00;
 					}
 					ui32 r2_n = r2_n & ~0xFF;
-					Eq_n r5_r4_n = (r2_n | 0x80) * r8;
-					Eq_n r9_r8_n = r3_n * r9_n;
-					Eq_n r8_r5_n = SEQ((word32) r9_r8_n, SLICE(r5_r4_n, word32, 32)) + (r3_n * r8 + (r2_n | 0x80) * r9_n);
+					uint64 r5_r4_n = (r2_n | 0x80) *64 r8;
+					uint64 r9_r8_n = r3_n *64 r9_n;
+					uint64 r8_r5_n = SEQ((word32) r9_r8_n, SLICE(r5_r4_n, word32, 32)) + (r3_n *64 r8 + (r2_n | 0x80) * r9_n);
 					r8_n.u3 = SLICE(r8_r5_n, word32, 32);
 					r2_n = r2_n | 0x80;
 					r9_n = SLICE(r9_r8_n, word32, 32) + (word32) (r8_n < 0x00);
@@ -18565,12 +18565,12 @@ Eq_n fn0000FD70(ui32 r11, Eq_n r12)
 			r10_n = 0x01 - r10_n;
 		}
 		uint32 r5_n = r11_n >> 0x02;
-		ui32 r7_n = SLICE(((SLICE(r5_n * 0x40000000, word32, 32) << 0x02) + 0x80000000) * 0x40000000, word32, 32);
-		ui32 r7_n = SLICE((r7_n << 0x02) * ((SLICE((r7_n << 0x02) * r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
-		ui32 r7_n = SLICE((r7_n << 0x02) * ((SLICE((r7_n << 0x02) * r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
+		ui32 r7_n = SLICE(((SLICE(r5_n *64 0x40000000, word32, 32) << 0x02) + 0x80000000) *64 0x40000000, word32, 32);
+		ui32 r7_n = SLICE((r7_n << 0x02) *64 ((SLICE((r7_n << 0x02) *64 r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
+		ui32 r7_n = SLICE((r7_n << 0x02) *64 ((SLICE((r7_n << 0x02) *64 r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32);
 		uint32 r12_n = r12_n >> 2;
 		uint32 r9_n = r9_n + r10_n;
-		uint32 r7_n = SLICE((SLICE((r7_n << 0x02) * ((SLICE((r7_n << 0x02) * r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32) << 0x02) * r12_n, word32, 32);
+		uint32 r7_n = SLICE((SLICE((r7_n << 0x02) *64 ((SLICE((r7_n << 0x02) *64 r5_n, word32, 32) << 0x02) + 0x80000000), word32, 32) << 0x02) *64 r12_n, word32, 32);
 		Eq_n r9_n = r9_n + 0x7F;
 		Eq_n r12_n = r12_n >> 4;
 		if (Test(NE,SLICE(r7_n, bool, 28)))
@@ -18586,7 +18586,7 @@ Eq_n fn0000FD70(ui32 r11, Eq_n r12)
 		if (r9_n > 0x00)
 		{
 			ui32 r7_n = r7_n & ~0x1F;
-			Eq_n r11_r10_n = r5_n * (r7_n | 0x10);
+			uint64 r11_r10_n = r5_n *64 (r7_n | 0x10);
 			r7_n = r7_n | 0x10;
 			r11_n = SLICE(r11_r10_n, word32, 32);
 			r5_n = (word32) SLICE(r7_n, bool, 5);
@@ -18596,7 +18596,7 @@ Eq_n fn0000FD70(ui32 r11, Eq_n r12)
 		{
 			Eq_n r9_n = __sat<uint32>(-r9_n + 0x01, 5);
 			r7_n = r7_n >> r9_n & ~0x1F | 0x10;
-			Eq_n r11_r10_n = r5_n * r7_n;
+			uint64 r11_r10_n = r5_n *64 r7_n;
 			r12_n >>= r9_n;
 			r11_n = SLICE(r11_r10_n, word32, 32);
 			r5_n = (word32) SLICE(r7_n, bool, 5);
@@ -18838,7 +18838,7 @@ Eq_n fn00010050(Eq_n r9, ui32 r11, ui32 r12, union Eq_n & r12Out)
 					r10_n = 0x01 - r10_n;
 				}
 			}
-			Eq_n r11_r10_n = r8_n * r11_n;
+			uint64 r11_r10_n = r8_n *64 r11_n;
 			uint32 r9_n = (word32) r9_n.u1 + r10_n;
 			ui32 r11_n = SLICE(r11_r10_n, word32, 32);
 			uint32 r10_n = (word32) r11_r10_n;
@@ -19070,7 +19070,7 @@ Eq_n __avr32_sdiv64(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r11Out, u
 					}
 				}
 				r12_n = r12_n | r1_n << 0x10;
-				Eq_n r9_r8_n = r12_n * r0_n;
+				uint64 r9_r8_n = r12_n *64 r0_n;
 				uint32 r9_n = SLICE(r9_r8_n, word32, 32);
 				uint32 r8_n = (word32) r9_r8_n;
 				uint32 r11_n = r11_n + r2_n;
@@ -19411,7 +19411,7 @@ Eq_n __moddi3(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11)
 					}
 				}
 			}
-			Eq_n r9_r8_n = (r12_n | r1_n << 0x10) * r5_n;
+			uint64 r9_r8_n = (r12_n | r1_n << 0x10) *64 r5_n;
 			uint32 r9_n = SLICE(r9_r8_n, word32, 32);
 			uint32 r8_n = (word32) r9_r8_n;
 			uint32 r11_n = r11_n + lr_n;
@@ -19491,7 +19491,7 @@ int64 fn000107C0(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r8Out, union
 					}
 				}
 				r12_n = r12_n | r3_n << 0x10;
-				Eq_n r9_r8_n = r12_n * r3_n;
+				uint64 r9_r8_n = r12_n *64 r3_n;
 				Eq_n r9_n;
 				r9_n.u3 = SLICE(r9_r8_n, word32, 32);
 				r8 = (word32) r9_r8_n;
@@ -19882,7 +19882,7 @@ uint64 fn00010A4C(uint64 r11_r10, Eq_n r8, Eq_n r9)
 				}
 			}
 		}
-		Eq_n r9_r8_n = (r12_n | r3_n << 0x10) * r1_n;
+		uint64 r9_r8_n = (r12_n | r3_n << 0x10) *64 r1_n;
 		uint32 r9_n = SLICE(r9_r8_n, word32, 32);
 		uint32 r8_n = (word32) r9_r8_n;
 		uint32 r11_n = r11_n + r5_n;
