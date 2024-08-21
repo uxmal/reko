@@ -37,8 +37,8 @@ namespace Reko.ImageLoaders.Elf
     {
         #region Constants
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"
-        private const byte LITTLE_ENDIAN = 1;
-        private const byte BIG_ENDIAN = 2;
+        private const byte ELFDATA2LSB = 1;
+        private const byte ELFDATA2MSB = 2;
         private const byte ELFCLASS32 = 1;              // 32-bit object file
         private const byte ELFCLASS64 = 2;              // 64-bit object file
         public const int HEADER_OFFSET = 0x0010;
@@ -47,7 +47,7 @@ namespace Reko.ImageLoaders.Elf
 
         #endregion
 
-        internal static TraceSwitch trace = new TraceSwitch(nameof(ElfImageLoader), "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(ElfImageLoader), "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
 
         private byte fileClass;
         private byte endianness;
@@ -127,8 +127,8 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (endianness)
             {
-            case LITTLE_ENDIAN: return new LeImageReader(RawImage, (long)fileOffset);
-            case BIG_ENDIAN: return new BeImageReader(RawImage, (long)fileOffset);
+            case ELFDATA2LSB: return new LeImageReader(RawImage, (long)fileOffset);
+            case ELFDATA2MSB: return new BeImageReader(RawImage, (long)fileOffset);
             default: throw new BadImageFormatException("Endianness is incorrectly specified.");
             }
         }
@@ -137,8 +137,8 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (endianness)
             {
-            case LITTLE_ENDIAN: return new LeImageReader(RawImage, fileOffset);
-            case BIG_ENDIAN: return new BeImageReader(RawImage, fileOffset);
+            case ELFDATA2LSB: return new LeImageReader(RawImage, fileOffset);
+            case ELFDATA2MSB: return new BeImageReader(RawImage, fileOffset);
             default: throw new BadImageFormatException("Endianness is incorrectly specified.");
             }
         }
@@ -147,8 +147,8 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (endianness)
             {
-            case LITTLE_ENDIAN: return new LeImageWriter(RawImage, fileOffset);
-            case BIG_ENDIAN: return new BeImageWriter(RawImage, fileOffset);
+            case ELFDATA2LSB: return new LeImageWriter(RawImage, fileOffset);
+            case ELFDATA2MSB: return new BeImageWriter(RawImage, fileOffset);
             default: throw new BadImageFormatException("Endianness is incorrectly specified.");
             }
         }
