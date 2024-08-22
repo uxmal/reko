@@ -770,6 +770,30 @@ namespace Reko.Core.Memory
             Bytes[offset + 3] = (byte) (dw >> 24);
         }
 
+        public override void WriteBeUInt64(long offset, ulong value)
+        {
+            Bytes[offset + 0] = (byte) (value >> 56);
+            Bytes[offset + 1] = (byte) (value >> 48);
+            Bytes[offset + 2] = (byte) (value >> 40);
+            Bytes[offset + 3] = (byte) (value >> 32);
+            Bytes[offset + 4] = (byte) (value >> 24);
+            Bytes[offset + 5] = (byte) (value >> 16);
+            Bytes[offset + 6] = (byte) (value >> 8);
+            Bytes[offset + 7] = (byte) (value);
+        }
+
+        public override void WriteLeUInt64(long offset, ulong dw)
+        {
+            Bytes[offset] = (byte) dw;
+            Bytes[offset + 1] = (byte) (dw >> 8);
+            Bytes[offset + 2] = (byte) (dw >> 16);
+            Bytes[offset + 3] = (byte) (dw >> 24);
+            Bytes[offset + 4] = (byte) (dw >> 32);
+            Bytes[offset + 5] = (byte) (dw >> 40);
+            Bytes[offset + 6] = (byte) (dw >> 48);
+            Bytes[offset + 7] = (byte) (dw >> 56);
+        }
+
         public static void WriteLeUInt32(byte[] abImage, uint offset, uint dw)
         {
             abImage[offset] = (byte) (dw & 0xFF);
@@ -793,6 +817,7 @@ namespace Reko.Core.Memory
         }
 
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
+
         public void WriteLeUInt16(Address addr, ushort w) { WriteLeUInt16(ToOffset(addr), w); }
 
         public void WriteBytes(byte[] srcBytes, long offset, int count)

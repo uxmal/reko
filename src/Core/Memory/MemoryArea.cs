@@ -173,9 +173,11 @@ namespace Reko.Core.Memory
 
         public abstract void WriteBeUInt16(long off, ushort value);
         public abstract void WriteBeUInt32(long off, uint value);
+        public abstract void WriteBeUInt64(long off, ulong value);
 
         public abstract void WriteLeUInt16(long off, ushort value);
         public abstract void WriteLeUInt32(long off, uint value);
+        public abstract void WriteLeUInt64(long off, ulong value);
         public void WriteLeUInt32(Address ea, uint value) => WriteLeUInt32(ea - BaseAddress, value);
     }
 }

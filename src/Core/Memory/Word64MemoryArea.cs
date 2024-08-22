@@ -166,6 +166,11 @@ namespace Reko.Core.Memory
             throw new System.NotImplementedException();
         }
 
+        public override void WriteBeUInt64(long off, ulong value)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void WriteByte(long off, byte value)
         {
             throw new System.NotImplementedException();
@@ -177,6 +182,11 @@ namespace Reko.Core.Memory
         }
 
         public override void WriteLeUInt32(long off, uint value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void WriteLeUInt64(long off, ulong value)
         {
             throw new System.NotImplementedException();
         }

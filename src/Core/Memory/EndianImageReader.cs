@@ -21,14 +21,10 @@
 #pragma warning disable IDE1006
 
 using Reko.Core.Expressions;
-using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Memory
 {

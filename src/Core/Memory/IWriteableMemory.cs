@@ -42,6 +42,54 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start writing.</param>
         /// <returns>A big-endian <see cref="ImageWriter"/>.</returns>
         ImageWriter CreateLeWriter(Address addr);
+
+        /// <summary>
+        /// Write a 16-bit value in big-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteBeUInt16(Address address, ushort value);
+
+        /// <summary>
+        /// Write a 32-bit value in big-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteBeUInt32(Address address, uint value);
+
+        /// <summary>
+        /// Write a 64-bit value in big-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteBeUInt64(Address address, ulong value);
+
+        /// <summary>
+        /// Write a 16-bit value in little-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteLeUInt16(Address address, ushort value);
+
+        /// <summary>
+        /// Write a 32-bit value in little-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteLeUInt32(Address address, uint value);
+
+        /// <summary>
+        /// Write a 64-bit value in little-endian order to the memory at address
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">Virtual address to write to.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteLeUInt64(Address address, ulong value);
     }
 
     /// <summary>

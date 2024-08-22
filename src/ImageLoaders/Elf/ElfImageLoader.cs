@@ -53,9 +53,8 @@ namespace Reko.ImageLoaders.Elf
         private byte endianness;
         private byte fileVersion;
         private byte osAbi;
+        private byte abiVersion;
         private Address addrPreferred;
-
-        protected ElfLoader? innerLoader;
 
         public ElfImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
             : base(services, imageLocation, rawBytes)
@@ -73,8 +72,8 @@ namespace Reko.ImageLoaders.Elf
         {
             var rdr = new BeImageReader(this.RawImage, 0);
             LoadElfIdentification(rdr);
-            this.innerLoader = CreateLoader();
-            this.innerLoader.LoadArchitectureFromHeader();
+            var innerLoader = CreateLoader();
+            innerLoader.LoadArchitectureFromHeader();
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             
             int cHeaders = innerLoader.LoadSegments();
@@ -102,7 +101,7 @@ namespace Reko.ImageLoaders.Elf
                 program = linker.LinkObject(platform, addrLoad, RawImage);
                 plt = linker.PltEntries;
             }
-            innerLoader!.Relocate(program, addrLoad!, plt);
+            innerLoader.Relocate(program, addrLoad!, plt);
             return program;
         }
 
@@ -121,6 +120,7 @@ namespace Reko.ImageLoaders.Elf
             this.endianness = rdr.ReadByte();
             this.fileVersion = rdr.ReadByte();
             this.osAbi = rdr.ReadByte();
+            this.abiVersion = rdr.ReadByte();
         }
 
         public EndianImageReader CreateReader(ulong fileOffset)

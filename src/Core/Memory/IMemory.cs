@@ -124,6 +124,10 @@ namespace Reko.Core.Memory
         /// <returns>True if the read succeeded, false if not.</returns>
         bool TryReadBe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c);
 
+        bool TryReadBeUInt16(Address address, out ushort value);
+        bool TryReadBeUInt32(Address address, out uint value);
+        bool TryReadBeUInt64(Address address, out ulong value);
+
         /// <summary>
         /// Attempt to read a little-endian value of type <paramref name="dt"/> from the address 
         /// <paramref name="addr"/>.
@@ -133,6 +137,10 @@ namespace Reko.Core.Memory
         /// <param name="c">The returned value.</param>
         /// <returns>True if the read succeeded, false if not.</returns>
         bool TryReadLe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c);
+
+        bool TryReadLeUInt16(Address address, out ushort value);
+        bool TryReadLeUInt32(Address address, out uint value);
+        bool TryReadLeUInt64(Address address, out ulong value);
     }
 
     /// <summary>

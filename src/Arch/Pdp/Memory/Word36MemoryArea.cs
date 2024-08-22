@@ -144,12 +144,22 @@ namespace Reko.Arch.Pdp.Memory
             throw new NotImplementedException();
         }
 
+        public override void WriteBeUInt64(long off, ulong value)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void WriteLeUInt16(long off, ushort value)
         {
             throw new NotImplementedException();
         }
 
         public override void WriteLeUInt32(long off, uint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteLeUInt64(long off, ulong value)
         {
             throw new NotImplementedException();
         }

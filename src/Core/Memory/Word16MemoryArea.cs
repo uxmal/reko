@@ -22,9 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace Reko.Core.Memory
 {
@@ -209,12 +207,22 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
+        public override void WriteBeUInt64(long off, ulong value)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void WriteLeUInt16(long off, ushort value)
         {
             throw new NotImplementedException();
         }
 
         public override void WriteLeUInt32(long off, uint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteLeUInt64(long off, ulong value)
         {
             throw new NotImplementedException();
         }
