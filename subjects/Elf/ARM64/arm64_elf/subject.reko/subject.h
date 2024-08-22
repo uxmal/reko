@@ -5,10 +5,10 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
-		(FC0 Eq_10 t0FC0)
-		(16B8 Eq_13 t16B8)
-		(1738 Eq_14 t1738)
-		(1FC20 (ptr64 void) ptr1FC20)
+		(1000 Eq_10 t1000)
+		(16F8 Eq_13 t16F8)
+		(1778 Eq_14 t1778)
+		(1FC60 (ptr64 void) ptr1FC60)
 		(1FF98 (ptr64 Eq_14) ptr1FF98)
 		(1FFA0 (ptr64 code) ptr1FFA0)
 		(1FFD0 word64 qw1FFD0)
@@ -297,10 +297,10 @@ T_62: (in Mem0[x1_6 + 0<64>:word64] @ 0000000000001750 : word64)
   OrigDataType: word64
 */
 typedef struct Globals {
-	Eq_10 t0FC0;	// FC0
-	Eq_13 t16B8;	// 16B8
-	Eq_14 t1738;	// 1738
-	void * ptr1FC20;	// 1FC20
+	Eq_10 t1000;	// 1000
+	Eq_13 t16F8;	// 16F8
+	Eq_14 t1778;	// 1778
+	void * ptr1FC60;	// 1FC60
 	void (* ptr1FF98)();	// 1FF98
 	<anonymous> * ptr1FFA0;	// 1FFA0
 	word64 qw1FFD0;	// 1FFD0

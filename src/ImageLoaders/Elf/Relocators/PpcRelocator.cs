@@ -20,12 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using Reko.Core.Memory;
-using Reko.Core.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -34,8 +29,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public class PpcRelocator : ElfRelocator32
     {
         private ElfRelocation? prevPpcHi16;
-        private EndianImageReader? prevRelR;
-        private ImageWriter? prevRelW;
+        private Address? prevRelR;
         private readonly Dictionary<PpcRt, int> missedRelocations = new Dictionary<PpcRt, int>();
 
         public PpcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
@@ -51,9 +45,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// in the decompiled code with just a call to the symbol obtained from the
         /// .real.plt section.
         /// </remarks>
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
-            base.Relocate(program);
+            base.Relocate(program, addrBase, pltEntries);
             return;
             /*
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
@@ -94,61 +88,54 @@ namespace Reko.ImageLoaders.Elf.Relocators
             */
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (loader.Sections.Count <= sym.SectionIndex)
-                return (null, null);
-            uint S = (uint)sym.Value;
-            uint A = (uint)rela.Addend!.Value;  //$REVIEW: PowerPC ELF Spec
-            uint P = (uint)rela.Offset;
-            var addr = Address.Ptr32(P);
-            uint PP = P;
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (PpcRt)(rela.Info & 0xFF);
             switch (rt)
             {
             case PpcRt.R_PPC_GLOB_DAT:
             case PpcRt.R_PPC_COPY:
             case PpcRt.R_PPC_JMP_SLOT:
-                break;
+                return (addr, null);
             case PpcRt.R_PPC_ADDR32:
-                relW.WriteUInt32(S + A);
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
                 break;
             case PpcRt.R_PPC_REL24:
-                uint wInstr = relR.ReadUInt32();
+                if (!ctx.TryReadUInt32(addr, out uint wInstr))
+                    return default;
                 // 24 bit relocation where bits 3-29 are used for relocations
-                uint value = (S + A - P);
+                uint value = (uint)(ctx.S + ctx.A - ctx.P);
                 wInstr = (wInstr & 0xFC000003) | (value & 0x03FFFFFC);
-                relW.WriteUInt32(wInstr);
+                ctx.WriteUInt32(addr, wInstr);
                 break;
             case PpcRt.R_PPC_ADDR16_HI:
             case PpcRt.R_PPC_ADDR16_HA:
                 // Wait for the following R_PPC_ADDR16_LO relocation.
                 prevPpcHi16 = rela;
-                prevRelR = relR;
-                prevRelW = relW;
+                prevRelR = addr;
                 break;
             case PpcRt.R_PPC_ADDR16_LO:
-                if (prevPpcHi16 == null)
+                if (prevPpcHi16 is null || prevRelR is null)
                     return (null, null);
-                uint valueHi = prevRelR!.ReadUInt16();
-                uint valueLo = relR.ReadUInt16();
+
+                if (!ctx.TryReadUInt16(prevRelR, out ushort valueHi))
+                    return default;
+                if (!ctx.TryReadUInt16(addr, out ushort valueLo))
+                    return default;
 
                 if ((PpcRt)(prevPpcHi16.Info & 0xFF) == PpcRt.R_PPC_ADDR16_HA)
                 {
-                    valueHi += (valueHi & 0x8000u) != 0 ? 1u : 0u;
+                    valueHi = (ushort)(valueHi + (valueHi & 0x8000u) != 0 ? 1u : 0u);
                 }
 
-                value = (valueHi << 16) | valueLo;
-                value += S;
+                value = ((uint)valueHi << 16) | valueLo;
+                value += (uint)ctx.S;
 
-                valueHi = (value >> 16) & 0xFFFF;
-                valueLo = value & 0xFFFF;
-                prevRelW!.WriteBeUInt16((ushort)valueHi);
-                relW.WriteBeUInt16((ushort)valueLo);
+                valueHi = (ushort)(value >> 16);
+                valueLo = (ushort) value;
+                ctx.WriteUInt16(prevRelR, valueHi);
+                ctx.WriteUInt16(addr, valueLo);
                 break;
             default:
                 if (!missedRelocations.TryGetValue(rt, out var count))
@@ -172,45 +159,24 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (loader.Sections.Count <= symbol.SectionIndex)
-            {
-                return (null, null);
-            }
-            ulong S = (ulong) symbol.Value;
-            ulong A = (ulong) rela.Addend!.Value;
-            ulong P = (ulong) rela.Offset;
-            ulong B = program.SegmentMap.BaseAddress.ToLinear();
-            var addr = Address.Ptr64(P);
-            ulong PP = P;
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (Ppc64Rt) (rela.Info & 0xFF);
             switch (rt)
             {
             case Ppc64Rt.R_PPC64_RELATIVE: // B + A
-                S = 0;
-                P = 0;
-                break;
+                ctx.WriteUInt64(addr, ctx.B + ctx.A);
+                return (addr, null);
             case Ppc64Rt.R_PPC64_ADDR64:    // S + A
-                B = 0;
-                P = 0;
-                break;
+                ctx.WriteUInt64(addr, ctx.S + ctx.A);
+                return (addr, null);
             case Ppc64Rt.R_PPC64_JMP_SLOT:
                 return (addr, null);
             default:
-                var listener = this.loader.Services.RequireService<IEventListener>();
-                var loc = listener.CreateAddressNavigator(program, addr);
-                listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
+                ctx.Warn(addr, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return (addr, null);
             }
-            var w = relR.ReadUInt64();
-            w += (B + A + S + P);
-            relW.WriteUInt64(w);
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

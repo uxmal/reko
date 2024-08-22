@@ -4,4 +4,4 @@
 
 #include "ipcalc.h"
 
-<anonymous> * g_ptr1A100 = &g_t3F100; // 000000000001A100
+<anonymous> * g_ptr1A100 = &g_t14F00; // 000000000001A100

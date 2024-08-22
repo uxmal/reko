@@ -18,14 +18,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Loading;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -35,27 +31,24 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            var rt = (SuperHrt)(byte)rela.Info;
-            if (rt == SuperHrt.R_SH_GLOB_DAT ||
-                rt == SuperHrt.R_SH_JMP_SLOT)
+            var addr = ctx.CreateAddress(ctx.P);
+            var rt = (SuperHrt) (byte) rela.Info;
+            switch (rt)
             {
-                var addrPfn = Address.Ptr32((uint)rela.Offset);
-                Debug.Print("Import reference {0} - {1}", addrPfn, symbol.Name);
-                var st = ElfLoader.GetSymbolType(symbol);
-                if (st.HasValue)
-                {
-                    program.ImportReferences[addrPfn] = new NamedImportReference(addrPfn, null, symbol.Name, st.Value);
-                }
+            case SuperHrt.R_SH_GLOB_DAT:
+            case SuperHrt.R_SH_JMP_SLOT:
+                var addrPfn = Address.Ptr32((uint) rela.Offset);
+                ctx.AddImportReference(symbol, addrPfn);
                 return (addrPfn, null);
             }
-            return (null, null);
+            return default;
         }
 
         public override string RelocationTypeToString(uint type)
         {
-            return ((SuperHrt)type).ToString();
+            return ((SuperHrt) type).ToString();
         }
     }
 

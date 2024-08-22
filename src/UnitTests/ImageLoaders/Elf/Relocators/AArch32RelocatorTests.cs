@@ -36,7 +36,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
     {
         protected override ElfLoader CreateLoader()
         {
-            return new ElfLoader32();
+            return new ElfLoader32(
+                new ServiceContainer(),
+                new Elf32_EHdr
+                {
+                    e_type = (ushort)ElfLoader.ET_EXEC,
+                },
+                0,
+                EndianServices.Little,
+                Array.Empty<byte>());
         }
 
         protected override ElfRelocator CreateRelocator(ElfLoader loader, SortedList<Address, ImageSymbol> imageSymbols)
@@ -65,8 +73,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var rel = Given_rel(0x4008, sym: 3, type: Arm32Rt.R_ARM_GLOB_DAT);
 
             Given_Relocator();
+            Given_Context();
 
-            var (addrRelocation, symNew) = relocator.RelocateEntry(program, sym, null, rel);
+            context.Update(rel, sym);
+            var (addrRelocation, symNew) = relocator.RelocateEntry(context, rel, sym);
 
             Assert.AreEqual(0x4008, addrRelocation.ToUInt32());
         }

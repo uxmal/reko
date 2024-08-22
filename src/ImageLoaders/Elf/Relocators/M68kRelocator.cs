@@ -18,12 +18,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core;
 using Reko.Core.Loading;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -33,7 +30,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
             return (null, null);
         }

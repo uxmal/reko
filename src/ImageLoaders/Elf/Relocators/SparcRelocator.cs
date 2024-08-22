@@ -20,11 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -38,104 +35,67 @@ namespace Reko.ImageLoaders.Elf.Relocators
             importReferences = null!;
         }
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
-            this.importReferences =  program.ImportReferences;
-            base.Relocate(program);
+            this.importReferences = program.ImportReferences;
+            base.Relocate(program, addrBase, pltEntries);
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (loader.Sections.Count <= sym.SectionIndex)
-                return (null, null);
-            var rt = (SparcRt)(rela.Info & 0xFF);
-            if (sym.SectionIndex == 0)
-            {
-                if (rt == SparcRt.R_SPARC_GLOB_DAT ||
-                    rt == SparcRt.R_SPARC_JMP_SLOT)
-                {
-                    var addrPfn = Address.Ptr32((uint)rela.Offset);
-                    Debug.Print("Import reference {0} - {1}", addrPfn, sym.Name);
-                    var st = ElfLoader.GetSymbolType(sym);
-                    if (st.HasValue)
-                    {
-                        importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
-                    }
-                    return (addrPfn, null);
-                }
-            }
-
-            var symSection = loader.Sections[(int)sym.SectionIndex];
-            uint S = (uint)sym.Value + symSection.Address!.ToUInt32();
-            int A = 0;
-            int sh = 0;
-            uint mask = ~0u;
-            Address addr;
-            if (referringSection != null)
-            {
-                addr = referringSection.Address! + rela.Offset;
-            }
-            else
-            {
-                addr = Address.Ptr32((uint)rela.Offset);
-            }
-            uint P = (uint)addr.ToLinear();
-            uint PP = P;
-            uint B = 0;
-
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.Offset,
-                (SparcRt)(rela.Info & 0xFF),
-                sym.Name,
+                (SparcRt) (rela.Info & 0xFF),
+                symbol.Name,
                 rela.Addend,
-                (int)(rela.Info >> 8),
+                (int) (rela.Info >> 8),
                 "section?");
 
+            var addr = ctx.CreateAddress(ctx.P);
+            var rt = (SparcRt)(rela.Info & 0xFF);
             switch (rt)
             {
-            case 0:
+            case SparcRt.R_SPARC_GLOB_DAT:
+            case SparcRt.R_SPARC_JMP_SLOT:
+                if (symbol.SectionIndex == 0)
+                {
+                    var addrPfn = Address.Ptr32((uint) rela.Offset);
+                    ctx.AddImportReference(symbol, addrPfn);
+                    return (addrPfn, null);
+                }
+                return (null, null);
+            case SparcRt.R_SPARC_NONE:
                 return (addr, null);
-            case SparcRt.R_SPARC_HI22:
-                A = (int)rela.Addend!.Value;
-                sh = 10;
-                P = 0;
-                break;
-            case SparcRt.R_SPARC_LO10:
-                A = (int)rela.Addend!.Value;
-                mask = 0x3FF;
-                P = 0;
-                break;
-            case SparcRt.R_SPARC_32:
-                A = (int)rela.Addend!.Value;
-                mask = 0xFFFFFFFF;
-                P = 0;
-                break;
-            case SparcRt.R_SPARC_WDISP30:
-                A = (int)rela.Addend!.Value;
-                P = ~P + 1;
-                sh = 2;
-                break;
-            case SparcRt.R_SPARC_RELATIVE:
-                A = (int)rela.Addend!.Value;
-                B = program.SegmentMap.BaseAddress.ToUInt32();
-                break;
+            case SparcRt.R_SPARC_HI22:  // (S + A) >> 10
+                if (!ctx.TryReadUInt32(addr, out uint w))
+                    return default;
+                w = (w & ~0x3F_FFFFu) | (uint)((ctx.S + ctx.A) >> 10);
+                ctx.WriteUInt32(addr, w);
+                return (addr, null);
+            case SparcRt.R_SPARC_LO10:  // (S + A) & 0x3FF
+                if (!ctx.TryReadUInt32(addr, out w))
+                    return default;
+                w = (w & ~0x3FFu) | (uint) ((ctx.S + ctx.A) & 0x3FF);
+                ctx.WriteUInt32(addr, w);
+                return (addr, null);
+            case SparcRt.R_SPARC_32:    // S + A
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
+                return (addr, null);
+            case SparcRt.R_SPARC_WDISP30:   // (S + A) >> 2
+                if (!ctx.TryReadUInt32(addr, out w))
+                    return default;
+                w = (w & ~0x3FFF_FFFFu) | (uint) ((ctx.S + ctx.A - ctx.P) >> 2);
+                ctx.WriteUInt32(addr, w);
+                return (addr, null);
+            case SparcRt.R_SPARC_RELATIVE:  // B + A
+                ctx.WriteUInt32(addr, ctx.B + ctx.A);
+                return (addr, null);
             case SparcRt.R_SPARC_COPY:
-                Debug.Print("Relocation type {0} not handled yet.", rt);
                 return (addr, null);
             default:
-                throw new NotImplementedException(string.Format(
-                    "SPARC ELF relocation type {0} not implemented yet.",
-                    rt));
+                ctx.Warn(addr, $"SPARC ELF relocation type {rt} not implemented yet.");
+                return (addr, null);
             }
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
-            var w = relR.ReadBeUInt32();
-            w += ((uint)(B + S + A + P) >> sh) & mask;
-            relW.WriteBeUInt32(w);
-
-            return (addr, null);
         }
 
         private string LoadString(uint symtabOffset, uint sym)

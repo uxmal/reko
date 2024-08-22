@@ -35,36 +35,23 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation  rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            var addr = Address.Ptr64(rela.Offset);
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (Aarch64Rt) (rela.Info & 0xFFFF);
-            ulong A = (ulong) rela.Addend!;
-            ulong S = symbol.Value;
-
             switch (rt)
             {
-            case Aarch64Rt.R_AARCH64_RELATIVE:
-                A = S = 0;
-                break;
+            case Aarch64Rt.R_AARCH64_RELATIVE:  // B + A
+                ctx.WriteUInt64(addr, ctx.B + ctx.A);
+                return (addr, null);
             case Aarch64Rt.R_AARCH64_JUMP_SLOT: // A + S
             case Aarch64Rt.R_AARCH64_GLOB_DAT:  // A + S
-                break;
+                ctx.WriteUInt64(addr, ctx.S + ctx.A);
+                return (addr, null);
             default:
-                var listener = this.loader.Services.RequireService<IEventListener>();
-                var loc = listener.CreateAddressNavigator(program, addr);
-                listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
+                ctx.Warn(addr, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return (addr, null);
             }
-            var arch = program.Architecture;
-            var relR = program.TryCreateImageReader(arch, addr, out var rdr) ? rdr : null!;
-            var relW = program.CreateImageWriter(arch, addr);
-
-            var w = relR.ReadUInt64();
-            w += (S + A);
-            relW.WriteUInt64(w);
-
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

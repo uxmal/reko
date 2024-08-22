@@ -20,8 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -33,17 +35,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
-            base.Relocate(program);
-
+            base.Relocate(program, addrBase, pltEntries);
             LoadImportReferencesFromRelPlt(program.ImportReferences);
         }
 
         private void LoadImportReferencesFromRelPlt(Dictionary<Address,ImportReference> importReferences)
         {
             var rel_plt = loader.GetSectionInfoByName(".rel.plt");
-            if (rel_plt == null)
+            if (rel_plt is null)
                 return;
             var symtab = rel_plt.LinkedSection!;
             var relRdr = loader.CreateReader(rel_plt.FileOffset);
@@ -66,51 +67,35 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (loader.Sections.Count <= sym.SectionIndex)
-                return (null,null);
-            uint S = (uint)sym.Value;
-            int A = 0;
-            int sh = 0;
-            uint mask = ~0u;
-            var addr = referringSection != null
-                ? referringSection.Address! + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-            uint P = (uint)addr.ToLinear();
-            uint PP = P;
-            uint B = 0;
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
+            var addr = Address.Ptr32((uint) ctx.P);
             var rt = (i386Rt)(rela.Info & 0xFF);
             switch (rt)
             {
-            case i386Rt.R_386_NONE: //  just ignore (common)
-                break;
+            case i386Rt.R_386_NONE:
             case i386Rt.R_386_COPY:
                 break;
             case i386Rt.R_386_RELATIVE: // B + A
-                A = (int)(rela.Addend ?? 0);
-                B = program.SegmentMap.BaseAddress.ToUInt32();
+                ctx.WriteUInt32(addr, ctx.B + ctx.A);
                 break;
-            case i386Rt.R_386_JMP_SLOT:
-                if (sym.Value == 0)
+            case i386Rt.R_386_JMP_SLOT: // S
+                if (symbol.Value == 0)
                 {
                     // Broken GCC compilers generate relocations referring to symbols 
                     // whose value is 0 instead of the expected address of the PLT stub.
-                    var gotEntry = relR.PeekLeUInt32(0);
-                    var symNew = CreatePltStubSymbolFromRelocation(sym, gotEntry, 6);
+                    if (!ctx.TryReadUInt32(addr, out var gotEntry))
+                        return default;
+                    var symNew = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 6);
                     return (addr, symNew);
                 }
+                ctx.WriteUInt32(addr, ctx.S);
                 break;
-            case i386Rt.R_386_32: // S + A
-                                  // Read the symTabIndex'th symbol.
-                A = (int) (rela.Addend ?? 0);
-                P = 0;
+            case i386Rt.R_386_32:   // S + A
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
                 break;
             case i386Rt.R_386_PC32: // S + A - P
-                if (sym.Value == 0)
+                if (symbol.Value == 0)
                 {
                     // This means that the symbol doesn't exist in this module, and is not accessed
                     // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
@@ -122,23 +107,19 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     //loader.AddSymbol(S, sym.Name);
                     //}
                 }
-                A = (int) (rela.Addend ?? 0);
-                P = ~P + 1;
+                ctx.WriteUInt32(addr, ctx.S + ctx.A - ctx.P);
                 break;
-            case i386Rt.R_386_GLOB_DAT:
+            case i386Rt.R_386_GLOB_DAT: // S
                 // This relocation type is used to set a global offset table entry to the address of the
                 // specified symbol. The special relocation type allows one to determine the
                 // correspondence between symbols and global offset table entries.
-                P = 0;
+                ctx.WriteUInt32(addr, ctx.S);
                 break;
             default:
-                throw new NotImplementedException(
-                    $"i386 ELF relocation type {rt} not implemented yet.");
+                Debug.Print($"i386 ELF relocation type {rt} not implemented yet.");
+                return (null, null);
             }
-            var w = relR.ReadLeUInt32();
-            w += ((uint)(B + S + A + P) >> sh) & mask;
-            relW.WriteLeUInt32(w);
-            return (addr, sym);
+            return (addr, symbol);
         }
 
         public override string RelocationTypeToString(uint type)

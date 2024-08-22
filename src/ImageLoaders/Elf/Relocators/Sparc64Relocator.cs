@@ -19,11 +19,8 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -37,137 +34,93 @@ namespace Reko.ImageLoaders.Elf.Relocators
             importReferences = null!;
         }
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
             this.importReferences = program.ImportReferences;
-            base.Relocate(program);
+            base.Relocate(program, addrBase, pltEntries);
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (loader.Sections.Count <= sym.SectionIndex)
-                return (null, null);
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (SparcRt) (rela.Info & 0xFF);
-
-            var addr = referringSection != null
-                 ? referringSection.Address! + rela.Offset
-                 : loader.CreateAddress(rela.Offset);
-            if (sym.SectionIndex == 0)
-            {
-                if (rt == SparcRt.R_SPARC_GLOB_DAT ||
-                    rt == SparcRt.R_SPARC_JMP_SLOT)
-                {
-                    var addrPfn = Address.Ptr32((uint) rela.Offset);
-                    ElfImageLoader.trace.Verbose("Import reference {0} - {1}", addrPfn, sym.Name);
-                    var st = ElfLoader.GetSymbolType(sym);
-                    if (st.HasValue)
-                    {
-                        importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
-                    }
-                    return (addrPfn, null);
-                }
-            }
-
-            var symSection = loader.Sections[(int) sym.SectionIndex];
-            ulong S = 0;
-            int A = 0;
+            int A;
             int sh = 0;
-            uint mask = ~0u;
-            if (referringSection != null)
-            {
-                addr = referringSection.Address! + rela.Offset;
-            }
-            else
-            {
-                addr = Address.Ptr64(rela.Offset);
-            }
-            ulong P = addr.ToLinear();
-            ulong PP = P;
+            ulong P;
+            ulong S = 0;
             ulong B = 0;
-
-            ElfImageLoader.trace.Verbose("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
-                rela.Offset,
-                (SparcRt) (rela.Info & 0xFF),
-                sym.Name,
-                rela.Addend.HasValue ? rela.Addend.Value : 0,
-                (int) (rela.Info >> 8),
-                "section?");
-
+            uint mask = ~0u;
             switch (rt)
             {
-            case 0:
-                return (null, null);
+            case SparcRt.R_SPARC_GLOB_DAT:
+            case SparcRt.R_SPARC_JMP_SLOT:
+                if (ctx.S == 0)
+                {
+                    ctx.AddImportReference(symbol, addr);
+                }
+                return (addr, null);
+            case SparcRt.R_SPARC_NONE:
+                return default;
             case SparcRt.R_SPARC_HI22:
-                A = (int) rela.Addend!.Value;
+                A = (int) ctx.A;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
-                return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate32(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LM22:
-                A = (int) rela.Addend!.Value;
-                S = sym.Value;
+                A = (int) ctx.A;
+                S = ctx.S;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
-                return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate32(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LO10:
                 A = (int) rela.Addend!.Value;
-                S = sym.Value;
+                S = ctx.S;
                 mask = 0x3FF;
                 P = 0;
-                return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate32(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_32:
                 A = (int) rela.Addend!.Value;
-                S = sym.Value;
+                S = ctx.S;
                 mask = 0xFFFFFFFF;
                 P = 0;
-                return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate32(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_WDISP30:
                 A = (int) rela.Addend!.Value;
-                P = ~P + 1;
+                P = ~ctx.P + 1;
                 sh = 2;
-                return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate32(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_RELATIVE:
                 A = (int) rela.Addend!.Value;
-                B = program.SegmentMap.BaseAddress.ToLinear();
+                B = ctx.B;
                 P = 0;
-                return Relocate64(program, sym, addr, S, A, sh, mask, P, B);
+                return Relocate64(ctx, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_COPY:
-                ElfImageLoader.trace.Warn("Relocation type {0} not handled yet.", rt);
                 return (addr, null);
             default:
-                ElfImageLoader.trace.Error(
-                    "SPARC ELF relocation type {0} not implemented yet.",
-                    rt);
+                ctx.Warn(addr, $"SPARC ELF relocation type {rt} not implemented yet.");
                 return (addr, null);
             }
         }
 
-        private (Address?, ElfSymbol?) Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address?, ElfSymbol?) Relocate32(RelocationContext ctx, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
-            var w = relR.ReadBeUInt32();
+            if (!ctx.TryReadUInt32(addr, out uint w))
+                return default;
             var wOld = w;
             w += ((uint) (B + S + (uint) A + P) >> sh) & mask;
-            relW.WriteBeUInt32(w);
-            ElfImageLoader.trace.Verbose($"Relocated value at {addr} from {wOld:X8} to {w:X8}.");
+            ctx.WriteUInt32(addr, w);
             return (addr, null);
         }
 
-        private (Address?, ElfSymbol?) Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address?, ElfSymbol?) Relocate64(RelocationContext ctx, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
-            var w = relR.ReadBeUInt64();
+            if (!ctx.TryReadUInt64(addr, out ulong w))
+                return default;
             var wOld = w;
             w += ((ulong) (B + S + (ulong) (long) A + P) >> sh) & mask;
-            relW.WriteBeUInt64(w);
-            ElfImageLoader.trace.Verbose($"Relocated value at {addr} from {wOld:X8} to {w:X8}.");
+            ctx.WriteUInt64(addr, w);
             return (addr, null);
         }
 

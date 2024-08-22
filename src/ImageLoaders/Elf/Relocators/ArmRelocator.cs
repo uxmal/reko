@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return symNew;
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
             /*
             S (when used on its own) is the address of the symbol
@@ -104,26 +104,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
             22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
             23  R_ARM_RELATIVE Dynamic      Data            B(S) + A  [Note: see Table 4-18]
             */
-            var A = rela.Addend.HasValue ? rela.Addend.Value : 0;
-            uint S = (uint) symbol.Value;
-            uint mask = ~0u;
-            int sh = 0;
-            var addr = referringSection != null
-                ? referringSection.Address! + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-            var rt = (Arm32Rt)(rela.Info & 0xFF);
+            var addr = ctx.CreateAddress(ctx.P);
+            var rt = (Arm32Rt) (rela.Info & 0xFF);
             switch (rt)
             {
             case Arm32Rt.R_ARM_NONE:
                 return (addr, null);
             case Arm32Rt.R_ARM_COPY:
-                A = S = 0;
-                break;
+                return (addr, null);
             case Arm32Rt.R_ARM_ABS32:
             case Arm32Rt.R_ARM_GLOB_DAT:
-            case Arm32Rt.R_ARM_JUMP_SLOT:
+            case Arm32Rt.R_ARM_JUMP_SLOT:       // S + A
                 // Add sym + rel.a
-                break;
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
+                return (addr, null);
             case Arm32Rt.R_ARM_RELATIVE:
                 // From the docs:
                 //
@@ -136,46 +130,41 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 //
                 // Reko always loads objects at their specified physical address, 
                 // so this relocation is a no-op;
-                A = S = 0;
-                break;
-            case Arm32Rt.R_ARM_TLS_TPOFF32:
+                return (addr, null);
+            case Arm32Rt.R_ARM_TLS_TPOFF32: // S + A - tp
                 // Allocates a 32 bit TLS slot
                 //$REVIEW: the documentation is unreadable, but this is a
                 // guess.
                 uint tlsSlotOffset = AllocateTlsSlot();
-                A += tlsSlotOffset;
-                break;
+                ctx.WriteUInt32(addr, ctx.S + ctx.A - tlsSlotOffset);
+                return (addr, null);
             case Arm32Rt.R_ARM_TLS_DTPMOD32:
                 //$REVIEW: this seems to refer to the modules
                 // used when creating the binary. My guess is
                 // that it wont be necessary for a fruitful
                 // decompilation -jkl
-                A = S = 0;
-                break;
+                return (addr, null);
             case Arm32Rt.R_ARM_TLS_DTPOFF32:
                 //$NYI
-                break;
+                return (addr, null);
             case Arm32Rt.R_ARM_CALL:
             case Arm32Rt.R_ARM_PC24:
             case Arm32Rt.R_ARM_JUMP24:
+            {
+                if ((symbol.Value & 0b11) != 0)
                 {
-                    if ((symbol.Value & 0b11) != 0)
-                    {
-                        var eventListener = loader.Services.RequireService<IEventListener>();
-                        var loc = eventListener.CreateAddressNavigator(program, addr);
-                        eventListener.Warn(loc, "Section {0}: unsupported interworking call (ARM -> Thumb)", referringSection?.Name ?? "<null>");
-                        return (addr, null);
-                    }
+                    var secName = ctx.ReferringSection?.Name ?? "<null>";
+                    ctx.Warn(addr, $"Section {secName}: unsupported interworking call (ARM -> Thumb)");
+                    return (addr, null);
+                }
+                if (!ctx.TryReadUInt32(addr, out uint uInstr))
+                    return (addr, null);
+                var offset = uInstr;
+                offset = (offset & 0x00ffffff) << 2;
+                if ((offset & 0x02000000) != 0)
+                    offset -= 0x04000000;
 
-                    if (!program.TryCreateImageReader(program.Architecture, addr, out var relInstr))
-                        return (addr, null);
-                    var uInstr = relInstr.ReadUInt32();
-                    var offset = uInstr;
-                    offset = (offset & 0x00ffffff) << 2;
-                    if ((offset & 0x02000000) != 0)
-                        offset -= 0x04000000;
-
-                    offset += (uint) symbol.Value - addr.ToUInt32() + program.SegmentMap.BaseAddress.ToUInt32();
+                offset += (uint) symbol.Value - addr.ToUInt32() + (uint)ctx.B;
 
 #if NOT_YET
                 /*
@@ -192,63 +181,48 @@ namespace Reko.ImageLoaders.Elf.Relocators
                          - loc - 8;
 #endif
 
-                    if ((int)offset <= -0x02000000 || (int)offset >= 0x02000000)
-                    {
-                        var eventListener = loader.Services.RequireService<IEventListener>();
-                        var loc = eventListener.CreateAddressNavigator(program, addr);
-                        eventListener.Warn(loc, "section {0} relocation at {1} out of range", referringSection?.Name ?? "<null>", addr);
-                        return (addr, null);
-                    }
-
-                    offset >>= 2;
-                    offset &= 0x00ffffff;
-
-                    uInstr &= 0xFF000000;
-                    uInstr |= offset;
-
-                    var relWriter = program.CreateImageWriter(program.Architecture, addr);
-                    relWriter.WriteUInt32(uInstr);
-
+                if ((int) offset <= -0x02000000 || (int) offset >= 0x02000000)
+                {
+                    var secName = ctx.ReferringSection?.Name ?? "<null>";
+                    ctx.Warn(addr, $"section {secName} relocation at {addr} out of range.");
                     return (addr, null);
                 }
+
+                offset >>= 2;
+                offset &= 0x00ffffff;
+
+                uInstr &= 0xFF000000;
+                uInstr |= offset;
+
+                ctx.WriteUInt32(addr, uInstr);
+
+                return (addr, null);
+            }
             case Arm32Rt.R_ARM_MOVW_ABS_NC:
             case Arm32Rt.R_ARM_MOVT_ABS:
-                {
-                    //var instr = program.CreateDisassembler(program.Architecture, addr).First();
-                    if (!program.TryCreateImageReader(program.Architecture, addr, out var relInstr))
-                    {
-                        return (addr, null);
-                    }
-                    var uInstr = relInstr.ReadUInt32();
-                    var offset = uInstr;
-                    offset = ((offset & 0xf0000) >> 4) | (offset & 0xfff);
-                    offset = (offset ^ 0x8000) - 0x8000;
-
-                    offset += (uint) symbol.Value;
-                    if (rt == Arm32Rt.R_ARM_MOVT_ABS)
-                        offset >>= 16;
-
-                    var tmp = uInstr & 0xfff0f000;
-                    tmp |= ((offset & 0xf000) << 4) |
-                        (offset & 0x0fff);
-
-                    var relWriter= program.CreateImageWriter(program.Architecture, addr);
-                    relWriter.WriteUInt32(tmp);
+            {
+                //var instr = program.CreateDisassembler(program.Architecture, addr).First();
+                if (!ctx.TryReadUInt32(addr, out uint uInstr))
                     return (addr, null);
-                }
-            default:
-                throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
+                var offset = uInstr;
+                offset = ((offset & 0xf0000) >> 4) | (offset & 0xfff);
+                offset = (offset ^ 0x8000) - 0x8000;
+
+                offset += (uint) symbol.Value;
+                if (rt == Arm32Rt.R_ARM_MOVT_ABS)
+                    offset >>= 16;
+
+                var tmp = uInstr & 0xfff0f000;
+                tmp |= ((offset & 0xf000) << 4) |
+                    (offset & 0x0fff);
+
+                ctx.WriteUInt32(addr, uInstr);
+                return (addr, null);
             }
-
-            var arch = program.Architecture;
-            var relR = program.TryCreateImageReader(arch, addr, out var r) ? r : null!;
-            var relW = program.CreateImageWriter(arch, addr);
-
-            var w = relR.ReadLeUInt32();
-            w += ((uint) (S + A) >> sh) & mask;
-            relW.WriteLeUInt32(w);
-
-            return (addr, null);
+            default:
+                ctx.Warn(addr, $"AArch32 relocation type {rt} is not implemented yet.");
+                return (null, null);
+            }
         }
 
         private uint AllocateTlsSlot()

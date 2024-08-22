@@ -4,6 +4,7 @@
 
 #include "ipcalc.h"
 
+<anonymous> g_t14F00 = <code>; // 0000000000014F00
 // 0000000000014F20: void herror()
 void herror()
 {

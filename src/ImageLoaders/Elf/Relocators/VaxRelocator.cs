@@ -20,34 +20,26 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class VaxRelocator : ElfRelocator32
     {
-        private Dictionary<Address, ImportReference> importReferences;
-
         public VaxRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.importReferences = default!;
         }
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
-            this.importReferences = program.ImportReferences;
-            base.Relocate(program);
+            base.Relocate(program, addrBase, pltEntries);
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
+            var addr = Address.Ptr32((uint) ctx.P);
             var rt = (VaxRt) (rela.Info & 0xFF);
-            var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
-                : loader.CreateAddress(rela.Offset);
             switch (rt)
             {
             case VaxRt.R_VAX_JMP_SLOT:
@@ -57,7 +49,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return (addr, symbol);
 
             default:
-                Debug.Print("VAX ELF relocation type {0} not implemented yet.",rt);
+                ctx.Warn(addr, $"VAX ELF relocation type {rt} not implemented yet.");
                 break;
             }
             return (null, null);

@@ -18,18 +18,16 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Loading;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using Reko.Core;
-using System.Linq;
 using System.Diagnostics;
-using Reko.Core.Configuration;
-using Reko.Core.Lib;
-using Reko.Core.Diagnostics;
-using Reko.Core.Services;
-using Reko.Core.Expressions;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -79,7 +77,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return symNew;
         }
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
             // MIPS relocation is really confusing, and doesn't follow
             // the pattern of most other architectures. The code below follows
@@ -144,7 +142,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     }
                 }
             }
-            base.Relocate(program);
+            base.Relocate(program, addrBase, pltEntries);
         }
 
         #region Long tirade about global pointer in MIPS ELF
@@ -284,56 +282,28 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            var mipsRt = (MIPSrt) (rel.Info & 0xFF);
-            if (symbol is null ||
-                loader.Sections.Count <= symbol.SectionIndex ||
-                mipsRt == MIPSrt.R_MIPS_NONE)
-                return (null, null);
-            Address addr;
-            uint P;
-            uint S;
-            if (referringSection?.Address != null)
-            {
-                addr = referringSection.Address + rel.Offset;
-                P = (uint)addr.ToLinear();
-                S = (uint)(loader.Sections[(int)symbol.SectionIndex].Address.ToLinear() + symbol.Value);
-            }
-            else
-            {
-                addr = Address.Ptr64(rel.Offset);
-                P = 0;
-                S = (uint) symbol.Value;
-            }
-            int sh = 0;
-            uint mask = 0;
-            if (!program.TryCreateImageReader(program.Architecture, addr, out var relR) ||
-                !relR.TryPeekBeUInt32(0, out uint w))
-                return (null, null);
-            uint A = (rel.Addend.HasValue)
-                ? (uint) rel.Addend.Value
-                : w;
-
-            switch (mipsRt)
+            var addr = Address.Ptr32((uint) ctx.P);
+            var rt = (MIPSrt) (rela.Info & 0xFF);
+            switch (rt)
             {
             case MIPSrt.R_MIPS_NONE:
-                return (addr, null);
             case MIPSrt.R_MIPS_REL32:
-                break;
+                return (addr, null);
             case MIPSrt.R_MIPS_JUMP_SLOT:
                 // Non-PIC binary will have these.
-                var addrInSlot = Address.Ptr32(w);
-                if (symbol.Value == 0 && program.SegmentMap.IsExecutableAddress(addrInSlot))
+                if (!ctx.TryReadUInt32(addr, out var uAddrInSlot))
+                    return default;
+                if (symbol.Value == 0 && ctx.IsExecutableAddress(ctx.CreateAddress(uAddrInSlot)))
                 {
-                    var newSym = CreatePltStubSymbolFromRelocation(symbol, w, 0);
+                    var newSym = CreatePltStubSymbolFromRelocation(symbol, uAddrInSlot, 0);
                     return (addr, newSym);
                 }
-                break;
-
+                return (addr, null);
             case MIPSrt.R_MIPS_32:
-                P = 0;
-                break;
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
+                return (addr, null);
             case MIPSrt.R_MIPS_HI16:
                 // Wait for the following R_MIPS_LO16 relocation.
                 addrHi = addr;
@@ -343,21 +313,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (addrHi is { })
                 {
                     // This LO16 relocation had a HI16 just before.
-                    var relHiR = program.TryCreateImageReader(program.Architecture, addrHi, out var r1) ? r1 : null!;
-                    var relHiW = program.CreateImageWriter(program.Architecture, addrHi);
-                    var relLoR = program.TryCreateImageReader(program.Architecture, addr, out var r2) ? r2 : null!;
-                    var relLoW = program.CreateImageWriter(program.Architecture, addr);
-
-                    uint valueHi = relHiR!.ReadUInt32();
-                    uint valueLo = relLoR.ReadUInt32();
+                    if (!ctx.TryReadUInt32(addrHi, out uint valueHi) ||
+                        !ctx.TryReadUInt32(addr, out uint valueLo))
+                        return default;
 
                     uint ahl = (valueHi << 16) | (valueLo & 0xFFFF);
-                    ahl += S;
+                    ahl += (uint)ctx.S;
 
                     valueHi = (valueHi & 0xFFFF0000u) | (ahl >> 16);
                     valueLo = (valueLo & 0xFFFF0000u) | (ahl & 0xFFFF);
-                    relHiW!.WriteUInt32(valueHi);
-                    relLoW!.WriteUInt32(valueLo);
+                    ctx.WriteUInt32(addrHi, valueHi);
+                    ctx.WriteUInt32(addr, valueLo);
 
                     // If there is another LO16 without a HI16 in-between use stash
                     // the current HI16 address. 
@@ -370,22 +336,22 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     // This LO16 relocation is "orphaned"; reuse the last HI16 if there is one.
                     if (addrHiPrev is null)
                         return (null, null);
-                    var relLoR = base.CreateImageReader(program, addr);
-                    var relLoW = program.CreateImageWriter(program.Architecture, addr);
-                    uint valueLo = relLoR.ReadUInt32();
-                    uint ahl = (valueLo & 0xFFFF) + S;
+                    if (!ctx.TryReadUInt32(addr, out uint valueLo))
+                        return default;
+                    uint ahl = (valueLo & 0xFFFF) + (uint) ctx.S;
                     valueLo = (valueLo & 0xFFFF0000u) | (ahl & 0xFFFF);
-                    relLoW!.WriteUInt32(valueLo);
+                    ctx.WriteUInt32(addr, valueLo);
                     return (addr, null);
                 }
             case MIPSrt.R_MIPS_26:
-                uint value26 = ((A << 2) + (P & 0xF0000000) + S) >> 2;
-                var rel26W = program.CreateImageWriter(program.Architecture, addr);
-                rel26W.WriteUInt32(w  & ~0x3FFFFFFu | value26 & 0x3FFFFFFu);
+                if (!ctx.TryReadUInt32(addr, out uint w))
+                    return default;
+                uint value26 = (uint) ((ctx.A << 2) + (ctx.P & 0xF0000000) + ctx.S) >> 2;
+                ctx.WriteUInt32(addr, w & ~0x3FFFFFFu | value26 & 0x3FFFFFFu);
                 return (addr, null);
             default:
-                    mask = 0;
-                    break;
+                Debug.Print("ELF RiscV: unhandled 32-bit relocation {0}: {1}", rt, rela);
+                return (addr, null);
                 /*
                 R_MIPS_NONE      0  none     local    none
                 R_MIPS_16        1  V–half16 external S + sign–extend(A)
@@ -419,11 +385,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 R_MIPS_CALLHI16  30 T-hi16   external (G - (short)G) >> 16 + A
                 R_MIPS_CALLLO16  31 T-lo16   external G & 0xffff */
             }
-            var relW = program.CreateImageWriter(program.Architecture, addr);
-            w += ((uint)(S + A + P) >> sh) & mask;
-            relW.WriteUInt32(w);
-
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -544,38 +505,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return elfNew;
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rel, ElfSymbol symbol)
         {
-            if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
-                return (null, null);
-            Address addr;
-            ulong P;
-            if (referringSection?.Address != null)
-            {
-                addr = referringSection.Address + rel.Offset;
-                P = addr.ToLinear();
-            }
-            else
-            {
-                addr = Address.Ptr64(rel.Offset);
-                P = 0;
-            }
-            if (addr.ToLinear() == 0)
-                return (addr, symbol);
-            var uAddrSection = (symbol.SectionIndex != 0)
-                ? loader.Sections[(int) symbol.SectionIndex].Address?.ToLinear() ?? 0
-                : 0;
-            uint S = (uint) (symbol.Value + uAddrSection);
-
-            ulong PP = P;
-            var relR = CreateImageReader(program, addr);
-            var relW = program.CreateImageWriter(program.Architecture, addr);
-            if (!relR.TryPeekBeUInt32(0, out uint w))
-                return (null, null);
-            uint A = (rel.Addend.HasValue)
-                ? (uint) rel.Addend.Value
-                : w;
-            uint ww = w;
+            var addr = ctx.CreateAddress(ctx.P);
+            if (ctx.P == 0)
+                return default;
 
             switch ((Mips64Rt)rel.Info)
             {
@@ -585,21 +519,21 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ulong A64;
                 if (rel.Addend.HasValue)
                     A64 = (ulong) rel.Addend.Value;
-                else if (!relR.TryPeekUInt64(0, out A64))
+                else if (!ctx.TryReadUInt64(addr, out A64))
                     return (null, null);
-                relW.WriteUInt64(S + A64);
-                return (addr, symbol);
+                    ctx.WriteUInt64(addr, ctx.S + A64);
+                    return (addr, symbol);
             case Mips64Rt.R_MIPS_26:
-                long sA = targ26.ReadSigned(A) << 2;
-                uint n = (uint) ((S + (ulong) sA) >> 2);
-                ww = (w & 0xFC000000u) | n;
-                break;
+                if (!ctx.TryReadUInt32(addr, out uint w))
+                    return default;
+                long sA = targ26.ReadSigned(ctx.A) << 2;
+                uint n = (uint) ((ctx.S + (ulong) sA) >> 2);
+                ctx.WriteUInt32(addr, (w & 0xFC000000u) | n);
+                return (addr, null);
             default:
-                ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rel.Info));
+                ctx.Warn(addr, $"Unimplemented MIPS64 relocation type: {RelocationTypeToString((uint) rel.Info)}.");
                 return (addr, symbol);
             }
-            relW.WriteUInt32(ww);
-            return (addr, symbol);
         }
 
         public override string RelocationTypeToString(uint type)

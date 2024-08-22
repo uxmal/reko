@@ -38,11 +38,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.state = new RelocState();
         }
 
-
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            this.state.S = (uint)symbol.Value;
-            return (null, null);
+            return default;
         }
 
         public override string? RelocationTypeToString(uint type)

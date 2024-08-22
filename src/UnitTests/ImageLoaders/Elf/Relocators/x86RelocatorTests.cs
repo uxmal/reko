@@ -19,16 +19,13 @@
 #endregion
 
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core;
+using Reko.Core.Loading;
 using Reko.ImageLoaders.Elf;
 using Reko.ImageLoaders.Elf.Relocators;
-using Reko.Core;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Core.Loading;
 
 namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 {
@@ -52,7 +49,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override ElfLoader CreateLoader()
         {
-            return new ElfLoader32();
+            return new ElfLoader32(
+                new ServiceContainer(),
+                new Elf32_EHdr
+                {
+                    e_type = (ushort) ElfLoader.ET_EXEC,
+                },
+                0,
+                EndianServices.Little,
+                Array.Empty<byte>());
         }
 
         [Test]
@@ -74,8 +79,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var rel = Given_rel(0x400C, sym: 3, type: i386Rt.R_386_JMP_SLOT);
 
             Given_Relocator();
+            Given_Context();
 
-            var (addr, symNew) = relocator.RelocateEntry(program, sym, null, rel);
+            context.Update(rel, sym);
+            var (addr, symNew) = relocator.RelocateEntry(context, rel, sym);
 
             Assert.AreEqual(0x400Cu, addr.ToUInt32());
             Assert.AreEqual("puts", symNew.Name);

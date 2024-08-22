@@ -18,15 +18,11 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Loading;
-using Reko.Core.Rtl;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -37,51 +33,33 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
+            var addr = loader.CreateAddress(ctx.P);
             var rt = (RiscVRt) (rela.Info & 0xFF);
-            ulong S = symbol.Value;
-            ulong A = 0;
-            ulong B = 0;
-
-            var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
             switch (rt)
             {
             case RiscVRt.R_RISCV_COPY:
                 return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
-                A = (ulong) rela.Addend!.Value;
-                B = program.SegmentMap.BaseAddress.ToLinear();
-                S = 0;
-                break;
+                ctx.WriteUInt32(addr, ctx.B + ctx.A);
+                return (addr, null);
             case RiscVRt.R_RISCV_64: // S + A
-                A = (ulong) rela.Addend!.Value;
-                B = 0;
-                break;
+                ctx.WriteUInt32(addr, ctx.S + ctx.A);
+                return (addr, null);
             case RiscVRt.R_RISCV_JUMP_SLOT: // S
-                S = symbol.Value;
-                if (S == 0)
+                if (ctx.S == 0)
                 {
-                    var gotEntry = relR.PeekLeUInt64(0);
+                    if (!ctx.TryReadUInt32(addr, out var gotEntry))
+                        return default;
                     var newSym = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
                     return (addr, newSym);
                 }
-                break;
+                return (addr, null);
             default:
                 Debug.Print("ELF RiscV: unhandled 32-bit relocation {0}: {1}", rt, rela);
-                break;
+                return default;
             }
-
-            var w = relR.ReadLeUInt64();
-            w += ((uint) (B + S + A));
-            relW.WriteLeUInt64(w);
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -96,51 +74,34 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (RiscVRt)(rela.Info & 0xFF);
-            ulong S = symbol.Value;
-            ulong A = 0;
-            ulong B = 0;
-
-            var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
 
             switch (rt)
             {
             case RiscVRt.R_RISCV_COPY:
                 return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
-                A = (ulong) rela.Addend!;
-                B = program.SegmentMap.BaseAddress.ToLinear();
-                S = 0;
-                break;
+                ctx.WriteUInt64(addr, ctx.B + ctx.A);
+                return (addr, null);
             case RiscVRt.R_RISCV_64: // S + A
-                A = (ulong) rela.Addend!;
-                B = 0;
-                break;
+                ctx.WriteUInt64(addr, ctx.S + ctx.A);
+                return (addr, null);
             case RiscVRt.R_RISCV_JUMP_SLOT: // S
-                S = symbol.Value;
-                if (S == 0)
+                if (ctx.S == 0)
                 {
-                    var gotEntry = relR.PeekLeUInt64(0);
+                    if (!ctx.TryReadUInt64(addr, out ulong gotEntry))
+                        return default;
                     var newSym = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
                     return (addr, newSym);
                 }
-                break;
+                return (addr, null);
             default:
-                Debug.Print("ELF RiscV: unhandled 64-bit relocation {0}: {1}", rt, rela);
-                break;
+                ctx.Warn(addr, $"ELF RiscV: unhandled 64-bit relocation {rt}: {rela}.");
+                return (addr, null);
             }
-
-            var w = relR.ReadLeUInt64();
-            w += ((uint) (B + S + A));
-            relW.WriteLeUInt64(w);
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

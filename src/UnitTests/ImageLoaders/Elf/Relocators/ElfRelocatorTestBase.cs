@@ -39,6 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         protected Program program;
         protected Dictionary<int, ElfSymbol> symbols;
         protected ElfLoader loader;
+        protected RelocationContext context;
 
         protected abstract Address GetLoadAddress();
 
@@ -61,6 +62,16 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var elfImgLoader = new ElfImageLoader(services, ImageLocation.FromUri("file:foo.elf"), Array.Empty<byte>());
             this.loader = CreateLoader();
             loader.Sections.Add(new ElfSection { Name = "" });   // section 0
+        }
+
+        protected void Given_Context()
+        {
+            this.context = new RelocationContext(
+                loader,
+                program,
+                program.SegmentMap.BaseAddress,
+                null,
+                new());
         }
 
         protected void Given_Relocator()

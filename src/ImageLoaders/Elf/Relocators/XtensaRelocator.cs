@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
             var rt = (XtensaRt) (rela.Info & 0xFF);
             ElfImageLoader.trace.Inform("XTensa relocation {0}: {1}", rt, rela);

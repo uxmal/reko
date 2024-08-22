@@ -86,6 +86,7 @@ l0000000000000740:
 	goto l0000000000000740;
 }
 
+<anonymous> g_t0760 = <code>; // 0000000000000760
 // 0000000000000768: Register Eq_n fib(Register Eq_n r2, Register out ptr64 r10Out, Register out ptr64 r11Out)
 // Called from:
 //      fib

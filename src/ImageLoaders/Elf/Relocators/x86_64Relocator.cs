@@ -21,17 +21,13 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class x86_64Relocator : ElfRelocator64
     {
-        private Dictionary<Address, ImportReference>? importReferences;
         private Dictionary<ElfSymbol, Address> plt;
 
         public x86_64Relocator(
@@ -52,14 +48,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// in the decompiled code with just a call to the symbol obtained from the
         /// .real.plt section.
         /// </remarks>
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
-            this.importReferences = program.ImportReferences;
-            base.Relocate(program);
-            LoadImportReferencesFromRelaPlt();
+            base.Relocate(program, addrBase, pltEntries);
+            LoadImportReferencesFromRelaPlt(program.ImportReferences);
         }
 
-        private void LoadImportReferencesFromRelaPlt()
+        private void LoadImportReferencesFromRelaPlt(Dictionary<Address, ImportReference> importReferences)
         {
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
             var plt = loader.GetSectionInfoByName(".plt");
@@ -81,93 +76,41 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var st = ElfLoader.GetSymbolType(symStr);
                 if (st.HasValue)
                 {
-                    importReferences![addr] = new NamedImportReference(addr, null, symStr.Name, st.Value);
+                    importReferences[addr] = new NamedImportReference(addr, null, symStr.Name, st.Value);
                 }
             }
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (rela.Offset == 0x540)
-                _ = this; //$DEBUG
-            var rt = (x86_64Rt)(rela.Info & 0xFF);
-            if (loader.Sections.Count <= sym.SectionIndex)
-                return (null, null);
-            if (rt == x86_64Rt.R_X86_64_GLOB_DAT ||
-                rt == x86_64Rt.R_X86_64_JUMP_SLOT)
-            {
-                var addrPfn = Address.Ptr64(rela.Offset);
-
-                var st = ElfLoader.GetSymbolType(sym);
-                if (!st.HasValue)
-                    return (null, null);
-                importReferences!.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name, st.Value));
-                var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
-                imageSymbols.Add(addrPfn, gotSym);
-                return (addrPfn, null);
-            }
-            ulong S = 0;
-            if (sym.SectionIndex != 0)
-            {
-                var symSection = loader.Sections[(int) sym.SectionIndex];
-                if (symSection.Address is null)
-                    return (null, null);
-                S = (ulong) sym.Value + symSection.Address!.ToLinear();
-            }
-            long A = 0;
-            int sh = 0;
-            uint mask = ~0u;
-            Address addr;
-            ulong P;
-            if (referringSection?.Address != null)
-            {
-                addr = referringSection.Address + rela.Offset;
-                P = addr.ToLinear();
-            }
-            else
-            {
-                addr = Address.Ptr64(rela.Offset);
-                P = 0;
-            }
-            var arch = program.Architecture;
-            var relR = CreateImageReader(program, arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-            ulong PP = P;
+            var addr = Address.Ptr64(ctx.P);
+            var rt = (x86_64Rt) (rela.Info & 0xFF);
             switch (rt)
             {
-            case x86_64Rt.R_X86_64_NONE: //  just ignore (common)
+            case x86_64Rt.R_X86_64_GLOB_DAT:    // S
+            case x86_64Rt.R_X86_64_JUMP_SLOT:   // S
+                var addrPfn = addr;
+                ctx.AddImportReference(symbol, addr);
+                var gotSym = loader.CreateGotSymbol(addrPfn, symbol.Name);
+                imageSymbols.Add(addrPfn, gotSym);
+                return (addrPfn, null);
+            case x86_64Rt.R_X86_64_PC32:    // S + A - P
+                ctx.WriteUInt32(addr, ctx.S + ctx.A - ctx.P);
                 break;
-            case x86_64Rt.R_X86_64_COPY:
-                break;
-            case x86_64Rt.R_X86_64_PC32:
-                relW.WriteUInt32(
-                       (uint)(S + (ulong) rela.Addend!.Value - P));
-                return (addr, null);
-            case x86_64Rt.R_X86_64_PLT32:
-                if (!plt.TryGetValue(sym, out var L))
+            case x86_64Rt.R_X86_64_PLT32:   // L + A - P
+                if (ctx.L == 0)
                 {
-                    Debug.Print("ELF external symbol {0} not present in PLT", sym);
+                    Debug.Print("ELF external symbol {0} not present in PLT", symbol);
                     return (null, null);
                 }
-                relW.WriteUInt32(
-                       (uint) (L.Offset + (ulong) rela.Addend!.Value - P));
-                return (addr, null);
-
+                ctx.WriteUInt32(addr, ctx.L + ctx.A - ctx.P);
+                break;
             default:
                 Debug.Print("x86_64 ELF relocation type {0} not implemented yet.",
                     rt);
                 break;
-                //throw new NotImplementedException(string.Format(
-                //    "x86_64 ELF relocation type {0} not implemented yet.",
-                //    rt));
             }
-            if (relR is not null)
-            {
-                var w = relR.ReadUInt64();
-                w += ((ulong)(S + (ulong)A + P) >> sh) & mask;
-                relW.WriteUInt64(w);
-            }
-            return (addr, null);
+            return (addr, symbol);
         }
 
         public override string RelocationTypeToString(uint type)

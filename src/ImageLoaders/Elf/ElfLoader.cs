@@ -135,6 +135,8 @@ namespace Reko.ImageLoaders.Elf
         public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
+        public bool IsBigendian => endianness == EndianServices.Big;
+        public abstract bool IsRelocatableFile { get; }
 
         public abstract ulong AddressToFileOffset(ulong addr);
 
@@ -578,7 +580,7 @@ namespace Reko.ImageLoaders.Elf
             // Locate the GOT. It's fully possible that the binary doesn't have a 
             // .got section.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
-            if (got == null)
+            if (got is null)
                 return;
 
             var gotStart = got.Address;
@@ -604,7 +606,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 var addrGot = rdr.Address;
                 var addrSym = ReadAddress(rdr);
-                if (addrSym == null)
+                if (addrSym is null)
                     break;
                 if (symbols.TryGetValue(addrSym, out ImageSymbol? symbol))
                 {
@@ -843,7 +845,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
             var relocator = CreateRelocator(this.Machine, symbols, plt);
-            relocator.Relocate(program);
+            relocator.Relocate(program, addrLoad, plt);
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
             var entryPoints = new List<ImageSymbol>();

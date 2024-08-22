@@ -34,39 +34,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            if (symbol == null ||
-                loader.Sections.Count <= symbol.SectionIndex)
-            {
-                return (null, null);
-            }
-
-            Address addr;
-            uint P;
-            if (referringSection?.Address != null)
-            {
-                addr = referringSection.Address + rel.Offset;
-                P = (uint) addr.ToLinear();
-            }
-            else
-            {
-                addr = Address.Ptr64(rel.Offset);
-                P = 0;
-            }
-            //var S = symbol.Value;
-            //uint PP = P;
-            //var relR = program.TryCreateImageReader(program.Architecture, addr);
-            //var relW = program.CreateImageWriter(program.Architecture, addr);
-            //int sh = 0;
-            //uint mask = 0;
-            //uint A = 0;
-            //var rt = (MIPSrt) (rel.Info & 0xFF);
-            //switch (rt)
-            //{
-
-            //}
-            return (addr, null);
+            var addr = ctx.CreateAddress(ctx.P);
+            return (addr, default);
         }
 
         public override string RelocationTypeToString(uint type)

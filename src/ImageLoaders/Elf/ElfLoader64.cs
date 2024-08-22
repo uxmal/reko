@@ -38,7 +38,12 @@ namespace Reko.ImageLoaders.Elf
     {
         private readonly byte osAbi;
 
-        public ElfLoader64(IServiceProvider services, Elf64_EHdr elfHeader, byte osAbi, EndianServices endianness, byte[] rawImage)
+        public ElfLoader64(
+            IServiceProvider services,
+            Elf64_EHdr elfHeader,
+            byte osAbi,
+            EndianServices endianness,
+            byte[] rawImage)
             : base(services, (ElfMachine) elfHeader.e_machine, elfHeader.e_flags, endianness, rawImage)
         {
             this.Header64 = elfHeader;
@@ -46,11 +51,12 @@ namespace Reko.ImageLoaders.Elf
             base.rawImage = rawImage;
         }
 
-        public Elf64_EHdr Header64 { get; set; }
+        public Elf64_EHdr Header64 { get; }
 
-        public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
+        public override Address DefaultAddress => Address.Ptr64(0x8048000);
 
-        public override bool IsExecutableFile { get { return Header64.e_type != ElfImageLoader.ET_REL; } }
+        public override bool IsExecutableFile => Header64.e_type != ElfImageLoader.ET_REL;
+        public override bool IsRelocatableFile => Header64.e_type == ElfImageLoader.ET_REL;
 
         public override ulong AddressToFileOffset(ulong addr)
         {
@@ -286,7 +292,7 @@ namespace Reko.ImageLoaders.Elf
                 if (rdr.TryReadUInt32(out uint uAddr))
                     addr = Address.Ptr32(uAddr);
             }
-            else if (this.Header64.e_type != ET_REL)
+            else if (this.IsExecutableFile)
             {
                 addr = Address.Ptr64(Header64.e_entry);
             }

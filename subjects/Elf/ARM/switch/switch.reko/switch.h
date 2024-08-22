@@ -27,6 +27,8 @@ Eq_1: (struct "Globals"
 		(10838 Eq_326 t10838)
 		(10840 (ptr32 code) ptr10840)
 		(10844 word32 dw10844)
+		(10854 (ptr32 code) abort_GOT)
+		(10858 (ptr32 code) __libc_start_main_GOT)
 		(10870 byte b10870))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_4: (fn ptr32 ())
@@ -1572,6 +1574,8 @@ typedef struct Globals {
 	Eq_326 t10838;	// 10838
 	<anonymous> * ptr10840;	// 10840
 	word32 dw10844;	// 10844
+	<anonymous> * abort_GOT;	// 10854
+	<anonymous> * __libc_start_main_GOT;	// 10858
 	byte b10870;	// 10870
 } Eq_1;
 

@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -39,15 +38,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfLoader Loader => elfLoader;
 
-        public override void Relocate(Program program)
+        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
         {
             //$TODO: do something with relocations.
             return;
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public override string RelocationTypeToString(uint type)

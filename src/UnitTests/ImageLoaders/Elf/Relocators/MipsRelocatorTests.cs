@@ -19,17 +19,14 @@
 #endregion
 
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.ImageLoaders.Elf;
-using Reko.ImageLoaders.Elf.Relocators;
 using Reko.Core;
-using System.ComponentModel.Design;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.ImageLoaders.Elf;
+using Reko.ImageLoaders.Elf.Relocators;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 {
@@ -59,7 +56,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override ElfLoader CreateLoader()
         {
-            return new ElfLoader32();
+            return new ElfLoader32(
+                new ServiceContainer(),
+                new Elf32_EHdr
+                {
+                    e_type = (ushort) ElfLoader.ET_EXEC
+                },
+                0,
+                EndianServices.Big,
+                Array.Empty<byte>());
         }
 
         [Test]
@@ -84,10 +89,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
                 Given_rel((uint)addrLo.Offset, sym: 3, type: MIPSrt.R_MIPS_LO16)
             };
             Given_Relocator();
+            Given_Context();
 
             foreach (var rel in rels)
             {
-                relocator.RelocateEntry(program, sym, null, rel);
+                if (context.Update(rel, sym))
+                    relocator.RelocateEntry(context, rel, sym);
             }
 
             program.SegmentMap.TryFindSegment(addrHi, out var seg);
@@ -122,10 +129,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
                 Given_rel((uint)addrOr.Offset, sym: 3, type: MIPSrt.R_MIPS_LO16)
             };
             Given_Relocator();
+            Given_Context();
 
             foreach (var rel in rels)
             {
-                relocator.RelocateEntry(program, sym, null, rel);
+                if (context.Update(rel, sym))
+                    relocator.RelocateEntry(context, rel, sym);
             }
 
             program.SegmentMap.TryFindSegment(addrHi, out var seg);
@@ -144,7 +153,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var symbol = Given_symbol(0, "", ElfSymbolType.STT_NOTYPE, 0, 0);
             var rel = Given_rel(0, 0, type: MIPSrt.R_MIPS_NONE);
             Given_Relocator();
-            relocator.RelocateEntry(program, symbol, null, rel);
+            Given_Context();
+
+            context.Update(rel, symbol);
+            relocator.RelocateEntry(context, rel, symbol);
         }
     }
 }

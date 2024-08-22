@@ -4,7 +4,7 @@
 
 #include "subject.h"
 
-Eq_n g_t0FC0 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) */ ; // 0000000000000FC0
+Eq_n g_t1000 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) */ ; // 0000000000001000
 // 0000000000001460: void fn0000000000001460(Register (ptr64 Eq_n) x0, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
 void fn0000000000001460(void (* x0)(), word32 dwArg00, char * ptrArg08)
 {
@@ -35,8 +35,7 @@ void fn00000000000014B0()
 	x1_n();
 }
 
-Eq_n g_t16B8 = ??/* Unexpected function type (fn void ()) */ ; // 00000000000016B8
-Eq_n g_t1738 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000001738
+Eq_n g_t16F8 = ??/* Unexpected function type (fn void ()) */ ; // 00000000000016F8
 // 0000000000001740: void fn0000000000001740(Register (ptr64 Eq_n) x0)
 void fn0000000000001740(void (* x0)(void * x0))
 {

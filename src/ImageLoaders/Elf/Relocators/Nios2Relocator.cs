@@ -20,9 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -33,11 +31,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            var rt = (RiscVRt) (rela.Info & 0xFF);
-
-            return (null, symbol);
+            var rt = (Nios2Rt) (rela.Info & 0xFF);
+            return default;
         }
 
         public override string? RelocationTypeToString(uint type)

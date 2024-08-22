@@ -147,6 +147,7 @@ Eq_1: (struct "Globals"
 		(12CC0 word64 optarg)
 		(12CC8 word64 stderr)
 		(12CD0 word64 stdout)
+		(14F00 code t14F00)
 		(15180 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) t15180)
 		(182E8 (fn void ()) t182E8)
 		(18378 (fn void ()) t18378)
@@ -26195,6 +26196,7 @@ typedef struct Globals {
 	word64 optarg;	// 12CC0
 	word64 stderr;	// 12CC8
 	word64 stdout;	// 12CD0
+	<anonymous> t14F00;	// 14F00
 	int32 t15180(int32 a0, char ** a1, char ** a2);	// 15180
 	void t182E8();	// 182E8
 	void t18378();	// 18378

@@ -7,6 +7,7 @@
 Eq_1: (struct "Globals"
 		(5CE code t05CE)
 		(5EE code t05EE)
+		(760 code t0760)
 		(8C8 int64 qw08C8)
 		(8D0 byte b08D0)
 		(8D8 ci8 b08D8)
@@ -17,6 +18,7 @@ Eq_1: (struct "Globals"
 		(2028 byte b2028)
 		(2030 (ptr64 code) ptr2030)
 		(2038 (ptr64 code) ptr2038)
+		(2040 (ptr64 code) __libc_csu_init_GOT)
 		(2048 (ptr64 code) ptr2048)
 		(2050 (ptr64 code) ptr2050)
 		(2068 byte b2068))
@@ -1130,6 +1132,7 @@ T_257:
 typedef struct Globals {
 	<anonymous> t05CE;	// 5CE
 	<anonymous> t05EE;	// 5EE
+	<anonymous> t0760;	// 760
 	int64 qw08C8;	// 8C8
 	byte b08D0;	// 8D0
 	ci8 b08D8;	// 8D8
@@ -1140,6 +1143,7 @@ typedef struct Globals {
 	byte b2028;	// 2028
 	<anonymous> * ptr2030;	// 2030
 	<anonymous> * ptr2038;	// 2038
+	<anonymous> * __libc_csu_init_GOT;	// 2040
 	<anonymous> * ptr2048;	// 2048
 	<anonymous> * ptr2050;	// 2050
 	byte b2068;	// 2068

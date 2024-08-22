@@ -21,18 +21,13 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Output;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
     public class RelaSegmentRenderer : ImageSegmentRenderer
     {
-        private ElfLoader32 loader;
-        private ElfSection shdr;
+        private readonly ElfLoader32 loader;
+        private readonly ElfSection shdr;
 
         public RelaSegmentRenderer(ElfLoader32 imgLoader, ElfSection shdr)
         {

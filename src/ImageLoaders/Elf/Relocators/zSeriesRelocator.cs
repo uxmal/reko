@@ -18,14 +18,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Loading;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -35,49 +30,34 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)
         {
-            ulong S = (ulong)symbol.Value;
-            ulong A = 0;
-            ulong B = 0;
+            var addr = ctx.CreateAddress(ctx.P);
             var rt = (zSeriesRt)(rela.Info & 0xFF);
-            var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-            var arch = program.Architecture;
-            var relR = program.TryCreateImageReader(arch, addr, out var r) ? r : null!;
-            var relW = program.CreateImageWriter(arch, addr);
-
             switch (rt)
             {
             case zSeriesRt.R_390_RELATIVE:  // B + A
-                A = (ulong)rela.Addend!;
-                B = program.SegmentMap.BaseAddress.ToLinear();
-                S = 0;
-                break;
+                ctx.WriteUInt64(addr, ctx.B + ctx.A);
+                return (addr, null);
             case zSeriesRt.R_390_GLOB_DAT:  // S + A
-                A = (ulong)rela.Addend!;
-                break;
+                ctx.WriteUInt64(addr, ctx.S + ctx.A);
+                return (addr, null);
             case zSeriesRt.R_390_JMP_SLOT:
                 if (symbol.Value == 0)
                 {
                     // Broken GCC compilers generate relocations referring to symbols 
                     // whose value is 0 instead of the expected address of the PLT stub.
-                    var gotEntry = relR.PeekBeUInt64(0);
+                    if (!ctx.TryReadUInt64(addr, out ulong gotEntry))
+                        return default;
                     var symNew = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0xE);
                     return (addr, symNew);
                 }
-                break;
+                ctx.WriteUInt64(addr, ctx.S + ctx.A);
+                return (addr, null);
             default:
-                Debug.Print("Unhandled relocation {0}: {1}", rt, rela);
-                break;
+                ctx.Warn(addr, $"Unhandled relocation {rt}: {rela}");
+                return default;
             }
-
-            var w = relR.ReadBeUInt64();
-            w += ((uint)(B + S + A));
-            relW.WriteBeUInt64(w);
-
-            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

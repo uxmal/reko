@@ -4,5 +4,5 @@
 
 #include "pngpixel.h"
 
-FILE * stderr = &g_tC04200; // 0000000000602100
+FILE * stderr = null; // 0000000000602100
 byte g_b602108 = 0x00; // 0000000000602108
