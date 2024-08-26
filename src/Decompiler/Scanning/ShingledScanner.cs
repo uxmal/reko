@@ -424,7 +424,7 @@ namespace Reko.Scanning
 
                 var instr = sr.Instructions[addr];
                 var label = program.NamingPolicy.BlockName(addr);
-                var block = new RtlBlock(addr, label);
+                var block = RtlBlock.CreateEmpty(program.Architecture, addr, label);
                 block.Instructions.Add(instr);
                 allBlocks.AddNode(block);
                 mpBlocks.Add(addr, block);

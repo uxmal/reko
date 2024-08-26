@@ -461,14 +461,12 @@ namespace Reko.Scanning
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
-            var rtlBlocks = 
+            var rtlBlocks =
                 from b in blocks.Values
                 join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
                 orderby b.id
-                select new RtlBlock(b.id, namingPolicy.BlockName(b.id))
-                {
-                    Instructions = instrs.Select(x => x.rtl).ToList()
-                };
+                select RtlBlock.CreatePartial(null!, b.id, namingPolicy.BlockName(b.id),
+                    instrs.Select(x => x.rtl).ToList());
 
             foreach (var rtlBlock in rtlBlocks)
             {

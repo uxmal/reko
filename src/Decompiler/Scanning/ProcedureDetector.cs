@@ -441,7 +441,7 @@ namespace Reko.Scanning
             // Create a fake node that will serve as the parent of all the 
             // existing entries. That node will be used to compute all
             // immediate dominators of all reachable blocks.
-            var auxNode = new RtlBlock(Address.Ptr64(~0ul), "<root>");
+            var auxNode = RtlBlock.CreateEmpty(null!, Address.Ptr64(~0ul), "<root>");
 
             var srGraph = MakeGraph(cluster, auxNode);
             var idoms = LTDominatorGraph<RtlBlock>.Create(srGraph, auxNode);

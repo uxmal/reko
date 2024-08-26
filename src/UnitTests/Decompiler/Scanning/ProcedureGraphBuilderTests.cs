@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 instrs.Clear();
                 clusters.Add(cluster);
             }
-            var block = new RtlBlock(
+            var block = RtlBlock.Create(
                 program.Architecture,
                 addrBlock,
                 id,

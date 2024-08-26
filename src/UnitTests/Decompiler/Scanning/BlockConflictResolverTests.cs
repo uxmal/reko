@@ -20,8 +20,8 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Scanning;
@@ -30,9 +30,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using RtlBlock = Reko.Scanning.RtlBlock;
 using HeuristicProcedure = Reko.Scanning.HeuristicProcedure;
-using Reko.Core.Loading;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -89,7 +88,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private RtlBlock Given_Block(uint uAddr)
         {
-            var b = new RtlBlock(Address.Ptr32(uAddr), $"l{uAddr:X8}");
+            var b = RtlBlock.CreateEmpty(null!, Address.Ptr32(uAddr), $"l{uAddr:X8}");
             return b;
         }
 

@@ -69,8 +69,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public RtlBlock Disassemble(Address addr)
         {
-            var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
             var arch = program.Architecture;
+            var current = RtlBlock.CreateEmpty(arch, addr, string.Format("l{0:X}", addr));
             program.TryCreateImageReader(arch, addr, out var rdr);
             
             var dasm = arch.CreateRewriter(
@@ -239,10 +239,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         private RtlBlock SplitBlock(RtlBlock block, Address addr)
         {
-            var newBlock = new RtlBlock(addr, string.Format("l{0:X}", addr))
-            {
-                IsValid = block.IsValid
-            };
+            var newBlock = RtlBlock.CreateEmpty(block.Architecture, addr, string.Format("l{0:X}", addr));
+            newBlock.IsValid = block.IsValid;
             sr.ICFG.Nodes.Add(newBlock);
             newBlock.Instructions.AddRange(
                 block.Instructions.Where(r => r.Address >= addr).OrderBy(r => r.Address));

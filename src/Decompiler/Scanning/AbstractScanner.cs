@@ -25,7 +25,6 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
@@ -153,7 +152,7 @@ namespace Reko.Scanning
             List<RtlInstructionCluster> instrs)
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, this.Provenance, instrs);
+            var block = RtlBlock.Create(arch, addrBlock, id, (int)length, addrFallthrough, this.Provenance, instrs);
             var success = sr.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success, $"Failed registering block at {addrBlock}");
             return block;
@@ -267,7 +266,7 @@ namespace Reko.Scanning
             var id = program.NamingPolicy.BlockName(addr);
             var addrFallthrough = addr + blockSize;
             trace.Verbose("      new block at {0}", addr);
-            return new RtlBlock(block.Architecture, addr, id, (int)blockSize, addrFallthrough, Provenance, instrs);
+            return RtlBlock.Create(block.Architecture, addr, id, (int)blockSize, addrFallthrough, Provenance, instrs);
         }
 
         public ExpressionSimplifier CreateEvaluator(ProcessorState state)

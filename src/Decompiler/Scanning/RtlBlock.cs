@@ -31,7 +31,7 @@ namespace Reko.Scanning
     /// </summary>
     public class RtlBlock
     {
-        public RtlBlock(
+        private RtlBlock(
             IProcessorArchitecture arch,
             Address addr,
             string id,
@@ -50,15 +50,45 @@ namespace Reko.Scanning
             this.IsValid = true;
         }
 
-        public RtlBlock(Address addr, string id) : this(
-            default!,
-            addr,
-            id,
-            0,
-            default!,
-            ProvenanceType.None,
-            new List<RtlInstructionCluster>())
+        public static RtlBlock Create(
+            IProcessorArchitecture arch,
+            Address addr,
+            string id,
+            int length,
+            Address addrFallThrough,
+            ProvenanceType provenance,
+            List<RtlInstructionCluster> instructions)
         {
+            return new RtlBlock(arch, addr, id, length, addrFallThrough, provenance, instructions);
+        }
+
+
+        public static RtlBlock CreateEmpty(IProcessorArchitecture arch, Address addr, string id)
+        {
+            return new RtlBlock(
+                arch,
+                addr,
+                id,
+                0,
+                default!,
+                ProvenanceType.None,
+                new List<RtlInstructionCluster>());
+        }
+
+        public static RtlBlock CreatePartial(
+            IProcessorArchitecture arch,
+            Address addr,
+            string id,
+            List<RtlInstructionCluster> clusters)
+        {
+            return new RtlBlock(
+                arch,
+                addr,
+                id,
+                0,
+                default!,
+                ProvenanceType.None,
+                clusters);
         }
 
         /// <summary>

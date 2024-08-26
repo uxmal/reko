@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             if (!this.mpIntBlock.TryGetValue(uAddr, out block))
             {
                 var addr = Address.Ptr32(uAddr);
-                block = new RtlBlock(addr, addr.GenerateName("l", ""));
+                block = RtlBlock.CreateEmpty(null!, addr, addr.GenerateName("l", ""));
                 this.mpIntBlock.Add(uAddr, block);
             }
             return block;

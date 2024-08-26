@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Graphs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Reko.Scanning
 {
@@ -31,7 +30,7 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResultsGraph : DirectedGraph<Address>
     {
-        private ScanResultsV2 cfg;
+        private readonly ScanResultsV2 cfg;
 
         public ScanResultsGraph(ScanResultsV2 cfg)
         {

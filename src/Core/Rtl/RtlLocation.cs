@@ -19,10 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Rtl
 {
@@ -31,7 +27,7 @@ namespace Reko.Core.Rtl
     /// which is required when dealing with machine instructions that have been
     /// rewritten to multiple RTL instructions.
     /// </summary>
-    public struct RtlLocation : IComparable<RtlLocation>
+    public readonly struct RtlLocation : IComparable<RtlLocation>
     {
         public RtlLocation(Address addr, int index)
         {

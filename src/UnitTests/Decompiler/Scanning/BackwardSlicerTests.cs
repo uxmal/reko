@@ -91,13 +91,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private RtlBlock Given_Block(uint uAddr)
         {
-            var b = new RtlBlock(Address.Ptr32(uAddr), $"l{uAddr:X8}");
+            var b = RtlBlock.CreateEmpty(arch, Address.Ptr32(uAddr), $"l{uAddr:X8}");
             return b;
         }
 
         private RtlBlock Given_Block(ushort uSeg, ushort uOffset)
         {
-            var b = new RtlBlock(Address.SegPtr(uSeg, uOffset), $"l{uSeg:X4}_{uOffset:X4}");
+            var b = RtlBlock.CreateEmpty(arch, Address.SegPtr(uSeg, uOffset), $"l{uSeg:X4}_{uOffset:X4}");
             return b;
         }
 

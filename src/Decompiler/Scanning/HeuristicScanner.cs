@@ -67,7 +67,7 @@ namespace Reko.Scanning
             this.host = host;
             this.storageBinder = program.Architecture.CreateFrame();
             this.eventListener = eventListener;
-            this.invalidBlock = new RtlBlock(null!, "<invalid>");
+            this.invalidBlock = RtlBlock.CreateEmpty(null!, null!, "<invalid>");
             this.binder = program.Architecture.CreateFrame();
         }
 
@@ -158,7 +158,7 @@ namespace Reko.Scanning
         private static void RemoveInvalidBlocks(ScanResults sr)
         {
             var revGraph = new DiGraph<RtlBlock>();
-            var invalid = new RtlBlock(null!, "<invalid>");
+            var invalid = RtlBlock.CreateEmpty(null!, null!, "<invalid>");
             revGraph.AddNode(invalid);
             foreach (var b in sr.ICFG.Nodes)
             {
