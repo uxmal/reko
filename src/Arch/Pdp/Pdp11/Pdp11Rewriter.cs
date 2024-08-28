@@ -22,19 +22,20 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Pdp.Pdp11
 {
     public partial class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly Pdp11Architecture arch;
+        private readonly EndianImageReader rdr;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Pdp11Instruction> dasm;
@@ -45,12 +46,13 @@ namespace Reko.Arch.Pdp.Pdp11
 
         public Pdp11Rewriter(
             Pdp11Architecture arch,
-            IEnumerable<Pdp11Instruction> instrs,
+            EndianImageReader rdr,
             IStorageBinder binder,
             IRewriterHost host)
         {
             this.arch = arch;
-            this.dasm = instrs.GetEnumerator();
+            this.rdr = rdr;
+            this.dasm = new Pdp11Disassembler(rdr, arch).GetEnumerator();
             this.binder = binder;
             this.host = host;
             this.rtlInstructions = new List<RtlInstruction>();
@@ -71,6 +73,7 @@ namespace Reko.Arch.Pdp.Pdp11
                         instr.Address,
                         "PDP-11 instruction {0} is not supported yet.", 
                         instr.Mnemonic);
+                    EmitUnitTest();
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
@@ -125,6 +128,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.mark: RewriteMark(); break;
                 case Mnemonic.mfpd: RewriteMfpd(); break;
                 case Mnemonic.mfpi: RewriteMfpi(); break;
+                case Mnemonic.mfpt: RewriteMfpt(); break;
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movb: RewriteMov(); break;
                 case Mnemonic.mtpi: RewriteMtpi(); break;
@@ -145,6 +149,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.setflags: RewriteClrSetFlags(Constant.True); break;
                 case Mnemonic.stcdi: RewriteStcdi(); break;
                 case Mnemonic.sob: RewriteSob(); break;
+                case Mnemonic.spl: RewriteSpl(); break;
                 case Mnemonic.stexp: RewriteStexp(); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.swab: RewriteSwab(); break;
@@ -164,6 +169,13 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             return GetEnumerator();
         }
+
+        private void EmitUnitTest()
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Pdp11Rw", instr, instr.Mnemonic.ToString(), rdr, "");
+        }
+
 
         private void SetFlags(Expression? e, FlagGroupStorage changed)
         {
@@ -623,6 +635,8 @@ namespace Reko.Arch.Pdp.Pdp11
         static readonly IntrinsicProcedure mfpi_intrinsic = new IntrinsicBuilder("__mfpi", true)
             .Param(PrimitiveType.Word16)
             .Returns(PrimitiveType.Word16);
+        static readonly IntrinsicProcedure mfpt_intrinsic = new IntrinsicBuilder("__mfpt", true)
+            .Returns(PrimitiveType.Word16);
         static readonly IntrinsicProcedure mtpi_intrinsic = new IntrinsicBuilder("__mtpi", true)
             .Param(PrimitiveType.Word16)
             .Param(PrimitiveType.Word16)
@@ -634,6 +648,9 @@ namespace Reko.Arch.Pdp.Pdp11
             .Param("TValue")
             .Param("TShift")
             .Returns("TValue");
+        static readonly IntrinsicProcedure spl_intrinsic = new IntrinsicBuilder("__set_priority_level", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
         static readonly IntrinsicProcedure stexp_intrinsic = new IntrinsicBuilder("__stexp", true)
             .GenericTypes("T")
             .Param("T")

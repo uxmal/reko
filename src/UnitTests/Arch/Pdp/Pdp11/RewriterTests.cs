@@ -207,6 +207,15 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         }
 
         [Test]
+        public void Pdp11Rw_spl()
+        {
+            Given_HexString("9A00");
+            AssertCode(     // spl      #2
+                "0|L--|03E0(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
         public void Pdp11Rw_sub()
         {
             Given_UInt16s(0xE5C6, 0x0010); // sub #0010,sp
@@ -560,7 +569,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         }
 
         [Test]
-        public void Pdp11Rw_Sob()
+        public void Pdp11Rw_sob()
         {
             Given_UInt16s(0x7E44);      // sob r0,..
             AssertCode(
@@ -643,6 +652,15 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
             AssertCode(
                "0|T--|0200(4): 1 instructions",
                "1|T--|goto 00DC");
+        }
+
+        [Test]
+        public void Pdp11rw_mfpt()
+        {
+            Given_UInt16s(0x0007);
+            AssertCode(     // mfpt
+                "0|L--|0200(2): 1 instructions",
+                "1|L--|r0 = __mfpt()");
         }
 
         [Test]

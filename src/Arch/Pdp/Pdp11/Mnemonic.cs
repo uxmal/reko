@@ -127,5 +127,6 @@ namespace Reko.Arch.Pdp.Pdp11
         ldexp,
         ldcid,
         ldcfd,
+        mfpt,
     }
 }

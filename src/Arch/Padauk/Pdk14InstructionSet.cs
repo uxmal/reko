@@ -20,17 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Padauk
 {
-    using Decoder = Reko.Core.Machine.Decoder<PadaukDisassembler, Mnemonic, PadaukInstruction>;
-
     partial class PadaukDisassembler
     {
         internal class Pdk14InstructionSet : InstructionSet

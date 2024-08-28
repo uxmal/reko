@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         public void Setup()
         {
             this.options = MachineInstructionRendererOptions.Default;
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         private void RunTest(string expected, params ushort[] words)
@@ -197,6 +198,12 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         }
 
         [Test]
+        public void Pdp11dis_mfpt()
+        {
+            RunTest("mfpt", 0x0007);
+        }
+
+        [Test]
         public void Pdp11dis_setflags()
         {
             RunTest("setflags\t#04", 0x00B4);
@@ -206,6 +213,12 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         public void Pdp11dis_mul2()
         {
             RunTest("mul\tr0,r3", 0xF0C0);
+        }
+
+        [Test]
+        public void Pdp11dis_spl()
+        {
+            RunTest("spl\t#04", 0x009C);
         }
 
         [Test]

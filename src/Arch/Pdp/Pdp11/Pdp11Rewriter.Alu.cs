@@ -236,6 +236,12 @@ namespace Reko.Arch.Pdp.Pdp11
             SetFalse(Registers.V);
         }
 
+        private void RewriteMfpt()
+        {
+            var r0 = binder.EnsureRegister(Registers.r0);
+            m.Assign(r0, m.Fn(mfpt_intrinsic));
+        }
+
         private void RewriteMtpi()
         {
             var src = RewriteSrc(instr.Operands[0]);

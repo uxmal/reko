@@ -186,6 +186,11 @@ namespace Reko.Arch.Pdp.Pdp11
             }
         }
 
+        private void RewriteSpl()
+        {
+            m.SideEffect(m.Fn(spl_intrinsic, this.RewriteSrc(instr.Operands[0])));
+        }
+
         private void RewriteTrap()
         {
             this.iclass = InstrClass.Transfer;

@@ -114,7 +114,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private static bool E(uint wOpcode, Pdp11Disassembler dasm)
         {
             var op = dasm.DecodeOperand(wOpcode);
-            if (op == null)
+            if (op is null)
                 return false;
             dasm.ops.Add(op);
             return true;
@@ -157,6 +157,15 @@ namespace Reko.Arch.Pdp.Pdp11
             return true;
         }
 
+        /// <summary>
+        /// Low order 3 bits of instruction word.
+        /// </summary>
+        private static bool I3(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) (wOpcode & 0x07));
+            dasm.ops.Add(op);
+            return true;
+        }
         // I4 - low order 4 bits.
         private static bool I4(uint wOpcode, Pdp11Disassembler dasm)
         {
@@ -226,26 +235,26 @@ namespace Reko.Arch.Pdp.Pdp11
                     (0x04, Instr(Mnemonic.iot)),
                     (0x05, Instr(Mnemonic.reset, InstrClass.Transfer)),
                     (0x06, Instr(Mnemonic.rtt, InstrClass.Transfer | InstrClass.Return)),
-                    (0x07, illegal))),
+                    (0x07, Instr(Mnemonic.mfpt)))),
                 (0x001, Instr(Mnemonic.jmp, InstrClass.Transfer, E)),
                 (0x002, Mask(3, 3, "  002",
                     Instr(Mnemonic.rts, InstrClass.Transfer | InstrClass.Return, R0),
-                    Instr(Mnemonic.spl, E),
                     illegal,
                     illegal,
+                    Instr(Mnemonic.spl, I3),
                     condCode,
                     condCode,
                     condCode,
                     condCode)),
                 (0x003, Instr(Mnemonic.swab, E)),
-               (0x020, jsr),
-               (0x021, jsr),
-               (0x022, jsr),
-               (0x023, jsr),
-               (0x024, jsr),
-               (0x025, jsr),
-               (0x026, jsr),
-               (0x027, jsr),
+                (0x020, jsr),
+                (0x021, jsr),
+                (0x022, jsr),
+                (0x023, jsr),
+                (0x024, jsr),
+                (0x025, jsr),
+                (0x026, jsr),
+                (0x027, jsr),
 
                (0x220, emt),
                (0x221, emt),

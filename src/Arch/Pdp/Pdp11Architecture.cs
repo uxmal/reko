@@ -202,7 +202,7 @@ namespace Reko.Arch.Pdp
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), binder, host);
+            return new Pdp11Rewriter(this, rdr, binder, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
