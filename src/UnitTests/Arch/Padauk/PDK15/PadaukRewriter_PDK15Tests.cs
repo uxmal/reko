@@ -227,6 +227,15 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
         }
 
         [Test]
+        public void Pdk15Rw_reti()
+        {
+            Given_HexString("7B00");
+            AssertCode(     // reti
+                "0|R--|0100(1): 1 instructions",
+                "1|R--|return (2,0)");
+        }
+
+        [Test]
         public void Pdk15Rw_set0()
         {
             Given_HexString("053B");
@@ -275,6 +284,16 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
                 "1|L--|v3 = Mem0[0x0003<p16>:byte] >>u 1<8>",
                 "2|L--|Mem0[0x0003<p16>:byte] = v3",
                 "3|L--|C = cond(v3)");
+        }
+
+        [Test]
+        public void Pdk15Rw_src()
+        {
+            Given_HexString("2C02");
+            AssertCode(     // src      [0x2]
+                "0|R--|0100(1): 2 instructions",
+                "1|L--|a = 0x2C<8>",
+                "2|R--|return (2,0)");
         }
 
         [Test]

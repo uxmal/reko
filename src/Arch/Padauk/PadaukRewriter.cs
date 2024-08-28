@@ -89,11 +89,13 @@ namespace Reko.Arch.Padauk
                 case Mnemonic.popaf: RewritePopaf(); break;
                 case Mnemonic.pushaf: RewritePushaf(); break;
                 case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.reti: RewriteReti(); break;
                 case Mnemonic.set0: RewriteSetBit(Constant.False(), CommonOps.ClearBit); break;
                 case Mnemonic.set1: RewriteSetBit(Constant.True(), CommonOps.SetBit); break;
                 case Mnemonic.sl: RewriteShift(m.Shl); break;
-                case Mnemonic.slc: RewriteSlc(); break;
+                case Mnemonic.slc: RewriteShiftThroughCarry(Rolc); break;
                 case Mnemonic.sr: RewriteShift(m.Shr); break;
+                case Mnemonic.src: RewriteShiftThroughCarry(Rorc); break;
                 case Mnemonic.stopexe: RewriteStopexe(); break;
                 case Mnemonic.sub: RewriteAddSub(m.ISub); break;
                 case Mnemonic.subc: RewriteAddcSubc(m.ISubC, m.ISub); break;
@@ -321,6 +323,12 @@ namespace Reko.Arch.Padauk
             m.Return(2, 0);
         }
 
+        //$TODO: unclear if there are any other effects of a RETI
+        private void RewriteReti()
+        {
+            m.Return(2, 0);
+        }
+
         private void RewriteSetBit(Constant value, IntrinsicProcedure intrinsic)
         {
             if (instr.Operands[0] is PortOperand port)
@@ -363,9 +371,19 @@ namespace Reko.Arch.Padauk
                 a, b, C);
         }
 
-        private void RewriteSlc()
+        private Expression Rorc(Expression a, Expression b)
         {
-            var dst = EmitAssignment(0, m.Byte(1), Rolc);
+            var C = binder.EnsureFlagGroup(Registers.C);
+            return m.Fn(
+                CommonOps.RorC.MakeInstance(
+                    a.DataType,
+                    b.DataType),
+                a, b, C);
+        }
+
+        private void RewriteShiftThroughCarry(Func<Expression,Expression,Expression> rotation)
+        {
+            var dst = EmitAssignment(0, m.Byte(1), rotation);
             EmitCc(Registers.C, dst);
         }
 
