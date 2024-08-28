@@ -1135,8 +1135,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 *** Elf\AVR32\ls
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -1158,19 +1158,6 @@ fn0000ACB0: warning: Structure analysis stopped making progress, quitting. Pleas
 
 === PDP-11\lunar
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-1780: warning: PDP-11 instruction spl is not supported yet.
-294A: warning: PDP-11 instruction spl is not supported yet.
-2D98: warning: PDP-11 instruction spl is not supported yet.
-2DC4: warning: PDP-11 instruction spl is not supported yet.
-2DDC: warning: PDP-11 instruction spl is not supported yet.
-2E22: warning: PDP-11 instruction spl is not supported yet.
-2E24: warning: PDP-11 instruction spl is not supported yet.
-2E26: warning: PDP-11 instruction spl is not supported yet.
-2E3A: warning: PDP-11 instruction spl is not supported yet.
-2E78: warning: PDP-11 instruction spl is not supported yet.
-2EC0: warning: PDP-11 instruction spl is not supported yet.
-2EC2: warning: PDP-11 instruction spl is not supported yet.
-2ECC: warning: PDP-11 instruction spl is not supported yet.
 013E: warning: Expected sizes of arrays to have been determined by now
 168C: warning: Expected sizes of arrays to have been determined by now
 1696: warning: Expected sizes of arrays to have been determined by now
@@ -1501,7 +1488,8 @@ finish: error: An error occurred while renaming variables.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 43
+   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
+   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -1799,15 +1787,6 @@ Evaluating c:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 0000000000200DE8: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\space
-0498: warning: PDP-11 instruction spl is not supported yet.
-106C: warning: PDP-11 instruction spl is not supported yet.
-23B4: warning: PDP-11 instruction spl is not supported yet.
-23BC: warning: PDP-11 instruction spl is not supported yet.
-23D2: warning: PDP-11 instruction spl is not supported yet.
-23E0: warning: PDP-11 instruction spl is not supported yet.
-23E8: warning: PDP-11 instruction spl is not supported yet.
-4D58: warning: PDP-11 instruction spl is not supported yet.
-53EA: warning: PDP-11 instruction spl is not supported yet.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 46C4: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
@@ -2676,4 +2655,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 36.81 seconds.
+Decompiled 93 binaries in 33.70 seconds.

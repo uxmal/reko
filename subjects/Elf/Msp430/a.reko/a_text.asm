@@ -28,7 +28,7 @@ l0000402C:
 	jnc	0000402C
 
 l00004036:
-	br.w	main
+	br	main
 0000403A                               30 40 3E 40 00 13           0@>@..
 00004040 0A 0D 5B 25 64 5D 20 00                         ..[%d] .        
 
@@ -71,7 +71,7 @@ l4080:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; task_1: 4096
 task_1 proc
@@ -182,7 +182,7 @@ main proc
 	call	4702
 	add.w	#001C,sp
 	mov.w	#0000,r15
-	br.w	5AD8
+	br	5AD8
 
 ;; msp430_compute_modulator_bits: 420E
 ;;   Called from:
@@ -286,7 +286,7 @@ l000042B4:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; init_uart_isr: 42CC
 ;;   Called from:
@@ -361,7 +361,7 @@ l0000436E:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; getchar: 4380
 getchar proc
@@ -382,7 +382,7 @@ l4396:
 
 l4398:
 	add.w	#0002,sp
-	ret.w
+	ret
 
 ;; uart_putchar_isr_mode: 439C
 ;;   Called from:
@@ -390,7 +390,7 @@ l4398:
 ;;     419E (in main)
 uart_putchar_isr_mode proc
 	mov.b	r15,&0200
-	ret.w
+	ret
 
 ;; putchar: 43A2
 ;;   Called from:
@@ -441,7 +441,7 @@ l000043D6:
 
 l000043E0:
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; x_getchar: 43E4
 ;;   Called from:
@@ -456,11 +456,11 @@ x_getchar proc
 
 l43F4:
 	mov.w	#0001,r15
-	ret.w
+	ret
 
 l43F8:
 	mov.w	#0000,r15
-	ret.w
+	ret
 
 ;; x_putchar: 43FC
 ;;   Called from:
@@ -511,7 +511,7 @@ l00004440:
 l0000444A:
 	mov.w	#0001,r15
 	add.w	#0002,sp
-	ret.w
+	ret
 
 ;; vRxISR: 4450
 vRxISR proc
@@ -710,7 +710,7 @@ l000045A4:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vTaskDelete: 45B6
 vTaskDelete proc
@@ -769,7 +769,7 @@ l4612:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vTaskDelayUntil: 461A
 ;;   Called from:
@@ -852,7 +852,7 @@ l00004696:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vTaskDelay: 469E
 vTaskDelay proc
@@ -902,7 +902,7 @@ l46EA:
 
 l46F8:
 	mov.w	@sp+,r11
-	ret.w
+	ret
 46FC                                     49 44 4C 45             IDLE
 4700 00 00                                           ..              
 
@@ -914,7 +914,7 @@ vTaskStartScheduler proc
 	jnz	0000470A
 
 l00004708:
-	ret.w
+	ret
 
 l0000470A:
 	push.w	#0000
@@ -940,7 +940,7 @@ vTaskEndScheduler proc
 	dint
 	mov.w	#0000,&020E
 	call	5238
-	ret.w
+	ret
 
 ;; vTaskSuspendAll: 4742
 ;;   Called from:
@@ -967,7 +967,7 @@ l00004758:
 	eint
 
 l0000475A:
-	ret.w
+	ret
 
 ;; xTaskResumeAll: 475C
 ;;   Called from:
@@ -1094,7 +1094,7 @@ l00004812:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xTaskGetTickCount: 481E
 ;;   Called from:
@@ -1117,7 +1117,7 @@ l00004830:
 	eint
 
 l00004832:
-	ret.w
+	ret
 
 ;; uxTaskGetNumberOfTasks: 4834
 uxTaskGetNumberOfTasks proc
@@ -1134,7 +1134,7 @@ l4846:
 	eint
 
 l4848:
-	ret.w
+	ret
 
 ;; vTaskIncrementTick: 484A
 ;;   Called from:
@@ -1216,7 +1216,7 @@ l000048D0:
 l000048D4:
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vTaskPlaceOnEventList: 48DA
 ;;   Called from:
@@ -1257,7 +1257,7 @@ l0000491C:
 l00004928:
 	call	4C32
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xTaskRemoveFromEventList: 4930
 ;;   Called from:
@@ -1330,7 +1330,7 @@ l000049A2:
 l000049A6:
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvIdleTask: 49AC
 prvIdleTask proc
@@ -1380,7 +1380,7 @@ l000049E6:
 	mov.w	r11,0018(r11)
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvInitialiseTaskLists: 4A12
 ;;   Called from:
@@ -1413,7 +1413,7 @@ l00004A2E:
 	mov.w	#0262,&0282
 	mov.w	#0272,&0284
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvCheckTasksWaitingTermination: 4A5E
 ;;   Called from:
@@ -1475,7 +1475,7 @@ l4ABA:
 
 l4ABE:
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvAllocateTCBAndStack: 4AC2
 ;;   Called from:
@@ -1513,7 +1513,7 @@ l00004AFA:
 	mov.w	r11,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvDeleteTCB: 4B02
 ;;   Called from:
@@ -1526,7 +1526,7 @@ prvDeleteTCB proc
 	mov.w	r11,r15
 	call	5192
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vTaskSwitchContext: 4B18
 ;;   Called from:
@@ -1598,7 +1598,7 @@ l00004B98:
 	mov.w	0006(r15),&0202
 
 l00004BAE:
-	ret.w
+	ret
 
 l00004BB0:
 	mov.w	&020C,r15
@@ -1635,7 +1635,7 @@ vListInitialise proc
 	call	4C00
 	mov.w	#0000,@r11
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vListInitialiseItem: 4C00
 ;;   Called from:
@@ -1644,7 +1644,7 @@ vListInitialise proc
 ;;     00004BF4 (in vListInitialise)
 vListInitialiseItem proc
 	mov.w	#0000,0008(r15)
-	ret.w
+	ret
 
 ;; vListInsertEnd: 4C06
 ;;   Called from:
@@ -1664,7 +1664,7 @@ vListInsertEnd proc
 	mov.w	r14,0004(r12)
 	mov.w	r12,0008(r14)
 	add.w	#0001,@r12
-	ret.w
+	ret
 
 ;; vListInsert: 4C32
 ;;   Called from:
@@ -1717,7 +1717,7 @@ l00004C76:
 	mov.w	r11,0008(r14)
 	add.w	#0001,@r11
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vListRemove: 4C98
 ;;   Called from:
@@ -1749,7 +1749,7 @@ l00004CB6:
 l00004CBA:
 	mov.w	#0000,0008(r14)
 	add.w	#FFFF,@r15
-	ret.w
+	ret
 
 ;; xQueueCreate: 4CC4
 ;;   Called from:
@@ -1831,7 +1831,7 @@ l00004D76:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xQueueSend: 4D7E
 ;;   Called from:
@@ -1977,7 +1977,7 @@ l00004E7A:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xQueueSendFromISR: 4E84
 ;;   Called from:
@@ -2040,7 +2040,7 @@ l4EE8:
 	mov.w	r13,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xQueueReceive: 4EF0
 ;;   Called from:
@@ -2189,7 +2189,7 @@ l00004FEC:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; xQueueReceiveFromISR: 4FF6
 ;;   Called from:
@@ -2258,7 +2258,7 @@ l00005060:
 l00005062:
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; uxQueueMessagesWaiting: 5068
 uxQueueMessagesWaiting proc
@@ -2275,7 +2275,7 @@ l507A:
 	eint
 
 l507C:
-	ret.w
+	ret
 
 ;; vQueueDelete: 507E
 vQueueDelete proc
@@ -2286,7 +2286,7 @@ vQueueDelete proc
 	mov.w	r11,r15
 	call	5192
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvUnlockQueue: 5092
 ;;   Called from:
@@ -2368,7 +2368,7 @@ l00005104:
 	mov.w	r10,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; prvIsQueueEmpty: 510C
 ;;   Called from:
@@ -2396,7 +2396,7 @@ l00005128:
 
 l0000512A:
 	mov.w	r14,r15
-	ret.w
+	ret
 
 ;; prvIsQueueFull: 512E
 ;;   Called from:
@@ -2426,7 +2426,7 @@ l0000514E:
 
 l00005152:
 	mov.w	r14,r15
-	ret.w
+	ret
 
 ;; pvPortMalloc: 5156
 ;;   Called from:
@@ -2467,7 +2467,7 @@ l00005186:
 	mov.w	r10,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vPortFree: 5192
 ;;   Called from:
@@ -2477,12 +2477,12 @@ l00005186:
 ;;     5084 (in vQueueDelete)
 ;;     508A (in vQueueDelete)
 vPortFree proc
-	ret.w
+	ret
 
 ;; vPortInitialiseBlocks: 5194
 vPortInitialiseBlocks proc
 	mov.w	#0000,&0216
-	ret.w
+	ret
 
 ;; pxPortInitialiseStack: 519A
 ;;   Called from:
@@ -2517,7 +2517,7 @@ pxPortInitialiseStack proc
 	mov.w	r13,@r15
 	sub.w	#0002,r15
 	mov.w	#0000,@r15
-	ret.w
+	ret
 
 ;; xPortStartScheduler: 520A
 ;;   Called from:
@@ -2547,7 +2547,7 @@ xPortStartScheduler proc
 ;;   Called from:
 ;;     473C (in vTaskEndScheduler)
 vPortEndScheduler proc
-	ret.w
+	ret
 
 ;; vPortYield: 523A
 ;;   Called from:
@@ -2611,7 +2611,7 @@ prvSetupTimerInterrupt proc
 	mov.w	#0010,&0162
 	bis.w	#0004,&0160
 	bis.w	#0010,&0160
-	ret.w
+	ret
 
 ;; prvTickISR: 52B4
 prvTickISR proc
@@ -2662,7 +2662,7 @@ printf proc
 	mov.w	r15,r13
 	mov.w	#43A2,r15
 	call	537E
-	ret.w
+	ret
 
 ;; PRINT: 531A
 ;;   Called from:
@@ -2703,7 +2703,7 @@ l00005342:
 l00005344:
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; __write_pad: 534A
 ;;   Called from:
@@ -2747,7 +2747,7 @@ l00005376:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; vuprintf: 537E
 ;;   Called from:
@@ -2795,14 +2795,14 @@ l000053C2:
 	jz	000053CC
 
 l000053C8:
-	br.w	5916
+	br	5916
 
 l000053CC:
 	cmp.b	#00,r7
 	jnz	000053D4
 
 l000053D0:
-	br.w	5924
+	br	5924
 
 l000053D4:
 	add.w	#0001,r6
@@ -2821,7 +2821,7 @@ l53EC:
 	jnz	53F6
 
 l000053F2:
-	br.w	58F0
+	br	58F0
 
 l000053F6:
 	mov.b	r7,r15
@@ -2830,56 +2830,56 @@ l000053F6:
 	jnz	00005406
 
 l00005402:
-	br.w	58F0
+	br	58F0
 
 l5406:
 	cmp.b	#0020,r7
 	jnz	5410
 
 l540C:
-	br.w	58DC
+	br	58DC
 
 l5410:
 	cmp.b	#0023,r7
 	jnz	541A
 
 l5416:
-	br.w	58D4
+	br	58D4
 
 l541A:
 	cmp.b	#002A,r7
 	jnz	5424
 
 l5420:
-	br.w	58B8
+	br	58B8
 
 l5424:
 	cmp.b	#002D,r7
 	jnz	542E
 
 l542A:
-	br.w	58A8
+	br	58A8
 
 l542E:
 	cmp.b	#002B,r7
 	jnz	5438
 
 l5434:
-	br.w	589E
+	br	589E
 
 l5438:
 	cmp.b	#002E,r7
 	jnz	5442
 
 l543E:
-	br.w	5838
+	br	5838
 
 l5442:
 	cmp.b	#0030,r7
 	jnz	544C
 
 l5448:
-	br.w	5822
+	br	5822
 
 l544C:
 	mov.b	r7,r15
@@ -2980,7 +2980,7 @@ l54E6:
 	jnz	54EE
 
 l54EA:
-	br.w	5924
+	br	5924
 
 l54EE:
 	mov.w	sp,002C(sp)
@@ -3029,7 +3029,7 @@ l552C:
 	jge	553E
 
 l553A:
-	br.w	5924
+	br	5924
 
 l553E:
 	mov.b	0028(sp),r14
@@ -3058,7 +3058,7 @@ l556A:
 	jge	5576
 
 l5572:
-	br.w	5924
+	br	5924
 
 l5576:
 	cmp.b	#0020,r8
@@ -3389,18 +3389,18 @@ l580C:
 
 l581A:
 	bis.b	#04,002E(sp)
-	br.w	53E8
+	br	53E8
 
 l5822:
 	bit.b	#0010,002E(sp)
 	jz	582E
 
 l582A:
-	br.w	53E8
+	br	53E8
 
 l582E:
 	bis.b	#0020,002E(sp)
-	br.w	53E8
+	br	53E8
 
 l5838:
 	mov.b	@r6,r7
@@ -3446,7 +3446,7 @@ l5882:
 
 l5884:
 	mov.b	r15,r11
-	br.w	53EC
+	br	53EC
 
 l588A:
 	mov.w	r5,r15
@@ -3461,16 +3461,16 @@ l5896:
 
 l5898:
 	mov.b	r15,r11
-	br.w	53E8
+	br	53E8
 
 l589E:
 	mov.b	#002B,0028(sp)
-	br.w	53E8
+	br	53E8
 
 l58A8:
 	bis.b	#0010,002E(sp)
 	and.b	#FFDF,002E(sp)
-	br.w	53E8
+	br	53E8
 
 l58B8:
 	mov.w	r5,r15
@@ -3480,7 +3480,7 @@ l58B8:
 	jl	58CA
 
 l58C6:
-	br.w	53E8
+	br	53E8
 
 l58CA:
 	xor.b	#FF,002F(sp)
@@ -3489,18 +3489,18 @@ l58CA:
 
 l58D4:
 	bis.b	#08,002E(sp)
-	br.w	53E8
+	br	53E8
 
 l58DC:
 	cmp.b	#00,0028(sp)
 	jz	58E6
 
 l58E2:
-	br.w	53E8
+	br	53E8
 
 l58E6:
 	mov.b	#0020,0028(sp)
-	br.w	53E8
+	br	53E8
 
 l58F0:
 	bit.b	#01,002E(sp)
@@ -3511,14 +3511,14 @@ l58F6:
 	add.w	#0004,r5
 	mov.w	@r15+,0030(sp)
 	mov.w	@r15+,0032(sp)
-	br.w	5406
+	br	5406
 
 l5906:
 	mov.w	r5,r15
 	add.w	#0002,r5
 	mov.w	@r15,0030(sp)
 	mov.w	#0000,0032(sp)
-	br.w	5406
+	br	5406
 
 l5916:
 	mov.w	r13,r14
@@ -3527,7 +3527,7 @@ l5916:
 	jl	5924
 
 l5920:
-	br.w	53CC
+	br	53CC
 
 l5924:
 	mov.w	&021A,r15
@@ -3540,7 +3540,7 @@ l5924:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; memchr: 593E
 ;;   Called from:
@@ -3575,7 +3575,7 @@ l0000595A:
 
 l0000595E:
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; strncpy: 5962
 ;;   Called from:
@@ -3617,7 +3617,7 @@ l00005984:
 l0000598E:
 	mov.w	r11,r15
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; memcpy: 5994
 ;;   Called from:
@@ -3778,7 +3778,7 @@ l00005A60:
 	mov.w	r10,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 ;; memset: 5A68
 ;;   Called from:
@@ -3860,7 +3860,7 @@ l00005ACE:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
-	ret.w
+	ret
 
 l5AD8:
 	bis.w	r15,sr
@@ -3879,7 +3879,7 @@ fn00005ADC proc
 	mov.w	r13,&0134
 	mov.w	r10,&0138
 	mov.w	&013A,r15
-	ret.w
+	ret
 
 ;; fn00005B04: 00005B04
 ;;   Called from:
@@ -3934,7 +3934,7 @@ l00005B44:
 	addc.w	#0000,r13
 
 l00005B4C:
-	ret.w
+	ret
 
 ;; fn00005B4E: 00005B4E
 ;;   Called from:
@@ -3973,4 +3973,4 @@ l00005B6C:
 	jnz	00005B58
 
 l00005B76:
-	ret.w
+	ret

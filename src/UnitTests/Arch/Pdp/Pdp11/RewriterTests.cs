@@ -211,8 +211,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         {
             Given_HexString("9A00");
             AssertCode(     // spl      #2
-                "0|L--|03E0(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0200(2): 1 instructions",
+                "1|L--|__set_priority_level(2<8>)");
         }
 
         [Test]

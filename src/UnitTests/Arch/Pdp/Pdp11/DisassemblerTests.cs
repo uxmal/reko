@@ -39,7 +39,6 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         public void Setup()
         {
             this.options = MachineInstructionRendererOptions.Default;
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         private void RunTest(string expected, params ushort[] words)
