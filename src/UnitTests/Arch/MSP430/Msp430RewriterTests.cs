@@ -79,6 +79,15 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
+        public void MSP430XRw_mov_to_pc()
+        {
+            Given_HexString("0046");
+            AssertCode(     // br r6
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|goto r6");
+        }
+
+        [Test]
         public void Msp430Rw_call()
         {
             Given_Bytes(0x8D, 0x12);	// call	r13

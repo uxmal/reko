@@ -18,7 +18,6 @@
  */
 #endregion
 
-using IronPython.Runtime;
 using NUnit.Framework;
 using Reko.Arch.Msp430;
 using Reko.Core.Machine;

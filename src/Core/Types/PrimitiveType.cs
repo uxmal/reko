@@ -56,7 +56,7 @@ namespace Reko.Core.Types
             this.IsWord = isWord;
 		}
 
-        public override bool IsPointer { get { return Domain == Domain.Pointer; } }
+        public override bool IsPointer => Domain == Domain.Pointer;
 
         public override void Accept(IDataTypeVisitor v)
         {

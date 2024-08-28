@@ -90,5 +90,11 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("rrum.w\t#01,r12", "5C03");
         }
+
+        [Test]
+        public void MSP430XDis_mov_to_pc()
+        {
+            AssertCode("br\tr6", "0046");
+        }
     }
 }

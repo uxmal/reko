@@ -219,7 +219,18 @@ namespace Reko.Arch.Msp430
             var aS = (uInstr >> 4) & 0x03;
             var iReg = (uInstr >> 8) & 0x0F;
             var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth!);
-            if (op1 == null)
+            if (op1 is null)
+                return false;
+            dasm.ops.Add(op1);
+            return true;
+        }
+
+        private static bool Saddr(uint uInstr, Msp430Disassembler dasm)
+        {
+            var aS = (uInstr >> 4) & 0x03;
+            var iReg = (uInstr >> 8) & 0x0F;
+            var op1 = dasm.SourceOperand(aS, iReg, false, dasm.arch.PointerType);
+            if (op1 is null)
                 return false;
             dasm.ops.Add(op1);
             return true;
@@ -230,7 +241,7 @@ namespace Reko.Arch.Msp430
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
             var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth!);
-            if (op1 == null)
+            if (op1 is null)
                 return false;
             dasm.ops.Add(op1);
             return true;
@@ -416,6 +427,8 @@ namespace Reko.Arch.Msp430
             {
                 if (!rdr.TryReadLeInt16(out short offset))
                     return null;
+                if (dataWidth is not null && dataWidth.IsPointer)
+                    return AddressOperand.Ptr16((ushort)offset);
                 return ImmediateOperand.Word16((ushort) offset);
             }
             else

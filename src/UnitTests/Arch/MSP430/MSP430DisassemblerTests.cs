@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_ret()
         {
-            AssertCode("ret.w", "3041");
+            AssertCode("ret", "3041");
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_goto()
         {
-            AssertCode("br.w\t414C", "30404C41");
+            AssertCode("br\t414C", "30404C41");
         }
 
         [Test]

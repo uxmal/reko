@@ -207,7 +207,11 @@ namespace Reko.Arch.Msp430
                 new JmpDecoder(jmps),
                 new JmpDecoder(jmps),
 
-                Instr(Mnemonics.mov, w,S,D),
+                Select(u => (u & 0x0F3F) == 0x0130, // mask: As & S
+                    Instr(Mnemonics.ret, InstrClass.Transfer|InstrClass.Return),
+                    Select(u => (u & 0x8F) == 0, // mask: Ad & D
+                        Instr(Mnemonics.br, InstrClass.Transfer, Saddr),
+                        Instr(Mnemonics.mov, w,S,D))),
                 Instr(Mnemonics.add, w,S,D),
                 Instr(Mnemonics.addc, w,S,D),
                 Instr(Mnemonics.subc, w,S,D),
@@ -228,12 +232,12 @@ namespace Reko.Arch.Msp430
                 };
             }
 
-            private Decoder Instr(Mnemonics mnemonic, params Mutator<Msp430Disassembler>[] mutators)
+            private static Decoder Instr(Mnemonics mnemonic, params Mutator<Msp430Disassembler>[] mutators)
             {
                 return new InstrDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>(InstrClass.Linear, mnemonic, mutators);
             }
 
-            private Decoder Instr(Mnemonics mnemonic, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
+            private static Decoder Instr(Mnemonics mnemonic, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
             {
                 return new InstrDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>(iclass, mnemonic, mutators);
             }
