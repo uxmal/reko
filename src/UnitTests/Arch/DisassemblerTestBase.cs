@@ -20,15 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Services;
-using NUnit.Framework.Interfaces;
 using Reko.Core.Memory;
+using Reko.Core.Services;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch
 {

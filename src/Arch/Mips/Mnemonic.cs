@@ -338,5 +338,6 @@ namespace Reko.Arch.Mips
         rotx,
         llwp,
         scwp,
+        synci,
     }
 }

@@ -21,11 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.Infineon;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.TriCore
 {
@@ -93,6 +88,16 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_adds()
+        {
+            Given_HexString("6280");
+            AssertCode(     // adds	d0,d8
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|d0 = __sat_add_signed(d0, d8)",
+                "2|L--|V_SV_AV_SAV = cond(d0)");
+        }
+
+        [Test]
         public void TriCoreRw_addsc_a()
         {
             Given_HexString("10CF");
@@ -111,12 +116,51 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_and_eq()
+        {
+            Given_HexString("8B2500F4");
+            AssertCode(     // and.eq	d15,d5,#0x2
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = __bit<word32,int32>(d15, 0<i32>)",
+                "2|L--|d15 = __write_bit<word32,int32>(d15, 0<i32>, v3 & d5 == 2<16>)");
+        }
+
+        [Test]
+        public void TriCoreRw_and_lt_u()
+        {
+            Given_HexString("0B4F3032");
+            AssertCode(     // and.lt.u	d3,d15,d4
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = __bit<word32,int32>(d3, 0<i32>)",
+                "2|L--|d3 = __write_bit<word32,int32>(d3, 0<i32>, v3 & d15 <u d4)");
+        }
+
+
+        [Test]
         public void TriCoreRw_andn()
         {
             Given_HexString("8F00C801");
             AssertCode(     // andn	d0,d0,#0x80
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d0 = d0 & ~0x80<32>");
+        }
+
+        [Test]
+        public void TriCoreRw_bisr()
+        {
+            Given_HexString("E00D");
+            AssertCode(     // bisr	d13,#0xD
+                "0|S--|00100000(2): 1 instructions",
+                "1|L--|__begin_isr(d13)");
+        }
+
+        [Test]
+        public void TriCoreRw_cadd()
+        {
+            Given_HexString("8A12");
+            AssertCode(     // cadd	d2,d15,#0x1
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|d2 = d15 != 0<32> ? d2 + 1<32> : d2");
         }
 
         [Test]
@@ -149,12 +193,33 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_cmovn()
+        {
+            Given_HexString("EAED");
+            AssertCode(     // cmovn	d13,d15,#0xFFFFFFFE
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|d13 = d15 == 0<32> ? 0xFFFFFFFE<32> : d13");
+        }
+
+
+
+        [Test]
         public void TriCoreRw_debug()
         {
             Given_HexString("00A0");
             AssertCode(     // debug
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|__debug()");
+        }
+
+        [Test]
+        public void TriCoreRw_dextr()
+        {
+            Given_HexString("17FC8202");
+            AssertCode(     // dextr	d0,d12,d15,d2
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = d12_d15 >>u d2",
+                "2|L--|d0 = SLICE(v5, word32, 0)");
         }
 
         [Test]
@@ -171,6 +236,16 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_eq_a()
+        {
+            Given_HexString("01400F64");
+            AssertCode(     // eq.a	d6,a0,a4
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = a0 == a4",
+                "2|L--|d6 = CONVERT(v3, bool, word32)");
+        }
+
+        [Test]
         public void TriCoreRw_extr()
         {
             Given_HexString("3700640E");
@@ -178,6 +253,37 @@ namespace Reko.UnitTests.Arch.TriCore
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = SLICE(d0, word4, 28)",
                 "2|L--|d0 = CONVERT(v4, word4, int32)");
+        }
+
+        [Test]
+        [Ignore("not yet")]
+        public void TriCoreRw_extr_2()
+        {
+            Given_HexString("57FA40A4");
+            AssertCode(     // extr	d10,d10,d4,#0x0
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = a12 >=u a2",
+                "2|L--|d9 = CONVERT(v3, bool, word32)");
+        }
+
+        [Test]
+        public void TriCoreRw_ge_a()
+        {
+            Given_HexString("012C3094");
+            AssertCode(     // ge.a	d9,a12,a2
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = a12 >=u a2",
+                "2|L--|d9 = CONVERT(v3, bool, word32)");
+        }
+
+        [Test]
+        public void TriCoreRw_ge_u()
+        {
+            Given_HexString("0B255011");
+            AssertCode(     // ge.u	d1,d5,d2
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = d5 >=u d2",
+                "2|L--|d1 = CONVERT(v3, bool, word32)");
         }
 
         [Test]
@@ -253,6 +359,25 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_jlt_u()
+        {
+            Given_HexString("BFF22880");
+            AssertCode(     // jlt.u	d2,#0xFFFFFFFF,00001976
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (d2 <u 0xFFFFFFFF<32>) branch 00100050");
+        }
+
+        [Test]
+        public void TriCoreRw_jltz()
+        {
+            Given_HexString("0E00");
+            AssertCode(     // jltz	d0,00000614
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (d0 < 0<32>) branch 00100000");
+        }
+
+
+        [Test]
         public void TriCoreRw_jne()
         {
             Given_HexString("5FF20E80");
@@ -268,6 +393,15 @@ namespace Reko.UnitTests.Arch.TriCore
             AssertCode(     // jnz	d15,00000C2E
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|if (d15 != 0<32>) branch 000FFFFA");
+        }
+
+        [Test]
+        public void TriCoreRw_jnz_a()
+        {
+            Given_HexString("7CFB");
+            AssertCode(     // jnz.a	a15,000010EE
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (a15 != 0<32>) branch 00100016");
         }
 
         [Test]
@@ -377,6 +511,16 @@ namespace Reko.UnitTests.Arch.TriCore
                 "2|L--|d4 = Mem0[a0:word32]");
         }
 
+        [Ignore("Complex")]
+        [Test]
+        public void TriCoreRw_lducx()
+        {
+            Given_HexString("15FD820F");
+            AssertCode(     // lducx	[0003F802]
+                "0|L--|000012A6(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
         [Test]
         public void TriCoreRw_lea()
         {
@@ -407,6 +551,27 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_lt()
+        {
+            Given_HexString("8B154022");
+            AssertCode(     // lt	d2,d5,#0x1
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = d5 < 1<32>",
+                "2|L--|d2 = CONVERT(v3, bool, word32)");
+        }
+
+        [Test]
+        public void TriCoreRw_madd()
+        {
+            Given_HexString("130034A2");
+            AssertCode(     // madd	d10,d2,d0,#0xFF40
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|d10 = d2 + d0 *s 0xFF40<u32>",
+                "2|L--|V_SV_AV_SAV = cond(d10)");
+        }
+
+
+        [Test]
         public void TriCoreRw_madd_u()
         {
             Given_HexString("13025029");
@@ -414,6 +579,16 @@ namespace Reko.UnitTests.Arch.TriCore
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|d2 = d9 + d2 *u 0xFF00<u32>",
                 "2|L--|V_SV_AV_SAV = cond(d2)");
+        }
+
+        [Test]
+        public void TriCoreRw_madds_u()
+        {
+            Given_HexString("13FE8212");
+            AssertCode(     // madds.u	d1,d2,d14,#0x2F
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|d1 = __sat_add_unsigned(d2, d14 *u 0x2F<u32>)",
+                "2|L--|V_SV_AV_SAV = cond(d1)");
         }
 
         [Test]
@@ -527,6 +702,17 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_ne_a()
+        {
+            Given_HexString("01001444");
+            AssertCode(     // ne.a	d4,a0,a0
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = a0 != a0",
+                "2|L--|d4 = CONVERT(v3, bool, word32)");
+        }
+
+
+        [Test]
         public void TriCoreRw_or()
         {
             Given_HexString("8F004F01");
@@ -543,6 +729,16 @@ namespace Reko.UnitTests.Arch.TriCore
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = __bit<word32,int32>(d4, 0<i32>)",
                 "2|L--|d4 = __write_bit<word32,int32>(d4, 0<i32>, v3 | d15 == 0<16>)");
+        }
+
+        [Test]
+        public void TriCoreRw_or_ne()
+        {
+            Given_HexString("8B140015");
+            AssertCode(     // or.ne	d1,d4,#0x1
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = __bit<word32,int32>(d1, 0<i32>)",
+                "2|L--|d1 = __write_bit<word32,int32>(d1, 0<i32>, v3 | d4 != 1<16>)");
         }
 
         [Test]
@@ -563,6 +759,45 @@ namespace Reko.UnitTests.Arch.TriCore
                 "0|R--|00100000(2): 2 instructions",
                 "1|L--|__load_upper_context()",
                 "2|R--|return (0,0)");
+        }
+
+        [Test]
+        public void TriCoreRw_rfe()
+        {
+            Given_HexString("0080");
+            AssertCode(     // rfe
+                "0|R--|00100000(2): 2 instructions",
+                "1|L--|__return_from_exception()",
+                "2|R--|return (0,0)");
+        }
+
+        [Ignore("Not ready yet")]
+        [Test]
+        public void TriCoreRw_rslcx()
+        {
+            Given_HexString("0D8060D2");
+            AssertCode(     // rslcx
+                "0|L--|00001904(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void TriCoreRw_rsub()
+        {
+            Given_HexString("8B0F0021");
+            AssertCode(     // rsub	d2,d15,#0x0
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|d2 = 0<16> - d15",
+                "2|L--|V_SV_AV_SAV = cond(d2)");
+        }
+
+        [Test]
+        public void TriCoreRw_sat_b()
+        {
+            Given_HexString("3200");
+            AssertCode(     // sat.b	d0
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|d0 = __saturate<int8,int32>(d0)");
         }
 
         [Test]
@@ -664,6 +899,16 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreRw_xnor_t()
+        {
+            Given_HexString("0700580C");
+            AssertCode(     // xor.t	d0,d0,#0x18,d0,#0x18
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = ~(__bit<word32,int32>(d0, 24<i32>) ^ __bit<word32,int32>(d0, 24<i32>))",
+                "2|L--|d0 = CONVERT(v4, bool, uint32)");
+        }
+
+        [Test]
         public void TriCoreRw_xor()
         {
             Given_HexString("8F238031");
@@ -672,19 +917,14 @@ namespace Reko.UnitTests.Arch.TriCore
                 "1|L--|d3 = d3 ^ 2<32>");
         }
 
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-
-
-
-
-
+        [Test]
+        public void TriCoreRw_xor_t()
+        {
+            Given_HexString("07007B00");
+            AssertCode(     // xor.t	d0,d0,#0x1B,d0,#0x0
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = __bit<word32,int32>(d0, 27<i32>) ^ __bit<word32,int32>(d0, 0<i32>)",
+                "2|L--|d0 = CONVERT(v4, bool, uint32)");
+        }
     }
 }

@@ -199,6 +199,24 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Convenience method that generates a <see cref="BinaryExpression"/> using
+        /// the provided <see cref="BinaryOperator"/> and assuming the returned 
+        /// data type is the same as the one of its first operand.
+        /// </summary>
+        /// <param name="op">The binary operator of the resulting expression.</param>
+        /// <param name="left">The first operand of the resulting expression.</param>
+        /// <param name="right">The second operand of the resulting expression.</param>
+        /// <returns>A binary expression.</returns>
+        public BinaryExpression BinC(BinaryOperator op, Expression left, Expression right, Expression carryFlag)
+        {
+            return new BinaryExpression(
+                op,
+                left.DataType,
+                new BinaryExpression(op, left.DataType, left, right),
+                carryFlag);
+        }
+
+        /// <summary>
         /// Short-circuiting 'and' ('&&' in C family of languages)
         /// </summary>
         /// <param name="a">Antecedent expression.</param>

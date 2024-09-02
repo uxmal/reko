@@ -687,8 +687,8 @@ namespace Reko.Arch.Mips
                 Mask(2, 1, "  P16.SYSCALL",
                     Instr(Mnemonic.syscall, InstrClass.Call | InstrClass.Transfer, U(0, 2)),
                     vz),
-                Nyi("BREAK[16]"),
-                Nyi("SDBBP[16]"));
+                Instr(Mnemonic.@break, InstrClass.Terminates, U(0, 3)),
+                Instr(Mnemonic.sdbbp, InstrClass.Terminates, U(0, 3)));
 
             var p16_mv = Select((5, 5), Eq0, "P16.MV",
                 p16_ri,
@@ -871,6 +871,8 @@ namespace Reko.Arch.Mips
                 Nyi("SOV"),
                 Nyi("invalid"));
 
+            var _MT_ = invalid;  // *(MT) in manual
+
             var pool32a0_1 = Mask(Bf((6, 4), (3, 2)), "  POOL32A0_1",
                 invalid,
                 invalid,
@@ -915,13 +917,13 @@ namespace Reko.Arch.Mips
 
                 // 20
                 invalid,
-                Nyi("(MT)"),
-                Nyi("(MT)"),
+                _MT_,
+                _MT_,
                 Nyi("mftr"),
 
                 invalid,
-                Nyi("(MT)"),
-                Nyi("(MT)"),
+                _MT_,
+                _MT_,
                 Nyi("mttr"),
 
                 invalid,
@@ -1258,7 +1260,9 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.lb, R21,Mu(PrimitiveType.SByte,16,12)),
                     Instr(Mnemonic.sb, R21,Mu(PrimitiveType.Byte,16,12)),
                     Instr(Mnemonic.lbu, R21,Mu(PrimitiveType.Byte,16,12)),
-                    Nyi("P.PREF[U12]"),
+                    Select((21, 5), u => u == 0x1F, "  P.PREF[U12]",
+                        Instr(Mnemonic.synci, Mu(PrimitiveType.UInt16,16,12)),
+                        Instr(Mnemonic.pref, Mu(PrimitiveType.UInt16, 16, 12))),
 
                     Instr(Mnemonic.lh, R21, Mu(PrimitiveType.Int16, 16, 12)),
                     Instr(Mnemonic.sh, R21, Mu(PrimitiveType.Word16, 16, 12)),

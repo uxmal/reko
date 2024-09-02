@@ -235,6 +235,11 @@ namespace Reko.Arch.X86.Rewriter
             VexAssign(isVex, SrcOp(0), m.Fn(intrinsic, SrcOp(1)));
         }
 
+        private void RewriteMovntps(bool isVex, IntrinsicProcedure intrinsic)
+        {
+            VexAssign(isVex, SrcOp(0), m.Fn(intrinsic, SrcOp(1)));
+        }
+
         private void RewriteMovlhps()
         {
             var src = SrcOp(1);

@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -75,24 +76,34 @@ namespace Reko.Arch.Infineon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.add: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.add: RewriteArithmetic(Operator.IAdd, 1, 2); break;
                 case Mnemonic.add_a: RewriteLogical(m.IAdd); break;
                 case Mnemonic.addi: RewriteAddi(); break;
                 case Mnemonic.addih: RewriteAddih(); break;
                 case Mnemonic.addih_a: RewriteAddih_a(); break;
+                case Mnemonic.adds: RewriteAdds(); break;
                 case Mnemonic.addsc_a: RewriteAddsc_a(); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
+                case Mnemonic.and_eq: RewriteLogicalBitAccumulate(m.And, m.Eq); break;
+                case Mnemonic.and_lt_u: RewriteLogicalBitAccumulate(m.And, m.Ult); break;
                 case Mnemonic.andn: RewriteLogical(Andn); break;
+                case Mnemonic.bisr: RewriteBisr(); break;
+                case Mnemonic.cadd: RewriteCadd(); break;
                 case Mnemonic.call:
                 case Mnemonic.calli: RewriteCall(); break;
                 case Mnemonic.cmov: RewriteCmov(m.Ne0); break;
+                case Mnemonic.cmovn: RewriteCmov(m.Eq0); break;
                 case Mnemonic.debug: RewriteDebug(); break;
+                case Mnemonic.dextr: RewriteDextr(); break;
                 case Mnemonic.disable: RewriteDisable(); break;
                 case Mnemonic.div: RewriteDiv(m.SDiv, m.SMod); break;
                 case Mnemonic.eq: RewriteBool(m.Eq); break;
+                case Mnemonic.eq_a: RewriteBool(m.Eq); break;
                 case Mnemonic.extr: RewriteExtr(PrimitiveType.Int32); break;
                 case Mnemonic.extr_u: RewriteExtr(PrimitiveType.UInt32); break;
                 case Mnemonic.ge: RewriteBool(m.Ge); break;
+                case Mnemonic.ge_a: RewriteBool(m.Uge); break;
+                case Mnemonic.ge_u: RewriteBool(m.Uge); break;
                 case Mnemonic.insert: RewriteInsert(); break;
                 case Mnemonic.isync: RewriteIsync(); break;
                 case Mnemonic.j: RewriteJ(); break;
@@ -103,8 +114,11 @@ namespace Reko.Arch.Infineon
                 case Mnemonic.ji: RewriteJi(); break;
                 case Mnemonic.jl: RewriteJl(); break;
                 case Mnemonic.jlt: RewriteJ(m.Lt); break;
+                case Mnemonic.jlt_u: RewriteJ(m.Ult); break;
+                case Mnemonic.jltz: RewriteJ(m.Lt0); break;
                 case Mnemonic.jne: RewriteJ(m.Ne); break;
                 case Mnemonic.jnz: RewriteJ(m.Ne0); break;
+                case Mnemonic.jnz_a: RewriteJ(m.Ne0); break;
                 case Mnemonic.jnz_t: RewriteJz_t(false); break;
                 case Mnemonic.jz:
                 case Mnemonic.jz_a: RewriteJ(m.Eq0); break;
@@ -119,8 +133,11 @@ namespace Reko.Arch.Infineon
                 case Mnemonic.lea: RewriteLea(); break;
                 case Mnemonic.lha: RewriteLha(); break;
                 case Mnemonic.loop: RewriteLoop(); break;
+                case Mnemonic.lt: RewriteBool(m.Lt); break;
                 case Mnemonic.lt_u: RewriteBool(m.Ult); break;
-                case Mnemonic.madd_u: RewriteMadd(m.UMul); break;
+                case Mnemonic.madd: RewriteMadd(Operator.SMul, Operator.IAdd); break;
+                case Mnemonic.madd_u: RewriteMadd(Operator.UMul, Operator.IAdd); break;
+                case Mnemonic.madds_u: RewriteMadds(m.UMul, adds_u); break;
                 case Mnemonic.max: RewriteIntrinsic(CommonOps.Max.MakeInstance(PrimitiveType.Int32)); break;
                 case Mnemonic.max_u: RewriteIntrinsic(CommonOps.Max.MakeInstance(PrimitiveType.UInt32)); break;
                 case Mnemonic.mfcr: RewriteMfcr(); break;
@@ -136,11 +153,16 @@ namespace Reko.Arch.Infineon
                 case Mnemonic.mtcr: RewriteMtcr(); break;
                 case Mnemonic.mul: RewriteMul(); break;
                 case Mnemonic.ne: RewriteBool(m.Ne); break;
+                case Mnemonic.ne_a: RewriteBool(m.Ne); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.or: RewriteLogical(m.Or); break;
                 case Mnemonic.or_eq: RewriteLogicalBitAccumulate(m.Or, m.Eq); break;
+                case Mnemonic.or_ne: RewriteLogicalBitAccumulate(m.Or, m.Ne); break;
                 case Mnemonic.orn_t: RewriteLogicalBit(Orn); break;
                 case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.rfe: RewriteRfe(); break;
+                case Mnemonic.rsub: RewriteArithmetic(Operator.ISub, 2, 1); break;
+                case Mnemonic.sat_b: RewriteSaturate(PrimitiveType.SByte, PrimitiveType.Int32); break;
                 case Mnemonic.sel: RewriteSelect(2, 3); break;
                 case Mnemonic.seln: RewriteSelect(3, 2); break;
                 case Mnemonic.sh: RewriteShift(m.Shr); break;
@@ -150,9 +172,11 @@ namespace Reko.Arch.Infineon
                 case Mnemonic.st_h: RewriteSt(PrimitiveType.Word16); break;
                 case Mnemonic.st_w: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stucx: RewriteStucx(); break;
-                case Mnemonic.sub: RewriteArithmetic(m.ISub); break;
+                case Mnemonic.sub: RewriteArithmetic(Operator.ISub, 1, 2); break;
                 case Mnemonic.sub_a: RewriteLogical(m.ISub); break;
+                case Mnemonic.xnor_t: RewriteLogicalBit(Xnor); break;
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
+                case Mnemonic.xor_t: RewriteLogicalBit(m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 rtls.Clear();
@@ -233,6 +257,10 @@ namespace Reko.Arch.Infineon
             return m.Or(a, m.Comp(b));
         }
 
+        private Expression Xnor(Expression a, Expression b)
+        {
+            return m.Comp(m.Xor(a, b));
+        }
 
         private void RewriteAddi()
         {
@@ -260,7 +288,16 @@ namespace Reko.Arch.Infineon
             m.Assign(dst, m.IAdd(op, m.Word32(imm << 16)));
         }
 
-        private void RewriteAddsc_a()
+        private void RewriteAdds()
+        {
+            var left = Operand(0);
+            var right = Operand(1, true);
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(adds, left, right));
+            m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
+        }
+
+    private void RewriteAddsc_a()
         {
             var op1 = Operand(1);
             var op2 = Operand(2);
@@ -275,22 +312,22 @@ namespace Reko.Arch.Infineon
                 m.Assign(dst, m.IAdd(op1, m.Shl(op2, sh)));
             }
         }
-
-        private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
+        
+        private void RewriteArithmetic(BinaryOperator type, int iopleft, int iopRight)
         {
             Expression dst;
             if (instr.Operands.Length == 2)
             {
                 dst = Operand(0);
                 var right = Operand(1, true);
-                m.Assign(dst, fn(dst, right));
+                m.Assign(dst, m.Bin(type, dst, right));
             }
             else
             {
-                var left = Operand(1);
-                var right = Operand(2, true);
+                var left = Operand(iopleft);
+                var right = Operand(iopRight, true);
                 dst = Operand(0);
-                m.Assign(dst, fn(left, right));
+                m.Assign(dst, m.Bin(type, left, right));
             }
             m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
         }
@@ -303,6 +340,30 @@ namespace Reko.Arch.Infineon
             var dst = Operand(0);
             m.Assign(tmp, fn(op1, op2));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, dst.DataType));
+        }
+
+        private void RewriteBisr()
+        {
+            m.SideEffect(m.Fn(bisr, Operand(0)));
+        }
+
+        private void RewriteCadd()
+        {
+            if (instr.Operands.Length != 3)
+            {
+                EmitUnitTest();
+                m.Invalid();
+                iclass = InstrClass.Invalid;
+                return;
+            }
+            var d15 = binder.EnsureRegister(Registers.DataRegisters[15]);
+            var reg = Operand(0);
+            var addend = Operand(2);
+            m.Assign(reg, m.Conditional(
+                reg.DataType,
+                m.Ne0(d15),
+                m.IAdd(reg, addend),
+                reg));
         }
 
         private void RewriteCall()
@@ -324,6 +385,17 @@ namespace Reko.Arch.Infineon
             m.SideEffect(m.Fn(debug));
         }
 
+        private void RewriteDextr()
+        {
+            var reg64 = binder.EnsureSequence(
+                PrimitiveType.Word64,
+                (RegisterStorage) instr.Operands[1],
+                (RegisterStorage) instr.Operands[2]);
+            var shift = Operand(3);
+            var tmp = binder.CreateTemporary(reg64.DataType);
+            m.Assign(tmp, m.Shr(reg64, shift));
+            m.Assign(Operand(0), m.Slice(tmp, PrimitiveType.Word32));
+        }
         private void RewriteDisable()
         {
             m.SideEffect(m.Fn(disable));
@@ -545,7 +617,7 @@ namespace Reko.Arch.Infineon
             m.Branch(m.Ne0(tmp), AddrOp(1));
         }
 
-        private void RewriteMadd(Func<Expression,Expression,Expression> func)
+        private void RewriteMadd(BinaryOperator mul, BinaryOperator add)
         {
             var op1 = Operand(1);
             var op2 = Operand(2);
@@ -555,11 +627,28 @@ namespace Reko.Arch.Infineon
                 op3 = Constant.UInt32(c.ToUInt32());
             }
             var dst = Operand(0);
-            m.Assign(dst, m.IAdd(op1, func(op2, op3)));
+            m.Assign(dst, m.Bin(add, op1, m.Bin(mul, op2, op3)));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.V_SV_AV_SAV),
                 m.Cond(dst));
         }
+
+        private void RewriteMadds(Func<Expression, Expression, Expression> mul, IntrinsicProcedure add)
+        {
+            var op1 = Operand(1);
+            var op2 = Operand(2);
+            var op3 = Operand(3);
+            if (op3 is Constant c)
+            {
+                op3 = Constant.UInt32(c.ToUInt32());
+            }
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(add, op1, mul(op2, op3)));
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.V_SV_AV_SAV),
+                m.Cond(dst));
+        }
+
 
         private void RewriteMfcr()
         {
@@ -642,6 +731,26 @@ namespace Reko.Arch.Infineon
             m.Return(0, 0);
         }
 
+        private void RewriteRfe()
+        {
+            m.SideEffect(m.Fn(rfe));
+            m.Return(0, 0);
+        }
+
+        private void RewriteSaturate(PrimitiveType dtSrc, PrimitiveType dtDst)
+        {
+            int iSrc;
+            if (instr.Operands.Length == 1)
+            {
+                iSrc = 0;
+            }
+            else
+            {
+                iSrc = 1;
+            }
+            m.Assign(Operand(0), m.Fn(sat.MakeInstance(dtSrc, dtDst), Operand(iSrc)));
+        }
+
         private void RewriteSelect(int iop1, int iop2)
         {
             var sel = m.Ne0(Operand(1));
@@ -722,6 +831,11 @@ namespace Reko.Arch.Infineon
             m.SideEffect(m.Fn(stucx));
         }
 
+        private static readonly IntrinsicProcedure adds = IntrinsicBuilder.Binary("__sat_add_signed", PrimitiveType.Int32);
+        private static readonly IntrinsicProcedure adds_u = IntrinsicBuilder.Binary("__sat_add_unsigned", PrimitiveType.UInt32);
+        private static readonly IntrinsicProcedure bisr = new IntrinsicBuilder("__begin_isr", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure debug = new IntrinsicBuilder("__debug", true)
             .Void();
         private static readonly IntrinsicProcedure disable = new IntrinsicBuilder("__disable", true)
@@ -744,6 +858,14 @@ namespace Reko.Arch.Infineon
             .Param(PrimitiveType.UInt32)
             .Param(PrimitiveType.Word32)
             .Void();
+
+        private static readonly IntrinsicProcedure rfe = new IntrinsicBuilder("__return_from_exception", false)
+            .Void();
+
+        private static readonly IntrinsicProcedure sat = new IntrinsicBuilder("__saturate", false)
+            .GenericTypes("TIn", "TOut")
+            .Params("TIn")
+            .Returns("TOut");
         private static readonly IntrinsicProcedure stucx = new IntrinsicBuilder("__store_upper_context", false)
             .Void();
 

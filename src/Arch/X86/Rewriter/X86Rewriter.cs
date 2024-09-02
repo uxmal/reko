@@ -424,6 +424,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vmovaps: RewriteMov(); break;
                 case Mnemonic.movddup: RewriteMovddup(false, movddup_intrinsic); break;
                 case Mnemonic.vmovddup: RewriteMovddup(true, movddup_intrinsic); break;
+                case Mnemonic.vmovntps: RewriteMovntps(true, movntps_intrinsic); break;
                 case Mnemonic.vmread: RewriteVmread(); break;
                 case Mnemonic.vmwrite: RewriteVmwrite(); break;
                 case Mnemonic.movbe: RewriteMovbe(); break;
@@ -1555,6 +1556,7 @@ namespace Reko.Arch.X86.Rewriter
         private static readonly IntrinsicProcedure min_intrinsic;
         private static readonly IntrinsicProcedure movbe_intrinsic;
         private static readonly IntrinsicProcedure movddup_intrinsic = GenericUnaryIntrinsic("__movddup");
+        private static readonly IntrinsicProcedure movntps_intrinsic = GenericUnaryIntrinsic("__movntps");
         private static readonly IntrinsicProcedure movhp_intrinsic = GenericConversionIntrinsic("__movhp");
         private static readonly IntrinsicProcedure movlp_intrinsic = GenericConversionIntrinsic("__movlp");
         private static readonly IntrinsicProcedure movmskb_intrinsic;

@@ -803,7 +803,7 @@ namespace Reko.Arch.Avr.Avr32
 
             var subhh_w = Instr(Mnemonic.subhh_w, Rw0, Rh25_5, Rh16_4);
 
-            var wide00000 = Sparse(8, 8, "  wide00000", Nyi(""),
+            var wide00000 = Sparse(8, 8, "  wide00000", invalid,
                 (0x00, Sparse(4, 4, "  0x00", Nyi(""),
                     (0b0000, add3WithShift),
                     (0b0001, add3WithShift),
@@ -1345,18 +1345,18 @@ namespace Reko.Arch.Avr.Avr32
                                 (0x14, Instr<Avr32Disassembler>(Mnemonic.frs)),
                                 (0x15, Instr<Avr32Disassembler>(Mnemonic.sscall)),
                                 (0x16, Instr<Avr32Disassembler>(Mnemonic.retss, InstrClass.Transfer|InstrClass.Return))),
-                            Nyi("100"),
-                            Nyi("101"),
-                            Nyi("110"),
-                            Nyi("111")),
+                            invalid,
+                            invalid,
+                            invalid,
+                            invalid),
 
-                        Nyi("0b0100"),
-                        Nyi("0b0101"),
+                        invalid,
+                        invalid,
                         invalid,
                         invalid,
 
-                        Nyi("0b1000"),
-                        Nyi("0b1001"),
+                        invalid,
+                        invalid,
                         Instr(Mnemonic.popm, multiRegisterCompact(true, true)),
                         invalid,
                         

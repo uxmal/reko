@@ -94,6 +94,7 @@ namespace Reko.Arch.CompactRisc
         private static readonly Bitfield bf4_3 = new Bitfield(4, 3);
         private static readonly Bitfield[] bf_abs24 = Bf((0, 4), (8, 4), (16, 16));
         private static readonly Bitfield[] bf_disp20 = Bf((8, 4), (16, 16));
+        private static readonly Bitfield[] bf_disp24_1 = Bf((8, 4), (16, 16));
         private static readonly Bitfield[] bf8_4_0_4 = Bf((8, 4), (0, 4));
         private static readonly Bitfield[] bf0_1_1_15 = Bf((0, 1), (1, 15));
         private static readonly Bitfield[] bf0_1_16_8_1_15 = Bf((0, 1), (16, 8), (1, 15));
@@ -926,10 +927,10 @@ namespace Reko.Arch.CompactRisc
                 Instr(Mnemonic.ashuw, cnt_4_4, R0),
                 Instr(Mnemonic.ashuw, neg_cnt_4_4, R0),
 
-                Nyi("0100 0100 xxxx xxxx  Fmt15 1 ZZ  lshb reg, reg 4 dest reg 4 count reg"),
+                Instr(Mnemonic.lshb, R4, R0),
                 Instr(Mnemonic.ashuw, R4, R0),
                 Instr(Mnemonic.lshw, R4, R0),
-                Nyi("0100 0111 xxxx xxxx  Fmt15 1 ZZ  lshd reg, rp 4 dest rp 4 count reg"),
+                Instr(Mnemonic.lshd, R4, R0),
 
                 Instr(Mnemonic.ashud, R4, rp0),
                 Instr(Mnemonic.lshw, neg_cnt_4_4, R0),

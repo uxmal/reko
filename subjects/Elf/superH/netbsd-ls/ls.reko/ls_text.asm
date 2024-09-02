@@ -3669,7 +3669,6 @@ l00403AA4:
 	invalid
 	invalid
 	invalid
-	invalid
 	mov.l	(00403B28),r15                                       ; @(58,pc)
 	invalid
 	invalid

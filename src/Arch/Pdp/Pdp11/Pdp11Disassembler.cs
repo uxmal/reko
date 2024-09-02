@@ -57,8 +57,6 @@ namespace Reko.Arch.Pdp.Pdp11
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
-            if (addr.ToLinear() == 0x0b0a)
-                _ = this; //$DEBUG
             ops.Clear();
             dataWidth = PrimitiveType.Word16;
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];

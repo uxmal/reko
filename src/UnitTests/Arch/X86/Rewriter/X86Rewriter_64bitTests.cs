@@ -801,6 +801,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_vmovntps()
+        {
+            Given_HexString("C5C82B4100");
+            AssertCode(     // vmovntps	[rcx+0h],xmm0
+                "0|L--|0000000140000000(5): 1 instructions",
+                "1|L--|Mem0[rcx:word128] = __movntps<word128>(xmm0)");
+        }
+
+        [Test]
         public void X86rw_movsd()
         {
             Given_HexString("F20F1045E0");   // movsd xmm0,dword PTR[rbp - 0x20]
@@ -1647,6 +1656,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "15|L--|ymm14 = CONVERT(xmm14, word128, word256)",
                 "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
         }
+
 
 
 

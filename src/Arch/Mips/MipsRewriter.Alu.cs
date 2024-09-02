@@ -214,6 +214,22 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
+        private void RewriteLoadE(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
+        {
+            var opSrc = RewriteOperand(instr.Operands[1]);
+            var opDst = RewriteOperand(instr.Operands[0]);
+            opSrc.DataType = (arch.WordWidth.BitSize == 64)
+                ? dtSmall64 ?? dtSmall
+                : dtSmall;
+            if (opDst.DataType.Size != opSrc.DataType.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension/conversion.
+                opSrc = m.Convert(opSrc, opSrc.DataType, arch.WordWidth);
+            }
+            m.Assign(opDst, opSrc);
+        }
+
         private void RewriteLoadIndexed(MipsInstruction instr, PrimitiveType dt, PrimitiveType dtDst, int scale)
         {
             var opSrc = RewriteIndexOperand((IndexedOperand)instr.Operands[1], scale);
@@ -662,6 +678,29 @@ namespace Reko.Arch.Mips
                 opSrc = m.Slice(opSrc, opDst.DataType);
             m.Assign(opDst, opSrc);
         }
+
+        private void RewriteSte(MipsInstruction instr, PrimitiveType dt)
+        {
+            var src = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
+            if (src.DataType.Size != dt.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a slice.
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(src, dt));
+                src = tmp;
+            }
+
+            var mem = RewriteOperand(instr.Operands[1]);
+            mem.DataType = dt;
+
+            m.SideEffect(
+                m.Fn(
+                    intrinsics.store_EVA.MakeInstance(arch.PointerType.BitSize, dt),
+                    m.AddrOf(arch.PointerType, mem),
+                    src));
+        }
+
 
         private void RewriteSub(MipsInstruction instr, PrimitiveType size)
         {

@@ -1613,6 +1613,5 @@ namespace Reko.UnitTests.Arch.Avr
         {
             AssertCode("xchg\tr1,r2,r3", "E403 0B41");
         }
-
     }
 }

@@ -278,7 +278,7 @@ namespace Reko.Arch.RiscV
 
                     Nyi("misc-mem 4"),
                     Nyi("misc-mem 5"),
-                    Nyi("misc-mem 6"),
+                    invalid,
                     Nyi("misc-mem 7")
                 };
 
@@ -693,8 +693,8 @@ namespace Reko.Arch.RiscV
                 };
 
                 var amo = Mask(12, 3, "  AMO",
-                    Nyi("amo - 000"),
-                    Nyi("amo - 001"),
+                    invalid,
+                    invalid,
                     Sparse(27, 5, "  AMO",
                         Nyi("amo - 010"),
                         (0x02, Instr(Mnemonic.lr_w, aq_rl, rd, Mem(PrimitiveType.Word32, 15))),

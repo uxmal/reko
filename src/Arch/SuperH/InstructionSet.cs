@@ -22,9 +22,11 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Reko.Arch.SuperH
 {
+    using static System.Formats.Asn1.AsnWriter;
     using Decoder = Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction>;
     using NyiDecoder = NyiDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>;
 
@@ -152,15 +154,15 @@ SH1 SH2 SH3 SH4 SH4A SH2A
 
                 var decoders_0_2 = Mask(7, 1, "  0..2",
                     Mask(4, 3, "  0.02",
-                        Instr(Mnemonic.stc,     LinPri, sr, r1),
-                        Instr(Mnemonic.stc,             gbr, r1),
-                        Instr(Mnemonic.stc,     LinPri, vbr, r1),
+                        Instr(Mnemonic.stc, LinPri, sr, r1),
+                        Instr(Mnemonic.stc, gbr, r1),
+                        Instr(Mnemonic.stc, LinPri, vbr, r1),
                         Instr_3_4(Mnemonic.stc, LinPri, ssr, r1),
 
                         Instr_3_4(Mnemonic.stc, LinPri, spc, r1),
-                        Instr_DSP(Mnemonic.stc,         mod, r1),
-                        Instr_DSP(Mnemonic.stc,         rs, r1),
-                        Instr_DSP(Mnemonic.stc,         re, r1)),
+                        Instr_DSP(Mnemonic.stc, mod, r1),
+                        Instr_DSP(Mnemonic.stc, rs, r1),
+                        Instr_DSP(Mnemonic.stc, re, r1)),
                     Instr_3_4(Mnemonic.stc, LinPri, RBank2_3bit, r1));
 
                 var decoders_0_3 = Mask(4, 4, "  0..3",
@@ -661,125 +663,245 @@ SH1 SH2 SH3 SH4 SH4A SH2A
                 var decoders_D = Instr(Mnemonic.mov_l, Pl, r1);
                 var decoders_E = Instr(Mnemonic.mov, I, r1);
 
-                var decoders_F_dsp = new NyiDecoder("F... DSP");
-                // 111100*0*0*0**00 ### DSP                            @@ nopy                  $$ No Operation </div>
-                // 111100*A*D*0**01 ### DSP                            @@ movy.w	@Ay,Dy      $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy </div>
-                // 111100*A*D*0**10 ### DSP                            @@ movy.w	@Ay+,Dy     $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy, Ay+2 -> Ay </div>
-                // 111100*A*D*0**11 ### DSP                            @@ movy.w	@Ay+Iy,Dy   $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy, Ay+Iy -> Ay </div>
-                // 111100*A*D*1**01 ### DSP                            @@ movy.w	Da,@Ay      $$ MSW of Da -> (Ay) </div>
-                // 111100*A*D*1**10 ### DSP                            @@ movy.w	Da,@Ay+     $$ MSW of Da -> (Ay), Ay+2 -> Ay </div>
-                // 111100*A*D*1**11 ### DSP                            @@ movy.w	Da,@Ay+Iy   $$ MSW of Da -> (Ay), Ay+Iy -> Ay </div>
-                // 1111000*0*0*00** ### DSP                            @@ nopx                  $$ No operation </div>
-                // 111100A*D*0*01** ### DSP                            @@ movx.w	@Ax,Dx      $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx </div>
-                // 111100A*D*0*10** ### DSP                            @@ movx.w	@Ax+,Dx     $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx, Ax+2 -> Ax </div>
-                // 111100A*D*0*11** ### DSP                            @@ movx.w	@Ax+Ix,Dx   $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx, Ax+Ix -> Ax </div>
-                // 111100A*D*1*01** ### DSP                            @@ movx.w	Da,@Ax      $$ MSW of Da -> (Ax) </div>
-                // 111100A*D*1*10** ### DSP                            @@ movx.w	Da,@Ax+     $$ MSW of Da -> (Ax), Ax+2 -> Ax </div>
-                // 111100A*D*1*11** ### DSP                            @@ movx.w	Da,@Ax+Ix   $$ MSW of Da -> (Ax), Ax+Ix -> Ax </div>
-                // 111101AADDDD0000 ### DSP                            @@ movs.w	@-As,Ds     $$ As-2 -> As, (As) -> MSW of Ds, 0 -> LSW of Ds </div>
-                // 111101AADDDD0001 ### DSP                            @@ movs.w	Ds,@-As     $$ As-2 -> As, MSW of Ds -> (As) </div>
-                // 111101AADDDD0010 ### DSP                            @@ movs.l	@-As,Ds     $$ As-4 -> As, (As) -> Ds </div>
-                // 111101AADDDD0011 ### DSP                            @@ movs.l	Ds,@-As     $$ As-4 -> As, Ds -> (As) </div>
-                // 111101AADDDD0100 ### DSP                            @@ movs.w	@As,Ds      $$ (As) -> MSW of Ds, 0 -> LSW of Ds </div>
-                // 111101AADDDD0101 ### DSP                            @@ movs.w	Ds,@As      $$ MSW of Ds -> (As) </div>
-                // 111101AADDDD0110 ### DSP                            @@ movs.l	@As,Ds      $$ (As) -> Ds </div>
-                // 111101AADDDD0111 ### DSP                            @@ movs.l	Ds,@As      $$ Ds -> (As) </div>
-                // 111101AADDDD1000 ### DSP                            @@ movs.w	@As+,Ds     $$ (As) -> MSW of Ds, 0 -> LSW of Ds, As+2 -> As </div>
-                // 111101AADDDD1001 ### DSP                            @@ movs.w	Ds,@As+     $$ MSW of Ds -> (As), As+2 -> As </div>
-                // 111101AADDDD1010 ### DSP                            @@ movs.l	@As+,Ds     $$ (As) -> Ds, As+4 -> As </div>
-                // 111101AADDDD1011 ### DSP                            @@ movs.l	Ds,@As+     $$ Ds -> (As), As+4 -> As </div>
-                // 111101AADDDD1100 ### DSP                            @@ movs.w	@As+Ix,Ds   $$ (As) -> MSW of Ds, 0 -> LSW of DS, As+Ix -> As </div>
-                // 111101AADDDD1101 ### DSP                            @@ movs.w	Ds,@As+Is   $$ MSW of DS -> (As), As+Is -> As </div>
-                // 111101AADDDD1110 ### DSP                            @@ movs.l	@As+Is,Ds   $$ (As) -> Ds, As+Is -> As </div>
-                // 111101AADDDD1111 ### DSP                            @@ movs.l	Ds,@As+Is   $$ Ds -> (As), As+Is -> As </div>
+                var decoder_F10_8_dsp32 = Mask(12, 4, "   F10..8 dsp",
+                    invalid,
+                    Instr(Mnemonic.pshl, Sx_xa,Sy_ym,Dz),     // 10000001xxyyzzzz ### DSP           @@ pshl		Sx,Sy,Dz    $$ If Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pshl, Sx_xa,Sy_ym,Dz), // 10000010xxyyzzzz ### DSP           @@ dct pshl	Sx,Sy,Dz    $$ If DC = 1 & Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If DC = 1 & Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz;;If DC = 0: nop </div>
+                    Instr(Mnemonic.dcf_pshl, Sx_xa,Sy_ym,Dz), // 10000011xxyyzzzz ### DSP           @@ dcf pshl	Sx,Sy,Dz    $$ If DC = 0 & Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If DC = 0 & Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz;;If DC = 1: nop </div>
+
+                    Instr(Mnemonic.pcmp, Sx_xa,Sy_ym),        // 10000100xxyy0000 ### DSP           @@ pcmp		Sx,Sy       $$ Sx - Sy </div>
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    Instr(Mnemonic.pabs, Sx_xa,Dz),        // 10001000xx00zzzz ### DSP           @@ pabs		Sx,Dz       $$ If Sx >= 0: Sx -> Dz;;If Sx < 0: 0 - Sx -> Dz </div>
+                    Instr(Mnemonic.pdec, Sx_xa,Dz),        // 10001001xx00zzzz ### DSP           @@ pdec		Sx,Dz       $$ MSW of Sx - 1 -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pdec, Sx_xa,Dz),    // 10001010xx00zzzz ### DSP           @@ dct pdec	Sx,Dz       $$ If DC = 1: MSW of Sx - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pdec, Sx_xa,Dz),    // 10001011xx00zzzz ### DSP           @@ dcf pdec	Sx,Dz       $$ If DC = 0: MSW of Sx - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.pclr, Dz),           // 100011010000zzzz ### DSP           @@ pclr		Dz          $$ 0x00000000 -> Dz </div>
+                    Instr(Mnemonic.dct_pclr, Dz),       // 100011100000zzzz ### DSP           @@ dct pclr	Dz          $$ If DC = 1: 0x00000000 -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pclr, Dz));      // 100011110000zzzz ### DSP           @@ dcf pclr	Dz          $$ If DC = 0: 0x00000000 -> Dz;;Else: nop </div>
+
+                var decoder_F10_9_dsp32 = Mask(12, 4, "   F10..9 dsp",
+                    invalid,
+                    Instr(Mnemonic.psha,Sx_xy, Sy_ym, Dz),    // 10010001xxyyzzzz ### DSP           @@ psha		Sx,Sy,Dz    $$ If Sy >= 0: Sx << Sy -> Dz;;If Sy < 0: Sx >> Sy -> Dz </div>
+                    Instr(Mnemonic.dct_psha,Sx_xy,Sy_ym,Dz),  // 10010010xxyyzzzz ### DSP           @@ dct psha	Sx,Sy,Dz    $$ If DC = 1 & Sy >= 0: Sx << Sy -> Dz;;If DC = 1 & Sy < 0: Sx >> Sy -> Dz;;If DC = 0: nop </div>
+                    Instr(Mnemonic.dcf_psha,Sx_xy,Sy_ym,Dz),  // 10010011xxyyzzzz ### DSP           @@ dcf psha	Sx,Sy,Dz    $$ If DC = 0 & Sy >= 0: Sx << Sy -> Dz;;If DC = 0 & Sy < 0: Sx >> Sy -> Dz;;If DC = 1: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.pand, Sx_xy,Sy_ym,Dz),     // 10010101xxyyzzzz ### DSP           @@ pand		Sx,Sy,Dz    $$ Sx & Sy -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pand, Sx_xy,Sy_ym,Dz),  // 10010110xxyyzzzz ### DSP           @@ dct pand	Sx,Sy,Dz    $$ If DC = 1: Sx & Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pand, Sx_xy,Sy_ym,Dz),  // 10010111xxyyzzzz ### DSP           @@ dcf pand	Sx,Sy,Dz    $$ If DC = 0: Sx & Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+
+                    Instr(Mnemonic.prnd, Sx_xa,Dz),        // 10011000xx00zzzz ### DSP           @@ prnd		Sx,Dz       $$ Sx + 0x00008000 -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.pinc, Sx_xy,Dz),        // 10011001xx00zzzz ### DSP           @@ pinc		Sx,Dz       $$ MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pinc, Sx_xy,Dz),     // 10011010xx00zzzz ### DSP           @@ dct pinc	Sx,Dz       $$ If DC = 1: MSW of Sx + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pinc, Sx_xy,Dz),     // 10011011xx00zzzz ### DSP           @@ dcf pinc	Sx,Dz       $$ If DC = 0: MSW of Sx + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.pdmsb,Sx_xy,Dz),        // 10011101xx00zzzz ### DSP           @@ pdmsb		Sx,Dz       $$ Sx data MSB position -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pdmsb,Sx_xy,Dz),    // 10011110xx00zzzz ### DSP           @@ dct pdmsb	Sx,Dz       $$ If DC = 1: Sx data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pdmsb,Sx_xy, Dz));  // 10011111xx00zzzz ### DSP           @@ dcf pdmsb	Sx,Dz       $$ If DC = 0: Sx data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+
+
+                var decoder_F10_A_dsp32 = Mask(12, 4, "   F10..A dsp",
+                    Instr(Mnemonic.psubc, Sx_xa, Sy_ym, Dz),    // 10100000xxyyzzzz ### DSP           @@ psubc		Sx,Sy,Dz    $$ Sx - Sy - DC -> Dz </div>
+                    Instr(Mnemonic.psub, Sx_xa, Sy_ym, Dz),     // 10100001xxyyzzzz ### DSP           @@ psub		Sx,Sy_ym,Dz    $$ Sx - Sy -> Dz </div>
+                    Instr(Mnemonic.dct_psub, Sx_xa, Sy_ym, Dz), // 10100010xxyyzzzz ### DSP           @@ dct psub	Sx,Sy,Dz    $$ If DC = 1: Sx - Sy -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_psub, Sx_xa, Sy_ym, Dz), // 10100011xxyyzzzz ### DSP           @@ dcf psub 	Sx,Sy,Dz    $$ If DC = 0: Sx - Sy -> Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.pxor, Sx_xy, Sy_ym, Dz),     // 10100101xxyyzzzz ### DSP           @@ pxor		Sx,Sy,Dz    $$ Sx ^ Sy -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pxor, Sx_xy, Sy_ym, Dz), // 10100110xxyyzzzz ### DSP           @@ dct pxor	Sx,Sy,Dz    $$ If DC = 1: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pxor, Sx_xy, Sy_ym, Dz), // 10100111xxyyzzzz ### DSP           @@ dcf pxor	Sx,Sy,Dz    $$ If DC = 0: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+
+                    Instr(Mnemonic.pabs, Sy_ym, Dz),            // 1010100000yyzzzz ### DSP           @@ pabs		Sy,Dz       $$ If Sy >= 0: Sy -> Dz;;If Sy < 0: 0 - Sy -> Dz </div>
+                    Instr(Mnemonic.pdec, Sy_ym, Dz),            // 1010100100yyzzzz ### DSP           @@ pdec		Sy,Dz       $$ MSW of Sy - 1 -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pdec, Sy_ym, Dz),        // 1010101000yyzzzz ### DSP           @@ dct pdec	Sy,Dz       $$ If DC = 1: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pdec, Sy_ym, Dz),       // 1010101100yyzzzz ### DSP           @@ dcf pdec	Sy,Dz       $$ If DC = 0: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid);
+
+                var decoder_F10_B_dsp32 = Mask(12, 4, "   F10..B dsp",
+                    Instr(Mnemonic.paddc, Sx_xa, Sy_ym, Dz),    // 10110000xxyyzzzz ### DSP           @@ paddc		Sx,Sy,Dz    $$ Sx + Sy + DC -> Dz </div>
+                    Instr(Mnemonic.padd, Sx_xa, Sy_ym, Dz),     // 10110001xxyyzzzz ### DSP           @@ padd		Sx,Sy,Dz    $$ Sx + Sy -> Dz </div>
+                    Instr(Mnemonic.dct_padd, Sx_xa, Sy_ym, Dz), // 10110010xxyyzzzz ### DSP           @@ dct padd	Sx,Sy,Dz    $$ If DC = 1: Sx + Sy -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_padd, Sx_xa, Sy_ym, Dz), // 10110011xxyyzzzz ### DSP           @@ dcf padd	Sx,Sy,Dz    $$ If DC = 0: Sx + Sy -> Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.por, Sx_xy, Sy_ym, Dz),      // 10110101xxyyzzzz ### DSP           @@ por		Sx,Sy,Dz    $$ Sx | Sy -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_por, Sx_xy, Sy_ym, Dz),  // 10110110xxyyzzzz ### DSP           @@ dct por	Sx,Sy,Dz    $$ If DC = 1: Sx | Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_por, Sx_xy, Sy_ym, Dz),  // 10110111xxyyzzzz ### DSP           @@ dcf por	Sx,Sy,Dz    $$ If DC = 0: Sx | Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+
+                    Instr(Mnemonic.prnd, Sy_ym, Dz),        // 1011100000yyzzzz ### DSP           @@ prnd		Sy,Dz       $$ Sy + 0x00008000 -> Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.pinc, Sy_ym, Dz),        // 1011100100yyzzzz ### DSP           @@ pinc		Sy,Dz       $$ MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pinc, Sy_ym, Dz),    // 1011101000yyzzzz ### DSP           @@ dct pinc	Sy,Dz       $$ If DC = 1: MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pinc, Sy_ym, Dz),    // 1011101100yyzzzz ### DSP           @@ dcf pinc	Sy,Dz       $$ If DC = 0: MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.pdmsb, Sy_ym, Dz),       // 1011110100yyzzzz ### DSP           @@ pdmsb		Sy,Dz       $$ Sy data MSB position -> MSW of Dz, clear LSW of Dz </div>
+                    Instr(Mnemonic.dct_pdmsb, Sy_ym, Dz),   // 1011111000yyzzzz ### DSP           @@ dct pdmsb	Sy,Dz       $$ If DC = 1: Sy data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pdmsb, Sy_ym, Dz));  // 1011111100yyzzzz ### DSP           @@ dcf pdmsb	Sy,Dz       $$ If DC = 0: Sy data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+
+
+                var decoder_F10_C_dsp32 = Mask(12, 4, "   F10..C dsp",
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    Instr(Mnemonic.pneg, Sx_xy,Dz),        // 11001001xx00zzzz ### DSP           @@ pneg		Sx,Dz       $$ 0 - Sx -> Dz </div>
+                    Instr(Mnemonic.dct_pneg, Sx_xy,Dz),    // 11001010xx00zzzz ### DSP           @@ dct pneg	Sx,Dz       $$ If DC = 1: 0 - Sx -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pneg, Sx_xy,Dz),    // 11001011xx00zzzz ### DSP           @@ dcf pneg	Sx,Dz       $$ If DC = 0: 0 - Sx -> Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.psts, mh,Dz),        // 110011010000zzzz ### DSP           @@ psts		MACH,Dz     $$ MACH -> Dz </div>
+                    Instr(Mnemonic.dct_psts, mh,Dz),    // 110011100000zzzz ### DSP           @@ dct psts	MACH,Dz     $$ If DC = 1: MACH -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_psts, mh, Dz));  // 110011110000zzzz ### DSP           @@ dcf psts	MACH,Dz     $$ If DC = 0: MACH -> Dz;;Else: nop </div>
+
+                var decoder_F10_D_dsp32 = Nyi("   F10..D dsp");
+                 //  Instr(Mnemonic.psubc,Sx_xa,Sy_ym,Dz),       // 1101 0000 0xxyyzzzz ### DSP           @@ psubc		Sx,Sy,Dz    $$ Sx - Sy - DC -> Dz </div>
+                 //  Instr(Mnemonic.psub, Sx_xa,Sy_ym,Dz),       // 1101 0000 1xxyyzzzz ### DSP           @@ psub		Sx,Sy,Dz    $$ Sx - Sy -> Dz </div>
+                 //  Instr(Mnemonic.dct_psub, Sx_xa,Sy_ym,Dz),   // 1101 0001 0xxyyzzzz ### DSP           @@ dct psub	Sx,Sy,Dz    $$ If DC = 1: Sx - Sy -> Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.dcf_psub, Sx_xa,Sy_ym,Dz),   // 1101 0001 1xxyyzzzz ### DSP           @@ dcf psub 	Sx,Sy,Dz    $$ If DC = 0: Sx - Sy -> Dz;;Else: nop </div>
+                 //
+                 //  invalid,
+                 //  Instr(Mnemonic.pxor,Sx_xy,Sy_ym,Dz),        // 1101 0010 1xxyyzzzz ### DSP           @@ pxor		Sx,Sy,Dz    $$ Sx ^ Sy -> Dz, clear LSW of Dz </div>
+                 //  Instr(Mnemonic.dct_pxor, Sx_xy,Sy_ym,Dz),   // 1101 0011 0xxyyzzzz ### DSP           @@ dct pxor	Sx,Sy,Dz    $$ If DC = 1: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.dcf_pxor, Sx_xy,Sy_ym,Dz),   // 1101 0011 1xxyyzzzz ### DSP           @@ dcf pxor	Sx,Sy,Dz    $$ If DC = 0: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
+                 //                                                           
+                 //  Instr(Mnemonic.pabs,  Sy_ym,Dz   ),         // 1101 0100 000yyzzzz ### DSP           @@ pabs		Sy,Dz       $$ If Sy >= 0: Sy -> Dz;;If Sy < 0: 0 - Sy -> Dz </div>
+                 //  Instr(Mnemonic.pdec,  Sy_ym,Dz   ),         // 1101 0100 100yyzzzz ### DSP           @@ pdec		Sy,Dz       $$ MSW of Sy - 1 -> MSW of Dz, clear LSW of Dz </div>
+                 //  Instr(Mnemonic.dct_pdec, Sy_ym,Dz   ),      // 1101 0101 000yyzzzz ### DSP           @@ dct pdec	Sy,Dz       $$ If DC = 1: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.dcf_pdec, Sy_ym, Dz  ),      // 1101 0101 100yyzzzz ### DSP           @@ dcf pdec	Sy,Dz       $$ If DC = 0: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
+                 //                                                           
+                 //  Instr(Mnemonic.pcopy,		Sx_xy,Dz),      // 1101 1001 xx00zzzz ### DSP           @@ pcopy		Sx,Dz       $$ Sx -> Dz </div>
+                 //  Instr(Mnemonic.dct_pcopy,	Sx_xy,Dz),      // 1101 1010 xx00zzzz ### DSP           @@ dct pcopy	Sx,Dz       $$ If DC = 1: Sx -> Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.dcf_pcopy,	Sx_xy,Dz),      // 1101 1011 xx00zzzz ### DSP           @@ dcf pcopy	Sx,Dz       $$ If DC = 0: Sx -> Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.psts, ml,Dz),                // 1101 1101 0000zzzz ### DSP           @@ psts		MACL,Dz     $$ MACL -> Dz </div>
+                 //  Instr(Mnemonic.dct_psts, ml, Dz  ),         // 1101 1110 0000zzzz ### DSP           @@ dct psts	MACL,Dz     $$ If DC = 1: MACL -> Dz;;Else: nop </div>
+                 //  Instr(Mnemonic.dcf_psts, ml, Dz ));         // 1101 1111 0000zzzz ### DSP           @@ dcf psts	MACL,Dz     $$ If DC = 0: MACL -> Dz;;Else: nop </div>
+
+
+                var decoder_F10_E_dsp32 = Mask(12, 4, "   F10..E dsp",
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    Instr(Mnemonic.pneg, Sy_ym, Dz), // 1110100100yyzzzz ### DSP           @@ pneg		Sy,Dz       $$ 0 - Sy -> Dz </div>
+                    Instr(Mnemonic.dct_pneg, Sy_ym, Dz), // 1110101000yyzzzz ### DSP           @@ dct pneg	Sy,Dz       $$ If DC = 1: 0 - Sy -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pneg, Sy_ym, Dz),  // 1110101100yyzzzz ### DSP           @@ dcf pneg	Sy,Dz       $$ If DC = 0: 0 - Sy -> Dz;;Else: nop </div>
+                
+                    invalid,
+                    Instr(Mnemonic.plds, Dz, mh),   // 111011010000zzzz ### DSP           @@ plds		Dz,MACH     $$ Dz -> MACH </div>
+                    Instr(Mnemonic.dct_plds, Dz, mh),   // 111011100000zzzz ### DSP           @@ dct plds	Dz,MACH     $$ If DC = 1: Dz -> MACH;;Else: nop </div>
+                    Instr(Mnemonic.dcf_plds, Dz, mh));  // 111011110000zzzz ### DSP           @@ dcf plds	Dz,MACH     $$ If DC = 0: Dz -> MACH;;Else: nop </div>
+                var decoder_F10_F_dsp32 = Mask(12, 4, "   F10..F dsp",
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    Instr(Mnemonic.pcopy, Sy_ym,Dz),        // 1111100100yyzzzz ### DSP           @@ pcopy		Sy,Dz       $$ Sy -> Dz </div>
+                    Instr(Mnemonic.dct_pcopy, Sy_ym,Dz),    // 1111101000yyzzzz ### DSP           @@ dct pcopy	Sy,Dz       $$ If DC = 1: Sy -> Dz;;Else: nop </div>
+                    Instr(Mnemonic.dcf_pcopy, Sy_ym, Dz),   // 1111101100yyzzzz ### DSP           @@ dcf pcopy	Sy,Dz       $$ If DC = 0: Sy -> Dz;;Else: nop </div>
+
+                    invalid,
+                    Instr(Mnemonic.plds, Dz, ml), // 111111010000zzzz ### DSP           @@ plds		Dz,MACL     $$ Dz -> MACL </div>
+                    Instr(Mnemonic.dct_plds, Dz, ml), // 111111100000zzzz ### DSP           @@ dct plds	Dz,MACL     $$ If DC = 1: Dz -> MACL;;Else: nop </div>
+                    Instr(Mnemonic.dcf_plds, Dz, ml)); // 111111110000zzzz ### DSP           @@ dcf plds	Dz,MACL     $$ If DC = 0: Dz -> MACL;;Else: nop </div>
+
+                var decoder_F10_dsp32 = Mask(12, 4, "  F10.. dsp",
+                    If(11, 1, u => u == 0, Instr(Mnemonic.psha, i7, Dz)),
+                    If(11, 1, u => u == 0, Instr(Mnemonic.pshl, i7, Dz)),
                 // 111110********** 00000iiiiiiizzzz ### DSP           @@ psha		#imm,Dz     $$ If imm >= 0: Dz << imm -> Dz;;If imm < 0: Dz >> imm -> Dz </div>
                 // 111110********** 00010iiiiiiizzzz ### DSP           @@ pshl		#imm,Dz     $$ If imm >= 0: Dz << imm -> Dz, clear LSW of Dz;;If imm < 0: Dz >> imm, clear LSW of Dz </div>
+                    invalid,
+                    invalid,
 
                 // 111110********** 0100eeff0000gg00 ### DSP           @@ pmuls	Se,Sf,Dg        $$ MSW of Se * MSW of Sf -> Dg </div>
+                    Instr(Mnemonic.pmuls, Se, Sf, Dg),
+                    invalid,
                 // 111110********** 0110eeffxxyygguu ### DSP           @@ psub		Sx,Sy,Du;;pmuls		Se,Sf,Dg $$ Sx - Sy -> Du;;MSW of Se * MSW of Sf -> Dg </div>
-
                 // 111110********** 0111eeffxxyygguu ### DSP           @@ padd		Sx,Sy,Du;;pmuls		Se,Sf,Dg $$ Sx + Sy -> Du;;MSW of Se * MSW of Sf -> Dg </div>
+                    Nyi("psub/pmuls"),
+                    Nyi("psub/pmuls"),
 
-                // 111110********** 10000001xxyyzzzz ### DSP           @@ pshl		Sx,Sy,Dz    $$ If Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz </div>
-                // 111110********** 10000010xxyyzzzz ### DSP           @@ dct pshl	Sx,Sy,Dz    $$ If DC = 1 & Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If DC = 1 & Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz;;If DC = 0: nop </div>
-                // 111110********** 10000011xxyyzzzz ### DSP           @@ dcf pshl	Sx,Sy,Dz    $$ If DC = 0 & Sy >= 0: Sx << Sy -> Dz, clear LSW of Dz;;If DC = 0 & Sy < 0: Sx >> Sy -> Dz, clear LSW of Dz;;If DC = 1: nop </div>
-                // 111110********** 10000100xxyy0000 ### DSP           @@ pcmp		Sx,Sy       $$ Sx - Sy </div>
-                // 111110********** 10001000xx00zzzz ### DSP           @@ pabs		Sx,Dz       $$ If Sx >= 0: Sx -> Dz;;If Sx < 0: 0 - Sx -> Dz </div>
-                // 111110********** 10001001xx00zzzz ### DSP           @@ pdec		Sx,Dz       $$ MSW of Sx - 1 -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 10001010xx00zzzz ### DSP           @@ dct pdec	Sx,Dz       $$ If DC = 1: MSW of Sx - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10001011xx00zzzz ### DSP           @@ dcf pdec	Sx,Dz       $$ If DC = 0: MSW of Sx - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 100011010000zzzz ### DSP           @@ pclr		Dz          $$ 0x00000000 -> Dz </div>
-                // 111110********** 100011100000zzzz ### DSP           @@ dct pclr	Dz          $$ If DC = 1: 0x00000000 -> Dz;;Else: nop </div>
-                // 111110********** 100011110000zzzz ### DSP           @@ dcf pclr	Dz          $$ If DC = 0: 0x00000000 -> Dz;;Else: nop </div>
+                    decoder_F10_8_dsp32,
+                    decoder_F10_9_dsp32,
+                    decoder_F10_A_dsp32,
+                    decoder_F10_B_dsp32,
+                    decoder_F10_C_dsp32,
+                    decoder_F10_D_dsp32,
+                    decoder_F10_E_dsp32,
+                    decoder_F10_F_dsp32);
 
-                // 111110********** 10010001xxyyzzzz ### DSP           @@ psha		Sx,Sy,Dz    $$ If Sy >= 0: Sx << Sy -> Dz;;If Sy < 0: Sx >> Sy -> Dz </div>
-                // 111110********** 10010010xxyyzzzz ### DSP           @@ dct psha	Sx,Sy,Dz    $$ If DC = 1 & Sy >= 0: Sx << Sy -> Dz;;If DC = 1 & Sy < 0: Sx >> Sy -> Dz;;If DC = 0: nop </div>
-                // 111110********** 10010011xxyyzzzz ### DSP           @@ dcf psha	Sx,Sy,Dz    $$ If DC = 0 & Sy >= 0: Sx << Sy -> Dz;;If DC = 0 & Sy < 0: Sx >> Sy -> Dz;;If DC = 1: nop </div>
-                // 111110********** 10010101xxyyzzzz ### DSP           @@ pand		Sx,Sy,Dz    $$ Sx & Sy -> Dz, clear LSW of Dz </div>
-                // 111110********** 10010110xxyyzzzz ### DSP           @@ dct pand	Sx,Sy,Dz    $$ If DC = 1: Sx & Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10010111xxyyzzzz ### DSP           @@ dcf pand	Sx,Sy,Dz    $$ If DC = 0: Sx & Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10011000xx00zzzz ### DSP           @@ prnd		Sx,Dz       $$ Sx + 0x00008000 -> Dz, clear LSW of Dz </div>
-                // 111110********** 10011001xx00zzzz ### DSP           @@ pinc		Sx,Dz       $$ MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 10011010xx00zzzz ### DSP           @@ dct pinc	Sx,Dz       $$ If DC = 1: MSW of Sx + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10011011xx00zzzz ### DSP           @@ dcf pinc	Sx,Dz       $$ If DC = 0: MSW of Sx + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10011101xx00zzzz ### DSP           @@ pdmsb		Sx,Dz       $$ Sx data MSB position -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 10011110xx00zzzz ### DSP           @@ dct pdmsb	Sx,Dz       $$ If DC = 1: Sx data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10011111xx00zzzz ### DSP           @@ dcf pdmsb	Sx,Dz       $$ If DC = 0: Sx data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                var decoder_F11_dsp32 = Nyi("    F10.. dsp");
 
-                // 111110********** 10100000xxyyzzzz ### DSP           @@ psubc		Sx,Sy,Dz    $$ Sx - Sy - DC -> Dz </div>
-                // 111110********** 10100001xxyyzzzz ### DSP           @@ psub		Sx,Sy,Dz    $$ Sx - Sy -> Dz </div>
-                // 111110********** 10100010xxyyzzzz ### DSP           @@ dct psub	Sx,Sy,Dz    $$ If DC = 1: Sx - Sy -> Dz;;Else: nop </div>
-                // 111110********** 10100011xxyyzzzz ### DSP           @@ dcf psub 	Sx,Sy,Dz    $$ If DC = 0: Sx - Sy -> Dz;;Else: nop </div>
-                // 111110********** 10100101xxyyzzzz ### DSP           @@ pxor		Sx,Sy,Dz    $$ Sx ^ Sy -> Dz, clear LSW of Dz </div>
-                // 111110********** 10100110xxyyzzzz ### DSP           @@ dct pxor	Sx,Sy,Dz    $$ If DC = 1: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10100111xxyyzzzz ### DSP           @@ dcf pxor	Sx,Sy,Dz    $$ If DC = 0: Sx ^ Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1010100000yyzzzz ### DSP           @@ pabs		Sy,Dz       $$ If Sy >= 0: Sy -> Dz;;If Sy < 0: 0 - Sy -> Dz </div>
-                // 111110********** 1010100100yyzzzz ### DSP           @@ pdec		Sy,Dz       $$ MSW of Sy - 1 -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 1010101000yyzzzz ### DSP           @@ dct pdec	Sy,Dz       $$ If DC = 1: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1010101100yyzzzz ### DSP           @@ dcf pdec	Sy,Dz       $$ If DC = 0: MSW of Sy - 1 -> MSW of DZ, clear LSW of Dz;;Else: nop </div>
 
-                // 111110********** 10110000xxyyzzzz ### DSP           @@ paddc		Sx,Sy,Dz    $$ Sx + Sy + DC -> Dz </div>
-                // 111110********** 10110001xxyyzzzz ### DSP           @@ padd		Sx,Sy,Dz    $$ Sx + Sy -> Dz </div>
-                // 111110********** 10110010xxyyzzzz ### DSP           @@ dct padd	Sx,Sy,Dz    $$ If DC = 1: Sx + Sy -> Dz;;Else: nop </div>
-                // 111110********** 10110011xxyyzzzz ### DSP           @@ dcf padd	Sx,Sy,Dz    $$ If DC = 0: Sx + Sy -> Dz;;Else: nop </div>
-                // 111110********** 10110101xxyyzzzz ### DSP           @@ por		Sx,Sy,Dz    $$ Sx | Sy -> Dz, clear LSW of Dz </div>
-                // 111110********** 10110110xxyyzzzz ### DSP           @@ dct por	Sx,Sy,Dz    $$ If DC = 1: Sx | Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 10110111xxyyzzzz ### DSP           @@ dcf por	Sx,Sy,Dz    $$ If DC = 0: Sx | Sy -> Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1011100000yyzzzz ### DSP           @@ prnd		Sy,Dz       $$ Sy + 0x00008000 -> Dz, clear LSW of Dz </div>
-                // 111110********** 1011100100yyzzzz ### DSP           @@ pinc		Sy,Dz       $$ MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 1011101000yyzzzz ### DSP           @@ dct pinc	Sy,Dz       $$ If DC = 1: MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1011101100yyzzzz ### DSP           @@ dcf pinc	Sy,Dz       $$ If DC = 0: MSW of Sy + 1 -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1011110100yyzzzz ### DSP           @@ pdmsb		Sy,Dz       $$ Sy data MSB position -> MSW of Dz, clear LSW of Dz </div>
-                // 111110********** 1011111000yyzzzz ### DSP           @@ dct pdmsb	Sy,Dz       $$ If DC = 1: Sy data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
-                // 111110********** 1011111100yyzzzz ### DSP           @@ dcf pdmsb	Sy,Dz       $$ If DC = 0: Sy data MSB position -> MSW of Dz, clear LSW of Dz;;Else: nop </div>
+                var decoders_F_dsp = Mask(10, 2, "  F... DSP",
+                    new NyiDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>("  00"),
+                    // 111100*0*0*0**00 ### DSP   @@ nopy               $$ No Operation
+                    // 111100*A*D*0**01 ### DSP   @@ movy.w	@Ay,Dy      $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy </div>
+                    // 111100*A*D*0**10 ### DSP   @@ movy.w	@Ay+,Dy     $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy, Ay+2 -> Ay </div>
+                    // 111100*A*D*0**11 ### DSP   @@ movy.w	@Ay+Iy,Dy   $$ (Ay) -> MSW of Dy, 0 -> LSW of Dy, Ay+Iy -> Ay </div>
 
-                // 111110********** 11001001xx00zzzz ### DSP           @@ pneg		Sx,Dz       $$ 0 - Sx -> Dz </div>
-                // 111110********** 11001010xx00zzzz ### DSP           @@ dct pneg	Sx,Dz       $$ If DC = 1: 0 - Sx -> Dz;;Else: nop </div>
-                // 111110********** 11001011xx00zzzz ### DSP           @@ dcf pneg	Sx,Dz       $$ If DC = 0: 0 - Sx -> Dz;;Else: nop </div>
-                // 111110********** 110011010000zzzz ### DSP           @@ psts		MACH,Dz     $$ MACH -> Dz </div>
-                // 111110********** 110011100000zzzz ### DSP           @@ dct psts	MACH,Dz     $$ If DC = 1: MACH -> Dz;;Else: nop </div>
-                // 111110********** 110011110000zzzz ### DSP           @@ dcf psts	MACH,Dz     $$ If DC = 0: MACH -> Dz;;Else: nop </div>
+                    // 111100*A*D*1**01 ### DSP   @@ movy.w	Da,@Ay      $$ MSW of Da -> (Ay) </div>
+                    // 111100*A*D*1**10 ### DSP   @@ movy.w	Da,@Ay+     $$ MSW of Da -> (Ay), Ay+2 -> Ay </div>
+                    // 111100*A*D*1**11 ### DSP   @@ movy.w	Da,@Ay+Iy   $$ MSW of Da -> (Ay), Ay+Iy -> Ay </div>
 
-                // 111110********** 11011001xx00zzzz ### DSP           @@ pcopy		Sx,Dz       $$ Sx -> Dz </div>
-                // 111110********** 11011010xx00zzzz ### DSP           @@ dct pcopy	Sx,Dz       $$ If DC = 1: Sx -> Dz;;Else: nop </div>
-                // 111110********** 11011011xx00zzzz ### DSP           @@ dcf pcopy	Sx,Dz       $$ If DC = 0: Sx -> Dz;;Else: nop </div>
-                // 111110********** 110111010000zzzz ### DSP           @@ psts		MACL,Dz     $$ MACL -> Dz </div>
-                // 111110********** 110111100000zzzz ### DSP           @@ dct psts	MACL,Dz     $$ If DC = 1: MACL -> Dz;;Else: nop </div>
-                // 111110********** 110111110000zzzz ### DSP           @@ dcf psts	MACL,Dz     $$ If DC = 0: MACL -> Dz;;Else: nop </div>
+                    // 1111000*0*0*00** ### DSP   @@ nopx               $$ No operation
+                    // 111100A*D*0*01** ### DSP   @@ movx.w	@Ax,Dx      $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx </div>
+                    // 111100A*D*0*10** ### DSP   @@ movx.w	@Ax+,Dx     $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx, Ax+2 -> Ax </div>
+                    // 111100A*D*0*11** ### DSP   @@ movx.w	@Ax+Ix,Dx   $$ (Ax) -> MSW of Dx, 0 -> LSW of Dx, Ax+Ix -> Ax </div>
 
-                // 111110********** 1110100100yyzzzz ### DSP           @@ pneg		Sy,Dz       $$ 0 - Sy -> Dz </div>
-                // 111110********** 1110101000yyzzzz ### DSP           @@ dct pneg	Sy,Dz       $$ If DC = 1: 0 - Sy -> Dz;;Else: nop </div>
-                // 111110********** 1110101100yyzzzz ### DSP           @@ dcf pneg	Sy,Dz       $$ If DC = 0: 0 - Sy -> Dz;;Else: nop </div>
-                // 111110********** 111011010000zzzz ### DSP           @@ plds		Dz,MACH     $$ Dz -> MACH </div>
-                // 111110********** 111011100000zzzz ### DSP           @@ dct plds	Dz,MACH     $$ If DC = 1: Dz -> MACH;;Else: nop </div>
-                // 111110********** 111011110000zzzz ### DSP           @@ dcf plds	Dz,MACH     $$ If DC = 0: Dz -> MACH;;Else: nop </div>
+                    // 111100A*D*1*01** ### DSP   @@ movx.w	Da,@Ax      $$ MSW of Da -> (Ax) </div>
+                    // 111100A*D*1*10** ### DSP   @@ movx.w	Da,@Ax+     $$ MSW of Da -> (Ax), Ax+2 -> Ax </div>
+                    // 111100A*D*1*11** ### DSP   @@ movx.w	Da,@Ax+Ix   $$ MSW of Da -> (Ax), Ax+Ix -> Ax </div>
+                    new NyiDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>("  01"),
 
-                // 111110********** 1111100100yyzzzz ### DSP           @@ pcopy		Sy,Dz       $$ Sy -> Dz </div>
-                // 111110********** 1111101000yyzzzz ### DSP           @@ dct pcopy	Sy,Dz       $$ If DC = 1: Sy -> Dz;;Else: nop </div>
-                // 111110********** 1111101100yyzzzz ### DSP           @@ dcf pcopy	Sy,Dz       $$ If DC = 0: Sy -> Dz;;Else: nop </div>
-                // 111110********** 111111010000zzzz ### DSP           @@ plds		Dz,MACL     $$ Dz -> MACL </div>
-                // 111110********** 111111100000zzzz ### DSP           @@ dct plds	Dz,MACL     $$ If DC = 1: Dz -> MACL;;Else: nop </div>
-                // 111110********** 111111110000zzzz ### DSP           @@ dcf plds	Dz,MACL     $$ If DC = 0: Dz -> MACL;;Else: nop </div>
+                // 111101AADDDD0000 ### DSP   @@ movs.w	@-As,Ds     $$ As-2 -> As, (As) -> MSW of Ds, 0 -> LSW of Ds </div>
+                // 111101AADDDD0001 ### DSP   @@ movs.w	Ds,@-As     $$ As-2 -> As, MSW of Ds -> (As) </div>
+                // 111101AADDDD0010 ### DSP   @@ movs.l	@-As,Ds     $$ As-4 -> As, (As) -> Ds </div>
+                // 111101AADDDD0011 ### DSP   @@ movs.l	Ds,@-As     $$ As-4 -> As, Ds -> (As) </div>
+                // 111101AADDDD0100 ### DSP   @@ movs.w	@As,Ds      $$ (As) -> MSW of Ds, 0 -> LSW of Ds </div>
+                // 111101AADDDD0101 ### DSP   @@ movs.w	Ds,@As      $$ MSW of Ds -> (As) </div>
+                // 111101AADDDD0110 ### DSP   @@ movs.l	@As,Ds      $$ (As) -> Ds </div>
+                // 111101AADDDD0111 ### DSP   @@ movs.l	Ds,@As      $$ Ds -> (As) </div>
+                // 111101AADDDD1000 ### DSP   @@ movs.w	@As+,Ds     $$ (As) -> MSW of Ds, 0 -> LSW of Ds, As+2 -> As </div>
+                // 111101AADDDD1001 ### DSP   @@ movs.w	Ds,@As+     $$ MSW of Ds -> (As), As+2 -> As </div>
+                // 111101AADDDD1010 ### DSP   @@ movs.l	@As+,Ds     $$ (As) -> Ds, As+4 -> As </div>
+                // 111101AADDDD1011 ### DSP   @@ movs.l	Ds,@As+     $$ Ds -> (As), As+4 -> As </div>
+                // 111101AADDDD1100 ### DSP   @@ movs.w	@As+Ix,Ds   $$ (As) -> MSW of Ds, 0 -> LSW of DS, As+Ix -> As </div>
+                // 111101AADDDD1101 ### DSP   @@ movs.w	Ds,@As+Is   $$ MSW of DS -> (As), As+Is -> As </div>
+                // 111101AADDDD1110 ### DSP   @@ movs.l	@As+Is,Ds   $$ (As) -> Ds, As+Is -> As </div>
+                // 111101AADDDD1111 ### DSP   @@ movs.l	Ds,@As+Is   $$ Ds -> (As), As+Is -> As </div>
+                    Instr32(decoder_F10_dsp32),
+                    invalid);
 
                 var decode_FxFD = Mask(8, 4,
                     Instr(Mnemonic.fsca, fpul, f1),

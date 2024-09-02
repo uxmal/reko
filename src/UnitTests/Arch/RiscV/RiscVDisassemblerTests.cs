@@ -23,8 +23,6 @@ using Reko.Arch.RiscV;
 using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -43,7 +41,7 @@ namespace Reko.UnitTests.Arch.RiscV
         public void Setup()
         {
             this.arch = new RiscVArchitecture(
-                new ServiceContainer(),
+                CreateServiceContainer(),
                 "riscV",
                 new Dictionary<string, object>
                 {
@@ -1349,6 +1347,5 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             AssertCode("zip\ts11,a7", 0b000010011110_10001_001_11011_0010011);
         }
-
     }
 }

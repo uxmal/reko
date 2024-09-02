@@ -292,6 +292,85 @@ namespace Reko.Arch.SuperH
             return true;
         }
 
+
+        private static Mutator<SuperHDisassembler> DspReg(Bitfield bf, params RegisterStorage?[] regs)
+        {
+            return (u, d) =>
+            {
+                var ireg = bf.Read(u);
+                var reg = regs[ireg];
+                if (reg is null)
+                    return false;
+                d.state.ops.Add(reg);
+                return true;
+            };
+        }
+        private static readonly Mutator<SuperHDisassembler> Dz = DspReg(
+            new Bitfield(0, 4),
+            new[]
+            {
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                Registers.a1,
+                null,
+                Registers.a0,
+
+                Registers.x0,
+                Registers.x1,
+                Registers.y0,
+                Registers.y1,
+
+                Registers.m0,
+                null,
+                Registers.m1,
+                null,
+            });
+        private static readonly Mutator<SuperHDisassembler> Se = DspReg(
+            new Bitfield(10, 2),
+            Registers.x0,
+            Registers.x1,
+            Registers.y0,
+            Registers.a1);
+        private static readonly Mutator<SuperHDisassembler> Sf = DspReg(
+            new Bitfield(8, 2),
+            Registers.y0,
+            Registers.y1,
+            Registers.x0,
+            Registers.a1);
+        private static readonly Mutator<SuperHDisassembler> Dg = DspReg(
+            new Bitfield(6, 2),
+            Registers.m0,
+            Registers.m1,
+            Registers.a0,
+            Registers.a1);
+
+
+        private static readonly Mutator<SuperHDisassembler> Sx_xa = DspReg(
+            new Bitfield(6, 2),
+            Registers.x0,
+            Registers.x1,
+            Registers.a0,
+            Registers.a1);
+        private static readonly Mutator<SuperHDisassembler> Sx_xy = DspReg(
+            new Bitfield(6, 2),
+            Registers.x0,
+            Registers.x1,
+            Registers.y0,
+            Registers.y1);
+        private static readonly Mutator<SuperHDisassembler> Sy_ym = DspReg(
+            new Bitfield(6, 2),
+            Registers.y0,
+            Registers.y1,
+            Registers.m0,
+            Registers.m1);
+
+
+
+
         private static Mutator<SuperHDisassembler> Register(RegisterStorage reg)
         {
             return (u, d) =>
@@ -326,7 +405,7 @@ namespace Reko.Arch.SuperH
         private static readonly Mutator<SuperHDisassembler> xmtrx = Register(Registers.xmtrx);
 
         /// <summary>
-        /// Unsigned 8-bit immediate
+        /// Unsigned 8-bit immediate at bit position 0.
         /// </summary>
         private static bool I(uint uInstr, SuperHDisassembler dasm)
         {
@@ -342,6 +421,16 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(ImmediateOperand.Byte((byte) (uInstr & 7)));
             return true;
         }
+
+        /// <summary>
+        /// Signed 7-bit immediate at bit offset 4.
+        /// </summary>
+        private static bool i7(uint uInstr, SuperHDisassembler dasm)
+        {
+            dasm.state.ops.Add(ImmediateOperand.Int32(bf4L7.ReadSigned(uInstr)));
+            return true;
+        }
+        private static readonly Bitfield bf4L7 = new(4, 7);
 
         /// <summary>
         /// Signed 20-bit immediate
@@ -713,6 +802,10 @@ namespace Reko.Arch.SuperH
             return new Instr32Decoder(decoder);
         }
 
+        private static Decoder Nyi(string message)
+        {
+            return new NyiDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>(message);
+        }
 
         // Predicates
 

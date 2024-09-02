@@ -345,6 +345,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_lshd()
+        {
+            AssertCode("lshd\tr4,r8", "4847");
+        }
+
+        [Test]
         public void Cr16Dasm_nop()
         {
             AssertCode("nop", "002C");

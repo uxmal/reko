@@ -117,6 +117,11 @@ namespace Reko.Arch.Mips
                 .Param(PrimitiveType.Int32)
                 .Param(PrimitiveType.Word64)
                 .Void();
+            store_EVA = new IntrinsicBuilder("__store_EVA", true)
+                .GenericTypes("T")
+                .PtrParam("T")
+                .Param("T")
+                .Void();
             swl = new IntrinsicBuilder("__swl", true)
                 .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word32)
@@ -180,6 +185,7 @@ namespace Reko.Arch.Mips
         public readonly IntrinsicProcedure sync;
         public readonly IntrinsicProcedure sdbbp;
         public readonly IntrinsicProcedure store_conditional;
+        public readonly IntrinsicProcedure store_EVA;
         public readonly IntrinsicProcedure swr;
         
         public readonly IntrinsicProcedure tlbp;

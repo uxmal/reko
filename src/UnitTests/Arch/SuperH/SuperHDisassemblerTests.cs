@@ -22,11 +22,8 @@ using NUnit.Framework;
 using Reko.Arch.SuperH;
 using Reko.Core;
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
@@ -661,7 +658,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode_Sh4a("stc.l\tgbr,@-r4", "1344");
         }
 
- 
+
 
         [Test]
         public void ShDis_sts_fpul()
@@ -910,6 +907,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode_Dsp("sts\ty1,r1", "BA01");
         }
+
     }
 }
-

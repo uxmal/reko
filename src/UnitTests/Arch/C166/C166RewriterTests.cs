@@ -21,11 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.C166;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.C166
 {
@@ -56,6 +52,16 @@ namespace Reko.UnitTests.Arch.C166
         }
 
         [Test]
+        public void C166Rw_addc()
+        {
+            Given_HexString("1001");
+            AssertCode(     // addc	r0,r1
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|r0 = r0 + r1 + C",
+                "2|L--|EZVCN = cond(r0)");
+        }
+
+        [Test]
         public void C166Rw_and()
         {
             Given_HexString("66F0DF00");
@@ -66,6 +72,33 @@ namespace Reko.UnitTests.Arch.C166
                 "3|L--|V = false",
                 "4|L--|C = false");
         }
+
+
+        [Test]
+        public void C166Rw_andb()
+        {
+            Given_HexString("696E");
+            AssertCode(     // andb	rl3,[r2]
+                "0|L--|0100(2): 4 instructions",
+                "1|L--|rl3 = rl3 & Mem0[r2:byte]",
+                "2|L--|EZN = cond(rl3)",
+                "3|L--|V = false",
+                "4|L--|C = false");
+        }
+
+        [Test]
+        public void C166Rw_band()
+        {
+            Given_HexString("6A00ECF0");
+            AssertCode(     // band	[0xFFD8]:0,DPP0:15
+                "0|L--|0100(4): 5 instructions",
+                "1|L--|N = __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>) ^ __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>)",
+                "2|L--|C = __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>) & __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>)",
+                "3|L--|V = __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>) | __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>)",
+                "4|L--|Z = ~(__bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>) | __bit<word16,int16>(Mem0[0xFFD8<p16>:word16], 0<i16>))",
+                "5|L--|E = false");
+        }
+
 
         [Test]
         public void C166Rw_bclr()
@@ -79,6 +112,21 @@ namespace Reko.UnitTests.Arch.C166
                 "4|L--|E = false",
                 "5|L--|V = false",
                 "6|L--|C = false");
+        }
+
+        [Test]
+        public void C166Rw_bfldl()
+        {
+            Given_HexString("0A00CA00");
+            AssertCode(     // bfldl	DPP0,CA,00
+                "0|L--|0100(4): 7 instructions",
+                "1|L--|v5 = SLICE(DPP0, byte, 0)",
+                "2|L--|v3 = v5",
+                "3|L--|v3 = v3 & ~0xCA<8> | 0<8>",
+                "4|L--|DPP0 = SEQ(SLICE(DPP0, byte, 8), v3)",
+                "5|L--|E = false",
+                "6|L--|V = false",
+                "7|L--|C = false");
         }
 
         [Test]
@@ -216,6 +264,18 @@ namespace Reko.UnitTests.Arch.C166
         }
 
         [Test]
+        public void C166Rw_pop()
+        {
+            Given_HexString("FCF0");
+            AssertCode(     // pop	r0
+                "0|L--|0100(2): 4 instructions",
+                "1|L--|v3 = Mem0[SP:word16]",
+                "2|L--|SP = SP + 2<i16>",
+                "3|L--|r0 = v3",
+                "4|L--|EZN = cond(v3)");
+        }
+
+        [Test]
         public void C166Rw_push()
         {
             Given_HexString("ECF0");
@@ -245,5 +305,28 @@ namespace Reko.UnitTests.Arch.C166
                 "1|L--|PSW = Mem0[SP + 2<i16>:word16]",
                 "2|R--|return (2,2)");
         }
+
+        [Test]
+        public void C166Rw_sub()
+        {
+            Given_HexString("206D");
+            AssertCode(     // sub	r6,r13
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|r6 = r6 - r13",
+                "2|L--|EZVCN = cond(r6)");
+        }
+
+
+        [Test]
+        public void C166Rw_subc()
+        {
+            Given_HexString("3637206D");
+            AssertCode(     // subc	[0xFE6E],6D20
+                "0|L--|0100(4): 3 instructions",
+                "1|L--|v4 = Mem0[0xFE6E<p16>:word16] - 0x6D20<16> - C",
+                "2|L--|Mem0[0xFE6E<p16>:word16] = v4",
+                "3|L--|EZVCN = cond(v4)");
+        }
+
     }
 }

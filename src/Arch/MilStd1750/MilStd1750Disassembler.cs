@@ -580,12 +580,12 @@ namespace Reko.Arch.MilStd1750
 
                 Instr(Mnemonic.tbi, _("tbi")),
                 Instr(Mnemonic.tsb, _("tsb")),
-                Instr(Mnemonic.svbr, _("svbr")),
+                Instr(Mnemonic.svbr, Ra,Rb),
                 invalid,
 
-                Instr(Mnemonic.rvbr, _("rvbr")),
+                Instr(Mnemonic.rvbr, Ra,Rb),
                 invalid,
-                Instr(Mnemonic.tvbr, _("tvbr")),
+                Instr(Mnemonic.tvbr, Ra,Rb),
                 invalid,
 
                 // 60
@@ -663,7 +663,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.srm, _("srm ")),
 
                 Instr(Mnemonic.dsti , Ra,Ix_w32),
-                Instr(Mnemonic.stm , _("stm ")),
+                Instr(Mnemonic.stm , N,Dx_w16),
                 Instr(Mnemonic.efst , Ra,Dx_r48),
                 Instr(Mnemonic.stub, Ra,Dx_w16),
 

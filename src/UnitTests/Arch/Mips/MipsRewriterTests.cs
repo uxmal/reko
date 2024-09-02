@@ -25,9 +25,12 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using static Reko.ImageLoaders.OdbgScript.OllyScript;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -188,20 +191,29 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsRw_sw()
-        {
-            AssertCode(0xAFBF0020,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x20<32>:word32] = ra");
-        }
-
-        [Test]
         public void MipsRw_sd_64()
         {
             Given_Mips64_Architecture();
             AssertCode(0xFFBF0020,
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[sp + 0x20<64>:word64] = ra");
+        }
+
+        [Test]
+        public void MipsRw_she()
+        {
+            Given_HexString("A4472A00");
+            AssertCode(     // she	r2,0000(r7)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r2 + 0x2A00<32>:word16] = SLICE(r7, word16, 0)");
+        }
+
+        [Test]
+        public void MipsRw_sw()
+        {
+            AssertCode(0xAFBF0020,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 0x20<32>:word32] = ra");
         }
 
         [Test]

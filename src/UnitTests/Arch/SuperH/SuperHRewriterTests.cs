@@ -1056,6 +1056,15 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_sets()
+        {
+            Given_HexString("5800");
+            AssertCode(     // sets
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|S = true");
+        }
+
+        [Test]
         public void SHRw_stc()
         {
             Given_HexString("0200");	// stc	sr,r0

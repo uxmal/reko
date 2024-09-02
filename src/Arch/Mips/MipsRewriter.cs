@@ -188,6 +188,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
                 case Mnemonic.lhxs: RewriteLoadIndexed(instr, PrimitiveType.Int16, PrimitiveType.Int32, 2); break;
                 case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
+                case Mnemonic.lhue: RewriteLe(instr, PrimitiveType.UInt16); break;
                 case Mnemonic.lhuxs: RewriteLoadIndexed(instr, PrimitiveType.Word16, PrimitiveType.Word32, 2); break;
                 case Mnemonic.ll: RewriteLoadLinked(instr, PrimitiveType.Word32); break;
                 case Mnemonic.lld: RewriteLoadLinked(instr, PrimitiveType.Word64); break;
@@ -248,6 +249,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.seh: RewriteSignExtend(instr, PrimitiveType.Word16); break;
                 case Mnemonic.seqi: RewriteScc(instr, m.Eq); break;
                 case Mnemonic.sh: RewriteStore(instr); break;
+                case Mnemonic.she: RewriteSte(instr, PrimitiveType.Word16); break;
                 case Mnemonic.sll:
                 case Mnemonic.sllv:
                     RewriteSll(instr); break;

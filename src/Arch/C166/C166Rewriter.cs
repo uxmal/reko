@@ -21,8 +21,10 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -80,9 +82,13 @@ namespace Reko.Arch.C166
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.add: RewriteAddSub(m.IAdd); break;
+                case Mnemonic.add: RewriteAddSub(Operator.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubc(Operator.IAdd); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
+                case Mnemonic.andb: RewriteLogical(m.And); break;
+                case Mnemonic.band: RewriteBand(); break;
                 case Mnemonic.bclr: RewriteBclr(); break;
+                case Mnemonic.bfldl: RewriteBfldl(); break;
                 case Mnemonic.bset: RewriteBset(); break;
                 case Mnemonic.calla: RewriteCalla(); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
@@ -97,9 +103,12 @@ namespace Reko.Arch.C166
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movb: RewriteMov(); break;
                 case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteReti(); break;
+                case Mnemonic.sub: RewriteAddSub(Operator.ISub); break;
+                case Mnemonic.subc: RewriteAddcSubc(Operator.ISub); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 instrs.Clear();
@@ -213,6 +222,18 @@ namespace Reko.Arch.C166
         private static FlagGroupStorage FlagGroup(FlagM bits, string name)
             => new FlagGroupStorage(Registers.PSW, (uint) bits, name, Registers.PSW.DataType);
 
+
+        private Expression MaybeSlice(Expression exp, DataType dt)
+        {
+            if (exp.DataType.BitSize > dt.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(exp, dt));
+                exp = tmp;
+            }
+            return exp;
+        }
+
         private Expression Src(int iop) => Src(instr.Operands[iop]);
 
         private Expression Src(MachineOperand op)
@@ -257,11 +278,34 @@ namespace Reko.Arch.C166
             return m.Test(cc, binder.EnsureFlagGroup(flagGroup));
         }
 
-        private void RewriteAddSub(Func<Expression,Expression, Expression> fn)
+        private void RewriteAddSub(BinaryOperator op)
+        {
+            var dst = Dst(0, m.Bin(op, Src(0), Src(1)));
+            EmitCond(EZVCN, dst);
+        }
+
+        private void RewriteAddcSubc(BinaryOperator op)
         {
             var src = Src(1);
-            var dst = Dst(0, src, fn);
+            var dst = Dst(0, src, (a, b) =>
+            {
+                var c = binder.EnsureFlagGroup(Registers.C);
+                return m.BinC(op, a, b, c);
+            });
             EmitCond(EZVCN, dst);
+        }
+
+        private void RewriteBand()
+        {
+            var (bitl, regl) = BitOp(0);
+            var (bitr, regr) = BitOp(0);
+            var left = m.Fn(bit_intrinsic, regl, bitl);
+            var right = m.Fn(bit_intrinsic, regr, bitr);
+            EmitCc(Registers.N, m.Xor(left, right));
+            EmitCc(Registers.C, m.And(left, right));
+            EmitCc(Registers.V, m.Or(left, right));
+            EmitCc(Registers.Z, m.Comp(m.Or(left, right)));
+            EmitCc(Registers.E, Constant.False());
         }
 
         private void RewriteBclr()
@@ -270,6 +314,19 @@ namespace Reko.Arch.C166
             EmitCc(Registers.N, m.Fn(bit_intrinsic, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
             m.Assign(reg, m.Fn(bit_clear_intrinsic, reg, bit));
+            EmitCc(Registers.E, Constant.False());
+            EmitCc(Registers.V, Constant.False());
+            EmitCc(Registers.C, Constant.False());
+        }
+
+        private void RewriteBfldl()
+        {
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(tmp, MaybeSlice(Src(0), tmp.DataType));
+            m.Assign(tmp, m.Or(
+                m.And(tmp, m.Comp(Src(1))),
+                Src(2)));
+            Dst(0, m.Dpb(Src(0), tmp, 0));
             EmitCc(Registers.E, Constant.False());
             EmitCc(Registers.V, Constant.False());
             EmitCc(Registers.C, Constant.False());
@@ -382,6 +439,16 @@ namespace Reko.Arch.C166
             var src = Src(1);
             var dst = Dst(0, src);
             EmitCond(EZ__N, dst);
+        }
+
+        private void RewritePop()
+        {
+            var tmp = binder.CreateTemporary(instr.Operands[0].Width);
+            var sp = binder.EnsureRegister(Registers.SP);
+            m.Assign(tmp, m.Mem16(sp));
+            m.Assign(sp, m.IAddS(sp, 2));
+            Dst(0, tmp);
+            EmitCond(EZ__N, tmp);
         }
 
         private void RewritePush()
