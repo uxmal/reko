@@ -39,7 +39,6 @@ namespace Reko.UnitTests.Arch.Mips
         {
             this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

@@ -35,7 +35,6 @@ namespace Reko.UnitTests.Arch.Avr
         {
             this.arch = new Avr32Architecture(CreateServiceContainer(), "avr32", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

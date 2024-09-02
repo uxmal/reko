@@ -52,8 +52,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [SetUp]
         public void Setup()
         {
-            BackwardSlicer.trace.Level = System.Diagnostics.TraceLevel.Verbose;
-
             sc = new ServiceContainer();
             fakeArch = new FakeArchitecture(sc);
             arch = fakeArch;

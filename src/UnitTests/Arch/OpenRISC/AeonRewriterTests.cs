@@ -12,7 +12,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         public AeonRewriterTests()
         {
-            // Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new AeonArchitecture(CreateServiceContainer(), "aeon", new());
             this.addrLoad = Address.Ptr32(0x0010_0000);
         }

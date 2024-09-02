@@ -73,7 +73,6 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void AssertCode(string sExp, string hexBytes)
         {
-            //Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             var i = DisassembleHexBytes(hexBytes);
 
             if (sExp != i.ToString()) // && i.Mnemonic == Mnemonic.nyi)
