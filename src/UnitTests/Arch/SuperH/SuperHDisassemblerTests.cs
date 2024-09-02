@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             });
             this.arch = arch4a;
             this.LoadAddress = Address.Ptr32(0x00010000);
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

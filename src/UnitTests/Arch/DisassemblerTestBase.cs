@@ -33,6 +33,7 @@ namespace Reko.UnitTests.Arch
     {
         protected ServiceContainer CreateServiceContainer()
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             var sc = new ServiceContainer();
             sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             return sc;
