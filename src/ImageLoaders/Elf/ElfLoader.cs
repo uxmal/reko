@@ -91,7 +91,6 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_X = 1;
 
         protected uint flags;
-        protected EndianServices endianness;
         protected IPlatform? platform;
         protected byte[] rawImage;
         private SegmentMap? segmentMap;
@@ -101,33 +100,27 @@ namespace Reko.ImageLoaders.Elf
             ElfMachine machine,
             uint flags,
             EndianServices endianness,
-            byte[] rawImage) : this()
+            byte[] rawImage) 
         {
             this.Services = services;
             this.Machine = machine;
             this.flags = flags;
-            this.endianness = endianness;
+            this.Endianness = endianness;
             this.rawImage = rawImage;
-        }
-
-        protected ElfLoader()
-        {
-            this.Services = null!;
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
             this.DynamicSymbols = new Dictionary<int, ElfSymbol>();
             this.Sections = new List<ElfSection>();
             this.Segments = new List<ElfSegment>();
             this.DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
             this.Dependencies = new List<string>();
-            this.endianness = null!;
-            this.Architecture = null!;
-            this.rawImage = null!;
         }
 
         public ElfMachine Machine { get; }
-        public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; }
         public abstract Address DefaultAddress { get; }
+        
+        public EndianServices Endianness { get; }
+
         public abstract bool IsExecutableFile { get; }
         public List<ElfSection> Sections { get; private set; }
         public List<ElfSegment> Segments { get; private set; }
@@ -135,7 +128,7 @@ namespace Reko.ImageLoaders.Elf
         public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
-        public bool IsBigendian => endianness == EndianServices.Big;
+        public bool IsBigendian => Endianness == EndianServices.Big;
         public abstract bool IsRelocatableFile { get; }
 
         public abstract ulong AddressToFileOffset(ulong addr);
@@ -144,7 +137,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Address CreateAddress(ulong uAddr);
 
-        public abstract ElfObjectLinker CreateLinker();
+        public abstract ElfObjectLinker CreateLinker(IProcessorArchitecture arch);
 
         public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
@@ -170,7 +163,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {
-            var rdr = endianness!.CreateImageReader(this.rawImage!, (long) offsetDynamic);
+            var rdr = Endianness!.CreateImageReader(this.rawImage!, (long) offsetDynamic);
             return GetDynamicEntries(rdr);
         }
 
@@ -230,12 +223,7 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
-        public void LoadArchitectureFromHeader()
-        {
-            Architecture = CreateArchitecture(endianness!)!;
-        }
-
-        protected virtual IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
+        public virtual IProcessorArchitecture CreateArchitecture(ElfMachine elfMachine, EndianServices endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var options = new Dictionary<string, object>();
@@ -243,9 +231,8 @@ namespace Reko.ImageLoaders.Elf
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
 
             string? stackRegName = null;
-            switch (this.Machine)
+            switch (elfMachine)
             {
-            case ElfMachine.EM_NONE: return null; // No machine
             case ElfMachine.EM_SPARC:
             case ElfMachine.EM_SPARC32PLUS:
                 arch = "sparc32"; break;
@@ -336,7 +323,7 @@ namespace Reko.ImageLoaders.Elf
             { ElfSymbolType.STT_NOTYPE, SymbolType.Unknown },
         };
 
-        public ImageSymbol? CreateImageSymbol(ElfSymbol sym, bool isExecutable)
+        public ImageSymbol? CreateImageSymbol(ElfSymbol sym, IProcessorArchitecture arch, bool isExecutable)
         {
             if (!isExecutable && sym.SectionIndex > 0 && sym.SectionIndex >= Sections.Count)
                 return null;
@@ -353,14 +340,14 @@ namespace Reko.ImageLoaders.Elf
                 ? platform!.MakeAddressFromLinear(sym.Value, true)
                 : Sections[(int) sym.SectionIndex].Address! + sym.Value;
 
-            var dt = GetSymbolDataType(sym);
+            var dt = GetSymbolDataType(sym, arch);
             var imgSym = ImageSymbol.Create(
                 st.Value,
-                this.Architecture,
+                arch,
                 addr,
                 sym.Name,
                 dt);
-            imgSym.ProcessorState = Architecture.CreateProcessorState();
+            imgSym.ProcessorState = arch.CreateProcessorState();
             return imgSym;
         }
 
@@ -377,13 +364,13 @@ namespace Reko.ImageLoaders.Elf
             return st;
         }
 
-        private DataType GetSymbolDataType(ElfSymbol sym)
+        private DataType GetSymbolDataType(ElfSymbol sym, IProcessorArchitecture arch)
         {
             if (sym.Type == ElfSymbolType.STT_FUNC)
             {
                 return new FunctionType();
             }
-            else if ((int) sym.Size == Architecture.PointerType.Size)
+            else if ((int) sym.Size == arch.PointerType.Size)
             {
                 return PrimitiveType.CreateWord(DataType.BitsPerByte * (int) sym.Size);
             }
@@ -460,6 +447,7 @@ namespace Reko.ImageLoaders.Elf
 
         public virtual ElfRelocator CreateRelocator(
             ElfMachine machine,
+            IProcessorArchitecture arch,
             SortedList<Address, ImageSymbol> symbols,
             Dictionary<ElfSymbol, Address> plt)
         {
@@ -491,7 +479,7 @@ namespace Reko.ImageLoaders.Elf
             var dynSeg = Segments.FirstOrDefault(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
             if (dynSeg is null)
                 return;
-            var rdr = this.endianness!.CreateImageReader(rawImage!, (long) dynSeg.p_offset);
+            var rdr = this.Endianness!.CreateImageReader(rawImage!, (long) dynSeg.p_offset);
             var (deps, entries) = LoadDynamicSegment(rdr);
             this.Dependencies.AddRange(deps);
             foreach (var de in entries)
@@ -537,12 +525,12 @@ namespace Reko.ImageLoaders.Elf
             return null;
         }
 
-        public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)
+        public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(IProcessorArchitecture arch, bool isExecutable)
         {
             var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var sym in Symbols.Values.SelectMany(seg => seg.Values).OrderBy(s => s.Value))
             {
-                var imgSym = CreateImageSymbol(sym, isExecutable);
+                var imgSym = CreateImageSymbol(sym, arch, isExecutable);
                 if (imgSym == null || imgSym.Address!.ToLinear() == 0)
                     continue;
                 imgSymbols[imgSym.Address] = imgSym;
@@ -552,12 +540,12 @@ namespace Reko.ImageLoaders.Elf
 
         public EndianImageReader CreateReader(ulong fileOffset)
         {
-            return endianness.CreateImageReader(rawImage, (long) fileOffset);
+            return Endianness.CreateImageReader(rawImage, (long) fileOffset);
         }
 
         public ImageWriter CreateWriter(uint fileOffset)
         {
-            return endianness.CreateImageWriter(rawImage, fileOffset);
+            return Endianness.CreateImageWriter(rawImage, fileOffset);
         }
 
         /// <summary>
@@ -602,6 +590,7 @@ namespace Reko.ImageLoaders.Elf
             ElfImageLoader.trace.Verbose("== Constructing GOT entries ==");
             if (!program.TryCreateImageReader(program.Architecture, gotStart, out var rdr))
                 return;
+            var arch = program.Architecture;
             while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;
@@ -614,7 +603,7 @@ namespace Reko.ImageLoaders.Elf
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
                     {
                         var name = symbol.Name!;
-                        ImageSymbol gotSym = CreateGotSymbol(addrGot, name);
+                        ImageSymbol gotSym = CreateGotSymbol(arch, addrGot, name);
                         symbols[addrGot] = gotSym;
                         ElfImageLoader.trace.Verbose("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
                             gotStart, addrGot - gotStart, gotSym, symbol);
@@ -636,7 +625,7 @@ namespace Reko.ImageLoaders.Elf
                 {
                     // This GOT entry has no corresponding symbol. It's likely a global
                     // variable with no name.
-                    ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, this.Architecture, addrGot);
+                    ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, program.Architecture, addrGot);
                     ElfImageLoader.trace.Verbose("{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
                         gotStart, addrGot - gotStart, addrGot);
                     program.ImportReferences.Add(
@@ -650,12 +639,12 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public ImageSymbol CreateGotSymbol(Address addrGot, string name)
+        public ImageSymbol CreateGotSymbol(IProcessorArchitecture arch, Address addrGot, string name)
         {
             //$TODO: look up function signature.
-            int size = Architecture.PointerType.Size;
-            int bitSize = Architecture.PointerType.BitSize;
-            return ImageSymbol.DataObject(Architecture, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize));
+            int size = arch.PointerType.Size;
+            int bitSize = arch.PointerType.BitSize;
+            return ImageSymbol.DataObject(arch, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize));
         }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
@@ -754,12 +743,12 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        protected ImageSymbol EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        protected ImageSymbol EnsureEntryPoint(IProcessorArchitecture arch, List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
             if (!symbols.TryGetValue(addr, out ImageSymbol? ep))
             {
-                ep = ImageSymbol.Procedure(this.Architecture, addr);
-                ep.ProcessorState = Architecture.CreateProcessorState();
+                ep = ImageSymbol.Procedure(arch, addr);
+                ep.ProcessorState = arch.CreateProcessorState();
                 symbols.Add(addr, ep);
             }
             entryPoints.Add(ep);
@@ -841,10 +830,11 @@ namespace Reko.ImageLoaders.Elf
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
-        public void Relocate(Program program, Address addrLoad, Dictionary<ElfSymbol, Address> plt)
+        public void Relocate(ElfMachine elfMachine, Program program, Address addrLoad, Dictionary<ElfSymbol, Address> plt)
         {
-            var symbols = CreateSymbolDictionaries(IsExecutableFile);
-            var relocator = CreateRelocator(this.Machine, symbols, plt);
+            var arch = program.Architecture;
+            var symbols = CreateSymbolDictionaries(arch, IsExecutableFile);
+            var relocator = CreateRelocator(elfMachine, arch, symbols, plt);
             relocator.Relocate(program, addrLoad, plt);
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
@@ -853,11 +843,11 @@ namespace Reko.ImageLoaders.Elf
             if (addrEntry != null)
             {
                 addrEntry = relocator.AdjustAddress(addrEntry);
-                var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
+                var symEntry = EnsureEntryPoint(arch, entryPoints, symbols, addrEntry);
                 var addrMain = relocator.FindMainFunction(program, addrEntry);
                 if (addrMain != null)
                 {
-                    EnsureEntryPoint(entryPoints, symbols, addrMain);
+                    EnsureEntryPoint(arch, entryPoints, symbols, addrMain);
                 }
                 var addrGlobalPtr = program.Platform.FindGlobalPointerValue(program, addrEntry);
                 if (addrGlobalPtr is not null)

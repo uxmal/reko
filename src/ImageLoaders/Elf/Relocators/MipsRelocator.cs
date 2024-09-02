@@ -38,13 +38,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
         const int PointerByteSize = 4;
         const int OFFSET_GP_GOT = 0x7FF0;
 
-        private IProcessorArchitecture archMips16e;
+        private readonly IProcessorArchitecture arch;
+        private IProcessorArchitecture? archMips16e;
         private Address? addrHi;
         private Address? addrHiPrev;
 
-        public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public MipsRelocator(ElfLoader32 loader, IProcessorArchitecture arch, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            archMips16e = null!;
+            this.arch = arch;
+            archMips16e = null;
         }
 
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
@@ -59,7 +61,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
                 this.archMips16e = cfgSvc.GetArchitecture(
-                    loader.Architecture.Name, 
+                    arch.Name, 
                     new Dictionary<string, object>
                     {
                         { "decoder", "mips16e" }
@@ -270,7 +272,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     symbol.Type == ElfSymbolType.STT_FUNC)
                 {
                     // This GOT entry is a known symbol!
-                    ImageSymbol symGotEntry = loader.CreateGotSymbol(addrGot, symbol.Name);
+                    ImageSymbol symGotEntry = loader.CreateGotSymbol(arch, addrGot, symbol.Name);
                     symbols[addrGot] = symGotEntry;
                     Debug.Print("Found GOT entry at {0}, changing symbol at {1}", symGotEntry, addrGot);
                     var st = ElfLoader.GetSymbolType(symbol);

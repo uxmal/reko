@@ -91,8 +91,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case x86_64Rt.R_X86_64_JUMP_SLOT:   // S
                 var addrPfn = addr;
                 ctx.AddImportReference(symbol, addr);
-                var gotSym = loader.CreateGotSymbol(addrPfn, symbol.Name);
-                imageSymbols.Add(addrPfn, gotSym);
+                ctx.AddGotSymbol(symbol, addrPfn);
                 return (addrPfn, null);
             case x86_64Rt.R_X86_64_PC32:    // S + A - P
                 ctx.WriteUInt32(addr, ctx.S + ctx.A - ctx.P);

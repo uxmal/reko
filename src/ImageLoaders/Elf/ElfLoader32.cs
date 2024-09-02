@@ -88,13 +88,13 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr32((uint) uAddr);
         }
 
-        protected override IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
+        public override IProcessorArchitecture CreateArchitecture(ElfMachine elfMachine, EndianServices endianness)
         {
             string arch;
             var options = new Dictionary<string, object>();
             string? stackRegName = null;
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
-            switch (Machine)
+            switch (elfMachine)
             {
             case ElfMachine.EM_MIPS:
                 //$TODO: detect release 6 of the MIPS architecture. 
@@ -142,7 +142,7 @@ namespace Reko.ImageLoaders.Elf
                 arch = "csky";
                 break;
             default:
-               return base.CreateArchitecture(endianness);
+               return base.CreateArchitecture(elfMachine, endianness);
             }
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var a = cfgSvc.GetArchitecture(arch, options);
@@ -159,13 +159,14 @@ namespace Reko.ImageLoaders.Elf
             return a;
         }
 
-        public override ElfObjectLinker CreateLinker()
+        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch)
         {
-            return new ElfObjectLinker32(this, Architecture, rawImage);
+            return new ElfObjectLinker32(this, arch, rawImage);
         }
 
         public override ElfRelocator CreateRelocator(
-            ElfMachine machine, 
+            ElfMachine machine,
+            IProcessorArchitecture arch,
             SortedList<Address, ImageSymbol> imageSymbols,
             Dictionary<ElfSymbol, Address> plt)
         {
@@ -175,7 +176,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_HEXAGON: return new HexagonRelocator(this, imageSymbols);
-            case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
+            case ElfMachine.EM_MIPS: return new MipsRelocator(this, arch, imageSymbols);
             case ElfMachine.EM_NANOMIPS: return new NanoMipsRelocator(this, imageSymbols);
             case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
@@ -198,7 +199,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
             case ElfMachine.EM_TC32: return new TC32Relocator(this, imageSymbols);
             }
-            return base.CreateRelocator(machine, imageSymbols, plt);
+            return base.CreateRelocator(machine, arch, imageSymbols, plt);
         }
 
         public ImageSegmentRenderer? CreateRenderer(ElfSection shdr, ElfMachine machine)

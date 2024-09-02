@@ -20,8 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Loading;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,7 +137,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 // Allocates a 32 bit TLS slot
                 //$REVIEW: the documentation is unreadable, but this is a
                 // guess.
-                uint tlsSlotOffset = AllocateTlsSlot();
+                uint tlsSlotOffset = AllocateTlsSlot(ctx.PointerType);
                 ctx.WriteUInt32(addr, ctx.S + ctx.A - tlsSlotOffset);
                 return (addr, null);
             case Arm32Rt.R_ARM_TLS_DTPMOD32:
@@ -225,10 +227,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        private uint AllocateTlsSlot()
+        private uint AllocateTlsSlot(PrimitiveType dtTlsSlot)
         {
             var tlsSlotOffset = this.currentTlsSlotOffset;
-            this.currentTlsSlotOffset += (uint) loader.Architecture.PointerType.Size;
+            this.currentTlsSlotOffset += (uint) dtTlsSlot.Size;
             return tlsSlotOffset;
         }
 

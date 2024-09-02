@@ -253,14 +253,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                 if (relTable is { })
                 {
-                    LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
+                    var arch = program.Architecture;
+                    LoadSymbolsFromDynamicSegment(arch, dynSeg, symtab, syment, offStrtab, offSymtab);
 
                     // Generate a symbol for each relocation.
                     ElfImageLoader.trace.Inform("Relocating entries in .dynamic:");
                     foreach (var (_, elfSym, _) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
-                        var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                        var imgSym = Loader.CreateImageSymbol(elfSym, arch, true);
                         // Symbols need to refer to the loaded image, if their value is 0,
                         // they are imported symbols.
                         if (imgSym == null || imgSym.Address!.ToLinear() == 0)
@@ -308,7 +309,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// </summary>
         protected void GenerateImageSymbol(Program program, Address addrImport, ElfSymbol elfSym, ElfSymbol? extraSym)
         {
-            var imgSym = Loader.CreateImageSymbol(elfSym, true);
+            var arch = program.Architecture;
+            var imgSym = Loader.CreateImageSymbol(elfSym, arch, true);
             if (imgSym != null && imgSym.Address!.ToLinear() != 0)
             {
                 imageSymbols[imgSym.Address] = imgSym;
@@ -316,7 +318,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             if (extraSym != null)
             {
-                var extraImgSym = Loader.CreateImageSymbol(extraSym, true);
+                var extraImgSym = Loader.CreateImageSymbol(extraSym, arch, true);
                 if (extraImgSym != null)
                 {
                     imageSymbols[extraImgSym.Address!] = extraImgSym;
@@ -333,7 +335,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        private void LoadSymbolsFromDynamicSegment(ElfSegment dynSeg, ElfDynamicEntry symtab, ElfDynamicEntry syment, ulong offStrtab, ulong offSymtab)
+        private void LoadSymbolsFromDynamicSegment(
+            IProcessorArchitecture arch,
+            ElfSegment dynSeg,
+            ElfDynamicEntry symtab,
+            ElfDynamicEntry syment,
+            ulong offStrtab,
+            ulong offSymtab)
         {
             // Sadly, the ELF format has no way to locate the end of the symbols in a DT_DYNAMIC segment.
             // We guess instead...
@@ -350,7 +358,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     if (elfSym is null)
                         continue;
                     ElfImageLoader.trace.Verbose("  {0:X8} {1}", elfSym.Value, elfSym.Name);
-                    var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                    var imgSym = Loader.CreateImageSymbol(elfSym, arch, true);
                     if (imgSym == null || imgSym.Address!.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;

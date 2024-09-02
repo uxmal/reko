@@ -148,7 +148,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), this.bytes);
             this.el32 = new ElfLoader32(sc, eih, 0, big_endian ? EndianServices.Big: EndianServices.Little, this.bytes);
-            this.el32.LoadArchitectureFromHeader();
+            //this.archQ = el32.CreateArchitecture(el32.Machine, el32.Endianness);
             el32.Segments.AddRange(programHeaders);
             el32.Sections.AddRange(sections);
         }

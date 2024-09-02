@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -85,7 +86,7 @@ namespace Reko.ImageLoaders.Elf
         public ulong P { get; private set; }
         public ulong S { get; private set; }
         public ElfSection? ReferringSection { get; }
-
+        public PrimitiveType PointerType => program.Architecture.PointerType;
 
         public void WriteUInt16(Address addr, ulong value)
         {
@@ -157,6 +158,12 @@ namespace Reko.ImageLoaders.Elf
             {
                 program.ImportReferences[addrPfn] = new NamedImportReference(addrPfn, null, symbol.Name, st.Value);
             }
+        }
+
+        public void AddGotSymbol(ElfSymbol symbol, Address addrPfn)
+        {
+            var gotSymbol = loader.CreateGotSymbol(program.Architecture, addrPfn, symbol.Name);
+            program.ImageSymbols[addrPfn] = gotSymbol;
         }
 
         public void Warn(Address addr, string message)

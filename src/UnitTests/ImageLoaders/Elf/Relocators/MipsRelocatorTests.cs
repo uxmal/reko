@@ -51,7 +51,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override ElfRelocator CreateRelocator(ElfLoader loader, SortedList<Address, ImageSymbol> imageSymbols)
         {
-            return new MipsRelocator((ElfLoader32) loader, imageSymbols);
+            var arch = GetArchitecture();
+            return new MipsRelocator((ElfLoader32) loader, arch, imageSymbols);
         }
 
         protected override ElfLoader CreateLoader()

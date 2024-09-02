@@ -81,12 +81,12 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr64(uAddr);
         }
 
-        protected override IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
+        public override IProcessorArchitecture CreateArchitecture(ElfMachine elfMachine, EndianServices endianness)
         {
             var options = new Dictionary<string, object>();
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
             string archName;
-            switch (Machine)
+            switch (elfMachine)
             {
             case ElfMachine.EM_IA_64:
                 archName = "ia64";
@@ -118,16 +118,18 @@ namespace Reko.ImageLoaders.Elf
                 options[ProcessorOption.WordSize] = 64;
                 break;
             default:
-                return base.CreateArchitecture(endianness);
+                return base.CreateArchitecture(elfMachine, endianness);
             }
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(archName, options);
+            if (arch is null)
+                throw new InvalidOperationException($"Unknown architecture '{arch}'.");
             return arch;
         }
 
-        public override ElfObjectLinker CreateLinker()
+        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch)
         {
-            return new ElfObjectLinker64(this, Architecture, rawImage);
+            return new ElfObjectLinker64(this, arch, rawImage);
         }
 
         private ImageSegmentRenderer? CreateRenderer64(ElfSection shdr)
@@ -146,7 +148,8 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public override ElfRelocator CreateRelocator(
-            ElfMachine machine, 
+            ElfMachine machine,
+            IProcessorArchitecture arch,
             SortedList<Address, ImageSymbol> symbols,
             Dictionary<ElfSymbol, Address> plt)
         {
@@ -163,7 +166,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_SPARCV9: return new Sparc64Relocator(this, symbols);
             case ElfMachine.EM_IA_64: return new Ia64Relocator(this, symbols);
             }
-            return base.CreateRelocator(machine, symbols, plt);
+            return base.CreateRelocator(machine, arch, symbols, plt);
         }
 
         public override void Dump(Address addrLoad, TextWriter writer)

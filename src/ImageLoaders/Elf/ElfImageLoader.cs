@@ -73,8 +73,8 @@ namespace Reko.ImageLoaders.Elf
             var rdr = new BeImageReader(this.RawImage, 0);
             LoadElfIdentification(rdr);
             var innerLoader = CreateLoader();
-            innerLoader.LoadArchitectureFromHeader();
-            var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
+            var arch = innerLoader.CreateArchitecture(innerLoader.Machine, innerLoader.Endianness);
+            var platform = innerLoader.LoadPlatform(osAbi, arch);
             
             int cHeaders = innerLoader.LoadSegments();
             innerLoader.Sections.AddRange(innerLoader.LoadSectionHeaders());
@@ -89,7 +89,7 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                if (addrLoad != null)
+                if (addrLoad is not null)
                 {
                     addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
                 }
@@ -97,11 +97,11 @@ namespace Reko.ImageLoaders.Elf
 
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
-                var linker = innerLoader.CreateLinker();
+                var linker = innerLoader.CreateLinker(arch);
                 program = linker.LinkObject(platform, addrLoad, RawImage);
                 plt = linker.PltEntries;
             }
-            innerLoader.Relocate(program, addrLoad!, plt);
+            innerLoader.Relocate(innerLoader.Machine, program, addrLoad!, plt);
             return program;
         }
 
