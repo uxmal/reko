@@ -25,7 +25,7 @@ namespace Reko.Core.Rtl
 {
     public sealed class RtlBranch : RtlTransfer
     {
-        public RtlBranch(Expression condition, Address target, InstrClass rtlClass) 
+        public RtlBranch(Expression condition, Expression target, InstrClass rtlClass) 
             : base(target, rtlClass)
         {
             this.Condition = condition;

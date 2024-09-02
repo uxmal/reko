@@ -91,7 +91,7 @@ namespace Reko.Core.Rtl
         /// <param name="target">Control goes to this address if condition is true</param>
         /// <param name="rtlClass">Describes details the branch instruction</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter Branch(Expression condition, Address target, InstrClass rtlClass)
+        public RtlEmitter Branch(Expression condition, Expression target, InstrClass rtlClass)
         {
             Instructions.Add(new RtlBranch(condition, target, rtlClass));
             return this;
@@ -104,7 +104,7 @@ namespace Reko.Core.Rtl
         /// <param name="condition">Boolean expression</param>
         /// <param name="target">Control goes to this address if condition is true</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter Branch(Expression condition, Address target)
+        public RtlEmitter Branch(Expression condition, Expression target)
         {
             Instructions.Add(new RtlBranch(condition, target, InstrClass.ConditionalTransfer));
             return this;
