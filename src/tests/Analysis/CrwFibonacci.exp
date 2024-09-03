@@ -2,7 +2,7 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // MayUse:  Stack +0004:[0..31]
 // DataTypes: 
 //   Stack +0004: int32
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn10000000
 // Trashed: SCZO eax Top
 // Preserved: edi esi esp
 // fn10000000

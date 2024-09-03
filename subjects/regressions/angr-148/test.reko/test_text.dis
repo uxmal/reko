@@ -108,7 +108,7 @@ word32 f()
 // Called from:
 //      main
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-main
 // Trashed: eax rdi Top
 // Preserved: rbp rsp
 f_entry:

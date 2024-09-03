@@ -21,7 +21,7 @@ byte fn02F4(byte a, byte c, byte b, byte h, word16 ix, ptr32 & ixOut)
 // Called from:
 //      fn164F
 // MayUse:  a:[0..7] b:[0..7] c:[0..7] h:[0..7] ix:[0..15]
-// LiveOut: hl ix sp
+// LiveOut: hl:[0..7]-fn164F ix:[0..15]-fn164F sp:[0..15]-fn164F
 // Trashed: SZHVNC af b c hl ix sp
 // Preserved:
 fn02F4_entry:
@@ -61,7 +61,7 @@ byte fn034E(byte a, byte b, byte l, byte h, word16 ix, ptr32 & ixOut)
 // Called from:
 //      fn02F4
 // MayUse:  a:[0..7] b:[0..7] h:[0..7] ix:[0..15] l:[0..7]
-// LiveOut: hl ix
+// LiveOut: hl:[0..7]-fn02F4 ix:[0..15]-fn02F4
 // Trashed: SZHVNC a b c h ix l sp
 // Preserved:
 fn034E_entry:
@@ -83,7 +83,7 @@ word16 fn0350(byte b, byte l, byte h, word16 ix, ptr32 & ixOut)
 //      fn03B2
 //      fn0914
 // MayUse:  b:[0..7] h:[0..7] ix:[0..15] l:[0..7]
-// LiveOut: hl ix
+// LiveOut: hl:[0..15]-fn03B2 ix:[0..15]-fn034E
 // Trashed: SZHVNC a b c h ix l sp
 // Preserved:
 fn0350_entry:
@@ -115,7 +115,7 @@ byte fn039D(byte a, byte h, word16 ix, ptr32 & ixOut)
 //      fn034E
 //      fn0350
 // MayUse:  a:[0..7] h:[0..7] ix:[0..15]
-// LiveOut: h ix
+// LiveOut: h:[8..15]-fn0350 ix:[0..15]-fn0350
 // Trashed: SZHVNC af b c f h ix l sp
 // Preserved:
 fn039D_entry:
@@ -153,7 +153,7 @@ byte fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, ptr32 &
 // Called from:
 //      fn039D
 // MayUse:  a:[0..7] de:[0..15] ix:[0..15] Sequence h:l:b:c:[0..31] Stack +0024:[0..15]
-// LiveOut: h ix
+// LiveOut: h:[8..15]-fn039D ix:[0..15]-fn039D
 // Trashed: SZHVNC a bc de hl ix sp
 // Preserved:
 fn03B2_entry:

@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 // Register word16 fn0C00_000B(Register word16 dx)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  dx:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax dx Top
 // Preserved: sp
 // fn0C00_000B
@@ -34,7 +34,7 @@ fn0C00_000B_exit:
 // Register word16 fn0C00_000F(Register word16 dx)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  dx:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_000B
 // Trashed: SCZO ax dx Top
 // Preserved: si sp
 // fn0C00_000F

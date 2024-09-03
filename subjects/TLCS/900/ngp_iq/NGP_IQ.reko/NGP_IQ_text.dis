@@ -183,7 +183,7 @@ bool fn0020050A(word16 hl)
 // Called from:
 //      fn00200532
 // MayUse:  xhl:[0..15]
-// LiveOut: Z
+// LiveOut: Z-fn00200532
 // Trashed: SZHVNC a w
 // Preserved: xbc xde xhl xsp
 fn0020050A_entry:
@@ -200,7 +200,7 @@ bool fn00200532(word32 xhl)
 // Called from:
 //      fn00200089
 // MayUse:  xhl:[0..31]
-// LiveOut: Z
+// LiveOut: Z-fn00200089
 // Trashed: SZHVNC
 // Preserved: xbc xhl xsp xwa
 fn00200532_entry:
@@ -219,7 +219,7 @@ word32 fn00200557(byte c, byte b, word32 xhl)
 // Called from:
 //      fn00200089
 // MayUse:  b:[0..7] c:[0..7] xhl:[0..31]
-// LiveOut: xwa
+// LiveOut: xwa:[0..31]-fn00200089
 // Trashed: SZHVNC xbc xwa
 // Preserved: xde xhl xsp
 fn00200557_entry:

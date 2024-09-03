@@ -49,7 +49,7 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // MayUse:  Stack +0002:[0..31]
 // DataTypes: 
 //   Stack +0002: (ptr32 (struct 0006))
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: ax bx es Top
 // Preserved: bp sp
 // fn0C00_0020
@@ -82,7 +82,7 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // DataTypes: 
 //   Stack +0002: (ptr32 (struct 0008))
 //   Stack +0006: word16
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax bx es Top
 // Preserved: bp sp
 // fn0C00_002E

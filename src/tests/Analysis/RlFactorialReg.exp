@@ -15,7 +15,7 @@ l0C00_0000:
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
-	LiveOut:   ax:[0..15]
+	LiveOut:   ax:[0..15]-fn0C00_000B
 	BitsUsed:  cx:[0..15]
 	Trashed:   SCZO ax cx dx Top
 	Preserved: si sp

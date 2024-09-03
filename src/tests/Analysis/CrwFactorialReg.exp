@@ -35,7 +35,7 @@ Register word16 fn0C00_000B(Register word16 cx)
 // MayUse:  cx:[0..15]
 // DataTypes: 
 //   cx: int16
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_000B
 // Trashed: SCZO ax cx dx Top
 // Preserved: si sp
 // fn0C00_000B

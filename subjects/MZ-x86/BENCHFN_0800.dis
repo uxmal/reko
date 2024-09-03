@@ -257,7 +257,7 @@ word16 __IOERROR(selector ds, word16 wArg02)
 //      _lseek
 //      _eof
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_eof
 // Trashed: SCZO ax Top
 // Preserved: bp si sp
 __IOERROR_entry:
@@ -424,7 +424,7 @@ word32 fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, ptr16 &
 // Called from:
 //      __setargv
 // MayUse:  ax:[0..15] cx:[0..15] Sequence ds:si:[0..31] Sequence es:di:[0..31]
-// LiveOut: CZ ax cx si
+// LiveOut: CZ-__setargv ax:[0..15]-__setargv cx:[0..15]-__setargv si:[0..15]-__setargv
 // Trashed: SCZO ax cx si Top
 // Preserved: bx di dx sp
 fn0800_03BF_entry:
@@ -538,7 +538,7 @@ word16 fn0800_04BF(selector ds, word16 wArg02, word16 wArg04)
 // Called from:
 //      _malloc
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_malloc
 // Trashed: SCZO ax Top
 // Preserved: bp di si sp
 fn0800_04BF_entry:
@@ -564,7 +564,7 @@ word16 fn0800_04F9(selector ds, word16 wArg02)
 // Called from:
 //      _malloc
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_malloc
 // Trashed: SCZO ax cx dx Top
 // Preserved: bp si sp
 fn0800_04F9_entry:
@@ -589,7 +589,7 @@ word16 fn0800_0536(selector ds, word16 wArg02)
 // Called from:
 //      _malloc
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_malloc
 // Trashed: SCZO ax cx dx Top
 // Preserved: bp si sp
 fn0800_0536_entry:
@@ -615,7 +615,7 @@ word16 _malloc(selector ds, word16 wArg02)
 //      __setenvp
 //      _setvbuf
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_setvbuf
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
 _malloc_entry:
@@ -681,7 +681,7 @@ word16 ___sbrk(selector ds, word32 dwArg02)
 //      fn0800_04F9
 //      fn0800_0536
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_0536
 // Trashed: SCZO ax cx dx Top
 // Preserved: bp sp
 ___sbrk_entry:
@@ -727,7 +727,7 @@ word16 fn0800_065B(selector ds, word16 wArg02)
 // Called from:
 //      _fseek
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fseek
 // Trashed: SCZOP ax bx Top
 // Preserved: bp di si sp
 fn0800_065B_entry:
@@ -824,7 +824,7 @@ word16 fn0800_0782(selector ds, word16 wArg02)
 // Called from:
 //      _fgetc
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fgetc
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_0782_entry:
@@ -932,7 +932,7 @@ word16 _isatty(word16 wArg02)
 // Called from:
 //      _fgetc
 // MayUse:  Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fgetc
 // Trashed: SCZO ax bx dx Top
 // Preserved: bp sp
 _isatty_entry:
@@ -1016,7 +1016,7 @@ word16 _read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Called from:
 //      fn0800_0782
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_0782
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di si sp
 _read_entry:
@@ -1077,7 +1077,7 @@ word16 __read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 //      _fgetc
 //      _read
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_read
 // Trashed: C ax bx cx dx Top
 // Preserved: SZO bp ds sp
 __read_entry:
@@ -1097,7 +1097,7 @@ word16 _write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Called from:
 //      _fflush
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fflush
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp di si sp
 _write_entry:
@@ -1170,7 +1170,7 @@ word16 __write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 //      _write
 //      _fputc
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_write
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp ds sp
 __write_entry:
@@ -1199,7 +1199,7 @@ word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & d
 //      __write
 //      _tell
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..7]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-_fseek dx:[0..15]-_fseek
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 _lseek_entry:
@@ -1297,7 +1297,7 @@ word16 _eof(selector ds, word16 wArg02)
 // Called from:
 //      _fgetc
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fgetc
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp sp
 _eof_entry:
@@ -1347,7 +1347,7 @@ word16 _fflush(selector ds, word16 wArg02)
 //      fn0800_075B
 //      _fputc
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-_fputc
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp di si sp
 _fflush_entry:
@@ -1392,7 +1392,7 @@ word16 _printf(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02)
 // Called from:
 //      _main
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: di
+// LiveOut: di:[0..15]-_main
 // Trashed: SCZDO ax di si Top
 // Preserved: bp sp
 _printf_entry:
@@ -1506,7 +1506,7 @@ word16 fn0800_1048(segptr32 es_di, selector ds, word16 wArg02)
 // Called from:
 //      __VPRINTER
 // MayUse:  ds:[0..15] Sequence es:di:[0..31] Stack +0002:[0..15]
-// LiveOut: di
+// LiveOut: di:[0..15]-__VPRINTER
 // Trashed: SCZDO al bx cx di dx Top
 // Preserved: bp sp
 fn0800_1048_entry:
@@ -1529,7 +1529,7 @@ word16 __VPRINTER(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02, w
 // Called from:
 //      _printf
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: di
+// LiveOut: di:[0..15]-_printf
 // Trashed: SCZDO ax di si Top
 // Preserved: P bp bx cx ds dx es sp ss
 __VPRINTER_entry:
@@ -2019,7 +2019,7 @@ word16 fn0800_108C(word16 di, selector es)
 // Called from:
 //      __VPRINTER
 // MayUse:  di:[0..15] es:[0..15]
-// LiveOut: cx
+// LiveOut: cx:[0..15]-__VPRINTER
 // Trashed: SCZO al cx Top
 // Preserved: di sp
 fn0800_108C_entry:
@@ -2043,7 +2043,7 @@ byte fn0800_1099(segptr32 ds_di, segptr32 ss_bp, byte al, word16 cx, word16 dx, 
 // Called from:
 //      __VPRINTER
 // MayUse:  ax:[0..7] bx:[0..15] cx:[0..15] dx:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31]
-// LiveOut: ax di
+// LiveOut: ax:[8..15]-__VPRINTER di:[0..15]-__VPRINTER
 // Trashed: SZO ax di Top
 // Preserved: C bp sp ss
 fn0800_1099_entry:
@@ -2071,7 +2071,7 @@ byte fn0800_10A1(segptr32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di, ptr
 //      __VPRINTER
 //      fn0800_1099
 // MayUse:  bx:[0..15] cx:[0..15] di:[0..15] dx:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: ax di
+// LiveOut: ax:[8..15]-fn0800_1099 di:[0..15]-__VPRINTER
 // Trashed: SCZO ax di Top
 // Preserved: bx cx dx es sp
 fn0800_10A1_entry:
@@ -2243,7 +2243,7 @@ word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, ptr16 & bxOut,
 // Called from:
 //      _main
 // MayUse:  di:[0..15] ds:[0..15] es:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: bp bx dx sp
+// LiveOut: bp:[0..15]-_main bx:[0..15]-_main dx:[0..15]-_main sp:[0..15]-_main
 // Trashed: SCZDOP ax bp bx cx di dx es si sp Top
 // Preserved:
 _scanf_entry:
@@ -2263,7 +2263,7 @@ word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg
 // Called from:
 //      _scanf
 // MayUse:  di:[0..15] ds:[0..15] es:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: bp bx dx
+// LiveOut: bp:[0..15]-_scanf bx:[0..15]-_scanf dx:[0..15]-_scanf
 // Trashed: SCZDOP ax bp bx cx di dx es si Top
 // Preserved: sp ss
 __scanner_entry:
@@ -2682,7 +2682,7 @@ ptr32 fn0800_1708(segptr32 ss_bp, selector ds)
 // Called from:
 //      __scanner
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: es:di
+// LiveOut: Sequence es:di:[0..31]-__scanner
 // Trashed: SCZOP di es Top
 // Preserved: sp
 fn0800_1708_entry:
@@ -2706,7 +2706,7 @@ word16 fn0800_1898(segptr32 ss_bp, selector ds, ptr16 & bpOut)
 // Called from:
 //      __scanner
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp bx
+// LiveOut: bp:[0..15]-__scanner bx:[0..15]-__scanner
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_1898_entry:
@@ -2754,7 +2754,7 @@ word16 fn0800_196F(segptr32 ss_bp, selector ds, ptr16 & bpOut)
 // Called from:
 //      __scanner
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp bx
+// LiveOut: bp:[0..15]-__scanner bx:[0..15]-__scanner
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_196F_entry:
@@ -2774,7 +2774,7 @@ word16 fn0800_1AEB(segptr32 ss_bp)
 //      fn0800_1898
 //      fn0800_1B2C
 // MayUse:  Sequence ss:bp:[0..31]
-// LiveOut: bp
+// LiveOut: bp:[0..15]-fn0800_1B06
 // Trashed: SCZO ax bp cx di es si Top
 // Preserved: sp ss
 fn0800_1AEB_entry:
@@ -2794,7 +2794,7 @@ word16 fn0800_1AFF(segptr32 ss_bp)
 //      __scanner
 //      fn0800_1AEB
 // MayUse:  Sequence ss:bp:[0..31]
-// LiveOut: bp
+// LiveOut: bp:[0..15]-__scanner
 // Trashed: ax bp di es si sp Top
 // Preserved:
 fn0800_1AFF_entry:
@@ -2811,7 +2811,7 @@ word16 fn0800_1B06(segptr32 ss_bp, selector ds, ptr16 & bpOut)
 //      fn0800_1898
 //      fn0800_196F
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp bx
+// LiveOut: bp:[0..15]-fn0800_196F bx:[0..15]-fn0800_196F
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_1B06_entry:
@@ -2975,7 +2975,7 @@ bool fn0800_1B9E(byte cl, byte bl)
 // Called from:
 //      __scantol
 // MayUse:  bx:[0..7] cl:[0..7]
-// LiveOut: C
+// LiveOut: C-__scantol
 // Trashed: SCZO Top
 // Preserved: bx sp
 fn0800_1B9E_entry:
@@ -3011,7 +3011,7 @@ word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word1
 // Called from:
 //      __scanner
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15] Stack +000E:[0..15]
-// LiveOut: ax bx di dx es
+// LiveOut: ax:[0..15]-__scanner bx:[0..15]-__scanner di:[0..15]-__scanner dx:[0..15]-__scanner es:[0..15]-__scanner
 // Trashed: SCZOP ax bx cx di dx es si Top
 // Preserved: bp ds sp ss
 __scantol_entry:

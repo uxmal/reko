@@ -87,7 +87,7 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // DataTypes: 
 //   ds: (ptr16 (segment))
 //   Stack +0002: (memptr (ptr16 (segment)) (struct 0004))
-// LiveOut: FPU -1
+// LiveOut: FPU -1:[0..63]-fn0C00_0000
 // Trashed: bx FPU -1 Top
 // Preserved: bp sp
 // fn0C00_0031

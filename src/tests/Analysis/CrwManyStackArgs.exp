@@ -40,7 +40,7 @@ Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word
 //   Stack +0002: word16
 //   Stack +0004: word16
 //   Stack +0006: word16
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax Top
 // Preserved: bp sp
 // fn0C00_0011

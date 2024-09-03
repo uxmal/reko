@@ -123,7 +123,7 @@ word32 fn00002354(word32 a5, word32 dwArg08, byte bArg0F)
 // Called from:
 //      fn00002294
 // MayUse:  a5:[0..31] Stack +0008:[0..31] Stack +000F:[0..7]
-// LiveOut: a6
+// LiveOut: a6:[0..31]-fn00002294
 // Trashed: CVZNX a0 a5 a6 a7 d0 d3 d4 d5
 // Preserved:
 fn00002354_entry:
@@ -170,7 +170,7 @@ word32 fn000023B4(word32 dwArg04, word32 dwArg08)
 //      fn000022C4
 //      fn00002354
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: a6 a7
+// LiveOut: a6:[0..31]-fn00002354 a7:[0..31]-fn00002354
 // Trashed: CVZNX a0 a6 a7 d0 d3 d4 d5
 // Preserved:
 fn000023B4_entry:
@@ -224,7 +224,7 @@ word32 fn00002418(word32 a5, ptr32 & a6Out)
 // Called from:
 //      fn000023F8
 // MayUse:  a5:[0..31]
-// LiveOut: a5 a6 a7
+// LiveOut: a5:[0..31]-fn000023F8 a6:[0..31]-fn000023F8 a7:[0..31]-fn000023F8
 // Trashed: CVZNX a0 a1 a2 a5 a6 a7 d0 d1 d2
 // Preserved:
 fn00002418_entry:
@@ -254,7 +254,7 @@ word32 fn0000243C(word32 a5, word32 dwArg04, ptr32 & a6Out)
 //      fn000023F8
 //      fn00002418
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
-// LiveOut: a5 a6 a7
+// LiveOut: a5:[0..31]-fn00002418 a6:[0..31]-fn00002418 a7:[0..31]-fn00002418
 // Trashed: CVZNX a0 a1 a2 a5 a6 a7 d0 d1 d2
 // Preserved:
 fn0000243C_entry:

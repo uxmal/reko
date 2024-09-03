@@ -26,7 +26,7 @@ void fn0390(byte b, byte c, byte e, byte bArg02)
 // Called from:
 //      fn0990
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
-// LiveOut: sp
+// LiveOut: sp:[0..15]-fn0990
 // Trashed: SZPC a bc de hl sp
 // Preserved:
 fn0390_entry:
@@ -54,7 +54,7 @@ bool fn03BB(byte c, ptr16 & aOut)
 //      fn03CB
 //      fn03E6
 // MayUse:  c:[0..7]
-// LiveOut: C a
+// LiveOut: C-fn03E6 a:[0..7]-fn03CB
 // Trashed: SZPC a c hl
 // Preserved: sp
 fn03BB_entry:
@@ -72,7 +72,7 @@ word16 fn03CB(byte c)
 // Called from:
 //      fn0990
 // MayUse:  c:[0..7]
-// LiveOut: af
+// LiveOut: af:[0..15]-fn0990
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn03CB_entry:
@@ -90,7 +90,7 @@ byte fn03E6(byte c)
 // Called from:
 //      fn0990
 // MayUse:  c:[0..7]
-// LiveOut: a
+// LiveOut: a:[0..7]-fn0990
 // Trashed: SZPC a c hl
 // Preserved: sp
 fn03E6_entry:
@@ -125,7 +125,7 @@ void fn040D(byte b, byte c, byte e, word16 wArg02)
 // Called from:
 //      fn0BE4
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..15]
-// LiveOut: sp
+// LiveOut: sp:[0..15]-fn0BE4
 // Trashed: SZPC a bc de hl sp
 // Preserved:
 fn040D_entry:
@@ -162,7 +162,7 @@ byte fn045B()
 //      fn1279
 //      fn12D8
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn12D8
 // Trashed: SZPC a hl
 // Preserved: sp
 fn045B_entry:
@@ -185,7 +185,7 @@ byte fn0473(byte c)
 //      fn0483
 //      fn056B
 // MayUse:  c:[0..7]
-// LiveOut: c
+// LiveOut: c:[0..7]-fn056B
 // Trashed: c de hl
 // Preserved: sp
 fn0473_entry:
@@ -202,7 +202,7 @@ word16 fn0483(byte b, byte c, byte d, byte e, word16 wArg02)
 // Called from:
 //      fn0534
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] Stack +0002:[0..15]
-// LiveOut: bc
+// LiveOut: bc:[0..15]-fn0534
 // Trashed: SZPC a bc de hl sp
 // Preserved:
 fn0483_entry:
@@ -256,7 +256,7 @@ byte fn0524(byte c)
 // Called from:
 //      fn056B
 // MayUse:  c:[0..7]
-// LiveOut: c
+// LiveOut: c:[0..7]-fn056B
 // Trashed: c de hl
 // Preserved: sp
 fn0524_entry:
@@ -273,7 +273,7 @@ word16 fn0534(byte c)
 // Called from:
 //      fn056B
 // MayUse:  bc:[0..7]
-// LiveOut: bc
+// LiveOut: bc:[0..15]-fn056B
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn0534_entry:
@@ -308,7 +308,7 @@ bool fn056B(word16 bc, ptr16 & bcOut)
 //      fn100A
 //      fn1229
 // MayUse:  bc:[0..15]
-// LiveOut: C bc
+// LiveOut: C-fn05EF bc:[0..15]-fn05CE
 // Trashed: SZPC a bc hl
 // Preserved: de sp
 fn056B_entry:
@@ -364,7 +364,7 @@ byte fn05CE(word16 bc)
 //      fn100A
 //      fn1229
 // MayUse:  bc:[0..15]
-// LiveOut: bc
+// LiveOut: bc:[8..15]-fn1229
 // Trashed: SZPC a bc hl
 // Preserved: sp
 fn05CE_entry:
@@ -393,7 +393,7 @@ bool fn05EF(word16 bc, ptr16 & bOut)
 //      fn06CE
 //      fn07B3
 // MayUse:  bc:[0..15]
-// LiveOut: C bc
+// LiveOut: C-fn061B bc:[8..15]-fn07B3
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn05EF_entry:
@@ -425,7 +425,7 @@ bool fn061B(byte b, byte c, byte d, byte e)
 // Called from:
 //      fn082F
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
-// LiveOut: C
+// LiveOut: C-fn082F
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn061B_entry:
@@ -500,7 +500,7 @@ byte fn06CE(byte b, byte c)
 //      fn07B3
 //      fn0BE4
 // MayUse:  b:[0..7] c:[0..7]
-// LiveOut: bc
+// LiveOut: bc:[8..15]-fn075C
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn06CE_entry:
@@ -665,7 +665,7 @@ byte fn082F(byte f, byte b, byte c, byte e, word16 wArg02, word16 wArg04)
 // Called from:
 //      fn0BE4
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] f:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: af
+// LiveOut: af:[0..7]-fn0BE4
 // Trashed: SZPC af bc de hl
 // Preserved: sp
 fn082F_entry:
@@ -839,7 +839,7 @@ bool fn0990(byte f, byte b, byte c, byte d, byte e, ptr16 & afOut)
 // Called from:
 //      fn082F
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] f:[0..7]
-// LiveOut: C af
+// LiveOut: C-fn082F af:[0..15]-fn082F
 // Trashed: SZPC af bc de hl sp
 // Preserved:
 fn0990_entry:
@@ -987,7 +987,7 @@ word16 fn0B74()
 // Called from:
 //      fn0990
 // MayUse: 
-// LiveOut: af
+// LiveOut: af:[0..15]-fn0990
 // Trashed: SZPC af bc de hl
 // Preserved: sp
 fn0B74_entry:
@@ -1078,7 +1078,7 @@ byte fn0C93()
 // Called from:
 //      fn0E63
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn0E63
 // Trashed: SZPC a bc hl
 // Preserved: sp
 fn0C93_entry:
@@ -1093,7 +1093,7 @@ bool fn0D64(ptr16 & aOut)
 // Called from:
 //      fn0D84
 // MayUse: 
-// LiveOut: C a
+// LiveOut: C-fn0D84 a:[0..7]-fn0D84
 // Trashed: SZPC a bc hl
 // Preserved: sp
 fn0D64_entry:
@@ -1201,7 +1201,7 @@ bool fn0EAB(ptr16 & aOut)
 // Called from:
 //      fn0E63
 // MayUse: 
-// LiveOut: C a
+// LiveOut: C-fn0E63 a:[0..7]-fn0E63
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn0EAB_entry:
@@ -1450,7 +1450,7 @@ word16 fn1279()
 // Called from:
 //      fn100A
 // MayUse: 
-// LiveOut: af
+// LiveOut: af:[0..15]-fn100A
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn1279_entry:
@@ -1487,7 +1487,7 @@ word16 fn12D8()
 // Called from:
 //      fn100A
 // MayUse: 
-// LiveOut: af
+// LiveOut: af:[0..15]-fn100A
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn12D8_entry:
@@ -1528,7 +1528,7 @@ byte fn1326(byte c, word16 hl, ptr16 & lOut)
 //      fn0483
 //      fn0BE4
 // MayUse:  c:[0..7] hl:[0..15]
-// LiveOut: c hl
+// LiveOut: c:[0..7]-fn0483 hl:[0..7]-fn0483
 // Trashed: SZPC a c h l
 // Preserved: sp
 fn1326_entry:
@@ -1551,7 +1551,7 @@ bool fn1335(word16 de, word16 hl)
 // Called from:
 //      fn0534
 // MayUse:  de:[0..15] hl:[0..15]
-// LiveOut: C
+// LiveOut: C-fn0534
 // Trashed: SZPC a h l
 // Preserved: sp
 fn1335_entry:
@@ -1579,7 +1579,7 @@ word16 fn1346(word16 bc, word16 de)
 // Called from:
 //      fn0BE4
 // MayUse:  bc:[0..15] de:[0..15]
-// LiveOut: hl
+// LiveOut: hl:[0..15]-fn0BE4
 // Trashed: SZPC a b c de hl
 // Preserved: sp
 fn1346_entry:
@@ -1597,7 +1597,7 @@ bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & hlOut)
 //      fn063E
 //      fn1346
 // MayUse:  de:[0..15] hl:[0..15]
-// LiveOut: C de hl
+// LiveOut: C-fn063E de:[0..15]-fn063E hl:[0..15]-fn1346
 // Trashed: SZPC a b c de hl
 // Preserved: sp
 fn1348_entry:
@@ -1616,7 +1616,7 @@ byte fn1353(byte a, word16 de, ptr16 & lOut)
 //      fn075C
 //      fn0E63
 // MayUse:  a:[0..7] de:[0..15]
-// LiveOut: a hl
+// LiveOut: a:[0..7]-fn075C hl:[0..7]-fn075C
 // Trashed: SZPC a de hl
 // Preserved: sp
 fn1353_entry:
@@ -1635,7 +1635,7 @@ byte fn1356(word16 de, word16 hl)
 // Called from:
 //      fn1353
 // MayUse:  de:[0..15] hl:[0..15]
-// LiveOut: hl
+// LiveOut: hl:[0..7]-fn1353
 // Trashed: SZPC a de h l
 // Preserved: sp
 fn1356_entry:

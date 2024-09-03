@@ -35,7 +35,7 @@ word32 set_socket_option.isra.0.part.1(ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7O
 // Called from:
 //      main
 // MayUse: 
-// LiveOut: r3 r4 r6 r7
+// LiveOut: r3:[0..31]-main r4:[0..31]-main r6:[0..31]-main r7:[0..31]-main
 // Trashed: r17 r25 r3 r4 r5 r6 r7
 // Preserved: sp
 set_socket_option.isra.0.part.1_entry:
@@ -67,7 +67,7 @@ word32 exit()
 //      ping6_run
 //      __libc_start_main
 // MayUse: 
-// LiveOut: r17 sp
+// LiveOut: r17:[0..31]-ping6_usage sp:[0..31]-main
 // Trashed: r17 r25 sp
 // Preserved:
 exit_entry:
@@ -361,7 +361,7 @@ word32 in_cksum(word32 r4, word32 r5, word32 r6)
 //      ping4_send_probe
 //      ping4_parse_reply
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping4_parse_reply
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: sp
 in_cksum_entry:
@@ -389,7 +389,7 @@ word32 usage(ptr32 & r3Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r12Out, ptr32
 //      main
 //      ping4_run
 // MayUse: 
-// LiveOut: r11 r12 r17 r2 r3 r7 sp
+// LiveOut: r11:[0..31]-ping4_run r12:[0..31]-ping4_run r17:[0..31]-ping4_run r2:[0..31]-ping4_run r3:[0..31]-ping4_run r7:[0..31]-ping4_run sp:[0..31]-ping4_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 usage_entry:
@@ -415,7 +415,7 @@ word32 create_socket(word32 r4, word32 r6, word32 r8, ptr32 & r3Out, ptr32 & r6O
 //      main
 //      usage
 // MayUse:  r4:[0..31] r6:[0..31] r8:[0..31]
-// LiveOut: r2 r3 r6 r7 r8
+// LiveOut: r2:[0..31]-usage r3:[0..31]-usage r6:[0..31]-main r7:[0..31]-usage r8:[0..31]-main
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 create_socket_entry:
@@ -592,7 +592,7 @@ word32 fn00400B4A()
 //      ping4_install_filter
 //      ping4_run
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping4_run
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00400B4A_entry:
@@ -628,7 +628,7 @@ word32 fn00400B52(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r11Out
 //      ping4_send_probe
 //      ping4_run
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3
+// LiveOut: r11:[0..31]-ping4_run r12:[0..31]-ping4_run r2:[0..31]-ping4_run r3:[0..31]-ping4_run
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00400B52_entry:
@@ -649,7 +649,7 @@ word32 fn00400B56(ptr32 & r4Out)
 //      create_socket
 //      ping4_run
 // MayUse: 
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-create_socket r4:[0..31]-create_socket
 // Trashed: r25 r3 r4
 // Preserved: sp
 fn00400B56_entry:
@@ -668,7 +668,7 @@ word32 fn00400B5A(word32 r4, word32 r5, ptr32 & r11Out, ptr32 & r12Out)
 //      usage
 //      ping4_run
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r8
+// LiveOut: r11:[0..31]-usage r12:[0..31]-usage r8:[0..31]-usage
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00400B5A_entry:
@@ -688,7 +688,7 @@ word32 fn00400B5E(ptr32 & r7Out)
 //      create_socket
 //      ping4_run
 // MayUse: 
-// LiveOut: r6 r7
+// LiveOut: r6:[0..31]-create_socket r7:[0..31]-create_socket
 // Trashed: r25 r6 r7
 // Preserved: sp
 fn00400B5E_entry:
@@ -708,7 +708,7 @@ word32 fn00400B62(word32 r4)
 //      ping4_install_filter
 //      ping4_run
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..15]-ping4_run
 // Trashed: r25 r4
 // Preserved: sp
 fn00400B62_entry:
@@ -726,7 +726,7 @@ word32 fn00400B66()
 //      create_socket
 //      ping4_run
 // MayUse: 
-// LiveOut: r17
+// LiveOut: r17:[0..31]-usage
 // Trashed: r17 r25
 // Preserved: sp
 fn00400B66_entry:
@@ -1151,7 +1151,7 @@ word32 fn00401280(ptr32 & r5Out)
 // Called from:
 //      ping4_run
 // MayUse: 
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-ping4_run r5:[0..31]-ping4_run
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401280_entry:
@@ -1169,7 +1169,7 @@ word32 fn00401284(word32 r4, ptr32 & r17Out)
 // Called from:
 //      ping4_run
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r5
+// LiveOut: r17:[0..31]-ping4_run r5:[0..31]-ping4_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401284_entry:
@@ -1193,7 +1193,7 @@ word32 pr_addr(word32 r0, word32 r4, word32 r18, word32 r19, word32 r20, word32 
 //      ping6_parse_reply
 //      ping6_run
 // MayUse:  r0:[0..31] r18:[0..31] r19:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r28:[0..31] r30:[0..31] r4:[0..31] ra:[0..31]
-// LiveOut: r17
+// LiveOut: r17:[0..31]-ping6_parse_reply
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 pr_addr_entry:
@@ -1236,7 +1236,7 @@ word32 fn00401366(word32 r4, word32 r5, word32 r6, ptr32 & r6Out)
 //      ping4_run
 //      pr_addr
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r5 r6
+// LiveOut: r5:[0..31]-pr_addr r6:[0..31]-pr_addr
 // Trashed: r10 r25 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401366_entry:
@@ -1489,7 +1489,7 @@ word32 fn00401608(word32 r4, word32 r5, word32 r6, ptr32 & r7Out)
 //      pr_addr
 //      pr_options
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r5 r7
+// LiveOut: r5:[0..31]-pr_addr r7:[0..31]-pr_options
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401608_entry:
@@ -1662,7 +1662,7 @@ word32 fn00401766(word32 r4)
 //      pr_iph
 //      ping4_parse_reply
 // MayUse:  r4:[0..31]
-// LiveOut: r17
+// LiveOut: r17:[0..31]-pr_options
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401766_entry:
@@ -2015,7 +2015,7 @@ word32 fn00401B9C(word32 r4)
 //      ping4_receive_error_msg
 //      ping4_parse_reply
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping4_parse_reply
 // Trashed: r25 r4
 // Preserved: sp
 fn00401B9C_entry:
@@ -2050,7 +2050,7 @@ word32 in_flight(ptr32 & r7Out)
 //      pinger
 //      main_loop
 // MayUse: 
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-pinger r7:[0..31]-pinger
 // Trashed: r25 r4 r6 r7
 // Preserved: sp
 in_flight_entry:
@@ -2203,7 +2203,7 @@ word32 limit_capabilities(word32 r0)
 //      main
 //      sigexit
 // MayUse:  r0:[0..31]
-// LiveOut: r8
+// LiveOut: r8:[0..31]-main
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved: ra
 limit_capabilities_entry:
@@ -2233,7 +2233,7 @@ word32 modify_capability(word32 r0, word32 r4, ptr32 & r3Out, ptr32 & r4Out, ptr
 //      setup
 //      ping6_run
 // MayUse:  r0:[0..31] r4:[0..31]
-// LiveOut: r11 r12 r17 r2 r3 r4 r6 r7 r8
+// LiveOut: r11:[0..31]-ping4_run r12:[0..31]-main r17:[0..31]-setup r2:[0..31]-main r3:[0..31]-main r4:[0..31]-main r6:[0..31]-main r7:[0..31]-main r8:[0..31]-limit_capabilities
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 modify_capability_entry:
@@ -2266,7 +2266,7 @@ word32 drop_capabilities(word32 r0)
 // Called from:
 //      ping6_run
 // MayUse:  r0:[0..31]
-// LiveOut: r3
+// LiveOut: r3:[0..31]-ping6_run
 // Trashed: hi lo r10 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved: r11 r12 r13 r14 r15 r24 ra
 drop_capabilities_entry:
@@ -2290,7 +2290,7 @@ word32 fill(word32 r0, word32 r4, word32 r5, word32 r6)
 // Called from:
 //      drop_capabilities
 // MayUse:  r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r3
+// LiveOut: r3:[0..31]-drop_capabilities
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 fill_entry:
@@ -2344,7 +2344,7 @@ word32 __schedule_exit(word32 r4)
 // Called from:
 //      main_loop
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-main_loop
 // Trashed: hi lo r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __schedule_exit_entry:
@@ -2389,7 +2389,7 @@ word32 print_timestamp(ptr32 & r11Out)
 //      if_name2index
 //      fn004033EA
 // MayUse: 
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-if_name2index r4:[0..31]-if_name2index
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 print_timestamp_entry:
@@ -2413,7 +2413,7 @@ word32 fn00401E7A(word32 r4, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 
 //      drop_capabilities
 //      pinger
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r12 r17 r2 r3 r6 r7 r8
+// LiveOut: r11:[0..31]-modify_capability r12:[0..31]-modify_capability r17:[0..31]-modify_capability r2:[0..31]-modify_capability r3:[0..31]-modify_capability r6:[0..31]-modify_capability r7:[0..31]-modify_capability r8:[0..31]-modify_capability
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401E7A_entry:
@@ -2440,7 +2440,7 @@ word32 fn00401E7E(ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 //      fill
 //      setup
 // MayUse: 
-// LiveOut: r4 r5 r6 r7
+// LiveOut: r4:[0..31]-limit_capabilities r5:[0..31]-setup r6:[0..31]-setup r7:[0..31]-setup
 // Trashed: r17 r25
 // Preserved: sp
 fn00401E7E_entry:
@@ -2462,7 +2462,7 @@ word32 fn00401E82()
 //      modify_capability
 //      drop_capabilities
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-limit_capabilities
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00401E82_entry:
@@ -2478,7 +2478,7 @@ word32 pinger(word32 r0, word32 r4, ptr32 & r12Out)
 // Called from:
 //      main_loop
 // MayUse:  r0:[0..31] r4:[0..31]
-// LiveOut: r12 r4
+// LiveOut: r12:[0..31]-main_loop r4:[0..31]-main_loop
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 pinger_entry:
@@ -2658,7 +2658,7 @@ word32 fn00402126(word32 r4, word32 r5)
 //      sock_setbufs
 //      setup
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-sock_setbufs
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00402126_entry:
@@ -2676,7 +2676,7 @@ word32 fn0040212A(word32 r4, ptr32 & r11Out)
 //      fill
 //      print_timestamp
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-print_timestamp r4:[0..31]-print_timestamp
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040212A_entry:
@@ -2695,7 +2695,7 @@ word32 sock_setbufs(word32 r5)
 //      ping4_run
 //      ping6_run
 // MayUse:  r5:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-ping4_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 sock_setbufs_entry:
@@ -2727,7 +2727,7 @@ word32 fn004021AC()
 // Called from:
 //      pinger
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-pinger
 // Trashed: r25 r3 r4
 // Preserved: sp
 fn004021AC_entry:
@@ -2747,7 +2747,7 @@ word32 fn004021B0(word32 r4, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r17Out)
 //      setup
 //      gather_statistics
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r3 r4 r6
+// LiveOut: r17:[0..31]-pinger r3:[0..31]-setup r4:[0..31]-pinger r6:[0..31]-pinger
 // Trashed: hi lo r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004021B0_entry:
@@ -2768,7 +2768,7 @@ word32 setup(word32 r0, word32 r4)
 //      ping4_run
 //      ping6_run
 // MayUse:  r0:[0..31] r4:[0..31]
-// LiveOut: r3
+// LiveOut: r3:[0..31]-ping4_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r0 r16 r17 ra sp
 setup_entry:
@@ -2881,7 +2881,7 @@ word32 fn004023EE()
 //      sock_setbufs
 //      setup
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-setup
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004023EE_entry:
@@ -2917,7 +2917,7 @@ word32 gather_statistics(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, 
 //      ping4_parse_reply
 //      ping6_parse_reply
 // MayUse:  r10:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_parse_reply
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 gather_statistics_entry:
@@ -3246,7 +3246,7 @@ word32 fn004029C6(word32 r4, ptr32 & r11Out, ptr32 & r14Out)
 //      gather_statistics
 //      finish
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r14 r3
+// LiveOut: r11:[0..31]-finish r14:[0..31]-finish r3:[0..31]-finish
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004029C6_entry:
@@ -3265,7 +3265,7 @@ word32 status(word32 r0, word32 r3)
 // Called from:
 //      main_loop
 // MayUse:  r0:[0..31] r3:[0..31]
-// LiveOut: r17
+// LiveOut: r17:[0..31]-main_loop
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: hi lo r10 r11 r12 r13 r16 ra sp
 status_entry:
@@ -3302,7 +3302,7 @@ word32 fn00402A96(word32 r4)
 // Called from:
 //      finish
 // MayUse:  r4:[0..31]
-// LiveOut: r3
+// LiveOut: r3:[0..31]-finish
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00402A96_entry:
@@ -3319,7 +3319,7 @@ word32 fn00402A9A(word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, ptr32 &
 //      finish
 //      status
 // MayUse:  r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r3 r4 r5
+// LiveOut: r11:[0..31]-finish r3:[0..31]-status r4:[0..63]-finish r5:[0..31]-finish
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00402A9A_entry:
@@ -3513,7 +3513,7 @@ word32 is_ours(word32 r4, word32 r5)
 //      ping6_receive_error_msg
 //      ping6_parse_reply
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_parse_reply
 // Trashed: r25 r4 r7
 // Preserved: sp
 is_ours_entry:
@@ -3533,7 +3533,7 @@ word32 fn00402CEA(ptr32 & r4Out)
 // Called from:
 //      main_loop
 // MayUse: 
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-main_loop r4:[0..31]-main_loop
 // Trashed: r25 r3 r4
 // Preserved: sp
 fn00402CEA_entry:
@@ -3551,7 +3551,7 @@ word32 fn00402CEE(word32 r4, word32 r12, ptr32 & r7Out, ptr32 & r17Out)
 // Called from:
 //      main_loop
 // MayUse:  r12:[0..31] r4:[0..31]
-// LiveOut: r17 r4 r7
+// LiveOut: r17:[0..31]-main_loop r4:[0..31]-main_loop r7:[0..31]-main_loop
 // Trashed: hi lo r10 r11 r13 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00402CEE_entry:
@@ -3613,7 +3613,7 @@ word32 niquery_set_qtype(word32 r4)
 //      niquery_option_ipv6_handler
 //      niquery_option_name_handler
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-niquery_option_ipv6_flag_handler
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 niquery_set_qtype_entry:
@@ -3964,7 +3964,7 @@ word32 niquery_nonce.isra.0(ptr32 & r5Out, ptr32 & r6Out)
 //      ping6_parse_reply
 //      build_niquery
 // MayUse: 
-// LiveOut: r4 r5 r6
+// LiveOut: r4:[0..31]-build_niquery r5:[0..31]-build_niquery r6:[0..31]-build_niquery
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 niquery_nonce.isra.0_entry:
@@ -3987,7 +3987,7 @@ word32 fn00403098(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out)
 //      niquery_option_subject_name_handler
 //      niquery_nonce.isra.0
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4 r5 r6
+// LiveOut: r4:[0..31]-niquery_nonce.isra.0 r5:[0..31]-niquery_nonce.isra.0 r6:[0..31]-niquery_nonce.isra.0
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00403098_entry:
@@ -4047,7 +4047,7 @@ word32 fn004030A4(word32 r4)
 //      ping6_receive_error_msg
 //      ping6_parse_reply
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_parse_reply
 // Trashed: r25 r4
 // Preserved: sp
 fn004030A4_entry:
@@ -4199,7 +4199,7 @@ word32 fn004032A0(ptr32 & r4Out)
 //      ping6_receive_error_msg
 //      hextoui
 // MayUse: 
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-hextoui r4:[0..31]-hextoui
 // Trashed: r25 r3 r4
 // Preserved: sp
 fn004032A0_entry:
@@ -4249,7 +4249,7 @@ word32 fn004032FE()
 //      if_name2index
 //      ping6_usage
 // MayUse: 
-// LiveOut: r6
+// LiveOut: r6:[0..31]-ping6_usage
 // Trashed: r25 r6 r7
 // Preserved: sp
 fn004032FE_entry:
@@ -4327,7 +4327,7 @@ word32 if_name2index(word32 r4, ptr32 & r11Out, ptr32 & r16Out)
 // Called from:
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r16 r4 sp
+// LiveOut: r11:[0..31]-ping6_run r16:[0..31]-ping6_run r4:[0..31]-ping6_run sp:[0..31]-ping6_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r16 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved: ra
 if_name2index_entry:
@@ -4392,7 +4392,7 @@ word32 fn004033F2(word32 r4, ptr32 & r17Out)
 //      ping6_receive_error_msg
 //      ping6_parse_reply
 // MayUse:  r4:[0..31]
-// LiveOut: r16 r17
+// LiveOut: r16:[0..31]-ping6_receive_error_msg r17:[0..31]-ping6_receive_error_msg
 // Trashed: r16 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004033F2_entry:
@@ -4476,7 +4476,7 @@ word32 build_echo(word32 r4)
 // Called from:
 //      ping6_send_probe
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_send_probe
 // Trashed: hi lo r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 build_echo_entry:
@@ -4502,7 +4502,7 @@ word32 build_niquery(word32 r0, word32 r4)
 // Called from:
 //      ping6_send_probe
 // MayUse:  r0:[0..31] r4:[0..31]
-// LiveOut: r16
+// LiveOut: r16:[0..31]-ping6_send_probe
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r16 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 build_niquery_entry:
@@ -4530,7 +4530,7 @@ word32 fn004034E2(word32 r4, word32 r5, word32 r6)
 //      build_niquery
 //      ping6_run
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-ping6_run
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004034E2_entry:
@@ -4576,7 +4576,7 @@ word32 ping6_usage(word32 r4, ptr32 & r17Out)
 //      usage
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r6
+// LiveOut: r17:[0..31]-ping6_run r6:[0..31]-usage
 // Trashed: r17 r25 r4 r5 r6 r7
 // Preserved: sp
 ping6_usage_entry:
@@ -4602,7 +4602,7 @@ word32 fn0040359C(word32 r4)
 //      build_niquery
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_run
 // Trashed: r25 r4
 // Preserved: sp
 fn0040359C_entry:
@@ -4618,7 +4618,7 @@ word32 ping6_run(word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r
 // Called from:
 //      main
 // MayUse:  r0:[0..31] r12:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r28:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
-// LiveOut: r11 r4 r8
+// LiveOut: r11:[0..31]-main r4:[0..31]-main r8:[0..31]-main
 // Trashed:
 // Preserved: sp
 // Terminates process
@@ -4991,7 +4991,7 @@ word32 fn00403C9A(ptr32 & r5Out, ptr32 & r7Out)
 // Called from:
 //      ping6_run
 // MayUse: 
-// LiveOut: r4 r5 r7
+// LiveOut: r4:[0..31]-ping6_run r5:[0..31]-ping6_run r7:[0..31]-ping6_run
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00403C9A_entry:
@@ -5027,7 +5027,7 @@ word32 __divdi3(word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r
 // Called from:
 //      fn00402A9A
 // MayUse:  r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r3 r4 r5
+// LiveOut: r11:[0..31]-fn00402A9A r3:[0..31]-fn00402A9A r4:[0..31]-fn00402A9A r5:[0..31]-fn00402A9A
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __divdi3_entry:
@@ -5408,7 +5408,7 @@ word32 __gtdf2(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r6Out, ptr32 
 // Called from:
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r6 r7
+// LiveOut: r4:[0..31]-decfloat r6:[0..31]-decfloat r7:[0..31]-decfloat
 // Trashed: r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __gtdf2_entry:
@@ -5566,7 +5566,7 @@ word32 __muldf3(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r3Out, ptr32
 //      fn0040CFCC
 //      fmod
 // MayUse:  r4:[0..63] r5:[0..31] r6:[0..63] r7:[0..31]
-// LiveOut: r10 r11 r12 r14 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r10:[0..31]-fn0040CFCC r11:[0..31]-printf_core r12:[0..31]-decfloat r14:[0..31]-printf_core r2:[0..31]-printf_core r3:[0..31]-decfloat r4:[0..31]-frexp r5:[0..31]-frexp r6:[0..31]-decfloat r7:[0..31]-decfloat r8:[0..31]-fn0040CFCC r9:[0..31]-__floatscan
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __muldf3_entry:
@@ -5840,7 +5840,7 @@ word32 __fixdfsi(word32 r4, word32 r5, ptr32 & r6Out)
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4 r6
+// LiveOut: r4:[0..31]-printf_core r6:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __fixdfsi_entry:
@@ -5877,7 +5877,7 @@ word32 sysconf(word32 r4, word32 r12, ptr32 & r7Out, ptr32 & r17Out)
 // Called from:
 //      fn00402CEE
 // MayUse:  r12:[0..31] r4:[0..63]
-// LiveOut: r17 r4 r7
+// LiveOut: r17:[0..31]-fn00402CEE r4:[0..31]-fn00402CEE r7:[0..31]-fn00402CEE
 // Trashed: hi lo r10 r11 r13 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 sysconf_entry:
@@ -5968,7 +5968,7 @@ word32 isxdigit(word32 r4)
 //      fill
 //      isxdigit_l
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-fill
 // Trashed: r25 r4 r6 r7
 // Preserved: sp
 isxdigit_entry:
@@ -6187,7 +6187,7 @@ word32 __errno_location(ptr32 & r4Out)
 //      sem_wait
 //      sem_trywait
 // MayUse: 
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-__syscall_ret r4:[0..31]-perror
 // Trashed: r25 r3 r4
 // Preserved: sp
 __errno_location_entry:
@@ -6204,7 +6204,7 @@ word32 strerror_l(word32 r4)
 // Called from:
 //      strerror
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-strerror
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: sp
 strerror_l_entry:
@@ -6245,7 +6245,7 @@ word32 strerror(word32 r4, ptr32 & r4Out)
 //      ping6_receive_error_msg
 //      printf_core
 // MayUse:  r4:[0..31]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-create_socket r4:[0..31]-perror
 // Trashed: r25 r3 r4 r5 r6 r7
 // Preserved: sp
 strerror_entry:
@@ -6381,7 +6381,7 @@ word32 __syscall(ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr
 //      sem_post
 //      lseek64
 // MayUse: 
-// LiveOut: r2 r4 r5 r6 r7 r8 r9
+// LiveOut: r2:[0..31]-__wait r4:[0..31]-__init_tls r5:[0..31]-__wait r6:[0..31]-__syscall_cp_c r7:[0..31]-__unlockfile r8:[0..31]-__wait r9:[0..31]-__wait
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __syscall_entry:
@@ -6403,7 +6403,7 @@ word32 sysinfo(ptr32 & r3Out, ptr32 & r6Out)
 // Called from:
 //      fn00402CEE
 // MayUse: 
-// LiveOut: r2 r3 r6
+// LiveOut: r2:[0..31]-sysconf r3:[0..31]-sysconf r6:[0..31]-sysconf
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 sysinfo_entry:
@@ -6456,7 +6456,7 @@ word32 __lctrans_cur()
 //      __getopt_msg
 //      gai_strerror
 // MayUse: 
-// LiveOut: r3
+// LiveOut: r3:[0..31]-gai_strerror
 // Trashed: r25 r3 r5 r7
 // Preserved: sp
 __lctrans_cur_entry:
@@ -6542,7 +6542,7 @@ word32 alloc_fwd(word32 r4, ptr32 & r4Out, ptr32 & r8Out, ptr32 & r19Out, ptr32 
 //      free
 //      realloc
 // MayUse:  r4:[0..31]
-// LiveOut: r19 r2 r22 r4 r8
+// LiveOut: r19:[0..31]-free r2:[0..31]-free r22:[0..31]-free r4:[0..31]-free r8:[0..31]-realloc
 // Trashed: r19 r2 r22 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r20 r21 ra sp
 alloc_fwd_entry:
@@ -6705,7 +6705,7 @@ word32 alloc_rev(word32 r4, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r8Out, ptr32 &
 //      free
 //      malloc
 // MayUse:  r4:[0..31]
-// LiveOut: r2 r22 r4 r5 r8 r9
+// LiveOut: r2:[0..31]-malloc r22:[0..31]-free r4:[0..31]-malloc r5:[0..31]-malloc r8:[0..31]-malloc r9:[0..31]-malloc
 // Trashed: r2 r20 r22 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r21 ra sp
 alloc_rev_entry:
@@ -6876,7 +6876,7 @@ word32 free(word32 r0, word32 r4, word32 r11, ptr32 & r3Out, ptr32 & r4Out, ptr3
 //      freeifaddrs
 //      __isoc99_vfscanf
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31]
-// LiveOut: r11 r2 r3 r4 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-malloc r2:[0..31]-malloc r3:[0..31]-malloc r4:[0..31]-__isoc99_vfscanf r6:[0..31]-malloc r7:[0..31]-__isoc99_vfscanf r8:[0..31]-malloc r9:[0..31]-malloc
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 free_entry:
@@ -7157,7 +7157,7 @@ word32 malloc(word32 r0, word32 r4, word32 r11, ptr32 & r3Out, ptr32 & r4Out, pt
 //      calloc
 //      __isoc99_vfscanf
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31]
-// LiveOut: r11 r2 r3 r4 r6 r8
+// LiveOut: r11:[0..31]-__malloc0 r2:[0..31]-__malloc0 r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__malloc0 r6:[0..31]-__malloc0 r8:[0..31]-__malloc0
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 malloc_entry:
@@ -7501,7 +7501,7 @@ word32 __malloc0(word32 r0, word32 r4, word32 r11, ptr32 & r4Out, ptr32 & r6Out,
 // Called from:
 //      calloc
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31]
-// LiveOut: r11 r2 r4 r6 r8
+// LiveOut: r11:[0..31]-calloc r2:[0..31]-calloc r4:[0..31]-calloc r6:[0..31]-calloc r8:[0..31]-calloc
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __malloc0_entry:
@@ -7545,7 +7545,7 @@ word32 realloc(word32 r0, word32 r4, word32 r5, word32 r11, ptr32 & r3Out, ptr32
 // Called from:
 //      __isoc99_vfscanf
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r6 r8
+// LiveOut: r11:[0..31]-__isoc99_vfscanf r12:[0..31]-__isoc99_vfscanf r2:[0..31]-__isoc99_vfscanf r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__isoc99_vfscanf r6:[0..31]-__isoc99_vfscanf r8:[0..31]-__isoc99_vfscanf
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r0 r16 r17 r18 r19 r20 r21 r22 r23 ra sp
 realloc_entry:
@@ -7715,7 +7715,7 @@ word32 __getopt_msg(word32 r4, word32 r5, word32 r6, word32 r7)
 // Called from:
 //      __posix_getopt
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r8
+// LiveOut: r8:[0..31]-__posix_getopt
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 __getopt_msg_entry:
@@ -7745,7 +7745,7 @@ word32 __posix_getopt(word32 r0, word32 r4, word32 r5, word32 r6, word32 r8, ptr
 // Called from:
 //      main
 // MayUse:  r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r8:[0..31]
-// LiveOut: r4 r8
+// LiveOut: r4:[0..31]-main r8:[0..31]-main
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 __posix_getopt_entry:
@@ -7881,7 +7881,7 @@ word32 getrlimit64(word32 r5, ptr32 & r6Out)
 // Called from:
 //      fn00402CEE
 // MayUse:  r5:[0..31]
-// LiveOut: r4 r6
+// LiveOut: r4:[0..31]-sysconf r6:[0..31]-sysconf
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 getrlimit64_entry:
@@ -7921,7 +7921,7 @@ word32 ioctl(ptr32 & r4Out, ptr32 & r7Out)
 //      if_indextoname
 //      if_nametoindex
 // MayUse: 
-// LiveOut: r3 r4 r7
+// LiveOut: r3:[0..31]-setup r4:[0..31]-if_nametoindex r7:[0..31]-ping4_run
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 ioctl_entry:
@@ -7940,7 +7940,7 @@ word32 madvise(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out, ptr32
 // Called from:
 //      free
 // MayUse: 
-// LiveOut: r2 r3 r4 r6 r8 r9
+// LiveOut: r2:[0..31]-free r3:[0..31]-free r4:[0..31]-free r6:[0..31]-free r8:[0..31]-free r9:[0..31]-free
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 madvise_entry:
@@ -7980,7 +7980,7 @@ word32 mmap64(word32 r5, word32 r7, word32 r10, word32 r11, ptr32 & r3Out, ptr32
 //      malloc
 //      __expand_heap
 // MayUse:  r10:[0..31] r11:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: r2 r3 r4 r6 r8
+// LiveOut: r2:[0..31]-__expand_heap r3:[0..31]-__expand_heap r4:[0..31]-__expand_heap r6:[0..31]-__expand_heap r8:[0..31]-__expand_heap
 // Trashed: r10 r2 r22 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 mmap64_entry:
@@ -8032,7 +8032,7 @@ word32 mremap(word32 r6, word32 r7, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out,
 // Called from:
 //      realloc
 // MayUse:  r6:[0..31] r7:[0..31]
-// LiveOut: r2 r3 r4 r6 r8
+// LiveOut: r2:[0..31]-realloc r3:[0..31]-realloc r4:[0..31]-realloc r6:[0..31]-realloc r8:[0..31]-realloc
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 mremap_entry:
@@ -8076,7 +8076,7 @@ word32 munmap(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 
 // Called from:
 //      free
 // MayUse: 
-// LiveOut: r2 r3 r4 r6 r7 r8 r9
+// LiveOut: r2:[0..31]-free r3:[0..31]-free r4:[0..31]-free r6:[0..31]-free r7:[0..31]-free r8:[0..31]-free r9:[0..31]-free
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 munmap_entry:
@@ -8100,7 +8100,7 @@ word32 mbtowc(word32 r4, word32 r5, word32 r6, word32 r8, ptr32 & r6Out, ptr32 &
 // Called from:
 //      __posix_getopt
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r8:[0..31]
-// LiveOut: r4 r6 r7 r8
+// LiveOut: r4:[0..31]-__posix_getopt r6:[0..31]-__posix_getopt r7:[0..31]-__posix_getopt r8:[0..31]-__posix_getopt
 // Trashed: r25 r3 r4 r6 r7 r8 r9
 // Preserved: ra sp
 mbtowc_entry:
@@ -8174,7 +8174,7 @@ word32 bind()
 //      ping6_run
 //      __res_msend_rc
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__res_msend_rc
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 bind_entry:
@@ -8194,7 +8194,7 @@ word32 connect(ptr32 & r5Out)
 //      ping6_run
 //      __lookup_name
 // MayUse: 
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-__lookup_name r5:[0..31]-ping4_run
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 connect_entry:
@@ -8216,7 +8216,7 @@ word32 freeaddrinfo(word32 r0, word32 r4, word32 r11, ptr32 & r3Out, ptr32 & r11
 //      niquery_option_subject_addr_handler
 //      ping6_run
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31]
-// LiveOut: r11 r2 r3
+// LiveOut: r11:[0..31]-ping4_run r2:[0..31]-ping4_run r3:[0..31]-ping4_run
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 freeaddrinfo_entry:
@@ -8238,7 +8238,7 @@ word32 gai_strerror(word32 r4)
 //      niquery_option_subject_addr_handler
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r3
+// LiveOut: r3:[0..31]-ping6_run
 // Trashed: r25 r3 r4 r5 r6 r7
 // Preserved: sp
 gai_strerror_entry:
@@ -8274,7 +8274,7 @@ word32 getaddrinfo(word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32
 //      niquery_option_subject_addr_handler
 //      ping6_run
 // MayUse:  r0:[0..31] r12:[0..31] r2:[0..31] r20:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-main r12:[0..31]-ping6_run r2:[0..31]-ping6_run r4:[0..31]-ping4_run r8:[0..31]-main
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 getaddrinfo_entry:
@@ -8397,7 +8397,7 @@ word32 copy_addr(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r
 // Called from:
 //      netlink_msg_to_ifaddr
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-netlink_msg_to_ifaddr
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 copy_addr_entry:
@@ -8443,7 +8443,7 @@ word32 netlink_msg_to_ifaddr(word32 r0, word32 r4, word32 r5, word32 r11, ptr32 
 // Called from:
 //      __netlink_enumerate
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-__netlink_enumerate r4:[0..31]-__netlink_enumerate
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 netlink_msg_to_ifaddr_entry:
@@ -8630,7 +8630,7 @@ word32 fn0040628E(word32 r4, word32 r5, word32 r6)
 // Called from:
 //      netlink_msg_to_ifaddr
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-netlink_msg_to_ifaddr
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040628E_entry:
@@ -8649,7 +8649,7 @@ word32 freeifaddrs(word32 r0, word32 r4, word32 r11)
 //      ping6_run
 //      getifaddrs
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31]
-// LiveOut: r11
+// LiveOut: r11:[0..31]-getifaddrs
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 freeifaddrs_entry:
@@ -8672,7 +8672,7 @@ word32 getifaddrs(word32 r0, word32 r11, ptr32 & r11Out)
 //      ping4_run
 //      ping6_run
 // MayUse:  r0:[0..31] r11:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-ping4_run r4:[0..31]-ping4_run
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 getifaddrs_entry:
@@ -8715,7 +8715,7 @@ word32 getnameinfo(word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word3
 // Called from:
 //      pr_addr
 // MayUse:  r10:[0..31] r21:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-pr_addr r5:[0..31]-pr_addr
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 getnameinfo_entry:
@@ -8993,7 +8993,7 @@ word32 getsockname()
 //      ping6_run
 //      __lookup_name
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__lookup_name
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 getsockname_entry:
@@ -9011,7 +9011,7 @@ word32 getsockopt(ptr32 & r7Out)
 // Called from:
 //      sock_setbufs
 // MayUse: 
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-sock_setbufs r7:[0..31]-sock_setbufs
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 getsockopt_entry:
@@ -9030,7 +9030,7 @@ word32 htonl(word32 r4)
 // Called from:
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_run
 // Trashed: r25 r4
 // Preserved: sp
 htonl_entry:
@@ -9050,7 +9050,7 @@ word32 htons(word32 r4)
 //      getaddrinfo
 //      __res_msend_rc
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__res_msend_rc
 // Trashed: r25 r4
 // Preserved: sp
 htons_entry:
@@ -9065,7 +9065,7 @@ word32 if_indextoname(word32 r5)
 // Called from:
 //      getnameinfo
 // MayUse:  r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-getnameinfo
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 if_indextoname_entry:
@@ -9096,7 +9096,7 @@ word32 if_nametoindex(word32 r4, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out, pt
 //      if_name2index
 //      __lookup_ipliteral
 // MayUse:  r4:[0..31]
-// LiveOut: r2 r4 r6 r8 r9
+// LiveOut: r2:[0..31]-__lookup_ipliteral r4:[0..31]-__lookup_ipliteral r6:[0..31]-__lookup_ipliteral r8:[0..31]-__lookup_ipliteral r9:[0..31]-__lookup_ipliteral
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 if_nametoindex_entry:
@@ -9130,7 +9130,7 @@ word32 __inet_aton(word32 r2, word32 r3, word32 r4, word32 r5, word32 r12, ptr32
 //      ping4_run
 //      __lookup_ipliteral
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r6 r8 r9
+// LiveOut: r11:[0..31]-__lookup_ipliteral r12:[0..31]-__lookup_ipliteral r2:[0..31]-__lookup_ipliteral r3:[0..31]-ping4_run r4:[0..31]-__lookup_ipliteral r6:[0..31]-__lookup_ipliteral r8:[0..31]-__lookup_ipliteral r9:[0..31]-__lookup_ipliteral
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 __inet_aton_entry:
@@ -9282,7 +9282,7 @@ word32 inet_pton(word32 r4, word32 r5, word32 r6, ptr32 & r4Out, ptr32 & r6Out, 
 //      inet_pton
 //      __lookup_ipliteral
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r4 r6 r8 r9
+// LiveOut: r11:[0..31]-inet_pton r12:[0..31]-inet_pton r2:[0..31]-inet_pton r4:[0..31]-inet_pton r6:[0..31]-inet_pton r8:[0..31]-inet_pton r9:[0..31]-inet_pton
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 inet_pton_entry:
@@ -9476,7 +9476,7 @@ word32 __lookup_ipliteral(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6,
 //      __lookup_name
 //      __get_resolv_conf
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r4 r6 r8 r9
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r4:[0..31]-__lookup_name r6:[0..31]-getnameinfo r8:[0..31]-__lookup_name r9:[0..31]-__get_resolv_conf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 __lookup_ipliteral_entry:
@@ -9559,7 +9559,7 @@ word32 fn00406C24(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r6Out,
 // Called from:
 //      __lookup_ipliteral
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3 r6 r8 r9
+// LiveOut: r11:[0..31]-__lookup_ipliteral r12:[0..31]-__lookup_ipliteral r2:[0..31]-__lookup_ipliteral r3:[0..31]-__lookup_ipliteral r6:[0..31]-__lookup_ipliteral r8:[0..31]-__lookup_ipliteral r9:[0..31]-__lookup_ipliteral
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00406C24_entry:
@@ -9583,7 +9583,7 @@ word32 __isspace(word32 r4, ptr32 & r7Out)
 //      fn00406F46
 //      __lookup_name
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-fn00406F46 r7:[0..31]-fn00406F46
 // Trashed: r25 r4 r7
 // Preserved: sp
 __isspace_entry:
@@ -9604,7 +9604,7 @@ word32 scopeof(word32 r4)
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__lookup_name
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 scopeof_entry:
@@ -9652,7 +9652,7 @@ word32 addrcmp(word32 r4, word32 r5, ptr32 & r7Out)
 //      sift
 //      trinkle
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-sift r7:[0..31]-trinkle
 // Trashed: r25 r4 r7
 // Preserved: sp
 addrcmp_entry:
@@ -9670,7 +9670,7 @@ word32 name_from_dns(word32 r4, word32 r6, word32 r7, word32 r8, ptr32 & r4Out, 
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r4:[0..31]-__lookup_name r8:[0..31]-__lookup_name
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 name_from_dns_entry:
@@ -9733,7 +9733,7 @@ word32 policyof(word32 r4, ptr32 & r7Out)
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-__lookup_name r7:[0..31]-__lookup_name
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 policyof_entry:
@@ -9762,7 +9762,7 @@ word32 is_valid_hostname(word32 r4, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out,
 //      name_from_hosts
 //      dns_parse_callback
 // MayUse:  r4:[0..31]
-// LiveOut: r18 r4 r5 r6 r7 r8
+// LiveOut: r18:[0..31]-name_from_hosts r4:[0..31]-name_from_hosts r5:[0..31]-dns_parse_callback r6:[0..31]-dns_parse_callback r7:[0..31]-dns_parse_callback r8:[0..31]-dns_parse_callback
 // Trashed: r18 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 is_valid_hostname_entry:
@@ -9808,7 +9808,7 @@ word32 name_from_hosts(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r4Out
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r4:[0..31]-__lookup_name r8:[0..31]-__lookup_name
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: hi lo r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 name_from_hosts_entry:
@@ -9916,7 +9916,7 @@ word32 fn00406F46(word32 r4, ptr32 & r7Out)
 // Called from:
 //      name_from_hosts
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-name_from_hosts r7:[0..31]-name_from_hosts
 // Trashed: r25 r4 r7
 // Preserved: sp
 fn00406F46_entry:
@@ -9934,7 +9934,7 @@ word32 dns_parse_callback(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8,
 // Called from:
 //      __dns_parse
 // MayUse:  r11:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r18 r2 r4 r5 r6 r7 r8
+// LiveOut: r11:[0..31]-__dns_parse r12:[0..31]-__dns_parse r18:[0..31]-__dns_parse r2:[0..31]-__dns_parse r4:[0..31]-__dns_parse r5:[0..31]-__dns_parse r6:[0..31]-__dns_parse r7:[0..31]-__dns_parse r8:[0..31]-__dns_parse
 // Trashed: r10 r11 r12 r13 r14 r15 r18 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 dns_parse_callback_entry:
@@ -9992,7 +9992,7 @@ word32 __lookup_name(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word
 // Called from:
 //      getaddrinfo
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-getaddrinfo r12:[0..31]-getaddrinfo r2:[0..31]-getaddrinfo r4:[0..31]-getaddrinfo r8:[0..31]-getaddrinfo
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __lookup_name_entry:
@@ -10280,7 +10280,7 @@ word32 fn0040738E(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r7Out,
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3 r7 r8
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r3:[0..31]-__lookup_name r7:[0..31]-__lookup_name r8:[0..31]-__lookup_name
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040738E_entry:
@@ -10302,7 +10302,7 @@ word32 __lookup_serv(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word
 // Called from:
 //      getaddrinfo
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r8
+// LiveOut: r11:[0..31]-getaddrinfo r12:[0..31]-getaddrinfo r2:[0..31]-getaddrinfo r3:[0..31]-getaddrinfo r4:[0..31]-getaddrinfo r8:[0..31]-getaddrinfo
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 ra sp
 __lookup_serv_entry:
@@ -10463,7 +10463,7 @@ word32 __netlink_enumerate(word32 r0, word32 r9, word32 r11, ptr32 & r11Out)
 // Called from:
 //      __rtnetlink_enumerate
 // MayUse:  r0:[0..31] r11:[0..31] r9:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-__rtnetlink_enumerate r4:[0..31]-__rtnetlink_enumerate
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 __netlink_enumerate_entry:
@@ -10505,7 +10505,7 @@ word32 __rtnetlink_enumerate(word32 r0, word32 r7, word32 r11, ptr32 & r11Out)
 // Called from:
 //      getifaddrs
 // MayUse:  r0:[0..31] r11:[0..31] r7:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-getifaddrs r4:[0..31]-getifaddrs
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 __rtnetlink_enumerate_entry:
@@ -10536,7 +10536,7 @@ word32 ntohl(word32 r4)
 //      ping6_parse_reply
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping4_run
 // Trashed: r25 r4
 // Preserved: sp
 ntohl_entry:
@@ -10554,7 +10554,7 @@ word32 ntohs(word32 r4)
 //      fn004030A4
 //      getnameinfo
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-getnameinfo
 // Trashed: r25 r4
 // Preserved: sp
 ntohs_entry:
@@ -10569,7 +10569,7 @@ word32 recv()
 // Called from:
 //      __netlink_enumerate
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__netlink_enumerate
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 recv_entry:
@@ -10587,7 +10587,7 @@ word32 recvfrom(ptr32 & r4Out, ptr32 & r7Out, ptr32 & r10Out)
 //      recv
 //      __res_msend_rc
 // MayUse: 
-// LiveOut: r10 r2 r4 r7
+// LiveOut: r10:[0..31]-__res_msend_rc r2:[0..31]-__res_msend_rc r4:[0..31]-__res_msend_rc r7:[0..31]-__res_msend_rc
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 recvfrom_entry:
@@ -10610,7 +10610,7 @@ word32 recvmsg(ptr32 & r5Out, ptr32 & r6Out)
 //      main_loop
 //      ping6_receive_error_msg
 // MayUse: 
-// LiveOut: r4 r5 r6
+// LiveOut: r4:[0..31]-main_loop r5:[0..31]-main_loop r6:[0..31]-main_loop
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 recvmsg_entry:
@@ -10631,7 +10631,7 @@ word32 res_mkquery(word32 r4, word32 r5, word32 r6, word32 r7, word32 r11, word3
 //      getnameinfo
 //      name_from_dns
 // MayUse:  r11:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] Stack +0000:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-name_from_dns r12:[0..31]-name_from_dns r2:[0..31]-name_from_dns r4:[0..31]-name_from_dns r8:[0..31]-name_from_dns
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 res_mkquery_entry:
@@ -10703,7 +10703,7 @@ word32 mtime(ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out)
 // Called from:
 //      __res_msend_rc
 // MayUse: 
-// LiveOut: r2 r4 r6 r8
+// LiveOut: r2:[0..31]-__res_msend_rc r4:[0..31]-__res_msend_rc r6:[0..31]-__res_msend_rc r8:[0..31]-__res_msend_rc
 // Trashed: hi lo r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 mtime_entry:
@@ -10738,7 +10738,7 @@ word32 __res_msend_rc(word32 r4, word32 r7, word32 r8, word32 r9, word32 r10, wo
 //      name_from_dns
 //      __res_msend
 // MayUse:  r10:[0..31] r21:[0..31] r4:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11 r12 r2 r4 r6 r8
+// LiveOut: r11:[0..31]-name_from_dns r12:[0..31]-name_from_dns r2:[0..31]-name_from_dns r4:[0..31]-name_from_dns r6:[0..31]-name_from_dns r8:[0..31]-name_from_dns
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __res_msend_rc_entry:
@@ -10941,7 +10941,7 @@ word32 fn00407A82(word32 r4, word32 r5)
 // Called from:
 //      __res_msend_rc
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__res_msend_rc
 // Trashed: r25 r3 r4 r7
 // Preserved: sp
 fn00407A82_entry:
@@ -10957,7 +10957,7 @@ word32 __res_msend(word32 r4, word32 r12, word32 r21, ptr32 & r11Out)
 // Called from:
 //      res_send
 // MayUse:  r12:[0..31] r21:[0..31] r4:[0..31]
-// LiveOut: r11 r4
+// LiveOut: r11:[0..31]-res_send r4:[0..31]-res_send
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 __res_msend_entry:
@@ -10980,7 +10980,7 @@ word32 res_send(word32 r12, word32 r21, ptr32 & r11Out, ptr32 & r17Out)
 // Called from:
 //      getnameinfo
 // MayUse:  r12:[0..31] r21:[0..31]
-// LiveOut: r11 r17 r4
+// LiveOut: r11:[0..31]-getnameinfo r17:[0..31]-getnameinfo r4:[0..31]-getnameinfo
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 res_send_entry:
@@ -11002,7 +11002,7 @@ word32 __isspace(word32 r4)
 // Called from:
 //      fn00407D08
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-fn00407D08
 // Trashed: r25 r4 r7
 // Preserved: sp
 __isspace_entry:
@@ -11023,7 +11023,7 @@ word32 __get_resolv_conf(word32 r4, word32 r5, word32 r12, ptr32 & r4Out, ptr32 
 //      __lookup_name
 //      __res_msend
 // MayUse:  r12:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r2 r4 r8 r9
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r4:[0..31]-__lookup_name r8:[0..31]-__lookup_name r9:[0..31]-__res_msend
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 __get_resolv_conf_entry:
@@ -11181,7 +11181,7 @@ word32 fn00407D00(word32 r4, word32 r5, word32 r6, ptr32 & r6Out)
 // Called from:
 //      __get_resolv_conf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r6
+// LiveOut: r4:[0..31]-__get_resolv_conf r6:[0..31]-__get_resolv_conf
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00407D00_entry:
@@ -11199,7 +11199,7 @@ word32 fn00407D04(word32 r4, word32 r5, ptr32 & r4Out)
 // Called from:
 //      __get_resolv_conf
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r2 r4
+// LiveOut: r2:[0..31]-__get_resolv_conf r4:[0..31]-__get_resolv_conf
 // Trashed: r10 r11 r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00407D04_entry:
@@ -11217,7 +11217,7 @@ word32 fn00407D08(word32 r4)
 // Called from:
 //      __get_resolv_conf
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__get_resolv_conf
 // Trashed: r25 r4 r7
 // Preserved: sp
 fn00407D08_entry:
@@ -11233,7 +11233,7 @@ word32 send()
 // Called from:
 //      __netlink_enumerate
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__netlink_enumerate
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 send_entry:
@@ -11249,7 +11249,7 @@ word32 sendmsg()
 // Called from:
 //      ping6_send_probe
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-ping6_send_probe
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 sendmsg_entry:
@@ -11270,7 +11270,7 @@ word32 sendto(ptr32 & r7Out, ptr32 & r10Out)
 //      __res_msend_rc
 //      send
 // MayUse: 
-// LiveOut: r10 r4 r7
+// LiveOut: r10:[0..31]-__res_msend_rc r4:[0..31]-send r7:[0..31]-__res_msend_rc
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 sendto_entry:
@@ -11299,7 +11299,7 @@ word32 setsockopt(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r7Out)
 //      fn00403C9A
 //      __res_msend_rc
 // MayUse: 
-// LiveOut: r2 r3 r4 r5 r7
+// LiveOut: r2:[0..31]-main r3:[0..31]-main r4:[0..31]-main r5:[0..31]-fn00401280 r7:[0..31]-fn00403C9A
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 setsockopt_entry:
@@ -11327,7 +11327,7 @@ word32 socket(word32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8
 //      __rtnetlink_enumerate
 //      __res_msend_rc
 // MayUse:  r5:[0..31]
-// LiveOut: r2 r3 r4 r6 r8 r9
+// LiveOut: r2:[0..31]-create_socket r3:[0..31]-create_socket r4:[0..31]-create_socket r6:[0..31]-if_nametoindex r8:[0..31]-create_socket r9:[0..31]-if_nametoindex
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 socket_entry:
@@ -11392,7 +11392,7 @@ word32 poll(word32 r6, ptr32 & r4Out, ptr32 & r7Out)
 //      main_loop
 //      __res_msend_rc
 // MayUse:  r6:[0..31]
-// LiveOut: r3 r4 r7
+// LiveOut: r3:[0..31]-main_loop r4:[0..31]-__res_msend_rc r7:[0..31]-__res_msend_rc
 // Trashed: hi lo r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 poll_entry:
@@ -11432,7 +11432,7 @@ word32 _setjmp(word32 r4, word32 r16, word32 r17, word32 r18, word32 r19, word32
 // Called from:
 //      pr_addr
 // MayUse:  r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r28:[0..31] r30:[0..31] r4:[0..31] ra:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-pr_addr
 // Trashed: r25 r4
 // Preserved: sp
 _setjmp_entry:
@@ -11497,7 +11497,7 @@ word32 __restore_sigs()
 //      raise
 //      __synccall
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__synccall
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __restore_sigs_entry:
@@ -11535,7 +11535,7 @@ word32 setitimer()
 //      __schedule_exit
 //      setup
 // MayUse: 
-// LiveOut: r3
+// LiveOut: r3:[0..31]-setup
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 setitimer_entry:
@@ -11701,7 +11701,7 @@ word32 __fopen_rb_ca(word32 r5, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r8Out, ptr
 //      __lookup_serv
 //      __get_resolv_conf
 // MayUse:  r5:[0..31]
-// LiveOut: r19 r2 r4 r5 r8 r9
+// LiveOut: r19:[0..31]-__lookup_serv r2:[0..31]-__lookup_serv r4:[0..31]-__lookup_serv r5:[0..31]-getnameinfo r8:[0..31]-__lookup_serv r9:[0..31]-__get_resolv_conf
 // Trashed: r10 r19 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 __fopen_rb_ca_entry:
@@ -11817,7 +11817,7 @@ word32 fflush_unlocked(word32 r4, ptr32 & r16Out, ptr32 & r17Out)
 //      fn004033F2
 //      fflush_unlocked
 // MayUse:  r4:[0..31]
-// LiveOut: r16 r17 r4
+// LiveOut: r16:[0..63]-finish r17:[0..31]-pinger r4:[0..31]-fflush_unlocked
 // Trashed: r16 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 fflush_unlocked_entry:
@@ -11893,7 +11893,7 @@ word32 fgets_unlocked(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r4
 //      __lookup_serv
 //      __get_resolv_conf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r21 r3 r4 r5 r8 r9
+// LiveOut: r11:[0..31]-__lookup_serv r12:[0..31]-__lookup_serv r2:[0..31]-__lookup_serv r21:[0..31]-__lookup_serv r3:[0..31]-__lookup_serv r4:[0..31]-__lookup_serv r5:[0..31]-getnameinfo r8:[0..31]-__lookup_serv r9:[0..31]-__get_resolv_conf
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r21 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r22 ra sp
 fgets_unlocked_entry:
@@ -12026,7 +12026,7 @@ word32 fprintf(ptr32 & r7Out)
 //      fn004032FE
 //      ping6_run
 // MayUse: 
-// LiveOut: r6 r7
+// LiveOut: r6:[0..31]-fn00400B5E r7:[0..31]-fn00400B5E
 // Trashed: r25 r6 r7
 // Preserved: ra sp
 fprintf_entry:
@@ -12045,7 +12045,7 @@ word32 fputc(word32 r4, word32 r5, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, 
 //      status
 //      fn00402A96
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r17 r2 r3 r5 r6 r7 r8
+// LiveOut: r17:[0..31]-perror r2:[0..31]-perror r3:[0..31]-perror r5:[0..31]-perror r6:[0..31]-perror r7:[0..31]-perror r8:[0..31]-perror
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r18 r19 ra sp
 fputc_entry:
@@ -12111,7 +12111,7 @@ word32 fputs_unlocked(word32 r4, word32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 
 //      __getopt_msg
 //      puts
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r8
+// LiveOut: r11:[0..31]-fn00400B5A r12:[0..31]-fn00400B5A r2:[0..31]-ping6_run r3:[0..31]-ping6_run r4:[0..31]-__getopt_msg r5:[0..31]-ping4_run r6:[0..31]-fn00403098 r8:[0..31]-main
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 fputs_unlocked_entry:
@@ -12188,7 +12188,7 @@ word32 ftrylockfile(word32 r4)
 // Called from:
 //      flockfile
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-flockfile
 // Trashed: r25 r3 r4 r5 r6 r7 r8
 // Preserved: sp
 ftrylockfile_entry:
@@ -12240,7 +12240,7 @@ word32 funlockfile(word32 r4)
 // Called from:
 //      __getopt_msg
 // MayUse:  r4:[0..31]
-// LiveOut: r8
+// LiveOut: r8:[0..31]-__getopt_msg
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 funlockfile_entry:
@@ -12266,7 +12266,7 @@ word32 __fwritex(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r4Out, 
 //      fwrite_unlocked
 //      out
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r13 r14 r17 r2 r3 r4 r5 r6 r7 r8
+// LiveOut: r11:[0..31]-fwrite_unlocked r12:[0..31]-fwrite_unlocked r13:[0..31]-out r14:[0..31]-out r17:[0..31]-fwrite_unlocked r2:[0..31]-fwrite_unlocked r3:[0..31]-fwrite_unlocked r4:[0..31]-fwrite_unlocked r5:[0..31]-fwrite_unlocked r6:[0..31]-fwrite_unlocked r7:[0..31]-out r8:[0..31]-fwrite_unlocked
 // Trashed: r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r18 r19 ra sp
 __fwritex_entry:
@@ -12366,7 +12366,7 @@ word32 fwrite_unlocked(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r3Out
 //      __getopt_msg
 //      fputs_unlocked
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r8
+// LiveOut: r11:[0..31]-perror r12:[0..31]-perror r2:[0..31]-fputs_unlocked r3:[0..31]-fputs_unlocked r4:[0..31]-fputs_unlocked r5:[0..31]-fputs_unlocked r6:[0..31]-fputs_unlocked r8:[0..31]-fputs_unlocked
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 fwrite_unlocked_entry:
@@ -12409,7 +12409,7 @@ word32 _IO_getc(word32 r4, ptr32 & r17Out)
 // Called from:
 //      __get_resolv_conf
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r4
+// LiveOut: r17:[0..31]-__get_resolv_conf r4:[0..31]-__get_resolv_conf
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 _IO_getc_entry:
@@ -12453,7 +12453,7 @@ word32 __ofl_lock()
 //      fflush_unlocked
 //      __stdio_exit_needed
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__stdio_exit_needed
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 __ofl_lock_entry:
@@ -12493,7 +12493,7 @@ word32 perror(word32 r4, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7
 //      ping6_install_filter
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r12 r17 r2 r3 r5 r6 r7 r8
+// LiveOut: r11:[0..31]-fn00401E7A r12:[0..31]-fn00401E7A r17:[0..31]-fn00401E7A r2:[0..31]-fn00401E7A r3:[0..31]-fn00401E7A r5:[0..31]-fn00401284 r6:[0..31]-fn00401E7A r7:[0..31]-fn00401E7A r8:[0..31]-fn00401E7A
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r18 r19 ra sp
 perror_entry:
@@ -12576,7 +12576,7 @@ word32 printf(word32 r4, ptr32 & r4Out, ptr32 & r7Out, ptr32 & r11Out, ptr32 & r
 //      fn0040309C
 //      fn00403C9E
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r14 r3 r4 r7
+// LiveOut: r11:[0..31]-fn004029C6 r14:[0..31]-fn004029C6 r3:[0..31]-fn004029C6 r4:[0..31]-fn0040212A r7:[0..31]-gather_statistics
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 printf_entry:
@@ -12642,7 +12642,7 @@ word32 putchar(word32 r4, ptr32 & r17Out)
 //      fn00402A96
 //      fn004033EE
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r3
+// LiveOut: r17:[0..31]-fn00401766 r3:[0..31]-fn00402A96
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 putchar_entry:
@@ -12747,7 +12747,7 @@ word32 snprintf(word32 r4, word32 r5, word32 r6)
 //      fn00401590
 //      inet_ntop
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-inet_ntop
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 snprintf_entry:
@@ -12762,7 +12762,7 @@ word32 sprintf(word32 r4, word32 r5, ptr32 & r7Out)
 // Called from:
 //      getnameinfo
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r5 r7
+// LiveOut: r5:[0..31]-getnameinfo r7:[0..31]-getnameinfo
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 sprintf_entry:
@@ -12779,7 +12779,7 @@ word32 __isoc99_sscanf(word32 r0, word32 r4, word32 r5, word32 r19, word32 r20, 
 // Called from:
 //      fill
 // MayUse:  r0:[0..31] r19:[0..31] r20:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-fill r4:[0..31]-fill
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 __isoc99_sscanf_entry:
@@ -12797,7 +12797,7 @@ word32 fmt_u(word32 r4, word32 r5, word32 r6, word32 r13, ptr32 & r5Out, ptr32 &
 //      printf_core
 //      fn004099EA
 // MayUse:  r13:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r13 r4 r5 r7 r8
+// LiveOut: r11:[0..31]-printf_core r13:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r7:[0..31]-printf_core r8:[0..31]-fn004099EA
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 fmt_u_entry:
@@ -12837,7 +12837,7 @@ word32 getint(word32 r4, ptr32 & r5Out, ptr32 & r7Out)
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r5 r7
+// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core r7:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 getint_entry:
@@ -12875,7 +12875,7 @@ word32 out(word32 r4, word32 r5, word32 r6, ptr32 & r4Out, ptr32 & r5Out, ptr32 
 //      pad
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r13 r14 r17 r3 r4 r5 r6 r7
+// LiveOut: r11:[0..31]-printf_core r13:[0..31]-printf_core r14:[0..31]-printf_core r17:[0..31]-pad r3:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r6:[0..31]-printf_core r7:[0..31]-printf_core
 // Trashed: r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 out_entry:
@@ -12913,7 +12913,7 @@ word32 pop_arg(word32 r5, word32 r6, ptr32 & r6Out, ptr32 & r7Out)
 // Called from:
 //      printf_core
 // MayUse:  r5:[0..31] r6:[0..31]
-// LiveOut: r5 r6 r7
+// LiveOut: r5:[0..31]-printf_core r6:[0..31]-printf_core r7:[0..31]-printf_core
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 pop_arg_entry:
@@ -13085,7 +13085,7 @@ word32 pad(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, ptr32 & r4Out,
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r13 r14 r3 r4 r5 r6 r7
+// LiveOut: r11:[0..31]-printf_core r13:[0..31]-printf_core r14:[0..31]-printf_core r3:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r6:[0..31]-printf_core r7:[0..31]-printf_core
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 pad_entry:
@@ -13129,7 +13129,7 @@ word32 printf_core(word32 r4, word32 r5, word32 r6, word32 r13, word32 r21, ptr3
 // Called from:
 //      vfprintf
 // MayUse:  r13:[0..31] r21:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r13 r14 r3 r4 r5 r7
+// LiveOut: r11:[0..31]-vfprintf r13:[0..31]-vfprintf r14:[0..31]-vfprintf r3:[0..31]-vfprintf r4:[0..31]-vfprintf r5:[0..31]-vfprintf r7:[0..31]-vfprintf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 printf_core_entry:
@@ -14228,7 +14228,7 @@ word32 fn004099EA(word32 r4, word32 r5, word32 r6, word32 r13, ptr32 & r7Out, pt
 // Called from:
 //      printf_core
 // MayUse:  r13:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r13 r4 r7 r8
+// LiveOut: r11:[0..31]-printf_core r13:[0..31]-printf_core r4:[0..31]-printf_core r7:[0..31]-printf_core r8:[0..31]-printf_core
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn004099EA_entry:
@@ -14251,7 +14251,7 @@ word32 vfprintf(word32 r4, word32 r5, word32 r6, ptr32 & r4Out, ptr32 & r5Out, p
 //      fn004032FE
 //      vsnprintf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r14 r3 r4 r5 r7
+// LiveOut: r11:[0..31]-printf r14:[0..31]-printf r3:[0..31]-printf r4:[0..31]-vsnprintf r5:[0..31]-vsnprintf r7:[0..31]-vsnprintf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 vfprintf_entry:
@@ -14352,7 +14352,7 @@ word32 vsnprintf(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out, ptr3
 //      snprintf
 //      vsprintf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r5 r7
+// LiveOut: r4:[0..31]-snprintf r5:[0..31]-vsprintf r7:[0..31]-vsprintf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 vsnprintf_entry:
@@ -14392,7 +14392,7 @@ word32 vsprintf(word32 r4, word32 r5, word32 r6, ptr32 & r7Out)
 // Called from:
 //      sprintf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r5 r7
+// LiveOut: r5:[0..31]-sprintf r7:[0..31]-sprintf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 vsprintf_entry:
@@ -14425,7 +14425,7 @@ word32 __isoc99_vsscanf(word32 r0, word32 r4, word32 r5, word32 r6, word32 r19, 
 // Called from:
 //      __isoc99_sscanf
 // MayUse:  r0:[0..31] r19:[0..31] r20:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-__isoc99_sscanf r4:[0..31]-__isoc99_sscanf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 __isoc99_vsscanf_entry:
@@ -14449,7 +14449,7 @@ word32 atoi(word32 r4)
 //      fn00400832
 //      __synccall
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__synccall
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 atoi_entry:
@@ -14498,7 +14498,7 @@ word32 shl(word32 r4, word32 r5)
 //      qsort
 //      fn00409F48
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r7
+// LiveOut: r7:[0..31]-fn00409F48
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 shl_entry:
@@ -14518,7 +14518,7 @@ word32 shr(word32 r4, word32 r5, ptr32 & r7Out, ptr32 & r8Out)
 //      trinkle
 //      fn00409F4C
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r5 r7 r8
+// LiveOut: r5:[0..31]-trinkle r7:[0..31]-trinkle r8:[0..31]-trinkle
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 shr_entry:
@@ -14542,7 +14542,7 @@ word32 cycle(word32 r4, word32 r5, word32 r6, ptr32 & r4Out, ptr32 & r7Out, ptr3
 //      sift
 //      trinkle
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r4 r7 r8
+// LiveOut: r11:[0..31]-sift r12:[0..31]-sift r2:[0..31]-sift r4:[0..31]-sift r7:[0..31]-sift r8:[0..31]-sift
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 cycle_entry:
@@ -14589,7 +14589,7 @@ word32 sift(word32 r4, word32 r5, word32 r7, word32 r8, ptr32 & r4Out, ptr32 & r
 //      trinkle
 //      qsort
 // MayUse:  r4:[0..31] r5:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r2 r4 r7 r8
+// LiveOut: r11:[0..31]-trinkle r12:[0..31]-trinkle r2:[0..31]-trinkle r4:[0..31]-trinkle r7:[0..31]-trinkle r8:[0..31]-trinkle
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 sift_entry:
@@ -14640,7 +14640,7 @@ word32 pntz(word32 r4)
 //      trinkle
 //      qsort
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-trinkle
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 pntz_entry:
@@ -14668,7 +14668,7 @@ word32 trinkle(word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 r10
 // Called from:
 //      qsort
 // MayUse:  r10:[0..31] r4:[0..31] r5:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11 r12 r2 r4 r7 r8
+// LiveOut: r11:[0..31]-qsort r12:[0..31]-qsort r2:[0..31]-qsort r4:[0..31]-qsort r7:[0..31]-qsort r8:[0..31]-qsort
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 trinkle_entry:
@@ -14732,7 +14732,7 @@ word32 qsort(word32 r4, word32 r5, word32 r6, ptr32 & r4Out, ptr32 & r8Out, ptr3
 // Called from:
 //      __lookup_name
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-__lookup_name r12:[0..31]-__lookup_name r2:[0..31]-__lookup_name r4:[0..31]-__lookup_name r8:[0..31]-__lookup_name
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 qsort_entry:
@@ -14831,7 +14831,7 @@ word32 fn00409F48(word32 r4, word32 r5)
 // Called from:
 //      qsort
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r7
+// LiveOut: r7:[0..31]-qsort
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 fn00409F48_entry:
@@ -14847,7 +14847,7 @@ word32 fn00409F4C(word32 r4, word32 r5, ptr32 & r8Out)
 // Called from:
 //      qsort
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r7 r8
+// LiveOut: r7:[0..31]-qsort r8:[0..31]-qsort
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 fn00409F4C_entry:
@@ -14867,7 +14867,7 @@ word32 strtox(word32 r0, word32 r2, word32 r4, word32 r6, word32 r12, ptr32 & r5
 //      strtod_l
 //      strtold_l
 // MayUse:  r0:[0..31] r12:[0..31] r2:[0..31] r4:[0..31] r6:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-strtof_l r5:[0..31]-strtof_l
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 strtox_entry:
@@ -14950,7 +14950,7 @@ word32 strtox(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r8, 
 //      __strtol_internal
 //      __strtoimax_internal
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-__strtoul_internal r12:[0..31]-__strtoul_internal r2:[0..31]-__strtoul_internal r3:[0..31]-__strtoul_internal r4:[0..31]-__strtoul_internal r5:[0..31]-__strtoull_internal r6:[0..31]-__strtoul_internal r7:[0..31]-__strtoul_internal r8:[0..31]-__strtoul_internal r9:[0..31]-__strtoul_internal
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 strtox_entry:
@@ -14993,7 +14993,7 @@ word32 __strtoull_internal(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6
 //      __lookup_ipliteral
 //      __strtoumax_internal
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-__lookup_ipliteral r12:[0..31]-__lookup_ipliteral r2:[0..31]-__lookup_ipliteral r5:[0..31]-__lookup_ipliteral r6:[0..31]-__lookup_ipliteral r7:[0..31]-__lookup_ipliteral r8:[0..31]-__lookup_ipliteral r9:[0..31]-__lookup_ipliteral
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __strtoull_internal_entry:
@@ -15038,7 +15038,7 @@ word32 __strtoul_internal(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6,
 //      __lookup_serv
 //      __get_resolv_conf
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-__lookup_serv r12:[0..31]-__lookup_serv r2:[0..31]-__lookup_serv r3:[0..31]-__lookup_serv r4:[0..31]-__lookup_serv r6:[0..31]-__inet_aton r7:[0..31]-__lookup_serv r8:[0..31]-__lookup_serv r9:[0..31]-__inet_aton
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 __strtoul_internal_entry:
@@ -15110,7 +15110,7 @@ word32 memchr(word32 r4, word32 r5, word32 r6, ptr32 & r5Out, ptr32 & r6Out, ptr
 //      strstr
 //      __string_read
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r5 r6 r8
+// LiveOut: r4:[0..31]-strnlen r5:[0..31]-strnlen r6:[0..31]-strnlen r8:[0..31]-strnlen
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 memchr_entry:
@@ -15192,7 +15192,7 @@ word32 memcmp(word32 r4, word32 r5, word32 r6, ptr32 & r7Out, ptr32 & r8Out, ptr
 //      __res_msend_rc
 //      strstr
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r7 r8 r9
+// LiveOut: r4:[0..31]-twoway_strstr r7:[0..31]-__res_msend_rc r8:[0..31]-__res_msend_rc r9:[0..31]-__res_msend_rc
 // Trashed: r25 r4 r7 r8 r9
 // Preserved: sp
 memcmp_entry:
@@ -15266,7 +15266,7 @@ word32 memcpy(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r5Out, ptr
 //      arg_n
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r13 r14 r2 r3 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-__fwritex r12:[0..31]-__fwritex r13:[0..31]-__fwritex r14:[0..31]-__fwritex r2:[0..31]-__fwritex r3:[0..31]-__fwritex r5:[0..31]-__fwritex r6:[0..31]-__fwritex r7:[0..31]-fn0040738E r8:[0..31]-__fwritex r9:[0..31]-fgets_unlocked
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: r16 r17 sp
 memcpy_entry:
@@ -15581,7 +15581,7 @@ word32 memmove(word32 r4, word32 r5, word32 r6, ptr32 & r8Out, ptr32 & r9Out, pt
 //      inet_ntop
 //      inet_pton
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r8 r9
+// LiveOut: r11:[0..31]-inet_pton r12:[0..31]-inet_pton r2:[0..31]-inet_pton r8:[0..31]-inet_pton r9:[0..31]-inet_pton
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 memmove_entry:
@@ -15760,7 +15760,7 @@ word32 memset(word32 r4, word32 r5, word32 r6, ptr32 & r6Out, ptr32 & r7Out, ptr
 //      stpncpy
 //      fn0040E008
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r10 r5 r6 r7 r8
+// LiveOut: r10:[0..31]-getaddrinfo r5:[0..31]-fn00401366 r6:[0..31]-fn00401366 r7:[0..31]-__isoc99_vfscanf r8:[0..31]-getaddrinfo
 // Trashed: r10 r25 r5 r6 r7 r8 r9
 // Preserved: sp
 memset_entry:
@@ -15847,7 +15847,7 @@ word32 strchr(word32 r4, word32 r5)
 //      __get_resolv_conf
 //      strstr
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__lookup_serv
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 strchr_entry:
@@ -15867,7 +15867,7 @@ word32 strchrnul(word32 r4, word32 r5)
 // Called from:
 //      strchr
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-strchr
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 strchrnul_entry:
@@ -15920,7 +15920,7 @@ word32 strcmp(word32 r4, word32 r5)
 // Called from:
 //      __vdsosym
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__vdsosym
 // Trashed: r25 r4 r6 r7 r8
 // Preserved: sp
 strcmp_entry:
@@ -15957,7 +15957,7 @@ word32 strcpy(word32 r4, word32 r5, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
 //      dns_parse_callback
 //      strcat
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r5 r6 r7 r8
+// LiveOut: r5:[0..31]-dns_parse_callback r6:[0..31]-dns_parse_callback r7:[0..31]-dns_parse_callback r8:[0..31]-dns_parse_callback
 // Trashed: r10 r25 r5 r6 r7 r8 r9
 // Preserved: r16 r4 ra sp
 strcpy_entry:
@@ -16012,7 +16012,7 @@ word32 strlen(word32 r4, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 //      __strdup
 //      mbsrtowcs
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r5 r6 r7
+// LiveOut: r4:[0..31]-perror r5:[0..31]-mbsrtowcs r6:[0..31]-mbsrtowcs r7:[0..31]-getnameinfo
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: sp
 strlen_entry:
@@ -16075,7 +16075,7 @@ word32 strncmp(word32 r4, word32 r5, word32 r6, ptr32 & r6Out)
 //      __lookup_serv
 //      fn00407D00
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r6
+// LiveOut: r4:[0..31]-__lookup_serv r6:[0..31]-fn00407D00
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 strncmp_entry:
@@ -16147,7 +16147,7 @@ word32 strnlen(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r8Out
 //      res_mkquery
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4 r5 r6 r8
+// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core r6:[0..31]-is_valid_hostname r8:[0..31]-__lookup_name
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 strnlen_entry:
@@ -16173,7 +16173,7 @@ word32 strspn(word32 r4, word32 r5)
 // Called from:
 //      inet_ntop
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-inet_ntop
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 sp
 strspn_entry:
@@ -16230,7 +16230,7 @@ word32 twoway_strstr(word32 r4, word32 r5)
 // Called from:
 //      strstr
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-strstr
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 twoway_strstr_entry:
@@ -16427,7 +16427,7 @@ word32 strstr(word32 r4, word32 r5, ptr32 & r4Out)
 //      __lookup_serv
 //      fn00407D04
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r2 r4
+// LiveOut: r2:[0..31]-__lookup_serv r4:[0..31]-__lookup_serv
 // Trashed: r10 r11 r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 strstr_entry:
@@ -16590,7 +16590,7 @@ word32 __syscall_cp_c(ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r8Out
 // Called from:
 //      __syscall_cp
 // MayUse: 
-// LiveOut: r2 r4 r5 r6 r8
+// LiveOut: r2:[0..31]-__syscall_cp r4:[0..31]-__syscall_cp r5:[0..31]-__syscall_cp r6:[0..31]-__syscall_cp r8:[0..31]-__syscall_cp
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __syscall_cp_c_entry:
@@ -16620,7 +16620,7 @@ word32 __syscall_cp(ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r8Out)
 //      open64
 //      __timedwait_cp
 // MayUse: 
-// LiveOut: r2 r4 r5 r6 r8
+// LiveOut: r2:[0..31]-close r4:[0..31]-open64 r5:[0..31]-connect r6:[0..31]-close r8:[0..31]-close
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __syscall_cp_entry:
@@ -16647,7 +16647,7 @@ word32 __wait(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r4Out, ptr32 &
 //      __lock
 //      __lockfile
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r2 r4 r5 r8 r9
+// LiveOut: r2:[0..31]-__lockfile r4:[0..31]-malloc r5:[0..31]-__lockfile r8:[0..31]-__lockfile r9:[0..31]-__lockfile
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 __wait_entry:
@@ -16768,7 +16768,7 @@ word32 __pthread_setcancelstate(word32 r4, word32 r5, ptr32 & r7Out)
 //      __synccall
 //      __timedwait
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4 r7
+// LiveOut: r4:[0..31]-fn00407A82 r7:[0..31]-__timedwait
 // Trashed: r25 r3 r4 r7
 // Preserved: sp
 __pthread_setcancelstate_entry:
@@ -16794,7 +16794,7 @@ word32 pthread_sigmask(word32 r4, word32 r6)
 // Called from:
 //      sigprocmask
 // MayUse:  r4:[0..31] r6:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-sigprocmask
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 pthread_sigmask_entry:
@@ -16854,7 +16854,7 @@ word32 __clock_gettime(word32 r4, word32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32
 //      __synccall
 //      __timedwait_cp
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r2 r3 r4 r5 r6 r7 r8
+// LiveOut: r2:[0..31]-mtime r3:[0..31]-gettimeofday r4:[0..31]-__timedwait_cp r5:[0..31]-mtime r6:[0..31]-__timedwait_cp r7:[0..31]-__timedwait_cp r8:[0..31]-mtime
 // Trashed: r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __clock_gettime_entry:
@@ -16910,7 +16910,7 @@ word32 gettimeofday(word32 r4, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r17Out)
 //      build_echo
 //      ping6_run
 // MayUse:  r4:[0..31]
-// LiveOut: r17 r3 r4 r6
+// LiveOut: r17:[0..31]-fn004021B0 r3:[0..31]-fn004021B0 r4:[0..31]-fn004021B0 r6:[0..31]-fn004021B0
 // Trashed: hi lo r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 gettimeofday_entry:
@@ -16951,7 +16951,7 @@ word32 close(ptr32 & r4Out, ptr32 & r6Out, ptr32 & r8Out)
 //      __res_msend_rc
 //      __synccall
 // MayUse: 
-// LiveOut: r2 r4 r6 r8
+// LiveOut: r2:[0..31]-__res_msend_rc r4:[0..31]-__res_msend_rc r6:[0..31]-__res_msend_rc r8:[0..31]-__res_msend_rc
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 close_entry:
@@ -16977,7 +16977,7 @@ word32 geteuid()
 // Called from:
 //      limit_capabilities
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-limit_capabilities
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 geteuid_entry:
@@ -16995,7 +16995,7 @@ word32 getpid(ptr32 & r4Out)
 //      setup
 //      ping6_run
 // MayUse: 
-// LiveOut: r2 r4
+// LiveOut: r2:[0..31]-ping6_run r4:[0..31]-setup
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 getpid_entry:
@@ -17013,7 +17013,7 @@ word32 getuid()
 // Called from:
 //      fn00401E82
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-fn00401E82
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 getuid_entry:
@@ -17030,7 +17030,7 @@ word32 isatty()
 // Called from:
 //      setup
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-setup
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 isatty_entry:
@@ -17047,7 +17047,7 @@ word32 seteuid(word32 r0, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r
 //      limit_capabilities
 //      modify_capability
 // MayUse:  r0:[0..31]
-// LiveOut: r17 r2 r3 r4 r6 r7 r8
+// LiveOut: r17:[0..31]-modify_capability r2:[0..31]-modify_capability r3:[0..31]-modify_capability r4:[0..31]-limit_capabilities r6:[0..31]-modify_capability r7:[0..31]-modify_capability r8:[0..31]-limit_capabilities
 // Trashed: r10 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 seteuid_entry:
@@ -17070,7 +17070,7 @@ word32 setuid(word32 r0, ptr32 & r4Out)
 // Called from:
 //      drop_capabilities
 // MayUse:  r0:[0..31]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-drop_capabilities r4:[0..31]-drop_capabilities
 // Trashed: r10 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 setuid_entry:
@@ -17114,7 +17114,7 @@ word32 fn0040B048()
 // Called from:
 //      do_setxid
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-do_setxid
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040B048_entry:
@@ -17132,7 +17132,7 @@ word32 __setxid(word32 r0, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & 
 //      seteuid
 //      setuid
 // MayUse:  r0:[0..31]
-// LiveOut: r17 r2 r3 r4 r6 r7 r8
+// LiveOut: r17:[0..31]-seteuid r2:[0..31]-seteuid r3:[0..31]-setuid r4:[0..31]-setuid r6:[0..31]-seteuid r7:[0..31]-seteuid r8:[0..31]-seteuid
 // Trashed: r10 r17 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __setxid_entry:
@@ -17164,7 +17164,7 @@ word32 write()
 //      write_stdout
 //      write_stdout
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-write_stdout
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 write_entry:
@@ -17183,7 +17183,7 @@ word32 isalnum(word32 r4, ptr32 & r6Out, ptr32 & r7Out)
 //      is_valid_hostname
 //      isalnum_l
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r6 r7
+// LiveOut: r4:[0..31]-is_valid_hostname r6:[0..31]-is_valid_hostname r7:[0..31]-is_valid_hostname
 // Trashed: r25 r4 r6 r7
 // Preserved: sp
 isalnum_entry:
@@ -17221,7 +17221,7 @@ word32 __init_tp(word32 r4)
 // Called from:
 //      __init_tls
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__init_tls
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __init_tp_entry:
@@ -17250,7 +17250,7 @@ word32 __copy_tls(word32 r4)
 // Called from:
 //      __init_tls
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__init_tls
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 __copy_tls_entry:
@@ -17362,7 +17362,7 @@ word32 scanexp(word32 r4, word32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 // Called from:
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r12 r2 r3 r4 r5 r6 r7 r8
+// LiveOut: r12:[0..31]-decfloat r2:[0..31]-decfloat r3:[0..31]-decfloat r4:[0..31]-decfloat r5:[0..31]-decfloat r6:[0..31]-decfloat r7:[0..31]-decfloat r8:[0..31]-__floatscan
 // Trashed: r10 r11 r12 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 ra sp
 scanexp_entry:
@@ -17515,7 +17515,7 @@ word32 decfloat(word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7
 // Called from:
 //      __floatscan
 // MayUse:  r0:[0..31] r12:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r11:[0..31]-__floatscan r12:[0..31]-__floatscan r2:[0..31]-__floatscan r3:[0..31]-__floatscan r4:[0..31]-__floatscan r5:[0..31]-__floatscan r6:[0..31]-__floatscan r7:[0..31]-__floatscan
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r0 r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 decfloat_entry:
@@ -18198,7 +18198,7 @@ word32 __floatscan(word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32
 //      strtold_l
 //      __isoc99_vfscanf
 // MayUse:  r0:[0..31] r12:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r11:[0..31]-__isoc99_vfscanf r12:[0..31]-__isoc99_vfscanf r2:[0..31]-__isoc99_vfscanf r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__isoc99_vfscanf r5:[0..31]-__isoc99_vfscanf r6:[0..31]-strtox r7:[0..31]-strtox
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __floatscan_entry:
@@ -18952,7 +18952,7 @@ word32 __intscan(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r
 //      strtox
 //      __isoc99_vfscanf
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..63] r6:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-strtox r12:[0..31]-strtox r2:[0..31]-strtox r3:[0..31]-strtox r4:[0..31]-strtox r5:[0..31]-strtox r6:[0..31]-strtox r7:[0..31]-strtox r8:[0..31]-strtox r9:[0..31]-strtox
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __intscan_entry:
@@ -19413,7 +19413,7 @@ word32 __shlim(word32 r4, word32 r6, word32 r7, ptr32 & r9Out, ptr32 & r11Out)
 //      __intscan
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r8 r9
+// LiveOut: r11:[0..31]-__intscan r8:[0..31]-__intscan r9:[0..31]-__intscan
 // Trashed: r10 r11 r25 r5 r8 r9
 // Preserved: sp
 __shlim_entry:
@@ -19451,7 +19451,7 @@ word32 __shgetc(word32 r4, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & 
 //      __isoc99_vfscanf
 //      fn0040DC0C
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-__intscan r12:[0..31]-__intscan r2:[0..31]-__intscan r3:[0..31]-__intscan r4:[0..31]-__intscan r5:[0..31]-__intscan r6:[0..31]-__intscan r7:[0..31]-__intscan r8:[0..31]-__intscan r9:[0..31]-__intscan
 // Trashed: r10 r11 r12 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __shgetc_entry:
@@ -19573,7 +19573,7 @@ word32 __syscall_ret(word32 r4, ptr32 & r4Out, ptr32 & r7Out)
 //      open64
 //      lseek64
 // MayUse:  r4:[0..31]
-// LiveOut: r3 r4 r7
+// LiveOut: r3:[0..31]-__clock_gettime r4:[0..31]-__libc_sigaction r7:[0..31]-__clock_gettime
 // Trashed: r25 r3 r4 r7
 // Preserved: r16 ra sp
 __syscall_ret_entry:
@@ -19597,7 +19597,7 @@ word32 __vdsosym(word32 r4, word32 r5)
 // Called from:
 //      cgt_init
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-cgt_init
 // Trashed: r10 r11 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __vdsosym_entry:
@@ -19752,7 +19752,7 @@ word32 calloc(word32 r0, word32 r4, word32 r5, word32 r7, word32 r11, ptr32 & r4
 //      getaddrinfo
 //      netlink_msg_to_ifaddr
 // MayUse:  r0:[0..31] r11:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: r11 r2 r4 r6 r8
+// LiveOut: r11:[0..31]-getaddrinfo r2:[0..31]-getaddrinfo r4:[0..31]-getaddrinfo r6:[0..31]-getaddrinfo r8:[0..31]-getaddrinfo
 // Trashed: hi lo r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 calloc_entry:
@@ -19790,7 +19790,7 @@ word32 __expand_heap(word32 r4, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr
 //      __simple_malloc
 //      malloc
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r2 r3 r4 r6 r7 r8
+// LiveOut: r11:[0..31]-malloc r2:[0..31]-malloc r3:[0..31]-malloc r4:[0..31]-malloc r6:[0..31]-malloc r7:[0..31]-malloc r8:[0..31]-malloc
 // Trashed: r10 r11 r2 r22 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 __expand_heap_entry:
@@ -19892,7 +19892,7 @@ word32 copysignl(word32 r5, word32 r7, ptr32 & r8Out)
 // Called from:
 //      __floatscan
 // MayUse:  r5:[0..31] r7:[0..31]
-// LiveOut: r5 r8
+// LiveOut: r5:[0..31]-decfloat r8:[0..31]-__floatscan
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: sp
 copysignl_entry:
@@ -19910,7 +19910,7 @@ word32 fabs(word32 r5)
 // Called from:
 //      __floatscan
 // MayUse:  r5:[0..31]
-// LiveOut: r5
+// LiveOut: r5:[0..31]-decfloat
 // Trashed: r25 r5 r6 r7
 // Preserved: r4 sp
 fabs_entry:
@@ -19925,7 +19925,7 @@ word32 fmodl(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out)
 // Called from:
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-decfloat r5:[0..31]-decfloat
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fmodl_entry:
@@ -19943,7 +19943,7 @@ word32 frexpl(word32 r4, word32 r5, word32 r6, ptr32 & r5Out, ptr32 & r18Out)
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r18 r4 r5
+// LiveOut: r18:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core
 // Trashed: r10 r11 r12 r13 r14 r15 r18 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 frexpl_entry:
@@ -19962,7 +19962,7 @@ word32 scalbn(word32 r4, word32 r5, word32 r6, ptr32 & r5Out, ptr32 & r8Out, ptr
 // Called from:
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r10 r4 r5 r8
+// LiveOut: r10:[0..31]-decfloat r4:[0..31]-decfloat r5:[0..31]-decfloat r8:[0..31]-__floatscan
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 scalbn_entry:
@@ -20015,7 +20015,7 @@ word32 fn0040CFCC(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out, ptr
 // Called from:
 //      scalbn
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r10 r4 r5 r8
+// LiveOut: r10:[0..31]-scalbn r4:[0..31]-scalbn r5:[0..31]-scalbn r8:[0..31]-scalbn
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040CFCC_entry:
@@ -20035,7 +20035,7 @@ word32 scalbnl(word32 r4, word32 r5, word32 r6, ptr32 & r3Out, ptr32 & r4Out, pt
 // Called from:
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r11:[0..31]-decfloat r12:[0..31]-decfloat r2:[0..31]-decfloat r3:[0..31]-decfloat r4:[0..31]-decfloat r5:[0..31]-decfloat r6:[0..31]-decfloat r7:[0..31]-decfloat
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 scalbnl_entry:
@@ -20059,7 +20059,7 @@ word32 mbstowcs(word32 r4, word32 r5, word32 r6, ptr32 & r5Out, ptr32 & r6Out, p
 // Called from:
 //      is_valid_hostname
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r18 r4 r5 r6 r8
+// LiveOut: r18:[0..31]-is_valid_hostname r4:[0..31]-is_valid_hostname r5:[0..31]-is_valid_hostname r6:[0..31]-is_valid_hostname r8:[0..31]-is_valid_hostname
 // Trashed: r18 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 mbstowcs_entry:
@@ -20080,7 +20080,7 @@ word32 wctomb(word32 r4, word32 r5, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out)
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r3 r4 r5 r6
+// LiveOut: r3:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r6:[0..31]-printf_core
 // Trashed: r25 r3 r4 r5 r6 r7
 // Preserved: sp
 wctomb_entry:
@@ -20108,7 +20108,7 @@ word32 dn_expand(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, ptr32 & 
 //      dns_parse_callback
 //      dns_parse_callback
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r11 r12 r2 r4 r8
+// LiveOut: r11:[0..31]-dns_parse_callback r12:[0..31]-dns_parse_callback r2:[0..31]-dns_parse_callback r4:[0..31]-dns_parse_callback r8:[0..31]-dns_parse_callback
 // Trashed: r10 r11 r12 r13 r14 r2 r25 r3 r4 r8 r9
 // Preserved: sp
 dn_expand_entry:
@@ -20195,7 +20195,7 @@ word32 __dns_parse(word32 r4, word32 r5, word32 r7, word32 r11, ptr32 & r5Out, p
 //      getnameinfo
 //      name_from_dns
 // MayUse:  r11:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: r11 r12 r2 r5 r6 r7 r8
+// LiveOut: r11:[0..31]-name_from_dns r12:[0..31]-name_from_dns r2:[0..31]-name_from_dns r5:[0..31]-getnameinfo r6:[0..31]-name_from_dns r7:[0..31]-name_from_dns r8:[0..31]-name_from_dns
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 __dns_parse_entry:
@@ -20331,7 +20331,7 @@ word32 __lockfile(word32 r4, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 
 //      __isoc99_vfscanf
 //      close_file
 // MayUse:  r4:[0..31]
-// LiveOut: r2 r3 r4 r5 r8 r9
+// LiveOut: r2:[0..31]-fputc r3:[0..31]-fputc r4:[0..31]-perror r5:[0..31]-fputc r8:[0..31]-fputc r9:[0..31]-fgets_unlocked
 // Trashed: r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 __lockfile_entry:
@@ -20383,7 +20383,7 @@ word32 __unlockfile(word32 r4, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr3
 //      vfprintf
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31]
-// LiveOut: r2 r4 r5 r6 r7 r8 r9
+// LiveOut: r2:[0..31]-fwrite_unlocked r4:[0..31]-__isoc99_vfscanf r5:[0..31]-fwrite_unlocked r6:[0..31]-fwrite_unlocked r7:[0..31]-fputc r8:[0..31]-fwrite_unlocked r9:[0..31]-fgets_unlocked
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 __unlockfile_entry:
@@ -20426,7 +20426,7 @@ word32 __overflow(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7
 //      _IO_putc
 //      puts
 // MayUse:  r4:[0..31] r5:[0..7]
-// LiveOut: r4 r5 r6 r7
+// LiveOut: r4:[0..31]-puts r5:[0..31]-fputc r6:[0..31]-fputc r7:[0..31]-fputc
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: r16 ra sp
 __overflow_entry:
@@ -20564,7 +20564,7 @@ word32 __towrite(word32 r4, ptr32 & r6Out, ptr32 & r7Out)
 //      fputc
 //      __fwritex
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r6 r7
+// LiveOut: r4:[0..31]-__fwritex r6:[0..31]-__fwritex r7:[0..31]-__fwritex
 // Trashed: r25 r4 r6 r7
 // Preserved: sp
 __towrite_entry:
@@ -20609,7 +20609,7 @@ word32 __uflow(word32 r4, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 //      _IO_getc
 //      __shgetc
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r5 r6 r7
+// LiveOut: r4:[0..31]-__shgetc r5:[0..31]-__shgetc r6:[0..31]-__shgetc r7:[0..31]-__shgetc
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: r16 ra sp
 __uflow_entry:
@@ -20671,7 +20671,7 @@ word32 arg_n(word32 r4, word32 r5, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r11Out,
 // Called from:
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r11 r12 r2 r3 r4
+// LiveOut: r11:[0..31]-__isoc99_vfscanf r12:[0..31]-__isoc99_vfscanf r2:[0..31]-__isoc99_vfscanf r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__isoc99_vfscanf
 // Trashed: r10 r11 r12 r13 r14 r15 r17 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 ra sp
 arg_n_entry:
@@ -20725,7 +20725,7 @@ word32 __isoc99_vfscanf(word32 r0, word32 r4, word32 r5, word32 r6, word32 r19, 
 // Called from:
 //      __isoc99_vsscanf
 // MayUse:  r0:[0..31] r19:[0..31] r20:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..31]-__isoc99_vsscanf r4:[0..31]-__isoc99_vsscanf
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 __isoc99_vfscanf_entry:
@@ -21292,7 +21292,7 @@ word32 fn0040DC0C(word32 r4, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 
 // Called from:
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31]
-// LiveOut: r11 r12 r2 r3 r4 r6 r8
+// LiveOut: r11:[0..31]-__isoc99_vfscanf r12:[0..31]-__isoc99_vfscanf r2:[0..31]-__isoc99_vfscanf r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__isoc99_vfscanf r6:[0..31]-__isoc99_vfscanf r8:[0..31]-__isoc99_vfscanf
 // Trashed: r10 r11 r12 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040DC0C_entry:
@@ -21315,7 +21315,7 @@ word32 stpcpy(word32 r4, word32 r5, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
 // Called from:
 //      strcpy
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r5 r6 r7 r8
+// LiveOut: r5:[0..31]-strcpy r6:[0..31]-strcpy r7:[0..31]-strcpy r8:[0..31]-strcpy
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 stpcpy_entry:
@@ -21443,7 +21443,7 @@ word32 __set_thread_area()
 // Called from:
 //      __init_tp
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__init_tp
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __set_thread_area_entry:
@@ -21514,7 +21514,7 @@ word32 __synccall(word32 r0, word32 r4, word32 r5)
 // Called from:
 //      seteuid
 // MayUse:  r0:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__setxid
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r11 r12 r13 r14 r15 r16 r17 r18 r19 r20 r21 r24 ra sp
 __synccall_entry:
@@ -21654,7 +21654,7 @@ word32 fn0040E00C()
 // Called from:
 //      __synccall
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__synccall
 // Trashed: r2 r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0040E00C_entry:
@@ -21671,7 +21671,7 @@ word32 readdir64(word32 r4)
 // Called from:
 //      __synccall
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__synccall
 // Trashed: r18 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 readdir64_entry:
@@ -21723,7 +21723,7 @@ word32 open64(word32 r5)
 // Called from:
 //      __synccall
 // MayUse:  r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__synccall
 // Trashed: r10 r18 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 open64_entry:
@@ -21751,7 +21751,7 @@ word32 copysign(word32 r5, word32 r7, ptr32 & r8Out)
 // Called from:
 //      copysignl
 // MayUse:  r5:[0..31] r7:[0..31]
-// LiveOut: r5 r8
+// LiveOut: r5:[0..31]-copysignl r8:[0..31]-copysignl
 // Trashed: r25 r5 r6 r7 r8
 // Preserved: r4 sp
 copysign_entry:
@@ -21768,7 +21768,7 @@ word32 fmod(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out)
 // Called from:
 //      fmodl
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-fmodl r5:[0..31]-fmodl
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 r23 r30 ra sp
 fmod_entry:
@@ -21893,7 +21893,7 @@ word32 frexp(word32 r4, word32 r5, word32 r6, ptr32 & r5Out, ptr32 & r18Out)
 //      frexpl
 //      frexp
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r18 r4 r5
+// LiveOut: r18:[0..31]-frexpl r4:[0..31]-frexpl r5:[0..31]-frexpl
 // Trashed: r10 r11 r12 r13 r14 r15 r18 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 frexp_entry:
@@ -21931,7 +21931,7 @@ word32 mbrtowc(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r3Out, ptr32 
 // Called from:
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r2 r3 r4 r6 r8
+// LiveOut: r11:[0..31]-__isoc99_vfscanf r2:[0..31]-__isoc99_vfscanf r3:[0..31]-__isoc99_vfscanf r4:[0..31]-__isoc99_vfscanf r6:[0..31]-__isoc99_vfscanf r8:[0..31]-__isoc99_vfscanf
 // Trashed: r10 r11 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: ra sp
 mbrtowc_entry:
@@ -22040,7 +22040,7 @@ word32 mbsinit(word32 r4)
 // Called from:
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__isoc99_vfscanf
 // Trashed: r25 r4 r7
 // Preserved: sp
 mbsinit_entry:
@@ -22060,7 +22060,7 @@ word32 mbsrtowcs(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out, ptr3
 // Called from:
 //      mbstowcs
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r18 r4 r5 r6 r8
+// LiveOut: r18:[0..31]-mbstowcs r4:[0..31]-mbstowcs r5:[0..31]-mbstowcs r6:[0..31]-mbstowcs r8:[0..31]-mbstowcs
 // Trashed: r18 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 ra sp
 mbsrtowcs_entry:
@@ -22257,7 +22257,7 @@ word32 wcrtomb(word32 r4, word32 r5, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out
 // Called from:
 //      wctomb
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r3 r4 r5 r6
+// LiveOut: r3:[0..31]-wctomb r4:[0..31]-wctomb r5:[0..31]-wctomb r6:[0..31]-wctomb
 // Trashed: r25 r3 r4 r5 r6 r7
 // Preserved: ra sp
 wcrtomb_entry:
@@ -22389,7 +22389,7 @@ word32 __toread(word32 r4, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r16Out)
 // Called from:
 //      __uflow
 // MayUse:  r4:[0..31]
-// LiveOut: r16 r4 r6 r7
+// LiveOut: r16:[0..31]-__uflow r4:[0..31]-__uflow r6:[0..31]-__uflow r7:[0..31]-__uflow
 // Trashed: r16 r25 r4 r6 r7
 // Preserved: r5 ra sp
 __toread_entry:
@@ -22618,7 +22618,7 @@ word32 sem_trywait(word32 r4)
 // Called from:
 //      sem_wait
 // MayUse:  r4:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-sem_timedwait
 // Trashed: r25 r3 r4 r5 r6 r7 r8
 // Preserved: ra sp
 sem_trywait_entry:
@@ -22657,7 +22657,7 @@ word32 __timedwait_cp(word32 r6, word32 r7, word32 r8)
 //      sem_wait
 //      __timedwait
 // MayUse:  r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-sem_timedwait
 // Trashed: r10 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 ra sp
 __timedwait_cp_entry:
@@ -22763,7 +22763,7 @@ word32 __ashldi3(word32 r4, word32 r5, word32 r6, ptr32 & r5Out)
 //      printf_core
 //      fmod
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: sp
 __ashldi3_entry:
@@ -22796,7 +22796,7 @@ word32 __lshrdi3(word32 r4, word32 r5, word32 r6, ptr32 & r5Out)
 // Called from:
 //      fmod
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-fmod r5:[0..31]-fmod
 // Trashed: r25 r4 r5 r6 r7
 // Preserved: sp
 __lshrdi3_entry:
@@ -22833,7 +22833,7 @@ word32 __udivdi3(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r
 //      __floatscan
 //      __intscan
 // MayUse:  r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r13 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-fmt_u r13:[0..31]-fmt_u r2:[0..31]-printf_core r3:[0..31]-printf_core r4:[0..31]-fmt_u r5:[0..31]-fmt_u r6:[0..31]-__intscan r7:[0..31]-fmt_u r8:[0..31]-fmt_u r9:[0..31]-printf_core
 // Trashed: hi lo r10 r11 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __udivdi3_entry:
@@ -23052,7 +23052,7 @@ word32 __umoddi3(word32 r4, word32 r5, word32 r6, word32 r7, word32 r13, ptr32 &
 //      printf_core
 //      __floatscan
 // MayUse:  r13:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r12 r2 r3 r4 r8
+// LiveOut: r12:[0..31]-fmt_u r2:[0..31]-fmt_u r3:[0..31]-fmt_u r4:[0..31]-fmt_u r8:[0..31]-printf_core
 // Trashed: hi lo r10 r11 r12 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __umoddi3_entry:
@@ -23240,7 +23240,7 @@ word32 __adddf3(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r4Out, ptr32
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r12 r13 r14 r3 r4 r5 r6 r7 r8
+// LiveOut: r11:[0..31]-__floatscan r12:[0..31]-printf_core r13:[0..31]-printf_core r14:[0..31]-printf_core r3:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r6:[0..31]-decfloat r7:[0..31]-printf_core r8:[0..31]-__floatscan
 // Trashed: r10 r11 r12 r13 r14 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __adddf3_entry:
@@ -23709,7 +23709,7 @@ word32 __divdf3(word32 r4, word32 r5, word32 r6, word32 r7, word32 r14, ptr32 & 
 //      __floatscan
 //      fmod
 // MayUse:  r14:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-fmod r5:[0..31]-fmod
 // Trashed: hi lo r10 r11 r12 r13 r14 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __divdf3_entry:
@@ -24068,7 +24068,7 @@ word32 __nedf2(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r4Out, ptr32 
 //      __floatscan
 //      frexpl
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r11 r13 r2 r4 r5 r6 r7 r8 r9
+// LiveOut: r11:[0..31]-printf_core r13:[0..31]-printf_core r2:[0..31]-printf_core r4:[0..31]-frexp r5:[0..31]-printf_core r6:[0..31]-printf_core r7:[0..31]-printf_core r8:[0..31]-printf_core r9:[0..31]-printf_core
 // Trashed: r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __nedf2_entry:
@@ -24143,7 +24143,7 @@ word32 __subdf3(word32 r4, word32 r5, word32 r6, word32 r7, ptr32 & r5Out, ptr32
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r13 r4 r5 r7
+// LiveOut: r13:[0..31]-printf_core r4:[0..31]-printf_core r5:[0..31]-printf_core r7:[0..31]-printf_core
 // Trashed: r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __subdf3_entry:

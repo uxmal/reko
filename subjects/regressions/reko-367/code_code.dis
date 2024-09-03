@@ -20,7 +20,7 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 //      fn800002AE
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95] Stack +0010:[0..95]
-// LiveOut: fp0
+// LiveOut: fp0:[0..95]-fn800001F2
 // Trashed: CVZN d0 d1 fp0
 // Preserved: X a6 a7 d2
 fn80000132_entry:
@@ -46,7 +46,7 @@ real96 fn8000018E(real96 rArg04)
 //      fn800002AE
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95]
-// LiveOut: fp0
+// LiveOut: fp0:[0..95]-fn800001F2
 // Trashed: CVZN d0 d1 fp0
 // Preserved: X a6 a7 d2 fp1
 fn8000018E_entry:
@@ -71,7 +71,7 @@ real96 fn800001F2(real96 rArg04)
 //      fn8000036C
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95]
-// LiveOut: fp0
+// LiveOut: fp0:[0..95]-fn8000036C
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: X a6 a7 d2 fp2
 fn800001F2_entry:
@@ -99,7 +99,7 @@ real96 fn800002AE(real96 rArg04)
 //      fn8000036C
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95]
-// LiveOut: fp0
+// LiveOut: fp0:[0..95]-fn8000036C
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: X a6 a7 d2 fp2
 fn800002AE_entry:

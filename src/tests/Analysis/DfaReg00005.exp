@@ -23,7 +23,7 @@ fn0C00_0000_exit:
 // FlagGroup bool fn0C00_000C(Register byte al, Register selector ds)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  al:[0..7] ds:[0..15]
-// LiveOut: C
+// LiveOut: C-fn0C00_0000
 // Trashed: SCZO Top
 // Preserved: sp
 // fn0C00_000C

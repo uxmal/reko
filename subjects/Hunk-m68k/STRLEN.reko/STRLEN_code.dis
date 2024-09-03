@@ -207,7 +207,7 @@ word32 fn00001214(word32 a3)
 // Called from:
 //      fn00001000
 // MayUse:  a3:[0..31]
-// LiveOut: d0
+// LiveOut: d0:[0..31]-fn00001000
 // Trashed: a0 d0
 // Preserved: a7
 fn00001214_entry:
@@ -372,7 +372,7 @@ word32 fn00001390()
 // Called from:
 //      fn00001354
 // MayUse: 
-// LiveOut: d0
+// LiveOut: d0:[0..31]-fn00001354
 // Trashed: CVZNX a0 a1 d0
 // Preserved: a2 a7
 fn00001390_entry:
@@ -387,7 +387,7 @@ word32 fn000013AC(word32 dwArg04)
 // Called from:
 //      fn00001390
 // MayUse:  Stack +0004:[0..31]
-// LiveOut: d0
+// LiveOut: d0:[0..31]-fn00001390
 // Trashed: CVZNX a0 a1 d0
 // Preserved: a7
 fn000013AC_entry:

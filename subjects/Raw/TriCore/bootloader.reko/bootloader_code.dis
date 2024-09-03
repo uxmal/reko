@@ -74,7 +74,7 @@ word32 fn00000128(word32 a3, word32 a6)
 // Called from:
 //      fn000000A8
 // MayUse:  a3:[0..31] a6:[0..31]
-// LiveOut: d5
+// LiveOut: d5:[0..31]-fn000000A8
 // Trashed: d0 d1 d2 d3 d4 d5 d6
 // Preserved: a10
 fn00000128_entry:
@@ -92,7 +92,7 @@ word32 fn0000016E(word32 d5, word32 PCXI, word32 FCX, word32 LCX)
 // Called from:
 //      fn000000A8
 // MayUse:  d5:[0..31] FCX:[0..31] LCX:[0..31] PCXI:[0..31]
-// LiveOut: d2
+// LiveOut: d2:[0..31]-fn000000A8
 // Trashed: C_V_SV_AV_AV a3 a4 a5 d0 d1 d2 d5
 // Preserved: a10
 fn0000016E_entry:
@@ -260,7 +260,7 @@ word32 fn00000400(word32 a4, word32 a15)
 // Called from:
 //      fn00000B04
 // MayUse:  a15:[0..31] a4:[0..31]
-// LiveOut: a15
+// LiveOut: a15:[0..31]-fn00000B04
 // Trashed: C_V_SV_AV_AV a15 a2 a3 a4 a5 a6 a8 d15 d2 d3 d4
 // Preserved: a10
 fn00000400_entry:
@@ -371,7 +371,7 @@ word32 fn00000648(word32 d4, ptr32 & a15Out)
 // Called from:
 //      fn00000CCE
 // MayUse:  d4:[0..31]
-// LiveOut: a15 d2
+// LiveOut: a15:[0..31]-fn00000CCE d2:[0..31]-fn00000CCE
 // Trashed: C_V_SV_AV_AV a15 a2 d15 d2
 // Preserved: a10
 fn00000648_entry:
@@ -396,7 +396,7 @@ word32 fn00000664(word32 d4, ptr32 & d15Out)
 //      fn000010B0
 //      fn000012F6
 // MayUse:  d4:[0..31]
-// LiveOut: d15 d2
+// LiveOut: d15:[0..31]-fn000010B0 d2:[0..31]-fn000012F6
 // Trashed: C_V_SV_AV_AV a15 a2 d15 d2
 // Preserved: a10
 fn00000664_entry:
@@ -647,7 +647,7 @@ word32 fn0000098A(word32 d4, word32 d5, word32 d6, word32 d7, word32 dwArg00)
 // Called from:
 //      fn00000EB6
 // MayUse:  d4:[0..31] d5:[0..31] d6:[0..31] d7:[0..31] Stack +0000:[0..31]
-// LiveOut: a15
+// LiveOut: a15:[0..31]-fn00000EB6
 // Trashed: a15 a2 d15
 // Preserved: a10
 fn0000098A_entry:
@@ -724,7 +724,7 @@ word32 fn00000AC0(word32 a4, word32 a15)
 //      fn00000400
 //      fn00000B04
 // MayUse:  a15:[0..31] a4:[0..31]
-// LiveOut: d15
+// LiveOut: d15:[0..31]-fn00000B04
 // Trashed: d15 d2 d3 d4
 // Preserved: a10
 fn00000AC0_entry:
@@ -745,7 +745,7 @@ word32 fn00000B04(word32 a4, word32 a15, word32 ICR)
 // Called from:
 //      fn000012F6
 // MayUse:  a15:[0..31] a4:[0..31] ICR:[0..31]
-// LiveOut: a15
+// LiveOut: a15:[0..31]-fn000012F6
 // Trashed: C_V_SV_AV_AV a15 a2 a3 a4 a5 a6 a8 d15 d2 d3 d4
 // Preserved: a10
 fn00000B04_entry:
@@ -1134,7 +1134,7 @@ word32 fn00001CB4(word32 d4, word32 a4)
 // Called from:
 //      fn00001DB0
 // MayUse:  a4:[0..31] d4:[0..31]
-// LiveOut: d15
+// LiveOut: d15:[0..31]-fn00001DB0
 // Trashed: a15 a2 d15 d2 d4
 // Preserved: a10
 fn00001CB4_entry:

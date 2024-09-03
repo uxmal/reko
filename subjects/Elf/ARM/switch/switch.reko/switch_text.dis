@@ -19,7 +19,7 @@ word32 call_gmon_start()
 // Called from:
 //      _init
 // MayUse: 
-// LiveOut: r10
+// LiveOut: r10:[0..31]-_init
 // Trashed: NZCV lr pc r10 r3
 // Preserved: sp
 call_gmon_start_entry:
@@ -126,7 +126,7 @@ word32 frobulate(word32 r0, word32 dwArg00, ptr32 & fpOut)
 //      bazulate
 //      switcheroo
 // MayUse:  r0:[0..31] Stack +0000:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-switcheroo r0:[0..31]-bazulate sp:[0..31]-bazulate
 // Trashed: NZCV fp ip lr r0 r1 r2 r3 sp
 // Preserved:
 frobulate_entry:
@@ -143,7 +143,7 @@ word32 bazulate(word32 r0, word32 r1)
 // Called from:
 //      switcheroo
 // MayUse:  r0:[0..31] r1:[0..31]
-// LiveOut: fp
+// LiveOut: fp:[0..31]-switcheroo
 // Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
 // Preserved:
 bazulate_entry:
@@ -160,7 +160,7 @@ word32 switcheroo(word32 r0)
 // Called from:
 //      main
 // MayUse:  r0:[0..31]
-// LiveOut: fp
+// LiveOut: fp:[0..31]-main
 // Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
 // Preserved:
 switcheroo_entry:
@@ -203,7 +203,7 @@ word32 __divsi3(word32 r0, word32 r1)
 //      frobulate
 //      bazulate
 // MayUse:  r0:[0..31] r1:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-frobulate
 // Trashed: NZCV ip lr r0 r1 r2 r3
 // Preserved: sp
 __divsi3_entry:
@@ -378,7 +378,7 @@ word32 __do_global_ctors_aux()
 // Called from:
 //      _init
 // MayUse: 
-// LiveOut: r4
+// LiveOut: r4:[0..31]-_init
 // Trashed: NZCV lr pc r2 r3 r4
 // Preserved: sp
 __do_global_ctors_aux_entry:

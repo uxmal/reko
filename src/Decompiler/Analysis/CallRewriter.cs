@@ -24,12 +24,14 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using LiveOutUse = Reko.Analysis.DataFlow.LiveOutUse;
 
 namespace Reko.Analysis
 {
@@ -38,6 +40,11 @@ namespace Reko.Analysis
     /// information, so that all CALL codes are converted into 
     /// <see cref="Application"/>s, with the appropriate parameter lists.
     /// </summary>
+    /// <remarks>
+    /// After running this analysis, all the procedures in the 
+    /// decompiled program can be treated separately, with the 
+    /// exception of global variables.
+    /// </remarks>
     public class CallRewriter
 	{
 		private readonly ProgramDataFlow mpprocflow;
@@ -130,7 +137,7 @@ namespace Reko.Analysis
         {
             var frame = ssa.Procedure.Frame;
             var mayUseSeqs = flow.BitsUsed.Keys.OfType<SequenceStorage>().ToHashSet();
-            var seqRegs = SequenceRegisters(flow.BitsUsed);
+            var seqRegs = SequenceRegisters(flow.BitsUsed.Keys);
 
             //$TODO: inputs should be sorted by ABI register order, even if they are sequences.
             //$BUG: should be sorted by ABI register order. Need a new method
@@ -178,13 +185,13 @@ namespace Reko.Analysis
             var arch = ssa.Procedure.Architecture;
 
             var allLiveOut = flow.BitsLiveOut;
-            var seqRegisters = SequenceRegisters(allLiveOut);
+            var seqRegisters = SequenceRegisters(allLiveOut.Keys);
             RemoveSequenceOverlaps(allLiveOut);
 
             //$REVIEW: consider moving these into ProcedureFlow.
             var regsLiveOut = new Dictionary<RegisterStorage, BitRange>();
             var seqLiveOut = new Dictionary<SequenceStorage, BitRange>();
-            var grfLiveOut = flow.grfLiveOut.Select(de => arch.GetFlagGroup(de.Key, de.Value)!);
+            var grfLiveOut = flow.LiveOutFlags.Select(de => arch.GetFlagGroup(de.Key, de.Value.Flags)!);
             var fpuLiveOut = new Dictionary<FpuStackStorage, BitRange>();
             foreach (var de in allLiveOut)
             {
@@ -194,15 +201,15 @@ namespace Reko.Analysis
                     if (!seqRegisters.Contains(reg) &&
                         !platform.IsImplicitArgumentRegister(reg))
                     {
-                        var (rega, regb) = MakeRegisterParameter((reg, de.Value));
+                        var (rega, regb) = MakeRegisterParameter((reg, de.Value.Range));
                         regsLiveOut[rega] = regb;
                     }
                     break;
                 case SequenceStorage seq:
-                    seqLiveOut[seq] = de.Value;
+                    seqLiveOut[seq] = de.Value.Range;
                     break;
                 case FpuStackStorage fpu:
-                    fpuLiveOut[fpu] = de.Value;
+                    fpuLiveOut[fpu] = de.Value.Range;
                     break;
                 }
             }
@@ -245,10 +252,10 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="liveOut"></param>
         /// <returns></returns>
-        private static Dictionary<Storage, BitRange> RemoveSequenceOverlaps(
-            Dictionary<Storage, BitRange> liveOut)
+        private static Dictionary<Storage, LiveOutUse> RemoveSequenceOverlaps(
+            Dictionary<Storage, LiveOutUse> liveOut)
         {
-            var regsInSequences = SequenceRegisters(liveOut);
+            var regsInSequences = SequenceRegisters(liveOut.Keys);
             foreach (var reg in regsInSequences)
             {
                 liveOut.Remove(reg);
@@ -259,9 +266,9 @@ namespace Reko.Analysis
         /// <summary>
         /// Collects all registers that are part of sequences.
         /// </summary>
-        private static HashSet<RegisterStorage> SequenceRegisters(Dictionary<Storage, BitRange> liveOut)
+        private static HashSet<RegisterStorage> SequenceRegisters(IEnumerable<Storage> storages)
         {
-            return liveOut.Keys
+            return storages
                 .OfType<SequenceStorage>()
                 .SelectMany(s => s.Elements)
                 .OfType<RegisterStorage>()
@@ -487,6 +494,11 @@ namespace Reko.Analysis
                     {
                         e = MakeReturnSequence(bindings, seq, idRet);
                     }
+                    /*
+                    else if (idRet.Storage is FlagGroupStorage grf)
+                    {
+                        e = MakeReturnFlags(bindings, grf, idRet);
+                    }*/
                     else
                     {
                         e = MakeReturnExpression(bindings, idRet.Storage, idRet);
@@ -507,7 +519,34 @@ namespace Reko.Analysis
             }
         }
 
-        private static Expression MakeReturnExpression(
+        private static Expression MakeReturnFlags(
+            CallBinding[] bindings,
+            FlagGroupStorage grf,
+            Identifier idRet)
+        {
+            var flags = bindings
+                .Where(cb => cb.Storage.OverlapsWith(grf))
+                .Select(cb => cb.Expression)
+                .ToArray();
+            Expression e;
+            if (flags.Length == 0)
+                e = InvalidConstant.Create(idRet.DataType);
+            else if (flags.Length == 1)
+            {
+                e = flags[0];
+            }
+            else
+            {
+                e = flags.Aggregate((a, b) => new BinaryExpression(
+                    BinaryOperator.Or,
+                    grf.DataType,
+                    a, b));
+            }
+            return e;
+        }
+
+
+    private static Expression MakeReturnExpression(
             CallBinding [] bindings,
             Storage reg,
             Identifier idRet)

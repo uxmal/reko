@@ -40,7 +40,7 @@ byte fn0038()
 // Called from:
 //      fn0112
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn0112
 // Trashed: CZ a
 // Preserved: sp
 fn0038_entry:
@@ -285,7 +285,7 @@ byte fn0146(byte f)
 // Called from:
 //      fn0068
 // MayUse:  f:[0..7]
-// LiveOut: f
+// LiveOut: f:[0..7]-fn0068
 // Trashed: ACCVZ a f
 // Preserved: sp
 fn0146_entry:
@@ -311,7 +311,7 @@ void fn015A()
 //      fn0178
 //      fn01C7
 // MayUse: 
-// LiveOut: sp
+// LiveOut: sp:[0..15]-fn01C7
 // Trashed: ACCVZ a sp
 // Preserved:
 fn015A_entry:
@@ -444,7 +444,7 @@ byte fn01C7(byte f)
 // Called from:
 //      fn0146
 // MayUse:  f:[0..7]
-// LiveOut: f
+// LiveOut: f:[0..7]-fn0146
 // Trashed: ACCVZ a f sp
 // Preserved:
 fn01C7_entry:
@@ -1152,7 +1152,7 @@ byte fn056C()
 // Called from:
 //      fn01C7
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn01C7
 // Trashed: ACCVZ a
 // Preserved: sp
 fn056C_entry:
@@ -1182,7 +1182,7 @@ byte fn0588()
 // Called from:
 //      fn01C7
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn01C7
 // Trashed: ACCVZ a
 // Preserved: sp
 fn0588_entry:
@@ -1213,7 +1213,7 @@ byte fn059D(byte a)
 //      fn01C7
 //      fn0588
 // MayUse:  a:[0..7]
-// LiveOut: a sp
+// LiveOut: a:[0..7]-fn01C7 sp:[0..15]-fn01C7
 // Trashed: ACCVZ a sp
 // Preserved:
 fn059D_entry:
@@ -1238,7 +1238,7 @@ byte fn05A9()
 // Called from:
 //      fn056C
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn056C
 // Trashed: ACCVZ a
 // Preserved: sp
 fn05A9_entry:
@@ -1272,7 +1272,7 @@ byte fn05C0(byte a)
 // Called from:
 //      fn01C7
 // MayUse:  a:[0..7]
-// LiveOut: a
+// LiveOut: a:[0..7]-fn01C7
 // Trashed: ACCVZ a
 // Preserved: f sp
 fn05C0_entry:
@@ -1298,7 +1298,7 @@ byte fn05CF()
 // Called from:
 //      fn05C0
 // MayUse: 
-// LiveOut: a
+// LiveOut: a:[0..7]-fn05C0
 // Trashed: ACCVZ a sp
 // Preserved: f
 fn05CF_entry:

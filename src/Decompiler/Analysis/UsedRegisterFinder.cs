@@ -347,7 +347,7 @@ namespace Reko.Analysis
                     (br, entry) =>
                     {
                         if (entry.Key.OverlapsWith(stg))
-                            return br | entry.Value;
+                            return br | entry.Value.Range;
                         else
                             return br;
                     });

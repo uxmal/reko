@@ -105,7 +105,7 @@ word32 acl_get_entry(word64 rdx, word32 esi, word64 rdi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100003AA8
 // Trashed: eax
 // Preserved: rsp
 acl_get_entry_entry:
@@ -216,7 +216,7 @@ word32 acl_get_tag_type(word64 rsi, word32 edi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31] rsi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100003AA8
 // Trashed: eax
 // Preserved: rsp
 acl_get_tag_type_entry:
@@ -231,7 +231,7 @@ word32 atoi(word64 rdi)
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000026A0
 // Trashed: eax
 // Preserved: rsp
 atoi_entry:
@@ -465,7 +465,7 @@ word64 getenv(word64 rdi)
 //      fn0000000100001B4A
 //      fn00000001000026A0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000001000026A0
 // Trashed: rax
 // Preserved: rsp
 getenv_entry:
@@ -480,7 +480,7 @@ word64 getgrgid(word32 edi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100003AA8
 // Trashed: rax
 // Preserved: rsp
 getgrgid_entry:
@@ -495,7 +495,7 @@ word32 getopt(word64 rdx, word64 rsi, word32 edi)
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000026A0
 // Trashed: eax
 // Preserved: rsp
 getopt_entry:
@@ -524,7 +524,7 @@ word64 getpwuid(word32 edi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100003AA8
 // Trashed: rax
 // Preserved: rsp
 getpwuid_entry:
@@ -539,7 +539,7 @@ word32 getuid()
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000026A0
 // Trashed: eax
 // Preserved: rsp
 getuid_entry:
@@ -602,7 +602,7 @@ word32 ioctl(word32 esi, word32 edi)
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rsi:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000026A0
 // Trashed: eax
 // Preserved: rsp
 ioctl_entry:
@@ -617,7 +617,7 @@ word32 isatty(word32 edi)
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000026A0
 // Trashed: eax
 // Preserved: rsp
 isatty_entry:
@@ -662,7 +662,7 @@ word64 localtime(word32 edi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100003AA8
 // Trashed: rax
 // Preserved: rsp
 localtime_entry:
@@ -678,7 +678,7 @@ word64 malloc(word64 rdi)
 //      fn0000000100001B4A
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100001B4A
 // Trashed: rax
 // Preserved: rsp
 malloc_entry:
@@ -728,7 +728,7 @@ word64 mbrtowc(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
 //      fn000000010000488B
 //      fn0000000100004AFA
 // MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100004ABB
 // Trashed: rax
 // Preserved: rsp
 mbrtowc_entry:
@@ -743,7 +743,7 @@ word64 memchr(word64 rdx, word32 esi, word64 rdi)
 // Called from:
 //      fn000000010000488B
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100004ABB
 // Trashed: rax
 // Preserved: rsp
 memchr_entry:
@@ -758,7 +758,7 @@ word64 nl_langinfo(word32 edi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100003AA8
 // Trashed: rax
 // Preserved: rsp
 nl_langinfo_entry:
@@ -777,7 +777,7 @@ word32 printf(word64 rdi)
 //      fn0000000100003AA8
 //      fn0000000100004715
 // MayUse:  rdi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00000001000023B0
 // Trashed: eax
 // Preserved: rsp
 printf_entry:
@@ -796,7 +796,7 @@ word32 putchar(word32 edi)
 //      fn0000000100004715
 //      fn000000010000488B
 // MayUse:  rdi:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100004715
 // Trashed: eax
 // Preserved: rsp
 putchar_entry:
@@ -811,7 +811,7 @@ word64 readlink(word64 rdx, word64 rsi, word64 rdi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100003AA8
 // Trashed: rax
 // Preserved: rsp
 readlink_entry:
@@ -889,7 +889,7 @@ word32 snprintf(word64 rdx, word64 rsi, word64 rdi)
 //      fn0000000100001B4A
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100003AA8
 // Trashed: eax
 // Preserved: rsp
 snprintf_entry:
@@ -950,7 +950,7 @@ word64 strdup(word64 rdi)
 // Called from:
 //      fn0000000100001B4A
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100001B4A
 // Trashed: rax
 // Preserved: rsp
 strdup_entry:
@@ -967,7 +967,7 @@ word64 strerror(word32 edi)
 //      fn00000001000023B0
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[8..63]-fn00000001000023B0
 // Trashed: rax
 // Preserved: rsp
 strerror_entry:
@@ -1001,7 +1001,7 @@ word64 strlen(word64 rdi)
 //      fn0000000100003AA8
 //      fn000000010000488B
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100004ABB
 // Trashed: rax
 // Preserved: rsp
 strlen_entry:
@@ -1080,7 +1080,7 @@ word32 time(word64 rdi)
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100003AA8
 // Trashed: eax
 // Preserved: rsp
 time_entry:
@@ -1162,7 +1162,7 @@ word32 wcwidth(word16 di)
 //      fn0000000100004715
 //      fn000000010000488B
 // MayUse:  rdi:[0..15]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0000000100004ABB
 // Trashed: eax
 // Preserved: rsp
 wcwidth_entry:

@@ -19,24 +19,20 @@
 #endregion
 
 using Reko.Core;
-using System;
+using Reko.Core.Lib;
 using System.Collections.Generic;
 using System.Linq;
-using Expression = Reko.Core.Expressions.Expression;
 using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
-using SortedList = System.Collections.SortedList;
 using Storage = Reko.Core.Storage;
 using StringWriter = System.IO.StringWriter;
 using TextWriter = System.IO.TextWriter;
-using System.IO;
-using Reko.Core.Lib;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Abstract base class for summary information kept with procedures or blocks.
-	/// </summary>
-	public abstract class DataFlow
+    /// <summary>
+    /// Abstract base class for summary information kept with procedures or blocks.
+    /// </summary>
+    public abstract class DataFlow
 	{
 		/// <summary>
 		/// Displays the dataflow object as a human-readable stream of text.
@@ -45,7 +41,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> grfFlags, IEnumerable<Storage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags, IEnumerable<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
             var sGrf = string.Join(" ", grfFlags
@@ -73,6 +69,28 @@ namespace Reko.Analysis
             foreach (var de in regRanges.OrderBy(de => de.Key.Name))
             {
                 sb.Write(" {0}:{1}", de.Key, de.Value);
+            }
+        }
+
+        public static void EmitRegisters(
+            IProcessorArchitecture arch,
+            string caption,
+            Dictionary<RegisterStorage, LiveOutFlagsUse> grfFlags,
+            IDictionary<Storage, LiveOutUse> regRanges,
+            TextWriter writer)
+        {
+            writer.Write(caption);
+            var sGrf = string.Join(" ", grfFlags
+                .Where(f => f.Value.Flags != 0)
+                .Select(f => $"{arch.GetFlagGroup(f.Key, f.Value.Flags)}-{f.Value.Procedure.Name}")
+                .OrderBy(f => f));
+            if (sGrf.Length > 0)
+            {
+                writer.Write(" {0}", sGrf);
+            }
+            foreach (var de in regRanges.OrderBy(de => de.Key.Name))
+            {
+                writer.Write(" {0}:{1}-{2}", de.Key, de.Value.Range, de.Value.Procedure.Name);
             }
         }
 
@@ -124,5 +142,36 @@ namespace Reko.Analysis
 			EmitFlagGroup(arch, caption, grfFlags, sw);
 			return sw.ToString();
 		}
-	}
+
+        /// <summary>
+        /// This structure is used to track, for a particular storage 
+        /// that is live-out from a procedure, which bit range of that
+        /// storage is used by an calling procedure, and the first 
+        /// external caller found by Reko. The latter property is 
+        /// used for diagnostic purposes.
+        /// </summary>
+        public readonly struct LiveOutUse
+        {
+            public LiveOutUse(in BitRange range, Procedure proc)
+            {
+                this.Range = range;
+                this.Procedure = proc;
+            }
+
+            public BitRange Range { get; }
+            public Procedure Procedure { get; }
+        }
+
+        public readonly struct LiveOutFlagsUse
+        {
+            public LiveOutFlagsUse(uint flags, Procedure proc)
+            {
+                this.Procedure = proc;
+                this.Flags = flags;
+            }
+
+            public Procedure Procedure { get; }
+            public uint Flags { get; }
+        }
+    }
 }

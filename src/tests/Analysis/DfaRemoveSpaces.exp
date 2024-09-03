@@ -54,7 +54,7 @@ fn0C00_0015_exit:
 // Register word16 fn0C00_002F(Stack segptr32 ptrArg02)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax cx si Top
 // Preserved: bp ds sp
 // fn0C00_002F

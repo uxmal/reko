@@ -38,7 +38,7 @@ Register byte fn0C00_0015(Register word16 ax)
 // MayUse:  ax:[0..15]
 // DataTypes: 
 //   ax: word16
-// LiveOut: ax
+// LiveOut: ax:[0..7]-fn0C00_0000
 // Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0015
@@ -82,7 +82,7 @@ Register byte fn0C00_0020(Register word16 ax)
 // MayUse:  ax:[0..15]
 // DataTypes: 
 //   ax: word16
-// LiveOut: ax
+// LiveOut: ax:[0..7]-fn0C00_0015
 // Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0020

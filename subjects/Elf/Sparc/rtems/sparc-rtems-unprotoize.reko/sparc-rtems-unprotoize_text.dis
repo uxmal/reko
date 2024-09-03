@@ -28,7 +28,7 @@ word32 fn0001150C(word32 o7, word32 l7)
 //      __do_global_dtors_aux
 //      frame_dummy
 // MayUse:  l7:[0..31] o7:[0..31]
-// LiveOut: l7
+// LiveOut: l7:[0..31]-frame_dummy
 // Trashed: l7
 // Preserved: sp
 fn0001150C_entry:
@@ -178,7 +178,7 @@ word32 xstrerror(word32 o0)
 //      main
 //      pexecute
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-pexecute
 // Trashed: o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 xstrerror_entry:
@@ -207,7 +207,7 @@ word32 xmalloc(word32 o0)
 //      choose_temp_base
 //      make_temp_file
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-getpwd
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 xmalloc_entry:
@@ -229,7 +229,7 @@ word32 xrealloc(word32 o0, word32 o1)
 //      unexpand_if_needed
 //      output_bytes
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-unexpand_if_needed
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 xrealloc_entry:
@@ -280,7 +280,7 @@ word32 savestring(word32 o0, word32 o1)
 //      unexpand_if_needed
 //      abspath
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-abspath
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 savestring_entry:
@@ -297,7 +297,7 @@ word32 savestring2(word32 o0, word32 o1, word32 o2, word32 o3)
 // Called from:
 //      gen_aux_info_file
 // MayUse:  o0:[0..31] o1:[0..31] o2:[0..31] o3:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-gen_aux_info_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 savestring2_entry:
@@ -332,7 +332,7 @@ word32 dupnstr(word32 o0, word32 o1)
 //      munge_compile_params
 //      edit_formals_lists
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-munge_compile_params
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 dupnstr_entry:
@@ -350,7 +350,7 @@ word32 substr(word32 o0, word32 o1)
 // Called from:
 //      other_variable_style_function
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-other_variable_style_function
 // Trashed: NZVC g0 g2 g3 o0 o2 o3
 // Preserved: sp
 substr_entry:
@@ -394,7 +394,7 @@ word32 safe_read(word32 o0, word32 o1, word32 o2)
 // Called from:
 //      process_aux_info_file
 // MayUse:  o0:[0..31] o1:[0..31] o2:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-process_aux_info_file
 // Trashed: NZVC g0 o0 o1
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o2 o3 o4 o5 o7 sp
 safe_read_entry:
@@ -523,7 +523,7 @@ word32 is_id_char(word32 o0)
 //      edit_formals_lists
 //      scan_for_missed_items
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-unexpand_if_needed
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
 is_id_char_entry:
@@ -569,7 +569,7 @@ word32 in_system_include_dir(word32 o0)
 // Called from:
 //      edit_file
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 in_system_include_dir_entry:
@@ -614,7 +614,7 @@ word32 needs_to_be_converted(word32 o0)
 // Called from:
 //      edit_file
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_file
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
 needs_to_be_converted_entry:
@@ -649,7 +649,7 @@ word32 directory_specified_p(word32 o0)
 // Called from:
 //      edit_file
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 directory_specified_p_entry:
@@ -708,7 +708,7 @@ word32 file_excluded_p(word32 o0)
 // Called from:
 //      edit_file
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 file_excluded_p_entry:
@@ -745,7 +745,7 @@ word32 string_list_cons(word32 o0, word32 o1)
 // Called from:
 //      main
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-main
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 string_list_cons_entry:
@@ -819,7 +819,7 @@ word32 lookup(word32 o0, word32 o1)
 //      find_file
 //      save_def_or_dec
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-find_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 lookup_entry:
@@ -1009,7 +1009,7 @@ word32 abspath(word32 o0, word32 o1, ptr32 & l0Out, ptr32 & l2Out, ptr32 & l3Out
 //      save_def_or_dec
 //      main
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: i1 i6 l0 l2 l3 l4 l7 o0
+// LiveOut: i1:[0..31]-shortpath i6:[0..31]-main l0:[0..31]-shortpath l2:[0..31]-main l3:[0..31]-main l4:[0..31]-main l7:[0..31]-main o0:[0..31]-main
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 abspath_entry:
@@ -1194,7 +1194,7 @@ word32 shortpath(word32 o0, word32 o1)
 //      edit_file
 //      main
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0 sp
+// LiveOut: o0:[0..31]-gen_aux_info_file sp:[0..31]-main
 // Trashed: NZVC g0 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7
 shortpath_entry:
@@ -1333,7 +1333,7 @@ word32 find_file(word32 o0, word32 o1, ptr32 & l2Out, ptr32 & l3Out, ptr32 & i0O
 //      referenced_file_is_newer
 //      save_def_or_dec
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: i0 i1 l2 l3 o0
+// LiveOut: i0:[0..31]-save_def_or_dec i1:[0..31]-save_def_or_dec l2:[0..31]-save_def_or_dec l3:[0..31]-save_def_or_dec o0:[0..31]-save_def_or_dec
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 find_file_entry:
@@ -1424,7 +1424,7 @@ word32 find_corresponding_lparen(word32 o0)
 // Called from:
 //      save_def_or_dec
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-save_def_or_dec
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
 find_corresponding_lparen_entry:
@@ -1746,7 +1746,7 @@ word32 munge_compile_params(word32 o0, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i0O
 //      gen_aux_info_file
 //      main
 // MayUse:  o0:[0..31]
-// LiveOut: i0 i6 l2 l6 l7
+// LiveOut: i0:[0..31]-gen_aux_info_file i6:[0..31]-main l2:[0..31]-gen_aux_info_file l6:[0..31]-main l7:[0..31]-main
 // Trashed: NZVC g0 g2 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 sp
 // Preserved: o4 o5 o7
 munge_compile_params_entry:
@@ -1843,7 +1843,7 @@ word32 gen_aux_info_file(word32 o0, ptr32 & l2Out, ptr32 & l4Out, ptr32 & i0Out,
 // Called from:
 //      process_aux_info_file
 // MayUse:  o0:[0..31]
-// LiveOut: i0 i2 i6 l2 l4 o0
+// LiveOut: i0:[0..31]-process_aux_info_file i2:[0..31]-process_aux_info_file i6:[0..31]-process_aux_info_file l2:[0..31]-process_aux_info_file l4:[0..31]-process_aux_info_file o0:[0..31]-process_aux_info_file
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0
 // Preserved: g2 o1 o2 o3 o4 o5 o7 sp
 gen_aux_info_file_entry:
@@ -1906,7 +1906,7 @@ word32 process_aux_info_file(word32 o0, word32 o2, ptr32 & l1Out)
 // Called from:
 //      do_processing
 // MayUse:  o0:[0..31] o2:[0..31]
-// LiveOut: l0 l1 sp
+// LiveOut: l0:[0..31]-do_processing l1:[0..31]-do_processing sp:[0..31]-do_processing
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 process_aux_info_file_entry:
@@ -2100,7 +2100,7 @@ word32 identify_lineno(word32 o0)
 //      edit_fn_definition
 //      scan_for_missed_items
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-scan_for_missed_items
 // Trashed: NZVC g0 g2 g3 o0 o1
 // Preserved: sp
 identify_lineno_entry:
@@ -2241,7 +2241,7 @@ word32 forward_to_next_token_char(word32 o0)
 // Called from:
 //      find_rightmost_formals_list
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-find_rightmost_formals_list
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 forward_to_next_token_char_entry:
@@ -2344,7 +2344,7 @@ word32 other_variable_style_function(word32 o0)
 // Called from:
 //      edit_fn_definition
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_fn_definition
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 other_variable_style_function_entry:
@@ -2518,7 +2518,7 @@ word32 find_rightmost_formals_list(word32 o0)
 // Called from:
 //      edit_fn_definition
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-edit_fn_definition
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 find_rightmost_formals_list_entry:
@@ -2643,7 +2643,7 @@ word32 careful_find_l_paren(word32 o0)
 // Called from:
 //      scan_for_missed_items
 // MayUse:  o0:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-scan_for_missed_items
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 careful_find_l_paren_entry:
@@ -2905,7 +2905,7 @@ word32 main(word32 o0, word32 o1)
 // Called from:
 //      _start
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-_start
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 sp
 // Preserved:
 main_entry:
@@ -3025,7 +3025,7 @@ word32 getpwd()
 // Called from:
 //      main
 // MayUse: 
-// LiveOut: o0
+// LiveOut: o0:[0..31]-main
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 getpwd_entry:
@@ -3552,7 +3552,7 @@ word32 try(word32 o0, word32 o1)
 //      choose_temp_base
 //      make_temp_file
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-choose_temp_base
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 try_entry:
@@ -3582,7 +3582,7 @@ word32 choose_temp_base()
 // Called from:
 //      gen_aux_info_file
 // MayUse: 
-// LiveOut: o0
+// LiveOut: o0:[0..31]-gen_aux_info_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 choose_temp_base_entry:
@@ -3707,7 +3707,7 @@ word32 my_index(word32 o0, word32 o1)
 // Called from:
 //      _getopt_internal
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-_getopt_internal
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
 my_index_entry:
@@ -3830,7 +3830,7 @@ word32 _getopt_initialize(word32 o2)
 // Called from:
 //      _getopt_internal
 // MayUse:  o2:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-_getopt_internal
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 _getopt_initialize_entry:
@@ -3877,7 +3877,7 @@ word32 _getopt_internal(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, w
 //      getopt_long
 //      getopt_long_only
 // MayUse:  o0:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-getopt_long
 // Trashed: NZVC g0 g2 g3 o0 o2 o3
 // Preserved: g1 g4 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o4 o5 o7 sp
 _getopt_internal_entry:
@@ -4580,7 +4580,7 @@ word32 getopt_long(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 // Called from:
 //      main
 // MayUse:  o0:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-main
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 getopt_long_entry:
@@ -4609,7 +4609,7 @@ word32 pexecute(word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 l1
 // Called from:
 //      gen_aux_info_file
 // MayUse:  l1:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] Stack +005C:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-gen_aux_info_file
 // Trashed: NZVC g0 o0
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
 pexecute_entry:
@@ -4748,7 +4748,7 @@ word32 mkstemps(word32 o0, word32 o1)
 // Called from:
 //      make_temp_file
 // MayUse:  o0:[0..31] o1:[0..31]
-// LiveOut: o0
+// LiveOut: o0:[0..31]-make_temp_file
 // Trashed: NZVC g0 g2 g3 o0 o1
 // Preserved: i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o2 o3 o4 o5 o7 sp
 mkstemps_entry:
@@ -4817,7 +4817,7 @@ word32 fn00016E64(word32 o7, word32 l7)
 // Called from:
 //      __do_global_ctors_aux
 // MayUse:  l7:[0..31] o7:[0..31]
-// LiveOut: l7
+// LiveOut: l7:[0..31]-__do_global_ctors_aux
 // Trashed: l7
 // Preserved: sp
 fn00016E64_entry:

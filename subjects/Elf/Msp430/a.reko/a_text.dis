@@ -138,7 +138,7 @@ word16 msp430_compute_modulator_bits(ui32 r13_r12, ui32 r15_r14, word16 wArg02)
 // Called from:
 //      init_uart_isr
 // MayUse:  Sequence r13:r12:[0..31] Sequence r15:r14:[0..31] Stack +0002:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..7]-init_uart_isr
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r10 r11 r4 r5 r6 r7 r8 r9 sp sr
 msp430_compute_modulator_bits_entry:
@@ -261,7 +261,7 @@ word16 putchar(word16 sr, word16 r15)
 //      task_3
 //      putchar
 // MayUse:  r15:[0..15] sr:[0..15]
-// LiveOut: r11
+// LiveOut: r11:[0..15]-putchar
 // Trashed: VNZC r13 r14 r15
 // Preserved: r11 sp sr
 putchar_entry:
@@ -294,7 +294,7 @@ word16 x_getchar(word16 sr, word16 r14, word16 r15)
 // Called from:
 //      getchar
 // MayUse:  r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-getchar
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8
 // Preserved: sp
 x_getchar_entry:
@@ -313,7 +313,7 @@ word16 x_putchar(word16 sr, word16 r14, word16 r15)
 // Called from:
 //      putchar
 // MayUse:  r14:[0..15] r15:[0..7] sr:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-putchar
 // Trashed: VNZC r13 r15
 // Preserved: r12 r14 r4 r5 r6 r7 r8 sp sr
 x_putchar_entry:
@@ -388,7 +388,7 @@ word16 xTaskCreate(word16 sr, word16 r13, word16 r14, word16 wArg02, ptr16 & r15
 //      fn00004000
 //      vTaskStartScheduler
 // MayUse:  r13:[0..15] r14:[0..15] sr:[0..15] Stack +0002:[0..15]
-// LiveOut: r15 sr
+// LiveOut: r15:[0..15]-vTaskStartScheduler sr:[0..15]-main
 // Trashed: VNZC r12 r13 r14 r15 r4 sr
 // Preserved: r10 r11 r5 r6 r7 r8 r9 sp
 xTaskCreate_entry:
@@ -663,7 +663,7 @@ word16 xTaskResumeAll(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Ou
 //      xQueueReceive
 //      pvPortMalloc
 // MayUse: 
-// LiveOut: r15 r4 r5 r6 r7
+// LiveOut: r15:[0..15]-xQueueSend r4:[0..15]-pvPortMalloc r5:[0..15]-pvPortMalloc r6:[0..15]-pvPortMalloc r7:[0..15]-pvPortMalloc
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7
 // Preserved: r10 r11 r8 r9 sp
 xTaskResumeAll_entry:
@@ -742,7 +742,7 @@ word16 xTaskGetTickCount()
 //      task_2
 //      task_3
 // MayUse: 
-// LiveOut: r15
+// LiveOut: r15:[0..15]-task_1
 // Trashed: VNZC r15
 // Preserved: sp
 xTaskGetTickCount_entry:
@@ -877,7 +877,7 @@ word16 xTaskRemoveFromEventList(word16 r15)
 //      xQueueReceiveFromISR
 //      prvUnlockQueue
 // MayUse:  r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-prvUnlockQueue
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r10 r11 sp
 xTaskRemoveFromEventList_entry:
@@ -1041,7 +1041,7 @@ word16 prvAllocateTCBAndStack(word16 sr, word16 r15, ptr16 & r5Out, ptr16 & r6Ou
 // Called from:
 //      xTaskCreate
 // MayUse:  r15:[0..15] sr:[0..15]
-// LiveOut: r15 r5 r6 r7 sr
+// LiveOut: r15:[0..15]-xTaskCreate r5:[0..15]-xTaskCreate r6:[0..15]-xTaskCreate r7:[0..15]-xTaskCreate sr:[0..15]-xTaskCreate
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 sr
 // Preserved: r10 r11 sp
 prvAllocateTCBAndStack_entry:
@@ -1263,7 +1263,7 @@ word16 xQueueCreate(word16 r15, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
 // Called from:
 //      init_uart_isr
 // MayUse:  r15:[0..15]
-// LiveOut: r15 r4 r6 r7
+// LiveOut: r15:[0..15]-init_uart_isr r4:[0..15]-init_uart_isr r6:[0..7]-init_uart_isr r7:[0..15]-init_uart_isr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7
 // Preserved: r10 r11 r9 sp
 xQueueCreate_entry:
@@ -1289,7 +1289,7 @@ word16 xQueueSend(word16 sr, word16 r13, word16 r14, word16 r15, ptr16 & r15Out)
 // Called from:
 //      x_putchar
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: r15 sr
+// LiveOut: r15:[0..15]-x_putchar sr:[0..15]-x_putchar
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: r10 r11 r9 sp
 xQueueSend_entry:
@@ -1388,7 +1388,7 @@ word16 xQueueSendFromISR(word16 sr, word16 r13, word16 r14, word16 r15)
 // Called from:
 //      vRxISR
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-vRxISR
 // Trashed: VNZC r12 r13 r14 r15 sr
 // Preserved: r10 r11 sp
 xQueueSendFromISR_entry:
@@ -1429,7 +1429,7 @@ word16 xQueueReceive(word16 sr, word16 r13, word16 r14, word16 r15)
 //      x_getchar
 //      x_putchar
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-x_getchar
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8
 // Preserved: r10 r11 r9 sp sr
 xQueueReceive_entry:
@@ -1529,7 +1529,7 @@ word16 xQueueReceiveFromISR(word16 sr, word16 r13, word16 r14, word16 r15)
 // Called from:
 //      vTxISR
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-vTxISR
 // Trashed: VNZC r12 r13 r14 r15 sr
 // Preserved: r10 r11 sp
 xQueueReceiveFromISR_entry:
@@ -1613,7 +1613,7 @@ word16 prvUnlockQueue(word16 r15)
 //      xQueueSend
 //      xQueueReceive
 // MayUse:  r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-xQueueSend
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r10 r11 sp
 prvUnlockQueue_entry:
@@ -1671,7 +1671,7 @@ word16 prvIsQueueEmpty(word16 r15)
 // Called from:
 //      xQueueReceive
 // MayUse:  r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-xQueueReceive
 // Trashed: VNZC r14 r15
 // Preserved: sp
 prvIsQueueEmpty_entry:
@@ -1701,7 +1701,7 @@ word16 prvIsQueueFull(word16 r15)
 // Called from:
 //      xQueueSend
 // MayUse:  r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-xQueueSend
 // Trashed: VNZC r14 r15
 // Preserved: sp
 prvIsQueueFull_entry:
@@ -1732,7 +1732,7 @@ word16 pvPortMalloc(word16 r15, ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr
 //      prvAllocateTCBAndStack
 //      xQueueCreate
 // MayUse:  r15:[0..15]
-// LiveOut: r15 r4 r5 r6 r7
+// LiveOut: r15:[0..15]-xQueueCreate r4:[0..15]-xQueueCreate r5:[0..15]-prvAllocateTCBAndStack r6:[0..15]-xQueueCreate r7:[0..15]-xQueueCreate
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7
 // Preserved: r10 r11 sp
 pvPortMalloc_entry:
@@ -1799,7 +1799,7 @@ word16 pxPortInitialiseStack(word16 r13, word16 r14, word16 r15)
 // Called from:
 //      xTaskCreate
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-xTaskCreate
 // Trashed: VNZC r15
 // Preserved: sp
 pxPortInitialiseStack_entry:
@@ -1869,7 +1869,7 @@ word16 vPortYield(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r8Out, pt
 //      xQueueSend
 //      xQueueReceive
 // MayUse: 
-// LiveOut: r10 r11 r4 r5 r6 r7 r8 r9
+// LiveOut: r10:[0..15]-xTaskCreate r11:[0..15]-xQueueSend r4:[0..15]-xTaskResumeAll r5:[0..15]-xTaskResumeAll r6:[0..15]-xTaskResumeAll r7:[0..15]-xTaskResumeAll r8:[0..15]-xTaskResumeAll r9:[0..15]-xQueueSend
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 vPortYield_entry:
@@ -1959,7 +1959,7 @@ word16 PRINT(word16 r14, word16 r15)
 // Called from:
 //      vuprintf
 // MayUse:  r14:[0..15] r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-vuprintf
 // Trashed: VNZC r14 r15
 // Preserved: r10 r11 sp
 PRINT_entry:
@@ -1992,7 +1992,7 @@ word16 __write_pad(word16 r14, word16 r15)
 // Called from:
 //      vuprintf
 // MayUse:  r14:[0..15] r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-vuprintf
 // Trashed: VNZC r14 r15
 // Preserved: r10 r11 r9 sp
 __write_pad_entry:
@@ -2442,7 +2442,7 @@ word16 memchr(word16 r13, word16 r14, word16 r15)
 // Called from:
 //      vuprintf
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15]
-// LiveOut: r15
+// LiveOut: r15:[0..15]-vuprintf
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r11 sp
 memchr_entry:
@@ -2510,7 +2510,7 @@ word16 memcpy(word16 sr, word16 r13, word16 r14, word16 r15)
 //      xQueueReceive
 //      xQueueReceiveFromISR
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: sr
+// LiveOut: sr:[0..15]-xQueueSend
 // Trashed: VNZC r12 r13 r14 sr
 // Preserved: r10 r11 r15 sp
 memcpy_entry:
@@ -2618,7 +2618,7 @@ word16 memset(word16 sr, word16 r13, word16 r14, word16 r15)
 // Called from:
 //      prvAllocateTCBAndStack
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
-// LiveOut: sr
+// LiveOut: sr:[0..15]-prvAllocateTCBAndStack
 // Trashed: VNZC r12 r13 r14 sr
 // Preserved: r10 r11 r15 r9 sp
 memset_entry:
@@ -2678,7 +2678,7 @@ ui32 fn00005ADC(word16 r10, word16 r11, word16 r12, word16 r13)
 // Called from:
 //      msp430_compute_modulator_bits
 // MayUse:  r10:[0..15] r11:[0..15] r12:[0..15] r13:[0..15]
-// LiveOut: r15:r14
+// LiveOut: Sequence r15:r14:[0..31]-msp430_compute_modulator_bits
 // Trashed: r14 r15
 // Preserved: sp
 fn00005ADC_entry:
@@ -2701,7 +2701,7 @@ word16 fn00005B04(ui32 r11_r10, ui32 r13_r12)
 // Called from:
 //      msp430_compute_modulator_bits
 // MayUse:  Sequence r11:r10:[0..31] Sequence r13:r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..15]-msp430_compute_modulator_bits
 // Trashed: VNZC r12 r13 r14 r15 r8 r9
 // Preserved: r10 r11 sp
 fn00005B04_entry:
@@ -2746,7 +2746,7 @@ bool fn00005B4E(ui32 r11_r10, word16 r8, word16 r12, word16 r13, ptr16 & r13_r12
 //      vuprintf
 //      fn00005B04
 // MayUse:  r12:[0..15] r13:[0..15] r8:[0..15] Sequence r11:r10:[0..31]
-// LiveOut: C r13:r12 r15:r14 r8
+// LiveOut: C-fn00005B04 Sequence r13:r12:[0..31]-fn00005B04 Sequence r15:r14:[0..31]-fn00005B04 r8:[0..15]-fn00005B04
 // Trashed: VNZC r12 r13 r14 r15 r8 r9
 // Preserved: r10 r11 sp
 fn00005B4E_entry:

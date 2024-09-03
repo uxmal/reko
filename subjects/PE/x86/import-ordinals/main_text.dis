@@ -4,7 +4,7 @@ word32 fn00401000()
 // Called from:
 //      fn00401010
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn00401010
 // Trashed: eax Top
 // Preserved: esp
 fn00401000_entry:
@@ -41,7 +41,7 @@ word32 fn00401040(word32 ecx)
 // Called from:
 //      Win32CrtStartup
 // MayUse:  ecx:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
 fn00401040_entry:
@@ -62,7 +62,7 @@ DWORD Win32CrtStartup()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx:[0..31] edi:[0..31] edx:[0..31] esi:[0..31] fs:[0..15]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
@@ -171,7 +171,7 @@ word32 fn004013F6(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 // Called from:
 //      fn0040153F
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: eax edx
+// LiveOut: eax:[0..31]-fn0040153F edx:[0..31]-fn0040153F
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp esi esp
 fn004013F6_entry:
@@ -204,7 +204,7 @@ byte fn0040143A()
 // Called from:
 //      Win32CrtStartup
 // MayUse:  fs:[0..15]
-// LiveOut: eax
+// LiveOut: eax:[0..7]-Win32CrtStartup
 // Trashed: SCZOP eax ecx edx Top
 // Preserved: esi esp
 fn0040143A_entry:
@@ -234,7 +234,7 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 // Called from:
 //      Win32CrtStartup
 // MayUse:  edx:[0..31] Stack +0004:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..7]-Win32CrtStartup
 // Trashed: SCZOP eax ecx edx Top
 // Preserved: ebp esp
 fn0040146F_entry:
@@ -262,7 +262,7 @@ byte fn0040153F(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxO
 // Called from:
 //      Win32CrtStartup
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
-// LiveOut: eax ebp ebx edi edx esi
+// LiveOut: eax:[0..7]-Win32CrtStartup ebp:[0..31]-Win32CrtStartup ebx:[0..31]-Win32CrtStartup edi:[0..31]-Win32CrtStartup edx:[0..31]-Win32CrtStartup esi:[0..31]-Win32CrtStartup
 // Trashed: SCZOP eax ebp ebx ecx edi edx esi Top
 // Preserved: esp
 fn0040153F_entry:
@@ -390,7 +390,7 @@ word32 fn00401761()
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: eax Top
 // Preserved: esp
 fn00401761_entry:
@@ -405,7 +405,7 @@ word32 fn00401767()
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: eax Top
 // Preserved: esp
 fn00401767_entry:
@@ -452,7 +452,7 @@ byte fn0040188B()
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..7]-Win32CrtStartup
 // Trashed: SCZOP eax ecx Top
 // Preserved: esp
 fn0040188B_entry:
@@ -499,7 +499,7 @@ word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 //      Win32CrtStartup
 //      fn0040153F
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0000:[0..31] Stack +0008:[0..31]
-// LiveOut: ebp
+// LiveOut: ebp:[0..31]-Win32CrtStartup
 // Trashed: SCZO eax ebp Top
 // Preserved: esp
 fn00401980_entry:
@@ -522,7 +522,7 @@ word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, pt
 //      Win32CrtStartup
 //      fn0040153F
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]
-// LiveOut: ebp ebx edi esi
+// LiveOut: ebp:[0..31]-fn0040153F ebx:[0..31]-fn0040153F edi:[0..31]-fn0040153F esi:[0..31]-fn0040153F
 // Trashed: ebp ebx ecx edi esi esp Top
 // Preserved:
 fn004019C6_entry:
@@ -616,7 +616,7 @@ word32 fn00401B98()
 //      fn0040143A
 //      fn004015C9
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn0040143A
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn00401B98_entry:
@@ -632,7 +632,7 @@ byte fn00401C46()
 //      fn0040146F
 //      fn004015E6
 // MayUse: 
-// LiveOut: al
+// LiveOut: al:[0..7]-fn0040146F
 // Trashed: al Top
 // Preserved: esp
 fn00401C46_entry:

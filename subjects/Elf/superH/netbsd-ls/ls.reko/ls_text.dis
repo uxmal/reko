@@ -3075,7 +3075,7 @@ word32 fn004044C4(word32 r4, word32 r5)
 // Called from:
 //      __udivsi3
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__udivsi3
 // Trashed: r4
 // Preserved: r15
 fn004044C4_entry:
@@ -3090,7 +3090,7 @@ word32 fn004044C6(word32 r4, word32 r5)
 // Called from:
 //      __udivsi3
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-__udivsi3
 // Trashed: r4
 // Preserved: r15
 fn004044C6_entry:
@@ -3105,7 +3105,7 @@ word32 fn004044D6(word32 r0, word32 r4, word32 r5, ptr32 & r4Out)
 // Called from:
 //      __udivsi3
 // MayUse:  r0:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r0 r4
+// LiveOut: r0:[0..31]-__udivsi3 r4:[0..31]-__udivsi3
 // Trashed: r0 r4
 // Preserved: r15
 fn004044D6_entry:

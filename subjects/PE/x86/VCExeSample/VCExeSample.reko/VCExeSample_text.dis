@@ -2,7 +2,7 @@ int32 main(int32 argc, char ** argv)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-main
 // Trashed: eax
 // Preserved:
 main_entry:
@@ -279,7 +279,7 @@ real64 double_return_test15(real64 d)
 // stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: FPU -1
+// LiveOut: FPU -1:[0..63]-double_return_test15
 // Trashed: FPU -1
 // Preserved:
 double_return_test15_entry:

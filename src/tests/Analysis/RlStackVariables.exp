@@ -19,7 +19,7 @@ l0C00_0000:
 	return
 fn0C00_0000_exit:
 // fn0C00_0020 /////////////////////
-	LiveOut:   ax:[0..15]
+	LiveOut:   ax:[0..15]-fn0C00_0000
 	BitsUsed:  Stack +0002:[0..31]
 	Trashed:   ax bx es Top
 	Preserved: bp sp
@@ -33,7 +33,7 @@ l0C00_0020:
 fn0C00_0020_exit:
 	use ax_12
 // fn0C00_002E /////////////////////
-	LiveOut:   ax:[0..15]
+	LiveOut:   ax:[0..15]-fn0C00_0000
 	BitsUsed:  Stack +0002:[0..31] Stack +0006:[0..15]
 	Trashed:   SCZO ax bx es Top
 	Preserved: bp sp

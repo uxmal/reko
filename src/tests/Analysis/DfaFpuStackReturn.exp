@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 // FpuStack real64 fn0C00_000C(Sequence segptr32 ds_bx)
 // stackDelta: 2; fpuStackDelta: 1; fpuMaxParam: -1
 // MayUse:  Sequence ds:bx:[0..31]
-// LiveOut: FPU -1
+// LiveOut: FPU -1:[0..63]-fn0C00_0000
 // Trashed: FPU -1 FPU -2 Top
 // Preserved: sp
 // fn0C00_000C

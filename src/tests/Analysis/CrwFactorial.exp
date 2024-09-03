@@ -38,7 +38,7 @@ Register word16 fn0C00_000F(Stack word16 wArg02)
 // MayUse:  Stack +0002:[0..15]
 // DataTypes: 
 //   Stack +0002: int16
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_000F
 // Trashed: SCZO ax dx Top
 // Preserved: bp sp
 // fn0C00_000F

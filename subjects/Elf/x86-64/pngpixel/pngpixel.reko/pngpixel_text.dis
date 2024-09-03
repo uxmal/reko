@@ -108,7 +108,7 @@ word32 component(word64 rdi, word32 esi, word32 edx, word32 ecx, word32 r8d)
 // Called from:
 //      print_pixel
 // MayUse:  edx:[0..31] esi:[0..31] r8d:[0..31] rcx:[0..31] rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-print_pixel
 // Trashed: SCZO rax rcx rdx Top
 // Preserved: rbp rsp
 component_entry:

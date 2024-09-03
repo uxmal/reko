@@ -127,7 +127,7 @@ word32 verify(word64 rdi)
 // Called from:
 //      main
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-main
 // Trashed: SCZOP rax rcx rdx rsi Top
 // Preserved: rbp rsp
 verify_entry:

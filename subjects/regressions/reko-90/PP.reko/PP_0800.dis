@@ -69,7 +69,7 @@ byte fn0800_01B9(selector ds, ptr16 & dxOut)
 // Called from:
 //      fn0800_8B0D
 // MayUse:  ds:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[8..15]-fn0800_8B0D dx:[0..15]-fn0800_8B0D
 // Trashed: ax dx Top
 // Preserved: ds sp
 fn0800_01B9_entry:
@@ -403,7 +403,7 @@ word16 fn0800_0541(word16 di, selector ds, ptr16 & dsOut)
 // Called from:
 //      main
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15]
-// LiveOut: bp ds sp
+// LiveOut: bp:[0..15]-main ds:[0..15]-main sp:[0..15]-main
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: DP
 fn0800_0541_entry:
@@ -714,7 +714,7 @@ word16 fn0800_09A3(selector ds, ptr16 & dsOut)
 //      fn0800_5E64
 //      fn0800_669C
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: bp ds sp
+// LiveOut: bp:[0..15]-fn0800_0541 ds:[0..15]-fn0800_0541 sp:[0..15]-fn0800_5E64
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_09A3_entry:
@@ -832,7 +832,7 @@ word16 fn0800_0ABC(selector ds, word32 dwArg04, ptr16 & dxOut)
 //      fn0800_18D9
 //      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0004:[0..31]
-// LiveOut: cx dx
+// LiveOut: cx:[0..15]-fn0800_112D dx:[0..15]-fn0800_112D
 // Trashed: SCZDO ax bx cx di dx es Top
 // Preserved: bp si sp
 fn0800_0ABC_entry:
@@ -866,7 +866,7 @@ word16 fn0800_0B79(word32 dwArg02, ui32 dwArg06)
 //      main
 //      fn0800_0ABC
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-main
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: P bp sp
 fn0800_0B79_entry:
@@ -938,7 +938,7 @@ word16 fn0800_0C08(word16 wArg02)
 //      fn0800_831D
 //      fn0800_8407
 // MayUse:  Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_831D
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
 fn0800_0C08_entry:
@@ -963,7 +963,7 @@ word16 fn0800_0C29(selector ds, word32 dwArg02, byte bArg06, ptr16 & clOut, ptr1
 //      fn0800_0402
 //      fn0800_0541
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..7]
-// LiveOut: ax bx cl dx
+// LiveOut: ax:[0..15]-fn0800_0402 bx:[0..15]-fn0800_0402 cl:[0..7]-fn0800_0402 dx:[0..15]-fn0800_0402
 // Trashed: SCZOP ax bx cl dx es Top
 // Preserved: bp sp
 fn0800_0C29_entry:
@@ -997,7 +997,7 @@ word16 fn0800_0C6C(selector ds, segptr32 ptrArg02)
 //      fn0800_0541
 //      fn0800_2DE2
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: dx
+// LiveOut: dx:[0..15]-fn0800_2DE2
 // Trashed: SCZO ax bx dx es Top
 // Preserved: P bp sp
 fn0800_0C6C_entry:
@@ -1096,7 +1096,7 @@ byte fn0800_0D24(selector ds, word16 wArg02, segptr32 ptrArg04, ptr16 & cxOut, p
 //      fn0800_4234
 //      fn0800_4311
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
-// LiveOut: ax bx cx di ds dx si
+// LiveOut: ax:[8..15]-fn0800_3DCF bx:[0..15]-fn0800_0402 cx:[0..15]-fn0800_0402 di:[0..15]-fn0800_0541 ds:[0..15]-fn0800_0402 dx:[0..15]-fn0800_0402 si:[0..15]-fn0800_0541
 // Trashed: SCZDO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_0D24_entry:
@@ -1128,7 +1128,7 @@ word16 fn0800_0DA9(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & dxOut, p
 // Called from:
 //      fn0800_0D24
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cx ds dx
+// LiveOut: cx:[0..15]-fn0800_0D24 ds:[0..15]-fn0800_0D24 dx:[0..15]-fn0800_0D24
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: P bp sp
 fn0800_0DA9_entry:
@@ -1151,7 +1151,7 @@ word16 fn0800_0DCE(word16 cx, word16 dx, word16 bx, selector ds, ptr16 & diOut)
 //      fn0800_0402
 //      fn0800_0541
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: di si
+// LiveOut: di:[0..15]-fn0800_0541 si:[0..15]-fn0800_0541
 // Trashed: SCZDO ax di dx si Top
 // Preserved: sp
 fn0800_0DCE_entry:
@@ -1169,7 +1169,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 // Called from:
 //      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-main
 // Trashed: SCZDOP ax bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_0DE8_entry:
@@ -1399,7 +1399,7 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 // Called from:
 //      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-main
 // Trashed: SCZDOP ax bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_112D_entry:
@@ -1522,7 +1522,7 @@ word16 fn0800_12E2(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // Called from:
 //      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: bp ds sp
+// LiveOut: bp:[0..15]-main ds:[0..15]-main sp:[0..15]-main
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_12E2_entry:
@@ -2003,7 +2003,7 @@ word16 fn0800_18D9(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // Called from:
 //      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: bp ds sp
+// LiveOut: bp:[0..15]-main ds:[0..15]-main sp:[0..15]-main
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_18D9_entry:
@@ -2105,7 +2105,7 @@ word16 fn0800_19EE(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // Called from:
 //      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
-// LiveOut: bp ds sp
+// LiveOut: bp:[0..15]-main ds:[0..15]-main sp:[0..15]-main
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_19EE_entry:
@@ -2464,7 +2464,7 @@ word16 fn0800_1CF6(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr
 //      fn0800_18D9
 //      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: bp cx ds dx si sp
+// LiveOut: bp:[0..15]-fn0800_19EE cx:[0..15]-fn0800_19EE ds:[0..15]-fn0800_19EE dx:[0..15]-fn0800_19EE si:[0..15]-fn0800_19EE sp:[0..15]-fn0800_19EE
 // Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_1CF6_entry:
@@ -2550,7 +2550,7 @@ word16 fn0800_1E5E(selector ds, ptr16 & dsOut)
 //      fn0800_12E2
 //      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: bp ds
+// LiveOut: bp:[0..15]-fn0800_18D9 ds:[0..15]-fn0800_18D9
 // Trashed: SCZOP ax bp bx cx di ds dx es Top
 // Preserved: D si sp
 fn0800_1E5E_entry:
@@ -2587,7 +2587,7 @@ word16 fn0800_1F5C(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & dsOut)
 // Called from:
 //      fn0800_12E2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax ds dx
+// LiveOut: ax:[0..15]-fn0800_12E2 ds:[0..15]-fn0800_12E2 dx:[0..15]-fn0800_12E2
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_1F5C_entry:
@@ -2714,7 +2714,7 @@ byte fn0800_2085(selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 // Called from:
 //      fn0800_12E2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cx
+// LiveOut: cx:[8..15]-fn0800_12E2
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_2085_entry:
@@ -3010,7 +3010,7 @@ byte fn0800_23EC(selector ds, segptr32 ptrArg02, ptr16 & bpOut, ptr16 & siOut, p
 //      fn0800_12E2
 //      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: bp cx ds si sp
+// LiveOut: bp:[0..15]-fn0800_18D9 cx:[8..15]-fn0800_12E2 ds:[0..15]-fn0800_18D9 si:[0..15]-fn0800_18D9 sp:[0..15]-fn0800_18D9
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_23EC_entry:
@@ -3151,7 +3151,7 @@ selector fn0800_24FE(selector ds, segptr32 ptrArg02)
 //      fn0800_19EE
 //      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_19EE
 // Trashed: SCZOP ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_24FE_entry:
@@ -3314,7 +3314,7 @@ byte fn0800_2688(selector ds, ui32 dwArg02, word32 dwArg06)
 //      fn0800_22FE
 //      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cl
+// LiveOut: cl:[0..7]-fn0800_1F5C
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp sp
 fn0800_2688_entry:
@@ -3391,7 +3391,7 @@ word16 fn0800_283D(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // Called from:
 //      fn0800_12E2
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_12E2 dx:[0..15]-fn0800_12E2
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_283D_entry:
@@ -3499,7 +3499,7 @@ word16 fn0800_2931(segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & dxOut)
 // Called from:
 //      fn0800_12E2
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_12E2 dx:[0..15]-fn0800_12E2
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_2931_entry:
@@ -3600,7 +3600,7 @@ word16 fn0800_29C5(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg
 //      fn0800_19EE
 //      fn0800_29C5
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] si:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_29C5 ds:[0..15]-fn0800_19EE
 // Trashed: SCZDOP ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_29C5_entry:
@@ -3854,7 +3854,7 @@ word16 fn0800_2C9A(selector ds, ptr16 & dxOut, ptr16 & bxOut)
 // Called from:
 //      main
 // MayUse:  ds:[0..15]
-// LiveOut: bx cx dx
+// LiveOut: bx:[0..15]-main cx:[0..15]-main dx:[0..15]-main
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: si sp
 fn0800_2C9A_entry:
@@ -3896,7 +3896,7 @@ word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 //      fn0800_1E5E
 //      fn0800_2D0A
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: ax cl dx
+// LiveOut: ax:[0..15]-fn0800_2D0A cl:[0..7]-fn0800_1CF6 dx:[0..15]-fn0800_1CF6
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp si sp
 fn0800_2CCF_entry:
@@ -3927,7 +3927,7 @@ word16 fn0800_2D0A(selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // Called from:
 //      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax bp ds sp
+// LiveOut: ax:[0..15]-fn0800_5374 bp:[0..15]-fn0800_5374 ds:[0..15]-fn0800_5374 sp:[0..15]-fn0800_5374
 // Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_2D0A_entry:
@@ -4017,7 +4017,7 @@ word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg
 //      fn0800_29C5
 //      fn0800_2DE2
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] si:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx ds dx si
+// LiveOut: ax:[0..15]-fn0800_2DE2 cx:[0..15]-fn0800_2DE2 ds:[0..15]-fn0800_112D dx:[0..15]-fn0800_2DE2 si:[0..15]-fn0800_29C5
 // Trashed: SCZDOP ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_2DE2_entry:
@@ -4356,7 +4356,7 @@ word16 fn0800_31B4(selector ds, word32 dwArg02, ptr16 & cxOut, ptr16 & dxOut)
 // Called from:
 //      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_2DE2 cx:[0..15]-fn0800_2DE2 dx:[0..15]-fn0800_2DE2
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_31B4_entry:
@@ -4427,7 +4427,7 @@ word16 fn0800_32CD(selector ds, word32 dwArg02, word16 wArg06, selector psegArg0
 // Called from:
 //      fn0800_31B4
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_31B4 cx:[0..15]-fn0800_31B4 dx:[0..15]-fn0800_31B4
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_32CD_entry:
@@ -4480,7 +4480,7 @@ word16 fn0800_335C(selector ds, segptr32 ptrArg02)
 // Called from:
 //      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: dx
+// LiveOut: dx:[0..15]-fn0800_2DE2
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_335C_entry:
@@ -4533,7 +4533,7 @@ word16 fn0800_33CD(selector ds, segptr32 ptrArg02, word16 wArg06, word32 dwArg08
 //      fn0800_335C
 //      fn0800_3678
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_3678 cx:[0..15]-fn0800_32CD dx:[0..15]-fn0800_32CD
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_33CD_entry:
@@ -4602,7 +4602,7 @@ word16 fn0800_3479(selector ds, segptr32 ptrArg02, word16 wArg06, ptr16 & cxOut,
 //      fn0800_32CD
 //      fn0800_33CD
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_33CD cx:[0..15]-fn0800_33CD dx:[0..15]-fn0800_33CD
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_3479_entry:
@@ -4674,7 +4674,7 @@ word16 fn0800_3509(word16 wArg02, selector psegArg04, word32 dwArg06, ptr16 & bx
 //      fn0800_3992
 //      fn0800_3C99
 // MayUse:  ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
-// LiveOut: bx dx
+// LiveOut: bx:[0..15]-fn0800_0C93 dx:[0..15]-fn0800_0C93
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_3509_entry:
@@ -4733,7 +4733,7 @@ byte fn0800_35A3(word16 wArg02, selector psegArg04, word32 dwArg06, ptr16 & dxOu
 //      fn0800_37DF
 //      fn0800_3992
 // MayUse:  ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
-// LiveOut: cx dx
+// LiveOut: cx:[8..15]-fn0800_29C5 dx:[0..15]-fn0800_335C
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_35A3_entry:
@@ -4786,7 +4786,7 @@ word16 fn0800_363D(selector ds, segptr32 ptrArg02, word32 dwArg06, ptr16 & dxOut
 //      fn0800_388C
 //      fn0800_3992
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cx dx
+// LiveOut: cx:[0..15]-fn0800_388C dx:[0..15]-fn0800_388C
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_363D_entry:
@@ -4809,7 +4809,7 @@ word16 fn0800_3678(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & siOut,
 //      fn0800_112D
 //      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: cx ds dx si
+// LiveOut: cx:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D dx:[0..15]-fn0800_112D si:[0..15]-fn0800_112D
 // Trashed: SCZO ax bx cx ds dx es si Top
 // Preserved: DP bp di sp
 fn0800_3678_entry:
@@ -4957,7 +4957,7 @@ word16 fn0800_37BE(word16 cx, word16 dx, selector ds, word32 dwArg02)
 //      fn0800_19EE
 //      fn0800_3BC3
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: si
+// LiveOut: si:[0..15]-fn0800_19EE
 // Trashed: SCZDO ax bx di es si Top
 // Preserved: bp sp
 fn0800_37BE_entry:
@@ -4973,7 +4973,7 @@ word16 fn0800_37DF(selector ds, ptr16 & dsOut)
 //      fn0800_0DE8
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ds si
+// LiveOut: ds:[0..15]-fn0800_112D si:[0..15]-fn0800_112D
 // Trashed: SCZDO ax bx cx ds dx es si Top
 // Preserved: P bp di sp
 fn0800_37DF_entry:
@@ -5030,7 +5030,7 @@ word16 fn0800_388C(selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & siOut, ptr
 //      fn0800_0DE8
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax cx ds dx si
+// LiveOut: ax:[0..15]-fn0800_112D cx:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D dx:[0..15]-fn0800_112D si:[0..15]-fn0800_112D
 // Trashed: SCZDOP ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_388C_entry:
@@ -5082,7 +5082,7 @@ word16 fn0800_395B(segptr32 ptrArg02, segptr32 ptrArg06)
 //      fn0800_388C
 //      fn0800_3992
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_388C
 // Trashed: SCZO ax bx es Top
 // Preserved: bp sp
 fn0800_395B_entry:
@@ -5102,7 +5102,7 @@ word16 fn0800_3992(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: DP bp sp
 fn0800_3992_entry:
@@ -5247,7 +5247,7 @@ word16 fn0800_3B0A(selector ds, word16 wArg0A, word16 wArg0C, ptr16 & siOut, ptr
 //      fn0800_6F20
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
-// LiveOut: bp ds si sp
+// LiveOut: bp:[0..15]-fn0800_51A9 ds:[0..15]-fn0800_51A9 si:[0..15]-fn0800_3BC3 sp:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3B0A_entry:
@@ -5320,7 +5320,7 @@ word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, word32 dwArg02, ui32 dwArg
 // Called from:
 //      fn0800_1E5E
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: bp ds si
+// LiveOut: bp:[0..15]-fn0800_1E5E ds:[0..15]-fn0800_1E5E si:[0..15]-fn0800_1E5E
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3BC3_entry:
@@ -5371,7 +5371,7 @@ byte fn0800_3C99(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, ptr1
 //      fn0800_1E5E
 //      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: bp cx ds si sp
+// LiveOut: bp:[0..15]-fn0800_1E5E cx:[8..15]-fn0800_23EC ds:[0..15]-fn0800_1E5E si:[0..15]-fn0800_1E5E sp:[0..15]-fn0800_23EC
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3C99_entry:
@@ -5463,7 +5463,7 @@ word16 fn0800_3DCF(selector ds, segptr32 ptrArg02, ptr16 & chOut, ptr16 & diOut,
 //      fn0800_741D
 //      fn0800_8359
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx di ds
+// LiveOut: ax:[0..15]-fn0800_51A9 cx:[8..15]-fn0800_3E27 di:[0..15]-fn0800_3E27 ds:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: DP bp si sp
 fn0800_3DCF_entry:
@@ -5510,7 +5510,7 @@ word16 fn0800_3E27(selector ds, word32 dwArg02, ptr16 & cxOut, ptr16 & diOut, pt
 //      fn0800_7A02
 //      fn0800_7C78
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx di ds
+// LiveOut: ax:[0..15]-fn0800_3E5D cx:[0..15]-fn0800_1E5E di:[0..15]-fn0800_3F58 ds:[0..15]-fn0800_3E5D
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_3E27_entry:
@@ -5540,7 +5540,7 @@ ui32 fn0800_3E5D(selector ds, word32 dwArg02, ptr16 & dsOut)
 //      fn0800_6F20
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ds dx:ax
+// LiveOut: ds:[0..15]-fn0800_51A9 Sequence dx:ax:[0..31]-fn0800_4C55
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_3E5D_entry:
@@ -5558,7 +5558,7 @@ word16 fn0800_3E9A(selector ds, segptr32 ptrArg02, ptr16 & dsOut)
 //      fn0800_51A9
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_51A9 ds:[0..15]-fn0800_51A9
 // Trashed: SCZOP ax bx cx di ds dx es Top
 // Preserved: D bp si sp
 fn0800_3E9A_entry:
@@ -5595,7 +5595,7 @@ word16 fn0800_3F0A(selector ds, word32 dwArg02, ptr16 & dsOut)
 //      fn0800_112D
 //      fn0800_67BF
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_3F0A_entry:
@@ -5621,7 +5621,7 @@ ui32 fn0800_3F58(selector ds, word32 dwArg02, ptr16 & diOut, ptr16 & dsOut)
 //      fn0800_67BF
 //      fn0800_6F20
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: di ds dx:ax
+// LiveOut: di:[0..15]-fn0800_12E2 ds:[0..15]-fn0800_51A9 Sequence dx:ax:[0..31]-fn0800_67BF
 // Trashed: SCZOP ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_3F58_entry:
@@ -5645,7 +5645,7 @@ word16 fn0800_3FAD(selector ds, word32 dwArg02, ptr16 & diOut, ptr16 & dsOut)
 //      fn0800_5E64
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax di ds
+// LiveOut: ax:[0..15]-fn0800_51A9 di:[0..15]-fn0800_46FE ds:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_3FAD_entry:
@@ -5669,7 +5669,7 @@ byte fn0800_401E(selector ds, byte bArg02, word32 dwArg04, ptr16 & cxOut, ptr16 
 //      fn0800_75EA
 //      fn0800_831D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
-// LiveOut: ax bx cx ds dx
+// LiveOut: ax:[8..15]-fn0800_75EA bx:[0..15]-fn0800_75EA cx:[0..15]-fn0800_75EA ds:[0..15]-fn0800_409C dx:[0..15]-fn0800_75EA
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_401E_entry:
@@ -5700,7 +5700,7 @@ byte fn0800_4047(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr
 //      fn0800_75EA
 //      fn0800_8624
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
-// LiveOut: ax bx cx di ds dx
+// LiveOut: ax:[8..15]-fn0800_401E bx:[0..15]-fn0800_401E cx:[0..15]-fn0800_401E di:[0..15]-fn0800_40BF ds:[0..15]-fn0800_51A9 dx:[0..15]-fn0800_401E
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: DP bp si sp
 fn0800_4047_entry:
@@ -5753,7 +5753,7 @@ selector fn0800_409C(selector ds, word16 wArg02, word16 wArg04, word32 dwArg06)
 //      fn0800_741D
 //      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_409C_entry:
@@ -5773,7 +5773,7 @@ word16 fn0800_40BF(selector ds, byte bArg02, word32 dwArg04, ptr16 & dsOut)
 //      fn0800_5E64
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
-// LiveOut: di ds
+// LiveOut: di:[0..15]-fn0800_46FE ds:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_40BF_entry:
@@ -5796,7 +5796,7 @@ byte fn0800_4110(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word
 //      fn0800_5B15
 //      fn0800_7FDC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
-// LiveOut: cx di ds si
+// LiveOut: cx:[8..15]-fn0800_1CF6 di:[0..15]-fn0800_5B15 ds:[0..15]-fn0800_3B0A si:[0..15]-fn0800_2D0A
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_4110_entry:
@@ -5834,7 +5834,7 @@ byte fn0800_4152(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word
 //      fn0800_6AD4
 //      fn0800_73AC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
-// LiveOut: ax ds si
+// LiveOut: ax:[8..15]-fn0800_5E64 ds:[0..15]-fn0800_3B0A si:[0..15]-fn0800_3B0A
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_4152_entry:
@@ -5871,7 +5871,7 @@ word32 fn0800_4194(selector ds, word32 dwArg02)
 //      fn0800_5B15
 //      fn0800_5DCE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_5B15
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_4194_entry:
@@ -5896,7 +5896,7 @@ word16 fn0800_4234(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & cxOut, p
 //      fn0800_3BC3
 //      fn0800_3C99
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax cx ds dx si
+// LiveOut: ax:[0..15]-fn0800_2DE2 cx:[0..15]-fn0800_3C99 ds:[0..15]-fn0800_2DE2 dx:[0..15]-fn0800_2DE2 si:[0..15]-fn0800_2DE2
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_4234_entry:
@@ -5926,7 +5926,7 @@ word32 fn0800_4271(selector ds, word16 wArg02, word16 wArg04)
 //      fn0800_4110
 //      fn0800_4152
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_3E9A
 // Trashed: SCZO ax dx Top
 // Preserved: bp sp
 fn0800_4271_entry:
@@ -5983,7 +5983,7 @@ word16 fn0800_4311(selector ds, word32 dwArg02, ptr16 & dxOut, ptr16 & bpOut, pt
 //      fn0800_5E64
 //      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax bp ds dx si sp
+// LiveOut: ax:[0..15]-fn0800_09A3 bp:[0..15]-fn0800_09A3 ds:[0..15]-fn0800_09A3 dx:[0..15]-fn0800_09A3 si:[0..15]-fn0800_3B0A sp:[0..15]-fn0800_09A3
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_4311_entry:
@@ -6017,7 +6017,7 @@ byte fn0800_4346(selector ds, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16
 //      fn0800_5E64
 //      fn0800_75EA
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
-// LiveOut: ax bx cx ds dx
+// LiveOut: ax:[8..15]-fn0800_5E64 bx:[0..15]-fn0800_75EA cx:[0..15]-fn0800_75EA ds:[0..15]-fn0800_09A3 dx:[0..15]-fn0800_75EA
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp sp
 fn0800_4346_entry:
@@ -6037,7 +6037,7 @@ word16 fn0800_4357(segptr32 ptrArg02, segptr32 ptrArg06)
 // Called from:
 //      fn0800_29C5
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_29C5
 // Trashed: SCZO ax bx dl es Top
 // Preserved: bp sp
 fn0800_4357_entry:
@@ -6271,7 +6271,7 @@ word16 fn0800_45E2(word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 // Called from:
 //      fn0800_4550
 // MayUse:  Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_4550 dx:[0..15]-fn0800_4550
 // Trashed: SCZO ax bx dx Top
 // Preserved: bp sp
 fn0800_45E2_entry:
@@ -6304,7 +6304,7 @@ word16 fn0800_463B(selector ds, word16 wArg02, selector psegArg04, word16 wArg06
 // Called from:
 //      fn0800_441C
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_441C
 // Trashed: SCZO ax cx dx Top
 // Preserved: bp di es si sp
 fn0800_463B_entry:
@@ -6363,7 +6363,7 @@ word16 fn0800_46FE(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds sp
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D sp:[0..15]-fn0800_112D
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: P
 fn0800_46FE_entry:
@@ -6643,7 +6643,7 @@ word16 fn0800_4B97(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_4B97_entry:
@@ -6665,7 +6665,7 @@ word16 fn0800_4BB1(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_4BB1_entry:
@@ -6707,7 +6707,7 @@ word16 fn0800_4C55(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bp bx cx di ds dx es Top
 // Preserved: sp
 fn0800_4C55_entry:
@@ -7010,7 +7010,7 @@ word16 fn0800_518F(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_518F_entry:
@@ -7032,7 +7032,7 @@ word16 fn0800_51A9(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds sp
+// LiveOut: ax:[0..15]-fn0800_112D ds:[0..15]-fn0800_112D sp:[0..15]-fn0800_112D
 // Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_51A9_entry:
@@ -7193,7 +7193,7 @@ word16 fn0800_5374(selector ds, ptr16 & bpOut, ptr16 & dsOut)
 //      fn0800_518F
 //      fn0800_51A9
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax bp ds sp
+// LiveOut: ax:[0..15]-fn0800_51A9 bp:[0..15]-fn0800_51A9 ds:[0..15]-fn0800_51A9 sp:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: P
 fn0800_5374_entry:
@@ -7345,7 +7345,7 @@ word16 fn0800_55E8(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_5374 ds:[0..15]-fn0800_5374
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: P bp sp
 fn0800_55E8_entry:
@@ -7471,7 +7471,7 @@ word16 fn0800_579B(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_5374 ds:[0..15]-fn0800_5374
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: P sp
 fn0800_579B_entry:
@@ -7592,7 +7592,7 @@ selector fn0800_5975(selector ds)
 // Called from:
 //      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_579B
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_5975_entry:
@@ -7639,7 +7639,7 @@ selector fn0800_5A24(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Called from:
 //      fn0800_55E8
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_55E8
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_5A24_entry:
@@ -7670,7 +7670,7 @@ word16 fn0800_5A8D(selector ds, word16 wArg02, selector psegArg04, ptr16 & dsOut
 // Called from:
 //      fn0800_55E8
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_55E8 ds:[0..15]-fn0800_55E8
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_5A8D_entry:
@@ -7712,7 +7712,7 @@ word16 fn0800_5B15(selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 //      fn0800_5C39
 //      fn0800_5CD9
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax di ds si
+// LiveOut: ax:[0..15]-fn0800_5CD9 di:[0..15]-fn0800_5CD9 ds:[0..15]-fn0800_5CD9 si:[0..15]-fn0800_5CD9
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: P bp sp
 fn0800_5B15_entry:
@@ -7773,7 +7773,7 @@ word16 fn0800_5C1A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
 // Called from:
 //      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: ax ds si
+// LiveOut: ax:[0..15]-fn0800_5374 ds:[0..15]-fn0800_5374 si:[0..15]-fn0800_5374
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_5C1A_entry:
@@ -7801,7 +7801,7 @@ word16 fn0800_5C39(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & diOut, ptr
 //      fn0800_5A8D
 //      fn0800_5C1A
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: ax di ds si
+// LiveOut: ax:[0..15]-fn0800_5C1A di:[0..15]-fn0800_5A24 ds:[0..15]-fn0800_5C1A si:[0..15]-fn0800_5C1A
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_5C39_entry:
@@ -7854,7 +7854,7 @@ word16 fn0800_5CD9(selector ds, word16 wArg02)
 //      fn0800_5A0F
 //      fn0800_5C1A
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_5C1A
 // Trashed: SCZO ax dx Top
 // Preserved: bp bx cx di ds es si sp
 fn0800_5CD9_entry:
@@ -7894,7 +7894,7 @@ selector fn0800_5D2F(selector ds, byte bArg02)
 //      fn0800_55E8
 //      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_579B
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: DP bp sp
 fn0800_5D2F_entry:
@@ -7926,7 +7926,7 @@ word16 fn0800_5DCE(selector ds, word32 dwArg02, ptr16 & dsOut)
 //      fn0800_4BB1
 //      fn0800_518F
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_4BB1 ds:[0..15]-fn0800_4BB1
 // Trashed: SCZOP ax bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_5DCE_entry:
@@ -7969,7 +7969,7 @@ word16 fn0800_5E64(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds sp
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8 sp:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: DP
 fn0800_5E64_entry:
@@ -8465,7 +8465,7 @@ word16 fn0800_669C(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds sp
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8 sp:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: DP
 fn0800_669C_entry:
@@ -8556,7 +8556,7 @@ word16 fn0800_67BF(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds sp
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8 sp:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: P
 fn0800_67BF_entry:
@@ -8701,7 +8701,7 @@ word16 fn0800_6AD4(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_6AD4_entry:
@@ -9171,7 +9171,7 @@ word16 fn0800_73AC(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..15]-fn0800_0DE8 ds:[0..15]-fn0800_0DE8
 // Trashed: SCZOP ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_73AC_entry:
@@ -9191,7 +9191,7 @@ word16 fn0800_741D(selector ds)
 // Called from:
 //      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_0DE8
 // Trashed: SCZO ax bx cx dx es si Top
 // Preserved: P bp di ds sp
 fn0800_741D_entry:
@@ -9343,7 +9343,7 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word32 dwArg06, pt
 //      fn0800_73AC
 //      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
-// LiveOut: bp ds si sp
+// LiveOut: bp:[0..15]-fn0800_12E2 ds:[0..15]-fn0800_12E2 si:[0..15]-fn0800_12E2 sp:[0..15]-fn0800_12E2
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: DP
 fn0800_75EA_entry:
@@ -9607,7 +9607,7 @@ byte fn0800_7A02(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[8..15]-fn0800_75EA ds:[0..15]-fn0800_75EA
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: P bp si sp
 fn0800_7A02_entry:
@@ -9728,7 +9728,7 @@ byte fn0800_7C78(selector ds, ptr16 & dsOut)
 // Called from:
 //      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[8..15]-fn0800_75EA ds:[0..15]-fn0800_75EA
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: P bp si sp
 fn0800_7C78_entry:
@@ -9915,7 +9915,7 @@ selector fn0800_7FDC(selector ds)
 //      fn0800_7A02
 //      fn0800_7C78
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_7A02
 // Trashed: SCZOP ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_7FDC_entry:
@@ -10107,7 +10107,7 @@ selector fn0800_831D(selector ds, word16 wArg02, segptr32 ptrArg04)
 // Called from:
 //      fn0800_7FDC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
-// LiveOut: ds
+// LiveOut: ds:[0..15]-fn0800_7FDC
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_831D_entry:
@@ -10134,7 +10134,7 @@ byte fn0800_8359(selector ds, ptr16 & dsOut)
 //      fn0800_7C78
 //      fn0800_7EAF
 // MayUse:  ds:[0..15] ss:[0..15]
-// LiveOut: ax ds
+// LiveOut: ax:[0..7]-fn0800_7A02 ds:[0..15]-fn0800_7A02
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_8359_entry:
@@ -10351,7 +10351,7 @@ word16 fn0800_8600(selector ds, byte bArg02, ptr16 & dsOut)
 //      fn0800_7C78
 //      fn0800_7EAF
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
-// LiveOut: di ds
+// LiveOut: di:[0..15]-fn0800_7EAF ds:[0..15]-fn0800_7C78
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_8600_entry:
@@ -10380,7 +10380,7 @@ byte fn0800_8624(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 //      fn0800_854B
 //      fn0800_8600
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
-// LiveOut: ax di ds
+// LiveOut: ax:[8..15]-fn0800_7A02 di:[0..15]-fn0800_854B ds:[0..15]-fn0800_854B
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_8624_entry:
@@ -10638,7 +10638,7 @@ word16 fn0800_87EF(segptr32 ds_si)
 // Called from:
 //      fn0800_867A
 // MayUse:  Sequence ds:si:[0..31]
-// LiveOut: si
+// LiveOut: si:[0..15]-fn0800_867A
 // Trashed: ax bx si Top
 // Preserved: ds sp
 fn0800_87EF_entry:
@@ -10656,7 +10656,7 @@ word16 fn0800_87F4(segptr32 ds_si)
 // Called from:
 //      fn0800_87EF
 // MayUse:  Sequence ds:si:[0..31]
-// LiveOut: si
+// LiveOut: si:[0..15]-fn0800_87EF
 // Trashed: ax si Top
 // Preserved: sp
 fn0800_87F4_entry:
@@ -10992,7 +10992,7 @@ byte fn0800_8B0D(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16
 //      fn0800_8B5A
 //      fn0800_8B69
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[8..15]-fn0800_8B5A dx:[0..15]-fn0800_8B5A
 // Trashed: SCZO ax dx Top
 // Preserved: bp bx cx es si sp
 fn0800_8B0D_entry:
@@ -11042,7 +11042,7 @@ byte fn0800_8B5A(selector ds, word16 wArg02, ptr16 & dxOut)
 //      fn0800_0D24
 //      fn0800_0DCE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[8..15]-fn0800_0D24 dx:[0..15]-fn0800_0D24
 // Trashed: SCZO ax dx Top
 // Preserved: bp sp
 fn0800_8B5A_entry:
@@ -11111,7 +11111,7 @@ int32 fn0800_8BBB(word32 dwArg02, word32 dwArg06, ptr16 & cxOut)
 //      fn0800_B6D6
 //      fn0800_C177
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cx dx:ax sp
+// LiveOut: cx:[0..15]-main Sequence dx:ax:[0..31]-fn0800_C177 sp:[0..15]-main
 // Trashed: SCZOP ax bx cx dx sp Top
 // Preserved:
 fn0800_8BBB_entry:
@@ -11131,7 +11131,7 @@ word32 fn0800_8BC2(word32 dwArg02, word32 dwArg06, ptr16 & cxOut, ptr16 & bxOut)
 //      fn0800_4550
 //      fn0800_7FDC
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: bx cx dx:ax sp
+// LiveOut: bx:[0..15]-fn0800_7FDC cx:[0..15]-fn0800_7FDC Sequence dx:ax:[0..31]-fn0800_0B79 sp:[0..15]-fn0800_0B79
 // Trashed: SCZOP ax bx cx dx sp Top
 // Preserved:
 fn0800_8BC2_entry:
@@ -11151,7 +11151,7 @@ int32 fn0800_8BCA(word32 dwArg02, word32 dwArg06)
 //      main
 //      fn0800_C177
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: dx:ax sp
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_C177 sp:[0..15]-main
 // Trashed: SCZOP ax bx cx dx sp Top
 // Preserved:
 fn0800_8BCA_entry:
@@ -11169,7 +11169,7 @@ word16 fn0800_8BD8(word16 cx, word32 dwArg04, word32 dwArg08, ptr16 & cxOut, ptr
 //      fn0800_8BC2
 //      fn0800_8BCA
 // MayUse:  cx:[0..15] Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[0..15]-fn0800_8BCA bx:[0..15]-fn0800_8BC2 cx:[0..15]-fn0800_8BC2 dx:[0..15]-fn0800_8BCA
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp di si sp
 fn0800_8BD8_entry:
@@ -11274,7 +11274,7 @@ ui32 fn0800_8C69(word16 ax, byte cl, word16 dx)
 //      fn0800_6F20
 //      fn0800_A215
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
-// LiveOut: dx:ax sp
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_A215 sp:[0..15]-fn0800_5C39
 // Trashed: SCZO ax bx cl dx sp Top
 // Preserved:
 fn0800_8C69_entry:
@@ -11297,7 +11297,7 @@ word16 fn0800_8C8A(word16 ax, byte cl, word16 dx, ptr16 & clOut, ptr16 & dxOut)
 //      fn0800_2688
 //      fn0800_46FE
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
-// LiveOut: ax cl dx sp
+// LiveOut: ax:[0..15]-fn0800_24FE cl:[0..7]-fn0800_2688 dx:[0..15]-fn0800_24FE sp:[0..15]-fn0800_46FE
 // Trashed: SCZO ax bx cl dx sp Top
 // Preserved:
 fn0800_8C8A_entry:
@@ -11330,7 +11330,7 @@ ui32 fn0800_8CAA(word16 ax, byte cl, word16 dx)
 //      fn0800_5E64
 //      fn0800_6F20
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
-// LiveOut: dx:ax sp
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_6F20 sp:[0..15]-fn0800_51A9
 // Trashed: SCZO ax bx cl dx sp Top
 // Preserved:
 fn0800_8CAA_entry:
@@ -11351,7 +11351,7 @@ word16 fn0800_8CCB(ui32 cx_bx, word16 ax, word16 dx, ptr16 & chOut, ptr16 & dxOu
 //      fn0800_ABA3
 //      fn0800_AD85
 // MayUse:  ax:[0..15] dx:[0..15] Sequence cx:bx:[0..31]
-// LiveOut: ax cx dx sp
+// LiveOut: ax:[0..15]-fn0800_A215 cx:[8..15]-fn0800_ABA3 dx:[0..15]-fn0800_A215 sp:[0..15]-fn0800_A215
 // Trashed: SCZO ax bx cx dx es sp Top
 // Preserved:
 fn0800_8CCB_entry:
@@ -11416,7 +11416,7 @@ word16 fn0800_8D2B(selector ds, word16 wArg02)
 //      fn0800_C632
 //      fn0800_C779
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_C632
 // Trashed: SCZO ax Top
 // Preserved: bp si sp
 fn0800_8D2B_entry:
@@ -11463,7 +11463,7 @@ word16 fn0800_8D76(word16 wArg02)
 // Called from:
 //      fn0800_A96D
 // MayUse:  Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_A96D
 // Trashed: SCZO ax bx dx Top
 // Preserved: bp sp
 fn0800_8D76_entry:
@@ -11573,7 +11573,7 @@ word16 fn0800_8E29(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr1
 //      fn0800_B97F
 //      fn0800_C632
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..7]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_ACB3 cx:[0..15]-fn0800_ACB3 dx:[0..15]-fn0800_ACB3
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 fn0800_8E29_entry:
@@ -11601,7 +11601,7 @@ word16 fn0800_8E52(selector ds, segptr32 ptrArg02)
 // Called from:
 //      fn0800_3678
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_3678
 // Trashed: SCZO ax dx Top
 // Preserved: bp ds sp
 fn0800_8E52_entry:
@@ -11622,7 +11622,7 @@ word32 fn0800_8E6A(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 // Called from:
 //      fn0800_A614
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..31]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_A614
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_8E6A_entry:
@@ -11655,7 +11655,7 @@ word32 fn0800_8F18(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & chOut)
 //      fn0800_C04F
 //      fn0800_C379
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] dx:[0..15]
-// LiveOut: cx dx:ax
+// LiveOut: cx:[8..15]-fn0800_ABA3 Sequence dx:ax:[0..31]-fn0800_C04F
 // Trashed: SCZOP ax cx dx Top
 // Preserved: si sp
 fn0800_8F18_entry:
@@ -11683,7 +11683,7 @@ word32 fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & cxOut, pt
 //      fn0800_A215
 //      fn0800_B0A1
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] dx:[0..15]
-// LiveOut: CZ bx cx dx
+// LiveOut: CZ-fn0800_A1D6 bx:[0..15]-fn0800_A1D6 cx:[0..15]-fn0800_A1D6 dx:[0..15]-fn0800_A1D6
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: sp
 fn0800_8F2F_entry:
@@ -11709,7 +11709,7 @@ word16 fn0800_8F50(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08,
 //      fn0800_AAB3
 //      fn0800_B97F
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_B97F cx:[8..15]-fn0800_AAB3
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_8F50_entry:
@@ -11744,7 +11744,7 @@ word16 fn0800_8F7F(selector ds, segptr32 ptrArg02)
 //      fn0800_3BC3
 //      fn0800_3C99
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: dx
+// LiveOut: dx:[0..15]-fn0800_0DA9
 // Trashed: SCZO ax dx Top
 // Preserved: bp ds sp
 fn0800_8F7F_entry:
@@ -11765,7 +11765,7 @@ word16 fn0800_8F97(word16 di, selector ds, word16 wArg02, word16 wArg04, word16 
 // Called from:
 //      fn0800_BF18
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
-// LiveOut: di
+// LiveOut: di:[0..15]-fn0800_BF18
 // Trashed: SCZDOP ax bp bx cx di dx es si Top
 // Preserved: sp ss
 l0800_906C_thunk_fn0800_93A6:
@@ -12223,7 +12223,7 @@ ptr32 fn0800_8FAB(segptr32 ss_bp, selector ds)
 // Called from:
 //      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: es:di
+// LiveOut: Sequence es:di:[0..31]-fn0800_8F97
 // Trashed: SCZOP di es Top
 // Preserved: sp
 fn0800_8FAB_entry:
@@ -12248,7 +12248,7 @@ word16 fn0800_912A(segptr32 ss_bp, selector ds, ptr16 & diOut)
 // Called from:
 //      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp di
+// LiveOut: bp:[0..15]-fn0800_8F97 di:[0..15]-fn0800_8F97
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_912A_entry:
@@ -12296,7 +12296,7 @@ word16 fn0800_920E(segptr32 ss_bp, selector ds, ptr16 & diOut)
 // Called from:
 //      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp di
+// LiveOut: bp:[0..15]-fn0800_8F97 di:[0..15]-fn0800_8F97
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_920E_entry:
@@ -12316,7 +12316,7 @@ word16 fn0800_93A6(segptr32 ss_bp, ptr16 & diOut)
 //      fn0800_912A
 //      fn0800_93EF
 // MayUse:  Sequence ss:bp:[0..31]
-// LiveOut: bp di
+// LiveOut: bp:[0..15]-fn0800_93C5 di:[0..15]-fn0800_93C5
 // Trashed: SCZO ax bp di es si Top
 // Preserved: sp ss
 fn0800_93A6_entry:
@@ -12338,7 +12338,7 @@ word16 fn0800_93BE(segptr32 ss_bp, ptr16 & diOut)
 //      fn0800_8F97
 //      fn0800_93A6
 // MayUse:  Sequence ss:bp:[0..31]
-// LiveOut: bp di
+// LiveOut: bp:[0..15]-fn0800_93A6 di:[0..15]-fn0800_8F97
 // Trashed: ax bp di es si sp Top
 // Preserved:
 fn0800_93BE_entry:
@@ -12357,7 +12357,7 @@ word16 fn0800_93C5(segptr32 ss_bp, selector ds, ptr16 & diOut)
 //      fn0800_912A
 //      fn0800_920E
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: bp di
+// LiveOut: bp:[0..15]-fn0800_920E di:[0..15]-fn0800_920E
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp ss
 fn0800_93C5_entry:
@@ -12473,7 +12473,7 @@ bool fn0800_9485(byte cl, byte bl, ptr16 & bxOut)
 // Called from:
 //      fn0800_94B0
 // MayUse:  bx:[0..7] cl:[0..7]
-// LiveOut: C bx
+// LiveOut: C-fn0800_94B0 bx:[0..15]-fn0800_94B0
 // Trashed: SCZO bx Top
 // Preserved: sp
 fn0800_9485_entry:
@@ -12511,7 +12511,7 @@ word16 fn0800_94B0(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 // Called from:
 //      fn0800_8F97
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15] Stack +000E:[0..31] Stack +0012:[0..31]
-// LiveOut: ax di dx
+// LiveOut: ax:[0..15]-fn0800_8F97 di:[0..15]-fn0800_8F97 dx:[0..15]-fn0800_8F97
 // Trashed: SCZOP ax bx cx di dx es si Top
 // Preserved: bp ds sp ss
 fn0800_94B0_entry:
@@ -12764,7 +12764,7 @@ word32 fn0800_9764(selector ds, segptr32 ptrArg02, ptr16 & cxOut)
 // Called from:
 //      main
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: cx dx:ax
+// LiveOut: cx:[0..15]-main Sequence dx:ax:[0..31]-main
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_9764_entry:
@@ -12788,7 +12788,7 @@ int32 fn0800_97B6(selector ds, word16 wArg02)
 // Called from:
 //      fn0800_AD2F
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_AD2F
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 fn0800_97B6_entry:
@@ -12804,7 +12804,7 @@ byte fn0800_97CC(selector ds, word16 wArg02, ptr16 & dxOut)
 //      fn0800_0C29
 //      fn0800_0C6C
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[0..7]-fn0800_0C29 dx:[0..15]-fn0800_0C6C
 // Trashed: SCZOP ax bx dx Top
 // Preserved: bp sp
 fn0800_97CC_entry:
@@ -12851,7 +12851,7 @@ word16 fn0800_9810(segptr32 es_di, byte dh, byte dl)
 // Called from:
 //      fn0800_9828
 // MayUse:  dh:[0..7] dl:[0..7] Sequence es:di:[0..31]
-// LiveOut: di
+// LiveOut: di:[0..15]-fn0800_9828
 // Trashed: SCZO ax di Top
 // Preserved: es sp
 fn0800_9810_entry:
@@ -12869,7 +12869,7 @@ word16 fn0800_9817(segptr32 es_di, byte al)
 // Called from:
 //      fn0800_9810
 // MayUse:  al:[0..7] Sequence es:di:[0..31]
-// LiveOut: di
+// LiveOut: di:[0..15]-fn0800_9810
 // Trashed: SCZO ax di Top
 // Preserved: es sp
 fn0800_9817_entry:
@@ -12889,7 +12889,7 @@ word16 fn0800_9820(segptr32 es_di, byte al)
 // Called from:
 //      fn0800_9817
 // MayUse:  al:[0..7] Sequence es:di:[0..31]
-// LiveOut: di
+// LiveOut: di:[0..15]-fn0800_9817
 // Trashed: SCZO al di Top
 // Preserved: sp
 fn0800_9820_entry:
@@ -12907,7 +12907,7 @@ word16 fn0800_9828(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02, 
 //      fn0800_B2EF
 //      fn0800_BEA2
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
-// LiveOut: di si
+// LiveOut: di:[0..15]-fn0800_B2EF si:[0..15]-fn0800_B2EF
 // Trashed: SCZDO ax di si Top
 // Preserved: P bp bx cx dx es sp ss
 fn0800_9828_entry:
@@ -13396,7 +13396,7 @@ word16 fn0800_9842(word16 di, selector es)
 // Called from:
 //      fn0800_9828
 // MayUse:  di:[0..15] es:[0..15]
-// LiveOut: cx
+// LiveOut: cx:[0..15]-fn0800_9828
 // Trashed: SCZO al cx Top
 // Preserved: di sp
 fn0800_9842_entry:
@@ -13420,7 +13420,7 @@ byte fn0800_984F(segptr32 ss_bp, byte al, word16 cx, word16 dx, word16 bx, word1
 // Called from:
 //      fn0800_9828
 // MayUse:  ax:[0..7] bx:[0..15] cx:[0..15] di:[0..15] dx:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: ax di
+// LiveOut: ax:[8..15]-fn0800_9828 di:[0..15]-fn0800_9828
 // Trashed: SZO ax di Top
 // Preserved: C bp sp ss
 fn0800_984F_entry:
@@ -13448,7 +13448,7 @@ byte fn0800_9858(segptr32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di, ptr
 //      fn0800_9828
 //      fn0800_984F
 // MayUse:  bx:[0..15] cx:[0..15] di:[0..15] dx:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: ax di
+// LiveOut: ax:[8..15]-fn0800_984F di:[0..15]-fn0800_9828
 // Trashed: SCZO ax di Top
 // Preserved: bx cx dx es sp
 fn0800_9858_entry:
@@ -13476,7 +13476,7 @@ word32 fn0800_9CE6(word32 dwArg02, word32 dwArg06)
 // Called from:
 //      fn0800_8E6A
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_8E6A
 // Trashed: SCZDO ax cx dx es Top
 // Preserved: bp si sp
 fn0800_9CE6_entry:
@@ -13495,7 +13495,7 @@ byte fn0800_9D41(word16 dx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // Called from:
 //      fn0800_9E75
 // MayUse:  dx:[0..15]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[8..15]-fn0800_9E75 bx:[0..15]-fn0800_9E75 cx:[0..15]-fn0800_9E75 dx:[0..15]-fn0800_9E75
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: sp
 fn0800_9D41_entry:
@@ -13537,7 +13537,7 @@ byte fn0800_9DA4(word16 dx, ptr16 & bxOut)
 // Called from:
 //      fn0800_9E75
 // MayUse:  dx:[0..15]
-// LiveOut: ax bx
+// LiveOut: ax:[8..15]-fn0800_9E75 bx:[0..15]-fn0800_9E75
 // Trashed: SCZO ax bx ds es Top
 // Preserved: DP cx dx sp
 fn0800_9DA4_entry:
@@ -13585,7 +13585,7 @@ word16 fn0800_9E15(selector ds)
 //      fn0800_9DA4
 //      fn0800_9F89
 // MayUse:  ds:[0..15]
-// LiveOut: bx
+// LiveOut: bx:[0..15]-fn0800_9DA4
 // Trashed: SCZO bx es Top
 // Preserved: ds sp
 fn0800_9E15_entry:
@@ -13610,7 +13610,7 @@ word16 fn0800_9E3E(selector ds)
 // Called from:
 //      fn0800_9DA4
 // MayUse:  ds:[0..15]
-// LiveOut: bx
+// LiveOut: bx:[0..15]-fn0800_9DA4
 // Trashed: SCZDOP ax bx es Top
 // Preserved: sp ss
 fn0800_9E3E_entry:
@@ -13643,7 +13643,7 @@ byte fn0800_9E75(selector ds, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16
 //      fn0800_A614
 //      fn0800_BA89
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
-// LiveOut: ax bx cx ds dx
+// LiveOut: ax:[8..15]-fn0800_4346 bx:[0..15]-fn0800_4346 cx:[0..15]-fn0800_4346 ds:[0..15]-fn0800_A614 dx:[0..15]-fn0800_4346
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_9E75_entry:
@@ -13673,7 +13673,7 @@ word16 fn0800_9E9E(word16 ax, ptr16 & dxOut)
 // Called from:
 //      fn0800_9F89
 // MayUse:  ax:[0..15] ss:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_9F9F dx:[0..15]-fn0800_9F9F
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: sp
 fn0800_9E9E_entry:
@@ -13703,7 +13703,7 @@ word16 fn0800_9F02(word16 ax, ptr16 & dxOut)
 // Called from:
 //      fn0800_9F89
 // MayUse:  ax:[0..15] ss:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_9F9F dx:[0..15]-fn0800_9F9F
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: sp
 fn0800_9F02_entry:
@@ -13737,7 +13737,7 @@ word16 fn0800_9F5C(word16 ax, word16 dx, selector ds, ptr16 & dxOut)
 // Called from:
 //      fn0800_9F89
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_9F9F dx:[0..15]-fn0800_9F9F
 // Trashed: SCZO ax bx ds dx Top
 // Preserved: sp
 fn0800_9F5C_entry:
@@ -13758,7 +13758,7 @@ word16 fn0800_9F7F(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr
 // Called from:
 //      fn0800_BA89
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
-// LiveOut: ax bp di ds dx si
+// LiveOut: ax:[0..15]-fn0800_BA89 bp:[0..15]-fn0800_BA89 di:[0..15]-fn0800_BA89 ds:[0..15]-fn0800_BA89 dx:[0..15]-fn0800_BA89 si:[0..15]-fn0800_BA89
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_9F7F_entry:
@@ -13781,7 +13781,7 @@ word16 fn0800_9F89(selector ds, word32 dwArg02, ptr16 & dxOut, ptr16 & bpOut, pt
 //      fn0800_4311
 //      fn0800_A006
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax bp ds dx si
+// LiveOut: ax:[0..15]-fn0800_4311 bp:[0..15]-fn0800_4311 ds:[0..15]-fn0800_4311 dx:[0..15]-fn0800_4311 si:[0..15]-fn0800_4311
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_9F89_entry:
@@ -13803,7 +13803,7 @@ word16 fn0800_9F92(int32 dx_ax, selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16
 //      fn0800_9F7F
 //      fn0800_9F89
 // MayUse:  ds:[0..15] Sequence dx:ax:[0..31] ss:[0..15]
-// LiveOut: ax bp di ds dx si
+// LiveOut: ax:[0..15]-fn0800_9F7F bp:[0..15]-fn0800_9F7F di:[0..15]-fn0800_9F7F ds:[0..15]-fn0800_9F7F dx:[0..15]-fn0800_9F7F si:[0..15]-fn0800_9F7F
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: P
 fn0800_9F92_entry:
@@ -13838,7 +13838,7 @@ word16 fn0800_9F9F(int32 dx_ax, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr
 //      fn0800_9F89
 //      fn0800_9F92
 // MayUse:  Sequence dx:ax:[0..31] ss:[0..15]
-// LiveOut: ax bp di ds dx si
+// LiveOut: ax:[0..15]-fn0800_9F92 bp:[0..15]-fn0800_9F92 di:[0..15]-fn0800_9F92 ds:[0..15]-fn0800_9F92 dx:[0..15]-fn0800_9F92 si:[0..15]-fn0800_9F92
 // Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_9F9F_entry:
@@ -13964,7 +13964,7 @@ word16 fn0800_A162(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr
 //      fn0800_A1D6
 //      fn0800_A215
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[0..15]-fn0800_A1D6 bx:[0..15]-fn0800_A1D6 cx:[0..15]-fn0800_A1D6 dx:[0..15]-fn0800_A1D6
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_A162_entry:
@@ -14013,7 +14013,7 @@ byte fn0800_A1D6(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16
 //      fn0800_9D41
 //      fn0800_A080
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[8..15]-fn0800_9D41 bx:[0..15]-fn0800_9D41 cx:[0..15]-fn0800_9D41 dx:[0..15]-fn0800_9D41
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_A1D6_entry:
@@ -14047,7 +14047,7 @@ word16 fn0800_A215(selector ds, ui32 dwArg02, ptr16 & dxOut)
 //      fn0800_9E9E
 //      fn0800_9F02
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_9F02 dx:[0..15]-fn0800_9F02
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_A215_entry:
@@ -14095,7 +14095,7 @@ word16 fn0800_A2A3(selector ds, word16 wArg04, ptr16 & cxOut)
 // Called from:
 //      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_B140 cx:[0..15]-fn0800_B140
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_A2A3_entry:
@@ -14223,7 +14223,7 @@ word16 fn0800_A401(byte al, selector ds, selector psegArg02, word16 wArg04, ptr1
 // Called from:
 //      fn0800_A162
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: ax bx
+// LiveOut: ax:[0..15]-fn0800_A162 bx:[0..15]-fn0800_A162
 // Trashed: C ax bx es Top
 // Preserved: SZO bp sp
 fn0800_A401_entry:
@@ -14247,7 +14247,7 @@ word16 fn0800_A471(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // Called from:
 //      fn0800_C379
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_C379 dx:[0..15]-fn0800_C379
 // Trashed: SCZDOP ax bx cx dx Top
 // Preserved: bp di es si sp ss
 fn0800_A471_entry:
@@ -14351,7 +14351,7 @@ word16 fn0800_A53C(selector ds, byte bArg06, ptr16 & cxOut)
 //      fn0800_A4F6
 //      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0006:[0..7]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_B140 cx:[0..15]-fn0800_B140
 // Trashed: ax cx dx Top
 // Preserved: SCZO bp ds sp
 fn0800_A53C_entry:
@@ -14422,7 +14422,7 @@ word16 fn0800_A59D(selector ds, word16 wArg02)
 // Called from:
 //      fn0800_AED6
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_AED6
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp sp
 fn0800_A59D_entry:
@@ -14487,7 +14487,7 @@ word16 fn0800_A614(selector ds, segptr32 ptrArg02, ptr16 & dsOut)
 //      fn0800_3C99
 //      fn0800_A96D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: cx ds
+// LiveOut: cx:[0..15]-fn0800_0DA9 ds:[0..15]-fn0800_0DA9
 // Trashed: SCZOP ax bx cx ds dx es Top
 // Preserved: D bp si sp
 fn0800_A614_entry:
@@ -14543,7 +14543,7 @@ word16 fn0800_A6B7(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bxOut)
 //      fn0800_B324
 //      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax bx dx
+// LiveOut: ax:[0..15]-fn0800_A614 bx:[0..15]-fn0800_A877 dx:[0..15]-fn0800_B324
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_A6B7_entry:
@@ -14607,7 +14607,7 @@ word16 fn0800_A77D(selector ds, word32 dwArg02, word16 wArg06, segptr32 ptrArg08
 // Called from:
 //      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
-// LiveOut: ax dx
+// LiveOut: ax:[0..15]-fn0800_2DE2 dx:[0..15]-fn0800_2DE2
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_A77D_entry:
@@ -14673,7 +14673,7 @@ word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, w
 //      fn0800_33CD
 //      fn0800_363D
 // MayUse:  al:[0..7] ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_33CD cx:[0..15]-fn0800_33CD dx:[0..15]-fn0800_33CD
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A817_entry:
@@ -14702,7 +14702,7 @@ word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16
 // Called from:
 //      fn0800_3479
 // MayUse:  al:[0..7] ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_3479 cx:[0..15]-fn0800_3479 dx:[0..15]-fn0800_3479
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A84A_entry:
@@ -14731,7 +14731,7 @@ word16 fn0800_A877(selector ds, ptr16 & bxOut)
 // Called from:
 //      fn0800_A6B7
 // MayUse:  ds:[0..15]
-// LiveOut: bx dx
+// LiveOut: bx:[0..15]-fn0800_A6B7 dx:[0..15]-fn0800_A6B7
 // Trashed: SCZOP ax bx cx di es si Top
 // Preserved: bp sp
 fn0800_A877_entry:
@@ -14762,7 +14762,7 @@ word16 fn0800_A8B7(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, segptr32 p
 // Called from:
 //      fn0800_A96D
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31]
-// LiveOut: ax cl
+// LiveOut: ax:[0..15]-fn0800_A96D cl:[0..7]-fn0800_A96D
 // Trashed: SCZOP ax bx cl dx es Top
 // Preserved: bp di si sp
 fn0800_A8B7_entry:
@@ -14837,7 +14837,7 @@ word16 fn0800_A96D(selector ds, word16 wArg02, word32 dwArg04, word32 dwArg08, s
 // Called from:
 //      fn0800_AA7E
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
-// LiveOut: ax cx ds dx
+// LiveOut: ax:[0..15]-fn0800_AA7E cx:[0..15]-fn0800_AA7E ds:[0..15]-fn0800_AA7E dx:[0..15]-fn0800_AA7E
 // Trashed: SCZOP ax bx cx ds dx es Top
 // Preserved: bp sp
 fn0800_A96D_entry:
@@ -14894,7 +14894,7 @@ word32 fn0800_AA34(selector ds)
 // Called from:
 //      fn0800_AA7E
 // MayUse:  ds:[0..15]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_AA7E
 // Trashed: SCZO ax bx dx es Top
 // Preserved: bp sp
 fn0800_AA34_entry:
@@ -14933,7 +14933,7 @@ word32 fn0800_AA7E(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & cxOut, p
 //      fn0800_3992
 //      fn0800_4234
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: cx ds dx:ax
+// LiveOut: cx:[0..15]-fn0800_4234 ds:[0..15]-fn0800_4234 Sequence dx:ax:[0..31]-fn0800_37DF
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: P bp sp
 fn0800_AA7E_entry:
@@ -14958,7 +14958,7 @@ word16 fn0800_AAB3(word16 dx, selector ds, segptr32 ptrArg02, word16 wArg06, seg
 // Called from:
 //      fn0800_ABA3
 // MayUse:  ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_ABA3 cx:[8..15]-fn0800_ABA3
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_AAB3_entry:
@@ -15044,7 +15044,7 @@ word16 fn0800_ABA3(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, wo
 // Called from:
 //      fn0800_4110
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
-// LiveOut: ax cx di si
+// LiveOut: ax:[0..15]-fn0800_4110 cx:[8..15]-fn0800_4110 di:[0..15]-fn0800_4110 si:[0..15]-fn0800_4110
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: P bp sp
 fn0800_ABA3_entry:
@@ -15106,7 +15106,7 @@ word16 fn0800_AC31(segptr32 ptrArg02)
 //      fn0800_ACB3
 //      fn0800_AD2F
 // MayUse:  Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_ACB3
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_AC31_entry:
@@ -15193,7 +15193,7 @@ word16 fn0800_ACB3(selector ds, segptr32 ptrArg02, ui32 dwArg06, word16 wArg0A, 
 //      fn0800_BA67
 //      fn0800_BA89
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_3E9A cx:[0..15]-fn0800_BA89
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_ACB3_entry:
@@ -15251,7 +15251,7 @@ int32 fn0800_AD2F(selector ds, segptr32 ptrArg02)
 //      fn0800_7A02
 //      fn0800_7C78
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_4194
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: P bp sp
 fn0800_AD2F_entry:
@@ -15285,7 +15285,7 @@ word16 fn0800_AD85(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, wo
 // Called from:
 //      fn0800_4152
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
-// LiveOut: ax si
+// LiveOut: ax:[0..15]-fn0800_4152 si:[0..15]-fn0800_4152
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: P bp sp
 fn0800_AD85_entry:
@@ -15375,7 +15375,7 @@ word16 fn0800_AE4C(selector ds, segptr32 ptrArg02)
 // Called from:
 //      fn0800_AED6
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_AED6
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_AE4C_entry:
@@ -15418,7 +15418,7 @@ word16 fn0800_AEC2(selector ds, segptr32 ptrArg02, ptr16 & chOut)
 //      fn0800_A77D
 //      fn0800_AAB3
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_A77D cx:[8..15]-fn0800_3DCF
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_AEC2_entry:
@@ -15436,7 +15436,7 @@ word16 fn0800_AED6(selector ds, segptr32 ptrArg02)
 // Called from:
 //      fn0800_AEC2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_AEC2
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: D bp si sp
 fn0800_AED6_entry:
@@ -15496,7 +15496,7 @@ word32 fn0800_AFCB(selector ds, segptr32 ptrArg02)
 // Called from:
 //      fn0800_C379
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0800_C379
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_AFCB_entry:
@@ -15716,7 +15716,7 @@ word16 fn0800_B113(selector ds, word16 wArg02, segptr32 ptrArg04, ptr16 & cxOut)
 // Called from:
 //      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_B140 cx:[0..15]-fn0800_B140
 // Trashed: C ax cx dx Top
 // Preserved: SZO bp ds sp
 fn0800_B113_entry:
@@ -15737,7 +15737,7 @@ word16 fn0800_B12E(selector ds, word16 wArg02)
 // Called from:
 //      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: cx
+// LiveOut: cx:[0..15]-fn0800_B140
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_B12E_entry:
@@ -15753,7 +15753,7 @@ byte fn0800_B140(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, ptr1
 // Called from:
 //      fn0800_A96D
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: ax cx
+// LiveOut: ax:[0..7]-fn0800_A96D cx:[0..15]-fn0800_A96D
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp di si sp
 fn0800_B140_entry:
@@ -15861,7 +15861,7 @@ word16 fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06, ptr16 & cxOut)
 // Called from:
 //      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_B140 cx:[0..15]-fn0800_B140
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_B2A0_entry:
@@ -15909,7 +15909,7 @@ word16 fn0800_B2EF(word16 cx, word16 dx, word16 bx, selector ds, word32 dwArg02,
 //      fn0800_75EA
 //      fn0800_7FDC
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31]
-// LiveOut: di si
+// LiveOut: di:[0..15]-main si:[0..15]-fn0800_0DCE
 // Trashed: SCZDO ax di si Top
 // Preserved: bp sp
 fn0800_B2EF_entry:
@@ -15927,7 +15927,7 @@ word16 fn0800_B30A(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, p
 //      fn0800_4047
 //      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[0..15]-fn0800_4047 bx:[0..15]-fn0800_4047 cx:[0..15]-fn0800_4047 dx:[0..15]-fn0800_4047
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_B30A_entry:
@@ -15948,7 +15948,7 @@ word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, p
 //      fn0800_B30A
 //      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[0..15]-fn0800_B30A bx:[0..15]-fn0800_B30A cx:[0..15]-fn0800_B30A dx:[0..15]-fn0800_B30A
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_B324_entry:
@@ -16052,7 +16052,7 @@ word16 fn0800_B4BE(selector ds, segptr32 ptrArg02, word16 wArg06, segptr32 ptrAr
 // Called from:
 //      fn0800_AD85
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_AD85
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: D bp di si sp
 fn0800_B4BE_entry:
@@ -16461,7 +16461,7 @@ word16 fn0800_B97F(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08)
 //      fn0800_AE4C
 //      fn0800_AED6
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_AE4C
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_B97F_entry:
@@ -16528,7 +16528,7 @@ word16 fn0800_BA4A(selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 //      fn0800_37DF
 //      fn0800_3C99
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_37DF
 // Trashed: SCZO ax dx es Top
 // Preserved: bp di ds sp
 fn0800_BA4A_entry:
@@ -16570,7 +16570,7 @@ word16 fn0800_BA89(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 // Called from:
 //      fn0800_A96D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
-// LiveOut: ax cx ds
+// LiveOut: ax:[0..15]-fn0800_A96D cx:[0..15]-fn0800_A96D ds:[0..15]-fn0800_A96D
 // Trashed: SCZOP ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_BA89_entry:
@@ -16717,7 +16717,7 @@ word16 fn0800_BC49(segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A, segp
 // Called from:
 //      fn0800_BE3B
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31] Stack +000E:[0..31] Stack +0012:[0..31]
-// LiveOut: bx
+// LiveOut: bx:[0..15]-fn0800_BE3B
 // Trashed: SCZDO ax bp bx cx di dx es si Top
 // Preserved: sp
 fn0800_BC49_entry:
@@ -16794,7 +16794,7 @@ word16 fn0800_BE3B(word32 dwArg02, word32 dwArg06, word32 dwArg0A, word32 dwArg0
 //      fn0800_3509
 //      fn0800_35A3
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31] Stack +000E:[0..31] Stack +0012:[0..31]
-// LiveOut: bx
+// LiveOut: bx:[0..15]-fn0800_3509
 // Trashed: SCZDO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_BE3B_entry:
@@ -16811,7 +16811,7 @@ word16 fn0800_BEA2(word16 cx, word16 dx, selector ds, segptr32 ptrArg02, word32 
 //      fn0800_31B4
 //      fn0800_37BE
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: di si
+// LiveOut: di:[0..15]-fn0800_0541 si:[0..15]-fn0800_37BE
 // Trashed: SCZDO ax bx di es si Top
 // Preserved: bp sp
 fn0800_BEA2_entry:
@@ -16829,7 +16829,7 @@ word16 fn0800_BF18(word16 di, selector ds, word16 wArg06, word16 wArg08)
 // Called from:
 //      fn0800_0541
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: di
+// LiveOut: di:[0..15]-fn0800_0541
 // Trashed: SCZDOP ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_BF18_entry:
@@ -16934,7 +16934,7 @@ word16 fn0800_BFC7(segptr32 ptrArg02, ptr16 & cxOut)
 //      fn0800_BC49
 //      fn0800_C379
 // MayUse:  Stack +0002:[0..31]
-// LiveOut: ax cx
+// LiveOut: ax:[0..15]-fn0800_0402 cx:[0..15]-fn0800_0402
 // Trashed: SCZDO ax cx es Top
 // Preserved: bp di sp
 fn0800_BFC7_entry:
@@ -16970,7 +16970,7 @@ word16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 // Called from:
 //      fn0800_29C5
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_29C5
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_BFE6_entry:
@@ -17044,7 +17044,7 @@ word16 fn0800_C04F(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & cx
 // Called from:
 //      fn0800_9764
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
-// LiveOut: ax cx dx
+// LiveOut: ax:[0..15]-fn0800_9764 cx:[0..15]-fn0800_9764 dx:[0..15]-fn0800_9764
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_C04F_entry:
@@ -17318,7 +17318,7 @@ word16 fn0800_C553(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, byt
 //      fn0800_C04F
 //      fn0800_C177
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..7]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0800_C04F
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp si sp
 fn0800_C553_entry:
@@ -17398,7 +17398,7 @@ word16 fn0800_C632(selector ds, word16 wArg02, word32 dwArg04, word16 wArg08, pt
 //      fn0800_A6B7
 //      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
-// LiveOut: ax bx dx
+// LiveOut: ax:[0..15]-fn0800_A6B7 bx:[0..15]-fn0800_A6B7 dx:[0..15]-fn0800_A6B7
 // Trashed: SCZOP ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_C632_entry:
@@ -17493,7 +17493,7 @@ word16 fn0800_C779(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08,
 //      fn0800_B4BE
 //      fn0800_C632
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
-// LiveOut: ax bx cx dx
+// LiveOut: ax:[0..15]-fn0800_C632 bx:[0..15]-fn0800_C632 cx:[0..15]-fn0800_B324 dx:[0..15]-fn0800_C632
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_C779_entry:

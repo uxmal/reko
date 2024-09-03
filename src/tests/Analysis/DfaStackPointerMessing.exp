@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 // Register word16 fn0C00_0008(Register word16 bx, Register selector ds)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bx:[0..15] ds:[0..15] ss:[0..15]
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: ax sp ss Top
 // Preserved:
 // fn0C00_0008

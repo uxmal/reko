@@ -69,7 +69,7 @@ Register word16 fn0C00_0014(Register word16 ax)
 // MayUse:  ax:[0..15]
 // DataTypes: 
 //   ax: word16
-// LiveOut: ax
+// LiveOut: ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax di Top
 // Preserved: sp
 // fn0C00_0014

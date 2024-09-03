@@ -19,7 +19,7 @@ l0C00_0000:
 	return
 fn0C00_0000_exit:
 // fn0C00_001E /////////////////////
-	LiveOut:   ax:[0..15] cl:[0..7]
+	LiveOut:   ax:[0..15]-fn0C00_0000 cl:[0..7]-fn0C00_0000
 	BitsUsed:  ax:[0..15] bx:[0..15] ch:[0..7] cl:[0..7]
 	Trashed:   SCZO ax bx cl Top
 	Preserved: sp
@@ -50,7 +50,7 @@ fn0C00_001E_exit:
 	use ax_20
 	use cl_23
 // fn0C00_0032 /////////////////////
-	LiveOut:   ax:[0..15] cl:[0..7]
+	LiveOut:   ax:[0..15]-fn0C00_0000 cl:[0..7]-fn0C00_0000
 	BitsUsed:  ax:[0..15] bx:[0..15] ch:[0..7] cl:[0..7]
 	Trashed:   SCZO ax cl dx Top
 	Preserved: sp

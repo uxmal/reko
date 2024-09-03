@@ -26,7 +26,7 @@ word64 fn0000000100001B4A(word64 rsi, word64 rdi)
 // Called from:
 //      fn00000001000023B0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000001000023B0
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi xmm0
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000100001B4A_entry:
@@ -881,7 +881,7 @@ word32 fn0000000100003201(word32 edi)
 //      fn00000001000035A9
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001000035A9
 // Trashed: SCZOP rax rcx rdi
 // Preserved: rbp rsp
 fn0000000100003201_entry:
@@ -1050,7 +1050,7 @@ word32 fn00000001000034AC(word32 edi)
 //      fn00000001000035A9
 //      fn0000000100003AA8
 // MayUse:  edi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000100003AA8
 // Trashed: SCZOP rax rdi rdx rsi
 // Preserved: rbp rsp
 fn00000001000034AC_entry:
@@ -1120,7 +1120,7 @@ word32 fn000000010000356F(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r1
 //      fn00000001000035A9
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63]
-// LiveOut: r12 r14 r15 rax rbp rbx
+// LiveOut: r12:[0..31]-fn00000001000035A9 r14:[0..63]-fn00000001000035A9 r15:[0..63]-fn0000000100003AA8 rax:[0..31]-fn00000001000035A9 rbp:[0..63]-fn0000000100003AA8 rbx:[0..63]-fn00000001000035A9
 // Trashed: SCZOP r12 r13 r14 r15 rax rbp rbx rcx rdi rdx rsi xmm0
 // Preserved: rsp
 fn000000010000356F_entry:
@@ -1714,7 +1714,7 @@ word32 fn0000000100004715(word64 rdi)
 // Called from:
 //      fn000000010000356F
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000010000356F
 // Trashed: SCZOP rax rcx rdi rdx rsi xmm0
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000100004715_entry:
@@ -1793,7 +1793,7 @@ word32 fn00000001000048AF(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r1
 //      fn000000010000356F
 //      fn000000010000488B
 // MayUse:  rdi:[0..63]
-// LiveOut: r12 r14 r15 rax rbp rbx
+// LiveOut: r12:[0..31]-fn000000010000356F r14:[0..63]-fn000000010000356F r15:[0..63]-fn000000010000356F rax:[0..31]-fn000000010000356F rbp:[0..63]-fn000000010000356F rbx:[0..63]-fn000000010000356F
 // Trashed: SCZOP r12 r13 r14 r15 rax rbp rbx rcx rdi rdx rsi xmm0
 // Preserved: rsp
 fn00000001000048AF_entry:
@@ -1816,7 +1816,7 @@ word32 fn0000000100004ABB(word64 rbx, word64 rbp, ptr64 & rbxOut, ptr64 & rbpOut
 //      fn000000010000488B
 //      fn00000001000048AF
 // MayUse:  rbp:[0..63] rbx:[0..63]
-// LiveOut: r12 r14 r15 rax rbp rbx
+// LiveOut: r12:[0..31]-fn00000001000048AF r14:[0..63]-fn00000001000048AF r15:[0..63]-fn00000001000048AF rax:[0..31]-fn00000001000048AF rbp:[0..63]-fn00000001000048AF rbx:[0..63]-fn00000001000048AF
 // Trashed: SCZOP r12 r13 r14 r15 rax rbp rbx rcx rdi rdx rsi rsp xmm0
 // Preserved:
 fn0000000100004ABB_entry:
@@ -1938,7 +1938,7 @@ word64 fn0000000100004AFA(word32 esi, word64 rdi)
 // Called from:
 //      fn0000000100001B4A
 // MayUse:  rdi:[0..63] rsi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000100001B4A
 // Trashed: SCZOP rax rcx rdi rdx rsi xmm0
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000100004AFA_entry:

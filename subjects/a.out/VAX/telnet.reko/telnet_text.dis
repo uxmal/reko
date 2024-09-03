@@ -114,7 +114,7 @@ word32 fn00000564(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn0000044E
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-fn0000044E r0:[0..31]-fn0000044E sp:[0..31]-fn0000044E
 // Trashed: CVZN ap fp r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00000564_entry:
@@ -281,7 +281,7 @@ word32 fn00000820(word32 fp, ptr32 & fpOut)
 //      fn00000564
 //      fn00000D40
 // MayUse:  fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn00000820_entry:
@@ -326,7 +326,7 @@ word32 fn000009DA(word32 ap)
 // Called from:
 //      fn00000564
 // MayUse:  ap:[0..31]
-// LiveOut: fp sp
+// LiveOut: fp:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r10 r11 sp
 // Preserved:
 fn000009DA_entry:
@@ -354,7 +354,7 @@ word32 fn000009F6(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000D40
 //      fn0000149A
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 r0:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 r11 sp
 // Preserved:
 fn000009F6_entry:
@@ -378,7 +378,7 @@ word32 fn00000AF8(word32 r8, word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  ap:[0..31] fp:[0..31] r8:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r11 sp
 // Preserved: r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 fn00000AF8_entry:
@@ -531,7 +531,7 @@ word32 fn00000D40(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn0000044E
 //      fn00000AF8
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r8 sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 r8:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00000D40_entry:
@@ -641,7 +641,7 @@ word32 fn00000E7E(word32 r8, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000AF8
 // MayUse:  fp:[0..31] r8:[0..31]
-// LiveOut: ap fp r8 sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 r8:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 r11 r8 sp
 // Preserved:
 fn00000E7E_entry:
@@ -691,7 +691,7 @@ word32 fn0000138E(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000D40
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000D40 fp:[0..31]-fn00000D40 r0:[0..31]-fn00000D40 sp:[0..31]-fn00000D40
 // Trashed: CVZN ap fp r0 r10 r11 r6 r7 r8 r9 sp
 // Preserved:
 fn0000138E_entry:
@@ -753,7 +753,7 @@ word32 fn00001438(word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000AF8
 // MayUse:  fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00001438_entry:
@@ -790,7 +790,7 @@ word32 fn0000149A(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000AF8
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 r1 r10 r11 sp
 // Preserved:
 fn0000149A_entry:
@@ -843,7 +843,7 @@ word32 fn00001622(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000D40
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000D40 fp:[0..31]-fn00000D40 sp:[0..31]-fn00000D40
 // Trashed: CVZN ap fp r11 sp
 // Preserved:
 fn00001622_entry:
@@ -863,7 +863,7 @@ word32 fn0000162E(word32 r0, word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000564
 //      fn00000D40
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000D40 fp:[0..31]-fn00000564 r0:[0..31]-fn00000D40 sp:[0..31]-fn00000D40
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn0000162E_entry:
@@ -916,7 +916,7 @@ word32 fn0000169A(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn0000169A_entry:
@@ -945,7 +945,7 @@ word32 fn000016A6(word32 ap, word32 fp, ptr32 & fpOut)
 //      fn0000044E
 //      fn00000564
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn0000044E fp:[0..31]-fn0000044E sp:[0..31]-fn0000044E
 // Trashed: CVZN ap fp r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn000016A6_entry:
@@ -968,7 +968,7 @@ word32 fn000016CA(word32 ap, word32 fp, ptr32 & r8Out, ptr32 & apOut, ptr32 & fp
 //      fn00000564
 //      fn00000D40
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r8 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 r8:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn000016CA_entry:
@@ -995,7 +995,7 @@ word32 fn000016FA(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000AF8
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000016FA_entry:
@@ -1021,7 +1021,7 @@ word32 fn00001706(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn0000044E
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn0000044E fp:[0..31]-fn0000044E sp:[0..31]-fn0000044E
 // Trashed: CVZN ap fp r11 sp
 // Preserved: r0 r10
 fn00001706_entry:
@@ -1059,7 +1059,7 @@ word32 fn00001746(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn0000044E
 //      fn00000564
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn0000044E fp:[0..31]-fn0000044E r0:[0..31]-fn0000044E sp:[0..31]-fn0000044E
 // Trashed: CVZN ap fp r0 r1 sp
 // Preserved:
 fn00001746_entry:
@@ -1084,7 +1084,7 @@ word32 fn0000176E(word32 ap, word32 fp, ptr32 & fpOut)
 //      fn00000D40
 //      fn0000149A
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000D40 fp:[0..31]-fn00000D40 sp:[0..31]-fn00000D40
 // Trashed: CVZN ap fp r0 r1 sp
 // Preserved:
 fn0000176E_entry:
@@ -1134,7 +1134,7 @@ word32 fn000017FE(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000017FE_entry:
@@ -1162,7 +1162,7 @@ word32 fn0000181E(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000AF8
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00000AF8 sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 r11 sp
 // Preserved:
 fn0000181E_entry:
@@ -1253,7 +1253,7 @@ word32 fn00001918(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00001922
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn00001922 r0:[0..31]-fn00001922
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00001918_entry:
@@ -1271,7 +1271,7 @@ word32 fn00001922(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn0000181E
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-fn0000181E r0:[0..31]-fn0000181E sp:[0..31]-fn0000181E
 // Trashed: ap fp r0 sp
 // Preserved: CVZN
 fn00001922_entry:
@@ -1294,7 +1294,7 @@ word32 fn0000192C(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00001936
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0
+// LiveOut: ap:[0..31]-fn00001936 fp:[0..31]-fn00001936 r0:[0..31]-fn00001936
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn0000192C_entry:
@@ -1315,7 +1315,7 @@ word32 fn00001936(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00001746
 //      fn0000181E
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001746 fp:[0..31]-fn00001746 r0:[0..31]-fn00001746 sp:[0..31]-fn0000181E
 // Trashed: ap fp r0 sp
 // Preserved: CVZN
 fn00001936_entry:
@@ -1341,7 +1341,7 @@ word32 fn0000194A(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn0000181E
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-fn0000181E r0:[0..31]-fn0000181E sp:[0..31]-fn0000181E
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn0000194A_entry:
@@ -1365,7 +1365,7 @@ word32 fn00001956(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r1 r10 r11 r8 r9 sp
 // Preserved:
 fn00001956_entry:
@@ -1409,7 +1409,7 @@ word32 fn000019AA(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & apOut, ptr32 & f
 // Called from:
 //      fn00001956
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10
+// LiveOut: ap:[0..31]-fn00001956 fp:[0..31]-fn00001956 r0:[0..31]-fn00001956 r10:[0..31]-fn00001956
 // Trashed: CVZN ap fp r0 r10 r11 r8 r9 sp
 // Preserved:
 fn000019AA_entry:
@@ -1438,7 +1438,7 @@ word32 fn000019E6(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00001956
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: fp r10
+// LiveOut: fp:[0..31]-fn00001956 r10:[0..31]-fn00001956
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn000019E6_entry:
@@ -1461,7 +1461,7 @@ word32 fn00001A0C(word32 r0, word32 r10, word32 ap, word32 fp, ptr32 & r11Out, p
 // Called from:
 //      fn00001956
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r10:[0..31]
-// LiveOut: ap fp r0 r11 sp
+// LiveOut: ap:[0..31]-fn00001956 fp:[0..31]-fn00001956 r0:[0..31]-fn00001956 r11:[0..31]-fn00001956 sp:[0..31]-fn00001956
 // Trashed: CVZN ap fp r0 r1 r10 r11 r8 r9 sp
 // Preserved:
 fn00001A0C_entry:
@@ -1572,7 +1572,7 @@ word32 fn00001B34(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & apOut, ptr32 & f
 // Called from:
 //      fn00001A0C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10 sp
+// LiveOut: ap:[0..31]-fn00001A0C fp:[0..31]-fn00001A0C r0:[0..31]-fn00001A0C r10:[0..31]-fn00001A0C sp:[0..31]-fn00001A0C
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn00001B34_entry:
@@ -1616,7 +1616,7 @@ word32 fn00001B62(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn0000044E
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn0000044E fp:[0..31]-fn0000044E r0:[0..31]-fn0000044E sp:[0..31]-fn0000044E
 // Trashed: CVZN ap fp r0 r1 r10 r11 r8 r9 sp
 // Preserved:
 fn00001B62_entry:
@@ -1668,7 +1668,7 @@ word32 fn00001BCA(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & apOut, ptr32 & f
 // Called from:
 //      fn00001B62
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10
+// LiveOut: ap:[0..31]-fn00001B62 fp:[0..31]-fn00001B62 r0:[0..31]-fn00001B62 r10:[0..31]-fn00001B62
 // Trashed: CVZN ap fp r0 r10 r11 r8 r9 sp
 // Preserved:
 fn00001BCA_entry:
@@ -1697,7 +1697,7 @@ word32 fn00001C06(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00001B62
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: fp r11
+// LiveOut: fp:[0..31]-fn00001B62 r11:[0..31]-fn00001B62
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn00001C06_entry:
@@ -1720,7 +1720,7 @@ word32 fn00001C2C(word32 r0, word32 r10, word32 ap, word32 fp, ptr32 & apOut, pt
 // Called from:
 //      fn00001B62
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r10:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001B62 fp:[0..31]-fn00001B62 r0:[0..31]-fn00001B62 sp:[0..31]-fn00001B62
 // Trashed: CVZN ap fp r0 r1 r10 r11 r8 r9 sp
 // Preserved:
 fn00001C2C_entry:
@@ -1835,7 +1835,7 @@ word32 fn00001D6C(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & apOut, ptr32 & f
 // Called from:
 //      fn00001C2C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10 sp
+// LiveOut: ap:[0..31]-fn00001C2C fp:[0..31]-fn00001C2C r0:[0..31]-fn00001C2C r10:[0..31]-fn00001C2C sp:[0..31]-fn00001C2C
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn00001D6C_entry:
@@ -1880,7 +1880,7 @@ word32 fn00001D9A(word32 ap, word32 fp, ptr32 & r11Out, ptr32 & apOut, ptr32 & f
 //      fn00000564
 //      fn00001C2C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r11 sp
+// LiveOut: ap:[0..31]-fn00001C2C fp:[0..31]-fn00001C2C r0:[0..31]-fn00001C2C r11:[0..31]-fn00001C2C sp:[0..31]-fn00001C2C
 // Trashed: CVZN ap fp r0 r1 r10 r11 r9 sp
 // Preserved:
 fn00001D9A_entry:
@@ -1933,7 +1933,7 @@ word32 fn00001DEE(word32 r0, word32 r10, word32 ap, word32 fp, ptr32 & r10Out, p
 //      fn00001A0C
 //      fn00001C2C
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r10:[0..31]
-// LiveOut: ap fp r0 r10 r11 sp
+// LiveOut: ap:[0..31]-fn00001C2C fp:[0..31]-fn00001C2C r0:[0..31]-fn00001C2C r10:[0..31]-fn00001C2C r11:[0..31]-fn00001A0C sp:[0..31]-fn00001C2C
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn00001DEE_entry:
@@ -1998,7 +1998,7 @@ word32 fn00001E3A(word32 r0, word32 ap, word32 fp, ptr32 & r9Out, ptr32 & r10Out
 //      fn0000162E
 //      fn00001DEE
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 r10 r11 r9 sp
+// LiveOut: ap:[0..31]-fn00001DEE fp:[0..31]-fn00001DEE r0:[0..31]-fn00001DEE r10:[0..31]-fn0000162E r11:[0..31]-fn00001DEE r9:[0..31]-fn00001DEE sp:[0..31]-fn00001DEE
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn00001E3A_entry:
@@ -2115,7 +2115,7 @@ word32 fn00001F52(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & r11Out, ptr32 & 
 //      fn00001BCA
 //      fn00001C2C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10 r11 sp
+// LiveOut: ap:[0..31]-fn00001BCA fp:[0..31]-fn00001BCA r0:[0..31]-fn00001BCA r10:[0..31]-fn00001BCA r11:[0..31]-fn00001A0C sp:[0..31]-fn00001C2C
 // Trashed: CVZN ap fp r0 r10 r11 r8 r9 sp
 // Preserved:
 fn00001F52_entry:
@@ -2246,7 +2246,7 @@ word32 fn00002070(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn0000207A
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn0000207A r0:[0..31]-fn0000207A
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00002070_entry:
@@ -2264,7 +2264,7 @@ word32 fn0000207A(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00001F52
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-fn00001F52 r0:[0..31]-fn00001F52 sp:[0..31]-fn00001F52
 // Trashed: ap fp r0 sp
 // Preserved: CVZN
 fn0000207A_entry:
@@ -2288,7 +2288,7 @@ word32 fn00002082(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000564
 //      fn00001C2C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001C2C fp:[0..31]-fn00001C2C r0:[0..31]-fn00001C2C sp:[0..31]-fn00001C2C
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00002082_entry:
@@ -2308,7 +2308,7 @@ word32 fn00002092(word32 ap, word32 fp, ptr32 & r11Out, ptr32 & apOut, ptr32 & f
 //      fn00000564
 //      fn00001A0C
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r11 sp
+// LiveOut: ap:[0..31]-fn00001A0C fp:[0..31]-fn00001A0C r0:[0..31]-fn00001A0C r11:[0..31]-fn00001A0C sp:[0..31]-fn00001A0C
 // Trashed: CVZN ap fp r0 r1 r10 r11 r8 r9 sp
 // Preserved:
 fn00002092_entry:
@@ -2408,7 +2408,7 @@ word32 fn000021E6(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000564
 //      fn0000149A
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn000021E6_entry:
@@ -2457,7 +2457,7 @@ word32 fn0000296A(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & apOut, ptr32 & f
 //      fn000019AA
 //      fn00001BCA
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10
+// LiveOut: ap:[0..31]-fn00001BCA fp:[0..31]-fn00001BCA r0:[0..31]-fn00001BCA r10:[0..31]-fn00001BCA
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn0000296A_entry:
@@ -2490,7 +2490,7 @@ word32 fn000029A6(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000029A6_entry:
@@ -2519,7 +2519,7 @@ word32 fn000029B2(word32 ap, word32 fp, ptr32 & r11Out, ptr32 & apOut, ptr32 & f
 //      fn00000564
 //      fn000021E6
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r11 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 r11:[0..31]-fn000021E6 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn000029B2_entry:
@@ -2548,7 +2548,7 @@ word32 fn000029C6(word32 r0, word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000564
 //      fn00000D40
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 r0:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000029C6_entry:
@@ -2577,7 +2577,7 @@ word32 fn000029F4(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn000029FE
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn000029FE r0:[0..31]-fn000029FE
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000029F4_entry:
@@ -2596,7 +2596,7 @@ word32 fn000029FE(word32 r0, word32 fp, ptr32 & fpOut)
 //      fn0000181E
 //      fn000029C6
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0 sp
+// LiveOut: fp:[0..31]-fn000029C6 r0:[0..31]-fn000029C6 sp:[0..31]-fn0000181E
 // Trashed: ap fp r0 sp
 // Preserved: CVZN
 fn000029FE_entry:
@@ -2620,7 +2620,7 @@ word32 fn00002A12(word32 r0, word32 fp, ptr32 & fpOut)
 //      fn00001F52
 //      fn0000296A
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn00001F52 r0:[0..31]-fn0000296A
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00002A12_entry:
@@ -2645,7 +2645,7 @@ word32 fn00002B62(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn000016A6
 //      fn000016CA
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r8
+// LiveOut: ap:[0..31]-fn000016A6 fp:[0..31]-fn000016A6 r8:[0..31]-fn000016CA
 // Trashed: CVZN ap fp r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00002B62_entry:
@@ -2777,7 +2777,7 @@ word32 fn00002B91(word32 r0, word32 r1, word32 ap, word32 fp, ptr32 & r2Out)
 // Called from:
 //      fn00002B62
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r1:[0..31]
-// LiveOut: r0 r2
+// LiveOut: r0:[0..31]-fn00002B62 r2:[0..31]-fn00002B62
 // Trashed: CVZN r0 r2 r3 r4 r5
 // Preserved: r1 sp
 fn00002B91_entry:
@@ -2890,7 +2890,7 @@ word32 fn000032CE(word32 r0, word32 ap, word32 fp, ptr32 & r8Out, ptr32 & apOut,
 //      fn00000D40
 //      fn00002B91
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 r8 sp
+// LiveOut: ap:[0..31]-fn00000D40 fp:[0..31]-fn00002B75 r0:[0..31]-fn00002B75 r8:[0..31]-fn00000D40 sp:[0..31]-fn00000D40
 // Trashed: CVZN ap fp r0 r10 r11 r8 r9 sp
 // Preserved:
 fn000032CE_entry:
@@ -3021,7 +3021,7 @@ word32 fn0000342C(word32 ap, word32 fp, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r
 //      fn0000296A
 //      fn000034A8
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10 r11 r9 sp
+// LiveOut: ap:[0..31]-fn00001E3A fp:[0..31]-fn0000296A r0:[0..31]-fn0000296A r10:[0..31]-fn0000296A r11:[0..31]-fn0000296A r9:[0..31]-fn00001E3A sp:[0..31]-fn0000296A
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn0000342C_entry:
@@ -3073,7 +3073,7 @@ word32 fn00003486(word32 ap, word32 fp)
 // Called from:
 //      fn00003502
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap sp
+// LiveOut: ap:[0..31]-fn00003502 sp:[0..31]-fn00003502
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn00003486_entry:
@@ -3100,7 +3100,7 @@ word32 fn000034A8(word32 ap, word32 fp, ptr32 & r11Out, ptr32 & apOut, ptr32 & f
 //      fn00001C06
 //      fn00003486
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r10 r11 sp
+// LiveOut: ap:[0..31]-fn00003486 fp:[0..31]-fn00001C06 r10:[0..31]-fn000019E6 r11:[0..31]-fn00001C06 sp:[0..31]-fn00003486
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn000034A8_entry:
@@ -3169,7 +3169,7 @@ word32 fn00003516(word32 ap, word32 fp, ptr32 & r10Out, ptr32 & r11Out, ptr32 & 
 //      fn00001956
 //      fn00001B62
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r0 r10 r11 sp
+// LiveOut: ap:[0..31]-fn00001B62 fp:[0..31]-fn00001B62 r0:[0..31]-fn00001B62 r10:[0..31]-fn00001B62 r11:[0..31]-fn00001B62 sp:[0..31]-fn00001B62
 // Trashed: CVZN ap fp r0 r1 r10 r11 sp
 // Preserved:
 fn00003516_entry:
@@ -3210,7 +3210,7 @@ word32 fn0000353E(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00001E3A
 //      fn000032CE
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001E3A fp:[0..31]-fn00001E3A r0:[0..31]-fn00001E3A sp:[0..31]-fn00001E3A
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn0000353E_entry:
@@ -3238,7 +3238,7 @@ word32 fn00003546(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn000032CE
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn000032CE fp:[0..31]-fn000032CE r0:[0..31]-fn000032CE sp:[0..31]-fn000032CE
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00003546_entry:
@@ -3263,7 +3263,7 @@ word32 fn00003566(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00003546
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn00003546 r0:[0..31]-fn00003546
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00003566_entry:
@@ -3280,7 +3280,7 @@ word32 fn0000357C(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00003586
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0
+// LiveOut: ap:[0..31]-fn00003586 fp:[0..31]-fn00003586 r0:[0..31]-fn00003586
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn0000357C_entry:
@@ -3302,7 +3302,7 @@ word32 fn00003586(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000AF8
 //      fn00003566
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn0000044E fp:[0..31]-fn00003566 r0:[0..31]-fn00003566 sp:[0..31]-fn0000044E
 // Trashed: ap fp r0 sp
 // Preserved: CVZN
 fn00003586_entry:
@@ -3330,7 +3330,7 @@ word32 fn00003596(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00001F52
 //      fn000034A8
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001F52 fp:[0..31]-fn00001F52 r0:[0..31]-fn00001F52 sp:[0..31]-fn00001F52
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn00003596_entry:
@@ -3358,7 +3358,7 @@ word32 fn000035A6(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 // Called from:
 //      fn00001F52
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00001F52 fp:[0..31]-fn00001F52 r0:[0..31]-fn00001F52 sp:[0..31]-fn00001F52
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000035A6_entry:
@@ -3387,7 +3387,7 @@ word32 fn000035B6(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn00000AF8
 //      fn00001E3A
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn00000AF8 fp:[0..31]-fn00001E3A r0:[0..31]-fn00001E3A sp:[0..31]-fn00000AF8
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000035B6_entry:
@@ -3415,7 +3415,7 @@ word32 fn000035BE(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r0 r10 r11 r9 sp
 // Preserved:
 fn000035BE_entry:
@@ -3458,7 +3458,7 @@ word32 fn000036E0(word32 ap, word32 fp, ptr32 & r11Out, ptr32 & apOut, ptr32 & f
 //      fn00001706
 //      fn000034A8
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp r10 r11
+// LiveOut: ap:[0..31]-fn00001706 fp:[0..31]-fn000034A8 r10:[0..31]-fn000034A8 r11:[0..31]-fn000034A8
 // Trashed: CVZN ap fp r0 r10 r11 sp
 // Preserved:
 fn000036E0_entry:
@@ -3500,7 +3500,7 @@ word32 fn0000381A(word32 ap, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn00000564
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut: ap:[0..31]-fn00000564 fp:[0..31]-fn00000564 sp:[0..31]-fn00000564
 // Trashed: CVZN ap fp r1 r3 r6 sp
 // Preserved:
 fn0000381A_entry:
@@ -3537,7 +3537,7 @@ word32 fn000038B6(word32 r0, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 //      fn000032CE
 //      fn0000342C
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: ap fp r0 sp
+// LiveOut: ap:[0..31]-fn000032CE fp:[0..31]-fn0000342C r0:[0..31]-fn0000342C sp:[0..31]-fn0000149A
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000038B6_entry:
@@ -3565,7 +3565,7 @@ word32 fn000038C6(word32 r0, word32 fp, ptr32 & fpOut)
 // Called from:
 //      fn000021E6
 // MayUse:  fp:[0..31] r0:[0..31]
-// LiveOut: fp r0
+// LiveOut: fp:[0..31]-fn000021E6 r0:[0..31]-fn000021E6
 // Trashed: CVZN ap fp r0 sp
 // Preserved:
 fn000038C6_entry:

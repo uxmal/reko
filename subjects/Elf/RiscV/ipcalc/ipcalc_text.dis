@@ -648,7 +648,7 @@ word64 fn00000000000163B0(word64 gp, word64 a0)
 // Called from:
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000175BC
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp
 fn00000000000163B0_entry:
@@ -694,7 +694,7 @@ word64 fn00000000000164D0(word64 a0, word64 a1)
 // Called from:
 //      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..31]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2
 // Preserved: ra s0 s1 s2 sp
 fn00000000000164D0_entry:
@@ -718,7 +718,7 @@ word64 fn000000000001654C(word64 gp, word64 a3, word64 a4, word64 a5, word64 a6,
 // Called from:
 //      fn0000000000015180
 // MayUse:  a3:[0..63] a4:[0..63] a5:[0..63] a6:[0..63] a7:[0..63] gp:[0..63]
-// LiveOut: a4 a5 a6 a7 gp
+// LiveOut: a4:[0..63]-fn0000000000015180 a5:[0..63]-fn0000000000015180 a6:[0..63]-fn0000000000015180 a7:[0..63]-fn0000000000015180 gp:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 gp t1 t3
 // Preserved: ra s0 s1 s2 s3 sp
 fn000000000001654C_entry:
@@ -758,7 +758,7 @@ word64 fn0000000000016630(word64 gp, word64 a0, word64 a1)
 // Called from:
 //      fn00000000000166F4
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000166F4
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 sp
 fn0000000000016630_entry:
@@ -805,7 +805,7 @@ word64 fn00000000000166F4(word64 gp, word64 a0, word64 a1, word64 a2)
 // Called from:
 //      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 sp
 fn00000000000166F4_entry:
@@ -883,7 +883,7 @@ word64 fn0000000000016830(word64 gp, word64 a0)
 //      fn00000000000168B8
 //      fn0000000000016D74
 // MayUse:  a0:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000016D74
 // Trashed: a0 a4 a5
 // Preserved: a3 ra s0 sp
 fn0000000000016830_entry:
@@ -924,7 +924,7 @@ word64 fn00000000000168E4(word64 gp, word64 a0, word64 a1)
 //      fn0000000000016D74
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000175BC
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 t1 t3 t4 t5
 // Preserved: ra s0 s1 sp
 fn00000000000168E4_entry:
@@ -972,7 +972,7 @@ word64 fn00000000000169D8(word64 gp, word64 a0, word64 a1)
 // Called from:
 //      fn0000000000015180
 // MayUse:  a0:[0..31] a1:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 sp
 fn00000000000169D8_entry:
@@ -1041,7 +1041,7 @@ word64 fn0000000000016B68(word64 a0)
 // Called from:
 //      fn0000000000016D74
 // MayUse:  a0:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000016D74
 // Trashed: a0 a1 a2 a3 a4 a5 a6
 // Preserved: ra sp
 fn0000000000016B68_entry:
@@ -1157,7 +1157,7 @@ word64 fn0000000000016D74(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2,
 // Called from:
 //      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63] ra:[0..63]
-// LiveOut: a0 a4
+// LiveOut: a0:[0..63]-fn0000000000015180 a4:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a4 a5
 // Preserved: a3 a6 a7 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 s8 sp t1 t3 t4 t5
 fn0000000000016D74_entry:
@@ -1359,7 +1359,7 @@ word64 fn000000000001730C(word64 gp, word64 a0, word64 a1)
 // Called from:
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000175BC
 // Trashed: a0 a4 a5
 // Preserved: a1 a2 a3 a6 ra s0 s1 sp
 fn000000000001730C_entry:
@@ -1404,7 +1404,7 @@ word64 fn00000000000173D4(word64 a0, word64 a1)
 // Called from:
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000175BC
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 sp
 fn00000000000173D4_entry:
@@ -1468,7 +1468,7 @@ word64 fn00000000000175BC(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1,
 // Called from:
 //      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63] ra:[0..63] s1:[0..63]
-// LiveOut: a0 a4
+// LiveOut: a0:[0..63]-fn0000000000015180 a4:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a4 a5
 // Preserved: a3 a6 a7 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp t1 t3 t4 t5
 fn00000000000175BC_entry:
@@ -1595,7 +1595,7 @@ word64 fn0000000000017924(word64 gp, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out
 //      fn0000000000017B40
 //      fn0000000000017D10
 // MayUse:  gp:[0..63]
-// LiveOut: a0 a1 a2 a3 a4 a6
+// LiveOut: a0:[0..63]-fn0000000000015180 a1:[0..63]-fn0000000000017D10 a2:[0..63]-fn0000000000017D10 a3:[0..63]-fn0000000000017D10 a4:[0..63]-fn0000000000017D10 a6:[0..63]-fn0000000000015180
 // Trashed: a0 a1 a2 a3 a4 a5 a6
 // Preserved: ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp
 fn0000000000017924_entry:
@@ -1689,7 +1689,7 @@ word64 fn0000000000017B40(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2,
 // Called from:
 //      fn0000000000016D74
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] a4:[0..63] gp:[0..63] ra:[0..63] s5:[0..63] s6:[0..63]
-// LiveOut: gp s1 s6
+// LiveOut: gp:[0..63]-fn0000000000016D74 s1:[0..63]-fn0000000000016D74 s6:[0..63]-fn0000000000016D74
 // Trashed: a0 a1 a2 a3 a4 a5 a6 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 t1
 // Preserved: sp
 fn0000000000017B40_entry:
@@ -1784,7 +1784,7 @@ word64 fn0000000000017D10(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1,
 // Called from:
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] a4:[0..63] gp:[0..63] ra:[0..63] s1:[0..63] s6:[0..63] s7:[0..63]
-// LiveOut: gp s0 s3 s4 s6
+// LiveOut: gp:[0..63]-fn00000000000175BC s0:[0..63]-fn00000000000175BC s3:[0..63]-fn00000000000175BC s4:[0..63]-fn00000000000175BC s6:[0..63]-fn00000000000175BC
 // Trashed: a0 a1 a2 a3 a4 a5 a6 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 t1
 // Preserved: sp
 fn0000000000017D10_entry:
@@ -1891,7 +1891,7 @@ word64 fn0000000000017F04(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
 // Called from:
 //      fn0000000000016D74
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn0000000000016D74
 // Trashed: a0 a1 a2 a3 a4 a5 a6 t1 t3
 // Preserved: a7 ra s0 s1 s2 s3 s4 s5 s6 sp
 fn0000000000017F04_entry:
@@ -1950,7 +1950,7 @@ word64 fn0000000000018118(word64 gp, word64 a0, word64 a1)
 // Called from:
 //      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
-// LiveOut: a0
+// LiveOut: a0:[0..63]-fn00000000000175BC
 // Trashed: a0 a4 a5 t4
 // Preserved: a1 a2 a3 a6 a7 ra s0 sp t1 t3 t5 t6
 fn0000000000018118_entry:
@@ -2029,7 +2029,7 @@ word64 fn00000000000182B4(word64 a0, ptr64 & a3Out, ptr64 & a4Out)
 //      fn0000000000017B40
 //      fn0000000000017F04
 // MayUse:  a0:[0..31]
-// LiveOut: a0 a3 a4
+// LiveOut: a0:[0..63]-fn00000000000166F4 a3:[0..63]-fn0000000000017B40 a4:[0..63]-fn0000000000017B40
 // Trashed: a0 a3 a4 a5
 // Preserved: sp
 fn00000000000182B4_entry:

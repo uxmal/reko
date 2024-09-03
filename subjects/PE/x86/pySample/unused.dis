@@ -2,7 +2,7 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0008:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-py_unused
 // Trashed: eax
 // Preserved:
 py_unused_entry:

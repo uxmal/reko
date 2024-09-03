@@ -81,7 +81,7 @@ word16 fn0110(word16 S0TIC)
 //      fn0034
 //      fn0128
 // MayUse:  S0TIC:[0..15]
-// LiveOut: S0TIC
+// LiveOut: S0TIC:[0..15]-fn0128
 // Trashed: EZVCN S0TIC
 // Preserved: r0
 fn0110_entry:
@@ -100,7 +100,7 @@ word16 fn011C(word16 S0RIC)
 // Called from:
 //      fn0034
 // MayUse:  S0RIC:[0..15]
-// LiveOut: r0 S0RIC
+// LiveOut: r0:[0..15]-fn0034 S0RIC:[0..15]-fn0034
 // Trashed: EZVCN r0 S0RIC
 // Preserved:
 fn011C_entry:

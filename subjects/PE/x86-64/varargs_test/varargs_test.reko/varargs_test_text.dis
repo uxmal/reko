@@ -4,7 +4,7 @@ word32 fn0000000140001000()
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400012BC
 // Trashed: SCZOP r8 r9 rax rcx rdx xmm0
 // Preserved: rsp
 fn0000000140001000_entry:
@@ -23,7 +23,7 @@ word64 fn00000001400010C0()
 //      fn00000001400010D0
 //      fn000000014000193C
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000001400010D0
 // Trashed: rax
 // Preserved: rsp
 fn00000001400010C0_entry:
@@ -55,7 +55,7 @@ word64 fn0000000140001130()
 //      fn0000000140001140
 //      fn000000014000193C
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000140001140
 // Trashed: rax
 // Preserved: rsp
 fn0000000140001130_entry:
@@ -87,7 +87,7 @@ word32 fn00000001400011B0(word64 rcx, word64 qwArg00)
 //      fn0000000140001000
 //      fn0000000140001E9C
 // MayUse:  rcx:[0..63] Stack +0000:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000140001000
 // Trashed: SCZOP r8 rax rcx rdx
 // Preserved: rsp
 fn00000001400011B0_entry:
@@ -191,7 +191,7 @@ word32 fn00000001400012BC(word64 rax)
 // Called from:
 //      Win32CrtStartup
 // MayUse:  rax:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-Win32CrtStartup
 // Trashed: SCZOP r8 r9 rax rcx rdx xmm0
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
@@ -277,7 +277,7 @@ DWORD Win32CrtStartup()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
@@ -312,7 +312,7 @@ word32 fn000000014000147C(word64 rcx, word64 qwArg00)
 // Called from:
 //      fn00000001400011B0
 // MayUse:  rcx:[0..63] Stack +0000:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400011B0
 // Trashed: SCZOP r8 rax rcx rdx
 // Preserved: rsp
 fn000000014000147C_entry:
@@ -424,7 +424,7 @@ byte fn000000014000164C(word32 ecx)
 // Called from:
 //      fn00000001400011D4
 // MayUse:  ecx:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..7]-fn00000001400011D4
 // Trashed: SCZOP r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
 // Preserved:
 fn000000014000164C_entry:
@@ -472,7 +472,7 @@ word64 fn0000000140001718(word64 rcx)
 //      Win32CrtStartup
 //      fn000000014000164C
 // MayUse:  rcx:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000001400012BC
 // Trashed: SCZOP r8 r9 rax rcx rdx
 // Preserved: rsp
 fn0000000140001718_entry:
@@ -573,7 +573,7 @@ word64 fn0000000140001804(word64 rcx)
 // Called from:
 //      fn0000000140001854
 // MayUse:  rcx:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000140001854
 // Trashed: SCZOP rax rcx rdx
 // Preserved: rbx rsp
 fn0000000140001804_entry:
@@ -616,7 +616,7 @@ word64 fn000000014000186C(LARGE_INTEGER tArg18)
 // Called from:
 //      Win32CrtStartup
 // MayUse:  Stack +0018:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-Win32CrtStartup
 // Trashed: SCZO rax rcx
 // Preserved: rbp rbx rsp
 fn000000014000186C_entry:
@@ -648,7 +648,7 @@ word32 fn0000000140001918()
 // Called from:
 //      fn00000001400011D4
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400011D4
 // Trashed: rax
 // Preserved: rsp
 fn0000000140001918_entry:
@@ -663,7 +663,7 @@ word32 fn0000000140001920()
 // Called from:
 //      fn00000001400011D4
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400011D4
 // Trashed: rax
 // Preserved: rsp
 fn0000000140001920_entry:
@@ -696,7 +696,7 @@ byte fn0000000140001938()
 //      fn0000000140001600
 //      fn00000001400017D8
 // MayUse: 
-// LiveOut: al
+// LiveOut: al:[0..7]-fn0000000140001600
 // Trashed: al
 // Preserved: rsp
 fn0000000140001938_entry:
@@ -730,7 +730,7 @@ word32 fn0000000140001958()
 // Called from:
 //      fn00000001400011D4
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400011D4
 // Trashed: SCZO rax
 // Preserved: rsp
 fn0000000140001958_entry:
@@ -777,7 +777,7 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, ULONGLONG tArg10, ptr64 & 
 //      Win32CrtStartup
 //      fn000000014000164C
 // MayUse:  ecx:[0..31] Stack +0000:[0..63] Stack +0010:[0..63]
-// LiveOut: rax rcx
+// LiveOut: rax:[0..63]-fn00000001400012BC rcx:[0..63]-fn00000001400012BC
 // Trashed: SCZOP r8 rax rcx rdx
 // Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
@@ -825,7 +825,7 @@ word32 fn0000000140001ABC()
 //      fn00000001400011D4
 //      fn00000001400012A0
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400012A0
 // Trashed: SCZO rax
 // Preserved: rsp
 fn0000000140001ABC_entry:
@@ -1071,7 +1071,7 @@ word32 fn0000000140001DC4()
 //      fn000000014000164C
 //      fn00000001400017B4
 // MayUse: 
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000001400015C4
 // Trashed: SCZO rax
 // Preserved: rsp
 fn0000000140001DC4_entry:

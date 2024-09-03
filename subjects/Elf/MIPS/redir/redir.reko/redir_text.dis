@@ -1724,7 +1724,7 @@ word32 client_prepare_connect(word32 r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out
 // Called from:
 //      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r5 r6 r7
+// LiveOut: r5:[0..31]-client_new r6:[0..31]-client_new r7:[0..31]-client_new
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
 client_prepare_connect_entry:
@@ -1890,7 +1890,7 @@ word32 add_to_request(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra, ptr
 //      client_prepare_connect
 //      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
-// LiveOut: r2 r5 r6 r7
+// LiveOut: r2:[0..31]-client_parse_request r5:[0..31]-client_prepare_connect r6:[0..31]-client_prepare_connect r7:[0..31]-client_prepare_connect
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 add_to_request_entry:
@@ -1934,7 +1934,7 @@ word32 get_a_line(word32 r4, word32 r5, word32 r6)
 // Called from:
 //      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_parse_request
 // Trashed: r2 r25 r28 r3 r4 r5
 // Preserved: r30 sp
 get_a_line_entry:
@@ -2009,7 +2009,7 @@ word32 client_send_request(word32 r4, word32 ra, ptr32 & r25Out)
 //      main
 //      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r25 r5
+// LiveOut: r25:[0..31]-main r5:[0..31]-main
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 client_send_request_entry:
@@ -2112,7 +2112,7 @@ word32 client_check_reply_http(word32 r4)
 // Called from:
 //      client_parse_reply
 // MayUse:  r4:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_parse_reply
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 client_check_reply_http_entry:
@@ -2230,7 +2230,7 @@ word32 client_destroy(word32 r4, word32 ra)
 //      main
 //      clist_delete
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r5
+// LiveOut: r5:[0..31]-main
 // Trashed: r2 r25 r28 r4
 // Preserved: r30 ra sp
 client_destroy_entry:
@@ -2277,7 +2277,7 @@ word32 open_destination(word32 r4, word32 ra)
 // Called from:
 //      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_new
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
 open_destination_entry:
@@ -2309,7 +2309,7 @@ word32 clist_new(word32 ra, ptr32 & r4Out, ptr32 & r5Out)
 // Called from:
 //      main
 // MayUse:  ra:[0..31]
-// LiveOut: r2 r4 r5
+// LiveOut: r2:[0..31]-main r4:[0..31]-main r5:[0..31]-main
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: r30 ra sp
 clist_new_entry:
@@ -2341,7 +2341,7 @@ word32 clist_add(word32 r4, word32 r5, ptr32 & r5Out)
 // Called from:
 //      main
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r2 r5
+// LiveOut: r2:[0..31]-main r5:[0..31]-main
 // Trashed: r2 r25 r28 r3 r4
 // Preserved: r30 sp
 clist_add_entry:
@@ -2370,7 +2370,7 @@ word32 clist_remove(word32 r4, word32 r5)
 // Called from:
 //      clist_delete
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r5
+// LiveOut: r5:[0..31]-clist_delete
 // Trashed: r2 r25 r28 r3
 // Preserved: r30 sp
 clist_remove_entry:
@@ -2520,7 +2520,7 @@ word32 request_new(word32 r4, word32 ra)
 // Called from:
 //      client_parse_request
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_parse_request
 // Trashed: r2 r25 r28 r3 r4 r5
 // Preserved: r30 ra sp
 request_new_entry:
@@ -2560,7 +2560,7 @@ word32 request_parse_line(word32 r4, word32 r5, word32 ra)
 //      client_parse_request
 //      request_new
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_parse_request
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: r30 ra sp
 request_parse_line_entry:
@@ -2647,7 +2647,7 @@ word32 request_add_lines(word32 r4, word32 r5, word32 r6)
 // Called from:
 //      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-client_parse_request
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 request_add_lines_entry:
@@ -2698,7 +2698,7 @@ word32 get_method(word32 r4, ptr32 & r5Out)
 // Called from:
 //      request_parse_line
 // MayUse:  r4:[0..31]
-// LiveOut: r2 r5
+// LiveOut: r2:[0..31]-request_parse_line r5:[0..31]-request_parse_line
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
 get_method_entry:
@@ -2716,7 +2716,7 @@ word32 get_uri(word32 r4)
 // Called from:
 //      request_parse_line
 // MayUse:  r4:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-request_parse_line
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
 get_uri_entry:
@@ -2845,7 +2845,7 @@ word32 is_a_method(word32 r4)
 // Called from:
 //      request_parse_line
 // MayUse:  r4:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-request_parse_line
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 is_a_method_entry:
@@ -3030,7 +3030,7 @@ word32 properties_parse_command_line(word32 r4, word32 r5, word32 r16, word32 ra
 // Called from:
 //      main
 // MayUse:  r16:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
-// LiveOut: r5
+// LiveOut: r5:[0..31]-main
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
 properties_parse_command_line_entry:
@@ -3134,7 +3134,7 @@ word32 properties_print_usage(word32 r4)
 // Called from:
 //      properties_parse_command_line
 // MayUse:  r4:[0..31]
-// LiveOut: r5
+// LiveOut: r5:[0..31]-properties_parse_command_line
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 properties_print_usage_entry:
@@ -3202,7 +3202,7 @@ word32 print_log(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7O
 //      slist_new
 //      slist_delete
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r25 r4 r5 r6 r7
+// LiveOut: r25:[0..31]-client_send_request r4:[0..31]-handle_log_rotate r5:[0..31]-main r6:[0..31]-add_to_request r7:[0..31]-add_to_request
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 print_log_entry:
@@ -3327,7 +3327,7 @@ word32 server_new(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // Called from:
 //      main
 // MayUse:  r4:[0..31] r5:[0..15] r6:[0..31] r7:[0..31] ra:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-main
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 server_new_entry:
@@ -3366,7 +3366,7 @@ word32 server_open(word32 r4, word32 ra, ptr32 & r5Out)
 // Called from:
 //      main
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r2 r5
+// LiveOut: r2:[0..31]-main r5:[0..31]-main
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
 server_open_entry:
@@ -3448,7 +3448,7 @@ word32 slist_new(word32 ra)
 // Called from:
 //      main
 // MayUse:  ra:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-main
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: r30 ra sp
 slist_new_entry:

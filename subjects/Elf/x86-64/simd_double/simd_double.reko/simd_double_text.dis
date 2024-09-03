@@ -103,7 +103,7 @@ word64 _mm_malloc(word64 rdi, word64 rsi)
 // Called from:
 //      main
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-main
 // Trashed: SCZOP rax rdi Top
 // Preserved: rbp rcx rdi rdx rsi rsp
 _mm_malloc_entry:

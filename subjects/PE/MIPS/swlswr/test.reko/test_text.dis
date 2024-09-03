@@ -4,7 +4,7 @@ word32 fn00011000()
 // Called from:
 //      fn000110E8
 // MayUse: 
-// LiveOut: r2
+// LiveOut: r2:[0..31]-fn000110E8
 // Trashed: r2 r4 r5 r6 r8
 // Preserved: ra sp
 fn00011000_entry:
@@ -24,7 +24,7 @@ DWORD Win32CrtStartup()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: r2
+// LiveOut: r2:[0..31]-Win32CrtStartup
 // Trashed: r2
 // Preserved:
 Win32CrtStartup_entry:
@@ -40,7 +40,7 @@ word32 fn000110E8()
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
-// LiveOut: r2
+// LiveOut: r2:[0..31]-Win32CrtStartup
 // Trashed: r2 r4 r5 r6 r8 r9
 // Preserved: r30 r7 ra sp
 fn000110E8_entry:
@@ -211,7 +211,7 @@ word32 fn00011460()
 // Called from:
 //      fn000112A8
 // MayUse: 
-// LiveOut: r2
+// LiveOut: r2:[0..31]-fn000112A8
 // Trashed: r2 r8
 // Preserved: sp
 fn00011460_entry:
@@ -269,7 +269,7 @@ word32 fn0001152C()
 // Called from:
 //      fn000116FC
 // MayUse: 
-// LiveOut: r2
+// LiveOut: r2:[0..31]-fn000116FC
 // Trashed: r2 r4 r5 r8 r9
 // Preserved: ra sp
 fn0001152C_entry:

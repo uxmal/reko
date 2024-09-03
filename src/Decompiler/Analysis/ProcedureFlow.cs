@@ -63,9 +63,9 @@ namespace Reko.Analysis
         /// (at least) the 16 least significant bits of r3 will be 
         /// live-out.
         /// </remarks>
-        public Dictionary<Storage, BitRange> BitsLiveOut;
+        public Dictionary<Storage, LiveOutUse> BitsLiveOut { get; set; }
 
-        public Dictionary<RegisterStorage, uint> grfLiveOut;
+        public Dictionary<RegisterStorage, LiveOutFlagsUse> LiveOutFlags { get; set; }
 
         public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
 		public Dictionary<RegisterStorage, uint> grfPreserved;
@@ -93,9 +93,9 @@ namespace Reko.Analysis
 
             grfTrashed = new Dictionary<RegisterStorage, uint>();
             grfPreserved = new Dictionary<RegisterStorage, uint>();
-            grfLiveOut = new Dictionary<RegisterStorage, uint>();
+            LiveOutFlags = new Dictionary<RegisterStorage, LiveOutFlagsUse>();
 
-            BitsLiveOut = new Dictionary<Storage, BitRange>();
+            BitsLiveOut = new Dictionary<Storage, LiveOutUse>();
 
             this.BitsUsed = new Dictionary<Storage, BitRange>();
             this.LiveInDataTypes = new Dictionary<Storage, DataType>();
@@ -114,7 +114,7 @@ namespace Reko.Analysis
 			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
             EmitStorageDataTypes("// DataTypes: ", LiveInDataTypes, writer);
-			EmitRegisters(arch, "// LiveOut:", grfLiveOut, BitsLiveOut.Keys, writer);
+			EmitRegisters(arch, "// LiveOut:", LiveOutFlags, BitsLiveOut, writer);
 			writer.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
 			writer.WriteLine();
@@ -144,9 +144,9 @@ namespace Reko.Analysis
 		{
             if (id.Storage is FlagGroupStorage flags)
 			{
-                if (!this.grfLiveOut.TryGetValue(flags.FlagRegister, out uint grf))
+                if (!this.LiveOutFlags.TryGetValue(flags.FlagRegister, out var grf))
                     return false;
-                return ((grf & flags.FlagGroupBits) != 0);
+                return ((grf.Flags & flags.FlagGroupBits) != 0);
 			}
 			if (id.Storage is RegisterStorage reg)
 			{

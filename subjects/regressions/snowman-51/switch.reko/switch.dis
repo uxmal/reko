@@ -2,7 +2,7 @@ char * get(uint32 n)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0004:[0..31]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-get
 // Trashed: eax
 // Preserved:
 get_entry:
@@ -27,7 +27,7 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-DllMain
 // Trashed: eax
 // Preserved:
 DllMain_entry:

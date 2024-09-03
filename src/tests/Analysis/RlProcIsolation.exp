@@ -34,7 +34,7 @@ l0C00_000F:
 	return
 fn0C00_000F_exit:
 // fn0C00_0014 /////////////////////
-	LiveOut:   ax:[0..15]
+	LiveOut:   ax:[0..15]-fn0C00_0000
 	BitsUsed:  ax:[0..15]
 	Trashed:   SCZO ax di Top
 	Preserved: sp

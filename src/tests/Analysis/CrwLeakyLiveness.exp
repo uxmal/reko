@@ -43,7 +43,7 @@ FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // MayUse:  ds:[0..15]
 // DataTypes: 
 //   ds: (ptr16 (segment 0104))
-// LiveOut: C ax
+// LiveOut: C-fn0C00_0000 ax:[0..15]-fn0C00_0000
 // Trashed: SCZO ax si Top
 // Preserved: sp
 // fn0C00_000A

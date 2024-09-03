@@ -83,7 +83,7 @@ word32 fn00002718(word32 r10, word32 r11)
 //      fn00003334
 //      fn00004968
 // MayUse:  r10:[0..31] r11:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00003334
 // Trashed: VNZC r10 r12 r8
 // Preserved: sp
 fn00002718_entry:
@@ -99,7 +99,7 @@ word32 fn0000272E(word32 r10, word32 r11)
 //      fn00003334
 //      fn00004968
 // MayUse:  r10:[0..31] r11:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00003334
 // Trashed: VNZC r12 r8
 // Preserved: sp
 fn0000272E_entry:
@@ -117,7 +117,7 @@ byte fn00002744(word32 r9, word32 r11, ptr32 & lrOut)
 //      fn0000284C
 //      fn00004968
 // MayUse:  r11:[0..31] r9:[0..31]
-// LiveOut: VNZ lr
+// LiveOut: VNZ-fn0000284C lr:[0..31]-fn0000284C
 // Trashed: VNZC lr r12 r8
 // Preserved: sp
 fn00002744_entry:
@@ -144,7 +144,7 @@ word32 fn000027D8(word32 r12, ptr32 & r9Out)
 // Called from:
 //      fn00003168
 // MayUse:  r12:[0..31]
-// LiveOut: r8 r9
+// LiveOut: r8:[0..31]-fn00003168 r9:[0..31]-fn00003168
 // Trashed: VNZC r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000027D8_entry:
@@ -285,7 +285,7 @@ word32 fn00002A4C()
 // Called from:
 //      fn0000393C
 // MayUse: 
-// LiveOut: r10
+// LiveOut: r10:[0..31]-fn0000393C
 // Trashed: VNZC r10 r11 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00002A4C_entry:
@@ -314,7 +314,7 @@ word32 fn00002A70(word32 r10, word32 r11, word32 r12, ptr32 & r12Out)
 //      fn00002DB4
 //      fn00004374
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: r11 r12
+// LiveOut: r11:[0..31]-fn00004374 r12:[0..7]-fn00004374
 // Trashed: VNZC r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00002A70_entry:
@@ -396,7 +396,7 @@ word32 fn00002B30(word32 r5, word32 r12, word32 lr, ptr32 & r9Out, ptr32 & r10Ou
 // Called from:
 //      fn00006CAC
 // MayUse:  lr:[0..31] r12:[0..31] r5:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00006CAC r10:[0..31]-fn00006CAC r11:[0..31]-fn00006CAC r12:[0..31]-fn00006CAC r8:[0..31]-fn00006CAC r9:[0..31]-fn00006CAC
 // Trashed: VNZC lr r10 r11 r12 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00002B30_entry:
@@ -539,7 +539,7 @@ word32 fn00002CBC(word32 r4, word32 lr, ptr32 & r9Out, ptr32 & r12Out, ptr32 & l
 //      fn00002B30
 //      fn0000511C
 // MayUse:  lr:[0..31] r4:[0..31]
-// LiveOut: lr r12 r8 r9
+// LiveOut: lr:[0..31]-fn00002B30 r12:[0..31]-fn00002B30 r8:[0..31]-fn00002B30 r9:[0..31]-fn00002B30
 // Trashed: VNZC lr r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00002CBC_entry:
@@ -622,7 +622,7 @@ word32 fn00002D38(word32 r4, word32 r11, word32 r12, word32 lr)
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r4:[0..31]
-// LiveOut: lr
+// LiveOut: lr:[0..31]-fn00004968
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00002D38_entry:
@@ -675,7 +675,7 @@ word32 fn00002DB4(word32 r4, word32 r5, word32 r10, word32 r11, word32 r12, word
 //      fn00004864
 //      fn00004968
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r10 r12
+// LiveOut: lr:[0..31]-fn00004864 r10:[0..31]-fn00004864 r12:[0..7]-fn00004864
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00002DB4_entry:
@@ -981,7 +981,7 @@ word32 fn000030B4(word32 r4, word32 r5, word32 r7, word32 r11, word32 r12, word3
 //      fn0000393C
 //      fn00004458
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000393C r12:[0..31]-fn0000393C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000030B4_entry:
@@ -1004,7 +1004,7 @@ word32 fn000030D8(word32 r4, word32 r5, word32 r7, word32 r12, word32 lr, ptr32 
 //      fn00003334
 //      fn000045F0
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00003334 r10:[0..31]-fn00003334 r11:[0..31]-fn00003334 r12:[0..7]-fn00003334 r8:[0..31]-fn000045F0 r9:[0..31]-fn000045F0
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000030D8_entry:
@@ -1045,7 +1045,7 @@ word32 fn00003120(word32 r0, word32 r1, word32 r2, word32 r5, word32 r10, word32
 // Called from:
 //      fn00003A44
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..7] r11:[0..31] r12:[0..31] r2:[0..31] r5:[0..31]
-// LiveOut: lr r11
+// LiveOut: lr:[0..31]-fn00003A44 r11:[0..31]-fn00003A44
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00003120_entry:
@@ -1083,7 +1083,7 @@ word32 fn00003168(word32 r0, word32 r1, word32 r4, word32 r7, word32 r10, word32
 //      fn00003334
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r8 r9
+// LiveOut: lr:[0..31]-fn0000511C r10:[0..31]-fn0000511C r11:[0..31]-fn0000511C r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00003168_entry:
@@ -1113,7 +1113,7 @@ word32 fn00003198(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn00003904
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
-// LiveOut: lr r0 r1 r2 r3
+// LiveOut: lr:[0..31]-fn00003904 r0:[0..31]-fn00003904 r1:[0..31]-fn00003904 r2:[0..31]-fn00003904 r3:[0..31]-fn00003904
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00003198_entry:
@@ -1168,7 +1168,7 @@ word32 fn00003210(word32 r4, word32 r5, word32 r7, word32 r10, word32 r11, word3
 //      fn00003334
 //      fn00004458
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00003334 r12:[0..31]-fn00003334
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00003210_entry:
@@ -1236,7 +1236,7 @@ word32 fn000032D0(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn0000330C
 //      fn00003334
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3
+// LiveOut: lr:[0..31]-fn0000330C r0:[0..31]-fn0000330C r1:[0..31]-fn0000330C r10:[0..31]-fn0000330C r11:[0..31]-fn0000330C r12:[0..31]-fn0000330C r2:[0..31]-fn0000330C r3:[0..31]-fn0000330C
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000032D0_entry:
@@ -1271,7 +1271,7 @@ word32 fn0000330C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00003334
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3
+// LiveOut: lr:[0..31]-fn00003334 r0:[0..31]-fn00003334 r1:[0..31]-fn00003334 r10:[0..31]-fn00003334 r11:[0..31]-fn00003334 r12:[0..31]-fn00003334 r2:[0..31]-fn00003334 r3:[0..31]-fn00003334
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000330C_entry:
@@ -1300,7 +1300,7 @@ word64 fn00003334(word32 r4, word32 r8, word32 r9, word32 r10, word32 r11, word3
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r4:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31]
-// LiveOut: lr r1:r0 r11:r10 r2 r3 r4 r5 r6 r7
+// LiveOut: lr:[0..31]-fn0000511C Sequence r1:r0:[0..63]-fn0000511C Sequence r11:r10:[0..63]-fn0000511C r2:[0..31]-fn0000511C r3:[0..31]-fn0000511C r4:[0..31]-fn0000511C r5:[0..31]-fn0000511C r6:[0..31]-fn0000511C r7:[0..31]-fn0000511C
 // Trashed: VNZC lr pc r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00003334_entry:
@@ -1783,7 +1783,7 @@ word32 fn00003904(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
-// LiveOut: lr r0 r1 r2 r3
+// LiveOut: lr:[0..31]-fn00004968 r0:[0..31]-fn00004968 r1:[0..31]-fn00004968 r2:[0..31]-fn00004968 r3:[0..31]-fn00004968
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00003904_entry:
@@ -1814,7 +1814,7 @@ word32 fn0000393C(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r10
+// LiveOut: lr:[0..31]-fn0000511C r10:[0..31]-fn0000511C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r4 r5 r6 r7 sp
 fn0000393C_entry:
@@ -1884,7 +1884,7 @@ word32 fn00003A44(word32 r0, word32 r2, word32 r5, word32 r11, word32 r12, word3
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r5:[0..31]
-// LiveOut: lr r10
+// LiveOut: lr:[0..31]-fn0000511C r10:[0..31]-fn0000511C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00003A44_entry:
@@ -1978,7 +1978,7 @@ word32 fn00003B2C(word32 r4, word32 r5, word32 r12, word32 lr, ptr32 & r5Out, pt
 //      fn00003B8C
 //      fn000045F0
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r10 r11 r4 r5 r7 r9
+// LiveOut: lr:[0..31]-fn00003B60 r10:[0..31]-fn000045F0 r11:[0..31]-fn00003B8C r4:[0..31]-fn00003B60 r5:[0..31]-fn00003B60 r7:[0..31]-fn00003B60 r9:[0..31]-fn00003B8C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00003B2C_entry:
@@ -2012,7 +2012,7 @@ word32 fn00003B60(ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 //      fn00003B2C
 //      fn000045F0
 // MayUse: 
-// LiveOut: lr r4 r5 r6 r7
+// LiveOut: lr:[0..31]-fn00003B2C r4:[0..31]-fn00003B2C r5:[0..31]-fn00003B2C r6:[0..31]-fn00003B2C r7:[0..31]-fn00003B2C
 // Trashed: VNZC lr r12 r8
 // Preserved: r4 r5 r6 r7 sp
 fn00003B60_entry:
@@ -2038,7 +2038,7 @@ word32 fn00003B8C(word32 r4, word32 lr, ptr32 & r10Out, ptr32 & r11Out, ptr32 & 
 // Called from:
 //      fn000045F0
 // MayUse:  lr:[0..31] r4:[0..31]
-// LiveOut: lr r10 r11 r9
+// LiveOut: lr:[0..31]-fn000045F0 r10:[0..31]-fn000045F0 r11:[0..31]-fn000045F0 r9:[0..31]-fn000045F0
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00003B8C_entry:
@@ -2059,7 +2059,7 @@ word32 fn00003BA4(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 sp
+// LiveOut: lr:[0..31]-fn0000511C r0:[0..31]-fn0000511C r1:[0..31]-fn0000511C r10:[0..31]-fn0000511C r11:[0..31]-fn0000511C r12:[0..7]-fn0000511C r2:[0..31]-fn0000511C r3:[0..31]-fn0000511C r4:[0..31]-fn0000511C r5:[0..31]-fn0000511C r6:[0..31]-fn0000511C r7:[0..31]-fn0000511C sp:[0..31]-fn0000511C
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00003BA4_entry:
@@ -2111,7 +2111,7 @@ word32 fn0000418C(word32 r1, word32 r5, word32 r9, word32 r10, word32 r11, word3
 //      fn000045F0
 //      fn0000511C
 // MayUse:  lr:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r5:[0..31] r9:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: lr:[0..31]-fn00004374 r0:[0..31]-fn000045F0 r1:[0..31]-fn000045F0 r10:[0..31]-fn000045F0 r11:[0..31]-fn00004374 r12:[0..31]-fn000045F0 r2:[0..31]-fn000045F0 r3:[0..31]-fn0000511C r4:[0..31]-fn00004374 r5:[0..31]-fn00004374 r6:[0..31]-fn000045F0 r7:[0..31]-fn00004374
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000418C_entry:
@@ -2302,7 +2302,7 @@ word32 fn00004374(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn00004458
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r11 r12
+// LiveOut: lr:[0..31]-fn00004458 r11:[0..31]-fn00004458 r12:[0..31]-fn00004458
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: pc r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00004374_entry:
@@ -2375,7 +2375,7 @@ word32 fn00004458(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r11 r12
+// LiveOut: lr:[0..31]-fn00004968 r11:[0..31]-fn00004968 r12:[0..31]-fn00004968
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: pc r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00004458_entry:
@@ -2518,7 +2518,7 @@ word32 fn000045F0(word32 r2, word32 r3, word32 r8, word32 r9, word32 r10, word32
 //      fn00004864
 //      fn00004968
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: lr r10 r12
+// LiveOut: lr:[0..31]-fn00004864 r10:[0..31]-fn00004864 r12:[0..31]-fn00004968
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000045F0_entry:
@@ -2739,7 +2739,7 @@ word32 fn00004864(word32 r0, word32 r1, word32 r2, word32 r3, word32 r11, word32
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31]
-// LiveOut: lr r10
+// LiveOut: lr:[0..31]-fn00004968 r10:[0..31]-fn00004968
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: pc r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00004864_entry:
@@ -2830,7 +2830,7 @@ word32 fn00004968(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: lr r10 r11
+// LiveOut: lr:[0..31]-fn0000511C r10:[0..31]-fn0000511C r11:[0..31]-fn0000511C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00004968_entry:
@@ -3770,7 +3770,7 @@ word32 fn000066CC()
 // Called from:
 //      fn00003334
 // MayUse: 
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00003334
 // Trashed: VNZC r12
 // Preserved: sp
 fn000066CC_entry:
@@ -3785,7 +3785,7 @@ bool fn000066D0(word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r7
 // Called from:
 //      fn00003334
 // MayUse:  lr:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: Z lr r10 r11 r12 r8 r9
+// LiveOut: Z-fn00003334 lr:[0..31]-fn00003334 r10:[0..31]-fn00003334 r11:[0..31]-fn00003334 r12:[0..31]-fn00003334 r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000066D0_entry:
@@ -3869,7 +3869,7 @@ word32 fn00006768(word32 r12)
 // Called from:
 //      fn00006814
 // MayUse:  r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00006814
 // Trashed: VNZC r10 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00006768_entry:
@@ -3920,7 +3920,7 @@ word32 fn000067DC(word32 r12)
 // Called from:
 //      fn00006814
 // MayUse:  r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00006814
 // Trashed: VNZC r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000067DC_entry:
@@ -4104,7 +4104,7 @@ word32 fn00006998(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn00004968
 //      fn00006AA8
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12
+// LiveOut: lr:[0..31]-fn00006AA8 r10:[0..31]-fn00006AA8 r11:[0..31]-fn00006AA8 r12:[0..31]-fn00006AA8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00006998_entry:
@@ -4214,7 +4214,7 @@ word32 fn00006AA8(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn00003334
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12
+// LiveOut: lr:[0..31]-fn00003198 r10:[0..31]-fn00003198 r11:[0..31]-fn00003334 r12:[0..31]-fn00003198
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00006AA8_entry:
@@ -4400,7 +4400,7 @@ word32 fn00006CAC(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 &
 //      fn0000B95C
 //      fn0000CA50
 // MayUse:  lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12 r4 r5 r6 r7 r8 r9 sp
+// LiveOut: lr:[0..31]-fn0000B95C r10:[0..31]-fn0000511C r11:[0..31]-fn0000B95C r12:[0..31]-fn0000B95C r4:[0..31]-fn0000A614 r5:[0..31]-fn0000511C r6:[0..31]-fn0000A614 r7:[0..31]-fn0000A614 r8:[0..31]-fn0000B95C r9:[0..31]-fn0000B95C sp:[0..31]-fn0000A614
 // Trashed: VNZC lr pc r10 r11 r12 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00006CAC_entry:
@@ -4445,7 +4445,7 @@ word32 fn00006D14(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00006E5C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00006E5C r10:[0..31]-fn00006E5C r11:[0..31]-fn00006E5C r12:[0..31]-fn00006E5C r8:[0..31]-fn00006E5C r9:[0..31]-fn00006E5C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00006D14_entry:
@@ -4522,7 +4522,7 @@ word32 fn00006D9C(word32 r0, word32 r1, word32 r4, word32 r7, word32 r10, word32
 // Called from:
 //      fn00006E5C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r7:[0..31]
-// LiveOut: lr
+// LiveOut: lr:[0..31]-fn00006E5C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00006D9C_entry:
@@ -4549,7 +4549,7 @@ byte fn00006DDC(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 //      fn00006E5C
 //      fn000092D8
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
-// LiveOut: VN lr r12
+// LiveOut: VN-fn000092D8 lr:[0..31]-fn000092D8 r12:[0..31]-fn000092D8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00006DDC_entry:
@@ -4642,7 +4642,7 @@ word32 fn00006E94(word32 r12, ptr32 & r11Out, ptr32 & r12Out)
 //      fn00003A44
 //      fn00007140
 // MayUse:  r12:[0..31]
-// LiveOut: r10 r11 r12
+// LiveOut: r10:[0..31]-fn00007140 r11:[0..31]-fn00007140 r12:[0..31]-fn00002B30
 // Trashed: VNZC r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00006E94_entry:
@@ -4681,7 +4681,7 @@ word32 fn00006ED4(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32
 // Called from:
 //      fn00007140
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00007140 r12:[0..31]-fn00007140
 // Trashed: VNZC lr r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00006ED4_entry:
@@ -4897,7 +4897,7 @@ bool fn00007140(word32 r3, word32 r4, word32 r5, word32 r11, word32 r12, word32 
 // Called from:
 //      fn000071D4
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn000071D4 lr:[0..31]-fn000071D4 r12:[0..31]-fn000071D4
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00007140_entry:
@@ -4955,7 +4955,7 @@ word32 fn000071D4(word32 r3, word32 r4, word32 r5, word32 r7, word32 r11, word32
 // Called from:
 //      fn00003A44
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00003A44 r12:[0..31]-fn00003A44
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn000071D4_entry:
@@ -4977,7 +4977,7 @@ word32 fn000071E8(word32 r0, word32 r1, word32 r2, word32 r12, word32 lr, ptr32 
 //      fn000071E8
 //      fn00007754
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31]
-// LiveOut: lr r0 r1 r12 r2 r3 r4 r6 r9
+// LiveOut: lr:[0..31]-fn000071E8 r0:[0..31]-fn000071E8 r1:[0..31]-fn000071E8 r12:[0..31]-fn000071E8 r2:[0..31]-fn000071E8 r3:[0..31]-fn000071E8 r4:[0..31]-fn000071E8 r6:[0..31]-fn000071E8 r9:[0..31]-fn00007754
 // Trashed: VNZC r12 r8 r9
 // Preserved: lr r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000071E8_entry:
@@ -5069,7 +5069,7 @@ word32 fn00007294(word32 r0, word32 r1, word32 r2, word32 r12, word32 lr, ptr32 
 //      fn00007294
 //      fn00008144
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31]
-// LiveOut: lr r0 r1 r10 r12 r2 r3 r4 r6 r9
+// LiveOut: lr:[0..31]-fn00007294 r0:[0..31]-fn00007294 r1:[0..31]-fn00007294 r10:[0..31]-fn00008144 r12:[0..31]-fn00007294 r2:[0..31]-fn00007294 r3:[0..31]-fn00007294 r4:[0..31]-fn00007294 r6:[0..31]-fn00007294 r9:[0..31]-fn00007294
 // Trashed: VNZC r10 r12 r8 r9
 // Preserved: lr r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00007294_entry:
@@ -5162,7 +5162,7 @@ word32 fn00007358(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00007754
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r9
+// LiveOut: lr:[0..31]-fn00007754 r0:[0..31]-fn00007754 r1:[0..31]-fn00007754 r10:[0..31]-fn00007754 r11:[0..31]-fn00007754 r12:[0..31]-fn00007754 r2:[0..31]-fn00007754 r3:[0..31]-fn00007754 r4:[0..31]-fn00007754 r5:[0..31]-fn00007754 r6:[0..31]-fn00007754 r7:[0..31]-fn00007754 r9:[0..31]-fn00007754
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00007358_entry:
@@ -5500,7 +5500,7 @@ byte fn00007754(word32 r2, word32 r3, word32 r8, word32 r9, word32 r10, word32 r
 //      fn00007754
 //      fn000087C0
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r9
+// LiveOut: VNZC-fn00007358 lr:[0..31]-fn00007358 r0:[0..31]-fn00007358 r1:[0..31]-fn00007358 r10:[0..31]-fn00007358 r11:[0..31]-fn00007358 r12:[0..31]-fn00007754 r2:[0..31]-fn00007358 r3:[0..31]-fn00007358 r4:[0..31]-fn00007358 r5:[0..31]-fn00007358 r6:[0..31]-fn00007358 r7:[0..31]-fn00007358 r9:[0..31]-fn00007358
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00007754_entry:
@@ -6121,7 +6121,7 @@ word32 fn00007D56(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00008144
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: lr:[0..31]-fn00008144 r0:[0..31]-fn00008144 r1:[0..31]-fn00008144 r10:[0..31]-fn00008144 r11:[0..31]-fn00008144 r12:[0..31]-fn00008144 r2:[0..31]-fn00008144 r3:[0..31]-fn00008144 r4:[0..31]-fn00008144 r5:[0..31]-fn00008144 r6:[0..31]-fn00008144 r7:[0..31]-fn00008144 r8:[0..31]-fn00008144 r9:[0..31]-fn00008144
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00007D56_entry:
@@ -6462,7 +6462,7 @@ byte fn00008144(word32 r2, word32 r8, word32 r9, word32 r10, word32 r11, word32 
 //      fn00008144
 //      fn000087C0
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: VNZC-fn00007D56 lr:[0..31]-fn00007D56 r0:[0..31]-fn00007D56 r1:[0..31]-fn00007D56 r10:[0..31]-fn00007D56 r11:[0..31]-fn00007D56 r12:[0..31]-fn00008144 r2:[0..31]-fn00007D56 r3:[0..31]-fn00007D56 r4:[0..31]-fn00007D56 r5:[0..31]-fn00007D56 r6:[0..31]-fn00007D56 r7:[0..31]-fn00007D56 r8:[0..31]-fn00007D56 r9:[0..31]-fn00007D56
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00008144_entry:
@@ -7077,7 +7077,7 @@ bool fn000087C0(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 // Called from:
 //      fn00003BA4
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: Z lr r0 r1 r10 r11 r2 r3 r4 r5 r6 r7
+// LiveOut: Z-fn00003BA4 lr:[0..31]-fn00003BA4 r0:[0..31]-fn00003BA4 r1:[0..31]-fn00003BA4 r10:[0..31]-fn00003BA4 r11:[0..31]-fn00003BA4 r2:[0..31]-fn00003BA4 r3:[0..31]-fn00003BA4 r4:[0..31]-fn00003BA4 r5:[0..31]-fn00003BA4 r6:[0..31]-fn00003BA4 r7:[0..31]-fn00003BA4
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn000087C0_entry:
@@ -7200,7 +7200,7 @@ word32 fn0000895C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r1
+// LiveOut: r1:[0..31]-fn00004968
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000895C_entry:
@@ -7266,7 +7266,7 @@ bool fn00008A6C(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r
 // Called from:
 //      fn00004968
 // MayUse:  lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn00004968 lr:[0..31]-fn00004968 r12:[0..31]-fn00004968
 // Trashed: VNZC lr r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00008A6C_entry:
@@ -7295,7 +7295,7 @@ word32 fn00008A8C(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 &
 // Called from:
 //      fn00002B30
 // MayUse:  lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00002B30 r12:[0..7]-fn00002B30
 // Trashed: VNZC lr r11 r12
 // Preserved: r4 r5 r6 r7 sp
 fn00008A8C_entry:
@@ -7406,7 +7406,7 @@ word32 fn00008BE0(word32 r12, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32
 //      fn0000901C
 //      fn000090C0
 // MayUse:  r12:[0..31]
-// LiveOut: r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// LiveOut: r0:[0..31]-fn00008E88 r1:[0..31]-fn000090C0 r10:[0..31]-fn00008E88 r11:[0..31]-fn00008E88 r12:[0..7]-fn00008E88 r2:[0..31]-fn000090C0 r3:[0..31]-fn00008E88 r4:[0..31]-fn00008E88 r5:[0..31]-fn00008E88 r6:[0..31]-fn00008E88 r7:[0..31]-fn000090C0 r8:[0..31]-fn00008E88 r9:[0..31]-fn00008E88
 // Trashed: VNZC r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00008BE0_entry:
@@ -7475,7 +7475,7 @@ bool fn00008CAA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 //      fn0000901C
 //      fn000090C0
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
-// LiveOut: Z lr r10 r11 r12
+// LiveOut: Z-fn000090C0 lr:[0..31]-fn000090C0 r10:[0..31]-fn000090C0 r11:[0..31]-fn000090C0 r12:[0..31]-fn000090C0
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00008CAA_entry:
@@ -7560,7 +7560,7 @@ bool fn00008DF4(word32 r4, word32 r5, word32 r7, word32 r12, word32 lr, ptr32 & 
 //      fn00008F68
 //      fn000090C0
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn000090C0 lr:[0..31]-fn000090C0 r12:[0..31]-fn000090C0
 // Trashed: VNZC lr r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00008DF4_entry:
@@ -7653,7 +7653,7 @@ bool fn00008E88(word32 r3, word32 r7, word32 r8, word32 r9, word32 r10, word32 r
 // Called from:
 //      fn00008F68
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r3:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn00008F68 lr:[0..31]-fn00008F68 r12:[0..31]-fn00008F68
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00008E88_entry:
@@ -7758,7 +7758,7 @@ word32 fn00008F68(word32 r2, word32 r7, word32 r11, word32 r12, word32 lr, ptr32
 //      fn0000901C
 //      fn000090C0
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r7:[0..31]
-// LiveOut: lr r10 r11 r12 r2
+// LiveOut: lr:[0..31]-fn000090C0 r10:[0..31]-fn000090C0 r11:[0..31]-fn000090C0 r12:[0..7]-fn000090C0 r2:[0..31]-fn000090C0
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn00008F68_entry:
@@ -7791,7 +7791,7 @@ word32 fn00008FEA(word32 r2)
 // Called from:
 //      fn00008FEC
 // MayUse:  r2:[0..31]
-// LiveOut: r2
+// LiveOut: r2:[0..31]-fn00008FEC
 // Trashed: VNZC r2
 // Preserved: sp
 fn00008FEA_entry:
@@ -7808,7 +7808,7 @@ word32 fn00008FEC(word32 r2, word32 r3, word32 r4, word32 r6, word32 lr, ptr32 &
 // Called from:
 //      fn00008F68
 // MayUse:  lr:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r6:[0..31]
-// LiveOut: lr r10 r11 r12 r2
+// LiveOut: lr:[0..31]-fn00008F68 r10:[0..31]-fn00008F68 r11:[0..31]-fn00008F68 r12:[0..7]-fn00008F68 r2:[0..31]-fn00008F68
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00008FEC_entry:
@@ -7902,7 +7902,7 @@ word32 fn00008FF2(word32 r3, word32 r6)
 // Called from:
 //      fn00008F68
 // MayUse:  r3:[0..31] r6:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..7]-fn00008FF2
 // Trashed: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn00008FF2_entry:
@@ -7977,7 +7977,7 @@ bool fn000090C0(word32 r0, word32 r1, word32 r3, word32 r4, word32 r5, word32 r1
 // Called from:
 //      fn0000511C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: Z lr r10 r11 r12
+// LiveOut: Z-fn0000511C lr:[0..31]-fn0000511C r10:[0..31]-fn0000511C r11:[0..31]-fn0000511C r12:[0..31]-fn0000511C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000090C0_entry:
@@ -8060,7 +8060,7 @@ ui64 fn00009248(word32 r10, word32 r11, word32 r12, word32 pc, ptr32 & r8Out, pt
 //      fn000093B8
 //      fn000095D6
 // MayUse:  pc:[0..31] r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r11:r10 r8 r9
+// LiveOut: lr:[0..31]-fn000093B8 Sequence r11:r10:[0..63]-fn000095D6 r8:[0..31]-fn000095D6 r9:[0..31]-fn000095D6
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00009248_entry:
@@ -8106,7 +8106,7 @@ word64 fn000092B4(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 &
 // Called from:
 //      fn000092D8
 // MayUse:  lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r11:r10
+// LiveOut: lr:[0..31]-fn000092D8 Sequence r11:r10:[0..63]-fn000092D8
 // Trashed: VNZC lr r10 r11 r12
 // Preserved: r4 r5 r6 r7 sp
 fn000092B4_entry:
@@ -8215,7 +8215,7 @@ word32 fn000093B8(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn00004968
 //      fn0000511C
 // MayUse:  r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r9:[0..31] Stack +0000:[0..63] Stack +0008:[0..63] Stack +0010:[0..31] Stack +0014:[0..31] Stack +0018:[0..63] Stack +0024:[0..31] Stack +0028:[0..31] Stack +0038:[0..31] Stack +003C:[0..31] Stack +0040:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: lr:[0..31]-fn00003334 r0:[0..31]-fn00003334 r1:[0..31]-fn00003334 r10:[0..31]-fn0000511C r11:[0..31]-fn00004864 r12:[0..31]-fn00003334 r2:[0..31]-fn00003334 r3:[0..31]-fn00003334 r4:[0..31]-fn00003334 r5:[0..31]-fn00003334 r6:[0..31]-fn00003334 r7:[0..31]-fn00003334
 // Trashed: VNZC lr pc r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn000093B8_entry:
@@ -8546,7 +8546,7 @@ word32 fn000095B2(word32 r4, word32 r5, word32 dwArg28, ptr32 & r3Out, ptr32 & r
 //      fn000093B8
 //      fn000095D6
 // MayUse:  r4:[0..31] r5:[0..31] Stack +0028:[0..31]
-// LiveOut: lr r10 r11 r12 r2 r3 r4 r5
+// LiveOut: lr:[0..31]-fn000095D6 r10:[0..31]-fn000095D6 r11:[0..31]-fn000095D6 r12:[0..31]-fn000095D6 r2:[0..31]-fn000095D6 r3:[0..31]-fn000095D6 r4:[0..31]-fn000095D6 r5:[0..31]-fn000095D6
 // Trashed: VNZC lr r10 r11 r12 r2 r3 r4 r5 r8 r9
 // Preserved: sp
 fn000095B2_entry:
@@ -8589,7 +8589,7 @@ word32 fn000095D6(word32 r0, word32 r1, word32 r2, word32 r5, word32 r6, word32 
 // Called from:
 //      fn000095B2
 // MayUse:  pc:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r2:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31] Stack +0014:[0..31] Stack +0020:[0..31] Stack +0024:[0..31] Stack +0034:[0..31] Stack +0038:[0..31] Stack +0040:[0..31] Stack +0048:[0..31]
-// LiveOut: lr r10 r11 r12 r2 r3 r4 r5
+// LiveOut: lr:[0..31]-fn000095B2 r10:[0..31]-fn000095B2 r11:[0..31]-fn000095B2 r12:[0..31]-fn000095B2 r2:[0..31]-fn000095B2 r3:[0..31]-fn000095B2 r4:[0..31]-fn000095B2 r5:[0..31]-fn000095B2
 // Trashed: VNZC lr pc r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn000095D6_entry:
@@ -8686,7 +8686,7 @@ word32 fn0000967A(word32 r6, word32 r7, word32 r12, word32 dwArg1C, word32 dwArg
 //      fn000093B8
 //      fn000095D6
 // MayUse:  r12:[0..31] r6:[0..31] r7:[0..31] Stack +001C:[0..31] Stack +0040:[0..31] Stack +0050:[0..31]
-// LiveOut: r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r0:[0..31]-fn000093B8 r1:[0..31]-fn000093B8 r10:[0..31]-fn000095D6 r11:[0..31]-fn000095D6 r12:[0..31]-fn000095D6 r2:[0..31]-fn000095D6 r3:[0..31]-fn000095D6 r4:[0..31]-fn000095D6 r5:[0..31]-fn000095D6 r6:[0..31]-fn000093B8 r7:[0..31]-fn000093B8
 // Trashed: VNZC r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn0000967A_entry:
@@ -8714,7 +8714,7 @@ word32 fn0000967E(word32 r5, word32 r6, word32 r7, word32 dwArg14, word32 dwArg3
 //      fn000095D6
 //      fn0000967A
 // MayUse:  r5:[0..31] r6:[0..31] r7:[0..31] Stack +0014:[0..31] Stack +0038:[0..31] Stack +0048:[0..31]
-// LiveOut: r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r0:[0..31]-fn0000967A r1:[0..31]-fn0000967A r10:[0..31]-fn0000967A r11:[0..31]-fn0000967A r12:[0..31]-fn0000967A r2:[0..31]-fn0000967A r3:[0..31]-fn0000967A r4:[0..31]-fn0000967A r5:[0..31]-fn0000967A r6:[0..31]-fn0000967A r7:[0..31]-fn0000967A
 // Trashed: VNZC r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000967E_entry:
@@ -8747,7 +8747,7 @@ word32 fn0000988A(word32 r1, word32 r6, word32 r12, word32 dwArg14, word32 dwArg
 //      fn000093B8
 //      fn0000967E
 // MayUse:  r1:[0..31] r12:[0..31] r6:[0..31] Stack +0014:[0..31] Stack +0048:[0..31]
-// LiveOut: r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7
+// LiveOut: r0:[0..31]-fn0000967E r1:[0..31]-fn0000967E r10:[0..31]-fn0000967E r11:[0..31]-fn0000967E r12:[0..31]-fn0000967E r2:[0..31]-fn0000967E r3:[0..31]-fn0000967E r4:[0..31]-fn0000967E r5:[0..31]-fn0000967E r6:[0..31]-fn0000967E r7:[0..31]-fn0000967E
 // Trashed: VNZC r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000988A_entry:
@@ -8864,7 +8864,7 @@ word32 fn00009A5C(word32 r5, word32 r7, word32 r12, word32 lr)
 //      fn00003334
 //      fn00004968
 // MayUse:  lr:[0..31] r12:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00003334
 // Trashed: VNZC r12 r8 r9
 // Preserved: lr pc r10 r11 r4 r5 r6 r7 sp
 fn00009A5C_entry:
@@ -8918,7 +8918,7 @@ word32 fn00009B5C(word32 r5, word32 r7, word32 r12, word32 lr)
 //      fn0000330C
 //      fn00003904
 // MayUse:  lr:[0..31] r12:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00003904
 // Trashed: VNZC r12 r8 r9
 // Preserved: lr pc r10 r11 r4 r5 r6 r7 sp
 fn00009B5C_entry:
@@ -8971,7 +8971,7 @@ word32 fn00009BC8(word32 r10, word32 r11, word32 r12, ptr32 & lrOut)
 // Called from:
 //      fn00004968
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00004968 r12:[0..31]-fn00004968
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00009BC8_entry:
@@ -9011,7 +9011,7 @@ word32 fn00009C40(word32 r0, word32 r1, word32 r2, word32 r9, word32 r10, word32
 //      fn00009C40
 //      fn00009D6C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r9:[0..31]
-// LiveOut: lr r0 r1 r10 r2 r3 r4 r5 r6
+// LiveOut: lr:[0..31]-fn00009C40 r0:[0..31]-fn00009C40 r1:[0..31]-fn00009C40 r10:[0..31]-fn00009C40 r2:[0..31]-fn00009C40 r3:[0..31]-fn00009C40 r4:[0..31]-fn00009C40 r5:[0..31]-fn00009C40 r6:[0..31]-fn00009C40
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00009C40_entry:
@@ -9130,7 +9130,7 @@ word32 fn00009D6C(word32 r0, word32 r1, word32 r2, word32 r10, word32 r11, word3
 // Called from:
 //      fn0000393C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31]
-// LiveOut: lr r10
+// LiveOut: lr:[0..31]-fn0000393C r10:[0..31]-fn0000393C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00009D6C_entry:
@@ -9148,7 +9148,7 @@ word32 fn00009D80(word32 r0, word32 r1, word32 r4, word32 r5, word32 r7, word32 
 //      fn00006D9C
 //      fn00009D94
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00006D9C r12:[0..31]-fn00006D9C
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00009D80_entry:
@@ -9240,7 +9240,7 @@ word32 fn00009E30(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn0000A788
 //      fn0000A7C8
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr
+// LiveOut: lr:[0..31]-fn0000A7C8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00009E30_entry:
@@ -9269,7 +9269,7 @@ word32 fn00009EDC(word32 r4, word32 r5, word32 r7, word32 r12, word32 lr, ptr32 
 //      fn0000A614
 //      fn0000A850
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000A850 r12:[0..31]-fn0000A850
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00009EDC_entry:
@@ -9289,7 +9289,7 @@ word32 fn00009EEC(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn0000A850
 //      fn0000A8DC
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
-// LiveOut: lr r10 r11 r12 r9
+// LiveOut: lr:[0..31]-fn00009EEC r10:[0..31]-fn00009EEC r11:[0..31]-fn00009EEC r12:[0..31]-fn00009EEC r9:[0..31]-fn00009EEC
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00009EEC_entry:
@@ -9910,7 +9910,7 @@ word32 fn0000A614(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 //      fn0000A804
 //      fn0000A828
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn0000A7C8 r10:[0..31]-fn0000A708 r11:[0..31]-fn0000A708 r12:[0..31]-fn0000A7C8 r8:[0..31]-fn0000A708 r9:[0..31]-fn0000A708
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000A614_entry:
@@ -10011,7 +10011,7 @@ word32 fn0000A708(word32 r10, word32 r11, word32 r12, word32 lr, ptr32 & r9Out, 
 // Called from:
 //      fn0000A764
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn0000A764 r10:[0..31]-fn0000A764 r11:[0..31]-fn0000A764 r12:[0..31]-fn0000A764 r8:[0..31]-fn0000A764 r9:[0..31]-fn0000A764
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000A708_entry:
@@ -10039,7 +10039,7 @@ word32 fn0000A764(word32 r11, word32 r12, word32 lr, ptr32 & r9Out, ptr32 & r10O
 // Called from:
 //      fn0000A778
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn0000A778 r10:[0..31]-fn0000A778 r11:[0..31]-fn0000A778 r12:[0..31]-fn0000A778 r8:[0..31]-fn0000A778 r9:[0..31]-fn0000A778
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000A764_entry:
@@ -10062,7 +10062,7 @@ word32 fn0000A778(word32 r12, word32 lr, ptr32 & r9Out, ptr32 & r10Out, ptr32 & 
 //      fn00003334
 //      fn0000511C
 // MayUse:  lr:[0..31] r12:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00003168 r10:[0..31]-fn00003168 r11:[0..31]-fn00003168 r12:[0..31]-fn00003168 r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000A778_entry:
@@ -10099,7 +10099,7 @@ word32 fn0000A7C8(word32 r0, word32 r1, word32 r4, word32 r5, word32 r7, word32 
 //      fn00006D9C
 //      fn00009D80
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn00009D80 r12:[0..31]-fn00009D80
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000A7C8_entry:
@@ -10198,7 +10198,7 @@ word32 fn0000A8DC(word32 r1, word32 r3, word32 r5, word32 r8, word32 r9, word32 
 // Called from:
 //      fn0000418C
 // MayUse:  lr:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r3:[0..31] r5:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r10 r11 r12
+// LiveOut: lr:[0..31]-fn0000418C r10:[0..31]-fn0000418C r11:[0..31]-fn0000418C r12:[0..31]-fn0000418C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000A8DC_entry:
@@ -10325,7 +10325,7 @@ word32 fn0000A9DE(word32 r8, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 
 //      fn0000A9DE
 //      fn0000B7B2
 // MayUse:  r8:[0..31]
-// LiveOut: lr r0 r1 r12 r2 r3
+// LiveOut: lr:[0..31]-fn0000B7B2 r0:[0..31]-fn0000B7B2 r1:[0..31]-fn0000B7B2 r12:[0..31]-fn0000B7B2 r2:[0..31]-fn0000B7B2 r3:[0..31]-fn0000B7B2
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn0000A9DE_entry:
@@ -10372,7 +10372,7 @@ word32 fn0000ACB0(word32 r6, word32 r7, word32 dwArg00, word32 dwArg04, word32 d
 //      fn0000ACAE
 //      fn0000AE42
 // MayUse:  r6:[0..31] r7:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31] Stack +0014:[0..31] Stack +0018:[0..31] Stack +001C:[0..31] Stack +0020:[0..31] Stack +0024:[0..31] Stack +0028:[0..31] Stack +002C:[0..31] Stack +0030:[0..31] Stack +0034:[0..31] Stack +0038:[0..31]
-// LiveOut: lr r0 r1 r12 r2 r3 r6
+// LiveOut: lr:[0..31]-fn0000AE42 r0:[0..31]-fn0000AE42 r1:[0..31]-fn0000AE42 r12:[0..31]-fn0000AE42 r2:[0..31]-fn0000AE42 r3:[0..31]-fn0000AE42 r6:[0..31]-fn0000AE42
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000ACB0_entry:
@@ -11536,7 +11536,7 @@ word32 fn0000AE42(word32 r4, word32 r6, word32 dwArg18, word32 dwArg40, ptr32 & 
 //      fn0000ACB0
 //      fn0000AEFA
 // MayUse:  r4:[0..31] r6:[0..31] Stack +0018:[0..31] Stack +0040:[0..31]
-// LiveOut: lr r0 r1 r12 r2 r3 r6
+// LiveOut: lr:[0..31]-fn0000AEFA r0:[0..31]-fn0000AEFA r1:[0..31]-fn0000AEFA r12:[0..31]-fn0000AEFA r2:[0..31]-fn0000AEFA r3:[0..31]-fn0000AEFA r6:[0..31]-fn0000AEFA
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000AE42_entry:
@@ -11716,7 +11716,7 @@ word32 fn0000AEFA(ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r6Out, pt
 //      fn0000AE42
 //      fn0000AF76
 // MayUse: 
-// LiveOut: lr r0 r1 r12 r2 r3 r6
+// LiveOut: lr:[0..31]-fn0000AE42 r0:[0..31]-fn0000AE42 r1:[0..31]-fn0000AE42 r12:[0..31]-fn0000AE42 r2:[0..31]-fn0000AE42 r3:[0..31]-fn0000AE42 r6:[0..31]-fn0000AE42
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000AEFA_entry:
@@ -11763,7 +11763,7 @@ word32 fn0000AF76(ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r6Out, pt
 //      fn0000A9DE
 //      fn0000AEFA
 // MayUse: 
-// LiveOut: lr r0 r1 r12 r2 r3 r6
+// LiveOut: lr:[0..31]-fn0000ACB0 r0:[0..31]-fn0000ACB0 r1:[0..31]-fn0000ACB0 r12:[0..31]-fn0000ACB0 r2:[0..31]-fn0000ACB0 r3:[0..31]-fn0000ACB0 r6:[0..31]-fn0000ACB0
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000AF76_entry:
@@ -11786,7 +11786,7 @@ word32 fn0000B7B2(word32 r9, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 
 // Called from:
 //      fn00004968
 // MayUse:  r9:[0..31]
-// LiveOut: lr r0 r1 r12 r2 r3
+// LiveOut: lr:[0..31]-fn00004968 r0:[0..31]-fn00004968 r1:[0..31]-fn00004968 r12:[0..31]-fn00004968 r2:[0..31]-fn00004968 r3:[0..31]-fn00004968
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B7B2_entry:
@@ -11810,7 +11810,7 @@ word32 fn0000B7D4(word32 r10, word32 r11, word32 r12, ptr32 & r9Out, ptr32 & r10
 //      fn00004864
 //      fn00004968
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r10 r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00003334 r10:[0..31]-fn00003334 r11:[0..31]-fn00003334 r12:[0..31]-fn00003334 r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B7D4_entry:
@@ -11886,7 +11886,7 @@ byte fn0000B88C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 //      fn0000418C
 //      fn00006998
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: VN lr r0 r1 r10 r11 r12 r2 r3
+// LiveOut: VN-fn00006998 lr:[0..31]-fn00006998 r0:[0..31]-fn00006998 r1:[0..31]-fn00006998 r10:[0..31]-fn00006998 r11:[0..31]-fn00006998 r12:[0..31]-fn00006998 r2:[0..31]-fn00006998 r3:[0..31]-fn00006998
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B88C_entry:
@@ -11938,7 +11938,7 @@ word32 fn0000B904(word32 r4, word32 r5, word32 r6, word32 r7, word32 r11, word32
 //      fn00003210
 //      fn0000A614
 // MayUse:  lr:[0..31] r11:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r12 r9
+// LiveOut: lr:[0..31]-fn0000A614 r12:[0..31]-fn0000A614 r9:[0..31]-fn0000A614
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B904_entry:
@@ -11973,7 +11973,7 @@ word32 fn0000B95C(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32
 //      fn00009EDC
 //      fn0000B978
 // MayUse:  lr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r11 r12 r8 r9
+// LiveOut: lr:[0..31]-fn00009B5C r11:[0..31]-fn00003120 r12:[0..31]-fn00009B5C r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B95C_entry:
@@ -12003,7 +12003,7 @@ word32 fn0000B978(word32 r0, word32 r1, word32 r2, word32 r4, word32 r7, word32 
 //      fn0000A920
 //      fn0000B994
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r4:[0..31] r7:[0..31]
-// LiveOut: lr r11 r12
+// LiveOut: lr:[0..31]-fn0000B994 r11:[0..31]-fn0000B994 r12:[0..31]-fn0000B994
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000B978_entry:
@@ -12026,7 +12026,7 @@ word32 fn0000B994(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 
 //      fn00003120
 //      fn00003334
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r12:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r0 r1 r10 r11 r12 r2 r8 r9
+// LiveOut: lr:[0..31]-fn00003334 r0:[0..31]-fn00003334 r1:[0..31]-fn00003334 r10:[0..31]-fn00003334 r11:[0..31]-fn00003334 r12:[0..31]-fn00003334 r2:[0..31]-fn00003334 r8:[0..31]-fn00003334 r9:[0..31]-fn00003334
 // Trashed: VNZC lr pc r0 r1 r10 r11 r12 r2 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000B994_entry:
@@ -12112,7 +12112,7 @@ word32 fn0000BA44(word32 r11, word32 r12)
 //      fn0000BA66
 //      fn0000BA8C
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn0000BA66
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: sp
 fn0000BA44_entry:
@@ -12136,7 +12136,7 @@ word32 fn0000BA66(word32 r10, word32 r11, word32 r12)
 // Called from:
 //      fn0000BA8C
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn0000BA8C
 // Trashed: VNZC lr r10 r12 r8 r9
 // Preserved: r0 r1 r11 r2 r3 r4 r5 r6 r7 sp
 fn0000BA66_entry:
@@ -12347,7 +12347,7 @@ word32 fn0000BC98(word32 r12)
 // Called from:
 //      fn00006768
 // MayUse:  r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..7]-fn00006768
 // Trashed: VNZC r12 r8
 // Preserved: sp
 fn0000BC98_entry:
@@ -12367,7 +12367,7 @@ word32 fn0000BCB0(word32 r12)
 //      fn00006768
 //      fn000067DC
 // MayUse:  r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..7]-fn00006768
 // Trashed: VNZC r12
 // Preserved: sp
 fn0000BCB0_entry:
@@ -12383,7 +12383,7 @@ word32 fn0000BCDC(word32 r12)
 //      fn000067DC
 //      fn00006814
 // MayUse:  r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..7]-fn00006814
 // Trashed: VNZC r12
 // Preserved: sp
 fn0000BCDC_entry:
@@ -12414,7 +12414,7 @@ word32 fn0000BD8C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn0000B88C
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000B88C r12:[0..31]-fn0000B88C
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000BD8C_entry:
@@ -12634,7 +12634,7 @@ word32 fn0000BFB8(word32 r0, word32 r8, word32 r9, word32 r10, word32 r11, word3
 //      fn0000C058
 //      fn0000C2C8
 // MayUse:  r0:[0..31] r10:[0..7] r11:[0..31] r12:[0..31] r8:[0..7] r9:[0..7] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31] Stack +0014:[0..31]
-// LiveOut: lr r0 r10 r11 r12 r2 r3 r4 r5 r6 sp
+// LiveOut: lr:[0..31]-fn0000C058 r0:[0..31]-fn0000C058 r10:[0..31]-fn0000C058 r11:[0..31]-fn0000C058 r12:[0..31]-fn0000C058 r2:[0..31]-fn0000C058 r3:[0..31]-fn0000C058 r4:[0..31]-fn0000C058 r5:[0..31]-fn0000C058 r6:[0..31]-fn0000C058 sp:[0..31]-fn0000C058
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn0000BFB8_entry:
@@ -12729,7 +12729,7 @@ byte fn0000C058(word32 r0, word32 r11, word32 r12, ptr32 & r0Out, ptr32 & r1Out,
 // Called from:
 //      fn0000B88C
 // MayUse:  r0:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: VN lr r0 r1 r10 r11 r12 r2 r3
+// LiveOut: VN-fn0000B88C lr:[0..31]-fn0000B88C r0:[0..31]-fn0000B88C r1:[0..31]-fn0000B88C r10:[0..31]-fn0000B88C r11:[0..31]-fn0000B88C r12:[0..31]-fn0000B88C r2:[0..31]-fn0000B88C r3:[0..31]-fn0000B88C
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn0000C058_entry:
@@ -12926,7 +12926,7 @@ byte fn0000C2C8(word32 r0, word32 r8, word32 r10, word32 r11, word32 r12, word32
 // Called from:
 //      fn0000C058
 // MayUse:  lr:[0..31] r0:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r8:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
-// LiveOut: VN lr r0 r1 r10 r11 r12 r2 r3
+// LiveOut: VN-fn0000C058 lr:[0..31]-fn0000C058 r0:[0..31]-fn0000C058 r1:[0..31]-fn0000C058 r10:[0..31]-fn0000C058 r11:[0..31]-fn0000C058 r12:[0..31]-fn0000C058 r2:[0..31]-fn0000C058 r3:[0..31]-fn0000C058
 // Trashed: VNZC lr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000C2C8_entry:
@@ -13035,7 +13035,7 @@ word32 fn0000CA68(word32 r11, word32 r12, ptr32 & lrOut)
 //      fn0000CAB8
 //      fn0000CAE0
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000CAE0 r12:[0..31]-fn0000CAB8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000CA68_entry:
@@ -13063,7 +13063,7 @@ word32 fn0000CAB8(word32 r10, word32 r11, word32 r12, ptr32 & lrOut)
 // Called from:
 //      fn0000CAE0
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000CAE0 r12:[0..31]-fn0000CAE0
 // Trashed: VNZC lr r10 r12 r8 r9
 // Preserved: r0 r1 r11 r2 r3 r4 r5 r6 r7 sp
 fn0000CAB8_entry:
@@ -13087,7 +13087,7 @@ bool fn0000CAE0(word32 r1, word32 r4, word32 r8, word32 r9, word32 r10, word32 r
 // Called from:
 //      fn000092D8
 // MayUse:  lr:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: Z lr
+// LiveOut: Z-fn000092D8 lr:[0..31]-fn000092D8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000CAE0_entry:
@@ -13279,7 +13279,7 @@ bool fn0000CCF0(word32 r4, word32 r5, word32 r7, word32 r11, word32 r12, word32 
 // Called from:
 //      fn00008E88
 // MayUse:  lr:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r7:[0..31]
-// LiveOut: Z lr r11 r12 r8 r9
+// LiveOut: Z-fn00008E88 lr:[0..31]-fn00008E88 r11:[0..31]-fn00008E88 r12:[0..31]-fn00008E88 r8:[0..31]-fn00008E88 r9:[0..31]-fn00008E88
 // Trashed: VNZC lr r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000CCF0_entry:
@@ -13366,7 +13366,7 @@ word32 fn0000CD78(word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word
 //      fn0000CE10
 //      fn0000CEEE
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000CEEE r12:[0..31]-fn0000CEEE
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000CD78_entry:
@@ -13387,7 +13387,7 @@ word32 fn0000CE10(word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word
 // Called from:
 //      fn0000CEEE
 // MayUse:  r10:[0..31] r11:[0..31] r12:[0..31] r8:[0..31] r9:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000CEEE r12:[0..31]-fn0000CEEE
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000CE10_entry:
@@ -13425,7 +13425,7 @@ word32 fn0000CE88(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 // Called from:
 //      fn0000CEEE
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: lr r12
+// LiveOut: lr:[0..31]-fn0000CEEE r12:[0..31]-fn0000CEEE
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000CE88_entry:
@@ -13490,7 +13490,7 @@ word32 fn0000CEEE(word32 r0, word32 r1, word32 r10, word32 r11, word32 r12)
 // Called from:
 //      fn0000D1B8
 // MayUse:  r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn0000D1B8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000CEEE_entry:
@@ -13667,7 +13667,7 @@ word32 fn0000D1B8(word32 r0, word32 r1, word32 r12)
 // Called from:
 //      fn0000A9DE
 // MayUse:  r0:[0..31] r1:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn0000ACB0
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000D1B8_entry:
@@ -13683,7 +13683,7 @@ word32 fn0000D204(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr)
 // Called from:
 //      fn0000D220
 // MayUse:  lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..7]-fn0000D220
 // Trashed: VNZC lr r12
 // Preserved: r4 r5 r6 r7 sp
 fn0000D204_entry:
@@ -13707,7 +13707,7 @@ bool fn0000D220(word32 r0, word32 r1, word32 r2, word32 r9, word32 r10, word32 l
 // Called from:
 //      fn0000B818
 // MayUse:  lr:[0..31] pc:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r2:[0..31] r9:[0..31]
-// LiveOut: Z lr pc r0 r1 r12 r2 r3 r6
+// LiveOut: Z-fn0000B818 lr:[0..31]-fn0000B818 pc:[0..31]-fn0000B818 r0:[0..31]-fn0000B818 r1:[0..31]-fn0000B818 r12:[0..31]-fn0000B818 r2:[0..31]-fn0000B818 r3:[0..31]-fn0000B818 r6:[0..31]-fn0000B818
 // Trashed: VNZC lr pc r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 fn0000D220_entry:
@@ -15434,7 +15434,7 @@ word64 fn0000E684(word32 r10, word32 r11, word32 r12, word32 pc)
 // Called from:
 //      fn0000D220
 // MayUse:  pc:[0..31] r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: r11:r10
+// LiveOut: Sequence r11:r10:[0..63]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000E684_entry:
@@ -15557,7 +15557,7 @@ word64 fn0000E868(word32 r10, word32 r11, word32 r12, word32 pc)
 // Called from:
 //      fn0000D220
 // MayUse:  pc:[0..31] r10:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: r11:r10
+// LiveOut: Sequence r11:r10:[0..63]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000E868_entry:
@@ -15680,7 +15680,7 @@ byte fn0000EA4C(word32 r11, word32 r12, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r
 // Called from:
 //      fn0000D220
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: VN lr r10 r11 r9
+// LiveOut: VN-fn0000D220 lr:[0..31]-fn0000D220 r10:[0..31]-fn0000D220 r11:[0..31]-fn0000D220 r9:[0..31]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000EA4C_entry:
@@ -15777,7 +15777,7 @@ byte fn0000EB48(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 // Called from:
 //      fn0000D220
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: VN lr
+// LiveOut: VN-fn0000D220 lr:[0..31]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn0000EB48_entry:
@@ -16459,7 +16459,7 @@ bool fn0000F278(word64 r11_r10, word32 r7, word32 pc, ptr32 & pcOut)
 // Called from:
 //      fn0000D220
 // MayUse:  pc:[0..31] r7:[0..31] Sequence r11:r10:[0..63]
-// LiveOut: Z pc
+// LiveOut: Z-fn0000D220 pc:[0..31]-fn0000D220
 // Trashed: VNZC lr pc r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn0000F278_entry:
@@ -16495,7 +16495,7 @@ word64 __avr32_f64_mul(word32 r8, word32 r9, word32 r10, word32 r11)
 //      fn0000E868
 //      fn000101CC
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11:r10
+// LiveOut: Sequence r11:r10:[0..63]-fn0000E868
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 __avr32_f64_mul_entry:
@@ -16652,7 +16652,7 @@ word32 __avr32_f64_sub(word32 r8, word32 r9, word32 r10, word32 r11, word32 lr, 
 //      fn0000D220
 //      __avr32_f64_add
 // MayUse:  lr:[0..31] r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r10 r11 r5 r6 r7 r8 r9
+// LiveOut: lr:[0..31]-__avr32_f64_add r10:[0..31]-__avr32_f64_add r11:[0..31]-__avr32_f64_add r5:[0..31]-__avr32_f64_add r6:[0..31]-__avr32_f64_add r7:[0..31]-__avr32_f64_add r8:[0..31]-__avr32_f64_add r9:[0..31]-__avr32_f64_add
 // Trashed: VNZC lr r10 r11 r12 r5 r6 r7 r8 r9
 // Preserved: sp
 __avr32_f64_sub_entry:
@@ -16832,7 +16832,7 @@ ui64 __avr32_f64_add(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r5Out
 //      __avr32_f64_sub
 //      fn000101CC
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r11:r10 r5 r6 r7 r8 r9
+// LiveOut: lr:[0..31]-__avr32_f64_sub Sequence r11:r10:[0..63]-fn0000D220 r5:[0..31]-__avr32_f64_sub r6:[0..31]-__avr32_f64_sub r7:[0..31]-__avr32_f64_sub r8:[0..31]-__avr32_f64_sub r9:[0..31]-__avr32_f64_sub
 // Trashed: VNZC lr r10 r11 r12 r5 r6 r7 r8 r9
 // Preserved: sp
 __avr32_f64_add_entry:
@@ -16991,7 +16991,7 @@ word32 __avr32_f64_to_s32(word32 r10, word32 r11)
 //      fn0000D220
 //      __avr32_f64_to_u32
 // MayUse:  r10:[0..31] r11:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn0000D220
 // Trashed: VNZC r11 r12 r9
 // Preserved: sp
 __avr32_f64_to_s32_entry:
@@ -17016,7 +17016,7 @@ ui64 fn0000F792(word32 r10, word32 r11)
 // Called from:
 //      fn00009248
 // MayUse:  r10:[0..31] r11:[0..31]
-// LiveOut: r11:r10
+// LiveOut: Sequence r11:r10:[0..63]-fn00009248
 // Trashed: VNZC r10 r11 r12 r8 r9
 // Preserved: sp
 fn0000F792_entry:
@@ -17063,7 +17063,7 @@ word32 __avr32_u32_to_f64(word32 r12, ptr32 & r11Out)
 //      fn000095D6
 //      fn000101CC
 // MayUse:  r12:[0..31]
-// LiveOut: r10 r11
+// LiveOut: r10:[0..31]-fn000101CC r11:[0..31]-fn000101CC
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: sp
 __avr32_u32_to_f64_entry:
@@ -17081,7 +17081,7 @@ word32 __avr32_s32_to_f64(word32 r12, ptr32 & r11Out, ptr32 & lrOut)
 // Called from:
 //      fn0000D220
 // MayUse:  r12:[0..31]
-// LiveOut: lr r10 r11
+// LiveOut: lr:[0..31]-fn0000D220 r10:[0..31]-fn0000D220 r11:[0..31]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: sp
 __avr32_s32_to_f64_entry:
@@ -17102,7 +17102,7 @@ word32 fn0000F806(word32 r11, word32 r12, ptr32 & r11Out, ptr32 & lrOut)
 //      __avr32_u32_to_f64
 //      __avr32_s32_to_f64
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: lr r10 r11
+// LiveOut: lr:[0..31]-__avr32_s32_to_f64 r10:[0..31]-__avr32_u32_to_f64 r11:[0..31]-__avr32_u32_to_f64
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: sp
 fn0000F806_entry:
@@ -17127,7 +17127,7 @@ word32 fn0000F80A(ui64 r11_r10, word32 r12, ptr32 & r11Out, ptr32 & lrOut)
 //      __avr32_s32_to_f64
 //      fn0000F806
 // MayUse:  r12:[0..31] Sequence r11:r10:[0..63]
-// LiveOut: lr r10 r11
+// LiveOut: lr:[0..31]-fn0000F806 r10:[0..31]-fn0000F806 r11:[0..31]-fn0000F806
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: sp
 fn0000F80A_entry:
@@ -17240,7 +17240,7 @@ bool __avr32_f64_cmp_eq(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r1
 //      fn0000D220
 //      fn0000F278
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: Z r12
+// LiveOut: Z-fn0000F278 r12:[0..31]-fn0000D220
 // Trashed: VNZC r11 r12 r9
 // Preserved: sp
 __avr32_f64_cmp_eq_entry:
@@ -17274,7 +17274,7 @@ bool __avr32_f64_cmp_ge(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r1
 //      fn0000E684
 //      fn0000E868
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn0000E868 lr:[0..31]-fn0000D220 r12:[0..31]-fn0000E868
 // Trashed: VNZC lr r11 r12 r9
 // Preserved: r10 r8 sp
 __avr32_f64_cmp_ge_entry:
@@ -17373,7 +17373,7 @@ bool __avr32_f64_cmp_lt(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r9
 //      fn0000E868
 //      fn0000F278
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: Z lr r12 r9
+// LiveOut: Z-fn0000F278 lr:[0..31]-fn0000F278 r12:[0..31]-fn0000D220 r9:[0..31]-fn0000D220
 // Trashed: VNZC lr r11 r12 r9
 // Preserved: r10 r8 sp
 __avr32_f64_cmp_lt_entry:
@@ -17479,7 +17479,7 @@ bool fn0000F9D0(word32 r11, word32 r12, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r1
 //      fn00008E88
 //      fn000090C0
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: Z r10 r8 r9
+// LiveOut: Z-fn00008BE0 r10:[0..31]-fn00008BE0 r8:[0..31]-fn00008E88 r9:[0..31]-fn00008BE0
 // Trashed: VNZC r10 r12 r8 r9
 // Preserved: sp
 fn0000F9D0_entry:
@@ -17567,7 +17567,7 @@ bool fn0000FA0E(word32 r11, word32 r12, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r1
 //      fn0000901C
 //      fn000090C0
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: Z r10 r8 r9
+// LiveOut: Z-fn000090C0 r10:[0..31]-fn000090C0 r8:[0..31]-fn00008BE0 r9:[0..31]-fn00008BE0
 // Trashed: VNZC r10 r12 r8 r9
 // Preserved: sp
 fn0000FA0E_entry:
@@ -17654,7 +17654,7 @@ ui64 __avr32_f64_div(word32 r2, word32 r8, word32 r9, word32 r10, word32 r11, pt
 //      fn000093B8
 //      fn000095D6
 // MayUse:  r10:[0..31] r11:[0..31] r2:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r11:r10 r8 r9
+// LiveOut: Sequence r11:r10:[0..63]-fn000095D6 r8:[0..31]-fn000095D6 r9:[0..31]-fn000095D6
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 __avr32_f64_div_entry:
@@ -17868,7 +17868,7 @@ word32 fn0000FD70(word32 r11, word32 r12)
 // Called from:
 //      fn00008E88
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00008E88
 // Trashed: VNZC r10 r11 r12 r8 r9
 // Preserved: r5 r6 r7 sp
 fn0000FD70_entry:
@@ -17972,7 +17972,7 @@ word32 fn0000FF9C(word32 r11, word32 r12)
 // Called from:
 //      fn00008BE0
 // MayUse:  r11:[0..31] r12:[0..31]
-// LiveOut: r12
+// LiveOut: r12:[0..31]-fn00008BE0
 // Trashed: VNZC r10 r11 r12 r8 r9
 // Preserved: sp
 fn0000FF9C_entry:
@@ -18136,7 +18136,7 @@ word32 fn00010050(word32 r9, word32 r11, word32 r12, ptr32 & r12Out)
 //      fn0000901C
 //      fn000090C0
 // MayUse:  r11:[0..31] r12:[0..31] r9:[0..31]
-// LiveOut: r12 r9
+// LiveOut: r12:[0..31]-fn000090C0 r9:[0..31]-fn000090C0
 // Trashed: VNZC r10 r11 r12 r8 r9
 // Preserved: sp
 fn00010050_entry:
@@ -18269,7 +18269,7 @@ word32 fn0001013A(word32 r12, ptr32 & r12Out)
 //      fn0000901C
 //      fn000090C0
 // MayUse:  r12:[0..31]
-// LiveOut: r12 r9
+// LiveOut: r12:[0..31]-fn000090C0 r9:[0..31]-fn000090C0
 // Trashed: VNZC r10 r12 r8 r9
 // Preserved: sp
 fn0001013A_entry:
@@ -18326,7 +18326,7 @@ word32 fn000101B2(word32 r12, ptr32 & r12Out)
 //      fn0000901C
 //      fn000090C0
 // MayUse:  r12:[0..31]
-// LiveOut: r11 r12
+// LiveOut: r11:[0..31]-fn00008E88 r12:[0..31]-fn000090C0
 // Trashed: VNZC r11 r12
 // Preserved: sp
 fn000101B2_entry:
@@ -18355,7 +18355,7 @@ word32 fn000101CC(word32 r10, word32 r11, word32 pc, ptr32 & r9Out, ptr32 & r10O
 //      fn00009248
 //      fn000093B8
 // MayUse:  pc:[0..31] r10:[0..31] r11:[0..31]
-// LiveOut: lr r10 r11 r8 r9
+// LiveOut: lr:[0..31]-fn00009248 r10:[0..31]-fn00009248 r11:[0..31]-fn00009248 r8:[0..31]-fn00009248 r9:[0..31]-fn00009248
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000101CC_entry:
@@ -18378,7 +18378,7 @@ word32 __avr32_sdiv64(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r11O
 // Called from:
 //      fn00009BC8
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r10 r11
+// LiveOut: lr:[0..31]-fn00009BC8 r10:[0..31]-fn00009BC8 r11:[0..31]-fn00009BC8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 __avr32_sdiv64_entry:
@@ -18625,7 +18625,7 @@ word32 __moddi3(word32 r8, word32 r9, word32 r10, word32 r11)
 // Called from:
 //      fn00009BC8
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: r10
+// LiveOut: r10:[0..31]-fn00009BC8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 __moddi3_entry:
@@ -18814,7 +18814,7 @@ word64 fn000107C0(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r8Out, p
 //      fn0000B7D4
 //      fn0000CA68
 // MayUse:  r10:[0..31] r11:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: lr r11:r10 r8 r9
+// LiveOut: lr:[0..31]-fn0000CA68 Sequence r11:r10:[0..63]-fn000093B8 r8:[0..31]-fn0000B7D4 r9:[0..31]-fn0000B7D4
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn000107C0_entry:
@@ -19044,7 +19044,7 @@ word64 fn00010A4C(word64 r11_r10, word32 r8, word32 r9)
 //      fn000093B8
 //      fn0000B7D4
 // MayUse:  r8:[0..31] r9:[0..31] Sequence r11:r10:[0..63]
-// LiveOut: r11:r10
+// LiveOut: Sequence r11:r10:[0..63]-fn000093B8
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 r4 r5 r6 r7 sp
 fn00010A4C_entry:
@@ -19251,7 +19251,7 @@ bool fn00010CFC(word64 r11_r10, word64 r9_r8, word32 pc, ptr32 & r12Out, ptr32 &
 //      fn0000D220
 //      fn0000F278
 // MayUse:  pc:[0..31] Sequence r11:r10:[0..63] Sequence r9:r8:[0..63]
-// LiveOut: Z lr r12
+// LiveOut: Z-fn0000F278 lr:[0..31]-fn0000D220 r12:[0..31]-fn0000D220
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r4 r5 r6 r7 sp
 fn00010CFC_entry:
@@ -19278,7 +19278,7 @@ word32 fn00010D38(word32 r11, word32 r12, word32 pc)
 // Called from:
 //      fn00010CFC
 // MayUse:  pc:[0..31] r11:[0..31] r12:[0..31]
-// LiveOut: lr
+// LiveOut: lr:[0..31]-fn00010CFC
 // Trashed: VNZC lr r10 r11 r12 r8 r9
 // Preserved: r0 r1 r2 r3 sp
 fn00010D38_entry:

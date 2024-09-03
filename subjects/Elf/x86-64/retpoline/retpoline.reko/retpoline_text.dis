@@ -100,7 +100,7 @@ word64 my1(word32 edi, word32 esi)
 // Called from:
 //      branches
 // MayUse:  edi:[0..31] esi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-branches
 // Trashed: SCZO rax rdi rsi Top
 // Preserved: rbp rsp
 my1_entry:

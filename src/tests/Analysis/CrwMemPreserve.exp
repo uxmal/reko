@@ -35,7 +35,7 @@ Register word16 memfoo()
 //   bx: word16
 //   cx: word16
 //   ds: (ptr16 (segment 0406))
-// LiveOut: ax
+// LiveOut: ax:[0..15]-memfoo
 // Trashed: ax
 // Preserved:
 // memfoo
@@ -91,7 +91,7 @@ Register word16 membar(Register word16 ax)
 // DataTypes: 
 //   ax: word16
 //   ds: (ptr16 (segment 1002))
-// LiveOut: ax
+// LiveOut: ax:[0..15]-membar
 // Trashed: ax
 // Preserved:
 // membar

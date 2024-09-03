@@ -61,7 +61,7 @@ l0C00_0068:
 	return
 fn0C00_0000_exit:
 // fn0C00_0069 /////////////////////
-	LiveOut:   C
+	LiveOut:   C-fn0C00_0000
 	BitsUsed:  Stack +0002:[0..15]
 	Trashed:   SCZO Top
 	Preserved: bp sp

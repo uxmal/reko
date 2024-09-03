@@ -552,7 +552,7 @@ DataTypes:
                 p =>
                 {
                     var flow = new ProcedureFlow(p);
-                    flow.BitsLiveOut.Add(seqDxAx, new BitRange(0, 32));
+                    flow.BitsLiveOut.Add(seqDxAx, new(new BitRange(0, 32), p));
                     return flow;
                 });
         }

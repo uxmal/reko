@@ -5,7 +5,7 @@ word16 reverse(word16 gp0, ptr16 & gp14Out)
 //      fn0100
 //      init_fft
 // MayUse:  gp0:[0..15]
-// LiveOut: gp0 gp14
+// LiveOut: gp0:[0..15]-init_fft gp14:[0..15]-init_fft
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4
 // Preserved: gp15 gp5
 reverse_entry:
@@ -32,7 +32,7 @@ word16 init_fft(ptr16 & gp4Out)
 // Called from:
 //      main
 // MayUse: 
-// LiveOut: gp3 gp4
+// LiveOut: gp3:[0..15]-main gp4:[0..15]-main
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6
 // Preserved:
 init_fft_entry:
@@ -61,7 +61,7 @@ word16 compute_output()
 // Called from:
 //      main
 // MayUse: 
-// LiveOut: gp14
+// LiveOut: gp14:[0..15]-main
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 compute_output_entry:
@@ -176,7 +176,7 @@ word16 frex(word16 gp1, word16 gp3)
 // Called from:
 //      sqrt
 // MayUse:  gp1:[0..15] gp3:[0..15]
-// LiveOut: gp1
+// LiveOut: gp1:[0..15]-sqrt
 // Trashed: CPZN gp1 gp4 gp5
 // Preserved: gp15
 frex_entry:
@@ -207,7 +207,7 @@ real48 sqrt(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 //      compute_output
 //      asin
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1:gp2 gp14
+// LiveOut: Sequence gp0:gp1:gp2:[0..47]-compute_output gp14:[0..15]-compute_output
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 sqrt_entry:
@@ -241,7 +241,7 @@ word32 auxasin(real48 gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
 // Called from:
 //      asin
 // MayUse:  Sequence gp0:gp1:gp2:[0..47]
-// LiveOut: gp0:gp1 gp14 gp2
+// LiveOut: Sequence gp0:gp1:[0..31]-asin gp14:[0..15]-asin gp2:[0..15]-asin
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 auxasin_entry:
@@ -327,7 +327,7 @@ word16 sincos(word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp
 //      sin
 //      cos
 // MayUse:  gp1:[0..15] gp4:[0..15]
-// LiveOut: gp0 gp1 gp14 gp2 gp3 gp4
+// LiveOut: gp0:[0..15]-cos gp1:[0..15]-cos gp14:[0..15]-cos gp2:[0..15]-cos gp3:[0..15]-sin gp4:[0..15]-sin
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 sincos_entry:
@@ -367,7 +367,7 @@ word48 sin(word32 gp0_gp1, word16 gp2, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & g
 // Called from:
 //      fft
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1:gp2 gp14 gp3 gp4
+// LiveOut: Sequence gp0:gp1:gp2:[0..47]-fft gp14:[0..15]-fft gp3:[0..15]-fft gp4:[0..15]-fft
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 sin_entry:
@@ -407,7 +407,7 @@ word48 cos(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 // Called from:
 //      fft
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1:gp2 gp14
+// LiveOut: Sequence gp0:gp1:gp2:[0..47]-fft gp14:[0..15]-fft
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved:
 cos_entry:
@@ -440,7 +440,7 @@ word16 cvia(word16 gp0, word16 gp1)
 // Called from:
 //      pr_dec_word
 // MayUse:  gp0:[0..15] gp1:[0..15]
-// LiveOut: gp0
+// LiveOut: gp0:[0..15]-pr_dec_word
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 cvia_entry:
@@ -489,7 +489,7 @@ word16 cvla(word32 gp12_gp13, word16 gp0, word16 gp1, word16 gp2)
 // Called from:
 //      pr_long_word
 // MayUse:  gp0:[0..15] gp1:[0..15] gp2:[0..15] Sequence gp12:gp13:[0..31]
-// LiveOut: gp0
+// LiveOut: gp0:[0..15]-pr_long_word
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 cvla_entry:
@@ -552,7 +552,7 @@ word16 cvfa(word32 gp1_gp2, word16 gp0, ptr16 & gp14Out)
 // Called from:
 //      pr_fp_num
 // MayUse:  gp0:[0..15] Sequence gp1:gp2:[0..31]
-// LiveOut: gp0 gp14
+// LiveOut: gp0:[0..15]-pr_fp_num gp14:[0..15]-pr_fp_num
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 cvfa_entry:
@@ -570,7 +570,7 @@ word16 cvea(word32 gp1_gp2, word16 gp0, word16 gp3)
 // Called from:
 //      pr_efp_num
 // MayUse:  gp0:[0..15] gp3:[0..15] Sequence gp1:gp2:[0..31]
-// LiveOut: gp0
+// LiveOut: gp0:[0..15]-pr_efp_num
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 cvea_entry:
@@ -589,7 +589,7 @@ word16 fn043E(real48 gp12_gp13_gp14, word16 gp0, word16 gp1, word16 gp11)
 //      cvfa
 //      cvea
 // MayUse:  gp0:[0..15] gp1:[0..15] gp11:[0..15] Sequence gp12:gp13:gp14:[0..47]
-// LiveOut: gp14
+// LiveOut: gp14:[0..15]-cvfa
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 fn043E_entry:
@@ -755,7 +755,7 @@ word16 pr_hex_byte(word16 gp0)
 // Called from:
 //      pr_hex_word
 // MayUse:  gp0:[0..15]
-// LiveOut: gp1
+// LiveOut: gp1:[0..15]-pr_hex_word
 // Trashed: CPZN gp0 gp1
 // Preserved: gp15
 pr_hex_byte_entry:
@@ -816,7 +816,7 @@ word16 pr_fp_num(word32 gp0_gp1)
 // Called from:
 //      main
 // MayUse:  Sequence gp0:gp1:[0..31]
-// LiveOut: gp14
+// LiveOut: gp14:[0..15]-main
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 pr_fp_num_entry:

@@ -33,7 +33,7 @@ word16 fn00000BEC(word32 r3_r2, word16 r1, word16 r4, word16 r5, word16 r6)
 //      fn00001F0C
 //      fn00002D76
 // MayUse:  r1:[0..15] r4:[0..15] r5:[0..15] r6:[0..15] Sequence r3:r2:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn00002D76
 // Trashed: LNZ r0 r2 r3 r4 r5
 // Preserved: CF r1 r10 r11 r12 r13 r7 r8 r9 ra sp
 fn00000BEC_entry:
@@ -125,7 +125,7 @@ word16 fn00001BEC(word32 r1_r0, word32 r3_r2, word32 r13, word32 ra, ptr32 & r1O
 //      fn00001F0C
 //      fn00002D76
 // MayUse:  r13:[0..31] ra:[0..31] Sequence r1:r0:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00001DFA r1:[0..15]-fn00001DFA
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn00001BEC_entry:
@@ -183,7 +183,7 @@ word16 fn00001DFA(word32 r3_r2, word16 r1, word32 r13, word32 ra, ptr32 & r1Out)
 // Called from:
 //      fn00001F0C
 // MayUse:  r1:[0..15] r13:[0..31] ra:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00001F0C r1:[0..15]-fn00001F0C
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn00001DFA_entry:
@@ -282,7 +282,7 @@ word16 fn00001F0C(word32 r3_r2, word16 r1, word16 r4, word32 r13, word32 ra, ptr
 // Called from:
 //      fn00002D76
 // MayUse:  r1:[0..15] r13:[0..31] r4:[0..15] ra:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00002D76 r1:[0..15]-fn00002D76
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn00001F0C_entry:
@@ -554,7 +554,7 @@ word16 fn000030F2(word32 r3_r2)
 // Called from:
 //      fn00004CD4
 // MayUse:  Sequence r3:r2:[0..31]
-// LiveOut: r1
+// LiveOut: r1:[0..15]-fn00004CD4
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn000030F2_entry:
@@ -749,7 +749,7 @@ word16 fn000033F8(word32 r3_r2, word16 r4)
 // Called from:
 //      fn00004CD4
 // MayUse:  r4:[0..15] Sequence r3:r2:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn00004CD4
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn000033F8_entry:
@@ -1107,7 +1107,7 @@ word16 fn000046AC(word32 r3_r2, word32 r13, ptr32 & r1Out)
 // Called from:
 //      fn00006226
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00006226 r1:[0..15]-fn00006226
 // Trashed: CFLNZ r0 r1 r13 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r8 r9 ra sp
 fn000046AC_entry:
@@ -1180,7 +1180,7 @@ word16 fn00004794(word32 r3_r2, word32 r13)
 // Called from:
 //      fn00002D76
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r1
+// LiveOut: r1:[0..15]-fn00002D76
 // Trashed: CFLNZ r0 r1 r13 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r8 r9 ra sp
 fn00004794_entry:
@@ -1270,7 +1270,7 @@ word16 fn00004CD4(word32 r3_r2, word16 r4, word16 r7, word16 r8, word16 r9, word
 //      fn00001F0C
 //      fn00002D76
 // MayUse:  r10:[0..15] r11:[0..15] r4:[0..15] r7:[0..15] r8:[0..15] r9:[0..15] ra:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00002D76 r1:[0..15]-fn00002D76
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn00004CD4_entry:
@@ -2558,7 +2558,7 @@ word32 fn00006134(word32 r3_r2, ptr32 & r1Out)
 //      fn00002D76
 //      fn00006226
 // MayUse:  Sequence r3:r2:[0..31]
-// LiveOut: r1 r9:r8
+// LiveOut: r1:[0..15]-fn00006226 Sequence r9:r8:[0..31]-fn00002D76
 // Trashed: CFLNZ r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9 ra
 // Preserved: sp
 fn00006134_entry:
@@ -2681,7 +2681,7 @@ word16 fn00006226(word32 r3_r2, word16 r4, word16 r5, word16 r6, word32 r13, wor
 // Called from:
 //      fn00001BEC
 // MayUse:  r13:[0..31] r4:[0..15] r5:[0..15] r6:[0..15] ra:[0..31] Sequence r3:r2:[0..31] Stack +0000:[0..31] Stack +0004:[0..15]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn00001BEC r1:[0..15]-fn00001BEC
 // Trashed: CFLNZ r0 r1 r13 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r7 r8 r9 ra sp
 fn00006226_entry:
@@ -2872,7 +2872,7 @@ word32 fn000089C4(word32 r3_r2, word32 ra, ptr32 & r1Out)
 // Called from:
 //      fn00001B74
 // MayUse:  ra:[0..31] Sequence r3:r2:[0..31]
-// LiveOut: r1 r9:r8
+// LiveOut: r1:[0..15]-fn00001B74 Sequence r9:r8:[0..31]-fn00001B74
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 ra
 // Preserved: sp
 fn000089C4_entry:
@@ -3464,7 +3464,7 @@ word32 fn0000A416(word32 r3_r2, word32 r5_r4, ptr32 & r13Out)
 // Called from:
 //      fn0000B218
 // MayUse:  Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r13 r9:r8
+// LiveOut: r13:[0..31]-fn0000B218 Sequence r9:r8:[0..31]-fn0000B218
 // Trashed: CFLNZ r0 r1 r12 r13 r2 r3 r4 r5 r6 r8 r9 ra
 // Preserved: r10 r11 r7 sp
 fn0000A416_entry:
@@ -4071,7 +4071,7 @@ word16 fn0000AF06(word32 r3_r2)
 //      fn000046AC
 //      fn00004794
 // MayUse:  Sequence r3:r2:[0..31]
-// LiveOut: r1
+// LiveOut: r1:[0..15]-fn000046AC
 // Trashed: CFLNZ r0 r1 r4 r5
 // Preserved: r2 r3 ra sp
 fn0000AF06_entry:
@@ -4202,7 +4202,7 @@ word16 fn0000B09C(word32 r3_r2)
 //      fn000033F8
 //      fn00004CD4
 // MayUse:  Sequence r3:r2:[0..31]
-// LiveOut: r1
+// LiveOut: r1:[0..15]-fn00004CD4
 // Trashed: CFLNZ r0 r1 r4 r5 r6
 // Preserved: r2 r3 r7 ra sp
 fn0000B09C_entry:
@@ -4871,7 +4871,7 @@ word16 fn0000BAE0(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r1Out, ptr32 &
 // Called from:
 //      fn0000C0EE
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r0 r1 r10 r11 r13
+// LiveOut: r0:[0..15]-fn0000C0EE r1:[0..15]-fn0000C0EE r10:[0..15]-fn0000C0EE r11:[0..15]-fn0000C0EE r13:[0..31]-fn0000C0EE
 // Trashed: CFLNZ r0 r1 r10 r11 r13 r2 r3 r4 r5 r6 r7 ra
 // Preserved: r12 r8 r9 sp
 fn0000BAE0_entry:
@@ -5215,7 +5215,7 @@ word32 fn0000C0EE(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r11_r10Out, pt
 //      fn00004794
 //      fn00004CD4
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r1:r0 r11:r10 r13
+// LiveOut: Sequence r1:r0:[0..31]-fn00004CD4 Sequence r11:r10:[0..31]-fn000033F8 r13:[0..31]-fn00004CD4
 // Trashed: CFLNZ r0 r1 r10 r11 r13 r2 r3 r4 r5 r6
 // Preserved: r7 ra sp
 fn0000C0EE_entry:
@@ -5233,7 +5233,7 @@ word16 fn0000C224(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r1Out)
 // Called from:
 //      fn0000CAF8
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn0000CAF8 r1:[0..15]-fn0000CAF8
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r10 r11 r12 r13 r7 r8 r9 ra sp
 fn0000C224_entry:
@@ -5341,7 +5341,7 @@ word32 fn0000CAF8(word32 r3_r2, word32 r5_r4, word32 r13)
 //      fn00004794
 //      fn00004CD4
 // MayUse:  r13:[0..31] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r1:r0
+// LiveOut: Sequence r1:r0:[0..31]-fn000030F2
 // Trashed: CFLNZ r0 r1 r2 r3 r4 r5 r6
 // Preserved: r7 ra sp
 fn0000CAF8_entry:
@@ -5360,7 +5360,7 @@ word32 fn0000D358(word16 r2, word16 r3, word16 r4, word16 r5)
 // Called from:
 //      fn0000A416
 // MayUse:  r2:[0..15] r3:[0..15] r4:[0..15] r5:[0..15]
-// LiveOut: r1:r0
+// LiveOut: Sequence r1:r0:[0..31]-fn0000A416
 // Trashed: CF r0 r1 r4 r5
 // Preserved: sp
 fn0000D358_entry:
@@ -5376,7 +5376,7 @@ word16 fn0000D464(word16 r2, word16 r3)
 // Called from:
 //      fn00006226
 // MayUse:  r2:[0..15] r3:[0..15]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn00006226
 // Trashed: CFLNZ r0 r1 r3 r4
 // Preserved: sp
 fn0000D464_entry:
@@ -5420,7 +5420,7 @@ word16 fn0000D4A4(word16 r2, word16 r3)
 // Called from:
 //      fn00004CD4
 // MayUse:  r2:[0..15] r3:[0..15]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn00004CD4
 // Trashed: LNZ r0 r1 r3
 // Preserved: CF r4 sp
 fn0000D4A4_entry:
@@ -5461,7 +5461,7 @@ word32 fn0000D4EC(word32 r3_r2, word32 r5_r4)
 // Called from:
 //      fn0000BAE0
 // MayUse:  Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r1:r0
+// LiveOut: Sequence r1:r0:[0..31]-fn0000BAE0
 // Trashed: LNZ r0 r1 r4 r5 r6
 // Preserved: r2 r3 ra sp
 fn0000D4EC_entry:
@@ -5476,7 +5476,7 @@ word16 fn0000D4F8(word32 r3_r2, word32 r5_r4, word16 r6, ptr32 & r1Out)
 // Called from:
 //      fn0000D4EC
 // MayUse:  r6:[0..15] Sequence r3:r2:[0..31] Sequence r5:r4:[0..31]
-// LiveOut: r0 r1
+// LiveOut: r0:[0..15]-fn0000D4EC r1:[0..15]-fn0000D4EC
 // Trashed: LNZ r0 r1 r4 r5
 // Preserved: CF r2 r3 r8 r9 ra sp
 fn0000D4F8_entry:
@@ -5537,7 +5537,7 @@ word16 fn0000D578(ptr32 & r3Out)
 // Called from:
 //      fn03B0
 // MayUse: 
-// LiveOut: r1 r3
+// LiveOut: r1:[0..15]-fn03B0 r3:[0..15]-fn03B0
 // Trashed: CF r0 r1 r2 r3
 // Preserved: r13 ra sp
 fn0000D578_entry:
@@ -5553,7 +5553,7 @@ word32 fn0000D974()
 // Called from:
 //      fn03B0
 // MayUse: 
-// LiveOut: r13
+// LiveOut: r13:[0..31]-fn03B0
 // Trashed: CF r13
 // Preserved: sp
 fn0000D974_entry:

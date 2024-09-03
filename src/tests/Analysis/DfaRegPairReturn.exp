@@ -21,7 +21,7 @@ fn0C00_0000_exit:
 // Sequence ui32 fn0C00_001B(Register selector ds)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:[0..15]
-// LiveOut: dx:ax
+// LiveOut: Sequence dx:ax:[0..31]-fn0C00_0000
 // Trashed: ax dx Top
 // Preserved: sp
 // fn0C00_001B

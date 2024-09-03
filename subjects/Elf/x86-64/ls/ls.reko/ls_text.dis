@@ -1119,7 +1119,7 @@ byte fn00000000004049E0(word64 rdi, word64 rsi, byte dl, word64 rcx)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  dl:[0..7] rcx:[0..63] rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..7]-fn00000000004028C0
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx Top
 // Preserved: dl r12 r14 rbp rbx rdi rsi rsp
 fn00000000004049E0_entry:
@@ -1303,7 +1303,7 @@ word32 fn0000000000404CD0(word32 edi)
 //      fn0000000000406A30
 //      fn0000000000407EA0
 // MayUse:  edi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000404CD0_entry:
@@ -1635,7 +1635,7 @@ word64 fn00000000004052D0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 //      fn0000000000405D50
 //      fn0000000000406540
 // MayUse:  fs:[0..15] r12:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax rcx
+// LiveOut: rax:[0..63]-fn00000000004028C0 rcx:[0..63]-fn0000000000406540
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn00000000004052D0_entry:
@@ -1947,7 +1947,7 @@ word32 fn0000000000405C20(byte dil, word32 esi, word32 edx, word32 ecx)
 //      fn0000000000405D00
 //      fn0000000000405D50
 // MayUse:  dil:[0..7] edx:[0..31] rcx:[8..31] rsi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000405D00
 // Trashed: SCZOP rax rcx rsi Top
 // Preserved: rsp
 fn0000000000405C20_entry:
@@ -2009,7 +2009,7 @@ byte fn0000000000405D00(byte dil, word64 rsi, word32 edx, word64 rcx)
 //      fn0000000000406B70
 //      fn0000000000407870
 // MayUse:  dil:[0..7] rcx:[0..63] rdx:[0..31] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..7]-fn0000000000407870
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rbx rsp
 fn0000000000405D00_entry:
@@ -2042,7 +2042,7 @@ word64 fn0000000000405D50(word64 rdi, word64 r12, selector fs)
 //      fn0000000000405ED0
 //      fn00000000004079F0
 // MayUse:  fs:[0..15] r12:[0..63] rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004079F0
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn0000000000405D50_entry:
@@ -2100,7 +2100,7 @@ word64 fn0000000000405ED0(word32 edi, selector fs)
 // Called from:
 //      fn00000000004079F0
 // MayUse:  fs:[0..15] rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004079F0
 // Trashed: SCZOP r8 rax rdi rdx rsi Top
 // Preserved: r10 r11 r12 r13 r14 r9 rbp rbx rcx rsp
 fn0000000000405ED0_entry:
@@ -2248,7 +2248,7 @@ word32 fn00000000004061B0(word64 rdi, selector fs)
 //      fn0000000000405ED0
 //      fn0000000000407EA0
 // MayUse:  fs:[0..15] rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r8 rbp rbx rcx rsp
 fn00000000004061B0_entry:
@@ -2334,7 +2334,7 @@ word64 fn0000000000406440(word64 rdi)
 //      fn0000000000406540
 //      fn0000000000406A30
 // MayUse:  rdi:[0..63]
-// LiveOut: rcx
+// LiveOut: rcx:[0..63]-fn0000000000406540
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000406440_entry:
@@ -2397,7 +2397,7 @@ word64 fn0000000000406540(word64 rcx, word64 rdx, byte sil, word64 rdi, selector
 //      fn0000000000406B70
 //      fn0000000000407870
 // MayUse:  fs:[0..15] rcx:[0..63] rdi:[0..63] rdx:[0..63] sil:[0..7]
-// LiveOut: rax rcx
+// LiveOut: rax:[0..63]-fn0000000000406B70 rcx:[0..63]-fn0000000000407870
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000406540_entry:
@@ -2641,7 +2641,7 @@ word64 fn0000000000406A80(word32 ecx, word64 rdx, word64 rsi, word64 rdi, select
 // Called from:
 //      fn0000000000406B70
 // MayUse:  ecx:[0..31] fs:[0..15] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000406B70
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 rbp rbx rsp
 fn0000000000406A80_entry:
@@ -3265,7 +3265,7 @@ word64 fn0000000000407EA0(word64 rcx, word32 edx, word32 esi, word64 rdi, select
 // Called from:
 //      fn00000000004028C0
 // MayUse:  edx:[0..31] esi:[0..31] fs:[0..15] rcx:[0..63] rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP r9 rax rcx rdi rdx rsi Top
 // Preserved: r10 r11 r12 r13 r14 r15 r8 rbp rbx rsp
 fn0000000000407EA0_entry:
@@ -3873,7 +3873,7 @@ word32 fn0000000000409CC0(word64 rdi, word64 rsi)
 // Called from:
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZOP rax Top
 // Preserved: rsp
 fn0000000000409CC0_entry:
@@ -3909,7 +3909,7 @@ word64 fn0000000000409D20(word64 rdi, word64 rsi)
 // Called from:
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000409D20_entry:
@@ -3967,7 +3967,7 @@ word64 fn0000000000409E50(word64 rdi, word64 rsi, word64 rdx, word64 rcx)
 //      fn000000000040A120
 //      fn000000000040C810
 // MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000409E50_entry:
@@ -4055,7 +4055,7 @@ word64 fn000000000040A000(word64 rdx, word64 rsi, word64 rdi, selector fs, ptr64
 // Called from:
 //      fn000000000040A120
 // MayUse:  fs:[0..15] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: r8 r9 rcx rdi rdx rsi
+// LiveOut: r8:[0..63]-fn000000000040A120 r9:[0..63]-fn000000000040A120 rcx:[0..63]-fn000000000040A120 rdi:[0..63]-fn000000000040A120 rdx:[0..63]-fn000000000040A120 rsi:[0..63]-fn000000000040A120
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040A000_entry:
@@ -4121,7 +4121,7 @@ word64 fn000000000040A120(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 // Called from:
 //      fn00000000004028C0
 // MayUse:  fs:[0..15] r8:[0..63] r9:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040A120_entry:
@@ -4145,7 +4145,7 @@ word64 fn000000000040A2B0(word64 rdi)
 // Called from:
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP rax rcx rdx rsi Top
 // Preserved: rbp rbx rsp
 fn000000000040A2B0_entry:
@@ -4182,7 +4182,7 @@ word64 fn000000000040A390(word64 rdi)
 //      fn000000000040A2B0
 //      fn000000000040A630
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040A2B0
 // Trashed: SCZOP rax rcx rdx rsi Top
 // Preserved: rsp
 fn000000000040A390_entry:
@@ -4232,7 +4232,7 @@ word64 fn000000000040A400(word64 rdi)
 // Called from:
 //      fn000000000040A630
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040A630
 // Trashed: SCZO rax rdx Top
 // Preserved: rbx rsp
 fn000000000040A400_entry:
@@ -4337,7 +4337,7 @@ word64 fn000000000040A610(word64 rdi, word64 rsi, word64 rdx)
 // Called from:
 //      fn0000000000405090
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000405090
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040A610_entry:
@@ -4357,7 +4357,7 @@ word64 fn000000000040A630(word64 rdi, word64 rsi, word64 rdx)
 // Called from:
 //      fn000000000040A610
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040A610
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040A630_entry:
@@ -4483,7 +4483,7 @@ byte fn000000000040AB70(word32 edi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..7]-fn00000000004028C0
 // Trashed: SCZOP rax rcx rdi rsi Top
 // Preserved: rsp
 fn000000000040AB70_entry:
@@ -4510,7 +4510,7 @@ word64 fn000000000040ABC0(word64 rdi)
 //      fn000000000040B400
 //      fn000000000040B710
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040B400
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040ABC0_entry:
@@ -4558,7 +4558,7 @@ word64 fn000000000040AC80(word64 rdi, word64 rsi)
 //      fn000000000040ACB0
 //      fn000000000040AE40
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040ACB0
 // Trashed: SCZO rax rdi rsi Top
 // Preserved: rbx rsp
 fn000000000040AC80_entry:
@@ -4581,7 +4581,7 @@ word64 fn000000000040ACB0(word64 rdi, word64 rsi, word64 rdx, word32 ecx)
 //      fn000000000040B8F0
 //      fn000000000040BB90
 // MayUse:  rcx:[0..31] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040B8F0
 // Trashed: SCZOP r10 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 rbp rbx rsp
 fn000000000040ACB0_entry:
@@ -4660,7 +4660,7 @@ byte fn000000000040ADB0(word64 rdi)
 //      fn000000000040B8F0
 //      fn000000000040BB90
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..7]-fn000000000040B400
 // Trashed: SCZOP rax Top xmm0 xmm1 xmm2 xmm3
 // Preserved: rsp
 fn000000000040ADB0_entry:
@@ -4698,7 +4698,7 @@ word32 fn000000000040AE40(word64 rdi, word64 rsi, word32 edx)
 // Called from:
 //      fn000000000040B710
 // MayUse:  rdi:[0..63] rdx:[0..31] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000000040B710
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040AE40_entry:
@@ -4780,7 +4780,7 @@ word64 fn000000000040AFB0(word64 rdi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: rax Top
 // Preserved: rsp
 fn000000000040AFB0_entry:
@@ -4795,7 +4795,7 @@ word64 fn000000000040B400(word64 rdi, word64 rsi, word64 rdx, word64 rcx, word64
 // Called from:
 //      fn00000000004028C0
 // MayUse:  r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040B400_entry:
@@ -4950,7 +4950,7 @@ word32 fn000000000040B710(word64 rdi, word64 rsi)
 //      fn000000000040B8F0
 //      fn000000000040BB90
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000000040B8F0
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1
 // Preserved: r12 rbp rbx rsp
 fn000000000040B710_entry:
@@ -5028,7 +5028,7 @@ word32 fn000000000040B8F0(word64 rdi, word64 rsi, word64 rdx)
 // Called from:
 //      fn000000000040BB50
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000000040BB50
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040B8F0_entry:
@@ -5144,7 +5144,7 @@ word64 fn000000000040BB50(word64 rdi, word64 rsi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: rbx rsp
 fn000000000040BB50_entry:
@@ -5169,7 +5169,7 @@ word64 fn000000000040BB90(word64 rdi, word64 rsi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040BB90_entry:
@@ -5270,7 +5270,7 @@ word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64
 //      fn0000000000407870
 //      fn0000000000407EA0
 // MayUse:  edx:[0..31] fs:[0..15] r8:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP FPU -1 FPU -2 FPU -3 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: FPU -4 r10 r12 r13 r14 r15 rbp rbx rsp
 fn000000000040BD70_entry:
@@ -5730,7 +5730,7 @@ word32 fn000000000040C810(word64 rdi, word64 rsi, word64 rdx)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000000004028C0
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 rbp rbx rsp
 fn000000000040C810_entry:
@@ -5813,7 +5813,7 @@ word64 fn000000000040C9B0(word32 edi)
 //      fn00000000004057B0
 //      fn00000000004061B0
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004061B0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 rbp rbx rsp
 fn000000000040C9B0_entry:
@@ -5861,7 +5861,7 @@ word64 fn000000000040CB40(word32 edi)
 //      fn0000000000406B70
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 rbp rbx rsp
 fn000000000040CB40_entry:
@@ -5908,7 +5908,7 @@ word64 fn000000000040CCD0(word64 rdi, word64 rsi)
 // Called from:
 //      fn0000000000406B70
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000406B70
 // Trashed: SCZOP r8 rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040CCD0_entry:
@@ -5947,7 +5947,7 @@ word64 fn000000000040CD70(word64 rdi, word64 rsi)
 //      fn0000000000407870
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040CD70_entry:
@@ -5971,7 +5971,7 @@ word64 fn000000000040CDC0(word64 rdi, word64 rsi, word64 rdx, word64 rcx, word32
 // Called from:
 //      fn00000000004028C0
 // MayUse:  r8d:[0..31] r9d:[0..31] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040CDC0_entry:
@@ -6176,7 +6176,7 @@ word32 fn000000000040D240(word32 edx, word64 rsi, word64 rdi, selector fs)
 //      fn0000000000406B70
 //      fn000000000040D420
 // MayUse:  fs:[0..15] rdi:[0..63] rdx:[0..31] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000000040D420
 // Trashed: SCZO rax rdx rsi Top
 // Preserved: P r12 r13 r14 r15 rbp rbx rcx rdi rsp
 fn000000000040D240_entry:
@@ -6298,7 +6298,7 @@ word32 fn000000000040D420(word32 esi, word64 rdi, selector fs)
 //      fn0000000000406B70
 //      fn0000000000407EA0
 // MayUse:  esi:[0..31] fs:[0..15] rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZO rax rdx rsi Top
 // Preserved: rbp rbx rdi rsp
 fn000000000040D420_entry:
@@ -6317,7 +6317,7 @@ word64 fn000000000040D450(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64
 //      fn000000000040D450
 //      fn000000000040D690
 // MayUse:  rbx:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rcx rdx
+// LiveOut: rcx:[0..63]-fn000000000040D450 rdx:[0..63]-fn000000000040D450
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040D450_entry:
@@ -6516,7 +6516,7 @@ word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, ptr64 & ecxOut)
 // Called from:
 //      fn000000000040D8A0
 // MayUse:  esi:[0..31] fs:[0..15] rdi:[0..63]
-// LiveOut: rax rcx
+// LiveOut: rax:[0..63]-fn000000000040D8A0 rcx:[8..31]-fn000000000040D8A0
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: P r12 r13 rbp rbx rsp
 fn000000000040D7B0_entry:
@@ -6586,7 +6586,7 @@ word64 fn000000000040D8A0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word32
 //      fn000000000040E6F0
 //      fn000000000040E930
 // MayUse:  fs:[0..15] r8d:[0..31] r9d:[0..31] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] Stack +0008:[0..63] Stack +0010:[0..63] Stack +0018:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040D8A0
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: fs r12 r13 r14 r15 rbp rbx rsp
 fn000000000040D8A0_entry:
@@ -7157,7 +7157,7 @@ word64 fn000000000040E450(word64 rcx, word64 rdx, word64 rsi, word32 edi, select
 //      fn000000000040EBF0
 //      fn000000000040EC10
 // MayUse:  edi:[0..31] fs:[0..15] rcx:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: r8 r9 rax
+// LiveOut: r8:[0..63]-fn000000000040EC10 r9:[0..63]-fn000000000040EC10 rax:[0..63]-fn000000000040EC10
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040E450_entry:
@@ -7223,7 +7223,7 @@ word64 fn000000000040E600(word64 rdi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004028C0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 rbp rbx rsp
 fn000000000040E600_entry:
@@ -7247,7 +7247,7 @@ word32 fn000000000040E630(word64 rdi)
 // Called from:
 //      fn00000000004028C0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000000004028C0
 // Trashed: SCZOP rax Top
 // Preserved: rsp
 fn000000000040E630_entry:
@@ -7339,7 +7339,7 @@ word64 fn000000000040E6F0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 // Called from:
 //      fn00000000004052D0
 // MayUse:  fs:[0..15] r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn00000000004052D0
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040E6F0_entry:
@@ -7443,7 +7443,7 @@ word64 fn000000000040EC10(word64 rdi, selector fs, ptr64 & r8Out, ptr64 & r9Out)
 //      fn00000000004028C0
 //      fn000000000040A000
 // MayUse:  fs:[0..15] rdi:[0..63]
-// LiveOut: r8 r9 rax
+// LiveOut: r8:[0..63]-fn000000000040A000 r9:[0..63]-fn000000000040A000 rax:[0..63]-fn000000000040A000
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040EC10_entry:
@@ -7511,7 +7511,7 @@ word64 fn000000000040ECD0(word64 rcx, word64 rdx, word64 rsi, byte dil, word64 r
 //      fn000000000040ECD0
 //      fn0000000000410600
 // MayUse:  fs:[0..15] r8:[0..63] r9:[0..31] rcx:[0..63] rdi:[0..7] rdx:[0..63] rsi:[0..63] Stack +0008:[0..31]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040ECD0
 // Trashed: SCZOP r10 r9 rax rdi rsi Top
 // Preserved: r11 r12 r13 r14 r15 r8 rbp rbx rcx rdx rsp
 fn000000000040ECD0_entry:
@@ -8766,7 +8766,7 @@ word64 fn0000000000410600(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word32
 // Called from:
 //      fn0000000000406A80
 // MayUse:  fs:[0..15] r8d:[0..31] r9d:[0..31] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000406A80
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000410600_entry:
@@ -8885,7 +8885,7 @@ word64 fn0000000000410C40(word64 rdi)
 //      fn0000000000410C90
 //      fn0000000000410E30
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040E450
 // Trashed: SCZOP rax Top
 // Preserved: rbx rsp
 fn0000000000410C40_entry:
@@ -8909,7 +8909,7 @@ word64 fn0000000000410C90(word64 rdi, word64 rsi)
 //      fn0000000000407EA0
 //      fn000000000040E930
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn000000000040E450
 // Trashed: SCZOP rax Top
 // Preserved: rbx rsi rsp
 fn0000000000410C90_entry:
@@ -8939,7 +8939,7 @@ word64 fn0000000000410E00(word64 rdi, word64 rsi)
 //      fn000000000040E600
 //      fn0000000000410E30
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000410E30
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn0000000000410E00_entry:
@@ -8956,7 +8956,7 @@ word64 fn0000000000410E30(word64 rdi)
 //      fn0000000000404D20
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..63]-fn0000000000407EA0
 // Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: rbx rsp
 fn0000000000410E30_entry:
@@ -8997,7 +8997,7 @@ word32 fn0000000000410E90(word64 rdi, word64 rsi, word32 edx, word64 rcx, word64
 // Called from:
 //      fn00000000004028C0
 // MayUse:  edx:[0..31] r8:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn00000000004028C0
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000410E90_entry:
@@ -9297,7 +9297,7 @@ word32 fn0000000000411360(word64 rdi, word64 rsi, word32 edx, word64 rcx, word64
 // Called from:
 //      fn000000000040C810
 // MayUse:  edx:[0..31] r8:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn000000000040C810
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000411360_entry:
@@ -9562,7 +9562,7 @@ word32 fn00000000004117B0(word32 edi, word64 rsi)
 //      fn0000000000411820
 //      fn0000000000411840
 // MayUse:  rdi:[0..31] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000411840
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn00000000004117B0_entry:
@@ -9593,7 +9593,7 @@ word32 fn0000000000411820(word64 rdi, word64 rsi)
 // Called from:
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rbx rsp
 fn0000000000411820_entry:
@@ -9610,7 +9610,7 @@ word32 fn0000000000411840(word64 rdi, word64 rsi)
 // Called from:
 //      fn0000000000407EA0
 // MayUse:  rdi:[0..63] rsi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000407EA0
 // Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rbx rsp
 fn0000000000411840_entry:
@@ -9657,7 +9657,7 @@ word64 fn0000000000411900(selector fs, ptr64 & ecxOut)
 // Called from:
 //      fn000000000040D7B0
 // MayUse:  fs:[0..15]
-// LiveOut: rax rcx
+// LiveOut: rax:[0..63]-fn000000000040D7B0 rcx:[8..31]-fn000000000040D7B0
 // Trashed: SCZOP rax rcx rdi Top
 // Preserved: fs r10 r12 r13 r14 r15 rbp rbx rdx rsi rsp
 fn0000000000411900_entry:
@@ -9861,7 +9861,7 @@ word32 fn0000000000411D30(word64 rdi)
 //      fn0000000000411880
 //      fn0000000000411900
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000411880
 // Trashed: SCZOP rax rdx rsi Top
 // Preserved: r12 rbp rbx rdi rsp
 fn0000000000411D30_entry:
@@ -9897,7 +9897,7 @@ word32 fn0000000000411DB0(word64 rdi)
 // Called from:
 //      fn0000000000411D30
 // MayUse:  rdi:[0..63]
-// LiveOut: rax
+// LiveOut: rax:[0..31]-fn0000000000411D30
 // Trashed: SCZOP rax rdx rsi Top
 // Preserved: rbx rdi rsp
 fn0000000000411DB0_entry:

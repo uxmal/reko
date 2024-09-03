@@ -7,7 +7,7 @@ bool memcpy(word32 r0, word32 r1, word32 r2, ptr32 & r4Out, ptr32 & r5Out, ptr32
 //      xQueueCRReceive
 //      xQueueCRReceiveFromISR
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
-// LiveOut: Z r4 r5 r6 r7
+// LiveOut: Z-xQueueCRReceive r4:[0..31]-prvCopyDataFromQueue r5:[0..31]-prvCopyDataFromQueue r6:[0..31]-prvCopyDataFromQueue r7:[0..31]-prvCopyDataFromQueue
 // Trashed: NZCV lr r0 r1 r2 r3 r4 r5 r6 r7 sp
 // Preserved:
 memcpy_entry:

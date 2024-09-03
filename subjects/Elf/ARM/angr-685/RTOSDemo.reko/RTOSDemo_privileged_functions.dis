@@ -68,7 +68,7 @@ bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, ptr32 & r0Out, ptr32 & 
 //      xQueueCRSend
 //      xQueueCRSendFromISR
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
-// LiveOut: Z r0 r7
+// LiveOut: Z-xQueueCRSend r0:[0..31]-xQueueGenericSend r7:[0..31]-xQueueGenericSendFromISR
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: r4 r5 r6 sp
 prvCopyDataToQueue_entry:
@@ -145,7 +145,7 @@ word32 prvCopyDataFromQueue(word32 r0, word32 r1, ptr32 & r5Out, ptr32 & r6Out, 
 //      xQueueGenericReceive
 //      xQueueReceiveFromISR
 // MayUse:  r0:[0..31] r1:[0..31]
-// LiveOut: r4 r5 r6 r7
+// LiveOut: r4:[0..31]-xQueueGenericReceive r5:[0..31]-xQueueGenericReceive r6:[0..31]-xQueueGenericReceive r7:[0..31]-xQueueReceiveFromISR
 // Trashed: lr r0 r1 r2 r3 r4 r5 r6 r7
 // Preserved: NZCV sp
 prvCopyDataFromQueue_entry:
@@ -292,7 +292,7 @@ word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 c
 //      xQueueTakeMutexRecursive
 //      MPU_xQueueGenericReceive
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueTakeMutexRecursive
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericReceive_entry:
@@ -718,7 +718,7 @@ word32 xQueueGenericCreate(word32 r0, word32 r1, word32 cpsr)
 //      xQueueCreateMutex
 //      MPU_xQueueGenericCreate
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-MPU_xQueueGenericCreate
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r4 r5 r6 sp
 xQueueGenericCreate_entry:
@@ -917,7 +917,7 @@ word32 xTaskCreate(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word
 //      vTaskStartScheduler
 //      MPU_xTaskCreate
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-vTaskStartScheduler
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xTaskCreate_entry:
@@ -1077,7 +1077,7 @@ word32 xTaskGetTickCount()
 // Called from:
 //      MPU_xTaskGetTickCount
 // MayUse: 
-// LiveOut: r0
+// LiveOut: r0:[0..31]-MPU_xTaskGetTickCount
 // Trashed: lr r0 r3
 // Preserved: sp
 xTaskGetTickCount_entry:
@@ -1383,7 +1383,7 @@ word32 xTaskIncrementTick()
 //      xTaskResumeAll
 //      xPortSysTickHandler
 // MayUse: 
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xTaskResumeAll
 // Trashed: NZCV lr r0 r3
 // Preserved: r1 r10 r2 r4 r5 r6 r7 r8 r9 sp
 xTaskIncrementTick_entry:
@@ -1466,7 +1466,7 @@ word32 xTaskResumeAll(word32 cpsr)
 //      vEventGroupDelete
 //      MPU_xTaskResumeAll
 // MayUse:  cpsr:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xEventGroupSync
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r4 r5 r6 r7 r8 sp
 xTaskResumeAll_entry:
@@ -1646,7 +1646,7 @@ word32 xTaskRemoveFromEventList(word32 r0)
 //      xQueueReceiveFromISR
 //      xQueueGenericReset
 // MayUse:  r0:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueGenericReset
 // Trashed: NZCV lr r0 r1 r2
 // Preserved: r3 r4 r5 r6 r7 sp
 xTaskRemoveFromEventList_entry:
@@ -1746,7 +1746,7 @@ word32 uxTaskResetEventItemValue()
 //      xEventGroupWaitBits
 //      xEventGroupSync
 // MayUse: 
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xEventGroupSync
 // Trashed: lr r0 r1 r2 r3
 // Preserved: sp
 uxTaskResetEventItemValue_entry:
@@ -1765,7 +1765,7 @@ word32 xTaskGetCurrentTaskHandle()
 //      xQueueTakeMutexRecursive
 //      xQueueGiveMutexRecursive
 // MayUse: 
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueGiveMutexRecursive
 // Trashed: lr r0 r3
 // Preserved: sp
 xTaskGetCurrentTaskHandle_entry:
@@ -1803,7 +1803,7 @@ word32 xTaskCheckForTimeOut(word32 r0, word32 r1, word32 cpsr)
 //      xQueueGenericReceive
 //      MPU_xTaskCheckForTimeOut
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueGenericSend
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r4 r5 r6 sp
 xTaskCheckForTimeOut_entry:
@@ -1902,7 +1902,7 @@ word32 xTaskPriorityDisinherit(word32 r0)
 // Called from:
 //      prvCopyDataToQueue
 // MayUse:  r0:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-prvCopyDataToQueue
 // Trashed: NZCV lr r0 r1 r2
 // Preserved: r3 r4 r5 r6 r7 sp
 xTaskPriorityDisinherit_entry:
@@ -1948,7 +1948,7 @@ word32 pvTaskIncrementMutexHeldCount()
 // Called from:
 //      xQueueGenericReceive
 // MayUse: 
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueGenericReceive
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: sp
 pvTaskIncrementMutexHeldCount_entry:
@@ -2042,7 +2042,7 @@ word32 pxPortInitialiseStack(word32 r0, word32 r1, word32 r2, word32 r3)
 // Called from:
 //      prvInitialiseNewTask
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-prvInitialiseNewTask
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r4 r5 sp
 pxPortInitialiseStack_entry:
@@ -2422,7 +2422,7 @@ word32 pvPortMalloc(word32 r0, word32 cpsr)
 //      MPU_pvPortMalloc
 //      xCoRoutineCreate
 // MayUse:  cpsr:[0..31] r0:[0..31]
-// LiveOut: r0
+// LiveOut: r0:[0..31]-xQueueGenericCreate
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r4 sp
 pvPortMalloc_entry:

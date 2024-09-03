@@ -4,7 +4,7 @@ word32 _init(ptr32 & r10Out)
 // Called from:
 //      __libc_csu_init
 // MayUse: 
-// LiveOut: r10 r4
+// LiveOut: r10:[0..31]-__libc_csu_init r4:[0..31]-__libc_csu_init
 // Trashed: NZCV lr pc r0 r10 r2 r3 r4
 // Preserved: sp
 _init_entry:

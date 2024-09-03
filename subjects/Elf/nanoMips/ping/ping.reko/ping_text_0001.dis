@@ -4,7 +4,7 @@ word32 __fixunsdfsi(word32 r4, word32 r5)
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4
+// LiveOut: r4:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __fixunsdfsi_entry:
@@ -39,7 +39,7 @@ word32 __floatsidf(word32 r4, ptr32 & r5Out)
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __floatsidf_entry:
@@ -76,7 +76,7 @@ word32 __floatunsidf(word32 r4, ptr32 & r5Out)
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
-// LiveOut: r4 r5
+// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 __floatunsidf_entry:

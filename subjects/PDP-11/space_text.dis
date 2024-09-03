@@ -124,7 +124,7 @@ word16 fn051A(word16 r0, word16 r2, ptr16 & r3Out)
 // Called from:
 //      fn0528
 // MayUse:  r0:[0..15] r2:[0..15]
-// LiveOut: r0 r3
+// LiveOut: r0:[0..15]-fn0528 r3:[0..15]-fn0528
 // Trashed: NZVC r0 r3
 // Preserved: sp
 fn051A_entry:
@@ -148,7 +148,7 @@ void fn0528(word16 r0)
 // Called from:
 //      fn0472
 // MayUse:  r0:[0..15]
-// LiveOut: sp
+// LiveOut: sp:[0..15]-fn0472
 // Trashed: NZVC r0 r2 r3 sp
 // Preserved:
 fn0528_entry:
@@ -243,7 +243,7 @@ void fn0670(word16 r5, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg0
 // Called from:
 //      fn3B42
 // MayUse:  r5:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: sp
+// LiveOut: sp:[0..15]-fn3B42
 // Trashed: NZVC r0 r1 r2 r3 r4 sp
 // Preserved: r5
 fn0670_entry:
@@ -542,7 +542,7 @@ word16 fn0AAE(word16 r5, ptr16 & r4Out)
 // Called from:
 //      fn3B42
 // MayUse:  r5:[0..15]
-// LiveOut: r0 r4
+// LiveOut: r0:[0..15]-fn3B42 r4:[0..15]-fn3B42
 // Trashed: NZVC r0 r1 r2 r3 r4 sp
 // Preserved: r5
 fn0AAE_entry:
@@ -618,7 +618,7 @@ word16 fn0AE2(word16 r4, word16 wArg00, word16 wArg02, word16 wArg04)
 // Called from:
 //      fn3B42
 // MayUse:  r4:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-// LiveOut: r3
+// LiveOut: r3:[0..15]-fn3B42
 // Trashed: NZVC r3 r4
 // Preserved: sp
 fn0AE2_entry:
@@ -635,7 +635,7 @@ word16 fn0AE6(word16 r4, word16 wArg00, word16 wArg02, word16 wArg04, word16 wAr
 //      fn0AC4
 //      fn0AE2
 // MayUse:  r4:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
-// LiveOut: r3
+// LiveOut: r3:[0..15]-fn0AE2
 // Trashed: NZVC r3 r4 sp
 // Preserved:
 fn0AE6_entry:
@@ -836,7 +836,7 @@ word16 fn0D3E(word16 r0, word16 r2)
 // Called from:
 //      fn0CF4
 // MayUse:  r0:[0..15] r2:[0..15]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn0CF4
 // Trashed: NZVC r0 r2
 // Preserved: sp
 fn0D3E_entry:
@@ -891,7 +891,7 @@ byte fn0E0E(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 w
 // Called from:
 //      fn3B42
 // MayUse:  Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
-// LiveOut: NV sp
+// LiveOut: NV-fn3B42 sp:[0..15]-fn3B42
 // Trashed: NZVC r0 r1 r2 r3 r4 sp
 // Preserved:
 fn0E0E_entry:
@@ -1040,7 +1040,7 @@ word16 fn0F48(word16 r5, ptr16 & r1Out, ptr16 & r5Out)
 // Called from:
 //      fn3B42
 // MayUse:  r5:[0..15]
-// LiveOut: r0 r1 r5
+// LiveOut: r0:[0..15]-fn3B42 r1:[0..15]-fn3B42 r5:[0..15]-fn3B42
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: sp
 fn0F48_entry:
@@ -1338,7 +1338,7 @@ word16 fn1366(word16 r0, word16 r3, word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr
 // Called from:
 //      fn12CA
 // MayUse:  r0:[0..15] r3:[0..15] r4:[0..15]
-// LiveOut: r0 r2 r3 r4
+// LiveOut: r0:[0..15]-fn12CA r2:[0..15]-fn12CA r3:[0..15]-fn12CA r4:[0..15]-fn12CA
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1366_entry:
@@ -1367,7 +1367,7 @@ word16 fn1370(word16 r0, word16 r3, word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr
 //      fn12CA
 //      fn1366
 // MayUse:  r0:[0..7] r3:[0..15] r4:[0..15]
-// LiveOut: r0 r2 r3 r4
+// LiveOut: r0:[0..15]-fn1366 r2:[0..15]-fn1366 r3:[0..15]-fn1366 r4:[0..15]-fn1366
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1370_entry:
@@ -1434,7 +1434,7 @@ word16 fn1420(word16 r2, word16 r3)
 //      fn145E
 //      fn14A8
 // MayUse:  r2:[0..15] r3:[0..15]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn14A8
 // Trashed: NZVC r0 r1
 // Preserved: sp
 fn1420_entry:
@@ -1774,7 +1774,7 @@ word16 fn1836(word16 r3, word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 //      fn16DA
 //      fn1D30
 // MayUse:  r3:[0..15] r4:[0..15]
-// LiveOut: r0 r2 r3 r4
+// LiveOut: r0:[0..15]-fn16DA r2:[0..15]-fn1370 r3:[0..15]-fn1D30 r4:[0..15]-fn1D30
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1836_entry:
@@ -1811,7 +1811,7 @@ word16 fn18BE(word16 r0, word16 r3, word16 r4, ptr16 & r4Out)
 // Called from:
 //      fn16DA
 // MayUse:  r0:[0..15] r3:[0..15] r4:[0..15]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..15]-fn16DA r4:[0..15]-fn16DA
 // Trashed: NZVC r0 r2 r3 r4 sp
 // Preserved:
 fn18BE_entry:
@@ -1874,7 +1874,7 @@ word16 fn1900(word16 r3, word16 r4, ptr16 & r3Out, ptr16 & r4Out)
 //      fn1836
 //      fn18BE
 // MayUse:  r3:[0..15] r4:[0..15]
-// LiveOut: r2 r3 r4
+// LiveOut: r2:[0..15]-fn1836 r3:[0..15]-fn1836 r4:[0..15]-fn1836
 // Trashed: NZVC r0 r2 r3 r4 sp
 // Preserved:
 fn1900_entry:
@@ -1928,7 +1928,7 @@ word16 fn1932(word16 r3, word16 r4, ptr16 & r3Out, ptr16 & r4Out)
 //      fn18BE
 //      fn1900
 // MayUse:  r3:[0..15] r4:[0..15]
-// LiveOut: r2 r3 r4
+// LiveOut: r2:[0..15]-fn1900 r3:[0..15]-fn18BE r4:[0..15]-fn18BE
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1932_entry:
@@ -2046,7 +2046,7 @@ word16 fn196A(word16 r3)
 //      fn195A
 //      fn1966
 // MayUse:  r3:[0..15]
-// LiveOut: r0
+// LiveOut: r0:[0..15]-fn195A
 // Trashed: NZVC r0
 // Preserved: sp
 fn196A_entry:
@@ -2126,7 +2126,7 @@ word16 fn1D30(word16 r0, word16 r3, ptr16 & r4Out)
 // Called from:
 //      fn14A8
 // MayUse:  r0:[0..15] r3:[0..15]
-// LiveOut: r3 r4
+// LiveOut: r3:[0..15]-fn14A8 r4:[0..15]-fn14A8
 // Trashed: NZVC r0 r1 r2 r3 r4
 // Preserved: sp
 fn1D30_entry:
@@ -2879,7 +2879,7 @@ word16 fn474C(word16 r1, word16 r2, word16 r3, word16 r4, ptr16 & r4Out)
 // Called from:
 //      fn45F6
 // MayUse:  r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15]
-// LiveOut: r0 r4
+// LiveOut: r0:[0..15]-fn45F6 r4:[0..15]-fn45F6
 // Trashed: NZVC r0 r2 r4
 // Preserved: sp
 fn474C_entry:

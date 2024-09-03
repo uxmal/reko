@@ -105,7 +105,7 @@ word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
 // Called from:
 //      main
 // MayUse:  Stack +0000:[0..31] xmm0:[0..31]
-// LiveOut: xmm0
+// LiveOut: xmm0:[0..31]-main
 // Trashed: SCZO rax rdx Top xmm0 xmm1 xmm2
 // Preserved: rsp
 Q_rsqrt_entry:
@@ -121,7 +121,7 @@ word128 lib_rsqrt(word128 xmm0)
 // Called from:
 //      main
 // MayUse:  xmm0:[0..31]
-// LiveOut: xmm0
+// LiveOut: xmm0:[0..31]-main
 // Trashed: SCZOP Top xmm0 xmm1
 // Preserved: rsp
 lib_rsqrt_entry:

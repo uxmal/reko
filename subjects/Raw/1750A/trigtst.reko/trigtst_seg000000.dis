@@ -100,7 +100,7 @@ word32 fn01E6(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1 gp2
+// LiveOut: Sequence gp0:gp1:[0..31]-fn0111 gp2:[0..15]-fn0111
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 fn01E6_entry:
@@ -147,7 +147,7 @@ word16 fn02BF(word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp
 //      fn032A
 //      fn034E
 // MayUse:  gp1:[0..15] gp4:[0..15]
-// LiveOut: gp0 gp1 gp14 gp2
+// LiveOut: gp0:[0..15]-fn032A gp1:[0..15]-fn032A gp14:[0..15]-fn032A gp2:[0..15]-fn032A
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 fn02BF_entry:
@@ -183,7 +183,7 @@ word32 fn032A(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1 gp2
+// LiveOut: Sequence gp0:gp1:[0..31]-fn0111 gp2:[0..15]-fn0111
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 fn032A_entry:
@@ -221,7 +221,7 @@ word32 fn034E(word32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp0:gp1 gp2
+// LiveOut: Sequence gp0:gp1:[0..31]-fn0111 gp2:[0..15]-fn0111
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved:
 fn034E_entry:
@@ -254,7 +254,7 @@ word16 fn03E0(word32 gp1_gp2, word16 gp0, word16 gp3, ptr16 & gp14Out)
 // Called from:
 //      fn04AE
 // MayUse:  gp0:[0..15] gp3:[0..15] Sequence gp1:gp2:[0..31]
-// LiveOut: gp0 gp14
+// LiveOut: gp0:[0..15]-fn04AE gp14:[0..15]-fn04AE
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 fn03E0_entry:
@@ -272,7 +272,7 @@ word16 fn03EC(real48 gp12_gp13_gp14, word16 gp0, word16 gp1, word16 gp11)
 // Called from:
 //      fn03E0
 // MayUse:  gp0:[0..15] gp1:[0..15] gp11:[0..15] Sequence gp12:gp13:gp14:[0..47]
-// LiveOut: gp14
+// LiveOut: gp14:[0..15]-fn03E0
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 fn03EC_entry:
@@ -414,7 +414,7 @@ word16 fn04AE(word32 gp0_gp1, word16 gp2)
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp14
+// LiveOut: gp14:[0..15]-fn0111
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 fn04AE_entry:

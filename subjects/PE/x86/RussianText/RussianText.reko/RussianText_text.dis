@@ -54,7 +54,7 @@ word32 fn00401158()
 //      _GetExceptDLLinfo
 //      fn004011B0
 // MayUse:  fs:[0..15]
-// LiveOut: eax
+// LiveOut: eax:[0..31]-fn004011FC
 // Trashed: eax edx Top
 // Preserved: esp
 fn00401158_entry:
@@ -67,7 +67,7 @@ int32 main(int32 argc, char ** argv)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: eax
+// LiveOut: eax:[0..31]-main
 // Trashed: eax
 // Preserved:
 main_entry:

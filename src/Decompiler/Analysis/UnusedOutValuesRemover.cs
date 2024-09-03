@@ -32,6 +32,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using LiveOutUse = Reko.Analysis.DataFlow.LiveOutUse;
+using LiveOutFlagsUse = Reko.Analysis.DataFlow.LiveOutFlagsUse;
 
 namespace Reko.Analysis
 {
@@ -103,7 +105,7 @@ namespace Reko.Analysis
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
                 flow.BitsLiveOut = SummarizeStorageBitranges(flow.BitsLiveOut.Concat(liveOut));
-                flow.grfLiveOut = SummarizeFlagGroups(liveOut);
+                flow.LiveOutFlags = SummarizeFlagGroups(liveOut);
             }
         }
 
@@ -174,12 +176,12 @@ namespace Reko.Analysis
             }
         }
 
-        private static Dictionary<Storage, BitRange> SummarizeStorageBitranges(
-            IEnumerable<KeyValuePair<Storage, BitRange>> items)
+        private static Dictionary<Storage, LiveOutUse> SummarizeStorageBitranges(
+            IEnumerable<KeyValuePair<Storage, LiveOutUse>> items)
         {
-            var registerDomains = new Dictionary<StorageDomain, KeyValuePair<Storage, BitRange>>();
-            var fpuStorages = new Dictionary<Storage, BitRange>();
-            var seqStorages = new Dictionary<Storage, BitRange>();
+            var registerDomains = new Dictionary<StorageDomain, KeyValuePair<Storage, LiveOutUse>>();
+            var fpuStorages = new Dictionary<Storage, LiveOutUse>();
+            var seqStorages = new Dictionary<Storage, LiveOutUse>();
             foreach (var item in items)
             {
                 switch (item.Key)
@@ -187,22 +189,22 @@ namespace Reko.Analysis
                 case RegisterStorage reg:
                     if (!registerDomains.TryGetValue(reg.Domain, out var widestRange))
                     {
-                        widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
+                        widestRange = new (reg, item.Value);
                         registerDomains.Add(reg.Domain, widestRange);
                     }
                     else
                     {
-                        int min = Math.Min(item.Value.Lsb, widestRange.Value.Lsb);
-                        int max = Math.Min(item.Value.Msb, widestRange.Value.Msb);
+                        int min = Math.Min(item.Value.Range.Lsb, widestRange.Value.Range.Lsb);
+                        int max = Math.Min(item.Value.Range.Msb, widestRange.Value.Range.Msb);
                         if (item.Key.Covers(widestRange.Key))
                         {
-                            widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
+                            widestRange = new (reg, item.Value);
                             registerDomains[reg.Domain] = widestRange;
                         }
                     }
                     break;
                 case FpuStackStorage fpu:
-                    fpuStorages[fpu] = new BitRange(0, (int)fpu.BitSize);
+                    fpuStorages[fpu] = new(new BitRange(0, (int)fpu.BitSize), item.Value.Procedure);
                     break;
                 case SequenceStorage seq:
                     seqStorages[seq] = item.Value;
@@ -216,15 +218,18 @@ namespace Reko.Analysis
                 .ToDictionary(k => k.Key, v => v.Value);
         }
 
-        private static Dictionary<RegisterStorage, uint> SummarizeFlagGroups(
-            Dictionary<Storage, BitRange> liveOut)
+        private static Dictionary<RegisterStorage, LiveOutFlagsUse> SummarizeFlagGroups(
+            Dictionary<Storage, LiveOutUse> liveOut)
         {
-            var results = new Dictionary<RegisterStorage, uint>();
+            var results = new Dictionary<RegisterStorage, LiveOutFlagsUse>();
             foreach (var de in liveOut)
             {
                 if (de.Key is FlagGroupStorage grf && grf.FlagGroupBits != 0)
                 {
-                    results[grf.FlagRegister] = results.Get(grf.FlagRegister) | grf.FlagGroupBits;
+                    var lof = results.Get(grf.FlagRegister);
+                    var flagBits = lof.Flags | grf.FlagGroupBits;
+                    var proc = lof.Procedure ?? de.Value.Procedure;
+                    results[grf.FlagRegister] = new(flagBits, proc);
                 }
             }
             return results;
@@ -271,7 +276,7 @@ namespace Reko.Analysis
 
         private static (HashSet<Statement> deadStms, HashSet<Storage> deadStgs) FindDeadStatementsInExitBlock(
             SsaState ssa,
-            Dictionary<Storage, BitRange> liveOutStorages)
+            Dictionary<Storage, LiveOutUse> liveOutStorages)
         {
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
@@ -301,10 +306,11 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="procCallee">Procedure that was called</param>
         /// <returns></returns>
-        private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
+        private Dictionary<Storage, LiveOutUse> CollectLiveOutStorages(
+            Procedure procCallee)
         {
             trace.Verbose("== Collecting live out storages of {0}", procCallee.Name);
-            var liveOutStorages = new Dictionary<Storage, BitRange>();
+            var liveOutStorages = new Dictionary<Storage, LiveOutUse>();
 
             var sig = procCallee.Signature;
             if (sig.ParametersValid)
@@ -316,7 +322,8 @@ namespace Reko.Analysis
                 {
                     liveOutStorages.Add(
                         sig.ReturnValue.Storage,
-                        new BitRange(0, sig.ReturnValue.DataType.BitSize));
+                        new(new BitRange(0, sig.ReturnValue.DataType.BitSize),
+                         procCallee));
                 }
             }
             else
@@ -341,14 +348,14 @@ namespace Reko.Analysis
                         {
                             var br = urf.Classify(ssaCaller, sid, def.Storage, true);
                             trace.Verbose("  {0}: {1}", sid.Identifier.Name, br);
-                            if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
+                            if (liveOutStorages.TryGetValue(def.Storage, out var brOld))
                             {
-                                br |= brOld;
-                                liveOutStorages[def.Storage] = br;
+                                br |= brOld.Range;
+                                liveOutStorages[def.Storage] = new(br, brOld.Procedure);
                             }
                             else if (!br.IsEmpty)
                             {
-                                liveOutStorages[def.Storage] = br;
+                                liveOutStorages[def.Storage] = new(br, stm.Block.Procedure);
                             }
                         }
                     }
@@ -359,24 +366,24 @@ namespace Reko.Analysis
 
         private static bool MergeLiveOut(
             ProcedureFlow flow,
-            Dictionary<Storage, BitRange> newLiveOut)
+            Dictionary<Storage, LiveOutUse> newLiveOut)
         {
             bool change = false;
             foreach (var de in newLiveOut)
             {
-                if (flow.BitsLiveOut.TryGetValue(de.Key, out BitRange oldRange))
+                if (flow.BitsLiveOut.TryGetValue(de.Key, out var oldRange))
                 {
-                    var range = oldRange | de.Value;
-                    if (range != oldRange)
+                    var range = oldRange.Range | de.Value.Range;
+                    if (range != oldRange.Range)
                     {
-                        flow.BitsLiveOut[de.Key] = range;
+                        flow.BitsLiveOut[de.Key] = new(range, oldRange.Procedure);
                         change = true;
                     }
                 }
                 else
                 {
-                    var range = de.Value;
-                    flow.BitsLiveOut[de.Key] = range;
+                    var range = de.Value.Range;
+                    flow.BitsLiveOut[de.Key] = new(range, de.Value.Procedure);
                     change = true;
                 }
             }
