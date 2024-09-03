@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -114,8 +115,8 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.div0u: RewriteDiv0u(); break;
                 case Mnemonic.div1: RewriteDiv1(); break;
                 case Mnemonic.divs: RewriteDivs(); break;
-                case Mnemonic.dmuls_l: RewriteDmul(m.SMul); break;
-                case Mnemonic.dmulu_l: RewriteDmul(m.UMul); break;
+                case Mnemonic.dmuls_l: RewriteDmul(Operator.SMul, PrimitiveType.Int64); break;
+                case Mnemonic.dmulu_l: RewriteDmul(Operator.UMul, PrimitiveType.UInt64); break;
                 case Mnemonic.dt: RewriteDt(); break;
                 case Mnemonic.exts_b: RewriteExt(PrimitiveType.SByte, PrimitiveType.Int32); break;
                 case Mnemonic.exts_w: RewriteExt(PrimitiveType.Int16, PrimitiveType.Int32); break;
@@ -522,12 +523,12 @@ namespace Reko.Arch.SuperH
             m.Assign(dst, m.SDiv(dst, src));
         }
 
-        private void RewriteDmul(Func<Expression, Expression, Expression> fn)
+        private void RewriteDmul(BinaryOperator fn, PrimitiveType dtProduct)
         {
-            var op1 = SrcOp(instr.Operands[0]);
-            var op2 = SrcOp(instr.Operands[1]);
+            var op1 = SrcOp(0);
+            var op2 = SrcOp(1);
             var mac = binder.EnsureRegister(Registers.mac);
-            m.Assign(mac, fn(op2, op1));
+            m.Assign(mac, m.Bin(fn, dtProduct, op2, op1));
         }
 
         private void RewriteDt()

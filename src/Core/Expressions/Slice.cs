@@ -35,6 +35,19 @@ namespace Reko.Core.Expressions
         {
             if (bitOffset < 0)
                 throw new ArgumentOutOfRangeException(nameof(bitOffset), "Offset must be non-negative.");
+            //$TODO:
+            // Turning the following code on causes stricter validation
+            // of the arguments. However in the TrashedRegisterFinder, 
+            // too-short values are being stored with SetState. That cannot 
+            // be fixed until a revamp of Ssa stack variables takes place.
+            // We currently commit too quickly to a stack variable before 
+            // we give the SSA stage a chance to determin whether two 
+            // adjacent stack stores are in fact a larger segmented load.
+#if STRICT
+            if (bitOffset + dt.BitSize > expression.DataType.BitSize)
+                throw new ArgumentException(nameof(expression), 
+                    $"Sliced expression is too small.{bitOffset} + {dt.BitSize} > {expression.DataType.BitSize} ");
+#endif
             Expression = expression;
             Offset = bitOffset;
         }

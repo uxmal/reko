@@ -1231,7 +1231,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|r4 = r4 << 0x21<8> & 1<64>");
             AssertCode(0x7863AB02,   // rldicl	r3,r3,35,0C
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = CONVERT(SLICE(r3, word52, 62), word52, word64)");
+                "1|L--|r3 = CONVERT(SLICE(r3, word52, 11), word52, word64)");
             AssertCode(0x7863e102, //"rldicl\tr3,r3,3C,04");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = r3 >>u 4<8>");
@@ -1243,7 +1243,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|r4 = r8 & 1<64>");
             AssertCode(0x794A5840,     // rldicl   r10,r10,0B,01
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = r10 >>u 0x35<8> & 0x7FFFFFFFFFFFFFFF<64>" );
+                "1|L--|r10 = __rol<word64,byte>(r10, 0xB<8>) & 0x7FFFFFFFFFFFFFFF<64>" );
         }
 
         [Test]

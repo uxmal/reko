@@ -2167,8 +2167,10 @@ void fn3B42(struct Eq_n * wArg00)
 		g_w578E = r1_n;
 		++*g_ptr5426;
 		fn0E0E(wLoc0A, 0x407D, 0x70A4, g_w578A, g_t578C.u0);
-		bool V_n = <invalid>;
-		bool N_n = <invalid>;
+		Eq_n V_n;
+		V_n.u0 = <invalid>;
+		Eq_n N_n;
+		N_n.u0 = <invalid>;
 		struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 		if (!(V_n | N_n))
 		{
@@ -2180,8 +2182,10 @@ void fn3B42(struct Eq_n * wArg00)
 			sp_n->tFFFFFFFA.u0 = 0xB852;
 			sp_n->wFFFFFFF8 = 0x407E;
 			fn0E0E(sp_n->ptrFFFFFFF6, sp_n->wFFFFFFF8, sp_n->tFFFFFFFA.u0, sp_n->wFFFFFFFC, sp_n->tFFFFFFFE.u0);
-			bool V_n = <invalid>;
-			bool N_n = <invalid>;
+			Eq_n V_n;
+			V_n.u0 = <invalid>;
+			Eq_n N_n;
+			N_n.u0 = <invalid>;
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			if (!(V_n | N_n))
 			{

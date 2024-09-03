@@ -756,7 +756,7 @@ l004028DC:
 l00402926_ds_t:
 l00402926_ds_f:
 l00402928:
-	Mem238[r9_205 + 28<i32>:word32] = r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s Mem223[0x004029D0<p32>:word32], word32, 32) + CONVERT(r8_203 > r0_204 + 0xFFFFFFFF<32>, bool, word32)
+	Mem238[r9_205 + 28<i32>:word32] = r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 Mem223[0x004029D0<p32>:word32], word32, 32) + CONVERT(r8_203 > r0_204 + 0xFFFFFFFF<32>, bool, word32)
 l00402938:
 l004024EC:
 	r3_249 = Mem240[r15_101 + 0x48<32>:word32]
@@ -814,7 +814,7 @@ l0040293C:
 l00402964_ds_t:
 l00402964_ds_f:
 l00402966:
-	Mem437[r9_108 + 48<i32>:word32] = r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s Mem422[0x004029D0<p32>:word32], word32, 32) + CONVERT(r10_1000 > r0_403 + 0xFFFFFFFF<32>, bool, word32)
+	Mem437[r9_108 + 48<i32>:word32] = r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 Mem422[0x004029D0<p32>:word32], word32, 32) + CONVERT(r10_1000 > r0_403 + 0xFFFFFFFF<32>, bool, word32)
 l00402976:
 l00402544:
 	r2_444 = Mem442[r15_101 + 0x50<32>:word32]

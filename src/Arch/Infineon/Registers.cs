@@ -380,9 +380,9 @@ namespace Reko.Arch.Infineon
             SAV = new FlagGroupStorage(psw, (uint) FlagM.CF, "AV", PrimitiveType.Bool);
             PswFlags = new[] { C, V, SV, AV, SAV };
 
-            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), "V_SV", PrimitiveType.Byte);
-            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "V_SV_AV_SAV", PrimitiveType.Byte);
-            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "C_V_SV_AV_SAV", PrimitiveType.Byte);
+            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), "V_SV", psw.DataType);
+            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "V_SV_AV_SAV", psw.DataType);
+            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "C_V_SV_AV_SAV", psw.DataType);
 
             ByName = factory.NamesToRegisters;
             ByDomain = factory.DomainsToRegisters;

@@ -60,8 +60,9 @@ namespace Reko.Evaluation
             {
                 return SliceSimdIntrisic(slice, simd, app);
             }
-            (e, changed) = e.Accept(this);
-
+            Expression e2;
+            (e2, changed) = e.Accept(this);
+            e = e2;
             slice = new Slice(slice.DataType, e, slice.Offset);
             e = sliceConst.Match(slice);
             if (e is not null)
@@ -159,20 +160,28 @@ namespace Reko.Evaluation
         /// <returns></returns>
         private static bool CanBeSliced(Slice slice, BinaryExpression bin)
         {
+            var sliceSize = slice.DataType.BitSize;
             return bin.Operator.Type switch
             {
-                OperatorType.And or
-                OperatorType.Or or
-                OperatorType.Xor => true,
+            OperatorType.And or
+            OperatorType.Or or
+            OperatorType.Xor =>
+                bin.Left.DataType.BitSize >= sliceSize &&
+                bin.Right.DataType.BitSize >= sliceSize,
 
-                OperatorType.IAdd or
-                OperatorType.ISub or
-                OperatorType.Shl or
-                OperatorType.IMul or
-                OperatorType.UMul or
-                OperatorType.SMul => slice.Offset == 0,
+            OperatorType.IAdd or
+            OperatorType.ISub or
+            OperatorType.IMul or
+            OperatorType.UMul or
+            OperatorType.SMul =>
+                slice.Offset == 0 &&
+                bin.Left.DataType.BitSize >= sliceSize &&
+                bin.Right.DataType.BitSize >= sliceSize,
 
-                _ => false,
+            OperatorType.Shl =>
+                slice.Offset == 0 &&
+                bin.Left.DataType.BitSize >= sliceSize,
+            _ => false,
             };
         }
 

@@ -14680,7 +14680,7 @@ fn0800_A817_entry:
 l0800_A817:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg06)
-	cx_33 = CONVERT(msdos_find_first_file(wArg0A, ptrArg02), bool, word16) | SLICE(SCZDOP, word16, 0)
+	cx_33 = SLICE(msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
 	ax_37 = SEQ(0x4E<8>, al) (alias)
 	dx_41 = SLICE(es_bx_12, word16, 0)
@@ -14709,7 +14709,7 @@ fn0800_A84A_entry:
 l0800_A84A:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg02)
-	cx_29 = CONVERT(msdos_find_next_file(), bool, word16) | SLICE(SCZDOP, word16, 0)
+	cx_29 = SLICE(msdos_find_next_file() | SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
 	ax_33 = SEQ(0x4F<8>, al) (alias)
 	dx_37 = SLICE(es_bx_12, word16, 0)

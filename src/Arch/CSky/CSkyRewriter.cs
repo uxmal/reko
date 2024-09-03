@@ -733,6 +733,7 @@ namespace Reko.Arch.CSky
 
         private void RewriteMacw(BinaryOperator mul, BinaryOperator? acc)
         {
+            // All mulsw* instructions are 16x32 multiplications.
             MaybeConditionalExecution();
             var (dst, l, r) = Rewrite2or3operands();
             var left = binder.CreateTemporary(PrimitiveType.Word16);
@@ -746,7 +747,7 @@ namespace Reko.Arch.CSky
             else
             {
                 var tmp = binder.CreateTemporary(dst.DataType);
-                m.Assign(tmp, m.Slice(m.Bin(mul, dst.DataType, left, right), PrimitiveType.Word32, 16));
+                m.Assign(tmp, m.Slice(m.Bin(mul, word48, left, right), PrimitiveType.Word32, 16));
                 m.Assign(dst, m.Bin(acc, dst, tmp));
             }
         }

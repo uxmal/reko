@@ -675,9 +675,9 @@ namespace Reko.Core
         {
             if (stgSub is not RegisterStorage that)
                 return -1;
-            if (!this.OverlapsWith(that))
+            if (!this.Covers(that))
                 return -1;
-            return (int) that.BitAddress;
+            return (int) (that.BitAddress - this.BitAddress);
         }
 
         public override bool OverlapsWith(Storage sThat)

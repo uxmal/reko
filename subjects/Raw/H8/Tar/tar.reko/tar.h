@@ -6351,7 +6351,7 @@ T_1409: (in Mem54[sp_7 + 0<32>:word16] @ 000085CC : word16)
   Class: Eq_1359
   DataType: int16
   OrigDataType: word16
-T_1410: (in SLICE(er2_16_16_r1_548, word16, 32) @ 000085B2 : word16)
+T_1410: (in SLICE(er2_16_16_r1_548, word16, 16) @ 000085B2 : word16)
   Class: Eq_1320
   DataType: word16
   OrigDataType: word16
@@ -7395,7 +7395,7 @@ T_1670: (in Mem257[sp_7 + 0<32>:word16] @ 0000871A : word16)
   Class: Eq_1359
   DataType: int16
   OrigDataType: word16
-T_1671: (in SLICE(er0_16_16_r1_551, word16, 32) @ 000086F6 : word16)
+T_1671: (in SLICE(er0_16_16_r1_551, word16, 16) @ 000086F6 : word16)
   Class: Eq_1318
   DataType: word16
   OrigDataType: word16

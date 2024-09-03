@@ -14351,13 +14351,16 @@ byte fn0800_A1D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut
 	ptr16 dx_n;
 	ptr16 bx_n;
 	fn0800-8F2F(wArg02, Mem7[ds:0x89:word16], wArg04, Mem7[ds:0x87:word16], out cx_n, out dx_n, out bx_n);
-	bool C_n = <invalid>;
+	Eq_n C_n;
+	C_n.u0 = <invalid>;
 	word16 ax_n;
 	if (!C_n)
 	{
 		fn0800-8F2F(wArg02, Mem7[ds:0x91:word16], wArg04, Mem7[ds:0x8F:word16], out cx_n, out dx_n, out bx_n);
-		bool Z_n = <invalid>;
-		bool C_n = <invalid>;
+		Eq_n Z_n;
+		Z_n.u0 = <invalid>;
+		Eq_n C_n;
+		C_n.u0 = <invalid>;
 		if (!(Z_n | C_n) && fn0800_A162(ds, wArg02, wArg04, out cx_n, out dx_n, out bx_n) != 0x00)
 		{
 			ax_n = 0x00;
@@ -14394,15 +14397,18 @@ Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 		fn0800-8F2F(ax_n, Mem59[ds:0x89:word16], dx_n, Mem59[ds:0x87:word16], out cx_n, out dx_n, out bx_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		bool C_n = <invalid>;
+		Eq_n C_n;
+		C_n.u0 = <invalid>;
 		if (!C_n)
 		{
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			fn0800-8F2F(ax_n, Mem59[ds:0x91:word16], dx_n, Mem59[ds:0x8F:word16], out cx_n, out dx_n, out bx_n);
-			bool Z_n = <invalid>;
-			bool C_n = <invalid>;
+			Eq_n Z_n;
+			Z_n.u0 = <invalid>;
+			Eq_n C_n;
+			C_n.u0 = <invalid>;
 			if (!(Z_n | C_n))
 			{
 				Eq_n ax_n = Mem59[ds:141:word16];
@@ -14934,16 +14940,16 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 	return ax_n;
 }
 
-// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack (ptr32 char) ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack (ptr32 char) ptrArg06, Stack cui16 wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-33CD
 //      fn0800-363D
-Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 {
-	word32 SCZDOP;
+	ui32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg06);
-	Eq_n cx_n = (word16) msdos_find_first_file(wArg0A, ptrArg02) | (word16) SCZDOP;
+	ptr16 cx_n = (word16) (msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP);
 	msdos_set_DTA(es_bx_n);
 	Eq_n ax_n = SEQ(0x4E, al);
 	ptr16 dx_n = (word16) es_bx_n;
@@ -14959,15 +14965,15 @@ Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A,
 	return ax_n;
 }
 
-// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack (ptr32 char) ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack (ptr32 char) ptrArg02, Register out ptr16 cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-3479
-Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, ptr16 & cxOut, ptr16 & dxOut)
 {
-	word32 SCZDOP;
+	ui32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg02);
-	Eq_n cx_n = (word16) msdos_find_next_file() | (word16) SCZDOP;
+	ptr16 cx_n = (word16) (msdos_find_next_file() | SCZDOP);
 	msdos_set_DTA(es_bx_n);
 	Eq_n ax_n = SEQ(0x4F, al);
 	ptr16 dx_n = (word16) es_bx_n;
@@ -15832,7 +15838,8 @@ void fn0800_B0A1(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 	word16 dx_n;
 	word16 bx_n;
 	fn0800-8F2F(wArg02, wArg08, wArg04, wArg06, out cx_n, out dx_n, out bx_n);
-	bool C_n = <invalid>;
+	Eq_n C_n;
+	C_n.u0 = <invalid>;
 	Eq_n ax_n;
 	if (!C_n)
 		ax_n.u0 = 0x01;

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Analysis;
+using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
@@ -767,7 +768,7 @@ namespace Reko.Analysis
                     var slices = sids.Select(MakeSlice).ToArray();
                     var e = slices.Skip(1).Aggregate(
                         (Expression) slices.First().Identifier, 
-                        (a, b) => outer.m.Or(a, b.Identifier));
+                        (a, b) => outer.m.Bin(Operator.Or, flagGroup.FlagRegister.Width, a, b.Identifier));
                     var ass = new AliasAssignment(id, e);
                     var sidTo = InsertBeforeStatement(bs.Block, stm, ass);
                     e.Accept(new InstructionUseAdder(sidTo.DefStatement, ssaIds));

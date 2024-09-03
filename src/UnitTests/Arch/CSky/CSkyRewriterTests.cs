@@ -21,7 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.CSky;
 using Reko.Core;
-using Reko.Core.Intrinsics;
 
 namespace Reko.UnitTests.Arch.CSky
 {
@@ -1359,11 +1358,11 @@ namespace Reko.UnitTests.Arch.CSky
         {
             Given_HexString("34C6 8094");
             AssertCode(     // mulswa\tr20,r17
-"0|L--|00100000(4): 4 instructions",
-"1|L--|v5 = SLICE(r20, word16, 0)",
-"2|L--|v6 = SLICE(r17, word16, 0)",
-"3|L--|v7 = SLICE(v5 *s32 v6, word32, 16)",
-"4|L--|r20 = r20 + v7");
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v5 = SLICE(r20, word16, 0)",
+                "2|L--|v6 = SLICE(r17, word16, 0)",
+                "3|L--|v7 = SLICE(v5 *s48 v6, word32, 16)",
+                "4|L--|r20 = r20 + v7");
         }
 
         [Test]
@@ -1374,7 +1373,7 @@ namespace Reko.UnitTests.Arch.CSky
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v5 = SLICE(r20, word16, 0)",
                 "2|L--|v6 = SLICE(r17, word16, 0)",
-                "3|L--|v7 = SLICE(v5 *s32 v6, word32, 16)",
+                "3|L--|v7 = SLICE(v5 *s48 v6, word32, 16)",
                 "4|L--|r20 = r20 - v7");
         }
 

@@ -83,6 +83,27 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
+        public void Stg_RegisterOffsets()
+        {
+            Assert.AreEqual(0, eax.OffsetOf(eax));
+            Assert.AreEqual(0, eax.OffsetOf(ax));
+            Assert.AreEqual(0, eax.OffsetOf(al));
+            Assert.AreEqual(8, eax.OffsetOf(ah));
+
+            Assert.AreEqual(-1, ax.OffsetOf(eax));
+            Assert.AreEqual(0, ax.OffsetOf(ax));
+            Assert.AreEqual(0, ax.OffsetOf(al));
+            Assert.AreEqual(8, ax.OffsetOf(ah));
+
+            Assert.AreEqual(-1, al.OffsetOf(eax));
+            Assert.AreEqual(-1, al.OffsetOf(ax));
+            Assert.AreEqual(0, al.OffsetOf(al));
+            Assert.AreEqual(-1, al.OffsetOf(ah));
+
+            Assert.AreEqual(0, ah.OffsetOf(ah));
+        }
+
+        [Test]
         public void Stg_FlagGroupsOverlap()
         {
             Assert.IsTrue(szc.OverlapsWith(szc));

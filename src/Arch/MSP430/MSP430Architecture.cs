@@ -94,7 +94,7 @@ namespace Reko.Arch.Msp430
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : Registers.sr.DataType;
             var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }

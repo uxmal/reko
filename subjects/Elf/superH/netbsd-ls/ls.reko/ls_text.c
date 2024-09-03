@@ -770,7 +770,7 @@ l004025F6:
 			if (r1_n != 0x00)
 			{
 				int32 r8_n;
-				r9_n->dw001C = r0_n + SLICE((r0_n + ~0x00) *s g_dw4029D0, word32, 32) + (word32) (r8_n > r0_n + ~0x00);
+				r9_n->dw001C = r0_n + SLICE((r0_n + ~0x00) *s64 g_dw4029D0, word32, 32) + (word32) (r8_n > r0_n + ~0x00);
 			}
 		}
 		else
@@ -819,7 +819,7 @@ l004025F6:
 			r9_n->dw0030 = r0_n;
 			word32 r1_n = **(r12_n + r1_n);
 			if (r1_n != 0x00)
-				r9_n->dw0030 = r0_n + SLICE((r0_n + ~0x00) *s g_dw4029D0, word32, 32) + (word32) (r10_n > r0_n + ~0x00);
+				r9_n->dw0030 = r0_n + SLICE((r0_n + ~0x00) *s64 g_dw4029D0, word32, 32) + (word32) (r10_n > r0_n + ~0x00);
 		}
 		else
 			r9_n->dw0030 = 0x04;

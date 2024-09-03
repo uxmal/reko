@@ -75,7 +75,7 @@ namespace Reko.Arch.Infineon
         {
             if (flagRegister != Registers.psw)
                 return null;
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : flagRegister.DataType;
             var f = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
             return f;
         }

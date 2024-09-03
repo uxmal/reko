@@ -38,7 +38,7 @@ namespace Reko.Evaluation
                 offset,
                 access.DataType);
             var newValue = ctx.GetValue(value, memory);
-            if (newValue != value)
+            if (newValue != value || newValue.DataType.BitSize != value.DataType.BitSize)
             {
                 ctx.RemoveExpressionUse(value);
                 ctx.UseExpression(newValue);

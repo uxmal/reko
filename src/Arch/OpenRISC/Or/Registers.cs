@@ -85,8 +85,7 @@ namespace Reko.Arch.OpenRISC.Or
             F = new FlagGroupStorage(sr, (uint) FlagM.F, "F", PrimitiveType.Bool);
             C = new FlagGroupStorage(sr, (uint) FlagM.CY, "C", PrimitiveType.Bool);
             V = new FlagGroupStorage(sr, (uint) FlagM.OV, "V", PrimitiveType.Bool);
-            CV = new FlagGroupStorage(sr, (uint) (FlagM.CY | FlagM.OV), "CV", PrimitiveType.Byte);
-
+            CV = new FlagGroupStorage(sr, (uint) (FlagM.CY | FlagM.OV), "CV", sr.DataType);
         }
     }
 

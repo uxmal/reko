@@ -145,7 +145,8 @@ void fn000027FC(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 	int32 r3_n = r11->dwFFFFFFD8;
 	word32 lr_n;
 	fn00002744(r12->dwFFFFFFD8, r3_n, out lr_n);
-	bool Z_n = <invalid>;
+	Eq_n Z_n;
+	Z_n.u0 = <invalid>;
 	if (!Z_n)
 		r10();
 }
@@ -160,7 +161,8 @@ void fn00002824(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 	int32 r3_n = r11->dwFFFFFFD0;
 	word32 lr_n;
 	fn00002744(r12->dwFFFFFFD0, r3_n, out lr_n);
-	bool Z_n = <invalid>;
+	Eq_n Z_n;
+	Z_n.u0 = <invalid>;
 	if (!Z_n)
 		r10();
 }
@@ -175,7 +177,8 @@ void fn0000284C(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 	int32 r3_n = r11->dwFFFFFFC8;
 	word32 lr_n;
 	fn00002744(r12->dwFFFFFFC8, r3_n, out lr_n);
-	bool Z_n = <invalid>;
+	Eq_n Z_n;
+	Z_n.u0 = <invalid>;
 	if (!Z_n)
 		r10();
 }
@@ -2138,8 +2141,10 @@ l00004288:
 						word32 r12_n;
 						word32 lr_n;
 						fn0000B88C(r0_n, r1, r2_n, r3_n, r4_n, r5_n, r12_n, lr_n, out r0_n, out r1_n, out r2_n, out r3_n, out r10_n, out r11_n, out r12_n, out lr_n);
-						bool N_n = <invalid>;
-						bool V_n = <invalid>;
+						Eq_n N_n;
+						N_n.u0 = <invalid>;
+						Eq_n V_n;
+						V_n.u0 = <invalid>;
 						int32 r9_n;
 						word32 r3_n;
 						ptr32 r4_n;
@@ -3187,8 +3192,10 @@ l00004EBE:
 					r5_n = (struct Eq_n *) r6_n->u0.ptr0008;
 					word32 lr_n;
 					fn00002744(sp_n->dw14EC, r5_n[492], out lr_n);
-					bool N_n = <invalid>;
-					bool V_n = <invalid>;
+					Eq_n N_n;
+					N_n.u0 = <invalid>;
+					Eq_n V_n;
+					V_n.u0 = <invalid>;
 					if (!(N_n | V_n))
 						r1_n = fn0000895C(r0_n, r12_n, r2_n, r3_n, r4_n, r5_n, r6_n, r7_n, r5_n + 488, lr_n);
 					int32 r3_n = sp_n->dw14EC;
@@ -3196,8 +3203,10 @@ l00004EBE:
 					sp_n->dw0004 = (int32) r5_n[492];
 					word32 lr_n;
 					fn00002744(r3_n, sp_n->dw0004, out lr_n);
-					bool N_n = <invalid>;
-					bool V_n = <invalid>;
+					Eq_n N_n;
+					N_n.u0 = <invalid>;
+					Eq_n V_n;
+					V_n.u0 = <invalid>;
 					if (N_n | V_n)
 					{
 						word32 lr_n;
@@ -4364,8 +4373,10 @@ l00006A2C:
 					word32 r3_n;
 					word32 r12_n;
 					fn0000B88C(r0_n, r1_n, r2_n, r3_n, r4_n, r5_n, sp_n->t0008.u3, lr_n, out r0_n, out r1_n, out r2_n, out r3_n, out r10_n, out r11_n, out r12_n, out lr_n);
-					bool N_n = <invalid>;
-					bool V_n = <invalid>;
+					Eq_n N_n;
+					N_n.u0 = <invalid>;
+					Eq_n V_n;
+					V_n.u0 = <invalid>;
 					word32 r4_n;
 					if (!(N_n | V_n))
 						r4_n = r4_n + r12_n;
@@ -4831,8 +4842,10 @@ void fn00006E5C(word32 r0, struct Eq_n * r8, ui32 (* r9)[], struct Eq_n ** r10, 
 	word32 r12_n;
 	word32 lr_n;
 	fn00006DDC(r0, dwArg00, r10, r12, r9, r8, r6_n, r11, r8, r9, r10, r11, lr, out r12_n, out lr_n);
-	bool N_n = <invalid>;
-	bool V_n = <invalid>;
+	Eq_n N_n;
+	N_n.u0 = <invalid>;
+	Eq_n V_n;
+	V_n.u0 = <invalid>;
 	if (!(N_n | V_n))
 		dwArg00();
 }
@@ -8472,8 +8485,10 @@ void fn000092D8(word32 r0, <anonymous> * r1, word32 r4, word32 r5, word64 * r10,
 	ui32 r12_n;
 	fn00006DDC(r0, r1, r2_n, r3_n, g_a99B4, r5_n, r6_n, r7_n, (struct Eq_n *) 0x04, g_a99B4, r6_n->ptr02F0, r7_n, lr, out r12_n, out lr_n);
 	r4_n = g_a99B4;
-	bool N_n = <invalid>;
-	bool V_n = <invalid>;
+	Eq_n N_n;
+	N_n.u0 = <invalid>;
+	Eq_n V_n;
+	V_n.u0 = <invalid>;
 	if (!(N_n | V_n))
 	{
 		r5_n |= g_a99B4[r12_n];
@@ -14241,8 +14256,10 @@ bool fn0000D220(Eq_n r0, Eq_n r1, ui32 r2, Eq_n r9, Eq_n r10, ptr32 lr, struct E
 	Eq_n r4_n = r10;
 	Eq_n r3_n = &tLoc30;
 	Eq_n r5_n = r9;
-	bool N_n = <invalid>;
-	bool V_n = <invalid>;
+	Eq_n N_n;
+	N_n.u0 = <invalid>;
+	Eq_n V_n;
+	V_n.u0 = <invalid>;
 	if (!(N_n | V_n))
 	{
 l0000E676:
@@ -14268,8 +14285,10 @@ l0000E676:
 	struct Eq_n * r11_n;
 	Eq_n lr_n;
 	fn0000EA4C(&tLoc30, r9, out r9_n, out r10_n, out r11_n, out lr_n);
-	bool N_n = <invalid>;
-	bool V_n = <invalid>;
+	Eq_n N_n;
+	N_n.u0 = <invalid>;
+	Eq_n V_n;
+	V_n.u0 = <invalid>;
 	if (!(N_n | V_n))
 	{
 		r6_n->ptr000C();

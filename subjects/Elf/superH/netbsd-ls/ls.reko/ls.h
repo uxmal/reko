@@ -5075,15 +5075,15 @@ T_950: (in Mem223[0x004029D0<p32>:word32] @ 00402936 : word32)
   Class: Eq_950
   DataType: int32
   OrigDataType: int32
-T_951: (in (r0_204 + 0xFFFFFFFF<32>) *s g_dw4029D0 @ 00402936 : int32)
+T_951: (in (r0_204 + 0xFFFFFFFF<32>) *s64 g_dw4029D0 @ 00402936 : int64)
   Class: Eq_951
-  DataType: int32
-  OrigDataType: int32
-T_952: (in SLICE((r0_204 + 0xFFFFFFFF<32>) *s Mem223[0x004029D0<p32>:word32], word32, 32) @ 00402936 : word32)
+  DataType: int64
+  OrigDataType: int64
+T_952: (in SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 Mem223[0x004029D0<p32>:word32], word32, 32) @ 00402936 : word32)
   Class: Eq_952
   DataType: word32
   OrigDataType: word32
-T_953: (in r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s g_dw4029D0, word32, 32) @ 00402936 : word32)
+T_953: (in r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 g_dw4029D0, word32, 32) @ 00402936 : word32)
   Class: Eq_953
   DataType: word32
   OrigDataType: word32
@@ -5103,7 +5103,7 @@ T_957: (in CONVERT(r8_203 > r0_204 + 0xFFFFFFFF<32>, bool, word32) @ 00402936 : 
   Class: Eq_957
   DataType: word32
   OrigDataType: word32
-T_958: (in r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s g_dw4029D0, word32, 32) + (word32) (r8_203 > r0_204 + 0xFFFFFFFF<32>) @ 00402936 : word32)
+T_958: (in r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 g_dw4029D0, word32, 32) + (word32) (r8_203 > r0_204 + 0xFFFFFFFF<32>) @ 00402936 : word32)
   Class: Eq_923
   DataType: word32
   OrigDataType: word32
@@ -5687,15 +5687,15 @@ T_1103: (in Mem422[0x004029D0<p32>:word32] @ 00402974 : word32)
   Class: Eq_950
   DataType: int32
   OrigDataType: int32
-T_1104: (in (r0_403 + 0xFFFFFFFF<32>) *s g_dw4029D0 @ 00402974 : int32)
+T_1104: (in (r0_403 + 0xFFFFFFFF<32>) *s64 g_dw4029D0 @ 00402974 : int64)
   Class: Eq_1104
-  DataType: int32
-  OrigDataType: int32
-T_1105: (in SLICE((r0_403 + 0xFFFFFFFF<32>) *s Mem422[0x004029D0<p32>:word32], word32, 32) @ 00402974 : word32)
+  DataType: int64
+  OrigDataType: int64
+T_1105: (in SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 Mem422[0x004029D0<p32>:word32], word32, 32) @ 00402974 : word32)
   Class: Eq_1105
   DataType: word32
   OrigDataType: word32
-T_1106: (in r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s g_dw4029D0, word32, 32) @ 00402974 : word32)
+T_1106: (in r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 g_dw4029D0, word32, 32) @ 00402974 : word32)
   Class: Eq_1106
   DataType: word32
   OrigDataType: word32
@@ -5711,7 +5711,7 @@ T_1109: (in CONVERT(r10_1000 > r0_403 + 0xFFFFFFFF<32>, bool, word32) @ 00402974
   Class: Eq_1109
   DataType: word32
   OrigDataType: word32
-T_1110: (in r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s g_dw4029D0, word32, 32) + (word32) (r10_1000 > r0_403 + 0xFFFFFFFF<32>) @ 00402974 : word32)
+T_1110: (in r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 g_dw4029D0, word32, 32) + (word32) (r10_1000 > r0_403 + 0xFFFFFFFF<32>) @ 00402974 : word32)
   Class: Eq_962
   DataType: int32
   OrigDataType: word32

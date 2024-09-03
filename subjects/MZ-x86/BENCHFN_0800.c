@@ -287,13 +287,15 @@ l0800_nE7:
 l0800_nA3:
 			word16 ax_n;
 			fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
-			bool C_n = <invalid>;
-			bool Z_n = <invalid>;
-			bool v36_n = C_n;
+			Eq_n C_n;
+			C_n.u0 = <invalid>;
+			Eq_n Z_n;
+			Z_n.u0 = <invalid>;
+			Eq_n v36_n = C_n;
 			if (!(Z_n | C_n))
 			{
-				bool C_n;
-				bool Z_n;
+				Eq_n C_n;
+				Eq_n Z_n;
 				do
 				{
 					if (v36_n)
@@ -325,8 +327,8 @@ l0800_nA3:
 						return;
 					}
 					fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
-					C_n = <invalid>;
-					Z_n = <invalid>;
+					C_n.u0 = <invalid>;
+					Z_n.u0 = <invalid>;
 					v36_n = C_n;
 				} while (Z_n | C_n);
 			}

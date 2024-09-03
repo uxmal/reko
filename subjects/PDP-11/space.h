@@ -1326,6 +1326,16 @@ Eq_3579: (fn byte ((ptr16 code), cui16, Eq_18, cui16, Eq_18))
 	T_3579 (in fn0E0E @ 3B7A : ptr16)
 	T_3580 (in signature of fn0E0E @ 0E0E : void)
 	T_3626 (in fn0E0E @ 3BA0 : ptr16)
+Eq_3588: (union "Eq_3588" (bool u0) (cui16 u1))
+	T_3588 (in <invalid> @ 3B7A : bool)
+	T_3589 (in V_50 @ 3B7A : Eq_3588)
+	T_3590 (in N_48 @ 3B7A : Eq_3588)
+	T_3643 (in V_81 @ 3BA0 : Eq_3588)
+	T_3644 (in N_79 @ 3BA0 : Eq_3588)
+Eq_3592: (union "Eq_3592" (bool u0) (cui16 u1))
+	T_3592 (in V_50 | N_48 @ 3B7E : word16)
+Eq_3646: (union "Eq_3646" (bool u0) (cui16 u1))
+	T_3646 (in V_81 | N_79 @ 3BA4 : word16)
 Eq_3739: (fn void (Eq_18, (ptr16 code), cui16, Eq_18, cui16, Eq_18))
 	T_3739 (in fn0670 @ 3C00 : ptr16)
 	T_3740 (in signature of fn0670 @ 0670 : void)
@@ -15960,22 +15970,22 @@ T_3588: (in <invalid> @ 3B7A : bool)
   Class: Eq_3588
   DataType: bool
   OrigDataType: bool
-T_3589: (in V_50 @ 3B7A : bool)
+T_3589: (in V_50 @ 3B7A : Eq_3588)
   Class: Eq_3588
-  DataType: bool
-  OrigDataType: bool
-T_3590: (in N_48 @ 3B7A : bool)
+  DataType: Eq_3588
+  OrigDataType: (union (bool u0) (cui16 u1))
+T_3590: (in N_48 @ 3B7A : Eq_3588)
   Class: Eq_3588
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_3588
+  OrigDataType: (union (bool u0) (cui16 u1))
 T_3591: (in sp_47 @ 3B7A : (ptr16 Eq_40))
   Class: Eq_40
   DataType: (ptr16 Eq_40)
   OrigDataType: (ptr16 (struct (FFFFFFF6 T_3629 tFFFFFFF6) (FFFFFFF8 T_1214 tFFFFFFF8) (FFFFFFFA T_1215 tFFFFFFFA) (FFFFFFFC T_1216 tFFFFFFFC) (FFFFFFFE T_1217 tFFFFFFFE)))
-T_3592: (in V_50 | N_48 @ 3B7E : bool)
+T_3592: (in V_50 | N_48 @ 3B7E : word16)
   Class: Eq_3592
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_3592
+  OrigDataType: (union (bool u1) (cui16 u0))
 T_3593: (in 0xC<16> @ 3B80 : word16)
   Class: Eq_54
   DataType: ci16
@@ -16176,22 +16186,22 @@ T_3642: (in fn0E0E(sp_47->ptrFFFFFFF6, sp_47->wFFFFFFF8, sp_47->tFFFFFFFA.u0, sp
   Class: Eq_3587
   DataType: byte
   OrigDataType: byte
-T_3643: (in V_81 @ 3BA0 : bool)
+T_3643: (in V_81 @ 3BA0 : Eq_3588)
   Class: Eq_3588
-  DataType: bool
-  OrigDataType: bool
-T_3644: (in N_79 @ 3BA0 : bool)
+  DataType: Eq_3588
+  OrigDataType: (union (bool u0) (cui16 u1))
+T_3644: (in N_79 @ 3BA0 : Eq_3588)
   Class: Eq_3588
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_3588
+  OrigDataType: (union (bool u0) (cui16 u1))
 T_3645: (in sp_78 @ 3BA0 : (ptr16 Eq_40))
   Class: Eq_40
   DataType: (ptr16 Eq_40)
   OrigDataType: (ptr16 (struct (FFFFFFF6 T_3743 tFFFFFFF6) (FFFFFFF8 T_312 tFFFFFFF8) (FFFFFFFA T_267 tFFFFFFFA) (FFFFFFFC T_312 tFFFFFFFC) (FFFFFFFE T_267 tFFFFFFFE)))
-T_3646: (in V_81 | N_79 @ 3BA4 : bool)
+T_3646: (in V_81 | N_79 @ 3BA4 : word16)
   Class: Eq_3646
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_3646
+  OrigDataType: (union (bool u1) (cui16 u0))
 T_3647: (in 0x12<16> @ 3BC2 : word16)
   Class: Eq_54
   DataType: ci16
@@ -21166,6 +21176,21 @@ typedef void (Eq_3503)(Eq_1283 *, word16 *);
 typedef Eq_18 (Eq_3557)(Eq_1399 *, Eq_18, Eq_1399 *);
 
 typedef byte (Eq_3579)(code *, cui16, Eq_18, cui16, Eq_18);
+
+typedef union Eq_3588 {
+	bool u0;
+	cui16 u1;
+} Eq_3588;
+
+typedef union Eq_3592 {
+	bool u0;
+	cui16 u1;
+} Eq_3592;
+
+typedef union Eq_3646 {
+	bool u0;
+	cui16 u1;
+} Eq_3646;
 
 typedef void (Eq_3739)(Eq_18, code *, cui16, Eq_18, cui16, Eq_18);
 

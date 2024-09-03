@@ -462,7 +462,7 @@ word32 fn00008584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 			word16 r0_n = sp_n->w0002 + r1_n * 0x0C;
 			sp_n->w0000 = r1_n;
 			sp_n->w0000 = r1_n + 0x01;
-			er2_16_n = SLICE(er2_16_16_r1_n, word16, 32);
+			er2_16_n = SLICE(er2_16_16_r1_n, word16, 16);
 			er4_16_n = SLICE(SEQ(er4_16_n, r1_n) + 0x01, word16, 16);
 			word16 r0_n = *SEQ(er0_16_n, r0_n + 0x9EB0);
 			if (r0_n == *SEQ(er3_16_n, (sp_n->w0002 + (sp_n->w0000 * 0x02 + (r1_n + 0x01)) * 0x04) + 0x9EB0))
@@ -532,7 +532,7 @@ word32 fn00008584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 			word16 r0_n = sp_n->w0004 + r1_n * 0x0C;
 			sp_n->w0000 = r1_n;
 			sp_n->w0000 = r1_n + 0x01;
-			er0_16_n = SLICE(er0_16_16_r1_n, word16, 32);
+			er0_16_n = SLICE(er0_16_16_r1_n, word16, 16);
 			ui16 r3_n = (r6_n + 0x01) * 0x02 + (sp_n->w0000 * 0x02 + (r1_n + 0x01)) * 0x04;
 			int16 r0_n = *SEQ(er0_16_n, r0_n + 0x9EB0);
 			sp_n->w0002 = r0_n;

@@ -312,7 +312,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4D33"); // dmuls.l\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|mac = r3 *s r4");
+                "1|L--|mac = r3 *s64 r4");
         }
 
         [Test]

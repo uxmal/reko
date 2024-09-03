@@ -42,6 +42,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private Identifier foo64;
+        private Identifier foo16;
         private ProcedureBuilder m;
         private IntrinsicProcedure rolc_8;
         private Mock<IProcessorArchitecture> arch;
@@ -88,16 +89,23 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
         private SsaIdentifierCollection BuildSsaIdentifiers()
         {
-            var mrFoo = RegisterStorage.Reg32("foo", 1);
-            var mrFoo64 = RegisterStorage.Reg64("foo64", 2);
-            var mrBar = RegisterStorage.Reg32("bar", 3);
-            foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
-            foo64 = new Identifier(mrFoo64.Name, mrFoo64.DataType, mrFoo64);
             var coll = new SsaIdentifierCollection();
-            var src = Constant.Word32(1);
-            foo = coll.Add(foo, new Statement(Address.Ptr32(0), new Assignment(foo, src), null), false).Identifier;
-            foo64 = coll.Add(foo64, new Statement(Address.Ptr32(0), new Assignment(foo64, Constant.Word64(1)), null), false).Identifier;
+            foo = MakeSsaId(RegisterStorage.Reg32("foo", 1), coll);
+            foo64 = MakeSsaId(RegisterStorage.Reg64("foo64", 2), coll);
+            foo16 = MakeSsaId(RegisterStorage.Reg16("foo16", 4), coll);
             return coll;
+        }
+
+        private Identifier MakeSsaId(RegisterStorage mrFoo16, SsaIdentifierCollection coll)
+        {
+            var foo16 = Identifier.Create(mrFoo16);
+            return coll.Add(foo16, new Statement(
+                Address.Ptr32(0), 
+                new Assignment(
+                    foo16, 
+                    Constant.Create(foo16.DataType, 1)),
+                null),
+                false).Identifier;
         }
 
         /// <summary>
@@ -585,7 +593,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Given_ExpressionSimplifier();
             var tmp = Given_Tmp("tmp", m.Mem16(m.Word32(0x00123400)));
             var (expr, _) = m.Xor(tmp, Constant.Word16(0xFFFF)).Accept(simplifier);
-            Assert.AreEqual("~tmp_3", expr.ToString());
+            Assert.AreEqual("~tmp_4", expr.ToString());
         }
 
         [Test]
@@ -696,7 +704,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var t2 = Given_Tmp("t2", m.Shr(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Shl(t2, 4).Accept(simplifier);
-            Assert.AreEqual("__align(t1_3, 16<i32>)", expr.ToString());
+            Assert.AreEqual("__align(t1_4, 16<i32>)", expr.ToString());
         }
 
         [Test]
@@ -707,7 +715,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var t2 = Given_Tmp("t2", m.IMul(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Mem32(m.IAdd(t2, 24)).Accept(simplifier);
-            Assert.AreEqual("Mem0[t1_3 * 4<32> + 0x18<32>:word32]", expr.ToString());
+            Assert.AreEqual("Mem0[t1_4 * 4<32> + 0x18<32>:word32]", expr.ToString());
         }
 
         [Test]
@@ -718,7 +726,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var t2 = Given_Tmp("t2", m.Shl(t1, 3));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2)).Accept(simplifier);
-            Assert.AreEqual("Mem0[(t1_3 << 3<8>) + 0x123456<32>:word32]", expr.ToString());
+            Assert.AreEqual("Mem0[(t1_4 << 3<8>) + 0x123456<32>:word32]", expr.ToString());
         }
 
         [Test]
@@ -773,7 +781,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var t2 = Given_Tmp("t2", m.Mem32(m.Word32(0x00123404)));
             var expr = m.Slice(m.Seq(t1, t2), PrimitiveType.Word16, 0);
             var (result, _) = expr.Accept(simplifier);
-            Assert.AreEqual("SLICE(t2_4, word16, 0)", result.ToString());
+            Assert.AreEqual("SLICE(t2_5, word16, 0)", result.ToString());
         }
 
         [Test]
@@ -996,7 +1004,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             var (result, changed) = exp.Accept(simplifier);
 
-            Assert.AreEqual("SEQ(a_3, b_4, c_5)", result.ToString());
+            Assert.AreEqual("SEQ(a_4, b_5, c_6)", result.ToString());
             Assert.IsTrue(changed);
         }
 
@@ -1012,7 +1020,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                     m.Slice(dx_ax, PrimitiveType.Word16, 0)));
             var (result, changed) = exp.Accept(simplifier);
 
-            Assert.AreEqual("dx_ax_3 == 0<32>", result.ToString());
+            Assert.AreEqual("dx_ax_4 == 0<32>", result.ToString());
             Assert.IsTrue(changed);
         }
 
@@ -1129,7 +1137,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                     PrimitiveType.Real32);
             var (result, changed) = exp.Accept(simplifier);
 
-            Assert.AreEqual("SLICE(v1_3, real32, 0) + SLICE(v2_4, real32, 0)", result.ToString());
+            Assert.AreEqual("SLICE(v1_4, real32, 0) + SLICE(v2_5, real32, 0)", result.ToString());
         }
 
         [Test]
@@ -1212,7 +1220,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("e_3 + foo_1 * 2<32>", exp.ToString());
+            Assert.AreEqual("e_4 + foo_1 * 2<32>", exp.ToString());
         }
 
         [Test]
@@ -1224,7 +1232,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("e_3", exp.ToString());
+            Assert.AreEqual("e_4", exp.ToString());
         }
 
         [Test]
@@ -1236,7 +1244,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("e_3", exp.ToString());
+            Assert.AreEqual("e_4", exp.ToString());
         }
 
         [Test]
@@ -1248,7 +1256,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("e_3 - foo_1 * 2<32>", exp.ToString());
+            Assert.AreEqual("e_4 - foo_1 * 2<32>", exp.ToString());
         }
 
         [Test]
@@ -1313,7 +1321,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Expression exp = m.Eq0(c);
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("!c_3", exp.ToString());
+            Assert.AreEqual("!c_4", exp.ToString());
         }
 
         [Test]
@@ -1326,7 +1334,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                 PrimitiveType.Word32, 8);
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("Mem0[id_3 + 2<32>:word32]", exp.ToString());
+            Assert.AreEqual("Mem0[id_4 + 2<32>:word32]", exp.ToString());
         }
 
         [Test]
@@ -1346,7 +1354,22 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                         PrimitiveType.Word32));
             exp = RunExpressionSimplifier(exp);
 
-            Assert.AreEqual("CONVERT(Mem0[id_3 + 14<i64>:word16] + Mem0[id_3 + 12<i64>:word16], word16, word32)", exp.ToString());
+            Assert.AreEqual("CONVERT(Mem0[id_4 + 14<i64>:word16] + Mem0[id_4 + 12<i64>:word16], word16, word32)", exp.ToString());
+        }
+
+        [Test(Description = "Cannot slice a multiplication if the slice is too wide.")]
+        public void Exs_TooWideSliceOfMultiplication()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.Slice(
+                m.IMul(
+                    PrimitiveType.Word64,
+                    foo16,
+                    Constant.Create(foo16.DataType, 3)),
+                PrimitiveType.CreateWord(24));
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("SLICE(foo16_3 *64 3<16>, word24, 0)", exp.ToString());
         }
     }
 }

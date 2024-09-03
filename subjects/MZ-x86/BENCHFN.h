@@ -486,6 +486,13 @@ Eq_509: (union "Eq_509" (uint16 u0) (ptr16 u1))
 	T_622 (in 0<16> @ 0800:03CF : word16)
 	T_637 (in cx - 1<16> @ 0800:03D2 : word16)
 	T_653 (in cx - 2<16> @ 0800:03E3 : word16)
+Eq_520: (union "Eq_520" (bool u0) (ui32 u1))
+	T_520 (in v36_263 @ 0800:03A8 : Eq_520)
+	T_554 (in <invalid> @ 0800:03AA : bool)
+	T_555 (in C_207 @ 0800:03AA : Eq_520)
+	T_556 (in Z_208 @ 0800:03AA : Eq_520)
+	T_572 (in C_122 @ 0800:03A3 : Eq_520)
+	T_573 (in Z_123 @ 0800:03A3 : Eq_520)
 Eq_522: (union "Eq_522" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5159) u2) ((memptr (ptr16 Eq_480) Eq_5160) u3))
 	T_522 (in di_67 + -2<i16> @ 0800:03EB : word16)
 Eq_534: (union "Eq_534" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5161) u2) ((memptr (ptr16 Eq_480) Eq_5162) u3))
@@ -504,8 +511,12 @@ Eq_547: (union "Eq_547" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5163) u
 	T_547 (in 1<i16> @ 0800:03AA : int16)
 Eq_548: (union "Eq_548" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5165) u2) ((memptr (ptr16 Eq_480) Eq_5166) u3))
 	T_548 (in di_89 + 1<i16> @ 0800:03AA : word16)
+Eq_557: (union "Eq_557" (bool u0) (ui32 u1))
+	T_557 (in Z_208 | C_207 @ 0800:03AD : word32)
 Eq_566: (union "Eq_566" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5167) u2) ((memptr (ptr16 Eq_480) Eq_5168) u3))
 	T_566 (in di_89 + 1<i16> @ 0800:03A3 : word16)
+Eq_574: (union "Eq_574" (bool u0) (ui32 u1))
+	T_574 (in Z_123 | C_122 @ 0800:03A6 : word32)
 Eq_575: (union "Eq_575" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_480) Eq_5169) u2) ((memptr (ptr16 Eq_480) Eq_5170) u3))
 	T_575 (in di_67 - 4<16> @ 0800:0403 : word16)
 	T_578 (in Mem147[ds_134:0x86<16>:word16] @ 0800:0403 : word16)
@@ -4174,9 +4185,9 @@ T_519: (in al_211 == 0x20<8> @ 0800:03B1 : bool)
   Class: Eq_519
   DataType: bool
   OrigDataType: bool
-T_520: (in v36_263 @ 0800:03A8 : bool)
+T_520: (in v36_263 @ 0800:03A8 : Eq_520)
   Class: Eq_520
-  DataType: bool
+  DataType: Eq_520
   OrigDataType: bool
 T_521: (in -2<i16> @ 0800:03EB : int16)
   Class: Eq_521
@@ -4314,18 +4325,18 @@ T_554: (in <invalid> @ 0800:03AA : bool)
   Class: Eq_520
   DataType: bool
   OrigDataType: bool
-T_555: (in C_207 @ 0800:03AA : bool)
+T_555: (in C_207 @ 0800:03AA : Eq_520)
   Class: Eq_520
-  DataType: bool
-  OrigDataType: bool
-T_556: (in Z_208 @ 0800:03AA : bool)
+  DataType: Eq_520
+  OrigDataType: (union (bool u0) (ui32 u1))
+T_556: (in Z_208 @ 0800:03AA : Eq_520)
   Class: Eq_520
-  DataType: bool
-  OrigDataType: bool
-T_557: (in Z_208 | C_207 @ 0800:03AD : bool)
+  DataType: Eq_520
+  OrigDataType: (union (bool u0) (ui32 u1))
+T_557: (in Z_208 | C_207 @ 0800:03AD : word32)
   Class: Eq_557
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_557
+  OrigDataType: (union (bool u1) (ui32 u0))
 T_558: (in 0<8> @ 0800:03BB : byte)
   Class: Eq_558
   DataType: byte
@@ -4382,18 +4393,18 @@ T_571: (in fn0800_03BF(si_102, (word16) di_89 + 1<i32>, ax_106, cx_104, out ax_1
   Class: Eq_553
   DataType: word32
   OrigDataType: word32
-T_572: (in C_122 @ 0800:03A3 : bool)
+T_572: (in C_122 @ 0800:03A3 : Eq_520)
   Class: Eq_520
-  DataType: bool
-  OrigDataType: bool
-T_573: (in Z_123 @ 0800:03A3 : bool)
+  DataType: Eq_520
+  OrigDataType: (union (bool u0) (ui32 u1))
+T_573: (in Z_123 @ 0800:03A3 : Eq_520)
   Class: Eq_520
-  DataType: bool
-  OrigDataType: bool
-T_574: (in Z_123 | C_122 @ 0800:03A6 : bool)
+  DataType: Eq_520
+  OrigDataType: (union (bool u0) (ui32 u1))
+T_574: (in Z_123 | C_122 @ 0800:03A6 : word32)
   Class: Eq_574
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_574
+  OrigDataType: (union (bool u1) (ui32 u0))
 T_575: (in di_67 - 4<16> @ 0800:0403 : word16)
   Class: Eq_575
   DataType: Eq_575
@@ -23401,6 +23412,11 @@ typedef union Eq_509 {
 	ptr16 u1;
 } Eq_509;
 
+typedef union Eq_520 {
+	bool u0;
+	ui32 u1;
+} Eq_520;
+
 typedef union Eq_522 {
 	int16 u0;
 	cup16 u1;
@@ -23436,12 +23452,22 @@ typedef union Eq_548 {
 	struct Eq_5150 Eq_480::* u3;
 } Eq_548;
 
+typedef union Eq_557 {
+	bool u0;
+	ui32 u1;
+} Eq_557;
+
 typedef union Eq_566 {
 	int16 u0;
 	cup16 u1;
 	struct Eq_5151 Eq_480::* u2;
 	struct Eq_5150 Eq_480::* u3;
 } Eq_566;
+
+typedef union Eq_574 {
+	bool u0;
+	ui32 u1;
+} Eq_574;
 
 typedef union Eq_575 {
 	int16 u0;

@@ -207,11 +207,11 @@ namespace Reko.Arch.Arm.AArch32
                 m.Invalid();
                 return;
             }
-            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(32));
+            int nRegs = regs.Length;
+            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(nRegs * 64));
             var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
             var reg = binder.EnsureRegister(opSrc.BaseRegister);
 
-            int nRegs = regs.Length;
             m.Assign(tmp, m.Fn(intrinsic.MakeInstance(32, dt), reg));
             int bitOffset = 64 * (nRegs - 1);
             foreach (var dreg in regs)
