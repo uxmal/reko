@@ -294,12 +294,20 @@ Alignment "holes" can occur between arguments passed on the stack, but "back-fil
 
         public override bool IsArgument(Storage stg)
         {
-            throw new NotImplementedException();
+            if (stg is RegisterStorage reg)
+            {
+                return 12 <= reg.Number && reg.Number <= 15;
+            }
+            return stg is StackStorage stk && stk.StackOffset > 0;
         }
 
         public override bool IsOutArgument(Storage stg)
         {
-            throw new NotImplementedException();
+            if (stg is RegisterStorage reg)
+            {
+                return 12 <= reg.Number && reg.Number <= 15;
+            }
+            return false;
         }
     }
     /*

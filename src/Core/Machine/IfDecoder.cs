@@ -20,10 +20,6 @@
 
 using Reko.Core.Lib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
@@ -42,7 +38,7 @@ namespace Reko.Core.Machine
         private readonly Decoder<TDasm, TMnemonic, TInstr> trueDecoder;
 
         public IfDecoder(
-            Bitfield bf,
+            in Bitfield bf,
             Predicate<uint> predicate,
             Decoder<TDasm, TMnemonic, TInstr> trueDecoder)
         {

@@ -63,11 +63,8 @@ namespace Reko.Analysis
                     (cconv, score) = AggregateScore(signature, cc, cconv, score);
                 }
             }
-            if (!string.IsNullOrEmpty(platform.DefaultCallingConvention))
-            {
-                var cc = platform.GetCallingConvention(platform.DefaultCallingConvention);
-                (cconv, _) = AggregateScore(signature, cc, cconv, score);
-            }
+            var ccDefault = platform.GetCallingConvention(platform.DefaultCallingConvention);
+            (cconv, _) = AggregateScore(signature, ccDefault, cconv, score);
             return cconv;
         }
 

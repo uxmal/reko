@@ -195,7 +195,10 @@ namespace Reko.Core.Machine
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), tag, decoders);
         }
 
-        public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int p1, int l1, int p2, int l2, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
+            int p1, int l1, int p2, int l2,
+            string tag,
+            params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(Bf((p1, l1), (p2, l2)), tag, decoders);
         }

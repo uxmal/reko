@@ -19,22 +19,24 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Used to compare register storages based on collation order. 
+    /// Registers will be sorted in the order specified by the 
+    /// arguments to the constructor.
+    /// </summary>
     public class StorageCollator : IComparer<Identifier>
     {
         private readonly IReadOnlyDictionary<StorageDomain, int> collationOrder;
 
-        public StorageCollator(StorageDomain[] collationOrder)
+        public StorageCollator(RegisterStorage[] collationOrder)
         {
             this.collationOrder = collationOrder.Select((x, i) => (x, i))
-                .ToDictionary(p => p.x, p => p.i);
+                .ToDictionary(p => p.x.Domain, p => p.i);
         }
 
         public int Compare(Identifier? x, Identifier? y)

@@ -58,14 +58,14 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
             this.fregDomains = fregs.Select(r => r.Domain).ToArray();
             
-            this.InArgumentComparer = new StorageCollator(iregDomains);
+            this.InArgumentComparer = new StorageCollator(iregs);
             this.al = arch.GetRegister("al")!;
             this.ax = arch.GetRegister("ax")!;
             this.eax = arch.GetRegister("eax")!;
             this.rax = arch.GetRegister("rax")!;
             this.rdx = arch.GetRegister("rdx")!;
-            this.InArgumentComparer = new StorageCollator(iregs.Select(r => r.Domain).ToArray());
-            this.OutArgumentComparer = new StorageCollator(new[] { rax.Domain, rdx.Domain });
+            this.InArgumentComparer = new StorageCollator(iregs);
+            this.OutArgumentComparer = new StorageCollator(new[] { rax, rdx });
         }
 
         public override void Generate(
