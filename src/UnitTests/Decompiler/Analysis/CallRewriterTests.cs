@@ -379,8 +379,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
             Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
-            flow.BitsLiveOut.Add(Registers.eax, BitRange.Empty);        // becomes the return value.
-            flow.BitsLiveOut.Add(Registers.ebx, BitRange.Empty);
+            flow.BitsLiveOut.Add(Registers.eax, new(BitRange.Empty, proc));        // becomes the return value.
+            flow.BitsLiveOut.Add(Registers.ebx, new(BitRange.Empty, proc));
             crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
@@ -399,9 +399,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void CrwFpuOutArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
-            flow.BitsLiveOut.Add(Registers.eax, BitRange.Empty);
-            flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), BitRange.Empty);
-            flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), BitRange.Empty);
+            flow.BitsLiveOut.Add(Registers.eax, new(BitRange.Empty, proc));
+            flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), new(BitRange.Empty,proc));
+            flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), new(BitRange.Empty,proc));
 
             crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));
@@ -651,7 +651,7 @@ FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, Fpu
 //   FPU +0: real64
 //   FPU +1: real64
 //   FPU +2: real64
-// LiveOut: FPU +2
+// LiveOut: FPU +2:[0..63]-main
 // Trashed: FPU +1 FPU +2 Top
 // Preserved: r63
 // FpuMultiplyAdd
@@ -753,7 +753,7 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // DataTypes: 
 //   r1: word32
 //   r2: word32
-// LiveOut: r1 r2
+// LiveOut: r1:[0..31]-main r2:[0..31]-main
 // Trashed: r1 r2
 // Preserved: r63
 // fnOutParam
@@ -1087,5 +1087,50 @@ main_exit:
             #endregion
             AssertProcedureCode(sExp, ssa);
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void CrwReturnFlagGroup()
+        {
+            var sr = RegisterStorage.Reg32("sr", 42);
+            var CV = new FlagGroupStorage(sr, 0x3, "CV", sr.DataType);
+            var C = new FlagGroupStorage(sr, 1, "C", PrimitiveType.Bool);
+            var V = new FlagGroupStorage(sr, 2, "V", PrimitiveType.Bool);
+
+            var ssa = Given_Procedure("main", m =>
+            {
+                var c = m.Flags("C_1", C);
+                var v = m.Flags("V_1", V);
+                var result = m.Flags("CV_2", CV);
+                m.Label("body");
+                m.Assign(result, m.Or(c, v));
+                m.AddUseToExitBlock(c);
+                m.AddUseToExitBlock(v);
+                m.Return();
+            });
+            Given_Signature(
+                "main",
+                FunctionType.Func(
+                    new Identifier(
+                        "reth",
+                        PrimitiveType.Word32,
+                        CV)));
+
+            When_RewriteReturns(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	CV_2 = C_1 | V_1
+	return C_1 | V_1
+main_exit:
+	use C_1
+	use V_1
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
     }
 }

@@ -119,17 +119,25 @@ byte fn00002744(word32 r11, word32 r9)
 // Preserved: sp
 fn00002744_entry:
 l00002744:
+	VNZC_9 = cond(r11 - r9)
+	N_33 = SLICE(VNZC_9, bool, 2) (alias)
+	V_45 = SLICE(VNZC_9, bool, 3) (alias)
+	Z_49 = SLICE(VNZC_9, bool, 1) (alias)
 	branch r11 >= r9 l0000274E
 l0000274E:
+	VNZ_15 = SLICE(cond(r11 - r9), bool, 3) (alias)
+	N_35 = SLICE(VNZ_15, bool, 2) (alias)
+	V_47 = SLICE(VNZ_15, bool, 3) (alias)
+	Z_51 = SLICE(VNZ_15, bool, 1) (alias)
 	branch r11 > r9 l00002758
 l00002754_1:
 l00002758:
 	branch r11 <= r9 l0000275C
 l00002758_1:
 l0000275C:
-	return <invalid>
+	return Z_51 | V_47 | N_35
 l0000274C:
-	return <invalid>
+	return Z_49 | V_45 | N_33
 fn00002744_exit:
 
 
@@ -4255,7 +4263,8 @@ l00006E4C_1:
 	r5_108 = 0xFFFFFFFE<32>
 l00006E50:
 	r12Out = r5_108
-	return <invalid>
+	VNZC_117 = cond(fp - 0x24<32>)
+	return SLICE(VNZC_117, bool, 2) | SLICE(VNZC_117, bool, 3)
 fn00006DDC_exit:
 
 
@@ -5631,7 +5640,8 @@ l00007D36:
 l00007D50:
 	r11Out = r11
 	r12Out = r12_100
-	return <invalid>
+	VNZC_1294 = cond(fp - 0x24<32>)
+	return SLICE(VNZC_1294, bool, 0) | SLICE(VNZC_1294, bool, 2) | SLICE(VNZC_1294, bool, 3) | SLICE(VNZC_1294, bool, 1)
 fn00007754_exit:
 
 
@@ -6441,7 +6451,8 @@ l0000879C:
 l000087BA:
 	r11Out = r11
 	r12Out = r12_100
-	return <invalid>
+	VNZC_1215 = cond(fp - 0x24<32>)
+	return SLICE(VNZC_1215, bool, 0) | SLICE(VNZC_1215, bool, 2) | SLICE(VNZC_1215, bool, 3) | SLICE(VNZC_1215, bool, 1)
 fn00008144_exit:
 
 
@@ -10964,7 +10975,7 @@ l0000B8CA:
 l0000B8DE:
 	call Mem17[r6_19 + 492<i32>:word32] (retsize: 0;)
 		uses: Mem:Mem17,r12:r12
-		defs: r11:r11_65,r12:r12_64
+		defs: r11:r11_65,r12:r12_64,VNZC:VNZC_66
 	r0Out = r0
 	r1Out = r1
 	r2Out = r2
@@ -10972,7 +10983,7 @@ l0000B8DE:
 	r10Out = r10_23
 	r11Out = r11_65
 	r12Out = r12_64
-	return <invalid>
+	return SLICE(VNZC_66, bool, 3) | SLICE(VNZC_66, bool, 2)
 l0000B8D4:
 	fn0000C058(r12_25, r12, out r0_74, out r1_75, out r2_77, out r3_78, out r10_86, out r11_87, out r12_76)
 	r0Out = r0_74
@@ -10982,7 +10993,9 @@ l0000B8D4:
 	r10Out = r10_86
 	r11Out = r11_87
 	r12Out = r12_76
-	return <invalid>
+	N_90 = <invalid>
+	V_89 = <invalid>
+	return V_89 | N_90
 fn0000B88C_exit:
 
 
@@ -11751,8 +11764,14 @@ l0000C0D0:
 l0000C0C2:
 	r8_46 = CONVERT(r12 <=u 0xE007F<32>, bool, word32)
 l0000C0D6:
+	VNZC_51 = cond(r8_46 - 0<32>)
+	N_640 = SLICE(VNZC_51, bool, 2) (alias)
+	V_712 = SLICE(VNZC_51, bool, 3) (alias)
 	branch r8_46 != 0<32> l0000C2D8
 l0000C0B0:
+	VNZC_53 = cond(r12 - 0xE01EF<32>)
+	N_640 = SLICE(VNZC_53, bool, 2) (alias)
+	V_712 = SLICE(VNZC_53, bool, 3) (alias)
 	branch r12 >u 0xE01EF<32> l0000C0E4
 l0000C0B8:
 l0000C06C:
@@ -11763,34 +11782,73 @@ l0000C078:
 l0000C0DC:
 	branch r12 <=u 0x10FF<32> l0000C190
 l0000C0E4:
+	VNZC_78 = cond(r12 - 0x115F<32>)
+	N_644 = SLICE(VNZC_78, bool, 2) (alias)
+	V_716 = SLICE(VNZC_78, bool, 3) (alias)
 	branch r12 <=u 0x115F<32> l0000C2DA
 l0000C0EC:
+	VNZC_81 = cond(r12 - 0x2329<32> - 1<32>)
+	N_644 = SLICE(VNZC_81, bool, 2) (alias)
+	V_716 = SLICE(VNZC_81, bool, 3) (alias)
 	branch r12 <=u 0x232A<32> l0000C2DA
 l0000C0F6:
 	branch r12 >u 0xA4CF<32> || r12 <u 0x2E80<32> l0000C114
 l0000C102:
 	branch r12 == 0x303F<32> l0000C114
 l0000C108:
+	VNZC_89 = cond(r12 - 0x4DC0<32> - 0x3F<32>)
+	N_644 = SLICE(VNZC_89, bool, 2) (alias)
+	V_716 = SLICE(VNZC_89, bool, 3) (alias)
 	branch r12 >u 0x4DFF<32> || r12 <u 0x4DC0<32> l0000C2DA
 l0000C114:
+	VNZC_94 = cond(r12 + 0xFFFF5400<32> - 0x2BA3<32>)
+	N_644 = SLICE(VNZC_94, bool, 2) (alias)
+	V_716 = SLICE(VNZC_94, bool, 3) (alias)
 	branch r12 <=u 0xD7A3<32> l0000C2DA
 l0000C124:
+	VNZC_98 = cond(r12 + 0xFFFF0700<32> - 0x1FF<32>)
+	N_644 = SLICE(VNZC_98, bool, 2) (alias)
+	V_716 = SLICE(VNZC_98, bool, 3) (alias)
 	branch r12 <=u 0xFAFF<32> l0000C2DA
 l0000C134:
+	VNZC_102 = cond(r12 + 0xFFFF01F0<32> - 0xF<32>)
+	N_644 = SLICE(VNZC_102, bool, 2) (alias)
+	V_716 = SLICE(VNZC_102, bool, 3) (alias)
 	branch r12 <=u 0xFE1F<32> l0000C2DA
 l0000C142:
+	VNZC_106 = cond(r12 + 0xFFFF01D0<32> - 0x3F<32>)
+	N_644 = SLICE(VNZC_106, bool, 2) (alias)
+	V_716 = SLICE(VNZC_106, bool, 3) (alias)
 	branch r12 <=u 0xFE6F<32> l0000C2DA
 l0000C152:
+	VNZC_110 = cond(r12 + 0xFFFF0100<32> - 0x60<32>)
+	N_644 = SLICE(VNZC_110, bool, 2) (alias)
+	V_716 = SLICE(VNZC_110, bool, 3) (alias)
 	branch r12 <=u 0xFF60<32> l0000C2DA
 l0000C162:
+	VNZC_114 = cond(r12 + 0xFFFF0020<32> - 6<32>)
+	N_644 = SLICE(VNZC_114, bool, 2) (alias)
+	V_716 = SLICE(VNZC_114, bool, 3) (alias)
 	branch r12 <=u 0xFFE6<32> l0000C2DA
 l0000C170:
+	VNZC_118 = cond(r12 + 0xFFFE0000<32> - 0xA6D6<32>)
+	N_644 = SLICE(VNZC_118, bool, 2) (alias)
+	V_716 = SLICE(VNZC_118, bool, 3) (alias)
 	branch r12 <=u 0x2A6D6<32> l0000C2DA
 l0000C180:
+	VNZC_122 = cond(r12 + 0xFFFD0800<32> - 0x21D<32>)
+	N_644 = SLICE(VNZC_122, bool, 2) (alias)
+	V_716 = SLICE(VNZC_122, bool, 3) (alias)
 	branch r12 <=u 0x2FA1D<32> l0000C2DA
 l0000C190:
+	VNZC_126 = cond(r12 - 0xA1<32> - 0xFEBF<32>)
+	N_641 = SLICE(VNZC_126, bool, 2) (alias)
+	V_713 = SLICE(VNZC_126, bool, 3) (alias)
 	branch r12 >u 0xFF60<32> || r12 <u 0xA1<32> l0000C2DE
 l0000C19C:
+	VNZC_128 = cond(r12 - 0x20A9<32>)
+	N_641 = SLICE(VNZC_128, bool, 2) (alias)
+	V_713 = SLICE(VNZC_128, bool, 3) (alias)
 	branch r12 == 0x20A9<32> l0000C2DE
 l0000C2DE:
 	r0Out = dwArg00
@@ -11800,10 +11858,13 @@ l0000C2DE:
 	r10Out = r10
 	r11Out = r11
 	r12Out = r7
-	return <invalid>
+	return V_713 | N_641
 l0000C1A4:
 	fn0000BFB8(0x43<32>, 0x55<32>, 0x45<32>, Mem29[r6_31 + 652<i32>:word32], r11, 0x2D<32>, 0x4A<32>, 0x50<32>, 0<32>, 0<32>, 0<32>, out r3_776, out r4_777, out r5_191, out r6_192, out r10, out r11, out r12_185)
+	VNZC_204 = cond(r12_185 - 0<32>)
 	sp_194 = <invalid>
+	N_644 = SLICE(VNZC_204, bool, 2) (alias)
+	V_716 = SLICE(VNZC_204, bool, 3) (alias)
 	branch r12_185 != 0<32> l0000C2DA
 l0000C1D0:
 	Mem208[sp_194 + 0x14<32>:word32] = r12_185
@@ -11814,7 +11875,10 @@ l0000C1D0:
 	Mem219[sp_194 + 4<32>:word32] = 0x31<32>
 	Mem225[sp_194:word32] = 0x33<32>
 	fn0000BFB8(0x32<32>, 0x42<32>, 0x47<32>, r11_212, r5_191, Mem225[sp_194:word32], Mem225[sp_194 + 4<i32>:word32], Mem225[sp_194 + 8<i32>:word32], Mem225[sp_194 + 12<i32>:word32], Mem225[sp_194 + 16<i32>:word32], Mem225[sp_194 + 20<i32>:word32], out r3_778, out r4_779, out r5_234, out r6_235, out r10, out r11, out r12_228)
+	VNZC_247 = cond(r12_228 - 0<32>)
 	sp_237 = <invalid>
+	N_644 = SLICE(VNZC_247, bool, 2) (alias)
+	V_716 = SLICE(VNZC_247, bool, 3) (alias)
 	branch r12_228 != 0<32> l0000C2DA
 l0000C1F8:
 	r11_249 = Mem225[r6_235 + 644<i32>:word32]
@@ -11825,7 +11889,10 @@ l0000C1F8:
 	Mem263[sp_237 + 4<32>:word32] = r12_228
 	Mem265[sp_237:word32] = r12_228
 	fn0000BFB8(0x4B<32>, 0x42<32>, 0x47<32>, r11_249, r5_234, Mem265[sp_237:word32], Mem265[sp_237 + 4<i32>:word32], Mem265[sp_237 + 8<i32>:word32], Mem265[sp_237 + 12<i32>:word32], Mem265[sp_237 + 16<i32>:word32], Mem265[sp_237 + 20<i32>:word32], out r3_780, out r4_273, out r5_274, out r6_275, out r10, out r11, out r12_268)
+	VNZC_287 = cond(r12_268 - 0<32>)
 	sp_277 = <invalid>
+	N_644 = SLICE(VNZC_287, bool, 2) (alias)
+	V_716 = SLICE(VNZC_287, bool, 3) (alias)
 	branch r12_268 != 0<32> l0000C2DA
 l0000C21A:
 	Mem290[sp_277 + 0x14<32>:word32] = r12_268
@@ -11836,7 +11903,10 @@ l0000C21A:
 	Mem305[sp_277 + 4<32>:word32] = 0x54<32>
 	Mem307[sp_277:word32] = r4_273
 	fn0000BFB8(0x43<32>, 0x55<32>, 0x45<32>, r11_291, r5_274, Mem307[sp_277:word32], Mem307[sp_277 + 4<i32>:word32], Mem307[sp_277 + 8<i32>:word32], Mem307[sp_277 + 12<i32>:word32], Mem307[sp_277 + 16<i32>:word32], Mem307[sp_277 + 20<i32>:word32], out r3_781, out r4_782, out r5_316, out r6_317, out r10, out r11, out r12_310)
+	VNZC_329 = cond(r12_310 - 0<32>)
 	sp_319 = <invalid>
+	N_644 = SLICE(VNZC_329, bool, 2) (alias)
+	V_716 = SLICE(VNZC_329, bool, 3) (alias)
 	branch r12_310 != 0<32> l0000C2DA
 l0000C240:
 	r11_331 = Mem307[r6_317 + 636<i32>:word32]
@@ -11847,7 +11917,10 @@ l0000C240:
 	Mem345[sp_319 + 4<32>:word32] = r12_310
 	Mem348[sp_319:word32] = 0x35<32>
 	fn0000BFB8(0x47<32>, 0x49<32>, 0x42<32>, r11_331, r5_316, Mem348[sp_319:word32], Mem348[sp_319 + 4<i32>:word32], Mem348[sp_319 + 8<i32>:word32], Mem348[sp_319 + 12<i32>:word32], Mem348[sp_319 + 16<i32>:word32], Mem348[sp_319 + 20<i32>:word32], out r3_783, out r4_356, out r5_357, out r6_358, out r10, out r11, out r12_351)
+	VNZC_370 = cond(r12_351 - 0<32>)
 	sp_360 = <invalid>
+	N_644 = SLICE(VNZC_370, bool, 2) (alias)
+	V_716 = SLICE(VNZC_370, bool, 3) (alias)
 	branch r12_351 != 0<32> l0000C2DA
 l0000C264:
 	Mem373[sp_360 + 0x14<32>:word32] = r12_351
@@ -11858,7 +11931,10 @@ l0000C264:
 	Mem388[sp_360 + 4<32>:word32] = 0x4B<32>
 	Mem390[sp_360:word32] = r4_356
 	fn0000BFB8(0x43<32>, 0x55<32>, 0x45<32>, r11_374, r5_357, Mem390[sp_360:word32], Mem390[sp_360 + 4<i32>:word32], Mem390[sp_360 + 8<i32>:word32], Mem390[sp_360 + 12<i32>:word32], Mem390[sp_360 + 16<i32>:word32], Mem390[sp_360 + 20<i32>:word32], out r3_397, out r4_784, out r5_399, out r6_400, out r10, out r11, out r12_393)
+	VNZC_412 = cond(r12_393 - 0<32>)
 	sp_402 = <invalid>
+	N_644 = SLICE(VNZC_412, bool, 2) (alias)
+	V_716 = SLICE(VNZC_412, bool, 3) (alias)
 	branch r12_393 != 0<32> l0000C2DA
 l0000C28A:
 	r11_415 = Mem390[r6_400 + 628<i32>:word32]
@@ -11868,7 +11944,10 @@ l0000C28A:
 	Mem426[sp_402 + 8<32>:word32] = r12_393
 	Mem429[sp_402 + 4<32>:word32] = 0x39<32>
 	Mem432[sp_402:word32] = 0x34<32>
+	VNZC_454 = cond(r12_435 - 0<32>)
 	r2_438 = fn0000BFB8(0x39<32>, r3_397, 0x43<32>, r11_415, r5_399, Mem432[sp_402:word32], Mem432[sp_402 + 4<i32>:word32], Mem432[sp_402 + 8<i32>:word32], Mem432[sp_402 + 12<i32>:word32], Mem432[sp_402 + 16<i32>:word32], Mem432[sp_402 + 20<i32>:word32], out r3_785, out r4_786, out r5_441, out r6_442, out r10, out r11, out r12_435)
+	N_644 = SLICE(VNZC_454, bool, 2) (alias)
+	V_716 = SLICE(VNZC_454, bool, 3) (alias)
 	branch r12_435 != 0<32> l0000C2DA
 l0000C2DA:
 	r0Out = r0
@@ -11878,7 +11957,7 @@ l0000C2DA:
 	r10Out = r10
 	r11Out = r11
 	r12Out = 2<32>
-	return <invalid>
+	return V_716 | N_644
 l0000C2B0:
 	r11_470 = Mem469[r6_442 + 624<i32>:word32]
 l0000C2C6_thunk_fn0000C2C8:
@@ -11890,8 +11969,13 @@ l0000C2C6_thunk_fn0000C2C8:
 	r10Out = r10_487
 	r11Out = r11_488
 	r12Out = r12_489
-	return <invalid>
+	N_499 = <invalid>
+	V_498 = <invalid>
+	return V_498 | N_499
 l0000C094:
+	VNZC_503 = cond(r12 - 1<32> - 0x9E<32>)
+	N_640 = SLICE(VNZC_503, bool, 2) (alias)
+	V_712 = SLICE(VNZC_503, bool, 3) (alias)
 	branch r12 >u 0x9F<32> || r12 <u 1<32> l0000C2D8
 l0000C2D8:
 	r0Out = r0
@@ -11901,7 +11985,7 @@ l0000C2D8:
 	r10Out = r10
 	r11Out = r11
 	r12Out = r12
-	return <invalid>
+	return V_712 | N_640
 l0000C0A0:
 	r0Out = r0
 	r1Out = r1
@@ -11910,7 +11994,7 @@ l0000C0A0:
 	r10Out = r10
 	r11Out = r11
 	r12Out = r12
-	return <invalid>
+	return V_712 | N_640
 fn0000C058_exit:
 
 
@@ -14443,13 +14527,20 @@ l0000EA4C:
 	r10_111 = Mem17[r11 + 4<i32>:word32] + 4<32>
 	r11_109 = 0<32>
 l0000EB20:
-	branch r11_109 <u Mem27[r11:word32] l0000EA5E
+	r8_28 = Mem27[r11:word32]
+	VNZC_30 = cond(r11_109 - r8_28)
+	N_184 = SLICE(VNZC_30, bool, 2) (alias)
+	V_204 = SLICE(VNZC_30, bool, 3) (alias)
+	branch r11_109 <u r8_28 l0000EA5E
 l0000EA5E:
 	r8_33 = Mem27[r10_111 + -4<i32>:word32]
+	VNZC_36 = cond(r8_33 - 1<32> - 0x15<32>)
+	N_185 = SLICE(VNZC_36, bool, 2) (alias)
+	V_205 = SLICE(VNZC_36, bool, 3) (alias)
 	branch r8_33 >u 0x16<32> || r8_33 <u 1<32> l0000EACC
 l0000EACC:
 	r11Out = <invalid>
-	return <invalid>
+	return V_205 | N_185
 l0000EA6C:
 	switch (r8_33 - 1<32>) { l0000EA74 l0000EA78 l0000EA7C l0000EA80 l0000EA84 l0000EA88 l0000EA8C l0000EA90 l0000EA94 l0000EA98 l0000EA9C l0000EAA0 l0000EAA4 l0000EAA8 l0000EAAC l0000EAB0 l0000EAB4 l0000EAB8 l0000EABC l0000EAC0 l0000EAC4 l0000EAC8 }
 l0000EAC8:
@@ -14510,7 +14601,7 @@ l0000EB1C:
 	r10_111 = r10_111 + 0xC<32>
 l0000EB26:
 	r11Out = <invalid>
-	return <invalid>
+	return V_204 | N_184
 fn0000EA4C_exit:
 
 
@@ -15180,7 +15271,8 @@ l0000F214:
 	Mem1552[r11 + 12<i32>:word32] = dwLoc30_1661
 	Mem1554[r11 + 8<i32>:word32] = dwLoc34_1659
 l0000F268:
-	return <invalid>
+	VNZC_1561 = cond(fp - 0x24<32>)
+	return SLICE(VNZC_1561, bool, 2) | SLICE(VNZC_1561, bool, 3)
 fn0000EB48_exit:
 
 

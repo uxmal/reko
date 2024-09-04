@@ -536,7 +536,8 @@ l1483_1B91:
 	ax_23 = SEQ(ah ^ 0x2E<8>, (al - 0x28<8> ^ 0xF9<8>) - bh) (alias)
 l1483_1BB7_thunk_fn1483_1BB9:
 	fn1483_1BB9(ax, ax_23, dx, bx, bp, si, v20_34, es, psegArg00, out cx_77, out dh_78, out bx_79, out bp_80, out si_81, out di_82, out es_83, out ds_84)
-	return <invalid>
+	SCZOP_61 = <invalid>
+	return SLICE(SCZOP_61, bool, 1) | SLICE(SCZOP_61, bool, 4) | SLICE(SCZOP_61, bool, 5) | SLICE(SCZOP_61, bool, 0) | SLICE(SCZOP_61, bool, 2)
 fn1483_1B91_exit:
 
 

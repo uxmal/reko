@@ -437,13 +437,18 @@ l0800_03C3:
 	branch al_12 != 0<8> l0800_03CA
 l0800_03C9:
 l0800_03CA:
+	Z_48 = SLICE(cond(0<8>), bool, 2) (alias)
+	C_34 = true
 	ax_63 = SEQ(al_12, 0<8>) (alias)
 	branch cx == 0<16> l0800_03E6
 l0800_03D1:
 	al_43 = Mem41[ds_si:byte]
+	SCZO_47 = cond(al_43 - 0x22<8>)
 	si = si + 1<i16>
 	cx = cx - 1<16>
+	Z_48 = SLICE(SCZO_47, bool, 2) (alias)
 	ax_63 = SEQ(al_12, al_43 - 0x22<8>) (alias)
+	C_34 = SLICE(SCZO_47, bool, 1) (alias)
 	branch al_43 == 0x22<8> l0800_03E6
 l0800_03D7:
 	ax_63 = SEQ(al_12, al_43) (alias)
@@ -455,11 +460,13 @@ l0800_03E2:
 	cx = cx - 2<16>
 	ax_63 = SEQ(al_12, Mem41[ds_si + 1<i32>:byte]) (alias)
 l0800_03E4:
+	Z_48 = SLICE(cond(si), bool, 2) (alias)
+	C_34 = false
 l0800_03E6:
 	axOut = ax_63
 	cxOut = cx
 	siOut = si
-	return <invalid>
+	return C_34 | Z_48
 fn0800_03BF_exit:
 
 

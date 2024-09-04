@@ -344,22 +344,30 @@ l0800_nA3:
 	goto l0800_nE7;
 }
 
-// 0800:03BF: FlagGroup word32 fn0800-03BF(Sequence (ptr32 Eq_n) ds_si, Sequence (ptr32 byte) es_di, Register word16 ax, Register Eq_n cx, Register out ptr16 axOut, Register out Eq_n cxOut, Register out ptr16 siOut)
+// 0800:03BF: FlagGroup ui32 fn0800-03BF(Sequence (ptr32 Eq_n) ds_si, Sequence (ptr32 byte) es_di, Register word16 ax, Register Eq_n cx, Register out ptr16 axOut, Register out Eq_n cxOut, Register out ptr16 siOut)
 // Called from:
 //      __setargv
-word32 fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & axOut, union Eq_n & cxOut, ptr16 & siOut)
+ui32 fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & axOut, union Eq_n & cxOut, ptr16 & siOut)
 {
 	ptr16 si = (word16) ds_si;
 	byte al_n = (byte) ax;
 	if (ax != 0x00)
 		*es_di = al_n;
+	Eq_n Z_n;
+	Z_n.u0 = SLICE(cond(0x00), bool, 2);
+	Eq_n C_n;
+	C_n.u0 = true;
 	ptr16 ax_n = SEQ(al_n, 0x00);
 	if (cx != 0x00)
 	{
 		byte al_n = ds_si->b0000;
+		Eq_n SCZO_n;
+		SCZO_n.u0 = cond(al_n - 0x22);
 		++si;
 		--cx;
+		Z_n.u0 = SLICE(SCZO_n, bool, 2);
 		ax_n = SEQ(al_n, al_n - 0x22);
+		C_n.u0 = SLICE(SCZO_n, bool, 1);
 		if (al_n != 0x22)
 		{
 			ax_n = SEQ(al_n, al_n);
@@ -369,12 +377,14 @@ word32 fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 
 				cx -= 0x02;
 				ax_n = SEQ(al_n, ds_si->b0001);
 			}
+			Z_n.u0 = SLICE(cond(si), bool, 2);
+			C_n.u0 = false;
 		}
 	}
 	axOut = ax_n;
 	cxOut = cx;
 	siOut = si;
-	return <invalid>;
+	return C_n | Z_n;
 }
 
 // 0800:0421: void __setenvp(Register (ptr16 Eq_n) ds)

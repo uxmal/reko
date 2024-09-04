@@ -819,7 +819,8 @@ byte fn0E0E(<anonymous> * wArg00, cui16 wArg02, Eq_n wArg04, cui16 wArg06, Eq_n 
 		{
 l0E7C:
 			(*((word16) r4_n + 42))();
-			return <invalid>;
+			byte NZVC_n;
+			return SLICE(NZVC_n, bool, 3) | SLICE(NZVC_n, bool, 1);
 		}
 	}
 	goto l0E7C;

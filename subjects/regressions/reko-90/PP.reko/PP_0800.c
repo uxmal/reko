@@ -11846,21 +11846,36 @@ word32 fn0800-8F18(Eq_n ax, uint16 cx, uint16 dx, Eq_n bx, union Eq_n & chOut)
 	return SEQ(SLICE(dx_ax_n, word16, 16) + ax_n, (word16) dx_ax_n);
 }
 
-// 0800:8F2F: FlagGroup word32 fn0800-8F2F(Register Eq_n ax, Register (ptr16 Eq_n) cx, Register Eq_n dx, Register Eq_n bx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
+// 0800:8F2F: FlagGroup ui32 fn0800-8F2F(Register Eq_n ax, Register (ptr16 Eq_n) cx, Register Eq_n dx, Register Eq_n bx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
 // Called from:
 //      fn0800_A1D6
 //      fn0800_A215
 //      fn0800_B0A1
-word32 fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
+ui32 fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
 {
+	byte al = (byte) ax;
 	byte bl = (byte) bx;
 	ptr16 dx_n = (ptr16) (dx.u5 + (ax >> 0x04));
 	ptr16 cx_n = cx + (bx >> 0x04);
-	Eq_n bx_n = SEQ(SLICE(bx >> 0x04, byte, 8), bl) & 0x0F;
+	cui16 bx_n = SEQ(SLICE(bx >> 0x04, byte, 8), bl);
+	Eq_n SCZO_n;
+	SCZO_n.u0 = cond(dx_n - cx_n);
+	cui16 ax_n = SEQ(bl, al);
+	Eq_n Z_n;
+	Z_n.u0 = SLICE(SCZO_n, bool, 2);
+	Eq_n C_n;
+	C_n.u0 = SLICE(SCZO_n, bool, 1);
+	if (dx_n == cx_n)
+	{
+		Eq_n SCZO_n;
+		SCZO_n.u0 = cond((ax_n & 0x0F) - (bx_n & 0x0F));
+		C_n.u0 = SLICE(SCZO_n, bool, 1);
+		Z_n.u0 = SLICE(SCZO_n, bool, 2);
+	}
 	cxOut = cx_n;
 	dxOut = dx_n;
-	bxOut = bx_n;
-	return <invalid>;
+	bxOut = bx_n & 0x0F;
+	return C_n | Z_n;
 }
 
 // 0800:8F50: Register Eq_n fn0800-8F50(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg08, Register out Eq_n chOut)

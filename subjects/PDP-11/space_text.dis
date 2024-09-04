@@ -912,7 +912,8 @@ l0E7A:
 l0E7C:
 	call Mem9[r4_4 + 0x2A<16>:word16] (retsize: 0;)
 		uses: Mem:Mem9
-	return <invalid>
+		defs: NZVC:NZVC_49
+	return SLICE(NZVC_49, bool, 3) | SLICE(NZVC_49, bool, 1)
 fn0E0E_exit:
 
 

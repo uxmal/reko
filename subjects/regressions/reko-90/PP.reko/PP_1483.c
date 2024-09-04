@@ -495,10 +495,10 @@ void fn1483-1777(byte al, byte bl, byte bh, word16 si, struct Eq_n * ds)
 	fn1483-467E(SEQ(ds, bh, bl - al - (byte) C), al, si);
 }
 
-// 1483:1B91: FlagGroup word32 fn1483-1B91(Register Eq_n al, Register Eq_n bx, Register Eq_n di, Register Eq_n ds, Stack Eq_n psegArg00)
+// 1483:1B91: FlagGroup ui32 fn1483-1B91(Register Eq_n al, Register Eq_n bx, Register Eq_n di, Register Eq_n ds, Stack Eq_n psegArg00)
 // Called from:
 //      fn1483-1BB9
-word32 fn1483-1B91(Eq_n al, Eq_n bx, Eq_n di, Eq_n ds, Eq_n psegArg00)
+ui32 fn1483-1B91(Eq_n al, Eq_n bx, Eq_n di, Eq_n ds, Eq_n psegArg00)
 {
 	byte ah;
 	uint8 bh = SLICE(bx, byte, 8);
@@ -525,7 +525,8 @@ word32 fn1483-1B91(Eq_n al, Eq_n bx, Eq_n di, Eq_n ds, Eq_n psegArg00)
 	selector es_n;
 	selector ds_n;
 	fn1483-1BB9(ax, ax_n, dx, bx, bp, si, v20_n, es, psegArg00, out cx_n, out dh_n, out bx_n, out bp_n, out si_n, out di_n, out es_n, out ds_n);
-	return <invalid>;
+	word32 SCZOP_n = <invalid>;
+	return SLICE(SCZOP_n, bool, 1) | SLICE(SCZOP_n, bool, 4) | SLICE(SCZOP_n, bool, 5) | (bool) SCZOP_n | SLICE(SCZOP_n, bool, 2);
 }
 
 // 1483:1BB8: Sequence segptr32 fn1483-1BB8(Sequence (ptr32 byte) ds_si, Register byte al, Register byte ah, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n bp, Register Eq_n di, Register Eq_n es, Register out ptr16 axOut, Register out Eq_n cxOut, Register out Eq_n dhOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) esOut, Register out (ptr16 Eq_n) dsOut)

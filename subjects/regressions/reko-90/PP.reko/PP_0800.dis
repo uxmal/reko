@@ -11687,18 +11687,26 @@ word32 fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & cxOut, pt
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: sp
 fn0800_8F2F_entry:
+	al = SLICE(ax, byte, 0)
 	bl = SLICE(bx, byte, 0)
 l0800_8F2F:
 	dx_15 = dx + (ax >>u 4<8>)
 	cx_24 = cx + (bx >>u 4<8>)
-	bx_30 = SEQ(SLICE(bx >>u 4<8>, byte, 8), bl) & 0xF<16>
+	bx_29 = SEQ(SLICE(bx >>u 4<8>, byte, 8), bl) (alias)
+	SCZO_31 = cond(dx_15 - cx_24)
+	ax_26 = SEQ(bl, al) (alias)
+	Z_32 = SLICE(SCZO_31, bool, 2) (alias)
+	C_37 = SLICE(SCZO_31, bool, 1) (alias)
 	branch dx_15 != cx_24 l0800_8F4F
 l0800_8F4D:
+	SCZO_33 = cond((ax_26 & 0xF<16>) - (bx_29 & 0xF<16>))
+	C_37 = SLICE(SCZO_33, bool, 1) (alias)
+	Z_32 = SLICE(SCZO_33, bool, 2) (alias)
 l0800_8F4F:
 	cxOut = cx_24
 	dxOut = dx_15
-	bxOut = bx_30
-	return <invalid>
+	bxOut = bx_29 & 0xF<16>
+	return C_37 | Z_32
 fn0800_8F2F_exit:
 
 

@@ -494,11 +494,10 @@ namespace Reko.Analysis
                     {
                         e = MakeReturnSequence(bindings, seq, idRet);
                     }
-                    /*
                     else if (idRet.Storage is FlagGroupStorage grf)
                     {
                         e = MakeReturnFlags(bindings, grf, idRet);
-                    }*/
+                    }
                     else
                     {
                         e = MakeReturnExpression(bindings, idRet.Storage, idRet);
