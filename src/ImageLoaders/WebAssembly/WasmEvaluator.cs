@@ -18,10 +18,8 @@
  */
 #endregion
 
-using Reko.Core;
-using System.Collections.Generic;
 using System;
-using Reko.Core.Expressions;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.WebAssembly
 {

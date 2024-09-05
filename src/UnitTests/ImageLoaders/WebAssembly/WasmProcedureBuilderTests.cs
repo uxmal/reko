@@ -45,6 +45,11 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         private Dictionary<int, ProcedureBase> mpFunidxToProc;
         private Dictionary<int, Address> mpGlobIdxToAddr;
 
+        private const int i32 = 127;
+        private const int i64 = 126;
+        private const int f32 = 125;
+        private const int f64 = 124;
+
         public WasmProcedureBuilderTests()
         {
             this.arch = new WasmArchitecture(new ServiceContainer(), "wasm", new());
@@ -66,8 +71,8 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             switch (valType)
             {
-            case 127: return PrimitiveType.Word32;
-            case 126: return PrimitiveType.Word64;
+            case i32: return PrimitiveType.Word32;
+            case i64: return PrimitiveType.Word64;
             case 125: return PrimitiveType.Real32;
             case 124: return PrimitiveType.Real64;
             default:
@@ -180,7 +185,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         [Test]
         public void Waspb_SimpleReturn()
         {
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -206,7 +211,7 @@ fn00000_exit:
         [Test]
         public void Waspb_i32_sub()
         {
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -236,7 +241,7 @@ fn00000_exit:
         [Test]
         public void Waspb_i64_eq()
         {
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -266,7 +271,7 @@ fn00000_exit:
         [Test]
         public void Waspb_i64_extend_u()
         {
-            Given_FuncType(new[] { 127 }, 126);
+            Given_FuncType(new[] { i32 }, i64);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -298,8 +303,8 @@ fn00000_exit:
         [Test]
         public void Waspb_call_with_float_constant()
         {
-            Given_FuncType(new[] { 127, 125 }, 127);
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32, 125 }, i32);
+            Given_FuncType(new[] { i32 }, i32);
             Given_ImportFunc("env", "extfun", 0);
             var sExp = @"
 // fn00000
@@ -333,9 +338,9 @@ fn00000_exit:
         [Test]
         public void Waspb_get_set_global()
         {
-            Given_FuncType(new[] { 127 }, 0);
-            Given_Global(127, true);
-            Given_Global(127, true);
+            Given_FuncType(new[] { i32 }, 0);
+            Given_Global(i32, true);
+            Given_Global(i32, true);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -411,7 +416,7 @@ fn00000_exit:
         [Test]
         public void Waspb_if()
         {
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -464,7 +469,7 @@ fn00000_exit:
         [Test]
         public void Waspb_if_else()
         {
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -541,7 +546,7 @@ l00000002:
 fn00000_exit:
 ";
             Given_FuncType(Array.Empty<int>(), 0);
-            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
             Given_ImportFunc("env", "puts", 1);
             RunTest(sExp, FnDef(
                 0,
@@ -589,8 +594,8 @@ l00000017:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 0);
-            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
             Given_ImportFunc("env", "puts", 1);
             RunTest(sExp, FnDef(
                 0,
@@ -607,7 +612,7 @@ fn00000_exit:
                             16,0,           // call
                 
                             32,0,           // local.get
-                            65,127,         // i32.const 0xFFFFFFFF
+                            65,i32,         // i32.const 0xFFFFFFFF
                             106,            // i32.add
                             34,0,           // local.tee
                             13,0,           // br.if 0
@@ -643,8 +648,8 @@ l0000000F:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 0);
-            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
             Given_ImportFunc("env", "puts", 1);
             RunTest(sExp, FnDef(
                 0,
@@ -654,7 +659,7 @@ fn00000_exit:
                         65, 16,     // i32.const
                         16, 0,      // call
                         32, 0,      // local.get
-                        65, 127,    // i32.const -1
+                        65, i32,    // i32.const -1
                         106,        // i32.add
                         34, 0,      // local.tee
                         13, 0,      // br_if 0
@@ -681,7 +686,7 @@ l00000000:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
             RunTest(sExp, FnDef(
                 0,
                 Array.Empty<LocalVariable>(),
@@ -714,7 +719,7 @@ l00000000:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { i32 }, 0);
             RunTest(sExp, FnDef(
                 0,
                 Array.Empty<LocalVariable>(),
@@ -746,13 +751,13 @@ l00000000:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             RunTest(sExp, FnDef(
                 0,
                 Array.Empty<LocalVariable>(),
                 new byte[] {
                     65,1,   // i32.const
-                    65,127, // i32.const
+                    65,i32, // i32.const
                     32,0,   // local.get
                     69,     // i32.eqz
                     27,     // select
@@ -764,8 +769,8 @@ fn00000_exit:
         [Ignore("for now")]
         public void Waspb_call_indirect_with_float_constant()
         {
-            Given_FuncType(new[] { 127, 125 }, 127);
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32, 125 }, i32);
+            Given_FuncType(new[] { i32 }, i32);
             //Given_Table(new[]
             //{
             //    1
@@ -846,7 +851,7 @@ fn00000_exit:
 0,97,115,109,1,0,0,0,
 1,9,
     2,
-        96,1,127,1,127,
+        96,1,i32,1,i32,
         96,0,0,
 2,21,
     2,
@@ -945,7 +950,7 @@ l00000031:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127, 127, 127 }, 127);
+            Given_FuncType(new[] { i32, i32, i32 }, i32);
             RunTest(sExp, FnDef(
                 0,
                 Array.Empty<LocalVariable>(),
@@ -966,7 +971,7 @@ fn00000_exit:
                 32,0,
                 15,     // return param0;
             11,
-            65,127,     // return -1
+            65,i32,     // return -1
             15,
         11,
         32,2,           // return a + b
@@ -1017,7 +1022,7 @@ l0000000F:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             RunTest(sExp, FnDef(
                 0,
                 Array.Empty<LocalVariable>(),
@@ -1025,7 +1030,7 @@ fn00000_exit:
                     get_local, 0,
                     i32_const, 0,
                     i32_ge_s,
-                    @if, 127,
+                    @if, i32,
                         get_local, 0,
                     @else,
                         i32_const, 0,
@@ -1072,7 +1077,7 @@ l0000003E:
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
-            Given_FuncType(new[] { 127 }, 127);
+            Given_FuncType(new[] { i32 }, i32);
             RunTest(sExp, FnDef(
                 0,
                 new LocalVariable[] {
@@ -1104,6 +1109,110 @@ fn00000_exit:
                         br_if, 0x0,
                     end,
                     i32_const, 1,
+                    end)));
+        }
+
+        [Test]
+        public void Wasmp_f64_convert_s_i32()
+        {
+            var sExpected = @"
+// fn00000
+// Return size: 0
+real64 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v3 = param0
+	v4 = CONVERT(v3, int32, real64)
+	return v4
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { i32 }, 124);
+            RunTest(sExpected, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                ByteCode(
+                    get_local, 0,
+                    f64_convert_s_i32,
+                    end)));
+        }
+
+        [Test]
+        public void Wasmp_f64_convert_u_i32()
+        {
+            var sExpected = @"
+// fn00000
+// Return size: 0
+real64 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v3 = param0
+	v4 = CONVERT(v3, uint32, real64)
+	return v4
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { i32 }, f64);
+            RunTest(sExpected, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                ByteCode(
+                    get_local, 0,
+                    f64_convert_u_i32,
+                    end)));
+        }
+
+        [Test]
+        public void Wasmp_f64_abs()
+        {
+            var sExpected = @"
+// fn00000
+// Return size: 0
+real64 fn00000(real64 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v3 = param0
+	v3 = fabs(v3)
+	return v3
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { f64 }, f64);
+            RunTest(sExpected, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                ByteCode(
+                    get_local, 0,
+                    f64_abs,
+                    end)));
+        }
+
+        [Test]
+        public void Wasmp_f64_promote_f32()
+        {
+            var sExpected = @"
+// fn00000
+// Return size: 0
+real64 fn00000(real32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v3 = param0
+	v4 = CONVERT(v3, real32, real64)
+	return v4
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { f32 }, f64);
+            RunTest(sExpected, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                ByteCode(
+                    get_local, 0,
+                    f64_promote_f32,
                     end)));
         }
 

@@ -4,4 +4,183 @@
 
 #include "hello.h"
 
+int8 g_b4388; // 00004388
+int8 g_b4390; // 00004390
+int8 g_b4398; // 00004398
+int8 g_b43A0; // 000043A0
+int8 g_b43A8; // 000043A8
+int8 g_b43B0; // 000043B0
+int8 g_b43B8; // 000043B8
+int8 g_b43C0; // 000043C0
+int8 g_b43C8; // 000043C8
+int8 g_b43D0; // 000043D0
+int8 g_b43D8; // 000043D8
+int8 g_b43E0; // 000043E0
+int8 g_b43E8; // 000043E8
+int8 g_b43F0; // 000043F0
+int8 g_b43F8; // 000043F8
+int8 g_b4400; // 00004400
+int8 g_b4408; // 00004408
+int8 g_b4410; // 00004410
+int8 g_b4418; // 00004418
+int8 g_b4420; // 00004420
+int8 g_b4428; // 00004428
+int8 g_b4430; // 00004430
+word32 g_dw4438; // 00004438
+word32 g_dw443C; // 0000443C
+word32 g_dw4440; // 00004440
+word32 g_dw4444; // 00004444
+word32 g_dw4448; // 00004448
+word32 g_dw444C; // 0000444C
+Eq_n g_t4450;
+byte g_b4454; // 00004454
+word32 g_dw4458; // 00004458
+word32 g_dw445C; // 0000445C
+word32 g_dw4460; // 00004460
+word32 g_dw4464; // 00004464
+word32 g_dw4478; // 00004478
+word32 g_dw447C; // 0000447C
+word32 g_dw4480; // 00004480
+word32 g_dw4484; // 00004484
+word32 g_dw44C0; // 000044C0
+word32 g_dw44C4; // 000044C4
+word32 g_dw44C8; // 000044C8
+word32 g_dw44CC; // 000044CC
+word32 g_dw44D0; // 000044D0
+word32 g_dw44D4; // 000044D4
+word32 g_dw44D8; // 000044D8
+word32 g_dw44DC; // 000044DC
+word32 g_dw44E0; // 000044E0
+word32 g_dw44E4; // 000044E4
+word32 g_dw44E8; // 000044E8
+word32 g_dw44EC; // 000044EC
+word32 g_dw44F0; // 000044F0
+word32 g_dw44F4; // 000044F4
+word32 g_dw44F8; // 000044F8
+word32 g_dw44FC; // 000044FC
+word32 g_dw4500; // 00004500
+word32 g_dw4504; // 00004504
+word32 g_dw4508; // 00004508
+word32 g_dw450C; // 0000450C
+word32 g_dw4510; // 00004510
+word32 g_dw4514; // 00004514
+word32 g_dw4518; // 00004518
+word32 g_dw451C; // 0000451C
+word32 g_dw4520; // 00004520
+word32 g_dw4524; // 00004524
+word32 g_dw4528; // 00004528
+word32 g_dw4530; // 00004530
+word32 g_dw4534; // 00004534
+word32 g_dw4538; // 00004538
+word32 g_dw4540; // 00004540
+word32 g_dw4544; // 00004544
+word32 g_dw4548; // 00004548
+word32 g_dw4550; // 00004550
+word32 g_dw4554; // 00004554
+word32 g_dw4558; // 00004558
+word32 g_dw4560; // 00004560
+word32 g_dw4564; // 00004564
+word32 g_dw4568; // 00004568
+word32 g_dw456C; // 0000456C
+int8 g_b4570; // 00004570
+int8 g_b4618; // 00004618
 Eq_n g_t4620;
+word32 g_dw4624; // 00004624
+Eq_n g_t463C;
+word32 g_dw4658; // 00004658
+uint32 g_dw4664; // 00004664
+ui32 g_dw4668; // 00004668
+Eq_n g_t466C;
+Eq_n g_t4670;
+Eq_n g_t4674;
+Eq_n g_t4678;
+Eq_n g_t467C;
+word32 g_dw4680; // 00004680
+word32 g_dw4684; // 00004684
+ui32 g_dw4688; // 00004688
+Eq_n g_a4794[];
+uint32 g_dw4814; // 00004814
+uint32 g_dw4818; // 00004818
+uint32 g_dw481C; // 0000481C
+ui32 g_dw4820; // 00004820
+Eq_n g_t4824;
+Eq_n g_t4828;
+Eq_n g_a482C[2308];
+word32 g_dw4830; // 00004830
+ui32 g_dw483C; // 0000483C
+ui32 g_dw4840; // 00004840
+Eq_n g_t4844;
+word32 g_dw4848; // 00004848
+word32 g_dw484C; // 0000484C
+word32 g_dw4850; // 00004850
+word32 g_dw4854; // 00004854
+struct Eq_n * g_ptr4858; // 00004858
+word32 g_dw485C; // 0000485C
+word32 g_dw4860; // 00004860
+word32 g_dw48A8; // 000048A8
+word32 g_dw48AC; // 000048AC
+struct Eq_n * g_ptr48B0; // 000048B0
+word32 g_dw48B4; // 000048B4
+word32 g_dw48B8; // 000048B8
+word32 g_dw4900; // 00004900
+word32 g_dw4904; // 00004904
+word32 g_dw4908; // 00004908
+word32 g_dw490C; // 0000490C
+word32 g_dw4954; // 00004954
+word32 g_dw4958; // 00004958
+word32 g_dw495C; // 0000495C
+word32 g_dw4960; // 00004960
+word32 g_dw49A8; // 000049A8
+word32 g_dw49AC; // 000049AC
+struct Eq_n * g_ptr49B0; // 000049B0
+word32 g_dw49B4; // 000049B4
+word32 g_dw49FC; // 000049FC
+word32 g_dw4A00; // 00004A00
+struct Eq_n * g_ptr4A04; // 00004A04
+word32 g_dw4A08; // 00004A08
+word32 g_dw4A50; // 00004A50
+word32 g_dw4A54; // 00004A54
+word32 g_dw4A58; // 00004A58
+word32 g_dw4A5C; // 00004A5C
+word32 g_dw4AA4; // 00004AA4
+word32 g_dw4AA8; // 00004AA8
+word32 g_dw4AAC; // 00004AAC
+word32 g_dw4AB0; // 00004AB0
+word32 g_dw4AF8; // 00004AF8
+word32 g_dw4AFC; // 00004AFC
+word32 g_dw4C78; // 00004C78
+word32 g_dw4C7C; // 00004C7C
+word64 g_qw4CB8; // 00004CB8
+word32 g_dw4CC0; // 00004CC0
+word64 g_qw4CC4; // 00004CC4
+word32 g_dw4CCC; // 00004CCC
+word64 g_qw4CD0; // 00004CD0
+word32 g_dw4CD8; // 00004CD8
+word64 g_qw4CDC; // 00004CDC
+word32 g_dw4CE4; // 00004CE4
+Eq_n g_a4CE8[25];
+word32 g_dw4E08; // 00004E08
+Eq_n g_a4E0C[25];
+word32 g_dw4F2C; // 00004F2C
+Eq_n g_a4F30[15];
+word32 g_dw4FD8; // 00004FD8
+word64 g_qw4FE4; // 00004FE4
+word32 g_dw4FEC; // 00004FEC
+word64 g_qw4FF0; // 00004FF0
+word32 g_dw4FF8; // 00004FF8
+word64 g_qw4FFC; // 00004FFC
+word32 g_dw5004; // 00005004
+word64 g_qw5008; // 00005008
+word32 g_dw5010; // 00005010
+Eq_n g_a5014[25];
+word32 g_dw5134; // 00005134
+Eq_n g_a5138[25];
+word32 g_dw5258; // 00005258
+Eq_n g_a525C[15];
+word32 g_dw5304; // 00005304
+word32 g_dw5390; // 00005390
+word32 g_dw5394; // 00005394
+Eq_n g_t5398;
+word32 g_dw539C; // 0000539C
+word32 g_dw53F0; // 000053F0
+word32 g_dw53F4; // 000053F4

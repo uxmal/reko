@@ -211,6 +211,10 @@ namespace Reko.Analysis
                     case SwitchInstruction sw:
                         typeDescender.Visit(sw.Expression);
                         break;
+                    case ReturnInstruction ret:
+                        if (ret.Expression is not null)
+                            typeDescender.Visit(ret.Expression);
+                        break;
                     }
                 }
             }
@@ -319,7 +323,9 @@ namespace Reko.Analysis
 
         public BitRange VisitReturnInstruction(ReturnInstruction ret)
         {
-            throw new NotImplementedException();
+            if (ret.Expression is null)
+                return BitRange.Empty;
+            return ret.Expression.Accept(this);
         }
 
         public BitRange VisitSideEffect(SideEffect side)

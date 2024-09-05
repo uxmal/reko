@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -82,7 +83,6 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             GenerateLocals();
             GenerateInstructions();
-            GenerateControlFlow();
             return proc;
         }
 
@@ -102,10 +102,6 @@ namespace Reko.ImageLoaders.WebAssembly
                 cParams = parameters.Length;
             }
             locals.AddRange(func.Locals.Select(Loc));
-        }
-
-        private void GenerateControlFlow()
-        {
         }
 
         private void GenerateInstructions()
@@ -131,6 +127,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.br_if: RewriteBrIf(); break;
                 case Mnemonic.br_table: RewriteBrTable(); break;
                 case Mnemonic.call: RewriteCall(); break;
+                case Mnemonic.call_indirect: RewriteIndirectCall(); break;
                 case Mnemonic.@else: RewriteElse(); break;
                 case Mnemonic.end: 
                     if (RewriteEnd(rdr))
@@ -142,10 +139,13 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.@return: RewriteReturn(); break;
 
                 case Mnemonic.drop: RewriteDrop(); break;
-                case Mnemonic.f32_add: RewriteBinary(m.FAdd, PrimitiveType.Real32); break;
+                case Mnemonic.f32_add: RewriteBinary(Operator.FAdd, PrimitiveType.Real32); break;
+                case Mnemonic.f32_abs: RewriteUnary(FpOps.FAbs32, PrimitiveType.Real32); break;
+                case Mnemonic.f32_convert_s_i32: RewriteConversion(PrimitiveType.Int32, PrimitiveType.Real32); break;
+                case Mnemonic.f32_convert_u_i32: RewriteConversion(PrimitiveType.UInt32, PrimitiveType.Real32); break;
                 case Mnemonic.f32_demote_f64: RewriteConversion(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.f32_reinterpret_i32: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.Real32)); break;
-                case Mnemonic.f32_div: RewriteBinary(m.FDiv, PrimitiveType.Real32); break;
+                case Mnemonic.f32_div: RewriteBinary(Operator.FDiv, PrimitiveType.Real32); break;
                 case Mnemonic.f32_eq: RewriteCmp(m.FEq); break;
                 case Mnemonic.f32_ne: RewriteCmp(m.FNe); break;
                 case Mnemonic.f32_ge: RewriteCmp(m.FGe); break;
@@ -153,13 +153,18 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_le: RewriteCmp(m.FLe); break;
                 case Mnemonic.f32_lt: RewriteCmp(m.FLt); break;
                 case Mnemonic.f32_load: RewriteLoad(PrimitiveType.Real32); break;
-                case Mnemonic.f32_mul: RewriteBinary(m.FMul, PrimitiveType.Real32); break;
-                case Mnemonic.f32_neg: RewriteUnary(m.FNeg, PrimitiveType.Real32); break;
+                case Mnemonic.f32_mul: RewriteBinary(Operator.FMul, PrimitiveType.Real32); break;
+                case Mnemonic.f32_neg: RewriteUnary(Operator.FNeg, PrimitiveType.Real32); break;
                 case Mnemonic.f32_sqrt: RewriteIntrinsic(FpOps.sqrtf); break;
                 case Mnemonic.f32_store: RewriteStore(PrimitiveType.Real32); break;
-                case Mnemonic.f32_sub: RewriteBinary(m.FSub, PrimitiveType.Real32); break;
-                case Mnemonic.f64_add: RewriteBinary(m.FAdd, PrimitiveType.Real64); break;
-                case Mnemonic.f64_div: RewriteBinary(m.FDiv, PrimitiveType.Real64); break;
+                case Mnemonic.f32_sub: RewriteBinary(Operator.FSub, PrimitiveType.Real32); break;
+                case Mnemonic.f64_abs: RewriteUnary(FpOps.FAbs64, PrimitiveType.Real64); break;
+                case Mnemonic.f64_add: RewriteBinary(Operator.FAdd, PrimitiveType.Real64); break;
+                case Mnemonic.f64_convert_s_i32: RewriteConversion(PrimitiveType.Int32, PrimitiveType.Real64); break;
+                case Mnemonic.f64_convert_s_i64: RewriteConversion(PrimitiveType.Int64, PrimitiveType.Real64); break;
+                case Mnemonic.f64_convert_u_i32: RewriteConversion(PrimitiveType.UInt32, PrimitiveType.Real64); break;
+                case Mnemonic.f64_convert_u_i64: RewriteConversion(PrimitiveType.UInt64, PrimitiveType.Real64); break;
+                case Mnemonic.f64_div: RewriteBinary(Operator.FDiv, PrimitiveType.Real64); break;
                 case Mnemonic.f64_eq: RewriteCmp(m.FEq); break;
                 case Mnemonic.f64_ne: RewriteCmp(m.FNe); break;
                 case Mnemonic.f64_ge: RewriteCmp(m.FGe); break;
@@ -167,12 +172,13 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f64_le: RewriteCmp(m.FLe); break;
                 case Mnemonic.f64_lt: RewriteCmp(m.FLt); break;
                 case Mnemonic.f64_load: RewriteLoad(PrimitiveType.Real64); break;
-                case Mnemonic.f64_mul: RewriteBinary(m.FMul, PrimitiveType.Real64); break;
-                case Mnemonic.f64_neg: RewriteUnary(m.FNeg, PrimitiveType.Real64); break;
+                case Mnemonic.f64_mul: RewriteBinary(Operator.FMul, PrimitiveType.Real64); break;
+                case Mnemonic.f64_neg: RewriteUnary(Operator.FNeg, PrimitiveType.Real64); break;
+                case Mnemonic.f64_promote_f32: RewriteConversion(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.f64_reinterpret_i64: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.Real64)); break;
                 case Mnemonic.f64_sqrt: RewriteIntrinsic(FpOps.sqrt); break;
                 case Mnemonic.f64_store: RewriteStore(PrimitiveType.Real64); break;
-                case Mnemonic.f64_sub: RewriteBinary(m.FSub, PrimitiveType.Real64); break;
+                case Mnemonic.f64_sub: RewriteBinary(Operator.FSub, PrimitiveType.Real64); break;
                 case Mnemonic.get_global:
                     var idxGlob = OpAsInt(0);
                     var global = wasmFile.GlobalIndex[idxGlob];
@@ -184,10 +190,10 @@ namespace Reko.ImageLoaders.WebAssembly
                     id = PushValue(local.DataType);
                     Assign(id, local);
                     break;
-                case Mnemonic.i32_add: RewriteBinary(m.IAdd, PrimitiveType.Word32); break;
-                case Mnemonic.i32_and: RewriteBinary(m.And, PrimitiveType.Word32); break;
-                case Mnemonic.i32_div_s: RewriteBinary(m.SDiv, PrimitiveType.Int32); break;
-                case Mnemonic.i32_div_u: RewriteBinary(m.UDiv, PrimitiveType.UInt32); break;
+                case Mnemonic.i32_add: RewriteBinary(Operator.IAdd, PrimitiveType.Word32); break;
+                case Mnemonic.i32_and: RewriteBinary(Operator.And, PrimitiveType.Word32); break;
+                case Mnemonic.i32_div_s: RewriteBinary(Operator.SDiv, PrimitiveType.Int32); break;
+                case Mnemonic.i32_div_u: RewriteBinary(Operator.UDiv, PrimitiveType.UInt32); break;
                 case Mnemonic.i32_eq: RewriteCmp(m.Eq); break;
                 case Mnemonic.i32_eqz: RewriteCmp0(m.Eq, PrimitiveType.Word32); break;
                 case Mnemonic.i32_ge_s: RewriteCmp(m.Ge); break;
@@ -204,27 +210,27 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i32_load8_u: RewriteLoadWiden(PrimitiveType.Byte, PrimitiveType.Word32); break;
                 case Mnemonic.i32_load16_s: RewriteLoadWiden(PrimitiveType.Int16, PrimitiveType.Word32); break;
                 case Mnemonic.i32_load16_u: RewriteLoadWiden(PrimitiveType.UInt16, PrimitiveType.Word32); break;
-                case Mnemonic.i32_mul: RewriteBinary(m.IMul, PrimitiveType.Word32); break;
-                case Mnemonic.i32_sub: RewriteBinary(m.ISub, PrimitiveType.Word32); break;
-                case Mnemonic.i32_or: RewriteBinary(m.Or, PrimitiveType.Word32); break;
-                case Mnemonic.i32_rem_s: RewriteBinary(m.SMod, PrimitiveType.Word32); break;
-                case Mnemonic.i32_rem_u: RewriteBinary(m.UMod, PrimitiveType.Word32); break;
-                case Mnemonic.i32_shl: RewriteBinary(m.Shl, PrimitiveType.Word32); break;
-                case Mnemonic.i32_shr_s: RewriteBinary(m.Sar, PrimitiveType.Word32); break;
-                case Mnemonic.i32_shr_u: RewriteBinary(m.Shr, PrimitiveType.Word32); break;
+                case Mnemonic.i32_mul: RewriteBinary(Operator.IMul, PrimitiveType.Word32); break;
+                case Mnemonic.i32_sub: RewriteBinary(Operator.ISub, PrimitiveType.Word32); break;
+                case Mnemonic.i32_or: RewriteBinary(Operator.Or, PrimitiveType.Word32); break;
+                case Mnemonic.i32_rem_s: RewriteBinary(Operator.SMod, PrimitiveType.Word32); break;
+                case Mnemonic.i32_rem_u: RewriteBinary(Operator.UMod, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shl: RewriteBinary(Operator.Shl, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shr_s: RewriteBinary(Operator.Sar, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shr_u: RewriteBinary(Operator.Shr, PrimitiveType.Word32); break;
                 case Mnemonic.i32_store: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.i32_store8: RewriteStoreNarrow(PrimitiveType.Byte); break;
                 case Mnemonic.i32_store16: RewriteStoreNarrow(PrimitiveType.Word16); break;
                 case Mnemonic.i32_wrap_i64: RewriteWrap(PrimitiveType.Word64, PrimitiveType.Word32); break;
-                case Mnemonic.i32_xor: RewriteBinary(m.Xor, PrimitiveType.Word32); break;
+                case Mnemonic.i32_xor: RewriteBinary(Operator.Xor, PrimitiveType.Word32); break;
                 case Mnemonic.i32_const:
                 case Mnemonic.i64_const:
                 case Mnemonic.f32_const:
                 case Mnemonic.f64_const: RewriteConst(); break;
-                case Mnemonic.i64_add: RewriteBinary(m.IAdd, PrimitiveType.Word64); break;
-                case Mnemonic.i64_and: RewriteBinary(m.And, PrimitiveType.Word64); break;
-                case Mnemonic.i64_div_s: RewriteBinary(m.SDiv, PrimitiveType.Int64); break;
-                case Mnemonic.i64_div_u: RewriteBinary(m.UDiv, PrimitiveType.UInt64); break;
+                case Mnemonic.i64_add: RewriteBinary(Operator.IAdd, PrimitiveType.Word64); break;
+                case Mnemonic.i64_and: RewriteBinary(Operator.And, PrimitiveType.Word64); break;
+                case Mnemonic.i64_div_s: RewriteBinary(Operator.SDiv, PrimitiveType.Int64); break;
+                case Mnemonic.i64_div_u: RewriteBinary(Operator.UDiv, PrimitiveType.UInt64); break;
                 case Mnemonic.i64_eq: RewriteCmp(m.Eq); break;
                 case Mnemonic.i64_eqz: RewriteCmp0(m.Eq, PrimitiveType.Word64); break;
                 case Mnemonic.i64_ge_s: RewriteCmp(m.Ge); break;
@@ -245,20 +251,20 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i64_load16_u: RewriteLoadWiden(PrimitiveType.UInt16, PrimitiveType.Word64); break;
                 case Mnemonic.i64_load32_s: RewriteLoadWiden(PrimitiveType.Int32, PrimitiveType.Word64); break;
                 case Mnemonic.i64_load32_u: RewriteLoadWiden(PrimitiveType.Word32, PrimitiveType.Word64); break;
-                case Mnemonic.i64_mul: RewriteBinary(m.IMul, PrimitiveType.Word64); break;
-                case Mnemonic.i64_sub: RewriteBinary(m.ISub, PrimitiveType.Word64); break;
-                case Mnemonic.i64_or: RewriteBinary(m.Or, PrimitiveType.Word64); break;
+                case Mnemonic.i64_mul: RewriteBinary(Operator.IMul, PrimitiveType.Word64); break;
+                case Mnemonic.i64_sub: RewriteBinary(Operator.ISub, PrimitiveType.Word64); break;
+                case Mnemonic.i64_or: RewriteBinary(Operator.Or, PrimitiveType.Word64); break;
                 case Mnemonic.i64_reinterpret_f64: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.UInt64)); break;
-                case Mnemonic.i64_rem_s: RewriteBinary(m.SMod, PrimitiveType.Word64); break;
-                case Mnemonic.i64_rem_u: RewriteBinary(m.UMod, PrimitiveType.Word64); break;
-                case Mnemonic.i64_shl: RewriteBinary(m.Shl, PrimitiveType.Word64); break;
-                case Mnemonic.i64_shr_s: RewriteBinary(m.Sar, PrimitiveType.Word64); break;
-                case Mnemonic.i64_shr_u: RewriteBinary(m.Shr, PrimitiveType.Word64); break;
+                case Mnemonic.i64_rem_s: RewriteBinary(Operator.SMod, PrimitiveType.Word64); break;
+                case Mnemonic.i64_rem_u: RewriteBinary(Operator.UMod, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shl: RewriteBinary(Operator.Shl, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shr_s: RewriteBinary(Operator.Sar, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shr_u: RewriteBinary(Operator.Shr, PrimitiveType.Word64); break;
                 case Mnemonic.i64_store: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.i64_store8: RewriteStoreNarrow(PrimitiveType.Byte); break;
                 case Mnemonic.i64_store16: RewriteStoreNarrow(PrimitiveType.Word16); break;
                 case Mnemonic.i64_store32: RewriteStoreNarrow(PrimitiveType.Word32); break;
-                case Mnemonic.i64_xor: RewriteBinary(m.Xor, PrimitiveType.Word64); break;
+                case Mnemonic.i64_xor: RewriteBinary(Operator.Xor, PrimitiveType.Word64); break;
 
                 case Mnemonic.select: RewriteSelect(); break;
                 case Mnemonic.set_global:
@@ -285,11 +291,11 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private void RewriteBinary(Func<Expression,Expression,Expression> fn, DataType dt)
+        private void RewriteBinary(BinaryOperator fn, DataType dt)
         {
             var arg2 = PopValue();
             var arg1 = PopValue();
-            var e = fn(arg1, arg2);
+            var e = m.Bin(fn, arg1, arg2);
             var id = PushValue(dt);
             Assign(id, e);
         }
@@ -314,7 +320,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 // We see this in some WASM binaries; sequences of consecutive
                 // br statements. But all of the br's after the first one must
                 // be unreachable, so why are they even there?
-                Console.WriteLine($"*** {instr.Address} {instr}: unreachable break");
+                Console.WriteLine($"*** fn index {this.func.FunctionIndex} {instr.Address} {instr}: unreachable break");
                 return;
             }
             var cLevelsUp = OpAsInt(0);
@@ -659,10 +665,18 @@ namespace Reko.ImageLoaders.WebAssembly
             Store(mem, narrowed);
         }
 
-        private void RewriteUnary(Func<Expression, Expression> fn, DataType dt)
+        private void RewriteUnary(UnaryOperator fn, DataType dt)
         {
             var arg = PopValue();
-            var e = fn(arg);
+            var e = m.Unary(fn, arg);
+            var id = PushValue(dt);
+            Assign(id, e);
+        }
+
+        private void RewriteUnary(IntrinsicProcedure fn, DataType dt)
+        {
+            var arg = PopValue();
+            var e = m.Fn(fn, arg);
             var id = PushValue(dt);
             Assign(id, e);
         }
