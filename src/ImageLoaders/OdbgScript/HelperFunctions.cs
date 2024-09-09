@@ -12,6 +12,7 @@ namespace Reko.ImageLoaders.OdbgScript
     using Reko.Core.Lib;
     using Reko.Core.Expressions;
     using Reko.Core;
+    using System.Buffers.Binary;
 
     public static class Helper
     {
@@ -120,14 +121,19 @@ namespace Reko.ImageLoaders.OdbgScript
 
         // Number manipulation
 
-        public static rulong reverse(rulong dw)
+        public static rulong ToHostEndianness(rulong dw, EndianServices endianness)
         {
-            throw new NotImplementedException();
-#if LATER
-            byte [] pdw = (byte*)&dw;
-            reverse(pdw, pdw + sizeof(dw));
+            if (endianness == EndianServices.Big)
+            {
+                if (BitConverter.IsLittleEndian)
+                    return BinaryPrimitives.ReverseEndianness(dw);
+            }
+            else
+            {
+                if (!BitConverter.IsLittleEndian)
+                    return BinaryPrimitives.ReverseEndianness(dw);
+            }
             return dw;
-#endif
         }
 
         /// <summary>

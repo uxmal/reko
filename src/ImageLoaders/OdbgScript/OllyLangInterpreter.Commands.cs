@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Output;
@@ -439,10 +438,13 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        // TE?
+        /// <summary>
+        /// Sets logging breakpoint at address addr that logs expression expr
+        /// </summary>
         private bool DoBPL(Expression[] args)
         {
-            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string expression))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) &&
+                GetString(args[1], out string expression))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -460,10 +462,19 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        // TE?
+        /// <summary>
+        ///    Sets logging breakpoint at address addr that logs expression expr if condition cond is true
+        /// Example:
+        ///    bplcnd 401000, "eax", "eax > 1" // logs the value of eax everytime this line is passed and eax > 1
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>> 1
+
         private bool DoBPLCND(Expression[] args)
         {
-            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string expression) && GetString(args[2], out string condition))
+            if (args.Length == 3 && GetAddress(args[0], out Address addr) &&
+                GetString(args[1], out string expression) &&
+                GetString(args[2], out string condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -480,11 +491,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Clear memory breakpoint.
+        /// </summary>
         private bool DoBPMC(params Expression[] args)
         {
             if (args.Length == 0)
             {
-                if (membpaddr != null && membpsize != 0)
+                if (membpaddr is not null && membpsize != 0)
                 {
                     Debugger.RemoveMemoryBPX(membpaddr, membpsize);
                     membpaddr = null;
@@ -495,11 +509,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Set memory breakpoint on read.
+        /// </summary>
         private bool DoBPRM(Expression[] args)
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
             {
-                if (membpaddr != null && membpsize != 0)
+                if (membpaddr is not null && membpsize != 0)
                     DoBPMC();
 
                 if (Debugger.SetMemoryBPXEx(addr, size, Ue.UE_MEMORY_READ, true, MemoryCallback))
@@ -1030,6 +1047,33 @@ rulong hwnd;
             return false;
         }
 
+        /// <summary>
+        /// Executes instructions between EXEC and ENDE in the context of the target process.
+        /// Values in curly braces { }
+        /// are replaced by their values.
+        /// PUSHA / POPA commands could be useful when you use this.
+        /// </summary>
+        /// <remarks>
+        /// Examples:
+        /// This does some mov's
+        /// <code>
+        /// mov x, "eax"
+        /// mov y, DEADBEEF
+        /// 
+        /// exec
+        ///     mov {x},{y}  // mov eax, 0DEADBEEF will be executed
+        ///     mov ecx, {x} // mov ecx, eax will be executed
+        /// ende
+        /// </code>
+        /// This calls ExitProcess in the debugged application<code>
+        /// exec
+        ///	push 0
+        ///	call ExitProcess
+        /// ende
+        /// ret
+        /// </code>
+        /// </remarks>
+
         private bool DoEXEC(Expression[] args)
         {
             if (args.Length == 0)
@@ -1139,9 +1183,17 @@ rulong hwnd;
 
         /// <summary>
         /// Searches 
+        /// Searches memory starting at addr for the specified value.
+        ///  found sets the reserved $RESULT variable. $RESULT == 0 if nothing found.
+        /// The search string can also use the wildcard "??" (see below).
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Example:
+        /// <code>
+        /// find eip, #6A00E8# // find a PUSH 0 followed by some kind of call
+	    /// find eip, #6A??E8# // find a PUSH &lt;something&gt; followed by some kind of call
+        /// </code>
+        /// </remarks>
         private bool DoFIND(params Expression[] args)
         {
             string finddata;
@@ -1155,7 +1207,7 @@ rulong hwnd;
 
             if (GetRulong(args[1], out ulong dw))
             {
-                finddata = Helper.rul2hexstr(Helper.reverse(dw));
+                finddata = Helper.rul2hexstr(Helper.ToHostEndianness(dw, arch.Endianness));
                 // Remove trailing zeroes, keep even character args.Length
                 int end;
                 for (end = finddata.Length - 1; end != 0; end--)
@@ -1525,7 +1577,7 @@ rulong hwnd;
 
                 if (GetRulong(args[1], out ulong dw))
                 {
-                    finddata = Helper.rul2hexstr(Helper.reverse(dw));
+                    finddata = Helper.rul2hexstr(Helper.ToHostEndianness(dw, arch.Endianness));
                     // Remove trailing zeroes, keep even character args.Length
                     int end;
                     for (end = finddata.Length - 1; end != 0; end--)
@@ -3684,7 +3736,7 @@ string param;
             {
                 if (GetRulong(args[0], out ulong dw))
                 {
-                    variables["$RESULT"] = Var.Create(Helper.reverse(dw));
+                    variables["$RESULT"] = Var.Create(Helper.ToHostEndianness(dw, arch.Endianness));
                     return true;
                 }
                 else if (GetString(args[0], out string str))

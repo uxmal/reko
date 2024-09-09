@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
+    using Reko.Core;
     using System.Text;
     using rulong = System.UInt64;
 
@@ -64,7 +65,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (v.IsBuf) // rulong + buf -> buf
                 {
-                    return Var.Create("#" + Helper.rul2hexstr(Helper.reverse(this.dw), sizeof(rulong) * 2) + v.ToHexString() + '#');
+                    return Var.Create("#" + Helper.rul2hexstr(Helper.ToHostEndianness(this.dw, EndianServices.Little), sizeof(rulong) * 2) + v.ToHexString() + '#');
                 }
                 else // rulong + str -> str
                 {
@@ -107,7 +108,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (this.IsBuf) // buf + rulong -> buf
                 {
-                    return Var.Create("#" + this.ToHexString() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong) * 2) + '#');
+                    return Var.Create("#" + this.ToHexString() + Helper.rul2hexstr(Helper.ToHostEndianness(rhs, EndianServices.Little), sizeof(rulong) * 2) + '#');
                 }
                 else // str + rulong -> str
                 {
@@ -249,7 +250,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     if (IsBuf)
                         str = '#' + ToHexString().Substring(0, newsize * 2) + '#';
                     else
-                        str!.Remove(newsize);
+                        str = str!.Remove(newsize);
                     size = newsize;
                 }
                 break;
@@ -261,7 +262,7 @@ namespace Reko.ImageLoaders.OdbgScript
             switch (type)
             {
             case etype.DW:
-                dw = Helper.reverse(dw);
+                dw = Helper.ToHostEndianness(dw, EndianServices.Little);
                 break;
             }
             return this;

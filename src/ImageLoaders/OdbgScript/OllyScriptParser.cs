@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly IOdbgScriptHost host;
         private readonly IFileSystemService fsSvc;
         private Lexer lexer;
-        private Stack<Lexer>? lexerStack;
+        private Stack<Lexer> lexerStack;
         private Token tok;
         private OllyScript script;
 
@@ -66,18 +66,18 @@ namespace Reko.ImageLoaders.OdbgScript
             this.currentDir = currentDir;
             this.lexerStack = new Stack<Lexer>();
             this.lexerStack.Push(new Lexer(rdr));
-            this.lexer = null!;
+            this.lexer = default!;
         }
 
         public void Dispose()
         {
-            if (lexerStack == null)
+            if (lexerStack is null)
                 throw new ObjectDisposedException(nameof(OllyScriptParser));
             foreach (var lexer in lexerStack)
             {
                 lexer.Dispose();
             }
-            lexerStack = null;
+            lexerStack = null!;
         }
 
         public OllyScript ParseScript()

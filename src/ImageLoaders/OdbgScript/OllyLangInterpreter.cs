@@ -579,6 +579,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         readonly static string[] e_flags = { "!cf", "!pf", "!af", "!zf", "!sf", "!df", "!of" };
 
+        /// <summary>
+        /// Constant values.
+        /// </summary>
         readonly static Dictionary<string, ulong> constants = new Dictionary<string, rulong>(StringComparer.InvariantCultureIgnoreCase)
         {
             { "true",  1},
@@ -748,10 +751,8 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var host = new OdbgScriptHost(services, null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
-            using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
-            {
-                this.Script = parser.ParseScript();
-            }
+            using var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir);
+            this.Script = parser.ParseScript();
         }
 
         public void Run()
@@ -808,7 +809,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
 
                 bool result = false;
-                if (cmd != null)
+                if (cmd is not null)
                 {
                     result = cmd(line.Args); // Call command
                 }

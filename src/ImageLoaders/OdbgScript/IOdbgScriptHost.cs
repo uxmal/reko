@@ -21,13 +21,14 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
+    /// <summary>
+    /// The environment in which the ODBG script interpreter is running.
+    /// </summary>
     public interface IOdbgScriptHost
     {
         SegmentMap SegmentMap { get; }
@@ -36,7 +37,6 @@ namespace Reko.ImageLoaders.OdbgScript
         /// Entrypoint as discovered by the script being run.
         /// </summary>
         ImageSymbol? OriginalEntryPoint { get; set; }
-
 
         Address AllocateMemory(ulong size);
         int Assemble(string asm, Address addr);

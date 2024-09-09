@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual Address AllocateMemory(ulong size)
         {
-            if (heap == null)
+            if (heap is null)
             {
                 // Find an available spot in the address space & align it up to a 16-byte boundary.
                 var maxSegment = SegmentMap.Segments.Values
