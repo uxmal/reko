@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Core.Collections
 {
@@ -101,6 +102,19 @@ namespace Reko.Core.Collections
             --count;
             TrickleDown(0, heap[count]);
             return value;
+        }
+
+        public bool TryDequeue([MaybeNullWhen(false)] out T value)
+        {
+            if (count <= 0)
+            {
+                value = default;
+                return false;
+            }
+            value = heap[0].Value;
+            --count;
+            TrickleDown(0, heap[count]);
+            return true;
         }
 
         public void Clear()

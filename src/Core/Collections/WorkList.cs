@@ -80,9 +80,8 @@ namespace Reko.Core.Collections
 
 		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
-			while (!IsEmpty)
+			while (q.TryDequeue(out var t))
 			{
-				T t = q.Dequeue();
 				if (inQ.Contains(t))
 				{
 					inQ.Remove(t);
