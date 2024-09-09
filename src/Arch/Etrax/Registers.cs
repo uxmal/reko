@@ -116,20 +116,20 @@ namespace Reko.Arch.Etrax
                 usp,
             };
 
-            F =  new FlagGroupStorage(dccr, (uint)FlagM.FF, "F", PrimitiveType.Bool);
-            P =  new FlagGroupStorage(dccr, (uint)FlagM.PF, "P", PrimitiveType.Bool);
-            U =  new FlagGroupStorage(dccr, (uint)FlagM.UF, "U", PrimitiveType.Bool);
-            M =  new FlagGroupStorage(dccr, (uint)FlagM.MF, "M", PrimitiveType.Bool);
-            B =  new FlagGroupStorage(dccr, (uint)FlagM.BF, "B", PrimitiveType.Bool);
-            I =  new FlagGroupStorage(dccr, (uint)FlagM.IF, "I", PrimitiveType.Bool);
-            X =  new FlagGroupStorage(dccr, (uint)FlagM.XF, "X", PrimitiveType.Bool);
-            N =  new FlagGroupStorage(dccr, (uint)FlagM.NF, "N", PrimitiveType.Bool);
-            Z =  new FlagGroupStorage(dccr, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
-            V =  new FlagGroupStorage(dccr, (uint)FlagM.VF, "V", PrimitiveType.Bool);
-            C =  new FlagGroupStorage(dccr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            F =  new FlagGroupStorage(dccr, (uint)FlagM.FF, nameof(F));
+            P =  new FlagGroupStorage(dccr, (uint)FlagM.PF, nameof(P));
+            U =  new FlagGroupStorage(dccr, (uint)FlagM.UF, nameof(U));
+            M =  new FlagGroupStorage(dccr, (uint)FlagM.MF, nameof(M));
+            B =  new FlagGroupStorage(dccr, (uint)FlagM.BF, nameof(B));
+            I =  new FlagGroupStorage(dccr, (uint)FlagM.IF, nameof(I));
+            X =  new FlagGroupStorage(dccr, (uint)FlagM.XF, nameof(X));
+            N =  new FlagGroupStorage(dccr, (uint)FlagM.NF, nameof(N));
+            Z =  new FlagGroupStorage(dccr, (uint)FlagM.ZF, nameof(Z));
+            V =  new FlagGroupStorage(dccr, (uint)FlagM.VF, nameof(V));
+            C =  new FlagGroupStorage(dccr, (uint)FlagM.CF, nameof(C));
 
-            NZ = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF), "NZ", dccr.DataType);
-            NZVC = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), "NZVC", dccr.DataType);
+            NZ = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF), nameof(NZ));
+            NZVC = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), nameof(NZVC));
         }
     }
 

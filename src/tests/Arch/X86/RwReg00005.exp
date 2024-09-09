@@ -56,8 +56,8 @@ l0C00_000C:
 	cx = 0xC<16>
 	al = al ^ al
 	SZ = cond(al)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch cx == 0<16> l0C00_001B
@@ -85,12 +85,12 @@ l0C00_001D:
 l0C00_002D:
 	bx = bx ^ bx
 	SZ = cond(bx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	cl = cl ^ cl
 	SZ = cond(cl)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

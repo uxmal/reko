@@ -189,10 +189,10 @@ l00000000000008FD:
 	eax_69 = SLICE(qwLoc10_211, word32, 0) (alias)
 	branch qwLoc10_211 < 0<64> l0000000000000921
 l0000000000000921:
-	v27_76 = CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), int64, real64)
+	v27_76 = CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), word64, real64)
 	xmm0 = SEQ(0<64>, v27_76 + v27_76)
 l000000000000091A:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, int64, real64))
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, word64, real64))
 l0000000000000936:
 	Mem85[rcx_61:real64] = SLICE(xmm0, real64, 0)
 	qwLoc10_211 = qwLoc10_211 + 1<64>
@@ -205,10 +205,10 @@ l0000000000000953:
 	rcx_101 = qwLoc18_217 * 8<64> + rax_30
 	branch qwLoc18_217 < 0xFFFFFFFFFFFFFFFF<64> l000000000000097A
 l000000000000097A:
-	v22_115 = CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), int64, real64)
+	v22_115 = CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), word64, real64)
 	xmm0 = SEQ(0<64>, v22_115 + v22_115)
 l0000000000000973:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, int64, real64))
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, word64, real64))
 l000000000000098F:
 	Mem124[rcx_101:real64] = SLICE(xmm0, real64, 0)
 	qwLoc18_217 = qwLoc18_217 + 1<64>

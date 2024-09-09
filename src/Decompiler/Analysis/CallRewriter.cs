@@ -24,7 +24,6 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System.Collections.Generic;
@@ -50,6 +49,7 @@ namespace Reko.Analysis
         private readonly IPlatform platform;
         private readonly CallingConventionMatcher ccm;
         private readonly IEventListener listener;
+        private readonly ExpressionEmitter m;
 
         public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IEventListener listener) 
 		{
@@ -57,6 +57,7 @@ namespace Reko.Analysis
 			this.mpprocflow = mpprocflow;
             this.ccm = new CallingConventionMatcher(platform);
             this.listener = listener;
+            this.m = new ExpressionEmitter();
         }
 
 		public static void Rewrite(
@@ -218,7 +219,10 @@ namespace Reko.Analysis
 
             foreach (var grf in grfLiveOut.OrderBy(g => g.Name))
             {
-                sb.AddOutParam(frame.EnsureFlagGroup(grf));
+                var grfOut = frame.EnsureFlagGroup(grf);
+                if (Bits.IsSingleBitSet(grf.FlagGroupBits))
+                    grfOut.DataType = PrimitiveType.Bool;
+                sb.AddOutParam(grfOut);
             }
 
             foreach (var seq in seqLiveOut.OrderBy(r => r.Key.Name))
@@ -309,7 +313,6 @@ namespace Reko.Analysis
                 sb.AddSequenceArgument(seq!);
             }
 
-            //$TODO: sort these by some ABI order?
             var regs = uses.Select(u => u.Storage as RegisterStorage)
                 .Where(r => r is not null && !platform.IsImplicitArgumentRegister(r))
                 .OrderBy(r => r!.Number);
@@ -359,7 +362,6 @@ namespace Reko.Analysis
                         PrimitiveType.CreateWord(item.range.Extent));
                     return (item.stg.StackOffset - frame.ReturnAddressSize, id);
                 });
-
         }
 
 		/// <summary>
@@ -443,14 +445,16 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        // Statements of the form:
-        //		call	<ssaCaller-operand>
-        // become redefined to 
-        //		ret = <ssaCaller-operand>(bindings)
-        // where ret is the return register (if any) and the
-        // bindings are the bindings of the procedure.
+        /// Statements of the form: <code>
+        ///		call	&lt;ssaCaller-operand&gt;
+        ///	</code>
+        /// become redefined to: <code>
+        ///		ret = &lt;ssaCaller-operand&gt;(bindings)
+        /// </code>
+        /// where ret is the return register (if any) and the
+        /// bindings are the bindings of the procedure.
         /// </summary>
-        /// <param name="ssaCeller">SSA state of the calling procedure.</param>
+        /// <param name="ssaCaller">SSA state of the calling procedure.</param>
         /// <returns>The number of calls that couldn't be converted</returns>
         public int RewriteCalls(SsaState ssaCaller)
         {
@@ -483,7 +487,7 @@ namespace Reko.Analysis
             foreach (var (block, bindings) in reachingBlocks)
             {
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
-                Debug.Assert(insertPos >= 0);
+                Debug.Assert(insertPos >= 0, "Should have found a return instruction.");
                 var stm = block.Statements[insertPos];
                 var idRet = sig.ReturnValue;
                 if (idRet != null && idRet.DataType is not VoidType)
@@ -517,7 +521,7 @@ namespace Reko.Analysis
             }
         }
 
-        private static Expression MakeReturnFlags(
+        private Expression MakeReturnFlags(
             CallBinding[] bindings,
             FlagGroupStorage grf,
             Identifier idRet)
@@ -532,19 +536,19 @@ namespace Reko.Analysis
             else if (flags.Length == 1)
             {
                 e = flags[0];
+                if (Bits.IsSingleBitSet(grf.FlagGroupBits))
+                    e = m.Ne0(e);
             }
             else
             {
-                e = flags.Aggregate((a, b) => new BinaryExpression(
-                    BinaryOperator.Or,
-                    grf.DataType,
+                e = flags.Aggregate((a, b) => m.Or(
                     a, b));
             }
             return e;
         }
 
 
-    private static Expression MakeReturnExpression(
+    private Expression MakeReturnExpression(
             CallBinding [] bindings,
             Storage reg,
             Identifier idRet)
@@ -558,12 +562,12 @@ namespace Reko.Analysis
             if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
             {
                 int offset = idStg.Storage.OffsetOf(idRet.Storage);
-                e = new Slice(idRet.DataType, e, offset);
+                e = m.Slice(e, idRet.DataType, offset);
             }
             return e;
         }
 
-        private static Expression MakeReturnSequence(
+        private Expression MakeReturnSequence(
             CallBinding[] bindings,
             SequenceStorage seq,
             Identifier idRet)
@@ -573,7 +577,7 @@ namespace Reko.Analysis
                 .Select(b => b.Expression)
                 .FirstOrDefault() ?? InvalidConstant.Create(e.DataType)))
                 .ToArray();
-            return new MkSequence(idRet.DataType, elements);
+            return m.Seq(idRet.DataType, elements);
         }
 
         private static Store MakeOutParameterStore(

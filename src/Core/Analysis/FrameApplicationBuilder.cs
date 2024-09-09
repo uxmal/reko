@@ -68,7 +68,7 @@ namespace Reko.Core.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
+            return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name);
         }
 
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)

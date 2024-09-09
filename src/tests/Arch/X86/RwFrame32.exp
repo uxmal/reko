@@ -65,8 +65,8 @@ l10000017:
 l10000027:
 	ax = ax ^ ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:
@@ -74,8 +74,8 @@ l1000002F:
 	ecx = Mem0[ebp + 8<i32>:word32]
 	edx = CONVERT(Mem0[ecx + eax:byte], byte, int32)
 	SZP = cond(edx & edx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(EQ,Z) l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:

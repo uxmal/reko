@@ -80,8 +80,7 @@ namespace Reko.Arch.Avr
             if (flagGroups.TryGetValue(grf, out var grfStg))
                 return grfStg;
 
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            grfStg = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            grfStg = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
             flagGroups.Add(grfStg.FlagGroupBits, grfStg);
             return grfStg;
         }

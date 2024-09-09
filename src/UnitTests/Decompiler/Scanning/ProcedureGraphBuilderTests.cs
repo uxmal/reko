@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             var status = new RegisterStorage("status", 32, 0, PrimitiveType.Word32);
-            C = Identifier.Create(new FlagGroupStorage(status, 0b0001, "C", PrimitiveType.Bool));
-            NZVC = Identifier.Create(new FlagGroupStorage(status, 0b1111, "NZVC", PrimitiveType.Byte));
+            C = Identifier.Create(new FlagGroupStorage(status, 0b0001, "C"));
+            NZVC = Identifier.Create(new FlagGroupStorage(status, 0b1111, "NZVC"));
         }
 
         [SetUp]

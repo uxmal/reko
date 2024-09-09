@@ -85,8 +85,7 @@ namespace Reko.Arch.CSky
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.Psr, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.Psr, grf, GrfToString(flagRegister, "", grf));
             return fl;
 
         }

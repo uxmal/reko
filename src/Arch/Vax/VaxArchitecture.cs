@@ -79,8 +79,7 @@ namespace Reko.Arch.Vax
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(Registers.psw, "", grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(Registers.psw, "", grf));
             return fl;
         }
 
@@ -122,10 +121,10 @@ namespace Reko.Arch.Vax
 
         //$REVIEW: shouldn't this be flaggroup?
         private static readonly FlagGroupStorage[] flagRegisters = {
-            new FlagGroupStorage(Registers.psw, (uint)FlagM.CF, "C", PrimitiveType.Bool),
-            new FlagGroupStorage(Registers.psw, (uint)FlagM.VF, "V", PrimitiveType.Bool),
-            new FlagGroupStorage(Registers.psw, (uint)FlagM.ZF, "Z", PrimitiveType.Bool),
-            new FlagGroupStorage(Registers.psw, (uint)FlagM.NF, "N", PrimitiveType.Bool),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.CF, "C"),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.VF, "V"),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.ZF, "Z"),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.NF, "N"),
         };
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -51,6 +52,8 @@ namespace Reko.Analysis
 		{
             var grf = arch.GetFlagGroup(bits.Key, bits.Value)!;
 			ret = binder.EnsureFlagGroup(grf);
+            if (Bits.IsSingleBitSet(grf.FlagGroupBits))
+                ret.DataType = PrimitiveType.Bool;
 		}
 
 		public void AddFpuStackArgument(int x, Identifier id)
@@ -70,7 +73,7 @@ namespace Reko.Analysis
 
         public Identifier AddOutParam(Identifier idOrig)
         {
-            if (this.ret == null)
+            if (this.ret is null)
             {
                 this.ret = idOrig;
                 return ret;

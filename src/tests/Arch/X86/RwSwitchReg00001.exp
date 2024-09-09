@@ -38,8 +38,8 @@ l10000014:
 	edx = Mem0[ebp - 4<i32>:word32]
 	ecx = ecx ^ ecx
 	SZ = cond(ecx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	cl = Mem0[edx + 0x10000026<32>:byte]
 	switch (v14) { l10000040 l10000036 l10000040 l1000004A }
 	// succ:  l10000040 l10000036 l10000040 l1000004A

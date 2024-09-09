@@ -88,7 +88,7 @@ l00000128:
 l0000013E:
 	Mem47[r4_126 + 12<i32>:word32] = Mem42[r4_126 + 4<i32>:word32]
 l00000144:
-	Z_199 = SLICE(cond(r6_29 - 2<32>), bool, 2) (alias)
+	Z_199 = cond(r6_29 - 2<32>) & 4<32> (alias)
 	branch r6_29 == 2<32> l00000158
 l00000158:
 	branch r5_119 != 0<32> l0000015C
@@ -100,7 +100,7 @@ l00000148:
 	Mem58[r4_126 + 56<i32>:word32] = r5_119 + 1<32>
 	r0Out = 0<32>
 	r7Out = r7
-	return SLICE(cond(r5_119 + 1<32>), bool, 2)
+	return (cond(r5_119 + 1<32>) & 4<32>) != 0<32>
 l00000108:
 	memcpy(Mem12[r0 + 8<i32>:word32], r1, r0_112, out r4_71, out r5_72, out r6_73, out r7_74)
 	r2_82 = Mem12[r4_71 + 4<i32>:word32]
@@ -111,13 +111,13 @@ l00000150:
 	Mem90[r4_71 + 56<i32>:word32] = r5_72 + 1<32>
 	r0Out = r6_73
 	r7Out = r7_74
-	return SLICE(cond(r5_72 + 1<32>), bool, 2)
+	return (cond(r5_72 + 1<32>) & 4<32>) != 0<32>
 l0000011C:
 	Mem100[r4_71 + 8<i32>:word32] = Mem85[r4_71:word32]
 	Mem101[r4_71 + 56<i32>:word32] = r5_72 + 1<32>
 	r0Out = r6_73
 	r7Out = r7_74
-	return SLICE(cond(r5_72 + 1<32>), bool, 2)
+	return (cond(r5_72 + 1<32>) & 4<32>) != 0<32>
 l000000F6:
 	r6_107 = Mem12[r0:word32]
 	branch r6_107 == 0<32> l00000160
@@ -125,15 +125,15 @@ l00000160:
 	r0_112 = xTaskPriorityDisinherit(Mem12[r0 + 4<i32>:word32])
 	Mem121[r0 + 4<i32>:word32] = r6_107
 	r5_119 = r5_16 + 1<32>
-	Z_199 = SLICE(cond(r5_16 + 1<32>), bool, 2) (alias)
+	Z_199 = cond(r5_16 + 1<32>) & 4<32> (alias)
 l000000FC:
 	r5_119 = r5_16 + 1<32>
-	Z_199 = SLICE(cond(r5_16 + 1<32>), bool, 2) (alias)
+	Z_199 = cond(r5_16 + 1<32>) & 4<32> (alias)
 l000000FE:
 	Mem128[r4_126 + 56<i32>:word32] = r5_119
 	r0Out = r0_112
 	r7Out = r7
-	return Z_199
+	return Z_199 != 0<32>
 prvCopyDataToQueue_exit:
 
 

@@ -889,13 +889,12 @@ namespace Reko.Scanning
 
         protected void ProcessQueue()
         {
-            while (procQueue.Count > 0)
+            while (procQueue.TryDequeue(out var workitem))
             {
                 if (eventListener.IsCanceled())
                 {
                     break;
                 }
-                var workitem = procQueue.Dequeue();
                 try
                 {
                     workitem.Process();

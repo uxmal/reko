@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     ReturnValue = ArgumentSerializer.Serialize(
                         new Identifier("C", PrimitiveType.Bool,
-                        new FlagGroupStorage(Registers.eflags, (uint)FlagM.CF, "C", PrimitiveType.Byte)))
+                        new FlagGroupStorage(Registers.eflags, (uint)FlagM.CF, "C")))
                 }
             };
 		}

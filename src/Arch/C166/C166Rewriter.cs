@@ -218,9 +218,9 @@ namespace Reko.Arch.C166
         }
 
         private static FlagGroupStorage FlagBit(FlagM bit, string name)
-            => new FlagGroupStorage(Registers.PSW, (uint) bit, name, PrimitiveType.Bool);
+            => new FlagGroupStorage(Registers.PSW, (uint) bit, name);
         private static FlagGroupStorage FlagGroup(FlagM bits, string name)
-            => new FlagGroupStorage(Registers.PSW, (uint) bits, name, Registers.PSW.DataType);
+            => new FlagGroupStorage(Registers.PSW, (uint) bits, name);
 
 
         private Expression MaybeSlice(Expression exp, DataType dt)

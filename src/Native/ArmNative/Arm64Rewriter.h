@@ -51,7 +51,7 @@ public:
 private:
 	void AddConditional(void(*mkInstr)());
 	void ConditionalSkip(bool force);
-	HExpr FlagGroup(FlagM bits, const char * name, BaseType type);
+	HExpr FlagGroup(FlagM bits, const char * name);
 	arm_cc Invert(arm_cc);
 	bool IsLastOperand(const cs_arm_op & op);
 	void NotImplementedYet();

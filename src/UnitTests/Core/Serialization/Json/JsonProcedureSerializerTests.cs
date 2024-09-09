@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                     "{'name':'Mem0','stg':{'kind':'mem'}}," +
                     "{'name':'r1','type':'w32','stg':{'kind':'reg','name':'r1'}}," + 
                     "{'name':'r9','type':'w32','stg':{'kind':'reg','name':'r9'}}," + 
-                    "{'name':'SZ','type':'u8','stg':{'kind':'flg','grf':3,'reg':'flags'}}" + 
+                    "{'name':'SZ','type':'w32','stg':{'kind':'flg','grf':3,'reg':'flags'}}" + 
                 "]," +
                 "'blocks':[" +
                     "{'name':'JpsTest_entry'," +

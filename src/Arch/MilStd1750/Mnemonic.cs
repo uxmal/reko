@@ -229,5 +229,12 @@ namespace Reko.Arch.MilStd1750
         xio_co,
         xio_po,
         xio_unknown,
+        xio_smk,
+        xio_clir,
+        xio_enbl,
+        xio_dsbl,
+        xio_rpi,
+        xio_spi,
+        xio_wsw,
     }
 }

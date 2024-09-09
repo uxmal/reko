@@ -907,8 +907,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var bp = binder.EnsureRegister(RegisterStorage.Reg16("bp", 5));
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var flags = RegisterStorage.Reg16("FLAGS", 6);
-            var SCZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 0x7, "SCZ", PrimitiveType.Word16));
-            var CZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 1, "CZ", PrimitiveType.Word16));
+            var SCZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 0x7, "SCZ"));
+            var CZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 1, "CZ"));
 
             var b1000 = Given_Block(0x1000);
             var b1010 = Given_Block(0x1010);
@@ -1018,7 +1018,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var r7 = binder.EnsureRegister(RegisterStorage.Reg32("r7", 7));
             var tmp = binder.CreateTemporary(PrimitiveType.UInt16);
             var sr = binder.EnsureRegister(RegisterStorage.Sysreg("sr", 0, PrimitiveType.Word32));
-            var f = binder.EnsureFlagGroup((RegisterStorage) sr.Storage, 1 << 9, "f", PrimitiveType.Bool);
+            var f = binder.EnsureFlagGroup((RegisterStorage) sr.Storage, 1 << 9, "f");
 
             Given_Instrs(b1000, m =>
                 {
@@ -1191,11 +1191,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var a3 = binder.EnsureRegister(RegisterStorage.Reg32("a3", 11));
             var a6 = binder.EnsureRegister(RegisterStorage.Reg32("a6", 14));
             var cr = RegisterStorage.Reg32("cr", 0x42);
-            var CVZNX = binder.EnsureFlagGroup(cr, 0x1F, "CVZNX", PrimitiveType.Byte);
-            var CVZN = binder.EnsureFlagGroup(cr, 0x1E, "CVZN", PrimitiveType.Byte);
-            var ZN = binder.EnsureFlagGroup(cr, 0x6, "ZN", PrimitiveType.Byte);
-            var C = binder.EnsureFlagGroup(cr, 0x10, "C", PrimitiveType.Bool);
-            var V = binder.EnsureFlagGroup(cr, 0x08, "V", PrimitiveType.Bool);
+            var CVZNX = binder.EnsureFlagGroup(cr, 0x1F, "CVZNX");
+            var CVZN = binder.EnsureFlagGroup(cr, 0x1E, "CVZN");
+            var ZN = binder.EnsureFlagGroup(cr, 0x6, "ZN");
+            var C = binder.EnsureFlagGroup(cr, 0x10, "C");
+            var V = binder.EnsureFlagGroup(cr, 0x08, "V");
             var v35 = binder.CreateTemporary("v35", PrimitiveType.Byte);
             var v36 = binder.CreateTemporary("v36", word24);
             var v37 = binder.CreateTemporary("v37", PrimitiveType.Byte);
@@ -1368,13 +1368,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var d0 = binder.EnsureRegister(RegisterStorage.Reg32("d0", 0));
             var d1 = binder.EnsureRegister(RegisterStorage.Reg32("d1", 1));
             var cr = RegisterStorage.Reg32("cr", 0x42);
-            var CVZNX = binder.EnsureFlagGroup(cr, 0x1F, "CVZNX", PrimitiveType.Byte);
-            var CVZN = binder.EnsureFlagGroup(cr, 0x1E, "CVZN", PrimitiveType.Byte);
-            var VZN = binder.EnsureFlagGroup(cr, 0xE, "VZN", PrimitiveType.Byte);
-            var ZN = binder.EnsureFlagGroup(cr, 0x6, "ZN", PrimitiveType.Byte);
-            var N = binder.EnsureFlagGroup(cr, 0x4, "N", PrimitiveType.Bool);
-            var C = binder.EnsureFlagGroup(cr, 0x10, "C", PrimitiveType.Bool);
-            var V = binder.EnsureFlagGroup(cr, 0x08, "V", PrimitiveType.Bool);
+            var CVZNX = binder.EnsureFlagGroup(cr, 0x1F, "CVZNX");
+            var CVZN = binder.EnsureFlagGroup(cr, 0x1E, "CVZN");
+            var VZN = binder.EnsureFlagGroup(cr, 0xE, "VZN");
+            var ZN = binder.EnsureFlagGroup(cr, 0x6, "ZN");
+            var N = binder.EnsureFlagGroup(cr, 0x4, "N");
+            var C = binder.EnsureFlagGroup(cr, 0x10, "C");
+            var V = binder.EnsureFlagGroup(cr, 0x08, "V");
             var word16 = PrimitiveType.Word16;
             var int16 = PrimitiveType.Int16;
             var int32 = PrimitiveType.Int32;
@@ -1515,8 +1515,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var rbp = binder.EnsureRegister(RegisterStorage.Reg64("rbp", 5));
             var edx = binder.EnsureRegister(RegisterStorage.Reg32("edx", 2));
             var flags = RegisterStorage.Reg32("eflags", 0x42);
-            var SCZO = binder.EnsureFlagGroup(flags, 0xF, "SZCO", PrimitiveType.Byte);
-            var CZ = binder.EnsureFlagGroup(flags, 0x6, "CZ", PrimitiveType.Byte);
+            var SCZO = binder.EnsureFlagGroup(flags, 0xF, "SZCO");
+            var CZ = binder.EnsureFlagGroup(flags, 0x6, "CZ");
             var word32 = PrimitiveType.Word32;
             var uint64 = PrimitiveType.UInt64;
             var int64 = PrimitiveType.Int64;

@@ -38,9 +38,8 @@ namespace Reko.Arch.Sparc
         {
             return binder.EnsureFlagGroup(
                 arch.Registers.psr,
-                (uint) grf, 
-                arch.GrfToString(arch.Registers.psr, "", (uint) grf),
-                Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool: PrimitiveType.Byte);
+                (uint) grf,
+                arch.GrfToString(arch.Registers.psr, "", (uint) grf));
         }
 
         private void RewriteBranch(Expression cond)

@@ -121,8 +121,8 @@ namespace Reko.Arch.SuperH
 
         public static readonly RegisterStorage xmtrx = new RegisterStorage("xmtrx", 48, 0, PrimitiveType.CreateWord(512));
 
-        public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, "T", PrimitiveType.Bool);
-        public static FlagGroupStorage S = new FlagGroupStorage(sr, 2, "S", PrimitiveType.Bool);
+        public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, nameof(T));
+        public static FlagGroupStorage S = new FlagGroupStorage(sr, 2, nameof(S));
 
         public static readonly RegisterStorage[] gpregs = new[]
         {

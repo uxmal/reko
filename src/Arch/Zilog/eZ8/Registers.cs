@@ -48,7 +48,7 @@ namespace Reko.Arch.Zilog.eZ8
             SPL = new RegisterStorage("spl", 0xFFE, 0, PrimitiveType.Byte);
             SPH = new RegisterStorage("spl", 0xFFE, 8, PrimitiveType.Byte);
 
-            C = new FlagGroupStorage(Flags, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            C = new FlagGroupStorage(Flags, (uint) FlagM.CF, nameof(C));
         }
     }
 

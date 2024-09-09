@@ -71,7 +71,7 @@ fn0C00_0069_entry:
 	def wArg02
 l0C00_0069:
 	SCZO_9 = cond(wArg02 - 0<16>)
-	C_14 = SLICE(SCZO_9, bool, 1) (alias)
+	C_14 = SCZO_9 & 2<32> (alias)
 	return
 fn0C00_0069_exit:
 	use C_14

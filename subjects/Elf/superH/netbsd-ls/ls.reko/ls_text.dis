@@ -2471,7 +2471,7 @@ l00403DC4_ds_t:
 l00403DC4_ds_f:
 	r5_38 = Mem28[r4 + 24<i32>:word32]
 l00403DC6:
-	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + true
+	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + True<32>
 l00403DCC:
 	branch Mem28[Mem28[Mem28[0x00403F30<p32>:word32] + r12_126:word32]:word32] == 0<32> l00403DE6
 l00403DD6:
@@ -2481,7 +2481,7 @@ l00403E2A:
 l00403DE0:
 	r1_53 = Mem28[r4 + 48<i32>:word32]
 l00403DE2:
-	r5_37 = r5_37 + r1_53 + true
+	r5_37 = r5_37 + r1_53 + True<32>
 l00403DE6:
 	branch Mem28[Mem28[Mem28[0x00403F38<p32>:word32] + r12_126:word32]:word32] != 0<32> l00403DFA
 l00403DF0:
@@ -2641,7 +2641,7 @@ l00403F94_ds_t:
 l00403F94_ds_f:
 	r5_38 = Mem28[r4 + 24<i32>:word32]
 l00403F96:
-	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + true
+	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + True<32>
 l00403F9C:
 	branch Mem28[Mem28[Mem28[0x00404088<p32>:word32] + r12_29:word32]:word32] == 0<32> l00403FB6
 l00403FA6:
@@ -2651,7 +2651,7 @@ l00403FF6:
 l00403FB0:
 	r1_53 = Mem28[r4 + 48<i32>:word32]
 l00403FB2:
-	r5_37 = r5_37 + r1_53 + true
+	r5_37 = r5_37 + r1_53 + True<32>
 l00403FB6:
 	branch Mem28[Mem28[Mem28[0x00404090<p32>:word32] + r12_29:word32]:word32] != 0<32> l00403FCA
 l00403FC0:
@@ -2764,7 +2764,7 @@ l0040412A:
 l004040F2:
 	r1_50 = Mem29[r4 + 48<i32>:word32]
 l004040F4:
-	r8_138 = r8_138 + r1_50 + true
+	r8_138 = r8_138 + r1_50 + True<32>
 l004040F8:
 	branch Mem29[Mem29[Mem29[0x00404194<p32>:word32] + r12_104:word32]:word32] == 0<32> l00404104
 l00404102:
@@ -2961,7 +2961,7 @@ l004042F8:
 		defs: pr:pr_46,r0:r0_38,r10:r10_40,r12:r12_42,r14:r14_44,r15:r15_36,r8:r8_37,r9:r9_39
 	r3_54 = Mem29[0x004043FC<p32>:word32]
 	call 0x0040432E<p32> + r3_54 (retsize: 0;)
-		uses: Mem:Mem29,pr:pr_46,r10:r10_40 + r0_38 + true,r11:CONVERT(Mem29[0x004043F0<p32>:word16], word16, int32),r12:r12_42,r13:r15_36 + 0x14<32>,r14:r14_44,r3:r3_54,r4:r15_36 + 0x14<32>,r5:0<32>,r6:CONVERT(Mem29[0x004043EE<p32>:word16], word16, int32),r8:r8_37,r9:r9_39
+		uses: Mem:Mem29,pr:pr_46,r10:r10_40 + r0_38 + True<32>,r11:CONVERT(Mem29[0x004043F0<p32>:word16], word16, int32),r12:r12_42,r13:r15_36 + 0x14<32>,r14:r14_44,r3:r3_54,r4:r15_36 + 0x14<32>,r5:0<32>,r6:CONVERT(Mem29[0x004043EE<p32>:word16], word16, int32),r8:r8_37,r9:r9_39
 		defs: pr:pr_73,r10:r10_67,r11:r11_68,r12:r12_69,r13:r13_70,r14:r14_71,r15:r15_63,r8:r8_64,r9:r9_66
 	r1_81 = Mem29[0x00404400<p32>:word32]
 	r11_82 = r11_68 + r15_63
@@ -3062,7 +3062,7 @@ l00404424:
 l004044BE:
 	return
 l0040442C:
-	r3_10 = 0<32> - CONVERT(__div0s<word32>(r4, 0<32>), bool, word32)
+	r3_10 = 0<32> - __div0s<word32>(r4, 0<32>)
 	__div0s<word32>(r3_10, r5)
 	__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r3_10, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5)
 	return

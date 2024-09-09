@@ -305,6 +305,36 @@ namespace Reko.Arch.MilStd1750
                 dasm.ops.Add(ra);
                 dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
                 return true;
+            case 0x2:
+                switch (cmd)
+                {
+                case 0x2000:
+                    dasm.mnemonic = Mnemonic.xio_smk;
+                    dasm.ops.Add(ra);
+                    break;
+                case 0x2001:
+                    dasm.mnemonic = Mnemonic.xio_clir;
+                    break;
+                case 0x2002:
+                    dasm.mnemonic = Mnemonic.xio_enbl;
+                    break;
+                case 0x2003:
+                    dasm.mnemonic = Mnemonic.xio_dsbl;
+                    break;
+                case 0x2004:
+                    dasm.mnemonic = Mnemonic.xio_rpi;
+                    dasm.ops.Add(ra);
+                    break;
+                case 0x2005:
+                    dasm.mnemonic = Mnemonic.xio_spi;
+                    dasm.ops.Add(ra);
+                    break;
+                case 0x200E:
+                    dasm.mnemonic = Mnemonic.xio_wsw;
+                    dasm.ops.Add(ra);
+                    break;
+                }
+                break;
             case 0x4:
                 switch (cmd)
                 {

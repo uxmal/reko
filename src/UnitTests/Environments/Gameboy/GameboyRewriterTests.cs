@@ -1,11 +1,7 @@
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using Reko.Environments.Gameboy;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.Gameboy
 {
@@ -52,7 +48,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|a = a + 0xED<8> + C",
                 "2|L--|ZHC = cond(a)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
         [Test]
@@ -91,7 +87,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a + e",
                 "2|L--|ZHC = cond(a)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
         [Test]
@@ -111,9 +107,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = a ^ a",
                 "2|L--|Z = cond(a)",
-                "3|L--|N = false",
-                "4|L--|H = false",
-                "5|L--|C = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>",
+                "5|L--|C = 0<8>");
         }
 
         [Test]
@@ -189,9 +185,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|a = a & 0x7F<8>",
                 "2|L--|Z = cond(a)",
-                "3|L--|N = false",
-                "4|L--|H = true",
-                "5|L--|C = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0x20<8>",
+                "5|L--|C = 0<8>");
         }
 
         [Test]
@@ -211,9 +207,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = a | Mem0[hl:byte]",
                 "2|L--|Z = cond(a)",
-                "3|L--|N = false",
-                "4|L--|H = false",
-                "5|L--|C = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>",
+                "5|L--|C = 0<8>");
         }
 
         [Test]
@@ -243,9 +239,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|a = __swap_nybbles(a)",
                 "2|L--|Z = cond(a)",
-                "3|L--|N = false",
-                "4|L--|H = false",
-                "5|L--|C = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>",
+                "5|L--|C = 0<8>");
         }
 
         [Test]
@@ -255,8 +251,8 @@ namespace Reko.UnitTests.Environments.Gameboy
             AssertCode(     // bit	3h,e
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|Z = __test_bit(e, 3<8>)",
-                "2|L--|N = false",
-                "3|L--|H = true");
+                "2|L--|N = 0<8>",
+                "3|L--|H = 0x20<8>");
         }
 
         [Test]
@@ -276,8 +272,8 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|a = a >>u 1<8>",
                 "2|L--|ZC = cond(a)",
-                "3|L--|N = false",
-                "4|L--|H = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>");
         }
 
         [Test]
@@ -288,8 +284,8 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|l = l << 1<8>",
                 "2|L--|ZC = cond(l)",
-                "3|L--|N = false",
-                "4|L--|H = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>");
         }
 
         [Test]
@@ -309,8 +305,8 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|Mem0[hl:byte] = __rcl<byte,byte>(Mem0[hl:byte], 1<8>, C)",
                 "2|L--|ZC = cond(Mem0[hl:byte])",
-                "3|L--|N = false",
-                "4|L--|H = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>");
         }
 
         [Test]
@@ -321,7 +317,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a - Mem0[hl:byte] - C",
                 "2|L--|ZHC = cond(a)",
-                "3|L--|N = true");
+                "3|L--|N = 0x40<8>");
         }
 
         [Test]
@@ -332,9 +328,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)",
-                "3|L--|Z = false",
-                "4|L--|N = false",
-                "5|L--|H = false");
+                "3|L--|Z = 0<8>",
+                "4|L--|N = 0<8>",
+                "5|L--|H = 0<8>");
         }
 
         [Test]
@@ -344,8 +340,8 @@ namespace Reko.UnitTests.Environments.Gameboy
             AssertCode(     // cpl
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = ~a",
-                "2|L--|N = true",
-                "3|L--|H = true");
+                "2|L--|N = 0x40<8>",
+                "3|L--|H = 0x20<8>");
         }
 
         [Test]
@@ -354,9 +350,9 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("37");
             AssertCode(     // scf
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|N = false",
-                "2|L--|H = false",
-                "3|L--|C = true");
+                "1|L--|N = 0<8>",
+                "2|L--|H = 0<8>",
+                "3|L--|C = 1<8>");
         }
 
         [Test]
@@ -377,8 +373,8 @@ namespace Reko.UnitTests.Environments.Gameboy
             AssertCode(     // ccf
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|C = !C",
-                "2|L--|N = false",
-                "3|L--|H = false");
+                "2|L--|N = 0<8>",
+                "3|L--|H = 0<8>");
         }
 
         [Test]
@@ -389,7 +385,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a - b",
                 "2|L--|ZHC = cond(a)",
-                "3|L--|N = true");
+                "3|L--|N = 0x40<8>");
         }
 
         [Test]
@@ -419,7 +415,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|b = b - 1<8>",
                 "2|L--|ZH = cond(b)",
-                "3|L--|N = true");
+                "3|L--|N = 0x40<8>");
         }
 
         [Test]
@@ -449,8 +445,8 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|sp = sp + 2<i16>",
                 "2|L--|HC = cond(sp)",
-                "3|L--|Z = false",
-                "4|L--|N = false");
+                "3|L--|Z = 0<8>",
+                "4|L--|N = 0<8>");
         }
 
         [Test]
@@ -461,7 +457,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|hl = hl + bc",
                 "2|L--|HC = cond(hl)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
         [Test]
@@ -472,7 +468,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a + e",
                 "2|L--|ZHC = cond(a)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
         [Test]
@@ -483,7 +479,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|b = b + 1<8>",
                 "2|L--|ZH = cond(b)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
 
@@ -514,9 +510,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = __rcr<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)",
-                "3|L--|Z = false",
-                "4|L--|N = false",
-                "5|L--|H = false");
+                "3|L--|Z = 0<8>",
+                "4|L--|N = 0<8>",
+                "5|L--|H = 0<8>");
         }
 
         [Test]
@@ -527,9 +523,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = __rol<byte,byte>(a, 1<8>)",
                 "2|L--|C = cond(a)",
-                "3|L--|Z = false",
-                "4|L--|N = false",
-                "5|L--|H = false");
+                "3|L--|Z = 0<8>",
+                "4|L--|N = 0<8>",
+                "5|L--|H = 0<8>");
         }
 
         [Test]
@@ -540,9 +536,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = __ror<byte,byte>(a, 1<8>)",
                 "2|L--|C = cond(a)",
-                "3|L--|Z = false",
-                "4|L--|N = false",
-                "5|L--|H = false");
+                "3|L--|Z = 0<8>",
+                "4|L--|N = 0<8>",
+                "5|L--|H = 0<8>");
         }
 
         [Test]
@@ -562,7 +558,7 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = __decimal_adjust(a)",
                 "2|L--|ZC = a",
-                "3|L--|H = false");
+                "3|L--|H = 0<8>");
         }
 
         [Test]
@@ -573,9 +569,9 @@ namespace Reko.UnitTests.Environments.Gameboy
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|e = e >> 1<8>",
                 "2|L--|Z = cond(e)",
-                "3|L--|N = false",
-                "4|L--|H = false",
-                "5|L--|C = false");
+                "3|L--|N = 0<8>",
+                "4|L--|H = 0<8>",
+                "5|L--|C = 0<8>");
         }
     }
 }

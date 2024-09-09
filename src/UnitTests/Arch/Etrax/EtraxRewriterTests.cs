@@ -74,8 +74,8 @@ namespace Reko.UnitTests.Arch.Etrax
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|r2 = r2 & r0",
                 "2|L--|NZ = cond(r2)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.Etrax
             Given_HexString("F025");
             AssertCode(     // clearf   I
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|I = false");
+                "1|L--|I = 0<32>");
         }
 
         [Test]
@@ -168,8 +168,8 @@ namespace Reko.UnitTests.Arch.Etrax
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|r0 = Mem0[r0:word32]",
                 "2|L--|NZ = cond(r0)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -180,8 +180,8 @@ namespace Reko.UnitTests.Arch.Etrax
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|r0 = 0<32>",
                 "2|L--|NZ = cond(r0)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -194,9 +194,9 @@ namespace Reko.UnitTests.Arch.Etrax
                 "2|L--|r3 = r3 + 2<i32>",
                 "3|L--|r2 = CONVERT(v4, uint16, uint32)",
                 "4|L--|Z = cond(r2)",
-                "5|L--|N = false",
-                "6|L--|V = false",
-                "7|L--|C = false");
+                "5|L--|N = 0<32>",
+                "6|L--|V = 0<32>",
+                "7|L--|C = 0<32>");
         }
 
         [Test]
@@ -216,8 +216,8 @@ namespace Reko.UnitTests.Arch.Etrax
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|r0 = !r0",
                 "2|L--|NZ = cond(r0)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -228,8 +228,8 @@ namespace Reko.UnitTests.Arch.Etrax
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|r2 = r2 | r0",
                 "2|L--|NZ = cond(r2)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]

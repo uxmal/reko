@@ -92,8 +92,7 @@ namespace Reko.Arch.H8
             FlagGroupStorage? flags;
             while (!flagGroups.TryGetValue(grf, out flags))
             {
-                PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-                flags = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+                flags = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
                 if (flagGroups.TryAdd(grf, flags))
                     break;
             }

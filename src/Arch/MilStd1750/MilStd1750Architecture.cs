@@ -91,8 +91,7 @@ namespace Reko.Arch.MilStd1750
             if (flagGroups.TryGetValue(grf, out FlagGroupStorage? f))
                 return f;
 
-            PrimitiveType dt = PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
             flagGroups.Add(grf, fl);
             return fl;
         }

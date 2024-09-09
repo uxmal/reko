@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             this.r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             this.sr = new RegisterStorage("SR", 42, 0, PrimitiveType.Word32);
-            this.C = Identifier.Create(new FlagGroupStorage(sr, 1, "C", PrimitiveType.Bool));
+            this.C = Identifier.Create(new FlagGroupStorage(sr, 1, nameof(C)));
         }
 
         protected void Setup(int textSize, int instrBitSize)

@@ -36,10 +36,10 @@ l0C00_000A:
 l0C00_0014:
 	ax_10 = Mem0[ds:si_6:word16]
 	Mem14[ds:0x100<16>:word16] = si_6 + 2<16>
-	C_15 = false
+	C_15 = 0<32>
 	return
 l0C00_001E:
-	C_9 = true
+	C_9 = 2<32>
 	return
 fn0C00_000A_exit:
 	C_18 = PHI((C_15, l0C00_0014), (C_9, l0C00_001E))

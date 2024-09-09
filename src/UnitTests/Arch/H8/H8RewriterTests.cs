@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("7771");
             AssertCode(     // bld	#0x07,r1h
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|C = __btst<byte,byte>(r1h, 7<8>)");
+                "1|L--|C = __btst<byte,byte>(r1h, 7<8>) ? 1<8> : 0<8>");
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("7308");
             AssertCode(     // btst	#0x00,r0l
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|Z = __btst<byte,byte>(r0l, 0<8>)");
+                "1|L--|Z = __btst<byte,byte>(r0l, 0<8>) ? 1<8> : 0<8>");
         }
 
         [Test]

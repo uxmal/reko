@@ -54,22 +54,22 @@ namespace Reko.Arch.Avr.Avr8
                     sreg
                 }).ToArray();
 
-            I = new FlagGroupStorage(sreg, (uint) FlagM.IF, "I", PrimitiveType.Bool);
-            T = new FlagGroupStorage(sreg, (uint) FlagM.TF, "T", PrimitiveType.Bool);
-            H = new FlagGroupStorage(sreg, (uint) FlagM.HF, "H", PrimitiveType.Bool);
-            V = new FlagGroupStorage(sreg, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            N = new FlagGroupStorage(sreg, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            C = new FlagGroupStorage(sreg, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(sreg, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            HSVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.HF | FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "HSVNZC", PrimitiveType.Byte);
-            SNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF), "SNZ", PrimitiveType.Byte);
-            SNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.CF), "SNZC", PrimitiveType.Byte);
-            SNZV = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.VF), "SNZV", PrimitiveType.Byte);
-            SVNC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.CF), "SVNC", PrimitiveType.Byte);
-            SVNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF), "SVNZ", PrimitiveType.Byte);
-            SVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "SVNZC", PrimitiveType.Byte);
-            SVZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.ZF | FlagM.CF), "SVZC", PrimitiveType.Byte);
-            VN = new FlagGroupStorage(sreg, (uint) (FlagM.VF | FlagM.NF), "VN", PrimitiveType.Byte);
+            I = new FlagGroupStorage(sreg, (uint) FlagM.IF, nameof(I));
+            T = new FlagGroupStorage(sreg, (uint) FlagM.TF, nameof(T));
+            H = new FlagGroupStorage(sreg, (uint) FlagM.HF, nameof(H));
+            V = new FlagGroupStorage(sreg, (uint) FlagM.VF, nameof(V));
+            N = new FlagGroupStorage(sreg, (uint) FlagM.NF, nameof(N));
+            C = new FlagGroupStorage(sreg, (uint) FlagM.CF, nameof(C));
+            Z = new FlagGroupStorage(sreg, (uint) FlagM.ZF, nameof(Z));
+            HSVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.HF | FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(HSVNZC));
+            SNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF), nameof(SNZ));
+            SNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(SNZC));
+            SNZV = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.VF), nameof(SNZV));
+            SVNC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.CF), nameof(SVNC));
+            SVNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF), nameof(SVNZ));
+            SVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(SVNZC));
+            SVZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.ZF | FlagM.CF), nameof(SVZC));
+            VN = new FlagGroupStorage(sreg, (uint) (FlagM.VF | FlagM.NF), nameof(VN));
             grfToString = new List<(FlagM, char)>
             {
                 (FlagM.IF, 'I'),

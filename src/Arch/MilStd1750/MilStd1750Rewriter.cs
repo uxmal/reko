@@ -35,13 +35,13 @@ namespace Reko.Arch.MilStd1750
     public partial class MilStd1750Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private static readonly FlagGroupStorage C = Registers.C;
-        private static readonly FlagGroupStorage CPZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.CF |FlagM.PF | FlagM.ZF | FlagM.NF), "CPZN", PrimitiveType.Byte);
+        private static readonly FlagGroupStorage CPZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.CF |FlagM.PF | FlagM.ZF | FlagM.NF), nameof(CPZN));
         private static readonly FlagGroupStorage N = Registers.N;
         private static readonly FlagGroupStorage P = Registers.P;
-        private static readonly FlagGroupStorage PZ = new FlagGroupStorage(Registers.sw, (uint) (FlagM.PF | FlagM.ZF), "PZ", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage PZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.PF | FlagM.ZF | FlagM.NF), "PZN", PrimitiveType.Byte);
+        private static readonly FlagGroupStorage PZ = new FlagGroupStorage(Registers.sw, (uint) (FlagM.PF | FlagM.ZF), nameof(PZ));
+        private static readonly FlagGroupStorage PZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.PF | FlagM.ZF | FlagM.NF), nameof(PZN));
         private static readonly FlagGroupStorage Z = Registers.Z;
-        private static readonly FlagGroupStorage ZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.ZF | FlagM.NF), "ZN", PrimitiveType.Byte);
+        private static readonly FlagGroupStorage ZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.ZF | FlagM.NF), nameof(ZN));
 
         private readonly MilStd1750Architecture arch;
         private readonly EndianImageReader rdr;

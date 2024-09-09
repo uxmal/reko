@@ -54,14 +54,14 @@ namespace Reko.Arch.Zilog.Z80
         public static readonly RegisterStorage hl_ = RegisterStorage.Reg16("hl'", 14);
         public static readonly RegisterStorage af_ = RegisterStorage.Reg16("af'", 15);
 
-        public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint) FlagM.SF, "S", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage P = new FlagGroupStorage(f, (uint) FlagM.PF, "P", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage SZ = new FlagGroupStorage(f, (uint) (FlagM.SF | FlagM.ZF), "SZ", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage SZP = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.SF | FlagM.PF), "SZP", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage SZPC = new FlagGroupStorage(f, (uint) (FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF), "SZPC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint) FlagM.SF, nameof(S));
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint) FlagM.ZF, nameof(Z));
+        public static readonly FlagGroupStorage P = new FlagGroupStorage(f, (uint) FlagM.PF, nameof(P));
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint) FlagM.NF, nameof(N));
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint) FlagM.CF, nameof(C));
+        public static readonly FlagGroupStorage SZ = new FlagGroupStorage(f, (uint) (FlagM.SF | FlagM.ZF), nameof(SZ));
+        public static readonly FlagGroupStorage SZP = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.SF | FlagM.PF), nameof(SZP));
+        public static readonly FlagGroupStorage SZPC = new FlagGroupStorage(f, (uint) (FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF), nameof(SZPC));
 
         internal static RegisterStorage?[] All;
         internal static FlagGroupStorage[] Flags = new[] { S, Z, P, N, C };

@@ -54,7 +54,7 @@ namespace Reko.Arch.X86.Analysis
     ///     SZP_3 = cond(ah_2 & 0x40<8>)
     ///     O_4 = false
     ///     C_4 = false
-    ///     P_5 = SLICE(SZP_3, bool, 5)
+    ///     P_5 = SZP_3 & 0x20<32>
     ///     branch Test(PE,P_5) somewhere
     ///     
     /// The net effect of this analysis is to bypass all that bit twiddling,
@@ -65,7 +65,7 @@ namespace Reko.Arch.X86.Analysis
     ///     SZP_3 = cond(ah_2 & 0x40<8>)
     ///     O_4 = false
     ///     C_4 = false
-    ///     P_5 = SLICE(SZP_3, bool, 5)
+    ///     P_5 = SZP_3 & 0x20<32>
     ///     branch Test(EQ,FPUF) somewhere <= note the changed Test instruction
     ///     
     /// After value propagation and dead code elminiation, we get:
@@ -293,6 +293,14 @@ namespace Reko.Arch.X86.Analysis
                     case Assignment ass:
                         if (ass.Src is Slice slice &&
                             slice.Expression == sid.Identifier)
+                        {
+                            wl.Add(ssa.Identifiers[ass.Dst]);
+                            break;
+                        }
+                        if (ass.Src is BinaryExpression bin &&
+                            bin.Operator == Operator.And &&
+                            bin.Left == sid.Identifier &&
+                            bin.Right is Constant)
                         {
                             wl.Add(ssa.Identifiers[ass.Dst]);
                             break;

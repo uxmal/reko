@@ -173,12 +173,12 @@ namespace Reko.Core
     /// </summary>
 	public class FlagGroupStorage : Storage, MachineOperand
     {
-        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) 
-            : base(freg.Domain, name, dataType)
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name)
+            : base(freg.Domain, name, freg.DataType)
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
-            this.BitSize = (uint)dataType.BitSize;
+            this.BitSize = (uint) freg.DataType.BitSize;
         }
 
         public override string Kind => "FlagGroup";

@@ -68,17 +68,17 @@ namespace Reko.Arch.M6800.M6809
 
             AddrRegs = new RegisterStorage[] { X, Y, U, S };
             
-            N = new FlagGroupStorage(CC, (uint)FlagM.N, "N", PrimitiveType.Bool); 
-            Z = new FlagGroupStorage(CC, (uint)FlagM.Z, "Z", PrimitiveType.Bool); 
-            V = new FlagGroupStorage(CC, (uint)FlagM.V, "V", PrimitiveType.Bool);
-            C = new FlagGroupStorage(CC, (uint)FlagM.C, "C", PrimitiveType.Bool);
+            N = new FlagGroupStorage(CC, (uint)FlagM.N, nameof(N)); 
+            Z = new FlagGroupStorage(CC, (uint)FlagM.Z, nameof(Z)); 
+            V = new FlagGroupStorage(CC, (uint)FlagM.V, nameof(V));
+            C = new FlagGroupStorage(CC, (uint)FlagM.C, nameof(C));
 
-            NV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.V), "NV", PrimitiveType.Byte);
-            NZ = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z), "NZ", PrimitiveType.Byte);
-            NZC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.C), "NZC", PrimitiveType.Byte);
-            NZV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V), "NZV", PrimitiveType.Byte);
-            NZVC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V|FlagM.C), "NZVC", PrimitiveType.Byte);
-            ZC = new FlagGroupStorage(CC, (uint) (FlagM.Z|FlagM.C), "ZC", PrimitiveType.Byte);
+            NV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.V), nameof(NV));
+            NZ = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z), nameof(NZ));
+            NZC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.C), nameof(NZC));
+            NZV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V), nameof(NZV));
+            NZVC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V|FlagM.C), nameof(NZVC));
+            ZC = new FlagGroupStorage(CC, (uint) (FlagM.Z|FlagM.C), nameof(ZC));
 
         }
     }

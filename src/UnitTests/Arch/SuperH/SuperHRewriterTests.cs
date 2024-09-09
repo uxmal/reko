@@ -715,7 +715,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("29 00"); // movt\tr0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = CONVERT(T, bool, int32)");
+                "1|L--|r0 = CONVERT(T != 0<32>, bool, word32)");
         }
 
         [Test]

@@ -635,10 +635,10 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
 
         static Pdp10Rewriter()
         {
-            C0C1VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.C0 | FlagM.C1 | FlagM.V | FlagM.T), "C0C1VT", word36);
-            C1VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.C1 | FlagM.V | FlagM.T), "C1VT", word36);
-            VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.V | FlagM.T), "VT", word36);
-            VTND = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.V | FlagM.T | FlagM.ND), "VTND", word36);
+            C0C1VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.C0 | FlagM.C1 | FlagM.V | FlagM.T), nameof(C0C1VT));
+            C1VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.C1 | FlagM.V | FlagM.T), nameof(C1VT));
+            VT = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.V | FlagM.T), nameof(VT));
+            VTND = new FlagGroupStorage(Registers.Psw, (uint) (FlagM.V | FlagM.T | FlagM.ND), nameof(VTND));
 
             absIntrinsic = new IntrinsicBuilder("abs", true)
                 .Param(word36)

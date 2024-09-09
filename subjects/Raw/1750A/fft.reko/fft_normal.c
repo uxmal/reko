@@ -154,9 +154,9 @@ cui16 frex(cui16 gp1, struct Eq_n ** gp3)
 	struct Eq_n * gp5_n = (struct Eq_n *) *gp3;
 	cui16 gp1_n = gp1 & 0xFF00;
 	cu16 gp4_n = gp1 & 0xFF;
-	if (Test(NE,True<8>))
+	if (False<16>)
 		gp4_n = gp1 & 0xFF | 0xFF00;
-	if (Test(NE,(gp4_n & 0x8000) == 0x00))
+	if ((gp4_n & 0x8000) != 0x00)
 	{
 		++gp4_n;
 		gp1_n = gp1 & 0xFF00 | 0xFF;
@@ -453,7 +453,7 @@ struct Eq_n * cvla(int32 gp12_gp13, struct Eq_n * gp0, struct Eq_n * gp1, uint16
 		gp12_gp13_n = gp12_gp13_n / 0x0A;
 		gp12_gp13_n = gp12_gp13_n;
 	} while (gp12_gp13_n / 0x0A != 0x00);
-	if (Test(EQ,(gp9_n + 0x01 & 0x8000) == 0x00))
+	if ((gp9_n + 0x01 & 0x8000) != 0x00)
 		*gp11_n = (byte) SEQ(*gp11_n, (byte) gp10_n);
 	else
 		*gp11_n = (byte) SEQ((byte) gp10_n, *gp11_n);
@@ -511,7 +511,7 @@ l0458:
 		gp12_gp13_n = gp12_gp13_gp14;
 		word16 gp14_n;
 		word16 gp0_n;
-		if (Test(EQ,(SLICE(gp12_gp13_gp14, word16, 16) & 0x0100) == 0x00))
+		if ((SLICE(gp12_gp13_gp14, word16, 16) & 0x0100) != 0x00)
 		{
 			while (true)
 			{

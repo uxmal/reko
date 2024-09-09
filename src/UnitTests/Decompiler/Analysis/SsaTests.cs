@@ -296,8 +296,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
     uses: al_4 = Test(ULE,SZ_2)
-          S_5 = SLICE(SZ_2, bool, 0) (alias)
-          Z_6 = SLICE(SZ_2, bool, 1) (alias)
+          S_5 = SZ_2 & 1<32> (alias)
+          Z_6 = SZ_2 & 2<32> (alias)
 C_3: orig: C
     def:  C_3 = false
     uses: use C_3
@@ -305,10 +305,10 @@ al_4: orig: al
     def:  al_4 = Test(ULE,SZ_2)
     uses: use al_4
 S_5: orig: S
-    def:  S_5 = SLICE(SZ_2, bool, 0) (alias)
+    def:  S_5 = SZ_2 & 1<32> (alias)
     uses: use S_5
 Z_6: orig: Z
-    def:  Z_6 = SLICE(SZ_2, bool, 1) (alias)
+    def:  Z_6 = SZ_2 & 2<32> (alias)
     uses: use Z_6
 // ProcedureBuilder
 // Return size: 0
@@ -318,8 +318,8 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
-	S_5 = SLICE(SZ_2, bool, 0) (alias)
-	Z_6 = SLICE(SZ_2, bool, 1) (alias)
+	S_5 = SZ_2 & 1<32> (alias)
+	Z_6 = SZ_2 & 2<32> (alias)
 	C_3 = false
 	al_4 = Test(ULE,SZ_2)
 	return

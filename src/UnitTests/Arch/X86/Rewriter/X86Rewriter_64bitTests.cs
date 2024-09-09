@@ -52,8 +52,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                "1|L--|eax = eax ^ eax",
                "2|L--|rax = CONVERT(eax, word32, uint64)",
                "3|L--|SZ = cond(eax)",
-               "4|L--|O = false",
-               "5|L--|C = false");
+               "4|L--|O = 0<32>",
+               "5|L--|C = 0<32>");
         }
 
         [Test]
@@ -141,8 +141,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0000000140000000(6): 4 instructions",
                 "1|L--|rax = rax & 0xFFFFFFFFC424EB44<64>",
                 "2|L--|SZ = cond(rax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
+                "3|L--|O = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -154,8 +154,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "1|L--|ecx = ebx & ~eax",
                 "2|L--|rcx = CONVERT(ecx, word32, uint64)",
                 "3|L--|SZ = cond(ecx)",
-                "4|L--|O = false",
-                "5|L--|C = false");
+                "4|L--|O = 0<32>",
+                "5|L--|C = 0<32>");
         }
 
         [Test]

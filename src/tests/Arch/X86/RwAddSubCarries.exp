@@ -46,8 +46,8 @@ l0C00_0000:
 	Mem0[ds:0x21A<16>:word16] = dx
 	ax = ax ^ ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	cl = Mem0[ds:0x220<16>:byte]
 	SCZO = cond(cl - 0x30<8>)
 	ax = ax + ax + C

@@ -103,15 +103,15 @@ namespace Reko.Environments.Gameboy
                 sp,
             }.ToDictionary(r => r.Domain);
 
-            C = new FlagGroupStorage(af, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            H = new FlagGroupStorage(af, (uint) FlagM.HF, "H", PrimitiveType.Bool);
-            N = new FlagGroupStorage(af, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(af, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            HC = new FlagGroupStorage(af, (uint) (FlagM.HF | FlagM.CF), "HC", PrimitiveType.Byte);
-            ZC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
-            ZH = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), "ZH", PrimitiveType.Byte);
-            ZHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), "ZHC", PrimitiveType.Byte);
-            ZNHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.NF | FlagM.CF), "ZNHC", PrimitiveType.Byte);
+            C = new FlagGroupStorage(f, (uint) FlagM.CF, nameof(C));
+            H = new FlagGroupStorage(f, (uint) FlagM.HF, nameof(H));
+            N = new FlagGroupStorage(f, (uint) FlagM.NF, nameof(N));
+            Z = new FlagGroupStorage(f, (uint) FlagM.ZF, nameof(Z));
+            HC = new FlagGroupStorage(f, (uint) (FlagM.HF | FlagM.CF), nameof(HC));
+            ZC = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.CF), nameof(ZC));
+            ZH = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), nameof(ZH));
+            ZHC = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), nameof(ZHC));
+            ZNHC = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.HF | FlagM.NF | FlagM.CF), nameof(ZNHC));
         }
     }
  

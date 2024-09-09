@@ -54,7 +54,7 @@ namespace Reko.Arch.MCore
             R0 = GpRegisters[0];
 
             PSR = factory.Reg32("psr");
-            C = new FlagGroupStorage(PSR, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            C = new FlagGroupStorage(PSR, (uint) FlagM.CF, nameof(C));
         }
 
         private static void Replace(RegisterStorage[] regs, int iReg, string newName)

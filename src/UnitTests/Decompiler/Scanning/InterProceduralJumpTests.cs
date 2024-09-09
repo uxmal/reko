@@ -50,8 +50,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Test()
         {
             freg = RegisterStorage.Reg32("freg", 9, 70);
-            reg = new Identifier("reg", PrimitiveType.Word32, RegisterStorage.Reg32("reg", 1));
-            SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(freg, 0xF, "SCZO", PrimitiveType.Byte));
+            reg = Identifier.Create(RegisterStorage.Reg32("reg", 1));
+            SCZO = Identifier.Create(new FlagGroupStorage(freg, 0xF, "SCZO"));
             new RtlTraceBuilder
             {
                 { 

@@ -153,7 +153,7 @@ namespace Reko.Arch.Avr.Avr32
              */
             CoprocRegisters = factory.RangeOfReg32(16, "cr{0}");
 
-            C = new FlagGroupStorage(sr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            C = new FlagGroupStorage(sr, (uint) FlagM.CF, nameof(C));
         }
 
         public static Dictionary<string, RegisterStorage> ByName { get; }

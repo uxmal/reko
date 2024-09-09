@@ -859,9 +859,9 @@ T_179: (in CONVERT(eax_69 & 1<32>, word32, uint64) @ 000000000000092D : uint64)
   OrigDataType: uint64
 T_180: (in qwLoc10_211 >> 1<64> | (uint64) (eax_69 & 1<32>) @ 000000000000092D : word64)
   Class: Eq_180
-  DataType: int64
-  OrigDataType: int64
-T_181: (in CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), int64, real64) @ 000000000000092D : real64)
+  DataType: ui64
+  OrigDataType: ui64
+T_181: (in CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), word64, real64) @ 000000000000092D : real64)
   Class: Eq_181
   DataType: real64
   OrigDataType: real64
@@ -889,11 +889,11 @@ T_187: (in SLICE(xmm0, word64, 64) @ 000000000000091A : word64)
   Class: Eq_187
   DataType: word64
   OrigDataType: word64
-T_188: (in CONVERT(qwLoc10_211, int64, real64) @ 000000000000091A : real64)
+T_188: (in CONVERT(qwLoc10_211, word64, real64) @ 000000000000091A : real64)
   Class: Eq_188
   DataType: real64
   OrigDataType: real64
-T_189: (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, int64, real64)) @ 000000000000091A : word128)
+T_189: (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, word64, real64)) @ 000000000000091A : word128)
   Class: Eq_185
   DataType: word128
   OrigDataType: word128
@@ -1007,9 +1007,9 @@ T_216: (in CONVERT(eax_108 & 1<32>, word32, uint64) @ 0000000000000986 : uint64)
   OrigDataType: uint64
 T_217: (in (word64) qwLoc18_217 + 1<i32> >> 1<64> | (uint64) (eax_108 & 1<32>) @ 0000000000000986 : word64)
   Class: Eq_217
-  DataType: int64
-  OrigDataType: int64
-T_218: (in CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), int64, real64) @ 0000000000000986 : real64)
+  DataType: ui64
+  OrigDataType: ui64
+T_218: (in CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), word64, real64) @ 0000000000000986 : real64)
   Class: Eq_218
   DataType: real64
   OrigDataType: real64
@@ -1037,11 +1037,11 @@ T_224: (in qwLoc18_217 + 1<64> @ 0000000000000973 : word64)
   Class: Eq_224
   DataType: Eq_224
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_225: (in CONVERT(qwLoc18_217 + 1<64>, int64, real64) @ 0000000000000973 : real64)
+T_225: (in CONVERT(qwLoc18_217 + 1<64>, word64, real64) @ 0000000000000973 : real64)
   Class: Eq_225
   DataType: real64
   OrigDataType: real64
-T_226: (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, int64, real64)) @ 0000000000000973 : word128)
+T_226: (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, word64, real64)) @ 0000000000000973 : word128)
   Class: Eq_185
   DataType: word128
   OrigDataType: word128

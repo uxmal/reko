@@ -268,12 +268,12 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             });
             AssertCode(
                 "0|L--|10000000(1): 1 instructions",
-                "1|L--|D = true",
+                "1|L--|D = 8<32>",
                 "2|L--|10000001(2): 2 instructions",
                 "3|L--|ax = Mem0[esi:word16]",
                 "4|L--|esi = esi - 2<i32>",
                 "5|L--|10000003(1): 1 instructions",
-                "6|L--|D = false",
+                "6|L--|D = 0<32>",
                 "7|L--|10000004(2): 2 instructions",
                 "8|L--|ax = Mem0[esi:word16]",
                 "9|L--|esi = esi + 2<i32>");
@@ -1499,10 +1499,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             AssertCode(     // rdrand	ebx
                 "0|L--|10000000(3): 5 instructions",
                 "1|L--|C = __rdrand(out ebx)",
-                "2|L--|S = false",
-                "3|L--|Z = false",
-                "4|L--|O = false",
-                "5|L--|P = false");
+                "2|L--|S = 0<32>",
+                "3|L--|Z = 0<32>",
+                "4|L--|O = 0<32>",
+                "5|L--|P = 0<32>");
         }
 
         [Test]

@@ -1140,14 +1140,14 @@ test_exit:
             var pb = new ProgramBuilder();
             pb.Add("register_tm_clones", m =>
             {
-                var rax = new Identifier("rax", PrimitiveType.Word64, RegisterStorage.Reg64("rax", 0));
-                var rsp = new Identifier("rsp", PrimitiveType.Word64, RegisterStorage.Reg64("rsp", 4));
-                var rbp = new Identifier("rbp", PrimitiveType.Word64, RegisterStorage.Reg64("rbp", 5));
-                var rsi = new Identifier("rsi", PrimitiveType.Word64, RegisterStorage.Reg64("rsi", 6));
-                var rdi = new Identifier("rsp", PrimitiveType.Word64, RegisterStorage.Reg64("rdi", 7));
+                var rax = Identifier.Create(RegisterStorage.Reg64("rax", 0));
+                var rsp = Identifier.Create(RegisterStorage.Reg64("rsp", 4));
+                var rbp = Identifier.Create(RegisterStorage.Reg64("rbp", 5));
+                var rsi = Identifier.Create(RegisterStorage.Reg64("rsi", 6));
+                var rdi = Identifier.Create(RegisterStorage.Reg64("rdi", 7));
                 var rflags = RegisterStorage.Reg64("rflags", 42);
-                var SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(rflags, 0xF, "SZCO", PrimitiveType.Byte));
-                var Z = new Identifier("Z", PrimitiveType.Bool, new FlagGroupStorage(rflags, 0x2, "Z", PrimitiveType.Bool));
+                var SCZO =Identifier.Create(new FlagGroupStorage(rflags, 0xF, "SZCO"));
+                var Z = Identifier.Create(new FlagGroupStorage(rflags, 0x2, "Z"));
 
                 //m.Assign(rsp, m.Frame.FramePointer);
                 m.Assign(rdi, 0x0000000000201028);

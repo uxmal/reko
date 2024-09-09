@@ -123,7 +123,7 @@ l000001EE:
 	gp0_123 = SLICE(gp0_gp1_gp2_86, word16, 32) (alias)
 	gp2_143 = SLICE(gp0_gp1_gp2_86, word16, 0) (alias)
 	gp1_106 = SLICE(gp0_gp1_gp2_86, word16, 16) & 0xFF00<16> | 0xFF<16>
-	branch Test(EQ,(gp6_17 >> 8<16> & 0x8000<u16>) == 0<16>) l00000218
+	branch (gp6_17 >> 8<16> & 0x8000<u16>) == 0<16> l00000218
 l00000215:
 	gp0_gp1_gp2_99 = SEQ(gp0_123, gp1_106, gp2_143) * Mem0[0x05B4<p16>:real48]
 	gp1_106 = SLICE(gp0_gp1_gp2_99, word16, 16) (alias)
@@ -304,7 +304,7 @@ l00000406:
 	gp2_192 = 0<16>
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
-	branch Test(NE,(SLICE(gp12_gp13_gp14, word16, 16) & 0x100<u16>) == 0<16>) l00000415
+	branch (SLICE(gp12_gp13_gp14, word16, 16) & 0x100<u16>) == 0<16> l00000415
 l00000415:
 	gp14_116 = SLICE(gp12_gp13_311, word16, 0) (alias)
 	branch gp12_gp13_311 >= Mem46[0x060D<p16>:real48] l041D

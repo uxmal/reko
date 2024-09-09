@@ -75,10 +75,10 @@ l0C00_0017:
 	ax_13 = Mem10[ds:bx_11 + 64<i16>:word16]
 	ax_14 = ax_13 << cl_12
 	SCZO_15 = cond(ax_14)
-	C_20 = SLICE(SCZO_15, bool, 1) (alias)
-	O_21 = SLICE(SCZO_15, bool, 4) (alias)
-	S_22 = SLICE(SCZO_15, bool, 0) (alias)
-	Z_23 = SLICE(SCZO_15, bool, 2) (alias)
+	C_20 = SCZO_15 & 2<32> (alias)
+	O_21 = SCZO_15 & 0x10<32> (alias)
+	S_22 = SCZO_15 & 1<32> (alias)
+	Z_23 = SCZO_15 & 4<32> (alias)
 	Mem16[ds:0x102<16>:word16] = ax_14
 	ax_17 = Mem16[ds:0x400<16>:word16]
 	bx_18 = Mem16[ds:0x402<16>:word16]
@@ -124,10 +124,10 @@ l0C00_0040:
 	ax_9 = Mem7[ds:bx_8:word16]
 	ax_10 = ax_9 + Mem7[ds:bx_8 + 2<i16>:word16]
 	SCZO_11 = cond(ax_10)
-	C_14 = SLICE(SCZO_11, bool, 1) (alias)
-	O_15 = SLICE(SCZO_11, bool, 4) (alias)
-	S_16 = SLICE(SCZO_11, bool, 0) (alias)
-	Z_17 = SLICE(SCZO_11, bool, 2) (alias)
+	C_14 = SCZO_11 & 2<32> (alias)
+	O_15 = SCZO_11 & 0x10<32> (alias)
+	S_16 = SCZO_11 & 1<32> (alias)
+	Z_17 = SCZO_11 & 4<32> (alias)
 	Mem12[ds:bx_8 + 4<i16>:word16] = ax_10
 	ax_13 = Mem12[ds:0x500<16>:word16]
 	return ax_13

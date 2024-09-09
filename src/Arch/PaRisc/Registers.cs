@@ -122,7 +122,7 @@ namespace Reko.Arch.PaRisc
 
             SAR = ControlRegisters[11];
 
-            CF = new FlagGroupStorage(PSW, 0xF000, "C", PrimitiveType.Word16);
+            CF = new FlagGroupStorage(PSW, 0xF000, "C");
         }
     }
 }

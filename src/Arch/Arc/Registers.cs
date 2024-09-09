@@ -79,15 +79,15 @@ namespace Reko.Arch.Arc
             LpEnd = sysFactory.Reg("LP_END", PrimitiveType.Word32);
             AuxMacmode = sysFactory.Reg("AUX_MACMODE", PrimitiveType.Word32);
 
-            Z = new FlagGroupStorage(Status32, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            N = new FlagGroupStorage(Status32, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            C = new FlagGroupStorage(Status32, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(Status32, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            S = new FlagGroupStorage(AuxMacmode, (uint) AuxFlagM.Sat, "S", PrimitiveType.Bool);
-            ZNCV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF | FlagM.VF), "ZNCV", PrimitiveType.Byte);
-            ZNC = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF), "ZNC", PrimitiveType.Byte);
-            ZNV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.VF), "ZNV", PrimitiveType.Byte);
-            ZN = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF), "ZN", PrimitiveType.Byte);
+            Z = new FlagGroupStorage(Status32, (uint) FlagM.ZF, "Z");
+            N = new FlagGroupStorage(Status32, (uint) FlagM.NF, "N");
+            C = new FlagGroupStorage(Status32, (uint) FlagM.CF, "C");
+            V = new FlagGroupStorage(Status32, (uint) FlagM.VF, "V");
+            S = new FlagGroupStorage(AuxMacmode, (uint) AuxFlagM.Sat, "S");
+            ZNCV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF | FlagM.VF), "ZNCV");
+            ZNC = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF), "ZNC");
+            ZNV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.VF), "ZNV");
+            ZN = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF), "ZN");
 
 
             ByDomain = factory.DomainsToRegisters

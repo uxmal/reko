@@ -118,8 +118,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (flagGroups.TryGetValue(grpFlags, out var f))
                 return f;
 
-            PrimitiveType dt = Bits.IsSingleBitSet(grpFlags) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grpFlags, GrfToString(PICRegisters.STATUS, "", grpFlags), dt);
+            var fl = new FlagGroupStorage(flagRegister, grpFlags, GrfToString(PICRegisters.STATUS, "", grpFlags));
             flagGroups.Add(grpFlags, fl);
             return fl;
         }

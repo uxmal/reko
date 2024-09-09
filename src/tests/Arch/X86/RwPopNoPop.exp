@@ -63,13 +63,13 @@ l0C00_0019:
 l0C00_001F:
 	sp = sp + 2<16>
 	SCZO = cond(sp)
-	C = false
+	C = 0<32>
 	return
 	// succ:  fn0C00_000A_exit
 l0C00_0024:
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 2<i16>
-	C = true
+	C = 2<32>
 	return
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:

@@ -29,8 +29,8 @@ l10000000:
 l1000000B:
 	edx = edx ^ edx
 	SZ = cond(edx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	dl = Mem0[eax + 0x1000001A<32>:byte]
 	switch (v12) { l10000034 l1000002A l10000034 l1000003E }
 	// succ:  l10000034 l1000002A l10000034 l1000003E

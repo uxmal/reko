@@ -934,7 +934,7 @@ Eq_n fn0000162E(Eq_n ap, struct Eq_n * fp, struct Eq_n & apOut, struct Eq_n & fp
 Eq_n fn0000169A(struct Eq_n * fp, ptr32 & apOut, ptr32 & fpOut)
 {
 	Eq_n r0_n = connect_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -996,7 +996,7 @@ int32 fn000016CA(Eq_n ap, struct Eq_n * fp, ptr32 & r8Out, struct Eq_n & apOut, 
 Eq_n fn000016FA(struct Eq_n * fp, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = select_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -1119,7 +1119,7 @@ byte g_b17CC = ~0x22; // 000017CC
 Eq_n fn000017FE(struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = setsockopt_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -1249,7 +1249,7 @@ Eq_n fn00001922(struct Eq_n * fp, struct Eq_n & fpOut)
 {
 	struct Eq_n * fp_n;
 	Eq_n r0_n = setitimer_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		Eq_n r0_n = fn00001918(r0_n, fp, out fp_n);
@@ -1284,7 +1284,7 @@ Eq_n fn00001936(Eq_n r0, struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpO
 	struct Eq_n * fp_n;
 	Eq_n ap_n;
 	__syscall<word16>(0x6D);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		Eq_n r0_n = fn0000192C(r0, fp, out ap_n, out fp_n);
@@ -1307,7 +1307,7 @@ Eq_n fn00001936(Eq_n r0, struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpO
 Eq_n fn0000194A(Eq_n r0, struct Eq_n * fp, struct Eq_n & fpOut)
 {
 	__syscall<word16>(111);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0;
@@ -2171,7 +2171,7 @@ Eq_n fn0000207A(struct Eq_n * fp, Eq_n ptrArg04, Eq_n dwArg08, int32 dwArg0C, st
 {
 	struct Eq_n * fp_n;
 	Eq_n r0_n = old_creat(ptrArg04, dwArg08, dwArg0C);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		Eq_n r0_n = fn00002070(r0_n, fp, out fp_n);
@@ -2388,7 +2388,7 @@ word32 fn0000296A(Eq_n ap, struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & f
 Eq_n fn000029A6(struct Eq_n * fp, int32 dwArg04, int32 dwArg08, int32 dwArg0C, int32 dwArg10, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = socket(dwArg04, dwArg08, dwArg0C, dwArg10);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -2477,7 +2477,7 @@ Eq_n fn000029FE(Eq_n r0, struct Eq_n * fp, struct Eq_n & fpOut)
 {
 	struct Eq_n * fp_n;
 	__syscall<word16>(0x6C);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		Eq_n r0_n = fn000029F4(r0, fp, out fp_n);
@@ -2498,7 +2498,7 @@ Eq_n fn000029FE(Eq_n r0, struct Eq_n * fp, struct Eq_n & fpOut)
 struct Eq_n * fn00002A12(struct Eq_n * fp, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, int32 dwArg10)
 {
 	Eq_n r0_n = old_lseek(dwArg04, dwArg08, dwArg0C, dwArg10);
-	bool C;
+	Eq_n C;
 	if (!C)
 		return fp->ptr000C;
 	g_t597C.u2 = (void *) r0_n;
@@ -3014,7 +3014,7 @@ int32 fn00003516(Eq_n ap, struct Eq_n * fp, union Eq_n & r10Out, union Eq_n & r1
 Eq_n fn0000353E(struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = old_fstat();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -3088,7 +3088,7 @@ Eq_n fn00003586(struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpOut)
 	struct Eq_n * fp_n;
 	Eq_n ap_n;
 	Eq_n r0_n = ioctl_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		Eq_n r0_n = fn0000357C(r0_n, fp, out ap_n, out fp_n);
@@ -3113,7 +3113,7 @@ Eq_n fn00003586(struct Eq_n * fp, union Eq_n & apOut, struct Eq_n & fpOut)
 Eq_n fn00003596(struct Eq_n * fp, Eq_n dwArg04, int32 dwArg08, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = sys_close(dwArg04, dwArg08);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -3137,7 +3137,7 @@ Eq_n fn00003596(struct Eq_n * fp, Eq_n dwArg04, int32 dwArg08, union Eq_n & apOu
 Eq_n fn000035A6(struct Eq_n * fp, Eq_n ptrArg04, Eq_n dwArg08, int32 dwArg0C, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = sys_open(ptrArg04, dwArg08, dwArg0C);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -3162,7 +3162,7 @@ Eq_n fn000035A6(struct Eq_n * fp, Eq_n ptrArg04, Eq_n dwArg08, int32 dwArg0C, un
 Eq_n fn000035B6(struct Eq_n * fp, Eq_n dwArg04, Eq_n ptrArg08, Eq_n tArg0C, int32 dwArg10, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = sys_read(dwArg04, ptrArg08, tArg0C, dwArg10);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -3298,7 +3298,7 @@ Eq_n fn0000381A(Eq_n ap, struct Eq_n * fp, struct Eq_n & fpOut)
 Eq_n fn000038B6(struct Eq_n * fp, Eq_n dwArg04, Eq_n ptrArg08, Eq_n tArg0C, Eq_n dwArg10, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r0_n = sys_write(dwArg04, ptrArg08, tArg0C, dwArg10);
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;
@@ -3322,7 +3322,7 @@ Eq_n fn000038B6(struct Eq_n * fp, Eq_n dwArg04, Eq_n ptrArg08, Eq_n tArg0C, Eq_n
 Eq_n fn000038C6(Eq_n fp, union Eq_n & fpOut)
 {
 	Eq_n r0_n = writev_unfinished();
-	bool C;
+	Eq_n C;
 	if (C)
 	{
 		g_t597C.u2 = (void *) r0_n;

@@ -406,7 +406,7 @@ l00008324:
 	Mem39[r2_15 + 4<i32>:word32] = r1
 	Mem40[r1 + 16<i32>:word32] = r0
 	Mem41[r0:word32] = r4_29 + 1<32>
-	return SLICE(cond(r4_29 + 1<32>), bool, 2)
+	return (cond(r4_29 + 1<32>) & 4<32>) != 0<32>
 vListInsert_exit:
 
 
@@ -473,11 +473,11 @@ l000083D8:
 	Z_47 = vCoRoutineAddToDelayedList(r2, r0 + 0x10<32>)
 	__msr(cpsr, 0<32>)
 	r0Out = 0xFFFFFFFC<32>
-	return Z_47
+	return Z_47 != 0<32>
 l000083B8:
 	__msr(cpsr, r2)
 	r0Out = r2
-	return Z_36
+	return Z_36 != 0<32>
 l00008388:
 	vPortExitCritical(cpsr)
 	__msr(cpsr, 0<32>)
@@ -487,25 +487,25 @@ l00008388:
 	r2_72 = Mem12[r0 + 56<i32>:word32]
 	r3_73 = Mem12[r0 + 60<i32>:word32]
 	r0_102 = 0<32>
-	Z_101 = SLICE(cond(r2_72 - r3_73), bool, 2) (alias)
+	Z_101 = cond(r2_72 - r3_73) & 4<32> (alias)
 	branch r2_72 <u r3_73 l000083C0
 l000083C0:
 	Z_101 = prvCopyDataToQueue(r0, r1, 0<32>, out r0_173, out r7_174)
 	branch Mem12[r0 + 36<i32>:word32] != 0<32> l000083EE
 l000083EE:
 	xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_92)
-	Z_101 = SLICE(cond(r0_92 - 0<32>), bool, 2) (alias)
+	Z_101 = cond(r0_92 - 0<32>) & 4<32> (alias)
 	branch r0_92 == 0<32> l000083CE
 l000083FA:
 	r0_102 = 0xFFFFFFFB<32>
 l000083CE:
 	__msr(cpsr, 0<32>)
 	r0Out = 1<32>
-	return Z_101
+	return Z_101 != 0<32>
 l000083AA:
 	__msr(cpsr, 0<32>)
 	r0Out = r0_102
-	return Z_101
+	return Z_101 != 0<32>
 xQueueCRSend_exit:
 
 
@@ -552,7 +552,7 @@ l00008466:
 	branch Mem58[r4_49 + 16<i32>:word32] != 0<32> l00008478
 l00008478:
 	xCoRoutineRemoveFromEventList(r4_49 + 0x10<32>, out r0_62)
-	Z = SLICE(cond(r0_62 - 0<32>), bool, 2) (alias)
+	Z = cond(r0_62 - 0<32>) & 4<32> (alias)
 	branch r0_62 == 0<32> l0000846E
 l00008484:
 	r0_141 = 0xFFFFFFFB<32>
@@ -560,28 +560,28 @@ l0000846E:
 	__msr(cpsr, 0<32>)
 	r0Out = 1<32>
 	r6Out = r6
-	return Z
+	return Z != 0<32>
 l0000843E:
 	r0_141 = r2_20
 l00008440:
 	__msr(cpsr, 0<32>)
 	r0Out = r0_141
 	r6Out = r6
-	return Z
+	return Z != 0<32>
 l00008418:
-	Z_97 = SLICE(cond(r2 - 0<32>), bool, 2) (alias)
+	NZCV_96 = cond(r2 - 0<32>)
 	branch r2 != 0<32> l0000848A
 l0000848A:
 	Z_106 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
 	__msr(cpsr, r5_17)
 	r0Out = 0xFFFFFFFC<32>
 	r6Out = r6
-	return Z_106
+	return Z_106 != 0<32>
 l0000841C:
 	__msr(cpsr, r2)
 	r0Out = r2
 	r6Out = r6
-	return Z_97
+	return (NZCV_96 & 4<32>) != 0<32>
 xQueueCRReceive_exit:
 
 
@@ -834,12 +834,12 @@ l000085B0:
 l000085C0:
 	__msr(cpsr, r3_16 - 1<32>)
 l000085C4:
-	Z_22 = SLICE(cond(r0_11 - 1<32>), bool, 2) (alias)
+	NZCV_21 = cond(r0_11 - 1<32>)
 	branch r0_11 == 1<32> l000085D4
 l000085C8:
 	__msr(cpsr, __mrs(cpsr) | 1<32>)
 l000085D4:
-	return Z_22
+	return (NZCV_21 & 4<32>) != 0<32>
 vPortExitCritical_exit:
 
 
@@ -1888,11 +1888,11 @@ l00008F0E:
 	Z_47 = vListInsert(Mem34[r4_15 + 104<i32>:word32], r1_32 + 4<32>)
 	branch r1 == 0<32> l00008F26
 l00008F26:
-	return Z_47
+	return Z_47 != 0<32>
 l00008F18:
 	r1_57 = Mem34[r4_15:word32]
 l00008F22_thunk_vListInsert:
-	return vListInsert(r1, r1_57 + 0x18<32>)
+	return vListInsert(r1, r1_57 + 0x18<32>) != 0<32>
 vCoRoutineAddToDelayedList_exit:
 
 
@@ -2052,12 +2052,12 @@ l00009094:
 	vListInsertEnd(r5_17 + 0x54<32>, r4_16 + 0x18<32>)
 	r0_39 = Mem15[r4_16 + 44<i32>:word32]
 	r3_40 = Mem15[Mem15[r5_17:word32] + 44<i32>:word32]
-	Z_70 = SLICE(cond(r0_39 - r3_40), bool, 2) (alias)
+	NZCV_41 = cond(r0_39 - r3_40)
 	branch r0_39 >=u r3_40 l000090BC
 l000090BA_1:
 l000090BC:
 	r0Out = 1<32>
-	return Z_70
+	return (NZCV_41 & 4<32>) != 0<32>
 xCoRoutineRemoveFromEventList_exit:
 
 

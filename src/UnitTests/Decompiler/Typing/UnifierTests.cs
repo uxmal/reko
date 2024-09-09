@@ -646,5 +646,12 @@ namespace Reko.UnitTests.Decompiler.Typing
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(arr word32 4)", un.Unify(t1, t2).ToString());
         }
+
+        [Test]
+        public void Unify_Regression1()
+        {
+            var t1 = PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 32);
+            var t2 = PrimitiveType.SegPtr32;
+        }
     }
 }

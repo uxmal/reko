@@ -474,7 +474,11 @@ namespace Reko.Typing
         public DataType VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
-			return handler.DataTypeTrait(cof, cof.DataType);
+            // There should be no more ConditionOf nodes 
+            // at the time of type analysis; their DataType
+            // is just a placeholder and should be
+            // disregarded.
+            return null!;
 		}
 
         public DataType VisitConversion(Conversion conversion)

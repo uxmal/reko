@@ -130,31 +130,31 @@ namespace Reko.Arch.Sparc
 
             psr = stg.Reg32("psr");
 
-            N = new FlagGroupStorage(psr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            V = new FlagGroupStorage(psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            C = new FlagGroupStorage(psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            NV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.VF), "NV", PrimitiveType.Byte);
-            NZ = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte);
-            NZV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), "NZV", PrimitiveType.Byte);
-            NZVC = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF |FlagM.VF | FlagM.CF), "NZVC", PrimitiveType.Byte);
-            ZC = new FlagGroupStorage(psr, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
+            N = new FlagGroupStorage(psr, (uint) FlagM.NF, nameof(N));
+            Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, nameof(Z));
+            V = new FlagGroupStorage(psr, (uint) FlagM.VF, nameof(V));
+            C = new FlagGroupStorage(psr, (uint) FlagM.CF, nameof(C));
+            NV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.VF), nameof(NV));
+            NZ = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF), nameof(NZ));
+            NZV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), nameof(NZV));
+            NZVC = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF |FlagM.VF | FlagM.CF), nameof(NZVC));
+            ZC = new FlagGroupStorage(psr, (uint) (FlagM.ZF | FlagM.CF), nameof(ZC));
 
-            xN = new FlagGroupStorage(psr, (uint) FlagM.xNF, "xN", PrimitiveType.Bool);
-            xZ = new FlagGroupStorage(psr, (uint) FlagM.xZF, "xZ", PrimitiveType.Bool);
-            xV = new FlagGroupStorage(psr, (uint) FlagM.xVF, "xV", PrimitiveType.Bool);
-            xC = new FlagGroupStorage(psr, (uint) FlagM.xCF, "xC", PrimitiveType.Bool);
-            xNV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xVF), "xNV", PrimitiveType.Byte);
-            xNZ = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF), "xNZ", PrimitiveType.Byte);
-            xNZV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF), "xNZV", PrimitiveType.Byte);
-            xNZVC = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF | FlagM.xCF), "xNZVC", PrimitiveType.Byte);
-            xZC = new FlagGroupStorage(psr, (uint) (FlagM.xZF | FlagM.xCF), "xZC", PrimitiveType.Byte);
+            xN = new FlagGroupStorage(psr, (uint) FlagM.xNF, nameof(xN));
+            xZ = new FlagGroupStorage(psr, (uint) FlagM.xZF, nameof(xZ));
+            xV = new FlagGroupStorage(psr, (uint) FlagM.xVF, nameof(xV));
+            xC = new FlagGroupStorage(psr, (uint) FlagM.xCF, nameof(xC));
+            xNV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xVF), nameof(xNV));
+            xNZ = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF), nameof(xNZ));
+            xNZV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF), nameof(xNZV));
+            xNZVC = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF | FlagM.xCF), nameof(xNZVC));
+            xZC = new FlagGroupStorage(psr, (uint) (FlagM.xZF | FlagM.xCF), nameof(xZC));
 
 
-            E = new FlagGroupStorage(psr, (uint) FlagM.EF, "E", PrimitiveType.Bool);
-            L = new FlagGroupStorage(psr, (uint) FlagM.LF, "L", PrimitiveType.Bool);
-            G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);
-            U = new FlagGroupStorage(psr, (uint) FlagM.UF, "U", PrimitiveType.Bool);
+            E = new FlagGroupStorage(psr, (uint) FlagM.EF, nameof(E));
+            L = new FlagGroupStorage(psr, (uint) FlagM.LF, nameof(L));
+            G = new FlagGroupStorage(psr, (uint) FlagM.GF, nameof(G));
+            U = new FlagGroupStorage(psr, (uint) FlagM.UF, nameof(U));
 
             fsr = stg.Reg32("fsr");
 

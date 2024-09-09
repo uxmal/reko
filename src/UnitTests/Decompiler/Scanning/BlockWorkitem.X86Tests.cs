@@ -404,8 +404,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 "\tv9 = bx" + nl +
                 "\tbx = bx & 3<16>" + nl +
                 "\tSZ = cond(bx)" + nl +
-                "\tO = false" + nl +
-                "\tC = false" + nl +
+                "\tO = 0<32>" + nl +
+                "\tC = 0<32>" + nl +
                 "\tbx = bx + bx" + nl + 
                 "\tSCZO = cond(bx)" + nl +
                 "\tswitch (v9) { foo1 foo2 foo3 foo4 }" + nl;
@@ -501,8 +501,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 "testblock:" + nl +
                 "\tesi = esi ^ esi" + nl +
                 "\tSZ = cond(esi)" + nl +
-                "\tO = false" + nl +
-                "\tC = false" + nl + 
+                "\tO = 0<32>" + nl +
+                "\tC = 0<32>" + nl + 
                 "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +
                  "\tgoto 0C00:0003" + nl;

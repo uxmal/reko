@@ -244,6 +244,16 @@ namespace Reko.Analysis
                     n <<= slice.Offset;
                     return n;
                 }
+            case BinaryExpression bin:
+                var idSliced = ConditionCodeEliminator.FindSlicedFlagRegister(bin);
+                if (idSliced is not null)
+                {
+                    var idOld = idCur;
+                    var n = Classify(ssa.Identifiers[ass.Dst]);
+                    idCur = idOld;
+                    return n;
+                }
+                break;
             case MkSequence seq:
                 {
                     // First verify that we are indeed using the sequence.

@@ -44,8 +44,8 @@ l10000015:
 l1000002F:
 	esi = esi | esi
 	SZ = cond(esi)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(NE,Z) l10000015
 	// succ:  l10000033 l10000015
 l10000033:

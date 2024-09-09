@@ -25,11 +25,11 @@ namespace Reko.Arch.Pdp.Pdp10
             Accumulators = factory.RangeOfReg(16, u => $"r{u}", PdpTypes.Word36);
             Psw = factory.Reg("Psw", PdpTypes.Word36);
 
-            C0 = new FlagGroupStorage(Psw, (uint) FlagM.C0, "C0", PrimitiveType.Bool);
-            C1 = new FlagGroupStorage(Psw, (uint) FlagM.C1, "C1", PrimitiveType.Bool);
-            V = new FlagGroupStorage(Psw, (uint) FlagM.V, "V", PrimitiveType.Bool);
-            T = new FlagGroupStorage(Psw, (uint) FlagM.T, "T", PrimitiveType.Bool);
-            ND = new FlagGroupStorage(Psw, (uint) FlagM.T, "ND", PrimitiveType.Bool);
+            C0 = new FlagGroupStorage(Psw, (uint) FlagM.C0, nameof(C0));
+            C1 = new FlagGroupStorage(Psw, (uint) FlagM.C1, nameof(C1));
+            V = new FlagGroupStorage(Psw, (uint) FlagM.V, nameof(V));
+            T = new FlagGroupStorage(Psw, (uint) FlagM.T, nameof(T));
+            ND = new FlagGroupStorage(Psw, (uint) FlagM.T, nameof(ND));
         }
     }
 

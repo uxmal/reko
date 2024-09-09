@@ -57,13 +57,13 @@ namespace Reko.Arch.WE32100
             ap = GpRegs[10];
             sp = GpRegs[12];
             psw = GpRegs[11];
-            C = new FlagGroupStorage(psw, (uint) FlagM.C, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(psw, (uint) FlagM.C, "V", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(psw, (uint) FlagM.C, "Z", PrimitiveType.Bool);
-            N = new FlagGroupStorage(psw, (uint) FlagM.C, "N", PrimitiveType.Bool);
+            C = new FlagGroupStorage(psw, (uint) FlagM.C, nameof(C));
+            V = new FlagGroupStorage(psw, (uint) FlagM.C, nameof(V));
+            Z = new FlagGroupStorage(psw, (uint) FlagM.C, nameof(Z));
+            N = new FlagGroupStorage(psw, (uint) FlagM.C, nameof(N));
             Flags = new FlagGroupStorage[] { C, V, Z, N };
-            NZV = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V), "NZV", PrimitiveType.Byte);
-            NZVC = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C), "NZVC", PrimitiveType.Byte);
+            NZV = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V), nameof(NZV));
+            NZVC = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C), nameof(NZVC));
 
             ByName = factory.NamesToRegisters;
             ByDomain = factory.DomainsToRegisters;

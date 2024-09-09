@@ -291,7 +291,7 @@ bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 	r2_n->ptr0004 = r1;
 	r1->ptr0010 = r0;
 	r0->dw0000 = r4_n + 0x01;
-	return SLICE(cond(r4_n + 0x01), bool, 2);
+	return (cond(r4_n + 0x01) & 0x04) != 0x00;
 }
 
 // 00008340: Register (ptr32 Eq_n) uxListRemove(Register (ptr32 Eq_n) r0)
@@ -336,19 +336,19 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out)
 	vPortEnterCritical(cpsr);
 	if (*((word32) r0 + 56) == *((word32) r0 + 60))
 	{
-		bool Z_n = vPortExitCritical(cpsr);
+		Eq_n Z_n = vPortExitCritical(cpsr);
 		if (r2 != 0x00)
 		{
-			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 16);
+			Eq_n Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 16);
 			__msr(cpsr, 0x00);
 			r0Out.u0 = ~0x03;
-			return Z_n;
+			return Z_n != 0x00;
 		}
 		else
 		{
 			__msr(cpsr, r2);
 			r0Out = r2;
-			return Z_n;
+			return Z_n != 0x00;
 		}
 	}
 	vPortExitCritical(cpsr);
@@ -360,7 +360,7 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out)
 	Eq_n r3_n = *((word32) r0 + 60);
 	Eq_n r0_n;
 	r0_n.u0 = 0x00;
-	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
+	Eq_n Z_n = cond(r2_n - r3_n) & 0x04;
 	if (r2_n < r3_n)
 	{
 		word32 r0_n;
@@ -370,7 +370,7 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out)
 		{
 			word32 r0_n;
 			xCoRoutineRemoveFromEventList((word32) r0 + 36, out r0_n);
-			Z_n = SLICE(cond(r0_n - 0x00), bool, 2);
+			Z_n = cond(r0_n - 0x00) & 0x04;
 			if (r0_n != 0x00)
 			{
 				r0_n.u0 = ~0x04;
@@ -379,21 +379,21 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out)
 		}
 		__msr(cpsr, 0x00);
 		r0Out.u0 = 0x01;
-		return Z_n;
+		return Z_n != 0x00;
 	}
 	else
 	{
 l000083AA:
 		__msr(cpsr, 0x00);
 		r0Out = r0_n;
-		return Z_n;
+		return Z_n != 0x00;
 	}
 }
 
-// 00008400: FlagGroup bool xQueueCRReceive(Register (ptr32 Eq_n) r0, Register Eq_n r1, Register Eq_n r2, Register word32 cpsr, Register out Eq_n r0Out, Register out ptr32 r6Out)
+// 00008400: FlagGroup Eq_n xQueueCRReceive(Register (ptr32 Eq_n) r0, Register Eq_n r1, Register Eq_n r2, Register word32 cpsr, Register out Eq_n r0Out, Register out ptr32 r6Out)
 // Called from:
 //      prvFlashCoRoutine
-bool xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out, ptr32 & r6Out)
+Eq_n xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n & r0Out, ptr32 & r6Out)
 {
 	word32 r7_n;
 	word32 r5_n;
@@ -406,21 +406,22 @@ bool xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n
 	ptr32 r6;
 	if (r5_n == 0x00)
 	{
-		bool Z_n = SLICE(cond(r2 - 0x00), bool, 2);
+		Eq_n NZCV_n;
+		NZCV_n.u1 = cond(r2 - 0x00);
 		if (r2 != 0x00)
 		{
-			bool Z_n = vCoRoutineAddToDelayedList(r2, (char *) &r0->t000C + 24);
+			Eq_n Z_n = vCoRoutineAddToDelayedList(r2, (char *) &r0->t000C + 24);
 			__msr(cpsr, r5_n);
 			r0Out.u0 = ~0x03;
 			r6Out = r6;
-			return Z_n;
+			return Z_n != 0x00;
 		}
 		else
 		{
 			__msr(cpsr, r2);
 			r0Out = r2;
 			r6Out = r6;
-			return Z_n;
+			return (NZCV_n & 0x04) != 0x00;
 		}
 	}
 	__msr(cpsr, 0x00);
@@ -447,12 +448,12 @@ bool xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n
 		r0->t0038.u0 = (word32) r3_n - 1;
 		if (r1_n >= r3_n)
 			r0->t000C.u1 = (struct Eq_n *) r1_n;
-		bool Z = memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6, out r7_n);
+		Eq_n Z = memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6, out r7_n);
 		if (r4_n->dw0010 != 0x00)
 		{
 			word32 r0_n;
 			xCoRoutineRemoveFromEventList(&r4_n->dw0010, out r0_n);
-			Z = SLICE(cond(r0_n - 0x00), bool, 2);
+			Z = cond(r0_n - 0x00) & 0x04;
 			if (r0_n != 0x00)
 			{
 				r0_n.u0 = ~0x04;
@@ -460,13 +461,13 @@ l00008440:
 				__msr(cpsr, 0x00);
 				r0Out = r0_n;
 				r6Out = r6;
-				return Z;
+				return Z != 0x00;
 			}
 		}
 		__msr(cpsr, 0x00);
 		r0Out.u0 = 0x01;
 		r6Out = r6;
-		return Z;
+		return Z != 0x00;
 	}
 	else
 	{
@@ -661,10 +662,11 @@ bool vPortExitCritical(word32 cpsr)
 	*r2_n = r3_n - 0x01;
 	if (r3_n == 0x01)
 		__msr(cpsr, r3_n - 0x01);
-	bool Z_n = SLICE(cond(r0_n - 0x01), bool, 2);
+	Eq_n NZCV_n;
+	NZCV_n.u1 = cond(r0_n - 0x01);
 	if (r0_n != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
-	return Z_n;
+	return (NZCV_n & 0x04) != 0x00;
 }
 
 word32 * g_ptr85D8 = &g_dw200000BC; // 000085D8
@@ -740,7 +742,7 @@ void prvFlashCoRoutine(struct Eq_n * r0, word32 cpsr)
 		r5_n = g_ptr86E0;
 		r6_n = fp - 20;
 l00008696:
-		bool Z_n = xQueueCRReceive(*r5_n, r6_n, ~0x00, cpsr, out r0_n, out r6_n);
+		Eq_n Z_n = xQueueCRReceive(*r5_n, r6_n, ~0x00, cpsr, out r0_n, out r6_n);
 		if (Z_n)
 		{
 			r0->w0034 = 0x01C2;
@@ -777,7 +779,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, word32 cpsr)
 	up32 r3_n = (word32) r0->w0034;
 	ptr32 fp;
 	word32 r0_n;
-	bool v24_n;
+	Eq_n v24_n;
 	if (r3_n != 0x0182)
 	{
 		if (r3_n > 0x0182)
@@ -789,7 +791,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, word32 cpsr)
 		}
 		else if (r3_n != 0x00)
 			return;
-		bool Z_n = xQueueCRSend(g_ptr877C->u1, fp - 0x0C, 0x00, cpsr, out r0_n);
+		Eq_n Z_n = xQueueCRSend(g_ptr877C->u1, fp - 0x0C, 0x00, cpsr, out r0_n);
 		v24_n = Z_n;
 		if (Z_n)
 		{
@@ -1286,11 +1288,11 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 	up32 r3_n = r4_n->dw0074;
 	struct Eq_n * r1_n = r4_n->ptr0000;
 	r1_n->dw0004 = r5_n;
-	bool Z_n = vListInsert(r4_n->ptr0068, &r1_n->dw0004);
+	Eq_n Z_n = vListInsert(r4_n->ptr0068, &r1_n->dw0004);
 	if (r1 == null)
-		return Z_n;
+		return Z_n != 0x00;
 	struct Eq_n * r1_n = r4_n->ptr0000;
-	return vListInsert(r1, &r1_n->dw0004 + 5);
+	return vListInsert(r1, &r1_n->dw0004 + 5) != 0x00;
 }
 
 struct Eq_n * g_ptr8F28 = &g_t200007FC; // 00008F28
@@ -1430,9 +1432,10 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 	vListInsertEnd((char *) r5_n + 84, (char *) r4_n + 24);
 	up32 r0_n = r4_n->dw002C;
 	up32 r3_n = *((char *) *r5_n + 44);
-	bool Z_n = SLICE(cond(r0_n - r3_n), bool, 2);
+	Eq_n NZCV_n;
+	NZCV_n.u1 = cond(r0_n - r3_n);
 	r0Out = &g_t0001;
-	return Z_n;
+	return (NZCV_n & 0x04) != 0x00;
 }
 
 struct Eq_n ** g_ptr90C0 = &g_ptr200007FC; // 000090C0

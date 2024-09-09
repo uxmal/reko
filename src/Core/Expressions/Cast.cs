@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Models a C-style cast. The specified expression is cast to the data type <code>dt</code>.
+    /// Models a C-style cast. The specified expression is cast to the data type <paramref name="dt" />.
     /// </summary>
 	public class Cast : Expression
 	{

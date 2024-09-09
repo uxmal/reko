@@ -185,11 +185,11 @@ l0226:
 	gp5_5 = Mem0[gp3:word16]
 	gp1_21 = gp1 & 0xFF00<16>
 	gp4_13 = gp1 & 0xFF<16>
-	branch Test(EQ,True<8>) l0231
+	branch True<16> l0231
 l022F:
 	gp4_13 = gp1 & 0xFF<16> | 0xFF00<16>
 l0231:
-	branch Test(EQ,(gp4_13 & 0x8000<u16>) == 0<16>) l0236
+	branch (gp4_13 & 0x8000<u16>) == 0<16> l0236
 l0233:
 	gp4_13 = gp4_13 + 1<16>
 	gp1_21 = gp1 & 0xFF00<16> | 0xFF<16>
@@ -539,7 +539,7 @@ l0419:
 	gp12_gp13_293 = gp12_gp13_289
 	branch gp12_gp13_293 / 0xA<32> != 0<32> l0409
 l041C:
-	branch Test(NE,(gp9_42 + 1<16> & 0x8000<u16>) == 0<16>) l0422
+	branch (gp9_42 + 1<16> & 0x8000<u16>) == 0<16> l0422
 l0422:
 	Mem144[gp11_110:word16] = SEQ(SLICE(gp10_138, byte, 0), Mem142[gp11_110:byte])
 l041F:
@@ -622,7 +622,7 @@ l0458:
 	gp2_192 = 0<16>
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
-	branch Test(NE,(SLICE(gp12_gp13_gp14, word16, 16) & 0x100<u16>) == 0<16>) l0467
+	branch (SLICE(gp12_gp13_gp14, word16, 16) & 0x100<u16>) == 0<16> l0467
 l0467:
 	gp14_116 = SLICE(gp12_gp13_311, word16, 0) (alias)
 	branch gp12_gp13_311 >= Mem46[0x057C<p16>:real48] l046F

@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.X86
 			var s2 = arch.GetFlagGroup("S");
 			Assert.AreEqual("S", s1.Name);
 			Assert.AreEqual(s1, s2);
-			Assert.AreEqual(PrimitiveType.Bool, s1.DataType);
+			Assert.AreEqual(PrimitiveType.Word32, s1.DataType);
 		}
 
 

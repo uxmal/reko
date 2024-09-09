@@ -42,7 +42,7 @@ namespace Reko.Arch.MicroBlaze
             GpRegs = factory.RangeOfReg32(32, "r{0}");
 
             msr = factory.Reg32("msr");
-            C = new FlagGroupStorage(msr, (uint) FlagM.CY, "C", PrimitiveType.Bool);
+            C = new FlagGroupStorage(msr, (uint) FlagM.CY, nameof(C));
 
             RegistersByDomain = GpRegs
                 .Concat(new[] { msr })
@@ -56,6 +56,6 @@ namespace Reko.Arch.MicroBlaze
     [Flags]
     public enum FlagM
     {
-        CY = 1 << 2, // 29
+        CY = 1 << 2, // 29 big-endian
     }
 }

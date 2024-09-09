@@ -77,7 +77,7 @@ namespace Reko.Arch.Etrax
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             var name = GrfToString(flagRegister, "", grf);
-            return new FlagGroupStorage(flagRegister, grf, name, PrimitiveType.Word16);
+            return new FlagGroupStorage(flagRegister, grf, name);
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)

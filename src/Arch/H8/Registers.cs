@@ -61,7 +61,7 @@ namespace Reko.Arch.H8
                     Macl,
                 })
                 .ToDictionary(r => r.Name);
-            C = new FlagGroupStorage(CcRegister, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            C = new FlagGroupStorage(CcRegister, (uint) FlagM.CF, nameof(C));
         }
 
         public static RegisterStorage[] GpRegisters { get; }

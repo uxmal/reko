@@ -1510,13 +1510,13 @@ SsaProcedureBuilder_exit:
             var v1h = m.Temp(PrimitiveType.CreateWord(56), "v1h");
             var v2b = m.Reg8("v2b");
             var flags = RegisterStorage.Reg32("flags", 42);
-            var C = m.Flags("S", new FlagGroupStorage(flags, 1, "S", PrimitiveType.Bool));
+            var C = m.Flags("S", new FlagGroupStorage(flags, 1, "S"));
 
             m.Assign(v1, m.Word64(0x57DF836069B622E7));
             m.Alias(v1b, m.Slice(v1, PrimitiveType.Byte));
             m.Alias(v1h, m.Slice(v1, v1h.DataType, 8));
-            m.Assign(C, true);
-            m.Assign(v2b, m.IAdd(m.IAdd(v1b, m.Byte(0x19)), C));
+            m.Assign(C, 1);
+            m.Assign(v2b, m.IAdd(m.IAdd(v1b, m.Byte(0x19)), m.Slice(C, v1b.DataType)));
 
             RunValuePropagator();
 

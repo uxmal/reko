@@ -76,7 +76,7 @@ l000094:
 	TBLPTRH_46 = Data60[0x00C8<p16>:byte]
 	TBLPTRU_49 = Data60[0x00C9<p16>:byte]
 	Data67[0x00C5<p16>:byte] = Data60[0x00C5<p16>:byte] - 1<8>
-	Data71[0x00C6<p16>:byte] = Data67[0x00C6<p16>:byte] - !SLICE(cond(Data67[0x00C5<p16>:byte]), bool, 0)
+	Data71[0x00C6<p16>:byte] = Data67[0x00C6<p16>:byte] - !(cond(Data67[0x00C5<p16>:byte]) & 1<8>)
 	v20_98 = Data71[0x00C6<p16>:byte] != 0<8>
 l000086:
 	__tblrd(TBLPTR, 1<8>)

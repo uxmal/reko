@@ -18,8 +18,8 @@ l0C00_0000:
 l0C00_0009:
 	bh = bh ^ bh
 	SZ = cond(bh)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	bx = bx + bx
 	SCZO = cond(bx)
 	switch (v16) { l0C00_0017 l0C00_001B l0C00_001F }

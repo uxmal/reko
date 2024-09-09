@@ -780,11 +780,10 @@ namespace Reko.Analysis
             {
                 var grfFrom = (FlagGroupStorage) elem.sid.Identifier.Storage;
                 if (grfFrom.FlagGroupBits == elem.mask)
-                    return elem.sid;
+                    return elem.sid;    // Don't need to slice if the bits match exactly.
                 if (elem.alias.ExactAliases.TryGetValue(elem.sid.Identifier, out var sid))
                     return sid;
-                int offset = Bits.Log2(this.flagMask);
-                var e = outer.m.Slice(elem.sid.Identifier, PrimitiveType.Bool, offset);
+                var e = outer.m.And(elem.sid.Identifier, elem.mask);
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);

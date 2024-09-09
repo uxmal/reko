@@ -208,14 +208,9 @@ namespace Reko.Arch.Arm
             FlagGroupStorage? f;
             while (!flagGroups.TryGetValue(grf, out f))
             {
-                var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
                 var flagregister =
-#if NATIVE
-                this.regsByName["cpsr"];
-#else
                     Registers.cpsr;
-#endif
-                f = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+                f = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
                 if (flagGroups.TryAdd(grf, f))
                     return f;
             }

@@ -528,7 +528,8 @@ namespace Reko.Arch.Avr.Avr32
         {
             Expression MkCond(ConditionCode cc, FlagGroupStorage grf)
             {
-                return m.Test(cc, binder.EnsureFlagGroup(grf));
+                return
+                    m.Test(cc, binder.EnsureFlagGroup(grf));
             }
 
             switch (instr.Condition)
@@ -1214,7 +1215,7 @@ namespace Reko.Arch.Avr.Avr32
             }
             else
             {
-                src = m.Convert(Condition(), PrimitiveType.Bool, PrimitiveType.Word32);
+                src = m.ExtendZ(Condition(), PrimitiveType.Word32);
             }
             RewriteOpDst(0, src);
         }
@@ -1376,17 +1377,17 @@ namespace Reko.Arch.Avr.Avr32
 
         static Avr32Rewriter()
         {
-            C = new FlagGroupStorage(Registers.sr, (uint) FlagM.CF, nameof(C), PrimitiveType.Bool);
-            Z = new FlagGroupStorage(Registers.sr, (uint) FlagM.ZF, nameof(Z), PrimitiveType.Bool);
-            N = new FlagGroupStorage(Registers.sr, (uint) FlagM.NF, nameof(N), PrimitiveType.Bool);
-            Q = new FlagGroupStorage(Registers.sr, (uint) FlagM.QF, nameof(Q), PrimitiveType.Bool);
-            V = new FlagGroupStorage(Registers.sr, (uint) FlagM.VF, nameof(V), PrimitiveType.Bool);
-            NZ = new FlagGroupStorage(Registers.sr, (uint)(FlagM.NF | FlagM.ZF), nameof(NZ), PrimitiveType.Byte);
-            NZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.NF | FlagM.ZF | FlagM.CF), nameof(NZC), PrimitiveType.Byte);
-            VN = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF), nameof(VN), PrimitiveType.Byte);
-            VNZ = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF), nameof(VNZ), PrimitiveType.Byte);
-            VNZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(VNZC), PrimitiveType.Byte);
-            ZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.ZF | FlagM.CF), nameof(ZC), PrimitiveType.Byte);
+            C = new FlagGroupStorage(Registers.sr, (uint) FlagM.CF, nameof(C));
+            Z = new FlagGroupStorage(Registers.sr, (uint) FlagM.ZF, nameof(Z));
+            N = new FlagGroupStorage(Registers.sr, (uint) FlagM.NF, nameof(N));
+            Q = new FlagGroupStorage(Registers.sr, (uint) FlagM.QF, nameof(Q));
+            V = new FlagGroupStorage(Registers.sr, (uint) FlagM.VF, nameof(V));
+            NZ = new FlagGroupStorage(Registers.sr, (uint)(FlagM.NF | FlagM.ZF), nameof(NZ));
+            NZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.NF | FlagM.ZF | FlagM.CF), nameof(NZC));
+            VN = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF), nameof(VN));
+            VNZ = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF), nameof(VNZ));
+            VNZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(VNZC));
+            ZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.ZF | FlagM.CF), nameof(ZC));
 
             clz_intrinsic = new IntrinsicBuilder("__clz", false)
                 .Param(PrimitiveType.Word32)

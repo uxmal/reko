@@ -29,6 +29,16 @@ namespace Reko.Core.Expressions
     /// </summary>
 	public class BinaryExpression : Expression
 	{
+        /// <summary>
+        /// Create an instance of the <see cref="BinaryExpression"/> class.
+        /// </summary>
+        /// <param name="op">Binary operation (e.g. <see cref="Operator.IAdd" /></param>
+        /// <param name="dtResult">
+        /// The result of the operation, which isn't necessarily neither the
+        /// same type domain, not even the same size (e.g. extending multiplications
+        /// on x86)</param>
+        /// <param name="left">Left expression of the operand.</param>
+        /// <param name="right">Right expression of the operand.</param>
 		public BinaryExpression(BinaryOperator op, DataType dtResult, Expression left, Expression right) : base(dtResult)
 		{
 			this.Operator = op;

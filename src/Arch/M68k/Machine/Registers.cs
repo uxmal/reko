@@ -136,20 +136,20 @@ namespace Reko.Arch.M68k.Machine
             pc = RegisterStorage.Reg32("pc", 27);
             fpsr = RegisterStorage.Reg32("fpsr", 28);
 
-            C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(ccr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(ccr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            N = new FlagGroupStorage(ccr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            X = new FlagGroupStorage(ccr, (uint) FlagM.XF, "X", PrimitiveType.Bool);
+            C = new FlagGroupStorage(ccr, (uint) FlagM.CF, nameof(C));
+            V = new FlagGroupStorage(ccr, (uint) FlagM.VF, nameof(V));
+            Z = new FlagGroupStorage(ccr, (uint) FlagM.ZF, nameof(Z));
+            N = new FlagGroupStorage(ccr, (uint) FlagM.NF, nameof(N));
+            X = new FlagGroupStorage(ccr, (uint) FlagM.XF, nameof(X));
 
-            CVZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), "CVZN", PrimitiveType.Byte);
-            CZ = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.CF), "CZ", PrimitiveType.Byte);
-            CZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), "CZN", PrimitiveType.Byte);
-            CZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.CF), "CZNX", PrimitiveType.Byte);
-            CVZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), "CVZNX", PrimitiveType.Byte);
-            VN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.VF), "VN", PrimitiveType.Byte);
-            VZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), "VZN", PrimitiveType.Byte);
-            ZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF), "ZN", PrimitiveType.Byte);
+            CVZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), nameof(CVZN));
+            CZ = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.CF), nameof(CZ));
+            CZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), nameof(CZN));
+            CZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(CZNX));
+            CVZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), nameof(CVZNX));
+            VN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.VF), nameof(VN));
+            VZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), nameof(VZN));
+            ZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF), nameof(ZN));
             Max = 29;
 
             regs = new RegisterStorage[] {

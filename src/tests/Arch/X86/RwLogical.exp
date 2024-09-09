@@ -21,12 +21,12 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ax = ax & 0xF<16>
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	ebx = ebx & ebx
 	SZ = cond(ebx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(EQ,Z) l0C00_000C
 	// succ:  l0C00_0008 l0C00_000C
 l0C00_0008:

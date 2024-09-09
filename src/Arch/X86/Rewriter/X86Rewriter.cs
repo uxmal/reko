@@ -141,8 +141,8 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.cdq: RewriteCdq(); break;
                 case Mnemonic.cdqe: RewriteCdqe(); break;
                 case Mnemonic.cqo: RewriteCqo(); break;
-                case Mnemonic.clc: RewriteSetFlag(Registers.C, Constant.False()); break;
-                case Mnemonic.cld: RewriteSetFlag(Registers.D, Constant.False()); break;
+                case Mnemonic.clc: RewriteSetFlag(Registers.C, 0); break;
+                case Mnemonic.cld: RewriteSetFlag(Registers.D, 0); break;
                 case Mnemonic.cli: RewriteCli(); break;
                 case Mnemonic.clts: RewriteClts(); break;
                 case Mnemonic.cldemote: RewriteCacheLine(cldemote_intrinsic); break;
@@ -682,8 +682,8 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.sqrtps: RewritePackedUnaryop(Simd.Sqrt, PrimitiveType.Real32); break;
                 case Mnemonic.sqrtsd: RewriteSqrtsd(sqrt_intrinsic, PrimitiveType.Real64); break;
                 case Mnemonic.sqrtss: RewriteSqrtsd(fsqrt_intrinsic, PrimitiveType.Real32); break;
-                case Mnemonic.stc: RewriteSetFlag(Registers.C, Constant.True()); break;
-                case Mnemonic.std: RewriteSetFlag(Registers.D, Constant.True()); break;
+                case Mnemonic.stc: RewriteSetFlag(Registers.C, Registers.C.FlagGroupBits); break;
+                case Mnemonic.std: RewriteSetFlag(Registers.D, Registers.D.FlagGroupBits); break;
                 case Mnemonic.sti: RewriteSti(); break;
                 case Mnemonic.stos: RewriteStringInstruction(); break;
                 case Mnemonic.stosb: RewriteStringInstruction(); break;

@@ -25,10 +25,10 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -161,9 +161,22 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     case Identifier idSrc:
                         wl.Add(ssaIds[idSrc]);
                         break;
-                    case Slice slice when slice.Expression is Identifier idSliced:
-                        wl.Add(ssaIds[idSliced]);
-                        break;
+                    case BinaryExpression bin:
+                        var idSliced = FindSlicedFlagRegister(bin);
+                        if (idSliced is not null)
+                        {
+                            wl.Add(ssaIds[idSliced]);
+                            break;
+                        }
+                        goto default;
+                    case UnaryExpression unary:
+                        idSliced = FindSlicedFlagRegister(unary.Expression);
+                        if (idSliced is not null && unary.Operator == BinaryOperator.Not)
+                        {
+                            wl.Add(ssaIds[idSliced]);
+                            break;
+                        }
+                        goto default;
                     default:
                         defs.Add(ssaIds[ass.Dst]);
                         break;
@@ -201,7 +214,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 if (IsCopyWithOptionalCast(sid.Identifier, use))
                 {
                     // Bypass copies (C_4 = C_3) and slices
-                    // (C_4 = SLICE(SZC_3, bool, 0)
+                    // (C_4 = SZC_3 & 1)
                     var ass = (Assignment) use.Instruction;
                     var sidAlias = ssaIds[ass.Dst];
                     aliases.Add(sidAlias.Identifier);
@@ -245,9 +258,11 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 return false;
             return ass.Src switch
             {
+                Identifier id => grf == id,
                 Conversion conv => grf == conv.Expression,
                 Cast cast => grf == cast.Expression,
                 Slice s => grf == s.Expression,
+                BinaryExpression bin when bin.Operator.Type == OperatorType.And => bin.Left == grf || bin.Right == grf,
                 BinaryExpression bin when bin.Operator.Type == OperatorType.Or => bin.Left == grf || bin.Right == grf,
                 _ => false,
             };
@@ -264,7 +279,6 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             FlagGroupStorage? testedFlags,
             bool forceIdentifier)
         {
-            var defs = ClosureOfReachingDefinitions(sid);
             var gf = new GrfDefinitionFinder(ssaIds);
             gf.FindDefiningExpression(sid);
 
@@ -345,7 +359,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             bool isNegated)
         {
             Expression e = sid.Identifier;
-            if (testedFlags is not null)
+            if (testedFlags is not null && !Bits.IsSingleBitSet(testedFlags.FlagGroupBits))
             {
                 e = m.And(e, testedFlags.FlagGroupBits);
             }
@@ -506,7 +520,19 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             // 4.  flags_3 = cond(b_2)
 
             var sidOrigHi = ssaIds[assRolc.Dst];
-            var sidCarryUsedInRolc = ssaIds[(Identifier) rolc.Arguments[2]];
+
+            // Go 'backwards' through aliasing slices until instruction
+            // defining the carry flag is found.
+            var carryIn = rolc.Arguments[2];
+            if (carryIn is not Identifier idCarry)
+            {
+                var idCarrySliced = FindSlicedFlagRegister(carryIn);
+                if (idCarrySliced is null)
+                    return assRolc;
+                idCarry = idCarrySliced;
+            }
+
+            var sidCarryUsedInRolc = ssaIds[idCarry];
             var defStatements = ClosureOfReachingDefinitions(sidCarryUsedInRolc);
             if (defStatements.Count != 1)
                 return assRolc;
@@ -573,11 +599,20 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
             // Go 'backwards' through aliasing slices until instruction
             // defining the carry flag is found.
-            var sidCarry = ssaIds[(Identifier) rorc.Arguments[2]];
-            var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
-            while (sidCarry.GetDefiningExpression() is Slice slice)
+            var carryIn = rorc.Arguments[2];
+            if (carryIn is not Identifier idCarry)
             {
-                if (slice.Expression is not Identifier idSliced)
+                var idCarrySliced  = FindSlicedFlagRegister(carryIn);
+                if (idCarrySliced is null)
+                    return a;
+                idCarry = idCarrySliced;
+            }
+            var sidCarry = ssaIds[idCarry];
+            var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
+            while (sidCarry.GetDefiningExpression() is BinaryExpression bin)
+            {
+                var idSliced = FindSlicedFlagRegister(bin);
+                if (idSliced is null)
                 {
                     return a;
                 }
@@ -635,12 +670,32 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return sidOrigLo.DefStatement.Instruction;
         }
 
+        public override Expression VisitConversion(Conversion conversion)
+        {
+            var c = conversion.Expression.Accept(this);
+            if (c is Identifier id && id.Storage is FlagGroupStorage grf)
+            {
+                if (conversion.SourceDataType == PrimitiveType.Bool)
+                {
+                    var e = m.Ne0(c);
+                    return e;
+                }
+            }
+            return m.Convert(c, conversion.SourceDataType, conversion.DataType);
+        }
+
         public override Expression VisitTestCondition(TestCondition tc)
         {
             var id = (Identifier) tc.Expression;
             SsaIdentifier sid = ssaIds[id];
             sid.Uses.Remove(useStm!);
-            Expression c = UseGrfConditionally(sid, tc.ConditionCode, id.Storage as FlagGroupStorage, false);
+            var grf = id.Storage as FlagGroupStorage;
+            Expression c = UseGrfConditionally(sid, tc.ConditionCode, grf, false);
+            if (c.DataType.Domain != Domain.Boolean)
+            {
+                if (grf is null || !Bits.IsSingleBitSet(grf.FlagGroupBits))
+                    c = m.Ne0(c);
+            }
             Use(c, useStm!);
             return c;
         }
@@ -768,5 +823,47 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var eua = new InstructionUseAdder(stm, ssaIds);
             expr.Accept(eua);
         }
+    }
+
+    /// <summary>
+    /// Find a "sliced" flag group register in the given expression.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// After SSA analysis, accesses to the flag registers are often
+    /// aliased by instructions of the type:<code>
+    /// single_bit = flag_group & constant_mask.
+    /// </code>
+    /// This method detects such "slices".
+    /// </remarks>
+    public static Identifier? FindSlicedFlagRegister(BinaryExpression bin)
+    {
+        if (bin.Operator == Operator.And &&
+            bin.Left is Identifier { Storage: FlagGroupStorage } id &&
+            bin.Right is Constant)
+        {
+            return id;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Find a "sliced" flag group register in the given expression.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// After SSA analysis, accesses to the flag registers are often
+    /// aliased by instructions of the type:<code>
+    /// single_bit = flag_group & constant_mask.
+    /// </code>
+    /// This method detects such "slices".
+    /// </remarks>
+    public static Identifier? FindSlicedFlagRegister(Expression? e)
+    {
+        if (e is BinaryExpression bin)
+            return FindSlicedFlagRegister(bin);
+        return null;
     }
 }

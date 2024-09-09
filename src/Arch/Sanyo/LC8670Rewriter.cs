@@ -372,9 +372,9 @@ namespace Reko.Arch.Sanyo
 
         static LC8670Rewriter()
         {
-            C = new FlagGroupStorage(Registers.PSW, (uint) FlagM.CY, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(Registers.PSW, (uint) FlagM.OV, "V", PrimitiveType.Bool);
-            CAV = new FlagGroupStorage(Registers.PSW, (uint) (FlagM.CY|FlagM.AC|FlagM.OV), "CAV", PrimitiveType.Byte);
+            C = new FlagGroupStorage(Registers.PSW, (uint) FlagM.CY, nameof(C));
+            V = new FlagGroupStorage(Registers.PSW, (uint) FlagM.OV, nameof(V));
+            CAV = new FlagGroupStorage(Registers.PSW, (uint) (FlagM.CY|FlagM.AC|FlagM.OV), nameof(CAV));
             clr1_sig = new IntrinsicBuilder("__clr1", false)
                 .Param(PrimitiveType.Byte).Param(PrimitiveType.Byte).Returns(PrimitiveType.Byte);
             not1_sig = new IntrinsicBuilder("__not1", false)

@@ -50,11 +50,11 @@ namespace Reko.UnitTests.Core
             this.ah = RegisterStorage.Reg8("ah", 0, 8);
 
             this.freg = RegisterStorage.Reg32("eflags", 70);
-            this.szc = new FlagGroupStorage(freg, 0x7, "szc", PrimitiveType.Byte);
-            this.sz = new FlagGroupStorage(freg, 0x6, "sz", PrimitiveType.Byte);
-            this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);
-            this.z = new FlagGroupStorage(freg, 0x2, "z", PrimitiveType.Bool);
-            this.s = new FlagGroupStorage(freg, 0x4, "s", PrimitiveType.Bool);
+            this.szc = new FlagGroupStorage(freg, 0x7, "szc");
+            this.sz = new FlagGroupStorage(freg, 0x6, "sz");
+            this.c = new FlagGroupStorage(freg, 0x1, "c");
+            this.z = new FlagGroupStorage(freg, 0x2, "z");
+            this.s = new FlagGroupStorage(freg, 0x4, "s");
 
             this.fpu0 = new FpuStackStorage(0, PrimitiveType.Real64);
             this.fpu1 = new FpuStackStorage(1, PrimitiveType.Real64);

@@ -75,6 +75,7 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage SCZ;
         public static readonly FlagGroupStorage SCZO;
         public static readonly FlagGroupStorage SCZOP;
+        public static readonly FlagGroupStorage SCZDOP;
         public static readonly FlagGroupStorage SO;
         public static readonly FlagGroupStorage SZ;
         public static readonly FlagGroupStorage SZO;
@@ -362,11 +363,14 @@ namespace Reko.Arch.X86
             SCZ = FlagRegister("SCZ", eflags, FlagM.SF | FlagM.CF | FlagM.ZF);
             SCZO = FlagRegister("SCZO", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF);
             SCZOP = FlagRegister("SCZOP", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF | FlagM.PF);
+            SCZDOP = FlagRegister("SCZDOP", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF);
             SO = FlagRegister("SO", eflags, FlagM.SF | FlagM.OF);
             SZ = FlagRegister("SZ", eflags, FlagM.SF | FlagM.ZF);
             SZO = FlagRegister("SZO", eflags, FlagM.SF | FlagM.ZF | FlagM.OF);
             SZP = FlagRegister("SZP", eflags, FlagM.SF | FlagM.ZF | FlagM.PF);
             EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
+
+
 
             FPUF = factory.Reg("FPUF", PrimitiveType.Word16);
             FPST = factory.Reg("FPST", PrimitiveType.Byte);
@@ -835,13 +839,12 @@ namespace Reko.Arch.X86
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)
         {
-            var dt = Bits.IsSingleBitSet((uint) grf) ? PrimitiveType.Bool : freg.DataType;
-            return new FlagGroupStorage(freg, (uint)grf, name, dt);
+            return new FlagGroupStorage(freg, (uint)grf, name);
         }
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, uint grf)
         {
-            return new FlagGroupStorage(freg, (uint) grf, name, PrimitiveType.Bool);
+            return new FlagGroupStorage(freg, (uint) grf, name);
         }
 
         public static RegisterStorage GetRegister(string name)

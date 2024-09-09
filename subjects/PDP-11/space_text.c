@@ -72,8 +72,9 @@ void fn0472(word16 r1, Eq_n wArg10)
 	fn0468(&g_b05E4);
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	Eq_n r0_n = *((word16) r3_n + 0x007C);
-	struct Eq_n * r3_n = (struct Eq_n *) *((word16) r3_n + 0x0E);
+	Eq_n r0_n;
+	r0_n.u0 = r3_n.u0[0x007C];
+	struct Eq_n * r3_n = (struct Eq_n *) r3_n.u0[0x0E];
 	if (r3_n != null)
 		r0_n.u0 = r3_n->t0002.u0;
 	fn0528(r0_n);
@@ -92,7 +93,8 @@ void fn0472(word16 r1, Eq_n wArg10)
 	{
 		fn0468(&g_b0601);
 		Eq_n r1_n = wArg10;
-		bool C_n = true;
+		Eq_n C_n;
+		C_n.u0 = 0x01;
 		Eq_n r0_n;
 		r0_n.u0 = 24;
 		while (true)
@@ -106,14 +108,15 @@ void fn0472(word16 r1, Eq_n wArg10)
 			do
 			{
 				r1_n <<= 1;
-				bool C_n = (bool) cond(r1_n);
+				Eq_n NZVC_n;
+				NZVC_n.u1 = cond(r1_n);
 				if (r1_n == 0x00)
 				{
 					while (TTYOUT(')'))
 						;
 					goto l04F2;
 				}
-				r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
+				r0_n = __rcl<word16,byte>(r0_n, 0x01, NZVC_n & 0x01);
 				C_n = (r0_n & 0x80) != 0x00;
 				r0_n = r0_n;
 			} while ((r0_n & 0x80) != 0x00);
@@ -157,7 +160,7 @@ Eq_n fn051A(Eq_n r0, Eq_n r2, union Eq_n & r3Out)
 	Eq_n r0_n;
 	r0_n.u0 = 0x00;
 	for (r3_n = r0; r2 <= r3_n; r3_n -= r2)
-		r0_n = (word16) r0_n + 1;
+		r0_n.u0 = (word16) r0_n + 1;
 	r3Out = r3_n;
 	return r0_n;
 }
@@ -173,7 +176,7 @@ void fn0528(Eq_n r0)
 	word16 r3_n = 0x03;
 	while (true)
 	{
-		int16 r0_n = (int16) *((word16) r0_n + 1455);
+		int16 r0_n = (int16) r0_n.u0[1455];
 		while (TTYOUT((char) r0_n))
 			;
 		--r3_n;
@@ -192,7 +195,8 @@ void fn054C(ci16 r0, struct Eq_n * r3)
 	ci16 r2_n = r0 & 0x0F;
 	Eq_n wLoc02_n;
 	wLoc02_n.u0 = 0x00;
-	bool C_n = true;
+	Eq_n C_n;
+	C_n.u0 = 0x01;
 	Eq_n v18_n;
 	do
 	{
@@ -223,7 +227,7 @@ void fn0608(<anonymous> * wArg00, Eq_n wArg02)
 	byte bArg02_n = (byte) wArg02;
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
-	*((word16) r4_n + 42) = wArg00;
+	r4_n.u0[42] = (struct Eq_n) wArg00;
 	Eq_n wArg00_n;
 	wArg00_n.u0 = 0x00;
 	Eq_n r1_n = wArg02;
@@ -234,7 +238,8 @@ void fn0608(<anonymous> * wArg00, Eq_n wArg02)
 		r1_n = -wArg02;
 	}
 	cui16 r2_n = 0x90;
-	bool C_n = false;
+	Eq_n C_n;
+	C_n.u0 = 0x00;
 	while (true)
 	{
 		r1_n = __rcl<word16,byte>(r1_n, 0x01, C_n);
@@ -248,30 +253,31 @@ void fn0608(<anonymous> * wArg00, Eq_n wArg02)
 	wArg00_n = __rcr<word16,byte>(r1_n, 0x01, (wLoc04 << 0x01 & 0x01) != 0x00);
 	wArg02 = SEQ(__rcr<byte,byte>(bArg03_n, 0x01, (r1_n & 0x01) != 0x00), bArg02_n);
 l065C:
-	(*((word16) r4_n + 42))();
+	r4_n.u0[42]();
 }
 
-// 0670: void fn0670(Register Eq_n r5, Stack (ptr16 code) wArg00, Stack cui16 wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack Eq_n wArg08)
+// 0670: void fn0670(Register Eq_n r5, Stack (ptr16 code) wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08)
 // Called from:
 //      fn3B42
-void fn0670(Eq_n r5, <anonymous> * wArg00, cui16 wArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08)
+void fn0670(Eq_n r5, <anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 {
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
-	*((word16) r4_n + 42) = wArg00;
-	cui16 r2_n = wArg06;
+	r4_n.u0[42] = (struct Eq_n) wArg00;
+	Eq_n r0_n = wArg02;
+	Eq_n r1_n = wArg04;
+	Eq_n r2_n = wArg06;
 	Eq_n r3_n = wArg08;
-	ui32 r0_r1_n = SEQ(wArg02, wArg04);
 	if (wArg08 == 0x00)
 	{
 		r3_n = wArg04;
+		r0_n = wArg06;
 		r2_n = wArg02;
-		r0_r1_n = SEQ(wArg06, wArg08);
+		r1_n = wArg08;
 	}
-	ui32 v49_n = r0_r1_n << 0x01;
-	Eq_n r1_n = (word16) v49_n;
-	Eq_n r0_n = SLICE(v49_n, word16, 16);
-	Eq_n r5_n = __rcl<word16,byte>(r5, 0x01, (SLICE(r0_r1_n, word16, 16) & 0x8000) != 0x00);
+	Eq_n r1_n = r1_n << 1;
+	Eq_n r0_n = __rcl<word16,byte>(r0_n, 0x01, cond(r1_n) & 0x01);
+	Eq_n r5_n = __rcl<word16,byte>(r5, 0x01, (r0_n & 0x8000) != 0x00);
 	word16 r2_n;
 	word16 r3_n;
 	if (r0_n == 0x00)
@@ -282,10 +288,12 @@ l06B2:
 		goto l0738;
 	}
 	Eq_n r2_n = r2_n << 1;
+	Eq_n NZVC_n;
+	NZVC_n.u1 = cond(r2_n);
 	if (r2_n == 0x00)
 		goto l06B2;
-	cui16 r5_n = (word16) r5_n + (word16) (r2_n < 0x00);
-	wchar_t r4_n = (word16) r2_n + SEQ(SLICE(r0_n, byte, 8), 0x00);
+	cui16 r5_n = r5_n.u0 + (NZVC_n & 0x01);
+	wchar_t r4_n = r2_n.u0 + SEQ(SLICE(r0_n, byte, 8), 0x00);
 	if (r4_n < 0x00)
 	{
 		if (r4_n <= 0x00)
@@ -317,24 +325,24 @@ l06B0:
 	Eq_n r1_n = SEQ(SLICE(r1_n, byte, 8), 0x00);
 	uint32 r4_r5_n = SEQ(r2_n >> 0x01, r3_n);
 	uint32 r2_r3_n = SEQ(r2_n >> 0x01, r3_n);
-	bool C_n;
+	Eq_n NZVC_n;
 	Eq_n r0_n;
 	uint32 r2_r3_n;
 	while (true)
 	{
 		r1_n <<= 1;
 		r4_r5_n >>= 1;
-		C_n = (bool) cond(r1_n);
+		NZVC_n.u1 = cond(r1_n);
 		if (r1_n == 0x00)
 			break;
-		r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
+		r0_n = __rcl<word16,byte>(r0_n, 0x01, NZVC_n & 0x01);
 		r2_r3_n = r2_r3_n;
 		r0_n = r0_n;
 		r2_r3_n = r2_r3_n;
 		if ((r0_n & 0x8000) != 0x00)
 			r2_r3_n = r2_r3_n + r4_r5_n;
 	}
-	Eq_n r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
+	Eq_n r0_n = __rcl<word16,byte>(r0_n, 0x01, NZVC_n & 0x01);
 	if ((r0_n & 0x8000) != 0x00)
 	{
 l0700:
@@ -345,22 +353,23 @@ l0700:
 	do
 	{
 		r3_n = (word16) r2_r3_n;
-		r2_n = SLICE(r2_r3_n, word16, 16);
+		r2_n.u0 = SLICE(r2_r3_n, word16, 16);
 		r4_r5_n >>= 1;
 		r0_n <<= 1;
 		if (r0_n < 0x00)
 			goto l0700;
 	} while (r0_n != 0x00);
 	Eq_n r4_n = r4_n;
-	bool C_n = false;
+	Eq_n C_n;
+	C_n.u0 = 0x00;
 	if (r2_n < 0x00)
 	{
 l0724:
-		uint32 r2_r3_n = SEQ((word16) r4_n + __swab(SEQ(SLICE(r2_n, byte, 8), 0x00)), __swab(SEQ(SLICE(__rcl<word16,byte>(r3_n, 0x01, C_n), byte, 8), 0x00) | r2_n)) + (uint32) __rcl<word16,byte>(r1_n, 0x01, (r3_n & 0x80) != 0x00);
+		uint32 r2_r3_n = __swab(SEQ(SLICE(__rcl<word16,byte>(r3_n, 0x01, C_n), byte, 8), 0x00) | r2_n) + (uint32) __rcl<word16,byte>(r1_n, 0x01, (r3_n & 0x80) != 0x00);
 		r3_n = (word16) r2_r3_n;
 		r2_n = SLICE(r2_r3_n, word16, 16);
 l0738:
-		(*((word16) r4_n + 42))();
+		r4_n.u0[42]();
 		return;
 	}
 	r3_n <<= 0x01;
@@ -368,7 +377,7 @@ l0738:
 	if ((r4_n & 0x7F80) != 0x00)
 	{
 		r4_n = (r4_n & 0x7F80) - 0x80;
-		C_n = (bool) cond(r4_n);
+		C_n = cond(r4_n) & 0x01;
 		goto l0724;
 	}
 	goto l06B0;
@@ -379,7 +388,8 @@ void fn0754(<anonymous> * wArg00, cui16 wArg02, uint16 wArg04, cui16 wArg06, uin
 {
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
-	*((word16) r4_n + 42) = wArg00;
+	r4_n.u0[42] = (struct Eq_n) wArg00;
+	uint16 r3_n = wArg08;
 	if (wArg02 << 1 == 0x00)
 	{
 		__syscall<word16>(0x898C);
@@ -400,26 +410,25 @@ void fn0754(<anonymous> * wArg00, cui16 wArg02, uint16 wArg04, cui16 wArg06, uin
 				goto l080A;
 			}
 l078E:
-			Eq_n r4_n = __rcr<word16,byte>(r4_n, 0x01, true);
+			Eq_n r4_n = __rcr<word16,byte>(r4_n, 0x01, 0x01);
 			Eq_n r5_n = __rcr<word16,byte>(r5_n, 0x01, (r2_n + 0x7F01 & 0x01) != 0x00);
 			Eq_n r0_n;
 			r0_n.u0 = 0x0100;
 			cup16 v34_n = r4_n - r5_n;
-			ui32 r4_r3_n;
 			if (v34_n > 0x00)
 			{
 l07AC:
-				r4_r3_n = SEQ(r4_n, wArg08) - SEQ(r5_n, wArg04);
+				ui32 r4_r3_n = SEQ(r4_n, wArg08) - SEQ(r5_n, wArg04);
+				r3_n = (word16) r4_r3_n;
+				r4_n.u0 = SLICE(r4_r3_n, word16, 16);
 				r0_n.u0 = 0x0202;
 				goto l07B6;
 			}
 			else
 			{
-				r4_r3_n = SEQ(r4_n, wArg08);
 				if (v34_n >= 0x00)
 				{
 					uint16 v36_n = wArg08 - wArg04;
-					r4_r3_n = SEQ(r4_n, wArg08);
 					if (v36_n >= 0x00)
 					{
 						if (v36_n == 0x00)
@@ -431,7 +440,7 @@ l07AC:
 					}
 				}
 l07B6:
-				fn07BA(r4_r3_n, SEQ(r5_n, wArg04), r0_n, 2028, (word16) r4_n + 42);
+				fn07BA(SEQ(r5_n, wArg04), r0_n, r3_n, r4_n, 2028, r4_n.u0 + 42);
 				return;
 			}
 		}
@@ -443,36 +452,35 @@ l080C:
 	fn07E8();
 }
 
-// 07BA: void fn07BA(Sequence ui32 r4_r3, Sequence ui32 r5_r1, Register Eq_n r0, Stack word16 wArg00, Stack (ptr16 word16) wArg04)
+// 07BA: void fn07BA(Sequence ui32 r5_r1, Register Eq_n r0, Register uint16 r3, Register Eq_n r4, Stack word16 wArg00, Stack (ptr16 word16) wArg04)
 // Called from:
 //      fn0754
-void fn07BA(ui32 r4_r3, ui32 r5_r1, Eq_n r0, word16 wArg00, word16 * wArg04)
+void fn07BA(ui32 r5_r1, Eq_n r0, uint16 r3, Eq_n r4, word16 wArg00, word16 * wArg04)
 {
 	word16 r5 = SLICE(r5_r1, word16, 16);
 	word16 r1 = (word16) r5_r1;
-	ui32 r4_r3_n = r4_r3;
 	Eq_n r0_n;
 	do
 	{
-		ui32 r4_r3_n = r4_r3_n << 0x01;
-		word16 r3_n = (word16) r4_r3_n;
-		word16 r4_n = SLICE(r4_r3_n, word16, 16);
-		bool C_n;
-		if ((SLICE(r4_r3_n, word16, 16) & 0x80) == 0x00)
+		r3 <<= 1;
+		r4 = __rcl<word16,byte>(r4, 0x01, cond(r3) & 0x01);
+		Eq_n C_n;
+		if ((r4 & 0x80) == 0x00)
 		{
-			cu8 v13_n = (byte) (r5 - r4_n);
-			C_n = (bool) cond(v13_n);
+			cu8 v13_n = (byte) (r5 - r4);
+			C_n = cond(v13_n) & 0x01;
 			if (v13_n > 0x00)
 				goto l07CE;
 			if (v13_n != 0x00)
 				goto l07C6;
-			cup16 v17_n = r1 - r3_n;
-			C_n = (bool) cond(v17_n);
+			cup16 v17_n = r1 - r3;
+			C_n = cond(v17_n) & 0x01;
 			if (v17_n > 0x00)
 				goto l07CE;
 			if (v17_n >= 0x00)
 			{
-				bool C_n = true;
+				Eq_n C_n;
+				C_n.u0 = 0x01;
 				Eq_n r0_n;
 				do
 				{
@@ -493,11 +501,12 @@ void fn07BA(ui32 r4_r3, ui32 r5_r1, Eq_n r0, word16 wArg00, word16 * wArg04)
 			}
 		}
 l07C6:
-		r4_r3_n -= r5_r1;
-		C_n = true;
+		ui32 r4_r3_n = SEQ(r4, r3) - r5_r1;
+		r3 = (word16) r4_r3_n;
+		r4.u0 = SLICE(r4_r3_n, word16, 16);
+		C_n.u0 = 0x01;
 l07CE:
 		r0 = __rcl<word16,byte>(r0_n, 0x01, C_n);
-		r4_r3_n = r4_r3_n;
 		r0_n = r0;
 	} while ((r0_n & 0x8000) == 0x00);
 }
@@ -542,39 +551,35 @@ void fn0A64(word16 * r5)
 word16 fn0AAE(struct Eq_n * r5, ptr16 & r4Out)
 {
 	struct Eq_n * r4_n = r5->ptr0002;
-	word16 v10_n = r4_n->w0002;
+	ui16 v10_n = r4_n->w0002;
 	cui16 v12_n = r4_n->w0000;
-	Eq_n r3_n = __rcr<word16,byte>(0x00, 0x01, (bool) cond(v12_n << 1));
-	Eq_n r0_n = __rcr<word16,byte>(v12_n << 1, 0x01, true);
+	Eq_n r3_n = __rcr<word16,byte>(0x00, 0x01, cond(v12_n << 1) & 0x01);
+	Eq_n r0_n = __rcr<word16,byte>(v12_n << 1, 0x01, 0x01);
 	Eq_n r2_n = SEQ(SLICE(r0_n, byte, 8), 0x00);
-	cui16 r0_n = r0_n & ~r2_n;
+	ui16 r1_n = v10_n;
+	Eq_n r0_n = r0_n & ~r2_n;
 	wchar_t r2_n = __swab(r2_n);
-	int16 r0_n;
 	if (r2_n <= 0x00)
 	{
-		int32 r0_r1_n = SEQ(r0_n, v10_n);
 		if (r2_n < 0x91)
 		{
 			do
 			{
-				uint16 r1_n;
 				ci16 v32_n;
 				while (true)
 				{
-					r0_n = SLICE(r0_r1_n, word16, 16);
-					r1_n = (word16) r0_r1_n;
 					v32_n = 0x88 - r2_n;
 					if (v32_n >= 0x00)
 						break;
-					r0_r1_n <<= 0x01;
+					r1_n <<= 1;
+					r0_n = __rcl<word16,byte>(r0_n, 0x01, cond(r1_n) & 0x01);
 					--r2_n;
 				}
 				if (v32_n == 0x00)
 					break;
 				++r2_n;
 				r0_n >>= 1;
-				r0_r1_n = SEQ(r0_n >> 1, r1_n);
-			} while (r0_n >> 1 != 0x00);
+			} while (r0_n != 0x00);
 			if (r3_n <= 0x00)
 				r0_n = -r0_n;
 l107E:
@@ -586,7 +591,7 @@ l1086:
 				word16 r0_n;
 				return r0_n;
 			}
-			r3_n = (word16) r3_n + r0_n;
+			r3_n.u0 = r3_n + r0_n;
 			if (r3_n >= 0x00)
 				goto l1086;
 			goto l105E;
@@ -594,7 +599,7 @@ l1086:
 l105E:
 		__syscall<word16>(0x8981);
 	}
-	r0_n = 0x00;
+	r0_n.u0 = 0x00;
 	goto l107E;
 }
 
@@ -621,7 +626,7 @@ word16 fn0AE2(<anonymous> ** r4, Eq_n wArg00, Eq_n wArg02, <anonymous> * wArg04)
 Eq_n fn0AE6(<anonymous> ** r4, word16 wArg00, Eq_n wArg02, Eq_n wArg04, <anonymous> * wArg06)
 {
 	uint8 bArg00 = (byte) wArg00;
-	uint8 bArg01 = SLICE(wArg00, byte, 8);
+	byte bArg01 = SLICE(wArg00, byte, 8);
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	uint16 wLoc04_n;
@@ -631,19 +636,19 @@ Eq_n fn0AE6(<anonymous> ** r4, word16 wArg00, Eq_n wArg02, Eq_n wArg04, <anonymo
 		if (bArg00 != 0x08)
 			wLoc04_n += 0x03;
 	}
-	*((word16) r3_n + 0x00A4) = wLoc04_n + (word16) (bArg00 < bArg01);
-	if (*((word16) r3_n + 116) == 0x00)
+	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (cond(bArg00 - bArg01) & 0x01));
+	if (r3_n.u0[116] == 0x00)
 	{
-		*((word16) r3_n + 82) = wArg00;
-		*((word16) r3_n + 0x0044) = wArg04;
+		r3_n.u0[82] = (struct Eq_n) wArg00;
+		r3_n.u0[0x0044] = (struct Eq_n) wArg04;
 		wArg06();
 		Eq_n r3;
 		return r3;
 	}
 	else
 	{
-		*((word16) r3_n + 82) = wArg00;
-		*((word16) r3_n + 0x0044) = wArg02;
+		r3_n.u0[82] = (struct Eq_n) wArg00;
+		r3_n.u0[0x0044] = (struct Eq_n) wArg02;
 		wArg04();
 		(*r4)();
 		return r3_n;
@@ -669,7 +674,7 @@ void fn0B44(Eq_n r0, Eq_n wArg00, Eq_n wArg02, word16 * ptrArg04)
 void fn0B60(Eq_n r0, word16 wArg00, Eq_n wArg02, Eq_n wArg04, word16 * ptrArg06)
 {
 	uint8 bArg00 = (byte) wArg00;
-	uint8 bArg01 = SLICE(wArg00, byte, 8);
+	byte bArg01 = SLICE(wArg00, byte, 8);
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	uint16 wLoc04_n;
@@ -679,16 +684,16 @@ void fn0B60(Eq_n r0, word16 wArg00, Eq_n wArg02, Eq_n wArg04, word16 * ptrArg06)
 		if (bArg00 != 0x08)
 			wLoc04_n += 0x03;
 	}
-	*((word16) r3_n + 0x00A4) = wLoc04_n + (word16) (bArg00 < bArg01);
+	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (cond(bArg00 - bArg01) & 0x01));
 	<anonymous> ** sp_n;
 	ptr16 fp;
 	word16 * sp_n;
-	if (*((word16) r3_n + 116) != 0x00)
+	if (r3_n.u0[116] != 0x00)
 	{
-		*((word16) r3_n + 82) = wArg00;
-		*((word16) r3_n + 0x0044) = wArg02;
-		*((word16) r3_n + 90) = *wArg04;
-		((word16) r3_n + 0x007E)->u0 = 0x0BEC;
+		r3_n.u0[82] = (struct Eq_n) wArg00;
+		r3_n.u0[0x0044] = (struct Eq_n) wArg02;
+		r3_n.u0[90] = wArg04.u0->t0000;
+		r3_n.u0[0x007E] = (struct Eq_n) 0x0BEC;
 		sp_n = fp + 0x06;
 l0BC6:
 		(*sp_n)();
@@ -698,31 +703,31 @@ l0BC6:
 		sp_n->tFFFFFFFC.u0 = (struct Eq_n *) r0_n;
 		Eq_n r3_n;
 		r3_n.u0 = g_t5424.u0;
-		*((word16) r3_n + 0x0044) = (word16) *((word16) r3_n + 0x0044) + (int16) (*((word16) r3_n + 83));
+		r3_n.u0[0x0044] = r3_n.u0[0x0044].t0000 + (int16) (*((word16) r3_n + 83));
 		Eq_n v37_n;
 		v37_n.u0 = sp_n->tFFFFFFFC.u0;
-		word16 v39_n = *((word16) r3_n + 90) - 0x01;
-		*((word16) r3_n + 90) = v39_n;
+		word16 v39_n = r3_n.u0[90] - 0x01;
+		r3_n.u0[90] = (struct Eq_n) v39_n;
 		sp_n = sp_n - 0x02;
 		r0 = v37_n;
 		if (v39_n == 0x00)
 		{
 			sp_n->tFFFFFFFC.u0 = sp_n->tFFFFFFFE.u0;
-			sp_n->tFFFFFFFE.u0 = (struct Eq_n *) *((word16) r3_n + 0x007E);
+			sp_n->tFFFFFFFE.u0 = (struct Eq_n *) r3_n.u0[0x007E];
 			sp_n->tFFFFFFFE.u0();
 			return;
 		}
 	}
 	else
 	{
-		*((word16) r3_n + 82) = wArg00;
-		*((word16) r3_n + 0x007E) = wArg02;
-		*((word16) r3_n + 0x0044) = wArg04;
-		*((word16) r3_n + 90) = *ptrArg06;
+		r3_n.u0[82] = (struct Eq_n) wArg00;
+		r3_n.u0[0x007E] = (struct Eq_n) wArg02;
+		r3_n.u0[0x0044] = (struct Eq_n) wArg04;
+		r3_n.u0[90] = (struct Eq_n) *ptrArg06;
 		sp_n = fp + 0x06;
 	}
 	sp_n = sp_n + 1;
-	r3_n = *sp_n;
+	r3_n.u0 = *sp_n;
 	goto l0BC6;
 }
 
@@ -800,14 +805,14 @@ void fn0DC8(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 }
 
 <anonymous> g_t0DCC = <code>; // 0DCC
-// 0E0E: FlagGroup byte fn0E0E(Stack (ptr16 code) wArg00, Stack cui16 wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack Eq_n wArg08)
+// 0E0E: FlagGroup cui16 fn0E0E(Stack (ptr16 code) wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08)
 // Called from:
 //      fn3B42
-byte fn0E0E(<anonymous> * wArg00, cui16 wArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08)
+cui16 fn0E0E(<anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 {
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
-	*((word16) r4_n + 42) = wArg00;
+	r4_n.u0[42] = (struct Eq_n) wArg00;
 	cup16 v19_n = wArg06 - wArg02;
 	bool v25_n = v19_n >= 0x00;
 	if (v19_n == 0x00)
@@ -817,9 +822,9 @@ byte fn0E0E(<anonymous> * wArg00, cui16 wArg02, Eq_n wArg04, cui16 wArg06, Eq_n 
 		if (v21_n == 0x00)
 		{
 l0E7C:
-			(*((word16) r4_n + 42))();
-			byte NZVC_n;
-			return SLICE(NZVC_n, bool, 3) | SLICE(NZVC_n, bool, 1);
+			r4_n.u0[42]();
+			cui16 NZVC_n;
+			return NZVC_n & 0x08 | NZVC_n & 0x02;
 		}
 	}
 	goto l0E7C;
@@ -832,18 +837,17 @@ void fn0EA8(Eq_n wArg00)
 {
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	((word16) r3_n + 0x0044)->u0 = 0x00;
-	if (*((word16) r3_n + 116) == 0x00)
-		*((word16) r3_n + 0x007E) = wArg00;
+	r3_n.u0[0x0044] = (struct Eq_n) 0x00;
+	if (r3_n.u0[116] == 0x00)
+		r3_n.u0[0x007E] = (struct Eq_n) wArg00;
 	wArg00();
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	*((word16) r3_n + 116) != 0x00;
-	*((word16) r3_n + 114) = null;
-	*((word16) r3_n + 112) = null;
-	*((word16) r3_n + 20) = null;
-	*((word16) r3_n + 0x0C) = *((word16) r3_n + 88);
-	*((word16) r3_n + 0x00A2) = 0x00;
+	r3_n.u0[114] = (struct Eq_n) null;
+	r3_n.u0[112] = (struct Eq_n) null;
+	r3_n.u0[20] = (struct Eq_n) null;
+	r3_n.u0[0x0C] = r3_n.u0[88];
+	r3_n.u0[0x00A2] = (struct Eq_n) 0x00;
 }
 
 Eq_n g_t0EF4 = // 0EF4
@@ -886,13 +890,13 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	struct Eq_n * v14_n = r4->ptr0000;
-	struct Eq_n * v18_n = (struct Eq_n *) *((word16) r3_n + 0x0E);
-	word16 v19_n = (word16) *r3_n;
-	byte v17_n = (byte) *((word16) r3_n + 116);
+	struct Eq_n * v18_n = (struct Eq_n *) r3_n.u0[0x0E];
+	word16 v19_n = r3_n.u0->t0000;
+	byte v17_n = (byte) r3_n.u0[116];
 	byte bLoc04_n = v14_n->b0001;
-	*r3_n = 0x00;
+	r3_n.u0->t0000 = (<anonymous>) 0x00;
 	ptr16 fp;
-	*((word16) r3_n + 0x0E) = fp - 0x07;
+	r3_n.u0[0x0E] = (struct Eq_n) (fp - 0x07);
 	word16 v23_n = *r5;
 	byte bLoc03_n = (byte) v19_n;
 	byte bLoc01_n = (byte) v18_n;
@@ -925,7 +929,7 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 			} while (r2_n != 0x00);
 		}
 	}
-	*((word16) r3_n + 116) = 0x00;
+	r3_n.u0[116] = (struct Eq_n) 0x00;
 	word16 wArg00_n = SEQ(v17_n, bArg00_n);
 	if (true)
 	{
@@ -935,9 +939,9 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 		fn3B42(stackArg0);
 		Eq_n r4_n;
 		r4_n.u0 = g_t5424.u0;
-		*r4_n = wLoc04_n;
-		*((word16) r4_n + 0x0E) = wLoc02_n;
-		*((word16) r4_n + 116) = bArg00_n;
+		r4_n.u0->t0000 = (<anonymous>) wLoc04_n;
+		r4_n.u0[0x0E] = (struct Eq_n) wLoc02_n;
+		r4_n.u0[116] = (struct Eq_n) bArg00_n;
 	}
 	else
 		r4->ptr0002();
@@ -958,29 +962,29 @@ uint16 fn0F48(struct Eq_n * r5, union Eq_n & r1Out, struct Eq_n & r5Out)
 		Eq_n r0_n;
 		r0_n.u0 = v14_n->u0;
 		uint16 r1_n = *v16_n;
-		ui32 r0_r1_n;
+		uint16 r1_n;
+		Eq_n r0_n;
 		if (r1_n != 0x00)
 		{
-			r0_r1_n = SEQ(__rcl<word16,byte>(r0_n, 0x01, (bool) cond(r1_n << 1)) + v14_n->u0, r1_n << 1) + SEQ(*v16_n, *v16_n);
-			uint16 r1_n = (word16) r0_r1_n;
-			ci16 r0_n = SLICE(r0_r1_n, word16, 16);
+			ui32 r0_r1_n = SEQ(__rcl<word16,byte>(r0_n, 0x01, cond(r1_n << 1) & 0x01) + v14_n->u0, r1_n << 1) + SEQ(*v16_n, *v16_n);
+			r1_n = (word16) r0_r1_n;
+			r0_n.u0 = SLICE(r0_r1_n, word16, 16);
 			if (r0_n <= 0x00)
-				r0_r1_n = SEQ(r0_n + 0x8000, r1_n);
+				r0_n.u0 = (word16) r0_n + 0x00008000;
 		}
 		else
-			r0_r1_n = SEQ((word16) r0_n + 1, 0x03);
-		v14_n->u0 = SLICE(r0_r1_n, word16, 16);
-		*v16_n = (word16) r0_r1_n;
+		{
+			r1_n = 0x03;
+			r0_n.u0 = (word16) r0_n + 1;
+		}
+		v14_n->u0 = (struct Eq_n *) r0_n;
+		*v16_n = r1_n;
 		cui16 r2_n = 0x81;
-		ui32 r0_r1_n = r0_r1_n;
-		word16 r1_n;
-		cui16 r0_n;
 		while (true)
 		{
-			r0_r1_n <<= 0x01;
-			r1_n = (word16) r0_r1_n;
-			r0_n = SLICE(r0_r1_n, word16, 16);
-			if ((SLICE(r0_r1_n, word16, 16) & 0x8000) != 0x00)
+			r1_n <<= 1;
+			r0_n = __rcl<word16,byte>(r0_n, 0x01, cond(r1_n) & 0x01);
+			if ((r0_n & 0x8000) != 0x00)
 				break;
 			--r2_n;
 		}
@@ -1002,26 +1006,26 @@ void fn0F9C()
 	t0000.b002B |= 0x01;
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	*((word16) r3_n + 0x0066) = (word16) *((word16) r3_n + 0x0066) + 1;
-	struct Eq_n * r4_n = (struct Eq_n *) *((word16) r3_n + 4);
+	r3_n.u0[0x0066] = r3_n.u0[0x0066].t0000 + 1;
+	struct Eq_n * r4_n = (struct Eq_n *) r3_n.u0[4];
 	struct Eq_n * r4_n;
-	while (r4_n < *((word16) r3_n + 2))
+	while (r4_n < (r3_n.u0)[2])
 	{
 		r4_n = r4_n + 1;
 		r4_n = r4_n;
 		if ((int16) r4_n->b0000 != 0x00)
 		{
-			if (*((word16) r3_n + 0x0066) == 0x02)
+			if (r3_n.u0[0x0066] == 0x02)
 			{
 				r4_n->bFFFFFFFF = 0x00;
-				--*((word16) r3_n + 0x0066);
+				r3_n.u0[0x0066] = (struct Eq_n) (r3_n.u0[0x0066] - 0x01);
 				--r4_n;
 			}
 			else
 				g_ptr1DAA();
 		}
 	}
-	union Eq_n * r0_n = (union Eq_n *) *((word16) r3_n + 110);
+	union Eq_n * r0_n = (union Eq_n *) r3_n.u0[110];
 	if (r0_n == null)
 	{
 		cui16 v31_n = t0000.w0024 & 0x0800;
@@ -1057,11 +1061,11 @@ void fn0FB2(int16 r0, struct Eq_n * wArg00, struct Eq_n * wArg02, struct Eq_n * 
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	ptr16 fp;
-	*((word16) r3_n + 100) = fp + 0x0A;
-	if (*((word16) r3_n + 20) != null)
+	r3_n.u0[100] = (struct Eq_n) (fp + 0x0A);
+	if (r3_n.u0[20] != null)
 		__syscall<word16>(0x899A);
-	*((word16) r3_n + 20) = wArg00;
-	*((word16) r3_n + 28) = wArg04;
+	r3_n.u0[20] = (struct Eq_n) wArg00;
+	r3_n.u0[28] = (struct Eq_n) wArg04;
 	g_t0FE2();
 }
 
@@ -1104,8 +1108,8 @@ void fn11A6(struct Eq_n * r0, word16 * r5)
 {
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	*((word16) r3_n + 100) = r0;
-	*((word16) r3_n + 88) = *((word16) r3_n + 0x0C);
+	r3_n.u0[100] = (struct Eq_n) r0;
+	r3_n.u0[88] = r3_n.u0[0x0C];
 	word16 * r0_n = g_a541C;
 	word16 * r1_n = &g_w542C;
 	word16 * r2_n = &g_ptr5426;
@@ -1150,25 +1154,25 @@ void fn12AC(int16 r2)
 {
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	*((word16) r3_n + 0x00A2) = (byte) r2;
-	if (*((word16) r3_n + 20) != null)
+	r3_n.u0[0x00A2] = (struct Eq_n) (byte) r2;
+	if (r3_n.u0[20] != null)
 		__syscall<word16>(0x899A);
 	struct Eq_n * r0_n = fn1420(r2, r3_n);
-	*((word16) r3_n + 20) = r0_n;
+	r3_n.u0[20] = (struct Eq_n) r0_n;
 	r0_n->t0000.u1 = (ci16) (r0_n->t0000.u1 & 0x0800);
 }
 
 // 12CA: void fn12CA(Register ptr16 r2, Register Eq_n r3)
 void fn12CA(ptr16 r2, Eq_n r3)
 {
-	struct Eq_n * r4_n = (struct Eq_n *) *((word16) r3 + 20);
-	struct Eq_n * r1_n = (struct Eq_n *) *((word16) r3 + 26);
+	struct Eq_n * r4_n = (struct Eq_n *) r3.u0[20];
+	struct Eq_n * r1_n = (struct Eq_n *) r3.u0[26];
 	if (r4_n->t0000.u0 <= 0x00)
 	{
 		PRINT(&g_b138E);
-		r2 = (ptr16) *((word16) r3 + 84);
+		r2 = (ptr16) r3.u0[84];
 		ptr16 fp;
-		*((word16) r3 + 84) = fp - 0x04;
+		r3.u0[84] = (struct Eq_n) (fp - 0x04);
 	}
 	Eq_n v19_n = r4_n->t0000.u1 & 0x20;
 	r4_n->t0000.u1 = (ci16) v19_n;
@@ -1186,17 +1190,17 @@ l1326:
 l132A:
 			if (r4_n->t0000.u0 <= 0x00)
 			{
-				if (r1_n < *((word16) r3 + 28))
+				if (r1_n < (r3.u0)[28])
 				{
-					int16 r5_n = (int16) **((word16) r3 + 28);
-					**((word16) r3 + 28) = 0x80;
+					int16 r5_n = (int16) *r3.u0[28].t0000;
+					((word16) r3 + 28)->u0->t0000 = (<anonymous>) 0x80;
 					PRINT(r1_n);
-					**((word16) r3 + 28) = (byte) r5_n;
+					((word16) r3 + 28)->u0->t0000 = (<anonymous>) (byte) r5_n;
 				}
 			}
 			else
 			{
-				for (; r1_n < *((word16) r3 + 28); ++r1_n)
+				for (; r1_n < (r3.u0)[28]; ++r1_n)
 				{
 					word16 r2_n;
 					fn1370((int16) r1_n->b0000, r3, r4_n, out r2_n, out r3, out r4_n);
@@ -1208,8 +1212,8 @@ l132A:
 			goto l132A;
 		if (v21_n == 0x24)
 		{
-			--*((word16) r3 + 28);
-			*((word16) r3 + 84) = null;
+			r3.u0[28] = (struct Eq_n) (r3.u0[28] - 0x01);
+			r3.u0[84] = (struct Eq_n) null;
 		}
 		else if (v21_n == 0x30)
 			r0_n = fn1366(0x0A, r3, r4_n, out r2, out r3, out r4_n);
@@ -1319,26 +1323,26 @@ word16 fn1420(int16 r2, Eq_n r3)
 {
 	if (r2 <= 0x00 || r2 > 99)
 		__syscall<word16>(0x8994);
-	struct Eq_n * v15_n = (struct Eq_n *) *((word16) r3 + 4);
+	struct Eq_n * v15_n = (struct Eq_n *) r3.u0[4];
 	struct Eq_n * r1_n = v15_n;
 	do
 	{
 		++r1_n;
 		if ((byte) r2 == r1_n->b0000)
 			goto l144A;
-	} while (r1_n < *((word16) r3 + 2));
+	} while (r1_n < (r3.u0)[2]);
 	r1_n = v15_n;
 	do
 	{
 		++r1_n;
 		if (r1_n->b0000 == 0x00)
 			goto l144A;
-	} while (r1_n < *((word16) r3 + 2));
+	} while (r1_n < (r3.u0)[2]);
 	__syscall<word16>(0x8995);
 l144A:
 	byte * r1_n = r1_n - 0x01;
 	*r1_n = (byte) r2;
-	word16 r0_n = (word16) *((word16) r3 + 6);
+	word16 r0_n = (word16) r3.u0[6];
 	ptr16 r1_n;
 	for (r1_n = r1_n - v15_n; r1_n != null; --r1_n)
 		r0_n += 0x20;
@@ -1352,22 +1356,22 @@ void fn145E(word16 r2, <anonymous> * wArg00, word16 wArg02, int16 * ptrArg04)
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	ptr16 fp;
-	*((word16) r3_n + 100) = fp + 22;
-	*((word16) r3_n + 0x00A2) = (byte) r2;
-	if (*((word16) r3_n + 20) != null)
+	r3_n.u0[100] = (struct Eq_n) (fp + 22);
+	r3_n.u0[0x00A2] = (struct Eq_n) (byte) r2;
+	if (r3_n.u0[20] != null)
 		__syscall<word16>(0x899A);
-	*((word16) r3_n + 18) = wArg02;
+	r3_n.u0[18] = (struct Eq_n) wArg02;
 	int16 v19_n = *ptrArg04;
 	struct Eq_n * r0_n = fn1420(v19_n, r3_n);
-	*((word16) r3_n + 20) = r0_n;
+	r3_n.u0[20] = (struct Eq_n) r0_n;
 	r0_n->t0000.u1 = (ci16) (r0_n->t0000.u1 & 0x0800);
 	wArg00();
 	ci16 v23_n = r0_n->w0000 & 0x0800;
 	r0_n->w0000 = v23_n;
 	if (v23_n == 0x00)
 		fn45F6(r0_n, v19_n, r3_n);
-	*((word16) r3_n + 26) = *((word16) r3_n + 2);
-	*((word16) r3_n + 88) = *((word16) r3_n + 0x0C);
+	r3_n.u0[26] = r3_n.u0[2];
+	r3_n.u0[88] = r3_n.u0[0x0C];
 }
 
 // 14A8: void fn14A8(Register int16 r2, Register uint16 r5)
@@ -1375,9 +1379,9 @@ void fn14A8(int16 r2, uint16 r5)
 {
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
-	*((word16) r3_n + 0x00A2) = (byte) r2;
+	r3_n.u0[0x00A2] = (struct Eq_n) (byte) r2;
 	struct Eq_n * r0_n = fn1420(r2, r3_n);
-	*((word16) r3_n + 20) = r0_n;
+	r3_n.u0[20] = (struct Eq_n) r0_n;
 	cui16 v15_n = r0_n->t0000.u1 & 0x0800;
 	r0_n->t0000.u1 = v15_n;
 	if (v15_n != 0x00)
@@ -1406,11 +1410,11 @@ void fn14A8(int16 r2, uint16 r5)
 					r4_n->t0000.u1 = v27_n;
 					if (v27_n != 0x00)
 					{
-						*((word16) r3_n + 112) = &g_t1520;
-						if (*((word16) r3_n + 116) != 0x00)
-							*((word16) r3_n + 114) = &g_t151E;
+						r3_n.u0[112] = (struct Eq_n) &g_t1520;
+						if (r3_n.u0[116] != 0x00)
+							r3_n.u0[114] = (struct Eq_n) &g_t151E;
 						ptr16 fp;
-						*((word16) r3_n + 100) = fp - 0x09;
+						r3_n.u0[100] = (struct Eq_n) (fp - 0x09);
 						while (true)
 						{
 							word16 r2_n;
@@ -1439,29 +1443,30 @@ void fn14A8(int16 r2, uint16 r5)
 				*r2_n = *r0_n;
 				++r0_n;
 				++r2_n;
-			} while (r0_n < *((word16) r3_n + 0x0C));
-			*((word16) r3_n + 0x0C) -= r5_n << 1;
+			} while (r0_n < (r3_n.u0)[0x0C]);
+			r3_n.u0[0x0C] = (struct Eq_n) (r3_n.u0[0x0C] - (r5_n << 1));
 			ci16 v63_n = r4_n->t0000.u1 & 0x04;
 			r4_n->t0000.u1 = v63_n;
 			int16 r1_n = (int16) r4_n->b0011;
 			__syscall<word16>(0x88FC);
 			Eq_n r0_n;
 			r0_n.u0 = 0x00;
-			bool C_n = true;
+			Eq_n C_n;
+			C_n.u0 = 0x01;
 			do
 			{
 				r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
 				C_n = (r0_n & 0x8000) != 0x00;
 				--r1_n;
 			} while (r1_n > 0x00);
-			*((word16) r3_n + 16) &= ~r0_n;
+			r3_n.u0[16] = (struct Eq_n) (r3_n.u0[16] & ~r0_n);
 		}
 		else
 			wLoc08_n = (word16 *) ~0x00;
-		*((word16) r3_n + 114) = null;
-		*((word16) r3_n + 112) = null;
-		struct Eq_n * r4_n = (struct Eq_n *) *((word16) r3_n + 4);
-		while (r4_n < *((word16) r3_n + 2))
+		r3_n.u0[114] = (struct Eq_n) null;
+		r3_n.u0[112] = (struct Eq_n) null;
+		struct Eq_n * r4_n = (struct Eq_n *) r3_n.u0[4];
+		while (r4_n < (r3_n.u0)[2])
 		{
 			++r4_n;
 			int16 r2_n = (int16) r4_n->b0000;
@@ -1472,7 +1477,7 @@ void fn14A8(int16 r2, uint16 r5)
 					r0_n[1] = (struct Eq_n) (r0_n[1] - r5);
 			}
 		}
-		r0_n = (struct Eq_n *) *((word16) r3_n + 20);
+		r0_n = (struct Eq_n *) r3_n.u0[20];
 	}
 	word16 r4_n;
 	for (r4_n = 0x10; r4_n != 0x00; --r4_n)
@@ -1480,7 +1485,7 @@ void fn14A8(int16 r2, uint16 r5)
 		r0_n->t0000.u1 = (ci16) 0x00;
 		++r0_n;
 	}
-	struct Eq_n * r0_n = (struct Eq_n *) *((word16) r3_n + 4);
+	struct Eq_n * r0_n = (struct Eq_n *) r3_n.u0[4];
 	struct Eq_n * r0_n;
 	do
 	{
@@ -1488,8 +1493,8 @@ void fn14A8(int16 r2, uint16 r5)
 		r0_n = r0_n;
 	} while (r0_n->b0000 != (byte) r2);
 	r0_n->bFFFFFFFF = 0x00;
-	*((word16) r3_n + 20) = null;
-	*((word16) r3_n + 0x00A2) = 0x00;
+	r3_n.u0[20] = (struct Eq_n) null;
+	r3_n.u0[0x00A2] = (struct Eq_n) 0x00;
 }
 
 Eq_n g_t151E = // 151E
@@ -1556,7 +1561,7 @@ void fn15CC(struct Eq_n * r5)
 void fn16DA(int16 r0, cui16 r2, Eq_n r3, struct Eq_n * r4)
 {
 	r4[7] = (struct Eq_n) r2;
-	if (r4[11] != *((word16) r3 + 94))
+	if (r4[11] != (r3.u0)[94])
 	{
 		ci16 v14_n = r4->t0000.u1 & 0x02;
 		r4->t0000.u1 = v14_n;
@@ -1567,15 +1572,15 @@ void fn16DA(int16 r0, cui16 r2, Eq_n r3, struct Eq_n * r4)
 			r4[0x0C] = (struct Eq_n) 0x00;
 			r4->t0000.u1 &= ~0x02;
 		}
-		r4[11] = (struct Eq_n) *((word16) r3 + 94);
-		if (r4->t0000.u1 > 0x00 || (*((word16) r3 + 92) < 0x0200 || r4[7] != 0x00))
+		r4[11] = (struct Eq_n) r3.u0[94];
+		if (r4->t0000.u1 > 0x00 || ((r3.u0)[92] < 0x0200 || r4[7] != 0x00))
 		{
 			struct Eq_n * r4_n;
 			r3 = fn18BE(r0, r3, r4, out r4_n);
 			--r4_n->w0016;
 		}
 	}
-	*((word16) r3 + 94) = (word16) *((word16) r3 + 94) + 1;
+	r3.u0[94] = r3.u0[94].t0000 + 1;
 }
 
 // 171E: void fn171E(Register (ptr16 Eq_n) r0, Register (ptr16 Eq_n) r3)
@@ -1598,7 +1603,11 @@ void fn172C(struct Eq_n * r0, uint16 r2)
 	uint32 r5_r2_n = (uint32) r2;
 	while (true)
 	{
-		Eq_n r4_n = SLICE(r4_r1_n, word16, 16);
+		Eq_n r5_n;
+		r5_n.u0 = SLICE(r5_r2_n, word16, 16);
+		Eq_n r4_n;
+		r4_n.u0 = SLICE(r4_r1_n, word16, 16);
+		cui16 r2_n = (word16) r5_r2_n;
 		word16 r1_n = (word16) r4_r1_n;
 		r3_n >>= 1;
 		if (r3_n >= 0x00)
@@ -1611,15 +1620,15 @@ void fn172C(struct Eq_n * r0, uint16 r2)
 					__syscall<word16>(0x89A8);
 				Eq_n r3_n;
 				r3_n.u0 = g_t5424.u0;
-				*((word16) r3_n + 94) = r1_n | r4_n;
-				*((word16) r3_n + 92) = r0->t0014.u0;
-				*((word16) r3_n + 92) <<= 1;
+				r3_n.u0[94] = (struct Eq_n) (r1_n | r4_n);
+				r3_n.u0[92] = (struct Eq_n) r0->t0014.u0;
+				r3_n.u0[92] = (struct Eq_n) (r3_n.u0[92] << 1);
 				return;
 			}
 		}
 		else
 			r4_r1_n += r5_r2_n;
-		r5_r2_n <<= 0x01;
+		r5_r2_n = SEQ(__rcl<word16,byte>(r5_n, 0x01, cond(r2_n << 1) & 0x01), r2_n << 1);
 	}
 }
 
@@ -1711,8 +1720,8 @@ word16 fn1900(Eq_n r3, struct Eq_n * r4, union Eq_n & r3Out, struct Eq_n & r4Out
 	Eq_n r3_n;
 	ptr16 fp;
 	(*(fp - 0x04))();
-	byte NZVC_n;
-	if ((bool) NZVC_n)
+	cui16 NZVC_n;
+	if (NZVC_n & 0x01)
 	{
 		fn18FE();
 		r3Out = r3;
@@ -1736,8 +1745,8 @@ word16 fn1900(Eq_n r3, struct Eq_n * r4, union Eq_n & r3Out, struct Eq_n & r4Out
 		}
 		else
 		{
-			*((word16) r3 + 112) = null;
-			struct Eq_n * r4_n = (struct Eq_n *) *((word16) r3 + 114);
+			r3.u0[112] = (struct Eq_n) null;
+			struct Eq_n * r4_n = (struct Eq_n *) r3.u0[114];
 			if (r4_n != null)
 			{
 				word16 r2_n = fn1932(r3, r4_n, out r3_n, out r4_n);
@@ -1776,21 +1785,21 @@ word16 fn1932(Eq_n r3, struct Eq_n * r4, union Eq_n & r3Out, struct Eq_n & r4Out
 	else
 	{
 		r4->t0000.u1 |= 0x1000;
-		*((word16) r3 + 114) = null;
-		struct Eq_n * r4_n = (struct Eq_n *) *((word16) r3 + 112);
+		r3.u0[114] = (struct Eq_n) null;
+		struct Eq_n * r4_n = (struct Eq_n *) r3.u0[112];
 		if (r4_n == null)
 			__syscall<word16>(0x8998);
-		struct Eq_n * sp_n = (struct Eq_n *) *((word16) r3 + 100);
+		struct Eq_n * sp_n = (struct Eq_n *) r3.u0[100];
 		sp_n->ptrFFFFFFFE = &g_t0EF4;
 		sp_n->tFFFFFFFC.u0 = (struct Eq_n *) r3;
 		word16 r2;
-		if (*((word16) r3 + 116) != 0x00)
+		if (r3.u0[116] != 0x00)
 		{
-			*((word16) r3 + 114) = null;
-			*((word16) r3 + 112) = null;
-			*((word16) r3 + 20) = null;
-			*((word16) r3 + 0x0C) = *((word16) r3 + 88);
-			*((word16) r3 + 0x00A2) = 0x00;
+			r3.u0[114] = (struct Eq_n) null;
+			r3.u0[112] = (struct Eq_n) null;
+			r3.u0[20] = (struct Eq_n) null;
+			r3.u0[0x0C] = r3.u0[88];
+			r3.u0[0x00A2] = (struct Eq_n) 0x00;
 			r3Out.u0 = sp_n->tFFFFFFFC.u0;
 			r4Out = r4_n;
 			return r2;
@@ -1798,11 +1807,11 @@ word16 fn1932(Eq_n r3, struct Eq_n * r4, union Eq_n & r3Out, struct Eq_n & r4Out
 		else
 		{
 			sp_n->ptrFFFFFFFE = r4_n;
-			*((word16) r3 + 114) = null;
-			*((word16) r3 + 112) = null;
-			*((word16) r3 + 20) = null;
-			*((word16) r3 + 0x0C) = *((word16) r3 + 88);
-			*((word16) r3 + 0x00A2) = 0x00;
+			r3.u0[114] = (struct Eq_n) null;
+			r3.u0[112] = (struct Eq_n) null;
+			r3.u0[20] = (struct Eq_n) null;
+			r3.u0[0x0C] = r3.u0[88];
+			r3.u0[0x00A2] = (struct Eq_n) 0x00;
 			r3Out.u0 = sp_n->tFFFFFFFC.u0;
 			r4Out = r4_n;
 			return r2;
@@ -2166,33 +2175,29 @@ void fn3B42(struct Eq_n * wArg00)
 		g_t578C.u0 = (struct Eq_n *) fn0F48(&g_t529C, out r1_n, out r5_n);
 		g_w578E = r1_n;
 		++*g_ptr5426;
-		fn0E0E(wLoc0A, 0x407D, 0x70A4, g_w578A, g_t578C.u0);
-		Eq_n V_n;
-		V_n.u0 = <invalid>;
-		Eq_n N_n;
-		N_n.u0 = <invalid>;
+		fn0E0E(wLoc0A, 0x407D, 0x70A4, g_t578A.u0, g_t578C.u0);
+		struct Eq_n * V_n = (struct Eq_n *) <invalid>;
+		struct Eq_n * N_n = (struct Eq_n *) <invalid>;
 		struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
-		if (!(V_n | N_n))
+		if ((V_n | N_n) == 0x00)
 		{
 			*g_ptr5426 = 0x0C;
-			g_w578A = 0x01;
+			g_t578A.u0 = 0x01;
 			++*g_ptr5426;
 			sp_n->tFFFFFFFE.u0 = g_t578C.u0;
-			sp_n->wFFFFFFFC = g_w578A;
+			sp_n->tFFFFFFFC.u0 = g_t578A.u0;
 			sp_n->tFFFFFFFA.u0 = 0xB852;
-			sp_n->wFFFFFFF8 = 0x407E;
-			fn0E0E(sp_n->ptrFFFFFFF6, sp_n->wFFFFFFF8, sp_n->tFFFFFFFA.u0, sp_n->wFFFFFFFC, sp_n->tFFFFFFFE.u0);
-			Eq_n V_n;
-			V_n.u0 = <invalid>;
-			Eq_n N_n;
-			N_n.u0 = <invalid>;
+			sp_n->tFFFFFFF8.u0 = 0x407E;
+			fn0E0E(sp_n->ptrFFFFFFF6, sp_n->tFFFFFFF8.u0, sp_n->tFFFFFFFA.u0, sp_n->tFFFFFFFC.u0, sp_n->tFFFFFFFE.u0);
+			struct Eq_n * V_n = (struct Eq_n *) <invalid>;
+			struct Eq_n * N_n = (struct Eq_n *) <invalid>;
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
-			if (!(V_n | N_n))
+			if ((V_n | N_n) == 0x00)
 			{
 				*g_ptr5426 = 0x0F;
 				g_w5790 = 0x4C;
 				++*g_ptr5426;
-				g_w5792 = ~0x00;
+				g_t5792.u0 = ~0x00;
 				++*g_ptr5426;
 			}
 			else
@@ -2200,7 +2205,7 @@ void fn3B42(struct Eq_n * wArg00)
 				*g_ptr5426 = 0x12;
 				g_w5790 = 0x04;
 				++*g_ptr5426;
-				g_w5792 = 0x01;
+				g_t5792.u0 = 0x01;
 			}
 			*g_ptr5426 = 0x14;
 			ci16 r1_n;
@@ -2209,10 +2214,10 @@ void fn3B42(struct Eq_n * wArg00)
 			g_w5796 = r1_n;
 			++*g_ptr5426;
 			sp_n->tFFFFFFFE.u0 = g_t5794.u0;
-			sp_n->wFFFFFFFC = g_w5792;
+			sp_n->tFFFFFFFC.u0 = g_t5792.u0;
 			sp_n->tFFFFFFFA.u0 = 0x00;
-			sp_n->wFFFFFFF8 = 0x4180;
-			fn0670(r5_n, sp_n->ptrFFFFFFF6, sp_n->wFFFFFFF8, sp_n->tFFFFFFFA.u0, sp_n->wFFFFFFFC, sp_n->tFFFFFFFE.u0);
+			sp_n->tFFFFFFF8.u0 = 0x4180;
+			fn0670(r5_n, sp_n->ptrFFFFFFF6, sp_n->tFFFFFFF8.u0, sp_n->tFFFFFFFA.u0, sp_n->tFFFFFFFC.u0, sp_n->tFFFFFFFE.u0);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			g_t5794.u0 = sp_n->t0000.u0;
 			g_w5796 = sp_n->w0002;
@@ -2231,7 +2236,7 @@ void fn3B42(struct Eq_n * wArg00)
 	if (g_w5788 != 0x00)
 	{
 		*g_ptr5426 = 0x1B;
-		g_w578A += g_w5790;
+		g_t578A.u0 += g_w5790;
 		++*g_ptr5426;
 		cui16 r0_n = 0x00;
 		if (g_w578E < 0x04)
@@ -2246,7 +2251,7 @@ void fn3B42(struct Eq_n * wArg00)
 			g_w57A8 = g_w57A6 - 0x01;
 			fn4230(&g_w52D8);
 			++*g_ptr5426;
-			g_w578A = 0x00;
+			g_t578A.u0 = 0x00;
 			goto l3E0A;
 		}
 		*g_ptr5426 = 0x1E;
@@ -2296,7 +2301,7 @@ void fn3B42(struct Eq_n * wArg00)
 			++*g_ptr5426;
 			Eq_n v158_n;
 			v158_n.u0 = g_t5794.u0;
-			fn0670(r5_n, wLoc0A, 0x4220, 0x00, g_w5792, v158_n);
+			fn0670(r5_n, wLoc0A, 0x4220, 0x00, g_t5792.u0, v158_n);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			g_t57A4.u0 = sp_n->t0000.u0;
 			g_w57A6 = sp_n->w0002;
@@ -2323,7 +2328,7 @@ void fn3B42(struct Eq_n * wArg00)
 			++*g_ptr5426;
 			g_w5870 += g_w5798;
 			++*g_ptr5426;
-			g_w578A = 0x00;
+			g_t578A.u0 = 0x00;
 			++*g_ptr5426;
 		}
 		goto l3E0A;
@@ -2489,22 +2494,24 @@ l4614:
 		}
 		if (r0->w0000 >= 0x00)
 			r0->w0000 |= 0x0100;
-		Eq_n r0_n = *((word16) r3 + 16);
+		Eq_n r0_n;
+		r0_n.u0 = r3.u0[16];
 		Eq_n r1_n;
 		r1_n.u0 = 0x00;
-		bool C_n = false;
+		Eq_n C_n;
+		C_n.u0 = 0x00;
 		Eq_n r0_n = r0_n;
 		Eq_n r0_n;
 		do
 		{
-			r1_n = (word16) r1_n + 1;
+			r1_n.u0 = (word16) r1_n + 1;
 			if (OVERFLOW<word16>(r1_n))
 			{
 				__syscall<word16>(~0x7660);
 				__syscall<word16>(0x899B);
 				__syscall<word16>(0x899C);
 				__syscall<word16>(0x899D);
-				*((word16) r3 + 16) = r0_n;
+				r3.u0[16] = (struct Eq_n) r0_n;
 				r1_n.u0[0x0000FFFA] = (struct Eq_n) (r1_n.u0[0x0000FFFA] | 0x80);
 				r1_n.u0[0x0A] = (struct Eq_n) 0x00;
 				r0->w0018 = 0x00;
@@ -2536,16 +2543,17 @@ l473C:
 		} while ((r0_n & 0x01) != 0x00);
 		r0->b0011 = (byte) r1_n;
 		--r0->b0011;
-		bool C_n = true;
+		Eq_n C_n;
+		C_n.u0 = 0x01;
 		do
 		{
 			r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
 			C_n = (r0_n & 0x8000) != 0x00;
 			--r1_n;
 		} while (r1_n != 0x00);
-		*((word16) r3 + 16) = r0_n;
+		r3.u0[16] = (struct Eq_n) r0_n;
 		fn13FE();
-		word16 r4_n = (word16) *((word16) r3 + 80);
+		word16 r4_n = (word16) r3.u0[80];
 		cup16 r5_n = t0000.w0026;
 		if (r5_n != 0x00 && r5_n > 14158)
 		{
@@ -2821,14 +2829,20 @@ Eq_n g_t5784 = // 5784
 		'\0',
 	};
 word16 g_w5788 = 0x00; // 5788
-cui16 g_w578A = 0x00; // 578A
+Eq_n g_t578A = // 578A
+	{
+		null
+	};
 Eq_n g_t578C = // 578C
 	{
 		null
 	};
 ci16 g_w578E = 0x00; // 578E
 word16 g_w5790 = 0x00; // 5790
-cui16 g_w5792 = 0x00; // 5792
+Eq_n g_t5792 = // 5792
+	{
+		null
+	};
 Eq_n g_t5794 = // 5794
 	{
 		null

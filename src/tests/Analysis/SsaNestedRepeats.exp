@@ -14,9 +14,9 @@ dx_4: orig: dx
 SZ_5: orig: SZ
     def:  SZ_5 = cond(dx_4)
 O_6: orig: O
-    def:  O_6 = false
+    def:  O_6 = 0<32>
 C_7: orig: C
-    def:  C_7 = false
+    def:  C_7 = 0<32>
 cx_8: orig: cx
     def:  cx_8 = 4<16>
     uses: cx_18 = PHI((cx_8, l0C00_0000), (cx_19, l0C00_0008), (cx_20, l0C00_000D))
@@ -24,14 +24,14 @@ di_9: orig: di
     def:  di_9 = 4<16>
     uses: di_21 = PHI((di_9, l0C00_0000), (di_21, l0C00_0008), (di_22, l0C00_000D))
 O_30: orig: O
-    def:  O_30 = SLICE(SZO_23, bool, 4) (alias)
+    def:  O_30 = SZO_23 & 0x10<32> (alias)
     uses: use O_30
 si_11: orig: si
     def:  si_11 = PHI((si, l0C00_0000), (si_14, l0C00_0008), (si_14, l0C00_000D))
     uses: ax_13 = Mem0[ds:si_11:word16]
           si_14 = si_11 + 2<i16>
 C_29: orig: C
-    def:  C_29 = SLICE(SCZO_17, bool, 1) (alias)
+    def:  C_29 = SCZO_17 & 2<32> (alias)
     uses: use C_29
 ax_13: orig: ax
     def:  ax_13 = Mem0[ds:si_11:word16]
@@ -54,7 +54,7 @@ dx_16: orig: dx
           use dx_16
 SCZO_17: orig: SCZO
     def:  SCZO_17 = cond(dx_16)
-    uses: C_29 = SLICE(SCZO_17, bool, 1) (alias)
+    uses: C_29 = SCZO_17 & 2<32> (alias)
 cx_18: orig: cx
     def:  cx_18 = PHI((cx_8, l0C00_0000), (cx_19, l0C00_0008), (cx_20, l0C00_000D))
     uses: cx_19 = cx_18 - 1<16>
@@ -77,11 +77,11 @@ di_22: orig: di
           use di_22
 SZO_23: orig: SZO
     def:  SZO_23 = cond(di_22)
-    uses: Z_24 = SLICE(SZO_23, bool, 2) (alias)
-          O_30 = SLICE(SZO_23, bool, 4) (alias)
-          S_31 = SLICE(SZO_23, bool, 0) (alias)
+    uses: Z_24 = SZO_23 & 4<32> (alias)
+          O_30 = SZO_23 & 0x10<32> (alias)
+          S_31 = SZO_23 & 1<32> (alias)
 Z_24: orig: Z
-    def:  Z_24 = SLICE(SZO_23, bool, 2) (alias)
+    def:  Z_24 = SZO_23 & 4<32> (alias)
     uses: branch Test(NE,Z_24) l0C00_0008
           use Z_24
 Mem25: orig: Mem0
@@ -97,7 +97,7 @@ Mem0:Mem
     def:  def Mem0
     uses: ax_13 = Mem0[ds:si_11:word16]
 S_31: orig: S
-    def:  S_31 = SLICE(SZO_23, bool, 0) (alias)
+    def:  S_31 = SZO_23 & 1<32> (alias)
     uses: use S_31
 // fn0C00_0000
 // Return size: 2
@@ -113,8 +113,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	dx_4 = 0<16>
 	SZ_5 = cond(dx_4)
-	O_6 = false
-	C_7 = false
+	O_6 = 0<32>
+	C_7 = 0<32>
 	cx_8 = 4<16>
 	di_9 = 4<16>
 	// succ:  l0C00_0008
@@ -127,7 +127,7 @@ l0C00_0008:
 	si_14 = si_11 + 2<i16>
 	dx_16 = dx_15 + ax_13
 	SCZO_17 = cond(dx_16)
-	C_29 = SLICE(SCZO_17, bool, 1) (alias)
+	C_29 = SCZO_17 & 2<32> (alias)
 	cx_19 = cx_18 - 1<16>
 	branch cx_19 != 0<16> l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
@@ -135,9 +135,9 @@ l0C00_000D:
 	cx_20 = 4<16>
 	di_22 = di_21 - 1<16>
 	SZO_23 = cond(di_22)
-	Z_24 = SLICE(SZO_23, bool, 2) (alias)
-	O_30 = SLICE(SZO_23, bool, 4) (alias)
-	S_31 = SLICE(SZO_23, bool, 0) (alias)
+	Z_24 = SZO_23 & 4<32> (alias)
+	O_30 = SZO_23 & 0x10<32> (alias)
+	S_31 = SZO_23 & 1<32> (alias)
 	branch Test(NE,Z_24) l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:

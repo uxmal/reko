@@ -35,7 +35,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr, bool reverse)
 	}
 	// We do not take the trouble of widening the CF to the word size
 	// to simplify code analysis in later stages. 
-	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
+	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C");
 	m.Assign(
 		opDst,
 		(m.*opr)(
@@ -181,7 +181,7 @@ void ArmRewriter::RewriteCmp(BinOpEmitter op)
 {
 	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src = Operand(Src1());
-	auto flags = FlagGroup(static_cast<FlagM>(0x0F), "NZCV", BaseType::Byte);
+	auto flags = FlagGroup(static_cast<FlagM>(0x0F), "NZCV");
 	m.Assign(flags, m.Cond(
 		(m.*op)(dst, src)));
 }
@@ -520,7 +520,7 @@ void ArmRewriter::RewriteQDAddSub(BinOpEmitter op)
 	m.AddArg(sum);
 	m.Assign(dst, m.Fn(sat));
 	m.Assign(
-		host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x10, "Q", BaseType::Bool),
+		host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x10, "Q"),
 		m.Cond(dst));
 }
 

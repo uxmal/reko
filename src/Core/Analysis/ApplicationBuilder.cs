@@ -20,6 +20,7 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -93,7 +94,7 @@ namespace Reko.Core.Analysis
             FunctionType sigCallee,
             ProcedureCharacteristics? chr)
         {
-            if (sigCallee == null || !sigCallee.ParametersValid)
+            if (sigCallee is null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
             this.sigCallee = sigCallee;
             var parameters = sigCallee.Parameters!;     // Since we checked ParametersValid, we are guaranteed there are parameters.
@@ -112,15 +113,18 @@ namespace Reko.Core.Analysis
             {
             case Identifier idOut:
                 {
-                    int extraBits = idOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
-                    if (extraBits > 0)
+                    if (idOut.Storage is not FlagGroupStorage)
                     {
-                        // The non-live bits of expOut can safely be replaced with anything,
-                        // since they won't be used. Later stages of the decompilation
-                        // process should remove the unused bits.
-                        var dtUnused = PrimitiveType.CreateWord(extraBits);
-                        var unused = Constant.Create(dtUnused, 0);
-                        appl = new MkSequence(expOut.DataType, unused, appl);
+                        int extraBits = idOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
+                        if (extraBits > 0)
+                        {
+                            // The non-live bits of expOut can safely be replaced with anything,
+                            // since they won't be used. Later stages of the decompilation
+                            // process should remove the unused bits.
+                            var dtUnused = PrimitiveType.CreateWord(extraBits);
+                            var unused = Constant.Create(dtUnused, 0);
+                            appl = new MkSequence(expOut.DataType, unused, appl);
+                        }
                     }
                     return new Assignment(idOut, appl);
                 }

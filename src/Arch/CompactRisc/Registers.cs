@@ -154,21 +154,21 @@ namespace Reko.Arch.CompactRisc
                 USP,
             };
 
-            I = new FlagGroupStorage(PSR, (uint) FlagM.IF, "I", PrimitiveType.Bool);
-            P = new FlagGroupStorage(PSR, (uint) FlagM.PF, "P", PrimitiveType.Bool);
-            E = new FlagGroupStorage(PSR, (uint) FlagM.EF, "E", PrimitiveType.Bool);
-            N = new FlagGroupStorage(PSR, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(PSR, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            F = new FlagGroupStorage(PSR, (uint) FlagM.FF, "F", PrimitiveType.Bool);
-            U = new FlagGroupStorage(PSR, (uint) FlagM.UF, "U", PrimitiveType.Bool);
-            L = new FlagGroupStorage(PSR, (uint) FlagM.LF, "L", PrimitiveType.Bool);
-            T = new FlagGroupStorage(PSR, (uint) FlagM.TF, "T", PrimitiveType.Bool);
-            C = new FlagGroupStorage(PSR, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            I = new FlagGroupStorage(PSR, (uint) FlagM.IF, nameof(I));
+            P = new FlagGroupStorage(PSR, (uint) FlagM.PF, nameof(P));
+            E = new FlagGroupStorage(PSR, (uint) FlagM.EF, nameof(E));
+            N = new FlagGroupStorage(PSR, (uint) FlagM.NF, nameof(N));
+            Z = new FlagGroupStorage(PSR, (uint) FlagM.ZF, nameof(Z));
+            F = new FlagGroupStorage(PSR, (uint) FlagM.FF, nameof(F));
+            U = new FlagGroupStorage(PSR, (uint) FlagM.UF, nameof(U));
+            L = new FlagGroupStorage(PSR, (uint) FlagM.LF, nameof(L));
+            T = new FlagGroupStorage(PSR, (uint) FlagM.TF, nameof(T));
+            C = new FlagGroupStorage(PSR, (uint) FlagM.CF, nameof(C));
 
-            CF = new FlagGroupStorage(PSR, (uint) (FlagM.CF | FlagM.FF), "CF", PrimitiveType.Word16);
-            LNZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.NF | FlagM.ZF), "LNZ", PrimitiveType.Word16);
-            LZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.ZF), "LZ", PrimitiveType.Word16);
-            NZ = new FlagGroupStorage(PSR, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Word16);
+            CF = new FlagGroupStorage(PSR, (uint) (FlagM.CF | FlagM.FF), nameof(CF));
+            LNZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.NF | FlagM.ZF), nameof(LNZ));
+            LZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.ZF), nameof(LZ));
+            NZ = new FlagGroupStorage(PSR, (uint) (FlagM.NF | FlagM.ZF), nameof(NZ));
 
             ByName = GpRegisters
                     .Concat(ProcessorRegisters)

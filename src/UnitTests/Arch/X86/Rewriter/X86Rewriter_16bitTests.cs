@@ -91,8 +91,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0C00:0000(3): 4 instructions",
                 "1|L--|si = si & 0x32<16>",
                 "2|L--|SZ = cond(si)",
-                "3|L--|O = false",
-                "4|L--|C = false");
+                "3|L--|O = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -388,8 +388,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "2|L--|0C00:0002(2): 4 instructions",
                 "3|L--|ax = ax ^ ax",
                 "4|L--|SZ = cond(ax)",
-                "5|L--|O = false",
-                "6|L--|C = false");
+                "5|L--|O = 0<32>",
+                "6|L--|C = 0<32>");
         }
 
         [Test]
@@ -562,8 +562,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0C00:0000(2): 4 instructions",
                 "1|L--|ax = ax | dx",
                 "2|L--|SZ = cond(ax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
+                "3|L--|O = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]
@@ -693,8 +693,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "6|L--|0C00:0002(2): 4 instructions",
                 "7|L--|ax = ax ^ ax",
                 "8|L--|SZ = cond(ax)",
-                "9|L--|O = false",
-                "10|L--|C = false");
+                "9|L--|O = 0<32>",
+                "10|L--|C = 0<32>");
         }
 
         [Test]
@@ -768,7 +768,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0C00:0000(2): 3 instructions",
                 "1|L--|ax = ax >> 1<16>",
                 "2|L--|SCZ = cond(ax)",
-                "3|L--|O = false",
+                "3|L--|O = 0<32>",
                 "4|L--|0C00:0002(2): 2 instructions",
                 "5|L--|bx = bx >> cl",
                 "6|L--|SCZO = cond(bx)",
@@ -824,8 +824,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             AssertCode(
                 "0|L--|0C00:0000(7): 3 instructions",
                 "1|L--|SZP = cond(edi & 0xFFFFFFFF<32>)",
-                "2|L--|O = false",
-                "3|L--|C = false");
+                "2|L--|O = 0<32>",
+                "3|L--|C = 0<32>");
         }
 
         [Test]
@@ -851,8 +851,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|0C00:0000(3): 4 instructions",
                 "1|L--|eax = eax ^ eax",
                 "2|L--|SZ = cond(eax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
+                "3|L--|O = 0<32>",
+                "4|L--|C = 0<32>");
         }
     }
 }

@@ -34,12 +34,12 @@ cx_8: orig: cx
     uses: SCZO_9 = cond(cx_8 - 0<16>)
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(cx_8 - 0<16>)
-    uses: Z_10 = SLICE(SCZO_9, bool, 2) (alias)
-          C_21 = SLICE(SCZO_9, bool, 1) (alias)
-          O_23 = SLICE(SCZO_9, bool, 4) (alias)
-          S_25 = SLICE(SCZO_9, bool, 0) (alias)
+    uses: Z_10 = SCZO_9 & 4<32> (alias)
+          C_21 = SCZO_9 & 2<32> (alias)
+          O_23 = SCZO_9 & 0x10<32> (alias)
+          S_25 = SCZO_9 & 1<32> (alias)
 Z_10: orig: Z
-    def:  Z_10 = SLICE(SCZO_9, bool, 2) (alias)
+    def:  Z_10 = SCZO_9 & 4<32> (alias)
     uses: branch Test(NE,Z_10) l0C00_0015
           use Z_10
 Mem11: orig: Mem0
@@ -65,13 +65,13 @@ cx_16: orig: cx
 Mem18: orig: Mem0
     def:  Mem18[ds:0x12C<16>:word16] = cx_16
 C_21: orig: C
-    def:  C_21 = SLICE(SCZO_9, bool, 1) (alias)
+    def:  C_21 = SCZO_9 & 2<32> (alias)
     uses: use C_21
 O_23: orig: O
-    def:  O_23 = SLICE(SCZO_9, bool, 4) (alias)
+    def:  O_23 = SCZO_9 & 0x10<32> (alias)
     uses: use O_23
 S_25: orig: S
-    def:  S_25 = SLICE(SCZO_9, bool, 0) (alias)
+    def:  S_25 = SCZO_9 & 1<32> (alias)
     uses: use S_25
 // fn0C00_0000
 // Return size: 2
@@ -89,10 +89,10 @@ l0C00_0000:
 	bx_7 = Mem0[ds:bx + 4<i16>:word16]
 	cx_8 = Mem0[ds:bx_7 + 2<i16>:word16]
 	SCZO_9 = cond(cx_8 - 0<16>)
-	Z_10 = SLICE(SCZO_9, bool, 2) (alias)
-	C_21 = SLICE(SCZO_9, bool, 1) (alias)
-	O_23 = SLICE(SCZO_9, bool, 4) (alias)
-	S_25 = SLICE(SCZO_9, bool, 0) (alias)
+	Z_10 = SCZO_9 & 4<32> (alias)
+	C_21 = SCZO_9 & 2<32> (alias)
+	O_23 = SCZO_9 & 0x10<32> (alias)
+	S_25 = SCZO_9 & 1<32> (alias)
 	branch Test(NE,Z_10) l0C00_0015
 	// succ:  l0C00_000B l0C00_0015
 l0C00_000B:

@@ -207,8 +207,7 @@ namespace Reko.Arch.Tlcs
                     return f;
             }
 
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(Registers.f, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(Registers.f, "", grf));
             return fl;
         }
 

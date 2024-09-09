@@ -72,8 +72,8 @@ fn0C00_0014_entry:
 l0C00_0014:
 	di = di ^ di
 	SZ = cond(di)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	ax = ax - 1<16>
 	SZO = cond(ax)
 	return

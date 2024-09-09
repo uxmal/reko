@@ -267,15 +267,13 @@ namespace Reko.Structure
 
         public bool ProcessUnresolvedRegions()
         {
-            if (unresolvedCycles.Count != 0)
+            if (unresolvedCycles.TryDequeue(out var cycle))
             {
-                var cycle = unresolvedCycles.Dequeue();
                 if (RefineLoop(cycle.Item1, cycle.Item2))
                     return true;
             }
-            if (unresolvedSwitches.Count != 0)
+            if (unresolvedSwitches.TryDequeue(out var switchHead))
             {
-                var switchHead = unresolvedSwitches.Dequeue();
                 RefineIncSwitch(switchHead);
                 return true;
             }

@@ -1290,7 +1290,7 @@ l00009B0A:
 	Mem29[ap_9 + 0x1019C<32>:word32] = r0_11
 	branch r0_11 > 2<32> l00009B2A
 l00009B2A:
-	branch Test(UGE,false) l00009B2C
+	branch False<32> l00009B2C
 l00009B2C:
 l00009B38:
 	r0_37 = fn00009C8A(fp_10, out r3_39, out fp_36)

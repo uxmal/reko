@@ -2575,6 +2575,8 @@ Eq_2158: (struct "Eq_2158" (C (ptr32 Eq_371) ptr000C) (10 (ptr32 Eq_372) ptr0010
 Eq_2175: (fn Eq_2 ())
 	T_2175 (in connect_unfinished @ 0000169A : ptr32)
 	T_2176 (in signature of connect_unfinished : void)
+Eq_2179: (union "Eq_2179" (bool u0) (word32 u1))
+	T_2179 (in C @ 0000169E : Eq_2179)
 Eq_2196: (fn ptr32 (Eq_2, (ptr32 Eq_3), Eq_2, (ptr32 Eq_3)))
 	T_2196 (in fn00002B62 @ 000016B0 : ptr32)
 	T_2197 (in signature of fn00002B62 @ 00002B62 : void)
@@ -2590,6 +2592,8 @@ Eq_2228: (struct "Eq_2228" (8 (ptr32 Eq_332) ptr0008) (C (ptr32 Eq_333) ptr000C)
 Eq_2250: (fn Eq_2 ())
 	T_2250 (in select_unfinished @ 000016FA : ptr32)
 	T_2251 (in signature of select_unfinished : void)
+Eq_2254: (union "Eq_2254" (bool u0) (word32 u1))
+	T_2254 (in C @ 000016FE : Eq_2254)
 Eq_2302: (fn int32 (Eq_2, (ptr32 Eq_3), (ptr32 Eq_2306), Eq_2, (ptr32 Eq_3)))
 	T_2302 (in fn000036E0 @ 00001717 : ptr32)
 	T_2303 (in signature of fn000036E0 @ 000036E0 : void)
@@ -2628,6 +2632,8 @@ Eq_2436: (union "Eq_2436" (byte u0) (word16 u1))
 Eq_2495: (fn Eq_2 ())
 	T_2495 (in setsockopt_unfinished @ 000017FE : ptr32)
 	T_2496 (in signature of setsockopt_unfinished : void)
+Eq_2499: (union "Eq_2499" (bool u0) (word32 u1))
+	T_2499 (in C @ 00001802 : Eq_2499)
 Eq_2541: (fn Eq_2 ((ptr32 Eq_3), (ptr32 Eq_3)))
 	T_2541 (in fn00001922 @ 00001844 : ptr32)
 	T_2542 (in signature of fn00001922 @ 00001922 : void)
@@ -2651,6 +2657,8 @@ Eq_2767: (struct "Eq_2767" (8 Eq_2 t0008) (C (ptr32 Eq_3) ptr000C))
 Eq_2786: (fn Eq_2 ())
 	T_2786 (in setitimer_unfinished @ 00001922 : ptr32)
 	T_2787 (in signature of setitimer_unfinished : void)
+Eq_2790: (union "Eq_2790" (bool u0) (word32 u1))
+	T_2790 (in C @ 00001926 : Eq_2790)
 Eq_2791: (fn Eq_2 (Eq_2, (ptr32 Eq_3), (ptr32 Eq_3)))
 	T_2791 (in fn00001918 @ 00001926 : ptr32)
 	T_2792 (in signature of fn00001918 @ 00001918 : void)
@@ -2659,9 +2667,13 @@ Eq_2813: (fn void (word16))
 	T_2814 (in signature of __syscall : void)
 	T_2834 (in __syscall<word16> @ 0000194A : ptr32)
 	T_5185 (in __syscall<word16> @ 000029FE : ptr32)
+Eq_2818: (union "Eq_2818" (bool u0) (word32 u1))
+	T_2818 (in C @ 0000193A : Eq_2818)
 Eq_2819: (fn Eq_2 (Eq_2, (ptr32 Eq_3), Eq_2, (ptr32 Eq_3)))
 	T_2819 (in fn0000192C @ 0000193A : ptr32)
 	T_2820 (in signature of fn0000192C @ 0000192C : void)
+Eq_2837: (union "Eq_2837" (bool u0) (word32 u1))
+	T_2837 (in C @ 0000194E : Eq_2837)
 Eq_2847: (fn (ptr32 Eq_2116) (Eq_2, (ptr32 Eq_3), ptr32, ptr32))
 	T_2847 (in fn000019AA @ 0000195C : ptr32)
 	T_2848 (in signature of fn000019AA @ 000019AA : void)
@@ -2951,6 +2963,8 @@ Eq_4598: (fn (ptr32 Eq_3) ((ptr32 Eq_3), Eq_2, Eq_2, Eq_2, int32))
 Eq_4630: (fn Eq_2 (Eq_2, Eq_2, int32))
 	T_4630 (in old_creat @ 0000207A : ptr32)
 	T_4631 (in signature of old_creat : void)
+Eq_4637: (union "Eq_4637" (bool u0) (word32 u1))
+	T_4637 (in C @ 0000207C : Eq_4637)
 Eq_4638: (fn Eq_2 (Eq_2, (ptr32 Eq_3), (ptr32 Eq_3)))
 	T_4638 (in fn00002070 @ 0000207C : ptr32)
 	T_4639 (in signature of fn00002070 @ 00002070 : void)
@@ -3391,14 +3405,20 @@ Eq_5060: (union "Eq_5060" (ui32 u0) (cui16 u1))
 Eq_5087: (fn Eq_2 (int32, int32, int32, int32))
 	T_5087 (in socket @ 000029A6 : ptr32)
 	T_5088 (in signature of socket : void)
+Eq_5095: (union "Eq_5095" (bool u0) (word32 u1))
+	T_5095 (in C @ 000029AA : Eq_5095)
 Eq_5153: (struct "Eq_5153" (FFFFFFF4 Eq_2 tFFFFFFF4) (8 (ptr32 Eq_684) ptr0008) (C (ptr32 Eq_685) ptr000C))
 	T_5153 (in fp_27 @ 000029E8 : (ptr32 Eq_5153))
+Eq_5188: (union "Eq_5188" (bool u0) (word32 u1))
+	T_5188 (in C @ 00002A02 : Eq_5188)
 Eq_5189: (fn Eq_2 (Eq_2, (ptr32 Eq_3), (ptr32 Eq_3)))
 	T_5189 (in fn000029F4 @ 00002A02 : ptr32)
 	T_5190 (in signature of fn000029F4 @ 000029F4 : void)
 Eq_5198: (fn Eq_2 (Eq_2, Eq_2, Eq_2, int32))
 	T_5198 (in old_lseek @ 00002A12 : ptr32)
 	T_5199 (in signature of old_lseek : void)
+Eq_5206: (union "Eq_5206" (bool u0) (word32 u1))
+	T_5206 (in C @ 00002A14 : Eq_5206)
 Eq_5214: (union "Eq_5214" (int32 u0) (uint32 u1))
 	T_5214 (in r8 @ 000038DA : Eq_5214)
 	T_5235 (in r0 @ 00002C1A : Eq_5214)
@@ -3544,6 +3564,8 @@ Eq_6141: (fn void (Eq_2))
 Eq_6203: (fn Eq_2 ())
 	T_6203 (in old_fstat @ 0000353E : ptr32)
 	T_6204 (in signature of old_fstat : void)
+Eq_6207: (union "Eq_6207" (bool u0) (word32 u1))
+	T_6207 (in C @ 00003540 : Eq_6207)
 Eq_6225: (fn int32 ((ptr32 Eq_3), ptr32))
 	T_6225 (in fn00003566 @ 00003558 : ptr32)
 	T_6226 (in signature of fn00003566 @ 00003566 : void)
@@ -3554,18 +3576,26 @@ Eq_6254: (struct "Eq_6254" (C ptr32 ptr000C))
 Eq_6275: (fn Eq_2 ())
 	T_6275 (in ioctl_unfinished @ 00003586 : ptr32)
 	T_6276 (in signature of ioctl_unfinished : void)
+Eq_6279: (union "Eq_6279" (bool u0) (word32 u1))
+	T_6279 (in C @ 00003588 : Eq_6279)
 Eq_6280: (fn Eq_2 (Eq_2, (ptr32 Eq_3), Eq_2, (ptr32 Eq_3)))
 	T_6280 (in fn0000357C @ 00003588 : ptr32)
 	T_6281 (in signature of fn0000357C @ 0000357C : void)
 Eq_6296: (fn Eq_2 (Eq_2, int32))
 	T_6296 (in sys_close @ 00003596 : ptr32)
 	T_6297 (in signature of sys_close : void)
+Eq_6302: (union "Eq_6302" (bool u0) (word32 u1))
+	T_6302 (in C @ 00003598 : Eq_6302)
 Eq_6320: (fn Eq_2 (Eq_2, Eq_2, int32))
 	T_6320 (in sys_open @ 000035A6 : ptr32)
 	T_6321 (in signature of sys_open : void)
+Eq_6327: (union "Eq_6327" (bool u0) (word32 u1))
+	T_6327 (in C @ 000035A8 : Eq_6327)
 Eq_6345: (fn Eq_2 (Eq_2, Eq_2, Eq_2, int32))
 	T_6345 (in sys_read @ 000035B6 : ptr32)
 	T_6346 (in signature of sys_read : void)
+Eq_6353: (union "Eq_6353" (bool u0) (word32 u1))
+	T_6353 (in C @ 000035B8 : Eq_6353)
 Eq_6398: (union "Eq_6398" (byte u0) ((ptr32 Eq_6561) u1))
 	T_6398 (in r10 @ 000035D1 : Eq_6398)
 	T_6408 (in ap.u3[4<i32>] - 4<32> @ 000036E6 : word32)
@@ -3577,9 +3607,13 @@ Eq_6398: (union "Eq_6398" (byte u0) ((ptr32 Eq_6561) u1))
 Eq_6482: (fn Eq_2 (Eq_2, Eq_2, Eq_2, Eq_2))
 	T_6482 (in sys_write @ 000038B6 : ptr32)
 	T_6483 (in signature of sys_write : void)
+Eq_6490: (union "Eq_6490" (bool u0) (word32 u1))
+	T_6490 (in C @ 000038B8 : Eq_6490)
 Eq_6508: (fn Eq_2 ())
 	T_6508 (in writev_unfinished @ 000038C6 : ptr32)
 	T_6509 (in signature of writev_unfinished : void)
+Eq_6512: (union "Eq_6512" (bool u0) (word32 u1))
+	T_6512 (in C @ 000038CA : Eq_6512)
 Eq_6521: (fn int32 (Eq_2))
 	T_6521 (in exit @ 000038DE : ptr32)
 	T_6522 (in signature of exit : void)
@@ -12349,10 +12383,10 @@ T_2178: (in r0_3 @ 0000169A : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_2179: (in C @ 0000169E : bool)
+T_2179: (in C @ 0000169E : Eq_2179)
   Class: Eq_2179
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2179
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2180: (in 0xC<32> @ 000016A0 : word32)
   Class: Eq_2180
   DataType: word32
@@ -12649,10 +12683,10 @@ T_2253: (in r0_3 @ 000016FA : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_2254: (in C @ 000016FE : bool)
+T_2254: (in C @ 000016FE : Eq_2254)
   Class: Eq_2254
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2254
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2255: (in 8<32> @ 00001700 : word32)
   Class: Eq_2255
   DataType: word32
@@ -13629,10 +13663,10 @@ T_2498: (in r0_3 @ 000017FE : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_2499: (in C @ 00001802 : bool)
+T_2499: (in C @ 00001802 : Eq_2499)
   Class: Eq_2499
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2499
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2500: (in 0xC<32> @ 00001804 : word32)
   Class: Eq_2500
   DataType: word32
@@ -14793,10 +14827,10 @@ T_2789: (in r0_3 @ 00001922 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_2790: (in C @ 00001926 : bool)
+T_2790: (in C @ 00001926 : Eq_2790)
   Class: Eq_2790
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2790
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2791: (in fn00001918 @ 00001926 : ptr32)
   Class: Eq_2791
   DataType: (ptr32 Eq_2791)
@@ -14905,10 +14939,10 @@ T_2817: (in __syscall<word16>(0x6D<16>) @ 00001936 : void)
   Class: Eq_2817
   DataType: void
   OrigDataType: void
-T_2818: (in C @ 0000193A : bool)
+T_2818: (in C @ 0000193A : Eq_2818)
   Class: Eq_2818
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2818
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2819: (in fn0000192C @ 0000193A : ptr32)
   Class: Eq_2819
   DataType: (ptr32 Eq_2819)
@@ -14981,10 +15015,10 @@ T_2836: (in __syscall<word16>(0x6F<16>) @ 0000194A : void)
   Class: Eq_2817
   DataType: void
   OrigDataType: void
-T_2837: (in C @ 0000194E : bool)
+T_2837: (in C @ 0000194E : Eq_2837)
   Class: Eq_2837
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_2837
+  OrigDataType: (union (bool u1) (word32 u0))
 T_2838: (in 0xC<32> @ 00001950 : word32)
   Class: Eq_2838
   DataType: word32
@@ -22239,10 +22273,10 @@ T_4636: (in r0_4 @ 0000207A : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_4637: (in C @ 0000207C : bool)
+T_4637: (in C @ 0000207C : Eq_4637)
   Class: Eq_4637
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_4637
+  OrigDataType: (union (bool u1) (word32 u0))
 T_4638: (in fn00002070 @ 0000207C : ptr32)
   Class: Eq_4638
   DataType: (ptr32 Eq_4638)
@@ -24428,10 +24462,10 @@ T_5094: (in r0_4 @ 000029A6 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_5095: (in C @ 000029AA : bool)
+T_5095: (in C @ 000029AA : Eq_5095)
   Class: Eq_5095
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_5095
+  OrigDataType: (union (bool u1) (word32 u0))
 T_5096: (in 0xC<32> @ 000029AC : word32)
   Class: Eq_5096
   DataType: word32
@@ -24800,10 +24834,10 @@ T_5187: (in __syscall<word16>(0x6C<16>) @ 000029FE : void)
   Class: Eq_2817
   DataType: void
   OrigDataType: void
-T_5188: (in C @ 00002A02 : bool)
+T_5188: (in C @ 00002A02 : Eq_5188)
   Class: Eq_5188
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_5188
+  OrigDataType: (union (bool u1) (word32 u0))
 T_5189: (in fn000029F4 @ 00002A02 : ptr32)
   Class: Eq_5189
   DataType: (ptr32 Eq_5189)
@@ -24872,10 +24906,10 @@ T_5205: (in r0_4 @ 00002A12 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_5206: (in C @ 00002A14 : bool)
+T_5206: (in C @ 00002A14 : Eq_5206)
   Class: Eq_5206
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_5206
+  OrigDataType: (union (bool u1) (word32 u0))
 T_5207: (in 0xC<32> @ 00002A16 : word32)
   Class: Eq_5207
   DataType: word32
@@ -28876,10 +28910,10 @@ T_6206: (in r0_3 @ 0000353E : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6207: (in C @ 00003540 : bool)
+T_6207: (in C @ 00003540 : Eq_6207)
   Class: Eq_6207
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6207
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6208: (in 0xC<32> @ 00003542 : word32)
   Class: Eq_6208
   DataType: word32
@@ -29164,10 +29198,10 @@ T_6278: (in r0_3 @ 00003586 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6279: (in C @ 00003588 : bool)
+T_6279: (in C @ 00003588 : Eq_6279)
   Class: Eq_6279
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6279
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6280: (in fn0000357C @ 00003588 : ptr32)
   Class: Eq_6280
   DataType: (ptr32 Eq_6280)
@@ -29256,10 +29290,10 @@ T_6301: (in r0_4 @ 00003596 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6302: (in C @ 00003598 : bool)
+T_6302: (in C @ 00003598 : Eq_6302)
   Class: Eq_6302
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6302
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6303: (in 0xC<32> @ 0000359A : word32)
   Class: Eq_6303
   DataType: word32
@@ -29356,10 +29390,10 @@ T_6326: (in r0_4 @ 000035A6 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6327: (in C @ 000035A8 : bool)
+T_6327: (in C @ 000035A8 : Eq_6327)
   Class: Eq_6327
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6327
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6328: (in 0xC<32> @ 000035AA : word32)
   Class: Eq_6328
   DataType: word32
@@ -29460,10 +29494,10 @@ T_6352: (in r0_4 @ 000035B6 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6353: (in C @ 000035B8 : bool)
+T_6353: (in C @ 000035B8 : Eq_6353)
   Class: Eq_6353
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6353
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6354: (in 0xC<32> @ 000035BA : word32)
   Class: Eq_6354
   DataType: word32
@@ -30008,10 +30042,10 @@ T_6489: (in r0_4 @ 000038B6 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6490: (in C @ 000038B8 : bool)
+T_6490: (in C @ 000038B8 : Eq_6490)
   Class: Eq_6490
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6490
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6491: (in 0xC<32> @ 000038BA : word32)
   Class: Eq_6491
   DataType: word32
@@ -30096,10 +30130,10 @@ T_6511: (in r0_3 @ 000038C6 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_6512: (in C @ 000038CA : bool)
+T_6512: (in C @ 000038CA : Eq_6512)
   Class: Eq_6512
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_6512
+  OrigDataType: (union (bool u1) (word32 u0))
 T_6513: (in 0xC<32> @ 000038CC : word32)
   Class: Eq_6513
   DataType: word32
@@ -30751,6 +30785,11 @@ typedef struct Eq_2158 {
 
 typedef Eq_2 (Eq_2175)();
 
+typedef union Eq_2179 {
+	bool u0;
+	word32 u1;
+} Eq_2179;
+
 typedef ptr32 (Eq_2196)(Eq_2, Eq_3 *, Eq_2, Eq_3 *);
 
 typedef struct Eq_2202 {
@@ -30772,6 +30811,11 @@ typedef struct Eq_2228 {
 } Eq_2228;
 
 typedef Eq_2 (Eq_2250)();
+
+typedef union Eq_2254 {
+	bool u0;
+	word32 u1;
+} Eq_2254;
 
 typedef int32 (Eq_2302)(Eq_2, Eq_3 *, Eq_2306 *, Eq_2, Eq_3 *);
 
@@ -30827,6 +30871,11 @@ typedef union Eq_2436 {
 
 typedef Eq_2 (Eq_2495)();
 
+typedef union Eq_2499 {
+	bool u0;
+	word32 u1;
+} Eq_2499;
+
 typedef Eq_2 (Eq_2541)(Eq_3 *, Eq_3 *);
 
 typedef struct Eq_2578 {
@@ -30850,11 +30899,26 @@ typedef struct Eq_2767 {
 
 typedef Eq_2 (Eq_2786)();
 
+typedef union Eq_2790 {
+	bool u0;
+	word32 u1;
+} Eq_2790;
+
 typedef Eq_2 (Eq_2791)(Eq_2, Eq_3 *, Eq_3 *);
 
 typedef void (Eq_2813)(word16);
 
+typedef union Eq_2818 {
+	bool u0;
+	word32 u1;
+} Eq_2818;
+
 typedef Eq_2 (Eq_2819)(Eq_2, Eq_3 *, Eq_2, Eq_3 *);
+
+typedef union Eq_2837 {
+	bool u0;
+	word32 u1;
+} Eq_2837;
 
 typedef Eq_2116 * (Eq_2847)(Eq_2, Eq_3 *, ptr32, ptr32);
 
@@ -31198,6 +31262,11 @@ typedef struct Eq_4585 {
 typedef Eq_3 * (Eq_4598)(Eq_3 *, Eq_2, Eq_2, Eq_2, int32);
 
 typedef Eq_2 (Eq_4630)(Eq_2, Eq_2, int32);
+
+typedef union Eq_4637 {
+	bool u0;
+	word32 u1;
+} Eq_4637;
 
 typedef Eq_2 (Eq_4638)(Eq_2, Eq_3 *, Eq_3 *);
 
@@ -31683,15 +31752,30 @@ typedef union Eq_5060 {
 
 typedef Eq_2 (Eq_5087)(int32, int32, int32, int32);
 
+typedef union Eq_5095 {
+	bool u0;
+	word32 u1;
+} Eq_5095;
+
 typedef struct Eq_5153 {
 	Eq_2 tFFFFFFF4;	// FFFFFFF4
 	struct Eq_684 * ptr0008;	// 8
 	struct Eq_685 * ptr000C;	// C
 } Eq_5153;
 
+typedef union Eq_5188 {
+	bool u0;
+	word32 u1;
+} Eq_5188;
+
 typedef Eq_2 (Eq_5189)(Eq_2, Eq_3 *, Eq_3 *);
 
 typedef Eq_2 (Eq_5198)(Eq_2, Eq_2, Eq_2, int32);
+
+typedef union Eq_5206 {
+	bool u0;
+	word32 u1;
+} Eq_5206;
 
 typedef union Eq_5214 {
 	int32 u0;
@@ -31831,6 +31915,11 @@ typedef void (Eq_6141)(Eq_2);
 
 typedef Eq_2 (Eq_6203)();
 
+typedef union Eq_6207 {
+	bool u0;
+	word32 u1;
+} Eq_6207;
+
 typedef int32 (Eq_6225)(Eq_3 *, ptr32);
 
 typedef struct Eq_6229 {
@@ -31844,13 +31933,33 @@ typedef struct Eq_6254 {
 
 typedef Eq_2 (Eq_6275)();
 
+typedef union Eq_6279 {
+	bool u0;
+	word32 u1;
+} Eq_6279;
+
 typedef Eq_2 (Eq_6280)(Eq_2, Eq_3 *, Eq_2, Eq_3 *);
 
 typedef Eq_2 (Eq_6296)(Eq_2, int32);
 
+typedef union Eq_6302 {
+	bool u0;
+	word32 u1;
+} Eq_6302;
+
 typedef Eq_2 (Eq_6320)(Eq_2, Eq_2, int32);
 
+typedef union Eq_6327 {
+	bool u0;
+	word32 u1;
+} Eq_6327;
+
 typedef Eq_2 (Eq_6345)(Eq_2, Eq_2, Eq_2, int32);
+
+typedef union Eq_6353 {
+	bool u0;
+	word32 u1;
+} Eq_6353;
 
 typedef union Eq_6398 {
 	byte u0;
@@ -31859,7 +31968,17 @@ typedef union Eq_6398 {
 
 typedef Eq_2 (Eq_6482)(Eq_2, Eq_2, Eq_2, Eq_2);
 
+typedef union Eq_6490 {
+	bool u0;
+	word32 u1;
+} Eq_6490;
+
 typedef Eq_2 (Eq_6508)();
+
+typedef union Eq_6512 {
+	bool u0;
+	word32 u1;
+} Eq_6512;
 
 typedef int32 (Eq_6521)(Eq_2);
 

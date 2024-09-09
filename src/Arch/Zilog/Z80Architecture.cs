@@ -130,8 +130,7 @@ namespace Reko.Arch.Zilog
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(flagRegister, "", grf));
             return fl;
         }
 

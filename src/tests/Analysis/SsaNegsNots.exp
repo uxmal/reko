@@ -138,7 +138,7 @@ eax_41: orig: eax
           eax_43 = eax_41 + 1<32>
 SCZO_42: orig: SCZO
     def:  SCZO_42 = cond(eax_41)
-    uses: C_46 = SLICE(SCZO_42, bool, 1) (alias)
+    uses: C_46 = SCZO_42 & 2<32> (alias)
 eax_43: orig: eax
     def:  eax_43 = eax_41 + 1<32>
     uses: SZO_44 = cond(eax_43)
@@ -146,13 +146,13 @@ eax_43: orig: eax
           use eax_43
 SZO_44: orig: SZO
     def:  SZO_44 = cond(eax_43)
-    uses: O_49 = SLICE(SZO_44, bool, 4) (alias)
-          S_50 = SLICE(SZO_44, bool, 0) (alias)
-          Z_51 = SLICE(SZO_44, bool, 2) (alias)
+    uses: O_49 = SZO_44 & 0x10<32> (alias)
+          S_50 = SZO_44 & 1<32> (alias)
+          Z_51 = SZO_44 & 4<32> (alias)
 Mem45: orig: Mem0
     def:  Mem45[ds:0x30C<16>:word32] = eax_43
 C_46: orig: C
-    def:  C_46 = SLICE(SCZO_42, bool, 1) (alias)
+    def:  C_46 = SCZO_42 & 2<32> (alias)
     uses: use C_46
 ecx_16_16_47: orig: ecx_16_16
     def:  ecx_16_16_47 = SLICE(ecx_22, word16, 16) (alias)
@@ -161,13 +161,13 @@ ecx_48: orig: ecx
     def:  ecx_48 = SEQ(ecx_16_16_47, cx_34) (alias)
     uses: use ecx_48
 O_49: orig: O
-    def:  O_49 = SLICE(SZO_44, bool, 4) (alias)
+    def:  O_49 = SZO_44 & 0x10<32> (alias)
     uses: use O_49
 S_50: orig: S
-    def:  S_50 = SLICE(SZO_44, bool, 0) (alias)
+    def:  S_50 = SZO_44 & 1<32> (alias)
     uses: use S_50
 Z_51: orig: Z
-    def:  Z_51 = SLICE(SZO_44, bool, 2) (alias)
+    def:  Z_51 = SZO_44 & 4<32> (alias)
     uses: use Z_51
 // fn0C00_0000
 // Return size: 2
@@ -218,12 +218,12 @@ l0C00_0000:
 	SZO_40 = cond(eax_39)
 	eax_41 = 0<32> - C_38
 	SCZO_42 = cond(eax_41)
-	C_46 = SLICE(SCZO_42, bool, 1) (alias)
+	C_46 = SCZO_42 & 2<32> (alias)
 	eax_43 = eax_41 + 1<32>
 	SZO_44 = cond(eax_43)
-	O_49 = SLICE(SZO_44, bool, 4) (alias)
-	S_50 = SLICE(SZO_44, bool, 0) (alias)
-	Z_51 = SLICE(SZO_44, bool, 2) (alias)
+	O_49 = SZO_44 & 0x10<32> (alias)
+	S_50 = SZO_44 & 1<32> (alias)
+	Z_51 = SZO_44 & 4<32> (alias)
 	Mem45[ds:0x30C<16>:word32] = eax_43
 	ecx_48 = SEQ(ecx_16_16_47, cx_34) (alias)
 	return

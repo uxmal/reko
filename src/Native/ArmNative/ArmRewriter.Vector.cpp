@@ -34,7 +34,7 @@ void ArmRewriter::RewriteVcmp()
 {
 	auto src1 = Operand(Dst(), BaseType::Word32, true);
 	auto src2 = Operand(Src1());
-	auto fpscr = host->EnsureFlagGroup((int)ARM_REG_FPSCR, 0xF0000000, "NZCV", BaseType::Word32);
+	auto fpscr = host->EnsureFlagGroup((int)ARM_REG_FPSCR, 0xF0000000, "NZCV");
 	m.Assign(fpscr, m.Cond(m.FSub(src1, src2)));
 }
 

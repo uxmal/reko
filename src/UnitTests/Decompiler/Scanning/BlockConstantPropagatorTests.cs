@@ -50,8 +50,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             r2 = Identifier.Create(RegisterStorage.Reg16("r2", 2));
             r3 = Identifier.Create(RegisterStorage.Reg16("r3", 2));
 
-            C = Identifier.Create(new FlagGroupStorage(sr, 0x1, "C", PrimitiveType.Bool));
-            CZ = Identifier.Create(new FlagGroupStorage(sr, 0x3, "CZ", PrimitiveType.Byte));
+            C = Identifier.Create(new FlagGroupStorage(sr, 0x1, "C"));
+            CZ = Identifier.Create(new FlagGroupStorage(sr, 0x3, "CZ"));
         }
 
         [SetUp]

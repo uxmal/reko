@@ -40,14 +40,14 @@ namespace Reko.Core.NativeInterface
 
 	[ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("3C689ED3-AE3E-4DF3-A4BB-B91AD871CDDC")]
+    [Guid("06E02449-39EB-4833-9247-D1CA03F3D9B5")]
     [NativeInterop]
     [ComVisible(true)]
     public interface INativeRewriterHost
     {
         [PreserveSig] HExpr EnsureRegister(int regKind, int reg);
         [PreserveSig] HExpr EnsureSequence(int regHi, int regLo, BaseType size);
-        [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name, BaseType size);
+        [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name);
         [PreserveSig] HExpr CreateTemporary(BaseType type);
         [PreserveSig] void Error(ulong uAddress, [MarshalAs(UnmanagedType.LPStr)] string error);
         [PreserveSig] HExpr EnsureIntrinsicProcedure([MarshalAs(UnmanagedType.LPStr)] string name, int isIdempotent, BaseType dt, int arity);

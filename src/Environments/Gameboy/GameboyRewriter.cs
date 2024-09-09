@@ -139,100 +139,110 @@ namespace Reko.Environments.Gameboy
         }
         private void Emit__01_()
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 1);
+            Clear(Registers.N);
+            Set(Registers.H);
+        }
+
+        private void Clear(FlagGroupStorage grf)
+        {
+            m.Assign(binder.EnsureFlagGroup(grf), 0);
+        }
+
+        private void Set(FlagGroupStorage grf)
+        {
+            m.Assign(binder.EnsureFlagGroup(grf), grf.FlagGroupBits);
         }
 
         private void Emit__11_()
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 1);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 1);
+            Set(Registers.N);
+            Set(Registers.H);
         }
 
         private void Emit_000C(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.C), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 0);
+            Clear(Registers.Z);
+            Clear(Registers.N);
+            Clear(Registers.H);
         }
 
         private void Emit_00HC(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.HC), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
+            Clear(Registers.Z);
+            Clear(Registers.N);
         }
 
         private void Emit_Z_0C(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZC), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 0);
+            Clear(Registers.H);
         }
 
         private void Emit_Z000(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.C), 0);
+            Clear(Registers.N);
+            Clear(Registers.H);
+            Clear(Registers.C);
         }
 
         private void Emit_Z00C(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZC), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 0);
+            Clear(Registers.N);
+            Clear(Registers.H);
         }
 
         private void Emit_Z01_(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 1);
+            Clear(Registers.N);
+            Set(Registers.H);
         }
 
         private void Emit_Z010(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.H), 1);
-            m.Assign(binder.EnsureFlagGroup(Registers.C), 0);
+            Clear(Registers.N);
+            Set(Registers.H);
+            Clear(Registers.C);
         }
 
         private void Emit_Z0H_(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZH), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
+            Clear(Registers.N);
         }
 
         private void Emit_Z0HC(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZHC), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
+            Clear(Registers.N);
         }
 
         private void Emit_Z1H_(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZH), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 1);
+            Set(Registers.N);
         }
 
         private void Emit_Z1HC(Expression e)
         {
             Debug.Assert(e != null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZHC), e);
-            m.Assign(binder.EnsureFlagGroup(Registers.N), 1);
+            Set(Registers.N);
         }
 
         private void Emit_ZNHC(Expression e)

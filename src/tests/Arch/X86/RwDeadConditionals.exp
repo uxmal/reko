@@ -22,8 +22,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ax = ax ^ ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	cx = Mem0[ds:bx:word16]
 	// succ:  l0C00_0004
 l0C00_0004:

@@ -160,11 +160,7 @@ namespace Reko.Arch.Mos6502
             var src = binder.EnsureRegister(regSrc);
             m.Assign(dst, src);
             m.Assign(
-                binder.EnsureFlagGroup(
-                    Registers.p,
-                    (uint) (FlagM.NF | FlagM.ZF),
-                    "NZ",
-                    PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.NZ),
                 m.Cond(dst));
         }
 
@@ -369,14 +365,14 @@ namespace Reko.Arch.Mos6502
         {
             var mem = RewriteOperand(instrCur.Operands[0]);
             var a = binder.EnsureRegister(Registers.a);
-            var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 a,
                 m.IAdd(
                     m.IAdd(a, mem),
                     c));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC"),
                 m.Cond(a));
         }
 
@@ -384,14 +380,14 @@ namespace Reko.Arch.Mos6502
         {
             var mem = RewriteOperand(instrCur.Operands[0]);
             var a = binder.EnsureRegister(Registers.a);
-            var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 a,
                 m.ISub(
                     m.ISub(a, mem),
                     m.Not(c)));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.NVZC),
                 m.Cond(a));
         }
 

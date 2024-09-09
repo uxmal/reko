@@ -805,7 +805,9 @@ namespace Reko.Arch.CSky
         {
             var c = binder.EnsureFlagGroup(Registers.C);
             var dst = Operand(0);
-            m.Assign(dst, m.ExtendZ(c, dst.DataType));
+            var tmp = binder.CreateTemporary(PrimitiveType.Bool);
+            m.Assign(tmp, m.Ne0(c));
+            m.Assign(dst, m.ExtendZ(tmp, dst.DataType));
         }
 
         private void RewriteMvcv()

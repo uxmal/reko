@@ -61,7 +61,7 @@ namespace Reko.Analysis
         public void MergeDataTypes()
         {
             var eqTypes = new Dictionary<EquivalenceClass, DataType>();
-            foreach (var (_, tv) in TypeVariables)
+            foreach (var (exp, tv) in TypeVariables)
             {
                 if (eqTypes.TryGetValue(tv.Class, out var dt))
                 {

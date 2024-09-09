@@ -124,9 +124,9 @@ l00100000:
 	ax_7 = __fstsw(FPUF_5)
 	ah_8 = SLICE(ax_7, byte, 8) (alias)
 	SZP_9 = cond(ah_8 & 0x40<8>)
-	Z_12 = SLICE(SZP_9, bool, 2) (alias)
-	O_10 = false
-	C_11 = false
+	Z_12 = SZP_9 & 4<32> (alias)
+	O_10 = 0<32>
+	C_11 = 0<32>
 	branch Test(EQ,FPUF_5) l0010000D
 ";
             #endregion
@@ -154,7 +154,7 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SCZO_6 = FPUF
-	Z_7 = SLICE(SCZO_6, bool, 2) (alias)
+	Z_7 = SCZO_6 & 4<32> (alias)
 	branch Test(NE,Z_7) l00100006
 ";
             #endregion
@@ -179,9 +179,9 @@ l00100000:
 	ax_7 = __fstsw(FPUF_5)
 	ah_8 = SLICE(ax_7, byte, 8) (alias)
 	SZP_9 = cond(ah_8 & 0x44<8>)
-	P_12 = SLICE(SZP_9, bool, 5) (alias)
-	O_10 = false
-	C_11 = false
+	P_12 = SZP_9 & 0x20<32> (alias)
+	O_10 = 0<32>
+	C_11 = 0<32>
 	branch Test(NE,FPUF_5) l00100000
 ",
             m =>
@@ -210,9 +210,9 @@ l00100000:
 	ST10[Top_8:real64] = ST6[Top_8:real64]
 	Top_11 = Top_8 + 1<i8>
 	SZP_13 = cond(ah_12 & 5<8>)
-	P_16 = SLICE(SZP_13, bool, 5) (alias)
-	O_14 = false
-	C_15 = false
+	P_16 = SZP_13 & 0x20<32> (alias)
+	O_14 = 0<32>
+	C_15 = 0<32>
 	branch Test(LT,FPUF_7) l00100014
 ",
 
@@ -235,9 +235,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 0x41<8>)
-	Z_12 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_12 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	eax_11 = Mem0[esp_2 + 4<i32>:word32]
 	branch Test(LE,FPUF) l00100000
 ",
@@ -262,10 +262,10 @@ l00100000:
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	ah_6 = ah_5 & 0x45<8>
 	SZ_7 = cond(ah_6)
-	O_8 = false
-	C_9 = false
+	O_8 = 0<32>
+	C_9 = 0<32>
 	SCZO_10 = cond(ah_6 - 0x40<8>)
-	Z_11 = SLICE(SCZO_10, bool, 2) (alias)
+	Z_11 = SCZO_10 & 4<32> (alias)
 	branch Test(EQ,FPUF) l00100000
 ",
                m =>
@@ -297,13 +297,13 @@ l00100000:
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	ah_6 = ah_5 & 0x45<8>
 	SZ_7 = cond(ah_6)
-	O_8 = false
-	C_9 = false
+	O_8 = 0<32>
+	C_9 = 0<32>
 	ah_10 = ah_6 ^ 0x40<8>
 	SZ_11 = cond(ah_10)
-	Z_14 = SLICE(SZ_11, bool, 2) (alias)
-	O_12 = false
-	C_13 = false
+	Z_14 = SZ_11 & 4<32> (alias)
+	O_12 = 0<32>
+	C_13 = 0<32>
 	branch Test(EQ,FPUF) l00100000
 ",
             m =>
@@ -330,9 +330,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 0x45<8>)
-	Z_9 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_9 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	branch Test(GT,FPUF) l00100000
 ",
                  m =>
@@ -362,9 +362,9 @@ l00100000:
 	ah_12 = SLICE(ax_9, byte, 8) (alias)
 	Mem11[esp_2 + 44<i32>:word32] = edx
 	SZP_13 = cond(ah_12 & 0x44<8>)
-	P_16 = SLICE(SZP_13, bool, 5) (alias)
-	O_14 = false
-	C_15 = false
+	P_16 = SZP_13 & 0x20<32> (alias)
+	O_14 = 0<32>
+	C_15 = 0<32>
 	branch Test(NE,FPUF_7) l00100000
 ",
                  m =>
@@ -392,9 +392,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 5<8>)
-	Z_9 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_9 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	branch Test(GE,FPUF) l00100000
 ",
                  m =>
@@ -418,7 +418,7 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SCZO_6 = FPUF
-	C_7 = SLICE(SCZO_6, bool, 1) (alias)
+	C_7 = SCZO_6 & 2<32> (alias)
 	branch Test(ULT,C_7) l00100000
 ",
             m =>
@@ -440,9 +440,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 0x40<8>)
-	Z_9 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_9 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	branch Test(EQ,FPUF) l00100000
 ",
                 m => {
@@ -463,9 +463,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 1<8>)
-	Z_9 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_9 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	branch Test(GE,FPUF) l00100000
 ",
             m =>
@@ -490,13 +490,13 @@ l00100000:
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	ah_6 = ah_5 & 0x45<8>
 	SZ_7 = cond(ah_6)
-	O_8 = false
-	C_9 = false
+	O_8 = 0<32>
+	C_9 = 0<32>
 	ah_10 = ah_6 ^ 0x40<8>
 	SZ_11 = cond(ah_10)
-	Z_14 = SLICE(SZ_11, bool, 2) (alias)
-	O_12 = false
-	C_13 = false
+	Z_14 = SZ_11 & 4<32> (alias)
+	O_12 = 0<32>
+	C_13 = 0<32>
 	branch Test(NE,FPUF) l00100000
 ",
                 m =>
@@ -519,9 +519,9 @@ l00100000:
 	ax_4 = __fstsw(FPUF)
 	ah_5 = SLICE(ax_4, byte, 8) (alias)
 	SZP_6 = cond(ah_5 & 0x41<8>)
-	Z_9 = SLICE(SZP_6, bool, 2) (alias)
-	O_7 = false
-	C_8 = false
+	Z_9 = SZP_6 & 4<32> (alias)
+	O_7 = 0<32>
+	C_8 = 0<32>
 	eax_12 = SEQ(eax_16_16, ax_4) (alias)
 	branch Test(GT,FPUF) l00100000
 ",
@@ -550,8 +550,8 @@ l00100000:
 	SCZO_7 = cond(eax_6)
 	eax_8 = eax_6 & 7<32>
 	SZ_9 = cond(eax_8)
-	O_10 = false
-	C_11 = false
+	O_10 = 0<32>
+	C_11 = 0<32>
 	return
 ",
             m =>

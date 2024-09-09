@@ -109,10 +109,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 (uint)flags, 
                 arch.GrfToString(PICRegisters.STATUS, 
                     "",
-                    (uint)flags), 
-                Bits.IsSingleBitSet((uint)flags)
-                    ? PrimitiveType.Bool
-                    : PrimitiveType.Byte);
+                    (uint)flags));
 
         protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);

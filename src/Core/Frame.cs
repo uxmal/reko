@@ -174,14 +174,14 @@ namespace Reko.Core
 			return id;
 		}
 
-        public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name, DataType dt)
+        public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name)
 		{
             if (grfMask == 0)
                 throw new ArgumentException("Argument must be non-zero.", nameof(grfMask));
 			Identifier? id = FindFlagGroup(freg, grfMask);
 			if (id is null)
 			{
-				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name, dt));
+				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name));
 				identifiers.Add(id);
 			}
 			return id;
@@ -194,7 +194,7 @@ namespace Reko.Core
             var id = FindFlagGroup(grf.FlagRegister, grf.FlagGroupBits);
             if (id is null)
             {
-                id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType));
+                id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name));
                 identifiers.Add(id);
             }
             return id;

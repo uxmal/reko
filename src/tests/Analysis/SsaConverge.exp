@@ -12,11 +12,11 @@ bx:bx
     uses: SCZO_5 = cond(bx - 0<16>)
 SCZO_5: orig: SCZO
     def:  SCZO_5 = cond(bx - 0<16>)
-    uses: Z_6 = SLICE(SCZO_5, bool, 2) (alias)
-          SZO_11 = SLICE(SCZO_5, bool, 4) (alias)
-          C_19 = SLICE(SCZO_5, bool, 1) (alias)
+    uses: Z_6 = SCZO_5 & 4<32> (alias)
+          SZO_11 = SCZO_5 & 0x15<32> (alias)
+          C_19 = SCZO_5 & 2<32> (alias)
 Z_6: orig: Z
-    def:  Z_6 = SLICE(SCZO_5, bool, 2) (alias)
+    def:  Z_6 = SCZO_5 & 4<32> (alias)
     uses: branch Test(EQ,Z_6) l0C00_0013
 ax_7: orig: ax
     def:  ax_7 = 0<16>
@@ -24,20 +24,20 @@ ax_7: orig: ax
           ax_14 = PHI((ax_13, l0C00_0007), (ax_7, l0C00_0013), (ax_12, l0C00_000D))
 SZ_8: orig: SZ
     def:  SZ_8 = cond(ax_7)
-    uses: S_24 = SLICE(SZ_8, bool, 0) (alias)
-          Z_29 = SLICE(SZ_8, bool, 2) (alias)
+    uses: S_24 = SZ_8 & 1<32> (alias)
+          Z_29 = SZ_8 & 4<32> (alias)
 O_9: orig: O
-    def:  O_9 = false
+    def:  O_9 = 0<32>
     uses: O_20 = PHI((O_21, l0C00_0007), (O_9, l0C00_0013), (O_21, l0C00_000D))
 C_10: orig: C
-    def:  C_10 = false
+    def:  C_10 = 0<32>
     uses: C_18 = PHI((C_19, l0C00_0007), (C_10, l0C00_0013), (C_19, l0C00_000D))
 SZO_11: orig: SZO
-    def:  SZO_11 = SLICE(SCZO_5, bool, 4) (alias)
+    def:  SZO_11 = SCZO_5 & 0x15<32> (alias)
     uses: branch Test(GT,SZO_11) l0C00_000D
-          O_21 = SLICE(SZO_11, bool, 4) (alias)
-          S_23 = SLICE(SZO_11, bool, 0) (alias)
-          Z_28 = SLICE(SZO_11, bool, 2) (alias)
+          O_21 = SZO_11 & 0x10<32> (alias)
+          S_23 = SZO_11 & 1<32> (alias)
+          Z_28 = SZO_11 & 4<32> (alias)
 ax_12: orig: ax
     def:  ax_12 = 1<16>
     uses: ax_14 = PHI((ax_13, l0C00_0007), (ax_7, l0C00_0013), (ax_12, l0C00_000D))
@@ -57,35 +57,35 @@ ds:ds
 Mem17: orig: Mem0
     def:  Mem17[ds:0x100<16>:word16] = ax_14
 C_19: orig: C
-    def:  C_19 = SLICE(SCZO_5, bool, 1) (alias)
+    def:  C_19 = SCZO_5 & 2<32> (alias)
     uses: C_18 = PHI((C_19, l0C00_0007), (C_10, l0C00_0013), (C_19, l0C00_000D))
           C_18 = PHI((C_19, l0C00_0007), (C_10, l0C00_0013), (C_19, l0C00_000D))
 O_20: orig: O
     def:  O_20 = PHI((O_21, l0C00_0007), (O_9, l0C00_0013), (O_21, l0C00_000D))
     uses: use O_20
 O_21: orig: O
-    def:  O_21 = SLICE(SZO_11, bool, 4) (alias)
+    def:  O_21 = SZO_11 & 0x10<32> (alias)
     uses: O_20 = PHI((O_21, l0C00_0007), (O_9, l0C00_0013), (O_21, l0C00_000D))
           O_20 = PHI((O_21, l0C00_0007), (O_9, l0C00_0013), (O_21, l0C00_000D))
 S_22: orig: S
     def:  S_22 = PHI((S_23, l0C00_0007), (S_24, l0C00_0013), (S_23, l0C00_000D))
     uses: use S_22
 S_23: orig: S
-    def:  S_23 = SLICE(SZO_11, bool, 0) (alias)
+    def:  S_23 = SZO_11 & 1<32> (alias)
     uses: S_22 = PHI((S_23, l0C00_0007), (S_24, l0C00_0013), (S_23, l0C00_000D))
           S_22 = PHI((S_23, l0C00_0007), (S_24, l0C00_0013), (S_23, l0C00_000D))
 S_24: orig: S
-    def:  S_24 = SLICE(SZ_8, bool, 0) (alias)
+    def:  S_24 = SZ_8 & 1<32> (alias)
     uses: S_22 = PHI((S_23, l0C00_0007), (S_24, l0C00_0013), (S_23, l0C00_000D))
 Z_27: orig: Z
     def:  Z_27 = PHI((Z_28, l0C00_0007), (Z_29, l0C00_0013), (Z_28, l0C00_000D))
     uses: use Z_27
 Z_28: orig: Z
-    def:  Z_28 = SLICE(SZO_11, bool, 2) (alias)
+    def:  Z_28 = SZO_11 & 4<32> (alias)
     uses: Z_27 = PHI((Z_28, l0C00_0007), (Z_29, l0C00_0013), (Z_28, l0C00_000D))
           Z_27 = PHI((Z_28, l0C00_0007), (Z_29, l0C00_0013), (Z_28, l0C00_000D))
 Z_29: orig: Z
-    def:  Z_29 = SLICE(SZ_8, bool, 2) (alias)
+    def:  Z_29 = SZ_8 & 4<32> (alias)
     uses: Z_27 = PHI((Z_28, l0C00_0007), (Z_29, l0C00_0013), (Z_28, l0C00_000D))
 // fn0C00_0000
 // Return size: 2
@@ -99,12 +99,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	SCZO_5 = cond(bx - 0<16>)
-	Z_6 = SLICE(SCZO_5, bool, 2) (alias)
-	SZO_11 = SLICE(SCZO_5, bool, 4) (alias)
-	C_19 = SLICE(SCZO_5, bool, 1) (alias)
-	O_21 = SLICE(SZO_11, bool, 4) (alias)
-	S_23 = SLICE(SZO_11, bool, 0) (alias)
-	Z_28 = SLICE(SZO_11, bool, 2) (alias)
+	Z_6 = SCZO_5 & 4<32> (alias)
+	SZO_11 = SCZO_5 & 0x15<32> (alias)
+	C_19 = SCZO_5 & 2<32> (alias)
+	O_21 = SZO_11 & 0x10<32> (alias)
+	S_23 = SZO_11 & 1<32> (alias)
+	Z_28 = SZO_11 & 4<32> (alias)
 	branch Test(EQ,Z_6) l0C00_0013
 	// succ:  l0C00_0005 l0C00_0013
 l0C00_0005:
@@ -121,10 +121,10 @@ l0C00_000D:
 l0C00_0013:
 	ax_7 = 0<16>
 	SZ_8 = cond(ax_7)
-	S_24 = SLICE(SZ_8, bool, 0) (alias)
-	Z_29 = SLICE(SZ_8, bool, 2) (alias)
-	O_9 = false
-	C_10 = false
+	S_24 = SZ_8 & 1<32> (alias)
+	Z_29 = SZ_8 & 4<32> (alias)
+	O_9 = 0<32>
+	C_10 = 0<32>
 	// succ:  l0C00_0015
 l0C00_0015:
 	Z_27 = PHI((Z_28, l0C00_0007), (Z_29, l0C00_0013), (Z_28, l0C00_000D))

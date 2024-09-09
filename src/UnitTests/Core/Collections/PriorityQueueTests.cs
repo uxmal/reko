@@ -42,7 +42,5 @@ namespace Reko.UnitTests.Core.Collections
             Assert.AreEqual("hello", pq.Dequeue());
             Assert.AreEqual("world", pq.Dequeue());
         }
-
-
     }
 }

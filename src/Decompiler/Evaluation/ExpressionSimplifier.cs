@@ -211,6 +211,7 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitTestCondition(TestCondition tc)
         {
+            return (tc, false);
             var (e, changed) = tc.Expression.Accept(this);
             if (e is BinaryExpression {
                 Operator: { Type: OperatorType.Or }, 

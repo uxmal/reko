@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.regB = RegisterStorage.Reg32("regB", 0x5678);
             this.lowA = RegisterStorage.Reg8("lowA", 0x1234);
             this.psw = RegisterStorage.Reg32("psw", 0x4242);
-            this.C = new FlagGroupStorage(psw, 0b01, "C", PrimitiveType.Bool);
+            this.C = new FlagGroupStorage(psw, 0b01, nameof(C));
         }
 
         private void Given_Procedure(

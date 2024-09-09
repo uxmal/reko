@@ -110,7 +110,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.clr: RewriteClr(instr, m.Word16(0)); break;
                 case Mnemonic.clrb: RewriteClr(instr, m.Byte(0)); break;
-                case Mnemonic.clrflags: RewriteClrSetFlags(Constant.False); break;
+                case Mnemonic.clrflags: RewriteClrSetFlags(false); break;
                 case Mnemonic.cmp: RewriteCmp(false); break;
                 case Mnemonic.cmpb: RewriteCmp(true); break;
                 case Mnemonic.com: RewriteCom(); break;
@@ -146,7 +146,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.rtt: RewriteRtt(); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
                 case Mnemonic.sbcb: RewriteAdcSbc(m.ISub); break;
-                case Mnemonic.setflags: RewriteClrSetFlags(Constant.True); break;
+                case Mnemonic.setflags: RewriteClrSetFlags(true); break;
                 case Mnemonic.stcdi: RewriteStcdi(); break;
                 case Mnemonic.sob: RewriteSob(); break;
                 case Mnemonic.spl: RewriteSpl(); break;
@@ -198,7 +198,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private void SetTrue(FlagGroupStorage flag)
         {
-            m.Assign(binder.EnsureFlagGroup(flag), 1);
+            m.Assign(binder.EnsureFlagGroup(flag), flag.FlagGroupBits);
         }
 
         private Expression? RewriteJmpSrc(MachineOperand op)

@@ -32,14 +32,14 @@ bool fn0C00_000C(byte al, selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	C_6 = SLICE(cond(al - 0x20<8>), bool, 1) (alias)
+	C_6 = cond(al - 0x20<8>) & 2<32> (alias)
 	branch al <u 0x20<8> l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
 	Mem10[ds:0x201<16>:word16] = Mem0[ds:0x201<16>:word16] + 1<16>
 	// succ:  l0C00_0014
 l0C00_0014:
-	return C_6
+	return C_6 != 0<32>
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 

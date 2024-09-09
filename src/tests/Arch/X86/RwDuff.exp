@@ -37,8 +37,8 @@ l0C00_0000:
 	v13 = bx
 	bx = bx & 7<16>
 	SZ = cond(bx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	si = Mem0[ds:0x40<16>:word16]
 	bx = bx + bx
 	SCZO = cond(bx)

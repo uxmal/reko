@@ -75,5 +75,16 @@ namespace Reko.Core.Expressions
                 this.ThenExp,
                 this.FalseExp);
         }
+
+        public override Expression Invert()
+        {
+            var t = this.ThenExp.Invert();
+            var e = this.FalseExp.Invert();
+            return new ConditionalExpression(
+                this.DataType,
+                this.Condition,
+                t,
+                e);
+        }
     }
 }

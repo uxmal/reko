@@ -25,8 +25,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ecx = ecx ^ ecx
 	SZ = cond(ecx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	ax = ax - bx
 	SCZO = cond(ax)
 	cl = CONVERT(Test(EQ,Z), bool, byte)

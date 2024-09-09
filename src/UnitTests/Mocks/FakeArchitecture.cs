@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Mocks
         public FakeArchitecture(IServiceProvider services, string archId, Dictionary<string,object> options) 
             : base(services, archId, options, null!, null!)
         {
-            this.CarryFlag = new FlagGroupStorage(FlagRegister, (uint) StatusFlags.C, "C", PrimitiveType.Bool);
+            this.CarryFlag = new FlagGroupStorage(FlagRegister, (uint) StatusFlags.C, "C");
             this.Description = "Fake Architecture for testing";
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Mocks
             if (((uint)grf & 0x10) != 0) sb.Append('X');
             if (sb.Length == 0)
                 return null;
-            return new FlagGroupStorage(flagRegister, grf, sb.ToString(), PrimitiveType.Byte);
+            return new FlagGroupStorage(flagRegister, grf, sb.ToString());
         }
 
 		public override FlagGroupStorage GetFlagGroup(string s)
@@ -186,10 +186,7 @@ namespace Reko.UnitTests.Mocks
                 }
             }
             if (grf != 0)
-                return new FlagGroupStorage(FlagRegister, grf, s,
-                    Bits.IsSingleBitSet(grf)
-                        ? PrimitiveType.Bool
-                        : PrimitiveType.Byte);
+                return new FlagGroupStorage(FlagRegister, grf, s);
             return null;
 		}
 

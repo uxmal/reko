@@ -78,8 +78,7 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.PSW, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.PSW, grf, GrfToString(flagRegister, "", grf));
             return fl;
         }
 

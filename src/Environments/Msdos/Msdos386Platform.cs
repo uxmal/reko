@@ -134,15 +134,15 @@ namespace Reko.Environments.Msdos
 
         public void LoadInterruptServices()
         {
+            var fsSvc = Services.RequireService<IFileSystemService>();
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var libPath = Path.Combine(prefix, "realmodeintservices.xml");
-            if (!File.Exists(libPath))
+            if (!fsSvc.FileExists(libPath))
             {
                 libPath = Path.Combine(Directory.GetCurrentDirectory(), "realmodeintservices.xml");
             }
 
             SerializedLibrary lib;
-            var fsSvc = Services.RequireService<IFileSystemService>();
             using (Stream stm = fsSvc.CreateFileStream(libPath, FileMode.Open, FileAccess.Read))
             {
                 lib = SerializedLibrary.LoadFromStream(stm);

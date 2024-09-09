@@ -2127,7 +2127,7 @@ l57AE:
 l57E6:
 	v185_190 = Mem180[r5_1002:word16]
 	r5_1002 = r5_1002 + 2<16>
-	dwLoc1C_2109 = SEQ(CONVERT(v185_190 * 2<16> <u 0<16>, bool, word16) - 1<i16>, v185_190) (alias)
+	dwLoc1C_2109 = SEQ((cond(v185_190 * 2<16>) & 1<16>) - 1<i16>, v185_190) (alias)
 l57B4:
 	r5_1002 = r5_1002 + 4<16>
 	dwLoc1C_2109 = Mem213[r5_1002:word32] (alias)
@@ -2526,7 +2526,7 @@ l00005A02:
 	r12_23 = r14 + r13
 	r13_233 = r15 + r13
 	r15_27 = r12_23 | r13_233
-	C_70 = SLICE(cond(r15_27 & 1<16>), bool, 0) (alias)
+	C_70 = cond(r15_27 & 1<16>) & 1<16> (alias)
 	branch (r15_27 & 1<16>) == 0<16> l00005A30
 l00005A12:
 	branch ((r12_23 ^ r13_233) & 1<16>) != 0<16> l00005A20
@@ -2543,7 +2543,7 @@ l00005A24:
 	r13_233 = r13_233 + 0xFFFF<16>
 	Mem56[r13_233:byte] = Mem54[r12_23:byte]
 	r14_41 = r14_41 + 0xFFFF<16>
-	C_70 = SLICE(cond(r14_41), bool, 0) (alias)
+	C_70 = cond(r14_41) & 1<16> (alias)
 	branch r14_41 != 0<16> l00005A24
 l00005A30:
 	sr = sr & 0xFFFE<16>
@@ -2567,7 +2567,7 @@ l00005A4C:
 l00005A58:
 l000059AC:
 	r15_106 = r14 | r15
-	C_149 = SLICE(cond(r15_106 & 1<16>), bool, 0) (alias)
+	C_149 = cond(r15_106 & 1<16>) & 1<16> (alias)
 	branch (r15_106 & 1<16>) == 0<16> l000059D0
 l000059B4:
 	branch ((r14 ^ r15) & 1<16>) != 0<16> l000059C0
@@ -2584,7 +2584,7 @@ l000059C4:
 	r14_122 = r14_122 + 0xFFFF<16>
 	r12_130 = r12_130 + 1<16>
 	r13_13 = r13_13 + 1<16>
-	C_149 = SLICE(cond(r14_122), bool, 0) (alias)
+	C_149 = cond(r14_122) & 1<16> (alias)
 	branch r14_122 != 0<16> l000059C4
 l000059D0:
 	sr = sr & 0xFFFE<16>
@@ -2630,7 +2630,7 @@ l00005A8A:
 l00005A90:
 	r11_122 = r14 | __swpb(r14)
 l00005A96:
-	C_55 = SLICE(cond(r15 & 1<16>), bool, 0) (alias)
+	C_55 = cond(r15 & 1<16>) & 1<16> (alias)
 	branch (r15 & 1<16>) == 0<16> l00005AAE
 l00005A9C:
 	r15_33 = 2<16> - (r15 & 1<16>)
@@ -2640,7 +2640,7 @@ l00005AA4:
 	Mem41[r14_124:byte] = SLICE(r14, byte, 0)
 	r12_34 = r12_34 + 0xFFFF<16>
 	r14_124 = r14_124 + 1<16>
-	C_55 = SLICE(cond(r12_34), bool, 0) (alias)
+	C_55 = cond(r12_34) & 1<16> (alias)
 	branch r12_34 != 0<16> l00005AA4
 l00005AAE:
 	sr = sr & 0xFFFE<16>
@@ -2757,15 +2757,15 @@ l00005B4E:
 	r9_18 = 0x21<16>
 l00005B6C:
 	r12 = r12 * 2<16>
-	r13 = r13 * 2<16> + CONVERT(r12 <u 0<16>, bool, word16)
+	r13 = r13 * 2<16> + (cond(r12) & 1<16>)
 	r9_18 = r9_18 - 1<16>
-	r8_17 = r8 * 2<16> + CONVERT(r13 <u 0<16>, bool, word16)
-	C_22 = SLICE(cond(r9_18), bool, 0) (alias)
+	r8_17 = r8 * 2<16> + (cond(r13) & 1<16>)
+	VNZC_20 = cond(r9_18)
 	branch r9_18 != 0<16> l00005B58
 l00005B58:
-	r8 = __rcr<word16,byte>(r8_17, 1<8>, C_22)
-	r14_25 = r14_25 * 2<16> + CONVERT(r8 <u 0<16>, bool, word16)
-	r15_29 = r15_29 * 2<16> + CONVERT(r14_25 <u 0<16>, bool, word16)
+	r8 = __rcr<word16,byte>(r8_17, 1<8>, VNZC_20 & 1<16>)
+	r14_25 = r14_25 * 2<16> + (cond(r8) & 1<16>)
+	r15_29 = r15_29 * 2<16> + (cond(r14_25) & 1<16>)
 	branch r15_29 >=u r11 l00005B6C
 l00005B62:
 	branch r15_29 != r11 l00005B68
@@ -2779,7 +2779,7 @@ l00005B76:
 	r13_r12Out = <invalid>
 	r15_r14Out = <invalid>
 	r8Out = r8_17
-	return C_22
+	return (VNZC_20 & 1<16>) != 0<16>
 fn00005B4E_exit:
 
 

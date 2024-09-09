@@ -35,18 +35,18 @@ namespace Reko.Arch.H8
 {
     public class H8Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static readonly FlagGroupStorage C = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-        private static readonly FlagGroupStorage H = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.HF, "H", PrimitiveType.Bool);
-        private static readonly FlagGroupStorage HNZVC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.HF|FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), "HNZVC", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage N = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-        private static readonly FlagGroupStorage NV = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.VF), "NV", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage NZ = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage NZC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), "NZC", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage NZV = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), "NZV", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage NZVC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), "NZVC", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage V = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-        private static readonly FlagGroupStorage ZC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
-        private static readonly FlagGroupStorage Z = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+        private static readonly FlagGroupStorage C = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.CF, nameof(C));
+        private static readonly FlagGroupStorage H = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.HF, nameof(H));
+        private static readonly FlagGroupStorage HNZVC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.HF|FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), nameof(HNZVC));
+        private static readonly FlagGroupStorage N = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.NF, nameof(N));
+        private static readonly FlagGroupStorage NV = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.VF), nameof(NV));
+        private static readonly FlagGroupStorage NZ = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.ZF), nameof(NZ));
+        private static readonly FlagGroupStorage NZC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), nameof(NZC));
+        private static readonly FlagGroupStorage NZV = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), nameof(NZV));
+        private static readonly FlagGroupStorage NZVC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), nameof(NZVC));
+        private static readonly FlagGroupStorage V = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.VF, nameof(V));
+        private static readonly FlagGroupStorage ZC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.ZF | FlagM.CF), nameof(ZC));
+        private static readonly FlagGroupStorage Z = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.ZF, nameof(Z));
 
 
         private readonly H8Architecture arch;
@@ -500,7 +500,13 @@ namespace Reko.Arch.H8
             var right = OpSrc(instr.Operands[0]);
             var left = OpSrc(instr.Operands[1]);
             var dst = binder.EnsureFlagGroup(flag);
-            m.Assign(dst, m.Fn(btst_intrinsic.MakeInstance(left.DataType, right.DataType), left, right));
+            m.Assign(
+                dst,
+                m.Conditional(
+                    dst.DataType,
+                    m.Fn(btst_intrinsic.MakeInstance(left.DataType, right.DataType), left, right),
+                    Constant.Create(dst.DataType, 1),
+                    Constant.Create(dst.DataType, 0)));
         }
 
         private void RewriteLogical(H8Instruction instr, Func<Expression,Expression, Expression> fn)

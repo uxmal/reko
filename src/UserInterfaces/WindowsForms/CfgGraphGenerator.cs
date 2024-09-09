@@ -76,9 +76,8 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var q = new Queue<Block>();
             q.Enqueue(block);
-            while (q.Count > 0)
+            while (q.TryDequeue(out var b))
             {
-                var b = q.Dequeue();
                 if (visited.Contains(b))
                     continue;
                 visited.Add(b);

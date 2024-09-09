@@ -51,7 +51,7 @@ void ___start(word32 r4, struct Eq_n * r5, word32 r9, word32 r10, word32 r11, wo
 			int32 r2_n = g_dw401EB4;
 			(*((char *) &g_t401E2C + r2_n))();
 			<anonymous> *** r11_n = *((word32) g_ptr401EBC + r12_n);
-			bool T_n = r9_n >= r11_n;
+			Eq_n T_n = r9_n >= r11_n;
 			while (!T_n)
 			{
 				<anonymous> ** v33_n = (<anonymous> **) *r9_n;
@@ -62,7 +62,7 @@ void ___start(word32 r4, struct Eq_n * r5, word32 r9, word32 r10, word32 r11, wo
 			(*((char *) &g_t401E3E + r1_n))();
 			<anonymous> *** r9_n = r9_n + r12_n;
 			<anonymous> *** r11_n = *((word32) g_ptr401ECC + r12_n);
-			bool T_n = r9_n >= r11_n;
+			Eq_n T_n = r9_n >= r11_n;
 			while (!T_n)
 			{
 				<anonymous> ** v32_n = (<anonymous> **) *r9_n;
@@ -150,7 +150,7 @@ void modcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r2_n > r1_n)
 		return;
 	up32 r6_n = r3_n->dw0034;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r0_n > r6_n)
@@ -159,10 +159,10 @@ void modcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r2_n > r1_n;
+	Eq_n T_n = r2_n > r1_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r6_n;
+		Eq_n T_n = r0_n >= r6_n;
 		if (!T_n)
 			return;
 	}
@@ -189,7 +189,7 @@ void revmodcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r2_n > r1_n)
 		return;
 	up32 r5_n = r3_n->dw0034;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r0_n > r5_n)
@@ -198,10 +198,10 @@ void revmodcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r2_n > r1_n;
+	Eq_n T_n = r2_n > r1_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r5_n;
+		Eq_n T_n = r0_n >= r5_n;
 		if (!T_n)
 			return;
 	}
@@ -228,7 +228,7 @@ void acccmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r2_n > r1_n)
 		return;
 	up32 r6_n = r3_n->dw0028;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r0_n > r6_n)
@@ -237,10 +237,10 @@ void acccmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r2_n > r1_n;
+	Eq_n T_n = r2_n > r1_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r6_n;
+		Eq_n T_n = r0_n >= r6_n;
 		if (!T_n)
 			return;
 	}
@@ -267,7 +267,7 @@ void revacccmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r2_n > r1_n)
 		return;
 	up32 r5_n = r3_n->dw0028;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r0_n > r5_n)
@@ -276,10 +276,10 @@ void revacccmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r2_n > r1_n;
+	Eq_n T_n = r2_n > r1_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r5_n;
+		Eq_n T_n = r0_n >= r5_n;
 		if (!T_n)
 			return;
 	}
@@ -306,7 +306,7 @@ void statcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r7_n > r3_n)
 		return;
 	up32 r6_n = r1_n->dw0040;
-	bool T_n = r7_n >= r3_n;
+	Eq_n T_n = r7_n >= r3_n;
 	if (T_n)
 	{
 		if (r0_n > r6_n)
@@ -315,10 +315,10 @@ void statcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r7_n > r3_n;
+	Eq_n T_n = r7_n > r3_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r6_n;
+		Eq_n T_n = r0_n >= r6_n;
 		if (!T_n)
 			return;
 	}
@@ -345,7 +345,7 @@ void revstatcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	if (r7_n > r3_n)
 		return;
 	up32 r5_n = r1_n->dw0040;
-	bool T_n = r7_n >= r3_n;
+	Eq_n T_n = r7_n >= r3_n;
 	if (T_n)
 	{
 		if (r0_n > r5_n)
@@ -354,10 +354,10 @@ void revstatcmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	}
 	if (!T_n)
 		return;
-	bool T_n = r7_n > r3_n;
+	Eq_n T_n = r7_n > r3_n;
 	if (!T_n)
 	{
-		bool T_n = r0_n >= r5_n;
+		Eq_n T_n = r0_n >= r5_n;
 		if (!T_n)
 			return;
 	}
@@ -384,7 +384,7 @@ void sizecmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	up32 r3_n = r1_n->dw0058;
 	if (r2_n > r1_n)
 		return;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r7_n > r3_n)
@@ -395,7 +395,7 @@ void sizecmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 		return;
 	if (r2_n <= r1_n)
 	{
-		bool T_n = r7_n >= r3_n;
+		Eq_n T_n = r7_n >= r3_n;
 		if (!T_n)
 			return;
 	}
@@ -418,7 +418,7 @@ void revsizecmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 	up32 r7_n = r1_n->dw0058;
 	if (r2_n > r1_n)
 		return;
-	bool T_n = r2_n >= r1_n;
+	Eq_n T_n = r2_n >= r1_n;
 	if (T_n)
 	{
 		if (r6_n > r7_n)
@@ -429,7 +429,7 @@ void revsizecmp(struct Eq_n * r4, struct Eq_n * r5, word32 pr)
 		return;
 	if (r2_n <= r1_n)
 	{
-		bool T_n = r6_n >= r7_n;
+		Eq_n T_n = r6_n >= r7_n;
 		if (!T_n)
 			return;
 	}
@@ -462,7 +462,7 @@ void mastercmp(struct Eq_n ** r4, struct Eq_n ** r5, word32 pr)
 	}
 	else
 	{
-		bool T_n = r7_n == r1_n;
+		Eq_n T_n = r7_n == r1_n;
 		if (!T_n && (*(*((word32) r12_n + g_dw402410)) == 0x00 && r4_n->dw0044 == 0x00))
 		{
 			if (r7_n == 0x01)
@@ -870,7 +870,7 @@ l004025F6:
 	(*r1_n)();
 	int32 r12_n;
 	*((word32) g_ptr402648 + r12_n) = 0x01;
-	bool T_n = (*((char *) &g_ptr402608[0] + r12_n))[0] == 0x00;
+	Eq_n T_n = (*((char *) &g_ptr402608[0] + r12_n))[0] == 0x00;
 	while (!T_n)
 	{
 		int32 r7_n = g_dw40264C;
@@ -1239,7 +1239,7 @@ l0040306E:
 					if ((*((char *) &r12_n[0] + g_dw40322C))[0] != 0x00)
 						r8_n |= (int32) g_w4031B6;
 					word32 * (* r0_n)[];
-					bool T_n;
+					Eq_n T_n;
 					int32 r13_n;
 					if ((r1_n | r3_n) == 0x00)
 					{
@@ -1370,7 +1370,7 @@ l00402D32:
 					r8_n |= 0x01;
 				goto l00402D4A;
 			}
-			bool T_n = r3_n == 0x00;
+			Eq_n T_n = r3_n == 0x00;
 l00403068:
 			if (!T_n)
 				goto l0040306E;
@@ -1765,14 +1765,14 @@ void printtime(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r1
 	up32 r5_n = r3_n->dw0000;
 	if (r1_n >= r7_n)
 	{
-		bool T_n = r1_n > r7_n;
+		Eq_n T_n = r1_n > r7_n;
 		if (T_n)
 		{
 l004036A8:
 			up32 r2_n = r2_n + g_dw403710;
 			if (r7_n >= r1_n + ~0x00)
 			{
-				bool T_n = r7_n > r1_n + ~0x00;
+				Eq_n T_n = r7_n > r1_n + ~0x00;
 				if (T_n)
 				{
 					r8_n = r8_n + 0x10;
@@ -1792,7 +1792,7 @@ l004036C4:
 			}
 			goto l004036D2;
 		}
-		bool T_n = r6_n >= r5_n;
+		Eq_n T_n = r6_n >= r5_n;
 		if (T_n)
 			goto l004036A8;
 	}
@@ -1844,7 +1844,7 @@ void printtype(ui32 r4, word32 pr)
 	}
 	else
 	{
-		bool T_n = r1_n > r2_n;
+		Eq_n T_n = r1_n > r2_n;
 		if (!T_n)
 		{
 			if (r1_n == (int32) g_w403798)
@@ -2387,7 +2387,7 @@ void printcol(struct Eq_n * r4, word32 r8, word32 r9, word32 r14, word32 pr)
 	if ((*((char *) &r12_n[0] + g_ptr403F2C))[0] != 0x00)
 	{
 		word32 r5_n = r4->dw0018;
-		r5_n = r5_n + r4->dw0028 + true;
+		r5_n = r5_n + r4->dw0028 + True<32>;
 	}
 	else
 		r5_n = r4->dw0018;
@@ -2398,7 +2398,7 @@ void printcol(struct Eq_n * r4, word32 r8, word32 r9, word32 r14, word32 pr)
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r5_n = r5_n + r1_n + true;
+		r5_n = r5_n + r1_n + True<32>;
 	}
 	if (**(g_ptr403F38 + r12_n) != 0x00 || *(*(g_ptr403F3C + r12_n)) != 0x00)
 		++r5_n;
@@ -2471,7 +2471,7 @@ l00403EC0:
 		struct Eq_n * r15_n;
 		int32 r8_n;
 		r15_n->dw0010 = r8_n << 2;
-		bool T_n = r8_n > r10_n;
+		Eq_n T_n = r8_n > r10_n;
 		while (T_n)
 		{
 			r15_n->t0008.u0 = (ui32) (r10_n << 2);
@@ -2553,7 +2553,7 @@ void printacol(struct Eq_n * r4, word32 r9, word32 r10, word32 r11, word32 r13, 
 	if (**((word32) g_ptr404084 + r12_n) != 0x00)
 	{
 		word32 r5_n = r4->dw0018;
-		r5_n = r5_n + r4->dw0028 + true;
+		r5_n = r5_n + r4->dw0028 + True<32>;
 	}
 	else
 		r5_n = r4->dw0018;
@@ -2564,7 +2564,7 @@ void printacol(struct Eq_n * r4, word32 r9, word32 r10, word32 r11, word32 r13, 
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r5_n = r5_n + r1_n + true;
+		r5_n = r5_n + r1_n + True<32>;
 	}
 	if ((*((char *) &g_ptr404090[0] + r12_n))[0] != 0x00 || (*((char *) (&g_ptr404094[0]) + r12_n))[0] != 0x00)
 		++r5_n;
@@ -2670,7 +2670,7 @@ void printstream(struct Eq_n * r4, word32 pr)
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r8_n = r8_n + r1_n + true;
+		r8_n = r8_n + r1_n + True<32>;
 	}
 	if ((*((char *) &g_ptr404194[0] + r12_n))[0] != 0x00)
 		++r8_n;
@@ -2855,7 +2855,7 @@ void printescaped(word32 r4, word32 r9, word32 r11, word32 r13, word32 r14, word
 	r15_n->ptr000C = r3_n;
 	word32 r9_n = 0x00;
 l0040434E:
-	bool T_n = r8_n >= r10_n;
+	Eq_n T_n = r8_n >= r10_n;
 	while (!T_n)
 	{
 		int32 r1_n = g_dw404408;
@@ -2943,7 +2943,7 @@ void __sdivsi3(Eq_n r4, uint32 r5)
 {
 	if (r5 == 0x00)
 		return;
-	Eq_n r3_n = 0x00 - (word32) __div0s<word32>(r4, 0x00);
+	Eq_n r3_n = 0x00 - __div0s<word32>(r4, 0x00);
 	__div0s<word32>(r3_n, r5);
 	__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r3_n, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5);
 }
@@ -2969,7 +2969,7 @@ Eq_n fn004044C6(Eq_n r4, uint32 r5)
 //      __udivsi3
 Eq_n fn004044D6(Eq_n r0, Eq_n r4, uint32 r5, union Eq_n & r4Out)
 {
-	bool T;
+	Eq_n T;
 	Eq_n r4_n = __div1<word32>(r4, r5);
 	Eq_n r0_n = __rcl<word32,byte>(r0, 0x01, T);
 	Eq_n r4_n = __div1<word32>(r4_n, r5);
@@ -2985,7 +2985,7 @@ void __udivsi3(Eq_n r4, uint32 r5)
 {
 	if ((uint32) (uint16) r5 != r5)
 	{
-		bool T_n = __div0u();
+		Eq_n T_n = __div0u();
 		Eq_n r0_n = __xtrct<word32,word32>(0x00, r4);
 		Eq_n r4_n;
 		Eq_n r4_n;

@@ -98,11 +98,11 @@ namespace Reko.Arch.i8051
         public static readonly RegisterStorage PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
 
 
-        public static readonly FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage CAOP = new FlagGroupStorage(PSW, (uint) (FlagM.C | FlagM.AC | FlagM.OV | FlagM.P), "CAOP", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C");
+        public static readonly FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A");
+        public static readonly FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O");
+        public static readonly FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P");
+        public static readonly FlagGroupStorage CAOP = new FlagGroupStorage(PSW, (uint) (FlagM.C | FlagM.AC | FlagM.OV | FlagM.P), nameof(CAOP));
         
 
 

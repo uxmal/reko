@@ -84,7 +84,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 	r0_n.u1 = r0.u2->u1.t0040.u1;
 	Eq_n r5_n = *((word32) r0 + 56);
 	Eq_n r5_n;
-	bool Z_n;
+	ui32 Z_n;
 	ptr32 r7;
 	if (r0_n == 0x00)
 	{
@@ -93,14 +93,14 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 		if (r6_n != 0x00)
 		{
 			r5_n.u1 = (word32) r5_n + 1;
-			Z_n = SLICE(cond((word32) r5_n + 1), bool, 2);
+			Z_n = cond((word32) r5_n + 1) & 0x04;
 		}
 		else
 		{
 			r0_n = xTaskPriorityDisinherit(r0.u2->u0.dw0004);
 			r0.u2->u0.dw0004 = (word32) r6_n;
 			r5_n.u1 = (word32) r5_n + 1;
-			Z_n = SLICE(cond((word32) r5_n + 1), bool, 2);
+			Z_n = cond((word32) r5_n + 1) & 0x04;
 		}
 	}
 	else
@@ -120,7 +120,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 				r4_n->dw0038 = r5_n + 0x01;
 				r0Out = r6_n;
 				r7Out = r7_n;
-				return SLICE(cond(r5_n + 0x01), bool, 2);
+				return (cond(r5_n + 0x01) & 0x04) != 0x00;
 			}
 			else
 			{
@@ -128,7 +128,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 				r4_n->dw0038 = r5_n + 0x01;
 				r0Out = r6_n;
 				r7Out = r7_n;
-				return SLICE(cond(r5_n + 0x01), bool, 2);
+				return (cond(r5_n + 0x01) & 0x04) != 0x00;
 			}
 		}
 		word32 r6_n;
@@ -140,13 +140,13 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 		r4_n.u2->u0.dw000C = (word32) r3_n;
 		if (r3_n < r1_n)
 			r4_n.u2->u0.dw000C = r4_n.u2->u0.dw0004;
-		Z_n = SLICE(cond(r6_n - 0x02), bool, 2);
+		Z_n = cond(r6_n - 0x02) & 0x04;
 		if (r6_n != 0x02)
 		{
 			((word32) r4_n + 56)->u1 = (word32) r5_n + 1;
 			r0Out.u0 = 0x00;
 			r7Out = r7;
-			return SLICE(cond((word32) r5_n + 1), bool, 2);
+			return (cond((word32) r5_n + 1) & 0x04) != 0x00;
 		}
 		if (r5_n == 0x00)
 			r5_n.u0 = 0x01;
@@ -155,7 +155,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 	*((word32) r4_n + 56) = r5_n;
 	r0Out = r0_n;
 	r7Out = r7;
-	return Z_n;
+	return Z_n != 0x00;
 }
 
 // 0000016C: Register word32 prvCopyDataFromQueue(Register Eq_n r0, Register Eq_n r1, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)

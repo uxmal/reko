@@ -23,9 +23,6 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
@@ -35,7 +32,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr1 = binder.EnsureFlagGroup(arch.cr, 0x2, "cr1", PrimitiveType.Byte);
+            var cr1 = binder.EnsureFlagGroup(arch.cr1);
             m.Assign(cr1, m.Cond(e));
         }
 

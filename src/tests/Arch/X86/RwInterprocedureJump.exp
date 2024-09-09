@@ -51,8 +51,8 @@ l0C00_000C:
 l0C00_0011:
 	ax = ax ^ ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0014:

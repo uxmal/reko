@@ -121,8 +121,8 @@ namespace Reko.UnitTests.Arch.Sparc
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|i1 = o1 & ~0x1B1<32>",
                 "2|L--|NZ = cond(i1)",
-                "3|L--|V = false",
-                "4|L--|C = false");
+                "3|L--|V = 0<32>",
+                "4|L--|C = 0<32>");
         }
 
         [Test]

@@ -107,16 +107,16 @@ namespace Reko.Arch.Arm.AArch32
 
         public static readonly HashSet<RegisterStorage> SIMDRegisters;
 
-        public static readonly FlagGroupStorage C =  FlagGroup(FlagM.CF, "C", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage N = FlagGroup(FlagM.NF, "N", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage NV = FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZCV = FlagGroup(FlagM.NF| FlagM.ZF | FlagM.CF | FlagM.VF, "NZCV", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZC = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZV = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage Q = FlagGroup(FlagM.QF, "Q", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage V = FlagGroup(FlagM.VF, "V", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage Z = FlagGroup(FlagM.ZF, "Z", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage ZC = FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage C =  FlagGroup(FlagM.CF, "C");
+        public static readonly FlagGroupStorage N = FlagGroup(FlagM.NF, "N");
+        public static readonly FlagGroupStorage NV = FlagGroup(FlagM.NF | FlagM.VF, "NV");
+        public static readonly FlagGroupStorage NZCV = FlagGroup(FlagM.NF| FlagM.ZF | FlagM.CF | FlagM.VF, "NZCV");
+        public static readonly FlagGroupStorage NZC = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC");
+        public static readonly FlagGroupStorage NZV = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV");
+        public static readonly FlagGroupStorage Q = FlagGroup(FlagM.QF, "Q");
+        public static readonly FlagGroupStorage V = FlagGroup(FlagM.VF, "V");
+        public static readonly FlagGroupStorage Z = FlagGroup(FlagM.ZF, "Z");
+        public static readonly FlagGroupStorage ZC = FlagGroup(FlagM.ZF | FlagM.CF, "ZC");
 
         static Registers()
         {
@@ -136,9 +136,9 @@ namespace Reko.Arch.Arm.AArch32
                 .ToDictionary(r => r.Domain);
         }
 
-        private static FlagGroupStorage FlagGroup(FlagM grf, string name, PrimitiveType type)
+        private static FlagGroupStorage FlagGroup(FlagM grf, string name)
         {
-            return new FlagGroupStorage(Registers.cpsr, (uint) grf, name, type);
+            return new FlagGroupStorage(Registers.cpsr, (uint) grf, name);
         }
     }
 }

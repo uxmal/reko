@@ -47,9 +47,9 @@ ax_10: orig: ax
           Mem15[ds:0x208<16>:word16] = ax_10
 SCZO_11: orig: SCZO
     def:  SCZO_11 = cond(ax_10)
-    uses: C_12 = SLICE(SCZO_11, bool, 1) (alias)
+    uses: C_12 = SCZO_11 & 2<32> (alias)
 C_12: orig: C
-    def:  C_12 = SLICE(SCZO_11, bool, 1) (alias)
+    def:  C_12 = SCZO_11 & 2<32> (alias)
     uses: dx_13 = dx_7 + bx_9 + C_12
 dx_13: orig: dx
     def:  dx_13 = dx_7 + bx_9 + C_12
@@ -92,11 +92,11 @@ ax_23: orig: ax
           Mem25[ds:0x218<16>:word16] = ax_23
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(ax_23)
-    uses: C_26 = SLICE(SCZO_24, bool, 1) (alias)
+    uses: C_26 = SCZO_24 & 2<32> (alias)
 Mem25: orig: Mem0
     def:  Mem25[ds:0x218<16>:word16] = ax_23
 C_26: orig: C
-    def:  C_26 = SLICE(SCZO_24, bool, 1) (alias)
+    def:  C_26 = SCZO_24 & 2<32> (alias)
     uses: dx_27 = dx_18 - bx_21 - C_26
 dx_27: orig: dx
     def:  dx_27 = dx_18 - bx_21 - C_26
@@ -117,17 +117,17 @@ ax_30: orig: ax
 SZ_31: orig: SZ
     def:  SZ_31 = cond(ax_30)
 O_32: orig: O
-    def:  O_32 = false
+    def:  O_32 = 0<32>
 C_33: orig: C
-    def:  C_33 = false
+    def:  C_33 = 0<32>
 cl_34: orig: cl
     def:  cl_34 = Mem29[ds:0x220<16>:byte]
     uses: SCZO_35 = cond(cl_34 - 0x30<8>)
 SCZO_35: orig: SCZO
     def:  SCZO_35 = cond(cl_34 - 0x30<8>)
-    uses: C_36 = SLICE(SCZO_35, bool, 1) (alias)
+    uses: C_36 = SCZO_35 & 2<32> (alias)
 C_36: orig: C
-    def:  C_36 = SLICE(SCZO_35, bool, 1) (alias)
+    def:  C_36 = SCZO_35 & 2<32> (alias)
     uses: ax_37 = ax_30 + ax_30 + C_36
 ax_37: orig: ax
     def:  ax_37 = ax_30 + ax_30 + C_36
@@ -142,9 +142,9 @@ cl_39: orig: cl
           cx_48 = SEQ(ch_47, cl_39) (alias)
 SCZO_40: orig: SCZO
     def:  SCZO_40 = cond(cl_39 - 0x3A<8>)
-    uses: C_41 = SLICE(SCZO_40, bool, 1) (alias)
+    uses: C_41 = SCZO_40 & 2<32> (alias)
 C_41: orig: C
-    def:  C_41 = SLICE(SCZO_40, bool, 1) (alias)
+    def:  C_41 = SCZO_40 & 2<32> (alias)
     uses: C_42 = !C_41
 C_42: orig: C
     def:  C_42 = !C_41
@@ -156,14 +156,14 @@ ax_43: orig: ax
           use ax_43
 SCZO_44: orig: SCZO
     def:  SCZO_44 = cond(ax_43)
-    uses: C_46 = SLICE(SCZO_44, bool, 1) (alias)
-          O_49 = SLICE(SCZO_44, bool, 4) (alias)
-          S_50 = SLICE(SCZO_44, bool, 0) (alias)
-          Z_51 = SLICE(SCZO_44, bool, 2) (alias)
+    uses: C_46 = SCZO_44 & 2<32> (alias)
+          O_49 = SCZO_44 & 0x10<32> (alias)
+          S_50 = SCZO_44 & 1<32> (alias)
+          Z_51 = SCZO_44 & 4<32> (alias)
 Mem45: orig: Mem0
     def:  Mem45[ds:0x222<16>:word16] = ax_43
 C_46: orig: C
-    def:  C_46 = SLICE(SCZO_44, bool, 1) (alias)
+    def:  C_46 = SCZO_44 & 2<32> (alias)
     uses: use C_46
 ch_47: orig: ch
     def:  ch_47 = SLICE(es_cx_19, byte, 8) (alias)
@@ -172,13 +172,13 @@ cx_48: orig: cx
     def:  cx_48 = SEQ(ch_47, cl_39) (alias)
     uses: use cx_48
 O_49: orig: O
-    def:  O_49 = SLICE(SCZO_44, bool, 4) (alias)
+    def:  O_49 = SCZO_44 & 0x10<32> (alias)
     uses: use O_49
 S_50: orig: S
-    def:  S_50 = SLICE(SCZO_44, bool, 0) (alias)
+    def:  S_50 = SCZO_44 & 1<32> (alias)
     uses: use S_50
 Z_51: orig: Z
-    def:  Z_51 = SLICE(SCZO_44, bool, 2) (alias)
+    def:  Z_51 = SCZO_44 & 4<32> (alias)
     uses: use Z_51
 // fn0C00_0000
 // Return size: 2
@@ -197,7 +197,7 @@ l0C00_0000:
 	bx_9 = Mem0[ds:0x206<16>:word16]
 	ax_10 = ax_6 + cx_8
 	SCZO_11 = cond(ax_10)
-	C_12 = SLICE(SCZO_11, bool, 1) (alias)
+	C_12 = SCZO_11 & 2<32> (alias)
 	dx_13 = dx_7 + bx_9 + C_12
 	SCZO_14 = cond(dx_13)
 	Mem15[ds:0x208<16>:word16] = ax_10
@@ -211,30 +211,30 @@ l0C00_0000:
 	bx_21 = es_20
 	ax_23 = ax_17 - cx_22
 	SCZO_24 = cond(ax_23)
-	C_26 = SLICE(SCZO_24, bool, 1) (alias)
+	C_26 = SCZO_24 & 2<32> (alias)
 	Mem25[ds:0x218<16>:word16] = ax_23
 	dx_27 = dx_18 - bx_21 - C_26
 	SCZO_28 = cond(dx_27)
 	Mem29[ds:0x21A<16>:word16] = dx_27
 	ax_30 = 0<16>
 	SZ_31 = cond(ax_30)
-	O_32 = false
-	C_33 = false
+	O_32 = 0<32>
+	C_33 = 0<32>
 	cl_34 = Mem29[ds:0x220<16>:byte]
 	SCZO_35 = cond(cl_34 - 0x30<8>)
-	C_36 = SLICE(SCZO_35, bool, 1) (alias)
+	C_36 = SCZO_35 & 2<32> (alias)
 	ax_37 = ax_30 + ax_30 + C_36
 	SCZO_38 = cond(ax_37)
 	cl_39 = Mem29[ds:0x221<16>:byte]
 	SCZO_40 = cond(cl_39 - 0x3A<8>)
-	C_41 = SLICE(SCZO_40, bool, 1) (alias)
+	C_41 = SCZO_40 & 2<32> (alias)
 	C_42 = !C_41
 	ax_43 = ax_37 + ax_37 + C_42
 	SCZO_44 = cond(ax_43)
-	C_46 = SLICE(SCZO_44, bool, 1) (alias)
-	O_49 = SLICE(SCZO_44, bool, 4) (alias)
-	S_50 = SLICE(SCZO_44, bool, 0) (alias)
-	Z_51 = SLICE(SCZO_44, bool, 2) (alias)
+	C_46 = SCZO_44 & 2<32> (alias)
+	O_49 = SCZO_44 & 0x10<32> (alias)
+	S_50 = SCZO_44 & 1<32> (alias)
+	Z_51 = SCZO_44 & 4<32> (alias)
 	Mem45[ds:0x222<16>:word16] = ax_43
 	cx_48 = SEQ(ch_47, cl_39) (alias)
 	return

@@ -68,8 +68,8 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|R0 = R0 & R1",
                 "2|L--|NZ = cond(R0)",
-                "3|L--|V = false",
-                "4|L--|AC0 = false");
+                "3|L--|V = 0<32>",
+                "4|L--|AC0 = 0<32>");
         }
 
         [Test]
@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 5 instructions",
                 "1|L--|R1 = __clear_bit<word32,byte>(R1, 7<8>)",
                 "2|L--|AN = cond(R1)",
-                "3|L--|AZ = false",
-                "4|L--|V = false",
-                "5|L--|AC0 = false");
+                "3|L--|AZ = 0<32>",
+                "4|L--|V = 0<32>",
+                "5|L--|AC0 = 0<32>");
         }
 
         [Test]
@@ -113,9 +113,9 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 5 instructions",
                 "1|L--|R0 = __set_bit<word32,byte>(R0, 0x1F<8>)",
                 "2|L--|AN = cond(R0)",
-                "3|L--|AZ = false",
-                "4|L--|V = false",
-                "5|L--|AC0 = false");
+                "3|L--|AZ = 0<32>",
+                "4|L--|V = 0<32>",
+                "5|L--|AC0 = 0<32>");
         }
 
         [Test]
@@ -469,8 +469,8 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 4 instructions",
                 "1|L--|R3 = R0 ^ R1",
                 "2|L--|NZ = cond(R3)",
-                "3|L--|V = false",
-                "4|L--|AC0 = false");
+                "3|L--|V = 0<32>",
+                "4|L--|AC0 = 0<32>");
         }
     }
 }

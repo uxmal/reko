@@ -111,7 +111,7 @@ namespace Reko.Arch.Mos6502
                     m.IAdd(a, mem),
                     c));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instr.Mnemonic), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.NVZC),
                 m.Cond(a));
         }
 

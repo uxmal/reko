@@ -103,8 +103,19 @@ namespace Reko.Evaluation
                     {
                         return (exp, true);
                     }
+                    conversion = m.Convert(exp, exp.DataType, conversion.DataType);
                 }
-                conversion = new Conversion(exp, conversion.SourceDataType, conversion.DataType);
+                else
+                {
+                    if (conversion.SourceDataType.BitSize == exp.DataType.BitSize)
+                    {
+                        conversion = m.Convert(exp, conversion.SourceDataType, conversion.DataType);
+                    }
+                    else
+                    {
+                        conversion = m.Convert(exp, exp.DataType, conversion.DataType);
+                    }
+                }
             }
             exp = convertConvertRule.Match(conversion);
             if (exp is not null)

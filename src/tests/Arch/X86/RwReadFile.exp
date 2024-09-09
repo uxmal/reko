@@ -33,8 +33,8 @@ l0C00_0000:
 	call fn0C00_0023 (retsize: 2;)
 	ax = ax | ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(GE,SO) l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:

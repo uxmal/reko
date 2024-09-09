@@ -13,9 +13,9 @@ dx_4: orig: dx
 SZ_5: orig: SZ
     def:  SZ_5 = cond(dx_4)
 O_6: orig: O
-    def:  O_6 = false
+    def:  O_6 = 0<32>
 C_7: orig: C
-    def:  C_7 = false
+    def:  C_7 = 0<32>
 cx_8: orig: cx
     def:  cx_8 = 4<16>
     uses: cx_18 = PHI((cx_8, l0C00_0000), (cx_19, l0C00_0008), (cx_20, l0C00_000D))
@@ -65,9 +65,9 @@ di_22: orig: di
           branch di_22 != 0<16> l0C00_0008
 SZO_23: orig: SZO
     def:  SZO_23 = cond(di_22)
-    uses: Z_24 = SLICE(SZO_23, bool, 2) (alias)
+    uses: Z_24 = SZO_23 & 4<32> (alias)
 Z_24: orig: Z
-    def:  Z_24 = SLICE(SZO_23, bool, 2) (alias)
+    def:  Z_24 = SZO_23 & 4<32> (alias)
 Mem25: orig: Mem0
     def:  Mem25[ds:0x300<16>:word16] = dx_16
 ds:ds
@@ -94,8 +94,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	dx_4 = 0<16>
 	SZ_5 = cond(dx_4)
-	O_6 = false
-	C_7 = false
+	O_6 = 0<32>
+	C_7 = 0<32>
 	cx_8 = 4<16>
 	di_9 = 4<16>
 	// succ:  l0C00_0008
@@ -115,7 +115,7 @@ l0C00_000D:
 	cx_20 = 4<16>
 	di_22 = di_21 - 1<16>
 	SZO_23 = cond(di_22)
-	Z_24 = SLICE(SZO_23, bool, 2) (alias)
+	Z_24 = SZO_23 & 4<32> (alias)
 	branch di_22 != 0<16> l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
@@ -137,9 +137,9 @@ dx_4: orig: dx
 SZ_5: orig: SZ
     def:  SZ_5 = cond(0<16>)
 O_6: orig: O
-    def:  O_6 = false
+    def:  O_6 = 0<32>
 C_7: orig: C
-    def:  C_7 = false
+    def:  C_7 = 0<32>
 cx_8: orig: cx
     def:  cx_8 = 4<16>
     uses: cx_18 = PHI((cx_8, l0C00_0000), (cx_19, l0C00_0008), (cx_20, l0C00_000D))
@@ -189,9 +189,9 @@ di_22: orig: di
           branch di_22 != 0<16> l0C00_0008
 SZO_23: orig: SZO
     def:  SZO_23 = cond(di_22)
-    uses: Z_24 = SLICE(SZO_23, bool, 2) (alias)
+    uses: Z_24 = SZO_23 & 4<32> (alias)
 Z_24: orig: Z
-    def:  Z_24 = SLICE(SZO_23, bool, 2) (alias)
+    def:  Z_24 = SZO_23 & 4<32> (alias)
 Mem25: orig: Mem0
     def:  Mem25[ds:0x300<16>:word16] = dx_16
 ds:ds
@@ -218,8 +218,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	dx_4 = 0<16>
 	SZ_5 = cond(0<16>)
-	O_6 = false
-	C_7 = false
+	O_6 = 0<32>
+	C_7 = 0<32>
 	cx_8 = 4<16>
 	di_9 = 4<16>
 	// succ:  l0C00_0008
@@ -239,7 +239,7 @@ l0C00_000D:
 	cx_20 = 4<16>
 	di_22 = di_21 - 1<16>
 	SZO_23 = cond(di_22)
-	Z_24 = SLICE(SZO_23, bool, 2) (alias)
+	Z_24 = SZO_23 & 4<32> (alias)
 	branch di_22 != 0<16> l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:

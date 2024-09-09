@@ -47,10 +47,10 @@ void fn0390(byte b, Eq_n c, byte e, byte bArg02)
 //      fn03E6
 bool fn03BB(Eq_n c, union Eq_n & aOut)
 {
-	g_t1657.u0 = (uint8) c;
-	byte a_n = SLICE(0x1A - (uint16) (g_t1657.u0 - 0x61), byte, 8);
+	g_t1657.u0 = (cu8) c;
+	byte a_n = 0x00 - (cond(0x1A - (g_t1657.u0 - 0x61)) & 0x01);
 	aOut = ~a_n;
-	return (bool) cond(a_n);
+	return (cond(a_n) & 0x01) != 0x00;
 }
 
 // 03CB: Register word16 fn03CB(Register Eq_n c)
@@ -58,8 +58,8 @@ bool fn03BB(Eq_n c, union Eq_n & aOut)
 //      fn0990
 word16 fn03CB(Eq_n c)
 {
-	g_t1658.u0 = (uint8) c;
-	byte a_n = ~SLICE(0x19 - (uint16) (g_t1658.u0 - 0x41), byte, 8);
+	g_t1658.u0 = (cu8) c;
+	byte a_n = (cond(0x19 - (g_t1658.u0 - 0x41)) & 0x01) - 1;
 	byte a_n;
 	fn03BB(g_t1658.u0, out a_n);
 	byte f;
@@ -71,7 +71,7 @@ word16 fn03CB(Eq_n c)
 //      fn0990
 Eq_n fn03E6(Eq_n c)
 {
-	g_t1659.u0 = (uint8) c;
+	g_t1659.u0 = (cu8) c;
 	byte a_n;
 	if (__rcr<byte,byte>(a_n, 0x01, fn03BB(g_t1659.u0, out a_n)) >= 0x00)
 		return g_t1659.u0;
@@ -250,17 +250,17 @@ bool fn056B(Eq_n bc, union Eq_n & bcOut)
 		break;
 	}
 	char a_n = g_b166C;
-	bool C_n = (bool) cond(a_n - 0x0D);
+	byte C_n = cond(a_n - 0x0D) & 0x01;
 	if (a_n == 0x0D)
 		g_b14F6 = 0x01;
 	else
 	{
 		char a_n = g_b166C;
-		C_n = (bool) cond(a_n - 0x0A);
+		C_n = cond(a_n - 0x0A) & 0x01;
 		if (a_n == 0x0A)
 		{
-			cu8 a_n = g_b14F3;
-			C_n = (bool) cond(a_n - 0x00);
+			byte a_n = g_b14F3;
+			C_n = cond(a_n - 0x00) & 0x01;
 			if (a_n != 0x00)
 				++g_b14FD;
 		}
@@ -268,7 +268,7 @@ bool fn056B(Eq_n bc, union Eq_n & bcOut)
 			++g_b14F6;
 	}
 	bcOut = bc_n;
-	return C_n;
+	return C_n != 0x00;
 }
 
 // 05CE: Register byte fn05CE(Register Eq_n bc)
@@ -310,19 +310,19 @@ bool fn05EF(Eq_n bc, union Eq_n & bOut)
 	g_t166F.u0 = (byte) c;
 	g_b1671 = 0x01;
 	Eq_n bc_n = bc;
-	bool C_n;
+	Eq_n C_n;
 	do
 	{
 		uint8 a_n = g_t166F.u1[0];
 		byte b_n = SLICE(bc_n, byte, 8);
-		C_n = (bool) cond(a_n - g_b1671);
+		C_n = cond(a_n - g_b1671) & 0x01;
 		if (a_n < g_b1671)
 			break;
 		C_n = fn056B(SEQ(b_n, g_t166F.u1[(uint16) g_b1671]), out bc_n);
 		++g_b1671;
 	} while (g_b1671 != 0x00);
 	bOut.u1 = <invalid>;
-	return C_n;
+	return C_n != 0x00;
 }
 
 // 061B: FlagGroup bool fn061B(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e)
@@ -337,9 +337,9 @@ bool fn061B(byte b, Eq_n c, byte d, Eq_n e)
 	g_t1672.u0 = (byte) c;
 	g_b14F3 = 0x02;
 	fn05CE(g_t1672.u1);
-	bool C_n = fn05EF(g_t1674.u1, out b_n);
+	Eq_n C_n = fn05EF(g_t1674.u1, out b_n);
 	fn0387();
-	return C_n;
+	return C_n != 0x00;
 }
 
 // 063E: void fn063E(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e)
@@ -659,10 +659,10 @@ void fn0920()
 	{
 		byte b_n;
 		byte h_n;
-		cu8 a_n;
+		byte a_n;
 		byte l_n;
 		S_BDOSVER(out b_n, out h_n, out a_n, out l_n);
-		if (((byte) (a_n < 0x30) - 1 & g_b168E) >> 0x01 < 0x00)
+		if (((cond(a_n - 0x30) & 0x01) - 1 & g_b168E) >> 0x01 < 0x00)
 			*((char *) g_t168B.u1 + 7) = (Fcb *) (*((char *) g_t168B.u1 + 7) | 0x80);
 		if (F_OPEN(g_t168B.u1) == ~0x00)
 		{
@@ -683,10 +683,10 @@ void fn0920()
 	}
 }
 
-// 0990: FlagGroup Eq_n fn0990(Register uint8 f, Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out Eq_n afOut)
+// 0990: FlagGroup bool fn0990(Register uint8 f, Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out Eq_n afOut)
 // Called from:
 //      fn082F
-Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
+bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 {
 	g_b1695 = d;
 	g_t1694.u0 = (byte) e;
@@ -707,33 +707,33 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		hl_n.u1 = g_t1692.u1;
 		sp_n->tFFFFFFFE.u1 = (byte *) af_n;
 		f = (byte) af_n;
-		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) (*hl_n < 0x41) | sp_n->b0003, f);
-		bcu8 a_n = SLICE(0x02 - (uint16) g_t1696.u0, byte, 8) & sp_n->b0003;
-		Eq_n C_n = cond(a_n >> 0x01);
+		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (cond(*hl_n - 0x41) & 0x01) | sp_n->b0003, f);
+		bcu8 a_n = 0x00 - (cond(0x02 - g_t1696.u0) & 0x01) & sp_n->b0003;
+		byte C_n = cond(a_n >> 0x01);
 		if (a_n >> 0x01 >= 0x00)
 		{
 			afOut.u0 = (uint16) f;
-			return C_n;
+			return C_n != 0x00;
 		}
 		*g_t168B.u1 = (Fcb *) (g_t1692.u1->a0000[0].u0 & 0x1F);
 		Eq_n hl_n;
 		hl_n.u1 = g_t168B.u1;
-		Eq_n C_n = (bool) cond(0x10 - *hl_n.u1);
+		byte SZPC_n = cond(0x10 - *hl_n.u1);
 		if (*hl_n.u1 > 0x10)
 		{
 			afOut.u0 = (uint16) f;
-			return C_n;
+			return (SZPC_n & 0x01) != 0x00;
 		}
 		g_t1692.u1 = (struct Eq_n *) &g_t1692.u1->b0002;
-		g_t1696.u0 = (uint8) (g_t1696.u0 - 0x01);
-		g_t1696.u0 = (uint8) (g_t1696.u0 - 0x01);
+		g_t1696.u0 = (cu8) (g_t1696.u0 - 0x01);
+		g_t1696.u0 = (cu8) (g_t1696.u0 - 0x01);
 	}
 	else
 		*g_t168B.u1 = (Fcb *) 0x00;
 	g_b1697 = 0x00;
 	while (true)
 	{
-		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(~SLICE(0x07 - (uint16) g_b1697, byte, 8), f);
+		sp_n->tFFFFFFFE.u1 = (byte *) SEQ((cond(0x07 - g_b1697) & 0x01) - 1, f);
 		word16 af_n = fn0B74();
 		f = (byte) af_n;
 		if ((SLICE(af_n, byte, 8) & sp_n->b0003) >> 0x01 >= 0x00)
@@ -741,25 +741,25 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		sp_n->tFFFFFFFE.u1 = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
 		byte a_n = *sp_n->tFFFFFFFE.u1;
 		*(g_t168B.u1 + ((uint16) g_b1697 + 0x01)) = (word16) a_n;
-		Eq_n C_n = (bool) cond(a_n - 0x2A);
+		byte SZPC_n = cond(a_n - 0x2A);
 		if (a_n == 0x2A)
 		{
 			afOut.u0 = (uint16) f;
-			return C_n;
+			return (SZPC_n & 0x01) != 0x00;
 		}
 		fn0B91();
 	}
-	cu8 * hl_n = (cu8 *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
-	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(SLICE(0x01 - (uint16) g_t1696.u0, byte, 8), f);
+	byte * hl_n = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
+	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (cond(0x01 - g_t1696.u0) & 0x01), f);
 	byte b_n;
-	if ((0x00 - (byte) (*hl_n < 0x2F) & sp_n->b0003) >> 0x01 < 0x00)
+	if ((0x00 - (cond(*hl_n - 0x2F) & 0x01) & sp_n->b0003) >> 0x01 < 0x00)
 	{
 		fn0B91();
-		Eq_n C_n = (bool) cond(0x03 - g_t1696.u0);
+		byte SZPC_n = cond(0x03 - g_t1696.u0);
 		if (g_t1696.u0 > 0x03)
 		{
 			afOut.u0 = (uint16) f;
-			return C_n;
+			return (SZPC_n & 0x01) != 0x00;
 		}
 		sp_n->tFFFFFFFE.u1 = g_t1696.u1;
 		sp_n->ptrFFFFFFFC = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
@@ -777,14 +777,14 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	}
 	else
 	{
-		cu8 * hl_n = (cu8 *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
-		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) (g_t1696.u0 < 0x01), f);
-		bcu8 a_n = 0x00 - (byte) (*hl_n < 0x2F) | sp_n->b0003;
-		Eq_n C_n = cond(a_n >> 0x01);
+		byte * hl_n = (byte *) (&g_t1692.u1->a0000->u0 + (uint16) g_b1697);
+		sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (cond(g_t1696.u0 - 0x01) & 0x01), f);
+		bcu8 a_n = 0x00 - (cond(*hl_n - 0x2F) & 0x01) | sp_n->b0003;
+		byte C_n = cond(a_n >> 0x01);
 		if (a_n >> 0x01 >= 0x00)
 		{
 			afOut.u0 = (uint16) f;
-			return C_n;
+			return C_n != 0x00;
 		}
 		Eq_n hl_n;
 		hl_n.u1 = g_t1694.u1;
@@ -817,11 +817,11 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 			break;
 	}
 	g_b1697 = 0x00;
-	Eq_n C_n;
+	byte C_n;
 	uint8 a_n;
 	do
 	{
-		C_n = (bool) cond(0x02 - g_b1697);
+		C_n = cond(0x02 - g_b1697) & 0x01;
 		if (g_b1697 > 0x02)
 			break;
 		byte a_n = fn03E6(*(g_t168B.u1 + ((uint16) g_b1697 + 0x09)));
@@ -829,10 +829,10 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		*hl_n = a_n;
 		a_n = g_b1697;
 		g_b1697 = a_n + 0x01;
-		C_n = (bool) cond(hl_n);
+		C_n = cond(hl_n) & 0x01;
 	} while (a_n != ~0x00);
 	afOut = SEQ(0x01, f);
-	return C_n;
+	return C_n != 0x00;
 }
 
 // 0B74: Register word16 fn0B74()
@@ -841,7 +841,7 @@ Eq_n fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 word16 fn0B74()
 {
 	byte f;
-	return SEQ(0x00 - (byte) (g_t1696.u0 < 0x01) & 0x00 - (byte) ((&(((g_t1692.u1)->a0000))[0].u0)[(uint16) g_b1697] < 0x2F), f);
+	return SEQ(0x00 - (cond(g_t1696.u0 + ~0x00) & 0x01) & 0x00 - (cond((&(((g_t1692.u1)->a0000))[0].u0)[(uint16) g_b1697] - 0x2F) & 0x01), f);
 }
 
 // 0B91: void fn0B91()
@@ -850,7 +850,7 @@ word16 fn0B74()
 void fn0B91()
 {
 	++g_b1697;
-	g_t1696.u0 = (uint8) (g_t1696.u0 - 0x01);
+	g_t1696.u0 = (cu8) (g_t1696.u0 - 0x01);
 }
 
 // 0BE4: void fn0BE4(Register uint8 f)
@@ -858,8 +858,8 @@ void fn0B91()
 //      fn100A
 void fn0BE4(uint8 f)
 {
-	byte a_n = 0x00 - (byte) (g_b138A < 0x02);
-	if ((0x00 - (byte) (g_b14F3 < 0x03) & a_n) >> 0x01 < 0x00)
+	byte a_n = 0x00 - (cond(g_b138A + ~0x01) & 0x01);
+	if ((0x00 - (cond(g_b14F3 - 0x03) & 0x01) & a_n) >> 0x01 < 0x00)
 	{
 		if (g_b14F6 != 0x01)
 			fn0814(a_n);
@@ -879,8 +879,8 @@ void fn0BE4(uint8 f)
 	word16 hl_n = g_w0108;
 	fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, (byte) hl_n, hl_n->wFFFFFFFA);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
-	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (byte) (g_b138A < 0x01), f_n);
-	if ((SLICE(0x03 - (uint16) g_b138A, byte, 8) | sp_n->b0003) >> 0x01 < 0x00)
+	sp_n->tFFFFFFFE.u1 = (byte *) SEQ(0x00 - (cond(g_b138A - 0x01) & 0x01), f_n);
+	if ((0x00 - (cond(0x03 - g_b138A) & 0x01) | sp_n->b0003) >> 0x01 < 0x00)
 		fn075C(0x00, 0x01, 0x00, 0x00);
 	switch (g_b138A)
 	{
@@ -906,14 +906,14 @@ byte fn0C93()
 	return g_b138D + g_b138C + (&g_b138C)[(uint16) g_b138C] + 0x7F;
 }
 
-// 0D64: FlagGroup Eq_n fn0D64(Register out Eq_n aOut)
+// 0D64: FlagGroup bool fn0D64(Register out Eq_n aOut)
 // Called from:
 //      fn0D84
-Eq_n fn0D64(union Eq_n & aOut)
+bool fn0D64(union Eq_n & aOut)
 {
 	bcu8 a_n = g_t1521.u1->b0009;
 	aOut = a_n >> 0x01;
-	return cond(a_n >> 0x01);
+	return cond(a_n >> 0x01) != 0x00;
 }
 
 // 0D6F: void fn0D6F()
@@ -975,25 +975,25 @@ void fn0E63(byte c)
 bool fn0EAB(union Eq_n & aOut)
 {
 	g_b16A7 = 0x00;
-	bool C_n;
+	byte SZPC_n;
 	while (true)
 	{
 		uint8 a_n = g_b138C;
-		C_n = (bool) cond(a_n - g_b16A7);
+		SZPC_n = cond(a_n - g_b16A7);
 		if (a_n < g_b16A7)
 			break;
 		struct Eq_n * hl_n = (uint16) g_b16A7;
 		byte a_n = (byte) *(g_t1521.u1 + ((uint16) g_b16A7 + 0x0A));
-		bool C_n = (bool) cond(a_n - hl_n->b138C);
+		byte SZPC_n = cond(a_n - hl_n->b138C);
 		if (a_n != hl_n->b138C)
 		{
 			aOut.u0 = 0x00;
-			return C_n;
+			return (SZPC_n & 0x01) != 0x00;
 		}
 		++g_b16A7;
 	}
 	aOut.u0 = 0x01;
-	return C_n;
+	return (SZPC_n & 0x01) != 0x00;
 }
 
 // 0FB8: void fn0FB8()
@@ -1008,29 +1008,29 @@ void fn100A(word16 af)
 	while (true)
 	{
 		f_n = (byte) af;
-		if ((0x00 - (byte) (g_b14FF < 0x0E) & (0x00 - (byte) (g_b16A8 < 0x01) & (0x00 - (byte) (g_b16A8 < ~0x02) & SLICE(af, byte, 8)))) >> 0x01 >= 0x00)
+		if ((0x00 - (cond(g_b14FF - 0x0E) & 0x01) & (0x00 - (cond(g_b16A8 + ~0x00) & 0x01) & (0x00 - (cond(g_b16A8 + 0x03) & 0x01) & SLICE(af, byte, 8)))) >> 0x01 >= 0x00)
 			break;
-		cu8 a_n = g_b14FF;
+		byte a_n = g_b14FF;
 		g_b14FF = a_n + 0x01;
 		(&g_b14FF)[(uint16) (a_n + 0x01)] = g_b16A8;
 		g_b16A8 = fn045B();
-		af = SEQ(0x00 - (byte) (g_b16A8 < 33), f_n);
+		af = SEQ(0x00 - (cond(g_b16A8 - 33) & 0x01), f_n);
 	}
 	if (g_b14FF == 0x00)
 	{
 		fn05CE(0x0369);
 		fn0387();
 	}
-	while ((0x00 - (byte) (g_b16A8 < 0x01) & 0x00 - (byte) (g_b16A8 < ~0x02)) >> 0x01 < 0x00)
+	while ((0x00 - (cond(g_b16A8 + ~0x00) & 0x01) & 0x00 - (cond(g_b16A8 + 0x03) & 0x01)) >> 0x01 < 0x00)
 		g_b16A8 = fn045B();
 	g_b16A8 = fn045B();
 	byte a_n;
 	word16 bc_n;
 	while (true)
 	{
-		a_n = 0x00 - (byte) (g_b16A8 < ~0x00);
+		a_n = 0x00 - (cond(g_b16A8 + 0x01) & 0x01);
 		bc_n = SEQ(a_n, a_n);
-		if ((0x00 - (byte) (g_b16A8 < 0x01) & a_n) >> 0x01 >= 0x00)
+		if ((0x00 - (cond(g_b16A8 + ~0x00) & 0x01) & a_n) >> 0x01 >= 0x00)
 			break;
 		if (g_b16A8 == 0x20)
 			fn1262();
@@ -1213,7 +1213,7 @@ word16 fn12D8()
 		g_b16AB = fn045B() + 0x1F;
 	else
 		fn1229();
-	if ((SLICE(0x10 - (uint16) g_b16AB, byte, 8) | 0x00 - (byte) (fn045B() < 0x2A)) >> 0x01 < 0x00)
+	if ((0x00 - (cond(0x10 - g_b16AB) & 0x01) | 0x00 - (cond(fn045B() - 0x2A) & 0x01)) >> 0x01 < 0x00)
 		fn1229();
 	byte f;
 	return SEQ(g_b16AB, f);
@@ -1248,7 +1248,7 @@ byte fn1326(byte c, uint16 hl, union Eq_n & lOut)
 //      fn0534
 bool fn1335(word16 de, word16 hl)
 {
-	return (bool) cond(SLICE(de - hl, byte, 8));
+	return (cond(SLICE(de - hl, byte, 8)) & 0x01) != 0x00;
 }
 
 // 133C: void fn133C()
@@ -1276,7 +1276,7 @@ bool fn1348(ui16 * de, ui16 * hl, ptr16 & deOut, union Eq_n & hlOut)
 	Eq_n a_a_n = *de - *hl;
 	deOut = (char *) de + 1;
 	hlOut = a_a_n;
-	return (bool) cond(SLICE(a_a_n, byte, 8));
+	return (cond(SLICE(a_a_n, byte, 8)) & 0x01) != 0x00;
 }
 
 // 1353: Register uint8 fn1353(Register uint8 a, Register (ptr16 byte) de, Register out Eq_n lOut)
@@ -1301,7 +1301,7 @@ byte fn1356(byte * de, uint16 hl)
 }
 
 struct Eq_n * g_ptr1388 = null; // 1388
-uint8 g_b138A = 0x00; // 138A
+byte g_b138A = 0x00; // 138A
 byte g_b138B = 0x00; // 138B
 uint8 g_b138C = 0x00; // 138C
 byte g_b138D = 0x00; // 138D
@@ -1316,8 +1316,8 @@ ptr16 g_ptr14BC = 0x00; // 14BC
 int16 g_w14BE = 0; // 14BE
 byte g_b14EF = 0x01; // 14EF
 byte g_b14F0 = 0x00; // 14F0
-cu8 g_b14F3 = 0x02; // 14F3
-cu8 g_b14F4 = 0x00; // 14F4
+byte g_b14F3 = 0x02; // 14F3
+byte g_b14F4 = 0x00; // 14F4
 byte g_b14F5 = 0x00; // 14F5
 cu8 g_b14F6 = 0x01; // 14F6
 cu8 g_b14F7 = 66; // 14F7
@@ -1331,7 +1331,7 @@ Eq_n g_t14FE = // 14FE
 	{
 		0x01
 	};
-cu8 g_b14FF = 0x00; // 14FF
+byte g_b14FF = 0x00; // 14FF
 cu8 g_b151D = 0x00; // 151D
 cu8 g_b151E = 0x00; // 151E
 cu8 g_b151F = 0x00; // 151F
@@ -1503,4 +1503,4 @@ uint8 g_b16A7 = 0x7E; // 16A7
 cu8 g_b16A8 = 0x23; // 16A8
 cu8 g_b16A9 = 0x56; // 16A9
 bui8 g_b16AA = 0x2A; // 16AA
-uint8 g_b16AB = 229; // 16AB
+byte g_b16AB = 229; // 16AB

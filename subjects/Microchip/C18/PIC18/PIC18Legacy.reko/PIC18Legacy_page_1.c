@@ -63,7 +63,7 @@ l000080:
 		TBLPTRH_n = g_b00C8;
 		TBLPTRU_n = g_b00C9;
 		--g_b00C5;
-		g_b00C6 -= !(bool) cond(g_b00C5);
+		g_b00C6 -= !(cond(g_b00C5) & 0x01);
 		v20_n = g_b00C6 != 0x00;
 	}
 	while (true)

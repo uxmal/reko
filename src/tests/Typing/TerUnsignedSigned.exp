@@ -5,9 +5,9 @@ define register_tm_clones
 register_tm_clones_entry:
 	// succ:  l1
 l1:
-	rsp = 0x201028<64>
+	rdi = 0x201028<64>
 	rsi = 0x201028<64>
-	rsi = rsi - rsp
+	rsi = rsi - rdi
 	branch (rsi >> 3<64>) + (((rsi >> 3<64>) >>u 0x3F<8>) >> 1<64>) == 0<64> mHyperSpace
 	// succ:  mHello mHyperSpace
 mHello:
@@ -26,9 +26,9 @@ define register_tm_clones
 register_tm_clones_entry:
 	// succ:  l1
 l1:
-	rsp = 0x201028<64>
+	rdi = 0x201028<64>
 	rsi = 0x201028<64>
-	rsi = rsi - rsp
+	rsi = rsi - rdi
 	branch (rsi >> 3<64>) + (((rsi >> 3<64>) >> 0x3F<8>) >> 1<64>) == 0<64> mHyperSpace
 	// succ:  mHello mHyperSpace
 mHello:
@@ -56,7 +56,7 @@ T_2: (in 0x201028<64> : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
-T_3: (in rsp : word64)
+T_3: (in rdi : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
@@ -68,7 +68,7 @@ T_5: (in rsi : int64)
   Class: Eq_4
   DataType: int64
   OrigDataType: int64
-T_6: (in rsi - rsp : word64)
+T_6: (in rsi - rdi : word64)
   Class: Eq_4
   DataType: int64
   OrigDataType: word64

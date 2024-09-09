@@ -208,7 +208,7 @@ m2Block:
 	branch Test(EQ,Z) m4Done
 	// succ:  m3Leg m4Done
 m3Leg:
-	CZ = 0<8>
+	CZ = 0<32>
 	// succ:  m4Done
 m4Done:
 	return

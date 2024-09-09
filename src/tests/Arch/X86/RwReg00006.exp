@@ -43,11 +43,11 @@ l10000000:
 	di = Mem0[esp + 20<i32>:word16]
 	bl = bl ^ bl
 	SZ = cond(bl)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	SZP = cond(di & di)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(NE,Z) l10000021
 	// succ:  l10000010 l10000021
 l10000010:
@@ -92,8 +92,8 @@ l1000002C:
 	esp = esp + 0x18<32>
 	SCZO = cond(esp)
 	SZP = cond(esi & esi)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(NE,Z) l10000061
 	// succ:  l10000056 l10000061
 l10000056:
@@ -122,8 +122,8 @@ l1000006D:
 	eax = Mem0[esi:word32]
 	ebp = ebp ^ ebp
 	SZ = cond(ebp)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	esp = esp + 4<32>
 	SCZO = cond(esp)
 	SCZO = cond(Mem0[eax:word16] - bp)
@@ -260,8 +260,8 @@ l1000018B:
 	// succ:  l10000194 l100001B2
 l10000194:
 	SZP = cond(bl & bl)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(EQ,Z) l10000211
 	// succ:  l10000198 l10000211
 l10000198:

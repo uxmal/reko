@@ -48,17 +48,17 @@ namespace Reko.Arch.Pdp.Pdp11
         public static readonly RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
         public static readonly RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
 
-        public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage NV = new FlagGroupStorage(psw, 0xA, "NV", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NVC = new FlagGroupStorage(psw, 0xB, "NVC", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZ = new FlagGroupStorage(psw, 0xC, "NZ", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZC = new FlagGroupStorage(psw, 0xD, "NZC", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZV = new FlagGroupStorage(psw, 0xE, "NZV", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage NZVC = new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage ZC = new FlagGroupStorage(psw, 0x5, "ZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, 8, nameof(N));
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, 4, nameof(Z));
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(psw, 2, nameof(V));
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, 1, nameof(C));
+        public static readonly FlagGroupStorage NV = new FlagGroupStorage(psw, 0xA, nameof(NV));
+        public static readonly FlagGroupStorage NVC = new FlagGroupStorage(psw, 0xB, nameof(NVC));
+        public static readonly FlagGroupStorage NZ = new FlagGroupStorage(psw, 0xC, nameof(NZ));
+        public static readonly FlagGroupStorage NZC = new FlagGroupStorage(psw, 0xD, nameof(NZC));
+        public static readonly FlagGroupStorage NZV = new FlagGroupStorage(psw, 0xE, nameof(NZV));
+        public static readonly FlagGroupStorage NZVC = new FlagGroupStorage(psw, 0xF, nameof(NZVC));
+        public static readonly FlagGroupStorage ZC = new FlagGroupStorage(psw, 0x5, nameof(ZC));
     }
 
     [Flags]

@@ -1093,9 +1093,9 @@ main_exit:
         public void CrwReturnFlagGroup()
         {
             var sr = RegisterStorage.Reg32("sr", 42);
-            var CV = new FlagGroupStorage(sr, 0x3, "CV", sr.DataType);
-            var C = new FlagGroupStorage(sr, 1, "C", PrimitiveType.Bool);
-            var V = new FlagGroupStorage(sr, 2, "V", PrimitiveType.Bool);
+            var CV = new FlagGroupStorage(sr, 0x3, "CV");
+            var C = new FlagGroupStorage(sr, 1, "C");
+            var V = new FlagGroupStorage(sr, 2, "V");
 
             var ssa = Given_Procedure("main", m =>
             {

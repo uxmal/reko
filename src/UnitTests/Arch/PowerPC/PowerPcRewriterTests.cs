@@ -4070,7 +4070,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v6 = f29",
                 "2|L--|v7 = f0",
-                "3|L--|cr4 = __ps_cmpo<real32[2],byte>(v6, v7)");
+                "3|L--|cr4 = __ps_cmpo<real32[2],word32>(v6, v7)");
         }
 
         [Test]

@@ -139,8 +139,7 @@ namespace Reko.Arch.Sparc
             if (flagGroups.TryGetValue(grf, out FlagGroupStorage? fl))
                 return fl;
 
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(flagRegister, "", grf), dt);
+            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(flagRegister, "", grf));
             flagGroups.Add(grf, fl);
             return fl;
         }

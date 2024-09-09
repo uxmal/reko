@@ -49,11 +49,10 @@ namespace Reko.Scanning
 
         public void ProcessQueue()
         {
-            while (queue.Count > 0)
+            while (queue.TryDequeue(out var wi))
             {
                 if (listener.IsCanceled())
                     return;
-                var wi = queue.Dequeue();
                 wi.Process();
             }
         }

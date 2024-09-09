@@ -366,7 +366,7 @@ namespace Reko.Core.Expressions
 
         public virtual Constant Negate()
         {
-            PrimitiveType p = (PrimitiveType) DataType;
+            var p = DataType;
             var c = GetValue();
             if ((p.Domain & (Domain.SignedInt | Domain.UnsignedInt)) != 0)
             {
@@ -378,6 +378,12 @@ namespace Reko.Core.Expressions
                 if (p.BitSize <= 32)
                     return Constant.Create(p, -Convert.ToInt64(c) & -1);
                 return Constant.Create(p, -Convert.ToInt64(c));
+            }
+            else if (p.BitSize <= 64)
+            {
+                ulong n = Convert.ToUInt64(c);
+                c = Bits.Mask(0, p.BitSize);
+                return Constant.Create(PrimitiveType.CreateWord(p.BitSize), ~n + 1);
             }
             else
                 throw new InvalidOperationException($"Type {p} doesn't support negation.");
@@ -416,7 +422,10 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="dt">Data type of the slice</param>
         /// <param name="offset">Bit offset from which to take the slice.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A possible new <see cref="Constant"/> having the 
+        /// data type <paramref name="dt"/>.
+        /// </returns>
         public virtual Constant Slice(DataType dt, int offset)
         {
             if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
@@ -821,6 +830,11 @@ namespace Reko.Core.Expressions
         public override int GetHashOfValue()
         {
             return value.GetHashCode();
+        }
+
+        public override Expression Invert()
+        {
+            return new ConstantByte(DataType, value == 0 ? (byte)1 : (byte)0);
         }
 
         public override byte ToByte()

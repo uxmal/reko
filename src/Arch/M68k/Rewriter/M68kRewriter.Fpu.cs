@@ -146,8 +146,7 @@ namespace Reko.Arch.M68k.Rewriter
             return binder.EnsureFlagGroup(
                 Registers.fpsr,
                 0xFF000000u,
-                "FPUFLAGS",
-                PrimitiveType.Byte);
+                "FPUFLAGS");
         }
 
         private void RewriteFcmp()

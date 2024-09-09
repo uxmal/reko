@@ -25,13 +25,11 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace Reko.Arch.SuperH
 {
@@ -666,7 +664,8 @@ namespace Reko.Arch.SuperH
         private void RewriteMovt()
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            var dst = DstOp(instr.Operands[0], t, a => m.Convert(a, a.DataType, PrimitiveType.Int32));
+            var dtDst = instr.Operands[0].Width;
+            var dst = DstOp(instr.Operands[0], t, a => m.ExtendZ(m.Ne0(a), dtDst));
         }
 
         private void RewriteMul_l()

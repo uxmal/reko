@@ -334,18 +334,18 @@ bool fn05D4(word16 r0, word16 r3, word16 r4, ptr16 & r0Out, ptr16 & r3Out, ptr16
 fn05D4_entry:
 l05D4:
 	v9_6 = r3 - Mem5[0x0F02<p16>:word16]
-	Z_109 = SLICE(cond(v9_6 - 4<16>), bool, 2) (alias)
+	NZVC_11 = cond(v9_6 - 4<16>)
 	branch v9_6 >u 4<16> l0648
 l0648:
 	r0Out = r0
 	r3Out = r3
 	r4Out = r4
 	r5Out = r5
-	return Z_109
+	return (NZVC_11 & 4<16>) != 0<16>
 l05E0:
 	fn0A7C(fn0AB6(r0, r4, out r4_23, out r5_114), r4_23, out r4_29)
 	r0_34 = fn0A94()
-	r3_49 = __rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, SLICE(cond(r0_34 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_34 << 2<i16>), bool, 0))
+	r3_49 = __rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, cond(r0_34 << 1<i16>) & 1<16>), 1<8>, cond(r0_34 << 2<i16>) & 1<16>)
 	r0_51 = Mem18[(r3_49 << 1<i16>) + 0xF2A<16>:word16]
 	v28_52 = Mem18[0x0F0E<p16>:word16] >> 1<i16>
 	Mem53[0x0F0E<p16>:word16] = v28_52
@@ -361,7 +361,7 @@ l0620_thunk_fn0AE8:
 	r3Out = r3_49 << 1<i16>
 	r4Out = r4_81
 	r5Out = r5_82
-	return Z_85
+	return Z_85 != 0<16>
 fn05D4_exit:
 
 
@@ -385,25 +385,25 @@ l065A:
 	branch SLICE(r1, byte, 0) == Mem0[r2_36 + 0xEE9<16>:byte] l0670
 l0670:
 	Mem25[r2_36 + 0xEE6<16>:byte] = 0<8>
-	Z_29 = true
+	Z_29 = 4<16>
 l0660:
 	branch SLICE(r0, byte, 0) != Mem0[r2_36 + 0xEE9<16>:byte] l0676
 l0676:
 	r2_36 = r2_36 - 1<16>
-	Z_29 = SLICE(cond(r2_36), bool, 2) (alias)
+	Z_29 = cond(r2_36) & 4<16> (alias)
 	branch r2_36 >= 0<16> l064E
 l067A:
 	r0Out = r0
 	r4Out = r4
 	r5Out = r5
-	return Z_29
+	return Z_29 != 0<16>
 l0666:
 l0666_thunk_fn0AE8:
 	Z_55 = fn0AE8(r0, r4, 0x066A<p16>, out r0_50, out r4_51, out r5_52)
 	r0Out = r0_50
 	r4Out = r4_51
 	r5Out = r5_52
-	return Z_55
+	return Z_55 != 0<16>
 fn064A_exit:
 
 
@@ -421,7 +421,7 @@ fn067C_entry:
 l067C:
 	r1_8 = (r3 - 1<16> << 1<i16>) + r0
 	v12_10 = Mem0[r1_8 + 0xE2A<16>:byte]
-	Z_15 = SLICE(cond(v12_10), bool, 2) (alias)
+	Z_15 = cond(v12_10) & 4<16> (alias)
 	branch v12_10 == 0<8> l06A0
 l068A:
 	Mem17[r1_8 + 0xE2A<16>:byte] = Mem0[r1_8 + 0xE2A<16>:byte] - 1<8>
@@ -430,12 +430,12 @@ l068A:
 	v24_33 = Mem23[r1_18 + 0xEE0<16>:byte]
 	Mem34[r4_28:byte] = v24_33
 	r4 = r4_28 + 1<16>
-	Z_15 = SLICE(cond(v24_33), bool, 2) (alias)
+	Z_15 = cond(v24_33) & 4<16> (alias)
 l06A0:
 	r0Out = r0
 	r4Out = r4
 	r5Out = r5
-	return Z_15
+	return Z_15 != 0<16>
 fn067C_exit:
 
 
@@ -576,7 +576,7 @@ l07D4:
 	sp_119 = sp_119 - 1<16>
 	Mem42[sp_119:byte] = Mem32[r1_27:byte]
 	Mem45[sp_119 + 1<16>:byte] = SLICE(r0, byte, 0)
-	r0 = fn0A74(fn0AB6(r0, r4, out r4_50, out r5_550), r4_50, out r4, out r5_10)
+	r0 = fn0A74(fn0AB6(r0, r4, out r4_50, out r5_547), r4_50, out r4, out r5_10)
 	branch Mem45[r1_27:word16] > 0<16> l07E8
 l07E6:
 	Mem67[r1_27:word16] = 0<16>
@@ -600,7 +600,7 @@ l084A:
 	sp_119 = sp_119 - 1<16>
 	Mem121[sp_119:byte] = Mem98[r1_148:byte]
 	Mem124[sp_119 + 1<16>:byte] = SLICE(r0, byte, 0)
-	r0 = fn0A74(fn0AB6(r0, r4, out r4_129, out r5_551), r4_129, out r4, out r5_10)
+	r0 = fn0A74(fn0AB6(r0, r4, out r4_129, out r5_548), r4_129, out r4, out r5_10)
 	Mem140[r1_148:word16] = 0<16>
 l085A:
 	r1_148 = r1_148 + 2<16>
@@ -658,7 +658,7 @@ l0828:
 	fn096A(r3_153)
 	Mem299[sp_275 - 2<i16>:word16] = r5_288
 l0838_thunk_fn0AE8:
-	fn0AE8(r0_286, r4_287, 0x083C<p16>, out r0_301, out r4_302, out r5_552)
+	fn0AE8(r0_286, r4_287, 0x083C<p16>, out r0_301, out r4_302, out r5_549)
 	r4Out = r4_302
 	return r0_301
 l07AC:
@@ -685,9 +685,8 @@ l08EA:
 	r0_341 = r0_341 << 1<i16>
 	branch r0_341 << 1<i16> <u 0<16> l0904
 l08EE:
-	v118_447 = CONVERT(r0_341, uint16, uint32) << 1<8>
-	r0_361 = SLICE(v118_447, word16, 0)
-	r1_375 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v118_447, word16, 16), 1<8>, SLICE(cond(r0_361 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_361 << 2<i16>), bool, 0))
+	r0_361 = r0_341 << 1<i16>
+	r1_375 = __rcl<word16,byte>(__rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, cond(r0_361) & 1<16>), 1<8>, cond(r0_361 << 1<i16>) & 1<16>), 1<8>, cond(r0_361 << 2<i16>) & 1<16>)
 	r1_346 = r1_375 << 1<i16>
 	branch Mem316[(r1_375 << 1<i16>) + 0xDC4<16>:word16] <= 0<16> l08D0
 l0904:
@@ -995,7 +994,7 @@ l0AF0:
 	r0Out = r0_33
 	r4Out = r4 - 1<16>
 	r5Out = wArg00
-	return SLICE(NZV_34, bool, 2)
+	return (NZV_34 & 4<16>) != 0<16>
 fn0AE8_exit:
 
 

@@ -80,10 +80,10 @@ namespace Reko.Arch.Arm
             return m.MapToHandle(id);
         }
 
-        public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
+        public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name)
         {
             var reg = regs[baseReg];
-            var id = frame.EnsureFlagGroup(reg, (uint)bitmask, name, Interop.DataTypes[size]);
+            var id = frame.EnsureFlagGroup(reg, (uint)bitmask, name);
             return m.MapToHandle(id);
         }
 

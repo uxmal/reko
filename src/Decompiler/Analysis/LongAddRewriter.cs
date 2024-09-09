@@ -375,9 +375,17 @@ public class LongAddRewriter : IAnalysis<SsaState>
             Candidate loInstr)
         {
             var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
-            while (queue.Count > 0)
+            while (queue.TryDequeue(out var use))
             {
-                var use = queue.Dequeue();
+                if (use.Instruction is not Assignment ass)
+                    continue;
+
+                if (ConditionCodeEliminator.FindSlicedFlagRegister(ass.Src) is not null)
+                {
+                    // This is a "slice" of a flag group, continue.
+                    queue.EnqueueRange(ssa.Identifiers[ass.Dst].Uses);
+                    continue;
+                }
                 var asc = MatchAdcSbc(use);
                 if (asc != null && asc.Statement != null && asc.Statement.Block == block)
                 {
@@ -387,13 +395,6 @@ public class LongAddRewriter : IAnalysis<SsaState>
                         return null;
                     asc.Statement = use;
                     return asc;
-                }
-                if (use.Instruction is not Assignment ass)
-                    continue;
-                if (ass.Src is Slice)
-                {
-                    queue.EnqueueRange(ssa.Identifiers[ass.Dst].Uses);
-                    continue;
                 }
                 if (IsCarryFlag(ass.Dst))
                     return null;

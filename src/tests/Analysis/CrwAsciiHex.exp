@@ -94,13 +94,13 @@ l0C00_002E:
 	// succ:  l0C00_0030
 l0C00_0030:
 	al_32 = PHI((al_19, l0C00_0022), (al_23, l0C00_0028), (al_27, l0C00_002E))
-	C_29 = false
+	C_29 = 0<32>
 	alOut = al_32
-	return C_29
+	return C_29 != 0<32>
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	C_17 = true
+	C_17 = 2<32>
 	alOut = al
-	return C_17
+	return C_17 != 0<32>
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:

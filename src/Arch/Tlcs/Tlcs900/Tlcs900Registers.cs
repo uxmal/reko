@@ -62,12 +62,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
         internal static RegisterStorage[] regs;
         internal static Dictionary<StorageDomain, Dictionary<int, RegisterStorage>> Subregisters;
 
-        public static readonly FlagGroupStorage S = new FlagGroupStorage(sr, 32, "S", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage Z = new FlagGroupStorage(sr, 16, "Z", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage H = new FlagGroupStorage(sr,  8, "H", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage V = new FlagGroupStorage(sr,  4, "V", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage N = new FlagGroupStorage(sr,  2, "N", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage C = new FlagGroupStorage(sr,  1, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage S = new FlagGroupStorage(sr, 32, nameof(S));
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(sr, 16, nameof(Z));
+        public static readonly FlagGroupStorage H = new FlagGroupStorage(sr,  8, nameof(H));
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(sr,  4, nameof(V));
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(sr,  2, nameof(N));
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(sr,  1, nameof(C));
 
         internal static FlagGroupStorage[] flagBits =
         {

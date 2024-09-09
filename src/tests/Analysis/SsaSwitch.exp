@@ -44,13 +44,13 @@ v16_12: orig: v16
     uses: switch (v16_12) { l0C00_0017 l0C00_001B l0C00_001F }
 SCZO_13: orig: SCZO
     def:  SCZO_13 = cond(bl_11 - 2<8>)
-    uses: CZ_14 = SLICE(SCZO_13, bool, 2) (alias)
-          C_31 = SLICE(SCZO_13, bool, 1) (alias)
-          O_35 = SLICE(SCZO_13, bool, 4) (alias)
-          S_38 = SLICE(SCZO_13, bool, 0) (alias)
-          Z_43 = SLICE(SCZO_13, bool, 2) (alias)
+    uses: CZ_14 = SCZO_13 & 6<32> (alias)
+          C_31 = SCZO_13 & 2<32> (alias)
+          O_35 = SCZO_13 & 0x10<32> (alias)
+          S_38 = SCZO_13 & 1<32> (alias)
+          Z_43 = SCZO_13 & 4<32> (alias)
 CZ_14: orig: CZ
-    def:  CZ_14 = SLICE(SCZO_13, bool, 2) (alias)
+    def:  CZ_14 = SCZO_13 & 6<32> (alias)
     uses: branch Test(UGT,CZ_14) l0C00_0023
 ax_15: orig: ax
     def:  ax_15 = 0<16>
@@ -62,9 +62,9 @@ bh_16: orig: bh
 SZ_17: orig: SZ
     def:  SZ_17 = cond(bh_16)
 O_18: orig: O
-    def:  O_18 = false
+    def:  O_18 = 0<32>
 C_19: orig: C
-    def:  C_19 = false
+    def:  C_19 = 0<32>
 bx_20: orig: bx
     def:  bx_20 = SEQ(bh_16, bl_11) (alias)
     uses: bx_21 = bx_20 + bx_20
@@ -77,10 +77,10 @@ bx_21: orig: bx
           bx_27 = PHI((bx_29, l0C00_0023), (bx_21, l0C00_001B), (bx_21, l0C00_001F), (bx_21, l0C00_0017))
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(bx_21)
-    uses: C_32 = SLICE(SCZO_22, bool, 1) (alias)
-          O_36 = SLICE(SCZO_22, bool, 4) (alias)
-          S_39 = SLICE(SCZO_22, bool, 0) (alias)
-          Z_44 = SLICE(SCZO_22, bool, 2) (alias)
+    uses: C_32 = SCZO_22 & 2<32> (alias)
+          O_36 = SCZO_22 & 0x10<32> (alias)
+          S_39 = SCZO_22 & 1<32> (alias)
+          Z_44 = SCZO_22 & 4<32> (alias)
 ax_23: orig: ax
     def:  ax_23 = 3<16>
     uses: ax_26 = PHI((ax_15, l0C00_0023), (ax_24, l0C00_001B), (ax_23, l0C00_001F), (ax_25, l0C00_0017))
@@ -106,10 +106,10 @@ C_30: orig: C
     def:  C_30 = PHI((C_31, l0C00_0023), (C_32, l0C00_001B), (C_32, l0C00_001F), (C_32, l0C00_0017))
     uses: use C_30
 C_31: orig: C
-    def:  C_31 = SLICE(SCZO_13, bool, 1) (alias)
+    def:  C_31 = SCZO_13 & 2<32> (alias)
     uses: C_30 = PHI((C_31, l0C00_0023), (C_32, l0C00_001B), (C_32, l0C00_001F), (C_32, l0C00_0017))
 C_32: orig: C
-    def:  C_32 = SLICE(SCZO_22, bool, 1) (alias)
+    def:  C_32 = SCZO_22 & 2<32> (alias)
     uses: C_30 = PHI((C_31, l0C00_0023), (C_32, l0C00_001B), (C_32, l0C00_001F), (C_32, l0C00_0017))
           C_30 = PHI((C_31, l0C00_0023), (C_32, l0C00_001B), (C_32, l0C00_001F), (C_32, l0C00_0017))
           C_30 = PHI((C_31, l0C00_0023), (C_32, l0C00_001B), (C_32, l0C00_001F), (C_32, l0C00_0017))
@@ -117,10 +117,10 @@ O_34: orig: O
     def:  O_34 = PHI((O_35, l0C00_0023), (O_36, l0C00_001B), (O_36, l0C00_001F), (O_36, l0C00_0017))
     uses: use O_34
 O_35: orig: O
-    def:  O_35 = SLICE(SCZO_13, bool, 4) (alias)
+    def:  O_35 = SCZO_13 & 0x10<32> (alias)
     uses: O_34 = PHI((O_35, l0C00_0023), (O_36, l0C00_001B), (O_36, l0C00_001F), (O_36, l0C00_0017))
 O_36: orig: O
-    def:  O_36 = SLICE(SCZO_22, bool, 4) (alias)
+    def:  O_36 = SCZO_22 & 0x10<32> (alias)
     uses: O_34 = PHI((O_35, l0C00_0023), (O_36, l0C00_001B), (O_36, l0C00_001F), (O_36, l0C00_0017))
           O_34 = PHI((O_35, l0C00_0023), (O_36, l0C00_001B), (O_36, l0C00_001F), (O_36, l0C00_0017))
           O_34 = PHI((O_35, l0C00_0023), (O_36, l0C00_001B), (O_36, l0C00_001F), (O_36, l0C00_0017))
@@ -128,10 +128,10 @@ S_37: orig: S
     def:  S_37 = PHI((S_38, l0C00_0023), (S_39, l0C00_001B), (S_39, l0C00_001F), (S_39, l0C00_0017))
     uses: use S_37
 S_38: orig: S
-    def:  S_38 = SLICE(SCZO_13, bool, 0) (alias)
+    def:  S_38 = SCZO_13 & 1<32> (alias)
     uses: S_37 = PHI((S_38, l0C00_0023), (S_39, l0C00_001B), (S_39, l0C00_001F), (S_39, l0C00_0017))
 S_39: orig: S
-    def:  S_39 = SLICE(SCZO_22, bool, 0) (alias)
+    def:  S_39 = SCZO_22 & 1<32> (alias)
     uses: S_37 = PHI((S_38, l0C00_0023), (S_39, l0C00_001B), (S_39, l0C00_001F), (S_39, l0C00_0017))
           S_37 = PHI((S_38, l0C00_0023), (S_39, l0C00_001B), (S_39, l0C00_001F), (S_39, l0C00_0017))
           S_37 = PHI((S_38, l0C00_0023), (S_39, l0C00_001B), (S_39, l0C00_001F), (S_39, l0C00_0017))
@@ -139,10 +139,10 @@ Z_42: orig: Z
     def:  Z_42 = PHI((Z_43, l0C00_0023), (Z_44, l0C00_001B), (Z_44, l0C00_001F), (Z_44, l0C00_0017))
     uses: use Z_42
 Z_43: orig: Z
-    def:  Z_43 = SLICE(SCZO_13, bool, 2) (alias)
+    def:  Z_43 = SCZO_13 & 4<32> (alias)
     uses: Z_42 = PHI((Z_43, l0C00_0023), (Z_44, l0C00_001B), (Z_44, l0C00_001F), (Z_44, l0C00_0017))
 Z_44: orig: Z
-    def:  Z_44 = SLICE(SCZO_22, bool, 2) (alias)
+    def:  Z_44 = SCZO_22 & 4<32> (alias)
     uses: Z_42 = PHI((Z_43, l0C00_0023), (Z_44, l0C00_001B), (Z_44, l0C00_001F), (Z_44, l0C00_0017))
           Z_42 = PHI((Z_43, l0C00_0023), (Z_44, l0C00_001B), (Z_44, l0C00_001F), (Z_44, l0C00_0017))
           Z_42 = PHI((Z_43, l0C00_0023), (Z_44, l0C00_001B), (Z_44, l0C00_001F), (Z_44, l0C00_0017))
@@ -166,26 +166,26 @@ l0C00_0000:
 	bl_11 = Mem7[ds_8:si:byte]
 	v16_12 = bl_11
 	SCZO_13 = cond(bl_11 - 2<8>)
-	CZ_14 = SLICE(SCZO_13, bool, 2) (alias)
+	CZ_14 = SCZO_13 & 6<32> (alias)
 	bx_29 = SEQ(bh, bl_11) (alias)
-	C_31 = SLICE(SCZO_13, bool, 1) (alias)
-	O_35 = SLICE(SCZO_13, bool, 4) (alias)
-	S_38 = SLICE(SCZO_13, bool, 0) (alias)
-	Z_43 = SLICE(SCZO_13, bool, 2) (alias)
+	C_31 = SCZO_13 & 2<32> (alias)
+	O_35 = SCZO_13 & 0x10<32> (alias)
+	S_38 = SCZO_13 & 1<32> (alias)
+	Z_43 = SCZO_13 & 4<32> (alias)
 	branch Test(UGT,CZ_14) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
 	bh_16 = 0<8>
 	SZ_17 = cond(bh_16)
-	O_18 = false
-	C_19 = false
+	O_18 = 0<32>
+	C_19 = 0<32>
 	bx_20 = SEQ(bh_16, bl_11) (alias)
 	bx_21 = bx_20 + bx_20
 	SCZO_22 = cond(bx_21)
-	C_32 = SLICE(SCZO_22, bool, 1) (alias)
-	O_36 = SLICE(SCZO_22, bool, 4) (alias)
-	S_39 = SLICE(SCZO_22, bool, 0) (alias)
-	Z_44 = SLICE(SCZO_22, bool, 2) (alias)
+	C_32 = SCZO_22 & 2<32> (alias)
+	O_36 = SCZO_22 & 0x10<32> (alias)
+	S_39 = SCZO_22 & 1<32> (alias)
+	Z_44 = SCZO_22 & 4<32> (alias)
 	switch (v16_12) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:

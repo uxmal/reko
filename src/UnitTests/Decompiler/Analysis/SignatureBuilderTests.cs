@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		public void TestGrfWithOneBit()
 		{
 			IProcessorArchitecture arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
-			SignatureBuilder sb = new SignatureBuilder(null, arch);
+			SignatureBuilder sb = new(null, arch);
             sb.AddFlagGroupReturnValue(
                 new KeyValuePair<RegisterStorage, uint>(Registers.eflags, (uint) FlagM.CF),
                 arch.CreateFrame());

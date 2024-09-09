@@ -680,10 +680,7 @@ namespace Reko.Arch.CompactRisc
         {
             var id = binder.EnsureFlagGroup(grf);
             var dst = Operand(0);
-            m.Assign(dst, m.Convert(
-                id,
-                PrimitiveType.Bool,
-                PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize)));
+            m.Assign(dst, m.ExtendZ(m.Ne0(id), dst.DataType));
         }
 
         private void RewriteSpr(PrimitiveType dt)

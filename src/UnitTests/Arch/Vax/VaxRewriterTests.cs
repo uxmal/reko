@@ -2221,7 +2221,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(5): 2 instructions",
                 "1|L--|Z = __ffc(r4, SLICE(r3, byte, 0), r2, out r5)",
-                "2|L--|CVN = 0<8>");
+                "2|L--|CVN = 0<32>");
         }
 
         [Test]
@@ -2243,7 +2243,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|r3 = 0<8>",
                 "2|L--|Z = __scanc(5<16>, 1<8>, 0<8>, SLICE(r2, byte, 0), out r0, out r1)",
                 "3|L--|r2 = 0<32>",
-                "4|L--|CVN = 0<8>");
+                "4|L--|CVN = 0<32>");
         }
 
         [Test]

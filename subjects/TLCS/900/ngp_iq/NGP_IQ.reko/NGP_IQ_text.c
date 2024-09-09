@@ -169,7 +169,7 @@ bool fn0020050A(word16 hl)
 	word32 xhl;
 	uint8 h_n = SLICE(xhl, byte, 8);
 	uint8 l_n = (byte) xhl;
-	return SLICE(cond((uint32) ((uint16) h_n * 0x02 + 0x9800 + (uint16) l_n * 0x40) + 0x01), bool, 4);
+	return (cond((uint32) ((uint16) h_n * 0x02 + 0x9800 + (uint16) l_n * 0x40) + 0x01) & 0x10) != 0x00;
 }
 
 // 00200532: FlagGroup bool fn00200532(Register word32 xhl)
@@ -181,7 +181,7 @@ bool fn00200532(word32 xhl)
 	word16 xhl_16_16_n = SLICE(xhl, word16, 16);
 	byte l_n = (byte) xhl;
 	fn0020050A((word16) xhl);
-	return fn0020050A((word16) SEQ(xhl_16_16_n, h_n + 0x01, l_n));
+	return fn0020050A((word16) SEQ(xhl_16_16_n, h_n + 0x01, l_n)) != 0x00;
 }
 
 // 00200557: Register word32 fn00200557(Register bui8 c, Register uint8 b, Register (ptr32 byte) xhl)

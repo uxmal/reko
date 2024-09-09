@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r1 = r1 ^ r1",
                 "2|L--|SNZC = cond(r1)",
-                "3|L--|V = false");
+                "3|L--|V = 0<8>");
         }
 
         [Test]
@@ -283,8 +283,8 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|r0 = ~r0",
                 "2|L--|SNZ = cond(r0)",
-                "3|L--|V = false",
-                "4|L--|C = true");
+                "3|L--|V = 0<8>",
+                "4|L--|C = 1<8>");
         }
 
         [Test]
@@ -334,7 +334,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r0 = r0 >>u 1<8>",
                 "2|L--|SVZC = cond(r0)",
-                "3|L--|N = false");
+                "3|L--|N = 0<8>");
         }
 
         [Test]

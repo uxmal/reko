@@ -479,9 +479,9 @@ bp_6: orig: bp
 SZC_7: orig: SZC
     def:  SZC_7 = cond(wArg04 - 3<16>)
     uses: branch Test(GE,SZC_7) ge3
-          C_18 = SLICE(SZC_7, bool, 2) (alias)
-          S_21 = SLICE(SZC_7, bool, 0) (alias)
-          Z_23 = SLICE(SZC_7, bool, 1) (alias)
+          C_18 = SZC_7 & 4<32> (alias)
+          S_21 = SZC_7 & 1<32> (alias)
+          Z_23 = SZC_7 & 2<32> (alias)
 r1_8: orig: r1
     def:  r1_8 = 1<32>
     uses: r1_19 = PHI((r1_9, l2), (r1_8, ge3))
@@ -501,16 +501,16 @@ r63_13: orig: r63
     def:  r63_13 = fp
     uses: use r63_13
 C_18: orig: C
-    def:  C_18 = SLICE(SZC_7, bool, 2) (alias)
+    def:  C_18 = SZC_7 & 4<32> (alias)
     uses: use C_18
 r1_19: orig: r1
     def:  r1_19 = PHI((r1_9, l2), (r1_8, ge3))
     uses: use r1_19
 S_21: orig: S
-    def:  S_21 = SLICE(SZC_7, bool, 0) (alias)
+    def:  S_21 = SZC_7 & 1<32> (alias)
     uses: use S_21
 Z_23: orig: Z
-    def:  Z_23 = SLICE(SZC_7, bool, 1) (alias)
+    def:  Z_23 = SZC_7 & 2<32> (alias)
     uses: use Z_23
 // proc1
 // Return size: 0
@@ -537,9 +537,9 @@ l1:
 	dwLoc04_14 = bp
 	bp_6 = fp - 4<32>
 	SZC_7 = cond(wArg04 - 3<16>)
-	C_18 = SLICE(SZC_7, bool, 2) (alias)
-	S_21 = SLICE(SZC_7, bool, 0) (alias)
-	Z_23 = SLICE(SZC_7, bool, 1) (alias)
+	C_18 = SZC_7 & 4<32> (alias)
+	S_21 = SZC_7 & 1<32> (alias)
+	Z_23 = SZC_7 & 2<32> (alias)
 	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
@@ -608,9 +608,9 @@ bp_6: orig: bp
 SZC_7: orig: SZC
     def:  SZC_7 = wArg04 - 3<16>
     uses: branch Test(GE,SZC_7) ge3
-          C_21 = SLICE(SZC_7, bool, 2) (alias)
-          S_25 = SLICE(SZC_7, bool, 0) (alias)
-          Z_27 = SLICE(SZC_7, bool, 1) (alias)
+          C_21 = SZC_7 & 4<32> (alias)
+          S_25 = SZC_7 & 1<32> (alias)
+          Z_27 = SZC_7 & 2<32> (alias)
 Mem8: orig: Mem0
     uses: Mem12 = PHI((Mem10, l2), (Mem8, ge3))
 r1_9: orig: r1
@@ -637,7 +637,7 @@ wArg04_17: orig: wArg04
 wArg04_18: orig: wArg04
     def:  wArg04_18 = 3<16>
 C_21: orig: C
-    def:  C_21 = SLICE(SZC_7, bool, 2) (alias)
+    def:  C_21 = SZC_7 & 4<32> (alias)
     uses: use C_21
 r1_22: orig: r1
     def:  r1_22 = PHI((r1, l2), (r1_9, ge3))
@@ -646,10 +646,10 @@ r1:r1
     def:  def r1
     uses: r1_22 = PHI((r1, l2), (r1_9, ge3))
 S_25: orig: S
-    def:  S_25 = SLICE(SZC_7, bool, 0) (alias)
+    def:  S_25 = SZC_7 & 1<32> (alias)
     uses: use S_25
 Z_27: orig: Z
-    def:  Z_27 = SLICE(SZC_7, bool, 1) (alias)
+    def:  Z_27 = SZC_7 & 2<32> (alias)
     uses: use Z_27
 // proc1
 // Return size: 0
@@ -679,9 +679,9 @@ l1:
 	dwLoc04_15 = bp
 	bp_6 = fp - 4<32>
 	SZC_7 = wArg04 - 3<16>
-	C_21 = SLICE(SZC_7, bool, 2) (alias)
-	S_25 = SLICE(SZC_7, bool, 0) (alias)
-	Z_27 = SLICE(SZC_7, bool, 1) (alias)
+	C_21 = SZC_7 & 4<32> (alias)
+	S_25 = SZC_7 & 1<32> (alias)
+	Z_27 = SZC_7 & 2<32> (alias)
 	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
@@ -890,9 +890,9 @@ Mem7: orig: Mem0
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 3<16>
     uses: branch Test(GE,CZS_8) ge3
-          C_26 = SLICE(CZS_8, bool, 2) (alias)
-          S_28 = SLICE(CZS_8, bool, 0) (alias)
-          Z_30 = SLICE(CZS_8, bool, 1) (alias)
+          C_26 = CZS_8 & 4<32> (alias)
+          S_28 = CZS_8 & 1<32> (alias)
+          Z_30 = CZS_8 & 2<32> (alias)
 r1:r1
     def:  def r1
     uses: dwLoc0C_21 = r1
@@ -930,13 +930,13 @@ dwLoc0C_23: orig: dwLoc0C
     def:  dwLoc0C_23 = PHI((dwLoc0C_22, l2), (dwLoc0C_21, ge3))
     uses: r1_14 = dwLoc0C_23
 C_26: orig: C
-    def:  C_26 = SLICE(CZS_8, bool, 2) (alias)
+    def:  C_26 = CZS_8 & 4<32> (alias)
     uses: use C_26
 S_28: orig: S
-    def:  S_28 = SLICE(CZS_8, bool, 0) (alias)
+    def:  S_28 = CZS_8 & 1<32> (alias)
     uses: use S_28
 Z_30: orig: Z
-    def:  Z_30 = SLICE(CZS_8, bool, 1) (alias)
+    def:  Z_30 = CZS_8 & 2<32> (alias)
     uses: use Z_30
 // proc1
 // Return size: 0
@@ -967,9 +967,9 @@ l1:
 	bp_6 = fp - 4<32>
 	dwLoc0C_19 = 0<32>
 	CZS_8 = wArg04 - 3<16>
-	C_26 = SLICE(CZS_8, bool, 2) (alias)
-	S_28 = SLICE(CZS_8, bool, 0) (alias)
-	Z_30 = SLICE(CZS_8, bool, 1) (alias)
+	C_26 = CZS_8 & 4<32> (alias)
+	S_28 = CZS_8 & 1<32> (alias)
+	Z_30 = CZS_8 & 2<32> (alias)
 	branch Test(GE,CZS_8) ge3
 	// succ:  l2 ge3
 l2:
@@ -1027,12 +1027,12 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: Z_4 = SLICE(SZ_2, bool, 2) (alias)
+    uses: Z_4 = SZ_2 & 2<32> (alias)
 C_3: orig: C
     def:  C_3 = false
     uses: CZ_5 = C_3 | Z_4 (alias)
 Z_4: orig: Z
-    def:  Z_4 = SLICE(SZ_2, bool, 2) (alias)
+    def:  Z_4 = SZ_2 & 2<32> (alias)
     uses: CZ_5 = C_3 | Z_4 (alias)
 CZ_5: orig: CZ
     def:  CZ_5 = C_3 | Z_4 (alias)
@@ -1047,7 +1047,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
-	Z_4 = SLICE(SZ_2, bool, 2) (alias)
+	Z_4 = SZ_2 & 2<32> (alias)
 	C_3 = false
 	CZ_5 = C_3 | Z_4 (alias)
 	al_6 = Test(ULE,CZ_5)
@@ -1870,9 +1870,9 @@ ebx_2: orig: ebx
           ebx_8 = Mem0[ebx_2 + 4<32>:word32]
 SCZ_3: orig: SCZ
     def:  SCZ_3 = cond(ebx_2 - 0<32>)
-    uses: Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+    uses: Z_4 = SCZ_3 & 2<32> (alias)
 Z_4: orig: Z
-    def:  Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+    def:  Z_4 = SCZ_3 & 2<32> (alias)
     uses: branch Test(NE,Z_4) l2Body
 eax_5: orig: eax
     def:  eax_5 = PHI((eax_1, l1), (eax_7, l2Body))
@@ -1910,7 +1910,7 @@ l3Head:
 	eax_5 = PHI((eax_1, l1), (eax_7, l2Body))
 	ebx_2 = PHI((ebx, l1), (ebx_8, l2Body))
 	SCZ_3 = cond(ebx_2 - 0<32>)
-	Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+	Z_4 = SCZ_3 & 2<32> (alias)
 	branch Test(NE,Z_4) l2Body
 	// succ:  l4Exit l2Body
 l4Exit:
@@ -2301,16 +2301,16 @@ proc1_exit:
     uses: SZ_2 = cond(r1)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(r1)
-    uses: S_4 = SLICE(SZ_2, bool, 0) (alias)
-          Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: S_4 = SZ_2 & 1<32> (alias)
+          Z_5 = SZ_2 & 2<32> (alias)
 C_3: orig: C
     def:  C_3 = false
     uses: use C_3
 S_4: orig: S
-    def:  S_4 = SLICE(SZ_2, bool, 0) (alias)
+    def:  S_4 = SZ_2 & 1<32> (alias)
     uses: use S_4
 Z_5: orig: Z
-    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    def:  Z_5 = SZ_2 & 2<32> (alias)
     uses: use Z_5
 // proc1
 // Return size: 0
@@ -2320,8 +2320,8 @@ proc1_entry:
 	// succ:  m0
 m0:
 	SZ_2 = cond(r1)
-	S_4 = SLICE(SZ_2, bool, 0) (alias)
-	Z_5 = SLICE(SZ_2, bool, 1) (alias)
+	S_4 = SZ_2 & 1<32> (alias)
+	Z_5 = SZ_2 & 2<32> (alias)
 	C_3 = false
 	return
 	// succ:  proc1_exit
@@ -2601,9 +2601,9 @@ proc1_exit:
     uses: SCZ_2 = cond(r3)
 SCZ_2: orig: SCZ
     def:  SCZ_2 = cond(r3)
-    uses: SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: SZ_3 = SCZ_2 & 3<32> (alias)
 SZ_3: orig: SZ
-    def:  SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+    def:  SZ_3 = SCZ_2 & 3<32> (alias)
     uses: r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
 r3_4: orig: r3
     def:  r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
@@ -2615,7 +2615,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SCZ_2 = cond(r3)
-	SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+	SZ_3 = SCZ_2 & 3<32> (alias)
 	r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
 	return
 	// succ:  proc1_exit
@@ -2644,13 +2644,13 @@ proc1_exit:
     uses: SCZ_2 = cond(r1)
 SCZ_2: orig: SCZ
     def:  SCZ_2 = cond(r1)
-    uses: Z_3 = SLICE(SCZ_2, bool, 1) (alias)
-          SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: Z_3 = SCZ_2 & 2<32> (alias)
+          SZ_4 = SCZ_2 & 3<32> (alias)
 Z_3: orig: Z
-    def:  Z_3 = SLICE(SCZ_2, bool, 1) (alias)
+    def:  Z_3 = SCZ_2 & 2<32> (alias)
     uses: branch Test(EQ,Z_3) mZero
 SZ_4: orig: SZ
-    def:  SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+    def:  SZ_4 = SCZ_2 & 3<32> (alias)
     uses: branch Test(LT,SZ_4) mLessThan
 // proc1
 // Return size: 0
@@ -2660,8 +2660,8 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SCZ_2 = cond(r1)
-	Z_3 = SLICE(SCZ_2, bool, 1) (alias)
-	SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+	Z_3 = SCZ_2 & 2<32> (alias)
+	SZ_4 = SCZ_2 & 3<32> (alias)
 	branch Test(EQ,Z_3) mZero
 	// succ:  l2 mZero
 l2:
@@ -3027,10 +3027,6 @@ proc1_exit:
         [Test]
         public void SsaTransBlockLiveness()
         {
-            //$TODO: the generation of 
-            //           eax_13 = DPB(eax_12, al_3, 8) (alias)
-            // although not incorrect is redundant. Investigate ways
-            // to get rid of it.
             var sExp =
             #region Expected
 @"eax_1: orig: eax
@@ -3046,15 +3042,15 @@ al_3: orig: al
 SCZ_4: orig: SCZ
     def:  SCZ_4 = cond(al_3 - 0x30<8>)
     uses: branch Test(LT,SCZ_4) m4_not_number
-          C_11 = SLICE(SCZ_4, bool, 1) (alias)
-          S_20 = SLICE(SCZ_4, bool, 0) (alias)
-          Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+          C_11 = SCZ_4 & 2<32> (alias)
+          S_20 = SCZ_4 & 1<32> (alias)
+          Z_24 = SCZ_4 & 4<32> (alias)
 SCZ_5: orig: SCZ
     def:  SCZ_5 = cond(al_3 - 0x39<8>)
     uses: branch Test(GT,SCZ_5) m4_not_number
-          C_9 = SLICE(SCZ_5, bool, 1) (alias)
-          S_18 = SLICE(SCZ_5, bool, 0) (alias)
-          Z_22 = SLICE(SCZ_5, bool, 2) (alias)
+          C_9 = SCZ_5 & 2<32> (alias)
+          S_18 = SCZ_5 & 1<32> (alias)
+          Z_22 = SCZ_5 & 4<32> (alias)
 al_6: orig: al
     def:  al_6 = 0<8>
     uses: eax_16 = SEQ(eax_24_8_13, al_6) (alias)
@@ -3065,14 +3061,14 @@ C_8: orig: C
     def:  C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
     uses: use C_8
 C_9: orig: C
-    def:  C_9 = SLICE(SCZ_5, bool, 1) (alias)
+    def:  C_9 = SCZ_5 & 2<32> (alias)
     uses: C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
           C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
 C_10: orig: C
     def:  C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
     uses: C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
 C_11: orig: C
-    def:  C_11 = SLICE(SCZ_4, bool, 1) (alias)
+    def:  C_11 = SCZ_4 & 2<32> (alias)
     uses: C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
 eax_12: orig: eax
     def:  eax_12 = PHI((eax_14, m2_number), (eax_16, m4_not_number))
@@ -3091,27 +3087,27 @@ S_17: orig: S
     def:  S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
     uses: use S_17
 S_18: orig: S
-    def:  S_18 = SLICE(SCZ_5, bool, 0) (alias)
+    def:  S_18 = SCZ_5 & 1<32> (alias)
     uses: S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
           S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
 S_19: orig: S
     def:  S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
     uses: S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
 S_20: orig: S
-    def:  S_20 = SLICE(SCZ_4, bool, 0) (alias)
+    def:  S_20 = SCZ_4 & 1<32> (alias)
     uses: S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
 Z_21: orig: Z
     def:  Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
     uses: use Z_21
 Z_22: orig: Z
-    def:  Z_22 = SLICE(SCZ_5, bool, 2) (alias)
+    def:  Z_22 = SCZ_5 & 4<32> (alias)
     uses: Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
           Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
 Z_23: orig: Z
     def:  Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
     uses: Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
 Z_24: orig: Z
-    def:  Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+    def:  Z_24 = SCZ_4 & 4<32> (alias)
     uses: Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
 // proc1
 // Return size: 0
@@ -3124,16 +3120,16 @@ l1:
 	Mem2[0x123400<32>:word32] = 4<32>
 	al_3 = Mem2[0x123408<32>:byte]
 	SCZ_4 = cond(al_3 - 0x30<8>)
-	C_11 = SLICE(SCZ_4, bool, 1) (alias)
-	S_20 = SLICE(SCZ_4, bool, 0) (alias)
-	Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+	C_11 = SCZ_4 & 2<32> (alias)
+	S_20 = SCZ_4 & 1<32> (alias)
+	Z_24 = SCZ_4 & 4<32> (alias)
 	branch Test(LT,SCZ_4) m4_not_number
 	// succ:  m1_maybe_number m4_not_number
 m1_maybe_number:
 	SCZ_5 = cond(al_3 - 0x39<8>)
-	C_9 = SLICE(SCZ_5, bool, 1) (alias)
-	S_18 = SLICE(SCZ_5, bool, 0) (alias)
-	Z_22 = SLICE(SCZ_5, bool, 2) (alias)
+	C_9 = SCZ_5 & 2<32> (alias)
+	S_18 = SCZ_5 & 1<32> (alias)
+	Z_22 = SCZ_5 & 4<32> (alias)
 	branch Test(GT,SCZ_5) m4_not_number
 	// succ:  m2_number m4_not_number
 m2_number:

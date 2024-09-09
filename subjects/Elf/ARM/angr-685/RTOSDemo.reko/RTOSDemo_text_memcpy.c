@@ -35,8 +35,8 @@ l0000A63C:
 			r6Out = r6_n;
 			ptr32 r7_n;
 			r7Out = r7_n;
-			bool Z_n;
-			return Z_n;
+			word32 Z_n;
+			return Z_n != 0x00;
 		}
 		Eq_n r4_n = r1;
 		Eq_n r3_n = r0;

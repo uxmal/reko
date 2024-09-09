@@ -64,7 +64,7 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage flags)
         {
-            return frameNew.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id!.DataType);
+            return frameNew.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)

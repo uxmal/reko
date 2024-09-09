@@ -87,10 +87,10 @@ namespace Reko.Arch.Rl78
             GpRegsByName = new ReadOnlyDictionary<string, RegisterStorage>(WordRegs.Concat(ByteRegs)
                 .ToDictionary(r => r.Name));
 
-            C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            cy = new FlagGroupStorage(psw, (uint) FlagM.CF, "cy", PrimitiveType.Bool);
-            CZ = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.ZF), "CZ", PrimitiveType.Byte);
-            Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            C = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(C));
+            cy = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(cy));
+            CZ = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.ZF), nameof(CZ));
+            Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, nameof(Z));
         }
     }
 

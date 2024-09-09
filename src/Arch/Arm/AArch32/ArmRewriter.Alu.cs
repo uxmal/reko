@@ -53,7 +53,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 opDst,
                 opr(

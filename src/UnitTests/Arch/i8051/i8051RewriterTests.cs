@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC3); // clr\tC
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|C = false");
+                "1|L--|C = 0<8>");
         }
 
         [Test]

@@ -73,9 +73,8 @@ namespace Reko.Arch.Arc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            var dt = Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = Registers.Status32;
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
             return fl;
         }
 

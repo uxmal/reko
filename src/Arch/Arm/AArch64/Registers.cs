@@ -195,15 +195,15 @@ namespace Reko.Arch.Arm.AArch64
                     new [] { fpsr },
                 }).ToArray();
 
-            C = new FlagGroupStorage(pstate, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            N = new FlagGroupStorage(pstate, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            NV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.VF), "NV", PrimitiveType.Word32);
-            NZ = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF), "NZ", PrimitiveType.Word32);
-            NZV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), "NZV", PrimitiveType.Word32);
-            NZCV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.CF|FlagM.VF), "NZCV", PrimitiveType.Word32);
-            V = new FlagGroupStorage(pstate, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            Z = new FlagGroupStorage(pstate, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            ZC = new FlagGroupStorage(pstate, (uint) (FlagM.ZF|FlagM.CF), "ZC", PrimitiveType.Word32);
+            C = new FlagGroupStorage(pstate, (uint) FlagM.CF, nameof(C));
+            N = new FlagGroupStorage(pstate, (uint) FlagM.NF, nameof(N));
+            NV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.VF), nameof(NV));
+            NZ = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF), nameof(NZ));
+            NZV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), nameof(NZV));
+            NZCV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.CF|FlagM.VF), nameof(NZCV));
+            V = new FlagGroupStorage(pstate, (uint) FlagM.VF, nameof(V));
+            Z = new FlagGroupStorage(pstate, (uint) FlagM.ZF, nameof(Z));
+            ZC = new FlagGroupStorage(pstate, (uint) (FlagM.ZF|FlagM.CF), nameof(ZC));
         }
     }
 }

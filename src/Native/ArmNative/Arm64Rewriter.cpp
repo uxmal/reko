@@ -106,7 +106,7 @@ void Arm64Rewriter::NotImplementedYet()
 
 HExpr Arm64Rewriter::NZCV()
 {
-	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0xF, "NZCV", BaseType::Byte);
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0xF, "NZCV");
 }
 
 void Arm64Rewriter::MaybeUpdateFlags(HExpr opDst)
@@ -159,40 +159,40 @@ HExpr Arm64Rewriter::TestCond(arm_cc cond)
 	//default:
 	//	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
 	case ARM_CC_HS:
-		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C", BaseType::Byte));
+		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C"));
 	case ARM_CC_LO:
-		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C", BaseType::Byte));
+		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C"));
 	case ARM_CC_EQ:
-		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
+		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z"));
 	case ARM_CC_GE:
-		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", BaseType::Byte));
+		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV"));
 	case ARM_CC_GT:
-		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", BaseType::Byte));
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV"));
 	case ARM_CC_HI:
-		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", BaseType::Byte));
+		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC"));
 	case ARM_CC_LE:
-		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV", BaseType::Byte));
+		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV"));
 	case ARM_CC_LS:
-		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", BaseType::Byte));
+		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC"));
 	case ARM_CC_LT:
-		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV", BaseType::Byte));
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV"));
 	case ARM_CC_MI:
-		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", BaseType::Byte));
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N"));
 	case ARM_CC_PL:
-		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", BaseType::Byte));
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ"));
 	case ARM_CC_NE:
-		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
+		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z"));
 	case ARM_CC_VC:
-		return m.Test(ConditionCode::NO, FlagGroup(FlagM::VF, "V", BaseType::Byte));
+		return m.Test(ConditionCode::NO, FlagGroup(FlagM::VF, "V"));
 	case ARM_CC_VS:
-		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", BaseType::Byte));
+		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V"));
 	}
 	return HExpr();
 }
 
-HExpr Arm64Rewriter::FlagGroup(FlagM bits, const char * name, BaseType type)
+HExpr Arm64Rewriter::FlagGroup(FlagM bits, const char * name)
 {
-	return host->EnsureFlagGroup(ARM64_REG_NZCV, (int) bits, name, type);
+	return host->EnsureFlagGroup(ARM64_REG_NZCV, (int) bits, name);
 }
 
 

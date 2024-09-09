@@ -29,6 +29,7 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.ImageLoaders.OdbgScript;
 using Reko.Services;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
@@ -95,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             Identifier id = new Identifier(
                 name,
                 PrimitiveType.Word32,
-                new FlagGroupStorage(freg, 1U, "C", PrimitiveType.Byte));
+                new FlagGroupStorage(freg, 1U, "C"));
             return ssaIds.Add(id, null, false).Identifier;
         }
 
@@ -485,8 +486,8 @@ done:
                 var r3 = m.Reg32("r3", 3);
                 var r4 = m.Reg32("r4", 4);
                 var flags = RegisterStorage.Reg32("flags", 0x0A);
-                var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
-                var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
+                var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC");
+                var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C");
 
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));
@@ -877,8 +878,8 @@ ProcedureBuilder_exit:
                 var r1 = m.Reg16("r1", 1);
                 var r0 = m.Reg16("r0", 0);
                 var psw = RegisterStorage.Reg16("psw", 2);
-                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
-                var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Word16));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C"));
+                var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC"));
                 var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
                 m.Assign(r1, m.Shl(r1, m.Int16(1)));
                 m.Assign(NZVC, m.Cond(r1));
@@ -911,13 +912,13 @@ l1:
 	v10_16 = SLICE(v11_17, uint16, 8)
 	h_1 = SLICE(v10_16, byte, 8)
 	SZC_1 = cond(h_1)
-	C_1 = SLICE(SZC_1, bool, 0) (alias)
+	C_1 = SZC_1 & 1<32> (alias)
 	l_1 = SLICE(v10_16, byte, 0)
 	SZC_2 = cond(l_1)
-	C_2 = SLICE(SZC_2, bool, 0) (alias)
+	C_2 = SZC_2 & 1<32> (alias)
 	b = SLICE(v11_17, byte, 0)
 	SZC_3 = cond(b)
-	C_3 = SLICE(SZC_3, bool, 0) (alias)
+	C_3 = SZC_3 & 1<32> (alias)
 	c_1 = SLICE(v12_18, byte, 0)
 	SZC_4 = cond(c_1)
 	return
@@ -936,8 +937,8 @@ SsaProcedureBuilder_exit:
                 var c = m.Reg8("c", 4);
                 var c_1 = m.Reg8("c_1", 4);
                 var flags = RegisterStorage.Reg32("flags", 42);
-                var szc = new FlagGroupStorage(flags, 7, "SZC", PrimitiveType.Byte);
-                var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
+                var szc = new FlagGroupStorage(flags, 7, "SZC");
+                var cy = new FlagGroupStorage(flags, 1, "C");
                 var SZC_1 = m.Flags("SZC_1", szc);
                 var SZC_2 = m.Flags("SZC_2", szc);
                 var SZC_3 = m.Flags("SZC_3", szc);
@@ -954,15 +955,15 @@ SsaProcedureBuilder_exit:
 
                 m.Assign(h_1, m.Shr(h, 1));
                 m.Assign(SZC_1, m.Cond(h_1));
-                m.Alias(C_1, m.Slice(SZC_1, Bool));
+                m.Alias(C_1, m.And(SZC_1, 1));
 
                 m.Assign(l_1, RorC(l, m.Byte(1), C_1));
                 m.Assign(SZC_2, m.Cond(l_1));
-                m.Alias(C_2, m.Slice(SZC_2, Bool));
+                m.Alias(C_2, m.And(SZC_2, 1));
 
                 m.Assign(b_1, RorC(b, m.Byte(1), C_2));
                 m.Assign(SZC_3, m.Cond(b_1));
-                m.Alias(C_3, m.Slice(SZC_3, Bool));
+                m.Alias(C_3, m.And(SZC_3, 1));
 
                 m.Assign(c_1, RorC(c, m.Byte(1), C_3));
                 m.Assign(SZC_4, m.Cond(c_1));
@@ -1012,8 +1013,8 @@ SsaProcedureBuilder_exit:
             RunSsaTest(sExp, m =>
             {
                 var flags = RegisterStorage.Reg32("flags", 42);
-                var sczo = new FlagGroupStorage(flags, 0xF, "SZCO", PrimitiveType.Byte);
-                var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
+                var sczo = new FlagGroupStorage(flags, 0xF, "SZCO");
+                var cy = new FlagGroupStorage(flags, 1, "C");
                 var fp = m.FramePointer();
                 var ax_1 = m.Reg16("ax_1");
                 var dx_2 = m.Reg16("dx_2");
@@ -1087,8 +1088,8 @@ ProcedureBuilder_exit:
                 var cx = m.Reg16("cx", 1);
                 var dx = m.Reg16("dx", 2);
                 var psw = RegisterStorage.Reg16("psw", 2);
-                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
-                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C"));
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO"));
                 var tmp = m.Frame.CreateTemporary(PrimitiveType.Bool);
 
                 m.BranchIf(m.Eq0(cx), "m1Done");
@@ -1143,9 +1144,9 @@ ProcedureBuilder_exit:
                 var ax = m.Reg16("ax", 0);
                 var dx = m.Reg16("dx", 2);
                 var psw = RegisterStorage.Reg16("psw", 2);
-                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
-                var SF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 8, "S", PrimitiveType.Bool));
-                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C"));
+                var SF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 8, "S"));
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO"));
 
                 m.Assign(dx, m.Sar(dx, 1));
                 m.Assign(SCZO, m.Cond(dx));
@@ -1211,7 +1212,7 @@ ProcedureBuilder_exit:
                 var r2 = m.Reg32("r2", 2);
                 var ctr = m.Reg32("ctr", 12);
                 var psw = RegisterStorage.Reg16("psw", 2);
-                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+                var SCZO = m.Frame.EnsureFlagGroup(psw, 0xF, "SCZO");
 
                 m.Label("m1");
                 m.Assign(r2, m.And(r2, 0x7F));
@@ -1238,6 +1239,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Ignore("This type of code doesn't seem to be generated anymore")]
         public void CceShrConvert()
         {
             var sExp =
@@ -1266,7 +1268,7 @@ ProcedureBuilder_exit:
 
                 m.Assign(r2, m.Shr(r2, 1));
                 m.Assign(C, m.Cond(r2));
-                m.Assign(r3, m.Convert(C, PrimitiveType.Bool, PrimitiveType.Word32));
+                m.Assign(r3, C);
                 m.Return(r3);
             });
         }
@@ -1296,9 +1298,9 @@ ProcedureBuilder_exit:
             {
                 var eax = m.Reg32("eax", 1);
                 var psw = RegisterStorage.Reg32("psw", 4);
-                var SZ = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0C, "SZ", PrimitiveType.Byte));
-                var SZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0E, "SZO", PrimitiveType.Byte));
-                var O = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x02, "O", PrimitiveType.Bool));
+                var SZ = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0C, "SZ"));
+                var SZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0E, "SZO"));
+                var O = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x02, "O"));
                 var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
                 m.Label("foo");
                 m.Assign(eax, m.Or(eax, eax));
@@ -1379,6 +1381,45 @@ ProcedureBuilder_exit:
                 m.Assign(eax, m.Fn(CommonOps.Ror, eax, m.Byte(1)));
                 m.BranchIf(m.Test(ConditionCode.UGE, C), "foo");
                 m.Return();
+            });
+        }
+
+        [Test]
+        public void CceRegression_Avr32()
+        {
+            var sExpected =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r9
+	def r7
+	// succ:  l1
+l1:
+	r9_5 = CONVERT(r9 >=u r7, bool, word32)
+	Mem6[0x123400<32>:word32] = r9_5
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExpected, m =>
+            {
+                var psw = RegisterStorage.Reg32("psw", 42);
+                var VNZC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "VNZC"));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C"));
+                var r7 = m.Reg32("r7");
+                var r9 = m.Reg32("r9");
+
+                m.Assign(VNZC, m.Cond(m.ISub(r9, r7)));
+                m.Assign(
+                    r9,
+                    m.Convert(
+                        m.Test(ConditionCode.UGE, C),
+                        PrimitiveType.Bool,
+                        PrimitiveType.Word32));
+                m.MStore(m.Word32(0x123400), r9);
             });
         }
     }

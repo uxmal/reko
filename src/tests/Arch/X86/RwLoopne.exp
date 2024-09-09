@@ -46,8 +46,8 @@ l0C00_000D:
 	si = si + 2<i16>
 	al = al ^ al
 	SZ = cond(al)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	// succ:  l0C00_0014
 l0C00_0014:
 	Mem0[es:di:byte] = al

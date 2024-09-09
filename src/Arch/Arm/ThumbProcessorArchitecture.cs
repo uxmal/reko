@@ -181,8 +181,7 @@ namespace Reko.Arch.Arm
                 return f;
             }
 
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
             flagGroups.Add(grf, fl);
             return fl;
         }

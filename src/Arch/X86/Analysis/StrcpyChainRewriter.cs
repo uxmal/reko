@@ -32,7 +32,7 @@ namespace Reko.Arch.X86.Analysis
     /// Rewrites x86 strcpy chain. Expression coalescing should be done before.
     /// </summary>
     /// <remarks>
-    /// Many x86 binaries contanains strcpy(&lt;dst&gt;, &lt;src&gt;) compiled
+    /// Many x86 binaries contain strcpy(&lt;dst&gt;, &lt;src&gt;) compiled
     /// as scasb/movsd/movsb sequence:
     /// <code>
     ///     mov edi,&lt;dst&gt;

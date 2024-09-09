@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.Name).Returns("FakeArch");
             proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(arch.Object, PrimitiveType.Word32));
             block = proc.AddBlock(proc.EntryAddress, "l00100000");
-            grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
+            grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ");
             program.Architecture = arch.Object;
             program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x00100000),

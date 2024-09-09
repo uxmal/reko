@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "2|L--|r1 = r1 + 2<16>",
                 "3|L--|r0 = r0 ^ v4",
                 "4|L--|NZ = cond(r0)",
-                "5|L--|C = false",
-                "6|L--|V = false");
+                "5|L--|C = 0<16>",
+                "6|L--|V = 0<16>");
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 3 instructions",
                 "1|L--|r2 = Mem0[r3:word16]",
                 "2|L--|NZ = cond(r2)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 3 instructions",
                 "1|L--|r2 = CONVERT(Mem0[r3:byte], byte, int16)",
                 "2|L--|NZ = cond(r2)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|Mem0[r5 + 0xEF3<16>:byte] = v4", 
                 "3|L--|NZ = cond(v4)",
-                "4|L--|V = false");
+                "4|L--|V = 0<16>");
         }
 
         [Test]
@@ -102,10 +102,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 6 instructions",
                 "1|L--|Mem0[r0:byte] = 0<8>",
                 "2|L--|r0 = r0 + 1<16>",
-                "3|L--|C = false",
-                "4|L--|V = false",
-                "5|L--|N = false",
-                "6|L--|Z = true");
+                "3|L--|C = 0<16>",
+                "4|L--|V = 0<16>",
+                "5|L--|N = 0<16>",
+                "6|L--|Z = 4<16>");
         }
 
         [Test]
@@ -154,10 +154,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 6 instructions",
                 "1|L--|r2 = r2 - 2<16>",
                 "2|L--|Mem0[r2:word16] = 0<16>",
-                "3|L--|C = false",
-                "4|L--|V = false",
-                "5|L--|N = false",
-                "6|L--|Z = true");
+                "3|L--|C = 0<16>",
+                "4|L--|V = 0<16>",
+                "5|L--|N = 0<16>",
+                "6|L--|Z = 4<16>");
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "1|L--|v3 = Mem0[0x0024<p16>:byte] | 0x20<8>",
                 "2|L--|Mem0[0x0024<p16>:byte] = v3",
                 "3|L--|NZ = cond(v3)",
-                "4|L--|V = false");
+                "4|L--|V = 0<16>");
         }
 
         [Test]
@@ -181,8 +181,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "1|L--|v5 = Mem0[r3 + 0x75<16>:byte]",
                 "2|L--|v5 = v5 & v5",
                 "3|L--|NZ = cond(v5)",
-                "4|L--|C = false",
-                "5|L--|V = false");
+                "4|L--|C = 0<16>",
+                "5|L--|V = 0<16>");
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(4): 3 instructions",
                 "1|L--|r4 = r4 & ~1<16>",
                 "2|L--|NZ = cond(r4)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(4): 3 instructions",
                 "1|L--|r0 = r0 & 0x1000<16>",
                 "2|L--|NZ = cond(r0)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -257,8 +257,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "2|L--|v5 = Mem0[r4:word16]",
                 "3|L--|v5 = v5 & v5",
                 "4|L--|NZ = cond(v5)",
-                "5|L--|C = false",
-                "6|L--|V = false");
+                "5|L--|C = 0<16>",
+                "6|L--|V = 0<16>");
         }
 
         [Test]
@@ -279,7 +279,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                   "0|L--|0200(4): 3 instructions",
                   "1|L--|r0 = 0x397<16>",
                   "2|L--|NZ = cond(r0)",
-                  "3|L--|V = false");
+                  "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "3|L--|v6 = Mem0[0x0204<p16>:word16] & ~v4",
                 "4|L--|Mem0[0x0204<p16>:word16] = v6",
                 "5|L--|NZ = cond(v6)",
-                "6|L--|V = false");
+                "6|L--|V = 0<16>");
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "3|L--|sp = sp - 2<16>",
                 "4|L--|Mem0[sp:word16] = v4",
                 "5|L--|NZ = cond(v4)",
-                "6|L--|V = false");
+                "6|L--|V = 0<16>");
         }
 
         [Test]
@@ -362,7 +362,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "4|L--|v6 = Mem0[r0:word16] & v4",
                 "5|L--|Mem0[r0:word16] = v6",
                 "6|L--|NZ = cond(v6)",
-                "7|L--|V = false");
+                "7|L--|V = 0<16>");
         }
 
         [Test]
@@ -407,7 +407,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
               "1|L--|Mem0[r5:byte] = 0x3D<8>",
               "2|L--|r5 = r5 + 1<16>",
               "3|L--|NZ = cond(0x3D<8>)",
-              "4|L--|V = false");
+              "4|L--|V = 0<16>");
         }
 
         [Test]
@@ -417,10 +417,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
             AssertCode(
               "0|L--|0200(2): 5 instructions",
               "1|L--|r3 = SEQ(SLICE(r3, byte, 8), 0<8>)",
-              "2|L--|C = false",
-              "3|L--|V = false",
-              "4|L--|N = false",
-              "5|L--|Z = true");
+              "2|L--|C = 0<16>",
+              "3|L--|V = 0<16>",
+              "4|L--|N = 0<16>",
+              "5|L--|Z = 4<16>");
         }
 
         [Test]
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
               "0|L--|0200(4): 3 instructions",
               "1|L--|r0 = Mem0[0x1D90<p16>:word16]",
               "2|L--|NZ = cond(r0)",
-              "3|L--|V = false");
+              "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -442,8 +442,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
               "0|L--|0200(2): 4 instructions",
               "1|L--|r3 = ~r3",
               "2|L--|NZ = cond(r3)",
-              "3|L--|V = false",
-              "4|L--|C = true");
+              "3|L--|V = 0<16>",
+              "4|L--|C = 1<16>");
         }
 
         [Test]
@@ -486,10 +486,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(4): 6 instructions",
                 "1|L--|v4 = Mem0[0x0214<p16>:ptr16]",
                 "2|L--|Mem0[v4:word16] = 0<16>",
-                "3|L--|C = false",
-                "4|L--|V = false",
-                "5|L--|N = false",
-                "6|L--|Z = true");
+                "3|L--|C = 0<16>",
+                "4|L--|V = 0<16>",
+                "5|L--|N = 0<16>",
+                "6|L--|Z = 4<16>");
         }
 
         [Test]
@@ -502,8 +502,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "2|L--|v4 = Mem0[v4:word16]",
                 "3|L--|r0 = r0 ^ v4",
                 "4|L--|NZ = cond(r0)",
-                "5|L--|C = false",
-                "6|L--|V = false");
+                "5|L--|C = 0<16>",
+                "6|L--|V = 0<16>");
         }
 
         [Test(Description = "Destination mustn't be an immediate")]
@@ -514,10 +514,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(4): 6 instructions",
                 "1|L--|v4 = Mem0[0x0214<p16>:ptr16]",
                 "2|L--|Mem0[v4:word16] = 0<16>",
-                "3|L--|C = false",
-                "4|L--|V = false",
-                "5|L--|N = false",
-                "6|L--|Z = true");
+                "3|L--|C = 0<16>",
+                "4|L--|V = 0<16>",
+                "5|L--|N = 0<16>",
+                "6|L--|Z = 4<16>");
         }
 
         [Test(Description = "Destination mustn't be an immediate")]
@@ -537,10 +537,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
             AssertCode(
                 "0|L--|0200(4): 5 instructions",
                 "1|L--|Mem0[0x0214<p16>:word16] = 0<16>",
-                "2|L--|C = false",
-                "3|L--|V = false",
-                "4|L--|N = false",
-                "5|L--|Z = true");
+                "2|L--|C = 0<16>",
+                "3|L--|V = 0<16>",
+                "4|L--|N = 0<16>",
+                "5|L--|Z = 4<16>");
         }
 
         [Test]
@@ -553,7 +553,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                   "2|L--|v5 = Mem0[r4:word16]", 
                   "3|L--|Mem0[Mem0[r4 + 0xA26<16>:word16]:ptr16] = v5",
                   "4|L--|NZ = cond(v5)",
-                  "5|L--|V = false");
+                  "5|L--|V = 0<16>");
         }
 
         [Test]
@@ -564,8 +564,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                   "0|L--|0200(2): 4 instructions",
                   "1|L--|r3 = __swab(r3)",
                   "2|L--|NZ = cond(r3)",
-                  "3|L--|C = false",
-                  "4|L--|V = false");
+                  "3|L--|C = 0<16>",
+                  "4|L--|V = 0<16>");
         }
 
         [Test]
@@ -599,7 +599,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 3 instructions",
                 "1|L--|r0_r1 = r0 *s r1",
                 "2|L--|NZC = cond(r0_r1)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -610,7 +610,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(2): 3 instructions",
                 "1|L--|r1 = r1 *s r2",
                 "2|L--|NZC = cond(r1)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -619,8 +619,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
             Given_UInt16s(0x00AA);      // clrflags NV
             AssertCode(
                 "0|L--|0200(2): 2 instructions",
-                "1|L--|N = false",
-                "2|L--|V = false");
+                "1|L--|N = 0<16>",
+                "2|L--|V = 0<16>");
         }
 
         [Test]
@@ -632,8 +632,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "1|L--|v5 = __stexp<real64>(ac2)",
                 "2|L--|Mem0[r2:int16] = v5",
                 "3|L--|NZ = cond(v5)",
-                "4|L--|C = false",
-                "5|L--|V = false");
+                "4|L--|C = 0<16>",
+                "5|L--|V = 0<16>");
         }
 
         [Test]
@@ -671,7 +671,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "0|L--|0200(6): 3 instructions",
                 "1|L--|Mem0[0x19E0<p16>:word16] = 1<16>",
                 "2|L--|NZ = cond(1<16>)",
-                "3|L--|V = false");
+                "3|L--|V = 0<16>");
         }
 
         [Test]
@@ -683,7 +683,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "1|L--|r2 = r2 - 2<16>",
                 "2|L--|Mem0[Mem0[r2:ptr16]:ptr16] = 0202",
                 "3|L--|NZ = cond(0x0202<p16>)",
-                "4|L--|V = false");
+                "4|L--|V = 0<16>");
         }
 
         [Test]

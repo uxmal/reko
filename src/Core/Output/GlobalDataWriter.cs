@@ -88,9 +88,8 @@ namespace Reko.Core.Output
                 Debug.Print("No global variables found.");
                 return;
             }
-            while (queue.Count > 0)
+            while (queue.TryDequeue(out var field))
             {
-                var field = queue.Dequeue();
                 WriteGlobalVariable(field);
             }
         }

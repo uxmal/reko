@@ -95,7 +95,7 @@ namespace Reko.Arch.SuperH
                 if (!grfs.TryGetValue(grf, out FlagGroupStorage? fl))
                 {
                     PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-                    fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+                    fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
                     grfs.Add(grf, fl);
                 }
                 return fl;

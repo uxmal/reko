@@ -511,7 +511,7 @@ namespace Reko.Arch.PowerPC
             var ea = (a.IsZero)
                 ? b
                 : m.IAdd(a, b);
-            var cr0 = binder.EnsureFlagGroup(arch.cr, 0xF, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr0);
             var ptr = new Pointer(dataType, arch.PointerType.BitSize);
             m.Assign(
                 cr0,

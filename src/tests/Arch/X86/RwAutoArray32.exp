@@ -24,12 +24,12 @@ l10000000:
 	SCZO = cond(esp)
 	eax = eax ^ eax
 	SZ = cond(eax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	ecx = ecx ^ ecx
 	SZ = cond(ecx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	Mem0[esp:word32] = 1<32>
 	Mem0[esp + 4<i32>:word32] = 2<32>
 	Mem0[esp + 8<i32>:word32] = 3<32>

@@ -1429,8 +1429,9 @@ namespace Reko.UnitTests.Arch.CSky
         {
             Given_HexString("00C4 1505");
             AssertCode(     // mvc\tr21
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = CONVERT(C, bool, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = C != 0<32>",
+                "2|L--|r21 = CONVERT(v5, bool, word32)");
         }
 
         [Test]

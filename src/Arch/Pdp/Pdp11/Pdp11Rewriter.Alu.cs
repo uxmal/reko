@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Output;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -139,22 +140,24 @@ namespace Reko.Arch.Pdp.Pdp11
             SetTrue(Registers.Z);
         }
 
-        private void RewriteClrSetFlags(Func<Constant> gen)
+        private void RewriteClrSetFlags(bool setFlag)
         {
             var grf = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
-            AddFlagAssignment(grf, Registers.N, gen);
-            AddFlagAssignment(grf, Registers.Z, gen);
-            AddFlagAssignment(grf, Registers.V, gen);
-            AddFlagAssignment(grf, Registers.C, gen);
+            AddFlagAssignment(grf, Registers.N, setFlag);
+            AddFlagAssignment(grf, Registers.Z, setFlag);
+            AddFlagAssignment(grf, Registers.V, setFlag);
+            AddFlagAssignment(grf, Registers.C, setFlag);
         }
 
-        private void AddFlagAssignment(uint grf, FlagGroupStorage flag, Func<Constant> gen)
+        private void AddFlagAssignment(uint grf, FlagGroupStorage flag, bool setFlag)
         {
             if ((grf & flag.FlagGroupBits) != 0)
             {
-                m.Assign(
-                    binder.EnsureFlagGroup(flag),
-                    gen());
+                var dst = binder.EnsureFlagGroup(flag);
+                var src = setFlag
+                    ? flag.FlagGroupBits
+                    : 0u;
+                m.Assign(dst, src);
             }
         }
 

@@ -34,9 +34,9 @@ si_10: orig: si
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
 SCZO_11: orig: SCZO
     def:  SCZO_11 = cond(ax_9 - 0x20<16>)
-    uses: Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+    uses: Z_12 = SCZO_11 & 4<32> (alias)
 Z_12: orig: Z
-    def:  Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+    def:  Z_12 = SCZO_11 & 4<32> (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
     uses: v14_22 = Mem14[ds:0x302<16>:word16] + 1<16>
@@ -49,18 +49,18 @@ ax_15: orig: ax
           branch ax_15 != 0xD<16> l0C00_001A
 SZ_16: orig: SZ
     def:  SZ_16 = cond(ax_15)
-    uses: Z_19 = SLICE(SZ_16, bool, 2) (alias)
+    uses: Z_19 = SZ_16 & 4<32> (alias)
 O_17: orig: O
-    def:  O_17 = false
+    def:  O_17 = 0<32>
 C_18: orig: C
-    def:  C_18 = false
+    def:  C_18 = 0<32>
 Z_19: orig: Z
-    def:  Z_19 = SLICE(SZ_16, bool, 2) (alias)
+    def:  Z_19 = SZ_16 & 4<32> (alias)
 SCZO_20: orig: SCZO
     def:  SCZO_20 = cond(ax_15 - 0xD<16>)
-    uses: Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+    uses: Z_21 = SCZO_20 & 4<32> (alias)
 Z_21: orig: Z
-    def:  Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+    def:  Z_21 = SCZO_20 & 4<32> (alias)
 v14_22: orig: v14
     def:  v14_22 = Mem14[ds:0x302<16>:word16] + 1<16>
     uses: Mem23[ds:0x302<16>:word16] = v14_22
@@ -120,9 +120,9 @@ l0C00_0005:
 	Mem14[ds:di:word16] = ax_9
 	ax_15 = ax_9 | ax_9
 	SZ_16 = cond(ax_15)
-	Z_19 = SLICE(SZ_16, bool, 2) (alias)
-	O_17 = false
-	C_18 = false
+	Z_19 = SZ_16 & 4<32> (alias)
+	O_17 = 0<32>
+	C_18 = 0<32>
 	branch ax_15 != 0<16> l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
@@ -131,7 +131,7 @@ l0C00_000B:
 	// succ:  l0C00_0024
 l0C00_0011:
 	SCZO_20 = cond(ax_15 - 0xD<16>)
-	Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+	Z_21 = SCZO_20 & 4<32> (alias)
 	branch ax_15 != 0xD<16> l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
@@ -145,7 +145,7 @@ l0C00_001A:
 	ax_9 = Mem8[ds:si_7:word16]
 	si_10 = si_7 + 2<i16>
 	SCZO_11 = cond(ax_9 - 0x20<16>)
-	Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+	Z_12 = SCZO_11 & 4<32> (alias)
 	branch ax_9 != 0x20<16> l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
@@ -199,9 +199,9 @@ si_10: orig: si
           ax_28 = si_10 - si
 SCZO_11: orig: SCZO
     def:  SCZO_11 = cond(ax_9 - 0x20<16>)
-    uses: Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+    uses: Z_12 = SCZO_11 & 4<32> (alias)
 Z_12: orig: Z
-    def:  Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+    def:  Z_12 = SCZO_11 & 4<32> (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
     uses: v14_22 = Mem14[ds:0x302<16>:word16] + 1<16>
@@ -210,18 +210,18 @@ ax_15: orig: ax
     def:  ax_15 = ax_9
 SZ_16: orig: SZ
     def:  SZ_16 = cond(ax_9)
-    uses: Z_19 = SLICE(SZ_16, bool, 2) (alias)
+    uses: Z_19 = SZ_16 & 4<32> (alias)
 O_17: orig: O
-    def:  O_17 = false
+    def:  O_17 = 0<32>
 C_18: orig: C
-    def:  C_18 = false
+    def:  C_18 = 0<32>
 Z_19: orig: Z
-    def:  Z_19 = SLICE(SZ_16, bool, 2) (alias)
+    def:  Z_19 = SZ_16 & 4<32> (alias)
 SCZO_20: orig: SCZO
     def:  SCZO_20 = cond(ax_9 - 0xD<16>)
-    uses: Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+    uses: Z_21 = SCZO_20 & 4<32> (alias)
 Z_21: orig: Z
-    def:  Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+    def:  Z_21 = SCZO_20 & 4<32> (alias)
 v14_22: orig: v14
     def:  v14_22 = Mem14[ds:0x302<16>:word16] + 1<16>
     uses: Mem23[ds:0x302<16>:word16] = v14_22
@@ -280,9 +280,9 @@ l0C00_0005:
 	Mem14[ds:di:word16] = ax_9
 	ax_15 = ax_9
 	SZ_16 = cond(ax_9)
-	Z_19 = SLICE(SZ_16, bool, 2) (alias)
-	O_17 = false
-	C_18 = false
+	Z_19 = SZ_16 & 4<32> (alias)
+	O_17 = 0<32>
+	C_18 = 0<32>
 	branch ax_9 != 0<16> l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
@@ -291,7 +291,7 @@ l0C00_000B:
 	// succ:  l0C00_0024
 l0C00_0011:
 	SCZO_20 = cond(ax_9 - 0xD<16>)
-	Z_21 = SLICE(SCZO_20, bool, 2) (alias)
+	Z_21 = SCZO_20 & 4<32> (alias)
 	branch ax_9 != 0xD<16> l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
@@ -305,7 +305,7 @@ l0C00_001A:
 	ax_9 = Mem8[ds:si_7:word16]
 	si_10 = si_7 + 2<i16>
 	SCZO_11 = cond(ax_9 - 0x20<16>)
-	Z_12 = SLICE(SCZO_11, bool, 2) (alias)
+	Z_12 = SCZO_11 & 4<32> (alias)
 	branch ax_9 != 0x20<16> l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:

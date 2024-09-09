@@ -276,12 +276,16 @@ namespace Reko.Arch.MicroBlaze
                 if (regB == Registers.GpRegs[0])
                 {
                     setCy = false;
-                    src = m.Convert(cy, PrimitiveType.Bool, dst.DataType);
+                    src = m.Conditional(
+                        regA.DataType,
+                        m.Ne0(cy),
+                        Constant.Create(regA.DataType, 1),
+                        Constant.Create(regA.DataType, 0));
                 }
                 else
                 {
                     src = binder.EnsureRegister(regB);
-                    src = m.IAdd(src, m.Convert(cy, PrimitiveType.Bool, dst.DataType));
+                    src = m.IAdd(src, cy);
                 }
             }
             else
@@ -617,10 +621,18 @@ namespace Reko.Arch.MicroBlaze
 
         private void RewriteShift1(Func<Expression, Expression, Expression> fn)
         {
-            var dst = Reg(0);
             var src = Reg(1);
+            var carry = binder.EnsureFlagGroup(Registers.C);
+            var dst = Reg(0);
+            m.Assign(
+                carry,
+                m.Conditional(
+                    PrimitiveType.Word32,
+                    m.Ne0(m.And(src, 1)),
+                     m.Word32(1),
+                     m.Word32(0)));
+
             m.Assign(dst, fn(src, m.Int32(1)));
-            C(dst);
         }
 
         private void RewriteStoreIdx(PrimitiveType dt)

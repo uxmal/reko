@@ -63,7 +63,7 @@ l0000A63C:
 	r5Out = r5_130
 	r6Out = r6_131
 	r7Out = r7_132
-	return Z_183
+	return Z_183 != 0<32>
 memcpy_exit:
 
 

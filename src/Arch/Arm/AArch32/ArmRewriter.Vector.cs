@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var src1 = Operand(0, PrimitiveType.Word32, true);
             var src2 = Operand(1);
-            var fpscr = binder.EnsureFlagGroup(Registers.fpscr, 0xF0000000, "NZCV", PrimitiveType.Word32);
+            var fpscr = binder.EnsureFlagGroup(Registers.fpscr, 0xF0000000, "NZCV");
             m.Assign(fpscr, m.Cond(m.FSub(src1, src2)));
         }
 

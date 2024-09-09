@@ -126,7 +126,7 @@ word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 		word16 gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
 		ptr16 gp2_n = (word16) gp0_gp1_gp2_n;
 		int16 gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFF;
-		if (Test(NE,(gp6_n >> 0x08 & 0x8000) == 0x00))
+		if ((gp6_n >> 0x08 & 0x8000) != 0x00)
 		{
 			real48 gp0_gp1_gp2_n = SEQ(gp0_n, gp1_n, gp2_n) * g_r05B4;
 			gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16);
@@ -282,7 +282,7 @@ l00000406:
 		gp12_gp13_n = gp12_gp13_gp14;
 		word16 gp14_n;
 		word16 gp0_n;
-		if (Test(EQ,(SLICE(gp12_gp13_gp14, word16, 16) & 0x0100) == 0x00))
+		if ((SLICE(gp12_gp13_gp14, word16, 16) & 0x0100) != 0x00)
 		{
 			while (true)
 			{

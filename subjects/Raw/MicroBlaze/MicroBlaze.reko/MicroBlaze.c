@@ -10196,15 +10196,15 @@ word32 fn00015318(Eq_n r5, Eq_n r6, Eq_n r7)
 //      fn00017044
 uint32 fn000156B4(Eq_n r5, Eq_n r6, Eq_n r7)
 {
-	Eq_n r9_n = __rcr<word32,int32>(r5, 1, cond(r5 >> 24));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, cond(r9_n));
-	uint32 r3_n = (r5 >> 24) + (__rcr<word32,int32>(r9_n, 1, cond(r9_n)) & 0xFF000000) + (r5 >> 8 & 0xFF00) + (r5 * 0x0100 & 0x00FF0000);
+	Eq_n r9_n = __rcr<word32,int32>(r5, 1, (r5 & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r9_n = __rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	uint32 r3_n = (r5 >> 24) + (__rcr<word32,int32>(r9_n, 1, (r9_n & 0x01) != 0x00 ? 0x01 : 0x00) & 0xFF000000) + (r5 >> 8 & 0xFF00) + (r5 * 0x0100 & 0x00FF0000);
 	uint32 r4_n;
 	if (r7 != 0x00)
 	{
@@ -10345,15 +10345,15 @@ l0001597C:
 	else
 		r4_n = ~r3_n;
 	Eq_n r3_n = ~r4_n;
-	Eq_n r7_n = __rcr<word32,int32>(r3_n, 1, cond(r3_n >> 8));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, cond(r7_n));
-	return (r3_n >> 24) + (__rcr<word32,int32>(r7_n, 1, cond(r7_n)) & 0xFF000000) + (r3_n >> 8 & 0xFF00) + (r3_n * 0x0100 & 0x00FF0000);
+	Eq_n r7_n = __rcr<word32,int32>(r3_n, 1, (r3_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	Eq_n r7_n = __rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00);
+	return (r3_n >> 24) + (__rcr<word32,int32>(r7_n, 1, (r7_n & 0x01) != 0x00 ? 0x01 : 0x00) & 0xFF000000) + (r3_n >> 8 & 0xFF00) + (r3_n * 0x0100 & 0x00FF0000);
 }
 
 // 00016D60: void fn00016D60(Register uint32 r5, Register int32 r7)
@@ -11599,7 +11599,7 @@ word32 fn00017F30(Eq_n r5, Eq_n r6)
 	while (true)
 	{
 		r6 >>= 1;
-		if (((r6 & 0x01) != 0x00 ? 0x01 : 0x00) != 0x00)
+		if ((((r6 & 0x01) != 0x00 ? 0x01 : 0x00) != 0x00 ? 0x01 : 0x00) != 0x00)
 		{
 			if (r6 == 0x00)
 			{
@@ -18879,7 +18879,7 @@ word32 fn0002E908(Eq_n r5, Eq_n r6, ptr32 & r7Out)
 		while (true)
 		{
 			r6 >>= 1;
-			ptr32 r7_n = (r6 & 0x01) != 0x00 ? 0x01 : 0x00;
+			ptr32 r7_n = ((r6 & 0x01) != 0x00 ? 0x01 : 0x00) != 0x00 ? 0x01 : 0x00;
 			if (r7_n != null)
 			{
 				if (r6 == 0x00)

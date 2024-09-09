@@ -58,7 +58,7 @@ namespace Reko.Arch.zSeries
 
             //$REVIEW: this should be a PSW.
             var ccReg = factory.Reg("ccReg", PrimitiveType.Byte);
-            CC = new FlagGroupStorage(ccReg, 0xF, "CC", PrimitiveType.Byte);
+            CC = new FlagGroupStorage(ccReg, 0xF, "CC");
         }
     }
 }

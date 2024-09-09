@@ -50,6 +50,7 @@ namespace Reko.Arch.PowerPC
         private readonly ReadOnlyCollection<RegisterStorage> cregs;
         private readonly Dictionary<int, RegisterStorage> spregs;
         private readonly Dictionary<uint, FlagGroupStorage> ccFlagGroups;
+
         private readonly Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
         private Decoder[]? primaryDecoders;
 
@@ -59,6 +60,8 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage fpscr { get; }
         public RegisterStorage cr { get; }
 
+        public FlagGroupStorage cr0 { get; }
+        public FlagGroupStorage cr1 { get; }
 
         public RegisterStorage acc { get; }
 
@@ -103,10 +106,12 @@ namespace Reko.Arch.PowerPC
                     .ToList());
 
             ccFlagGroups = Enumerable.Range(0, 8)
-                .Select(n => new FlagGroupStorage(cr, 0xFu << (n * 4), $"cr{n}", PrimitiveType.Byte))
+                .Select(n => new FlagGroupStorage(cr, 0xFu << (n * 4), $"cr{n}"))
                 .ToDictionary(f => f.FlagGroupBits);
             ccFlagGroupsByName = ccFlagGroups.Values
                 .ToDictionary(f => f.Name);
+            this.cr0 = ccFlagGroupsByName["cr0"];
+            this.cr1 = ccFlagGroupsByName["cr1"];
 
 
             regs = new ReadOnlyCollection<RegisterStorage>(

@@ -150,7 +150,7 @@ void main(Eq_n ds)
 	(ss->*((word32) sp_n - 4)).u0 = 0x00;
 	word32 dx_ax_n = fn0800-9764(ds_n, ss->*((word32) sp_n - 4), out cx_n);
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 	(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) (word16) dx_ax_n;
 	Eq_n sp_n = sp_n;
@@ -186,65 +186,65 @@ void main(Eq_n ds)
 	struct Eq_n Eq_n::* sp_n = sp_n - 2;
 	(ss->*sp_n).w0000 = 0x00;
 	(ss->*sp_n).tFFFFFFFE.u0 = 0x00;
-	word32 dx_ax_n = fn0800-9764(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out cx_n) - ((ss->*bp_n).tFFFFFFFC).u5;
+	word32 dx_ax_n = fn0800-9764(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out cx_n) - ((ss->*bp_n).tFFFFFFFC).u4;
 	(ss->*bp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 	(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) (word16) dx_ax_n;
 	Mem245[ss:sp_n + 0x00:word16] = Mem242[ds_n:10737:word16];
 	Mem248[ss:sp_n + -2:word16] = Mem245[ds_n:0x29EF:word16];
 	Mem251[ss:sp_n + -4:word16] = Mem248[ds_n:10741:word16];
 	Mem254[ss:sp_n + -6:word16] = Mem251[ds_n:0x29F3:word16];
-	Eq_n ax_n = fn0800-0B79((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+	Eq_n ax_n = fn0800-0B79((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4);
 	(ss->*sp_n).w0000 = 0x00;
 	(ss->*sp_n).tFFFFFFFE.u0 = 0x3C;
 	(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFE.u0;
 	(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-	Eq_n dx_ax_n = fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+	Eq_n dx_ax_n = fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+	(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-	(ss->*((word32) sp_n - 6)).u3 = 0x00;
-	(ss->*((word32) sp_n - 8)).u3 = 0x3C;
-	(ss->*((word32) sp_n - 0x0A)).u5 = 0x00;
+	(ss->*((word32) sp_n - 6)).u2 = 0x00;
+	(ss->*((word32) sp_n - 8)).u2 = 0x3C;
+	(ss->*((word32) sp_n - 0x0A)).u4 = 0x00;
 	(ss->*((word32) sp_n - 0x0C)).u0 = 0x0E10;
 	(ss->*((word32) sp_n - 0x0E)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 	(ss->*((word32) sp_n - 16)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
 	Eq_n dx_ax_n = fn0800-8BCA(ss->*((word32) sp_n - 16), ss->*((word32) sp_n - 0x0C));
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+	(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 4), ss->*sp_n.u6, out cx_n);
+	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 4), ss->*sp_n.u5, out cx_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+	(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-	(ss->*((word32) sp_n - 6)).u3 = 0x00;
-	(ss->*((word32) sp_n - 8)).u3 = 0x0E10;
-	(ss->*((word32) sp_n - 0x0A)).u5 = 0x00;
+	(ss->*((word32) sp_n - 6)).u2 = 0x00;
+	(ss->*((word32) sp_n - 8)).u2 = 0x0E10;
+	(ss->*((word32) sp_n - 0x0A)).u4 = 0x00;
 	(ss->*((word32) sp_n - 0x0C)).u0 = 0x5180;
 	(ss->*((word32) sp_n - 0x0E)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 	(ss->*((word32) sp_n - 16)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
 	Eq_n dx_ax_n = fn0800-8BCA(ss->*((word32) sp_n - 16), ss->*((word32) sp_n - 0x0C));
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+	(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 4), ss->*sp_n.u6, out cx_n);
+	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 4), ss->*sp_n.u5, out cx_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+	(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-	(ss->*((word32) sp_n - 6)).u3 = (uint32) ax_n % 100;
+	(ss->*((word32) sp_n - 6)).u2 = (uint32) ax_n % 100;
 	uint32 dx_ax_n = (uint32) ax_n;
-	(ss->*((word32) sp_n - 8)).u3 = dx_ax_n /u 100;
+	(ss->*((word32) sp_n - 8)).u2 = dx_ax_n /u 100;
 	Mem410[ss:sp_n + -0x0A:word16] = Mem407[ds_n:10737:word16];
 	Mem413[ss:sp_n + -0x0C:word16] = Mem410[ds_n:0x29EF:word16];
 	Mem416[ss:sp_n + -0x0E:word16] = Mem413[ds_n:10741:word16];
 	Mem419[ss:sp_n + -16:word16] = Mem416[ds_n:0x29F3:word16];
 	ss->*((word32) sp_n - 18) = ds_n;
-	(ss->*((word32) sp_n - 20)).u5 = 1500;
-	(ss->*((word32) sp_n - 22)).u5 = 0x08;
+	(ss->*((word32) sp_n - 20)).u4 = 1500;
+	(ss->*((word32) sp_n - 22)).u4 = 0x08;
 	Mem430[ss:sp_n + -24:word16] = Mem427[ds_n:10771:word16];
 	ss->*((word32) sp_n - 26) = ds_n;
 	(ss->*((word32) sp_n - 28)).u0 = 2027;
@@ -270,7 +270,7 @@ void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 	struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 	union Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem10[ds:0x2A27:word16] << 0x02);
 	byte ch_n = SLICE(cx_n, byte, 8);
-	if (fn0800_BFC7((es_n->*bx_n).u5, out cx_n) > 0x01)
+	if (fn0800_BFC7((es_n->*bx_n).u4, out cx_n) > 0x01)
 	{
 		Eq_n es_bx_n = Mem44[ds:9884:segptr32];
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
@@ -280,7 +280,7 @@ void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 		word16 bx_n;
 		word16 si_n;
 		word16 di_n;
-		fn0800-0D24(ds, 0x01, (es_n->*bx_n).u5, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
+		fn0800-0D24(ds, 0x01, (es_n->*bx_n).u4, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
 		ch_n = SLICE(cx_n, byte, 8);
 	}
 	Eq_n ax_n = fn0800-0C29(ds, SEQ(ds, 0x0829), Mem89[ds:Mem89[ds:9884:word16][Mem89[ds:0x2A27:word16] * 0x04] + 0x00:byte], out cl_n, out dx_n, out bx_n);
@@ -293,7 +293,7 @@ void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 		union Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem123[ds:0x2A27:word16] << 0x02);
 		word16 si_n;
 		word16 di_n;
-		fn0800-0D24(ds, 0x01, (es_n->*bx_n).u5, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
+		fn0800-0D24(ds, 0x01, (es_n->*bx_n).u4, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
 	}
 	Mem161[ds:0x2A27:word16] = Mem159[ds:0x2A27:word16] + 0x01;
 	if (Mem161[ds:0x2A25:word16] > 0x02)
@@ -308,7 +308,7 @@ void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 		Eq_n es_bx_n = Mem188[ds:9884:segptr32];
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		union Eq_n Eq_n::* bx_n = (word16) es_bx_n + (ax_n << 0x02);
-		fn0800_BF9E(SEQ(ds, 0x4348), (es_n->*bx_n).u5);
+		fn0800_BF9E(SEQ(ds, 0x4348), (es_n->*bx_n).u4);
 		fn0800-0C6C(ds, SEQ(ds, 0x4348));
 		byte Eq_n::* di_n = 0x4348;
 		word16 cx_n = ~0x00;
@@ -414,7 +414,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 				union Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem366[ds:0x2A27:word16] << 0x02);
 				word16 cx_n;
 				word16 bx_n;
-				fn0800-0D24(ds, 0x02, (es_n->*bx_n).u5, out cx_n, out dx_n, out bx_n, out si_n, out di, out ds);
+				fn0800-0D24(ds, 0x02, (es_n->*bx_n).u4, out cx_n, out dx_n, out bx_n, out si_n, out di, out ds);
 			}
 			Eq_n ptrLoc06_n;
 			if (si_n >= 0x06)
@@ -425,7 +425,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 				struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 				Eq_n bx_n = SLICE(es_bx_n, word16, 0) + (Mem417[ds:0x2A27:word16] << 0x02);
 				Eq_n cx_n;
-				if (fn0800_BFC7(es_n->*bx_n.u6, out cx_n) == 0x02)
+				if (fn0800_BFC7(es_n->*bx_n, out cx_n) == 0x02)
 				{
 					Mem462[ds:0x2A27:word16] = Mem433[ds:0x2A27:word16] + 0x01;
 					if (Mem462[ds:0x2A27:word16] == Mem462[ds:9882:word16])
@@ -433,7 +433,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 					Eq_n es_bx_n = Mem462[ds:9884:segptr32];
 					struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 					union Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem462[ds:0x2A27:word16] << 0x02);
-					ptrLoc06_n.u5 = (es_n->*bx_n).u5;
+					ptrLoc06_n.u4 = (es_n->*bx_n).u4;
 				}
 				else
 				{
@@ -442,7 +442,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 					struct Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem433[ds:0x2A27:word16] << 0x02);
 					ptrLoc06_n = SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000 + 0x02);
 				}
-				if ((int16) *ptrLoc06_n.u5 == 0x00)
+				if ((int16) *ptrLoc06_n.u4 == 0x00)
 				{
 					word16 cx_n;
 					word16 dx_n;
@@ -482,7 +482,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 							fn0800-0D24(ds, 0x03, ptrLoc06_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
 							ch_n = SLICE(cx_n, byte, 8);
 						}
-						Eq_n ax_n = fn0800-0C29(ds, SEQ(ds, 0x0844), *ptrLoc06_n.u5, out cl_n, out dx_n, out bx_n);
+						Eq_n ax_n = fn0800-0C29(ds, SEQ(ds, 0x0844), *ptrLoc06_n.u4, out cl_n, out dx_n, out bx_n);
 						Mem1057[ds:0x2A23:word16] = ax_n;
 						Eq_n cx_n = SEQ(ch_n, cl_n);
 						if (ax_n >= 0x06)
@@ -532,7 +532,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 					<unknown>* di_n = di_n - cx_n;
 					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(*((word32) ds + 17022), di_n, size_n);
-					memcpy((word16) size_n + 17022, &(wLoc04_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+					memcpy((word16) size_n + 17022, &(wLoc04_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 					fn0800-0C6C(ds, SEQ(ds, 17022));
 					di.u0 = 17022;
 					word16 cx_n = ~0x00;
@@ -573,7 +573,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 					<unknown>* di_n = di_n - cx_n;
 					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(*((word32) ds + 17123), di_n, size_n);
-					memcpy((word16) size_n + 17123, &(wLoc04_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+					memcpy((word16) size_n + 17123, &(wLoc04_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 					fn0800-0C6C(ds, SEQ(ds, 17123));
 					di.u0 = 17123;
 					word16 cx_n = ~0x00;
@@ -729,17 +729,17 @@ word16 fn0800-09A3(Eq_n ds, struct Eq_n & dsOut)
 	(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0000.u0 = (wchar_t) ax_n;
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*sp_n.u6).t0000.u0 = (wchar_t) ax_n;
 	ss->*((word32) sp_n - 2) = ds_n;
-	(ss->*((word32) sp_n - 4)).u5 = 0x0A6E;
-	fn0800-867A(ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u10.u1);
+	(ss->*((word32) sp_n - 4)).u4 = 0x0A6E;
+	fn0800-867A(ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u9.u1);
 	while (true)
 	{
 		word16 si_n = (ss->*bp_n).w0004;
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) ds_n;
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) ds_n;
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		struct Eq_n * ds_n = (ss->*bp_n).ptr0006;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n;
@@ -752,18 +752,20 @@ word16 fn0800-09A3(Eq_n ds, struct Eq_n & dsOut)
 				break;
 		}
 		word16 cx_n = ~cx_n;
-		cui16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(si_n, di_n - cx_n, (uint32) cx_n);
+		cui16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
-		ds_n.u5 = (ss->*sp_n.u7).t0002.u10.u1;
+		ds_n.u4 = (ss->*sp_n.u6).t0002.u9.u1;
 		if (ax_n == 0x00)
 			break;
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n;
 		word16 cx_n = ~0x00;
@@ -778,34 +780,34 @@ word16 fn0800-09A3(Eq_n ds, struct Eq_n & dsOut)
 		}
 		Eq_n di_n;
 		di_n.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) ((int16) (es_n->*(((ss->*bp_n).tFFFFFFF8).u0 + -cx_n)).b0001 << 0x08);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) ((int16) (es_n->*(((ss->*bp_n).tFFFFFFF8).u0 + -cx_n)).b0001 << 0x08);
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
 			Eq_n di_n;
-			di_n.u5 = &di_n.u7->b0001;
+			di_n.u4 = &di_n.u6->b0001;
 			--cx_n;
 			di_n = di_n;
-			if (es_n->*di_n.u5 != 0x00)
+			if (es_n->*di_n.u4 != 0x00)
 				break;
 		}
-		word16 dx_n = (ss->*sp_n.u7).t0002.u0 + (uint16) (es_n->*(((ss->*bp_n).tFFFFFFF8).u0 + -cx_n)).b0002;
+		word16 dx_n = (ss->*sp_n.u6).t0002.u0 + (uint16) (es_n->*(((ss->*bp_n).tFFFFFFF8).u0 + -cx_n)).b0002;
 		Eq_n di_n;
 		di_n.u0 = (ss->*bp_n).tFFFFFFF8.u0;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
 			Eq_n di_n;
-			di_n.u5 = &di_n.u7->b0001;
+			di_n.u4 = &di_n.u6->b0001;
 			--cx_n;
 			di_n = di_n;
-			if (es_n->*di_n.u5 != 0x00)
+			if (es_n->*di_n.u4 != 0x00)
 				break;
 		}
 		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFF8.u0 + ((dx_n + -cx_n) + 0x03));
 	}
 	Eq_n es_di_n;
-	es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+	es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	byte Eq_n::* di_n = (word16) es_di_n;
 	word16 cx_n = ~0x00;
@@ -820,20 +822,20 @@ word16 fn0800-09A3(Eq_n ds, struct Eq_n & dsOut)
 	}
 	(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFF8.u0 + ~cx_n);
 	Eq_n es_bx_n;
-	es_bx_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
-	(ss->*sp_n.u7).t0002.u0 = (wchar_t) (((int16) *es_bx_n.u5 << 0x08) + (uint16) (es_bx_n.u7)->b0001 + 0x02);
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
+	es_bx_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
+	(ss->*sp_n.u6).t0002.u0 = (wchar_t) (((int16) *es_bx_n.u4 << 0x08) + (uint16) (es_bx_n.u6)->b0001 + 0x02);
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 	ss->*((word32) sp_n - 2) = (word16) es_bx_n;
-	(ss->*((word32) sp_n - 4)).u5 = (ss->*bp_n).w000A;
+	(ss->*((word32) sp_n - 4)).u4 = (ss->*bp_n).w000A;
 	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).t0008.u0;
-	fn0800_B0F3(ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0);
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+	fn0800_B0F3(ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0);
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 	word16 cx_n;
 	word16 dx_n;
 	word16 bx_n;
 	struct Eq_n * ds_n;
-	fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+	fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
 	word16 bp_n = (ss->*bp_n).w0000;
 	dsOut = ds_n;
 	return bp_n;
@@ -920,19 +922,19 @@ word16 fn0800-0B79(Eq_n dwArg02, Eq_n dwArg06)
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x0A;
 		(ss->*sp_n).wFFFFFFFC = wArg04_n;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) wArg02_n;
-		Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out bx_n);
+		Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out bx_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0006.u0 = 0x00;
-		(ss->*sp_n.u7).t0004.u0 = 0x0A;
-		(ss->*sp_n.u7).t0002.u0 = wArg08_n;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) wArg06_n;
+		(ss->*sp_n.u6).t0006.u0 = 0x00;
+		(ss->*((word32) sp_n + 4)).u0 = 0x0A;
+		(ss->*sp_n.u6).t0002.u0 = wArg08_n;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) wArg06_n;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		sp_n = (mp16) &sp_n.u7->t0008.u0;
+		sp_n = (mp16) &sp_n.u6->t0008.u0;
 		word16 cx_n;
 		word16 bx_n;
-		dwArg06_n = fn0800-8BC2(ss->*sp_n.u6, (ss->*sp_n.u7).t0004.u5, out cx_n, out bx_n);
+		dwArg06_n = fn0800-8BC2(ss->*sp_n.u5, ss->*((word32) sp_n + 4), out cx_n, out bx_n);
 		dwArg02_n = dx_ax_n;
 	}
 	struct Eq_n Eq_n::* sp_n = sp_n - 2;
@@ -944,7 +946,7 @@ word16 fn0800-0B79(Eq_n dwArg02, Eq_n dwArg06)
 	(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (word16) dx_ax_n;
 	word16 cx_n;
 	word16 bx_n;
-	return (word16) fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out bx_n);
+	return (word16) fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out bx_n);
 }
 
 // 0800:0C08: Register word16 fn0800-0C08(Stack Eq_n wArg02)
@@ -1005,9 +1007,9 @@ word16 fn0800-0C6C(Eq_n ds, Eq_n ptrArg02)
 	{
 		word16 wArg02_n = (word16) ptrArg02;
 		word16 wArg04_n = SLICE(ptrArg02, word16, 16);
-		if (*ptrArg02.u5 == 0x00)
+		if (*ptrArg02.u4 == 0x00)
 			break;
-		*ptrArg02.u5 = (char) fn0800-97CC(ds, (int16) *ptrArg02.u5, out dx);
+		*ptrArg02.u4 = (char) fn0800-97CC(ds, (int16) *ptrArg02.u4, out dx);
 		ptrArg02 = SEQ(wArg04_n, wArg02_n + 0x01);
 	}
 	return dx;
@@ -1040,10 +1042,12 @@ void fn0800-0C93(Eq_n ds, Eq_n dwArg02)
 	Eq_n cmpResult_n = memcmp(*((word32) ds + 10004), di_n, (uint32) cx_n);
 	cui16 ax_n = 0x00;
 	Eq_n cx_n = cx_n - __find_first_difference__(*((word32) ds + 10004), di_n);
+	Eq_n SCZO_n;
+	SCZO_n.u1 = cond(cmpResult_n);
 	if (cmpResult_n != 0x00)
 	{
-		cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-		ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+		word16 ax_n = 0x00 - (SCZO_n & 0x02);
+		ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 	}
 	if (ax_n != 0x00)
 	{
@@ -1063,7 +1067,7 @@ void fn0800-0C93(Eq_n ds, Eq_n dwArg02)
 		<unknown>* di_n = di_n - cx_n;
 		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(*((word32) ds + 10004), di_n, size_n);
-		memcpy((word16) size_n + 10004, &(ss->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+		memcpy((word16) size_n + 10004, &(ss->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 		cx_n.u0 = 0x00;
 	}
 	word16 di_n;
@@ -1104,7 +1108,7 @@ byte fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, union Eq_n & cxOut, ptr16 
 	word16 di_n;
 	fn0800_B2EF(cx_n, dx_n, wArg02 << 0x02, ds_n, SEQ(ds_n, 2210), out di_n);
 	Eq_n bx_n = (word16) ptrArg04;
-	if (*ptrArg04.u5 != 0x00)
+	if (*ptrArg04.u4 != 0x00)
 	{
 		word16 di_n;
 		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, SEQ(ds_n, 2214), out di_n);
@@ -1197,7 +1201,7 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 			fn0800-0C93(ds_n, SEQ(ds_n, 0x4541));
 			Eq_n dx_ax_n = fn0800-4194(ds_n, Mem272[ds_n:0x29E3:word32]);
 			Eq_n dx_n;
-			dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+			dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 			Mem302[ds_n:0x2A09:word16] = dx_n;
 			Eq_n ax_n = (word16) dx_ax_n;
 			Mem303[ds_n:0x2A07:word16] = ax_n;
@@ -1237,30 +1241,30 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 							Mem498[ss:sp_n + -2:word16] = Mem495[ds_n:0x2A07:word16];
 							Mem501[ss:sp_n + -4:word16] = Mem498[ds_n:0x2A09:word16];
 							Mem504[ss:sp_n + -6:word16] = Mem501[ds_n:0x2A07:word16];
-							fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+							fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 							Eq_n sp_n;
 							sp_n.u0 = <invalid>;
-							sp_n.u5 = &sp_n.u7->t0008.u0;
+							sp_n.u4 = &sp_n.u6->t0008.u0;
 							Eq_n ax_n = Mem504[ds_n:0x2A05:word16];
 							Eq_n dx_n = Mem504[ds_n:0x2A03:word16];
 							if (ax_n >=u Mem504[ds_n:0x2A09:word16] && (ax_n != Mem504[ds_n:0x2A09:word16] || dx_n >=u Mem504[ds_n:0x2A07:word16]) && Mem504[ds_n:10773:word16] != 0x00)
 							{
 								Mem535[ss:sp_n + 0x06:word16] = Mem504[ds_n:0x29E5:word16];
 								Mem538[ss:sp_n + 0x04:word16] = Mem535[ds_n:0x29E3:word16];
-								fn0800_BA67(ds_n, (ss->*sp_n.u7).t0004.u5);
+								fn0800_BA67(ds_n, ss->*((word32) sp_n + 4));
 								Mem553[ss:sp_n + 0x06:word16] = Mem538[ds_n:10721:word16];
 								Mem556[ss:sp_n + 0x04:word16] = Mem553[ds_n:10719:word16];
-								fn0800_BA67(ds_n, (ss->*sp_n.u7).t0004.u5);
+								fn0800_BA67(ds_n, ss->*((word32) sp_n + 4));
 								Mem571[ss:sp_n + 0x06:word16] = Mem556[ds_n:10721:word16];
 								Mem574[ss:sp_n + 0x04:word16] = Mem571[ds_n:10719:word16];
-								(ss->*sp_n.u7).t0002.u0 = 21070;
-								(ss->*sp_n.u7).t0000.u0 = 0x4300;
-								Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0, (ss->*sp_n.u7).t0004.u5);
+								(ss->*sp_n.u6).t0002.u0 = 21070;
+								(ss->*sp_n.u6).t0000.u0 = 0x4300;
+								Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0, ss->*((word32) sp_n + 4));
 								Mem596[ss:sp_n + 0x06:word16] = Mem580[ds_n:10721:word16];
 								Mem599[ss:sp_n + 0x04:word16] = Mem596[ds_n:10719:word16];
 								Mem602[ss:sp_n + 0x02:word16] = Mem599[ds_n:0x2A09:word16];
 								Mem605[ss:sp_n + 0x00:word16] = Mem602[ds_n:0x2A07:word16];
-								Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0, (ss->*sp_n.u7).t0004.u5);
+								Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0, ss->*((word32) sp_n + 4));
 								Mem621[ss:sp_n + 0x06:word16] = Mem605[ds_n:0x2A09:word16];
 								Mem624[ss:sp_n + 0x04:word16] = Mem621[ds_n:0x2A07:word16];
 								Mem627[ss:sp_n + 0x02:word16] = Mem624[ds_n:10721:word16];
@@ -1268,10 +1272,10 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 								Mem633[ss:sp_n + -2:word16] = Mem630[ds_n:0x29E5:word16];
 								Mem636[ss:sp_n + -4:word16] = Mem633[ds_n:0x29E3:word16];
 								word16 si_n;
-								fn0800-3B0A(ds_n, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, out si_n, out ds_n);
+								fn0800-3B0A(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, out si_n, out ds_n);
 								Eq_n sp_n;
 								sp_n.u0 = <invalid>;
-								sp_n.u5 = &sp_n.u7->t000C.u0;
+								sp_n.u4 = &sp_n.u6->t000C.u0;
 								si_n.u0 = 0x02;
 							}
 						}
@@ -1304,10 +1308,10 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				Mem674[ss:sp_n + 0x00:word16] = Mem669[ds_n:10721:word16];
 				Mem677[ss:sp_n + -2:word16] = Mem674[ds_n:10719:word16];
-				Eq_n dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+				Eq_n dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 				Mem689[ds_n:0x2A05:word16] = SLICE(dx_ax_n, word16, 16);
 				Mem690[ds_n:0x2A03:word16] = SLICE(dx_ax_n, word16, 0);
-				sp_n.u5 = (char *) &sp_n->t0000 + 2;
+				sp_n.u4 = (char *) &sp_n->t0000 + 2;
 				Eq_n ax_n = Mem690[ds_n:0x2A05:word16];
 				Eq_n dx_n = Mem690[ds_n:0x2A03:word16];
 				if (ax_n >=u Mem690[ds_n:0x2A09:word16] && (ax_n != Mem690[ds_n:0x2A09:word16] || dx_n >=u Mem690[ds_n:0x2A07:word16]) && Mem690[ds_n:10773:word16] == 0x00)
@@ -1332,10 +1336,10 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				Mem746[ss:sp_n + 0x00:word16] = Mem735[ds_n:0x29E5:word16];
 				Mem749[ss:sp_n + -2:word16] = Mem746[ds_n:0x29E3:word16];
-				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 				Mem764[ss:sp_n + 0x00:word16] = Mem749[ds_n:10721:word16];
 				Mem767[ss:sp_n + -2:word16] = Mem764[ds_n:10719:word16];
-				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 				Mem782[ss:sp_n + 0x00:word16] = Mem767[ds_n:0x2A09:word16];
 				Mem785[ss:sp_n + -2:word16] = Mem782[ds_n:0x2A07:word16];
 				Mem788[ss:sp_n + -4:word16] = Mem785[ds_n:10721:word16];
@@ -1346,22 +1350,22 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 				fn0800-3B0A(ds_n, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out si_n, out ds_n);
 				Eq_n sp_n;
 				sp_n.u0 = <invalid>;
-				sp_n.u5 = &sp_n.u7->t000C.u0;
+				sp_n.u4 = &sp_n.u6->t000C.u0;
 				si_n.u0 = 0x00;
 			}
 			struct Eq_n Eq_n::* sp_n = sp_n - 2;
 			Mem823[ss:sp_n + 0x00:word16] = Mem818[ds_n:0x29E5:word16];
 			Mem826[ss:sp_n + -2:word16] = Mem823[ds_n:0x29E3:word16];
 			Eq_n ds_n;
-			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			Mem842[ss:sp_n + 0x00:word16] = Mem826[ds_n:10721:word16];
 			Mem845[ss:sp_n + -2:word16] = Mem842[ds_n:10719:word16];
-			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			if (si_n > 0x02)
 			{
 				(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 				(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC;
-				fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+				fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 			}
 			else
 				si_n = fn0800-37DF(ds_n, out ds_n);
@@ -1369,7 +1373,7 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) si_n;
-			cx_n = fn0800-0ABC(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+			cx_n = fn0800-0ABC(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 		}
 	}
 	Eq_n ds_n;
@@ -1383,128 +1387,129 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 //      main
 Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds)
 {
-	word16 di_n;
-	mp16 fp;
-	word16 di_n;
-	Eq_n bx_n = Mem17[ds:0x2A25:word16];
-	word16 di_n;
-	fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2288), out di_n);
-	if (Mem32[ds:11855:word16] != 0x00)
-	{
-		word16 di_n;
-		fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2302), out di_n);
-	}
-	Eq_n si_n = fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2323), out di_n);
-	if (Mem71[ds:0x2A25:word16] == 0x01)
-		cx = fn0800-3678(ds, SEQ(ds, 17022), out dx, out si_n, out ds);
-	word16 cx_n;
-	word16 dx_n;
-	word16 si_n;
-	Eq_n ds_n;
-	while (fn0800-2DE2(cx, dx, si_n, ds, SEQ(ds, 0x4541), out cx_n, out dx_n, out si_n, out ds_n) != 0x00)
-	{
-		fn0800-3764(ds_n);
-		if (fn0800-388C(ds_n, out cx, out dx, out si_n, out ds) != 0x00)
-		{
-			fn0800-0C93(ds, SEQ(ds, 0x4541));
-			Eq_n dx_ax_n = fn0800-4194(ds, Mem169[ds:0x29E3:word32]);
-			Eq_n dx_n;
-			dx_n.u5 = SLICE(dx_ax_n, word16, 16);
-			Mem199[ds:0x2A05:word16] = dx_n;
-			Eq_n ax_n = (word16) dx_ax_n;
-			Mem200[ds:0x2A03:word16] = ax_n;
-			Eq_n sp_n = fp - 0x02;
-			if (dx_n <= 0x00 && (Test(ULT,false) || ax_n < 0x12))
-				si_n.u0 = 0x07;
-			else
-			{
-				Eq_n bx_n = Mem200[ds:0x2A23:word16];
-				if (bx_n <= 0x05)
-				{
-					switch (bx_n)
-					{
-					case 0x00:
-						si_n = fn0800-4C55(ds, out ds);
-						break;
-					case 0x01:
-						int32 dx_ax_n = fn0800-3F58(ds, Mem200[ds:0x29E3:word32], out di_n, out ds);
-						int32 dx_ax_n = fn0800-8CAA((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16));
-						sp_n.u0 = <invalid>;
-						word16 ax_n = (word16) dx_ax_n;
-						if (SLICE(dx_ax_n, word16, 16) == 0x52 && ax_n == 0x4E43)
-						{
-							sp_n.u0 = <invalid>;
-							word16 bp_n;
-							si_n = fn0800-5374(ds, out bp_n, out ds);
-						}
-						else
-							si_n.u0 = 0x07;
-						break;
-					case 0x02:
-						sp_n.u0 = <invalid>;
-						si_n = fn0800-51A9(ds, out ds);
-						break;
-					case 0x03:
-						si_n = fn0800-518F(ds, out ds);
-						break;
-					case 0x04:
-						sp_n = fp - 0x02;
-						Eq_n ds_n;
-						if (fn0800-3F0A(ds, Mem200[ds:0x29E3:word32], out ds_n) == 0x4D5A)
-						{
-							sp_n.u0 = <invalid>;
-							si_n = fn0800-46FE(ds_n, out ds);
-						}
-						else
-							si_n = fn0800-4B97(ds_n, out ds);
-						break;
-					case 0x05:
-						si_n = fn0800-4BB1(ds, out ds);
-						break;
-					}
-				}
-			}
-			struct Eq_n Eq_n::* sp_n = sp_n - 2;
-			selector ss;
-			Mem395[ss:sp_n + 0x00:word16] = Mem384[ds:10721:word16];
-			Mem398[ss:sp_n + -2:word16] = Mem395[ds:10719:word16];
-			Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u5);
-			Mem411[ds:0x2A09:word16] = SLICE(dx_ax_n, word16, 16);
-			Mem412[ds:0x2A07:word16] = SLICE(dx_ax_n, word16, 0);
-			Mem415[ss:sp_n + 0x00:word16] = Mem412[ds:0x29E5:word16];
-			Mem418[ss:sp_n + -2:word16] = Mem415[ds:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u5);
-			Mem430[ds:0x2A05:word16] = SLICE(dx_ax_n, word16, 16);
-			Mem431[ds:0x2A03:word16] = SLICE(dx_ax_n, word16, 0);
-			if (si_n != 0x00)
-			{
-				Eq_n dx_n = Mem431[ds:0x2A03:word16];
-				Mem441[ds:0x2A09:word16] = Mem431[ds:0x2A05:word16];
-				Mem442[ds:0x2A07:word16] = dx_n;
-			}
-			Mem449[ss:sp_n + 0x00:word16] = Mem444[ds:0x29E5:word16];
-			Mem452[ss:sp_n + -2:word16] = Mem449[ds:0x29E3:word16];
-			Eq_n ds_n;
-			fn0800_A614(ds, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
-			Mem468[ss:sp_n + 0x00:word16] = Mem452[ds_n:10721:word16];
-			Mem471[ss:sp_n + -2:word16] = Mem468[ds_n:10719:word16];
-			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds);
-			if (Mem471[ds:0x2A25:word16] != 0x02 && si_n == 0x00)
-				si_n = fn0800-37DF(ds, out ds);
-			else
-			{
-				(ss->*sp_n).t0000.u0 = (wchar_t) ds;
-				(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC;
-				fn0800-8F7F(ds, (ss->*sp_n).tFFFFFFFE.u5);
-			}
-			struct Eq_n Eq_n::* sp_n = sp_n - 2;
-			(ss->*sp_n).t0000.u0 = (wchar_t) ds;
-			(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
-			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) si_n;
-			cx = fn0800-0ABC(ds, (ss->*sp_n).tFFFFFFFE.u5, out dx);
-		}
-	}
-	return ds_n;
+fn0800-112D_entry:
+	bx_n = Mem17[ds:0x2A25:word16]
+	fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2288), out di_n)
+	branch Mem32[ds:11855:word16] == 0x00 l0800_nF
+	goto l0800_n
+l0800_nD:
+l0800_n:
+	fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2302), out di_n)
+l0800_nF:
+	si_n = fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2323), out di_n)
+	branch Mem71[ds:0x2A25:word16] == 0x01 l0800_n
+	goto l0800_nC2
+l0800_n:
+	cx = fn0800-3678(ds, SEQ(ds, 17022), out dx, out si_n, out ds)
+	goto l0800_nC2
+l0800_n:
+l0800_nF:
+	fn0800-0C93(ds, SEQ(ds, 0x4541))
+	dx_ax_n = fn0800-4194(ds, Mem169[ds:0x29E3:word32])
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16)
+	Mem199[ds:0x2A05:word16] = dx_n
+	ax_n = (word16) dx_ax_n
+	Mem200[ds:0x2A03:word16] = ax_n
+	sp_n = fp - 0x02
+	branch dx_n > 0x00 l0800_nCF
+l0800_nC3:
+	branch 0x00 || ax_n < 0x12 l0800_nCA
+	goto l0800_nCF
+l0800_nC5:
+l0800_nCA:
+	si_n.u0 = 0x07
+	goto l0800_n
+l0800_nCF:
+	bx_n = Mem200[ds:0x2A23:word16]
+	branch bx_n > 0x05 l0800_n
+l0800_nD8:
+	switch (bx_n) { l0800_n l0800_nDF l0800_nE l0800_n l0800_n l0800_n }
+l0800_nDF:
+	dx_ax_n = fn0800-3F58(ds, Mem200[ds:0x29E3:word32], out di_n, out ds)
+	dx_ax_n = fn0800-8CAA((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16))
+	sp_n.u0 = <invalid>
+	ax_n = (word16) dx_ax_n
+	branch SLICE(dx_ax_n, word16, 16) != 0x52 || ax_n != 0x4E43 l0800_n
+	goto l0800_nFC
+l0800_nF7:
+l0800_nFC:
+	sp_n.u0 = <invalid>
+	si_n = fn0800-5374(ds, out bp_n, out ds)
+	goto l0800_n
+l0800_n:
+	si_n.u0 = 0x07
+	goto l0800_n
+l0800_n:
+	sp_n = fp - 0x02
+	branch fn0800-3F0A(ds, Mem200[ds:0x29E3:word32], out ds_n) != 0x4D5A l0800_n
+l0800_nB:
+	sp_n.u0 = <invalid>
+	si_n = fn0800-46FE(ds_n, out ds)
+	goto l0800_n
+l0800_n:
+	si_n = fn0800-4B97(ds_n, out ds)
+	goto l0800_n
+l0800_n:
+	si_n = fn0800-4BB1(ds, out ds)
+	goto l0800_n
+l0800_n:
+	si_n = fn0800-4C55(ds, out ds)
+	goto l0800_n
+l0800_n:
+	si_n = fn0800-518F(ds, out ds)
+	goto l0800_n
+l0800_nE:
+	sp_n.u0 = <invalid>
+	si_n = fn0800-51A9(ds, out ds)
+l0800_n:
+	sp_n = sp_n - 2
+	Mem395[ss:sp_n + 0x00:word16] = Mem384[ds:10721:word16]
+	Mem398[ss:sp_n + -2:word16] = Mem395[ds:10719:word16]
+	dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u4)
+	Mem411[ds:0x2A09:word16] = SLICE(dx_ax_n, word16, 16)
+	Mem412[ds:0x2A07:word16] = SLICE(dx_ax_n, word16, 0)
+	Mem415[ss:sp_n + 0x00:word16] = Mem412[ds:0x29E5:word16]
+	Mem418[ss:sp_n + -2:word16] = Mem415[ds:0x29E3:word16]
+	dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u4)
+	Mem430[ds:0x2A05:word16] = SLICE(dx_ax_n, word16, 16)
+	Mem431[ds:0x2A03:word16] = SLICE(dx_ax_n, word16, 0)
+	branch si_n == 0x00 l0800_nF
+l0800_n:
+	dx_n = Mem431[ds:0x2A03:word16]
+	Mem441[ds:0x2A09:word16] = Mem431[ds:0x2A05:word16]
+	Mem442[ds:0x2A07:word16] = dx_n
+l0800_nF:
+	Mem449[ss:sp_n + 0x00:word16] = Mem444[ds:0x29E5:word16]
+	Mem452[ss:sp_n + -2:word16] = Mem449[ds:0x29E3:word16]
+	fn0800_A614(ds, (ss->*sp_n).tFFFFFFFE.u4, out ds_n)
+	Mem468[ss:sp_n + 0x00:word16] = Mem452[ds_n:10721:word16]
+	Mem471[ss:sp_n + -2:word16] = Mem468[ds_n:10719:word16]
+	fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds)
+	branch Mem471[ds:0x2A25:word16] == 0x02 || si_n != 0x00 l0800_nA6
+	goto l0800_nB3
+l0800_nA2:
+l0800_nA6:
+	(ss->*sp_n).t0000.u0 = (wchar_t) ds
+	(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC
+	fn0800-8F7F(ds, (ss->*sp_n).tFFFFFFFE.u4)
+	goto l0800_nB6
+l0800_nB3:
+	si_n = fn0800-37DF(ds, out ds)
+l0800_nB6:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = (wchar_t) ds
+	(ss->*sp_n).tFFFFFFFE.u0 = 0x4541
+	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) si_n
+	cx = fn0800-0ABC(ds, (ss->*sp_n).tFFFFFFFE.u4, out dx)
+l0800_nC2:
+	branch fn0800-2DE2(cx, dx, si_n, ds, SEQ(ds, 0x4541), out cx_n, out dx_n, out si_n, out ds_n) == 0x00 l0800_nD4
+l0800_nD1:
+	fn0800-3764(ds_n)
+	branch fn0800-388C(ds_n, out cx, out dx, out si_n, out ds) != 0x00 l0800_nF
+	goto l0800_nC2
+l0800_nD4:
+	return ds_n
+fn0800-112D_exit:
 }
 
 // 0800:12E2: Register word16 fn0800-12E2(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
@@ -1616,7 +1621,7 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
 	Eq_n cx_n = fn0800-1CF6(ds_n, 0x00, out dx_n, out bp_n, out si_n, out ds_n);
-	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0002.u0;
+	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0002.u0;
 	Eq_n si_n;
 	si_n.u0 = 0x00;
 	struct Eq_n * es_bx_n;
@@ -1628,30 +1633,30 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 		sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 		word16 cx_n;
 		word16 dx_n;
-		if (fn0800-2DE2(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out si_n, out ds_n) == 0x00)
+		if (fn0800-2DE2(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out si_n, out ds_n) == 0x00)
 			break;
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 110);
 		word16 bx_n;
-		fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out bx_n);
+		fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out bx_n);
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 0x84);
 		word16 dx_n;
-		fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+		fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 		(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 110);
-		Eq_n ax_n = fn0800-283D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+		Eq_n ax_n = fn0800-283D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 		(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 		(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 		if ((ax_n | dx_n) == 0x00)
 		{
 			(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 110);
-			Eq_n ax_n = fn0800-1F5C(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n, out ds_n);
+			Eq_n ax_n = fn0800-1F5C(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n, out ds_n);
 			(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 			(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 		}
@@ -1660,7 +1665,7 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 		(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 0x84);
-		Eq_n ax_n = fn0800-2931((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+		Eq_n ax_n = fn0800-2931((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 		(ss->*bp_n).tFFFFFFFA.u0 = (wchar_t) dx_n;
 		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
 		if ((ax_n | dx_n) == 0x00)
@@ -1669,7 +1674,7 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 			(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 0x84);
-			fn0800-2085(ds_n, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+			fn0800-2085(ds_n, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4);
 			sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 		}
 		else
@@ -1677,16 +1682,16 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 			(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 			(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFF8.u0;
 			word16 si_n;
-			fn0800-23EC(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out bp_n, out si_n, out ds_n);
+			fn0800-23EC(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out bp_n, out si_n, out ds_n);
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0004.u0;
+			sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->b0004;
 		}
 		es_bx_n = Mem620[ds_n:11857:segptr32];
-		dx_n.u3 = (uint16) es_bx_n->b0005;
+		dx_n.u2 = (uint16) es_bx_n->b0005;
 		si_n.u0 = 0x01;
 		cx_n.u0 = 0x08;
-	} while ((word16) dx_n.u3 + ((uint16) es_bx_n->b0004 << 0x08) < ~0x73);
+	} while ((word16) dx_n.u2 + ((uint16) es_bx_n->b0004 << 0x08) < ~0x73);
 	if (si_n != 0x00)
 	{
 		Eq_n ds_n;
@@ -1696,25 +1701,25 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 		Eq_n cx_n = fn0800-1CF6(ds_n, (ss->*sp_n).t0000.u0, out dx_n, out bp_n, out si_n, out ds_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0000.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = 0x01;
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		fn0800-2DBF(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u0);
+		fn0800-2DBF(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u0);
 		Eq_n dx_n = Mem686[ds_n:10703:word16];
 		Mem692[ds_n:10721:word16] = Mem686[ds_n:10705:word16];
 		Mem693[ds_n:10719:word16] = dx_n;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ds_n;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ds_n;
 		(ss->*((word32) sp_n - 2)).u0 = 2373;
 		ss->*((word32) sp_n - 4) = ds_n;
 		(ss->*((word32) sp_n - 6)).u0 = 0x4477;
 		fn0800-37BE(cx_n, dx_n, ds_n, ss->*((word32) sp_n - 6));
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ds_n;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ds_n;
 		(ss->*((word32) sp_n - 2)).u0 = 0x0941;
 		ss->*((word32) sp_n - 4) = ds_n;
 		(ss->*((word32) sp_n - 6)).u0 = 0x4477;
 		Eq_n ax_n = fn0800-4234(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n, out dx_n, out si_n, out ds_n);
 		Mem740[ds_n:10717:word16] = dx_n;
 		Mem741[ds_n:10715:word16] = ax_n;
-		struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0002.u0;
+		struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0002.u0;
 		struct Eq_n Eq_n::* sp_n;
 		struct Eq_n Eq_n::* sp_n;
 		Eq_n es_bx_n;
@@ -1728,13 +1733,13 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 			word16 cx_n;
 			word16 dx_n;
 			word16 si_n;
-			if (fn0800-2DE2(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out si_n, out ds_n) == 0x00)
+			if (fn0800-2DE2(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out si_n, out ds_n) == 0x00)
 				goto l0800_nA9;
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x093D;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFA.u0 = 0x4541;
-			Eq_n ax_n = fn0800-4234(ds_n, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out si_n, out ds_n);
+			Eq_n ax_n = fn0800-4234(ds_n, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out si_n, out ds_n);
 			Mem797[ds_n:0x29E5:word16] = dx_n;
 			Mem798[ds_n:0x29E3:word16] = ax_n;
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
@@ -1742,34 +1747,34 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 110);
 			word16 bx_n;
-			fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out bx_n);
+			fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out bx_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 0x84);
 			word16 dx_n;
-			fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+			fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
-			fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+			fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 			(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 110);
-			Eq_n ax_n = fn0800-283D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+			Eq_n ax_n = fn0800-283D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) dx_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ax_n;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 0x84);
-			Eq_n ax_n = fn0800-2931((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+			Eq_n ax_n = fn0800-2931((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 			(ss->*bp_n).tFFFFFFFA.u0 = (wchar_t) dx_n;
 			(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
 			Mem901[ss:sp_n + 0x00:word16] = Mem898[ds_n:10705:word16];
 			Mem904[ss:sp_n + -2:word16] = Mem901[ds_n:10703:word16];
-			Eq_n dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+			Eq_n dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 			Mem921[ds_n:0x29E9:word16] = SLICE(dx_ax_n - 0x04, word16, 16);
 			Mem922[ds_n:10727:word16] = SLICE(dx_ax_n, word16, 0) - 0x04;
 			Eq_n ax_n = fn0800-8C8A(Mem922[ds_n:0x29E9:word16], 0x08, 0x00, out cl_n, out dx_n);
 			Eq_n es_di_n;
-			es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+			es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
 			ss->*((word32) sp_n - 2) = ax_n;
@@ -1799,9 +1804,9 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 				di_n = &Eq_n::b0001;
 				es_n = 0x00;
 			}
-			es_n->*di_n = (ss->*sp_n.u7).t0002.u1;
+			es_n->*di_n = (ss->*sp_n.u6).t0002.u1;
 			Eq_n es_di_n;
-			es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+			es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 			Mem1016[ss:sp_n + -2:word16] = Mem1000[ds_n:0x29E9:word16];
 			struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 			byte Eq_n::* di_n = (word16) es_di_n;
@@ -1829,10 +1834,10 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 				di_n = &Eq_n::t0001;
 				es_n = 0x00;
 			}
-			di_n[1] = (struct Eq_n) (ss->*sp_n.u7).t0002.u1;
+			di_n[1] = (struct Eq_n) (ss->*sp_n.u6).t0002.u1;
 			Eq_n ax_n = fn0800-8C8A(Mem1078[ds_n:10727:word16], 0x08, Mem1078[ds_n:0x29E9:word16], out cl_n, out dx_n);
 			Eq_n es_di_n;
-			es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+			es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
 			ss->*((word32) sp_n - 2) = ax_n;
@@ -1862,9 +1867,9 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 				di_n = &Eq_n::t0001;
 				es_n = 0x00;
 			}
-			di_n[2] = (struct Eq_n) (ss->*sp_n.u7).t0002.u1;
+			di_n[2] = (struct Eq_n) (ss->*sp_n.u6).t0002.u1;
 			Eq_n es_di_n;
-			es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+			es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 			struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 			byte Eq_n::* di_n = (word16) es_di_n;
 			word16 cx_n = ~0x00;
@@ -1926,7 +1931,7 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 					Eq_n sp_n;
 					sp_n.u0 = <invalid>;
 					bp_n = fn0800-75EA(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 4), out si_n, out ds_n);
-					sp_n.u5 = &sp_n.u7->t0008.u0;
+					sp_n.u4 = &sp_n.u6->t0008.u0;
 					Eq_n ax_n = Mem1356[ds_n:0x2A05:word16];
 					Eq_n dx_n = Mem1356[ds_n:0x2A03:word16];
 					word16 ax_n;
@@ -1937,15 +1942,15 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 					di_n = ax_n;
 					if (ax_n != 0x00)
 					{
-						(ss->*sp_n.u7).t0006.u0 = 0x01;
+						(ss->*sp_n.u6).t0006.u0 = 0x01;
 						ui32 ax_dx_n = -Mem1399[ds_n:0x2A03:ui32];
-						(ss->*sp_n.u7).t0004.u0 = SLICE(ax_dx_n, word16, 16);
-						(ss->*sp_n.u7).t0002.u0 = (wchar_t) (word16) ax_dx_n;
+						(ss->*((word32) sp_n + 4)).u4 = SLICE(ax_dx_n, word16, 16);
+						(ss->*sp_n.u6).t0002.u0 = (wchar_t) (word16) ax_dx_n;
 						Mem1416[ss:sp_n + 0x00:word16] = Mem1413[ds_n:10721:word16];
 						Mem1419[ss:sp_n + -2:word16] = Mem1416[ds_n:10719:word16];
 						word16 cx_n;
-						fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
-						sp_n.u5 = &sp_n.u7->t0008.u0;
+						fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u0, out cx_n);
+						sp_n.u4 = &sp_n.u6->t0008.u0;
 					}
 				}
 			}
@@ -1957,14 +1962,14 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				Mem1452[ss:sp_n + 0x00:word16] = Mem1447[ds_n:0x29E5:word16];
 				Mem1455[ss:sp_n + -2:word16] = Mem1452[ds_n:0x29E3:word16];
-				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+				fn0800_BA67(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 				Eq_n sp_n;
-				sp_n.u5 = &sp_n->t0002.u0;
+				sp_n.u4 = &sp_n->t0002.u0;
 				if (Mem1455[ds_n:0x2A09:word16] >=u 0x00 && (Mem1455[ds_n:0x2A09:word16] != 0x00 || Mem1455[ds_n:0x2A07:word16] >=u 0x12))
 				{
 					Mem1478[ss:sp_n + 0x00:word16] = Mem1455[ds_n:0x29E5:word16];
 					Mem1481[ss:sp_n + -2:word16] = Mem1478[ds_n:0x29E3:word16];
-					int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+					int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 					int32 dx_ax_n = fn0800-8CAA((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16));
 					sp_n.u0 = <invalid>;
 					word16 ax_n = (word16) dx_ax_n;
@@ -1976,13 +1981,13 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 				Mem1519[ss:sp_n + -2:word16] = Mem1516[ds_n:10703:word16];
 				(ss->*sp_n).tFFFFFFFC.u0 = 21070;
 				(ss->*sp_n).tFFFFFFFA.u0 = 0x4300;
-				Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+				Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 				Mem1541[ss:sp_n + 0x00:word16] = Mem1525[ds_n:10705:word16];
 				Mem1544[ss:sp_n + -2:word16] = Mem1541[ds_n:10703:word16];
 				Mem1547[ss:sp_n + -4:word16] = Mem1544[ds_n:0x2A09:word16];
 				Mem1550[ss:sp_n + -6:word16] = Mem1547[ds_n:0x2A07:word16];
-				ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
-				sp_n.u5 = &sp_n->t0002.u0;
+				ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
+				sp_n.u4 = &sp_n->t0002.u0;
 l0800_nE:
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				Mem1570[ss:sp_n + 0x00:word16] = Mem1565[ds_n:0x2A09:word16];
@@ -1995,7 +2000,7 @@ l0800_nE:
 				sp_n.u0 = <invalid>;
 				word16 si_n;
 				bp_n = fn0800-3B0A(ds_n, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out si_n, out ds_n);
-				sp_n.u5 = &sp_n.u7->t000C.u0;
+				sp_n.u4 = &sp_n.u6->t000C.u0;
 				si_n.u0 = 0x02;
 			}
 			sp_n = sp_n - 2;
@@ -2003,39 +2008,39 @@ l0800_nE:
 			Mem1612[ss:sp_n + -2:word16] = Mem1609[ds_n:10703:word16];
 			Mem1615[ss:sp_n + -4:word16] = Mem1612[ds_n:10733:word16];
 			Mem1618[ss:sp_n + -6:word16] = Mem1615[ds_n:10731:word16];
-			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 			Mem1634[ss:sp_n + 0x00:word16] = Mem1618[ds_n:0x29E5:word16];
 			Mem1637[ss:sp_n + -2:word16] = Mem1634[ds_n:0x29E3:word16];
-			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x4541;
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) si_n;
-			byte ch_n = SLICE(fn0800-0ABC(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n), byte, 8);
+			byte ch_n = SLICE(fn0800-0ABC(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n), byte, 8);
 			es_bx_n = Mem1663[ds_n:11857:segptr32];
-			dx_n.u3 = (uint16) es_bx_n.u2->b0005;
+			dx_n.u2 = (uint16) es_bx_n.u2->b0005;
 			sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002.u0;
 			bx_n = (word16) es_bx_n;
 			cx_n = SEQ(ch_n, 0x08);
-		} while ((word16) dx_n.u3 + ((uint16) (es_bx_n.u2)->b0004 << 0x08) < ~0x73);
+		} while ((word16) dx_n.u2 + ((uint16) (es_bx_n.u2)->b0004 << 0x08) < ~0x73);
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x0952;
 		word16 di_n;
-		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n);
+		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n);
 		sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002.u0;
 l0800_nA9:
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		Mem1713[ss:sp_n + 0x00:word16] = Mem1708[ds_n:10717:word16];
 		Mem1716[ss:sp_n + -2:word16] = Mem1713[ds_n:10715:word16];
 		Eq_n ds_n;
-		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x4477;
-		fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		word16 Eq_n::* bp_n = fn0800-1E5E(ds_n, out ds_n);
 		Mem1758[ss:sp_n + 0x00:word16] = Mem1734[ds_n:10705:word16];
 		Mem1761[ss:sp_n + -2:word16] = Mem1758[ds_n:10703:word16];
 		struct Eq_n * ds_n;
-		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 		word16 bp_n = ss->*bp_n;
 		dsOut = ds_n;
 		return bp_n;
@@ -2046,7 +2051,7 @@ l0800_nA9:
 		Mem1784[ss:sp_n + 0x00:word16] = Mem1781[ds_n:10705:word16];
 		Mem1787[ss:sp_n + -2:word16] = Mem1784[ds_n:10703:word16];
 		struct Eq_n * ds_n;
-		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+		fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 		word16 bp_n = (ss->*bp_n).w0000;
 		dsOut = ds_n;
 		return bp_n;
@@ -2069,7 +2074,7 @@ word16 fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 	fn0800_B2EF(cx, dx, Mem18[ds:0x2A25:word16] << 0x02, ds, SEQ(ds, 2412), out di_n);
 	Eq_n dx_ax_n = fn0800_AA7E(ds, SEQ(ds, 0x4348), SEQ(ds, 2429), out cx_n, out ds_n);
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	Mem67[ds_n:10705:word16] = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	Mem68[ds_n:10703:word16] = ax_n;
@@ -2086,10 +2091,10 @@ word16 fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
 	Eq_n ss;
-	(ss->*sp_n.u7).t0000.u0 = 0x00;
+	(ss->*sp_n.u6).t0000.u0 = 0x00;
 	(ss->*((word32) sp_n - 2)).u0 = 0x00;
-	fn0800-2DBF(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u0);
-	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0002.u0;
+	fn0800-2DBF(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u0);
+	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0002.u0;
 	struct Eq_n Eq_n::* sp_n;
 	Eq_n ds_n;
 	while (true)
@@ -2101,21 +2106,21 @@ word16 fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 8);
 		(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFF6.u0 = (word16) (bp_n - 4);
-		if (fn0800-29C5(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out ds_n) == 0x00)
+		if (fn0800-29C5(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out ds_n) == 0x00)
 			break;
 		(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 110);
-		fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		fn0800-23EC(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out bp_n, out si_n, out ds_n);
+		fn0800-23EC(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out bp_n, out si_n, out ds_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFA.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		fn0800-22FE(ds_n, (ss->*sp_n.u7).t0000.u5);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFA.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
+		fn0800-22FE(ds_n, (ss->*sp_n.u6).t0000.u4);
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFFC.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFFC.u4;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n + 0x02;
 		word16 cx_n = ~0x00;
@@ -2145,24 +2150,24 @@ word16 fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 		if (es_n->*di_n == 0x00)
 		{
 			Eq_n dx_n = Mem252[ds_n:11857:word16];
-			if (Mem252[ds_n:11859:word16] != Mem252[ss:bp_n + -2:word16] || &((dx_n.u7)->t0008).u0 != ((ss->*bp_n).tFFFFFFFC).u0)
+			if (Mem252[ds_n:11859:word16] != Mem252[ss:bp_n + -2:word16] || &((dx_n.u6)->t0008).u0 != ((ss->*bp_n).tFFFFFFFC).u0)
 			{
-				(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-				(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-				fn0800-2201(ds_n, (ss->*sp_n.u7).t0000.u5);
+				(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+				(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+				fn0800-2201(ds_n, (ss->*sp_n.u6).t0000.u4);
 			}
 		}
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) ss;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) (bp_n - 110);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) ss;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) (bp_n - 110);
 		(ss->*((word32) sp_n - 2)).u0 = 0x0D;
-		cx_n = fn0800-0ABC(ds_n, ss->*sp_n.u6, out dx_n);
-		sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0004.u0;
+		cx_n = fn0800-0ABC(ds_n, ss->*sp_n.u5, out dx_n);
+		sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->b0004;
 	}
 	word16 Eq_n::* bp_n = fn0800-1E5E(ds_n, out ds_n);
 	Mem185[ss:sp_n + 0x00:word16] = Mem147[ds_n:10705:word16];
 	Mem188[ss:sp_n + -2:word16] = Mem185[ds_n:10703:word16];
 	struct Eq_n * ds_n;
-	fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+	fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 	word16 bp_n = ss->*bp_n;
 	dsOut = ds_n;
 	return bp_n;
@@ -2188,7 +2193,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 	fn0800_B2EF(cx, dx, Mem21[ds:0x2A25:word16] << 0x02, ds, SEQ(ds, 0x0986), out di_n);
 	Eq_n dx_ax_n = fn0800_AA7E(ds, SEQ(ds, 0x4348), SEQ(ds, 0x0997), out cx_n, out ds_n);
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	Mem70[ds_n:10705:word16] = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	Mem71[ds_n:10703:word16] = ax_n;
@@ -2217,15 +2222,15 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 	sp_n.u0 = <invalid>;
 	Eq_n cx_n = fn0800-1CF6(ds_n, 0x01, out dx_n, out bp_n, out si_n, out ds_n);
 	Eq_n sp_n;
-	sp_n.u5 = &sp_n.u7->t0002.u0;
+	sp_n.u4 = &sp_n.u6->t0002.u0;
 	if (Mem140[ds_n:0x2A25:word16] == 0x07)
 	{
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ds_n;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ds_n;
 		(ss->*((word32) sp_n - 2)).u0 = 0x099B;
 		ss->*((word32) sp_n - 4) = ds_n;
 		(ss->*((word32) sp_n - 6)).u0 = 0x44DC;
 		si_n = fn0800-37BE(cx_n, dx_n, ds_n, ss->*((word32) sp_n - 6));
-		sp_n.u5 = &sp_n.u7->t0002.u0;
+		sp_n.u4 = &sp_n.u6->t0002.u0;
 	}
 	struct Eq_n Eq_n::* sp_n;
 	Eq_n ds_n;
@@ -2238,17 +2243,17 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (bp_n - 8);
 		(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFF6.u0 = (word16) (bp_n - 4);
-		if (fn0800-29C5(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out ds_n) == 0x00)
+		if (fn0800-29C5(cx_n, dx_n, si_n, ds_n, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out ds_n) == 0x00)
 			break;
 		(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 114);
-		fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		fn0800-0C93(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		Eq_n ds_n = fn0800-24FE(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-24FE(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = 0x00;
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n;
 		word16 cx_n = ~0x00;
@@ -2276,7 +2281,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			es_n = 0x00;
 		}
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ((int16) (es_n->*di_n) << 0x08);
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n;
@@ -2305,7 +2310,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			es_n = 0x00;
 		}
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ((ss->*sp_n).tFFFFFFFE.u0 + (uint16) di_n[1]);
 		(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
@@ -2335,7 +2340,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			es_n = 0x00;
 		}
 		Eq_n es_di_n;
-		es_di_n.u5 = (ss->*bp_n).tFFFFFFF8.u5;
+		es_di_n.u4 = (ss->*bp_n).tFFFFFFF8.u4;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ((int16) di_n[2] << 0x08);
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n;
@@ -2363,18 +2368,18 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			di_n = &Eq_n::t0001;
 			es_n = 0x00;
 		}
-		uint32 dx_ax_n = (ss->*sp_n).tFFFFFFFC.u5 + (uint32) (((ss->*sp_n).tFFFFFFFA).u0 + (uint16) di_n[3]);
+		uint32 dx_ax_n = (ss->*sp_n).tFFFFFFFC.u4 + (uint32) (((ss->*sp_n).tFFFFFFFA).u0 + (uint16) di_n[3]);
 		(ss->*sp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) (word16) dx_ax_n;
 		Mem613[ss:sp_n + -6:word16] = Mem590[ds_n:10705:word16];
 		Mem616[ss:sp_n + -8:word16] = Mem613[ds_n:10703:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		if (Mem616[ds_n:0x2A25:word16] != 0x07)
 		{
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			Eq_n es_n;
-			es_n.u5 = (ss->*sp_n).t0000.u10.u1;
+			es_n.u4 = (ss->*sp_n).t0000.u9.u1;
 			(ss->*sp_n).t0000.u0 = (wchar_t) es_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC;
 			byte Eq_n::* di_n = 17022;
@@ -2389,15 +2394,15 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			Eq_n di_n;
 			di_n.u0 = (ss->*sp_n).tFFFFFFFE.u0;
 			Eq_n es_n;
-			es_n.u5 = (ss->*sp_n).t0000.u10.u1;
+			es_n.u4 = (ss->*sp_n).t0000.u9.u1;
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			cu16 cx_n = ~cx_n;
 			<unknown>* di_n = di_n - cx_n;
 			uint32 size_n = (cx_n >> 0x01) *32 0x02;
-			memcpy(&(es_n->*di_n.u5), di_n, size_n);
-			memcpy(&(es_n->*(di_n.u5 + (word16) size_n)), &(es_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+			memcpy(&(es_n->*di_n.u4), di_n, size_n);
+			memcpy(&(es_n->*(di_n.u4 + (word16) size_n)), &(es_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 			Eq_n ds_n;
-			ds_n.u5 = (ss->*sp_n).t0000.u10.u1;
+			ds_n.u4 = (ss->*sp_n).t0000.u9.u1;
 			if (Mem675[ds_n:0x2A25:word16] == 0x08)
 			{
 				if (Mem675[ds_n:17022:byte] != 0x00 && (ss->*bp_n).bFFFFFF8E == 0x5C)
@@ -2406,7 +2411,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 113);
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ds_n;
 					Eq_n es_n;
-					es_n.u5 = (ss->*sp_n).tFFFFFFFC.u10.u1;
+					es_n.u4 = (ss->*sp_n).tFFFFFFFC.u9.u1;
 					byte Eq_n::* di_n = 0x44DC;
 					word16 cx_n = ~0x00;
 					while (cx_n != 0x00)
@@ -2435,7 +2440,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) es_n;
 					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (di_n - 0x01);
 					word16 bx_n;
-					fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out bx_n);
+					fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out bx_n);
 				}
 				else
 				{
@@ -2443,7 +2448,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 114);
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ds_n;
 					Eq_n es_n;
-					es_n.u5 = (ss->*sp_n).tFFFFFFFC.u10.u1;
+					es_n.u4 = (ss->*sp_n).tFFFFFFFC.u9.u1;
 					byte Eq_n::* di_n = 0x44DC;
 					word16 cx_n = ~0x00;
 					while (cx_n != 0x00)
@@ -2472,7 +2477,7 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) es_n;
 					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (di_n - 0x01);
 					word16 bx_n;
-					fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out bx_n);
+					fn0800-3509((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out bx_n);
 				}
 			}
 			struct Eq_n Eq_n::* sp_n = sp_n - 2;
@@ -2480,12 +2485,12 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC;
 			word16 dx_n;
 			word16 si_n;
-			fn0800-3678(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out dx_n, out si_n, out ds_n);
+			fn0800-3678(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out dx_n, out si_n, out ds_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 			(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (bp_n - 114);
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ds_n;
 			Eq_n es_n;
-			es_n.u5 = (ss->*sp_n).tFFFFFFFC.u10.u1;
+			es_n.u4 = (ss->*sp_n).tFFFFFFFC.u9.u1;
 			byte Eq_n::* di_n = 0x44DC;
 			word16 cx_n = ~0x00;
 			while (cx_n != 0x00)
@@ -2514,14 +2519,14 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) es_n;
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (di_n - 0x01);
 			word16 dx_n;
-			fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u10.u1, (ss->*sp_n).tFFFFFFFE.u5, out dx_n);
+			fn0800-35A3((ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u9.u1, (ss->*sp_n).tFFFFFFFE.u4, out dx_n);
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 2472;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFA.u0 = 0x44DC;
-		Eq_n ax_n = fn0800-4234(ds_n, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out si_n, out ds_n);
+		Eq_n ax_n = fn0800-4234(ds_n, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out si_n, out ds_n);
 		Mem1022[ds_n:10721:word16] = dx_n;
 		Mem1023[ds_n:10719:word16] = ax_n;
 		Eq_n dx_n = Mem1023[ds_n:10703:word16];
@@ -2549,12 +2554,12 @@ word16 fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 	Mem223[ss:sp_n + 0x00:word16] = Mem198[ds_n:10705:word16];
 	Mem226[ss:sp_n + -2:word16] = Mem223[ds_n:10703:word16];
 	Eq_n ds_n;
-	fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+	fn0800_A614(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 	if (Mem226[ds_n:0x2A25:word16] == 0x07)
 	{
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x44DC;
-		fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		fn0800-8F7F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 	}
 	word16 bp_n = (ss->*bp_n).w0000;
 	dsOut = ds_n;
@@ -2630,7 +2635,7 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 		ds_n->t2E51 = ax_n;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		word16 sp_n = (word16) &sp_n.u7->t0004.u0;
+		word16 sp_n = (word16) &sp_n.u6->b0004;
 	}
 	else
 	{
@@ -2639,7 +2644,7 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 		Eq_n ax_n = fn0800-4311(ds_n, 0xFFF0, out dx_n, out bp_n, out si_n, out ds_n);
 		ds_n->w2E53 = dx_n;
 		ds_n->t2E51 = ax_n;
-		word16 sp_n = (word16) &sp_n.u7->t0004.u0;
+		word16 sp_n = (word16) &sp_n.u6->b0004;
 	}
 	struct Eq_n Eq_n::* sp_n = sp_n - 2;
 	selector ss;
@@ -2650,7 +2655,7 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 	Mem319[ss:sp_n + -6:word16] = Mem316[ds_n:10705:word16];
 	Mem322[ss:sp_n + -8:word16] = Mem319[ds_n:10703:word16];
 	word16 cx_n;
-	fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+	fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 	Mem336[ss:sp_n + 0x00:word16] = Mem322[ds_n:10705:word16];
 	Mem339[ss:sp_n + -2:word16] = Mem336[ds_n:10703:word16];
 	(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
@@ -2661,16 +2666,16 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 	word16 si_n;
 	word16 di_n;
 	Eq_n ds_n;
-	fn0800-4110(ds_n, (ss->*sp_n).tFFFFFFF6.u5, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out di_n, out ds_n);
+	fn0800-4110(ds_n, (ss->*sp_n).tFFFFFFF6.u4, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out di_n, out ds_n);
 	(ss->*sp_n).t0000.u0 = 0x00;
 	(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (si_n - 0x08);
 	Eq_n ax_n = Mem374[ds_n:11857:word16];
 	Mem380[ss:sp_n + -4:word16] = Mem374[ds_n:11859:word16];
-	(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) &ax_n.u7->t0008.u0;
+	(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) &ax_n.u6->t0008.u0;
 	uint16 cx_n = (uint16) cl_n;
 	word16 dx_n;
 	struct Eq_n Eq_n::* bp_n;
-	if (fn0800-2CCF(ds_n, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out cl_n, out dx_n) != (ss->*bp_n).wFFFFFFFE)
+	if (fn0800-2CCF(ds_n, (ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out cl_n, out dx_n) != (ss->*bp_n).wFFFFFFFE)
 	{
 		(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x4348;
@@ -2681,7 +2686,7 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 		word16 si_n;
 		word16 di_n;
 		selector ds_n;
-		fn0800-0D24(ds_n, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
+		fn0800-0D24(ds_n, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
 	}
 	ptr16 si_n = ss->*sp_n;
 	ptr16 bp_n = (ss->*bp_n).ptr0000;
@@ -2795,7 +2800,7 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 			di_n = &Eq_n::b0001;
 			es_n = 0x00;
 		}
-		ptrArg02.u5 = &(es_n->*di_n);
+		ptrArg02.u4 = &(es_n->*di_n);
 	}
 	Eq_n es_bx_n = Mem149[ds:11857:segptr32];
 	uint16 ax_n = ((uint16) es_bx_n.u2->b0004 << 0x08) + (uint16) (es_bx_n.u2)->b0005;
@@ -2828,7 +2833,7 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 	sp_n.u0 = <invalid>;
 	selector ss;
 	ss->*((word32) sp_n - 2) = ax_n;
-	(ss->*((word32) sp_n - 4)).u5 = (char *) dx_n + 2;
+	(ss->*((word32) sp_n - 4)).u4 = (char *) dx_n + 2;
 	byte Eq_n::* di_n = wArg02_n;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
@@ -2845,16 +2850,16 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 	<unknown>* di_n = di_n - cx_n;
 	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(di_n.u1, di_n, size_n);
-	memcpy((word16) di_n.u1 + (word16) size_n, &(wArg04_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+	memcpy((word16) di_n.u1 + (word16) size_n, &(wArg04_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	Eq_n ds_n = ss->*((word32) sp_n - 2);
 	((char *) dx_n + (cx_n + 0x03))[-1] = 0x00;
 	Eq_n es_bx_n = Mem294[ds_n:11857:segptr32];
-	es_bx_n.u7->t0004.u1 = (int8) (byte) (ax_n + (cx_n + 0x03) >> 0x08);
-	((word32) es_bx_n + 5)->u2 = bLoc08_n + bLoc0A_n;
+	es_bx_n.u6->b0004 = (int8) (byte) (ax_n + (cx_n + 0x03) >> 0x08);
+	((word32) es_bx_n + 5)->u1 = bLoc08_n + bLoc0A_n;
 	(ss->*((word32) sp_n - 2)).u0 = 0x00;
-	(ss->*((word32) sp_n - 4)).u5 = 0x00;
-	(ss->*((word32) sp_n - 6)).u5 = 0x00;
-	(ss->*((word32) sp_n - 8)).u5 = cx_n + 0x03;
+	(ss->*((word32) sp_n - 4)).u4 = 0x00;
+	(ss->*((word32) sp_n - 6)).u4 = 0x00;
+	(ss->*((word32) sp_n - 8)).u4 = cx_n + 0x03;
 	fn0800-2688(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4));
 	dxOut = ax_n;
 	dsOut = ds_n;
@@ -2902,7 +2907,7 @@ byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 	<unknown>* di_n = di_n - cx_n;
 	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(bx_n - 0x01, di_n, size_n);
-	memcpy(bx_n - 0x01 + (word16) size_n, &(psegArg04_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+	memcpy(bx_n - 0x01 + (word16) size_n, &(psegArg04_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	Eq_n es_n = dx_n;
 	byte Eq_n::* di_n = bx_n - 0x01;
 	word16 cx_n = ~0x00;
@@ -3028,15 +3033,15 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 {
 	Eq_n wArg02_n = (word16) ptrArg02;
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n es_bx_n = Mem12[ds:11857:segptr32];
 	uint16 dx_n = Mem31[ds:11857:word16] + ((CONVERT(Mem31[ptrArg02 + 0x00:byte], int8, int16) << 0x08) + CONVERT(Mem31[ptrArg02 + 1:byte], uint8, uint16)) - wArg02_n;
-	uint16 ax_n = ((uint16) es_bx_n.u7->t0004.u1 << 0x08) + (uint16) (*((word32) es_bx_n + 5));
+	uint16 ax_n = ((uint16) es_bx_n.u6->b0004 << 0x08) + (uint16) (*((word32) es_bx_n + 5));
 	word16 ax_n = (word16) (&wArg02_n.u1->b0000 + dx_n);
 	fn0800_B0F3(ptrArg02, SEQ(wArg04_n, ax_n), Mem26[ds:11857:word16] + ax_n - ax_n);
 	Eq_n es_bx_n = Mem72[ds:11857:segptr32];
-	es_bx_n.u7->t0004.u1 = (int8) (byte) (ax_n - dx_n >> 0x08);
-	((word32) es_bx_n + 5)->u2 = (byte) (ax_n - dx_n);
+	es_bx_n.u6->b0004 = (int8) (byte) (ax_n - dx_n >> 0x08);
+	((word32) es_bx_n + 5)->u1 = (byte) (ax_n - dx_n);
 	fn0800-2688(ds, -(uint32) dx_n, 0x00);
 	Eq_n dx_n = Mem112[ds:17838:word16];
 	if (Mem112[ds:0x45B0:word16] != wArg04_n || dx_n != wArg02_n)
@@ -3085,7 +3090,7 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 	Eq_n wArg02_n = (word16) ptrArg02;
 	struct Eq_n * wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n es_bx_n = Mem12[ds:11857:segptr32];
-	uint16 ax_n = ((uint16) es_bx_n.u7->t0004.u1 << 0x08) + (uint16) (*((word32) es_bx_n + 5));
+	uint16 ax_n = ((uint16) es_bx_n.u6->b0004 << 0x08) + (uint16) (*((word32) es_bx_n + 5));
 	byte bLoc08_n = (byte) ax_n;
 	word16 dx_n = Mem26[ds:11857:word16] + ax_n;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -3115,8 +3120,8 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 	ui16 ax_n = wArg02_n + di_n;
 	fn0800_B0F3(ptrArg02, ax_n, dx_n - ax_n);
 	Eq_n es_bx_n = Mem123[ds:11857:segptr32];
-	es_bx_n.u7->t0004.u1 = (int8) (byte) (ax_n - di_n >> 0x08);
-	((word32) es_bx_n + 5)->u2 = bLoc08_n - (byte) di_n;
+	es_bx_n.u6->b0004 = (int8) (byte) (ax_n - di_n >> 0x08);
+	((word32) es_bx_n + 5)->u1 = bLoc08_n - (byte) di_n;
 	fn0800-2688(ds, -(uint32) di_n, 0x00);
 	Mem182[ds:0x45AC:word16] = wArg04_n;
 	Eq_n dx_n;
@@ -3258,12 +3263,12 @@ byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, unio
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
 	selector ss;
-	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).wFFFFFFFE;
-	(ss->*sp_n.u7).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u1;
+	(ss->*sp_n.u6).t000A.u0 = (ss->*bp_n).wFFFFFFFE;
+	(ss->*sp_n.u6).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u1;
 	ui32 ax_dx_n = -(ss->*bp_n).dwFFFFFFF8;
-	(ss->*sp_n.u7).t0006.u0 = SLICE(ax_dx_n, word16, 16);
-	(ss->*sp_n.u7).t0004.u0 = (wchar_t) (word16) ax_dx_n;
-	fn0800-2688(ds_n, (ss->*sp_n.u7).t0004.u5, (ss->*sp_n.u7).t0008.u5);
+	(ss->*sp_n.u6).t0006.u0 = SLICE(ax_dx_n, word16, 16);
+	(ss->*((word32) sp_n + 4)).u4 = (word16) ax_dx_n;
+	fn0800-2688(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0008.u4);
 	bpOut.u0 = (ss->*bp_n).t0000.u0;
 	siOut = si_n;
 	dsOut = ds_n;
@@ -3427,7 +3432,7 @@ Eq_n fn0800-24FE(Eq_n ds, Eq_n ptrArg02)
 		Mem437[ss:sp_n + -4:word16] = Mem434[ds_n:10703:word16];
 		Eq_n dx_ax_n = fn0800-3E5D(ds_n, ss->*((word32) sp_n - 4), out ds_n);
 		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+		dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 		Mem450[ds_n:0x2A05:word16] = dx_n;
 		Eq_n ax_n = (word16) dx_ax_n;
 		Mem451[ds_n:0x2A03:word16] = ax_n;
@@ -3456,13 +3461,13 @@ byte fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06)
 	mp16 sp_n = fp - 0x12;
 	byte cl_n = 0x08;
 	Eq_n dx_n = Mem7[ds:11859:word16];
-	word16 bx_n = (word16) es_bx_n + (((uint16) ((es_bx_n.u7)->t0004).u1 << 0x08) + (uint16) (*((word32) es_bx_n + 5)));
+	word16 bx_n = (word16) es_bx_n + (((uint16) (es_bx_n.u6)->b0004 << 0x08) + (uint16) (*((word32) es_bx_n + 5)));
 	segptr32 ptrLoc06_n = SEQ(Mem26[ds:11859:word16], Mem26[ds:11857:word16] + 0x08);
 	while (true)
 	{
 		word16 wLoc06_n = (word16) ptrLoc06_n;
 		Eq_n wLoc04_n;
-		wLoc04_n.u5 = SLICE(ptrLoc06_n, word16, 16);
+		wLoc04_n.u4 = SLICE(ptrLoc06_n, word16, 16);
 		if (wLoc04_n == dx_n && wLoc06_n == bx_n)
 			break;
 		segptr32 ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x02);
@@ -3589,7 +3594,7 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 			di_n = &Eq_n::b0001;
 			es_n = 0x00;
 		}
-		ptrArg02.u5 = &(es_n->*di_n);
+		ptrArg02.u4 = &(es_n->*di_n);
 	}
 	Eq_n es_bx_n = Mem149[ds:11857:segptr32];
 	ptr16 dx_n = Mem149[ds:11859:word16];
@@ -3612,12 +3617,14 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 				break;
 		}
 		word16 cx_n = ~cx_n;
-		cui16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(&ptrLoc0A_n->b0001 + 1, di_n - cx_n, (uint32) cx_n);
+		cui16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n == 0x00)
 		{
@@ -3677,12 +3684,14 @@ word16 fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06, ptr16 & dxOut)
 				break;
 		}
 		word16 cx_n = ~cx_n;
-		cui16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(ptrArg06_n, di_n - cx_n, (uint32) cx_n);
+		cui16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n == 0x00)
 		{
@@ -3754,7 +3763,7 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 	fn0800-35A3(fp - 122, ss, SEQ(ds, 0x4541), out dx_n);
 	Eq_n es_bx_n = Mem97[ds:11857:segptr32];
 	word16 dx_n = Mem97[ds:11859:word16];
-	Eq_n bx_n = (word16) es_bx_n + (((uint16) ((es_bx_n.u7)->t0004).u1 << 0x08) + (uint16) (*((word32) es_bx_n + 5)));
+	Eq_n bx_n = (word16) es_bx_n + (((uint16) (es_bx_n.u6)->b0004 << 0x08) + (uint16) (*((word32) es_bx_n + 5)));
 	Eq_n cx_n;
 	cx_n.u0 = 0x08;
 	while (true)
@@ -3773,7 +3782,7 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 					ptrArg02.u1->t0000.u0 = (word16) dx_n;
 					Eq_n dx_n = Mem249[ds:0x45AA:word16];
 					Mem255[ptrArg06 + 2:word16] = Mem249[ds:0x45AC:word16];
-					ptrArg06.u7->t0000.u0 = (wchar_t) dx_n;
+					ptrArg06.u6->t0000.u0 = (wchar_t) dx_n;
 					Eq_n es_di_n = Mem256[ds:17838:segptr32];
 					struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 					byte Eq_n::* di_n = (word16) es_di_n + 0x02;
@@ -3789,7 +3798,7 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 					<unknown>* di_n = di_n - cx_n;
 					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(ptrArg0A, di_n, size_n);
-					memcpy(ptrArg0A + (word16) size_n, &(es_n->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+					memcpy(ptrArg0A + (word16) size_n, &(es_n->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 					struct Eq_n * es_n = Mem329[ds:0x45AC:selector];
 					Eq_n di_n = Mem333[ds:0x45AA:word16];
 					word16 cx_n = ~0x00;
@@ -3806,9 +3815,9 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 					word16 cx_n = ~0x00;
 					while (cx_n != 0x00)
 					{
-						di_n.u5 = &di_n.u7->b0001;
+						di_n.u4 = &di_n.u6->b0001;
 						--cx_n;
-						if (wArg0C->*di_n.u5 != 0x00)
+						if (wArg0C->*di_n.u4 != 0x00)
 							break;
 					}
 					memcpy(di_n - 0x01, di_n, (uint32) cx_n);
@@ -3918,10 +3927,12 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 				Eq_n cmpResult_n = memcmp((word16) si_n.u0 + 2, di_n, (uint32) cx_n);
 				cui16 ax_n = 0x00;
 				si = (word16) si_n.u0 + 2 + __find_first_difference__((word16) si_n.u0 + 2, di_n);
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(cmpResult_n);
 				if (cmpResult_n != 0x00)
 				{
-					cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-					ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+					word16 ax_n = 0x00 - (SCZO_n & 0x02);
+					ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 				}
 				if (ax_n == 0x00)
 					break;
@@ -4023,7 +4034,7 @@ Eq_n fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & 
 			break;
 		cl.u0 = 0x08;
 		dx = ax_n >> 0x08;
-		ax_n = (*((word32) ds + 0x00002A29))[(uint16) (bArg08_n ^ *ptrArg02.u5) & 0xFF] ^ ax_n >> 0x08;
+		ax_n = (*((word32) ds + 0x00002A29))[(uint16) (bArg08_n ^ *ptrArg02.u4) & 0xFF] ^ ax_n >> 0x08;
 		ptrArg02 = SEQ(wArg04_n, wArg02_n + 0x01);
 	}
 	clOut = cl;
@@ -4046,9 +4057,9 @@ cu16 fn0800-2D0A(Eq_n ds, ptr16 & bpOut, struct Eq_n & dsOut)
 	(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).t0004.u0;
-	Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5);
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0006.u0;
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).t0004.u0;
+	Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4);
 	(ss->*bp_n).tFFFFFFF6.u0 = SLICE(dx_ax_n, word16, 16);
 	(ss->*bp_n).tFFFFFFF4.u0 = (wchar_t) (word16) dx_ax_n;
 	cu16 si_n = 0x00;
@@ -4056,7 +4067,7 @@ cu16 fn0800-2D0A(Eq_n ds, ptr16 & bpOut, struct Eq_n & dsOut)
 	{
 		Eq_n dx_n;
 		Eq_n ax_n;
-		if ((ss->*bp_n).t0008.u5 > 0xFFF0)
+		if ((ss->*bp_n).t0008.u4 > 0xFFF0)
 		{
 			dx_n.u0 = 0x00;
 			ax_n.u0 = ~0x0F;
@@ -4068,38 +4079,38 @@ cu16 fn0800-2D0A(Eq_n ds, ptr16 & bpOut, struct Eq_n & dsOut)
 		}
 		(ss->*bp_n).tFFFFFFFA.u0 = (wchar_t) dx_n;
 		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0006.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).t0004.u0;
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0006.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).t0004.u0;
 		(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		ss->*((word32) sp_n - 4) = ax_n;
 		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 		(ss->*((word32) sp_n - 8)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
 		Eq_n si_n;
 		word16 di_n;
-		fn0800-4110(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6, out si_n, out di_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) si_n;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
+		fn0800-4110(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5, out si_n, out di_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) si_n;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
 		(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 		(ss->*((word32) sp_n - 4)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
 		byte cl_n;
 		word16 dx_n;
-		si_n = fn0800-2CCF(ds_n, ss->*((word32) sp_n - 4), (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0, out cl_n, out dx_n);
-		(ss->*bp_n).t0008.u5 = (char *) ((ss->*bp_n).t0008.u5 - ((ss->*bp_n).tFFFFFFF8).u5);
+		si_n = fn0800-2CCF(ds_n, ss->*((word32) sp_n - 4), (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0, out cl_n, out dx_n);
+		(ss->*bp_n).t0008.u4 = (char *) ((ss->*bp_n).t0008.u4 - ((ss->*bp_n).tFFFFFFF8).u4);
 	}
-	(ss->*sp_n.u7).t0002.u0 = 0x00;
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0;
+	(ss->*sp_n.u6).t0002.u0 = 0x00;
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0;
 	(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFF4.u0;
 	(ss->*((word32) sp_n - 4)).u0 = (ss->*bp_n).t0006.u0;
 	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).t0004.u0;
 	word16 cx_n;
-	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 	word16 cx_n;
 	word16 dx_n;
 	word16 bx_n;
 	struct Eq_n * ds_n;
-	fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+	fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
 	bpOut = (ss->*bp_n).ptr0000;
 	dsOut = ds_n;
 	return si_n;
@@ -4154,7 +4165,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 	Eq_n dx_n;
 	Eq_n cx_n;
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = (word16) ptrArg02;
 	<unknown> Eq_n::* fp;
 	if (Mem15[ds:0x4654:word16] == 0x00 && (Mem15[ds:18002:word16] == Mem15[ds:0x4656:word16] && Mem15[ds:0x464E:word16] != 0x00))
@@ -4271,7 +4282,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 			<unknown>* di_n = di_n - cx_n;
 			uint32 size_n = (cx_n >> 0x01) *32 0x02;
 			memcpy(ptrArg02, di_n, size_n);
-			memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+			memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 			Mem387[ds:0x4617:word16] = Mem373[ds:0x4617:word16] + 0x01;
 			cxOut.u0 = 0x00;
 			dxOut = dx_n;
@@ -4296,7 +4307,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 		Eq_n es_bx_n = Mem492[ds:9884:segptr32];
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		union Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem492[ds:18002:word16] << 0x02);
-		fn0800_BF9E(SEQ(ds, 0x45B2), (es_n->*bx_n).u5);
+		fn0800_BF9E(SEQ(ds, 0x45B2), (es_n->*bx_n).u4);
 		byte Eq_n::* di_n = 0x45B2;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
@@ -4345,7 +4356,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 			<unknown>* di_n = di_n - cx_n;
 			uint32 size_n = (cx_n >> 0x01) *32 0x02;
 			memcpy(ptrArg02, di_n, size_n);
-			memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+			memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 			Mem699[ds:0x4617:word16] = Mem685[ds:0x4617:word16] + 0x01;
 			Mem701[ds:18002:word16] = Mem699[ds:18002:word16] + 0x01;
 			cxOut.u0 = 0x00;
@@ -4368,7 +4379,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 		if (si_n != 0x00)
 		{
 			Eq_n bx_n = Mem866[ds:0x4619:word16];
-			(ds->*((word32) bx_n + 0x000045B2)).u5 = 0x00;
+			ds->*((word16) bx_n + 0x000045B2) = 0x00;
 			if (Mem869[ds:0x4617:word16] == 0x00 && Mem869[ds:18000:word16] != 0x00)
 			{
 				word16 di_n;
@@ -4404,9 +4415,9 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n.u5 = &di_n.u7->b0001;
+		di_n.u4 = &di_n.u6->b0001;
 		--cx_n;
-		if (wArg04_n->*di_n.u5 != 0x00)
+		if (wArg04_n->*di_n.u4 != 0x00)
 			break;
 	}
 	memcpy(di_n - 0x01, di_n, (uint32) cx_n);
@@ -4427,11 +4438,13 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 	cui16 ax_n = 0x00;
 	Eq_n cx_n = cx_n - firstDifference_n;
 	Eq_n si_n;
-	si_n.u5 = wArg02_n + firstDifference_n;
+	si_n.u4 = wArg02_n + firstDifference_n;
+	Eq_n SCZO_n;
+	SCZO_n.u1 = cond(cmpResult_n);
 	if (cmpResult_n != 0x00)
 	{
-		cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-		ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+		word16 ax_n = 0x00 - (SCZO_n & 0x02);
+		ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 	}
 	if (ax_n != 0x00)
 	{
@@ -4450,11 +4463,13 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 		Eq_n firstDifference_n = __find_first_difference__(ptrArg02, di_n);
 		cui16 ax_n = 0x00;
 		cx_n = cx_n - firstDifference_n;
-		si_n.u5 = wArg02_n + firstDifference_n;
+		si_n.u4 = wArg02_n + firstDifference_n;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n != 0x00)
 		{
@@ -4480,7 +4495,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut)
 {
 	Eq_n wArg04;
-	wArg04.u5 = SLICE(dwArg02, word16, 16);
+	wArg04.u4 = SLICE(dwArg02, word16, 16);
 	Eq_n wArg02 = (word16) dwArg02;
 	Eq_n cx_n;
 	Eq_n dx_n;
@@ -4530,9 +4545,9 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n.u5 = &di_n.u7->b0001;
+			di_n.u4 = &di_n.u6->b0001;
 			--cx_n;
-			if (wArg04->*di_n.u5 != 0x00)
+			if (wArg04->*di_n.u4 != 0x00)
 				break;
 		}
 		memcpy(di_n - 0x01, di_n, (uint32) cx_n);
@@ -4568,7 +4583,7 @@ word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, byte Eq_n::* wArg06, Eq_n psegArg08, w
 	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	mp16 fp;
 	memcpy(fp - 0x0068, di_n, size_n);
-	memcpy(fp - 0x0068 + (word16) size_n, &(psegArg08->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+	memcpy(fp - 0x0068 + (word16) size_n, &(psegArg08->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	byte Eq_n::* di_n = fp - 0x0068;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
@@ -4622,12 +4637,14 @@ word16 fn0800-335C(Eq_n ds, Eq_n ptrArg02)
 				break;
 		}
 		ui16 cx_n = ~cx_n;
-		cui16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(fp - 16, di_n - cx_n, (uint32) cx_n);
+		cui16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n == 0x00)
 		{
@@ -4660,22 +4677,26 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, ptr16 & cxO
 	ptr16 dx_n;
 	if (fn0800_A817(0x23, ds, dwArg08, SEQ(ds, 17955), wArg06, out cx_n, out dx_n) == 0x00)
 	{
-		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 0x00004641), *((word32) ds + 0x0A3B), 0x02);
+		word16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n != 0x00)
 		{
 			Eq_n cmpResult_n = memcmp(*((word32) ds + 0x00004641), *((word32) ds + 2621), 0x03);
 			word16 ax_n = 0x00;
 			ptr16 cx_n = 0x03 - __find_first_difference__(*((word32) ds + 0x00004641), *((word32) ds + 2621));
+			Eq_n SCZO_n;
+			SCZO_n.u1 = cond(cmpResult_n);
 			if (cmpResult_n != 0x00)
 			{
-				cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-				ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+				word16 ax_n = 0x00 - (SCZO_n & 0x02);
+				ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 			}
 			if (ax_n != 0x00 && (CONVERT(Mem79[ds:17976:byte], int8, int16) & wArg06) == wArg06)
 			{
@@ -4694,7 +4715,7 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, ptr16 & cxO
 					<unknown>* di_n = di_n - cx_n;
 					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(ptrArg02, di_n, size_n);
-					memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+					memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 					cx_n = 0x00;
 				}
 				cxOut = cx_n;
@@ -4734,22 +4755,26 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, ptr16 & cxOut, union Eq
 			dxOut.u1 = (<unknown>*) <invalid>;
 			return 0x01;
 		}
-		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 0x00004641), *((word32) ds + 0x0A3B), 0x02);
+		word16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n == 0x00)
 			continue;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 0x00004641), *((word32) ds + 2621), 0x03);
 		ax_n = 0x00;
 		cx_n = 0x03 - __find_first_difference__(*((word32) ds + 0x00004641), *((word32) ds + 2621));
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 	} while (ax_n == 0x00 || (CONVERT(Mem72[ds:17976:byte], int8, int16) & wArg06) != wArg06);
 	if (ptrArg02 != 0x00)
@@ -4767,7 +4792,7 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, ptr16 & cxOut, union Eq
 		<unknown>* di_n = di_n - cx_n;
 		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(ptrArg02, di_n, size_n);
-		memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+		memcpy(ptrArg02 + (word16) size_n, &(ds->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 		cx_n = 0x00;
 	}
 	cxOut = cx_n;
@@ -4804,8 +4829,8 @@ Eq_n fn0800-3509(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, ptr16 & bxOut)
 	uint16 cx_n = ~cx_n;
 	<unknown>* di_n = di_n - cx_n;
 	uint32 size_n = (cx_n >> 0x01) *32 0x02;
-	memcpy(&(psegArg04->*wArg02.u5), di_n, size_n);
-	memcpy(&(psegArg04->*(wArg02.u5 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+	memcpy(&(psegArg04->*wArg02.u4), di_n, size_n);
+	memcpy(&(psegArg04->*(wArg02.u4 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	byte Eq_n::* di_n = fp - 90;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
@@ -4821,9 +4846,9 @@ Eq_n fn0800-3509(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, ptr16 & bxOut)
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n.u5 = &di_n.u7->b0001;
+		di_n.u4 = &di_n.u6->b0001;
 		--cx_n;
-		if (psegArg04->*di_n.u5 != 0x00)
+		if (psegArg04->*di_n.u4 != 0x00)
 			break;
 	}
 	memcpy(di_n - 0x01, di_n, (uint32) cx_n);
@@ -4858,8 +4883,8 @@ byte fn0800-35A3(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, union Eq_n & dxOut)
 	uint16 cx_n = ~cx_n;
 	<unknown>* di_n = di_n - cx_n;
 	uint32 size_n = (cx_n >> 0x01) *32 0x02;
-	memcpy(&(psegArg04->*wArg02.u5), di_n, size_n);
-	memcpy(&(psegArg04->*(wArg02.u5 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+	memcpy(&(psegArg04->*wArg02.u4), di_n, size_n);
+	memcpy(&(psegArg04->*(wArg02.u4 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	byte Eq_n::* di_n = fp - 22;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
@@ -4875,9 +4900,9 @@ byte fn0800-35A3(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, union Eq_n & dxOut)
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n.u5 = &di_n.u7->b0001;
+		di_n.u4 = &di_n.u6->b0001;
 		--cx_n;
-		if (psegArg04->*di_n.u5 != 0x00)
+		if (psegArg04->*di_n.u4 != 0x00)
 			break;
 	}
 	memcpy(di_n - 0x01, di_n, (uint32) cx_n);
@@ -4944,7 +4969,7 @@ word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & siOut, un
 	{
 		struct Eq_n * ptrLoc0A_n = (struct Eq_n *) di_n;
 		if (es_n == wArg04 && di_n == wArg02 || ptrLoc0A_n->bFFFFFFFF == 0x3A)
-			ptrLoc06_n.u5 = (word16) di_n + 1;
+			ptrLoc06_n.u4 = (word16) di_n + 1;
 	}
 	word16 cx_n;
 	Eq_n dx_n;
@@ -4994,7 +5019,7 @@ word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & siOut, un
 			fn0800-0D24(ds, 0x0E, ptrArg02, out cx_n, out dx_n, out bx_n, out si, out di_n, out ds);
 		}
 		*ptrLoc0A_n = 0x5C;
-		ptrLoc06_n.u5 = (word16) di_n + 1;
+		ptrLoc06_n.u4 = (word16) di_n + 1;
 	}
 	dxOut = dx_n;
 	siOut = si;
@@ -5023,7 +5048,7 @@ void fn0800-3764(Eq_n ds)
 		<unknown>* di_n = di_n - cx_n;
 		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(*((word32) ds + 0x000044DC), di_n, size_n);
-		memcpy((word16) size_n + 0x44DC, &(ds->*((char *) di_n + (word16) size_n)), (uint32) SLICE(cond(cx_n >> 0x01), bool, 1));
+		memcpy((word16) size_n + 0x44DC, &(ds->*((char *) di_n + (word16) size_n)), cond(cx_n >> 0x01) & 0x02);
 	}
 	else
 	{
@@ -5186,9 +5211,9 @@ word16 fn0800-388C(Eq_n ds, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & siOut, un
 word16 fn0800-395B(Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	word16 ax_n = ptrArg02.u1->w0002;
-	if (ax_n != ((ptrArg06.u7)->t0002).u0)
-		return ax_n - ((ptrArg06.u7)->t0002).u0;
-	return ptrArg02.u1->w0000 - ((ptrArg06.u7)->t0000).u0;
+	if (ax_n != ((ptrArg06.u6)->t0002).u0)
+		return ax_n - ((ptrArg06.u6)->t0002).u0;
+	return ptrArg02.u1->w0000 - ((ptrArg06.u6)->t0000).u0;
 }
 
 // 0800:3992: Register word16 fn0800-3992(Register Eq_n ds, Register out Eq_n dsOut)
@@ -5243,7 +5268,7 @@ word16 fn0800-3992(Eq_n ds, union Eq_n & dsOut)
 		fn0800-35A3(di_n - 0x01, es_n, dwLoc7A_n, out dx_n);
 		Eq_n dx_ax_n = fn0800_AA7E(ds, SEQ(ss, fp - 116), SEQ(ds, 0x0A4D), out cx_n, out ds_n);
 		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+		dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 		Eq_n ax_n = (word16) dx_ax_n;
 		if (dx_ax_n != 0x00)
 		{
@@ -5286,19 +5311,19 @@ word16 fn0800-3992(Eq_n ds, union Eq_n & dsOut)
 						ss->*((word32) sp_n - 2) = ss;
 						ss->*((word32) sp_n - 4) = fp - 116;
 						ss->*((word32) sp_n - 6) = ss;
-						(ss->*((word32) sp_n - 8)).u5 = fp - 0x0E;
+						(ss->*((word32) sp_n - 8)).u4 = fp - 0x0E;
 						word16 dx_n;
 						fn0800-363D(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out dx_n);
 						ss->*((word32) sp_n - 2) = ds_n;
 						(ss->*((word32) sp_n - 4)).u0 = 0x4541;
 						ss->*((word32) sp_n - 6) = ss;
-						(ss->*((word32) sp_n - 8)).u5 = fp - 0x0A;
+						(ss->*((word32) sp_n - 8)).u4 = fp - 0x0A;
 						word16 dx_n;
 						fn0800-363D(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out dx_n);
 						ss->*((word32) sp_n - 2) = ss;
 						ss->*((word32) sp_n - 4) = fp - 0x0A;
 						ss->*((word32) sp_n - 6) = ss;
-						(ss->*((word32) sp_n - 8)).u5 = fp - 0x0E;
+						(ss->*((word32) sp_n - 8)).u4 = fp - 0x0E;
 						if (fn0800-395B(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4)) >= 0x00)
 						{
 							ss->*((word32) sp_n - 2) = dx_n;
@@ -5392,8 +5417,8 @@ word16 fn0800-3B0A(Eq_n ds, Eq_n wArg0A, Eq_n wArg0C, ptr16 & siOut, union Eq_n 
 			}
 			(ss->*bp_n).tFFFFFFFA.u0 = (wchar_t) dx_n;
 			(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
-			(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0006.u0;
-			(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).t0004.u0;
+			(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0006.u0;
+			(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).t0004.u0;
 			(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFFA.u0;
 			ss->*((word32) sp_n - 4) = ax_n;
 			(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
@@ -5401,22 +5426,22 @@ word16 fn0800-3B0A(Eq_n ds, Eq_n wArg0A, Eq_n wArg0C, ptr16 & siOut, union Eq_n 
 			word16 si_n;
 			word16 di_n;
 			Eq_n ds_n;
-			fn0800-4110(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6, out si_n, out di_n, out ds_n);
-			(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t000A.u0;
-			(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).t0008.u0;
+			fn0800-4110(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5, out si_n, out di_n, out ds_n);
+			(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t000A.u0;
+			(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).t0008.u0;
 			(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFFA.u0;
 			(ss->*((word32) sp_n - 4)).u0 = (ss->*bp_n).tFFFFFFF8.u0;
 			(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 			(ss->*((word32) sp_n - 8)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
-			fn0800-4152(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6, out si, out ds_n);
-			(ss->*bp_n).t000C.u5 = (char *) ((ss->*bp_n).t000C.u5 - ((ss->*bp_n).tFFFFFFF8).u5);
+			fn0800-4152(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5, out si, out ds_n);
+			(ss->*bp_n).t000C.u4 = (char *) ((ss->*bp_n).t000C.u4 - ((ss->*bp_n).tFFFFFFF8).u4);
 		}
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds);
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds);
 	}
 	word16 bp_n = (ss->*bp_n).w0000;
 	siOut = si;
@@ -5450,31 +5475,31 @@ Eq_n fn0800-3BC3(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, union Eq
 	selector ss;
 	Mem151[ss:sp_n + 0x0A:word16] = Mem132[ds_n:10709:word16];
 	Mem154[ss:sp_n + 0x08:word16] = Mem151[ds_n:10707:word16];
-	fn0800_BA67(ds_n, (ss->*sp_n.u7).t0008.u5);
-	(ss->*sp_n.u7).t000A.u0 = 0x00;
-	ui32 ax_dx_n = (ss->*bp_n).t000C.u5 + ((ss->*bp_n).t0008).u0;
-	(ss->*sp_n.u7).t0008.u0 = SLICE(ax_dx_n, word16, 16);
-	(ss->*sp_n.u7).t0006.u0 = (wchar_t) (word16) ax_dx_n;
-	(ss->*sp_n.u7).t0004.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0004.u0;
+	fn0800_BA67(ds_n, (ss->*sp_n.u6).t0008.u4);
+	(ss->*sp_n.u6).t000A.u0 = 0x00;
+	ui32 ax_dx_n = (ss->*bp_n).t000C.u4 + ((ss->*bp_n).t0008).u0;
+	(ss->*sp_n.u6).t0008.u0 = SLICE(ax_dx_n, word16, 16);
+	(ss->*sp_n.u6).t0006.u0 = (wchar_t) (word16) ax_dx_n;
+	(ss->*((word32) sp_n + 4)).u0 = (ss->*bp_n).t0006.u0;
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0004.u0;
 	word16 cx_n;
-	fn0800_ACB3(ds_n, (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u5, (ss->*sp_n.u7).t000A.u0, out cx_n);
-	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-	(ss->*sp_n.u7).t0006.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0004.u0 = (ss->*bp_n).t0004.u0;
+	fn0800_ACB3(ds_n, (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u4, (ss->*sp_n.u6).t000A.u0, out cx_n);
+	(ss->*sp_n.u6).t000A.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*sp_n.u6).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+	(ss->*sp_n.u6).t0006.u0 = (ss->*bp_n).t0006.u0;
+	(ss->*((word32) sp_n + 4)).u0 = (ss->*bp_n).t0004.u0;
 	Mem212[ss:sp_n + 0x02:word16] = Mem209[ds_n:10709:word16];
 	Mem215[ss:sp_n + 0x00:word16] = Mem212[ds_n:10707:word16];
-	struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u7).t0008.u0, (ss->*sp_n.u7).t000A.u0, out si_n, out ds_n);
+	struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u6).t0008.u0, (ss->*sp_n.u6).t000A.u0, out si_n, out ds_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
 	Mem234[ss:sp_n + 0x0A:word16] = Mem215[ds_n:10709:word16];
 	Mem237[ss:sp_n + 0x08:word16] = Mem234[ds_n:10707:word16];
 	Eq_n ds_n;
-	fn0800_A614(ds_n, (ss->*sp_n.u7).t0008.u5, out ds_n);
-	(ss->*sp_n.u7).t000A.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0008.u0 = 0x43AD;
-	fn0800-8F7F(ds_n, (ss->*sp_n.u7).t0008.u5);
+	fn0800_A614(ds_n, (ss->*sp_n.u6).t0008.u4, out ds_n);
+	(ss->*sp_n.u6).t000A.u0 = (wchar_t) ds_n;
+	(ss->*sp_n.u6).t0008.u0 = 0x43AD;
+	fn0800-8F7F(ds_n, (ss->*sp_n.u6).t0008.u4);
 	Eq_n bp_n;
 	bp_n.u0 = (ss->*bp_n).t0000.u0;
 	siOut = si_n;
@@ -5520,68 +5545,68 @@ byte fn0800-3C99(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & b
 	struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, wArg06, wArg08, out si_n, out ds_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*sp_n.u7).t000A.u0 = 0x00;
-	ui32 ax_dx_n = (ss->*bp_n).t000C.u5 + ((ss->*bp_n).t0008).u0;
-	(ss->*sp_n.u7).t0008.u0 = SLICE(ax_dx_n, word16, 16);
-	(ss->*sp_n.u7).t0006.u0 = (wchar_t) (word16) ax_dx_n;
-	(ss->*sp_n.u7).t0004.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0004.u0;
+	(ss->*sp_n.u6).t000A.u0 = 0x00;
+	ui32 ax_dx_n = (ss->*bp_n).t000C.u4 + ((ss->*bp_n).t0008).u0;
+	(ss->*sp_n.u6).t0008.u0 = SLICE(ax_dx_n, word16, 16);
+	(ss->*sp_n.u6).t0006.u0 = (wchar_t) (word16) ax_dx_n;
+	(ss->*((word32) sp_n + 4)).u0 = (ss->*bp_n).t0006.u0;
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0004.u0;
 	word16 cx_n;
-	fn0800_ACB3(ds_n, (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u5, (ss->*sp_n.u7).t000A.u0, out cx_n);
-	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0008.u0 = (ss->*bp_n).t0004.u0;
-	ui32 dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n.u7).t0008.u5) - (((ss->*bp_n).t000C).u5 + ((ss->*bp_n).t0008).u0);
+	fn0800_ACB3(ds_n, (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u4, (ss->*sp_n.u6).t000A.u0, out cx_n);
+	(ss->*sp_n.u6).t000A.u0 = (ss->*bp_n).t0006.u0;
+	(ss->*sp_n.u6).t0008.u0 = (ss->*bp_n).t0004.u0;
+	ui32 dx_ax_n = fn0800-4194(ds_n, (ss->*sp_n.u6).t0008.u4) - (((ss->*bp_n).t000C).u4 + ((ss->*bp_n).t0008).u0);
 	(ss->*bp_n).t000E.u0 = SLICE(dx_ax_n, word16, 16);
 	Eq_n ax_n = (word16) dx_ax_n;
 	(ss->*bp_n).t000C.u0 = (wchar_t) ax_n;
-	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).t000E.u0;
-	(ss->*sp_n.u7).t0008.u0 = (wchar_t) ax_n;
-	(ss->*sp_n.u7).t0006.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0004.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-	(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).t0006.u0;
-	(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).t0004.u0;
-	struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u7).t0008.u0, (ss->*sp_n.u7).t000A.u0, out si_n, out ds_n);
+	(ss->*sp_n.u6).t000A.u0 = (ss->*bp_n).t000E.u0;
+	(ss->*sp_n.u6).t0008.u0 = (wchar_t) ax_n;
+	(ss->*sp_n.u6).t0006.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*((word32) sp_n + 4)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).t0006.u0;
+	(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).t0004.u0;
+	struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u6).t0008.u0, (ss->*sp_n.u6).t000A.u0, out si_n, out ds_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-	(ss->*sp_n.u7).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+	(ss->*sp_n.u6).t000A.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+	(ss->*sp_n.u6).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, (ss->*sp_n.u7).t0008.u5, out ds_n);
+	fn0800_A614(ds_n, (ss->*sp_n.u6).t0008.u4, out ds_n);
 	Mem280[ss:sp_n + 0x0A:word16] = Mem264[ds_n:10705:word16];
 	Mem283[ss:sp_n + 0x08:word16] = Mem280[ds_n:10703:word16];
 	Eq_n ds_n;
-	fn0800_A614(ds_n, (ss->*sp_n.u7).t0008.u5, out ds_n);
-	(ss->*sp_n.u7).t000A.u0 = 0x0180;
-	(ss->*sp_n.u7).t0008.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0006.u0 = 0x4348;
-	fn0800_A4F6(ds_n, (ss->*sp_n.u7).t000A.u0);
-	(ss->*sp_n.u7).t000A.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0008.u0 = 0x4348;
-	fn0800-8F7F(ds_n, (ss->*sp_n.u7).t0008.u5);
-	(ss->*sp_n.u7).t000A.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0008.u0 = 0x4348;
-	(ss->*sp_n.u7).t0006.u0 = (wchar_t) ss;
-	(ss->*sp_n.u7).t0004.u0 = (wchar_t) (bp_n - 0x006A);
-	if (fn0800_BA4A(ds_n, (ss->*sp_n.u7).t0004.u5, (ss->*sp_n.u7).t0008.u5) == ~0x00)
+	fn0800_A614(ds_n, (ss->*sp_n.u6).t0008.u4, out ds_n);
+	(ss->*sp_n.u6).t000A.u0 = 0x0180;
+	(ss->*sp_n.u6).t0008.u0 = (wchar_t) ds_n;
+	(ss->*sp_n.u6).t0006.u0 = 0x4348;
+	fn0800_A4F6(ds_n, (ss->*sp_n.u6).t000A.u0);
+	(ss->*sp_n.u6).t000A.u0 = (wchar_t) ds_n;
+	(ss->*sp_n.u6).t0008.u0 = 0x4348;
+	fn0800-8F7F(ds_n, (ss->*sp_n.u6).t0008.u4);
+	(ss->*sp_n.u6).t000A.u0 = (wchar_t) ds_n;
+	(ss->*sp_n.u6).t0008.u0 = 0x4348;
+	(ss->*sp_n.u6).t0006.u0 = (wchar_t) ss;
+	ss->*((word32) sp_n + 4) = bp_n - 0x006A;
+	if (fn0800_BA4A(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0008.u4) == ~0x00)
 	{
-		(ss->*sp_n.u7).t000A.u0 = (wchar_t) ss;
-		(ss->*sp_n.u7).t0008.u0 = (wchar_t) (bp_n - 0x006A);
-		(ss->*sp_n.u7).t0006.u0 = 0x0A;
+		(ss->*sp_n.u6).t000A.u0 = (wchar_t) ss;
+		(ss->*sp_n.u6).t0008.u0 = (wchar_t) (bp_n - 0x006A);
+		(ss->*sp_n.u6).t0006.u0 = 0x0A;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		word16 si_n;
 		word16 di_n;
-		fn0800-0D24(ds_n, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u5, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
+		fn0800-0D24(ds_n, (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u4, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
 	}
-	(ss->*sp_n.u7).t000A.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0008.u0 = 2661;
-	(ss->*sp_n.u7).t0006.u0 = (wchar_t) ds_n;
-	(ss->*sp_n.u7).t0004.u0 = 0x4348;
-	Eq_n ax_n = fn0800-4234(ds_n, (ss->*sp_n.u7).t0004.u5, (ss->*sp_n.u7).t0008.u5, out cx_n, out dx_n, out si_n, out ds_n);
+	(ss->*sp_n.u6).t000A.u0 = (wchar_t) ds_n;
+	(ss->*sp_n.u6).t0008.u0 = 2661;
+	(ss->*sp_n.u6).t0006.u0 = (wchar_t) ds_n;
+	(ss->*((word32) sp_n + 4)).u0 = 0x4348;
+	Eq_n ax_n = fn0800-4234(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0008.u4, out cx_n, out dx_n, out si_n, out ds_n);
 	ds_n->w29D1 = dx_n;
 	ds_n->t29CF = ax_n;
-	Eq_n si_n = (ss->*sp_n.u7).t000E.u0;
+	Eq_n si_n = (ss->*sp_n.u6).t000E.u0;
 	bpOut.u0 = (ss->*bp_n).t0000.u0;
 	siOut = si_n;
 	dsOut = ds_n;
@@ -5600,17 +5625,17 @@ byte fn0800-3C99(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & b
 word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = (word16) ptrArg02;
-	ci16 v11_n = ptrArg02.u7->t0000.u0 - 0x01;
-	ptrArg02.u7->t0000.u0 = v11_n;
+	ci16 v11_n = ptrArg02.u6->t0000.u0 - 0x01;
+	ptrArg02.u6->t0000.u0 = v11_n;
 	Eq_n ax_n;
 	if (v11_n >= 0x00)
 	{
-		struct Eq_n * ax_n = ptrArg02.u7->t000E.u0;
-		uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u7->t000C.u0;
-		ptrArg02.u7->t000C.u0 = (wchar_t) (ptrArg02.u7->t000C.u0 + 0x01);
-		ax_n.u3 = (uint16) (ax_n->*si_n);
+		struct Eq_n * ax_n = ptrArg02.u6->t000E.u0;
+		uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u6->t000C.u0;
+		ptrArg02.u6->t000C.u0 = (wchar_t) (ptrArg02.u6->t000C.u0 + 0x01);
+		ax_n.u2 = (uint16) (ax_n->*si_n);
 	}
 	else
 	{
@@ -5699,17 +5724,17 @@ word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, union Eq_n & dsOut)
 {
 	word16 cx_n;
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = (word16) ptrArg02;
-	ci16 v11_n = ptrArg02.u7->t0000.u0 - 0x01;
-	ptrArg02.u7->t0000.u0 = v11_n;
+	ci16 v11_n = ptrArg02.u6->t0000.u0 - 0x01;
+	ptrArg02.u6->t0000.u0 = v11_n;
 	Eq_n ax_n;
 	if (v11_n >= 0x00)
 	{
-		struct Eq_n * ax_n = ptrArg02.u7->t000E.u0;
-		uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u7->t000C.u0;
-		ptrArg02.u7->t000C.u0 = (wchar_t) (ptrArg02.u7->t000C.u0 + 0x01);
-		ax_n.u3 = (uint16) (ax_n->*si_n);
+		struct Eq_n * ax_n = ptrArg02.u6->t000E.u0;
+		uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u6->t000C.u0;
+		ptrArg02.u6->t000C.u0 = (wchar_t) (ptrArg02.u6->t000C.u0 + 0x01);
+		ax_n.u2 = (uint16) (ax_n->*si_n);
 	}
 	else
 	{
@@ -5846,20 +5871,20 @@ byte fn0800-401E(Eq_n ds, Eq_n bArg02, Eq_n dwArg04, ptr16 & cxOut, ptr16 & dxOu
 byte fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg06_n;
-	wArg06_n.u5 = SLICE(ptrArg04, word16, 16);
+	wArg06_n.u4 = SLICE(ptrArg04, word16, 16);
 	Eq_n wArg04_n = (word16) ptrArg04;
-	ci16 v11_n = ptrArg04.u7->t0000.u0 + 0x01;
-	ptrArg04.u7->t0000.u0 = v11_n;
+	ci16 v11_n = ptrArg04.u6->t0000.u0 + 0x01;
+	ptrArg04.u6->t0000.u0 = v11_n;
 	ptr16 bx_n = (word16) ptrArg04;
 	uint16 ax_n;
 	ptr16 cx_n;
 	ptr16 dx_n;
 	if (v11_n < 0x00)
 	{
-		struct Eq_n * ax_n = ptrArg04.u7->t000E.u0;
-		union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u7->t000C.u0;
-		ptrArg04.u7->t000C.u0 = (wchar_t) (ptrArg04.u7->t000C.u0 + 0x01);
-		(ax_n->*si_n).u1 = (int8) bArg02;
+		struct Eq_n * ax_n = ptrArg04.u6->t000E.u0;
+		union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u6->t000C.u0;
+		ptrArg04.u6->t000C.u0 = (wchar_t) (ptrArg04.u6->t000C.u0 + 0x01);
+		(ax_n->*si_n).u1 = (uint8) bArg02;
 		ax_n = (uint16) bArg02;
 		byte ch;
 		cx_n = SEQ(ch, bArg02);
@@ -5951,7 +5976,7 @@ byte fn0800-4110(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 	ptr16 si_n;
 	byte ch_n;
 	Eq_n wArg0C;
-	wArg0C.u5 = SLICE(dwArg0A, word16, 16);
+	wArg0C.u4 = SLICE(dwArg0A, word16, 16);
 	Eq_n wArg0A = (word16) dwArg0A;
 	Eq_n ax_n = fn0800_ABA3(ds, dwArg02, 0x01, wArg06, dwArg0A, out ch_n, out si_n, out di_n);
 	Eq_n cx_n;
@@ -5985,7 +6010,7 @@ byte fn0800-4152(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 {
 	ptr16 si_n;
 	Eq_n wArg0C;
-	wArg0C.u5 = SLICE(dwArg0A, word16, 16);
+	wArg0C.u4 = SLICE(dwArg0A, word16, 16);
 	Eq_n wArg0A = (word16) dwArg0A;
 	Eq_n ax_n = fn0800_AD85(ds, dwArg02, 0x01, wArg06, dwArg0A, out si_n);
 	if (wArg08 != 0x00 || ax_n != wArg06)
@@ -5994,7 +6019,7 @@ byte fn0800-4152(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 		word16 dx_n;
 		word16 bx_n;
 		word16 di_n;
-		ax_n.u3 = (uint16) fn0800-0D24(ds, 0x09, fn0800-4271(ds, wArg0A, wArg0C), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
+		ax_n.u2 = (uint16) fn0800-0D24(ds, 0x09, fn0800-4271(ds, wArg0A, wArg0C), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
 	}
 	siOut = si_n;
 	dsOut = ds;
@@ -6208,7 +6233,7 @@ l0800_nA7:
 void fn0800-43D4(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 {
 	Eq_n cx_n = wArg06;
-	struct Eq_n Eq_n::* si_n = (struct Eq_n Eq_n::*) (wArg02.u5 + wArg06 *s16 0x0C);
+	struct Eq_n Eq_n::* si_n = (struct Eq_n Eq_n::*) (wArg02.u4 + wArg06 *s16 0x0C);
 	while (true)
 	{
 		si_n -= 0x0C;
@@ -6246,11 +6271,11 @@ void fn0800-441C(Eq_n ds, segptr32 ptrArg02, Eq_n wArg06)
 				wLoc04 = cx_n;
 			}
 			++si_n;
-			cx_n.u5 = &cx_n.u7->b0001;
+			cx_n.u4 = &cx_n.u6->b0001;
 		} while (cx_n < wArg06);
 	}
 	Eq_n psegArg04_n;
-	psegArg04_n.u5 = SLICE(ptrArg02, selector, 16);
+	psegArg04_n.u4 = SLICE(ptrArg02, selector, 16);
 	Eq_n wArg02_n = (word16) ptrArg02;
 	if (di_n == 0x00)
 		return;
@@ -6266,41 +6291,41 @@ void fn0800-441C(Eq_n ds, segptr32 ptrArg02, Eq_n wArg06)
 		{
 			Eq_n ax_n = Mem96[ds:18008:word16];
 			Eq_n ax_n = Mem145[ds:18010:word16];
-			ui32 Eq_n::* bx_n = (ui32 Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
-			ui32 Eq_n::* bx_n = (ui32 Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+			ui32 Eq_n::* bx_n = (ui32 Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
+			ui32 Eq_n::* bx_n = (ui32 Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 			psegArg04_n->*bx_n += psegArg04_n->*bx_n;
-			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 			(psegArg04_n->*bx_n).w0002 = 0x00;
 			(psegArg04_n->*bx_n).w0000 = 0x00;
-			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 			++(psegArg04_n->*bx_n).w000A;
 			int16 cx_n = ax_n *s16 0x0C;
 			int16 dx_n = ax_n *s16 0x0C;
 			struct Eq_n Eq_n::* bx_n;
 			while (true)
 			{
-				bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + dx_n);
+				bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + dx_n);
 				if ((psegArg04_n->*bx_n).t0004.u0 == ~0x00)
 					break;
 				Eq_n ax_n;
 				ax_n.u0 = (psegArg04_n->*bx_n).t0004.u0;
 				Mem189[ds:18010:word16] = ax_n;
-				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 				++(psegArg04_n->*bx_n).w000A;
 				dx_n = ax_n *s16 0x0C;
 			}
 			Mem201[psegArg04_n:bx_n + 4:word16] = Mem177[ds:18008:word16];
-			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+			struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 			++(psegArg04_n->*bx_n).w000A;
 			while (true)
 			{
-				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + cx_n);
+				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + cx_n);
 				if ((psegArg04_n->*bx_n).t0004.u0 == ~0x00)
 					break;
 				Eq_n ax_n;
 				ax_n.u0 = (psegArg04_n->*bx_n).t0004.u0;
 				Mem223[ds:18008:word16] = ax_n;
-				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u5 + ax_n *s16 0x0C);
+				struct Eq_n Eq_n::* bx_n = (struct Eq_n Eq_n::*) (wArg02_n.u4 + ax_n *s16 0x0C);
 				++(psegArg04_n->*bx_n).w000A;
 				cx_n = ax_n *s16 0x0C;
 			}
@@ -6338,7 +6363,7 @@ void fn0800-4550(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 			{
 				Eq_n wLoc06_n = (word16) dwLoc06_n;
 				word16 wLoc04_n = SLICE(dwLoc06_n, word16, 16);
-				if ((psegArg04->*si_n.u7).t000A.u0 == wLoc0C_n)
+				if ((psegArg04->*si_n.u6).t000A.u0 == wLoc0C_n)
 				{
 					struct Eq_n Eq_n::* sp_n = sp_n - 2;
 					selector ss;
@@ -6347,23 +6372,23 @@ void fn0800-4550(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wLoc0A_n;
 					(ss->*sp_n).wFFFFFFFA = wLoc04_n;
 					(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) wLoc06_n;
-					Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, out cx_n, out bx_n);
+					Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, out cx_n, out bx_n);
 					Eq_n sp_n;
 					sp_n.u0 = <invalid>;
-					(ss->*sp_n.u7).t0006.u0 = SLICE(dx_ax_n, word16, 16);
-					(ss->*sp_n.u7).t0004.u0 = (wchar_t) (word16) dx_ax_n;
-					word16 ax_n = fn0800-45E2((ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u0, out dx_n);
-					(psegArg04->*si_n.u7).t0008.u0 = dx_n;
-					(psegArg04->*si_n.u7).t0006.u0 = ax_n;
-					sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000A.u0;
+					(ss->*sp_n.u6).t0006.u0 = SLICE(dx_ax_n, word16, 16);
+					ss->*((word32) sp_n + 4) = (word16) dx_ax_n;
+					word16 ax_n = fn0800-45E2(ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u0, out dx_n);
+					(psegArg04->*si_n.u6).t0008.u0 = dx_n;
+					(psegArg04->*si_n.u6).t0006.u0 = ax_n;
+					sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t000A.u0;
 					dwLoc06_n += dwLoc0A_n;
 				}
-				si_n.u5 = &si_n.u7->t000C.u0;
-				di_n.u5 = &di_n.u7->b0001;
+				si_n.u4 = &si_n.u6->t000C.u0;
+				di_n.u4 = &di_n.u6->b0001;
 			} while (di_n < wArg06);
 		}
 		++wLoc0C_n;
-		dwLoc0A_n = SEQ(wLoc08_n >> 0x01, __rcr<word16,byte>(wLoc0A_n, 0x01, SLICE(cond(wLoc08_n >> 0x01), bool, 1)));
+		dwLoc0A_n = SEQ(wLoc08_n >> 0x01, __rcr<word16,byte>(wLoc0A_n, 0x01, cond(wLoc08_n >> 0x01) & 0x02));
 	}
 }
 
@@ -6381,13 +6406,13 @@ ui16 fn0800-45E2(Eq_n wArg02, uint16 wArg04, word16 wArg06, union Eq_n & dxOut)
 		--bx_n;
 		if (bx_n == 0x00)
 			break;
-		Eq_n ax_n = __rcl<word16,byte>(wLoc04_n, 0x01, SLICE(cond(wLoc06_n << 0x01), bool, 1));
+		Eq_n ax_n = __rcl<word16,byte>(wLoc04_n, 0x01, cond(wLoc06_n << 0x01) & 0x02);
 		wLoc06_n <<= 0x01;
 		if ((wArg02 & 0x01) != 0x00)
 			wLoc06_n |= 0x01;
 		wLoc04_n = ax_n;
 		wArg04 >>= 0x01;
-		wArg02 = __rcr<word16,byte>(wArg02, 0x01, SLICE(cond(wArg04 >> 0x01), bool, 1));
+		wArg02 = __rcr<word16,byte>(wArg02, 0x01, cond(wArg04 >> 0x01) & 0x02);
 	}
 	dxOut = wLoc04_n;
 	return wLoc06_n;
@@ -6411,8 +6436,8 @@ word16 fn0800-463B(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 	{
 		do
 		{
-			cui16 ax_n = (psegArg04->*si_n.u7).t0002.u0;
-			cui16 dx_n = (psegArg04->*si_n.u7).t0000.u0;
+			cui16 ax_n = (psegArg04->*si_n.u6).t0002.u0;
+			cui16 dx_n = (psegArg04->*si_n.u6).t0000.u0;
 			if ((dx_n | ax_n) != 0x00)
 			{
 				if (SEQ(ax_n, dx_n) < dwLoc0A_n)
@@ -6432,8 +6457,8 @@ word16 fn0800-463B(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 			wLoc0C_n = SLICE(dwLoc0E_n, word16, 16);
 			wLoc0A_n = (word16) dwLoc0A_n;
 			wLoc08_n = SLICE(dwLoc0A_n, word16, 16);
-			si_n.u5 = &si_n.u7->t000C.u0;
-			cx_n.u5 = &cx_n.u7->b0001;
+			si_n.u4 = &si_n.u6->t000C.u0;
+			cx_n.u4 = &cx_n.u6->b0001;
 		} while (cx_n < wArg06);
 	}
 	if ((wLoc08_n != ~0x00 || wLoc0A_n != ~0x00) && (wLoc0C_n != ~0x00 || wLoc0E_n != ~0x00))
@@ -6514,7 +6539,7 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 				Eq_n ax_n = fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
 				Eq_n ax_n = (word16) dx_ax_n;
 				Eq_n dx_n;
-				dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+				dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 				Eq_n wLoc0C_n = ax_n;
 				if (di_n != 0x00)
 					wLoc0C_n = ax_n - 0x01;
@@ -6564,7 +6589,7 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 				word16 dx_n;
 				word16 bx_n;
 				Eq_n ds_n;
-				fn0800-401E(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
+				fn0800-401E(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
 				Mem502[ss:sp_n + -2:word16] = Mem487[ds_n:10721:word16];
 				Mem505[ss:sp_n + -4:word16] = Mem502[ds_n:10719:word16];
 				(ss->*((word32) sp_n - 6)).u0 = 0x00;
@@ -6579,22 +6604,22 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 				Mem558[ss:sp_n + -4:word16] = Mem555[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem577[ss:sp_n + -2:word16] = Mem561[ds_n:10721:word16];
 				Mem580[ss:sp_n + -4:word16] = Mem577[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem599[ss:sp_n + -2:word16] = Mem583[ds_n:10721:word16];
 				Mem602[ss:sp_n + -4:word16] = Mem599[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem621[ss:sp_n + -2:word16] = Mem605[ds_n:10721:word16];
 				Mem624[ss:sp_n + -4:word16] = Mem621[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem642[ss:sp_n + -2:word16] = Mem627[ds_n:10721:word16];
 				Mem645[ss:sp_n + -4:word16] = Mem642[ds_n:10719:word16];
 				(ss->*((word32) sp_n - 6)).u0 = 0x00;
@@ -6602,27 +6627,27 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 				word16 dx_n;
 				word16 bx_n;
 				Eq_n ds_n;
-				fn0800-401E(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
+				fn0800-401E(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
 				Mem667[ss:sp_n + -2:word16] = Mem651[ds_n:10721:word16];
 				Mem670[ss:sp_n + -4:word16] = Mem667[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem689[ss:sp_n + -2:word16] = Mem673[ds_n:10721:word16];
 				Mem692[ss:sp_n + -4:word16] = Mem689[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem711[ss:sp_n + -2:word16] = Mem695[ds_n:10721:word16];
 				Mem714[ss:sp_n + -4:word16] = Mem711[ds_n:10719:word16];
 				(ss->*((word32) sp_n - 6)).u0 = 0x1E;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem733[ss:sp_n + -2:word16] = Mem717[ds_n:10721:word16];
 				Mem736[ss:sp_n + -4:word16] = Mem733[ds_n:10719:word16];
 				ss->*((word32) sp_n - 6) = ax_n;
 				Eq_n ds_n;
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 				Mem754[ss:sp_n + -2:word16] = Mem739[ds_n:10721:word16];
 				Mem757[ss:sp_n + -4:word16] = Mem754[ds_n:10719:word16];
 				(ss->*((word32) sp_n - 6)).u0 = 0x00;
@@ -6630,10 +6655,10 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 				word16 dx_n;
 				word16 bx_n;
 				Eq_n ds_n;
-				fn0800-401E(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
+				fn0800-401E(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out cx_n, out dx_n, out bx_n, out ds_n);
 				(ss->*((word32) sp_n - 2)).u0 = 0x00;
 				(ss->*((word32) sp_n - 4)).u0 = 0x00;
-				(ss->*((word32) sp_n - 6)).u5 = (word32) ax_n + 32;
+				(ss->*((word32) sp_n - 6)).u4 = (word32) ax_n + 32;
 				Mem791[ss:sp_n + -8:word16] = Mem788[ds_n:0x29E5:word16];
 				Mem794[ss:sp_n + -0x0A:word16] = Mem791[ds_n:0x29E3:word16];
 				word16 cx_n;
@@ -6646,7 +6671,7 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 					Eq_n ax_n;
 					byte ch_n;
 					word16 di_n;
-					ax_n.u3 = (uint16) (byte) fn0800-3DCF(ds_n, ss->*((word32) sp_n - 4), out ch_n, out di_n, out ds_n);
+					ax_n.u2 = (uint16) (byte) fn0800-3DCF(ds_n, ss->*((word32) sp_n - 4), out ch_n, out di_n, out ds_n);
 					di_n = ax_n;
 					if (ax_n != 0x00)
 					{
@@ -6666,16 +6691,16 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 							byte ch_n;
 							word16 di_n;
 							Eq_n ds_n;
-							si_n.u5 += (uint16) (byte) fn0800-3DCF(ds_n, ss->*((word32) sp_n - 4), out ch_n, out di_n, out ds_n);
+							si_n.u4 += (uint16) (byte) fn0800-3DCF(ds_n, ss->*((word32) sp_n - 4), out ch_n, out di_n, out ds_n);
 							Mem903[ss:sp_n + -2:word16] = Mem882[ds_n:10721:word16];
 							Mem906[ss:sp_n + -4:word16] = Mem903[ds_n:10719:word16];
 							ss->*((word32) sp_n - 6) = si_n;
 							Eq_n ds_n;
-							fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+							fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 							Mem924[ss:sp_n + -2:word16] = Mem908[ds_n:10721:word16];
 							Mem927[ss:sp_n + -4:word16] = Mem924[ds_n:10719:word16];
 							ss->*((word32) sp_n - 6) = ax_n;
-							di_n = fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+							di_n = fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 						}
 					}
 				} while (di_n != 0x00);
@@ -6741,8 +6766,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 					fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
 					Mem1202[ss:sp_n + -2:word16] = Mem1187[ds_n:0x29E5:word16];
 					Mem1205[ss:sp_n + -4:word16] = Mem1202[ds_n:0x29E3:word16];
-					ui32 dx_ax_n = fn0800-4194(ds_n, ss->*((word32) sp_n - 4)) - ((ss->*bp_n).tFFFFFFFC).u5;
-					(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+					ui32 dx_ax_n = fn0800-4194(ds_n, ss->*((word32) sp_n - 4)) - ((ss->*bp_n).tFFFFFFFC).u4;
+					(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 					ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
 					Mem1228[ss:sp_n + -6:word16] = Mem1225[ds_n:10721:word16];
 					Mem1231[ss:sp_n + -8:word16] = Mem1228[ds_n:10719:word16];
@@ -6767,22 +6792,22 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dsOut)
 					Mem1316[ss:sp_n + -4:word16] = Mem1313[ds_n:10719:word16];
 					ss->*((word32) sp_n - 6) = di_n & 0x01FF;
 					Eq_n ds_n;
-					fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+					fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 					Mem1335[ss:sp_n + -2:word16] = Mem1319[ds_n:10721:word16];
 					Mem1338[ss:sp_n + -4:word16] = Mem1335[ds_n:10719:word16];
 					(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFF6.u0;
 					Eq_n ds_n;
-					fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+					fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 					Mem1358[ss:sp_n + -2:word16] = Mem1342[ds_n:10721:word16];
 					Mem1361[ss:sp_n + -4:word16] = Mem1358[ds_n:10719:word16];
 					(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFF4.u0;
 					Eq_n ds_n;
-					fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+					fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 					Mem1380[ss:sp_n + -2:word16] = Mem1364[ds_n:10721:word16];
 					Mem1383[ss:sp_n + -4:word16] = Mem1380[ds_n:10719:word16];
 					(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFF2.u0;
 					Eq_n ds_n;
-					fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
+					fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
 					dsOut = ds_n;
 					return 0x00;
 				}
@@ -6852,14 +6877,14 @@ Eq_n fn0800-4BB1(Eq_n ds, union Eq_n & dsOut)
 		selector ss;
 		Mem117[ss:sp_n + 0x0A:word16] = Mem99[ds_n:10721:word16];
 		Mem120[ss:sp_n + 0x08:word16] = Mem117[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0006.u0 = 0x00;
-		(ss->*sp_n.u7).t0004.u0 = 0x00;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u5);
+		(ss->*sp_n.u6).t0006.u0 = 0x00;
+		(ss->*((word32) sp_n + 4)).u0 = 0x00;
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u4);
 		Mem143[ss:sp_n + 0x0A:word16] = Mem128[ds_n:10721:word16];
 		Mem146[ss:sp_n + 0x08:word16] = Mem143[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0006.u0 = 0x00;
-		(ss->*sp_n.u7).t0004.u0 = 0x00;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u5);
+		(ss->*sp_n.u6).t0006.u0 = 0x00;
+		(ss->*((word32) sp_n + 4)).u0 = 0x00;
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u4);
 		Mem170[ss:sp_n + 0x0A:word16] = Mem154[ds_n:10721:word16];
 		Mem173[ss:sp_n + 0x08:word16] = Mem170[ds_n:10719:word16];
 		Mem176[ss:sp_n + 0x06:word16] = Mem173[ds_n:0x29E5:word16];
@@ -6867,12 +6892,12 @@ Eq_n fn0800-4BB1(Eq_n ds, union Eq_n & dsOut)
 		word16 cx_n;
 		word16 di_n;
 		Eq_n ds_n;
-		(ss->*sp_n.u7).t0006.u0 = (wchar_t) fn0800-3E27(ds_n, (ss->*sp_n.u7).t0004.u5, out cx_n, out di_n, out ds_n);
+		(ss->*sp_n.u6).t0006.u0 = (wchar_t) fn0800-3E27(ds_n, ss->*((word32) sp_n + 4), out cx_n, out di_n, out ds_n);
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0006.u1, (ss->*sp_n.u7).t0008.u5, out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0006.u1, (ss->*sp_n.u6).t0008.u4, out cx_n, out dx_n, out bx_n, out ds_n);
 		Eq_n ax_n = fn0800-5374(ds_n, out bp_n, out ds_n);
 		dsOut = ds_n;
 		return ax_n;
@@ -6914,7 +6939,7 @@ word16 fn0800-4C55(Eq_n ds, union Eq_n & dsOut)
 			dx_ax_n = fn0800-3E5D(ds_n, Mem66[ds_n:0x29E3:word32], out ds_n);
 			Eq_n ax_n = (word16) dx_ax_n;
 			Eq_n dx_n;
-			dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+			dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 			ds_n = fn0800-409C(ds_n, ax_n, dx_n, Mem92[ds_n:10719:word32]);
 			Eq_n dwLoc0A_n = dx_ax_n;
 			while (true)
@@ -6962,26 +6987,26 @@ word16 fn0800-4C55(Eq_n ds, union Eq_n & dsOut)
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
 		selector ss;
-		(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+		(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 		ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
 		Mem520[ss:sp_n + -6:word16] = Mem517[ds_n:0x29E5:word16];
 		Mem523[ss:sp_n + -8:word16] = Mem520[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), (ss->*sp_n.u7).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), (ss->*sp_n.u6).t0000.u0, out cx_n);
 		Mem538[ss:sp_n + 0x00:word16] = Mem523[ds_n:0x29E5:word16];
 		Mem541[ss:sp_n + -2:word16] = Mem538[ds_n:0x29E3:word16];
 		Eq_n dx_ax_n = fn0800_AD2F(ds_n, ss->*((word32) sp_n - 2));
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) (word16) dx_ax_n;
-		(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) (word16) dx_ax_n;
+		(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 		Mem559[ss:sp_n + -4:word16] = Mem556[ds_n:0x29E5:word16];
 		Mem562[ss:sp_n + -6:word16] = Mem559[ds_n:0x29E3:word16];
 		Eq_n dx_ax_n = fn0800-4194(ds_n, ss->*((word32) sp_n - 6));
 		Eq_n ax_n = (word16) dx_ax_n;
 		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+		dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 		Eq_n bx_n = ss->*((word32) sp_n - 2);
 		Eq_n dx_n;
-		dx_n.u0 = (ss->*sp_n.u7).t0000.u0;
+		dx_n.u0 = (ss->*sp_n.u6).t0000.u0;
 		if (bx_n >= dx_n && (bx_n != dx_n || dx_n >= ax_n))
 		{
 			dsOut = ds_n;
@@ -6995,7 +7020,7 @@ word16 fn0800-4C55(Eq_n ds, union Eq_n & dsOut)
 			Mem621[ss:sp_n + 0x00:word16] = Mem618[ds_n:10721:word16];
 			Mem624[ss:sp_n + -2:word16] = Mem621[ds_n:10719:word16];
 			Eq_n dx_n;
-			dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+			dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 			ss->*((word32) sp_n - 4) = dx_n;
 			Eq_n ax_n = (word16) dx_ax_n;
 			ss->*((word32) sp_n - 6) = ax_n;
@@ -7056,11 +7081,11 @@ void fn0800-4F2C(Eq_n ds)
 	Mem48[ss:sp_n + -4:word16] = Mem45[ds_n:0x29E3:word16];
 	Eq_n dx_ax_n = fn0800_AD2F(ds_n, ss->*((word32) sp_n - 4));
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	Eq_n ax_n = (word16) dx_ax_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	if (dx_ax_n > 0x12)
 	{
 		Mem72[ss:sp_n + -2:word16] = Mem60[ds_n:0x29E5:word16];
@@ -7089,26 +7114,26 @@ void fn0800-4F2C(Eq_n ds)
 		int32 dx_ax_n = fn0800-8CAA(ax_n, 0x02, dx_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+		(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 		ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) dx_n;
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) dx_n;
 		ss->*((word32) sp_n - 2) = ax_n;
 		Mem205[ss:sp_n + -4:word16] = Mem202[ds_n:0x29E5:word16];
 		Mem208[ss:sp_n + -6:word16] = Mem205[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) dx_n;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ax_n;
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) dx_n;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ax_n;
 		Mem229[ss:sp_n + -2:word16] = Mem226[ds_n:10721:word16];
 		Mem232[ss:sp_n + -4:word16] = Mem229[ds_n:10719:word16];
 		Mem235[ss:sp_n + -6:word16] = Mem232[ds_n:0x29E5:word16];
 		Mem238[ss:sp_n + -8:word16] = Mem235[ds_n:0x29E3:word16];
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0, out si_n, out ds_n);
-		word16 sp_n = (word16) &sp_n.u7->t000C.u0;
+		struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0, out si_n, out ds_n);
+		word16 sp_n = (word16) &sp_n.u6->t000C.u0;
 		Eq_n ds_n;
 		while (true)
 		{
@@ -7116,7 +7141,7 @@ void fn0800-4F2C(Eq_n ds)
 			Eq_n ds_n;
 			Mem261[ss:sp_n + 0x00:word16] = Mem256[ds_n:0x29E5:word16];
 			Mem264[ss:sp_n + -2:word16] = Mem261[ds_n:0x29E3:word16];
-			int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+			int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 			word16 ax_n = (word16) dx_ax_n;
 			if (SLICE(dx_ax_n, word16, 16) != 0x00 || ax_n != 1004)
 				break;
@@ -7126,12 +7151,12 @@ void fn0800-4F2C(Eq_n ds)
 			Mem317[ss:sp_n + -6:word16] = Mem314[ds_n:0x29E5:word16];
 			Mem320[ss:sp_n + -8:word16] = Mem317[ds_n:0x29E3:word16];
 			word16 cx_n;
-			fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+			fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 			Mem334[ss:sp_n + 0x00:word16] = Mem320[ds_n:10721:word16];
 			Mem337[ss:sp_n + -2:word16] = Mem334[ds_n:10719:word16];
 			(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
 			(ss->*sp_n).tFFFFFFFA.u0 = 1004;
-			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 			struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 			struct Eq_n Eq_n::* bp_n;
 			do
@@ -7140,7 +7165,7 @@ void fn0800-4F2C(Eq_n ds)
 				Eq_n ds_n;
 				Mem366[ss:sp_n + 0x00:word16] = Mem361[ds_n:0x29E5:word16];
 				Mem369[ss:sp_n + -2:word16] = Mem366[ds_n:0x29E3:word16];
-				Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+				Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 				struct Eq_n Eq_n::* bp_n;
 				(ss->*bp_n).tFFFFFFFC.u0 = SLICE(dx_ax_n, word16, 16);
 				Eq_n ax_n = (word16) dx_ax_n;
@@ -7149,13 +7174,13 @@ void fn0800-4F2C(Eq_n ds)
 				Mem391[ss:sp_n + -2:word16] = Mem388[ds_n:10719:word16];
 				(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 				(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ax_n;
-				Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+				Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 				struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 				if (((ss->*bp_n).tFFFFFFFA.u0 | ((ss->*bp_n).tFFFFFFFC).u0) != 0x00)
 				{
 					Mem417[ss:sp_n + 0x00:word16] = Mem396[ds_n:0x29E5:word16];
 					Mem420[ss:sp_n + -2:word16] = Mem417[ds_n:0x29E3:word16];
-					Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+					Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 					(ss->*bp_n).tFFFFFFF8.u0 = SLICE(dx_ax_n - 0x01, word16, 16);
 					word16 ax_n = (word16) dx_ax_n;
 					(ss->*bp_n).wFFFFFFF6 = ax_n - 0x01;
@@ -7163,11 +7188,11 @@ void fn0800-4F2C(Eq_n ds)
 					Mem445[ss:sp_n + -2:word16] = Mem442[ds_n:10719:word16];
 					(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFF8.u0;
 					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (ax_n - 0x01);
-					Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+					Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 					Eq_n dx_ax_n = fn0800-8C69((ss->*bp_n).tFFFFFFFA.u0, 0x02, (ss->*bp_n).tFFFFFFFC.u0);
 					Eq_n sp_n;
 					sp_n.u0 = <invalid>;
-					(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+					(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 					ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
 					Mem482[ss:sp_n + -6:word16] = Mem479[ds_n:10721:word16];
 					Mem485[ss:sp_n + -8:word16] = Mem482[ds_n:10719:word16];
@@ -7176,7 +7201,7 @@ void fn0800-4F2C(Eq_n ds)
 					Eq_n sp_n;
 					sp_n.u0 = <invalid>;
 					struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), out si_n, out ds_n);
-					word16 sp_n = (word16) &sp_n.u7->t000C.u0;
+					word16 sp_n = (word16) &sp_n.u6->t000C.u0;
 				}
 			} while (((ss->*bp_n).wFFFFFFFA | (ss->*bp_n).wFFFFFFFC) != 0x00);
 		}
@@ -7189,34 +7214,34 @@ void fn0800-4F2C(Eq_n ds)
 		int32 dx_ax_n = fn0800-8CAA(wLoc18_n, 0x02, wLoc16_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+		(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 		ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem554[ss:sp_n + 0x02:word16] = Mem538[ds_n:10721:word16];
 		Mem557[ss:sp_n + 0x00:word16] = Mem554[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
+		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
 		Mem578[ss:sp_n + 0x00:word16] = Mem575[ds_n:20110:word16];
 		Mem581[ss:sp_n + -2:word16] = Mem578[ds_n:20108:word16];
 		Mem584[ss:sp_n + -4:word16] = Mem581[ds_n:10721:word16];
 		Mem587[ss:sp_n + -6:word16] = Mem584[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 		Mem602[ss:sp_n + 0x02:word16] = Mem587[ds_n:10721:word16];
 		Mem605[ss:sp_n + 0x00:word16] = Mem602[ds_n:10719:word16];
 		Eq_n wLoc0E_n;
 		ss->*((word32) sp_n - 2) = wLoc0E_n;
 		Eq_n wLoc10_n;
 		ss->*((word32) sp_n - 4) = wLoc10_n;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem629[ds_n:20108:ui32] = Mem625[ds_n:20108:ui32] + 0x04;
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
-		(ss->*sp_n.u7).t0000.u0 = SLICE(dx_ax_n, word16, 16);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
+		(ss->*sp_n.u6).t0000.u0 = SLICE(dx_ax_n, word16, 16);
 		ss->*((word32) sp_n - 2) = (word16) dx_ax_n;
 		Mem644[ss:sp_n + -4:word16] = Mem641[ds_n:10721:word16];
 		Mem647[ss:sp_n + -6:word16] = Mem644[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 		struct Eq_n Eq_n::* bp_n;
 		Eq_n ds_n;
 		(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) fn0800-5374(ds_n, out bp_n, out ds_n);
@@ -7224,7 +7249,7 @@ void fn0800-4F2C(Eq_n ds)
 		sp_n.u0 = <invalid>;
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
 		ui32 ax_dx_n = (ss->*bp_n).dwFFFFFFE6 + (ss->*bp_n).dwFFFFFFEE;
-		(ss->*((word32) sp_n - 4)).u5 = SLICE(ax_dx_n, word16, 16);
+		(ss->*((word32) sp_n - 4)).u4 = SLICE(ax_dx_n, word16, 16);
 		ss->*((word32) sp_n - 6) = (word16) ax_dx_n;
 		Mem691[ss:sp_n + -8:word16] = Mem688[ds_n:0x29E5:word16];
 		Mem694[ss:sp_n + -0x0A:word16] = Mem691[ds_n:0x29E3:word16];
@@ -7274,15 +7299,15 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 		selector ss;
 		Mem20[ss:sp_n + 0x00:word16] = Mem15[ds:0x29E5:word16];
 		Mem23[ss:sp_n + -2:word16] = Mem20[ds:0x29E3:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = (wchar_t) (word16) dx_ax_n;
 		(ss->*sp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 		Mem41[ss:sp_n + -4:word16] = Mem38[ds:0x29E5:word16];
 		Mem44[ss:sp_n + -6:word16] = Mem41[ds:0x29E3:word16];
-		Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFA.u5);
+		Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFA.u4);
 		Eq_n ax_n = (word16) dx_ax_n;
 		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+		dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 		Eq_n bx_n;
 		bx_n.u0 = (ss->*sp_n).tFFFFFFFE.u0;
 		Eq_n dx_n;
@@ -7291,7 +7316,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 			break;
 		Mem84[ss:sp_n + 0x00:word16] = Mem44[ds:0x29E5:word16];
 		Mem87[ss:sp_n + -2:word16] = Mem84[ds:0x29E3:word16];
-		word16 ax_n = fn0800-3E9A(ds, (ss->*sp_n).tFFFFFFFE.u5, out ds);
+		word16 ax_n = fn0800-3E9A(ds, (ss->*sp_n).tFFFFFFFE.u4, out ds);
 		if (ax_n != 0x00)
 		{
 			if (ax_n != 0x01)
@@ -7309,24 +7334,24 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 						byte ch_n;
 						word16 di_n;
 						Eq_n ds_n;
-						(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u5, out ch_n, out di_n, out ds_n);
+						(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u4, out ch_n, out di_n, out ds_n);
 						word16 cx_n;
 						word16 dx_n;
 						word16 bx_n;
 						word16 di_n;
-						fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds);
+						fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds);
 					}
 				}
 				else
 				{
 					Mem419[ss:sp_n + 0x00:word16] = Mem87[ds:0x29E5:word16];
 					Mem422[ss:sp_n + -2:word16] = Mem419[ds:0x29E3:word16];
-					Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u5);
+					Eq_n dx_ax_n = fn0800-4194(ds, (ss->*sp_n).tFFFFFFFE.u4);
 					(ss->*sp_n).t0000.u0 = (wchar_t) (word16) dx_ax_n;
 					(ss->*sp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 					Mem441[ss:sp_n + -4:word16] = Mem438[ds:0x29E5:word16];
 					Mem444[ss:sp_n + -6:word16] = Mem441[ds:0x29E3:word16];
-					ui32 bx_cx_n = SEQ((ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0) - fn0800_AD2F(ds, ((ss->*sp_n).tFFFFFFFA).u5);
+					ui32 bx_cx_n = SEQ((ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0) - fn0800_AD2F(ds, ((ss->*sp_n).tFFFFFFFA).u4);
 					(ss->*sp_n).t0000.u0 = SLICE(bx_cx_n, word16, 16);
 					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (word16) bx_cx_n;
 					Mem470[ss:sp_n + -4:word16] = Mem467[ds:10721:word16];
@@ -7337,7 +7362,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 					sp_n.u0 = <invalid>;
 					word16 si_n;
 					bp_n = fn0800-3B0A(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out si_n, out ds);
-					sp_n.u5 = &sp_n.u7->t000C.u0;
+					sp_n.u4 = &sp_n.u6->t000C.u0;
 				}
 				continue;
 			}
@@ -7345,23 +7370,23 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 			Mem153[ss:sp_n + -2:word16] = Mem150[ds:10719:word16];
 			Mem156[ss:sp_n + -4:word16] = Mem153[ds:0x29E5:word16];
 			Mem159[ss:sp_n + -6:word16] = Mem156[ds:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-3E5D(ds, (ss->*sp_n).tFFFFFFFA.u5, out ds_n);
+			Eq_n dx_ax_n = fn0800-3E5D(ds, (ss->*sp_n).tFFFFFFFA.u4, out ds_n);
 			(ss->*sp_n).tFFFFFFFC.u0 = SLICE(dx_ax_n, word16, 16);
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (word16) dx_ax_n;
-			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 			Mem192[ss:sp_n + 0x00:word16] = Mem176[ds_n:0x29E5:word16];
 			Mem195[ss:sp_n + -2:word16] = Mem192[ds_n:0x29E3:word16];
-			Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 			(ss->*bp_n).tFFFFFFFE.u0 = 0x00;
 			(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 			Mem214[ss:sp_n + 0x00:word16] = Mem211[ds_n:10721:word16];
 			Mem217[ss:sp_n + -2:word16] = Mem214[ds_n:10719:word16];
 			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 			Eq_n ds_n;
-			fn0800-40BF(ds_n, (ss->*sp_n).t0004.u1, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			fn0800-40BF(ds_n, (ss->*sp_n).t0004.u1, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			Mem235[ss:sp_n + 0x00:word16] = Mem219[ds_n:0x29E5:word16];
 			Mem238[ss:sp_n + -2:word16] = Mem235[ds_n:0x29E3:word16];
-			int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+			int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 			int32 dx_ax_n = fn0800-8CAA((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16));
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
@@ -7378,7 +7403,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 				sp_n.u0 = <invalid>;
 				word16 si_n;
 				bp_n = fn0800-3B0A(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), out si_n, out ds);
-				sp_n.u5 = &sp_n.u7->t000C.u0;
+				sp_n.u4 = &sp_n.u6->t000C.u0;
 				continue;
 			}
 			Eq_n ax_n = fn0800-5374(ds_n, out bp_n, out ds_n);
@@ -7389,7 +7414,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 				(ss->*((word32) sp_n - 2)).u0 = 0x01;
 				Eq_n dx_n = Mem328[ds_n:0x2A07:word16];
 				Mem341[ss:sp_n + -4:word16] = -SLICE(SEQ(Mem328[ds_n:0x2A09:word16], dx_n) + 0x02, word16, 16) - (dx_n != ~0x01);
-				ss->*((word32) sp_n - 6) = -((word16) dx_n.u3 + 2);
+				ss->*((word32) sp_n - 6) = -((word16) dx_n.u2 + 2);
 				Mem346[ss:sp_n + -8:word16] = Mem343[ds_n:10721:word16];
 				Mem349[ss:sp_n + -0x0A:word16] = Mem346[ds_n:10719:word16];
 				word16 cx_n;
@@ -7397,7 +7422,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 				Mem364[ss:sp_n + -2:word16] = Mem349[ds_n:10721:word16];
 				Mem367[ss:sp_n + -4:word16] = Mem364[ds_n:10719:word16];
 				Mem370[ss:sp_n + -6:word16] = Mem367[ds_n:0x2A07:word16];
-				fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds);
+				fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds);
 				(ss->*((word32) sp_n - 2)).u0 = 0x01;
 				Mem389[ss:sp_n + -4:word16] = Mem386[ds:0x2A09:word16];
 				Mem392[ss:sp_n + -6:word16] = Mem389[ds:0x2A07:word16];
@@ -7421,13 +7446,13 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dsOut)
 		byte ch_n;
 		word16 di_n;
 		Eq_n ds_n;
-		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u5, out ch_n, out di_n, out ds_n);
+		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u4, out ch_n, out di_n, out ds_n);
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		word16 di_n;
-		fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds);
-		sp_n.u5 = (char *) &sp_n->t0000 + 2;
+		fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds);
+		sp_n.u4 = (char *) &sp_n->t0000 + 2;
 	}
 	dsOut = ds;
 	return 0x00;
@@ -7488,18 +7513,18 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & bpOut, union Eq_n & dsOut)
 		Eq_n ds_n;
 		if (fn0800-2D0A(ds_n, out bp_n, out ds_n) == Mem170[ds_n:11849:word16])
 		{
-			(ss->*sp_n.u7).t0006.u0 = 0x01;
-			(ss->*sp_n.u7).t0004.u0 = 0x0F;
-			Eq_n ax_n = fn0800-4311(ds_n, (ss->*sp_n.u7).t0004.u5, out dx_n, out bp_n, out si_n, out ds_n);
+			(ss->*sp_n.u6).t0006.u0 = 0x01;
+			(ss->*((word32) sp_n + 4)).u0 = 0x0F;
+			Eq_n ax_n = fn0800-4311(ds_n, ss->*((word32) sp_n + 4), out dx_n, out bp_n, out si_n, out ds_n);
 			(ss->*bp_n).wFFFFFFFA = dx_n;
 			(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ax_n;
 			Mem215[ds_n:11891:word16] = dx_n + 0x01;
 			Mem216[ds_n:11889:word16] = 0x00;
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			(ss->*sp_n.u7).t0002.u0 = 0x01;
-			(ss->*sp_n.u7).t0000.u0 = 0x0F;
-			Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u6, out dx_n, out bp_n, out si_n, out ds_n);
+			(ss->*sp_n.u6).t0002.u0 = 0x01;
+			(ss->*sp_n.u6).t0000.u0 = 0x0F;
+			Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u5, out dx_n, out bp_n, out si_n, out ds_n);
 			(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 			(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 			Mem241[ds_n:11867:word16] = dx_n + 0x01;
@@ -7519,21 +7544,21 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & bpOut, union Eq_n & dsOut)
 			Mem264[ss:bp_n + -0x0E:word16] = Mem262[ds_n:11855:word16];
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			(ss->*sp_n.u7).t0002.u0 = 0x01;
+			(ss->*sp_n.u6).t0002.u0 = 0x01;
 			word16 si_n;
 			Eq_n ds_n;
-			if (fn0800-5C1A(ds_n, (ss->*sp_n.u7).t0002.u0, out si_n, out ds_n) != 0x00 && (Mem267[ds_n:0x2A25:word16] != 0x02 && Mem267[ds_n:0x2A25:word16] != 0x07))
+			if (fn0800-5C1A(ds_n, (ss->*sp_n.u6).t0002.u0, out si_n, out ds_n) != 0x00 && (Mem267[ds_n:0x2A25:word16] != 0x02 && Mem267[ds_n:0x2A25:word16] != 0x07))
 				si_n = 0x0A;
 			word16 si_n = si_n;
 			if (si_n == 0x00)
 			{
-				(ss->*sp_n.u7).t0002.u0 = 0x01;
-				if (fn0800-5C1A(ds_n, (ss->*sp_n.u7).t0002.u0, out si_n, out ds_n) != 0x00)
+				(ss->*sp_n.u6).t0002.u0 = 0x01;
+				if (fn0800-5C1A(ds_n, (ss->*sp_n.u6).t0002.u0, out si_n, out ds_n) != 0x00)
 				{
 					if (Mem301[ds_n:0x2A23:word16] != 0x01)
 					{
-						(ss->*sp_n.u7).t0002.u0 = 0x10;
-						Eq_n ax_n = fn0800-5C1A(ds_n, (ss->*sp_n.u7).t0002.u0, out si_n, out ds_n);
+						(ss->*sp_n.u6).t0002.u0 = 0x10;
+						Eq_n ax_n = fn0800-5C1A(ds_n, (ss->*sp_n.u6).t0002.u0, out si_n, out ds_n);
 						if (Mem326[ds_n:0x2A25:word16] == 0x02 && Mem326[ds_n:11855:word16] == 0x00)
 							Mem345[ds_n:11855:word16] = ax_n;
 						if (Mem347[ds_n:11855:word16] != ax_n && Mem347[ds_n:11855:word16] != 0x00)
@@ -7558,29 +7583,29 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & bpOut, union Eq_n & dsOut)
 					si_n = fn0800-55E8(ds_n, out ds_n);
 			}
 			Mem413[ds_n:11855:word16] = Mem368[ss:bp_n + -0x0E:word16];
-			(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFA.u0;
-			(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
+			(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFA.u0;
+			(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF8.u0;
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			Eq_n ds_n;
-			fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-			(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-			(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+			fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+			(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+			(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			Eq_n ds_n;
-			fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+			fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
 			Mem458[ds_n:0x2A03:ui32] = Mem454[ds_n:0x2A03:ui32] + 0x12;
-			(ss->*sp_n.u7).t0002.u0 = 0x00;
+			(ss->*sp_n.u6).t0002.u0 = 0x00;
 			ui32 ax_dx_n = Mem461[ss:bp_n + -0x0C:ui32] + Mem461[ds_n:0x2A03:ui32];
-			(ss->*sp_n.u7).t0000.u0 = SLICE(ax_dx_n, word16, 16);
+			(ss->*sp_n.u6).t0000.u0 = SLICE(ax_dx_n, word16, 16);
 			ss->*((word32) sp_n - 2) = (word16) ax_dx_n;
 			Mem475[ss:sp_n + -4:word16] = Mem472[ds_n:0x29E5:word16];
 			Mem478[ss:sp_n + -6:word16] = Mem475[ds_n:0x29E3:word16];
 			word16 cx_n;
-			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 			if (si_n == 0x00)
 			{
 				if (Mem478[ds_n:11853:word16] == Mem478[ds_n:11851:word16])
@@ -7653,7 +7678,7 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 		(ss->*sp_n).tFFFFFFFC.u0 = 10127;
 		Eq_n ds_n = fn0800-5A24(ds_n, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0);
 		(ss->*sp_n).t0000.u0 = 0x10;
-		sp_n.u5 = (char *) &sp_n->t0000 + 2;
+		sp_n.u4 = (char *) &sp_n->t0000 + 2;
 		Eq_n dwLoc06_n;
 		word16 si_n;
 		word16 di_n;
@@ -7667,10 +7692,10 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 			struct Eq_n Eq_n::* sp_n = sp_n - 2;
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds;
 			(ss->*sp_n).tFFFFFFFE.u0 = 10511;
-			Eq_n ax_n = fn0800-5A8D(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u10.u1, out ds);
+			Eq_n ax_n = fn0800-5A8D(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u9.u1, out ds);
 			Mem193[ds:11847:word16] = ax_n;
 			Mem199[ds:0x29FF:ui32] = Mem195[ds:0x29FF:ui32] + CONVERT(ax_n, uint16, uint32);
-			sp_n.u5 = (char *) &sp_n->t0000 + 2;
+			sp_n.u4 = (char *) &sp_n->t0000 + 2;
 			if (Mem199[ds:11847:word16] != 0x00)
 			{
 				while (true)
@@ -7690,16 +7715,16 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 					Mem254[ds:11855:word16] = Mem206[ds:11855:word16] >>u 0x01;
 				Eq_n es_bx_n = Mem264[ds:11885:segptr32];
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
-				(ss->*sp_n).t0000.u0 = (wchar_t) (uint16) es_bx_n.u7->t0002.u1;
-				uint16 bx_n = (uint16) *es_bx_n.u5;
-				(ss->*sp_n).tFFFFFFFE.u5 = (char *) (SEQ((ss->*sp_n).t0000.u0, 0x00) + (uint32) ((uint16) (es_bx_n.u7)->b0001 << 0x08));
+				(ss->*sp_n).t0000.u0 = (wchar_t) (uint16) es_bx_n.u6->t0002.u1;
+				uint16 bx_n = (uint16) *es_bx_n.u4;
+				(ss->*sp_n).tFFFFFFFE.u4 = (char *) (SEQ((ss->*sp_n).t0000.u0, 0x00) + (uint32) ((uint16) (es_bx_n.u6)->b0001 << 0x08));
 				Eq_n dx_ax_n = SEQ((ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0) + (uint32) bx_n;
 				Eq_n dx_ax_n = fn0800-8C69((word16) dx_ax_n, Mem294[ds:11845:byte], SLICE(dx_ax_n, word16, 16));
 				Eq_n sp_n;
 				sp_n.u0 = <invalid>;
 				ss->*((word32) sp_n - 2) = (word16) dx_ax_n;
 				word16 ax_n = 0x01 << Mem320[ds:11845:byte];
-				(ss->*((word32) sp_n - 4)).u5 = SLICE(dx_ax_n, word16, 16);
+				(ss->*((word32) sp_n - 4)).u4 = SLICE(dx_ax_n, word16, 16);
 				uint32 ax_dx_n = SEQ(Mem326[ss:sp_n + -4:word16], Mem326[ss:sp_n + -2:word16]) + CONVERT(Mem326[ds:10747:word16] & ax_n - 0x01, uint16, uint32);
 				Mem343[ds:0x29FD:word16] = SLICE(ax_dx_n, word16, 16);
 				Mem344[ds:10747:word16] = SLICE(ax_dx_n, word16, 0);
@@ -7711,10 +7736,10 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds;
 			(ss->*sp_n).tFFFFFFFE.u0 = 10319;
 			Eq_n ds_n;
-			Mem377[ds_n:11819:word16] = fn0800-5A8D(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u10.u1, out ds_n) + 0x01;
+			Mem377[ds_n:11819:word16] = fn0800-5A8D(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u9.u1, out ds_n) + 0x01;
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = 10127;
-			Eq_n ax_n = fn0800-5A8D(ds_n, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u10.u1, out ds);
+			Eq_n ax_n = fn0800-5A8D(ds_n, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u9.u1, out ds);
 			Mem395[ds:11817:word16] = ax_n + 0x02;
 			Mem401[ds:0x29FF:ui32] = Mem397[ds:0x29FF:ui32] + CONVERT(ax_n + 0x02, uint16, uint32);
 			while (true)
@@ -7743,7 +7768,7 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 	(ss->*sp_n).tFFFFFFF6.u0 = (wchar_t) ax_n;
 	word16 si_n;
 	struct Eq_n * ds_n;
-	fn0800-4152(ds, (ss->*sp_n).tFFFFFFF6.u5, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+	fn0800-4152(ds, (ss->*sp_n).tFFFFFFF6.u4, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 	dsOut = ds_n;
 	return 0x00;
 }
@@ -7944,15 +7969,15 @@ Eq_n fn0800-5A8D(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, union Eq_n & dsOut)
 	while (true)
 	{
 		byte bLoc04_n = (byte) wLoc04_n;
-		if ((psegArg04->*di_n.u7).t000A.u0 != 0x00)
+		if ((psegArg04->*di_n.u6).t000A.u0 != 0x00)
 		{
 			cui16 cx_n = Mem21[ds:10747:word16] & (0x01 << Mem21[psegArg04:di_n + 0x0A:byte]) - 0x01;
-			if ((psegArg04->*di_n.u7).t0008.u0 == 0x00 && cx_n == ((psegArg04->*di_n.u7).t0006).u0)
+			if ((psegArg04->*di_n.u6).t0008.u0 == 0x00 && cx_n == ((psegArg04->*di_n.u6).t0006).u0)
 			{
 				word16 si_n;
 				word16 di_n;
 				Eq_n ds_n;
-				fn0800-5C39(ds, (wArg02.u5 + wLoc04_n *s 0x0C)[0x0A], out si_n, out di_n, out ds_n);
+				fn0800-5C39(ds, (wArg02.u4 + wLoc04_n *s 0x0C)[0x0A], out si_n, out di_n, out ds_n);
 				if (wLoc04_n >= 0x02)
 				{
 					Eq_n ax_n = fn0800-5C39(ds_n, wLoc04_n - 0x01, out si_n, out di_n, out ds_n) | 0x01 << bLoc04_n - 0x01;
@@ -7966,7 +7991,7 @@ Eq_n fn0800-5A8D(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, union Eq_n & dsOut)
 				}
 			}
 		}
-		di_n.u5 = &di_n.u7->t000C.u0;
+		di_n.u4 = &di_n.u6->t000C.u0;
 		wLoc04_n = (word16) wLoc04_n + 1;
 	}
 }
@@ -7980,60 +8005,6 @@ Eq_n fn0800-5A8D(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, union Eq_n & dsOut)
 //      fn0800-5CD9
 word16 fn0800-5B15(Eq_n ds, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
-	struct Eq_n * ax_n = Mem7[ds:11891:word16];
-	byte ah_n = SLICE(ax_n, byte, 8);
-	Eq_n dx_n = Mem7[ds:11889:word16];
-	Eq_n si;
-	ptr16 di;
-	if (ax_n != Mem7[ds:11887:word16] || dx_n + ~0x02 != Mem7[ds:11885:word16])
-	{
-l0800_nC0B:
-		Eq_n es_bx_n = Mem222[ds:11885:segptr32];
-		Mem225[ds:11885:word16] = Mem222[ds:11885:word16] + 0x01;
-		word16 ax_n = SEQ(ah_n, *es_bx_n.u5);
-		siOut = si;
-		diOut = di;
-		dsOut = ds;
-		return ax_n;
-	}
-	uint32 bx_cx_n = fn0800-4194(ds, Mem7[ds:0x29E3:word32]) - fn0800_AD2F(ds, Mem39[ds:0x29E3:word32]);
-	uint32 dx_ax_n;
-	if (bx_cx_n > 0xFFFD)
-		dx_ax_n = 0xFFFD;
-	else
-		dx_ax_n = bx_cx_n;
-	Eq_n v26_n = Mem88[ds:0x29E5:word16];
-	Eq_n v27_n = Mem97[ds:0x29E3:word16];
-	struct Eq_n * ax_n = Mem105[ds:11891:word16];
-	Eq_n dx_n = Mem105[ds:11889:word16];
-	Mem108[ds:11887:word16] = ax_n;
-	Mem109[ds:11885:word16] = dx_n;
-	Eq_n ax_n = (word16) dx_ax_n;
-	word16 si_n;
-	word16 di_n;
-	Eq_n ds_n;
-	fn0800-4110(ds, &(ax_n->*dx_n.u5), ax_n, SLICE(dx_ax_n, word16, 16), SEQ(v26_n, v27_n), out si_n, out di_n, out ds_n);
-	uint32 v30_v29_n = bx_cx_n - dx_ax_n;
-	cup16 v29_n = (word16) v30_v29_n;
-	cup16 v30_n = SLICE(v30_v29_n, word16, 16);
-	uint32 dwLoc06_n = v30_v29_n;
-	if (Test(UGE,false))
-	{
-		if (v30_n > 0x00)
-		{
-l0800_nBC1:
-			dwLoc06_n = 0x02;
-			goto l0800_nBCB;
-		}
-		dwLoc06_n = v30_v29_n;
-		if (v29_n > 0x02)
-			goto l0800_nBC1;
-	}
-l0800_nBCB:
-	fn0800-4110(ds_n, SEQ(Mem167[ds_n:11891:word16], Mem167[ds_n:11889:word16] + ax_n), SLICE(dwLoc06_n, word16, 0), SLICE(dwLoc06_n, word16, 16), Mem151[ds_n:0x29E3:word32], out si, out di, out ds);
-	word16 cx_n;
-	ah_n = SLICE(fn0800_ACB3(ds, Mem202[ds:0x29E3:word32], -dwLoc06_n, 0x01, out cx_n), byte, 8);
-	goto l0800_nC0B;
 }
 
 // 0800:5C1A: Register Eq_n fn0800-5C1A(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 siOut, Register out Eq_n dsOut)
@@ -8096,15 +8067,15 @@ cui16 fn0800-5C39(Eq_n ds, Eq_n wArg02, ptr16 & siOut, ptr16 & diOut, union Eq_n
 		if ((Mem121[ds:10747:word16] & 0x01) != 0x00)
 			di_n |= wLoc08_n;
 		Eq_n ax_n = Mem121[ds:0x29FD:word16];
-		Eq_n dx_n = __rcr<word16,byte>(Mem121[ds:10747:word16], 0x01, SLICE(cond(ax_n >>u 0x01), bool, 1));
+		Eq_n dx_n = __rcr<word16,byte>(Mem121[ds:10747:word16], 0x01, cond(ax_n >>u 0x01) & 0x02);
 		Mem145[ds:0x29FD:word16] = ax_n >>u 0x01;
 		Mem146[ds:10747:word16] = dx_n;
 		Mem153[ds:11845:word16] = Mem150[ds:11845:word16] - 0x01;
 		wLoc08_n <<= 0x01;
 		si_n = si_n - 0x01;
 	}
-	ptr16 di_n = (ptr16) (ss->*sp_n.u7).t0000.u0;
-	siOut = (ptr16) (ss->*sp_n.u7).t0002.u0;
+	ptr16 di_n = (ptr16) (ss->*sp_n.u6).t0000.u0;
+	siOut = (ptr16) (ss->*sp_n.u6).t0002.u0;
 	diOut = di_n;
 	dsOut = ds;
 	return di_n;
@@ -8137,7 +8108,7 @@ ui16 fn0800-5CD9(Eq_n ds, Eq_n wArg02)
 		if ((Mem53[ds:10747:word16] & 0x80) != 0x00)
 			++si_n;
 		Eq_n dx_n = Mem53[ds:10747:word16];
-		Mem73[ds:0x29FD:word16] = __rcl<word16,byte>(Mem53[ds:0x29FD:word16], 0x01, SLICE(cond(dx_n << 0x01), bool, 1));
+		Mem73[ds:0x29FD:word16] = __rcl<word16,byte>(Mem53[ds:0x29FD:word16], 0x01, cond(dx_n << 0x01) & 0x02);
 		Mem74[ds:10747:word16] = dx_n << 0x01;
 		Mem76[ds:11845:word16] = Mem74[ds:11845:word16] - 0x01;
 		di_n = di_n - 0x01;
@@ -8175,35 +8146,6 @@ Eq_n fn0800-5D2F(Eq_n ds, Eq_n bArg02)
 //      fn0800-518F
 cui16 fn0800-5DCE(Eq_n ds, Eq_n dwArg02, union Eq_n & dsOut)
 {
-	Eq_n dx_ax_n = fn0800-4194(ds, dwArg02);
-	cup16 ax_n = (word16) dx_ax_n;
-	word16 dx_n = SLICE(dx_ax_n, word16, 16);
-	cui16 ax_n;
-	if (Test(UGE,false) && (dx_n != 0x00 || ax_n >= 0x0400))
-		ax_n = 0x0400;
-	else
-		ax_n = (word16) fn0800-4194(ds, dwArg02) & ~0x03;
-	cui16 si_n;
-	for (si_n = ax_n; si_n != 0x00; si_n -= 0x02)
-	{
-		word16 cx_n;
-		word16 di_n;
-		if (fn0800-3E27(ds, dwArg02, out cx_n, out di_n, out ds) == 21070)
-		{
-			word16 cx_n;
-			word16 di_n;
-			if ((fn0800-3E27(ds, dwArg02, out cx_n, out di_n, out ds) & 0xFF00) == 0x4300)
-			{
-				word16 cx_n;
-				fn0800_ACB3(ds, dwArg02, ~0x03, 0x01, out cx_n);
-				break;
-			}
-			word16 cx_n;
-			fn0800_ACB3(ds, dwArg02, ~0x01, 0x01, out cx_n);
-		}
-	}
-	dsOut = ds;
-	return si_n;
 }
 
 // 0800:5E64: Register word16 fn0800-5E64(Register Eq_n ds, Register out Eq_n dsOut)
@@ -8211,568 +8153,501 @@ cui16 fn0800-5DCE(Eq_n ds, Eq_n dwArg02, union Eq_n & dsOut)
 //      fn0800-0DE8
 word16 fn0800-5E64(Eq_n ds, union Eq_n & dsOut)
 {
-	Eq_n ds_n;
-	Eq_n ds_n;
-	Eq_n ds_n;
-	word16 si_n;
-	Eq_n ds_n;
-	word16 si_n;
-	word16 cx_n;
-	Eq_n ds_n;
-	word16 di_n;
-	Eq_n ds_n;
-	word16 si_n;
-	Eq_n dx_n;
-	Eq_n ds_n;
-	word16 di_n;
-	mp16 fp;
-	struct Eq_n Eq_n::* bp_n = fp - 2;
-	mp16 sp_n = fp - 0x3E;
-	word16 cx_n = 0x04;
-	if (true)
-		cx_n = 0x03;
-	word16 ax_n = 0x00;
-	Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002202), (uint32) cx_n);
-	if (cmpResult_n != 0x00)
-	{
-		cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-		ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
-	}
-	if (ax_n != 0x00)
-	{
-		cu16 cx_n = 0x04;
-		word16 dx_n = ~0x00;
-		if (false)
-		{
-			cx_n = 0x03;
-			dx_n = 0x00;
-		}
-		uint16 cx_n = cx_n >> 0x01;
-		memcpy(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n *32 0x02);
-		<unknown>* di_n = cx_n * 0x02 + 17009;
-		memcpy(di_n, cx_n * 0x02 + 0x2202, (uint32) SLICE(cond(cx_n), bool, 1));
-		Eq_n di_n = (char *) di_n + (word16) (cx_n < 0x00);
-		word16 cx_n;
-		for (cx_n = dx_n; cx_n != 0x00; --cx_n)
-		{
-			ds->*di_n = 0x00;
-			di_n = (word16) di_n + 1;
-		}
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		bp_n = fn0800-09A3(ds, out ds);
-		sp_n = (mp16) &sp_n.u7->t0008.u0;
-	}
-	Eq_n ax_n = (CONVERT(Mem129[ds:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem129[ds:11894:byte], uint8, uint16);
-	if (Mem129[ds:0x2A09:word16] >u 0x00 || Mem129[ds:0x2A09:word16] == 0x00 && ax_n <u Mem129[ds:0x2A07:word16])
-	{
-		if (Mem129[ds:0x2A0B:word32] >u 0x7FF0)
-		{
-			Mem155[ds:0x2A0D:word16] = 0x00;
-			Mem156[ds:0x2A0B:word16] = 0x7FF0;
-		}
-		struct Eq_n Eq_n::* sp_n = sp_n - 2;
-		selector ss;
-		(ss->*sp_n).t0000.u0 = 0x00;
-		(ss->*sp_n).tFFFFFFFE.u0 = 0x00;
-		(ss->*sp_n).tFFFFFFFC.u0 = 0x02;
-		Mem179[ss:sp_n + -6:word16] = Mem175[ds:0x29E5:word16];
-		Mem182[ss:sp_n + -8:word16] = Mem179[ds:0x29E3:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
-		Mem197[ss:sp_n + 0x00:word16] = Mem182[ds:0x29E5:word16];
-		Mem200[ss:sp_n + -2:word16] = Mem197[ds:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) fn0800-3FAD(ds, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
-		Mem223[ss:sp_n + 0x00:word16] = Mem220[ds_n:0x29E5:word16];
-		Mem226[ss:sp_n + -2:word16] = Mem223[ds_n:0x29E3:word16];
-		Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
-		Eq_n di_n = ax_n;
-		if ((ss->*bp_n).tFFFFFFDE.u0 != 0x00)
-			di_n = ax_n - 0x01;
-		uint32 dx_ax_n = (word32) fn0800-8C69(di_n, 0x09, 0x00) + (uint32) ((ss->*bp_n).tFFFFFFDE).u0;
-		(ss->*bp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
-		(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) (word16) dx_ax_n;
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		if (Mem268[ss:bp_n + -4:word32] >u Mem268[ds_n:0x2A07:word32])
-		{
-			Eq_n dx_n = Mem268[ds_n:0x2A07:word16];
-			Mem283[ss:bp_n + -2:word16] = Mem268[ds_n:0x2A09:word16];
-			(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) dx_n;
-		}
-		Mem292[ss:sp_n + -2:word16] = Mem286[ds_n:0x29E5:word16];
-		Mem295[ss:sp_n + -4:word16] = Mem292[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFDC.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem313[ss:sp_n + -2:word16] = Mem310[ds_n:0x29E5:word16];
-		Mem316[ss:sp_n + -4:word16] = Mem313[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFDA.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem333[ss:sp_n + -2:word16] = Mem330[ds_n:0x29E5:word16];
-		Mem336[ss:sp_n + -4:word16] = Mem333[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFD8.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem353[ss:sp_n + -2:word16] = Mem350[ds_n:0x29E5:word16];
-		Mem356[ss:sp_n + -4:word16] = Mem353[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFD6.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem373[ss:sp_n + -2:word16] = Mem370[ds_n:0x29E5:word16];
-		Mem376[ss:sp_n + -4:word16] = Mem373[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFD4.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem393[ss:sp_n + -2:word16] = Mem390[ds_n:0x29E5:word16];
-		Mem396[ss:sp_n + -4:word16] = Mem393[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem413[ss:sp_n + -2:word16] = Mem410[ds_n:0x29E5:word16];
-		Mem416[ss:sp_n + -4:word16] = Mem413[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem432[ss:sp_n + -2:word16] = Mem416[ds_n:0x29E5:word16];
-		Mem435[ss:sp_n + -4:word16] = Mem432[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFD0.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem452[ss:sp_n + -2:word16] = Mem449[ds_n:0x29E5:word16];
-		Mem455[ss:sp_n + -4:word16] = Mem452[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFCE.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem472[ss:sp_n + -2:word16] = Mem469[ds_n:0x29E5:word16];
-		Mem475[ss:sp_n + -4:word16] = Mem472[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFCC.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem492[ss:sp_n + -2:word16] = Mem489[ds_n:0x29E5:word16];
-		Mem495[ss:sp_n + -4:word16] = Mem492[ds_n:0x29E3:word16];
-		word16 di_n;
-		Eq_n ds_n;
-		fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n);
-		Mem510[ss:sp_n + -2:word16] = Mem495[ds_n:10721:word16];
-		Mem513[ss:sp_n + -4:word16] = Mem510[ds_n:10719:word16];
-		Eq_n ax_n = (CONVERT(Mem513[ds_n:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem513[ds_n:11894:byte], uint8, uint16);
-		(ss->*((word32) sp_n - 6)).u0 = 0x00;
-		ss->*((word32) sp_n - 8) = ax_n;
-		ss->*((word32) sp_n - 0x0A) = ds_n;
-		(ss->*((word32) sp_n - 0x0C)).u0 = 0x2E77;
-		word16 si_n;
-		Eq_n ds_n;
-		fn0800-4152(ds_n, ss->*((word32) sp_n - 0x0C), ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 4), out si_n, out ds_n);
-		Eq_n sp_n = sp_n;
-		if ((ss->*bp_n).tFFFFFFDC.u0 != 0x00)
-		{
-			(ss->*((word32) sp_n - 2)).u0 = 0x00;
-			(ss->*((word32) sp_n - 4)).u0 = ~0x00;
-			Eq_n ax_n = fn0800-4311(ds_n, ss->*((word32) sp_n - 4), out dx_n, out bp_n, out si_n, out ds_n);
-			(ss->*bp_n).tFFFFFFF6.u0 = (wchar_t) dx_n;
-			(ss->*bp_n).tFFFFFFF4.u0 = (wchar_t) ax_n;
-			Eq_n sp_n;
-			sp_n.u0 = <invalid>;
-			(ss->*sp_n.u7).t0002.u0 = 0x00;
-			(ss->*sp_n.u7).t0000.u0 = 0x00;
-			(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFCC.u0;
-			Mem590[ss:sp_n + -4:word16] = Mem587[ds_n:0x29E5:word16];
-			Mem593[ss:sp_n + -6:word16] = Mem590[ds_n:0x29E3:word16];
-			word16 cx_n;
-			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-			(ss->*bp_n).tFFFFFFCA.u0 = (ss->*bp_n).tFFFFFFF4.u0;
-			Eq_n sp_n;
-			sp_n.u5 = &sp_n.u7->t0004.u0;
-			Eq_n si_n;
-			si_n.u0 = 0x00;
-			while (si_n != ((ss->*bp_n).tFFFFFFDC).u0)
-			{
-				struct Eq_n Eq_n::* sp_n = sp_n - 2;
-				Mem621[ss:sp_n + 0x00:word16] = Mem614[ds_n:0x29E5:word16];
-				Mem624[ss:sp_n + -2:word16] = Mem621[ds_n:0x29E3:word16];
-				word16 di_n;
-				Eq_n ds_n;
-				(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
-				Mem641[ss:sp_n + 0x00:word16] = Mem638[ds_n:0x29E5:word16];
-				Mem644[ss:sp_n + -2:word16] = Mem641[ds_n:0x29E3:word16];
-				uint32 dx_ax_n = (word32) fn0800-8C69(fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n), 0x04, 0x00) + (uint32) ((ss->*bp_n).tFFFFFFDE).u0;
-				Eq_n es_n;
-				es_n.u5 = (ss->*bp_n).tFFFFFFF6.u10.u1;
-				Eq_n bx_n;
-				bx_n.u0 = (ss->*bp_n).tFFFFFFCA.u0;
-				(es_n->*bx_n.u7).t0002.u0 = SLICE(dx_ax_n, word16, 16);
-				(es_n->*bx_n.u7).t0000.u0 = (word16) dx_ax_n;
-				(ss->*bp_n).tFFFFFFCA.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFCA.u0 + 0x04);
-				sp_n.u0 = <invalid>;
-				si_n.u5 = &si_n.u7->b0001;
-			}
-			struct Eq_n Eq_n::* sp_n = sp_n - 2;
-			(ss->*sp_n).t0000.u0 = 0x667B;
-			(ss->*sp_n).tFFFFFFFE.u0 = 0x04;
-			(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFDC.u0;
-			(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFF6.u0;
-			(ss->*sp_n).tFFFFFFF8.u0 = (ss->*bp_n).tFFFFFFF4.u0;
-			fn0800_B95E(ds_n, (ss->*sp_n).tFFFFFFF8.u0, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0);
-			Eq_n di_n;
-			di_n.u0 = (ss->*bp_n).tFFFFFFF4.u0;
-			(ss->*bp_n).wFFFFFFC8 = 0;
-			struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002.u0;
-			Eq_n si_n;
-			si_n.u0 = 0x00;
-			while (si_n != ((ss->*bp_n).tFFFFFFDC).u0)
-			{
-				Eq_n es_n;
-				es_n.u5 = (ss->*bp_n).tFFFFFFF6.u10.u1;
-				cui16 ax_n = (es_n->*di_n.u7).t0002.u0;
-				Eq_n dx_n = (es_n->*di_n.u7).t0000.u0;
-				(ss->*bp_n).wFFFFFFEE = ax_n;
-				(ss->*bp_n).tFFFFFFEC.u1 = (cui16) dx_n;
-				(ss->*bp_n).tFFFFFFF2.u0 = (wchar_t) (ax_n & 0x0F);
-				(ss->*bp_n).tFFFFFFF0.u0 = (wchar_t) (dx_n & ~0x0F);
-				struct Eq_n Eq_n::* sp_n = sp_n - 2;
-				Mem762[ss:sp_n + 0x00:word16] = Mem759[ds_n:10721:word16];
-				Mem765[ss:sp_n + -2:word16] = Mem762[ds_n:10719:word16];
-				(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
-				word16 cx_n;
-				word16 dx_n;
-				word16 bx_n;
-				word16 di_n;
-				Eq_n ds_n;
-				fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-				Mem786[ss:sp_n + 0x00:word16] = Mem770[ds_n:10721:word16];
-				Mem789[ss:sp_n + -2:word16] = Mem786[ds_n:10719:word16];
-				Eq_n sp_n;
-				sp_n.u0 = <invalid>;
-				ss->*((word32) sp_n - 2) = (word16) fn0800-8CAA((ss->*bp_n).tFFFFFFF0.u0, 0x04, (ss->*bp_n).tFFFFFFF2.u0);
-				Eq_n di_n = fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out ds_n);
-				(ss->*bp_n).tFFFFFFDE.u0 = 0x00;
-				do
-				{
-					Eq_n es_n;
-					es_n.u5 = (ss->*bp_n).tFFFFFFF6.u10.u1;
-					ui32 ax_dx_n = es_n->*di_n.u6 - ((ss->*bp_n).tFFFFFFF0).u5;
-					(ss->*bp_n).wFFFFFFEA = SLICE(ax_dx_n, word16, 16);
-					(ss->*bp_n).tFFFFFFE8.u1 = (cup16) (word16) ax_dx_n;
-					(ss->*bp_n).tFFFFFFF0.u5 += ax_dx_n;
-					if ((ss->*bp_n).wFFFFFFEA > 0x00 || (ss->*bp_n).wFFFFFFEA == 0x00 && ((ss->*bp_n).tFFFFFFE8).u1 > 0xFF)
-						break;
-					ui32 ax_dx_n = (ss->*bp_n).tFFFFFFF0.u5 - ((ss->*bp_n).tFFFFFFEC).u0;
-					cup16 ax_n = SLICE(ax_dx_n, word16, 16);
-					cup16 dx_n = (word16) ax_dx_n;
-					byte ah_n = SLICE(ax_n, byte, 8);
-					if (ax_n > 0x00 || Test(UGE,false) && dx_n >= ~0x0F || ((ss->*bp_n).tFFFFFFDE).u0 == 0xFF)
-						break;
-					Mem872[ss:sp_n + 0x02:word16] = Mem836[ds_n:10721:word16];
-					Mem875[ss:sp_n + 0x00:word16] = Mem872[ds_n:10719:word16];
-					ss->*((word32) sp_n - 2) = SEQ(ah_n, (ss->*bp_n).tFFFFFFE8.u0);
-					word16 cx_n;
-					word16 dx_n;
-					word16 bx_n;
-					word16 di_n;
-					fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-					(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFDE.u0 + 0x01);
-					di_n = di_n + 0x04;
-					si_n.u5 = &si_n.u7->b0001;
-				} while (si_n != ((ss->*bp_n).tFFFFFFDC).u0);
-				(ss->*sp_n.u7).t0002.u0 = 0x01;
-				Eq_n ax_n;
-				ax_n.u0 = (ss->*bp_n).tFFFFFFDE.u0;
-				(ss->*sp_n.u7).t0000.u0 = (wchar_t) ((ss->*bp_n).wFFFFFFC8 - (ax_n != ~0x02));
-				ss->*((word32) sp_n - 2) = -&ax_n.u7->b0003;
-				Mem924[ss:sp_n + -4:word16] = Mem920[ds_n:10721:word16];
-				Mem927[ss:sp_n + -6:word16] = Mem924[ds_n:10719:word16];
-				byte ah_n = SLICE(fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n), byte, 8);
-				Mem942[ss:sp_n + 0x02:word16] = Mem927[ds_n:10721:word16];
-				Mem945[ss:sp_n + 0x00:word16] = Mem942[ds_n:10719:word16];
-				ss->*((word32) sp_n - 2) = SEQ(ah_n, (ss->*bp_n).tFFFFFFDE.u1);
-				word16 cx_n;
-				word16 dx_n;
-				word16 bx_n;
-				fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-				(ss->*sp_n.u7).t0002.u0 = 0x01;
-				uint32 dx_ax_n = (uint32) (ss->*bp_n).tFFFFFFDE.u0 + 0x02;
-				(ss->*sp_n.u7).t0000.u0 = SLICE(dx_ax_n, word16, 16);
-				ss->*((word32) sp_n - 2) = (word16) dx_ax_n;
-				Mem979[ss:sp_n + -4:word16] = Mem976[ds_n:10721:word16];
-				Mem982[ss:sp_n + -6:word16] = Mem979[ds_n:10719:word16];
-				word16 cx_n;
-				fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-				sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0004.u0;
-			}
-			struct Eq_n Eq_n::* sp_n = sp_n - 2;
-			(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0;
-			(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFF4.u0;
-			word16 cx_n;
-			word16 dx_n;
-			word16 bx_n;
-			fn0800-4346(ds_n, (ss->*sp_n).t0000.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-			sp_n.u5 = &sp_n->t0002.u0;
-		}
-		struct Eq_n Eq_n::* sp_n = sp_n - 2;
-		Mem1001[ss:sp_n + 0x00:word16] = Mem996[ds_n:10721:word16];
-		Mem1004[ss:sp_n + -2:word16] = Mem1001[ds_n:10719:word16];
-		(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
-		word16 cx_n;
-		word16 dx_n;
-		word16 bx_n;
-		word16 di_n;
-		Eq_n ds_n;
-		fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-		Mem1027[ss:sp_n + 0x00:word16] = Mem1011[ds_n:10721:word16];
-		Mem1030[ss:sp_n + -2:word16] = Mem1027[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
-		(ss->*bp_n).wFFFFFFE6 = SLICE((word32) dx_ax_n - 32, word16, 16);
-		(ss->*bp_n).tFFFFFFE4.u1 = (cui16) ((word16) dx_ax_n + ~0x1F);
-		while (((ss->*bp_n).tFFFFFFE4.u1 & 0x0F) != 0x00)
-		{
-			struct Eq_n Eq_n::* sp_n = sp_n - 2;
-			Mem1063[ss:sp_n + 0x00:word16] = Mem1051[ds_n:10721:word16];
-			Mem1066[ss:sp_n + -2:word16] = Mem1063[ds_n:10719:word16];
-			(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
-			word16 cx_n;
-			word16 dx_n;
-			word16 bx_n;
-			word16 di_n;
-			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-			(ss->*bp_n).tFFFFFFE4.u0 = (ui32) ((ss->*bp_n).tFFFFFFE4.u0 + 0x01);
-		}
-		(ss->*bp_n).tFFFFFFFC.u5 = (char *) ((ss->*bp_n).tFFFFFFFC.u5 - (uint32) (((ss->*bp_n).tFFFFFFDA).u0 << 0x04));
-		struct Eq_n Eq_n::* sp_n = sp_n - 2;
-		(ss->*sp_n).t0000.u0 = 0x00;
-		Eq_n ax_n;
-		ax_n.u0 = (ss->*bp_n).tFFFFFFDA.u0;
-		(ss->*sp_n).tFFFFFFFE.u0 = 0x00;
-		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) (ax_n << 0x04);
-		Mem1115[ss:sp_n + -6:word16] = Mem1112[ds_n:0x29E5:word16];
-		Mem1118[ss:sp_n + -8:word16] = Mem1115[ds_n:0x29E3:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
-		(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-		(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-		(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-		(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-		struct Eq_n Eq_n::* bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0006.u0 = 0x00;
-		(ss->*sp_n.u7).t0004.u0 = 0x00;
-		(ss->*sp_n.u7).t0002.u0 = 0x20;
-		Mem1171[ss:sp_n + 0x00:word16] = Mem1168[ds_n:10721:word16];
-		Mem1174[ss:sp_n + -2:word16] = Mem1171[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
-		Mem1189[ss:sp_n + 0x06:word16] = Mem1174[ds_n:10721:word16];
-		Mem1192[ss:sp_n + 0x04:word16] = Mem1189[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFD0.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds_n);
-		Mem1211[ss:sp_n + 0x06:word16] = Mem1195[ds_n:10721:word16];
-		Mem1214[ss:sp_n + 0x04:word16] = Mem1211[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFCE.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds_n);
-		Mem1233[ss:sp_n + 0x06:word16] = Mem1217[ds_n:10721:word16];
-		Mem1236[ss:sp_n + 0x04:word16] = Mem1233[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFD2.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds_n);
-		Mem1255[ss:sp_n + 0x06:word16] = Mem1239[ds_n:10721:word16];
-		Mem1258[ss:sp_n + 0x04:word16] = Mem1255[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFD4.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds_n);
-		Mem1277[ss:sp_n + 0x06:word16] = Mem1261[ds_n:10721:word16];
-		Mem1280[ss:sp_n + 0x04:word16] = Mem1277[ds_n:10719:word16];
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFE4.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds_n);
-		Mem1309[ss:bp_n + -0x0022:word16] = SLICE(fn0800-8CAA(Mem1283[ds_n:0x2A03:word16], 0x04, Mem1283[ds_n:0x2A05:word16]), word16, 0);
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		if ((Mem1309[ds_n:0x2A03:word16] & 0x0F) != 0x00)
-			(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFDE.u0 + 0x01);
-		Mem1326[ss:sp_n + -2:word16] = Mem1321[ds_n:10721:word16];
-		Mem1329[ss:sp_n + -4:word16] = Mem1326[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		Mem1349[ss:sp_n + -2:word16] = Mem1333[ds_n:10721:word16];
-		Mem1352[ss:sp_n + -4:word16] = Mem1349[ds_n:10719:word16];
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		ss->*((word32) sp_n - 2) = (ss->*bp_n).tFFFFFFDE.u0 + (word16) fn0800-8CAA(((ss->*bp_n).tFFFFFFE4).u0, 0x04, ((ss->*bp_n).tFFFFFFE6).u0);
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out ds_n);
-		ui32 ax_dx_n = Mem1369[ss:bp_n + -4:ui32] - Mem1369[ds_n:0x2A03:ui32] + Mem1369[ds_n:0x4E88:ui32];
-		(ss->*bp_n).tFFFFFFFA.u0 = SLICE(ax_dx_n + 0x80, word16, 16);
-		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((word16) ax_dx_n + 0x80);
-		if (Mem1397[ds_n:10781:word16] != 0x00)
-			(ss->*bp_n).tFFFFFFF8.u5 += 0x0200;
-		else if (Mem1397[ds_n:0x2A21:word16] == 0x01)
-			(ss->*bp_n).tFFFFFFF8.u5 += 384;
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
-		uint32 dx_bx_n = (ss->*bp_n).tFFFFFFFC.u5 + (uint32) ((ss->*bp_n).wFFFFFFDA << 0x04);
-		(ss->*sp_n.u7).t0000.u0 = SLICE(dx_bx_n, word16, 16);
-		ss->*((word32) sp_n - 2) = (word16) dx_bx_n;
-		Mem1439[ss:sp_n + -4:word16] = Mem1435[ds_n:0x29E5:word16];
-		Mem1442[ss:sp_n + -6:word16] = Mem1439[ds_n:0x29E3:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-		(ss->*sp_n.u7).t0002.u0 = 0x02;
-		(ss->*sp_n.u7).t0000.u0 = 0x00;
-		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		Mem1467[ss:sp_n + -4:word16] = Mem1464[ds_n:10721:word16];
-		Mem1470[ss:sp_n + -6:word16] = Mem1467[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-		Mem1485[ss:sp_n + 0x02:word16] = Mem1470[ds_n:10721:word16];
-		Mem1488[ss:sp_n + 0x00:word16] = Mem1485[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5);
-		(ss->*bp_n).tFFFFFFE2.u0 = SLICE(dx_ax_n, word16, 16);
-		(ss->*bp_n).tFFFFFFE0.u0 = (wchar_t) (word16) dx_ax_n;
-		ui32 dx_bx_n = Mem1500[ds_n:0x2A07:ui32] - Mem1500[ss:bp_n + -4:ui32] - CONVERT(Mem1500[ss:bp_n + -38:word16] << 0x04, uint16, uint32);
-		(ss->*sp_n.u7).t0002.u0 = SLICE(dx_bx_n, word16, 16);
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) (word16) dx_bx_n;
-		Mem1521[ss:sp_n + -2:word16] = Mem1518[ds_n:10721:word16];
-		Mem1524[ss:sp_n + -4:word16] = Mem1521[ds_n:10719:word16];
-		Mem1527[ss:sp_n + -6:word16] = Mem1524[ds_n:0x29E5:word16];
-		Mem1530[ss:sp_n + -8:word16] = Mem1527[ds_n:0x29E3:word16];
-		struct Eq_n Eq_n::* bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0, out si_n, out ds_n);
-		(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFE0.u0 & 0x01FF);
-		fn0800-8CAA((ss->*bp_n).tFFFFFFE0.u0, 0x09, (ss->*bp_n).tFFFFFFE2.u0);
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		(ss->*bp_n).tFFFFFFDE.u0 == 0x00;
-		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		(ss->*((word32) sp_n - 4)).u0 = 0x00;
-		(ss->*((word32) sp_n - 6)).u0 = 0x02;
-		Mem1585[ss:sp_n + -8:word16] = Mem1581[ds_n:10721:word16];
-		Mem1588[ss:sp_n + -0x0A:word16] = Mem1585[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
-		Mem1603[ss:sp_n + -2:word16] = Mem1588[ds_n:10721:word16];
-		Mem1606[ss:sp_n + -4:word16] = Mem1603[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0;
-		Eq_n di_n = fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		Mem1626[ss:sp_n + -2:word16] = Mem1610[ds_n:10721:word16];
-		Mem1629[ss:sp_n + -4:word16] = Mem1626[ds_n:10719:word16];
-		ss->*((word32) sp_n - 6) = di_n;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		if (Mem1631[ds_n:10781:word16] != 0x00)
-		{
-			(ss->*((word32) sp_n - 2)).u0 = 0x00;
-			(ss->*((word32) sp_n - 4)).u0 = 0x00;
-			(ss->*((word32) sp_n - 6)).u0 = 0x2E;
-			Mem1659[ss:sp_n + -8:word16] = Mem1656[ds_n:10721:word16];
-			Mem1662[ss:sp_n + -0x0A:word16] = Mem1659[ds_n:10719:word16];
-			word16 cx_n;
-			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
-			Mem1677[ss:sp_n + -2:word16] = Mem1662[ds_n:10721:word16];
-			Mem1680[ss:sp_n + -4:word16] = Mem1677[ds_n:10719:word16];
-			(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0;
-			Eq_n di_n = fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-			Mem1699[ss:sp_n + -2:word16] = Mem1683[ds_n:10721:word16];
-			Mem1702[ss:sp_n + -4:word16] = Mem1699[ds_n:10719:word16];
-			ss->*((word32) sp_n - 6) = di_n;
-			fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		}
-		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		(ss->*((word32) sp_n - 4)).u0 = 0x00;
-		(ss->*((word32) sp_n - 6)).u0 = 0x18;
-		Mem1734[ss:sp_n + -8:word16] = Mem1730[ds_n:10721:word16];
-		Mem1737[ss:sp_n + -0x0A:word16] = Mem1734[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
-		Mem1751[ss:sp_n + -2:word16] = Mem1737[ds_n:10721:word16];
-		Mem1754[ss:sp_n + -4:word16] = Mem1751[ds_n:10719:word16];
-		Mem1767[ss:sp_n + -6:word16] = (CONVERT(Mem1754[ds_n:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem1754[ds_n:11894:byte], uint8, uint16) - 0x20;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		(ss->*((word32) sp_n - 4)).u0 = 0x00;
-		(ss->*((word32) sp_n - 6)).u0 = 0x1C;
-		Mem1793[ss:sp_n + -8:word16] = Mem1790[ds_n:10721:word16];
-		Mem1796[ss:sp_n + -0x0A:word16] = Mem1793[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
-		Mem1811[ss:sp_n + -2:word16] = Mem1796[ds_n:10721:word16];
-		Mem1814[ss:sp_n + -4:word16] = Mem1811[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD8.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		Mem1834[ss:sp_n + -2:word16] = Mem1818[ds_n:10721:word16];
-		Mem1837[ss:sp_n + -4:word16] = Mem1834[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD6.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		(ss->*((word32) sp_n - 2)).u0 = 0x00;
-		(ss->*((word32) sp_n - 4)).u0 = 0x00;
-		(ss->*((word32) sp_n - 6)).u0 = 0x0A;
-		Mem1866[ss:sp_n + -8:word16] = Mem1863[ds_n:10721:word16];
-		Mem1869[ss:sp_n + -0x0A:word16] = Mem1866[ds_n:10719:word16];
-		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
-		if ((ss->*bp_n).tFFFFFFFC.u5 + (uint32) (((ss->*bp_n).tFFFFFFD8).u0 << 0x04) > ((ss->*bp_n).tFFFFFFF8).u5 + (((ss->*bp_n).tFFFFFFE0).u5 - 0x20))
-			(ss->*bp_n).tFFFFFFF8.u5 += (ss->*bp_n).tFFFFFFFC.u5 + (uint32) (((ss->*bp_n).tFFFFFFD8).u0 << 0x04) - (((ss->*bp_n).tFFFFFFF8).u5 + (((ss->*bp_n).tFFFFFFE0).u5 - 0x20));
-		(ss->*bp_n).tFFFFFFF8.u5 += (uint32) (0x10 - ((ss->*bp_n).t0008).u1 & 0x0F);
-		Eq_n ax_n = (word16) fn0800-8CAA((ss->*bp_n).tFFFFFFF8.u0, 0x04, (ss->*bp_n).tFFFFFFFA.u0);
-		(ss->*bp_n).tFFFFFFD8.u0 = (wchar_t) ax_n;
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		Mem1972[ss:sp_n + -2:word16] = Mem1967[ds_n:10721:word16];
-		Mem1975[ss:sp_n + -4:word16] = Mem1972[ds_n:10719:word16];
-		ss->*((word32) sp_n - 6) = ax_n;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		if ((ss->*bp_n).tFFFFFFD6.u0 < ((ss->*bp_n).tFFFFFFD8).u0)
-			(ss->*bp_n).tFFFFFFD6.u0 = (ss->*bp_n).tFFFFFFD8.u0;
-		Mem2001[ss:sp_n + -2:word16] = Mem1996[ds_n:10721:word16];
-		Mem2004[ss:sp_n + -4:word16] = Mem2001[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD6.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		ui32 dx_ax_n = Mem2008[ss:bp_n + -4:ui32] + Mem2008[ds_n:0x4E88:ui32];
-		Eq_n ax_n = (word16) fn0800-8CAA((word16) dx_ax_n + 0x20, 0x04, SLICE(dx_ax_n + 0x20, word16, 16));
-		(ss->*bp_n).tFFFFFFD4.u0 = (wchar_t) ax_n;
-		Eq_n sp_n;
-		sp_n.u0 = <invalid>;
-		Mem2045[ss:sp_n + -2:word16] = Mem2042[ds_n:10721:word16];
-		Mem2048[ss:sp_n + -4:word16] = Mem2045[ds_n:10719:word16];
-		ss->*((word32) sp_n - 6) = ax_n;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFE4.u0 + 0x80);
-		if (Mem2065[ds_n:10781:word16] != 0x00)
-			(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFD2.u0 + 0x0200);
-		else if (Mem2065[ds_n:0x2A21:word16] == 0x01)
-			(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFD2.u0 + 0x0180);
-		Mem2082[ss:sp_n + -2:word16] = Mem2077[ds_n:10721:word16];
-		Mem2085[ss:sp_n + -4:word16] = Mem2082[ds_n:10719:word16];
-		(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD2.u0;
-		Eq_n ds_n;
-		fn0800-40BF(ds_n, (ss->*sp_n.u7).t0006.u1, ss->*((word32) sp_n - 4), out ds_n);
-		Eq_n dx_bx_n = Mem2089[ds_n:0x2A07:ui32] - Mem2089[ss:bp_n + -4:ui32] - CONVERT(Mem2089[ss:bp_n + -38:word16] << 0x04, uint16, uint32);
-		if (dx_bx_n == 0x00)
-		{
-			dsOut = ds_n;
-			return 0x00;
-		}
-		else
-		{
-			dsOut = ds_n;
-			return 0x01;
-		}
-	}
-	else
-	{
-		dsOut = ds;
-		return 0x03;
-	}
+fn0800-5E64_entry:
+	bp_n = fp - 2
+	sp_n = fp - 0x3E
+	cx_n = 0x04
+	branch false l0800_nE80
+	goto l0800_nE7E
+l0800_nE64:
+l0800_nE7E:
+	cx_n = 0x03
+l0800_nE80:
+	cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002202), (uint32) cx_n)
+	ax_n = 0x00
+	SCZO_n.u1 = cond(cmpResult_n)
+	branch cmpResult_n == 0x00 l0800_nE8B
+l0800_nE86:
+	ax_n = 0x00 - (SCZO_n & 0x02)
+	ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02)
+l0800_nE8B:
+	branch ax_n == 0x00 l0800_nEC3
+l0800_nE8F:
+	cx_n = 0x04
+	dx_n = ~0x00
+	branch true l0800_nEA5
+l0800_nEA1:
+	cx_n = 0x03
+	dx_n = 0x00
+l0800_nEA5:
+	cx_n = cx_n >> 0x01
+	memcpy(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n *32 0x02)
+	SCZO_n.u1 = cond(cx_n)
+	di_n = cx_n * 0x02 + 17009
+	memcpy(di_n, cx_n * 0x02 + 0x2202, SCZO_n & 0x02)
+	di_n = (char *) di_n + ((word16) SCZO_n & 0x02)
+	cx_n = dx_n
+l0800_nEB1:
+	branch cx_n == 0x00 l0800_nEB3
+l0800_5EB1_n:
+	ds->*di_n = 0x00
+	di_n = (word16) di_n + 1
+	cx_n = cx_n - 0x01
+	goto l0800_nEB1
+l0800_nEB3:
+	sp_n.u0 = <invalid>
+	bp_n = fn0800-09A3(ds, out ds)
+	sp_n = (mp16) &sp_n.u6->t0008.u0
+l0800_nEC3:
+	ax_n = (CONVERT(Mem129[ds:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem129[ds:11894:byte], uint8, uint16)
+	branch Mem129[ds:0x2A09:word16] >u 0x00 l0800_nEED
+l0800_nEDC:
+	branch Mem129[ds:0x2A09:word16] != 0x00 l0800_nEE4
+l0800_nEDE:
+	branch ax_n <u Mem129[ds:0x2A07:word16] l0800_nEED
+l0800_nEE4:
+	dsOut = ds
+	return 0x03
+l0800_nEED:
+	branch Mem129[ds:0x2A0B:word32] <=u 0x7FF0 l0800_nF0A
+l0800_nEFE:
+	Mem155[ds:0x2A0D:word16] = 0x00
+	Mem156[ds:0x2A0B:word16] = 0x7FF0
+l0800_nF0A:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = 0x00
+	(ss->*sp_n).tFFFFFFFE.u0 = 0x00
+	(ss->*sp_n).tFFFFFFFC.u0 = 0x02
+	Mem179[ss:sp_n + -6:word16] = Mem175[ds:0x29E5:word16]
+	Mem182[ss:sp_n + -8:word16] = Mem179[ds:0x29E3:word16]
+	fn0800_ACB3(ds, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n)
+	Mem197[ss:sp_n + 0x00:word16] = Mem182[ds:0x29E5:word16]
+	Mem200[ss:sp_n + -2:word16] = Mem197[ds:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) fn0800-3FAD(ds, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n)
+	Mem223[ss:sp_n + 0x00:word16] = Mem220[ds_n:0x29E5:word16]
+	Mem226[ss:sp_n + -2:word16] = Mem223[ds_n:0x29E3:word16]
+	ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n)
+	di_n = ax_n
+	branch (ss->*bp_n).tFFFFFFDE.u0 == 0x00 l0800_nF48
+l0800_nF47:
+	di_n = ax_n - 0x01
+l0800_nF48:
+	dx_ax_n = (word32) fn0800-8C69(di_n, 0x09, 0x00) + (uint32) ((ss->*bp_n).tFFFFFFDE).u0
+	(ss->*bp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16)
+	(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) (word16) dx_ax_n
+	sp_n.u0 = <invalid>
+	branch Mem268[ss:bp_n + -4:word32] <=u Mem268[ds_n:0x2A07:word32] l0800_nF7E
+l0800_nF71:
+	dx_n = Mem268[ds_n:0x2A07:word16]
+	Mem283[ss:bp_n + -2:word16] = Mem268[ds_n:0x2A09:word16]
+	(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) dx_n
+l0800_nF7E:
+	Mem292[ss:sp_n + -2:word16] = Mem286[ds_n:0x29E5:word16]
+	Mem295[ss:sp_n + -4:word16] = Mem292[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFDC.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem313[ss:sp_n + -2:word16] = Mem310[ds_n:0x29E5:word16]
+	Mem316[ss:sp_n + -4:word16] = Mem313[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFDA.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem333[ss:sp_n + -2:word16] = Mem330[ds_n:0x29E5:word16]
+	Mem336[ss:sp_n + -4:word16] = Mem333[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFD8.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem353[ss:sp_n + -2:word16] = Mem350[ds_n:0x29E5:word16]
+	Mem356[ss:sp_n + -4:word16] = Mem353[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFD6.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem373[ss:sp_n + -2:word16] = Mem370[ds_n:0x29E5:word16]
+	Mem376[ss:sp_n + -4:word16] = Mem373[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFD4.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem393[ss:sp_n + -2:word16] = Mem390[ds_n:0x29E5:word16]
+	Mem396[ss:sp_n + -4:word16] = Mem393[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem413[ss:sp_n + -2:word16] = Mem410[ds_n:0x29E5:word16]
+	Mem416[ss:sp_n + -4:word16] = Mem413[ds_n:0x29E3:word16]
+	fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem432[ss:sp_n + -2:word16] = Mem416[ds_n:0x29E5:word16]
+	Mem435[ss:sp_n + -4:word16] = Mem432[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFD0.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem452[ss:sp_n + -2:word16] = Mem449[ds_n:0x29E5:word16]
+	Mem455[ss:sp_n + -4:word16] = Mem452[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFCE.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem472[ss:sp_n + -2:word16] = Mem469[ds_n:0x29E5:word16]
+	Mem475[ss:sp_n + -4:word16] = Mem472[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFCC.u0 = (wchar_t) fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem492[ss:sp_n + -2:word16] = Mem489[ds_n:0x29E5:word16]
+	Mem495[ss:sp_n + -4:word16] = Mem492[ds_n:0x29E3:word16]
+	fn0800-3FAD(ds_n, ss->*((word32) sp_n - 4), out di_n, out ds_n)
+	Mem510[ss:sp_n + -2:word16] = Mem495[ds_n:10721:word16]
+	Mem513[ss:sp_n + -4:word16] = Mem510[ds_n:10719:word16]
+	ax_n = (CONVERT(Mem513[ds_n:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem513[ds_n:11894:byte], uint8, uint16)
+	(ss->*((word32) sp_n - 6)).u0 = 0x00
+	ss->*((word32) sp_n - 8) = ax_n
+	ss->*((word32) sp_n - 0x0A) = ds_n
+	(ss->*((word32) sp_n - 0x0C)).u0 = 0x2E77
+	fn0800-4152(ds_n, ss->*((word32) sp_n - 0x0C), ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 4), out si_n, out ds_n)
+	sp_n = sp_n
+	branch (ss->*bp_n).tFFFFFFDC.u0 != 0x00 l0800_n
+	goto l0800_n
+l0800_n:
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = ~0x00
+	ax_n = fn0800-4311(ds_n, ss->*((word32) sp_n - 4), out dx_n, out bp_n, out si_n, out ds_n)
+	(ss->*bp_n).tFFFFFFF6.u0 = (wchar_t) dx_n
+	(ss->*bp_n).tFFFFFFF4.u0 = (wchar_t) ax_n
+	sp_n.u0 = <invalid>
+	(ss->*sp_n.u6).t0002.u0 = 0x00
+	(ss->*sp_n.u6).t0000.u0 = 0x00
+	(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFCC.u0
+	Mem590[ss:sp_n + -4:word16] = Mem587[ds_n:0x29E5:word16]
+	Mem593[ss:sp_n + -6:word16] = Mem590[ds_n:0x29E3:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n)
+	(ss->*bp_n).tFFFFFFCA.u0 = (ss->*bp_n).tFFFFFFF4.u0
+	sp_n.u4 = &sp_n.u6->b0004
+	si_n.u0 = 0x00
+	goto l0800_nD6
+l0800_n:
+	sp_n = sp_n - 2
+	Mem621[ss:sp_n + 0x00:word16] = Mem614[ds_n:0x29E5:word16]
+	Mem624[ss:sp_n + -2:word16] = Mem621[ds_n:0x29E3:word16]
+	(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n)
+	Mem641[ss:sp_n + 0x00:word16] = Mem638[ds_n:0x29E5:word16]
+	Mem644[ss:sp_n + -2:word16] = Mem641[ds_n:0x29E3:word16]
+	dx_ax_n = (word32) fn0800-8C69(fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n), 0x04, 0x00) + (uint32) ((ss->*bp_n).tFFFFFFDE).u0
+	es_n.u4 = (ss->*bp_n).tFFFFFFF6.u9.u1
+	bx_n.u0 = (ss->*bp_n).tFFFFFFCA.u0
+	(es_n->*bx_n.u6).t0002.u0 = SLICE(dx_ax_n, word16, 16)
+	(es_n->*bx_n.u6).t0000.u0 = (word16) dx_ax_n
+	(ss->*bp_n).tFFFFFFCA.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFCA.u0 + 0x04)
+	sp_n.u0 = <invalid>
+	si_n.u4 = &si_n.u6->b0001
+l0800_nD6:
+	branch si_n != ((ss->*bp_n).tFFFFFFDC).u0 l0800_n
+l0800_nDB:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = 0x667B
+	(ss->*sp_n).tFFFFFFFE.u0 = 0x04
+	(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFDC.u0
+	(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFF6.u0
+	(ss->*sp_n).tFFFFFFF8.u0 = (ss->*bp_n).tFFFFFFF4.u0
+	fn0800_B95E(ds_n, (ss->*sp_n).tFFFFFFF8.u0, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0)
+	di_n.u0 = (ss->*bp_n).tFFFFFFF4.u0
+	(ss->*bp_n).tFFFFFFC8.u0 = 0<32>
+	sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002.u0
+	si_n.u0 = 0x00
+	goto l0800_nC
+l0800_n:
+l0800_n:
+	es_n.u4 = (ss->*bp_n).tFFFFFFF6.u9.u1
+	ax_dx_n = es_n->*di_n.u5 - ((ss->*bp_n).tFFFFFFF0).u4
+	(ss->*bp_n).wFFFFFFEA = SLICE(ax_dx_n, word16, 16)
+	(ss->*bp_n).tFFFFFFE8.u1 = (cup16) (word16) ax_dx_n
+	(ss->*bp_n).tFFFFFFF0.u4 = (ss->*bp_n).tFFFFFFF0.u4 + ax_dx_n
+	branch (ss->*bp_n).wFFFFFFEA > 0x00 l0800_nB9
+l0800_n:
+	branch (ss->*bp_n).wFFFFFFEA != 0x00 l0800_nB
+l0800_n:
+	branch (ss->*bp_n).tFFFFFFE8.u1 > 0xFF l0800_nB9
+l0800_nB:
+	ax_dx_n = (ss->*bp_n).tFFFFFFF0.u4 - ((ss->*bp_n).tFFFFFFEC).u0
+	ax_n = SLICE(ax_dx_n, word16, 16)
+	dx_n = (word16) ax_dx_n
+	ah_n = SLICE(ax_n, byte, 8)
+	branch ax_n > 0x00 l0800_nB9
+l0800_nB:
+	branch 0x00 || dx_n < ~0x0F l0800_n
+	goto l0800_nB9
+l0800_nD:
+l0800_n:
+	branch (ss->*bp_n).tFFFFFFDE.u0 == 0xFF l0800_nB9
+l0800_n:
+	Mem872[ss:sp_n + 0x02:word16] = Mem836[ds_n:10721:word16]
+	Mem875[ss:sp_n + 0x00:word16] = Mem872[ds_n:10719:word16]
+	ss->*((word32) sp_n - 2) = SEQ(ah_n, (ss->*bp_n).tFFFFFFE8.u0)
+	fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n)
+	(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFDE.u0 + 0x01)
+	di_n = di_n + 0x04
+	si_n.u4 = &si_n.u6->b0001
+	branch si_n != ((ss->*bp_n).tFFFFFFDC).u0 l0800_n
+l0800_nB9:
+	(ss->*sp_n.u6).t0002.u0 = 0x01
+	ax_n.u0 = (ss->*bp_n).tFFFFFFDE.u0
+	(ss->*sp_n.u6).t0000.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFC8.u0 - (ax_n != ~0x02))
+	ss->*((word32) sp_n - 2) = -&ax_n.u6->b0003
+	Mem924[ss:sp_n + -4:word16] = Mem920[ds_n:10721:word16]
+	Mem927[ss:sp_n + -6:word16] = Mem924[ds_n:10719:word16]
+	ah_n = SLICE(fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n), byte, 8)
+	Mem942[ss:sp_n + 0x02:word16] = Mem927[ds_n:10721:word16]
+	Mem945[ss:sp_n + 0x00:word16] = Mem942[ds_n:10719:word16]
+	ss->*((word32) sp_n - 2) = SEQ(ah_n, (ss->*bp_n).tFFFFFFDE.u1)
+	fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n)
+	(ss->*sp_n.u6).t0002.u0 = 0x01
+	dx_ax_n = (uint32) (ss->*bp_n).tFFFFFFDE.u0 + 0x02
+	(ss->*sp_n.u6).t0000.u0 = SLICE(dx_ax_n, word16, 16)
+	ss->*((word32) sp_n - 2) = (word16) dx_ax_n
+	Mem979[ss:sp_n + -4:word16] = Mem976[ds_n:10721:word16]
+	Mem982[ss:sp_n + -6:word16] = Mem979[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n)
+	sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->b0004
+l0800_nC:
+	branch si_n == ((ss->*bp_n).tFFFFFFDC).u0 l0800_n
+l0800_n:
+	es_n.u4 = (ss->*bp_n).tFFFFFFF6.u9.u1
+	ax_n = (es_n->*di_n.u6).t0002.u0
+	dx_n = (es_n->*di_n.u6).t0000.u0
+	(ss->*bp_n).wFFFFFFEE = ax_n
+	(ss->*bp_n).tFFFFFFEC.u1 = (cui16) dx_n
+	(ss->*bp_n).tFFFFFFF2.u0 = (wchar_t) (ax_n & 0x0F)
+	(ss->*bp_n).tFFFFFFF0.u0 = (wchar_t) (dx_n & ~0x0F)
+	sp_n = sp_n - 2
+	Mem762[ss:sp_n + 0x00:word16] = Mem759[ds_n:10721:word16]
+	Mem765[ss:sp_n + -2:word16] = Mem762[ds_n:10719:word16]
+	(ss->*sp_n).tFFFFFFFC.u0 = 0x00
+	fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n)
+	Mem786[ss:sp_n + 0x00:word16] = Mem770[ds_n:10721:word16]
+	Mem789[ss:sp_n + -2:word16] = Mem786[ds_n:10719:word16]
+	sp_n.u0 = <invalid>
+	ss->*((word32) sp_n - 2) = (word16) fn0800-8CAA((ss->*bp_n).tFFFFFFF0.u0, 0x04, (ss->*bp_n).tFFFFFFF2.u0)
+	di_n = fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out ds_n)
+	(ss->*bp_n).tFFFFFFDE.u0 = 0x00
+	goto l0800_n
+l0800_n:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0
+	(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFF4.u0
+	fn0800-4346(ds_n, (ss->*sp_n).t0000.u0, out cx_n, out dx_n, out bx_n, out ds_n)
+	sp_n.u4 = &sp_n->t0002.u0
+l0800_n:
+	sp_n = sp_n - 2
+	Mem1001[ss:sp_n + 0x00:word16] = Mem996[ds_n:10721:word16]
+	Mem1004[ss:sp_n + -2:word16] = Mem1001[ds_n:10719:word16]
+	(ss->*sp_n).tFFFFFFFC.u0 = 0x00
+	fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n)
+	Mem1027[ss:sp_n + 0x00:word16] = Mem1011[ds_n:10721:word16]
+	Mem1030[ss:sp_n + -2:word16] = Mem1027[ds_n:10719:word16]
+	dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4)
+	(ss->*bp_n).wFFFFFFE6 = SLICE((word32) dx_ax_n - 32, word16, 16)
+	(ss->*bp_n).tFFFFFFE4.u1 = (cui16) ((word16) dx_ax_n + ~0x1F)
+	goto l0800_n
+l0800_nD:
+	sp_n = sp_n - 2
+	Mem1063[ss:sp_n + 0x00:word16] = Mem1051[ds_n:10721:word16]
+	Mem1066[ss:sp_n + -2:word16] = Mem1063[ds_n:10719:word16]
+	(ss->*sp_n).tFFFFFFFC.u0 = 0x00
+	fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n)
+	(ss->*bp_n).tFFFFFFE4.u0 = (ui32) ((ss->*bp_n).tFFFFFFE4.u0 + 0x01)
+l0800_n:
+	branch ((ss->*bp_n).tFFFFFFE4.u1 & 0x0F) != 0x00 l0800_nD
+l0800_n:
+	(ss->*bp_n).tFFFFFFFC.u4 = (char *) ((ss->*bp_n).tFFFFFFFC.u4 - (uint32) (((ss->*bp_n).tFFFFFFDA).u0 << 0x04))
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = 0x00
+	ax_n.u0 = (ss->*bp_n).tFFFFFFDA.u0
+	(ss->*sp_n).tFFFFFFFE.u0 = 0x00
+	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) (ax_n << 0x04)
+	Mem1115[ss:sp_n + -6:word16] = Mem1112[ds_n:0x29E5:word16]
+	Mem1118[ss:sp_n + -8:word16] = Mem1115[ds_n:0x29E3:word16]
+	fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n)
+	(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFE.u0
+	(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFFC.u0
+	(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFE.u0
+	(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFFC.u0
+	bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n)
+	sp_n.u0 = <invalid>
+	(ss->*sp_n.u6).t0006.u0 = 0x00
+	(ss->*((word32) sp_n + 4)).u0 = 0x00
+	(ss->*sp_n.u6).t0002.u0 = 0x20
+	Mem1171[ss:sp_n + 0x00:word16] = Mem1168[ds_n:10721:word16]
+	Mem1174[ss:sp_n + -2:word16] = Mem1171[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u0, out cx_n)
+	Mem1189[ss:sp_n + 0x06:word16] = Mem1174[ds_n:10721:word16]
+	Mem1192[ss:sp_n + 0x04:word16] = Mem1189[ds_n:10719:word16]
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFD0.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds_n)
+	Mem1211[ss:sp_n + 0x06:word16] = Mem1195[ds_n:10721:word16]
+	Mem1214[ss:sp_n + 0x04:word16] = Mem1211[ds_n:10719:word16]
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFCE.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds_n)
+	Mem1233[ss:sp_n + 0x06:word16] = Mem1217[ds_n:10721:word16]
+	Mem1236[ss:sp_n + 0x04:word16] = Mem1233[ds_n:10719:word16]
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFD2.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds_n)
+	Mem1255[ss:sp_n + 0x06:word16] = Mem1239[ds_n:10721:word16]
+	Mem1258[ss:sp_n + 0x04:word16] = Mem1255[ds_n:10719:word16]
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFD4.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds_n)
+	Mem1277[ss:sp_n + 0x06:word16] = Mem1261[ds_n:10721:word16]
+	Mem1280[ss:sp_n + 0x04:word16] = Mem1277[ds_n:10719:word16]
+	(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFE4.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds_n)
+	Mem1309[ss:bp_n + -0x0022:word16] = SLICE(fn0800-8CAA(Mem1283[ds_n:0x2A03:word16], 0x04, Mem1283[ds_n:0x2A05:word16]), word16, 0)
+	sp_n.u0 = <invalid>
+	branch (Mem1309[ds_n:0x2A03:word16] & 0x0F) == 0x00 l0800_n
+l0800_n:
+	(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFDE.u0 + 0x01)
+l0800_n:
+	Mem1326[ss:sp_n + -2:word16] = Mem1321[ds_n:10721:word16]
+	Mem1329[ss:sp_n + -4:word16] = Mem1326[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	Mem1349[ss:sp_n + -2:word16] = Mem1333[ds_n:10721:word16]
+	Mem1352[ss:sp_n + -4:word16] = Mem1349[ds_n:10719:word16]
+	sp_n.u0 = <invalid>
+	ss->*((word32) sp_n - 2) = (ss->*bp_n).tFFFFFFDE.u0 + (word16) fn0800-8CAA(((ss->*bp_n).tFFFFFFE4).u0, 0x04, ((ss->*bp_n).tFFFFFFE6).u0)
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out ds_n)
+	ax_dx_n = Mem1369[ss:bp_n + -4:ui32] - Mem1369[ds_n:0x2A03:ui32] + Mem1369[ds_n:0x4E88:ui32]
+	(ss->*bp_n).tFFFFFFFA.u0 = SLICE(ax_dx_n + 0x80, word16, 16)
+	(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((word16) ax_dx_n + 0x80)
+	branch Mem1397[ds_n:10781:word16] == 0x00 l0800_n
+l0800_nD:
+	(ss->*bp_n).tFFFFFFF8.u4 = (ss->*bp_n).tFFFFFFF8.u4 + 0x0200
+	goto l0800_nA8
+l0800_n:
+	branch Mem1397[ds_n:0x2A21:word16] != 0x01 l0800_nA8
+l0800_nF:
+	(ss->*bp_n).tFFFFFFF8.u4 = (ss->*bp_n).tFFFFFFF8.u4 + 384
+l0800_nA8:
+	(ss->*sp_n.u6).t0002.u0 = 0x00
+	dx_bx_n = (ss->*bp_n).tFFFFFFFC.u4 + (uint32) ((ss->*bp_n).wFFFFFFDA << 0x04)
+	(ss->*sp_n.u6).t0000.u0 = SLICE(dx_bx_n, word16, 16)
+	ss->*((word32) sp_n - 2) = (word16) dx_bx_n
+	Mem1439[ss:sp_n + -4:word16] = Mem1435[ds_n:0x29E5:word16]
+	Mem1442[ss:sp_n + -6:word16] = Mem1439[ds_n:0x29E3:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n)
+	(ss->*sp_n.u6).t0002.u0 = 0x02
+	(ss->*sp_n.u6).t0000.u0 = 0x00
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	Mem1467[ss:sp_n + -4:word16] = Mem1464[ds_n:10721:word16]
+	Mem1470[ss:sp_n + -6:word16] = Mem1467[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n)
+	Mem1485[ss:sp_n + 0x02:word16] = Mem1470[ds_n:10721:word16]
+	Mem1488[ss:sp_n + 0x00:word16] = Mem1485[ds_n:10719:word16]
+	dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4)
+	(ss->*bp_n).tFFFFFFE2.u0 = SLICE(dx_ax_n, word16, 16)
+	(ss->*bp_n).tFFFFFFE0.u0 = (wchar_t) (word16) dx_ax_n
+	dx_bx_n = Mem1500[ds_n:0x2A07:ui32] - Mem1500[ss:bp_n + -4:ui32] - CONVERT(Mem1500[ss:bp_n + -38:word16] << 0x04, uint16, uint32)
+	(ss->*sp_n.u6).t0002.u0 = SLICE(dx_bx_n, word16, 16)
+	(ss->*sp_n.u6).t0000.u0 = (wchar_t) (word16) dx_bx_n
+	Mem1521[ss:sp_n + -2:word16] = Mem1518[ds_n:10721:word16]
+	Mem1524[ss:sp_n + -4:word16] = Mem1521[ds_n:10719:word16]
+	Mem1527[ss:sp_n + -6:word16] = Mem1524[ds_n:0x29E5:word16]
+	Mem1530[ss:sp_n + -8:word16] = Mem1527[ds_n:0x29E3:word16]
+	bp_n = fn0800-3B0A(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0, out si_n, out ds_n)
+	(ss->*bp_n).tFFFFFFDE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFE0.u0 & 0x01FF)
+	fn0800-8CAA((ss->*bp_n).tFFFFFFE0.u0, 0x09, (ss->*bp_n).tFFFFFFE2.u0)
+	sp_n.u0 = <invalid>
+	(ss->*bp_n).tFFFFFFDE.u0 == 0x00
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = 0x00
+	(ss->*((word32) sp_n - 6)).u0 = 0x02
+	Mem1585[ss:sp_n + -8:word16] = Mem1581[ds_n:10721:word16]
+	Mem1588[ss:sp_n + -0x0A:word16] = Mem1585[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n)
+	Mem1603[ss:sp_n + -2:word16] = Mem1588[ds_n:10721:word16]
+	Mem1606[ss:sp_n + -4:word16] = Mem1603[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0
+	di_n = fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	Mem1626[ss:sp_n + -2:word16] = Mem1610[ds_n:10721:word16]
+	Mem1629[ss:sp_n + -4:word16] = Mem1626[ds_n:10719:word16]
+	ss->*((word32) sp_n - 6) = di_n
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	branch Mem1631[ds_n:10781:word16] == 0x00 l0800_nB9
+	goto l0800_n
+l0800_n:
+l0800_n:
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = 0x00
+	(ss->*((word32) sp_n - 6)).u0 = 0x2E
+	Mem1659[ss:sp_n + -8:word16] = Mem1656[ds_n:10721:word16]
+	Mem1662[ss:sp_n + -0x0A:word16] = Mem1659[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n)
+	Mem1677[ss:sp_n + -2:word16] = Mem1662[ds_n:10721:word16]
+	Mem1680[ss:sp_n + -4:word16] = Mem1677[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFDE.u0
+	di_n = fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	Mem1699[ss:sp_n + -2:word16] = Mem1683[ds_n:10721:word16]
+	Mem1702[ss:sp_n + -4:word16] = Mem1699[ds_n:10719:word16]
+	ss->*((word32) sp_n - 6) = di_n
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+l0800_nB9:
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = 0x00
+	(ss->*((word32) sp_n - 6)).u0 = 0x18
+	Mem1734[ss:sp_n + -8:word16] = Mem1730[ds_n:10721:word16]
+	Mem1737[ss:sp_n + -0x0A:word16] = Mem1734[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n)
+	Mem1751[ss:sp_n + -2:word16] = Mem1737[ds_n:10721:word16]
+	Mem1754[ss:sp_n + -4:word16] = Mem1751[ds_n:10719:word16]
+	Mem1767[ss:sp_n + -6:word16] = (CONVERT(Mem1754[ds_n:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem1754[ds_n:11894:byte], uint8, uint16) - 0x20
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = 0x00
+	(ss->*((word32) sp_n - 6)).u0 = 0x1C
+	Mem1793[ss:sp_n + -8:word16] = Mem1790[ds_n:10721:word16]
+	Mem1796[ss:sp_n + -0x0A:word16] = Mem1793[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n)
+	Mem1811[ss:sp_n + -2:word16] = Mem1796[ds_n:10721:word16]
+	Mem1814[ss:sp_n + -4:word16] = Mem1811[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD8.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	Mem1834[ss:sp_n + -2:word16] = Mem1818[ds_n:10721:word16]
+	Mem1837[ss:sp_n + -4:word16] = Mem1834[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD6.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	(ss->*((word32) sp_n - 2)).u0 = 0x00
+	(ss->*((word32) sp_n - 4)).u0 = 0x00
+	(ss->*((word32) sp_n - 6)).u0 = 0x0A
+	Mem1866[ss:sp_n + -8:word16] = Mem1863[ds_n:10721:word16]
+	Mem1869[ss:sp_n + -0x0A:word16] = Mem1866[ds_n:10719:word16]
+	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n)
+	branch (ss->*bp_n).tFFFFFFFC.u4 + (uint32) (((ss->*bp_n).tFFFFFFD8).u0 << 0x04) <= ((ss->*bp_n).tFFFFFFF8).u4 + (((ss->*bp_n).tFFFFFFE0).u4 - 0x20) l0800_nC
+l0800_nE:
+	(ss->*bp_n).tFFFFFFF8.u4 = (ss->*bp_n).tFFFFFFF8.u4 + ((((ss->*bp_n).tFFFFFFFC).u4 + (uint32) (((ss->*bp_n).tFFFFFFD8).u0 << 0x04)) - (((ss->*bp_n).tFFFFFFF8).u4 + (((ss->*bp_n).tFFFFFFE0).u4 - 0x20)))
+l0800_nC:
+	(ss->*bp_n).tFFFFFFF8.u4 = (ss->*bp_n).tFFFFFFF8.u4 + (uint32) (0x10 - ((ss->*bp_n).t0008).u1 & 0x0F)
+	ax_n = (word16) fn0800-8CAA((ss->*bp_n).tFFFFFFF8.u0, 0x04, (ss->*bp_n).tFFFFFFFA.u0)
+	(ss->*bp_n).tFFFFFFD8.u0 = (wchar_t) ax_n
+	sp_n.u0 = <invalid>
+	Mem1972[ss:sp_n + -2:word16] = Mem1967[ds_n:10721:word16]
+	Mem1975[ss:sp_n + -4:word16] = Mem1972[ds_n:10719:word16]
+	ss->*((word32) sp_n - 6) = ax_n
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	branch (ss->*bp_n).tFFFFFFD6.u0 >= ((ss->*bp_n).tFFFFFFD8).u0 l0800_nDC
+l0800_nD6:
+	(ss->*bp_n).tFFFFFFD6.u0 = (ss->*bp_n).tFFFFFFD8.u0
+l0800_nDC:
+	Mem2001[ss:sp_n + -2:word16] = Mem1996[ds_n:10721:word16]
+	Mem2004[ss:sp_n + -4:word16] = Mem2001[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD6.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	dx_ax_n = Mem2008[ss:bp_n + -4:ui32] + Mem2008[ds_n:0x4E88:ui32]
+	ax_n = (word16) fn0800-8CAA((word16) dx_ax_n + 0x20, 0x04, SLICE(dx_ax_n + 0x20, word16, 16))
+	(ss->*bp_n).tFFFFFFD4.u0 = (wchar_t) ax_n
+	sp_n.u0 = <invalid>
+	Mem2045[ss:sp_n + -2:word16] = Mem2042[ds_n:10721:word16]
+	Mem2048[ss:sp_n + -4:word16] = Mem2045[ds_n:10719:word16]
+	ss->*((word32) sp_n - 6) = ax_n
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFE4.u0 + 0x80)
+	branch Mem2065[ds_n:10781:word16] == 0x00 l0800_nF
+l0800_n:
+	(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFD2.u0 + 0x0200)
+	goto l0800_nB
+l0800_nF:
+	branch Mem2065[ds_n:0x2A21:word16] != 0x01 l0800_nB
+l0800_n:
+	(ss->*bp_n).tFFFFFFD2.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFD2.u0 + 0x0180)
+l0800_nB:
+	Mem2082[ss:sp_n + -2:word16] = Mem2077[ds_n:10721:word16]
+	Mem2085[ss:sp_n + -4:word16] = Mem2082[ds_n:10719:word16]
+	(ss->*((word32) sp_n - 6)).u0 = (ss->*bp_n).tFFFFFFD2.u0
+	fn0800-40BF(ds_n, (ss->*sp_n.u6).t0006.u1, ss->*((word32) sp_n - 4), out ds_n)
+	dx_bx_n = Mem2089[ds_n:0x2A07:ui32] - Mem2089[ss:bp_n + -4:ui32] - CONVERT(Mem2089[ss:bp_n + -38:word16] << 0x04, uint16, uint32)
+	branch dx_bx_n == 0x00 l0800_n
+l0800_nA:
+	dsOut = ds_n
+	return 0x01
+l0800_n:
+	dsOut = ds_n
+	return 0x00
+fn0800-5E64_exit:
 }
 
 // 0800:669C: Register word16 fn0800-669C(Register Eq_n ds, Register out Eq_n dsOut)
@@ -8788,12 +8663,14 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 		word16 cx_n = 0x04;
 		if (true)
 			cx_n = 0x03;
-		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002206), (uint32) cx_n);
+		word16 ax_n = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(cmpResult_n);
 		if (cmpResult_n != 0x00)
 		{
-			cup16 ax_n = 0x00 - (word16) (cmpResult_n < 0x00);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
+			word16 ax_n = 0x00 - (SCZO_n & 0x02);
+			ax_n = ax_n - ~0x00 - (cond(ax_n) & 0x02);
 		}
 		if (ax_n != 0x00)
 		{
@@ -8806,9 +8683,11 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 			}
 			uint16 cx_n = cx_n >> 0x01;
 			memcpy(*((word32) ds + 17009), *((word32) ds + 0x00002206), cx_n *32 0x02);
+			Eq_n SCZO_n;
+			SCZO_n.u1 = cond(cx_n);
 			<unknown>* di_n = cx_n * 0x02 + 17009;
-			memcpy(di_n, cx_n * 0x02 + 0x2206, (uint32) SLICE(cond(cx_n), bool, 1));
-			Eq_n di_n = (char *) di_n + (word16) (cx_n < 0x00);
+			memcpy(di_n, cx_n * 0x02 + 0x2206, SCZO_n & 0x02);
+			Eq_n di_n = (char *) di_n + ((word16) SCZO_n & 0x02);
 			word16 cx_n;
 			for (cx_n = dx_n; cx_n != 0x00; --cx_n)
 			{
@@ -8818,7 +8697,7 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
 			bp_n = fn0800-09A3(ds, out ds);
-			sp_n = (mp16) &sp_n.u7->t0008.u0;
+			sp_n = (mp16) &sp_n.u6->t0008.u0;
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		selector ss;
@@ -8831,15 +8710,15 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 		(ss->*sp_n).tFFFFFFF6.u0 = 0x2E77;
 		word16 si_n;
 		Eq_n ds_n;
-		fn0800-4152(ds, (ss->*sp_n).tFFFFFFF6.u5, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+		fn0800-4152(ds, (ss->*sp_n).tFFFFFFF6.u4, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 		uint32 dx_bx_n = Mem169[ds_n:0x2A07:ui32] + CONVERT((CONVERT(Mem169[ds_n:11893:byte], uint8, uint16) << 0x08) + CONVERT(Mem169[ds_n:11894:byte], uint8, uint16), uint16, uint32);
 		(ss->*bp_n).tFFFFFFFE.u0 = SLICE(dx_bx_n + 0x40, word16, 16);
 		(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ((word16) dx_bx_n + 0x40);
 		if (Mem207[ds_n:10781:word16] != 0x00)
-			(ss->*bp_n).tFFFFFFFC.u5 += 0x0200;
+			(ss->*bp_n).tFFFFFFFC.u4 += 0x0200;
 		else if (Mem207[ds_n:0x2A21:word16] == 0x01)
-			(ss->*bp_n).tFFFFFFFC.u5 += 384;
-		if ((ss->*bp_n).tFFFFFFFC.u5 <= 0xFEFE)
+			(ss->*bp_n).tFFFFFFFC.u4 += 384;
+		if ((ss->*bp_n).tFFFFFFFC.u4 <= 0xFEFE)
 		{
 			Mem242[ss:sp_n + 0x00:word16] = Mem228[ds_n:0x2A09:word16];
 			Mem245[ss:sp_n + -2:word16] = Mem242[ds_n:0x2A07:word16];
@@ -8847,7 +8726,7 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 			Mem251[ss:sp_n + -6:word16] = Mem248[ds_n:0x2A07:word16];
 			word16 si_n;
 			Eq_n ds_n;
-			fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+			fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 			dsOut = ds_n;
 			return 0x00;
 		}
@@ -8898,7 +8777,7 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 			(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((word16) ax_dx_n + 0x0E);
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			word16 sp_n = (word16) &sp_n.u7->t0008.u0;
+			word16 sp_n = (word16) &sp_n.u6->t0008.u0;
 		}
 		else
 		{
@@ -8909,13 +8788,13 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 			fn0800-3B0A(ds_n, 0x10, 0x00, out si_n, out ds_n);
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			(ss->*sp_n.u7).t000A.u0 = 0x00;
-			(ss->*sp_n.u7).t0008.u0 = 0x00;
-			(ss->*sp_n.u7).t0006.u0 = 0x1A;
+			(ss->*sp_n.u6).t000A.u0 = 0x00;
+			(ss->*sp_n.u6).t0008.u0 = 0x00;
+			(ss->*sp_n.u6).t0006.u0 = 0x1A;
 			Mem192[ss:sp_n + 0x04:word16] = Mem189[ds_n:0x29E5:word16];
 			Mem195[ss:sp_n + 0x02:word16] = Mem192[ds_n:0x29E3:word16];
 			word16 cx_n;
-			fn0800_ACB3(ds_n, (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u5, (ss->*sp_n.u7).t000A.u0, out cx_n);
+			fn0800_ACB3(ds_n, (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u4, (ss->*sp_n.u6).t000A.u0, out cx_n);
 			Mem210[ss:sp_n + 0x0A:word16] = Mem195[ds_n:10721:word16];
 			Mem213[ss:sp_n + 0x08:word16] = Mem210[ds_n:10719:word16];
 			Mem216[ss:sp_n + 0x06:word16] = Mem213[ds_n:0x29E5:word16];
@@ -8923,32 +8802,32 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 			word16 cx_n;
 			word16 di_n;
 			Eq_n ds_n;
-			(ss->*sp_n.u7).t0006.u0 = (wchar_t) fn0800-3E27(ds_n, (ss->*sp_n.u7).t0004.u5, out cx_n, out di_n, out ds_n);
+			(ss->*sp_n.u6).t0006.u0 = (wchar_t) fn0800-3E27(ds_n, ss->*((word32) sp_n + 4), out cx_n, out di_n, out ds_n);
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			Eq_n ds_n;
-			fn0800-401E(ds_n, (ss->*sp_n.u7).t0006.u1, (ss->*sp_n.u7).t0008.u5, out cx_n, out dx_n, out bx_n, out ds_n);
+			fn0800-401E(ds_n, (ss->*sp_n.u6).t0006.u1, (ss->*sp_n.u6).t0008.u4, out cx_n, out dx_n, out bx_n, out ds_n);
 			Eq_n dx_n = Mem234[ds_n:0x2A07:word16];
 			Mem254[ss:sp_n + 0x0A:word16] = SLICE(SEQ(Mem234[ds_n:0x2A09:word16], dx_n) - 0x1C, word16, 16);
-			(ss->*sp_n.u7).t0008.u0 = (wchar_t) (dx_n - 0x1C);
+			(ss->*sp_n.u6).t0008.u0 = (wchar_t) (dx_n - 0x1C);
 			Eq_n dx_n = Mem256[ds_n:0x2A07:word16];
 			Mem265[ss:sp_n + 0x06:word16] = SLICE(SEQ(Mem256[ds_n:0x2A09:word16], dx_n) - 0x1C, word16, 16);
-			(ss->*sp_n.u7).t0004.u0 = (wchar_t) (dx_n - 0x1C);
-			struct Eq_n Eq_n::* bp_n = fn0800-75EA(ds_n, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u5, out si_n, out ds_n);
+			ss->*((word32) sp_n + 4) = dx_n - 0x1C;
+			struct Eq_n Eq_n::* bp_n = fn0800-75EA(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u4, out si_n, out ds_n);
 			ui32 ax_dx_n = ds_n->dw2A07 - 0x1C - ds_n->dw2A03 + ds_n->dw4E88;
 			(ss->*bp_n).tFFFFFFFA.u0 = SLICE(ax_dx_n + 0x0E, word16, 16);
 			(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) ((word16) ax_dx_n + 0x0E);
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			word16 sp_n = (word16) &sp_n.u7->t0008.u0;
+			word16 sp_n = (word16) &sp_n.u6->t0008.u0;
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		Eq_n ds_n;
 		Mem408[ss:sp_n + 0x00:word16] = Mem403[ds_n:10721:word16];
 		Mem411[ss:sp_n + -2:word16] = Mem408[ds_n:10719:word16];
 		struct Eq_n Eq_n::* bp_n;
-		if (((word16) fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5) & 0x01) != 0x00)
+		if (((word16) fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4) & 0x01) != 0x00)
 		{
 			Mem430[ss:sp_n + 0x00:word16] = Mem411[ds_n:10721:word16];
 			Mem433[ss:sp_n + -2:word16] = Mem430[ds_n:10719:word16];
@@ -8958,8 +8837,8 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 			word16 bx_n;
 			word16 di_n;
 			selector ds_n;
-			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-			++(ss->*bp_n).tFFFFFFF8.u5;
+			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
+			++(ss->*bp_n).tFFFFFFF8.u4;
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		Eq_n ds_n;
@@ -8967,10 +8846,10 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 		Mem468[ss:sp_n + -2:word16] = Mem465[ds_n:10719:word16];
 		(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFA.u0 = 0x00;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		Mem492[ss:sp_n + 0x00:word16] = Mem476[ds_n:10721:word16];
 		Mem495[ss:sp_n + -2:word16] = Mem492[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		Mem510[ds_n:0x2A05:word16] = SLICE(dx_ax_n + ~0x1F, word16, 16);
 		Mem511[ds_n:0x2A03:word16] = SLICE(dx_ax_n, word16, 0) + ~0x1F;
 		(ss->*sp_n).t0000.u0 = 0x00;
@@ -8979,48 +8858,48 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 		Mem525[ss:sp_n + -6:word16] = Mem522[ds_n:10721:word16];
 		Mem528[ss:sp_n + -8:word16] = Mem525[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem543[ss:sp_n + 0x00:word16] = Mem528[ds_n:10721:word16];
 		Mem546[ss:sp_n + -2:word16] = Mem543[ds_n:10719:word16];
 		word16 di_n;
 		Eq_n ds_n;
-		(ss->*bp_n).tFFFFFFF8.u5 = (char *) ((ss->*bp_n).tFFFFFFF8.u5 - fn0800-3F58(ds_n, ((ss->*sp_n).tFFFFFFFE).u5, out di_n, out ds_n));
+		(ss->*bp_n).tFFFFFFF8.u4 = (char *) ((ss->*bp_n).tFFFFFFF8.u4 - fn0800-3F58(ds_n, ((ss->*sp_n).tFFFFFFFE).u4, out di_n, out ds_n));
 		Mem570[ss:sp_n + 0x00:word16] = Mem566[ds_n:10721:word16];
 		Mem573[ss:sp_n + -2:word16] = Mem570[ds_n:10719:word16];
 		Mem576[ss:sp_n + -4:word16] = Mem573[ds_n:0x2A05:word16];
 		Mem579[ss:sp_n + -6:word16] = Mem576[ds_n:0x2A03:word16];
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFE.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
 		Mem604[ss:sp_n + -6:word16] = Mem601[ds_n:0x29E5:word16];
 		Mem607[ss:sp_n + -8:word16] = Mem604[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem622[ss:sp_n + 0x00:word16] = Mem607[ds_n:0x29E5:word16];
 		Mem625[ss:sp_n + -2:word16] = Mem622[ds_n:0x29E3:word16];
 		word16 cx_n;
 		word16 di_n;
 		Eq_n ds_n;
-		if (fn0800-3E27(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out di_n, out ds_n) == 0x601A)
+		if (fn0800-3E27(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out di_n, out ds_n) == 0x601A)
 		{
 			Mem642[ss:sp_n + 0x00:word16] = Mem625[ds_n:0x29E5:word16];
 			Mem645[ss:sp_n + -2:word16] = Mem642[ds_n:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			(ss->*sp_n).t0000.u0 = (wchar_t) (word16) dx_ax_n;
 			(ss->*sp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 			Mem665[ss:sp_n + -4:word16] = Mem662[ds_n:0x29E5:word16];
 			Mem668[ss:sp_n + -6:word16] = Mem665[ds_n:0x29E3:word16];
-			ui32 bx_cx_n = (word32) fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFA.u5, out ds_n) + SEQ(((ss->*sp_n).tFFFFFFFE).u0, ((ss->*sp_n).t0000).u0);
+			ui32 bx_cx_n = (word32) fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFA.u4, out ds_n) + SEQ(((ss->*sp_n).tFFFFFFFE).u0, ((ss->*sp_n).t0000).u0);
 			(ss->*bp_n).wFFFFFFFE = SLICE(bx_cx_n, word16, 16);
 			(ss->*bp_n).tFFFFFFFC.u1 = (word16) (word16) bx_cx_n;
 			Mem694[ss:sp_n + 0x00:word16] = Mem691[ds_n:0x29E5:word16];
 			Mem697[ss:sp_n + -2:word16] = Mem694[ds_n:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			(ss->*bp_n).wFFFFFFF6 = SLICE(dx_ax_n, word16, 16);
 			(ss->*bp_n).tFFFFFFF4.u1 = (word16) (word16) dx_ax_n;
-			if ((ss->*bp_n).tFFFFFFFC.u0 + ((ss->*bp_n).tFFFFFFF4).u0 > ((ss->*bp_n).tFFFFFFF8).u5 + ds_n->dw2A03)
-				(ss->*bp_n).tFFFFFFF8.u5 += (ss->*bp_n).tFFFFFFFC.u0 + ((ss->*bp_n).tFFFFFFF4).u0 - (((ss->*bp_n).tFFFFFFF8).u5 + ds_n->dw2A03);
+			if ((ss->*bp_n).tFFFFFFFC.u0 + ((ss->*bp_n).tFFFFFFF4).u0 > ((ss->*bp_n).tFFFFFFF8).u4 + ds_n->dw2A03)
+				(ss->*bp_n).tFFFFFFF8.u4 += (ss->*bp_n).tFFFFFFFC.u0 + ((ss->*bp_n).tFFFFFFF4).u0 - (((ss->*bp_n).tFFFFFFF8).u4 + ds_n->dw2A03);
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		(ss->*sp_n).t0000.u0 = 0x00;
@@ -9030,12 +8909,12 @@ word16 fn0800-67BF(Eq_n ds, union Eq_n & dsOut)
 		Mem773[ss:sp_n + -6:word16] = Mem769[ds_n:10721:word16];
 		Mem776[ss:sp_n + -8:word16] = Mem773[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem791[ss:sp_n + 0x00:word16] = Mem776[ds_n:10721:word16];
 		Mem794[ss:sp_n + -2:word16] = Mem791[ds_n:10719:word16];
 		(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		dsOut = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		dsOut = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		return 0x00;
 	}
 	else
@@ -9078,7 +8957,7 @@ word16 fn0800-6AD4(Eq_n ds, union Eq_n & dsOut)
 				dx_ax_n = fn0800-3E5D(ds_n, Mem87[ds_n:0x29E3:word32], out ds_n);
 				Eq_n ax_n = (word16) dx_ax_n;
 				Eq_n dx_n;
-				dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+				dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 				ds_n = fn0800-409C(ds_n, ax_n, dx_n, Mem113[ds_n:10719:word32]);
 				Eq_n dwLoc0A_n = dx_ax_n;
 				while (true)
@@ -9125,7 +9004,7 @@ word16 fn0800-6AD4(Eq_n ds, union Eq_n & dsOut)
 			Eq_n dx_ax_n = fn0800_AD2F(ds_n, Mem508[ds_n:0x29E3:word32]);
 			Eq_n ax_n = (word16) dx_ax_n;
 			Eq_n dx_n;
-			dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+			dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 			if (dx_n >=u Mem531[ds_n:0x2A09:word16] && (dx_n != Mem531[ds_n:0x2A09:word16] || ax_n >=u Mem531[ds_n:0x2A07:word16]))
 			{
 				dsOut = ds_n;
@@ -9213,7 +9092,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	Eq_n dx_ax_n = fn0800_AD2F(ds_n, ss->*((word32) sp_n - 4));
 	(ss->*((word32) sp_n - 2)).u0 = 0x01;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 4) = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	ss->*((word32) sp_n - 6) = ax_n;
@@ -9223,7 +9102,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	fn0800_ACB3(ds_n, ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), out cx_n);
 	struct Eq_n Eq_n::* bp_n = fp - 2;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	Eq_n ax_n = (word16) dx_ax_n;
 	Eq_n sp_n = sp_n;
 	struct Eq_n Eq_n::* sp_n;
@@ -9232,7 +9111,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		sp_n = sp_n - 2;
 		Mem95[ss:sp_n + 0x00:word16] = Mem90[ds_n:0x29E5:word16];
 		Mem98[ss:sp_n + -2:word16] = Mem95[ds_n:0x29E3:word16];
-		int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+		int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 		word16 ax_n = (word16) dx_ax_n;
 		if (SLICE(dx_ax_n, word16, 16) != 0x00 || ax_n != 1004)
 			break;
@@ -9242,15 +9121,15 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Mem133[ss:sp_n + -6:word16] = Mem130[ds_n:0x29E5:word16];
 		Mem136[ss:sp_n + -8:word16] = Mem133[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
-		sp_n.u5 = (char *) &sp_n->t0000 + 2;
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
+		sp_n.u4 = (char *) &sp_n->t0000 + 2;
 		Eq_n dx_ax_n;
 		do
 		{
 			struct Eq_n Eq_n::* sp_n = sp_n - 2;
 			Mem155[ss:sp_n + 0x00:word16] = Mem150[ds_n:0x29E5:word16];
 			Mem158[ss:sp_n + -2:word16] = Mem155[ds_n:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+			Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 			dx_ax_n = fn0800-8C69((word16) dx_ax_n, 0x02, SLICE(dx_ax_n, word16, 16));
 			word16 ax_n = (word16) dx_ax_n;
 			Eq_n sp_n;
@@ -9258,7 +9137,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 			if (dx_ax_n != 0x00)
 			{
 				(ss->*((word32) sp_n - 2)).u0 = 0x01;
-				(ss->*((word32) sp_n - 4)).u5 = SLICE((word32) dx_ax_n + 4, word16, 16);
+				(ss->*((word32) sp_n - 4)).u4 = SLICE((word32) dx_ax_n + 4, word16, 16);
 				ss->*((word32) sp_n - 6) = ax_n + 0x04;
 				Mem206[ss:sp_n + -8:word16] = Mem203[ds_n:0x29E5:word16];
 				Mem209[ss:sp_n + -0x0A:word16] = Mem206[ds_n:0x29E3:word16];
@@ -9270,9 +9149,9 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	}
 	Mem237[ss:sp_n + 0x00:word16] = Mem98[ds_n:0x29E5:word16];
 	Mem240[ss:sp_n + -2:word16] = Mem237[ds_n:0x29E3:word16];
-	int32 dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5) - dx_ax_n;
+	int32 dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4) - dx_ax_n;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	Mem260[ds_n:0x2A05:word16] = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	Mem261[ds_n:0x2A03:word16] = ax_n;
@@ -9280,13 +9159,13 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	Mem267[ss:sp_n + -2:word16] = Mem264[ds_n:10719:word16];
 	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg04;
 	(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) wArg02;
-	Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+	Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 	Mem289[ss:sp_n + 0x00:word16] = Mem273[ds_n:10721:word16];
 	Mem292[ss:sp_n + -2:word16] = Mem289[ds_n:10719:word16];
-	Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+	Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 	Eq_n ax_n = (word16) dx_ax_n;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 	if (dx_n >= 0x00 && (dx_n > 0x00 || ax_n > 0x12))
 	{
@@ -9296,49 +9175,49 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Mem327[ss:sp_n + -6:word16] = Mem324[ds_n:10721:word16];
 		Mem330[ss:sp_n + -8:word16] = Mem327[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem345[ss:sp_n + 0x00:word16] = Mem330[ds_n:10721:word16];
 		Mem348[ss:sp_n + -2:word16] = Mem345[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+		Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 		(ss->*sp_n).t0000.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 		Mem378[ss:sp_n + -6:word16] = Mem375[ds_n:10721:word16];
 		Mem381[ss:sp_n + -8:word16] = Mem378[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem395[ss:sp_n + 0x00:word16] = Mem381[ds_n:10721:word16];
 		Mem398[ss:sp_n + -2:word16] = Mem395[ds_n:10719:word16];
 		(ss->*sp_n).tFFFFFFFC.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFA.u0 = 0x00;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		Mem422[ss:sp_n + 0x00:word16] = Mem406[ds_n:10721:word16];
 		Mem425[ss:sp_n + -2:word16] = Mem422[ds_n:10719:word16];
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) dx_n;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ax_n;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		Mem447[ss:sp_n + 0x00:word16] = Mem431[ds_n:10721:word16];
 		Mem450[ss:sp_n + -2:word16] = Mem447[ds_n:10719:word16];
 		(ss->*sp_n).tFFFFFFFC.u0 = SLICE(dx_ax_n, word16, 16);
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (word16) dx_ax_n;
-		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*sp_n).t0000.u0 = 0x00;
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) dx_n;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 		Mem483[ss:sp_n + -6:word16] = Mem480[ds_n:0x29E5:word16];
 		Mem486[ss:sp_n + -8:word16] = Mem483[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		(ss->*sp_n).t0000.u0 = SLICE(dx_ax_n - 0x08, word16, 16);
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (ax_n - 0x08);
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) dx_n;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ax_n;
 		word16 si_n;
-		bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+		bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 		Mem535[ds_n:0x2A03:ui32] = Mem531[ds_n:0x2A03:ui32] + 0x08;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0008.u0;
+		sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0008.u0;
 	}
 	Eq_n ax_n = Mem538[ds_n:0x2A05:word16];
 	Eq_n dx_n = Mem538[ds_n:0x2A03:word16];
@@ -9351,7 +9230,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Mem567[ss:sp_n + -6:word16] = Mem563[ds_n:10721:word16];
 		Mem570[ss:sp_n + -8:word16] = Mem567[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		(ss->*sp_n).t0000.u0 = 0x00;
 		uint16 dx_n = (ss->*bp_n).wFFFFFFEC;
 		(ss->*sp_n).tFFFFFFFE.u0 = SLICE(SEQ((ss->*bp_n).wFFFFFFEE, dx_n) - 0x04, word16, 16);
@@ -9359,7 +9238,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Mem598[ss:sp_n + -6:word16] = Mem595[ds_n:0x29E5:word16];
 		Mem601[ss:sp_n + -8:word16] = Mem598[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		uint16 dx_n = (ss->*bp_n).wFFFFFFF0;
 		(ss->*sp_n).t0000.u0 = SLICE(SEQ((ss->*bp_n).tFFFFFFF2.u0, dx_n) + 0x04, word16, 16);
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) (dx_n + 0x04);
@@ -9372,29 +9251,29 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		sp_n.u0 = <invalid>;
 		Mem654[ss:sp_n + 0x0A:word16] = Mem635[ds_n:0x29E5:word16];
 		Mem657[ss:sp_n + 0x08:word16] = Mem654[ds_n:0x29E3:word16];
-		int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n.u7).t0008.u5, out di_n, out ds_n);
+		int32 dx_ax_n = fn0800-3F58(ds_n, (ss->*sp_n.u6).t0008.u4, out di_n, out ds_n);
 		word16 ax_n = (word16) dx_ax_n;
 		if (SLICE(dx_ax_n, word16, 16) == 0x00 && ax_n == 1004)
 		{
-			(ss->*sp_n.u7).t000A.u0 = 0x01;
-			(ss->*sp_n.u7).t0008.u0 = 0x00;
-			(ss->*sp_n.u7).t0006.u0 = 0x04;
+			(ss->*sp_n.u6).t000A.u0 = 0x01;
+			(ss->*sp_n.u6).t0008.u0 = 0x00;
+			(ss->*sp_n.u6).t0006.u0 = 0x04;
 			Mem692[ss:sp_n + 0x04:word16] = Mem689[ds_n:0x29E5:word16];
 			Mem695[ss:sp_n + 0x02:word16] = Mem692[ds_n:0x29E3:word16];
 			word16 cx_n;
-			fn0800_ACB3(ds_n, (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u5, (ss->*sp_n.u7).t000A.u0, out cx_n);
+			fn0800_ACB3(ds_n, (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u4, (ss->*sp_n.u6).t000A.u0, out cx_n);
 			Mem709[ss:sp_n + 0x0A:word16] = Mem695[ds_n:10721:word16];
 			Mem712[ss:sp_n + 0x08:word16] = Mem709[ds_n:10719:word16];
-			(ss->*sp_n.u7).t0006.u0 = 0x00;
-			(ss->*sp_n.u7).t0004.u0 = 1004;
-			ds_n = fn0800-409C(ds_n, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, (ss->*sp_n.u7).t0008.u5);
-			struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000C.u0;
+			(ss->*sp_n.u6).t0006.u0 = 0x00;
+			(ss->*((word32) sp_n + 4)).u0 = 1004;
+			ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, (ss->*sp_n.u6).t0008.u4);
+			struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t000C.u0;
 			do
 			{
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				Mem741[ss:sp_n + 0x00:word16] = Mem736[ds_n:0x29E5:word16];
 				Mem744[ss:sp_n + -2:word16] = Mem741[ds_n:0x29E3:word16];
-				Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+				Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 				(ss->*bp_n).tFFFFFFFE.u0 = SLICE(dx_ax_n, word16, 16);
 				Eq_n ax_n = (word16) dx_ax_n;
 				(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
@@ -9402,13 +9281,13 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 				Mem766[ss:sp_n + -2:word16] = Mem763[ds_n:10719:word16];
 				(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFE.u0;
 				(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ax_n;
-				ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+				ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 				sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002.u0;
 				if (((ss->*bp_n).tFFFFFFFC.u0 | ((ss->*bp_n).tFFFFFFFE).u0) != 0x00)
 				{
 					Mem792[ss:sp_n + 0x00:word16] = Mem771[ds_n:0x29E5:word16];
 					Mem795[ss:sp_n + -2:word16] = Mem792[ds_n:0x29E3:word16];
-					Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out ds_n);
+					Eq_n dx_ax_n = fn0800-3E5D(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out ds_n);
 					(ss->*bp_n).tFFFFFFFA.u0 = SLICE((word32) dx_ax_n + 1, word16, 16);
 					word16 ax_n = (word16) dx_ax_n;
 					(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) (ax_n + 0x01);
@@ -9416,11 +9295,11 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 					Mem820[ss:sp_n + -2:word16] = Mem817[ds_n:10719:word16];
 					(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (ax_n + 0x01);
-					Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+					Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 					Eq_n dx_ax_n = fn0800-8C69((ss->*bp_n).tFFFFFFFC.u0, 0x02, (ss->*bp_n).tFFFFFFFE.u0);
 					Eq_n sp_n;
 					sp_n.u0 = <invalid>;
-					(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+					(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 					ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
 					Mem857[ss:sp_n + -6:word16] = Mem854[ds_n:10721:word16];
 					Mem860[ss:sp_n + -8:word16] = Mem857[ds_n:10719:word16];
@@ -9430,7 +9309,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 					sp_n.u0 = <invalid>;
 					word16 si_n;
 					bp_n = fn0800-3B0A(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), out si_n, out ds_n);
-					sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000C.u0;
+					sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t000C.u0;
 				}
 			} while (((ss->*bp_n).tFFFFFFFC.u0 | ((ss->*bp_n).tFFFFFFFE).u0) != 0x00);
 		}
@@ -9442,7 +9321,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		(ss->*bp_n).tFFFFFFFE.u0 = SLICE(ax_dx_n, word16, 16);
 		(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) (word16) ax_dx_n;
 		if ((Mem918[ds_n:0x2A03:word16] & 0x03) != 0x00)
-			(ss->*bp_n).tFFFFFFFC.u5 += 2;
+			(ss->*bp_n).tFFFFFFFC.u4 += 2;
 		Eq_n sp_n;
 		if (((ss->*bp_n).tFFFFFFFC.u0 & 0x03) != 0x00)
 		{
@@ -9468,14 +9347,14 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 			word16 dx_n;
 			word16 bx_n;
 			word16 di_n;
-			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
+			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
 			Mem1015[ds_n:0x2A03:ui32] = Mem1011[ds_n:0x2A03:ui32] + 0x01;
-			sp_n.u5 = (char *) &sp_n->t0000 + 2;
+			sp_n.u4 = (char *) &sp_n->t0000 + 2;
 		}
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
 		Mem1019[ss:sp_n + 0x00:word16] = Mem977[ds_n:10721:word16];
 		Mem1022[ss:sp_n + -2:word16] = Mem1019[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*bp_n).tFFFFFFFA.u0 = SLICE(dx_ax_n, word16, 16);
 		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) (word16) dx_ax_n;
 		(ss->*sp_n).t0000.u0 = 0x01;
@@ -9485,21 +9364,21 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Mem1056[ss:sp_n + -6:word16] = Mem1053[ds_n:10721:word16];
 		Mem1059[ss:sp_n + -8:word16] = Mem1056[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+		fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 		Mem1074[ss:sp_n + 0x00:word16] = Mem1059[ds_n:10721:word16];
 		Mem1077[ss:sp_n + -2:word16] = Mem1074[ds_n:10719:word16];
 		int32 dx_ax_n = fn0800-8CAA(Mem1077[ds_n:0x2A03:word16], 0x02, Mem1077[ds_n:0x2A05:word16]);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*((word32) sp_n - 2)).u5 = SLICE(dx_ax_n, word16, 16);
+		(ss->*((word32) sp_n - 2)).u4 = SLICE(dx_ax_n, word16, 16);
 		ss->*((word32) sp_n - 4) = (word16) dx_ax_n;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Eq_n ax_n;
 		ax_n.u0 = (ss->*bp_n).tFFFFFFF6.u0;
 		Eq_n dx_n;
 		dx_n.u0 = (ss->*bp_n).tFFFFFFF4.u0;
 		(ss->*bp_n).tFFFFFFE6.u0 = (wchar_t) (ax_n & 0x3FFF);
-		if (SEQ(ax_n & 0x3FFF, dx_n) > ((ss->*bp_n).tFFFFFFFC).u5)
+		if (SEQ(ax_n & 0x3FFF, dx_n) > ((ss->*bp_n).tFFFFFFFC).u4)
 		{
 			Eq_n ax_n;
 			ax_n.u0 = (ss->*bp_n).tFFFFFFF4.u0;
@@ -9510,25 +9389,25 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		ax_n.u0 = (ss->*bp_n).tFFFFFFF6.u0;
 		(ss->*bp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 		(ss->*bp_n).tFFFFFFFE.u0 = (wchar_t) ((ss->*bp_n).tFFFFFFFE.u0 | ax_n & 0xC000);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
 		Mem1145[ss:sp_n + 0x00:word16] = Mem1140[ds_n:20110:word16];
 		Mem1148[ss:sp_n + -2:word16] = Mem1145[ds_n:20108:word16];
 		Mem1151[ss:sp_n + -4:word16] = Mem1148[ds_n:10721:word16];
 		Mem1154[ss:sp_n + -6:word16] = Mem1151[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 		Mem1169[ss:sp_n + 0x02:word16] = Mem1154[ds_n:10721:word16];
 		Mem1172[ss:sp_n + 0x00:word16] = Mem1169[ds_n:10719:word16];
 		(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFFE.u0;
 		(ss->*((word32) sp_n - 4)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		(ss->*((word32) sp_n - 2)).u0 = (ss->*bp_n).tFFFFFFF8.u0;
 		Mem1205[ss:sp_n + -4:word16] = Mem1202[ds_n:10721:word16];
 		Mem1208[ss:sp_n + -6:word16] = Mem1205[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 		Mem1225[ds_n:20108:ui32] = Mem1221[ds_n:20108:ui32] + 0x04;
 	}
 }
@@ -9568,15 +9447,15 @@ word16 fn0800-741D(Eq_n ds)
 		selector ss;
 		Mem20[ss:sp_n + 0x00:word16] = Mem15[ds:0x29E5:word16];
 		Mem23[ss:sp_n + -2:word16] = Mem20[ds:0x29E3:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds, (ss->*sp_n).tFFFFFFFE.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds, (ss->*sp_n).tFFFFFFFE.u4);
 		Eq_n ax_n = (word16) dx_ax_n;
 		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+		dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 		if (dx_n >=u Mem23[ds:0x2A09:word16] && (dx_n != Mem23[ds:0x2A09:word16] || ax_n >=u Mem23[ds:0x2A07:word16]))
 			break;
 		Mem58[ss:sp_n + 0x00:word16] = Mem23[ds:0x29E5:word16];
 		Mem61[ss:sp_n + -2:word16] = Mem58[ds:0x29E3:word16];
-		word16 ax_n = fn0800-3E9A(ds, (ss->*sp_n).tFFFFFFFE.u5, out ds);
+		word16 ax_n = fn0800-3E9A(ds, (ss->*sp_n).tFFFFFFFE.u4, out ds);
 		switch (ax_n)
 		{
 		case 0x00:
@@ -9587,12 +9466,12 @@ word16 fn0800-741D(Eq_n ds)
 			byte ch_n;
 			word16 di_n;
 			Eq_n ds_n;
-			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u5, out ch_n, out di_n, out ds_n);
+			(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u4, out ch_n, out di_n, out ds_n);
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			word16 di_n;
-			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds);
+			fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds);
 			sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 			break;
 		case 0x01:
@@ -9600,13 +9479,13 @@ word16 fn0800-741D(Eq_n ds)
 			Mem127[ss:sp_n + -2:word16] = Mem124[ds:10719:word16];
 			Mem130[ss:sp_n + -4:word16] = Mem127[ds:0x29E5:word16];
 			Mem133[ss:sp_n + -6:word16] = Mem130[ds:0x29E3:word16];
-			Eq_n dx_ax_n = fn0800-3E5D(ds, (ss->*sp_n).tFFFFFFFA.u5, out ds_n);
+			Eq_n dx_ax_n = fn0800-3E5D(ds, (ss->*sp_n).tFFFFFFFA.u4, out ds_n);
 			(ss->*sp_n).tFFFFFFFC.u0 = SLICE(dx_ax_n, word16, 16);
 			(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (word16) dx_ax_n;
-			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
+			Eq_n ds_n = fn0800-409C(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4);
 			Mem166[ss:sp_n + 0x00:word16] = Mem150[ds_n:0x29E5:word16];
 			Mem169[ss:sp_n + -2:word16] = Mem166[ds_n:0x29E3:word16];
-			Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u5, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*sp_n).tFFFFFFFE.u4, out di_n, out ds_n);
 			(ss->*bp_n).tFFFFFFFE.u0 = 0x00;
 			(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 			Mem187[ss:sp_n + 0x00:word16] = Mem184[ds_n:10721:word16];
@@ -9616,41 +9495,41 @@ word16 fn0800-741D(Eq_n ds)
 			word16 dx_n;
 			word16 bx_n;
 			Eq_n ds_n;
-			fn0800-401E(ds_n, (ss->*sp_n).t0004.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out ds_n);
+			fn0800-401E(ds_n, (ss->*sp_n).t0004.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out ds_n);
 			(ss->*sp_n).t0000.u0 = (ss->*bp_n).tFFFFFFFE.u0;
 			(ss->*sp_n).tFFFFFFFE.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 			(ss->*sp_n).tFFFFFFFC.u0 = (ss->*bp_n).tFFFFFFFE.u0;
 			(ss->*sp_n).tFFFFFFFA.u0 = (ss->*bp_n).tFFFFFFFC.u0;
 			word16 si_n;
 			Eq_n ds_n;
-			bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out ds_n);
+			bp_n = fn0800-75EA(ds_n, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out ds_n);
 			Eq_n sp_n;
 			sp_n.u0 = <invalid>;
-			(ss->*sp_n.u7).t0006.u0 = 0x01;
+			(ss->*sp_n.u6).t0006.u0 = 0x01;
 			Eq_n dx_n = Mem239[ds_n:0x2A03:word16];
 			Mem252[ss:sp_n + 0x04:word16] = -SLICE(SEQ(Mem239[ds_n:0x2A05:word16], dx_n) + 0x02, word16, 16) - (dx_n != ~0x01);
-			(ss->*sp_n.u7).t0002.u0 = (wchar_t) -((word16) dx_n.u3 + 2);
+			(ss->*sp_n.u6).t0002.u0 = (wchar_t) -((word16) dx_n.u2 + 2);
 			Mem257[ss:sp_n + 0x00:word16] = Mem254[ds_n:10721:word16];
 			Mem260[ss:sp_n + -2:word16] = Mem257[ds_n:10719:word16];
 			word16 cx_n;
-			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
+			fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u0, out cx_n);
 			Mem275[ss:sp_n + 0x06:word16] = Mem260[ds_n:10721:word16];
 			Mem278[ss:sp_n + 0x04:word16] = Mem275[ds_n:10719:word16];
 			Mem281[ss:sp_n + 0x02:word16] = Mem278[ds_n:0x2A03:word16];
-			fn0800-40BF(ds_n, (ss->*sp_n.u7).t0002.u1, (ss->*sp_n.u7).t0004.u5, out ds);
+			fn0800-40BF(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*((word32) sp_n + 4), out ds);
 			Eq_n dx_n = Mem281[ds:0x2A03:word16];
 			if (Mem281[ds:0x2A05:word16] == Mem281[ss:bp_n + -2:word16] && dx_n == ((ss->*bp_n).tFFFFFFFC).u0)
 			{
-				(ss->*sp_n.u7).t0006.u0 = 0x01;
-				ui32 ax_dx_n = -(ss->*bp_n).tFFFFFFFC.u5;
-				(ss->*sp_n.u7).t0004.u0 = SLICE(ax_dx_n, word16, 16);
-				(ss->*sp_n.u7).t0002.u0 = (wchar_t) (word16) ax_dx_n;
+				(ss->*sp_n.u6).t0006.u0 = 0x01;
+				ui32 ax_dx_n = -(ss->*bp_n).tFFFFFFFC.u4;
+				(ss->*((word32) sp_n + 4)).u4 = SLICE(ax_dx_n, word16, 16);
+				(ss->*sp_n.u6).t0002.u0 = (wchar_t) (word16) ax_dx_n;
 				Mem346[ss:sp_n + 0x00:word16] = Mem343[ds:0x29E5:word16];
 				Mem349[ss:sp_n + -2:word16] = Mem346[ds:0x29E3:word16];
 				word16 cx_n;
-				fn0800_ACB3(ds, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
-				(ss->*sp_n.u7).t0006.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-				(ss->*sp_n.u7).t0004.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+				fn0800_ACB3(ds, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u0, out cx_n);
+				(ss->*sp_n.u6).t0006.u0 = (ss->*bp_n).tFFFFFFFE.u0;
+				(ss->*((word32) sp_n + 4)).u0 = (ss->*bp_n).tFFFFFFFC.u0;
 				Mem370[ss:sp_n + 0x02:word16] = Mem367[ds:10721:word16];
 				Mem373[ss:sp_n + 0x00:word16] = Mem370[ds:10719:word16];
 				Mem376[ss:sp_n + -2:word16] = Mem373[ds:0x29E5:word16];
@@ -9658,19 +9537,19 @@ word16 fn0800-741D(Eq_n ds)
 				Eq_n sp_n;
 				sp_n.u0 = <invalid>;
 				word16 si_n;
-				bp_n = fn0800-3B0A(ds, (ss->*sp_n.u7).t0004.u0, (ss->*sp_n.u7).t0006.u0, out si_n, out ds);
-				sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000C.u0;
+				bp_n = fn0800-3B0A(ds, ss->*((word32) sp_n + 4), (ss->*sp_n.u6).t0006.u0, out si_n, out ds);
+				sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t000C.u0;
 			}
 			else
 			{
-				(ss->*sp_n.u7).t0006.u0 = 0x01;
+				(ss->*sp_n.u6).t0006.u0 = 0x01;
 				Mem308[ss:sp_n + 0x04:word16] = Mem304[ds:0x2A05:word16];
 				Mem311[ss:sp_n + 0x02:word16] = Mem308[ds:0x2A03:word16];
 				Mem314[ss:sp_n + 0x00:word16] = Mem311[ds:10721:word16];
 				Mem317[ss:sp_n + -2:word16] = Mem314[ds:10719:word16];
 				word16 cx_n;
-				fn0800_ACB3(ds, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
-				sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0008.u0;
+				fn0800_ACB3(ds, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u4, (ss->*sp_n.u6).t0006.u0, out cx_n);
+				sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0008.u0;
 			}
 			break;
 		case 0x03:
@@ -9685,12 +9564,12 @@ word16 fn0800-741D(Eq_n ds)
 				byte ch_n;
 				word16 di_n;
 				Eq_n ds_n;
-				(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u5, out ch_n, out di_n, out ds_n);
+				(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) fn0800-3DCF(ds, (ss->*sp_n).tFFFFFFFA.u4, out ch_n, out di_n, out ds_n);
 				word16 cx_n;
 				word16 dx_n;
 				word16 bx_n;
 				word16 di_n;
-				fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds);
+				fn0800-4047(ds_n, (ss->*sp_n).tFFFFFFFC.u1, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds);
 			}
 			break;
 		default:
@@ -9707,7 +9586,7 @@ word16 fn0800-741D(Eq_n ds)
 			sp_n.u0 = <invalid>;
 			word16 si_n;
 			bp_n = fn0800-3B0A(ds, (ss->*sp_n).tFFFFFFFE.u0, (ss->*sp_n).t0000.u0, out si_n, out ds);
-			sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000C.u0;
+			sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t000C.u0;
 			break;
 		}
 	}
@@ -9787,36 +9666,36 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		Mem85[ds_n:11889:word16] = 0x00;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
-		(ss->*sp_n.u7).t0000.u0 = 0x10;
-		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u6, out dx_n, out bp_n, out si_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = 0x10;
+		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u5, out dx_n, out bp_n, out si_n, out ds_n);
 		(ss->*bp_n).wFFFFFFF0 = dx_n;
 		(ss->*bp_n).tFFFFFFEE.u0 = (wchar_t) ax_n;
 		Mem112[ds_n:11833:word16] = dx_n + 0x01;
 		Mem113[ds_n:11831:word16] = 0x00;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
-		(ss->*sp_n.u7).t0000.u0 = 0x10;
-		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u6, out dx_n, out bp_n, out si_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = 0x10;
+		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u5, out dx_n, out bp_n, out si_n, out ds_n);
 		(ss->*bp_n).wFFFFFFF4 = dx_n;
 		(ss->*bp_n).tFFFFFFF2.u0 = (wchar_t) ax_n;
 		Mem140[ds_n:11829:word16] = dx_n + 0x01;
 		Mem141[ds_n:0x2E33:word16] = 0x00;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
-		(ss->*sp_n.u7).t0000.u0 = 0x10;
-		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u6, out dx_n, out bp_n, out si_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = 0x10;
+		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u5, out dx_n, out bp_n, out si_n, out ds_n);
 		(ss->*bp_n).wFFFFFFF8 = dx_n;
 		(ss->*bp_n).tFFFFFFF6.u0 = (wchar_t) ax_n;
 		Mem168[ds_n:11841:word16] = dx_n + 0x01;
 		Mem169[ds_n:11839:word16] = 0x00;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
-		(ss->*sp_n.u7).t0000.u0 = 0x10;
-		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u6, out dx_n, out bp_n, out si_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = 0x10;
+		Eq_n ax_n = fn0800-4311(ds_n, ss->*sp_n.u5, out dx_n, out bp_n, out si_n, out ds_n);
 		(ss->*bp_n).tFFFFFFFC.u0 = (wchar_t) dx_n;
 		(ss->*bp_n).tFFFFFFFA.u0 = (wchar_t) ax_n;
 		Mem196[ds_n:11837:word16] = dx_n + 0x01;
@@ -9826,30 +9705,30 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		sp_n.u0 = <invalid>;
 		Mem208[ss:sp_n + 0x02:word16] = Mem197[ds_n:0x29E5:word16];
 		Mem211[ss:sp_n + 0x00:word16] = Mem208[ds_n:0x29E3:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4);
 		Mem223[ds_n:0x4664:word16] = SLICE(dx_ax_n, word16, 16);
 		Mem224[ds_n:18018:word16] = SLICE(dx_ax_n, word16, 0);
 		Mem227[ss:sp_n + 0x02:word16] = Mem224[ds_n:10721:word16];
 		Mem230[ss:sp_n + 0x00:word16] = Mem227[ds_n:10719:word16];
-		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5);
+		Eq_n dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4);
 		Mem241[ds_n:0x4660:word16] = SLICE(dx_ax_n, word16, 16);
 		Mem242[ds_n:18014:word16] = SLICE(dx_ax_n, word16, 0);
 		Mem245[ss:sp_n + 0x02:word16] = Mem242[ds_n:10721:word16];
 		Mem248[ss:sp_n + 0x00:word16] = Mem245[ds_n:10719:word16];
 		uint16 ax_n = Mem248[ds_n:0x2A21:word16];
-		(ss->*((word32) sp_n - 2)).u5 = SLICE((uint32) ax_n + 0x524E4300, word16, 16);
+		(ss->*((word32) sp_n - 2)).u4 = SLICE((uint32) ax_n + 0x524E4300, word16, 16);
 		ss->*((word32) sp_n - 4) = ax_n + 0x4300;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem277[ss:sp_n + 0x02:word16] = Mem261[ds_n:10721:word16];
 		Mem280[ss:sp_n + 0x00:word16] = Mem277[ds_n:10719:word16];
 		Mem283[ss:sp_n + -2:word16] = Mem280[ds_n:0x4680:word16];
 		Mem286[ss:sp_n + -4:word16] = Mem283[ds_n:0x467E:word16];
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem301[ss:sp_n + 0x02:word16] = Mem286[ds_n:10721:word16];
 		Mem304[ss:sp_n + 0x00:word16] = Mem301[ds_n:10719:word16];
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
 		(ss->*((word32) sp_n - 4)).u0 = 0x00;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem327[ss:sp_n + 0x02:word16] = Mem312[ds_n:10721:word16];
 		Mem330[ss:sp_n + 0x00:word16] = Mem327[ds_n:10719:word16];
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
@@ -9857,7 +9736,7 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out cx_n, out dx_n, out bx_n, out ds_n);
 		Mem351[ss:sp_n + 0x02:word16] = Mem336[ds_n:10721:word16];
 		Mem354[ss:sp_n + 0x00:word16] = Mem351[ds_n:10719:word16];
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
@@ -9865,7 +9744,7 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out cx_n, out dx_n, out bx_n, out ds_n);
 		Mem375[ss:sp_n + 0x02:word16] = Mem360[ds_n:10721:word16];
 		Mem378[ss:sp_n + 0x00:word16] = Mem375[ds_n:10719:word16];
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
@@ -9873,31 +9752,31 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		Eq_n dx_n;
 		Eq_n bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out cx_n, out dx_n, out bx_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) ds_n;
-		(ss->*sp_n.u7).t0000.u0 = 0x2240;
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out cx_n, out dx_n, out bx_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) ds_n;
+		(ss->*sp_n.u6).t0000.u0 = 0x2240;
 		word16 di_n;
-		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, ss->*sp_n.u6, out di_n);
+		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, ss->*sp_n.u5, out di_n);
 		Mem413[ss:bp_n + -2:word16] = Mem402[ds_n:11855:word16];
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
 		Eq_n ax_n;
 		ax_n.u0 = 0x01;
 		if (Mem416[ds_n:0x2A1F:word16] == 0x00)
 			ax_n.u0 = 0x00;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ax_n;
-		fn0800-8465(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0);
-		(ss->*sp_n.u7).t0002.u0 = 0x01;
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ax_n;
+		fn0800-8465(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0);
+		(ss->*sp_n.u6).t0002.u0 = 0x01;
 		Eq_n ax_n;
 		ax_n.u0 = 0x01;
 		if (Mem439[ds_n:11855:word16] == 0x00)
 			ax_n.u0 = 0x00;
-		(ss->*sp_n.u7).t0000.u0 = (wchar_t) ax_n;
-		fn0800-8465(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0);
+		(ss->*sp_n.u6).t0000.u0 = (wchar_t) ax_n;
+		fn0800-8465(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0);
 		if (Mem450[ds_n:0x2A23:word16] != 0x01 && Mem450[ds_n:11855:word16] != 0x00)
 		{
-			(ss->*sp_n.u7).t0002.u0 = 0x10;
+			(ss->*sp_n.u6).t0002.u0 = 0x10;
 			Mem469[ss:sp_n + 0x00:word16] = Mem466[ds_n:11855:word16];
-			fn0800-8465(ds_n, (ss->*sp_n.u7).t0000.u0, (ss->*sp_n.u7).t0002.u0);
+			fn0800-8465(ds_n, (ss->*sp_n.u6).t0000.u0, (ss->*sp_n.u6).t0002.u0);
 		}
 		uint16 ax_n = Mem480[ds_n:0x2A21:word16];
 		byte ah_n = SLICE(ax_n, byte, 8);
@@ -9917,9 +9796,9 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		byte Eq_n::* si_n = 18050;
 		while (Mem514[ds_n:20098:word16] != 0x00)
 		{
-			(ss->*sp_n.u7).t0002.u0 = (wchar_t) SEQ(ah_n, ds_n->*si_n);
+			(ss->*sp_n.u6).t0002.u0 = (wchar_t) SEQ(ah_n, ds_n->*si_n);
 			word16 di_n;
-			fn0800-8624(ds_n, (ss->*sp_n.u7).t0002.u1, out di_n, out ds_n);
+			fn0800-8624(ds_n, (ss->*sp_n.u6).t0002.u1, out di_n, out ds_n);
 			Mem542[ds_n:20098:word16] = Mem527[ds_n:20098:word16] - 0x01;
 			++si_n;
 			ah_n = 0x00;
@@ -9936,23 +9815,23 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 			Mem589[ds_n:0x4E88:ui32] = Mem585[ds_n:0x4E88:ui32] + 0x02;
 		Mem603[ss:sp_n + 0x02:word16] = Mem592[ds_n:10721:word16];
 		Mem606[ss:sp_n + 0x00:word16] = Mem603[ds_n:10719:word16];
-		int32 dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u7).t0000.u5) - Mem606[ds_n:18014:ui32];
+		int32 dx_ax_n = fn0800_AD2F(ds_n, (ss->*sp_n.u6).t0000.u4) - Mem606[ds_n:18014:ui32];
 		Mem621[ds_n:0x2A05:word16] = SLICE(dx_ax_n, word16, 16);
 		Mem622[ds_n:0x2A03:word16] = SLICE(dx_ax_n, word16, 0);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
 		Eq_n dx_n = Mem625[ds_n:18014:word16];
 		Mem634[ss:sp_n + 0x00:word16] = SLICE(SEQ(Mem625[ds_n:0x4660:word16], dx_n) + 0x08, word16, 16);
-		(ss->*((word32) sp_n - 2)).u5 = (word16) dx_n.u1 + 8;
+		(ss->*((word32) sp_n - 2)).u4 = (word16) dx_n.u1 + 8;
 		Mem639[ss:sp_n + -4:word16] = Mem636[ds_n:10721:word16];
 		Mem642[ss:sp_n + -6:word16] = Mem639[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
 		Mem656[ss:sp_n + 0x02:word16] = Mem642[ds_n:10721:word16];
 		Mem659[ss:sp_n + 0x00:word16] = Mem656[ds_n:10719:word16];
 		Eq_n dx_n = Mem659[ds_n:0x2A03:word16];
 		Mem668[ss:sp_n + -2:word16] = SLICE(SEQ(Mem659[ds_n:0x2A05:word16], dx_n) - 0x12, word16, 16);
 		ss->*((word32) sp_n - 4) = dx_n - 0x12;
-		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u6);
+		Eq_n ds_n = fn0800-409C(ds_n, ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5);
 		Mem686[ss:sp_n + 0x02:word16] = Mem670[ds_n:10721:word16];
 		Mem689[ss:sp_n + 0x00:word16] = Mem686[ds_n:10719:word16];
 		Mem692[ss:sp_n + -2:word16] = Mem689[ds_n:11851:word16];
@@ -9960,7 +9839,7 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out cx_n, out dx_n, out bx_n, out ds_n);
 		Mem708[ss:sp_n + 0x02:word16] = Mem692[ds_n:10721:word16];
 		Mem711[ss:sp_n + 0x00:word16] = Mem708[ds_n:10719:word16];
 		Mem714[ss:sp_n + -2:word16] = Mem711[ds_n:11849:word16];
@@ -9968,7 +9847,7 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-401E(ds_n, (ss->*sp_n.u7).t0002.u1, ss->*sp_n.u6, out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-401E(ds_n, (ss->*sp_n.u6).t0002.u1, ss->*sp_n.u5, out cx_n, out dx_n, out bx_n, out ds_n);
 		Mem730[ss:sp_n + 0x02:word16] = Mem714[ds_n:10721:word16];
 		Mem733[ss:sp_n + 0x00:word16] = Mem730[ds_n:10719:word16];
 		Mem738[ss:sp_n + -2:word16] = CONVERT(Mem733[ds_n:0x4E88:byte], uint8, uint16);
@@ -9977,7 +9856,7 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 bx_n;
 		word16 di_n;
 		Eq_n ds_n;
-		fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
+		fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
 		Mem754[ss:sp_n + 0x02:word16] = Mem738[ds_n:10721:word16];
 		Mem757[ss:sp_n + 0x00:word16] = Mem754[ds_n:10719:word16];
 		Mem762[ss:sp_n + -2:word16] = CONVERT(Mem757[ds_n:0x29F7:byte], uint8, uint16);
@@ -9986,62 +9865,62 @@ word16 fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, union Eq_n &
 		word16 bx_n;
 		word16 di_n;
 		Eq_n ds_n;
-		fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0000.u5, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
+		fn0800-4047(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0000.u4, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
 		ui32 ax_dx_n = Mem777[ds_n:18014:ui32] + Mem777[ds_n:0x2A03:ui32];
-		(ss->*sp_n.u7).t0000.u0 = SLICE(ax_dx_n, word16, 16);
+		(ss->*sp_n.u6).t0000.u0 = SLICE(ax_dx_n, word16, 16);
 		ss->*((word32) sp_n - 2) = (word16) ax_dx_n;
 		Mem791[ss:sp_n + -4:word16] = Mem788[ds_n:10721:word16];
 		Mem794[ss:sp_n + -6:word16] = Mem791[ds_n:10719:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-		(ss->*sp_n.u7).t0002.u0 = 0x00;
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
+		(ss->*sp_n.u6).t0002.u0 = 0x00;
 		ui32 ax_dx_n = Mem808[ds_n:18018:ui32] + Mem808[ds_n:0x467E:ui32];
-		(ss->*sp_n.u7).t0000.u0 = SLICE(ax_dx_n, word16, 16);
+		(ss->*sp_n.u6).t0000.u0 = SLICE(ax_dx_n, word16, 16);
 		ss->*((word32) sp_n - 2) = (word16) ax_dx_n;
 		Mem822[ss:sp_n + -4:word16] = Mem819[ds_n:0x29E5:word16];
 		Mem825[ss:sp_n + -6:word16] = Mem822[ds_n:0x29E3:word16];
 		word16 cx_n;
-		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u0, out cx_n);
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFEC.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFEA.u0;
+		fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), (ss->*sp_n.u6).t0002.u0, out cx_n);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFEC.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFEA.u0;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFF0.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFEE.u0;
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFF0.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFEE.u0;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFF4.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF2.u0;
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFF4.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF2.u0;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFF8.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0;
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFF8.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFF6.u0;
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
-		(ss->*sp_n.u7).t0002.u0 = (ss->*bp_n).tFFFFFFFC.u0;
-		(ss->*sp_n.u7).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds_n);
+		(ss->*sp_n.u6).t0002.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+		(ss->*sp_n.u6).t0000.u0 = (ss->*bp_n).tFFFFFFFA.u0;
 		Eq_n cx_n;
 		Eq_n dx_n;
 		Eq_n bx_n;
-		fn0800-4346(ds_n, (ss->*sp_n.u7).t0002.u0, out cx_n, out dx_n, out bx_n, out ds);
-		(ss->*sp_n.u7).t0002.u0 = (wchar_t) ds;
-		(ss->*sp_n.u7).t0000.u0 = 0x223C;
+		fn0800-4346(ds_n, (ss->*sp_n.u6).t0002.u0, out cx_n, out dx_n, out bx_n, out ds);
+		(ss->*sp_n.u6).t0002.u0 = (wchar_t) ds;
+		(ss->*sp_n.u6).t0000.u0 = 0x223C;
 		word16 di_n;
-		fn0800_B2EF(cx_n, dx_n, bx_n, ds, ss->*sp_n.u6, out di_n);
-		sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0004.u0;
+		fn0800_B2EF(cx_n, dx_n, bx_n, ds, ss->*sp_n.u5, out di_n);
+		sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->b0004;
 	}
 	word16 bp_n = (ss->*bp_n).w0000;
 	siOut.u0 = (ss->*sp_n).t0000.u0;
@@ -10128,13 +10007,15 @@ byte fn0800-7A02(Eq_n ds, union Eq_n & dsOut)
 				word16 cx_n;
 				word16 di_n;
 				Mem593[ds_n:11817:word16] = fn0800-3E27(ds, Mem562[ds:10715:word32], out cx_n, out di_n, out ds_n);
+				Eq_n ds_n;
 				word16 cx_n;
 				word16 di_n;
-				Mem613[ds:11819:word16] = fn0800-3E27(ds_n, Mem593[ds_n:10715:word32], out cx_n, out di_n, out ds);
-				fn0800-8407(ds, Mem618[ds:11819:word16], SEQ(ds, 10319));
-				fn0800-8407(ds, Mem637[ds:11817:word16], SEQ(ds, 10127));
-				Mem652[ds:11817:word16] = Mem640[ds:11817:word16] + 0x02;
-				Mem659[ds:0x467A:ui32] = Mem655[ds:0x467A:ui32] + CONVERT(Mem652[ds:11817:word16], uint16, uint32);
+				Mem613[ds_n:11819:word16] = fn0800-3E27(ds_n, Mem593[ds_n:10715:word32], out cx_n, out di_n, out ds_n);
+				fn0800-8407(ds_n, Mem618[ds_n:11819:word16], SEQ(ds_n, 10319));
+				fn0800-8407(ds_n, Mem637[ds_n:11817:word16], SEQ(ds_n, 10127));
+				Mem652[ds_n:11817:word16] = Mem640[ds_n:11817:word16] + 0x02;
+				Mem659[ds_n:0x467A:ui32] = Mem655[ds_n:0x467A:ui32] + CONVERT(Mem652[ds_n:11817:word16], uint16, uint32);
+				ds = ds_n;
 				while (true)
 				{
 					Eq_n ax_n = Mem662[ds:11817:word16];
@@ -10398,7 +10279,7 @@ Eq_n fn0800-7FDC(Eq_n ds)
 		(ss->*sp_n).tFFFFFFF6.u0 = (wchar_t) ax_n;
 		word16 si_n;
 		word16 di_n;
-		fn0800-4110(ds, (ss->*sp_n).tFFFFFFF6.u5, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out si_n, out di_n, out ds);
+		fn0800-4110(ds, (ss->*sp_n).tFFFFFFF6.u4, (ss->*sp_n).tFFFFFFFA.u0, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out si_n, out di_n, out ds);
 		Mem181[ds:0x4676:ui32] = Mem177[ds:0x4676:ui32] - dwLoc06_n;
 		Mem187[ds:0x4672:ui32] = Mem183[ds:0x4672:ui32] + dwLoc06_n;
 		struct Eq_n * ax_n = Mem187[ds:11887:word16];
@@ -10466,19 +10347,19 @@ Eq_n fn0800-7FDC(Eq_n ds)
 				ui32 dx_ax_n = fn0800-8F18(99, Mem389[ds:0x4668:word16], 0x00, Mem389[ds:0x4666:word16], out ch_n);
 				(ss->*sp_n).tFFFFFFFC.u0 = SLICE(dx_ax_n, word16, 16);
 				(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (word16) dx_ax_n;
-				Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5, out cx_n, out bx_n);
+				Eq_n dx_ax_n = fn0800-8BC2((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4, out cx_n, out bx_n);
 				Eq_n sp_n;
 				sp_n.u0 = <invalid>;
 				Eq_n dx_n;
-				dx_n.u5 = SLICE(dx_ax_n, word16, 16);
-				(ss->*sp_n.u7).t0006.u0 = (wchar_t) dx_n;
-				(ss->*sp_n.u7).t0004.u0 = (word16) dx_ax_n;
-				(ss->*sp_n.u7).t0002.u0 = (wchar_t) ds;
-				(ss->*sp_n.u7).t0000.u0 = 0x2244;
+				dx_n.u4 = SLICE(dx_ax_n, word16, 16);
+				(ss->*sp_n.u6).t0006.u0 = (wchar_t) dx_n;
+				(ss->*((word32) sp_n + 4)).u4 = (word16) dx_ax_n;
+				(ss->*sp_n.u6).t0002.u0 = (wchar_t) ds;
+				(ss->*sp_n.u6).t0000.u0 = 0x2244;
 				word16 di_n;
-				fn0800_B2EF(cx_n, dx_n, bx_n, ds, ss->*sp_n.u6, out di_n);
+				fn0800_B2EF(cx_n, dx_n, bx_n, ds, ss->*sp_n.u5, out di_n);
 				Mem439[ds:18012:word16] = 0x00;
-				sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0008.u0;
+				sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0008.u0;
 			}
 		}
 		Eq_n ax_n = Mem211[ds:11881:word16] - Mem211[ds:11885:word16];
@@ -10492,7 +10373,7 @@ Eq_n fn0800-7FDC(Eq_n ds)
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ax_n;
 		Mem490[ss:sp_n + -6:word16] = Mem487[ds:11891:word16];
 		Mem493[ss:sp_n + -8:word16] = Mem490[ds:11889:word16];
-		fn0800_B0F3((ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0);
+		fn0800_B0F3((ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0);
 		sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 		if (Mem493[ds:11877:word16] <u Mem493[ds:11881:word16])
 			break;
@@ -10516,7 +10397,7 @@ Eq_n fn0800-7FDC(Eq_n ds)
 	Mem598[ss:sp_n + -6:word16] = Mem595[ds_n:10717:word16];
 	Mem601[ss:sp_n + -8:word16] = Mem598[ds_n:10715:word16];
 	word16 cx_n;
-	fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u5, (ss->*sp_n).t0000.u0, out cx_n);
+	fn0800_ACB3(ds_n, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u4, (ss->*sp_n).t0000.u0, out cx_n);
 	return ds_n;
 }
 
@@ -10585,7 +10466,7 @@ void fn0800-83A1(Eq_n ds, segptr32 ptrArg02, Eq_n wArg06)
 		{
 			fn0800-8489(ds, (psegArg04_n->*wLoc04_n).w0000, 0x04);
 			++wLoc04_n;
-			si_n.u5 = &si_n.u7->b0001;
+			si_n.u4 = &si_n.u6->b0001;
 		} while (si_n < di_n);
 	}
 }
@@ -10768,7 +10649,7 @@ void fn0800-867A(word16 wArg04, Eq_n psegArg06, Eq_n wArg08, Eq_n psegArg0A)
 	Eq_n es_n = psegArg0A;
 	byte ah_n = SLICE(ax_n, byte, 8);
 	<unknown>* si_n = &si_n->b000A + 1;
-	uint8 al_n = ((psegArg06->*si_n).b000A * 0x02 + true) * 0x02;
+	uint8 al_n = ((psegArg06->*si_n).b000A * 0x02 + 0x02) * 0x02;
 	bool v48_n;
 	do
 	{
@@ -10777,17 +10658,17 @@ void fn0800-867A(word16 wArg04, Eq_n psegArg06, Eq_n wArg08, Eq_n psegArg0A)
 		al_n = al_n;
 		if (al_n >= 0x00)
 		{
-			es_n->*di_n.u5 = (char) (ds_n->*si_n);
+			es_n->*di_n.u4 = (char) (ds_n->*si_n);
 			si_n = (word16) si_n + 1;
-			di_n.u5 = &di_n.u7->b0001;
+			di_n.u4 = &di_n.u6->b0001;
 			al_n = al_n * 0x02;
 			v33_n = al_n * 0x02 == 0x00;
 			if (al_n * 0x02 < 0x00)
 				goto l0800_n;
 l0800_n:
-			es_n->*di_n.u5 = (char) (ds_n->*si_n);
+			es_n->*di_n.u4 = (char) (ds_n->*si_n);
 			si_n = (word16) si_n + 1;
-			di_n.u5 = &di_n.u7->b0001;
+			di_n.u4 = &di_n.u6->b0001;
 			continue;
 		}
 l0800_n:
@@ -10799,11 +10680,14 @@ l0800_n:
 				goto l0800_n;
 		}
 		uint8 al_n = al_n * 0x02;
-		ui8 bh_n = 0x00;
+		Eq_n bh_n;
+		bh_n.u0 = 0x00;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(al_n);
 		bool v36_n = al_n >= 0x00;
 		if (al_n == 0x00)
 		{
-			al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+			al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 			si_n = (word16) si_n + 1;
 			v36_n = al_n >= 0x00;
 		}
@@ -10811,32 +10695,38 @@ l0800_n:
 		cx_n.u0 = 0x02;
 		if (v36_n)
 		{
-			uint8 al_n = al_n * 0x02;
-			bool C_n = SLICE(cond(al_n), bool, 1);
+			ui8 al_n = al_n * 0x02;
+			Eq_n SCZO_n;
+			SCZO_n.u1 = cond(al_n);
+			ui32 C_n = SCZO_n & 0x02;
 			if (al_n == 0x00)
 			{
-				al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+				al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 				si_n = (word16) si_n + 1;
-				C_n = SLICE(cond(al_n), bool, 1);
+				C_n = cond(al_n) & 0x02;
 			}
 			al_n = al_n * 0x02;
 			Eq_n cl_n = C_n + 0x04;
+			Eq_n SCZO_n;
+			SCZO_n.u1 = cond(al_n);
 			bool v39_n = al_n >= 0x00;
 			cx_n.u1 = (uint16) cl_n;
 			if (al_n == 0x00)
 			{
-				al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+				al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 				si_n = (word16) si_n + 1;
 				v39_n = al_n >= 0x00;
 			}
 			if (!v39_n)
 			{
 				uint8 al_n = al_n * 0x02;
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(al_n);
 				al_n = al_n;
 				if (al_n == 0x00)
 				{
 					si_n = (word16) si_n + 1;
-					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 				}
 				byte ch_n = SLICE(cx_n - 0x01, byte, 8);
 				ui8 cl_n = (cl_n - 0x01) * 0x02 + (byte) (al_n < 0x00);
@@ -10848,41 +10738,47 @@ l0800_n:
 					do
 					{
 						uint8 al_n = al_n * 0x02;
+						Eq_n SCZO_n;
+						SCZO_n.u1 = cond(al_n);
 						al_n = al_n;
 						if (al_n == 0x00)
 						{
 							si_n = (word16) si_n + 1;
-							al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+							al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 						}
 						--cx_n;
-						bh_n = bh_n * 0x02 + (byte) (al_n < 0x00);
+						bh_n = bh_n *8 0x02 + (byte) (al_n < 0x00);
 						ch_n = SLICE(cx_n, byte, 8);
 					} while (cx_n != 0x00);
-					uint16 cx_n = SEQ(ch_n, (bh_n + 0x03) * 0x02);
-					memcpy(&(es_n->*di_n.u5), si_n, cx_n *32 0x02);
+					uint16 cx_n = SEQ(ch_n, ((word32) bh_n + 3) *8 0x02);
+					memcpy(&(es_n->*di_n.u4), si_n, cx_n *32 0x02);
 					si_n = (<unknown>*) (si_n + cx_n * 0x02);
-					di_n.u5 = di_n + cx_n * 0x02;
+					di_n.u4 = di_n + cx_n * 0x02;
 					continue;
 				}
 			}
 			goto l0800_n;
 		}
 		al_n = al_n * 0x02;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(al_n);
 		bool v42_n = al_n >= 0x00;
 		if (al_n == 0x00)
 		{
-			al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+			al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 			si_n = (word16) si_n + 1;
 			v42_n = al_n >= 0x00;
 		}
 		if (v42_n)
 			goto l0800_n;
 		uint8 al_n = al_n * 0x02;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(al_n);
 		bool v45_n = al_n >= 0x00;
 		word16 ax_n = SEQ(ah_n, al_n);
 		if (al_n == 0x00)
 		{
-			uint8 al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+			uint8 al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 			si_n = (word16) si_n + 1;
 			v45_n = al_n >= 0x00;
 			ax_n = SEQ(ah_n, al_n);
@@ -10900,55 +10796,64 @@ l0800_n:
 			cx_n = cx_n + 0x08;
 l0800_n:
 			al_n *= 0x02;
+			Eq_n SCZO_n;
+			SCZO_n.u1 = cond(al_n);
 			bool v51_n = al_n >= 0x00;
 			if (al_n == 0x00)
 			{
-				al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+				al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 				si_n = (word16) si_n + 1;
 				v51_n = al_n >= 0x00;
 			}
 			if (!v51_n)
 			{
-				uint8 al_n = al_n * 0x02;
-				bool C_n = SLICE(cond(al_n), bool, 1);
+				ui8 al_n = al_n * 0x02;
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(al_n);
+				Eq_n C_n = SCZO_n & 0x02;
 				if (al_n == 0x00)
 				{
-					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 					si_n = (word16) si_n + 1;
-					C_n = SLICE(cond(al_n), bool, 1);
+					C_n = cond(al_n) & 0x02;
 				}
 				al_n = al_n * 0x02;
-				ui8 bh_n = (byte) C_n;
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(al_n);
 				bool v54_n = al_n < 0x00;
 				if (al_n == 0x00)
 				{
-					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 					si_n = (word16) si_n + 1;
 					v54_n = al_n < 0x00;
 				}
 				if (!v54_n)
 				{
-					bh_n = bh_n;
-					if (bh_n != 0x00)
+					bh_n = C_n;
+					if (C_n != 0x00)
 						goto l0800_n;
-					bh_n = bh_n + 0x01;
+					bh_n = (word32) C_n.u1 + 1;
 					goto l0800_n;
 				}
 				uint8 al_n = al_n * 0x02;
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(al_n);
 				uint8 al_n;
 				if (al_n != 0x00)
 					al_n = al_n;
 				else
 				{
 					si_n = (word16) si_n + 1;
-					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 				}
 				al_n = al_n * 0x02;
-				bh_n = bh_n * 0x02 + (byte) (al_n < 0x00) | 0x04;
+				bh_n = C_n *8 0x02 + (byte) (al_n < 0x00) | 0x04;
+				Eq_n SCZO_n;
+				SCZO_n.u1 = cond(al_n);
 				bool v57_n = al_n < 0x00;
 				if (al_n == 0x00)
 				{
-					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 					si_n = (word16) si_n + 1;
 					v57_n = al_n < 0x00;
 				}
@@ -10956,26 +10861,28 @@ l0800_n:
 				{
 l0800_n:
 					uint8 al_n = al_n * 0x02;
+					Eq_n SCZO_n;
+					SCZO_n.u1 = cond(al_n);
 					al_n = al_n;
 					if (al_n == 0x00)
 					{
 						si_n = (word16) si_n + 1;
-						al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+						al_n = ds_n->*si_n *8 0x02 + (SCZO_n & 0x02);
 					}
-					bh_n = bh_n * 0x02 + (byte) (al_n < 0x00);
+					bh_n = bh_n *8 0x02 + (byte) (al_n < 0x00);
 				}
 			}
 l0800_n:
 			byte Eq_n::* si_n = di_n - 0x01 - SEQ(bh_n, ds_n->*si_n);
 			__cli();
-			memcpy(&(es_n->*di_n.u5), &(es_n->*si_n), (uint32) cx_n);
+			memcpy(&(es_n->*di_n.u4), &(es_n->*si_n), (uint32) cx_n);
 			__sti();
-			di_n.u5 = di_n + cx_n;
+			di_n.u4 = di_n + cx_n;
 			si_n = (word16) si_n + 1;
 			continue;
 		}
 		Eq_n ax_n;
-		ax_n.u5 = ds_n + (si_n >> 0x04);
+		ax_n.u4 = ds_n + (si_n >> 0x04);
 		bui8 al_n = (byte) ax_n;
 		di_n = (di_n & 0x0F) + 0x8000;
 		es_n = es_n + (di_n >> 0x04) - 0x0800;
@@ -10983,10 +10890,12 @@ l0800_n:
 		ds_n = ax_n;
 		ah_n = SLICE(ax_n, byte, 8);
 		al_n = al_n * 0x02;
+		Eq_n SCZO_n;
+		SCZO_n.u1 = cond(al_n * 0x02);
 		v48_n = al_n * 0x02 >= 0x00;
 		if (al_n * 0x02 == 0x00)
 		{
-			al_n = ax_n->*(si_n & 0x0F) *8 0x02 + (byte) (al_n * 0x02 < 0x00);
+			al_n = ax_n->*(si_n & 0x0F) *8 0x02 + (SCZO_n & 0x02);
 			si_n = (si_n & 0x0F) + 1;
 			v48_n = al_n >= 0x00;
 		}
@@ -11073,7 +10982,7 @@ void fn0800-8832(Eq_n ds)
 		Eq_n si_n = Mem10[ds:11817:word16];
 		Eq_n di_n = Mem10[ds:11819:word16];
 		Eq_n ax_n;
-		ax_n.u5 = &ax_n.u7->b0001;
+		ax_n.u4 = &ax_n.u6->b0001;
 		if (ax_n + 0x01 == Mem32[ds:11825:word16])
 			ax_n.u0 = 0x00;
 		Mem42[ds:11821:word16] = ax_n;
@@ -11102,7 +11011,8 @@ void fn0800-889A(Eq_n ds)
 	Mem13[ds:11819:word16] = 0x00;
 	Mem14[ds:11817:word16] = 0x01;
 	Eq_n es_di_n = Mem14[ds:11885:segptr32];
-	Eq_n ax_n = es_di_n.u7->t0000.u0;
+	Eq_n ax_n;
+	ax_n.u0 = es_di_n.u6->t0000.u0;
 	Mem19[ds:20112:word16] = ax_n;
 	word16 di_n = (word16) es_di_n;
 	word16 dx_n = Mem19[ds:11881:word16] - (di_n + 0x01);
@@ -11152,7 +11062,7 @@ void fn0800-889A(Eq_n ds)
 				if (cx_n == dx_n)
 				{
 					Eq_n es_di_n = Mem69[ds:11885:segptr32];
-					<unknown>* di_n = (word16) cx_n.u3 + (word16) es_di_n;
+					<unknown>* di_n = (word16) cx_n.u2 + (word16) es_di_n;
 					struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 					<unknown>* si_n = di_n - bx_n;
 					word16 ax_n = Mem69[ds:0x4E94:word16] - cx_n;
@@ -11161,7 +11071,7 @@ void fn0800-889A(Eq_n ds)
 					word16 cx_n = ax_n - __find_first_difference__(si_n, di_n);
 					if (cmpResult_n != 0x00)
 						++cx_n;
-					cx_n.u5 = (word16) dx_n.u3 + (ax_n - cx_n);
+					cx_n.u4 = (word16) dx_n.u2 + (ax_n - cx_n);
 				}
 			}
 			if (cx_n >u Mem150[ds:0x2E2F:word16])
@@ -11191,8 +11101,8 @@ l0800_nB1:
 	Eq_n di_n = Mem16[ds:11821:word16];
 	struct Eq_n * es_n = Mem16[ds:11841:selector];
 	Eq_n ax_n;
-	ax_n.u0 = es_n->a0000[0].t0000.u5[di_n].t0000.u0;
-	es_n->a0000[0].t0000.u5[di_n].t0000.u0 = (wchar_t) dx_n;
+	ax_n.u0 = (&es_n->t0000.a0000)[0].t0000.u4[di_n].t0000.u0;
+	(&es_n->t0000.a0000)[0].t0000.u4[di_n].t0000.u0 = (wchar_t) dx_n;
 	if (Mem22[ds:11821:word16] != ax_n)
 	{
 		Eq_n es_di_n = Mem22[ds:11885:segptr32];
@@ -11204,16 +11114,17 @@ l0800_nB1:
 	Eq_n di_n = Mem38[Mem38[ds:11885:segptr32] + 0x00:word16];
 	Eq_n ax_n = Mem38[ds:11821:word16];
 	struct Eq_n * es_n = Mem38[ds:11833:selector];
-	if (es_n->a0000[0].t0000.u5[di_n].t0000.u0 == dx_n)
-		es_n->a0000[0].t0000.u5[di_n].t0000.u0 = (wchar_t) ax_n;
+	if ((&es_n->t0000.a0000)[0].t0000.u4[di_n].t0000.u0 == dx_n)
+		(&es_n->t0000.a0000)[0].t0000.u4[di_n].t0000.u0 = (wchar_t) ax_n;
 	else
-		Mem38[ds:11841:selector]:0x00[Mem38[ds:11829:selector]:0x00[di_n * 0x02] * 0x02] = ax_n;
-	Mem57[ds:11829:selector]:0x00[di_n * 0x02] = ax_n;
+		Mem38[ds:11841:selector]:0x00[Mem38[ds:11829:selector]:0x00[di_n *16 0x02] * 0x02] = ax_n;
+	Mem57[ds:11829:selector]:0x00[di_n *16 0x02] = ax_n;
 	Eq_n es_di_n = Mem61[ds:11885:segptr32];
 	word16 di_n = (word16) es_di_n;
 	word16 bx_n = Mem61[ds:11881:word16] - (di_n + 0x01);
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
-	Eq_n al_n = *es_di_n.u5;
+	Eq_n al_n;
+	al_n.u4 = *es_di_n.u4;
 	union Eq_n Eq_n::* di_n = di_n + 0x01;
 	bool v27_n = bx_n != 0x00;
 	word16 cx_n = bx_n;
@@ -11235,8 +11146,8 @@ l0800_nB1:
 	{
 		Eq_n ax_n = Mem102[ds:11821:word16];
 		Eq_n ax_n;
-		ax_n.u5 = &ax_n.u7->b0001;
-		if (&ax_n.u7->b0001 == dx_n)
+		ax_n.u4 = &ax_n.u6->b0001;
+		if (&ax_n.u6->b0001 == dx_n)
 			ax_n.u0 = 0x00;
 		Mem114[ds:11821:word16] = ax_n;
 		Mem116[ds:11885:word16] = Mem114[ds:11885:word16] + 0x01;
@@ -11251,7 +11162,7 @@ l0800_nB1:
 		Mem122[ds:11837:selector]:0x00[di_n *16 0x02] = bx_n;
 		struct Eq_n * es_n = Mem139[ds:11841:selector];
 		Eq_n v25_n;
-		v25_n.u0 = es_n->a0000[0].t0000.u5[di_n].t0000.u0;
+		v25_n.u0 = (&es_n->t0000.a0000)[0].t0000.u4[di_n].t0000.u0;
 		es_n:0x00[di_n *16 0x02] = Mem139[ds:11821:word16];
 		if (Mem143[ds:11821:word16] != v25_n)
 		{
@@ -11411,10 +11322,12 @@ int32 fn0800-8BCA(Eq_n dwArg02, Eq_n dwArg06)
 //      fn0800-8BCA
 uint16 fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
 {
-	ci16 wArg06 = SLICE(dwArg04, word16, 16);
+	ui16 wArg04 = (word16) dwArg04;
+	Eq_n wArg06 = SLICE(dwArg04, word16, 16);
 	Eq_n wArg08 = (word16) dwArg08;
 	Eq_n wArg0A = SLICE(dwArg08, word16, 16);
 	Eq_n di_n = cx;
+	ui16 ax_n = wArg04;
 	Eq_n cx_n = wArg0A;
 	Eq_n bx_n;
 	uint16 ax_n;
@@ -11430,23 +11343,23 @@ uint16 fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & cxOut, ptr1
 	}
 	else
 	{
+		Eq_n dx_n = wArg06;
 		Eq_n cx_bx_n = dwArg08;
-		Eq_n dx_ax_n = dwArg04;
 		if ((cx & 0x01) == 0x00)
 		{
-			Eq_n dx_ax_n = dwArg04;
+			dx_n = wArg06;
 			if (wArg06 < 0x00)
 			{
-				dx_ax_n = -dwArg04;
+				word32 dx_ax_n = -dwArg04;
+				ax_n = (word16) dx_ax_n;
+				dx_n = SLICE(dx_ax_n, word16, 16);
 				di_n = cx | 0x0C;
 			}
 			cx_bx_n = dwArg08;
-			dx_ax_n = dx_ax_n;
 			if (wArg0A < 0x00)
 			{
 				cx_bx_n = -dwArg08;
 				di_n = di_n ^ 0x04;
-				dx_ax_n = dx_ax_n;
 			}
 		}
 		Eq_n bx_n = (word16) cx_bx_n;
@@ -11456,15 +11369,11 @@ uint16 fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & cxOut, ptr1
 		di_n.u0 = 0x00;
 		Eq_n si_n;
 		si_n.u0 = 0x00;
-		Eq_n dx_ax_n = dx_ax_n;
-		word16 ax_n;
-		word16 dx_n;
 		do
 		{
-			ui32 v33_n = dx_ax_n << 0x01;
-			si_n = __rcl<word16,byte>(si_n, 0x01, (SLICE(dx_ax_n, word16, 16) & 0x8000) != 0x00);
-			ax_n = (word16) v33_n;
-			dx_n = SLICE(v33_n, word16, 16);
+			ax_n <<= 0x01;
+			dx_n = __rcl<word16,byte>(dx_n, 0x01, cond(ax_n) & 0x02);
+			si_n = __rcl<word16,byte>(si_n, 0x01, (dx_n & 0x8000) != 0x00);
 			di_n = __rcl<word16,byte>(di_n, 0x01, (si_n & 0x8000) != 0x00);
 			if (di_n >= cx_n && (di_n > cx_n || si_n >= bx_n))
 			{
@@ -11474,7 +11383,6 @@ uint16 fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & cxOut, ptr1
 				++ax_n;
 			}
 			--cx_n;
-			dx_ax_n = SEQ(dx_n, ax_n);
 		} while (cx_n != 0x00);
 		bx_n = di_n;
 		uint32 dx_ax_n = SEQ(dx_n, ax_n);
@@ -11571,7 +11479,7 @@ Eq_n fn0800-8CCB(uint32 cx_bx, Eq_n ax, Eq_n dx, union Eq_n & chOut, ptr16 & dxO
 	byte cl_n = (byte) cx;
 	if (cx >= 0x00)
 	{
-		cu16 ax_n = (cu16) (ax.u5 + bx);
+		cu16 ax_n = (cu16) (ax.u4 + bx);
 		byte al_n = (byte) ax_n;
 		if (ax_n < 0x00)
 		{
@@ -11687,7 +11595,7 @@ l0800_nDF7:
 	Eq_n cx_n = wArg0E;
 	if (wArg0E < 0x00 && bArg04 != 0x00)
 	{
-		*ptrArg08.u5 = 0x2D;
+		*ptrArg08.u1 = 0x2D;
 		ui32 cx_ax_n = -dwArg0C;
 		++di_n;
 		ax_n = (word16) cx_ax_n;
@@ -11720,7 +11628,7 @@ l0800_nDD9:
 				if (al_n < 0x0A)
 					al_n = al_n + 0x30;
 				else
-					al_n = (byte) (bArg02.u5 + (al_n - 0x0A));
+					al_n = (byte) bArg02.u0 + (al_n - 0x0A);
 				es_n->*di_n = al_n;
 				++di_n;
 				--cx_n;
@@ -11830,22 +11738,20 @@ ui32 fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr
 {
 	byte al = (byte) ax;
 	byte bl = (byte) bx;
-	ptr16 dx_n = (ptr16) (dx.u5 + (ax >> 0x04));
+	ptr16 dx_n = (ptr16) (dx.u4 + (ax >> 0x04));
 	ptr16 cx_n = cx + (bx >> 0x04);
 	Eq_n SCZO_n;
-	SCZO_n.u0 = cond(dx_n - cx_n);
+	SCZO_n.u1 = cond(dx_n - cx_n);
 	cui16 ax_n = SEQ(bl, al);
 	cui16 bx_n = SEQ(SLICE(bx >> 0x04, byte, 8), bl);
-	Eq_n Z_n;
-	Z_n.u0 = SLICE(SCZO_n, bool, 2);
-	Eq_n C_n;
-	C_n.u0 = SLICE(SCZO_n, bool, 1);
+	ui32 Z_n = SCZO_n & 0x04;
+	ui32 C_n = SCZO_n & 0x02;
 	if (dx_n == cx_n)
 	{
 		Eq_n SCZO_n;
-		SCZO_n.u0 = cond((ax_n & 0x0F) - (bx_n & 0x0F));
-		C_n.u0 = SLICE(SCZO_n, bool, 1);
-		Z_n.u0 = SLICE(SCZO_n, bool, 2);
+		SCZO_n.u1 = cond((ax_n & 0x0F) - (bx_n & 0x0F));
+		C_n = SCZO_n & 0x02;
+		Z_n = SCZO_n & 0x04;
 	}
 	cxOut = cx_n;
 	dxOut = dx_n;
@@ -12095,7 +12001,7 @@ l0800_nFCB:
 					{
 						struct Eq_n * es_di_n = fn0800-8FAB(fp - 2, ds);
 						di_n = (word16) es_di_n;
-						es_n.u5 = SLICE(es_di_n, selector, 16);
+						es_n.u4 = SLICE(es_di_n, selector, 16);
 					}
 					Eq_n di_n = ϕ(di_n, di_n);
 					Eq_n es_n = ϕ(es_n, es_n);
@@ -12577,7 +12483,7 @@ word16 fn0800-93A6(struct Eq_n * ss_bp, ptr16 & diOut)
 	ptr16 di_n;
 	selector seg0800;
 	(seg0800->*ss_bp->ptr0006)();
-	ss_bp->wFFFFFFFC -= (word16) (ss_bp->wFFFFFFFC < 0x01);
+	ss_bp->wFFFFFFFC -= cond(ss_bp->wFFFFFFFC - 0x01) & 0x02;
 	word16 bp_n = fn0800-93BE(ss_bp, out di_n);
 	diOut = di_n;
 	return bp_n;
@@ -12711,7 +12617,7 @@ bool fn0800-9485(uint8 cl, byte bl, union Eq_n & bxOut)
 	Eq_n bx;
 	cu8 bl_n = (byte) bx;
 	uint8 bl_n = bl_n - 0x30;
-	bool C_n;
+	word32 C_n;
 	Eq_n bx_n;
 	if (bl_n >= 0x30)
 	{
@@ -12720,11 +12626,11 @@ bool fn0800-9485(uint8 cl, byte bl, union Eq_n & bxOut)
 l0800_nA2:
 			if (bl_n < cl)
 			{
-				C_n = false;
+				C_n = 0x00;
 				bx_n.u0 = (uint16) bl_n;
 l0800_nAF:
 				bxOut = bx_n;
-				return C_n;
+				return C_n != 0x00;
 			}
 			goto l0800_nAD;
 		}
@@ -12737,7 +12643,7 @@ l0800_nAF:
 	}
 l0800_nAD:
 	bx_n = bx;
-	C_n = true;
+	C_n = 0x02;
 	goto l0800_nAF;
 }
 
@@ -12909,9 +12815,9 @@ l0800_n:
 								dx_ax_n = wArg0A *32 di_n;
 								ax_si_n = SEQ((word16) dx_ax_n, bx_n) + wArg0A *32 si_n;
 								di_si_n = ax_si_n;
-							} while (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24) + (byte) (SLICE(ax_si_n, word16, 16) < 0x00) == 0x00);
+							} while ((word32) (cond(SLICE(ax_si_n, word16, 16)) & 0x02) + (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24)) == 0x00);
 							uint16 ah_al_n = (uint16) bLoc03_n + ~0x00;
-							dx_n = SLICE(cond(SLICE(ah_al_n, byte, 8)), bool, 1) + 0x7FFF;
+							dx_n = (cond(SLICE(ah_al_n, byte, 8)) & 0x02) + 0x7FFF;
 							wLoc08_n = 0x02;
 							ax_n = ah_al_n;
 l0800_n:
@@ -13014,16 +12920,16 @@ void fn0800-9667(struct Eq_n * ptrArg02)
 //      main
 word32 fn0800-9764(Eq_n ds, Eq_n ptrArg02, ptr16 & cxOut)
 {
-	word16 dx_n;
+	cui16 dx_n;
 	ptr16 cx_n;
 	<unknown> Eq_n::* fp;
 	fn0800-8B95(fp - 6);
 	fn0800-8BA8(fp - 0x0A);
-	word16 ax_n = fn0800_C04F(ds, fp - 6, fp - 0x0A, out cx_n, out dx_n);
+	Eq_n ax_n = fn0800_C04F(ds, fp - 6, fp - 0x0A, out cx_n, out dx_n);
 	if (ptrArg02 != 0x00)
 	{
-		ptrArg02.u7->t0002.u0 = dx_n;
-		ptrArg02.u7->t0000.u0 = ax_n;
+		ptrArg02.u6->t0002.u0 = dx_n;
+		ptrArg02.u6->t0000.u0 = (wchar_t) ax_n;
 	}
 	cxOut = cx_n;
 	return SEQ(dx_n, ax_n);
@@ -13095,100 +13001,133 @@ word16 fn0800-9817(byte * es_di, byte al)
 word16 fn0800-9820(byte * es_di, byte al)
 {
 	word16 di = (word16) es_di;
-	*es_di = al + 0xD0 + (byte) __daa(al + 0x90, &(al + 0x90));
+	*es_di = (bool) __daa(al + 0x90, &(al + 0x90)) + (al + 0xD0);
 	return di + 1;
 }
 
-// 0800:9828: Register word16 fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Register out ptr16 diOut)
+// 0800:9828: Register word16 fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack mp16 wArg02, Stack Eq_n ptrArg04, Register out ptr16 diOut)
 // Called from:
 //      fn0800_B2EF
 //      fn0800_BEA2
-word16 fn0800-9828(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, ptr16 & diOut)
+word16 fn0800-9828(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, mp16 wArg02, Eq_n ptrArg04, ptr16 & diOut)
 {
+	byte ah_n;
+	ci16 bx_n;
+	byte bLoc16_n;
+	word16 bx_n;
+	word16 cx_n;
+	word16 cx_n;
+	Eq_n wLoc10_n;
+	union Eq_n Eq_n::* di_n;
+	struct Eq_n * es_n;
+	byte Eq_n::* di_n;
+	byte Eq_n::* di_n;
+	word16 cx_n;
+	word16 dx_n;
+	byte * es_di_n;
+	ptr32 es_di_n;
+	<unknown> Eq_n::* di_n;
+	word16 di_n;
+	byte Eq_n::* si_n;
+	Eq_n bx_n;
+	word16 bx_n;
+	word16 bx_n;
+	cui16 wLoc04_n;
+	Eq_n wLoc0C_n;
+	word16 ax_n;
+	cu8 ch_n;
+	byte Eq_n::* si_n;
+	segptr32 ptrArg04_n;
+	word16 wLoc06_n;
 	Eq_n fp;
-	Eq_n bLoc16_n;
-	bLoc16_n.u0 = 0x50;
-	struct Eq_n Eq_n::* sp_n = fp - 0x9E;
-	byte Eq_n::* wLoc06_n = fp - 0x98;
+	byte bLoc16_n = 0x50;
+	mp16 sp_n = fp - 0x9E;
+	mp16 wLoc06_n = fp - 0x98;
 l0800_n:
-	byte Eq_n::* di_n = wLoc06_n;
+	word16 di_n = wLoc06_n;
 l0800_n:
-	struct Eq_n * psegArg06_n = SLICE(ptrArg04, selector, 16);
-	struct Eq_n * es_n = SLICE(ptrArg04, selector, 16);
-	byte Eq_n::* si_n = (word16) ptrArg04;
+	struct Eq_n * psegArg06_n = SLICE(ptrArg04_n, selector, 16);
+	struct Eq_n * es_n = SLICE(ptrArg04_n, selector, 16);
+	word16 si_n = (word16) ptrArg04_n;
 	Eq_n ss;
+	word16 sp_n;
+	Eq_n bLoc16_n;
 	while (true)
 	{
-		Eq_n al_n = es_n->*si_n;
-		++si_n;
-		Eq_n al_n = al_n;
+		byte al_n = es_n->*si_n;
+		byte Eq_n::* si_n = si_n + 1;
+		byte al_n = al_n;
 		if (al_n == 0x00)
 			break;
+		union Eq_n Eq_n::* di_n;
 		if (al_n == 0x25)
 		{
-			al_n = es_n->*si_n;
-			++si_n;
+			byte al_n = es_n->*si_n;
+			byte Eq_n::* si_n = si_n + 1;
 			if (al_n == 0x25)
 				goto l0800_nA5;
-			wLoc06_n = di_n;
-			cu8 ch_n = 0x00;
-			Eq_n wLoc10_n;
-			wLoc10_n.u0 = 0x00;
-			cui16 wLoc04_n = 0x20;
-			Eq_n bLoc0D_n;
-			bLoc0D_n.u0 = 0x00;
-			Eq_n wLoc0A_n;
-			wLoc0A_n.u0 = ~0x00;
-			Eq_n wLoc0C_n;
-			wLoc0C_n.u0 = ~0x00;
+			union Eq_n Eq_n::* wLoc06_n = di_n;
+			byte ch_n = 0x00;
+			word16 wLoc10_n = 0x00;
+			word16 wLoc04_n = 0x20;
+			byte bLoc0D_n = 0x00;
+			word16 wLoc0A_n = ~0x00;
+			word16 wLoc0C_n = ~0x00;
 l0800_nDD:
 			Eq_n ax_n;
-			ax_n.u3 = (uint16) al_n;
+			Eq_n al_n;
+			ax_n.u1 = (uint16) al_n;
 			uint8 bl_n = al_n - 0x20;
 			byte ah_n = 0x00;
-			dx = ax_n;
-			bx.u3 = (uint16) bl_n;
-			cx = SEQ(ch_n, 0x00);
+			Eq_n dx_n = ax_n;
+			Eq_n bx_n;
+			bx_n.u0 = (uint16) bl_n;
+			word16 cx_n = SEQ(ch_n, 0x00);
 			if (bl_n < 0x60)
 			{
-				uint8 bl_n = (uint8) (ds->*((word32) bx + 9733));
-				bx.u3 = (uint16) bl_n;
-				cx = SEQ(ch_n, 0x00);
-				if (bx > 0x17)
+				uint8 bl_n = (uint8) (ds->*((word16) bx_n + 9733));
+				uint16 bx_n = (uint16) bl_n;
+				word16 cx_n = SEQ(ch_n, 0x00);
+				if (bx_n > 0x17)
 					goto l0800_nC82;
-				bx <<= 0x01;
-				cx = SEQ(ch_n, 0x00);
-				switch (bx)
+				ui16 bx_n = bx_n << 0x01;
+				word16 cx_n = SEQ(ch_n, 0x00);
+				switch (bx_n)
 				{
 				case 0x00:
-					cx = SEQ(ch_n, 0x00);
+					word16 cx_n = SEQ(ch_n, 0x00);
 					if (ch_n <= 0x00)
 					{
+						byte bLoc0D_n;
 						if (bLoc0D_n != 0x2B)
-							bLoc0D_n = al_n;
+						{
+							Eq_n bLoc0D_n = al_n;
+						}
 						goto l0800_nDB;
 					}
 					break;
 				case 0x01:
-					cx = SEQ(ch_n, 0x00);
+					word16 cx_n = SEQ(ch_n, 0x00);
+					cui16 wLoc04_n;
 					if (ch_n <= 0x00)
 					{
-						wLoc04_n |= 0x01;
+						cui16 wLoc04_n = wLoc04_n | 0x01;
 						goto l0800_nDB;
 					}
 					break;
 				case 0x02:
 					Eq_n ax_n;
-					ax_n.u0 = (ss->*wArg02.u7).t0000.u0;
-					ah_n = SLICE(ax_n, byte, 8);
-					wArg02.u5 = &wArg02.u7->t0002.u0;
+					struct Eq_n Eq_n::* wArg02_n;
+					ax_n.u0 = (ss->*wArg02_n).t0000.u0;
+					byte ah_n = SLICE(ax_n, byte, 8);
+					union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
 					if (ch_n >= 0x02)
 					{
-						cx = SEQ(ch_n, 0x00);
+						word16 cx_n = SEQ(ch_n, 0x00);
 						if (ch_n != 0x04)
 							goto l0800_n;
-						wLoc0C_n = ax_n;
-						++ch_n;
+						Eq_n wLoc0C_n = ax_n;
+						cu8 ch_n = ch_n + 0x01;
 						goto l0800_nDB;
 					}
 					else
@@ -13196,78 +13135,78 @@ l0800_nDD:
 						Eq_n ax_n = ax_n;
 						if (ax_n < 0x00)
 						{
-							ax_n = -ax_n;
-							wLoc04_n |= 0x02;
+							ci16 ax_n = -ax_n;
+							cui16 wLoc04_n = wLoc04_n | 0x02;
 						}
-						wLoc0A_n = ax_n;
-						ch_n = 0x03;
+						word16 wLoc0A_n = ax_n;
+						byte ch_n = 0x03;
 						goto l0800_nA;
 					}
 				case 0x03:
-					cx = SEQ(ch_n, 0x00);
+					word16 cx_n = SEQ(ch_n, 0x00);
 					if (ch_n <= 0x00)
 					{
-						wLoc04_n |= 0x02;
+						cui16 wLoc04_n = wLoc04_n | 0x02;
 						goto l0800_nDB;
 					}
 					break;
 				case 0x04:
-					cx = SEQ(ch_n, 0x00);
+					word16 cx_n = SEQ(ch_n, 0x00);
 					if (ch_n >= 0x04)
 						goto l0800_n;
-					ch_n = 0x04;
-					wLoc0C_n.u5 = &wLoc0C_n.u7->b0001;
+					byte ch_n = 0x04;
+					wchar_t wLoc0C_n = (word16) wLoc0C_n + 1;
 					goto l0800_nDB;
 				case 0x05:
 					goto l0800_n;
 				case 0x06:
-					wLoc04_n |= 0x10;
+					cui16 wLoc04_n = wLoc04_n | 0x10;
 					goto l0800_n;
 				case 0x07:
-					wLoc04_n |= 0x0100;
+					cui16 wLoc04_n = wLoc04_n | 0x0100;
 					goto l0800_nD1;
 				case 0x08:
 l0800_nD1:
-					wLoc04_n &= ~0x10;
+					cui16 wLoc04_n = wLoc04_n & ~0x10;
 					goto l0800_n;
 				case 0x09:
+					int16 wLoc0A_n;
 					if (ch_n <= 0x00)
 					{
 						if ((wLoc04_n & 0x02) == 0x00)
 						{
-							wLoc04_n |= 0x08;
-							ch_n = 0x01;
+							cui16 wLoc04_n = wLoc04_n | 0x08;
+							byte ch_n = 0x01;
 							goto l0800_nDB;
 						}
 					}
 					else
 					{
 l0800_n:
-						Eq_n ax_n;
-						ax_n.u5 = (int16) (al_n - 0x30);
-						ah_n = 0x00;
+						int16 ax_n = (int16) (al_n - 0x30);
+						byte ah_n = 0x00;
 						if (ch_n <= 0x02)
 						{
-							ch_n = 0x02;
-							wLoc0A_n = ax_n;
+							byte ch_n = 0x02;
+							int16 wLoc0A_n = ax_n;
 							if (wLoc0A_n >= 0x00)
 							{
-								wLoc0A_n.u5 = ax_n.u5 + wLoc0A_n *16 0x0A;
+								int16 wLoc0A_n = ax_n + wLoc0A_n * 0x0A;
 								goto l0800_nDB;
 							}
 						}
 						else
 						{
-							cx = SEQ(ch_n, 0x00);
+							word16 cx_n = SEQ(ch_n, 0x00);
 							if (ch_n != 0x04)
 							{
 l0800_n:
 								goto l0800_nC82;
 							}
-							wLoc0C_n = ax_n;
+							int16 wLoc0C_n = ax_n;
 							if (wLoc0C_n != 0x00)
 							{
-								wLoc0C_n.u5 = ax_n.u5 + wLoc0C_n *16 0x0A;
+								int16 wLoc0C_n = ax_n + wLoc0C_n * 0x0A;
 								goto l0800_nDB;
 							}
 						}
@@ -13275,320 +13214,388 @@ l0800_n:
 l0800_nA:
 					goto l0800_nDB;
 				case 0x0A:
-					uint8 bLoc08_n = 0x01;
+					byte bLoc08_n = 0x01;
 					Eq_n ax_n;
-					ax_n.u0 = (ss->*wArg02.u7).t0000.u0;
-					Eq_n bx_n = SEQ(0x0A, bl_n << 0x01);
+					ax_n.u0 = (ss->*wArg02_n).t0000.u0;
+					word16 bx_n = SEQ(0x0A, bl_n << 0x01);
 					goto l0800_nA0A;
 				case 11:
-					Eq_n bx_n = SEQ(0x08, bl_n << 0x01);
+					word16 bx_n = SEQ(0x08, bl_n << 0x01);
 					goto l0800_nE6;
 				case 0x0C:
-					Eq_n bx_n = SEQ(0x0A, bl_n << 0x01);
+					word16 bx_n = SEQ(0x0A, bl_n << 0x01);
 					goto l0800_nEA;
 				case 0x0D:
-					bx_n = SEQ(0x10, (byte) al_n + 233);
+					word16 bx_n = SEQ(0x10, (byte) al_n + 233);
 l0800_nE6:
-					bLoc0D_n.u0 = 0x00;
-					bx_n = bx_n;
+					byte bLoc0D_n = 0x00;
+					word16 bx_n = bx_n;
 l0800_nEA:
-					bLoc08_n = 0x00;
-					ax_n.u0 = (ss->*wArg02.u7).t0000.u0;
-					bx_n = bx_n;
+					byte bLoc08_n = 0x00;
+					Eq_n ax_n;
+					ax_n.u0 = (ss->*wArg02_n).t0000.u0;
+					word16 bx_n = bx_n;
 l0800_nA0A:
-					struct Eq_n Eq_n::* di_n = (struct Eq_n Eq_n::*) &wArg02.u7->b0001;
+					struct Eq_n Eq_n::* di_n = (struct Eq_n Eq_n::*) ((char *) &wArg02_n->t0000 + 1);
 					int8 bh_n = SLICE(bx_n, byte, 8);
-					Eq_n dx_n;
-					dx_n.u0 = 0x00;
-					Eq_n di_n;
-					di_n.u5 = &di_n->t0001.u0;
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
+					word16 dx_n = 0x00;
+					union Eq_n Eq_n::* di_n = (union Eq_n Eq_n::*) &di_n->w0001;
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					if ((wLoc04_n & 0x10) != 0x00)
 					{
-						dx_n.u0 = (ss->*di_n).t0001.u0;
-						di_n.u5 = di_n + 1;
+						word16 dx_n = (ss->*di_n).w0001;
+						struct Eq_n Eq_n::* di_n = (struct Eq_n Eq_n::*) (&di_n->w0001 + 1);
 					}
-					wArg02 = di_n;
+					word16 wArg02_n = di_n;
+					Eq_n ax_n;
+					Eq_n dx_n;
 					if (ax_n == 0x00)
 					{
-						dx = dx_n;
+						Eq_n dx_n = dx_n;
 						if (dx_n != 0x00)
 							goto l0800_nA32;
-						bx = bx_n;
+						Eq_n bx_n = bx_n;
 						if (wLoc0C_n == 0x00)
 							goto l0800_n;
 					}
 					else
 					{
 l0800_nA32:
-						wLoc04_n |= 0x04;
+						cui16 wLoc04_n = wLoc04_n | 0x04;
 					}
 					struct Eq_n Eq_n::* sp_n = sp_n - 2;
 					(ss->*sp_n).t0000.u0 = (wchar_t) dx_n;
-					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ax_n;
+					(ss->*sp_n).tFFFFFFFE.u1 = (word16) ax_n;
 					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ss;
-					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) (fp - 71);
+					(ss->*sp_n).tFFFFFFFA.u0 = (mp16) (fp - 71);
 					(ss->*sp_n).tFFFFFFF8.u0 = (int16) bh_n;
-					(ss->*sp_n).tFFFFFFF6.u0 = (wchar_t) (uint16) bLoc08_n;
-					(ss->*sp_n).tFFFFFFF4.u0 = (wchar_t) bx_n;
-					fn0800-8D87((ss->*sp_n).tFFFFFFF4.u1, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFF8.u0, (ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+					uint8 bLoc08_n;
+					(ss->*sp_n).tFFFFFFF6.u0 = (uint16) bLoc08_n;
+					(ss->*sp_n).tFFFFFFF4.u1 = (word16) bx_n;
+					fn0800-8D87((ss->*sp_n).tFFFFFFF4.u0, (ss->*sp_n).tFFFFFFF6.u1, (ss->*sp_n).tFFFFFFF8.u0, (ss->*sp_n).tFFFFFFFA.u1, (ss->*sp_n).tFFFFFFFE.u0);
 					(ss->*sp_n).t0000.u0 = (wchar_t) ss;
 					Eq_n es_n;
-					es_n.u5 = (ss->*sp_n).t0000.u10.u1;
-					sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
-					dx = wLoc0C_n;
-					byte * es_di_n;
-					byte * es_di_n;
+					es_n.u4 = (ss->*sp_n).t0000.u9.u1;
+					struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
+					Eq_n dx_n = wLoc0C_n;
 					if (wLoc0C_n >= 0x00)
 					{
-						es_di_n = SEQ(es_n, fp - 71);
+						ptr32 es_di_n = SEQ(es_n, fp - 71);
 						goto l0800_nB54;
 					}
 					else
 					{
-						es_di_n = SEQ(es_n, fp - 71);
+						ptr32 es_di_n = SEQ(es_n, fp - 71);
 						goto l0800_nB46;
 					}
 				case 0x0E:
 					struct Eq_n Eq_n::* sp_n = sp_n - 2;
-					(ss->*sp_n).t0000.u0 = (ss->*wArg02.u7).t0000.u0;
-					byte Eq_n::* di_n = fp - 72;
-					wArg02.u5 = &wArg02.u7->t0002.u0;
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
+					(ss->*sp_n).t0000.u0 = (ss->*wArg02_n).t0000.u0;
+					mp16 di_n = fp - 72;
+					union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					if ((wLoc04_n & 0x20) != 0x00)
 					{
-						word16 dx_n = (ss->*wArg02.u7).t0002.u0;
+						word16 dx_n = (ss->*wArg02_n).w0002;
 						(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ss;
 						Eq_n es_n;
-						es_n.u5 = (ss->*sp_n).tFFFFFFFE.u10.u1;
+						es_n.u4 = (ss->*sp_n).tFFFFFFFE.u9.u1;
 						byte Eq_n::* di_n = fn0800-9810(SEQ(es_n, fp - 72), SLICE(dx_n, byte, 8), (byte) dx_n);
 						es_n->*di_n = 0x3A;
-						wArg02.u5 = &wArg02.u7->t0004.u0;
-						di_n = di_n + 1;
+						struct Eq_n Eq_n::* wArg02_n = (struct Eq_n Eq_n::*) (&wArg02_n->w0002 + 1);
+						byte Eq_n::* di_n = di_n + 1;
 					}
 					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) ss;
 					Eq_n dx_n;
 					dx_n.u0 = (ss->*sp_n).t0000.u0;
 					Eq_n es_n;
-					es_n.u5 = (ss->*sp_n).tFFFFFFFE.u10.u1;
+					es_n.u4 = (ss->*sp_n).tFFFFFFFE.u9.u1;
 					byte Eq_n::* di_n = fn0800-9810(SEQ(es_n, di_n), SLICE(dx_n, byte, 8), (byte) dx_n);
 					ss->*di_n = 0x00;
-					sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
-					wLoc04_n &= ~0x04;
+					struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
+					cui16 wLoc04_n = wLoc04_n & ~0x04;
 					Eq_n di_n = di_n - (fp - 72);
-					dx = wLoc0C_n;
+					Eq_n dx_n = wLoc0C_n;
 					if (wLoc0C_n <= di_n)
-						dx = di_n;
-					es_di_n = SEQ(es_n, fp - 72);
+					{
+						Eq_n dx_n = di_n;
+					}
+					ptr32 es_di_n = SEQ(es_n, fp - 72);
 					goto l0800_nB46;
 				case 0x0F:
 					Eq_n cx_n = wLoc0C_n;
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					if (wLoc0C_n < 0x00)
-						cx_n.u0 = 0x06;
+					{
+						word16 cx_n = 0x06;
+					}
 					struct Eq_n Eq_n::* sp_n = sp_n - 2;
 					(ss->*sp_n).t0000.u0 = (wchar_t) ss;
-					(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) wArg02;
-					(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) cx_n;
+					(ss->*sp_n).ptrFFFFFFFE = wArg02_n;
+					word16 cx_n;
+					(ss->*sp_n).wFFFFFFFC = cx_n;
 					(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) ss;
-					(ss->*sp_n).tFFFFFFF8.u0 = (int16) (fp - 71);
-					(ss->*sp_n).tFFFFFFF6.u0 = (wchar_t) ax_n;
-					(ss->*sp_n).tFFFFFFF4.u0 = (wchar_t) (wLoc04_n & 0x01);
-					word16 ax_n;
+					(ss->*sp_n).ptrFFFFFFF8 = fp - 71;
+					(ss->*sp_n).tFFFFFFF6.u0 = (ci16) ax_n;
+					(ss->*sp_n).wFFFFFFF4 = wLoc04_n & 0x01;
 					if ((wLoc04_n & 0x0100) != 0x00)
 					{
-						ax_n = 0x08;
-						wArg02.u5 = &wArg02.u7->t000A.u0;
+						word16 ax_n = 0x08;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) (&wArg02_n->w0002 + 4);
 					}
 					else
 					{
-						wArg02.u5 = &wArg02.u7->t0008.u0;
-						ax_n = 0x06;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) (&wArg02_n->w0002 + 3);
+						word16 ax_n = 0x06;
 					}
+					word16 ax_n;
 					(ss->*sp_n).wFFFFFFF2 = ax_n;
 					fn0800_A2CC(ds);
 					(ss->*sp_n).tFFFFFFF0.u0 = (wchar_t) ss;
-					sp_n = sp_n - 0x0E;
-					es_di_n = SEQ((ss->*sp_n).tFFFFFFF0.u10.u1, fp - 71);
+					struct Eq_n Eq_n::* sp_n = sp_n - 0x0E;
+					ptr32 es_di_n = SEQ((ss->*sp_n).tFFFFFFF0.u9.u1, fp - 71);
 l0800_nB46:
-					Eq_n es_n;
-					es_n.u5 = SLICE(es_di_n, selector, 16);
-					byte Eq_n::* di_n = (word16) es_di_n;
+					struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
+					word16 di_n = (word16) es_di_n;
+					cui16 wLoc04_n;
 					if ((wLoc04_n & 0x08) != 0x00)
 					{
-						dx = wLoc0A_n;
-						es_di_n = es_di_n;
+						int16 dx_n = wLoc0A_n;
+						ptr32 es_di_n = es_di_n;
 						if (wLoc0A_n > 0x00)
 						{
 l0800_nB54:
-							es_n.u5 = SLICE(es_di_n, selector, 16);
-							di_n = (word16) es_di_n;
+							struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
+							byte Eq_n::* di_n = (word16) es_di_n;
 							Eq_n cx_n = fn0800-9842(di_n, es_n);
 							if (*es_di_n == 0x2D)
-								--cx_n;
-							dx -= cx_n;
-							if (dx > 0x00)
-								wLoc10_n = dx;
+							{
+								word16 cx_n = cx_n - 0x01;
+							}
+							ci16 dx_n = dx_n - cx_n;
+							if (dx_n > 0x00)
+							{
+								ci16 wLoc10_n = dx_n;
+							}
 						}
 					}
+					struct Eq_n * es_n;
+					byte Eq_n::* di_n;
 					if (es_n->*di_n != 0x2D)
 					{
+						byte bLoc0D_n;
 						if (bLoc0D_n == 0x00)
 							goto l0800_nB86;
-						--di_n;
-						es_n->*di_n = (byte) bLoc0D_n;
+						byte Eq_n::* di_n = di_n - 0x01;
+						es_n->*di_n = bLoc0D_n;
 					}
+					ci16 wLoc10_n;
 					if (wLoc10_n > 0x00 && wLoc0C_n < 0x00)
-						--wLoc10_n;
+					{
+						ci16 wLoc10_n = wLoc10_n - 0x01;
+					}
 l0800_nB86:
 					Eq_n cx_n = fn0800-9842(di_n, es_n);
 					goto l0800_nB89;
 				case 0x10:
 					union Eq_n Eq_n::* sp_n = sp_n - 2;
 					(ss->*sp_n).u0 = (wchar_t) ss;
-					wArg02.u5 = &wArg02.u7->t0002.u0;
-					es_n.u5 = (ss->*sp_n).u10.u1;
-					sp_n = (struct Eq_n Eq_n::*) ((char *) sp_n + 2);
-					di_n = fp - 71;
-					cx_n.u0 = 0x01;
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
+					union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
+					Eq_n es_n;
+					es_n.u4 = (ss->*sp_n).u9.u1;
+					union Eq_n Eq_n::* sp_n = (union Eq_n Eq_n::*) ((char *) sp_n + 2);
+					mp16 di_n = fp - 71;
+					word16 cx_n = 0x01;
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					goto l0800_nB89;
 				case 0x11:
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
-					bool v73_n;
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					if ((wLoc04_n & 0x20) == 0x00)
 					{
-						byte Eq_n::* di_n = (byte Eq_n::*) (ss->*wArg02.u7).t0000.u0;
+						Eq_n di_n;
+						di_n.u0 = (ss->*wArg02_n).t0000.u0;
 						union Eq_n Eq_n::* sp_n = sp_n - 2;
 						(ss->*sp_n).u0 = (wchar_t) ds;
-						wArg02.u5 = &wArg02.u7->t0002.u0;
-						es_n.u5 = (ss->*sp_n).u10.u1;
-						di_n = di_n;
-						v73_n = di_n != 0x00;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
+						Eq_n es_n;
+						es_n.u4 = (ss->*sp_n).u9.u1;
+						Eq_n di_n = di_n;
+						bool v74_n = di_n != 0x00;
 					}
 					else
 					{
-						Eq_n es_di_n = (ds->*wArg02.u7).t0000.u5;
-						es_n.u5 = SLICE(es_di_n, selector, 16);
-						di_n = (word16) es_di_n;
-						wArg02.u5 = &wArg02.u7->t0004.u0;
-						v73_n = es_di_n != 0x00;
+						Eq_n es_di_n;
+						es_di_n.u2 = (ds->*wArg02_n).t0000.u2;
+						struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
+						word16 di_n = (word16) es_di_n;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) (&wArg02_n->w0002 + 1);
+						bool v75_n = es_di_n != 0x00;
 					}
+					bool v73_n;
 					if (!v73_n)
 					{
 						union Eq_n Eq_n::* sp_n = sp_n - 2;
 						(ss->*sp_n).u0 = (wchar_t) ds;
-						es_n.u5 = (ss->*sp_n).u10.u1;
-						di_n = 0x25FE;
+						Eq_n es_n;
+						es_n.u4 = (ss->*sp_n).u9.u1;
+						word16 di_n = 0x25FE;
 					}
-					cx_n = fn0800-9842(di_n, es_n);
+					word16 sp_n = sp_n;
+					Eq_n cx_n = fn0800-9842(di_n, es_n);
 					if (cx_n > wLoc0C_n)
-						cx_n = wLoc0C_n;
+					{
+						Eq_n cx_n = wLoc0C_n;
+					}
 l0800_nB89:
-					byte Eq_n::* si_n = di_n;
-					Eq_n bx_n = wLoc0A_n;
+					union Eq_n Eq_n::* si_n = di_n;
+					union Eq_n Eq_n::* di_n = di_n;
+					int16 bx_n = wLoc0A_n;
+					cui16 wLoc04_n;
 					if ((wLoc04_n & 0x05) == 0x05)
 					{
+						ci16 wLoc10_n;
 						if (al_n != 111)
 						{
 							if (al_n == 0x78 || al_n == 88)
 							{
-								Eq_n v45_n = wLoc10_n - 0x02;
-								wLoc04_n |= 0x40;
-								bx_n = wLoc0A_n - 0x02;
-								wLoc10_n = v45_n;
+								ci16 v45_n = wLoc10_n - 0x02;
+								cui16 wLoc04_n = wLoc04_n | 0x40;
+								ci16 bx_n = wLoc0A_n - 0x02;
+								ci16 wLoc10_n = v45_n;
 								if (v45_n < 0x00)
-									wLoc10_n.u0 = 0x00;
+								{
+									word16 wLoc10_n = 0x00;
+								}
 							}
 l0800_nBCC:
-							cx.u5 = cx_n + wLoc10_n;
+							ci16 cx_n = (word16) wLoc10_n.u0 + cx_n;
+							cui16 wLoc04_n;
+							Eq_n dx_n;
 							if ((wLoc04_n & 0x02) == 0x00)
 							{
-								for (; bx_n > cx; --bx_n)
-									fn0800-984F(SEQ(ss, fp - 2), 0x20, cx, dx, bx_n, di_n, out di_n);
+								ci16 bx_n;
+								while (bx_n > cx_n)
+								{
+									union Eq_n Eq_n::* di_n;
+									word16 di_n;
+									fn0800-984F(SEQ(ss, fp - 2), 0x20, cx_n, dx_n, bx_n, di_n, out di_n);
+									ci16 bx_n = bx_n - 0x01;
+								}
 							}
+							ci16 bx_n;
 							if ((wLoc04_n & 0x40) != 0x00)
 							{
-								byte Eq_n::* di_n;
-								fn0800-984F(SEQ(ss, fp - 2), 0x30, cx, dx, bx_n, di_n, out di_n);
-								fn0800-984F(SEQ(ss, fp - 2), al_n, cx, dx, bx_n, di_n, out di_n);
+								union Eq_n Eq_n::* di_n;
+								union Eq_n Eq_n::* di_n;
+								fn0800-984F(SEQ(ss, fp - 2), 0x30, cx_n, dx_n, bx_n, di_n, out di_n);
+								word16 di_n;
+								fn0800-984F(SEQ(ss, fp - 2), al_n, cx_n, dx_n, bx_n, di_n, out di_n);
 							}
-							dx = wLoc10_n;
+							Eq_n dx_n = wLoc10_n;
+							selector es_n;
 							if (wLoc10_n > 0x00)
 							{
-								Eq_n cx_n = cx - wLoc10_n;
-								bx_n -= wLoc10_n;
-								Eq_n al_n = es_n->*di_n;
+								ci16 cx_n = cx_n - wLoc10_n;
+								ci16 bx_n = bx_n - wLoc10_n;
+								Eq_n al_n;
+								al_n.u0 = (es_n->*di_n).u0;
 								if (al_n == 0x2D || (al_n == 0x20 || al_n == 0x2B))
 								{
-									fn0800-984F(SEQ(ss, fp - 2), es_n->*di_n, cx_n, wLoc10_n, bx_n, di_n, out di_n);
-									si_n = di_n + 1;
-									--cx_n;
-									--bx_n;
+									union Eq_n Eq_n::* di_n;
+									word16 di_n;
+									fn0800-984F(SEQ(ss, fp - 2), (es_n->*di_n).u0, cx_n, wLoc10_n, bx_n, di_n, out di_n);
+									union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ((char *) di_n + 1);
+									ci16 cx_n = cx_n - 0x01;
+									word16 bx_n = bx_n - 0x01;
 								}
 								Eq_n cx_n = wLoc10_n;
+								Eq_n cx_n;
 								if (wLoc10_n != 0x00)
 								{
+									word16 cx_n;
 									do
 									{
+										ci16 cx_n;
+										ci16 bx_n;
+										union Eq_n Eq_n::* di_n;
+										word16 di_n;
 										fn0800-984F(SEQ(ss, fp - 2), 0x30, cx_n, cx_n, bx_n, di_n, out di_n);
-										--cx_n;
+										cx_n = cx_n - 0x01;
 									} while (cx_n != 0x00);
 								}
-								dx = cx_n;
-								cx = cx_n;
+								word16 dx_n = cx_n;
+								Eq_n cx_n = cx_n;
 							}
-							if (cx != 0x00)
+							word16 cx_n;
+							Eq_n dx_n;
+							if (cx_n != 0x00)
 							{
-								bx_n -= cx;
+								ci16 bx_n = bx_n - cx_n;
+								word16 cx_n;
 								do
 								{
-									ss->*di_n = es_n->*si_n;
-									Eq_n v50_n = bLoc16_n - 0x01;
-									++si_n;
-									++di_n;
-									bLoc16_n = v50_n;
+									union Eq_n Eq_n::* di_n;
+									union Eq_n Eq_n::* si_n;
+									(ss->*di_n).u0 = (es_n->*si_n).u0;
+									ci8 v50_n = bLoc16_n - 0x01;
+									union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ((char *) si_n + 1);
+									union Eq_n Eq_n::* di_n = (union Eq_n Eq_n::*) ((char *) di_n + 1);
+									ci8 bLoc16_n = v50_n;
+									ci16 cx_n;
 									if (v50_n <= 0x00)
-										fn0800-9858(SEQ(ss, fp - 2), cx, dx, bx_n, di_n, out di_n);
-									--cx;
-								} while (cx != 0x00);
+									{
+										word16 di_n;
+										fn0800-9858(SEQ(ss, fp - 2), cx_n, dx_n, bx_n, di_n, out di_n);
+									}
+									cx_n = cx_n - 0x01;
+								} while (cx_n != 0x00);
 							}
-							bx = bx_n;
+							ci16 bx_n = bx_n;
 							if (bx_n > 0x00)
 							{
-								cx = bx_n;
+								ci16 cx_n = bx_n;
+								word16 cx_n;
 								do
 								{
-									fn0800-984F(SEQ(ss, fp - 2), 0x20, cx, dx, bx_n, di_n, out di_n);
-									--cx;
-								} while (cx != 0x00);
+									ci16 cx_n;
+									union Eq_n Eq_n::* di_n;
+									word16 di_n;
+									fn0800-984F(SEQ(ss, fp - 2), 0x20, cx_n, dx_n, bx_n, di_n, out di_n);
+									cx_n = cx_n - 0x01;
+								} while (cx_n != 0x00);
 							}
 							goto l0800_n;
 						}
 						if (wLoc10_n <= 0x00)
-							wLoc10_n.u0 = 0x01;
+						{
+							word16 wLoc10_n = 0x01;
+						}
 					}
 					goto l0800_nBCC;
 				case 0x12:
-					ptrArg04.u5 = &(psegArg06_n->*si_n);
-					struct Eq_n Eq_n::* di_n;
-					Eq_n es_n;
+					segptr32 ptrArg04_n = &(psegArg06_n->*si_n);
 					if ((wLoc04_n & 0x20) == 0x00)
 					{
-						di_n = (struct Eq_n Eq_n::*) (ss->*wArg02.u7).t0000.u0;
+						Eq_n di_n;
+						di_n.u0 = (ss->*wArg02_n).t0000.u0;
 						union Eq_n Eq_n::* sp_n = sp_n - 2;
 						(ss->*sp_n).u0 = (wchar_t) ds;
-						wArg02.u5 = &wArg02.u7->t0002.u0;
-						es_n.u5 = (ss->*sp_n).u10.u1;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
+						Eq_n es_n;
+						es_n.u4 = (ss->*sp_n).u9.u1;
 					}
 					else
 					{
-						Eq_n es_di_n = (ds->*wArg02.u7).t0000.u5;
-						es_n.u5 = SLICE(es_di_n, selector, 16);
-						di_n = (word16) es_di_n;
-						wArg02.u5 = &wArg02.u7->t0004.u0;
+						Eq_n es_di_n;
+						es_di_n.u2 = (ds->*wArg02_n).t0000.u2;
+						struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
+						word16 di_n = (word16) es_di_n;
+						union Eq_n Eq_n::* wArg02_n = (union Eq_n Eq_n::*) (&wArg02_n->w0002 + 1);
 					}
+					selector es_n;
+					struct Eq_n Eq_n::* di_n;
 					(es_n->*di_n).w0000 = (uint16) (0x50 - bLoc16_n);
+					word16 sp_n = sp_n;
 					if ((wLoc04_n & 0x10) != 0x00)
 						(es_n->*di_n).w0002 = 0x00;
 					goto l0800_n;
@@ -13597,56 +13604,73 @@ l0800_nBCC:
 				case 0x15:
 					goto l0800_nC82;
 				case 22:
-					wLoc04_n &= ~0x20;
+					cui16 wLoc04_n = wLoc04_n & ~0x20;
 					goto l0800_n;
 				case 0x17:
-					wLoc04_n |= 0x20;
+					cui16 wLoc04_n = wLoc04_n | 0x20;
 l0800_n:
-					ch_n = 0x05;
+					byte ch_n = 0x05;
 l0800_nDB:
-					al_n = es_n->*si_n;
-					++si_n;
+					byte al_n = es_n->*si_n;
+					byte Eq_n::* si_n = si_n + 1;
 					goto l0800_nDD;
 				}
 			}
 l0800_nC82:
-			dx = ax_n;
+			Eq_n dx_n = ax_n;
 			byte Eq_n::* si_n = si_n;
-			uint16 ax_n = SEQ(ah_n, 0x25);
+			union Eq_n Eq_n::* di_n = di_n;
+			word16 ax_n = SEQ(ah_n, 0x25);
 			uint8 al_n;
 			do
 			{
 				uint16 ax_n = (uint16) al_n;
-				fn0800-984F(SEQ(ss, fp - 2), (byte) ax_n, cx, ax_n, bx, di_n, out di_n);
+				word16 ax_n;
+				ci16 cx_n;
+				ci16 bx_n;
+				union Eq_n Eq_n::* di_n;
+				word16 di_n;
+				fn0800-984F(SEQ(ss, fp - 2), (byte) ax_n, cx_n, ax_n, bx_n, di_n, out di_n);
+				uint8 Eq_n::* si_n;
 				al_n = psegArg06_n->*si_n;
-				++si_n;
-				ax_n = ax_n;
+				uint8 Eq_n::* si_n = si_n + 1;
 			} while (al_n != 0x00);
 			break;
 		}
 l0800_nA5:
-		ss->*di_n = (byte) al_n;
-		Eq_n v18_n = bLoc16_n - 0x01;
-		++di_n;
-		bLoc16_n = v18_n;
+		Eq_n al_n;
+		(ss->*di_n).u0 = (int8) al_n;
+		ci8 v18_n = bLoc16_n - 0x01;
+		union Eq_n Eq_n::* di_n = (union Eq_n Eq_n::*) ((char *) di_n + 1);
+		ci8 bLoc16_n = v18_n;
 		if (v18_n <= 0x00)
-			fn0800-9858(SEQ(ss, fp - 2), cx, dx, bx, di_n, out di_n);
+		{
+			ci16 cx_n;
+			Eq_n dx_n;
+			ci16 bx_n;
+			word16 di_n;
+			fn0800-9858(SEQ(ss, fp - 2), cx_n, dx_n, bx_n, di_n, out di_n);
+		}
 	}
 	if (bLoc16_n < 0x50)
 	{
+		ci16 cx_n;
+		Eq_n dx_n;
+		ci16 bx_n;
+		union Eq_n Eq_n::* di_n;
 		word16 di_n;
-		fn0800-9858(SEQ(ss, fp - 2), cx, dx, bx, di_n, out di_n);
+		fn0800-9858(SEQ(ss, fp - 2), cx_n, dx_n, bx_n, di_n, out di_n);
 	}
-	struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
+	struct Eq_n Eq_n::* sp_n = sp_n + 2;
 	word16 si_n = (ss->*sp_n).w0002;
 	diOut = (ss->*sp_n).ptr0000;
 	return si_n;
 }
 
-// 0800:9842: Register word16 fn0800-9842(Register (memptr Eq_n byte) di, Register Eq_n es)
+// 0800:9842: Register word16 fn0800-9842(Register (memptr (ptr16 Eq_n) byte) di, Register (ptr16 Eq_n) es)
 // Called from:
 //      fn0800-9828
-word16 fn0800-9842(byte Eq_n::* di, Eq_n es)
+word16 fn0800-9842(byte Eq_n::* di, struct Eq_n * es)
 {
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
@@ -13661,37 +13685,37 @@ word16 fn0800-9842(byte Eq_n::* di, Eq_n es)
 	return -cx_n;
 }
 
-// 0800:984F: Register byte fn0800-984F(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n al, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (memptr Eq_n byte) di, Register out Eq_n diOut)
+// 0800:984F: Register byte fn0800-984F(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n al, Register ci16 cx, Register Eq_n dx, Register ci16 bx, Register (memptr Eq_n Eq_n) di, Register out Eq_n diOut)
 // Called from:
 //      fn0800-9828
-byte fn0800-984F(struct Eq_n * ss_bp, Eq_n al, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq_n::* di, union Eq_n & diOut)
+byte fn0800-984F(struct Eq_n * ss_bp, Eq_n al, ci16 cx, Eq_n dx, ci16 bx, union Eq_n Eq_n::* di, union Eq_n & diOut)
 {
 	word16 ax;
 	al = (byte) ax;
 	Eq_n ss;
-	ss.u5 = SLICE(ss_bp, selector, 16);
-	ss->*di = (byte) al;
+	ss.u4 = SLICE(ss_bp, selector, 16);
+	(ss->*di).u0 = (int8) al;
 	Eq_n v9_n = ss_bp->tFFFFFFEC.u0 - 0x01;
 	ss_bp->tFFFFFFEC.u0 = (byte) v9_n;
 	if (v9_n != 0x00)
 	{
-		diOut = di + 1;
+		diOut = (char *) di + 1;
 		return SLICE(ax, byte, 8);
 	}
 	else
 	{
 		Eq_n di_n;
-		fn0800-9858(ss_bp, cx, dx, bx, di + 1, out di_n);
+		fn0800-9858(ss_bp, cx, dx, bx, (char *) di + 1, out di_n);
 		diOut = di_n;
 		return 0x00;
 	}
 }
 
-// 0800:9858: Register byte fn0800-9858(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (memptr Eq_n byte) di, Register out Eq_n diOut)
+// 0800:9858: Register byte fn0800-9858(Sequence (ptr32 Eq_n) ss_bp, Register ci16 cx, Register Eq_n dx, Register ci16 bx, Register (memptr Eq_n Eq_n) di, Register out ptr16 diOut)
 // Called from:
 //      fn0800-9828
 //      fn0800-984F
-byte fn0800-9858(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq_n::* di, union Eq_n & diOut)
+byte fn0800-9858(struct Eq_n * ss_bp, ci16 cx, Eq_n dx, ci16 bx, union Eq_n Eq_n::* di, ptr16 & diOut)
 {
 	word16 bp = (word16) ss_bp;
 	word16 di_n = di - (bp - 0x96);
@@ -13939,7 +13963,7 @@ l0800_nF25:
 		word16 dx_n;
 		if (fn0800_A215(ds_n, (uint32) (-(ax_n & 0x0F) + 0x10), out dx_n) != ~0x00)
 		{
-			dx_n.u5 = &dx_n.u7->b0001;
+			dx_n.u4 = &dx_n.u6->b0001;
 			goto l0800_nF25;
 		}
 	}
@@ -14111,12 +14135,12 @@ void fn0800_A006(Eq_n bx, Eq_n ds)
 	if (dx_n == 0x00)
 		return;
 	Eq_n dx_n = Mem42[bx:0x00:word16];
-	memcpy(*((char *) dx_n + 4), bx.u7->t0004.u5, 0x0C);
+	memcpy(*((char *) dx_n + 4), *((word32) bx + 4), 0x0C);
 	cu16 dx_n = dx_n - 0x01;
 	if (dx_n != 0x01)
 	{
 		struct Eq_n * es_n = (struct Eq_n *) ((char *) dx_n + 1);
-		struct Eq_n * ds_n = (struct Eq_n *) &bx.u7->b0001;
+		struct Eq_n * ds_n = (struct Eq_n *) &bx.u6->b0001;
 		while (true)
 		{
 			cu16 cx_n = dx_n;
@@ -14152,11 +14176,11 @@ void fn0800_A080(Eq_n ax, int16 cx, Eq_n bx, Eq_n ds)
 	else
 	{
 		Eq_n di_n;
-		di_n.u5 = bx + ax;
+		di_n.u4 = bx + ax;
 		Mem44[di_n:0x00:word16] = cx - ax;
 		Mem45[di_n:0x02:word16] = bx;
 		Mem51[bx:0x00:word16] = ax;
-		struct Eq_n * dx_n = (struct Eq_n *) (bx.u5 + cx);
+		struct Eq_n * dx_n = (struct Eq_n *) (bx.u4 + cx);
 		if (dx_n->t0002 != 0x00)
 			dx_n->t0002 = di_n;
 		else
@@ -14184,8 +14208,8 @@ word16 fn0800_A162(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & cxOut, union 
 	if (si_n + 0x3F >>u 0x06 != Mem11[ds:9880:word16])
 	{
 		Eq_n si_n = __align(si_n + 0x3F, 64);
-		struct Eq_n * dx_n = Mem11[ds:0x91:word16];
-		struct Eq_n * ax_n = __align(si_n + 0x3F, 64) + Mem11[ds:0x7B:word16];
+		cup16 dx_n = Mem11[ds:0x91:word16];
+		cup16 ax_n = __align(si_n + 0x3F, 64) + Mem11[ds:0x7B:word16];
 		byte al_n = (byte) ax_n;
 		if (ax_n > dx_n)
 			si_n = dx_n - Mem11[ds:0x7B:word16];
@@ -14234,7 +14258,7 @@ byte fn0800_A1D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut
 		Z_n.u0 = <invalid>;
 		Eq_n C_n;
 		C_n.u0 = <invalid>;
-		if (!(Z_n | C_n) && fn0800_A162(ds, wArg02, wArg04, out cx_n, out dx_n, out bx_n) != 0x00)
+		if ((Z_n | C_n) == 0x00 && fn0800_A162(ds, wArg02, wArg04, out cx_n, out dx_n, out bx_n) != 0x00)
 		{
 			ax_n = 0x00;
 l0800_A213:
@@ -14282,7 +14306,7 @@ Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 			Z_n.u0 = <invalid>;
 			Eq_n C_n;
 			C_n.u0 = <invalid>;
-			if (!(Z_n | C_n))
+			if ((Z_n | C_n) == 0x00)
 			{
 				Eq_n ax_n = Mem59[ds:141:word16];
 				Eq_n dx_n = Mem59[ds:0x8B:word16];
@@ -14318,7 +14342,7 @@ Eq_n fn0800_A2A3(Eq_n ds, word16 wArg04, ptr16 & cxOut)
 	msdos_unknown_n();
 	Eq_n dx_n = (word16) ptrArg06;
 	Eq_n ax_n = SEQ(0x44, bArg04);
-	bool C;
+	Eq_n C;
 	if (!C)
 	{
 		if (wArg04 == 0x00)
@@ -14504,7 +14528,7 @@ Eq_n fn0800_A53C(Eq_n ds, byte bArg06, union Eq_n & cxOut)
 	__syscall<byte>(33);
 	Eq_n cx_n = wArg08;
 	Eq_n ax_n = SEQ(0x43, bArg06);
-	bool C;
+	Eq_n C;
 	Eq_n ax_n;
 	if (!C)
 	{
@@ -14620,13 +14644,13 @@ Eq_n fn0800_A614(Eq_n ds, Eq_n ptrArg02, union Eq_n & dsOut)
 {
 	word16 wArg02_n = (word16) ptrArg02;
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n cx;
-	if (ptrArg02.u7->ptr0012 == wArg02_n)
+	if (ptrArg02.u6->ptr0012 == wArg02_n)
 	{
-		if (ptrArg02.u7->t0006.u0 != 0x00)
+		if (ptrArg02.u6->t0006.u0 != 0x00)
 		{
-			if (ptrArg02.u7->t0000.u0 < 0x00)
+			if (ptrArg02.u6->t0000.u0 < 0x00)
 			{
 				cx = wArg04_n;
 				word16 dx_n;
@@ -14634,10 +14658,10 @@ Eq_n fn0800_A614(Eq_n ds, Eq_n ptrArg02, union Eq_n & dsOut)
 				if (fn0800_A6B7(ds, ptrArg02, out dx_n, out bx_n) != 0x00)
 					goto l0800_A6B2;
 			}
-			if ((ptrArg02.u7->t0002.u0 & 0x04) != 0x00)
+			if ((ptrArg02.u6->t0002.u0 & 0x04) != 0x00)
 			{
 				Eq_n v20_n;
-				v20_n.u0 = ptrArg02.u7->t000A.u0;
+				v20_n.u0 = ptrArg02.u6->t000A.u0;
 				word16 cx_n;
 				word16 dx_n;
 				word16 bx_n;
@@ -14645,24 +14669,24 @@ Eq_n fn0800_A614(Eq_n ds, Eq_n ptrArg02, union Eq_n & dsOut)
 				cx = v20_n;
 			}
 		}
-		if (ptrArg02.u7->t0004.u1 >= 0x00)
+		if (ptrArg02.u6->b0004 >= 0x00)
 		{
-			int8 al_n = ptrArg02.u7->t0004.u1;
+			int8 al_n = ptrArg02.u6->b0004;
 			Eq_n ax_n;
-			ax_n.u5 = (int16) al_n;
+			ax_n.u4 = (int16) al_n;
 			fn0800_A559(al_n, ds, ax_n);
 			cx = ax_n;
 		}
-		ptrArg02.u7->t0002.u0 = 0x00;
-		ptrArg02.u7->t0006.u0 = 0x00;
-		ptrArg02.u7->t0000.u0 = 0x00;
-		ptrArg02.u7->t0004.u1 = ~0x00;
-		if (ptrArg02.u7->w0010 != 0x00)
+		ptrArg02.u6->t0002.u0 = 0x00;
+		ptrArg02.u6->t0006.u0 = 0x00;
+		ptrArg02.u6->t0000.u0 = (wchar_t) 0x00;
+		ptrArg02.u6->b0004 = ~0x00;
+		if (*((word32) ptrArg02 + 16) != 0x00)
 		{
-			char * dx_ax_n = fn0800-8E6A(ds, ptrArg02.u7->w0010, 0x00, 0x00, 0<32>);
+			char * dx_ax_n = fn0800-8E6A(ds, *((word32) ptrArg02 + 16), 0x00, 0x00, 0<32>);
 			fn0800-97F8(ds, dx_ax_n);
-			ptrArg02.u7->w0010 = 0x00;
-			cx.u5 = SLICE(dx_ax_n, word16, 16);
+			((word32) ptrArg02 + 16)->u2 = 0x00;
+			cx.u4 = SLICE(dx_ax_n, word16, 16);
 		}
 	}
 l0800_A6B2:
@@ -14682,7 +14706,7 @@ word16 fn0800_A6B7(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & bxOut)
 {
 	ptr16 wArg02 = (word16) ptrArg02;
 	Eq_n wArg04;
-	wArg04.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n dx;
 	ptr16 bx_n;
 	if (ptrArg02 == 0x00)
@@ -14691,7 +14715,7 @@ word16 fn0800_A6B7(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & bxOut)
 		goto l0800_A778;
 	}
 	word16 ax_n;
-	if (ptrArg02.u7->ptr0012 != wArg02)
+	if (ptrArg02.u6->ptr0012 != wArg02)
 	{
 l0800_A6D5:
 		bx_n = wArg02;
@@ -14702,45 +14726,45 @@ l0800_A77A:
 		return ax_n;
 	}
 	bx_n = wArg02;
-	if (ptrArg02.u7->t0000.u0 < 0x00)
+	if (ptrArg02.u6->t0000.u0 < 0x00)
 	{
-		ci16 ax_n = ptrArg02.u7->t0006.u0 + ((ptrArg02.u7)->t0000).u0;
-		ptrArg02.u7->t0000.u0 = (wchar_t) (ptrArg02.u7->t0000.u0 - (ax_n + 0x01));
+		ci16 ax_n = ptrArg02.u6->t0006.u0 + ((ptrArg02.u6)->t0000).u0;
+		ptrArg02.u6->t0000.u0 = (wchar_t) (ptrArg02.u6->t0000.u0 - (ax_n + 0x01));
 		Eq_n ax_n;
-		ax_n.u0 = ptrArg02.u7->t000A.u0;
+		ax_n.u0 = ptrArg02.u6->t000A.u0;
 		Eq_n dx_n;
-		dx_n.u0 = ptrArg02.u7->t0008.u0;
-		ptrArg02.u7->t000E.u0 = (wchar_t) ax_n;
-		ptrArg02.u7->t000C.u0 = (wchar_t) dx_n;
-		if (fn0800_C632(ds, (int16) ptrArg02.u7->t0004.u1, SEQ(ax_n, dx_n), ax_n + 0x01, out dx, out bx_n) != ax_n + 0x01)
+		dx_n.u0 = ptrArg02.u6->t0008.u0;
+		ptrArg02.u6->t000E.u0 = (wchar_t) ax_n;
+		ptrArg02.u6->t000C.u0 = (wchar_t) dx_n;
+		if (fn0800_C632(ds, (int16) ptrArg02.u6->b0004, SEQ(ax_n, dx_n), ax_n + 0x01, out dx, out bx_n) != ax_n + 0x01)
 		{
 			bx_n = wArg02;
-			if ((ptrArg02.u7->t0002.u0 & 0x0200) == 0x00)
+			if ((ptrArg02.u6->t0002.u0 & 0x0200) == 0x00)
 			{
-				ptrArg02.u7->t0002.u0 = (wchar_t) (ptrArg02.u7->t0002.u0 | 0x10);
+				ptrArg02.u6->t0002.u0 = (wchar_t) (ptrArg02.u6->t0002.u0 | 0x10);
 				goto l0800_A6D5;
 			}
 		}
 		goto l0800_A778;
 	}
-	if ((ptrArg02.u7->t0002.u0 & 0x08) == 0x00)
+	if ((ptrArg02.u6->t0002.u0 & 0x08) == 0x00)
 	{
 		dx = wArg02 + 0x05;
-		if (ptrArg02.u7->t000E.u0 != wArg04 || ((ptrArg02.u7)->t000C).u0 != wArg02 + 0x05)
+		if (ptrArg02.u6->t000E.u0 != wArg04 || ((ptrArg02.u6)->t000C).u0 != wArg02 + 0x05)
 		{
 l0800_A778:
 			ax_n = 0x00;
 			goto l0800_A77A;
 		}
 	}
-	ptrArg02.u7->t0000.u0 = 0x00;
+	ptrArg02.u6->t0000.u0 = 0x00;
 	bx_n = wArg02;
 	dx = wArg02 + 0x05;
-	if (ptrArg02.u7->t000E.u0 == wArg04 && ((ptrArg02.u7)->t000C).u0 == wArg02 + 0x05)
+	if (ptrArg02.u6->t000E.u0 == wArg04 && ((ptrArg02.u6)->t000C).u0 == wArg02 + 0x05)
 	{
-		dx.u0 = ptrArg02.u7->t0008.u0;
-		ptrArg02.u7->t000E.u0 = ptrArg02.u7->t000A.u0;
-		ptrArg02.u7->t000C.u0 = (wchar_t) dx;
+		dx.u0 = ptrArg02.u6->t0008.u0;
+		ptrArg02.u6->t000E.u0 = ptrArg02.u6->t000A.u0;
+		ptrArg02.u6->t000C.u0 = (wchar_t) dx;
 	}
 	goto l0800_A778;
 }
@@ -14767,15 +14791,15 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 		--di_n;
 		if (di_n <= 0x00)
 			break;
-		ci16 v20_n = ptrArg08.u7->t0000.u0 - 0x01;
-		ptrArg08.u7->t0000.u0 = v20_n;
+		ci16 v20_n = ptrArg08.u6->t0000.u0 - 0x01;
+		ptrArg08.u6->t0000.u0 = v20_n;
 		Eq_n ax_n;
 		if (v20_n >= 0x00)
 		{
-			struct Eq_n * ax_n = ptrArg08.u7->t000E.u0;
-			uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg08.u7->t000C.u0;
-			ptrArg08.u7->t000C.u0 = (wchar_t) (ptrArg08.u7->t000C.u0 + 0x01);
-			ax_n.u3 = (uint16) (ax_n->*si_n);
+			struct Eq_n * ax_n = ptrArg08.u6->t000E.u0;
+			uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg08.u6->t000C.u0;
+			ptrArg08.u6->t000C.u0 = (wchar_t) (ptrArg08.u6->t000C.u0 + 0x01);
+			ax_n.u2 = (uint16) (ax_n->*si_n);
 		}
 		else
 		{
@@ -14799,7 +14823,7 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 	else
 	{
 		*ptrLoc06_n = 0x00;
-		if ((ptrArg08.u7->t0002.u0 & 0x10) != 0x00)
+		if ((ptrArg08.u6->t0002.u0 & 0x10) != 0x00)
 		{
 			dx_n = 0x00;
 			ax_n = 0x00;
@@ -14814,23 +14838,21 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 	return ax_n;
 }
 
-// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack (ptr32 char) ptrArg06, Stack cui16 wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack (ptr32 char) ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-33CD
 //      fn0800-363D
-Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	ui32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg06);
-	ptr16 v16_n = (word16) (msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP);
+	Eq_n v16_n = (word16) (msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP);
 	msdos_set_DTA(es_bx_n);
 	ptr16 bx_n = (word16) es_bx_n;
 	Eq_n ax_n = SEQ(0x4E, al);
-	selector ss;
-	struct Eq_n Eq_n::* fp;
 	Eq_n ax_n;
-	if (Test(UGE,(ss->*fp).f0006))
+	if (!(SEQ(SLICE(SCZDOP, word16, 16), v16_n) & 0x02))
 		ax_n.u0 = 0x00;
 	else
 		ax_n = fn0800-8D2B(ds, ax_n);
@@ -14839,22 +14861,20 @@ Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A,
 	return ax_n;
 }
 
-// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack (ptr32 char) ptrArg02, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack (ptr32 char) ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-3479
-Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, ptr16 & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	ui32 SCZDOP;
 	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg02);
-	ptr16 v15_n = (word16) (msdos_find_next_file() | SCZDOP);
+	Eq_n v15_n = (word16) (msdos_find_next_file() | SCZDOP);
 	msdos_set_DTA(es_bx_n);
 	ptr16 bx_n = (word16) es_bx_n;
 	Eq_n ax_n = SEQ(0x4F, al);
-	selector ss;
-	struct Eq_n Eq_n::* fp;
 	Eq_n ax_n;
-	if (Test(UGE,(ss->*fp).f0006))
+	if (!(SEQ(SLICE(SCZDOP, word16, 16), v15_n) & 0x02))
 		ax_n.u0 = 0x00;
 	else
 		ax_n = fn0800-8D2B(ds, ax_n);
@@ -14898,8 +14918,7 @@ cui16 fn0800_A8B7(Eq_n ds, word16 * ptrArg02, cui16 * ptrArg06, Eq_n ptrArg0A, u
 	word16 wArg0A_n = (word16) ptrArg0A;
 	word16 wArg0C_n = SLICE(ptrArg0A, word16, 16);
 	word16 di_n = 0x00;
-	Eq_n cl_n;
-	cl_n.u5 = *ptrArg0A.u5;
+	Eq_n cl_n = *ptrArg0A.u4;
 	union Eq_n * ptrArg0A_n = SEQ(wArg0C_n, wArg0A_n + 0x01);
 	cui16 dx_n;
 	cui16 si_n;
@@ -14927,12 +14946,12 @@ l0800_A967:
 		di_n = 0x80;
 		si_n = 0x02;
 	}
-	cl_n.u1 = ptrArg0A_n->u1;
+	cl_n.u0 = ptrArg0A_n->u0;
 	union Eq_n * ptrArg0A_n = SEQ(wArg0C_n, wArg0A_n + 0x02);
-	if (cl_n == 0x2B || ptrArg0A_n->u1 == 0x2B && (cl_n == 116 || cl_n == 0x62))
+	if (cl_n == 0x2B || ptrArg0A_n->u0 == 0x2B && (cl_n == 116 || cl_n == 0x62))
 	{
 		if (cl_n == 0x2B)
-			cl_n.u1 = ptrArg0A_n->u1;
+			cl_n.u0 = ptrArg0A_n->u0;
 		dx_n = dx_n & ~0x03 | 0x04;
 		di_n = 0x0180;
 		si_n = 0x03;
@@ -14971,29 +14990,29 @@ word16 fn0800_A96D(Eq_n ds, cui16 wArg02, Eq_n dwArg04, Eq_n dwArg08, Eq_n ptrAr
 	byte cl_n;
 	<unknown> Eq_n::* fp;
 	ptr16 wArg0E_n = SLICE(ptrArg0C, word16, 16);
-	Eq_n ax_n = fn0800_A8B7(ds, fp - 6, fp - 4, dwArg04, out cl_n);
-	ptrArg0C.u7->t0002.u0 = (wchar_t) ax_n;
+	cui16 ax_n = fn0800_A8B7(ds, fp - 6, fp - 4, dwArg04, out cl_n);
+	ptrArg0C.u6->t0002.u0 = ax_n;
 	ptr16 cx_n = SEQ(ch, cl_n);
 	if (ax_n == 0x00)
 	{
 l0800_A9B9:
-		ptrArg0C.u7->t0004.u1 = (int8) ~0x00;
-		ptrArg0C.u7->t0002.u0 = 0x00;
+		ptrArg0C.u6->b0004 = ~0x00;
+		ptrArg0C.u6->t0002.u0 = 0x00;
 		goto l0800_A9C7;
 	}
 	else
 	{
-		if (ptrArg0C.u7->t0004.u1 < 0x00)
+		if (ptrArg0C.u6->b0004 < 0x00)
 		{
-			Eq_n al_n = fn0800_B140(ds, dwArg08, wLoc04 | wArg02, wLoc06, out cx_n);
-			ptrArg0C.u7->t0004.u1 = (int8) al_n;
+			int8 al_n = fn0800_B140(ds, dwArg08, wLoc04 | wArg02, wLoc06, out cx_n);
+			ptrArg0C.u6->b0004 = al_n;
 			if (al_n < 0x00)
 				goto l0800_A9B9;
 		}
-		if (fn0800-8D76((int16) ptrArg0C.u7->t0004.u1) != 0x00)
-			ptrArg0C.u7->t0002.u0 = (wchar_t) (ptrArg0C.u7->t0002.u0 | 0x0200);
+		if (fn0800-8D76((int16) ptrArg0C.u6->b0004) != 0x00)
+			ptrArg0C.u6->t0002.u0 |= 0x0200;
 		ci16 ax_n;
-		if ((ptrArg0C.u7->t0002.u0 & 0x0200) != 0x00)
+		if ((ptrArg0C.u6->t0002.u0 & 0x0200) != 0x00)
 			ax_n = 0x01;
 		else
 			ax_n = 0x00;
@@ -15003,7 +15022,7 @@ l0800_A9B9:
 		word16 ax_n;
 		if (fn0800_BA89(ds, ptrArg0C, 0x00, 0x00, ax_n, 0x0200, out cx_n, out ds) == 0x00)
 		{
-			ptrArg0C.u7->w0010 = 0x00;
+			((word32) ptrArg0C + 16)->u4 = 0x00;
 			dx_n = wArg0E_n;
 			ax_n = wArg0C_n;
 			goto l0800_AA2E;
@@ -15094,15 +15113,15 @@ Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08, un
 		if (wArg06 == 0x00)
 			goto l0800_AB9A;
 		Eq_n v11_n;
-		v11_n.u5 = &wArg06.u7->b0001;
+		v11_n.u4 = &wArg06.u6->b0001;
 		wArg06 = v11_n;
 		Eq_n ax_n;
-		if (ptrArg02.u7->t0006.u0 > v11_n)
+		if (ptrArg02.u6->t0006.u0 > v11_n)
 			ax_n = v11_n;
 		else
-			ax_n.u0 = ptrArg02.u7->t0006.u0;
+			ax_n.u0 = ptrArg02.u6->t0006.u0;
 		Eq_n di_n = ax_n;
-		if ((ptrArg02.u7->t0002.u0 & 0x40) == 0x00 || (((ptrArg02.u7)->t0006).u0 == 0x00 || (((ptrArg02.u7)->t0006).u0 >= v11_n || ((ptrArg02.u7)->t0000).u0 != 0x00)))
+		if ((ptrArg02.u6->t0002.u0 & 0x40) == 0x00 || (((ptrArg02.u6)->t0006).u0 == 0x00 || (((ptrArg02.u6)->t0006).u0 >= v11_n || ((ptrArg02.u6)->t0000).u0 != 0x00)))
 		{
 			while (true)
 			{
@@ -15115,15 +15134,15 @@ Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08, un
 				--di_n;
 				if (di_n == 0x00)
 					break;
-				Eq_n v23_n = ptrArg02.u7->t0000.u0 - 0x01;
-				ptrArg02.u7->t0000.u0 = (wchar_t) v23_n;
+				Eq_n v23_n = ptrArg02.u6->t0000.u0 - 0x01;
+				ptrArg02.u6->t0000.u0 = (wchar_t) v23_n;
 				Eq_n ax_n;
 				if (v23_n >= 0x00)
 				{
-					struct Eq_n * ax_n = ptrArg02.u7->t000E.u0;
-					uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u7->t000C.u0;
-					ptrArg02.u7->t000C.u0 = (wchar_t) (ptrArg02.u7->t000C.u0 + 0x01);
-					ax_n.u3 = (uint16) (ax_n->*si_n);
+					struct Eq_n * ax_n = ptrArg02.u6->t000E.u0;
+					uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u6->t000C.u0;
+					ptrArg02.u6->t000C.u0 = (wchar_t) (ptrArg02.u6->t000C.u0 + 0x01);
+					ax_n.u2 = (uint16) (ax_n->*si_n);
 				}
 				else
 				{
@@ -15134,7 +15153,7 @@ Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08, un
 				Eq_n dl_n = (byte) ax_n;
 				if (ax_n == ~0x00)
 					break;
-				*ptrArg08_n.u5 = (char) dl_n;
+				*ptrArg08_n.u4 = (char) dl_n;
 				ptrArg08_n = SEQ(wArg0A_n, wArg08_n + 0x01);
 			}
 			if (dx != ~0x00)
@@ -15142,16 +15161,16 @@ Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08, un
 			goto l0800_AB3D;
 		}
 		di_n.u0 = 0x00;
-		for (wArg06 = v11_n - 0x01; ptrArg02.u7->t0006.u0 <= wArg06; wArg06 -= ptrArg02.u7->t0006.u0)
-			di_n.u5 += ptrArg02.u7->t0006.u0;
+		for (wArg06 = v11_n - 0x01; ptrArg02.u6->t0006.u0 <= wArg06; wArg06 -= ptrArg02.u6->t0006.u0)
+			di_n.u4 += ptrArg02.u6->t0006.u0;
 		byte ch_n;
-		ax_n = fn0800-8F50(ds, (int16) ptrArg02.u7->t0004.u1, ptrArg08_n, di_n, out ch_n);
+		ax_n = fn0800-8F50(ds, (int16) ptrArg02.u6->b0004, ptrArg08_n, di_n, out ch_n);
 		dx = ax_n;
-		ptrArg08_n = SEQ(wArg0A_n, ax_n.u5 + wArg08_n);
+		ptrArg08_n = SEQ(wArg0A_n, ax_n.u4 + wArg08_n);
 	} while (ax_n == di_n);
-	wArg06.u5 += di_n - ax_n;
+	wArg06.u4 += di_n - ax_n;
 l0800_AB3D:
-	ptrArg02.u7->t0002.u0 |= 0x20;
+	ptrArg02.u6->t0002.u0 |= 0x20;
 l0800_AB9A:
 	chOut.u1 = (<unknown>*) <invalid>;
 	return wArg06;
@@ -15162,64 +15181,60 @@ l0800_AB9A:
 //      fn0800-4110
 uint16 fn0800_ABA3(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, union Eq_n & chOut, ptr16 & siOut, union Eq_n & diOut)
 {
-	byte ch_n;
-	mp16 fp;
-	Eq_n wArg04;
-	wArg04.u5 = SLICE(dwArg02, word16, 16);
-	Eq_n wArg02 = (word16) dwArg02;
-	word16 wArg0C = SLICE(dwArg0A, word16, 16);
-	Eq_n wArg0A = (word16) dwArg0A;
-	Eq_n sp_n = fp - 0x0A;
-	uint16 ax_n;
-	selector ss;
-	if (wArg06 == 0x00)
-		ax_n = 0x00;
-	else
-	{
-		ui32 dx_ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n);
-		Eq_n ax_n = (word16) dx_ax_n;
-		Eq_n dx_n;
-		dx_n.u5 = SLICE(dx_ax_n, word16, 16);
-		if (dx_n <= 0x01 && (dx_n < 0x01 || Test(ULT,false)))
-		{
-			sp_n = fp - 0x0A;
-			byte ch_n;
-			ax_n = (uint32) (ax_n - fn0800_AAB3(dx_n, ds, dwArg0A, ax_n, dwArg02, out ch_n)) /u wArg06;
-		}
-		else
-		{
-			word16 si_n = (word16) &wArg08.u7->b0001;
-			while (true)
-			{
-				--si_n;
-				if (si_n == 0x00)
-					break;
-				struct Eq_n Eq_n::* sp_n = sp_n - 2;
-				(ss->*sp_n).t0000.u0 = (wchar_t) wArg04;
-				(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) wArg02;
-				(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg06;
-				(ss->*sp_n).wFFFFFFFA = wArg0C;
-				(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) wArg0A;
-				byte ch_n;
-				if (fn0800_AAB3(dx_n, ds, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5, out ch_n) != 0x00)
-					break;
-				sp_n.u0 = <invalid>;
-				Eq_n dx_n;
-				wArg04 = dx_n;
-				byte ch_n;
-				wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n);
-				dx_n = dx_n;
-			}
-			ax_n = wArg08 - si_n;
-		}
-	}
-	Eq_n di_n;
-	di_n.u0 = (ss->*sp_n.u7).t0000.u0;
-	ptr16 si_n = (ptr16) (ss->*sp_n.u7).t0002.u0;
-	chOut.u1 = (<unknown>*) <invalid>;
-	siOut = si_n;
-	diOut = di_n;
-	return ax_n;
+fn0800_ABA3_entry:
+	wArg04.u4 = SLICE(dwArg02, word16, 16)
+	wArg02 = (word16) dwArg02
+	wArg0C = SLICE(dwArg0A, word16, 16)
+	wArg0A = (word16) dwArg0A
+	sp_n = fp - 0x0A
+	branch wArg06 != 0x00 l0800_ABB6
+	goto l0800_ABB2
+l0800_ABA3:
+l0800_ABB2:
+	ax_n = 0x00
+	goto l0800_AC2B
+l0800_ABB6:
+	dx_ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n)
+	ax_n = (word16) dx_ax_n
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16)
+	branch dx_n > 0x01 l0800_ABF2
+l0800_ABCD:
+	branch dx_n < 0x01 l0800_ABD3
+l0800_ABCF:
+	branch 0x00 l0800_ABF2
+l0800_ABD3:
+	sp_n = fp - 0x0A
+	ax_n = (uint32) (ax_n - fn0800_AAB3(dx_n, ds, dwArg0A, ax_n, dwArg02, out ch_n)) /u wArg06
+	goto l0800_AC2B
+l0800_ABF2:
+	si_n = (word16) &wArg08.u6->b0001
+	goto l0800_AC0B
+l0800_ABF8:
+	sp_n.u0 = <invalid>
+	wArg04 = dx_n
+	wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n)
+	dx_n = dx_n
+l0800_AC0B:
+	si_n = si_n - 0x01
+	branch si_n == 0x00 l0800_AC26
+l0800_AC12:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = (wchar_t) wArg04
+	(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) wArg02
+	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg06
+	(ss->*sp_n).wFFFFFFFA = wArg0C
+	(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) wArg0A
+	branch fn0800_AAB3(dx_n, ds, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4, out ch_n) == 0x00 l0800_ABF8
+l0800_AC26:
+	ax_n = wArg08 - si_n
+l0800_AC2B:
+	di_n.u0 = (ss->*sp_n.u6).t0000.u0
+	si_n = (ptr16) (ss->*sp_n.u6).t0002.u0
+	chOut.u1 = (<unknown>*) <invalid>
+	siOut = si_n
+	diOut = di_n
+	return ax_n
+fn0800_ABA3_exit:
 }
 
 // 0800:AC31: Register Eq_n fn0800_AC31(Stack Eq_n ptrArg02)
@@ -15231,28 +15246,28 @@ Eq_n fn0800_AC31(Eq_n ptrArg02)
 	byte * ptrLoc06_n;
 	Eq_n cx_n;
 	Eq_n si_n;
-	if (ptrArg02.u7->t0000.u0 < 0x00)
+	if (ptrArg02.u6->t0000.u0 < 0x00)
 	{
-		word16 cx_n = ptrArg02.u7->t0006.u0 + ((ptrArg02.u7)->t0000).u0;
+		word16 cx_n = ptrArg02.u6->t0006.u0 + ((ptrArg02.u6)->t0000).u0;
 		cx_n = cx_n + 0x01;
 		si_n = cx_n + 0x01;
 	}
 	else
 	{
 		Eq_n ax_n;
-		ax_n.u0 = ptrArg02.u7->t0000.u0;
+		ax_n.u0 = ptrArg02.u6->t0000.u0;
 		cx_n = ax_n;
 		si_n = ax_n;
 	}
-	if ((ptrArg02.u7->t0002.u0 & 0x40) == 0x00)
+	if ((ptrArg02.u6->t0002.u0 & 0x40) == 0x00)
 	{
 		Eq_n dx_n;
-		dx_n.u0 = ptrArg02.u7->t000C.u0;
+		dx_n.u0 = ptrArg02.u6->t000C.u0;
 		Eq_n ax_n;
-		ax_n.u0 = ptrArg02.u7->t000E.u0;
+		ax_n.u0 = ptrArg02.u6->t000E.u0;
 		Eq_n wLoc06_n = dx_n;
 		byte * ptrLoc06_n = SEQ(ax_n, dx_n);
-		if (ptrArg02.u7->t0000.u0 < 0x00)
+		if (ptrArg02.u6->t0000.u0 < 0x00)
 		{
 			while (true)
 			{
@@ -15262,7 +15277,7 @@ Eq_n fn0800_AC31(Eq_n ptrArg02)
 				Eq_n v22_n = wLoc06_n - 0x01;
 				wLoc06_n = v22_n;
 				if (*SEQ(ax_n, v22_n) == 0x0A)
-					si_n.u5 = &si_n.u7->b0001;
+					si_n.u4 = &si_n.u6->b0001;
 			}
 		}
 		else
@@ -15277,7 +15292,7 @@ Eq_n fn0800_AC31(Eq_n ptrArg02)
 				ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x01);
 				ptrLoc06_n = ptrLoc06_n;
 				if (*ptrLoc06_n == 0x0A)
-					si_n.u5 = &si_n.u7->b0001;
+					si_n.u4 = &si_n.u6->b0001;
 			}
 		}
 	}
@@ -15329,14 +15344,14 @@ word16 fn0800_ACB3(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, Eq_n wArg0A, ptr16 & cx
 		ax_n = ~0x00;
 	else
 	{
-		if (wArg0A == 0x01 && ((ptrArg02.u7)->t0000).u0 > 0x00)
+		if (wArg0A == 0x01 && ((ptrArg02.u6)->t0000).u0 > 0x00)
 			dwArg06 -= (uint32) fn0800_AC31(ptrArg02);
-		ptrArg02.u7->t0002.u0 &= ~0x01A0;
-		ptrArg02.u7->t0000.u0 = 0x00;
-		word16 dx_n = ptrArg02.u7->t0008.u0;
-		ptrArg02.u7->t000E.u0 = ptrArg02.u7->t000A.u0;
-		ptrArg02.u7->t000C.u0 = dx_n;
-		uint16 ax_n = fn0800-8E29(ds, (int16) ptrArg02.u7->t0004.u1, dwArg06, (byte) wArg0A, out cx_n, out dx_n);
+		ptrArg02.u6->t0002.u0 &= ~0x01A0;
+		ptrArg02.u6->t0000.u0 = 0x00;
+		word16 dx_n = ptrArg02.u6->t0008.u0;
+		ptrArg02.u6->t000E.u0 = ptrArg02.u6->t000A.u0;
+		ptrArg02.u6->t000C.u0 = dx_n;
+		uint16 ax_n = fn0800-8E29(ds, (int16) ptrArg02.u6->b0004, dwArg06, (byte) wArg0A, out cx_n, out dx_n);
 		if (dx_n == ~0x00 && ax_n == ~0x00)
 			ax_n = ~0x00;
 		else
@@ -15367,14 +15382,14 @@ word16 fn0800_ACB3(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, Eq_n wArg0A, ptr16 & cx
 //      fn0800-7C78
 int32 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02)
 {
-	int32 dx_ax_n = fn0800-97B6(ds, (int16) ptrArg02.u7->t0004.u1);
+	int32 dx_ax_n = fn0800-97B6(ds, (int16) ptrArg02.u6->b0004);
 	int16 dx_n = SLICE(dx_ax_n, word16, 16);
 	uint16 ax_n = (word16) dx_ax_n;
 	int16 wLoc04_n = dx_n;
 	uint16 wLoc06_n = ax_n;
 	if (dx_n != ~0x00 || ax_n != ~0x00)
 	{
-		if (ptrArg02.u7->t0000.u0 < 0x00)
+		if (ptrArg02.u6->t0000.u0 < 0x00)
 		{
 			uint32 v20_v18_n = dx_ax_n + (uint32) fn0800_AC31(ptrArg02);
 			wLoc06_n = (word16) v20_v18_n;
@@ -15395,59 +15410,58 @@ int32 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02)
 //      fn0800-4152
 Eq_n fn0800_AD85(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, ptr16 & siOut)
 {
-	byte ch_n;
-	mp16 fp;
-	Eq_n wArg04;
-	wArg04.u5 = SLICE(dwArg02, word16, 16);
-	Eq_n wArg02 = (word16) dwArg02;
-	word16 wArg0C = SLICE(dwArg0A, word16, 16);
-	Eq_n wArg0A = (word16) dwArg0A;
-	Eq_n sp_n = fp - 0x0A;
-	Eq_n ax_n;
-	if (wArg06 != 0x00)
-	{
-		ui32 dx_ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n);
-		Eq_n ax_n = (word16) dx_ax_n;
-		cup16 dx_n = SLICE(dx_ax_n, word16, 16);
-		selector ss;
-		if (dx_n <= 0x01 && (dx_n < 0x01 || Test(ULT,false)))
-		{
-			sp_n = fp - 0x0A;
-			ax_n = (uint32) fn0800_B4BE(ds, dwArg0A, ax_n, dwArg02) /u wArg06;
+fn0800_AD85_entry:
+	wArg04.u4 = SLICE(dwArg02, word16, 16)
+	wArg02 = (word16) dwArg02
+	wArg0C = SLICE(dwArg0A, word16, 16)
+	wArg0A = (word16) dwArg0A
+	sp_n = fp - 0x0A
+	branch wArg06 == 0x00 l0800_AE07
+	goto l0800_AD94
+l0800_AD85:
+l0800_AD94:
+	dx_ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n)
+	ax_n = (word16) dx_ax_n
+	dx_n = SLICE(dx_ax_n, word16, 16)
+	branch dx_n > 0x01 l0800_ADC9
+l0800_ADAB:
+	branch dx_n < 0x01 l0800_ADB1
+l0800_ADAD:
+	branch 0x00 l0800_ADC9
+l0800_ADB1:
+	sp_n = fp - 0x0A
+	ax_n = (uint32) fn0800_B4BE(ds, dwArg0A, ax_n, dwArg02) /u wArg06
+	goto l0800_AE0A
+l0800_ADC9:
+	si_n.u0 = 0x00
+	branch wArg08 <= 0x00 l0800_AE07
+l0800_ADD0:
+	sp_n = sp_n - 2
+	(ss->*sp_n).t0000.u0 = (wchar_t) wArg04
+	(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) wArg02
+	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg06
+	(ss->*sp_n).wFFFFFFFA = wArg0C
+	(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) wArg0A
+	ax_n = fn0800_B4BE(ds, (ss->*sp_n).tFFFFFFF8.u4, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u4)
+	sp_n.u4 = &sp_n->ptr0002
+	branch false || ax_n != wArg06 l0800_ADEA
+	goto l0800_ADEE
+l0800_ADE6:
+l0800_ADEA:
+	ax_n = si_n
+	goto l0800_AE0A
+l0800_ADEE:
+	sp_n.u0 = <invalid>
+	wArg04 = dx_n
+	wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n)
+	si_n.u4 = &si_n.u6->b0001
+	branch si_n < wArg08 l0800_ADD0
+l0800_AE07:
+	ax_n = wArg08
 l0800_AE0A:
-			siOut = (ptr16) (ss->*sp_n.u7).t0002.u0;
-			return ax_n;
-		}
-		Eq_n si_n;
-		si_n.u0 = 0x00;
-		if (wArg08 > 0x00)
-		{
-			do
-			{
-				struct Eq_n Eq_n::* sp_n = sp_n - 2;
-				(ss->*sp_n).t0000.u0 = (wchar_t) wArg04;
-				(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) wArg02;
-				(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg06;
-				(ss->*sp_n).wFFFFFFFA = wArg0C;
-				(ss->*sp_n).tFFFFFFF8.u0 = (wchar_t) wArg0A;
-				Eq_n ax_n = fn0800_B4BE(ds, (ss->*sp_n).tFFFFFFF8.u5, (ss->*sp_n).tFFFFFFFC.u0, (ss->*sp_n).tFFFFFFFE.u5);
-				sp_n.u5 = &sp_n->ptr0002;
-				if (false || ax_n != wArg06)
-				{
-					ax_n = si_n;
-					goto l0800_AE0A;
-				}
-				sp_n.u0 = <invalid>;
-				Eq_n dx_n;
-				wArg04 = dx_n;
-				byte ch_n;
-				wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n);
-				si_n.u5 = &si_n.u7->b0001;
-			} while (si_n < wArg08);
-		}
-	}
-	ax_n = wArg08;
-	goto l0800_AE0A;
+	siOut = (ptr16) (ss->*sp_n.u6).t0002.u0
+	return ax_n
+fn0800_AD85_exit:
 }
 
 // 0800:AE10: void fn0800_AE10(Register Eq_n ds)
@@ -15465,7 +15479,7 @@ void fn0800_AE10(Eq_n ds)
 		--si_n;
 		if (si_n == 0x00)
 			break;
-		if ((ptrLoc06_n.u7->t0002.u0 & 0x0300) == 0x0300)
+		if ((ptrLoc06_n.u6->t0002.u0 & 0x0300) == 0x0300)
 		{
 			word16 dx_n;
 			word16 bx_n;
@@ -15480,32 +15494,32 @@ void fn0800_AE10(Eq_n ds)
 //      fn0800_AED6
 word16 fn0800_AE4C(Eq_n ds, Eq_n ptrArg02)
 {
-	if ((ptrArg02.u7->t0002.u0 & 0x0200) != 0x00)
+	if ((ptrArg02.u6->t0002.u0 & 0x0200) != 0x00)
 		fn0800_AE10(ds);
 	Eq_n v13_n;
-	v13_n.u0 = ptrArg02.u7->t0006.u0;
+	v13_n.u0 = ptrArg02.u6->t0006.u0;
 	Eq_n ax_n;
-	ax_n.u0 = ptrArg02.u7->t000A.u0;
+	ax_n.u0 = ptrArg02.u6->t000A.u0;
 	Eq_n dx_n;
-	dx_n.u0 = ptrArg02.u7->t0008.u0;
-	ptrArg02.u7->t000E.u0 = (wchar_t) ax_n;
-	ptrArg02.u7->t000C.u0 = (wchar_t) dx_n;
-	Eq_n ax_n = fn0800_B97F(ds, (int16) ptrArg02.u7->t0004.u1, SEQ(ax_n, dx_n), v13_n);
-	ptrArg02.u7->t0000.u0 = (wchar_t) ax_n;
+	dx_n.u0 = ptrArg02.u6->t0008.u0;
+	ptrArg02.u6->t000E.u0 = (wchar_t) ax_n;
+	ptrArg02.u6->t000C.u0 = (wchar_t) dx_n;
+	Eq_n ax_n = fn0800_B97F(ds, (int16) ptrArg02.u6->b0004, SEQ(ax_n, dx_n), v13_n);
+	ptrArg02.u6->t0000.u0 = (wchar_t) ax_n;
 	word16 ax_n;
 	if (ax_n > 0x00)
 	{
-		ptrArg02.u7->t0002.u0 = (wchar_t) (ptrArg02.u7->t0002.u0 & ~0x20);
+		ptrArg02.u6->t0002.u0 = (wchar_t) (ptrArg02.u6->t0002.u0 & ~0x20);
 		ax_n = 0x00;
 	}
 	else
 	{
-		if (ptrArg02.u7->t0000.u0 == 0x00)
-			ptrArg02.u7->t0002.u0 = (wchar_t) (ptrArg02.u7->t0002.u0 & 65151 | 0x20);
+		if (ptrArg02.u6->t0000.u0 == 0x00)
+			ptrArg02.u6->t0002.u0 = (wchar_t) (ptrArg02.u6->t0002.u0 & 65151 | 0x20);
 		else
 		{
-			ptrArg02.u7->t0000.u0 = 0x00;
-			ptrArg02.u7->t0002.u0 = (wchar_t) (ptrArg02.u7->t0002.u0 | 0x10);
+			ptrArg02.u6->t0000.u0 = 0x00;
+			ptrArg02.u6->t0002.u0 = (wchar_t) (ptrArg02.u6->t0002.u0 | 0x10);
 		}
 		ax_n = ~0x00;
 	}
@@ -15520,7 +15534,7 @@ word16 fn0800_AE4C(Eq_n ds, Eq_n ptrArg02)
 //      fn0800_AAB3
 word16 fn0800_AEC2(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut)
 {
-	++ptrArg02.u7->t0000.u0;
+	++ptrArg02.u6->t0000.u0;
 	word16 ax_n = fn0800_AED6(ds, ptrArg02);
 	chOut.u1 = (<unknown>*) <invalid>;
 	return ax_n;
@@ -15539,30 +15553,30 @@ l0800_AEE2:
 		return ax_n;
 	}
 	uint8 al_n;
-	if (ptrArg02.u7->t0000.u0 <= 0x00)
+	if (ptrArg02.u6->t0000.u0 <= 0x00)
 	{
-		if (ptrArg02.u7->t0000.u0 < 0x00 || ((((ptrArg02.u7)->t0002).u0 & 0x0110) != 0x00 || (((ptrArg02.u7)->t0002).u0 & 0x01) == 0x00))
+		if (ptrArg02.u6->t0000.u0 < 0x00 || ((((ptrArg02.u6)->t0002).u0 & 0x0110) != 0x00 || (((ptrArg02.u6)->t0002).u0 & 0x01) == 0x00))
 		{
 l0800_AF7F:
-			ptrArg02.u7->t0002.u0 |= 0x10;
+			ptrArg02.u6->t0002.u0 |= 0x10;
 			goto l0800_AEE2;
 		}
-		ptrArg02.u7->t0002.u0 |= 0x80;
-		if (ptrArg02.u7->t0006.u0 == 0x00)
+		ptrArg02.u6->t0002.u0 |= 0x80;
+		if (ptrArg02.u6->t0006.u0 == 0x00)
 		{
 			do
 			{
-				if ((ptrArg02.u7->t0002.u0 & 0x0200) != 0x00)
+				if ((ptrArg02.u6->t0002.u0 & 0x0200) != 0x00)
 					fn0800_AE10(ds);
-				if (fn0800_B97F(ds, (int16) ptrArg02.u7->t0004.u1, SEQ(ds, 0x4EE4), 0x01) == 0x00)
+				if (fn0800_B97F(ds, (int16) ptrArg02.u6->b0004, SEQ(ds, 0x4EE4), 0x01) == 0x00)
 				{
-					if (fn0800_A59D(ds, (int16) ptrArg02.u7->t0004.u1) != 0x01)
+					if (fn0800_A59D(ds, (int16) ptrArg02.u6->b0004) != 0x01)
 						goto l0800_AF7F;
-					ptrArg02.u7->t0002.u0 = ptrArg02.u7->t0002.u0 & 65151 | 0x20;
+					ptrArg02.u6->t0002.u0 = ptrArg02.u6->t0002.u0 & 65151 | 0x20;
 					goto l0800_AEE2;
 				}
-			} while (Mem83[ds:0x4EE4:byte] == 0x0D && (((ptrArg02.u7)->t0002).u0 & 0x40) == 0x00);
-			ptrArg02.u7->t0002.u0 &= ~0x20;
+			} while (Mem83[ds:0x4EE4:byte] == 0x0D && (((ptrArg02.u6)->t0002).u0 & 0x40) == 0x00);
+			ptrArg02.u6->t0002.u0 &= ~0x20;
 			al_n = Mem117[ds:0x4EE4:byte];
 l0800_AFBB:
 			ax_n = (uint16) al_n;
@@ -15571,10 +15585,10 @@ l0800_AFBB:
 		if (fn0800_AE4C(ds, ptrArg02) != 0x00)
 			goto l0800_AEE2;
 	}
-	--ptrArg02.u7->t0000.u0;
-	struct Eq_n * ax_n = ptrArg02.u7->t000E.u0;
-	uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u7->t000C.u0;
-	ptrArg02.u7->t000C.u0 = (wchar_t) (ptrArg02.u7->t000C.u0 + 0x01);
+	--ptrArg02.u6->t0000.u0;
+	struct Eq_n * ax_n = ptrArg02.u6->t000E.u0;
+	uint8 Eq_n::* si_n = (uint8 Eq_n::*) ptrArg02.u6->t000C.u0;
+	ptrArg02.u6->t000C.u0 = (wchar_t) (ptrArg02.u6->t000C.u0 + 0x01);
 	al_n = ax_n->*si_n;
 	goto l0800_AFBB;
 }
@@ -15706,7 +15720,7 @@ void fn0800_B0A1(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 	struct Eq_n * wArg08 = SLICE(ptrArg06, word16, 16);
 	Eq_n wArg06 = (word16) ptrArg06;
 	Eq_n wArg04;
-	wArg04.u5 = SLICE(ptrArg02, word16, 16);
+	wArg04.u4 = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02 = (word16) ptrArg02;
 	word16 cx_n;
 	word16 dx_n;
@@ -15731,8 +15745,8 @@ void fn0800_B0A1(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 	{
 		if (wArg0A == 0x00)
 			return;
-		wArg08->*di_n = wArg04->*si_n.u5;
-		si_n.u5 = &si_n.u7->b0001;
+		wArg08->*di_n = wArg04->*si_n.u4;
+		si_n.u4 = &si_n.u6->b0001;
 		di_n = (word16) di_n + 1;
 		cx_n = wArg0A - 0x01;
 	}
@@ -15941,7 +15955,7 @@ word16 fn0800_B30A(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & d
 	ptr16 bx_n;
 	ptr16 dx_n;
 	ptr16 cx_n;
-	--ptrArg04.u7->t0000.u0;
+	--ptrArg04.u6->t0000.u0;
 	word16 ax_n = fn0800_B324(ds, bArg02, ptrArg04, out cx_n, out dx_n, out bx_n);
 	cxOut = cx_n;
 	dxOut = dx_n;
@@ -15963,34 +15977,34 @@ uint16 fn0800_B324(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & d
 	ptr16 bx_n = (word16) ptrArg04;
 	ptr16 dx_n;
 	ptr16 cx;
-	if (ptrArg04.u7->t0000.u0 >= ~0x00)
+	if (ptrArg04.u6->t0000.u0 >= ~0x00)
 	{
 		dx_n = dx;
-		if ((ptrArg04.u7->t0002.u0 & 0x90) == 0x00)
+		if ((ptrArg04.u6->t0002.u0 & 0x90) == 0x00)
 		{
 			dx_n = dx;
-			if ((ptrArg04.u7->t0002.u0 & 0x02) != 0x00)
+			if ((ptrArg04.u6->t0002.u0 & 0x02) != 0x00)
 			{
-				ptrArg04.u7->t0002.u0 |= 0x0100;
+				ptrArg04.u6->t0002.u0 |= 0x0100;
 				ptr16 wArg06_n;
-				if (ptrArg04.u7->t0006.u0 != 0x00)
+				if (ptrArg04.u6->t0006.u0 != 0x00)
 				{
-					if (ptrArg04.u7->t0000.u0 != 0x00)
+					if (ptrArg04.u6->t0000.u0 != 0x00)
 					{
 						dh = SLICE(dx_n, byte, 8);
 						cx = wArg06_n;
 						if (fn0800_A6B7(ds, ptrArg04, out dx_n, out bx_n) != 0x00)
 							goto l0800_B380;
 					}
-					ptrArg04.u7->t0000.u0 = -ptrArg04.u7->t0006.u0;
-					struct Eq_n * ax_n = ptrArg04.u7->t000E.u0;
-					union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u7->t000C.u0;
-					ptrArg04.u7->t000C.u0 = (wchar_t) (ptrArg04.u7->t000C.u0 + 0x01);
+					ptrArg04.u6->t0000.u0 = -ptrArg04.u6->t0006.u0;
+					struct Eq_n * ax_n = ptrArg04.u6->t000E.u0;
+					union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u6->t000C.u0;
+					ptrArg04.u6->t000C.u0 = (wchar_t) (ptrArg04.u6->t000C.u0 + 0x01);
 					Eq_n dl_n = Mem193[ds:0x4EE6:byte];
-					(ax_n->*si_n).u1 = (int8) dl_n;
+					(ax_n->*si_n).u1 = (uint8) dl_n;
 					bx_n = wArg04_n;
 					dx_n = SEQ(dh, dl_n);
-					if ((ptrArg04.u7->t0002.u0 & 0x08) == 0x00 || Mem197[ds:0x4EE6:byte] != 0x0A && Mem197[ds:0x4EE6:byte] != 0x0D)
+					if ((ptrArg04.u6->t0002.u0 & 0x08) == 0x00 || Mem197[ds:0x4EE6:byte] != 0x0A && Mem197[ds:0x4EE6:byte] != 0x0D)
 						goto l0800_B4A3;
 					cx = wArg06_n;
 					uint16 ax_n;
@@ -16008,35 +16022,35 @@ l0800_B4A8:
 					bxOut = bx_n;
 					return ax_n;
 				}
-				if (((*((word32) ds + 9450))[(int16) ptrArg04.u7->t0004.u1] & 0x0800) != 0x00)
+				if (((*((word32) ds + 9450))[(int16) ptrArg04.u6->b0004] & 0x0800) != 0x00)
 				{
 					word16 cx_n;
 					word16 dx_n;
-					fn0800-8E29(ds, (int16) ptrArg04.u7->t0004.u1, 0x00, 0x02, out cx_n, out dx_n);
+					fn0800-8E29(ds, (int16) ptrArg04.u6->b0004, 0x00, 0x02, out cx_n, out dx_n);
 					wArg06_n = SLICE(ptrArg04, word16, 16);
 				}
 				word16 bx_n;
-				if ((Mem77[ds:0x4EE6:byte] != 0x0A || ((((ptrArg04.u7)->t0002).u0 & 0x40) != 0x00 || fn0800_C779(ds, (int16) ((ptrArg04.u7)->t0004).u1, SEQ(ds, 9902), 0x01, out cx, out dx_n, out bx_n) == 0x01)) && fn0800_C779(ds, (int16) ((ptrArg04.u7)->t0004).u1, SEQ(ds, 0x4EE6), 0x01, out cx, out dx_n, out bx_n) == 0x01)
+				if ((Mem77[ds:0x4EE6:byte] != 0x0A || ((((ptrArg04.u6)->t0002).u0 & 0x40) != 0x00 || fn0800_C779(ds, (int16) (ptrArg04.u6)->b0004, SEQ(ds, 9902), 0x01, out cx, out dx_n, out bx_n) == 0x01)) && fn0800_C779(ds, (int16) (ptrArg04.u6)->b0004, SEQ(ds, 0x4EE6), 0x01, out cx, out dx_n, out bx_n) == 0x01)
 					goto l0800_B4A3;
 				bx_n = (word16) ptrArg04;
-				if ((ptrArg04.u7->t0002.u0 & 0x0200) != 0x00)
+				if ((ptrArg04.u6->t0002.u0 & 0x0200) != 0x00)
 					goto l0800_B4A3;
 			}
 		}
-		ptrArg04.u7->t0002.u0 |= 0x10;
+		ptrArg04.u6->t0002.u0 |= 0x10;
 		bx_n = (word16) ptrArg04;
 		goto l0800_B380;
 	}
 	else
 	{
-		++ptrArg04.u7->t0000.u0;
-		struct Eq_n * ax_n = ptrArg04.u7->t000E.u0;
-		union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u7->t000C.u0;
-		ptrArg04.u7->t000C.u0 = (wchar_t) (ptrArg04.u7->t000C.u0 + 0x01);
+		++ptrArg04.u6->t0000.u0;
+		struct Eq_n * ax_n = ptrArg04.u6->t000E.u0;
+		union Eq_n Eq_n::* si_n = (union Eq_n Eq_n::*) ptrArg04.u6->t000C.u0;
+		ptrArg04.u6->t000C.u0 = (wchar_t) (ptrArg04.u6->t000C.u0 + 0x01);
 		Eq_n dl_n = Mem254[ds:0x4EE6:byte];
-		(ax_n->*si_n).u1 = (int8) dl_n;
+		(ax_n->*si_n).u1 = (uint8) dl_n;
 		dx_n = SEQ(dh, dl_n);
-		if ((ptrArg04.u7->t0002.u0 & 0x08) == 0x00 || Mem257[ds:0x4EE6:byte] != 0x0A && Mem257[ds:0x4EE6:byte] != 0x0D)
+		if ((ptrArg04.u6->t0002.u0 & 0x08) == 0x00 || Mem257[ds:0x4EE6:byte] != 0x0A && Mem257[ds:0x4EE6:byte] != 0x0D)
 			goto l0800_B4A3;
 		cx = wArg06_n;
 		if (fn0800_A6B7(ds, ptrArg04, out dx_n, out bx_n) == 0x00)
@@ -16052,7 +16066,7 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 {
 	Eq_n di_n = wArg06;
 	Eq_n ptrArg08_n;
-	if ((ptrArg02.u7->t0002.u0 & 0x08) != 0x00)
+	if ((ptrArg02.u6->t0002.u0 & 0x08) != 0x00)
 	{
 		Eq_n ptrArg08_n;
 		word16 cx_n;
@@ -16067,14 +16081,14 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 				goto l0800_B69D;
 			ptrArg08_n = SEQ(wArg0A_n, wArg08_n + 0x01);
 			ptrArg08_n = ptrArg08_n;
-		} while (fn0800_B324(ds, *ptrArg08_n.u5, ptrArg02, out cx_n, out dx_n, out bx_n) != ~0x00);
+		} while (fn0800_B324(ds, *ptrArg08_n.u4, ptrArg02, out cx_n, out dx_n, out bx_n) != ~0x00);
 		goto l0800_B4F5;
 	}
 	Eq_n ax_n;
-	if ((ptrArg02.u7->t0002.u0 & 0x40) == 0x00)
+	if ((ptrArg02.u6->t0002.u0 & 0x40) == 0x00)
 	{
 		ptrArg08_n = ptrArg08;
-		if (ptrArg02.u7->t0006.u0 != 0x00)
+		if (ptrArg02.u6->t0006.u0 != 0x00)
 		{
 			uint16 ax_n;
 			do
@@ -16084,18 +16098,18 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 				--di_n;
 				if (di_n == 0x00)
 					goto l0800_B69D;
-				Eq_n v23_n = ptrArg02.u7->t0000.u0 + 0x01;
-				ptrArg02.u7->t0000.u0 = (wchar_t) v23_n;
+				Eq_n v23_n = ptrArg02.u6->t0000.u0 + 0x01;
+				ptrArg02.u6->t0000.u0 = (wchar_t) v23_n;
 				if (v23_n < 0x00)
 				{
 					Eq_n ax_n;
-					ax_n.u0 = ptrArg02.u7->t000E.u0;
+					ax_n.u0 = ptrArg02.u6->t000E.u0;
 					Eq_n si_n;
-					si_n.u0 = ptrArg02.u7->t000C.u0;
-					ptrArg02.u7->t000C.u0 = (wchar_t) (ptrArg02.u7->t000C.u0 + 0x01);
+					si_n.u0 = ptrArg02.u6->t000C.u0;
+					ptrArg02.u6->t000C.u0 = (wchar_t) (ptrArg02.u6->t000C.u0 + 0x01);
 					Eq_n dl_n;
-					dl_n.u5 = *ptrArg08_n.u5;
-					ax_n->*si_n.u5 = (char) dl_n;
+					dl_n.u4 = *ptrArg08_n.u4;
+					ax_n->*si_n.u4 = (char) dl_n;
 					ax_n = (uint16) dl_n;
 					ptrArg08_n = SEQ(wArg0A_n, wArg08_n + 0x01);
 				}
@@ -16104,7 +16118,7 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 					word16 cx_n;
 					word16 dx_n;
 					word16 bx_n;
-					ax_n = fn0800_B30A(ds, *ptrArg08_n.u5, ptrArg02, out cx_n, out dx_n, out bx_n);
+					ax_n = fn0800_B30A(ds, *ptrArg08_n.u4, ptrArg02, out cx_n, out dx_n, out bx_n);
 					ptrArg08_n = SEQ(wArg0A_n, wArg08_n + 0x01);
 				}
 			} while (ax_n != ~0x00);
@@ -16112,39 +16126,39 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 		}
 		word16 dx_n;
 		word16 bx_n;
-		if (fn0800_C632(ds, (int16) ptrArg02.u7->t0004.u1, ptrArg08, wArg06, out dx_n, out bx_n) < wArg06)
+		if (fn0800_C632(ds, (int16) ptrArg02.u6->b0004, ptrArg08, wArg06, out dx_n, out bx_n) < wArg06)
 			goto l0800_B4F5;
 	}
-	else if (ptrArg02.u7->t0006.u0 == 0x00)
+	else if (ptrArg02.u6->t0006.u0 == 0x00)
 	{
-		if (((*((word32) ds + 9450))[(int16) ptrArg02.u7->t0004.u1] & 0x0800) != 0x00)
+		if (((*((word32) ds + 9450))[(int16) ptrArg02.u6->b0004] & 0x0800) != 0x00)
 		{
 			word16 cx_n;
 			word16 dx_n;
-			fn0800-8E29(ds, (int16) ptrArg02.u7->t0004.u1, 0<32>, 0x02, out cx_n, out dx_n);
+			fn0800-8E29(ds, (int16) ptrArg02.u6->b0004, 0<32>, 0x02, out cx_n, out dx_n);
 		}
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
-		if (fn0800_C779(ds, (int16) ptrArg02.u7->t0004.u1, ptrArg08, wArg06, out cx_n, out dx_n, out bx_n) < wArg06)
+		if (fn0800_C779(ds, (int16) ptrArg02.u6->b0004, ptrArg08, wArg06, out cx_n, out dx_n, out bx_n) < wArg06)
 			goto l0800_B4F5;
 	}
-	else if (ptrArg02.u7->t0006.u0 < wArg06)
+	else if (ptrArg02.u6->t0006.u0 < wArg06)
 	{
 		word16 dx_n;
 		word16 bx_n;
-		if (ptrArg02.u7->t0000.u0 != 0x00 && fn0800_A6B7(ds, ptrArg02, out dx_n, out bx_n) != 0x00)
+		if (ptrArg02.u6->t0000.u0 != 0x00 && fn0800_A6B7(ds, ptrArg02, out dx_n, out bx_n) != 0x00)
 			goto l0800_B4F5;
-		if (((*((word32) ds + 9450))[(int16) ptrArg02.u7->t0004.u1] & 0x0800) != 0x00)
+		if (((*((word32) ds + 9450))[(int16) ptrArg02.u6->b0004] & 0x0800) != 0x00)
 		{
 			word16 cx_n;
 			word16 dx_n;
-			fn0800-8E29(ds, (int16) ptrArg02.u7->t0004.u1, 0<32>, 0x02, out cx_n, out dx_n);
+			fn0800-8E29(ds, (int16) ptrArg02.u6->b0004, 0<32>, 0x02, out cx_n, out dx_n);
 		}
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
-		if (fn0800_C779(ds, (int16) ptrArg02.u7->t0004.u1, ptrArg08, wArg06, out cx_n, out dx_n, out bx_n) < wArg06)
+		if (fn0800_C779(ds, (int16) ptrArg02.u6->b0004, ptrArg08, wArg06, out cx_n, out dx_n, out bx_n) < wArg06)
 		{
 l0800_B4F5:
 			ax_n.u0 = 0x00;
@@ -16153,10 +16167,10 @@ l0800_B4F5:
 	}
 	else
 	{
-		if (wArg06.u5 + ((ptrArg02.u7)->t0000).u0 >= 0x00)
+		if (wArg06.u4 + ((ptrArg02.u6)->t0000).u0 >= 0x00)
 		{
-			if (ptrArg02.u7->t0000.u0 == 0x00)
-				ptrArg02.u7->t0000.u0 = (wchar_t) (~0x00 - ((ptrArg02.u7)->t0006).u0);
+			if (ptrArg02.u6->t0000.u0 == 0x00)
+				ptrArg02.u6->t0000.u0 = (wchar_t) (~0x00 - ((ptrArg02.u6)->t0006).u0);
 			else
 			{
 				word16 dx_n;
@@ -16165,9 +16179,9 @@ l0800_B4F5:
 					goto l0800_B4F5;
 			}
 		}
-		fn0800_B03B(ptrArg02.u7->t000C.u5, ptrArg08, wArg06);
-		ptrArg02.u7->t0000.u0 = (wchar_t) (wArg06.u5 + ((ptrArg02.u7)->t0000).u0);
-		ptrArg02.u7->t000C.u0 = (wchar_t) (wArg06.u5 + ((ptrArg02.u7)->t000C).u0);
+		fn0800_B03B(ptrArg02.u6->t000C.u4, ptrArg08, wArg06);
+		ptrArg02.u6->t0000.u0 = (wchar_t) (wArg06.u4 + ((ptrArg02.u6)->t0000).u0);
+		ptrArg02.u6->t000C.u0 = (wchar_t) (wArg06.u4 + ((ptrArg02.u6)->t000C).u0);
 	}
 l0800_B69D:
 	ax_n = wArg06;
@@ -16188,9 +16202,9 @@ void fn0800_B6A8(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 	if (cx_n >> 0x01 < 0x00)
 	{
 		Eq_n al_n;
-		al_n.u5 = *ptrArg02.u5;
-		*ptrArg02.u5 = *ptrArg06.u5;
-		*ptrArg06.u5 = (char) al_n;
+		al_n.u4 = *ptrArg02.u4;
+		*ptrArg02.u4 = *ptrArg06.u4;
+		*ptrArg06.u4 = (char) al_n;
 		si_n = (struct Eq_n Eq_n::*) ((char *) &si_n->w0000 + 1);
 		di_n = (word16 Eq_n::*) ((char *) di_n + 1);
 		if (cx_n >> 0x01 == 0x00)
@@ -16230,7 +16244,7 @@ void fn0800_B6D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 		(ss->*sp_n).tFFFFFFFE.u0 = (wchar_t) bx_n;
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg06;
 		Eq_n bx_n;
-		bx_n.u5 = wArg04.u5 + ax_n;
+		bx_n.u4 = wArg04.u4 + ax_n;
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) bx_n;
 		0x0800:Mem55[ds:20202:word16]();
 		Eq_n wLoc0A_n = bx_n;
@@ -16242,7 +16256,7 @@ void fn0800_B6D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 			(ss->*sp_n).t0004.u0 = (wchar_t) bx_n;
 			(ss->*sp_n).t0002.u0 = (wchar_t) wArg06;
 			(ss->*sp_n).t0000.u0 = (wchar_t) bx_n;
-			fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+			fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 		}
 		(ss->*sp_n).t0006.u0 = (wchar_t) wArg06;
 		(ss->*sp_n).t0004.u0 = (wchar_t) wArg04;
@@ -16276,7 +16290,7 @@ void fn0800_B6D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 			(ss->*sp_n).t0000.u0 = (wchar_t) bx_n;
 			sp_n = sp_n;
 l0800_B7BD:
-			fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+			fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 			sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0006 + 2);
 		}
 		if (si_n == 0x03)
@@ -16311,7 +16325,7 @@ l0800_B7BD:
 					(ss->*sp_n).t0004.u0 = (wchar_t) wLoc06_n;
 					(ss->*sp_n).t0002.u0 = (wchar_t) wArg06;
 					(ss->*sp_n).t0000.u0 = (wchar_t) wLoc0E_n;
-					fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+					fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 					wLoc0E_n += Mem253[ds:20200:word16];
 				}
 				sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0006 + 2);
@@ -16340,12 +16354,12 @@ l0800_B7BD:
 						(ss->*sp_n).t0004.u0 = (wchar_t) wLoc06_n;
 						(ss->*sp_n).t0002.u0 = (wchar_t) wArg06;
 						(ss->*sp_n).t0000.u0 = (wchar_t) wLoc0A_n;
-						fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+						fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 						sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0006 + 2);
 						if (ax_n != 0x00)
 						{
 							Eq_n ax_n = Mem327[ds:20200:word16];
-							wLoc06_n.u5 = wLoc06_n + ax_n;
+							wLoc06_n.u4 = wLoc06_n + ax_n;
 							wLoc0A_n -= ax_n;
 						}
 						break;
@@ -16373,9 +16387,9 @@ l0800_B7BD:
 			(ss->*sp_n).t0004.u0 = (wchar_t) wLoc12_n;
 			(ss->*sp_n).t0002.u0 = (wchar_t) wArg06;
 			(ss->*sp_n).t0000.u0 = (wchar_t) wLoc16_n;
-			fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+			fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 			Eq_n ax_n = Mem444[ds:20200:word16];
-			wLoc12_n.u5 = wLoc12_n + ax_n;
+			wLoc12_n.u4 = wLoc12_n + ax_n;
 			wLoc16_n -= ax_n;
 		}
 		(ss->*sp_n).t0006.u0 = 0x00;
@@ -16384,7 +16398,7 @@ l0800_B7BD:
 		(ss->*sp_n).t0000.u0 = (wchar_t) (wLoc06_n - wLoc0E_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		Eq_n ax_n = (word16) fn0800-8BBB((ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5, out cx_n);
+		Eq_n ax_n = (word16) fn0800-8BBB((ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4, out cx_n);
 		(ss->*((word32) sp_n - 2)).u0 = 0x00;
 		Mem498[ss:sp_n + -4:word16] = Mem495[ds:20200:word16];
 		Eq_n dx_n = wArg04 + Mem498[ds:20200:word16] *s16 si_n - wLoc06_n;
@@ -16456,7 +16470,7 @@ l0800_B7BD:
 			(ss->*sp_n).t0000.u0 = (wchar_t) dx_n;
 			sp_n = sp_n;
 l0800_B720:
-			fn0800_B6A8(ds, (ss->*sp_n).t0000.u5, (ss->*sp_n).t0004.u5);
+			fn0800_B6A8(ds, (ss->*sp_n).t0000.u4, (ss->*sp_n).t0004.u4);
 		}
 	}
 }
@@ -16563,7 +16577,7 @@ void fn0800_BA67(Eq_n ds, Eq_n ptrArg02)
 {
 	word16 cx_n;
 	if (fn0800_ACB3(ds, ptrArg02, 0x00, 0x00, out cx_n) == 0x00)
-		ptrArg02.u7->t0002.u0 &= ~0x10;
+		ptrArg02.u6->t0002.u0 &= ~0x10;
 }
 
 // 0800:BA89: Register word16 fn0800_BA89(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg06, Stack cui16 wArg08, Stack ci16 wArg0A, Stack Eq_n wArg0C, Register out Eq_n cxOut, Register out Eq_n dsOut)
@@ -16577,7 +16591,7 @@ word16 fn0800_BA89(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, cui16 wArg08, ci16 wArg
 	struct Eq_n Eq_n::* bp_n = fp - 2;
 	ci16 di_n = wArg0A;
 	word16 ax_n;
-	if (ptrArg02.u7->ptr0012 != wArg02_n || (wArg0A > 0x02 || wArg0C > 0x7FFF))
+	if (ptrArg02.u6->ptr0012 != wArg02_n || (wArg0A > 0x02 || wArg0C > 0x7FFF))
 	{
 l0800_BAAB:
 		ax_n = ~0x00;
@@ -16590,27 +16604,27 @@ l0800_BAAB:
 		else if (Mem14[ds:9904:word16] == 0x00 && wArg02_n == (<unknown>*) 0x2358)
 			Mem40[ds:9904:word16] = 0x01;
 		Eq_n cx;
-		if (ptrArg02.u7->t0000.u0 != 0x00)
+		if (ptrArg02.u6->t0000.u0 != 0x00)
 			fn0800_ACB3(ds, ptrArg02, 0x00, 0x01, out cx);
 		Eq_n wArg04_n;
-		wArg04_n.u5 = SLICE(ptrArg02, word16, 16);
+		wArg04_n.u4 = SLICE(ptrArg02, word16, 16);
 		word16 wArg02_n = (word16) ptrArg02;
-		if ((ptrArg02.u7->t0002.u0 & 0x04) != 0x00)
+		if ((ptrArg02.u6->t0002.u0 & 0x04) != 0x00)
 		{
 			Eq_n v22_n;
-			v22_n.u0 = ptrArg02.u7->t000A.u0;
+			v22_n.u0 = ptrArg02.u6->t000A.u0;
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
 			fn0800-9E75(ds, v22_n, out cx_n, out dx_n, out bx_n, out ds);
 			cx = v22_n;
 		}
-		ptrArg02.u7->t0002.u0 = (wchar_t) (ptrArg02.u7->t0002.u0 & ~0x0C);
-		ptrArg02.u7->t0006.u0 = 0x00;
-		ptrArg02.u7->t000A.u0 = (wchar_t) wArg04_n;
-		ptrArg02.u7->t0008.u0 = (wchar_t) (wArg02_n + 0x05);
-		ptrArg02.u7->t000E.u0 = (wchar_t) wArg04_n;
-		ptrArg02.u7->t000C.u0 = (wchar_t) (wArg02_n + 0x05);
+		ptrArg02.u6->t0002.u0 = (wchar_t) (ptrArg02.u6->t0002.u0 & ~0x0C);
+		ptrArg02.u6->t0006.u0 = 0x00;
+		ptrArg02.u6->t000A.u0 = (wchar_t) wArg04_n;
+		ptrArg02.u6->t0008.u0 = (wchar_t) (wArg02_n + 0x05);
+		ptrArg02.u6->t000E.u0 = (wchar_t) wArg04_n;
+		ptrArg02.u6->t000C.u0 = (wchar_t) (wArg02_n + 0x05);
 		if (wArg0A != 0x02)
 		{
 			Eq_n si_n = wArg0C;
@@ -16723,7 +16737,7 @@ word16 fn0800_BC49(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n ptrArg0A, Eq_n ptrArg0E, E
 	{
 		word16 wArg02_n = (word16) ptrArg02;
 		word16 wArg04_n = SLICE(ptrArg02, word16, 16);
-		if (*ptrArg02.u5 != 0x20)
+		if (*ptrArg02.u4 != 0x20)
 			break;
 		Eq_n ptrArg02_n = SEQ(wArg04_n, wArg02_n + 0x01);
 		ptrArg02 = ptrArg02_n;
@@ -16784,7 +16798,7 @@ word16 fn0800_BEA2(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, union
 {
 	Eq_n di_n;
 	mp16 fp;
-	*ptrArg02.u5 = (char) 0x00;
+	*ptrArg02.u4 = (char) 0x00;
 	word16 si_n = fn0800-9828(cx, dx, (word16) ptrArg02, ds, fp + 0x0A, dwArg06, out di_n);
 	diOut = di_n;
 	return si_n;
@@ -17019,34 +17033,34 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
 	selector ss;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x3C;
-	(ss->*((word32) sp_n - 6)).u5 = SLICE(v12_v11_n, word16, 16);
+	(ss->*((word32) sp_n - 6)).u4 = SLICE(v12_v11_n, word16, 16);
 	ss->*((word32) sp_n - 8) = (word16) v12_v11_n;
 	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out cx_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x3C;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 6) = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	ss->*((word32) sp_n - 8) = ax_n;
 	ptrArg0A->b0000 = (byte) fn0800-8BCA(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4));
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x3C;
 	ss->*((word32) sp_n - 6) = dx_n;
 	ss->*((word32) sp_n - 8) = ax_n;
 	int32 dx_ax_n = fn0800-8BBB(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out cx_n);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x88F8;
 	Eq_n dx_n;
-	dx_n.u5 = SLICE(dx_ax_n, word16, 16);
+	dx_n.u4 = SLICE(dx_ax_n, word16, 16);
 	ss->*((word32) sp_n - 6) = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
 	ss->*((word32) sp_n - 8) = ax_n;
@@ -17054,7 +17068,7 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	ptrArg06->w0000 = ((word16) fn0800-8BBB(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out cx_n) << 0x02) + 0x07BC;
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x88F8;
 	ss->*((word32) sp_n - 6) = dx_n;
 	ss->*((word32) sp_n - 8) = ax_n;
@@ -17066,17 +17080,17 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	if (dx_ax_n >= 0x2250)
 	{
 		++ptrArg06->w0000;
-		(ss->*((word32) sp_n - 2)).u5 = 0x00;
+		(ss->*((word32) sp_n - 2)).u4 = 0x00;
 		(ss->*((word32) sp_n - 4)).u0 = 0x2238;
 		Eq_n v34_n;
-		v34_n.u5 = SLICE(dx_ax_n - 0x2250, word16, 16);
+		v34_n.u4 = SLICE(dx_ax_n - 0x2250, word16, 16);
 		ss->*((word32) sp_n - 6) = v34_n;
 		ss->*((word32) sp_n - 8) = ax_n - 0x2250;
 		word16 cx_n;
 		ptrArg06->w0000 += (word16) fn0800-8BBB(ss->*((word32) sp_n - 8), ss->*((word32) sp_n - 4), out cx_n);
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*((word32) sp_n - 2)).u5 = 0x00;
+		(ss->*((word32) sp_n - 2)).u4 = 0x00;
 		(ss->*((word32) sp_n - 4)).u0 = 0x2238;
 		ss->*((word32) sp_n - 6) = v34_n;
 		ss->*((word32) sp_n - 8) = ax_n - 0x2250;
@@ -17086,7 +17100,7 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	}
 	Eq_n wArg02_n = (word16) dwArg02_n;
 	Eq_n wArg04_n;
-	wArg04_n.u5 = SLICE(dwArg02_n, word16, 16);
+	wArg04_n.u4 = SLICE(dwArg02_n, word16, 16);
 	if (Mem289[ds:0x26E6:word16] != 0x00)
 	{
 		struct Eq_n Eq_n::* sp_n = sp_n - 2;
@@ -17096,7 +17110,7 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 		(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) wArg02_n;
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
-		(ss->*((word32) sp_n - 2)).u5 = (word16) fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+		(ss->*((word32) sp_n - 2)).u4 = (word16) fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4);
 		(ss->*((word32) sp_n - 4)).u0 = 0x00;
 		(ss->*((word32) sp_n - 6)).u0 = 0x18;
 		ss->*((word32) sp_n - 8) = wArg04_n;
@@ -17104,13 +17118,13 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 		Eq_n sp_n;
 		sp_n.u0 = <invalid>;
 		word16 cx_n;
-		(ss->*((word32) sp_n - 2)).u5 = (word16) fn0800-8BBB(ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), out cx_n);
+		(ss->*((word32) sp_n - 2)).u4 = (word16) fn0800-8BBB(ss->*((word32) sp_n - 0x0A), ss->*((word32) sp_n - 6), out cx_n);
 		(ss->*((word32) sp_n - 4)).u0 = 0x00;
 		ss->*((word32) sp_n - 6) = ptrArg06->w0000 + 63566;
-		struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t0002.u0;
-		if (fn0800_C553(ds, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u5) != 0x00)
+		struct Eq_n Eq_n::* sp_n = (struct Eq_n Eq_n::*) &sp_n.u6->t0002.u0;
+		if (fn0800_C553(ds, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 4), ss->*((word32) sp_n - 2), ss->*sp_n.u4) != 0x00)
 		{
-			word16 wArg02_n = (word16) &wArg02_n.u7->b0001;
+			word16 wArg02_n = (word16) &wArg02_n.u6->b0001;
 			word16 wArg04_n = SLICE(dwArg02_n + 0x01, word16, 16);
 		}
 	}
@@ -17121,10 +17135,10 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 	(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) wArg04_n;
 	Eq_n wArg02_n;
 	(ss->*sp_n).tFFFFFFFA.u0 = (wchar_t) wArg02_n;
-	ptrArg0A->b0001 = (byte) fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u5, (ss->*sp_n).tFFFFFFFE.u5);
+	ptrArg0A->b0001 = (byte) fn0800-8BCA((ss->*sp_n).tFFFFFFFA.u4, (ss->*sp_n).tFFFFFFFE.u4);
 	Eq_n sp_n;
 	sp_n.u0 = <invalid>;
-	(ss->*((word32) sp_n - 2)).u5 = 0x00;
+	(ss->*((word32) sp_n - 2)).u4 = 0x00;
 	(ss->*((word32) sp_n - 4)).u0 = 0x18;
 	ss->*((word32) sp_n - 6) = wArg04_n;
 	ss->*((word32) sp_n - 8) = wArg02_n;
@@ -17184,7 +17198,7 @@ void fn0800_C379(Eq_n ds)
 	struct Eq_n * dx_n = SLICE(dx_ax_n, word16, 16);
 	<unknown> Eq_n::* ax_n = (word16) dx_ax_n;
 	word16 cx_n;
-	if (dx_ax_n == 0x00 || (fn0800_BFC7(dx_ax_n, out cx_n) < 0x04 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 0x00:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 1:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 2:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || (dx_ax_n.u7)->b0003 != 0x2D && ((dx_ax_n.u7)->b0003 != 0x2B && (Mem46[ds:CONVERT(Mem46[dx_ax_n + 3:byte], int8, int16) + 0x2251:byte] & 0x02) == 0x00))))) || (CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 3:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x02) == 0x00 && (CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 4:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x02) == 0x00)
+	if (dx_ax_n == 0x00 || (fn0800_BFC7(dx_ax_n, out cx_n) < 0x04 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 0x00:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 1:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || ((CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 2:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x0C) == 0x00 || (dx_ax_n.u6)->b0003 != 0x2D && ((dx_ax_n.u6)->b0003 != 0x2B && (Mem46[ds:CONVERT(Mem46[dx_ax_n + 3:byte], int8, int16) + 0x2251:byte] & 0x02) == 0x00))))) || (CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 3:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x02) == 0x00 && (CONVERT(Mem46[ds:CONVERT(Mem46[dx_ax_n + 4:byte], int8, int16) + 0x2251:byte], int8, int16) & 0x02) == 0x00)
 	{
 		Mem342[ds:0x26E6:word16] = 0x01;
 		Mem343[ds:9956:word16] = 0x00;
@@ -17234,7 +17248,7 @@ word16 fn0800_C553(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, uint8 bArg08)
 			si_n = wArg06 - 0x01;
 		wArg04.u0 = 0x00;
 		while ((*((word32) ds + 9920))[wArg04].u0 <= si_n)
-			wArg04.u5 = (word16) wArg04.u3 + 1;
+			wArg04.u4 = (word16) wArg04.u2 + 1;
 	}
 	else
 	{
@@ -17263,7 +17277,7 @@ l0800_C62B:
 		cx_n = (*((word32) ds + 9920))[wArg04];
 	if (((byte) wArg02 + 0xB2 & 0x03) != 0x00)
 		--cx_n;
-	Eq_n cx_n = cx_n - (uint32) ((wArg02 *16 0x016D + ((&(wArg02.u7)->b0001 >> 0x02) + cx_n)) + 0x04) % 0x07;
+	Eq_n cx_n = cx_n - (uint32) ((wArg02 *16 0x016D + ((&(wArg02.u6)->b0001 >> 0x02) + cx_n)) + 0x04) % 0x07;
 	if (wArg04 == 0x04)
 	{
 		if (wArg06 <= cx_n && (wArg06 != cx_n || bArg08 < 0x02))
@@ -17349,14 +17363,14 @@ Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, Eq_n wArg08, union Eq_n & d
 					v24_n = wLoc08_n - 0x01;
 					wLoc08_n = v24_n;
 					Eq_n al_n;
-					al_n.u5 = *ptrLoc0E_n.u5;
+					al_n.u4 = *ptrLoc0E_n.u4;
 					ptrLoc0E_n = SEQ(wLoc0C_n, wLoc0E_n + 0x01);
 					if (al_n == 0x0A)
 					{
-						ptrLoc06_n->u1 = (int8) 0x0D;
+						ptrLoc06_n->u1 = (uint8) 0x0D;
 						ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x01);
 					}
-					ptrLoc06_n->u1 = (int8) al_n;
+					ptrLoc06_n->u1 = (uint8) al_n;
 					wLoc06_n = (word16) ptrLoc06_n;
 					word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
 					dx_n = wLoc06_n + 0x01 - (fp - 0x90);

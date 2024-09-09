@@ -81,9 +81,8 @@ namespace Reko.Arch.CSky
             Psr = CodesToControlRegisters[0];
             Vbr = CodesToControlRegisters[1];
             //$TODO: manual is unclear on the positions of the bits in the psr
-            C = new FlagGroupStorage(Psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(Psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-
+            C = new FlagGroupStorage(Psr, (uint) FlagM.CF, nameof(C));
+            V = new FlagGroupStorage(Psr, (uint) FlagM.VF, nameof(V));
         }
 
         public static RegisterStorage ControlRegister(uint ireg)

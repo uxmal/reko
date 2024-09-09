@@ -85,6 +85,21 @@ namespace Reko.Scanning
             return pointers;
         }
 
+        /// <summary>
+        /// Add two numbers, and return both the sum and 
+        /// unsigned overflow.
+        /// </summary>
+        /// <param name="a">Augend.</param>
+        /// <param name="b">Addend.</param>
+        /// <param name="wordMask">
+        /// Bitmask used to adjust the width of the summands.
+        /// </param>
+        /// <param name="result">
+        /// The resulting sum if no unsigned overflow occurred, otherwise
+        /// 0.</param>
+        /// <returns>
+        /// True if an overflow occurred.
+        /// </returns>
         protected static bool AddOverflow(ulong a, ulong b, ulong wordMask, out ulong result)
         {
             var s = (a + b) & wordMask;

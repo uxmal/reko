@@ -344,17 +344,17 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             var sExp = @"l1:
 	SCZ_2 = cond(cx - 0x30<16>)
-	C_3 = SLICE(SCZ_2, bool, 2) (alias)
+	C_3 = SCZ_2 & 4<32> (alias)
 	ax_4 = 0<16> + C_3
 	SCZ_5 = cond(ax_4)
 	SCZ_6 = cond(cx - 0x3A<16>)
-	C_7 = SLICE(SCZ_6, bool, 2) (alias)
+	C_7 = SCZ_6 & 4<32> (alias)
 	C_8 = !C_7
 	ax_9 = ax_4 + ax_4 + C_8
 	SCZ_10 = cond(ax_9)
-	C_11 = SLICE(SCZ_10, bool, 2) (alias)
-	S_12 = SLICE(SCZ_10, bool, 0) (alias)
-	Z_13 = SLICE(SCZ_10, bool, 1) (alias)
+	C_11 = SCZ_10 & 4<32> (alias)
+	S_12 = SCZ_10 & 1<32> (alias)
+	Z_13 = SCZ_10 & 2<32> (alias)
 	return
 ";
             var sb = new StringWriter();
@@ -379,7 +379,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	ax_8 = SLICE(dx_ax_16, word16, 0) (alias)
 	dx_12 = SLICE(dx_ax_16, word16, 16) (alias)
 	SCZ_9 = cond(ax_8)
-	C_11 = SLICE(SCZ_9, bool, 2) (alias)
+	C_11 = SCZ_9 & 4<32> (alias)
 	Mem10[0x0218<p16>:word16] = ax_8
 	Mem13[0x021A<p16>:word16] = dx_12
 ";
@@ -412,7 +412,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	dx_3 = Mem0[0x0212<p16>:word16]
 	ax_4 = ax_2 + Mem0[0x0220<p16>:word16]
 	SCZ_5 = cond(ax_4)
-	C_6 = SLICE(SCZ_5, bool, 2) (alias)
+	C_6 = SCZ_5 & 4<32> (alias)
 ";
             #endregion
 
@@ -446,12 +446,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	tmp2_11 = SLICE(tmp2_tmp1_18, word32, 32) (alias)
 	Mem7[0x6FF0<32>:word32] = tmp1_6
 	SCZ_8 = cond(tmp1_6)
-	C_10 = SLICE(SCZ_8, bool, 2) (alias)
+	C_10 = SCZ_8 & 4<32> (alias)
 	Mem12[0x6FF4<32>:word32] = tmp2_11
 	SCZ_13 = cond(tmp2_11)
-	C_14 = SLICE(SCZ_13, bool, 2) (alias)
-	S_15 = SLICE(SCZ_13, bool, 0) (alias)
-	Z_16 = SLICE(SCZ_13, bool, 1) (alias)
+	C_14 = SCZ_13 & 4<32> (alias)
+	S_15 = SCZ_13 & 1<32> (alias)
+	Z_16 = SCZ_13 & 2<32> (alias)
 	return
 ";
             RunTest(sExp, m =>
@@ -486,17 +486,17 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	ax_4 = SLICE(dx_ax_18, word16, 0) (alias)
 	dx_8 = SLICE(dx_ax_18, word16, 16) (alias)
 	SCZ_5 = cond(ax_4)
-	C_7 = SLICE(SCZ_5, bool, 2) (alias)
+	C_7 = SCZ_5 & 4<32> (alias)
 	dx_ax_19 = SEQ(dx_8, ax_4)
 	dx_ax_20 = dx_ax_19 + Mem0[bx + 6<16>:ui32]
 	ax_9 = SLICE(dx_ax_20, word16, 0) (alias)
 	dx_12 = SLICE(dx_ax_20, word16, 16) (alias)
 	SCZ_10 = cond(ax_9)
-	C_11 = SLICE(SCZ_10, bool, 2) (alias)
+	C_11 = SCZ_10 & 4<32> (alias)
 	SCZ_13 = cond(dx_12)
-	C_14 = SLICE(SCZ_13, bool, 2) (alias)
-	S_15 = SLICE(SCZ_13, bool, 0) (alias)
-	Z_16 = SLICE(SCZ_13, bool, 1) (alias)
+	C_14 = SCZ_13 & 4<32> (alias)
+	S_15 = SCZ_13 & 1<32> (alias)
+	Z_16 = SCZ_13 & 2<32> (alias)
 	return
 ";
             #endregion
@@ -532,7 +532,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	ax_3 = SLICE(dx_ax_13, word16, 0) (alias)
 	dx_10 = SLICE(dx_ax_13, word16, 16) (alias)
 	SCZ_4 = cond(ax_3)
-	C_6 = SLICE(SCZ_4, bool, 2) (alias)
+	C_6 = SCZ_4 & 4<32> (alias)
 	dx_7 = dx + C_6
 	SCZ_8 = cond(dx_7)
 ";
@@ -585,7 +585,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	a_6 = SLICE(a_a_13, byte, 0) (alias)
 	a_11 = SLICE(a_a_13, byte, 8) (alias)
 	SCZ_7 = cond(a_6)
-	C_10 = SLICE(SCZ_7, bool, 2) (alias)
+	C_10 = SCZ_7 & 4<32> (alias)
 	DPL_8 = a_6
 	a_9 = 0<8>
 	DPH_12 = a_11

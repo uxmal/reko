@@ -58,8 +58,8 @@ l0C00_002A:
 l0C00_003A:
 	ax = ax | ax
 	SZ = cond(ax)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	branch Test(NE,Z) l0C00_001F
 	// succ:  l0C00_003E l0C00_001F
 l0C00_003E:

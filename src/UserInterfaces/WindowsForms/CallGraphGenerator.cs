@@ -59,9 +59,8 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var q = new Queue<Procedure>();
             q.Enqueue(rootProc);
-            while (q.Count > 0)
+            while (q.TryDequeue(out var proc))
             {
-                var proc = q.Dequeue();
                 if (visited.Contains(proc))
                     continue;
                 visited.Add(proc);

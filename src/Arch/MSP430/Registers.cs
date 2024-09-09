@@ -61,10 +61,10 @@ namespace Reko.Arch.Msp430
                     string.Format("r{0}", i), i, 0, dtGpReg)))
 
                 .ToArray();
-            C = new FlagGroupStorage(sr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            NZC = new FlagGroupStorage(sr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), "NZC", sr.DataType);
-            V = new FlagGroupStorage(sr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            VNZC = new FlagGroupStorage(sr, (uint) (FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "VNZC", sr.DataType);
+            C = new FlagGroupStorage(sr, (uint) FlagM.CF, nameof(C));
+            NZC = new FlagGroupStorage(sr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), nameof(NZC));
+            V = new FlagGroupStorage(sr, (uint) FlagM.VF, nameof(V));
+            VNZC = new FlagGroupStorage(sr, (uint) (FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(VNZC));
 
             ByName = GpRegisters.ToDictionary(r => r.Name);
         }

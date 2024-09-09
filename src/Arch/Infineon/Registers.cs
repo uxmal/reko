@@ -373,16 +373,16 @@ namespace Reko.Arch.Infineon
             psw = CoreRegisters[0xFE04];
             a11 = AddrRegisters[11];
 
-            C = new FlagGroupStorage(psw, (uint)FlagM.CF, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(psw, (uint) FlagM.CF, "V", PrimitiveType.Bool);
-            SV = new FlagGroupStorage(psw, (uint) FlagM.CF, "SV", PrimitiveType.Bool);
-            AV = new FlagGroupStorage(psw, (uint) FlagM.CF, "AV", PrimitiveType.Bool);
-            SAV = new FlagGroupStorage(psw, (uint) FlagM.CF, "AV", PrimitiveType.Bool);
+            C = new FlagGroupStorage(psw, (uint)FlagM.CF, nameof(C));
+            V = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(V));
+            SV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(SV));
+            AV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(AV));
+            SAV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(AV));
             PswFlags = new[] { C, V, SV, AV, SAV };
 
-            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), "V_SV", psw.DataType);
-            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "V_SV_AV_SAV", psw.DataType);
-            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "C_V_SV_AV_SAV", psw.DataType);
+            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), nameof(V_SV));
+            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), nameof(V_SV_AV_SAV));
+            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), nameof(C_V_SV_AV_SAV));
 
             ByName = factory.NamesToRegisters;
             ByDomain = factory.DomainsToRegisters;

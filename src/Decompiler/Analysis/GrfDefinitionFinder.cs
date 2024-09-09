@@ -108,7 +108,15 @@ namespace Reko.Analysis
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
-			defExpr = binExp;
+            Identifier? id = ConditionCodeEliminator.FindSlicedFlagRegister(binExp);
+            if (id is not null)
+            {
+                id.Accept(this);
+            }
+            else
+            {
+                defExpr = binExp;
+            }
 		}
 
 		public override void VisitConditionOf(ConditionOf cof)
@@ -133,12 +141,18 @@ namespace Reko.Analysis
 
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
-			if (unary != null && unary.Operator.Type == OperatorType.Not && unary.Expression is Identifier id)
-			{
-				negated = !negated;
-
-				stm = ssaIds[id].DefStatement;
-			}
+            if (unary != null && unary.Operator.Type == OperatorType.Not)
+            {
+                negated = !negated;
+                if (unary.Expression is Identifier id)
+                {
+                    stm = ssaIds[id].DefStatement;
+                }
+                else
+                {
+                    unary.Expression.Accept(this);
+                }
+            }
 		}
 	}
 }

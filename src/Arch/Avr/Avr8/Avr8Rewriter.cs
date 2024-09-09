@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -107,7 +108,7 @@ namespace Reko.Arch.Avr.Avr8
             case Mnemonic.call: RewriteCall(); break;
             case Mnemonic.cli: RewriteCli(); break;
             case Mnemonic.cln: RewriteClearBit(Registers.N); break;
-            case Mnemonic.com: RewriteUnary(m.Comp, Registers.SNZ, Registers.V, Registers.C); break;
+            case Mnemonic.com: RewriteUnary(Operator.Comp, Registers.SNZ, Registers.V, Registers.C); break;
             case Mnemonic.cp: RewriteCp(); break;
             case Mnemonic.cpi: RewriteCp(); break;
             case Mnemonic.cpc: RewriteCpc(); break;
@@ -130,7 +131,7 @@ namespace Reko.Arch.Avr.Avr8
             case Mnemonic.mov: RewriteMov(); break;
             case Mnemonic.movw: RewriteMovw(); break;
             case Mnemonic.muls: RewriteMuls(); break;
-            case Mnemonic.neg: RewriteUnary(m.Neg, CmpFlags); break;
+            case Mnemonic.neg: RewriteUnary(Operator.Neg, CmpFlags); break;
             case Mnemonic.@out: RewriteOut(); break;
             case Mnemonic.or: RewriteBinOp(m.Or, Registers.SNZV); break;
             case Mnemonic.ori: RewriteBinOp(m.Or, Registers.SNZV); break;
@@ -243,21 +244,21 @@ namespace Reko.Arch.Avr.Avr8
         }
 
         private void RewriteUnary(
-             Func<Expression, Expression> fn,
+            UnaryOperator op,
              FlagGroupStorage mod,
              FlagGroupStorage? clr = null,
              FlagGroupStorage? set = null)
         {
             var reg = RewriteOp(0);
-            m.Assign(reg, fn(reg));
+            m.Assign(reg, m.Unary(op, reg));
             EmitFlags(reg, mod);
-            if (clr != null)
+            if (clr is not null)
             {
                 m.Assign(binder.EnsureFlagGroup(clr), 0);
             }
-            if (set != null)
+            if (set is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(set), 1);
+                m.Assign(binder.EnsureFlagGroup(set), set.FlagGroupBits);
             }
         }
 

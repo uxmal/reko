@@ -79,9 +79,8 @@ namespace Reko.Arch.MicroBlaze
                 return f;
             }
 
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = Registers.msr;
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
             flagGroups.Add(grf, fl);
             return fl;
         }

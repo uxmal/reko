@@ -158,8 +158,7 @@ namespace Reko.Arch.Pdp
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
-			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf));
 			return fl;
 		}
 
@@ -176,8 +175,7 @@ namespace Reko.Arch.Pdp
                 case 'C': grf |= Registers.C.FlagGroupBits; break;
                 }
             }
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            return new FlagGroupStorage(Registers.psw, grf, name, dt);
+            return new FlagGroupStorage(Registers.psw, grf, name);
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)

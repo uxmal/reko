@@ -429,8 +429,8 @@ namespace Reko.Arch.X86.Rewriter
         private void EmitLogicalFlags(Expression result)
         {
             EmitCcInstr(result, Registers.SZ);
-            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
+            m.Assign(binder.EnsureFlagGroup(Registers.C), 0);
         }
 
         private void RewriteConditionalMove(ConditionCode cc, MachineOperand dst, MachineOperand src)
@@ -952,11 +952,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewritePushf(DataType dt)
         {
-            var flags = binder.EnsureFlagGroup(
-                Registers.eflags,
-                (uint) (FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
-                "SCZDOP",
-                Registers.eflags.DataType);
+            var flags = binder.EnsureFlagGroup(Registers.SCZDOP);
             RewritePush(
                 dt,
                 MaybeSlice(dt, flags));
@@ -1065,11 +1061,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             var sp = StackPointer();
             var src = orw.StackAccess(sp, width);
-            var grf = binder.EnsureFlagGroup(
-                    Registers.eflags,
-                    (uint) (FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
-                    "SCZDOP",
-                    Registers.eflags.DataType);
+            var grf = binder.EnsureFlagGroup(Registers.SCZDOP);
             if (grf.DataType.BitSize > src.DataType.BitSize)
             {
                 m.Assign(grf, m.Dpb(grf, src, 0));
@@ -1184,7 +1176,7 @@ namespace Reko.Arch.X86.Rewriter
             if (src is Constant c && c.ToInt32() == 1)
             {
                 EmitCcInstr(value, Registers.SCZ);
-                m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+                m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
             }
             else
             {
@@ -1201,9 +1193,9 @@ namespace Reko.Arch.X86.Rewriter
                 PrimitiveType.CreateWord(dst.DataType.BitSize)));
         }
 
-        private void RewriteSetFlag(FlagGroupStorage flags, Constant value)
+        private void RewriteSetFlag(FlagGroupStorage flags, uint value)
         {
-            state.SetFlagGroup(flags, value);
+            state.SetFlagGroup(flags, Constant.Create(flags.DataType, value));
             var id = orw.FlagGroup(flags);
             m.Assign(id, value);
         }
@@ -1404,8 +1396,8 @@ namespace Reko.Arch.X86.Rewriter
                 SrcOp(1));
 
             EmitCcInstr(src, Registers.SZP);
-            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
+            m.Assign(binder.EnsureFlagGroup(Registers.C), 0);
         }
 
         private void RewriteUnaryOperator(UnaryOperator op, int iOp, MachineOperand opSrc, CopyFlags flags = 0)

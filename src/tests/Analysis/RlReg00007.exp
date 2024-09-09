@@ -30,7 +30,7 @@ fn0C00_000C_entry:
 	def Mem0
 l0C00_000C:
 	SCZO_5 = cond(al - 0x20<8>)
-	C_6 = SLICE(SCZO_5, bool, 1) (alias)
+	C_6 = SCZO_5 & 2<32> (alias)
 	branch al <u 0x20<8> l0C00_0014
 l0C00_0010:
 	v8_9 = Mem0[ds:0x201<16>:word16] + 1<16>

@@ -75,7 +75,21 @@ namespace Reko.Core.Rtl
         /// <param name="dst">Destination</param>
         /// <param name="src">Source</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter Assign(Expression dst, int src)
+        public RtlEmitter Assign(Expression dst, long src)
+        {
+            var ass = new RtlAssignment(dst, Constant.Create(dst.DataType, src));
+            Instructions.Add(ass);
+            return this;
+        }
+
+        /// <summary>
+        /// Convenience method to generate a RtlAssignment ('dst = const' in the C language family).
+        /// The source is converted to a Constant.
+        /// </summary>
+        /// <param name="dst">Destination</param>
+        /// <param name="src">Source</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter Assign(Expression dst, ulong src)
         {
             var ass = new RtlAssignment(dst, Constant.Create(dst.DataType, src));
             Instructions.Add(ass);

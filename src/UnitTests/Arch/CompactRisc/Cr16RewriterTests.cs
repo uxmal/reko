@@ -766,7 +766,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("8008");
             AssertCode(     // sfs	r0
                 "0|L--|00003000(2): 1 instructions",
-                "1|L--|r0 = CONVERT(F, bool, int16)");
+                "1|L--|r0 = CONVERT(F != 0<16>, bool, word16)");
         }
 
         [Test]

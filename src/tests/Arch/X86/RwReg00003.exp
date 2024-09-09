@@ -21,8 +21,8 @@ l0C00_0000:
 	call fn0C00_0010 (retsize: 2;)
 	ecx = ecx ^ ecx
 	SZ = cond(ecx)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	Mem0[ds:0x310<16>:word32] = ecx
 	return
 	// succ:  fn0C00_0000_exit
@@ -69,8 +69,8 @@ fn0C00_0010_entry:
 l0C00_0010:
 	ch = ch ^ ch
 	SZ = cond(ch)
-	O = false
-	C = false
+	O = 0<32>
+	C = 0<32>
 	cl = Mem0[ds:0x300<16>:byte]
 	branch cx == 0<16> l0C00_001E
 	// succ:  l0C00_0018 l0C00_001E

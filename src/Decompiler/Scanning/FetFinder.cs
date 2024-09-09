@@ -52,7 +52,6 @@ namespace Reko.Scanning
         private uint uAddrMax;
         private uint uAddrMin;
 
-
         public FetFinder(
             IProcessorArchitecture arch, 
             ByteMemoryArea mem,
@@ -108,7 +107,7 @@ namespace Reko.Scanning
         }
 
 
-        public List<FET> FindFETs(uint start,  uint wnd)
+        public List<FET> FindFETs(uint start, uint wnd)
         {
             var result = new List<FET>();
             uint pos = 0;
@@ -143,6 +142,9 @@ namespace Reko.Scanning
             return result;
         }
 
+        /// <summary>
+        /// Summary information about a Function Entry Table (FET).
+        /// </summary>
         public record FET(uint head, uint gap, uint tableSize);
 
         private bool read_word(EndianImageReader rdr, [MaybeNullWhen(false)] out Constant ptrValue)

@@ -23,12 +23,9 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
@@ -38,10 +35,9 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr0 = binder.EnsureFlagGroup(arch.cr, 0xF, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr0);
             m.Assign(cr0, m.Cond(e));
         }
-
 
         private void RewriteAdd()
         {
@@ -80,7 +76,7 @@ namespace Reko.Arch.PowerPC
         {
             var opD = RewriteOperand(instr.Operands[0]);
             var opS = RewriteOperand(instr.Operands[1]);
-            var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr0);
             m.Assign(opD,
                 m.ISub(
                     m.IAdd(opS, cr0),
