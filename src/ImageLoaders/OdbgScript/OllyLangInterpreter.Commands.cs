@@ -182,6 +182,15 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Assemble a text asm file at some address.
+        /// </summary>
+        /// <remarks>
+        /// Example:
+        /// <code>
+        /// asmtxt EIP, "myasm.txt"
+        /// </code>
+        /// </remarks>
         private bool DoASMTXT(Expression[] args)
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string asmfile))
@@ -599,6 +608,17 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Converts string/dword variable to a Buffer
+        /// </summary>
+        /// <remarks>
+        /// Example:
+	    /// <code>
+        /// mov s, "123"
+        /// buf s
+        /// log s // output #313233#
+        /// </code>
+        /// </remarks>
         private bool DoBUF(Expression[] args)
         {
             if (args.Length == 1 && args[0] is Identifier id && IsVariable(id.Name))
