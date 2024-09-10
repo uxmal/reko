@@ -122,6 +122,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     continue;
                 var uses = new HashSet<Statement>();
                 this.aliases.Clear();
+                if (s.DefStatement.Block.Address.Offset == 0x3BB)
+                    _ = this; //$DEBUG
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
                 trace.Inform("CCE: Tracing {0}", sidGrf.DefStatement.Instruction);
                 foreach (var u in uses)
