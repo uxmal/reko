@@ -116,6 +116,7 @@ namespace Reko.Core.Serialization
             Calls = new List<SerializedCall_v1>();
             IndirectJumps = new List<IndirectJump_v4>();
             Segments = new List<Segment_v4>();
+            DebugTraceProcedures = new List<string>();
             BlockLabels = new List<BlockLabel_v1>();
         }
 
@@ -154,6 +155,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
+
+        [XmlElement("debug-trace-proc")]
+        public List<string> DebugTraceProcedures;
 
         [XmlElement("blocklabel")]
         public List<BlockLabel_v1> BlockLabels;

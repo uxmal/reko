@@ -23,6 +23,7 @@ using Avalonia.Media;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui.TextViewing;
+using Reko.Scanning;
 using Reko.UserInterfaces.AvaloniaUI.Controls;
 using System;
 using System.Globalization;
@@ -63,7 +64,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public override ITextSpan CreateProcedureTextSpan(ProcedureBase proc, Address addr)
         {
-            throw new NotImplementedException();
+            return new ProcedureTextSpan(proc, addr);
+
         }
 
         public override ITextSpan CreateTextSpan(string text, string? style)
@@ -138,6 +140,23 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             public override string GetText()
             {
                 return text;
+            }
+        }
+
+        public class ProcedureTextSpan : TextSpan
+        {
+            private ProcedureBase proc;
+
+            public ProcedureTextSpan(ProcedureBase proc, Address addr)
+            {
+                this.proc = proc;
+                this.Tag = addr;
+                this.Style = "dasm-addrText";
+            }
+
+            public override string GetText()
+            {
+                return proc.Name;
             }
         }
 

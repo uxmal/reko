@@ -103,6 +103,7 @@ namespace Reko.Core.Serialization
                     Segments = program.User.Segments.Select(SerializeSegment).ToList(),
                     ExtractResources = program.User.ExtractResources,
                     OutputFilePolicy = program.User.OutputFilePolicy,
+                    DebugTraceProcedures = program.User.DebugTraceProcedures.ToList(),
                 },
                 DisassemblyDirectory =  ConvertToProjectRelativePath(projectPath, program.DisassemblyDirectory),
                 SourceDirectory =       ConvertToProjectRelativePath(projectPath, program.SourceDirectory),

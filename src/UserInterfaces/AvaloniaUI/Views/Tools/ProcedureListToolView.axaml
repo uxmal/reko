@@ -32,7 +32,7 @@
 				AutoGenerateColumns="false" >
 				<!--DoubleClick="procList_DoubleTapped">-->
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
+					<DataGridTextColumn Header="Name" Binding="{Binding DecoratedName}" Width="5*" />
 					<DataGridTextColumn Header="Address" Binding="{Binding Address}" />
 					<DataGridTextColumn Header="Segment" Binding="{Binding Segment}" />
 				</DataGrid.Columns>

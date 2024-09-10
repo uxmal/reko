@@ -455,6 +455,12 @@ namespace Reko.Core.Serialization
                     .Where(s => s != null)
                     .ToList()!;
             }
+            if (sUser.DebugTraceProcedures is not null)
+            {
+                program.User.DebugTraceProcedures = sUser.DebugTraceProcedures
+                    .Where(s => s is not null)
+                    .ToHashSet()!;
+            }
             if (sUser.BlockLabels != null)
             {
                 program.User.BlockLabels = sUser.BlockLabels

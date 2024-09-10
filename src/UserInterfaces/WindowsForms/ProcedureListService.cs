@@ -100,11 +100,6 @@ namespace Reko.Gui
             ShowProcedures(procs);
         }
 
-        private (string,string) StringizeProcedure(Procedure proc)
-        {
-            return (proc.EntryAddress.ToString(), proc.Name);
-        }
-
         private void ShowProcedures(IEnumerable<ProgramProcedure> sProcs)
         {
             var searchText = txtProcedureFilter.Text.Trim();
@@ -137,9 +132,10 @@ namespace Reko.Gui
             var segName = item.Program.SegmentMap.TryFindSegment(item.Procedure.EntryAddress, out var seg)
                 ? seg.Name
                 : "???";
+            var name = ProcedureListViewModel.GenerateDecoratedName(item.Program, item.Procedure);
             var subItems = new[] {
                 item.Procedure.EntryAddress.ToString(),
-                item.Procedure.Name,
+                name,
                 segName
             };
             return subItems;
@@ -207,7 +203,6 @@ namespace Reko.Gui
                     DebugTraceSelectedProcedure();
                     return true;
 #endif
-
                 }
             }
             return false;
@@ -270,16 +265,18 @@ namespace Reko.Gui
         private void DebugTraceSelectedProcedure()
         {
             var item = listProcedures.SelectedItems[0];
-            if (item.Tag != null)
-            {
-                var pp = (ProgramProcedure) item.Tag;
-                var name = pp.Procedure.Name;
-                var procs = pp.Program.User.DebugTraceProcedures;
-                if (procs.Contains(name))
-                    procs.Remove(name);
-                else
-                    procs.Add(name);
-            }
+            if (item.Tag is null)
+                return;
+            
+            var pp = (ProgramProcedure) item.Tag;
+            var name = pp.Procedure.Name;
+            var procs = pp.Program.User.DebugTraceProcedures;
+            if (procs.Contains(name))
+                procs.Remove(name);
+            else
+                procs.Add(name);
+
+            item.SubItems[1].Text = ProcedureListViewModel.GenerateDecoratedName(pp.Program, pp.Procedure);
         }
 #endif
 

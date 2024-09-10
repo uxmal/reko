@@ -126,7 +126,12 @@ namespace Reko.Gui.ViewModels.Tools
 
         private ProcedureItem CreateProcedureItem((Program program, Procedure proc) pp)
         {
-            return new ProcedureItem(pp.proc.Name, pp.proc.EntryAddress.ToString(), pp.program, pp.proc);
+            return new ProcedureItem(
+                pp.proc.Name, 
+                GenerateDecoratedName(pp.program, pp.proc),
+                pp.proc.EntryAddress.ToString(),
+                pp.program,
+                pp.proc);
         }
 
         public void GotFocus()
@@ -138,20 +143,40 @@ namespace Reko.Gui.ViewModels.Tools
             }
         }
 
-        public class ProcedureItem
+        public class ProcedureItem : ChangeNotifyingObject
         {
-            public ProcedureItem(string name, string address, Program program, Procedure proc)
+            public ProcedureItem(string name, string decoratedName, string address, Program program, Procedure proc)
             {
                 this.Name = name;
+                this.decoratedName = decoratedName;
                 this.Address = address;
                 this.Program = program;
                 this.Procedure = proc;
             }
 
             public string Name { get; }
+            public string DecoratedName
+            {
+                get => decoratedName;
+                set
+                {
+                    base.RaiseAndSetIfChanged(ref decoratedName, value);
+                }
+            }
+            private string decoratedName;
             public string Address { get; }
             public Program Program { get; }
             public Procedure Procedure { get; }
         }
+
+        public static string GenerateDecoratedName(Program program, Procedure procedure)
+        {
+            var name = procedure.Name;
+            if (program.User.DebugTraceProcedures.Contains(name))
+                name += " (D)";
+            return name;
+        }
+
     }
+
 }

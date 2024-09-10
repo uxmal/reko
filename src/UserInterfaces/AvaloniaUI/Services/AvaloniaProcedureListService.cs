@@ -71,7 +71,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            throw new NotImplementedException();
+            //$TODO: implement this!
+            return ValueTask.FromResult(false);
         }
 
         public void Load(Project project)
@@ -83,7 +84,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            throw new NotImplementedException();
+            return false; //$TODO: implement this!
         }
 
         public void Show()
