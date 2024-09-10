@@ -116,6 +116,7 @@
       <var id="var.Xbox.TargetPath" >$SolutionDir$/Environments/Xbox/$TargetDir$/Reko.Environments.Xbox.dll</var>
       <var id="var.ZX81.TargetPath" >$SolutionDir$/Environments/ZX81/$TargetDir$/Reko.Environments.ZX81.dll</var>
 
+      <var id="var.AOut.ProjectDir" >$SolutionDir$/ImageLoaders/AOut/</var>
       <var id="var.AOut.TargetPath" >$SolutionDir$/ImageLoaders/AOut/$TargetDir$/Reko.ImageLoaders.AOut.dll</var>
       <var id="var.Ar.TargetPath" >$SolutionDir$/ImageLoaders/Archives/$TargetDir$/Reko.ImageLoaders.Archives.dll</var>
       <var id="var.BinHex.TargetPath" >$SolutionDir$/ImageLoaders/BinHex/$TargetDir$/Reko.ImageLoaders.BinHex.dll</var>
@@ -178,6 +179,7 @@
         
       <!-- Image loaders -->
       <File Source="$(var.AOut.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.AOut.ProjectDir)VaxUnix.inc" nuget_target="c:" />
       <File Source="$(var.Ar.TargetPath)" nuget_target="f:" />
       <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Coff.TargetPath)" nuget_target="f:" />

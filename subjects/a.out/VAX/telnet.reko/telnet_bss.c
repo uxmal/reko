@@ -4,67 +4,62 @@
 
 #include "telnet.h"
 
-int8 g_b4998 = 0; // 00004998
 word32 g_dw4F98 = 0x00; // 00004F98
 Eq_n g_t4F9C = // 00004F9C
 	{
-		0x00
+		0
 	};
 Eq_n g_t4FA4 = // 00004FA4
 	{
-		0x00
+		0
 	};
 Eq_n g_t4FA8 = // 00004FA8
 	{
-		0x00
+		0
 	};
 Eq_n g_t5070 = // 00005070
 	{
-		0x00
+		0
 	};
 Eq_n g_t5078 = // 00005078
 	{
-		0x00
+		0
 	};
 int16 g_w5118 = 0; // 00005118
 int16 g_w511A = 0; // 0000511A
 Eq_n g_t511C = // 0000511C
 	{
-		0x00
+		0
 	};
-Eq_n g_t5128 = // 00005128
-	{
-		0x00
-	};
+struct Eq_n * g_ptr5128 = null; // 00005128
 Eq_n g_t5144 = // 00005144
 	{
-		0x00
+		0
 	};
 Eq_n g_t5568 = // 00005568
 	{
-		0x00
+		0
 	};
-byte g_b5570 = 0x00; // 00005570
-byte * g_ptr5970 = null; // 00005970
+Eq_n g_t5970 = // 00005970
+	{
+		0
+	};
 int32 g_dw5974 = 0; // 00005974
 int32 g_dw5978 = 0; // 00005978
 Eq_n g_t597C = // 0000597C
 	{
-		0x00
+		0
 	};
 word32 g_dw9984 = 0x00; // 00009984
 <unknown> g_t9988 = // 00009988;
-Eq_n g_t9A38 = // 00009A38
-	{
-		0x00
-	};
+byte * g_ptr9A38 = null; // 00009A38
 union Eq_n g_u9D8C = // 00009D8C
 	{
-		0x00
+		0
 	};
 Eq_n g_t9D9C = // 00009D9C
 	{
-		0x00
+		0
 	};
 ptr32 g_ptr9DA0 = 0x00; // 00009DA0
 word32 g_dw9DA4 = 0x00; // 00009DA4
@@ -74,22 +69,18 @@ union Eq_n * g_ptr9DAC = null; // 00009DAC
 <unknown> g_t9E3C = // 00009E3C;
 Eq_n g_t9ED8 = // 00009ED8
 	{
-		0x00
+		0
 	};
 Eq_n g_tA240 = // 0000A240
 	{
-		0x00
+		0
 	};
 ptr32 g_ptrA244 = 0x00; // 0000A244
-Eq_n g_tA248 = // 0000A248
-	{
-		0x00
-	};
+int32 g_dwA248 = 0; // 0000A248
 Eq_n g_tA24C = // 0000A24C
 	{
-		0x00
+		0
 	};
-<unknown> g_tA250 = // 0000A250;
 <unknown> g_tA2DC = // 0000A2DC;
 Eq_n g_aA2F0[] = // 0000A2F0
 	{

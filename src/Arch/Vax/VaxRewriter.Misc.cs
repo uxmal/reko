@@ -70,6 +70,11 @@ namespace Reko.Arch.Vax
             m.SideEffect(m.Fn(intrinsic, RewriteSrcOp(0, PrimitiveType.Word16)));
         }
 
+        private void RewriteChmk()
+        {
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, RewriteSrcOp(0, PrimitiveType.Word16)));
+        }
+
         private void RewriteCmpc3()
         {
             var len = RewriteSrcOp(0, PrimitiveType.Word16);

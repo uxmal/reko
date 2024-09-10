@@ -70,6 +70,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
     public string Description => "Elimination of condition codes";
 
+
+
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var w = CreateWorker(ssa);

@@ -312,6 +312,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Xbox\Xbox\xboxkernel.def" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Xbox\Xbox360\xbox360krnl.def" />
+    <DecompilerMetadata Include="$(SolutionDir)ImageLoaders\AOut\VaxUnix.inc" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />

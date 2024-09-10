@@ -159,7 +159,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.casel: RewriteCase(PrimitiveType.Word32); break;
                 case Mnemonic.casew: RewriteCase(PrimitiveType.Word16); break;
                 case Mnemonic.chme: RewriteChm(chme); break;
-                case Mnemonic.chmk: RewriteChm(chmk); break;
+                case Mnemonic.chmk: RewriteChmk(); break;
                 case Mnemonic.chms: RewriteChm(chms); break;
                 case Mnemonic.chmu: RewriteChm(chmu); break;
 
@@ -825,7 +825,6 @@ namespace Reko.Arch.Vax
             .Void();
 
         private static readonly IntrinsicProcedure chme = new IntrinsicBuilder("vax_chme", true).Param(PrimitiveType.Word16).Void();
-        private static readonly IntrinsicProcedure chmk = new IntrinsicBuilder("vax_chmk", true).Param(PrimitiveType.Word16).Void();
         private static readonly IntrinsicProcedure chms = new IntrinsicBuilder("vax_chms", true).Param(PrimitiveType.Word16).Void();
         private static readonly IntrinsicProcedure chmu = new IntrinsicBuilder("vax_chmu", true).Param(PrimitiveType.Word16).Void();
 

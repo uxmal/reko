@@ -5,10 +5,22 @@
 #include "telnet.h"
 
 word32 * g_ptr3C04 = null; // 00003C04
-int8 * g_ptr3CB0 = &g_b4198; // 00003CB0
-int8 * g_ptr3CB4 = &g_b4198; // 00003CB4
-int8 * g_ptr3CB8 = &g_b4598; // 00003CB8
-int8 * g_ptr3CBC = &g_b4598; // 00003CBC
+Eq_n g_t3CB0 = // 00003CB0
+	{
+		-0x0068
+	};
+Eq_n g_t3CB4 = // 00003CB4
+	{
+		-0x0068
+	};
+Eq_n g_t3CB8 = // 00003CB8
+	{
+		-0x0068
+	};
+Eq_n g_t3CBC = // 00003CBC
+	{
+		-0x0068
+	};
 word32 g_dw3CE4 = 0x00; // 00003CE4
 word32 g_dw3CE8 = 0x00; // 00003CE8
 int8 g_b3CEC = 29; // 00003CEC
@@ -18,45 +30,37 @@ struct Eq_n g_t3DF0 = // 00003DF0
 	};
 Eq_n g_t3E84 = // 00003E84
 	{
-		0x00
+		0
 	};
 int32 g_dw3E88 = 0; // 00003E88
 <unknown> g_t3EE8 = // 00003EE8;
 <unknown> g_t3F72 = // 00003F72;
 <unknown> g_t4064 = // 00004064;
-int8 g_b4198 = 0; // 00004198
 byte g_b42C2 = 0x02; // 000042C2
-Eq_n g_t42F4 = // 000042F4
-	{
-		0x00
-	};
+word32 g_dw42F4 = 0x00; // 000042F4
 ui32 g_dw42F8 = 0x00; // 000042F8
 <unknown> g_t4309 = // 00004309;
-Eq_n g_t431C = // 0000431C
-	{
-		0x00
-	};
+word32 g_dw431C = 0x00; // 0000431C
 ui32 g_dw4320 = 0x00; // 00004320
 <unknown> g_t4334 = // 00004334;
 Eq_n g_a4339[] = // 00004339
 	{
 	};
 <unknown> g_t43BC = // 000043BC;
-<unknown> g_t43CD = // 000043CD;
 Eq_n g_t43D0 = // 000043D0
 	{
-		0x46
+		70
 	};
 Eq_n g_t43D4 = // 000043D4
 	{
-		0x00
+		0
 	};
 byte * g_ptr43D8 = null; // 000043D8
 ui32 g_dw43E4 = 0x01; // 000043E4
 int8 g_b43E6 = 0; // 000043E6
 Eq_n g_t43E8 = // 000043E8
 	{
-		0x00
+		0
 	};
 int8 * g_ptr43EC = null; // 000043EC
 ui32 g_dw43F8 = 0x00010002; // 000043F8
@@ -66,4 +70,3 @@ Eq_n g_t4564 = // 00004564
 	{
 		100
 	};
-int8 g_b4598 = 0; // 00004598
