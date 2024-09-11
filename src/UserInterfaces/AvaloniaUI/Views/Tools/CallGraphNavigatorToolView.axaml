@@ -29,11 +29,13 @@
 					</DataGrid.Columns>
 				</DataGrid>
 			</Border>
+			
 			<StackPanel Grid.Column="1" Grid.Row="1">
-				<Label Name="lblProcedureName" />
+				<Label Name="lblProcedureName" Tag="{Binding ViewModel.NodeObject.NodeObject}" />
 				<Label Name="lblAddress" />
 				<Label Name="lblSignature" />
 			</StackPanel>
+			
 			<Border Grid.Column="2" Grid.Row="1">
 				<DataGrid AutoGenerateColumns="false" ItemsSource="{Binding ViewModel.Successors}">
 					<DataGrid.Columns>

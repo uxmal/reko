@@ -20,6 +20,7 @@
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Reko.Gui.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
@@ -27,6 +28,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
     {
         public CallGraphNavigatorToolView()
         {
+            InitializeComponent();
+            lblProcedureName.AddHandler(Label.PointerPressedEvent, lblProcedureName_Click);
+        }
+
+        private void lblProcedureName_Click(object sender, RoutedEvent e)
+        {
+            var model = (CallGraphNavigatorViewModel?) DataContext;
+            model?.ToString();
         }
     }
 }

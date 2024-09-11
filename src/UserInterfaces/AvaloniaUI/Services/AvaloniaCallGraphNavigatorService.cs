@@ -34,6 +34,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         private readonly IServiceProvider services;
         private readonly CallGraphNavigatorToolViewModel viewModel;
         private readonly ISelectedAddressService selSvc;
+        private readonly ICodeViewerService codeViewerSvc;
         private Program? program;
 
         public AvaloniaCallGraphNavigatorService(IServiceProvider services, MainViewModel mainViewModel)
@@ -41,6 +42,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.services = services;
             this.viewModel = mainViewModel.CallGraphNavigator;
             this.selSvc = services.RequireService<ISelectedAddressService>();
+            this.codeViewerSvc = services.RequireService<ICodeViewerService>();
             this.selSvc.SelectedProcedureChanged += SelSvc_SelectedProcedureChanged;
         }
 
@@ -52,7 +54,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                 var callGraph = (program is not null)
                     ? program.CallGraph
                     : new CallGraph();
-                this.viewModel.ViewModel = new CallGraphNavigatorViewModel(callGraph, proc);
+                this.viewModel.ViewModel = new CallGraphNavigatorViewModel(program, callGraph, proc, codeViewerSvc);
             }
             else
             {

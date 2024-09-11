@@ -36,15 +36,17 @@ namespace Reko.UserInterfaces.WindowsForms
         private readonly IServiceProvider services;
         private readonly CallGraphNavigatorView view;
         private ISelectedAddressService? selSvc;
+        private ICodeViewerService codeViewerSvc;
         private Program? program;
 
         public CallGraphNavigatorService(IServiceProvider services, CallGraphNavigatorView callGraphNavigatorView)
         {
             this.services = services;
             this.selSvc = services.RequireService<ISelectedAddressService>();
+            this.codeViewerSvc = services.RequireService<ICodeViewerService>();
             this.selSvc.SelectedProcedureChanged += SelSvc_SelectedProcedureChanged;
             this.view = callGraphNavigatorView;
-            this.view.ViewModel = new CallGraphNavigatorViewModel(new CallGraph());
+            this.view.ViewModel = new CallGraphNavigatorViewModel(program, new CallGraph(), codeViewerSvc);
         }
 
         public IWindowFrame? Frame { get; set; }
@@ -71,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var callGraph = (program is not null)
                     ? program.CallGraph
                     : new CallGraph();
-                this.view.ViewModel = new CallGraphNavigatorViewModel(callGraph, proc);
+                this.view.ViewModel = new CallGraphNavigatorViewModel(program, callGraph, proc, codeViewerSvc);
             }
             else
             {

@@ -194,5 +194,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             NavigateTo(listCallers.FocusedItem);
         }
+
+        private void linkProcedure_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            viewModel.ShowProcedure(viewModel?.NodeObject?.NodeObject);
+        }
     }
 }

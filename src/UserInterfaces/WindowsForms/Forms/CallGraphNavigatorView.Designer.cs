@@ -55,9 +55,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             listCallers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             listCallers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { colCallerName, colCallerAddress });
             listCallers.Dock = System.Windows.Forms.DockStyle.Fill;
-            listCallers.Location = new System.Drawing.Point(3, 29);
+            listCallers.Location = new System.Drawing.Point(6, 61);
+            listCallers.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             listCallers.Name = "listCallers";
-            listCallers.Size = new System.Drawing.Size(327, 381);
+            listCallers.Size = new System.Drawing.Size(607, 825);
             listCallers.TabIndex = 0;
             listCallers.UseCompatibleStateImageBehavior = false;
             listCallers.View = System.Windows.Forms.View.Details;
@@ -78,9 +79,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             listCallees.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             listCallees.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { colCalleeName, colCalleeAddress });
             listCallees.Dock = System.Windows.Forms.DockStyle.Fill;
-            listCallees.Location = new System.Drawing.Point(669, 29);
+            listCallees.Location = new System.Drawing.Point(1244, 61);
+            listCallees.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             listCallees.Name = "listCallees";
-            listCallees.Size = new System.Drawing.Size(329, 381);
+            listCallees.Size = new System.Drawing.Size(609, 825);
             listCallees.TabIndex = 1;
             listCallees.UseCompatibleStateImageBehavior = false;
             listCallees.View = System.Windows.Forms.View.Details;
@@ -99,9 +101,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // lblAddress
             // 
             lblAddress.AutoSize = true;
-            lblAddress.Location = new System.Drawing.Point(3, 19);
+            lblAddress.Location = new System.Drawing.Point(6, 41);
+            lblAddress.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             lblAddress.Name = "lblAddress";
-            lblAddress.Size = new System.Drawing.Size(58, 15);
+            lblAddress.Size = new System.Drawing.Size(123, 32);
             lblAddress.TabIndex = 2;
             lblAddress.Text = "0000:0000";
             // 
@@ -109,19 +112,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             linkProcedure.AutoSize = true;
             linkProcedure.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            linkProcedure.Location = new System.Drawing.Point(3, 0);
+            linkProcedure.Location = new System.Drawing.Point(6, 0);
+            linkProcedure.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             linkProcedure.Name = "linkProcedure";
-            linkProcedure.Size = new System.Drawing.Size(166, 19);
+            linkProcedure.Size = new System.Drawing.Size(321, 37);
             linkProcedure.TabIndex = 3;
             linkProcedure.TabStop = true;
             linkProcedure.Text = "<No procedure selected>";
+            linkProcedure.LinkClicked += linkProcedure_LinkClicked;
             // 
             // lblSignature
             // 
             lblSignature.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            lblSignature.Location = new System.Drawing.Point(3, 34);
+            lblSignature.Location = new System.Drawing.Point(6, 73);
+            lblSignature.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             lblSignature.Name = "lblSignature";
-            lblSignature.Size = new System.Drawing.Size(319, 334);
+            lblSignature.Size = new System.Drawing.Size(593, 727);
             lblSignature.TabIndex = 4;
             // 
             // panel1
@@ -131,35 +137,39 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             panel1.Controls.Add(lblAddress);
             panel1.Controls.Add(linkProcedure);
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel1.Location = new System.Drawing.Point(336, 29);
+            panel1.Location = new System.Drawing.Point(625, 61);
+            panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(327, 381);
+            panel1.Size = new System.Drawing.Size(607, 825);
             panel1.TabIndex = 5;
             // 
             // lblCallers
             // 
             lblCallers.AutoSize = true;
-            lblCallers.Location = new System.Drawing.Point(3, 0);
+            lblCallers.Location = new System.Drawing.Point(6, 0);
+            lblCallers.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             lblCallers.Name = "lblCallers";
-            lblCallers.Size = new System.Drawing.Size(106, 15);
+            lblCallers.Size = new System.Drawing.Size(213, 32);
             lblCallers.TabIndex = 6;
             lblCallers.Text = "Calling procedures";
             // 
             // lblProcedure
             // 
             lblProcedure.AutoSize = true;
-            lblProcedure.Location = new System.Drawing.Point(336, 0);
+            lblProcedure.Location = new System.Drawing.Point(625, 0);
+            lblProcedure.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             lblProcedure.Name = "lblProcedure";
-            lblProcedure.Size = new System.Drawing.Size(61, 15);
+            lblProcedure.Size = new System.Drawing.Size(122, 32);
             lblProcedure.TabIndex = 7;
             lblProcedure.Text = "Procedure";
             // 
             // lblCallees
             // 
             lblCallees.AutoSize = true;
-            lblCallees.Location = new System.Drawing.Point(669, 0);
+            lblCallees.Location = new System.Drawing.Point(1244, 0);
+            lblCallees.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             lblCallees.Name = "lblCallees";
-            lblCallees.Size = new System.Drawing.Size(102, 15);
+            lblCallees.Size = new System.Drawing.Size(206, 32);
             lblCallees.TabIndex = 8;
             lblCallees.Text = "Called procedures";
             // 
@@ -176,20 +186,23 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tableLayoutPanel1.Controls.Add(lblProcedure, 1, 0);
             tableLayoutPanel1.Controls.Add(lblCallees, 2, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 42);
+            tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(1001, 413);
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(1859, 892);
             tableLayoutPanel1.TabIndex = 9;
             // 
             // toolStrip1
             // 
+            toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { btnBack, btnForward });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new System.Drawing.Size(1001, 25);
+            toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            toolStrip1.Size = new System.Drawing.Size(1859, 42);
             toolStrip1.TabIndex = 10;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -199,7 +212,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             btnBack.Image = Resources.Back;
             btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
             btnBack.Name = "btnBack";
-            btnBack.Size = new System.Drawing.Size(23, 22);
+            btnBack.Size = new System.Drawing.Size(46, 36);
             btnBack.Text = "Back";
             // 
             // btnForward
@@ -208,17 +221,18 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             btnForward.Image = Resources.Forward;
             btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
             btnForward.Name = "btnForward";
-            btnForward.Size = new System.Drawing.Size(23, 22);
+            btnForward.Size = new System.Drawing.Size(46, 36);
             btnForward.Text = "Forward";
             // 
             // CallGraphNavigatorView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
             Controls.Add(toolStrip1);
+            Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             Name = "CallGraphNavigatorView";
-            Size = new System.Drawing.Size(1001, 438);
+            Size = new System.Drawing.Size(1859, 934);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);

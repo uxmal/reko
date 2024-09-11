@@ -24,6 +24,8 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Gui.Reactive;
+using Reko.Gui.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -32,27 +34,39 @@ namespace Reko.Gui.ViewModels.Tools
 {
     public class CallGraphNavigatorViewModel : ChangeNotifyingObject
     {
+        private readonly Program? program;
         private readonly CallGraph graph;
+        private readonly ICodeViewerService codeViewerSvc;
         private readonly HashSet<ProcedureBase> visited;
         private CallGraphViewModelItem? currentNode;
 
-        public CallGraphNavigatorViewModel(CallGraph graph)
+        public CallGraphNavigatorViewModel(
+            Program? program,
+            CallGraph graph,
+            ICodeViewerService codeViewerSvc)
         {
+            this.program = program;
             this.graph = graph;
-            visited = new HashSet<ProcedureBase>();
+            this.codeViewerSvc = codeViewerSvc;
+            this.visited = new HashSet<ProcedureBase>();
             Predecessors = new ObservableCollection<CallGraphViewModelItem>(CollectRoots());
             Successors = new ObservableCollection<CallGraphViewModelItem>();
             NavigateTo((Procedure?) null);
         }
 
-        public CallGraphNavigatorViewModel(CallGraph graph, Procedure? proc)
+        public CallGraphNavigatorViewModel(
+            Program? program,
+            CallGraph graph,
+            Procedure? proc,
+            ICodeViewerService codeViewerSvc)
         {
+            this.program = program;
             this.graph = graph;
+            this.codeViewerSvc = codeViewerSvc;
             visited = new HashSet<ProcedureBase>();
             Predecessors = new ObservableCollection<CallGraphViewModelItem>();
             Successors = new ObservableCollection<CallGraphViewModelItem>();
             NavigateTo(proc);
-
         }
 
         public ObservableCollection<CallGraphViewModelItem> Predecessors { get; }
@@ -179,6 +193,15 @@ namespace Reko.Gui.ViewModels.Tools
             NodeTitle = item.Title;
             NodeDescription = item.Description;
             NodeDetails = item.Details;
+        }
+
+        public void ShowProcedure(ProcedureBase callable)
+        {
+            if (program is null)
+                return;
+            if (callable is not Procedure proc)
+                return;
+            codeViewerSvc.DisplayProcedure(program, proc, program.NeedsScanning);
         }
 
         public class CalleeCollector : InstructionVisitorBase
