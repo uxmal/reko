@@ -2627,7 +2627,7 @@ void _obstack_begin(struct Eq_n * o0, struct Eq_n * o1, word32 o2, <anonymous> *
 		i1_n->dw0000 = o0_n;
 		o0->dw0010 = o0_n;
 		i1_n->dw0004 = 0x00;
-		o0->dw0028 = o0->dw0028 & ~0x40000000 & ~0x20000000;
+		o0->dw0028 &= ~0x60000000;
 	}
 	else
 	{
@@ -2677,7 +2677,7 @@ void _obstack_begin_n(struct Eq_n * o0, struct Eq_n * o1, word32 o2, <anonymous>
 		i1_n->dw0000 = o0_n;
 		o0->dw0010 = o0_n;
 		i1_n->dw0004 = 0x00;
-		o0->dw0028 = o0->dw0028 & ~0x40000000 & ~0x20000000;
+		o0->dw0028 &= ~0x60000000;
 	}
 	else
 	{

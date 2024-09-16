@@ -1371,5 +1371,19 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("SLICE(foo16_3 *64 3<16>, word24, 0)", exp.ToString());
         }
+
+
+        [TestCase(0x3u, 0xEu, "foo_1 & 2<32>")]
+        [TestCase(0x3u, 0xCu, "0<32>")]
+        public void Exs_AndAnd(uint arg1, uint arg2, string sExpected)
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.And(
+                m.And(foo, arg1),
+                arg2);
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual(sExpected, exp.ToString());
+        }
     }
 }

@@ -2098,7 +2098,7 @@ l00406004:
 						{
 							if (r2_n == 2)
 							{
-								((char *) r28_n->ptrFFFF81E0 + 4)[dwLoc24_n * 0x98 + 144] = (char) ((word32) *((char *) *r28_n->ptrFFFF820C + (word32) bLoc1C_n * 0x02) & 0x01 & 0xFFFF);
+								((char *) r28_n->ptrFFFF81E0 + 4)[dwLoc24_n * 0x98 + 144] = (char) ((word32) *((char *) *r28_n->ptrFFFF820C + (word32) bLoc1C_n * 0x02) & 0x01);
 								dwLoc28_n += -1;
 							}
 						}
@@ -2149,7 +2149,7 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 		if (g_ptr10000A40->a0004[dwLoc18_n].t0004.u0 == 2)
 		{
 			word32 dwLoc14_n;
-			if (((word32) *((char *) *g_ptr10000A6C + (word32) ((char *) g_ptr10000A40 + (dwLoc18_n * 0x98 + 8))[4] * 0x02) & 0x01 & 0xFFFF) != 0x00)
+			if (((word32) *((char *) *g_ptr10000A6C + (word32) ((char *) g_ptr10000A40 + (dwLoc18_n * 0x98 + 8))[4] * 0x02) & 0x01) != 0x00)
 				dwLoc14_n = tolower((word32) ((char *) g_ptr10000A40 + (dwLoc18_n * 0x98 + 8))[4]);
 			else
 				dwLoc14_n = toupper((word32) ((char *) g_ptr10000A40 + (dwLoc18_n * 0x98 + 8))[4]);
@@ -3569,7 +3569,7 @@ void __unpack_f(uint32 * r4, struct Eq_n * r5)
 	case 0x00FF:
 		if ((r3_n & 0x007FFFFF) != 0x00)
 		{
-			if ((r3_n & 0x007FFFFF & 0x00100000) != 0x00)
+			if ((r3_n & 0x00100000) != 0x00)
 				r5->dw0000 = 1;
 			else
 				r5->dw0000 = 0x00;
@@ -3750,7 +3750,7 @@ void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 	case 0x07FF:
 		if ((r3_n | r2_n & 0x000FFFFF) != 0x00)
 		{
-			if ((r2_n & 0x000FFFFF & 0x00080000) != 0x00)
+			if ((r2_n & 0x00080000) != 0x00)
 				r5->dw0000 = 1;
 			else
 				r5->dw0000 = 0x00;

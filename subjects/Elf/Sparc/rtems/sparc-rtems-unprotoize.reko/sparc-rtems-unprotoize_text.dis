@@ -3149,7 +3149,7 @@ l00015448:
 	Mem149[i1_124:word32] = o0_148
 	Mem150[o0 + 16<i32>:word32] = o0_148
 	Mem151[i1_124 + 4<i32>:word32] = 0<32>
-	Mem157[o0 + 40<i32>:word32] = Mem151[o0 + 40<i32>:word32] & 0xBFFFFFFF<32> & 0xDFFFFFFF<32>
+	Mem157[o0 + 40<i32>:word32] = Mem151[o0 + 40<i32>:word32] & 0x9FFFFFFF<32>
 	return
 _obstack_begin_exit:
 l00015434_ds_f:
@@ -3214,7 +3214,7 @@ l00015510:
 	Mem150[i1_125:word32] = o0_149
 	Mem151[o0 + 16<i32>:word32] = o0_149
 	Mem152[i1_125 + 4<i32>:word32] = 0<32>
-	Mem158[o0 + 40<i32>:word32] = Mem152[o0 + 40<i32>:word32] & 0xBFFFFFFF<32> & 0xDFFFFFFF<32>
+	Mem158[o0 + 40<i32>:word32] = Mem152[o0 + 40<i32>:word32] & 0x9FFFFFFF<32>
 	return
 _obstack_begin_1_exit:
 l000154FC_ds_f:

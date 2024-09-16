@@ -302,6 +302,17 @@ namespace Reko.Evaluation
                         return (new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c), true);
                     }
                 }
+                if (binExp.Operator.Type == OperatorType.And &&
+                    binLeft.Operator.Type == OperatorType.And)
+                {
+                    return (m.And(
+                        binLeft.Left,
+                        Operator.And.ApplyConstants(
+                            binExp.DataType,
+                            cLeftRight,
+                            cRight)),
+                        true);
+                }
             }
 
             // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)

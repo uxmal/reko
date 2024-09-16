@@ -3108,7 +3108,7 @@ l0040608C:
 l00406070:
 	branch r2_247 == 2<i32> l00406150
 l00406150:
-	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + (dwLoc24_383 * 0x98<32> + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, int8, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>
+	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + (dwLoc24_383 * 0x98<32> + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, int8, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) & 1<32>
 	dwLoc28_364 = dwLoc28_364 + -1<i32>
 l00406084:
 l00405FFC:
@@ -3156,7 +3156,7 @@ l00406530:
 	r2_94 = Mem48[0x10000A40<32>:word32] + 4<i32> + dwLoc18_226 * 0x98<32>
 	printf("-%c %s ", Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], Mem48[r2_94:word32])
 l004063B4:
-	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>) == 0<32> l00406474
+	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32>) == 0<32> l00406474
 l00406474:
 	dwLoc14_229 = toupper(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32))
 l0040641C:
@@ -4941,7 +4941,7 @@ l004095D0:
 	branch (r3_6 & 0x7FFFFF<32>) != 0<32> l004095D4_ds_t
 l004095D4_ds_t:
 l004095E4:
-	branch (r3_6 & 0x7FFFFF<32> & 0x100000<32>) == 0<32> l004095EC_ds_t
+	branch (r3_6 & 0x100000<32>) == 0<32> l004095EC_ds_t
 l004095EC_ds_t:
 l004095F8:
 	Mem29[r5:word32] = 0<32>
@@ -5165,7 +5165,7 @@ l00409A04:
 	branch (r3_10 | r2_9 & 0xFFFFF<32>) != 0<32> l00409A0C_ds_t
 l00409A0C_ds_t:
 l00409A18:
-	branch (r2_9 & 0xFFFFF<32> & 0x80000<32>) == 0<32> l00409A30_ds_t
+	branch (r2_9 & 0x80000<32>) == 0<32> l00409A30_ds_t
 l00409A30_ds_t:
 l00409A3C:
 	Mem48[r5:word32] = 0<32>

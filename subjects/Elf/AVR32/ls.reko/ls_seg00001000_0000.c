@@ -12660,7 +12660,7 @@ l0000E4A8:
 				}
 				ui32 r9_n = 0x01 << r8_n;
 				word32 r8_n;
-				if ((r9_n & 0x0001FFFF & ~0xBE7F) == 0x00)
+				if ((r9_n & 0x00014180) == 0x00)
 				{
 					if (Test(EQ,SLICE(r9_n, bool, 12)))
 					{

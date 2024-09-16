@@ -153,7 +153,7 @@ cui16 frex(cui16 gp1, struct Eq_n ** gp3)
 	struct Eq_n * gp5_n = (struct Eq_n *) *gp3;
 	cui16 gp1_n = gp1 & 0xFF00;
 	cu16 gp4_n = gp1 & 0xFF;
-	if (Test(NE,(gp1 & 0xFF & 0x0100) == 0x00))
+	if (Test(NE,True<8>))
 		gp4_n = gp1 & 0xFF | 0xFF00;
 	if (Test(NE,(gp4_n & 0x8000) == 0x00))
 	{

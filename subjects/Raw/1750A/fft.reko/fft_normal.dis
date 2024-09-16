@@ -184,7 +184,7 @@ l0226:
 	gp5_5 = Mem0[gp3:word16]
 	gp1_21 = gp1 & 0xFF00<16>
 	gp4_13 = gp1 & 0xFF<16>
-	branch Test(EQ,(gp1 & 0xFF<16> & 0x100<u16>) == 0<16>) l0231
+	branch Test(EQ,True<8>) l0231
 l022F:
 	gp4_13 = gp1 & 0xFF<16> | 0xFF00<16>
 l0231:

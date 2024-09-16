@@ -13041,7 +13041,7 @@ l0000DEC2:
 	branch r8_666 >u 0x10<32> l0000DEF8
 l0000DECC:
 	r9_823 = 1<32> << r8_666
-	branch (r9_823 & 0x1FFFF<32> & 0xFFFF4180<32>) != 0<32> l0000DEF0
+	branch (r9_823 & 0x14180<32>) != 0<32> l0000DEF0
 l0000DEDE:
 	branch Test(EQ,SLICE(r9_823, bool, 12)) l0000DEF4
 l0000DEF4:

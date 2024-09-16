@@ -2730,7 +2730,7 @@ void UARTConfigSet(struct Eq_n * r0, uint32 r1, ui32 r2)
 		r4_n = r0->dw0018;
 	while ((r4_n & 0x08) != 0x00);
 	r0->dw002C &= ~0x10;
-	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
+	r0->dw0030 &= ~0x0301;
 	uint32 r0_n = SysCtlClockGet();
 	uint32 r2_n = r0_n /u (r1 << 4);
 	r0->dw0024 = r2_n;
@@ -2761,7 +2761,7 @@ void UARTDisable(struct Eq_n * r0)
 	while (r0->dw0018 << 28 < 0x00)
 		;
 	r0->dw002C &= ~0x10;
-	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
+	r0->dw0030 &= ~0x0301;
 }
 
 // 0000A00C: void UARTCharsAvail()

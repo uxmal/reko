@@ -4188,7 +4188,7 @@ l00009F56:
 	branch (r4_27 & 8<32>) != 0<32> l00009F56
 l00009F5E:
 	Mem34[r0 + 44<i32>:word32] = Mem16[r0 + 44<i32>:word32] & 0xFFFFFFEF<32>
-	Mem38[r0 + 48<i32>:word32] = Mem34[r0 + 48<i32>:word32] & 0xFFFFFCFF<32> & 0xFFFFFFFE<32>
+	Mem38[r0 + 48<i32>:word32] = Mem34[r0 + 48<i32>:word32] & 0xFFFFFCFE<32>
 	r0_40 = SysCtlClockGet()
 	r2_50 = r0_40 /u (r1 << 4<i32>)
 	Mem58[r0 + 36<i32>:word32] = r2_50
@@ -4244,7 +4244,7 @@ l00009FF0:
 	branch Mem0[r0 + 0x18<32>:word32] << 28<i32> < 0<32> l00009FF0
 l00009FF6:
 	Mem16[r0 + 44<i32>:word32] = Mem0[r0 + 44<i32>:word32] & 0xFFFFFFEF<32>
-	Mem20[r0 + 48<i32>:word32] = Mem16[r0 + 48<i32>:word32] & 0xFFFFFCFF<32> & 0xFFFFFFFE<32>
+	Mem20[r0 + 48<i32>:word32] = Mem16[r0 + 48<i32>:word32] & 0xFFFFFCFE<32>
 	return
 UARTDisable_exit:
 
