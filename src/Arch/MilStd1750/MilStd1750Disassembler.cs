@@ -234,7 +234,7 @@ namespace Reko.Arch.MilStd1750
             }
             else
             {
-                var op = AddressOperand.Ptr16(imm);
+                var op = Address.Ptr16(imm);
                 dasm.ops.Add(op);
             }
             return true;
@@ -286,7 +286,7 @@ namespace Reko.Arch.MilStd1750
         {
             var disp = bf0_8.ReadSigned(uInstr);
             var addrDst = dasm.addr + disp;
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 

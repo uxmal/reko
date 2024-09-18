@@ -580,7 +580,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 var offset = bfOffset.ReadSigned(u) << 1;
                 var addr = d.addr + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -591,7 +591,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 var offset = Bitfield.ReadSignedFields(bfOffset, u) << 1;
                 var addr = d.addr + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }

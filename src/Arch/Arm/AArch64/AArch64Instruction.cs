@@ -95,10 +95,10 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 renderer.EndOperand();
                 break;
-            case AddressOperand addrOp:
+            case Address addrOp:
                 renderer.BeginOperand();
-                ulong linAddr = addrOp.Address.ToLinear();
-                renderer.WriteAddress($"#&{linAddr:X}", addrOp.Address);
+                ulong linAddr = addrOp.ToLinear();
+                renderer.WriteAddress($"#&{linAddr:X}", addrOp);
                 renderer.EndOperand();
                 break;
             default:

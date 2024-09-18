@@ -888,7 +888,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var offset = Bitfield.ReadSignedFields(bfOffset, u) << shift;
                 var addrDst = d.addrPacket + offset;
-                d.ops.Add(AddressOperand.Create(addrDst));
+                d.ops.Add(addrDst);
                 return true;
             };
         }

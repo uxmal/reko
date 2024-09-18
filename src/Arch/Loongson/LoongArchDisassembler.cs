@@ -193,7 +193,7 @@ namespace Reko.Arch.Loongson
             {
                 var displacement = bitfield.ReadSigned(u);
                 var addr = d.addr + displacement * 4;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -219,7 +219,7 @@ namespace Reko.Arch.Loongson
             {
                 var displacement = Bitfield.ReadSignedFields(bitfields, u);
                 var addr = d.addr + displacement * 4;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }

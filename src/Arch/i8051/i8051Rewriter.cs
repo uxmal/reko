@@ -184,7 +184,7 @@ namespace Reko.Arch.i8051
             var a = OpSrc(instr.Operands[0], arch.DataMemory);
             var b = OpSrc(instr.Operands[1], arch.DataMemory);
             var C = binder.EnsureFlagGroup(Registers.CFlag);
-            var addr = ((AddressOperand)instr.Operands[2]).Address;
+            var addr = (Address) instr.Operands[2];
             m.Assign(C, m.Cond(m.ISub(a, b)));
             m.Branch(m.Ne(a, b), addr, iclass);
         }
@@ -251,7 +251,7 @@ namespace Reko.Arch.i8051
         {
             iclass = InstrClass.ConditionalTransfer;
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
-            var addr = ((AddressOperand)instr.Operands[1]).Address;
+            var addr = (Address) instr.Operands[1];
             m.Assign(dst, m.ISub(dst, 1));
             m.Branch(m.Ne0(dst), addr, InstrClass.ConditionalTransfer);
         }
@@ -271,7 +271,7 @@ namespace Reko.Arch.i8051
         {
             iclass = InstrClass.ConditionalTransfer;
             var src = OpSrc(instr.Operands[0], arch.DataMemory);
-            var addr = ((AddressOperand)instr.Operands[1]).Address;
+            var addr = (Address)instr.Operands[1];
             m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
@@ -279,7 +279,7 @@ namespace Reko.Arch.i8051
         {
             iclass = InstrClass.ConditionalTransfer;
             var src = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C));
-            var addr = ((AddressOperand)instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             m.Branch(m.Test(cc, src), addr, InstrClass.ConditionalTransfer);
         }
 
@@ -296,7 +296,7 @@ namespace Reko.Arch.i8051
         {
             iclass = InstrClass.ConditionalTransfer;
             var src = binder.EnsureRegister(Registers.A);
-            var addr = ((AddressOperand)instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
@@ -457,8 +457,8 @@ namespace Reko.Arch.i8051
                 return binder.EnsureFlagGroup(flg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var (ea, alias) = EffectiveAddress(mem);
                 if (alias is not null)

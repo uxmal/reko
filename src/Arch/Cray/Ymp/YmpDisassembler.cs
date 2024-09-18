@@ -227,7 +227,7 @@ namespace Reko.Arch.Cray.Ymp
             if (!dasm.rdr.TryReadBeUInt16(out ushort n))
                 return false;
             var uAddr = ((uInstr & 0x1FF) << 16) | n;
-            dasm.ops.Add(AddressOperand.Ptr32(uAddr));
+            dasm.ops.Add(Address.Ptr32(uAddr));
             return true;
         }
 
@@ -239,7 +239,7 @@ namespace Reko.Arch.Cray.Ymp
                 return false;
             uint nm = n;
             nm = nm << 16 | m;
-            dasm.ops.Add(AddressOperand.Ptr32(nm));
+            dasm.ops.Add(Address.Ptr32(nm));
             return true;
         }
 

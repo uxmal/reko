@@ -61,7 +61,7 @@ namespace Reko.Arch.RiscV
             var opRight = RewriteOp(1);
             m.Branch(
                 fn(opLeft, opRight),
-                ((AddressOperand) instr.Operands[2]).Address,
+                (Address) instr.Operands[2],
                 InstrClass.ConditionalTransfer);
         }
 
@@ -81,7 +81,7 @@ namespace Reko.Arch.RiscV
             var zero = Constant.Zero(op.DataType);
             m.Branch(
                 fn(op, zero),
-                ((AddressOperand) instr.Operands[1]).Address,
+                (Address)instr.Operands[1],
                 InstrClass.ConditionalTransfer);
         }
 

@@ -156,7 +156,7 @@ namespace Reko.Arch.MicroBlaze
         private Address Addr(int iOp)
         {
             var op = instrCur.Operands[iOp];
-            var addr = ((AddressOperand) op).Address;
+            var addr = (Address)op;
             return addr;
         }
 
@@ -339,9 +339,9 @@ namespace Reko.Arch.MicroBlaze
         {
             var reg = Reg(0);
             var cond = cmp(reg);
-            if (instrCur.Operands[1] is AddressOperand addrDst)
+            if (instrCur.Operands[1] is Address addrDst)
             {
-                m.Branch(cond, addrDst.Address, instrCur.InstructionClass);
+                m.Branch(cond, addrDst, instrCur.InstructionClass);
             }
             else
             {

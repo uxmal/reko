@@ -50,11 +50,11 @@ namespace Reko.Arch.Sparc
             this.iclass = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {
-                m.Goto(((AddressOperand)instrCur.Operands[0]).Address, rtlClass);
+                m.Goto((Address)instrCur.Operands[0], rtlClass);
             }
             else
             {
-                m.Branch(cond, ((AddressOperand)instrCur.Operands[0]).Address, rtlClass);
+                m.Branch(cond, (Address)instrCur.Operands[0], rtlClass);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Reko.Arch.Sparc
             var rtlClass = instrCur.InstructionClass;
             this.iclass = rtlClass;
             var reg = RewriteRegister(0);
-            m.Branch(fn(reg), ((AddressOperand) instrCur.Operands[1]).Address, rtlClass);
+            m.Branch(fn(reg), (Address)instrCur.Operands[1], rtlClass);
         }
 
         private void RewriteCall()
@@ -71,7 +71,7 @@ namespace Reko.Arch.Sparc
             // A special case is when we call to the location after
             // the delay slot. This is an idiom to capture the 
             // program counter in the la register.
-            var dst = ((AddressOperand) instrCur.Operands[0]).Address;
+            var dst = (Address)instrCur.Operands[0];
             if (instrCur.Address.ToLinear() + 8 == dst.ToLinear())
             {
                 iclass = InstrClass.Linear;

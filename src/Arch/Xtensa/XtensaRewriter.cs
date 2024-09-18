@@ -392,8 +392,8 @@ namespace Reko.Arch.Xtensa
             {
             case RegisterStorage rOp:
                 return binder.EnsureRegister(rOp);
-            case AddressOperand aOp:
-                return aOp.Address;
+            case Address addr:
+                return addr;
             case ImmediateOperand iOp:
                 return iOp.Value;
             }

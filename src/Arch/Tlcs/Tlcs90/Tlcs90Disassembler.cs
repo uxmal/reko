@@ -226,7 +226,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 if (!dasm.rdr.TryReadLe(size, out var c))
                     return false;
-                dasm.ops.Add(AddressOperand.Ptr16(c.ToUInt16()));
+                dasm.ops.Add(Address.Ptr16(c.ToUInt16()));
                 return true;
             };
         }
@@ -241,7 +241,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
             var dest = dasm.rdr.Address + (sbyte) b;
-            dasm.ops.Add(AddressOperand.Create(dest));
+            dasm.ops.Add(dest);
             return true;
         }
 
@@ -253,7 +253,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             if (!dasm.rdr.TryReadLeInt16(out short off))
                 return false;
             var dest = dasm.rdr.Address + off;
-            dasm.ops.Add(AddressOperand.Create(dest));
+            dasm.ops.Add(dest);
             return true;
         }
 
@@ -462,7 +462,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         operand.Offset != null)
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
-                        var op = AddressOperand.Ptr16(operand.Offset.ToUInt16());
+                        var op = Address.Ptr16(operand.Offset.ToUInt16());
                         instr.Operands = new MachineOperand[] { instr.Operands[0], op };
                     }
                     else

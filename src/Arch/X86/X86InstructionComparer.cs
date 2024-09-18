@@ -54,10 +54,10 @@ namespace Reko.Arch.X86
                 var immOpB = (ImmediateOperand) opB;
                 return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
             }
-            if (opA is AddressOperand addrOpA)
+            if (opA is Address addrOpA)
             {
-                var addrOpB = (AddressOperand) opB;
-                return NormalizeConstants || addrOpA.Address == addrOpB.Address;
+                var addrOpB = (Address) opB;
+                return NormalizeConstants || addrOpA == addrOpB;
             }
             if (opA is MemoryOperand memOpA)
             {
@@ -136,9 +136,9 @@ namespace Reko.Arch.X86
             {
                 RegisterStorage regOp => base.GetRegisterHash(regOp),
                 ImmediateOperand immOp => base.GetConstantHash(immOp.Value),
-                AddressOperand addrOp => base.NormalizeConstants
+                Address addr => base.NormalizeConstants
                         ? 1
-                        : addrOp.Address.GetHashCode(),
+                        : addr.GetHashCode(),
                 MemoryOperand memOp => GetMemoryOperandHash(memOp),
                 FpuOperand fpuOp => 59 * fpuOp.StNumber.GetHashCode(),
                 _ => throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName)

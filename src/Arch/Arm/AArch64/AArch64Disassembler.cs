@@ -1033,7 +1033,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 long sPageOffset = Bitfield.ReadSignedFields(fields, u) << sh;
                 ulong uAddrPage = d.addr.ToLinear() & ~0xFFFul;
-                d.state.ops.Add(AddressOperand.Ptr64(uAddrPage + (ulong) sPageOffset));
+                d.state.ops.Add(Address.Ptr64(uAddrPage + (ulong) sPageOffset));
                 return true;
             };
         }
@@ -1231,7 +1231,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var displacement = Bitfield.ReadSignedFields(fields, u);
                 var addr = d.addr + displacement;
-                d.state.ops.Add(AddressOperand.Create(addr));
+                d.state.ops.Add(addr);
                 return true;
             };
         }
@@ -1248,8 +1248,8 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var n = Bitfield.ReadSignedFields(fields, u);
-                AddressOperand aop = AddressOperand.Create(d.addr + (n << 2));
-                d.state.ops.Add(aop);
+                Address addr = d.addr + (n << 2);
+                d.state.ops.Add(addr);
                 return true;
             };
         }
@@ -1452,7 +1452,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 int offset = (int)Bits.SignExtend(u >> 5, 19) << 2;
                 var addr = d.addr + offset;
-                d.state.ops.Add(AddressOperand.Create(addr));
+                d.state.ops.Add(addr);
                 return true;
             };
         }

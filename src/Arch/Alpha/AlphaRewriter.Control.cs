@@ -40,7 +40,7 @@ namespace Reko.Arch.Alpha
         private void RewriteBr()
         {
             var ret = (RegisterStorage)instr.Operands[0];
-            var dst = ((AddressOperand)instr.Operands[1]).Address;
+            var dst = (Address) instr.Operands[1];
             RewriteTransfer(ret, dst);
         }
 
@@ -57,7 +57,7 @@ namespace Reko.Arch.Alpha
 
         private void RewriteBranch(Func<Expression, Expression> fn)
         {
-            var dst = ((AddressOperand)instr.Operands[1]).Address;
+            var dst = (Address)instr.Operands[1];
             var src = Rewrite(instr.Operands[0]);
             m.Branch(fn(src), dst, instr.InstructionClass);
         }
@@ -84,7 +84,7 @@ namespace Reko.Arch.Alpha
         private void RewriteFBranch(BinaryOperator op)
         {
             var src = Rewrite(instr.Operands[0]);
-            var dst = ((AddressOperand)instr.Operands[1]).Address;
+            var dst = (Address)instr.Operands[1];
             m.Branch(
                 m.Bin(
                     op, PrimitiveType.Bool, src, Constant.Real64(0.0)),

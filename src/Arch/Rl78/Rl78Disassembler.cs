@@ -295,7 +295,7 @@ namespace Reko.Arch.Rl78
             if (!dasm.rdr.TryReadByte(out byte upcRelativeOffset))
                 return false;
             sbyte pcRelativeOffset = (sbyte) upcRelativeOffset;
-            var addrOp = AddressOperand.Create(dasm.rdr.Address + pcRelativeOffset);
+            var addrOp = dasm.rdr.Address + pcRelativeOffset;
             dasm.ops.Add(addrOp);
             return true;
         }
@@ -305,7 +305,7 @@ namespace Reko.Arch.Rl78
             if (!dasm.rdr.TryReadUInt16(out ushort upcRelativeOffset))
                 return false;
             short pcRelativeOffset = (short) upcRelativeOffset;
-            var addrOp = AddressOperand.Create(dasm.rdr.Address + pcRelativeOffset);
+            var addrOp = dasm.rdr.Address + pcRelativeOffset;
             dasm.ops.Add(addrOp);
             return true;
         }
@@ -317,8 +317,8 @@ namespace Reko.Arch.Rl78
             if (!dasm.rdr.TryReadByte(out byte seg))
                 return false;
             uint uAbsAddress = ((uint) seg << 16) | (uint) upcRelativeOffset;
-            var addrOp = AddressOperand.Ptr32(uAbsAddress);
-            addrOp.Width = dasm.arch.Ptr20;
+            var addrOp = Address.Ptr32(uAbsAddress);
+            addrOp.DataType = dasm.arch.Ptr20;
             dasm.ops.Add(addrOp);
             dasm.isAbsolute = true;
             return true;
@@ -328,7 +328,7 @@ namespace Reko.Arch.Rl78
         {
             if (!dasm.rdr.TryReadUInt16(out ushort uAbsAddress))
                 return false;
-            var addrOp = AddressOperand.Ptr32(uAbsAddress);
+            var addrOp = Address.Ptr32(uAbsAddress);
             dasm.ops.Add(addrOp);
             dasm.isAbsolute = true;
             return true;

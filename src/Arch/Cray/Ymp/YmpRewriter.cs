@@ -137,8 +137,8 @@ namespace Reko.Arch.Cray.Ymp
                 return reg;
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             default:
                 throw new NotImplementedException($"Unimplemented Cray operand {instrCur.Operands[iop].GetType().Name}.");
             }

@@ -340,8 +340,8 @@ namespace Reko.Arch.X86.Rewriter
         private bool IsRealModeReboot(X86Instruction instrCur)
         {
             bool isRealModeReboot = 
-                instrCur.Operands[0] is AddressOperand addrOp &&
-                addrOp.Address.ToLinear() == 0xFFFF0;
+                instrCur.Operands[0] is Address addr &&
+                addr.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }
 
@@ -349,7 +349,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             return op switch
             {
-                AddressOperand ado => ado.Address,
+                Address addr => addr,
                 ImmediateOperand imm => orw.ImmediateAsAddress(instrCur.Address, imm),
                 _ => null
             };

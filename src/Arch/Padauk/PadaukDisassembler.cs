@@ -217,7 +217,7 @@ namespace Reko.Arch.Padauk
             return (u, d) =>
             {
                 var i = addrField.Read(u);
-                d.ops.Add(AddressOperand.Ptr16((ushort)i));
+                d.ops.Add(Address.Ptr16((ushort)i));
                 return true;
             };
         }

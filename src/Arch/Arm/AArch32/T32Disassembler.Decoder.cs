@@ -114,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     InstructionClass = InstrClass.Transfer|InstrClass.Call,
                     Mnemonic = Mnemonic.bl,
-                    Operands = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
+                    Operands = new MachineOperand[] { dasm.addr + (off + 4) }
                 };
             }
         }

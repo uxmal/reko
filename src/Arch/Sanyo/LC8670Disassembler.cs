@@ -97,7 +97,7 @@ namespace Reko.Arch.Sanyo
                         | ((uInstr & 0x07u) << 8)        // get some bits
                         | ((uInstr & 0x10u) != 0 ? 0x800u : 0)  // out of place bit
                         | b);                   // lower 8 bits
-            dasm.ops.Add(AddressOperand.Ptr16((ushort) uAddr));
+            dasm.ops.Add(Address.Ptr16((ushort) uAddr));
             return true;
         }
 
@@ -105,7 +105,7 @@ namespace Reko.Arch.Sanyo
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort uAddr))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(uAddr));
+            dasm.ops.Add(Address.Ptr16(uAddr));
             return true;
         }
 
@@ -116,7 +116,7 @@ namespace Reko.Arch.Sanyo
                 return false;
             short offset = (sbyte) b;
             var uAddr = (0xFFFF & (dasm.addr.ToLinear() + 2 + (ushort) offset));
-            dasm.ops.Add(AddressOperand.Ptr16((ushort) uAddr));
+            dasm.ops.Add(Address.Ptr16((ushort) uAddr));
             return true;
         }
 
@@ -126,7 +126,7 @@ namespace Reko.Arch.Sanyo
             if (!dasm.rdr.TryReadInt16(out short offset))
                 return false;
             var uAddr = (0xFFFF & (dasm.addr.ToLinear() + 3 - 1 + (ushort) offset));
-            dasm.ops.Add(AddressOperand.Ptr16((ushort) uAddr));
+            dasm.ops.Add(Address.Ptr16((ushort) uAddr));
             return true;
         }
 

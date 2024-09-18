@@ -287,8 +287,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(mem.Width, ea);
@@ -308,8 +308,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(mem.Width, ea);
@@ -389,7 +389,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var exp = OpOrZero(0);
             var bit = Op(1);
-            var target = ((AddressOperand) instr.Operands[2]).Address;
+            var target = (Address) instr.Operands[2];
             m.Branch(m.Fn(CommonOps.Bit, exp, bit), target);
         }
 
@@ -407,7 +407,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var left = OpOrZero(0);
             var right = OpOrZero(1);
-            var target = ((AddressOperand) instr.Operands[2]).Address;
+            var target = (Address)instr.Operands[2];
             m.Branch(cmp(left, right), target);
         }
 

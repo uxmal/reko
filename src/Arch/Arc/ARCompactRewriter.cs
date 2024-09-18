@@ -453,8 +453,8 @@ namespace Reko.Arch.Arc
                 return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
-            case AddressOperand aop:
-                return aop.Address;
+            case Address aop:
+                return aop;
             default:
                 throw new NotImplementedException($"Unimplemented operand type {instr.Operands[iOp].GetType().Name}.");
             }
@@ -615,7 +615,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteB(ArcCondition cond)
         {
-            var addr = ((AddressOperand) instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             if (cond == ArcCondition.AL)
             {
                 m.Goto(addr, this.iclass);
@@ -635,7 +635,7 @@ namespace Reko.Arch.Arc
             {
                 cond = cond.Invert();
             }
-            m.Branch(cond, ((AddressOperand) instr.Operands[2]).Address, iclass);
+            m.Branch(cond, (Address)instr.Operands[2], iclass);
         }
 
         private void RewriteBl(ArcCondition cond)
@@ -648,7 +648,7 @@ namespace Reko.Arch.Arc
         {
             var src1 = Operand(0);
             var src2 = Operand(1);
-            m.Branch(cmp(src1, src2), ((AddressOperand) instr.Operands[2]).Address, instr.InstructionClass);
+            m.Branch(cmp(src1, src2), (Address) instr.Operands[2], instr.InstructionClass);
         }
 
         private void RewriteBrk()
@@ -760,7 +760,7 @@ namespace Reko.Arch.Arc
         {
             MaybeSkip(condition);
             var uAddrStart = instr.Address.ToUInt32() + (uint) instr.Length;
-            var uAddrEnd = ((AddressOperand) instr.Operands[0]).Address.ToUInt32();
+            var uAddrEnd = ((Address) instr.Operands[0]).ToUInt32();
             this.state.SetValue(Registers.LpStart, Constant.UInt32(uAddrStart));
             this.state.SetValue(Registers.LpEnd, Constant.UInt32(uAddrEnd));
             m.Assign(binder.EnsureRegister(Registers.LpStart), Address.Ptr32(uAddrStart));

@@ -151,7 +151,7 @@ namespace Reko.Arch.Altera.Nios2
         private static bool B(uint uInstr, Nios2Disassembler dasm)
         {
             var offset = i_imm.ReadSigned(uInstr);
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 
@@ -162,7 +162,7 @@ namespace Reko.Arch.Altera.Nios2
             var offset = i_imm.ReadSigned(uInstr);
             dasm.ops.Add(regA);
             dasm.ops.Add(regB);
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 
@@ -173,7 +173,7 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
             var offset = j_offset.ReadSigned(uInstr) * 4;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 

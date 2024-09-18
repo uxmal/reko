@@ -190,8 +190,8 @@ namespace Reko.Arch.Rl78
                 return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
-            case AddressOperand aop:
-                return aop.Address;
+            case Address aop:
+                return aop;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -351,7 +351,7 @@ namespace Reko.Arch.Rl78
             var cond = RewriteSrc(instr.Operands[0]);
             m.BranchInMiddleOfInstruction(m.Not(cond), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             RewriteDst(instr.Operands[0], Constant.False(), (a, b) => b);
-            m.Goto(((AddressOperand) instr.Operands[1]).Address);
+            m.Goto((Address)instr.Operands[1]);
         }
 
         private void RewriteCall()

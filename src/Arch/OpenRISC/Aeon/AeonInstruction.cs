@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -81,13 +82,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                     renderer.WriteString("@lo");
                 }
                 break;
-            case AddressOperand addr:
+            case Address addr:
                 if (this.Mnemonic == Mnemonic.bg_movhi ||
                     this.Mnemonic == Mnemonic.bn_movhi__ ||
                     this.Mnemonic == Mnemonic.bt_movhi__)
                 {
-                    var uAddr = addr.Address.ToUInt32();
-                    renderer.WriteAddress($"0x{uAddr:X}@hi", addr.Address);
+                    var uAddr = addr.ToUInt32();
+                    renderer.WriteAddress($"0x{uAddr:X}@hi", addr);
                     return;
                 }
                 goto default;

@@ -180,7 +180,7 @@ namespace Reko.Arch.Pdp.Pdp10.Disassembler
                 else
                 {
                     var addr = new Address18(dasm.imm);
-                    op = AddressOperand.Create(addr);
+                    op = addr;
                 }
             }
             else 

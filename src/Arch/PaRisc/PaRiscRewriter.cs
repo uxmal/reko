@@ -214,8 +214,8 @@ namespace Reko.Arch.PaRisc
                 return i.Value;
             case LeftImmediateOperand l:
                 return l.Value;
-            case AddressOperand a:
-                return a.Address;
+            case Address a:
+                return a;
             case MemoryOperand mem:
                 Identifier rb = binder.EnsureRegister(mem.Base);
                 Expression ea = rb;

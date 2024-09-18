@@ -291,8 +291,8 @@ namespace Reko.Arch.X86.Emulator
             }
             if (op is ImmediateOperand i)
                 return i.Value.ToUInt32();
-            if (op is AddressOperand a)
-                return a.Address.ToUInt32();
+            if (op is Address a)
+                return a.ToUInt32();
             if (op is MemoryOperand m)
             {
                 ulong ea = GetEffectiveAddress(m);
@@ -354,9 +354,9 @@ namespace Reko.Arch.X86.Emulator
 
         protected Address XferTarget(MachineOperand op)
         {
-            if (op is AddressOperand a)
+            if (op is Address addr)
             {
-                return a.Address;
+                return addr;
             }
             else if (op is ImmediateOperand immediate)
             {

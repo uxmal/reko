@@ -108,7 +108,7 @@ namespace Reko.Arch.Tms7000
         private static bool j(uint u, Tms7000Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + (sbyte) b));
+            dasm.ops.Add(dasm.rdr.Address + (sbyte) b);
             return true;
         }
 

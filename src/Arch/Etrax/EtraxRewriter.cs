@@ -171,7 +171,7 @@ namespace Reko.Arch.Etrax
             {
             case RegisterStorage r: return binder.EnsureRegister(r);
             case ImmediateOperand imm: return imm.Value;
-            case AddressOperand a: return a.Address;
+            case Address addr: return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 if (mem.PostIncrement)
@@ -208,13 +208,13 @@ namespace Reko.Arch.Etrax
         private void RewriteBranch(ConditionCode cc, FlagGroupStorage grf)
         {
             var test = m.Test(cc, binder.EnsureFlagGroup(grf));
-            var dst = ((AddressOperand) instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             m.Branch(test, dst, instr.InstructionClass);
         }
         
         private void RewriteBranchAlways()
         {
-            var dst = ((AddressOperand) instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             m.GotoD(dst);
         }
 

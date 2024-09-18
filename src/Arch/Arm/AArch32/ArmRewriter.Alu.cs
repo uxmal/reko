@@ -82,8 +82,8 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteAdr()
         {
             var dst = Operand(0, PrimitiveType.Word32, true);
-            var src = (AddressOperand)instr.Operands[1];
-            m.Assign(dst, src.Address);
+            var src = (Address)instr.Operands[1];
+            m.Assign(dst, src);
         }
 
         private void RewriteBfc()

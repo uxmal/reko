@@ -390,8 +390,8 @@ namespace Reko.Arch.Mips
                 else
                     ea = m.ISub(baseReg, -indOp.Offset);
                 return m.Mem(indOp.Width, ea);
-            case AddressOperand addrOp:
-                return addrOp.Address;
+            case Address addrOp:
+                return addrOp;
             case IndexedOperand idxOp:
                 return RewriteIndexOperand(idxOp, 1);
             }
@@ -444,9 +444,8 @@ namespace Reko.Arch.Mips
                 return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
-            case AddressOperand addrOp:
-                return addrOp.Address;
-
+            case Address addrOp:
+                return addrOp;
             case IndirectOperand indOp:
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);

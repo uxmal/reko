@@ -509,17 +509,17 @@ namespace Reko.Arch.M6800.M6809
         private void RewriteBranch(ConditionCode cc, FlagGroupStorage flags)
         {
             var flagGrp = binder.EnsureFlagGroup(flags);
-            m.Branch(m.Test(cc, flagGrp), ((AddressOperand) instr.Operands[0]).Address, instr.InstructionClass); 
+            m.Branch(m.Test(cc, flagGrp), (Address) instr.Operands[0], instr.InstructionClass); 
         }
 
         private void RewriteBra()
         {
-            m.Goto(((AddressOperand) instr.Operands[0]).Address);
+            m.Goto((Address)instr.Operands[0]);
         }
 
         private void RewriteBsr()
         {
-            m.Call(((AddressOperand) instr.Operands[0]).Address, 2);
+            m.Call((Address)instr.Operands[0], 2);
         }
 
         private void RewriteCwai()

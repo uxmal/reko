@@ -585,7 +585,7 @@ namespace Reko.Arch.Vax
                     }
                     return load;
                 }
-            case AddressOperand addrOp:
+            case Address addrOp:
                 //$BUG: enabling the commented code causes huge regressions in the
                 // unzip subject.
                 /*if (addrOp.Width.BitSize > width.BitSize)
@@ -599,7 +599,7 @@ namespace Reko.Arch.Vax
                 }
                 else*/
                 {
-                    return addrOp.Address;
+                    return addrOp;
                 }
             case IndexOperand indexOperand:
                 ea = RewriteSrcOp(indexOperand.Base, PrimitiveType.Word32);
@@ -704,7 +704,7 @@ namespace Reko.Arch.Vax
                     idx = m.IMul(idx, Constant.Int32(width.Size));
                 return RewriteDstOp(indexOperand.Base, PrimitiveType.Word32, fn, idx);
             case ImmediateOperand _:
-            case AddressOperand _:
+            case Address _:
                 return null!;
             }
             throw new NotImplementedException(op.GetType().Name);

@@ -258,7 +258,7 @@ namespace Reko.Arch.V850
             var dispLo = (ushort) dasm.displacement;
             var dispHi = (uint) bits0_5.ReadSigned(uInstr);
             dispHi = (dispHi << 16) | dispLo;
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + (int) dispHi));
+            dasm.ops.Add(dasm.addr + (int) dispHi);
             return true;
         }
 
@@ -269,7 +269,7 @@ namespace Reko.Arch.V850
             if (!dasm.rdr.TryReadUInt16(out ushort dispHi))
                 return false;
             var disp = (uint) (dispHi << 16) | dispLo;
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + (int) disp));
+            dasm.ops.Add(dasm.addr + (int) disp);
             return true;
         }
 
@@ -278,7 +278,7 @@ namespace Reko.Arch.V850
         private static bool disp9(uint uInstr, V850Disassembler dasm)
         {
             var disp = Bitfield.ReadSignedFields(disp9_fields, uInstr) << 1;
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + disp));
+            dasm.ops.Add(dasm.addr + disp);
             return true;
         }
 

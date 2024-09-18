@@ -100,9 +100,12 @@ namespace Reko.Core.Machine
         /// the skeleton of a unit test for ease of implementation.
         /// </summary>
         /// <param name="message">A message describing why the instruction is not yet implemented.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Implementations should return an instruction whose 
+        /// <see cref="MachineInstruction.InstructionClass"/> property 
+        /// has the value <see cref="InstrClass.Invalid"/>.
+        /// </returns>
         public abstract TInstr NotYetImplemented(string message);
-
 
         /// <summary>
         /// After the instruction has been fully decoded, this method is called to construct 
@@ -376,10 +379,15 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
-        /// Compact way of creating an array of <see cref="Bitfield"/>s.
+        /// Creates an array of <see cref="Bitfield"/>s.
         /// </summary>
-        /// <param name="fields"></param>
-        /// <returns></returns>
+        /// <param name="fields">
+        /// An array of (position, length) tuples, indicating the bitfields.
+        /// The bit positions are in little endian order, i.e. the least 
+        /// significant bits are numbered with 0.</param>
+        /// <returns>
+        /// An array of <see cref="Bitfield">bitfields</see>.
+        /// </returns>
         public static Bitfield[] Bf(params (int pos, int len)[] fields)
         {
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();

@@ -56,7 +56,7 @@ namespace Reko.Arch.X86.Rewriter
             case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth);
             case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
             case FpuOperand fpu: return FpuRegister(fpu.StNumber);
-            case AddressOperand addr: return addr.Address;
+            case Address addr: return addr;
             default: throw new NotImplementedException($"Operand {op}");
             }
         }

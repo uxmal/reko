@@ -134,7 +134,7 @@ namespace Reko.Arch.Angstrem
         private static bool A10(uint uInstr, KR1878Disassembler dasm)
         {
             var a = a10field.Read(uInstr);
-            var target = AddressOperand.Ptr16((ushort)a);
+            var target = Address.Ptr16((ushort)a);
             dasm.ops.Add(target);
             return true;
         }

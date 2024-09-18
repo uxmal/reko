@@ -78,12 +78,18 @@ namespace Reko.Arch.M68k.Machine
                         M68kDisassembler.HexStringFormat));
                 return;
             }
+            if (op is Address addr)
+            {
+                renderer.WriteAddress($"${addr.Offset:X8}", addr);
+                return;
+            }
+
             else if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
                 var uAddr = Address.ToUInt32();
                 if (memOp.Offset != null)
                     uAddr = (uint) (uAddr + memOp.Offset.ToInt32());
-                var addr = Address.Ptr32(uAddr);
+                addr = Address.Ptr32(uAddr);
                 if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
                     renderer.WriteAddress(addr.ToString(), addr);

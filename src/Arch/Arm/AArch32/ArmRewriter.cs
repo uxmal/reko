@@ -593,9 +593,9 @@ namespace Reko.Arch.Arm.AArch32
         {
             Expression dst;
             bool dstIsAddress;
-            if (instr.Operands[0] is AddressOperand aOp)
+            if (instr.Operands[0] is Address aOp)
             {
-                dst = aOp.Address;
+                dst = aOp;
                 dstIsAddress = true;
             }
             else
@@ -662,7 +662,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             iclass = InstrClass.ConditionalTransfer;
             m.Branch(ctor(Operand(0)),
-                    ((AddressOperand) instr.Operands[1]).Address,
+                    (Address)instr.Operands[1],
                     InstrClass.ConditionalTransfer);
         }
 
@@ -835,8 +835,8 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     return m.Mem(SizeFromLoadStore(), ea);
                 }
-            case AddressOperand aop:
-                return aop.Address;
+            case Address addr:
+                return addr;
             case IndexedOperand ixop:
                 // Extract a single item from the vector register
                 var ixreg = Reg(ixop.Register);

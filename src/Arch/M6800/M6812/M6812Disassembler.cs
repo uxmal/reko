@@ -317,7 +317,7 @@ namespace Reko.Arch.M6800.M6812
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
             var addrDst = dasm.rdr.Address + (sbyte)rel;
-            dasm.operands.Add(AddressOperand.Create(addrDst));
+            dasm.operands.Add(addrDst);
             return true;
         }
 
@@ -326,7 +326,7 @@ namespace Reko.Arch.M6800.M6812
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
             var addrDst = dasm.rdr.Address + (int)rel;
-            dasm.operands.Add(AddressOperand.Create(addrDst));
+            dasm.operands.Add(addrDst);
             return true;
         }
 
@@ -335,7 +335,7 @@ namespace Reko.Arch.M6800.M6812
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
             var addrDst = dasm.rdr.Address - (int)rel;
-            dasm.operands.Add(AddressOperand.Create(addrDst));
+            dasm.operands.Add(addrDst);
             return true;
         }
 
@@ -344,7 +344,7 @@ namespace Reko.Arch.M6800.M6812
             if (!dasm.rdr.TryReadBeInt16(out var rel))
                 return false;
             var addrDst = dasm.rdr.Address + rel;
-            dasm.operands.Add(AddressOperand.Create(addrDst));
+            dasm.operands.Add(addrDst);
             return true;
         }
 

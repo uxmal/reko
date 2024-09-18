@@ -127,7 +127,7 @@ namespace Reko.Arch.LatticeMico
             return (u, d) =>
             {
                 var offset = field.ReadSigned(u) << 2;
-                d.ops.Add(AddressOperand.Create(d.addr + offset));
+                d.ops.Add(d.addr + offset);
                 return true;
             };
         }

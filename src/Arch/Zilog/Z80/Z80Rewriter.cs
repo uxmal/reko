@@ -321,11 +321,11 @@ namespace Reko.Arch.Zilog.Z80
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
-                m.Call(((AddressOperand)instr.Operands[1]).Address, 2);
+                m.Call((Address)instr.Operands[1], 2);
             }
             else
             {
-                m.Call(((AddressOperand)instr.Operands[0]).Address, 2);
+                m.Call((Address)instr.Operands[0], 2);
             }
         }
 
@@ -388,7 +388,7 @@ namespace Reko.Arch.Zilog.Z80
             var dst = instr.Operands[0];
             var b = binder.EnsureRegister(Registers.b);
             m.Assign(b, m.ISub(b, 1));
-            m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, InstrClass.Transfer);
+            m.Branch(m.Ne0(b), (Address)dst, InstrClass.Transfer);
         }
 
         private void RewriteDi()
@@ -450,10 +450,10 @@ namespace Reko.Arch.Zilog.Z80
             switch (instr.Operands[0])
             {
             case ConditionOperand cOp:
-                EmitBranch(cOp, ((AddressOperand)instr.Operands[1]).Address);
+                EmitBranch(cOp, (Address)instr.Operands[1]);
                 break;
-            case AddressOperand target:
-                m.Goto(target.Address);
+            case Address target:
+                m.Goto(target);
                 break;
             case MemoryOperand mTarget:
                 m.Goto(binder.EnsureRegister(mTarget.Base!));
@@ -469,7 +469,7 @@ namespace Reko.Arch.Zilog.Z80
             {
                 op = dasm.Current.Operands[1];
             }
-            var target = (AddressOperand)op;
+            var target = (Address)op;
             if (cop != null)
             {
                 ConditionCode cc;
@@ -486,12 +486,12 @@ namespace Reko.Arch.Zilog.Z80
                     m.Test(
                         cc,
                         binder.EnsureFlagGroup(cr)),
-                    target.Address,
+                    target,
                     iclass);
             }
             else
             {
-                m.Goto(target.Address);
+                m.Goto(target);
             }
         }
 

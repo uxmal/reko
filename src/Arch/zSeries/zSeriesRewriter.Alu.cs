@@ -659,8 +659,8 @@ namespace Reko.Arch.zSeries
         private void RewriteShift2(PrimitiveType dt, Func<Expression,Expression,Expression> fn)
         {
             int sh;
-            if (instr.Operands[1] is AddressOperand addr)
-                sh = (int) addr.Address.ToLinear() & 0x3F;
+            if (instr.Operands[1] is Address addr)
+                sh = (int) addr.ToLinear() & 0x3F;
             else 
                 sh = (int)((MemoryOperand)instr.Operands[1]).Offset & 0x3F;
             var src = Reg(0, dt);

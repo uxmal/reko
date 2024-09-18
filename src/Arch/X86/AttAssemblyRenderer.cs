@@ -217,8 +217,7 @@ namespace Reko.Arch.X86
                 renderer.WriteChar(')');
                 break;
 
-            case AddressOperand aop:
-                var addr = aop.Address;
+            case Address addr:
                 if (options.SymbolResolver(addr, out string? name, out long symOffset))
                 {
                     base.RenderSymbolReference(addr, name!, symOffset, renderer);
@@ -241,7 +240,7 @@ namespace Reko.Arch.X86
                 }
                 else
                 {
-                    renderer.WriteAddress(FormatUnsignedValue(aop.Address.Offset, "${0}"), addr);
+                    renderer.WriteAddress(FormatUnsignedValue(addr.Offset, "${0}"), addr);
                 }
                 break;
             default: throw new NotImplementedException($"Not implemeted operand type {operand.GetType().Name}");

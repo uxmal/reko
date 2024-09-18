@@ -300,8 +300,8 @@ namespace Reko.Arch.CSky
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 return m.Mem(mem.Width, EffectiveAddress(mem));
             default:
@@ -467,14 +467,14 @@ namespace Reko.Arch.CSky
 
         private void RewriteBr()
         {
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address) instr.Operands[0];
             m.Goto(target);
         }
 
         private void RewriteBranch(Func<Expression, Expression> cmp)
         {
             var reg = Operand(0);
-            var target = ((AddressOperand) instr.Operands[1]).Address;
+            var target = (Address) instr.Operands[1];
             m.Branch(cmp(reg), target);
         }
 
@@ -493,7 +493,7 @@ namespace Reko.Arch.CSky
             {
                 condition = m.Not(condition);
             }
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address)instr.Operands[0];
             m.Branch(condition, target);
         }
 
@@ -507,7 +507,7 @@ namespace Reko.Arch.CSky
 
         private void RewriteBsr()
         {
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address) instr.Operands[0];
             m.Call(target, 0);
         }
 

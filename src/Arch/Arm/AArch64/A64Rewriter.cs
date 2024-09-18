@@ -512,8 +512,8 @@ namespace Reko.Arch.Arm.AArch64
                 return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
-            case AddressOperand addrOp:
-                return addrOp.Address;
+            case Address addrOp:
+                return addrOp;
             case VectorRegisterOperand vectorOp:
                 return RewriteVectorRegisterOperand(vectorOp);
             case MemoryOperand mem:

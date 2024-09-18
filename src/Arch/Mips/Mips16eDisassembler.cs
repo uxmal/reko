@@ -319,7 +319,7 @@ namespace Reko.Arch.Mips
         public static bool AImm8(uint uInstr, Mips16eDisassembler dasm)
         {
             var addr = dasm.addr.Align(4) + (bf0_8.Read(uInstr) << 2);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -328,7 +328,7 @@ namespace Reko.Arch.Mips
             Debug.Assert(dasm.extend.HasValue);
             var uExt = ((Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length | bf0_5.Read(uInstr)));
             var addr = dasm.addr.Align(4) + Bits.SignExtend(uExt, 16);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -396,7 +396,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = field.ReadSigned(u) << 1;
                 var addr = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -410,7 +410,7 @@ namespace Reko.Arch.Mips
                 (Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length) |
                 bf0_5.Read(uInstr);
             var offset = Bits.SignExtend(uOffset, 16) << 1;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 
@@ -423,7 +423,7 @@ namespace Reko.Arch.Mips
             var uDst = dasm.rdr.Address.ToLinear() & ~((1u << 28) - 1u);
             uDst |= offset << 2;
             var addrDst = Address.Create(dasm.arch.PointerType, uDst);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 
@@ -444,8 +444,7 @@ namespace Reko.Arch.Mips
             Debug.Assert(dasm.extend.HasValue);
             var uExt = ((Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length | bf0_5.Read(uInstr)));
             var addr = dasm.addr.Align(4) + Bits.SignExtend(uExt, 16);
-            var mem = AddressOperand.Create(addr);
-            dasm.ops.Add(mem);
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -468,8 +467,7 @@ namespace Reko.Arch.Mips
                 Debug.Assert(d.extend.HasValue);
                 var uExt = ((Bitfield.ReadFields(bf_extend5, d.extend.Value) << bf0_5.Length | bf0_5.Read(u)));
                 var addr = d.addr.Align(4) + Bits.SignExtend(uExt, 16);
-                var mem = AddressOperand.Create(addr);
-                d.ops.Add(mem);
+                d.ops.Add(addr);
                 return true;
             };
         }

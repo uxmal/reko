@@ -127,8 +127,8 @@ namespace Reko.Arch.M68k.Assembler
                 return (postOp.Register.Number & 7 | 0x18);
             case PredecrementMemoryOperand preOp:
                 return (preOp.Register.Number & 7 | 0x20);
-            case M68kAddressOperand addrOp:
-                Imm(addrOp.Width.Size, addrOp.Address.ToUInt32());
+            case Address addrOp:
+                Imm(addrOp.DataType.Size, addrOp.ToUInt32());
                 return 0x39;
             case ImmediateOperand immOp:
                 Imm(immOp.Width.Size, immOp.Value.ToUInt32());
@@ -367,7 +367,7 @@ namespace Reko.Arch.M68k.Assembler
 
         public void Jsr(uint address)
         {
-            Jsr(new M68kAddressOperand(address));
+            Jsr(Address.Ptr32(address));
         }
 
         public void Jsr(MachineOperand op)

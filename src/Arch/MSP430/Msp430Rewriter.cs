@@ -196,8 +196,8 @@ namespace Reko.Arch.Msp430
                 }
             case ImmediateOperand iop:
                 return iop.Value;
-            case AddressOperand aop:
-                return aop.Address;
+            case Address aop:
+                return aop;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -264,8 +264,8 @@ namespace Reko.Arch.Msp430
                 m.Assign(tmp, fn(tmp, src));
                 m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
                 return tmp;
-            case AddressOperand aop:
-                var mem = m.Mem(op.Width, aop.Address);
+            case Address aop:
+                var mem = m.Mem(op.Width, aop);
                 m.Assign(mem, fn(mem, src));
                 return mem;
             }
@@ -313,8 +313,8 @@ namespace Reko.Arch.Msp430
                 }
                 m.Assign(m.Mem(mop.Width, ea), MaybeSlice(src, mop.Width));
                 return src;
-            case AddressOperand aop:
-                var mem = m.Mem(op.Width, aop.Address);
+            case Address aop:
+                var mem = m.Mem(op.Width, aop);
                 m.Assign(mem, src);
                 return src;
             }
@@ -412,7 +412,7 @@ namespace Reko.Arch.Msp430
         {
             iclass = InstrClass.ConditionalTransfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)flags));
-            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.Operands[0]).Address, InstrClass.ConditionalTransfer);
+            m.Branch(m.Test(cc, grf), (Address)instr.Operands[0], InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCall()

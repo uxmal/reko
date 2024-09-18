@@ -182,8 +182,8 @@ namespace Reko.Arch.Padauk
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 if (mem.Bit.HasValue)
                 {

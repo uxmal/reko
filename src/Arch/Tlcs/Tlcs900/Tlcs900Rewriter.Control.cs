@@ -54,7 +54,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             iclass = InstrClass.ConditionalTransfer;
             var reg = RewriteSrc(instr.Operands[0]);
-            var dst = ((AddressOperand)instr.Operands[1]).Address;
+            var dst = (Address)instr.Operands[1];
             m.Assign(reg, m.ISub(reg, 1));
             m.Branch(m.Ne0(reg), dst, InstrClass.ConditionalTransfer);
         }

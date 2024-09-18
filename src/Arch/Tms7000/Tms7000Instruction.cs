@@ -44,8 +44,8 @@ namespace Reko.Arch.Tms7000
             case ImmediateOperand imm:
                 renderer.WriteString(ImmediateOperand.FormatUnsignedValue(imm.Value, ">{1}"));
                 break;
-            case AddressOperand addr:
-                renderer.WriteAddress("@" + addr.Address, addr.Address);
+            case Address addr:
+                renderer.WriteAddress("@" + addr, addr);
                 break;
             default:
                 op.Render(renderer, options);

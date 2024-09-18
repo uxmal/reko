@@ -59,11 +59,11 @@ namespace Reko.Arch.Zilog.Z80
                     return true;
                 var immOpB = (ImmediateOperand) opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
-            case AddressOperand addrOpA:
+            case Address addrOpA:
                 if (NormalizeConstants)
                     return true;
-                var addrOpB = (AddressOperand) opB;
-                return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
+                var addrOpB = (Address) opB;
+                return addrOpA.ToLinear() == addrOpB.ToLinear();
             case ConditionOperand condOpA:
                 return condOpA.Code == ((ConditionOperand) opB).Code;
             case MemoryOperand memOpA:
@@ -105,12 +105,12 @@ namespace Reko.Arch.Zilog.Z80
                 else
                     return h * 13 ^ GetConstantHash(immOp.Value);
             }
-            if (op is AddressOperand addrOp)
+            if (op is Address addrOp)
             {
                 if (NormalizeConstants)
                     return h;
                 else
-                    return h * 29 ^ addrOp.Address.GetHashCode();
+                    return h * 29 ^ addrOp.GetHashCode();
             }
             if (op is ConditionOperand condOp)
             {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,8 @@ namespace Reko.Core
     /// linear addresses (z80, PowerPC) and some others have eldritch 
     /// segmented addresses (x86).
     /// </summary>
-	public abstract class Address : Expression, IComparable<Address>, IComparable
+	public abstract class Address : Expression, IComparable<Address>, IComparable,
+        MachineOperand
     {
         protected Address(DataType size)
             : base(size)
@@ -120,6 +122,12 @@ namespace Reko.Core
         public override IEnumerable<Expression> Children => Array.Empty<Expression>();
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
+
+        DataType MachineOperand.Width
+        {
+            get => DataType;
+            set => DataType = value;
+        }
 
         /// <summary>
         /// If this is a segmented address, returns the segment selector. If this is a 
@@ -247,6 +255,18 @@ namespace Reko.Core
                 return (b is null) ? 0 : -1;
             }
             return a.CompareTo(b);
+        }
+
+        void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            renderer.WriteAddress(this.ToString(), this);
+            renderer.EndOperand();
+        }
+
+        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        {
+            return ToString();
         }
 
         public abstract Constant ToConstant();

@@ -50,7 +50,7 @@ namespace Reko.Arch.Vax
                 m.Invalid();
                 return;
             }
-            if (!(this.instr.Operands[3] is AddressOperand addrOp))
+            if (this.instr.Operands[3] is not Address addrOp)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -60,14 +60,14 @@ namespace Reko.Arch.Vax
             {
                 m.Branch(
                     m.FLe(index, limit),
-                    addrOp.Address,
+                    addrOp,
                     InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.FGe(index, limit),
-                    addrOp.Address,
+                    addrOp,
                     InstrClass.ConditionalTransfer);
             }
         }
@@ -88,7 +88,7 @@ namespace Reko.Arch.Vax
                 m.Invalid();
                 return;
             }
-            if (!(this.instr.Operands[3] is AddressOperand addrOp))
+            if (this.instr.Operands[3] is not Address addr)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -98,14 +98,14 @@ namespace Reko.Arch.Vax
             {
                 m.Branch(
                     m.Le(index, limit),
-                    addrOp.Address,
+                    addr,
                     InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.Ge(index, limit),
-                    addrOp.Address,
+                    addr,
                     InstrClass.ConditionalTransfer);
             }
         }
@@ -126,7 +126,7 @@ namespace Reko.Arch.Vax
                 test = m.Eq0(test);
             }
             m.Branch(test,
-                ((AddressOperand)this.instr.Operands[2]).Address,
+                (Address)this.instr.Operands[2],
                 InstrClass.ConditionalTransfer);
         }
 
@@ -134,7 +134,7 @@ namespace Reko.Arch.Vax
         {
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
-            var dst = ((AddressOperand)this.instr.Operands[2]).Address;
+            var dst = (Address)this.instr.Operands[2];
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
             if (updateBit)
@@ -155,7 +155,7 @@ namespace Reko.Arch.Vax
         {
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
-            var dst = ((AddressOperand)this.instr.Operands[2]).Address;
+            var dst = (Address)this.instr.Operands[2];
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.SideEffect(m.Fn(set_interlock));
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
@@ -179,26 +179,26 @@ namespace Reko.Arch.Vax
             var n = RewriteSrcOp(0, PrimitiveType.Word32);
             var test = fn(m.And(n, 1));
             m.Branch(test,
-                    ((AddressOperand)this.instr.Operands[1]).Address,
+                    (Address)this.instr.Operands[1],
                     iclass);
         }
 
         private void RewriteBranch()
         {
-            if (!(this.instr.Operands[0] is AddressOperand addrOp))
+            if (this.instr.Operands[0] is not Address addr)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
-            m.Goto(addrOp.Address);
+            m.Goto(addr);
         }
 
         private void RewriteBsb()
         {
-            if (this.instr.Operands[0] is AddressOperand addrOp)
+            if (this.instr.Operands[0] is Address addr)
             {
-                m.Call(addrOp.Address, 4);
+                m.Call(addr, 4);
             }
             else
             { 
@@ -211,7 +211,7 @@ namespace Reko.Arch.Vax
         {
             m.Branch(
                 m.Test(cc, FlagGroup(flags)),
-                ((AddressOperand)this.instr.Operands[0]).Address,
+                (Address)this.instr.Operands[0],
                 InstrClass.ConditionalTransfer);
         }
 
@@ -227,7 +227,7 @@ namespace Reko.Arch.Vax
                 return;
             m.Branch(
                 cmp(dst, limit),
-                ((AddressOperand)this.instr.Operands[2]).Address,
+                (Address)this.instr.Operands[2],
                 iclass);
         }
 
@@ -317,7 +317,7 @@ namespace Reko.Arch.Vax
                 return;
             m.Branch(
                 cmp(dst, Constant.Word32(0)),
-                ((AddressOperand)this.instr.Operands[1]).Address,
+                (Address)this.instr.Operands[1],
                 InstrClass.ConditionalTransfer);
         }
 

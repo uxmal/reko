@@ -167,7 +167,7 @@ namespace Reko.Arch.Avr.Avr8
         {
             int offset = (short) ((wInstr & 0xFFF) << 4);
             offset = offset >> 3;
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + 2 + offset));
+            dasm.ops.Add(dasm.addr + 2 + offset);
             return true;
         }
 
@@ -233,7 +233,7 @@ namespace Reko.Arch.Avr.Avr8
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort w2))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr32(
+            dasm.ops.Add(Address.Ptr32(
                 (uint) (((wInstr >> 4) & 0x1F) << 18) |
                 (uint) ((wInstr & 1) << 17) |
                 (uint) (w2 << 1)));
@@ -259,7 +259,7 @@ namespace Reko.Arch.Avr.Avr8
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort w2))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(w2));
+            dasm.ops.Add(Address.Ptr16(w2));
             return true;
         }
 
@@ -270,7 +270,7 @@ namespace Reko.Arch.Avr.Avr8
             offset = (short) (offset << 6);
             offset = (short) (offset >> 8);
             offset = (short) (offset & ~1);
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + offset + 2));
+            dasm.ops.Add(dasm.addr + offset + 2);
             return true;
         }
 

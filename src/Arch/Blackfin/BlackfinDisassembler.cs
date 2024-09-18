@@ -531,7 +531,7 @@ namespace Reko.Arch.Blackfin
             return (u, d) =>
             {
                 var offset = bitfield.ReadSigned(u) << 1;
-                d.ops.Add(AddressOperand.Create(d.addr + offset));
+                d.ops.Add(d.addr + offset);
                 return true;
             };
         }
@@ -581,7 +581,7 @@ namespace Reko.Arch.Blackfin
             return (u, d) =>
             {
                 var pcOffset = bitfield.ReadSigned(u) << sh;
-                d.ops.Add(AddressOperand.Create(d.addr + pcOffset));
+                d.ops.Add(d.addr + pcOffset);
                 return true;
             };
         }

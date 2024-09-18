@@ -145,8 +145,8 @@ Architecture */
                 return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case IndirectOperand mem:
                 Expression ea;
                 if (mem.Base == arch.pc)
@@ -165,21 +165,21 @@ Architecture */
 
         private void RewriteB(MipsInstruction instr)
         {
-            var dst = ((AddressOperand) instr.Operands[0]).Address;
+            var dst = (Address) instr.Operands[0];
             m.Goto(dst);    // No jump delay slot
         }
 
         private void RewriteBeqz(MipsInstruction instr)
         {
             var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
-            var dst = ((AddressOperand) instr.Operands[1]).Address;
+            var dst = (Address)instr.Operands[1];
             m.Branch(m.Eq0(reg), dst);    // No jump delay slot
         }
 
         private void RewriteBnez(MipsInstruction instr)
         {
             var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
-            var dst = ((AddressOperand) instr.Operands[1]).Address;
+            var dst = (Address)instr.Operands[1];
             m.Branch(m.Ne0(reg), dst);    // No jump delay slot
         }
 
@@ -214,7 +214,7 @@ Architecture */
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            var dst = ((AddressOperand) instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             m.CallD(dst, 0);
         }
 
@@ -223,7 +223,7 @@ Architecture */
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            var dst = ((AddressOperand) instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             m.CallXD(dst, 0, arch);
         }
 

@@ -483,8 +483,8 @@ namespace Reko.Arch.RiscV
                 return reg;
             case ImmediateOperand immop:
                 return immop.Value;
-            case AddressOperand addrop:
-                return addrop.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var ea = (Expression)binder.EnsureRegister(mem.Base!);
                 if (mem.Offset != 0)

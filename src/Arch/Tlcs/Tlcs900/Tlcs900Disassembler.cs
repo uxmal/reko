@@ -186,7 +186,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (!dasm.rdr.TryReadByte(out byte o8))
                 return false;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + (sbyte) o8));
+            dasm.ops.Add(dasm.rdr.Address + (sbyte) o8);
             return true;
         }
 
@@ -194,7 +194,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (!dasm.rdr.TryReadLeInt16(out short o16))
                 return false;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + o16));
+            dasm.ops.Add(dasm.rdr.Address + o16);
             return true;
         }
 
@@ -515,7 +515,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 uAddr |= (uint)b << sh;
                 sh += 8;
             }
-            return AddressOperand.Ptr32(uAddr);
+            return Address.Ptr32(uAddr);
         }
 
         private RegisterStorage? ExtraRegister(byte b)

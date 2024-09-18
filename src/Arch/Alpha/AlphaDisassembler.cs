@@ -195,7 +195,7 @@ namespace Reko.Arch.Alpha
             {
                 int offset = ((int)uInstr << 11) >> 9;
                 var op1 = dasm.AluRegister(uInstr >> 21);
-                var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
+                var op2 = dasm.rdr.Address + offset;
                 return new AlphaInstruction
                 {
                     Mnemonic = this.mnemonic,
@@ -218,7 +218,7 @@ namespace Reko.Arch.Alpha
             {
                 int offset = ((int)uInstr << 11) >> 9;
                 var op1 = dasm.FpuRegister(uInstr >> 21);
-                var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
+                var op2 = dasm.rdr.Address + offset;
                 return new AlphaInstruction
                 {
                     Mnemonic = this.mnemonic,

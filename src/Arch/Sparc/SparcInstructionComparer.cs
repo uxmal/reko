@@ -54,9 +54,9 @@ namespace Reko.Arch.Sparc
                 return CompareRegisters(rA, (RegisterStorage) b);
             case ImmediateOperand immA:
                 return CompareValues(immA.Value, ((ImmediateOperand) b).Value);
-            case AddressOperand addrA:
+            case Address addrA:
                 return NormalizeConstants ||
-                    addrA.Address.ToLinear() == ((AddressOperand) b).Address.ToLinear();
+                    addrA.ToLinear() == ((Address) b).ToLinear();
             case MemoryOperand mA:
                 var mB = (MemoryOperand) b;
                 if (!CompareRegisters(mA.Base, mB.Base))
@@ -90,8 +90,8 @@ namespace Reko.Arch.Sparc
                 return GetRegisterHash(r);
             case ImmediateOperand i:
                 return GetConstantHash(i.Value);
-            case AddressOperand a:
-                return a.Address.GetHashCode();
+            case Address a:
+                return a.GetHashCode();
             case MemoryOperand m:
                 var h = GetRegisterHash(m.Base);
                 h = h ^ 29 * GetConstantHash(m.Offset);

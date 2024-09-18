@@ -200,7 +200,7 @@ namespace Reko.Arch.XCore
             var imm = (uInstr & 0x3F) << 1;
             var addr = dasm.addr + imm;
             dasm.ops.Add(Registers.GpRegs[iReg]);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -213,7 +213,7 @@ namespace Reko.Arch.XCore
                 return false;       // Illegal address.
             var addr = dasm.addr - imm;
             dasm.ops.Add(Registers.GpRegs[iReg]);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -236,7 +236,7 @@ namespace Reko.Arch.XCore
         {
             var displacement = (uInstr & Bits.Mask(0, 6)) << 1;
             var addr = dasm.addr + displacement;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -245,7 +245,7 @@ namespace Reko.Arch.XCore
         {
             var displacement = (int)(uInstr & Bits.Mask(0, 6)) << 1;
             var addr = dasm.addr - displacement;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -266,7 +266,7 @@ namespace Reko.Arch.XCore
         {
             var displacement = (uInstr & Bits.Mask(0, 10)) << 1;
             var addr = dasm.addr + displacement;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -275,7 +275,7 @@ namespace Reko.Arch.XCore
         {
             var displacement = (int)(uInstr & Bits.Mask(0, 10)) << 1;
             var addr = dasm.addr - displacement;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -285,7 +285,7 @@ namespace Reko.Arch.XCore
         {
             var offset = pcRe11Field.ReadSigned(uInstr);
             var addr = dasm.addr + 2 * offset;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 

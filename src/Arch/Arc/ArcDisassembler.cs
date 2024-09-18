@@ -534,7 +534,7 @@ namespace Reko.Arch.Arc
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
                 var uAddr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32((uint)uAddr));
+                d.ops.Add(Address.Ptr32((uint)uAddr));
                 return true;
             };
         }
@@ -549,7 +549,7 @@ namespace Reko.Arch.Arc
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
                 var uAddr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32(uAddr));
+                d.ops.Add(Address.Ptr32(uAddr));
                 return true;
             };
         }
@@ -562,7 +562,7 @@ namespace Reko.Arch.Arc
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
                 var addr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32((uint) addr));
+                d.ops.Add(Address.Ptr32((uint) addr));
                 return true;
             };
         }
@@ -575,7 +575,7 @@ namespace Reko.Arch.Arc
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
                 var addr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32((uint) addr));
+                d.ops.Add(Address.Ptr32((uint) addr));
                 return true;
             };
         }

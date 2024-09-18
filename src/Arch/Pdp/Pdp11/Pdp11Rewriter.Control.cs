@@ -44,7 +44,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteBr()
         {
             this.iclass = InstrClass.Transfer;
-            m.Goto(((AddressOperand)instr.Operands[0]).Address);
+            m.Goto((Address)instr.Operands[0]);
         }
 
         private void RewriteBxx(ConditionCode cc, FlagGroupStorage flags)
@@ -52,7 +52,7 @@ namespace Reko.Arch.Pdp.Pdp11
             this.iclass = InstrClass.Transfer;
             m.Branch(
                 m.Test(cc, binder.EnsureFlagGroup(flags)),
-                ((AddressOperand)instr.Operands[0]).Address,
+                (Address)instr.Operands[0],
                 InstrClass.ConditionalTransfer);
         }
 
@@ -182,7 +182,7 @@ namespace Reko.Arch.Pdp.Pdp11
             else
             {
                 m.Assign(reg, m.ISub(reg, 1));
-                m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, this.iclass);
+                m.Branch(m.Ne0(reg), (Address)instr.Operands[1], this.iclass);
             }
         }
 

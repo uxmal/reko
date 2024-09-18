@@ -58,9 +58,9 @@ namespace Reko.Arch.RiscV
             case ImmediateOperand immA:
                 var immB = (ImmediateOperand) opB;
                 return NormalizeConstants || base.CompareValues(immA.Value, immB.Value);
-            case AddressOperand addrA:
-                var addrB = (AddressOperand) opB;
-                return NormalizeConstants || addrA.Address == addrB.Address;
+            case Address addrA:
+                var addrB = (Address) opB;
+                return NormalizeConstants || addrA == addrB;
             default:
                 throw new NotImplementedException();
             }
@@ -90,10 +90,10 @@ namespace Reko.Arch.RiscV
                         ? 0
                         : base.GetConstantHash(immop.Value),
 
-                AddressOperand aop =>
+                Address aop =>
                     (NormalizeConstants)
                         ? 0
-                        : aop.Address.GetHashCode(),
+                        : aop.GetHashCode(),
                 null => 0,
                 _ =>
                 throw new NotImplementedException(

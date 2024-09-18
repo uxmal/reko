@@ -187,7 +187,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadByte(out var imm8))
                 return false;
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + (sbyte) imm8));
+            dasm.ops.Add(dasm.addr + (sbyte) imm8);
             return true;
         }
 
@@ -384,7 +384,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort addr16))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(addr16));
+            dasm.ops.Add(Address.Ptr16(addr16));
             return true;
         }
 
@@ -398,7 +398,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
                    (uint) lo
                 | ((uint) mi << 8)
                 | ((uint) hi << 16);
-            dasm.ops.Add(AddressOperand.Create(Address.Ptr32(addr24)));
+            dasm.ops.Add(Address.Ptr32(addr24));
             return true;
         }
 

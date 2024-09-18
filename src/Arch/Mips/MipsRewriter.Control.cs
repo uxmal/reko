@@ -54,7 +54,7 @@ namespace Reko.Arch.Mips
             // A special case is when we call to the location after
             // the delay slot. This is an idiom to capture the 
             // program counter in the la register.
-            var dst = ((AddressOperand) instr.Operands[iop]).Address;
+            var dst = (Address) instr.Operands[iop];
             if (instr.Address.ToLinear() + 8 == dst.ToLinear())
             {
                 iclass = InstrClass.Linear;

@@ -169,7 +169,7 @@ namespace Reko.Arch.OpenRISC.Or
 
         private Address Addr(MachineOperand op)
         {
-            return ((AddressOperand) op).Address;
+            return (Address) op;
         }
 
         private Constant Imm(MachineOperand op)
@@ -319,8 +319,8 @@ namespace Reko.Arch.OpenRISC.Or
             {
                 f = m.Not(f);
             }
-            var target = (AddressOperand) instrCur.Operands[0];
-            m.Branch(f, target.Address, instrCur.InstructionClass);
+            var target = (Address) instrCur.Operands[0];
+            m.Branch(f, target, instrCur.InstructionClass);
         }
 
         private void RewriteCmov()

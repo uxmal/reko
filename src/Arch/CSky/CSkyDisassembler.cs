@@ -259,7 +259,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var displacement = bf.ReadSigned(u);
-                var addrOp = AddressOperand.Create(d.addr + (displacement << shift));
+                var addrOp = d.addr + (displacement << shift);
                 d.ops.Add(addrOp);
                 return true;
             };

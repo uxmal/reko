@@ -679,7 +679,7 @@ namespace Reko.Arch.M68k.Disassembler
                 {
                     if (EXT_EFFECTIVE_ZERO(extension))
                     {
-                        return new M68kAddressOperand(Address.Ptr32(0));
+                        return Address.Ptr32(0);
                     }
 
                     RegisterStorage? base_reg = null;
@@ -735,12 +735,12 @@ namespace Reko.Arch.M68k.Disassembler
                 // Absolute short address
                 if (!rdr.TryReadBeUInt16(out ushort usAddr))
                     return null;
-                return new M68kAddressOperand(usAddr);
+                return Address.Ptr32(usAddr);
             case 0x39:
                 // Absolute long address
                 if (!rdr.TryReadBeUInt32(out uint uAddr))
                     return null;
-                return new M68kAddressOperand(uAddr);
+                return Address.Ptr32(uAddr);
             case 0x3A:
                 // Program counter with displacement
                 var off = rdr.Address - addr;
@@ -1316,7 +1316,7 @@ namespace Reko.Arch.M68k.Disassembler
                 return false;
             dasm.mnemonic = mnemonic;
             dasm.iclass = InstrClass.ConditionalTransfer;
-            dasm.ops.Add(new M68kAddressOperand(new_pc + displacement));
+            dasm.ops.Add(new_pc + displacement);
             return true;
         }
 
@@ -1484,7 +1484,7 @@ namespace Reko.Arch.M68k.Disassembler
             dasm.iclass = InstrClass.ConditionalTransfer;
             dasm.mnemonic = g_dbcc[uInstr >> 8 & 0xf];
             dasm.ops.Add(get_data_reg(uInstr & 7));
-            dasm.ops.Add(new M68kAddressOperand(temp_pc + sDisplacement));
+            dasm.ops.Add(temp_pc + sDisplacement);
             return true;
         }
 
@@ -2317,7 +2317,7 @@ namespace Reko.Arch.M68k.Disassembler
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
             dasm.mnemonic = g_mmucond[uInstr & 0xf];
-            dasm.ops.Add(AddressOperand.Create(temp_pc + sDisplacement));
+            dasm.ops.Add(temp_pc + sDisplacement);
             return true;
         }
 
@@ -2327,7 +2327,7 @@ namespace Reko.Arch.M68k.Disassembler
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
             dasm.mnemonic = g_mmucond[uInstr & 0xf];
-            dasm.ops.Add(AddressOperand.Create(temp_pc + sDisplacement));
+            dasm.ops.Add(temp_pc + sDisplacement);
             return false;
         }
 
@@ -2339,7 +2339,7 @@ namespace Reko.Arch.M68k.Disassembler
             if (!dasm.rdr.TryReadBeInt16(out short displacement))
                 return false;
             dasm.mnemonic = g_mmudcond[uInstr & 0xf];
-            dasm.ops.Add(AddressOperand.Create(temp_pc + displacement));
+            dasm.ops.Add(temp_pc + displacement);
             return false;
         }
 
@@ -2591,7 +2591,7 @@ namespace Reko.Arch.M68k.Disassembler
             }
             else
                 offset = (sbyte) offset;
-            dasm.ops.Add(new M68kAddressOperand(addr + offset));
+            dasm.ops.Add(addr + offset);
             return true;
         }
 
@@ -2602,7 +2602,7 @@ namespace Reko.Arch.M68k.Disassembler
             var addr = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short relative))
                 return false;
-            dasm.ops.Add(new M68kAddressOperand(addr + relative));
+            dasm.ops.Add(addr + relative);
             return true;
         }
 

@@ -154,8 +154,7 @@ namespace Reko.Arch.Telink
         {
             var displacement = bf0_8.ReadSigned(uInstr) << 1;
             var addrTarget = dasm.addr + displacement;
-            var aOp = AddressOperand.Create(addrTarget);
-            dasm.ops.Add(aOp);
+            dasm.ops.Add(addrTarget);
             return true;
         }
 

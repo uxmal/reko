@@ -100,7 +100,7 @@ namespace Reko.Arch.M68k.Disassembler
                     {
                         op = default!; return false;
                     }
-                    op = new M68kAddressOperand(usAddr);
+                    op = Address.Ptr32(usAddr);
                     return true;
                 case 1: // Absolute long address
                     uint uAddr;
@@ -108,7 +108,7 @@ namespace Reko.Arch.M68k.Disassembler
                     {
                         op = default!; return false;
                     }
-                    op = new M68kAddressOperand(uAddr);
+                    op = Address.Ptr32(uAddr);
                     return true;
                 case 2: // Program counter with displacement
                     var off = rdr.Address - dasm.addr;
@@ -224,7 +224,7 @@ namespace Reko.Arch.M68k.Disassembler
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                 {
-                    op = new M68kAddressOperand(Address.Ptr32(0));
+                    op = Address.Ptr32(0);
                     return true;
                 }
 

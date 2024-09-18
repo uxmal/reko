@@ -233,7 +233,7 @@ namespace Reko.Arch.MilStd1750
         }
 
         private void AssignFlags(FlagGroupStorage flags, Expression e) => m.Assign(binder.EnsureFlagGroup(flags), e);
-        private Address Addr(int iOp) => ((AddressOperand) instr.Operands[iOp]).Address;
+        private Address Addr(int iOp) => (Address) instr.Operands[iOp];
 
 
         private Expression AltMem(DataType dt)
@@ -279,8 +279,8 @@ namespace Reko.Arch.MilStd1750
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Index != null)

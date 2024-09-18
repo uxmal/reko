@@ -77,8 +77,8 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
             case RegisterStorage reg:
                 e = binder.EnsureRegister(reg);
                 break;
-            case AddressOperand addr:
-                e = addr.Address;
+            case Address addr:
+                e = addr;
                 break;
             case MemoryOperand mem:
                 if (mem.Base is { })

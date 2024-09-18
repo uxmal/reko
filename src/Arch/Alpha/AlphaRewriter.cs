@@ -254,8 +254,8 @@ namespace Reko.Arch.Alpha
             }
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mop:
                 int offset = highWord ? (int)mop.Offset << 16 : mop.Offset;
                 Expression ea;

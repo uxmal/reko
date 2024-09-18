@@ -239,7 +239,7 @@ namespace Reko.Arch.Mips
                 var offset = field.ReadSigned(u);
                 offset <<= 1;
                 var addrDst = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addrDst));
+                d.ops.Add(addrDst);
                 return true;
             };
         }

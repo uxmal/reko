@@ -503,14 +503,14 @@ namespace Reko.Arch.Xtensa
         private static bool j(uint wInstr, XtensaDisassembler dasm)
         { 
             int dst = (int) dasm.state.addr.ToUInt32() + (sbyte) dasm.state.imm8 + 4;
-            dasm.ops.Add(AddressOperand.Ptr32((uint) dst));
+            dasm.ops.Add(Address.Ptr32((uint) dst));
             return true;
         }
 
         private static bool ju(uint wInstr, XtensaDisassembler dasm)
         {
             uint dst = dasm.state.addr.ToUInt32() + (byte) dasm.state.imm8 + 4;
-            dasm.ops.Add(AddressOperand.Ptr32(dst));
+            dasm.ops.Add(Address.Ptr32(dst));
             return true;
         }
 
@@ -521,7 +521,7 @@ namespace Reko.Arch.Xtensa
                 dasm.state.r |
                 ((dasm.state.t & 0x3) << 4);
             int dst = (int) dasm.state.addr.ToUInt32() + (sbyte) n + 4;
-            dasm.ops.Add(AddressOperand.Ptr32((uint) dst));
+            dasm.ops.Add(Address.Ptr32((uint) dst));
             return true;
         }
 
@@ -529,7 +529,7 @@ namespace Reko.Arch.Xtensa
 
         private static bool J(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = AddressOperand.Ptr32((uint) ((int) dasm.state.addr.ToLinear() + (dasm.state.offset + 4)));
+            var op = Address.Ptr32((uint) ((int) dasm.state.addr.ToLinear() + (dasm.state.offset + 4)));
             dasm.ops.Add(op);
             return true;
         }
@@ -537,7 +537,7 @@ namespace Reko.Arch.Xtensa
         // Call offset
         private static bool c(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = AddressOperand.Ptr32((uint) ((dasm.state.addr.ToUInt32() & ~3) + (dasm.state.offset << 2) + 4));
+            var op = Address.Ptr32((uint) ((dasm.state.addr.ToUInt32() & ~3) + (dasm.state.offset << 2) + 4));
             dasm.ops.Add(op);
             return true;
         }
@@ -548,7 +548,7 @@ namespace Reko.Arch.Xtensa
             var nAddr =
                 ((0xFFFF0000 | dasm.state.imm16) << 2) +
                  (int) (dasm.rdr.Address.ToUInt32() & ~3);
-            var op = AddressOperand.Ptr32((uint) nAddr);
+            var op = Address.Ptr32((uint) nAddr);
             dasm.ops.Add(op);
             return true;
         }
@@ -735,7 +735,7 @@ namespace Reko.Arch.Xtensa
                 int shoff = dasm.state.imm12;
                 if (shoff > 0x7FF)
                     shoff |= ~0x7FF;
-                var dst = AddressOperand.Ptr32((uint)
+                var dst = Address.Ptr32((uint)
                     ((int)dasm.state.addr.ToUInt32() + 4 + shoff));
 
                 return new XtensaInstruction

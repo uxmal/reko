@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         public void X86Dis_call32()
         {
             var instr = DisassembleBytes(0xE9, 0x78, 0x56, 0x34, 012);
-            var addrOp = (AddressOperand) instr.Operands[0];
+            var addrOp = (Address) instr.Operands[0];
             Assert.AreEqual("0C35567D", addrOp.ToString());
         }
 

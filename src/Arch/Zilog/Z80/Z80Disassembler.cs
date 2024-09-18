@@ -295,7 +295,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort us))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(us));
+            dasm.ops.Add(Address.Ptr16(us));
             return true;
         }
 
@@ -374,7 +374,7 @@ namespace Reko.Arch.Zilog.Z80
                 return false;
 
             int offset = (sbyte) bOffset;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 

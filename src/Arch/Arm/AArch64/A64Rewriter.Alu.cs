@@ -56,7 +56,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteAdrp()
         {
             var dst = RewriteOp(instr.Operands[0]);
-            var addr = ((AddressOperand)instr.Operands[1]).Address;
+            var addr = (Address)instr.Operands[1];
             m.Assign(dst, addr);
         }
 
@@ -374,9 +374,9 @@ namespace Reko.Arch.Arm.AArch64
             MemoryOperand? mem = null;
             Identifier? baseReg = null;
             Expression? postIndex = null;
-            if (instr.Operands[1] is AddressOperand aOp)
+            if (instr.Operands[1] is Address aOp)
             {
-                ea = aOp.Address;
+                ea = aOp;
             }
             else
             {
@@ -621,9 +621,9 @@ namespace Reko.Arch.Arm.AArch64
         {
             var imm = ((ImmediateOperand)instr.Operands[0]).Value;
             Expression ea;
-            if (instr.Operands[1] is AddressOperand aOp)
+            if (instr.Operands[1] is Address addr)
             {
-                ea = aOp.Address;
+                ea = addr;
             }
             else if (instr.Operands[1] is MemoryOperand mem)
             {

@@ -509,7 +509,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = Bitfield.ReadSignedFields(offsetfields, u) << 1;
                 var addr = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -527,7 +527,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = Bitfield.ReadSignedFields(offsetfields, u);
                 var addr = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -539,7 +539,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = Bitfield.ReadFields(offsetfields, u) << 1;
                 var addr = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }

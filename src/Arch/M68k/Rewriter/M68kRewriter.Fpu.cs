@@ -45,7 +45,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void RewriteFbcc(ConditionCode cc)
         {
-            var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             if (cc == ConditionCode.NEVER)
             {
                 m.Nop();
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k.Rewriter
             iclass = InstrClass.ConditionalTransfer;
             m.Branch(fnTest(
                 binder.EnsureRegister(Registers.fpsr)),
-                ((M68kAddressOperand)instr.Operands[0]).Address,
+                (Address)instr.Operands[0],
                 InstrClass.ConditionalTransfer);
         }
 

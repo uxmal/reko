@@ -58,11 +58,11 @@ namespace Reko.Arch.Pdp.Pdp11
             case RegisterStorage ropA:
                 var ropB = (RegisterStorage) opB;
                 return ropA == ropB;
-            case AddressOperand addrA:
+            case Address addrA:
                 if (NormalizeConstants)
                     return true;
-                var addrB = opB as AddressOperand;
-                return addrB != null && addrA.Address.ToLinear() == addrB.Address.ToLinear();
+                var addrB = opB as Address;
+                return addrB != null && addrA.ToLinear() == addrB.ToLinear();
             case ImmediateOperand immA:
                 var immB = (ImmediateOperand) opB;
                 return CompareValues(immA.Value, immB.Value);
@@ -105,12 +105,12 @@ namespace Reko.Arch.Pdp.Pdp11
             {
                 return base.GetConstantHash(immop.Value);
             }
-            if (op is AddressOperand addrop)
+            if (op is Address addrop)
             {
                 if (NormalizeRegisters)
                     return 0;
                 else
-                    return addrop.Address.GetHashCode();
+                    return addrop.GetHashCode();
             }
             if (op is MemoryOperand mem)
             {

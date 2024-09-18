@@ -412,8 +412,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
                     addr = m.Mem(word36, addr);
                 }
                 break;
-            case AddressOperand addrOp:
-                addr = addrOp.Address;
+            case Address addrOp:
+                addr = addrOp;
                 break;
             default:
                 throw new NotImplementedException($"Operand type {instr.Operands[iOp].GetType().Name}");
@@ -444,8 +444,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
                     value = m.Mem(word36, value);
                 }
                 return value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             }
             throw new NotImplementedException();
         }

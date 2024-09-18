@@ -879,7 +879,7 @@ namespace Reko.Arch.X86.Rewriter
 
                     if (targetOperand is ImmediateOperand immOperand)
                     {
-                        targetOperand = AddressOperand.Create(orw.ImmediateAsAddress(instrCur.Address, immOperand));
+                        targetOperand = orw.ImmediateAsAddress(instrCur.Address, immOperand);
                     }
                     else
                     {
@@ -896,7 +896,7 @@ namespace Reko.Arch.X86.Rewriter
                     dasm.TryPeek(3, out var p3) &&
                     (p1.Mnemonic == Mnemonic.push && (p1.Operands[0] is ImmediateOperand)) &&
                     (p2!.Mnemonic == Mnemonic.push && (p2.Operands[0] is ImmediateOperand)) &&
-                    (p3!.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is AddressOperand)))
+                    (p3!.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is Address)))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(p3.Operands[0], instrCur.Operands[0].Width);

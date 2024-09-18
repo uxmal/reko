@@ -96,11 +96,11 @@ namespace Reko.Arch.Rl78
                 this.RenderOperand(bit.Operand, renderer, options);
                 renderer.WriteFormat(".{0}", bit.BitPosition);
                 return;
-            case AddressOperand aop:
+            case Address aop:
                 var sb = new StringBuilder();
                 if (this.IsAbsolute)
                 {
-                    if (aop.Width.BitSize == 20)
+                    if (aop.DataType.BitSize == 20)
                         sb.Append("!!");
                     else
                         sb.Append("!");
@@ -109,8 +109,8 @@ namespace Reko.Arch.Rl78
                 {
                     sb.Append("$!");
                 }
-                sb.AppendFormat("{0:X4}", aop.Address.ToLinear());
-                renderer.WriteAddress(sb.ToString(), aop.Address);
+                sb.AppendFormat("{0:X4}", aop.ToLinear());
+                renderer.WriteAddress(sb.ToString(), aop);
                 return;
             case RegisterBankOperand rbop:
                 renderer.WriteFormat("rb{0}", rbop.Bank);

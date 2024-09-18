@@ -301,8 +301,8 @@ namespace Reko.Arch.Avr.Avr32
                     return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 return RewriteMemoryOperand(mem);
             case RegisterImmediateOperand regimm:
@@ -555,7 +555,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteBranch()
         {
-            var addr = ((AddressOperand) instr.Operands[0]).Address;
+            var addr = (Address) instr.Operands[0];
             if (instr.Condition == Avr32Condition.al)
             {
                 m.Goto(addr);
@@ -665,7 +665,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteGoto()
         {
             this.iclass = InstrClass.Transfer;
-            m.Goto(((AddressOperand) instr.Operands[0]).Address);
+            m.Goto((Address) instr.Operands[0]);
         }
 
         private void RewriteLd(PrimitiveType dtCast, PrimitiveType dtDst)

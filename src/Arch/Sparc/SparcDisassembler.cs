@@ -243,13 +243,13 @@ namespace Reko.Arch.Sparc
         internal static bool J2_16(uint wInstr, SparcDisassembler dasm)
         {
             int offset = Bitfield.ReadSignedFields(bf20_2_0_16, wInstr) << 2;
-            dasm.ops.Add(AddressOperand.Create(dasm.imageReader.Address + (offset - 4)));
+            dasm.ops.Add(dasm.imageReader.Address + (offset - 4));
             return true;
         }
 
         internal static bool JJ(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(AddressOperand.Create((dasm.imageReader.Address - 4) + ((int) wInstr << 2)));
+            dasm.ops.Add((dasm.imageReader.Address - 4) + ((int) wInstr << 2));
             return true;
         }
 
@@ -355,10 +355,10 @@ namespace Reko.Arch.Sparc
             return imm | mask;
         }
 
-        private static AddressOperand GetAddressOperand(Address addr, uint wInstr, int bitLength)
+        private static Address GetAddressOperand(Address addr, uint wInstr, int bitLength)
         {
             int offset = SignExtend(wInstr, bitLength) << 2;
-            return AddressOperand.Create(addr + (offset - 4));
+            return addr + (offset - 4);
         }
 
         private static MachineOperand GetAlternateSpaceOperand(Registers registers, uint wInstr, PrimitiveType type)

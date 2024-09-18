@@ -244,8 +244,8 @@ namespace Reko.Arch.C166
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 return Mem(mem);
             default:
@@ -346,7 +346,7 @@ namespace Reko.Arch.C166
         private void RewriteCalla()
         {
             var cc = ((ConditionalOperand) instr.Operands[0]).CondCode;
-            var addr = ((AddressOperand) instr.Operands[1]).Address;
+            var addr = (Address) instr.Operands[1];
             if (cc == CondCode.cc_UC)
             {
                 m.Call(addr, 2);
@@ -413,7 +413,7 @@ namespace Reko.Arch.C166
         private void RewriteJmps()
         {
             var seg = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt16();
-            var off = ((AddressOperand) instr.Operands[1]).Address.Offset;
+            var off = ((Address) instr.Operands[1]).Offset;
             var addr = Address.SegPtr(seg, (uint) off);
             m.Goto(addr);
         }
@@ -421,7 +421,7 @@ namespace Reko.Arch.C166
         private void RewriteJnb()
         {
             var (bit, exp) = BitOp(0);
-            var addr = ((AddressOperand) instr.Operands[1]).Address;
+            var addr = (Address) instr.Operands[1];
             m.Branch(m.Not(m.Fn(bit_intrinsic, exp, bit)), addr);
         }
 

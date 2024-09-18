@@ -1530,16 +1530,16 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"r2: orig: r2
     uses: r2_1 = r2 & 1<32>
-          r2_2 = r2 & 1<32> & 0xFFFF<32>
+          r2_2 = r2 & 1<32>
+          Mem4[r4:word32] = r2 & 1<32>
 r2_1: orig: r2_1
     def:  r2_1 = r2 & 1<32>
 r2_2: orig: r2_2
-    def:  r2_2 = r2 & 1<32> & 0xFFFF<32>
-    uses: Mem4[r4:word32] = r2_2
+    def:  r2_2 = r2 & 1<32>
 r4: orig: r4
-    uses: Mem4[r4:word32] = r2_2
+    uses: Mem4[r4:word32] = r2 & 1<32>
 Mem4: orig: Mem0
-    def:  Mem4[r4:word32] = r2_2
+    def:  Mem4[r4:word32] = r2 & 1<32>
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
@@ -1547,8 +1547,8 @@ SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r2_1 = r2 & 1<32>
-	r2_2 = r2 & 1<32> & 0xFFFF<32>
-	Mem4[r4:word32] = r2_2
+	r2_2 = r2 & 1<32>
+	Mem4[r4:word32] = r2 & 1<32>
 SsaProcedureBuilder_exit:
 ";
             #endregion

@@ -92,7 +92,7 @@ namespace Reko.Arch.i8051
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(
+            dasm.ops.Add(Address.Ptr16(
                 (ushort) (
                     (dasm.rdr.Address.ToLinear() & ~0x7Ful) |
                     (uInstr & 0xE0u) << 3 |
@@ -105,7 +105,7 @@ namespace Reko.Arch.i8051
         {
             if (!dasm.rdr.TryReadBeUInt16(out var uAddr)) // Yes, big endian!
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(uAddr));
+            dasm.ops.Add(Address.Ptr16(uAddr));
             return true;
         }
 
@@ -113,7 +113,7 @@ namespace Reko.Arch.i8051
         private static bool o(uint uInstr, i8051Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + (sbyte) b));
+            dasm.ops.Add(dasm.rdr.Address + (sbyte) b);
             return true;
         }
 

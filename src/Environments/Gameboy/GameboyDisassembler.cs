@@ -294,7 +294,7 @@ namespace Reko.Environments.Gameboy
         {
             if (!dasm.rdr.TryReadUInt16(out ushort w))
                 return false;
-            var imm = AddressOperand.Ptr16(w);
+            var imm = Address.Ptr16(w);
             dasm.operands.Add(imm);
             return true;
         }
@@ -305,7 +305,7 @@ namespace Reko.Environments.Gameboy
                 return false;
             int displacement = (sbyte) b;
             var addrTarget = dasm.rdr.Address + displacement;
-            dasm.operands.Add(AddressOperand.Create(addrTarget));
+            dasm.operands.Add(addrTarget);
             return true;
         }
 

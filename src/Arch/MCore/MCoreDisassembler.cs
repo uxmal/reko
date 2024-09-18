@@ -149,7 +149,7 @@ namespace Reko.Arch.MCore
             {
                 var disp = dispField.ReadSigned(u) << 1;
                 var addr = d.addr + (2 + disp);
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -162,7 +162,7 @@ namespace Reko.Arch.MCore
             {
                 var disp = dispField.ReadSigned(u) << shift;
                 var addr = Address.Ptr32((uint)(d.addr.ToUInt32() + (2 + disp)) & ~3u);
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }

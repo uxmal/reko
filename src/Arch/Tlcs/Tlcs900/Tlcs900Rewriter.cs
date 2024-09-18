@@ -153,8 +153,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -208,8 +208,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var id = binder.EnsureRegister(reg);
                 m.Assign(id, fn(id, src));
                 return id;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)

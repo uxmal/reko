@@ -193,7 +193,7 @@ namespace Reko.Arch.MicroBlaze
                     var n = (uint) field.ReadSigned(u);
                     addr = Address.Ptr32(n);
                 }
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -218,7 +218,7 @@ namespace Reko.Arch.MicroBlaze
                     var n = field.ReadSigned(u);
                     addr = d.addr + n;
                 }
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }

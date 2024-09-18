@@ -333,7 +333,7 @@ namespace Reko.Arch.CompactRisc
         {
             var disp = 1 + (uInstr >> 4) & 0xF;
             var addrDst = dasm.addr + (disp << 1);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 
@@ -344,7 +344,7 @@ namespace Reko.Arch.CompactRisc
         {
             var disp = (long)Bitfield.ReadSignedFields(bf8_4_0_4, uInstr);
             var addrDst = dasm.addr + (disp << 1);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 
@@ -357,7 +357,7 @@ namespace Reko.Arch.CompactRisc
                 return false;
             var disp = (long) Bitfield.ReadSignedFields(bf0_1_1_15, encDisp);
             var addrDst = dasm.addr + (disp << 1);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 
@@ -368,7 +368,7 @@ namespace Reko.Arch.CompactRisc
             uint codedDisp = (uInstr << 16) | low;
             var disp24 = Bitfield.ReadSignedFields(bf0_1_16_8_1_15, codedDisp);
             var addrDst = ((uint)dasm.addr.Offset + (uint)(disp24 << 1)) & 0xFF_FFFFu;
-            dasm.ops.Add(AddressOperand.Ptr32(addrDst));
+            dasm.ops.Add(Address.Ptr32(addrDst));
             return true;
         }
 
@@ -379,7 +379,7 @@ namespace Reko.Arch.CompactRisc
         {
             var disp24 = Bitfield.ReadSignedFields(bf16_1_0_4_8_4_17_15, uInstr);
             var addrDst = dasm.addr + (disp24 << 1);
-            dasm.ops.Add(AddressOperand.Create(addrDst));
+            dasm.ops.Add(addrDst);
             return true;
         }
 

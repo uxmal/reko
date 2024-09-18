@@ -206,7 +206,7 @@ namespace Reko.Arch.Xtensa
                 return;
             }
             this.lbegin = instr.Address + instr.Length;
-            this.lend = ((AddressOperand) instr.Operands[1]).Address;
+            this.lend = (Address) instr.Operands[1];
             var reg = RewriteOp(instr.Operands[0]);
             m.Assign(binder.EnsureRegister(Registers.LCOUNT), m.ISub(reg, 1));
         }

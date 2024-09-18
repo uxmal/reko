@@ -109,7 +109,7 @@ namespace Reko.Arch.Msp430
                         if (instr.Operands[0] is ImmediateOperand imm)
                         {
                             var uAddr = imm.Value.ToUInt16();
-                            instr.Operands = new MachineOperand[] { AddressOperand.Ptr16(uAddr) };
+                            instr.Operands = new MachineOperand[] { Address.Ptr16(uAddr) };
                         }
                     }
                     return instr;
@@ -184,7 +184,7 @@ namespace Reko.Arch.Msp430
         private static bool J(uint uInstr, Msp430Disassembler dasm)
         {
             int offset = (short) (uInstr << 6) >> 5;
-            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            dasm.ops.Add(dasm.rdr.Address + offset);
             return true;
         }
 
@@ -255,7 +255,7 @@ namespace Reko.Arch.Msp430
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
             var op1 = dasm.SourceOperand(aS, iReg, true, dasm.dataWidth!);
-            if (op1 == null || op1 is ImmediateOperand || op1 is AddressOperand)
+            if (op1 == null || op1 is ImmediateOperand || op1 is Address)
                 return false;
             dasm.ops.Add(op1);
             return true;
@@ -314,7 +314,7 @@ namespace Reko.Arch.Msp430
                 return false;
             var hi4 = (uInstr >> 8) & 0x0F;
             //$TODO: 20-bit address?
-            var op1 = AddressOperand.Ptr32((hi4 << 16) | lo16);
+            var op1 = Address.Ptr32((hi4 << 16) | lo16);
             dasm.ops.Add(op1);
             return true;
         }
@@ -428,7 +428,7 @@ namespace Reko.Arch.Msp430
                 if (!rdr.TryReadLeInt16(out short offset))
                     return null;
                 if (dataWidth is not null && dataWidth.IsPointer)
-                    return AddressOperand.Ptr16((ushort)offset);
+                    return Address.Ptr16((ushort)offset);
                 return ImmediateOperand.Word16((ushort) offset);
             }
             else

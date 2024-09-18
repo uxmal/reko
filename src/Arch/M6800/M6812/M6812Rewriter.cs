@@ -447,7 +447,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBcc(ConditionCode cc, FlagGroupStorage grf)
         {
-            var addr = ((AddressOperand)instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             m.Branch(
                 m.Test(cc, binder.EnsureFlagGroup(grf)),
                 addr,
@@ -478,14 +478,14 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBra()
         {
-            m.Goto(((AddressOperand)instr.Operands[0]).Address);
+            m.Goto((Address)instr.Operands[0]);
         }
 
         private void RewriteBrclr()
         {
             var mem = RewriteOp(instr.Operands[0]);
             var mask = RewriteOp(instr.Operands[1]);
-            var dst = ((AddressOperand)instr.Operands[2]).Address;
+            var dst = (Address)instr.Operands[2];
             m.Branch(m.Eq0(m.And(mem, mask)), dst, iclass);
         }
 
@@ -493,7 +493,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var mem = RewriteOp(instr.Operands[0]);
             var mask = RewriteOp(instr.Operands[1]);
-            var dst = ((AddressOperand)instr.Operands[2]).Address;
+            var dst = (Address)instr.Operands[2];
             m.Branch(m.Eq0(m.And(m.Comp(mem), mask)), dst, iclass);
         }
 
@@ -510,7 +510,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBsr()
         {
-            var dst = ((AddressOperand)instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             m.Call(dst, 2);
         }
 
@@ -591,7 +591,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var reg = RewriteOp(instr.Operands[0]);
             m.Assign(reg, m.ISub(reg, 1));
-            m.Branch(cmp(reg), ((AddressOperand) instr.Operands[1]).Address, iclass);
+            m.Branch(cmp(reg), (Address) instr.Operands[1], iclass);
         }
 
         private void RewriteEdiv(
@@ -691,7 +691,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var reg = RewriteOp(instr.Operands[0]);
             m.Assign(reg, m.IAdd(reg, 1));
-            m.Branch(cmp(reg), ((AddressOperand)instr.Operands[1]).Address, InstrClass.ConditionalTransfer);
+            m.Branch(cmp(reg), (Address)instr.Operands[1], InstrClass.ConditionalTransfer);
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
@@ -902,7 +902,7 @@ namespace Reko.Arch.M6800.M6812
         private void RewriteTb(Func<Expression, Expression> test)
         {
             var src = RewriteOp(instr.Operands[0]);
-            var addr = ((AddressOperand)instr.Operands[1]).Address;
+            var addr = (Address)instr.Operands[1];
             m.Branch(test(src), addr, iclass);
         }
 

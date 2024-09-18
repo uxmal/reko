@@ -302,14 +302,14 @@ namespace Reko.Arch.RiscV
         private static bool J(uint u, RiscVDisassembler d)
         {
             var offset = Bitfield.ReadSignedFields(j_bitfields, u) << 1;
-            d.state.ops.Add(AddressOperand.Create(d.addrInstr + offset));
+            d.state.ops.Add(d.addrInstr + offset);
             return true;
         }
 
         private static bool Jc(uint u, RiscVDisassembler d)
         {
             var offset = Bitfield.ReadSignedFields(c_j_bitfields, u) << 1;
-            d.state.ops.Add(AddressOperand.Create(d.addrInstr + offset));
+            d.state.ops.Add(d.addrInstr + offset);
             return true;
         }
 
@@ -425,10 +425,10 @@ namespace Reko.Arch.RiscV
             return n;
         }
 
-        private AddressOperand GetBranchTarget(uint wInstr)
+        private Address GetBranchTarget(uint wInstr)
         {
             long offset = Bitfield.ReadSignedFields(bfBranch, wInstr) << 1;
-            return AddressOperand.Create(addrInstr + offset);
+            return addrInstr + offset;
         }
 
         private ImmediateOperand GetSImmediate(uint wInstr)
@@ -827,7 +827,7 @@ namespace Reko.Arch.RiscV
             {
                 var sImm = Bitfield.ReadSignedFields(masks, u) << sh;
                 var addr = d.addrInstr + sImm;
-                d.state.ops.Add(AddressOperand.Create(addr));
+                d.state.ops.Add(addr);
                 return true;
             };
         }

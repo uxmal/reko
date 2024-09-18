@@ -406,15 +406,16 @@ namespace Reko.Arch.RiscV
             case ImmediateOperand immop:
                 RenderImmediate(immop, renderer);
                 return;
-            case AddressOperand addrop:
-                //$TODO: 32-bit?
-                if (addrop.Width.BitSize == 32)
+            case Address addr:
+                if (addr.DataType.BitSize == 32)
                 {
-                    renderer.WriteAddress(string.Format("0x{0:X8}", addrop.Address.ToLinear()), addrop.Address);
-                } else {
-                    renderer.WriteAddress(string.Format("0x{0:X16}", addrop.Address.ToLinear()), addrop.Address);
+                    renderer.WriteAddress(string.Format("0x{0:X8}", addr.ToLinear()), addr);
                 }
-                    return;
+                else 
+                {
+                    renderer.WriteAddress(string.Format("0x{0:X16}", addr.ToLinear()), addr);
+                }
+                return;
             case MemoryOperand memop:
                 RenderMemoryOperand(memop, renderer, options);
                 return;

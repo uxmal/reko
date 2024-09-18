@@ -155,7 +155,7 @@ namespace Reko.Environments.Windows
             var op0 = instr.Operands.Length > 0 ? instr.Operands[0] : null;
             if (instr.InstructionClass == InstrClass.Transfer)
             {
-                if (op0 is AddressOperand addrOp0 && addrOp0.Address > instr.Address)
+                if (op0 is Address addrOp0 && addrOp0 > instr.Address)
                 {
                     // Forward jump (appears in Borland binaries)
                     p.Dispose();
@@ -163,7 +163,7 @@ namespace Reko.Environments.Windows
                     var bmem = (ByteMemoryArea) seg.MemoryArea;
                     if (!LocatePattern(
                         bmem.Bytes,
-                        (uint) (addrOp0.Address - seg.MemoryArea.BaseAddress),
+                        (uint) (addrOp0 - seg.MemoryArea.BaseAddress),
                         (uint) (offsetMax),
                         borlandPattern,
                         out idx))

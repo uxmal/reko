@@ -60,11 +60,11 @@ namespace Reko.Arch.Mips
                     return true;
                 var iB = (ImmediateOperand)b;
                 return CompareValues(iA.Value, iB.Value);
-            case AddressOperand aA:
+            case Address aA:
                 if (NormalizeConstants)
                     return true;
-                var aB = (AddressOperand)b;
-                return aA.Address.ToLinear() == aB.Address.ToLinear();
+                var aB = (Address)b;
+                return aA.ToLinear() == aB.ToLinear();
             case IndirectOperand mA:
                 var mB = (IndirectOperand)b;
                 if (!NormalizeRegisters && mA.Base != mB.Base)
@@ -103,11 +103,11 @@ namespace Reko.Arch.Mips
                     return 0;
                 else
                     return GetConstantHash(i.Value);
-            case AddressOperand a:
+            case Address a:
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return a.Address.GetHashCode();
+                    return a.GetHashCode();
             case IndirectOperand m:
                 int h = 0;
                 if (!NormalizeRegisters)

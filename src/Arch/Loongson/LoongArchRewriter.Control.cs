@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
@@ -32,25 +33,25 @@ namespace Reko.Arch.Loongson
     {
         private void RewriteB()
         {
-            m.Goto(((AddressOperand) instr.Operands[0]).Address);
+            m.Goto((Address) instr.Operands[0]);
         }
 
         private void RewriteBl()
         {
-            m.Call(((AddressOperand) instr.Operands[0]).Address, 0);
+            m.Call((Address)instr.Operands[0], 0);
         }
 
         private void RewriteBranch(Func<Expression, Expression, Expression> fn)
         {
             var src1 = Op(0, false);
             var src2 = Op(1, false);
-            m.Branch(fn(src1, src2), ((AddressOperand) instr.Operands[2]).Address);
+            m.Branch(fn(src1, src2), (Address)instr.Operands[2]);
         }
 
         private void RewriteBranch0(Func<Expression, Expression> fn)
         {
             var id = Op(0, false);
-            m.Branch(fn(id), ((AddressOperand) instr.Operands[1]).Address);
+            m.Branch(fn(id), (Address)instr.Operands[1]);
         }
 
         private void RewriteJirl()

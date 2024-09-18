@@ -72,7 +72,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 if (memLd.Base != regHi)
                     return;
                 uint uFullWord = AddFullWord(movhi.Operands[1], memLd.Offset);
-                movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
+                movhi.Operands[1] = Address.Ptr32(uFullWord);
                 memLd.IsFullOffset = true;
                 memLd.Offset = (int) uFullWord;
                 break;
@@ -88,7 +88,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 if (memSt.Base != regHi)
                     return;
                 uFullWord = AddFullWord(movhi.Operands[1], memSt.Offset);
-                movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
+                movhi.Operands[1] = Address.Ptr32(uFullWord);
                 memSt.IsFullOffset = true;
                 memSt.Offset = (int) uFullWord;
                 break;
@@ -102,7 +102,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     return;
                 var addImm = (ImmediateOperand) instr.Operands[addImmIndex];
                 uFullWord = AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
-                movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
+                movhi.Operands[1] = Address.Ptr32(uFullWord);
                 instr.Operands[addImmIndex] = ImmediateOperand.Word32(uFullWord);
                 break;
             case Mnemonic.bn_ori:
@@ -112,7 +112,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     return;
                 var orImm = (ImmediateOperand) instr.Operands[2];
                 uFullWord = OrFullWord(movhi.Operands[1], orImm.Value.ToUInt32());
-                movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
+                movhi.Operands[1] = Address.Ptr32(uFullWord);
                 instr.Operands[2] = ImmediateOperand.Word32(uFullWord);
                 break;
             }

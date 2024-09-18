@@ -150,7 +150,7 @@ namespace Reko.Arch.WE32100
                 m.Assign(m.Mem(dt, ea), src);
                 return src;
             case ImmediateOperand _:
-            case AddressOperand _:
+            case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();
                 return null;
@@ -179,7 +179,7 @@ namespace Reko.Arch.WE32100
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
             case ImmediateOperand _:
-            case AddressOperand _:
+            case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();
                 return null;
@@ -208,7 +208,7 @@ namespace Reko.Arch.WE32100
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
             case ImmediateOperand _:
-            case AddressOperand _:
+            case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();
                 return null;

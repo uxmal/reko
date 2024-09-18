@@ -73,9 +73,9 @@ namespace Reko.Arch.M68k
                 if (!NormalizeRegisters && !CompareRegisters(memA.Base, memB.Base))
                     return false;
                 return NormalizeConstants || CompareValues(memA.Offset, memB.Offset);
-            case M68kAddressOperand addrA:
-                var addrB = (M68kAddressOperand) opB;
-                return NormalizeConstants || addrA.Address == addrB.Address;
+            case Address addrA:
+                var addrB = (Address) opB;
+                return NormalizeConstants || addrA == addrB;
             case IndirectIndexedOperand idxA:
                 var idxB = (IndirectIndexedOperand) opB;
                 if (!NormalizeRegisters)
@@ -122,11 +122,11 @@ namespace Reko.Arch.M68k
                     return 0;
                 else
                     return immop.Value.GetHashCode();
-            case M68kAddressOperand addrOp:
+            case Address addrOp:
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return addrOp.Address.GetHashCode();
+                    return addrOp.GetHashCode();
             case MemoryOperand memOp:
                 int h = 0;
                 if (!NormalizeConstants && memOp.Offset != null)

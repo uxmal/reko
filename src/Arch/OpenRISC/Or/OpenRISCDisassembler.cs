@@ -191,7 +191,7 @@ namespace Reko.Arch.OpenRISC.Or
             {
                 var displacement = field.ReadSigned(u) << 2;
                 var addrDest = d.addr + displacement;
-                d.ops.Add(AddressOperand.Create(addrDest));
+                d.ops.Add(addrDest);
                 return true;
             };
         }
@@ -234,8 +234,8 @@ namespace Reko.Arch.OpenRISC.Or
                 long lAddr = (long) (d.addr.ToLinear() & ~8192ul) + pageOffset;
                 ulong uAddr = (ulong) lAddr;
                 var aOp = d.arch.WordWidth.BitSize == 64
-                    ? AddressOperand.Ptr64(uAddr)
-                    : AddressOperand.Ptr32((uint) uAddr);
+                    ? Address.Ptr64(uAddr)
+                    : Address.Ptr32((uint) uAddr);
                 d.ops.Add(aOp);
                 return true;
             };

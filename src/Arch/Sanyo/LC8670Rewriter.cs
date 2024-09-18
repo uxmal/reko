@@ -183,20 +183,20 @@ namespace Reko.Arch.Sanyo
             if (instr.Operands.Length == 3)
             {
                 test = fn(Op(0), Op(1));
-                target = ((AddressOperand) instr.Operands[2]).Address;
+                target = (Address) instr.Operands[2];
             }
             else
             {
                 var acc = binder.EnsureRegister(Registers.ACC);
                 test = fn(acc, Op(0));
-                target = ((AddressOperand) instr.Operands[1]).Address;
+                target = (Address)instr.Operands[1];
             }
             m.Branch(test, target);
         }
 
         private void RewriteBp(bool invert)
         {
-            var target = ((AddressOperand) instr.Operands[2]).Address;
+            var target = (Address)instr.Operands[2];
             Expression test = m.Fn(test1_sig, Op(0), Op(1));
             if (invert)
                 test = test.Invert();
@@ -206,7 +206,7 @@ namespace Reko.Arch.Sanyo
         private void RewriteBnzZ(Func<Expression,Expression> fn)
         {
             var acc = binder.EnsureRegister(Registers.ACC);
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address)instr.Operands[0];
             m.Branch(fn(acc), target);
         }
 
@@ -218,7 +218,7 @@ namespace Reko.Arch.Sanyo
 
         private void RewriteCall()
         {
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address)instr.Operands[0];
             m.Call(target, 2);
         }
 
@@ -227,7 +227,7 @@ namespace Reko.Arch.Sanyo
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.ISub(Op(0), 1));
             m.Assign(Op(0), tmp);
-            var target = ((AddressOperand) instr.Operands[1]).Address;
+            var target = (Address)instr.Operands[1];
             m.Branch(m.Ne0(tmp), target);
         }
 
@@ -251,7 +251,7 @@ namespace Reko.Arch.Sanyo
 
         private void RewriteJmp()
         {
-            var target = ((AddressOperand) instr.Operands[0]).Address;
+            var target = (Address)instr.Operands[0];
             m.Goto(target);
         }
 

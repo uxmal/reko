@@ -57,9 +57,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                     var immOpB = (ImmediateOperand)opB;
                     return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
 
-                case AddressOperand addrOpA:
-                    var addrOpB = (AddressOperand)opB;
-                    return NormalizeConstants || addrOpA.Address == addrOpB.Address;
+                case Address addrOpA:
+                    var addrOpB = (Address)opB;
+                    return NormalizeConstants || addrOpA == addrOpB;
 
                 case PICOperandPseudo pseudoA:
                     var pseudoB = (PICOperandPseudo)opB;
@@ -179,8 +179,8 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case ImmediateOperand immOp:
                     return GetConstantHash(immOp.Value);
 
-                case AddressOperand addrOp:
-                    return NormalizeConstants ? 1 : addrOp.Address.GetHashCode();
+                case Address addrOp:
+                    return NormalizeConstants ? 1 : addrOp.GetHashCode();
 
                 case PICOperandPseudo pseudoOp:
                     return NormalizeConstants ? 1 : pseudoOp.Values.GetHashCode();

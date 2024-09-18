@@ -193,7 +193,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private static bool PcRel(uint wOpcode, Pdp11Disassembler dasm)
         {
             var uAddr = (int) dasm.rdr.Address.ToLinear() + 2 * (sbyte) (wOpcode & 0xFF);
-            dasm.ops.Add(AddressOperand.Ptr16((ushort) uAddr));
+            dasm.ops.Add(Address.Ptr16((ushort) uAddr));
             return true;
         }
 
@@ -391,7 +391,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private MachineOperand Imm6(ushort opcode)
         {
             var offset = (opcode & 0x3F) << 1;
-            return AddressOperand.Create(rdr.Address - offset);
+            return rdr.Address - offset;
         }
 
         private RegisterStorage? FpuAccumulator(uint opcode)

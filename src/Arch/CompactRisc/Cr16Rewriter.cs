@@ -233,8 +233,8 @@ namespace Reko.Arch.CompactRisc
                 return binder.EnsureSequence(seq.DataType, seq.Elements);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(mem.Width, ea);
@@ -352,27 +352,27 @@ namespace Reko.Arch.CompactRisc
         private void RewriteBcc(ConditionCode cc, FlagGroupStorage grf)
         {
             var id = binder.EnsureFlagGroup(grf);
-            m.Branch(m.Test(cc, id), ((AddressOperand) instr.Operands[0]).Address);
+            m.Branch(m.Test(cc, id), (Address)instr.Operands[0]);
         }
 
         private void RewriteBccClear(FlagGroupStorage grf)
         {
-            m.Branch(m.Not(binder.EnsureFlagGroup(grf)), ((AddressOperand) instr.Operands[0]).Address);
+            m.Branch(m.Not(binder.EnsureFlagGroup(grf)), (Address)instr.Operands[0]);
         }
 
         private void RewriteBccSet(FlagGroupStorage grf)
         {
-            m.Branch(binder.EnsureFlagGroup(grf), ((AddressOperand) instr.Operands[0]).Address);
+            m.Branch(binder.EnsureFlagGroup(grf), (Address) instr.Operands[0]);
         }
 
         private void RewriteBeq0(PrimitiveType dt)
         {
-            m.Branch(m.Eq0(MaybeSlice(0, dt)), ((AddressOperand) instr.Operands[1]).Address);
+            m.Branch(m.Eq0(MaybeSlice(0, dt)), (Address) instr.Operands[1]);
         }
 
         private void RewriteBne0(PrimitiveType dt)
         {
-            m.Branch(m.Ne0(MaybeSlice(0, dt)), ((AddressOperand) instr.Operands[1]).Address);
+            m.Branch(m.Ne0(MaybeSlice(0, dt)), (Address) instr.Operands[1]);
         }
 
         private void RewriteBr()

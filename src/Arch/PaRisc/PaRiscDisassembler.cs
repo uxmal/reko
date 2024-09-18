@@ -1064,7 +1064,7 @@ namespace Reko.Arch.PaRisc
             {
                 var offset = (int)Bits.SignExtend(permutator(u, fields), totalWidth) * 4 + 8;
                 var addrDst = d.addr + offset;
-                d.ops.Add(AddressOperand.Create(addrDst));
+                d.ops.Add(addrDst);
                 return true;
             };
         }

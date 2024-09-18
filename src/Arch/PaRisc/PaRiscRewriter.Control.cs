@@ -207,7 +207,7 @@ namespace Reko.Arch.PaRisc
             Expression reg,
             Expression? right = null)
         {
-            var addrDest = ((AddressOperand) instr.Operands[iop]).Address;
+            var addrDest = (Address) instr.Operands[iop];
             if (instr.Annul)
             {
                 if (addrDest <= instr.Address)

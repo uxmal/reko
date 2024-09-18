@@ -184,8 +184,8 @@ namespace Reko.Arch.LatticeMico
                     ea = m.AddSubSignedInt(ea, mem.Offset);
                 }
                 return m.Mem(mem.Width, ea);
-            case AddressOperand aop:
-                return aop.Address;
+            case Address aop:
+                return aop;
             }
             throw new NotImplementedException($"{op.GetType().Name} not implemented.");
         }
@@ -202,7 +202,7 @@ namespace Reko.Arch.LatticeMico
         {
             var src1 = Rewrite(instr.Operands[0]);
             var src2 = Rewrite(instr.Operands[1]);
-            var dst = ((AddressOperand)instr.Operands[2]).Address;
+            var dst = (Address)instr.Operands[2];
             m.Branch(fn(src1, src2), dst);
         }
 

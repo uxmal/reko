@@ -448,7 +448,7 @@ namespace Reko.Arch.SuperH
         /// </summary>
         private static bool j(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(AddressOperand.Create(dasm.rdr.Address + (2 + 2 * (sbyte)uInstr)));
+            dasm.state.ops.Add(dasm.rdr.Address + (2 + 2 * (sbyte)uInstr));
             return true;
         }
 
@@ -458,7 +458,7 @@ namespace Reko.Arch.SuperH
         private static bool J(uint uInstr, SuperHDisassembler dasm)
         {
             int offset = ((int)uInstr << 20) >> 19;
-            dasm.state.ops.Add(AddressOperand.Create(dasm.rdr.Address + (2 + offset)));
+            dasm.state.ops.Add(dasm.rdr.Address + (2 + offset));
             return true;
         }
 

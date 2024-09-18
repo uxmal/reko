@@ -32,7 +32,7 @@ namespace Reko.Arch.M68k.Rewriter
     {
         private void RewriteBcc(ConditionCode cc, FlagGroupStorage flags)
         {
-            var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             if ((addr.ToUInt32() & 1) != 0)
             {
                 iclass = InstrClass.Invalid;
@@ -54,7 +54,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void RewriteBsr()
         {
-            var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
+            var addr = (Address) instr.Operands[0];
             if ((addr.ToUInt32() & 1) != 0)
             {
                 iclass = InstrClass.Invalid;

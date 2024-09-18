@@ -137,7 +137,7 @@ namespace Reko.Arch.Altera.Nios2
             m.Nop();
         }
 
-        private Address Addr(int iop) => ((AddressOperand) instr.Operands[iop]).Address;
+        private Address Addr(int iop) => (Address) instr.Operands[iop];
 
         private Constant Imm(int iop) => ((ImmediateOperand)instr.Operands[iop]).Value;
 

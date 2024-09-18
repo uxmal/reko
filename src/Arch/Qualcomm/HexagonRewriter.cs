@@ -151,7 +151,7 @@ namespace Reko.Arch.Qualcomm
             {
             case RegisterStorage reg: return UseReg(reg);
             case ImmediateOperand imm: return imm.Value;
-            case AddressOperand addr: return addr.Address;
+            case Address addr: return addr;
             case ApplicationOperand app: return RewriteApplication(app);
             case MemoryOperand mem: var src = RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
             case RegisterPairOperand pair: return UsePair(pair);
@@ -679,17 +679,17 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteJump(HexagonInstruction instr, MachineOperand opDst)
         {
-            var aop = (AddressOperand) opDst;
+            var addr = (Address) opDst;
             if (instr.ConditionPredicate != null)
             {
                 //if (instr.ConditionPredicateNew)
                 //    throw new NotImplementedException(".NEW");
                 var cond = OperandSrc(instr.ConditionPredicate)!;
-                Branch(cond, aop.Address);
+                Branch(cond, addr);
             }
             else
             {
-                Goto(aop.Address);
+                Goto(addr);
             }
         }
 

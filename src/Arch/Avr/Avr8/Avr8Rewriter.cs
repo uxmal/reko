@@ -270,8 +270,8 @@ namespace Reko.Arch.Avr.Avr8
                 return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
-            case AddressOperand aop:
-                return aop.Address;
+            case Address aop:
+                return aop;
             }
             throw new NotImplementedException(string.Format("Rewriting {0}s not implemented yet.", op.GetType().Name));
         }

@@ -228,18 +228,18 @@ namespace Reko.Arch.X86
                     renderer.WriteChar('}');
                 }
                 break;
-            case AddressOperand addrOp:
-                if (addrOp.Address.Selector.HasValue)
+            case Address addrOp:
+                if (addrOp.Selector.HasValue)
                 {
                     renderer.WriteString("far");
                     renderer.WriteString(" ");
-                    renderer.WriteString(FormatUnsignedValue(addrOp.Address.Selector.Value, "{0:X4}"));
+                    renderer.WriteString(FormatUnsignedValue(addrOp.Selector.Value, "{0:X4}"));
                     renderer.WriteChar(':');
-                    renderer.WriteString(FormatUnsignedValue(addrOp.Address.Offset, "{0:X4}"));
+                    renderer.WriteString(FormatUnsignedValue(addrOp.Offset, "{0:X4}"));
                 }
                 else
                 {
-                    renderer.WriteAddress(FormatUnsignedValue(addrOp.Address.ToLinear(), "{0:X4}"), addrOp.Address);
+                    renderer.WriteAddress(FormatUnsignedValue(addrOp.ToLinear(), "{0:X4}"), addrOp);
                 }
                 break;
             case FpuOperand fpu:
@@ -399,7 +399,7 @@ namespace Reko.Arch.X86
 
         protected static bool HasImplicitWidth(MachineOperand op)
         {
-            return op is RegisterStorage || op is AddressOperand || op is FpuOperand;
+            return op is RegisterStorage || op is Address || op is FpuOperand;
         }
     }
 }

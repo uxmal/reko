@@ -138,19 +138,18 @@ namespace Reko.Arch.Mips
             return arch.fpuCcRegs[regNo];
         }
 
-        private AddressOperand RelativeBranch(uint wInstr)
+        private Address RelativeBranch(uint wInstr)
         {
             int off = (short) wInstr;
             off <<= 2;
-            return AddressOperand.Create(rdr.Address + off);
+            return rdr.Address + off;
         }
 
-        private AddressOperand LargeBranch(uint wInstr)
+        private Address LargeBranch(uint wInstr)
         {
             var off = (wInstr & 0x03FFFFFF) << 2;
             ulong linAddr = (rdr.Address.ToLinear() & ~0x0FFFFFFFul) | off;
-            return AddressOperand.Create(
-                Address.Create(arch.PointerType, linAddr));
+            return Address.Create(arch.PointerType, linAddr);
         }
 
         private IndirectOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)

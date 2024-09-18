@@ -192,7 +192,7 @@ namespace Reko.Arch.Infineon
 
         private Address AddrOp(int iop)
         {
-            return ((AddressOperand) instr.Operands[iop]).Address;
+            return (Address)instr.Operands[iop];
         }
 
         private Expression Andn(Expression a, Expression b)
@@ -243,8 +243,8 @@ namespace Reko.Arch.Infineon
                 if (extendConstant)
                     return m.Word32(imm.Value.ToInt32());
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case SequenceStorage seq:
                 return binder.EnsureSequence(seq);
             default:

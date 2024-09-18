@@ -435,7 +435,7 @@ namespace Reko.Arch.H8
             if ((disp & 1) != 0)
                 return false;       // Branch destination must be even.
             var addrTarget = dasm.rdr.Address + disp;
-            dasm.ops.Add(AddressOperand.Create(addrTarget));
+            dasm.ops.Add(addrTarget);
             return true;
         }
 
@@ -449,7 +449,7 @@ namespace Reko.Arch.H8
             if ((disp & 1) != 0)
                 return false;       // Branch destination must be even.
             var addrTarget = dasm.rdr.Address + disp;
-            dasm.ops.Add(AddressOperand.Create(addrTarget));
+            dasm.ops.Add(addrTarget);
             return true;
         }
 
@@ -462,7 +462,7 @@ namespace Reko.Arch.H8
             if ((disp & 1) != 0)
                 return false;       // Branch destination must be even.
             var addrTarget = dasm.addr + disp;
-            dasm.ops.Add(AddressOperand.Create(addrTarget));
+            dasm.ops.Add(addrTarget);
             return true;
         }
 
@@ -476,7 +476,7 @@ namespace Reko.Arch.H8
             if ((disp & 1) != 0)
                 return false;       // Branch destination must be even.
             var addrTarget = dasm.addr + disp;
-            dasm.ops.Add(AddressOperand.Create(addrTarget));
+            dasm.ops.Add(addrTarget);
             return true;
         }
 

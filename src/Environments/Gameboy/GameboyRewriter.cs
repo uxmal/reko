@@ -249,8 +249,8 @@ namespace Reko.Environments.Gameboy
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base is null)
@@ -356,7 +356,7 @@ namespace Reko.Environments.Gameboy
                 var cond = Op(0).Invert();
                 m.Branch(cond, instr.Address + instr.Length);
             }
-            var target = ((AddressOperand) instr.Operands[^1]).Address;
+            var target = (Address)instr.Operands[^1];
             m.Call(target, 2);
         }
 

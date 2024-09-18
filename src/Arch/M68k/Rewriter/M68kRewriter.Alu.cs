@@ -526,9 +526,9 @@ namespace Reko.Arch.M68k.Rewriter
                         Constant.Int32(mem.Offset.ToInt32()));
                 }
             }
-            if (instr.Operands[0] is AddressOperand addrOp)
+            if (op is Address addrOp)
             {
-                return addrOp.Address;
+                return addrOp;
             }
             if (op is IndexedOperand indop)
             {

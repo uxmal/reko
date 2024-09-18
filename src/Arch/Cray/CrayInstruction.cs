@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
@@ -86,10 +87,10 @@ namespace Reko.Arch.Cray
         {
             switch (operand)
             {
-            case AddressOperand addr:
-                var sAddr = Convert.ToString(addr.Address.ToUInt32(), 8)
+            case Address addr:
+                var sAddr = Convert.ToString(addr.ToUInt32(), 8)
                     .PadLeft(12, '0');
-                renderer.WriteAddress(sAddr, addr.Address);
+                renderer.WriteAddress(sAddr, addr);
                 break;
             case ImmediateOperand imm:
                 var sValue = Convert.ToString((int) imm.Value.ToUInt64(), 8)

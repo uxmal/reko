@@ -526,7 +526,7 @@ namespace Reko.Arch.Arm.AArch32
             (u, d) =>
             {
                 var offset = 8 + (((int) u << 8) >> 6);
-                d.state.ops.Add(AddressOperand.Create(d.addr + offset));
+                d.state.ops.Add(d.addr + offset);
                 return true;
             };
 
@@ -545,7 +545,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var offset = 8 + (((int) u << 8) >> 6);
                 offset |= ((int) u >> 23) & 2;
-                d.state.ops.Add(AddressOperand.Create(d.addr + offset));
+                d.state.ops.Add(d.addr + offset);
                 return true;
             };
 

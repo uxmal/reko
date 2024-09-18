@@ -270,7 +270,7 @@ namespace Reko.Arch.M6800.M6809
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
             var addr = dasm.rdr.Address + (sbyte)b;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -279,7 +279,7 @@ namespace Reko.Arch.M6800.M6809
             if (!dasm.rdr.TryReadBeInt16(out short d))
                 return false;
             var addr = dasm.rdr.Address + d;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 

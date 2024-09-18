@@ -239,6 +239,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Represents a machine address.
     /// </summary>
+    [Obsolete("Use the Reko.Core.Address class instead.", true)]
     public class AddressOperand : AbstractMachineOperand
     {
         public Address Address;

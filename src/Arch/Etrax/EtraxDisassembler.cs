@@ -276,7 +276,7 @@ namespace Reko.Arch.Etrax
             if (pcRelative)
             {
                 addrImm += imm.ToInt32();
-                return AddressOperand.Create(addrImm);
+                return addrImm;
             }
             else
             {
@@ -291,7 +291,7 @@ namespace Reko.Arch.Etrax
         {
             var offset = Bitfield.ReadSignedFields(bitBccOffset, uInstr) << 1;
             var dst = dasm.rdr.Address + offset;
-            dasm.ops.Add(AddressOperand.Create(dst));
+            dasm.ops.Add(dst);
             return true;
         }
 
@@ -300,7 +300,7 @@ namespace Reko.Arch.Etrax
             if (!dasm.rdr.TryReadLeInt16(out short offset))
                 return false;
             var dst = dasm.rdr.Address + offset;
-            dasm.ops.Add(AddressOperand.Create(dst));
+            dasm.ops.Add(dst);
             return true;
         }
 

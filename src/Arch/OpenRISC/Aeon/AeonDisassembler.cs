@@ -278,7 +278,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
                 var displacement = displacementField.ReadSigned(u);
                 var target = d.addr + displacement;
-                d.ops.Add(AddressOperand.Create(target));
+                d.ops.Add(target);
                 return true;
             };
         }

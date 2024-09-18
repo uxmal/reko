@@ -186,8 +186,8 @@ namespace Reko.Arch.Tms7000
                     ea = RegisterPair(mem.Register!);
                 }
                 return m.Mem(mem.Width, ea);
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             default:
                 throw new NotImplementedException(op.GetType().Name);
             }
@@ -247,7 +247,7 @@ namespace Reko.Arch.Tms7000
             var z = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.ZF));
             m.Branch(
                 m.Test(ConditionCode.NE, z),
-                ((AddressOperand)instr.Operands[2]).Address,
+                (Address)instr.Operands[2],
                 InstrClass.ConditionalTransfer);
         }
 
@@ -330,7 +330,7 @@ namespace Reko.Arch.Tms7000
             iclass = InstrClass.ConditionalTransfer;
             var reg = Operand(instr.Operands[0]);
             m.Assign(reg, m.ISub(reg, 1));
-            m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
+            m.Branch(m.Ne0(reg), (Address)instr.Operands[1], iclass);
         }
 
         private void RewriteIdle()
@@ -348,7 +348,7 @@ namespace Reko.Arch.Tms7000
         private void RewriteJcc(ConditionCode cc, FlagM grf)
         {
             iclass = InstrClass.ConditionalTransfer;
-            var dst = ((AddressOperand)instr.Operands[0]).Address;
+            var dst = (Address)instr.Operands[0];
             var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)grf));
             m.Branch(m.Test(cc, flags), dst, iclass);
         }

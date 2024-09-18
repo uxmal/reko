@@ -82,11 +82,11 @@ namespace Reko.Arch.M68k.Rewriter
                     return Constant.Create(imm.Width, imm.Value.ToUInt32());
             case MemoryOperand mem:
                 return RewriteMemoryAccess(mem, DataWidth, addrInstr);
-            case M68kAddressOperand addr:
+            case Address addr:
                 if (addressAsAddress)
-                    return addr.Address;
+                    return addr;
                 else
-                    return m.Mem(DataWidth, addr.Address);
+                    return m.Mem(DataWidth, addr);
             case PredecrementMemoryOperand pre:
                 ea = binder.EnsureRegister(pre.Register);
                 m.Assign(ea, m.ISubS(ea, DataWidth.Size));
@@ -238,9 +238,9 @@ namespace Reko.Arch.M68k.Rewriter
                     m.Assign(d, result);
                     return d;
                 }
-            case M68kAddressOperand addr:
+            case Address addr:
                 {
-                    var load = m.Mem(dataWidth, addr.Address);
+                    var load = m.Mem(dataWidth, addr);
                     return EmitStore(load, opGen(src, load));
                 }
             case MemoryOperand mem:
@@ -343,9 +343,9 @@ namespace Reko.Arch.M68k.Rewriter
                         return r;
                     }
                 }
-            case M68kAddressOperand addr:
+            case Address addr:
                 {
-                    var access = m.Mem(dataWidth, addr.Address);
+                    var access = m.Mem(dataWidth, addr);
                     return EmitStore(access, opGen(access));
                 }
             case MemoryOperand mem:
@@ -511,12 +511,12 @@ namespace Reko.Arch.M68k.Rewriter
                     m.Assign(access, src);
                     return src;
                 }
-            case M68kAddressOperand mAddr:
+            case Address mAddr:
                 {
                     m.Assign(
                         m.Mem(
                             dataWidth,
-                            m.Ptr32(mAddr.Address.ToUInt32())),
+                            m.Ptr32(mAddr.ToUInt32())),
                         src);
                     return src;
                 }

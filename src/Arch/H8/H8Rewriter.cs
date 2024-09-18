@@ -190,8 +190,8 @@ namespace Reko.Arch.H8
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)
@@ -359,13 +359,13 @@ namespace Reko.Arch.H8
 
         private void RewriteBranch(H8Instruction instr)
         {
-            m.Goto(((AddressOperand) instr.Operands[0]).Address);
+            m.Goto((Address)instr.Operands[0]);
         }
 
         private void RewriteBranch(H8Instruction instr, ConditionCode cc, FlagGroupStorage grf)
         {
             var test = m.Test(cc, binder.EnsureFlagGroup(grf));
-            m.Branch(test, ((AddressOperand) instr.Operands[0]).Address);
+            m.Branch(test, (Address)instr.Operands[0]);
         }
 
         private void RewriteClrmac(H8Instruction instr)

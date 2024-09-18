@@ -396,7 +396,7 @@ namespace Reko.Arch.zSeries
 
         private Address Addr(int iop)
         {
-            return ((AddressOperand)instr.Operands[iop]).Address;
+            return (Address)instr.Operands[iop];
         }
 
         private Expression Assign(Expression dst, Expression src)
@@ -430,8 +430,8 @@ namespace Reko.Arch.zSeries
         {
             switch (instr.Operands[iop])
             {
-            case AddressOperand aOp:
-                return aOp.Address;
+            case Address aOp:
+                return aOp;
             case MemoryOperand mem:
                 return EffectiveAddress(mem);
             default:
@@ -480,8 +480,8 @@ namespace Reko.Arch.zSeries
                 return imm.Value;
             case MemoryOperand mem:
                 return new MemoryAccess(EffectiveAddress(mem), dt);
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             default:
                 throw new NotImplementedException($"{instr.Operands[iop].GetType().Name}");
             }
@@ -525,7 +525,7 @@ namespace Reko.Arch.zSeries
 
         private Address PcRel(int iOp)
         {
-            var addr = ((AddressOperand) instr.Operands[iOp]).Address;
+            var addr = (Address)instr.Operands[iOp];
             return addr;
         }
 
@@ -536,7 +536,7 @@ namespace Reko.Arch.zSeries
 
         private Expression Rel(int iOp, PrimitiveType dt)
         {
-            return m.Mem(dt, ((AddressOperand) instr.Operands[iOp]).Address);
+            return m.Mem(dt, (Address)instr.Operands[iOp]);
         }
 
         private Identifier Reg(int iOp, DataType dt)

@@ -411,7 +411,7 @@ namespace Reko.Arch.Infineon
             var uDisp24 = ((uInstr & 0xFF00) << 8) | (uInstr >> 16);
             var disp24 = Bits.SignExtend(uDisp24, 24);
             var addr = dasm.addr + disp24 * 2;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -425,7 +425,7 @@ namespace Reko.Arch.Infineon
         {
             var uDisp24 = ((uInstr & 0xFF00) << 8) | (uInstr >> 16);
             var addr = Address.Ptr32(uDisp24);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -435,7 +435,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var disp = (bf.ReadSigned(u)) << 1;
-                d.ops.Add(AddressOperand.Create(d.addr + disp));
+                d.ops.Add(d.addr + disp);
                 return true;
             };
         }
@@ -449,7 +449,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var disp = (bf.Read(u) + (uint)offset) << 1;
-                d.ops.Add(AddressOperand.Create(d.addr + disp));
+                d.ops.Add(d.addr + disp);
                 return true;
             };
         }
@@ -459,7 +459,7 @@ namespace Reko.Arch.Infineon
         private static bool ndisp8_4(uint uInstr, TriCoreDisassembler dasm)
         {
             var disp = (int) (0xFFFF_FFE0u | ((uInstr >> 7) & 0x1E));
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + disp));
+            dasm.ops.Add(dasm.addr + disp);
             return true;
         }
 

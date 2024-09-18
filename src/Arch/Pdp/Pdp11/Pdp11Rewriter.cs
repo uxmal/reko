@@ -308,8 +308,8 @@ namespace Reko.Arch.Pdp.Pdp11
                 {
                     return immOp.Value;
                 }
-            case AddressOperand addrOp:
-                return addrOp.Address;
+            case Address addrOp:
+                return addrOp;
             case MemoryOperand memOp:
                 var r = memOp.Register != null
                     ? binder.EnsureRegister(memOp.Register)

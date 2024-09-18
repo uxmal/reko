@@ -8821,9 +8821,9 @@ static Reko.Core.Machine.AbstractMachineOperand.FormatSignedValue(Reko.Core.Expr
 static Reko.Core.Machine.AbstractMachineOperand.FormatUnsignedValue(Reko.Core.Expressions.Constant! c, string! format = "{0}{1}") -> string!
 static Reko.Core.Machine.AbstractMachineOperand.FormatValue(Reko.Core.Expressions.Constant! c, bool forceSignForSignedIntegers = true, string! integerFormat = "{0}{1}") -> string!
 static Reko.Core.Machine.AddressOperand.Create(Reko.Core.Address! addr) -> Reko.Core.Machine.AddressOperand!
-static Reko.Core.Machine.AddressOperand.Ptr16(ushort a) -> Reko.Core.Machine.AddressOperand!
-static Reko.Core.Machine.AddressOperand.Ptr32(uint a) -> Reko.Core.Machine.AddressOperand!
-static Reko.Core.Machine.AddressOperand.Ptr64(ulong a) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.Address.Ptr16(ushort a) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.Address.Ptr32(uint a) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.Address.Ptr64(ulong a) -> Reko.Core.Machine.AddressOperand!
 static Reko.Core.Machine.Decoder.DumpMaskedInstruction(int instrBitSize, uint wInstr, Reko.Core.Lib.Bitfield[]! bitfields, string! tag) -> void
 static Reko.Core.Machine.Decoder.DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string! tag) -> void
 static Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>.DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic) -> void

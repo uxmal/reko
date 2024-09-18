@@ -105,7 +105,7 @@ namespace Reko.Arch.zSeries
             if ((baseReg == null || baseReg.Number == 0) &&
                 (idxReg == null || idxReg.Number == 0))
             {
-                return AddressOperand.Ptr32((uint) offset);
+                return Address.Ptr32((uint) offset);
             }
             return new MemoryOperand(PrimitiveType.Word32)
             {
@@ -121,7 +121,7 @@ namespace Reko.Arch.zSeries
         {
             if (baseReg == null || baseReg.Number == 0)
             {
-                return AddressOperand.Ptr32((uint) offset);
+                return Address.Ptr32((uint) offset);
             }
             return new MemoryOperand(PrimitiveType.Word32)
             {
@@ -263,14 +263,14 @@ namespace Reko.Arch.zSeries
         {
             var addr = dasm.addr + 2 * (int)Bits.SignExtend(uInstr, 16);
             dasm.ops.Add(Registers.GpRegisters[(uInstr >> 20) & 0xF]);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
         public static bool RIc(ulong uInstr, zSeriesDisassembler dasm)
         {
             var addr = dasm.addr + 2*(int)Bits.SignExtend(uInstr, 16);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -285,7 +285,7 @@ namespace Reko.Arch.zSeries
             dasm.ops.Add(r1);
             dasm.ops.Add(r2);
             dasm.ops.Add(ImmediateOperand.Byte(m3));
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -298,7 +298,7 @@ namespace Reko.Arch.zSeries
             dasm.ops.Add(r1);
             dasm.ops.Add(new ImmediateOperand(i2));
             dasm.ops.Add(ImmediateOperand.Byte(m3));
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 
@@ -316,7 +316,7 @@ namespace Reko.Arch.zSeries
         private static bool RIEe(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
-            var ri2 = AddressOperand.Create(dasm.addr + 2 * (int) Bits.SignExtend(uInstr, 32));
+            var ri2 = dasm.addr + 2 * (int) Bits.SignExtend(uInstr, 32);
             var r3 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
             dasm.ops.Add(r1);
             dasm.ops.Add(r3);
@@ -353,14 +353,14 @@ namespace Reko.Arch.zSeries
         {
             dasm.ops.Add(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
             var offset = 2 * (int)Bits.SignExtend(uInstr, 32);
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + offset));
+            dasm.ops.Add(dasm.addr + offset);
             return true;
         }
 
         public static bool RILc(ulong uInstr, zSeriesDisassembler dasm)
         {
             var offset = 2 * (int)Bits.SignExtend(uInstr, 32);
-            dasm.ops.Add(AddressOperand.Create(dasm.addr + offset));
+            dasm.ops.Add(dasm.addr + offset);
             return true;
         }
 
@@ -370,7 +370,7 @@ namespace Reko.Arch.zSeries
         {
             var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
             var offset = 2 * (short) uInstr;
-            var ri2 = AddressOperand.Create(dasm.addr + offset);
+            var ri2 = dasm.addr + offset;
             var r3 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
             dasm.ops.Add(r1);
             dasm.ops.Add(r3);
@@ -458,7 +458,7 @@ namespace Reko.Arch.zSeries
             var b3 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
             var d3 = (int) Bitfield.ReadSignedFields(siyDisplacement, uInstr);
             dasm.ops.Add(m1);
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             dasm.ops.Add(new MemoryOperand(dasm.arch.WordWidth)
             {
                 Base = b3,

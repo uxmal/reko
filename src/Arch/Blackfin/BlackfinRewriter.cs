@@ -130,7 +130,7 @@ namespace Reko.Arch.Blackfin
 
         private Address Addr(int iOperand)
         {
-            return ((AddressOperand) instr.Operands[iOperand]).Address;
+            return (Address) instr.Operands[iOperand];
         }
 
         private void EmitCc(FlagGroupStorage grf, Expression e)
@@ -153,8 +153,8 @@ namespace Reko.Arch.Blackfin
                 return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
-            case AddressOperand addr:
-                return addr.Address;
+            case Address addr:
+                return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(mem.Width, ea);

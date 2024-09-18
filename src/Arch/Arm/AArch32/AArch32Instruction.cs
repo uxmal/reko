@@ -247,8 +247,8 @@ namespace Reko.Arch.Arm.AArch32
                         renderer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
                 }
                 break;
-            case AddressOperand aop:
-                renderer.WriteAddress($"${aop.Address}", aop.Address);
+            case Address aop:
+                renderer.WriteAddress($"${aop}", aop);
                 break;
             case MemoryOperand mem:
                 if (mem.BaseRegister == Registers.pc)

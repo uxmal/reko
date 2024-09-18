@@ -367,7 +367,7 @@ namespace Reko.Arch.C166
                 d.ops.Add(new BitOfOperand(q, qq));
                 var offset = rrField.ReadSigned(u) << 1;
                 var addr = d.rdr.Address + offset;
-                d.ops.Add(AddressOperand.Create(addr));
+                d.ops.Add(addr);
                 return true;
             };
         }
@@ -474,7 +474,7 @@ namespace Reko.Arch.C166
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort uAddr))
                 return false;
-            dasm.ops.Add(AddressOperand.Ptr16(uAddr));
+            dasm.ops.Add(Address.Ptr16(uAddr));
             return true;
         }
 
@@ -542,7 +542,7 @@ namespace Reko.Arch.C166
         {
             var offset = relField.ReadSigned(uInstr) << 1;
             var addr = dasm.rdr.Address + offset;
-            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(addr);
             return true;
         }
 

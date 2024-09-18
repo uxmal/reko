@@ -236,8 +236,8 @@ namespace Reko.Arch.SuperH
             case ImmediateOperand immOp:
                 return Constant.Word32(immediateFn!(immOp.Value.ToInt32()));
 
-            case AddressOperand addrOp:
-                return addrOp.Address;
+            case Address addrOp:
+                return addrOp;
             case MemoryOperand mem:
                 Identifier reg;
                 switch (mem.mode)
@@ -413,7 +413,7 @@ namespace Reko.Arch.SuperH
                 ? InstrClass.ConditionalTransfer | InstrClass.Delay
                 : InstrClass.ConditionalTransfer;
             Expression cond = binder.EnsureFlagGroup(Registers.T);
-            var addr = ((AddressOperand) instr.Operands[0]).Address;
+            var addr = (Address) instr.Operands[0];
             if (!takenOnTset)
                 cond = m.Not(cond);
             m.Branch(cond, addr, this.iclass);
@@ -449,7 +449,7 @@ namespace Reko.Arch.SuperH
         private void RewriteGoto()
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
-            var addr = ((AddressOperand) instr.Operands[0]).Address;
+            var addr = (Address)instr.Operands[0];
             m.GotoD(addr);
         }
 

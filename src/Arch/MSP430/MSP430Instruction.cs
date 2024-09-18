@@ -74,7 +74,7 @@ namespace Reko.Arch.Msp430
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (op is AddressOperand && (base.InstructionClass & InstrClass.Transfer) == 0)
+            if (op is Address && (InstructionClass & InstrClass.Transfer) == 0)
             {
                 renderer.WriteString("#");
             }

@@ -137,7 +137,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private void Jump(AeonInstruction instr, int iop)
         {
-            Address addr = ((AddressOperand) instr.Operands[iop]).Address;
+            Address addr = (Address)instr.Operands[iop];
             InstructionPointer = addr;
         }
 

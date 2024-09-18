@@ -633,9 +633,8 @@ namespace Reko.Arch.X86
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
             if (addr is null)
                 return false;
-            var aop = AddressOperand.Create(addr);
-            aop.Width = PrimitiveType.SegPtr32; //$BUG: in 32-bit code this is SegPtr48
-            dasm.decodingContext.ops.Add(aop);
+            addr.DataType = PrimitiveType.SegPtr32; //$BUG: in 32-bit code this is SegPtr48
+            dasm.decodingContext.ops.Add(addr);
             return true;
         }
 
@@ -942,9 +941,9 @@ namespace Reko.Arch.X86
                 ulong uAddr = (ulong) ((long) d.rdr.Address.Offset + jOffset);
                 MachineOperand op;
                 if (d.defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
-                    op = AddressOperand.Ptr64(uAddr);
+                    op = Address.Ptr64(uAddr);
                 else if (d.defaultAddressWidth.BitSize == 32)
-                    op = AddressOperand.Ptr32((uint) uAddr);
+                    op = Address.Ptr32((uint) uAddr);
                 else
                 {
                     op = new ImmediateOperand(Constant.Create(PrimitiveType.Offset16, uAddr));

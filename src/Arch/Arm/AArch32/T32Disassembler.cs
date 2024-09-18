@@ -1539,7 +1539,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var offset = field.ReadSigned(u) << 2;
-                var op = AddressOperand.Create(d.addr.Align(4) + offset);
+                var op = d.addr.Align(4) + offset;
                 d.state.ops.Add(op);
                 return true;
             };
@@ -1550,7 +1550,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var offset = Bitfield.ReadSignedFields(fields, u) << shift;
-                var op = AddressOperand.Create(d.addr + (offset + 4));
+                var op = d.addr + (offset + 4);
                 d.state.ops.Add(op);
                 return true;
             };
@@ -1561,7 +1561,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var offset = (SBitfield(wInstr, 9, 1) << 6) |
                          (SBitfield(wInstr, 3, 5) << 1);
-            dasm.state.ops.Add(AddressOperand.Create(dasm.addr + (offset + 4)));
+            dasm.state.ops.Add(dasm.addr + (offset + 4));
             return true;
         }
 
@@ -1958,7 +1958,7 @@ namespace Reko.Arch.Arm.AArch32
             var ssss = Bits.SignExtend(wInstr >> 26, 1) & mask;
             wInstr = (wInstr & ~mask) | (~(wInstr ^ ssss) & mask);
             int offset = Bitfield.ReadSignedFields(B_T4_fields, wInstr) << 1;
-            var op = AddressOperand.Create(dasm.addr + (offset + 4));
+            var op = dasm.addr + (offset + 4);
             dasm.state.ops.Add(op);
             return true;
         }

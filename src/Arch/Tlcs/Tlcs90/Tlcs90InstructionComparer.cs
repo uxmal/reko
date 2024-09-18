@@ -62,11 +62,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return true;
                 var immOpB = (ImmediateOperand)opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
-            case AddressOperand addrOpA:
+            case Address addrOpA:
                 if (NormalizeConstants)
                     return true;
-                var addrOpB = (AddressOperand)opB;
-                return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
+                var addrOpB = (Address) opB;
+                return addrOpA.ToLinear() == addrOpB.ToLinear();
             case ConditionOperand condOpA:
                 return condOpA.Code == ((ConditionOperand)opB).Code;
             case MemoryOperand memOpA:
@@ -105,11 +105,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return h;
                 else
                     return h * 13 ^ GetConstantHash(immOp.Value);
-            case AddressOperand addrOp:
+            case Address addrOp:
                 if (NormalizeConstants)
                     return h;
                 else
-                    return h * 29 ^ addrOp.Address.GetHashCode();
+                    return h * 29 ^ addrOp.GetHashCode();
             case ConditionOperand condOp:
                 return h * 19 ^ condOp.Code.GetHashCode();
             case MemoryOperand memOp:
