@@ -341,7 +341,7 @@ namespace Reko.Analysis
         {
             
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-#if FIND_BUGS
+#if !FIND_BUGS
 // This is currently disabled because of hard-to-fix problems with the UnalignedMemoryAccessFuser
             ssa.Validate(s =>
             {
@@ -349,8 +349,13 @@ namespace Reko.Analysis
                 Console.WriteLine("    {0}", s);
                 ssa.Write(Console.Out);
                 ssa.Procedure.Write(false, Console.Out);
+
+                Debug.Print("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name, s);
+                Debug.Print("    {0}", s);
+                ssa.Dump(true);
             });
 #endif
+
         }
 
         [Conditional("DEBUG")]

@@ -27,7 +27,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -58,7 +57,7 @@ namespace Reko.Analysis;
 /// </remarks>
 public class LongAddRewriter : IAnalysis<SsaState>
 {
-    private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Verbose };
+    private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Warning };
     private static readonly InstructionMatcher adcPattern;
     private static readonly InstructionMatcher addPattern;
     private static readonly ExpressionMatcher memOffset;
@@ -212,8 +211,12 @@ public class LongAddRewriter : IAnalysis<SsaState>
             {
                 var sidWideSrc = AddSsaId(idWideSrc);
                 wideSrc = sidWideSrc.Identifier;
-                sidWideSrc.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
+                sidWideSrc.DefStatement = stmHi.Block.Statements.Insert(
+                    iStm++,
+                    stmHi.Address,
                     CreateMkSeq(wideSrc, hiCandidate.Left, loCandidate.Left));
+                GetSsaIdentifierOf(hiCandidate.Left)?.Uses.Add(sidWideSrc.DefStatement);
+                GetSsaIdentifierOf(loCandidate.Left)?.Uses.Add(sidWideSrc.DefStatement);
             }
 
             var sidWideDst = AddSsaId((Identifier) CreateWideExpression(ssa, loCandidate.Dst, hiCandidate.Dst, totalSize));
@@ -221,6 +224,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             var wideDst = sidWideDst.Identifier;
             sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
                 Assign(wideDst, new UnaryExpression(Operator.Neg, wideSrc.DataType, wideSrc)));
+            GetSsaIdentifierOf(wideSrc)?.Uses.Add(sidWideDst.DefStatement);
 
             var sidLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidLo is not null)
@@ -296,6 +300,8 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     if (e is Identifier eId)
                         return ssa.Identifiers[eId];
             }
+            else if (dst is Conversion conv && conv.Expression is Identifier idConv)
+                return ssa.Identifiers[idConv];
             return null;
         }
 

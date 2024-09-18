@@ -1516,7 +1516,6 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 	Eq_n ds_n;
 	word16 dx_n;
 	word16 di_n;
-	ui32 ax_dx_n;
 	word16 dx_n;
 	byte cl_n;
 	word16 dx_n;
@@ -1942,16 +1941,13 @@ word16 fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, struct Eq_n & dsOut)
 					if (ax_n != 0x00)
 					{
 						(ss->*sp_n.u7).t0006.u0 = 0x01;
-						ui32 ax_dx_n = -ax_dx_n;
-						Eq_n ax_n = Mem1399[ds_n:0x2A05:word16];
-						Eq_n dx_n = Mem1399[ds_n:0x2A03:word16];
+						ui32 ax_dx_n = -Mem1399[ds_n:0x2A03:ui32];
 						(ss->*((word32) sp_n + 4)).u5 = SLICE(ax_dx_n, word16, 16);
 						(ss->*sp_n.u7).t0002.u0 = (wchar_t) (word16) ax_dx_n;
 						Mem1416[ss:sp_n + 0x00:word16] = Mem1413[ds_n:10721:word16];
 						Mem1419[ss:sp_n + -2:word16] = Mem1416[ds_n:10719:word16];
 						word16 cx_n;
 						fn0800_ACB3(ds_n, ss->*((word32) sp_n - 2), (ss->*sp_n.u7).t0002.u5, (ss->*sp_n.u7).t0006.u0, out cx_n);
-						ax_dx_n = SEQ(ax_n, dx_n);
 						sp_n.u5 = &sp_n.u7->t0008.u0;
 					}
 				}
@@ -3146,7 +3142,6 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 //      fn0800-18D9
 byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & dsOut)
 {
-	ui32 ax_dx_n;
 	Eq_n ds_n;
 	ptr16 si_n;
 	struct Eq_n Eq_n::* bp_n;
@@ -3267,16 +3262,13 @@ byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, unio
 	selector ss;
 	(ss->*sp_n.u7).t000A.u0 = (ss->*bp_n).wFFFFFFFE;
 	(ss->*sp_n.u7).t0008.u0 = (ss->*bp_n).tFFFFFFFC.u1;
-	ui32 ax_dx_n = -ax_dx_n;
-	ui16 ax_n = (ss->*bp_n).wFFFFFFFA;
-	uint16 dx_n = (ss->*bp_n).wFFFFFFF8;
+	ui32 ax_dx_n = -(ss->*bp_n).dwFFFFFFF8;
 	(ss->*sp_n.u7).t0006.u0 = SLICE(ax_dx_n, word16, 16);
 	(ss->*((word32) sp_n + 4)).u5 = (word16) ax_dx_n;
 	fn0800-2688(ds_n, ss->*((word32) sp_n + 4), (ss->*sp_n.u7).t0008.u5);
 	bpOut.u0 = (ss->*bp_n).t0000.u0;
 	siOut = si_n;
 	dsOut = ds_n;
-	ax_dx_n = SEQ(ax_n, dx_n);
 	return ch_n;
 }
 
@@ -9207,7 +9199,6 @@ void fn0800-6EFF(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, cup16 wArg02)
 // 0800:6F20: void fn0800-6F20(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
 void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
-	ui32 ax_dx_n;
 	Eq_n ds_n;
 	Eq_n ds_n;
 	Eq_n ds_n;
@@ -9494,9 +9485,7 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		(ss->*bp_n).tFFFFFFFA.u0 = SLICE(dx_ax_n, word16, 16);
 		(ss->*bp_n).tFFFFFFF8.u0 = (wchar_t) (word16) dx_ax_n;
 		(ss->*sp_n).t0000.u0 = 0x01;
-		ui32 ax_dx_n = -ax_dx_n;
-		Eq_n ax_n = Mem1038[ds_n:0x2A05:word16];
-		Eq_n dx_n = Mem1038[ds_n:0x2A03:word16];
+		ui32 ax_dx_n = -Mem1038[ds_n:0x2A03:ui32];
 		(ss->*sp_n).tFFFFFFFE.u0 = SLICE(ax_dx_n - 0x04, word16, 16);
 		(ss->*sp_n).tFFFFFFFC.u0 = (wchar_t) ((word16) ax_dx_n - 0x04);
 		Mem1056[ss:sp_n + -6:word16] = Mem1053[ds_n:10721:word16];
@@ -9516,7 +9505,6 @@ void fn0800-6F20(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Eq_n dx_n;
 		dx_n.u0 = (ss->*bp_n).tFFFFFFF4.u0;
 		(ss->*bp_n).tFFFFFFE6.u0 = (wchar_t) (ax_n & 0x3FFF);
-		ax_dx_n = SEQ(ax_n, dx_n);
 		if (SEQ(ax_n & 0x3FFF, dx_n) > ((ss->*bp_n).tFFFFFFFC).u5)
 		{
 			Eq_n ax_n;
@@ -9574,7 +9562,6 @@ word16 fn0800-73AC(Eq_n ds, struct Eq_n & dsOut)
 //      fn0800-0DE8
 word16 fn0800-741D(Eq_n ds)
 {
-	ui32 ax_dx_n;
 	Eq_n ds_n;
 	word16 di_n;
 	Eq_n ds_n;
@@ -9661,11 +9648,7 @@ word16 fn0800-741D(Eq_n ds)
 			if (Mem281[ds:0x2A05:word16] == Mem281[ss:bp_n + -2:word16] && dx_n == ((ss->*bp_n).tFFFFFFFC).u0)
 			{
 				(ss->*sp_n.u7).t0006.u0 = 0x01;
-				ui32 ax_dx_n = -ax_dx_n;
-				Eq_n ax_n;
-				ax_n.u0 = (ss->*bp_n).tFFFFFFFE.u0;
-				Eq_n dx_n;
-				dx_n.u0 = (ss->*bp_n).tFFFFFFFC.u0;
+				ui32 ax_dx_n = -(ss->*bp_n).tFFFFFFFC.u5;
 				(ss->*((word32) sp_n + 4)).u5 = SLICE(ax_dx_n, word16, 16);
 				(ss->*sp_n.u7).t0002.u0 = (wchar_t) (word16) ax_dx_n;
 				Mem346[ss:sp_n + 0x00:word16] = Mem343[ds:0x29E5:word16];
@@ -9680,7 +9663,6 @@ word16 fn0800-741D(Eq_n ds)
 				Mem379[ss:sp_n + -4:word16] = Mem376[ds:0x29E3:word16];
 				Eq_n sp_n;
 				sp_n.u0 = <invalid>;
-				ax_dx_n = SEQ(ax_n, dx_n);
 				word16 si_n;
 				bp_n = fn0800-3B0A(ds, ss->*((word32) sp_n + 4), (ss->*sp_n.u7).t0006.u0, out si_n, out ds);
 				sp_n = (struct Eq_n Eq_n::*) &sp_n.u7->t000C.u0;

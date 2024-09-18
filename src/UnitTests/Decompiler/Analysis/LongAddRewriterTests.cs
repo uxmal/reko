@@ -181,6 +181,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
+            ssa.Validate(s =>
+            {
+                ssa.Write(Console.Out);
+                ssa.Procedure.Write(false, Console.Out);
+                Assert.Fail(s);
+            });
         }
 
         [Test]

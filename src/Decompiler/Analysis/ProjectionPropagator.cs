@@ -56,7 +56,7 @@ namespace Reko.Analysis;
 /// </summary>
 public class ProjectionPropagator : IAnalysis<SsaState>
 {
-    private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProjectionPropagator), "Traces projection propagator") { Level = TraceLevel.Verbose };
+    private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProjectionPropagator), "Traces projection propagator") { Level = TraceLevel.Warning };
 
     private readonly AnalysisContext context;
 
