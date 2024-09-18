@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Arch.Sparc
 {
@@ -358,31 +359,28 @@ namespace Reko.Arch.Sparc
         {
             Expression? baseReg;
             Expression? offset;
-            if (op is MemoryOperand mem)
+            var mem = (MemoryOperand) op;
+            if (mem.Offset is not null)
             {
                 baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
                 offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
             }
             else
             {
-                if (op is IndexedMemoryOperand i)
-                {
-                    baseReg = i.Base == arch.Registers.g0 ? null : binder.EnsureRegister(i.Base);
-                    offset = i.Index == arch.Registers.g0 ? null : binder.EnsureRegister(i.Index);
-                }
-                else
-                    throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
+                Debug.Assert(mem.Index is not null);
+                baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
+                offset = mem.Index == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Index);
             }
             return m.Mem(size, SimplifySum(baseReg, offset));
         }
 
         private Expression SimplifySum(Expression? srcLeft, Expression? srcRight)
         {
-            if (srcLeft == null && srcRight == null)
+            if (srcLeft is null && srcRight is null)
                 return Constant.Zero(PrimitiveType.Ptr32);
-            else if (srcLeft == null)
+            else if (srcLeft is null)
                 return srcRight!;
-            else if (srcRight == null)
+            else if (srcRight is null)
                 return srcLeft;
             else
                 return m.IAdd(srcLeft, srcRight);

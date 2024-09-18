@@ -61,12 +61,14 @@ namespace Reko.Arch.Sparc
                 var mB = (MemoryOperand) b;
                 if (!CompareRegisters(mA.Base, mB.Base))
                     return false;
-                return CompareValues(mA.Offset, mB.Offset);
-            case IndexedMemoryOperand xA:
-                var xB = (IndexedMemoryOperand) b;
-                if (!CompareRegisters(xA.Base, xB.Base))
-                    return false;
-                return CompareRegisters(xA.Index, xB.Index);
+                if (mA.Offset is not null)
+                {
+                    return CompareValues(mA.Offset, mB.Offset);
+                }
+                else
+                {
+                    return CompareRegisters(mA.Index, mB.Index);
+                }
             }
             throw new NotImplementedException();
         }
@@ -95,10 +97,7 @@ namespace Reko.Arch.Sparc
             case MemoryOperand m:
                 var h = GetRegisterHash(m.Base);
                 h = h ^ 29 * GetConstantHash(m.Offset);
-                return h;
-            case IndexedMemoryOperand x:
-                h = GetRegisterHash(x.Base);
-                h = h ^ 59 * GetRegisterHash(x.Index);
+                h = h ^ 59 * GetRegisterHash(m.Index);
                 return h;
             }
             throw new NotImplementedException();

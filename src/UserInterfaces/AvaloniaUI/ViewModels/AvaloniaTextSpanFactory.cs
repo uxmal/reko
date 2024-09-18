@@ -114,7 +114,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             private readonly string text;
 
-            public InertTextSpan(string text, string style)
+            public InertTextSpan(string text, string? style)
             {
                 this.text = text;
                 base.Style = style;
@@ -169,7 +169,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             public Address Address { get; private set; }
 
-            public MemoryTextSpan(string text, string style)
+            public MemoryTextSpan(string text, string? style)
             {
                 this.text = text;
                 base.Style = style;

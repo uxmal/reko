@@ -43,7 +43,7 @@ namespace Reko.Arch.Telink
             this.InstructionBitSize = 16;
             this.MemoryGranularity = 8;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO
+            this.StackRegister = null!; //$TODO
             this.WordWidth = PrimitiveType.Word32;
         }
 

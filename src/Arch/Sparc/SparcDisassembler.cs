@@ -366,7 +366,7 @@ namespace Reko.Arch.Sparc
             RegisterStorage b = registers.GetRegister(wInstr >> 14);
             RegisterStorage idx = registers.GetRegister(wInstr);
             var asi = (wInstr >> 4) & 0xFF;
-            return new MemoryOperand(b, Constant.Int32((int) asi), type);
+            return MemoryOperand.Indirect(b, Constant.Int32((int) asi), type);
         }
 
         private static MachineOperand GetMemoryOperand(Registers registers, uint wInstr, PrimitiveType type)
@@ -374,12 +374,12 @@ namespace Reko.Arch.Sparc
             RegisterStorage b = registers.GetRegister(wInstr >> 14);
             if ((wInstr & (1 << 13)) != 0)
             {
-                return new MemoryOperand(b, Constant.Int32(SignExtend(wInstr, 13)), type);
+                return MemoryOperand.Indirect(b, Constant.Int32(SignExtend(wInstr, 13)), type);
             }
             else
             {
                 RegisterStorage idx = registers.GetRegister(wInstr);
-                return new IndexedMemoryOperand(b, idx, type);
+                return MemoryOperand.Indexed(b, idx, type);
             }
         }
 

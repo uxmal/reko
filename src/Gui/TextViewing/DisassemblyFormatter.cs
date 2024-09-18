@@ -53,6 +53,7 @@ namespace Reko.Gui.TextViewing
             this.arch = arch;
             this.instr = instr;
             this.line = line;
+            this.addrInstr = default!;
             this.annotations = new List<string>();
             this.mnemonicStyle = Gui.Services.UiStyles.DisassemblerOpcode;
         }
@@ -130,7 +131,7 @@ namespace Reko.Gui.TextViewing
             sb.Append(n);
         }
 
-        public void WriteString(string s)
+        public void WriteString(string? s)
         {
             sb.Append(s);
         }
@@ -140,9 +141,12 @@ namespace Reko.Gui.TextViewing
             sb.AppendFormat(fmt, parms);
         }
 
-        public void AddAnnotation(string annotation)
+        public void AddAnnotation(string? annotation)
         {
-            this.annotations.Add(annotation);
+            if (annotation is not null)
+            {
+                this.annotations.Add(annotation);
+            }
         }
 
         public void NewLine()

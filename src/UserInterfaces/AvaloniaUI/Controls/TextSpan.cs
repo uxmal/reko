@@ -38,7 +38,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         }
 
         public abstract string GetText();
-        public string Style { get; set; }
+        public string? Style { get; set; }
 
         public object? tag;
         public object? Tag {

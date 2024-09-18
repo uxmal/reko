@@ -74,16 +74,16 @@ namespace Reko.Core.Machine
             return CompareOperands(x, y);
         }
 
-        public int GetConstantHash(Constant c)
+        public int GetConstantHash(Constant? c)
         {
-            if ((norm & Normalize.Constants) != 0)
+            if ((norm & Normalize.Constants) != 0 || c is null)
                 return 0;
             return c.GetValue().GetHashCode();
         }
 
-        public int GetRegisterHash(RegisterStorage r)
+        public int GetRegisterHash(RegisterStorage? r)
         {
-            if ((norm & Normalize.Registers) != 0)
+            if ((norm & Normalize.Registers) != 0 || r is null)
                 return 0;
             return r.Number.GetHashCode();
         }

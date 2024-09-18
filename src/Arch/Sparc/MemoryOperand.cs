@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -31,41 +32,45 @@ namespace Reko.Arch.Sparc
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        public readonly RegisterStorage Base;
-        public readonly Constant Offset;
-
-        public MemoryOperand(RegisterStorage b, Constant offset, PrimitiveType width) : base(width)
+        private MemoryOperand(RegisterStorage b, Constant? offset, RegisterStorage? index, PrimitiveType width) : base(width)
         {
             this.Base = b;
             this.Offset = offset;
+            this.Index = index;
         }
+
+        public static MemoryOperand Indirect(RegisterStorage baseRg, Constant offset, PrimitiveType dt)
+        {
+            return new MemoryOperand(baseRg, offset, null, dt);
+        }
+
+        public static MemoryOperand Indexed(RegisterStorage baseReg, RegisterStorage index, PrimitiveType dt)
+        {
+            return new MemoryOperand(baseReg, null, index, dt);
+        }
+
+        public RegisterStorage Base { get; }
+        public Constant? Offset { get; }
+        public RegisterStorage? Index { get; }
+
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteFormat("[%{0}", Base.Name);
-            if (!Offset.IsNegative)
+            if (Offset is not null)
             {
-                renderer.WriteString("+");
+                if (!Offset.IsNegative)
+                {
+                    renderer.WriteString("+");
+                }
+                renderer.WriteString(Offset.ToInt16().ToString());
             }
-            renderer.WriteString(Offset.ToInt16().ToString());
+            else
+            {
+                Debug.Assert(Index is not null);
+                renderer.WriteFormat("+%{0}", Index);
+            }
             renderer.WriteString("]");
-        }
-    }
-
-    public class IndexedMemoryOperand : AbstractMachineOperand
-    {
-        public readonly RegisterStorage Base;
-        public readonly RegisterStorage Index;
-
-        public IndexedMemoryOperand(RegisterStorage r1, RegisterStorage r2, PrimitiveType width) : base(width)
-        {
-            this.Base = r1;
-            this.Index = r2;
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteFormat("[%{0}+%{1}]", Base, Index);
         }
     }
 }

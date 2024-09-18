@@ -65,7 +65,7 @@ namespace Reko.Arch.X86
     [Designer("Reko.Arch.X86.Design.X86ArchitectureDesigner,Reko.Arch.X86.Design")]
 	public class IntelArchitecture : ProcessorArchitecture
 	{
-        private ProcessorMode mode;
+        private readonly ProcessorMode mode;
         private Decoder[]? rootDecoders;
 
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
