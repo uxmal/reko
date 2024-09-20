@@ -314,6 +314,7 @@ fn073A proc
 
 
 fn0C81 proc
+	mov ax,0x42
 	ret
 	endp
 
