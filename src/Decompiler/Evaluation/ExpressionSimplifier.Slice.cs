@@ -92,7 +92,7 @@ namespace Reko.Evaluation
                 }
             }
 
-            e = sliceConvert.Match(slice);
+            e = sliceConvert.Match(slice, ctx);
             if (e is not null)
             {
                 return (e, true);

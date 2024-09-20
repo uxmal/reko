@@ -98,7 +98,7 @@ SsaProcedureBuilder_exit:
             Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
-                var h = m.Reg("h", Z80Registers.h); 
+                var h = m.Reg("h", Z80Registers.h);
                 var l = m.Reg("l", Z80Registers.l);
                 var de_1 = m.Reg("de_1", Z80Registers.de);
 
@@ -318,7 +318,7 @@ SsaProcedureBuilder_exit:
                 m.Assign(cx_3, m.Seq(t1, t2));
                 m.Return();
             });
-    }
+        }
 
         // Only fuse slices if they are adjacent. If the fused slices
         // don't cover the underlying storage, we must emit a new slice.

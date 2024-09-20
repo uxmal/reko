@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -30,10 +31,26 @@ namespace Reko.Evaluation
         {
         }
 
-        public Expression? Match(Slice slice)
+        public Expression? Match(Slice slice, EvaluationContext ctx)
         {
+
             if (slice.Offset != 0)
+            {
+                var slicedExp = slice.Expression;
+                if (slicedExp is Identifier id)
+                {
+                    slicedExp = ctx.GetDefiningExpression(id);
+                }
+                // We might be slicing a5 zero extension.
+                if (slicedExp is Conversion slConv &&
+                    slice.Offset >= slConv.SourceDataType.BitSize &&
+                        IsUselessIntegralExtension(slice, slConv))
+                {
+                    ctx.RemoveExpressionUse(slice.Expression);
+                    return Constant.Zero(slice.DataType);
+                }
                 return null;
+            }
             Expression result;
             if (slice.Expression is Conversion conv)
             {

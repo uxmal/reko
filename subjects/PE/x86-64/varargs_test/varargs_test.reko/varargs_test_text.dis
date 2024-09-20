@@ -989,56 +989,53 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 // Trashed: SCZOP r10 r11 r8 r9 rax rcx rdx
 // Preserved: rbp rbx rdi rsp
 fn0000000140001BFC_entry:
-	ebx_173 = SLICE(rbx, word32, 0) (alias)
+	ebx_22 = SLICE(rbx, word32, 0) (alias)
 l0000000140001BFC:
 	Mem19[0x000000014000301C<p64>:word32] = 2<32>
-	__cpuid(0<32>, 0<32>, &0<32>, &ebx_173, &0<32>, &edx)
+	__cpuid(0<32>, 0<32>, &0<32>, &ebx_22, &0<32>, &edx)
 	Mem26[0x0000000140003018<p64>:word32] = 1<32>
-	rdx_65 = CONVERT(ebx_173 ^ 0x756E6547<32>, word32, uint64)
-	r8_118 = CONVERT(Mem26[0x0000000140003614<p64>:word32], word32, uint64)
-	edx_71 = SLICE(rdx_65, word32, 0) (alias)
-	__cpuid(1<32>, 0<32>, &1<32>, &ebx_173, &0<32>, &edx_71)
+	r8d_100 = Mem26[0x0000000140003614<p64>:word32] (alias)
+	__cpuid(1<32>, 0<32>, &1<32>, &ebx_22, &0<32>, &(ebx_22 ^ 0x756E6547<32>))
 	bLoc20_271 = 0<8> (alias)
-	r8d_95 = SLICE(r8_118, word32, 0) (alias)
-	r11d_125 = ebx_173 ^ 0x68747541<32> | edx ^ 0x69746E65<32> | 0x444D4163<32> (alias)
-	branch (edx ^ 0x49656E69<32> | 0x6C65746E<32> | edx_71) != 0<32> l0000000140001CE9
+	r11d_125 = ebx_22 ^ 0x68747541<32> | edx ^ 0x69746E65<32> | 0x444D4163<32> (alias)
+	ebx_173 = ebx_22
+	branch (edx ^ 0x49656E69<32> | 0x6C65746E<32> | ebx_22 ^ 0x756E6547<32>) != 0<32> l0000000140001CE9
 l0000000140001C97:
 	Mem93[0x0000000140003020<p64>:word64] = 0xFFFFFFFFFFFFFFFF<64>
-	r8_118 = CONVERT(r8d_95 | 4<32>, word32, uint64)
-	r8d_100 = SLICE(r8_118, word32, 0) (alias)
-	Mem101[0x0000000140003614<p64>:word32] = r8d_100
+	r8d_100 = r8d_100 | 4<32> (alias)
+	Mem101[0x0000000140003614<p64>:word32] = r8d_100 | 4<32>
+	ebx_173 = ebx_22
 	branch false l0000000140001CDE
 l0000000140001CB6:
+	ebx_173 = ebx_22
 	branch false l0000000140001CDE
 l0000000140001CBD:
+	ebx_173 = ebx_22
 	branch false l0000000140001CDE
 l0000000140001CC4:
+	ebx_173 = ebx_22
 	branch false l0000000140001CE9
 l0000000140001CCE:
 	ebx_173 = 0x10001<32> (alias)
 	branch __bt<word64>(0x100010001<64>, 0xFFFCF9B0<u64>) l0000000140001CE9
 l0000000140001CDE:
-	r8_118 = CONVERT(r8d_100 | 1<32>, word32, uint64)
-	Mem123[0x0000000140003614<p64>:word32] = SLICE(r8_118, word32, 0)
+	r8d_100 = r8d_100 | 4<32> | 1<32> (alias)
+	Mem123[0x0000000140003614<p64>:word32] = r8d_100
 l0000000140001CE9:
-	r8d_139 = SLICE(r8_118, word32, 0) (alias)
-	r8_141 = r8_118 (alias)
 	branch r11d_125 != 0<32> l0000000140001D07
 l0000000140001CEE:
-	r8_141 = r8_118 (alias)
 	branch true l0000000140001D07
 l0000000140001CFC:
-	r8_141 = CONVERT(r8d_139 | 4<32>, word32, uint64)
-	Mem146[0x0000000140003614<p64>:word32] = SLICE(r8_141, word32, 0)
+	r8d_100 = r8d_100 | 4<32> (alias)
+	Mem146[0x0000000140003614<p64>:word32] = r8d_100
 l0000000140001D07:
-	r8d_182 = SLICE(r8_141, word32, 0) (alias)
 	branch true l0000000140001D3B
 l0000000140001D17:
-	__cpuid(7<32>, 0<32>, &7<32>, &ebx_173, &0<32>, &edx_71)
+	__cpuid(7<32>, 0<32>, &7<32>, &ebx_173, &0<32>, &(ebx_22 ^ 0x756E6547<32>))
 	bLoc20_271 = SLICE(ebx_173, byte, 0) (alias)
 	branch __bt<word32>(ebx_173, 9<8>) l0000000140001D3B
 l0000000140001D30:
-	Mem189[0x0000000140003614<p64>:word32] = r8d_182 | 2<32>
+	Mem189[0x0000000140003614<p64>:word32] = r8d_100 | 2<32>
 l0000000140001D3B:
 	branch __bt<word32>(0<32>, 0x14<8>) l0000000140001DB0
 l0000000140001D42:

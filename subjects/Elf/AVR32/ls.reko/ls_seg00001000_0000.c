@@ -7233,9 +7233,8 @@ l000097C2:
 							word32 r8_n;
 							if (r10_n == 0x01)
 							{
-								Eq_n r11_r10_n;
-								r11_r10_n.u0 = (uint64) (r4_n.u2 + ((word32) qwLoc70_n & 0x01));
-								r8_n = (word32) ((word32) (r11_r10_n != 0x00) + r3_n > 0x05);
+								uint64 r11_r10_n = (uint64) (r4_n.u2 + ((word32) qwLoc70_n & 0x01));
+								r8_n = (word32) ((word32) ((word32) r11_r10_n != 0x00) + r3_n > 0x05);
 							}
 							else
 							{

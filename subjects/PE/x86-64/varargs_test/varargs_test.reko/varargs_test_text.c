@@ -695,72 +695,75 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 	g_dw4000301C = 0x02;
 	__cpuid(0x00, 0x00, &0x00, &ebx_n, &0x00, &edx);
 	g_dw40003018 = 0x01;
-	uint64 rdx_n = (uint64) (ebx_n ^ 1970169159);
-	uint64 r8_n = (uint64) g_dw40003614;
-	ui32 edx_n = (word32) rdx_n;
-	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &edx_n);
+	ui32 r8d_n = g_dw40003614;
+	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &(ebx_n ^ 1970169159));
 	byte bLoc20_n = 0x00;
-	ui32 r8d_n = (word32) r8_n;
 	ui32 r11d_n = ebx_n ^ 1752462657 | edx ^ 0x69746E65 | 0x444D4163;
-	if ((edx ^ 0x49656E69 | 1818588270 | edx_n) == 0x00)
+	word32 ebx_n = ebx_n;
+	if ((edx ^ 0x49656E69 | 1818588270 | ebx_n ^ 1970169159) != 0x00)
 	{
-		g_qw40003020 = ~0x00;
-		r8_n = (uint64) (r8d_n | 0x04);
-		ui32 r8d_n = (word32) r8_n;
-		g_dw40003614 = r8d_n;
-		if (false || (false || false))
-		{
-l0000000140001CDE:
-			r8_n = (uint64) (r8d_n | 0x01);
-			g_dw40003614 = (word32) r8_n;
-			goto l0000000140001CE9;
-		}
-		if (true)
-		{
-			ebx_n = 0x00010001;
-			if (!__bt<word64>(0x100010001, 0xFFFCF9B0))
-				goto l0000000140001CDE;
-		}
-	}
 l0000000140001CE9:
-	ui32 r8d_n = (word32) r8_n;
-	uint64 r8_n = r8_n;
-	if (r11d_n == 0x00)
-	{
-		r8_n = r8_n;
+		if (r11d_n == 0x00 && false)
+		{
+			r8d_n |= 0x04;
+			g_dw40003614 = r8d_n;
+		}
 		if (false)
 		{
-			r8_n = (uint64) (r8d_n | 0x04);
-			g_dw40003614 = (word32) r8_n;
+			__cpuid(0x07, 0x00, &0x07, &ebx_n, &0x00, &(ebx_n ^ 1970169159));
+			bLoc20_n = (byte) ebx_n;
+			if (!__bt<word32>(ebx_n, 0x09))
+				g_dw40003614 = r8d_n | 0x02;
 		}
-	}
-	ui32 r8d_n = (word32) r8_n;
-	if (false)
-	{
-		__cpuid(0x07, 0x00, &0x07, &ebx_n, &0x00, &edx_n);
-		bLoc20_n = (byte) ebx_n;
-		if (!__bt<word32>(ebx_n, 0x09))
-			g_dw40003614 = r8d_n | 0x02;
-	}
-	if (!__bt<word32>(0x00, 0x14))
-	{
-		g_dw40003018 = 0x02;
-		g_dw4000301C = 0x06;
-		if (!__bt<word32>(0x00, 0x1B) && !__bt<word32>(0x00, 0x1C))
+		if (!__bt<word32>(0x00, 0x14))
 		{
-			word64 edx_eax_n = __xgetbv(0x00);
-			if (((SLICE(edx_eax_n, byte, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)
+			g_dw40003018 = 0x02;
+			g_dw4000301C = 0x06;
+			if (!__bt<word32>(0x00, 0x1B) && !__bt<word32>(0x00, 0x1C))
 			{
-				ui32 eax_n = g_dw4000301C | 0x08;
-				g_dw40003018 = 0x03;
-				g_dw4000301C = eax_n;
-				if ((bLoc20_n & 0x20) != 0x00)
+				word64 edx_eax_n = __xgetbv(0x00);
+				if (((SLICE(edx_eax_n, byte, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)
 				{
-					g_dw40003018 = 0x05;
-					g_dw4000301C = eax_n | 0x20;
+					ui32 eax_n = g_dw4000301C | 0x08;
+					g_dw40003018 = 0x03;
+					g_dw4000301C = eax_n;
+					if ((bLoc20_n & 0x20) != 0x00)
+					{
+						g_dw40003018 = 0x05;
+						g_dw4000301C = eax_n | 0x20;
+					}
 				}
 			}
 		}
+	}
+	else
+	{
+		g_qw40003020 = ~0x00;
+		r8d_n |= 0x04;
+		g_dw40003614 = r8d_n | 0x04;
+		ebx_n = ebx_n;
+		if (true)
+		{
+			ebx_n = ebx_n;
+			if (false)
+				goto l0000000140001CDE;
+			ebx_n = ebx_n;
+			if (true)
+			{
+				ebx_n = ebx_n;
+				if (true)
+				{
+					ebx_n = 0x00010001;
+					if (!__bt<word64>(0x100010001, 0xFFFCF9B0))
+						goto l0000000140001CDE;
+				}
+				goto l0000000140001CE9;
+			}
+		}
+l0000000140001CDE:
+		r8d_n = r8d_n | 0x04 | 0x01;
+		g_dw40003614 = r8d_n;
+		goto l0000000140001CE9;
 	}
 }
 

@@ -111,6 +111,42 @@ namespace Reko.UnitTests.Mocks
             return MakeSsaIdentifier(id, name);
         }
 
+        /// <summary>
+        /// Generate a named 8-bit temporary SSA identifier
+        /// </summary>
+        public Identifier Temp8(string name)
+        {
+            var id = base.Temp(PrimitiveType.Byte, name);
+            return MakeSsaIdentifier(id, name);
+        }
+
+        /// <summary>
+        /// Generate a named 16-bit temporary SSA identifier
+        /// </summary>
+        public Identifier Temp16(string name)
+        {
+            var id = base.Temp(PrimitiveType.Word16, name);
+            return MakeSsaIdentifier(id, name);
+        }
+
+        /// <summary>
+        /// Generate a named 32-bit temporary SSA identifier
+        /// </summary>
+        public Identifier Temp32(string name)
+        {
+            var id = base.Temp(PrimitiveType.Word32, name);
+            return MakeSsaIdentifier(id, name);
+        }
+
+        /// <summary>
+        /// Generate a named 64-bit temporary SSA identifier
+        /// </summary>
+        public Identifier Temp64(string name)
+        {
+            var id = base.Temp(PrimitiveType.Word64, name);
+            return MakeSsaIdentifier(id, name);
+        }
+
         public Identifier Reg64(string name)
         {
             return Reg(name, PrimitiveType.Word64);

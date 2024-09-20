@@ -218,7 +218,7 @@ word16 fn0534(char c)
 	return bc_n;
 }
 
-// 056B: FlagGroup bool fn056B(Register ptr16 bc, Register out ptr16 bcOut)
+// 056B: FlagGroup bool fn056B(Register Eq_n bc, Register out Eq_n bcOut)
 // Called from:
 //      fn05CE
 //      fn05EF
@@ -229,12 +229,12 @@ word16 fn0534(char c)
 //      fn0814
 //      fn100A
 //      fn1229
-bool fn056B(ptr16 bc, ptr16 & bcOut)
+bool fn056B(Eq_n bc, union Eq_n & bcOut)
 {
 	char c = (byte) bc;
 	byte b = SLICE(bc, byte, 8);
 	g_b166C = c;
-	ptr16 bc_n;
+	Eq_n bc_n;
 	switch (g_b14F3)
 	{
 	case 0x01:
@@ -465,8 +465,9 @@ void fn075C(byte b, Eq_n c, byte d, Eq_n e)
 	fn05CE(0x0260);
 	Eq_n hl_n;
 	hl_n.u1 = g_t1683.u1;
+	fn06CE(SLICE(hl_n, byte, 8), (byte) hl_n);
 	word16 bc_n;
-	fn056B(SEQ(SLICE((uint16) fn06CE(SLICE(hl_n, byte, 8), (byte) hl_n), byte, 8), 0x0D), out bc_n);
+	fn056B(0x0D, out bc_n);
 	word16 bc_n;
 	fn056B(SEQ(SLICE(bc_n, byte, 8), 0x0A), out bc_n);
 	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
@@ -863,7 +864,8 @@ void fn0BE4(uint8 f)
 		if (g_b14F6 != 0x01)
 			fn0814(a_n);
 		fn05CE(662);
-		fn0814(SLICE((uint16) fn06CE(0x00, g_b138A - 0x01), byte, 8));
+		fn06CE(0x00, g_b138A - 0x01);
+		fn0814(0x00);
 	}
 	struct Eq_n * hl_n = g_ptr1388;
 	g_b1645 = g_b138A + 0x30;
@@ -1137,11 +1139,11 @@ void fn100A(word16 af)
 void fn1229()
 {
 	g_b14F3 = 0x02;
-	byte b_n = SLICE((uint16) fn05CE(0x02D1), byte, 8);
+	fn05CE(0x02D1);
 	if (g_b16A8 != 0x00)
 	{
 		word16 bc_n;
-		fn056B(SEQ(b_n, 0x3E), out bc_n);
+		fn056B(0x3E, out bc_n);
 		word16 bc_n;
 		fn056B(SEQ(SLICE(bc_n, byte, 8), 0x20), out bc_n);
 		while (true)

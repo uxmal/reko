@@ -490,9 +490,8 @@ l000000010000250A:
 					if ((byte) &g_t5340 != 0x00 && (edx & 0x02) != 0x00)
 					{
 						uint64 rdi_n = (uint64) rax_n->dw0038;
-						word32 rdi_32_32_n = SLICE(rdi_n, word32, 32);
 						if ((word32) rdi_n == 0x00)
-							rdi_n = SEQ(rdi_32_32_n, 0x02);
+							rdi_n = 0x02;
 						rax_n = strerror((word32) rdi_n);
 l00000001000024DF:
 						warnx();

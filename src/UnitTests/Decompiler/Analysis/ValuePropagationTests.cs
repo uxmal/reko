@@ -1639,5 +1639,110 @@ SsaProcedureBuilder_exit:
 
             AssertStringsEqual(sExpected, m.Ssa);
         }
+
+        // When slicing zero extensions, we know that the slice is a zero.
+        [Test]
+        public void VpSliceOfZeroExtension()
+        {
+            var sExpected =
+            #region Expected
+@"ds: orig: ds
+    uses: bl_8 = Mem10[ds:bx_7 + 0x2605<16>:byte]
+          Mem11[ds:0x1234<16>:bool] = bx_9 <=u 0x17<16>
+al_1: orig: al_1
+    uses: ax_2 = CONVERT(al_1, uint8, uint16)
+          bl_3 = al_1
+          dl_6 = al_1
+          bx_7 = CONVERT(al_1 - 0x20<8>, uint8, uint16)
+ax_2: orig: ax_2
+    def:  ax_2 = CONVERT(al_1, uint8, uint16)
+    uses: dx_5 = ax_2
+bl_3: orig: bl_3
+    def:  bl_3 = al_1
+bh_4: orig: bh_4
+    def:  bh_4 = 0<8>
+dx_5: orig: dx_5
+    def:  dx_5 = ax_2
+dl_6: orig: dl_6
+    def:  dl_6 = al_1
+bx_7: orig: bx_7
+    def:  bx_7 = CONVERT(al_1 - 0x20<8>, uint8, uint16)
+    uses: bl_8 = Mem10[ds:bx_7 + 0x2605<16>:byte]
+bl_8: orig: bl_8
+    def:  bl_8 = Mem10[ds:bx_7 + 0x2605<16>:byte]
+    uses: bx_9 = CONVERT(bl_8, uint8, uint16)
+bx_9: orig: bx_9
+    def:  bx_9 = CONVERT(bl_8, uint8, uint16)
+    uses: Mem11[ds:0x1234<16>:bool] = bx_9 <=u 0x17<16>
+Mem10: orig: Mem0
+    uses: bl_8 = Mem10[ds:bx_7 + 0x2605<16>:byte]
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x1234<16>:bool] = bx_9 <=u 0x17<16>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	ax_2 = CONVERT(al_1, uint8, uint16)
+	bl_3 = al_1
+	bh_4 = 0<8>
+	dx_5 = ax_2
+	dl_6 = al_1
+	bx_7 = CONVERT(al_1 - 0x20<8>, uint8, uint16)
+	bl_8 = Mem10[ds:bx_7 + 0x2605<16>:byte]
+	bx_9 = CONVERT(bl_8, uint8, uint16)
+	Mem11[ds:0x1234<16>:bool] = bx_9 <=u 0x17<16>
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var ds = m.Temp16("ds");
+            var al_1 = m.Temp8("al_1");
+            var ax_2 = m.Temp16("ax_2");
+            var bl_3 = m.Temp8("bl_3");
+            var bh_4 = m.Temp8("bh_4");
+            var dx_5 = m.Temp16("dx_5");
+            var dl_6 = m.Temp8("dl_6");
+            var bx_7 = m.Temp16("bx_7");
+            var bl_8 = m.Temp8("bl_8");
+            var bx_9 = m.Temp16("bx_9");
+
+            /*
+                ax_2 = CONVERT(al_1, uint8, uint16) (alias)
+                bl_3 = SLICE(ax_2, byte, 0) (alias)
+                bh_4 = SLICE(ax_2, byte, 8) (alias)
+                ah_1224 = 0<8>
+                dx = ax_2
+                dl_6 = SLICE(ax_2, byte, 0) (alias)
+                bx = SEQ(bh_4, bl_3 - 0x20<8>) (alias)
+                cx = SEQ(ch_1220, 0<8>) (alias)
+                branch bl_3 >=u 0x80<8> l0800_98FE
+            l0800_98EB:
+                bl_8 = Mem77[ds:bx + 0x2605<16>:byte]
+                bx = SEQ(bh_4, bl_8) (alias)
+                cx = SEQ(ch_1220, 0<8>) (alias)
+                branch bx <=u 0x17<16> l0800_98F7
+            */
+            var uint8 = PrimitiveType.UInt8;
+            var uint16 = PrimitiveType.UInt16;
+            var @byte = PrimitiveType.Byte;
+            m.Assign(ax_2, m.Convert(al_1, uint8, uint16));
+            m.Assign(bl_3, m.Slice(ax_2, @byte, 0));
+            m.Assign(bh_4, m.Slice(ax_2, @byte, 8));
+            m.Assign(dx_5, ax_2);
+            m.Assign(dl_6, m.Slice(ax_2, @byte, 0));
+            m.Assign(bx_7, m.Seq(bh_4, m.ISub(bl_3, 0x20)));
+            m.Assign(bl_8, m.Mem8(m.SegPtr(ds, m.IAdd(bx_7, 0x2605))));
+            m.Assign(bx_9, m.Seq(bh_4, bl_8));
+            m.MStore(m.SegPtr(ds, m.Word16(0x1234)), m.Ule(bx_9, 0x17));
+            m.Return();
+
+            RunValuePropagator();
+
+            AssertStringsEqual(sExpected, m.Ssa);
+        }
     }
 }

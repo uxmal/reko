@@ -583,7 +583,8 @@ l0773:
 l077D:
 	fn05CE(0x260<16>)
 	hl_48 = Mem16[0x1683<16>:word16]
-	fn056B(SEQ(SLICE(CONVERT(fn06CE(SLICE(hl_48, byte, 8), SLICE(hl_48, byte, 0)), uint8, uint16), byte, 8), 0xD<8>), out bc_65)
+	fn06CE(SLICE(hl_48, byte, 8), SLICE(hl_48, byte, 0))
+	fn056B(0xD<16>, out bc_65)
 	fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_127)
 	hl_85 = <invalid>
 	branch (fn1353(0<8>, 0x1685<16>, out l_128) | SLICE(hl_85, byte, 0)) == 0<8> l07AF
@@ -1032,7 +1033,8 @@ l0C04:
 	fn0814(a_9)
 l0C07:
 	fn05CE(0x296<16>)
-	fn0814(SLICE(CONVERT(fn06CE(0<8>, Mem13[0x138A<16>:byte] - 1<8>), uint8, uint16), byte, 8))
+	fn06CE(0<8>, Mem13[0x138A<16>:byte] - 1<8>)
+	fn0814(0<8>)
 l0C1A:
 	hl_73 = Mem13[0x1388<16>:word16]
 	Mem78[0x1645<16>:byte] = Mem13[0x138A<16>:byte] + 0x30<8>
@@ -1403,10 +1405,10 @@ void fn1229()
 fn1229_entry:
 l1229:
 	Mem4[0x14F3<16>:byte] = 2<8>
-	b_17 = SLICE(CONVERT(fn05CE(0x2D1<16>), uint8, uint16), byte, 8) (alias)
+	fn05CE(0x2D1<16>)
 	branch Mem4[0x16A8<16>:byte] == 0<8> l125E
 l123C:
-	fn056B(SEQ(b_17, 0x3E<8>), out bc_20)
+	fn056B(0x3E<16>, out bc_20)
 	fn056B(SEQ(SLICE(bc_20, byte, 8), 0x20<8>), out bc_30)
 l1246:
 	b_44 = SLICE(bc_30, byte, 8) (alias)

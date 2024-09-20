@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Looks at member pointer uses, to see if they always are associated
+	/// Looks at segmented pointer uses, to see if they always are associated
     /// with the same base pointer / segment selector. If so, they can be 
     /// treated as a pointer.
 	/// </summary>
@@ -42,7 +42,12 @@ namespace Reko.Analysis
 		private readonly Identifier overAssociatedId = new("overAssociated", VoidType.Instance, null!);
         private readonly Constant overAssociatedConst = Constant.Real64(0.0);
 
-		public SegmentedAccessClassifier(SsaState  ssa)
+        /// <summary>
+        /// Creates an instance of a <see cref="SegmentedAccessClassifier"/>
+        /// working over the provded <see cref="SsaState">SSA graph.</see>
+        /// </summary>
+        /// <param name="ssa">SSA graph to work on.</param>
+		public SegmentedAccessClassifier(SsaState ssa)
 		{
 			this.ssa = ssa;
 			assocs = new Dictionary<Identifier,Identifier>();
