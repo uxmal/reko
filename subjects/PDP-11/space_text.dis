@@ -9,14 +9,14 @@ void fn0468(word16 r3)
 // Preserved: C sp
 fn0468_entry:
 l0468:
+	v5_5 = Mem0[r3:byte]
 	r3 = r3 + 1<16>
-	r0_7 = CONVERT(Mem0[r3:byte], byte, int16)
-	branch r0_7 == 0<16> l04F8
+	branch CONVERT(v5_5, byte, int16) == 0<16> l04F8
 l04F8:
 	return
 fn0468_exit:
 l046C:
-	branch TTYOUT(SLICE(r0_7, char, 0)) l046C
+	branch TTYOUT(v5_5) l046C
 l0470:
 
 
@@ -110,9 +110,8 @@ l0506:
 l050E:
 	fn04FA(r0_11 - 1<16>)
 l0512:
-	r0_31 = CONVERT(bLoc02_41, byte, int16)
 l0514:
-	branch TTYOUT(SLICE(r0_31, char, 0)) l0514
+	branch TTYOUT(bLoc02_41) l0514
 l0518:
 	return
 fn04FA_exit:
@@ -1292,15 +1291,15 @@ l12E8:
 	r0_23 = 0xA<16>
 	branch v19_26 == 0<16> l131E
 l12F2:
-	r5_34 = CONVERT(Mem27[r1_11:byte], byte, int16)
+	v21_32 = Mem27[r1_11:byte]
 	r1_11 = r1_11 + 1<16>
-	branch SLICE(r5_34, byte, 0) != 0x31<8> l12FE
+	branch v21_32 != 0x31<8> l12FE
 l12FE:
-	branch SLICE(r5_34, byte, 0) == 0x2B<8> l132A
+	branch v21_32 == 0x2B<8> l132A
 l1304:
-	branch SLICE(r5_34, byte, 0) != 0x24<8> l1314
+	branch v21_32 != 0x24<8> l1314
 l1314:
-	branch SLICE(r5_34, byte, 0) != 0x30<8> l131E
+	branch v21_32 != 0x30<8> l131E
 l131A:
 	r0_23 = fn1366(0xA<16>, r3, r4_10, out r2, out r3, out r4_10)
 l130A:

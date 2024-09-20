@@ -774,10 +774,9 @@ char * fn0000000000016630(struct Eq_n * gp, char * a0, word64 * a1)
 		a5_n = (int64) *a0_n;
 		if (a5_n == null)
 		{
-			Eq_n a4_n;
-			a4_n.u0 = (int64) (word32) a0_n;
-			if (a0_n == a4_n)
-				*a1 = (word64) (word32) a4_n;
+			word32 v19_n = (word32) a0_n;
+			if (a0_n == (int64) v19_n)
+				*a1 = (word64) v19_n;
 			else
 				a5_n = (char *) -0x0022;
 			goto l0000000000016698;

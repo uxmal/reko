@@ -110,14 +110,14 @@ Eq_69: (union "Eq_69" (int32 u0) (uint32 u1))
 	T_92 (in 0x10<32> @ 0000000000400E27 : word32)
 	T_98 (in  @ 0000000000400ED8 : uint32)
 	T_178 (in CONVERT(SLICE(png_get_bit_depth(rdi, rsi, rsi, ecx, rdx, rsi, rdi, rax_27), byte, 0), byte, word32) @ 0000000000400F27 : word32)
-	T_179 (in eax_50 @ 0000000000400F27 : Eq_69)
+	T_179 (in eax_48 @ 0000000000400F27 : Eq_69)
 Eq_77: (union "Eq_77" (int32 u0) (uint32 u1))
 	T_77 (in (edx + (esi & 0x3F<32>) *s r8d) *s ecx @ 0000000000400E01 : int32)
-	T_78 (in eax_52 @ 0000000000400E01 : Eq_77)
+	T_78 (in eax_50 @ 0000000000400E01 : Eq_77)
 Eq_80: (union "Eq_80" (int32 u0) (uint32 u1))
 	T_80 (in esi >> 6<32> @ 0000000000400E1B : word32)
 Eq_90: (struct "Eq_90" (0 byte b0000) (1 byte b0001))
-	T_90 (in rdi + ((uint64) (((esi >> 6<32>) *s r8d) *s ecx) << 3<64>) + (uint64) (eax_52 >> 3<32>) @ 0000000000400E1B : word64)
+	T_90 (in rdi + ((uint64) (((esi >> 6<32>) *s r8d) *s ecx) << 3<64>) + (uint64) (eax_50 >> 3<32>) @ 0000000000400E1B : word64)
 	T_91 (in v18_67 @ 0000000000400E1B : (ptr64 Eq_90))
 Eq_94: (fn int32 ((ptr64 Eq_96), (ptr64 char), Eq_69))
 	T_94 (in fprintf @ 0000000000400ED8 : ptr64)
@@ -180,10 +180,10 @@ Eq_294: (fn int32 ((ptr64 char), uint32))
 	T_295 (in signature of printf : void)
 Eq_301: (fn word64 (uint64, word32, ptr64, word64, ptr64, word64, word32, word64))
 	T_301 (in png_get_tRNS @ 000000000040102B : ptr64)
-Eq_317: (fn int32 ((ptr64 char), uint32, int32, int32, int32))
+Eq_317: (fn int32 ((ptr64 char), uint32, word32, word32, word32))
 	T_317 (in printf @ 0000000000401130 : ptr64)
 	T_318 (in signature of printf : void)
-Eq_354: (fn int32 ((ptr64 char), uint32, int32, int32, int32, int32))
+Eq_354: (fn int32 ((ptr64 char), uint32, word32, word32, word32, int32))
 	T_354 (in printf @ 00000000004010CA : ptr64)
 	T_355 (in signature of printf : void)
 Eq_381: (struct "Eq_381" (8 (ptr64 char) ptr0008) (10 (ptr64 char) ptr0010) (18 (ptr64 char) ptr0018))
@@ -597,7 +597,7 @@ T_77: (in (edx + (esi & 0x3F<32>) *s r8d) *s ecx @ 0000000000400E01 : int32)
   Class: Eq_77
   DataType: Eq_77
   OrigDataType: int32
-T_78: (in eax_52 @ 0000000000400E01 : Eq_77)
+T_78: (in eax_50 @ 0000000000400E01 : Eq_77)
   Class: Eq_77
   DataType: Eq_77
   OrigDataType: (union (int32 u0) (uint32 u1))
@@ -637,15 +637,15 @@ T_87: (in 3<32> @ 0000000000400E1B : word32)
   Class: Eq_87
   DataType: word32
   OrigDataType: word32
-T_88: (in eax_52 >> 3<32> @ 0000000000400E1B : word32)
+T_88: (in eax_50 >> 3<32> @ 0000000000400E1B : word32)
   Class: Eq_88
   DataType: uint32
   OrigDataType: uint32
-T_89: (in CONVERT(eax_52 >>u 3<32>, word32, uint64) @ 0000000000400E1B : uint64)
+T_89: (in CONVERT(eax_50 >>u 3<32>, word32, uint64) @ 0000000000400E1B : uint64)
   Class: Eq_89
   DataType: uint64
   OrigDataType: uint64
-T_90: (in rdi + ((uint64) (((esi >> 6<32>) *s r8d) *s ecx) << 3<64>) + (uint64) (eax_52 >> 3<32>) @ 0000000000400E1B : word64)
+T_90: (in rdi + ((uint64) (((esi >> 6<32>) *s r8d) *s ecx) << 3<64>) + (uint64) (eax_50 >> 3<32>) @ 0000000000400E1B : word64)
   Class: Eq_90
   DataType: (ptr64 Eq_90)
   OrigDataType: word64
@@ -738,7 +738,7 @@ T_112: (in 7<8> @ 0000000000400E52 : byte)
   Class: Eq_112
   DataType: byte
   OrigDataType: byte
-T_113: (in SLICE(eax_52, byte, 0) @ 0000000000400E52 : byte)
+T_113: (in SLICE(eax_50, byte, 0) @ 0000000000400E52 : byte)
   Class: Eq_113
   DataType: byte
   OrigDataType: byte
@@ -746,15 +746,15 @@ T_114: (in 7<8> @ 0000000000400E52 : byte)
   Class: Eq_114
   DataType: byte
   OrigDataType: byte
-T_115: (in (byte) eax_52 & 7<8> @ 0000000000400E52 : byte)
+T_115: (in (byte) eax_50 & 7<8> @ 0000000000400E52 : byte)
   Class: Eq_115
   DataType: byte
   OrigDataType: byte
-T_116: (in 7<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E52 : byte)
+T_116: (in 7<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E52 : byte)
   Class: Eq_116
   DataType: byte
   OrigDataType: byte
-T_117: (in (word32) v18_67->b0000 >> 7<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E52 : word32)
+T_117: (in (word32) v18_67->b0000 >> 7<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E52 : word32)
   Class: Eq_117
   DataType: int32
   OrigDataType: int32
@@ -762,11 +762,11 @@ T_118: (in 1<32> @ 0000000000400E52 : word32)
   Class: Eq_118
   DataType: ui32
   OrigDataType: ui32
-T_119: (in (word32) v18_67->b0000 >> 7<8> - ((byte) eax_52 & 7<8>) & 1<32> @ 0000000000400E52 : word32)
+T_119: (in (word32) v18_67->b0000 >> 7<8> - ((byte) eax_50 & 7<8>) & 1<32> @ 0000000000400E52 : word32)
   Class: Eq_119
   DataType: ui32
   OrigDataType: ui32
-T_120: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 7<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 1<32>, word32, uint64) @ 0000000000400E52 : uint64)
+T_120: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 7<8> - (SLICE(eax_50, byte, 0) & 7<8>) & 1<32>, word32, uint64) @ 0000000000400E52 : uint64)
   Class: Eq_120
   DataType: uint64
   OrigDataType: uint64
@@ -794,7 +794,7 @@ T_126: (in 6<8> @ 0000000000400E72 : byte)
   Class: Eq_126
   DataType: byte
   OrigDataType: byte
-T_127: (in SLICE(eax_52, byte, 0) @ 0000000000400E72 : byte)
+T_127: (in SLICE(eax_50, byte, 0) @ 0000000000400E72 : byte)
   Class: Eq_127
   DataType: byte
   OrigDataType: byte
@@ -802,15 +802,15 @@ T_128: (in 7<8> @ 0000000000400E72 : byte)
   Class: Eq_128
   DataType: byte
   OrigDataType: byte
-T_129: (in (byte) eax_52 & 7<8> @ 0000000000400E72 : byte)
+T_129: (in (byte) eax_50 & 7<8> @ 0000000000400E72 : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_130: (in 6<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E72 : byte)
+T_130: (in 6<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E72 : byte)
   Class: Eq_130
   DataType: byte
   OrigDataType: byte
-T_131: (in (word32) v18_67->b0000 >> 6<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E72 : word32)
+T_131: (in (word32) v18_67->b0000 >> 6<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E72 : word32)
   Class: Eq_131
   DataType: int32
   OrigDataType: int32
@@ -818,11 +818,11 @@ T_132: (in 3<32> @ 0000000000400E72 : word32)
   Class: Eq_132
   DataType: ui32
   OrigDataType: ui32
-T_133: (in (word32) v18_67->b0000 >> 6<8> - ((byte) eax_52 & 7<8>) & 3<32> @ 0000000000400E72 : word32)
+T_133: (in (word32) v18_67->b0000 >> 6<8> - ((byte) eax_50 & 7<8>) & 3<32> @ 0000000000400E72 : word32)
   Class: Eq_133
   DataType: ui32
   OrigDataType: ui32
-T_134: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 6<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 3<32>, word32, uint64) @ 0000000000400E72 : uint64)
+T_134: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 6<8> - (SLICE(eax_50, byte, 0) & 7<8>) & 3<32>, word32, uint64) @ 0000000000400E72 : uint64)
   Class: Eq_120
   DataType: uint64
   OrigDataType: uint64
@@ -846,7 +846,7 @@ T_139: (in 4<8> @ 0000000000400E8F : byte)
   Class: Eq_139
   DataType: byte
   OrigDataType: byte
-T_140: (in SLICE(eax_52, byte, 0) @ 0000000000400E8F : byte)
+T_140: (in SLICE(eax_50, byte, 0) @ 0000000000400E8F : byte)
   Class: Eq_140
   DataType: byte
   OrigDataType: byte
@@ -854,15 +854,15 @@ T_141: (in 7<8> @ 0000000000400E8F : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_142: (in (byte) eax_52 & 7<8> @ 0000000000400E8F : byte)
+T_142: (in (byte) eax_50 & 7<8> @ 0000000000400E8F : byte)
   Class: Eq_142
   DataType: byte
   OrigDataType: byte
-T_143: (in 4<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E8F : byte)
+T_143: (in 4<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E8F : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_144: (in (word32) v18_67->b0000 >> 4<8> - ((byte) eax_52 & 7<8>) @ 0000000000400E8F : word32)
+T_144: (in (word32) v18_67->b0000 >> 4<8> - ((byte) eax_50 & 7<8>) @ 0000000000400E8F : word32)
   Class: Eq_144
   DataType: int32
   OrigDataType: int32
@@ -870,11 +870,11 @@ T_145: (in 0xF<32> @ 0000000000400E8F : word32)
   Class: Eq_145
   DataType: ui32
   OrigDataType: ui32
-T_146: (in (word32) v18_67->b0000 >> 4<8> - ((byte) eax_52 & 7<8>) & 0xF<32> @ 0000000000400E8F : word32)
+T_146: (in (word32) v18_67->b0000 >> 4<8> - ((byte) eax_50 & 7<8>) & 0xF<32> @ 0000000000400E8F : word32)
   Class: Eq_146
   DataType: ui32
   OrigDataType: ui32
-T_147: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 4<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 0xF<32>, word32, uint64) @ 0000000000400E8F : uint64)
+T_147: (in CONVERT(CONVERT(Mem70[v18_67 + 0<64>:byte], byte, word32) >> 4<8> - (SLICE(eax_50, byte, 0) & 7<8>) & 0xF<32>, word32, uint64) @ 0000000000400E8F : uint64)
   Class: Eq_120
   DataType: uint64
   OrigDataType: uint64
@@ -1002,7 +1002,7 @@ T_178: (in CONVERT(SLICE(png_get_bit_depth(rdi, rsi, rsi, ecx, rdx, rsi, rdi, ra
   Class: Eq_69
   DataType: Eq_69
   OrigDataType: word32
-T_179: (in eax_50 @ 0000000000400F27 : Eq_69)
+T_179: (in eax_48 @ 0000000000400F27 : Eq_69)
   Class: Eq_69
   DataType: Eq_69
   OrigDataType: word32
@@ -1022,7 +1022,7 @@ T_183: (in SLICE(rcx_42, word32, 0) @ 0000000000400F3B : word32)
   Class: Eq_183
   DataType: word32
   OrigDataType: word32
-T_184: (in png_get_color_type((word32) rcx_42, rdi, rsi, rsi, eax_50) @ 0000000000400F3B : word64)
+T_184: (in png_get_color_type((word32) rcx_42, rdi, rsi, rsi, eax_48) @ 0000000000400F3B : word64)
   Class: Eq_184
   DataType: word64
   OrigDataType: word64
@@ -1038,7 +1038,7 @@ T_187: (in CONVERT(SLICE(rax_61, byte, 0), byte, word32) @ 0000000000400F40 : wo
   Class: Eq_187
   DataType: up32
   OrigDataType: word32
-T_188: (in eax_68 @ 0000000000400F40 : up32)
+T_188: (in eax_66 @ 0000000000400F40 : up32)
   Class: Eq_187
   DataType: up32
   OrigDataType: up32
@@ -1046,7 +1046,7 @@ T_189: (in 6<32> @ 0000000000400F46 : word32)
   Class: Eq_187
   DataType: up32
   OrigDataType: up32
-T_190: (in eax_68 > 6<32> @ 0000000000400F46 : bool)
+T_190: (in eax_66 > 6<32> @ 0000000000400F46 : bool)
   Class: Eq_190
   DataType: bool
   OrigDataType: bool
@@ -1107,11 +1107,11 @@ T_204: (in 1<32> @ 0000000000400F83 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_205: (in component(rdx, ecx, 0<32>, eax_50, 1<32>) @ 0000000000400F83 : word32)
+T_205: (in component(rdx, ecx, 0<32>, eax_48, 1<32>) @ 0000000000400F83 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
-T_206: (in printf("GRAY %u\n", component(rdx, ecx, 0<32>, eax_50, 1<32>)) @ 0000000000400F83 : int32)
+T_206: (in printf("GRAY %u\n", component(rdx, ecx, 0<32>, eax_48, 1<32>)) @ 0000000000400F83 : int32)
   Class: Eq_206
   DataType: int32
   OrigDataType: int32
@@ -1152,7 +1152,7 @@ T_215: (in 3<32> @ 00000000004011C8 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_216: (in component(rdx, ecx, 0<32>, eax_50, 3<32>) @ 00000000004011C8 : word32)
+T_216: (in component(rdx, ecx, 0<32>, eax_48, 3<32>) @ 00000000004011C8 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1168,7 +1168,7 @@ T_219: (in 3<32> @ 00000000004011C8 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_220: (in component(rdx, ecx, 1<32>, eax_50, 3<32>) @ 00000000004011C8 : word32)
+T_220: (in component(rdx, ecx, 1<32>, eax_48, 3<32>) @ 00000000004011C8 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1184,11 +1184,11 @@ T_223: (in 3<32> @ 00000000004011C8 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_224: (in component(rdx, ecx, 2<32>, eax_50, 3<32>) @ 00000000004011C8 : word32)
+T_224: (in component(rdx, ecx, 2<32>, eax_48, 3<32>) @ 00000000004011C8 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
-T_225: (in printf("RGB %u %u %u\n", component(rdx, ecx, 0<32>, eax_50, 3<32>), component(rdx, ecx, 1<32>, eax_50, 3<32>), component(rdx, ecx, 2<32>, eax_50, 3<32>)) @ 00000000004011C8 : int32)
+T_225: (in printf("RGB %u %u %u\n", component(rdx, ecx, 0<32>, eax_48, 3<32>), component(rdx, ecx, 1<32>, eax_48, 3<32>), component(rdx, ecx, 2<32>, eax_48, 3<32>)) @ 00000000004011C8 : int32)
   Class: Eq_225
   DataType: int32
   OrigDataType: int32
@@ -1204,7 +1204,7 @@ T_228: (in 1<32> @ 0000000000400FA7 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_229: (in component(rdx, ecx, 0<32>, eax_50, 1<32>) @ 0000000000400FA7 : word32)
+T_229: (in component(rdx, ecx, 0<32>, eax_48, 1<32>) @ 0000000000400FA7 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: word32
@@ -1309,7 +1309,7 @@ T_254: (in 2<32> @ 0000000000401220 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_255: (in component(rdx, ecx, 0<32>, eax_50, 2<32>) @ 0000000000401220 : word32)
+T_255: (in component(rdx, ecx, 0<32>, eax_48, 2<32>) @ 0000000000401220 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1325,11 +1325,11 @@ T_258: (in 2<32> @ 0000000000401220 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_259: (in component(rdx, ecx, 1<32>, eax_50, 2<32>) @ 0000000000401220 : word32)
+T_259: (in component(rdx, ecx, 1<32>, eax_48, 2<32>) @ 0000000000401220 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
-T_260: (in printf("GRAY+ALPHA %u %u\n", component(rdx, ecx, 0<32>, eax_50, 2<32>), component(rdx, ecx, 1<32>, eax_50, 2<32>)) @ 0000000000401220 : int32)
+T_260: (in printf("GRAY+ALPHA %u %u\n", component(rdx, ecx, 0<32>, eax_48, 2<32>), component(rdx, ecx, 1<32>, eax_48, 2<32>)) @ 0000000000401220 : int32)
   Class: Eq_260
   DataType: int32
   OrigDataType: int32
@@ -1374,7 +1374,7 @@ T_270: (in 4<32> @ 00000000004012C2 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_271: (in component(rdx, ecx, 0<32>, eax_50, 4<32>) @ 00000000004012C2 : word32)
+T_271: (in component(rdx, ecx, 0<32>, eax_48, 4<32>) @ 00000000004012C2 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1390,7 +1390,7 @@ T_274: (in 4<32> @ 00000000004012C2 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_275: (in component(rdx, ecx, 1<32>, eax_50, 4<32>) @ 00000000004012C2 : word32)
+T_275: (in component(rdx, ecx, 1<32>, eax_48, 4<32>) @ 00000000004012C2 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1406,7 +1406,7 @@ T_278: (in 4<32> @ 00000000004012C2 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_279: (in component(rdx, ecx, 2<32>, eax_50, 4<32>) @ 00000000004012C2 : word32)
+T_279: (in component(rdx, ecx, 2<32>, eax_48, 4<32>) @ 00000000004012C2 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
@@ -1422,11 +1422,11 @@ T_282: (in 4<32> @ 00000000004012C2 : word32)
   Class: Eq_70
   DataType: int32
   OrigDataType: word32
-T_283: (in component(rdx, ecx, 3<32>, eax_50, 4<32>) @ 00000000004012C2 : word32)
+T_283: (in component(rdx, ecx, 3<32>, eax_48, 4<32>) @ 00000000004012C2 : word32)
   Class: Eq_199
   DataType: uint32
   OrigDataType: uint32
-T_284: (in printf("RGBA %u %u %u %u\n", component(rdx, ecx, 0<32>, eax_50, 4<32>), component(rdx, ecx, 1<32>, eax_50, 4<32>), component(rdx, ecx, 2<32>, eax_50, 4<32>), component(rdx, ecx, 3<32>, eax_50, 4<32>)) @ 00000000004012C2 : int32)
+T_284: (in printf("RGBA %u %u %u %u\n", component(rdx, ecx, 0<32>, eax_48, 4<32>), component(rdx, ecx, 1<32>, eax_48, 4<32>), component(rdx, ecx, 2<32>, eax_48, 4<32>), component(rdx, ecx, 3<32>, eax_48, 4<32>)) @ 00000000004012C2 : int32)
   Class: Eq_284
   DataType: int32
   OrigDataType: int32
@@ -1573,15 +1573,15 @@ T_319: (in  @ 0000000000401130 : uint32)
   OrigDataType: 
 T_320: (in  @ 0000000000401130 : int32)
   Class: Eq_320
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_321: (in  @ 0000000000401130 : int32)
   Class: Eq_321
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_322: (in  @ 0000000000401130 : int32)
   Class: Eq_322
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_323: (in INDEXED %u = %d %d %d
  @ 0000000000401130 : (ptr64 char))
@@ -1608,10 +1608,10 @@ T_328: (in 0<64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 0000000000401130 : 
   Class: Eq_328
   DataType: byte
   OrigDataType: byte
-T_329: (in CONVERT(0<64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 0000000000401130 : int32)
+T_329: (in CONVERT(0<64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 0000000000401130 : word32)
   Class: Eq_320
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_330: (in 1<i64> @ 0000000000401130 : int64)
   Class: Eq_330
   DataType: (ptr64 (arr Eq_730))
@@ -1632,10 +1632,10 @@ T_334: (in 1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 0000000000401130 :
   Class: Eq_334
   DataType: byte
   OrigDataType: byte
-T_335: (in CONVERT(1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 0000000000401130 : int32)
+T_335: (in CONVERT(1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 0000000000401130 : word32)
   Class: Eq_321
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_336: (in 2<i64> @ 0000000000401130 : int64)
   Class: Eq_336
   DataType: (ptr64 (arr Eq_732))
@@ -1656,11 +1656,11 @@ T_340: (in 2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 0000000000401130 :
   Class: Eq_340
   DataType: byte
   OrigDataType: byte
-T_341: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 0000000000401130 : int32)
+T_341: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 0000000000401130 : word32)
   Class: Eq_322
-  DataType: int32
-  OrigDataType: int32
-T_342: (in printf("INDEXED %u = %d %d %d\n", eax_276, (int32) null[(uint64) eax_276].b0000, (int32) ((Eq_730[]) 1<i64>)[(uint64) eax_276].b0000, (int32) ((Eq_732[]) 2<i64>)[(uint64) eax_276]) @ 0000000000401130 : int32)
+  DataType: word32
+  OrigDataType: word32
+T_342: (in printf("INDEXED %u = %d %d %d\n", eax_276, (word32) null[(uint64) eax_276].b0000, (word32) ((Eq_730[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_732[]) 2<i64>)[(uint64) eax_276]) @ 0000000000401130 : int32)
   Class: Eq_342
   DataType: int32
   OrigDataType: int32
@@ -1722,15 +1722,15 @@ T_356: (in  @ 00000000004010CA : uint32)
   OrigDataType: 
 T_357: (in  @ 00000000004010CA : int32)
   Class: Eq_357
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_358: (in  @ 00000000004010CA : int32)
   Class: Eq_358
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_359: (in  @ 00000000004010CA : int32)
   Class: Eq_359
-  DataType: int32
+  DataType: word32
   OrigDataType: 
 T_360: (in  @ 00000000004010CA : int32)
   Class: Eq_347
@@ -1761,10 +1761,10 @@ T_366: (in 0<64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 00000000004010CA : 
   Class: Eq_366
   DataType: byte
   OrigDataType: byte
-T_367: (in CONVERT(0<64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 00000000004010CA : int32)
+T_367: (in CONVERT(0<64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 00000000004010CA : word32)
   Class: Eq_357
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_368: (in 1<i64> @ 00000000004010CA : int64)
   Class: Eq_368
   DataType: (ptr64 (arr Eq_738))
@@ -1785,10 +1785,10 @@ T_372: (in 1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 00000000004010CA :
   Class: Eq_372
   DataType: byte
   OrigDataType: byte
-T_373: (in CONVERT(1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 00000000004010CA : int32)
+T_373: (in CONVERT(1<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 00000000004010CA : word32)
   Class: Eq_358
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_374: (in 2<i64> @ 00000000004010CA : int64)
   Class: Eq_374
   DataType: (ptr64 (arr Eq_740))
@@ -1809,11 +1809,11 @@ T_378: (in 2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>] @ 00000000004010CA :
   Class: Eq_378
   DataType: byte
   OrigDataType: byte
-T_379: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, int32) @ 00000000004010CA : int32)
+T_379: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word32) @ 00000000004010CA : word32)
   Class: Eq_359
-  DataType: int32
-  OrigDataType: int32
-T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_276, (int32) null[(uint64) eax_276].b0000, (int32) ((Eq_738[]) 1<i64>)[(uint64) eax_276].b0000, (int32) ((Eq_740[]) 2<i64>)[(uint64) eax_276].b0000, esi_474) @ 00000000004010CA : int32)
+  DataType: word32
+  OrigDataType: word32
+T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_276, (word32) null[(uint64) eax_276].b0000, (word32) ((Eq_738[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_740[]) 2<i64>)[(uint64) eax_276].b0000, esi_474) @ 00000000004010CA : int32)
   Class: Eq_380
   DataType: int32
   OrigDataType: int32
@@ -2750,7 +2750,7 @@ T_613: (in eax_309 - ((dwLoc68_735 & 1<32>) << 3<8> - (byte) (dwLoc68_735 + 1<32
   Class: Eq_613
   DataType: uint32
   OrigDataType: ui32
-T_614: (in edx_385 @ 000000000040151D : uint32)
+T_614: (in edx_363 @ 000000000040151D : uint32)
   Class: Eq_613
   DataType: uint32
   OrigDataType: uint32
@@ -2790,7 +2790,7 @@ T_623: (in SLICE(eax_377, byte, 0) @ 000000000040153E : byte)
   Class: Eq_623
   DataType: byte
   OrigDataType: byte
-T_624: (in edx_385 >> (byte) eax_377 @ 000000000040153E : word32)
+T_624: (in edx_363 >> (byte) eax_377 @ 000000000040153E : word32)
   Class: Eq_624
   DataType: uint32
   OrigDataType: uint32
@@ -2798,7 +2798,7 @@ T_625: (in 0<32> @ 000000000040153E : word32)
   Class: Eq_624
   DataType: uint32
   OrigDataType: word32
-T_626: (in edx_385 >> (byte) eax_377 == 0<32> @ 000000000040153E : bool)
+T_626: (in edx_363 >> (byte) eax_377 == 0<32> @ 000000000040153E : bool)
   Class: Eq_626
   DataType: bool
   OrigDataType: bool
@@ -3416,9 +3416,9 @@ typedef int32 (Eq_294)(char *, uint32);
 
 typedef word64 (Eq_301)(uint64, word32, ptr64, word64, ptr64, word64, word32, word64);
 
-typedef int32 (Eq_317)(char *, uint32, int32, int32, int32);
+typedef int32 (Eq_317)(char *, uint32, word32, word32, word32);
 
-typedef int32 (Eq_354)(char *, uint32, int32, int32, int32, int32);
+typedef int32 (Eq_354)(char *, uint32, word32, word32, word32, int32);
 
 typedef struct Eq_381 {
 	char * ptr0008;	// 8

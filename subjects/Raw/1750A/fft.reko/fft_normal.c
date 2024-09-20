@@ -320,10 +320,11 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
+	int32 gp0_gp1_n = SEQ(SLICE(gp0_gp1_n, word16, 16), (word16) gp5_gp6_gp7_n);
 	if (gp5_gp6_gp7_n < 0.0)
 	{
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8057) + 3));
-		gp0_gp1_n += g_dwFFFF805D;
+		gp0_gp1_n = gp0_gp1_n + g_dwFFFF805D;
 	}
 	struct Eq_n * gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
@@ -356,10 +357,11 @@ word48 cos(int32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
+	int32 gp0_gp1_n = SEQ(SLICE(gp0_gp1_n, word16, 16), (word16) gp5_gp6_gp7_n);
 	if (gp5_gp6_gp7_n < 0.0)
 	{
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8064) + 3));
-		gp0_gp1_n += g_dwFFFF806A;
+		gp0_gp1_n = gp0_gp1_n + g_dwFFFF806A;
 	}
 	word16 gp0_n = sincos((word16) gp0_gp1_n + g_wFFFF806C, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp14Out = gp14_n;
@@ -542,24 +544,23 @@ l0458:
 			gp11[9] = (struct Eq_n) (gp2_n | 0x3030);
 		else
 			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
-		int32 gp2_gp3_n = (int32) SEQ(gp12_gp13_n, gp14_n);
-		gp11->t0000.u1 = SEQ(gp11->t0000.u0, (byte) gp2_gp3_n + 0x30);
+		gp11->t0000.u1 = SEQ(gp11->t0000.u0, (byte) gp14_n + 0x30);
 		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 		cui16 gp7_n = 0x00;
-		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) gp2_gp3_n;
+		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) ((int32) SEQ(gp12_gp13_n, gp14_n));
 		do
 		{
 			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t0579.u1;
-			int32 gp2_gp3_n = (int32) SEQ((word32) gp12_gp13_gp14_n, (word16) gp12_gp13_gp14_n);
-			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) gp2_gp3_n;
-			word16 gp3_n = (word16) gp2_gp3_n;
+			word16 gp14_n = (word16) gp12_gp13_gp14_n;
+			real48 gp4_gp5_gp6_n = SEQ((word32) gp12_gp13_gp14_n, gp14_n);
+			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) ((int32) gp4_gp5_gp6_n);
 			gp14 = (word16) gp12_gp13_gp14_n;
 			++gp7_n;
 			if ((gp7_n & 0x8000) != 0x00)
-				gp11[1] = (struct Eq_n) SEQ((byte) gp3_n + 0x30, gp11[1]);
+				gp11[1] = (struct Eq_n) SEQ((byte) gp14_n + 0x30, gp11[1]);
 			else
 			{
-				gp11[1] = (struct Eq_n) SEQ(gp11[1], (byte) gp3_n + 0x30);
+				gp11[1] = (struct Eq_n) SEQ(gp11[1], (byte) gp14_n + 0x30);
 				++gp11;
 			}
 			--gp1;

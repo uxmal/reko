@@ -87,10 +87,9 @@ l00001556:
 			if (v18_n >= 0x00)
 			{
 				uint8 v22_n = a3_n->b0000;
-				uint32 d0_n = (uint32) v22_n;
 				if (v22_n != 0x00)
 				{
-					word24 v29_n = SLICE(__swap(SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8);
+					word24 v29_n = SLICE(__swap(SEQ(SLICE((uint32) ((word16) v22_n << 0x08), word24, 8), a3_n[1])), word24, 8);
 					a3_n += 4;
 					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
@@ -106,7 +105,7 @@ l0000159A:
 				return;
 			}
 			++a3_n;
-			d0_n = SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n->b0000);
+			d0_n = SEQ(SLICE((uint32) ((word16) v18_n << 0x08), word24, 8), a3_n->b0000);
 		}
 		d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) d0_n * 0x02);
 		goto l00001578;

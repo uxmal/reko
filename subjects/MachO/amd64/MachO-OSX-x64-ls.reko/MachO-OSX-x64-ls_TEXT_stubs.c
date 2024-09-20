@@ -428,14 +428,14 @@ int32 printf(char * rdi)
 	return printf(rdi, 0x00);
 }
 
-// 0000000100004ED4: Register int32 putchar(Register ui32 edi)
+// 0000000100004ED4: Register int32 putchar(Register int32 edi)
 // Called from:
 //      fn0000000100003201
 //      fn000000010000356F
 //      fn0000000100003AA8
 //      fn0000000100004715
 //      fn000000010000488B
-int32 putchar(ui32 edi)
+int32 putchar(int32 edi)
 {
 	word64 rdi;
 	return putchar((int32) rdi);

@@ -147,10 +147,10 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 						esi_n = (word32) null[(uint64) eax_n];
 					else
 						esi_n = 0xFF;
-					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 2)[(uint64) eax_n].b0000, esi_n);
+					printf("INDEXED %u = %d %d %d %d\n", eax_n, (word32) null[(uint64) eax_n].b0000, (word32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (word32) ((Eq_n[]) 2)[(uint64) eax_n].b0000, esi_n);
 				}
 				else
-					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 2)[(uint64) eax_n]);
+					printf("INDEXED %u = %d %d %d\n", eax_n, (word32) null[(uint64) eax_n].b0000, (word32) ((Eq_n[]) 1)[(uint64) eax_n].b0000, (word32) ((Eq_n[]) 2)[(uint64) eax_n]);
 			}
 			else
 				printf("INDEXED %u = invalid index\n", eax_n);

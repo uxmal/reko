@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Evaluation
 {
@@ -52,23 +53,57 @@ namespace Reko.Evaluation
                 return null;
             }
             Expression result;
-            if (slice.Expression is Conversion conv)
+            if (IsApplicableConversion(ctx, slice.Expression, out Conversion? conv))
             {
                 if (IsUselessIntegralExtension(slice, conv))
                 {
                     result = slice.DataType.BitSize == conv.SourceDataType.BitSize
                         ? conv.Expression
                         : new Slice(slice.DataType, conv.Expression, 0);
+                    ctx.RemoveExpressionUse(slice);
+                    ctx.UseExpression(result);
                     return result;
                 }
                 if (CanSliceConversion(slice, conv))
                 {
                     result = new Conversion(
                         conv.Expression, conv.SourceDataType, slice.DataType);
+                    ctx.RemoveExpressionUse(slice);
+                    ctx.UseExpression(result);
                     return result;
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// A conversion is applicable if 
+        /// </summary>
+        /// <param name="conv"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool IsApplicableConversion(
+            EvaluationContext ctx,
+            Expression sliceExp,
+            [MaybeNullWhen(false)] out Conversion conv)
+        {
+            if (sliceExp is Identifier id)
+            {
+                var def = ctx.GetDefiningExpression(id);
+                if (def is Conversion c2 &&
+                    c2.Expression is Identifier)
+                {
+                    conv = c2;
+                    return true;
+                }
+            }
+            else if (sliceExp is Conversion c)
+            {
+                conv = c;
+                return true;
+            }
+            conv = null;
+            return false;
         }
 
         private static bool CanSliceConversion(Slice slice, Conversion conv)

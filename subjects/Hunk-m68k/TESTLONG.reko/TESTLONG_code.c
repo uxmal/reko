@@ -652,14 +652,14 @@ l00001696:
 							wLoc34_n = SLICE(v213_n, word16, 16);
 							dwLoc38_n = 0x00;
 						}
-						uint32 d1_n = SEQ(wLoc34_n, wLoc32_n);
+						word32 dwLoc34_n = SEQ(wLoc34_n, wLoc32_n);
 						if (d4_n == 0x68)
 						{
-							d1_n = (uint32) wLoc32_n;
 							dwLoc38_n = 0x00;
+							dwLoc34_n = SEQ(SLICE((uint32) wLoc32_n, word24, 8), (byte) wLoc32_n);
 						}
-						uint8 bLoc31_n = SLICE(d1_n, byte, 24);
-						uint64 qwLoc38_n = SEQ(dwLoc38_n, d1_n);
+						uint8 bLoc31_n = SLICE(dwLoc34_n, byte, 24);
+						uint64 qwLoc38_n = SEQ(dwLoc38_n, dwLoc34_n);
 						if (d4_n == 0x02)
 							qwLoc38_n = (uint64) bLoc31_n;
 						dwLoc38_n = (word32) qwLoc38_n;
@@ -717,10 +717,11 @@ l000018F2:
 							int32 dwLoc40_n = d0_n >> 0x1F;
 							if (d4_n == 0x68)
 							{
-								d0_n.u0 = (int32) wLoc3A_n;
-								dwLoc40_n = d0_n >> 0x1F;
+								int32 d1_n = (int32) wLoc3A_n;
+								dwLoc40_n = d1_n >> 0x1F;
 								d1_n = SEQ(SLICE(d0_n >> 0x1F, word16, 16), wLoc3A_n);
 								d0_n = d1_n;
+								d0_n = SEQ(SLICE(d1_n, word24, 8), (byte) wLoc3A_n);
 							}
 							int8 bLoc39_n = SLICE(d0_n, byte, 24);
 							qwLoc40_n = SEQ(dwLoc40_n, d0_n);
@@ -2170,8 +2171,9 @@ l000036B2:
 													{
 														struct Eq_n * a0_n = dwArg04->ptr0004;
 														dwArg04->ptr0004 = &a0_n->b0000 + 1;
-														d0_n.u2 = (uint32) a0_n->b0000;
-														d1.u2 = (uint32) (byte) d0_n;
+														uint8 v345_n = a0_n->b0000;
+														d0_n.u2 = (uint32) v345_n;
+														d1.u2 = (uint32) v345_n;
 													}
 													else
 													{

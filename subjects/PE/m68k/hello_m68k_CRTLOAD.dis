@@ -94,19 +94,18 @@ l0000155C:
 	branch v18_85 < 0<8> l00001572
 l00001572:
 	a3_100 = a3_100 + 1<i32>
-	d0_102 = SEQ(SLICE(CONVERT(SLICE(d0_102, word16, 0) << 8<16>, uint16, uint32), word24, 8), Mem84[a3_100:byte])
+	d0_102 = SEQ(SLICE(CONVERT(CONVERT(v18_85, uint8, word16) << 8<16>, uint16, uint32), word24, 8), Mem84[a3_100:byte])
 l00001576:
 	d0_109 = SEQ(SLICE(d0_102, word16, 16), SLICE(d0_102, word16, 0) * 2<16>)
 l0000155E:
 	v22_111 = Mem84[a3_100:byte]
-	d0_114 = CONVERT(v22_111, uint8, uint32)
 	branch v22_111 == 0<8> l0000159A
 l0000159A:
 	__syscall<word16>(0xA9A3<16>)
 	return
 fn000014E8_exit:
 l00001562:
-	v29_136 = SLICE(__swap(SEQ(SLICE(CONVERT(SLICE(d0_114, word16, 0) << 8<16>, uint16, uint32), word24, 8), Mem84[a3_100 + 1<i32>:byte])), word24, 8)
+	v29_136 = SLICE(__swap(SEQ(SLICE(CONVERT(CONVERT(v22_111, uint8, word16) << 8<16>, uint16, uint32), word24, 8), Mem84[a3_100 + 1<i32>:byte])), word24, 8)
 	a3_100 = a3_100 + 4<i32>
 	d0_109 = SEQ(SLICE(SEQ(SLICE(v29_136, word16, 8), SLICE(SEQ(v29_136, Mem84[a3_100 + 2<i32>:byte]), word16, 0) << 8<16>), word24, 8), Mem84[a3_100 + 3<i32>:byte]) * 2<32>
 l00001578:

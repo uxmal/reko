@@ -19,14 +19,14 @@ l0000006E:
 l00000080:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l00000074
 l00000074:
-	r3_46 = CONVERT(SLICE(r4_154, byte, 0) - 1<8>, byte, uint32)
-	r4_154 = CONVERT(SLICE(r3_46, int8, 0), int8, int32)
-	branch r3_46 == 0<32> l00000098
+	v23_45 = SLICE(r4_154, byte, 0) - 1<8>
+	r4_154 = CONVERT(v23_45, int8, int32)
+	branch CONVERT(v23_45, byte, uint32) == 0<32> l00000098
 l0000008A:
 	vTaskMissedYield()
-	r3_55 = CONVERT(SLICE(r4_154, byte, 0) - 1<8>, byte, uint32)
-	r4_154 = CONVERT(SLICE(r3_55, int8, 0), int8, int32)
-	branch r3_55 != 0<32> l0000007C
+	v16_54 = SLICE(r4_154, byte, 0) - 1<8>
+	r4_154 = CONVERT(v16_54, int8, int32)
+	branch CONVERT(v16_54, byte, uint32) != 0<32> l0000007C
 l0000007C:
 	branch Mem12[r0 + 36<i32>:word32] == 0<32> l00000098
 l00000098:
@@ -41,14 +41,14 @@ l000000B4:
 l000000C6:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l000000BA
 l000000BA:
-	r3_109 = CONVERT(SLICE(r4_105, byte, 0) - 1<8>, byte, uint32)
-	r4_105 = CONVERT(SLICE(r3_109, int8, 0), int8, int32)
-	branch r3_109 == 0<32> l000000DE
+	v21_108 = SLICE(r4_105, byte, 0) - 1<8>
+	r4_105 = CONVERT(v21_108, int8, int32)
+	branch CONVERT(v21_108, byte, uint32) == 0<32> l000000DE
 l000000D0:
 	vTaskMissedYield()
-	r3_118 = CONVERT(SLICE(r4_105, byte, 0) - 1<8>, byte, uint32)
-	r4_105 = CONVERT(SLICE(r3_118, int8, 0), int8, int32)
-	branch r3_118 != 0<32> l000000C2
+	v19_117 = SLICE(r4_105, byte, 0) - 1<8>
+	r4_105 = CONVERT(v19_117, int8, int32)
+	branch CONVERT(v19_117, byte, uint32) != 0<32> l000000C2
 l000000C2:
 	branch Mem68[r0 + 16<i32>:word32] == 0<32> l000000DE
 l000000DE:
@@ -457,7 +457,7 @@ l00000458:
 l00000476:
 	branch r3 == 2<32> l00000482
 l00000482:
-	r4_34 = CONVERT(Mem16[r0 + 69<i32>:byte], int8, int32)
+	v17_33 = Mem16[r0 + 69<i32>:byte]
 	branch prvCopyDataToQueue(r0, r1, r3, out r0_171, out r7_45) l000004A6
 l000004A6:
 	branch Mem16[r0 + 36<i32>:word32] == 0<32> l0000049E
@@ -468,7 +468,7 @@ l000004B8:
 l000004BC:
 	Mem68[r7_45:word32] = 1<32>
 l00000496:
-	Mem74[r0 + 69<i32>:byte] = SLICE(r4_34, int8, 0) + 1<i8>
+	Mem74[r0 + 69<i32>:byte] = v17_33 + 1<i8>
 l0000049E:
 	__msr(cpsr, r6_18)
 	return
@@ -498,7 +498,7 @@ l00000500:
 	__msr(cpsr, r4_14)
 	return
 l000004E2:
-	r3_31 = CONVERT(Mem12[r0 + 69<i32>:byte], int8, int32)
+	v13_30 = Mem12[r0 + 69<i32>:byte]
 	Mem32[r0 + 56<i32>:word32] = r2_17 + 1<32>
 	branch r2_17 == 0xFFFFFFFF<32> l00000508
 l00000508:
@@ -510,7 +510,7 @@ l0000051A:
 l0000051E:
 	Mem55[r1:word32] = 1<32>
 l000004F0:
-	Mem61[r0 + 69<i32>:byte] = SLICE(r3_31, int8, 0) + 1<i8>
+	Mem61[r0 + 69<i32>:byte] = v13_30 + 1<i8>
 l000004F8:
 l000004FA:
 	__msr(cpsr, r4_14)

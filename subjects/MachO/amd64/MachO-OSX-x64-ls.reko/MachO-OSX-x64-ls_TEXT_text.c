@@ -407,8 +407,8 @@ void fn00000001000023B0(ui32 edx, int32 edi)
 			fts_read$INODE64();
 			while (rax_n != null)
 			{
-				rax_n = (uint64) rax_n->w0058;
-				int32 eax_n = (word32) rax_n;
+				int32 eax_n = (word32) rax_n->w0058;
+				rax_n = (uint64) eax_n;
 				word64 rax_n;
 				if (eax_n <= 0x0C)
 				{
@@ -489,8 +489,9 @@ l000000010000250A:
 					rax_n = (struct Eq_n *) &g_t5340;
 					if ((byte) &g_t5340 != 0x00 && (edx & 0x02) != 0x00)
 					{
-						uint64 rdi_n = (uint64) rax_n->dw0038;
-						if ((word32) rdi_n == 0x00)
+						word32 edi_n = rax_n->dw0038;
+						uint64 rdi_n = (uint64) edi_n;
+						if (edi_n == 0x00)
 							rdi_n = 0x02;
 						rax_n = strerror((word32) rdi_n);
 l00000001000024DF:
@@ -523,6 +524,7 @@ l00000001000024BB:
 //      fn0000000100001778
 void fn00000001000026A0(char ** rsi, int32 edi)
 {
+	word16 wLoc36;
 	if (edi <= 0x00)
 		fn000000010000488B();
 	setlocale(0x100005410, 0x00);
@@ -815,9 +817,9 @@ l0000000100002D0A:
 					signal(&g_t319B, 0x03);
 					fn000000010000328E(getenv("LSCOLORS"));
 l0000000100002D4C:
+					ui32 eax_n = g_dw6578;
 					Eq_n ecx_n;
 					ecx_n.u0 = g_t6574.u0;
-					ui32 eax_n = g_dw6578;
 					if ((ecx_n | eax_n) == 0x00 && ((g_t6598.u0 | dwLoc064C_n) == 0x00 && (g_t65AC.u0 | r15d_n) == 0x00))
 					{
 						ui32 edx_n = r14d_n | 0x08;
@@ -915,8 +917,8 @@ l0000000100002E3A:
 	{
 		if (ioctl(0x40087468, 0x01) == ~0x00)
 			goto l0000000100002748;
-		word16 wLoc36;
-		eax_n = (word32) wLoc36;
+		word32 eax_n = (word32) wLoc36;
+		eax_n = eax_n;
 		if (eax_n == 0x00)
 		{
 l0000000100002748:
@@ -1432,8 +1434,8 @@ word32 fn0000000100004ABB(Eq_n rbx, struct Eq_n * rbp, ptr64 & rbxOut, ptr64 & r
 			}
 			if (eax_n != 0x00)
 			{
-				uint64 rdi_n = (uint64) rbp->dwFFFFFF4C;
-				word32 edi_n = (word32) rdi_n;
+				int32 edi_n = rbp->dwFFFFFF4C;
+				uint64 rdi_n = (uint64) edi_n;
 				if (edi_n == 0x22 || edi_n == 0x5C)
 					goto l00000001000049B7;
 				if (r14d_n > 0x00)
@@ -1456,16 +1458,15 @@ l00000001000049B7:
 				goto l0000000100004A24;
 			if (g_t658C.u0 != 0x00)
 			{
-				uint64 rax_n = (uint64) rbp->dwFFFFFF4C;
-				int32 eax_n = (word32) rax_n;
-				byte al_n = (byte) rax_n;
+				int32 eax_n = rbp->dwFFFFFF4C;
+				byte al_n = (byte) eax_n;
 				if (eax_n < 0x00 || eax_n > 0xFF)
 					goto l0000000100004A19;
 				struct Eq_n * rax_n = memchr(0x13, (int32) al_n, &g_v5770);
 				if (rax_n == null)
 					goto l0000000100004A19;
 				putchar(0x5C);
-				putchar((word32) rax_n->b0001);
+				putchar((int32) rax_n->b0001);
 				rbp->dwFFFFFF48 += 0x02;
 				goto l0000000100004AA8;
 			}
@@ -1486,17 +1487,17 @@ l0000000100004A39:
 		if (eax_n > 0x00)
 		{
 l0000000100004A3D:
+			rbp->dwFFFFFF44 = eax_n * 0x04;
 			uint64 r15_n = (uint64) eax_n;
-			rbp->dwFFFFFF44 = (word32) r15_n * 0x04;
 			Eq_n r12_n = rbx;
 			do
 			{
-				uint64 r13_n = (uint64) r12_n.u0->b0000;
+				ui32 r13d_n = (word32) r12_n.u0->b0000;
 				putchar(0x5C);
-				bcu8 r13b_n = (byte) r13_n;
+				bcu8 r13b_n = (byte) r13d_n;
 				putchar((word32) (r13b_n >> 0x06) + 0x30);
 				putchar(((word32) (r13b_n >> 0x03) & 0x07) + 0x30);
-				putchar(((word32) r13_n & 0x07) + 0x30);
+				putchar((r13d_n & 0x07) + 0x30);
 				++r12_n.u0;
 				--r15_n;
 			} while (r15_n != 0x00);
@@ -1522,7 +1523,7 @@ l0000000100004AA8:
 			break;
 		rbx.u0 = rbx + rax_n;
 	}
-	uint64 rax_n = (uint64) rbp->dwFFFFFF48;
+	word32 eax_n = rbp->dwFFFFFF48;
 	ptr64 qwArg98;
 	rbxOut = qwArg98;
 	ptr64 qwArgC0;
@@ -1532,27 +1533,26 @@ l0000000100004AA8:
 	r14Out = qwArgB0;
 	ptr64 qwArgB8;
 	r15Out = qwArgB8;
-	return (word32) rax_n;
+	return eax_n;
 }
 
-// 0000000100004AFA: Register uint64 fn0000000100004AFA(Register word32 esi, Register Eq_n rdi)
+// 0000000100004AFA: Register uint64 fn0000000100004AFA(Register ui32 esi, Register Eq_n rdi)
 // Called from:
 //      fn0000000100001B4A
-uint64 fn0000000100004AFA(word32 esi, Eq_n rdi)
+uint64 fn0000000100004AFA(ui32 esi, Eq_n rdi)
 {
 	wchar_t wLocBC;
 	word64 rsi;
 	esi = (word32) rsi;
 	Eq_n tLocB8 = (Eq_n) 0;
-	Eq_n rbx_n;
-	rbx_n.u0 = (int64) esi;
-	word32 ebx_n;
-	ui32 dwLocC0_n = (word32) rbx_n * 0x04;
+	ui32 ebx_n;
+	ui32 dwLocC0_n = esi * 0x04;
 	uint64 r14_n = 0x00;
-	Eq_n r15_n = rbx_n;
+	Eq_n r15_n;
+	r15_n.u0 = (int64) esi;
 	Eq_n r12_n = rdi;
 	uint64 rax_n;
-	for (ebx_n = (word32) rbx_n; ebx_n != 0x00; --ebx_n)
+	for (ebx_n = esi; ebx_n != 0x00; --ebx_n)
 	{
 		Eq_n rax_n = mbrtowc(&tLocB8, r15_n, r12_n, &wLocBC);
 		word32 eax_n = (word32) rax_n;

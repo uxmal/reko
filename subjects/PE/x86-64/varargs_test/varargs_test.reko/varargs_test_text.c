@@ -149,6 +149,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	struct Eq_n * gs;
 	fn00000001400015C4(gs);
 	word32 ecx_n = g_dw400035B0;
+	word32 ecx_n = ecx_n;
 	<anonymous> ** rax_n = rax_n;
 	if (ecx_n == 0x01)
 	{
@@ -198,18 +199,18 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	get_initial_narrow_environment();
 	uint64 rax_n = (uint64) fn0000000140001000();
 	fn0000000140001AC0();
-	int32 ebx_n = (word32) rax_n;
+	int32 eax_n = (word32) rax_n;
 	if ((byte) rax_n != 0x00)
 	{
 		if (sil_n == 0x00)
 			cexit();
 		byte dl;
 		fn00000001400017D8(dl);
-		rax_n = (uint64) ebx_n;
+		rax_n = (uint64) eax_n;
 		return (word32) rax_n;
 	}
 	else
-		exit(ebx_n);
+		exit(eax_n);
 }
 
 // 0000000140001434: Register Eq_n Win32CrtStartup()
@@ -388,9 +389,8 @@ word64 fn0000000140001718(<anonymous> ** rcx)
 				struct Eq_n * r9_n = rdx_n + rax_n;
 				for (; rdx_n != r9_n; rdx_n += (struct Eq_n *) 0x28)
 				{
-					uint64 rcx_n = (uint64) rdx_n->dw000C;
-					word32 ecx_n = (word32) rcx_n;
-					if (r8_n >= rcx_n)
+					word32 ecx_n = rdx_n->dw000C;
+					if (r8_n >= (uint64) ecx_n)
 					{
 						uint64 rax_n = (uint64) (rdx_n->dw0008 + ecx_n);
 						rax_56_8_n = SLICE(rax_n, word56, 8);
@@ -589,8 +589,9 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		uint64 rax_n = SEQ(rax_32_32_n, eax_n);
 		if (eax_n == 0x00)
 		{
-			rax_n = (uint64) (0x00 - (bl_n != 0x00));
-			g_dw40003610 &= (word32) rax_n;
+			ui32 eax_n = 0x00 - (bl_n != 0x00);
+			g_dw40003610 &= eax_n;
+			rax_n = (uint64) eax_n;
 		}
 		rcxOut = rcx_n;
 		return rax_n;
@@ -635,9 +636,8 @@ void fn0000000140001B24(struct Eq_n ** rcx)
 	struct Eq_n * rax_n = (struct Eq_n *) *rcx;
 	if (rax_n->dw0000 != ~0x1F928C9C || rax_n->dw0018 != 0x04)
 		return;
-	uint64 rcx_n = (uint64) rax_n->dw0020;
-	word32 ecx_n = (word32) rcx_n;
-	if ((word32) rcx_n > 0x19930522 && ecx_n != 0x01994000)
+	up32 ecx_n = rax_n->dw0020;
+	if (ecx_n > 0x19930522 && ecx_n != 0x01994000)
 		return;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 	int3();
@@ -698,6 +698,7 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 	ui32 r8d_n = g_dw40003614;
 	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &(ebx_n ^ 1970169159));
 	byte bLoc20_n = 0x00;
+	ui32 r8d_n = r8d_n;
 	ui32 r11d_n = ebx_n ^ 1752462657 | edx ^ 0x69746E65 | 0x444D4163;
 	word32 ebx_n = ebx_n;
 	if ((edx ^ 0x49656E69 | 1818588270 | ebx_n ^ 1970169159) != 0x00)
@@ -705,8 +706,9 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 l0000000140001CE9:
 		if (r11d_n == 0x00 && false)
 		{
-			r8d_n |= 0x04;
+			ui32 r8d_n = r8d_n | 0x04;
 			g_dw40003614 = r8d_n;
+			r8d_n = r8d_n;
 		}
 		if (false)
 		{
@@ -739,7 +741,7 @@ l0000000140001CE9:
 	else
 	{
 		g_qw40003020 = ~0x00;
-		r8d_n |= 0x04;
+		r8d_n = r8d_n | 0x04;
 		g_dw40003614 = r8d_n | 0x04;
 		ebx_n = ebx_n;
 		if (true)

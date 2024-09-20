@@ -57,11 +57,11 @@ void fn0468(byte * r3)
 {
 	while (true)
 	{
+		char v5_n = *r3;
 		++r3;
-		int16 r0_n = (int16) *r3;
-		if (r0_n == 0x00)
+		if ((int16) v5_n == 0x00)
 			break;
-		while (TTYOUT((char) r0_n))
+		while (TTYOUT(v5_n))
 			;
 	}
 }
@@ -141,11 +141,10 @@ void fn04FA(ci16 r0)
 		++r0_n;
 		wLoc02_n = v11_n;
 	} while (v11_n >= 0x00);
-	byte bLoc02_n = (byte) v11_n + 0x3A;
+	char bLoc02_n = (byte) v11_n + 0x3A;
 	if (r0_n != 0x01)
 		fn04FA(r0_n - 0x01);
-	int16 r0_n = (int16) bLoc02_n;
-	while (TTYOUT((char) r0_n))
+	while (TTYOUT(bLoc02_n))
 		;
 }
 
@@ -1176,9 +1175,9 @@ void fn12CA(ptr16 r2, Eq_n r3)
 	int16 r0_n = 0x0A;
 	if (v19_n != 0x00)
 	{
-		int16 r5_n = (int16) r1_n->b0000;
+		byte v21_n = r1_n->b0000;
 		++r1_n;
-		if ((byte) r5_n == 0x31)
+		if (v21_n == 0x31)
 		{
 			r0_n = 0x0C;
 l1326:
@@ -1205,14 +1204,14 @@ l132A:
 			}
 			return;
 		}
-		if ((byte) r5_n == 0x2B)
+		if (v21_n == 0x2B)
 			goto l132A;
-		if ((byte) r5_n == 0x24)
+		if (v21_n == 0x24)
 		{
 			--*((word16) r3 + 28);
 			*((word16) r3 + 84) = null;
 		}
-		else if ((byte) r5_n == 0x30)
+		else if (v21_n == 0x30)
 			r0_n = fn1366(0x0A, r3, r4_n, out r2, out r3, out r4_n);
 	}
 	if (r4_n->t0000.u0 <= 0x00 && r2 == null)

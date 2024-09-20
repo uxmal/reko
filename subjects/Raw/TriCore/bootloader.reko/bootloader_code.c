@@ -283,10 +283,11 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 void fn000005CE(ui32 d4, ui16 * a4)
 {
 		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		Eq_n d2_n;
-		d2_n.u0 = (int32) a15_n->nF0000003;
-		*a4 = (word16) d2_n;
+		word4 v10_n = a15_n->nF0000003;
+		*a4 = (word16) v10_n;
 		int32 d15_n = 0x00;
+		Eq_n d2_n;
+		d2_n.u0 = (int32) v10_n;
 		while (true)
 		{
 			int32 d4_n = d15_n + 0x01;
@@ -297,9 +298,9 @@ void fn000005CE(ui32 d4, ui16 * a4)
 		}
 		Eq_n d15_n;
 		d15_n.u1 = a15_n->tF000001C.u1;
-		*a4 = (word16) d2_n << 0x04;
+		*a4 = (word16) v10_n << 0x04;
 		if (__bit<word32,byte>(d15_n, 11))
-			*a4 = (word16) d2_n << 0x04 | 0x08;
+			*a4 = (word16) v10_n << 0x04 | 0x08;
 }
 
 // 00000648: Register word32 fn00000648(Register ui32 d4, Register out ptr32 a15Out)
@@ -482,10 +483,11 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 				d4->bD0000018 = (byte) d15_n;
 				if (!__bit<word32,byte>(a15_n->tF000001C.u1, 0x04))
 				{
-					Eq_n d2_n;
-					d2_n.u0 = (int32) a15_n->nF0000003;
-					*a4 = (word16) d2_n;
+					word4 v16_n = a15_n->nF0000003;
+					*a4 = (word16) v16_n;
 					int32 d15_n = 0x00;
+					Eq_n d2_n;
+					d2_n.u0 = (int32) v16_n;
 					while (true)
 					{
 						int32 d4_n = d15_n + 0x01;
@@ -496,9 +498,9 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 					}
 					Eq_n d15_n;
 					d15_n.u1 = a15_n->tF000001C.u1;
-					*a4 = (word16) d2_n << 0x04;
+					*a4 = (word16) v16_n << 0x04;
 					if (__bit<word32,byte>(d15_n, 11))
-						*a4 = (word16) d2_n << 0x04 | 0x08;
+						*a4 = (word16) v16_n << 0x04 | 0x08;
 				}
 				else
 				{

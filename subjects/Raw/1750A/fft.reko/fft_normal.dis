@@ -379,14 +379,15 @@ l0384:
 	gp5_gp6_gp7_115 = SEQ(SLICE(gp2_gp3_gp4_19, word32, 0), SLICE(gp2_gp3_gp4_19, word16, 0)) - SEQ(gp0_gp1, gp2)
 l0389:
 	gp5_gp6_gp7_40 = gp5_gp6_gp7_115 * Mem0[0x8057<p16>:real48]
-	gp0_gp1_117 = CONVERT(gp5_gp6_gp7_40, real48, int32)
-	gp5_gp6_gp7_54 = gp5_gp6_gp7_40 - CONVERT(gp0_gp1_117, int32, real48)
+	gp0_gp1_45 = CONVERT(gp5_gp6_gp7_40, real48, int32)
+	gp5_gp6_gp7_54 = gp5_gp6_gp7_40 - CONVERT(gp0_gp1_45, int32, real48)
 	gp7_55 = SLICE(gp5_gp6_gp7_54, word16, 0) (alias)
 	gp4_56 = gp7_55
+	gp0_gp1_117 = SEQ(SLICE(gp0_gp1_45, word16, 16), CONVERT(gp5_gp6_gp7_40, real48, word16)) (alias)
 	branch gp5_gp6_gp7_54 >= 0.0 l0396
 l0392:
 	gp4_56 = SLICE(SEQ(SLICE(gp5_gp6_gp7_54, word32, 0), gp7_55) + Mem0[0x805A<p16>:real48], word16, 0) (alias)
-	gp0_gp1_117 = gp0_gp1_117 + Mem0[0x805D<p16>:word32]
+	gp0_gp1_117 = gp0_gp1_45 + Mem0[0x805D<p16>:word32]
 l0396:
 	gp1_80 = SLICE(gp0_gp1_117, word16, 0) (alias)
 	branch gp0_gp1 >= 0<32> l039B
@@ -423,12 +424,13 @@ l03AB:
 	gp5_gp6_gp7_49 = gp5_gp6_gp7_35 - CONVERT(gp0_gp1_40, int32, real48)
 	gp7_50 = SLICE(gp5_gp6_gp7_49, word16, 0) (alias)
 	gp4_51 = gp7_50
+	gp0_gp1_61 = SEQ(SLICE(gp0_gp1_40, word16, 16), CONVERT(gp5_gp6_gp7_35, real48, word16)) (alias)
 	branch gp5_gp6_gp7_49 >= 0.0 l03B8
 l03B4:
 	gp4_51 = SLICE(SEQ(SLICE(gp5_gp6_gp7_49, word32, 0), gp7_50) + Mem0[0x8067<p16>:real48], word16, 0) (alias)
-	gp0_gp1_40 = gp0_gp1_40 + Mem0[0x806A<p16>:word32]
+	gp0_gp1_61 = gp0_gp1_40 + Mem0[0x806A<p16>:word32]
 l03B8:
-	gp0_75 = sincos(SLICE(gp0_gp1_40, word16, 0) + Mem0[0x806C<p16>:word16], gp4_51, out gp1_76, out gp2_78, out gp3_99, out gp4_100, out gp14_77)
+	gp0_75 = sincos(SLICE(gp0_gp1_61, word16, 0) + Mem0[0x806C<p16>:word16], gp4_51, out gp1_76, out gp2_78, out gp3_100, out gp4_101, out gp14_77)
 	gp14Out = gp14_77
 	return SEQ(gp0_75, gp1_76, gp2_78)
 cos_exit:
@@ -648,24 +650,23 @@ l0482:
 l047F:
 	Mem103[gp11 + 9<16>:word16] = gp2_96 | 0x3030<16>
 l0484:
-	gp2_gp3_121 = CONVERT(SEQ(gp12_gp13_311, gp14_116), real48, int32)
-	Mem137[gp11:word16] = SEQ(Mem135[gp11:byte], SLICE(gp2_gp3_121, byte, 0) + 0x30<8>)
+	Mem137[gp11:word16] = SEQ(Mem135[gp11:byte], SLICE(gp14_116, byte, 0) + 0x30<8>)
 	Mem142[gp11 + 1<16>:word16] = SEQ(0x2E<8>, Mem137[gp11 + 1<16>:byte])
 	gp7_104 = 0<16>
-	gp12_gp13_gp14_130 = SEQ(gp12_gp13_311, gp14_116) - CONVERT(gp2_gp3_121, int32, real48)
+	gp12_gp13_gp14_130 = SEQ(gp12_gp13_311, gp14_116) - CONVERT(CONVERT(SEQ(gp12_gp13_311, gp14_116), real48, int32), int32, real48)
 l0493:
 	gp12_gp13_gp14_148 = gp12_gp13_gp14_130 * Mem147[0x0579<p16>:real48]
-	gp2_gp3_157 = CONVERT(SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), SLICE(gp12_gp13_gp14_148, word16, 0)), real48, int32)
-	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(gp2_gp3_157, int32, real48)
-	gp3_159 = SLICE(gp2_gp3_157, word16, 0) (alias)
+	gp14_152 = SLICE(gp12_gp13_gp14_148, word16, 0) (alias)
+	gp4_gp5_gp6_156 = SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), gp14_152) (alias)
+	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(CONVERT(gp4_gp5_gp6_156, real48, int32), int32, real48)
 	gp14 = SLICE(gp12_gp13_gp14_130, word16, 0) (alias)
 	gp7_104 = gp7_104 + 1<16>
 	branch (gp7_104 & 0x8000<u16>) == 0<16> l04A2
 l04A2:
-	Mem176[gp11 + 1<16>:word16] = SEQ(Mem147[gp11 + 1<16>:byte], SLICE(gp3_159, byte, 0) + 0x30<8>)
+	Mem176[gp11 + 1<16>:word16] = SEQ(Mem147[gp11 + 1<16>:byte], CONVERT(gp14_152, word16, byte) + 0x30<8>)
 	gp11 = gp11 + 1<16>
 l049F:
-	Mem181[gp11 + 1<16>:word16] = SEQ(SLICE(gp3_159, byte, 0) + 0x30<8>, Mem147[gp11 + 1<16>:byte])
+	Mem181[gp11 + 1<16>:word16] = SEQ(CONVERT(gp14_152, word16, byte) + 0x30<8>, Mem147[gp11 + 1<16>:byte])
 l04A5:
 	gp1 = gp1 - 1<16>
 	branch gp1 != 0<16> l0493

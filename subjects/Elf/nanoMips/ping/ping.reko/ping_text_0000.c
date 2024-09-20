@@ -13809,8 +13809,9 @@ Eq_n pop_arg(Eq_n r5, Eq_n r6, union Eq_n & r6Out, union Eq_n & r7Out)
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					Eq_n v9_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v9_n;
+					r5_n.u3 = (int32) v9_n;
 					if (r5_n < 0x00)
 						goto l004089AC;
 					r6.u3 = r6.u11[4];
@@ -13833,8 +13834,9 @@ l004089AC:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v19_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v19_n;
+					r5.u3 = (int32) v19_n;
 					if (r5 < 0x00)
 						goto l00408AA2;
 					r6.u3 = r6.u11[4];
@@ -13857,8 +13859,9 @@ l00408AA2:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					Eq_n v18_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v18_n;
+					r5_n.u3 = (int32) v18_n;
 					if (r5_n < 0x00)
 						goto l00408AC6;
 					r6.u3 = r6.u11[4];
@@ -13881,8 +13884,9 @@ l00408AC6:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v17_n = (byte) r7_n + ~0x07;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v17_n;
+					r5.u3 = (int32) v17_n;
 					if (r5 < 0x00)
 						goto l00408A78;
 					r7_n = r6.u11[4] - r7_n;
@@ -13900,8 +13904,9 @@ l00408A78:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v10_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v10_n;
+					r5.u3 = (int32) v10_n;
 					if (r5 < 0x00)
 						goto l004089D6;
 					r6.u3 = r6.u11[4];
@@ -13919,8 +13924,9 @@ l004089D6:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					Eq_n v16_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v16_n;
+					r5_n.u3 = (int32) v16_n;
 					if (r5_n < 0x00)
 						goto l004089FE;
 					r6.u3 = r6.u11[4];
@@ -13938,8 +13944,9 @@ l004089FE:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v15_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v15_n;
+					r5.u3 = (int32) v15_n;
 					if (r5 < 0x00)
 						goto l00408A22;
 					r6.u3 = r6.u11[4];
@@ -13959,8 +13966,9 @@ l004089CE:
 				union Eq_n * r7_n;
 				if (r7_n > 0x00)
 				{
-					r5_n.u3 = (int32) ((byte) r7_n + 252);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5_n;
+					Eq_n v14_n = (byte) r7_n + 252;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v14_n;
+					r5_n.u3 = (int32) v14_n;
 					if (r5_n < 0x00)
 						goto l00408A46;
 					r6.u3 = r6.u11[4];
@@ -13981,8 +13989,9 @@ l004089F8:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v13_n = (byte) r7_n + ~0x07;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v13_n;
+					r5.u3 = (int32) v13_n;
 					if (r5 >= 0x00)
 					{
 						r7_n = r6.u11[4] - r7_n;
@@ -13994,8 +14003,9 @@ l004089F8:
 				if (r7_n > 0x00)
 				{
 					Eq_n r7_n = __ins<word32,word32>(r7_n, 0x00, 0x00, 0x01);
-					r5.u3 = (int32) ((byte) r7_n + ~0x07);
-					(&r6.u21->u1)[0x0C] = (struct Eq_n) (byte) r5;
+					Eq_n v11_n = (byte) r7_n + ~0x07;
+					(&r6.u21->u1)[0x0C] = (struct Eq_n) v11_n;
+					r5.u3 = (int32) v11_n;
 					if (r5 >= 0x00)
 					{
 						r7_n = r6.u11[4] - r7_n;
@@ -14128,7 +14138,7 @@ Eq_n printf_core(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r13, Eq_n r21, union Eq_n & r4O
 	Eq_n r16_n = r4;
 	Eq_n r3;
 	word32 r7_n;
-	byte bLoc02DC_n;
+	Eq_n bLoc02DC_n;
 	Eq_n r7_n;
 	Eq_n r11;
 	ptr32 r14;
@@ -15375,7 +15385,7 @@ l00409330:
 						if (r23_n < 0x08)
 						{
 							union Eq_n * r7_n = (union Eq_n *) *((char *) g_a413020 + r23_n * 0x04);
-							uint16 wLoc02DC_n = (word16) r7_n;
+							Eq_n wLoc02DC_n = (word16) r7_n;
 							switch (r23_n)
 							{
 							case 0x00:
@@ -15387,12 +15397,12 @@ l00409330:
 								r6 = 0x00412F40 >> 0x1F;
 								break;
 							case 0x03:
+								r7_n->u0 = (uint16) wLoc02DC_n;
 								r6.u3 = (word32) wLoc02DC_n;
-								r7_n->u1 = (word16) (word16) r6;
 								break;
 							case 0x04:
+								r7_n->u1 = (byte) bLoc02DC_n;
 								r6.u3 = (word32) bLoc02DC_n;
-								r7_n->u0 = (byte) (byte) r6;
 								break;
 							case 0x05:
 								break;
@@ -15609,9 +15619,9 @@ l00408CD8:
 		r5.u3 = (word32) (&r7_n.u21->u1)[0x0C];
 		if (r5 > 0x00)
 		{
-			int32 r6_n = (int32) ((byte) r5 + 252);
-			(&r7_n.u21->u1)[0x0C] = (struct Eq_n) (byte) r6_n;
-			if (r6_n >= 0x00)
+			byte v20_n = (byte) r5 + 252;
+			(&r7_n.u21->u1)[0x0C] = (struct Eq_n) v20_n;
+			if ((int32) v20_n >= 0x00)
 			{
 				r7_n = r7_n.u11[4] - r5;
 l00408DBC:
@@ -15626,9 +15636,9 @@ l00408DBC:
 	Eq_n r7_n;
 	if (r5 > 0x00)
 	{
-		int32 r6_n = (int32) ((byte) r5 + 252);
-		(&r7_n.u21->u1)[0x0C] = (struct Eq_n) (byte) r6_n;
-		if (r6_n >= 0x00)
+		int8 v19_n = (byte) r5 + 252;
+		(&r7_n.u21->u1)[0x0C] = (struct Eq_n) v19_n;
+		if ((int32) v19_n >= 0x00)
 		{
 			r7_n = r7_n.u11[4] - r5;
 l00408D6A:
@@ -22732,7 +22742,7 @@ Eq_n __overflow(Eq_n r4, Eq_n r5, union Eq_n & r5Out, ptr32 & r6Out, union Eq_n 
 			r4_n.u3 = (word32) bLoc11_n;
 			if (r4_n != (word32) (*((word32) r4 + 75)))
 			{
-				*r7_n.u3 = (byte) r4_n;
+				*r7_n.u3 = bLoc11_n;
 				r5Out = r5;
 				r6Out = r7_n.u11 + 1;
 				r7Out = r7_n;
