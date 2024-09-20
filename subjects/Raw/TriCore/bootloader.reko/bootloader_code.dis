@@ -729,11 +729,11 @@ fn00000AC0_entry:
 l00000AC0:
 	d2_4 = Mem0[0x0003C5F0<p32>:word32]
 	d15_11 = CONVERT(Mem0[0x0003C5F4<p32>:bool], bool, int32) != 0<32> ? d2_4 | 0xF8<32> : d2_4 & 0xFFFFFFF7<32> | 0xFFFFFFF0<32>
-	d15_18 = (CONVERT(Mem0[0x0003C5F4<p32>:bool], bool, int32) != 0<32> ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>) & 0xFFFFFFFD<32>
+	d15_17 = CONVERT(Mem0[0x0003C5F4<p32>:bool], bool, int32) != 0<32> ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>
 	Mem23[0x0003C5F0<p32>:word32] = a15
 	Mem25[0x0003C5F0<p32>:word32] = a4
 	__load_upper_context()
-	return d15_18
+	return d15_17 & 0xFFFFFFFD<32>
 fn00000AC0_exit:
 
 

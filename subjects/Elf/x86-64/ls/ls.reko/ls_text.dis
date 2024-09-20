@@ -2021,7 +2021,6 @@ l0000000000405D00:
 l0000000000405D10:
 	rdi_30 = Mem6[0x000000000061A610<p64>:word64]
 	rax_31 = Mem6[rdi_30 + 40<i64>:word64]
-	rax_32_32_65 = SLICE(rax_31, word32, 32) (alias)
 	branch rax_31 >=u Mem6[rdi_30 + 48<i64>:word64] l0000000000405D3A
 l0000000000405D3A:
 	__overflow(rdi_30, CONVERT(bl_34, byte, int32))
@@ -9870,11 +9869,9 @@ l0000000000411D30:
 l0000000000411D43:
 	branch __freading(rdi) != 0<32> l0000000000411D80
 l0000000000411D80:
-	rax_34 = lseek(fileno(rdi), 0<u64>, 1<i32>)
-	branch rax_34 != 0xFFFFFFFFFFFFFFFF<64> l0000000000411D4C
+	branch lseek(fileno(rdi), 0<u64>, 1<i32>) != 0xFFFFFFFFFFFFFFFF<64> l0000000000411D4C
 l0000000000411D4C:
-	rax_39 = CONVERT(fn0000000000411DB0(rdi), uint32, uint64)
-	branch SLICE(rax_39, word32, 0) == 0<32> l0000000000411D9C
+	branch fn0000000000411DB0(rdi) == 0<32> l0000000000411D9C
 l0000000000411D9C:
 l0000000000411D9F:
 	return fclose(rdi)

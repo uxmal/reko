@@ -2865,6 +2865,7 @@ l0800_21C1:
 	es_bx_423 = Mem388[ds:0x2E51<16>:segptr32]
 	Mem427[es_bx_423 + 4<i16>:byte] = SLICE(ax_28 + (cx_51 + 4<16>) >>u 8<8>, byte, 0)
 	Mem430[es_bx_423 + 5<i16>:byte] = bLoc0C_627 + bLoc0E_628
+	fn0800_2688(ds, CONVERT(cx_51 + 4<16>, uint16, uint32), 0<32>)
 	return ch_721
 fn0800_2085_exit:
 
@@ -5625,8 +5626,7 @@ l0800_3F58:
 	fn0800_ACB3(ds_43, dwArg02, 0xFFFFFFFC<32>, 1<16>, out cx_123)
 	diOut = di_42
 	dsOut = ds_43
-	dx_ax_91 = SEQ(ax_18, 0<16>) + CONVERT(ax_39, uint16, uint32)
-	return dx_ax_91
+	return SEQ(ax_18, 0<16>) + CONVERT(ax_39, uint16, uint32)
 fn0800_3F58_exit:
 
 
@@ -9659,8 +9659,7 @@ l0800_7BE3:
 	si_352 = si_352 + 1<16>
 l0800_7BFC:
 	Mem394[ds:0x29F7<16>:ui32] = Mem390[ds:0x29F7<16>:ui32] + 1<32>
-	dx_ax_1023 = fn0800_AD2F(ds, Mem394[ds:0x29E3<16>:word32])
-	dwLoc06_1015 = dx_ax_1023 (alias)
+	dwLoc06_1015 = fn0800_AD2F(ds, Mem394[ds:0x29E3<16>:word32]) (alias)
 l0800_7BD5:
 l0800_7ACB:
 	ax_428 = fn0800_3E27(ds, Mem344[ds:0x29DB<16>:word32], out cx_1020, out di_1021, out ds)
@@ -9772,8 +9771,7 @@ l0800_7E36:
 	si_219 = si_219 + 1<16>
 l0800_7E4F:
 	Mem261[ds:0x29F7<16>:ui32] = Mem257[ds:0x29F7<16>:ui32] + 1<32>
-	dx_ax_842 = fn0800_AD2F(ds, Mem261[ds:0x29E3<16>:word32])
-	dwLoc06_830 = dx_ax_842 (alias)
+	dwLoc06_830 = fn0800_AD2F(ds, Mem261[ds:0x29E3<16>:word32]) (alias)
 l0800_7DE2:
 l0800_7CAC:
 	ax_298 = fn0800_3E27(ds_124, Mem133[ds_124:0x29DB<16>:word32], out cx_835, out di_836, out ds_124)
@@ -10128,8 +10126,7 @@ byte fn0800_8359(selector ds, ptr16 & dsOut)
 fn0800_8359_entry:
 l0800_8359:
 	al_30 = SLICE(fn0800_3DCF(ds, Mem7[ds:0x29E3<16>:word32], out ch_73, out di_74, out ds_24), byte, 0) (alias)
-	ax_43 = Mem31[ds_24:((CONVERT(Mem31[ds_24:0x2E4B<16>:byte] ^ al_30, uint8, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem31[ds_24:0x2E4B<16>:word16] >>u 8<8>
-	Mem44[ds_24:0x2E4B<16>:word16] = ax_43
+	Mem44[ds_24:0x2E4B<16>:word16] = Mem31[ds_24:((CONVERT(Mem31[ds_24:0x2E4B<16>:byte] ^ al_30, uint8, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem31[ds_24:0x2E4B<16>:word16] >>u 8<8>
 	Mem50[ds_24:0x29FF<16>:ui32] = Mem46[ds_24:0x29FF<16>:ui32] + 1<32>
 	dsOut = ds_24
 	return al_30
@@ -11680,9 +11677,9 @@ fn0800_8F2F_entry:
 l0800_8F2F:
 	dx_15 = dx + (ax >>u 4<8>)
 	cx_24 = cx + (bx >>u 4<8>)
-	bx_29 = SEQ(SLICE(bx >>u 4<8>, byte, 8), bl) (alias)
 	SCZO_31 = cond(dx_15 - cx_24)
 	ax_26 = SEQ(bl, al) (alias)
+	bx_29 = SEQ(SLICE(bx >>u 4<8>, byte, 8), bl) (alias)
 	Z_32 = SLICE(SCZO_31, bool, 2) (alias)
 	C_37 = SLICE(SCZO_31, bool, 1) (alias)
 	branch dx_15 != cx_24 l0800_8F4F
@@ -13176,11 +13173,10 @@ l0800_9B83:
 l0800_9B86:
 	cx_571 = fn0800_9842(di_566, es_532)
 l0800_9B89:
-	ax_591 = wLoc04_1482 & 5<16>
 	si_578 = di_576
 	di_588 = di_53
 	bx_589 = wLoc0A_1406
-	branch ax_591 != 5<16> l0800_9BAF
+	branch (wLoc04_1482 & 5<16>) != 5<16> l0800_9BAF
 l0800_9B9C:
 	branch dl_140 != 0x6F<8> l0800_9BB1
 l0800_9BB1:
@@ -13212,6 +13208,7 @@ l0800_9BD8:
 l0800_9BE2:
 	branch (wLoc04_1522 & 0x40<16>) == 0<16> l0800_9BF4
 l0800_9BE9:
+	fn0800_984F(SEQ(ss, fp - 2<i16>), 0x30<8>, cx_629, dx_679, bx_673, di_669, out di_692)
 	fn0800_984F(SEQ(ss, fp - 2<i16>), dl_140, cx_629, dx_679, bx_673, di_692, out di_701)
 l0800_9BF4:
 	dx_709 = wLoc10_1520
@@ -13226,8 +13223,8 @@ l0800_9C06:
 l0800_9C0A:
 	branch al_732 != 0x2B<8> l0800_9C15
 l0800_9C0E:
-	si_743 = di_576 + 1<i16>
 	fn0800_984F(SEQ(ss, fp - 2<i16>), Mem627[es_721:di_576:byte], cx_715, wLoc10_1520, bx_717, di_752, out di_757)
+	si_743 = di_576 + 1<i16>
 	cx_761 = cx_715 - 1<16>
 	bx_762 = bx_717 - 1<16>
 l0800_9C15:
@@ -14676,18 +14673,18 @@ fn0800_A817_entry:
 l0800_A817:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg06)
-	cx_33 = SLICE(msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP, word16, 0)
+	v16_30 = SLICE(msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
+	bx_17 = SLICE(es_bx_12, word16, 0) (alias)
 	ax_37 = SEQ(0x4E<8>, al) (alias)
-	dx_41 = SLICE(es_bx_12, word16, 0)
 	branch Test(ULT,Mem47[ss:fp + 6<i16>:bool]) l0800_A844
 l0800_A844:
 	ax_55 = fn0800_8D2B(ds, ax_37)
 l0800_A840:
 	ax_55 = 0<16>
 l0800_A848:
-	cxOut = cx_33
-	dxOut = dx_41
+	cxOut = v16_30
+	dxOut = bx_17
 	return ax_55
 fn0800_A817_exit:
 
@@ -14705,18 +14702,18 @@ fn0800_A84A_entry:
 l0800_A84A:
 	es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg02)
-	cx_29 = SLICE(msdos_find_next_file() | SCZDOP, word16, 0)
+	v15_26 = SLICE(msdos_find_next_file() | SCZDOP, word16, 0)
 	msdos_set_DTA(es_bx_12)
+	bx_17 = SLICE(es_bx_12, word16, 0) (alias)
 	ax_33 = SEQ(0x4F<8>, al) (alias)
-	dx_37 = SLICE(es_bx_12, word16, 0)
 	branch Test(ULT,Mem43[ss:fp + 6<i16>:bool]) l0800_A871
 l0800_A871:
 	ax_51 = fn0800_8D2B(ds, ax_33)
 l0800_A86D:
 	ax_51 = 0<16>
 l0800_A875:
-	cxOut = cx_29
-	dxOut = dx_37
+	cxOut = v15_26
+	dxOut = bx_17
 	return ax_51
 fn0800_A84A_exit:
 
@@ -17154,9 +17151,8 @@ l0800_C234:
 	Mem268[ss:sp_249 - 4<i16>:word16] = 0x2238<16>
 	Mem271[ss:sp_249 - 6<i16>:word16] = v34_222
 	Mem274[ss:sp_249 - 8<i16>:word16] = ax_198 - 0x2250<16>
-	dx_ax_799 = fn0800_8BCA(Mem274[ss:sp_249 - 8<i16>:word32], Mem274[ss:sp_249 - 4<i16>:word32])
 	sp_279 = <invalid>
-	dwArg02_779 = dx_ax_799 (alias)
+	dwArg02_779 = fn0800_8BCA(Mem274[ss:sp_249 - 8<i16>:word32], Mem274[ss:sp_249 - 4<i16>:word32]) (alias)
 l0800_C26F:
 	wArg02_595 = SLICE(dwArg02_780, word16, 0) (alias)
 	wArg04_594 = SLICE(dwArg02_780, word16, 16) (alias)

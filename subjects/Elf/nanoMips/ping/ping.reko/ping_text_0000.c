@@ -24258,10 +24258,10 @@ word32 open64(Eq_n r5)
 //      copysignl
 Eq_n copysign(Eq_n r5, Eq_n r7, ptr32 & r8Out)
 {
-	Eq_n r5_n = __ext<word32,word32>(r5, 0x00, 0x1F) | __ins<word32,word32>(r7, 0x00, 0x00, 0x01);
+	Eq_n r6_n = __ext<word32,word32>(r5, 0x00, 0x1F) | __ins<word32,word32>(r7, 0x00, 0x00, 0x01);
 	ptr32 r4;
 	r8Out = r4;
-	return r5_n;
+	return r6_n;
 }
 
 // 0040E140: Register Eq_n fmod(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r5Out)

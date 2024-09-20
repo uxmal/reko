@@ -21756,9 +21756,9 @@ word32 copysign(word32 r5, word32 r7, ptr32 & r8Out)
 // Preserved: r4 sp
 copysign_entry:
 l0040E120:
-	r5_12 = __ext<word32,word32>(r5, 0<32>, 0x1F<32>) | __ins<word32,word32>(r7, 0<32>, 0<32>, 1<32>)
+	r6_10 = __ext<word32,word32>(r5, 0<32>, 0x1F<32>) | __ins<word32,word32>(r7, 0<32>, 0<32>, 1<32>)
 	r8Out = r4
-	return r5_12
+	return r6_10
 copysign_exit:
 
 

@@ -3734,7 +3734,7 @@ Eq_3065: (union "Eq_3065" (int32 u0) (uint32 u1))
 	T_17347 (in Mem63[r2_75 + 68<i32>:word32] @ 000183DC : word32)
 	T_17356 (in Mem63[r2_75 + 56<i32>:word32] @ 000183F4 : word32)
 Eq_3162: (fn ui32 ((ptr32 Eq_3038), Eq_40))
-	T_3162 (in fn000062BC @ 000064C4 : ptr32)
+	T_3162 (in fn000062BC @ 000064B8 : ptr32)
 	T_3163 (in signature of fn000062BC @ 000062BC : void)
 Eq_3255: (fn uint32 ((ptr32 Eq_3038), Eq_40, Eq_40))
 	T_3255 (in fn00006394 @ 000065B8 : ptr32)
@@ -7227,15 +7227,15 @@ T_249: (in (*(ui32 *) 0x1F01E80<32> & 2<32>) != 0<32> @ 000046F4 : bool)
   Class: Eq_249
   DataType: bool
   OrigDataType: bool
-T_250: (in 0x1F01E88<32> @ 00004714 : word32)
+T_250: (in 0x1F01E88<32> @ 0000470C : word32)
   Class: Eq_250
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_251 t0000)))
-T_251: (in Mem26[0x1F01E88<32>:word32] @ 00004714 : word32)
+T_251: (in Mem26[0x1F01E88<32>:word32] @ 0000470C : word32)
   Class: Eq_236
   DataType: word32
   OrigDataType: word32
-T_252: (in r11_29 @ 00004714 : word32)
+T_252: (in r3_27 @ 0000470C : word32)
   Class: Eq_236
   DataType: word32
   OrigDataType: word32
@@ -18903,7 +18903,7 @@ T_3161: (in fn0000C8A0(-20<i32>, r15_116, out r14_219, out r15_167) @ 000064B0 :
   Class: Eq_47
   DataType: (ptr32 Eq_47)
   OrigDataType: word32
-T_3162: (in fn000062BC @ 000064C4 : ptr32)
+T_3162: (in fn000062BC @ 000064B8 : ptr32)
   Class: Eq_3162
   DataType: (ptr32 Eq_3162)
   OrigDataType: (ptr32 (fn T_3164 (T_3092, T_3159)))
@@ -18911,19 +18911,19 @@ T_3163: (in signature of fn000062BC @ 000062BC : void)
   Class: Eq_3162
   DataType: (ptr32 Eq_3162)
   OrigDataType: 
-T_3164: (in fn000062BC(r3, r15_167) @ 000064C4 : word32)
+T_3164: (in fn000062BC(r3, r15_167) @ 000064B8 : word32)
+  Class: Eq_3164
+  DataType: ui32
+  OrigDataType: word32
+T_3165: (in r2_179 @ 000064B8 : ui32)
   Class: Eq_3164
   DataType: ui32
   OrigDataType: ui32
-T_3165: (in 3<32> @ 000064C4 : word32)
-  Class: Eq_3165
+T_3166: (in 3<32> @ 000064D4 : word32)
+  Class: Eq_3166
   DataType: word32
   OrigDataType: word32
-T_3166: (in fn000062BC(r3, r15_167) << 3<32> @ 000064C4 : word32)
-  Class: Eq_3091
-  DataType: ui32
-  OrigDataType: ui32
-T_3167: (in r11_187 @ 000064C4 : ui32)
+T_3167: (in r2_179 << 3<32> @ 000064D4 : word32)
   Class: Eq_3091
   DataType: ui32
   OrigDataType: ui32

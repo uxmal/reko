@@ -10891,10 +10891,9 @@ l0000B7E6:
 	r7_21 = r7_21 - 1<i32>
 	Mem54[r7_21:byte] = SLICE(fn00010A4C(r5_r4_90, 0xA<32>, 0<32>), byte, 0) + 0x30<8>
 	r11_r10_95 = fn000107C0(SLICE(r5_r4_90, word32, 32), SLICE(r5_r4_90, word32, 0), 0<32>, 0xA<32>)
-	r10_56 = SLICE(r11_r10_95, word32, 0) (alias)
 	r11_57 = SLICE(r11_r10_95, word32, 32) (alias)
 	r5_r4_90 = r11_r10_95 (alias)
-	branch r11_57 != SLICE(cond(r10_56 - 0<32>), bool, 0) l0000B7E6
+	branch r11_57 != SLICE(cond(SLICE(r11_r10_95, word32, 0) - 0<32>), bool, 0) l0000B7E6
 l0000B80E:
 	r12Out = r7_21
 	return r11_57
@@ -14381,12 +14380,11 @@ l0000E6D2:
 	r8_367 = SLICE(qwLoc0434_433, word32, 0) (alias)
 	r9_369 = SLICE(qwLoc0434_433, word32, 32) (alias)
 	qwLoc0434_433 = __avr32_f64_mul(r9_369, r8_367, r9_369, r8_367)
-	r11_r10_536 = __avr32_f64_mul(r3_257, r2_255, r3_257, r2_255)
 	r0_135 = r0_135 + lr_252
 	r4_115 = SLICE(r11_r10_535, word32, 0)
 	r5_117 = SLICE(r11_r10_535, word32, 32)
 	r1_141 = r1_141 + 1<32>
-	r3_r2_528 = r11_r10_536 (alias)
+	r3_r2_528 = __avr32_f64_mul(r3_257, r2_255, r3_257, r2_255) (alias)
 
 
 word64 fn0000E868(word32 r10, word32 r11, word32 r12, word32 pc)
@@ -14504,12 +14502,11 @@ l0000E8B6:
 	r8_367 = SLICE(qwLoc0434_433, word32, 0) (alias)
 	r9_369 = SLICE(qwLoc0434_433, word32, 32) (alias)
 	qwLoc0434_433 = __avr32_f64_mul(r9_369, r8_367, r9_369, r8_367)
-	r11_r10_536 = __avr32_f64_mul(r3_257, r2_255, r3_257, r2_255)
 	r0_135 = r0_135 + lr_252
 	r4_115 = SLICE(r11_r10_535, word32, 0)
 	r5_117 = SLICE(r11_r10_535, word32, 32)
 	r1_141 = r1_141 + 1<32>
-	r3_r2_528 = r11_r10_536 (alias)
+	r3_r2_528 = __avr32_f64_mul(r3_257, r2_255, r3_257, r2_255) (alias)
 
 
 byte fn0000EA4C(word32 r11, word32 r12, ptr32 & r11Out)
@@ -15323,12 +15320,12 @@ __avr32_f64_mul_entry:
 l0000F2D0:
 	branch (r10 | r11 << 1<8>) == 0<32> l0000F48E
 l0000F48E:
-	r11_10 = (r11 ^ r9) & 0x80000000<32>
+	r11_9 = r11 ^ r9
 	branch CONVERT(SLICE(r9, word11, 20), word11, word32) == 0x7FF<32> l0000F4A0
 l0000F4A0:
 	return 0xFFFFFFFFFFFFFFFF<64>
 l0000F49E_1:
-	return SEQ(r11_10, r10)
+	return SEQ(r11_9 & 0x80000000<32>, r10)
 l0000F2D8:
 	lr_40 = r11 ^ r9
 	r7_171 = CONVERT(SLICE(r11, word11, 20), word11, word32)
@@ -16549,8 +16546,7 @@ l0000FBB6:
 l0000FBC0_1:
 	r6_519 = r12_469
 l0000FBC4:
-	r11_r10_584 = SEQ(__setbit(r3_364 >>u 8<32>, 31<i32>, SLICE(lr_24, bool, 31)), r2_439 >>u 8<32> | r3_364 << 0x18<8>) + CONVERT(r6_519, uint32, uint64)
-	return r11_r10_584
+	return SEQ(__setbit(r3_364 >>u 8<32>, 31<i32>, SLICE(lr_24, bool, 31)), r2_439 >>u 8<32> | r3_364 << 0x18<8>) + CONVERT(r6_519, uint32, uint64)
 __avr32_f64_div_exit:
 
 

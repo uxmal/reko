@@ -750,7 +750,7 @@ l0000481E:
 	__disable_interrupts()
 	v4_4 = Mem0[0x0218<p16>:word16]
 	Mem6[0x0218<p16>:word16] = v4_4 + 1<16>
-	r15_9 = Mem6[0x0208<p16>:word16]
+	v6_8 = Mem6[0x0208<p16>:word16]
 	branch v4_4 == 0xFFFF<16> l00004832
 l0000482A:
 	v9_11 = Mem6[0x0218<p16>:word16]
@@ -759,7 +759,7 @@ l0000482A:
 l00004830:
 	__enable_interrupts()
 l00004832:
-	return r15_9
+	return v6_8
 xTaskGetTickCount_exit:
 
 
@@ -1879,21 +1879,21 @@ l0000523A:
 	vTaskSwitchContext()
 	v21_58 = Mem48[Mem48[0x00000202<p32>:word16]:word16]
 	Mem63[0x00000218<p32>:word16] = Mem48[v21_58:word16]
-	r11_78 = Mem63[v21_58 + 10<i16>:word16]
-	r10_81 = Mem63[v21_58 + 12<i16>:word16]
-	r9_84 = Mem63[v21_58 + 14<i16>:word16]
-	r8_87 = Mem63[v21_58 + 16<i16>:word16]
-	r7_90 = Mem63[v21_58 + 18<i16>:word16]
-	r6_93 = Mem63[v21_58 + 20<i16>:word16]
-	r4_99 = Mem63[v21_58 + 24<i16>:word16]
+	v27_76 = Mem63[v21_58 + 10<i16>:word16]
+	v28_79 = Mem63[v21_58 + 12<i16>:word16]
+	v29_82 = Mem63[v21_58 + 14<i16>:word16]
+	v30_85 = Mem63[v21_58 + 16<i16>:word16]
+	v31_88 = Mem63[v21_58 + 18<i16>:word16]
+	v32_91 = Mem63[v21_58 + 20<i16>:word16]
+	v34_97 = Mem63[v21_58 + 24<i16>:word16]
 	r5Out = Mem63[v21_58 + 22<i16>:word16]
-	r6Out = r6_93
-	r7Out = r7_90
-	r8Out = r8_87
-	r9Out = r9_84
-	r10Out = r10_81
-	r11Out = r11_78
-	return r4_99
+	r6Out = v32_91
+	r7Out = v31_88
+	r8Out = v30_85
+	r9Out = v29_82
+	r10Out = v28_79
+	r11Out = v27_76
+	return v34_97
 vPortYield_exit:
 
 
@@ -2686,12 +2686,12 @@ l00005ADC:
 	Mem4[0x0130<p16>:word16] = r12
 	Mem6[0x0138<p16>:word16] = r10
 	Mem7[0x0134<p16>:word16] = r12
-	r14_9 = Mem7[0x013A<p16>:word16]
+	v6_8 = Mem7[0x013A<p16>:word16]
 	Mem11[0x013A<p16>:word16] = Mem7[0x013C<p16>:word16]
 	Mem13[0x0138<p16>:word16] = r11
 	Mem15[0x0134<p16>:word16] = r13
 	Mem16[0x0138<p16>:word16] = r10
-	return SEQ(Mem16[0x013A<p16>:word16], r14_9)
+	return SEQ(Mem16[0x013A<p16>:word16], v6_8)
 fn00005ADC_exit:
 
 

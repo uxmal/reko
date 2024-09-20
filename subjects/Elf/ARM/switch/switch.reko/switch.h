@@ -64,12 +64,12 @@ Eq_100: (union "Eq_100" (int32 u0) (uint32 u1) (ptr32 u2))
 	T_100 (in r0 @ 00008430 : Eq_100)
 	T_101 (in dwArg00 @ 00008430 : Eq_100)
 	T_102 (in fpOut @ 00008430 : Eq_100)
-	T_105 (in r0 @ 00008468 : Eq_100)
-	T_106 (in r1 @ 00008468 : Eq_100)
-	T_107 (in r0 * r0 @ 00008468 : word32)
-	T_108 (in 0x539<32> @ 00008468 : word32)
-	T_109 (in __divsi3(r0 * r0, 0x539<32>) @ 00008468 : word32)
-	T_110 (in r0_34 @ 00008468 : Eq_100)
+	T_105 (in r0 @ 00008460 : Eq_100)
+	T_106 (in r1 @ 00008460 : Eq_100)
+	T_107 (in r0 * r0 @ 00008460 : word32)
+	T_108 (in 0x539<32> @ 00008460 : word32)
+	T_109 (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
+	T_110 (in r0_25 @ 00008460 : Eq_100)
 	T_112 (in r0 @ 0000846C : Eq_100)
 	T_113 (in r1 @ 0000846C : Eq_100)
 	T_118 (in r0 + r1 @ 000084C4 : word32)
@@ -121,7 +121,7 @@ Eq_100: (union "Eq_100" (int32 u0) (uint32 u1) (ptr32 u2))
 	T_260 (in r1_104 >> 4<i32> @ 00008610 : word32)
 	T_266 (in 0xFFFFFC18<32> @ 00008644 : word32)
 Eq_103: (fn Eq_100 (Eq_100, Eq_100))
-	T_103 (in __divsi3 @ 00008468 : ptr32)
+	T_103 (in __divsi3 @ 00008460 : ptr32)
 	T_104 (in signature of __divsi3 @ 00008588 : void)
 	T_116 (in __divsi3 @ 000084C4 : ptr32)
 	T_117 (in __divsi3 @ 000084C4 : ptr32)
@@ -590,7 +590,7 @@ T_102: (in fpOut @ 00008430 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: ptr32
-T_103: (in __divsi3 @ 00008468 : ptr32)
+T_103: (in __divsi3 @ 00008460 : ptr32)
   Class: Eq_103
   DataType: (ptr32 Eq_103)
   OrigDataType: (ptr32 (fn T_109 (T_107, T_108)))
@@ -598,27 +598,27 @@ T_104: (in signature of __divsi3 @ 00008588 : void)
   Class: Eq_103
   DataType: (ptr32 Eq_103)
   OrigDataType: 
-T_105: (in r0 @ 00008468 : Eq_100)
+T_105: (in r0 @ 00008460 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: (union (int32 u0) (uint32 u1))
-T_106: (in r1 @ 00008468 : Eq_100)
+T_106: (in r1 @ 00008460 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: int32
-T_107: (in r0 * r0 @ 00008468 : word32)
+T_107: (in r0 * r0 @ 00008460 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: ui32
-T_108: (in 0x539<32> @ 00008468 : word32)
+T_108: (in 0x539<32> @ 00008460 : word32)
   Class: Eq_100
   DataType: int32
   OrigDataType: word32
-T_109: (in __divsi3(r0 * r0, 0x539<32>) @ 00008468 : word32)
+T_109: (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32
-T_110: (in r0_34 @ 00008468 : Eq_100)
+T_110: (in r0_25 @ 00008460 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32

@@ -563,11 +563,11 @@ ui32 fn00000AC0(Eq_n a4, Eq_n a15)
 {
 		Eq_n d2_n = *(union Eq_n *) 0x0003C5F0;
 		ui32 d15_n = (int32) *(union Eq_n *) 247284 != 0x00 ? d2_n | 0xF8 : d2_n & ~0x08 | ~0x0F;
-		ui32 d15_n = ((int32) *(union Eq_n *) 247284 != 0x00 ? d15_n | 0x04 : d15_n & ~0x04) & ~0x02;
+		ui32 d15_n = (int32) *(union Eq_n *) 247284 != 0x00 ? d15_n | 0x04 : d15_n & ~0x04;
 		*(union Eq_n *) 0x0003C5F0 = a15;
 		*(union Eq_n *) 0x0003C5F0 = a4;
 		__load_upper_context();
-		return d15_n;
+		return d15_n & ~0x02;
 }
 
 // 00000B04: Register Eq_n fn00000B04(Register Eq_n a4, Register Eq_n a15, Register uint32 ICR)

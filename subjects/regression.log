@@ -497,8 +497,8 @@ fn000ECBDB: error: An internal error occurred while building the expressions of 
    at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 152
    at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 208
    at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
-   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 58
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 247
+   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 57
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 250
 fn000F4A65: error: An internal error occurred while building the expressions of fn000F4A65
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in c:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
@@ -507,14 +507,14 @@ fn000F4A65: error: An internal error occurred while building the expressions of 
    at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 152
    at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 208
    at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
-   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 58
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 247
+   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 57
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 250
 fn00116E5E: error: An internal error occurred while building the expressions of fn00116E5E
     The given key 'l00117142' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 258
 l000ECC80: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 l000D7BAC: warning: Non-integral switch expression
 l000D7FBC: warning: Non-integral switch expression
@@ -1314,7 +1314,7 @@ fn0000000100003AA8: error: An internal error occurred while building the express
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 258
 l0000000100003AE7: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000000100003AA8: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000000100004703' was not present in the dictionary.
@@ -1523,7 +1523,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
        at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
    at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 162
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 258
 fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1556,64 +1556,6 @@ fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
-   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
-   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
-l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-l0800_031A: warning: Non-integral switch expression
-l0800_0663: warning: Non-integral switch expression
-l0800_0EE8: warning: Non-integral switch expression
-l0800_11D8: warning: Non-integral switch expression
-0800:4F14: warning: Expected sizes of arrays to have been determined by now
-0800:4F1C: warning: Expected sizes of arrays to have been determined by now
-0800:4F24: warning: Expected sizes of arrays to have been determined by now
-0800:6EBC: warning: Expected sizes of arrays to have been determined by now
-0800:6ECA: warning: Expected sizes of arrays to have been determined by now
-0800:6ED8: warning: Expected sizes of arrays to have been determined by now
-0800:4F14: warning: Expected sizes of arrays to have been determined by now
-0800:4F1C: warning: Expected sizes of arrays to have been determined by now
-0800:4F24: warning: Expected sizes of arrays to have been determined by now
-0800:6EBC: warning: Expected sizes of arrays to have been determined by now
-0800:6ECA: warning: Expected sizes of arrays to have been determined by now
-0800:6ED8: warning: Expected sizes of arrays to have been determined by now
-
-*** regressions\reko-90\PP
-Borland C v3 runtime detected
-0800:0000: warning: User procedure 'fn0800_0000' has been marked 'no decompile' but its signature has not been specified.
-fn0800_9828: error: An error occurred while renaming variables.
-    Sequence contains no matching element
-       at System.Linq.ThrowHelper.ThrowNoMatchException()
-   at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 91
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
-   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
-fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
-    Dominator graph calculation timed out.
-       at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
-   at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 162
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
-fn0800_1CF6: error: An error occurred while renaming variables.
-    The given key 'l0800_1D54' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
-   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
-   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
-fn0800_2688: error: An error occurred while renaming variables.
-    The given key 'l0800_2729' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
-   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
-   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
-fn0800_67BF: error: An error occurred while renaming variables.
-    The given key 'l0800_6A7C' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -2517,13 +2459,13 @@ fn00009746: error: An internal error occurred while building the expressions of 
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 258
 fn00008EC2: error: An internal error occurred while building the expressions of fn00008EC2
     The given key 'fn00008EC2_exit' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 258
 l00009735: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn00008EC2: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00009735' was not present in the dictionary.
@@ -2639,4 +2581,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 94 binaries in 61.38 seconds.
+Decompiled 93 binaries in 56.71 seconds.

@@ -332,14 +332,14 @@ l00001D44:
 l00001D58:
 	branch __btst<byte>(Mem18[a2_23 + 14<i32>:byte], 6<16>) l00001D78
 l00001D78:
-	a2_48 = Mem18[a7_30 + 4<32>:word32]
+	v19_47 = Mem18[a7_30 + 4<32>:word32]
 	a6_50 = Mem18[a6_29:word32]
 	d3Out = d3_31
 	d4Out = d4_27
 	d5Out = <invalid>
 	d6Out = <invalid>
 	d7Out = <invalid>
-	a2Out = a2_48
+	a2Out = v19_47
 	a5Out = a5_28
 	a6Out = a6_50
 	return 0<32>
@@ -348,26 +348,26 @@ l00001D60:
 	call a5_28 + 138<i32> (retsize: 4;)
 		uses: a2:a2_23,a5:a5_28,a6:a6_29,Mem:Mem54
 		defs: a5:a5_63,a6:a6_59,a7:a7_58,d0:d0_61,d3:d3_66,d4:d4_65
-	a2_78 = Mem54[a7_58 + 4<32>:word32]
+	v18_77 = Mem54[a7_58 + 4<32>:word32]
 	a6_80 = Mem54[a6_59:word32]
 	d3Out = d3_66
 	d4Out = d4_65
 	d5Out = <invalid>
 	d6Out = <invalid>
 	d7Out = <invalid>
-	a2Out = a2_78
+	a2Out = v18_77
 	a5Out = a5_63
 	a6Out = a6_80
 	return CONVERT(d0_61 != 0<32> ? 0xFF<8> : 0<8>, int8, int32)
 l00001D50:
-	a2_87 = Mem18[a7_30 + 4<32>:word32]
+	v13_86 = Mem18[a7_30 + 4<32>:word32]
 	a6_89 = Mem18[a6_29:word32]
 	d3Out = d3_31
 	d4Out = d4_27
 	d5Out = <invalid>
 	d6Out = <invalid>
 	d7Out = <invalid>
-	a2Out = a2_87
+	a2Out = v13_86
 	a5Out = a5_28
 	a6Out = a6_89
 	return 0xFFFFFFFF<32>
@@ -639,7 +639,7 @@ l00001FAE:
 	branch d4_125 == d5_195 l00001FC4
 l00001FC4:
 	a7_307 = a7_133 + 4<i32>
-	d0_300 = Mem298[a6_121 + 8<i32>:word32] & 0xFF<32>
+	d0_299 = Mem298[a6_121 + 8<i32>:word32]
 	d4_308 = Mem298[a7_307:word32]
 	d5_310 = Mem298[a7_307 + 4<i32>:word32]
 	a2_312 = Mem298[a7_307 + 8<i32>:word32]
@@ -652,7 +652,7 @@ l00001FC4:
 	a3Out = a3_314
 	a5Out = a5
 	a6Out = a6_316
-	return d0_300
+	return d0_299 & 0xFF<32>
 l00001FB2:
 	__bset<word16>(Mem298[a2_123 + 3<i32>:byte], 5<16>, out Mem298[a2_123 + 3<i32>:byte])
 	a7_326 = a7_133 + 4<i32>
@@ -728,11 +728,11 @@ l00002032:
 l00002058:
 	Mem48[a2_20:word32] = Mem46[a2_20 + 8<i32>:word32]
 	Mem50[a2_20 + 4<i32>:word32] = 0<32>
-	a2_56 = Mem50[a7_18 + 4<32>:word32]
+	v17_55 = Mem50[a7_18 + 4<32>:word32]
 	a6_59 = Mem50[a6_19:word32]
 	a5Out = a5_21
 	a6Out = a6_59
-	return a2_56
+	return v17_55
 fn00002014_exit:
 
 
@@ -832,11 +832,11 @@ l0000210C:
 	Mem42[a2_31 + 4<i32>:word32] = 0<32>
 	a7_37 = a7_29 + 4<32>
 l00002128:
-	a2_49 = Mem47[a7_37:word32]
+	v17_48 = Mem47[a7_37:word32]
 	a6_52 = Mem47[a6_30:word32]
 	a5Out = a5
 	a6Out = a6_52
-	return a2_49
+	return v17_48
 fn000020F0_exit:
 
 

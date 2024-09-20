@@ -60,8 +60,7 @@ void fn00200089()
 	fn00200557(0x01, 0x01, &g_b200122);
 	fn00200557(0x02, 0x04, &g_b200147);
 	fn00200557(0x04, 0x05, &g_b200165);
-	word32 xwa_n = fn00200557(0x04, 0x06, &g_b20017F);
-	byte a_n = (byte) xwa_n;
+	byte a_n = (byte) fn00200557(0x04, 0x06, &g_b20017F);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a200363;
 	word16 bc_n;
@@ -81,8 +80,7 @@ void fn00200089()
 		fn00200557(0x0F, 0x04, &g_b2001E8);
 	fn00200557(0x02, 0x08, &g_b2001FD);
 	fn00200557(0x04, 0x09, &g_b200217);
-	word32 xwa_n = fn00200557(0x04, 0x0A, &g_b200231);
-	byte a_n = (byte) xwa_n;
+	byte a_n = (byte) fn00200557(0x04, 0x0A, &g_b200231);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a200492;
 	word16 bc_n;
@@ -102,8 +100,7 @@ void fn00200089()
 		fn00200557(0x0F, 0x08, &g_b20029A);
 	fn00200557(0x02, 0x0C, &g_b2002AF);
 	fn00200557(0x04, 0x0D, &g_b2002CB);
-	word32 xwa_n = fn00200557(0x04, 0x0E, &g_b2002E5);
-	byte a_n = (byte) xwa_n;
+	byte a_n = (byte) fn00200557(0x04, 0x0E, &g_b2002E5);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a2004B5;
 	word16 bc_n;

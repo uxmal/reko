@@ -49,9 +49,9 @@ l0341:
 l034A:
 	a_94 = c_75 + Mem62[ix + -34<i16>:byte]
 l034B_thunk_fn034E:
-	hl_122 = CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), uint8, uint16) (alias)
+	hl_125 = CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), uint8, uint16)
 	ixOut = ix_103
-	return SLICE(hl_122, byte, 0)
+	return SLICE(hl_125, byte, 0)
 fn02F4_exit:
 
 

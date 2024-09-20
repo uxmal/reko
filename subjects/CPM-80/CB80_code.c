@@ -1229,15 +1229,15 @@ void fn1315()
 byte fn1326(byte c, uint16 hl, union Eq_n & lOut)
 {
 	uint16 hl_n = hl;
-	Eq_n l_n;
+	Eq_n a_n;
 	do
 	{
 		uint16 v12_n = hl_n >> 0x01;
-		l_n = (byte) v12_n;
+		a_n = (byte) v12_n;
 		--c;
 		hl_n = v12_n;
 	} while (c != 0x00);
-	lOut = l_n;
+	lOut = a_n;
 	return c;
 }
 

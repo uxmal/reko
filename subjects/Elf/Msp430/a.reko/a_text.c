@@ -648,7 +648,7 @@ cup16 xTaskGetTickCount()
 	__disable_interrupts();
 	word16 v4_n = usCriticalNesting;
 	usCriticalNesting = v4_n + 0x01;
-	cup16 r15_n = xTickCount;
+	cup16 v6_n = xTickCount;
 	if (v4_n != ~0x00)
 	{
 		word16 v9_n = usCriticalNesting;
@@ -656,7 +656,7 @@ cup16 xTaskGetTickCount()
 		if (v9_n == 0x01)
 			__enable_interrupts();
 	}
-	return r15_n;
+	return v6_n;
 }
 
 // 4834: void uxTaskGetNumberOfTasks()
@@ -1562,21 +1562,21 @@ word16 vPortYield(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r8Out, pt
 	vTaskSwitchContext();
 	struct Eq_n * v21_n = pxCurrentTCB->ptr0000;
 	usCriticalNesting = v21_n->w0000;
-	struct Eq_n * r11_n = v21_n->ptr000A;
-	ptr16 r10_n = v21_n->ptr000C;
-	ptr16 r9_n = v21_n->ptr000E;
-	ptr16 r8_n = v21_n->ptr0010;
-	ptr16 r7_n = v21_n->ptr0012;
-	ptr16 r6_n = v21_n->ptr0014;
-	word16 r4_n = v21_n->w0018;
+	struct Eq_n * v27_n = v21_n->ptr000A;
+	ptr16 v28_n = v21_n->ptr000C;
+	ptr16 v29_n = v21_n->ptr000E;
+	ptr16 v30_n = v21_n->ptr0010;
+	ptr16 v31_n = v21_n->ptr0012;
+	ptr16 v32_n = v21_n->ptr0014;
+	word16 v34_n = v21_n->w0018;
 	r5Out = v21_n->ptr0016;
-	r6Out = r6_n;
-	r7Out = r7_n;
-	r8Out = r8_n;
-	r9Out = r9_n;
-	r10Out = r10_n;
-	r11Out = r11_n;
-	return r4_n;
+	r6Out = v32_n;
+	r7Out = v31_n;
+	r8Out = v30_n;
+	r9Out = v29_n;
+	r10Out = v28_n;
+	r11Out = v27_n;
+	return v34_n;
 }
 
 // 528E: void prvSetupTimerInterrupt()
@@ -2311,12 +2311,12 @@ ui32 fn00005ADC(cui16 r10, cui16 r11, Eq_n r12, Eq_n r13)
 	*(union Eq_n *) 0x0130 = r12;
 	*(cui16 *) 0x0138 = r10;
 	*(union Eq_n *) 0x0134 = r12;
-	uint16 r14_n = *(uint16 *) 0x013A;
+	uint16 v6_n = *(uint16 *) 0x013A;
 	*(uint16 *) 0x013A = *(uint16 *) 0x013C;
 	*(cui16 *) 0x0138 = r11;
 	*(union Eq_n *) 0x0134 = r13;
 	*(cui16 *) 0x0138 = r10;
-	return SEQ(*(uint16 *) 0x013A, r14_n);
+	return SEQ(*(uint16 *) 0x013A, v6_n);
 }
 
 // 00005B04: Register uint16 fn00005B04(Sequence uint32 r11_r10, Sequence ui32 r13_r12)

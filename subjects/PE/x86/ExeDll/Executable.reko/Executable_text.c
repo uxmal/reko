@@ -198,8 +198,7 @@ l00401438:
 byte fn0040143F()
 {
 	selector fs;
-	word32 eax_n = fn00401B98();
-	if (eax_n == 0x00)
+	if (fn00401B98() == 0x00)
 		return 0x00;
 	word32 edx_n = fs->ptr0018->dw0004;
 	word32 eax_n;

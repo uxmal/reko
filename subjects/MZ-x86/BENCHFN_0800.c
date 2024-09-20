@@ -1219,7 +1219,6 @@ word16 __VPRINTER(ci16 cx, ci16 dx, word16 bx, Eq_n ds, mp16 wArg02, ci16 wArg04
 	ci16 wLoc8E_n;
 	word16 cx_n;
 	byte Eq_n::* di_n;
-	cui16 wLoc9A_n;
 	struct Eq_n * es_n;
 	byte Eq_n::* di_n;
 	byte Eq_n::* di_n;
@@ -1655,12 +1654,12 @@ l0800_n:
 							Eq_n cx_n = wLoc92_n;
 						}
 l0800_n:
-						cui16 ax_n = wLoc9A_n & 0x05;
 						byte Eq_n::* wArg04_n = si_n;
 						byte Eq_n::* si_n = di_n;
 						byte Eq_n::* di_n = di_n;
 						int16 bx_n = wLoc94_n;
-						if (ax_n == 0x05)
+						cui16 wLoc9A_n;
+						if ((wLoc9A_n & 0x05) == 0x05)
 						{
 							ci16 wLoc8E_n;
 							if (dl_n != 111)
@@ -1696,6 +1695,8 @@ l0800_nB5:
 								{
 									word16 di_n;
 									word16 di_n;
+									fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), 0x30, cx_n, dx_n, bx_n, out di_n);
+									word16 di_n;
 									fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), dl_n, cx_n, dx_n, bx_n, out di_n);
 								}
 								ci16 dx_n = wLoc8E_n;
@@ -1707,10 +1708,10 @@ l0800_nB5:
 									byte al_n = es_n->*di_n;
 									if (al_n == 0x2D || (al_n == 0x20 || al_n == 0x2B))
 									{
-										byte Eq_n::* si_n = di_n + 1;
 										word16 di_n;
 										word16 di_n;
 										fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), es_n->*di_n, cx_n, wLoc8E_n, bx_n, out di_n);
+										byte Eq_n::* si_n = di_n + 1;
 										ci16 cx_n = cx_n - 0x01;
 										word16 bx_n = bx_n - 0x01;
 									}

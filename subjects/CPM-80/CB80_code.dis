@@ -1535,12 +1535,12 @@ fn1326_entry:
 	hl_26 = hl (alias)
 l1326:
 	v12_22 = hl_26 >>u 1<8>
-	l_14 = SLICE(v12_22, byte, 0)
+	a_12 = SLICE(v12_22, byte, 0)
 	c = c - 1<8>
 	hl_26 = v12_22 (alias)
 	branch c != 0<8> l1326
 l1331:
-	lOut = l_14
+	lOut = a_12
 	return c
 fn1326_exit:
 

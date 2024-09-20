@@ -131,9 +131,9 @@ word32 frobulate(word32 r0, word32 dwArg00, ptr32 & fpOut)
 // Preserved:
 frobulate_entry:
 l00008434:
-	r0_34 = __divsi3(r0 * r0, 0x539<32>)
+	r0_25 = __divsi3(r0 * r0, 0x539<32>)
 	fpOut = dwArg00
-	return r0_34
+	return r0_25
 frobulate_exit:
 
 

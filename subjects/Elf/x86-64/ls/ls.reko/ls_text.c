@@ -2343,7 +2343,6 @@ byte fn0000000000405D00(byte dil, uint64 rsi, word32 edx, word64 rcx)
 	{
 		FILE * rdi_n = stdout;
 		byte * rax_n = (byte *) *((char *) rdi_n + 40);
-		word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 		if (rax_n < *((char *) rdi_n + 48))
 		{
 			*((char *) rdi_n + 40) = (FILE *) (rax_n + 1);
@@ -10460,14 +10459,7 @@ int32 fn0000000000411D30(FILE * rdi)
 {
 	if (fileno(rdi) < 0x00)
 		return fclose(rdi);
-	if (__freading(rdi) != 0x00)
-	{
-		Eq_n rax_n = lseek(fileno(rdi), 0x00, 1);
-		if (rax_n == ~0x00)
-			return fclose(rdi);
-	}
-	uint64 rax_n = (uint64) fn0000000000411DB0(rdi);
-	if ((word32) rax_n == 0x00)
+	if (__freading(rdi) != 0x00 && lseek(fileno(rdi), 0x00, 1) == ~0x00 || fn0000000000411DB0(rdi) == 0x00)
 		return fclose(rdi);
 	int32 * rax_n = __errno_location();
 	int32 r12d_n = *rax_n;

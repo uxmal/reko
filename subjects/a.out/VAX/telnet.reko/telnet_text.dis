@@ -1385,11 +1385,11 @@ l0000198B:
 l00001984:
 	r9_105 = r9_105 + 4<32>
 l0000199A:
-	r0_120 = fn000019E6(ap_107, fp_108, out fp_110)
+	r10_113 = fn000019E6(ap_107, fp_108, out fp_110)
 	fp_127 = Mem125[fp_110 + 0xC<32>:word32]
 	apOut = Mem125[fp_110 + 8<32>:word32]
 	fpOut = fp_127
-	return r0_120
+	return r10_113
 fn00001956_exit:
 
 
@@ -1638,11 +1638,11 @@ l00001BA9:
 	Mem120[sp_114 - 4<32>:word32] = Mem116[r11_118 + 12<i32>:word32]
 	branch fn00003516(ap_10, fp_11, out r10_105, out r11_172, out ap_10, out fp_11) != 0<32> l00001B6B
 l00001BBA:
-	r0_153 = fn00001C06(ap_10, fp_11, out fp_143)
+	r11_147 = fn00001C06(ap_10, fp_11, out fp_143)
 	fp_159 = Mem158[fp_143 + 0xC<32>:word32]
 	apOut = Mem158[fp_143 + 8<32>:word32]
 	fpOut = fp_159
-	return r0_153
+	return r11_147
 fn00001B62_exit:
 
 

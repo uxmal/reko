@@ -1357,11 +1357,11 @@ word32 fn00001956(Eq_n ap, struct Eq_n * fp, ptr32 & apOut, ptr32 & fpOut)
 		}
 	}
 l0000199A:
-	word32 r0_n = fn000019E6(ap_n, fp_n, out fp_n);
+	word32 r10_n = fn000019E6(ap_n, fp_n, out fp_n);
 	ptr32 fp_n = fp_n->ptr000C;
 	apOut = fp_n->ptr0008;
 	fpOut = fp_n;
-	return r0_n;
+	return r10_n;
 }
 
 // 000019AA: Register word32 fn000019AA(Register Eq_n ap, Register (ptr32 Eq_n) fp, Register out ptr32 apOut, Register out ptr32 fpOut)
@@ -1598,11 +1598,11 @@ l00001BA4:
 			r10_n = r10_n + 0x04;
 		}
 	}
-	word32 r0_n = fn00001C06(ap_n, fp_n, out fp_n);
+	word32 r11_n = fn00001C06(ap_n, fp_n, out fp_n);
 	ptr32 fp_n = fp_n->ptr000C;
 	apOut = fp_n->ptr0008;
 	fpOut = fp_n;
-	return r0_n;
+	return r11_n;
 }
 
 // 00001BCA: Register word32 fn00001BCA(Register Eq_n ap, Register (ptr32 Eq_n) fp, Register out ptr32 apOut, Register out ptr32 fpOut)

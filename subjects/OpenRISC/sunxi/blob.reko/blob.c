@@ -120,9 +120,9 @@ word32 fn000046C0(ptr32 & r12Out)
 	*(ui32 *) 0x01F01E80 |= 0x02;
 	while ((*(ui32 *) 0x01F01E80 & 0x02) != 0x00)
 		;
-	word32 r11_n = *(word32 *) 0x01F01E88;
+	word32 r3_n = *(word32 *) 0x01F01E88;
 	r12Out = *(ptr32 *) 0x01F01E84;
-	return r11_n;
+	return r3_n;
 }
 
 // 0000473C: Register word32 fn0000473C(Register int32 r3)
@@ -1250,9 +1250,9 @@ l0000646C:
 			word32 r14_n;
 			Eq_n r15_n;
 			fn0000C8A0(-20, r15_n, out r14_n, out r15_n);
-			ui32 r11_n = fn000062BC(r3, r15_n) << 0x03;
+			ui32 r2_n = fn000062BC(r3, r15_n);
 			r15Out = r15_n;
-			return r11_n;
+			return r2_n << 0x03;
 		}
 		if ((r11_n & -3) != 0x00)
 		{

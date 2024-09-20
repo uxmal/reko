@@ -227,6 +227,9 @@ namespace Reko.Analysis
                     dynamicLinker, services, eventListener);
                 try
                 {
+                    var vp = new ValuePropagator(context);
+                    vp.Transform(ssa);
+
                     if (Program.User.Heuristics.Contains(AnalysisHeuristics.AggressiveBranchRemoval))
                     {
                         // This ends up being very aggressive and doesn't replicate the original
@@ -248,7 +251,6 @@ namespace Reko.Analysis
                     coa.Transform(ssa);
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(context);
                     vp.Transform(ssa);
 
                     DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);

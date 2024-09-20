@@ -1214,11 +1214,11 @@ T_121: (in CONVERT(fn034E(a_94, b_79, l_97, h_98, ix, out ix_103), uint8, uint16
   Class: Eq_121
   DataType: uint16
   OrigDataType: uint16
-T_122: (in hl_122 @ 034B : uint16)
+T_122: (in hl_125 @ 034B : uint16)
   Class: Eq_121
   DataType: uint16
   OrigDataType: uint16
-T_123: (in SLICE(hl_122, byte, 0) @ 034B : byte)
+T_123: (in SLICE(hl_125, byte, 0) @ 034B : byte)
   Class: Eq_5
   DataType: byte
   OrigDataType: byte
