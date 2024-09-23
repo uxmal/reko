@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.Output
             var sc = new ServiceContainer();
             var platform = new Mocks.FakePlatform(sc, new Mocks.FakeArchitecture(sc));
             this.listener = new FakeDecompilerEventListener();
-            this.program = new Program(new ProgramMemory(segs), platform.Architecture, platform)
+            this.program = new Program(new ByteProgramMemory(segs), platform.Architecture, platform)
             {
                 Name = "myprogram.exe"
             };

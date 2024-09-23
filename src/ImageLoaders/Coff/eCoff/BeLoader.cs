@@ -67,7 +67,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
             var arch = LoadArchitecture(header.f_magic);
             var platform = new DefaultPlatform(Services, arch);
             var segmap = new SegmentMap(imgSegments);
-            var program = new Program(new ProgramMemory(segmap), arch, platform);
+            var program = new Program(new ByteProgramMemory(segmap), arch, platform);
             if (this.opthdr.HasValue)
             {
                 var addrEntry = Address.Ptr32(opthdr.Value.entry);   //$64

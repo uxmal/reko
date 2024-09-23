@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(arch.Services, arch);
             program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform);
         }

@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.program = new Program
             {
                 Architecture = arch,
-                Memory = new ProgramMemory(lr.SegmentMap),
+                Memory = new ByteProgramMemory(lr.SegmentMap),
                 SegmentMap = lr.SegmentMap,
                 ImageMap = lr.ImageMap,
                 Platform = platform,

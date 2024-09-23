@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.BinHex
                     bmem.BaseAddress,
                     new ImageSegment("", bmem, AccessMode.ReadWriteExecute));
             }
-            var memory = new ProgramMemory(segmentMap);
+            var memory = new ByteProgramMemory(segmentMap);
             program = new Program(memory, arch, platform);
             rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program);
             return program;

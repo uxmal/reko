@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Gui.Forms
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             var platform = new Mock<IPlatform>();
-            program = new Program(new ProgramMemory(segmentMap), arch.Object, platform.Object);
+            program = new Program(new ByteProgramMemory(segmentMap), arch.Object, platform.Object);
             project = new Project { Programs = { program } };
 
             browserSvc = new Mock<IProjectBrowserService>();

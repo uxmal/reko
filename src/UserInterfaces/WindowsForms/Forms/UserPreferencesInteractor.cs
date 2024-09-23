@@ -325,7 +325,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 ImageMap = imageMap,

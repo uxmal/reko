@@ -476,7 +476,7 @@ namespace Reko.ImageLoaders.MzExe
 
             var segments = MakeSegmentMap(addrLoad, leSegs);
             var platform = MakePlatform();
-            var program  = new Program(new ProgramMemory(segments), arch, platform);
+            var program  = new Program(new ByteProgramMemory(segments), arch, platform);
             var eip_module = leSegs[hdr.eip_object - 1].BaseAddress;
             var addrEntry = Address.Ptr32(eip_module + hdr.eip);
             program.EntryPoints.Add(addrEntry, ImageSymbol.Procedure(arch, addrEntry, "_le_entry"));

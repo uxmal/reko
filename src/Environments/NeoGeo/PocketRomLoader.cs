@@ -62,7 +62,7 @@ namespace Reko.Environments.NeoGeo
             var env = cfgSvc.GetEnvironment("neo-geo-pocket");
             var platform = env.Load(Services, arch);
             
-            var program = new Program(new ProgramMemory(segmap), arch, platform);
+            var program = new Program(new ByteProgramMemory(segmap), arch, platform);
             program.EntryPoints[entryPoint] = ImageSymbol.Procedure(program.Architecture, entryPoint);
             return program;
         }

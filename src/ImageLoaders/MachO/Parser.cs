@@ -229,7 +229,7 @@ namespace Reko.ImageLoaders.MachO
                 rdr.Offset = pos + cmdsize;
             }
             ldr.program!.Architecture = arch;
-            ldr.program.Memory = new ProgramMemory(segmentMap);
+            ldr.program.Memory = new ByteProgramMemory(segmentMap);
             ldr.program.SegmentMap = segmentMap;
             if (!string.IsNullOrEmpty(platformName))
             {

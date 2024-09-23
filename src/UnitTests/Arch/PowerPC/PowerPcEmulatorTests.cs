@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             var mem = new ByteMemoryArea(Address.Ptr64(0x0010_0000), writer.ToArray());
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
             var segmap = new SegmentMap(mem.BaseAddress, seg);
-            var program = new Program(new ProgramMemory(segmap), arch, new DefaultPlatform(sc, arch));
+            var program = new Program(new ByteProgramMemory(segmap), arch, new DefaultPlatform(sc, arch));
 
             var envEmu = new DefaultPlatformEmulator();
 

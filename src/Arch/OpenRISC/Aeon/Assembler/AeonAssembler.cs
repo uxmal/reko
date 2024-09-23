@@ -224,7 +224,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(arch.Services, arch));
             foreach (var sym in symbolsByName.Values)

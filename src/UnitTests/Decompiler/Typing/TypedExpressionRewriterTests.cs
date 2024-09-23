@@ -274,7 +274,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var arch = new FakeArchitecture(new ServiceContainer());
             var segmentMap = new SegmentMap(Address.Ptr32(0x10000));
             Program program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(null, arch));
             SetupPreStages(program);

@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap = new SegmentMap(
                 addrPsp,
                 psp);
-            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
+            var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
 
             this.Relocate(program, addrLoad);
 

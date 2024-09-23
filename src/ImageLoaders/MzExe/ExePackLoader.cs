@@ -144,7 +144,7 @@ namespace Reko.ImageLoaders.MzExe
                     "code",
                     imgU,
                     AccessMode.ReadWriteExecute));
-            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
+            var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             Relocate(program, addr!);
             return program;
         }

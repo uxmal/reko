@@ -291,7 +291,7 @@ namespace Reko.ImageLoaders.MzExe
                     ImageSymbols[sym.Address] = sym;
                 }
             }
-            this.program = new Program(new ProgramMemory(SegmentMap), arch, platform, ImageSymbols, new())
+            this.program = new Program(new ByteProgramMemory(SegmentMap), arch, platform, ImageSymbols, new())
             {
                 Name = this.ImageLocation.GetFilename()
             };

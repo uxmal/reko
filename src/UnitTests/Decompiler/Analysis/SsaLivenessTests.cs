@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 Architecture = arch,
                 Platform = platform,
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap)
+                Memory = new ByteProgramMemory(segmentMap)
             };
             this.proc = proc;
             var dynamicLinker = new Mock<IDynamicLinker>().Object;

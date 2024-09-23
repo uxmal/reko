@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.Elf
         private readonly ElfLoader loader;
         private readonly Dictionary<ElfSymbol, Address> pltLocations;
         private readonly Program program;
-        private readonly IWriteableMemory memory;
+        private readonly IByteWriteableMemory memory;
         private readonly bool isBigendian;
         private readonly bool isRelocatableFile;
 
@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.Elf
             this.ReferringSection = referringSection;
             this.pltLocations = pltLocations;
             this.program = program;
-            this.memory = (IWriteableMemory)program.Memory;
+            this.memory = (IByteWriteableMemory)program.Memory;
             this.isBigendian = loader.IsBigendian;
             this.isRelocatableFile = loader.IsRelocatableFile;
             this.B = addrBase.ToLinear();

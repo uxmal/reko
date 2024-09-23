@@ -122,7 +122,7 @@ struct exec {
                 new ImageSegment("data", data, AccessMode.ReadWrite),
                 new ImageSegment("bss", bss, AccessMode.ReadWrite));
             var platform = cfgSvc.GetEnvironment("unicos").Load(Services, arch);
-            var program = new Program(new ProgramMemory(segs), arch, platform);
+            var program = new Program(new ByteProgramMemory(segs), arch, platform);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr32((uint) a_entry), "_start");
             program.EntryPoints[entry.Address] = entry;
             return program;

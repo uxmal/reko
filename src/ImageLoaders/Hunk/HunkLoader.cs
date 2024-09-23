@@ -77,7 +77,7 @@ namespace Reko.ImageLoaders.Hunk
                 new ImageSegment(
                     "code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform);
 

@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Core.Output
                     bmem.BaseAddress,
                     new ImageSegment("code", bmem, AccessMode.ReadWriteExecute));
             this.program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(sc, arch));
             var globalStruct = new StructureType();

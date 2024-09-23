@@ -260,7 +260,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void Given_Program()
         {
             var segmentMap = new SegmentMap(Address.Ptr32(0x10000));
-            this.program = new Program(new ProgramMemory(segmentMap), this.arch.Object, this.platform.Object);
+            this.program = new Program(new ByteProgramMemory(segmentMap), this.arch.Object, this.platform.Object);
         }
 
         [Test]

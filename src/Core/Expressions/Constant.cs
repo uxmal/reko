@@ -295,6 +295,11 @@ namespace Reko.Core.Expressions
             return negativeExp ? 1.0 / acc : acc;
         }
 
+        public override Expression Invert()
+        {
+            return new ConstantBool(DataType, IsZero);
+        }
+
         public override bool IsZero => IsIntegerZero;
 
         public virtual bool IsIntegerZero
@@ -603,11 +608,6 @@ namespace Reko.Core.Expressions
         }
 
         public override Constant Complement()
-        {
-            return new ConstantBool(DataType, !value);
-        }
-
-        public override Expression Invert()
         {
             return new ConstantBool(DataType, !value);
         }
@@ -1098,6 +1098,11 @@ namespace Reko.Core.Expressions
         public override int GetHashOfValue()
         {
             return value.GetHashCode();
+        }
+
+        public override Expression Invert()
+        {
+            return Constant.Bool(value == 0);
         }
 
         public override byte ToByte()

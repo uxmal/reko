@@ -258,7 +258,7 @@ namespace Reko.Environments.C64
                     mem.BaseAddress,
                     new ImageSegment("c64", mem, AccessMode.ReadWriteExecute));
                 var program = new Program(
-                    new ProgramMemory(segmentMap),
+                    new ByteProgramMemory(segmentMap),
                     arch,
                     new DefaultPlatform(services, arch))
                 {

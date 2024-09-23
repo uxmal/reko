@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var program = new Program
             {
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap)
+                Memory = new ByteProgramMemory(segmentMap)
             };
             var svp = new SparseValuePropagation(ssa, program, new FakeDecompilerEventListener());
             svp.Transform();

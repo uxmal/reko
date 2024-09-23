@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
 
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(sc, arch));
             var procAddress = Address.Ptr32(0x10000000);

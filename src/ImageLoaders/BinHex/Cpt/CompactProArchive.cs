@@ -543,7 +543,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     var rsrcFork = new ResourceFork(Archive.Platform, image);
                     var bmem = new ByteMemoryArea(addrLoad, image);
                     var segmentMap = new SegmentMap(addrLoad);
-                    var program = new Program(new ProgramMemory(segmentMap), Archive.Architecture, Archive.Platform);
+                    var program = new Program(new ByteProgramMemory(segmentMap), Archive.Architecture, Archive.Platform);
                     rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program);
 
                     // The name is always 'rsrc', so go to the parent to fetch the "actual"

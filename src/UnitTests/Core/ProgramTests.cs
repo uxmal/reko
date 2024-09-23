@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core
             var mem = new ByteMemoryArea(addrBase, bytes);
             var segmentMap = new SegmentMap(addrBase);
             segmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
-            program.Memory = new ProgramMemory(segmentMap);
+            program.Memory = new ByteProgramMemory(segmentMap);
             program.SegmentMap = segmentMap;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             program.Platform = new DefaultPlatform(null, arch.Object);

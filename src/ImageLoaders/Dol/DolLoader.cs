@@ -164,7 +164,7 @@ namespace Reko.ImageLoaders.Dol
 
             var entryPoint = ImageSymbol.Procedure(arch, this.hdr.entrypoint);
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform,
                 new() { { this.hdr.entrypoint, entryPoint } },

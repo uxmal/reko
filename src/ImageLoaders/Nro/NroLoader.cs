@@ -130,7 +130,7 @@ namespace Reko.ImageLoaders.Nro
             HandleSegment(NroSegmentType.DynSym, header.segments1[2]);
 
             SegmentMap segMap = new SegmentMap(PreferredBaseAddress, segments.ToArray());
-            Program program = new Program(new ProgramMemory(segMap), arch, platform);
+            Program program = new Program(new ByteProgramMemory(segMap), arch, platform);
             return program;
         }
     }

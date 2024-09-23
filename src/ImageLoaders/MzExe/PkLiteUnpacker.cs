@@ -211,7 +211,7 @@ l01C8:
 			imgU = new ByteMemoryArea(addrLoad!, abU);
             segmentMap = new SegmentMap(imgU.BaseAddress,
                 new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
-			var program = new Program(new ProgramMemory(segmentMap), arch, platform);
+			var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             var state = Relocate(program, addrLoad!);
 
             var sym = ImageSymbol.Procedure(arch, Address.SegPtr(pklCs, pklIp), state: state);

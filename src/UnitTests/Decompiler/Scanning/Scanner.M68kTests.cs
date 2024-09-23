@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
             program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(null, arch));
             RunTest(addrBase);

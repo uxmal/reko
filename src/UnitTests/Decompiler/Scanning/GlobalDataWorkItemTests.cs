@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.program = new Program
             {
                 Architecture = arch.Object,
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 ImageMap = imageMap,
                 Platform = platform.Object

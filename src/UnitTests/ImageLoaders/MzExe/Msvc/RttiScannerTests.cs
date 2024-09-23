@@ -67,7 +67,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
                     m.TryCreateLeReader(a, b, out r)))
                 .Returns(true);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
-            this.program = new Program(new ProgramMemory(segments), arch.Object, platform.Object);
+            this.program = new Program(new ByteProgramMemory(segments), arch.Object, platform.Object);
             this.listener = new FakeDecompilerEventListener();
         }
 

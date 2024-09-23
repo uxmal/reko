@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             this.program = new Program
             {
                 Architecture = arch,
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Platform = new DefaultPlatform(null, arch),
             };

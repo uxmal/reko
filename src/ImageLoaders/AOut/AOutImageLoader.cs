@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.AOut
                 var entry = ImageSymbol.Location(arch, Address.Ptr32(uAddrEntry));   // Entry point
 
                 var program = new Program(
-                    new ProgramMemory(segmentMap),
+                    new ByteProgramMemory(segmentMap),
                     arch,
                     new VaxUnix(Services, arch));
                 program.EntryPoints.Add(entry.Address, entry);

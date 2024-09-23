@@ -71,7 +71,7 @@ namespace Reko.Loading
         {
             var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, userSegments, imageBytes);
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform);
             foreach (var ep in this.EntryPoints)

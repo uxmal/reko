@@ -361,7 +361,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var program = new Program { 
                 Platform = new DefaultPlatform(sc, arch),
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap)
+                Memory = new ByteProgramMemory(segmentMap)
             };
 
             var sst = new SsaTransform(

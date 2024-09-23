@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program = new Program {
                 Architecture = arch,
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
             };
             binder = new StorageBinder();
             graph = new DiGraph<RtlBlock>();

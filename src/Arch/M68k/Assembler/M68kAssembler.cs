@@ -85,7 +85,7 @@ namespace Reko.Arch.M68k.Assembler
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             return new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch, 
                 new DefaultPlatform(arch.Services, arch));
         }

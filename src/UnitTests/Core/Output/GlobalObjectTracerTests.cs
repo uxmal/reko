@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Core.Output
             var addrBase = Address.Ptr32(uAddrBase);
             var sc = new ServiceContainer();
             var arch = new FakeArchitecture(sc);
-            this.program = new Program(new ProgramMemory(new SegmentMap(addrBase)), arch, new DefaultPlatform(sc, arch));
+            this.program = new Program(new ByteProgramMemory(new SegmentMap(addrBase)), arch, new DefaultPlatform(sc, arch));
         }
 
         private void Given_DataSegment(string name, uint uAddr, uint size)

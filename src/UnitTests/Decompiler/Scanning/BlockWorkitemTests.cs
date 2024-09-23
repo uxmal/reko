@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     ".text",
                     new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
                     AccessMode.ReadExecute));
-            program.Memory = new ProgramMemory(program.SegmentMap);
+            program.Memory = new ByteProgramMemory(program.SegmentMap);
             program.Platform = new DefaultPlatform(sc, arch.Object);
             arch.Setup(a => a.StackRegister).Returns((RegisterStorage)sp.Storage);
             arch.Setup(s => s.PointerType).Returns(PrimitiveType.Ptr32);

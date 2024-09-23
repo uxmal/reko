@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Gui
             var segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var program = new Program(new ProgramMemory(segmentMap), arch.Object, platform.Object);
+            var program = new Program(new ByteProgramMemory(segmentMap), arch.Object, platform.Object);
             var project = new Project(ImageLocation.FromUri("foo/bar/baz.project"));
             project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);

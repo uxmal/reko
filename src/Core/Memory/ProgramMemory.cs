@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -35,53 +34,9 @@ namespace Reko.Core.Memory
 
         public SegmentMap SegmentMap { get; }
 
-        public bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
-        {
-            if (!SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                rdr = null;
-                return false;
-            }
-            rdr = segment.MemoryArea.CreateBeReader(addr);
-            return true;
-        }
-
-        public bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
-        {
-            if (!SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                rdr = null;
-                return false;
-            }
-            rdr = segment.MemoryArea.CreateBeReader(addr, cUnits);
-            return true;
-        }
-
         public ImageWriter CreateBeWriter(Address addr)
         {
             throw new NotImplementedException();
-        }
-
-        public bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
-        {
-            if (!SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                rdr = null;
-                return false;
-            }
-            rdr = segment.MemoryArea.CreateLeReader(addr);
-            return true;
-        }
-
-        public bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
-        {
-            if (!SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                rdr = null;
-                return false;
-            }
-            rdr = segment.MemoryArea.CreateLeReader(addr, cUnits);
-            return true;
         }
 
         public ImageWriter CreateLeWriter(Address addr)
@@ -112,6 +67,50 @@ namespace Reko.Core.Memory
             return segment.IsWriteable;
         }
 
+        public bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
+        {
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateBeReader(addr);
+            return true;
+        }
+
+        public bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
+        {
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateBeReader(addr, cUnits);
+            return true;
+        }
+
+        public bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
+        {
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateLeReader(addr);
+            return true;
+        }
+
+        public bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
+        {
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.MemoryArea.CreateLeReader(addr, cUnits);
+            return true;
+        }
+
         public bool TryReadBe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -122,36 +121,6 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBe(addr, dt, out c);
         }
 
-        public bool TryReadBeUInt16(Address addr, out ushort value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadBeUInt16(addr, out value);
-        }
-
-        public bool TryReadBeUInt32(Address addr, out uint value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadBeUInt32(addr, out value);
-        }
-
-        public bool TryReadBeUInt64(Address addr, out ulong value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadBeUInt64(addr, out value);
-        }
-
         public bool TryReadLe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -160,85 +129,6 @@ namespace Reko.Core.Memory
                 return false;
             }
             return segment.MemoryArea.TryReadLe(addr, dt, out c);
-        }
-
-        public bool TryReadLeUInt16(Address addr, out ushort value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadLeUInt16(addr, out value);
-        }
-
-        public bool TryReadLeUInt32(Address addr, out uint value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadLeUInt32(addr, out value);
-        }
-
-        public bool TryReadLeUInt64(Address addr, out ulong value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-            {
-                value = 0;
-                return false;
-            }
-            return segment.MemoryArea.TryReadLeUInt64(addr, out value);
-        }
-
-        public void WriteBeUInt16(Address addr, ushort value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteBeUInt16(addr - segment.MemoryArea.BaseAddress, value);
-        }
-
-        public void WriteBeUInt32(Address addr, uint value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteBeUInt32(addr - segment.MemoryArea.BaseAddress, value); 
-        }
-
-        public void WriteBeUInt64(Address addr, ulong value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteBeUInt64(addr - segment.MemoryArea.BaseAddress, value);
-        }
-
-        public void WriteLeUInt16(Address addr, ushort value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteLeUInt16(addr - segment.MemoryArea.BaseAddress, value);
-        }
-
-        public void WriteLeUInt32(Address addr, uint value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteLeUInt32(addr - segment.MemoryArea.BaseAddress, value);
-        }
-
-        public void WriteLeUInt64(Address addr, ulong value)
-        {
-            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            segment.MemoryArea.WriteLeUInt64(addr - segment.MemoryArea.BaseAddress, value);
-        }
-
-        private ImageSegment RequireSegment(Address addr)
-        {
-            if (!SegmentMap.TryFindSegment(addr, out var segment))
-                throw new ArgumentException($"The address {addr} is invalid.");
-            return segment;
         }
     }
 }

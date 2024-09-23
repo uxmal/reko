@@ -629,7 +629,7 @@ ProcedureBuilder_exit:
             var program = new Program {
                 Architecture = m.Architecture,
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 Platform = new DefaultPlatform(sc, m.Architecture)
             };
 

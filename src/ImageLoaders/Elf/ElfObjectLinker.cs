@@ -124,7 +124,7 @@ namespace Reko.ImageLoaders.Elf
             CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();
             var segmentMap = CreateSegments(addrBase, segments);
-            var program = new Program(new ProgramMemory(segmentMap), platform.Architecture, platform);
+            var program = new Program(new ByteProgramMemory(segmentMap), platform.Architecture, platform);
             LoadExternalProcedures(program.InterceptedCalls);
             return program;
         }

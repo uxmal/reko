@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public Program Preprocess()
         {
             var segmentMap = BuildSegmentMap(wasmFile.Sections);
-            var program = new Program(new ProgramMemory(segmentMap), arch, platform);
+            var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             program.NeedsScanning = false;
             GenerateProcedures(program);
             return program;

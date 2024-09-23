@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var mem = new ByteMemoryArea(Address.Ptr32(0x00123300), new byte[0x1000]);
             var segment = new ImageSegment(".data", mem, AccessMode.ReadWrite);
             var segments = new SegmentMap(segment.Address, segment);
-            var program = new Program(new ProgramMemory(segments), arch, platform);
+            var program = new Program(new ByteProgramMemory(segments), arch, platform);
             return program;
         }
 

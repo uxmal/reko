@@ -54,7 +54,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         {
             var segmentMap = new SegmentMap(GetLoadAddress());
             this.program = new Program();
-            this.program.Memory = new ProgramMemory(segmentMap);
+            this.program.Memory = new ByteProgramMemory(segmentMap);
             this.program.SegmentMap = segmentMap;
             this.program.Architecture = GetArchitecture();
             this.symbols = new Dictionary<int, ElfSymbol>();

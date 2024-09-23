@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core
                 Address.Ptr32(0x00100000),
                 new ImageSegment(".text", new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
                 new ImageSegment(".data", new ByteMemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
-            this.mem = new ProgramMemory(segmentMap);
+            this.mem = new ByteProgramMemory(segmentMap);
         }
 
         [Test]

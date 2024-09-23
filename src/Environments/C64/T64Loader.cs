@@ -246,7 +246,7 @@ directory.
                 var platform = cfgSvc.GetEnvironment("c64").Load(services, arch);
                 var segMap = platform.CreateAbsoluteMemoryMap()!;
                 segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
-                var program = new Program(new ProgramMemory(segMap), arch, platform);
+                var program = new Program(new ByteProgramMemory(segMap), arch, platform);
                 program.Location = ImageLocation;
                 program.Name = Name;
 

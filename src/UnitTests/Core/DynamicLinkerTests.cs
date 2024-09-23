@@ -323,7 +323,7 @@ VarargsParserClass: FakeParser";
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
-                Memory = new ProgramMemory(new SegmentMap(memGot.BaseAddress, 
+                Memory = new ByteProgramMemory(new SegmentMap(memGot.BaseAddress, 
                     new ImageSegment(".text", memText, AccessMode.ReadExecute),
                     new ImageSegment(".got", memGot, AccessMode.Read))),
             };

@@ -195,7 +195,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 Architecture = arch,
                 SegmentMap = segmentMap,
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 Platform = platform
             };
             platform.Test_GetCallingConvention = (ccName) => {
@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             program = new Program
             {
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.Architecture = arch;
             program.Platform = new FakePlatform(null, arch);
             program.SegmentMap = segmentMap;
-            program.Memory = new ProgramMemory(segmentMap);
+            program.Memory = new ByteProgramMemory(segmentMap);
             return new TestScanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
         }
 

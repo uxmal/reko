@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 Architecture = arch.Object,
                 Platform = new FakePlatform(sc, arch.Object),
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
             };
             sc = new ServiceContainer();

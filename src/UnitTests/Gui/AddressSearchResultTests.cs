@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Gui
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
             var arch = new Mocks.FakeArchitecture(sc);
-            this.program = new Program(new ProgramMemory(imageMap), arch, new DefaultPlatform(sc, arch));
+            this.program = new Program(new ByteProgramMemory(imageMap), arch, new DefaultPlatform(sc, arch));
         }
 
         [Test]

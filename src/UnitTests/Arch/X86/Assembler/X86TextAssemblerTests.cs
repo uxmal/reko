@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
                 addrBase,
                 new ImageSegment("code", bmem, AccessMode.ReadWriteExecute));
             var arch = (IProcessorArchitecture) new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
-            this.program = new Program(new ProgramMemory(segmentMap), arch, null);
+            this.program = new Program(new ByteProgramMemory(segmentMap), arch, null);
         }
 
         [Test]

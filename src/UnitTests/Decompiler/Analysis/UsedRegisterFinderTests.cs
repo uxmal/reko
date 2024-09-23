@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             platform.Setup(p => p.PointerType).Returns(arch.PointerType);
             progBuilder.Program.Platform = platform.Object;
             progBuilder.Program.SegmentMap = segmentMap;
-            progBuilder.Program.Memory = new ProgramMemory(segmentMap);
+            progBuilder.Program.Memory = new ByteProgramMemory(segmentMap);
             var sc = new ServiceContainer();
             var listener = new FakeDecompilerEventListener();
             sc.AddService<IDecompilerEventListener>(listener);

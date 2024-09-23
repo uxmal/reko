@@ -218,7 +218,7 @@ namespace Reko.ImageLoaders.TekHex
             var segmentMap = MakeSegmentMap(arch);
             var program = new Program
             {
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = platform,

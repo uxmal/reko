@@ -56,7 +56,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
                     bmem.BaseAddress,
                     new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute));
             return new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(arch.Services, arch));
         }

@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Mocks
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             Program = new Program
             {
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 Architecture = new FakeArchitecture(new ServiceContainer())
             };
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Mocks
                 ".text", AccessMode.Execute);
                 
             Program.Platform = new DefaultPlatform(new ServiceContainer(), arch);
-            Program.Memory = new ProgramMemory(Program.SegmentMap);
+            Program.Memory = new ByteProgramMemory(Program.SegmentMap);
 			return Program;
 		}
 

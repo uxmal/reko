@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new ImageSegment("prôg", bmem, AccessMode.ReadExecute));
             program = new Program
             {
-                Memory = new ProgramMemory(segmentMap),
+                Memory = new ByteProgramMemory(segmentMap),
                 SegmentMap = segmentMap,
                 ImageMap = segmentMap.CreateImageMap()
             };

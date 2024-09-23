@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new ImageSegment("code", mem, AccessMode.ReadWrite));
             Given_Architecture();
             var program = new Program(
-                new ProgramMemory(segmap),
+                new ByteProgramMemory(segmap),
                 arch.Object,
                 new Mock<IPlatform>().Object);
             var sr = new ScanResults();

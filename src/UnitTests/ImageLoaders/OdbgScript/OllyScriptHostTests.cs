@@ -53,7 +53,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             var addrBase = Address.Ptr32(0x00100000);
             var segmentMap = new SegmentMap(addrBase);
             segmentMap.AddSegment(new ByteMemoryArea(addrBase, new byte[0xFF]), ".text", AccessMode.ReadWrite);
-            this.program = new Program(new ProgramMemory(segmentMap), arch, null);
+            this.program = new Program(new ByteProgramMemory(segmentMap), arch, null);
         }
 
         private void Given_Host()

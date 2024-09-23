@@ -63,7 +63,7 @@ namespace Reko.ImageLoaders.VmsExe
                 AccessMode.ReadWriteExecute));
 
             return new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform
         }

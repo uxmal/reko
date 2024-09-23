@@ -42,7 +42,15 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start writing.</param>
         /// <returns>A big-endian <see cref="ImageWriter"/>.</returns>
         ImageWriter CreateLeWriter(Address addr);
+    }
 
+    /// <summary>
+    /// Implements a common special case of the <see cref="IWriteableMemory"/>,
+    /// where individual memory units are 8-bit octets.
+    /// </summary>
+
+    public interface IByteWriteableMemory : IByteAdressableMemory, IWriteableMemory
+    {
         /// <summary>
         /// Write a 16-bit value in big-endian order to the memory at address
         /// <paramref name="address"/>.
@@ -90,15 +98,8 @@ namespace Reko.Core.Memory
         /// <param name="address">Virtual address to write to.</param>
         /// <param name="value">Value to write.</param>
         void WriteLeUInt64(Address address, ulong value);
-    }
 
-    /// <summary>
-    /// Implements a common special case of the <see cref="IWriteableMemory"/>,
-    /// where individual memory units are 8-bit octets.
-    /// </summary>
 
-    public interface IByteWriteableMemory : IWriteableMemory
-    {
         /// <summary>
         /// Write an octet-sized value to memory.
         /// </summary>

@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             m = new ProcedureBuilder();
             var map = new SegmentMap(Address.Ptr32(0x10000000));
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(new ProgramMemory(map), state, new FakeDecompilerEventListener());
+            expSimp = new ExpressionSimplifier(new ByteProgramMemory(map), state, new FakeDecompilerEventListener());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost(arch);
         }
@@ -395,7 +395,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
-                new ExpressionSimplifier(new ProgramMemory(map), state, new FakeDecompilerEventListener()));
+                new ExpressionSimplifier(new ByteProgramMemory(map), state, new FakeDecompilerEventListener()));
             var instrs = new StatementList(new Block(null!, null!, "foo"));
             bw.BackwalkInstructions(new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))

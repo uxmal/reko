@@ -46,7 +46,7 @@ namespace Reko.Environments.RT11
                         new ByteMemoryArea(addrLoad, RawImage),
                         AccessMode.ReadWriteExecute));
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 new RT11Platform(Services, arch));
             Relocate(program, addrLoad);

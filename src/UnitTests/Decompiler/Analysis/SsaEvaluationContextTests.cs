@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     ".readonly",
                     new ByteMemoryArea(Address.Ptr32(0x0012_3000), new byte[] { 0x78, 0x56, 0x34, 0x12 }),
                     AccessMode.ReadExecute));
-            this.memory = new ProgramMemory(segmentMap);
+            this.memory = new ByteProgramMemory(segmentMap);
         }
 
         [Test]

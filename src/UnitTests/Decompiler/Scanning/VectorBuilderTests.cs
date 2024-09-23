@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     new ImageSegment(".text", mem, AccessMode.ReadExecute));
 
             this.program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch.Object,
                 null);
         }

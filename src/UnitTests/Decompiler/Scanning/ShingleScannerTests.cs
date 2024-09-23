@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(null, arch);
             program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform);
         }
@@ -378,7 +378,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 mem,
                 AccessMode.ReadExecute));
             this.program.SegmentMap = segmentMap;
-            this.program.Memory = new ProgramMemory(segmentMap);
+            this.program.Memory = new ByteProgramMemory(segmentMap);
             var arch = new Mock<IProcessorArchitecture>();
             var dynamicLinker = new Mock<IDynamicLinker>();
 

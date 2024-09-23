@@ -668,7 +668,7 @@ namespace Reko.ImageLoaders.Xex
             var ep = GetEntryPoint(arch);
 
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform );
 

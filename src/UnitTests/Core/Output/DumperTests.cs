@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core.Output
                         AccessMode.ReadWrite));
 
             this.program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch.Object,
                 platform.Object);
             arch.Setup(a => a.CreateFrame()).Returns(
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Core.Output
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.platform = new Mock<IPlatform>();
             this.program = new Program(
-                new ProgramMemory(new SegmentMap(
+                new ByteProgramMemory(new SegmentMap(
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",

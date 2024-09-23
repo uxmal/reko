@@ -132,7 +132,7 @@ namespace Reko.ImageLoaders.Omf
             }
             var segmentMap = new SegmentMap(segments.Skip(1).ToArray()!);
             var program = new Program(
-                new ProgramMemory(segmentMap),
+                new ByteProgramMemory(segmentMap),
                 arch,
                 platform,
                 symbols.ToSortedList(s => s.Address),

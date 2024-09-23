@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.MzExe.Te
             var segments = LoadSectionData(sections);
             var arch = base.CreateArchitecture(hdr.machine);
             var platform = base.CreatePlatform(hdr.machine, Services, arch);
-            return new Program(new ProgramMemory(segments), arch, platform);
+            return new Program(new ByteProgramMemory(segments), arch, platform);
         }
 
         private SegmentMap LoadSectionData(Section[] sections)
