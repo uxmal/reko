@@ -45,10 +45,10 @@ namespace Reko.Core
         /// Create a linear <see cref="Address"/> of the type <paramref name="dtAddress"/>
         /// from the raw bit pattern <paramref name="bitPattern"/>.
         /// </summary>
-        /// <param name="dtAddress"></param>
-        /// <param name="bitPattern"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <param name="dtAddress">Data type that determines the size of the address.</param>
+        /// <param name="bitPattern">The value of the address.</param>
+        /// <returns>An <see cref="Address"/> instance of the requested size.
+        /// </returns>
         public static Address Create(DataType dtAddress, ulong bitPattern)
         {
             switch (dtAddress.BitSize)
@@ -61,31 +61,72 @@ namespace Reko.Core
             }
         }
 
-        public static Address Ptr16(ushort addr)
+        /// <summary>
+        /// Creates a 16-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Value of the address.</param>
+        /// <returns>A 16-bit address instance.</returns>
+        public static Address Ptr16(ushort uAddr)
         {
-            return new Address16(addr);
+            return new Address16(uAddr);
         }
 
+        /// <summary>
+        /// Creates a 32-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Value of the address.</param>
+        /// <returns>A 32-bit address instance.</returns>
         public static Address Ptr32(uint uAddr)
         {
             return new Address32(uAddr);
         }
 
+        /// <summary>
+        /// Creates a 64-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Value of the address.</param>
+        /// <returns>A 64-bit address instance.</returns>
         public static Address Ptr64(ulong addr)
         {
             return new Address64(addr);
         }
 
+        /// <summary>
+        /// Creates a real-mode segmented address.
+        /// </summary>
+        /// <param name="uAddr">Value of the address.</param>
+        /// <returns>A 32-bit segmented address instance.</returns>
+        /// <remarks>
+        /// This address type is suitable for
+        /// real-mode x86 programs.
+        /// </remarks>
         public static Address SegPtr(ushort seg, uint off)
         {
             return new RealSegmentedAddress(seg, (ushort)off);
         }
 
+        /// <summary>
+        /// Creates a protected-mode segmented address.
+        /// </summary>
+        /// <param name="uAddr">Value of the address.</param>
+        /// <returns>A 32-bit segmented address instance.</returns>
+        /// <remarks>
+        /// This address type is suitable for
+        /// protected-mode x86 programs with segmented pointers.
+        /// </remarks>
         public static Address ProtectedSegPtr(ushort seg, uint off)
         {
             return new ProtectedSegmentedAddress(seg, (ushort)off);
         }
 
+        /// <summary>
+        /// Returns the larger of two <see cref="Address">Addresses</see>.
+        /// </summary>
+        /// <param name="a">The first address to compare.</param>
+        /// <param name="b">The second address to compare.</param>
+        /// <returns>Address <paramref name="a"/> or <paramref name="b"/>,
+        /// whichever is larger.
+        /// </returns>
         public static Address Max(Address a, Address b)
         {
             if (a.ToLinear() >= b.ToLinear())
@@ -94,6 +135,14 @@ namespace Reko.Core
                 return b;
         }
 
+        /// <summary>
+        /// Returns the lesser of two <see cref="Address">Addresses</see>.
+        /// </summary>
+        /// <param name="a">The first address to compare.</param>
+        /// <param name="b">The second address to compare.</param>
+        /// <returns>Address <paramref name="a"/> or <paramref name="b"/>,
+        /// whichever is smaller.
+        /// </returns>
         public static Address Min(Address a, Address b)
         {
             if (a.ToLinear() <= b.ToLinear())

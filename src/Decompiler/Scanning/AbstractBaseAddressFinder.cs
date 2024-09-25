@@ -29,6 +29,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Classes deriving from this abstract class are used to 
+    /// determine the base address of a binary program image
+    /// when the image cannot provide that address.
+    /// </summary>
     public abstract class AbstractBaseAddressFinder
     {
         private uint stride;
@@ -53,7 +58,7 @@ namespace Reko.Scanning
 
 
         /// <summary>
-        /// Scan every N (power of 2) addresses. (default is 0x1000)'
+        /// Scan every N (power of 2) addresses (default is 0x1000).
         /// </summary>
         public uint Stride
         {

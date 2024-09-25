@@ -52,7 +52,6 @@ namespace Reko.UnitTests.Decompiler.Loading
             cfgSvc = new Mock<IConfigurationService>();
             signatureFiles = new List<SignatureFileDefinition>();
             sc.AddService<IEventListener>(eventListener);
-            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             cfgSvc.Setup(d => d.GetSignatureFiles()).Returns(signatureFiles);

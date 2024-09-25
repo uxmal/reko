@@ -59,6 +59,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var dynamicLinker = new Mock<IDynamicLinker>();
             var sc = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             // Uncommenting the below line is useful for debugging, but slows down the unit tests

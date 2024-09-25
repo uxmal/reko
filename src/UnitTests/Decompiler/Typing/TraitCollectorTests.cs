@@ -18,26 +18,21 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Analysis;
-using Reko.Arch.X86;
-using Reko.Scanning;
-using Reko.Typing;
-using Reko.UnitTests.Mocks;
-using Reko.UnitTests.Fragments;
-using NUnit.Framework;
-using System;
-using System.IO;
-using System.ComponentModel.Design;
 using Reko.Core.Services;
-using System.Runtime.InteropServices;
+using Reko.Core.Types;
 using Reko.Services;
-using Reko.Core.Analysis;
+using Reko.Typing;
+using Reko.UnitTests.Fragments;
+using Reko.UnitTests.Mocks;
+using System;
+using System.ComponentModel.Design;
+using System.IO;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -183,7 +178,6 @@ namespace Reko.UnitTests.Decompiler.Typing
 		}
 
 		[Test]
-        //[Ignore("FIXME")]
 		public void TrcoGlobalArray()
 		{
             Program program = CreateProgram();
@@ -310,7 +304,9 @@ namespace Reko.UnitTests.Decompiler.Typing
 			m.Add(new IntelIndexedAddressingMode());
 			Program program = m.BuildProgram();
             var sc = new ServiceContainer();
-            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoIntelIndexedAddressingMode.txt");
@@ -323,7 +319,9 @@ namespace Reko.UnitTests.Decompiler.Typing
 			m.Add(new TreeFindMock());
 			Program program = m.BuildProgram();
             var sc = new ServiceContainer();
-            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoTreeFind.txt");

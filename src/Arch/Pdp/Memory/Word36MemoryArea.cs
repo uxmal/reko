@@ -31,6 +31,11 @@ namespace Reko.Arch.Pdp.Memory
     /// <summary>
     /// This class represents a memory area where the contents are accessed by 36-bit words.
     /// </summary>
+    /// <remarks>
+    /// The 36-bit words are stored individually in 64-bit words, wasting 28 bits per word.
+    /// PDP-10 programs seldom exceeded 2^18 words, which is easily accommodated by a 
+    /// modern computer.
+    /// </remarks>
     public class Word36MemoryArea : MemoryArea
     {
         public Word36MemoryArea(Address addrBase, ulong[] words)

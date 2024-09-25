@@ -63,7 +63,7 @@ namespace Reko.Loading
             }
             catch
             {
-                var eventListener = services.RequireService<IDecompilerEventListener>();
+                var eventListener = services.RequireService<IEventListener>();
                 eventListener.Error("Symbol source {0} in the Reko configuration failed to load.", symSrcDef.Name!);
                 return null;
             }

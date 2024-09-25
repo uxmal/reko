@@ -27,6 +27,7 @@ namespace Reko.Core.Output
 {
     /// <summary>
     /// This class renders data in the format expected in a memory dump.
+    /// The rendered output is sent to an instance of <see cref="IMemoryFormatterOutput"/>.
     /// </summary>
     /// <remarks>
     /// A memory dump typically has the format:
@@ -56,7 +57,8 @@ namespace Reko.Core.Output
         /// Address units are the smallest addressable memory units of a 
         /// memory (typically bytes, but exceptions do exist). A chunk is 
         /// the term used for grouping one or more such addressable units for
-        /// the purpose of rendering.
+        /// the purpose of rendering. For instance, consider dumping 8-bit
+        /// byte memory in 16-bit chunks.
         /// </remarks>
         /// <param name="dtChunk">Datatype representing the size of the chunks
         /// to render.</param>

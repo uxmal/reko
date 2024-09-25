@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Graphs;
+using Reko.Core.Services;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
@@ -39,11 +40,11 @@ namespace Reko.Concurrent
         private readonly Dictionary<int, Worker> workers;
         private readonly Condensation<TItem> condensation;
         private readonly Action<TItem[]> workAction;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 
         public SccWorkerCoordinator(
             Condensation<TItem> condensation,
-            IDecompilerEventListener listener,
+            IEventListener listener,
             Action<TItem[]> workAction)
         {
             this.condensation = condensation;

@@ -56,7 +56,7 @@ namespace Reko.Core.Output
         /// <summary>
         /// Advance by a specific number of steps.
         /// </summary>
-        /// <param name="count"></param>
+        /// <param name="count">Steps to advance</param>
         void Advance(int count);
 
         /// <summary>
@@ -65,8 +65,16 @@ namespace Reko.Core.Output
         void Finish();
     }
 
+    /// <summary>
+    /// A "dummy" implementation of <see cref="IProgressIndicator"/> which does
+    /// nothing.
+    /// </summary>
     public class NullProgressIndicator : IProgressIndicator
     {
+        /// <summary>
+        /// Shared instance of <see cref="NullProgressIndicator"/>. Since there is
+        /// no mutable state, it can be freely used everywhere with impunity.
+        /// </summary>
         public static NullProgressIndicator Instance { get; } = new NullProgressIndicator();
 
         private NullProgressIndicator()

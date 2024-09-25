@@ -36,6 +36,9 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IEventListener
     {
+        /// <summary>
+        /// A reference to an instance of <see cref="IProgressIndicator"/>.
+        /// </summary>
         IProgressIndicator Progress { get; }
 
         ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address);
@@ -69,6 +72,11 @@ namespace Reko.Core.Services
         /// </summary>
         /// <returns>True if cancellation has been requested, false if not.
         /// </returns>
+        /// <remarks>
+        /// Implementations of potentially long-running loops are expected to 
+        /// poll this method occasionally in order to respond to cancellation
+        /// requests from the user.
+        /// </remarks>
         bool IsCanceled();
     }
 

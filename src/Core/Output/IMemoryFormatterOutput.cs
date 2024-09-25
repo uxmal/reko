@@ -44,7 +44,12 @@ namespace Reko.Core.Output
         /// chunks, each consisting of <paramref name="nCharsPerChunk"/> 
         /// letters or digits.
         /// </summary>
-        /// <param name="nCells"></param>
+        /// <param name="nChunks">
+        /// Number of memory units this corresponds to.
+        /// </param>
+        /// <param name="nCharsPerChunk">
+        /// Number of character positions per chunk.
+        /// </param>
         void RenderFillerSpan(int nChunks, int nCharsPerChunk);
 
         /// <summary>

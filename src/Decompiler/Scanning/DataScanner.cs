@@ -23,7 +23,6 @@ using Reko.Core.Loading;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 
@@ -31,11 +30,11 @@ namespace Reko.Scanning
 {
     public class DataScanner : ScannerBase, IScannerServices
     {
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly Queue<WorkItem> queue;
         private readonly ScanResults sr;
 
-        public DataScanner(Program program, ScanResults sr, IDecompilerEventListener listener)
+        public DataScanner(Program program, ScanResults sr, IEventListener listener)
             : base(program, listener)
         {
             this.sr = sr;

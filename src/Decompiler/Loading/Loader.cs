@@ -106,7 +106,7 @@ namespace Reko.Loading
             byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
 
             var project = new Project(imageLocation);
-            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<IDecompilerEventListener>());
+            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<IEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             project = projectLoader.LoadProject(image);
             if (project is not null)
@@ -344,7 +344,7 @@ namespace Reko.Loading
                 : cfgSvc.GetRawFile(DefaultToFormat);
             if (rawFile is null)
             {
-                this.Services.RequireService<IDecompilerEventListener>().Warn(
+                this.Services.RequireService<IEventListener>().Warn(
                     new NullCodeLocation(imageLocation.FilesystemPath),
                     "The format of the file is unknown.");
                 return null;

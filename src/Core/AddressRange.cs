@@ -23,7 +23,7 @@ using System;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes a memory address range [begin...end)
+	/// Describes a half-open memory address range [begin...end)
 	/// </summary>
 	public class AddressRange
 	{

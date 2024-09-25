@@ -234,12 +234,12 @@ namespace Reko.Analysis
                     {
                         // This ends up being very aggressive and doesn't replicate the original
                         // binary code. See discussion on https://github.com/uxmal/reko/issues/932
-                        DumpWatchedProcedure("urb", "Before unreachable block removal", ssa.Procedure);
+                        DumpWatchedProcedure("urb", "Before unreachable block removal", ssa);
                         var urb = new UnreachableBlockRemover(context);
                         urb.Transform(ssa);
                     }
 
-                    DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
+                    DumpWatchedProcedure("precoa", "Before expression coalescing", ssa);
                     
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
@@ -253,7 +253,7 @@ namespace Reko.Analysis
 
                     vp.Transform(ssa);
 
-                    DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);
+                    DumpWatchedProcedure("postcoa", "After expression coalescing", ssa);
 
                     ssa = RunAnalyses(analysisFactory, context, AnalysisStage.AfterExpressionCoalescing, ssa);
 
@@ -271,7 +271,7 @@ namespace Reko.Analysis
                         str.ModifyUses();
                     }
                     DeadCode.Eliminate(ssa);
-                    DumpWatchedProcedure("sr", "After strength reduction", ssa.Procedure);
+                    DumpWatchedProcedure("sr", "After strength reduction", ssa);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
                     var web = new WebBuilder(context, Program.InductionVariables);
@@ -341,11 +341,16 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, SsaState ssa)
         {
-            
+            if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
+            {
+                Debug.Print("// {0}: {1}: SSA graph ==================", ssa.Procedure.Name, caption);
+                var sw = new StringWriter();
+                ssa.Write(sw);
+                Debug.WriteLine(sw);
+            }
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-#if !FIND_BUGS
-// This is currently disabled because of hard-to-fix problems with the UnalignedMemoryAccessFuser
-            ssa.Validate(s =>
+            if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
+                ssa.Validate(s =>
             {
                 Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name,  s);
                 Console.WriteLine("    {0}", s);
@@ -356,17 +361,12 @@ namespace Reko.Analysis
                 Debug.Print("    {0}", s);
                 ssa.Dump(true);
             });
-#endif
-
         }
 
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
-            if (Program.User.DebugTraceProcedures.Contains(proc.Name) ||
-                proc.Name == "fn0800_9828" ||
-                proc.Name == "fn0800_8F97" ||
-                proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding")
+            if (Program.User.DebugTraceProcedures.Contains(proc.Name))
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
@@ -381,7 +381,6 @@ namespace Reko.Analysis
                     }
                     testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
                 }
-
             }
         }
     }

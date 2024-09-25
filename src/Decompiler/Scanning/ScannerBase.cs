@@ -30,10 +30,10 @@ namespace Reko.Scanning
 {
     public abstract class ScannerBase
     {
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly Dictionary<Address, UserProcedure> noDecompiledProcs;
  
-        public ScannerBase(Program program, IDecompilerEventListener eventListener)
+        public ScannerBase(Program program, IEventListener eventListener)
         {
             this.Program = program;
             this.eventListener = eventListener;

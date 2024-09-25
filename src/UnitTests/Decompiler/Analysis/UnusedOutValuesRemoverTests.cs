@@ -58,6 +58,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.services = new ServiceContainer();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
+            services.AddService<IEventListener>(eventListener);
             services.AddService<IDecompilerEventListener>(eventListener);
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             this.regA = RegisterStorage.Reg32("regA", 0x1234);
@@ -109,7 +110,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private void RunTest(string sExp, Program program)
         {
             var sc = new ServiceContainer();
-            sc.AddService(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
 
             var dfa = new DataFlowAnalysis(
                 program,

@@ -23,7 +23,6 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -50,9 +49,9 @@ namespace Reko.Analysis
 		private readonly ProgramDataFlow mpprocflow;
         private readonly IPlatform platform;
         private readonly CallingConventionMatcher ccm;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 
-        public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IDecompilerEventListener listener) 
+        public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IEventListener listener) 
 		{
             this.platform = platform;
 			this.mpprocflow = mpprocflow;
