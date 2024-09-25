@@ -40,8 +40,6 @@ namespace Reko.Evaluation
             var newValue = ctx.GetValue(value, memory);
             if (newValue != value || newValue.DataType.BitSize != value.DataType.BitSize)
             {
-                ctx.RemoveExpressionUse(value);
-                ctx.UseExpression(newValue);
                 changed = true;
             }
             return (newValue, changed);

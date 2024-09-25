@@ -316,13 +316,13 @@ l000E387A:
 				loc7.u13[4] = (struct Eq_n) 0x00;
 				ui32 v349_n = *(ui32 *) 0x4668;
 				ui32 v349_n = 0x01 << loc5_n;
-				ui32 v350_n = loc5_n << 0x02;
+				struct Eq_n * v350_n = loc5_n << 0x02;
 				ui32 v349_n = v349_n & v349_n;
 				if (v349_n == 0x00)
 				{
 					*(ui32 *) 0x4668 = v349_n | v349_n;
-					((Eq_n[]) 0x4794)[loc5_n].u2 = (int8 *) loc7;
-					loc7.u12[0x0C] = (struct Eq_n) (&((Eq_n[]) 0x4794)->u0 + v350_n);
+					*(v350_n + (Eq_n (*)[]) 0x4794) = (word32) loc7;
+					loc7.u12[0x0C] = (struct Eq_n) (v350_n + (Eq_n (*)[]) 0x4794);
 					loc7.u13[3] = (struct Eq_n) loc7;
 					loc7.u12[4] = (struct Eq_n) loc7;
 				}
@@ -1251,7 +1251,7 @@ l000E53A3:
 					loc6.u13[4] = (struct Eq_n) 0x00;
 					ui32 v332_n = *(ui32 *) 0x4668;
 					ui32 v332_n = 0x01 << loc4_n;
-					ui32 v333_n = loc4_n << 0x02;
+					struct Eq_n * v333_n = loc4_n << 0x02;
 					if ((v332_n & v332_n) != 0x00)
 					{
 						Eq_n v332_n;
@@ -1315,8 +1315,8 @@ l000E571B:
 					else
 					{
 						*(ui32 *) 0x4668 = v332_n | v332_n;
-						((Eq_n[]) 0x4794)[loc4_n].u2 = (int8 *) loc6;
-						loc6.u12[0x0C] = (struct Eq_n) (&((Eq_n[]) 0x4794)->u0 + v333_n);
+						*(v333_n + (Eq_n (*)[]) 0x4794) = (word32) loc6;
+						loc6.u12[0x0C] = (struct Eq_n) (v333_n + (Eq_n (*)[]) 0x4794);
 						loc6.u13[3] = (struct Eq_n) loc6;
 						loc6.u12[4] = (struct Eq_n) loc6;
 						return;

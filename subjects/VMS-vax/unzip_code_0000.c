@@ -4740,7 +4740,7 @@ word32 fn00010676(real32 ** r4, ptr32 r7, struct Eq_n * ap, struct Eq_n * fp, pt
 	r0_n.u1 = (uint32) v19_n;
 	if (r0_n > 0x08)
 	{
-		**r4 = 0.5F + 36.0F;
+		**r4 = 36.0F + 0.5F;
 		__halt();
 	}
 	else

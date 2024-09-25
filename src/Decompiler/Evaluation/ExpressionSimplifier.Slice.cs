@@ -86,8 +86,6 @@ namespace Reko.Evaluation
                 var eNew = SliceSequence(seq, slice.DataType, slice.Offset);
                 if (eNew is not null)
                 {
-                    ctx.RemoveExpressionUse(slice);
-                    ctx.UseExpression(eNew);
                     return (eNew, true);
                 }
             }
@@ -109,11 +107,6 @@ namespace Reko.Evaluation
                 int sizeDiff = lsbElem.DataType.BitSize - slice.DataType.BitSize;
                 if (sizeDiff >= 0)
                 {
-                    foreach (var elem in seq2.Expressions)
-                    {
-                        ctx.RemoveExpressionUse(elem);
-                    }
-                    ctx.UseExpression(lsbElem);
                     if (sizeDiff > 0)
                     {
                         return (new Slice(slice.DataType, lsbElem, slice.Offset), true);

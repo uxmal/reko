@@ -185,8 +185,8 @@ di_21: orig: di
 di_22: orig: di
     def:  di_22 = di_21 - 1<16>
     uses: SZO_23 = cond(di_22)
-          branch di_22 != 0<16> l0C00_0008
           di_21 = PHI((di_9, l0C00_0000), (di_21, l0C00_0008), (di_22, l0C00_000D))
+          branch di_22 != 0<16> l0C00_0008
 SZO_23: orig: SZO
     def:  SZO_23 = cond(di_22)
     uses: Z_24 = SLICE(SZO_23, bool, 2) (alias)

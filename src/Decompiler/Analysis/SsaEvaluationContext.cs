@@ -104,12 +104,6 @@ namespace Reko.Analysis
             return arch.ReinterpretAsFloat(rawBits);
         }
 
-        public void RemoveIdentifierUse(Identifier id)
-        {
-            if (id != null)
-                ssaIds[id].Uses.Remove(Statement!);
-        }
-
         public void RemoveExpressionUse(Expression exp)
         {
             if (Statement == null)

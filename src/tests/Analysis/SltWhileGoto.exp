@@ -3,8 +3,8 @@ sp_2: orig: sp
 Top_3: orig: Top
 si:si
     def:  def si
-    uses: ax_28 = si_10 - si
-          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
+    uses: si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
+          ax_28 = si_10 - si
 bx_5: orig: bx
 si_7: orig: si
     def:  si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
@@ -21,9 +21,9 @@ ax_9: orig: ax
           branch ax_9 != 0xD<16> l0C00_001A
 si_10: orig: si
     def:  si_10 = si_7 + 2<i16>
-    uses: ax_28 = si_10 - si
+    uses: si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
-          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
+          ax_28 = si_10 - si
 SCZO_11: orig: SCZO
 Z_12: orig: Z
 Mem14: orig: Mem0

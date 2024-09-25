@@ -12476,12 +12476,12 @@ l000E21FD:
 						v1157_n.u13[4] = (struct Eq_n) 0x00;
 						ui32 v1157_n = *(ui32 *) 0x4668;
 						ui32 v1157_n = 0x01 << loc26_n;
-						ui32 v1158_n = loc26_n << 0x02;
+						struct Eq_n * v1158_n = loc26_n << 0x02;
 						if ((v1157_n & v1157_n) == 0x00)
 						{
 							*(ui32 *) 0x4668 = v1157_n | v1157_n;
-							((Eq_n[]) 0x4794)[loc26_n].u2 = (int8 *) v1157_n;
-							v1157_n.u12[0x0C] = (struct Eq_n) (&((Eq_n[]) 0x4794)->u0 + v1158_n);
+							*(v1158_n + (Eq_n (*)[]) 0x4794) = (word32) v1157_n;
+							v1157_n.u12[0x0C] = (struct Eq_n) (v1158_n + (Eq_n (*)[]) 0x4794);
 							v1157_n.u13[3] = (struct Eq_n) v1157_n;
 							v1157_n.u12[4] = (struct Eq_n) v1157_n;
 							goto l000E248A;
@@ -12864,12 +12864,12 @@ l000E2B7A:
 							v1157_n.u13[4] = (struct Eq_n) 0x00;
 							ui32 v1157_n = *(ui32 *) 0x4668;
 							ui32 v1157_n = 0x01 << loc20_n;
-							ui32 v1158_n = loc20_n << 0x02;
+							struct Eq_n * v1158_n = loc20_n << 0x02;
 							if ((v1157_n & v1157_n) == 0x00)
 							{
 								*(ui32 *) 0x4668 = v1157_n | v1157_n;
-								((Eq_n[]) 0x4794)[loc20_n].u2 = (int8 *) v1157_n;
-								v1157_n.u12[0x0C] = (struct Eq_n) (&((Eq_n[]) 0x4794)->u0 + v1158_n);
+								*(v1158_n + (Eq_n (*)[]) 0x4794) = (word32) v1157_n;
+								v1157_n.u12[0x0C] = (struct Eq_n) (v1158_n + (Eq_n (*)[]) 0x4794);
 								v1157_n.u13[3] = (struct Eq_n) v1157_n;
 								v1157_n.u12[4] = (struct Eq_n) v1157_n;
 								goto l000E2B7A;
@@ -13460,12 +13460,12 @@ l000E0CF2:
 		v1157_n.u12[0x0A] = (struct Eq_n) 0x00;
 		v1157_n.u13[4] = (struct Eq_n) 0x00;
 		ui32 v1157_n = 0x01 << loc35_n;
-		ui32 v1158_n = loc35_n << 0x02;
+		struct Eq_n * v1158_n = loc35_n << 0x02;
 		if ((loc548 & v1157_n) == 0x00)
 		{
 			*(ui32 *) 0x4668 = loc548 | v1157_n;
-			((Eq_n[]) 0x4794)[loc35_n].u2 = (int8 *) v1157_n;
-			v1157_n.u12[0x0C] = (struct Eq_n) (&((Eq_n[]) 0x4794)->u0 + v1158_n);
+			*(v1158_n + (Eq_n (*)[]) 0x4794) = (word32) v1157_n;
+			v1157_n.u12[0x0C] = (struct Eq_n) (v1158_n + (Eq_n (*)[]) 0x4794);
 			v1157_n.u13[3] = (struct Eq_n) v1157_n;
 			v1157_n.u12[4] = (struct Eq_n) v1157_n;
 			goto l000E0CF2;

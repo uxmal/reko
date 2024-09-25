@@ -53,9 +53,6 @@ namespace Reko.Evaluation
             if (idOrig is null)
                 return null;
 
-            ctx.RemoveIdentifierUse(idHi);
-            ctx.RemoveIdentifierUse(idLo);
-            ctx.UseExpression(idOrig);
             return idOrig;
         }
     }

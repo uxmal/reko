@@ -72,8 +72,6 @@ namespace Reko.Evaluation
             if (basePtr is null)
                 return null;
 
-            ctx.RemoveIdentifierUse(seg);
-            ctx.RemoveIdentifierUse(idOff!);
             Expression ea;
             if (segptr!.Offset == idOff)
             {
@@ -89,7 +87,6 @@ namespace Reko.Evaluation
                 else
                     throw new NotImplementedException();
             }
-            ctx.UseExpression(basePtr!);
             return ea;
         }
 

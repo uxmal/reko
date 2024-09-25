@@ -101,7 +101,7 @@ namespace Reko.Scanning
             var formatArg = fnCall.Arguments[iFormatArg];
             if (formatArg is Identifier idFormat)
             {
-                this.ctx.RemoveIdentifierUse(idFormat);
+                //$REVIEW: this.ctx.RemoveIdentifierUse(idFormat);
                 fnCall.Arguments[iFormatArg] = formatString;
             }
             else if (formatArg is Constant)

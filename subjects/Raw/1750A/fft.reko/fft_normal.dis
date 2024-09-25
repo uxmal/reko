@@ -114,10 +114,11 @@ l01A4:
 	gp8_gp9_gp10_137 = Mem108[gp14_220 + 4<16>:real48] * Mem108[0x8030<16>:real48] - Mem108[gp14_220 + 7<16>:real48] * Mem108[gp11_122:real48]
 	gp5_gp6_gp7_158 = Mem108[gp14_220 + 7<16>:real48] * Mem108[0x8030<16>:real48] + Mem108[gp14_220 + 4<16>:real48] * Mem108[gp11_122:real48]
 	Mem177[0x8030<16>:real48] = Mem108[0x8030<16>:real48] - gp8_gp9_gp10_137
+	gp1_161 = gp0_104 * 3<16>
 	gp2_gp3_gp4_188 = Mem177[gp0_104 * 3<16> + 0x8060<16>:real48] - gp5_gp6_gp7_158
 	Mem193[gp11_122:real48] = gp2_gp3_gp4_188
 	Mem200[0x8030<16>:real48] = gp8_gp9_gp10_137 + Mem193[0x8030<16>:real48]
-	Mem207[gp0_104 * 3<16> + 0x8060<16>:real48] = gp5_gp6_gp7_158 + Mem200[gp0_104 * 3<16> + 0x8060<16>:real48]
+	Mem207[gp1_161 + 0x8060<16>:real48] = gp5_gp6_gp7_158 + Mem200[gp0_104 * 3<16> + 0x8060<16>:real48]
 	gp3 = SLICE(gp2_gp3_gp4_188, word16, 16) (alias)
 	gp4 = SLICE(gp2_gp3_gp4_188, word16, 0) (alias)
 	gp0_104 = gp0_104 + Mem207[gp14_220 + 1<16>:word16]
@@ -657,8 +658,7 @@ l0484:
 l0493:
 	gp12_gp13_gp14_148 = gp12_gp13_gp14_130 * Mem147[0x0579<p16>:real48]
 	gp14_152 = SLICE(gp12_gp13_gp14_148, word16, 0) (alias)
-	gp4_gp5_gp6_156 = SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), gp14_152) (alias)
-	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(CONVERT(gp4_gp5_gp6_156, real48, int32), int32, real48)
+	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(CONVERT(SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), gp14_152), real48, int32), int32, real48)
 	gp14 = SLICE(gp12_gp13_gp14_130, word16, 0) (alias)
 	gp7_104 = gp7_104 + 1<16>
 	branch (gp7_104 & 0x8000<u16>) == 0<16> l04A2

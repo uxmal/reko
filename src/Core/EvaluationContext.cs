@@ -72,7 +72,6 @@ namespace Reko.Core
         Expression GetValue(Application appl);
         Expression? GetDefiningExpression(Identifier id);
 
-        void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
         void RemoveExpressionUse(Expression expr);
         void SetValue(Identifier id, Expression value);

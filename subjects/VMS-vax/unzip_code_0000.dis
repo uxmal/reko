@@ -4809,7 +4809,7 @@ l00010676:
 	r0_59 = CONVERT(v19_28, word16, uint32)
 	branch r0_59 > 8<32> l000106FB
 l000106FB:
-	Mem66[Mem58[r4:word32]:real32] = 0.5F + 36.0F
+	Mem66[Mem58[r4:word32]:real32] = 36.0F + 0.5F
 	__halt()
 l000106E7_1:
 	call 0x000106EB<p32> + r0_59 * 2<32> (retsize: 0;)

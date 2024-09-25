@@ -5990,7 +5990,8 @@ l000000000040CF6F:
 	rax_52 = mbstowcs(0<u64>, rdi, 0<u64>)
 	branch rax_52 != 0xFFFFFFFFFFFFFFFF<64> l000000000040CFA8
 l000000000040CFA8:
-	rax_59 = malloc((rax_52 + 1<64>) * 4<64>)
+	r15_56 = (rax_52 + 1<64>) * 4<64>
+	rax_59 = malloc(r15_56)
 	qwLoc58_593 = rax_59
 	branch rax_59 == 0<64> l000000000040D160
 l000000000040D160:
@@ -6001,7 +6002,7 @@ l000000000040D169:
 l000000000040CFCF:
 	branch mbstowcs(rax_59, rdi, rax_52 + 1<64>) == 0<64> l000000000040CE03
 l000000000040CFEC:
-	Mem85[rax_59 - 4<i64> + (rax_52 + 1<64>) * 4<64>:word32] = 0<32>
+	Mem85[rax_59 - 4<i64> + r15_56:word32] = 0<32>
 	edi_86 = Mem85[rax_59:word32]
 	rdi_114 = CONVERT(edi_86, word32, uint64)
 	branch edi_86 == 0<32> l000000000040D106

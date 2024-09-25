@@ -20,8 +20,10 @@ void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx
 // Preserved: sp ss
 fn1483_0ADC_entry:
 l1483_0ADC:
+	es_di_74 = fn1483_0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, wArg00, wArg04, wArg0A, psegArg01A2)
+	ST62[<invalid> - 1<i8>:real64] = rRet0
 	Top_29 = <invalid>
-	ST39[Top_29:real64] = CONVERT(Mem0[fn1483_0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, wArg00, wArg04, wArg0A, psegArg01A2) + 0xFFFFE086<32>:real32], real32, real64) - ST[Top_29:real64]
+	ST39[Top_29:real64] = CONVERT(Mem0[es_di_74 + 0xFFFFE086<32>:real32], real32, real64) - ST[Top_29:real64]
 	return
 fn1483_0ADC_exit:
 

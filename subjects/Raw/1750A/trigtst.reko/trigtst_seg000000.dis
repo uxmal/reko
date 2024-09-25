@@ -340,8 +340,7 @@ l00000432:
 l0441:
 	gp12_gp13_gp14_148 = gp12_gp13_gp14_130 * Mem147[0x060A<p16>:real48]
 	gp14_152 = SLICE(gp12_gp13_gp14_148, word16, 0) (alias)
-	gp4_gp5_gp6_156 = SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), gp14_152) (alias)
-	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(CONVERT(gp4_gp5_gp6_156, real48, int32), int32, real48)
+	gp12_gp13_gp14_130 = gp12_gp13_gp14_148 - CONVERT(CONVERT(SEQ(SLICE(gp12_gp13_gp14_148, word32, 0), gp14_152), real48, int32), int32, real48)
 	gp14 = SLICE(gp12_gp13_gp14_130, word16, 0) (alias)
 	gp7_104 = gp7_104 + 1<16>
 	branch (gp7_104 & 0x8000<u16>) == 0<16> l00000450

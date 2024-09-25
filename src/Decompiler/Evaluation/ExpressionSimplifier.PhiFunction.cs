@@ -32,7 +32,6 @@ namespace Reko.Evaluation
                 {
                     var (e, _) = a.Value.Accept(this);
                     var (arg, _) = SimplifyPhiArg(e);
-                    ctx.RemoveExpressionUse(arg);
                     return arg;
                 })
                 .Where(a => ctx.GetValue((a as Identifier)!) != pc)
@@ -42,12 +41,10 @@ namespace Reko.Evaluation
             var e = args.FirstOrDefault();
             if (e != null && args.All(a => cmp.Equals(a, e)))
             {
-                ctx.UseExpression(e);
                 return (e, true);
             }
             else
             {
-                ctx.UseExpression(pc);
                 return (pc, false);
             }
         }
@@ -71,8 +68,6 @@ namespace Reko.Evaluation
                   ctx.GetValue(idLeft) is BinaryExpression binLeft))
                 return (arg, false);
 
-            ctx.RemoveIdentifierUse(idLeft);
-            ctx.UseExpression(binLeft);
             bin = new BinaryExpression(
                 bin.Operator,
                 bin.DataType,

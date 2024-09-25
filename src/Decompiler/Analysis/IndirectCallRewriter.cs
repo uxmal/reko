@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -47,13 +48,13 @@ namespace Reko.Analysis
         private readonly IndirectCallTypeAscender asc;
         private readonly IndirectCallExpander expander;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly SsaMutator ssam;
 
         public IndirectCallRewriter(
             IReadOnlyProgram program,
             SsaState ssa,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.program = program;
             this.proc = ssa.Procedure;

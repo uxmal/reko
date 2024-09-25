@@ -249,10 +249,6 @@ namespace Reko.Analysis
             {
             }
 
-            public void RemoveIdentifierUse(Identifier id)
-            {
-            }
-
             public void SetValue(Identifier id, Expression value)
             {
                 values[id] = value;

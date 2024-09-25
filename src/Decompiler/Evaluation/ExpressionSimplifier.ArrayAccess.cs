@@ -45,8 +45,6 @@ namespace Reko.Evaluation
                     var eNew = SliceSequence(seq, acc.DataType, bitPosition);
                     if (eNew is not null)
                     {
-                        ctx.RemoveExpressionUse(a);
-                        ctx.UseExpression(eNew);
                         (eNew, _) = eNew.Accept(this);
                         return (eNew, true);
                     }

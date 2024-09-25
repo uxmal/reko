@@ -105,10 +105,11 @@ void fft(uint16 gp3, uint16 gp4)
 					real48 gp8_gp9_gp10_n = gp14_n->r0004 * (g_aFFFF8030)[0].r0000 - (gp14_n->t0007).u0 * *gp11_n;
 					real48 gp5_gp6_gp7_n = gp14_n->t0007.u0 * (g_aFFFF8030)[0].r0000 + gp14_n->r0004 * *gp11_n;
 					g_aFFFF8030[0].r0000 = (real48) (g_aFFFF8030[0].r0000 - gp8_gp9_gp10_n);
+					struct Eq_n * gp1_n = gp0_n * 0x03;
 					real48 gp2_gp3_gp4_n = g_aFFFF8060[gp0_n] - gp5_gp6_gp7_n;
 					*gp11_n = gp2_gp3_gp4_n;
 					g_aFFFF8030[0].r0000 = (real48) (gp8_gp9_gp10_n + (g_aFFFF8030)[0].r0000);
-					g_aFFFF8060[gp0_n] = (struct Eq_n) (gp5_gp6_gp7_n + g_aFFFF8060[gp0_n]);
+					*(gp1_n + g_aFFFF8060) = (word16) (gp5_gp6_gp7_n + g_aFFFF8060[gp0_n]);
 					gp3 = SLICE(gp2_gp3_gp4_n, word16, 16);
 					gp4 = (word16) gp2_gp3_gp4_n;
 				}
@@ -552,8 +553,7 @@ l0458:
 		{
 			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t0579.u1;
 			word16 gp14_n = (word16) gp12_gp13_gp14_n;
-			real48 gp4_gp5_gp6_n = SEQ((word32) gp12_gp13_gp14_n, gp14_n);
-			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) ((int32) gp4_gp5_gp6_n);
+			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) ((int32) SEQ((word32) gp12_gp13_gp14_n, gp14_n));
 			gp14 = (word16) gp12_gp13_gp14_n;
 			++gp7_n;
 			if ((gp7_n & 0x8000) != 0x00)

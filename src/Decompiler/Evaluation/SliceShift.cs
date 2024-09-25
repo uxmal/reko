@@ -61,11 +61,6 @@ namespace Reko.Evaluation
 
             var expr = shift.Left;
             var dt = slice.DataType;
-            if (id != null)
-            {
-                ctx.RemoveIdentifierUse(id);
-                ctx.UseExpression(expr);
-            }
             expr.DataType = dt;
             return expr;
         }

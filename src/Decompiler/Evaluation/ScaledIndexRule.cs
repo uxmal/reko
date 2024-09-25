@@ -92,21 +92,17 @@ namespace Reko.Evaluation
             Expression eaNew;
             if (binEaLeft != null)
             {
-                ctx.RemoveIdentifierUse((Identifier) binEaLeft.Left);
                 eaNew = new BinaryExpression(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
             }
             else if (binEaRight != null)
             {
-                ctx.RemoveIdentifierUse((Identifier) binEaRight.Right);
                 eaNew = new BinaryExpression(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
             }
             else 
             {
                 Debug.Assert(idEa != null);
-                ctx.RemoveIdentifierUse(idEa);
                 eaNew = defIndex!;
             }
-            ctx.UseExpression(defIndex!);
             return eaNew;
         }
 

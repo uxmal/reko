@@ -59,7 +59,6 @@ namespace Reko.Evaluation
             if (bin.Right is not Constant c)
                 return null;
             var dt = b.DataType;
-            ctx.RemoveIdentifierUse(id);
             var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + factor);
             return new BinaryExpression(Operator.IMul, dt, id, cc);
         }

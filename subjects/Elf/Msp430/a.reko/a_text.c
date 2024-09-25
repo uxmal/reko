@@ -1823,9 +1823,8 @@ l57AE:
 					word16 wLoc1C_n = (word16) dwLoc1C_n;
 					if (SLICE(dwLoc1C_n, word16, 16) < 0x00)
 					{
-						word16 v180_n = ~wLoc1C_n;
 						bLoc24_n = 0x2D;
-						dwLoc1C_n = SEQ(SLICE(-dwLoc1C_n, word16, 16), v180_n + 0x01);
+						dwLoc1C_n = SEQ(SLICE(-dwLoc1C_n, word16, 16), -wLoc1C_n);
 					}
 					bLoc18_n = 0x0A;
 					dwLoc1C_n = dwLoc1C_n;

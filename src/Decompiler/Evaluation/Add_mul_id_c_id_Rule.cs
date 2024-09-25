@@ -76,7 +76,6 @@ namespace Reko.Evaluation
             if (idInner != id)
 				return null;
 
-            ctx.RemoveIdentifierUse(id);
             var op = Operator.IAdd;
             var c = swapped
                 ? op.ApplyConstants(cOne.DataType, cOne, cInner)

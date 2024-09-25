@@ -13,8 +13,11 @@ void fn1483-0ADB()
 // 1483:0ADC: void fn1483-0ADC(Sequence (ptr32 Eq_n) ds_di, Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ax, Register Eq_n cx, Register ui16 dx, Register byte bl, Register byte bh, Register Eq_n si, Register (ptr16 Eq_n) es, Register (ptr16 Eq_n) fs, Stack (memptr (ptr16 Eq_n) Eq_n) wArg00, Stack word16 wArg04, Stack word16 wArg0A, Stack (ptr16 Eq_n) psegArg01A2)
 void fn1483-0ADC(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byte bh, Eq_n si, struct Eq_n * es, struct Eq_n * fs, struct Eq_n Eq_n::* wArg00, word16 wArg04, word16 wArg0A, struct Eq_n * psegArg01A2)
 {
-	real64 * Top_n = (real64 *) <invalid>;
-	*Top_n = (real64) fn1483-0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, wArg00, wArg04, wArg0A, psegArg01A2)->rFFFFE086 - *Top_n;
+	struct Eq_n * es_di_n = fn1483-0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, wArg00, wArg04, wArg0A, psegArg01A2);
+	real64 rRet0;
+	((struct Eq_n *) <invalid>)->rFFFFFFFF = rRet0;
+	struct Eq_n * Top_n = (struct Eq_n *) <invalid>;
+	Top_n->r0000 = (real64) es_di_n->rFFFFE086 - Top_n->r0000;
 }
 
 // 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register cu8 al, Register word16 cx, Register Eq_n bx, Register Eq_n bp)

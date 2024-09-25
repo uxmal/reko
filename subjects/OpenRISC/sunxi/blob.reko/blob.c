@@ -1582,13 +1582,13 @@ l00007298:
 int32 fn00007338(uint32 r3, Eq_n r4)
 {
 	struct Eq_n * r6_n = (struct Eq_n *) 0x40000000;
-	ui32 r3_n = r3 >> 0x01 << 0x14;
+	int32 r3_n = r3 >> 0x01 << 0x14;
 	Eq_n r5_n;
 	r5_n.u0 = 0;
 	while (r5_n < r4)
 	{
 		r6_n->t0000 = (word32) r5_n + 19088743;
-		r6_n[(r3 >> 0x01) * 0x00040000] = (struct Eq_n) ((word32) r5_n - 19088744);
+		*((char *) &r6_n->t0000 + r3_n) = (word32) r5_n - 19088744;
 		r6_n = (struct Eq_n *) ((char *) r6_n - 4);
 		r5_n = (word32) r5_n - 1;
 	}

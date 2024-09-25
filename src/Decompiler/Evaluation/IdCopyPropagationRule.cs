@@ -36,8 +36,6 @@ namespace Reko.Evaluation
             if (ctx.GetValue(id) is not Identifier idNew || idNew == idOld)
                 return null;
 
-            ctx.RemoveIdentifierUse(idOld);
-            ctx.UseExpression(idNew);
             return idNew!;
         }
 	}

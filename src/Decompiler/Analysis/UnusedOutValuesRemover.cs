@@ -56,7 +56,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow dataFlow;
         private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
         public UnusedOutValuesRemover(
             Program program,
@@ -70,7 +70,7 @@ namespace Reko.Analysis
             this.ssaStates = ssaStates;
             this.dynamicLinker = dynamicLinker;
             this.services = services;
-            this.eventListener = services.RequireService<IDecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
             this.wl = new WorkList<SsaState>();
             this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);

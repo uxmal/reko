@@ -28,6 +28,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Services;
@@ -47,7 +48,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
         private readonly IReadOnlyCallGraph callGraph;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly WorkStack<Block> worklist;
         private readonly Dictionary<Procedure, SsaState> ssas;
         private readonly ExpressionValueComparer cmp;
@@ -65,7 +66,7 @@ namespace Reko.Analysis
             IReadOnlyProgram program,
             ProgramDataFlow flow,
             IEnumerable<SsaTransform> sccGroup,
-            IDecompilerEventListener listener)
+            IEventListener listener)
         {
             this.program = program;
             this.arch = program.Architecture;
@@ -792,10 +793,6 @@ namespace Reko.Analysis
             }
             
             public void RemoveExpressionUse(Expression expr)
-            {
-            }
-
-            public void RemoveIdentifierUse(Identifier id)
             {
             }
 

@@ -33,8 +33,7 @@ namespace Reko.Evaluation
         {
             if (ctx.GetValue(id) is ProcedureConstant pc)
             {
-                ctx.RemoveIdentifierUse(id);
-                return pc!;
+                return pc;
             }
             else
             {

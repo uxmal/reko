@@ -24,8 +24,8 @@ using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +51,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow flow;
         private readonly HashSet<Procedure> scc;
         private readonly Dictionary<PhiAssignment, BitRange> visited;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private Identifier? idCur;
         private ProcedureFlow? procFlow;
         private SsaState? ssa;
@@ -61,7 +61,7 @@ namespace Reko.Analysis
             IReadOnlyProgram program,
             ProgramDataFlow flow,
             IEnumerable<Procedure> scc,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.program = program;
             this.flow = flow;
@@ -315,8 +315,10 @@ namespace Reko.Analysis
             if (!visited.TryGetValue(phi, out BitRange value))
             {
                 visited[phi] = BitRange.Empty;
+                var idOld = this.idCur;
                 value = Classify(ssa!.Identifiers[phi.Dst]);
                 visited[phi] = value;
+                this.idCur = idOld;
             }
             return value;
         }

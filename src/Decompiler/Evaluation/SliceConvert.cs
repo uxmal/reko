@@ -47,7 +47,6 @@ namespace Reko.Evaluation
                     slice.Offset >= slConv.SourceDataType.BitSize &&
                         IsUselessIntegralExtension(slice, slConv))
                 {
-                    ctx.RemoveExpressionUse(slice.Expression);
                     return Constant.Zero(slice.DataType);
                 }
                 return null;
@@ -60,16 +59,12 @@ namespace Reko.Evaluation
                     result = slice.DataType.BitSize == conv.SourceDataType.BitSize
                         ? conv.Expression
                         : new Slice(slice.DataType, conv.Expression, 0);
-                    ctx.RemoveExpressionUse(slice);
-                    ctx.UseExpression(result);
                     return result;
                 }
                 if (CanSliceConversion(slice, conv))
                 {
                     result = new Conversion(
                         conv.Expression, conv.SourceDataType, slice.DataType);
-                    ctx.RemoveExpressionUse(slice);
-                    ctx.UseExpression(result);
                     return result;
                 }
             }

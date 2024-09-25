@@ -38,7 +38,6 @@ namespace Reko.Evaluation
                 return null;
             if (idLeft != idRight || binExp.Operator.Type != OperatorType.IAdd)
                 return null;
-            ctx.RemoveIdentifierUse(idLeft);
             return new BinaryExpression(Operator.IMul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
         }
 	}

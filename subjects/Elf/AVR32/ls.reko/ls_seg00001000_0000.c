@@ -1997,6 +1997,7 @@ l0000450A:
 					else
 						r8_n = r4_n /u r8_n;
 					Eq_n r7_n[] = r10_n->dw0004;
+					union Eq_n * lr_n = r9_n << 0x02;
 					if (r9_n != r12_n)
 						r8_n.u0 = 0x02;
 					if (r9_n == r12_n)
@@ -2007,7 +2008,7 @@ l0000450A:
 					if (r11_n < r9_n)
 					{
 						r10_n->dw0000 = r11_n.u2 + r10_n->dw0000 + r9_n;
-						null[r9_n].t0000.u2 = (byte *) r9_n;
+						lr_n->u2 = (byte *) r9_n;
 						r10_n->bFFFFFFFC = (byte) (r10_n->dw0000 < r2_n);
 					}
 				}

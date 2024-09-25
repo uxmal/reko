@@ -81,11 +81,6 @@ namespace Reko.Evaluation
                     int sizeDiff = lsbElem.DataType.Size - conversion.DataType.Size;
                     if (sizeDiff >= 0)
                     {
-                        foreach (var elem in seq.Expressions)
-                        {
-                            ctx.RemoveExpressionUse(elem);
-                        }
-                        ctx.UseExpression(lsbElem);
                         if (sizeDiff > 0)
                         {
                             return (new Conversion(lsbElem, lsbElem.DataType, conversion.DataType), true);

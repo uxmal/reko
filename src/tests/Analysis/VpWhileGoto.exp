@@ -170,8 +170,8 @@ Top_3: orig: Top
 si:si
     def:  def si
     uses: bx_5 = si
-          ax_28 = si_10 - si
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
+          ax_28 = si_10 - si
 bx_5: orig: bx
     def:  bx_5 = si
 si_7: orig: si
@@ -185,8 +185,8 @@ ax_9: orig: ax
     def:  ax_9 = Mem8[ds:si_7:word16]
     uses: SCZO_11 = cond(ax_9 - 0x20<16>)
           Mem14[ds:di:word16] = ax_9
-          ax_15 = ax_9
           branch ax_9 != 0x20<16> l0C00_0005
+          ax_15 = ax_9
           SZ_16 = cond(ax_9)
           branch ax_9 != 0<16> l0C00_0011
           SCZO_20 = cond(ax_9 - 0xD<16>)
@@ -194,9 +194,9 @@ ax_9: orig: ax
 si_10: orig: si
     def:  si_10 = si_7 + 2<i16>
     uses: ax_26 = si_10
+          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
+          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
           ax_28 = si_10 - si
-          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
-          si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
 SCZO_11: orig: SCZO
     def:  SCZO_11 = cond(ax_9 - 0x20<16>)
     uses: Z_12 = SLICE(SCZO_11, bool, 2) (alias)

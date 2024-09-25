@@ -410,10 +410,6 @@ namespace Reko.Scanning
             {
             }
 
-            public void RemoveIdentifierUse(Identifier id)
-            {
-            }
-
             public void SetValue(Identifier id, Expression value)
             {
             }

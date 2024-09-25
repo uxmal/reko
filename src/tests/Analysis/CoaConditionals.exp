@@ -22,8 +22,8 @@ ds:ds
           branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
 Mem0:Mem
     def:  def Mem0
-    uses: branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
-          Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
+    uses: Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
+          branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
           branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
 ax_6: orig: ax
 SCZO_7: orig: SCZO

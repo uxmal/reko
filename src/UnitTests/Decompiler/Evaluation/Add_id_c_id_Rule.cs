@@ -59,7 +59,6 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.IsNotNull(e);
             ass.Src = e;
             Assert.AreEqual("x = id *s 5<32>", ass.ToString());
-            Assert.AreEqual(1, ssaIds[id].Uses.Count);
         }
 
         /// <summary>

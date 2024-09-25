@@ -37,12 +37,9 @@ namespace Reko.Evaluation
             {
             case OperatorType.ISub:
             case OperatorType.Xor:
-                ctx.RemoveIdentifierUse(id);
-                ctx.RemoveIdentifierUse(id);
                 return Constant.Zero(binExp.DataType);
             case OperatorType.And:
             case OperatorType.Or:
-                ctx.RemoveIdentifierUse(id);
                 return id;
             }
             return null;

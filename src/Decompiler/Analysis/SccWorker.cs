@@ -52,7 +52,7 @@ namespace Reko.Analysis
         private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;  //$MUTABLE
         private readonly IReadOnlySet<Procedure> sccProcs;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly AnalysisContext context;
 
         public SccWorker(
@@ -105,7 +105,7 @@ namespace Reko.Analysis
                 vp.Transform(sst.SsaState);
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                dfa.DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState.Procedure);
+                dfa.DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState);
             }
 
             foreach (var sst in ssts)
@@ -116,12 +116,12 @@ namespace Reko.Analysis
                 RemoveImplicitRegistersFromHellNodes(ssa);
                 var prj = new ProjectionPropagator(context);
                 prj.Transform(ssa);
-                dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa.Procedure);
+                dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa);
 
                 // Stores of sliced long variables can be fused.
                 var stfu = new StoreFuser(context);
                 stfu.Transform(ssa);
-                dfa.DumpWatchedProcedure("stfu", "After store fusion", ssa.Procedure);
+                dfa.DumpWatchedProcedure("stfu", "After store fusion", ssa);
             }
 
             var uid = new UsedRegisterFinder(program, flow, procs, this.eventListener);
@@ -135,7 +135,7 @@ namespace Reko.Analysis
                 uid.ComputeLiveIn(ssa, true);
                 var procFlow = flow[ssa.Procedure];
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
-                dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa.Procedure);
+                dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa);
             }
             sw.Stop();
             Debug.Print("   SCC: {0} {1}ms ===", string.Join(",", sccProcs), sw.ElapsedMilliseconds);

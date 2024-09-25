@@ -223,10 +223,6 @@ namespace Reko.Core
             return Architecture.ReinterpretAsFloat(rawBits);
         }
 
-        public void RemoveIdentifierUse(Identifier id)
-        {
-        }
-
         public void UseExpression(Expression expr)
         {
         }

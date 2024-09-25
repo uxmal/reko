@@ -1160,7 +1160,7 @@ SsaProcedureBuilder_exit:
 
             vp.Transform(m.Ssa);
 
-            m.Ssa.Validate(s => Assert.Fail(s));
+            m.Ssa.Validate(s => { Console.WriteLine(m.Ssa); Assert.Fail(s); });
             AssertStringsEqual(sExp, m.Ssa);
         }
 

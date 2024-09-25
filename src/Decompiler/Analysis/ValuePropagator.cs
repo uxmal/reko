@@ -29,8 +29,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Scanning;
-using Reko.Services;
-using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -148,17 +146,26 @@ public class ValuePropagator : IAnalysis<SsaState>
 
         public (Instruction, bool) VisitAssignment(Assignment a)
         {
-            bool changed;
-            (a.Src, changed) = a.Src.Accept(eval);
-            var (src, changed2) = ReplaceIndirectCallToImport(a.Src);
+            var (src1, changed) = a.Src.Accept(eval);
+            var (src, changed2) = ReplaceIndirectCallToImport(src1);
+            if (changed|changed2)
+            {
+                evalCtx.RemoveExpressionUse(a.Src);
+                evalCtx.UseExpression(src);
+            }
             a.Src = src;
             return (a, changed|changed2);
         }
 
         public (Instruction, bool) VisitBranch(Branch b)
         {
-            bool changed;
-            (b.Condition, changed) = b.Condition.Accept(eval);
+            var (cond, changed) = b.Condition.Accept(eval);
+            if (changed)
+            {
+                evalCtx.RemoveExpressionUse(b.Condition);
+                evalCtx.UseExpression(cond);
+                b.Condition = cond;
+            }
             return (b, changed);
         }
 
@@ -168,6 +175,11 @@ public class ValuePropagator : IAnalysis<SsaState>
             var oldCallee = ci.Callee;
             bool changed;
             (ci.Callee, changed) = ci.Callee.Accept(eval);
+            if (changed)
+            {
+                evalCtx.RemoveExpressionUse(oldCallee);
+                evalCtx.UseExpression(ci.Callee);
+            }
             if (ci.Callee is ProcedureConstant pc)
             {
                 var sig = pc.Procedure.Signature;
@@ -192,6 +204,11 @@ public class ValuePropagator : IAnalysis<SsaState>
             foreach (var use in ci.Uses)
             {
                 var (e, c) = use.Expression.Accept(eval);
+                if (c)
+                {
+                    evalCtx.RemoveExpressionUse(use.Expression);
+                    evalCtx.UseExpression(e);
+                }
                 use.Expression = e;
                 changed |= c;
             }
@@ -237,34 +254,69 @@ public class ValuePropagator : IAnalysis<SsaState>
         public (Instruction, bool) VisitPhiAssignment(PhiAssignment phi)
         {
             var (src, changed) = phi.Src.Accept(eval);
+            if (!changed)
+                return (phi, false);
+            evalCtx.RemoveExpressionUse(phi.Src);
             if (src is PhiFunction f)
+            {
+                evalCtx.UseExpression(f);
                 return (new PhiAssignment(phi.Dst, f), changed);
+            }
             else
+            {
+                evalCtx.UseExpression(src);
                 return (new Assignment(phi.Dst, src), changed);
+            }
         }
 
         public (Instruction, bool) VisitReturnInstruction(ReturnInstruction ret)
         {
             bool changed = false;
-            if (ret.Expression != null)
-                (ret.Expression, changed) = ret.Expression.Accept(eval);
+            if (ret.Expression is not null)
+            {
+                Expression e;
+                (e, changed) = ret.Expression.Accept(eval);
+                if (changed)
+                {
+                    evalCtx.RemoveExpressionUse(ret.Expression);
+                    evalCtx.UseExpression(e);
+                    ret.Expression = e;
+                }
+            }
             return (ret, changed);
         }
 
         public (Instruction, bool) VisitSideEffect(SideEffect side)
         {
             var (exp, changed) = side.Expression.Accept(eval);
+            if (changed)
+            {
+                evalCtx.RemoveExpressionUse(side.Expression);
+                evalCtx.UseExpression(exp);
+            }
             return (new SideEffect(exp), changed);
         }
 
         public (Instruction, bool) VisitStore(Store store)
         {
-            bool srcChanged;
             bool dstChanged = false;
-            (store.Src, srcChanged) = store.Src.Accept(eval);
-            if (store.Dst is not Identifier idDst || (idDst.Storage is not OutArgumentStorage))
+            var (src, srcChanged) = store.Src.Accept(eval);
+            if (srcChanged)
             {
-                (store.Dst, dstChanged) = store.Dst.Accept(eval);
+                evalCtx.RemoveExpressionUse(store.Src);
+                evalCtx.UseExpression(src);
+                store.Src = src;
+            }
+            if (store.Dst is MemoryAccess mem)
+            {
+                Expression ea;
+                (ea, dstChanged) = mem.EffectiveAddress.Accept(eval);
+                if (dstChanged)
+                {
+                    evalCtx.RemoveExpressionUse(mem.EffectiveAddress);
+                    evalCtx.UseExpression(ea);
+                    store.Dst = new MemoryAccess(mem.MemoryId, ea, mem.DataType);
+                }
             }
             return (store, srcChanged|dstChanged);
         }
@@ -272,6 +324,11 @@ public class ValuePropagator : IAnalysis<SsaState>
         public (Instruction, bool) VisitSwitchInstruction(SwitchInstruction si)
         {
             var (exp, changed) = si.Expression.Accept(eval);
+            if (changed)
+            {
+                evalCtx.RemoveExpressionUse(si.Expression);
+                evalCtx.UseExpression(exp);
+            }
             return (new SwitchInstruction(exp, si.Targets), changed);
         }
 
@@ -296,7 +353,12 @@ public class ValuePropagator : IAnalysis<SsaState>
                 foreach (var use in ci.Uses)
                 {
                     var (e, c) = use.Expression.Accept(eval);
-                    use.Expression = e;
+                    if (c)
+                    {
+                        evalCtx.RemoveExpressionUse(use.Expression);
+                        evalCtx.UseExpression(e);
+                        use.Expression = e;
+                    }
                     changed |= c;
                 }
                 var abb = new CallApplicationBuilder(this.ssa, stm, ci, true);

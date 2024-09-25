@@ -2135,9 +2135,8 @@ l57C0:
 	wLoc1C_1086 = SLICE(dwLoc1C_2109, word16, 0) (alias)
 	branch SLICE(dwLoc1C_2109, word16, 16) < 0<16> l57CE
 l57CE:
-	v180_223 = ~wLoc1C_1086
 	bLoc24_1065 = 0x2D<8>
-	dwLoc1C_2109 = SEQ(SLICE(-dwLoc1C_2109, word16, 16), v180_223 + 1<16>) (alias)
+	dwLoc1C_2109 = SEQ(SLICE(-dwLoc1C_2109, word16, 16), -wLoc1C_1086) (alias)
 l57C6:
 	bLoc18_1092 = 0xA<8>
 	dwLoc1C_2112 = dwLoc1C_2109 (alias)

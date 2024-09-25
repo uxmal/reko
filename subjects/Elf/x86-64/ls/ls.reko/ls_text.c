@@ -6179,7 +6179,8 @@ uint64 fn000000000040CDC0(char * rdi, struct Eq_n * rsi, uint64 rdx, Eq_n rcx, w
 		}
 		goto l000000000040CF8C;
 	}
-	struct Eq_n * rax_n = malloc((rax_n.u4 + 1) * 0x04);
+	Eq_n r15_n = (rax_n.u4 + 1) * 0x04;
+	struct Eq_n * rax_n = malloc(r15_n);
 	qwLoc58_n = rax_n;
 	uint64 r12_n;
 	Eq_n rax_n;
@@ -6211,7 +6212,7 @@ l000000000040CE03:
 		rbp_n = null;
 		goto l000000000040CE08;
 	}
-	(rax_n - 4)[rax_n.u4 + 1] = 0x00;
+	*(rax_n - 4 + r15_n) = (word64) 0x00;
 	word32 edi_n = (word32) rax_n->w0000;
 	uint64 rdi_n = (uint64) edi_n;
 	Eq_n qwLoc48_n;

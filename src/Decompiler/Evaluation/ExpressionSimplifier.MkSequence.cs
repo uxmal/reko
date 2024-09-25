@@ -186,9 +186,6 @@ namespace Reko.Evaluation
                 ? m.Mem(access.MemoryId, dt, fusedEa)
                 : m.SegMem(access.MemoryId, dt, seg, fusedEa);
 
-            foreach (var e in elems)
-                ctx.RemoveExpressionUse(e);
-            ctx.UseExpression(result);
             return result;
         }
 
@@ -218,10 +215,6 @@ namespace Reko.Evaluation
             }
             if (changed)
             {
-                foreach (var e in elems)
-                    ctx.RemoveExpressionUse(e);
-                foreach (var f in fused)
-                    ctx.UseExpression(f);
                 if (fused.Count == 1)
                     return fused[0];
                 else
@@ -273,9 +266,6 @@ namespace Reko.Evaluation
             }
             if (mul is null)
                 return null;
-            foreach (var e in seq)
-                ctx.RemoveExpressionUse(e);
-            ctx.UseExpression(mul);
             if (dtSeq.BitSize < mul.DataType.BitSize)
             {
                 return m.Slice(mul, dtSeq, 0);
@@ -301,11 +291,6 @@ namespace Reko.Evaluation
                         mul = bin;
                 }
             }
-            if (mul is null)
-                return null;
-            foreach (var e in seq)
-                ctx.RemoveExpressionUse(e);
-            ctx.UseExpression(mul);
             return mul;
         }
 

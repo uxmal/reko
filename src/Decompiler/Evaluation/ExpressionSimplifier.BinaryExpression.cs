@@ -151,14 +151,12 @@ namespace Reko.Evaluation
                     // (| X 0xFFFF...F) ==> 0xFFFF...F
                     if (cRight.IsMaxUnsigned && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
-                        ctx.RemoveExpressionUse(left);
                         return (right, true);
                     }
                     break;
                 case OperatorType.And:
                     if (cRight.IsIntegerZero && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
-                        ctx.RemoveExpressionUse(left);
                         return (cRight, true);
                     }
                     if (cRight.IsMaxUnsigned && sameBitsize)
@@ -294,7 +292,6 @@ namespace Reko.Evaluation
                     var c = Operator.IMul.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     if (c.IsIntegerZero && !CriticalInstruction.IsCritical(binLeft))
                     {
-                        ctx.RemoveExpressionUse(binLeft);
                         return (c, true);
                     }
                     else
@@ -348,7 +345,6 @@ namespace Reko.Evaluation
                         binLeft.Operator.Type == OperatorType.ISub &&
                         !cRight.IsIntegerZero)
                     {
-                        ctx.UseExpression(binLeft.Left);
                         var c = Operator.IAdd.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                         return (m.Cor(
                             new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
@@ -357,7 +353,6 @@ namespace Reko.Evaluation
                     }
                     else
                     {
-                        ctx.RemoveIdentifierUse(idLeft!);
                         var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
                         var c = op.ApplyConstants(binExp.DataType, cRight, cLeftRight);
                         return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
@@ -365,7 +360,6 @@ namespace Reko.Evaluation
                 }
                 else if (binLeft.Operator.Type == OperatorType.USub)
                 {
-                    ctx.RemoveIdentifierUse(idLeft!);
                     var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
                     var c = op.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     var opCmp = ((ConditionalOperator) binExp.Operator).ToUnsigned();
@@ -539,15 +533,12 @@ namespace Reko.Evaluation
                             new BinaryExpression(
                                 Operator.IMul, idRight.DataType, idRight,
                                 Constant.Create(idRight.DataType, 2)));
-                        ctx.RemoveIdentifierUse(idRight);
                         return (binExp, true);
                     }
                     else
                     {
                         // ((e+id)-id) ==> e
                         // ((e-id)+id) ==> e
-                        ctx.RemoveIdentifierUse(idRight);
-                        ctx.RemoveIdentifierUse(idRight);
                         return (binLeft.Left, true);
                     }
                 }
@@ -646,7 +637,6 @@ namespace Reko.Evaluation
             {
                 var shLeft = 1 << cLeft.ToInt32();
                 var shRight = 1 << cRight.ToInt32();
-                ctx.RemoveExpressionUse(right.Left);
                 return m.IMul(left.Left,
                     bin.Operator.Type == OperatorType.IAdd
                         ? shLeft + shRight
@@ -668,7 +658,6 @@ namespace Reko.Evaluation
             {
                 var mLeft = cLeft.ToInt32();
                 var mRight = cRight.ToInt32();
-                ctx.RemoveExpressionUse(right.Left);
                 return new BinaryExpression(left.Operator, left.DataType,
                     left.Left,
                     Constant.Create(
@@ -693,8 +682,6 @@ namespace Reko.Evaluation
                     (binInner.Operator.Type == OperatorType.Shr || binInner.Operator.Type == OperatorType.Sar) &&
                     cmp.Equals(cRight, binInner.Right))
                 {
-                    ctx.RemoveExpressionUse(idLeft);
-                    ctx.UseExpression(binInner.Left);
                     var sig = FunctionType.Func(
                         new Identifier("", bin.DataType, null!),
                         new Identifier("x", binInner.Left.DataType, null!),

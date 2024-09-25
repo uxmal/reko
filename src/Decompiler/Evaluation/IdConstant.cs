@@ -52,7 +52,6 @@ namespace Reko.Evaluation
             var ptr = dt?.ResolveAs<Pointer>();
             if (ptr is null)
             {
-                ctx.RemoveIdentifierUse(idDst);
                 var cNew = src!.CloneExpression();
                 if (src.DataType.IsWord &&
                     cSrc is not null &&
@@ -69,14 +68,12 @@ namespace Reko.Evaluation
             {
                 if (cSrc is not null)
                 {
-                    ctx.RemoveIdentifierUse(idDst);
                     var addr = Address.Create(ptr, cSrc.ToUInt64());
                     addr.DataType = ptr;
                     return addr;
                 }
                 if (src is Address)
                 {
-                    ctx.RemoveIdentifierUse(idDst);
                     var addr = src.CloneExpression();
                     addr.DataType = ptr;
                     return addr;

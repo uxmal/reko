@@ -43,8 +43,6 @@ namespace Reko.Evaluation
             if (bin.Left is not Identifier || bin.Right is not Constant)
                 return null;
 
-            ctx.RemoveIdentifierUse(id);
-            ctx.UseExpression(bin);
             return bin!;
 		}
 	}

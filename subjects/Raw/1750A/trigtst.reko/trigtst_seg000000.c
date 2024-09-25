@@ -324,8 +324,7 @@ l00000406:
 		{
 			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t060A.u1;
 			word16 gp14_n = (word16) gp12_gp13_gp14_n;
-			real48 gp4_gp5_gp6_n = SEQ((word32) gp12_gp13_gp14_n, gp14_n);
-			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) ((int32) gp4_gp5_gp6_n);
+			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) ((int32) SEQ((word32) gp12_gp13_gp14_n, gp14_n));
 			gp14 = (word16) gp12_gp13_gp14_n;
 			++gp7_n;
 			if ((gp7_n & 0x8000) != 0x00)
