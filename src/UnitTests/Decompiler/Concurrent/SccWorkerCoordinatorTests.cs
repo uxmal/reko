@@ -174,7 +174,6 @@ namespace Reko.UnitTests.Decompiler.Concurrent
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             coordinator.RunAsync().Wait();
-            Console.WriteLine("Wallclock time: {0}ms", stopwatch.ElapsedMilliseconds);
 
             var sw = new StringWriter();
             sw.WriteLine();
