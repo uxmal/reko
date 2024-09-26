@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -29,7 +28,7 @@ namespace Reko.Core
 {
     /// <summary>
     /// Models a procedure in an external API, whose signature is known, but 
-    /// whose code is irrelevant to the decompilation.
+    /// whose code is not included in decompilation.
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{

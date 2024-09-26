@@ -28,6 +28,9 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// A web is the union of one or more <see cref="SsaIdentifier">SSA identifiers</see>.
+    /// </summary>
     public class Web
 	{
 		public Web()
@@ -38,9 +41,9 @@ namespace Reko.Analysis
 		}
 
         public Identifier? Identifier { get; private set; }
-        public HashSet<SsaIdentifier> Members { get; private set; }
-        public HashSet<Statement> Uses { get; private set; }
-        public HashSet<Statement> Definitions { get; private set; }
+        public HashSet<SsaIdentifier> Members { get; }
+        public HashSet<Statement> Uses { get; }
+        public HashSet<Statement> Definitions { get; }
 
         public void Add(SsaIdentifier sid)
 		{
@@ -81,7 +84,7 @@ namespace Reko.Analysis
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}
-        
+
 		public LinearInductionVariable? InductionVariable { get; private set; }
 
 		public void Write(TextWriter writer)

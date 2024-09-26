@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System.Runtime.InteropServices;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Reko.ImageLoaders.DiskImages.TwoMG
 {

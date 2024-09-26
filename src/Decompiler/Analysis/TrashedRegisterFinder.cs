@@ -576,8 +576,8 @@ namespace Reko.Analysis
                     var value = ctx.GetValue(id);
                     if (value is Identifier idV && idV == sid.OriginalIdentifier)
                     {
-                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
-                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.PreservedFlags[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.PreservedFlags.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
                         ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
                             ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
                     }
@@ -585,8 +585,8 @@ namespace Reko.Analysis
                     {
                         ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
                             ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
-                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
-                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.PreservedFlags[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.PreservedFlags.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
                     }
                     return true;
                 }

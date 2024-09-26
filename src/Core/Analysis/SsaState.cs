@@ -55,7 +55,9 @@ namespace Reko.Core.Analysis
         /// <paramref name="stmts"/> statement list, or -1 if there was none.
         /// </summary>
         /// <param name="stmts"></param>
-        /// <returns></returns>
+        /// <returns>The index of the last <see cref="DefInstruction"/>
+        /// or -1 if there is none.
+        /// </returns>
         private static int LastDefPosition(StatementList stmts)
         {
             for (int i = stmts.Count - 1; i >= 0; --i)
@@ -112,7 +114,7 @@ namespace Reko.Core.Analysis
 		}
 
         /// <summary>
-        /// Validates the SSA state for consistency. If found inconsisted, the <paramref name="error"/> 
+        /// Validates the SSA state for consistency. If found inconsistent, the <paramref name="error"/> 
         /// callback is called, passing an error message suitable for a Debug.Assert call.
         /// </summary>
         /// <param name="error">Callback for raising errors.</param>
@@ -284,9 +286,10 @@ namespace Reko.Core.Analysis
 
         /// <summary>
         /// Deletes a statement by removing all the ids it references 
-        /// from SSA state, then removes the statement itself from code.
+        /// from SSA state, then removes the statement itself from 
+        /// the <see cref="Block"/> it is contained in.
         /// </summary>
-        /// <param name="stm"></param>
+        /// <param name="stm">The <see cref="Statement"/> to delete.</param>
         public void DeleteStatement(Statement stm)
 		{
 			// Remove all definitions and uses.
@@ -303,7 +306,9 @@ namespace Reko.Core.Analysis
 		/// Writes all SSA identifiers, showing the original variable,
 		/// the defining statement, and the using statements.
 		/// </summary>
-		/// <param name="writer"></param>
+		/// <param name="writer"><see cref="TextWriter"/> into which the
+        /// formatted output is written.
+        /// </param>
 		public void Write(TextWriter writer)
 		{
 			foreach (SsaIdentifier id in Identifiers)

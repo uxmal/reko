@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 				w.WriteLine();
 				DataFlow.EmitRegisters(program.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.Trashed, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(program.Architecture, "\tPreserved:", flow.grfPreserved, flow.Preserved, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tPreserved:", flow.PreservedFlags, flow.Preserved, w);
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);

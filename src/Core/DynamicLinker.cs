@@ -38,6 +38,25 @@ namespace Reko.Core
     /// </summary>
     public interface IDynamicLinker
     {
+        /// <summary>
+        /// Find an external procedure, based on its name. The optional
+        /// <paramref name="moduleName"/> allows specifying a particular
+        /// code module hosting the external procedure.
+        /// </summary>
+        /// <param name="moduleName">
+        /// Optional name of the module hosting the externa procedure.
+        /// </param>
+        /// <param name="importName">
+        /// The name of the external procedure.
+        /// </param>
+        /// <param name="platform">
+        /// The operating environment hosting the executable program.
+        /// </param>
+        /// <returns>
+        /// If an external procedure matching <paramref name="importName"/>
+        /// and <paramref name="moduleName"/> can be located, it is returned,
+        /// otherwise null.
+        /// </returns>
         ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform);
         ExternalProcedure? ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
         Expression? ResolveImport(string? moduleName, string globalName, IPlatform platform);

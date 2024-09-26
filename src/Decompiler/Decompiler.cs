@@ -356,9 +356,10 @@ namespace Reko
         /// <remarks>
         /// //$REFACTOR: this is using C++-style comments. This should be in a HLL-specific class.
         /// </remarks>
-        /// <param name="program"></param>
-        /// <param name="proc"></param>
-        /// <param name="w"></param>
+        /// <param name="program">Program in which <paramref name="proc"/> is located.</param>
+        /// <param name="proc">Procedure whose heder is to rendered.</param>
+        /// <param name="w"><see cref="TextWriter"/> into which the output is written.
+        /// </param>
         private void WriteProcedureHeader(Program program, Procedure proc, TextWriter w)
         {
             w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);

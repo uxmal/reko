@@ -157,9 +157,12 @@ namespace Reko.Analysis
         /// <returns>The bit range used by sid</returns>
         public BitRange Classify(SsaIdentifier sid)
         {
+            var idPrev = idCur;
             idCur = sid.Identifier;
-            return sid.Uses
+            var result = sid.Uses
                 .Aggregate(BitRange.Empty, (w, stm) => w | stm.Instruction.Accept(this));
+            idCur = idPrev;
+            return result;
         }
 
         private DataType DataTypeOf(
@@ -231,27 +234,20 @@ namespace Reko.Analysis
                 {
                     // A simple assignment a = b is a copy, and so we must chase
                     // the uses of a.
-                    var idOld = idCur;
-                    idCur = ass.Dst;
                     var n = Classify(ssa.Identifiers[ass.Dst]);
-                    idCur = idOld;
                     return n;
                 }
             case Slice slice:
                 {
                     // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
-                    var idOld = idCur;
                     var n = Classify(ssa.Identifiers[ass.Dst]);
                     n <<= slice.Offset;
-                    idCur = idOld;
                     return n;
                 }
             case MkSequence seq:
                 {
                     // First verify that we are indeed using the sequence.
-                    var idOld = idCur;
                     var n = Classify(ssa.Identifiers[ass.Dst]);
-                    idCur = idOld;
                     if (n.IsEmpty)
                         return n;
                     // Now check the elements of the sequence.
@@ -315,10 +311,8 @@ namespace Reko.Analysis
             if (!visited.TryGetValue(phi, out BitRange value))
             {
                 visited[phi] = BitRange.Empty;
-                var idOld = this.idCur;
                 value = Classify(ssa!.Identifiers[phi.Dst]);
                 visited[phi] = value;
-                this.idCur = idOld;
             }
             return value;
         }

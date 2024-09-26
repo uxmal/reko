@@ -43,7 +43,7 @@ namespace Reko.Analysis
         /// A collection of each storage that is live-in to the procedure,
         /// and the bits that are live in.
         /// </summary>
-        public Dictionary<Storage, BitRange> BitsUsed;
+        public Dictionary<Storage, BitRange> BitsUsed { get; set; }
 
         /// <summary>
         /// The data types inferred for each live-in storage.
@@ -65,23 +65,58 @@ namespace Reko.Analysis
         /// </remarks>
         public Dictionary<Storage, LiveOutUse> BitsLiveOut { get; set; }
 
+        /// <summary>
+        /// A collection of all flag groups that are live-out after the 
+        /// procedure is called, grouped by the flag register in which
+        /// they are located.
+        /// </summary>
         public Dictionary<RegisterStorage, LiveOutFlagsUse> LiveOutFlags { get; set; }
 
-        public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
-		public Dictionary<RegisterStorage, uint> grfPreserved;
+        /// <summary>
+        /// Registers explicitly preserved by the procedure.
+        /// </summary>
+        /// <remarks>
+        /// Registers are typically preserved when register values are pushed
+        /// to the stack at the entry of the procedure, and popped before 
+        /// leaving.
+        /// </remarks>
+        public HashSet<Storage> Preserved { get; }
 
-		public Dictionary<RegisterStorage,uint> grfTrashed;
-		public HashSet<Storage> Trashed;        // Registers globally trashed by procedure and/or callees.
-        
+        /// <summary>
+        /// Flag bits explicitly preserved by the procedure, organized
+        /// by the status register in which they are stored.
+        /// </summary>
+        /// <remarks>
+        /// This typically occurs register values are pushed to the
+        /// stack at the entry of the procedure, and popped before 
+        /// leaving.
+        /// </remarks>
+		public Dictionary<RegisterStorage, uint> PreservedFlags { get; }
+
+        /// <summary>
+        /// Registers that have been modified at the end of the execution of
+        /// the <see cref="Procedure"/>.
+        /// </summary>
+        public HashSet<Storage> Trashed { get; }
+
+        /// <summary>
+        /// Condition code flags that have been modified at the end of the execution of
+        /// the <see cref="Procedure"/>, grouped by the status register they
+        /// are part of.
+        /// </summary>
+        public Dictionary<RegisterStorage, uint> grfTrashed { get; }
+
         /// <summary>
         /// If present, indicates a register always has a constant value
         /// leaving the procedure.
         /// </summary>
-        public Dictionary<Storage, Constant> Constants; 
+        public Dictionary<Storage, Constant> Constants { get; }
 
-        // True if calling this procedure terminates the thread/process. This implies
-        // that no code path reached the exit block without first terminating the process.
-        public bool TerminatesProcess;
+        /// <summary>
+        /// True if calling this procedure terminates the thread/process. This implies
+        /// that no code path reached the exit block without first terminating the process.
+        /// </summary>
+        public bool TerminatesProcess { get; set; }
 
         public ProcedureFlow(Procedure proc)
         {
@@ -92,7 +127,7 @@ namespace Reko.Analysis
             Constants = new Dictionary<Storage, Constant>();
 
             grfTrashed = new Dictionary<RegisterStorage, uint>();
-            grfPreserved = new Dictionary<RegisterStorage, uint>();
+            PreservedFlags = new Dictionary<RegisterStorage, uint>();
             LiveOutFlags = new Dictionary<RegisterStorage, LiveOutFlagsUse>();
 
             BitsLiveOut = new Dictionary<Storage, LiveOutUse>();
@@ -118,7 +153,7 @@ namespace Reko.Analysis
 			writer.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
 			writer.WriteLine();
-			EmitRegisters(arch, "// Preserved:", grfPreserved, Preserved, writer);
+			EmitRegisters(arch, "// Preserved:", PreservedFlags, Preserved, writer);
 			writer.WriteLine();
             if (TerminatesProcess)
                 writer.WriteLine("// Terminates process");

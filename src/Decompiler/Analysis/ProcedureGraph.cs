@@ -25,6 +25,10 @@ using System.Collections.Generic;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// This class is a wrapper for the <see cref="CallGraph"/> of a program.
+    /// The edges go from calling procedure to called procedure.
+    /// </summary>
     public class ProcedureGraph : DirectedGraph<Procedure>
     {
         private readonly CallGraph cg;

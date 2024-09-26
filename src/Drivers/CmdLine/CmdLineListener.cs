@@ -66,15 +66,6 @@ namespace Reko.CmdLine
             return new NullCodeLocation(addrIndirectJump.ToString());
         }
 
-        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
-        {
-            EnsureNewLine();
-            Console.Out.WriteLine("{0}: {1}: {2}",
-                location.Text,
-                d.ImageKey,
-                d.Message);
-        }
-
         public void Info(string message)
         {
             EnsureNewLine();

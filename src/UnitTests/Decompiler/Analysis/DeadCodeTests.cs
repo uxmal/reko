@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var proc = new Procedure(m.Architecture, name, Address.Ptr32(0x00123400), m.Architecture.CreateFrame());
             var flow = new ProcedureFlow(proc);
             flow.BitsUsed = uses.ToDictionary(u => u, u => new BitRange(0, (int)u.BitSize / 8));
-            flow.Trashed = defs.ToHashSet();
+            flow.Trashed.UnionWith(defs);
             this.programDataFlow[proc] = flow;
             return proc;
         }

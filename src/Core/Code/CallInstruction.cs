@@ -87,17 +87,17 @@ namespace Reko.Core.Code
         /// The <see cref="Storage"/> used for an argument to a call. The storage
         /// is relative to the caller's frame.
         /// </summary>
-        public Storage Storage;
+        public Storage Storage { get; }
 
         /// <summary>
         /// The argument expression bound to a parameter of a call.
         /// </summary>
-        public Expression Expression;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// Argument bits used by the callee.
         /// </summary>
-        public BitRange BitRange;
+        public BitRange BitRange { get; }
 
         public CallBinding(Storage stg, Expression exp)
         {

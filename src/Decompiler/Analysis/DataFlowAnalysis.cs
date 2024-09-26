@@ -314,7 +314,7 @@ namespace Reko.Analysis
         public void ClearTestFiles()
         {
             var testSvc = this.services.GetService<ITestGenerationService>();
-            if (testSvc != null)
+            if (testSvc is not null)
             {
                 testSvc.RemoveFiles("analysis_");
             }

@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Models a user-specified global varaible.
+    /// </summary>
     public class UserGlobal
     {
         public Address Address { get; set; }

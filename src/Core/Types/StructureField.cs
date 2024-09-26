@@ -187,7 +187,7 @@ namespace Reko.Core.Types
         }
 
         /// <summary>
-        /// Returns the structurefield exactly located at the specified offset.
+        /// Returns the structure field exactly located at the specified offset.
         /// </summary>
         /// <param name="offset">Offset (in bytes) of the field to retrieve.</param>
         /// <returns>The requested StructureField if it exists at <paramref>offset</paramref>, otherwise null.</returns>
