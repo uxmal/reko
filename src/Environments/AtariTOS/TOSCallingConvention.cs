@@ -29,6 +29,12 @@ namespace Reko.Environments.AtariTOS
 {
     // The TOSCall calling convention takes all arguments on stack, ignoring 
     // the first one since it is the system call selector.
+    // From the GEMDOS manual:
+    //      Results are returned in DO. Registers DO-D2 and AO-A2
+    //      can be modified; registers D3-D7 and A3-A7 will always be
+    //      preserved.The caller is responsible for popping the arguments
+    //      (including the function number) off of the stack after
+    // the call.
     public class TOSCallingConvention : AbstractCallingConvention
     {
         private readonly IProcessorArchitecture arch;

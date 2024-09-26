@@ -49,9 +49,9 @@ namespace Reko.Environments.AtariTOS
 
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
-            if (ccName == "TOSCall")
+            if (ccName == "TOScall")
                 return new TOSCallingConvention(this.Architecture);
-            throw new NotImplementedException();
+            return new CallingConvention(this.Architecture);
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
@@ -61,8 +61,12 @@ namespace Reko.Environments.AtariTOS
             {
                 if (!module.ServicesByVector.TryGetValue(vector, out var svc))
                     continue;
+                foreach (SystemService service in svc)
+                {
+                    if (service.SyscallInfo is not null && service.SyscallInfo.Matches(vector, state))
+                        return service;
+                }
             }
-            //$BUG: does no work?
             return null;
         }
 
