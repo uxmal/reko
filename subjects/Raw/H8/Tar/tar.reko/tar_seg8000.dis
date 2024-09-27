@@ -1556,8 +1556,8 @@ byte fn00009B66()
 fn00009B66_entry:
 l00009B66:
 	r0_11 = fn00009E18(out r1_12, out r2l_49)
-	r0l_27 = SLICE(r0_11, byte, 0) + (cond(SLICE(r1_12 + 1<16>, byte, 8)) & 1<8>)
-	Mem34[0x9E90<p16>:word16] = SEQ(SLICE(r0_11, byte, 8) + (cond(r0l_27) & 1<8>), r0l_27)
+	r0l_27 = SLICE(r0_11, byte, 0) + CONVERT(SLICE(r1_12 + 1<16>, byte, 8) <u 0<8>, bool, byte)
+	Mem34[0x9E90<p16>:word16] = SEQ(SLICE(r0_11, byte, 8) + CONVERT(r0l_27 <u 0<8>, bool, byte), r0l_27)
 	Mem36[0x9E92<p16>:word16] = r1_12 + 1<16>
 	return Mem36[0x9E92<p16>:byte]
 fn00009B66_exit:

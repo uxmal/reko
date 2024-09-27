@@ -747,13 +747,12 @@ l0800_0A5E_1:
 	branch Mem99[es_364:di_110:byte] == 0<8> l0800_0A5E
 l0800_0A60:
 	cx_117 = ~cx_106
-	cmpResult_125 = memcmp(ds_100:si_95, es_364:di_110 - cx_117, CONVERT(cx_117, word16, uint32))
 	ax_136 = 0<16>
-	SCZO_130 = cond(cmpResult_125)
+	cmpResult_125 = memcmp(ds_100:si_95, es_364:di_110 - cx_117, CONVERT(cx_117, word16, uint32))
 	branch cmpResult_125 == 0<16> l0800_0A6D
 l0800_0A68:
-	ax_133 = 0<16> - (SCZO_130 & 2<32>)
-	ax_136 = ax_133 - 0xFFFF<16> - (cond(ax_133) & 2<32>)
+	ax_133 = 0<16> - CONVERT(cmpResult_125 <u 0<16>, bool, word16)
+	ax_136 = ax_133 - 0xFFFF<16> - CONVERT(ax_133 <u 0<16>, bool, word16)
 l0800_0A6D:
 	ds_146 = Mem99[ss:sp_59 + 2<16>:selector]
 	branch ax_136 != 0<16> l0800_09FF
@@ -1044,11 +1043,10 @@ l0800_0CBB:
 	cmpResult_69 = memcmp(ds:0x2714<16>, ss:di_62, CONVERT(cx_60, word16, uint32))
 	ax_80 = 0<16>
 	cx_198 = cx_60 - __find_first_difference__(ds:0x2714<16>, ss:di_62)
-	SCZO_74 = cond(cmpResult_69)
 	branch cmpResult_69 == 0<16> l0800_0CC8
 l0800_0CC3:
-	ax_77 = 0<16> - (SCZO_74 & 2<32>)
-	ax_80 = ax_77 - 0xFFFF<16> - (cond(ax_77) & 2<32>)
+	ax_77 = 0<16> - CONVERT(cmpResult_69 <u 0<16>, bool, word16)
+	ax_80 = ax_77 - 0xFFFF<16> - CONVERT(ax_77 <u 0<16>, bool, word16)
 l0800_0CC8:
 	branch ax_80 == 0<16> l0800_0D0D
 l0800_0CCC:
@@ -3467,13 +3465,12 @@ l0800_28D4_1:
 	branch Mem193[es_316:di_204:byte] == 0<8> l0800_28D4
 l0800_28D6:
 	cx_211 = ~cx_200
-	cmpResult_219 = memcmp(ptrLoc0A_480 + 2<32>, es_316:di_204 - cx_211, CONVERT(cx_211, word16, uint32))
 	ax_230 = 0<16>
-	SCZO_224 = cond(cmpResult_219)
+	cmpResult_219 = memcmp(ptrLoc0A_480 + 2<32>, es_316:di_204 - cx_211, CONVERT(cx_211, word16, uint32))
 	branch cmpResult_219 == 0<16> l0800_28E3
 l0800_28DE:
-	ax_227 = 0<16> - (SCZO_224 & 2<32>)
-	ax_230 = ax_227 - 0xFFFF<16> - (cond(ax_227) & 2<32>)
+	ax_227 = 0<16> - CONVERT(cmpResult_219 <u 0<16>, bool, word16)
+	ax_230 = ax_227 - 0xFFFF<16> - CONVERT(ax_227 <u 0<16>, bool, word16)
 l0800_28E3:
 	branch ax_230 != 0<16> l0800_28F4
 l0800_28F4:
@@ -3541,13 +3538,12 @@ l0800_296F_1:
 	branch Mem88[es_256:di_102:byte] == 0<8> l0800_296F
 l0800_2971:
 	cx_106 = ~cx_103
-	cmpResult_114 = memcmp(ptrArg06_278, es_256:di_102 - cx_106, CONVERT(cx_106, word16, uint32))
 	ax_125 = 0<16>
-	SCZO_119 = cond(cmpResult_114)
+	cmpResult_114 = memcmp(ptrArg06_278, es_256:di_102 - cx_106, CONVERT(cx_106, word16, uint32))
 	branch cmpResult_114 == 0<16> l0800_297E
 l0800_2979:
-	ax_122 = 0<16> - (SCZO_119 & 2<32>)
-	ax_125 = ax_122 - 0xFFFF<16> - (cond(ax_122) & 2<32>)
+	ax_122 = 0<16> - CONVERT(cmpResult_114 <u 0<16>, bool, word16)
+	ax_125 = ax_122 - 0xFFFF<16> - CONVERT(ax_122 <u 0<16>, bool, word16)
 l0800_297E:
 	branch ax_125 != 0<16> l0800_298D
 l0800_298D:
@@ -3796,11 +3792,10 @@ l0800_2BDA:
 	cmpResult_654 = memcmp(ds_624:si_618 + 2<16>, ss:di_648, CONVERT(cx_646, word16, uint32))
 	ax_665 = 0<16>
 	si = si_618 + 2<16> + __find_first_difference__(ds_624:si_618 + 2<16>, ss:di_648)
-	SCZO_659 = cond(cmpResult_654)
 	branch cmpResult_654 == 0<16> l0800_2BE7
 l0800_2BE2:
-	ax_662 = 0<16> - (SCZO_659 & 2<32>)
-	ax_665 = ax_662 - 0xFFFF<16> - (cond(ax_662) & 2<32>)
+	ax_662 = 0<16> - CONVERT(cmpResult_654 <u 0<16>, bool, word16)
+	ax_665 = ax_662 - 0xFFFF<16> - CONVERT(ax_662 <u 0<16>, bool, word16)
 l0800_2BE7:
 	branch ax_665 == 0<16> l0800_2C29
 l0800_2C29:
@@ -4300,11 +4295,10 @@ l0800_315C:
 	ax_1152 = 0<16>
 	cx_1143 = cx_1133 - firstDifference_1142
 	si_1144 = wArg02_1436 + firstDifference_1142
-	SCZO_1146 = cond(cmpResult_1141)
 	branch cmpResult_1141 == 0<16> l0800_3169
 l0800_3164:
-	ax_1149 = 0<16> - (SCZO_1146 & 2<32>)
-	ax_1152 = ax_1149 - 0xFFFF<16> - (cond(ax_1149) & 2<32>)
+	ax_1149 = 0<16> - CONVERT(cmpResult_1141 <u 0<16>, bool, word16)
+	ax_1152 = ax_1149 - 0xFFFF<16> - CONVERT(ax_1149 <u 0<16>, bool, word16)
 l0800_3169:
 	branch ax_1152 == 0<16> l0800_3195
 l0800_316E:
@@ -4324,11 +4318,10 @@ l0800_3183:
 	ax_1222 = 0<16>
 	cx_1143 = cx_1203 - firstDifference_1212
 	si_1144 = wArg02_1436 + firstDifference_1212
-	SCZO_1216 = cond(cmpResult_1211)
 	branch cmpResult_1211 == 0<16> l0800_3190
 l0800_318B:
-	ax_1219 = 0<16> - (SCZO_1216 & 2<32>)
-	ax_1222 = ax_1219 - 0xFFFF<16> - (cond(ax_1219) & 2<32>)
+	ax_1219 = 0<16> - CONVERT(cmpResult_1211 <u 0<16>, bool, word16)
+	ax_1222 = ax_1219 - 0xFFFF<16> - CONVERT(ax_1219 <u 0<16>, bool, word16)
 l0800_3190:
 	branch ax_1222 != 0<16> l0800_31A7
 l0800_31A7:
@@ -4498,13 +4491,12 @@ l0800_33A0_1:
 	branch Mem77[ss:di_290:byte] == 0<8> l0800_33A0
 l0800_33A2:
 	cx_96 = ~cx_85
-	cmpResult_104 = memcmp(ss:fp - 16<i16>, ss:di_290 - cx_96, CONVERT(cx_96, word16, uint32))
 	ax_115 = 0<16>
-	SCZO_109 = cond(cmpResult_104)
+	cmpResult_104 = memcmp(ss:fp - 16<i16>, ss:di_290 - cx_96, CONVERT(cx_96, word16, uint32))
 	branch cmpResult_104 == 0<16> l0800_33AF
 l0800_33AA:
-	ax_112 = 0<16> - (SCZO_109 & 2<32>)
-	ax_115 = ax_112 - 0xFFFF<16> - (cond(ax_112) & 2<32>)
+	ax_112 = 0<16> - CONVERT(cmpResult_104 <u 0<16>, bool, word16)
+	ax_115 = ax_112 - 0xFFFF<16> - CONVERT(ax_112 <u 0<16>, bool, word16)
 l0800_33AF:
 	branch ax_115 != 0<16> l0800_33C7
 l0800_33B4:
@@ -4539,24 +4531,22 @@ fn0800_33CD_entry:
 l0800_33CD:
 	branch fn0800_A817(0x23<8>, ds, dwArg08, SEQ(ds, 0x4623<16>), wArg06, out cx_33, out dx_34) == 0<16> l0800_33F1
 l0800_33F1:
-	cmpResult_56 = memcmp(ds:0x4641<16>, ds:0xA3B<16>, 2<u32>)
 	ax_55 = 0<16>
-	SCZO_61 = cond(cmpResult_56)
+	cmpResult_56 = memcmp(ds:0x4641<16>, ds:0xA3B<16>, 2<u32>)
 	branch cmpResult_56 == 0<16> l0800_3407
 l0800_3402:
-	ax_64 = 0<16> - (SCZO_61 & 2<32>)
-	ax_55 = ax_64 - 0xFFFF<16> - (cond(ax_64) & 2<32>)
+	ax_64 = 0<16> - CONVERT(cmpResult_56 <u 0<16>, bool, word16)
+	ax_55 = ax_64 - 0xFFFF<16> - CONVERT(ax_64 <u 0<16>, bool, word16)
 l0800_3407:
 	branch ax_55 == 0<16> l0800_3431
 l0800_340B:
 	cmpResult_86 = memcmp(ds:0x4641<16>, ds:0xA3D<16>, 3<u32>)
 	ax_85 = 0<16>
 	cx_179 = 3<16> - __find_first_difference__(ds:0x4641<16>, ds:0xA3D<16>)
-	SCZO_91 = cond(cmpResult_86)
 	branch cmpResult_86 == 0<16> l0800_3421
 l0800_341C:
-	ax_94 = 0<16> - (SCZO_91 & 2<32>)
-	ax_85 = ax_94 - 0xFFFF<16> - (cond(ax_94) & 2<32>)
+	ax_94 = 0<16> - CONVERT(cmpResult_86 <u 0<16>, bool, word16)
+	ax_85 = ax_94 - 0xFFFF<16> - CONVERT(ax_94 <u 0<16>, bool, word16)
 l0800_3421:
 	branch ax_85 == 0<16> l0800_3431
 l0800_3425:
@@ -4611,24 +4601,22 @@ l0800_3479:
 l0800_347E:
 	branch fn0800_A84A(0x23<8>, ds, SEQ(ds, 0x4623<16>), out cx_26, out dx_27) == 0<16> l0800_3494
 l0800_3494:
-	cmpResult_49 = memcmp(ds:0x4641<16>, ds:0xA3B<16>, 2<u32>)
 	ax_48 = 0<16>
-	SCZO_54 = cond(cmpResult_49)
+	cmpResult_49 = memcmp(ds:0x4641<16>, ds:0xA3B<16>, 2<u32>)
 	branch cmpResult_49 == 0<16> l0800_34AA
 l0800_34A5:
-	ax_57 = 0<16> - (SCZO_54 & 2<32>)
-	ax_48 = ax_57 - 0xFFFF<16> - (cond(ax_57) & 2<32>)
+	ax_57 = 0<16> - CONVERT(cmpResult_49 <u 0<16>, bool, word16)
+	ax_48 = ax_57 - 0xFFFF<16> - CONVERT(ax_57 <u 0<16>, bool, word16)
 l0800_34AA:
 	branch ax_48 == 0<16> l0800_347E
 l0800_34AE:
 	cmpResult_79 = memcmp(ds:0x4641<16>, ds:0xA3D<16>, 3<u32>)
 	ax_78 = 0<16>
 	cx_173 = 3<16> - __find_first_difference__(ds:0x4641<16>, ds:0xA3D<16>)
-	SCZO_84 = cond(cmpResult_79)
 	branch cmpResult_79 == 0<16> l0800_34C4
 l0800_34BF:
-	ax_87 = 0<16> - (SCZO_84 & 2<32>)
-	ax_78 = ax_87 - 0xFFFF<16> - (cond(ax_87) & 2<32>)
+	ax_87 = 0<16> - CONVERT(cmpResult_79 <u 0<16>, bool, word16)
+	ax_78 = ax_87 - 0xFFFF<16> - CONVERT(ax_87 <u 0<16>, bool, word16)
 l0800_34C4:
 	branch ax_78 == 0<16> l0800_347E
 l0800_34C8:
@@ -7982,13 +7970,12 @@ l0800_5E64:
 l0800_5E7E:
 	cx_23 = 3<16>
 l0800_5E80:
-	cmpResult_34 = memcmp(ds:0x4271<16>, ds:0x2202<16>, CONVERT(cx_23, word16, uint32))
 	ax_28 = 0<16>
-	SCZO_39 = cond(cmpResult_34)
+	cmpResult_34 = memcmp(ds:0x4271<16>, ds:0x2202<16>, CONVERT(cx_23, word16, uint32))
 	branch cmpResult_34 == 0<16> l0800_5E8B
 l0800_5E86:
-	ax_42 = 0<16> - (SCZO_39 & 2<32>)
-	ax_28 = ax_42 - 0xFFFF<16> - (cond(ax_42) & 2<32>)
+	ax_42 = 0<16> - CONVERT(cmpResult_34 <u 0<16>, bool, word16)
+	ax_28 = ax_42 - 0xFFFF<16> - CONVERT(ax_42 <u 0<16>, bool, word16)
 l0800_5E8B:
 	branch ax_28 == 0<16> l0800_5EC3
 l0800_5E8F:
@@ -8482,13 +8469,12 @@ l0800_66BE:
 l0800_66D0:
 	cx_31 = 3<16>
 l0800_66D2:
-	cmpResult_42 = memcmp(ds:0x4271<16>, ds:0x2206<16>, CONVERT(cx_31, word16, uint32))
 	ax_36 = 0<16>
-	SCZO_47 = cond(cmpResult_42)
+	cmpResult_42 = memcmp(ds:0x4271<16>, ds:0x2206<16>, CONVERT(cx_31, word16, uint32))
 	branch cmpResult_42 == 0<16> l0800_66DD
 l0800_66D8:
-	ax_50 = 0<16> - (SCZO_47 & 2<32>)
-	ax_36 = ax_50 - 0xFFFF<16> - (cond(ax_50) & 2<32>)
+	ax_50 = 0<16> - CONVERT(cmpResult_42 <u 0<16>, bool, word16)
+	ax_36 = ax_50 - 0xFFFF<16> - CONVERT(ax_50 <u 0<16>, bool, word16)
 l0800_66DD:
 	branch ax_36 == 0<16> l0800_6715
 l0800_66E1:
@@ -10441,11 +10427,10 @@ l0800_8744:
 l0800_8753:
 	al_83 = al_115 * 2<8>
 	bh_167 = 0<8>
-	SCZO_84 = cond(al_83)
 	v36_545 = al_83 >=u 0<8>
 	branch al_83 == 0<8> l0800_879B
 l0800_879B:
-	al_83 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_84 & 2<32>)
+	al_83 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_83 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v36_545 = al_83 >=u 0<8>
 l0800_875C:
@@ -10454,34 +10439,31 @@ l0800_875F:
 	branch v36_545 l0800_86E6
 l0800_86E6:
 	al_106 = al_83 * 2<8>
-	SCZO_98 = cond(al_106)
-	C_105 = SCZO_98 & 2<32> (alias)
+	C_105 = cond(al_106) & 2<32> (alias)
 	branch al_106 == 0<8> l0800_86BC
 l0800_86BC:
-	al_106 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_98 & 2<32>)
+	al_106 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_106 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	C_105 = cond(al_106) & 2<32> (alias)
 l0800_86EA:
 	al_115 = al_106 * 2<8>
 	cl_113 = C_105 + 4<8>
-	SCZO_116 = cond(al_115)
 	v39_548 = al_115 >=u 0<8>
 	cx_145 = CONVERT(cl_113, uint8, uint16) (alias)
 	branch al_115 == 0<8> l0800_86C2
 l0800_86C2:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_116 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v39_548 = al_115 >=u 0<8>
 l0800_86F0:
 	branch v39_548 l0800_8701
 l0800_86F2:
 	al_129 = al_115 * 2<8>
-	SCZO_130 = cond(al_129)
 	al_115 = al_129
 	branch al_129 == 0<8> l0800_86C8
 l0800_86C8:
 	si_101 = si_101 + 1<i16>
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_130 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_129 <u 0<8>, bool, byte)
 l0800_86F9:
 	ch_458 = SLICE(cx_145 - 1<16>, byte, 8) (alias)
 	cl_150 = (cl_113 - 1<8>) * 2<8> + CONVERT(al_129 <u 0<8>, bool, byte)
@@ -10491,12 +10473,11 @@ l0800_86A7:
 	cx_173 = SEQ(ch_458, 4<8>) (alias)
 l0800_86A9:
 	al_155 = al_115 * 2<8>
-	SCZO_156 = cond(al_155)
 	al_115 = al_155
 	branch al_155 == 0<8> l0800_86A1
 l0800_86A1:
 	si_101 = si_101 + 1<i16>
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_156 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_155 <u 0<8>, bool, byte)
 l0800_86AD:
 	cx_173 = cx_173 - 1<16>
 	bh_167 = bh_167 * 2<8> + CONVERT(al_155 <u 0<8>, bool, byte)
@@ -10509,11 +10490,10 @@ l0800_86B1:
 	di_200 = di_200 + cx_180 *u 2<16>
 l0800_8761:
 	al_115 = al_83 * 2<8>
-	SCZO_202 = cond(al_115)
 	v42_551 = al_115 >=u 0<8>
 	branch al_115 == 0<8> l0800_87A0
 l0800_87A0:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_202 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v42_551 = al_115 >=u 0<8>
 l0800_8765:
@@ -10521,12 +10501,11 @@ l0800_8768:
 	branch v42_551 l0800_8728
 l0800_876A:
 	al_215 = al_115 * 2<8>
-	SCZO_216 = cond(al_215)
 	v45_554 = al_215 >=u 0<8>
 	ax_245 = SEQ(ah_250, al_215) (alias)
 	branch al_215 == 0<8> l0800_87A5
 l0800_87A5:
-	al_224 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_216 & 2<32>)
+	al_224 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_215 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v45_554 = al_224 >=u 0<8>
 	ax_245 = SEQ(ah_250, al_224) (alias)
@@ -10550,11 +10529,10 @@ l0800_87B4:
 	ds_20 = ax_277
 	ah_250 = SLICE(ax_245, byte, 8) (alias)
 	al_115 = al_281 * 2<8>
-	SCZO_283 = cond(al_281 * 2<8>)
 	v48_557 = al_281 * 2<8> >=u 0<8>
 	branch al_281 * 2<8> != 0<8> l0800_87E3
 l0800_87DD:
-	al_115 = Mem259[ax_277:si_101 & 0xF<16>:byte] * 2<8> + (SCZO_283 & 2<32>)
+	al_115 = Mem259[ax_277:si_101 & 0xF<16>:byte] * 2<8> + CONVERT(al_281 * 2<8> <u 0<8>, bool, byte)
 	si_101 = (si_101 & 0xF<16>) + 1<i16>
 	v48_557 = al_115 >=u 0<8>
 l0800_87E3:
@@ -10567,52 +10545,47 @@ l0800_877B:
 	cx_145 = cx_309 + 8<16>
 l0800_8701:
 	al_115 = al_115 * 2<8>
-	SCZO_316 = cond(al_115)
 	v51_560 = al_115 >=u 0<8>
 	branch al_115 == 0<8> l0800_86CE
 l0800_86CE:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_316 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v51_560 = al_115 >=u 0<8>
 l0800_8705:
 	branch v51_560 l0800_8728
 l0800_8707:
 	al_332 = al_115 * 2<8>
-	SCZO_333 = cond(al_332)
-	C_340 = SCZO_333 & 2<32> (alias)
+	C_340 = cond(al_332) & 2<32> (alias)
 	branch al_332 == 0<8> l0800_86D4
 l0800_86D4:
-	al_332 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_333 & 2<32>)
+	al_332 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_332 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	C_340 = cond(al_332) & 2<32> (alias)
 l0800_870E:
 	al_115 = al_332 * 2<8>
-	SCZO_357 = cond(al_115)
 	v54_563 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_86DA
 l0800_86DA:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_357 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v54_563 = al_115 <u 0<8>
 l0800_8714:
 	branch v54_563 l0800_8784
 l0800_8784:
 	al_370 = al_115 * 2<8>
-	SCZO_371 = cond(al_370)
 	branch al_370 == 0<8> l0800_87AA
 l0800_87AA:
 	si_101 = si_101 + 1<i16>
-	al_379 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_371 & 2<32>)
+	al_379 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_370 <u 0<8>, bool, byte)
 l0800_8788:
 	al_379 = al_370
 l0800_878B:
 	al_115 = al_379 * 2<8>
 	bh_167 = C_340 *8 2<8> + CONVERT(al_370 <u 0<8>, bool, byte) | 4<8>
-	SCZO_389 = cond(al_115)
 	v57_566 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_87AF
 l0800_87AF:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_389 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
 	v57_566 = al_115 <u 0<8>
 l0800_8794:
@@ -10626,12 +10599,11 @@ l0800_871D:
 	bh_167 = C_340 + 1<8>
 l0800_8722:
 	al_410 = al_115 * 2<8>
-	SCZO_411 = cond(al_410)
 	al_115 = al_410
 	branch al_410 == 0<8> l0800_86E0
 l0800_86E0:
 	si_101 = si_101 + 1<i16>
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + (SCZO_411 & 2<32>)
+	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_410 <u 0<8>, bool, byte)
 l0800_8726:
 	bh_167 = bh_167 * 2<8> + CONVERT(al_410 <u 0<8>, bool, byte)
 l0800_8728:
@@ -12341,7 +12313,7 @@ fn0800_93A6_entry:
 l0800_93A6:
 	call 0x800<16>:Mem15[ss_bp + 6<i32>:word16] (retsize: 2;)
 		uses: ax:0xFFFF<16>,Mem:Mem15,Stack +0002:0xFFFF<16>,Stack +0004:Mem9[ss_bp + 8<i32>:word16],Stack +0006:Mem0[ss_bp + 10<i32>:word16]
-	Mem24[ss_bp - 4<i32>:word16] = Mem15[ss_bp - 4<i32>:word16] - (cond(Mem15[ss_bp - 4<i32>:word16] - 1<16>) & 2<32>)
+	Mem24[ss_bp - 4<i32>:word16] = Mem15[ss_bp - 4<i32>:word16] - CONVERT(Mem15[ss_bp - 4<i32>:word16] <u 1<16>, bool, word16)
 l0800_93BA_thunk_fn0800_93BE:
 	bp_28 = fn0800_93BE(ss_bp, out di_29)
 	diOut = di_29
@@ -12692,7 +12664,7 @@ l0800_95D4:
 	dx_ax_382 = wArg0A *u32 di_344
 	ax_si_542 = SEQ(SLICE(dx_ax_382, word16, 0), bx_362) + wArg0A *u32 si_343
 	di_si_537 = ax_si_542 (alias)
-	branch SLICE(dx_ax_382, byte, 16) + SLICE(dx_ax_382, byte, 24) + (cond(SLICE(ax_si_542, word16, 16)) & 2<32>) != 0<8> l0800_9636
+	branch SLICE(dx_ax_382, byte, 16) + SLICE(dx_ax_382, byte, 24) + CONVERT(SLICE(ax_si_542, word16, 16) <u 0<16>, bool, byte) != 0<8> l0800_9636
 l0800_9636:
 	ah_al_544 = CONVERT(bLoc03_548, uint8, uint16) + 0xFFFF<16>
 	dx_408 = (cond(SLICE(ah_al_544, byte, 8)) & 2<32>) + 0x7FFF<16>

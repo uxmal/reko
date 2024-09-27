@@ -477,8 +477,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("92640001"); // sra\tr19,r4
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r19 = r4 >> 1<i32>",
-                "2|L--|C = cond(r19)");
+                "1|L--|C = (r4 & 1<32>) != 0<32> ? 1<32> : 0<32>",
+                "2|L--|r19 = r4 >> 1<i32>");
         }
 
         [Test]
@@ -487,8 +487,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("90F90021");   // src	r7,r25
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = __rcr<word32,int32>(r25, 1<i32>, C)",
-                "2|L--|C = cond(r7)");
+                "1|L--|C = (r25 & 1<32>) != 0<32> ? 1<32> : 0<32>",
+                "2|L--|r7 = __rcr<word32,int32>(r25, 1<i32>, C)");
         }
 
         [Test]
@@ -497,8 +497,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("92A40041"); // srl\tr21,r4
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r21 = r4 >>u 1<i32>",
-                "2|L--|C = cond(r21)");
+                "1|L--|C = (r4 & 1<32>) != 0<32> ? 1<32> : 0<32>",
+                "2|L--|r21 = r4 >>u 1<i32>");
         }
 
         [Test]

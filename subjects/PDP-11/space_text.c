@@ -288,11 +288,9 @@ l06B2:
 		goto l0738;
 	}
 	Eq_n r2_n = r2_n << 1;
-	Eq_n NZVC_n;
-	NZVC_n.u1 = cond(r2_n);
 	if (r2_n == 0x00)
 		goto l06B2;
-	cui16 r5_n = r5_n.u0 + (NZVC_n & 0x01);
+	cui16 r5_n = r5_n.u0 + (word16) (r2_n < 0x00);
 	wchar_t r4_n = r2_n.u0 + SEQ(SLICE(r0_n, byte, 8), 0x00);
 	if (r4_n < 0x00)
 	{
@@ -626,7 +624,7 @@ word16 fn0AE2(<anonymous> ** r4, Eq_n wArg00, Eq_n wArg02, <anonymous> * wArg04)
 Eq_n fn0AE6(<anonymous> ** r4, word16 wArg00, Eq_n wArg02, Eq_n wArg04, <anonymous> * wArg06)
 {
 	uint8 bArg00 = (byte) wArg00;
-	byte bArg01 = SLICE(wArg00, byte, 8);
+	uint8 bArg01 = SLICE(wArg00, byte, 8);
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	uint16 wLoc04_n;
@@ -636,7 +634,7 @@ Eq_n fn0AE6(<anonymous> ** r4, word16 wArg00, Eq_n wArg02, Eq_n wArg04, <anonymo
 		if (bArg00 != 0x08)
 			wLoc04_n += 0x03;
 	}
-	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (cond(bArg00 - bArg01) & 0x01));
+	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (word16) (bArg00 < bArg01));
 	if (r3_n.u0[116] == 0x00)
 	{
 		r3_n.u0[82] = (struct Eq_n) wArg00;
@@ -674,7 +672,7 @@ void fn0B44(Eq_n r0, Eq_n wArg00, Eq_n wArg02, word16 * ptrArg04)
 void fn0B60(Eq_n r0, word16 wArg00, Eq_n wArg02, Eq_n wArg04, word16 * ptrArg06)
 {
 	uint8 bArg00 = (byte) wArg00;
-	byte bArg01 = SLICE(wArg00, byte, 8);
+	uint8 bArg01 = SLICE(wArg00, byte, 8);
 	Eq_n r3_n;
 	r3_n.u0 = g_t5424.u0;
 	uint16 wLoc04_n;
@@ -684,7 +682,7 @@ void fn0B60(Eq_n r0, word16 wArg00, Eq_n wArg02, Eq_n wArg04, word16 * ptrArg06)
 		if (bArg00 != 0x08)
 			wLoc04_n += 0x03;
 	}
-	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (cond(bArg00 - bArg01) & 0x01));
+	r3_n.u0[0x00A4] = (struct Eq_n) (wLoc04_n + (word16) (bArg00 < bArg01));
 	<anonymous> ** sp_n;
 	ptr16 fp;
 	word16 * sp_n;

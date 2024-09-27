@@ -410,24 +410,36 @@ done:
 			Assert.AreEqual("branch r == 0<32> foo", stmBr.Instruction.ToString());
 		}
 
-		[Test]
+        [Test]
         [Category(Categories.UnitTests)]
-		public void CceSetnz()
-		{
-			Identifier r = Reg32("r");
-			Identifier Z = FlagGroup("Z");
-			Identifier f = Reg32("f");
+        public void CceSetnz()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r
+	// succ:  l1
+l1:
+	Mem4[0x123400<32>:word32] = r != 0<32>
+ProcedureBuilder_exit:
 
-			Statement stmZ = new Statement(Address.Ptr32(0), m.Assign(Z, m.Cond(m.ISub(r, 0))), null);
-			ssaIds[Z].DefStatement = stmZ;
-			Statement stmF = new Statement(Address.Ptr32(0), m.Assign(f, m.Test(ConditionCode.NE, Z)), null);
-			ssaIds[f].DefStatement = stmF;
-			ssaIds[Z].Uses.Add(stmF);
+";
+            #endregion
 
-            Given_ConditionCodeEliminator();
-			cce.Transform(ssaState);
-			Assert.AreEqual("f = r != 0<32>", stmF.Instruction.ToString());
-		}
+            RunStringTest(sExp, m =>
+            {
+                Identifier r = Reg32("r");
+                Identifier Z = FlagGroup("Z");
+                Identifier f = Reg32("f");
+
+                m.Assign(Z, m.Cond(m.ISub(r, 0)));
+                m.Assign(f, m.Test(ConditionCode.NE, Z));
+                m.MStore(m.Word32(0x123400), f);
+            });
+        }
 
         [Test]
         [Category(Categories.UnitTests)]

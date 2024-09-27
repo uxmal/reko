@@ -1703,8 +1703,8 @@ Eq_n fn00009B66()
 	byte r2l_n;
 	word16 r1_n;
 	word16 r0_n = fn00009E18(out r1_n, out r2l_n);
-	byte r0l_n = (byte) r0_n + (cond(SLICE(r1_n + 0x01, byte, 8)) & 0x01);
-	*(ui16 *) 0x9E90 = SEQ(SLICE(r0_n, byte, 8) + (cond(r0l_n) & 0x01), r0l_n);
+	cu8 r0l_n = (byte) r0_n + (byte) (SLICE(r1_n + 0x01, byte, 8) < 0x00);
+	*(ui16 *) 0x9E90 = SEQ(SLICE(r0_n, byte, 8) + (byte) (r0l_n < 0x00), r0l_n);
 	*(union Eq_n *) 0x9E92 = r1_n + 0x01;
 	return *(union Eq_n *) 0x9E92;
 }

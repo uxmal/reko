@@ -354,6 +354,8 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     CreateLongUnaryInstruction(loInstr, hiInstr);
                     Changed = true;
                 }
+                if (block.Address.Offset == 0x8CB2)
+                    _ = this; //$DEBUG;
             }
         }
 

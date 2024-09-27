@@ -20623,49 +20623,49 @@ T_4966: (in r1_12 + 1<16> @ 00009B7E : ui16)
   OrigDataType: word16
 T_4967: (in SLICE(r1_12 + 1<16>, byte, 8) @ 00009B7E : byte)
   Class: Eq_4967
-  DataType: byte
-  OrigDataType: byte
-T_4968: (in cond(SLICE(r1_12 + 1<16>, byte, 8)) @ 00009B7E : byte)
-  Class: Eq_4968
-  DataType: byte
-  OrigDataType: byte
-T_4969: (in 1<8> @ 00009B7E : byte)
+  DataType: cu8
+  OrigDataType: cu8
+T_4968: (in 0<8> @ 00009B7E : byte)
+  Class: Eq_4967
+  DataType: cu8
+  OrigDataType: cu8
+T_4969: (in SLICE(r1_12 + 1<16>, byte, 8) < 0<8> @ 00009B7E : bool)
   Class: Eq_4969
-  DataType: byte
-  OrigDataType: byte
-T_4970: (in cond(SLICE(r1_12 + 1<16>, byte, 8)) & 1<8> @ 00009B7E : byte)
+  DataType: bool
+  OrigDataType: bool
+T_4970: (in CONVERT(SLICE(r1_12 + 1<16>, byte, 8) <u 0<8>, bool, byte) @ 00009B7E : byte)
   Class: Eq_4970
   DataType: byte
   OrigDataType: byte
-T_4971: (in (byte) r0_11 + (cond(SLICE(r1_12 + 1<16>, byte, 8)) & 1<8>) @ 00009B7E : byte)
+T_4971: (in (byte) r0_11 + (byte) (SLICE(r1_12 + 1<16>, byte, 8) < 0<8>) @ 00009B7E : byte)
   Class: Eq_4971
-  DataType: byte
+  DataType: cu8
   OrigDataType: byte
-T_4972: (in r0l_27 @ 00009B7E : byte)
+T_4972: (in r0l_27 @ 00009B7E : cu8)
   Class: Eq_4971
-  DataType: byte
-  OrigDataType: byte
+  DataType: cu8
+  OrigDataType: cu8
 T_4973: (in SLICE(r0_11, byte, 8) @ 00009B82 : byte)
   Class: Eq_4973
   DataType: byte
   OrigDataType: byte
-T_4974: (in cond(r0l_27) @ 00009B82 : byte)
-  Class: Eq_4974
-  DataType: byte
-  OrigDataType: byte
-T_4975: (in 1<8> @ 00009B82 : byte)
+T_4974: (in 0<8> @ 00009B82 : byte)
+  Class: Eq_4971
+  DataType: cu8
+  OrigDataType: cu8
+T_4975: (in r0l_27 < 0<8> @ 00009B82 : bool)
   Class: Eq_4975
-  DataType: byte
-  OrigDataType: byte
-T_4976: (in cond(r0l_27) & 1<8> @ 00009B82 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_4976: (in CONVERT(r0l_27 <u 0<8>, bool, byte) @ 00009B82 : byte)
   Class: Eq_4976
   DataType: byte
   OrigDataType: byte
-T_4977: (in SLICE(r0_11, byte, 8) + (cond(r0l_27) & 1<8>) @ 00009B82 : byte)
+T_4977: (in SLICE(r0_11, byte, 8) + (byte) (r0l_27 < 0<8>) @ 00009B82 : byte)
   Class: Eq_4977
   DataType: byte
   OrigDataType: byte
-T_4978: (in SEQ(SLICE(r0_11, byte, 8) + (cond(r0l_27) & 1<8>), r0l_27) @ 00009B82 : word16)
+T_4978: (in SEQ(SLICE(r0_11, byte, 8) + CONVERT(r0l_27 <u 0<8>, bool, byte), r0l_27) @ 00009B82 : word16)
   Class: Eq_4946
   DataType: ui16
   OrigDataType: word16

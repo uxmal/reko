@@ -4,8 +4,8 @@
 
 #include "a.h"
 
-// 00004000: void fn00004000(Register cui16 sr, Register ui16 r8)
-void fn00004000(cui16 sr, ui16 r8)
+// 00004000: void fn00004000(Register cui16 sr, Register uint16 r8)
+void fn00004000(cui16 sr, uint16 r8)
 {
 	*(word16 *) 288 = 0x5A80;
 	byte * r15_n = (byte *) 0x5B78;
@@ -36,8 +36,8 @@ Eq_n g_t4040 = // 4040
 		0x0A,
 		,
 	};
-// 4048: void task_idle(Register ui16 r8)
-void task_idle(ui16 r8)
+// 4048: void task_idle(Register uint16 r8)
+void task_idle(uint16 r8)
 {
 	ci16 r10_n = xTaskGetTickCount() + 1000;
 	while (true)
@@ -92,10 +92,10 @@ Eq_n g_t411D = // 411D
 		,
 	};
 byte g_b414B = 0x00; // 414B
-// 414C: void main(Register cui16 sr, Register ui16 r8)
+// 414C: void main(Register cui16 sr, Register uint16 r8)
 // Called from:
 //      fn00004000
-void main(cui16 sr, ui16 r8)
+void main(cui16 sr, uint16 r8)
 {
 	__set_stackpointer((<unknown>*) 0x0A00);
 	*(word16 *) 288 = 0x5A80;
@@ -1603,11 +1603,11 @@ void prvTickISR()
 	usCriticalNesting = pxCurrentTCB->ptr0000->w0000;
 }
 
-// 5308: void printf(Register ui16 r8, Stack (ptr16 Eq_n) wArg02)
+// 5308: void printf(Register uint16 r8, Stack (ptr16 Eq_n) wArg02)
 // Called from:
 //      fn00004000
 //      task_idle
-void printf(ui16 r8, struct Eq_n * wArg02)
+void printf(uint16 r8, struct Eq_n * wArg02)
 {
 	ptr16 fp;
 	vuprintf(r8, fp + 0x04, wArg02, &g_t43A2);
@@ -1670,10 +1670,10 @@ word16 __write_pad(Eq_n r14, word16 r15)
 	return r15_n;
 }
 
-// 537E: void vuprintf(Register ui16 r8, Register (ptr16 uint16) r13, Register (ptr16 Eq_n) r14, Register (ptr16 code) r15)
+// 537E: void vuprintf(Register uint16 r8, Register (ptr16 uint16) r13, Register (ptr16 Eq_n) r14, Register (ptr16 code) r15)
 // Called from:
 //      printf
-void vuprintf(ui16 r8, uint16 * r13, struct Eq_n * r14, <anonymous> * r15)
+void vuprintf(uint16 r8, uint16 * r13, struct Eq_n * r14, <anonymous> * r15)
 {
 	total_len = 0x00;
 	__write_char = r15;
@@ -1818,7 +1818,7 @@ l57AE:
 					{
 						uint16 v185_n = *r5_n;
 						++r5_n;
-						dwLoc1C_n = SEQ((cond(v185_n * 0x02) & 0x01) - 1, v185_n);
+						dwLoc1C_n = SEQ((word16) (v185_n * 0x02 < 0x00) - 1, v185_n);
 					}
 					word16 wLoc1C_n = (word16) dwLoc1C_n;
 					if (SLICE(dwLoc1C_n, word16, 16) < 0x00)
@@ -1958,14 +1958,14 @@ l564A:
 					cu16 r12_n;
 					do
 					{
-						ui16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);
-						ui16 wLoc1C_n = (word16) dwLoc1C_n;
+						uint16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);
+						uint16 wLoc1C_n = (word16) dwLoc1C_n;
 						bLoc16_n = 0x00;
 						if (SLICE(dwLoc1C_n - (uint32) wLoc14_n, word16, 16) < 0x00)
 							bLoc16_n = 0x01;
 						ui32 r13_r12_n;
 						ui32 r15_r14_n;
-						ui16 r8_n;
+						uint16 r8_n;
 						fn00005B4E((uint32) wLoc14_n, r8, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8_n);
 						cu16 r14_n = <invalid>;
 						if (r14_n >= 0x0A)
@@ -2192,7 +2192,7 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			ui16 r14_n;
+			uint16 r14_n;
 			for (r14_n = __rcr<word16,byte>(r11_n, 0x01, C_n); r14_n != 0x00; r14_n += ~0x00)
 			{
 				*r13_n = *r12_n;
@@ -2231,7 +2231,7 @@ cui16 memcpy(cui16 sr, Eq_n r13, byte * r14, byte * r15)
 				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			ui16 r14_n;
+			uint16 r14_n;
 			for (r14_n = __rcr<word16,byte>(r11_n, 0x01, C_n); r14_n != 0x00; r14_n += ~0x00)
 			{
 				r12_n -= 0x02;
@@ -2285,7 +2285,7 @@ cui16 memset(cui16 sr, Eq_n r13, Eq_n r14, byte * r15)
 			} while (r12_n != 0x00);
 		}
 		sr &= ~0x01;
-		ui16 r12_n = __rcr<word16,byte>(r13, 0x01, C_n);
+		uint16 r12_n = __rcr<word16,byte>(r13, 0x01, C_n);
 		do
 		{
 			*r14_n = (byte) r11_n;
@@ -2318,18 +2318,18 @@ ui32 fn00005ADC(cui16 r10, cui16 r11, Eq_n r12, Eq_n r13)
 	return SEQ(*(uint16 *) 0x013A, v6_n);
 }
 
-// 00005B04: Register ui16 fn00005B04(Sequence uint32 r11_r10, Sequence ui32 r13_r12)
+// 00005B04: Register uint16 fn00005B04(Sequence uint32 r11_r10, Sequence ui32 r13_r12)
 // Called from:
 //      msp430_compute_modulator_bits
-ui16 fn00005B04(uint32 r11_r10, ui32 r13_r12)
+uint16 fn00005B04(uint32 r11_r10, ui32 r13_r12)
 {
 	ui32 r15_r14_n;
 	ui32 r13_r12_n;
 	Eq_n r8_n;
-	ui16 r13 = SLICE(r13_r12, word16, 16);
-	ui16 r12 = (word16) r13_r12;
+	uint16 r13 = SLICE(r13_r12, word16, 16);
+	uint16 r12 = (word16) r13_r12;
 	cui16 r11 = SLICE(r11_r10, word16, 16);
-	ui16 r8_n = 0x00;
+	uint16 r8_n = 0x00;
 	if ((r13 & 0x8000) != 0x00)
 	{
 		ui32 r13_r12_n = ~r13_r12;
@@ -2344,23 +2344,23 @@ ui16 fn00005B04(uint32 r11_r10, ui32 r13_r12)
 		r8_n |= 0x08;
 		r11_r10_n = SEQ(SLICE(r11_r10_n + 0x01, word16, 16), (word16) r11_r10_n + 0x01);
 	}
-	ui16 r8_n = __rcr<word16,byte>(r8_n, 0x01, fn00005B4E(r11_r10_n, r8_n, r12, r13, out r13_r12_n, out r15_r14_n, out r8_n));
+	uint16 r8_n = __rcr<word16,byte>(r8_n, 0x01, fn00005B4E(r11_r10_n, r8_n, r12, r13, out r13_r12_n, out r15_r14_n, out r8_n));
 	if ((r8_n & 0x04) != 0x00)
 	{
 		ui32 r13_r12_n = ~r13_r12_n;
 		r13_r12_n = SEQ(SLICE(r13_r12_n + 0x01, word16, 16), (word16) r13_r12_n + 0x01);
 	}
-	ui16 r12_n = (word16) r13_r12_n;
+	uint16 r12_n = (word16) r13_r12_n;
 	if ((r8_n & 0x08) != 0x00)
 		r12_n = (word16) ~r13_r12_n + 0x01;
 	return r12_n;
 }
 
-// 00005B4E: FlagGroup bool fn00005B4E(Sequence uint32 r11_r10, Register ui16 r8, Register ui16 r12, Register ui16 r13, Sequence out Eq_n r13_r12Out, Sequence out Eq_n r15_r14Out, Register out Eq_n r8Out)
+// 00005B4E: FlagGroup bool fn00005B4E(Sequence uint32 r11_r10, Register uint16 r8, Register uint16 r12, Register uint16 r13, Sequence out Eq_n r13_r12Out, Sequence out Eq_n r15_r14Out, Register out Eq_n r8Out)
 // Called from:
 //      vuprintf
 //      fn00005B04
-bool fn00005B4E(uint32 r11_r10, ui16 r8, ui16 r12, ui16 r13, union Eq_n & r13_r12Out, union Eq_n & r15_r14Out, union Eq_n & r8Out)
+bool fn00005B4E(uint32 r11_r10, uint16 r8, uint16 r12, uint16 r13, union Eq_n & r13_r12Out, union Eq_n & r15_r14Out, union Eq_n & r8Out)
 {
 	uint16 r11 = SLICE(r11_r10, word16, 16);
 	uint16 r10 = (word16) r11_r10;
@@ -2372,15 +2372,15 @@ bool fn00005B4E(uint32 r11_r10, ui16 r8, ui16 r12, ui16 r13, union Eq_n & r13_r1
 	while (true)
 	{
 		r12 *= 0x02;
-		r13 = r13 * 0x02 + (cond(r12) & 0x01);
+		r13 = r13 * 0x02 + (word16) (r12 < 0x00);
 		--r9_n;
-		r8_n = r8 * 0x02 + (cond(r13) & 0x01);
+		r8_n = r8 * 0x02 + (word16) (r13 < 0x00);
 		VNZC_n.u1 = cond(r9_n);
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr<word16,byte>(r8_n, 0x01, VNZC_n & 0x01);
-		r14_n = r14_n * 0x02 + (cond(r8) & 0x01);
-		r15_n = r15_n * 0x02 + (cond(r14_n) & 0x01);
+		r14_n = r14_n * 0x02 + (word16) (r8 < 0x00);
+		r15_n = r15_n * 0x02 + (word16) (r14_n < 0x00);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))
 		{
 			uint32 r15_r14_n = SEQ(r15_n, r14_n) - r11_r10;

@@ -266,10 +266,9 @@ l068E:
 	branch r0_43 == 0<16> l06B2
 l069C:
 	r2_53 = r2_18 << 1<i16>
-	NZVC_54 = cond(r2_53)
 	branch r2_53 == 0<16> l06B2
 l06A0:
-	r5_57 = r5_46 + (NZVC_54 & 1<16>)
+	r5_57 = r5_46 + CONVERT(r2_53 <u 0<16>, bool, word16)
 	r4_59 = SEQ(SLICE(r0_43, byte, 8), 0<8>) + r2_53
 	branch r4_59 >=u 0<16> l06AE
 l06AE:
@@ -649,7 +648,7 @@ l0AF8:
 l0AFE:
 	wLoc04_85 = wLoc04_85 + 3<16>
 l0B02:
-	Mem30[r3_6 + 0xA4<16>:word16] = wLoc04_85 + (cond(bArg00 - bArg01) & 1<16>)
+	Mem30[r3_6 + 0xA4<16>:word16] = wLoc04_85 + CONVERT(bArg00 <u bArg01, bool, word16)
 	branch Mem30[r3_6 + 0x74<16>:byte] == 0<8> l0B22
 l0B22:
 	Mem38[r3_6 + 0x52<16>:word16] = wArg00
@@ -720,7 +719,7 @@ l0B72:
 l0B78:
 	wLoc04_134 = wLoc04_134 + 3<16>
 l0B7C:
-	Mem30[r3_111 + 0xA4<16>:word16] = wLoc04_134 + (cond(bArg00 - bArg01) & 1<16>)
+	Mem30[r3_111 + 0xA4<16>:word16] = wLoc04_134 + CONVERT(bArg00 <u bArg01, bool, word16)
 	branch Mem30[r3_111 + 0x74<16>:byte] == 0<8> l0BA4
 l0BA4:
 	Mem49[r3_111 + 0x52<16>:word16] = wArg00
