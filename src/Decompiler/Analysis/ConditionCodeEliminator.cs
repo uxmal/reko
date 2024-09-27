@@ -94,8 +94,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         private readonly ExpressionEmitter m;
         private readonly HashSet<Identifier> aliases;
         private readonly Dictionary<(Identifier, ConditionCode), SsaIdentifier> generatedIds;
-        private SsaIdentifier? sidGrf;
-        private Statement? useStm;
+        private SsaIdentifier sidGrf = default!;
+        private Statement useStm = default!;
 
         public Worker(IReadOnlyProgram program, SsaState ssa, IEventListener listener)
         {
@@ -128,6 +128,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 {
                     try
                     {
+                        if (u.Block.Address.Offset == 0x0A68)
+                            _ = this; //$DEBUG
                         useStm = u;
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
                         useStm.Instruction.Accept(this);
@@ -446,7 +448,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     }
                 }
                 return a;
-            case Conversion conv when conv.Expression == this.sidGrf?.Identifier:
+            case Conversion conv when conv.Expression == this.sidGrf.Identifier:
                 if (conv.SourceDataType == PrimitiveType.Bool)
                 {
                     if (sidGrf.GetDefiningExpression() is not ConditionOf cof)
@@ -464,7 +466,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                             m.Ne0(m.And(bin.Left, 1)),
                             Constant.Create(conv.DataType, 1),
                             Constant.Create(conv.DataType, 0));
-                        Use(a.Src, useStm!);
+                        Use(a.Src, useStm);
                     }
                 }
                 return a;
@@ -472,32 +474,43 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return a;
         }
 
-        private Instruction TransformAddOrSub(Assignment a, BinaryExpression binUse)
+        private Instruction TransformAddOrSub(Assignment a, BinaryExpression addSub)
         {
-            Expression u = binUse.Right;
-            Slice? c = null;
-            if (u != sidGrf!.Identifier && !this.aliases.Contains(u))
+            Expression u = addSub.Right;
+            Slice? slice = null;
+            BinaryExpression? binMask = null;
+            if (u != sidGrf.Identifier && !this.aliases.Contains(u))
             {
-                c = binUse.Right as Slice;
-                if (c != null)
-                    u = c.Expression;
+                slice = addSub.Right as Slice;
+                if (slice is not null)
+                    u = slice.Expression;
+                else
+                {
+                    binMask = addSub.Right as BinaryExpression;
+                    if (binMask is not null &&
+                        binMask.Operator.Type == OperatorType.And &&
+                        binMask.Right is Constant)
+                    {
+                        u = binMask.Left;
+                    }
+                }
             }
             if (u != sidGrf.Identifier && !this.aliases.Contains(u))
                 return a;
 
             var oldSid = ssaIds[(Identifier) u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
-            if (c != null)
+            if (slice != null)
             {
-                binUse.Right = new Conversion(u, u.DataType, c.DataType);
+                addSub.Right = new Conversion(u, u.DataType, slice.DataType);
             }
-            else if (binUse.Left.DataType.BitSize > u.DataType.BitSize)
+            else if (addSub.Left.DataType.BitSize > u.DataType.BitSize)
             {
-                var conv = new Conversion(u, u.DataType, PrimitiveType.CreateWord(binUse.Left.DataType.BitSize));
-                binUse.Right = conv;
+                var conv = new Conversion(u, u.DataType, PrimitiveType.CreateWord(addSub.Left.DataType.BitSize));
+                addSub.Right = conv;
             }
             else
-                binUse.Right = u;
+                addSub.Right = u;
             oldSid.Uses.Remove(useStm!);
             Use(u, useStm!);
             return a;
