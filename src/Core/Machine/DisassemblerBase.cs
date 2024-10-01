@@ -379,6 +379,23 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
+        /// Creates a monolithic <see cref="Bitfield"/>.
+        /// </summary>
+        /// <param name="pos">
+        /// A bit positions in little endian order, i.e. the least 
+        /// significant bit is numbered with 0.</param>
+        /// <param name="len">
+        /// The width of the bitfield.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Bitfield">bitfield</see>.
+        /// </returns>
+        public static Bitfield Bf(int pos, int len)
+        {
+            return new Bitfield(pos, len);
+        }
+
+        /// <summary>
         /// Creates an array of <see cref="Bitfield"/>s.
         /// </summary>
         /// <param name="fields">

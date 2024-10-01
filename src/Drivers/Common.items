@@ -44,6 +44,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\Microchip\MicrochipPIC.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MilStd1750\MilStd1750.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Mips\Mips.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\MN103\MN103.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Mos6502\Mos6502.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MSP430\MSP430.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\OpenRISC\OpenRISC.csproj" />
@@ -158,6 +159,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\MilStd1750\bin\$(StandardOutputDir)\Reko.Arch.MilStd1750.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(StandardOutputDir)\Reko.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\MN103\bin\$(StandardOutputDir)\Reko.Arch.MN103.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(StandardOutputDir)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\MSP430\bin\$(StandardOutputDir)\Reko.Arch.Msp430.*" />
     <Architectures Include="$(SolutionDir)Arch\OpenRISC\bin\$(StandardOutputDir)\Reko.Arch.OpenRISC.*" />

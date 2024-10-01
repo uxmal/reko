@@ -42,6 +42,7 @@
         <var id="var.MicrochipPIC.TargetPath" >$SolutionDir$/Arch/Microchip/$TargetDir$/Reko.Arch.MicrochipPIC.dll</var>
         <var id="var.MilStd1750.TargetPath" >$SolutionDir$/Arch/MilStd1750/$TargetDir$/Reko.Arch.MilStd1750.dll</var>
         <var id="var.Mips.TargetPath" >$SolutionDir$/Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
+        <var id="var.MN103.TargetPath" >$SolutionDir$/Arch/Mips/$TargetDir$/Reko.Arch.MN103.dll</var>
         <var id="var.Mos6502.TargetPath" >$SolutionDir$/Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
         <var id="var.Msp430.TargetPath" >$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
         <var id="var.OpenRISC.TargetPath" >$SolutionDir$/Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
@@ -314,6 +315,7 @@
         <File Source="$(var.MicrochipPIC.Design.TargetPath)" />
         <File Source="$(var.MilStd1750.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mips.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.MN103.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mos6502.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msp430.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OpenRISC.TargetPath)" nuget_target="f:" />
