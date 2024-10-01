@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 
 namespace Reko.Evaluation
@@ -38,7 +39,7 @@ namespace Reko.Evaluation
             }
             // jkl: Copy propagation causes real problems when used during trashed register analysis.
             // If needed in other passes, it should be an option for expression e
-            e = idCopyPropagation.Match(id, ctx);
+            e = IdCopyPropagation(id, ctx);
             if (e is not null)
             {
                 return (e, true);
@@ -49,6 +50,15 @@ namespace Reko.Evaluation
                 return (e, true);
             }
             return (id, false);
+        }
+
+        private static Expression? IdCopyPropagation(Identifier id, EvaluationContext ctx)
+        {
+            var idOld = id;
+            if (ctx.GetValue(id) is not Identifier idNew || idNew == idOld)
+                return null;
+
+            return idNew;
         }
 
     }

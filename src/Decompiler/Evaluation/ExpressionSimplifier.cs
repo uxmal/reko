@@ -41,7 +41,6 @@ namespace Reko.Evaluation
         private static readonly Add_e_c_cRule addEcc;
         private static readonly Add_mul_id_c_id_Rule addMici;
         private static readonly ConstConstBin_Rule constConstBin;
-        private static readonly IdCopyPropagationRule idCopyPropagation;
         private static readonly IdBinIdc_Rule idBinIdc;
         private static readonly SliceConstant_Rule sliceConst;
         private static readonly SliceMem_Rule sliceMem;
@@ -271,7 +270,6 @@ namespace Reko.Evaluation
             add2ids = new AddTwoIdsRule();
             addEcc = new Add_e_c_cRule();
             addMici = new Add_mul_id_c_id_Rule();
-            idCopyPropagation = new IdCopyPropagationRule();
             idBinIdc = new IdBinIdc_Rule();
             sliceConst = new SliceConstant_Rule();
             sliceMem = new SliceMem_Rule();
