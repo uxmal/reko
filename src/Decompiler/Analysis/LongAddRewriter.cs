@@ -90,6 +90,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
     public class Worker
     {
         private readonly SsaState ssa;
+        private readonly SsaMutator ssam;
         private readonly IProcessorArchitecture arch;
         private readonly IEventListener listener;
         private Expression? dst;
@@ -97,6 +98,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
         public Worker(SsaState ssa, AnalysisContext context)
         {
             this.ssa = ssa;
+            this.ssam = new SsaMutator(ssa);
             this.arch = ssa.Procedure.Architecture;
             this.listener = context.EventListener;
         }
@@ -195,11 +197,13 @@ public class LongAddRewriter : IAnalysis<SsaState>
         /// </summary>
         /// <param name="loCandidate"></param>
         /// <param name="hiCandidate"></param>
-        private void CreateLongUnaryInstruction(Candidate loCandidate, Candidate hiCandidate)
+        private void CreateLongNegationInstruction(Candidate loCandidate, Candidate hiCandidate)
         {
             var stmHi = ssa.Identifiers[(Identifier) hiCandidate.Dst!].DefStatement;
             var stmLo = ssa.Identifiers[(Identifier) loCandidate.Dst!].DefStatement;
-            var iStm = stmHi.Block.Statements.IndexOf(stmHi);
+            var iStm = Math.Min(
+                stmHi.Block.Statements.IndexOf(stmHi),
+                stmLo.Block.Statements.IndexOf(stmLo));
 
             SsaIdentifier AddSsaId(Identifier id) => ssa.Identifiers.Add(id, stmHi, false);
 
@@ -233,7 +237,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 stmLo.Instruction = new Assignment(sidLo.Identifier, new Slice(sidLo.Identifier.DataType, wideDst, 0));
                 ssa.AddUses(stmLo);
             }
-            var sidHi = GetSsaIdentifierOf(hiCandidate.Right);
+            var sidHi = GetSsaIdentifierOf(hiCandidate.Dst);
             if (sidHi is not null)
             {
                 ssa.RemoveUses(sidHi.DefStatement);
@@ -343,22 +347,98 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 loInstr = MatchNegation(block.Statements[i]);
                 if (loInstr is not null)
                 {
-                    var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
-                               FindConditionOfNeg(loInstr.Left);
-                    if (cond is null)
-                        continue;
-                    var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);
+                    var hiInstr = FindNegationHighPart(block, stmtsOrig, i, loInstr);
                     if (hiInstr is null)
                         continue;
                     trace.Verbose("Larw: {0}: found neg/sbc {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
-                    CreateLongUnaryInstruction(loInstr, hiInstr);
+                    CreateLongNegationInstruction(loInstr, hiInstr);
                     Changed = true;
                 }
-                if (block.Address.Offset == 0x8CB2)
-                    _ = this; //$DEBUG;
+
+                var stm = block.Statements[i];
+
+                loInstr = MatchOr(block.Statements[i]);
+                if (loInstr is not null)
+                {
+                    var (hi, lo) = FindHighShift(loInstr);
+                    if (hi is null)
+                        continue;
+
+                    //trace.Verbose("Larw: {0}: found shift/sbc {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
+                    CreateLongShiftInstruction(hi, lo!);
+                    Changed = true;
+                }
             }
         }
 
+        private Candidate? FindNegationHighPart(Block block, List<Statement> stmtsOrig, int i, Candidate loInstr)
+        {
+            var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
+                       FindConditionOfNeg(loInstr.Left);
+            if (cond is not null)
+            {
+                var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);
+                return hiInstr;
+            }
+            var hiNegsub = FindUsingNegSub(stmtsOrig, loInstr.Dst);
+            if (hiNegsub is not null)
+            {
+                return hiNegsub;
+            }
+            return null;
+        }
+
+        private (Identifier?, Statement?) FindUse(Identifier id,  Func<Identifier, Statement, Identifier?> predicate)
+        {
+            var sid = ssa.Identifiers[id];
+            foreach (var use in sid.Uses)
+            {
+                var idDef = predicate(id, use);
+                if (idDef is not null)
+                    return (idDef, use);
+            }
+            return default;
+        }
+
+        private Candidate? FindUsingNegSub(List<Statement> stmtsOrig, Expression? neg)
+        {
+            if (neg is not Identifier idNeg)
+                return null;
+            var (idConv, useConv) = FindUse(idNeg, (id, use) =>
+                (use.Instruction is Assignment ass &&
+                    ass.Src is Conversion conv &&
+                    conv.Expression is BinaryExpression bin &&
+                    bin.Operator.Type == OperatorType.Ult &&
+                    bin.Right.IsZero &&
+                    bin.Left == id)
+                    ? ass.Dst : null);
+            if (idConv is null)
+                return null;
+            var (idSub, useSub) = FindUse(idConv, (id, use) =>
+                (use.Instruction is Assignment ass &&
+                ass.Src is BinaryExpression bin &&
+                bin.Operator.Type == OperatorType.ISub &&
+                bin.Right == id)
+                ? ass.Dst : null);
+            if (idSub is null)
+                return null;
+
+            // Found the instruction the computes the high part.
+            Debug.Assert(useSub is not null);
+            var assSub = (Assignment) useSub.Instruction;
+            var sub = (BinaryExpression) assSub.Src;
+            if (sub.Left is not Identifier idHiNegDst)
+                return null;
+            var stmHiNeg = ssa.Identifiers[idHiNegDst].DefStatement;
+            if (stmHiNeg is null || stmHiNeg.Instruction is not Assignment assHiNeg ||
+                assHiNeg.Src is not UnaryExpression hiNeg ||
+                hiNeg.Operator.Type != OperatorType.Neg)
+                return null;
+            return new Candidate(Operator.ISub, hiNeg.Expression, null)
+            {
+                Dst = idSub,
+            };
+        }
 
         /// <summary>
         /// Determines if the carry flag reaches a using instruction, and 
@@ -406,7 +486,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
 
         public bool IsCarryFlag(Expression? exp)
         {
-            return 
+            return
                 exp is Identifier cf &&
                 cf.Storage.Equals(arch.CarryFlag);
         }
@@ -432,7 +512,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     {
                         return new Candidate(asc.Op, u.Expression, asc.Dst)
                         {
-                            Dst = idNegatedHi
+                            Dst = asc.Dst,
                         };
                     }
                 }
@@ -629,7 +709,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 if (!IsCarryFlag(m.CapturedExpression("right")))
                     return null;
                 var op = m.CapturedOperator("op") as BinaryOperator;
-                if (op is not BinaryOperator binOp|| !binOp.Type.IsAddOrSub())
+                if (op is not BinaryOperator binOp || !binOp.Type.IsAddOrSub())
                     return null;
                 var dst = m.CapturedExpression("dst")!;
                 var left = m.CapturedExpression("left")!;
@@ -700,7 +780,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             if (!op.Type.IsAddOrSub())
                 return null;
             return new Candidate(
-                (BinaryOperator)op,
+                (BinaryOperator) op,
                 m.CapturedExpression("left")!,
                 m.CapturedExpression("right")!)
             {
@@ -721,7 +801,245 @@ public class LongAddRewriter : IAnalysis<SsaState>
             }
             return null;
         }
+
+        private Expression? GetExp(Expression exp)
+        {
+            while (exp is Identifier id)
+            {
+                var sid = ssa.Identifiers[id];
+                var def = sid.GetDefiningExpression();
+                if (def is null)
+                    return exp;
+                if (def is BinaryExpression b)
+                    return b;
+                if (def is not Identifier idDef)
+                    return id;
+                exp = def;
+            }
+            return exp;
+        }
+
+        private bool IsShl(Expression exp)
+        {
+            return exp is BinaryExpression bin &&
+                bin.Operator.Type == OperatorType.Shl;
+        }
+
+        private bool IsShr(Expression exp)
+        {
+            return exp is BinaryExpression bin &&
+                (bin.Operator.Type == OperatorType.Shr ||
+                 bin.Operator.Type == OperatorType.Sar);
+        }
+
+
+        private Candidate? MatchOr(Statement stm)
+        {
+            if (stm.Instruction is Assignment ass &&
+                ass.Src is BinaryExpression bin &&
+                bin.Operator == Operator.Or)
+            {
+                var left = GetExp(bin.Left);
+                var right = GetExp(bin.Right);
+                if (left is null || right is null)
+                    return null;
+                if (IsShr(left) && IsShl(right) ||
+                    IsShr(right) && IsShl(left))
+                {
+                    return new Candidate(bin.Operator, left, right)
+                    {
+                        Dst = ass.Dst,
+                        Statement = stm,
+                    };
+                }
+            }
+            return null;
+        }
+
+
+        private (
+            Candidate? hi,
+            Candidate? lo)
+            FindHighShift(Candidate orInstr)
+        {
+            var (op1, exp1, sh1, shConst1) = UnpackShift(orInstr.Left);
+            var (op2, exp2, sh2, shConst2) = UnpackShift(orInstr.Right!);
+            if (exp1 is null || exp2 is null)
+                return default;
+            if (op1 is null || op2 is null)
+                return default;
+            if (shConst1 is not null)
+            {
+                _ = this;//$DEBUG
+                if (exp1 is not Identifier idRight)
+                    return default;
+                var (sidOtherDst, otherSrc) = FindOtherShiftUse(op1.Type == OperatorType.Shl, idRight);
+                if (sidOtherDst is null)
+                    return default;
+                Debug.Assert(otherSrc is not null);
+                var hiCandidate = new Candidate(op2, exp2, sh2)
+                {
+                    Dst = orInstr.Dst,
+                    Statement = orInstr.Statement,
+                };
+                var loCandidate = new Candidate(op1, otherSrc, sh1)
+                {
+                    Dst = sidOtherDst.Identifier,
+                    Statement = sidOtherDst.DefStatement,
+                };
+                if (op1.Type == OperatorType.Shl)
+                {
+                    return (loCandidate, hiCandidate);
+                }
+                else
+                {
+                    return (hiCandidate, loCandidate);
+                }
+            }
+            else if (shConst2 is not null)
+            {
+                if (exp2 is not Identifier idRight)
+                    return default;
+                var (sidOtherDst, otherSrc) = FindOtherShiftUse(op1.Type == OperatorType.Shl, idRight);
+                if (sidOtherDst is null)
+                    return default;
+                Debug.Assert(otherSrc is not null);
+                var hiCandidate = new Candidate(op1, exp1, sh1)
+                {
+                    Dst = orInstr.Dst,
+                    Statement = orInstr.Statement,
+                };
+                var loCandidate = new Candidate(op1, otherSrc, sh1)
+                {
+                    Dst = sidOtherDst.Identifier,
+                    Statement = sidOtherDst.DefStatement,
+                };
+                if (op1.Type == OperatorType.Shl)
+                {
+                    return (hiCandidate, loCandidate);
+                }
+                else
+                {
+                    return (loCandidate, hiCandidate);
+                }
+            }
+            return default;
+        }
+
+        private (SsaIdentifier?, Expression?) FindOtherShiftUse(bool isLeftShift, Identifier idRight)
+        {
+            if (GetExp(idRight) is not Identifier id)
+                return default;
+            var sid = ssa.Identifiers[id];
+            foreach (var use in sid.Uses)
+            {
+                if (use.Instruction is Assignment ass &&
+                    ass.Src is BinaryExpression bin &&
+                    ((isLeftShift && bin.Operator.Type == OperatorType.Shl) ||
+                     (!isLeftShift && (bin.Operator.Type == OperatorType.Shr ||
+                                       bin.Operator.Type == OperatorType.Sar))))
+                {
+                    return (GetSsaIdentifierOf(ass.Dst), bin.Left);
+                }
+            }
+            return default;
+        }
+
+        private (BinaryOperator? opType, Expression? left, Expression? shAmt, Constant? c) UnpackShift(Expression e)
+        {
+            var bin = (BinaryExpression) e;
+            var shAmt = GetExp(bin.Right);
+            Constant? c = null;
+            if (shAmt is BinaryExpression binShift)
+            {
+                if (binShift.Right is Constant cc &&
+                    cc.ToInt32() == e.DataType.BitSize)
+                {
+                    c = cc;
+                    shAmt = binShift.Left;
+                }
+                else if (binShift.Operator.Type == OperatorType.ISub &&
+                        binShift.Left is Constant ccSub &&
+                        ccSub.ToInt32() == e.DataType.BitSize)
+                {
+                    c = ccSub;
+                    shAmt = binShift.Right;
+                }
+                else
+                    return default;
+            }
+            return (bin.Operator, bin.Left, shAmt, c);
+        }
+
+        private void CreateLongShiftInstruction(Candidate hiCandidate, Candidate loCandidate)
+        {
+            var totalSize = PrimitiveType.Create(
+                Domain.SignedInt | Domain.UnsignedInt,
+                hiCandidate.Dst!.DataType.BitSize + loCandidate.Dst!.DataType.BitSize);
+            var left = CreateWideExpression(ssa, loCandidate.Left, hiCandidate.Left, totalSize);
+            var shift = hiCandidate.Right!;
+            this.dst = CreateWideExpression(ssa, loCandidate.Dst, hiCandidate.Dst, totalSize);
+            var stmts = hiCandidate.Statement!.Block.Statements;
+            var addr = hiCandidate.Statement.Address;
+            var iStm = FindLongShiftInsertPosition(loCandidate, hiCandidate, stmts);
+            Statement? stmMkLeft = null;
+            if (left is Identifier)
+            {
+                stmMkLeft = stmts.Insert(
+                    iStm++,
+                    addr,
+                    CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
+                left = ReplaceDstWithSsaIdentifier(left, stmMkLeft);
+            }
+
+            var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, loCandidate.Right!);
+            Instruction instr = Assign(dst, expSum);
+            var stmLong = stmts.Insert(iStm++, addr, instr);
+            this.dst = ReplaceDstWithSsaIdentifier(this.dst, stmLong);
+
+            var sidDst = GetSsaIdentifierOf(dst);
+            if (stmMkLeft is not null)
+                ssa.AddUses(stmMkLeft);
+            ssa.AddUses(stmLong);
+
+            var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
+            if (sidDstLo != null)
+            {
+                var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
+                var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
+                    sidDstLo.Identifier, cast));
+                var stmDeadLo = sidDstLo.DefStatement;
+                sidDstLo.DefStatement = stmCastLo;
+
+                var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
+                var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
+                var stmSliceHi = stmts.Insert(iStm++, addr, new AliasAssignment(
+                    sidDstHi!.Identifier, slice));
+                var stmDeadHi = sidDstHi.DefStatement;
+                sidDstHi.DefStatement = stmSliceHi;
+
+                if (sidDstLo != null)
+                {
+                    sidDst!.Uses.Add(stmCastLo);
+                }
+                if (sidDstHi != null)
+                {
+                    sidDst!.Uses.Add(stmSliceHi);
+                }
+                ssa.DeleteStatement(stmDeadLo!);
+                ssa.DeleteStatement(stmDeadHi!);
+            }
+        }
+
+        private int FindLongShiftInsertPosition(Candidate loCandidate, Candidate hiCandidate, StatementList stmts)
+        {
+            var istmHi = stmts.IndexOf(hiCandidate.Statement!);
+            var istmLo = stmts.IndexOf(loCandidate.Statement!);
+            var i = Math.Min(istmHi, istmLo);
+            return Math.Max(i, 0);
+        }
     }
+
     public class Candidate
     {
         public Candidate(BinaryOperator op, Expression left, Expression? right)
@@ -731,7 +1049,6 @@ public class LongAddRewriter : IAnalysis<SsaState>
             this.Right = right;
         }
 
-        public int StatementIndex;
         public Statement? Statement;
         public Expression? Dst;
         public readonly BinaryOperator Op;

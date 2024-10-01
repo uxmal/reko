@@ -623,10 +623,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var sExp =
             #region Expected
 @"l1:
-	dx_ax_8 = SEQ(dx, ax)
-	dx_ax_9 = -dx_ax_8
 	dx_2 = -dx
 	C_3 = cond(dx_2 != 0<16>)
+	dx_ax_8 = SEQ(dx, ax)
+	dx_ax_9 = -dx_ax_8
 	ax_5 = SLICE(dx_ax_9, word16, 0)
 	C_6 = cond(ax_5 != 0<16>)
 	dx_7 = SLICE(dx_ax_9, word16, 16)
@@ -655,10 +655,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             #region Expected
 @"l1:
 	C_2 = dx != 0<16>
-	dx_ax_8 = SEQ(dx, ax)
-	dx_ax_9 = -dx_ax_8
 	dx_3 = -dx
 	C_5 = ax != 0<16>
+	dx_ax_8 = SEQ(dx, ax)
+	dx_ax_9 = -dx_ax_8
 	ax_6 = SLICE(dx_ax_9, word16, 0)
 	dx_7 = SLICE(dx_ax_9, word16, 16)
 ";
@@ -687,9 +687,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 @"l1:
 	dx_1 = 0<16>
 	C_2 = dx_1 != 0<16>
-	dx_ax_8 = -CONVERT(ax, word16, uint32)
 	dx_3 = -dx_1
 	C_5 = ax != 0<16>
+	dx_ax_8 = -CONVERT(ax, word16, uint32)
 	ax_6 = SLICE(dx_ax_8, word16, 0)
 	dx_7 = SLICE(dx_ax_8, word16, 16)
 ";
@@ -710,5 +710,144 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 this.block = m.Block;
             });
         }
+
+        [Test]
+        public void Larw_LongShiftRight()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	bx_2 = dx
+	ax_5 = ax >>u cl
+	dx_ax_13 = SEQ(dx, ax)
+	dx_ax_14 = dx_ax_13 >>u cl
+	ax_10 = SLICE(dx_ax_14, word16, 0) (alias)
+	dx_6 = SLICE(dx_ax_14, word16, 16) (alias)
+	cl_7 = -cl
+	cl_8 = cl_7 + 0x10<8>
+	bx_9 = bx_2 << cl_8
+	Mem11[0x1234<16>:word16] = ax_10
+	Mem12[0x1236<16>:word16] = dx_6
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var ax = m.Reg16("ax", 0);
+                var cl = m.Reg8("cl", 1);
+                var dx = m.Reg16("dx", 2);
+                var bx = m.Reg16("bx", 3);
+
+                m.Assign(bx, dx);
+                m.Assign(ax, m.Shr(ax, cl));
+                m.Assign(dx, m.Shr(dx, cl));
+                m.Assign(cl, m.Neg(cl));
+                m.Assign(cl, m.IAdd(cl, 0x10));
+                m.Assign(bx, m.Shl(bx, cl));
+                m.Assign(ax, m.Or(ax, bx));
+                m.MStore(m.Word16(0x1234), ax);
+                m.MStore(m.Word16(0x1236), dx);
+
+                this.block = m.Block;
+            });
+        }
+
+        /*
+   bx = ax
+    ax = ax << cl
+    SCZO = cond(ax)
+    dx = dx << cl
+    SCZO = cond(dx)
+    C = cl != 0x00
+    cl = -cl
+    SZO = cond(cl)
+    cl = cl + 0x10
+    SCZO = cond(cl)
+    bx = bx >>u cl
+    SCZO = cond(bx)
+    dx = dx | bx
+    SZ = cond(dx)
+    O = 0x00
+    C = 0x00
+
+        
+    bx = dx
+    ax = ax >>u cl
+    SCZO = cond(ax)
+    dx = dx >> cl
+    SCZO = cond(dx)
+    C = cl != 0x00
+    cl = -cl
+    SZO = cond(cl)
+    cl = cl + 0x10
+    SCZO = cond(cl)
+    bx = bx << cl
+    SCZO = cond(bx)
+    ax = ax | bx
+    SZ = cond(ax)
+    O = 0x00
+    C = 0x00
+
+        
+    r8 = 0x20 - r12
+    VNZC = cond(r8)
+    r6 = r6 | r7
+    NZ = cond(r6)
+    r7 = r7 >>u r12
+    NZC = cond(r7)
+    r9 = r10 << r8
+    NZC = cond(r9)
+    r7 = r7 | r9
+    NZ = cond(r7)
+    r10 = r10 >>u r12
+    NZC = cond(r10)
+    r9 = r11 << r8
+    NZC = cond(r9)
+    r10 = r10 | r9
+    NZ = cond(r10)
+    r11 = r11 >>u r12
+    NZC = cond(r11)
+
+         * 
+         */
+
+
+        [Test]
+        public void LarwMipsNegate()
+        {
+            var sExpected =
+            #region Expected
+@"l1:
+	r5_r4_10 = SEQ(r5, r4)
+	r5_r4_11 = -r5_r4_10
+	r4_2 = SLICE(r5_r4_11, word32, 0)
+	r5_4 = -r5
+	r9_5 = CONVERT(r4_2 <u 0<32>, bool, word32)
+	r2_6 = 0xFFFFFFFF<32>
+	r5_7 = SLICE(r5_r4_11, word32, 32)
+	Mem8[0x123400<32>:word32] = r4_2
+	Mem9[0x123404<32>:word32] = r5_7
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                var r4 = m.Reg32("r4", 4);
+                var r5 = m.Reg32("r5", 5);
+                var r9 = m.Reg32("r9", 9);
+                var r2 = m.Reg32("r2", 2);
+
+                m.Assign(r4, m.Neg(r4));
+                m.Assign(r5, m.Neg(r5));
+                m.Assign(r9, m.Convert(m.Ult0(r4), PrimitiveType.Bool, PrimitiveType.Word32));
+                m.Assign(r2, m.Word32(~0u));
+                m.Assign(r5, m.ISub(r5, r9));
+                m.MStore(m.Word32(0x123400), r4);
+                m.MStore(m.Word32(0x123404), r5);
+
+                this.block = m.Block;
+            });
+        }
+
     }
 }

@@ -46,61 +46,6 @@ namespace Reko.UnitTests.Arch.MN103
 
         public override Address LoadAddress => addr;
 
-        private class RewriterHost : IRewriterHost
-        {
-            public Constant GlobalRegisterValue => throw new NotImplementedException();
-
-            public void Error(Address address, string format, params object[] args)
-            {
-                Console.Write("E: {0}: ", address);
-                Console.WriteLine(format, args);
-            }
-
-            public IProcessorArchitecture GetArchitecture(string archMoniker)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression GetImport(Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Warn(Address address, string format, params object[] args)
-            {
-                Console.Write("W: {0}: ", address);
-                Console.WriteLine(format, args);
-            }
-        }
-
-
-        [Test]
-        public void Mn103Rw_Generate()
-        {
-            var rnd = new Random(0x4711);
-            var buf = new byte[65536];
-            rnd.NextBytes(buf);
-            var mem = new ByteMemoryArea(addr, buf);
-            var rdr = mem.CreateLeReader(0);
-            var state = arch.CreateProcessorState();
-            var rtls = arch.CreateRewriter(rdr, state, new StorageBinder(), new RewriterHost());
-            var instrs = rtls.ToArray();
-        }
 
         [Test]
         public void Mn103Rw_add_imm()

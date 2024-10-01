@@ -53,17 +53,21 @@ l0804D12C:
 				ui32 r6_n;
 				if (r7_n < 0x39)
 				{
+					ui32 r4_n;
 					if (r7_n < 0x20)
 					{
-						word32 r10_n = 0x20 - r7_n;
 						r7_n = r9_n >> r7_n;
-						r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
+						r6_n = (word32) (r6 << 0x03 << 0x20 - r7_n > 0x00) | r4_n;
 						goto l0804D156;
 					}
 					uint32 r4_n = r9_n >> r7_n;
 					ui32 r10_n = 0x00;
 					if (r7_n != 0x20)
-						r10_n = r9_n << -r7_n;
+					{
+						uint64 r10_r4_n = SEQ(r9_n, r6 << 0x03) >> r7_n;
+						r4_n = (word32) r10_r4_n;
+						r10_n = SLICE(r10_r4_n, word32, 32);
+					}
 					r6_n = (word32) ((r10_n | r6 << 0x03) > 0x00) | r4_n;
 				}
 				else
@@ -169,17 +173,21 @@ l0804D1AE:
 			ui32 r12_n;
 			if (r11_n < 0x39)
 			{
+				ui32 r4_n;
 				if (r11_n < 0x20)
 				{
-					word32 r7_n = 0x20 - r11_n;
 					r11_n = r8_n >> r11_n;
-					r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
+					r12_n = r4_n | (word32) ((r4 << 0x03) << 0x20 - r11_n > 0x00);
 					goto l0804D1F8;
 				}
 				uint32 r4_n = r8_n >> r11_n;
 				ui32 r7_n = 0x00;
 				if (r11_n != 0x20)
-					r7_n = r8_n << -r11_n;
+				{
+					uint64 r7_r4_n = SEQ(r8_n, r4 << 0x03) >> r11_n;
+					r4_n = (word32) r7_r4_n;
+					r7_n = SLICE(r7_r4_n, word32, 32);
+				}
 				r12_n = r4_n | (word32) ((r7_n | r4 << 0x03) > 0x00);
 			}
 			else
@@ -304,17 +312,21 @@ l0804D052:
 		ui32 r6_n;
 		if (r7_n < 0x39)
 		{
+			ui32 r4_n;
 			if (r7_n < 0x20)
 			{
-				word32 r10_n = 0x20 - r7_n;
 				r7_n = r9_n >> r7_n;
-				r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
+				r6_n = (word32) (r6 << 0x03 << 0x20 - r7_n > 0x00) | r4_n;
 				goto l0804D36E;
 			}
 			uint32 r4_n = r9_n >> r7_n;
 			ui32 r10_n = 0x00;
 			if (r7_n != 0x20)
-				r10_n = r9_n << -r7_n;
+			{
+				uint64 r10_r4_n = SEQ(r9_n, r6 << 0x03) >> r7_n;
+				r4_n = (word32) r10_r4_n;
+				r10_n = SLICE(r10_r4_n, word32, 32);
+			}
 			r6_n = (word32) ((r10_n | r6 << 0x03) > 0x00) | r4_n;
 		}
 		else
@@ -372,17 +384,21 @@ l0804D3D0:
 		ui32 r12_n;
 		if (r11_n < 0x39)
 		{
+			ui32 r5_n;
 			if (r11_n < 0x20)
 			{
-				word32 r7_n = 0x20 - r11_n;
 				r11_n = r8_n >> r11_n;
-				r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
+				r12_n = r5_n | (word32) ((r4 << 0x03) << 0x20 - r11_n > 0x00);
 				goto l0804D426;
 			}
 			uint32 r5_n = r8_n >> r11_n;
 			ui32 r7_n = 0x00;
 			if (r11_n != 0x20)
-				r7_n = r8_n << -r11_n;
+			{
+				uint64 r7_r5_n = SEQ(r8_n, r4 << 0x03) >> r11_n;
+				r5_n = (word32) r7_r5_n;
+				r7_n = SLICE(r7_r5_n, word32, 32);
+			}
 			r12_n = r5_n | (word32) ((r7_n | r4 << 0x03) > 0x00);
 		}
 		else

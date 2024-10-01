@@ -9,7 +9,7 @@ byte g_b0005; // 00000005
 byte g_b0006; // 00000006
 byte g_b0007; // 00000007
 byte g_b0008; // 00000008
-Eq_n g_t0009;
+byte g_b0009; // 00000009
 Eq_n g_t000A;
 Eq_n g_t0020;
 byte g_bFFFFFFFF; // FFFFFFFF

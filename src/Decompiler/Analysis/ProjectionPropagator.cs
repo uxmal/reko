@@ -30,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 
 namespace Reko.Analysis;
 
@@ -262,6 +261,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     // on word.
                     dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
                 }
+
                 Identifier? idWide = GenerateWideIdentifier(dtWide, sids);
                 if (idWide is not null && idWide.DataType.BitSize != dtWide.BitSize)
                     return null;
@@ -333,7 +333,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 {
                     idWide = CombineAdjacentStorages(sids);
                 }
-                else 
+                else
                 {
                     idWide = ssa.Procedure.Frame.EnsureSequence(
                         dt,
@@ -406,7 +406,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
 
             private Slice? AsSlice(Assignment? ass)
             {
-                if (ass == null)
+                if (ass is null)
                     return null;
                 if (ass.Src is Slice slice)
                     return slice;

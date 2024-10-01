@@ -1414,8 +1414,7 @@ finish: error: An error occurred while renaming variables.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
+   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 43
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -1516,6 +1515,7 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1523,6 +1523,7 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1530,6 +1531,7 @@ fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1537,6 +1539,7 @@ fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1544,6 +1547,7 @@ fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
+   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -2460,7 +2464,7 @@ fn00008EC2: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00009735' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2468,7 +2472,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2570,4 +2574,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 64.57 seconds.
+Decompiled 93 binaries in 65.57 seconds.

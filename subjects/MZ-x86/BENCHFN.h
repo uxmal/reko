@@ -2133,8 +2133,8 @@ Eq_4754: (struct "Eq_4754" (FFFFFFFE Eq_224 tFFFFFFFE) (0 Eq_224 t0000))
 Eq_4764: (struct "Eq_4764" (FFFFFFFE Eq_224 tFFFFFFFE) (0 Eq_224 t0000))
 	T_4764 (in sp_119 + -2<i16> @ 0800:1CC6 : word16)
 Eq_4784: (union "Eq_4784" (int32 u0) (uint32 u1))
-	T_4784 (in -di_si_783 @ 0800:1D18 : int32)
-	T_4785 (in dx_ax_536 @ 0800:1D18 : Eq_4784)
+	T_4784 (in -di_si_783 @ 0800:1D1C : int32)
+	T_4785 (in dx_ax_536 @ 0800:1D1C : Eq_4784)
 Eq_4789: (struct "Eq_4789" (FFFFFFFE Eq_224 tFFFFFFFE) (0 Eq_224 t0000))
 	T_4789 (in sp_119 + -2<i16> @ 0800:1CF2 : word16)
 Eq_4803: (union "Eq_4803" (int32 u0) (uint32 u1))
@@ -9972,11 +9972,11 @@ T_1910: (in Mem41[ds:wArg08 + 0<16>:byte] @ 0800:0C7E : byte)
   Class: Eq_1906
   DataType: byte
   OrigDataType: byte
-T_1911: (in -dwArg0A @ 0800:0C82 : ui32)
+T_1911: (in -dwArg0A @ 0800:0C86 : ui32)
   Class: Eq_1911
   DataType: ui32
   OrigDataType: word32
-T_1912: (in cx_ax_175 @ 0800:0C82 : ui32)
+T_1912: (in cx_ax_175 @ 0800:0C86 : ui32)
   Class: Eq_1911
   DataType: ui32
   OrigDataType: ui32
@@ -21591,11 +21591,11 @@ T_4783: (in v51_318 < 0<16> @ 0800:1CED : bool)
   Class: Eq_4783
   DataType: bool
   OrigDataType: bool
-T_4784: (in -di_si_783 @ 0800:1D18 : int32)
+T_4784: (in -di_si_783 @ 0800:1D1C : int32)
   Class: Eq_4784
   DataType: Eq_4784
   OrigDataType: uint32
-T_4785: (in dx_ax_536 @ 0800:1D18 : Eq_4784)
+T_4785: (in dx_ax_536 @ 0800:1D1C : Eq_4784)
   Class: Eq_4784
   DataType: Eq_4784
   OrigDataType: (union (int32 u0) (uint32 u1))

@@ -726,31 +726,31 @@ l00001932:
 					}
 l00001974:
 					a3_n = fp + -0x0E;
-					word32 * dwLoc44_n;
+					Eq_n dwLoc44_n;
 					if (bLoc44_n != 0x78 && bLoc44_n != 88)
 					{
-						word32 * dwLoc40_n;
+						Eq_n dwLoc40_n;
 						if (bLoc44_n == 111)
-							dwLoc40_n = (word32 *) 0x08;
+							dwLoc40_n.u0 = 0x08;
 						else
-							dwLoc40_n = (word32 *) 0x0A;
+							dwLoc40_n.u0 = 0x0A;
 						dwLoc44_n = dwLoc40_n;
 					}
 					else
-						dwLoc44_n = (word32 *) 0x10;
+						dwLoc44_n.u0 = 0x10;
 					ptr32 a6_n;
 					if (bLoc44_n != 88)
 						a6_n = &g_t1DB8;
 					else
 						a6_n = &g_t1DC8;
 					word32 * d3_n = null;
-					int64 d6_d7_n = SEQ(dwLoc38_n, dwLoc34_n);
-					int64 d0_d1_n;
+					Eq_n d6_d7_n = SEQ(dwLoc38_n, dwLoc34_n);
+					Eq_n d0_d1_n;
 					do
 					{
 						--a3_n;
 						*a3_n = (int8) *((word32) a6_n + fn00002648(d6_d7_n, SEQ(dwLoc44_n >> 0x1F, dwLoc44_n)));
-						d0_d1_n = fn000023F8(SLICE(d6_d7_n, word32, 32), (word32) d6_d7_n, dwLoc44_n >> 0x1F, dwLoc44_n, out a0_n);
+						d0_d1_n = fn000023F8(d6_d7_n, SEQ(dwLoc44_n >> 0x1F, dwLoc44_n), out a0_n);
 						d3_n = (word32 *) ((char *) d3_n + 1);
 						d6_d7_n = d0_d1_n;
 					} while (SLICE(d0_d1_n, word32, 32) != 0x00);
@@ -1285,15 +1285,19 @@ word32 fn000023C8()
 	return a5;
 }
 
-// 000023F8: Sequence word64 fn000023F8(Stack (ptr32 word32) dwArg04, Stack (ptr32 word32) dwArg08, Stack (ptr32 word32) dwArg0C, Stack (ptr32 word32) dwArg10, Register out (ptr32 word32) a0Out)
+// 000023F8: Sequence ui64 fn000023F8(Stack Eq_n qwArg04, Stack Eq_n qwArg0C, Register out (ptr32 word32) a0Out)
 // Called from:
 //      fn00001458
-word64 fn000023F8(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32 * dwArg10, word32 & a0Out)
+ui64 fn000023F8(Eq_n qwArg04, Eq_n qwArg0C, word32 & a0Out)
 {
 	word32 * d2_n;
 	word32 * d1_n;
 	word32 d2_n;
 	word32 d1_n;
+	word32 * dwArg08 = SLICE(qwArg04, word32, 32);
+	word32 * dwArg04 = (word32) qwArg04;
+	word32 * dwArg10 = SLICE(qwArg0C, word32, 32);
+	word32 * dwArg0C = (word32) qwArg0C;
 	word32 * d1_n = dwArg08;
 	word32 * a0_n = dwArg08;
 	word32 * d3_n = dwArg10;
@@ -1322,7 +1326,7 @@ word64 fn000023F8(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32 *
 			word32 d5_n = 0x20 - d4_n;
 			if (d5_n != 0x00)
 			{
-				word32 * d0_n = fn000024FC(dwArg04 >> d4_n, dwArg04 << d5_n | dwArg08 >> d4_n, dwArg0C << d5_n | dwArg10 >> d4_n, out d1_n, out d2_n);
+				word32 * d0_n = fn000024FC(dwArg04 >> d4_n, (word32) (qwArg04 >> d4_n), (word32) (qwArg0C >> d4_n), out d1_n, out d2_n);
 				word32 * d3_n = dwArg10 << d5_n;
 				uint32 d5_n = __swap(d0_n);
 				word32 d6_n = __swap(d3_n);
@@ -1503,13 +1507,13 @@ l00002642:
 	}
 }
 
-// 00002648: Register (ptr32 word32) fn00002648(Stack int64 qwArg04, Stack int64 qwArg0C)
+// 00002648: Register (ptr32 word32) fn00002648(Stack Eq_n qwArg04, Stack Eq_n qwArg0C)
 // Called from:
 //      fn00001458
-word32 * fn00002648(int64 qwArg04, int64 qwArg0C)
+word32 * fn00002648(Eq_n qwArg04, Eq_n qwArg0C)
 {
 	ui32 d2_n;
-	ui32 d1_n;
+	uint32 d1_n;
 	word32 * dwArg08 = SLICE(qwArg04, word32, 32);
 	word32 * dwArg04 = (word32) qwArg04;
 	word32 * dwArg10 = SLICE(qwArg0C, word32, 32);
@@ -1559,10 +1563,10 @@ word32 * fn00002648(int64 qwArg04, int64 qwArg0C)
 	if (d5_n == 0x00)
 	{
 		if (dwArg0C < dwArg04 || dwArg10 <= dwArg08)
-			d1_n = (word32) (qwArg04 - qwArg0C);
+			d1_n = dwArg08 - dwArg10;
 		return d1_n;
 	}
-	word32 * d0_n = fn000024FC(dwArg04 >> d4_n, dwArg04 << d5_n | dwArg08 >> d4_n, dwArg0C << d5_n | dwArg10 >> d4_n, out d1_n, out d2_n);
+	word32 * d0_n = fn000024FC(dwArg04 >> d4_n, (word32) (qwArg04 >> d4_n), (word32) (qwArg0C >> d4_n), out d1_n, out d2_n);
 	word32 * d3_n = dwArg10 << d5_n;
 	uint32 d7_n = __swap(d0_n);
 	word32 d6_n = __swap(d3_n);
@@ -1576,7 +1580,7 @@ word32 * fn00002648(int64 qwArg04, int64 qwArg0C)
 	uint32 d6_n = dwArg08 << d5_n;
 	uint32 d3_n = __swap(SEQ(SLICE(d3_n, word16, 16), 0x00)) + __swap(SEQ(SLICE(d4_n, word16, 16), 0x00)) + SEQ(SLICE(d7_n, word16, 16), SLICE(v43_v41_n, word16, 16));
 	up32 v50_n = d1_n - d2_n;
-	ui64 d2_d3_n;
+	uint64 d2_d3_n;
 	if (v50_n < 0x00)
 	{
 l0000273C:
@@ -1593,8 +1597,7 @@ l0000273C:
 				goto l0000273C;
 		}
 l00002740:
-		ui64 d1_d6_n = SEQ(d1_n, d6_n) - d2_d3_n;
-		d1_n = SLICE(d1_d6_n, word32, 32) << 0x20 - d5_n | (word32) d1_d6_n >> d5_n;
+		d1_n = (word32) (SEQ(d1_n, d6_n) - d2_d3_n >> d4_n);
 		return d1_n;
 	}
 }
