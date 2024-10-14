@@ -142,6 +142,7 @@ namespace Reko.Arch.X86.Assembler
 			keywords["jl"] = Token.JL;
 			keywords["jle"] = Token.JLE;
 			keywords["jmp"] = Token.JMP;
+			keywords["jnb"] = Token.JNB;
 			keywords["jnc"] = Token.JNC;
 			keywords["jne"] = Token.JNZ;
 			keywords["jno"] = Token.JNO;

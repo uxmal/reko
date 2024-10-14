@@ -870,8 +870,9 @@ namespace Reko.Arch.X86.Assembler
 			case Token.JMP:
 				ProcessCallJmp(false);
 				break;
+			case Token.JNB:
 			case Token.JNC:
-				ProcessBranch(0x03);
+                ProcessBranch(0x03);
 				break;
 			case Token.JNS:
 				ProcessBranch(0x09);
