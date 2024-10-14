@@ -71,9 +71,14 @@ namespace Reko.ImageLoaders.WebAssembly.Output
             var mem = new ByteMemoryArea(Address.Ptr32(0x1_0000), codeSection.Bytes);
             var rdr = new LeImageReader(mem, function.Start, function.End);
             var dasm = arch.CreateDisassembler(rdr);
-            //$TODO provide real procedures.
+            //$TODO provide real procedures and image symbols.
             var procedures = new Dictionary<Address, Procedure>();
-            var instrRenderer = new FormatterInstructionWriter(formatter, procedures, false);
+            var symbols = new Dictionary<Address, ImageSymbol>();
+            var instrRenderer = new FormatterInstructionWriter(
+                formatter,
+                procedures,
+                symbols,
+                false);
             var options = new MachineInstructionRendererOptions();
             var dataStack = new List<DataType>();
             var blockStack = new List<WasmInstruction>();

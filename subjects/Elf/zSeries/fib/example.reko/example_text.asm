@@ -12,7 +12,7 @@ _start proc
 	la	r7,160(r15)
 	larl	r6,__libc_csu_fini
 	larl	r5,__libc_csu_init
-	larl	r2,0000000000002040
+	larl	r2,__libc_csu_init_GOT
 	lg	r2,(r2)
 	brasl	r14,__libc_start_main
 	invalid
@@ -23,8 +23,8 @@ _start proc
 ;;     0000000000000708 (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	larl	r5,00000000000008C8
-	larl	r1,0000000000002068
-	larl	r2,0000000000002068
+	larl	r1,__TMC_END__
+	larl	r2,__TMC_END__
 	la	r1,7(r1)
 	sgr	r1,r2
 	clg	r1,(r5)
@@ -44,8 +44,8 @@ l000000000000067C:
 ;;   Called from:
 ;;     0000000000000746 (in frame_dummy)
 register_tm_clones proc
-	larl	r1,0000000000002068
-	larl	r3,0000000000002068
+	larl	r1,__TMC_END__
+	larl	r3,__TMC_END__
 	sgr	r3,r1
 	srag	r3,r3,00000003
 	srlg	r1,r3,0000003F
@@ -60,7 +60,7 @@ l00000000000006A8:
 	ber	r14
 
 l00000000000006BA:
-	larl	r2,0000000000002068
+	larl	r2,__TMC_END__
 	br	r1
 00000000000006C2       07 07 07 07 07 07                           ......        
 
@@ -69,7 +69,7 @@ __do_global_dtors_aux proc
 	stmg	r11,r15,88(r15)
 	larl	r13,00000000000008D0
 	aghi	r15,-000000A0
-	larl	r11,0000000000002068
+	larl	r11,__TMC_END__
 	cli	(r11),00
 	jne	0000000000000712
 
@@ -79,7 +79,7 @@ l00000000000006E6:
 	je	0000000000000708
 
 l00000000000006F6:
-	larl	r1,0000000000002060
+	larl	r1,__dso_handle
 	lg	r2,(r1)
 	brasl	r14,__cxa_finalize
 
@@ -97,7 +97,7 @@ frame_dummy proc
 	stmg	r13,r15,104(r15)
 	larl	r13,00000000000008D8
 	aghi	r15,-000000A0
-	larl	r2,0000000000001E18
+	larl	r2,__JCR_END__
 	clc	(8,r13),(r2)
 	jne	000000000000074C
 
@@ -183,8 +183,8 @@ __libc_csu_init proc
 	lgr	r9,r3
 	lgr	r8,r4
 	brasl	r14,_init
-	larl	r11,0000000000001E10
-	larl	r1,0000000000001E08
+	larl	r11,__do_global_dtors_aux_fini_array_entry
+	larl	r1,__frame_dummy_init_array_entry
 	sgr	r11,r1
 	srag	r11,r11,00000003
 	je	0000000000000876

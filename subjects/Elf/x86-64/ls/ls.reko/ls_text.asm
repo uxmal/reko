@@ -255,7 +255,7 @@ l0000000000402C70:
 
 l0000000000402C85:
 	mov	rcx,[rsp+20h]
-	mov	rdi,[000000000061A640]                                 ; [rip+002179AF]
+	mov	rdi,[optarg]                                           ; [rip+002179AF]
 	xor	r8d,r8d
 	xor	edx,edx
 	xor	esi,esi
@@ -295,7 +295,7 @@ l0000000000402CF6:
 
 l0000000000402D05:
 	mov	edi,10h
-	mov	r15,[000000000061A640]                                 ; [rip+0021792F]
+	mov	r15,[optarg]                                           ; [rip+0021792F]
 	call	fn0000000000410C40
 	mov	rdx,[000000000061B100]                                 ; [rip+002183E3]
 	mov	[rax],r15
@@ -371,7 +371,7 @@ l0000000000402E15:
 	cmovnz	rsi,rax
 
 l0000000000402E26:
-	mov	rdi,[000000000061A610]                                 ; [rip+002177E3]
+	mov	rdi,[stdout]                                           ; [rip+002177E3]
 	mov	qword ptr [rsp],+0h
 	mov	r9d,4138BDh
 	mov	r8d,4138CDh
@@ -382,12 +382,12 @@ l0000000000402E26:
 	call	4027F0h
 
 l0000000000402E54:
-	mov	r12,[000000000061A640]                                 ; [rip+002177E5]
+	mov	r12,[optarg]                                           ; [rip+002177E5]
 	jmp	402B30h
 
 l0000000000402E60:
 	mov	r9,[000000000061A578]                                  ; [rip+00217711]
-	mov	rsi,[000000000061A640]                                 ; [rip+002177D2]
+	mov	rsi,[optarg]                                           ; [rip+002177D2]
 	mov	r8d,4h
 	mov	ecx,412F50h
 	mov	edx,412F80h
@@ -399,7 +399,7 @@ l0000000000402E60:
 
 l0000000000402E9A:
 	mov	r9,[000000000061A578]                                  ; [rip+002176D7]
-	mov	rsi,[000000000061A640]                                 ; [rip+00217798]
+	mov	rsi,[optarg]                                           ; [rip+00217798]
 	mov	r8d,4h
 	mov	ecx,412FB0h
 	mov	edx,412FE0h
@@ -423,7 +423,7 @@ l0000000000402F09:
 
 l0000000000402F15:
 	mov	r9,[000000000061A578]                                  ; [rip+0021765C]
-	mov	rsi,[000000000061A640]                                 ; [rip+0021771D]
+	mov	rsi,[optarg]                                           ; [rip+0021771D]
 	mov	r8d,4h
 	mov	ecx,416460h
 	mov	edx,416480h
@@ -436,7 +436,7 @@ l0000000000402F15:
 
 l0000000000402F50:
 	mov	r9,[000000000061A578]                                  ; [rip+00217621]
-	mov	rsi,[000000000061A640]                                 ; [rip+002176E2]
+	mov	rsi,[optarg]                                           ; [rip+002176E2]
 	mov	r8d,4h
 	mov	ecx,4136B0h
 	mov	edx,4136C0h
@@ -449,7 +449,7 @@ l0000000000402F50:
 l0000000000402F8A:
 	mov	edi,10h
 	call	fn0000000000410C40
-	mov	rdx,[000000000061A640]                                 ; [rip+002176A5]
+	mov	rdx,[optarg]                                           ; [rip+002176A5]
 	mov	[rax],rdx
 	mov	rdx,[000000000061B0F8]                                 ; [rip+00218153]
 	mov	[000000000061B0F8],rax                                 ; [rip+0021814C]
@@ -467,7 +467,7 @@ l0000000000402FC1:
 
 l0000000000402FD6:
 	mov	r9,[000000000061A578]                                  ; [rip+0021759B]
-	mov	rsi,[000000000061A640]                                 ; [rip+0021765C]
+	mov	rsi,[optarg]                                           ; [rip+0021765C]
 	mov	r8d,4h
 	mov	ecx,413010h
 	mov	edx,413040h
@@ -486,7 +486,7 @@ l000000000040301F:
 	jmp	402B30h
 
 l000000000040302E:
-	mov	rsi,[000000000061A640]                                 ; [rip+0021760B]
+	mov	rsi,[optarg]                                           ; [rip+0021760B]
 	test	rsi,rsi
 	jz	403A7Ch
 
@@ -510,7 +510,7 @@ l0000000000403078:
 	jmp	402B30h
 
 l0000000000403084:
-	mov	rdi,[000000000061A640]                                 ; [rip+002175B5]
+	mov	rdi,[optarg]                                           ; [rip+002175B5]
 	mov	edx,61B138h
 	mov	esi,61B140h
 	call	fn000000000040C810
@@ -534,7 +534,7 @@ l00000000004030CD:
 
 l00000000004030DC:
 	mov	rcx,[rsp+20h]
-	mov	rdi,[000000000061A640]                                 ; [rip+00217558]
+	mov	rdi,[optarg]                                           ; [rip+00217558]
 	xor	r8d,r8d
 	xor	edx,edx
 	xor	esi,esi
@@ -547,7 +547,7 @@ l00000000004030F8:
 	jnz	403134h
 
 l0000000000403100:
-	mov	rdi,[000000000061A640]                                 ; [rip+00217539]
+	mov	rdi,[optarg]                                           ; [rip+00217539]
 	call	fn000000000040E930
 	mov	edx,5h
 	mov	r15,rax
@@ -606,7 +606,7 @@ l00000000004031C7:
 	jmp	402B30h
 
 l00000000004031D6:
-	mov	rbx,[000000000061A650]                                 ; [rip+00217473]
+	mov	rbx,[stderr]                                           ; [rip+00217473]
 	mov	esi,415BF8h
 	xor	edi,edi
 	mov	edx,5h
@@ -698,7 +698,7 @@ l00000000004032F4:
 
 l0000000000403301:
 	cmp	[000000000061B129],0h                                  ; [rip+00217E21]
-	mov	r12d,[000000000061A620]                                ; [rip+00217311]
+	mov	r12d,[optind]                                          ; [rip+00217311]
 	jnz	403AC5h
 
 l0000000000403315:
@@ -939,7 +939,7 @@ l0000000000403615:
 	jnz	403646h
 
 l000000000040361E:
-	mov	rdi,[000000000061A610]                                 ; [rip+00216FEB]
+	mov	rdi,[stdout]                                           ; [rip+00216FEB]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	4045E4h
@@ -960,7 +960,7 @@ l0000000000403646:
 l000000000040365A:
 	test	rbx,rbx
 	mov	rdx,[000000000061B0E0]                                 ; [rip+00217A7C]
-	mov	rdi,[000000000061A610]                                 ; [rip+00216FA5]
+	mov	rdi,[stdout]                                           ; [rip+00216FA5]
 	cmovz	rbx,r14
 
 l000000000040366F:
@@ -983,7 +983,7 @@ l00000000004036A1:
 	add	[000000000061AF78],8h                                  ; [rip+002178C5]
 
 l00000000004036B3:
-	mov	rcx,[000000000061A610]                                 ; [rip+00216F56]
+	mov	rcx,[stdout]                                           ; [rip+00216F56]
 	mov	edx,2h
 	mov	esi,1h
 	mov	edi,41393Bh
@@ -1431,7 +1431,7 @@ l0000000000403BF3:
 	jmp	402E26h
 
 l0000000000403BFD:
-	mov	rdi,[000000000061A640]                                 ; [rip+00216A3C]
+	mov	rdi,[optarg]                                           ; [rip+00216A3C]
 	call	fn000000000040E930
 	xor	edi,edi
 	mov	r15,rax
@@ -1542,13 +1542,13 @@ l0000000000403D39:
 	xor	edi,edi
 	mov	esi,4139DBh
 	call	402360h
-	mov	rsi,[000000000061A610]                                 ; [rip+002168BF]
+	mov	rsi,[stdout]                                           ; [rip+002168BF]
 	mov	rbx,rax
 	mov	rdi,rax
 	call	402520h
 	mov	rdi,rbx
 	call	402380h
-	mov	rdi,[000000000061A610]                                 ; [rip+002168A5]
+	mov	rdi,[stdout]                                           ; [rip+002168A5]
 	add	[000000000061B018],rax                                 ; [rip+002172A6]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
@@ -1567,13 +1567,13 @@ l0000000000403D8B:
 	mov	ecx,200h
 	add	[000000000061B018],1h                                  ; [rip+00217266]
 	call	fn000000000040BD70
-	mov	rsi,[000000000061A610]                                 ; [rip+00216852]
+	mov	rsi,[stdout]                                           ; [rip+00216852]
 	mov	rbx,rax
 	mov	rdi,rax
 	call	402520h
 	mov	rdi,rbx
 	call	402380h
-	mov	rdi,[000000000061A610]                                 ; [rip+00216838]
+	mov	rdi,[stdout]                                           ; [rip+00216838]
 	add	[000000000061B018],rax                                 ; [rip+00217239]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
@@ -1681,7 +1681,7 @@ l0000000000403EE2:
 	jmp	4034A1h
 
 l0000000000403F2E:
-	mov	rcx,[000000000061A610]                                 ; [rip+002166DB]
+	mov	rcx,[stdout]                                           ; [rip+002166DB]
 	mov	edx,2h
 	mov	esi,1h
 	mov	edi,413771h
@@ -1703,7 +1703,7 @@ l0000000000403F76:
 	jmp	40365Ah
 
 l0000000000403F8D:
-	mov	rcx,[000000000061A610]                                 ; [rip+0021667C]
+	mov	rcx,[stdout]                                           ; [rip+0021667C]
 	mov	edx,2h
 	mov	esi,1h
 	mov	edi,413771h
@@ -1800,7 +1800,7 @@ l00000000004040D9:
 	call	fn0000000000406440
 
 l00000000004040ED:
-	mov	rdi,[000000000061A610]                                 ; [rip+0021651C]
+	mov	rdi,[stdout]                                           ; [rip+0021651C]
 	mov	ebx,412CC0h
 	call	402820h
 	jmp	40410Dh
@@ -1915,7 +1915,7 @@ l0000000000404220:
 	jz	4044B5h
 
 l0000000000404233:
-	mov	rdi,[000000000061A610]                                 ; [rip+002163D6]
+	mov	rdi,[stdout]                                           ; [rip+002163D6]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	4044A3h
@@ -2032,7 +2032,7 @@ l00000000004043BB:
 	call	fn0000000000410E50
 
 l00000000004043C0:
-	mov	r8,[000000000061A640]                                  ; [rip+00216279]
+	mov	r8,[optarg]                                            ; [rip+00216279]
 	mov	esi,[rsp+38h]
 	mov	ecx,413080h
 	xor	edx,edx
@@ -2171,7 +2171,7 @@ l0000000000404564:
 	mov	rsi,r12
 	mov	edi,41391Dh
 	call	fn0000000000409F80
-	mov	rbx,[000000000061A650]                                 ; [rip+002160D5]
+	mov	rbx,[stderr]                                           ; [rip+002160D5]
 	mov	edx,5h
 	mov	esi,413928h
 	xor	edi,edi
@@ -2187,7 +2187,7 @@ l000000000040459C:
 	jz	4031D6h
 
 l00000000004045A8:
-	mov	rdi,[000000000061A650]                                 ; [rip+002160A1]
+	mov	rdi,[stderr]                                           ; [rip+002160A1]
 	mov	edx,41393Eh
 	mov	esi,1h
 	xor	eax,eax
@@ -3282,7 +3282,7 @@ l0000000000405220:
 	jbe	4052A8h
 
 l000000000040523C:
-	mov	rdi,[000000000061A610]                                 ; [rip+002153CD]
+	mov	rdi,[stdout]                                           ; [rip+002153CD]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	4052B9h
@@ -3312,7 +3312,7 @@ l0000000000405277:
 	add	rbx,1h
 
 l000000000040527B:
-	mov	rdi,[000000000061A610]                                 ; [rip+0021538E]
+	mov	rdi,[stdout]                                           ; [rip+0021538E]
 	mov	rdx,[rdi+28h]
 	cmp	rdx,[rdi+30h]
 	jnc	4052ADh
@@ -3705,7 +3705,7 @@ l0000000000405683:
 	mov	rax,[rsi+18h]
 	xor	ebx,ebx
 	mov	[rsi+10h],rax
-	mov	rsi,[000000000061A610]                                 ; [rip+00214F7C]
+	mov	rsi,[stdout]                                           ; [rip+00214F7C]
 	call	402520h
 	nop	dword ptr [rax+0h]
 
@@ -3720,7 +3720,7 @@ l00000000004056A0:
 	ja	4056A0h
 
 l00000000004056BF:
-	mov	rdi,[000000000061A610]                                 ; [rip+00214F4A]
+	mov	rdi,[stdout]                                           ; [rip+00214F4A]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	4056EFh
@@ -3769,7 +3769,7 @@ fn0000000000405700 proc
 l0000000000405710:
 	xor	esi,esi
 	call	fn000000000040D420
-	mov	rsi,[000000000061A610]                                 ; [rip+00214EF2]
+	mov	rsi,[stdout]                                           ; [rip+00214EF2]
 	sub	ebx,eax
 	mov	eax,0h
 	cmovs	ebx,eax
@@ -3784,7 +3784,7 @@ l0000000000405728:
 	nop
 
 l0000000000405740:
-	mov	rdi,[000000000061A610]                                 ; [rip+00214EC9]
+	mov	rdi,[stdout]                                           ; [rip+00214EC9]
 	mov	rcx,[rdi+28h]
 	cmp	rcx,[rdi+30h]
 	jnc	405799h
@@ -4086,7 +4086,7 @@ fn0000000000405D00 proc
 	jz	405D33h
 
 l0000000000405D10:
-	mov	rdi,[000000000061A610]                                 ; [rip+002148F9]
+	mov	rdi,[stdout]                                           ; [rip+002148F9]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	405D3Ah
@@ -4666,7 +4666,7 @@ fn0000000000406440 proc
 
 l000000000040644D:
 	mov	rsi,[rdi]
-	mov	rcx,[000000000061A610]                                 ; [rip+002141B9]
+	mov	rcx,[stdout]                                           ; [rip+002141B9]
 	mov	edx,1h
 	mov	rdi,[rdi+8h]
 	add	rsp,18h
@@ -4692,7 +4692,7 @@ fn0000000000406490 proc
 0000000000406497                      66 0F 1F 84 00 00 00 00 00        f........
 
 l00000000004064A0:
-	mov	rdi,[000000000061A610]                                 ; [rip+00214169]
+	mov	rdi,[stdout]                                           ; [rip+00214169]
 	call	402820h
 	xor	edi,edi
 	mov	rdx,rsp
@@ -4947,7 +4947,7 @@ l0000000000406723:
 
 l0000000000406732:
 	mov	rdx,[000000000061B0E8]                                 ; [rip+002149AF]
-	mov	rdi,[000000000061A610]                                 ; [rip+00213ED0]
+	mov	rdi,[stdout]                                           ; [rip+00213ED0]
 	xor	ecx,ecx
 	mov	rsi,r12
 	call	fn00000000004052D0
@@ -5006,7 +5006,7 @@ l00000000004067C6:
 
 l00000000004067D8:
 	mov	rdx,[000000000061B0E8]                                 ; [rip+00214909]
-	mov	rdi,[000000000061A610]                                 ; [rip+00213E2A]
+	mov	rdi,[stdout]                                           ; [rip+00213E2A]
 	xor	ecx,ecx
 	mov	rsi,r12
 	call	fn00000000004052D0
@@ -5462,7 +5462,7 @@ l0000000000406D01:
 	nop	dword ptr [rax+0h]
 
 l0000000000406D08:
-	mov	rsi,[000000000061A610]                                 ; [rip+00213901]
+	mov	rsi,[stdout]                                           ; [rip+00213901]
 	mov	rdi,r12
 	sub	rbp,r12
 	call	402520h
@@ -5694,7 +5694,7 @@ l0000000000406F96:
 	add	r13,rax
 
 l0000000000406FBC:
-	mov	rsi,[000000000061A610]                                 ; [rip+0021364D]
+	mov	rsi,[stdout]                                           ; [rip+0021364D]
 	sub	r13,r12
 	mov	rdi,r12
 	call	402520h
@@ -5795,7 +5795,7 @@ l00000000004070DC:
 00000000004070E7                      66 0F 1F 84 00 00 00 00 00        f........
 
 l00000000004070F0:
-	mov	rcx,[000000000061A610]                                 ; [rip+00213519]
+	mov	rcx,[stdout]                                           ; [rip+00213519]
 	mov	edx,2h
 	mov	esi,1h
 	mov	edi,413771h
@@ -5829,7 +5829,7 @@ l0000000000407160:
 	jz	407012h
 
 l000000000040716B:
-	mov	rcx,[000000000061A610]                                 ; [rip+0021349E]
+	mov	rcx,[stdout]                                           ; [rip+0021349E]
 	mov	edx,4h
 	mov	esi,1h
 	mov	edi,41377Eh
@@ -6251,7 +6251,7 @@ l00000000004079F9:
 0000000000407A14             0F 1F 40 00                             ..@.        
 
 l0000000000407A18:
-	mov	rdi,[000000000061A610]                                 ; [rip+00212BF1]
+	mov	rdi,[stdout]                                           ; [rip+00212BF1]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E39h
@@ -6301,7 +6301,7 @@ l0000000000407AA1:
 0000000000407AA6                   66 2E 0F 1F 84 00 00 00 00 00       f.........
 
 l0000000000407AB0:
-	mov	rdi,[000000000061A610]                                 ; [rip+00212B59]
+	mov	rdi,[stdout]                                           ; [rip+00212B59]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E27h
@@ -6385,7 +6385,7 @@ l0000000000407BB0:
 	mov	r14d,20h
 
 l0000000000407BBC:
-	mov	rdi,[000000000061A610]                                 ; [rip+00212A4D]
+	mov	rdi,[stdout]                                           ; [rip+00212A4D]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E8Bh
@@ -6396,7 +6396,7 @@ l0000000000407BD1:
 	mov	byte ptr [rax],2Ch
 
 l0000000000407BDC:
-	mov	rdi,[000000000061A610]                                 ; [rip+00212A2D]
+	mov	rdi,[stdout]                                           ; [rip+00212A2D]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E7Eh
@@ -6420,7 +6420,7 @@ l0000000000407C18:
 	mov	rax,[000000000061B1A8]                                 ; [rip+00213584]
 	mov	rdi,[rax+rbx*8]
 	call	fn0000000000406B70
-	mov	rdi,[000000000061A610]                                 ; [rip+002129DC]
+	mov	rdi,[stdout]                                           ; [rip+002129DC]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E6Fh
@@ -6459,7 +6459,7 @@ l0000000000407C88:
 	xor	esi,esi
 	mov	rdi,[rax+rbx*8]
 	call	fn0000000000407870
-	mov	rdi,[000000000061A610]                                 ; [rip+0021296F]
+	mov	rdi,[stdout]                                           ; [rip+0021296F]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E60h
@@ -6543,7 +6543,7 @@ l0000000000407D6B:
 	jc	407D50h
 
 l0000000000407DB2:
-	mov	rdi,[000000000061A610]                                 ; [rip+00212857]
+	mov	rdi,[stdout]                                           ; [rip+00212857]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	407E51h
@@ -8048,7 +8048,7 @@ l0000000000409768:
 	mov	esi,413D60h
 	xor	edi,edi
 	call	402360h
-	mov	rdi,[000000000061A650]                                 ; [rip+00210ED5]
+	mov	rdi,[stderr]                                           ; [rip+00210ED5]
 	mov	rdx,rax
 	mov	rcx,rbp
 	mov	esi,1h
@@ -8068,7 +8068,7 @@ l0000000000409794:
 	mov	edi,1h
 	xor	eax,eax
 	call	402730h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210E57]
+	mov	rbp,[stdout]                                           ; [rip+00210E57]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,413DB0h
@@ -8076,7 +8076,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210E34]
+	mov	rbp,[stdout]                                           ; [rip+00210E34]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,413E40h
@@ -8084,7 +8084,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210E11]
+	mov	rbp,[stdout]                                           ; [rip+00210E11]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,413E90h
@@ -8092,7 +8092,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210DEE]
+	mov	rbp,[stdout]                                           ; [rip+00210DEE]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,413FA0h
@@ -8100,7 +8100,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210DCB]
+	mov	rbp,[stdout]                                           ; [rip+00210DCB]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,4141E8h
@@ -8108,7 +8108,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210DA8]
+	mov	rbp,[stdout]                                           ; [rip+00210DA8]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414398h
@@ -8116,7 +8116,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210D85]
+	mov	rbp,[stdout]                                           ; [rip+00210D85]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414540h
@@ -8124,7 +8124,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210D62]
+	mov	rbp,[stdout]                                           ; [rip+00210D62]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414580h
@@ -8132,7 +8132,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210D3F]
+	mov	rbp,[stdout]                                           ; [rip+00210D3F]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414670h
@@ -8140,7 +8140,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210D1C]
+	mov	rbp,[stdout]                                           ; [rip+00210D1C]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414780h
@@ -8148,7 +8148,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210CF9]
+	mov	rbp,[stdout]                                           ; [rip+00210CF9]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414928h
@@ -8156,7 +8156,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210CD6]
+	mov	rbp,[stdout]                                           ; [rip+00210CD6]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414AC0h
@@ -8164,7 +8164,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210CB3]
+	mov	rbp,[stdout]                                           ; [rip+00210CB3]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414C28h
@@ -8172,7 +8172,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210C90]
+	mov	rbp,[stdout]                                           ; [rip+00210C90]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414DA0h
@@ -8180,7 +8180,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210C6D]
+	mov	rbp,[stdout]                                           ; [rip+00210C6D]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,414F58h
@@ -8188,7 +8188,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210C4A]
+	mov	rbp,[stdout]                                           ; [rip+00210C4A]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415020h
@@ -8196,7 +8196,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210C27]
+	mov	rbp,[stdout]                                           ; [rip+00210C27]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,4151F0h
@@ -8204,7 +8204,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210C04]
+	mov	rbp,[stdout]                                           ; [rip+00210C04]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,4153F0h
@@ -8212,7 +8212,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210BE1]
+	mov	rbp,[stdout]                                           ; [rip+00210BE1]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415480h
@@ -8220,7 +8220,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210BBE]
+	mov	rbp,[stdout]                                           ; [rip+00210BBE]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,4155E8h
@@ -8228,7 +8228,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210B9B]
+	mov	rbp,[stdout]                                           ; [rip+00210B9B]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415748h
@@ -8236,7 +8236,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210B78]
+	mov	rbp,[stdout]                                           ; [rip+00210B78]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415778h
@@ -8244,7 +8244,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210B55]
+	mov	rbp,[stdout]                                           ; [rip+00210B55]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,4157B0h
@@ -8252,7 +8252,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210B32]
+	mov	rbp,[stdout]                                           ; [rip+00210B32]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415850h
@@ -8260,7 +8260,7 @@ l0000000000409794:
 	mov	rsi,rbp
 	mov	rdi,rax
 	call	402520h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210B0F]
+	mov	rbp,[stdout]                                           ; [rip+00210B0F]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415970h
@@ -8291,7 +8291,7 @@ l0000000000409794:
 	mov	edi,1h
 	xor	eax,eax
 	call	402730h
-	mov	rbp,[000000000061A610]                                 ; [rip+00210A8B]
+	mov	rbp,[stdout]                                           ; [rip+00210A8B]
 	mov	edx,5h
 	xor	edi,edi
 	mov	esi,415A30h
@@ -8724,7 +8724,7 @@ fn000000000040A000 proc
 	mov	esi,415E35h
 	push	rbx
 	sub	rsp,8h
-	mov	rbx,[000000000061A650]                                 ; [rip+00210623]
+	mov	rbx,[stderr]                                           ; [rip+00210623]
 	call	402360h
 	mov	rdi,rax
 	mov	rsi,rbx
@@ -8743,7 +8743,7 @@ l000000000040A050:
 	add	rbx,1h
 	mov	r14,rbp
 	call	fn000000000040EC10
-	mov	rdi,[000000000061A650]                                 ; [rip+002105EA]
+	mov	rdi,[stderr]                                           ; [rip+002105EA]
 	mov	rcx,rax
 	mov	edx,415E4Ah
 	xor	eax,eax
@@ -8771,7 +8771,7 @@ l000000000040A09D:
 	add	rbx,1h
 	add	rbp,r13
 	call	fn000000000040EC10
-	mov	rdi,[000000000061A650]                                 ; [rip+0021059D]
+	mov	rdi,[stderr]                                           ; [rip+0021059D]
 	mov	rcx,rax
 	mov	edx,415E52h
 	xor	eax,eax
@@ -8782,7 +8782,7 @@ l000000000040A09D:
 	jnz	40A086h
 
 l000000000040A0D0:
-	mov	rdi,[000000000061A650]                                 ; [rip+00210579]
+	mov	rdi,[stderr]                                           ; [rip+00210579]
 	mov	rax,[rdi+28h]
 	cmp	rax,[rdi+30h]
 	jnc	40A0FBh
@@ -13274,16 +13274,16 @@ l000000000040D6DA:
 
 l000000000040D6F8:
 	lea	rbx,[rax+4h]
-	mov	[000000000061A600],rbx                                 ; [rip+0020CEFD]
+	mov	[__progname],rbx                                       ; [rip+0020CEFD]
 
 l000000000040D703:
 	mov	[000000000061B200],rbx                                 ; [rip+0020DAF6]
-	mov	[000000000061A648],rbx                                 ; [rip+0020CF37]
+	mov	[__progname_full],rbx                                  ; [rip+0020CF37]
 	pop	rbx
 	ret
 
 l000000000040D713:
-	mov	rcx,[000000000061A650]                                 ; [rip+0020CF36]
+	mov	rcx,[stderr]                                           ; [rip+0020CF36]
 	mov	edx,37h
 	mov	esi,1h
 	mov	edi,415FA0h

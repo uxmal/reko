@@ -21,7 +21,7 @@ _start proc
 ;;     00000000004003CC (in _init)
 call_gmon_start proc
 	sub	rsp,8h
-	mov	rax,[0000000000600FE0]                                 ; [rip+00200B99]
+	mov	rax,[__gmon_start___GOT]                               ; [rip+00200B99]
 	test	rax,rax
 	jz	40044Eh
 
@@ -93,7 +93,7 @@ l00000000004004BE:
 
 ;; __do_global_dtors_aux: 00000000004004D0
 __do_global_dtors_aux proc
-	cmp	[0000000000601038],0h                                  ; [rip+00200B61]
+	cmp	[__TMC_END__],0h                                       ; [rip+00200B61]
 	jnz	4004EAh
 
 l00000000004004D9:
@@ -101,7 +101,7 @@ l00000000004004D9:
 	mov	rbp,rsp
 	call	deregister_tm_clones
 	pop	rbp
-	mov	[0000000000601038],1h                                  ; [rip+00200B4E]
+	mov	[__TMC_END__],1h                                       ; [rip+00200B4E]
 
 l00000000004004EA:
 	ret
@@ -109,7 +109,7 @@ l00000000004004EA:
 
 ;; frame_dummy: 00000000004004F0
 frame_dummy proc
-	cmp	[0000000000600E08],0h                                  ; [rip+00200910]
+	cmp	[__JCR_END__],0h                                       ; [rip+00200910]
 	jz	400518h
 
 l00000000004004FA:
@@ -248,8 +248,8 @@ l000000000040061D:
 __libc_csu_init proc
 	mov	[rsp-28h],rbp
 	mov	[rsp-20h],r12
-	lea	rbp,[0000000000600E00]                                 ; [rip+002007CF]
-	lea	r12,[0000000000600DF8]                                 ; [rip+002007C0]
+	lea	rbp,[__do_global_dtors_aux_fini_array_entry]           ; [rip+002007CF]
+	lea	r12,[__frame_dummy_init_array_entry]                   ; [rip+002007C0]
 	mov	[rsp-18h],r13
 	mov	[rsp-10h],r14
 	mov	[rsp-8h],r15

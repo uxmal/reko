@@ -76,7 +76,7 @@ l00000000004004CE:
 
 ;; __do_global_dtors_aux: 00000000004004E0
 __do_global_dtors_aux proc
-	cmp	[0000000000601040],0h                                  ; [rip+00200B59]
+	cmp	[__TMC_END__],0h                                       ; [rip+00200B59]
 	jnz	4004FAh
 
 l00000000004004E9:
@@ -84,7 +84,7 @@ l00000000004004E9:
 	mov	rbp,rsp
 	call	deregister_tm_clones
 	pop	rbp
-	mov	[0000000000601040],1h                                  ; [rip+00200B46]
+	mov	[__TMC_END__],1h                                       ; [rip+00200B46]
 
 l00000000004004FA:
 	ret
@@ -92,7 +92,7 @@ l00000000004004FA:
 
 ;; frame_dummy: 0000000000400500
 frame_dummy proc
-	cmp	[0000000000600E20],0h                                  ; [rip+00200918]
+	cmp	[__JCR_END__],0h                                       ; [rip+00200918]
 	jz	400528h
 
 l000000000040050A:
@@ -142,9 +142,9 @@ __libc_csu_init proc
 	push	r13
 	mov	r13,rdx
 	push	r12
-	lea	r12,[0000000000600E10]                                 ; [rip+002008A8]
+	lea	r12,[__frame_dummy_init_array_entry]                   ; [rip+002008A8]
 	push	rbp
-	lea	rbp,[0000000000600E18]                                 ; [rip+002008A8]
+	lea	rbp,[__do_global_dtors_aux_fini_array_entry]           ; [rip+002008A8]
 	push	rbx
 	sub	rbp,r12
 	xor	ebx,ebx

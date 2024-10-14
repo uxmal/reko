@@ -17,7 +17,7 @@ l80000096:
 	beq	$800000AA
 
 l800000A0:
-	pea	$80002724
+	pea	__TMC_END__
 	jsr.l	(a0)
 	addq.l	#$04,a7
 
@@ -51,7 +51,7 @@ l800000CA:
 
 l800000D4:
 	move.l	d0,-(a7)
-	pea	$80002724
+	pea	__TMC_END__
 	jsr.l	(a0)
 	addq.l	#$08,a7
 
@@ -64,12 +64,12 @@ __do_global_dtors_aux proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
 	move.l	d2,-(a7)
-	tst.b	$80002724
+	tst.b	__TMC_END__
 	bne	$8000014C
 
 l800000F4:
-	lea	$80002714,a2
-	move.l	$80002726,d0
+	lea	__DTOR_LIST__,a2
+	move.l	dtor_idx.3228,d0
 	move.l	#$80002718,d2
 	subi.l	#$80002714,d2
 	asr.l	#$02,d2
@@ -79,10 +79,10 @@ l800000F4:
 
 l80000114:
 	addq.l	#$01,d0
-	move.l	d0,$80002726
+	move.l	d0,dtor_idx.3228
 	movea.l	(a2,d0*4),a0
 	jsr.l	(a0)
-	move.l	$80002726,d0
+	move.l	dtor_idx.3228,d0
 	cmp.l	d0,d2
 	bhi	$80000114
 
@@ -93,12 +93,12 @@ l8000012C:
 	beq	$80000144
 
 l8000013A:
-	pea	$8000065C
+	pea	__EH_FRAME_BEGIN__
 	jsr.l	(a0)
 	addq.l	#$04,a7
 
 l80000144:
-	move.b	#$01,$80002724
+	move.b	#$01,__TMC_END__
 
 l8000014C:
 	move.l	-$0008(a6),d2
@@ -120,13 +120,13 @@ frame_dummy proc
 	beq	$8000017E
 
 l8000016E:
-	pea	$8000272A
-	pea	$8000065C
+	pea	object.3241
+	pea	__EH_FRAME_BEGIN__
 	jsr.l	(a0)
 	addq.l	#$08,a7
 
 l8000017E:
-	lea	$8000271C,a0
+	lea	__JCR_END__,a0
 	tst.l	(a0)
 	bne	$8000018E
 
@@ -463,8 +463,8 @@ l8000060E:
 __do_global_ctors_aux proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
-	movea.l	$8000270C,a0
-	lea	$8000270C,a2
+	movea.l	__CTOR_LIST__,a0
+	lea	__CTOR_LIST__,a2
 	moveq	#-$01,d0
 	cmp.l	a0,d0
 	beq	$80000646

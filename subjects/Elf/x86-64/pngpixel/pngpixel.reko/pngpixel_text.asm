@@ -77,7 +77,7 @@ l0000000000400D78:
 
 ;; __do_global_dtors_aux: 0000000000400D80
 __do_global_dtors_aux proc
-	cmp	[0000000000602108],0h                                  ; [rip+00201381]
+	cmp	[completed.7585],0h                                    ; [rip+00201381]
 	jnz	400D9Ah
 
 l0000000000400D89:
@@ -85,7 +85,7 @@ l0000000000400D89:
 	mov	rbp,rsp
 	call	deregister_tm_clones
 	pop	rbp
-	mov	[0000000000602108],1h                                  ; [rip+0020136E]
+	mov	[completed.7585],1h                                    ; [rip+0020136E]
 
 l0000000000400D9A:
 	ret
@@ -220,7 +220,7 @@ l0000000000400EA0:
 	jmp	400EE7h
 
 l0000000000400EC1:
-	mov	rax,[0000000000602100]                                 ; [rip+00201238]
+	mov	rax,[stderr]                                           ; [rip+00201238]
 	mov	edx,[rbp-24h]
 	mov	esi,401808h
 	mov	rdi,rax
@@ -915,7 +915,7 @@ l00000000004016AF:
 	call	400B50h
 
 l00000000004016C0:
-	mov	rax,[0000000000602100]                                 ; [rip+00200A39]
+	mov	rax,[stderr]                                           ; [rip+00200A39]
 	mov	rcx,rax
 	mov	edx,2Ch
 	mov	esi,1h
@@ -931,7 +931,7 @@ l00000000004016DE:
 	jmp	40175Dh
 
 l00000000004016F6:
-	mov	rax,[0000000000602100]                                 ; [rip+00200A03]
+	mov	rax,[stderr]                                           ; [rip+00200A03]
 	mov	rcx,rax
 	mov	edx,2Eh
 	mov	esi,1h
@@ -943,7 +943,7 @@ l0000000000401716:
 	mov	rax,[rbp-0A0h]
 	add	rax,18h
 	mov	rdx,[rax]
-	mov	rax,[0000000000602100]                                 ; [rip+002009D5]
+	mov	rax,[stderr]                                           ; [rip+002009D5]
 	mov	esi,401A48h
 	mov	rdi,rax
 	mov	eax,0h
@@ -951,7 +951,7 @@ l0000000000401716:
 	jmp	40175Dh
 
 l000000000040173F:
-	mov	rax,[0000000000602100]                                 ; [rip+002009BA]
+	mov	rax,[stderr]                                           ; [rip+002009BA]
 	mov	rcx,rax
 	mov	edx,27h
 	mov	esi,1h
@@ -979,9 +979,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[0000000000601E00]                                 ; [rip+0020066E]
+	lea	r12,[__frame_dummy_init_array_entry]                   ; [rip+0020066E]
 	push	rbp
-	lea	rbp,[0000000000601E08]                                 ; [rip+0020066E]
+	lea	rbp,[__do_global_dtors_aux_fini_array_entry]           ; [rip+0020066E]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

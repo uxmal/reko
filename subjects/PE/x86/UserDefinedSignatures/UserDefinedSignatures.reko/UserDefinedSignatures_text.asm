@@ -164,7 +164,7 @@ l0040111A:
 	mov	ecx,[ebp+0Ch]
 	mov	edx,[ecx+eax*4]
 	push	edx
-	call	dword ptr [40209Ch]
+	call	dword ptr [__imp__atoi]
 	add	esp,4h
 	mov	[ebp-0Ch],eax
 	lea	eax,[ebp-0Ch]
@@ -195,7 +195,7 @@ l0040116B:
 	mov	ecx,[ebp+0Ch]
 	mov	edx,[ecx+eax*4]
 	push	edx
-	call	dword ptr [4020A0h]
+	call	dword ptr [__imp__atof]
 	add	esp,4h
 	fstp	dword ptr [ebp-10h]
 	lea	eax,[ebp-10h]
@@ -226,7 +226,7 @@ l004011B9:
 	mov	ecx,[ebp+0Ch]
 	mov	edx,[ecx+eax*4]
 	push	edx
-	call	dword ptr [4020A0h]
+	call	dword ptr [__imp__atof]
 	add	esp,4h
 	fstp	double ptr [ebp-18h]
 	lea	eax,[ebp-18h]
@@ -254,7 +254,7 @@ l004011EF:
 	mov	[403024h],edx
 	mov	eax,[ebp-4h]
 	push	eax
-	call	dword ptr [4020A4h]
+	call	dword ptr [__imp__free]
 	add	esp,4h
 	xor	eax,eax
 	mov	esp,ebp

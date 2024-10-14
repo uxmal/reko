@@ -487,7 +487,7 @@ fn000ECBDB: error: An internal error occurred while building the expressions of 
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in c:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in c:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 188
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 59
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 55
    at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 152
    at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 208
    at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
@@ -497,7 +497,7 @@ fn000F4A65: error: An internal error occurred while building the expressions of 
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in c:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in c:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 188
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 59
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 55
    at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 152
    at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 208
    at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
@@ -2574,4 +2574,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 65.57 seconds.
+Decompiled 93 binaries in 52.83 seconds.

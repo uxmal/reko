@@ -93,6 +93,10 @@ namespace Reko.Gui.TextViewing
             {
                 span = factory.CreateProcedureTextSpan(proc, addr);
             }
+            else if (program.ImageSymbols.TryGetValue(addr, out var symbol))
+            {
+                span = factory.CreateAddressTextSpan(addr, symbol.Name ?? formattedAddress);
+            }
             else
             {
                 span = factory.CreateAddressTextSpan(addr, formattedAddress);

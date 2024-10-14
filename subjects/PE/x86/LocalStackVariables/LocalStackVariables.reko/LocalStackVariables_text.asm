@@ -35,7 +35,7 @@ main proc
 	mov	edx,[ebp-28h]
 	push	edx
 	push	4020C8h
-	call	dword ptr [4020A0h]
+	call	dword ptr [__imp__printf]
 	add	esp,1Ch
 	lea	eax,[ebp-18h]
 	mov	[403018h],eax
@@ -53,7 +53,7 @@ main proc
 	mov	eax,[ebp-18h]
 	push	eax
 	push	4020D8h
-	call	dword ptr [4020A0h]
+	call	dword ptr [__imp__printf]
 	add	esp,10h
 	xor	eax,eax
 	mov	esp,ebp

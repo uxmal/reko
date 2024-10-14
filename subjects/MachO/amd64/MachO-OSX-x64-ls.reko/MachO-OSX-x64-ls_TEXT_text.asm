@@ -101,7 +101,7 @@ fn0000000100001B4A proc
 	sub	rsp,+128h
 	mov	[rbp-108h],rsi
 	mov	[rbp-128h],rdi
-	mov	rax,[0000000100006030]                                 ; [rip+000044BD]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+000044BD]
 	mov	rax,[rax]
 	mov	[rbp-30h],rax
 	test	rsi,rsi
@@ -725,7 +725,7 @@ l0000000100002302:
 	jnz	100002302h
 
 l0000000100002322:
-	mov	rax,[0000000100006030]                                 ; [rip+00003D07]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+00003D07]
 	mov	rax,[rax]
 	cmp	rax,[rbp-30h]
 	jz	100002379h
@@ -1471,7 +1471,7 @@ l0000000100002B83:
 	jnz	100002B56h
 
 l0000000100002B88:
-	mov	rax,[0000000100006048]                                 ; [rip+000034B9]
+	mov	rax,[__imp__optind]                                    ; [rip+000034B9]
 	movsxd	rax,dword ptr [rax]
 	mov	[rbp-660h],rax
 	mov	rcx,[rbp-658h]
@@ -2082,7 +2082,7 @@ l0000000100003332:
 	jmp	1000033C0h
 
 l000000010000333B:
-	mov	rax,[0000000100006038]                                 ; [rip+00002CF6]
+	mov	rax,[__imp____stderrp]                                 ; [rip+00002CF6]
 	mov	rsi,[rax]
 	lea	rdi,[0000000100005428]                                 ; [rip+000020DC]
 	call	fputs
@@ -2122,7 +2122,7 @@ l0000000100003388:
 	jnz	1000033B7h
 
 l000000010000339B:
-	mov	rax,[0000000100006038]                                 ; [rip+00002C96]
+	mov	rax,[__imp____stderrp]                                 ; [rip+00002C96]
 	mov	rdi,[rax]
 	movsx	edx,r12b
 	xor	al,al
@@ -2598,7 +2598,7 @@ fn0000000100003AA8 proc
 	push	r14
 	push	rbx
 	sub	rsp,60h
-	mov	rax,[0000000100006030]                                 ; [rip+00002576]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+00002576]
 	mov	rax,[rax]
 	mov	[rbp-18h],rax
 	mov	[rbp-70h],rdi
@@ -2696,11 +2696,11 @@ l0000000100003BA3:
 	mov	rdx,rbx
 	mov	rcx,rax
 	call	strftime
-	mov	rax,[0000000100006040]                                 ; [rip+00002476]
+	mov	rax,[__imp____stdoutp]                                 ; [rip+00002476]
 	mov	rsi,[rax]
 	mov	rdi,r14
 	call	fputs
-	mov	rax,[0000000100006030]                                 ; [rip+00002454]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+00002454]
 	mov	rax,[rax]
 	cmp	rax,[rbp-18h]
 	jnz	100003BEEh
@@ -2722,7 +2722,7 @@ l0000000100003BEE:
 	push	r12
 	push	rbx
 	sub	rsp,+0CB8h
-	mov	rax,[0000000100006030]                                 ; [rip+00002422]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+00002422]
 	mov	rax,[rax]
 	mov	[rbp-30h],rax
 	mov	rax,[rdi]
@@ -3175,7 +3175,7 @@ l00000001000041F1:
 	call	__error
 	mov	edi,[rax]
 	call	strerror
-	mov	rcx,[0000000100006038]                                 ; [rip+00001E34]
+	mov	rcx,[__imp____stderrp]                                 ; [rip+00001E34]
 	mov	rdi,[rcx]
 	lea	rcx,[000000010000552D]                                 ; [rip+0000131F]
 	mov	rsi,rcx
@@ -3395,7 +3395,7 @@ l00000001000044F6:
 	jz	100004533h
 
 l0000000100004505:
-	mov	rax,[0000000100006038]                                 ; [rip+00001B2C]
+	mov	rax,[__imp____stderrp]                                 ; [rip+00001B2C]
 	mov	rsi,[rax]
 	lea	rax,[0000000100005557]                                 ; [rip+00001041]
 	mov	rdi,rax
@@ -3547,7 +3547,7 @@ l00000001000046C1:
 	jnz	100003C9Ah
 
 l00000001000046DB:
-	mov	rax,[0000000100006030]                                 ; [rip+0000194E]
+	mov	rax,[__imp____stack_chk_guard]                         ; [rip+0000194E]
 	mov	rax,[rax]
 	cmp	rax,[rbp-30h]
 	jz	100004703h
@@ -3639,7 +3639,7 @@ l00000001000047E4:
 	ja	100004808h
 
 l00000001000047F4:
-	mov	r15,[0000000100006028]                                 ; [rip+0000182D]
+	mov	r15,[__imp___DefaultRuneLocale]                        ; [rip+0000182D]
 	mov	eax,[r15+rdi*4+3Ch]
 	shr	eax,12h
 	and	eax,1h
@@ -3707,7 +3707,7 @@ l0000000100004879:
 fn000000010000488B proc
 	push	rbp
 	mov	rbp,rsp
-	mov	rax,[0000000100006038]                                 ; [rip+000017A2]
+	mov	rax,[__imp____stderrp]                                 ; [rip+000017A2]
 	mov	rsi,[rax]
 	lea	rdi,[0000000100005730]                                 ; [rip+00000E90]
 	call	fputs
@@ -3764,7 +3764,7 @@ l0000000100004944:
 	ja	100004964h
 
 l0000000100004951:
-	mov	rax,[0000000100006028]                                 ; [rip+000016D0]
+	mov	rax,[__imp___DefaultRuneLocale]                        ; [rip+000016D0]
 	mov	eax,[rax+rdi*4+3Ch]
 	shr	eax,12h
 	and	eax,1h
@@ -4000,7 +4000,7 @@ l0000000100004BAA:
 	ja	100004BCAh
 
 l0000000100004BB7:
-	mov	rax,[0000000100006028]                                 ; [rip+0000146A]
+	mov	rax,[__imp___DefaultRuneLocale]                        ; [rip+0000146A]
 	mov	eax,[rax+rdi*4+3Ch]
 	shr	eax,12h
 	and	eax,1h
@@ -4122,7 +4122,7 @@ l0000000100004CF4:
 	ja	100004D14h
 
 l0000000100004D01:
-	mov	rax,[0000000100006028]                                 ; [rip+00001320]
+	mov	rax,[__imp___DefaultRuneLocale]                        ; [rip+00001320]
 	mov	eax,[rax+rdi*4+3Ch]
 	shr	eax,12h
 	and	eax,1h

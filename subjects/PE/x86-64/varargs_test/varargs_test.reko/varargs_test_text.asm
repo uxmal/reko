@@ -62,7 +62,7 @@ fn00000001400010D0 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58h]
 	xor	ecx,ecx
-	call	[0000000140002178]                                    ; [rip+0000107D]
+	call	[__imp____acrt_iob_func]                              ; [rip+0000107D]
 	mov	rbx,rax
 	call	fn00000001400010C0
 	xor	r9d,r9d
@@ -70,7 +70,7 @@ fn00000001400010D0 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	[0000000140002168]                                    ; [rip+0000104E]
+	call	[__imp____stdio_common_vfscanf]                       ; [rip+0000104E]
 	add	rsp,30h
 	pop	rdi
 	pop	rsi
@@ -102,7 +102,7 @@ fn0000000140001140 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58h]
 	mov	ecx,1h
-	call	[0000000140002178]                                    ; [rip+0000100A]
+	call	[__imp____acrt_iob_func]                              ; [rip+0000100A]
 	mov	rbx,rax
 	call	fn0000000140001130
 	xor	r9d,r9d
@@ -110,7 +110,7 @@ fn0000000140001140 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	[0000000140002170]                                    ; [rip+00000FE3]
+	call	[__imp____stdio_common_vfprintf]                      ; [rip+00000FE3]
 	add	rsp,30h
 	pop	rdi
 	pop	rsi
@@ -388,15 +388,15 @@ fn0000000140001448 proc
 	sub	rsp,20h
 	mov	rbx,rcx
 	xor	ecx,ecx
-	call	[0000000140002068]                                    ; [rip+00000C0F]
+	call	[__imp__SetUnhandledExceptionFilter]                  ; [rip+00000C0F]
 	mov	rcx,rbx
-	call	[0000000140002010]                                    ; [rip+00000BAE]
-	call	[0000000140002060]                                    ; [rip+00000BF8]
+	call	[__imp__UnhandledExceptionFilter]                     ; [rip+00000BAE]
+	call	[__imp__GetCurrentProcess]                            ; [rip+00000BF8]
 	mov	rcx,rax
 	mov	edx,0C0000409h
 	add	rsp,20h
 	pop	rbx
-	jmp	[0000000140002058]                                     ; [rip+00000BDC]
+	jmp	[__imp__TerminateProcess]                              ; [rip+00000BDC]
 
 ;; fn000000014000147C: 000000014000147C
 ;;   Called from:
@@ -455,7 +455,7 @@ fn0000000140001550 proc
 	push	rdi
 	sub	rsp,40h
 	mov	rbx,rcx
-	call	[0000000140002070]                                    ; [rip+00000B0F]
+	call	[__imp__RtlCaptureContext]                            ; [rip+00000B0F]
 	mov	rsi,[rbx+0F8h]
 	xor	edi,edi
 
@@ -463,7 +463,7 @@ l000000014000156A:
 	xor	r8d,r8d
 	lea	rdx,[rsp+60h]
 	mov	rcx,rsi
-	call	[0000000140002000]                                    ; [rip+00000A85]
+	call	[__imp__RtlLookupFunctionEntry]                       ; [rip+00000A85]
 	test	rax,rax
 	jz	1400015B9h
 
@@ -478,7 +478,7 @@ l0000000140001580:
 	mov	[rsp+28h],rcx
 	xor	ecx,ecx
 	mov	[rsp+20h],rbx
-	call	[0000000140002008]                                    ; [rip+00000A56]
+	call	[__imp__RtlVirtualUnwind]                             ; [rip+00000A56]
 	inc	edi
 	cmp	edi,2h
 	jl	14000156Ah
@@ -849,17 +849,17 @@ fn000000014000186C proc
 
 l0000000140001894:
 	lea	rcx,[rbp+18h]
-	call	[0000000140002030]                                    ; [rip+00000792]
+	call	[__imp__GetSystemTimeAsFileTime]                      ; [rip+00000792]
 	mov	rax,[rbp+18h]
 	mov	[rbp+10h],rax
-	call	[0000000140002038]                                    ; [rip+0000078C]
+	call	[__imp__GetCurrentThreadId]                           ; [rip+0000078C]
 	mov	eax,eax
 	xor	[rbp+10h],rax
-	call	[0000000140002040]                                    ; [rip+00000788]
+	call	[__imp__GetCurrentProcessId]                          ; [rip+00000788]
 	mov	eax,eax
 	lea	rcx,[rbp+20h]
 	xor	[rbp+10h],rax
-	call	[0000000140002048]                                    ; [rip+00000780]
+	call	[__imp__QueryPerformanceCounter]                      ; [rip+00000780]
 	mov	eax,[rbp+20h]
 	lea	rcx,[rbp+10h]
 	shl	rax,20h
@@ -904,7 +904,7 @@ fn0000000140001920 proc
 ;;     000000014000122E (in fn00000001400011D4)
 fn0000000140001928 proc
 	lea	rcx,[0000000140003600]                                 ; [rip+00001CD1]
-	jmp	[0000000140002028]                                     ; [rip+000006F2]
+	jmp	[__imp__InitializeSListHead]                           ; [rip+000006F2]
 0000000140001936                   CC CC                               ..        
 
 ;; fn0000000140001938: 0000000140001938
@@ -985,12 +985,12 @@ l000000014000199D:
 	mov	r8d,4D0h
 	call	140001DE6h
 	lea	rcx,[rbp-10h]
-	call	[0000000140002070]                                    ; [rip+000006B1]
+	call	[__imp__RtlCaptureContext]                            ; [rip+000006B1]
 	mov	rbx,[rbp+0E8h]
 	lea	rdx,[rbp+4D8h]
 	mov	rcx,rbx
 	xor	r8d,r8d
-	call	[0000000140002000]                                    ; [rip+00000627]
+	call	[__imp__RtlLookupFunctionEntry]                       ; [rip+00000627]
 	test	rax,rax
 	jz	140001A1Ah
 
@@ -1006,7 +1006,7 @@ l00000001400019DE:
 	lea	rcx,[rbp-10h]
 	mov	[rsp+20h],rcx
 	xor	ecx,ecx
-	call	[0000000140002008]                                    ; [rip+000005EE]
+	call	[__imp__RtlVirtualUnwind]                             ; [rip+000005EE]
 
 l0000000140001A1A:
 	mov	rax,[rbp+4C8h]
@@ -1022,7 +1022,7 @@ l0000000140001A1A:
 	mov	[rsp+60h],rax
 	mov	dword ptr [rsp+50h],40000015h
 	mov	dword ptr [rsp+54h],1h
-	call	[0000000140002020]                                    ; [rip+000005B2]
+	call	[__imp__IsDebuggerPresent]                            ; [rip+000005B2]
 	cmp	eax,1h
 	lea	rax,[rsp+50h]
 	mov	[rsp+40h],rax
@@ -1030,9 +1030,9 @@ l0000000140001A1A:
 	setz	bl
 	mov	[rsp+48h],rax
 	xor	ecx,ecx
-	call	[0000000140002068]                                    ; [rip+000005D9]
+	call	[__imp__SetUnhandledExceptionFilter]                  ; [rip+000005D9]
 	lea	rcx,[rsp+40h]
-	call	[0000000140002010]                                    ; [rip+00000576]
+	call	[__imp__UnhandledExceptionFilter]                     ; [rip+00000576]
 	test	eax,eax
 	jnz	140001AA8h
 
@@ -1065,7 +1065,7 @@ fn0000000140001ABC proc
 fn0000000140001AC0 proc
 	sub	rsp,28h
 	xor	ecx,ecx
-	call	[0000000140002018]                                    ; [rip+0000054C]
+	call	[__imp__GetModuleHandleW]                             ; [rip+0000054C]
 	mov	rcx,rax
 	test	rax,rax
 	jnz	140001AD8h
@@ -1107,7 +1107,7 @@ l0000000140001B0F:
 ;;     00000001400012A4 (in fn00000001400012A0)
 fn0000000140001B14 proc
 	lea	rcx,[fn0000000140001B24]                               ; [rip+00000009]
-	jmp	[0000000140002068]                                     ; [rip+00000546]
+	jmp	[__imp__SetUnhandledExceptionFilter]                   ; [rip+00000546]
 0000000140001B22       CC CC                                       ..            
 
 ;; fn0000000140001B24: 0000000140001B24

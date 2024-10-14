@@ -3,7 +3,7 @@
 ;; fn0000000000400428: 0000000000400428
 fn0000000000400428 proc
 	sub	rsp,8h
-	mov	rax,[0000000000600FF8]                                 ; [rip+00200BC5]
+	mov	rax,[__gmon_start___GOT]                               ; [rip+00200BC5]
 	test	rax,rax
 	jz	40043Ah
 

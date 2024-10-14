@@ -10,7 +10,7 @@ fn10001000 proc
 	push	ecx
 	push	10002144h
 	push	edx
-	call	dword ptr [10002088h]
+	call	dword ptr [__imp__PyArg_ParseTuple]
 	add	esp,10h
 	test	eax,eax
 	jnz	10001027h
@@ -25,7 +25,7 @@ l10001027:
 	add	ecx,eax
 	push	ecx
 	push	1000214Ch
-	call	dword ptr [10002090h]
+	call	dword ptr [__imp__Py_BuildValue]
 	add	esp,8h
 	add	esp,8h
 	ret
@@ -41,7 +41,7 @@ fn10001050 proc
 	push	ecx
 	push	10002150h
 	push	edx
-	call	dword ptr [10002088h]
+	call	dword ptr [__imp__PyArg_ParseTuple]
 	add	esp,10h
 	test	eax,eax
 	jnz	10001078h
@@ -55,7 +55,7 @@ l10001078:
 	sub	eax,[esp+4h]
 	push	eax
 	push	1000214Ch
-	call	dword ptr [10002090h]
+	call	dword ptr [__imp__Py_BuildValue]
 	add	esp,8h
 	add	esp,8h
 	ret
@@ -71,7 +71,7 @@ fn100010A0 proc
 	push	ecx
 	push	10002158h
 	push	edx
-	call	dword ptr [10002088h]
+	call	dword ptr [__imp__PyArg_ParseTuple]
 	add	esp,10h
 	test	eax,eax
 	jnz	100010C8h
@@ -86,7 +86,7 @@ l100010C8:
 	idiv	dword ptr [esp+4h]
 	push	eax
 	push	1000214Ch
-	call	dword ptr [10002090h]
+	call	dword ptr [__imp__Py_BuildValue]
 	add	esp,8h
 	add	esp,8h
 	ret
@@ -102,7 +102,7 @@ fn100010F0 proc
 	push	ecx
 	push	10002160h
 	push	edx
-	call	dword ptr [10002088h]
+	call	dword ptr [__imp__PyArg_ParseTuple]
 	add	esp,10h
 	test	eax,eax
 	jnz	10001118h
@@ -117,7 +117,7 @@ l10001118:
 	fdiv	dword ptr [esp+0Ch]
 	fstp	double ptr [esp]
 	push	10002168h
-	call	dword ptr [10002090h]
+	call	dword ptr [__imp__Py_BuildValue]
 	add	esp,0Ch
 	add	esp,8h
 	ret
@@ -128,7 +128,7 @@ py_unused proc
 	mov	eax,[esp+8h]
 	push	1000216Ch
 	push	eax
-	call	dword ptr [10002088h]
+	call	dword ptr [__imp__PyArg_ParseTuple]
 	add	esp,8h
 	test	eax,eax
 	jnz	10001158h
@@ -137,9 +137,9 @@ l10001157:
 	ret
 
 l10001158:
-	mov	eax,[1000208Ch]
+	mov	eax,[__imp___Py_NoneStruct]
 	add	dword ptr [eax],1h
-	mov	eax,[1000208Ch]
+	mov	eax,[__imp___Py_NoneStruct]
 	ret
 10001166                   CC CC CC CC CC CC CC CC CC CC       ..........
 
@@ -150,7 +150,7 @@ initpySample proc
 	push	0h
 	push	10003010h
 	push	10002174h
-	call	dword ptr [10002084h]
+	call	dword ptr [__imp__Py_InitModule4]
 	add	esp,14h
 	ret
 1000118D                                        3B 0D 00              ;..
@@ -182,7 +182,7 @@ l100011FC:
 
 l10001202:
 	cmp	eax,1h
-	mov	ecx,[10002058h]
+	mov	ecx,[__imp___adjust_fdiv]
 	mov	ecx,[ecx]
 	push	ebx
 	push	esi
@@ -193,7 +193,7 @@ l10001202:
 l1000121C:
 	mov	eax,fs:[0018h]
 	mov	edi,[eax+4h]
-	mov	ebx,[10002028h]
+	mov	ebx,[__imp__InterlockedCompareExchange]
 	push	ebp
 	mov	esi,100033ACh
 	jmp	1000124Bh
@@ -208,7 +208,7 @@ l1000123A:
 
 l1000123E:
 	push	3E8h
-	call	dword ptr [1000202Ch]
+	call	dword ptr [__imp__Sleep]
 	push	0h
 
 l1000124B:
@@ -264,7 +264,7 @@ l10001293:
 l100012AE:
 	push	ebp
 	push	esi
-	call	dword ptr [10002030h]
+	call	dword ptr [__imp__InterlockedExchange]
 
 l100012B6:
 	cmp	dword ptr [100033B8h],0h
@@ -292,13 +292,13 @@ l100012E8:
 	jnz	1000137Eh
 
 l100012F0:
-	mov	edi,[10002028h]
+	mov	edi,[__imp__InterlockedCompareExchange]
 	mov	esi,100033ACh
 	jmp	10001308h
 
 l100012FD:
 	push	3E8h
-	call	dword ptr [1000202Ch]
+	call	dword ptr [__imp__Sleep]
 
 l10001308:
 	push	ebp
@@ -320,7 +320,7 @@ l1000131C:
 
 l10001326:
 	push	dword ptr [100033B4h]
-	mov	edi,[10002068h]
+	mov	edi,[__imp___decode_pointer]
 	call	edi
 	mov	ebx,eax
 	test	ebx,ebx
@@ -349,9 +349,9 @@ l10001350:
 
 l10001357:
 	push	ebx
-	call	dword ptr [1000206Ch]
+	call	dword ptr [__imp__free]
 	pop	ecx
-	call	dword ptr [10002070h]
+	call	dword ptr [__imp___encoded_null]
 	mov	[100033B0h],eax
 	mov	[100033B4h],eax
 
@@ -359,7 +359,7 @@ l1000136F:
 	push	0h
 	push	esi
 	mov	[100033A8h],ebp
-	call	dword ptr [10002030h]
+	call	dword ptr [__imp__InterlockedExchange]
 
 l1000137E:
 	xor	eax,eax
@@ -563,7 +563,7 @@ fn100015CF proc
 	push	10002210h
 	call	fn100017E8
 	push	dword ptr [100033B4h]
-	mov	esi,[10002068h]
+	mov	esi,[__imp___decode_pointer]
 	call	esi
 	pop	ecx
 	mov	[ebp-1Ch],eax
@@ -572,7 +572,7 @@ fn100015CF proc
 
 l100015F2:
 	push	dword ptr [ebp+8h]
-	call	dword ptr [10002050h]
+	call	dword ptr [__imp___onexit]
 	pop	ecx
 	jmp	1000165Fh
 
@@ -595,7 +595,7 @@ l100015FE:
 	call	1000190Ah
 	mov	[ebp-24h],eax
 	push	dword ptr [ebp-1Ch]
-	mov	esi,[10002078h]
+	mov	esi,[__imp___encode_pointer]
 	call	esi
 	mov	[100033B4h],eax
 	push	dword ptr [ebp-20h]
@@ -796,7 +796,7 @@ l100017CD:
 
 l100017D6:
 	push	dword ptr [esp+4h]
-	call	dword ptr [10002010h]
+	call	dword ptr [__imp__DisableThreadLibraryCalls]
 
 l100017E0:
 	xor	eax,eax
@@ -883,18 +883,18 @@ l10001894:
 	push	esi
 	lea	eax,[ebp-8h]
 	push	eax
-	call	dword ptr [10002000h]
+	call	dword ptr [__imp__GetSystemTimeAsFileTime]
 	mov	esi,[ebp-4h]
 	xor	esi,[ebp-8h]
-	call	dword ptr [10002004h]
+	call	dword ptr [__imp__GetCurrentProcessId]
 	xor	esi,eax
-	call	dword ptr [10002008h]
+	call	dword ptr [__imp__GetCurrentThreadId]
 	xor	esi,eax
-	call	dword ptr [1000200Ch]
+	call	dword ptr [__imp__GetTickCount]
 	xor	esi,eax
 	lea	eax,[ebp-10h]
 	push	eax
-	call	dword ptr [10002034h]
+	call	dword ptr [__imp__QueryPerformanceCounter]
 	mov	eax,[ebp-0Ch]
 	xor	eax,[ebp-10h]
 	xor	esi,eax

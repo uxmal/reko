@@ -12,7 +12,7 @@ fn0000000000400480 proc
 	mov	r8,+400780h
 	mov	rcx,+400710h
 	mov	rdi,+400660h
-	call	[0000000000600FF0]                                    ; [rip+00200B46]
+	call	[__libc_start_main_GOT]                               ; [rip+00200B46]
 	hlt
 00000000004004AB                                  0F 1F 44 00 00            ..D..
 

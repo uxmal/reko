@@ -38,7 +38,7 @@ test1 proc
 	mov	edx,[ebp+8h]
 	push	edx
 	push	4020D0h
-	call	dword ptr [4020A0h]
+	call	dword ptr [__imp__printf]
 	add	esp,18h
 	pop	ebp
 	ret

@@ -17,7 +17,7 @@ fn00401010 proc
 	push	esi
 	mov	esi,[ebp+8h]
 	push	1h
-	call	dword ptr [4020B4h]
+	call	dword ptr [__imp____acrt_iob_func]
 	add	esp,4h
 	lea	ecx,[ebp+0Ch]
 	push	ecx
@@ -27,7 +27,7 @@ fn00401010 proc
 	call	fn00401000
 	push	dword ptr [eax+4h]
 	push	dword ptr [eax]
-	call	dword ptr [4020B0h]
+	call	dword ptr [__imp____stdio_common_vfprintf]
 	add	esp,18h
 	pop	esi
 	pop	ebp
@@ -41,17 +41,17 @@ fn00401040 proc
 	mov	ebp,esp
 	push	ecx
 	lea	ecx,[ebp-4h]
-	call	dword ptr [4020BCh]
+	call	dword ptr [__imp__driver.dll_1]
 	push	3h
 	lea	ecx,[ebp-4h]
-	call	dword ptr [4020C0h]
+	call	dword ptr [__imp__driver.dll_2]
 	push	1h
 	lea	ecx,[ebp-4h]
-	call	dword ptr [4020C4h]
+	call	dword ptr [__imp__driver.dll_4]
 	push	5h
 	lea	ecx,[ebp-4h]
-	call	dword ptr [4020C8h]
-	mov	eax,[4020CCh]
+	call	dword ptr [__imp__driver.dll_3]
+	mov	eax,[__imp__driver.dll_11]
 	push	dword ptr [ebp-4h]
 	push	dword ptr [eax]
 	push	402118h
@@ -525,17 +525,17 @@ l00401685:
 l0040168E:
 	lea	eax,[ebp-0Ch]
 	push	eax
-	call	dword ptr [40200Ch]
+	call	dword ptr [__imp__GetSystemTimeAsFileTime]
 	mov	eax,[ebp-8h]
 	xor	eax,[ebp-0Ch]
 	mov	[ebp-4h],eax
-	call	dword ptr [402020h]
+	call	dword ptr [__imp__GetCurrentThreadId]
 	xor	[ebp-4h],eax
-	call	dword ptr [402024h]
+	call	dword ptr [__imp__GetCurrentProcessId]
 	xor	[ebp-4h],eax
 	lea	eax,[ebp-14h]
 	push	eax
-	call	dword ptr [402028h]
+	call	dword ptr [__imp__QueryPerformanceCounter]
 	mov	ecx,[ebp-10h]
 	lea	eax,[ebp-4h]
 	xor	ecx,[ebp-14h]
@@ -650,7 +650,7 @@ l00401788:
 	mov	dword ptr [ebp-58h],40000015h
 	mov	dword ptr [ebp-54h],1h
 	mov	[ebp-4Ch],eax
-	call	dword ptr [402004h]
+	call	dword ptr [__imp__IsDebuggerPresent]
 	push	esi
 	lea	ebx,[eax-1h]
 	neg	ebx
@@ -660,10 +660,10 @@ l00401788:
 	sbb	bl,bl
 	mov	[ebp-4h],eax
 	inc	bl
-	call	dword ptr [402010h]
+	call	dword ptr [__imp__SetUnhandledExceptionFilter]
 	lea	eax,[ebp-8h]
 	push	eax
-	call	dword ptr [40201Ch]
+	call	dword ptr [__imp__UnhandledExceptionFilter]
 	test	eax,eax
 	jnz	401882h
 
@@ -686,7 +686,7 @@ l00401882:
 ;;     00401258 (in Win32CrtStartup)
 fn0040188B proc
 	push	0h
-	call	dword ptr [402000h]
+	call	dword ptr [__imp__GetModuleHandleW]
 	mov	ecx,eax
 	test	ecx,ecx
 	jnz	40189Ch

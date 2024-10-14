@@ -5,7 +5,7 @@
 ;;     0000000000000A9C (in __libc_csu_init)
 _init proc
 	sub	rsp,8h
-	mov	rax,[0000000000200FE8]                                 ; [rip+00200A3D]
+	mov	rax,[__gmon_start___GOT]                               ; [rip+00200A3D]
 	test	rax,rax
 	jz	05B2h
 

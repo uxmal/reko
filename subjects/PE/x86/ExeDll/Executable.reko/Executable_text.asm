@@ -4,18 +4,18 @@
 ;;   Called from:
 ;;     00401253 (in Win32CrtStartup)
 fn00401000 proc
-	push	dword ptr [402004h]
-	call	dword ptr [402010h]
-	mov	eax,[402008h]
+	push	dword ptr [__imp__?exported_critical_section@@3U_RTL_CRITICAL_SECTION@@A]
+	call	dword ptr [__imp__InitializeCriticalSection]
+	mov	eax,[__imp__?exported_int@@3HA]
 	push	dword ptr [eax]
 	push	402108h
 	call	fn00401060
 	push	1h
-	call	dword ptr [402000h]
+	call	dword ptr [__imp__?slow_and_safe_increment@@YAHH@Z]
 	push	eax
 	push	402108h
 	call	fn00401060
-	mov	eax,[402008h]
+	mov	eax,[__imp__?exported_int@@3HA]
 	push	dword ptr [eax]
 	push	402108h
 	call	fn00401060
@@ -44,7 +44,7 @@ fn00401060 proc
 	push	esi
 	mov	esi,[ebp+8h]
 	push	1h
-	call	dword ptr [4020C8h]
+	call	dword ptr [__imp____acrt_iob_func]
 	add	esp,4h
 	lea	ecx,[ebp+0Ch]
 	push	ecx
@@ -54,7 +54,7 @@ fn00401060 proc
 	call	fn00401050
 	push	dword ptr [eax+4h]
 	push	dword ptr [eax]
-	call	dword ptr [4020C4h]
+	call	dword ptr [__imp____stdio_common_vfprintf]
 	add	esp,18h
 	pop	esi
 	pop	ebp
@@ -231,13 +231,13 @@ fn004012D8 proc
 	push	ebp
 	mov	ebp,esp
 	push	0h
-	call	dword ptr [402038h]
+	call	dword ptr [__imp__SetUnhandledExceptionFilter]
 	push	dword ptr [ebp+8h]
-	call	dword ptr [40203Ch]
+	call	dword ptr [__imp__UnhandledExceptionFilter]
 	push	0C0000409h
-	call	dword ptr [402034h]
+	call	dword ptr [__imp__GetCurrentProcess]
 	push	eax
-	call	dword ptr [402030h]
+	call	dword ptr [__imp__TerminateProcess]
 	pop	ebp
 	ret
 00401300 55 8B EC 81 EC 24 03 00 00 6A 17 E8 32 09 00 00 U....$...j..2...
@@ -649,17 +649,17 @@ l0040168A:
 l00401693:
 	lea	eax,[ebp-0Ch]
 	push	eax
-	call	dword ptr [40201Ch]
+	call	dword ptr [__imp__GetSystemTimeAsFileTime]
 	mov	eax,[ebp-8h]
 	xor	eax,[ebp-0Ch]
 	mov	[ebp-4h],eax
-	call	dword ptr [402020h]
+	call	dword ptr [__imp__GetCurrentThreadId]
 	xor	[ebp-4h],eax
-	call	dword ptr [402024h]
+	call	dword ptr [__imp__GetCurrentProcessId]
 	xor	[ebp-4h],eax
 	lea	eax,[ebp-14h]
 	push	eax
-	call	dword ptr [402028h]
+	call	dword ptr [__imp__QueryPerformanceCounter]
 	mov	ecx,[ebp-10h]
 	lea	eax,[ebp-4h]
 	xor	ecx,[ebp-14h]
@@ -713,7 +713,7 @@ fn00401709 proc
 ;; fn0040170C: 0040170C
 fn0040170C proc
 	push	403358h
-	call	dword ptr [402018h]
+	call	dword ptr [__imp__InitializeSListHead]
 	ret
 
 ;; fn00401718: 00401718
@@ -835,7 +835,7 @@ l0040178F:
 	mov	dword ptr [ebp-58h],40000015h
 	mov	dword ptr [ebp-54h],1h
 	mov	[ebp-4Ch],eax
-	call	dword ptr [402014h]
+	call	dword ptr [__imp__IsDebuggerPresent]
 	push	esi
 	lea	ebx,[eax-1h]
 	neg	ebx
@@ -845,10 +845,10 @@ l0040178F:
 	sbb	bl,bl
 	mov	[ebp-4h],eax
 	inc	bl
-	call	dword ptr [402038h]
+	call	dword ptr [__imp__SetUnhandledExceptionFilter]
 	lea	eax,[ebp-8h]
 	push	eax
-	call	dword ptr [40203Ch]
+	call	dword ptr [__imp__UnhandledExceptionFilter]
 	test	eax,eax
 	jnz	401889h
 
@@ -870,7 +870,7 @@ l00401889:
 ;;     0040125D (in Win32CrtStartup)
 fn0040188F proc
 	push	0h
-	call	dword ptr [402040h]
+	call	dword ptr [__imp__GetModuleHandleW]
 	mov	ecx,eax
 	test	ecx,ecx
 	jnz	4018A0h
@@ -907,7 +907,7 @@ l004018C8:
 ;; fn004018D3: 004018D3
 fn004018D3 proc
 	push	4018DFh
-	call	dword ptr [402038h]
+	call	dword ptr [__imp__SetUnhandledExceptionFilter]
 	ret
 004018DF                                              55                U
 004018E0 8B EC 8B 45 08 8B 00 81 38 63 73 6D E0 75 25 83 ...E....8csm.u%.

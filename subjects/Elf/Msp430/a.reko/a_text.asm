@@ -2524,10 +2524,10 @@ pxPortInitialiseStack proc
 ;;     00004730 (in vTaskStartScheduler)
 xPortStartScheduler proc
 	call	528E
-	mov.w	00000206,r12
+	mov.w	uxCurrentNumberOfTasks,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,0000021C
+	mov.w	r15,xRxedChars
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13
@@ -2577,15 +2577,15 @@ vPortYield proc
 	push.w	r13
 	push.w	r14
 	push.w	r15
-	mov.w	0000021C,r14
+	mov.w	xRxedChars,r14
 	push.w	r14
-	mov.w	00000206,r12
+	mov.w	uxCurrentNumberOfTasks,r12
 	mov.w	sp,@r12
 	call	4B18
-	mov.w	00000206,r12
+	mov.w	uxCurrentNumberOfTasks,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,0000021C
+	mov.w	r15,xRxedChars
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13
@@ -2627,16 +2627,16 @@ prvTickISR proc
 	push.w	r13
 	push.w	r14
 	push.w	r15
-	mov.w	021C,r14
+	mov.w	xRxedChars,r14
 	push.w	r14
-	mov.w	0206,r12
+	mov.w	uxCurrentNumberOfTasks,r12
 	mov.w	sp,@r12
 	call	484A
 	call	4B18
-	mov.w	0206,r12
+	mov.w	uxCurrentNumberOfTasks,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,021C
+	mov.w	r15,xRxedChars
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13

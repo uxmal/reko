@@ -5,18 +5,18 @@
 ;;     004018A2 (in ping4_receive_error_msg)
 ;;     00401AB4 (in ping4_parse_reply)
 acknowledge proc
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	subu	r5,r7,r4
 	andi	r6,r5,0000FFFF
 	bbnezc	r5,0000000F,00400136
 
 l004000FE:
-	lwpc	r5,00430078
+	lwpc	r5,pipesize
 	bltc	r6,r5,00400110
 
 l00400108:
 	addiu	r6,r6,00000001
-	swpc	r6,00430078
+	swpc	r6,pipesize
 
 l00400110:
 	aluipc	r6,00000454
@@ -47,7 +47,7 @@ set_socket_option.isra.0.part.1 proc
 	balc	strerror
 	addiupc	r5,00010384
 	move	r6,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 	li	r4,00000002
 	balc	exit
@@ -135,7 +135,7 @@ l004001D8:
 	beqzc	r7,004001F0
 
 l004001DC:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,000106DE
 	balc	fputs_unlocked
 
@@ -170,7 +170,7 @@ l00400280:
 004002A0 E0 80 C0 E4 96 9B CB 60 3C 42 05 00 A1 04 A4 06 .......`<B......
 
 l004002B0:
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 	bc	004001EA
 004002BC                                     EB 60 2A 42             .`*B
@@ -246,7 +246,7 @@ l004002B0:
 00400710 8F 60 6E F9 02 00 FF 29 97 FA                   .`n....)..      
 
 l0040071A:
-	lwpc	r7,00430254
+	lwpc	r7,optind
 	subu	r16,r16,r7
 	lsa	r18,r7,r18,00000002
 	bnezc	r16,0040072C
@@ -303,7 +303,7 @@ l00400782:
 	sw	r7,0024(sp)
 
 l00400784:
-	lwpc	r7,00454530
+	lwpc	r7,settos
 	beqzc	r7,004007B4
 
 l0040078C:
@@ -331,7 +331,7 @@ l004007B0:
 	bc	00400782
 
 l004007B4:
-	lwpc	r7,00454504
+	lwpc	r7,tclass
 	beqzc	r7,004007D6
 
 l004007BC:
@@ -360,7 +360,7 @@ l004007E6:
 	balc	gai_strerror
 	addiupc	r5,0000FD22
 	movep	r6,r7,r20,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 	bc	004001EA
 
@@ -567,7 +567,7 @@ l00400938:
 ;;     00400B80 (in ping4_run)
 usage proc
 	save	00000010,ra,00000001
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F9FE
 	balc	fn00400B5A
 	li	r4,00000001
@@ -604,7 +604,7 @@ l00400988:
 	bneiuc	r16,00000001,004009B0
 
 l0040098C:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	li	r16,00000003
 	bbeqzc	r7,00000008,0040096E
 
@@ -614,7 +614,7 @@ l00400998:
 	balc	strerror
 	addiupc	r5,0000FAD8
 	move	r6,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn00400B5E
 	bc	0040096E
 
@@ -632,7 +632,7 @@ l004009BA:
 	balc	strerror
 	addiupc	r5,0000FAE2
 	move	r6,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn00400B5E
 	beqzc	r18,004009EC
 
@@ -646,7 +646,7 @@ l004009D6:
 	bneiuc	r7,00000021,004009BA
 
 l004009DE:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000008,004009BA
 
 l004009E8:
@@ -697,14 +697,14 @@ ping4_send_probe proc
 	li	r7,00000008
 	sb	r7,0000(r16)
 	sb	r0,0001(r16)
-	lwpc	r4,004544E4
+	lwpc	r4,ntransmitted
 	sh	r0,0002(r16)
 	addiu	r4,r4,00000001
 	andi	r4,r4,0000FFFF
 	balc	fn00400B62
-	lwpc	r7,004544C4
+	lwpc	r7,ident
 	sh	r7,0004(r16)
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	addiu	r7,r7,00000001
 	sh	r4,0006(r16)
 	andi	r6,r7,0000FFFF
@@ -717,11 +717,11 @@ ping4_send_probe proc
 	nor	r7,r0,r7
 	and	r7,r7,r6
 	sw	r7,0040(sp)
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	beqzc	r7,00400A8C
 
 l00400A6E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	addiu	r17,r16,00000008
 	bbeqzc	r7,0000000C,00400AEA
 
@@ -734,16 +734,16 @@ l00400A7A:
 	move.balc	r4,r17,memcpy
 
 l00400A8C:
-	lwpc	r17,00430074
+	lwpc	r17,datalen
 	addiu	r17,r17,00000008
 	movep	r5,r6,r17,r0
 	move.balc	r4,r16,in_cksum
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	sh	r4,0002(r16)
 	beqzc	r7,00400AD2
 
 l00400AA4:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,0000000C,00400AD2
 
 l00400AAE:
@@ -783,15 +783,15 @@ l00400AEA:
 ;; ping4_install_filter: 00400AF2
 ping4_install_filter proc
 	save	00000020,ra,00000003
-	lwpc	r7,0045451C
+	lwpc	r7,once.5593
 	move	r17,r4
 	bnezc	r7,00400B48
 
 l00400AFE:
-	lwpc	r7,004544C4
+	lwpc	r7,ident
 	li	r16,00000001
 	sw	r7,000C(sp)
-	swpc	r16,0045451C
+	swpc	r16,once.5593
 	lhu	r4,000C(sp)
 	balc	fn00400B62
 	addiupc	r7,0002F4F0
@@ -897,7 +897,7 @@ ping4_run proc
 	bltic	r17,00000002,00400C24
 
 l00400B76:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000005,00400B82
 
 l00400B80:
@@ -907,7 +907,7 @@ l00400B82:
 	bbeqzc	r7,00000009,00400B96
 
 l00400B86:
-	lwpc	r7,0045453C
+	lwpc	r7,ts_type
 	bneiuc	r7,00000003,00400B80
 
 l00400B90:
@@ -921,7 +921,7 @@ l00400B96:
 
 l00400B9A:
 	ori	r7,r7,00000400
-	swpc	r7,004544EC
+	swpc	r7,options
 	bc	00400C24
 
 l00400BA6:
@@ -944,7 +944,7 @@ l00400BBC:
 	movep	r6,r7,r20,r4
 
 l00400BC6:
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn00400B5E
 	bc	00400C96
 
@@ -969,7 +969,7 @@ l00400BEC:
 
 l00400BF4:
 	lw	r17,0038(sp)
-	swpc	r20,004544C0
+	swpc	r20,hostname
 	beqzc	r4,00400C02
 
 l00400BFE:
@@ -979,10 +979,10 @@ l00400C02:
 	beqic	r17,00000001,00400C20
 
 l00400C06:
-	lwpc	r7,00454538
+	lwpc	r7,nroute
 	lw	r5,0004(r19)
 	addiu	r6,r7,00000001
-	swpc	r6,00454538
+	swpc	r6,nroute
 	addiupc	r6,0003087C
 	swxs	r5,r7(r6)
 
@@ -1008,13 +1008,13 @@ l00400C28:
 	bneiuc	r4,00000001,00400BA6
 
 l00400C4E:
-	swpc	r20,004544C0
+	swpc	r20,hostname
 	bneiuc	r17,00000001,00400C06
 
 l00400C58:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	ori	r7,r7,00000004
-	swpc	r7,004544EC
+	swpc	r7,options
 	bc	00400C20
 
 l00400C6A:
@@ -1045,7 +1045,7 @@ l00400C96:
 	balc	fn00400B66
 
 l00400C9A:
-	lwpc	r19,00454528
+	lwpc	r19,device
 	beqc	r0,r19,00400D38
 
 l00400CA4:
@@ -1058,7 +1058,7 @@ l00400CA4:
 	move.balc	r5,r19,strncpy
 	li	r4,00000001
 	balc	modify_capability
-	lwpc	r19,00454528
+	lwpc	r19,device
 	move.balc	r4,r19,strlen
 	move	r7,r19
 	addiu	r8,r4,00000001
@@ -1085,9 +1085,9 @@ l00400CF4:
 	bgec	r4,r0,00400D16
 
 l00400D02:
-	lwpc	r6,00454528
+	lwpc	r6,device
 	addiupc	r5,0000F81C
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn00400B5E
 	bc	00400C96
 
@@ -1112,7 +1112,7 @@ l00400D32:
 	bc	00400C92
 
 l00400D38:
-	lwpc	r7,00454530
+	lwpc	r7,settos
 	beqzc	r7,00400D5A
 
 l00400D40:
@@ -1130,7 +1130,7 @@ l00400D52:
 l00400D5A:
 	addiu	r4,r0,00000401
 	balc	fn00400B62
-	lwpc	r7,00454538
+	lwpc	r7,nroute
 	sh	r4,002A(sp)
 	beqzc	r7,00400D76
 
@@ -1153,9 +1153,9 @@ l00400D86:
 	bneiuc	r7,0000000D,00400DD0
 
 l00400D8E:
-	lwpc	r7,00412EF0
+	lwpc	r7,stderr
 	sw	r7,000C(sp)
-	lwpc	r7,0045452C
+	lwpc	r7,broadcast_pings
 	lw	r17,000C(sp)
 	addiupc	r4,0000F7F2
 	beqzc	r7,00400E0A
@@ -1198,7 +1198,7 @@ l00400DE8:
 	bc	00400C92
 
 l00400DEE:
-	lwpc	r7,00454528
+	lwpc	r7,device
 	sh	r0,0002(r18)
 	beqzc	r7,00400E32
 
@@ -1208,7 +1208,7 @@ l00400DF8:
 	beqzc	r4,00400E0E
 
 l00400E00:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F802
 
 l00400E0A:
@@ -1217,7 +1217,7 @@ l00400E0A:
 
 l00400E0E:
 	lw	r5,0038(sp)
-	lwpc	r22,00454528
+	lwpc	r22,device
 	move	r19,r21
 
 l00400E18:
@@ -1228,9 +1228,9 @@ l00400E1A:
 	bnezc	r19,00400E32
 
 l00400E20:
-	lwpc	r6,00454528
+	lwpc	r6,device
 	addiupc	r5,0000F7FA
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn00400B5E
 
 l00400E32:
@@ -1246,7 +1246,7 @@ l00400E3E:
 	sw	r7,0044(sp)
 
 l00400E42:
-	lwpc	r19,00454528
+	lwpc	r19,device
 	beqzc	r19,00400E72
 
 l00400E4A:
@@ -1265,23 +1265,23 @@ l00400E4A:
 
 l00400E6A:
 	li	r7,00000018
-	swpc	r7,004544AC
+	swpc	r7,cmsg_len
 
 l00400E72:
-	lwpc	r7,0045452C
+	lwpc	r7,broadcast_pings
 	beqzc	r7,00400EC4
 
 l00400E7A:
-	lwpc	r7,00454514
+	lwpc	r7,uid
 	bnezc	r7,00400EFC
 
 l00400E82:
-	lwpc	r7,00430048
+	lwpc	r7,pmtudisc
 	bgec	r7,r0,00400EE0
 
 l00400E8C:
 	li	r7,00000002
-	swpc	r7,00430048
+	swpc	r7,pmtudisc
 	bc	00400ED6
 
 l00400E96:
@@ -1317,7 +1317,7 @@ l00400EC4:
 	beqc	r4,r7,00400E7A
 
 l00400ED6:
-	lwpc	r7,00430048
+	lwpc	r7,pmtudisc
 	bltc	r7,r0,00400F30
 
 l00400EE0:
@@ -1335,29 +1335,29 @@ l00400EF6:
 	bc	00400C92
 
 l00400EFC:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	addiu	r6,r0,000003E7
 	bltc	r6,r7,00400F16
 
 l00400F0A:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F75C
 	bc	00400E0A
 
 l00400F16:
-	lwpc	r7,00430048
+	lwpc	r7,pmtudisc
 	bltc	r7,r0,00400E82
 
 l00400F20:
 	beqic	r7,00000002,00400E82
 
 l00400F24:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F772
 	bc	00400E0A
 
 l00400F30:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000F,00400F50
 
 l00400F3A:
@@ -1404,7 +1404,7 @@ l00400F78:
 	beqzc	r4,00400F9A
 
 l00400F8C:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F77A
 	balc	fputs_unlocked
 
@@ -1439,7 +1439,7 @@ l00400FC6:
 	balc	fn00401284
 
 l00400FCC:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000005,00401012
 
 l00400FD6:
@@ -1460,7 +1460,7 @@ l00400FD6:
 	li	r6,00000004
 	move	r5,r0
 	addiu	r7,sp,00000038
-	swpc	r19,00454534
+	swpc	r19,optlen
 	balc	fn00401280
 	bgec	r4,r0,00401012
 
@@ -1469,7 +1469,7 @@ l0040100C:
 	bc	00400C92
 
 l00401012:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000009,004010A8
 
 l0040101C:
@@ -1481,7 +1481,7 @@ l0040101C:
 	li	r5,00000028
 	li	r6,00000024
 	sb	r7,0038(sp)
-	lwpc	r7,0045453C
+	lwpc	r7,ts_type
 	movz	r6,r5,r7
 
 l00401038:
@@ -1516,7 +1516,7 @@ l00401074:
 	bc	00400C92
 
 l0040107A:
-	lwpc	r5,00454538
+	lwpc	r5,nroute
 	addiu	r6,sp,00000038
 	sll	r7,r5,00000003
 	addiu	r7,r7,00000004
@@ -1536,10 +1536,10 @@ l00401092:
 
 l004010A0:
 	li	r7,00000028
-	swpc	r7,00454534
+	swpc	r7,optlen
 
 l004010A8:
-	lwpc	r19,004544EC
+	lwpc	r19,options
 	bbeqzc	r19,0000000A,00401114
 
 l004010B2:
@@ -1555,7 +1555,7 @@ l004010B2:
 	movz	r7,r6,r19
 
 l004010D2:
-	lwpc	r8,00454538
+	lwpc	r8,nroute
 	move	r19,r7
 	sll	r7,r8,00000002
 	addiu	r7,r7,00000003
@@ -1581,21 +1581,21 @@ l004010F8:
 
 l0040110C:
 	li	r7,00000028
-	swpc	r7,00454534
+	swpc	r7,optlen
 
 l00401114:
-	lwpc	r7,00430074
+	lwpc	r7,datalen
 	addiu	r6,r0,00000200
 	addiu	r4,r7,00000207
 	div	r5,r4,r6
-	lwpc	r6,00454534
+	lwpc	r6,optlen
 	addiu	r7,r7,00000008
 	addiu	r6,r6,00000104
 	mul	r5,r5,r6
 	addu	r5,r5,r7
 	sw	r5,001C(sp)
 	move.balc	r4,r16,sock_setbufs
-	lwpc	r7,0045452C
+	lwpc	r7,broadcast_pings
 	beqzc	r7,0040116E
 
 l00401144:
@@ -1619,7 +1619,7 @@ l00401162:
 	bc	004010F4
 
 l0040116E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000010,00401194
 
 l00401178:
@@ -1638,11 +1638,11 @@ l0040118C:
 	bc	00400C92
 
 l00401194:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000011,004011DA
 
 l0040119E:
-	lwpc	r7,00454510
+	lwpc	r7,ttl
 	lw	r4,0000(r16)
 	sw	r7,0028(sp)
 	addiu	r8,r0,00000001
@@ -1671,10 +1671,10 @@ l004011D2:
 	bc	00400C92
 
 l004011DA:
-	lwpc	r6,00454534
+	lwpc	r6,optlen
 	addiu	r7,r0,0000FFE3
 	subu	r7,r7,r6
-	lwpc	r6,00430074
+	lwpc	r6,datalen
 	bgec	r7,r6,004011F8
 
 l004011F0:
@@ -1686,7 +1686,7 @@ l004011F8:
 
 l004011FC:
 	li	r7,00000001
-	swpc	r7,00454508
+	swpc	r7,timing
 
 l00401204:
 	addiu	r19,r6,00000088
@@ -1695,28 +1695,28 @@ l00401204:
 	bnezc	r4,0040121E
 
 l00401210:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F65A
 	bc	00400E0A
 
 l0040121E:
 	lw	r4,0004(r17)
-	lwpc	r21,004544C0
+	lwpc	r21,hostname
 	balc	fn00401590
 	movep	r5,r6,r21,r4
 	addiupc	r4,0000F65E
 	balc	fn00401594
-	lwpc	r7,00454528
+	lwpc	r7,device
 	bnezc	r7,00401242
 
 l00401238:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000F,0040125C
 
 l00401242:
 	lw	r4,0004(r18)
 	balc	fn00401590
-	lwpc	r6,00454528
+	lwpc	r6,device
 	addiupc	r7,0000F228
 	move	r5,r4
 	movz	r6,r7,r6
@@ -1726,8 +1726,8 @@ l00401256:
 	balc	fn00401594
 
 l0040125C:
-	lwpc	r5,00430074
-	lwpc	r6,00454534
+	lwpc	r5,datalen
+	lwpc	r6,optlen
 	addu	r6,r5,r6
 	addiupc	r4,0000F63E
 	addiu	r6,r6,0000001C
@@ -1795,7 +1795,7 @@ pr_addr proc
 	sw	r0,0110(sp)
 	balc	fn00401366
 	lw	r17,0008(sp)
-	lwpc	r7,00454520
+	lwpc	r7,last_salen.5581
 	bnec	r6,r7,004012C2
 
 l004012B4:
@@ -1809,21 +1809,21 @@ l004012C2:
 	addiupc	r4,00030118
 	lw	r17,000C(sp)
 	move	r6,r7
-	swpc	r7,00454520
+	swpc	r7,last_salen.5581
 	balc	fn00401608
 	addiupc	r4,00053068
 	balc	_setjmp
 	addiu	r7,r0,000000FF
 	sltiu	r4,r4,00000001
 	lw	r17,0008(sp)
-	swpc	r4,004314C0
+	swpc	r4,in_pr_addr
 	lw	r17,000C(sp)
 	addiu	r10,r0,00000001
 	move	r9,r0
 	move	r8,r0
 	addiu	r6,sp,00000110
 	balc	getnameinfo
-	lwpc	r7,004544B8
+	lwpc	r7,exiting
 	beqzc	r7,00401322
 
 l00401306:
@@ -1839,7 +1839,7 @@ l0040130C:
 	bc	00401358
 
 l00401322:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000002,00401306
 
 l0040132C:
@@ -1862,7 +1862,7 @@ l00401342:
 	balc	snprintf
 
 l00401358:
-	swpc	r0,004314C0
+	swpc	r0,in_pr_addr
 
 l0040135E:
 	addiupc	r4,0002F07E
@@ -2003,7 +2003,7 @@ l0040142C:
 	bgec	r0,r17,004013FA
 
 l00401436:
-	lwpc	r7,00454524
+	lwpc	r7,old_rrlen.5543
 	addiu	r18,r16,00000002
 	bnec	r7,r17,00401462
 
@@ -2014,7 +2014,7 @@ l00401444:
 	bnezc	r4,00401462
 
 l00401450:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000000,00401462
 
 l0040145A:
@@ -2025,7 +2025,7 @@ l0040145A:
 l00401462:
 	movep	r5,r6,r18,r17
 	addiupc	r4,0002FFF8
-	swpc	r17,00454524
+	swpc	r17,old_rrlen.5543
 	balc	fn00401608
 	addiupc	r4,0000F834
 	addiu	r18,r16,00000003
@@ -2340,7 +2340,7 @@ l00401652:
 	beqc	r0,r16,00401760
 
 l00401656:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000008,00401760
 
 l00401660:
@@ -2626,7 +2626,7 @@ l00401806:
 	bneiuc	r5,00000001,00401870
 
 l0040180E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r16,r7,00000010
 	bnec	r0,r16,00401936
 
@@ -2638,10 +2638,10 @@ l00401820:
 	balc	fn00401BA0
 
 l00401826:
-	lwpc	r7,004544D0
+	lwpc	r7,nerrors
 	li	r17,00000001
 	addiu	r7,r7,00000001
-	swpc	r7,004544D0
+	swpc	r7,nerrors
 
 l00401836:
 	balc	__errno_location
@@ -2657,7 +2657,7 @@ l00401842:
 
 l00401848:
 	lw	r4,0000(r18)
-	lwpc	r7,00412EF0
+	lwpc	r7,stderr
 	sw	r7,000C(sp)
 	beqic	r4,0000001A,00401868
 
@@ -2733,11 +2733,11 @@ l004018CE:
 	balc	perror
 
 l004018D6:
-	lwpc	r7,004544D0
-	lwpc	r16,004544EC
+	lwpc	r7,nerrors
+	lwpc	r16,options
 	addiu	r7,r7,00000001
 	andi	r17,r16,00000010
-	swpc	r7,004544D0
+	swpc	r7,nerrors
 	bnezc	r17,00401930
 
 l004018F0:
@@ -2766,7 +2766,7 @@ l004018FE:
 	move	r7,r0
 	lw	r6,0008(r18)
 	balc	pr_icmph
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn00401B98
 
 l00401930:
@@ -2811,7 +2811,7 @@ l00401960:
 	bgeic	r5,00000005,0040198C
 
 l00401964:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000008,00401974
 
 l0040196E:
@@ -2826,7 +2826,7 @@ l00401974:
 	move.balc	r4,r18,pr_addr
 	addiupc	r5,0000F886
 	movep	r6,r7,r20,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 	bc	0040196E
 
@@ -2868,7 +2868,7 @@ l004019B4:
 	beqc	r0,r4,00401B52
 
 l004019DC:
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn00401B98
 
 l004019E4:
@@ -2951,7 +2951,7 @@ l00401A56:
 	bbnezc	r7,00000005,0040196E
 
 l00401A5A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r6,r7,00000111
 	bneiuc	r6,00000001,00401B04
 
@@ -3004,7 +3004,7 @@ l00401AB0:
 	bc	004019E4
 
 l00401ABA:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r7,r7,00000011
 	bnec	r0,r7,0040196E
 
@@ -3044,7 +3044,7 @@ l00401B04:
 	bbeqzc	r7,00000008,004019E4
 
 l00401B08:
-	lwpc	r6,00454514
+	lwpc	r6,uid
 	bnec	r0,r6,004019E4
 
 l00401B12:
@@ -3082,21 +3082,21 @@ l00401B40:
 	bc	00401970
 
 l00401B52:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000D,00401B72
 
 l00401B5C:
 	li	r4,00000007
 	balc	fn00401766
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000000,00401B7C
 
 l00401B6A:
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn00401B98
 
 l00401B72:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000000,004019E4
 
 l00401B7C:
@@ -3104,7 +3104,7 @@ l00401B7C:
 	move.balc	r4,r21,pr_options
 	li	r4,0000000A
 	balc	putchar
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn00401B98
 	bc	00401970
 
@@ -3154,16 +3154,16 @@ fn00401BA0 proc
 ;;     00402C74 (in main_loop)
 in_flight proc
 	aluipc	r6,00000454
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	lhu	r6,0518(r6)
 	subu	r6,r7,r6
 	andi	r4,r6,0000FFFF
 	bbeqzc	r6,0000000F,00401BD6
 
 l00401BC6:
-	lwpc	r4,004544DC
+	lwpc	r4,nreceived
 	subu	r7,r7,r4
-	lwpc	r4,004544D0
+	lwpc	r4,nerrors
 	subu	r4,r7,r4
 
 l00401BD6:
@@ -3174,11 +3174,11 @@ l00401BD6:
 ;;     00402008 (in pinger)
 ;;     004020C6 (in pinger)
 advance_ntransmitted proc
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	aluipc	r5,00000454
 	addiu	r7,r6,00000001
 	lhu	r4,0518(r5)
-	swpc	r7,004544E4
+	swpc	r7,ntransmitted
 	andi	r7,r7,0000FFFF
 	subu	r7,r7,r4
 	addiu	r4,r0,00007FFF
@@ -3194,7 +3194,7 @@ l00401C02:
 ;; sigstatus: 00401C04
 sigstatus proc
 	li	r7,00000001
-	swpc	r7,00454500
+	swpc	r7,status_snapshot
 	jrc	ra
 
 ;; update_interval: 00401C0E
@@ -3202,7 +3202,7 @@ sigstatus proc
 ;;     0040208A (in pinger)
 ;;     00402576 (in gather_statistics)
 update_interval proc
-	lwpc	r6,004544F4
+	lwpc	r6,rtt
 	beqzc	r6,00401C52
 
 l00401C16:
@@ -3210,13 +3210,13 @@ l00401C16:
 	div	r7,r6,r5
 
 l00401C1C:
-	lwpc	r6,004544F8
+	lwpc	r6,rtt_addend
 	addiu	r5,r0,000003E8
 	addu	r7,r7,r6
 	addiu	r7,r7,000001F4
 	div	r6,r7,r5
-	lwpc	r7,00454514
-	swpc	r6,0043008C
+	lwpc	r7,uid
+	swpc	r6,interval
 	beqzc	r7,00401C50
 
 l00401C3E:
@@ -3225,14 +3225,14 @@ l00401C3E:
 
 l00401C46:
 	addiu	r7,r0,000000C8
-	swpc	r7,0043008C
+	swpc	r7,interval
 
 l00401C50:
 	jrc	ra
 
 l00401C52:
 	addiu	r6,r0,000003E8
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	mul	r7,r7,r6
 	bc	00401C1C
 
@@ -3280,8 +3280,8 @@ set_signal proc
 sigexit proc
 	save	00000010,ra,00000001
 	li	r7,00000001
-	swpc	r7,004544B8
-	lwpc	r7,004314C0
+	swpc	r7,exiting
+	lwpc	r7,in_pr_addr
 	bnezc	r7,00401CAC
 
 l00401CAA:
@@ -3299,10 +3299,10 @@ l00401CAC:
 limit_capabilities proc
 	save	00000010,ra,00000001
 	balc	fn00401E82
-	swpc	r4,00454514
+	swpc	r4,uid
 	balc	geteuid
-	swpc	r4,004544B4
-	lwpc	r4,00454514
+	swpc	r4,euid
+	lwpc	r4,uid
 	balc	seteuid
 	bnezc	r4,00401CD8
 
@@ -3328,7 +3328,7 @@ l00401CD8:
 ;;     00403798 (in ping6_run)
 modify_capability proc
 	save	00000010,ra,00000001
-	lwpc	r7,004544B4
+	lwpc	r7,euid
 	bnezc	r4,00401CF0
 
 l00401CEC:
@@ -3414,7 +3414,7 @@ l00401D24:
 	bltc	r0,r4,00401DC0
 
 l00401D72:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000004,00401D90
 
 l00401D7C:
@@ -3438,7 +3438,7 @@ l00401D92:
 	bnezc	r4,00401DA8
 
 l00401D98:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F4EE
 	balc	fn00402126
 	li	r4,00000002
@@ -3482,28 +3482,28 @@ l00401DCC:
 ;;     00402B0E (in main_loop)
 __schedule_exit proc
 	save	00000020,ra,00000002
-	lwpc	r7,00454548
+	lwpc	r7,waittime.5325
 	move	r16,r4
 	bnezc	r7,00401E4A
 
 l00401DE6:
-	lwpc	r7,004544DC
+	lwpc	r7,nreceived
 	beqzc	r7,00401E4E
 
 l00401DEE:
 	addiu	r5,r0,000003E8
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	mul	r7,r7,r5
-	lwpc	r6,0045450C
+	lwpc	r6,tmax
 	sll	r6,r6,00000001
-	swpc	r6,00454548
+	swpc	r6,waittime.5325
 	bgeuc	r6,r7,00401E12
 
 l00401E0C:
-	swpc	r7,00454548
+	swpc	r7,waittime.5325
 
 l00401E12:
-	lwpc	r7,00454548
+	lwpc	r7,waittime.5325
 	addiu	r5,r0,000003E8
 	divu	r6,r7,r5
 	bltc	r16,r0,00401E28
@@ -3533,7 +3533,7 @@ l00401E4A:
 
 l00401E4E:
 	addiu	r6,r0,000003E8
-	lwpc	r7,00430084
+	lwpc	r7,lingertime
 	mul	r7,r7,r6
 	bc	00401E0C
 
@@ -3547,7 +3547,7 @@ l00401E4E:
 ;;     004033EA (in fn004033EA)
 print_timestamp proc
 	save	00000020,ra,00000001
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000013,00401E78
 
 l00401E68:
@@ -3592,21 +3592,21 @@ fn00401E82 proc
 ;;     00402AEE (in main_loop)
 pinger proc
 	save	00000030,ra,00000005
-	lwpc	r7,004544B8
+	lwpc	r7,exiting
 	movep	r16,r17,r4,r5
 	addiu	r4,r0,000003E8
 	bnec	r0,r7,004020FC
 
 l00401E98:
-	lwpc	r7,004544D8
+	lwpc	r7,npackets
 	beqzc	r7,00401EB4
 
 l00401EA0:
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	bltc	r6,r7,00401EB4
 
 l00401EAA:
-	lwpc	r7,004314C8
+	lwpc	r7,deadline
 	beqc	r0,r7,004020FC
 
 l00401EB4:
@@ -3619,18 +3619,18 @@ l00401EB4:
 l00401EC4:
 	addiupc	r4,000525C8
 	balc	fn004021B0
-	lwpc	r7,00430088
+	lwpc	r7,preload
 	addiu	r7,r7,FFFFFFFF
-	lwpc	r6,0043008C
+	lwpc	r6,interval
 	mul	r7,r7,r6
-	swpc	r7,00454544
+	swpc	r7,tokens.5340
 
 l00401EE0:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000014,00401F2A
 
 l00401EEA:
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	bgec	r0,r6,00401F2A
 
 l00401EF4:
@@ -3644,12 +3644,12 @@ l00401EF4:
 
 l00401F08:
 	balc	print_timestamp
-	lwpc	r5,004544E4
+	lwpc	r5,ntransmitted
 	lui	r7,00000010
 	addiupc	r4,0000F404
 	mod	r6,r5,r7
 	move.balc	r5,r6,printf
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fflush_unlocked
 
 l00401F2A:
@@ -3689,7 +3689,7 @@ l00401F68:
 	bnezc	r4,00401F84
 
 l00401F6A:
-	lwpc	r7,00430080
+	lwpc	r7,confirm_flag
 	beqzc	r7,00401F84
 
 l00401F72:
@@ -3698,7 +3698,7 @@ l00401F72:
 	bneiuc	r7,00000016,00401F84
 
 l00401F7A:
-	swpc	r0,00430080
+	swpc	r0,confirm_flag
 	balc	fn004021AC
 	sw	r0,0000(sp)
 
@@ -3721,10 +3721,10 @@ l00401F8C:
 	subu	r4,r4,r8
 	lw	r19,0004(r7)
 	mul	r4,r4,r5
-	lwpc	r9,00430088
+	lwpc	r9,preload
 	subu	r6,r6,r19
 	div	r8,r6,r5
-	lwpc	r5,0043008C
+	lwpc	r5,interval
 	move	r10,r7
 	addu	r8,r8,r4
 	bnezc	r5,00401FD4
@@ -3743,7 +3743,7 @@ l00401FCC:
 
 l00401FD4:
 	mul	r9,r9,r5
-	lwpc	r4,00454544
+	lwpc	r4,tokens.5340
 	addu	r4,r4,r8
 	slt	r8,r4,r9
 	movz	r4,r9,r8
@@ -3758,26 +3758,26 @@ l00401FEA:
 l00401FEE:
 	lw	r17,0008(sp)
 	subu	r4,r4,r5
-	swpc	r4,00454544
+	swpc	r4,tokens.5340
 	sw	r7,0490(r18)
 	lw	r17,000C(sp)
 	sw	r7,0001(r10)
 	bc	00401EE0
 
 l00402002:
-	swpc	r0,00454540
+	swpc	r0,oom_count.5339
 	balc	advance_ntransmitted
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r7,r7,00000011
 	bneiuc	r7,00000001,00402044
 
 l0040201A:
-	lwpc	r5,00430070
-	lwpc	r7,00430088
+	lwpc	r5,screen_width
+	lwpc	r7,preload
 	bgec	r7,r5,00402034
 
 l0040202A:
-	lwpc	r7,00430078
+	lwpc	r7,pipesize
 	bltc	r7,r5,0040203C
 
 l00402034:
@@ -3790,8 +3790,8 @@ l0040203C:
 	balc	write_stdout
 
 l00402044:
-	lwpc	r7,00454544
-	lwpc	r4,0043008C
+	lwpc	r7,tokens.5340
+	lwpc	r4,interval
 	subu	r4,r4,r7
 	restore.jrc	00000030,ra,00000005
 
@@ -3799,26 +3799,26 @@ l00402054:
 	balc	abort
 
 l00402058:
-	lwpc	r7,004544F4
+	lwpc	r7,rtt
 	li	r6,00061A7F
-	swpc	r0,00454544
+	swpc	r0,tokens.5340
 	bgec	r6,r7,004020FE
 
 l0040206E:
 	addiu	r6,r0,0000C350
 
 l00402072:
-	lwpc	r7,004544F8
+	lwpc	r7,rtt_addend
 	addu	r7,r7,r6
-	swpc	r7,004544F8
-	lwpc	r7,004544EC
+	swpc	r7,rtt_addend
+	lwpc	r7,options
 	bbeqzc	r7,0000000E,0040208E
 
 l0040208A:
 	balc	update_interval
 
 l0040208E:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	li	r4,0000000A
 	bltic	r7,00000016,004020AA
 
@@ -3829,10 +3829,10 @@ l0040209A:
 	movz	r4,r7,r6
 
 l004020AA:
-	lwpc	r7,00454540
+	lwpc	r7,oom_count.5339
 	addiu	r7,r7,00000001
-	lwpc	r6,00430084
-	swpc	r7,00454540
+	lwpc	r6,lingertime
+	swpc	r7,oom_count.5339
 	mul	r7,r7,r4
 	bltc	r7,r6,004020FC
 
@@ -3844,7 +3844,7 @@ l004020C6:
 	bnezc	r18,004020E4
 
 l004020CC:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000004,004020E4
 
 l004020D6:
@@ -3856,10 +3856,10 @@ l004020DA:
 	balc	write_stdout
 
 l004020E4:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	li	r6,0000000A
 	slti	r4,r7,0000000A
-	swpc	r0,00454544
+	swpc	r0,tokens.5340
 	movz	r6,r7,r4
 
 l004020FA:
@@ -3874,11 +3874,11 @@ l004020FE:
 	bc	00402072
 
 l00402106:
-	lwpc	r7,00454544
+	lwpc	r7,tokens.5340
 	li	r4,0000000A
-	lwpc	r6,0043008C
+	lwpc	r6,interval
 	addu	r7,r7,r6
-	swpc	r7,00454544
+	swpc	r7,tokens.5340
 	restore.jrc	00000030,ra,00000005
 
 l0040211E:
@@ -3911,12 +3911,12 @@ sock_setbufs proc
 	save	00000020,ra,00000003
 	li	r7,00000004
 	sw	r7,000C(sp)
-	lwpc	r7,004544FC
+	lwpc	r7,sndbuf
 	movep	r17,r16,r4,r5
 	bnezc	r7,00402144
 
 l0040213E:
-	swpc	r16,004544FC
+	swpc	r16,sndbuf
 
 l00402144:
 	lw	r4,0000(r17)
@@ -3925,7 +3925,7 @@ l00402144:
 	addiu	r6,r0,00001001
 	addiu	r5,r0,0000FFFF
 	balc	fn004023EE
-	lwpc	r7,00430088
+	lwpc	r7,preload
 	mul	r16,r16,r7
 	addiu	r7,r0,0000FFFF
 	bgec	r7,r16,004021A6
@@ -3953,7 +3953,7 @@ l00402192:
 	bgec	r7,r16,004021A4
 
 l00402198:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F1AE
 	balc	fn00402126
 
@@ -3992,17 +3992,17 @@ fn004021B0 proc
 ;;     00403C6C (in ping6_run)
 setup proc
 	save	000000B0,ra,00000003
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	move	r16,r4
 	andi	r6,r7,00000003
 	bneiuc	r6,00000001,004021CA
 
 l004021C4:
-	swpc	r0,0043008C
+	swpc	r0,interval
 
 l004021CA:
-	lwpc	r5,00454514
-	lwpc	r6,0043008C
+	lwpc	r5,uid
+	lwpc	r6,interval
 	beqzc	r5,004021F4
 
 l004021D8:
@@ -4012,7 +4012,7 @@ l004021D8:
 l004021E0:
 	addiu	r6,r0,000000C8
 	addiupc	r5,0000F1A4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004023F2
 
 l004021F0:
@@ -4020,13 +4020,13 @@ l004021F0:
 	balc	fn00401E7E
 
 l004021F4:
-	lwpc	r4,00430088
+	lwpc	r4,preload
 	li	r17,7FFFFFFF
 	div	r5,r17,r4
 	bltc	r6,r5,00402216
 
 l00402208:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F1BA
 	balc	fn00402126
 	bc	004021F0
@@ -4044,7 +4044,7 @@ l0040221E:
 	balc	fn004023EE
 
 l0040222E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000007,0040224A
 
 l00402238:
@@ -4056,7 +4056,7 @@ l00402238:
 	balc	fn004023EE
 
 l0040224A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,0000000C,00402276
 
 l00402254:
@@ -4071,12 +4071,12 @@ l00402254:
 	beqzc	r4,00402276
 
 l0040226A:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000F180
 	balc	fn00402126
 
 l00402276:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000012,004022B6
 
 l00402280:
@@ -4095,14 +4095,14 @@ l00402280:
 	bnec	r17,r7,004022B6
 
 l004022A4:
-	lwpc	r6,004544C8
+	lwpc	r6,mark
 	addiupc	r5,0000F186
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004023F2
 
 l004022B6:
 	li	r7,00000001
-	lwpc	r6,0043008C
+	lwpc	r6,interval
 	sw	r7,0008(sp)
 	addiu	r7,r0,000003E7
 	sw	r0,000C(sp)
@@ -4126,7 +4126,7 @@ l004022E0:
 	addiu	r6,r0,00001005
 	addiu	r5,r0,0000FFFF
 	balc	fn004023EE
-	lwpc	r6,0043008C
+	lwpc	r6,interval
 	slti	r7,r6,0000000A
 	li	r5,0000000A
 	movz	r5,r6,r7
@@ -4148,14 +4148,14 @@ l00402304:
 	beqzc	r4,00402340
 
 l00402330:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	ori	r7,r7,00000800
-	swpc	r7,004544EC
+	swpc	r7,options
 
 l00402340:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r7,r7,00000008
-	lwpc	r5,00430074
+	lwpc	r5,datalen
 	beqc	r0,r7,004023E8
 
 l00402352:
@@ -4166,7 +4166,7 @@ l00402358:
 	balc	getpid
 	andi	r4,r4,0000FFFF
 	balc	htons
-	swpc	r4,004544C4
+	swpc	r4,ident
 
 l00402368:
 	addiupc	r5,FFFFF92C
@@ -4187,7 +4187,7 @@ l00402368:
 	move	r5,r0
 	addiupc	r4,00052102
 	balc	fn004021B0
-	lwpc	r7,004314C8
+	lwpc	r7,deadline
 	beqzc	r7,004023B2
 
 l004023A0:
@@ -4218,7 +4218,7 @@ l004023CC:
 	beqzc	r7,004023D8
 
 l004023D2:
-	swpc	r7,00430070
+	swpc	r7,screen_width
 
 l004023D8:
 	restore.jrc	000000B0,ra,00000003
@@ -4263,7 +4263,7 @@ fn004023F2 proc
 gather_statistics proc
 	save	00000040,r30,0000000A
 	movep	r19,r16,r6,r7
-	lwpc	r7,004544DC
+	lwpc	r7,nreceived
 	addiu	r7,r7,00000001
 	move	r23,r4
 	move	r21,r8
@@ -4271,22 +4271,22 @@ gather_statistics proc
 	move	r17,r10
 	move	r30,r11
 	addu	r20,r4,r5
-	swpc	r7,004544DC
+	swpc	r7,nreceived
 	bnec	r0,r9,0040245C
 
 l0040241A:
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	subu	r5,r7,r16
 	andi	r6,r5,0000FFFF
 	bbnezc	r5,0000000F,0040245C
 
 l00402428:
-	lwpc	r5,00430078
+	lwpc	r5,pipesize
 	bltc	r6,r5,0040243A
 
 l00402432:
 	addiu	r6,r6,00000001
-	swpc	r6,00430078
+	swpc	r6,pipesize
 
 l0040243A:
 	aluipc	r6,00000454
@@ -4305,7 +4305,7 @@ l00402458:
 	sh	r16,0518(r6)
 
 l0040245C:
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	move	r22,r0
 	beqc	r0,r7,004025DC
 
@@ -4332,18 +4332,18 @@ l00402478:
 l00402494:
 	move	r6,r22
 	addiupc	r5,0000EFBA
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004023F2
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,0000000C,004024DE
 
 l004024AC:
 	movep	r4,r5,r17,r0
 	balc	fn004021B0
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	addiu	r6,r0,00001000
 	or	r7,r7,r6
-	swpc	r7,004544EC
+	swpc	r7,options
 
 l004024C2:
 	lw	r7,0004(r17)
@@ -4387,21 +4387,21 @@ l004024E4:
 	addu	r7,r7,r4
 	sw	r6,0488(r5)
 	sw	r7,048C(r5)
-	lwpc	r7,0043007C
+	lwpc	r7,tmin
 	bgec	r22,r7,0040253E
 
 l00402538:
-	swpc	r22,0043007C
+	swpc	r22,tmin
 
 l0040253E:
-	lwpc	r7,0045450C
+	lwpc	r7,tmax
 	bgec	r7,r22,0040254E
 
 l00402548:
-	swpc	r22,0045450C
+	swpc	r22,tmax
 
 l0040254E:
-	lwpc	r6,004544F4
+	lwpc	r6,rtt
 	sll	r7,r22,00000003
 	beqzc	r6,00402566
 
@@ -4412,8 +4412,8 @@ l0040255A:
 	addu	r7,r7,r6
 
 l00402566:
-	swpc	r7,004544F4
-	lwpc	r7,004544EC
+	swpc	r7,rtt
+	lwpc	r7,options
 	bbeqzc	r7,0000000E,0040257A
 
 l00402576:
@@ -4430,18 +4430,18 @@ l0040257A:
 	beqzc	r5,004025FE
 
 l00402592:
-	lwpc	r7,004544E0
+	lwpc	r7,nrepeats
 	addu	r7,r7,r17
-	swpc	r7,004544E0
-	lwpc	r7,004544DC
+	swpc	r7,nrepeats
+	lwpc	r7,nreceived
 	addiu	r7,r7,FFFFFFFF
-	swpc	r7,004544DC
+	swpc	r7,nreceived
 
 l004025AE:
-	lwpc	r7,00430080
+	lwpc	r7,confirm_flag
 	li	r16,00000001
-	swpc	r7,004314C4
-	lwpc	r7,004544EC
+	swpc	r7,confirm
+	lwpc	r7,options
 	bbnezc	r7,00000004,004025D8
 
 l004025C6:
@@ -4467,12 +4467,12 @@ l004025DC:
 	beqzc	r18,0040257A
 
 l004025DE:
-	lwpc	r7,004544CC
+	lwpc	r7,nchecksum
 	addiu	r7,r7,00000001
-	swpc	r7,004544CC
-	lwpc	r7,004544DC
+	swpc	r7,nchecksum
+	lwpc	r7,nreceived
 	addiu	r7,r7,FFFFFFFF
-	swpc	r7,004544DC
+	swpc	r7,nreceived
 
 l004025FA:
 	move	r17,r0
@@ -4508,7 +4508,7 @@ l00402626:
 	move.balc	r5,r21,printf
 
 l0040262E:
-	lwpc	r7,00430074
+	lwpc	r7,datalen
 	addiu	r7,r7,00000007
 	bltc	r7,r19,00402646
 
@@ -4519,7 +4519,7 @@ l0040263A:
 	bc	004025D8
 
 l00402646:
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	beqzc	r7,00402668
 
 l0040264E:
@@ -4547,7 +4547,7 @@ l00402672:
 	balc	fn004029C6
 
 l00402678:
-	lwpc	r4,00430074
+	lwpc	r4,datalen
 	li	r5,00000008
 
 l00402680:
@@ -4566,7 +4566,7 @@ l00402698:
 	balc	fn004029C6
 
 l004026A0:
-	lwpc	r7,00430074
+	lwpc	r7,datalen
 	bgec	r17,r7,004025D8
 
 l004026AA:
@@ -4657,18 +4657,18 @@ l00402746:
 	lw	r5,0498(r7)
 	subu	r16,r16,r5
 	balc	fn00402A96
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fflush_unlocked
-	lwpc	r5,004544C0
+	lwpc	r5,hostname
 	addiupc	r4,0000EE10
 	balc	fn004029C6
-	lwpc	r5,004544E4
+	lwpc	r5,ntransmitted
 	addiupc	r4,0000EE20
 	balc	fn004029C6
-	lwpc	r5,004544DC
+	lwpc	r5,nreceived
 	addiupc	r4,0000EE30
 	balc	fn004029C6
-	lwpc	r5,004544E0
+	lwpc	r5,nrepeats
 	beqzc	r5,00402790
 
 l0040278A:
@@ -4676,7 +4676,7 @@ l0040278A:
 	balc	fn004029C6
 
 l00402790:
-	lwpc	r5,004544CC
+	lwpc	r5,nchecksum
 	beqzc	r5,0040279E
 
 l00402798:
@@ -4684,7 +4684,7 @@ l00402798:
 	balc	fn004029C6
 
 l0040279E:
-	lwpc	r5,004544D0
+	lwpc	r5,nerrors
 	beqzc	r5,004027AC
 
 l004027A6:
@@ -4692,11 +4692,11 @@ l004027A6:
 	balc	fn004029C6
 
 l004027AC:
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	beqzc	r6,004027E6
 
 l004027B4:
-	lwpc	r4,004544DC
+	lwpc	r4,nreceived
 	li	r17,00000064
 	subu	r4,r6,r4
 	sra	r7,r6,0000001F
@@ -4717,15 +4717,15 @@ l004027E6:
 	li	r4,0000000A
 	addiupc	r18,0000DC8C
 	balc	fn00402A96
-	lwpc	r17,004544DC
+	lwpc	r17,nreceived
 	beqc	r0,r17,00402908
 
 l004027F8:
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	beqc	r0,r7,00402908
 
 l00402802:
-	lwpc	r7,004544E0
+	lwpc	r7,nrepeats
 	aluipc	r18,00000454
 	addu	r17,r17,r7
 	lw	r4,0480(r18)
@@ -4796,7 +4796,7 @@ l004028AC:
 
 l004028B0:
 	addiu	r17,r0,000003E8
-	lwpc	r7,0045450C
+	lwpc	r7,tmax
 	mod	r10,r7,r17
 	div	r30,r7,r17
 	addiu	r6,r0,000003E8
@@ -4808,7 +4808,7 @@ l004028B0:
 	move	r23,r4
 	addiu	r6,r0,000003E8
 	move	r7,r0
-	lwpc	r21,0043007C
+	lwpc	r21,tmin
 	movep	r4,r5,r19,r22
 	balc	fn00402A9A
 	mod	r7,r18,r17
@@ -4823,7 +4823,7 @@ l004028B0:
 	balc	fn004029C6
 
 l00402908:
-	lwpc	r6,00430078
+	lwpc	r6,pipesize
 	bltic	r6,00000002,0040291E
 
 l00402912:
@@ -4832,21 +4832,21 @@ l00402912:
 	addiupc	r18,0000EC56
 
 l0040291E:
-	lwpc	r7,004544DC
+	lwpc	r7,nreceived
 	beqzc	r7,0040299E
 
 l00402926:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	beqzc	r7,0040293C
 
 l0040292E:
 	addiu	r6,r0,00004001
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	and	r7,r7,r6
 	beqzc	r7,0040299E
 
 l0040293C:
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	bltic	r6,00000002,0040299E
 
 l00402946:
@@ -4861,7 +4861,7 @@ l00402946:
 	addu	r5,r5,r16
 	sra	r7,r6,0000001F
 	balc	fn00402A9A
-	lwpc	r7,004544F4
+	lwpc	r7,rtt
 	li	r6,00000008
 	addiu	r8,r0,00001F40
 	div	r9,r7,r6
@@ -4879,16 +4879,16 @@ l00402946:
 l0040299E:
 	li	r4,0000000A
 	balc	fn00402A96
-	lwpc	r7,004544DC
+	lwpc	r7,nreceived
 	li	r4,00000001
 	beqzc	r7,004029BE
 
 l004029AC:
-	lwpc	r4,004314C8
+	lwpc	r4,deadline
 	beqzc	r4,004029BE
 
 l004029B4:
-	lwpc	r4,004544D8
+	lwpc	r4,npackets
 	slt	r4,r7,r4
 
 l004029BE:
@@ -4922,10 +4922,10 @@ fn004029C6 proc
 ;;     00402AEA (in main_loop)
 status proc
 	save	00000030,ra,00000003
-	lwpc	r16,004544E4
+	lwpc	r16,ntransmitted
 	move	r4,r0
-	swpc	r0,00454500
-	lwpc	r17,004544DC
+	swpc	r0,status_snapshot
+	lwpc	r17,nreceived
 	beqzc	r16,004029F6
 
 l004029E2:
@@ -4938,33 +4938,33 @@ l004029E2:
 	balc	fn00402A9A
 
 l004029F6:
-	lwpc	r7,00412EF0
+	lwpc	r7,stderr
 	move	r8,r4
 	sw	r7,001C(sp)
 	movep	r6,r7,r17,r16
 	lw	r17,001C(sp)
 	addiupc	r5,0000EC84
 	balc	fprintf
-	lwpc	r6,004544DC
+	lwpc	r6,nreceived
 	beqzc	r6,00402A8A
 
 l00402A14:
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	beqzc	r7,00402A8A
 
 l00402A1C:
-	lwpc	r7,004544E0
+	lwpc	r7,nrepeats
 	aluipc	r5,00000454
 	addu	r6,r6,r7
 	lw	r4,0480(r5)
 	lw	r5,0484(r5)
 	sra	r7,r6,0000001F
 	balc	fn00402A9A
-	lwpc	r7,004544F4
+	lwpc	r7,rtt
 	li	r6,00000008
-	lwpc	r5,0043007C
+	lwpc	r5,tmin
 	div	r11,r7,r6
-	lwpc	r16,0045450C
+	lwpc	r16,tmax
 	addiu	r6,r0,000003E8
 	addiu	r10,r0,00001F40
 	mod	r17,r16,r6
@@ -5023,29 +5023,29 @@ main_loop proc
 	sw	r6,0004(sp)
 
 l00402AAC:
-	lwpc	r7,004544B8
+	lwpc	r7,exiting
 	bnec	r0,r7,00402C92
 
 l00402AB6:
-	lwpc	r6,004544D8
+	lwpc	r6,npackets
 	beqzc	r6,00402AD0
 
 l00402ABE:
-	lwpc	r5,004544D0
-	lwpc	r7,004544DC
+	lwpc	r5,nerrors
+	lwpc	r7,nreceived
 	addu	r7,r7,r5
 	bgec	r7,r6,00402C92
 
 l00402AD0:
-	lwpc	r7,004314C8
+	lwpc	r7,deadline
 	beqzc	r7,00402AE2
 
 l00402AD8:
-	lwpc	r7,004544D0
+	lwpc	r7,nerrors
 	bnec	r0,r7,00402C92
 
 l00402AE2:
-	lwpc	r7,00454500
+	lwpc	r7,status_snapshot
 	beqzc	r7,00402AEC
 
 l00402AEA:
@@ -5054,16 +5054,16 @@ l00402AEA:
 l00402AEC:
 	movep	r4,r5,r17,r16
 	balc	pinger
-	lwpc	r7,004544D8
+	lwpc	r7,npackets
 	move	r20,r4
 	beqzc	r7,00402B14
 
 l00402AFC:
-	lwpc	r6,004544E4
+	lwpc	r6,ntransmitted
 	bltc	r6,r7,00402B14
 
 l00402B06:
-	lwpc	r7,004314C8
+	lwpc	r7,deadline
 	bnezc	r7,00402B14
 
 l00402B0E:
@@ -5075,12 +5075,12 @@ l00402B14:
 
 l00402B18:
 	addiu	r6,r0,00004800
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	and	r7,r7,r6
 	bnezc	r7,00402BA4
 
 l00402B26:
-	lwpc	r6,0043008C
+	lwpc	r6,interval
 	li	r5,0000000A
 	slti	r7,r6,0000000A
 	movz	r5,r6,r7
@@ -5244,7 +5244,7 @@ l00402C4A:
 	bc	00402C12
 
 l00402C4E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000C,00402C7E
 
 l00402C58:
@@ -5290,12 +5290,12 @@ l00402C92:
 
 l00402C96:
 	addiu	r6,r0,00004800
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	and	r7,r7,r6
 	bnezc	r7,00402CAE
 
 l00402CA4:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	beqc	r0,r7,00402B3A
 
 l00402CAE:
@@ -5332,7 +5332,7 @@ is_ours proc
 	beqc	r4,r7,00402CE8
 
 l00402CDC:
-	lwpc	r4,004544C4
+	lwpc	r4,ident
 	xor	r4,r4,r5
 	sltiu	r4,r4,00000001
 
@@ -5362,7 +5362,7 @@ fn00402CEE proc
 ;;     00403442 (in niquery_option_handler)
 niquery_option_help_handler proc
 	save	00000010,ra,00000001
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E9EC
 	balc	fn00403098
 	li	r4,00000002
@@ -5373,7 +5373,7 @@ niquery_option_help_handler proc
 ;;     00402D10 (in niquery_option_help_handler)
 niquery_option_subject_name_handler proc
 	save	00000010,ra,00000001
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000EABE
 	balc	fn00403098
 	li	r4,00000003
@@ -5389,7 +5389,7 @@ niquery_option_subject_name_handler proc
 ;;     00402DC0 (in niquery_option_name_handler)
 niquery_set_qtype proc
 	save	00000010,ra,00000001
-	lwpc	r7,00430214
+	lwpc	r7,ni_query
 	bltc	r7,r0,00402D3E
 
 l00402D30:
@@ -5402,7 +5402,7 @@ l00402D32:
 	restore.jrc	00000010,ra,00000001
 
 l00402D3E:
-	swpc	r4,00430214
+	swpc	r4,ni_query
 	move	r4,r0
 	restore.jrc	00000010,ra,00000001
 
@@ -5417,13 +5417,13 @@ niquery_option_ipv4_flag_handler proc
 
 l00402D56:
 	li	r4,00000014
-	lwpc	r7,004314D8
+	lwpc	r7,ni_flag
 	mul	r16,r16,r4
 	addiupc	r4,0002D36C
 	addu	r4,r4,r16
 	lw	r6,000C(r4)
 	or	r7,r7,r6
-	swpc	r7,004314D8
+	swpc	r7,ni_flag
 	move	r7,r0
 
 l00402D72:
@@ -5449,13 +5449,13 @@ niquery_option_ipv6_flag_handler proc
 
 l00402D90:
 	li	r4,00000014
-	lwpc	r7,004314D8
+	lwpc	r7,ni_flag
 	mul	r16,r16,r4
 	addiupc	r4,0002D332
 	addu	r4,r4,r16
 	lw	r6,000C(r4)
 	or	r7,r7,r6
-	swpc	r7,004314D8
+	swpc	r7,ni_flag
 	move	r7,r0
 
 l00402DAC:
@@ -5766,7 +5766,7 @@ l00402F86:
 	bneiuc	r5,00000001,00402FEC
 
 l00402F8E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	andi	r17,r7,00000010
 	bnec	r0,r17,00403080
 
@@ -5778,10 +5778,10 @@ l00402FA0:
 	balc	write_stdout
 
 l00402FA6:
-	lwpc	r7,004544D0
+	lwpc	r7,nerrors
 	li	r16,00000001
 	addiu	r7,r7,00000001
-	swpc	r7,004544D0
+	swpc	r7,nerrors
 
 l00402FB6:
 	balc	fn004032A0
@@ -5797,7 +5797,7 @@ l00402FC0:
 
 l00402FC6:
 	lw	r4,0000(r18)
-	lwpc	r7,00412EF0
+	lwpc	r7,stderr
 	sw	r7,000C(sp)
 	beqic	r4,0000001A,00402FE4
 
@@ -5848,11 +5848,11 @@ l00403016:
 	beqzc	r4,00402FF4
 
 l00403020:
-	lwpc	r7,004544D0
+	lwpc	r7,nerrors
 	li	r17,00000001
 	addiu	r7,r7,00000001
-	swpc	r7,004544D0
-	lwpc	r7,004544EC
+	swpc	r7,nerrors
+	lwpc	r7,options
 	bbnezc	r7,00000004,00402FB6
 
 l0040303A:
@@ -5884,7 +5884,7 @@ l00403048:
 	balc	pr_icmph
 	li	r4,0000000A
 	balc	fn004033EE
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn004033F2
 	bc	00402FB6
 
@@ -5901,7 +5901,7 @@ l00403082:
 ;;     004034DE (in build_niquery)
 niquery_nonce.isra.0 proc
 	save	00000010,ra,00000001
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E74A
 	balc	fn00403098
 	li	r4,00000003
@@ -5994,7 +5994,7 @@ l004030D8:
 	beqc	r0,r4,0040324A
 
 l00403100:
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn004033F2
 	bc	004031FE
 
@@ -6046,7 +6046,7 @@ l0040314A:
 	bc	00403110
 
 l0040314E:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000008,0040315E
 
 l00403158:
@@ -6059,7 +6059,7 @@ l0040315A:
 l0040315E:
 	move	r6,r21
 	addiupc	r5,0000E86C
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004032FE
 	bc	00403158
 
@@ -6105,18 +6105,18 @@ l004031AC:
 l004031B4:
 	lhu	r4,0006(r18)
 	balc	fn004030A4
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	subu	r5,r7,r4
 	andi	r6,r5,0000FFFF
 	bbnezc	r5,0000000F,004031FA
 
 l004031C6:
-	lwpc	r5,00430078
+	lwpc	r5,pipesize
 	bltc	r6,r5,004031D8
 
 l004031D0:
 	addiu	r6,r6,00000001
-	swpc	r6,00430078
+	swpc	r6,pipesize
 
 l004031D8:
 	aluipc	r6,00000454
@@ -6143,10 +6143,10 @@ l004031FE:
 	bc	0040315A
 
 l00403202:
-	lwpc	r7,004544D0
+	lwpc	r7,nerrors
 	addiu	r7,r7,00000001
-	swpc	r7,004544D0
-	lwpc	r7,004544EC
+	swpc	r7,nerrors
+	lwpc	r7,options
 	bbeqzc	r7,00000000,00403224
 
 l0040321A:
@@ -6175,21 +6175,21 @@ l0040323A:
 	move.balc	r4,r17,pr_icmph
 
 l0040324A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000D,0040326A
 
 l00403254:
 	li	r4,00000007
 	balc	fn004033EE
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000000,00403274
 
 l00403262:
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	balc	fn004033F2
 
 l0040326A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbnezc	r7,00000000,004031FE
 
 l00403274:
@@ -6198,11 +6198,11 @@ l00403274:
 	bc	00403100
 
 l0040327A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000008,00403158
 
 l00403284:
-	lwpc	r7,00454514
+	lwpc	r7,uid
 	bnec	r0,r7,00403158
 
 l0040328E:
@@ -6227,15 +6227,15 @@ fn004032A0 proc
 ;; ping6_install_filter: 004032A4
 ping6_install_filter proc
 	save	00000020,ra,00000003
-	lwpc	r7,0045454C
+	lwpc	r7,once.5585
 	move	r17,r4
 	bnezc	r7,004032FC
 
 l004032B0:
-	lwpc	r7,004544C4
+	lwpc	r7,ident
 	li	r16,00000001
 	sw	r7,000C(sp)
-	swpc	r16,0045454C
+	swpc	r16,once.5585
 	lhu	r4,000C(sp)
 	balc	fn0040359C
 	addiupc	r7,0002CDCE
@@ -6283,7 +6283,7 @@ niquery_option_subject_addr_handler proc
 	li	r7,00000002
 	addiupc	r4,0002CDB6
 	sw	r7,0010(sp)
-	lwpc	r6,00430210
+	lwpc	r6,ni_subject_type
 	li	r7,00000001
 	sw	r7,0018(sp)
 	addu	r4,r4,r16
@@ -6291,11 +6291,11 @@ niquery_option_subject_addr_handler proc
 	bltc	r6,r0,00403338
 
 l0040332E:
-	lwpc	r5,004314D4
+	lwpc	r5,ni_subject
 	bnec	r0,r5,004033BA
 
 l00403338:
-	swpc	r7,00430210
+	swpc	r7,ni_subject_type
 	beqzc	r7,00403348
 
 l00403340:
@@ -6308,7 +6308,7 @@ l00403344:
 l00403348:
 	li	r7,00000010
 	li	r16,00000008
-	swpc	r7,004314D0
+	swpc	r7,ni_subject_len
 	li	r7,0000000A
 	sw	r7,0014(sp)
 
@@ -6325,14 +6325,14 @@ l00403366:
 	balc	gai_strerror
 	addiupc	r5,0000E69E
 	movep	r6,r7,r19,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004032FE
 	bc	004033C6
 
 l0040337A:
 	li	r16,00000004
 	sw	r7,0014(sp)
-	swpc	r16,004314D0
+	swpc	r16,ni_subject_len
 	bc	00403356
 
 l00403386:
@@ -6340,9 +6340,9 @@ l00403386:
 	move	r6,r20
 	addu	r5,r5,r16
 	balc	fn004034E2
-	lwpc	r4,004314D4
+	lwpc	r4,ni_subject
 	balc	free
-	swpc	r19,004314D4
+	swpc	r19,ni_subject
 
 l0040339E:
 	lw	r17,000C(sp)
@@ -6353,7 +6353,7 @@ l004033A6:
 	beqzc	r18,0040339E
 
 l004033A8:
-	lwpc	r20,004314D0
+	lwpc	r20,ni_subject_len
 	move.balc	r4,r20,malloc
 	move	r19,r4
 	bnezc	r4,00403386
@@ -6393,7 +6393,7 @@ l004033D6:
 l004033D8:
 	move	r6,r16
 	addiupc	r5,0000D14A
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004032FE
 	li	r4,00000002
 	balc	fn004030A0
@@ -6523,13 +6523,13 @@ build_echo proc
 	sb	r7,0000(r4)
 	move	r16,r4
 	sh	r0,0002(r4)
-	lwpc	r4,004544E4
+	lwpc	r4,ntransmitted
 	addiu	r4,r4,00000001
 	andi	r4,r4,0000FFFF
 	balc	fn0040359C
-	lwpc	r7,004544C4
+	lwpc	r7,ident
 	sh	r7,0004(r16)
-	lwpc	r7,00454508
+	lwpc	r7,timing
 	sh	r4,0006(r16)
 	beqzc	r7,004034A8
 
@@ -6539,7 +6539,7 @@ l004034A0:
 	balc	gettimeofday
 
 l004034A8:
-	lwpc	r4,00430074
+	lwpc	r4,datalen
 	addiu	r4,r4,00000008
 	restore.jrc	00000010,ra,00000002
 
@@ -6552,9 +6552,9 @@ build_niquery proc
 	move	r16,r4
 	sb	r7,0000(r4)
 	sh	r0,0002(r4)
-	lwpc	r4,004544E4
+	lwpc	r4,ntransmitted
 	addiu	r4,r4,00000001
-	swpc	r0,00430074
+	swpc	r0,datalen
 	andi	r4,r4,0000FFFF
 	balc	fn0040359C
 	sb	r4,0008(r16)
@@ -6575,7 +6575,7 @@ fn004034E2 proc
 ;; ping6_send_probe: 004034E6
 ping6_send_probe proc
 	save	00000050,ra,00000005
-	lwpc	r7,004544E4
+	lwpc	r7,ntransmitted
 	movep	r18,r17,r4,r5
 	addiu	r7,r7,00000001
 	move	r5,r6
@@ -6589,13 +6589,13 @@ ping6_send_probe proc
 	lw	r6,0000(r4)
 	and	r7,r7,r6
 	sw	r7,0000(sp)
-	lwpc	r7,00430214
+	lwpc	r7,ni_query
 	move	r4,r17
 	bgec	r7,r0,0040354C
 
 l0040351C:
 	balc	build_echo
-	lwpc	r7,00454554
+	lwpc	r7,cmsglen
 	move	r16,r4
 	bnezc	r7,0040354E
 
@@ -6604,12 +6604,12 @@ l00403528:
 	addiu	r9,r0,0000001C
 	addiupc	r8,0002EFC6
 	movep	r5,r6,r17,r16
-	lwpc	r7,004314C4
+	lwpc	r7,confirm
 	balc	sendto
 
 l0040353E:
 	xor	r16,r16,r4
-	swpc	r0,004314C4
+	swpc	r0,confirm
 	movz	r4,r0,r16
 
 l0040354A:
@@ -6629,7 +6629,7 @@ l0040354E:
 	addiupc	r6,0002DF7A
 	sw	r6,0024(sp)
 	addiu	r5,sp,00000014
-	lwpc	r6,004314C4
+	lwpc	r6,confirm
 	sw	r17,000C(sp)
 	sw	r16,0010(sp)
 	sw	r19,0020(sp)
@@ -6650,7 +6650,7 @@ ping6_usage proc
 
 l0040358A:
 	addiupc	r5,0000E49E
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fn004032FE
 	li	r4,00000002
 	balc	exit
@@ -6674,7 +6674,7 @@ ping6_run proc
 	save	00000070,r30,0000000A
 	addiu	r30,sp,FFFFF070
 	movep	r19,r16,r6,r7
-	lwpc	r7,00430214
+	lwpc	r7,ni_query
 	movep	r17,r18,r4,r5
 	sw	r0,0FA4(r30)
 	bltc	r7,r0,004035E0
@@ -6686,18 +6686,18 @@ l004035B8:
 	balc	getpid
 	addiupc	r7,00050EA6
 	sw	r4,0048(sp)
-	lwpc	r7,00430210
+	lwpc	r7,ni_subject_type
 	bltc	r7,r0,00403C7E
 
 l004035D6:
-	lwpc	r7,004314D4
+	lwpc	r7,ni_subject
 	beqc	r0,r7,00403C7E
 
 l004035E0:
 	bltic	r17,00000002,004035F6
 
 l004035E4:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E576
 	balc	fputs_unlocked
 
@@ -6726,7 +6726,7 @@ l00403612:
 	balc	gai_strerror
 	addiupc	r5,0000E3F2
 	movep	r6,r7,r17,r4
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 
 l00403626:
@@ -6734,15 +6734,15 @@ l00403626:
 	balc	exit
 
 l0040362C:
-	lwpc	r7,00430214
+	lwpc	r7,ni_query
 	bgec	r7,r0,00403640
 
 l00403636:
-	lwpc	r7,00430210
+	lwpc	r7,ni_subject_type
 	bneiuc	r7,00000001,004035F2
 
 l00403640:
-	lwpc	r17,004544D4
+	lwpc	r17,ni_group
 	bc	004035FC
 
 l00403648:
@@ -6767,9 +6767,9 @@ l00403664:
 	beqzc	r4,00403682
 
 l00403672:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	ori	r7,r7,00000004
-	swpc	r7,004544EC
+	swpc	r7,options
 
 l00403682:
 	addiupc	r19,0002EE56
@@ -6795,7 +6795,7 @@ l00403698:
 	addiupc	r4,0002EE42
 	balc	fn004034E2
 	lw	r7,0018(r18)
-	lwpc	r6,00454550
+	lwpc	r6,scope_id.5415
 	sw	r7,0058(sp)
 	beqzc	r7,004036C4
 
@@ -6806,7 +6806,7 @@ l004036B2:
 	beqc	r6,r7,004036CC
 
 l004036B4:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E4DA
 
 l004036BE:
@@ -6817,12 +6817,12 @@ l004036C4:
 	bnezc	r6,004036CC
 
 l004036C6:
-	swpc	r7,00454550
+	swpc	r7,scope_id.5415
 
 l004036CC:
 	addiupc	r7,0002CB4C
 	lw	r6,0008(r7)
-	swpc	r17,004544C0
+	swpc	r17,hostname
 	move	r17,r7
 	bnec	r0,r6,004038E0
 
@@ -6847,7 +6847,7 @@ l004036F0:
 	bltc	r19,r0,00403790
 
 l00403702:
-	lwpc	r4,004544B0
+	lwpc	r4,device
 	beqc	r0,r4,0040379C
 
 l0040370C:
@@ -6893,7 +6893,7 @@ l00403750:
 	bnec	r7,r4,00403796
 
 l0040376E:
-	lwpc	r22,004544B0
+	lwpc	r22,device
 	move.balc	r4,r22,strlen
 	move	r7,r22
 	addiu	r8,r4,00000001
@@ -6942,7 +6942,7 @@ l004037D4:
 l004037DA:
 	sh	r0,0002(r17)
 	move.balc	r4,r19,close
-	lwpc	r7,004544B0
+	lwpc	r7,device
 	beqzc	r7,0040382A
 
 l004037E8:
@@ -6956,7 +6956,7 @@ l004037F2:
 
 l004037F8:
 	lw	r23,0010(r17)
-	lwpc	r20,004544B0
+	lwpc	r20,device
 	lw	r8,0014(r17)
 	lwm	r21,0008(r17),00000002
 	lw	r19,0FB0(r30)
@@ -6967,7 +6967,7 @@ l0040380E:
 l00403812:
 	move	r6,r20
 	addiupc	r5,0000E590
-	lwpc	r4,00412EF0
+	lwpc	r4,stderr
 	balc	fprintf
 
 l00403822:
@@ -6975,17 +6975,17 @@ l00403822:
 	balc	freeifaddrs
 
 l0040382A:
-	lwpc	r19,004544B0
+	lwpc	r19,device
 	beqzc	r19,00403864
 
 l00403832:
-	lwpc	r7,00454554
+	lwpc	r7,cmsglen
 	li	r6,00000014
 	addiupc	r17,0002DC9E
 	move	r5,r0
 	addu	r17,r7,r17
 	addiu	r7,r7,00000020
-	swpc	r7,00454554
+	swpc	r7,cmsglen
 	li	r7,00000020
 	sw	r7,0040(sp)
 	li	r7,00000029
@@ -7007,16 +7007,16 @@ l00403864:
 	bnec	r4,r17,0040394C
 
 l0040387A:
-	lwpc	r7,00454514
+	lwpc	r7,uid
 	beqc	r0,r7,0040393A
 
 l00403884:
-	lwpc	r7,0043008C
+	lwpc	r7,interval
 	addiu	r6,r0,000003E7
 	bltc	r6,r7,00403920
 
 l00403892:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E348
 	bc	004036BE
 
@@ -7055,7 +7055,7 @@ l004038DC:
 	bc	0040380E
 
 l004038E0:
-	lwpc	r4,004544B0
+	lwpc	r4,device
 	beqc	r0,r4,0040382A
 
 l004038EA:
@@ -7087,27 +7087,27 @@ l0040391E:
 	bc	00403904
 
 l00403920:
-	lwpc	r7,00430218
+	lwpc	r7,pmtudisc
 	bltc	r7,r0,0040393A
 
 l0040392A:
 	beqic	r7,00000002,0040393A
 
 l0040392E:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E2DC
 	bc	004036BE
 
 l0040393A:
-	lwpc	r7,00430218
+	lwpc	r7,pmtudisc
 	bgec	r7,r0,0040394C
 
 l00403944:
 	li	r7,00000002
-	swpc	r7,00430218
+	swpc	r7,pmtudisc
 
 l0040394C:
-	lwpc	r7,00430218
+	lwpc	r7,pmtudisc
 	bltc	r7,r0,00403970
 
 l00403956:
@@ -7125,7 +7125,7 @@ l0040396A:
 	bc	00403790
 
 l00403970:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000F,00403990
 
 l0040397A:
@@ -7141,16 +7141,16 @@ l0040398A:
 	bc	00403790
 
 l00403990:
-	lwpc	r17,00430074
+	lwpc	r17,datalen
 	bltiuc	r17,00000008,004039AC
 
 l0040399A:
-	lwpc	r7,00430214
+	lwpc	r7,ni_query
 	bgec	r7,r0,004039AC
 
 l004039A4:
 	li	r7,00000001
-	swpc	r7,00454508
+	swpc	r7,timing
 
 l004039AC:
 	addiu	r17,r17,00001038
@@ -7159,7 +7159,7 @@ l004039AC:
 	bnezc	r4,004039C4
 
 l004039B8:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000CEB2
 	bc	004036BE
 
@@ -7176,13 +7176,13 @@ l004039C4:
 	beqzc	r4,004039EE
 
 l004039DE:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000CD28
 	balc	fputs_unlocked
 	sw	r0,0008(sp)
 
 l004039EE:
-	lwpc	r7,00430074
+	lwpc	r7,datalen
 	addiu	r6,r0,00000200
 	addiu	r4,r7,00000207
 	div	r5,r4,r6
@@ -7207,7 +7207,7 @@ l00403A18:
 	bgec	r4,r0,00403A42
 
 l00403A34:
-	lwpc	r5,00412EF0
+	lwpc	r5,stderr
 	addiupc	r4,0000E232
 	balc	fputs_unlocked
 
@@ -7225,7 +7225,7 @@ l00403A54:
 	sw	r7,0FB0(r30)
 
 l00403A60:
-	lwpc	r6,00430214
+	lwpc	r6,ni_query
 	lw	r7,0FC0(r30)
 	bltc	r6,r0,00403A90
 
@@ -7251,7 +7251,7 @@ l00403A90:
 	bc	00403A72
 
 l00403A96:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000010,00403ABE
 
 l00403AA0:
@@ -7270,7 +7270,7 @@ l00403AB8:
 	bc	00403790
 
 l00403ABE:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000011,00403B00
 
 l00403AC8:
@@ -7327,7 +7327,7 @@ l00403B30:
 	bc	00403790
 
 l00403B36:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,0000000A,00403B5A
 
 l00403B40:
@@ -7345,11 +7345,11 @@ l00403B54:
 	bc	00403790
 
 l00403B5A:
-	lwpc	r7,004544EC
+	lwpc	r7,options
 	bbeqzc	r7,00000009,00403BF2
 
 l00403B64:
-	lwpc	r7,00454554
+	lwpc	r7,cmsglen
 	move	r20,sp
 	addiu	r7,r7,0000002F
 	li	r6,00000020
@@ -7359,7 +7359,7 @@ l00403B64:
 	addiu	r21,r0,FFFFFFFF
 	move	r4,sp
 	balc	memset
-	lwpc	r4,004544BC
+	lwpc	r4,flowlabel
 	ext	r4,r4,00000000,00000014
 	balc	htonl
 	li	r7,00000001
@@ -7388,7 +7388,7 @@ l00403BCA:
 	addiu	r8,r0,00000004
 	lw	r4,0000(r16)
 	li	r6,00000021
-	swpc	r7,004544BC
+	swpc	r7,flowlabel
 	sw	r7,0004(sp)
 	li	r5,00000029
 	addiu	r7,r30,00000FAC
@@ -7405,12 +7405,12 @@ l00403BF0:
 l00403BF2:
 	li	r5,0000001C
 	addiupc	r4,0002E900
-	lwpc	r18,004544C0
+	lwpc	r18,hostname
 	balc	pr_addr
 	movep	r5,r6,r18,r4
 	addiupc	r4,0000E170
 	balc	fn00403C9E
-	lwpc	r4,004544BC
+	lwpc	r4,flowlabel
 	beqzc	r4,00403C1E
 
 l00403C12:
@@ -7420,8 +7420,8 @@ l00403C12:
 	balc	fn00403C9E
 
 l00403C1E:
-	lwpc	r7,004544B0
-	lwpc	r18,004544EC
+	lwpc	r7,device
+	lwpc	r18,options
 	bnezc	r7,00403C30
 
 l00403C2C:
@@ -7431,9 +7431,9 @@ l00403C30:
 	ori	r7,r18,00000004
 	li	r5,0000001C
 	addiupc	r4,0002C5E2
-	swpc	r7,004544EC
+	swpc	r7,options
 	balc	pr_addr
-	lwpc	r6,004544B0
+	lwpc	r6,device
 	move	r5,r4
 	addiupc	r7,0000C828
 	movz	r6,r7,r6
@@ -7441,10 +7441,10 @@ l00403C30:
 l00403C54:
 	addiupc	r4,0000CC44
 	balc	fn00403C9E
-	swpc	r18,004544EC
+	swpc	r18,options
 
 l00403C60:
-	lwpc	r5,00430074
+	lwpc	r5,datalen
 	addiupc	r4,0000E12E
 	balc	fn00403C9E
 	move.balc	r4,r16,setup
@@ -7455,10 +7455,10 @@ l00403C60:
 
 l00403C7E:
 	addiupc	r7,0002E87E
-	swpc	r7,004314D4
+	swpc	r7,ni_subject
 	li	r7,00000010
-	swpc	r7,004314D0
-	swpc	r0,00430210
+	swpc	r7,ni_subject_len
+	swpc	r0,ni_subject_type
 	bc	004035E0
 
 ;; fn00403C9A: 00403C9A
@@ -9006,7 +9006,7 @@ __init_libc proc
 	move	r5,r0
 	addiu	r4,sp,00000028
 	balc	memset
-	swpc	r17,00432DD0
+	swpc	r17,___environ
 	move	r4,r0
 
 l0040488C:
@@ -9039,9 +9039,9 @@ l004048A8:
 
 l004048B6:
 	lw	r17,0068(sp)
-	swpc	r7,004544A0
+	swpc	r7,__hwcap
 	lw	r7,00A8(sp)
-	swpc	r7,004544A8
+	swpc	r7,__sysinfo
 	lw	r17,0040(sp)
 	sw	r7,0064(sp)
 	bnezc	r16,00404940
@@ -9101,10 +9101,10 @@ l00404938:
 	teq	r0,r0,00000000
 
 l00404940:
-	swpc	r16,00432520
+	swpc	r16,program_invocation_name
 
 l00404946:
-	swpc	r16,00432524
+	swpc	r16,program_invocation_short_name
 	bc	00404952
 
 l0040494E:
@@ -9500,7 +9500,7 @@ l00404AC8:
 l00404ACA:
 	addiupc	r4,0002DA6A
 	balc	__lock
-	lwpc	r7,00432534
+	lwpc	r7,cur.1422
 	subu	r6,r0,r7
 	and	r16,r16,r6
 
@@ -9508,7 +9508,7 @@ l00404ADE:
 	addu	r17,r17,r16
 
 l00404AE0:
-	lwpc	r6,00432530
+	lwpc	r6,end.1423
 	subu	r6,r6,r7
 	bgeuc	r6,r17,00404B10
 
@@ -9519,7 +9519,7 @@ l00404AEC:
 	beqzc	r4,00404B64
 
 l00404AF6:
-	lwpc	r7,00432530
+	lwpc	r7,end.1423
 	beqc	r4,r7,00404B5C
 
 l00404B00:
@@ -9530,13 +9530,13 @@ l00404B00:
 l00404B06:
 	lw	r17,000C(sp)
 	addu	r4,r4,r6
-	swpc	r4,00432530
+	swpc	r4,end.1423
 
 l00404B10:
 	addu	r17,r7,r17
 	addu	r16,r7,r16
 	addiupc	r4,0002DA20
-	swpc	r17,00432534
+	swpc	r17,cur.1422
 	balc	__unlock
 	move	r4,r16
 	restore.jrc	00000020,ra,00000003
@@ -9546,14 +9546,14 @@ l00404B26:
 	move	r16,r0
 	balc	__lock
 	li	r17,00000001
-	lwpc	r7,00432534
+	lwpc	r7,cur.1422
 	bc	00404ADE
 
 l00404B3A:
 	addiupc	r4,0002D9FA
 	addiu	r16,r16,FFFFFFFF
 	balc	__lock
-	lwpc	r7,00432534
+	lwpc	r7,cur.1422
 	subu	r6,r0,r7
 	li	r5,8000000F
 	and	r16,r16,r6
@@ -9563,7 +9563,7 @@ l00404B5A:
 	bc	00404ADE
 
 l00404B5C:
-	lwpc	r7,00432534
+	lwpc	r7,cur.1422
 	bc	00404B06
 
 l00404B64:
@@ -10648,7 +10648,7 @@ l00405380:
 	beqc	r0,r4,004056EA
 
 l0040538C:
-	lwpc	r18,00432540
+	lwpc	r18,end.2906
 	lw	r17,001C(sp)
 	beqc	r18,r4,004053A2
 
@@ -10665,7 +10665,7 @@ l004053A2:
 	li	r4,00000001
 	ori	r7,r7,00000001
 	sw	r7,-0008(r6)
-	swpc	r6,00432540
+	swpc	r6,end.2906
 	sw	r4,-0004(r6)
 	addiu	r9,r18,FFFFFFF8
 	sw	r7,-0004(r18)
@@ -11380,7 +11380,7 @@ l00405938:
 __getopt_msg proc
 	save	00000020,ra,00000006
 	move	r20,r4
-	lwpc	r16,00412EF0
+	lwpc	r16,stderr
 	movep	r19,r17,r6,r7
 	move.balc	r4,r5,__lctrans_cur
 	move	r18,r4
@@ -11417,23 +11417,23 @@ l00405980:
 ;;     004001B6 (in main)
 __posix_getopt proc
 	save	00000040,ra,00000006
-	lwpc	r7,00430254
+	lwpc	r7,optind
 	movep	r19,r18,r4,r5
 	move	r17,r6
 	beqzc	r7,004059A0
 
 l00405998:
-	lwpc	r7,00432960
+	lwpc	r7,optreset
 	beqzc	r7,004059B4
 
 l004059A0:
 	li	r7,00000001
-	swpc	r0,00432960
-	swpc	r0,004544A4
-	swpc	r7,00430254
+	swpc	r0,optreset
+	swpc	r0,__optpos
+	swpc	r7,optind
 
 l004059B4:
-	lwpc	r7,00430254
+	lwpc	r7,optind
 	li	r4,FFFFFFFF
 	bgec	r7,r19,00405B00
 
@@ -11451,8 +11451,8 @@ l004059CC:
 
 l004059D2:
 	addiu	r7,r7,00000001
-	swpc	r5,004544E8
-	swpc	r7,00430254
+	swpc	r5,optarg
+	swpc	r7,optind
 	li	r4,00000001
 	restore.jrc	00000040,ra,00000006
 
@@ -11470,19 +11470,19 @@ l004059F0:
 
 l004059F4:
 	addiu	r7,r7,00000001
-	swpc	r7,00430254
+	swpc	r7,optind
 	restore.jrc	00000040,ra,00000006
 
 l004059FE:
-	lwpc	r7,004544A4
+	lwpc	r7,__optpos
 	bnezc	r7,00405A0E
 
 l00405A06:
 	li	r7,00000001
-	swpc	r7,004544A4
+	swpc	r7,__optpos
 
 l00405A0E:
-	lwpc	r7,004544A4
+	lwpc	r7,__optpos
 	li	r6,00000004
 	addu	r5,r5,r7
 	addiu	r4,sp,00000018
@@ -11496,19 +11496,19 @@ l00405A24:
 	li	r7,00000001
 
 l00405A2C:
-	lwpc	r5,00430254
+	lwpc	r5,optind
 	lwxs	r4,r5(r18)
-	lwpc	r6,004544A4
+	lwpc	r6,__optpos
 	addu	r20,r4,r6
 	addu	r6,r7,r6
-	swpc	r6,004544A4
+	swpc	r6,__optpos
 	lbux	r6,r6(r4)
 	bnezc	r6,00405A5A
 
 l00405A4C:
 	addiu	r5,r5,00000001
-	swpc	r0,004544A4
-	swpc	r5,00430254
+	swpc	r0,__optpos
+	swpc	r5,optind
 
 l00405A5A:
 	lbu	r6,0000(r17)
@@ -11551,7 +11551,7 @@ l00405A8E:
 	beqc	r5,r6,00405ABA
 
 l00405A94:
-	swpc	r6,004544F0
+	swpc	r6,optopt
 	lbu	r6,0000(r17)
 	bneiuc	r6,0000003A,00405AA4
 
@@ -11560,7 +11560,7 @@ l00405AA0:
 	restore.jrc	00000040,ra,00000006
 
 l00405AA4:
-	lwpc	r6,00430250
+	lwpc	r6,opterr
 	beqzc	r6,00405AA0
 
 l00405AAC:
@@ -11583,40 +11583,40 @@ l00405AC2:
 	bneiuc	r5,0000003A,00405B02
 
 l00405ACC:
-	swpc	r0,004544E8
+	swpc	r0,optarg
 
 l00405AD2:
 	lbu	r7,0000(r16)
-	lwpc	r6,004544A4
+	lwpc	r6,__optpos
 	bneiuc	r7,0000003A,00405AE0
 
 l00405ADE:
 	beqzc	r6,00405B00
 
 l00405AE0:
-	lwpc	r7,00430254
+	lwpc	r7,optind
 	addiu	r5,r7,00000001
 	lwxs	r7,r7(r18)
-	swpc	r5,00430254
+	swpc	r5,optind
 	addu	r7,r7,r6
-	swpc	r0,004544A4
-	swpc	r7,004544E8
+	swpc	r0,__optpos
+	swpc	r7,optarg
 
 l00405B00:
 	restore.jrc	00000040,ra,00000006
 
 l00405B02:
-	lwpc	r5,00430254
+	lwpc	r5,optind
 	bltc	r5,r19,00405AD2
 
 l00405B0C:
-	swpc	r4,004544F0
+	swpc	r4,optopt
 	move	r4,r6
 	lbu	r5,0000(r17)
 	beqic	r5,0000003A,00405B00
 
 l00405B1A:
-	lwpc	r6,00430250
+	lwpc	r6,opterr
 	beqc	r0,r6,00405AA0
 
 l00405B24:
@@ -16886,7 +16886,7 @@ l00407F70:
 	bnezc	r7,00407FA4
 
 l00407F7C:
-	lwpc	r7,00432988
+	lwpc	r7,unmask_done
 	bnezc	r7,00407FA4
 
 l00407F84:
@@ -16900,7 +16900,7 @@ l00407F84:
 	sw	r0,0000(sp)
 	balc	__syscall
 	li	r7,00000001
-	swpc	r7,00432988
+	swpc	r7,unmask_done
 
 l00407FA4:
 	lw	r7,0000(r17)
@@ -17189,12 +17189,12 @@ fflush_unlocked proc
 	bnezc	r4,004081DE
 
 l004081A6:
-	lwpc	r7,00430300
+	lwpc	r7,__stdout_used
 	move	r17,r0
 	beqzc	r7,004081BA
 
 l004081B0:
-	lwpc	r4,00430300
+	lwpc	r4,__stdout_used
 	balc	fflush_unlocked
 	move	r17,r4
 
@@ -17917,7 +17917,7 @@ __ofl_unlock proc
 ;;     00403790 (in ping6_run)
 perror proc
 	save	00000020,ra,00000005
-	lwpc	r16,00412EF0
+	lwpc	r16,stderr
 	move	r17,r4
 	balc	__errno_location
 	lw	r4,0000(r4)
@@ -18015,7 +18015,7 @@ printf proc
 	li	r7,0000001C
 	move	r5,r4
 	sb	r7,000C(sp)
-	lwpc	r4,00412EF4
+	lwpc	r4,stdout
 	li	r7,00000040
 	swm	r9,0034(sp),00000002
 	sw	r11,003C(sp)
@@ -18094,7 +18094,7 @@ l0040875A:
 ;;     00402A96 (in fn00402A96)
 ;;     004033EE (in fn004033EE)
 putchar proc
-	lwpc	r5,00412EF4
+	lwpc	r5,stdout
 	bc	fputc
 0040877A                               00 00 00 00 00 00           ......
 
@@ -18106,7 +18106,7 @@ putchar proc
 ;;     004033C2 (in niquery_option_subject_addr_handler)
 puts proc
 	save	00000010,ra,00000004
-	lwpc	r16,00412EF4
+	lwpc	r16,stdout
 	move	r17,r4
 	lw	r7,004C(r16)
 	move	r18,r0
@@ -23845,7 +23845,7 @@ l0040AEEC:
 ;;     0040E9A2 (in __timedwait_cp)
 __clock_gettime proc
 	save	00000010,ra,00000003
-	lwpc	r7,004303A0
+	lwpc	r7,vdso_func
 	movep	r17,r16,r4,r5
 	beqzc	r7,0040AF12
 
@@ -28102,7 +28102,7 @@ l0040CE06:
 	addiu	r5,r6,FFFFFFFF
 	move	r17,r4
 	and	r7,r7,r5
-	lwpc	r4,00432EF4
+	lwpc	r4,brk.1530
 	addu	r16,r16,r7
 	beqc	r0,r4,0040CEB4
 
@@ -28127,7 +28127,7 @@ l0040CE3E:
 	bgeuc	r4,r7,0040CE82
 
 l0040CE42:
-	lwpc	r5,00432EF0
+	lwpc	r5,mmap_step.1531
 	addiu	r7,r0,00000802
 	srl	r5,r5,00000001
 	move	r10,r0
@@ -28145,10 +28145,10 @@ l0040CE62:
 	beqc	r4,r7,0040CEF4
 
 l0040CE70:
-	lwpc	r7,00432EF0
+	lwpc	r7,mmap_step.1531
 	sw	r16,0000(r17)
 	addiu	r7,r7,00000001
-	swpc	r7,00432EF0
+	swpc	r7,mmap_step.1531
 	restore.jrc	00000020,ra,00000004
 
 l0040CE82:
@@ -28169,7 +28169,7 @@ l0040CE98:
 l0040CE9C:
 	addiu	r4,r0,000000D6
 	balc	__syscall
-	lwpc	r7,00432EF4
+	lwpc	r7,brk.1530
 	addu	r6,r16,r7
 	beqc	r4,r6,0040CEE8
 
@@ -28186,7 +28186,7 @@ l0040CEB4:
 	addiu	r5,r6,FFFFFFFF
 	and	r7,r7,r5
 	addu	r4,r7,r4
-	swpc	r4,00432EF4
+	swpc	r4,brk.1530
 	bc	0040CE1E
 
 l0040CED4:
@@ -28205,7 +28205,7 @@ l0040CEDC:
 	restore.jrc	00000020,ra,00000004
 
 l0040CEE8:
-	swpc	r4,00432EF4
+	swpc	r4,brk.1530
 	sw	r16,0000(r17)
 	move	r4,r7
 	restore.jrc	00000020,ra,00000004
@@ -30349,7 +30349,7 @@ handler proc
 	sw	r4,000C(sp)
 
 l0040DD62:
-	lwpc	r5,00432F18
+	lwpc	r5,head
 	sw	r5,0008(sp)
 	sync	00000000
 
@@ -30394,8 +30394,8 @@ l0040DDAE:
 l0040DDBC:
 	addiu	r4,sp,00000010
 	balc	sem_wait
-	lwpc	r7,00432F08
-	lwpc	r4,00432F04
+	lwpc	r7,callback
+	lwpc	r4,context
 	jalrc	ra,r7
 	addiu	r4,sp,00000020
 	balc	sem_post
@@ -30445,15 +30445,15 @@ __synccall proc
 	li	r4,00000001
 	balc	__pthread_setcancelstate
 	lw	r7,0001(r21)
-	swpc	r0,00432F18
+	swpc	r0,head
 	beqc	r0,r7,0040DF7E
 
 l0040DE50:
-	swpc	r18,00432F08
-	swpc	r19,00432F04
+	swpc	r18,callback
+	swpc	r19,context
 	sync	00000000
 	li	r7,00000001
-	swpc	r7,00432F00
+	swpc	r7,__block_new_threads
 	sync	00000000
 	addiu	r6,r0,00000080
 	li	r5,FFFFFFFF
@@ -30477,7 +30477,7 @@ l0040DE50:
 
 l0040DEA4:
 	sync	00000000
-	swpc	r0,00432F00
+	swpc	r0,__block_new_threads
 	sync	00000000
 	li	r7,7FFFFFFF
 	addiu	r6,r0,00000081
@@ -30549,9 +30549,9 @@ l0040DF3C:
 
 l0040DF3E:
 	sync	00000000
-	swpc	r4,00432F0C
+	swpc	r4,target_tid
 	sync	00000000
-	lwpc	r7,00432F18
+	lwpc	r7,head
 
 l0040DF52:
 	beqzc	r7,0040DFA8
@@ -30567,7 +30567,7 @@ l0040DF5A:
 l0040DF5E:
 	lw	r4,0120(sp)
 	balc	close
-	lwpc	r16,00432F18
+	lwpc	r16,head
 
 l0040DF6C:
 	bnezc	r16,0040DF8A
@@ -30583,7 +30583,7 @@ l0040DF6E:
 l0040DF7E:
 	move	r4,r19
 	jalrc	ra,r18
-	lwpc	r4,00432F18
+	lwpc	r4,head
 	bc	0040DFA4
 
 l0040DF8A:
@@ -31679,9 +31679,9 @@ l0040E730:
 	bnezc	r16,0040E72A
 
 l0040E732:
-	lwpc	r4,00432F30
+	lwpc	r4,__stdin_used
 	balc	close_file
-	lwpc	r4,00430300
+	lwpc	r4,__stdout_used
 	restore	00000010,ra,00000002
 	bc	close_file
 0040E74A                               00 00 00 00 00 00           ......

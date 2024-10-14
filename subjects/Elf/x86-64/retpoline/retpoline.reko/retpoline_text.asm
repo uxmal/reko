@@ -12,7 +12,7 @@ _start proc
 	mov	r8,+400780h
 	mov	rcx,+400710h
 	mov	rdi,+400660h
-	call	[0000000000600FF0]                                    ; [rip+00200B46]
+	call	[__libc_start_main_GOT]                               ; [rip+00200B46]
 	hlt
 00000000004004AB                                  0F 1F 44 00 00            ..D..
 
@@ -75,14 +75,14 @@ l0000000000400518:
 
 ;; __do_global_dtors_aux: 0000000000400520
 __do_global_dtors_aux proc
-	cmp	[0000000000601040],0h                                  ; [rip+00200B19]
+	cmp	[__TMC_END__],0h                                       ; [rip+00200B19]
 	jnz	400540h
 
 l0000000000400529:
 	push	rbp
 	mov	rbp,rsp
 	call	deregister_tm_clones
-	mov	[0000000000601040],1h                                  ; [rip+00200B07]
+	mov	[__TMC_END__],1h                                       ; [rip+00200B07]
 	pop	rbp
 	ret
 000000000040053B                                  0F 1F 44 00 00            ..D..
@@ -268,9 +268,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[0000000000600E10]                                 ; [rip+002006EE]
+	lea	r12,[__frame_dummy_init_array_entry]                   ; [rip+002006EE]
 	push	rbp
-	lea	rbp,[0000000000600E18]                                 ; [rip+002006EE]
+	lea	rbp,[__do_global_dtors_aux_fini_array_entry]           ; [rip+002006EE]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

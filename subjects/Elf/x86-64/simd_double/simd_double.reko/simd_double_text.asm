@@ -12,7 +12,7 @@ _start proc
 	lea	r8,[__libc_csu_fini]                                   ; [rip+000004AA]
 	lea	rcx,[__libc_csu_init]                                  ; [rip+00000433]
 	lea	rdi,[main]                                             ; [rip+00000254]
-	call	[0000000000200FE0]                                    ; [rip+00200996]
+	call	[__libc_start_main_GOT]                               ; [rip+00200996]
 	hlt
 000000000000064B                                  0F 1F 44 00 00            ..D..
 
@@ -20,15 +20,15 @@ _start proc
 ;;   Called from:
 ;;     0000000000000703 (in __do_global_dtors_aux)
 deregister_tm_clones proc
-	lea	rdi,[0000000000201048]                                 ; [rip+002009F1]
+	lea	rdi,[__TMC_END__]                                      ; [rip+002009F1]
 	push	rbp
-	lea	rax,[0000000000201048]                                 ; [rip+002009E9]
+	lea	rax,[__TMC_END__]                                      ; [rip+002009E9]
 	cmp	rax,rdi
 	mov	rbp,rsp
 	jz	0680h
 
 l0000000000000667:
-	mov	rax,[0000000000200FD8]                                 ; [rip+0020096A]
+	mov	rax,[_ITM_deregisterTMCloneTable_GOT]                  ; [rip+0020096A]
 	test	rax,rax
 	jz	0680h
 
@@ -46,8 +46,8 @@ l0000000000000680:
 ;;   Called from:
 ;;     0000000000000725 (in frame_dummy)
 register_tm_clones proc
-	lea	rdi,[0000000000201048]                                 ; [rip+002009B1]
-	lea	rsi,[0000000000201048]                                 ; [rip+002009AA]
+	lea	rdi,[__TMC_END__]                                      ; [rip+002009B1]
+	lea	rsi,[__TMC_END__]                                      ; [rip+002009AA]
 	push	rbp
 	sub	rsi,rdi
 	mov	rbp,rsp
@@ -59,7 +59,7 @@ register_tm_clones proc
 	jz	06D0h
 
 l00000000000006B8:
-	mov	rax,[0000000000200FF0]                                 ; [rip+00200931]
+	mov	rax,[_ITM_registerTMCloneTable_GOT]                    ; [rip+00200931]
 	test	rax,rax
 	jz	06D0h
 
@@ -75,22 +75,22 @@ l00000000000006D0:
 
 ;; __do_global_dtors_aux: 00000000000006E0
 __do_global_dtors_aux proc
-	cmp	[0000000000201048],0h                                  ; [rip+00200961]
+	cmp	[__TMC_END__],0h                                       ; [rip+00200961]
 	jnz	0718h
 
 l00000000000006E9:
-	cmp	[0000000000200FF8],0h                                  ; [rip+00200907]
+	cmp	[__cxa_finalize_GOT],0h                                ; [rip+00200907]
 	push	rbp
 	mov	rbp,rsp
 	jz	0703h
 
 l00000000000006F7:
-	mov	rdi,[0000000000201040]                                 ; [rip+00200942]
+	mov	rdi,[__dso_handle]                                     ; [rip+00200942]
 	call	0610h
 
 l0000000000000703:
 	call	deregister_tm_clones
-	mov	[0000000000201048],1h                                  ; [rip+00200939]
+	mov	[__TMC_END__],1h                                       ; [rip+00200939]
 	pop	rbp
 	ret
 0000000000000711    0F 1F 80 00 00 00 00                          .......        
@@ -190,7 +190,7 @@ vec_add proc
 	mov	[rbp-0A0h],rsi
 	mov	[rbp-0A8h],rdx
 	mov	[rbp-0B0h],rcx
-	mov	rcx,[0000000000000B00]                                 ; [rip+0000031E]
+	mov	rcx,[double_size.21529]                                ; [rip+0000031E]
 	mov	rax,[rbp-98h]
 	mov	edx,0h
 	div	rcx
@@ -402,9 +402,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[0000000000200DE8]                                 ; [rip+00200366]
+	lea	r12,[__frame_dummy_init_array_entry]                   ; [rip+00200366]
 	push	rbp
-	lea	rbp,[0000000000200DF0]                                 ; [rip+00200366]
+	lea	rbp,[__do_global_dtors_aux_fini_array_entry]           ; [rip+00200366]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

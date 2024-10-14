@@ -222,7 +222,7 @@ namespace Reko.Core.Output
                 var flags = MachineInstructionRendererFlags.ResolvePcRelativeAddress;
                 if (this.RenderInstructionsCanonically)
                     flags |= MachineInstructionRendererFlags.RenderInstructionsCanonically;
-                var writer = new FormatterInstructionWriter(formatter, program.Procedures, true);
+                var writer = new FormatterInstructionWriter(formatter, program.Procedures, program.ImageSymbols, true);
                 var options = new MachineInstructionRendererOptions(
                     flags: flags,
                     syntax: "");

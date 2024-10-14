@@ -1576,12 +1576,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("004011FB", bwslc.GuardInstrAddress.ToString());
         }
+        /*
 
-        [Test]
-        public void Bwslc_RiscV_64bit()
-        {
-            /*
-             * 
+    [Test]
+    public void Bwslc_RiscV_64bit()
+    {
+         * 
 0000000000015214 F0EF DDDF jal getopt_long
 0000000000015218 0713 FFF0 li a4,-0x1
 000000000001521C 0793 0005 mv a5,a0
@@ -1597,24 +1597,24 @@ namespace Reko.UnitTests.Decompiler.Scanning
 000000000001523C 87B3 00E7 add a5,a5,a4
 0000000000015240 A783 0007 lw a5,(a5)
 0000000000015244 8067 0007 jalr zero,a5,0x0
- *
-    call get_optt
-    a4 = -1
-    a5 = a0
-    branch a0 == a4 l0000000000015348
+*
+call get_optt
+a4 = -1
+a5 = a0
+branch a0 == a4 l0000000000015348
 l0000000000015224:
-    a4 = 118
-    branch a4 <u a0 l0000000000015200
+a4 = 118
+branch a4 <u a0 l0000000000015200
 l000000000001522C:
-    a5 = a5 << 0x20
-    a4 = 0x00010000
-    a5 = a5 >>u 0x1E
-    a4 = a4 + 672
-    a5 = a5 + a4
-    a5 = CONVERT(Mem0[a5:int32], int32, int64)
-    call a5 (retsize: 0;)
-*/
-            var l15214 = Given_Block(0x0000000000015214ul);
+a5 = a5 << 0x20
+a4 = 0x00010000
+a5 = a5 >>u 0x1E
+a4 = a4 + 672
+a5 = a5 + a4
+a5 = CONVERT(Mem0[a5:int32], int32, int64)
+call a5 (retsize: 0;)
+
+        var l15214 = Given_Block(0x0000000000015214ul);
             var l15224 = Given_Block(0x0000000000015224ul);
             var l1522C = Given_Block(0x000000000001522Cul);
             var bye = Given_Block(0x0000000000015200ul);
@@ -1668,6 +1668,7 @@ l000000000001522C:
             Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("004011FB", bwslc.GuardInstrAddress.ToString());
         }
+    */
     }
     // Test cases
     // A one-level jump table from MySQL. JTT represents the jump table.

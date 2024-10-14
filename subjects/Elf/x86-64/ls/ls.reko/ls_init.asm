@@ -3,7 +3,7 @@
 ;; _init: 0000000000402168
 _init proc
 	sub	rsp,8h
-	mov	rax,[0000000000619FF8]                                 ; [rip+00217E85]
+	mov	rax,[__gmon_start___GOT]                               ; [rip+00217E85]
 	test	rax,rax
 	jz	40217Dh
 
