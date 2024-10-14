@@ -68,7 +68,7 @@ namespace Reko.Evaluation
                   ctx.GetValue(idLeft) is BinaryExpression binLeft))
                 return (arg, false);
 
-            bin = new BinaryExpression(
+            bin = m.Bin(
                 bin.Operator,
                 bin.DataType,
                 binLeft,

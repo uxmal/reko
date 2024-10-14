@@ -48,7 +48,7 @@ namespace Reko.Evaluation
                     var right = m.Slice(bin.Right, slice.DataType, slice.Offset).Accept(this);
                     if (left.Item2 | right.Item2)
                     {
-                        var exp = new BinaryExpression(bin.Operator, slice.DataType,
+                        var exp = m.Bin(bin.Operator, slice.DataType,
                             left.Item1, right.Item1);
                         return (exp, true);
                     }
@@ -184,7 +184,7 @@ namespace Reko.Evaluation
         {
             if (bin.Left.DataType.BitSize > bin.Right.DataType.BitSize)
             {
-                extBin = new BinaryExpression(
+                extBin = m.Bin(
                     bin.Operator,
                     bin.DataType,
                     bin.Left,
@@ -196,7 +196,7 @@ namespace Reko.Evaluation
             }
             if (bin.Left.DataType.BitSize < bin.Right.DataType.BitSize)
             {
-                extBin = new BinaryExpression(
+                extBin = m.Bin(
                     bin.Operator,
                     bin.DataType,
                     m.Convert(

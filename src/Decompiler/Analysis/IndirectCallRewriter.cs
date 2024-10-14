@@ -315,8 +315,7 @@ namespace Reko.Analysis
                 if (id.Storage is MemoryStorage)
                     return VisitMemoryIdentifier(id);
                 var usedId = FindUsedId(outer.call!, id.Storage);
-                if (usedId != null)
-                    usedId.Accept(outer);
+                usedId?.Accept(outer);
                 return usedId ?? InvalidArgument(id.DataType);
             }
         }

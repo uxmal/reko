@@ -1,462 +1,275 @@
-void herror()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-herror_exit:
+// herror
+// Return size: 0
+define herror
 herror_entry:
+herror_exit:
 
 
-void __strdup()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__strdup_exit:
+// __strdup
+// Return size: 0
+define __strdup
 __strdup_entry:
+__strdup_exit:
 
 
-void clock_gettime()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-clock_gettime_exit:
+// clock_gettime
+// Return size: 0
+define clock_gettime
 clock_gettime_entry:
+clock_gettime_exit:
 
 
-void close()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-close_exit:
+// close
+// Return size: 0
+define close
 close_entry:
+close_exit:
 
 
-void read()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-read_exit:
+// read
+// Return size: 0
+define read
 read_entry:
+read_exit:
 
 
-void inet_ntop()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-inet_ntop_exit:
+// inet_ntop
+// Return size: 0
+define inet_ntop
 inet_ntop_entry:
+inet_ntop_exit:
 
 
-void snprintf()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-snprintf_exit:
+// snprintf
+// Return size: 0
+define snprintf
 snprintf_entry:
+snprintf_exit:
 
 
-void getaddrinfo()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-getaddrinfo_exit:
+// getaddrinfo
+// Return size: 0
+define getaddrinfo
 getaddrinfo_entry:
+getaddrinfo_exit:
 
 
-void dlopen()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-dlopen_exit:
+// dlopen
+// Return size: 0
+define dlopen
 dlopen_entry:
+dlopen_exit:
 
 
-void open()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-open_exit:
+// open
+// Return size: 0
+define open
 open_entry:
+open_exit:
 
 
-void __snprintf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__snprintf_chk_exit:
+// __snprintf_chk
+// Return size: 0
+define __snprintf_chk
 __snprintf_chk_entry:
+__snprintf_chk_exit:
 
 
-void dlsym()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-dlsym_exit:
+// dlsym
+// Return size: 0
+define dlsym
 dlsym_entry:
+dlsym_exit:
 
 
-void exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-exit_exit:
+// exit
+// Return size: 0
+define exit
 exit_entry:
+exit_exit:
 
 
-void getopt_long()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-getopt_long_exit:
+// getopt_long
+// Return size: 0
+define getopt_long
 getopt_long_entry:
+getopt_long_exit:
 
 
-void __vasprintf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__vasprintf_chk_exit:
+// __vasprintf_chk
+// Return size: 0
+define __vasprintf_chk
 __vasprintf_chk_entry:
+__vasprintf_chk_exit:
 
 
-void __asprintf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__asprintf_chk_exit:
+// __asprintf_chk
+// Return size: 0
+define __asprintf_chk
 __asprintf_chk_entry:
+__asprintf_chk_exit:
 
 
-void getnameinfo()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-getnameinfo_exit:
+// getnameinfo
+// Return size: 0
+define getnameinfo
 getnameinfo_entry:
+getnameinfo_exit:
 
 
-void memset()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memset_exit:
+// memset
+// Return size: 0
+define memset
 memset_entry:
+memset_exit:
 
 
-void inet_pton()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-inet_pton_exit:
+// inet_pton
+// Return size: 0
+define inet_pton
 inet_pton_entry:
+inet_pton_exit:
 
 
-void strcmp()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strcmp_exit:
+// strcmp
+// Return size: 0
+define strcmp
 strcmp_entry:
+strcmp_exit:
 
 
-void free()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-free_exit:
+// free
+// Return size: 0
+define free
 free_entry:
+free_exit:
 
 
-void __printf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__printf_chk_exit:
+// __printf_chk
+// Return size: 0
+define __printf_chk
 __printf_chk_entry:
+__printf_chk_exit:
 
 
-void __sprintf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sprintf_chk_exit:
+// __sprintf_chk
+// Return size: 0
+define __sprintf_chk
 __sprintf_chk_entry:
+__sprintf_chk_exit:
 
 
-void fwrite()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fwrite_exit:
+// fwrite
+// Return size: 0
+define fwrite
 fwrite_entry:
+fwrite_exit:
 
 
-void memcmp()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memcmp_exit:
+// memcmp
+// Return size: 0
+define memcmp
 memcmp_entry:
+memcmp_exit:
 
 
-void fputs()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fputs_exit:
+// fputs
+// Return size: 0
+define fputs
 fputs_entry:
+fputs_exit:
 
 
-void isatty()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-isatty_exit:
+// isatty
+// Return size: 0
+define isatty
 isatty_entry:
+isatty_exit:
 
 
-void __fprintf_chk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__fprintf_chk_exit:
+// __fprintf_chk
+// Return size: 0
+define __fprintf_chk
 __fprintf_chk_entry:
+__fprintf_chk_exit:
 
 
-void __libc_start_main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__libc_start_main_exit:
+// __libc_start_main
+// Return size: 0
+define __libc_start_main
 __libc_start_main_entry:
+__libc_start_main_exit:
 
 
-void putchar()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-putchar_exit:
+// putchar
+// Return size: 0
+define putchar
 putchar_entry:
+putchar_exit:
 
 
-void fputc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn0000000000015FCC
-// MayUse: 
-// LiveOut:
-// Trashed: t1 t3
-// Preserved: sp
+// fputc
+// Return size: 0
+define fputc
 fputc_entry:
+	sp = fp
+	// succ:  l0000000000015100
 l0000000000015100:
-	t3_5 = Mem0[0x000000000001A100<p64>:word64]
-	call t3_5 (retsize: 0;)
-		uses: Mem:Mem0,t1:0x000000000001510C<p64>,t3:t3_5
+	t3 = 0x000000000001A100<p64>
+	t3 = Mem0[t3:word64]
+	t1 = 0x000000000001510C<p64>
+	call t3 (retsize: 0;)
 	return
+	// succ:  fputc_exit
 fputc_exit:
 
 
-void __stack_chk_fail()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__stack_chk_fail_exit:
+// __stack_chk_fail
+// Return size: 0
+define __stack_chk_fail
 __stack_chk_fail_entry:
+__stack_chk_fail_exit:
 
 
-void __errno_location()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__errno_location_exit:
+// __errno_location
+// Return size: 0
+define __errno_location
 __errno_location_entry:
+__errno_location_exit:
 
 
-void strtol()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strtol_exit:
+// strtol
+// Return size: 0
+define strtol
 strtol_entry:
+strtol_exit:
 
 
-void strchr()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strchr_exit:
+// strchr
+// Return size: 0
+define strchr
 strchr_entry:
+strchr_exit:
 
 
-void memcpy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memcpy_exit:
+// memcpy
+// Return size: 0
+define memcpy
 memcpy_entry:
+memcpy_exit:
 
 
-void abort()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-abort_exit:
+// abort
+// Return size: 0
+define abort
 abort_entry:
+abort_exit:
 
 
-void freeaddrinfo()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-freeaddrinfo_exit:
+// freeaddrinfo
+// Return size: 0
+define freeaddrinfo
 freeaddrinfo_entry:
+freeaddrinfo_exit:
 
 

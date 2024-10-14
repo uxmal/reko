@@ -349,7 +349,7 @@ namespace Reko.Analysis
                 Debug.WriteLine(sw);
             }
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-            if (true || Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
+            if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
                 ssa.Validate(s =>
             {
                 Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name,  s);

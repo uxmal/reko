@@ -220,7 +220,7 @@ namespace Reko.Evaluation
             if (left is InvalidConstant || right is InvalidConstant)
                 return (InvalidConstant.Create(binExp.DataType), lChanged | rChanged);
 
-            binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
+            binExp = m.Bin(binExp.Operator, binExp.DataType, left, right);
             e = constConstBin.Match(binExp);
             if (e is not null)
             {
@@ -240,7 +240,7 @@ namespace Reko.Evaluation
                 cRight = ctx.ReinterpretAsFloat(cRight!);
                 right = cRight;
                 changed = true;
-                binExp = new BinaryExpression(
+                binExp = m.Bin(
                     binExp.Operator,
                     binExp.DataType,
                     binExp.Left,
@@ -285,7 +285,7 @@ namespace Reko.Evaluation
                     }
                     if (c.IsIntegerZero)
                         return (binLeft.Left, true);
-                    return (new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c), true);
+                    return (m.Bin(binOperator, binExp.DataType, binLeft.Left, c), true);
                 }
                 if (binExp.Operator.Type == OperatorType.IMul && binLeft.Operator.Type == OperatorType.IMul)
                 {
@@ -296,7 +296,7 @@ namespace Reko.Evaluation
                     }
                     else
                     {
-                        return (new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c), true);
+                        return (m.Bin(binExp.Operator, binExp.DataType, binLeft.Left, c), true);
                     }
                 }
                 if (binExp.Operator.Type == OperatorType.And &&
@@ -320,7 +320,7 @@ namespace Reko.Evaluation
             {
                 if (binLeft.Operator.Type == OperatorType.ISub)
                 {
-                    return (new BinaryExpression(
+                    return (m.Bin(
                         (BinaryOperator)((ConditionalOperator) binExp.Operator).Mirror(),
                         binExp.DataType,
                         binLeft.Right,
@@ -355,7 +355,7 @@ namespace Reko.Evaluation
                     {
                         var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
                         var c = op.ApplyConstants(binExp.DataType, cRight, cLeftRight);
-                        return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
+                        return (m.Bin(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                     }
                 }
                 else if (binLeft.Operator.Type == OperatorType.USub)
@@ -363,7 +363,7 @@ namespace Reko.Evaluation
                     var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
                     var c = op.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     var opCmp = ((ConditionalOperator) binExp.Operator).ToUnsigned();
-                    return (new BinaryExpression(opCmp, PrimitiveType.Bool, binLeft.Left, c), true);
+                    return (m.Bin(opCmp, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
             }
             var dwordIdiom = UnfoldDwordIdiom(binExp);
@@ -383,7 +383,7 @@ namespace Reko.Evaluation
                 binLeft.Operator.Type == OperatorType.ISub &&
                 right.IsZero)
             {
-                e = new BinaryExpression(binExp.Operator, binExp.DataType,
+                e = m.Bin(binExp.Operator, binExp.DataType,
                     binLeft.Left, binLeft.Right);
                 return (e, true);
             }
@@ -486,7 +486,7 @@ namespace Reko.Evaluation
                 (left.Offset == right.DataType.BitSize ||
                  right.Offset == left.DataType.BitSize))
             {
-                return new BinaryExpression(
+                return m.Bin(
                     binExp.Operator,
                     binExp.DataType,
                     left.Expression,
@@ -510,9 +510,9 @@ namespace Reko.Evaluation
                 if (binLeft.Left is Identifier idLeftLeft &&
                     idLeftLeft == idRight)
                 {
-                    binExp = new BinaryExpression(
+                    binExp = m.Bin(
                         binLeft.Operator, binExp.DataType,
-                        new BinaryExpression(
+                        m.Bin(
                             binExp.Operator, binLeft.DataType,
                             binLeft.Left, binExp.Right),
                         binLeft.Right);
@@ -527,12 +527,10 @@ namespace Reko.Evaluation
                     {
                         // ((e+id)+id) ==> (e+id*2)
                         // ((e-id)-id) ==> (e-id*2)
-                        binExp = new BinaryExpression(
+                        binExp = m.Bin(
                             binLeft.Operator, binExp.DataType,
                             binLeft.Left,
-                            new BinaryExpression(
-                                Operator.IMul, idRight.DataType, idRight,
-                                Constant.Create(idRight.DataType, 2)));
+                            m.IMul(idRight, 2));
                         return (binExp, true);
                     }
                     else

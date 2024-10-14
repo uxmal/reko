@@ -20,13 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using Reko.Core.Memory;
 using Reko.Core.Output;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly.Output
 {

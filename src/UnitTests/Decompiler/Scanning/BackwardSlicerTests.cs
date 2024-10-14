@@ -61,7 +61,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                         ".text",
                         new ByteMemoryArea(Address.Ptr32(0x00120000), new byte[0x10000]),
                         AccessMode.ReadExecute));
-            program = new Program {
+            program = new Program
+            {
                 Architecture = arch,
                 SegmentMap = segmentMap,
                 Memory = new ByteProgramMemory(segmentMap),
@@ -85,6 +86,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var cc = arch.GetFlagGroup(name);
             return binder.EnsureFlagGroup(cc);
+        }
+
+        private RtlBlock Given_Block(ulong uAddr)
+        {
+            var b = RtlBlock.CreateEmpty(arch, Address.Ptr64(uAddr), $"l{uAddr:X16}");
+            return b;
         }
 
         private RtlBlock Given_Block(uint uAddr)
@@ -314,7 +321,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
             });
-            Given_Instrs(b, m => {
+            Given_Instrs(b, m =>
+            {
                 m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), InstrClass.ConditionalTransfer);
             });
 
@@ -329,7 +337,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(bx, m.IAdd(bx, bx));
                 m.Assign(SCZO, new ConditionOf(bx));
             });
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.Goto(m.Mem16(m.IAdd(bx, 0x8400)));
             });
 
@@ -379,7 +388,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x1008);
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.BranchInMiddleOfInstruction(m.Eq0(ecx), Address.Ptr32(0x1010), InstrClass.ConditionalTransfer);
                 m.Assign(tmp, m.Mem32(esi));
                 m.Assign(m.Mem32(edi), tmp);
@@ -390,7 +400,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
 
             var b3 = Given_Block(0x1010);
-            Given_Instrs(b3, m => {
+            Given_Instrs(b3, m =>
+            {
                 m.Goto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x00123400)));
             });
 
@@ -572,7 +583,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
 
             var b2 = Given_Block(0x00100008);
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.Assign(d1, m.Word32(0));
                 m.Assign(CVZN, m.Cond(d1));
             });
@@ -594,7 +606,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(d1, m.Dpb(d1, v5, 0));
                 m.Assign(CVZN, m.Cond(v5));
             });
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(d1, I16), I16, I32)));
             });
 
@@ -657,7 +670,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
 
             var b2 = Given_Block(0x00100008);
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.Assign(d1, m.Word32(0));
                 m.Assign(CVZN, m.Cond(d1));
             });
@@ -679,7 +693,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(d1, m.Dpb(d1, v5, 0));
                 m.Assign(CVZN, m.Cond(v5));
             });
-            Given_Instrs(b2, m => {
+            Given_Instrs(b2, m =>
+            {
                 m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(d1, I16), I16, I32)));
             });
 
@@ -1235,7 +1250,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m.Assign(d0, m.Convert(m.Slice(d0, PrimitiveType.Int8, 0), PrimitiveType.Int8, PrimitiveType.Int32));
                     m.Assign(ZN, m.Cond(d0));
                 },
-                m => {
+                m =>
+                {
                     m.Assign(m.Mem32(m.IAdd(a6, m.Int32(-8))), d0);
                     m.Assign(ZN, m.Cond(d0));
                     m.Assign(C, Constant.False());
@@ -1254,7 +1270,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m.Assign(v40, m.ISub(d2, d0));
                     m.Assign(CVZN, m.Cond(v40));
                 },
-                m => {
+                m =>
+                {
                     m.Branch(m.Test(ConditionCode.ULT, C), b1C24.Address);
                 });
 
@@ -1380,8 +1397,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var int32 = PrimitiveType.Int32;
 
             Given_Instrs(b101408,
-                m => {
-                    m.Assign(v69, m.Mem8(m.IAdd(a0,1)));
+                m =>
+                {
+                    m.Assign(v69, m.Mem8(m.IAdd(a0, 1)));
                     m.Assign(v70, m.Slice(d0, word24, 8));
                     m.Assign(v71, m.ISub(m.Slice(d0, PrimitiveType.Byte, 0), 0x41));
                     m.Assign(v72, m.Slice(d0, word24, 8));
@@ -1391,7 +1409,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m => m.Branch(m.Test(ConditionCode.LT, N), b101582.Address)
                 );
             Given_Instrs(b101414,
-                m => {
+                m =>
+                {
                     m.Assign(v73, m.ISub(m.Slice(d0, PrimitiveType.Byte, 0), 0x17));
                     m.Assign(CVZN, m.Cond(v73));
                 },
@@ -1421,7 +1440,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                         m.Assign(d1, m.Seq(v78, v77));
                         m.Assign(CVZNX, m.Cond(v77));
                     },
-                    m => {
+                    m =>
+                    {
                         m.Assign(v79, m.Mem16(m.IAdd(Address.Ptr32(0x0010142A), m.Convert(m.Slice(d1, int16, 0), int16, int32))));
                         m.Assign(v80, m.Slice(d1, word16, 16));
                         m.Assign(d1, m.Seq(v80, v79));
@@ -1521,20 +1541,22 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var uint64 = PrimitiveType.UInt64;
             var int64 = PrimitiveType.Int64;
             Given_Instrs(b4011F7,
-                m => {
+                m =>
+                {
                     m.Assign(edx, m.Mem32(m.ISub(rbp, 8)));
                     m.Assign(rdx, m.Convert(edx, word32, uint64));
                 },
                 m => m.Assign(rax, rdx),
-                m => {
-                        m.Assign(rax, m.ISub(rax, 2));
-                        m.Assign(SCZO, m.Cond(rax));
+                m =>
+                {
+                    m.Assign(rax, m.ISub(rax, 2));
+                    m.Assign(SCZO, m.Cond(rax));
                 },
                 m => m.Branch(m.Test(ConditionCode.UGT, CZ), b40122E.Address)
                 );
             Given_Instrs(b401203,
                 m => m.Assign(rcx, m.Word64(0x0000000000402004)),
-                m => m.Assign(rax , m. Convert(m.Mem32(m.IAdd(rcx, m.IMul(rdx, 4))), word32, int64)),
+                m => m.Assign(rax, m.Convert(m.Mem32(m.IAdd(rcx, m.IMul(rdx, 4))), word32, int64)),
                 m =>
                 {
                     m.Assign(rax, m.IAdd(rax, rcx));
@@ -1554,8 +1576,99 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("004011FB", bwslc.GuardInstrAddress.ToString());
         }
-    }
 
+        [Test]
+        public void Bwslc_RiscV_64bit()
+        {
+            /*
+             * 
+0000000000015214 F0EF DDDF jal getopt_long
+0000000000015218 0713 FFF0 li a4,-0x1
+000000000001521C 0793 0005 mv a5,a0
+0000000000015220 0463 12E5 beq a0,a4,0x0000000000015348
+
+0000000000015224 0713 0760 li a4,0x76
+0000000000015228 6CE3 FCA7 bltu a4,a0,0x0000000000015200
+
+000000000001522C 9793 0207 slli a5,a5,0x20
+0000000000015230 0737 0001 lui a4,0x10
+0000000000015234 D793 01E7 srli a5,a5,0x1E
+0000000000015238 0713 2A07 addi a4,a4,0x2A0
+000000000001523C 87B3 00E7 add a5,a5,a4
+0000000000015240 A783 0007 lw a5,(a5)
+0000000000015244 8067 0007 jalr zero,a5,0x0
+ *
+    call get_optt
+    a4 = -1
+    a5 = a0
+    branch a0 == a4 l0000000000015348
+l0000000000015224:
+    a4 = 118
+    branch a4 <u a0 l0000000000015200
+l000000000001522C:
+    a5 = a5 << 0x20
+    a4 = 0x00010000
+    a5 = a5 >>u 0x1E
+    a4 = a4 + 672
+    a5 = a5 + a4
+    a5 = CONVERT(Mem0[a5:int32], int32, int64)
+    call a5 (retsize: 0;)
+*/
+            var l15214 = Given_Block(0x0000000000015214ul);
+            var l15224 = Given_Block(0x0000000000015224ul);
+            var l1522C = Given_Block(0x000000000001522Cul);
+            var bye = Given_Block(0x0000000000015200ul);
+
+            graph.Nodes.Add(l15214);
+            graph.Nodes.Add(l15224);
+            graph.Nodes.Add(l1522C);
+            graph.Nodes.Add(bye);
+
+            graph.AddEdge(l15214, l15224);
+            graph.AddEdge(l15214, bye);
+            graph.AddEdge(l15224, l1522C);
+            graph.AddEdge(l15224, bye);
+
+            
+            var a0 = binder.EnsureRegister(RegisterStorage.Reg64("a0", 0));
+            var a4 = binder.EnsureRegister(RegisterStorage.Reg64("a4", 4));
+            var a5 = binder.EnsureRegister(RegisterStorage.Reg64("a5", 5));
+
+
+            Given_Instrs(l15214,
+                m => m.Call(Address.Ptr64(0x424242), 0),
+                m => m.Assign(a4, -1),
+                m => m.Assign(a5, a0),
+                m => m.Branch(m.Eq(a0, a4), bye.Address));
+            Given_Instrs(l15224,
+                m => m.Assign(a4, 0x5),
+                m => m.Branch(m.Ult(a4, a0), bye.Address));
+            Given_Instrs(l1522C,
+                m => m.Assign(a5, m.Shl(a5, 0x20)),
+                m => m.Assign(a4, 0x00010000),
+                m => m.Assign(a5, m.Shr(a5, 0x1E)),
+                m => m.Assign(a4, m.IAdd(a4, 672)),
+                m => m.Assign(a5, m.IAdd(a5, a4)),
+                m => m.Assign(a5, m.Convert(
+                    m.Mem(
+                    PrimitiveType.Int32, a5),
+                    PrimitiveType.Int32,
+                    PrimitiveType.Int64)),
+                m => m.Goto(a5));
+
+            var bwslc = new BackwardSlicer(host, l1522C, processorState);
+            Assert.IsTrue(bwslc.Start(l1522C, 4, Target(l1522C)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual(
+                "(a5 << 0x20<8> >>u 0x1E<8>) + 0x102A0<64>",
+                bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("a0", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("a0", bwslc.JumpTableIndexToUse.ToString());
+            Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("004011FB", bwslc.GuardInstrAddress.ToString());
+        }
+    }
     // Test cases
     // A one-level jump table from MySQL. JTT represents the jump table.
     // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5

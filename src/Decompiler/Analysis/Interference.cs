@@ -27,7 +27,7 @@ namespace Reko.Analysis
 	/// Represents an edge between two identifiers that intefere in an
 	/// interference graph.
 	/// </summary>
-	public struct Interference : IComparable<Interference>
+	public readonly struct Interference : IComparable<Interference>
 	{
 		public Interference(Identifier id1, Identifier id2)
 		{

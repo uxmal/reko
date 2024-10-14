@@ -41,7 +41,7 @@ namespace Reko.Evaluation
                 if (op is ConditionalOperator)
                 {
                     var result = op.ApplyConstants(binExp.DataType, cLeft!, cRight);
-                    result.DataType = dtResult!;
+                    result.DataType = dtResult;
                     return result;
                 }
 				if (!cLeft.IsReal && !cRight.IsReal)

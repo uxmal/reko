@@ -370,7 +370,7 @@ namespace Reko.Evaluation
             }
             var (left, _) = new MkSequence(dt, lefts).Accept(this);
             var (right, _) = new MkSequence(dt, rights).Accept(this);
-            return new BinaryExpression(opPrev!, dt, left, right);
+            return m.Bin(opPrev!, dt, left, right);
         }
     }
 }

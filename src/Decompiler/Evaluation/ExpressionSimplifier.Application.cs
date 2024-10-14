@@ -66,14 +66,14 @@ namespace Reko.Evaluation
                 {
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
-                        return (new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]), true);
+                        return (m.Bin(Operator.Shl, appl.DataType, args[0], args[1]), true);
                     }
                 }
                 else if (intrinsic.Name == CommonOps.RorC.Name)
                 {
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
-                        return (new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]), true);
+                        return (m.Bin(Operator.Shr, appl.DataType, args[0], args[1]), true);
                     }
                 }
                 else if (intrinsic.Name == CommonOps.Rol.Name)
