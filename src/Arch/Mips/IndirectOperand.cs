@@ -32,30 +32,46 @@ namespace Reko.Arch.Mips
 {
     public class IndirectOperand : AbstractMachineOperand
     {
-        public int Offset;
-        public RegisterStorage Base;
-
-        public IndirectOperand(PrimitiveType dataWidth, int offset, RegisterStorage baseReg) : base(dataWidth)
+        public IndirectOperand(PrimitiveType dataWidth, MachineOperand offset, RegisterStorage baseReg) : base(dataWidth)
         {
             this.Offset = offset;
             this.Base = baseReg;
         }
 
+        public MachineOperand Offset { get; set; }
+
+        public RegisterStorage Base { get; }
+
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+            if (Offset is SliceOperand slice)
+            {
+                slice.Render(renderer, options);
+                renderer.WriteFormat("({0})", Base);
+                return;
+            }
             string fmt;
-            int offset;
-            if (Offset >= 0)
+            int offset = ((ImmediateOperand) Offset).Value.ToInt32();
+            if (offset >= 0)
             {
                 fmt = "{0:X4}({1})";
-                offset = Offset;
             }
             else 
             {
                 fmt = "-{0:X4}({1})";
-                offset = -Offset;
+                offset = -offset;
             }
-            renderer.WriteString(string.Format(fmt, offset, Base));
+            renderer.WriteFormat(fmt, offset, Base);
+        }
+
+        public int IntOffset()
+        {
+            ImmediateOperand offset;
+            if (Offset is SliceOperand slice)
+                offset = slice.Value;
+            else
+                offset = (ImmediateOperand) Offset;
+            return offset.Value.ToInt32();
         }
     }
 }

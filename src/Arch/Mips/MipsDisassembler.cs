@@ -155,7 +155,10 @@ namespace Reko.Arch.Mips
         private IndirectOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)
         {
             var baseReg = arch.GetRegister((int) (wInstr >> shift) & 0x1F)!;
-            return new IndirectOperand(dataWidth, offset, baseReg);
+            return new IndirectOperand(
+                dataWidth, 
+                ImmediateOperand.Int32(offset),
+                baseReg);
         }
     }
 }

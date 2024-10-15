@@ -432,7 +432,10 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
-                var mem = new IndirectOperand(dt, offset, d.arch.StackRegister);
+                var mem = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    d.arch.StackRegister);
                 d.ops.Add(mem);
                 return true;
             };
@@ -453,7 +456,10 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
-                var mem = new IndirectOperand(dt, offset, d.arch.pc);
+                var mem = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    d.arch.pc);
                 d.ops.Add(mem);
                 return true;
             };
@@ -480,7 +486,10 @@ namespace Reko.Arch.Mips
             //    var uExtend = Bitfield.ReadFields(bf_extend, dasm.extend.Value) << bf0_5.Length;
             //    offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
             int offset = (int) bf0_8.Read(uInstr) << 2;
-            var mem = new IndirectOperand(dasm.arch.PointerType, offset, dasm.arch.StackRegister);
+            var mem = new IndirectOperand(
+                dasm.arch.PointerType,
+                ImmediateOperand.Int32(offset),
+                dasm.arch.StackRegister);
             dasm.ops.Add(mem);
             return true;
         }
@@ -489,7 +498,10 @@ namespace Reko.Arch.Mips
         {
             var uExtend = Bitfield.ReadFields(bf_extend5, dasm.extend!.Value) << bf0_5.Length;
             var offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
-            var mem = new IndirectOperand(dasm.arch.PointerType, offset, dasm.arch.StackRegister);
+            var mem = new IndirectOperand(
+                dasm.arch.PointerType,
+                ImmediateOperand.Int32(offset),
+                dasm.arch.StackRegister);
             dasm.ops.Add(mem);
             return true;
         }
@@ -511,7 +523,10 @@ namespace Reko.Arch.Mips
                 }
                 var encReg = fieldreg.Read(u);
                 var reg = registerEncoding[encReg];
-                var mem = new IndirectOperand(dt, offset, reg);
+                var mem = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    reg);
                 d.ops.Add(mem);
                 return true;
             };

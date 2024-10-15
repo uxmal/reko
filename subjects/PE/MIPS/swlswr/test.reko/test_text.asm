@@ -134,8 +134,8 @@ fn0001116C proc
 fn000111C4 proc
 	addiu	sp,sp,-00000020
 	sw	ra,0018(sp)
-	lui	r8,+0001
-	lw	r8,3030(r8)
+	lui	r8,%hi(00013030)
+	lw	r8,%lo(00013030)(r8)
 	sw	r8,0014(sp)
 	lw	r8,0014(sp)
 	beq	r8,r0,0001120C
@@ -150,8 +150,8 @@ l000111E4:
 l000111F4:
 	lw	r8,0014(sp)
 	nor	r9,r8,r0
-	lui	r8,+0001
-	sw	r9,3034(r8)
+	lui	r8,%hi(00013034)
+	sw	r9,%lo(00013034)(r8)
 	beq	r0,r0,00011268
 	nop
 
@@ -177,12 +177,12 @@ l00011244:
 
 l0001124C:
 	lw	r9,0014(sp)
-	lui	r8,+0001
-	sw	r9,3030(r8)
+	lui	r8,%hi(00013030)
+	sw	r9,%lo(00013030)(r8)
 	lw	r8,0014(sp)
 	nor	r9,r8,r0
-	lui	r8,+0001
-	sw	r9,3034(r8)
+	lui	r8,%hi(00013034)
+	sw	r9,%lo(00013034)(r8)
 
 l00011268:
 	lw	ra,0018(sp)
@@ -222,42 +222,42 @@ fn000112A8 proc
 	lw	r8,0020(sp)
 	sll	r9,r8,18
 	sra	r9,r9,18
-	lui	r8,+0001
-	sb	r9,3038(r8)
+	lui	r8,%hi(00013038)
+	sb	r9,%lo(00013038)(r8)
 	lw	r8,001C(sp)
 	bne	r8,r0,0001138C
 	nop
 
 l000112DC:
-	lui	r8,+0001
-	lw	r8,3040(r8)
+	lui	r8,%hi(00013040)
+	lw	r8,%lo(00013040)(r8)
 	beq	r8,r0,00011374
 	nop
 
 l000112EC:
-	lui	r8,+0001
-	lw	r8,303C(r8)
+	lui	r8,%hi(0001303C)
+	lw	r8,%lo(0001303C)(r8)
 	addiu	r9,r8,-00000004
-	lui	r8,+0001
-	sw	r9,303C(r8)
-	lui	r8,+0001
-	lw	r9,303C(r8)
-	lui	r8,+0001
-	lw	r8,3040(r8)
+	lui	r8,%hi(0001303C)
+	sw	r9,%lo(0001303C)(r8)
+	lui	r8,%hi(0001303C)
+	lw	r9,%lo(0001303C)(r8)
+	lui	r8,%hi(00013040)
+	lw	r8,%lo(00013040)(r8)
 	sltu	r8,r9,r8
 	bne	r8,r0,0001134C
 	nop
 
 l0001131C:
-	lui	r8,+0001
-	lw	r8,303C(r8)
+	lui	r8,%hi(0001303C)
+	lw	r8,%lo(0001303C)(r8)
 	lw	r8,0000(r8)
 	beq	r8,r0,00011344
 	nop
 
 l00011330:
-	lui	r8,+0001
-	lw	r8,303C(r8)
+	lui	r8,%hi(0001303C)
+	lw	r8,%lo(0001303C)(r8)
 	lw	r8,0000(r8)
 	jalr	ra,r8
 	nop
@@ -267,16 +267,16 @@ l00011344:
 	nop
 
 l0001134C:
-	lui	r8,+0001
-	lw	r4,3040(r8)
+	lui	r8,%hi(00013040)
+	lw	r4,%lo(00013040)(r8)
 	jal	000117AC
 	nop
-	lui	r4,+0001
-	sw	r0,303C(r4)
-	lui	r8,+0001
-	lw	r9,303C(r8)
-	lui	r8,+0001
-	sw	r9,3040(r8)
+	lui	r4,%hi(0001303C)
+	sw	r0,%lo(0001303C)(r4)
+	lui	r8,%hi(0001303C)
+	lw	r9,%lo(0001303C)(r8)
+	lui	r8,%hi(00013040)
+	sw	r9,%lo(00013040)(r8)
 
 l00011374:
 	lui	r8,+0001
@@ -441,11 +441,11 @@ fn0001152C proc
 	sw	ra,0030(sp)
 	sw	r4,0038(sp)
 	sw	r0,0014(sp)
-	lui	r8,+0001
-	lw	r8,3040(r8)
+	lui	r8,%hi(00013040)
+	lw	r8,%lo(00013040)(r8)
 	sw	r8,001C(sp)
-	lui	r8,+0001
-	lw	r8,303C(r8)
+	lui	r8,%hi(0001303C)
+	lw	r8,%lo(0001303C)(r8)
 	sw	r8,0028(sp)
 	sw	r0,0018(sp)
 	sw	r0,0024(sp)
@@ -575,11 +575,11 @@ l000116B0:
 	addiu	r8,r8,+00000004
 	sw	r8,0028(sp)
 	lw	r9,0028(sp)
-	lui	r8,+0001
-	sw	r9,303C(r8)
+	lui	r8,%hi(0001303C)
+	sw	r9,%lo(0001303C)(r8)
 	lw	r9,001C(sp)
-	lui	r8,+0001
-	sw	r9,3040(r8)
+	lui	r8,%hi(00013040)
+	sw	r9,%lo(00013040)(r8)
 	lw	r8,0038(sp)
 	sw	r8,002C(sp)
 

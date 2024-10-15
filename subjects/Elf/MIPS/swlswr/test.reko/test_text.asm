@@ -5,8 +5,8 @@ __start proc
 	or	r0,ra,r0
 	bal	0000061C
 	nop
-	lui	r28,+0002
-	addiu	r28,r28,-00007B9C
+	lui	r28,%hi(FFFF8464)
+	addiu	r28,r28,%lo(FFFF8464)
 	addu	r28,r28,ra
 	or	ra,r0,r0
 	lw	r4,-7FE8(r28)
@@ -33,8 +33,8 @@ l00000664:
 ;;   Called from:
 ;;     000007A8 (in __do_global_dtors_aux)
 deregister_tm_clones proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007BF0
+	lui	r28,%hi(FFFF8410)
+	addiu	r28,r28,%lo(FFFF8410)
 	addu	r28,r28,r25
 	lw	r4,-7FD8(r28)
 	lw	r2,-7FDC(r28)
@@ -58,8 +58,8 @@ l000006A0:
 ;;   Called from:
 ;;     000007E8 (in frame_dummy)
 register_tm_clones proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007C28
+	lui	r28,%hi(FFFF83D8)
+	addiu	r28,r28,%lo(FFFF83D8)
 	addu	r28,r28,r25
 	lw	r4,-7FD8(r28)
 	lw	r5,-7FDC(r28)
@@ -86,8 +86,8 @@ l000006EC:
 
 ;; __do_global_dtors_aux: 000006F4
 __do_global_dtors_aux proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007C74
+	lui	r28,%hi(FFFF838C)
+	addiu	r28,r28,%lo(FFFF838C)
 	addu	r28,r28,r25
 	addiu	sp,sp,-00000030
 	sw	r19,0028(sp)
@@ -159,8 +159,8 @@ l000007B8:
 
 ;; frame_dummy: 000007D4
 frame_dummy proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007D54
+	lui	r28,%hi(FFFF82AC)
+	addiu	r28,r28,%lo(FFFF82AC)
 	addu	r28,r28,r25
 	lw	r25,-7FCC(r28)
 	addiu	r25,r25,+000006A8
@@ -169,8 +169,8 @@ frame_dummy proc
 
 ;; main: 000007F0
 main proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007D70
+	lui	r28,%hi(FFFF8290)
+	addiu	r28,r28,%lo(FFFF8290)
 	addu	r28,r28,r25
 	addiu	sp,sp,-00000030
 	sw	ra,002C(sp)
@@ -224,8 +224,8 @@ main proc
 
 ;; __libc_csu_init: 000008C0
 __libc_csu_init proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007E40
+	lui	r28,%hi(FFFF81C0)
+	addiu	r28,r28,%lo(FFFF81C0)
 	addu	r28,r28,r25
 	addiu	sp,sp,-00000038
 	lw	r25,-7FC8(r28)
@@ -278,8 +278,8 @@ __libc_csu_fini proc
 
 ;; __do_global_ctors_aux: 00000970
 __do_global_ctors_aux proc
-	lui	r28,+0002
-	addiu	r28,r28,-00007EF0
+	lui	r28,%hi(FFFF8110)
+	addiu	r28,r28,%lo(FFFF8110)
 	addu	r28,r28,r25
 	lw	r3,-7FD8(r28)
 	addiu	sp,sp,-00000028

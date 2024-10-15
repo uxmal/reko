@@ -197,8 +197,8 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_auipc_sb()
         {
             AssertCode(
-                "auipc\ta4,0x2",
-                "sb\ta5,0x402(a4)",
+                "auipc\ta4,pcrel_hi(0x00102402)",
+                "sb\ta5,pcrel_lo(0x00102402)",
                 "1727 0000 2301 F740");
             ///2717 0000     	auipc a4,0x2 !!!0123 40F7     	sb a5,0x402(a4)
         }

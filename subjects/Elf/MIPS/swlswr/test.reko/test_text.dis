@@ -13,9 +13,9 @@ l00000610:
 	sp_17 = (fp & -8<i32>) + -32<i32>
 	r7_18 = Mem0[0x00010A9C<p32>:word32]
 	r8_19 = Mem0[0x00010AA0<p32>:word32]
-	Mem20[sp_17 + 0x10<32>:word32] = r8_19
-	Mem22[sp_17 + 0x14<32>:word32] = r2
-	Mem23[sp_17 + 0x18<32>:word32] = sp_17
+	Mem20[sp_17 + 16<i32>:word32] = r8_19
+	Mem22[sp_17 + 20<i32>:word32] = r2
+	Mem23[sp_17 + 24<i32>:word32] = sp_17
 	call Mem23[0x00010ADC<p32>:word32] (retsize: 0;)
 		uses: Mem:Mem23,r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19
 l00000664:
@@ -146,9 +146,9 @@ l000007F0:
 	memset(&dwLoc14, 0<32>, SLICE(5<i32>, size_t, 0))
 	r2_38 = calloc(SLICE(1<i32>, size_t, 0), SLICE(5<i32>, size_t, 0))
 	Mem45[r2_38:word32] = Mem42[&dwLoc14:word32]
-	Mem48[r2_38 + 4<32>:byte] = bLoc10
+	Mem48[r2_38 + 4<i32>:byte] = bLoc10
 	Mem51[r2_38:byte] = 0xC<8>
-	Mem53[r2_38 + 1<32>:word32] = 0<32>
+	Mem53[r2_38 + 1<i32>:word32] = 0<32>
 	Mem56[&dwLoc14:byte] = 0x42<8>
 	Mem58[&dwLoc14 + 1<i32>:word32] = r2_38
 	r30_12 = fp + -48<i32>

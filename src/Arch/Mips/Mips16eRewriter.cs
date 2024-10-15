@@ -151,12 +151,12 @@ Architecture */
                 Expression ea;
                 if (mem.Base == arch.pc)
                 {
-                    ea = dasm.Current.Address + mem.Offset;
+                    ea = dasm.Current.Address + mem.IntOffset();
                 }
                 else
                 {
                     ea = binder.EnsureRegister(mem.Base);
-                    ea = m.AddSubSignedInt(ea, mem.Offset);
+                    ea = m.AddSubSignedInt(ea, mem.IntOffset());
                 }
                 return m.Mem(op.Width, ea);
             }

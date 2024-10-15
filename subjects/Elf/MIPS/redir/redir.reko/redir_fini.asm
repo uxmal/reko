@@ -2,8 +2,8 @@
 
 ;; _fini: 00409CB0
 _fini proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00001450
+	lui	r28,%hi(FFFFEBB0)
+	addiu	r28,r28,%lo(FFFFEBB0)
 	addu	r28,r28,r25
 	addiu	sp,sp,-00000020
 	sw	r28,0010(sp)

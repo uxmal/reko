@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.IsAssignableFrom(typeof(IndirectOperand), op);
             var opReg = op as IndirectOperand;
             Assert.AreEqual(reg, opReg.Base);
-            Assert.AreEqual(offset, opReg.Offset);
+            Assert.AreEqual(offset, opReg.IntOffset());
             Assert.AreEqual(type, opReg.Width);
         }
 

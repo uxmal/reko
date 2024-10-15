@@ -185,7 +185,7 @@ namespace Reko.Arch.Mips
                 opDst,
                 m.Fn(intrinsics.ldl,
                     binder.EnsureRegister(opSrc.Base),
-                    m.Int32(opSrc.Offset)));
+                    m.Int32(opSrc.IntOffset())));
         }
 
         private void RewriteLdr(MipsInstruction instr)
@@ -196,7 +196,7 @@ namespace Reko.Arch.Mips
                 opDst,
                 m.Fn(intrinsics.ldr,
                     binder.EnsureRegister(opSrc.Base),
-                    m.Int32(opSrc.Offset)));
+                    m.Int32(opSrc.IntOffset())));
         }
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
@@ -344,7 +344,7 @@ namespace Reko.Arch.Mips
             int rt = ((RegisterStorage) instr.Operands[0]).Number;
             var mem = ((IndirectOperand) instr.Operands[1]);
             var rs = binder.EnsureRegister(mem.Base);
-            int offset = mem.Offset;
+            int offset = mem.IntOffset();
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             while (i != count)
             {
@@ -621,7 +621,7 @@ namespace Reko.Arch.Mips
             m.SideEffect(m.Fn(
                 intrinsics.sdl,
                 binder.EnsureRegister(opDst.Base),
-                m.Int32(opDst.Offset),
+                m.Int32(opDst.IntOffset()),
                 opSrc));
         }
 
@@ -632,7 +632,7 @@ namespace Reko.Arch.Mips
             m.SideEffect(m.Fn(
               intrinsics.sdr,
               binder.EnsureRegister(opDst.Base),
-              m.Int32(opDst.Offset),
+              m.Int32(opDst.IntOffset()),
               opSrc));
         }
 
@@ -743,7 +743,7 @@ namespace Reko.Arch.Mips
             var rt = ((RegisterStorage) instr.Operands[0]).Number;
             var count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var ind = (IndirectOperand) instr.Operands[1];
-            var offset = ind.Offset;
+            var offset = ind.IntOffset();
             var rs = binder.EnsureRegister(ind.Base);
             for (int i = 0; i < count; ++i) {
                 int this_rt;

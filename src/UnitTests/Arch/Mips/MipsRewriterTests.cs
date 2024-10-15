@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("100001 01001 00011 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = CONVERT(Mem0[r9 - 0x38<32>:int16], int16, word32)");
+                "1|L--|r3 = CONVERT(Mem0[r9 - 56<i32>:int16], int16, word32)");
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("100101 01011 01101 1111111111111000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r13 = CONVERT(Mem0[r11 - 8<32>:uint16], uint16, word32)");
+                "1|L--|r13 = CONVERT(Mem0[r11 - 8<i32>:uint16], uint16, word32)");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("110000 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked<word32>(&Mem0[r10 - 0x38<32>:word32])");
+                "1|L--|r21 = __load_linked<word32>(&Mem0[r10 - 56<i32>:word32])");
         }
         [Test]
         public void MipsRw_lld()
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("110100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked<word64>(&Mem0[r10 - 0x38<64>:word64])");
+                "1|L--|r21 = __load_linked<word64>(&Mem0[r10 - 56<i64>:word64])");
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("111000 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional<word32>(&Mem0[r10 - 0x38<32>:word32], r21)");
+                "1|L--|r21 = __store_conditional<word32>(&Mem0[r10 - 56<i32>:word32], r21)");
         }
         [Test]
         public void MipsRw_scd()
@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("111100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional<word64>(&Mem0[r10 - 0x38<64>:word64], r21)");
+                "1|L--|r21 = __store_conditional<word64>(&Mem0[r10 - 56<i64>:word64], r21)");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0xFFBF0020,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x20<64>:word64] = ra");
+                "1|L--|Mem0[sp + 32<i64>:word64] = ra");
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("A4472A00");
             AssertCode(     // she	r2,0000(r7)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r2 + 0x2A00<32>:word16] = SLICE(r7, word16, 0)");
+                "1|L--|Mem0[r2 + 10752<i32>:word16] = SLICE(r7, word16, 0)");
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xAFBF0020,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x20<32>:word32] = ra");
+                "1|L--|Mem0[sp + 32<i32>:word32] = ra");
         }
 
         [Test]
@@ -245,10 +245,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x8fb30010,   // lw s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = Mem0[sp + 0x10<32>:word32]");
-            AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
+                "1|L--|r19 = Mem0[sp + 16<i32>:word32]");
+            AssertCode(0x8fb3FFF0,   // lw s3,-16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = Mem0[sp - 0x10<32>:word32]");
+                "1|L--|r19 = Mem0[sp - 16<i32>:word32]");
         }
 
         [Test(Description = "On MIPS64, lw loads a signed integer")]
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = CONVERT(Mem0[sp - 0x10<64>:int32], int32, word64)");
+                "1|L--|r19 = CONVERT(Mem0[sp - 16<i64>:int32], int32, word64)");
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0xdfb30010,   // ld s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = Mem0[sp + 0x10<64>:word64]");
+                "1|L--|r19 = Mem0[sp + 16<i64>:word64]");
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x9fb30010,   // ld s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = CONVERT(Mem0[sp + 0x10<64>:uint32], uint32, word64)");
+                "1|L--|r19 = CONVERT(Mem0[sp + 16<i64>:uint32], uint32, word64)");
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xA128D958, // sb t0,-9896(t1)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r9 - 0x26A8<32>:byte] = SLICE(r8, byte, 0)");
+                "1|L--|Mem0[r9 - 9896<i32>:byte] = SLICE(r8, byte, 0)");
         }
 
         [Test]
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x88c80003,  // lwl t0,3(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwl(r8, Mem0[r6 + 3<32>:word32])");
+                "1|L--|r8 = __lwl(r8, Mem0[r6 + 3<i32>:word32])");
 
             AssertCode(0x98c80000,   // lwr t0,0(a2)
                 "0|L--|00100000(4): 1 instructions",
@@ -416,7 +416,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xE7AC0030, // swc1\tf12,0030(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x30<32>:word32] = f12");
+                "1|L--|Mem0[sp + 48<i32>:word32] = f12");
         }
 
         [Test]
@@ -506,8 +506,6 @@ namespace Reko.UnitTests.Arch.Mips
                 "2|L--|r10 = r3");
         }
 
-
-
         [Test]
         public void MipsRw_swl_swr()
         {
@@ -517,7 +515,7 @@ namespace Reko.UnitTests.Arch.Mips
 
             AssertCode(0xBBA80028,                // swr r8, 0028(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x28<32>:word32] = __swr(Mem0[sp + 0x28<32>:word32], r8)");
+                "1|L--|Mem0[sp + 43<i32>:word32] = __swr(Mem0[sp + 43<i32>:word32], r8)");
         }
 
         [Test(Description = "Oddly, we see production code that writes to the r0 register. We musn't allow that assignment result in invalid code")]
@@ -1340,7 +1338,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xD9714B49,   // ldc2	r17,4B49(r11)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__write_cpr2(0x11<8>, Mem0[r11 + 0x4B49<32>:word64])");
+                "1|L--|__write_cpr2(0x11<8>, Mem0[r11 + 19273<i32>:word64])");
         }
 
         [Test]
@@ -1348,7 +1346,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xCA753D95,   // lwc2	r21,3D95(r19)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__write_cpr2(0x15<8>, Mem0[r19 + 0x3D95<32>:word64])");
+                "1|L--|__write_cpr2(0x15<8>, Mem0[r19 + 15765<i32>:word64])");
         }
 
         [Test]
@@ -1356,7 +1354,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xFBB8BB46,   // sdc2	r24,-44BA(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp - 0x44BA<32>:word64] = __read_cpr2<word64>(0x18<8>)");
+                "1|L--|Mem0[sp - 17594<i32>:word64] = __read_cpr2<word64>(0x18<8>)");
         }
 
         [Test]
@@ -1373,7 +1371,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xE8BCCD9A,   // swc2	r28,-3266(r5)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r5 - 0x3266<32>:word32] = __read_cpr2<word32>(0x1C<8>)");
+                "1|L--|Mem0[r5 - 12902<i32>:word32] = __read_cpr2<word32>(0x1C<8>)");
         }
 
         [Test]

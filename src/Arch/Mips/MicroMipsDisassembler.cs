@@ -259,7 +259,10 @@ namespace Reko.Arch.Mips
                 var baseReg =  d.arch.GetRegister(iBase)!;
 
                 var offset = offsetField.ReadSigned(u) * dt.Size;
-                var mop = new IndirectOperand(dt, offset, baseReg);
+                var mop = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    baseReg);
                 d.ops.Add(mop);
                 return true;
             };
@@ -276,7 +279,10 @@ namespace Reko.Arch.Mips
                 var iBase = (int) baseField.Read(u);
                 var baseReg = d.arch.GetRegister(iBase)!;
                 var offset = offsetField.ReadSigned(u);
-                var mop = new IndirectOperand(dt, offset, baseReg);
+                var mop = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    baseReg);
                 d.ops.Add(mop);
                 return true;
             };
@@ -296,7 +302,10 @@ namespace Reko.Arch.Mips
             var baseReg = dasm.arch.GetRegister(iBase)!;
             var encOffset = offsetField16.Read(uInstr);
             var offset = encodedByteOffsets[encOffset];
-            var mop = new IndirectOperand(PrimitiveType.Byte, offset, baseReg);
+            var mop = new IndirectOperand(
+                PrimitiveType.Byte, 
+                ImmediateOperand.Int32(offset),
+                baseReg);
             dasm.ops.Add(mop);
             return true;
         }
@@ -311,7 +320,10 @@ namespace Reko.Arch.Mips
                 var iBase32 = threeBitRegisterEncodings[iBase];
                 var baseReg = d.arch.GetRegister(iBase32)!;
                 var offset = offsetField.ReadSigned(u) * dt.Size;
-                var mop = new IndirectOperand(dt, offset, baseReg);
+                var mop = new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    baseReg);
                 d.ops.Add(mop);
                 return true;
             };

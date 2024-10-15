@@ -2,8 +2,8 @@
 
 ;; _init: 004001BC
 _init proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-0000795C
+	lui	r28,%hi(FFFF86A4)
+	addiu	r28,r28,%lo(FFFF86A4)
 	addu	r28,r28,r25
 	addiu	sp,sp,-00000020
 	sw	r28,0010(sp)

@@ -383,12 +383,8 @@ namespace Reko.Arch.Mips
             case IndirectOperand indOp:
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
-                if (indOp.Offset == 0)
-                    ea = baseReg;
-                else if (indOp.Offset > 0)
-                    ea = m.IAdd(baseReg, indOp.Offset);
-                else
-                    ea = m.ISub(baseReg, -indOp.Offset);
+                int offset = indOp.IntOffset();
+                ea = m.AddSubSignedInt(baseReg, offset);
                 return m.Mem(indOp.Width, ea);
             case Address addrOp:
                 return addrOp;
@@ -449,12 +445,7 @@ namespace Reko.Arch.Mips
             case IndirectOperand indOp:
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
-                if (indOp.Offset == 0)
-                    ea = baseReg;
-                else if (indOp.Offset > 0)
-                    ea = m.IAdd(baseReg, indOp.Offset);
-                else
-                    ea = m.ISub(baseReg, -indOp.Offset);
+                ea = m.AddSubSignedInt(baseReg, indOp.IntOffset());
                 return m.Mem(indOp.Width, ea);
             case IndexedOperand idxOp:
                 if (idxOp.Base.Number == 0)

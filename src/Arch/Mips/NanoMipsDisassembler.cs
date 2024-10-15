@@ -372,7 +372,10 @@ namespace Reko.Arch.Mips
                 var iReg = gpr3_encoding[iEncodedReg];
                 var baseReg = d.arch.GetRegister(iReg)!;
                 var nOffset = offsetField.Read(u) * dt.Size;
-                d.ops.Add(new IndirectOperand(dt, (int) nOffset, baseReg));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32((int) nOffset),
+                    baseReg));
                 return true;
             };
         }
@@ -390,7 +393,10 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(dt, offset, d.arch.StackRegister));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    d.arch.StackRegister));
                 return true;
             };
         }
@@ -404,7 +410,10 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(dt, offset, d.gp));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    d.gp));
                 return true;
             };
         }
@@ -423,7 +432,10 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(dt, offset, d.gp));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(offset),
+                    d.gp));
                 return true;
             };
         }
@@ -439,7 +451,10 @@ namespace Reko.Arch.Mips
                 var iBase = (int) baseField.Read(u);
                 var off = (int)offsetField.Read(u);
                 var rBase = d.arch.GetRegister(iBase)!;
-                d.ops.Add(new IndirectOperand(dt, off, rBase));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(off),
+                    rBase));
                 return true;
             };
         }
@@ -453,7 +468,10 @@ namespace Reko.Arch.Mips
                 var iBase = (int) baseField.Read(u);
                 var off = Bitfield.ReadSignedFields(offsetFields, u);
                 var rBase = d.arch.GetRegister(iBase)!;
-                d.ops.Add(new IndirectOperand(dt, off, rBase));
+                d.ops.Add(new IndirectOperand(
+                    dt,
+                    ImmediateOperand.Int32(off),
+                    rBase));
                 return true;
             };
         }
@@ -575,7 +593,10 @@ namespace Reko.Arch.Mips
                 var rt = d.arch.GetRegister(gpr4_encoding[iRtCode])!;
                 var rs = d.arch.GetRegister(gpr4_encoding[iRsCode])!;
                 d.ops.Add(rt);
-                d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, rs));
+                d.ops.Add(new IndirectOperand(
+                    PrimitiveType.Word32,
+                    ImmediateOperand.Int32(offset),
+                    rs));
                 return true;
             };
         }

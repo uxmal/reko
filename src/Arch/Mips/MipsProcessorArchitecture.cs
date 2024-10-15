@@ -101,7 +101,8 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return CreateDisassemblerInternal(imageReader);
+            var dasm = CreateDisassemblerInternal(imageReader);
+            return new LongConstantFuser(dasm);
         }
 
         private IEnumerable<MipsInstruction> CreateDisassemblerInternal(EndianImageReader imageReader)
