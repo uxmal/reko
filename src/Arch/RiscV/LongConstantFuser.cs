@@ -70,7 +70,7 @@ namespace Reko.Arch.RiscV
                     else if (IsMemoryInstruction(instrLo.Mnemonic))
                     {
                         var memOp = (MemoryOperand) instrLo.Operands[1];
-                        if (instrLo.Operands[0] == memOp.Base &&
+                        if (instrHi.Operands[0] == memOp.Base &&
                             memOp.Offset is ImmediateOperand imm)
                         {
                             var immHi = (ImmediateOperand) instrHi.Operands[1];
@@ -113,7 +113,7 @@ namespace Reko.Arch.RiscV
                     else if (IsMemoryInstruction(instrLo.Mnemonic))
                     {
                         var memOp = (MemoryOperand) instrLo.Operands[1];
-                        if (instrLo.Operands[0] == memOp.Base &&
+                        if (instrHi.Operands[0] == memOp.Base &&
                             memOp.Offset is ImmediateOperand imm)
                         {
                             immLo = imm;

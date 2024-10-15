@@ -656,7 +656,8 @@ namespace Reko.Arch.PowerPC
 
         private MachineOperand MemOff(uint reg, uint wInstr)
         {
-            return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int)reg & 0x1F], (short) wInstr);
+            return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int)reg & 0x1F],
+                ImmediateOperand.Int32((short) wInstr));
         }
 
         private RegisterStorage CRegFromBits(uint r)

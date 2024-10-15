@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         internal void Lbzu(RegisterStorage rD, short offset, RegisterStorage rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lbzu, rD, new MemoryOperand(rD.DataType, rA, offset), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lbzu, rD, new MemoryOperand(rD.DataType, rA, ImmediateOperand.Int32(offset)), null, false));
         }
 
         public void Lis(RegisterStorage r, ushort uimm)
@@ -149,12 +149,12 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public void Lwzu(RegisterStorage rD, short offset, RegisterStorage rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lwzu, rD, new MemoryOperand(rD.DataType, rA, offset), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwzu, rD, new MemoryOperand(rD.DataType, rA, ImmediateOperand.Int32(offset)), null, false));
         }
 
         public void Lwz(RegisterStorage rD, short offset, RegisterStorage rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lwz, rD, new MemoryOperand(rD.DataType, rA, offset), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwz, rD, new MemoryOperand(rD.DataType, rA, ImmediateOperand.Int32(offset)), null, false));
         }
 
         public void Mtctr(RegisterStorage r)
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private MemoryOperand Mem(RegisterStorage baseReg, short offset)
         {
-            return new MemoryOperand(baseReg.DataType, baseReg, offset);
+            return new MemoryOperand(baseReg.DataType, baseReg, ImmediateOperand.Int32(offset));
         }
     }
 }

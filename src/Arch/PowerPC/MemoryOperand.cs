@@ -19,30 +19,47 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        public MemoryOperand(PrimitiveType size, RegisterStorage reg, int offset) : base(size)
+        public MemoryOperand(PrimitiveType size, RegisterStorage reg, MachineOperand offset) : base(size)
         {
             this.BaseRegister = reg;
             this.Offset = offset;
         }
 
         public RegisterStorage BaseRegister { get; }
-        public int Offset { get; } 
+        public MachineOperand Offset { get; set; } 
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteString($"{Offset}({BaseRegister})");
+            if (Offset is SliceOperand slice)
+            {
+                renderer.WriteString($"{slice}({BaseRegister})");
+            }
+            else
+            {
+                var offset = (ImmediateOperand) this.Offset;
+                renderer.WriteString($"{offset.Value.ToInt32()}({BaseRegister.Name})");
+            }
+        }
+
+        public int IntOffset()
+        {
+            ImmediateOperand offset;
+            if (this.Offset is SliceOperand slice)
+            {
+                offset = slice.Value;
+            }
+            else
+            {
+                offset = (ImmediateOperand) this.Offset;
+            }
+            return offset.Value.ToInt32();
         }
     }
 }

@@ -2386,8 +2386,8 @@ fn00402404 proc
 
 l00402458:
 	addi	r4,r1,+0038
-	addis	r3,r0,+7379
-	ori	r3,r3,7376
+	addis	r3,%hi(73797376),+7379
+	ori	r3,r3,%lo(73797376)
 	bl	fn00403F9C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
@@ -2866,8 +2866,8 @@ l00402A7C:
 l00402AB0:
 	addi	r31,r1,+0038
 	ori	r4,r31,0000
-	addis	r3,r0,+6164
-	ori	r3,r3,6472
+	addis	r3,%hi(61646472),+6164
+	ori	r3,r3,%lo(61646472)
 	bl	fn00403F9C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
@@ -3554,8 +3554,8 @@ fn004032FC proc
 	addi	r5,r5,+0004
 	addi	r6,r0,+0042
 	stw	r6,12(r31)
-	addis	r7,r0,+7FFF
-	ori	r7,r7,FFFF
+	addis	r7,%hi(FFFFFFFF),+7FFF
+	ori	r7,r7,%lo(FFFFFFFF)
 	stw	r7,4(r31)
 	bl	fn004004B4
 	nop
@@ -3651,8 +3651,8 @@ l0040347C:
 	beq	cr1,$004034A4
 
 l00403484:
-	addis	r4,r0,+7FFF
-	ori	r4,r4,FFFF
+	addis	r4,%hi(FFFFFFFF),+7FFF
+	ori	r4,r4,%lo(FFFFFFFF)
 	cmplw	cr1,r28,r4
 	bgt	cr1,$004034A4
 

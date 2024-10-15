@@ -731,21 +731,22 @@ namespace Reko.Arch.PowerPC
         {
             var mop = (MemoryOperand) operand;
             var reg = binder.EnsureRegister(mop.BaseRegister);
-            var offset = mop.Offset;
+            var offset = mop.IntOffset();
             return emitter.IAddS(reg, offset);
         }
 
         private Expression EffectiveAddress_r0(int iOp, int extraOffset = 0)
         {
             var mop = (MemoryOperand) instr.Operands[iOp];
+            var offset = mop.IntOffset();
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32(mop.Offset + extraOffset);
+                return Constant.Word32(offset + extraOffset);
             }
             else
             {
                 var reg = binder.EnsureRegister(mop.BaseRegister);
-                var offset = mop.Offset + extraOffset;
+                offset = offset + extraOffset;
                 if (offset != 0)
                     return m.IAddS(reg, offset);
                 else
@@ -756,14 +757,14 @@ namespace Reko.Arch.PowerPC
         private Expression EffectiveAddress_r0(MachineOperand operand)
         {
             var mop = (MemoryOperand) operand;
+            var offset = mop.IntOffset();
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32(mop.Offset);
+                return Constant.Word32(offset);
             }
             else
             {
                 var reg = binder.EnsureRegister(mop.BaseRegister);
-                var offset = mop.Offset;
                 if (offset != 0)
                     return m.IAddS(reg, offset);
                 else

@@ -171,7 +171,8 @@ namespace Reko.Arch.PowerPC
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
+            var dasm = new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
+            return new LongConstantFuser(dasm);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -230,7 +231,7 @@ namespace Reko.Arch.PowerPC
                 return null;
             if (mem.BaseRegister != reg)
                 return null;
-            uAddr = (uint)((int)uAddr + mem.Offset);
+            uAddr = (uint)((int)uAddr + mem.IntOffset());
             reg = (RegisterStorage)e.Current.Operands[0];
 
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.mtctr)
