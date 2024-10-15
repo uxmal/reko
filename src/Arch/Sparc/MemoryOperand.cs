@@ -22,17 +22,13 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Sparc
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        private MemoryOperand(RegisterStorage b, Constant? offset, RegisterStorage? index, PrimitiveType width) : base(width)
+        private MemoryOperand(RegisterStorage b, MachineOperand? offset, RegisterStorage? index, PrimitiveType width) : base(width)
         {
             this.Base = b;
             this.Offset = offset;
@@ -41,7 +37,7 @@ namespace Reko.Arch.Sparc
 
         public static MemoryOperand Indirect(RegisterStorage baseRg, Constant offset, PrimitiveType dt)
         {
-            return new MemoryOperand(baseRg, offset, null, dt);
+            return new MemoryOperand(baseRg, new ImmediateOperand(offset), null, dt);
         }
 
         public static MemoryOperand Indexed(RegisterStorage baseReg, RegisterStorage index, PrimitiveType dt)
@@ -50,7 +46,7 @@ namespace Reko.Arch.Sparc
         }
 
         public RegisterStorage Base { get; }
-        public Constant? Offset { get; }
+        public MachineOperand? Offset { get; set; }
         public RegisterStorage? Index { get; }
 
 
@@ -59,11 +55,12 @@ namespace Reko.Arch.Sparc
             renderer.WriteFormat("[%{0}", Base.Name);
             if (Offset is not null)
             {
-                if (!Offset.IsNegative)
+                int offset = IntOffset();
+                if (offset >= 0)
                 {
                     renderer.WriteString("+");
                 }
-                renderer.WriteString(Offset.ToInt16().ToString());
+                renderer.WriteString(offset.ToString());
             }
             else
             {
@@ -71,6 +68,22 @@ namespace Reko.Arch.Sparc
                 renderer.WriteFormat("+%{0}", Index);
             }
             renderer.WriteString("]");
+        }
+
+        public int IntOffset()
+        {
+            if (Offset is null)
+                return 0;
+            ImmediateOperand offset;
+            if (Offset is SliceOperand slice)
+            {
+                offset = slice.Value;
+            }
+            else
+            {
+                offset = (ImmediateOperand) Offset;
+            }
+            return offset.Value.ToInt32();
         }
     }
 }

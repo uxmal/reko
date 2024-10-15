@@ -147,8 +147,8 @@ l00010B2C:
 	add	%o0,0000025C,%o0
 
 l00010B34:
-	sethi	00000042,%o0
-	add	%o0,00000274,%o0
+	sethi	%hi(00420274),%o0
+	add	%o0,%lo(00420274),%o0
 
 l00010B3C:
 	be	00010B4C
@@ -159,8 +159,8 @@ l00010B44:
 	add	%o1,0000028C,%o3
 
 l00010B4C:
-	sethi	00000042,%o1
-	add	%o1,000002A4,%o3
+	sethi	%hi(004202A4),%o1
+	add	%o1,%lo(004202A4),%o3
 
 l00010B54:
 	be	00010B64
@@ -171,8 +171,8 @@ l00010B5C:
 	add	%o1,000002BC,%o2
 
 l00010B64:
-	sethi	00000042,%o1
-	add	%o1,000002D4,%o2
+	sethi	%hi(004202D4),%o1
+	add	%o1,%lo(004202D4),%o2
 
 l00010B6C:
 	be	00010B7C
@@ -183,18 +183,18 @@ l00010B74:
 	add	%o1,000002EC,%o1
 
 l00010B7C:
-	sethi	00000042,%o1
-	add	%o1,00000304,%o1
+	sethi	%hi(00420304),%o1
+	add	%o1,%lo(00420304),%o1
 
 l00010B84:
 	be	00010BE8
-	sethi	00000042,%o4
+	sethi	%hi(0042025C),%o4
 
 l00010B8C:
 	add	%o4,0000025C,%o4
 	subcc	%o0,%o4,%g0
 	bne	00010BDC
-	sethi	00000042,%o0
+	sethi	%hi(0042028C),%o0
 
 l00010B9C:
 	add	%o0,0000028C,%o0
@@ -203,15 +203,15 @@ l00010B9C:
 	or	%g0,00000000,%i1
 
 l00010BAC:
-	sethi	00000042,%o0
-	add	%o0,000002BC,%o0
+	sethi	%hi(004202BC),%o0
+	add	%o0,%lo(004202BC),%o0
 	subcc	%o2,%o0,%g0
 	bne	00010BE0
 	or	%g0,00000000,%i1
 
 l00010BC0:
-	sethi	00000042,%o0
-	add	%o0,000002EC,%o0
+	sethi	%hi(004202EC),%o0
+	add	%o0,%lo(004202EC),%o0
 	subcc	%o1,%o0,%g0
 	bne	00010BE0
 	or	%g0,00000000,%i1
@@ -228,11 +228,11 @@ l00010BE0:
 	subcc	%i1,00000000,%g0
 
 l00010BE8:
-	sethi	00000042,%o4
-	add	%o4,00000274,%o4
+	sethi	%hi(00420274),%o4
+	add	%o4,%lo(00420274),%o4
 	subcc	%o0,%o4,%g0
 	bne	00010C3C
-	sethi	00000042,%o0
+	sethi	%hi(004202A4),%o0
 
 l00010BFC:
 	add	%o0,000002A4,%o0
@@ -241,15 +241,15 @@ l00010BFC:
 	sethi	00000000,%g0
 
 l00010C0C:
-	sethi	00000042,%o0
-	add	%o0,000002D4,%o0
+	sethi	%hi(004202D4),%o0
+	add	%o0,%lo(004202D4),%o0
 	subcc	%o2,%o0,%g0
 	bne	00010C3C
 	sethi	00000000,%g0
 
 l00010C20:
-	sethi	00000042,%o0
-	add	%o0,00000304,%o0
+	sethi	%hi(00420304),%o0
+	add	%o0,%lo(00420304),%o0
 	subcc	%o1,%o0,%g0
 	bne	00010C3C
 	sethi	00000000,%g0

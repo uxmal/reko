@@ -511,11 +511,11 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xABA8002B,                // swl r8, 002B(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x2B<32>:word32] = __swl(Mem0[sp + 0x2B<32>:word32], r8)");
+                "1|L--|Mem0[sp + 43<i32>:word32] = __swl(Mem0[sp + 43<i32>:word32], r8)");
 
             AssertCode(0xBBA80028,                // swr r8, 0028(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 43<i32>:word32] = __swr(Mem0[sp + 43<i32>:word32], r8)");
+                "1|L--|Mem0[sp + 40<i32>:word32] = __swr(Mem0[sp + 40<i32>:word32], r8)");
         }
 
         [Test(Description = "Oddly, we see production code that writes to the r0 register. We musn't allow that assignment result in invalid code")]
@@ -633,7 +633,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0xf7a10018, // sdc1 $f1,24(sp)
             "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x18<64>:word64] = f1");
+                "1|L--|Mem0[sp + 24<i64>:word64] = f1");
         }
 
         [Test]

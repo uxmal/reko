@@ -362,8 +362,9 @@ namespace Reko.Arch.Sparc
             var mem = (MemoryOperand) op;
             if (mem.Offset is not null)
             {
+                int nOffset = mem.IntOffset();
                 baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
-                offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
+                offset = nOffset == 0 ? null : Constant.Int32(nOffset);
             }
             else
             {

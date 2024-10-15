@@ -63,7 +63,7 @@ namespace Reko.Arch.Sparc
                     return false;
                 if (mA.Offset is not null)
                 {
-                    return CompareValues(mA.Offset, mB.Offset);
+                    return mA.IntOffset() == mB.IntOffset();
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace Reko.Arch.Sparc
                 return a.GetHashCode();
             case MemoryOperand m:
                 var h = GetRegisterHash(m.Base);
-                h = h ^ 29 * GetConstantHash(m.Offset);
+                h = h ^ 29 * m.IntOffset();
                 h = h ^ 59 * GetRegisterHash(m.Index);
                 return h;
             }

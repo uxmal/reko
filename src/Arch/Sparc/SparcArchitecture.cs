@@ -63,8 +63,10 @@ namespace Reko.Arch.Sparc
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new SparcDisassembler(this, Decoder, imageReader);
+            var dasm = new SparcDisassembler(this, Decoder, imageReader);
+            return new LongConstantFuser(dasm);
         }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new SparcInstructionComparer(norm);
