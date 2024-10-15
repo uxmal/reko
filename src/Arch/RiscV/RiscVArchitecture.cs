@@ -95,7 +95,8 @@ namespace Reko.Arch.RiscV
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new RiscVDisassembler(this, decoders!, imageReader);
+            var dasm = new RiscVDisassembler(this, decoders!, imageReader);
+            return new LongConstantFuser(dasm);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

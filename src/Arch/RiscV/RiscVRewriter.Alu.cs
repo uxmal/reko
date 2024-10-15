@@ -24,7 +24,6 @@ using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.Security.Cryptography;
 
 namespace Reko.Arch.RiscV
 {
@@ -220,9 +219,10 @@ namespace Reko.Arch.RiscV
             {
                 var baseReg = binder.EnsureRegister(mem.Base);
                 ea = baseReg;
-                if (mem.Offset != 0)
+                int offset = OffsetOf(mem);
+                if (offset != 0)
                 {
-                    ea = m.IAddS(ea, mem.Offset);
+                    ea = m.IAddS(ea, offset);
                 }
             }
             else
@@ -242,6 +242,20 @@ namespace Reko.Arch.RiscV
                 src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(dst, src);
+        }
+
+        private int OffsetOf(MemoryOperand mem)
+        {
+            ImmediateOperand offset;
+            if (mem.Offset is SliceOperand slice)
+            {
+                offset = slice.Value;
+            }
+            else
+            {
+                offset = (ImmediateOperand) mem.Offset;
+            }
+            return offset.Value.ToInt32();
         }
 
         private void RewriteLoadReserved(DataType dt)
@@ -429,7 +443,8 @@ namespace Reko.Arch.RiscV
             var src = RewriteOp(0);
             if (instr.Operands[1] is MemoryOperand mem)
             {
-                RewriteStore(dt, binder.EnsureRegister(mem.Base), mem.Offset, src);
+                int offset = OffsetOf(mem);
+                RewriteStore(dt, binder.EnsureRegister(mem.Base), offset, src);
             }
             else
             {

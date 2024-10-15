@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Reko.Arch.RiscV
@@ -240,6 +241,9 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
+        /// <summary>
+        /// Destination register encoded at bit position 7.
+        /// </summary>
         private static bool rd(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetRegister(wInstr, 7);
@@ -249,7 +253,7 @@ namespace Reko.Arch.RiscV
 
         private static bool i(uint wInstr, RiscVDisassembler dasm)
         {
-            var op = dasm.GetImmediate(wInstr, 20, 's');
+            var op = dasm.GetSignedImmediate(wInstr, 20);
             dasm.state.ops.Add(op);
             return true;
         }
@@ -393,19 +397,11 @@ namespace Reko.Arch.RiscV
             return reg;
         }
 
-        private ImmediateOperand GetImmediate(uint wInstr, int bitPos, char sign)
+        private ImmediateOperand GetSignedImmediate(uint wInstr, int bitPos)
         {
             Constant c;
-            if (sign == 's')
-            {
-                int s = ((int)wInstr) >> bitPos;
-                c = Constant.Create(arch.NaturalSignedInteger, s);
-            }
-            else
-            {
-                uint u = wInstr >> bitPos;
-                c = Constant.Create(arch.WordWidth, u);
-            }
+            int s = ((int) wInstr) >> bitPos;
+            c = Constant.Create(arch.NaturalSignedInteger, s);
             return new ImmediateOperand(c);
         }
 
@@ -429,14 +425,6 @@ namespace Reko.Arch.RiscV
         {
             long offset = Bitfield.ReadSignedFields(bfBranch, wInstr) << 1;
             return addrInstr + offset;
-        }
-
-        private ImmediateOperand GetSImmediate(uint wInstr)
-        {
-            var offset = (int)
-                   (extract32(wInstr, 7, 5)
-                 | (extract32(wInstr, 25, 7) << 5));
-            return ImmediateOperand.Int32(offset);
         }
 
         public override RiscVInstruction NotYetImplemented(string message)
@@ -854,7 +842,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    uOffset));
+                    ImmediateOperand.Int32(uOffset)));
                 return true;
             };
         }
@@ -882,21 +870,19 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    uOffset));
+                    ImmediateOperand.Int32(uOffset)));
                 return true;
             };
         }
 
 
-        // Memory operand format, where offset is scaled by the register size
-        private static Mutator<RiscVDisassembler> MemScaledOffset(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
-        {
-            var masks = fields
-                .Select(field => new Bitfield(field.pos, field.len))
-                .ToArray();
-
-            return MemScaledOffset(dt, regOffset, masks);
-        }
+        /// <summary>
+        /// Memory operand format, where offset is scaled by the register size
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="regOffset"></param>
+        /// <param name="masks"></param>
+        /// <returns></returns>
 
         private static Mutator<RiscVDisassembler> MemScaledOffset(PrimitiveType dt, int regOffset, Bitfield[] masks)
         {
@@ -910,7 +896,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    uOffset));
+                    ImmediateOperand.Int32(uOffset)));
                 return true;
             };
         }
@@ -936,7 +922,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    uOffset));
+                    ImmediateOperand.Int32(uOffset)));
                 return true;
             };
         }
@@ -959,7 +945,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.StackRegister,
-                    uOffset));
+                    ImmediateOperand.Int32(uOffset)));
                 return true;
             };
         }

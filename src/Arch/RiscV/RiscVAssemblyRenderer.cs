@@ -236,7 +236,7 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        public string FormatValue(Constant c, bool forceSignForSignedIntegers = false)
+        public static string FormatValue(Constant c, bool forceSignForSignedIntegers = false)
         {
             var pt = (PrimitiveType) c.DataType;
             if (pt.Domain == Domain.SignedInt)
@@ -269,7 +269,8 @@ namespace Reko.Arch.RiscV
                         RenderSyntheticInstruction("li", instr, renderer, options, ops_0_2);
                         return;
                     }
-                    if (((ImmediateOperand) instr.Operands[2]).Value.IsZero)
+                    if (instr.Operands[2] is ImmediateOperand imm &&
+                        imm.Value.IsZero)
                     {
                         RenderSyntheticInstruction("mv", instr, renderer, options, ops_0_1);
                         return;
@@ -417,26 +418,44 @@ namespace Reko.Arch.RiscV
                 }
                 return;
             case MemoryOperand memop:
-                RenderMemoryOperand(memop, renderer, options);
+                RenderMemoryOperand(instr, memop, renderer, options);
+                return;
+            case SliceOperand slice:
+                RenderSliceOperand(instr, slice, renderer, options);
                 return;
             }
             throw new NotImplementedException($"Risc-V operand type {op.GetType().Name} not implemented yet.");
         }
 
         protected virtual void RenderMemoryOperand(
+            RiscVInstruction instr,
             MemoryOperand memop,
             MachineInstructionRenderer renderer,
             MachineInstructionRendererOptions options)
         {
-            if(memop.Offset == 0)
+            if (memop.Offset is SliceOperand slice)
             {
-                renderer.WriteFormat("({0:X})", memop.Base);
+                RenderSliceOperand(instr, slice, renderer, options);
             }
             else
             {
-                var offset = FormatSignedValue(memop.Offset);
-                renderer.WriteFormat("{0}({1:X})", offset, memop.Base);
+                int offset = ((ImmediateOperand) memop.Offset).Value.ToInt32();
+                if (offset != 0)
+                {
+                    var sOffset = FormatSignedValue(offset);
+                    renderer.WriteFormat(sOffset);
+                }
             }
+            renderer.WriteFormat("({0})", memop.Base.Name);
+        }
+
+
+        internal void RenderSliceOperand(RiscVInstruction instr, SliceOperand slice, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.WriteString(slice.Slice.Format());
+            renderer.WriteChar('(');
+            this.RenderOperand(instr, slice.InferredValue, renderer, options);
+            renderer.WriteChar(')');
         }
 
         protected virtual void RenderRegister(string regName, MachineInstructionRenderer renderer)
@@ -448,6 +467,13 @@ namespace Reko.Arch.RiscV
             ImmediateOperand imm,
             MachineInstructionRenderer renderer)
         {
+            RenderImmediateOperand(imm, renderer);
+        }
+
+        public static void RenderImmediateOperand(
+            ImmediateOperand imm, 
+            MachineInstructionRenderer renderer)
+        { 
             var pt = imm.Value.DataType;
             if (pt.Domain == Domain.Offset)
                 renderer.WriteString(FormatUnsignedValue(imm.Value.ToUInt64(), "0x{0:X}"));

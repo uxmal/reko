@@ -487,9 +487,10 @@ namespace Reko.Arch.RiscV
                 return addr;
             case MemoryOperand mem:
                 var ea = (Expression)binder.EnsureRegister(mem.Base!);
-                if (mem.Offset != 0)
+                int offset = OffsetOf(mem);
+                if (offset != 0)
                 {
-                    ea = m.AddSubSignedInt(ea, mem.Offset);
+                    ea = m.AddSubSignedInt(ea, offset);
                 }
                 return m.Mem(mem.Width, ea);
             }

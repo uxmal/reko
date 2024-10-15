@@ -98,7 +98,7 @@ namespace Reko.Core.Collections
         /// <param name="result">If the peek was successful, the peeked
         /// item.</param>
         /// <returns>True if the peek was successful, false if not.</returns>
-        public bool TryPeek(int ahead, [MaybeNullWhen(false)] out T? result)
+        public bool TryPeek(int ahead, [MaybeNullWhen(false)] out T result)
         {
             if (ahead < 0)
                 throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(ahead));

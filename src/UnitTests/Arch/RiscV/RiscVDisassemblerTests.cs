@@ -22,7 +22,9 @@ using NUnit.Framework;
 using Reko.Arch.RiscV;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.RiscV
 {
@@ -102,6 +104,21 @@ namespace Reko.UnitTests.Arch.RiscV
             Assert.AreEqual(sExp, i.ToString());
         }
 
+        private void AssertCode(params string[] arguments)
+        {
+            var hexBytes = arguments[^1];
+            byte[] bytes = BytePattern.FromHexBytes(hexBytes);
+            var mem = new ByteMemoryArea(LoadAddress, bytes);
+            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(mem, 0U));
+            var instrs = dasm.Take(arguments.Length - 1).ToArray();
+            for (int i = 0; i < arguments.Length - 1; ++i)
+            {
+                var sInstr = instrs[i].ToString();
+                Assert.AreEqual(arguments[i], sInstr, $"Instruction {i}");
+            }
+        }
+
+
         [Test]
         public void RiscV_dasm_beq()
         {
@@ -112,6 +129,15 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_lui()
         {
             AssertCode("lui\tt6,0x12345", 0b00010010001101000101_11111_01101_11);
+        }
+
+        [Test]
+        public void RiscV_dasm_lui_addi()
+        {
+            AssertCode(
+                "lui\tt6,pcrel_hi(0x12345678)",
+                "addi\tt6,t6,pcrel_lo(0x12345678)",
+                "B75F3412 938F 8F67");
         }
 
         [Test]
@@ -156,6 +182,26 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("auipc\tgp,0xFFFFD", 0b11111111111111111_101_00011_00101_11);
         }
 
+        [Test]
+        public void RiscVDis_auipc_addi()
+        {
+            AssertCode(
+                "auipc\ts1,pcrel_hi(0x000FF9A6)",
+                "addi\ts1,s1,pcrel_lo(0x000FF9A6)",
+                "97040000 9384649A");
+            //0497 0000       auipc s1,0x0!!!8493 0A64 addi    s1,s1,0xA6
+
+        }
+
+        [Test]
+        public void RiscV_dasm_auipc_sb()
+        {
+            AssertCode(
+                "auipc\ta4,0x2",
+                "sb\ta5,0x402(a4)",
+                "1727 0000 2301 F740");
+            ///2717 0000     	auipc a4,0x2 !!!0123 40F7     	sb a5,0x402(a4)
+        }
         [Test]
         public void RiscV_dasm_jal_ra()
         {
@@ -1346,5 +1392,6 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             AssertCode("zip\ts11,a7", 0b000010011110_10001_001_11011_0010011);
         }
+
     }
 }

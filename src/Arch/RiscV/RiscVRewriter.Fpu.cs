@@ -97,9 +97,10 @@ namespace Reko.Arch.RiscV
             if (instr.Operands[1] is MemoryOperand mem)
             {
                 ea = binder.EnsureRegister(mem.Base);
-                if (mem.Offset != 0)
+                var offset = OffsetOf(mem);
+                if (offset != 0)
                 {
-                    ea = m.IAddS(ea, mem.Offset);
+                    ea = m.IAddS(ea, offset);
                 }
             }
             else

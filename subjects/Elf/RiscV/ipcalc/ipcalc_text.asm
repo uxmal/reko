@@ -708,8 +708,8 @@ l00000000000159E0:
 
 l00000000000159E8:
 	ld	a2,0x60(sp)
-	lui	a1,0x12
-	addi	a1,a1,-0x3B8
+	lui	a1,pcrel_hi(0x11C48)
+	addi	a1,a1,pcrel_lo(0x11C48)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -730,8 +730,8 @@ l0000000000015A14:
 	beq	a2,zero,0x0000000000015A2C
 
 l0000000000015A1C:
-	lui	a1,0x12
-	addi	a1,a1,-0x388
+	lui	a1,pcrel_hi(0x11C78)
+	addi	a1,a1,pcrel_lo(0x11C78)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -744,8 +744,8 @@ l0000000000015A34:
 	beq	a2,zero,0x0000000000015A4C
 
 l0000000000015A3C:
-	lui	a1,0x12
-	addi	a1,a1,-0x378
+	lui	a1,pcrel_hi(0x11C88)
+	addi	a1,a1,pcrel_lo(0x11C88)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -765,8 +765,8 @@ l0000000000015A5C:
 	beq	a0,zero,0x0000000000015DA4
 
 l0000000000015A70:
-	lui	a1,0x12
-	addi	a1,a1,-0x368
+	lui	a1,pcrel_hi(0x11C98)
+	addi	a1,a1,pcrel_lo(0x11C98)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -782,8 +782,8 @@ l0000000000015A88:
 	beq	a0,zero,0x0000000000015D90
 
 l0000000000015A9C:
-	lui	a1,0x12
-	addi	a1,a1,-0x348
+	lui	a1,pcrel_hi(0x11CB8)
+	addi	a1,a1,pcrel_lo(0x11CB8)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -796,8 +796,8 @@ l0000000000015AB4:
 	beq	a2,zero,0x0000000000015ACC
 
 l0000000000015ABC:
-	lui	a1,0x12
-	addi	a1,a1,-0x328
+	lui	a1,pcrel_hi(0x11CD8)
+	addi	a1,a1,pcrel_lo(0x11CD8)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -815,8 +815,8 @@ l0000000000015AE0:
 	beq	a2,zero,0x0000000000015AF8
 
 l0000000000015AE8:
-	lui	a1,0x12
-	addi	a1,a1,-0x308
+	lui	a1,pcrel_hi(0x11CF8)
+	addi	a1,a1,pcrel_lo(0x11CF8)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -832,8 +832,8 @@ l0000000000015B00:
 	beq	a0,zero,0x0000000000015E90
 
 l0000000000015B14:
-	lui	a1,0x12
-	addi	a1,a1,-0x2F8
+	lui	a1,pcrel_hi(0x11D08)
+	addi	a1,a1,pcrel_lo(0x11D08)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -849,8 +849,8 @@ l0000000000015B2C:
 	beq	a0,zero,0x0000000000015EA4
 
 l0000000000015B40:
-	lui	a1,0x12
-	addi	a1,a1,-0x2D8
+	lui	a1,pcrel_hi(0x11D28)
+	addi	a1,a1,pcrel_lo(0x11D28)
 	li	a0,0x1
 	jal	__printf_chk
 
@@ -859,8 +859,8 @@ l0000000000015B50:
 	beq	a2,zero,0x00000000000153DC
 
 l0000000000015B58:
-	lui	a1,0x12
-	addi	a1,a1,-0x2B8
+	lui	a1,pcrel_hi(0x11D48)
+	addi	a1,a1,pcrel_lo(0x11D48)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x00000000000153DC
@@ -875,15 +875,15 @@ l0000000000015B74:
 	bne	a5,zero,0x0000000000015CD8
 
 l0000000000015B80:
-	lui	a3,0x12
-	addi	a3,a3,-0x660
+	lui	a3,pcrel_hi(0x119A0)
+	addi	a3,a3,pcrel_lo(0x119A0)
 
 l0000000000015B88:
 	mv	a4,s4
 
 l0000000000015B8C:
-	lui	a2,0x12
-	addi	a2,a2,-0x590
+	lui	a2,pcrel_hi(0x11A70)
+	addi	a2,a2,pcrel_lo(0x11A70)
 	li	a1,0x1
 	jal	__fprintf_chk
 	j	0x00000000000153D8
@@ -914,8 +914,8 @@ l0000000000015BD0:
 	bne	a5,zero,0x0000000000015E7C
 
 l0000000000015BDC:
-	lui	a3,0x12
-	addi	a3,a3,-0x660
+	lui	a3,pcrel_hi(0x119A0)
+	addi	a3,a3,pcrel_lo(0x119A0)
 	mv	a4,s10
 	j	0x0000000000015B8C
 
@@ -1011,8 +1011,8 @@ l0000000000015CB8:
 	j	0x00000000000153DC
 
 l0000000000015CD8:
-	lui	a3,0x12
-	addi	a3,a3,-0x668
+	lui	a3,pcrel_hi(0x11998)
+	addi	a3,a3,pcrel_lo(0x11998)
 	j	0x0000000000015B88
 
 l0000000000015CE4:
@@ -1036,24 +1036,24 @@ l0000000000015CF0:
 
 l0000000000015D18:
 	ld	a2,0x68(sp)
-	lui	a1,0x12
-	addi	a1,a1,-0x3D8
+	lui	a1,pcrel_hi(0x11C28)
+	addi	a1,a1,pcrel_lo(0x11C28)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x00000000000159D0
 
 l0000000000015D30:
 	ld	a2,0x58(sp)
-	lui	a1,0x12
-	addi	a1,a1,-0x3A8
+	lui	a1,pcrel_hi(0x11C58)
+	addi	a1,a1,pcrel_lo(0x11C58)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015A04
 
 l0000000000015D48:
 	lw	a2,0xD8(sp)
-	lui	a1,0x12
-	addi	a1,a1,-0x3C8
+	lui	a1,pcrel_hi(0x11C38)
+	addi	a1,a1,pcrel_lo(0x11C38)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x00000000000159D8
@@ -1068,22 +1068,22 @@ l0000000000015D60:
 
 l0000000000015D78:
 	ld	a2,0x50(sp)
-	lui	a1,0x12
-	addi	a1,a1,-0x398
+	lui	a1,pcrel_hi(0x11C68)
+	addi	a1,a1,pcrel_lo(0x11C68)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015A0C
 
 l0000000000015D90:
-	lui	a1,0x12
-	addi	a1,a1,-0x338
+	lui	a1,pcrel_hi(0x11CC8)
+	addi	a1,a1,pcrel_lo(0x11CC8)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015AAC
 
 l0000000000015DA4:
-	lui	a1,0x12
-	addi	a1,a1,-0x358
+	lui	a1,pcrel_hi(0x11CA8)
+	addi	a1,a1,pcrel_lo(0x11CA8)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015A80
@@ -1156,8 +1156,8 @@ l0000000000015E74:
 	j	0x0000000000015668
 
 l0000000000015E7C:
-	lui	a3,0x12
-	addi	a3,a3,-0x668
+	lui	a3,pcrel_hi(0x11998)
+	addi	a3,a3,pcrel_lo(0x11998)
 	mv	a4,s10
 	j	0x0000000000015B8C
 
@@ -1165,33 +1165,33 @@ l0000000000015E8C:
 	jal	__stack_chk_fail
 
 l0000000000015E90:
-	lui	a1,0x12
-	addi	a1,a1,-0x2E8
+	lui	a1,pcrel_hi(0x11D18)
+	addi	a1,a1,pcrel_lo(0x11D18)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015B24
 
 l0000000000015EA4:
-	lui	a1,0x12
-	addi	a1,a1,-0x2C8
+	lui	a1,pcrel_hi(0x11D38)
+	addi	a1,a1,pcrel_lo(0x11D38)
 	li	a0,0x1
 	jal	__printf_chk
 	j	0x0000000000015B50
 
 ;; fn0000000000015EB8: 0000000000015EB8
 fn0000000000015EB8 proc
-	auipc	gp,0xFFFFD
-	addi	gp,gp,0x590
+	auipc	gp,pcrel_hi(0x0000000000013448)
+	addi	gp,gp,pcrel_lo(0x0000000000013448)
 	mv	a5,a0
-	auipc	a0,0xFFFFF
-	addi	a0,a0,0x2BC
+	auipc	a0,pcrel_hi(fn0000000000015180)
+	addi	a0,a0,pcrel_lo(fn0000000000015180)
 	ld	a1,(sp)
 	addi	a2,sp,0x8
 	andi	sp,sp,-0x10
-	auipc	a3,0x2
-	addi	a3,a3,0x410
-	auipc	a4,0x2
-	addi	a4,a4,0x498
+	auipc	a3,pcrel_hi(fn00000000000182E8)
+	addi	a3,a3,pcrel_lo(fn00000000000182E8)
+	auipc	a4,pcrel_hi(fn0000000000018378)
+	addi	a4,a4,pcrel_lo(fn0000000000018378)
 	mv	a6,sp
 	j	__libc_start_main
 
@@ -1208,8 +1208,8 @@ fn0000000000015EF0 proc
 	bgeu	a4,a5,0x0000000000015F20
 
 l0000000000015F0C:
-	lui	t1,0x0
-	mv	t1,t1
+	lui	t1,pcrel_hi(0x0)
+	addi	t1,t1,pcrel_lo(0x0)
 	beq	t1,zero,0x0000000000015F20
 
 l0000000000015F18:
@@ -1236,8 +1236,8 @@ fn0000000000015F24 proc
 	beq	a1,zero,0x0000000000015F60
 
 l0000000000015F4C:
-	lui	t1,0x0
-	mv	t1,t1
+	lui	t1,pcrel_hi(0x0)
+	addi	t1,t1,pcrel_lo(0x0)
 	beq	t1,zero,0x0000000000015F60
 
 l0000000000015F58:
@@ -1277,8 +1277,8 @@ l0000000000015FA4:
 	j	fn0000000000015F24
 
 l0000000000015FA8:
-	lui	a5,0x0
-	mv	a5,a5
+	lui	a5,pcrel_hi(0x0)
+	addi	a5,a5,pcrel_lo(0x0)
 	beq	a5,zero,0x0000000000015FA4
 
 l0000000000015FB4:
@@ -2258,16 +2258,16 @@ fn0000000000016B38 proc
 
 l0000000000016B40:
 	slli	a0,a0,0x20
-	lui	a5,0x10
-	addi	a5,a5,0x480
+	lui	a5,pcrel_hi(0x10480)
+	addi	a5,a5,pcrel_lo(0x10480)
 	srli	a0,a0,0x1D
 	add	a0,a5,a0
 	ld	a0,(a0)
 	jalr	zero,ra,0x0
 
 l0000000000016B5C:
-	lui	a0,0x11
-	addi	a0,a0,0x1D0
+	lui	a0,pcrel_hi(0x111D0)
+	addi	a0,a0,pcrel_lo(0x111D0)
 	jalr	zero,ra,0x0
 
 ;; fn0000000000016B68: 0000000000016B68
@@ -2315,13 +2315,13 @@ l0000000000016BC0:
 	bltu	a3,a4,0x0000000000016CB8
 
 l0000000000016BCC:
-	lui	a4,0x11
-	addi	a4,a4,0x748
+	lui	a4,pcrel_hi(0x11748)
+	addi	a4,a4,pcrel_lo(0x11748)
 	j	0x0000000000016BE0
 
 l0000000000016BD8:
-	lui	a4,0x11
-	addi	a4,a4,0x5E8
+	lui	a4,pcrel_hi(0x115E8)
+	addi	a4,a4,pcrel_lo(0x115E8)
 
 l0000000000016BE0:
 	ld	ra,0x8(sp)
@@ -2360,8 +2360,8 @@ l0000000000016C24:
 
 l0000000000016C2C:
 	ld	ra,0x8(sp)
-	lui	a4,0x11
-	addi	a4,a4,0x608
+	lui	a4,pcrel_hi(0x11608)
+	addi	a4,a4,pcrel_lo(0x11608)
 	mv	a0,a4
 	addi	sp,sp,0x10
 	jalr	zero,ra,0x0
@@ -2371,8 +2371,8 @@ l0000000000016C44:
 	bne	a3,a4,0x0000000000016BC0
 
 l0000000000016C4C:
-	lui	a4,0x11
-	addi	a4,a4,0x640
+	lui	a4,pcrel_hi(0x11640)
+	addi	a4,a4,pcrel_lo(0x11640)
 	j	0x0000000000016BE0
 
 l0000000000016C58:
@@ -2381,13 +2381,13 @@ l0000000000016C58:
 	bne	a4,a3,0x0000000000016BC0
 
 l0000000000016C64:
-	lui	a4,0x11
-	addi	a4,a4,0x618
+	lui	a4,pcrel_hi(0x11618)
+	addi	a4,a4,pcrel_lo(0x11618)
 	j	0x0000000000016BE0
 
 l0000000000016C70:
-	lui	a4,0x11
-	addi	a4,a4,0x630
+	lui	a4,pcrel_hi(0x11630)
+	addi	a4,a4,pcrel_lo(0x11630)
 	j	0x0000000000016BE0
 
 l0000000000016C7C:
@@ -2402,8 +2402,8 @@ l0000000000016C88:
 	bne	a6,a4,0x0000000000016BC0
 
 l0000000000016C90:
-	lui	a4,0x11
-	addi	a4,a4,0x6C0
+	lui	a4,pcrel_hi(0x116C0)
+	addi	a4,a4,pcrel_lo(0x116C0)
 	j	0x0000000000016BE0
 
 l0000000000016C9C:
@@ -2411,8 +2411,8 @@ l0000000000016C9C:
 	bne	a6,a4,0x0000000000016BC0
 
 l0000000000016CA4:
-	lui	a4,0x11
-	addi	a4,a4,0x6A0
+	lui	a4,pcrel_hi(0x116A0)
+	addi	a4,a4,pcrel_lo(0x116A0)
 	j	0x0000000000016BE0
 
 l0000000000016CB0:
@@ -2425,21 +2425,21 @@ l0000000000016CB8:
 	beq	a5,a4,0x0000000000016D0C
 
 l0000000000016CC4:
-	lui	a4,0x11
-	addi	a4,a4,0x650
+	lui	a4,pcrel_hi(0x11650)
+	addi	a4,a4,pcrel_lo(0x11650)
 	j	0x0000000000016BE0
 
 l0000000000016CD0:
-	lui	a4,0x11
-	addi	a4,a4,0x660
+	lui	a4,pcrel_hi(0x11660)
+	addi	a4,a4,pcrel_lo(0x11660)
 	j	0x0000000000016BE0
 
 l0000000000016CDC:
 	bne	a6,zero,0x0000000000016BC0
 
 l0000000000016CE0:
-	lui	a4,0x11
-	addi	a4,a4,0x680
+	lui	a4,pcrel_hi(0x11680)
+	addi	a4,a4,pcrel_lo(0x11680)
 	j	0x0000000000016BE0
 
 l0000000000016CEC:
@@ -2447,18 +2447,18 @@ l0000000000016CEC:
 	bne	a6,a4,0x0000000000016BC0
 
 l0000000000016CF4:
-	lui	a4,0x11
-	addi	a4,a4,0x708
+	lui	a4,pcrel_hi(0x11708)
+	addi	a4,a4,pcrel_lo(0x11708)
 	j	0x0000000000016BE0
 
 l0000000000016D00:
-	lui	a4,0x11
-	addi	a4,a4,0x6E0
+	lui	a4,pcrel_hi(0x116E0)
+	addi	a4,a4,pcrel_lo(0x116E0)
 	j	0x0000000000016BE0
 
 l0000000000016D0C:
-	lui	a4,0x11
-	addi	a4,a4,0x710
+	lui	a4,pcrel_hi(0x11710)
+	addi	a4,a4,pcrel_lo(0x11710)
 	j	0x0000000000016BE0
 
 l0000000000016D18:
@@ -2466,13 +2466,13 @@ l0000000000016D18:
 	bne	a5,a2,0x0000000000016D4C
 
 l0000000000016D20:
-	lui	a4,0x11
-	addi	a4,a4,0x710
+	lui	a4,pcrel_hi(0x11710)
+	addi	a4,a4,pcrel_lo(0x11710)
 	bne	a3,a5,0x0000000000016BE0
 
 l0000000000016D2C:
-	lui	a4,0x11
-	addi	a4,a4,0x710
+	lui	a4,pcrel_hi(0x11710)
+	addi	a4,a4,pcrel_lo(0x11710)
 	bne	a6,a2,0x0000000000016BE0
 
 l0000000000016D38:
@@ -2480,8 +2480,8 @@ l0000000000016D38:
 	bne	a0,a6,0x0000000000016BE0
 
 l0000000000016D40:
-	lui	a4,0x11
-	addi	a4,a4,0x720
+	lui	a4,pcrel_hi(0x11720)
+	addi	a4,a4,pcrel_lo(0x11720)
 	j	0x0000000000016BE0
 
 l0000000000016D4C:
@@ -2491,13 +2491,13 @@ l0000000000016D4C:
 l0000000000016D54:
 	andi	a5,a4,0xFE
 	li	a3,0x12
-	lui	a4,0x11
-	addi	a4,a4,0x650
+	lui	a4,pcrel_hi(0x11650)
+	addi	a4,a4,pcrel_lo(0x11650)
 	bne	a5,a3,0x0000000000016BE0
 
 l0000000000016D68:
-	lui	a4,0x11
-	addi	a4,a4,0x738
+	lui	a4,pcrel_hi(0x11738)
+	addi	a4,a4,pcrel_lo(0x11738)
 	j	0x0000000000016BE0
 
 ;; fn0000000000016D74: 0000000000016D74
@@ -2733,8 +2733,8 @@ l000000000001703C:
 	bltu	a4,a5,0x00000000000172B0
 
 l0000000000017048:
-	lui	a5,0x11
-	addi	a5,a5,0x770
+	lui	a5,pcrel_hi(0x11770)
+	addi	a5,a5,pcrel_lo(0x11770)
 	j	0x00000000000170A0
 
 l0000000000017054:
@@ -2761,8 +2761,8 @@ l000000000001707C:
 	j	0x0000000000016E20
 
 l0000000000017098:
-	lui	a5,0x11
-	addi	a5,a5,0x758
+	lui	a5,pcrel_hi(0x11758)
+	addi	a5,a5,pcrel_lo(0x11758)
 
 l00000000000170A0:
 	sd	a5,0xC0(s6)
@@ -2924,8 +2924,8 @@ l0000000000017260:
 	j	0x000000000001716C
 
 l000000000001727C:
-	lui	a5,0x11
-	addi	a5,a5,0x760
+	lui	a5,pcrel_hi(0x11760)
+	addi	a5,a5,pcrel_lo(0x11760)
 	j	0x00000000000170A0
 
 l0000000000017288:
@@ -2938,13 +2938,13 @@ l0000000000017288:
 	j	0x0000000000017184
 
 l00000000000172A4:
-	lui	a5,0x11
-	addi	a5,a5,0x768
+	lui	a5,pcrel_hi(0x11768)
+	addi	a5,a5,pcrel_lo(0x11768)
 	j	0x00000000000170A0
 
 l00000000000172B0:
-	lui	a5,0x11
-	addi	a5,a5,0x778
+	lui	a5,pcrel_hi(0x11778)
+	addi	a5,a5,pcrel_lo(0x11778)
 	j	0x00000000000170A0
 
 l00000000000172BC:
@@ -2952,8 +2952,8 @@ l00000000000172BC:
 	li	a3,0x265
 
 l00000000000172C4:
-	lui	a2,0x11
-	addi	a2,a2,0x7B0
+	lui	a2,pcrel_hi(0x117B0)
+	addi	a2,a2,pcrel_lo(0x117B0)
 	li	a1,0x1
 	jal	__fprintf_chk
 	jal	abort
@@ -3118,8 +3118,8 @@ l0000000000017458:
 	jalr	zero,ra,0x0
 
 l0000000000017474:
-	lui	s1,0x10
-	addi	s1,s1,0x480
+	lui	s1,pcrel_hi(0x10480)
+	addi	s1,s1,pcrel_lo(0x10480)
 
 l000000000001747C:
 	li	a2,0xC
@@ -3144,8 +3144,8 @@ l00000000000174A4:
 
 l00000000000174B8:
 	ld	ra,0x28(sp)
-	lui	a0,0x12
-	addi	a0,a0,-0x748
+	lui	a0,pcrel_hi(0x118B8)
+	addi	a0,a0,pcrel_lo(0x118B8)
 	ld	s0,0x20(sp)
 	ld	s1,0x18(sp)
 	ld	s2,0x10(sp)
@@ -3154,8 +3154,8 @@ l00000000000174B8:
 	jalr	zero,ra,0x0
 
 l00000000000174DC:
-	lui	s1,0x10
-	addi	s1,s1,0x480
+	lui	s1,pcrel_hi(0x10480)
+	addi	s1,s1,pcrel_lo(0x10480)
 	li	a2,0x10
 	addi	a1,s1,0x400
 	jal	memcmp
@@ -3169,14 +3169,14 @@ l00000000000174F4:
 	bne	a0,zero,0x000000000001747C
 
 l0000000000017508:
-	lui	a0,0x12
-	addi	a0,a0,-0x790
+	lui	a0,pcrel_hi(0x11870)
+	addi	a0,a0,pcrel_lo(0x11870)
 	j	0x0000000000017458
 
 l0000000000017514:
 	ld	ra,0x28(sp)
-	lui	a0,0x12
-	addi	a0,a0,-0x760
+	lui	a0,pcrel_hi(0x118A0)
+	addi	a0,a0,pcrel_lo(0x118A0)
 	ld	s0,0x20(sp)
 	ld	s1,0x18(sp)
 	ld	s2,0x10(sp)
@@ -3186,8 +3186,8 @@ l0000000000017514:
 
 l0000000000017538:
 	ld	ra,0x28(sp)
-	lui	a0,0x12
-	addi	a0,a0,-0x7A8
+	lui	a0,pcrel_hi(0x11858)
+	addi	a0,a0,pcrel_lo(0x11858)
 	ld	s0,0x20(sp)
 	ld	s1,0x18(sp)
 	ld	s2,0x10(sp)
@@ -3197,8 +3197,8 @@ l0000000000017538:
 
 l000000000001755C:
 	ld	ra,0x28(sp)
-	lui	a0,0x12
-	addi	a0,a0,-0x778
+	lui	a0,pcrel_hi(0x11888)
+	addi	a0,a0,pcrel_lo(0x11888)
 	ld	s0,0x20(sp)
 	ld	s1,0x18(sp)
 	ld	s2,0x10(sp)
@@ -3207,28 +3207,28 @@ l000000000001755C:
 	jalr	zero,ra,0x0
 
 l0000000000017580:
-	lui	a0,0x12
-	addi	a0,a0,-0x728
+	lui	a0,pcrel_hi(0x118D8)
+	addi	a0,a0,pcrel_lo(0x118D8)
 	j	0x0000000000017458
 
 l000000000001758C:
-	lui	a0,0x12
-	addi	a0,a0,-0x718
+	lui	a0,pcrel_hi(0x118E8)
+	addi	a0,a0,pcrel_lo(0x118E8)
 	j	0x0000000000017458
 
 l0000000000017598:
-	lui	a0,0x12
-	addi	a0,a0,-0x700
+	lui	a0,pcrel_hi(0x11900)
+	addi	a0,a0,pcrel_lo(0x11900)
 	j	0x0000000000017458
 
 l00000000000175A4:
-	lui	a0,0x11
-	addi	a0,a0,0x748
+	lui	a0,pcrel_hi(0x11748)
+	addi	a0,a0,pcrel_lo(0x11748)
 	j	0x0000000000017458
 
 l00000000000175B0:
-	lui	a0,0x12
-	addi	a0,a0,-0x6E8
+	lui	a0,pcrel_hi(0x11918)
+	addi	a0,a0,pcrel_lo(0x11918)
 	j	0x0000000000017458
 
 ;; fn00000000000175BC: 00000000000175BC
@@ -3356,8 +3356,8 @@ l0000000000017728:
 	ld	a3,(s2)
 
 l0000000000017740:
-	lui	a2,0x12
-	addi	a2,a2,-0x670
+	lui	a2,pcrel_hi(0x11990)
+	addi	a2,a2,pcrel_lo(0x11990)
 	li	a1,0x40
 	jal	snprintf
 	slli	a5,s6,0x31
@@ -3496,8 +3496,8 @@ l00000000000178B4:
 	bne	s2,a5,0x0000000000017728
 
 l00000000000178D0:
-	lui	a3,0x11
-	addi	a3,a3,0x1D0
+	lui	a3,pcrel_hi(0x111D0)
+	addi	a3,a3,pcrel_lo(0x111D0)
 	j	0x0000000000017740
 
 l00000000000178DC:
@@ -3595,8 +3595,8 @@ l00000000000179C0:
 	beq	a0,zero,0x0000000000017B14
 
 l00000000000179DC:
-	lui	a1,0x13
-	addi	a1,a1,-0x588
+	lui	a1,pcrel_hi(0x12A78)
+	addi	a1,a1,pcrel_lo(0x12A78)
 	jal	dlsym
 	lui	a1,0x13
 	sd	a0,-0x798(gp)
@@ -4377,10 +4377,10 @@ fn00000000000182E8 proc
 	addi	sp,sp,-0x40
 	sd	s0,0x30(sp)
 	sd	s2,0x20(sp)
-	auipc	s0,0x2
-	addi	s0,s0,-0x4DC
-	auipc	s2,0x2
-	addi	s2,s2,-0x4DC
+	auipc	s0,pcrel_hi(0x0000000000019E18)
+	addi	s0,s0,pcrel_lo(0x0000000000019E18)
+	auipc	s2,pcrel_hi(0x0000000000019E20)
+	addi	s2,s2,pcrel_lo(0x0000000000019E20)
 	sub	s2,s2,s0
 	sd	ra,0x38(sp)
 	sd	s1,0x28(sp)

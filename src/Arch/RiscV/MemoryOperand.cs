@@ -27,25 +27,30 @@ namespace Reko.Arch.RiscV
     public class MemoryOperand : AbstractMachineOperand
     {
 
-        public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, int offset) : base(width)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, MachineOperand offset) : base(width)
         {
             this.Base = baseRegister;
             this.Offset = offset;
         }
 
         public RegisterStorage Base { get; }
-        public int Offset { get; }
+        public MachineOperand Offset { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if(Offset == 0)
+            if (Offset is SliceOperand slice)
             {
-                renderer.WriteFormat("({0})", Base);
+                slice.Render(renderer, options);
             }
             else
             {
-                renderer.WriteFormat("{0}({1})", Offset, Base);
+                int offset = ((ImmediateOperand) Offset).Value.ToInt32();
+                if (offset != 0)
+                {
+                    renderer.WriteFormat("{0}", offset);
+                }
             }
+            renderer.WriteFormat("({0})", Base.Name);
         }
     }
 }
