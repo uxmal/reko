@@ -1,4 +1,4 @@
-word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r10Out, ptr64 & r12Out, ptr64 & r13Out)
+word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, word64 & r8Out, word64 & r9Out, word64 & r10Out, word64 & r12Out, word64 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

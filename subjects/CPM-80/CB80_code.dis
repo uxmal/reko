@@ -47,7 +47,7 @@ l03A9:
 	Mem34[0x1654<16>:word16] = Mem30[0x1654<16>:word16] + 1<16>
 
 
-bool fn03BB(byte c, ptr16 & aOut)
+bool fn03BB(byte c, byte & aOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -294,7 +294,7 @@ l056A:
 fn0534_exit:
 
 
-bool fn056B(word16 bc, ptr16 & bcOut)
+bool fn056B(word16 bc, word16 & bcOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -385,7 +385,7 @@ l05DD:
 	Mem29[0x166D<16>:word16] = Mem10[0x166D<16>:word16] + 1<16>
 
 
-bool fn05EF(word16 bc, ptr16 & bOut)
+bool fn05EF(word16 bc, byte & bOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -834,7 +834,7 @@ l098F:
 fn0920_exit:
 
 
-bool fn0990(byte f, byte b, byte c, byte d, byte e, ptr16 & afOut)
+bool fn0990(byte f, byte b, byte c, byte d, byte e, word16 & afOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1089,7 +1089,7 @@ l0C93:
 fn0C93_exit:
 
 
-bool fn0D64(ptr16 & aOut)
+bool fn0D64(byte & aOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1197,7 +1197,7 @@ l0E98:
 fn0E63_exit:
 
 
-bool fn0EAB(ptr16 & aOut)
+bool fn0EAB(byte & aOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1523,7 +1523,7 @@ l1315:
 fn1315_exit:
 
 
-byte fn1326(byte c, word16 hl, ptr16 & lOut)
+byte fn1326(byte c, word16 hl, byte & lOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1592,7 +1592,7 @@ l1347_thunk_fn1348:
 fn1346_exit:
 
 
-bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & hlOut)
+bool fn1348(word16 de, word16 hl, word16 & deOut, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1611,7 +1611,7 @@ l1348:
 fn1348_exit:
 
 
-byte fn1353(byte a, word16 de, ptr16 & lOut)
+byte fn1353(byte a, word16 de, byte & lOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

@@ -165,7 +165,7 @@ l004012C3:
 Win32CrtStartup_exit:
 
 
-word32 fn004013F6(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
+word32 fn004013F6(word32 dwArg04, word32 dwArg08, word32 & edxOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -255,7 +255,7 @@ l0040148D:
 fn0040146F_exit:
 
 
-byte fn0040153F(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+byte fn0040153F(word32 ebx, word32 esi, word32 edi, word32 & edxOut, word32 & ebxOut, word32 & ebpOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -514,7 +514,7 @@ l00401980:
 fn00401980_exit:
 
 
-word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn004019C6(word32 ebp, word32 dwArg00, word32 & ebpOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

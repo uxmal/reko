@@ -364,7 +364,7 @@ l000005F0:
 	d15_17 = d4_19
 
 
-word32 fn00000648(word32 d4, ptr32 & a15Out)
+word32 fn00000648(word32 d4, word32 & a15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -388,7 +388,7 @@ l00000662:
 fn00000648_exit:
 
 
-word32 fn00000664(word32 d4, ptr32 & d15Out)
+word32 fn00000664(word32 d4, word32 & d15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

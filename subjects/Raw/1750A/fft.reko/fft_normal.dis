@@ -1,4 +1,4 @@
-word16 reverse(word16 gp0, ptr16 & gp14Out)
+word16 reverse(word16 gp0, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -26,7 +26,7 @@ l012B:
 reverse_exit:
 
 
-word16 init_fft(ptr16 & gp4Out)
+word16 init_fft(word16 & gp4Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -201,7 +201,7 @@ l0236:
 frex_exit:
 
 
-real48 sqrt(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
+real48 sqrt(word32 gp0_gp1, word16 gp2, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -236,7 +236,7 @@ l026F:
 sqrt_exit:
 
 
-word32 auxasin(real48 gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
+word32 auxasin(real48 gp0_gp1_gp2, word16 & gp2Out, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -321,7 +321,7 @@ l02FA:
 rcos_exit:
 
 
-word16 sincos(word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
+word16 sincos(word16 gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, word16 & gp3Out, word16 & gp4Out, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -362,7 +362,7 @@ l0328:
 sincos_exit:
 
 
-word48 sin(word32 gp0_gp1, word16 gp2, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
+word48 sin(word32 gp0_gp1, word16 gp2, word16 & gp3Out, word16 & gp4Out, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -403,7 +403,7 @@ l039B:
 sin_exit:
 
 
-word48 cos(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
+word48 cos(word32 gp0_gp1, word16 gp2, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -549,7 +549,7 @@ l0424:
 cvla_exit:
 
 
-word16 cvfa(word32 gp1_gp2, word16 gp0, ptr16 & gp14Out)
+word16 cvfa(word32 gp1_gp2, word16 gp0, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

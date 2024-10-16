@@ -4410,8 +4410,8 @@ Eq_n fn000000000040A000(Eq_n rdx, void * rsi, Eq_n rdi[], struct Eq_n * fs, unio
 		rdxOut = rdx_n;
 		rsiOut = (FILE *) 0x0A;
 		rdiOut.u0 = <invalid>;
-		r8Out.u0 = (<unknown>*) <invalid>;
-		r9Out.u0 = (<unknown>*) <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
 		return <invalid>;
 	}
 	else
@@ -4420,9 +4420,9 @@ Eq_n fn000000000040A000(Eq_n rdx, void * rsi, Eq_n rdi[], struct Eq_n * fs, unio
 		*rax_n = 0x0A;
 		rdxOut = rax_n + 1;
 		rsiOut = rsi_n;
-		rdiOut.u0 = (<unknown>*) <invalid>;
-		r8Out.u0 = (<unknown>*) <invalid>;
-		r9Out.u0 = (<unknown>*) <invalid>;
+		rdiOut.u0 = <invalid>;
+		r8Out.u0 = <invalid>;
+		r9Out.u0 = <invalid>;
 		return <invalid>;
 	}
 }
@@ -6729,10 +6729,10 @@ void fn000000000040D740(struct Eq_n * rdi, word32 esi)
 	}
 }
 
-// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out Eq_n ecxOut)
+// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out word32 ecxOut)
 // Called from:
 //      fn000000000040D8A0
-char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, union Eq_n & ecxOut)
+char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, word32 & ecxOut)
 {
 	word32 ecx_n;
 	char * rax_n = dcgettext(null, rdi, 5);
@@ -6766,7 +6766,7 @@ char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, union Eq_n & e
 	else
 	{
 l000000000040D7D7:
-		ecxOut.u0 = (<unknown>*) <invalid>;
+		ecxOut = <invalid>;
 		return rbx_n;
 	}
 }
@@ -7441,14 +7441,14 @@ l000000000040DB54:
 	goto l000000000040DE6B;
 }
 
-// 000000000040E450: Register Eq_n fn000000000040E450(Register (ptr64 Eq_n) rcx, Register Eq_n rdx, Register Eq_n rsi, Register Eq_n edi, Register (ptr32 Eq_n) fs, Register out ptr64 r8Out, Register out ptr64 r9Out)
+// 000000000040E450: Register Eq_n fn000000000040E450(Register (ptr64 Eq_n) rcx, Register Eq_n rdx, Register Eq_n rsi, Register Eq_n edi, Register (ptr32 Eq_n) fs, Register out word64 r8Out, Register out word64 r9Out)
 // Called from:
 //      fn000000000040E930
 //      fn000000000040E970
 //      fn000000000040EAB0
 //      fn000000000040EBF0
 //      fn000000000040EC10
-Eq_n fn000000000040E450(struct Eq_n * rcx, Eq_n rdx, Eq_n rsi, Eq_n edi, struct Eq_n * fs, ptr64 & r8Out, ptr64 & r9Out)
+Eq_n fn000000000040E450(struct Eq_n * rcx, Eq_n rdx, Eq_n rsi, Eq_n edi, struct Eq_n * fs, word64 & r8Out, word64 & r9Out)
 {
 	int32 * rax_n = __errno_location();
 	int64 r15_n = (int64) edi;
@@ -7499,9 +7499,9 @@ Eq_n fn000000000040E450(struct Eq_n * rcx, Eq_n rdx, Eq_n rsi, Eq_n edi, struct 
 			r14_n = rax_n;
 		}
 		*rax_n = eax_n;
-		ptr64 r8_n;
+		word64 r8_n;
 		r8Out = r8_n;
-		ptr64 r9_n;
+		word64 r9_n;
 		r9Out = r9_n;
 		return r14_n;
 	}
@@ -7644,14 +7644,14 @@ void fn000000000040EBF0(Eq_n rsi, Eq_n edi, struct Eq_n * fs)
 	fn000000000040E450(&g_t61A5A0, ~0x00, rsi, edi, fs, out r8_n, out r9_n);
 }
 
-// 000000000040EC10: Register word64 fn000000000040EC10(Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out ptr64 r8Out, Register out ptr64 r9Out)
+// 000000000040EC10: Register word64 fn000000000040EC10(Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out word64 r8Out, Register out word64 r9Out)
 // Called from:
 //      fn00000000004028C0
 //      fn000000000040A000
-word64 fn000000000040EC10(Eq_n rdi, struct Eq_n * fs, ptr64 & r8Out, ptr64 & r9Out)
+word64 fn000000000040EC10(Eq_n rdi, struct Eq_n * fs, word64 & r8Out, word64 & r9Out)
 {
-	ptr64 r9_n;
-	ptr64 r8_n;
+	word64 r9_n;
+	word64 r8_n;
 	word64 rax_n = fn000000000040E450(&g_t61A5A0, ~0x00, rdi, 0x00, fs, out r8_n, out r9_n);
 	r8Out = r8_n;
 	r9Out = r9_n;
@@ -10153,10 +10153,10 @@ void fn0000000000411880(FILE * rdi)
 	}
 }
 
-// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out Eq_n ecxOut)
+// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out word32 ecxOut)
 // Called from:
 //      fn000000000040D7B0
-char * fn0000000000411900(struct Eq_n * fs, union Eq_n & ecxOut)
+char * fn0000000000411900(struct Eq_n * fs, word32 & ecxOut)
 {
 	word64 rax_n = fs->qw0028;
 	char * rax_n = nl_langinfo(0x0E);
@@ -10188,7 +10188,7 @@ l000000000041196A:
 			__stack_chk_fail();
 		else
 		{
-			ecxOut.u0 = (<unknown>*) <invalid>;
+			ecxOut = <invalid>;
 			return rbx_n;
 		}
 	}

@@ -1200,7 +1200,7 @@ Eq_4604: (union "Eq_4604" (bool u0) (word32 u1))
 	T_4604 (in r8_114 >= r10_115 @ 004043AA : bool)
 	T_4605 (in T_116 @ 004043AA : Eq_4604)
 	T_4637 (in r8_114 >= r10_115 @ 0040434E : bool)
-Eq_4654: (union "Eq_4654" (bool u0) (uint32 u1) (ptr32 u2))
+Eq_4654: (union "Eq_4654" (bool u0) (uint32 u1))
 	T_4654 (in r4 @ 004043D6 : Eq_4654)
 	T_4661 (in p1 @ 00404430 : word32)
 	T_4665 (in 0<32> - __div0s<word32>(r4, 0<32>) @ 00404430 : word32)
@@ -1278,18 +1278,18 @@ Eq_4654: (union "Eq_4654" (bool u0) (uint32 u1) (ptr32 u2))
 	T_4819 (in __rcl<word32,byte>(r0_12, 1<8>, T_9) @ 00404526 : word32)
 	T_4821 (in __xtrct<word32,word32>(r4, r0_12) @ 00404526 : word32)
 	T_4822 (in r4_16 @ 00404526 : Eq_4654)
-	T_4823 (in out r4_16 @ 00404526 : ptr32)
+	T_4823 (in out r4_16 @ 00404526 : word32)
 	T_4824 (in fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16) @ 00404526 : word32)
 	T_4826 (in __rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9) @ 00404526 : word32)
 	T_4827 (in r4_19 @ 00404526 : Eq_4654)
-	T_4828 (in out r4_19 @ 00404526 : ptr32)
+	T_4828 (in out r4_19 @ 00404526 : word32)
 	T_4829 (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19) @ 00404526 : word32)
 	T_4831 (in __rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9) @ 00404526 : word32)
 	T_4832 (in r4_22 @ 00404526 : Eq_4654)
-	T_4833 (in out r4_22 @ 00404526 : ptr32)
+	T_4833 (in out r4_22 @ 00404526 : word32)
 	T_4834 (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22) @ 00404526 : word32)
 	T_4836 (in __rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9) @ 00404526 : word32)
-	T_4838 (in out r4_55 @ 00404526 : ptr32)
+	T_4838 (in out r4_55 @ 00404526 : word32)
 	T_4839 (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55) @ 00404526 : word32)
 	T_4842 (in p1 @ 004044F0 : word32)
 	T_4843 (in __swap_w<word32>(r4) @ 004044F0 : word32)
@@ -20537,7 +20537,7 @@ T_4768: (in r5 @ 004044D2 : uint32)
 T_4769: (in r4Out @ 004044D2 : Eq_4654)
   Class: Eq_4654
   DataType: Eq_4654
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_4770: (in __div1<word32> @ 004044D6 : ptr32)
   Class: Eq_4669
   DataType: (ptr32 Eq_4669)
@@ -20750,10 +20750,10 @@ T_4822: (in r4_16 @ 00404526 : Eq_4654)
   Class: Eq_4654
   DataType: Eq_4654
   OrigDataType: word32
-T_4823: (in out r4_16 @ 00404526 : ptr32)
+T_4823: (in out r4_16 @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_4824: (in fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16) @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
@@ -20770,10 +20770,10 @@ T_4827: (in r4_19 @ 00404526 : Eq_4654)
   Class: Eq_4654
   DataType: Eq_4654
   OrigDataType: word32
-T_4828: (in out r4_19 @ 00404526 : ptr32)
+T_4828: (in out r4_19 @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_4829: (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19) @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
@@ -20790,10 +20790,10 @@ T_4832: (in r4_22 @ 00404526 : Eq_4654)
   Class: Eq_4654
   DataType: Eq_4654
   OrigDataType: word32
-T_4833: (in out r4_22 @ 00404526 : ptr32)
+T_4833: (in out r4_22 @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_4834: (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22) @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
@@ -20810,10 +20810,10 @@ T_4837: (in r4_55 @ 00404526 : word32)
   Class: Eq_4837
   DataType: word32
   OrigDataType: word32
-T_4838: (in out r4_55 @ 00404526 : ptr32)
+T_4838: (in out r4_55 @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_4839: (in fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55) @ 00404526 : word32)
   Class: Eq_4654
   DataType: Eq_4654
@@ -23199,7 +23199,6 @@ typedef union Eq_4604 {
 typedef union Eq_4654 {
 	bool u0;
 	uint32 u1;
-	ptr32 u2;
 } Eq_4654;
 
 typedef Eq_4664 (Eq_4659)(Eq_4654, uint32);

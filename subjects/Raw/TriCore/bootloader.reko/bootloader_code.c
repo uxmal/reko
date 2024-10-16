@@ -320,11 +320,11 @@ word32 fn00000648(ui32 d4, ptr32 & a15Out)
 		return d2_n;
 }
 
-// 00000664: Register int32 fn00000664(Register ui32 d4, Register out Eq_n d15Out)
+// 00000664: Register int32 fn00000664(Register ui32 d4, Register out uint32 d15Out)
 // Called from:
 //      fn000010B0
 //      fn000012F6
-int32 fn00000664(ui32 d4, union Eq_n & d15Out)
+int32 fn00000664(ui32 d4, uint32 & d15Out)
 {
 		int32 d2_n = (int32) ((Eq_n[]) 0xF000501C)[d4].f0000;
 		__load_upper_context();

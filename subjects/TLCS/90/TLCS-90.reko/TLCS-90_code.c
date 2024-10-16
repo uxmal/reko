@@ -13,12 +13,12 @@ void fn0000(byte a)
 }
 
 byte g_b0001 = 0x00; // 00000001
-// 02F4: Register byte fn02F4(Register byte a, Register uint8 c, Register ui8 b, Register byte h, Register (ptr16 Eq_n) ix, Register out Eq_n ixOut)
+// 02F4: Register byte fn02F4(Register byte a, Register uint8 c, Register ui8 b, Register byte h, Register (ptr16 Eq_n) ix, Register out word16 ixOut)
 // Called from:
 //      fn164F
-byte fn02F4(byte a, uint8 c, ui8 b, byte h, struct Eq_n * ix, union Eq_n & ixOut)
+byte fn02F4(byte a, uint8 c, ui8 b, byte h, struct Eq_n * ix, word16 & ixOut)
 {
-	Eq_n ix_n;
+	word16 ix_n;
 	byte C;
 	cu8 a_n = a + ix->bFFFFFFE4 + C;
 	Eq_n a_a_n = ix->tFFFFFFF6.u1 + (SEQ(b, c) ^ (ix->tFFFFFFFA).u1);
@@ -50,13 +50,13 @@ byte fn02F4(byte a, uint8 c, ui8 b, byte h, struct Eq_n * ix, union Eq_n & ixOut
 	return (byte) hl_n;
 }
 
-// 034E: Register Eq_n fn034E(Register Eq_n a, Register uint8 b, Register Eq_n l, Register byte h, Register (ptr16 Eq_n) ix, Register out Eq_n ixOut)
+// 034E: Register Eq_n fn034E(Register Eq_n a, Register uint8 b, Register Eq_n l, Register byte h, Register (ptr16 Eq_n) ix, Register out word16 ixOut)
 // Called from:
 //      fn02F4
-Eq_n fn034E(Eq_n a, uint8 b, Eq_n l, byte h, struct Eq_n * ix, union Eq_n & ixOut)
+Eq_n fn034E(Eq_n a, uint8 b, Eq_n l, byte h, struct Eq_n * ix, word16 & ixOut)
 {
 	ix->tFFFFFFFA.u0 = (ui8) a;
-	Eq_n ix_n;
+	word16 ix_n;
 	fn0350(b, l, h, ix, out ix_n);
 	ixOut = ix_n;
 	Eq_n l_n;
@@ -64,12 +64,12 @@ Eq_n fn034E(Eq_n a, uint8 b, Eq_n l, byte h, struct Eq_n * ix, union Eq_n & ixOu
 	return l_n;
 }
 
-// 0350: Register Eq_n fn0350(Register uint8 b, Register Eq_n l, Register byte h, Register (ptr16 Eq_n) ix, Register out Eq_n ixOut)
+// 0350: Register Eq_n fn0350(Register uint8 b, Register Eq_n l, Register byte h, Register (ptr16 Eq_n) ix, Register out word16 ixOut)
 // Called from:
 //      fn034E
 //      fn03B2
 //      fn0914
-Eq_n fn0350(uint8 b, Eq_n l, byte h, struct Eq_n * ix, union Eq_n & ixOut)
+Eq_n fn0350(uint8 b, Eq_n l, byte h, struct Eq_n * ix, word16 & ixOut)
 {
 	uint8 v19_n;
 	uint8 v18_n;
@@ -88,19 +88,19 @@ Eq_n fn0350(uint8 b, Eq_n l, byte h, struct Eq_n * ix, union Eq_n & ixOut)
 	ix->bFFFFFFFB = ix->bFFFFFFFB ^ a_n;
 	ix->tFFFFFFFC.u0 = (uint8) (ix->tFFFFFFFC.u0 ^ a_n);
 	byte a;
-	Eq_n ix_n;
+	word16 ix_n;
 	fn039D(a, h, ix, out ix_n);
 	ixOut = ix_n;
 	return <invalid>;
 }
 
-// 039D: Register byte fn039D(Register byte a, Register byte h, Register (ptr16 Eq_n) ix, Register out Eq_n ixOut)
+// 039D: Register byte fn039D(Register byte a, Register byte h, Register (ptr16 Eq_n) ix, Register out word16 ixOut)
 // Called from:
 //      fn034E
 //      fn0350
-byte fn039D(byte a, byte h, struct Eq_n * ix, union Eq_n & ixOut)
+byte fn039D(byte a, byte h, struct Eq_n * ix, word16 & ixOut)
 {
-	Eq_n ix_n;
+	word16 ix_n;
 	Eq_n de;
 	byte c;
 	byte b;
@@ -123,13 +123,13 @@ void fn03AA()
 {
 }
 
-// 03B2: Register byte fn03B2(Sequence uint32 h_l_b_c, Register byte a, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24, Register out Eq_n ixOut)
+// 03B2: Register byte fn03B2(Sequence uint32 h_l_b_c, Register byte a, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24, Register out word16 ixOut)
 // Called from:
 //      fn039D
-byte fn03B2(uint32 h_l_b_c, byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg24, union Eq_n & ixOut)
+byte fn03B2(uint32 h_l_b_c, byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg24, word16 & ixOut)
 {
 	ptr32 fp;
-	Eq_n ix_n;
+	word16 ix_n;
 	byte h_n;
 	Eq_n l;
 	uint8 b;
@@ -197,7 +197,7 @@ byte fn03B2(uint32 h_l_b_c, byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg24, unio
 			hl_n.u1 = (word32) hl_n + 1;
 			de_n.u0 = (word32) de_n + 1;
 		}
-		ixOut.u1 = ix->t0000.u1;
+		ixOut = ix->w0000;
 		return SLICE(hl_n, byte, 8);
 	}
 }

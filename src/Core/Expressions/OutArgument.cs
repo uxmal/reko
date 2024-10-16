@@ -36,9 +36,9 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Builds an outparameter.
         /// </summary>
-        /// <param name="refType">The type of the reference, ie. if the identifer is of type int, the reference type is (ptr int)</param>
-        /// <param name="id"></param>
-        public OutArgument(DataType refType, Expression id) : base(refType)
+        /// <param name="dt">The type of argument</param>
+        /// <param name="id">An identifier for the argument.</param>
+        public OutArgument(DataType dt, Expression id) : base(dt)
         {
             this.Expression = id;
         }

@@ -418,7 +418,7 @@ l0800_03BB:
 	ax_106 = SEQ(ah_234, 0<8>) (alias)
 
 
-word32 fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, ptr16 & axOut, ptr16 & cxOut, ptr16 & siOut)
+word32 fn0800_03BF(segptr32 ds_si, segptr32 es_di, word16 ax, word16 cx, word16 & axOut, word16 & cxOut, word16 & siOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1197,7 +1197,7 @@ l0800_0C26:
 __write_exit:
 
 
-word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & dxOut)
+word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, word16 & dxOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2036,7 +2036,7 @@ l0800_1094:
 fn0800_108C_exit:
 
 
-byte fn0800_1099(segptr32 ds_di, segptr32 ss_bp, byte al, word16 cx, word16 dx, word16 bx, ptr16 & diOut)
+byte fn0800_1099(segptr32 ds_di, segptr32 ss_bp, byte al, word16 cx, word16 dx, word16 bx, word16 & diOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2063,7 +2063,7 @@ l0800_109F_thunk_fn0800_10A1:
 fn0800_1099_exit:
 
 
-byte fn0800_10A1(segptr32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di, ptr16 & diOut)
+byte fn0800_10A1(segptr32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di, word16 & diOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2236,7 +2236,7 @@ l0800_16D1:
 _free_exit:
 
 
-word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, ptr16 & bxOut, ptr16 & bpOut)
+word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, word16 & bxOut, word16 & bpOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2256,7 +2256,7 @@ l0800_16F1:
 _scanf_exit:
 
 
-word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & bxOut, ptr16 & bpOut)
+word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 & bxOut, word16 & bpOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2700,7 +2700,7 @@ l0800_1711:
 fn0800_1708_exit:
 
 
-word16 fn0800_1898(segptr32 ss_bp, selector ds, ptr16 & bpOut)
+word16 fn0800_1898(segptr32 ss_bp, selector ds, word16 & bpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2748,7 +2748,7 @@ l0800_18CF_thunk_fn0800_1B2C:
 fn0800_18CF_exit:
 
 
-word16 fn0800_196F(segptr32 ss_bp, selector ds, ptr16 & bpOut)
+word16 fn0800_196F(segptr32 ss_bp, selector ds, word16 & bpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2804,7 +2804,7 @@ l0800_1B8C:
 fn0800_1AFF_exit:
 
 
-word16 fn0800_1B06(segptr32 ss_bp, selector ds, ptr16 & bpOut)
+word16 fn0800_1B06(segptr32 ss_bp, selector ds, word16 & bpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3005,7 +3005,7 @@ l0800_1BCB:
 fn0800_1B9E_exit:
 
 
-word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, ptr16 & dxOut, ptr16 & bxOut, ptr16 & diOut, ptr16 & esOut)
+word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, word16 & dxOut, word16 & bxOut, word16 & diOut, selector & esOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

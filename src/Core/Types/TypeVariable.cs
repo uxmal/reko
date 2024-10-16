@@ -22,6 +22,7 @@ using Reko.Core.Code;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Core.Types
 {
@@ -71,7 +72,11 @@ namespace Reko.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType { get { return dt!; } set { dt = value; } }
+		public DataType DataType { get { return dt!; } set {
+                MonitorChange(dt, value);
+                dt = value; } }
+
+
         private DataType? dt;
 
 		public int Number { get; }
@@ -91,5 +96,16 @@ namespace Reko.Core.Types
 			get { return 0; }
 			set { ThrowBadSize(); }
 		}
-	}
+
+        /// <summary>
+        /// Debugging method used to inspect modifications of 
+        /// the <see cref="DataType"/> property of this class.
+        /// </summary>
+        /// <param name="dtOld">Old value of the property.</param>
+        /// <param name="dtNew">New valie of the property.</param>
+        [Conditional("DEBUG")]
+        private void MonitorChange(DataType? dtOld, DataType dtNew)
+        {
+        }
+    }
 }

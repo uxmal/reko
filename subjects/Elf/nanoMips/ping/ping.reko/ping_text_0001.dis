@@ -32,7 +32,7 @@ l00410144:
 __fixunsdfsi_exit:
 
 
-word32 __floatsidf(word32 r4, ptr32 & r5Out)
+word32 __floatsidf(word32 r4, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -69,7 +69,7 @@ l004101A2:
 __floatsidf_exit:
 
 
-word32 __floatunsidf(word32 r4, ptr32 & r5Out)
+word32 __floatunsidf(word32 r4, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

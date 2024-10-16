@@ -71,7 +71,6 @@ Relocations
 === MZ-x86\BENCHFN
 Borland v2 detected
 l0800_113C: warning: Non-integral switch expression
-l0800_17AE: warning: Non-integral switch expression
 
 === Hunk-m68k\BENCHLNG
 000028C5: warning: Expected sizes of arrays to have been determined by now
@@ -139,7 +138,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
 00000004: warning: Expected sizes of arrays to have been determined by now
 000000FF: error: Failed to write global variable g_t00FF.
@@ -155,7 +154,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
 
 === Hunk-m68k\BYTEOPS
@@ -267,7 +266,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -282,7 +281,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -297,7 +296,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -314,7 +313,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -329,7 +328,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -344,7 +343,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1333,9 +1332,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -1517,7 +1514,6 @@ fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1525,7 +1521,6 @@ fn0800_2688: error: An error occurred while renaming variables.
     The given key 'l0800_2729' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1533,7 +1528,6 @@ fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1541,7 +1535,6 @@ fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1549,7 +1542,6 @@ fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 129
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 91
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 119
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 106
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
@@ -1877,7 +1869,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1892,7 +1884,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1907,7 +1899,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1922,7 +1914,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1937,7 +1929,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -1952,7 +1944,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 439
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 56
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 57
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 389
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 151
@@ -2466,7 +2458,7 @@ fn00008EC2: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00009735' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2474,7 +2466,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2576,4 +2568,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 93 binaries in 58.77 seconds.
+Decompiled 93 binaries in 67.86 seconds.

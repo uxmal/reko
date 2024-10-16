@@ -186,7 +186,7 @@ l00008188_thunk_vParTestSetLED:
 vSetErrorLED_exit:
 
 
-word32 prvSetAndCheckRegisters(word32 cpsr, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
+word32 prvSetAndCheckRegisters(word32 cpsr, word32 & r5Out, word32 & r6Out, word32 & r7Out, word32 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -450,7 +450,7 @@ l00008356:
 uxListRemove_exit:
 
 
-bool xQueueCRSend(word32 r0, word32 r1, word32 r2, word32 cpsr, ptr32 & r0Out)
+bool xQueueCRSend(word32 r0, word32 r1, word32 r2, word32 cpsr, word32 & r0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -509,7 +509,7 @@ l000083AA:
 xQueueCRSend_exit:
 
 
-bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 cpsr, ptr32 & r0Out, ptr32 & r6Out)
+bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 cpsr, word32 & r0Out, word32 & r6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2032,7 +2032,7 @@ vCoRoutineSchedule_exit:
 l00008FB6:
 
 
-bool xCoRoutineRemoveFromEventList(word32 r0, ptr32 & r0Out)
+bool xCoRoutineRemoveFromEventList(word32 r0, word32 & r0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

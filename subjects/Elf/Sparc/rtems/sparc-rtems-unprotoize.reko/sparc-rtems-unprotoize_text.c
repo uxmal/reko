@@ -766,13 +766,13 @@ l00011EC8:
 	goto l00011DA0;
 }
 
-// 00011F34: Register Eq_n abspath(Register Eq_n o0, Register Eq_n o1, Register out ptr32 l0Out, Register out (ptr32 Eq_n) l2Out, Register out (ptr32 Eq_n) l3Out, Register out (ptr32 Eq_n) l4Out, Register out (ptr32 Eq_n) l7Out, Register out ptr32 i1Out, Register out (ptr32 Eq_n) i6Out)
+// 00011F34: Register Eq_n abspath(Register Eq_n o0, Register Eq_n o1, Register out word32 l0Out, Register out (ptr32 Eq_n) l2Out, Register out (ptr32 Eq_n) l3Out, Register out (ptr32 Eq_n) l4Out, Register out (ptr32 Eq_n) l7Out, Register out word32 i1Out, Register out (ptr32 Eq_n) i6Out)
 // Called from:
 //      shortpath
 //      referenced_file_is_newer
 //      save_def_or_dec
 //      main
-Eq_n abspath(Eq_n o0, Eq_n o1, ptr32 & l0Out, struct Eq_n & l2Out, struct Eq_n & l3Out, struct Eq_n & l4Out, struct Eq_n & l7Out, ptr32 & i1Out, struct Eq_n & i6Out)
+Eq_n abspath(Eq_n o0, Eq_n o1, word32 & l0Out, struct Eq_n & l2Out, struct Eq_n & l3Out, struct Eq_n & l4Out, struct Eq_n & l7Out, word32 & i1Out, struct Eq_n & i6Out)
 {
 	ptr32 fp;
 	Eq_n i0_n = o0;
@@ -909,13 +909,13 @@ l00012120:
 	else
 		o2_n->b0000 = 0x00;
 	Eq_n o0_n = savestring(&sp_n->b0060, o2_n - &sp_n->b0060);
-	ptr32 i1_n = sp_n->ptr0004;
+	word32 i1_n = sp_n->dw0004;
 	struct Eq_n * i6_n = sp_n->ptr0018;
 	struct Eq_n * l2_n = sp_n->ptr0028;
 	struct Eq_n * l3_n = sp_n->ptr002C;
 	struct Eq_n * l4_n = sp_n->ptr0030;
 	struct Eq_n * l7_n = sp_n->ptr003C;
-	l0Out = sp_n->ptr0020;
+	l0Out = sp_n->dw0020;
 	l2Out = l2_n;
 	l3Out = l3_n;
 	l4Out = l4_n;
@@ -1064,11 +1064,11 @@ l000122B8:
 	goto l00012238;
 }
 
-// 00012304: Register Eq_n find_file(Register Eq_n o0, Register word32 o1, Register out ptr32 l2Out, Register out ptr32 l3Out, Register out (ptr32 char) i0Out, Register out ptr32 i1Out)
+// 00012304: Register Eq_n find_file(Register Eq_n o0, Register word32 o1, Register out word32 l2Out, Register out word32 l3Out, Register out (ptr32 char) i0Out, Register out word32 i1Out)
 // Called from:
 //      referenced_file_is_newer
 //      save_def_or_dec
-Eq_n find_file(Eq_n o0, word32 o1, ptr32 & l2Out, ptr32 & l3Out, char & i0Out, ptr32 & i1Out)
+Eq_n find_file(Eq_n o0, word32 o1, word32 & l2Out, word32 & l3Out, char & i0Out, word32 & i1Out)
 {
 	word32 dwLoc98;
 	ptr32 fp;
@@ -1080,9 +1080,9 @@ Eq_n find_file(Eq_n o0, word32 o1, ptr32 & l2Out, ptr32 & l3Out, char & i0Out, p
 	{
 l000123C8:
 		char * i0_n = sp_n->ptr0000;
-		ptr32 i1_n = sp_n->ptr0004;
-		ptr32 l3_n = sp_n->ptr002C;
-		l2Out = sp_n->ptr0028;
+		word32 i1_n = sp_n->dw0004;
+		word32 l3_n = sp_n->dw002C;
+		l2Out = sp_n->dw0028;
 		l3Out = l3_n;
 		i0Out = i0_n;
 		i1Out = i1_n;
@@ -1436,11 +1436,11 @@ l00012AB4:
 	goto l00012648;
 }
 
-// 00012B64: Register word32 munge_compile_params(Register Eq_n o0, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out Eq_n i0Out, Register out ptr32 i6Out)
+// 00012B64: Register word32 munge_compile_params(Register Eq_n o0, Register out word32 l6Out, Register out word32 l7Out, Register out Eq_n i0Out, Register out ptr32 i6Out)
 // Called from:
 //      gen_aux_info_file
 //      main
-word32 munge_compile_params(Eq_n o0, ptr32 & l6Out, ptr32 & l7Out, union Eq_n & i0Out, ptr32 & i6Out)
+word32 munge_compile_params(Eq_n o0, word32 & l6Out, word32 & l7Out, union Eq_n & i0Out, ptr32 & i6Out)
 {
 	ptr32 fp;
 	struct Eq_n * sp_n = fp + ~0x6F - ((strlen(o0) << 0x02) + 0x27 & ~0x07);
@@ -1477,9 +1477,9 @@ word32 munge_compile_params(Eq_n o0, ptr32 & l6Out, ptr32 & l7Out, union Eq_n & 
 		}
 		if ((int32) *i0_n.u0 == 0x2D && (int32) ((word32) (*((word32) i0_n + 1)) + 177) < 0x20)
 		{
-			ptr32 l6;
+			word32 l6;
 			l6Out = l6;
-			ptr32 l7;
+			word32 l7;
 			l7Out = l7;
 			i0Out = i0_n;
 			i6Out = fp;
@@ -1508,18 +1508,18 @@ l00012D00:
 	i0_n.u0 = sp_n->t0000.u0;
 	ptr32 i6_n = sp_n->ptr0018;
 	word32 l2_n = sp_n->dw0028;
-	ptr32 l7_n = sp_n->ptr003C;
-	l6Out = sp_n->ptr0038;
+	word32 l7_n = sp_n->dw003C;
+	l6Out = sp_n->dw0038;
 	l7Out = l7_n;
 	i0Out = i0_n;
 	i6Out = i6_n;
 	return l2_n;
 }
 
-// 00012E2C: Register Eq_n gen_aux_info_file(Register Eq_n o0, Register out ptr32 l2Out, Register out (ptr32 char) l4Out, Register out (ptr32 char) i0Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// 00012E2C: Register Eq_n gen_aux_info_file(Register Eq_n o0, Register out word32 l2Out, Register out (ptr32 char) l4Out, Register out (ptr32 char) i0Out, Register out word32 i2Out, Register out ptr32 i6Out)
 // Called from:
 //      process_aux_info_file
-Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l2Out, char & l4Out, char & i0Out, ptr32 & i2Out, ptr32 & i6Out)
+Eq_n gen_aux_info_file(Eq_n o0, word32 & l2Out, char & l4Out, char & i0Out, word32 & i2Out, ptr32 & i6Out)
 {
 	struct Eq_n * fp;
 	struct Eq_n * i6_n = fp;
@@ -1562,10 +1562,10 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l2Out, char & l4Out, char & i0Out, ptr32
 			fprintf(&g_t2B640, ": %s\n", xstrerror(l2_n));
 			pwait(&g_dw17270);
 			char * i0_n = sp_n->ptr0000;
-			ptr32 i2_n = sp_n->ptr0008;
+			word32 i2_n = sp_n->dw0008;
 			ptr32 i6_n = sp_n->ptr0018;
 			char * l4_n = sp_n->ptr0030;
-			l2Out = sp_n->ptr0028;
+			l2Out = sp_n->dw0028;
 			l4Out = l4_n;
 			i0Out = i0_n;
 			i2Out = i2_n;
@@ -1577,10 +1577,10 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l2Out, char & l4Out, char & i0Out, ptr32
 		notice("%s: compiling `%s'\n", g_t28150.u0, sp_n->dw0048);
 }
 
-// 00013034: Register word32 process_aux_info_file(Register Eq_n o0, Register word32 o2, Register out ptr32 l1Out)
+// 00013034: Register word32 process_aux_info_file(Register Eq_n o0, Register word32 o2, Register out word32 l1Out)
 // Called from:
 //      do_processing
-word32 process_aux_info_file(Eq_n o0, word32 o2, ptr32 & l1Out)
+word32 process_aux_info_file(Eq_n o0, word32 o2, word32 & l1Out)
 {
 	struct Eq_n * fp;
 	struct Eq_n * sp_n = (char *) fp - 0x00F8 - ((word32) strlen(o0) + 0x0A & ~0x07);
@@ -1724,7 +1724,7 @@ l000131F0:
 	}
 l000135B8:
 	word32 l0_n = sp_n->dw0020;
-	l1Out = sp_n->ptr0024;
+	l1Out = sp_n->dw0024;
 	return l0_n;
 }
 

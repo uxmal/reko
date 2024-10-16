@@ -15,7 +15,7 @@ l0100:
 fn0000_exit:
 
 
-byte fn02F4(byte a, byte c, byte b, byte h, word16 ix, ptr32 & ixOut)
+byte fn02F4(byte a, byte c, byte b, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -55,7 +55,7 @@ l034B_thunk_fn034E:
 fn02F4_exit:
 
 
-byte fn034E(byte a, byte b, byte l, byte h, word16 ix, ptr32 & ixOut)
+byte fn034E(byte a, byte b, byte l, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -75,7 +75,7 @@ l034E_thunk_fn0350:
 fn034E_exit:
 
 
-word16 fn0350(byte b, byte l, byte h, word16 ix, ptr32 & ixOut)
+word16 fn0350(byte b, byte l, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -108,7 +108,7 @@ l039A_thunk_fn039D:
 fn0350_exit:
 
 
-byte fn039D(byte a, byte h, word16 ix, ptr32 & ixOut)
+byte fn039D(byte a, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -147,7 +147,7 @@ fn03AA_entry:
 l03AA:
 
 
-byte fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, ptr32 & ixOut)
+byte fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, word16 & ixOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

@@ -136,10 +136,10 @@ void fn0242(word16 r0, word16 * r1)
 	}
 }
 
-// 02C8: Register word16 fn02C8(Register (ptr16 Eq_n) r4, Register out Eq_n r3Out, Register out ptr16 r4Out)
+// 02C8: Register word16 fn02C8(Register (ptr16 Eq_n) r4, Register out ci16 r3Out, Register out ptr16 r4Out)
 // Called from:
 //      fn0242
-word16 fn02C8(struct Eq_n * r4, union Eq_n & r3Out, ptr16 & r4Out)
+word16 fn02C8(struct Eq_n * r4, ci16 & r3Out, ptr16 & r4Out)
 {
 	word16 r2_n;
 	fn125E((int16) r4->b0000, g_ptr004A, out r2_n);
@@ -624,8 +624,7 @@ void fn0B06()
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0;
-	stackArg0.u0 = <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 }
 
@@ -811,8 +810,7 @@ word16 fn0E32()
 	} while (g_w00AE <= 0xC0);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0;
-	stackArg0.u0 = <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 	__reset();
 	word16 r5_n;
@@ -957,14 +955,14 @@ void fn103C(word16 r0, struct Eq_n * r3, struct Eq_n * r5, struct Eq_n * wArg00)
 	fn0242(9944, &r5->w0004 + 1);
 }
 
-// 114A: FlagGroup bool fn114A(Register (ptr16 Eq_n) r0, Register (ptr16 Eq_n) r1, Sequence out Eq_n r2_r3Out)
+// 114A: FlagGroup bool fn114A(Register (ptr16 Eq_n) r0, Register (ptr16 Eq_n) r1, Sequence out ui32 r2_r3Out)
 // Called from:
 //      fn0300
 //      fn0488
 //      fn053A
 //      fn0A0A
 //      fn123A
-bool fn114A(struct Eq_n * r0, struct Eq_n * r1, union Eq_n & r2_r3Out)
+bool fn114A(struct Eq_n * r0, struct Eq_n * r1, ui32 & r2_r3Out)
 {
 	cup16 v11_n = r1 - r0;
 	Eq_n C_n = cond(v11_n) & 0x01;
@@ -1073,7 +1071,7 @@ bool fn114A(struct Eq_n * r0, struct Eq_n * r1, union Eq_n & r2_r3Out)
 															{
 																C_n.u0 = 0x00;
 l119E:
-																r2_r3Out.u0 = <invalid>;
+																r2_r3Out = <invalid>;
 																return C_n != 0x00;
 															}
 															goto l122A;
@@ -1198,7 +1196,7 @@ l122E:
 														Eq_n C_n = (r2_n & 0x8000) != 0x00;
 														if ((r2_n & 0x8000) != 0x00)
 															C_n = cond(SLICE(r3_n + (uint32) r1, word16, 16)) & 0x01;
-														r2_r3Out.u0 = <invalid>;
+														r2_r3Out = <invalid>;
 														return C_n != 0x00;
 													}
 l122A:
@@ -1330,7 +1328,7 @@ struct Eq_n * fn125E(struct Eq_n * r0, struct Eq_n * r1, struct Eq_n & r2Out)
 	return r0_n;
 }
 
-// 126C: Register (ptr16 Eq_n) fn126C(Register (ptr16 Eq_n) r0, Register (ptr16 Eq_n) r2, Register (ptr16 Eq_n) r3, Register out Eq_n r3Out)
+// 126C: Register (ptr16 Eq_n) fn126C(Register (ptr16 Eq_n) r0, Register (ptr16 Eq_n) r2, Register (ptr16 Eq_n) r3, Register out int16 r3Out)
 // Called from:
 //      fn0300
 //      fn0488
@@ -1339,7 +1337,7 @@ struct Eq_n * fn125E(struct Eq_n * r0, struct Eq_n * r1, struct Eq_n & r2Out)
 //      fn0F04
 //      fn1578
 //      fn15F2
-struct Eq_n * fn126C(struct Eq_n * r0, struct Eq_n * r2, struct Eq_n * r3, union Eq_n & r3Out)
+struct Eq_n * fn126C(struct Eq_n * r0, struct Eq_n * r2, struct Eq_n * r3, int16 & r3Out)
 {
 	struct Eq_n * r2_n = __rcl<word16,byte>(r2, 0x01, cond(r3 << 1) & 0x01) - r0;
 	ui16 r3_n;
@@ -1439,7 +1437,7 @@ l12D4:
 l12DC:
 															r3_n = r3_n << 1;
 															r2_n = __rcl<word16,byte>(r2_n, 0x01, cond(r3_n) & 0x01) + r0;
-															Eq_n r3_n;
+															int16 r3_n;
 															struct Eq_n * r2_n;
 															if (r2_n <= null)
 															{
@@ -1453,7 +1451,7 @@ l12EC:
 																	return r2_n + r0;
 																}
 l1386:
-																Eq_n r3_n = (word16) r3_n + 1;
+																int16 r3_n = r3_n + 0x01;
 																r3Out = r3_n;
 																return r2_n;
 															}
@@ -1578,16 +1576,16 @@ l1304:
 	goto l1304;
 }
 
-// 13AA: void fn13AA(Stack Eq_n ptrArg00)
+// 13AA: void fn13AA(Stack (ptr16 ci16) ptrArg00)
 // Called from:
 //      fn0856
 //      fn0B06
 //      fn0E32
 //      fn34E0
-void fn13AA(Eq_n ptrArg00)
+void fn13AA(ci16 * ptrArg00)
 {
 	g_w25C0 = 0xF700;
-	ci16 r0_n = *ptrArg00.u1;
+	ci16 r0_n = *ptrArg00;
 	cu16 r1_n = g_w0070;
 	ci16 r0_n = r0_n;
 	if (r0_n <= 0x00)
@@ -1714,10 +1712,10 @@ struct Eq_n * fn15F2(struct Eq_n * r0, struct Eq_n * r1)
 
 <unknown> g_t1630 = // 1630;
 <unknown> g_t163C = // 163C;
-// 1658: Register (ptr16 Eq_n) fn1658(Register (ptr16 Eq_n) r1, Register (ptr16 byte) r3, Stack ptr16 wArg02, Register out ptr16 r3Out)
+// 1658: Register (ptr16 Eq_n) fn1658(Register (ptr16 Eq_n) r1, Register (ptr16 byte) r3, Stack ptr16 wArg02, Register out word16 r3Out)
 // Called from:
 //      fn15F2
-struct Eq_n * fn1658(struct Eq_n * r1, byte * r3, ptr16 wArg02, ptr16 & r3Out)
+struct Eq_n * fn1658(struct Eq_n * r1, byte * r3, ptr16 wArg02, word16 & r3Out)
 {
 	if (wArg02 != null || *r3 != 0x30)
 	{
@@ -1828,7 +1826,7 @@ void fn34E0()
 	fn355A();
 	*(word16 *) ~0x99 = 0x40;
 	*(word16 *) 0xF400 = 13666;
-	fn13AA(*(union Eq_n *) 0x3FFC);
+	fn13AA(*(ci16 **) 0x3FFC);
 }
 
 // 355A: void fn355A()

@@ -70,7 +70,7 @@ l02B4:
 	r5_6 = r5_6 + 2<16>
 
 
-word16 fn02C8(word16 r4, ptr16 & r3Out, ptr16 & r4Out)
+word16 fn02C8(word16 r4, word16 & r3Out, word16 & r4Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -864,7 +864,7 @@ l0E96_thunk_fn0E98:
 fn0E32_exit:
 
 
-word16 fn0E98(word16 r5, ptr16 & r5Out)
+word16 fn0E98(word16 r5, word16 & r5Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1031,7 +1031,7 @@ l1090:
 	fn0242(0x26D8<16>, r5 + 6<16>)
 
 
-bool fn114A(word16 r0, word16 r1, ptr16 & r2_r3Out)
+bool fn114A(word16 r0, word16 r1, ui32 & r2_r3Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1274,7 +1274,7 @@ l119E:
 fn114A_exit:
 
 
-word16 fn123A(word16 r0, word16 r1, ptr16 & r2Out, ptr16 & r3Out)
+word16 fn123A(word16 r0, word16 r1, word16 & r2Out, word16 & r3Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1312,7 +1312,7 @@ l1246:
 fn123A_exit:
 
 
-word16 fn125E(word16 r0, word16 r1, ptr16 & r2Out)
+word16 fn125E(word16 r0, word16 r1, word16 & r2Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1331,7 +1331,7 @@ l125E:
 fn125E_exit:
 
 
-word16 fn126C(word16 r0, word16 r2, word16 r3, ptr16 & r3Out)
+word16 fn126C(word16 r0, word16 r2, word16 r3, word16 & r3Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1648,7 +1648,7 @@ l161A:
 fn15F2_exit:
 
 
-word16 fn1658(word16 r1, word16 r3, word16 wArg02, ptr16 & r3Out)
+word16 fn1658(word16 r1, word16 r3, word16 wArg02, word16 & r3Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

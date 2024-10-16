@@ -26,17 +26,17 @@ Eq_n reverse(Eq_n gp0, struct Eq_n & gp14Out)
 	return gp0_n;
 }
 
-// 012E: Register int16 init_fft(Register out ptr16 gp4Out)
+// 012E: Register int16 init_fft(Register out word16 gp4Out)
 // Called from:
 //      main
-int16 init_fft(ptr16 & gp4Out)
+int16 init_fft(word16 & gp4Out)
 {
 	ptr16 fp;
 	struct Eq_n * gp14_n = fp - 0x01;
 	Eq_n gp3_n;
 	gp3_n.u0 = 0x00;
 	Eq_n gp3_n;
-	ptr16 gp4_n;
+	word16 gp4_n;
 	do
 	{
 		gp14_n[1] = (struct Eq_n) gp3_n;
@@ -202,10 +202,10 @@ real48 sqrt(int32 gp0_gp1, word16 gp2, struct Eq_n & gp14Out)
 	return SEQ(gp0_n, gp1_n, gp2_n);
 }
 
-// 0273: Sequence word32 auxasin(Sequence Eq_n gp0_gp1_gp2, Register out ptr16 gp2Out, Register out ptr16 gp14Out)
+// 0273: Sequence word32 auxasin(Sequence Eq_n gp0_gp1_gp2, Register out word16 gp2Out, Register out ptr16 gp14Out)
 // Called from:
 //      asin
-word32 auxasin(Eq_n gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
+word32 auxasin(Eq_n gp0_gp1_gp2, word16 & gp2Out, ptr16 & gp14Out)
 {
 	real48 gp5_gp6_gp7_n = gp0_gp1_gp2 * gp0_gp1_gp2;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
@@ -260,11 +260,11 @@ void rcos()
 {
 }
 
-// 0311: Register word16 sincos(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp4Out, Register out ptr16 gp14Out)
+// 0311: Register word16 sincos(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out word16 gp1Out, Register out word16 gp2Out, Register out word16 gp3Out, Register out word16 gp4Out, Register out ptr16 gp14Out)
 // Called from:
 //      sin
 //      cos
-word16 sincos(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
+word16 sincos(struct Eq_n * gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, word16 & gp3Out, word16 & gp4Out, ptr16 & gp14Out)
 {
 	struct Eq_n * gp2_n = gp1;
 	if (gp1 < null)
@@ -285,13 +285,13 @@ word16 sincos(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr
 	{
 		<anonymous> * gp2_n = (<anonymous> *) gp2_n->ptr032C;
 		gp2_n();
-		ptr16 gp1_n;
+		word16 gp1_n;
 		gp1Out = gp1_n;
-		ptr16 gp2_n;
+		word16 gp2_n;
 		gp2Out = gp2_n;
-		ptr16 gp3_n;
+		word16 gp3_n;
 		gp3Out = gp3_n;
-		ptr16 gp4_n;
+		word16 gp4_n;
 		gp4Out = gp4_n;
 		ptr16 gp14_n;
 		gp14Out = gp14_n;
@@ -300,14 +300,14 @@ word16 sincos(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr
 	}
 }
 
-// 037C: Sequence word48 sin(Sequence int32 gp0_gp1, Register word16 gp2, Register out Eq_n gp3Out, Register out Eq_n gp4Out, Register out (ptr16 Eq_n) gp14Out)
+// 037C: Sequence word48 sin(Sequence int32 gp0_gp1, Register word16 gp2, Register out uint16 gp3Out, Register out uint16 gp4Out, Register out (ptr16 Eq_n) gp14Out)
 // Called from:
 //      fft
-word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, struct Eq_n & gp14Out)
+word48 sin(int32 gp0_gp1, word16 gp2, uint16 & gp3Out, uint16 & gp4Out, struct Eq_n & gp14Out)
 {
 	struct Eq_n * gp14_n;
-	Eq_n gp4_n;
-	Eq_n gp3_n;
+	uint16 gp4_n;
+	uint16 gp3_n;
 	word16 gp2_n;
 	word16 gp1_n;
 	real48 gp5_gp6_gp7_n = SEQ(gp0_gp1, gp2);
@@ -337,12 +337,12 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	return SEQ(gp0_n, gp1_n, gp2_n);
 }
 
-// 03A0: Sequence word48 cos(Sequence int32 gp0_gp1, Register word16 gp2, Register out ptr16 gp14Out)
+// 03A0: Sequence word48 cos(Sequence int32 gp0_gp1, Register word16 gp2, Register out word16 gp14Out)
 // Called from:
 //      fft
-word48 cos(int32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
+word48 cos(int32 gp0_gp1, word16 gp2, word16 & gp14Out)
 {
-	ptr16 gp14_n;
+	word16 gp14_n;
 	word16 gp4_n;
 	word16 gp3_n;
 	word16 gp2_n;
@@ -460,10 +460,10 @@ struct Eq_n * cvla(int32 gp12_gp13, struct Eq_n * gp0, struct Eq_n * gp1, uint16
 	return gp1;
 }
 
-// 0426: Register (ptr16 Eq_n) cvfa(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register out ptr16 gp14Out)
+// 0426: Register (ptr16 Eq_n) cvfa(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register out word16 gp14Out)
 // Called from:
 //      pr_fp_num
-struct Eq_n * cvfa(word32 gp1_gp2, struct Eq_n * gp0, ptr16 & gp14Out)
+struct Eq_n * cvfa(word32 gp1_gp2, struct Eq_n * gp0, word16 & gp14Out)
 {
 	struct Eq_n * gp1 = SLICE(gp1_gp2, word16, 16);
 	gp0[7] = (struct Eq_n) 0x00;

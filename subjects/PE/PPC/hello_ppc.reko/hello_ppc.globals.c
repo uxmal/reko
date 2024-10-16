@@ -5,7 +5,6 @@
 #include "hello_ppc.h"
 
 Eq_n g_t0001;
-word32 g_dw0003; // 00000003
 Eq_n g_t0016;
 Eq_n g_t0041;
 Eq_n g_t0060;
@@ -17,5 +16,5 @@ int8 g_b0BFF; // 00000BFF
 Eq_n g_t1000;
 Eq_n g_t1008;
 word32 g_dw1FF8; // 00001FF8
-Eq_n g_tFFFFFFFD;
+Eq_n g_tFFFFFFFC;
 Eq_n g_tFFFFFFFF;

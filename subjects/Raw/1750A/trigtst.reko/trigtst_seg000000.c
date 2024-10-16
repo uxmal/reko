@@ -105,10 +105,10 @@ void fn0111()
 	fn045A(0x0A);
 }
 
-// 01E6: Sequence word32 fn01E6(Sequence word32 gp0_gp1, Register ptr16 gp2, Register out ptr16 gp2Out)
+// 01E6: Sequence word32 fn01E6(Sequence word32 gp0_gp1, Register word16 gp2, Register out word16 gp2Out)
 // Called from:
 //      fn0111
-word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
+word32 fn01E6(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 {
 	word16 gp0 = SLICE(gp0_gp1, word16, 16);
 	int16 gp1 = (word16) gp0_gp1;
@@ -124,7 +124,7 @@ word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 		real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
 		Eq_n gp6_n = gp6_n >> 0x08;
 		word16 gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
-		ptr16 gp2_n = (word16) gp0_gp1_gp2_n;
+		word16 gp2_n = (word16) gp0_gp1_gp2_n;
 		int16 gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFF;
 		if ((gp6_n >> 0x08 & 0x8000) != 0x00)
 		{
@@ -145,11 +145,11 @@ word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 	}
 }
 
-// 02BF: Register word16 fn02BF(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp14Out)
+// 02BF: Register word16 fn02BF(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out word16 gp1Out, Register out word16 gp2Out, Register out ptr16 gp14Out)
 // Called from:
 //      fn032A
 //      fn034E
-word16 fn02BF(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp14Out)
+word16 fn02BF(struct Eq_n * gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, ptr16 & gp14Out)
 {
 	struct Eq_n * gp2_n = gp1;
 	if (gp1 < null)
@@ -168,9 +168,9 @@ word16 fn02BF(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr
 	{
 		<anonymous> * gp2_n = (<anonymous> *) gp2_n->ptr02DA;
 		gp2_n();
-		ptr16 gp1_n;
+		word16 gp1_n;
 		gp1Out = gp1_n;
-		ptr16 gp2_n;
+		word16 gp2_n;
 		gp2Out = gp2_n;
 		ptr16 gp14_n;
 		gp14Out = gp14_n;
@@ -180,13 +180,13 @@ word16 fn02BF(struct Eq_n * gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr
 }
 
 <anonymous> g_t0316 = <code>; // 0316
-// 032A: Sequence int32 fn032A(Sequence int32 gp0_gp1, Register word16 gp2, Register out ptr16 gp2Out)
+// 032A: Sequence int32 fn032A(Sequence int32 gp0_gp1, Register word16 gp2, Register out word16 gp2Out)
 // Called from:
 //      fn0111
-int32 fn032A(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
+int32 fn032A(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 {
 	word16 gp14_n;
-	ptr16 gp2_n;
+	word16 gp2_n;
 	word16 gp1_n;
 	real48 gp5_gp6_gp7_n = SEQ(gp0_gp1, gp2);
 	if (gp0_gp1 < 0x00)
@@ -213,13 +213,13 @@ int32 fn032A(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 	return SEQ(gp0_n, gp1_n);
 }
 
-// 034E: Sequence int32 fn034E(Sequence int32 gp0_gp1, Register word16 gp2, Register out ptr16 gp2Out)
+// 034E: Sequence int32 fn034E(Sequence int32 gp0_gp1, Register word16 gp2, Register out word16 gp2Out)
 // Called from:
 //      fn0111
-int32 fn034E(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
+int32 fn034E(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 {
 	word16 gp14_n;
-	ptr16 gp2_n;
+	word16 gp2_n;
 	word16 gp1_n;
 	real48 gp5_gp6_gp7_n = SEQ(gp0_gp1, gp2);
 	if (gp0_gp1 < 0x00)
@@ -243,10 +243,10 @@ int32 fn034E(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 	return SEQ(gp0_n, gp1_n);
 }
 
-// 03E0: Register (ptr16 Eq_n) fn03E0(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register word16 gp3, Register out ptr16 gp14Out)
+// 03E0: Register (ptr16 Eq_n) fn03E0(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register word16 gp3, Register out word16 gp14Out)
 // Called from:
 //      fn04AE
-struct Eq_n * fn03E0(word32 gp1_gp2, struct Eq_n * gp0, word16 gp3, ptr16 & gp14Out)
+struct Eq_n * fn03E0(word32 gp1_gp2, struct Eq_n * gp0, word16 gp3, word16 & gp14Out)
 {
 	struct Eq_n * gp1 = SLICE(gp1_gp2, word16, 16);
 	gp0[0x0A] = (struct Eq_n) 0x00;

@@ -445,12 +445,12 @@ Eq_n fn000014EC(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 	}
 }
 
-// 0000151E: Register Eq_n fn0000151E(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out ptr32 d1Out)
+// 0000151E: Register Eq_n fn0000151E(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out uipr32 d1Out)
 // Called from:
 //      fn000014AC
 //      fn000014EC
 //      fn00002664
-Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, ptr32 & d1Out)
+Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, uipr32 & d1Out)
 {
 	Eq_n d1_n = __swap(d1);
 	word16 v9_n = (word16) d1_n;
@@ -1095,17 +1095,17 @@ int8 g_b1F14 = 37; // 00001F14
 <unknown> g_t1F18 = // 00001F18;
 <unknown> g_t1F20 = // 00001F20;
 <unknown> g_t1F30 = // 00001F30;
-// 00001F40: Register uint32 fn00001F40(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
+// 00001F40: Register uint32 fn00001F40(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out word32 a5Out)
 // Called from:
 //      fn000015C0
-uint32 fn00001F40(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
+uint32 fn00001F40(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, word32 & a5Out)
 {
 	dwArg08->dw0018 |= 0x02;
 	int32 v13_n = dwArg08->dw0014 - 0x01;
 	dwArg08->dw0014 = v13_n;
 	ui32 * a0_n;
 	uint32 d1_n;
-	ptr32 a5;
+	word32 a5;
 	if (v13_n >= 0x00 && (dwArg04 != 0x0A || (dwArg08->dw0018 & 0x80) == 0x00))
 	{
 		a0_n = dwArg08->ptr0004;
@@ -2838,10 +2838,10 @@ l00003942:
 	return d0_n;
 }
 
-// 00003C60: Register uint32 fn00003C60(Register Eq_n d4, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out Eq_n d1Out)
+// 00003C60: Register uint32 fn00003C60(Register Eq_n d4, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out uint32 d1Out)
 // Called from:
 //      fn00002C3C
-uint32 fn00003C60(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, union Eq_n & d1Out)
+uint32 fn00003C60(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, uint32 & d1Out)
 {
 	word32 d0_n = __swap(dwArg08);
 	uint32 d1_n = __swap(dwArg10);

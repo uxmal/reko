@@ -71,7 +71,7 @@ namespace Reko.Analysis
         public override OutArgument BindOutArg(Storage stg)
         {
             var exp = stg.Accept(this, (defs, ApplicationBindingType.Out));
-            return new OutArgument(arch.FramePointerType, exp!);
+            return new OutArgument(stg.DataType, exp!);
         }
 
         public override Expression? BindReturnValue(Storage? stg)

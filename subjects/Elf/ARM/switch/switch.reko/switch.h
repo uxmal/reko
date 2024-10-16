@@ -31,7 +31,7 @@ Eq_1: (struct "Globals"
 		(10858 (ptr32 code) __libc_start_main_GOT)
 		(10870 byte b10870))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_4: (fn ptr32 ())
+Eq_4: (fn word32 ())
 	T_4 (in call_gmon_start @ 000082F4 : ptr32)
 	T_5 (in signature of call_gmon_start @ 0000836C : void)
 Eq_8: (fn void ())
@@ -60,7 +60,7 @@ Eq_35: (fn void ())
 	T_36 (in signature of abort : void)
 Eq_97: (fn word32 ())
 	T_97 (in fn00000000 @ 00008420 : ptr32)
-Eq_100: (union "Eq_100" (int32 u0) (uint32 u1) (ptr32 u2))
+Eq_100: (union "Eq_100" (int32 u0) (uint32 u1))
 	T_100 (in r0 @ 00008430 : Eq_100)
 	T_101 (in dwArg00 @ 00008430 : Eq_100)
 	T_102 (in fpOut @ 00008430 : Eq_100)
@@ -73,22 +73,22 @@ Eq_100: (union "Eq_100" (int32 u0) (uint32 u1) (ptr32 u2))
 	T_112 (in r0 @ 0000846C : Eq_100)
 	T_113 (in r1 @ 0000846C : Eq_100)
 	T_118 (in r0 + r1 @ 000084C4 : word32)
-	T_122 (in out fp_25 @ 000084C4 : ptr32)
+	T_122 (in out fp_25 @ 000084C4 : word32)
 	T_123 (in frobulate(r0, r1, out fp_25) @ 000084C4 : word32)
 	T_124 (in __divsi3(r0 + r1, frobulate(r0, r1, out fp_25)) @ 000084C4 : word32)
 	T_128 (in Mem20[fp_25 + -24<i32>:word32] @ 000084C4 : word32)
 	T_131 (in Mem20[sp_32 + 0<32>:word32] @ 000084C4 : word32)
-	T_133 (in out fp_52 @ 000084C4 : ptr32)
+	T_133 (in out fp_52 @ 000084C4 : word32)
 	T_134 (in frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52) @ 000084C4 : word32)
 	T_135 (in __divsi3(__divsi3(r0 + r1, frobulate(r0, r1, out fp_25)), frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52)) @ 000084C4 : word32)
 	T_140 (in r0 @ 000084D0 : Eq_100)
 	T_141 (in 6<32> @ 000084F0 : word32)
-	T_145 (in out fp_39 @ 00008518 : ptr32)
+	T_145 (in out fp_39 @ 00008518 : word32)
 	T_146 (in frobulate(r0, r0, out fp_39) @ 00008518 : word32)
 	T_149 (in 0<32> @ 00008548 : word32)
 	T_150 (in 0<32> @ 00008548 : word32)
 	T_154 (in r0 - 3<32> @ 0000852C : word32)
-	T_155 (in out fp_39 @ 0000852C : ptr32)
+	T_155 (in out fp_39 @ 0000852C : word32)
 	T_156 (in frobulate(r0 - 3<32>, r0, out fp_39) @ 0000852C : word32)
 	T_162 (in r0 @ 00008558 : Eq_100)
 	T_170 (in 0<32> @ 00008590 : word32)
@@ -165,7 +165,7 @@ Eq_261: (fn void (word32))
 	T_261 (in __syscall<word32> @ 0000863C : ptr32)
 	T_262 (in signature of __syscall : void)
 	T_268 (in __syscall<word32> @ 0000864C : ptr32)
-Eq_271: (fn Eq_275 (ptr32))
+Eq_271: (fn Eq_275 (word32))
 	T_271 (in _init @ 00008664 : ptr32)
 	T_272 (in signature of _init @ 000082F0 : void)
 Eq_275: (union "Eq_275" (int32 u0) (uint32 u1))
@@ -190,10 +190,10 @@ T_2: (in r4 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_3: (in r10Out : ptr32)
+T_3: (in r10Out : word32)
   Class: Eq_3
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: word32
+  OrigDataType: word32
 T_4: (in call_gmon_start @ 000082F4 : ptr32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
@@ -204,11 +204,11 @@ T_5: (in signature of call_gmon_start @ 0000836C : void)
   OrigDataType: 
 T_6: (in call_gmon_start() @ 000082F4 : word32)
   Class: Eq_3
-  DataType: ptr32
+  DataType: word32
   OrigDataType: word32
-T_7: (in r10_9 @ 000082F4 : ptr32)
+T_7: (in r10_9 @ 000082F4 : word32)
   Class: Eq_3
-  DataType: ptr32
+  DataType: word32
   OrigDataType: word32
 T_8: (in frame_dummy @ 000082F8 : ptr32)
   Class: Eq_8
@@ -589,7 +589,7 @@ T_101: (in dwArg00 @ 00008430 : Eq_100)
 T_102: (in fpOut @ 00008430 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_103: (in __divsi3 @ 00008460 : ptr32)
   Class: Eq_103
   DataType: (ptr32 Eq_103)
@@ -666,10 +666,10 @@ T_121: (in fp_25 @ 000084C4 : (ptr32 Eq_121))
   Class: Eq_121
   DataType: (ptr32 Eq_121)
   OrigDataType: (ptr32 (struct (FFFFFFE8 T_128 tFFFFFFE8)))
-T_122: (in out fp_25 @ 000084C4 : ptr32)
+T_122: (in out fp_25 @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_123: (in frobulate(r0, r1, out fp_25) @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
@@ -710,10 +710,10 @@ T_132: (in fp_52 @ 000084C4 : (ptr32 word32))
   Class: Eq_132
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_138 t0000)))
-T_133: (in out fp_52 @ 000084C4 : ptr32)
+T_133: (in out fp_52 @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_134: (in frobulate(fp_25->tFFFFFFE8.u0, sp_32->u0, out fp_52) @ 000084C4 : word32)
   Class: Eq_100
   DataType: Eq_100
@@ -758,10 +758,10 @@ T_144: (in fp_39 @ 00008518 : (ptr32 Eq_144))
   Class: Eq_144
   DataType: (ptr32 Eq_144)
   OrigDataType: (ptr32 (struct (4 T_161 t0004)))
-T_145: (in out fp_39 @ 00008518 : ptr32)
+T_145: (in out fp_39 @ 00008518 : word32)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_146: (in frobulate(r0, r0, out fp_39) @ 00008518 : word32)
   Class: Eq_100
   DataType: Eq_100
@@ -798,10 +798,10 @@ T_154: (in r0 - 3<32> @ 0000852C : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: up32
-T_155: (in out fp_39 @ 0000852C : ptr32)
+T_155: (in out fp_39 @ 0000852C : word32)
   Class: Eq_100
   DataType: Eq_100
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_156: (in frobulate(r0 - 3<32>, r0, out fp_39) @ 0000852C : word32)
   Class: Eq_100
   DataType: Eq_100
@@ -1274,10 +1274,10 @@ T_273: (in r10_21 @ 00008664 : ptr32)
   Class: Eq_273
   DataType: ptr32
   OrigDataType: ptr32
-T_274: (in out r10_21 @ 00008664 : ptr32)
+T_274: (in out r10_21 @ 00008664 : word32)
   Class: Eq_3
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: word32
+  OrigDataType: word32
 T_275: (in _init(out r10_21) @ 00008664 : word32)
   Class: Eq_275
   DataType: Eq_275
@@ -1579,7 +1579,7 @@ typedef struct Globals {
 	byte b10870;	// 10870
 } Eq_1;
 
-typedef ptr32 (Eq_4)();
+typedef word32 (Eq_4)();
 
 typedef void (Eq_8)();
 
@@ -1602,7 +1602,6 @@ typedef word32 (Eq_97)();
 typedef union Eq_100 {
 	int32 u0;
 	uint32 u1;
-	ptr32 u2;
 } Eq_100;
 
 typedef Eq_100 (Eq_103)(Eq_100, Eq_100);
@@ -1645,7 +1644,7 @@ typedef union Eq_242 {
 
 typedef void (Eq_261)(word32);
 
-typedef Eq_275 (Eq_271)(ptr32);
+typedef Eq_275 (Eq_271)(word32);
 
 typedef union Eq_275 {
 	int32 u0;

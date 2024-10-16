@@ -950,10 +950,10 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 	}
 }
 
-// 00402028: Register word32 client_prepare_connect(Register (ptr32 Eq_n) r4, Register word32 ra, Register out ptr32 r6Out, Register out ptr32 r7Out)
+// 00402028: Register word32 client_prepare_connect(Register (ptr32 Eq_n) r4, Register word32 ra, Register out word32 r6Out, Register out word32 r7Out)
 // Called from:
 //      client_new
-word32 client_prepare_connect(struct Eq_n * r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
+word32 client_prepare_connect(struct Eq_n * r4, word32 ra, word32 & r6Out, word32 & r7Out)
 {
 	ptr32 fp;
 	getsockopt(r4->t0000.u0, 0x00, 80, &r4->w1798, fp + -24, 0x10008860, 16);
@@ -964,8 +964,8 @@ word32 client_prepare_connect(struct Eq_n * r4, word32 ra, ptr32 & r6Out, ptr32 
 	if ((word32) (r2_n < 0x0100) == 0x00)
 		dwLoc18_n.u0 = 0x0100;
 	word32 r5_n;
-	ptr32 r6_n;
-	ptr32 r7_n;
+	word32 r6_n;
+	word32 r7_n;
 	add_to_request(r4, r4->ptr0FB0, fp + -0x0118, dwLoc18_n, ra, out r5_n, out r6_n, out r7_n);
 	r6Out = r6_n;
 	r7Out = r7_n;
@@ -1467,10 +1467,10 @@ struct Eq_n * clist_new(word32 ra, struct Eq_n & r4Out, struct Eq_n & r5Out)
 	return r2_n;
 }
 
-// 00403CBC: Register int32 clist_add(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register out ptr32 r5Out)
+// 00403CBC: Register int32 clist_add(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register out (ptr32 Eq_n) r5Out)
 // Called from:
 //      main
-int32 clist_add(struct Eq_n * r4, struct Eq_n * r5, ptr32 & r5Out)
+int32 clist_add(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n & r5Out)
 {
 	if (r4->ptr0008 != null)
 	{
@@ -1483,7 +1483,7 @@ int32 clist_add(struct Eq_n * r4, struct Eq_n * r5, ptr32 & r5Out)
 	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
 		r4->dw0004 = r4->dw0000;
 	int32 r2_n = r4->dw0000;
-	r5Out = (<unknown>*) <invalid>;
+	r5Out = (struct Eq_n *) <invalid>;
 	return r2_n;
 }
 
@@ -2168,7 +2168,7 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 	return r5_n;
 }
 
-// 00406610: Register int32 print_log(Register int32 r4, Register ptr32 r5, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r25Out)
+// 00406610: Register int32 print_log(Register int32 r4, Register ptr32 r5, Register out ptr32 r5Out, Register out word32 r6Out, Register out word32 r7Out, Register out word32 r25Out)
 // Called from:
 //      handle_stop
 //      handle_log_rotate
@@ -2193,19 +2193,19 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 //      server_destroy
 //      slist_new
 //      slist_delete
-int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
+int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, word32 & r6Out, word32 & r7Out, word32 & r25Out)
 {
 	ptr32 fp;
-	ptr32 r25_n = &g_t406610;
+	word32 r25_n = 0x00406610;
 	if ((word32) (*g_ptr100008F4 < r4) == 0x00)
 	{
 		word32 r2_n = vsnprintf(fp + -0x0418, 0x03FF, r5, fp + 8, fp + 8);
 		g_t40697C();
 	}
 	r5Out = r5;
-	ptr32 r6;
+	word32 r6;
 	r6Out = r6;
-	ptr32 r7;
+	word32 r7;
 	r7Out = r7;
 	r25Out = r25_n;
 	return r4;
@@ -2327,13 +2327,13 @@ struct Eq_n * server_new(word32 r4, word32 r5, word32 r6, int32 r7, word32 ra)
 	return r2_n;
 }
 
-// 00406D4C: Register int32 server_open(Register (ptr32 Eq_n) r4, Register word32 ra, Register out ptr32 r5Out)
+// 00406D4C: Register int32 server_open(Register (ptr32 Eq_n) r4, Register word32 ra, Register out word32 r5Out)
 // Called from:
 //      main
-int32 server_open(struct Eq_n * r4, word32 ra, ptr32 & r5Out)
+int32 server_open(struct Eq_n * r4, word32 ra, word32 & r5Out)
 {
 	Eq_n r2_n = socket(2, 2, 6);
-	ptr32 r5_n;
+	word32 r5_n;
 	int32 r2_n;
 	if (r2_n < 0x00)
 	{

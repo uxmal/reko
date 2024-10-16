@@ -87,11 +87,11 @@ l0000000000000740:
 }
 
 <anonymous> g_t0760 = <code>; // 0000000000000760
-// 0000000000000768: Register Eq_n fib(Register Eq_n r2, Register out ptr64 r10Out, Register out ptr64 r11Out)
+// 0000000000000768: Register Eq_n fib(Register Eq_n r2, Register out word64 r10Out, Register out ptr64 r11Out)
 // Called from:
 //      fib
 //      main
-Eq_n fib(Eq_n r2, ptr64 & r10Out, ptr64 & r11Out)
+Eq_n fib(Eq_n r2, word64 & r10Out, ptr64 & r11Out)
 {
 	word64 r10_n;
 	ptr64 fp;
@@ -111,7 +111,7 @@ Eq_n fib(Eq_n r2, ptr64 & r10Out, ptr64 & r11Out)
 	ptr64 v29_n = (char *) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
 	r11_n->ptr0118();
-	ptr64 r10_n;
+	word64 r10_n;
 	r10Out = r10_n;
 	ptr64 r11_n;
 	r11Out = r11_n;

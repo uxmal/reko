@@ -41,11 +41,11 @@ void fn0390(byte b, Eq_n c, byte e, byte bArg02)
 	}
 }
 
-// 03BB: FlagGroup bool fn03BB(Register Eq_n c, Register out Eq_n aOut)
+// 03BB: FlagGroup bool fn03BB(Register Eq_n c, Register out byte aOut)
 // Called from:
 //      fn03CB
 //      fn03E6
-bool fn03BB(Eq_n c, union Eq_n & aOut)
+bool fn03BB(Eq_n c, byte & aOut)
 {
 	g_t1657.u0 = (cu8) c;
 	byte a_n = 0x00 - (byte) (g_t1657.u0 > 0x7B || g_t1657.u0 < 0x61);
@@ -218,7 +218,7 @@ word16 fn0534(char c)
 	return bc_n;
 }
 
-// 056B: FlagGroup bool fn056B(Register Eq_n bc, Register out Eq_n bcOut)
+// 056B: FlagGroup bool fn056B(Register cui16 bc, Register out cui16 bcOut)
 // Called from:
 //      fn05CE
 //      fn05EF
@@ -229,12 +229,12 @@ word16 fn0534(char c)
 //      fn0814
 //      fn100A
 //      fn1229
-bool fn056B(Eq_n bc, union Eq_n & bcOut)
+bool fn056B(cui16 bc, cui16 & bcOut)
 {
 	char c = (byte) bc;
 	byte b = SLICE(bc, byte, 8);
 	g_b166C = c;
-	Eq_n bc_n;
+	cui16 bc_n;
 	switch (g_b14F3)
 	{
 	case 0x01:
@@ -297,12 +297,12 @@ byte fn05CE(Eq_n bc)
 	return SLICE(bc_n, byte, 8);
 }
 
-// 05EF: FlagGroup bool fn05EF(Register Eq_n bc, Register out Eq_n bOut)
+// 05EF: FlagGroup bool fn05EF(Register Eq_n bc, Register out byte bOut)
 // Called from:
 //      fn061B
 //      fn06CE
 //      fn07B3
-bool fn05EF(Eq_n bc, union Eq_n & bOut)
+bool fn05EF(Eq_n bc, byte & bOut)
 {
 	byte b = SLICE(bc, byte, 8);
 	Eq_n c = (byte) bc;
@@ -321,7 +321,7 @@ bool fn05EF(Eq_n bc, union Eq_n & bOut)
 		C_n = fn056B(SEQ(b_n, g_t166F.u1[(uint16) g_b1671]), out bc_n);
 		++g_b1671;
 	} while (g_b1671 != 0x00);
-	bOut.u1 = <invalid>;
+	bOut = <invalid>;
 	return C_n != 0x00;
 }
 
@@ -683,10 +683,10 @@ void fn0920()
 	}
 }
 
-// 0990: FlagGroup bool fn0990(Register uint8 f, Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out Eq_n afOut)
+// 0990: FlagGroup bool fn0990(Register uint8 f, Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out uint16 afOut)
 // Called from:
 //      fn082F
-bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
+bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, uint16 & afOut)
 {
 	g_b1695 = d;
 	g_t1694.u0 = (byte) e;
@@ -712,7 +712,7 @@ bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		byte C_n = cond(a_n >> 0x01);
 		if (a_n >> 0x01 >= 0x00)
 		{
-			afOut.u0 = (uint16) f;
+			afOut = (uint16) f;
 			return C_n != 0x00;
 		}
 		*g_t168B.u1 = (Fcb *) (g_t1692.u1->a0000[0].u0 & 0x1F);
@@ -721,7 +721,7 @@ bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		byte SZPC_n = cond(0x10 - *hl_n.u1);
 		if (*hl_n.u1 > 0x10)
 		{
-			afOut.u0 = (uint16) f;
+			afOut = (uint16) f;
 			return (SZPC_n & 0x01) != 0x00;
 		}
 		g_t1692.u1 = (struct Eq_n *) &g_t1692.u1->b0002;
@@ -744,7 +744,7 @@ bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		byte SZPC_n = cond(a_n - 0x2A);
 		if (a_n == 0x2A)
 		{
-			afOut.u0 = (uint16) f;
+			afOut = (uint16) f;
 			return (SZPC_n & 0x01) != 0x00;
 		}
 		fn0B91();
@@ -758,7 +758,7 @@ bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		byte SZPC_n = cond(0x03 - g_t1696.u0);
 		if (g_t1696.u0 > 0x03)
 		{
-			afOut.u0 = (uint16) f;
+			afOut = (uint16) f;
 			return (SZPC_n & 0x01) != 0x00;
 		}
 		sp_n->tFFFFFFFE.u1 = g_t1696.u1;
@@ -783,7 +783,7 @@ bool fn0990(uint8 f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		byte C_n = cond(a_n >> 0x01);
 		if (a_n >> 0x01 >= 0x00)
 		{
-			afOut.u0 = (uint16) f;
+			afOut = (uint16) f;
 			return C_n != 0x00;
 		}
 		Eq_n hl_n;
@@ -906,10 +906,10 @@ byte fn0C93()
 	return g_b138D + g_b138C + (&g_b138C)[(uint16) g_b138C] + 0x7F;
 }
 
-// 0D64: FlagGroup bool fn0D64(Register out Eq_n aOut)
+// 0D64: FlagGroup bool fn0D64(Register out uint8 aOut)
 // Called from:
 //      fn0D84
-bool fn0D64(union Eq_n & aOut)
+bool fn0D64(uint8 & aOut)
 {
 	bcu8 a_n = g_t1521.u1->b0009;
 	aOut = a_n >> 0x01;
@@ -969,10 +969,10 @@ void fn0E63(byte c)
 	}
 }
 
-// 0EAB: FlagGroup bool fn0EAB(Register out Eq_n aOut)
+// 0EAB: FlagGroup bool fn0EAB(Register out byte aOut)
 // Called from:
 //      fn0E63
-bool fn0EAB(union Eq_n & aOut)
+bool fn0EAB(byte & aOut)
 {
 	g_b16A7 = 0x00;
 	byte SZPC_n;
@@ -987,12 +987,12 @@ bool fn0EAB(union Eq_n & aOut)
 		byte SZPC_n = cond(a_n - hl_n->b138C);
 		if (a_n != hl_n->b138C)
 		{
-			aOut.u0 = 0x00;
+			aOut = 0x00;
 			return (SZPC_n & 0x01) != 0x00;
 		}
 		++g_b16A7;
 	}
-	aOut.u0 = 0x01;
+	aOut = 0x01;
 	return (SZPC_n & 0x01) != 0x00;
 }
 
@@ -1224,14 +1224,14 @@ void fn1315()
 {
 }
 
-// 1326: Register byte fn1326(Register byte c, Register uint16 hl, Register out Eq_n lOut)
+// 1326: Register byte fn1326(Register byte c, Register uint16 hl, Register out byte lOut)
 // Called from:
 //      fn0483
 //      fn0BE4
-byte fn1326(byte c, uint16 hl, union Eq_n & lOut)
+byte fn1326(byte c, uint16 hl, byte & lOut)
 {
 	uint16 hl_n = hl;
-	Eq_n a_n;
+	byte a_n;
 	do
 	{
 		uint16 v12_n = hl_n >> 0x01;
@@ -1267,27 +1267,27 @@ word16 fn1346(ui16 * bc, ui16 * de)
 	return hl_n;
 }
 
-// 1348: FlagGroup bool fn1348(Register (ptr16 ui16) de, Register (ptr16 ui16) hl, Register out ptr16 deOut, Register out Eq_n hlOut)
+// 1348: FlagGroup bool fn1348(Register (ptr16 ui16) de, Register (ptr16 ui16) hl, Register out ptr16 deOut, Register out ui16 hlOut)
 // Called from:
 //      fn063E
 //      fn1346
-bool fn1348(ui16 * de, ui16 * hl, ptr16 & deOut, union Eq_n & hlOut)
+bool fn1348(ui16 * de, ui16 * hl, ptr16 & deOut, ui16 & hlOut)
 {
-	Eq_n a_a_n = *de - *hl;
+	ui16 a_a_n = *de - *hl;
 	deOut = (char *) de + 1;
 	hlOut = a_a_n;
 	return (cond(SLICE(a_a_n, byte, 8)) & 0x01) != 0x00;
 }
 
-// 1353: Register uint8 fn1353(Register uint8 a, Register (ptr16 byte) de, Register out Eq_n lOut)
+// 1353: Register uint8 fn1353(Register uint8 a, Register (ptr16 byte) de, Register out byte lOut)
 // Called from:
 //      fn075C
 //      fn0E63
-uint8 fn1353(uint8 a, byte * de, union Eq_n & lOut)
+uint8 fn1353(uint8 a, byte * de, byte & lOut)
 {
 	uint16 hl_n = (uint16) a;
 	fn1356(de, hl_n);
-	lOut.u1 = (<unknown>*) <invalid>;
+	lOut = <invalid>;
 	uint8 a_n;
 	return a_n;
 }

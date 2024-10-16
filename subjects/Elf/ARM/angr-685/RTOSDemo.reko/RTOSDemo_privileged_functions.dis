@@ -59,7 +59,7 @@ l000000E8_thunk_vPortExitCritical:
 prvUnlockQueue_exit:
 
 
-bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, ptr32 & r0Out, ptr32 & r7Out)
+bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 & r0Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -137,7 +137,7 @@ l000000FE:
 prvCopyDataToQueue_exit:
 
 
-word32 prvCopyDataFromQueue(word32 r0, word32 r1, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+word32 prvCopyDataFromQueue(word32 r0, word32 r1, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

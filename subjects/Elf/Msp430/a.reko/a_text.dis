@@ -381,7 +381,7 @@ l44A8:
 vTxISR_exit:
 
 
-word16 xTaskCreate(word16 sr, word16 r13, word16 r14, word16 wArg02, ptr16 & r15Out)
+word16 xTaskCreate(word16 sr, word16 r13, word16 r14, word16 wArg02, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -652,7 +652,7 @@ l0000475A:
 vTaskSuspendAll_exit:
 
 
-word16 xTaskResumeAll(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
+word16 xTaskResumeAll(word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1035,7 +1035,7 @@ l4ABE:
 prvCheckTasksWaitingTermination_exit:
 
 
-word16 prvAllocateTCBAndStack(word16 sr, word16 r15, ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
+word16 prvAllocateTCBAndStack(word16 sr, word16 r15, word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1257,7 +1257,7 @@ l00004CBA:
 vListRemove_exit:
 
 
-word16 xQueueCreate(word16 r15, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
+word16 xQueueCreate(word16 r15, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1283,7 +1283,7 @@ l00004D76:
 xQueueCreate_exit:
 
 
-word16 xQueueSend(word16 sr, word16 r13, word16 r14, word16 r15, ptr16 & r15Out)
+word16 xQueueSend(word16 sr, word16 r13, word16 r14, word16 r15, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1725,7 +1725,7 @@ l00005152:
 prvIsQueueFull_exit:
 
 
-word16 pvPortMalloc(word16 r15, ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r15Out)
+word16 pvPortMalloc(word16 r15, word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1855,7 +1855,7 @@ l5238:
 vPortEndScheduler_exit:
 
 
-word16 vPortYield(ptr16 & r5Out, ptr16 & r6Out, ptr16 & r7Out, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16 & r11Out)
+word16 vPortYield(word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r8Out, word16 & r9Out, word16 & r10Out, word16 & r11Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2738,7 +2738,7 @@ l00005B4C:
 fn00005B04_exit:
 
 
-bool fn00005B4E(ui32 r11_r10, word16 r8, word16 r12, word16 r13, ptr16 & r13_r12Out, ptr16 & r15_r14Out, ptr16 & r8Out)
+bool fn00005B4E(ui32 r11_r10, word16 r8, word16 r12, word16 r13, ui32 & r13_r12Out, ui32 & r15_r14Out, word16 & r8Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

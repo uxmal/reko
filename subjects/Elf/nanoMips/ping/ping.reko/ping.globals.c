@@ -7,11 +7,13 @@
 byte g_b0000; // 00000000
 Eq_n g_t0001;
 Eq_n g_t0002;
-Eq_n g_a000A[];
+Eq_n g_t000A;
 Eq_n g_t000E;
 Eq_n g_t0018;
 byte g_b001A; // 0000001A
 Eq_n g_t0025;
+Eq_n g_t002E;
+Eq_n g_t003A;
 Eq_n g_t0054;
 Eq_n g_t0069;
 Eq_n g_t0267;
@@ -45,11 +47,11 @@ Eq_n g_t412028C;
 Eq_n g_t4120290;
 Eq_n g_t4120294;
 union Eq_n * g_ptr4120298; // 04120298
-ptr32 g_ptr412029C; // 0412029C
+word32 g_dw412029C; // 0412029C
 union Eq_n * g_ptr41202A0; // 041202A0
-ptr32 g_ptr41202A4; // 041202A4
+word32 g_dw41202A4; // 041202A4
 union Eq_n * g_ptr41202A8; // 041202A8
-ptr32 g_ptr41202AC; // 041202AC
+word32 g_dw41202AC; // 041202AC
 Eq_n g_t41202B0;
 Eq_n g_t41202B4;
 Eq_n g_t41202B8;

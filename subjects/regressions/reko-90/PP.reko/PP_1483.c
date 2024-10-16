@@ -20,10 +20,10 @@ void fn1483-0ADC(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 	Top_n->r0000 = (real64) es_di_n->rFFFFE086 - Top_n->r0000;
 }
 
-// 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register cu8 al, Register word16 cx, Register Eq_n bx, Register Eq_n bp)
+// 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register cu8 al, Register word16 cx, Register Eq_n bx, Register int16 bp)
 // Called from:
 //      fn1483-0C55
-Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, cu8 al, word16 cx, Eq_n bx, Eq_n bp)
+Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, cu8 al, word16 cx, Eq_n bx, int16 bp)
 {
 	struct Eq_n * ds_n;
 	struct Eq_n * es_n;
@@ -82,7 +82,7 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, cu8 al, word16 cx, Eq_n bx, Eq_n 
 //      fn1483-0C91
 word32 fn1483-0C55()
 {
-	Eq_n bp;
+	int16 bp;
 	Eq_n bx;
 	word16 cx;
 	<unknown> Eq_n::* di;
@@ -112,14 +112,14 @@ Eq_n fn1483-0C91(Eq_n ds_bx, struct Eq_n * ss_bp, cu8 al, Eq_n cx, Eq_n si, Eq_n
 	{
 		Eq_n ax_n = fn1483-0C55();
 		diOut = di;
-		esOut.u1 = (<unknown>*) <invalid>;
+		esOut.u0 = <invalid>;
 		return ax_n;
 	}
 	else if (*((word32) ds_bx + (uipr32) si) *s16 0x18 == 0x00 && cx != 0x01)
 	{
 		Eq_n ax_n = fn1483-0CA0(SEQ(psegArg00, di), ss_bp, si, ds, out di_n);
 		diOut = di_n;
-		esOut.u1 = (<unknown>*) <invalid>;
+		esOut.u0 = <invalid>;
 		return ax_n;
 	}
 	else
@@ -127,7 +127,7 @@ Eq_n fn1483-0C91(Eq_n ds_bx, struct Eq_n * ss_bp, cu8 al, Eq_n cx, Eq_n si, Eq_n
 		ds->*((ds->*bx).a2203 + si) += cx - 0x01;
 		Eq_n ax_n = fn1483-0CA0(SEQ(psegArg00, di), ss_bp, si, ds, out di_n);
 		diOut = di_n;
-		esOut.u1 = (<unknown>*) <invalid>;
+		esOut.u0 = <invalid>;
 		return ax_n;
 	}
 }
@@ -517,9 +517,9 @@ ui32 fn1483-1B91(Eq_n al, Eq_n bx, Eq_n di, Eq_n ds, Eq_n psegArg00)
 	Eq_n fp;
 	__in<byte>(fp);
 	ui16 ax_n = SEQ(ah ^ 0x2E, (al - 0x28 ^ ~0x06) - bh);
-	Eq_n ax;
+	union Eq_n Eq_n::* ax;
 	Eq_n dx;
-	Eq_n bp;
+	int16 bp;
 	Eq_n si;
 	Eq_n es;
 	word16 cx_n;
@@ -536,25 +536,25 @@ ui32 fn1483-1B91(Eq_n al, Eq_n bx, Eq_n di, Eq_n ds, Eq_n psegArg00)
 	return SCZOP_n & 0x02 | SCZOP_n & 0x10 | SCZOP_n & 0x20 | SCZOP_n & 0x01 | SCZOP_n & 0x04;
 }
 
-// 1483:1BB8: Sequence segptr32 fn1483-1BB8(Sequence (ptr32 byte) ds_si, Register byte al, Register byte ah, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n bp, Register Eq_n di, Register Eq_n es, Register out ptr16 axOut, Register out Eq_n cxOut, Register out Eq_n dhOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) esOut, Register out (ptr16 Eq_n) dsOut)
+// 1483:1BB8: Sequence segptr32 fn1483-1BB8(Sequence (ptr32 byte) ds_si, Register byte al, Register byte ah, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register int16 bp, Register Eq_n di, Register Eq_n es, Register out word16 axOut, Register out Eq_n cxOut, Register out byte dhOut, Register out word16 bxOut, Register out word16 siOut, Register out word16 diOut, Register out (ptr16 Eq_n) esOut, Register out (ptr16 Eq_n) dsOut)
 // Called from:
 //      fn1483-0C11
-segptr32 fn1483-1BB8(byte * ds_si, byte al, byte ah, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n di, Eq_n es, ptr16 & axOut, union Eq_n & cxOut, union Eq_n & dhOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & esOut, struct Eq_n & dsOut)
+segptr32 fn1483-1BB8(byte * ds_si, byte al, byte ah, ui16 cx, Eq_n dx, Eq_n bx, int16 bp, Eq_n di, Eq_n es, word16 & axOut, union Eq_n & cxOut, byte & dhOut, word16 & bxOut, word16 & siOut, word16 & diOut, struct Eq_n & esOut, struct Eq_n & dsOut)
 {
 	Eq_n ds = SLICE(ds_si, selector, 16);
 	Eq_n si = (word16) ds_si;
-	Eq_n ax_n = SEQ(ah, al | *ds_si);
+	union Eq_n Eq_n::* ax_n = SEQ(ah, al | *ds_si);
 	word16 cx_n;
 	byte dh_n;
-	ptr16 bx_n;
+	word16 bx_n;
 	word16 bp_n;
-	ptr16 si_n;
-	ptr16 di_n;
+	word16 si_n;
+	word16 di_n;
 	struct Eq_n * es_n;
 	struct Eq_n * ds_n;
 	axOut = fn1483-1BB9(ax_n, cx, dx, bx, bp, si, di, es, ds, out cx_n, out dh_n, out bx_n, out bp_n, out si_n, out di_n, out es_n, out ds_n);
-	cxOut.u1 = (<unknown>*) <invalid>;
-	dhOut.u1 = (<unknown>*) <invalid>;
+	cxOut.u0 = <invalid>;
+	dhOut = <invalid>;
 	bxOut = bx_n;
 	siOut = si_n;
 	diOut = di_n;
@@ -565,11 +565,11 @@ segptr32 fn1483-1BB8(byte * ds_si, byte al, byte ah, ui16 cx, Eq_n dx, Eq_n bx, 
 	return SEQ(ss_n, bp_n);
 }
 
-// 1483:1BB9: Register Eq_n fn1483-1BB9(Register Eq_n ax, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n bp, Register (ptr32 (arr Eq_n)) si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register out Eq_n cxOut, Register out Eq_n dhOut, Register out ptr16 bxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n esOut, Register out Eq_n dsOut)
+// 1483:1BB9: Register (memptr Eq_n Eq_n) fn1483-1BB9(Register (memptr Eq_n Eq_n) ax, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register int16 bp, Register (ptr32 (arr Eq_n)) si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register out Eq_n cxOut, Register out byte dhOut, Register out word16 bxOut, Register out int16 bpOut, Register out (memptr Eq_n Eq_n) siOut, Register out Eq_n diOut, Register out Eq_n esOut, Register out Eq_n dsOut)
 // Called from:
 //      fn1483-1B91
 //      fn1483-1BB8
-Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_n di, Eq_n es, Eq_n ds, union Eq_n & cxOut, union Eq_n & dhOut, ptr16 & bxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & esOut, union Eq_n & dsOut)
+union Eq_n Eq_n::* fn1483-1BB9(union Eq_n Eq_n::* ax, ui16 cx, Eq_n dx, Eq_n bx, int16 bp, Eq_n (* si)[], Eq_n di, Eq_n es, Eq_n ds, union Eq_n & cxOut, byte & dhOut, word16 & bxOut, int16 & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & esOut, union Eq_n & dsOut)
 {
 	Eq_n bx_n;
 	word32 ecx_n;
@@ -602,26 +602,27 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 					{
 						__sti();
 						(5251->*bx)();
-						cxOut.u1 = (<unknown>*) <invalid>;
-						dhOut.u1 = (<unknown>*) <invalid>;
-						ptr16 bx_n;
+						cxOut.u0 = <invalid>;
+						dhOut = <invalid>;
+						word16 bx_n;
 						bxOut = bx_n;
 						bpOut = bp;
 						siOut = ax;
 						diOut = di;
 						esOut = es_n;
-						dsOut.u1 = (<unknown>*) <invalid>;
+						dsOut.u0 = <invalid>;
 						word16 cx_n = (word16) ecx_n;
-						Eq_n ax_n;
+						union Eq_n Eq_n::* ax_n;
 						return ax_n;
 					}
-					ds->*ax = (word16) (ds->*ax) + ah_n;
+					(ds->*ax).u0 = (byte) ((ds->*ax).u0 + ah_n);
 					Eq_n cs;
 					(ss->*ax_n).tFFFFFFFE.u0 = (struct Eq_n *) cs;
 					sp_n = ax_n - 2;
 				}
 				es = (ss->*sp_n).ptr0000;
-				Eq_n al_n = ds->*ax;
+				Eq_n al_n;
+				al_n.u0 = (ds->*ax).u0;
 				Mem64[es:0x02FB:byte] = al_n;
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
@@ -634,7 +635,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 				word16 ax_n = (word16) sp_n[0x0E];
 				Eq_n di_n = (ss->*sp_n).ptr0000;
 				si = sp_n[2];
-				bp = sp_n[4];
+				bp = (int16) sp_n[4];
 				bx_n = sp_n[8];
 				byte cl_n = (byte) sp_n[0x0C];
 				es->*di_n = (byte) ax_n;
@@ -659,14 +660,14 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n (* si)[], Eq_
 			{
 				byte bh_n = bh_n | ds->*((word16) bx + 3);
 				(ss->*sp_n).tFFFFFFFE.u0 = (struct Eq_n *) es;
-				cxOut.u1 = (<unknown>*) <invalid>;
-				dhOut.u1 = (<unknown>*) <invalid>;
+				cxOut.u0 = <invalid>;
+				dhOut = <invalid>;
 				bxOut = SEQ(bh_n, bl_n);
 				bpOut = bp - 0x02;
-				siOut.u0 = 29289;
+				siOut = 29289;
 				diOut = di;
 				esOut = es;
-				dsOut.u1 = (<unknown>*) <invalid>;
+				dsOut.u0 = <invalid>;
 				return ax_n - 34302;
 			}
 			(ss->*sp_n).tFFFFFFFE.u0 = 25445;

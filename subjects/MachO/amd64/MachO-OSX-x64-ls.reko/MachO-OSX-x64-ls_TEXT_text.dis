@@ -1114,7 +1114,7 @@ l00000001000034F3:
 fn00000001000034AC_exit:
 
 
-word32 fn000000010000356F(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn000000010000356F(word64 rdi, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1787,7 +1787,7 @@ l000000010000488B:
 	exit(1<32>)
 
 
-word32 fn00000001000048AF(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn00000001000048AF(word64 rdi, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1810,7 +1810,7 @@ l00000001000048FD_thunk_fn0000000100004ABB:
 fn00000001000048AF_exit:
 
 
-word32 fn0000000100004ABB(word64 rbx, word64 rbp, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn0000000100004ABB(word64 rbx, word64 rbp, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

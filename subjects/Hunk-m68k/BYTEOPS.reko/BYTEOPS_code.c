@@ -903,17 +903,17 @@ int8 g_b1DAC = 37; // 00001DAC
 <unknown> g_t1DB0 = // 00001DB0;
 <unknown> g_t1DB8 = // 00001DB8;
 <unknown> g_t1DC8 = // 00001DC8;
-// 00001DD8: Register uint32 fn00001DD8(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
+// 00001DD8: Register uint32 fn00001DD8(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out word32 a5Out)
 // Called from:
 //      fn00001458
-uint32 fn00001DD8(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
+uint32 fn00001DD8(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, word32 & a5Out)
 {
 	dwArg08->dw0018 |= 0x02;
 	int32 v13_n = dwArg08->dw0014 - 0x01;
 	dwArg08->dw0014 = v13_n;
 	ui32 * a0_n;
 	uint32 d1_n;
-	ptr32 a5;
+	word32 a5;
 	if (v13_n >= 0x00 && (dwArg04 != 0x0A || (dwArg08->dw0018 & 0x80) == 0x00))
 	{
 		a0_n = dwArg08->ptr0004;
@@ -928,12 +928,12 @@ uint32 fn00001DD8(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5O
 	return d1_n;
 }
 
-// 00001E34: Register word32 fn00001E34(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
+// 00001E34: Register word32 fn00001E34(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out word32 a5Out)
 // Called from:
 //      fn00001DD8
-word32 fn00001E34(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
+word32 fn00001E34(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, word32 & a5Out)
 {
-	ptr32 a5_n = fn000023C8();
+	word32 a5_n = fn000023C8();
 	word32 d0_n;
 	if (dwArg08 == null)
 	{
@@ -1003,13 +1003,13 @@ l00001F42:
 	goto l00001F42;
 }
 
-// 00001F48: Register word32 fn00001F48(Stack (ptr32 Eq_n) dwArg04, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
+// 00001F48: Register word32 fn00001F48(Stack (ptr32 Eq_n) dwArg04, Register out (ptr32 ui32) a0Out, Register out word32 a5Out)
 // Called from:
 //      fn00001E34
 //      fn00002A44
-word32 fn00001F48(struct Eq_n * dwArg04, ui32 & a0Out, ptr32 & a5Out)
+word32 fn00001F48(struct Eq_n * dwArg04, ui32 & a0Out, word32 & a5Out)
 {
-	ptr32 a5_n = fn000023C8();
+	word32 a5_n = fn000023C8();
 	word32 d0_n;
 	if (dwArg04 == null)
 	{
@@ -1686,12 +1686,12 @@ word32 * fn00002AC8(word32 * d2, word32 * dwArg04, word32 * dwArg08)
 	}
 }
 
-// 00002AFA: Register (ptr32 word32) fn00002AFA(Register (ptr32 word32) d0, Register (ptr32 word32) d1, Register (ptr32 word32) d2, Register out ptr32 d1Out)
+// 00002AFA: Register (ptr32 word32) fn00002AFA(Register (ptr32 word32) d0, Register (ptr32 word32) d1, Register (ptr32 word32) d2, Register out uipr32 d1Out)
 // Called from:
 //      fn000024FC
 //      fn00002A88
 //      fn00002AC8
-word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, ptr32 & d1Out)
+word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, uipr32 & d1Out)
 {
 	word32 * d1_n = __swap(d1);
 	word16 v9_n = (word16) d1_n;

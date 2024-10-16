@@ -71,13 +71,13 @@ void prvUnlockQueue(Eq_n r0, word32 cpsr)
 	vPortExitCritical(cpsr);
 }
 
-// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register out Eq_n r0Out, Register out ptr32 r7Out)
+// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register out Eq_n r0Out, Register out word32 r7Out)
 // Called from:
 //      xQueueGenericSend
 //      xQueueGenericSendFromISR
 //      xQueueCRSend
 //      xQueueCRSendFromISR
-bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 & r7Out)
+bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, word32 & r7Out)
 {
 	Eq_n r4_n = r0;
 	Eq_n r0_n;
@@ -85,7 +85,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 	Eq_n r5_n = *((word32) r0 + 56);
 	Eq_n r5_n;
 	ui32 Z_n;
-	ptr32 r7;
+	word32 r7;
 	if (r0_n == 0x00)
 	{
 		Eq_n r6_n;
@@ -110,7 +110,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 			struct Eq_n * r4_n;
 			word32 r5_n;
 			Eq_n r6_n;
-			ptr32 r7_n;
+			word32 r7_n;
 			memcpy(r0.u2->u0.dw0008, r1, r0_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			up32 r2_n = r4_n->dw0004;
 			up32 r3_n = r4_n->dw0008 + r4_n->dw0040;
@@ -158,22 +158,22 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, ptr32 &
 	return Z_n != 0x00;
 }
 
-// 0000016C: Register word32 prvCopyDataFromQueue(Register Eq_n r0, Register Eq_n r1, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+// 0000016C: Register word32 prvCopyDataFromQueue(Register Eq_n r0, Register Eq_n r1, Register out word32 r5Out, Register out word32 r6Out, Register out word32 r7Out)
 // Called from:
 //      xQueuePeekFromISR
 //      xQueueGenericReceive
 //      xQueueReceiveFromISR
-word32 prvCopyDataFromQueue(Eq_n r0, Eq_n r1, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+word32 prvCopyDataFromQueue(Eq_n r0, Eq_n r1, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 {
 	Eq_n r2_n;
 	r2_n.u1 = r0.u2->u1.t0040.u1;
 	if (r2_n == 0x00)
 	{
-		ptr32 r5;
+		word32 r5;
 		r5Out = r5;
-		ptr32 r6;
+		word32 r6;
 		r6Out = r6;
-		ptr32 r7;
+		word32 r7;
 		r7Out = r7;
 		word32 r4;
 		return r4;
@@ -189,9 +189,9 @@ word32 prvCopyDataFromQueue(Eq_n r0, Eq_n r1, ptr32 & r5Out, ptr32 & r6Out, ptr3
 			r1_n.u1 = r0.u1->t0000.u1;
 		r0.u2->u0.dw000C = (word32) r1_n;
 		word32 r4_n;
-		ptr32 r5_n;
-		ptr32 r6_n;
-		ptr32 r7_n;
+		word32 r5_n;
+		word32 r6_n;
+		word32 r7_n;
 		memcpy(r1, r1_n, r2_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r5Out = r5_n;
 		r6Out = r6_n;

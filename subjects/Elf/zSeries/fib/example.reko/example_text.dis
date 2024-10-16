@@ -125,7 +125,7 @@ l0000000000000760:
 	v12_45 = CC_44
 
 
-word64 fib(word64 r2, ptr64 & r10Out, ptr64 & r11Out)
+word64 fib(word64 r2, word64 & r10Out, word64 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

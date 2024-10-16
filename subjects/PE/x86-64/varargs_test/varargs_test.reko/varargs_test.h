@@ -215,11 +215,11 @@ Eq_129: (fn (ptr64 (ptr64 code)) (word32, word64, Eq_100, (ptr64 Eq_134)))
 	T_570 (in fn0000000140001974 @ 000000014000170F : ptr64)
 Eq_134: (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord))
 	T_134 (in rcxOut @ 000000014000127E : (ptr64 Eq_134))
-	T_137 (in out rcx_211 @ 000000014000127E : ptr64)
-	T_164 (in out rcx_212 @ 0000000140001289 : ptr64)
-	T_243 (in out rcx_341 @ 00000001400012DE : ptr64)
-	T_262 (in out rcx_50 @ 0000000140001303 : ptr64)
-	T_575 (in out rcx_20 @ 000000014000170F : ptr64)
+	T_137 (in out rcx_211 @ 000000014000127E : word64)
+	T_164 (in out rcx_212 @ 0000000140001289 : word64)
+	T_243 (in out rcx_341 @ 00000001400012DE : word64)
+	T_262 (in out rcx_50 @ 0000000140001303 : word64)
+	T_575 (in out rcx_20 @ 000000014000170F : word64)
 	T_982 (in &tLoc0588 @ 0000000140001A8F : (ptr64 (struct "_EXCEPTION_POINTERS")))
 	T_983 (in rcx_93 @ 0000000140001A8F : (ptr64 Eq_134))
 Eq_139: (fn void ())
@@ -1278,7 +1278,7 @@ T_133: (in tArg10 @ 000000014000127E : Eq_100)
 T_134: (in rcxOut @ 000000014000127E : (ptr64 Eq_134))
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_135: (in 7<32> @ 000000014000127E : word32)
   Class: Eq_131
   DataType: word32
@@ -1287,10 +1287,10 @@ T_136: (in rcx_211 @ 000000014000127E : word64)
   Class: Eq_136
   DataType: word64
   OrigDataType: word64
-T_137: (in out rcx_211 @ 000000014000127E : ptr64)
+T_137: (in out rcx_211 @ 000000014000127E : word64)
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_138: (in fn0000000140001974(7<32>, rbx, tArg08, out rcx_211) @ 000000014000127E : word64)
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))
@@ -1395,10 +1395,10 @@ T_163: (in rcx_212 @ 0000000140001289 : word64)
   Class: Eq_163
   DataType: word64
   OrigDataType: word64
-T_164: (in out rcx_212 @ 0000000140001289 : ptr64)
+T_164: (in out rcx_212 @ 0000000140001289 : word64)
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_165: (in fn0000000140001974(7<32>, rbx, tArg08, out rcx_212) @ 0000000140001289 : word64)
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))
@@ -1711,10 +1711,10 @@ T_242: (in rcx_341 @ 00000001400012DE : word64)
   Class: Eq_242
   DataType: word64
   OrigDataType: word64
-T_243: (in out rcx_341 @ 00000001400012DE : ptr64)
+T_243: (in out rcx_341 @ 00000001400012DE : word64)
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_244: (in fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_341) @ 00000001400012DE : word64)
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))
@@ -1787,10 +1787,10 @@ T_261: (in rcx_50 @ 0000000140001303 : word64)
   Class: Eq_261
   DataType: word64
   OrigDataType: word64
-T_262: (in out rcx_50 @ 0000000140001303 : ptr64)
+T_262: (in out rcx_50 @ 0000000140001303 : word64)
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_263: (in fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_50) @ 0000000140001303 : word64)
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))
@@ -3039,10 +3039,10 @@ T_574: (in rcx_20 @ 000000014000170F : (ptr64 (ptr64 code)))
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))
   OrigDataType: word64
-T_575: (in out rcx_20 @ 000000014000170F : ptr64)
+T_575: (in out rcx_20 @ 000000014000170F : word64)
   Class: Eq_134
   DataType: (ptr64 Eq_134)
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_576: (in fn0000000140001974(5<32>, qwLoc50, tLoc40, out rcx_20) @ 000000014000170F : word64)
   Class: Eq_138
   DataType: (ptr64 (ptr64 code))

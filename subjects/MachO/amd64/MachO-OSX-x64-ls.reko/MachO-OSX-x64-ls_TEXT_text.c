@@ -1156,34 +1156,34 @@ l00000001000034F3:
 	return 0x01;
 }
 
-// 000000010000356F: Register word32 fn000000010000356F(Register Eq_n rdi, Register out ptr64 rbxOut, Register out ptr64 rbpOut, Register out Eq_n r12dOut, Register out ptr64 r14Out, Register out ptr64 r15Out)
+// 000000010000356F: Register word32 fn000000010000356F(Register Eq_n rdi, Register out word64 rbxOut, Register out word64 rbpOut, Register out word32 r12dOut, Register out word64 r14Out, Register out word64 r15Out)
 // Called from:
 //      fn00000001000035A9
 //      fn0000000100003AA8
-word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn000000010000356F(Eq_n rdi, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 {
 	wchar_t wLocBC;
-	ptr64 r15_n;
-	ptr64 r14_n;
+	word64 r15_n;
+	word64 r14_n;
 	word32 r12d_n;
-	ptr64 rbp_n;
-	ptr64 rbx_n;
+	word64 rbp_n;
+	word64 rbx_n;
 	if (g_dw6588 != 0x00 || g_t658C.u0 != 0x00)
 	{
 		uint64 rax_n = (uint64) fn00000001000048AF(rdi, out rbx_n, out rbp_n, out r12d_n, out r14_n, out r15_n);
 		rbxOut = rbx_n;
 		rbpOut = rbp_n;
-		r12dOut.u0 = (<unknown>*) <invalid>;
+		r12dOut = <invalid>;
 		r14Out = r14_n;
 		r15Out = r15_n;
 		return (word32) rax_n;
 	}
 	else
 	{
-		ptr64 rbx;
-		ptr64 rbp;
-		ptr64 r14;
-		ptr64 r15;
+		word64 rbx;
+		word64 rbp;
+		word64 r14;
+		word64 r15;
 		if (g_t657C.u0 != 0x00)
 		{
 			Eq_n tLocB8 = (Eq_n) 0;
@@ -1251,7 +1251,7 @@ word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 l0000000100004D9B:
 			rbxOut = rbx;
 			rbpOut = rbp;
-			r12dOut.u0 = (<unknown>*) <invalid>;
+			r12dOut = <invalid>;
 			r14Out = r14;
 			r15Out = r15;
 			return (word32) rax_n;
@@ -1261,7 +1261,7 @@ l0000000100004D9B:
 			uint64 rax_n = (uint64) fn0000000100004715(rdi);
 			rbxOut = rbx;
 			rbpOut = rbp;
-			r12dOut.u0 = <invalid>;
+			r12dOut = <invalid>;
 			r14Out = r14;
 			r15Out = r15;
 			return (word32) rax_n;
@@ -1384,32 +1384,32 @@ void fn000000010000488B()
 	exit(0x01);
 }
 
-// 00000001000048AF: Register word32 fn00000001000048AF(Register Eq_n rdi, Register out ptr64 rbxOut, Register out ptr64 rbpOut, Register out Eq_n r12dOut, Register out ptr64 r14Out, Register out ptr64 r15Out)
+// 00000001000048AF: Register word32 fn00000001000048AF(Register Eq_n rdi, Register out word64 rbxOut, Register out word64 rbpOut, Register out word32 r12dOut, Register out word64 r14Out, Register out word64 r15Out)
 // Called from:
 //      fn000000010000356F
 //      fn000000010000488B
-word32 fn00000001000048AF(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn00000001000048AF(Eq_n rdi, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 {
-	ptr64 r15_n;
-	ptr64 r14_n;
+	word64 r15_n;
+	word64 r14_n;
 	word32 r12d_n;
-	ptr64 rbp_n;
-	ptr64 rbx_n;
+	word64 rbp_n;
+	word64 rbx_n;
 	ptr64 fp;
 	uint64 rax_n = (uint64) fn0000000100004ABB(rdi, fp - 8, out rbx_n, out rbp_n, out r12d_n, out r14_n, out r15_n);
 	rbxOut = rbx_n;
 	rbpOut = rbp_n;
-	r12dOut.u0 = (<unknown>*) <invalid>;
+	r12dOut = <invalid>;
 	r14Out = r14_n;
 	r15Out = r15_n;
 	return (word32) rax_n;
 }
 
-// 0000000100004ABB: Register word32 fn0000000100004ABB(Register Eq_n rbx, Register (ptr64 Eq_n) rbp, Register out ptr64 rbxOut, Register out ptr64 rbpOut, Register out Eq_n r12dOut, Register out ptr64 r14Out, Register out ptr64 r15Out)
+// 0000000100004ABB: Register word32 fn0000000100004ABB(Register Eq_n rbx, Register (ptr64 Eq_n) rbp, Register out word64 rbxOut, Register out word64 rbpOut, Register out word32 r12dOut, Register out word64 r14Out, Register out word64 r15Out)
 // Called from:
 //      fn000000010000488B
 //      fn00000001000048AF
-word32 fn0000000100004ABB(Eq_n rbx, struct Eq_n * rbp, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
+word32 fn0000000100004ABB(Eq_n rbx, struct Eq_n * rbp, word64 & rbxOut, word64 & rbpOut, word32 & r12dOut, word64 & r14Out, word64 & r15Out)
 {
 	while (true)
 	{
@@ -1524,14 +1524,14 @@ l0000000100004AA8:
 		rbx.u0 = rbx + rax_n;
 	}
 	word32 eax_n = rbp->dwFFFFFF48;
-	ptr64 qwArg98;
+	word64 qwArg98;
 	rbxOut = qwArg98;
-	ptr64 qwArgC0;
+	word64 qwArgC0;
 	rbpOut = qwArgC0;
-	r12dOut.u0 = (<unknown>*) <invalid>;
-	ptr64 qwArgB0;
+	r12dOut = <invalid>;
+	word64 qwArgB0;
 	r14Out = qwArgB0;
-	ptr64 qwArgB8;
+	word64 qwArgB8;
 	r15Out = qwArgB8;
 	return eax_n;
 }

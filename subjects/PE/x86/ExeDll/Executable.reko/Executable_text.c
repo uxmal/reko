@@ -46,7 +46,7 @@ void fn00401060(word32 dwArg04)
 Eq_n Win32CrtStartup()
 {
 	ptr32 fp;
-	Eq_n dwLoc0C;
+	ui32 dwLoc0C;
 	Eq_n edi;
 	Eq_n esi;
 	word32 ebx;
@@ -155,7 +155,7 @@ l004012C8:
 		word32 ebp_n;
 		word32 esi_n;
 		word32 edi_n;
-		fn004019C6(ebp_n, esp_n->tFFFFFFFC.u0, out ebp_n, out esi_n, out edi_n);
+		fn004019C6(ebp_n, esp_n->dwFFFFFFFC, out ebp_n, out esi_n, out edi_n);
 		return eax_n;
 	}
 	goto l00401177;
@@ -262,17 +262,17 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	}
 }
 
-// 00401544: Register byte fn00401544(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out (ptr32 Eq_n) ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// 00401544: Register byte fn00401544(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out word32 edxOut, Register out word32 ebxOut, Register out (ptr32 Eq_n) ebpOut, Register out word32 esiOut, Register out word32 ediOut)
 // Called from:
 //      Win32CrtStartup
 //      fn004014AD
-byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, struct Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, word32 & edxOut, word32 & ebxOut, struct Eq_n & ebpOut, word32 & esiOut, word32 & ediOut)
 {
-	ptr32 edi_n;
-	ptr32 esi_n;
+	word32 edi_n;
+	word32 esi_n;
 	struct Eq_n * ebp_n;
-	ptr32 edx;
-	Eq_n dwLoc0C;
+	word32 edx;
+	ui32 dwLoc0C;
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC = 0x00;
 	word24 eax_24_8_n = 0x5A;
@@ -292,7 +292,7 @@ byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, 
 				ebp_n->dwFFFFFFFC = ~0x01;
 				eax_n = SEQ(eax_24_8_n, 0x01);
 l004015C8:
-				ptr32 ebx_n = fn004019C6(ebp_n, dwLoc0C, out ebp_n, out esi_n, out edi_n);
+				word32 ebx_n = fn004019C6(ebp_n, dwLoc0C, out ebp_n, out esi_n, out edi_n);
 				edxOut = edx;
 				ebxOut = ebx_n;
 				ebpOut = ebp_n;
@@ -528,11 +528,11 @@ void fn00401976()
 	g_ptr4020D0();
 }
 
-// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack Eq_n dwArg00, Stack ui32 dwArg08)
+// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack ui32 dwArg00, Stack ui32 dwArg08)
 // Called from:
 //      Win32CrtStartup
 //      fn00401544
-ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
+ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, ui32 dwArg00, ui32 dwArg08)
 {
 	ptr32 fp;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
@@ -540,27 +540,26 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 	esp_n->tFFFFFFF8.u1 = (struct Eq_n *) esi;
 	esp_n->tFFFFFFF4.u1 = (struct Eq_n *) edi;
 	esp_n->tFFFFFFF0.u1 = (word32) (g_t403004.u0 ^ fp + 8);
-	esp_n->tFFFFFFEC.u0 = (ui32) dwArg00;
+	esp_n->dwFFFFFFEC = dwArg00;
 	selector fs;
 	fs->ptr0000 = fp - 8;
 	return fp + 8;
 }
 
-// 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00, Register out Eq_n ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack ui32 dwArg00, Register out ui32 ebpOut, Register out word32 esiOut, Register out word32 ediOut)
 // Called from:
 //      Win32CrtStartup
 //      fn00401544
-word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn004019C6(struct Eq_n * ebp, ui32 dwArg00, ui32 & ebpOut, word32 & esiOut, word32 & ediOut)
 {
 	selector fs;
 	fs->dw0000 = ebp->dwFFFFFFF0;
-	Eq_n ebp_n;
-	ebp_n.u0 = ebp->t0000.u0;
-	ebp->t0000.u0 = (ui32) dwArg00;
+	ui32 ebp_n = ebp->dw0000;
+	ebp->dw0000 = dwArg00;
 	ebpOut = ebp_n;
-	ptr32 dwArg0C;
+	word32 dwArg0C;
 	esiOut = dwArg0C;
-	ptr32 dwArg08;
+	word32 dwArg08;
 	ediOut = dwArg08;
 	word32 dwArg10;
 	return dwArg10;

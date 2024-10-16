@@ -1221,14 +1221,14 @@ l132A:
 	goto l1326;
 }
 
-// 1366: Register int16 fn1366(Register int16 r0, Register Eq_n r3, Register (ptr16 Eq_n) r4, Register out ptr16 r2Out, Register out Eq_n r3Out, Register out (ptr16 Eq_n) r4Out)
+// 1366: Register int16 fn1366(Register int16 r0, Register Eq_n r3, Register (ptr16 Eq_n) r4, Register out word16 r2Out, Register out Eq_n r3Out, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn12CA
-int16 fn1366(int16 r0, Eq_n r3, struct Eq_n * r4, ptr16 & r2Out, union Eq_n & r3Out, struct Eq_n & r4Out)
+int16 fn1366(int16 r0, Eq_n r3, struct Eq_n * r4, word16 & r2Out, union Eq_n & r3Out, struct Eq_n & r4Out)
 {
 	struct Eq_n * r4_n;
 	Eq_n r3_n;
-	ptr16 r2_n;
+	word16 r2_n;
 	if (r4->t0000.u0 > 0x00)
 	{
 		int16 r0_n = fn1370(r0, r3, r4, out r2_n, out r3_n, out r4_n);
@@ -1241,7 +1241,7 @@ int16 fn1366(int16 r0, Eq_n r3, struct Eq_n * r4, ptr16 & r2Out, union Eq_n & r3
 	{
 		while (TTYOUT((char) r0))
 			;
-		ptr16 r2;
+		word16 r2;
 		r2Out = r2;
 		r3Out = r3;
 		r4Out = r4;
@@ -1630,13 +1630,13 @@ void fn172C(struct Eq_n * r0, uint16 r2)
 	}
 }
 
-// 1836: Register word16 fn1836(Register Eq_n r3, Register (ptr16 Eq_n) r4, Register out ptr16 r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
+// 1836: Register word16 fn1836(Register Eq_n r3, Register (ptr16 Eq_n) r4, Register out word16 r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn1370
 //      fn14A8
 //      fn16DA
 //      fn1D30
-word16 fn1836(Eq_n r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
+word16 fn1836(Eq_n r3, struct Eq_n * r4, word16 & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
 {
 	struct Eq_n * r4_n;
 	struct Eq_n * r3_n;
@@ -1652,7 +1652,7 @@ word16 fn1836(Eq_n r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r3Out, str
 		r4[0x0C] = (struct Eq_n) 0x00;
 		__syscall<word16>(35235);
 	}
-	ptr16 r2_n = fn1900(r3, r4, out r3_n, out r4_n);
+	word16 r2_n = fn1900(r3, r4, out r3_n, out r4_n);
 	byte v27_n = r4_n->b0011 | 0x90;
 	SEQ(0x88, v27_n)();
 	r2Out = r2_n;
@@ -2578,10 +2578,10 @@ l473C:
 <anonymous> * g_a46C4[] = // 46C4
 	{
 	};
-// 474C: Register (ptr16 Eq_n) fn474C(Register (ptr16 Eq_n) r1, Register word16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out ptr16 r4Out)
+// 474C: Register (ptr16 Eq_n) fn474C(Register (ptr16 Eq_n) r1, Register word16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out word16 r4Out)
 // Called from:
 //      fn45F6
-struct Eq_n * fn474C(struct Eq_n * r1, word16 r2, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r4Out)
+struct Eq_n * fn474C(struct Eq_n * r1, word16 r2, struct Eq_n * r3, struct Eq_n * r4, word16 & r4Out)
 {
 	ptr16 fp;
 	LOCK();
@@ -2618,7 +2618,7 @@ l47DA:
 				sp_n->ptr0000 = &sp_n->ptr0000->b0000 + 1;
 l47DC:
 				UNLOCK();
-				r4Out = null;
+				r4Out = 0x00;
 				return r0_n;
 			}
 			sp_n -= 0x02;

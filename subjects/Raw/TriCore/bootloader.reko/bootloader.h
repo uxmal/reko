@@ -402,11 +402,6 @@ Eq_556: (struct "Eq_556" (C byte b000C))
 Eq_580: (struct "Eq_580" (F000001C Eq_2 tF000001C))
 	T_580 (in (d4 << 5<i32>) + 20480<i32> @ 00000650 : word32)
 	T_581 (in a15_8 @ 00000650 : (ptr32 Eq_580))
-Eq_601: (union "Eq_601" (ui32 u0) (ptr32 u1))
-	T_601 (in d15Out @ 0000065E : Eq_601)
-	T_611 (in d4 << 5<i32> @ 00000678 : word32)
-	T_1615 (in out d15_16 @ 000010CA : ptr32)
-	T_1739 (in out d15_46 @ 00001312 : ptr32)
 Eq_613: (struct "Eq_613" (0 int16 w0000) (4 ui32 dw0004) (8 ui32 dw0008) (14 word16 w0014))
 	T_613 (in a4 @ 00000678 : (ptr32 Eq_613))
 Eq_617: (struct "Eq_617" (F0000000 ui32 dwF0000000) (F0000008 ui32 dwF0000008) (F000000C ui32 dwF000000C) (F0000018 ui32 dwF0000018) (F000001C Eq_2 tF000001C))
@@ -591,7 +586,7 @@ Eq_1605: (fn void (ui32, (ptr32 ui16)))
 	T_1605 (in fn000005CE @ 000010D0 : ptr32)
 	T_1606 (in signature of fn000005CE @ 000005CE : void)
 	T_1745 (in fn000005CE @ 0000131A : ptr32)
-Eq_1612: (fn word32 (ui32, Eq_601))
+Eq_1612: (fn word32 (ui32, uint32))
 	T_1612 (in fn00000664 @ 000010CA : ptr32)
 	T_1613 (in signature of fn00000664 @ 00000664 : void)
 	T_1736 (in fn00000664 @ 00001312 : ptr32)
@@ -2959,7 +2954,7 @@ T_575: (in d4 @ 0000060E : ui32)
 T_576: (in a15Out @ 0000060E : ptr32)
   Class: Eq_576
   DataType: ptr32
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_577: (in 5<i32> @ 00000650 : int32)
   Class: Eq_577
   DataType: int32
@@ -3056,10 +3051,10 @@ T_600: (in d4 @ 0000065E : ui32)
   Class: Eq_600
   DataType: ui32
   OrigDataType: ui32
-T_601: (in d15Out @ 0000065E : Eq_601)
+T_601: (in d15Out @ 0000065E : uint32)
   Class: Eq_601
-  DataType: Eq_601
-  OrigDataType: ptr32
+  DataType: uint32
+  OrigDataType: word32
 T_602: (in 0xF000501C<32> @ 00000674 : word32)
   Class: Eq_602
   DataType: (ptr32 (arr Eq_1863))
@@ -3098,7 +3093,7 @@ T_610: (in 5<i32> @ 00000678 : int32)
   OrigDataType: int32
 T_611: (in d4 << 5<i32> @ 00000678 : word32)
   Class: Eq_601
-  DataType: Eq_601
+  DataType: uint32
   OrigDataType: ui32
 T_612: (in d4 @ 00000678 : ui32)
   Class: Eq_612
@@ -6136,10 +6131,10 @@ T_1370: (in a15_6 @ 00000CD6 : (ptr32 byte))
   Class: Eq_803
   DataType: (ptr32 byte)
   OrigDataType: word32
-T_1371: (in out a15_6 @ 00000CD6 : ptr32)
+T_1371: (in out a15_6 @ 00000CD6 : word32)
   Class: Eq_576
   DataType: ptr32
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_1372: (in fn00000648(1<32>, out a15_6) @ 00000CD6 : word32)
   Class: Eq_1372
   DataType: word32
@@ -7112,10 +7107,10 @@ T_1614: (in 0<32> @ 000010CA : word32)
   Class: Eq_600
   DataType: ui32
   OrigDataType: word32
-T_1615: (in out d15_16 @ 000010CA : ptr32)
+T_1615: (in out d15_16 @ 000010CA : word32)
   Class: Eq_601
-  DataType: Eq_601
-  OrigDataType: ptr32
+  DataType: uint32
+  OrigDataType: up32
 T_1616: (in fn00000664(0<32>, out d15_16) @ 000010CA : word32)
   Class: Eq_1616
   DataType: word32
@@ -7615,10 +7610,10 @@ T_1738: (in d15_46 @ 00001312 : word32)
   Class: Eq_1738
   DataType: word32
   OrigDataType: word32
-T_1739: (in out d15_46 @ 00001312 : ptr32)
+T_1739: (in out d15_46 @ 00001312 : word32)
   Class: Eq_601
-  DataType: Eq_601
-  OrigDataType: ptr32
+  DataType: uint32
+  OrigDataType: word32
 T_1740: (in fn00000664(0<32>, out d15_46) @ 00001312 : word32)
   Class: Eq_1616
   DataType: word32
@@ -8316,11 +8311,6 @@ typedef struct Eq_580 {
 	Eq_2 tF000001C;	// F000001C
 } Eq_580;
 
-typedef union Eq_601 {
-	ui32 u0;
-	ptr32 u1;
-} Eq_601;
-
 typedef struct Eq_613 {
 	int16 w0000;	// 0
 	ui32 dw0004;	// 4
@@ -8570,7 +8560,7 @@ typedef void (Eq_1592)(Eq_1157 *);
 
 typedef void (Eq_1605)(ui32, ui16 *);
 
-typedef word32 (Eq_1612)(ui32, Eq_601);
+typedef word32 (Eq_1612)(ui32, uint32);
 
 typedef struct Eq_1621 {
 	byte b000D;	// D

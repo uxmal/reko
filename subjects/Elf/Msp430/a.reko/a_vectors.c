@@ -4,5 +4,8 @@
 
 #include "a.h"
 
-<unknown> g_tFFFFFFFD = // FFFD;
-<unknown> g_tFFFFFFFF = // FFFF;
+struct Eq_n g_tFFFFFFFF = // FFFF
+	{
+		0x40,
+		,
+	};

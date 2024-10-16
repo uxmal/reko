@@ -1,4 +1,4 @@
-bool memcpy(word32 r0, word32 r1, word32 r2, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+bool memcpy(word32 r0, word32 r1, word32 r2, word32 & r4Out, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

@@ -117,7 +117,7 @@ l000117D4:
 l00011898:
 
 
-word32 fn00011C0A(word32 r0, word32 r1, word32 ap, word32 fp, ptr32 & r2Out, ptr32 & r3Out, ptr32 & fpOut)
+word32 fn00011C0A(word32 r0, word32 r1, word32 ap, word32 fp, word32 & r2Out, word32 & r3Out, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -191,7 +191,7 @@ l00011C1F:
 fn00011C0A_exit:
 
 
-word32 fn00011CDA(word32 r0, word32 ap, word32 fp, ptr32 & r2Out, ptr32 & r3Out, ptr32 & fpOut)
+word32 fn00011CDA(word32 r0, word32 ap, word32 fp, word32 & r2Out, word32 & r3Out, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -477,7 +477,7 @@ l00012641:
 fn00012616_exit:
 
 
-word32 fn00012702(word32 r0, word32 ap, ptr32 & r2Out, ptr32 & r7Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn00012702(word32 r0, word32 ap, word32 & r2Out, word32 & r7Out, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2854,7 +2854,7 @@ l0001490C_1:
 fn00014812_exit:
 
 
-word32 fn00015106(word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 r11, word32 ap, word32 fp, ptr32 & r5Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn00015106(word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 r11, word32 ap, word32 fp, word32 & r5Out, word32 & r6Out, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3460,7 +3460,7 @@ l0001766A:
 fn00017662_exit:
 
 
-word32 fn00017772(word32 ap, word32 fp, ptr32 & fpOut)
+word32 fn00017772(word32 ap, word32 fp, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3499,7 +3499,7 @@ l00017772:
 fn00017772_exit:
 
 
-word32 fn000177CA(word32 ap, word32 fp, word32 pc, ptr32 & fpOut)
+word32 fn000177CA(word32 ap, word32 fp, word32 pc, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3647,7 +3647,7 @@ l00017F46:
 fn00017DEE_exit:
 
 
-word32 fn000185AE(word32 ap, word32 fp, word32 pc, ptr32 & r2Out, ptr32 & r3Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & pcOut)
+word32 fn000185AE(word32 ap, word32 fp, word32 pc, word32 & r2Out, word32 & r3Out, word32 & apOut, word32 & fpOut, word32 & pcOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3783,7 +3783,7 @@ l00018787:
 fn0001872A_exit:
 
 
-word32 fn0001878E(word32 ap, word32 fp, ptr32 & r3Out, ptr32 & r5Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn0001878E(word32 ap, word32 fp, word32 & r3Out, word32 & r5Out, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -4107,7 +4107,7 @@ l00018C15:
 fn00018BF6_exit:
 
 
-word32 fn00018C3A(word32 r3, word32 r5, word32 r6, word32 ap, word32 fp, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn00018C3A(word32 r3, word32 r5, word32 r6, word32 ap, word32 fp, word32 & r3Out, word32 & r5Out, word32 & r6Out, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -4471,7 +4471,7 @@ l00018C5C:
 fn00018C3A_exit:
 
 
-word32 fn00018F22(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
+word32 fn00018F22(word32 ap, word32 fp, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

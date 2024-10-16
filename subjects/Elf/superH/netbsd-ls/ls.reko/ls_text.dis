@@ -3099,7 +3099,7 @@ l004044C6:
 fn004044C6_exit:
 
 
-word32 fn004044D6(word32 r0, word32 r4, word32 r5, ptr32 & r4Out)
+word32 fn004044D6(word32 r0, word32 r4, word32 r5, word32 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

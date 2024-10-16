@@ -119,7 +119,7 @@ l0000842C:
 call_frame_dummy_exit:
 
 
-word32 frobulate(word32 r0, word32 dwArg00, ptr32 & fpOut)
+word32 frobulate(word32 r0, word32 dwArg00, word32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

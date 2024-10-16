@@ -86,8 +86,6 @@ Eq_n g_t0083 = // 00000083
 			&g_t4190C600,
 		}
 	};
-<unknown> g_t00CA = // 000000CA;
-<unknown> g_t0100 = // 00000100;
 Eq_n g_t0104 = // 00000104
 	{
 		
@@ -199,7 +197,6 @@ Eq_n g_t0400 = // 00000400
 		},
 	};
 <unknown> g_t0588 = // 00000588;
-<unknown> g_t1000 = // 00001000;
 <unknown> g_t1C10 = // 00001C10;
 <unknown> g_t93EC = // 000093EC;
 <unknown> g_tB474 = // 0000B474;
@@ -299,10 +296,7 @@ word32 g_dw18E84 = 0x3021FFF8; // 00018E84
 struct Eq_n * g_ptr18E88 = &g_tFA610004; // 00018E88
 struct Eq_n * g_ptr18E8C = &g_t12610000; // 00018E8C
 struct Eq_n * g_ptr18E90 = &g_tF8B3000C; // 00018E90
-Eq_n g_t18E9C = // 00018E9C
-	{
-		-0x80000000
-	};
+int32 g_dw18E9C = -0x80000000; // 00018E9C
 struct Eq_n * g_ptr18EA0 = &g_t10330000; // 00018EA0
 byte * g_ptr18EA4 = &g_bEA610004; // 00018EA4
 word32 g_dw18EA8 = 0x30210008; // 00018EA8
@@ -581,3 +575,4 @@ word32 g_a1D1D0[] = // 0001D1D0
 <unknown> g_t2E7AC = // 0002E7AC;
 byte g_bFFFF8E64; // FFFF8E64
 byte g_bFFFFD644; // FFFFD644
+Eq_n g_tFFFFFFFF;

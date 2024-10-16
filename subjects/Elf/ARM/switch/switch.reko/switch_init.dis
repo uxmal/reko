@@ -1,4 +1,4 @@
-word32 _init(ptr32 & r10Out)
+word32 _init(word32 & r10Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

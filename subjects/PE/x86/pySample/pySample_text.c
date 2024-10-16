@@ -54,10 +54,10 @@ void initpySample()
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }
 
-// 100011E9: Register word32 fn100011E9(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// 100011E9: Register word32 fn100011E9(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out word32 ebxOut, Register out word32 esiOut, Register out word32 ediOut)
 // Called from:
 //      fn10001388
-word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, word32 & ebxOut, word32 & esiOut, word32 & ediOut)
 {
 	selector fs;
 	ptr32 fp;
@@ -73,7 +73,7 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr3
 		--g_dw10003070;
 	}
 	g_dw100033A4 = *adjust_fdiv;
-	ptr32 * esp_n = fp - 16;
+	word32 * esp_n = fp - 16;
 	switch (dwArg08)
 	{
 	case 0x01:
@@ -99,9 +99,9 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr3
 			eax_n = 0x00;
 l10001381:
 			struct Eq_n * esp_n = (struct Eq_n *) (esp_n + 1);
-			ptr32 edi = *esp_n;
-			ptr32 esi = esp_n->ptr0000;
-			ptr32 ebx = esp_n->ptr0004;
+			word32 edi = *esp_n;
+			word32 esi = esp_n->dw0000;
+			word32 ebx = esp_n->dw0004;
 l10001384:
 			ebxOut = ebx;
 			esiOut = esi;
@@ -155,7 +155,7 @@ l10001384:
 		esp_n->ptrFFFFFFFC = (LONG *) &g_t100033AC;
 		g_dw100033A8 = 0x00;
 		InterlockedExchange(esp_n->ptrFFFFFFFC, esp_n->t0000);
-		esp_n = (ptr32 *) (&esp_n->t0000 + 1);
+		esp_n = (word32 *) (&esp_n->t0000 + 1);
 		break;
 	}
 	eax_n = 0x01;
@@ -303,10 +303,10 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 	return eax_n;
 }
 
-// 10001742: Register ui32 fn10001742(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
+// 10001742: Register ui32 fn10001742(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Register out word32 ediOut)
 // Called from:
 //      fn100011E9
-ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
+ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, word32 & ediOut)
 {
 	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x08);

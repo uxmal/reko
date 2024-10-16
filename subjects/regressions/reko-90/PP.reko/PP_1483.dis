@@ -100,7 +100,7 @@ l1483_0C57:
 fn1483_0C55_exit:
 
 
-word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, byte al, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, byte al, word16 cx, word16 si, word16 di, selector psegArg00, word16 & diOut, selector & esOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -140,7 +140,7 @@ l1483_0C9D_thunk_fn1483_0CA0:
 fn1483_0C91_exit:
 
 
-word16 fn1483_0CA0(segptr32 es_di, segptr32 ss_bp, word16 si, selector ds, ptr16 & diOut)
+word16 fn1483_0CA0(segptr32 es_di, segptr32 ss_bp, word16 si, selector ds, word16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -179,7 +179,7 @@ l1483_0CA9_in_fn1483_0CA0:
 fn1483_0CA0_exit:
 
 
-word16 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
+word16 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, selector & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -215,7 +215,7 @@ l1483_0CF9_thunk_fn1483_0CFC:
 fn1483_0CED_exit:
 
 
-word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, selector & esOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -236,7 +236,7 @@ l1483_0CFA_thunk_fn1483_0CFC:
 fn1483_0CFA_exit:
 
 
-word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, selector & esOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -544,7 +544,7 @@ l1483_1BB7_thunk_fn1483_1BB9:
 fn1483_1B91_exit:
 
 
-segptr32 fn1483_1BB8(segptr32 ds_si, byte al, byte ah, word16 cx, word16 dx, word16 bx, word16 bp, word16 di, selector es, ptr16 & axOut, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+segptr32 fn1483_1BB8(segptr32 ds_si, byte al, byte ah, word16 cx, word16 dx, word16 bx, word16 bp, word16 di, selector es, word16 & axOut, word16 & cxOut, byte & dhOut, word16 & bxOut, word16 & siOut, word16 & diOut, selector & esOut, selector & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -572,7 +572,7 @@ l1483_1BB8_thunk_fn1483_1BB9:
 fn1483_1BB8_exit:
 
 
-word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 & cxOut, byte & dhOut, word16 & bxOut, word16 & bpOut, word16 & siOut, word16 & diOut, selector & esOut, selector & dsOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

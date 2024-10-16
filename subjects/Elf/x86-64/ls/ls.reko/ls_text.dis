@@ -1635,7 +1635,7 @@ l000000000040529C:
 fn0000000000405200_exit:
 
 
-word64 fn00000000004052D0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r12, selector fs, ptr64 & rcxOut)
+word64 fn00000000004052D0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r12, selector fs, word64 & rcxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2396,7 +2396,7 @@ l00000000004064D9:
 	sigprocmask(2<i32>, &qwLoc88, 0<u64>)
 
 
-word64 fn0000000000406540(word64 rcx, word64 rdx, byte sil, word64 rdi, selector fs, ptr64 & rcxOut)
+word64 fn0000000000406540(word64 rcx, word64 rdx, byte sil, word64 rdi, selector fs, word64 & rcxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -4059,7 +4059,7 @@ l0000000000409FA4:
 fn0000000000409F80_exit:
 
 
-word64 fn000000000040A000(word64 rdx, word64 rsi, word64 rdi, selector fs, ptr64 & rdxOut, ptr64 & rsiOut, ptr64 & rdiOut, ptr64 & r8Out, ptr64 & r9Out)
+word64 fn000000000040A000(word64 rdx, word64 rsi, word64 rdi, selector fs, word64 & rdxOut, word64 & rsiOut, word64 & rdiOut, word64 & r8Out, word64 & r9Out)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -6313,7 +6313,7 @@ l000000000040D43E_thunk_fn000000000040D240:
 fn000000000040D420_exit:
 
 
-word64 fn000000000040D450(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, ptr64 & rdxOut)
+word64 fn000000000040D450(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 & rdxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -6513,7 +6513,7 @@ l000000000040D754_1:
 	rcx_10 = rcx_10 - 1<64>
 
 
-word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, ptr64 & ecxOut)
+word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, word32 & ecxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -7100,7 +7100,7 @@ l000000000040DC9D:
 fn000000000040D8A0_exit:
 
 
-word64 fn000000000040E450(word64 rcx, word64 rdx, word64 rsi, word32 edi, selector fs, ptr64 & r8Out, ptr64 & r9Out)
+word64 fn000000000040E450(word64 rcx, word64 rdx, word64 rsi, word32 edi, selector fs, word64 & r8Out, word64 & r9Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -7387,7 +7387,7 @@ l000000000040EBFC_thunk_fn000000000040E450:
 fn000000000040EBF0_exit:
 
 
-word64 fn000000000040EC10(word64 rdi, selector fs, ptr64 & r8Out, ptr64 & r9Out)
+word64 fn000000000040EC10(word64 rdi, selector fs, word64 & r8Out, word64 & r9Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -9535,7 +9535,7 @@ l00000000004118B4:
 fn0000000000411880_exit:
 
 
-word64 fn0000000000411900(selector fs, ptr64 & ecxOut)
+word64 fn0000000000411900(selector fs, word32 & ecxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

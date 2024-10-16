@@ -22,6 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -66,6 +67,7 @@ namespace Reko.Core.Types
             get { return dt!; }
             set
             {
+                MonitorChange(this.dt, value);
                 dt = value;
             }
         }
@@ -156,5 +158,16 @@ namespace Reko.Core.Types
 			}
 			writer.WriteLine(" }}");
 		}
+
+        /// <summary>
+        /// Debugging method used to inspect modifications of 
+        /// the <see cref="DataType"/> property of this class.
+        /// </summary>
+        /// <param name="dtOld">Old value of the property.</param>
+        /// <param name="dtNew">New valie of the property.</param>
+        [Conditional("DEBUG")]
+        private void MonitorChange(DataType? dtOld, DataType? dtNew)
+        {
+        }
 	}
 }

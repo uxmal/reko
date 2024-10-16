@@ -769,7 +769,7 @@ l000000014000196C:
 fn000000014000196C_exit:
 
 
-word64 fn0000000140001974(word32 ecx, word64 qwArg00, ULONGLONG tArg10, ptr64 & rcxOut)
+word64 fn0000000140001974(word32 ecx, word64 qwArg00, ULONGLONG tArg10, word64 & rcxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

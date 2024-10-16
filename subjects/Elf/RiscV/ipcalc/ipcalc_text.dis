@@ -712,7 +712,7 @@ l000000000001652C:
 fn00000000000164D0_exit:
 
 
-word64 fn000000000001654C(word64 gp, word64 a3, word64 a4, word64 a5, word64 a6, word64 a7, ptr64 & a4Out, ptr64 & a5Out, ptr64 & a6Out, ptr64 & a7Out)
+word64 fn000000000001654C(word64 gp, word64 a3, word64 a4, word64 a5, word64 a6, word64 a7, word64 & a4Out, word64 & a5Out, word64 & a6Out, word64 & a7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1151,7 +1151,7 @@ l0000000000016BE0:
 fn0000000000016B68_exit:
 
 
-word64 fn0000000000016D74(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, ptr64 & a4Out)
+word64 fn0000000000016D74(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, word64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1462,7 +1462,7 @@ l0000000000017458:
 fn00000000000173D4_exit:
 
 
-word64 fn00000000000175BC(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, ptr64 & a4Out)
+word64 fn00000000000175BC(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, word64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1587,7 +1587,7 @@ l0000000000017780:
 fn00000000000175BC_exit:
 
 
-word64 fn0000000000017924(word64 gp, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, ptr64 & a4Out, ptr64 & a6Out)
+word64 fn0000000000017924(word64 gp, word64 & a1Out, word64 & a2Out, word64 & a3Out, word64 & a4Out, word64 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1683,7 +1683,7 @@ l0000000000017970:
 fn0000000000017924_exit:
 
 
-word64 fn0000000000017B40(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s5, word64 s6, ptr64 & s1Out, ptr64 & s6Out)
+word64 fn0000000000017B40(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s5, word64 s6, word64 & s1Out, word64 & s6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1778,7 +1778,7 @@ l0000000000017B84:
 fn0000000000017B40_exit:
 
 
-word64 fn0000000000017D10(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s6, word64 s7, ptr64 & s0Out, ptr64 & s3Out, ptr64 & s4Out, ptr64 & s6Out)
+word64 fn0000000000017D10(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s6, word64 s7, word64 & s0Out, word64 & s3Out, word64 & s4Out, word64 & s6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2018,7 +2018,7 @@ l0000000000018254:
 fn0000000000018118_exit:
 
 
-word64 fn00000000000182B4(word64 a0, ptr64 & a3Out, ptr64 & a4Out)
+word64 fn00000000000182B4(word64 a0, word64 & a3Out, word64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

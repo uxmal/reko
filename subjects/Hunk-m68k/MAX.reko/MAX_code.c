@@ -1353,10 +1353,10 @@ l0000216E:
 		;
 }
 
-// 0000248C: Register uint32 fn0000248C(Register Eq_n d4, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out Eq_n d1Out)
+// 0000248C: Register uint32 fn0000248C(Register Eq_n d4, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out uint32 d1Out)
 // Called from:
 //      fn00001468
-uint32 fn0000248C(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, union Eq_n & d1Out)
+uint32 fn0000248C(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, uint32 & d1Out)
 {
 	word32 d0_n = __swap(dwArg08);
 	uint32 d1_n = __swap(dwArg10);
@@ -1402,11 +1402,11 @@ Eq_n fn0000254C(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 	}
 }
 
-// 0000257E: Register Eq_n fn0000257E(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out ptr32 d1Out)
+// 0000257E: Register Eq_n fn0000257E(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out uipr32 d1Out)
 // Called from:
 //      fn0000254C
 //      fn00003B28
-Eq_n fn0000257E(Eq_n d0, Eq_n d1, Eq_n d2, ptr32 & d1Out)
+Eq_n fn0000257E(Eq_n d0, Eq_n d1, Eq_n d2, uipr32 & d1Out)
 {
 	Eq_n d1_n = __swap(d1);
 	word16 v9_n = (word16) d1_n;
@@ -2449,17 +2449,17 @@ int8 g_b3888 = 37; // 00003888
 <unknown> g_t388C = // 0000388C;
 <unknown> g_t3894 = // 00003894;
 <unknown> g_t38A4 = // 000038A4;
-// 000038B4: Register uint32 fn000038B4(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
+// 000038B4: Register uint32 fn000038B4(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out word32 a5Out)
 // Called from:
 //      fn00002F34
-uint32 fn000038B4(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
+uint32 fn000038B4(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, word32 & a5Out)
 {
 	dwArg08->dw0018 |= 0x02;
 	int32 v13_n = dwArg08->dw0014 - 0x01;
 	dwArg08->dw0014 = v13_n;
 	ui32 * a0_n;
 	uint32 d1_n;
-	ptr32 a5;
+	word32 a5;
 	if (v13_n >= 0x00 && (dwArg04 != 0x0A || (dwArg08->dw0018 & 0x80) == 0x00))
 	{
 		a0_n = dwArg08->ptr0004;

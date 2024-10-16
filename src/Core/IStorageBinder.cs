@@ -39,7 +39,7 @@ namespace Reko.Core
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
         Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);
-        Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer);
+        Identifier EnsureOutArgument(Identifier idOrig, DataType dtOutArgument);
         Identifier EnsureSequence(SequenceStorage sequence);
         Identifier EnsureSequence(DataType dataType, params Storage[] elements);
         Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements);

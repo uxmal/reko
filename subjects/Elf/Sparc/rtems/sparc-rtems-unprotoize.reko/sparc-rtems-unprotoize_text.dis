@@ -1000,7 +1000,7 @@ l00011F2C:
 unexpand_if_needed_exit:
 
 
-word32 abspath(word32 o0, word32 o1, ptr32 & l0Out, ptr32 & l2Out, ptr32 & l3Out, ptr32 & l4Out, ptr32 & l7Out, ptr32 & i1Out, ptr32 & i6Out)
+word32 abspath(word32 o0, word32 o1, word32 & l0Out, word32 & l2Out, word32 & l3Out, word32 & l4Out, word32 & l7Out, word32 & i1Out, word32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1326,7 +1326,7 @@ l000122FC:
 shortpath_exit:
 
 
-word32 find_file(word32 o0, word32 o1, ptr32 & l2Out, ptr32 & l3Out, ptr32 & i0Out, ptr32 & i1Out)
+word32 find_file(word32 o0, word32 o1, word32 & l2Out, word32 & l3Out, word32 & i0Out, word32 & i1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1739,7 +1739,7 @@ l000128F4:
 	exit(0x21<32>)
 
 
-word32 munge_compile_params(word32 o0, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i0Out, ptr32 & i6Out)
+word32 munge_compile_params(word32 o0, word32 & l6Out, word32 & l7Out, word32 & i0Out, word32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1837,7 +1837,7 @@ l00012C40:
 munge_compile_params_exit:
 
 
-word32 gen_aux_info_file(word32 o0, ptr32 & l2Out, ptr32 & l4Out, ptr32 & i0Out, ptr32 & i2Out, ptr32 & i6Out)
+word32 gen_aux_info_file(word32 o0, word32 & l2Out, word32 & l4Out, word32 & i0Out, word32 & i2Out, word32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1900,7 +1900,7 @@ l00012EBC:
 	notice(0x17250<32>, Mem131[0x28150<32>:word32], Mem131[sp_99 + 72<i32>:word32])
 
 
-word32 process_aux_info_file(word32 o0, word32 o2, ptr32 & l1Out)
+word32 process_aux_info_file(word32 o0, word32 o2, word32 & l1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

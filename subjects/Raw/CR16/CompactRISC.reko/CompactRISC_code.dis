@@ -117,7 +117,7 @@ l00001BD2:
 fn00001B74_exit:
 
 
-word16 fn00001BEC(word32 r1_r0, word32 r3_r2, word32 r13, word32 ra, ptr32 & r1Out)
+word16 fn00001BEC(word32 r1_r0, word32 r3_r2, word32 r13, word32 ra, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -177,7 +177,7 @@ l00001C12:
 fn00001BEC_exit:
 
 
-word16 fn00001DFA(word32 r3_r2, word16 r1, word32 r13, word32 ra, ptr32 & r1Out)
+word16 fn00001DFA(word32 r3_r2, word16 r1, word32 r13, word32 ra, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -274,7 +274,7 @@ l00001E3C:
 fn00001DFA_exit:
 
 
-word16 fn00001F0C(word32 r3_r2, word16 r1, word16 r4, word32 r13, word32 ra, ptr32 & r1Out)
+word16 fn00001F0C(word32 r3_r2, word16 r1, word16 r4, word32 r13, word32 ra, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1098,7 +1098,7 @@ l000035E8:
 fn000033F8_exit:
 
 
-word16 fn000046AC(word32 r3_r2, word32 r13, ptr32 & r1Out)
+word16 fn000046AC(word32 r3_r2, word32 r13, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1259,7 +1259,7 @@ l000047C8:
 fn00004794_exit:
 
 
-word16 fn00004CD4(word32 r3_r2, word16 r4, word16 r7, word16 r8, word16 r9, word16 r10, word16 r11, word32 ra, ptr32 & r1Out)
+word16 fn00004CD4(word32 r3_r2, word16 r4, word16 r7, word16 r8, word16 r9, word16 r10, word16 r11, word32 ra, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2550,7 +2550,7 @@ l00004D0E:
 fn00004CD4_exit:
 
 
-word32 fn00006134(word32 r3_r2, ptr32 & r1Out)
+word32 fn00006134(word32 r3_r2, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2674,7 +2674,7 @@ l00006160:
 fn00006134_exit:
 
 
-word16 fn00006226(word32 r3_r2, word16 r4, word16 r5, word16 r6, word32 r13, word32 ra, word32 dwArg00, word16 wArg04, ptr32 & r1Out)
+word16 fn00006226(word32 r3_r2, word16 r4, word16 r5, word16 r6, word32 r13, word32 ra, word32 dwArg00, word16 wArg04, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2865,7 +2865,7 @@ l00006418:
 fn00006226_exit:
 
 
-word32 fn000089C4(word32 r3_r2, word32 ra, ptr32 & r1Out)
+word32 fn000089C4(word32 r3_r2, word32 ra, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3456,7 +3456,7 @@ l0000A1BA:
 fn0000A0E8_exit:
 
 
-word32 fn0000A416(word32 r3_r2, word32 r5_r4, ptr32 & r13Out)
+word32 fn0000A416(word32 r3_r2, word32 r5_r4, word32 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -4858,7 +4858,7 @@ l0000B83C:
 fn0000B218_exit:
 
 
-word16 fn0000BAE0(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r1Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r13Out)
+word16 fn0000BAE0(word32 r3_r2, word32 r5_r4, word32 r13, word16 & r1Out, word16 & r10Out, word16 & r11Out, word32 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -5198,7 +5198,7 @@ l0000BC5A:
 	r9_r8_1919 = r1_r0_1902 (alias)
 
 
-word32 fn0000C0EE(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r11_r10Out, ptr32 & r13Out)
+word32 fn0000C0EE(word32 r3_r2, word32 r5_r4, word32 r13, word32 & r11_r10Out, word32 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -5220,7 +5220,7 @@ l0000C0EE:
 fn0000C0EE_exit:
 
 
-word16 fn0000C224(word32 r3_r2, word32 r5_r4, word32 r13, ptr32 & r1Out)
+word16 fn0000C224(word32 r3_r2, word32 r5_r4, word32 r13, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -5463,7 +5463,7 @@ l0000D4EC:
 fn0000D4EC_exit:
 
 
-word16 fn0000D4F8(word32 r3_r2, word32 r5_r4, word16 r6, ptr32 & r1Out)
+word16 fn0000D4F8(word32 r3_r2, word32 r5_r4, word16 r6, word16 & r1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -5524,7 +5524,7 @@ l0000D540:
 fn0000D4F8_exit:
 
 
-word16 fn0000D578(ptr32 & r3Out)
+word16 fn0000D578(word16 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

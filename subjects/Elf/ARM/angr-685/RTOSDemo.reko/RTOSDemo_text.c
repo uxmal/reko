@@ -144,10 +144,10 @@ void vSetErrorLED(word32 cpsr)
 	vParTestSetLED(0x07, 0x01, cpsr);
 }
 
-// 0000818C: Register word32 prvSetAndCheckRegisters(Register word32 cpsr, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out)
+// 0000818C: Register word32 prvSetAndCheckRegisters(Register word32 cpsr, Register out word32 r5Out, Register out word32 r6Out, Register out word32 r7Out, Register out word32 r8Out)
 // Called from:
 //      vApplicationIdleHook
-word32 prvSetAndCheckRegisters(word32 cpsr, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
+word32 prvSetAndCheckRegisters(word32 cpsr, word32 & r5Out, word32 & r6Out, word32 & r7Out, word32 & r8Out)
 {
 	if (true && (true && (true && (true && (true && (true && (true && (true && (true && (true && (true && (true && true))))))))))))
 		return;
@@ -1418,13 +1418,13 @@ l00009046:
 struct Eq_n * g_ptr9088 = &g_t200007FC; // 00009088
 word32 g_dw908C = 0x20000808; // 0000908C
 word32 g_dw9090 = 0x20000800; // 00009090
-// 00009094: FlagGroup bool xCoRoutineRemoveFromEventList(Register (ptr32 Eq_n) r0, Register out ptr32 r0Out)
+// 00009094: FlagGroup bool xCoRoutineRemoveFromEventList(Register (ptr32 Eq_n) r0, Register out word32 r0Out)
 // Called from:
 //      xQueueCRSend
 //      xQueueCRReceive
 //      xQueueCRSendFromISR
 //      xQueueCRReceiveFromISR
-bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
+bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, word32 & r0Out)
 {
 	struct Eq_n * r4_n = r0->ptr000C->ptr000C;
 	struct Eq_n ** r5_n = g_ptr90C0;
@@ -1434,7 +1434,7 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 	up32 r3_n = *((char *) *r5_n + 44);
 	Eq_n NZCV_n;
 	NZCV_n.u1 = cond(r0_n - r3_n);
-	r0Out = &g_t0001;
+	r0Out = 0x01;
 	return (NZCV_n & 0x04) != 0x00;
 }
 

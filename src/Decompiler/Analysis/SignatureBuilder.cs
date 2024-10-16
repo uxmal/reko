@@ -83,7 +83,7 @@ namespace Reko.Analysis
                 //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
                 // future versions of reko will opt to model multiple values return from functions
                 // explicitly instead of using destructive updates of this kind.
-                var parameter = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.BitSize));
+                var parameter = binder.EnsureOutArgument(idOrig, idOrig.DataType);
                 parameters.Add(parameter);
                 return parameter;
             }

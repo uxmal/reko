@@ -61,7 +61,7 @@ namespace Reko.Core.Analysis
         public override OutArgument BindOutArg(Storage stg)
         {
             var actualArg = stg.Accept(this);
-            return new OutArgument(arch.FramePointerType, actualArg);
+            return new OutArgument(stg.DataType, actualArg);
         }
 
         #region StorageVisitor<Expression> Members

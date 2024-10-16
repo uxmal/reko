@@ -1718,7 +1718,7 @@ l00402014:
 client_new_exit:
 
 
-word32 client_prepare_connect(word32 r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
+word32 client_prepare_connect(word32 r4, word32 ra, word32 & r6Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1883,7 +1883,7 @@ l00402A4C:
 client_parse_request_exit:
 
 
-word32 add_to_request(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+word32 add_to_request(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2002,7 +2002,7 @@ l00402E44:
 client_read_request_exit:
 
 
-word32 client_send_request(word32 r4, word32 ra, ptr32 & r25Out)
+word32 client_send_request(word32 r4, word32 ra, word32 & r25Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2303,7 +2303,7 @@ l00403BDC:
 open_destination_exit:
 
 
-word32 clist_new(word32 ra, ptr32 & r4Out, ptr32 & r5Out)
+word32 clist_new(word32 ra, word32 & r4Out, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2335,7 +2335,7 @@ l00403CA8:
 clist_new_exit:
 
 
-word32 clist_add(word32 r4, word32 r5, ptr32 & r5Out)
+word32 clist_add(word32 r4, word32 r5, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -2692,7 +2692,7 @@ l00404B18:
 request_add_lines_exit:
 
 
-word32 get_method(word32 r4, ptr32 & r5Out)
+word32 get_method(word32 r4, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3174,7 +3174,7 @@ l004065D0:
 properties_print_usage_exit:
 
 
-word32 print_log(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
+word32 print_log(word32 r4, word32 r5, word32 & r5Out, word32 & r6Out, word32 & r7Out, word32 & r25Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -3360,7 +3360,7 @@ l00406D38:
 server_new_exit:
 
 
-word32 server_open(word32 r4, word32 ra, ptr32 & r5Out)
+word32 server_open(word32 r4, word32 ra, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

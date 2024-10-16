@@ -84,7 +84,7 @@ l10001170:
 initpySample_exit:
 
 
-word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 & ebxOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -484,7 +484,7 @@ l1000173E:
 fn10001700_exit:
 
 
-word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & ediOut)
+word32 fn10001742(word32 ebx, word32 esi, word32 edi, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

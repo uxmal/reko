@@ -4,13 +4,13 @@
 
 #include "RTOSDemo.h"
 
-// 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+// 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register out word32 r4Out, Register out word32 r5Out, Register out word32 r6Out, Register out word32 r7Out)
 // Called from:
 //      prvCopyDataToQueue
 //      prvCopyDataFromQueue
 //      xQueueCRReceive
 //      xQueueCRReceiveFromISR
-bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, word32 & r4Out, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 {
 	Eq_n r5_n = r0;
 	if (r2 > 0x0F)
@@ -27,13 +27,13 @@ l0000A630:
 				r3_n.u1 = (word32) r3_n + 1;
 			} while (r3_n != r2);
 l0000A63C:
-			ptr32 r4_n;
+			word32 r4_n;
 			r4Out = r4_n;
-			ptr32 r5_n;
+			word32 r5_n;
 			r5Out = r5_n;
-			ptr32 r6_n;
+			word32 r6_n;
 			r6Out = r6_n;
-			ptr32 r7_n;
+			word32 r7_n;
 			r7Out = r7_n;
 			word32 Z_n;
 			return Z_n != 0x00;

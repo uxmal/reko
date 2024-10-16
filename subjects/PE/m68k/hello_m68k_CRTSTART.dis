@@ -218,7 +218,7 @@ l000023F8:
 fn000023F8_exit:
 
 
-word32 fn00002418(word32 a5, ptr32 & a6Out)
+word32 fn00002418(word32 a5, word32 & a6Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -247,7 +247,7 @@ l00002430:
 fn00002418_exit:
 
 
-word32 fn0000243C(word32 a5, word32 dwArg04, ptr32 & a6Out)
+word32 fn0000243C(word32 a5, word32 dwArg04, word32 & a6Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
