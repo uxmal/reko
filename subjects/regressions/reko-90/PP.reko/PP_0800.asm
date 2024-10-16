@@ -18648,6 +18648,11 @@ fn0800_8BBB proc
 	pop	cx
 	push	cs
 	push	cx
+
+;; fn0800_8BBE: 0800:8BBE
+;;   Called from:
+;;     0800:8BBB (in fn0800_8BBB)
+fn0800_8BBE proc
 	xor	cx,cx
 	jmp	8BD8h
 
@@ -18662,6 +18667,11 @@ fn0800_8BC2 proc
 	pop	cx
 	push	cs
 	push	cx
+
+;; fn0800_8BC5: 0800:8BC5
+;;   Called from:
+;;     0800:8BC2 (in fn0800_8BC2)
+fn0800_8BC5 proc
 	mov	cx,1h
 	jmp	8BD8h
 
@@ -18680,15 +18690,20 @@ fn0800_8BCA proc
 	pop	cx
 	push	cs
 	push	cx
+
+;; fn0800_8BCD: 0800:8BCD
+;;   Called from:
+;;     0800:8BCA (in fn0800_8BCA)
+fn0800_8BCD proc
 	mov	cx,2h
 	jmp	8BD8h
 0800:8BD2       59 0E 51 B9 03 00                           Y.Q...        
 
 ;; fn0800_8BD8: 0800:8BD8
 ;;   Called from:
-;;     0800:8BC0 (in fn0800_8BBB)
-;;     0800:8BC8 (in fn0800_8BC2)
-;;     0800:8BD0 (in fn0800_8BCA)
+;;     0800:8BC0 (in fn0800_8BBE)
+;;     0800:8BC8 (in fn0800_8BC5)
+;;     0800:8BD0 (in fn0800_8BCD)
 fn0800_8BD8 proc
 	push	bp
 	push	si
@@ -18819,6 +18834,11 @@ fn0800_8C69 proc
 	pop	bx
 	push	cs
 	push	bx
+
+;; fn0800_8C6C: 0800:8C6C
+;;   Called from:
+;;     0800:8C69 (in fn0800_8C69)
+fn0800_8C6C proc
 	cmp	cl,10h
 	jnc	8C81h
 
@@ -18853,6 +18873,11 @@ fn0800_8C8A proc
 	pop	bx
 	push	cs
 	push	bx
+
+;; fn0800_8C8D: 0800:8C8D
+;;   Called from:
+;;     0800:8C8A (in fn0800_8C8A)
+fn0800_8C8D proc
 	cmp	cl,10h
 	jnc	8CA2h
 
@@ -18899,6 +18924,11 @@ fn0800_8CAA proc
 	pop	bx
 	push	cs
 	push	bx
+
+;; fn0800_8CAD: 0800:8CAD
+;;   Called from:
+;;     0800:8CAA (in fn0800_8CAA)
+fn0800_8CAD proc
 	cmp	cl,10h
 	jnc	8CC2h
 
@@ -18928,6 +18958,11 @@ fn0800_8CCB proc
 	pop	es
 	push	cs
 	push	es
+
+;; fn0800_8CCE: 0800:8CCE
+;;   Called from:
+;;     0800:8CCB (in fn0800_8CCB)
+fn0800_8CCE proc
 	or	cx,cx
 	jge	8CDEh
 

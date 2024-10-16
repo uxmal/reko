@@ -1007,6 +1007,35 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewritePop()
         {
+            // This hack handles the occurence of
+            //      pop <reg>   ; Pop the near return address
+            //      push cs     ; push the CS selector
+            //      push <reg>  ; push the return address
+            // which "converts" a near call to a far call.
+            // The code replaces the sequence with a far call
+            // to the instruction following the second push.
+
+            // Ideally it should only be triggered at the start 
+            // of a procedure. Maybe a future version of Reko
+            // will have a "hint" to the rewriter telling it
+            // that the current instruction is at the start of a procedure
+
+            if (instrCur.Operands[0] is RegisterStorage regScratch &&
+                regScratch.BitSize == 16 &&
+                dasm.TryPeek(1, out var pushCs) &&
+                    pushCs.Mnemonic == Mnemonic.push &&
+                    pushCs.Operands[0] == Registers.cs &&
+                dasm.TryPeek(2, out var pushScratch) &&
+                    pushScratch.Mnemonic == Mnemonic.push &&
+                    pushScratch.Operands[0] == regScratch)
+            {
+                var callTarget = pushScratch.Address + pushScratch.Length;
+                this.iclass = InstrClass.Call;
+                m.Call(callTarget, 4);
+                m.Return(2, 0);
+                dasm.Skip(2);
+                return;
+            }
             RewritePop(dasm.Current.Operands[0], dasm.Current.Operands[0].Width);
         }
 
