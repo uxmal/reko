@@ -1011,11 +1011,17 @@ namespace Reko.Arch.X86.Rewriter
             //      pop <reg>   ; Pop the near return address
             //      push cs     ; push the CS selector
             //      push <reg>  ; push the return address
+            //      <rest of procedure>
             // which "converts" a near call to a far call.
-            // The code replaces the sequence with a far call
-            // to the instruction following the second push.
-
-            // Ideally it should only be triggered at the start 
+            // The code below replaces the sequence with a far call
+            // to the instruction following the second push. The 
+            // resulting IR instructions generated are equivalent
+            // to:
+            //      call <rest of procedure>
+            //      ret         ; near return
+            //      <rest of procedure>
+            //
+            // Ideally this check should only be triggered at the start 
             // of a procedure. Maybe a future version of Reko
             // will have a "hint" to the rewriter telling it
             // that the current instruction is at the start of a procedure
