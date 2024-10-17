@@ -15,7 +15,7 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-// Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
+// Register word16 fn0C00_0004(Register word16 dx, Register out word16 dxOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  dx:[0..15]
 // LiveOut: ax:[0..15]-fn0C00_0013 dx:[0..15]-fn0C00_0013
@@ -23,7 +23,7 @@ fn0C00_0000_exit:
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0
-word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
+word16 fn0C00_0004(word16 dx, word16 & dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:

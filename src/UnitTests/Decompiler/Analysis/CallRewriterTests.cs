@@ -382,7 +382,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             flow.BitsLiveOut.Add(Registers.eax, new(BitRange.Empty, proc));        // becomes the return value.
             flow.BitsLiveOut.Add(Registers.ebx, new(BitRange.Empty, proc));
             crw.EnsureSignature(ssa, flow);
-            Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("Register word32 foo(Register out word32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
 
         [Test]
@@ -404,7 +404,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), new(BitRange.Empty,proc));
 
             crw.EnsureSignature(ssa, flow);
-            Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out real80 rArg0Out, FpuStack out real80 rArg1Out)", proc.Signature.ToString(proc.Name));
         }
 
         [Test]
@@ -748,7 +748,7 @@ l1:
 	return
 	// succ:  main_exit
 main_exit:
-Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out ptr32 r2Out)
+Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out word32 r2Out)
 // MayUse:  r1:[0..31] r2:[0..31]
 // DataTypes: 
 //   r1: word32
@@ -766,7 +766,7 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // r63:r63
 // r2Out:Out:r2
 // return address size: 0
-word32 fnOutParam(word32 r1, word32 r2, ptr32 & r2Out)
+word32 fnOutParam(word32 r1, word32 r2, word32 & r2Out)
 fnOutParam_entry:
 	def r1
 	def r2

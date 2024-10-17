@@ -36,7 +36,7 @@ l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
+FlagGroup bool fn0C00_000A(Register byte al, Register out byte alOut)
 // MayUse:  al:[0..7]
 // DataTypes: 
 //   al: cu8
@@ -59,7 +59,7 @@ FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // O:O
 // alOut:Out:al
 // return address size: 2
-bool fn0C00_000A(byte al, ptr16 & alOut)
+bool fn0C00_000A(byte al, byte & alOut)
 fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A

@@ -39,7 +39,7 @@ l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
+FlagGroup bool fn0C00_000A(Register selector ds, Register out word16 axOut)
 // MayUse:  ds:[0..15]
 // DataTypes: 
 //   ds: (ptr16 (segment 0104))
@@ -64,7 +64,7 @@ FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // O:O
 // axOut:Out:ax
 // return address size: 2
-bool fn0C00_000A(selector ds, ptr16 & axOut)
+bool fn0C00_000A(selector ds, word16 & axOut)
 fn0C00_000A_entry:
 	def ds
 	def Mem0

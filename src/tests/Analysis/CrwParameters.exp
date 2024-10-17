@@ -44,7 +44,7 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out ptr16 siOut)
+Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out word16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
 //   Sequence ds:si: (ptr32 (struct 0002))
@@ -64,7 +64,7 @@ Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0025(segptr32 ds_si, ptr16 & siOut)
+word16 fn0C00_0025(segptr32 ds_si, word16 & siOut)
 fn0C00_0025_entry:
 	def ds_si
 	si = SLICE(ds_si, word16, 0)
@@ -77,7 +77,7 @@ l0C00_0025:
 	return ax_7
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:
-Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out ptr16 siOut)
+Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out word16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
 //   Sequence ds:si: (ptr32 (struct 0002))
@@ -102,7 +102,7 @@ Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0027(segptr32 ds_si, ptr16 & siOut)
+word16 fn0C00_0027(segptr32 ds_si, word16 & siOut)
 fn0C00_0027_entry:
 	def ds_si
 	si = SLICE(ds_si, word16, 0)
@@ -124,7 +124,7 @@ l0C00_002E:
 	return ax_18
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
-Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)
+Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out word16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
 //   Sequence ds:si: (ptr32 (struct 0006))
@@ -144,7 +144,7 @@ Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_002F(segptr32 ds_si, ptr16 & siOut)
+word16 fn0C00_002F(segptr32 ds_si, word16 & siOut)
 fn0C00_002F_entry:
 	def ds_si
 	si = SLICE(ds_si, word16, 0)
@@ -158,7 +158,7 @@ l0C00_002F:
 	return ax_7
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:
-Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out ptr16 siOut)
+Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out word16 siOut)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
 //   Sequence ds:si: segptr32
@@ -178,7 +178,7 @@ Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0036(segptr32 ds_si, ptr16 & siOut)
+word16 fn0C00_0036(segptr32 ds_si, word16 & siOut)
 fn0C00_0036_entry:
 	def ds_si
 	ds = SLICE(ds_si, selector, 16)

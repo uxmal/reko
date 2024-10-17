@@ -37,7 +37,7 @@ bx_5: orig: bx
 bxOut:Out:bx
 // fn0C00_000E
 // Return size: 0
-word16 fn0C00_000E(ptr16 & bxOut)
+word16 fn0C00_000E(word16 & bxOut)
 fn0C00_000E_entry:
 	// succ:  l0C00_000E
 l0C00_000E:

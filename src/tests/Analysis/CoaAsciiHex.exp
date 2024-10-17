@@ -117,7 +117,7 @@ Z_68: orig: Z
 Z_69: orig: Z
 // fn0C00_000A
 // Return size: 0
-bool fn0C00_000A(byte al, ptr16 & alOut)
+bool fn0C00_000A(byte al, byte & alOut)
 fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A

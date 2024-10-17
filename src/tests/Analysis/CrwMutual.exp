@@ -28,7 +28,7 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
+Register word16 fn0C00_0004(Register word16 dx, Register out word16 dxOut)
 // MayUse:  dx:[0..15]
 // DataTypes: 
 //   dx: word16
@@ -52,7 +52,7 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // O:O
 // dxOut:Out:dx
 // return address size: 2
-word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
+word16 fn0C00_0004(word16 dx, word16 & dxOut)
 fn0C00_0004_entry:
 	def dx
 	// succ:  l0C00_0004
